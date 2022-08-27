@@ -89,16 +89,24 @@
 <li><a href="#download-toolchain">17.3 Download Toolchain</a><ul></ul></li>
 <li><a href="#build-nuttx">17.4 Build NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>1 Sep 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/uboot-title.png" alt="Apache NuttX RTOS booting on Pine64 PinePhone" /></p>
-<p><em>Apache NuttX RTOS booting on Pine64 PinePhone</em></p>
-<p>Suppose we’re creating our own Operating System (non-Linux)  for Pine64 PinePhone…</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#nuttx-boot-log"><em>Apache NuttX RTOS booting on Pine64 PinePhone</em></a></p>
+<p>Suppose we’re creating our own <strong>Operating System</strong> (non-Linux) for <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>…</p>
 <ul>
-<li>What’s the file format?</li>
-<li>Where in RAM should it run?</li>
-<li>Can we make a microSD that will boot our OS?</li>
-<li>What happens when PinePhone powers on?</li>
+<li>
+<p>What’s the File Format?</p>
+</li>
+<li>
+<p>Where in RAM should it run?</p>
+</li>
+<li>
+<p>Can we make a microSD that will boot our OS?</p>
+</li>
+<li>
+<p>What happens when PinePhone powers on?</p>
+</li>
 </ul>
-<p>This article explains how we ported Apache NuttX RTOS to PinePhone. And we’ll answer these questions along the way!</p>
-<p>Let’s walk through the steps to create our own PinePhone Operating System…</p>
+<p>This article explains how we ported <a href="https://lupyuen.github.io/articles/arm"><strong>Apache NuttX RTOS</strong></a> to PinePhone. And we’ll answer the questions along the way!</p>
+<p>Let’s walk through the steps to create our own <strong>PinePhone Operating System</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
 </ul>
@@ -161,7 +169,7 @@
 </ol>
 <p>Don’t power up PinePhone yet! We need to talk about PinePhone’s Bootloader…</p>
 <p><img src="https://lupyuen.github.io/images/arm-jumpdrive.png" alt="PinePhone Jumpdrive on microSD" /></p>
-<p><em>PinePhone Jumpdrive on microSD</em></p>
+<p><a href="https://github.com/dreemurrs-embedded/Jumpdrive"><em>PinePhone Jumpdrive on microSD</em></a></p>
 <h1 id="u-boot-bootloader"><a href="#u-boot-bootloader">4 U-Boot Bootloader</a></h1>
 <p><em>What happens when we power up PinePhone?</em></p>
 <p>The <a href="https://en.wikipedia.org/wiki/Das_U-Boot"><strong>U-Boot Bootloader</strong></a> runs, searching for a Linux Kernel to boot (on microSD or eMMC)…</p>
@@ -183,7 +191,7 @@
 <p><em>Whoa! These docs look so dry…</em></p>
 <p>There’s an easier way to grok U-Boot. Let’s watch PinePhone boot Jumpdrive!</p>
 <p><img src="https://lupyuen.github.io/images/uboot-uboot.png" alt="U-Boot Bootloader on PinePhone" /></p>
-<p><em>U-Boot Bootloader on PinePhone</em></p>
+<p><a href="https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log"><em>U-Boot Bootloader on PinePhone</em></a></p>
 <h1 id="boot-log"><a href="#boot-log">5 Boot Log</a></h1>
 <p>Now we’re ready to watch what happens when PinePhone boots…</p>
 <ol>
@@ -309,7 +317,7 @@ if load ${devtype} ${devnum}:${distro_bootpart} ${kernel_addr_z} /Image.gz; then
     fi;
   fi;
 fi</code></pre></div>
-<p>(We’ll explain fdt_addr_r, kernel_addr_r and ramdisk_addr_r)</p>
+<p>(We’ll explain <em>fdt_addr_r</em>, <em>kernel_addr_r</em> and <em>ramdisk_addr_r</em>)</p>
 <p>The above U-Boot Script <strong><code>pine64-pinephone.txt</code></strong> is compiled to <strong><code>boot.scr</code></strong> by this Makefile: <a href="https://github.com/dreemurrs-embedded/Jumpdrive/blob/master/Makefile#L207-L209">Jumpdrive/Makefile</a></p>
 <div class="example-wrap"><pre class="language-text"><code>%.scr: src/%.txt
 	@echo &quot;MKIMG $@&quot;
@@ -351,7 +359,7 @@ ramdisk_addr_r=0x4FE00000</code></pre></div>
 <p><strong><code>ramdisk_addr_r</code></strong>: Linux RAM File System <code>initramfs</code> will be loaded into RAM at <strong><code>0x4FE0</code> <code>0000</code></strong></p>
 </li>
 </ul>
-<p><em>Aha! That’s why our kernel must start at <code>0x4008</code> <code>0000</code>!</em></p>
+<p><em>Aha that’s why our kernel must start at <code>0x4008</code> <code>0000</code>!</em></p>
 <p>Yep! Thus we can…</p>
 <ul>
 <li>
@@ -431,14 +439,15 @@ real_start: ... </code></pre></div>
 <p>We’re almost ready to boot NuttX on PinePhone!</p>
 <p><em>Will we see anything when NuttX boots on PinePhone?</em></p>
 <p>Not yet. We need to implement the UART Driver…</p>
+<p><img src="https://lupyuen.github.io/images/uboot-uart1.png" alt="Allwinner A64 UART Controller Registers" /></p>
+<p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><em>Allwinner A64 UART Controller Registers</em></a></p>
 <h1 id="uart-output"><a href="#uart-output">10 UART Output</a></h1>
 <p>Our operating system will show some output on PinePhone’s <strong>Serial Debug Console</strong> as it boots.</p>
 <p>To do that, we’ll talk to the <strong>UART Controller</strong> on the Allwinner A64 SoC…</p>
 <ul>
 <li><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a></li>
 </ul>
-<p>Flip the <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>A64 User Manual</strong></a> to page 562 and we’ll see the <strong>UART Registers</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/uboot-uart1.png" alt="A64 UART Controller Registers" /></p>
+<p>Flip the <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>A64 User Manual</strong></a> to page 562 and we’ll see the <strong>UART Registers</strong>. (Pic above)</p>
 <p>PinePhone’s Serial Console is connected to <strong>UART0</strong> at Base Address <strong><code>0x01C2</code> <code>8000</code></strong></p>
 <p>The First Register of UART0 is what we need: <strong>UART_THR</strong> at <strong><code>0x01C2</code> <code>8000</code></strong>…</p>
 <p><img src="https://lupyuen.github.io/images/uboot-uart2.png" alt="A64 UART Register UART_THR" /></p>
@@ -455,7 +464,7 @@ real_start: ... </code></pre></div>
   PRINT(hello, &quot;HELLO NUTTX ON PINEPHONE!\r\n&quot;)</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L178-L179">(Source)</a></p>
 <p>Calls our <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L58-L69"><strong><code>PRINT</code> Macro</strong></a> to print a string at startup.</p>
-<p>Which is super convenient because our <strong>Startup Code</strong> has plenty of Assembly Code!</p>
+<p>Which is super convenient because our <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S"><strong>Startup Code</strong></a> has plenty of Assembly Code!</p>
 <p><em>What’s inside the macro?</em></p>
 <p>Our <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L58-L69"><strong><code>PRINT</code> Macro</strong></a> calls…</p>
 <ul>
@@ -511,6 +520,7 @@ SECTION_FUNC(text, up_earlyserialinit)
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L171-L175">(<strong><code>up_earlyserialinit</code></strong> is called by our Startup Code)</a></p>
 <p>We’re finally ready to boot our own PinePhone Operating System!</p>
 <p><img src="https://lupyuen.github.io/images/uboot-title2.png" alt="Apache NuttX RTOS booting on Pine64 PinePhone" /></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#nuttx-boot-log"><em>Apache NuttX RTOS booting on Pine64 PinePhone</em></a></p>
 <h1 id="pinephone-boots-nuttx"><a href="#pinephone-boots-nuttx">12 PinePhone Boots NuttX</a></h1>
 <p>Earlier we said that we’ll overwrite <strong><code>Image.gz</code> on Jumpdrive microSD</strong> to boot our own OS…</p>
 <ul>
@@ -668,6 +678,7 @@ strb w0, [x15, #0x0C]</code></pre></div>
 </ul>
 <p>Which implement all kinds of Arm64 Features: <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_fpu.c"><strong>FPU</strong></a>, <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_gicv3.c"><strong>Interrupts</strong></a>, <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c"><strong>MMU</strong></a>, <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_task_sched.c"><strong>Tasks</strong></a>, <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_arch_timer.c"><strong>Timers</strong></a>…</p>
 <h1 id="whats-next"><a href="#whats-next">15 What’s Next</a></h1>
+<p>TODO</p>
 <p><strong>NuttX on PinePhone</strong> might take a while to become a <strong>Daily Driver</strong>…</p>
 <p>But today NuttX is ready to turn PinePhone into a valuable <strong>Learning Resource</strong>!</p>
 <p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
