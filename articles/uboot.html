@@ -88,7 +88,7 @@
 <li><a href="#install-prerequisites">17.2 Install Prerequisites</a><ul></ul></li>
 <li><a href="#download-toolchain">17.3 Download Toolchain</a><ul></ul></li>
 <li><a href="#build-nuttx">17.4 Build NuttX</a><ul></ul></li></ul></li>
-<li><a href="#appendix-allwinner-a64-uart">18 Appendix: Allwinner A64 UART</a><ul></ul></li></ul></nav><p>📝 <em>1 Sep 2022</em></p>
+<li><a href="#appendix-allwinner-a64-uart">18 Appendix: Allwinner A64 UART</a><ul></ul></li></ul></nav><p>📝 <em>28 Aug 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/uboot-title.png" alt="Apache NuttX RTOS booting on Pine64 PinePhone" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#nuttx-boot-log"><em>Apache NuttX RTOS booting on Pine64 PinePhone</em></a></p>
 <p>Suppose we’re creating our own <strong>Operating System</strong> (non-Linux) for <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>…</p>
@@ -136,7 +136,7 @@
 <p>Not quite! Our OS will actually be loaded at <strong><code>0x4008</code> <code>0000</code></strong></p>
 <p>We’ll see why in a while, but first we talk about a Very Important Cable…</p>
 <p><img src="https://lupyuen.github.io/images/arm-uart2.jpg" alt="PinePhone connected to USB Serial Debug Cable" /></p>
-<p><a href="https://lupyuen.github.io/articles/arm#uart-driver-for-nuttx"><em>PinePhone connected to USB Serial Debug Cable</em></a></p>
+<p><a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><em>PinePhone connected to USB Serial Debug Cable</em></a></p>
 <h1 id="usb-serial-debug-cable"><a href="#usb-serial-debug-cable">2 USB Serial Debug Cable</a></h1>
 <p><em>Can we watch what happens when PinePhone boots?</em></p>
 <p>There’s a magical cable for that: <strong>USB Serial Debug Cable</strong> (pic above)…</p>
@@ -246,7 +246,8 @@ Scanning mmc 0:1...
 Found U-Boot script /boot.scr
 653 bytes read in 3 ms (211.9 KiB/s)</code></pre></div>
 <p>U-Boot scans our microSD and discovers a <strong>U-Boot Script <code>boot.scr</code></strong></p>
-<p>We’ll talk more about the script, which <strong>loads the Linux Kernel</strong> into RAM and starts it…</p>
+<p>(We’ll talk more about the script)</p>
+<p>The U-Boot Script <strong>loads the Linux Kernel</strong> into RAM and starts it…</p>
 <div class="example-wrap"><pre class="language-text"><code># Executing script at 4fc00000
 gpio: pin 114 (gpio 114) value is 1
 4275261 bytes read in 192 ms (21.2 MiB/s)
@@ -419,7 +420,7 @@ __start:
 <p>(NuttX code begins at <strong><code>real_start</code></strong> after the header)</p>
 <p>Then comes the rest of the header…</p>
 <div class="example-wrap"><pre class="language-text"><code>  .quad   0x0000               /* PinePhone Image load offset from start of RAM */
-  .quad   _e_initstack - __start         /* Effective size of kernel image, little-endian */
+  .quad   _e_initstack - __start  /* Effective size of kernel image, little-endian */
   .quad   __HEAD_FLAGS         /* Informative flags, little-endian */
   .quad   0                    /* reserved */
   .quad   0                    /* reserved */
@@ -486,8 +487,8 @@ real_start: ... </code></pre></div>
 GTEXT(up_lowputc)
 SECTION_FUNC(text, up_lowputc)
   ldr   x15, =UART1_BASE_ADDRESS  /* Load UART Base Address */
-  early_uart_ready    x15, w2     /* Wait for UART ready */
-  early_uart_transmit x15, w0     /* Transmit to UART    */
+  early_uart_ready    x15, w2     /* Wait for UART ready    */
+  early_uart_transmit x15, w0     /* Transmit to UART       */
   ret</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L96-L105">(Source)</a> </p>
 <p>And calls <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L87-L94"><strong><code>early_uart_transmit</code></strong></a> Macro to transmit a character…</p>
@@ -509,6 +510,7 @@ SECTION_FUNC(text, up_lowputc)
  */
 .macro early_uart_ready xb, wt
 1:
+  # TODO: Wait for PinePhone Allwinner A64 UART
   ...</code></pre></div>
 <p>Also we don’t <strong>initialise the UART Port</strong> because U-Boot has kindly done it for us. Eventually this needs to be fixed: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72">qemu_lowputc.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* UART initialization
@@ -517,6 +519,8 @@ SECTION_FUNC(text, up_lowputc)
  */
 GTEXT(up_earlyserialinit)
 SECTION_FUNC(text, up_earlyserialinit)
+  # TODO: Set PinePhone Allwinner A64 Baud Rate Divisor:
+  # Write to UART_LCR (DLAB), UART_DLL and UART_DLH
   ...</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L171-L175">(<strong><code>up_earlyserialinit</code></strong> is called by our Startup Code)</a></p>
 <p>More about this in the Appendix…</p>
