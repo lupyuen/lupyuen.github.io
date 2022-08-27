@@ -712,9 +712,17 @@ Which implement all kinds of Arm64 Features: [__FPU__](https://github.com/lupyue
 
 # What's Next
 
-TODO
+Today we've seen that it's indeed possible to __boot our own OS__ on PinePhone... By __replacing a single file__ on Jumpdrive microSD!
+
+We've done that with __Apache NuttX RTOS__, which has plenty of code that will be useful for PinePhone OS Developers.
+
+_Will NuttX work with all PinePhone features?_
 
 __NuttX on PinePhone__ might take a while to become a __Daily Driver__...
+
+-   [__"PinePhone on RTOS"__](https://lupyuen.github.io/articles/arm#pinephone-on-rtos)
+
+-   [__"PinePhone Drivers and Apps"__](https://lupyuen.github.io/articles/arm#pinephone-drivers-and-apps)
 
 But today NuttX is ready to turn PinePhone into a valuable __Learning Resource__!
 
@@ -837,9 +845,15 @@ The NuttX Output Files may be found here...
 
 -   [__Apache NuttX RTOS for PinePhone__](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.3)
 
-TODO: The output file [__`nuttx.bin`__)](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.3/nuttx.bin)
+The [__NuttX Binary Image `nuttx.bin`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.3/nuttx.bin) will be gzipped and copied to Jumpdrive microSD as __`Image.gz`__...
 
-TODO: is the Arm64 [__ELF Executable__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) that we'll run in the next step.
+-   [__"PinePhone Boots NuttX"__](https://lupyuen.github.io/articles/uboot#pinephone-boots-nuttx)
+
+For Troubleshooting: Refer to the [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.3/nuttx) or the [__NuttX Arm Disassembly `nuttx.S`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.3/nuttx.S)
+
+This article explains how we may load the [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.3/nuttx) into Ghidra for inspection...
+
+-   [__"Analyse NuttX Image with Ghidra"__](https://lupyuen.github.io/articles/arm#appendix-analyse-nuttx-image-with-ghidra)
 
 # Appendix: Allwinner A64 UART
 
