@@ -470,7 +470,7 @@ Rightfully we should wait for __THR Empty__ (Transmit Buffer Empty) before sendi
 
 And we should initialise the __UART Baud Rate__. We'll come back to this.
 
-# NuttX UART Driver
+# NuttX UART Macros
 
 NuttX writes to the UART Port with some clever __Arm Assembly Macros__.
 
@@ -533,7 +533,7 @@ That's how we print a string to the console at startup!
 
 _What's inside `early_uart_ready`?_
 
-Right now we don't check if UART is __ready to transmit__, so our UART output will have missing characters. This needs to be fixed...
+Right now we don't check if UART is __ready to transmit__, so our UART output will have dropped characters. This needs to be fixed: [qemu_lowputc.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L74-L85)
 
 ```text
 /* Wait for UART to be ready to transmit
@@ -546,9 +546,7 @@ Right now we don't check if UART is __ready to transmit__, so our UART output wi
   ...
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L74-L85)
-
-Also we don't __initialise the UART Port__ because U-Boot has kindly done it for us. This needs to be fixed...
+Also we don't __initialise the UART Port__ because U-Boot has kindly done it for us. Eventually this needs to be fixed: [qemu_lowputc.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72)
 
 ```text
 /* UART initialization
@@ -562,11 +560,24 @@ SECTION_FUNC(text, up_earlyserialinit)
   ...
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72)
+[(__`up_earlyserialinit`__ is called by our Startup Code)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L171-L175)
 
-# NuttX Boots On PinePhone
+# PinePhone Boots NuttX
 
 TODO
+
+Build NuttX
+
+Zip NuttX
+
+```bash
+```
+
+Copy to microSD
+
+```bash
+
+```
 
 ![Apache NuttX RTOS booting on Pine64 PinePhone](https://lupyuen.github.io/images/uboot-title2.png)
 
@@ -658,7 +669,9 @@ strb w0, [x15, #0x0C]
 
 # NuttX Source Code
 
-TODO: Apache NuttX RTOS has plenty of __Arm64 Code__ that will be helpful to creators of PinePhone Operating Systems.
+TODO: Apache NuttX RTOS has plenty of __Arm64 Code__ that will be helpful to creators of PinePhone Operating Systems...
+
+[__Startup Code__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S)
 
 # What's Next
 
@@ -685,3 +698,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1561843749168173056)
+
+# Appendix: Build NuttX for PinePhone
+
+TODO
