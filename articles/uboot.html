@@ -79,14 +79,15 @@
 <li><a href="#uart-output">10 UART Output</a><ul></ul></li>
 <li><a href="#nuttx-uart-macros">11 NuttX UART Macros</a><ul></ul></li>
 <li><a href="#pinephone-boots-nuttx">12 PinePhone Boots NuttX</a><ul></ul></li>
-<li><a href="#upcoming-fixes">13 Upcoming Fixes</a><ul></ul></li>
+<li><a href="#uart-fixes">13 UART Fixes</a><ul></ul></li>
 <li><a href="#nuttx-source-code">14 NuttX Source Code</a><ul></ul></li>
 <li><a href="#whats-next">15 What’s Next</a><ul></ul></li>
 <li><a href="#notes">16 Notes</a><ul></ul></li>
 <li><a href="#appendix-build-nuttx-for-pinephone">17 Appendix: Build NuttX for PinePhone</a><ul>
 <li><a href="#download-nuttx">17.1 Download NuttX</a><ul></ul></li>
-<li><a href="#download-toolchain">17.2 Download Toolchain</a><ul></ul></li>
-<li><a href="#build-nuttx">17.3 Build NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>1 Sep 2022</em></p>
+<li><a href="#install-prerequisites">17.2 Install Prerequisites</a><ul></ul></li>
+<li><a href="#download-toolchain">17.3 Download Toolchain</a><ul></ul></li>
+<li><a href="#build-nuttx">17.4 Build NuttX</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>1 Sep 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/uboot-title.png" alt="Apache NuttX RTOS booting on Pine64 PinePhone" /></p>
 <p><em>Apache NuttX RTOS booting on Pine64 PinePhone</em></p>
 <p>Suppose we’re creating our own Operating System (non-Linux)  for Pine64 PinePhone…</p>
@@ -578,8 +579,8 @@ HELLO NUTTX ON PINEPHONE!
 - Ready to Boot CPU
 - Boot from EL2</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#nuttx-boot-log">(See the Complete Log)</a></p>
-<h1 id="upcoming-fixes"><a href="#upcoming-fixes">13 Upcoming Fixes</a></h1>
-<p>TODO: UART Input</p>
+<h1 id="uart-fixes"><a href="#uart-fixes">13 UART Fixes</a></h1>
+<p>TODO: UART Input won’t work until we implement the UART Driver</p>
 <p><strong>For QEMU:</strong> These are the Source Files for the UART Driver (PL011)…</p>
 <ul>
 <li>
@@ -691,10 +692,10 @@ strb w0, [x15, #0x0C]</code></pre></div>
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1561843749168173056"><strong>this Twitter Thread</strong></a></li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/arm-build.png" alt="Build NuttX" /></p>
 <h1 id="appendix-build-nuttx-for-pinephone"><a href="#appendix-build-nuttx-for-pinephone">17 Appendix: Build NuttX for PinePhone</a></h1>
-<p>TODO</p>
+<p>Follow these steps to build <strong>Apache NuttX RTOS</strong> for PinePhone…</p>
 <h2 id="download-nuttx"><a href="#download-nuttx">17.1 Download NuttX</a></h2>
-<p>TODO</p>
 <p>We download the Source Code…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Create NuttX Directory
 mkdir nuttx
@@ -715,12 +716,12 @@ git clone \
   apps
 
 # We&#39;ll build NuttX inside nuttx/nuttx
-cd nuttx</code></pre></div>
+cd nuttx</code></pre></div><h2 id="install-prerequisites"><a href="#install-prerequisites">17.2 Install Prerequisites</a></h2>
 <p>Install the <strong>Build Prerequisites</strong> below, but skip the RISC-V Toolchain…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></li>
 </ul>
-<h2 id="download-toolchain"><a href="#download-toolchain">17.2 Download Toolchain</a></h2>
+<h2 id="download-toolchain"><a href="#download-toolchain">17.3 Download Toolchain</a></h2>
 <p>Download the Arm Toolchain for <strong>AArch64 ELF Bare-Metal Target <code>aarch64-none-elf</code></strong>…</p>
 <ul>
 <li><a href="https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads"><strong>Arm GNU Toolchain Downloads</strong></a></li>
@@ -742,8 +743,8 @@ export PATH=&quot;$PATH:$HOME/gcc-arm-11.2-2022.02-x86_64-aarch64-none-elf/bin&q
 export PATH=&quot;$PATH:/Applications/ArmGNUToolchain/11.3.rel1/aarch64-none-elf/bin&quot;</code></pre></div>
 <p>Check the Arm Toolchain…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ aarch64-none-elf-gcc -v
-gcc version 11.3.1 20220712 (Arm GNU Toolchain 11.3.Rel1)</code></pre></div><h2 id="build-nuttx"><a href="#build-nuttx">17.3 Build NuttX</a></h2>
-<p>TODO</p>
+gcc version 11.3.1 20220712 (Arm GNU Toolchain 11.3.Rel1)</code></pre></div><h2 id="build-nuttx"><a href="#build-nuttx">17.4 Build NuttX</a></h2>
+<p>Finally we <strong>configure and build</strong> NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Configure NuttX for Arm Cortex-A53 Single Core
 ./tools/configure.sh -l qemu-a53:nsh
 
