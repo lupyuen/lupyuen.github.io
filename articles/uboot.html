@@ -531,16 +531,19 @@ SECTION_FUNC(text, up_earlyserialinit)
 <li>
 <p>Follow these steps to <strong>build NuttX</strong>…</p>
 <p><a href="https://lupyuen.github.io/articles/uboot#appendix-build-nuttx-for-pinephone"><strong>“Build NuttX for PinePhone”</strong></a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.3/nuttx.bin">(Or download <strong><code>nuttx.bin</code></strong> from here)</a></p>
 </li>
 <li>
 <p>Compress the <strong>NuttX Binary Image</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Compress the NuttX Binary Image
 cp nuttx.bin Image
 rm -f Image.gz
-gzip Image</code></pre></div></li>
+gzip Image</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.3/Image.gz">(Or download <strong><code>Image.gz</code></strong> from here)</a></p>
+</li>
 <li>
 <p>Overwrite <strong><code>Image.gz</code></strong> on <strong>Jumpdrive microSD</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code># Copy compressed image to microSD
+<div class="example-wrap"><pre class="language-bash"><code># Copy compressed NuttX Binary Image to Jumpdrive microSD
 # TODO: Change the microSD Path
 cp Image.gz &quot;/Volumes/NO NAME&quot;</code></pre></div></li>
 <li>
