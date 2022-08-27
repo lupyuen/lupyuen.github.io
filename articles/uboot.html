@@ -77,12 +77,13 @@
 <li><a href="#linux-kernel-header">8 Linux Kernel Header</a><ul></ul></li>
 <li><a href="#nuttx-header">9 NuttX Header</a><ul></ul></li>
 <li><a href="#uart-output">10 UART Output</a><ul></ul></li>
-<li><a href="#nuttx-uart-driver">11 NuttX UART Driver</a><ul></ul></li>
-<li><a href="#nuttx-boots-on-pinephone">12 NuttX Boots On PinePhone</a><ul></ul></li>
+<li><a href="#nuttx-uart-macros">11 NuttX UART Macros</a><ul></ul></li>
+<li><a href="#pinephone-boots-nuttx">12 PinePhone Boots NuttX</a><ul></ul></li>
 <li><a href="#more-uart">13 More UART</a><ul></ul></li>
 <li><a href="#nuttx-source-code">14 NuttX Source Code</a><ul></ul></li>
 <li><a href="#whats-next">15 What’s Next</a><ul></ul></li>
-<li><a href="#notes">16 Notes</a><ul></ul></li></ul></nav><p>📝 <em>1 Sep 2022</em></p>
+<li><a href="#notes">16 Notes</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-pinephone">17 Appendix: Build NuttX for PinePhone</a><ul></ul></li></ul></nav><p>📝 <em>1 Sep 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/uboot-title.png" alt="Apache NuttX RTOS booting on Pine64 PinePhone" /></p>
 <p><em>Apache NuttX RTOS booting on Pine64 PinePhone</em></p>
 <p>Suppose we’re creating our own Operating System (non-Linux)  for Pine64 PinePhone…</p>
@@ -443,7 +444,7 @@ real_start: ... </code></pre></div>
 <p><em>Did we forget something?</em></p>
 <p>Rightfully we should wait for <strong>THR Empty</strong> (Transmit Buffer Empty) before sending our data.</p>
 <p>And we should initialise the <strong>UART Baud Rate</strong>. We’ll come back to this.</p>
-<h1 id="nuttx-uart-driver"><a href="#nuttx-uart-driver">11 NuttX UART Driver</a></h1>
+<h1 id="nuttx-uart-macros"><a href="#nuttx-uart-macros">11 NuttX UART Macros</a></h1>
 <p>NuttX writes to the UART Port with some clever <strong>Arm Assembly Macros</strong>.</p>
 <p>This Assembly Code in NuttX…</p>
 <div class="example-wrap"><pre class="language-text"><code>hello:
@@ -487,7 +488,7 @@ SECTION_FUNC(text, up_lowputc)
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L87-L94">(Source)</a></p>
 <p>That’s how we print a string to the console at startup!</p>
 <p><em>What’s inside <code>early_uart_ready</code>?</em></p>
-<p>Right now we don’t check if UART is <strong>ready to transmit</strong>, so our UART output will have missing characters. This needs to be fixed…</p>
+<p>Right now we don’t check if UART is <strong>ready to transmit</strong>, so our UART output will have dropped characters. This needs to be fixed: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L74-L85">qemu_lowputc.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* Wait for UART to be ready to transmit
  * xb: register which contains the UART base address
  * wt: scratch register number
@@ -495,8 +496,7 @@ SECTION_FUNC(text, up_lowputc)
 .macro early_uart_ready xb, wt
 1:
   ...</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L74-L85">(Source)</a></p>
-<p>Also we don’t <strong>initialise the UART Port</strong> because U-Boot has kindly done it for us. This needs to be fixed…</p>
+<p>Also we don’t <strong>initialise the UART Port</strong> because U-Boot has kindly done it for us. Eventually this needs to be fixed: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72">qemu_lowputc.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* UART initialization
  * xb: register which contains the UART base address
  * c: scratch register number
@@ -504,9 +504,14 @@ SECTION_FUNC(text, up_lowputc)
 GTEXT(up_earlyserialinit)
 SECTION_FUNC(text, up_earlyserialinit)
   ...</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72">(Source)</a></p>
-<h1 id="nuttx-boots-on-pinephone"><a href="#nuttx-boots-on-pinephone">12 NuttX Boots On PinePhone</a></h1>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L171-L175">(<strong><code>up_earlyserialinit</code></strong> is called by our Startup Code)</a></p>
+<h1 id="pinephone-boots-nuttx"><a href="#pinephone-boots-nuttx">12 PinePhone Boots NuttX</a></h1>
 <p>TODO</p>
+<p>Build NuttX</p>
+<p>Zip NuttX</p>
+<div class="example-wrap"><pre class="language-bash"><code></code></pre></div>
+<p>Copy to microSD</p>
+<div class="example-wrap"><pre class="language-bash"><code></code></pre></div>
 <p><img src="https://lupyuen.github.io/images/uboot-title2.png" alt="Apache NuttX RTOS booting on Pine64 PinePhone" /></p>
 <p>Here’s the UART Log of NuttX booting on PinePhone…</p>
 <div class="example-wrap"><pre class="language-text"><code>DRAM: 2048 MiB
@@ -584,7 +589,8 @@ strb w0, [x15, #0x04]
 Set DLAB to 0:
 mov x0, #0x00
 strb w0, [x15, #0x0C]</code></pre></div><h1 id="nuttx-source-code"><a href="#nuttx-source-code">14 NuttX Source Code</a></h1>
-<p>TODO: Apache NuttX RTOS has plenty of <strong>Arm64 Code</strong> that will be helpful to creators of PinePhone Operating Systems.</p>
+<p>TODO: Apache NuttX RTOS has plenty of <strong>Arm64 Code</strong> that will be helpful to creators of PinePhone Operating Systems…</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S"><strong>Startup Code</strong></a></p>
 <h1 id="whats-next"><a href="#whats-next">15 What’s Next</a></h1>
 <p><strong>NuttX on PinePhone</strong> might take a while to become a <strong>Daily Driver</strong>…</p>
 <p>But today NuttX is ready to turn PinePhone into a valuable <strong>Learning Resource</strong>!</p>
@@ -610,6 +616,8 @@ strb w0, [x15, #0x0C]</code></pre></div><h1 id="nuttx-source-code"><a href="#nut
 <ol>
 <li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1561843749168173056"><strong>this Twitter Thread</strong></a></li>
 </ol>
+<h1 id="appendix-build-nuttx-for-pinephone"><a href="#appendix-build-nuttx-for-pinephone">17 Appendix: Build NuttX for PinePhone</a></h1>
+<p>TODO</p>
 
     
 </body>
