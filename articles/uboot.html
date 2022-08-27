@@ -78,7 +78,7 @@
 <li><a href="#nuttx-header">9 NuttX Header</a><ul></ul></li>
 <li><a href="#uart-output">10 UART Output</a><ul></ul></li>
 <li><a href="#nuttx-uart-driver">11 NuttX UART Driver</a><ul></ul></li>
-<li><a href="#nuttx-log">12 NuttX Log</a><ul></ul></li>
+<li><a href="#nuttx-boots-on-pinephone">12 NuttX Boots On PinePhone</a><ul></ul></li>
 <li><a href="#more-uart">13 More UART</a><ul></ul></li>
 <li><a href="#nuttx-source-code">14 NuttX Source Code</a><ul></ul></li>
 <li><a href="#whats-next">15 What’s Next</a><ul></ul></li>
@@ -93,7 +93,7 @@
 <li>What happens when PinePhone powers on?</li>
 </ul>
 <p>This article explains how we ported Apache NuttX RTOS to PinePhone. And we’ll answer these questions along the way!</p>
-<p>Let’s dive in and walk through the steps…</p>
+<p>Let’s walk through the steps to create our own PinePhone Operating System…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
 </ul>
@@ -399,8 +399,10 @@ __start:
    */
   add     x13, x18, #0x16      /* the magic &quot;MZ&quot; signature */
   b       real_start           /* branch to kernel start */</code></pre></div>
-<p>(NuttX OS code begins at <strong><code>real_start</code></strong> after the header)</p>
 <p><a href="https://en.wikipedia.org/wiki/DOS_MZ_executable">(“MZ” refers to Mark Zbikowski)</a></p>
+<p>The header begins at <strong>Kernel Start Address <code>0x4008</code> <code>0000</code></strong>.</p>
+<p>At the top of the header we jump to <strong><code>real_start</code></strong> to skip the header.</p>
+<p>(NuttX code begins at <strong><code>real_start</code></strong> after the header)</p>
 <p>Then comes the rest of the header…</p>
 <div class="example-wrap"><pre class="language-text"><code>  .quad   0x0000               /* PinePhone Image load offset from start of RAM */
   .quad   _e_initstack - __start         /* Effective size of kernel image, little-endian */
@@ -414,7 +416,7 @@ __start:
 /* NuttX OS Code begins here, after the header */
 real_start: ... </code></pre></div>
 <p><em>What’s the value of <code>__start</code>?</em></p>
-<p>Remember <strong><code>kernel_addr_r</code></strong>, the Kernel Start Address from U-Boot?</p>
+<p>Remember <strong><code>kernel_addr_r</code></strong>, the <a href="https://lupyuen.github.io/articles/uboot#boot-address"><strong>Kernel Start Address</strong></a> from U-Boot?</p>
 <p>In NuttX, we define the Kernel Start Address <strong><code>__start</code></strong> as <strong><code>0x4008</code> <code>0000</code></strong> in our Linker Script: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L34">nuttx/boards/arm64/qemu/qemu-a53/scripts/dramboot</a></p>
 <div class="example-wrap"><pre class="language-text"><code>SECTIONS
 {
@@ -432,10 +434,11 @@ real_start: ... </code></pre></div>
 </ul>
 <p>Flip the <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>A64 User Manual</strong></a> to page 562 and we’ll see the <strong>UART Registers</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/uboot-uart1.png" alt="A64 UART Controller Registers" /></p>
-<p>PinePhone’s Serial Console is connected to <strong>UART0</strong> at <strong><code>0x01C2</code> <code>8000</code></strong></p>
-<p>The First Register of UART0 is what we need: <strong>UART_THR</strong> also at <strong><code>0x01C2</code> <code>8000</code></strong>…</p>
+<p>PinePhone’s Serial Console is connected to <strong>UART0</strong> at Base Address <strong><code>0x01C2</code> <code>8000</code></strong></p>
+<p>The First Register of UART0 is what we need: <strong>UART_THR</strong> at <strong><code>0x01C2</code> <code>8000</code></strong>…</p>
 <p><img src="https://lupyuen.github.io/images/uboot-uart2.png" alt="A64 UART Register UART_THR" /></p>
-<p><strong>UART_THR</strong> is the Transmit Holding Register.</p>
+<p><em>What’s UART_THR?</em></p>
+<p><strong>UART_THR</strong> is the <strong>Transmit Holding Register</strong>.</p>
 <p>We’ll write our output data to <strong><code>0x01C2</code> <code>8000</code></strong>, byte by byte, and the data will appear in the Serial Console. Let’s do that!</p>
 <p><em>Did we forget something?</em></p>
 <p>Rightfully we should wait for <strong>THR Empty</strong> (Transmit Buffer Empty) before sending our data.</p>
@@ -446,46 +449,63 @@ real_start: ... </code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>hello:
   PRINT(hello, &quot;HELLO NUTTX ON PINEPHONE!\r\n&quot;)</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L178-L179">(Source)</a></p>
-<p>Calls the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L58-L69"><strong><code>PRINT</code> Macro</strong></a> to print a string at startup.</p>
-<p>Which is super convenient because our Startup Code has plenty of Assembly Code!</p>
-<p>TODO</p>
-<p>For PinePhone Allwinner A64 UART: We reused the previous code for transmitting output to UART…</p>
+<p>Calls our <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L58-L69"><strong><code>PRINT</code> Macro</strong></a> to print a string at startup.</p>
+<p>Which is super convenient because our <strong>Startup Code</strong> has plenty of Assembly Code!</p>
+<p><em>What’s inside the macro?</em></p>
+<p>Our <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L58-L69"><strong><code>PRINT</code> Macro</strong></a> calls…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L292-L308"><strong><code>boot_stage_puts</code></strong></a> Function, which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L96-L105"><strong><code>up_lowputc</code></strong></a> Function</p>
+</li>
+</ul>
+<p>Which loads our <strong>UART Base Address</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>/* PinePhone Allwinner A64 UART0 Base Address: */
+#define UART1_BASE_ADDRESS 0x01C28000
+
+/* Print a character on the UART - this function is called by C
+ * x0: character to print
+ */
+GTEXT(up_lowputc)
+SECTION_FUNC(text, up_lowputc)
+  ldr   x15, =UART1_BASE_ADDRESS  /* Load UART Base Address */
+  early_uart_ready    x15, w2     /* Wait for UART ready */
+  early_uart_transmit x15, w0     /* Transmit to UART    */
+  ret</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L96-L105">(Source)</a> </p>
+<p>And calls <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L87-L94"><strong><code>early_uart_transmit</code></strong></a> Macro to transmit a character…</p>
 <div class="example-wrap"><pre class="language-text"><code>/* UART transmit character
  * xb: register which contains the UART base address
  * wt: register which contains the character to transmit
  */
-
 .macro early_uart_transmit xb, wt
-    strb  \wt, [\xb]             /* -&gt; UARTDR (Data Register) */
+  /* Write to UART_THR (Transmit Holding Register) */
+  strb  \wt, [\xb]
 .endm</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L87-L94">(Source)</a></p>
-<p>But we updated the UART Register Address for Allwinner A64 UART…</p>
-<div class="example-wrap"><pre class="language-text"><code> /* PinePhone Allwinner A64 UART0 Base Address: */
- #define UART1_BASE_ADDRESS 0x01C28000</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L40-L45">(Source)</a></p>
-<p>Right now we don’t check if UART is ready to transmit, so our UART output will have missing characters. This needs to be fixed…</p>
+<p>That’s how we print a string to the console at startup!</p>
+<p><em>What’s inside <code>early_uart_ready</code>?</em></p>
+<p>Right now we don’t check if UART is <strong>ready to transmit</strong>, so our UART output will have missing characters. This needs to be fixed…</p>
 <div class="example-wrap"><pre class="language-text"><code>/* Wait for UART to be ready to transmit
  * xb: register which contains the UART base address
- * c: scratch register number
+ * wt: scratch register number
  */
-
 .macro early_uart_ready xb, wt
 1:
-    ...
-.endm</code></pre></div>
+  ...</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L74-L85">(Source)</a></p>
-<p>We don’t init the UART Port because U-Boot has kindly done it for us. This needs to be fixed…</p>
+<p>Also we don’t <strong>initialise the UART Port</strong> because U-Boot has kindly done it for us. This needs to be fixed…</p>
 <div class="example-wrap"><pre class="language-text"><code>/* UART initialization
  * xb: register which contains the UART base address
  * c: scratch register number
  */
-
 GTEXT(up_earlyserialinit)
 SECTION_FUNC(text, up_earlyserialinit)
-    ...
-    ret</code></pre></div>
+  ...</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72">(Source)</a></p>
-<h1 id="nuttx-log"><a href="#nuttx-log">12 NuttX Log</a></h1>
+<h1 id="nuttx-boots-on-pinephone"><a href="#nuttx-boots-on-pinephone">12 NuttX Boots On PinePhone</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/uboot-title2.png" alt="Apache NuttX RTOS booting on Pine64 PinePhone" /></p>
 <p>Here’s the UART Log of NuttX booting on PinePhone…</p>
@@ -527,8 +547,7 @@ Starting kernel ...
 
 HELLO NUTTX ON PINEPHONE!
 - Ready to Boot CPU
-- Boot from EL2
-f</code></pre></div><h1 id="more-uart"><a href="#more-uart">13 More UART</a></h1>
+- Boot from EL2</code></pre></div><h1 id="more-uart"><a href="#more-uart">13 More UART</a></h1>
 <p>TODO: Allwinner A64 UART</p>
 <div class="example-wrap"><pre class="language-text"><code>UART_LCR
 Line Control Register
@@ -565,7 +584,7 @@ strb w0, [x15, #0x04]
 Set DLAB to 0:
 mov x0, #0x00
 strb w0, [x15, #0x0C]</code></pre></div><h1 id="nuttx-source-code"><a href="#nuttx-source-code">14 NuttX Source Code</a></h1>
-<p>TODO</p>
+<p>TODO: Apache NuttX RTOS has plenty of <strong>Arm64 Code</strong> that will be helpful to creators of PinePhone Operating Systems.</p>
 <h1 id="whats-next"><a href="#whats-next">15 What’s Next</a></h1>
 <p><strong>NuttX on PinePhone</strong> might take a while to become a <strong>Daily Driver</strong>…</p>
 <p>But today NuttX is ready to turn PinePhone into a valuable <strong>Learning Resource</strong>!</p>
