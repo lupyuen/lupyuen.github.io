@@ -562,24 +562,42 @@ SECTION_FUNC(text, up_earlyserialinit)
 
 [(__`up_earlyserialinit`__ is called by our Startup Code)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L171-L175)
 
-# PinePhone Boots NuttX
-
-TODO
-
-Build NuttX
-
-Zip NuttX
-
-```bash
-```
-
-Copy to microSD
-
-```bash
-
-```
+We're finally ready to boot our own PinePhone Operating System!
 
 ![Apache NuttX RTOS booting on Pine64 PinePhone](https://lupyuen.github.io/images/uboot-title2.png)
+
+# PinePhone Boots NuttX
+
+Earlier we said that we'll overwrite __`Image.gz` on Jumpdrive microSD__ to boot our own OS...
+
+-   [__"Boot Address"__](https://lupyuen.github.io/articles/uboot#boot-address)
+
+Let's do it!
+
+1.  Follow these steps to __build NuttX__...
+
+    [__"Build NuttX for PinePhone"__](https://lupyuen.github.io/articles/uboot#appendix-build-nuttx-for-pinephone)
+
+1.  Compress the __NuttX Binary Image__...
+
+    ```bash
+    ## Compress the NuttX Binary Image
+    cp nuttx.bin Image
+    rm -f Image.gz
+    gzip Image
+    ```
+
+1.  Overwrite __`Image.gz`__ on __Jumpdrive microSD__...
+
+    ```bash
+    ## Copy compressed image to microSD
+    ## TODO: Change the microSD Path
+    cp Image.gz "/Volumes/NO NAME"
+    ```
+
+1.  Insert __Jumpdrive microSD__ into PinePhone and power up
+
+TODO
 
 Here's the UART Log of NuttX booting on PinePhone...
 
@@ -625,7 +643,29 @@ HELLO NUTTX ON PINEPHONE!
 - Boot from EL2
 ```
 
-# More UART
+[(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx#nuttx-boot-log)
+
+# Upcoming Fixes
+
+TODO: UART Input
+
+__For QEMU:__ These are the Source Files for the UART Driver (PL011)...
+
+-   [arch/arm64/src/qemu/qemu_serial.c](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_serial.c)
+
+-   [arch/arm64/src/qemu/qemu_lowputc.S](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_lowputc.S)
+
+    [(More about PL011 UART)](https://krinkinmu.github.io/2020/11/29/PL011.html)
+
+We'll redo the code above for the __PinePhone UART Driver__ (based on Allwinner A64 SoC)...
+
+-   [__UART0 Memory Map__](https://linux-sunxi.org/A64/Memory_map)
+
+-   [__Allwinner A64 UART__](https://linux-sunxi.org/UART)
+
+-   [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+
+-   [__Allwinner A64 Info__](https://linux-sunxi.org/A64)
 
 TODO: Allwinner A64 UART
 
@@ -667,11 +707,43 @@ mov x0, #0x00
 strb w0, [x15, #0x0C]
 ```
 
+![Arm64 Architecture-Specific Source Files](https://lupyuen.github.io/images/arm-source.png)
+
+[_Arm64 Architecture-Specific Source Files_](https://github.com/apache/incubator-nuttx/tree/master/arch/arm64/src/common)
+
 # NuttX Source Code
 
 TODO: Apache NuttX RTOS has plenty of __Arm64 Code__ that will be helpful to creators of PinePhone Operating Systems...
 
 [__Startup Code__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S)
+
+_What's inside the NuttX code for Arm Cortex-A53?_
+
+Let's browse the __Source Files__ for the implementation of Cortex-A53 on NuttX.
+
+NuttX treats QEMU as a __Target Board__ (as though it was a dev board). Here are the Source Files and Build Configuration for the __QEMU Board__...
+
+-   [nuttx/boards/arm64/qemu/qemu-a53](https://github.com/apache/incubator-nuttx/tree/master/boards/arm64/qemu/qemu-a53)
+
+(We'll clone this to create a Target Board for PinePhone)
+
+The __Board-Specific Drivers__ for QEMU are started in [qemu_bringup.c](https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/src/qemu_bringup.c)
+
+(We'll start the PinePhone Drivers here)
+
+The QEMU Board calls the __QEMU Architecture-Specific Drivers__ at...
+
+-   [nuttx/arch/arm64/src/qemu](https://github.com/apache/incubator-nuttx/tree/master/arch/arm64/src/qemu)
+
+The __UART Driver__ is located at [qemu_serial.c](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_serial.c) and [qemu_lowputc.S](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_lowputc.S)
+
+(For PinePhone we'll create a UART Driver for Allwinner A64 SoC. I2C, SPI and other Low-Level A64 Drivers will be located here too)
+
+The QEMU Functions (Board and Architecture) call the __Arm64 Architecture Functions__ (pic above)...
+
+-   [nuttx/arch/arm64/src/common](https://github.com/apache/incubator-nuttx/tree/master/arch/arm64/src/common)
+
+Which implement all kinds of Arm64 Features: [__FPU__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_fpu.c), [__Interrupts__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_gicv3.c), [__MMU__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c), [__Tasks__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_task_sched.c), [__Timers__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_arch_timer.c)...
 
 # What's Next
 
@@ -702,3 +774,98 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Appendix: Build NuttX for PinePhone
 
 TODO
+
+## Download NuttX
+
+TODO
+
+We download the Source Code...
+
+```bash
+## Create NuttX Directory
+mkdir nuttx
+cd nuttx
+
+## Download NuttX OS
+git clone \
+  --recursive \
+  --branch pinephone \
+  https://github.com/lupyuen/incubator-nuttx \
+  nuttx
+
+## Download NuttX Apps
+git clone \
+  --recursive \
+  --branch pinephone \
+  https://github.com/lupyuen/incubator-nuttx-apps \
+  apps
+
+## We'll build NuttX inside nuttx/nuttx
+cd nuttx
+```
+
+Install the __Build Prerequisites__ below, but skip the RISC-V Toolchain...
+
+-   [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
+
+## Download Toolchain
+
+Download the Arm Toolchain for __AArch64 ELF Bare-Metal Target `aarch64-none-elf`__...
+
+-   [__Arm GNU Toolchain Downloads__](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
+
+For Linux x64 and WSL:
+
+-   [gcc-arm-11.2-2022.02-x86_64-aarch64-none-elf.tar.xz](https://developer.arm.com/-/media/Files/downloads/gnu/11.2-2022.02/binrel/gcc-arm-11.2-2022.02-x86_64-aarch64-none-elf.tar.xz)
+
+For macOS:
+
+-   [arm-gnu-toolchain-11.3.rel1-darwin-x86_64-aarch64-none-elf.pkg](https://developer.arm.com/-/media/Files/downloads/gnu/11.3.rel1/binrel/arm-gnu-toolchain-11.3.rel1-darwin-x86_64-aarch64-none-elf.pkg)
+
+(I don't recommend building NuttX on Plain Old Windows CMD, please use WSL instead)
+
+Add the downloaded Arm Toolchain to the __`PATH`__...
+
+```bash
+## For Linux x64 and WSL:
+export PATH="$PATH:$HOME/gcc-arm-11.2-2022.02-x86_64-aarch64-none-elf/bin"
+
+## For macOS:
+export PATH="$PATH:/Applications/ArmGNUToolchain/11.3.rel1/aarch64-none-elf/bin"
+```
+
+Check the Arm Toolchain...
+
+```bash
+$ aarch64-none-elf-gcc -v
+gcc version 11.3.1 20220712 (Arm GNU Toolchain 11.3.Rel1)
+```
+
+## Build NuttX
+
+TODO
+
+```bash
+## Configure NuttX for Arm Cortex-A53 Single Core
+./tools/configure.sh -l qemu-a53:nsh
+
+## Build NuttX
+make
+
+## Dump the disassembly to nuttx.S
+aarch64-none-elf-objdump \
+  -t -S --demangle --line-numbers --wide \
+  nuttx \
+  >nuttx.S \
+  2>&1
+```
+
+[(See the Build Log)](https://gist.github.com/lupyuen/2c5db82c3103f52ed7ca99804f9220c1)
+
+(On an old MacBook Pro 2012, NuttX builds in 2 minutes)
+
+The NuttX Output Files may be found here...
+
+-   [__TODO: NuttX for Arm Cortex-A53 Single Core__](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.1)
+
+TODO: The output file [__`nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.1/nuttx) is the Arm64 [__ELF Executable__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format) that we'll run in the next step.
