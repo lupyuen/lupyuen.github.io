@@ -87,7 +87,8 @@
 <li><a href="#download-nuttx">17.1 Download NuttX</a><ul></ul></li>
 <li><a href="#install-prerequisites">17.2 Install Prerequisites</a><ul></ul></li>
 <li><a href="#download-toolchain">17.3 Download Toolchain</a><ul></ul></li>
-<li><a href="#build-nuttx">17.4 Build NuttX</a><ul></ul></li></ul></li>
+<li><a href="#build-nuttx">17.4 Build NuttX</a><ul></ul></li>
+<li><a href="#output-files">17.5 Output Files</a><ul></ul></li></ul></li>
 <li><a href="#appendix-allwinner-a64-uart">18 Appendix: Allwinner A64 UART</a><ul></ul></li></ul></nav><p>📝 <em>28 Aug 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/uboot-title.png" alt="Apache NuttX RTOS booting on Pine64 PinePhone" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#nuttx-boot-log"><em>Apache NuttX RTOS booting on Pine64 PinePhone</em></a></p>
@@ -575,7 +576,7 @@ Uncompressed size: 278528 = 0x44000
    Loading Ramdisk to 49ef8000, end 49fff4e4 ... OK
    Loading Device Tree to 0000000049eec000, end 0000000049ef7d41 ... OK</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#nuttx-boot-log">(See the Complete Log)</a></p>
-<p>And NuttX runs…</p>
+<p>Then NuttX runs…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 
 HELLO NUTTX ON PINEPHONE!
@@ -596,7 +597,7 @@ HELLO NUTTX ON PINEPHONE!
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c">arch/arm64/src/qemu/qemu_serial.c</a></li>
 </ul>
-<p>We’ll port this driver from <a href="https://krinkinmu.github.io/2020/11/29/PL011.html"><strong>PL011 UART</strong></a> to <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 UART</strong></a>.</p>
+<p>We’ll port this driver from <a href="https://krinkinmu.github.io/2020/11/29/PL011.html"><strong>PL011 UART</strong></a> to <a href="https://lupyuen.github.io/articles/uboot#uart-output"><strong>Allwinner A64 UART</strong></a>.</p>
 <p><img src="https://lupyuen.github.io/images/arm-source.png" alt="Arm64 Source Files in NuttX" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common"><em>Arm64 Source Files in NuttX</em></a></p>
 <h1 id="nuttx-source-code"><a href="#nuttx-source-code">14 NuttX Source Code</a></h1>
@@ -605,7 +606,7 @@ HELLO NUTTX ON PINEPHONE!
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common">nuttx/arch/arm64/src/common</a></li>
 </ul>
-<p>The functions here implement all kinds of Arm64 Features: <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_fpu.c"><strong>FPU</strong></a>, <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_gicv3.c"><strong>Interrupts</strong></a>, <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_mmu.c"><strong>MMU</strong></a>, <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_task_sched.c"><strong>Tasks</strong></a>, <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_arch_timer.c"><strong>Timers</strong></a>, …</p>
+<p>These functions implement all kinds of Arm64 Features: <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_fpu.c"><strong>FPU</strong></a>, <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_gicv3.c"><strong>Interrupts</strong></a>, <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_mmu.c"><strong>MMU</strong></a>, <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_task_sched.c"><strong>Tasks</strong></a>, <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_arch_timer.c"><strong>Timers</strong></a>, …</p>
 <p>The <strong>Arm64 Startup Code</strong> (including Linux Kernel Header) is at…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S">nuttx/arch/arm64/src/common/arm64_head.S</a></li>
@@ -629,7 +630,7 @@ HELLO NUTTX ON PINEPHONE!
 <li><a href="https://lupyuen.github.io/articles/arm"><strong>“Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone”</strong></a></li>
 </ul>
 <h1 id="whats-next"><a href="#whats-next">15 What’s Next</a></h1>
-<p>Today we’ve seen that it’s indeed possible to <strong>boot our own OS</strong> on PinePhone… By <strong>replacing a single file</strong> on Jumpdrive microSD!</p>
+<p>It’s indeed possible to <strong>boot our own OS</strong> on PinePhone… By <strong>replacing a single file</strong> on Jumpdrive microSD!</p>
 <p>We’ve done that with <strong>Apache NuttX RTOS</strong>, which has plenty of code that will be helpful for PinePhone OS Developers.</p>
 <p><em>Will NuttX work with all PinePhone features?</em></p>
 <p><strong>NuttX on PinePhone</strong> might take a while to become a <strong>Daily Driver</strong>…</p>
@@ -668,7 +669,7 @@ HELLO NUTTX ON PINEPHONE!
 <h1 id="appendix-build-nuttx-for-pinephone"><a href="#appendix-build-nuttx-for-pinephone">17 Appendix: Build NuttX for PinePhone</a></h1>
 <p>Follow these steps to build <strong>Apache NuttX RTOS</strong> for PinePhone…</p>
 <h2 id="download-nuttx"><a href="#download-nuttx">17.1 Download NuttX</a></h2>
-<p>We download the Source Code…</p>
+<p>Download the Source Code for NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Create NuttX Directory
 mkdir nuttx
 cd nuttx
@@ -730,7 +731,8 @@ aarch64-none-elf-objdump \
   &gt;nuttx.S \
   2&gt;&amp;1</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/2c5db82c3103f52ed7ca99804f9220c1">(See the Build Log)</a></p>
-<p>(On an old MacBook Pro 2012, NuttX builds in 2 minutes)</p>
+<p>On an old MacBook Pro 2012, NuttX builds in 2 minutes.</p>
+<h2 id="output-files"><a href="#output-files">17.5 Output Files</a></h2>
 <p>The NuttX Output Files may be found here…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.3"><strong>Apache NuttX RTOS for PinePhone</strong></a></li>
@@ -739,7 +741,15 @@ aarch64-none-elf-objdump \
 <ul>
 <li><a href="https://lupyuen.github.io/articles/uboot#pinephone-boots-nuttx"><strong>“PinePhone Boots NuttX”</strong></a></li>
 </ul>
-<p>For Troubleshooting: Refer to the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.3/nuttx"><strong>NuttX ELF Image <code>nuttx</code></strong></a> or the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.3/nuttx.S"><strong>NuttX Arm Disassembly <code>nuttx.S</code></strong></a></p>
+<p>For Troubleshooting: Refer to these files…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.3/nuttx"><strong>NuttX ELF Image <code>nuttx</code></strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.3/nuttx.S"><strong>NuttX Arm Disassembly <code>nuttx.S</code></strong></a></p>
+</li>
+</ul>
 <p>This article explains how we may load the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.3/nuttx"><strong>NuttX ELF Image <code>nuttx</code></strong></a> into Ghidra for inspection…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/arm#appendix-analyse-nuttx-image-with-ghidra"><strong>“Analyse NuttX Image with Ghidra”</strong></a></li>
@@ -760,7 +770,9 @@ aarch64-none-elf-objdump \
 <p><a href="https://lupyuen.github.io/articles/uboot#uart-fixes">(More about this)</a></p>
 </li>
 </ul>
-<p>Based on the <strong>Allwinner A64 UART</strong> doc (page 562)…</p>
+<p>Let’s talk about <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72"><strong><code>up_earlyserialinit</code></strong></a>.</p>
+<p><em>How will we initialise the UART Port?</em></p>
+<p>According to the <strong>Allwinner A64 UART</strong> doc (page 562)…</p>
 <ul>
 <li><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a></li>
 </ul>
@@ -784,6 +796,7 @@ strb w0, [x15, #0x04]</code></pre></div></li>
 <div class="example-wrap"><pre class="language-text"><code>mov  x0, #0x00
 strb w0, [x15, #0x0C]</code></pre></div></li>
 </ol>
+<p><a href="https://developer.arm.com/documentation/102374/0100/Registers-in-AArch64---general-purpose-registers">(Confused? <strong><code>x0</code></strong> and <strong><code>w0</code></strong> are actually the same register, 64-bit vs 32-bit)</a></p>
 <p>Where…</p>
 <ul>
 <li>
