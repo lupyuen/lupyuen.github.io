@@ -567,6 +567,10 @@ SECTION_FUNC(text, up_earlyserialinit)
 
 [(__`up_earlyserialinit`__ is called by our Startup Code)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L171-L175)
 
+More about this in the Appendix...
+
+-   [__"Allwinner A64 UART"__](https://lupyuen.github.io/articles/uboot#appendix-allwinner-a64-uart)
+
 We're finally ready to boot our own PinePhone Operating System!
 
 ![Apache NuttX RTOS booting on Pine64 PinePhone](https://lupyuen.github.io/images/uboot-title2.png)
@@ -574,6 +578,8 @@ We're finally ready to boot our own PinePhone Operating System!
 [_Apache NuttX RTOS booting on Pine64 PinePhone_](https://github.com/lupyuen/pinephone-nuttx#nuttx-boot-log)
 
 # PinePhone Boots NuttX
+
+_Can we boot our own OS on PinePhone... By replacing a single file on Jumpdrive microSD?_
 
 Earlier we said that we'll overwrite __`Image.gz` on Jumpdrive microSD__ to boot our own OS...
 
@@ -855,54 +861,67 @@ TODO: is the Arm64 [__ELF Executable__](https://en.wikipedia.org/wiki/Executable
 
 # Appendix: Allwinner A64 UART
 
-Earlier we said that our implementation for __Allwinner A64 UART__ is incomplete...
+Earlier we said that our implementation of __Allwinner A64 UART__ is incomplete...
 
-TODO
+-   [__`early_uart_ready`__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L74-L85) needs to check if UART is __ready to transmit__
 
-Allwinner A64 UART
+    [(More about this)](https://lupyuen.github.io/articles/uboot#nuttx-uart-macros)
 
--   [__UART0 Memory Map__](https://linux-sunxi.org/A64/Memory_map)
+-   [__`up_earlyserialinit`__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72) needs to __initialise the UART Port__
 
--   [__Allwinner A64 UART__](https://linux-sunxi.org/UART)
+    [(More about this)](https://lupyuen.github.io/articles/uboot#nuttx-uart-macros)
+
+-   [__UART Driver__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_serial.c) needs to support __UART Input__
+
+    [(More about this)](https://lupyuen.github.io/articles/uboot#uart-fixes)
+
+Based on the __Allwinner A64 UART__ doc (page 562)...
 
 -   [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
 
--   [__Allwinner A64 Info__](https://linux-sunxi.org/A64)
+We might __initialise the UART Port__ in [__`up_earlyserialinit`__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72) like so...
 
-```text
-UART_LCR
-Line Control Register
-Offset 0x0C 
-Bit 7: DLAB (Divisor Latch Access Bit)
-0x80
+1.  Set __DLAB Flag__ to allow update of UART Divisor...
 
-Set DLAB to 1 (0x80):
-ldr x15, =UART1_BASE_ADDRESS
-mov x0, #0x80
-strb w0, [x15, #0x0C]
+    ```text
+    ldr  x15, =UART1_BASE_ADDRESS
+    mov  x0,  #0x80
+    strb w0,  [x15, #0x0C]
+    ```
 
-Baud Rate = (Serial Clock Frequency) / (16 * Divisor)
-Divisor = (Serial Clock Frequency) / (16 * Baud Rate)
-Divisor = (Serial Clock Frequency / 16) / Baud Rate
-SCLK Serial Clock Frequency = ???
+1.  Write the __UART Divisor__ (Least Significant Byte) to UART_DLL...
 
-UART_DLL
-Divisor Latch Low (lower 8 bits of divisor)
-Offset 0x00
+    ```text
+    mov  x0, divisor % 256
+    strb w0, [x15, #0x00]
+    ```
 
-Write UART_DLL:
-mov x0, divisor % 256
-strb w0, [x15, #0x00]
+1.  Write the __UART Divisor__ (Most Significant Byte) to UART_DLH...
 
-UART_DLH
-Divisor Latch High (upper 8 bits of divisor)
-Offset 0x04
+    ```text
+    mov  x0, divisor / 256
+    strb w0, [x15, #0x04]
+    ```
 
-Write UART_DLH:
-mov x0, divisor / 256
-strb w0, [x15, #0x04]
+1.  Clear __DLAB Flag__ to disallow update of UART Divisor...
 
-Set DLAB to 0:
-mov x0, #0x00
-strb w0, [x15, #0x0C]
-```
+    ```text
+    mov  x0, #0x00
+    strb w0, [x15, #0x0C]
+    ```
+
+Where...
+
+-   __DLAB (Divisor Latch Access Bit)__ is Bit 7 of UART_LCR
+
+-   __UART_LCR (Line Control Register)__ is at Offset `0x0C` of the UART Base Address
+
+-   __UART_DLL (Divisor Latch Low)__ is at Offset `0x00`
+
+-   __UART_DLH (Divisor Latch High)__ is at Offset `0x04`
+
+-   __UART Divisor__ is computed as...
+
+    (Serial Clock Frequency / 16) / Baud Rate
+
+TODO: What is the Serial Clock Frequency (SCLK)?
