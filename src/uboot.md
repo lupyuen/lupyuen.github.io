@@ -639,6 +639,11 @@ HELLO NUTTX ON PINEPHONE!
 - Boot from EL2
 - Boot from EL1
 - Boot to C runtime for OS Initialize
+nx_start: Entry
+up_allocate_heap: heap_start=0x0x400c4000, heap_size=0x7f3c000
+gic_validate_dist_version: No GIC version detect
+arm64_gic_initialize: no distributor detected, giving up ret=-19
+up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
 ```
 
 Yep NuttX boots on PinePhone... After replacing a single __`Image.gz`__ file!
@@ -651,15 +656,22 @@ We expect to see this output when NuttX boots...
 
 -   [__"Test NuttX: Single Core"__](https://lupyuen.github.io/articles/arm#test-nuttx-single-core)
 
-But the rest of the output is missing because we haven't implemented the __UART Driver__...
+Right now it's failing at the __Interrupt Controller (GIC)__...
+
+```text
+gic_validate_dist_version: No GIC version detect
+arm64_gic_initialize: no distributor detected, giving up ret=-19
+```
+
+We'll have to fix this.
+
+_Isn't NuttX supposed to accept commands entered in the Serial Console?_
+
+This requires UART Input, which will work when we have implemented the __UART Driver__...
 
 -   [arch/arm64/src/qemu/qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c)
 
 We'll port this driver from [__PL011 UART__](https://krinkinmu.github.io/2020/11/29/PL011.html) to [__Allwinner A64 UART__](https://lupyuen.github.io/articles/uboot#uart-output).
-
-_Isn't NuttX supposed to accept commands entered in the Serial Console?_
-
-Yep this requires UART Input, which will work when we have implemented the UART Driver.
 
 ![Arm64 Source Files in NuttX](https://lupyuen.github.io/images/arm-source.png)
 
