@@ -89,7 +89,9 @@
 <li><a href="#download-toolchain">17.3 Download Toolchain</a><ul></ul></li>
 <li><a href="#build-nuttx">17.4 Build NuttX</a><ul></ul></li>
 <li><a href="#output-files">17.5 Output Files</a><ul></ul></li></ul></li>
-<li><a href="#appendix-allwinner-a64-uart">18 Appendix: Allwinner A64 UART</a><ul></ul></li></ul></nav><p>📝 <em>28 Aug 2022</em></p>
+<li><a href="#appendix-allwinner-a64-uart">18 Appendix: Allwinner A64 UART</a><ul>
+<li><a href="#wait-for-uart-ready">18.1 Wait for UART Ready</a><ul></ul></li>
+<li><a href="#initialise-uart">18.2 Initialise UART</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>28 Aug 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/uboot-title.png" alt="Apache NuttX RTOS booting on Pine64 PinePhone" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#nuttx-boot-log"><em>Apache NuttX RTOS booting on Pine64 PinePhone</em></a></p>
 <p>Suppose we’re creating our own <strong>Operating System</strong> (non-Linux) for <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>…</p>
@@ -761,7 +763,7 @@ aarch64-none-elf-objdump \
 <p>Earlier we said that our implementation of <strong>Allwinner A64 UART</strong> is incomplete…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L74-L85"><strong><code>early_uart_ready</code></strong></a> needs to check if UART is <strong>ready to transmit</strong></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L74-L85"><strong><code>early_uart_ready</code></strong></a> needs to wait for UART to be <strong>ready to transmit</strong></p>
 <p><a href="https://lupyuen.github.io/articles/uboot#nuttx-uart-macros">(More about this)</a></p>
 </li>
 <li>
@@ -773,7 +775,39 @@ aarch64-none-elf-objdump \
 <p><a href="https://lupyuen.github.io/articles/uboot#uart-fixes">(More about this)</a></p>
 </li>
 </ul>
-<p>Let’s talk about <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72"><strong><code>up_earlyserialinit</code></strong></a>.</p>
+<p>Let’s talk about the implementation…</p>
+<p><img src="https://lupyuen.github.io/images/uboot-uart2.png" alt="Allwinner A64 UART Register UART_THR" /></p>
+<p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><em>Allwinner A64 UART Register UART_THR</em></a></p>
+<h2 id="wait-for-uart-ready"><a href="#wait-for-uart-ready">18.1 Wait for UART Ready</a></h2>
+<p><em>How do we wait for the UART Port to be ready before we transmit data?</em></p>
+<p>See the pic above. According to the <strong>Allwinner A64 UART</strong> doc (page 563)…</p>
+<ul>
+<li><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a></li>
+</ul>
+<p>We should write data to the UART Port…</p>
+<p>ONLY WHEN the <strong>THRE Bit</strong> is set.</p>
+<p>(THRE means <strong>Transmit Holding Register Empty</strong>)</p>
+<p><em>Where’s the THRE Bit?</em></p>
+<p>THRE Bit is <strong>Bit 5</strong> (<code>0x20</code>) of UART_LSR.</p>
+<p><strong>UART_LSR</strong> (Line Status Register) is at <strong>Offset <code>0x14</code></strong> from the UART Base Address.</p>
+<p>In Arm64 Assembly, this is how we wait for the UART to be ready: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L74-L89">qemu_lowputc.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>/* PinePhone Allwinner A64: 
+ * Wait for UART to be ready to transmit
+ * xb: register which contains the UART base address
+ * wt: scratch register number
+ */
+
+.macro early_uart_ready xb, wt
+1:
+  /* Load the Line Status Register at Offset 0x14 from UART Base Address */
+  ldrh  \wt, [\xb, #0x14]
+
+  /* Check the THRE Bit (Tx Holding Register Empty) */
+  tst   \wt, #0x20
+
+  /* If UART is not ready (THRE=0), jump back to label `1:` */
+  b.eq  1b                     
+.endm</code></pre></div><h2 id="initialise-uart"><a href="#initialise-uart">18.2 Initialise UART</a></h2>
 <p><em>How will we initialise the UART Port?</em></p>
 <p>According to the <strong>Allwinner A64 UART</strong> doc (page 562)…</p>
 <ul>
