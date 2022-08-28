@@ -505,17 +505,13 @@ SECTION_FUNC(text, up_lowputc)
 .endm</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L87-L94">(Source)</a></p>
 <p>That’s how we print a string to the console at startup!</p>
-<p><em>What’s inside <code>early_uart_ready</code>?</em></p>
-<p>Right now we don’t check if UART is <strong>ready to transmit</strong>, so our UART output will have dropped characters. This needs to be fixed: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L74-L85">qemu_lowputc.S</a></p>
-<div class="example-wrap"><pre class="language-text"><code>/* Wait for UART to be ready to transmit
- * xb: register which contains the UART base address
- * wt: scratch register number
- */
-.macro early_uart_ready xb, wt
-1:
-  # TODO: Wait for PinePhone Allwinner A64 UART
-  ...</code></pre></div>
-<p>Also we don’t <strong>initialise the UART Port</strong> because U-Boot has kindly done it for us. Eventually this needs to be fixed: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72">qemu_lowputc.S</a></p>
+<p><em>What’s <code>early_uart_ready</code>?</em></p>
+<p><strong><code>early_uart_ready</code></strong> Macro waits for the UART Port to be <strong>ready to transmit</strong>, as explained here…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/uboot#wait-for-uart-ready"><strong>“Wait for UART Ready”</strong></a></li>
+</ul>
+<p><em>How do we initialise the UART Port?</em></p>
+<p>Right now we don’t <strong>initialise the UART Port</strong> because U-Boot has kindly done it for us. Eventually this needs to be fixed: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72">qemu_lowputc.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* UART initialization
  * xb: register which contains the UART base address
  * c: scratch register number
@@ -528,7 +524,7 @@ SECTION_FUNC(text, up_earlyserialinit)
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L171-L175">(<strong><code>up_earlyserialinit</code></strong> is called by our Startup Code)</a></p>
 <p>More about this in the Appendix…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/uboot#appendix-allwinner-a64-uart"><strong>“Allwinner A64 UART”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/uboot#initialise-uart"><strong>“Initialise UART”</strong></a></li>
 </ul>
 <p>We’re finally ready to boot our own PinePhone Operating System!</p>
 <p><img src="https://lupyuen.github.io/images/uboot-title2.png" alt="Apache NuttX RTOS booting on Pine64 PinePhone" /></p>
@@ -583,7 +579,9 @@ Uncompressed size: 278528 = 0x44000
 
 HELLO NUTTX ON PINEPHONE!
 - Ready to Boot CPU
-- Boot from EL2</code></pre></div>
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize</code></pre></div>
 <p>Yep NuttX boots on PinePhone… After replacing a single <strong><code>Image.gz</code></strong> file!</p>
 <h1 id="uart-fixes"><a href="#uart-fixes">13 UART Fixes</a></h1>
 <p><em>Where’s the rest of the boot output?</em></p>
@@ -591,15 +589,13 @@ HELLO NUTTX ON PINEPHONE!
 <ul>
 <li><a href="https://lupyuen.github.io/articles/arm#test-nuttx-single-core"><strong>“Test NuttX: Single Core”</strong></a></li>
 </ul>
-<p>But remember we said earlier that we don’t check if the UART is <strong>ready to transmit</strong>?</p>
-<p>This needs to be fixed: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L74-L85"><strong><code>early_uart_ready</code></strong></a></p>
-<p><a href="https://lupyuen.github.io/articles/uboot#nuttx-uart-macros">(More about this)</a></p>
-<p><em>Isn’t NuttX supposed to accept commands entered in the Serial Console?</em></p>
-<p>UART Input won’t work until we implement the <strong>UART Driver</strong>…</p>
+<p>But the rest of the output is missing because we haven’t implemented the <strong>UART Driver</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c">arch/arm64/src/qemu/qemu_serial.c</a></li>
 </ul>
 <p>We’ll port this driver from <a href="https://krinkinmu.github.io/2020/11/29/PL011.html"><strong>PL011 UART</strong></a> to <a href="https://lupyuen.github.io/articles/uboot#uart-output"><strong>Allwinner A64 UART</strong></a>.</p>
+<p><em>Isn’t NuttX supposed to accept commands entered in the Serial Console?</em></p>
+<p>Yep this requires UART Input, which will work when we have implemented the UART Driver.</p>
 <p><img src="https://lupyuen.github.io/images/arm-source.png" alt="Arm64 Source Files in NuttX" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common"><em>Arm64 Source Files in NuttX</em></a></p>
 <h1 id="nuttx-source-code"><a href="#nuttx-source-code">14 NuttX Source Code</a></h1>
