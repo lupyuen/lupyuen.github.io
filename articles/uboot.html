@@ -581,7 +581,12 @@ HELLO NUTTX ON PINEPHONE!
 - Ready to Boot CPU
 - Boot from EL2
 - Boot from EL1
-- Boot to C runtime for OS Initialize</code></pre></div>
+- Boot to C runtime for OS Initialize
+nx_start: Entry
+up_allocate_heap: heap_start=0x0x400c4000, heap_size=0x7f3c000
+gic_validate_dist_version: No GIC version detect
+arm64_gic_initialize: no distributor detected, giving up ret=-19
+up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000</code></pre></div>
 <p>Yep NuttX boots on PinePhone… After replacing a single <strong><code>Image.gz</code></strong> file!</p>
 <h1 id="uart-fixes"><a href="#uart-fixes">13 UART Fixes</a></h1>
 <p><em>Where’s the rest of the boot output?</em></p>
@@ -589,13 +594,16 @@ HELLO NUTTX ON PINEPHONE!
 <ul>
 <li><a href="https://lupyuen.github.io/articles/arm#test-nuttx-single-core"><strong>“Test NuttX: Single Core”</strong></a></li>
 </ul>
-<p>But the rest of the output is missing because we haven’t implemented the <strong>UART Driver</strong>…</p>
+<p>Right now it’s failing at the <strong>Interrupt Controller (GIC)</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>gic_validate_dist_version: No GIC version detect
+arm64_gic_initialize: no distributor detected, giving up ret=-19</code></pre></div>
+<p>We’ll have to fix this.</p>
+<p><em>Isn’t NuttX supposed to accept commands entered in the Serial Console?</em></p>
+<p>This requires UART Input, which will work when we have implemented the <strong>UART Driver</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c">arch/arm64/src/qemu/qemu_serial.c</a></li>
 </ul>
 <p>We’ll port this driver from <a href="https://krinkinmu.github.io/2020/11/29/PL011.html"><strong>PL011 UART</strong></a> to <a href="https://lupyuen.github.io/articles/uboot#uart-output"><strong>Allwinner A64 UART</strong></a>.</p>
-<p><em>Isn’t NuttX supposed to accept commands entered in the Serial Console?</em></p>
-<p>Yep this requires UART Input, which will work when we have implemented the UART Driver.</p>
 <p><img src="https://lupyuen.github.io/images/arm-source.png" alt="Arm64 Source Files in NuttX" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common"><em>Arm64 Source Files in NuttX</em></a></p>
 <h1 id="nuttx-source-code"><a href="#nuttx-source-code">14 NuttX Source Code</a></h1>
