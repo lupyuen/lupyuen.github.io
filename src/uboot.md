@@ -378,7 +378,7 @@ _How do we make a Linux Kernel Header in our non-Linux OS?_
 
 Apache NuttX RTOS can help!
 
-This is how we created the __Arm64 Linux Kernel Header__ in NuttX: [nuttx/arch/arm64/src/common/arm64_head.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L79-L117)
+This is how we created the __Arm64 Linux Kernel Header__ in NuttX: [arch/arm64/src/common/arm64_head.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L79-L117)
 
 ```text
   /* Kernel startup entry point.
@@ -429,7 +429,7 @@ _What's the value of `__start`?_
 
 Remember __`kernel_addr_r`__, the [__Kernel Start Address__](https://lupyuen.github.io/articles/uboot#boot-address) from U-Boot?
 
-In NuttX, we define the Kernel Start Address __`__start`__ as __`0x4008` `0000`__ in our Linker Script: [nuttx/boards/arm64/qemu/qemu-a53/scripts/dramboot](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L34)
+In NuttX, we define the Kernel Start Address __`__start`__ as __`0x4008` `0000`__ in our Linker Script: [boards/arm64/qemu/qemu-a53/scripts/dramboot](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L34)
 
 ```text
 SECTIONS
@@ -651,7 +651,7 @@ nx_start_application: Starting init thread
 
 Yep NuttX boots on PinePhone... After replacing a single __`Image.gz`__ file!
 
-# UART Fixes
+# Upcoming Fixes
 
 _Where's the rest of the boot output?_
 
@@ -665,15 +665,19 @@ But we haven't implemented the __Generic Interrupt Controller (GIC)__ for PinePh
 arm64_gic_initialize: TODO: Init GIC for PinePhone
 ```
 
-We'll have to fix this to support [__Arm GIC Version 2__](https://developer.arm.com/documentation/ihi0048/latest/) on PinePhone...
+We'll have to fix this code to support [__Arm GIC Version 2__](https://developer.arm.com/documentation/ihi0048/latest/) on PinePhone...
 
--   [nuttx/arch/arm64/src/common/arm64_gicv3.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c)
+-   [arch/arm64/src/common/arm64_gicv3.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c)
+
+Perhaps based on this __Arm32 Implementation__ of Arm GIC Version 2...
+
+-   [arch/arm/src/armv7-a/arm_gicv2.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/armv7-a/arm_gicv2.c)
 
 _Isn't NuttX supposed to accept commands entered in the Serial Console?_
 
 This requires UART Input, which will work when we have implemented the __UART Driver__...
 
--   [nuttx/arch/arm64/src/qemu/qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c)
+-   [arch/arm64/src/qemu/qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c)
 
 We'll port this driver from [__PL011 UART__](https://krinkinmu.github.io/2020/11/29/PL011.html) to [__Allwinner A64 UART__](https://lupyuen.github.io/articles/uboot#uart-output).
 
@@ -687,19 +691,19 @@ Apache NuttX RTOS has plenty of __Arm64 Code__ that will be helpful to creators 
 
 The __Arm64 Architecture Functions__ (pic above) are defined here...
 
--   [nuttx/arch/arm64/src/common](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common)
+-   [arch/arm64/src/common](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common)
 
 These functions implement all kinds of Arm64 Features: [__FPU__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_fpu.c), [__Interrupts__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_gicv3.c), [__MMU__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_mmu.c), [__Tasks__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_task_sched.c), [__Timers__](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_arch_timer.c), ...
 
 The __Arm64 Startup Code__ (including Linux Kernel Header) is at...
 
--   [nuttx/arch/arm64/src/common/arm64_head.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S)
+-   [arch/arm64/src/common/arm64_head.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S)
 
 Officially NuttX supports only one __Arm64 Target Board__: QEMU Emulator.
 
 Below are the Source Files and Build Configuration for __QEMU Emulator__...
 
--   [nuttx/boards/arm64/qemu/qemu-a53](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/boards/arm64/qemu/qemu-a53)
+-   [boards/arm64/qemu/qemu-a53](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/boards/arm64/qemu/qemu-a53)
 
 (We'll clone this to create a Target Board for PinePhone)
 
@@ -709,7 +713,7 @@ The __Board-Specific Drivers__ for QEMU are started in [qemu_bringup.c](https://
 
 The QEMU Board calls the __QEMU Architecture-Specific Drivers__ at...
 
--   [nuttx/arch/arm64/src/qemu](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/qemu)
+-   [arch/arm64/src/qemu](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/qemu)
 
 The __UART Driver__ is located at [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c) and [qemu_lowputc.S](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/qemu/qemu_lowputc.S)
 
@@ -886,7 +890,7 @@ Earlier we said that our implementation of __Allwinner A64 UART__ is incomplete.
 
 -   [__UART Driver__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c) needs to support __UART Input__
 
-    [(More about this)](https://lupyuen.github.io/articles/uboot#uart-fixes)
+    [(More about this)](https://lupyuen.github.io/articles/uboot#upcoming-fixes)
 
 Let's talk about the implementation...
 
