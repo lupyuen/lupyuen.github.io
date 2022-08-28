@@ -460,7 +460,7 @@ Let's browse the __Source Files__ for the implementation of Cortex-A53 on NuttX.
 
 NuttX treats QEMU as a __Target Board__ (as though it was a dev board). Here are the Source Files and Build Configuration for the __QEMU Board__...
 
--   [nuttx/boards/arm64/qemu/qemu-a53](https://github.com/apache/incubator-nuttx/tree/master/boards/arm64/qemu/qemu-a53)
+-   [boards/arm64/qemu/qemu-a53](https://github.com/apache/incubator-nuttx/tree/master/boards/arm64/qemu/qemu-a53)
 
 (We'll clone this to create a Target Board for PinePhone)
 
@@ -470,7 +470,7 @@ The __Board-Specific Drivers__ for QEMU are started in [qemu_bringup.c](https://
 
 The QEMU Board calls the __QEMU Architecture-Specific Drivers__ at...
 
--   [nuttx/arch/arm64/src/qemu](https://github.com/apache/incubator-nuttx/tree/master/arch/arm64/src/qemu)
+-   [arch/arm64/src/qemu](https://github.com/apache/incubator-nuttx/tree/master/arch/arm64/src/qemu)
 
 The __UART Driver__ is located at [qemu_serial.c](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_serial.c) and [qemu_lowputc.S](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/qemu/qemu_lowputc.S)
 
@@ -478,7 +478,7 @@ The __UART Driver__ is located at [qemu_serial.c](https://github.com/apache/incu
 
 The QEMU Functions (Board and Architecture) call the __Arm64 Architecture Functions__ (pic above)...
 
--   [nuttx/arch/arm64/src/common](https://github.com/apache/incubator-nuttx/tree/master/arch/arm64/src/common)
+-   [arch/arm64/src/common](https://github.com/apache/incubator-nuttx/tree/master/arch/arm64/src/common)
 
 Which implement all kinds of Arm64 Features: [__FPU__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_fpu.c), [__Interrupts__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_gicv3.c), [__MMU__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c), [__Tasks__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_task_sched.c), [__Timers__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_arch_timer.c)...
 
@@ -795,11 +795,11 @@ _Will we see anything when NuttX boots on PinePhone?_
 
 Not yet. We need to implement the UART Driver for NuttX...
 
-[__UPDATE:__ NuttX boots on PinePhone yay!](https://github.com/lupyuen/pinephone-nuttx#nuttx-boots-on-pinephone)
+[__UPDATE:__ NuttX boots on PinePhone yay!](https://lupyuen.github.io/articles/uboot)
 
-![NuttX boots on PinePhone yay!](https://lupyuen.github.io/images/Screenshot_2022-08-26_08-04-34_080626.png)
+![NuttX boots on PinePhone yay!](https://lupyuen.github.io/images/uboot-title.png)
 
-[_NuttX boots on PinePhone yay!_](https://github.com/lupyuen/pinephone-nuttx#nuttx-boots-on-pinephone)
+[_NuttX boots on PinePhone yay!_](https://lupyuen.github.io/articles/uboot)
 
 # UART Driver for NuttX
 
@@ -823,7 +823,7 @@ We'll redo the code above for the __PinePhone UART Driver__ (based on Allwinner 
 
 -   [__Allwinner A64 Info__](https://linux-sunxi.org/A64)
 
-__UPDATE:__ We now have a partial implementation of the [__PinePhone UART Driver__](https://github.com/lupyuen/pinephone-nuttx#nuttx-boots-on-pinephone)
+__UPDATE:__ We now have a partial implementation of the [__PinePhone UART Driver__](https://lupyuen.github.io/articles/uboot)
 
 _Where's the UART Port on PinePhone?_
 
@@ -942,6 +942,10 @@ Stay tuned for updates!
 [_NuttX on a Touchscreen Device: Pine64 PineDio Stack BL604_](https://lupyuen.github.io/articles/pinedio2)
 
 # What's Next
+
+Check out the followup article...
+
+-   [__"PinePhone boots Apache NuttX RTOS"__](https://lupyuen.github.io/articles/uboot)
 
 __NuttX on PinePhone__ might take a while to become a __Daily Driver__...
 
