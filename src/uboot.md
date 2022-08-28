@@ -869,7 +869,7 @@ This article explains how we may load the [__NuttX ELF Image `nuttx`__](https://
 
 Earlier we said that our implementation of __Allwinner A64 UART__ is incomplete...
 
--   [__`early_uart_ready`__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L74-L85) needs to check if UART is __ready to transmit__
+-   [__`early_uart_ready`__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L74-L85) needs to wait for UART to be __ready to transmit__
 
     [(More about this)](https://lupyuen.github.io/articles/uboot#nuttx-uart-macros)
 
@@ -881,7 +881,55 @@ Earlier we said that our implementation of __Allwinner A64 UART__ is incomplete.
 
     [(More about this)](https://lupyuen.github.io/articles/uboot#uart-fixes)
 
-Let's talk about [__`up_earlyserialinit`__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72).
+Let's talk about the implementation...
+
+![Allwinner A64 UART Register UART_THR](https://lupyuen.github.io/images/uboot-uart2.png)
+
+[_Allwinner A64 UART Register UART_THR_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+
+## Wait for UART Ready
+
+_How do we wait for the UART Port to be ready before we transmit data?_
+
+See the pic above. According to the __Allwinner A64 UART__ doc (page 563)...
+
+-   [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+
+We should write data to the UART Port...
+
+ONLY WHEN the __THRE Bit__ is set.
+
+(THRE means __Transmit Holding Register Empty__)
+
+_Where's the THRE Bit?_
+
+THRE Bit is __Bit 5__ (`0x20`) of UART_LSR.
+
+__UART_LSR__ (Line Status Register) is at __Offset `0x14`__ from the UART Base Address.
+
+In Arm64 Assembly, this is how we wait for the UART to be ready: [qemu_lowputc.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L74-L89)
+
+```text
+/* PinePhone Allwinner A64: 
+ * Wait for UART to be ready to transmit
+ * xb: register which contains the UART base address
+ * wt: scratch register number
+ */
+
+.macro early_uart_ready xb, wt
+1:
+  /* Load the Line Status Register at Offset 0x14 from UART Base Address */
+  ldrh  \wt, [\xb, #0x14]
+
+  /* Check the THRE Bit (Tx Holding Register Empty) */
+  tst   \wt, #0x20
+
+  /* If UART is not ready (THRE=0), jump back to label `1:` */
+  b.eq  1b                     
+.endm
+```
+
+## Initialise UART
 
 _How will we initialise the UART Port?_
 
