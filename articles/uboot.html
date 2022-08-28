@@ -540,7 +540,7 @@ SECTION_FUNC(text, up_earlyserialinit)
 <li>
 <p>Follow these steps to <strong>build NuttX</strong>…</p>
 <p><a href="https://lupyuen.github.io/articles/uboot#appendix-build-nuttx-for-pinephone"><strong>“Build NuttX for PinePhone”</strong></a></p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.5/nuttx.bin">(Or download <strong><code>nuttx.bin</code></strong> from here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.6/nuttx.bin">(Or download <strong><code>nuttx.bin</code></strong> from here)</a></p>
 </li>
 <li>
 <p>Compress the <strong>NuttX Binary Image</strong>…</p>
@@ -548,7 +548,7 @@ SECTION_FUNC(text, up_earlyserialinit)
 cp nuttx.bin Image
 rm -f Image.gz
 gzip Image</code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.5/Image.gz">(Or download <strong><code>Image.gz</code></strong> from here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.6/Image.gz">(Or download <strong><code>Image.gz</code></strong> from here)</a></p>
 </li>
 <li>
 <p>Overwrite <strong><code>Image.gz</code></strong> on <strong>Jumpdrive microSD</strong>…</p>
@@ -584,9 +584,12 @@ HELLO NUTTX ON PINEPHONE!
 - Boot to C runtime for OS Initialize
 nx_start: Entry
 up_allocate_heap: heap_start=0x0x400c4000, heap_size=0x7f3c000
-gic_validate_dist_version: No GIC version detect
-arm64_gic_initialize: no distributor detected, giving up ret=-19
-up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000</code></pre></div>
+arm64_gic_initialize: TODO: Init GIC for PinePhone
+up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_highpri: Starting high-priority kernel worker thread(s)
+nx_start_application: Starting init thread</code></pre></div>
 <p>Yep NuttX boots on PinePhone… After replacing a single <strong><code>Image.gz</code></strong> file!</p>
 <h1 id="uart-fixes"><a href="#uart-fixes">13 UART Fixes</a></h1>
 <p><em>Where’s the rest of the boot output?</em></p>
@@ -594,14 +597,16 @@ up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cyc
 <ul>
 <li><a href="https://lupyuen.github.io/articles/arm#test-nuttx-single-core"><strong>“Test NuttX: Single Core”</strong></a></li>
 </ul>
-<p>Right now it’s failing at the <strong>Interrupt Controller (GIC)</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>gic_validate_dist_version: No GIC version detect
-arm64_gic_initialize: no distributor detected, giving up ret=-19</code></pre></div>
-<p>We’ll have to fix this.</p>
+<p>But we haven’t implemented the <strong>Generic Interrupt Controller (GIC)</strong> for PinePhone…</p>
+<div class="example-wrap"><pre class="language-text"><code>arm64_gic_initialize: TODO: Init GIC for PinePhone</code></pre></div>
+<p>We’ll have to fix this to support <a href="https://developer.arm.com/documentation/ihi0048/latest/"><strong>Arm GIC Version 2</strong></a> on PinePhone…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c">nuttx/arch/arm64/src/common/arm64_gicv3.c</a></li>
+</ul>
 <p><em>Isn’t NuttX supposed to accept commands entered in the Serial Console?</em></p>
 <p>This requires UART Input, which will work when we have implemented the <strong>UART Driver</strong>…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c">arch/arm64/src/qemu/qemu_serial.c</a></li>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c">nuttx/arch/arm64/src/qemu/qemu_serial.c</a></li>
 </ul>
 <p>We’ll port this driver from <a href="https://krinkinmu.github.io/2020/11/29/PL011.html"><strong>PL011 UART</strong></a> to <a href="https://lupyuen.github.io/articles/uboot#uart-output"><strong>Allwinner A64 UART</strong></a>.</p>
 <p><img src="https://lupyuen.github.io/images/arm-source.png" alt="Arm64 Source Files in NuttX" /></p>
@@ -744,22 +749,22 @@ aarch64-none-elf-objdump \
 <h2 id="output-files"><a href="#output-files">17.5 Output Files</a></h2>
 <p>The NuttX Output Files may be found here…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.5"><strong>Apache NuttX RTOS for PinePhone</strong></a></li>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.6"><strong>Apache NuttX RTOS for PinePhone</strong></a></li>
 </ul>
-<p>The <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.5/nuttx.bin"><strong>NuttX Binary Image <code>nuttx.bin</code></strong></a> will be gzipped and copied to Jumpdrive microSD as <strong><code>Image.gz</code></strong>…</p>
+<p>The <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.6/nuttx.bin"><strong>NuttX Binary Image <code>nuttx.bin</code></strong></a> will be gzipped and copied to Jumpdrive microSD as <strong><code>Image.gz</code></strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/uboot#pinephone-boots-nuttx"><strong>“PinePhone Boots NuttX”</strong></a></li>
 </ul>
 <p>For Troubleshooting: Refer to these files…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.5/nuttx"><strong>NuttX ELF Image <code>nuttx</code></strong></a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.6/nuttx"><strong>NuttX ELF Image <code>nuttx</code></strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.5/nuttx.S"><strong>NuttX Arm Disassembly <code>nuttx.S</code></strong></a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.6/nuttx.S"><strong>NuttX Arm Disassembly <code>nuttx.S</code></strong></a></p>
 </li>
 </ul>
-<p>This article explains how we may load the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.5/nuttx"><strong>NuttX ELF Image <code>nuttx</code></strong></a> into Ghidra for inspection…</p>
+<p>This article explains how we may load the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.6/nuttx"><strong>NuttX ELF Image <code>nuttx</code></strong></a> into Ghidra for inspection…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/arm#appendix-analyse-nuttx-image-with-ghidra"><strong>“Analyse NuttX Image with Ghidra”</strong></a></li>
 </ul>
@@ -857,7 +862,7 @@ strb w0, [x15, #0x0C]</code></pre></div></li>
 <p>(Serial Clock Frequency / 16) / Baud Rate</p>
 </li>
 </ul>
-<p>TODO: What is the Serial Clock Frequency (SCLK)?</p>
+<p><strong>TODO:</strong> What is the Serial Clock Frequency (SCLK)?</p>
 
     
 </body>
