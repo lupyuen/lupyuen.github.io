@@ -619,6 +619,7 @@ nx_start_application: Starting init thread</code></pre></div>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c">arch/arm64/src/qemu/qemu_serial.c</a></li>
 </ul>
 <p>We’ll port this driver from <a href="https://krinkinmu.github.io/2020/11/29/PL011.html"><strong>PL011 UART</strong></a> to <a href="https://lupyuen.github.io/articles/uboot#uart-output"><strong>Allwinner A64 UART</strong></a>.</p>
+<p><a href="https://lupyuen.github.io/articles/uboot#uart-driver">(More about UART Driver)</a></p>
 <p><img src="https://lupyuen.github.io/images/arm-source.png" alt="Arm64 Source Files in NuttX" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common"><em>Arm64 Source Files in NuttX</em></a></p>
 <h1 id="nuttx-source-code"><a href="#nuttx-source-code">14 NuttX Source Code</a></h1>
@@ -645,7 +646,7 @@ nx_start_application: Starting init thread</code></pre></div>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/qemu">arch/arm64/src/qemu</a></li>
 </ul>
 <p>The <strong>UART Driver</strong> is located at <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c">qemu_serial.c</a> and <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/qemu/qemu_lowputc.S">qemu_lowputc.S</a></p>
-<p>(We’ll port the UART Driver to PinePhone)</p>
+<p><a href="https://lupyuen.github.io/articles/uboot#uart-driver">(More about UART Driver)</a></p>
 <p>The <strong>QEMU Target for NuttX</strong> is described in this article…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/arm"><strong>“Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone”</strong></a></li>
@@ -783,15 +784,12 @@ aarch64-none-elf-objdump \
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L74-L85"><strong><code>early_uart_ready</code></strong></a> needs to wait for UART to be <strong>ready to transmit</strong></p>
-<p><a href="https://lupyuen.github.io/articles/uboot#nuttx-uart-macros">(More about this)</a></p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72"><strong><code>up_earlyserialinit</code></strong></a> needs to <strong>initialise the UART Port</strong></p>
-<p><a href="https://lupyuen.github.io/articles/uboot#nuttx-uart-macros">(More about this)</a></p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c"><strong>UART Driver</strong></a> needs to support <strong>UART Input</strong></p>
-<p><a href="https://lupyuen.github.io/articles/uboot#upcoming-fixes">(More about this)</a></p>
 </li>
 </ul>
 <p>Let’s talk about the implementation…</p>
@@ -874,9 +872,51 @@ strb w0, [x15, #0x0C]</code></pre></div></li>
 </ul>
 <p><strong>TODO:</strong> What is the Serial Clock Frequency (SCLK)?</p>
 <h2 id="uart-driver"><a href="#uart-driver">18.3 UART Driver</a></h2>
-<p>We have partially implemented the <strong>UART Driver</strong> for PinePhone’s Allwinner A64 UART Port.</p>
+<p>We have partially implemented the <strong>UART Driver</strong> for PinePhone’s Allwinner A64 UART Port…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c">arch/arm64/src/qemu/qemu_serial.c</a> </li>
+</ul>
 <p>Right now we support <strong>UART Output</strong>, but not UART Input.</p>
-<p>TODO</p>
+<p>The (incomplete) <strong>Serial Operations</strong> for our UART Driver are…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L811-L815"><strong>qemu_pl011_setup</strong></a>: Setup UART </p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L730-L743"><strong>qemu_pl011_shutdown</strong></a>: Shutdown UART</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L723-L727"><strong>qemu_pl011_attach</strong></a>: Attach UART Interrupt</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L669-L672"><strong>qemu_pl011_detach</strong></a>: Detach UART Interrupt</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L585-L612"><strong>qemu_pl011_ioctl</strong></a>: UART I/O Control</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L578-L582"><strong>qemu_pl011_receive</strong></a>: Receive UART Input</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L517-L520"><strong>qemu_pl011_rxint</strong></a>: Enable or disable UART Receive Interrupt</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L486-L490"><strong>qemu_pl011_rxavailable</strong></a>: Is UART Input available</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L452-L457"><strong>qemu_pl011_send</strong></a>: Send UART Output</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L547-L550"><strong>qemu_pl011_txint</strong></a>: Enable or disable UART Transmit Interrupt</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L399-L407"><strong>qemu_pl011_txready</strong></a>: Is UART ready to transmit</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L427-L431"><strong>qemu_pl011_txempty</strong></a>: Is UART Transmit Buffer empty</p>
+</li>
+</ul>
+<p>The operations above are being ported from <a href="https://krinkinmu.github.io/2020/11/29/PL011.html"><strong>PL011 UART</strong></a> to Allwinner A64 UART.</p>
 
     
 </body>
