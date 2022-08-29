@@ -590,7 +590,7 @@ Let's do it!
 
     [__"Build NuttX for PinePhone"__](https://lupyuen.github.io/articles/uboot#appendix-build-nuttx-for-pinephone)
 
-    [(Or download __`nuttx.bin`__ from here)](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.6/nuttx.bin)
+    [(Or download __`nuttx.bin`__ from here)](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.7/nuttx.bin)
 
 1.  Compress the __NuttX Binary Image__...
 
@@ -601,7 +601,7 @@ Let's do it!
     gzip Image
     ```
 
-    [(Or download __`Image.gz`__ from here)](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.6/Image.gz)
+    [(Or download __`Image.gz`__ from here)](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.7/Image.gz)
 
 1.  Overwrite __`Image.gz`__ on __Jumpdrive microSD__...
 
@@ -870,19 +870,19 @@ On an old MacBook Pro 2012, NuttX builds in 2 minutes.
 
 The NuttX Output Files may be found here...
 
--   [__Apache NuttX RTOS for PinePhone__](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.6)
+-   [__Apache NuttX RTOS for PinePhone__](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.7)
 
-The [__NuttX Binary Image `nuttx.bin`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.6/nuttx.bin) will be gzipped and copied to Jumpdrive microSD as __`Image.gz`__...
+The [__NuttX Binary Image `nuttx.bin`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.7/nuttx.bin) will be gzipped and copied to Jumpdrive microSD as __`Image.gz`__...
 
 -   [__"PinePhone Boots NuttX"__](https://lupyuen.github.io/articles/uboot#pinephone-boots-nuttx)
 
 For Troubleshooting: Refer to these files...
 
--   [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.6/nuttx)
+-   [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.7/nuttx)
 
--   [__NuttX Arm Disassembly `nuttx.S`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.6/nuttx.S)
+-   [__NuttX Arm Disassembly `nuttx.S`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.7/nuttx.S)
 
-This article explains how we may load the [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.6/nuttx) into Ghidra for inspection...
+This article explains how we may load the [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.7/nuttx) into Ghidra for inspection...
 
 -   [__"Analyse NuttX Image with Ghidra"__](https://lupyuen.github.io/articles/arm#appendix-analyse-nuttx-image-with-ghidra)
 
