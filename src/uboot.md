@@ -689,6 +689,14 @@ But it waits forever switching to the __Init Thread__.
 
 We probably need to fix the [__Generic Interrupt Controller__](https://github.com/lupyuen/pinephone-nuttx#interrupt-controller) for PinePhone.
 
+More about NuttX booting on PinePhone...
+
+-   [__"Boot Sequence"__](https://github.com/lupyuen/pinephone-nuttx#boot-sequence)
+
+-   [__"Boot Debugging"__](https://github.com/lupyuen/pinephone-nuttx#boot-debugging)
+
+-   [__"Memory Map"__](https://github.com/lupyuen/pinephone-nuttx#memory-map)
+
 _Isn't NuttX supposed to accept commands entered in the Serial Console?_
 
 This requires UART Input, which will work when we have implemented the __UART Driver__...
