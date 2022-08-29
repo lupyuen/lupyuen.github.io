@@ -91,7 +91,8 @@
 <li><a href="#output-files">17.5 Output Files</a><ul></ul></li></ul></li>
 <li><a href="#appendix-allwinner-a64-uart">18 Appendix: Allwinner A64 UART</a><ul>
 <li><a href="#wait-for-uart-ready">18.1 Wait for UART Ready</a><ul></ul></li>
-<li><a href="#initialise-uart">18.2 Initialise UART</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>28 Aug 2022</em></p>
+<li><a href="#initialise-uart">18.2 Initialise UART</a><ul></ul></li>
+<li><a href="#uart-driver">18.3 UART Driver</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>28 Aug 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/uboot-title.png" alt="Apache NuttX RTOS booting on Pine64 PinePhone" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#nuttx-boot-log"><em>Apache NuttX RTOS booting on Pine64 PinePhone</em></a></p>
 <p>Suppose we’re creating our own <strong>Operating System</strong> (non-Linux) for <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>…</p>
@@ -872,6 +873,10 @@ strb w0, [x15, #0x0C]</code></pre></div></li>
 </li>
 </ul>
 <p><strong>TODO:</strong> What is the Serial Clock Frequency (SCLK)?</p>
+<h2 id="uart-driver"><a href="#uart-driver">18.3 UART Driver</a></h2>
+<p>We have partially implemented the <strong>UART Driver</strong> for PinePhone’s Allwinner A64 UART Port.</p>
+<p>Right now we support <strong>UART Output</strong>, but not UART Input.</p>
+<p>TODO</p>
 
     
 </body>
