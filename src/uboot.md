@@ -687,6 +687,8 @@ This requires UART Input, which will work when we have implemented the __UART Dr
 
 We'll port this driver from [__PL011 UART__](https://krinkinmu.github.io/2020/11/29/PL011.html) to [__Allwinner A64 UART__](https://lupyuen.github.io/articles/uboot#uart-output).
 
+[(More about UART Driver)](https://lupyuen.github.io/articles/uboot#uart-driver)
+
 ![Arm64 Source Files in NuttX](https://lupyuen.github.io/images/arm-source.png)
 
 [_Arm64 Source Files in NuttX_](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common)
@@ -723,7 +725,7 @@ The QEMU Board calls the __QEMU Architecture-Specific Drivers__ at...
 
 The __UART Driver__ is located at [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c) and [qemu_lowputc.S](https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/qemu/qemu_lowputc.S)
 
-(We'll port the UART Driver to PinePhone)
+[(More about UART Driver)](https://lupyuen.github.io/articles/uboot#uart-driver)
 
 The __QEMU Target for NuttX__ is described in this article...
 
@@ -888,15 +890,9 @@ Earlier we said that our implementation of __Allwinner A64 UART__ is incomplete.
 
 -   [__`early_uart_ready`__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L74-L85) needs to wait for UART to be __ready to transmit__
 
-    [(More about this)](https://lupyuen.github.io/articles/uboot#nuttx-uart-macros)
-
 -   [__`up_earlyserialinit`__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72) needs to __initialise the UART Port__
 
-    [(More about this)](https://lupyuen.github.io/articles/uboot#nuttx-uart-macros)
-
 -   [__UART Driver__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c) needs to support __UART Input__
-
-    [(More about this)](https://lupyuen.github.io/articles/uboot#upcoming-fixes)
 
 Let's talk about the implementation...
 
@@ -1005,8 +1001,36 @@ __TODO:__ What is the Serial Clock Frequency (SCLK)?
 
 ## UART Driver
 
-We have partially implemented the __UART Driver__ for PinePhone's Allwinner A64 UART Port.
+We have partially implemented the __UART Driver__ for PinePhone's Allwinner A64 UART Port...
+
+-   [arch/arm64/src/qemu/qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c) 
 
 Right now we support __UART Output__, but not UART Input.
 
-TODO
+The (incomplete) __Serial Operations__ for our UART Driver are...
+
+-   [__qemu_pl011_setup__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L811-L815): Setup UART 
+
+-   [__qemu_pl011_shutdown__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L730-L743): Shutdown UART
+
+-   [__qemu_pl011_attach__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L723-L727): Attach UART Interrupt
+
+-   [__qemu_pl011_detach__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L669-L672): Detach UART Interrupt
+
+-   [__qemu_pl011_ioctl__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L585-L612): UART I/O Control
+
+-   [__qemu_pl011_receive__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L578-L582): Receive UART Input
+
+-   [__qemu_pl011_rxint__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L517-L520): Enable or disable UART Receive Interrupt
+
+-   [__qemu_pl011_rxavailable__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L486-L490): Is UART Input available
+
+-   [__qemu_pl011_send__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L452-L457): Send UART Output
+
+-   [__qemu_pl011_txint__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L547-L550): Enable or disable UART Transmit Interrupt
+
+-   [__qemu_pl011_txready__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L399-L407): Is UART ready to transmit
+
+-   [__qemu_pl011_txempty__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L427-L431): Is UART Transmit Buffer empty
+
+The operations above are being ported from [__PL011 UART__](https://krinkinmu.github.io/2020/11/29/PL011.html) to Allwinner A64 UART.
