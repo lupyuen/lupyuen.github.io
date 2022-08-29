@@ -648,10 +648,7 @@ up_allocate_heap: heap_start=0x0x400c4000, heap_size=0x7f3c000
 arm64_gic_initialize: TODO: Init GIC for PinePhone
 arm64_gic_initialize: GIC Version is 2
 up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-work_start_highpri: Starting high-priority kernel worker thread(s)
-nx_start_application: Starting init thread
+uart_regi
 ```
 
 Yep NuttX boots on PinePhone... After replacing a single __`Image.gz`__ file!
@@ -664,22 +661,33 @@ We expect to see this output when NuttX boots...
 
 -   [__"Test NuttX: Single Core"__](https://lupyuen.github.io/articles/arm#test-nuttx-single-core)
 
-But we haven't implemented the __Generic Interrupt Controller (GIC)__ for PinePhone...
+But NuttX hangs when it tries to handle the __System Timer Interrupt__...
 
 ```text
-arm64_gic_initialize: TODO: Init GIC for PinePhone
-arm64_gic_initialize: GIC Version is 2
+up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
+uart_regi
 ```
 
-We'll have to fix this code to support [__Arm GIC Version 2__](https://developer.arm.com/documentation/ihi0048/latest/) on PinePhone...
+[(More about System Timer)](https://github.com/lupyuen/pinephone-nuttx#system-timer)
 
--   [arch/arm64/src/common/arm64_gicv3.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c)
+This is probably due to our incomplete implementation of the __Generic Interrupt Controller (GIC)__ for PinePhone...
 
-Perhaps based on this __Arm32 Implementation__ of Arm GIC Version 2...
+-   [__"Interrupt Controller"__](https://github.com/lupyuen/pinephone-nuttx#interrupt-controller)
 
--   [arch/arm/src/armv7-a/arm_gicv2.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/armv7-a/arm_gicv2.c)
+_What if we disable the System Timer?_
 
-[(More about PinePhone's Interrupt Controller)](https://github.com/lupyuen/pinephone-nuttx#interrupt-controller)
+If we disable the [__System Timer__](https://github.com/lupyuen/pinephone-nuttx#system-timer), NuttX will boot further...
+
+```text
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_highpri: Starting high-priority kernel worker thread(s)
+nx_start_application: Starting init thread
+```
+
+But it waits forever switching to the __Init Thread__.
+
+We probably need to fix the [__Generic Interrupt Controller__](https://github.com/lupyuen/pinephone-nuttx#interrupt-controller) for PinePhone.
 
 _Isn't NuttX supposed to accept commands entered in the Serial Console?_
 
