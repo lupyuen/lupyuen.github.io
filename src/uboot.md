@@ -1002,3 +1002,11 @@ Where...
     (Serial Clock Frequency / 16) / Baud Rate
 
 __TODO:__ What is the Serial Clock Frequency (SCLK)?
+
+## UART Driver
+
+We have partially implemented the __UART Driver__ for PinePhone's Allwinner A64 UART Port.
+
+Right now we support __UART Output__, but not UART Input.
+
+TODO
