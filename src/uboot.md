@@ -673,6 +673,8 @@ Perhaps based on this __Arm32 Implementation__ of Arm GIC Version 2...
 
 -   [arch/arm/src/armv7-a/arm_gicv2.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/armv7-a/arm_gicv2.c)
 
+[(More about PinePhone's Interrupt Controller)](https://github.com/lupyuen/pinephone-nuttx#interrupt-controller)
+
 _Isn't NuttX supposed to accept commands entered in the Serial Console?_
 
 This requires UART Input, which will work when we have implemented the __UART Driver__...
