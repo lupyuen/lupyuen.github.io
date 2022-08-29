@@ -439,6 +439,10 @@ SECTIONS
   _start = .;
 ```
 
+We also updated the Kernel Start Address in the NuttX __Memory Map__...
+
+-   [__"Memory Map"__](https://github.com/lupyuen/pinephone-nuttx#memory-map)
+
 We're almost ready to boot NuttX on PinePhone!
 
 _Will we see anything when NuttX boots on PinePhone?_
