@@ -176,6 +176,8 @@ qemu-system-aarch64 \
   -kernel ./nuttx
 ```
 
+[(More about QEMU "virt" Machine)](https://www.qemu.org/docs/master/system/arm/virt.html)
+
 QEMU shows this...
 
 ```text

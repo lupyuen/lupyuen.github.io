@@ -880,6 +880,8 @@ aarch64-none-elf-objdump \
 
 [(See the Build Log)](https://gist.github.com/lupyuen/2c5db82c3103f52ed7ca99804f9220c1)
 
+[(See our Build Script)](https://gist.github.com/lupyuen/7e828ea476d12cffa5e535a215723908)
+
 On an old MacBook Pro 2012, NuttX builds in 2 minutes.
 
 ## Output Files
