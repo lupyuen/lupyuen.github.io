@@ -457,7 +457,7 @@ To do that, we'll talk to the __UART Controller__ on the Allwinner A64 SoC...
 
 -   [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
 
-Flip the [__A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) to page 562 and we'll see the __UART Registers__. (Pic above)
+Flip the [__A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) to page 562 ("UART") and we'll see the __UART Registers__. (Pic above)
 
 PinePhone's Serial Console is connected to __UART0__ at Base Address __`0x01C2` `8000`__
 
@@ -904,7 +904,7 @@ Let's talk about the implementation...
 
 _How do we wait for the UART Port to be ready before we transmit data?_
 
-See the pic above. According to the __Allwinner A64 UART__ doc (page 563)...
+See the pic above. According to the __Allwinner A64 UART__ doc (page 563, "UART")...
 
 -   [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
 
@@ -946,7 +946,7 @@ In Arm64 Assembly, this is how we wait for the UART to be ready: [qemu_lowputc.S
 
 _How will we initialise the UART Port?_
 
-According to the __Allwinner A64 UART__ doc (page 562)...
+According to the __Allwinner A64 UART__ doc (page 562, "UART")...
 
 -   [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
 
