@@ -441,6 +441,10 @@ real_start: ... </code></pre></div>
   /* PinePhone uboot load address (kernel_addr_r) */
   . = 0x40080000;
   _start = .;</code></pre></div>
+<p>We also updated the Kernel Start Address in the NuttX <strong>Memory Map</strong>…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx#memory-map"><strong>“Memory Map”</strong></a></li>
+</ul>
 <p>We’re almost ready to boot NuttX on PinePhone!</p>
 <p><em>Will we see anything when NuttX boots on PinePhone?</em></p>
 <p>Not yet. We need to implement the UART Driver…</p>
