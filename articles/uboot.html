@@ -592,10 +592,7 @@ up_allocate_heap: heap_start=0x0x400c4000, heap_size=0x7f3c000
 arm64_gic_initialize: TODO: Init GIC for PinePhone
 arm64_gic_initialize: GIC Version is 2
 up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-work_start_highpri: Starting high-priority kernel worker thread(s)
-nx_start_application: Starting init thread</code></pre></div>
+uart_regi</code></pre></div>
 <p>Yep NuttX boots on PinePhone… After replacing a single <strong><code>Image.gz</code></strong> file!</p>
 <h1 id="upcoming-fixes"><a href="#upcoming-fixes">13 Upcoming Fixes</a></h1>
 <p><em>Where’s the rest of the boot output?</em></p>
@@ -603,18 +600,22 @@ nx_start_application: Starting init thread</code></pre></div>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/arm#test-nuttx-single-core"><strong>“Test NuttX: Single Core”</strong></a></li>
 </ul>
-<p>But we haven’t implemented the <strong>Generic Interrupt Controller (GIC)</strong> for PinePhone…</p>
-<div class="example-wrap"><pre class="language-text"><code>arm64_gic_initialize: TODO: Init GIC for PinePhone
-arm64_gic_initialize: GIC Version is 2</code></pre></div>
-<p>We’ll have to fix this code to support <a href="https://developer.arm.com/documentation/ihi0048/latest/"><strong>Arm GIC Version 2</strong></a> on PinePhone…</p>
+<p>But NuttX hangs when it tries to handle the <strong>System Timer Interrupt</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
+uart_regi</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#system-timer">(More about System Timer)</a></p>
+<p>This is probably due to our incomplete implementation of the <strong>Generic Interrupt Controller (GIC)</strong> for PinePhone…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c">arch/arm64/src/common/arm64_gicv3.c</a></li>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx#interrupt-controller"><strong>“Interrupt Controller”</strong></a></li>
 </ul>
-<p>Perhaps based on this <strong>Arm32 Implementation</strong> of Arm GIC Version 2…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/armv7-a/arm_gicv2.c">arch/arm/src/armv7-a/arm_gicv2.c</a></li>
-</ul>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx#interrupt-controller">(More about PinePhone’s Interrupt Controller)</a></p>
+<p><em>What if we disable the System Timer?</em></p>
+<p>If we disable the <a href="https://github.com/lupyuen/pinephone-nuttx#system-timer"><strong>System Timer</strong></a>, NuttX will boot further…</p>
+<div class="example-wrap"><pre class="language-text"><code>uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_highpri: Starting high-priority kernel worker thread(s)
+nx_start_application: Starting init thread</code></pre></div>
+<p>But it waits forever switching to the <strong>Init Thread</strong>.</p>
+<p>We probably need to fix the <a href="https://github.com/lupyuen/pinephone-nuttx#interrupt-controller"><strong>Generic Interrupt Controller</strong></a> for PinePhone.</p>
 <p><em>Isn’t NuttX supposed to accept commands entered in the Serial Console?</em></p>
 <p>This requires UART Input, which will work when we have implemented the <strong>UART Driver</strong>…</p>
 <ul>
