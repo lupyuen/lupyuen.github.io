@@ -452,7 +452,7 @@ real_start: ... </code></pre></div>
 <ul>
 <li><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a></li>
 </ul>
-<p>Flip the <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>A64 User Manual</strong></a> to page 562 and we’ll see the <strong>UART Registers</strong>. (Pic above)</p>
+<p>Flip the <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>A64 User Manual</strong></a> to page 562 (“UART”) and we’ll see the <strong>UART Registers</strong>. (Pic above)</p>
 <p>PinePhone’s Serial Console is connected to <strong>UART0</strong> at Base Address <strong><code>0x01C2</code> <code>8000</code></strong></p>
 <p>The First Register of UART0 is what we need: <strong>UART_THR</strong> at <strong><code>0x01C2</code> <code>8000</code></strong>…</p>
 <p><img src="https://lupyuen.github.io/images/uboot-uart2.png" alt="A64 UART Register UART_THR" /></p>
@@ -794,7 +794,7 @@ aarch64-none-elf-objdump \
 <p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><em>Allwinner A64 UART Register UART_THR</em></a></p>
 <h2 id="wait-for-uart-ready"><a href="#wait-for-uart-ready">18.1 Wait for UART Ready</a></h2>
 <p><em>How do we wait for the UART Port to be ready before we transmit data?</em></p>
-<p>See the pic above. According to the <strong>Allwinner A64 UART</strong> doc (page 563)…</p>
+<p>See the pic above. According to the <strong>Allwinner A64 UART</strong> doc (page 563, “UART”)…</p>
 <ul>
 <li><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a></li>
 </ul>
@@ -823,7 +823,7 @@ aarch64-none-elf-objdump \
   b.eq  1b                     
 .endm</code></pre></div><h2 id="initialise-uart"><a href="#initialise-uart">18.2 Initialise UART</a></h2>
 <p><em>How will we initialise the UART Port?</em></p>
-<p>According to the <strong>Allwinner A64 UART</strong> doc (page 562)…</p>
+<p>According to the <strong>Allwinner A64 UART</strong> doc (page 562, “UART”)…</p>
 <ul>
 <li><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a></li>
 </ul>
