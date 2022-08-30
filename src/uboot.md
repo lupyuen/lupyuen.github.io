@@ -701,6 +701,10 @@ More about NuttX booting on PinePhone...
 
 -   [__"Memory Map"__](https://github.com/lupyuen/pinephone-nuttx#memory-map)
 
+-   [__"Handling Interrupts"__](https://github.com/lupyuen/pinephone-nuttx#handling-interrupts)
+
+-   [__"Dump Interrupt Vector Table"__](https://github.com/lupyuen/pinephone-nuttx#dump-interrupt-vector-table)
+
 _Isn't NuttX supposed to accept commands entered in the Serial Console?_
 
 This requires UART Input, which will work when we have implemented the __UART Driver__...
