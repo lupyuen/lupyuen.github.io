@@ -674,6 +674,10 @@ This is probably due to our incomplete implementation of the __Generic Interrupt
 
 -   [__"Interrupt Controller"__](https://github.com/lupyuen/pinephone-nuttx#interrupt-controller)
 
+-   [__"Timer Interrrupt Isn't Handled"__](https://github.com/lupyuen/pinephone-nuttx#timer-interrrupt-isnt-handled)
+
+-   [__"Test PinePhone GIC with QEMU"__](https://github.com/lupyuen/pinephone-nuttx#test-pinephone-gic-with-qemu)
+
 _What if we disable the System Timer?_
 
 If we disable the [__System Timer__](https://github.com/lupyuen/pinephone-nuttx#system-timer), NuttX will boot further...
