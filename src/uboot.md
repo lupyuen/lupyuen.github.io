@@ -693,17 +693,19 @@ But it waits forever switching to the __Init Thread__.
 
 We probably need to fix the [__Generic Interrupt Controller__](https://github.com/lupyuen/pinephone-nuttx#interrupt-controller) for PinePhone.
 
-More about NuttX booting on PinePhone...
+More about NuttX booting on PinePhone and troubleshooting it...
 
--   [__"Boot Sequence"__](https://github.com/lupyuen/pinephone-nuttx#boot-sequence)
+1.  [__"Boot Sequence"__](https://github.com/lupyuen/pinephone-nuttx#boot-sequence)
 
--   [__"Boot Debugging"__](https://github.com/lupyuen/pinephone-nuttx#boot-debugging)
+1.  [__"Boot Debugging"__](https://github.com/lupyuen/pinephone-nuttx#boot-debugging)
 
--   [__"Memory Map"__](https://github.com/lupyuen/pinephone-nuttx#memory-map)
+1.  [__"Memory Map"__](https://github.com/lupyuen/pinephone-nuttx#memory-map)
 
--   [__"Handling Interrupts"__](https://github.com/lupyuen/pinephone-nuttx#handling-interrupts)
+1.  [__"Handling Interrupts"__](https://github.com/lupyuen/pinephone-nuttx#handling-interrupts)
 
--   [__"Dump Interrupt Vector Table"__](https://github.com/lupyuen/pinephone-nuttx#dump-interrupt-vector-table)
+1.  [__"Dump Interrupt Vector Table"__](https://github.com/lupyuen/pinephone-nuttx#dump-interrupt-vector-table)
+
+1.  [__"Interrupt Debugging"__](https://github.com/lupyuen/pinephone-nuttx#interrupt-debugging)
 
 _Isn't NuttX supposed to accept commands entered in the Serial Console?_
 
