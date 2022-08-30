@@ -624,8 +624,8 @@ work_start_highpri: Starting high-priority kernel worker thread(s)
 nx_start_application: Starting init thread</code></pre></div>
 <p>But it waits forever switching to the <strong>Init Thread</strong>.</p>
 <p>We probably need to fix the <a href="https://github.com/lupyuen/pinephone-nuttx#interrupt-controller"><strong>Generic Interrupt Controller</strong></a> for PinePhone.</p>
-<p>More about NuttX booting on PinePhone…</p>
-<ul>
+<p>More about NuttX booting on PinePhone and troubleshooting it…</p>
+<ol>
 <li>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#boot-sequence"><strong>“Boot Sequence”</strong></a></p>
 </li>
@@ -641,7 +641,10 @@ nx_start_application: Starting init thread</code></pre></div>
 <li>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#dump-interrupt-vector-table"><strong>“Dump Interrupt Vector Table”</strong></a></p>
 </li>
-</ul>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#interrupt-debugging"><strong>“Interrupt Debugging”</strong></a></p>
+</li>
+</ol>
 <p><em>Isn’t NuttX supposed to accept commands entered in the Serial Console?</em></p>
 <p>This requires UART Input, which will work when we have implemented the <strong>UART Driver</strong>…</p>
 <ul>
