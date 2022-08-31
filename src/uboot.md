@@ -356,16 +356,16 @@ Yep it's totally strange, but U-Boot Bootloader expects our OS to begin with an 
 The doc says that a Linux Kernel Image (for Arm64) should begin with this __64-byte header__...
 
 ```text
-u32 code0;                    /* Executable code */
-u32 code1;                    /* Executable code */
-u64 text_offset;              /* Image load offset, little endian */
-u64 image_size;               /* Effective Image size, little endian */
-u64 flags;                    /* kernel flags, little endian */
-u64 res2      = 0;            /* reserved */
-u64 res3      = 0;            /* reserved */
-u64 res4      = 0;            /* reserved */
-u32 magic     = 0x644d5241;   /* Magic number, little endian, "ARM\x64" */
-u32 res5;                     /* reserved (used for PE COFF offset) */
+u32 code0;              /* Executable code */
+u32 code1;              /* Executable code */
+u64 text_offset;        /* Image load offset, little endian */
+u64 image_size;         /* Effective Image size, little endian */
+u64 flags;              /* kernel flags, little endian */
+u64 res2  = 0;          /* reserved */
+u64 res3  = 0;          /* reserved */
+u64 res4  = 0;          /* reserved */
+u32 magic = 0x644d5241; /* Magic number, little endian, "ARM\x64" */
+u32 res5;               /* reserved (used for PE COFF offset) */
 ```
 
 [(Source)](https://www.kernel.org/doc/html/latest/arm64/booting.html)
@@ -412,18 +412,28 @@ At the top of the header we jump to __`real_start`__ to skip the header.
 Then comes the rest of the header...
 
 ```text
-  .quad   0x0000               /* PinePhone Image load offset from start of RAM */
-  .quad   _e_initstack - __start  /* Effective size of kernel image, little-endian */
-  .quad   __HEAD_FLAGS         /* Informative flags, little-endian */
-  .quad   0                    /* reserved */
-  .quad   0                    /* reserved */
-  .quad   0                    /* reserved */
-  .ascii  "ARM\x64"            /* Magic number, "ARM\x64" */
-  .long   0                    /* reserved */
+  /* PinePhone Image load offset from start of RAM */
+  .quad   0x0000  
+
+  /* Effective size of kernel image, little-endian */
+  .quad   _e_initstack - __start
+
+  /* Informative flags, little-endian */
+  .quad   __HEAD_FLAGS
+
+  .quad   0          /* reserved */
+  .quad   0          /* reserved */
+  .quad   0          /* reserved */
+  .ascii  "ARM\x64"  /* Magic number, "ARM\x64" */
+  .long   0          /* reserved */
 
 /* NuttX OS Code begins here, after the header */
 real_start: ... 
 ```
+
+[(__`_e_initstack`__ is End of Stack Space)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L105)
+
+[(__`__HEAD_FLAGS`__ is defined here)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L41-L49)
 
 _What's the value of `__start`?_
 
