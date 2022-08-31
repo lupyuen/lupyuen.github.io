@@ -685,7 +685,7 @@ This problem might be related to the __Arm64 Interrupt__ issues that we fixed ea
 
 -   [__"Interrupt Controller"__](https://github.com/lupyuen/pinephone-nuttx#interrupt-controller)
 
--   [__"Timer Interrrupt Isn't Handled"__](https://github.com/lupyuen/pinephone-nuttx#timer-interrrupt-isnt-handled)
+-   [__"Timer Interrupt Isn't Handled"__](https://github.com/lupyuen/pinephone-nuttx#timer-interrupt-isnt-handled)
 
 -   [__"Arm64 Vector Table Is Wrong"__](https://github.com/lupyuen/pinephone-nuttx#arm64-vector-table-is-wrong)
 
