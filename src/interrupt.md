@@ -239,6 +239,8 @@ Let's test our reckless GIC Version 2 with QEMU Emulator...
 
 ![Tracing Arm64 Interrupts on QEMU Emulator can get... Really messy](https://lupyuen.github.io/images/interrupt-title2.png)
 
+_Tracing Arm64 Interrupts on QEMU Emulator can get... Really messy_
+
 # Test PinePhone GIC with QEMU
 
 _Will our hacked GIC Version 2 run on PinePhone?_
@@ -299,11 +301,11 @@ nsh>
 nx_start: CPU0: Beginning Idle Loop
 ```
 
-Yep NuttX with GIC Version 2 boots OK on QEMU, and will probably run on PinePhone!
+NuttX with GIC Version 2 boots OK on QEMU, and will probably run on PinePhone!
 
 _We tested Interrupts with GIC Version 2?_
 
-Yep the screen above shows "TX" whenever an Interrupt Handler is dispatched.
+Yep the pic above shows __"TX"__ whenever an Interrupt Handler is dispatched.
 
 (We added Debug Logging for [arm64_vectors.S](https://github.com/lupyuen/incubator-nuttx/blob/gicv2/arch/arm64/src/common/arm64_vectors.S#L337-L350) and [arm64_vector_table.S](https://github.com/lupyuen/incubator-nuttx/blob/gicv2/arch/arm64/src/common/arm64_vector_table.S#L47-L75))
 
@@ -607,7 +609,7 @@ jump_to_c_entry:
 
 _So how did our Vector Base Address Register get messed up? And why is it off by exactly `0x18` `0000`?_
 
-TODO
+We might have missed something when we changed the __Kernel Start Address__ from `0x4028` `0000` to `0x4008` `0000` in [dramboot.ld](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L34). We'll check some more.
 
 # What's Next
 
