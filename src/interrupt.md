@@ -198,7 +198,7 @@ Kinda. We did a __horrible hack__... Don't try this at home! (Unless you have a 
 #include "../arch/arm/src/armv7-a/arm_gicv2.c"
 ```
 
-(We commented out the GIC Version 3 code)
+[(We commented out the __GIC Version 3__ code as __`NOTUSED`__)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c)
 
 _What! Did we just `#include` the GIC Version 2 Source Code from Arm32 into Arm64?_
 
