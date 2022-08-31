@@ -397,8 +397,8 @@ __start:
    * its opcode forms the magic "MZ" signature of a PE/COFF file
    * that is required for UEFI applications.
    */
-  add     x13, x18, #0x16      /* the magic "MZ" signature */
-  b       real_start           /* branch to kernel start */
+  add     x13, x18, #0x16  /* the magic "MZ" signature */
+  b       real_start       /* branch to kernel start */
 ```
 
 [("MZ" refers to Mark Zbikowski)](https://en.wikipedia.org/wiki/DOS_MZ_executable)
