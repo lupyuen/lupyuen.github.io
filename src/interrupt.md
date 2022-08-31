@@ -607,23 +607,23 @@ jump_to_c_entry:
     ret x25
 ```
 
+The __Boot Sequence__ for NuttX RTOS is explained here...
+
+-   [__"Boot Sequence"__](https://github.com/lupyuen/pinephone-nuttx#boot-sequence)
+
 _So how did our Vector Base Address Register get messed up? And why is it off by exactly `0x18` `0000`?_
 
-We might have missed something when we changed the __Kernel Start Address__ from `0x4028` `0000` to `0x4008` `0000` in [dramboot.ld](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L34). We'll check some more.
+We might have missed something when we changed the __Kernel Start Address__ from `0x4028` `0000` to `0x4008` `0000` in [dramboot.ld](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L34).
+
+Or maybe we made a mistake in our __Memory Map__...
+
+-   [__"Memory Map"__](https://github.com/lupyuen/pinephone-nuttx#memory-map)
+
+We'll check some more.
 
 # What's Next
 
-TODO
-
-_Will NuttX work with all PinePhone features?_
-
-__NuttX on PinePhone__ might take a while to become a __Daily Driver__...
-
--   [__"PinePhone on RTOS"__](https://lupyuen.github.io/articles/arm#pinephone-on-rtos)
-
--   [__"PinePhone Drivers and Apps"__](https://lupyuen.github.io/articles/arm#pinephone-drivers-and-apps)
-
-But today NuttX is ready to turn PinePhone into a valuable __Learning Resource__!
+TODO: NuttX Shell
 
 There's plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏
 
