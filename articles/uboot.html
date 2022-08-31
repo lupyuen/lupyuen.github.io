@@ -617,11 +617,11 @@ nx_start: CPU0: Beginning Idle Loop</code></pre></div>
 <p>Yep NuttX boots on PinePhone… After replacing a single <strong><code>Image.gz</code></strong> file!</p>
 <h1 id="upcoming-fixes"><a href="#upcoming-fixes">13 Upcoming Fixes</a></h1>
 <p><em>Where’s the rest of the boot output?</em></p>
-<p>We expect to see this output when NuttX boots…</p>
+<p>We expect to see the <strong>NuttX Shell</strong> when NuttX boots…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/arm#test-nuttx-single-core"><strong>“Test NuttX: Single Core”</strong></a></li>
 </ul>
-<p>But NuttX seems to be stuck at the <strong>Idle Loop</strong>, before showing the NuttX Shell…</p>
+<p>But NuttX seems to be stuck at the <strong>Idle Loop</strong>, without showing the NuttX Shell…</p>
 <div class="example-wrap"><pre class="language-text"><code>nx_start_application: Starting init thread
 lib_cxx_initialize: _sinit: 0x400a7000 _einit: 0x400a7000 _stext: 0x40080000 _etext: 0x400a8000
 nx_start: CPU0: Beginning Idle Loop</code></pre></div>
