@@ -419,17 +419,49 @@ _OK I'm really stumped. Did something go bad deep inside Arm64 Interrupts?_
 
 Possibly! Let's talk about the Arm64 Vector Table...
 
+![Vector Base Address Register, EL1](https://lupyuen.github.io/images/interrupt-vbar.jpg)
+
 # Arm64 Vector Table Is Wrong
 
-TODO
+_When an Interrupt is triggered, what happens in the Arm64 CPU?_
 
-Earlier we saw that the Interrupt Handler wasn't called for System Timer Interrupt. And it might be due to problems in the __Arm64 Vector Table `_vector_table`__: [arch/arm64/src/common/arm64_vector_table.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L93-L232)
+According to the [__Arm Cortex-A53 Technical Reference Manual__](https://documentation-service.arm.com/static/5e9075f9c8052b1608761519?token=) (page 4-121), the CPU reads the __Vector Base Address Register (EL1)__ to locate the Arm64 Vector Table. (Pic above)
 
-Let's check whether the Arm64 Vector Table `_vector_table` is correctly configured in the Arm CPU: [arch/arm64/src/common/arm64_arch_timer.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L212-L235)
+(Why EL1? We'll explain in a while)
+
+The __Arm64 Vector Table__ looks like this...
+
+![Arm64 Vector Table](https://lupyuen.github.io/images/interrupt-vector.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L93-L131)
+
+Which we define in NuttX as __`_vector_table`__: [arch/arm64/src/common/arm64_vector_table.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L93-L232)
+
+```text
+GTEXT(_vector_table)
+SECTION_SUBSEC_FUNC(exc_vector_table,_vector_table_section,_vector_table)
+  ...
+  /* Current EL with SP0 / IRQ */
+  .align 7
+  arm64_enter_exception x0, x1
+  b    arm64_irq_handler
+  ...
+  /* Current EL with SPx / IRQ */
+  .align 7
+  arm64_enter_exception x0, x1
+  b    arm64_irq_handler
+```
+
+[(__`arm64_enter_exception`__ is defined here)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L41-L87)
+
+[(__`arm64_irq_handler`__ is the NuttX IRQ Handler)](https://github.com/lupyuen/pinephone-nuttx#handling-interrupts)
+
+_So Vector Base Address Register (EL1) should point to `_vector_table`?_
+
+Let's find out! This is how we read __Vector Base Address Register (EL1)__: [arch/arm64/src/common/arm64_arch_timer.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L212-L235)
 
 ```c
-void up_timer_initialize(void)
-{
+void up_timer_initialize(void) {
   ...
   // Attach System Timer Interrupt Handler
   irq_attach(ARM_ARCH_TIMER_IRQ, arm64_arch_timer_compare_isr, 0);
@@ -440,19 +472,18 @@ void up_timer_initialize(void)
   sinfo("Before writing: vbar_el1=%p\n", read_sysreg(vbar_el1));
 ```
 
-After attaching the Interrupt Handler for System Timer, we read the Arm64 [Vector Base Address Register EL1](https://github.com/lupyuen/pinephone-nuttx#handling-interrupts). Here's the output...
+Here's the output on PinePhone...
 
 ```text
-up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
 up_timer_initialize: _vector_table=0x400a7000
 up_timer_initialize: Before writing: vbar_el1=0x40227000
 ```
 
-Aha! `_vector_table` is at 0x400a7000... But Vector Base Address Register EL1 says 0x40227000!
+Aha! __`_vector_table`__ is at __`0x400a` `7000`__... But Vector Base Address Register (EL1) says __`0x4022` `7000`!__
 
-Our Arm64 CPU is pointing to the wrong Arm64 Vector Table... Hence our Interrupt Handler is never called!
+Our Arm64 CPU is pointing to the __wrong Arm64 Vector Table__... Hence our Interrupt Handler is never called!
 
-Let's fix the Vector Base Address Register EL1: [arch/arm64/src/common/arm64_arch_timer.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L212-L235)
+Let's fix it: [arch/arm64/src/common/arm64_arch_timer.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L212-L235)
 
 ```c
   // For PinePhone: Write Vector Base Address Register EL1
@@ -463,226 +494,23 @@ Let's fix the Vector Base Address Register EL1: [arch/arm64/src/common/arm64_arc
   sinfo("After writing: vbar_el1=%p\n", read_sysreg(vbar_el1));
 ```
 
-This writes the correct value of `_vector_table` back into Vector Base Address Register EL1. Here's the output...
+This writes the correct value of __`_vector_table`__ back into Vector Base Address Register EL1. Here's the output...
 
 ```text
-up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
 up_timer_initialize: _vector_table=0x400a7000
 up_timer_initialize: Before writing: vbar_el1=0x40227000
 up_timer_initialize: After writing: vbar_el1=0x400a7000
 ```
 
-Yep Vector Base Address Register EL1 is now correct.
+Yep Vector Base Address Register (EL1) is now correct.
 
 And our Interrupt Handlers are now working fine yay!
 
-# Handling Interrupts
+Let's talk about EL1...
+
+# Exception Levels
 
 TODO
-
-Let's talk about NuttX and how it handles interrupts.
-
-The __Interrupt Vector Table__ is defined in [sched/irq/irq_initialize.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/sched/irq/irq_initialize.c#L47-L53)
-
-```c
-/* This is the interrupt vector table */
-struct irq_info_s g_irqvector[NR_IRQS];
-```
-
-(Next section talks about dumping the Interrupt Vector Table)
-
-At startup, the Interrupt Vector Table is initialised to the __Unexpected Interrupt Handler `irq_unexpected_isr`__: [sched/irq/irq_initialize.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/sched/irq/irq_initialize.c#L59-L85)
-
-```c
-/****************************************************************************
- * Name: irq_initialize
- * Description:
- *   Configure the IRQ subsystem
- ****************************************************************************/
-void irq_initialize(void)
-{
-  /* Point all interrupt vectors to the unexpected interrupt */
-  for (i = 0; i < NR_IRQS; i++)
-    {
-      g_irqvector[i].handler = irq_unexpected_isr;
-    }
-  up_irqinitialize();
-}
-```
-
-__Unexpected Interrupt Handler `irq_unexpected_isr`__ is called when an Interrupt is triggered and there's no Interrupt Handler attached to the Interrupt: [sched/irq/irq_unexpectedisr.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/sched/irq/irq_unexpectedisr.c#L38-L59)
-
-```c
-/****************************************************************************
- * Name: irq_unexpected_isr
- * Description:
- *   An interrupt has been received for an IRQ that was never registered
- *   with the system.
- ****************************************************************************/
-int irq_unexpected_isr(int irq, FAR void *context, FAR void *arg)
-{
-  up_irq_save();
-  _err("ERROR irq: %d\n", irq);
-  PANIC();
-```
-
-To __attach an Interrupt Handler__, we set the Handler and the Argument in the Interrupt Vector Table: [sched/irq/irq_attach.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/sched/irq/irq_attach.c#L37-L136)
-
-```c
-/****************************************************************************
- * Name: irq_attach
- * Description:
- *   Configure the IRQ subsystem so that IRQ number 'irq' is dispatched to
- *   'isr'
- ****************************************************************************/
-int irq_attach(int irq, xcpt_t isr, FAR void *arg)
-{
-  ...
-  /* Save the new ISR and its argument in the table. */
-  g_irqvector[irq].handler = isr;
-  g_irqvector[irq].arg     = arg;
-```
-
-When an __Interrupt is triggered__...
-
-1.  Arm CPU looks up the __Arm64 Vector Table `_vector_table`__: [arch/arm64/src/common/arm64_vector_table.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L93-L232)
-
-    ```text
-    /* Four types of exceptions:
-    * - synchronous: aborts from MMU, SP/CP alignment checking, unallocated
-    *   instructions, SVCs/SMCs/HVCs, ...)
-    * - IRQ: group 1 (normal) interrupts
-    * - FIQ: group 0 or secure interrupts
-    * - SError: fatal system errors
-    *
-    * Four different contexts:
-    * - from same exception level, when using the SP_EL0 stack pointer
-    * - from same exception level, when using the SP_ELx stack pointer
-    * - from lower exception level, when this is AArch64
-    * - from lower exception level, when this is AArch32
-    *
-    * +------------------+------------------+-------------------------+
-    * |     Address      |  Exception type  |       Description       |
-    * +------------------+------------------+-------------------------+
-    * | VBAR_ELn + 0x000 | Synchronous      | Current EL with SP0     |
-    * |          + 0x080 | IRQ / vIRQ       |                         |
-    * |          + 0x100 | FIQ / vFIQ       |                         |
-    * |          + 0x180 | SError / vSError |                         |
-    * +------------------+------------------+-------------------------+
-    * |          + 0x200 | Synchronous      | Current EL with SPx     |
-    * |          + 0x280 | IRQ / vIRQ       |                         |
-    * |          + 0x300 | FIQ / vFIQ       |                         |
-    * |          + 0x380 | SError / vSError |                         |
-    * +------------------+------------------+-------------------------+
-    * |          + 0x400 | Synchronous      | Lower EL using  AArch64 |
-    * |          + 0x480 | IRQ / vIRQ       |                         |
-    * |          + 0x500 | FIQ / vFIQ       |                         |
-    * |          + 0x580 | SError / vSError |                         |
-    * +------------------+------------------+-------------------------+
-    * |          + 0x600 | Synchronous      | Lower EL using AArch64  |
-    * |          + 0x680 | IRQ / vIRQ       |                         |
-    * |          + 0x700 | FIQ / vFIQ       |                         |
-    * |          + 0x780 | SError / vSError |                         |
-    * +------------------+------------------+-------------------------+
-    */
-    GTEXT(_vector_table)
-    SECTION_SUBSEC_FUNC(exc_vector_table,_vector_table_section,_vector_table)
-        ...
-        /* Current EL with SPx / IRQ */
-        .align 7
-        arm64_enter_exception x0, x1
-        b    arm64_irq_handler
-        ...
-        /* Lower EL using AArch64 / IRQ */
-        .align 7
-        arm64_enter_exception x0, x1
-        b    arm64_irq_handler
-    ```
-
-    [(`arm64_enter_exception` is defined here)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L41-L87)
-
-1.  Based on the Arm64 Vector Table `_vector_table`, Arm CPU jumps to `arm64_irq_handler`: [arch/arm64/src/common/arm64_vectors.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vectors.S#L326-L413)
-
-    ```text
-    /****************************************************************************
-    * Name: arm64_irq_handler
-    * Description:
-    *   Interrupt exception handler
-    ****************************************************************************/
-    GTEXT(arm64_irq_handler)
-    SECTION_FUNC(text, arm64_irq_handler)
-        ...
-        /* Call arm64_decodeirq() on the interrupt stack
-        * with interrupts disabled
-        */
-        bl     arm64_decodeirq
-    ```
-
-1.  `arm64_irq_handler` calls `arm64_decodeirq` to decode the Interrupt: [arch/arm64/src/common/arm64_gicv3.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L800-L829)
-
-    ```c
-    /***************************************************************************
-    * Name: arm64_decodeirq
-    * Description:
-    *   This function is called from the IRQ vector handler in arm64_vectors.S.
-    *   At this point, the interrupt has been taken and the registers have
-    *   been saved on the stack.  This function simply needs to determine the
-    *   the irq number of the interrupt and then to call arm_doirq to dispatch
-    *   the interrupt.
-    *  Input Parameters:
-    *   regs - A pointer to the register save area on the stack.
-    ***************************************************************************/
-    // Decode IRQ for PinePhone, based on arm_decodeirq in arm_gicv2.c
-    uint64_t * arm64_decodeirq(uint64_t * regs)
-    {
-      ...
-      if (irq < NR_IRQS)
-        {
-          /* Dispatch the interrupt */
-
-          regs = arm64_doirq(irq, regs);
-    ```
-
-1.  `arm64_decodeirq` calls `arm64_doirq` to dispatch the Interrupt: [arch/arm64/src/common/arm64_doirq.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_doirq.c#L64-L119)
-
-    ```c
-    /****************************************************************************
-     * Name: arm64_doirq
-    * Description:
-    *   Receives the decoded GIC interrupt information and dispatches control
-    *   to the attached interrupt handler.
-    *
-    ****************************************************************************/
-    uint64_t *arm64_doirq(int irq, uint64_t * regs)
-    {
-      ...
-      /* Deliver the IRQ */
-      irq_dispatch(irq, regs);
-    ```
-
-1.  `irq_dispatch` calls the Interrupt Handler fetched from the Interrupt Vector Table: [sched/irq/irq_dispatch.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/sched/irq/irq_dispatch.c#L115-L173)
-
-    ```c
-    /****************************************************************************
-     * Name: irq_dispatch
-    * Description:
-    *   This function must be called from the architecture-specific logic in
-    *   order to dispatch an interrupt to the appropriate, registered handling
-    *   logic.
-    ****************************************************************************/
-    void irq_dispatch(int irq, FAR void *context)
-    {
-      if ((unsigned)irq < NR_IRQS)
-        {
-          if (g_irqvector[ndx].handler)
-            {
-              vector = g_irqvector[ndx].handler;
-              arg    = g_irqvector[ndx].arg;
-            }
-        }
-      /* Then dispatch to the interrupt handler */
-      CALL_VECTOR(ndx, vector, irq, context, arg);
-    ```
 
 _How is the [Arm64 Vector Table `_vector_table`](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L93-L232) configured in the Arm CPU?_
 
@@ -747,131 +575,6 @@ HELLO NUTTX ON PINEPHONE!
 From this we see that NuttX runs mostly in EL1.
 
 (EL1 is less privileged than EL2, which supports Processor Virtualization)
-
-# Dump Interrupt Vector Table
-
-TODO
-
-This is how we dump the Interrupt Vector Table to troubleshoot Interrupts...
-
-Based on [arch/arm64/src/common/arm64_arch_timer.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L210-L240)
-
-```c
-#include "irq/irq.h" // For dumping Interrupt Vector Table
-
-void up_timer_initialize(void)
-{
-  ...
-  // Attach System Timer Interrupt Handler
-  irq_attach(ARM_ARCH_TIMER_IRQ, arm64_arch_timer_compare_isr, 0);
-
-  // Begin dumping Interrupt Vector Table
-  sinfo("ARM_ARCH_TIMER_IRQ=%d\n", ARM_ARCH_TIMER_IRQ);
-  sinfo("arm64_arch_timer_compare_isr=%p\n", arm64_arch_timer_compare_isr);
-  sinfo("irq_unexpected_isr=%p\n", irq_unexpected_isr);
-  for (int i = 0; i < NR_IRQS; i++)
-    {
-      sinfo("g_irqvector[%d].handler=%p\n", i, g_irqvector[i].handler);
-    }
-  // End dumping Interrupt Vector Table
-```
-
-This code runs at startup to attach the very first Interrupt Handler, for the [System Timer Interrupt](https://github.com/lupyuen/pinephone-nuttx#system-timer).
-
-We see that the System Timer Interrupt Number (IRQ) is 27...
-
-```text
-up_timer_initialize: ARM_ARCH_TIMER_IRQ=27
-up_timer_initialize: arm64_arch_timer_compare_isr=0x4009ae18
-up_timer_initialize: irq_unexpected_isr=0x400820e0
-
-up_timer_initialize: g_irqvector[0].handler=0x400820e0
-...
-up_timer_initialize: g_irqvector[26].handler=0x400820e0
-up_timer_initialize: g_irqvector[27].handler=0x4009ae18
-up_timer_initialize: g_irqvector[28].handler=0x400820e0
-...
-up_timer_initialize: g_irqvector[219].handler=0x400820e0
-```
-
-All entries in the Interrupt Vector Table point to the [Unexpected Interrupt Handler `irq_unexpected_isr`](https://github.com/lupyuen/pinephone-nuttx#handling-interrupts), except for `g_irqvector[27]` which points to the [System Timer Interrupt Handler `arm64_arch_timer_compare_isr`](https://github.com/lupyuen/pinephone-nuttx#system-timer).
-
-# Interrupt Debugging
-
-TODO
-
-_Can we debug the Arm64 Interrupt Handler?_
-
-Yep we can write to the UART Port like this...
-
-Based on [arch/arm64/src/common/arm64_vectors.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vectors.S#L326-L413)
-
-```text
-# PinePhone Allwinner A64 UART0 Base Address
-#define UART1_BASE_ADDRESS 0x01C28000
-
-# QEMU UART Base Address
-# Previously: #define UART1_BASE_ADDRESS 0x9000000
-
-/****************************************************************************
- * Name: arm64_irq_handler
- * Description:
- *   Interrupt exception handler
- ****************************************************************************/
-GTEXT(arm64_irq_handler)
-SECTION_FUNC(text, arm64_irq_handler)
-
-    mov   x0, #84                 /* For Debug: 'T' */
-    ldr   x1, =UART1_BASE_ADDRESS /* For Debug */
-    strb  w0, [x1]                /* For Debug */
-
-    /* switch to IRQ stack and save current sp on it. */
-    ...
-```
-
-This will print "T" on the console whenever the Arm64 CPU triggers an Interrupt. (Assuming that the UART Buffer hasn't overflowed)
-
-We can insert this debug code for every handler in [arch/arm64/src/common/arm64_vectors.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vectors.S)...
-
--   [`arm64_sync_exc`](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vectors.S#L172-L324): Handle synchronous exception
-
--   [`arm64_irq_handler`](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vectors.S#L326-L413): Interrupt exception handler
-
--   [`arm64_serror_handler`](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vectors.S#L401-L413): SError handler (Fatal System Errors)
-
--   [`arm64_mode32_error`](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vectors.S#L415-L425): Mode32 Error
-
--   [`arm64_irq_spurious`](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vectors.S#L427-L438): Spurious Interrupt
-
-This is how we insert the debug code for every handler in [arm64_vectors.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vectors.S): https://gist.github.com/lupyuen/4bea83c61704080f1af18abfda63c77e
-
-We can do the same for the __Arm64 Vector Table__: [arch/arm64/src/common/arm64_vector_table.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L47-L75)
-
-```text
-# PinePhone Allwinner A64 UART0 Base Address
-#define UART1_BASE_ADDRESS 0x01C28000
-
-# QEMU UART Base Address
-# Previously: #define UART1_BASE_ADDRESS 0x9000000
-
-/* Save Corruptible Registers and exception context
- * on the task stack
- * note: allocate stackframe with XCPTCONTEXT_GP_REGS
- *     which is ARM64_ESF_REGS + ARM64_CS_REGS
- *     but only save ARM64_ESF_REGS
- */
-.macro arm64_enter_exception xreg0, xreg1
-    sub    sp, sp, #8 * XCPTCONTEXT_GP_REGS
-
-    stp    x0,  x1,  [sp, #8 * REG_X0]
-    stp    x2,  x3,  [sp, #8 * REG_X2]
-    ...
-    stp    x28, x29, [sp, #8 * REG_X28]
-
-    mov   x0, #88                 /* For Debug: 'X' */
-    ldr   x1, =UART1_BASE_ADDRESS /* For Debug */
-    strb  w0, [x1]                /* For Debug */
-```
 
 # Memory Map
 
