@@ -427,9 +427,6 @@ SECTION_SUBSEC_FUNC(exc_vector_table,_vector_table_section,_vector_table)
 <p>Let’s find out! This is how we read <strong>Vector Base Address Register (EL1)</strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L212-L235">arch/arm64/src/common/arm64_arch_timer.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void up_timer_initialize(void) {
   ...
-  // Attach System Timer Interrupt Handler
-  irq_attach(ARM_ARCH_TIMER_IRQ, arm64_arch_timer_compare_isr, 0);
-
   // For PinePhone: Read Vector Base Address Register EL1
   extern void *_vector_table[];
   sinfo(&quot;_vector_table=%p\n&quot;, _vector_table);
@@ -478,33 +475,8 @@ lib_cxx_initialize: _sinit: 0x400a7000 _einit: 0x400a7000 _stext: 0x40080000 _et
 nx_start: CPU0: Beginning Idle Loop</code></pre></div>
 <p>Let’s talk about EL1…</p>
 <h1 id="exception-levels"><a href="#exception-levels">8 Exception Levels</a></h1>
-<p>TODO</p>
-<p><em>How is the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L93-L232">Arm64 Vector Table <code>_vector_table</code></a> configured in the Arm CPU?</em></p>
-<p>The <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L93-L232">Arm64 Vector Table <code>_vector_table</code></a> is configured in the Arm CPU during EL1 Init by <code>arm64_boot_el1_init</code>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_boot.c#L132-L162">arch/arm64/src/common/arm64_boot.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>void arm64_boot_el1_init(void)
-{
-  /* Setup vector table */
-  write_sysreg((uint64_t)_vector_table, vbar_el1);
-  ARM64_ISB();</code></pre></div>
-<p><code>vbar_el1</code> refers to <strong>Vector Base Address Register EL1</strong>.</p>
-<p><a href="https://documentation-service.arm.com/static/5e9075f9c8052b1608761519?token=">(See Arm Cortex-A53 Technical Reference Manual, page 4-121, “Vector Base Address Register, EL1”)</a></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_boot.c#L39-L75">(Arm64 Vector Table is also configured during EL3 Init by <code>arm64_boot_el3_init</code>)</a></p>
-<p>EL1 Init <code>arm64_boot_el1_init</code> is called by our Startup Code: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L216-L230">arch/arm64/src/common/arm64_head.S</a></p>
-<div class="example-wrap"><pre class="language-text"><code>    PRINT(switch_el1, &quot;- Boot from EL1\r\n&quot;)
-
-    /* EL1 init */
-    bl    arm64_boot_el1_init
-
-    /* set SP_ELx and Enable SError interrupts */
-    msr   SPSel, #1
-    msr   DAIFClr, #(DAIFCLR_ABT_BIT)
-    isb
-
-jump_to_c_entry:
-    PRINT(jump_to_c_entry, &quot;- Boot to C runtime for OS Initialize\r\n&quot;)
-    ret x25</code></pre></div>
-<p><em>What are EL1 and EL3?</em></p>
-<p>According to <a href="https://documentation-service.arm.com/static/5e9075f9c8052b1608761519?token=">Arm Cortex-A53 Technical Reference Manual</a> page 3-5 (“Exception Level”)…</p>
+<p><em>What’s EL1?</em></p>
+<p>EL1 is <strong>Exception Level 1</strong>. As defined in <a href="https://documentation-service.arm.com/static/5e9075f9c8052b1608761519?token="><strong>Arm Cortex-A53 Technical Reference Manual</strong></a> page 3-5 (“Exception Level”)…</p>
 <blockquote>
 <p>The ARMv8 exception model defines exception levels EL0-EL3, where:</p>
 </blockquote>
@@ -528,14 +500,40 @@ jump_to_c_entry:
 <li>EL3 provides support for a secure state, see Security state on page 3-6.</li>
 </ul>
 </blockquote>
-<p>PinePhone only uses EL1 and EL2 (but not EL3)…</p>
+<p>So <strong>EL1 is (kinda) privileged</strong>, suitable for running OS Kernel code. (Like NuttX)</p>
+<p>NuttX runs mostly in <strong>EL1</strong> and briefly in <strong>EL2</strong> (at startup)…</p>
 <div class="example-wrap"><pre class="language-text"><code>HELLO NUTTX ON PINEPHONE!
 - Ready to Boot CPU
 - Boot from EL2
 - Boot from EL1
 - Boot to C runtime for OS Initialize</code></pre></div>
-<p>From this we see that NuttX runs mostly in EL1.</p>
-<p>(EL1 is less privileged than EL2, which supports Processor Virtualization)</p>
+<p>(Remember that EL1 is less privileged than EL2, which supports Processor Virtualization)</p>
+<p>That’s why we talked about the EL1 Vector Base Address Register in the previous section.</p>
+<p><em>So there’s a Vector Base Address Register for EL1, EL2 and EL3?</em></p>
+<p>Indeed! Each Exception Level has its own Arm64 Vector Table.</p>
+<p>(Except EL0)</p>
+<p><em>Who loads the EL1 Vector Base Address Register?</em></p>
+<p>The EL1 Vector Base Address Register is loaded during <strong>EL1 Initialisation</strong> at startup: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_boot.c#L132-L162">arch/arm64/src/common/arm64_boot.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>void arm64_boot_el1_init(void) {
+  /* Setup vector table */
+  write_sysreg((uint64_t)_vector_table, vbar_el1);
+  ARM64_ISB();</code></pre></div>
+<p><strong><code>arm64_boot_el1_init</code></strong> is called by our Startup Code: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L216-L230">arch/arm64/src/common/arm64_head.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>    PRINT(switch_el1, &quot;- Boot from EL1\r\n&quot;)
+
+    /* EL1 init */
+    bl    arm64_boot_el1_init
+
+    /* set SP_ELx and Enable SError interrupts */
+    msr   SPSel, #1
+    msr   DAIFClr, #(DAIFCLR_ABT_BIT)
+    isb
+
+jump_to_c_entry:
+    PRINT(jump_to_c_entry, &quot;- Boot to C runtime for OS Initialize\r\n&quot;)
+    ret x25</code></pre></div>
+<p><em>So how did our Vector Base Address Register get messed up? And why is it off by exactly <code>0x18</code> <code>0000</code>?</em></p>
+<p>TODO</p>
 <h1 id="memory-map"><a href="#memory-map">9 Memory Map</a></h1>
 <p>TODO</p>
 <p>PinePhone depends on Arm’s Memory Management Unit (MMU). We defined two MMU Memory Regions for PinePhone: RAM and Device I/O: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/include/qemu/chip.h#L38-L62">arch/arm64/include/qemu/chip.h</a></p>
