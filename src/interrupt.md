@@ -233,7 +233,7 @@ Everything else stays the same! Well except for...
 
 -   [__`arm64_gic_irq_set_priority`__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L162-L196)
 
-_Injecting Arm32 into Arm64 sounds so reckless... Will it work?_
+_Injecting Arm32 code into Arm64 sounds so reckless... Will it work?_
 
 Let's test our reckless GIC Version 2 with QEMU Emulator...
 
@@ -623,7 +623,19 @@ We'll check some more.
 
 # What's Next
 
-TODO: NuttX Shell
+We expect to see the __NuttX Shell__ when NuttX boots...
+
+-   [__"Test NuttX: Single Core"__](https://lupyuen.github.io/articles/arm#test-nuttx-single-core)
+
+But NuttX seems to be stuck at the __Idle Loop__, without showing the NuttX Shell...
+
+```text
+nx_start_application: Starting init thread
+lib_cxx_initialize: _sinit: 0x400a7000 _einit: 0x400a7000 _stext: 0x40080000 _etext: 0x400a8000
+nx_start: CPU0: Beginning Idle Loop
+```
+
+We'll do more troubleshooting.
 
 There's plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏
 

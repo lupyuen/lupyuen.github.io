@@ -680,11 +680,11 @@ Yep NuttX boots on PinePhone... After replacing a single __`Image.gz`__ file!
 
 _Where's the rest of the boot output?_
 
-We expect to see this output when NuttX boots...
+We expect to see the __NuttX Shell__ when NuttX boots...
 
 -   [__"Test NuttX: Single Core"__](https://lupyuen.github.io/articles/arm#test-nuttx-single-core)
 
-But NuttX seems to be stuck at the __Idle Loop__, before showing the NuttX Shell...
+But NuttX seems to be stuck at the __Idle Loop__, without showing the NuttX Shell...
 
 ```text
 nx_start_application: Starting init thread
