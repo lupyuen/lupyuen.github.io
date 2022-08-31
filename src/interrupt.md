@@ -475,8 +475,8 @@ void up_timer_initialize(void) {
 Here's the output on PinePhone...
 
 ```text
-up_timer_initialize: _vector_table=0x400a7000
-up_timer_initialize: Before writing: vbar_el1=0x40227000
+_vector_table=0x400a7000
+Before writing: vbar_el1=0x40227000
 ```
 
 Aha! __`_vector_table`__ is at __`0x400a` `7000`__... But Vector Base Address Register (EL1) says __`0x4022` `7000`!__
@@ -494,17 +494,44 @@ Let's fix it: [arch/arm64/src/common/arm64_arch_timer.c](https://github.com/lupy
   sinfo("After writing: vbar_el1=%p\n", read_sysreg(vbar_el1));
 ```
 
-This writes the correct value of __`_vector_table`__ back into Vector Base Address Register EL1. Here's the output...
+This writes the correct value of __`_vector_table`__ back into Vector Base Address Register EL1. Here's the output on PinePhone...
 
 ```text
-up_timer_initialize: _vector_table=0x400a7000
-up_timer_initialize: Before writing: vbar_el1=0x40227000
-up_timer_initialize: After writing: vbar_el1=0x400a7000
+_vector_table=0x400a7000
+Before writing: vbar_el1=0x40227000
+After writing:  vbar_el1=0x400a7000
 ```
 
 Yep Vector Base Address Register (EL1) is now correct.
 
-And our Interrupt Handlers are now working fine yay!
+Our Interrupt Handlers are now working fine... And PinePhone boots successfully yay! 🎉
+
+```text
+HELLO NUTTX ON PINEPHONE!
+- Ready to Boot CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+
+nx_start: Entry
+up_allocate_heap: heap_start=0x0x400c4000, heap_size=0x7f3c000
+arm64_gic_initialize: TODO: Init GIC for PinePhone
+arm64_gic_initialize: CONFIG_GICD_BASE=0x1c81000
+arm64_gic_initialize: CONFIG_GICR_BASE=0x1c82000
+arm64_gic_initialize: GIC Version is 2
+
+up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
+up_timer_initialize: _vector_table=0x400a7000
+up_timer_initialize: Before writing: vbar_el1=0x40227000
+up_timer_initialize: After writing:  vbar_el1=0x400a7000
+
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_highpri: Starting high-priority kernel worker thread(s)
+nx_start_application: Starting init thread
+lib_cxx_initialize: _sinit: 0x400a7000 _einit: 0x400a7000 _stext: 0x40080000 _etext: 0x400a8000
+nx_start: CPU0: Beginning Idle Loop
+```
 
 Let's talk about EL1...
 
