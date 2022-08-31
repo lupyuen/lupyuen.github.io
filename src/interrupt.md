@@ -4,8 +4,6 @@
 
 ![Tracing Arm64 Interrupts on QEMU Emulator can get... Really messy](https://lupyuen.github.io/images/interrupt-title.jpg)
 
-_Tracing Arm64 Interrupts on QEMU Emulator can get... Really messy_
-
 Creating our own __Operating System__ (non-Linux) for __Pine64 PinePhone__ can be super challenging...
 
 -   How does PinePhone handle Interrupts?
@@ -239,6 +237,8 @@ _Injecting Arm32 into Arm64 sounds so reckless... Will it work?_
 
 Let's test our reckless GIC Version 2 with QEMU Emulator...
 
+![Tracing Arm64 Interrupts on QEMU Emulator can get... Really messy](https://lupyuen.github.io/images/interrupt-title2.png)
+
 # Test PinePhone GIC with QEMU
 
 _Will our hacked GIC Version 2 run on PinePhone?_
@@ -300,6 +300,12 @@ nx_start: CPU0: Beginning Idle Loop
 ```
 
 Yep NuttX with GIC Version 2 boots OK on QEMU, and will probably run on PinePhone!
+
+_We tested Interrupts with GIC Version 2?_
+
+Yep the screen above shows "TX" whenever an Interrupt Handler is dispatched.
+
+(We added Debug Logging for [arm64_vectors.S](https://github.com/lupyuen/incubator-nuttx/blob/gicv2/arch/arm64/src/common/arm64_vectors.S#L337-L350) and [arm64_vector_table.S](https://github.com/lupyuen/incubator-nuttx/blob/gicv2/arch/arm64/src/common/arm64_vector_table.S#L47-L75))
 
 _How did we get the GIC Base Addresses for QEMU?_
 
@@ -603,296 +609,6 @@ _So how did our Vector Base Address Register get messed up? And why is it off by
 
 TODO
 
-# Memory Map
-
-TODO
-
-PinePhone depends on Arm's Memory Management Unit (MMU). We defined two MMU Memory Regions for PinePhone: RAM and Device I/O: [arch/arm64/include/qemu/chip.h](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/include/qemu/chip.h#L38-L62)
-
-```c
-// PinePhone Generic Interrupt Controller
-// GIC_DIST:  0x01C80000 + 0x1000
-// GIC_CPUIF: 0x01C80000 + 0x2000
-#define CONFIG_GICD_BASE          0x01C81000  
-#define CONFIG_GICR_BASE          0x01C82000  
-
-// Previously:
-// #define CONFIG_GICD_BASE          0x8000000
-// #define CONFIG_GICR_BASE          0x80a0000
-
-// PinePhone RAM: 0x4000 0000 to 0x4800 0000
-#define CONFIG_RAMBANK1_ADDR      0x40000000
-#define CONFIG_RAMBANK1_SIZE      MB(128)
-
-// PinePhone Device I/O: 0x0 to 0x2000 0000
-#define CONFIG_DEVICEIO_BASEADDR  0x00000000
-#define CONFIG_DEVICEIO_SIZE      MB(512)
-
-// Previously:
-// #define CONFIG_DEVICEIO_BASEADDR  0x7000000
-// #define CONFIG_DEVICEIO_SIZE      MB(512)
-
-// PinePhone uboot load address (kernel_addr_r)
-#define CONFIG_LOAD_BASE          0x40080000
-// Previously: #define CONFIG_LOAD_BASE          0x40280000
-```
-
-We also changed CONFIG_LOAD_BASE for PinePhone's Kernel Start Address (kernel_addr_r).
-
-_How are the MMU Memory Regions used?_
-
-NuttX initialises the Arm MMU with the MMU Memory Regions at startup: [arch/arm64/src/qemu/qemu_boot.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_boot.c#L52-L67)
-
-```c
-static const struct arm_mmu_region mmu_regions[] =
-{
-  MMU_REGION_FLAT_ENTRY("DEVICE_REGION",
-                        CONFIG_DEVICEIO_BASEADDR, MB(512),
-                        MT_DEVICE_NGNRNE | MT_RW | MT_SECURE),
-
-  MMU_REGION_FLAT_ENTRY("DRAM0_S0",
-                        CONFIG_RAMBANK1_ADDR, MB(512),
-                        MT_NORMAL | MT_RW | MT_SECURE),
-};
-
-const struct arm_mmu_config mmu_config =
-{
-  .num_regions = ARRAY_SIZE(mmu_regions),
-  .mmu_regions = mmu_regions,
-};
-```
-
-The Arm MMU Initialisation is done by `arm64_mmu_init`, defined in [arch/arm64/src/common/arm64_mmu.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_mmu.c#L571-L622)
-
-We'll talk more about the Arm MMU in the next section...
-
-# Boot Sequence
-
-TODO
-
-This section describes the Boot Sequence for NuttX on PinePhone.
-
-The Startup Code (in Arm64 Assembly) inits the Arm64 System Registers, UART Port and jumps to `arm64_boot_secondary_c_routine` (in C): [arch/arm64/src/common/arm64_head.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L228-L230)
-
-```text
-    ldr    x25, =arm64_boot_secondary_c_routine
-    ...
-jump_to_c_entry:
-    PRINT(jump_to_c_entry, "- Boot to C runtime for OS Initialize\r\n")
-    ret x25
-```
-
-`arm64_boot_primary_c_routine` inits the BSS, calls `arm64_chip_boot` to init the Arm64 CPU, and `nx_start` to start the NuttX processes: [arch/arm64/src/common/arm64_boot.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_boot.c#L179-L189)
-
-```c
-void arm64_boot_primary_c_routine(void)
-{
-  boot_early_memset(_START_BSS, 0, _END_BSS - _START_BSS);
-  arm64_chip_boot();
-  nx_start();
-}
-```
-
-`arm64_chip_boot` calls `arm64_mmu_init` to enable the Arm Memory Management Unit, and `qemu_board_initialize` to init the Board Drivers: [arch/arm64/src/qemu/qemu_boot.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_boot.c#L81-L105)
-
-```c
-void arm64_chip_boot(void)
-{
-  /* MAP IO and DRAM, enable MMU. */
-
-  arm64_mmu_init(true);
-
-#ifdef CONFIG_SMP
-  arm64_psci_init("smc");
-
-#endif
-
-  /* Perform board-specific device initialization. This would include
-   * configuration of board specific resources such as GPIOs, LEDs, etc.
-   */
-
-  qemu_board_initialize();
-
-#ifdef USE_EARLYSERIALINIT
-  /* Perform early serial initialization if we are going to use the serial
-   * driver.
-   */
-
-  qemu_earlyserialinit();
-#endif
-}
-```
-
-`arm64_mmu_init` is defined in [arch/arm64/src/common/arm64_mmu.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_mmu.c#L571-L622)
-
-The next section talks about debugging the Boot Sequence...
-
-# Boot Debugging
-
-TODO
-
-_How can we debug NuttX while it boots?_
-
-We may call `up_putc` to print characters to the Serial Console and troubleshoot the Boot Sequence: [arch/arm64/src/common/arm64_boot.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_boot.c#L179-L189)
-
-```c
-void arm64_boot_primary_c_routine(void)
-{
-  int up_putc(int ch);  // For debugging
-  up_putc('0');  // For debugging
-  boot_early_memset(_START_BSS, 0, _END_BSS - _START_BSS);
-  up_putc('1');  // For debugging
-  arm64_chip_boot();
-  up_putc('2');  // For debugging
-  nx_start();
-}
-```
-
-This prints "012" to the Serial Console as NuttX boots.
-
-
-# NuttX Boot Log
-
-TODO
-
-Here's the UART Log of NuttX booting on PinePhone...
-
-```text
-DRAM: 2048 MiB
-Trying to boot from MMC1
-NOTICE:  BL31: v2.2(release):v2.2-904-gf9ea3a629
-NOTICE:  BL31: Built : 15:32:12, Apr  9 2020
-NOTICE:  BL31: Detected Allwinner A64/H64/R18 SoC (1689)
-NOTICE:  BL31: Found U-Boot DTB at 0x4064410, model: PinePhone
-NOTICE:  PSCI: System suspend is unavailable
-
-U-Boot 2020.07 (Nov 08 2020 - 00:15:12 +0100)
-
-DRAM:  2 GiB
-MMC:   Device 'mmc@1c11000': seq 1 is in use by 'mmc@1c10000'
-mmc@1c0f000: 0, mmc@1c10000: 2, mmc@1c11000: 1
-Loading Environment from FAT... *** Warning - bad CRC, using default environment
-
-starting USB...
-No working controllers found
-Hit any key to stop autoboot:  0 
-switch to partitions #0, OK
-mmc0 is current device
-Scanning mmc 0:1...
-Found U-Boot script /boot.scr
-653 bytes read in 3 ms (211.9 KiB/s)
-## Executing script at 4fc00000
-gpio: pin 114 (gpio 114) value is 1
-99784 bytes read in 8 ms (11.9 MiB/s)
-Uncompressed size: 278528 = 0x44000
-36162 bytes read in 4 ms (8.6 MiB/s)
-1078500 bytes read in 51 ms (20.2 MiB/s)
-## Flattened Device Tree blob at 4fa00000
-   Booting using the fdt blob at 0x4fa00000
-   Loading Ramdisk to 49ef8000, end 49fff4e4 ... OK
-   Loading Device Tree to 0000000049eec000, end 0000000049ef7d41 ... OK
-
-Starting kernel ...
-
-HELLO NUTTX ON PINEPHONE!
-- Ready to Boot CPU
-- Boot from EL2
-- Boot from EL1
-- Boot to C runtime for OS Initialize
-nx_start: Entry
-up_allocate_heap: heap_start=0x0x400c4000, heap_size=0x7f3c000
-arm64_gic_initialize: TODO: Init GIC for PinePhone
-arm64_gic_initialize: CONFIG_GICD_BASE=0x1c81000
-arm64_gic_initialize: CONFIG_GICR_BASE=0x1c82000
-arm64_gic_initialize: GIC Version is 2
-up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
-up_timer_initialize: _vector_table=0x400a7000
-up_timer_initialize: Before writing: vbar_el1=0x40227000
-up_timer_initialize: After writing: vbar_el1=0x400a7000
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-work_start_highpri: Starting high-priority kernel worker thread(s)
-nx_start_application: Starting init thread
-lib_cxx_initialize: _sinit: 0x400a7000 _einit: 0x400a7000 _stext: 0x40080000 _etext: 0x400a8000
-nx_start: CPU0: Beginning Idle Loop
-```
-
-_Where's the rest of the boot output?_
-
-We expect to see this output when NuttX boots...
-
--   ["Test NuttX: Single Core"](https://lupyuen.github.io/articles/arm#test-nuttx-single-core)
-
-But PinePhone stops halfway. Let's find out why...
-
-# System Timer 
-
-TODO
-
-NuttX starts the System Timer when it boots. Here's how the System Timer is started: [arch/arm64/src/common/arm64_arch_timer.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L212-L233)
-
-```c
-void up_timer_initialize(void)
-{
-  uint64_t curr_cycle;
-
-  arch_timer_rate   = arm64_arch_timer_get_cntfrq();
-  cycle_per_tick    = ((uint64_t)arch_timer_rate / (uint64_t)TICK_PER_SEC);
-
-  sinfo("%s: cp15 timer(s) running at %lu.%02luMHz, cycle %ld\n", __func__,
-        (unsigned long)arch_timer_rate / 1000000,
-        (unsigned long)(arch_timer_rate / 10000) % 100, cycle_per_tick);
-
-  irq_attach(ARM_ARCH_TIMER_IRQ, arm64_arch_timer_compare_isr, 0);
-  arm64_gic_irq_set_priority(ARM_ARCH_TIMER_IRQ, ARM_ARCH_TIMER_PRIO,
-                             ARM_ARCH_TIMER_FLAGS);
-
-  curr_cycle = arm64_arch_timer_count();
-  arm64_arch_timer_set_compare(curr_cycle + cycle_per_tick);
-  arm64_arch_timer_enable(true);
-
-  up_enable_irq(ARM_ARCH_TIMER_IRQ);
-  arm64_arch_timer_set_irq_mask(false);
-}
-```
-
-At every tick, the System Timer triggers an interrupt that calls [`arm64_arch_timer_compare_isr`](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L109-L169)
-
-(`CONFIG_SCHED_TICKLESS` is undefined)
-
-__Timer IRQ `ARM_ARCH_TIMER_IRQ`__ is defined in [arch/arm64/src/common/arm64_arch_timer.h](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.h#L38-L45)
-
-```c
-#define CONFIG_ARM_TIMER_SECURE_IRQ         (GIC_PPI_INT_BASE + 13)
-#define CONFIG_ARM_TIMER_NON_SECURE_IRQ     (GIC_PPI_INT_BASE + 14)
-#define CONFIG_ARM_TIMER_VIRTUAL_IRQ        (GIC_PPI_INT_BASE + 11)
-#define CONFIG_ARM_TIMER_HYP_IRQ            (GIC_PPI_INT_BASE + 10)
-
-#define ARM_ARCH_TIMER_IRQ	CONFIG_ARM_TIMER_VIRTUAL_IRQ
-#define ARM_ARCH_TIMER_PRIO	IRQ_DEFAULT_PRIORITY
-#define ARM_ARCH_TIMER_FLAGS	IRQ_TYPE_LEVEL
-```
-
-`GIC_PPI_INT_BASE` is defined in [arch/arm64/src/common/arm64_gic.h](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gic.h#L120-L128)
-
-```c
-#define GIC_SGI_INT_BASE            0
-#define GIC_PPI_INT_BASE            16
-#define GIC_IS_SGI(intid)           (((intid) >= GIC_SGI_INT_BASE) && \
-                                     ((intid) < GIC_PPI_INT_BASE))
-
-#define GIC_SPI_INT_BASE            32
-#define GIC_NUM_INTR_PER_REG        32
-#define GIC_NUM_CFG_PER_REG         16
-#define GIC_NUM_PRI_PER_REG         4
-```
-
-# GIC Register Dump
-
-TODO
-
-Below is the dump of PinePhone's registers for [Arm Generic Interrupt Controller version 2](https://developer.arm.com/documentation/ihi0048/latest/)...
-
 # What's Next
 
 TODO
@@ -922,7 +638,3 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/interrupt.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/interrupt.md)
-
-# Notes
-
-1.  TODO
