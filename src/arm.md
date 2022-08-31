@@ -482,7 +482,7 @@ The QEMU Functions (Board and Architecture) call the __Arm64 Architecture Functi
 
 -   [arch/arm64/src/common](https://github.com/apache/incubator-nuttx/tree/master/arch/arm64/src/common)
 
-Which implement all kinds of Arm64 Features: [__FPU__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_fpu.c), [__Interrupts__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_gicv3.c), [__MMU__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c), [__Tasks__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_task_sched.c), [__Timers__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_arch_timer.c)...
+Which implement all kinds of Arm64 Features: [__FPU__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_fpu.c), [__Interrupts__](https://github.com/lupyuen/pinephone-nuttx#interrupt-controller), [__MMU__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c), [__Tasks__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_task_sched.c), [__Timers__](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_arch_timer.c)...
 
 (We'll reuse them for PinePhone)
 
