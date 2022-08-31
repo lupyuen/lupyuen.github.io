@@ -435,8 +435,8 @@ SECTION_SUBSEC_FUNC(exc_vector_table,_vector_table_section,_vector_table)
   sinfo(&quot;_vector_table=%p\n&quot;, _vector_table);
   sinfo(&quot;Before writing: vbar_el1=%p\n&quot;, read_sysreg(vbar_el1));</code></pre></div>
 <p>Here’s the output on PinePhone…</p>
-<div class="example-wrap"><pre class="language-text"><code>up_timer_initialize: _vector_table=0x400a7000
-up_timer_initialize: Before writing: vbar_el1=0x40227000</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>_vector_table=0x400a7000
+Before writing: vbar_el1=0x40227000</code></pre></div>
 <p>Aha! <strong><code>_vector_table</code></strong> is at <strong><code>0x400a</code> <code>7000</code></strong>… But Vector Base Address Register (EL1) says <strong><code>0x4022</code> <code>7000</code>!</strong></p>
 <p>Our Arm64 CPU is pointing to the <strong>wrong Arm64 Vector Table</strong>… Hence our Interrupt Handler is never called!</p>
 <p>Let’s fix it: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L212-L235">arch/arm64/src/common/arm64_arch_timer.c</a></p>
@@ -446,12 +446,36 @@ up_timer_initialize: Before writing: vbar_el1=0x40227000</code></pre></div>
 
   // For PinePhone: Read Vector Base Address Register EL1
   sinfo(&quot;After writing: vbar_el1=%p\n&quot;, read_sysreg(vbar_el1));</code></pre></div>
-<p>This writes the correct value of <strong><code>_vector_table</code></strong> back into Vector Base Address Register EL1. Here’s the output…</p>
-<div class="example-wrap"><pre class="language-text"><code>up_timer_initialize: _vector_table=0x400a7000
-up_timer_initialize: Before writing: vbar_el1=0x40227000
-up_timer_initialize: After writing: vbar_el1=0x400a7000</code></pre></div>
+<p>This writes the correct value of <strong><code>_vector_table</code></strong> back into Vector Base Address Register EL1. Here’s the output on PinePhone…</p>
+<div class="example-wrap"><pre class="language-text"><code>_vector_table=0x400a7000
+Before writing: vbar_el1=0x40227000
+After writing:  vbar_el1=0x400a7000</code></pre></div>
 <p>Yep Vector Base Address Register (EL1) is now correct.</p>
-<p>And our Interrupt Handlers are now working fine yay!</p>
+<p>Our Interrupt Handlers are now working fine… And PinePhone boots successfully yay! 🎉</p>
+<div class="example-wrap"><pre class="language-text"><code>HELLO NUTTX ON PINEPHONE!
+- Ready to Boot CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+
+nx_start: Entry
+up_allocate_heap: heap_start=0x0x400c4000, heap_size=0x7f3c000
+arm64_gic_initialize: TODO: Init GIC for PinePhone
+arm64_gic_initialize: CONFIG_GICD_BASE=0x1c81000
+arm64_gic_initialize: CONFIG_GICR_BASE=0x1c82000
+arm64_gic_initialize: GIC Version is 2
+
+up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
+up_timer_initialize: _vector_table=0x400a7000
+up_timer_initialize: Before writing: vbar_el1=0x40227000
+up_timer_initialize: After writing:  vbar_el1=0x400a7000
+
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_highpri: Starting high-priority kernel worker thread(s)
+nx_start_application: Starting init thread
+lib_cxx_initialize: _sinit: 0x400a7000 _einit: 0x400a7000 _stext: 0x40080000 _etext: 0x400a8000
+nx_start: CPU0: Beginning Idle Loop</code></pre></div>
 <p>Let’s talk about EL1…</p>
 <h1 id="exception-levels"><a href="#exception-levels">8 Exception Levels</a></h1>
 <p>TODO</p>
