@@ -200,7 +200,7 @@ Kinda. We did a __horrible hack__... Don't try this at home! (Unless you have a 
 
 (We commented out the GIC Version 3 code)
 
-_What! Did we just `#include` GIC Version 2 from Arm32 into Arm64?_
+_What! Did we just `#include` the GIC Version 2 Source Code from Arm32 into Arm64?_
 
 Yep it's an awful trick but it seems to work!
 
