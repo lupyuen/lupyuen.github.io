@@ -463,9 +463,6 @@ Let's find out! This is how we read __Vector Base Address Register (EL1)__: [arc
 ```c
 void up_timer_initialize(void) {
   ...
-  // Attach System Timer Interrupt Handler
-  irq_attach(ARM_ARCH_TIMER_IRQ, arm64_arch_timer_compare_isr, 0);
-
   // For PinePhone: Read Vector Base Address Register EL1
   extern void *_vector_table[];
   sinfo("_vector_table=%p\n", _vector_table);
@@ -537,27 +534,54 @@ Let's talk about EL1...
 
 # Exception Levels
 
-TODO
+_What's EL1?_
 
-_How is the [Arm64 Vector Table `_vector_table`](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L93-L232) configured in the Arm CPU?_
+EL1 is __Exception Level 1__. As defined in [__Arm Cortex-A53 Technical Reference Manual__](https://documentation-service.arm.com/static/5e9075f9c8052b1608761519?token=) page 3-5 ("Exception Level")...
 
-The [Arm64 Vector Table `_vector_table`](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L93-L232) is configured in the Arm CPU during EL1 Init by `arm64_boot_el1_init`: [arch/arm64/src/common/arm64_boot.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_boot.c#L132-L162)
+> The ARMv8 exception model defines exception levels EL0-EL3, where:
+
+> - EL0 has the lowest software execution privilege, and execution at EL0 is called unprivileged execution.
+
+> - Increased exception levels, from 1 to 3, indicate increased software execution privilege.
+
+> - EL2 provides support for processor virtualization.
+
+> - EL3 provides support for a secure state, see Security state on page 3-6.
+
+So __EL1 is (kinda) privileged__, suitable for running OS Kernel code. (Like NuttX)
+
+NuttX runs mostly in __EL1__ and briefly in __EL2__ (at startup)...
+
+```text
+HELLO NUTTX ON PINEPHONE!
+- Ready to Boot CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+```
+
+(Remember that EL1 is less privileged than EL2, which supports Processor Virtualization)
+
+That's why we talked about the EL1 Vector Base Address Register in the previous section.
+
+_So there's a Vector Base Address Register for EL1, EL2 and EL3?_
+
+Indeed! Each Exception Level has its own Arm64 Vector Table.
+
+(Except EL0)
+
+_Who loads the EL1 Vector Base Address Register?_
+
+The EL1 Vector Base Address Register is loaded during __EL1 Initialisation__ at startup: [arch/arm64/src/common/arm64_boot.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_boot.c#L132-L162)
 
 ```c
-void arm64_boot_el1_init(void)
-{
+void arm64_boot_el1_init(void) {
   /* Setup vector table */
   write_sysreg((uint64_t)_vector_table, vbar_el1);
   ARM64_ISB();
 ```
 
-`vbar_el1` refers to __Vector Base Address Register EL1__.
-
-[(See Arm Cortex-A53 Technical Reference Manual, page 4-121, "Vector Base Address Register, EL1")](https://documentation-service.arm.com/static/5e9075f9c8052b1608761519?token=)
-
-[(Arm64 Vector Table is also configured during EL3 Init by `arm64_boot_el3_init`)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_boot.c#L39-L75)
-
-EL1 Init `arm64_boot_el1_init` is called by our Startup Code: [arch/arm64/src/common/arm64_head.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L216-L230)
+__`arm64_boot_el1_init`__ is called by our Startup Code: [arch/arm64/src/common/arm64_head.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L216-L230)
 
 ```text
     PRINT(switch_el1, "- Boot from EL1\r\n")
@@ -575,33 +599,9 @@ jump_to_c_entry:
     ret x25
 ```
 
-_What are EL1 and EL3?_
+_So how did our Vector Base Address Register get messed up? And why is it off by exactly `0x18` `0000`?_
 
-According to [Arm Cortex-A53 Technical Reference Manual](https://documentation-service.arm.com/static/5e9075f9c8052b1608761519?token=) page 3-5 ("Exception Level")...
-
-> The ARMv8 exception model defines exception levels EL0-EL3, where:
-
-> - EL0 has the lowest software execution privilege, and execution at EL0 is called unprivileged execution.
-
-> - Increased exception levels, from 1 to 3, indicate increased software execution privilege.
-
-> - EL2 provides support for processor virtualization.
-
-> - EL3 provides support for a secure state, see Security state on page 3-6.
-
-PinePhone only uses EL1 and EL2 (but not EL3)...
-
-```text
-HELLO NUTTX ON PINEPHONE!
-- Ready to Boot CPU
-- Boot from EL2
-- Boot from EL1
-- Boot to C runtime for OS Initialize
-```
-
-From this we see that NuttX runs mostly in EL1.
-
-(EL1 is less privileged than EL2, which supports Processor Virtualization)
+TODO
 
 # Memory Map
 
