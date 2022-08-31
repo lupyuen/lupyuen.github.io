@@ -160,17 +160,207 @@ Which we define in NuttX as: [arch/arm64/include/qemu/chip.h](https://github.com
 #define CONFIG_GICR_BASE 0x01C82000  
 ```
 
+Back to our headache of GIC Version 2...
+
+# GIC Version 2
+
+_Does NuttX support GIC Version 2?_
+
+Yes NuttX supports __Generic Interrupt Controller (GIC) Version 2__ but there's a catch... It's for __Arm32 CPUs, not Arm64 CPUs!__
+
+-   [arch/arm/src/armv7-a/arm_gicv2.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/armv7-a/arm_gicv2.c)
+
+-   [arch/arm/src/armv7-a/arm_gicv2_dump.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/armv7-a/arm_gicv2_dump.c)
+
+-   [arch/arm/src/armv7-a/gic.h](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/armv7-a/gic.h)
+
+_So we port NuttX's GIC Version 2 from Arm32 to Arm64?_
+
+Kinda. We did a __horrible hack__... Don't try this at home! (Unless you have a ten-foot pole) [arch/arm64/src/common/arm64_gicv3.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L765-L823)
+
+```c
+// GIC v2 for PinePhone:
+// Reuse the implementation of Arm32 GIC v2
+#define PINEPHONE_GICv2
+#define CONFIG_ARMV7A_HAVE_GICv2
+#define CONFIG_ARCH_TRUSTZONE_NONSECURE
+
+// Override...
+// MPCORE_ICD_VBASE: GIC Distributor
+// MPCORE_ICC_VBASE: GIC CPU Interface
+#include "../arch/arm/src/armv7-a/mpcore.h"
+#undef  MPCORE_ICD_VBASE
+#undef  MPCORE_ICC_VBASE
+#define MPCORE_ICD_VBASE CONFIG_GICD_BASE  // 0x01C81000  
+#define MPCORE_ICC_VBASE CONFIG_GICR_BASE  // 0x01C82000  
+
+// Inject Arm32 GIC v2 Implementation
+#include "../arch/arm/src/armv7-a/arm_gicv2.c"
+```
+
+(We commented out the GIC Version 3 code)
+
+_What! Did we just `#include` GIC Version 2 from Arm32 into Arm64?_
+
+Yep it's an awful trick but it seems to work!
+
+We made __minor tweaks__ to GIC Version 2 to compile with Arm64...
+
+-   [Changes to arm_gicv2.c](https://github.com/lupyuen/incubator-nuttx/commit/6fa0e7e5d2beddad07890c83d2ee428a3f2b8a62#diff-6e1132aef124dabaf94c200ab06d65c7bc2b9967bf76a46aba71a7f43b5fb219)
+
+-   [Changes to arm_gicv2_dump.c](https://github.com/lupyuen/incubator-nuttx/commit/4fc2669fef62d12ba1dd428f2daf03d3bc362501#diff-eb05c977988d59202a9472f6fa7f9dc290724662ad6d15a4ba99b8f1fc1dc8f8)
+
+-   [Changes to gic.h](https://github.com/lupyuen/incubator-nuttx/commit/6fa0e7e5d2beddad07890c83d2ee428a3f2b8a62#diff-b4fcb67b71de954c942ead9bb0868e720a5802c90743f0a1883f84b7565e1a0f)
+
+We rewrote this function for Arm64 because we're passing __64-bit Registers__ (instead of 32-bit): [arm64_gicv3.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L795-L822)
+
+```c
+// Decode IRQ for PinePhone.
+// Based on arm_decodeirq in arm_gicv2.c.
+// Previously we passed 32-bit Registers as `uint32_t *`
+uint64_t * arm64_decodeirq(uint64_t * regs) {
+  /* Omitted: Get the interrupt ID */
+  ...
+  /* Dispatch the Arm64 interrupt */
+  regs = arm64_doirq(irq, regs);
+```
+
+Everything else stays the same! Well except for...
+
+-   [__`arm64_gic_initialize`__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L713-L743)
+
+-   [__`arm64_gic_secondary_init`__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L753-L760)
+
+-   [__`arm64_gic_irq_set_priority`__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L162-L196)
+
+_Injecting Arm32 into Arm64 sounds so reckless... Will it work?_
+
+Let's test our reckless GIC Version 2 with QEMU Emulator...
+
+# Test PinePhone GIC with QEMU
+
 TODO
 
-PinePhone gic
+This is how we tested PinePhone's [Generic Interrupt Controller (GIC)](https://github.com/lupyuen/pinephone-nuttx#interrupt-controller) with QEMU...
 
-Let's read gic
+```bash
+## Run GIC v2 with QEMU
+qemu-system-aarch64 \
+  -smp 4 \
+  -cpu cortex-a53 \
+  -nographic \
+  -machine virt,virtualization=on,gic-version=2 \
+  -net none \
+  -chardev stdio,id=con,mux=on \
+  -serial chardev:con \
+  -mon chardev=con,mode=readline \
+  -kernel ./nuttx
+```
 
-V3 vs v2
+Note that `gic-version=2`, instead of the usual GIC Version 3 for NuttX Arm64.
 
-Verify v2
+Also we simulated 4 Cores of Arm Cortex-A53 (similar to PinePhone): `-smp 4`
 
-Reuse nuttx v2
+QEMU boots OK with PinePhone's GIC Version 2...
+
+```text
+- Ready to Boot CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+nx_start: Entry
+up_allocate_heap: heap_start=0x0x402c4000, heap_size=0x7d3c000
+arm64_gic_initialize: TODO: Init GIC for PinePhone
+arm64_gic_initialize: CONFIG_GICD_BASE=0x8000000
+arm64_gic_initialize: CONFIG_GICR_BASE=0x8010000
+arm64_gic_initialize: GIC Version is 2
+EFGHup_timer_initialize: up_timer_initialize: cp15 timer(s) running at 62.50MHz, cycle 62500
+AKLMNOPBIJuart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+AKLMNOPBIJwork_start_highpri: Starting high-priority kernel worker thread(s)
+nx_start_application: Starting init thread
+lib_cxx_initialize: _sinit: 0x402a7000 _einit: 0x402a7000 _stext: 0x40280000 _etext: 0x402a8000
+nsh: sysinit: fopen failed: 2
+nsh: mkfatfs: command not found
+
+NuttShell (NSH) NuttX-10.3.0-RC2
+nsh> nx_start: CPU0: Beginning Idle Loop
+```
+
+So our implementation of GIC Version 2 for PinePhone is probably OK.
+
+_Is the Timer Interrupt triggered correctly with PinePhone GIC?_
+
+Yes, we verified that the Timer Interrupt Handler [`arm64_arch_timer_compare_isr`](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L109-L169) is  called periodically. (We checked using [`up_putc`](https://github.com/lupyuen/pinephone-nuttx#boot-debugging))
+
+_How did we get the GIC Base Addresses?_
+
+```text
+arm64_gic_initialize: CONFIG_GICD_BASE=0x8000000
+arm64_gic_initialize: CONFIG_GICR_BASE=0x8010000
+```
+
+We got the GIC v2 Base Addresses for GIC Distributor (`CONFIG_GICD_BASE`) and GIC CPU Interface (`CONFIG_GICR_BASE`) by dumping the Device Tree from QEMU...
+
+```bash
+## GIC v2 Dump Device Tree
+qemu-system-aarch64 \
+  -smp 4 \
+  -cpu cortex-a53 \
+  -nographic \
+  -machine virt,virtualization=on,gic-version=2,dumpdtb=gicv2.dtb \
+  -net none \
+  -chardev stdio,id=con,mux=on \
+  -serial chardev:con \
+  -mon chardev=con,mode=readline \
+  -kernel ./nuttx
+
+## Convert Device Tree to text format
+dtc -o gicv2.dts -O dts -I dtb gicv2.dtb
+```
+
+The Base Addresses are revealed in the GIC v2 Device Tree: [gicv2.dts](https://github.com/lupyuen/incubator-nuttx/blob/gicv2/gicv2.dts#L324)...
+
+```text
+intc@8000000 {
+reg = <
+    0x00 0x8000000 0x00 0x10000  //  GIC Distributor:   0x8000000
+    0x00 0x8010000 0x00 0x10000  //  GIC CPU Interface: 0x8010000
+    0x00 0x8030000 0x00 0x10000  //  VGIC Virtual Interface Control: 0x8030000
+    0x00 0x8040000 0x00 0x10000  //  VGIC Virtual CPU Interface:     0x8040000
+>;
+compatible = "arm,cortex-a15-gic";
+```
+
+[(More about this)](https://www.kernel.org/doc/Documentation/devicetree/bindings/interrupt-controller/arm%2Cgic.txt)
+
+We defined the Base Addresses in [arch/arm64/include/qemu/chip.h](https://github.com/lupyuen/incubator-nuttx/blob/gicv2/arch/arm64/include/qemu/chip.h#L38-L40)
+
+Compare the above Base Addresses with the GIC v3 Device Tree: [gicv3.dts](https://github.com/lupyuen/incubator-nuttx/blob/gicv2/gicv3.dts#L324)
+
+```text
+intc@8000000 {
+reg = <
+    0x00 0x8000000 0x00 0x10000   //  GIC Distributor:   0x8000000
+    0x00 0x80a0000 0x00 0xf60000  //  GIC CPU Interface: 0x80a0000
+>;
+#redistributor-regions = <0x01>;
+compatible = "arm,gic-v3";
+```
+
+This is how we copied the PinePhone GIC v2 Source Files into NuttX Arm64 for testing...
+
+```bash
+cp ~/PinePhone/nuttx/nuttx/arch/arm64/src/common/arm64_gicv3.c      ~/gicv2/nuttx/nuttx/arch/arm64/src/common/arm64_gicv3.c
+cp ~/PinePhone/nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2.c         ~/gicv2/nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2.c
+cp ~/PinePhone/nuttx/nuttx/arch/arm/src/armv7-a/gic.h               ~/gicv2/nuttx/nuttx/arch/arm/src/armv7-a/gic.h
+cp ~/PinePhone/nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2_dump.c    ~/gicv2/nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2_dump.c
+cp ~/PinePhone/nuttx/nuttx/arch/arm64/src/common/arm64_arch_timer.c ~/gicv2/nuttx/nuttx/arch/arm64/src/common/arm64_arch_timer.c
+cp ~/PinePhone/nuttx/run.sh             ~/gicv2/nuttx/run.sh
+cp ~/PinePhone/nuttx/.vscode/tasks.json ~/gicv2/nuttx/.vscode/tasks.json
+```
+
+TODO
 
 Test with qemu
 
@@ -265,132 +455,6 @@ We expect to see this output when NuttX boots...
 -   ["Test NuttX: Single Core"](https://lupyuen.github.io/articles/arm#test-nuttx-single-core)
 
 But PinePhone stops halfway. Let's find out why...
-
-# Interrupt Controller
-
-TODO
-
-Let's talk about the __Arm Generic Interrupt Controller (GIC)__ for PinePhone...
-
-```text
-arm64_gic_initialize: TODO: Init GIC for PinePhone
-arm64_gic_initialize: CONFIG_GICD_BASE=0x1c81000
-arm64_gic_initialize: CONFIG_GICR_BASE=0x1c82000
-arm64_gic_initialize: GIC Version is 2
-```
-
-This is the current implementation of [Arm GIC Version 3](https://developer.arm.com/documentation/ihi0069/latest) in NuttX Arm64...
-
--   [arch/arm64/src/common/arm64_gicv3.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c)
-
--   [arch/arm64/src/common/arm64_gic.h](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gic.h)
-
-This implementation won't work on PinePhone, so we have commented out the existing code and inserted our own implementation.
-
-_Why won't Arm GIC Version 3 work on PinePhone?_
-
-According to the Allwinner A64 SoC User Manual (page 210, "GIC"), PinePhone's Interrupt Controller runs on...
-
--   [Arm GIC PL400](https://developer.arm.com/documentation/ddi0471/b/introduction/about-the-gic-400), which is based on...
-
--   [Arm GIC Version 2](https://developer.arm.com/documentation/ihi0048/latest/)
-
-We'll have to downgrade [arm64_gicv3.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c) to support Arm GIC Version 2 for PinePhone.
-
-_Does NuttX implement Arm GIC Version 2?_
-
-NuttX has an implementation of Arm GIC Version 2, but it's based on Arm32. We'll port it from Arm32 to Arm64...
-
--   [arch/arm/src/armv7-a/arm_gicv2.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/armv7-a/arm_gicv2.c)
-
--   [arch/arm/src/armv7-a/arm_gicv2_dump.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/armv7-a/arm_gicv2_dump.c)
-
--   [arch/arm/src/armv7-a/gic.h](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/armv7-a/gic.h)
-
--   [arch/arm/src/armv7-a/mpcore.h](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/armv7-a/mpcore.h)
-
--   [arch/arm/src/imx6/chip.h](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/imx6/chip.h)
-
--   [arch/arm/src/imx6/hardware/imx_memorymap.h](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/imx6/hardware/imx_memorymap.h)
-
-By reusing the code above, we have implemented Arm GIC Version 2 for PinePhone...
-
--   [arch/arm64/src/common/arm64_gicv3.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L765-L823)
-
-We made minor tweaks to NuttX's implementation of GIC Version 2...
-
--   [Changes for arch/arm/src/armv7-a/arm_gicv2.c](https://github.com/lupyuen/incubator-nuttx/commit/6fa0e7e5d2beddad07890c83d2ee428a3f2b8a62#diff-6e1132aef124dabaf94c200ab06d65c7bc2b9967bf76a46aba71a7f43b5fb219)
-
--   [Changes for arch/arm/src/armv7-a/arm_gicv2_dump.c](https://github.com/lupyuen/incubator-nuttx/commit/4fc2669fef62d12ba1dd428f2daf03d3bc362501#diff-eb05c977988d59202a9472f6fa7f9dc290724662ad6d15a4ba99b8f1fc1dc8f8)
-
--   [Changes for arch/arm/src/armv7-a/gic.h](https://github.com/lupyuen/incubator-nuttx/commit/6fa0e7e5d2beddad07890c83d2ee428a3f2b8a62#diff-b4fcb67b71de954c942ead9bb0868e720a5802c90743f0a1883f84b7565e1a0f)
-
-_Where in memory is the GIC located?_
-
-According to the Allwinner A64 SoC User Manual (page 74, "Memory Mapping"), the GIC is located at this address...
-
-| Module | Address (It is for Cluster CPU) | Remarks
-| :----- | :------ | :------
-|SCU space | 0x01C80000| (What's this?)
-| | GIC_DIST: 0x01C80000 + 0x1000| GIC Distributor (GICD)
-|CPUS can’t access | GIC_CPUIF:0x01C80000 + 0x2000| GIC CPU Interface (GICC)
-
-(Why "CPUS can’t access"?)
-
-The __Interrupt Sources__ are defined in the Allwinner A64 SoC User Manual (page 210, "GIC")...
-
--   16 x Software-Generated Interrupts (SGI)
-
-    "This is an interrupt generated by software writing to a GICD_SGIR register in the GIC. The system uses SGIs for interprocessor communication."
-
--   16 x Private Peripheral Interrupts (PPI)
-
-    "This is a peripheral interrupt that is specific to a single processor"
-
--   125 x Shared Peripheral Interrupts (SPI)
-
-    "This is a peripheral interrupt that the Distributor can route to any of a specified combination of processors"
-
-To verify the GIC Version, read the __Peripheral ID2 Register (ICPIDR2)__ at Offset 0xFE8 of GIC Distributor.
-
-Bits 4 to 7 of ICPIDR2 are...
-
--   0x1 for GIC Version 1
--   0x2 for GIC Version 2
-
-This is how we implement the GIC Version verification: [arch/arm64/src/common/arm64_gicv3.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L710-L734)
-
-```c
-// Init GIC v2 for PinePhone. See https://github.com/lupyuen/pinephone-nuttx#interrupt-controller
-int arm64_gic_initialize(void)
-{
-  sinfo("TODO: Init GIC for PinePhone\n");
-
-  // To verify the GIC Version, read the Peripheral ID2 Register (ICPIDR2) at Offset 0xFE8 of GIC Distributor.
-  // Bits 4 to 7 of ICPIDR2 are...
-  // - 0x1 for GIC Version 1
-  // - 0x2 for GIC Version 2
-  // GIC Distributor is at 0x01C80000 + 0x1000.
-  // See https://github.com/lupyuen/pinephone-nuttx#interrupt-controller
-  const uint8_t *ICPIDR2 = (const uint8_t *) (CONFIG_GICD_BASE + 0xFE8);
-  uint8_t version = (*ICPIDR2 >> 4) & 0b1111;
-  sinfo("GIC Version is %d\n", version);
-  DEBUGASSERT(version == 2);
-
-  // arm_gic0_initialize must be called on CPU0
-  arm_gic0_initialize();
-
-  // arm_gic_initialize must be called for all CPUs
-  // TODO: Move to arm64_gic_secondary_init
-  arm_gic_initialize();
-
-  return 0;
-}
-```
-
-See below for the GIC Register Dump.
-
-Let's talk about NuttX's System Timer, which depends on the GIC...
 
 # System Timer 
 
@@ -559,129 +623,6 @@ up_timer_initialize: After writing: vbar_el1=0x400a7000
 Yep Vector Base Address Register EL1 is now correct.
 
 And our Interrupt Handlers are now working fine yay!
-
-# Test PinePhone GIC with QEMU
-
-TODO
-
-This is how we tested PinePhone's [Generic Interrupt Controller (GIC)](https://github.com/lupyuen/pinephone-nuttx#interrupt-controller) with QEMU...
-
-```bash
-## Run GIC v2 with QEMU
-qemu-system-aarch64 \
-  -smp 4 \
-  -cpu cortex-a53 \
-  -nographic \
-  -machine virt,virtualization=on,gic-version=2 \
-  -net none \
-  -chardev stdio,id=con,mux=on \
-  -serial chardev:con \
-  -mon chardev=con,mode=readline \
-  -kernel ./nuttx
-```
-
-Note that `gic-version=2`, instead of the usual GIC Version 3 for NuttX Arm64.
-
-Also we simulated 4 Cores of Arm Cortex-A53 (similar to PinePhone): `-smp 4`
-
-QEMU boots OK with PinePhone's GIC Version 2...
-
-```text
-- Ready to Boot CPU
-- Boot from EL2
-- Boot from EL1
-- Boot to C runtime for OS Initialize
-nx_start: Entry
-up_allocate_heap: heap_start=0x0x402c4000, heap_size=0x7d3c000
-arm64_gic_initialize: TODO: Init GIC for PinePhone
-arm64_gic_initialize: CONFIG_GICD_BASE=0x8000000
-arm64_gic_initialize: CONFIG_GICR_BASE=0x8010000
-arm64_gic_initialize: GIC Version is 2
-EFGHup_timer_initialize: up_timer_initialize: cp15 timer(s) running at 62.50MHz, cycle 62500
-AKLMNOPBIJuart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-AKLMNOPBIJwork_start_highpri: Starting high-priority kernel worker thread(s)
-nx_start_application: Starting init thread
-lib_cxx_initialize: _sinit: 0x402a7000 _einit: 0x402a7000 _stext: 0x40280000 _etext: 0x402a8000
-nsh: sysinit: fopen failed: 2
-nsh: mkfatfs: command not found
-
-NuttShell (NSH) NuttX-10.3.0-RC2
-nsh> nx_start: CPU0: Beginning Idle Loop
-```
-
-So our implementation of GIC Version 2 for PinePhone is probably OK.
-
-_Is the Timer Interrupt triggered correctly with PinePhone GIC?_
-
-Yes, we verified that the Timer Interrupt Handler [`arm64_arch_timer_compare_isr`](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L109-L169) is  called periodically. (We checked using [`up_putc`](https://github.com/lupyuen/pinephone-nuttx#boot-debugging))
-
-_How did we get the GIC Base Addresses?_
-
-```text
-arm64_gic_initialize: CONFIG_GICD_BASE=0x8000000
-arm64_gic_initialize: CONFIG_GICR_BASE=0x8010000
-```
-
-We got the GIC v2 Base Addresses for GIC Distributor (`CONFIG_GICD_BASE`) and GIC CPU Interface (`CONFIG_GICR_BASE`) by dumping the Device Tree from QEMU...
-
-```bash
-## GIC v2 Dump Device Tree
-qemu-system-aarch64 \
-  -smp 4 \
-  -cpu cortex-a53 \
-  -nographic \
-  -machine virt,virtualization=on,gic-version=2,dumpdtb=gicv2.dtb \
-  -net none \
-  -chardev stdio,id=con,mux=on \
-  -serial chardev:con \
-  -mon chardev=con,mode=readline \
-  -kernel ./nuttx
-
-## Convert Device Tree to text format
-dtc -o gicv2.dts -O dts -I dtb gicv2.dtb
-```
-
-The Base Addresses are revealed in the GIC v2 Device Tree: [gicv2.dts](https://github.com/lupyuen/incubator-nuttx/blob/gicv2/gicv2.dts#L324)...
-
-```text
-intc@8000000 {
-reg = <
-    0x00 0x8000000 0x00 0x10000  //  GIC Distributor:   0x8000000
-    0x00 0x8010000 0x00 0x10000  //  GIC CPU Interface: 0x8010000
-    0x00 0x8030000 0x00 0x10000  //  VGIC Virtual Interface Control: 0x8030000
-    0x00 0x8040000 0x00 0x10000  //  VGIC Virtual CPU Interface:     0x8040000
->;
-compatible = "arm,cortex-a15-gic";
-```
-
-[(More about this)](https://www.kernel.org/doc/Documentation/devicetree/bindings/interrupt-controller/arm%2Cgic.txt)
-
-We defined the Base Addresses in [arch/arm64/include/qemu/chip.h](https://github.com/lupyuen/incubator-nuttx/blob/gicv2/arch/arm64/include/qemu/chip.h#L38-L40)
-
-Compare the above Base Addresses with the GIC v3 Device Tree: [gicv3.dts](https://github.com/lupyuen/incubator-nuttx/blob/gicv2/gicv3.dts#L324)
-
-```text
-intc@8000000 {
-reg = <
-    0x00 0x8000000 0x00 0x10000   //  GIC Distributor:   0x8000000
-    0x00 0x80a0000 0x00 0xf60000  //  GIC CPU Interface: 0x80a0000
->;
-#redistributor-regions = <0x01>;
-compatible = "arm,gic-v3";
-```
-
-This is how we copied the PinePhone GIC v2 Source Files into NuttX Arm64 for testing...
-
-```bash
-cp ~/PinePhone/nuttx/nuttx/arch/arm64/src/common/arm64_gicv3.c      ~/gicv2/nuttx/nuttx/arch/arm64/src/common/arm64_gicv3.c
-cp ~/PinePhone/nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2.c         ~/gicv2/nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2.c
-cp ~/PinePhone/nuttx/nuttx/arch/arm/src/armv7-a/gic.h               ~/gicv2/nuttx/nuttx/arch/arm/src/armv7-a/gic.h
-cp ~/PinePhone/nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2_dump.c    ~/gicv2/nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2_dump.c
-cp ~/PinePhone/nuttx/nuttx/arch/arm64/src/common/arm64_arch_timer.c ~/gicv2/nuttx/nuttx/arch/arm64/src/common/arm64_arch_timer.c
-cp ~/PinePhone/nuttx/run.sh             ~/gicv2/nuttx/run.sh
-cp ~/PinePhone/nuttx/.vscode/tasks.json ~/gicv2/nuttx/.vscode/tasks.json
-```
 
 # Handling Interrupts
 
