@@ -383,55 +383,41 @@ Let's investigate...
 
 # Timer Interrupt Isn't Handled
 
-TODO
+_Why did PinePhone hang while handling System Timer Interrupts?_
 
-Nuttx Interrupts
+_Was the Timer Interrupt Handler called?_
 
-Nuttx Interrupt vector table 
+We verified that __Timer Interrupt Handler [arm64_arch_timer_compare_isr](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L134-L161)__ was NEVER called.
 
-Arm64 vector table
+(We checked by calling [__`up_putc`__](https://github.com/lupyuen/pinephone-nuttx#boot-debugging), which prints directly to the UART Port)
 
-EL vs EL
+So something went wrong BEFORE calling the Interrupt Handler. Let's backtrack...
 
-EL?
+_Is the Interrupt Vector Table pointing correctly to the Timer Interrupt Handler?_
 
-Write to EL
+NuttX defines an __Interrupt Vector Table__ for dispatching Interrupt Handlers...
 
-TODO
+-   [__"Handling Interrupts"__](https://github.com/lupyuen/pinephone-nuttx#handling-interrupts)
 
-NuttX hangs while attempting to handle the Timer Interrupt.
+We dumped NuttX's Interrupt Vector Table...
 
-The Timer Interrupt Handler [`arm64_arch_timer_compare_isr`](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L109-L169) is never called. (We checked using [`up_putc`](https://github.com/lupyuen/pinephone-nuttx#boot-debugging))
+-   [__"Dump Interrupt Vector Table"__](https://github.com/lupyuen/pinephone-nuttx#dump-interrupt-vector-table)
 
-_Is it caused by PinePhone's GIC?_
+And verified that the Timer Interrupt Handler is set correctly in the table.
 
-This problem doesn't seem to be caused by [PinePhone's Generic Interrupt Controller (GIC)](https://github.com/lupyuen/pinephone-nuttx#interrupt-controller) that we have implemented. We [successfully tested PinePhone's GIC](https://github.com/lupyuen/pinephone-nuttx#test-pinephone-gic-with-qemu) with QEMU.
+_Maybe something went wrong when NuttX tried to call the Interrupt Handler?_
 
-Let's troubleshoot the Timer Interrupt...
+NuttX should call [__Interrupt Dispatcher `irq_dispatch`__](https://github.com/lupyuen/pinephone-nuttx#handling-interrupts) to dispatch the Interrupt Handler...
 
--   We called [`up_putc`](https://github.com/lupyuen/pinephone-nuttx#boot-debugging) to understand [how Interrupts are handled on NuttX](https://github.com/lupyuen/pinephone-nuttx#handling-interrupts).
+But nope, __`irq_dispatch`__ was never called.
 
-    We also added Debug Code to the [Arm64 Interrupt Handler](https://github.com/lupyuen/pinephone-nuttx#interrupt-debugging).
+_Some error occurred and NuttX threw an Unexpected Interrupt?_
 
-    [(Maybe we should have used GDB with QEMU)](https://github.com/apache/incubator-nuttx/tree/master/boards/arm64/qemu/qemu-a53) 
+Nope, the [__Unexpected Interrupt Handler `irq_unexpected_isr`__](https://github.com/lupyuen/pinephone-nuttx#handling-interrupts) was never called either.
 
--   We [dumped the Interrupt Vector Table](https://github.com/lupyuen/pinephone-nuttx#dump-interrupt-vector-table).
+_OK I'm really stumped. Did something go bad deep inside Arm64 Interrupts?_
 
-    We verified that the Timer Interrupt Handler Address in the table is correct.
-
--   We confirmed that [Interrupt Dispatcher `irq_dispatch`](https://github.com/lupyuen/pinephone-nuttx#handling-interrupts) isn't called.
-
-    And [Unexpected Interrupt Handler `irq_unexpected_isr`](https://github.com/lupyuen/pinephone-nuttx#handling-interrupts) isn't called either.
-
--   Let's backtrack, maybe there's a problem in the Arm64 Interrupt Handler?
-
-    But [`arm64_enter_exception`](https://github.com/lupyuen/pinephone-nuttx#handling-interrupts) and [`arm64_irq_handler`](https://github.com/lupyuen/pinephone-nuttx#handling-interrupts) aren't called either.
-
--   Maybe the __Arm64 Vector Table `_vector_table`__ isn't correctly configured?
-
-    [arch/arm64/src/common/arm64_vector_table.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L93-L232)
-
-And we're right! The Arm64 Vector Table is indeed incorrectly configured! Here why...
+Possibly! Let's talk about the Arm64 Vector Table...
 
 # Arm64 Vector Table Is Wrong
 
