@@ -590,7 +590,7 @@ Let's do it!
 
     [__"Build NuttX for PinePhone"__](https://lupyuen.github.io/articles/uboot#appendix-build-nuttx-for-pinephone)
 
-    [(Or download __`nuttx.bin`__ from here)](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.7/nuttx.bin)
+    [(Or download __`nuttx.bin`__ from here)](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.8/nuttx.bin)
 
 1.  Compress the __NuttX Binary Image__...
 
@@ -601,7 +601,7 @@ Let's do it!
     gzip Image
     ```
 
-    [(Or download __`Image.gz`__ from here)](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.7/Image.gz)
+    [(Or download __`Image.gz`__ from here)](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.8/Image.gz)
 
 1.  Overwrite __`Image.gz`__ on __Jumpdrive microSD__...
 
@@ -646,9 +646,19 @@ HELLO NUTTX ON PINEPHONE!
 nx_start: Entry
 up_allocate_heap: heap_start=0x0x400c4000, heap_size=0x7f3c000
 arm64_gic_initialize: TODO: Init GIC for PinePhone
+arm64_gic_initialize: CONFIG_GICD_BASE=0x1c81000
+arm64_gic_initialize: CONFIG_GICR_BASE=0x1c82000
 arm64_gic_initialize: GIC Version is 2
 up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
-uart_regi
+up_timer_initialize: _vector_table=0x400a7000
+up_timer_initialize: Before writing: vbar_el1=0x40227000
+up_timer_initialize: After writing: vbar_el1=0x400a7000
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_highpri: Starting high-priority kernel worker thread(s)
+nx_start_application: Starting init thread
+lib_cxx_initialize: _sinit: 0x400a7000 _einit: 0x400a7000 _stext: 0x40080000 _etext: 0x400a8000
+nx_start: CPU0: Beginning Idle Loop
 ```
 
 Yep NuttX boots on PinePhone... After replacing a single __`Image.gz`__ file!
@@ -898,19 +908,19 @@ On an old MacBook Pro 2012, NuttX builds in 2 minutes.
 
 The NuttX Output Files may be found here...
 
--   [__Apache NuttX RTOS for PinePhone__](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.7)
+-   [__Apache NuttX RTOS for PinePhone__](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.8)
 
-The [__NuttX Binary Image `nuttx.bin`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.7/nuttx.bin) will be gzipped and copied to Jumpdrive microSD as __`Image.gz`__...
+The [__NuttX Binary Image `nuttx.bin`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.8/nuttx.bin) will be gzipped and copied to Jumpdrive microSD as __`Image.gz`__...
 
 -   [__"PinePhone Boots NuttX"__](https://lupyuen.github.io/articles/uboot#pinephone-boots-nuttx)
 
 For Troubleshooting: Refer to these files...
 
--   [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.7/nuttx)
+-   [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.8/nuttx)
 
--   [__NuttX Arm Disassembly `nuttx.S`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.7/nuttx.S)
+-   [__NuttX Arm Disassembly `nuttx.S`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.8/nuttx.S)
 
-This article explains how we may load the [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.7/nuttx) into Ghidra for inspection...
+This article explains how we may load the [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.8/nuttx) into Ghidra for inspection...
 
 -   [__"Analyse NuttX Image with Ghidra"__](https://lupyuen.github.io/articles/arm#appendix-analyse-nuttx-image-with-ghidra)
 
