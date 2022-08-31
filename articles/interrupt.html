@@ -71,7 +71,7 @@
 <li><a href="#allwinner-a64-gic">2 Allwinner A64 GIC</a><ul></ul></li>
 <li><a href="#gic-version-2">3 GIC Version 2</a><ul></ul></li>
 <li><a href="#test-pinephone-gic-with-qemu">4 Test PinePhone GIC with QEMU</a><ul></ul></li>
-<li><a href="#nuttx-hangs-at-startup">5 NuttX Hangs At Startup</a><ul></ul></li>
+<li><a href="#pinephone-hangs-at-startup">5 PinePhone Hangs At Startup</a><ul></ul></li>
 <li><a href="#timer-interrupt-isnt-handled">6 Timer Interrupt Isn’t Handled</a><ul></ul></li>
 <li><a href="#arm64-vector-table-is-wrong">7 Arm64 Vector Table Is Wrong</a><ul></ul></li>
 <li><a href="#handling-interrupts">8 Handling Interrupts</a><ul></ul></li>
@@ -358,7 +358,7 @@ compatible = &quot;arm,cortex-a15-gic&quot;;</code></pre></div>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/gicv2/arch/arm64/include/qemu/chip.h#L38-L40">arch/arm64/include/qemu/chip.h</a></li>
 </ul>
-<h1 id="nuttx-hangs-at-startup"><a href="#nuttx-hangs-at-startup">5 NuttX Hangs At Startup</a></h1>
+<h1 id="pinephone-hangs-at-startup"><a href="#pinephone-hangs-at-startup">5 PinePhone Hangs At Startup</a></h1>
 <p><em>NuttX should boot OK on PinePhone right?</em></p>
 <p>We followed these steps to <strong>boot NuttX on PinePhone</strong> (with GIC Version 2)…</p>
 <ul>
@@ -371,25 +371,24 @@ arm64_gic_initialize: CONFIG_GICR_BASE=0x1c82000
 arm64_gic_initialize: GIC Version is 2
 up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
 uart_regi</code></pre></div>
-<p>Yep NuttX got stuck <strong>while printing a line!</strong></p>
+<p>NuttX got stuck <strong>while printing a line!</strong></p>
+<p>And it happened a short while after we started the <strong>System Timer</strong>: <strong><code>up_timer_initialize</code></strong></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#system-timer">(More about System Timer)</a></p>
+<p><em>Something in the System Timer caused this?</em></p>
+<p>Yep! If we <strong>disabled the System Timer</strong>, PinePhone will continue to boot.</p>
+<p>Remember that the System Timer will trigger Interrupts periodically…</p>
+<p>Perhaps we’re <strong>handling Interrupts incorrectly?</strong></p>
+<p>Let’s investigate…</p>
+<h1 id="timer-interrupt-isnt-handled"><a href="#timer-interrupt-isnt-handled">6 Timer Interrupt Isn’t Handled</a></h1>
 <p>TODO</p>
-<p>Timer interrupt</p>
 <p>Nuttx Interrupts</p>
 <p>Nuttx Interrupt vector table </p>
 <p>Arm64 vector table</p>
 <p>EL vs EL</p>
 <p>EL?</p>
 <p>Write to EL</p>
-<h1 id="timer-interrupt-isnt-handled"><a href="#timer-interrupt-isnt-handled">6 Timer Interrupt Isn’t Handled</a></h1>
 <p>TODO</p>
-<p>Previously NuttX hangs midsentence while booting on PinePhone, let’s find out how we fixed it…</p>
-<div class="example-wrap"><pre class="language-text"><code>arm64_gic_initialize: TODO: Init GIC for PinePhone
-arm64_gic_initialize: CONFIG_GICD_BASE=0x1c81000
-arm64_gic_initialize: CONFIG_GICR_BASE=0x1c82000
-arm64_gic_initialize: GIC Version is 2
-up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
-uart_regi</code></pre></div>
-<p>Based on our experiments, it seems the <a href="https://github.com/lupyuen/pinephone-nuttx#system-timer">System Timer</a> triggered a Timer Interrupt, and NuttX hangs while attempting to handle the Timer Interrupt.</p>
+<p>NuttX hangs while attempting to handle the Timer Interrupt.</p>
 <p>The Timer Interrupt Handler <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L109-L169"><code>arm64_arch_timer_compare_isr</code></a> is never called. (We checked using <a href="https://github.com/lupyuen/pinephone-nuttx#boot-debugging"><code>up_putc</code></a>)</p>
 <p><em>Is it caused by PinePhone’s GIC?</em></p>
 <p>This problem doesn’t seem to be caused by <a href="https://github.com/lupyuen/pinephone-nuttx#interrupt-controller">PinePhone’s Generic Interrupt Controller (GIC)</a> that we have implemented. We <a href="https://github.com/lupyuen/pinephone-nuttx#test-pinephone-gic-with-qemu">successfully tested PinePhone’s GIC</a> with QEMU.</p>
