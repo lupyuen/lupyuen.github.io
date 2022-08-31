@@ -75,7 +75,90 @@ Allwinner A64's GIC supports __157 Interrupt Sources__: 16 Software-Generated, 1
 
 The GIC in Allwinner A64 is a little problematic, let's talk...
 
+![Allwinner A64 runs on Arm GIC Version 2](https://lupyuen.github.io/images/interrupt-gic.jpg)
+
+_Allwinner A64 runs on Arm GIC Version 2_
+
 # Allwinner A64 GIC
+
+_What's this GIC error we saw earlier?_
+
+```text
+HELLO NUTTX ON PINEPHONE!
+- Ready to Boot CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+arm64_gic_initialize: no distributor detected, giving up
+```
+
+When we boot NuttX RTOS, it expects PinePhone to provide a modern __Generic Interrupt Controller (GIC), Version 3__.
+
+But the [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) (page 210, "GIC") says that PinePhone runs on...
+
+-   [__Arm GIC PL400__](https://developer.arm.com/documentation/ddi0471/b/introduction/about-the-gic-400), which is based on...
+
+-   [__Arm GIC Version 2__](https://developer.arm.com/documentation/ihi0048/latest/)
+
+Our GIC Version 2 is from 2011, when Arm CPUs were still 32-bit... That's __11 years ago!__
+
+So we need to fix NuttX and downgrade GIC Version 3 __back to GIC Version 2__, specially for PinePhone.
+
+_We're sure that PinePhone runs on GIC Version 2?_
+
+Let's verify! This code reads the __GIC Version__ from PinePhone: [arch/arm64/src/common/arm64_gicv3.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L710-L734)
+
+```c
+// Init GIC v2 for PinePhone
+int arm64_gic_initialize(void) {
+  sinfo("TODO: Init GIC for PinePhone\n");
+  sinfo("CONFIG_GICD_BASE=%p\n", CONFIG_GICD_BASE);
+  sinfo("CONFIG_GICR_BASE=%p\n", CONFIG_GICR_BASE);
+
+  // To verify the GIC Version, read the Peripheral ID2 Register (ICPIDR2) at Offset 0xFE8 of GIC Distributor.
+  // Bits 4 to 7 of ICPIDR2 are...
+  // - 0x1 for GIC Version 1
+  // - 0x2 for GIC Version 2
+  // GIC Distributor is at 0x01C80000 + 0x1000
+  const uint8_t *ICPIDR2 = (const uint8_t *) (CONFIG_GICD_BASE + 0xFE8);
+  uint8_t version = (*ICPIDR2 >> 4) & 0b1111;
+  sinfo("GIC Version is %d\n", version);
+  DEBUGASSERT(version == 2);
+```
+
+Here's the output...
+
+```text
+arm64_gic_initialize: TODO: Init GIC for PinePhone
+arm64_gic_initialize: CONFIG_GICD_BASE=0x1c81000
+arm64_gic_initialize: CONFIG_GICR_BASE=0x1c82000
+arm64_gic_initialize: GIC Version is 2
+```
+
+[(Source)](https://github.com/lupyuen/pinephone-nuttx#pinephone-u-boot-log)
+
+Yep PinePhone runs on __GIC Version 2__. Bummer.
+
+_What are GICD and GICR?_
+
+__GICD (GIC Distributor)__ and __GICR (GIC CPU Interface)__ are the addresses for accessing the GIC on PinePhone.
+
+According to [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) (page 74, "Memory Mapping"), the GIC is located at...
+
+| Module | Address | Remarks
+| :----- | :------ | :------
+| GIC_DIST | `0x01C8` `0000` + `0x1000`| GIC Distributor (GICD)
+| GIC_CPUIF | `0x01C8` `0000` + `0x2000`| GIC CPU Interface (GICR)
+
+Which we define in NuttX as: [arch/arm64/include/qemu/chip.h](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/include/qemu/chip.h#L38-L62)
+
+```c
+// PinePhone Generic Interrupt Controller
+// GIC_DIST:  0x01C80000 + 0x1000
+// GIC_CPUIF: 0x01C80000 + 0x2000
+#define CONFIG_GICD_BASE 0x01C81000  
+#define CONFIG_GICR_BASE 0x01C82000  
+```
 
 TODO
 
@@ -109,6 +192,79 @@ EL?
 
 Write to EL
 
+# NuttX Boot Log
+
+TODO
+
+Here's the UART Log of NuttX booting on PinePhone...
+
+```text
+DRAM: 2048 MiB
+Trying to boot from MMC1
+NOTICE:  BL31: v2.2(release):v2.2-904-gf9ea3a629
+NOTICE:  BL31: Built : 15:32:12, Apr  9 2020
+NOTICE:  BL31: Detected Allwinner A64/H64/R18 SoC (1689)
+NOTICE:  BL31: Found U-Boot DTB at 0x4064410, model: PinePhone
+NOTICE:  PSCI: System suspend is unavailable
+
+U-Boot 2020.07 (Nov 08 2020 - 00:15:12 +0100)
+
+DRAM:  2 GiB
+MMC:   Device 'mmc@1c11000': seq 1 is in use by 'mmc@1c10000'
+mmc@1c0f000: 0, mmc@1c10000: 2, mmc@1c11000: 1
+Loading Environment from FAT... *** Warning - bad CRC, using default environment
+
+starting USB...
+No working controllers found
+Hit any key to stop autoboot:  0 
+switch to partitions #0, OK
+mmc0 is current device
+Scanning mmc 0:1...
+Found U-Boot script /boot.scr
+653 bytes read in 3 ms (211.9 KiB/s)
+## Executing script at 4fc00000
+gpio: pin 114 (gpio 114) value is 1
+99784 bytes read in 8 ms (11.9 MiB/s)
+Uncompressed size: 278528 = 0x44000
+36162 bytes read in 4 ms (8.6 MiB/s)
+1078500 bytes read in 51 ms (20.2 MiB/s)
+## Flattened Device Tree blob at 4fa00000
+   Booting using the fdt blob at 0x4fa00000
+   Loading Ramdisk to 49ef8000, end 49fff4e4 ... OK
+   Loading Device Tree to 0000000049eec000, end 0000000049ef7d41 ... OK
+
+Starting kernel ...
+
+HELLO NUTTX ON PINEPHONE!
+- Ready to Boot CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+nx_start: Entry
+up_allocate_heap: heap_start=0x0x400c4000, heap_size=0x7f3c000
+arm64_gic_initialize: TODO: Init GIC for PinePhone
+arm64_gic_initialize: CONFIG_GICD_BASE=0x1c81000
+arm64_gic_initialize: CONFIG_GICR_BASE=0x1c82000
+arm64_gic_initialize: GIC Version is 2
+up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
+up_timer_initialize: _vector_table=0x400a7000
+up_timer_initialize: Before writing: vbar_el1=0x40227000
+up_timer_initialize: After writing: vbar_el1=0x400a7000
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_highpri: Starting high-priority kernel worker thread(s)
+nx_start_application: Starting init thread
+lib_cxx_initialize: _sinit: 0x400a7000 _einit: 0x400a7000 _stext: 0x40080000 _etext: 0x400a8000
+nx_start: CPU0: Beginning Idle Loop
+```
+
+_Where's the rest of the boot output?_
+
+We expect to see this output when NuttX boots...
+
+-   ["Test NuttX: Single Core"](https://lupyuen.github.io/articles/arm#test-nuttx-single-core)
+
+But PinePhone stops halfway. Let's find out why...
 
 # Interrupt Controller
 
