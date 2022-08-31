@@ -206,7 +206,7 @@ arm64_gic_initialize: GIC Version is 2</code></pre></div>
 #define CONFIG_GICR_BASE 0x01C82000  </code></pre></div>
 <p>Back to our headache of GIC Version 2…</p>
 <h1 id="gic-version-2"><a href="#gic-version-2">3 GIC Version 2</a></h1>
-<p><em>Does NuttX support GIC Version 2?</em></p>
+<p><em>Does NuttX support GIC Version 2 for PinePhone?</em></p>
 <p>Yes NuttX supports <strong>Generic Interrupt Controller (GIC) Version 2</strong> but there’s a catch… It’s for <strong>Arm32 CPUs, not Arm64 CPUs!</strong></p>
 <ul>
 <li>
@@ -219,6 +219,7 @@ arm64_gic_initialize: GIC Version is 2</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/armv7-a/gic.h">arch/arm/src/armv7-a/gic.h</a></p>
 </li>
 </ul>
+<p>Remember: GIC Version 2 was created for Arm32.</p>
 <p><em>So we port NuttX’s GIC Version 2 from Arm32 to Arm64?</em></p>
 <p>Kinda. We did a <strong>horrible hack</strong>… Don’t try this at home! (Unless you have a ten-foot pole) <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L765-L823">arch/arm64/src/common/arm64_gicv3.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// GIC v2 for PinePhone:
