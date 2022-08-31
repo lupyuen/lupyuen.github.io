@@ -416,8 +416,8 @@ __start:
    * its opcode forms the magic &quot;MZ&quot; signature of a PE/COFF file
    * that is required for UEFI applications.
    */
-  add     x13, x18, #0x16      /* the magic &quot;MZ&quot; signature */
-  b       real_start           /* branch to kernel start */</code></pre></div>
+  add     x13, x18, #0x16  /* the magic &quot;MZ&quot; signature */
+  b       real_start       /* branch to kernel start */</code></pre></div>
 <p><a href="https://en.wikipedia.org/wiki/DOS_MZ_executable">(“MZ” refers to Mark Zbikowski)</a></p>
 <p>The header begins at <strong>Kernel Start Address <code>0x4008</code> <code>0000</code></strong>.</p>
 <p>At the top of the header we jump to <strong><code>real_start</code></strong> to skip the header.</p>
