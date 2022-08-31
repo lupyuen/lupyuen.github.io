@@ -346,7 +346,7 @@ Which we defined in NuttX at...
 
 -   [arch/arm64/include/qemu/chip.h](https://github.com/lupyuen/incubator-nuttx/blob/gicv2/arch/arm64/include/qemu/chip.h#L38-L40)
 
-# NuttX Hangs At Startup
+# PinePhone Hangs At Startup
 
 _NuttX should boot OK on PinePhone right?_
 
@@ -365,11 +365,25 @@ up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cyc
 uart_regi
 ```
 
-Yep NuttX got stuck __while printing a line!__
+NuttX got stuck __while printing a line!__
+
+And it happened a short while after we started the __System Timer__: __`up_timer_initialize`__
+
+[(More about System Timer)](https://github.com/lupyuen/pinephone-nuttx#system-timer)
+
+_Something in the System Timer caused this?_
+
+Yep! If we __disabled the System Timer__, PinePhone will continue to boot.
+
+Remember that the System Timer will trigger Interrupts periodically...
+
+Perhaps we're __handling Interrupts incorrectly?__
+
+Let's investigate...
+
+# Timer Interrupt Isn't Handled
 
 TODO
-
-Timer interrupt
 
 Nuttx Interrupts
 
@@ -383,22 +397,9 @@ EL?
 
 Write to EL
 
-# Timer Interrupt Isn't Handled
-
 TODO
 
-Previously NuttX hangs midsentence while booting on PinePhone, let's find out how we fixed it...
-
-```text
-arm64_gic_initialize: TODO: Init GIC for PinePhone
-arm64_gic_initialize: CONFIG_GICD_BASE=0x1c81000
-arm64_gic_initialize: CONFIG_GICR_BASE=0x1c82000
-arm64_gic_initialize: GIC Version is 2
-up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
-uart_regi
-```
-
-Based on our experiments, it seems the [System Timer](https://github.com/lupyuen/pinephone-nuttx#system-timer) triggered a Timer Interrupt, and NuttX hangs while attempting to handle the Timer Interrupt.
+NuttX hangs while attempting to handle the Timer Interrupt.
 
 The Timer Interrupt Handler [`arm64_arch_timer_compare_isr`](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L109-L169) is never called. (We checked using [`up_putc`](https://github.com/lupyuen/pinephone-nuttx#boot-debugging))
 
