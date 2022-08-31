@@ -671,39 +671,27 @@ We expect to see this output when NuttX boots...
 
 -   [__"Test NuttX: Single Core"__](https://lupyuen.github.io/articles/arm#test-nuttx-single-core)
 
-But NuttX hangs when it tries to handle the __System Timer Interrupt__...
+But NuttX seems to be stuck at the __Idle Loop__, before showing the NuttX Shell...
 
 ```text
-up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
-uart_regi
+nx_start_application: Starting init thread
+lib_cxx_initialize: _sinit: 0x400a7000 _einit: 0x400a7000 _stext: 0x40080000 _etext: 0x400a8000
+nx_start: CPU0: Beginning Idle Loop
 ```
 
-[(More about System Timer)](https://github.com/lupyuen/pinephone-nuttx#system-timer)
+This problem might be related to the __Arm64 Interrupt__ issues that we fixed earlier...
 
-This is probably due to our incomplete implementation of the __Generic Interrupt Controller (GIC)__ for PinePhone...
+-   [__"System Timer"__](https://github.com/lupyuen/pinephone-nuttx#system-timer)
 
 -   [__"Interrupt Controller"__](https://github.com/lupyuen/pinephone-nuttx#interrupt-controller)
 
 -   [__"Timer Interrrupt Isn't Handled"__](https://github.com/lupyuen/pinephone-nuttx#timer-interrrupt-isnt-handled)
 
+-   [__"Arm64 Vector Table Is Wrong"__](https://github.com/lupyuen/pinephone-nuttx#arm64-vector-table-is-wrong)
+
 -   [__"Test PinePhone GIC with QEMU"__](https://github.com/lupyuen/pinephone-nuttx#test-pinephone-gic-with-qemu)
 
-_What if we disable the System Timer?_
-
-If we disable the [__System Timer__](https://github.com/lupyuen/pinephone-nuttx#system-timer), NuttX will boot further...
-
-```text
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-work_start_highpri: Starting high-priority kernel worker thread(s)
-nx_start_application: Starting init thread
-```
-
-But it waits forever switching to the __Init Thread__.
-
-We probably need to fix the [__Generic Interrupt Controller__](https://github.com/lupyuen/pinephone-nuttx#interrupt-controller) for PinePhone.
-
-More about NuttX booting on PinePhone and troubleshooting it...
+We'll do more troubleshooting. More about NuttX booting on PinePhone...
 
 1.  [__"Boot Sequence"__](https://github.com/lupyuen/pinephone-nuttx#boot-sequence)
 
