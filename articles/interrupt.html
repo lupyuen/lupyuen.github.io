@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>NuttX RTOS on PinePhone: Fixing the Interrupts</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="NuttX RTOS on PinePhone: Fixing the Interrupts" 
+    data-rh="true">
+<meta property="og:description" 
+    content="How Pine64 PinePhone handles Arm64 Interrupts with the Generic Interrupt Controller... And how we implemented PinePhone Interrupt Handling in Apache NuttX RTOS"
+    data-rh="true">
+<meta name="description" 
+    content="How Pine64 PinePhone handles Arm64 Interrupts with the Generic Interrupt Controller... And how we implemented PinePhone Interrupt Handling in Apache NuttX RTOS">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/interrupt-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">NuttX RTOS on PinePhone: Fixing the Interrupts</h1>
+    <nav id="TOC"><ul>
+<li><a href="#generic-interrupt-controller">1 Generic Interrupt Controller</a><ul></ul></li>
+<li><a href="#interrupt-controller">2 Interrupt Controller</a><ul></ul></li>
+<li><a href="#system-timer">3 System Timer</a><ul></ul></li>
+<li><a href="#timer-interrupt-isnt-handled">4 Timer Interrupt Isn’t Handled</a><ul></ul></li>
+<li><a href="#arm64-vector-table-is-wrong">5 Arm64 Vector Table Is Wrong</a><ul></ul></li>
+<li><a href="#test-pinephone-gic-with-qemu">6 Test PinePhone GIC with QEMU</a><ul></ul></li>
+<li><a href="#handling-interrupts">7 Handling Interrupts</a><ul></ul></li>
+<li><a href="#dump-interrupt-vector-table">8 Dump Interrupt Vector Table</a><ul></ul></li>
+<li><a href="#interrupt-debugging">9 Interrupt Debugging</a><ul></ul></li>
+<li><a href="#memory-map">10 Memory Map</a><ul></ul></li>
+<li><a href="#boot-sequence">11 Boot Sequence</a><ul></ul></li>
+<li><a href="#boot-debugging">12 Boot Debugging</a><ul></ul></li>
+<li><a href="#gic-register-dump">13 GIC Register Dump</a><ul></ul></li>
+<li><a href="#whats-next">14 What’s Next</a><ul></ul></li>
+<li><a href="#notes">15 Notes</a><ul></ul></li></ul></nav><p>📝 <em>6 Sep 2022</em></p>
+<p><img src="https://lupyuen.github.io/images/interrupt-title.jpg" alt="Tracing Arm64 Interrupts on QEMU Emulator can get… Really messy" /></p>
+<p><em>Tracing Arm64 Interrupts on QEMU Emulator can get… Really messy</em></p>
+<p>Creating our own <strong>Operating System</strong> (non-Linux) for <strong>Pine64 PinePhone</strong> can be super challenging…</p>
+<ul>
+<li>
+<p>How does PinePhone handle Interrupts?</p>
+</li>
+<li>
+<p>What’s a Generic Interrupt Controller? (GIC)</p>
+</li>
+<li>
+<p>Why is PinePhone’s GIC particularly problematic?</p>
+</li>
+<li>
+<p>What’s an Exception Level? (EL)</p>
+</li>
+<li>
+<p>Why does EL matter for handling Arm64 Interrupts?</p>
+</li>
+</ul>
+<p>We’ll answer these questions today as we port <strong>Apache NuttX RTOS</strong> to PinePhone.</p>
+<p>Let’s dive into our <strong>Porting Journal</strong> for NuttX on PinePhone…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
+</ul>
+<p>And relive the very first <strong>Interrupt issue</strong> that we hit…</p>
+<div class="example-wrap"><pre class="language-text"><code>HELLO NUTTX ON PINEPHONE!
+- Ready to Boot CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+arm64_gic_initialize: no distributor detected, giving up</code></pre></div>
+<p>TODO: Partial list of Shared Peripheral Interrupts supported by Allwinner A64’s GIC</p>
+<h1 id="generic-interrupt-controller"><a href="#generic-interrupt-controller">1 Generic Interrupt Controller</a></h1>
+<p><em>What’s a GIC?</em></p>
+<p>A <strong>Generic Interrupt Controller (GIC)</strong> works like a typical Interrupt Controller in a CPU. It manages Interrupts for the Arm64 CPU.</p>
+<p>Except that GIC is a special chunk of silicon that lives <strong>inside the Allwinner A64 SoC</strong>. (Outside the Arm64 CPU)</p>
+<p><em>Huh? Arm64 CPU doesn’t have its own Interrupt Controller?</em></p>
+<p>Interrupting gets complicated… Remember PinePhone runs on <strong>4 Arm64 CPUs?</strong></p>
+<p>The 4 CPUs must handle the Interrupts triggered by <strong>all kinds of Peripherals</strong>: UART, I2C, DMA, USB, microSD, eMMC, …</p>
+<p>We do this the <strong>flexible, efficient</strong> way with a GIC, which supports…</p>
+<ul>
+<li>
+<p><strong>Shared Peripheral Interrupts (SPI)</strong></p>
+<p>GIC can route Peripheral Interrupts to <strong>one or multiple CPUs</strong></p>
+<p>(Pic above)</p>
+</li>
+<li>
+<p><strong>Private Peripheral Interrupts (PPI)</strong></p>
+<p>GIC can route Peripheral Interrupts to a <strong>single CPU</strong></p>
+</li>
+<li>
+<p><strong>Software-Generated Interrupts (SGI)</strong></p>
+<p>GIC lets CPUs to <strong>talk to each other</strong> by triggering Software Interrupts</p>
+<p>(Anyone remember Silicon Graphics?)</p>
+</li>
+</ul>
+<p>Allwinner A64’s GIC supports <strong>157 Interrupt Sources</strong>: 16 SGI, 16 PPI and 125 SPI.</p>
+<p>TODO</p>
+<p>PinePhone gic</p>
+<p>Let’s read gic</p>
+<p>V3 vs v2</p>
+<p>Verify v2</p>
+<p>Reuse nuttx v2</p>
+<p>Test with qemu</p>
+<p>Dump device tree</p>
+<p>Midsentence</p>
+<p>Timer interrupt</p>
+<p>Nuttx Interrupts</p>
+<p>Nuttx Interrupt vector table </p>
+<p>Arm64 vector table</p>
+<p>EL vs EL</p>
+<p>EL?</p>
+<p>Write to EL</p>
+<h1 id="interrupt-controller"><a href="#interrupt-controller">2 Interrupt Controller</a></h1>
+<p>TODO</p>
+<p>Let’s talk about the <strong>Arm Generic Interrupt Controller (GIC)</strong> for PinePhone…</p>
+<div class="example-wrap"><pre class="language-text"><code>arm64_gic_initialize: TODO: Init GIC for PinePhone
+arm64_gic_initialize: CONFIG_GICD_BASE=0x1c81000
+arm64_gic_initialize: CONFIG_GICR_BASE=0x1c82000
+arm64_gic_initialize: GIC Version is 2</code></pre></div>
+<p>This is the current implementation of <a href="https://developer.arm.com/documentation/ihi0069/latest">Arm GIC Version 3</a> in NuttX Arm64…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c">arch/arm64/src/common/arm64_gicv3.c</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gic.h">arch/arm64/src/common/arm64_gic.h</a></p>
+</li>
+</ul>
+<p>This implementation won’t work on PinePhone, so we have commented out the existing code and inserted our own implementation.</p>
+<p><em>Why won’t Arm GIC Version 3 work on PinePhone?</em></p>
+<p>According to the Allwinner A64 SoC User Manual (page 210, “GIC”), PinePhone’s Interrupt Controller runs on…</p>
+<ul>
+<li>
+<p><a href="https://developer.arm.com/documentation/ddi0471/b/introduction/about-the-gic-400">Arm GIC PL400</a>, which is based on…</p>
+</li>
+<li>
+<p><a href="https://developer.arm.com/documentation/ihi0048/latest/">Arm GIC Version 2</a></p>
+</li>
+</ul>
+<p>We’ll have to downgrade <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c">arm64_gicv3.c</a> to support Arm GIC Version 2 for PinePhone.</p>
+<p><em>Does NuttX implement Arm GIC Version 2?</em></p>
+<p>NuttX has an implementation of Arm GIC Version 2, but it’s based on Arm32. We’ll port it from Arm32 to Arm64…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/armv7-a/arm_gicv2.c">arch/arm/src/armv7-a/arm_gicv2.c</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/armv7-a/arm_gicv2_dump.c">arch/arm/src/armv7-a/arm_gicv2_dump.c</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/armv7-a/gic.h">arch/arm/src/armv7-a/gic.h</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/armv7-a/mpcore.h">arch/arm/src/armv7-a/mpcore.h</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/imx6/chip.h">arch/arm/src/imx6/chip.h</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/imx6/hardware/imx_memorymap.h">arch/arm/src/imx6/hardware/imx_memorymap.h</a></p>
+</li>
+</ul>
+<p>By reusing the code above, we have implemented Arm GIC Version 2 for PinePhone…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L765-L823">arch/arm64/src/common/arm64_gicv3.c</a></li>
+</ul>
+<p>We made minor tweaks to NuttX’s implementation of GIC Version 2…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/6fa0e7e5d2beddad07890c83d2ee428a3f2b8a62#diff-6e1132aef124dabaf94c200ab06d65c7bc2b9967bf76a46aba71a7f43b5fb219">Changes for arch/arm/src/armv7-a/arm_gicv2.c</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/4fc2669fef62d12ba1dd428f2daf03d3bc362501#diff-eb05c977988d59202a9472f6fa7f9dc290724662ad6d15a4ba99b8f1fc1dc8f8">Changes for arch/arm/src/armv7-a/arm_gicv2_dump.c</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/6fa0e7e5d2beddad07890c83d2ee428a3f2b8a62#diff-b4fcb67b71de954c942ead9bb0868e720a5802c90743f0a1883f84b7565e1a0f">Changes for arch/arm/src/armv7-a/gic.h</a></p>
+</li>
+</ul>
+<p><em>Where in memory is the GIC located?</em></p>
+<p>According to the Allwinner A64 SoC User Manual (page 74, “Memory Mapping”), the GIC is located at this address…</p>
+<div><table><thead><tr><th style="text-align: left">Module</th><th style="text-align: left">Address (It is for Cluster CPU)</th><th style="text-align: left">Remarks</th></tr></thead><tbody>
+<tr><td style="text-align: left">SCU space</td><td style="text-align: left">0x01C80000</td><td style="text-align: left">(What’s this?)</td></tr>
+<tr><td style="text-align: left"></td><td style="text-align: left">GIC_DIST: 0x01C80000 + 0x1000</td><td style="text-align: left">GIC Distributor (GICD)</td></tr>
+<tr><td style="text-align: left">CPUS can’t access</td><td style="text-align: left">GIC_CPUIF:0x01C80000 + 0x2000</td><td style="text-align: left">GIC CPU Interface (GICC)</td></tr>
+</tbody></table>
+</div>
+<p>(Why “CPUS can’t access”?)</p>
+<p>The <strong>Interrupt Sources</strong> are defined in the Allwinner A64 SoC User Manual (page 210, “GIC”)…</p>
+<ul>
+<li>
+<p>16 x Software-Generated Interrupts (SGI)</p>
+<p>“This is an interrupt generated by software writing to a GICD_SGIR register in the GIC. The system uses SGIs for interprocessor communication.”</p>
+</li>
+<li>
+<p>16 x Private Peripheral Interrupts (PPI)</p>
+<p>“This is a peripheral interrupt that is specific to a single processor”</p>
+</li>
+<li>
+<p>125 x Shared Peripheral Interrupts (SPI)</p>
+<p>“This is a peripheral interrupt that the Distributor can route to any of a specified combination of processors”</p>
+</li>
+</ul>
+<p>To verify the GIC Version, read the <strong>Peripheral ID2 Register (ICPIDR2)</strong> at Offset 0xFE8 of GIC Distributor.</p>
+<p>Bits 4 to 7 of ICPIDR2 are…</p>
+<ul>
+<li>0x1 for GIC Version 1</li>
+<li>0x2 for GIC Version 2</li>
+</ul>
+<p>This is how we implement the GIC Version verification: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L710-L734">arch/arm64/src/common/arm64_gicv3.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Init GIC v2 for PinePhone. See https://github.com/lupyuen/pinephone-nuttx#interrupt-controller
+int arm64_gic_initialize(void)
+{
+  sinfo(&quot;TODO: Init GIC for PinePhone\n&quot;);
+
+  // To verify the GIC Version, read the Peripheral ID2 Register (ICPIDR2) at Offset 0xFE8 of GIC Distributor.
+  // Bits 4 to 7 of ICPIDR2 are...
+  // - 0x1 for GIC Version 1
+  // - 0x2 for GIC Version 2
+  // GIC Distributor is at 0x01C80000 + 0x1000.
+  // See https://github.com/lupyuen/pinephone-nuttx#interrupt-controller
+  const uint8_t *ICPIDR2 = (const uint8_t *) (CONFIG_GICD_BASE + 0xFE8);
+  uint8_t version = (*ICPIDR2 &gt;&gt; 4) &amp; 0b1111;
+  sinfo(&quot;GIC Version is %d\n&quot;, version);
+  DEBUGASSERT(version == 2);
+
+  // arm_gic0_initialize must be called on CPU0
+  arm_gic0_initialize();
+
+  // arm_gic_initialize must be called for all CPUs
+  // TODO: Move to arm64_gic_secondary_init
+  arm_gic_initialize();
+
+  return 0;
+}</code></pre></div>
+<p>See below for the GIC Register Dump.</p>
+<p>Let’s talk about NuttX’s System Timer, which depends on the GIC…</p>
+<h1 id="system-timer"><a href="#system-timer">3 System Timer</a></h1>
+<p>TODO</p>
+<p>NuttX starts the System Timer when it boots. Here’s how the System Timer is started: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L212-L233">arch/arm64/src/common/arm64_arch_timer.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>void up_timer_initialize(void)
+{
+  uint64_t curr_cycle;
+
+  arch_timer_rate   = arm64_arch_timer_get_cntfrq();
+  cycle_per_tick    = ((uint64_t)arch_timer_rate / (uint64_t)TICK_PER_SEC);
+
+  sinfo(&quot;%s: cp15 timer(s) running at %lu.%02luMHz, cycle %ld\n&quot;, __func__,
+        (unsigned long)arch_timer_rate / 1000000,
+        (unsigned long)(arch_timer_rate / 10000) % 100, cycle_per_tick);
+
+  irq_attach(ARM_ARCH_TIMER_IRQ, arm64_arch_timer_compare_isr, 0);
+  arm64_gic_irq_set_priority(ARM_ARCH_TIMER_IRQ, ARM_ARCH_TIMER_PRIO,
+                             ARM_ARCH_TIMER_FLAGS);
+
+  curr_cycle = arm64_arch_timer_count();
+  arm64_arch_timer_set_compare(curr_cycle + cycle_per_tick);
+  arm64_arch_timer_enable(true);
+
+  up_enable_irq(ARM_ARCH_TIMER_IRQ);
+  arm64_arch_timer_set_irq_mask(false);
+}</code></pre></div>
+<p>At every tick, the System Timer triggers an interrupt that calls <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L109-L169"><code>arm64_arch_timer_compare_isr</code></a></p>
+<p>(<code>CONFIG_SCHED_TICKLESS</code> is undefined)</p>
+<p><strong>Timer IRQ <code>ARM_ARCH_TIMER_IRQ</code></strong> is defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.h#L38-L45">arch/arm64/src/common/arm64_arch_timer.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#define CONFIG_ARM_TIMER_SECURE_IRQ         (GIC_PPI_INT_BASE + 13)
+#define CONFIG_ARM_TIMER_NON_SECURE_IRQ     (GIC_PPI_INT_BASE + 14)
+#define CONFIG_ARM_TIMER_VIRTUAL_IRQ        (GIC_PPI_INT_BASE + 11)
+#define CONFIG_ARM_TIMER_HYP_IRQ            (GIC_PPI_INT_BASE + 10)
+
+#define ARM_ARCH_TIMER_IRQ	CONFIG_ARM_TIMER_VIRTUAL_IRQ
+#define ARM_ARCH_TIMER_PRIO	IRQ_DEFAULT_PRIORITY
+#define ARM_ARCH_TIMER_FLAGS	IRQ_TYPE_LEVEL</code></pre></div>
+<p><code>GIC_PPI_INT_BASE</code> is defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gic.h#L120-L128">arch/arm64/src/common/arm64_gic.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#define GIC_SGI_INT_BASE            0
+#define GIC_PPI_INT_BASE            16
+#define GIC_IS_SGI(intid)           (((intid) &gt;= GIC_SGI_INT_BASE) &amp;&amp; \
+                                     ((intid) &lt; GIC_PPI_INT_BASE))
+
+#define GIC_SPI_INT_BASE            32
+#define GIC_NUM_INTR_PER_REG        32
+#define GIC_NUM_CFG_PER_REG         16
+#define GIC_NUM_PRI_PER_REG         4</code></pre></div><h1 id="timer-interrupt-isnt-handled"><a href="#timer-interrupt-isnt-handled">4 Timer Interrupt Isn’t Handled</a></h1>
+<p>TODO</p>
+<p>Previously NuttX hangs midsentence while booting on PinePhone, let’s find out how we fixed it…</p>
+<div class="example-wrap"><pre class="language-text"><code>arm64_gic_initialize: TODO: Init GIC for PinePhone
+arm64_gic_initialize: CONFIG_GICD_BASE=0x1c81000
+arm64_gic_initialize: CONFIG_GICR_BASE=0x1c82000
+arm64_gic_initialize: GIC Version is 2
+up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
+uart_regi</code></pre></div>
+<p>Based on our experiments, it seems the <a href="https://github.com/lupyuen/pinephone-nuttx#system-timer">System Timer</a> triggered a Timer Interrupt, and NuttX hangs while attempting to handle the Timer Interrupt.</p>
+<p>The Timer Interrupt Handler <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L109-L169"><code>arm64_arch_timer_compare_isr</code></a> is never called. (We checked using <a href="https://github.com/lupyuen/pinephone-nuttx#boot-debugging"><code>up_putc</code></a>)</p>
+<p><em>Is it caused by PinePhone’s GIC?</em></p>
+<p>This problem doesn’t seem to be caused by <a href="https://github.com/lupyuen/pinephone-nuttx#interrupt-controller">PinePhone’s Generic Interrupt Controller (GIC)</a> that we have implemented. We <a href="https://github.com/lupyuen/pinephone-nuttx#test-pinephone-gic-with-qemu">successfully tested PinePhone’s GIC</a> with QEMU.</p>
+<p>Let’s troubleshoot the Timer Interrupt…</p>
+<ul>
+<li>
+<p>We called <a href="https://github.com/lupyuen/pinephone-nuttx#boot-debugging"><code>up_putc</code></a> to understand <a href="https://github.com/lupyuen/pinephone-nuttx#handling-interrupts">how Interrupts are handled on NuttX</a>.</p>
+<p>We also added Debug Code to the <a href="https://github.com/lupyuen/pinephone-nuttx#interrupt-debugging">Arm64 Interrupt Handler</a>.</p>
+<p><a href="https://github.com/apache/incubator-nuttx/tree/master/boards/arm64/qemu/qemu-a53">(Maybe we should have used GDB with QEMU)</a> </p>
+</li>
+<li>
+<p>We <a href="https://github.com/lupyuen/pinephone-nuttx#dump-interrupt-vector-table">dumped the Interrupt Vector Table</a>.</p>
+<p>We verified that the Timer Interrupt Handler Address in the table is correct.</p>
+</li>
+<li>
+<p>We confirmed that <a href="https://github.com/lupyuen/pinephone-nuttx#handling-interrupts">Interrupt Dispatcher <code>irq_dispatch</code></a> isn’t called.</p>
+<p>And <a href="https://github.com/lupyuen/pinephone-nuttx#handling-interrupts">Unexpected Interrupt Handler <code>irq_unexpected_isr</code></a> isn’t called either.</p>
+</li>
+<li>
+<p>Let’s backtrack, maybe there’s a problem in the Arm64 Interrupt Handler?</p>
+<p>But <a href="https://github.com/lupyuen/pinephone-nuttx#handling-interrupts"><code>arm64_enter_exception</code></a> and <a href="https://github.com/lupyuen/pinephone-nuttx#handling-interrupts"><code>arm64_irq_handler</code></a> aren’t called either.</p>
+</li>
+<li>
+<p>Maybe the <strong>Arm64 Vector Table <code>_vector_table</code></strong> isn’t correctly configured?</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L93-L232">arch/arm64/src/common/arm64_vector_table.S</a></p>
+</li>
+</ul>
+<p>And we’re right! The Arm64 Vector Table is indeed incorrectly configured! Here why…</p>
+<h1 id="arm64-vector-table-is-wrong"><a href="#arm64-vector-table-is-wrong">5 Arm64 Vector Table Is Wrong</a></h1>
+<p>TODO</p>
+<p>Earlier we saw that the Interrupt Handler wasn’t called for System Timer Interrupt. And it might be due to problems in the <strong>Arm64 Vector Table <code>_vector_table</code></strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L93-L232">arch/arm64/src/common/arm64_vector_table.S</a></p>
+<p>Let’s check whether the Arm64 Vector Table <code>_vector_table</code> is correctly configured in the Arm CPU: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L212-L235">arch/arm64/src/common/arm64_arch_timer.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>void up_timer_initialize(void)
+{
+  ...
+  // Attach System Timer Interrupt Handler
+  irq_attach(ARM_ARCH_TIMER_IRQ, arm64_arch_timer_compare_isr, 0);
+
+  // For PinePhone: Read Vector Base Address Register EL1
+  extern void *_vector_table[];
+  sinfo(&quot;_vector_table=%p\n&quot;, _vector_table);
+  sinfo(&quot;Before writing: vbar_el1=%p\n&quot;, read_sysreg(vbar_el1));</code></pre></div>
+<p>After attaching the Interrupt Handler for System Timer, we read the Arm64 <a href="https://github.com/lupyuen/pinephone-nuttx#handling-interrupts">Vector Base Address Register EL1</a>. Here’s the output…</p>
+<div class="example-wrap"><pre class="language-text"><code>up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
+up_timer_initialize: _vector_table=0x400a7000
+up_timer_initialize: Before writing: vbar_el1=0x40227000</code></pre></div>
+<p>Aha! <code>_vector_table</code> is at 0x400a7000… But Vector Base Address Register EL1 says 0x40227000!</p>
+<p>Our Arm64 CPU is pointing to the wrong Arm64 Vector Table… Hence our Interrupt Handler is never called!</p>
+<p>Let’s fix the Vector Base Address Register EL1: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L212-L235">arch/arm64/src/common/arm64_arch_timer.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>  // For PinePhone: Write Vector Base Address Register EL1
+  write_sysreg((uint64_t)_vector_table, vbar_el1);
+  ARM64_ISB();
+
+  // For PinePhone: Read Vector Base Address Register EL1
+  sinfo(&quot;After writing: vbar_el1=%p\n&quot;, read_sysreg(vbar_el1));</code></pre></div>
+<p>This writes the correct value of <code>_vector_table</code> back into Vector Base Address Register EL1. Here’s the output…</p>
+<div class="example-wrap"><pre class="language-text"><code>up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
+up_timer_initialize: _vector_table=0x400a7000
+up_timer_initialize: Before writing: vbar_el1=0x40227000
+up_timer_initialize: After writing: vbar_el1=0x400a7000</code></pre></div>
+<p>Yep Vector Base Address Register EL1 is now correct.</p>
+<p>And our Interrupt Handlers are now working fine yay!</p>
+<h1 id="test-pinephone-gic-with-qemu"><a href="#test-pinephone-gic-with-qemu">6 Test PinePhone GIC with QEMU</a></h1>
+<p>TODO</p>
+<p>This is how we tested PinePhone’s <a href="https://github.com/lupyuen/pinephone-nuttx#interrupt-controller">Generic Interrupt Controller (GIC)</a> with QEMU…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Run GIC v2 with QEMU
+qemu-system-aarch64 \
+  -smp 4 \
+  -cpu cortex-a53 \
+  -nographic \
+  -machine virt,virtualization=on,gic-version=2 \
+  -net none \
+  -chardev stdio,id=con,mux=on \
+  -serial chardev:con \
+  -mon chardev=con,mode=readline \
+  -kernel ./nuttx</code></pre></div>
+<p>Note that <code>gic-version=2</code>, instead of the usual GIC Version 3 for NuttX Arm64.</p>
+<p>Also we simulated 4 Cores of Arm Cortex-A53 (similar to PinePhone): <code>-smp 4</code></p>
+<p>QEMU boots OK with PinePhone’s GIC Version 2…</p>
+<div class="example-wrap"><pre class="language-text"><code>- Ready to Boot CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+nx_start: Entry
+up_allocate_heap: heap_start=0x0x402c4000, heap_size=0x7d3c000
+arm64_gic_initialize: TODO: Init GIC for PinePhone
+arm64_gic_initialize: CONFIG_GICD_BASE=0x8000000
+arm64_gic_initialize: CONFIG_GICR_BASE=0x8010000
+arm64_gic_initialize: GIC Version is 2
+EFGHup_timer_initialize: up_timer_initialize: cp15 timer(s) running at 62.50MHz, cycle 62500
+AKLMNOPBIJuart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+AKLMNOPBIJwork_start_highpri: Starting high-priority kernel worker thread(s)
+nx_start_application: Starting init thread
+lib_cxx_initialize: _sinit: 0x402a7000 _einit: 0x402a7000 _stext: 0x40280000 _etext: 0x402a8000
+nsh: sysinit: fopen failed: 2
+nsh: mkfatfs: command not found
+
+NuttShell (NSH) NuttX-10.3.0-RC2
+nsh&gt; nx_start: CPU0: Beginning Idle Loop</code></pre></div>
+<p>So our implementation of GIC Version 2 for PinePhone is probably OK.</p>
+<p><em>Is the Timer Interrupt triggered correctly with PinePhone GIC?</em></p>
+<p>Yes, we verified that the Timer Interrupt Handler <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L109-L169"><code>arm64_arch_timer_compare_isr</code></a> is  called periodically. (We checked using <a href="https://github.com/lupyuen/pinephone-nuttx#boot-debugging"><code>up_putc</code></a>)</p>
+<p><em>How did we get the GIC Base Addresses?</em></p>
+<div class="example-wrap"><pre class="language-text"><code>arm64_gic_initialize: CONFIG_GICD_BASE=0x8000000
+arm64_gic_initialize: CONFIG_GICR_BASE=0x8010000</code></pre></div>
+<p>We got the GIC v2 Base Addresses for GIC Distributor (<code>CONFIG_GICD_BASE</code>) and GIC CPU Interface (<code>CONFIG_GICR_BASE</code>) by dumping the Device Tree from QEMU…</p>
+<div class="example-wrap"><pre class="language-bash"><code># GIC v2 Dump Device Tree
+qemu-system-aarch64 \
+  -smp 4 \
+  -cpu cortex-a53 \
+  -nographic \
+  -machine virt,virtualization=on,gic-version=2,dumpdtb=gicv2.dtb \
+  -net none \
+  -chardev stdio,id=con,mux=on \
+  -serial chardev:con \
+  -mon chardev=con,mode=readline \
+  -kernel ./nuttx
+
+# Convert Device Tree to text format
+dtc -o gicv2.dts -O dts -I dtb gicv2.dtb</code></pre></div>
+<p>The Base Addresses are revealed in the GIC v2 Device Tree: <a href="https://github.com/lupyuen/incubator-nuttx/blob/gicv2/gicv2.dts#L324">gicv2.dts</a>…</p>
+<div class="example-wrap"><pre class="language-text"><code>intc@8000000 {
+reg = &lt;
+    0x00 0x8000000 0x00 0x10000  //  GIC Distributor:   0x8000000
+    0x00 0x8010000 0x00 0x10000  //  GIC CPU Interface: 0x8010000
+    0x00 0x8030000 0x00 0x10000  //  VGIC Virtual Interface Control: 0x8030000
+    0x00 0x8040000 0x00 0x10000  //  VGIC Virtual CPU Interface:     0x8040000
+&gt;;
+compatible = &quot;arm,cortex-a15-gic&quot;;</code></pre></div>
+<p><a href="https://www.kernel.org/doc/Documentation/devicetree/bindings/interrupt-controller/arm%2Cgic.txt">(More about this)</a></p>
+<p>We defined the Base Addresses in <a href="https://github.com/lupyuen/incubator-nuttx/blob/gicv2/arch/arm64/include/qemu/chip.h#L38-L40">arch/arm64/include/qemu/chip.h</a></p>
+<p>Compare the above Base Addresses with the GIC v3 Device Tree: <a href="https://github.com/lupyuen/incubator-nuttx/blob/gicv2/gicv3.dts#L324">gicv3.dts</a></p>
+<div class="example-wrap"><pre class="language-text"><code>intc@8000000 {
+reg = &lt;
+    0x00 0x8000000 0x00 0x10000   //  GIC Distributor:   0x8000000
+    0x00 0x80a0000 0x00 0xf60000  //  GIC CPU Interface: 0x80a0000
+&gt;;
+#redistributor-regions = &lt;0x01&gt;;
+compatible = &quot;arm,gic-v3&quot;;</code></pre></div>
+<p>This is how we copied the PinePhone GIC v2 Source Files into NuttX Arm64 for testing…</p>
+<div class="example-wrap"><pre class="language-bash"><code>cp ~/PinePhone/nuttx/nuttx/arch/arm64/src/common/arm64_gicv3.c      ~/gicv2/nuttx/nuttx/arch/arm64/src/common/arm64_gicv3.c
+cp ~/PinePhone/nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2.c         ~/gicv2/nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2.c
+cp ~/PinePhone/nuttx/nuttx/arch/arm/src/armv7-a/gic.h               ~/gicv2/nuttx/nuttx/arch/arm/src/armv7-a/gic.h
+cp ~/PinePhone/nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2_dump.c    ~/gicv2/nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2_dump.c
+cp ~/PinePhone/nuttx/nuttx/arch/arm64/src/common/arm64_arch_timer.c ~/gicv2/nuttx/nuttx/arch/arm64/src/common/arm64_arch_timer.c
+cp ~/PinePhone/nuttx/run.sh             ~/gicv2/nuttx/run.sh
+cp ~/PinePhone/nuttx/.vscode/tasks.json ~/gicv2/nuttx/.vscode/tasks.json</code></pre></div><h1 id="handling-interrupts"><a href="#handling-interrupts">7 Handling Interrupts</a></h1>
+<p>TODO</p>
+<p>Let’s talk about NuttX and how it handles interrupts.</p>
+<p>The <strong>Interrupt Vector Table</strong> is defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/sched/irq/irq_initialize.c#L47-L53">sched/irq/irq_initialize.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/* This is the interrupt vector table */
+struct irq_info_s g_irqvector[NR_IRQS];</code></pre></div>
+<p>(Next section talks about dumping the Interrupt Vector Table)</p>
+<p>At startup, the Interrupt Vector Table is initialised to the <strong>Unexpected Interrupt Handler <code>irq_unexpected_isr</code></strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/sched/irq/irq_initialize.c#L59-L85">sched/irq/irq_initialize.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
+ * Name: irq_initialize
+ * Description:
+ *   Configure the IRQ subsystem
+ ****************************************************************************/
+void irq_initialize(void)
+{
+  /* Point all interrupt vectors to the unexpected interrupt */
+  for (i = 0; i &lt; NR_IRQS; i++)
+    {
+      g_irqvector[i].handler = irq_unexpected_isr;
+    }
+  up_irqinitialize();
+}</code></pre></div>
+<p><strong>Unexpected Interrupt Handler <code>irq_unexpected_isr</code></strong> is called when an Interrupt is triggered and there’s no Interrupt Handler attached to the Interrupt: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/sched/irq/irq_unexpectedisr.c#L38-L59">sched/irq/irq_unexpectedisr.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
+ * Name: irq_unexpected_isr
+ * Description:
+ *   An interrupt has been received for an IRQ that was never registered
+ *   with the system.
+ ****************************************************************************/
+int irq_unexpected_isr(int irq, FAR void *context, FAR void *arg)
+{
+  up_irq_save();
+  _err(&quot;ERROR irq: %d\n&quot;, irq);
+  PANIC();</code></pre></div>
+<p>To <strong>attach an Interrupt Handler</strong>, we set the Handler and the Argument in the Interrupt Vector Table: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/sched/irq/irq_attach.c#L37-L136">sched/irq/irq_attach.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
+ * Name: irq_attach
+ * Description:
+ *   Configure the IRQ subsystem so that IRQ number &#39;irq&#39; is dispatched to
+ *   &#39;isr&#39;
+ ****************************************************************************/
+int irq_attach(int irq, xcpt_t isr, FAR void *arg)
+{
+  ...
+  /* Save the new ISR and its argument in the table. */
+  g_irqvector[irq].handler = isr;
+  g_irqvector[irq].arg     = arg;</code></pre></div>
+<p>When an <strong>Interrupt is triggered</strong>…</p>
+<ol>
+<li>
+<p>Arm CPU looks up the <strong>Arm64 Vector Table <code>_vector_table</code></strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L93-L232">arch/arm64/src/common/arm64_vector_table.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>/* Four types of exceptions:
+* - synchronous: aborts from MMU, SP/CP alignment checking, unallocated
+*   instructions, SVCs/SMCs/HVCs, ...)
+* - IRQ: group 1 (normal) interrupts
+* - FIQ: group 0 or secure interrupts
+* - SError: fatal system errors
+*
+* Four different contexts:
+* - from same exception level, when using the SP_EL0 stack pointer
+* - from same exception level, when using the SP_ELx stack pointer
+* - from lower exception level, when this is AArch64
+* - from lower exception level, when this is AArch32
+*
+* +------------------+------------------+-------------------------+
+* |     Address      |  Exception type  |       Description       |
+* +------------------+------------------+-------------------------+
+* | VBAR_ELn + 0x000 | Synchronous      | Current EL with SP0     |
+* |          + 0x080 | IRQ / vIRQ       |                         |
+* |          + 0x100 | FIQ / vFIQ       |                         |
+* |          + 0x180 | SError / vSError |                         |
+* +------------------+------------------+-------------------------+
+* |          + 0x200 | Synchronous      | Current EL with SPx     |
+* |          + 0x280 | IRQ / vIRQ       |                         |
+* |          + 0x300 | FIQ / vFIQ       |                         |
+* |          + 0x380 | SError / vSError |                         |
+* +------------------+------------------+-------------------------+
+* |          + 0x400 | Synchronous      | Lower EL using  AArch64 |
+* |          + 0x480 | IRQ / vIRQ       |                         |
+* |          + 0x500 | FIQ / vFIQ       |                         |
+* |          + 0x580 | SError / vSError |                         |
+* +------------------+------------------+-------------------------+
+* |          + 0x600 | Synchronous      | Lower EL using AArch64  |
+* |          + 0x680 | IRQ / vIRQ       |                         |
+* |          + 0x700 | FIQ / vFIQ       |                         |
+* |          + 0x780 | SError / vSError |                         |
+* +------------------+------------------+-------------------------+
+*/
+GTEXT(_vector_table)
+SECTION_SUBSEC_FUNC(exc_vector_table,_vector_table_section,_vector_table)
+    ...
+    /* Current EL with SPx / IRQ */
+    .align 7
+    arm64_enter_exception x0, x1
+    b    arm64_irq_handler
+    ...
+    /* Lower EL using AArch64 / IRQ */
+    .align 7
+    arm64_enter_exception x0, x1
+    b    arm64_irq_handler</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L41-L87">(<code>arm64_enter_exception</code> is defined here)</a></p>
+</li>
+<li>
+<p>Based on the Arm64 Vector Table <code>_vector_table</code>, Arm CPU jumps to <code>arm64_irq_handler</code>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vectors.S#L326-L413">arch/arm64/src/common/arm64_vectors.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>/****************************************************************************
+* Name: arm64_irq_handler
+* Description:
+*   Interrupt exception handler
+****************************************************************************/
+GTEXT(arm64_irq_handler)
+SECTION_FUNC(text, arm64_irq_handler)
+    ...
+    /* Call arm64_decodeirq() on the interrupt stack
+    * with interrupts disabled
+    */
+    bl     arm64_decodeirq</code></pre></div></li>
+<li>
+<p><code>arm64_irq_handler</code> calls <code>arm64_decodeirq</code> to decode the Interrupt: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L800-L829">arch/arm64/src/common/arm64_gicv3.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/***************************************************************************
+* Name: arm64_decodeirq
+* Description:
+*   This function is called from the IRQ vector handler in arm64_vectors.S.
+*   At this point, the interrupt has been taken and the registers have
+*   been saved on the stack.  This function simply needs to determine the
+*   the irq number of the interrupt and then to call arm_doirq to dispatch
+*   the interrupt.
+*  Input Parameters:
+*   regs - A pointer to the register save area on the stack.
+***************************************************************************/
+// Decode IRQ for PinePhone, based on arm_decodeirq in arm_gicv2.c
+uint64_t * arm64_decodeirq(uint64_t * regs)
+{
+  ...
+  if (irq &lt; NR_IRQS)
+    {
+      /* Dispatch the interrupt */
+
+      regs = arm64_doirq(irq, regs);</code></pre></div></li>
+<li>
+<p><code>arm64_decodeirq</code> calls <code>arm64_doirq</code> to dispatch the Interrupt: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_doirq.c#L64-L119">arch/arm64/src/common/arm64_doirq.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
+ * Name: arm64_doirq
+* Description:
+*   Receives the decoded GIC interrupt information and dispatches control
+*   to the attached interrupt handler.
+*
+****************************************************************************/
+uint64_t *arm64_doirq(int irq, uint64_t * regs)
+{
+  ...
+  /* Deliver the IRQ */
+  irq_dispatch(irq, regs);</code></pre></div></li>
+<li>
+<p><code>irq_dispatch</code> calls the Interrupt Handler fetched from the Interrupt Vector Table: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/sched/irq/irq_dispatch.c#L115-L173">sched/irq/irq_dispatch.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
+ * Name: irq_dispatch
+* Description:
+*   This function must be called from the architecture-specific logic in
+*   order to dispatch an interrupt to the appropriate, registered handling
+*   logic.
+****************************************************************************/
+void irq_dispatch(int irq, FAR void *context)
+{
+  if ((unsigned)irq &lt; NR_IRQS)
+    {
+      if (g_irqvector[ndx].handler)
+        {
+          vector = g_irqvector[ndx].handler;
+          arg    = g_irqvector[ndx].arg;
+        }
+    }
+  /* Then dispatch to the interrupt handler */
+  CALL_VECTOR(ndx, vector, irq, context, arg);</code></pre></div></li>
+</ol>
+<p><em>How is the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L93-L232">Arm64 Vector Table <code>_vector_table</code></a> configured in the Arm CPU?</em></p>
+<p>The <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L93-L232">Arm64 Vector Table <code>_vector_table</code></a> is configured in the Arm CPU during EL1 Init by <code>arm64_boot_el1_init</code>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_boot.c#L132-L162">arch/arm64/src/common/arm64_boot.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>void arm64_boot_el1_init(void)
+{
+  /* Setup vector table */
+  write_sysreg((uint64_t)_vector_table, vbar_el1);
+  ARM64_ISB();</code></pre></div>
+<p><code>vbar_el1</code> refers to <strong>Vector Base Address Register EL1</strong>.</p>
+<p><a href="https://documentation-service.arm.com/static/5e9075f9c8052b1608761519?token=">(See Arm Cortex-A53 Technical Reference Manual, page 4-121, “Vector Base Address Register, EL1”)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_boot.c#L39-L75">(Arm64 Vector Table is also configured during EL3 Init by <code>arm64_boot_el3_init</code>)</a></p>
+<p>EL1 Init <code>arm64_boot_el1_init</code> is called by our Startup Code: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L216-L230">arch/arm64/src/common/arm64_head.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>    PRINT(switch_el1, &quot;- Boot from EL1\r\n&quot;)
+
+    /* EL1 init */
+    bl    arm64_boot_el1_init
+
+    /* set SP_ELx and Enable SError interrupts */
+    msr   SPSel, #1
+    msr   DAIFClr, #(DAIFCLR_ABT_BIT)
+    isb
+
+jump_to_c_entry:
+    PRINT(jump_to_c_entry, &quot;- Boot to C runtime for OS Initialize\r\n&quot;)
+    ret x25</code></pre></div>
+<p><em>What are EL1 and EL3?</em></p>
+<p>According to <a href="https://documentation-service.arm.com/static/5e9075f9c8052b1608761519?token=">Arm Cortex-A53 Technical Reference Manual</a> page 3-5 (“Exception Level”)…</p>
+<blockquote>
+<p>The ARMv8 exception model defines exception levels EL0-EL3, where:</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>EL0 has the lowest software execution privilege, and execution at EL0 is called unprivileged execution.</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>Increased exception levels, from 1 to 3, indicate increased software execution privilege.</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>EL2 provides support for processor virtualization.</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>EL3 provides support for a secure state, see Security state on page 3-6.</li>
+</ul>
+</blockquote>
+<p>PinePhone only uses EL1 and EL2 (but not EL3)…</p>
+<div class="example-wrap"><pre class="language-text"><code>HELLO NUTTX ON PINEPHONE!
+- Ready to Boot CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize</code></pre></div>
+<p>From this we see that NuttX runs mostly in EL1.</p>
+<p>(EL1 is less privileged than EL2, which supports Processor Virtualization)</p>
+<h1 id="dump-interrupt-vector-table"><a href="#dump-interrupt-vector-table">8 Dump Interrupt Vector Table</a></h1>
+<p>TODO</p>
+<p>This is how we dump the Interrupt Vector Table to troubleshoot Interrupts…</p>
+<p>Based on <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L210-L240">arch/arm64/src/common/arm64_arch_timer.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#include &quot;irq/irq.h&quot; // For dumping Interrupt Vector Table
+
+void up_timer_initialize(void)
+{
+  ...
+  // Attach System Timer Interrupt Handler
+  irq_attach(ARM_ARCH_TIMER_IRQ, arm64_arch_timer_compare_isr, 0);
+
+  // Begin dumping Interrupt Vector Table
+  sinfo(&quot;ARM_ARCH_TIMER_IRQ=%d\n&quot;, ARM_ARCH_TIMER_IRQ);
+  sinfo(&quot;arm64_arch_timer_compare_isr=%p\n&quot;, arm64_arch_timer_compare_isr);
+  sinfo(&quot;irq_unexpected_isr=%p\n&quot;, irq_unexpected_isr);
+  for (int i = 0; i &lt; NR_IRQS; i++)
+    {
+      sinfo(&quot;g_irqvector[%d].handler=%p\n&quot;, i, g_irqvector[i].handler);
+    }
+  // End dumping Interrupt Vector Table</code></pre></div>
+<p>This code runs at startup to attach the very first Interrupt Handler, for the <a href="https://github.com/lupyuen/pinephone-nuttx#system-timer">System Timer Interrupt</a>.</p>
+<p>We see that the System Timer Interrupt Number (IRQ) is 27…</p>
+<div class="example-wrap"><pre class="language-text"><code>up_timer_initialize: ARM_ARCH_TIMER_IRQ=27
+up_timer_initialize: arm64_arch_timer_compare_isr=0x4009ae18
+up_timer_initialize: irq_unexpected_isr=0x400820e0
+
+up_timer_initialize: g_irqvector[0].handler=0x400820e0
+...
+up_timer_initialize: g_irqvector[26].handler=0x400820e0
+up_timer_initialize: g_irqvector[27].handler=0x4009ae18
+up_timer_initialize: g_irqvector[28].handler=0x400820e0
+...
+up_timer_initialize: g_irqvector[219].handler=0x400820e0</code></pre></div>
+<p>All entries in the Interrupt Vector Table point to the <a href="https://github.com/lupyuen/pinephone-nuttx#handling-interrupts">Unexpected Interrupt Handler <code>irq_unexpected_isr</code></a>, except for <code>g_irqvector[27]</code> which points to the <a href="https://github.com/lupyuen/pinephone-nuttx#system-timer">System Timer Interrupt Handler <code>arm64_arch_timer_compare_isr</code></a>.</p>
+<h1 id="interrupt-debugging"><a href="#interrupt-debugging">9 Interrupt Debugging</a></h1>
+<p>TODO</p>
+<p><em>Can we debug the Arm64 Interrupt Handler?</em></p>
+<p>Yep we can write to the UART Port like this…</p>
+<p>Based on <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vectors.S#L326-L413">arch/arm64/src/common/arm64_vectors.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>#define UART1_BASE_ADDRESS 0x01C28000
+
+
+/****************************************************************************
+ * Name: arm64_irq_handler
+ * Description:
+ *   Interrupt exception handler
+ ****************************************************************************/
+GTEXT(arm64_irq_handler)
+SECTION_FUNC(text, arm64_irq_handler)
+
+    mov   x0, #84                 /* For Debug: &#39;T&#39; */
+    ldr   x1, =UART1_BASE_ADDRESS /* For Debug */
+    strb  w0, [x1]                /* For Debug */
+
+    /* switch to IRQ stack and save current sp on it. */
+    ...</code></pre></div>
+<p>This will print “T” on the console whenever the Arm64 CPU triggers an Interrupt. (Assuming that the UART Buffer hasn’t overflowed)</p>
+<p>We can insert this debug code for every handler in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vectors.S">arch/arm64/src/common/arm64_vectors.S</a>…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vectors.S#L172-L324"><code>arm64_sync_exc</code></a>: Handle synchronous exception</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vectors.S#L326-L413"><code>arm64_irq_handler</code></a>: Interrupt exception handler</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vectors.S#L401-L413"><code>arm64_serror_handler</code></a>: SError handler (Fatal System Errors)</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vectors.S#L415-L425"><code>arm64_mode32_error</code></a>: Mode32 Error</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vectors.S#L427-L438"><code>arm64_irq_spurious</code></a>: Spurious Interrupt</p>
+</li>
+</ul>
+<p>This is how we insert the debug code for every handler in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vectors.S">arm64_vectors.S</a>: https://gist.github.com/lupyuen/4bea83c61704080f1af18abfda63c77e</p>
+<p>We can do the same for the <strong>Arm64 Vector Table</strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L47-L75">arch/arm64/src/common/arm64_vector_table.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>#define UART1_BASE_ADDRESS 0x01C28000
+
+
+/* Save Corruptible Registers and exception context
+ * on the task stack
+ * note: allocate stackframe with XCPTCONTEXT_GP_REGS
+ *     which is ARM64_ESF_REGS + ARM64_CS_REGS
+ *     but only save ARM64_ESF_REGS
+ */
+.macro arm64_enter_exception xreg0, xreg1
+    sub    sp, sp, #8 * XCPTCONTEXT_GP_REGS
+
+    stp    x0,  x1,  [sp, #8 * REG_X0]
+    stp    x2,  x3,  [sp, #8 * REG_X2]
+    ...
+    stp    x28, x29, [sp, #8 * REG_X28]
+
+    mov   x0, #88                 /* For Debug: &#39;X&#39; */
+    ldr   x1, =UART1_BASE_ADDRESS /* For Debug */
+    strb  w0, [x1]                /* For Debug */</code></pre></div><h1 id="memory-map"><a href="#memory-map">10 Memory Map</a></h1>
+<p>TODO</p>
+<p>PinePhone depends on Arm’s Memory Management Unit (MMU). We defined two MMU Memory Regions for PinePhone: RAM and Device I/O: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/include/qemu/chip.h#L38-L62">arch/arm64/include/qemu/chip.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// PinePhone Generic Interrupt Controller
+// GIC_DIST:  0x01C80000 + 0x1000
+// GIC_CPUIF: 0x01C80000 + 0x2000
+#define CONFIG_GICD_BASE          0x01C81000  
+#define CONFIG_GICR_BASE          0x01C82000  
+
+// Previously:
+// #define CONFIG_GICD_BASE          0x8000000
+// #define CONFIG_GICR_BASE          0x80a0000
+
+// PinePhone RAM: 0x4000 0000 to 0x4800 0000
+#define CONFIG_RAMBANK1_ADDR      0x40000000
+#define CONFIG_RAMBANK1_SIZE      MB(128)
+
+// PinePhone Device I/O: 0x0 to 0x2000 0000
+#define CONFIG_DEVICEIO_BASEADDR  0x00000000
+#define CONFIG_DEVICEIO_SIZE      MB(512)
+
+// Previously:
+// #define CONFIG_DEVICEIO_BASEADDR  0x7000000
+// #define CONFIG_DEVICEIO_SIZE      MB(512)
+
+// PinePhone uboot load address (kernel_addr_r)
+#define CONFIG_LOAD_BASE          0x40080000
+// Previously: #define CONFIG_LOAD_BASE          0x40280000</code></pre></div>
+<p>We also changed CONFIG_LOAD_BASE for PinePhone’s Kernel Start Address (kernel_addr_r).</p>
+<p><em>How are the MMU Memory Regions used?</em></p>
+<p>NuttX initialises the Arm MMU with the MMU Memory Regions at startup: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_boot.c#L52-L67">arch/arm64/src/qemu/qemu_boot.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static const struct arm_mmu_region mmu_regions[] =
+{
+  MMU_REGION_FLAT_ENTRY(&quot;DEVICE_REGION&quot;,
+                        CONFIG_DEVICEIO_BASEADDR, MB(512),
+                        MT_DEVICE_NGNRNE | MT_RW | MT_SECURE),
+
+  MMU_REGION_FLAT_ENTRY(&quot;DRAM0_S0&quot;,
+                        CONFIG_RAMBANK1_ADDR, MB(512),
+                        MT_NORMAL | MT_RW | MT_SECURE),
+};
+
+const struct arm_mmu_config mmu_config =
+{
+  .num_regions = ARRAY_SIZE(mmu_regions),
+  .mmu_regions = mmu_regions,
+};</code></pre></div>
+<p>The Arm MMU Initialisation is done by <code>arm64_mmu_init</code>, defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_mmu.c#L571-L622">arch/arm64/src/common/arm64_mmu.c</a></p>
+<p>We’ll talk more about the Arm MMU in the next section…</p>
+<h1 id="boot-sequence"><a href="#boot-sequence">11 Boot Sequence</a></h1>
+<p>TODO</p>
+<p>This section describes the Boot Sequence for NuttX on PinePhone.</p>
+<p>The Startup Code (in Arm64 Assembly) inits the Arm64 System Registers, UART Port and jumps to <code>arm64_boot_secondary_c_routine</code> (in C): <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L228-L230">arch/arm64/src/common/arm64_head.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>    ldr    x25, =arm64_boot_secondary_c_routine
+    ...
+jump_to_c_entry:
+    PRINT(jump_to_c_entry, &quot;- Boot to C runtime for OS Initialize\r\n&quot;)
+    ret x25</code></pre></div>
+<p><code>arm64_boot_primary_c_routine</code> inits the BSS, calls <code>arm64_chip_boot</code> to init the Arm64 CPU, and <code>nx_start</code> to start the NuttX processes: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_boot.c#L179-L189">arch/arm64/src/common/arm64_boot.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>void arm64_boot_primary_c_routine(void)
+{
+  boot_early_memset(_START_BSS, 0, _END_BSS - _START_BSS);
+  arm64_chip_boot();
+  nx_start();
+}</code></pre></div>
+<p><code>arm64_chip_boot</code> calls <code>arm64_mmu_init</code> to enable the Arm Memory Management Unit, and <code>qemu_board_initialize</code> to init the Board Drivers: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_boot.c#L81-L105">arch/arm64/src/qemu/qemu_boot.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>void arm64_chip_boot(void)
+{
+  /* MAP IO and DRAM, enable MMU. */
+
+  arm64_mmu_init(true);
+
+#ifdef CONFIG_SMP
+  arm64_psci_init(&quot;smc&quot;);
+
+#endif
+
+  /* Perform board-specific device initialization. This would include
+   * configuration of board specific resources such as GPIOs, LEDs, etc.
+   */
+
+  qemu_board_initialize();
+
+#ifdef USE_EARLYSERIALINIT
+  /* Perform early serial initialization if we are going to use the serial
+   * driver.
+   */
+
+  qemu_earlyserialinit();
+#endif
+}</code></pre></div>
+<p><code>arm64_mmu_init</code> is defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_mmu.c#L571-L622">arch/arm64/src/common/arm64_mmu.c</a></p>
+<p>The next section talks about debugging the Boot Sequence…</p>
+<h1 id="boot-debugging"><a href="#boot-debugging">12 Boot Debugging</a></h1>
+<p>TODO</p>
+<p><em>How can we debug NuttX while it boots?</em></p>
+<p>We may call <code>up_putc</code> to print characters to the Serial Console and troubleshoot the Boot Sequence: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_boot.c#L179-L189">arch/arm64/src/common/arm64_boot.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>void arm64_boot_primary_c_routine(void)
+{
+  int up_putc(int ch);  // For debugging
+  up_putc(&#39;0&#39;);  // For debugging
+  boot_early_memset(_START_BSS, 0, _END_BSS - _START_BSS);
+  up_putc(&#39;1&#39;);  // For debugging
+  arm64_chip_boot();
+  up_putc(&#39;2&#39;);  // For debugging
+  nx_start();
+}</code></pre></div>
+<p>This prints “012” to the Serial Console as NuttX boots.</p>
+<h1 id="gic-register-dump"><a href="#gic-register-dump">13 GIC Register Dump</a></h1>
+<p>TODO</p>
+<p>Below is the dump of PinePhone’s registers for <a href="https://developer.arm.com/documentation/ihi0048/latest/">Arm Generic Interrupt Controller version 2</a>…</p>
+<h1 id="whats-next"><a href="#whats-next">14 What’s Next</a></h1>
+<p>TODO</p>
+<p><em>Will NuttX work with all PinePhone features?</em></p>
+<p><strong>NuttX on PinePhone</strong> might take a while to become a <strong>Daily Driver</strong>…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/arm#pinephone-on-rtos"><strong>“PinePhone on RTOS”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/arm#pinephone-drivers-and-apps"><strong>“PinePhone Drivers and Apps”</strong></a></p>
+</li>
+</ul>
+<p>But today NuttX is ready to turn PinePhone into a valuable <strong>Learning Resource</strong>!</p>
+<p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/book"><strong>My Current Project: “The RISC-V BL602 Book”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/interrupt.md"><strong>lupyuen.github.io/src/interrupt.md</strong></a></p>
+<h1 id="notes"><a href="#notes">15 Notes</a></h1>
+<ol>
+<li>TODO</li>
+</ol>
+
+    
+</body>
+</html>
