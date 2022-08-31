@@ -35,7 +35,9 @@ HELLO NUTTX ON PINEPHONE!
 arm64_gic_initialize: no distributor detected, giving up
 ```
 
-TODO: Partial list of Shared Peripheral Interrupts supported by Allwinner A64's GIC
+![Partial list of Shared Peripheral Interrupts for Allwinner A64's GIC](https://lupyuen.github.io/images/interrupt-peripheral.jpg)
+
+_Partial list of Shared Peripheral Interrupts for Allwinner A64's GIC_
 
 # Generic Interrupt Controller
 
@@ -69,7 +71,11 @@ We do this the __flexible, efficient__ way with a GIC, which supports...
 
     (Anyone remember Silicon Graphics?)
 
-Allwinner A64's GIC supports __157 Interrupt Sources__: 16 SGI, 16 PPI and 125 SPI.
+Allwinner A64's GIC supports __157 Interrupt Sources__: 16 Software-Generated, 16 Private and 125 Shared.
+
+The GIC in Allwinner A64 is a little problematic, let's talk...
+
+# Allwinner A64 GIC
 
 TODO
 
