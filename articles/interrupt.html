@@ -269,6 +269,7 @@ uint64_t * arm64_decodeirq(uint64_t * regs) {
 <p><em>Injecting Arm32 into Arm64 sounds so reckless… Will it work?</em></p>
 <p>Let’s test our reckless GIC Version 2 with QEMU Emulator…</p>
 <p><img src="https://lupyuen.github.io/images/interrupt-title2.png" alt="Tracing Arm64 Interrupts on QEMU Emulator can get… Really messy" /></p>
+<p><em>Tracing Arm64 Interrupts on QEMU Emulator can get… Really messy</em></p>
 <h1 id="test-pinephone-gic-with-qemu"><a href="#test-pinephone-gic-with-qemu">4 Test PinePhone GIC with QEMU</a></h1>
 <p><em>Will our hacked GIC Version 2 run on PinePhone?</em></p>
 <p>Before testing on PinePhone, let’s test our Generic Interrupt Controller (GIC) Version 2 on <strong>QEMU Emulator</strong>.</p>
@@ -316,9 +317,9 @@ nsh: mkfatfs: command not found
 NuttShell (NSH) NuttX-10.3.0-RC2
 nsh&gt;
 nx_start: CPU0: Beginning Idle Loop</code></pre></div>
-<p>Yep NuttX with GIC Version 2 boots OK on QEMU, and will probably run on PinePhone!</p>
+<p>NuttX with GIC Version 2 boots OK on QEMU, and will probably run on PinePhone!</p>
 <p><em>We tested Interrupts with GIC Version 2?</em></p>
-<p>Yep the screen above shows “TX” whenever an Interrupt Handler is dispatched.</p>
+<p>Yep the pic above shows <strong>“TX”</strong> whenever an Interrupt Handler is dispatched.</p>
 <p>(We added Debug Logging for <a href="https://github.com/lupyuen/incubator-nuttx/blob/gicv2/arch/arm64/src/common/arm64_vectors.S#L337-L350">arm64_vectors.S</a> and <a href="https://github.com/lupyuen/incubator-nuttx/blob/gicv2/arch/arm64/src/common/arm64_vector_table.S#L47-L75">arm64_vector_table.S</a>)</p>
 <p><em>How did we get the GIC Base Addresses for QEMU?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_GICD_BASE=0x8000000
@@ -529,7 +530,7 @@ jump_to_c_entry:
     PRINT(jump_to_c_entry, &quot;- Boot to C runtime for OS Initialize\r\n&quot;)
     ret x25</code></pre></div>
 <p><em>So how did our Vector Base Address Register get messed up? And why is it off by exactly <code>0x18</code> <code>0000</code>?</em></p>
-<p>TODO</p>
+<p>We might have missed something when we changed the <strong>Kernel Start Address</strong> from <code>0x4028</code> <code>0000</code> to <code>0x4008</code> <code>0000</code> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L34">dramboot.ld</a>. We’ll check some more.</p>
 <h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p><em>Will NuttX work with all PinePhone features?</em></p>
