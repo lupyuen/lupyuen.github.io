@@ -380,43 +380,28 @@ uart_regi</code></pre></div>
 <p>Perhaps we’re <strong>handling Interrupts incorrectly?</strong></p>
 <p>Let’s investigate…</p>
 <h1 id="timer-interrupt-isnt-handled"><a href="#timer-interrupt-isnt-handled">6 Timer Interrupt Isn’t Handled</a></h1>
-<p>TODO</p>
-<p>Nuttx Interrupts</p>
-<p>Nuttx Interrupt vector table </p>
-<p>Arm64 vector table</p>
-<p>EL vs EL</p>
-<p>EL?</p>
-<p>Write to EL</p>
-<p>TODO</p>
-<p>NuttX hangs while attempting to handle the Timer Interrupt.</p>
-<p>The Timer Interrupt Handler <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L109-L169"><code>arm64_arch_timer_compare_isr</code></a> is never called. (We checked using <a href="https://github.com/lupyuen/pinephone-nuttx#boot-debugging"><code>up_putc</code></a>)</p>
-<p><em>Is it caused by PinePhone’s GIC?</em></p>
-<p>This problem doesn’t seem to be caused by <a href="https://github.com/lupyuen/pinephone-nuttx#interrupt-controller">PinePhone’s Generic Interrupt Controller (GIC)</a> that we have implemented. We <a href="https://github.com/lupyuen/pinephone-nuttx#test-pinephone-gic-with-qemu">successfully tested PinePhone’s GIC</a> with QEMU.</p>
-<p>Let’s troubleshoot the Timer Interrupt…</p>
+<p><em>Why did PinePhone hang while handling System Timer Interrupts?</em></p>
+<p><em>Was the Timer Interrupt Handler called?</em></p>
+<p>We verified that <strong>Timer Interrupt Handler <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L134-L161">arm64_arch_timer_compare_isr</a></strong> was NEVER called.</p>
+<p>(We checked by calling <a href="https://github.com/lupyuen/pinephone-nuttx#boot-debugging"><strong><code>up_putc</code></strong></a>, which prints directly to the UART Port)</p>
+<p>So something went wrong BEFORE calling the Interrupt Handler. Let’s backtrack…</p>
+<p><em>Is the Interrupt Vector Table pointing correctly to the Timer Interrupt Handler?</em></p>
+<p>NuttX defines an <strong>Interrupt Vector Table</strong> for dispatching Interrupt Handlers…</p>
 <ul>
-<li>
-<p>We called <a href="https://github.com/lupyuen/pinephone-nuttx#boot-debugging"><code>up_putc</code></a> to understand <a href="https://github.com/lupyuen/pinephone-nuttx#handling-interrupts">how Interrupts are handled on NuttX</a>.</p>
-<p>We also added Debug Code to the <a href="https://github.com/lupyuen/pinephone-nuttx#interrupt-debugging">Arm64 Interrupt Handler</a>.</p>
-<p><a href="https://github.com/apache/incubator-nuttx/tree/master/boards/arm64/qemu/qemu-a53">(Maybe we should have used GDB with QEMU)</a> </p>
-</li>
-<li>
-<p>We <a href="https://github.com/lupyuen/pinephone-nuttx#dump-interrupt-vector-table">dumped the Interrupt Vector Table</a>.</p>
-<p>We verified that the Timer Interrupt Handler Address in the table is correct.</p>
-</li>
-<li>
-<p>We confirmed that <a href="https://github.com/lupyuen/pinephone-nuttx#handling-interrupts">Interrupt Dispatcher <code>irq_dispatch</code></a> isn’t called.</p>
-<p>And <a href="https://github.com/lupyuen/pinephone-nuttx#handling-interrupts">Unexpected Interrupt Handler <code>irq_unexpected_isr</code></a> isn’t called either.</p>
-</li>
-<li>
-<p>Let’s backtrack, maybe there’s a problem in the Arm64 Interrupt Handler?</p>
-<p>But <a href="https://github.com/lupyuen/pinephone-nuttx#handling-interrupts"><code>arm64_enter_exception</code></a> and <a href="https://github.com/lupyuen/pinephone-nuttx#handling-interrupts"><code>arm64_irq_handler</code></a> aren’t called either.</p>
-</li>
-<li>
-<p>Maybe the <strong>Arm64 Vector Table <code>_vector_table</code></strong> isn’t correctly configured?</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L93-L232">arch/arm64/src/common/arm64_vector_table.S</a></p>
-</li>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx#handling-interrupts"><strong>“Handling Interrupts”</strong></a></li>
 </ul>
-<p>And we’re right! The Arm64 Vector Table is indeed incorrectly configured! Here why…</p>
+<p>We dumped NuttX’s Interrupt Vector Table…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx#dump-interrupt-vector-table"><strong>“Dump Interrupt Vector Table”</strong></a></li>
+</ul>
+<p>And verified that the Timer Interrupt Handler is set correctly in the table.</p>
+<p><em>Maybe something went wrong when NuttX tried to call the Interrupt Handler?</em></p>
+<p>NuttX should call <a href="https://github.com/lupyuen/pinephone-nuttx#handling-interrupts"><strong>Interrupt Dispatcher <code>irq_dispatch</code></strong></a> to dispatch the Interrupt Handler…</p>
+<p>But nope, <strong><code>irq_dispatch</code></strong> was never called.</p>
+<p><em>Some error occurred and NuttX threw an Unexpected Interrupt?</em></p>
+<p>Nope, the <a href="https://github.com/lupyuen/pinephone-nuttx#handling-interrupts"><strong>Unexpected Interrupt Handler <code>irq_unexpected_isr</code></strong></a> was never called either.</p>
+<p><em>OK I’m really stumped. Did something go bad deep inside Arm64 Interrupts?</em></p>
+<p>Possibly! Let’s talk about the Arm64 Vector Table…</p>
 <h1 id="arm64-vector-table-is-wrong"><a href="#arm64-vector-table-is-wrong">7 Arm64 Vector Table Is Wrong</a></h1>
 <p>TODO</p>
 <p>Earlier we saw that the Interrupt Handler wasn’t called for System Timer Interrupt. And it might be due to problems in the <strong>Arm64 Vector Table <code>_vector_table</code></strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L93-L232">arch/arm64/src/common/arm64_vector_table.S</a></p>
