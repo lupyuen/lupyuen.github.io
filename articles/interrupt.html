@@ -239,7 +239,7 @@ arm64_gic_initialize: GIC Version is 2</code></pre></div>
 // Inject Arm32 GIC v2 Implementation
 #include &quot;../arch/arm/src/armv7-a/arm_gicv2.c&quot;</code></pre></div>
 <p>(We commented out the GIC Version 3 code)</p>
-<p><em>What! Did we just <code>#include</code> GIC Version 2 from Arm32 into Arm64?</em></p>
+<p><em>What! Did we just <code>#include</code> the GIC Version 2 Source Code from Arm32 into Arm64?</em></p>
 <p>Yep it’s an awful trick but it seems to work!</p>
 <p>We made <strong>minor tweaks</strong> to GIC Version 2 to compile with Arm64…</p>
 <ul>
