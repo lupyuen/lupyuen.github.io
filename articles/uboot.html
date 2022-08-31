@@ -384,16 +384,16 @@ ramdisk_addr_r=0x4FE00000</code></pre></div>
 <li><a href="https://www.kernel.org/doc/html/latest/arm64/booting.html"><strong>“Booting AArch64 Linux”</strong></a></li>
 </ul>
 <p>The doc says that a Linux Kernel Image (for Arm64) should begin with this <strong>64-byte header</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>u32 code0;                    /* Executable code */
-u32 code1;                    /* Executable code */
-u64 text_offset;              /* Image load offset, little endian */
-u64 image_size;               /* Effective Image size, little endian */
-u64 flags;                    /* kernel flags, little endian */
-u64 res2      = 0;            /* reserved */
-u64 res3      = 0;            /* reserved */
-u64 res4      = 0;            /* reserved */
-u32 magic     = 0x644d5241;   /* Magic number, little endian, &quot;ARM\x64&quot; */
-u32 res5;                     /* reserved (used for PE COFF offset) */</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>u32 code0;              /* Executable code */
+u32 code1;              /* Executable code */
+u64 text_offset;        /* Image load offset, little endian */
+u64 image_size;         /* Effective Image size, little endian */
+u64 flags;              /* kernel flags, little endian */
+u64 res2  = 0;          /* reserved */
+u64 res3  = 0;          /* reserved */
+u64 res4  = 0;          /* reserved */
+u32 magic = 0x644d5241; /* Magic number, little endian, &quot;ARM\x64&quot; */
+u32 res5;               /* reserved (used for PE COFF offset) */</code></pre></div>
 <p><a href="https://www.kernel.org/doc/html/latest/arm64/booting.html">(Source)</a></p>
 <p>Let’s make a Linux Kernel Header to appease U-Boot…</p>
 <h1 id="nuttx-header"><a href="#nuttx-header">9 NuttX Header</a></h1>
@@ -423,17 +423,25 @@ __start:
 <p>At the top of the header we jump to <strong><code>real_start</code></strong> to skip the header.</p>
 <p>(NuttX code begins at <strong><code>real_start</code></strong> after the header)</p>
 <p>Then comes the rest of the header…</p>
-<div class="example-wrap"><pre class="language-text"><code>  .quad   0x0000               /* PinePhone Image load offset from start of RAM */
-  .quad   _e_initstack - __start  /* Effective size of kernel image, little-endian */
-  .quad   __HEAD_FLAGS         /* Informative flags, little-endian */
-  .quad   0                    /* reserved */
-  .quad   0                    /* reserved */
-  .quad   0                    /* reserved */
-  .ascii  &quot;ARM\x64&quot;            /* Magic number, &quot;ARM\x64&quot; */
-  .long   0                    /* reserved */
+<div class="example-wrap"><pre class="language-text"><code>  /* PinePhone Image load offset from start of RAM */
+  .quad   0x0000  
+
+  /* Effective size of kernel image, little-endian */
+  .quad   _e_initstack - __start
+
+  /* Informative flags, little-endian */
+  .quad   __HEAD_FLAGS
+
+  .quad   0          /* reserved */
+  .quad   0          /* reserved */
+  .quad   0          /* reserved */
+  .ascii  &quot;ARM\x64&quot;  /* Magic number, &quot;ARM\x64&quot; */
+  .long   0          /* reserved */
 
 /* NuttX OS Code begins here, after the header */
 real_start: ... </code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L105">(<strong><code>_e_initstack</code></strong> is End of Stack Space)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L41-L49">(<strong><code>__HEAD_FLAGS</code></strong> is defined here)</a></p>
 <p><em>What’s the value of <code>__start</code>?</em></p>
 <p>Remember <strong><code>kernel_addr_r</code></strong>, the <a href="https://lupyuen.github.io/articles/uboot#boot-address"><strong>Kernel Start Address</strong></a> from U-Boot?</p>
 <p>In NuttX, we define the Kernel Start Address <strong><code>__start</code></strong> as <strong><code>0x4008</code> <code>0000</code></strong> in our Linker Script: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L34">boards/arm64/qemu/qemu-a53/scripts/dramboot</a></p>
