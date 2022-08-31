@@ -529,21 +529,19 @@ nx_start: CPU0: Beginning Idle Loop</code></pre></div>
 jump_to_c_entry:
     PRINT(jump_to_c_entry, &quot;- Boot to C runtime for OS Initialize\r\n&quot;)
     ret x25</code></pre></div>
-<p><em>So how did our Vector Base Address Register get messed up? And why is it off by exactly <code>0x18</code> <code>0000</code>?</em></p>
-<p>We might have missed something when we changed the <strong>Kernel Start Address</strong> from <code>0x4028</code> <code>0000</code> to <code>0x4008</code> <code>0000</code> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L34">dramboot.ld</a>. We’ll check some more.</p>
-<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
-<p>TODO</p>
-<p><em>Will NuttX work with all PinePhone features?</em></p>
-<p><strong>NuttX on PinePhone</strong> might take a while to become a <strong>Daily Driver</strong>…</p>
+<p>The <strong>Boot Sequence</strong> for NuttX RTOS is explained here…</p>
 <ul>
-<li>
-<p><a href="https://lupyuen.github.io/articles/arm#pinephone-on-rtos"><strong>“PinePhone on RTOS”</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/articles/arm#pinephone-drivers-and-apps"><strong>“PinePhone Drivers and Apps”</strong></a></p>
-</li>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx#boot-sequence"><strong>“Boot Sequence”</strong></a></li>
 </ul>
-<p>But today NuttX is ready to turn PinePhone into a valuable <strong>Learning Resource</strong>!</p>
+<p><em>So how did our Vector Base Address Register get messed up? And why is it off by exactly <code>0x18</code> <code>0000</code>?</em></p>
+<p>We might have missed something when we changed the <strong>Kernel Start Address</strong> from <code>0x4028</code> <code>0000</code> to <code>0x4008</code> <code>0000</code> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L34">dramboot.ld</a>.</p>
+<p>Or maybe we made a mistake in our <strong>Memory Map</strong>…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx#memory-map"><strong>“Memory Map”</strong></a></li>
+</ul>
+<p>We’ll check some more.</p>
+<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
+<p>TODO: NuttX Shell</p>
 <p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
