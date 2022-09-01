@@ -720,6 +720,10 @@ Yep NuttX boots on PinePhone... After replacing a single __`Image.gz`__ file!
 
 # Upcoming Fixes
 
+Right now we're running NuttX on a __Single Arm64 CPU__. In future we might run on all __4 Arm64 CPUs__ of PinePhone...
+
+-   [__"Multi Core SMP"__](https://github.com/lupyuen/pinephone-nuttx#multi-core-smp)
+
 We fixed some issues with __Arm64 Interrupts__ on PinePhone...
 
 -   [__"NuttX RTOS on PinePhone: Fixing the Interrupts"__](https://lupyuen.github.io/articles/interrupt)
@@ -730,7 +734,7 @@ And we fixed UART Input in our [__UART Driver__](https://lupyuen.github.io/artic
 
 We'll write about the UART Driver in the next article!
 
-Here are some tips for debugging the __NuttX Boot Sequence__ on PinePhone...
+Below are some tips for debugging the __NuttX Boot Sequence__ on PinePhone...
 
 1.  [__"Boot Sequence"__](https://github.com/lupyuen/pinephone-nuttx#boot-sequence)
 
