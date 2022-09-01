@@ -548,7 +548,7 @@ nshn:x _msktfaarttf:s :C PcUo0m:m aBnedg innonti nfgo uInddle  L oNouptt
 ```
 (Yeah the output is slightly garbled, the UART Driver needs fixing)
 
-__NuttX Shell__ works perfectly OK on PinePhone...
+Now that we have UART Interrupts, __NuttX Shell__ works perfectly OK on PinePhone...
 
 ```text
 nsh> uname -a
