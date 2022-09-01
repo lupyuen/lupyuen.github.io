@@ -653,6 +653,10 @@ nsh&gt; ls /dev
 <p><a href="https://youtube.com/shorts/WmRzfCiWV6o?feature=share"><strong>Watch the Demo on YouTube</strong></a></p>
 <p>Yep NuttX boots on PinePhone… After replacing a single <strong><code>Image.gz</code></strong> file!</p>
 <h1 id="upcoming-fixes"><a href="#upcoming-fixes">13 Upcoming Fixes</a></h1>
+<p>Right now we’re running NuttX on a <strong>Single Arm64 CPU</strong>. In future we might run on all <strong>4 Arm64 CPUs</strong> of PinePhone…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx#multi-core-smp"><strong>“Multi Core SMP”</strong></a></li>
+</ul>
 <p>We fixed some issues with <strong>Arm64 Interrupts</strong> on PinePhone…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/interrupt"><strong>“NuttX RTOS on PinePhone: Fixing the Interrupts”</strong></a></li>
@@ -662,7 +666,7 @@ nsh&gt; ls /dev
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c">arch/arm64/src/qemu/qemu_serial.c</a></li>
 </ul>
 <p>We’ll write about the UART Driver in the next article!</p>
-<p>Here are some tips for debugging the <strong>NuttX Boot Sequence</strong> on PinePhone…</p>
+<p>Below are some tips for debugging the <strong>NuttX Boot Sequence</strong> on PinePhone…</p>
 <ol>
 <li>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#boot-sequence"><strong>“Boot Sequence”</strong></a></p>
