@@ -606,14 +606,20 @@ arm64_gic_initialize: GIC Version is 2
 up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
 up_timer_initialize: _vector_table=0x400a7000
 up_timer_initialize: Before writing: vbar_el1=0x40227000
-up_timer_initialize: After writing:  vbar_el1=0x400a7000
+up_timer_initialize: After writing: vbar_el1=0x400a7000
 
 uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
 work_start_highpri: Starting high-priority kernel worker thread(s)
+
 nx_start_application: Starting init thread
 lib_cxx_initialize: _sinit: 0x400a7000 _einit: 0x400a7000 _stext: 0x40080000 _etext: 0x400a8000
-nx_start: CPU0: Beginning Idle Loop</code></pre></div>
+nsh: sysinit: fopen failed: 2
+
+eshn:x _msktfaarttf:s :C PcUo0m:m aBnedg innonti nfgo uInddlL toNoupt
+ Shell (NSH) NuttX-10.3.0-RC2
+nsh&gt; </code></pre></div>
+<p>(Yeah the output is slightly garbled, the UART Driver needs fixing)</p>
 <p>Yep NuttX boots on PinePhone… After replacing a single <strong><code>Image.gz</code></strong> file!</p>
 <h1 id="upcoming-fixes"><a href="#upcoming-fixes">13 Upcoming Fixes</a></h1>
 <p><em>Where’s the rest of the boot output?</em></p>
@@ -621,15 +627,13 @@ nx_start: CPU0: Beginning Idle Loop</code></pre></div>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/arm#test-nuttx-single-core"><strong>“Test NuttX: Single Core”</strong></a></li>
 </ul>
-<p>But NuttX Shell won’t appear until we have implemented <strong>Transmit Interrupts</strong> in our <strong>UART Driver</strong>…</p>
+<p>But NuttX Shell won’t work until we have implemented UART Input in our <strong>UART Driver</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c">arch/arm64/src/qemu/qemu_serial.c</a></li>
 </ul>
 <p>We’ll port this driver from <a href="https://krinkinmu.github.io/2020/11/29/PL011.html"><strong>PL011 UART</strong></a> to <a href="https://lupyuen.github.io/articles/uboot#uart-output"><strong>Allwinner A64 UART</strong></a>.</p>
 <p><a href="https://lupyuen.github.io/articles/uboot#uart-driver">(More about UART Driver)</a></p>
-<p><em>Isn’t NuttX supposed to accept commands entered in the Serial Console?</em></p>
-<p>This requires <strong>UART Input</strong>, which will work when we have implemented the UART Driver.</p>
-<p>We figured this out by debugging the <strong>NuttX Boot Sequence</strong> on PinePhone…</p>
+<p>Here are some tips for debugging the <strong>NuttX Boot Sequence</strong> on PinePhone…</p>
 <ol>
 <li>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#boot-sequence"><strong>“Boot Sequence”</strong></a></p>

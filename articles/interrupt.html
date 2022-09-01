@@ -463,14 +463,20 @@ arm64_gic_initialize: GIC Version is 2
 up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
 up_timer_initialize: _vector_table=0x400a7000
 up_timer_initialize: Before writing: vbar_el1=0x40227000
-up_timer_initialize: After writing:  vbar_el1=0x400a7000
+up_timer_initialize: After writing: vbar_el1=0x400a7000
 
 uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
 work_start_highpri: Starting high-priority kernel worker thread(s)
+
 nx_start_application: Starting init thread
 lib_cxx_initialize: _sinit: 0x400a7000 _einit: 0x400a7000 _stext: 0x40080000 _etext: 0x400a8000
-nx_start: CPU0: Beginning Idle Loop</code></pre></div>
+nsh: sysinit: fopen failed: 2
+
+eshn:x _msktfaarttf:s :C PcUo0m:m aBnedg innonti nfgo uInddlL toNoupt
+ Shell (NSH) NuttX-10.3.0-RC2
+nsh&gt; </code></pre></div>
+<p>(Yeah the output is slightly garbled, the UART Driver needs fixing)</p>
 <p>Let’s talk about EL1…</p>
 <h1 id="exception-levels"><a href="#exception-levels">8 Exception Levels</a></h1>
 <p><em>What’s EL1?</em></p>
@@ -546,7 +552,7 @@ jump_to_c_entry:
 <ul>
 <li><a href="https://lupyuen.github.io/articles/arm#test-nuttx-single-core"><strong>“Test NuttX: Single Core”</strong></a></li>
 </ul>
-<p>But NuttX Shell won’t appear until we have implemented <strong>Transmit Interrupts</strong> in our <strong>UART Driver</strong>. So we’ll do this now…</p>
+<p>But NuttX Shell won’t work until we have implemented UART Input in our <strong>UART Driver</strong>. So we’ll do this now…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/uboot#uart-driver"><strong>“UART Driver”</strong></a></li>
 </ul>
