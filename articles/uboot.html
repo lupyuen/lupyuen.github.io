@@ -917,7 +917,7 @@ strb w0, [x15, #0x0C]</code></pre></div></li>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c">arch/arm64/src/qemu/qemu_serial.c</a> </li>
 </ul>
-<p>Right now we support <strong>UART Output</strong>, but not UART Input.</p>
+<p>We haven’t implemented <strong>Transmit and Receive Interrupts</strong> in our UART Driver, which are needed by NuttX Shell.</p>
 <p>The (incomplete) <strong>Serial Operations</strong> for our UART Driver are…</p>
 <ul>
 <li>
