@@ -1036,7 +1036,7 @@ We have partially implemented the __UART Driver__ for PinePhone's Allwinner A64 
 
 -   [arch/arm64/src/qemu/qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c) 
 
-Right now we support __UART Output__, but not UART Input.
+We haven't implemented __Transmit and Receive Interrupts__ in our UART Driver, which are needed by NuttX Shell.
 
 The (incomplete) __Serial Operations__ for our UART Driver are...
 
