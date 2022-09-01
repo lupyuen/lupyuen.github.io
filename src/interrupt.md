@@ -582,6 +582,8 @@ nsh> ls /dev
  zero
 ```
 
+[__Watch the Demo on YouTube__](https://youtube.com/shorts/WmRzfCiWV6o?feature=share)
+
 Let's talk about EL1...
 
 # Exception Levels
