@@ -115,7 +115,7 @@ arm64_gic_initialize: no distributor detected, giving up</code></pre></div>
 <p>Except that GIC is a special chunk of silicon that lives <strong>inside the Allwinner A64 SoC</strong>. (Outside the Arm64 CPU)</p>
 <p><em>Huh? Arm64 CPU doesn’t have its own Interrupt Controller?</em></p>
 <p>Interrupting gets complicated… Remember PinePhone runs on <strong>4 Arm64 CPUs?</strong></p>
-<p>The 4 CPUs must handle the Interrupts triggered by <strong>all kinds of Peripherals</strong>: UART, I2C, DMA, USB, microSD, eMMC, …</p>
+<p>The 4 CPUs must handle the Interrupts triggered by <strong>all kinds of Peripherals</strong>: UART, I2C, SPI, DMA, USB, microSD, eMMC, …</p>
 <p>We do this the <strong>flexible, efficient</strong> way with a GIC, which supports…</p>
 <ul>
 <li>
