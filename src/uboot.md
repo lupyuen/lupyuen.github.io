@@ -836,6 +836,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [__"Genode Operating System Framework 22.05"__](https://genode.org/documentation/genode-platforms-22-05.pdf)
 
+    PinePhone's __Touch Display__ is explained in pages 171 to 197.
+
+    PinePhone's __LTE Modem__ is covered in pages 198 to 204.
+
 ![Build NuttX](https://lupyuen.github.io/images/arm-build.png)
 
 # Appendix: Build NuttX for PinePhone
