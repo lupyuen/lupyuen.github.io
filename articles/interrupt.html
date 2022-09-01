@@ -447,7 +447,9 @@ Before writing: vbar_el1=0x40227000
 After writing:  vbar_el1=0x400a7000</code></pre></div>
 <p>Yep Vector Base Address Register (EL1) is now correct.</p>
 <p>Our Interrupt Handlers are now working fine… And PinePhone boots successfully yay! 🎉</p>
-<div class="example-wrap"><pre class="language-text"><code>HELLO NUTTX ON PINEPHONE!
+<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
+
+HELLO NUTTX ON PINEPHONE!
 - Ready to Boot CPU
 - Boot from EL2
 - Boot from EL1
@@ -455,6 +457,7 @@ After writing:  vbar_el1=0x400a7000</code></pre></div>
 
 nx_start: Entry
 up_allocate_heap: heap_start=0x0x400c4000, heap_size=0x7f3c000
+
 arm64_gic_initialize: TODO: Init GIC for PinePhone
 arm64_gic_initialize: CONFIG_GICD_BASE=0x1c81000
 arm64_gic_initialize: CONFIG_GICR_BASE=0x1c82000
@@ -467,16 +470,45 @@ up_timer_initialize: After writing: vbar_el1=0x400a7000
 
 uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
-work_start_highpri: Starting high-priority kernel worker thread(s)
 
+work_start_highpri: Starting high-priority kernel worker thread(s)
 nx_start_application: Starting init thread
 lib_cxx_initialize: _sinit: 0x400a7000 _einit: 0x400a7000 _stext: 0x40080000 _etext: 0x400a8000
 nsh: sysinit: fopen failed: 2
 
-eshn:x _msktfaarttf:s :C PcUo0m:m aBnedg innonti nfgo uInddlL toNoupt
- Shell (NSH) NuttX-10.3.0-RC2
-nsh&gt; </code></pre></div>
+nshn:x _msktfaarttf:s :C PcUo0m:m aBnedg innonti nfgo uInddle  L oNouptt
+ Shell (NSH) NuttX-10.3.0-RC2</code></pre></div>
 <p>(Yeah the output is slightly garbled, the UART Driver needs fixing)</p>
+<p><strong>NuttX Shell</strong> works perfectly OK on PinePhone…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; uname -a
+NuttX 10.3.0-RC2 fc909c6-dirty Sep  1 2022 17:05:44 arm64 qemu-a53
+
+nsh&gt; help
+help usage:  help [-v] [&lt;cmd&gt;]
+
+  .         cd        dmesg     help      mount     rmdir     true      xd        
+  [         cp        echo      hexdump   mv        set       truncate  
+  ?         cmp       exec      kill      printf    sleep     uname     
+  basename  dirname   exit      ls        ps        source    umount    
+  break     dd        false     mkdir     pwd       test      unset     
+  cat       df        free      mkrd      rm        time      usleep    
+
+Builtin Apps:
+  getprime  hello     nsh       ostest    sh        
+
+nsh&gt; hello
+task_spawn: name=hello entry=0x4009b1a0 file_actions=0x400c9580 attr=0x400c9588 argv=0x400c96d0
+spawn_execattrs: Setting policy=2 priority=100 for pid=3
+Hello, World!!
+
+nsh&gt; ls /dev
+/dev:
+ console
+ null
+ ram0
+ ram2
+ ttyS0
+ zero</code></pre></div>
 <p>Let’s talk about EL1…</p>
 <h1 id="exception-levels"><a href="#exception-levels">8 Exception Levels</a></h1>
 <p><em>What’s EL1?</em></p>
@@ -548,14 +580,6 @@ jump_to_c_entry:
 </ul>
 <p>We’ll check some more.</p>
 <h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
-<p>We expect to see the <strong>NuttX Shell</strong> when NuttX boots…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/arm#test-nuttx-single-core"><strong>“Test NuttX: Single Core”</strong></a></li>
-</ul>
-<p>But NuttX Shell won’t work until we have implemented UART Input in our <strong>UART Driver</strong>. So we’ll do this now…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/uboot#uart-driver"><strong>“UART Driver”</strong></a></li>
-</ul>
 <p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
