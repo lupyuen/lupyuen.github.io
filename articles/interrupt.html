@@ -546,11 +546,7 @@ jump_to_c_entry:
 <ul>
 <li><a href="https://lupyuen.github.io/articles/arm#test-nuttx-single-core"><strong>“Test NuttX: Single Core”</strong></a></li>
 </ul>
-<p>But NuttX seems to be stuck at the <strong>Idle Loop</strong>, without showing the NuttX Shell…</p>
-<div class="example-wrap"><pre class="language-text"><code>nx_start_application: Starting init thread
-lib_cxx_initialize: _sinit: 0x400a7000 _einit: 0x400a7000 _stext: 0x40080000 _etext: 0x400a8000
-nx_start: CPU0: Beginning Idle Loop</code></pre></div>
-<p>We’ll do more troubleshooting.</p>
+<p>But NuttX Shell won’t appear until we have implemented <strong>Transmit Interrupts</strong> in our <strong>UART Driver</strong>. So we’ll do this now.</p>
 <p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>

@@ -621,15 +621,15 @@ nx_start: CPU0: Beginning Idle Loop</code></pre></div>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/arm#test-nuttx-single-core"><strong>“Test NuttX: Single Core”</strong></a></li>
 </ul>
-<p>But NuttX seems to be stuck at the <strong>Idle Loop</strong>, without showing the NuttX Shell…</p>
-<div class="example-wrap"><pre class="language-text"><code>nx_start_application: Starting init thread
-lib_cxx_initialize: _sinit: 0x400a7000 _einit: 0x400a7000 _stext: 0x40080000 _etext: 0x400a8000
-nx_start: CPU0: Beginning Idle Loop</code></pre></div>
-<p>This problem might be related to the <strong>Arm64 Interrupt</strong> issues that we fixed earlier…</p>
+<p>But NuttX Shell won’t appear until we have implemented <strong>Transmit Interrupts</strong> in our <strong>UART Driver</strong>…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/interrupt"><strong>“NuttX RTOS on PinePhone: Fixing the Interrupts”</strong></a></li>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c">arch/arm64/src/qemu/qemu_serial.c</a></li>
 </ul>
-<p>We’ll do more troubleshooting. More about NuttX booting on PinePhone…</p>
+<p>We’ll port this driver from <a href="https://krinkinmu.github.io/2020/11/29/PL011.html"><strong>PL011 UART</strong></a> to <a href="https://lupyuen.github.io/articles/uboot#uart-output"><strong>Allwinner A64 UART</strong></a>.</p>
+<p><a href="https://lupyuen.github.io/articles/uboot#uart-driver">(More about UART Driver)</a></p>
+<p><em>Isn’t NuttX supposed to accept commands entered in the Serial Console?</em></p>
+<p>This requires <strong>UART Input</strong>, which will work when we have implemented the UART Driver.</p>
+<p>We figured this out by debugging the <strong>NuttX Boot Sequence</strong> on PinePhone…</p>
 <ol>
 <li>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#boot-sequence"><strong>“Boot Sequence”</strong></a></p>
@@ -650,13 +650,6 @@ nx_start: CPU0: Beginning Idle Loop</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#interrupt-debugging"><strong>“Interrupt Debugging”</strong></a></p>
 </li>
 </ol>
-<p><em>Isn’t NuttX supposed to accept commands entered in the Serial Console?</em></p>
-<p>This requires UART Input, which will work when we have implemented the <strong>UART Driver</strong>…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c">arch/arm64/src/qemu/qemu_serial.c</a></li>
-</ul>
-<p>We’ll port this driver from <a href="https://krinkinmu.github.io/2020/11/29/PL011.html"><strong>PL011 UART</strong></a> to <a href="https://lupyuen.github.io/articles/uboot#uart-output"><strong>Allwinner A64 UART</strong></a>.</p>
-<p><a href="https://lupyuen.github.io/articles/uboot#uart-driver">(More about UART Driver)</a></p>
 <p><img src="https://lupyuen.github.io/images/arm-source.png" alt="Arm64 Source Files in NuttX" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common"><em>Arm64 Source Files in NuttX</em></a></p>
 <h1 id="nuttx-source-code"><a href="#nuttx-source-code">14 NuttX Source Code</a></h1>
