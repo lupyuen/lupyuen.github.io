@@ -656,6 +656,7 @@ HELLO NUTTX ON PINEPHONE!
 
 nx_start: Entry
 up_allocate_heap: heap_start=0x0x400c4000, heap_size=0x7f3c000
+
 arm64_gic_initialize: TODO: Init GIC for PinePhone
 arm64_gic_initialize: CONFIG_GICD_BASE=0x1c81000
 arm64_gic_initialize: CONFIG_GICR_BASE=0x1c82000
@@ -668,36 +669,64 @@ up_timer_initialize: After writing: vbar_el1=0x400a7000
 
 uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
-work_start_highpri: Starting high-priority kernel worker thread(s)
 
+work_start_highpri: Starting high-priority kernel worker thread(s)
 nx_start_application: Starting init thread
 lib_cxx_initialize: _sinit: 0x400a7000 _einit: 0x400a7000 _stext: 0x40080000 _etext: 0x400a8000
 nsh: sysinit: fopen failed: 2
 
-eshn:x _msktfaarttf:s :C PcUo0m:m aBnedg innonti nfgo uInddlL toNoupt
+nshn:x _msktfaarttf:s :C PcUo0m:m aBnedg innonti nfgo uInddle  L oNouptt
  Shell (NSH) NuttX-10.3.0-RC2
-nsh> 
 ```
-
 (Yeah the output is slightly garbled, the UART Driver needs fixing)
+
+__NuttX Shell__ works perfectly OK on PinePhone...
+
+```text
+nsh> uname -a
+NuttX 10.3.0-RC2 fc909c6-dirty Sep  1 2022 17:05:44 arm64 qemu-a53
+
+nsh> help
+help usage:  help [-v] [<cmd>]
+
+  .         cd        dmesg     help      mount     rmdir     true      xd        
+  [         cp        echo      hexdump   mv        set       truncate  
+  ?         cmp       exec      kill      printf    sleep     uname     
+  basename  dirname   exit      ls        ps        source    umount    
+  break     dd        false     mkdir     pwd       test      unset     
+  cat       df        free      mkrd      rm        time      usleep    
+
+Builtin Apps:
+  getprime  hello     nsh       ostest    sh        
+
+nsh> hello
+task_spawn: name=hello entry=0x4009b1a0 file_actions=0x400c9580 attr=0x400c9588 argv=0x400c96d0
+spawn_execattrs: Setting policy=2 priority=100 for pid=3
+Hello, World!!
+
+nsh> ls /dev
+/dev:
+ console
+ null
+ ram0
+ ram2
+ ttyS0
+ zero
+```
 
 Yep NuttX boots on PinePhone... After replacing a single __`Image.gz`__ file!
 
 # Upcoming Fixes
 
-_Where's the rest of the boot output?_
+We fixed some issues with __Arm64 Interrupts__ on PinePhone...
 
-We expect to see the __NuttX Shell__ when NuttX boots...
+-   [__"NuttX RTOS on PinePhone: Fixing the Interrupts"__](https://lupyuen.github.io/articles/interrupt)
 
--   [__"Test NuttX: Single Core"__](https://lupyuen.github.io/articles/arm#test-nuttx-single-core)
-
-But NuttX Shell won't work until we have implemented UART Input in our __UART Driver__...
+And we fixed UART Input in our [__UART Driver__](https://lupyuen.github.io/articles/uboot#uart-driver)...
 
 -   [arch/arm64/src/qemu/qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c)
 
-We'll port this driver from [__PL011 UART__](https://krinkinmu.github.io/2020/11/29/PL011.html) to [__Allwinner A64 UART__](https://lupyuen.github.io/articles/uboot#uart-output).
-
-[(More about UART Driver)](https://lupyuen.github.io/articles/uboot#uart-driver)
+We'll write about the UART Driver in the next article!
 
 Here are some tips for debugging the __NuttX Boot Sequence__ on PinePhone...
 
