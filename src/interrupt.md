@@ -1,10 +1,10 @@
 # NuttX RTOS on PinePhone: Fixing the Interrupts
 
-📝 _6 Sep 2022_
+📝 _1 Sep 2022_
 
 ![Tracing Arm64 Interrupts on QEMU Emulator can get... Really messy](https://lupyuen.github.io/images/interrupt-title.jpg)
 
-Creating our own __Operating System__ (non-Linux) for __Pine64 PinePhone__ can be super challenging...
+Creating our own __Operating System__ (non-Linux) for [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) can be super challenging...
 
 -   How does PinePhone handle Interrupts?
 
@@ -16,7 +16,7 @@ Creating our own __Operating System__ (non-Linux) for __Pine64 PinePhone__ can b
 
 -   Why does EL matter for handling Arm64 Interrupts?
 
-We'll answer these questions today as we port __Apache NuttX RTOS__ to PinePhone.
+We'll answer these questions today as we port [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) to PinePhone.
 
 Let's dive into our __Porting Journal__ for NuttX on PinePhone...
 
@@ -41,7 +41,7 @@ _Partial list of Shared Peripheral Interrupts for Allwinner A64's GIC_
 
 _What's a GIC?_
 
-A __Generic Interrupt Controller (GIC)__ works like a typical Interrupt Controller in a CPU. It manages Interrupts for the Arm64 CPU.
+PinePhone's __Generic Interrupt Controller (GIC)__ works like a typical Interrupt Controller in a CPU. It manages Interrupts for the Arm64 CPU.
 
 Except that GIC is a special chunk of silicon that lives __inside the Allwinner A64 SoC__. (Outside the Arm64 CPU)
 
@@ -239,13 +239,13 @@ Let's test our reckless GIC Version 2 with QEMU Emulator...
 
 ![Tracing Arm64 Interrupts on QEMU Emulator can get... Really messy](https://lupyuen.github.io/images/interrupt-title2.png)
 
-_Tracing Arm64 Interrupts on QEMU Emulator can get... Really messy_
+[_Tracing Arm64 Interrupts on QEMU Emulator can get... Really messy_](https://github.com/lupyuen/incubator-nuttx/blob/3331de1b84fd7579edfe726abb71b18beeac29e6/nuttx.log)
 
 # Test PinePhone GIC with QEMU
 
 _Will our hacked GIC Version 2 run on PinePhone?_
 
-Before testing on PinePhone, let's test our Generic Interrupt Controller (GIC) Version 2 on __QEMU Emulator__.
+Before testing on PinePhone, let's test our Generic Interrupt Controller (GIC) Version 2 on [__QEMU Emulator__](https://www.qemu.org/).
 
 Follow these steps to build NuttX for __QEMU with GIC Version 2__...
 
@@ -301,13 +301,15 @@ nsh>
 nx_start: CPU0: Beginning Idle Loop
 ```
 
+[(See the Complete Log)](https://github.com/lupyuen/incubator-nuttx/blob/3331de1b84fd7579edfe726abb71b18beeac29e6/nuttx.log)
+
 NuttX with GIC Version 2 boots OK on QEMU, and will probably run on PinePhone!
 
 _We tested Interrupts with GIC Version 2?_
 
 Yep the pic above shows __"TX"__ whenever an Interrupt Handler is dispatched.
 
-(We added Debug Logging for [arm64_vectors.S](https://github.com/lupyuen/incubator-nuttx/blob/gicv2/arch/arm64/src/common/arm64_vectors.S#L337-L350) and [arm64_vector_table.S](https://github.com/lupyuen/incubator-nuttx/blob/gicv2/arch/arm64/src/common/arm64_vector_table.S#L47-L75))
+(We added Debug Logging to [arm64_vectors.S](https://github.com/lupyuen/incubator-nuttx/blob/gicv2/arch/arm64/src/common/arm64_vectors.S#L337-L350) and [arm64_vector_table.S](https://github.com/lupyuen/incubator-nuttx/blob/gicv2/arch/arm64/src/common/arm64_vector_table.S#L47-L75))
 
 _How did we get the GIC Base Addresses for QEMU?_
 
@@ -460,7 +462,7 @@ SECTION_SUBSEC_FUNC(exc_vector_table,_vector_table_section,_vector_table)
   b    arm64_irq_handler
 ```
 
-[(__`arm64_enter_exception`__ is defined here)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L41-L87)
+[(__`arm64_enter_exception`__ saves the Arm64 Registers)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L41-L87)
 
 [(__`arm64_irq_handler`__ is the NuttX IRQ Handler)](https://github.com/lupyuen/pinephone-nuttx#handling-interrupts)
 
@@ -471,7 +473,7 @@ Let's find out! This is how we read __Vector Base Address Register (EL1)__: [arc
 ```c
 void up_timer_initialize(void) {
   ...
-  // For PinePhone: Read Vector Base Address Register EL1
+  // Read Vector Base Address Register EL1
   extern void *_vector_table[];
   sinfo("_vector_table=%p\n", _vector_table);
   sinfo("Before writing: vbar_el1=%p\n", read_sysreg(vbar_el1));
@@ -491,11 +493,11 @@ Our Arm64 CPU is pointing to the __wrong Arm64 Vector Table__... Hence our Inter
 Let's fix it: [arch/arm64/src/common/arm64_arch_timer.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L212-L235)
 
 ```c
-  // For PinePhone: Write Vector Base Address Register EL1
+  // Write Vector Base Address Register EL1
   write_sysreg((uint64_t)_vector_table, vbar_el1);
   ARM64_ISB();
 
-  // For PinePhone: Read Vector Base Address Register EL1
+  // Read Vector Base Address Register EL1
   sinfo("After writing: vbar_el1=%p\n", read_sysreg(vbar_el1));
 ```
 
@@ -568,7 +570,7 @@ HELLO NUTTX ON PINEPHONE!
 - Boot to C runtime for OS Initialize
 ```
 
-(Remember that EL1 is less privileged than EL2, which supports Processor Virtualization)
+(Remember that EL1 is less privileged than EL2, which supports Processor Virtualization. Host OS will run at EL2, Guest OS at EL1)
 
 That's why we talked about the EL1 Vector Base Address Register in the previous section.
 

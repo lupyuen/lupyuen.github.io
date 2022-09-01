@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>NuttX RTOS on PinePhone: Fixing the Interrupts</title>
+            <link>https://lupyuen.github.io/articles/interrupt</link>
+            <description><![CDATA[How Pine64 PinePhone handles Arm64 Interrupts with the Generic Interrupt Controller... And how we implemented PinePhone Interrupt Handling in Apache NuttX RTOS]]></description>
+            <guid>https://lupyuen.github.io/articles/interrupt</guid>
+            <pubDate>Thu, 01 Sep 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>PinePhone boots Apache NuttX RTOS</title>
             <link>https://lupyuen.github.io/articles/uboot</link>
             <description><![CDATA[How we ported Apache NuttX RTOS to PinePhone... And what's inside the U-Boot Bootloader]]></description>
