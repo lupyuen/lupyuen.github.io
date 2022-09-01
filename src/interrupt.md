@@ -629,15 +629,7 @@ We expect to see the __NuttX Shell__ when NuttX boots...
 
 -   [__"Test NuttX: Single Core"__](https://lupyuen.github.io/articles/arm#test-nuttx-single-core)
 
-But NuttX seems to be stuck at the __Idle Loop__, without showing the NuttX Shell...
-
-```text
-nx_start_application: Starting init thread
-lib_cxx_initialize: _sinit: 0x400a7000 _einit: 0x400a7000 _stext: 0x40080000 _etext: 0x400a8000
-nx_start: CPU0: Beginning Idle Loop
-```
-
-We'll do more troubleshooting.
+But NuttX Shell won't appear until we have implemented __Transmit Interrupts__ in our __UART Driver__. So we'll do this now.
 
 There's plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏
 

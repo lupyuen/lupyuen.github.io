@@ -684,19 +684,19 @@ We expect to see the __NuttX Shell__ when NuttX boots...
 
 -   [__"Test NuttX: Single Core"__](https://lupyuen.github.io/articles/arm#test-nuttx-single-core)
 
-But NuttX seems to be stuck at the __Idle Loop__, without showing the NuttX Shell...
+But NuttX Shell won't appear until we have implemented __Transmit Interrupts__ in our __UART Driver__...
 
-```text
-nx_start_application: Starting init thread
-lib_cxx_initialize: _sinit: 0x400a7000 _einit: 0x400a7000 _stext: 0x40080000 _etext: 0x400a8000
-nx_start: CPU0: Beginning Idle Loop
-```
+-   [arch/arm64/src/qemu/qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c)
 
-This problem might be related to the __Arm64 Interrupt__ issues that we fixed earlier...
+We'll port this driver from [__PL011 UART__](https://krinkinmu.github.io/2020/11/29/PL011.html) to [__Allwinner A64 UART__](https://lupyuen.github.io/articles/uboot#uart-output).
 
--   [__"NuttX RTOS on PinePhone: Fixing the Interrupts"__](https://lupyuen.github.io/articles/interrupt)
+[(More about UART Driver)](https://lupyuen.github.io/articles/uboot#uart-driver)
 
-We'll do more troubleshooting. More about NuttX booting on PinePhone...
+_Isn't NuttX supposed to accept commands entered in the Serial Console?_
+
+This requires __UART Input__, which will work when we have implemented the UART Driver.
+
+We figured this out by debugging the __NuttX Boot Sequence__ on PinePhone...
 
 1.  [__"Boot Sequence"__](https://github.com/lupyuen/pinephone-nuttx#boot-sequence)
 
@@ -709,16 +709,6 @@ We'll do more troubleshooting. More about NuttX booting on PinePhone...
 1.  [__"Dump Interrupt Vector Table"__](https://github.com/lupyuen/pinephone-nuttx#dump-interrupt-vector-table)
 
 1.  [__"Interrupt Debugging"__](https://github.com/lupyuen/pinephone-nuttx#interrupt-debugging)
-
-_Isn't NuttX supposed to accept commands entered in the Serial Console?_
-
-This requires UART Input, which will work when we have implemented the __UART Driver__...
-
--   [arch/arm64/src/qemu/qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c)
-
-We'll port this driver from [__PL011 UART__](https://krinkinmu.github.io/2020/11/29/PL011.html) to [__Allwinner A64 UART__](https://lupyuen.github.io/articles/uboot#uart-output).
-
-[(More about UART Driver)](https://lupyuen.github.io/articles/uboot#uart-driver)
 
 ![Arm64 Source Files in NuttX](https://lupyuen.github.io/images/arm-source.png)
 
