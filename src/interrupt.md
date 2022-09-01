@@ -530,15 +530,22 @@ arm64_gic_initialize: GIC Version is 2
 up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
 up_timer_initialize: _vector_table=0x400a7000
 up_timer_initialize: Before writing: vbar_el1=0x40227000
-up_timer_initialize: After writing:  vbar_el1=0x400a7000
+up_timer_initialize: After writing: vbar_el1=0x400a7000
 
 uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
 work_start_highpri: Starting high-priority kernel worker thread(s)
+
 nx_start_application: Starting init thread
 lib_cxx_initialize: _sinit: 0x400a7000 _einit: 0x400a7000 _stext: 0x40080000 _etext: 0x400a8000
-nx_start: CPU0: Beginning Idle Loop
+nsh: sysinit: fopen failed: 2
+
+eshn:x _msktfaarttf:s :C PcUo0m:m aBnedg innonti nfgo uInddlL toNoupt
+ Shell (NSH) NuttX-10.3.0-RC2
+nsh> 
 ```
+
+(Yeah the output is slightly garbled, the UART Driver needs fixing)
 
 Let's talk about EL1...
 
@@ -629,7 +636,7 @@ We expect to see the __NuttX Shell__ when NuttX boots...
 
 -   [__"Test NuttX: Single Core"__](https://lupyuen.github.io/articles/arm#test-nuttx-single-core)
 
-But NuttX Shell won't appear until we have implemented __Transmit Interrupts__ in our __UART Driver__. So we'll do this now...
+But NuttX Shell won't work until we have implemented UART Input in our __UART Driver__. So we'll do this now...
 
 -   [__"UART Driver"__](https://lupyuen.github.io/articles/uboot#uart-driver)
 
