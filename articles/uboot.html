@@ -627,21 +627,7 @@ lib_cxx_initialize: _sinit: 0x400a7000 _einit: 0x400a7000 _stext: 0x40080000 _et
 nx_start: CPU0: Beginning Idle Loop</code></pre></div>
 <p>This problem might be related to the <strong>Arm64 Interrupt</strong> issues that we fixed earlier…</p>
 <ul>
-<li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx#system-timer"><strong>“System Timer”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx#interrupt-controller"><strong>“Interrupt Controller”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx#timer-interrupt-isnt-handled"><strong>“Timer Interrupt Isn’t Handled”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx#arm64-vector-table-is-wrong"><strong>“Arm64 Vector Table Is Wrong”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx#test-pinephone-gic-with-qemu"><strong>“Test PinePhone GIC with QEMU”</strong></a></p>
-</li>
+<li><a href="https://lupyuen.github.io/articles/interrupt"><strong>“NuttX RTOS on PinePhone: Fixing the Interrupts”</strong></a></li>
 </ul>
 <p>We’ll do more troubleshooting. More about NuttX booting on PinePhone…</p>
 <ol>
@@ -717,6 +703,10 @@ nx_start: CPU0: Beginning Idle Loop</code></pre></div>
 </ul>
 <p>But today NuttX is ready to turn PinePhone into a valuable <strong>Learning Resource</strong>!</p>
 <p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
+<p>Check out the followup article…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/interrupt"><strong>“NuttX RTOS on PinePhone: Fixing the Interrupts”</strong></a></li>
+</ul>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
@@ -739,7 +729,13 @@ nx_start: CPU0: Beginning Idle Loop</code></pre></div>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/uboot.md"><strong>lupyuen.github.io/src/uboot.md</strong></a></p>
 <h1 id="notes"><a href="#notes">16 Notes</a></h1>
 <ol>
-<li>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1561843749168173056"><strong>this Twitter Thread</strong></a></li>
+<li>
+<p>This article is the expanded version of <a href="https://twitter.com/MisterTechBlog/status/1564380402110070785"><strong>this Twitter Thread</strong></a></p>
+</li>
+<li>
+<p>Check out this detailed doc on porting <strong>Genode OS</strong> to PinePhone…</p>
+<p><a href="https://genode.org/documentation/genode-platforms-22-05.pdf"><strong>“Genode Operating System Framework 22.05”</strong></a></p>
+</li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/arm-build.png" alt="Build NuttX" /></p>
 <h1 id="appendix-build-nuttx-for-pinephone"><a href="#appendix-build-nuttx-for-pinephone">17 Appendix: Build NuttX for PinePhone</a></h1>
