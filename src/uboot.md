@@ -694,15 +694,7 @@ nx_start: CPU0: Beginning Idle Loop
 
 This problem might be related to the __Arm64 Interrupt__ issues that we fixed earlier...
 
--   [__"System Timer"__](https://github.com/lupyuen/pinephone-nuttx#system-timer)
-
--   [__"Interrupt Controller"__](https://github.com/lupyuen/pinephone-nuttx#interrupt-controller)
-
--   [__"Timer Interrupt Isn't Handled"__](https://github.com/lupyuen/pinephone-nuttx#timer-interrupt-isnt-handled)
-
--   [__"Arm64 Vector Table Is Wrong"__](https://github.com/lupyuen/pinephone-nuttx#arm64-vector-table-is-wrong)
-
--   [__"Test PinePhone GIC with QEMU"__](https://github.com/lupyuen/pinephone-nuttx#test-pinephone-gic-with-qemu)
+-   [__"NuttX RTOS on PinePhone: Fixing the Interrupts"__](https://lupyuen.github.io/articles/interrupt)
 
 We'll do more troubleshooting. More about NuttX booting on PinePhone...
 
@@ -788,6 +780,10 @@ But today NuttX is ready to turn PinePhone into a valuable __Learning Resource__
 
 There's plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏
 
+Check out the followup article...
+
+-   [__"NuttX RTOS on PinePhone: Fixing the Interrupts"__](https://lupyuen.github.io/articles/interrupt)
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
@@ -806,7 +802,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Notes
 
-1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1561843749168173056)
+1.  This article is the expanded version of [__this Twitter Thread__](https://twitter.com/MisterTechBlog/status/1564380402110070785)
+
+1.  Check out this detailed doc on porting __Genode OS__ to PinePhone...
+
+    [__"Genode Operating System Framework 22.05"__](https://genode.org/documentation/genode-platforms-22-05.pdf)
 
 ![Build NuttX](https://lupyuen.github.io/images/arm-build.png)
 

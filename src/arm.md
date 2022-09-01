@@ -945,9 +945,11 @@ Stay tuned for updates!
 
 # What's Next
 
-Check out the followup article...
+Check out the followup articles...
 
 -   [__"PinePhone boots Apache NuttX RTOS"__](https://lupyuen.github.io/articles/uboot)
+
+-   [__"NuttX RTOS on PinePhone: Fixing the Interrupts"__](https://lupyuen.github.io/articles/interrupt)
 
 __NuttX on PinePhone__ might take a while to become a __Daily Driver__...
 
