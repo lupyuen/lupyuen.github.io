@@ -10,7 +10,7 @@ Last week we spoke about creating our own __Operating System__ for [__Pine64 Pin
 
 -   [__"PinePhone boots Apache NuttX RTOS"__](https://lupyuen.github.io/articles/uboot)
 
-Our PinePhone OS will be awfully quiet if we don't implement __UART Input and Output__. (For the Serial Debug Console)
+Our PinePhone OS will be awfully quiet until we implement __UART Input and Output__. (For the Serial Debug Console)
 
 Today we'll learn about the __UART Controller__ for the Allwinner A64 SoC inside PinePhone...
 
@@ -28,11 +28,23 @@ Let's dive into our __Porting Journal__ for NuttX on PinePhone...
 
 -   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
 
-# UART With Polling
+![Allwinner A64 UART Controller Registers](https://lupyuen.github.io/images/uboot-uart1.png)
 
-TODO
+[_Allwinner A64 UART Controller Registers_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
 
-[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L60-L67)
+# UART Output
+
+Our operating system will print some output on PinePhone's __Serial Debug Console__ as it runs. (And receive input too)
+
+To do that, we'll talk to the __UART Controller__ on the Allwinner A64 SoC...
+
+-   [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+
+Flip the [__A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) to page 562 ("UART") and we'll see the __UART Registers__. (Pic above)
+
+PinePhone's Serial Console is connected to __UART0__ at Base Address __`0x01C2` `8000`__
+
+Which we define like so: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L60-L67)
 
 ```c
 // Use PinePhone Allwinner A64 UART (instead of QEMU PL011)
@@ -45,11 +57,29 @@ TODO
 #define UART_BASE_ADDRESS 0x01C28000
 ```
 
+(We'll talk about `UART_IRQ` in a while)
+
+Let's read and write UART Data the easier (inefficient) way, via Polling...
+
+![A64 UART Registers UART_RBR and UART_THR](https://lupyuen.github.io/images/uboot-uart2.png)
+
+[_A64 UART Registers UART_RBR and UART_THR_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+
+# UART With Polling
+
+Page 563 of the [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) tells us the UART Registers for __reading and writing UART Data__ (pic above)...
+
+-   __Receiver Buffer Register (RBR)__: At Offset `0x00`
+
+-   __Transmit Holding Register (THR)__: Also at Offset `0x00`
+
+Let's write some UART Data...
+
 ## Transmit UART
 
-TODO
+The __Transmit Holding Register (THR)__ is at address __`0x01C2` `8000`__. (Since Offset is 0)
 
-[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1044-L1060)
+We'll write our output data to __`0x01C2` `8000`__, byte by byte, and the data will appear in the Serial Console: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1044-L1060)
 
 ```c
 // Send one byte to PinePhone Allwinner A64 UART
@@ -71,11 +101,41 @@ static void a64_uart_send(struct uart_dev_s *dev, int ch)
 }
 ```
 
+So this code...
+
+```c
+a64_uart_send(NULL, 'H');
+a64_uart_send(NULL, 'E');
+a64_uart_send(NULL, 'Y');
+```
+
+Will print this to PinePhone's Serial Console...
+
+```text
+HEY
+```
+
+_Will this work if we send a huge chunk of text?_
+
+Nope, we'll overflow the __Transmit FIFO Buffer__!
+
+The pic below shows what happens if we print a lot of text... The overflow characters __will get dropped__. (Hence the solitary "`f`")
+
+To fix this, we __wait for the UART Port__ to be ready before we transmit. We'll see how in the next section.
+
+_What's `uart_dev_s`?_
+
+That's the convention that NuttX RTOS expects for UART Drivers.
+
+We may drop the parameter if we're not on NuttX.
+
+![Why we wait for the UART Port before we transmit](https://lupyuen.github.io/images/uboot-title.png)
+
+_Why we wait for the UART Port before we transmit_
+
 ## Wait To Transmit
 
-TODO
-
-[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1077-L1093)
+To check if the UART Port is ready to accept output data, we read Bit 5 of the __Line Status Register (UART_LSR)__ at Offset `0x14`: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1077-L1093)
 
 ```c
 // Return true if Transmit FIFO is not full for PinePhone Allwinner A64 UART
@@ -98,6 +158,14 @@ static bool a64_uart_txready(struct uart_dev_s *dev)
 ```
 
 TODO
+
+```c
+// Wait for UART Port to be ready
+while (!a64_uart_txready(NULL)) {}
+
+// Send one byte of data
+a64_uart_send(NULL, 'A');
+```
 
 [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1095-L1100)
 
@@ -162,6 +230,10 @@ static bool a64_uart_rxavailable(struct uart_dev_s *dev)
   return (*uart_lsr) & 1;  // DR=1 if data is ready
 }
 ```
+
+## Arm64 Assembly
+
+TODO
 
 # UART With Interrupts
 
