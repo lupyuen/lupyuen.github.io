@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>NuttX RTOS on PinePhone: UART Driver</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="NuttX RTOS on PinePhone: UART Driver" 
+    data-rh="true">
+<meta property="og:description" 
+    content="Our PinePhone Operating System will be awfully quiet if we don't implement UART Input and Output... Here's how we implemented the UART Driver for Apache NuttX RTOS"
+    data-rh="true">
+<meta name="description" 
+    content="Our PinePhone Operating System will be awfully quiet if we don't implement UART Input and Output... Here's how we implemented the UART Driver for Apache NuttX RTOS">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/serial-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">NuttX RTOS on PinePhone: UART Driver</h1>
+    <nav id="TOC"><ul>
+<li><a href="#uart-with-polling">1 UART With Polling</a><ul>
+<li><a href="#transmit-uart">1.1 Transmit UART</a><ul></ul></li>
+<li><a href="#wait-for-uart">1.2 Wait for UART</a><ul></ul></li></ul></li>
+<li><a href="#uart-with-interrupts">2 UART With Interrupts</a><ul>
+<li><a href="#enable-interrupt">2.1 Enable Interrupt</a><ul></ul></li>
+<li><a href="#interrupt-handler">2.2 Interrupt Handler</a><ul></ul></li>
+<li><a href="#uart-transmit">2.3 UART Transmit</a><ul></ul></li>
+<li><a href="#uart-receive">2.4 UART Receive</a><ul></ul></li></ul></li>
+<li><a href="#initialise-uart">3 Initialise UART</a><ul></ul></li>
+<li><a href="#whats-next">4 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Sep 2022</em></p>
+<p><img src="https://lupyuen.github.io/images/serial-title.jpg" alt="PinePhone Hacking with Pinebook Pro and BLÅHAJ" /></p>
+<p><em>PinePhone Hacking with Pinebook Pro and BLÅHAJ</em></p>
+<p>Last week we spoke about creating our own <strong>Operating System</strong> for <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/uboot"><strong>“PinePhone boots Apache NuttX RTOS”</strong></a></li>
+</ul>
+<p>Our PinePhone OS will be awfully quiet if we don’t implement <strong>UART Input and Output</strong>. (For the Serial Debug Console)</p>
+<p>Today we’ll learn about the <strong>UART Controller</strong> for the Allwinner A64 SoC inside PinePhone…</p>
+<p>And how we implemented PinePhone’s <strong>UART Driver</strong> <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> </p>
+<p>Let’s dive into our <strong>Porting Journal</strong> for NuttX on PinePhone…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
+</ul>
+<h1 id="uart-with-polling"><a href="#uart-with-polling">1 UART With Polling</a></h1>
+<p>TODO</p>
+<h2 id="transmit-uart"><a href="#transmit-uart">1.1 Transmit UART</a></h2>
+<p>TODO</p>
+<h2 id="wait-for-uart"><a href="#wait-for-uart">1.2 Wait for UART</a></h2>
+<p>TODO</p>
+<h1 id="uart-with-interrupts"><a href="#uart-with-interrupts">2 UART With Interrupts</a></h1>
+<p>TODO</p>
+<h2 id="enable-interrupt"><a href="#enable-interrupt">2.1 Enable Interrupt</a></h2>
+<p>TODO</p>
+<h2 id="interrupt-handler"><a href="#interrupt-handler">2.2 Interrupt Handler</a></h2>
+<p>TODO</p>
+<h2 id="uart-transmit"><a href="#uart-transmit">2.3 UART Transmit</a></h2>
+<p>TODO</p>
+<h2 id="uart-receive"><a href="#uart-receive">2.4 UART Receive</a></h2>
+<p>TODO</p>
+<h1 id="initialise-uart"><a href="#initialise-uart">3 Initialise UART</a></h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
+
+HELLO NUTTX ON PINEPHONE!
+- Ready to Boot CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+
+nx_start: Entry
+up_allocate_heap: heap_start=0x0x400c4000, heap_size=0x7f3c000
+
+arm64_gic_initialize: TODO: Init GIC for PinePhone
+arm64_gic_initialize: CONFIG_GICD_BASE=0x1c81000
+arm64_gic_initialize: CONFIG_GICR_BASE=0x1c82000
+arm64_gic_initialize: GIC Version is 2
+
+up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
+up_timer_initialize: _vector_table=0x400a7000
+up_timer_initialize: Before writing: vbar_el1=0x40227000
+up_timer_initialize: After writing: vbar_el1=0x400a7000
+
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+
+work_start_highpri: Starting high-priority kernel worker thread(s)
+nx_start_application: Starting init thread
+lib_cxx_initialize: _sinit: 0x400a7000 _einit: 0x400a7000 _stext: 0x40080000 _etext: 0x400a8000
+nsh: sysinit: fopen failed: 2
+
+nshn:x _msktfaarttf:s :C PcUo0m:m aBnedg innonti nfgo uInddle  L oNouptt
+ Shell (NSH) NuttX-10.3.0-RC2</code></pre></div>
+<p>(Yeah the output is slightly garbled, the UART Driver needs fixing)</p>
+<p>Now that we have UART Interrupts, <strong>NuttX Shell</strong> works perfectly OK on PinePhone…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; uname -a
+NuttX 10.3.0-RC2 fc909c6-dirty Sep  1 2022 17:05:44 arm64 qemu-a53
+
+nsh&gt; help
+help usage:  help [-v] [&lt;cmd&gt;]
+
+  .         cd        dmesg     help      mount     rmdir     true      xd        
+  [         cp        echo      hexdump   mv        set       truncate  
+  ?         cmp       exec      kill      printf    sleep     uname     
+  basename  dirname   exit      ls        ps        source    umount    
+  break     dd        false     mkdir     pwd       test      unset     
+  cat       df        free      mkrd      rm        time      usleep    
+
+Builtin Apps:
+  getprime  hello     nsh       ostest    sh        
+
+nsh&gt; hello
+task_spawn: name=hello entry=0x4009b1a0 file_actions=0x400c9580 attr=0x400c9588 argv=0x400c96d0
+spawn_execattrs: Setting policy=2 priority=100 for pid=3
+Hello, World!!
+
+nsh&gt; ls /dev
+/dev:
+ console
+ null
+ ram0
+ ram2
+ ttyS0
+ zero</code></pre></div>
+<p><a href="https://youtube.com/shorts/WmRzfCiWV6o?feature=share"><strong>Watch the Demo on YouTube</strong></a></p>
+<h1 id="whats-next"><a href="#whats-next">4 What’s Next</a></h1>
+<p>TODO</p>
+<p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/book"><strong>My Current Project: “The RISC-V BL602 Book”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/serial.md"><strong>lupyuen.github.io/src/serial.md</strong></a></p>
+
+    
+</body>
+</html>
