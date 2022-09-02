@@ -127,10 +127,10 @@ int arm64_gic_initialize(void) {
 Here's the output...
 
 ```text
-arm64_gic_initialize: TODO: Init GIC for PinePhone
-arm64_gic_initialize: CONFIG_GICD_BASE=0x1c81000
-arm64_gic_initialize: CONFIG_GICR_BASE=0x1c82000
-arm64_gic_initialize: GIC Version is 2
+TODO: Init GIC for PinePhone
+CONFIG_GICD_BASE=0x1c81000
+CONFIG_GICR_BASE=0x1c82000
+GIC Version is 2
 ```
 
 [(Source)](https://github.com/lupyuen/pinephone-nuttx#pinephone-u-boot-log)
