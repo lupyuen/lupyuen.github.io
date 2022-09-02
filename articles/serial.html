@@ -67,26 +67,28 @@
 
     <h1 class="title">NuttX RTOS on PinePhone: UART Driver</h1>
     <nav id="TOC"><ul>
-<li><a href="#uart-with-polling">1 UART With Polling</a><ul>
-<li><a href="#transmit-uart">1.1 Transmit UART</a><ul></ul></li>
-<li><a href="#wait-to-transmit">1.2 Wait To Transmit</a><ul></ul></li>
-<li><a href="#receive-uart">1.3 Receive UART</a><ul></ul></li>
-<li><a href="#wait-to-receive">1.4 Wait To Receive</a><ul></ul></li></ul></li>
-<li><a href="#uart-with-interrupts">2 UART With Interrupts</a><ul>
-<li><a href="#attach-interrupt-handler">2.1 Attach Interrupt Handler</a><ul></ul></li>
-<li><a href="#enable-interrupt">2.2 Enable Interrupt</a><ul></ul></li>
-<li><a href="#handle-interrupt">2.3 Handle Interrupt</a><ul></ul></li>
-<li><a href="#uart-transmit">2.4 UART Transmit</a><ul></ul></li>
-<li><a href="#uart-receive">2.5 UART Receive</a><ul></ul></li></ul></li>
-<li><a href="#initialise-uart">3 Initialise UART</a><ul></ul></li>
-<li><a href="#whats-next">4 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Sep 2022</em></p>
+<li><a href="#uart-output">1 UART Output</a><ul></ul></li>
+<li><a href="#uart-with-polling">2 UART With Polling</a><ul>
+<li><a href="#transmit-uart">2.1 Transmit UART</a><ul></ul></li>
+<li><a href="#wait-to-transmit">2.2 Wait To Transmit</a><ul></ul></li>
+<li><a href="#receive-uart">2.3 Receive UART</a><ul></ul></li>
+<li><a href="#wait-to-receive">2.4 Wait To Receive</a><ul></ul></li>
+<li><a href="#arm64-assembly">2.5 Arm64 Assembly</a><ul></ul></li></ul></li>
+<li><a href="#uart-with-interrupts">3 UART With Interrupts</a><ul>
+<li><a href="#attach-interrupt-handler">3.1 Attach Interrupt Handler</a><ul></ul></li>
+<li><a href="#enable-interrupt">3.2 Enable Interrupt</a><ul></ul></li>
+<li><a href="#handle-interrupt">3.3 Handle Interrupt</a><ul></ul></li>
+<li><a href="#uart-transmit">3.4 UART Transmit</a><ul></ul></li>
+<li><a href="#uart-receive">3.5 UART Receive</a><ul></ul></li></ul></li>
+<li><a href="#initialise-uart">4 Initialise UART</a><ul></ul></li>
+<li><a href="#whats-next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Sep 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/serial-title.jpg" alt="PinePhone Hacking with Pinebook Pro and BLÅHAJ" /></p>
 <p><em>PinePhone Hacking with Pinebook Pro and BLÅHAJ</em></p>
 <p>Last week we spoke about creating our own <strong>Operating System</strong> for <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/uboot"><strong>“PinePhone boots Apache NuttX RTOS”</strong></a></li>
 </ul>
-<p>Our PinePhone OS will be awfully quiet if we don’t implement <strong>UART Input and Output</strong>. (For the Serial Debug Console)</p>
+<p>Our PinePhone OS will be awfully quiet until we implement <strong>UART Input and Output</strong>. (For the Serial Debug Console)</p>
 <p>Today we’ll learn about the <strong>UART Controller</strong> for the Allwinner A64 SoC inside PinePhone…</p>
 <ul>
 <li>
@@ -107,9 +109,17 @@
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
 </ul>
-<h1 id="uart-with-polling"><a href="#uart-with-polling">1 UART With Polling</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L60-L67">qemu_serial.c</a></p>
+<p><img src="https://lupyuen.github.io/images/uboot-uart1.png" alt="Allwinner A64 UART Controller Registers" /></p>
+<p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><em>Allwinner A64 UART Controller Registers</em></a></p>
+<h1 id="uart-output"><a href="#uart-output">1 UART Output</a></h1>
+<p>Our operating system will print some output on PinePhone’s <strong>Serial Debug Console</strong> as it runs. (And receive input too)</p>
+<p>To do that, we’ll talk to the <strong>UART Controller</strong> on the Allwinner A64 SoC…</p>
+<ul>
+<li><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a></li>
+</ul>
+<p>Flip the <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>A64 User Manual</strong></a> to page 562 (“UART”) and we’ll see the <strong>UART Registers</strong>. (Pic above)</p>
+<p>PinePhone’s Serial Console is connected to <strong>UART0</strong> at Base Address <strong><code>0x01C2</code> <code>8000</code></strong></p>
+<p>Which we define like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L60-L67">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Use PinePhone Allwinner A64 UART (instead of QEMU PL011)
 #define PINEPHONE_UART
 
@@ -117,9 +127,25 @@
 #define UART_IRQ 32
 
 // UART0 Base Address for PinePhone Allwinner A64 UART
-#define UART_BASE_ADDRESS 0x01C28000</code></pre></div><h2 id="transmit-uart"><a href="#transmit-uart">1.1 Transmit UART</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1044-L1060">qemu_serial.c</a></p>
+#define UART_BASE_ADDRESS 0x01C28000</code></pre></div>
+<p>(We’ll talk about <code>UART_IRQ</code> in a while)</p>
+<p>Let’s read and write UART Data the easier (inefficient) way, via Polling…</p>
+<p><img src="https://lupyuen.github.io/images/uboot-uart2.png" alt="A64 UART Registers UART_RBR and UART_THR" /></p>
+<p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><em>A64 UART Registers UART_RBR and UART_THR</em></a></p>
+<h1 id="uart-with-polling"><a href="#uart-with-polling">2 UART With Polling</a></h1>
+<p>Page 563 of the <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> tells us the UART Registers for <strong>reading and writing UART Data</strong> (pic above)…</p>
+<ul>
+<li>
+<p><strong>Receiver Buffer Register (RBR)</strong>: At Offset <code>0x00</code></p>
+</li>
+<li>
+<p><strong>Transmit Holding Register (THR)</strong>: Also at Offset <code>0x00</code></p>
+</li>
+</ul>
+<p>Let’s write some UART Data…</p>
+<h2 id="transmit-uart"><a href="#transmit-uart">2.1 Transmit UART</a></h2>
+<p>The <strong>Transmit Holding Register (THR)</strong> is at address <strong><code>0x01C2</code> <code>8000</code></strong>. (Since Offset is 0)</p>
+<p>We’ll write our output data to <strong><code>0x01C2</code> <code>8000</code></strong>, byte by byte, and the data will appear in the Serial Console: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1044-L1060">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Send one byte to PinePhone Allwinner A64 UART
 static void a64_uart_send(struct uart_dev_s *dev, int ch)
 {
@@ -136,9 +162,24 @@ static void a64_uart_send(struct uart_dev_s *dev, int ch)
   // FIFO is full. Any attempt to write data when the FIFO is full results in the
   // write data being lost.
   *uart_thr = ch;
-}</code></pre></div><h2 id="wait-to-transmit"><a href="#wait-to-transmit">1.2 Wait To Transmit</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1077-L1093">qemu_serial.c</a></p>
+}</code></pre></div>
+<p>So this code…</p>
+<div class="example-wrap"><pre class="language-c"><code>a64_uart_send(NULL, &#39;H&#39;);
+a64_uart_send(NULL, &#39;E&#39;);
+a64_uart_send(NULL, &#39;Y&#39;);</code></pre></div>
+<p>Will print this to PinePhone’s Serial Console…</p>
+<div class="example-wrap"><pre class="language-text"><code>HEY</code></pre></div>
+<p><em>Will this work if we send a huge chunk of text?</em></p>
+<p>Nope, we’ll overflow the <strong>Transmit FIFO Buffer</strong>!</p>
+<p>The pic below shows what happens if we print a lot of text… The overflow characters <strong>will get dropped</strong>. (Hence the solitary “<code>f</code>”)</p>
+<p>To fix this, we <strong>wait for the UART Port</strong> to be ready before we transmit. We’ll see how in the next section.</p>
+<p><em>What’s <code>uart_dev_s</code>?</em></p>
+<p>That’s the convention that NuttX RTOS expects for UART Drivers.</p>
+<p>We may drop the parameter if we’re not on NuttX.</p>
+<p><img src="https://lupyuen.github.io/images/uboot-title.png" alt="Why we wait for the UART Port before we transmit" /></p>
+<p><em>Why we wait for the UART Port before we transmit</em></p>
+<h2 id="wait-to-transmit"><a href="#wait-to-transmit">2.2 Wait To Transmit</a></h2>
+<p>To check if the UART Port is ready to accept output data, we read Bit 5 of the <strong>Line Status Register (UART_LSR)</strong> at Offset <code>0x14</code>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1077-L1093">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Return true if Transmit FIFO is not full for PinePhone Allwinner A64 UART
 static bool a64_uart_txready(struct uart_dev_s *dev)
 {
@@ -157,13 +198,18 @@ static bool a64_uart_txready(struct uart_dev_s *dev)
   return (*uart_lsr &amp; 0b100000) != 0;  // Transmit FIFO is ready if THRE=1 (Bit 5)
 }</code></pre></div>
 <p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>// Wait for UART Port to be ready
+while (!a64_uart_txready(NULL)) {}
+
+// Send one byte of data
+a64_uart_send(NULL, &#39;A&#39;);</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1095-L1100">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Return true if Transmit FIFO is empty for PinePhone Allwinner A64 UART
 static bool a64_uart_txempty(struct uart_dev_s *dev)
 {
   // Transmit FIFO is empty if Transmit FIFO is not full (for now)
   return a64_uart_txready(dev);
-}</code></pre></div><h2 id="receive-uart"><a href="#receive-uart">1.3 Receive UART</a></h2>
+}</code></pre></div><h2 id="receive-uart"><a href="#receive-uart">2.3 Receive UART</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L992-L1010">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Receive data from PinePhone Allwinner A64 UART
@@ -184,7 +230,7 @@ static int a64_uart_receive(struct uart_dev_s *dev, unsigned int *status)
   // the data already in the FIFO is preserved, but any incoming data are lost
   // and an overrun error occurs.
   return *uart_rbr;
-}</code></pre></div><h2 id="wait-to-receive"><a href="#wait-to-receive">1.4 Wait To Receive</a></h2>
+}</code></pre></div><h2 id="wait-to-receive"><a href="#wait-to-receive">2.4 Wait To Receive</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1027-L1042">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Return true if Receive FIFO is not empty for PinePhone Allwinner A64 UART
@@ -202,9 +248,11 @@ static bool a64_uart_rxavailable(struct uart_dev_s *dev)
   // This bit is cleared when the RBR is read in non-FIFO mode, or when the
   // receiver FIFO is empty, in FIFO mode.
   return (*uart_lsr) &amp; 1;  // DR=1 if data is ready
-}</code></pre></div><h1 id="uart-with-interrupts"><a href="#uart-with-interrupts">2 UART With Interrupts</a></h1>
+}</code></pre></div><h2 id="arm64-assembly"><a href="#arm64-assembly">2.5 Arm64 Assembly</a></h2>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code></code></pre></div><h2 id="attach-interrupt-handler"><a href="#attach-interrupt-handler">2.1 Attach Interrupt Handler</a></h2>
+<h1 id="uart-with-interrupts"><a href="#uart-with-interrupts">3 UART With Interrupts</a></h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code></code></pre></div><h2 id="attach-interrupt-handler"><a href="#attach-interrupt-handler">3.1 Attach Interrupt Handler</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L940-L961">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Attach Interrupt Handler for PinePhone Allwinner A64 UART
@@ -239,7 +287,7 @@ static void a64_uart_detach(struct uart_dev_s *dev)
 
   // Detach UART Interrupt Handler
   irq_detach(UART_IRQ);
-}</code></pre></div><h2 id="enable-interrupt"><a href="#enable-interrupt">2.2 Enable Interrupt</a></h2>
+}</code></pre></div><h2 id="enable-interrupt"><a href="#enable-interrupt">3.2 Enable Interrupt</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1012-L1025">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable or disable Receive Interrupts for PinePhone Allwinner A64 UART
@@ -270,7 +318,7 @@ static void a64_uart_txint(struct uart_dev_s *dev, bool enable)
   // 1: Enable
   if (enable) { *uart_ier |= 0b00000010; }
   else        { *uart_ier &amp;= 0b11111101; }
-}</code></pre></div><h2 id="handle-interrupt"><a href="#handle-interrupt">2.3 Handle Interrupt</a></h2>
+}</code></pre></div><h2 id="handle-interrupt"><a href="#handle-interrupt">3.3 Handle Interrupt</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1102-L1139">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Interrupt Handler for PinePhone Allwinner A64 UART
@@ -310,11 +358,11 @@ static int a64_uart_irq_handler(int irq, void *context, void *arg)
 
   }
   return OK;
-}</code></pre></div><h2 id="uart-transmit"><a href="#uart-transmit">2.4 UART Transmit</a></h2>
+}</code></pre></div><h2 id="uart-transmit"><a href="#uart-transmit">3.4 UART Transmit</a></h2>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code></code></pre></div><h2 id="uart-receive"><a href="#uart-receive">2.5 UART Receive</a></h2>
+<div class="example-wrap"><pre class="language-c"><code></code></pre></div><h2 id="uart-receive"><a href="#uart-receive">3.5 UART Receive</a></h2>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code></code></pre></div><h1 id="initialise-uart"><a href="#initialise-uart">3 Initialise UART</a></h1>
+<div class="example-wrap"><pre class="language-c"><code></code></pre></div><h1 id="initialise-uart"><a href="#initialise-uart">4 Initialise UART</a></h1>
 <p>TODO</p>
 <p>https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L925-L930</p>
 <div class="example-wrap"><pre class="language-c"><code>// Setup PinePhone Allwinner A64 UART
@@ -414,7 +462,7 @@ nsh&gt; ls /dev
  ttyS0
  zero</code></pre></div>
 <p><a href="https://youtube.com/shorts/WmRzfCiWV6o?feature=share"><strong>Watch the Demo on YouTube</strong></a></p>
-<h1 id="whats-next"><a href="#whats-next">4 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">5 What’s Next</a></h1>
 <p>TODO</p>
 <p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
