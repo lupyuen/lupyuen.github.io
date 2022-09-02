@@ -14,7 +14,15 @@ Our PinePhone OS will be awfully quiet if we don't implement __UART Input and Ou
 
 Today we'll learn about the __UART Controller__ for the Allwinner A64 SoC inside PinePhone...
 
-And how we implemented PinePhone's __UART Driver__ [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) 
+-   Transmit and receive UART Data the Polling Way
+
+-   Also the Interrupt-Driven Way
+
+-   Enabling UART Interrupts
+
+-   Handling UART Interrupts
+
+And how we implemented PinePhone's __UART Driver__ for [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) 
 
 Let's dive into our __Porting Journal__ for NuttX on PinePhone...
 
@@ -24,37 +32,347 @@ Let's dive into our __Porting Journal__ for NuttX on PinePhone...
 
 TODO
 
+[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L60-L67)
+
+```c
+// Use PinePhone Allwinner A64 UART (instead of QEMU PL011)
+#define PINEPHONE_UART
+
+// UART0 IRQ Number for PinePhone Allwinner A64 UART
+#define UART_IRQ 32
+
+// UART0 Base Address for PinePhone Allwinner A64 UART
+#define UART_BASE_ADDRESS 0x01C28000
+```
+
 ## Transmit UART
 
 TODO
 
-## Wait for UART
+[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1044-L1060)
+
+```c
+// Send one byte to PinePhone Allwinner A64 UART
+static void a64_uart_send(struct uart_dev_s *dev, int ch)
+{
+  // Write to UART Transmit Holding Register (UART_THR)
+  // Offset: 0x0000
+  uint8_t *uart_thr = (uint8_t *) (UART_BASE_ADDRESS + 0x0);
+
+  // Bits 7 to 0: Transmit Holding Register (THR)
+  // Data to be transmitted on the serial output port . Data should only be
+  // written to the THR when the THR Empty (THRE) bit (UART_LSR[5]) is set.
+
+  // If in FIFO mode and FIFOs are enabled (UART_FCR[0] = 1) and THRE is set,
+  // 16 number of characters of data may be written to the THR before the
+  // FIFO is full. Any attempt to write data when the FIFO is full results in the
+  // write data being lost.
+  *uart_thr = ch;
+}
+```
+
+## Wait To Transmit
 
 TODO
+
+[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1077-L1093)
+
+```c
+// Return true if Transmit FIFO is not full for PinePhone Allwinner A64 UART
+static bool a64_uart_txready(struct uart_dev_s *dev)
+{
+  // Read from UART Line Status Register (UART_LSR)
+  // Offset: 0x0014
+  const uint8_t *uart_lsr = (const uint8_t *) (UART_BASE_ADDRESS + 0x14);
+
+  // Bit 5: TX Holding Register Empty (THRE)
+  // If the FIFOs are disabled, this bit is set to "1" whenever the TX Holding
+  // Register is empty and ready to accept new data and it is cleared when the
+  // CPU writes to the TX Holding Register.
+
+  // If the FIFOs are enabled, this bit is set to "1" whenever the TX FIFO is
+  // empty and it is cleared when at least one byte is written
+  // to the TX FIFO.
+  return (*uart_lsr & 0b100000) != 0;  // Transmit FIFO is ready if THRE=1 (Bit 5)
+}
+```
+
+TODO
+
+[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1095-L1100)
+
+```c
+// Return true if Transmit FIFO is empty for PinePhone Allwinner A64 UART
+static bool a64_uart_txempty(struct uart_dev_s *dev)
+{
+  // Transmit FIFO is empty if Transmit FIFO is not full (for now)
+  return a64_uart_txready(dev);
+}
+```
+
+## Receive UART
+
+TODO
+
+[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L992-L1010)
+
+```c
+// Receive data from PinePhone Allwinner A64 UART
+static int a64_uart_receive(struct uart_dev_s *dev, unsigned int *status)
+{
+  // Read from UART Receiver Buffer Register (UART_RBR)
+  // Offset: 0x0000
+  const uint8_t *uart_rbr = (const uint8_t *) (UART_BASE_ADDRESS + 0x00);
+
+  // Bits 7 to 0: Receiver Buffer Register (RBR)
+  // Data byte received on the serial input port . The data in this register is
+  // valid only if the Data Ready (DR) bit in the UART Line Status Register
+  // (UART_LCR) is set.
+  //
+  // If in FIFO mode and FIFOs are enabled (UART_FCR[0] set to one), this
+  // register accesses the head of the receive FIFO. If the receive FIFO is full
+  // and this register is not read before the next data character arrives, then
+  // the data already in the FIFO is preserved, but any incoming data are lost
+  // and an overrun error occurs.
+  return *uart_rbr;
+}
+```
+
+## Wait To Receive
+
+TODO
+
+[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1027-L1042)
+
+```c
+// Return true if Receive FIFO is not empty for PinePhone Allwinner A64 UART
+static bool a64_uart_rxavailable(struct uart_dev_s *dev)
+{
+  // Read from UART Line Status Register (UART_LSR)
+  // Offset: 0x0014
+  const uint8_t *uart_lsr = (const uint8_t *) (UART_BASE_ADDRESS + 0x14);
+
+  // Bit 0: Data Ready (DR)
+  // This is used to indicate that the receiver contains at least one character in
+  // the RBR or the receiver FIFO.
+  // 0: no data ready
+  // 1: data ready
+  // This bit is cleared when the RBR is read in non-FIFO mode, or when the
+  // receiver FIFO is empty, in FIFO mode.
+  return (*uart_lsr) & 1;  // DR=1 if data is ready
+}
+```
 
 # UART With Interrupts
 
 TODO
 
+```c
+```
+
+## Attach Interrupt Handler
+
+TODO
+
+[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L940-L961)
+
+```c
+// Attach Interrupt Handler for PinePhone Allwinner A64 UART
+static int a64_uart_attach(struct uart_dev_s *dev)
+{
+  int ret;
+
+  // Attach UART Interrupt Handler
+  ret = irq_attach(UART_IRQ, a64_uart_irq_handler, dev);
+
+  // Set Interrupt Priority in GIC v2
+  arm64_gic_irq_set_priority(UART_IRQ, IRQ_TYPE_LEVEL, 0);
+
+  // Enable UART Interrupt
+  if (ret == OK)
+    {
+      up_enable_irq(UART_IRQ);
+    }
+  else
+    {
+      sinfo("error ret=%d\n", ret);
+    }
+  return ret;
+}
+```
+
+TODO
+
+[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L963-L971)
+
+```c
+// Detach Interrupt Handler for PinePhone Allwinner A64 UART
+static void a64_uart_detach(struct uart_dev_s *dev)
+{
+  // Disable UART Interrupt
+  up_disable_irq(UART_IRQ);
+
+  // Detach UART Interrupt Handler
+  irq_detach(UART_IRQ);
+}
+```
+
 ## Enable Interrupt
 
 TODO
 
-## Interrupt Handler 
+[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1012-L1025)
+
+```c
+// Enable or disable Receive Interrupts for PinePhone Allwinner A64 UART
+static void a64_uart_rxint(struct uart_dev_s *dev, bool enable)
+{
+  // Write to UART Interrupt Enable Register (UART_IER)
+  // Offset: 0x0004
+  uint8_t *uart_ier = (uint8_t *) (UART_BASE_ADDRESS + 0x04);
+
+  // Bit 0: Enable Received Data Available Interrupt (ERBFI)
+  // This is used to enable/disable the generation of Received Data Available Interrupt and the Character Timeout Interrupt (if in FIFO mode and FIFOs enabled). These are the second highest priority interrupts.
+  // 0: Disable
+  // 1: Enable
+  if (enable) { *uart_ier |= 0b00000001; }
+  else        { *uart_ier &= 0b11111110; }
+}
+```
 
 TODO
+
+```c
+// Enable or disable Transmit Interrupts for PinePhone Allwinner A64 UART
+static void a64_uart_txint(struct uart_dev_s *dev, bool enable)
+{
+  // Write to UART Interrupt Enable Register (UART_IER)
+  // Offset: 0x0004
+  uint8_t *uart_ier = (uint8_t *) (UART_BASE_ADDRESS + 0x04);
+
+  // Bit 1: Enable Transmit Holding Register Empty Interrupt (ETBEI)
+  // This is used to enable/disable the generation of Transmitter Holding Register Empty Interrupt. This is the third highest priority interrupt.
+  // 0: Disable
+  // 1: Enable
+  if (enable) { *uart_ier |= 0b00000010; }
+  else        { *uart_ier &= 0b11111101; }
+}
+```
+
+## Handle Interrupt 
+
+TODO
+
+[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1102-L1139)
+
+```c
+// Interrupt Handler for PinePhone Allwinner A64 UART
+static int a64_uart_irq_handler(int irq, void *context, void *arg)
+{
+  // Get the UART Device
+  struct uart_dev_s *dev = (struct uart_dev_s *)arg;
+  UNUSED(irq);
+  UNUSED(context);
+  DEBUGASSERT(dev != NULL && dev->priv != NULL);
+
+  // Read UART Interrupt Identity Register (UART_IIR)
+  // Offset: 0x0008 
+  const uint8_t *uart_iir = (const uint8_t *) (UART_BASE_ADDRESS + 0x08);
+
+  // Bits 3 to 0: Interrupt ID
+  // This indicates the highest priority pending interrupt which can be one of the following types:
+  // 0000: modem status
+  // 0001: no interrupt pending
+  // 0010: THR empty
+  // 0100: received data available
+  // 0110: receiver line status
+  // 0111: busy detect
+  // 1100: character timeout
+  // Bit 3 indicates an interrupt can only occur when the FIFOs are enabled and used to distinguish a Character Timeout condition interrupt.
+  uint8_t int_id = (*uart_iir) & 0b1111;
+
+  // 0100: If received data is available...
+  if (int_id == 0b0100) {
+    // Receive the data
+    uart_recvchars(dev);
+
+  // 0010: If THR is empty (Transmit Holding Register)...
+  } else if (int_id == 0b0010) {
+    // Transmit the data
+    uart_xmitchars(dev);
+
+  }
+  return OK;
+}
+```
 
 ## UART Transmit
 
 TODO
 
+```c
+```
+
 ## UART Receive
 
 TODO
 
+```c
+```
+
 # Initialise UART
 
 TODO
+
+https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L925-L930
+
+```c
+// Setup PinePhone Allwinner A64 UART
+static int a64_uart_setup(struct uart_dev_s *dev)
+{
+  // TODO: Set the Baud Rate
+  return 0;
+}
+```
+
+TODO
+
+https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L932-L938
+
+```c
+// Shutdown PinePhone Allwinner A64 UART
+static void a64_uart_shutdown(struct uart_dev_s *dev)
+{
+  // Should never be called
+  UNUSED(dev);
+  sinfo("%s: call unexpected\n", __func__);
+}
+```
+
+TODO
+
+https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L973-L990
+
+```c
+// I/O Control for PinePhone Allwinner A64 UART
+static int a64_uart_ioctl(struct file *filep, int cmd, unsigned long arg)
+{
+  int ret = OK;
+  UNUSED(filep);
+  UNUSED(arg);
+  switch (cmd)
+    {
+      case TIOCSBRK:  /* BSD compatibility: Turn break on, unconditionally */
+      case TIOCCBRK:  /* BSD compatibility: Turn break off, unconditionally */
+      default:
+        {
+          ret = -ENOTTY;
+          break;
+        }
+    }
+  return ret;
+}
+```
 
 ```text
 Starting kernel ...
