@@ -334,7 +334,11 @@ qemu-system-aarch64 \
   -kernel ./nuttx
 
 ## Convert Device Tree to text format
-dtc -o gicv2.dts -O dts -I dtb gicv2.dtb
+dtc \
+  -o gicv2.dts \
+  -O dts \
+  -I dtb \
+  gicv2.dtb
 ```
 
 The Base Addresses are revealed in the __GIC Version 2 Device Tree__: [gicv2.dts](https://github.com/lupyuen/incubator-nuttx/blob/gicv2/gicv2.dts#L324)...
