@@ -216,12 +216,19 @@ static bool a64_uart_txempty(struct uart_dev_s *dev)
 {
   // Transmit FIFO is empty if Transmit FIFO is not full (for now)
   return a64_uart_txready(dev);
-}</code></pre></div><h2 id="receive-uart"><a href="#receive-uart">2.3 Receive UART</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L992-L1010">qemu_serial.c</a></p>
+}</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/uboot-uart2.png" alt="A64 UART Registers UART_RBR and UART_THR" /></p>
+<p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><em>A64 UART Registers UART_RBR and UART_THR</em></a></p>
+<h2 id="receive-uart"><a href="#receive-uart">2.3 Receive UART</a></h2>
+<p>Now that PinePhone can talk to us, let’s make sure we can talk back!</p>
+<p>Anything that we type into PinePhone’s Serial Console will appear in the <strong>Receiver Buffer Register (RBR)</strong>, byte by byte.</p>
+<p>The Receiver Buffer Register is at address <strong><code>0x01C2</code> <code>8000</code></strong>. (Since Offset is 0). This how we read it: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L992-L1010">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Receive data from PinePhone Allwinner A64 UART
 static int a64_uart_receive(struct uart_dev_s *dev, unsigned int *status)
 {
+  // Status is always OK
+  *status = 0;
+
   // Read from UART Receiver Buffer Register (UART_RBR)
   // Offset: 0x0000
   const uint8_t *uart_rbr = (const uint8_t *) (UART_BASE_ADDRESS + 0x00);
@@ -237,9 +244,12 @@ static int a64_uart_receive(struct uart_dev_s *dev, unsigned int *status)
   // the data already in the FIFO is preserved, but any incoming data are lost
   // and an overrun error occurs.
   return *uart_rbr;
-}</code></pre></div><h2 id="wait-to-receive"><a href="#wait-to-receive">2.4 Wait To Receive</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1027-L1042">qemu_serial.c</a></p>
+}</code></pre></div>
+<p>(We may drop the <strong><code>dev</code></strong> and <strong><code>status</code></strong> parameters if we’re not on NuttX)</p>
+<p>But don’t read the UART Input yet! We need to wait for the UART Input to be available…</p>
+<h2 id="wait-to-receive"><a href="#wait-to-receive">2.4 Wait To Receive</a></h2>
+<p>Let’s check if there’s <strong>UART Input</strong> ready to be read from the UART Port.</p>
+<p>We read Bit 0 of the <strong>Line Status Register (UART_LSR)</strong> at Offset <code>0x14</code>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1027-L1042">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Return true if Receive FIFO is not empty for PinePhone Allwinner A64 UART
 static bool a64_uart_rxavailable(struct uart_dev_s *dev)
 {
@@ -255,11 +265,29 @@ static bool a64_uart_rxavailable(struct uart_dev_s *dev)
   // This bit is cleared when the RBR is read in non-FIFO mode, or when the
   // receiver FIFO is empty, in FIFO mode.
   return (*uart_lsr) &amp; 1;  // DR=1 if data is ready
-}</code></pre></div><h2 id="arm64-assembly"><a href="#arm64-assembly">2.5 Arm64 Assembly</a></h2>
-<p>TODO</p>
+}</code></pre></div>
+<p>Now we’re ready to read UART Input…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Wait for UART Input to be ready
+while (!a64_uart_rxavailable(NULL)) {}
+
+// Read one byte of data
+int status;
+int ch = a64_uart_receive(NULL, &amp;status);</code></pre></div>
+<p><em>Again… This looks like a waste of CPU Cycles?</em></p>
+<p>Indeed, UART Input won’t work well on multitasking operating systems unless we do it with Interrupts. (Coming up in a sec!)</p>
+<h2 id="arm64-assembly"><a href="#arm64-assembly">2.5 Arm64 Assembly</a></h2>
+<p><em>Is it safe to do UART Output when our PinePhone OS is booting?</em></p>
+<p>Yep we may call <a href="https://lupyuen.github.io/articles/serial#transmit-uart"><strong><code>a64_uart_send</code></strong></a> and <a href="https://lupyuen.github.io/articles/serial#wait-to-transmit"><strong><code>a64_uart_txready</code></strong></a> when our OS is booting.</p>
+<p>For Arm64 Assembly we have something similar: This <strong>Arm64 Assembly Macro</strong> is super helpful for printing debug messages in our Arm64 Startup Code…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/uboot#nuttx-uart-macros"><strong>“NuttX UART Macros”</strong></a></li>
+</ul>
+<p><em>Don’t we need to set the Baud Rate for the UART Port?</em></p>
+<p>Right now we don’t initialise the UART Port because U-Boot has kindly done it for us. (At 115.2 kbps)</p>
+<p>We’ll come back to this in a while.</p>
 <h1 id="uart-with-interrupts"><a href="#uart-with-interrupts">3 UART With Interrupts</a></h1>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code></code></pre></div><h2 id="attach-interrupt-handler"><a href="#attach-interrupt-handler">3.1 Attach Interrupt Handler</a></h2>
+<h2 id="attach-interrupt-handler"><a href="#attach-interrupt-handler">3.1 Attach Interrupt Handler</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L940-L961">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Attach Interrupt Handler for PinePhone Allwinner A64 UART
