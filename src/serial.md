@@ -192,16 +192,25 @@ static bool a64_uart_txempty(struct uart_dev_s *dev)
 }
 ```
 
+![A64 UART Registers UART_RBR and UART_THR](https://lupyuen.github.io/images/uboot-uart2.png)
+
+[_A64 UART Registers UART_RBR and UART_THR_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+
 ## Receive UART
 
-TODO
+Now that PinePhone can talk to us, let's make sure we can talk back!
 
-[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L992-L1010)
+Anything that we type into PinePhone's Serial Console will appear in the __Receiver Buffer Register (RBR)__, byte by byte.
+
+The Receiver Buffer Register is at address __`0x01C2` `8000`__. (Since Offset is 0). This how we read it: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L992-L1010)
 
 ```c
 // Receive data from PinePhone Allwinner A64 UART
 static int a64_uart_receive(struct uart_dev_s *dev, unsigned int *status)
 {
+  // Status is always OK
+  *status = 0;
+
   // Read from UART Receiver Buffer Register (UART_RBR)
   // Offset: 0x0000
   const uint8_t *uart_rbr = (const uint8_t *) (UART_BASE_ADDRESS + 0x00);
@@ -220,11 +229,15 @@ static int a64_uart_receive(struct uart_dev_s *dev, unsigned int *status)
 }
 ```
 
+(We may drop the __`dev`__ and __`status`__ parameters if we're not on NuttX)
+
+But don't read the UART Input yet! We need to wait for the UART Input to be available...
+
 ## Wait To Receive
 
-TODO
+Let's check if there's __UART Input__ ready to be read from the UART Port.
 
-[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1027-L1042)
+We read Bit 0 of the __Line Status Register (UART_LSR)__ at Offset `0x14`: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1027-L1042)
 
 ```c
 // Return true if Receive FIFO is not empty for PinePhone Allwinner A64 UART
@@ -245,16 +258,40 @@ static bool a64_uart_rxavailable(struct uart_dev_s *dev)
 }
 ```
 
+Now we're ready to read UART Input...
+
+```c
+// Wait for UART Input to be ready
+while (!a64_uart_rxavailable(NULL)) {}
+
+// Read one byte of data
+int status;
+int ch = a64_uart_receive(NULL, &status);
+```
+
+_Again... This looks like a waste of CPU Cycles?_
+
+Indeed, UART Input won't work well on multitasking operating systems unless we do it with Interrupts. (Coming up in a sec!)
+
 ## Arm64 Assembly
 
-TODO
+_Is it safe to do UART Output when our PinePhone OS is booting?_
+
+Yep we may call [__`a64_uart_send`__](https://lupyuen.github.io/articles/serial#transmit-uart) and [__`a64_uart_txready`__](https://lupyuen.github.io/articles/serial#wait-to-transmit) when our OS is booting.
+
+For Arm64 Assembly we have something similar: This __Arm64 Assembly Macro__ is super helpful for printing debug messages in our Arm64 Startup Code...
+
+-   [__"NuttX UART Macros"__](https://lupyuen.github.io/articles/uboot#nuttx-uart-macros)
+
+_Don't we need to set the Baud Rate for the UART Port?_
+
+Right now we don't initialise the UART Port because U-Boot has kindly done it for us. (At 115.2 kbps)
+
+We'll come back to this in a while.
 
 # UART With Interrupts
 
 TODO
-
-```c
-```
 
 ## Attach Interrupt Handler
 
