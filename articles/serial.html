@@ -367,11 +367,11 @@ static int a64_uart_irq_handler(int irq, void *context, void *arg)
   return OK;
 }</code></pre></div><h2 id="uart-transmit"><a href="#uart-transmit">3.4 UART Transmit</a></h2>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code></code></pre></div><h2 id="uart-receive"><a href="#uart-receive">3.5 UART Receive</a></h2>
+<h2 id="uart-receive"><a href="#uart-receive">3.5 UART Receive</a></h2>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code></code></pre></div><h1 id="initialise-uart"><a href="#initialise-uart">4 Initialise UART</a></h1>
+<h1 id="initialise-uart"><a href="#initialise-uart">4 Initialise UART</a></h1>
 <p>TODO</p>
-<p>https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L925-L930</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L925-L930">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Setup PinePhone Allwinner A64 UART
 static int a64_uart_setup(struct uart_dev_s *dev)
 {
@@ -379,7 +379,7 @@ static int a64_uart_setup(struct uart_dev_s *dev)
   return 0;
 }</code></pre></div>
 <p>TODO</p>
-<p>https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L932-L938</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L932-L938">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Shutdown PinePhone Allwinner A64 UART
 static void a64_uart_shutdown(struct uart_dev_s *dev)
 {
@@ -388,7 +388,7 @@ static void a64_uart_shutdown(struct uart_dev_s *dev)
   sinfo(&quot;%s: call unexpected\n&quot;, __func__);
 }</code></pre></div>
 <p>TODO</p>
-<p>https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L973-L990</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L973-L990">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// I/O Control for PinePhone Allwinner A64 UART
 static int a64_uart_ioctl(struct file *filep, int cmd, unsigned long arg)
 {
@@ -406,7 +406,9 @@ static int a64_uart_ioctl(struct file *filep, int cmd, unsigned long arg)
         }
     }
   return ret;
-}</code></pre></div><div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
+}</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 
 HELLO NUTTX ON PINEPHONE!
 - Ready to Boot CPU
