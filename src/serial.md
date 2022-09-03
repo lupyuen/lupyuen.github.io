@@ -299,6 +299,24 @@ TODO
 
 -   Handle Interrupt 
 
+NuttX uses both Polling-based UART and Interrupt-driven UART. NuttX OS writes __System Logs__ (`syslog`) the UART Polling way...
+
+```c
+sinfo("This is printed on UART with Polling\n");
+```
+
+[(By calling __`up_putc`__)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L869-L891)
+
+And NuttX Apps print __App Messages__ the UART Interrupt Way...
+
+```c
+printf("This is printed on UART with Interrupts\n");
+```
+
+So if we don't see any App Messages, check that the __UART Interrupts__ are OK.
+
+TODO
+
 ![Shared Peripheral Interrupts for Allwinner A64's Generic Interrupt Controller](https://lupyuen.github.io/images/interrupt-peripheral.jpg)
 
 [_Shared Peripheral Interrupts for Allwinner A64's Generic Interrupt Controller_](https://lupyuen.github.io/articles/interrupt#generic-interrupt-controller)
