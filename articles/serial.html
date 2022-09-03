@@ -298,6 +298,13 @@ int ch = a64_uart_receive(NULL, &amp;status);</code></pre></div>
 <p>Handle Interrupt </p>
 </li>
 </ul>
+<p>NuttX uses both Polling-based UART and Interrupt-driven UART. NuttX OS writes <strong>System Logs</strong> (<code>syslog</code>) the UART Polling way…</p>
+<div class="example-wrap"><pre class="language-c"><code>sinfo(&quot;This is printed on UART with Polling\n&quot;);</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L869-L891">(By calling <strong><code>up_putc</code></strong>)</a></p>
+<p>And NuttX Apps print <strong>App Messages</strong> the UART Interrupt Way…</p>
+<div class="example-wrap"><pre class="language-c"><code>printf(&quot;This is printed on UART with Interrupts\n&quot;);</code></pre></div>
+<p>So if we don’t see any App Messages, check that the <strong>UART Interrupts</strong> are OK.</p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/interrupt-peripheral.jpg" alt="Shared Peripheral Interrupts for Allwinner A64’s Generic Interrupt Controller" /></p>
 <p><a href="https://lupyuen.github.io/articles/interrupt#generic-interrupt-controller"><em>Shared Peripheral Interrupts for Allwinner A64’s Generic Interrupt Controller</em></a></p>
 <h2 id="attach-interrupt-handler"><a href="#attach-interrupt-handler">3.1 Attach Interrupt Handler</a></h2>
