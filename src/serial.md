@@ -340,30 +340,27 @@ Let's __attach our Interrupt Handler__ to handle the UART Interrupts: [qemu_seri
 // Attach Interrupt Handler for PinePhone Allwinner A64 UART
 static int a64_uart_attach(struct uart_dev_s *dev)
 {
-  int ret;
-
   // Attach UART Interrupt Handler
-  ret = irq_attach(UART_IRQ, a64_uart_irq_handler, dev);
+  int ret = irq_attach(UART_IRQ, a64_uart_irq_handler, dev);
 
   // Set Interrupt Priority in GIC v2
   arm64_gic_irq_set_priority(UART_IRQ, IRQ_TYPE_LEVEL, 0);
 
   // Enable UART Interrupt
-  if (ret == OK)
-    {
-      up_enable_irq(UART_IRQ);
-    }
-  else
-    {
-      sinfo("error ret=%d\n", ret);
-    }
+  if (ret == OK) {
+    up_enable_irq(UART_IRQ);
+  } else {
+    sinfo("error ret=%d\n", ret);
+  }
   return ret;
 }
 ```
 
+__`a64_uart_irq_handler`__ is our UART Interrupt Handler, we'll cover in a while.
+
 _What's `irq_attach`?_
 
-TODO
+On NuttX, we call __`irq_attach`__ to attach an Interrupt Handler.
 
 _What's `arm64_gic_irq_set_priority`?_
 
