@@ -105,7 +105,7 @@
 </li>
 </ul>
 <p>And how we implemented PinePhone’s <strong>UART Driver</strong> for <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> </p>
-<p>Let’s dive into our <strong>Porting Journal</strong> for NuttX on PinePhone…</p>
+<p>Let’s dive into our <strong>NuttX Porting Journal</strong> and find out how we made PinePhone chatty over UART…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
 </ul>
@@ -171,7 +171,7 @@ a64_uart_send(NULL, &#39;Y&#39;);</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>HEY</code></pre></div>
 <p><em>Will this work if we send a huge chunk of text?</em></p>
 <p>Nope, we’ll overflow the <strong>Transmit FIFO Buffer</strong>!</p>
-<p>The pic below shows what happens if we print a lot of text… The overflow characters <strong>will get dropped</strong>. (Hence the solitary “<code>f</code>”)</p>
+<p>The pic below shows what happens if we print too much… The overflow characters <strong>will get dropped</strong>. (Hence the solitary “<code>f</code>”)</p>
 <p>To fix this, we <strong>wait for the UART Port</strong> to be ready before we transmit. We’ll see how in the next section.</p>
 <p><em>What’s <code>uart_dev_s</code>?</em></p>
 <p>That’s the convention that NuttX RTOS expects for UART Drivers.</p>
@@ -179,7 +179,8 @@ a64_uart_send(NULL, &#39;Y&#39;);</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/uboot-title.png" alt="Why we wait for the UART Port before we transmit" /></p>
 <p><em>Why we wait for the UART Port before we transmit</em></p>
 <h2 id="wait-to-transmit"><a href="#wait-to-transmit">2.2 Wait To Transmit</a></h2>
-<p>To check if the UART Port is ready to accept output data, we read Bit 5 of the <strong>Line Status Register (UART_LSR)</strong> at Offset <code>0x14</code>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1077-L1093">qemu_serial.c</a></p>
+<p>Let’s check if the UART Port is <strong>ready to accept output data</strong> for transmission.</p>
+<p>We read Bit 5 of the <strong>Line Status Register (UART_LSR)</strong> at Offset <code>0x14</code>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1077-L1093">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Return true if Transmit FIFO is not full for PinePhone Allwinner A64 UART
 static bool a64_uart_txready(struct uart_dev_s *dev)
 {
@@ -197,13 +198,19 @@ static bool a64_uart_txready(struct uart_dev_s *dev)
   // to the TX FIFO.
   return (*uart_lsr &amp; 0b100000) != 0;  // Transmit FIFO is ready if THRE=1 (Bit 5)
 }</code></pre></div>
-<p>TODO</p>
+<p>Now we can print to the Serial Console <strong>without dropping characters</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Wait for UART Port to be ready
 while (!a64_uart_txready(NULL)) {}
 
 // Send one byte of data
 a64_uart_send(NULL, &#39;A&#39;);</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1095-L1100">qemu_serial.c</a></p>
+<p><em>Busy Wait in an Empty Loop? That’s wasteful ain’t it?</em></p>
+<p>Yes we’re wasting CPU Cycles waiting for UART.</p>
+<p>That’s why NuttX and other Operating Systems will insist that we implement <strong>UART with Interrupts</strong> (instead of Polling).</p>
+<p>We’ll cover this in a while.</p>
+<p>Also note that PinePhone’s UART Port has a <strong>Transmit FIFO Buffer</strong> of 16 characters.</p>
+<p>Our UART Driver doesn’t check for the available space in the Transmit FIFO Buffer.</p>
+<p>For efficiency, we should probably fix this: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1095-L1100">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Return true if Transmit FIFO is empty for PinePhone Allwinner A64 UART
 static bool a64_uart_txempty(struct uart_dev_s *dev)
 {
