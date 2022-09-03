@@ -531,6 +531,8 @@ static int a64_uart_ioctl(struct file *filep, int cmd, unsigned long arg)
 }
 ```
 
+# NuttX Serial Driver
+
 TODO
 
 ```text
