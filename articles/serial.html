@@ -286,30 +286,39 @@ int ch = a64_uart_receive(NULL, &amp;status);</code></pre></div>
 <p>Right now we don’t initialise the UART Port because U-Boot has kindly done it for us. (At 115.2 kbps)</p>
 <p>We’ll come back to this in a while.</p>
 <h1 id="uart-with-interrupts"><a href="#uart-with-interrupts">3 UART With Interrupts</a></h1>
-<p>TODO</p>
+<p>Earlier we saw UART with Polling, and how inefficient it can get. Now we talk about <strong>UART with Interrupts</strong> and how we…</p>
 <ul>
 <li>
-<p>Attach Interrupt Handler</p>
+<p>Attach a UART Interrupt Handler</p>
 </li>
 <li>
-<p>Enable Interrupt</p>
+<p>Enable Interrupts</p>
 </li>
 <li>
-<p>Handle Interrupt </p>
+<p>Handle Interrupts</p>
 </li>
 </ul>
+<p><em>Does NuttX use UART Polling or Interrupts?</em></p>
 <p>NuttX uses both Polling-based UART and Interrupt-driven UART. NuttX OS writes <strong>System Logs</strong> (<code>syslog</code>) the UART Polling way…</p>
 <div class="example-wrap"><pre class="language-c"><code>sinfo(&quot;This is printed on UART with Polling\n&quot;);</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L869-L891">(By calling <strong><code>up_putc</code></strong>)</a></p>
 <p>And NuttX Apps print <strong>App Messages</strong> the UART Interrupt Way…</p>
 <div class="example-wrap"><pre class="language-c"><code>printf(&quot;This is printed on UART with Interrupts\n&quot;);</code></pre></div>
-<p>So if we don’t see any App Messages, check that the <strong>UART Interrupts</strong> are OK.</p>
-<p>TODO</p>
+<p>So if we don’t see any App Messages in NuttX, check that the <strong>UART Interrupts</strong> are OK.</p>
 <p><img src="https://lupyuen.github.io/images/interrupt-peripheral.jpg" alt="Shared Peripheral Interrupts for Allwinner A64’s Generic Interrupt Controller" /></p>
 <p><a href="https://lupyuen.github.io/articles/interrupt#generic-interrupt-controller"><em>Shared Peripheral Interrupts for Allwinner A64’s Generic Interrupt Controller</em></a></p>
 <h2 id="attach-interrupt-handler"><a href="#attach-interrupt-handler">3.1 Attach Interrupt Handler</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L940-L961">qemu_serial.c</a></p>
+<p>PinePhone’s UART Controller will trigger an Interrupt for <strong>Transmit and Receive Events</strong> when…</p>
+<ul>
+<li>
+<p>Transmit Buffer becomes empty</p>
+</li>
+<li>
+<p>Received Data becomes available</p>
+</li>
+</ul>
+<p>The <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> (page 211, “GIC”) reveals that UART0 Interrupts will be triggered at <strong>Interrupt Number 32</strong>. (Pic above)</p>
+<p>Let’s <strong>attach our Interrupt Handler</strong> to handle the UART Interrupts: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L940-L961">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// UART0 IRQ Number for PinePhone Allwinner A64 UART
 #define UART_IRQ 32
 
@@ -335,6 +344,9 @@ static int a64_uart_attach(struct uart_dev_s *dev)
     }
   return ret;
 }</code></pre></div>
+<p><em>What’s <code>irq_attach</code>?</em></p>
+<p>TODO</p>
+<p><em>What’s <code>arm64_gic_irq_set_priority</code>?</em></p>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L963-L971">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Detach Interrupt Handler for PinePhone Allwinner A64 UART
