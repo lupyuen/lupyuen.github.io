@@ -396,21 +396,15 @@ static int a64_uart_irq_handler(int irq, void *context, void *arg)
 
 TODO
 
-```c
-```
-
 ## UART Receive
 
 TODO
-
-```c
-```
 
 # Initialise UART
 
 TODO
 
-https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L925-L930
+[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L925-L930)
 
 ```c
 // Setup PinePhone Allwinner A64 UART
@@ -423,7 +417,7 @@ static int a64_uart_setup(struct uart_dev_s *dev)
 
 TODO
 
-https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L932-L938
+[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L932-L938)
 
 ```c
 // Shutdown PinePhone Allwinner A64 UART
@@ -437,7 +431,7 @@ static void a64_uart_shutdown(struct uart_dev_s *dev)
 
 TODO
 
-https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L973-L990
+[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L973-L990)
 
 ```c
 // I/O Control for PinePhone Allwinner A64 UART
@@ -459,6 +453,8 @@ static int a64_uart_ioctl(struct file *filep, int cmd, unsigned long arg)
   return ret;
 }
 ```
+
+TODO
 
 ```text
 Starting kernel ...
