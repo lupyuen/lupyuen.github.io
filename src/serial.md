@@ -291,13 +291,15 @@ We'll come back to this in a while.
 
 # UART With Interrupts
 
-TODO
+Earlier we saw UART with Polling, and how inefficient it can get. Now we talk about __UART with Interrupts__ and how we...
 
--   Attach Interrupt Handler
+-   Attach a UART Interrupt Handler
 
--   Enable Interrupt
+-   Enable Interrupts
 
--   Handle Interrupt 
+-   Handle Interrupts
+
+_Does NuttX use UART Polling or Interrupts?_
 
 NuttX uses both Polling-based UART and Interrupt-driven UART. NuttX OS writes __System Logs__ (`syslog`) the UART Polling way...
 
@@ -313,9 +315,7 @@ And NuttX Apps print __App Messages__ the UART Interrupt Way...
 printf("This is printed on UART with Interrupts\n");
 ```
 
-So if we don't see any App Messages, check that the __UART Interrupts__ are OK.
-
-TODO
+So if we don't see any App Messages in NuttX, check that the __UART Interrupts__ are OK.
 
 ![Shared Peripheral Interrupts for Allwinner A64's Generic Interrupt Controller](https://lupyuen.github.io/images/interrupt-peripheral.jpg)
 
@@ -323,9 +323,15 @@ TODO
 
 ## Attach Interrupt Handler
 
-TODO
+PinePhone's UART Controller will trigger an Interrupt for __Transmit and Receive Events__ when...
 
-[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L940-L961)
+-   Transmit Buffer becomes empty
+
+-   Received Data becomes available
+
+The [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) (page 211, "GIC") reveals that UART0 Interrupts will be triggered at __Interrupt Number 32__. (Pic above)
+
+Let's __attach our Interrupt Handler__ to handle the UART Interrupts: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L940-L961)
 
 ```c
 // UART0 IRQ Number for PinePhone Allwinner A64 UART
@@ -354,6 +360,12 @@ static int a64_uart_attach(struct uart_dev_s *dev)
   return ret;
 }
 ```
+
+_What's `irq_attach`?_
+
+TODO
+
+_What's `arm64_gic_irq_set_priority`?_
 
 TODO
 
