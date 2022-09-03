@@ -293,6 +293,16 @@ We'll come back to this in a while.
 
 TODO
 
+-   Attach Interrupt Handler
+
+-   Enable Interrupt
+
+-   Handle Interrupt 
+
+![Shared Peripheral Interrupts for Allwinner A64's Generic Interrupt Controller](https://lupyuen.github.io/images/interrupt-peripheral.jpg)
+
+[_Shared Peripheral Interrupts for Allwinner A64's Generic Interrupt Controller_](https://lupyuen.github.io/articles/interrupt#generic-interrupt-controller)
+
 ## Attach Interrupt Handler
 
 TODO
@@ -300,6 +310,9 @@ TODO
 [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L940-L961)
 
 ```c
+// UART0 IRQ Number for PinePhone Allwinner A64 UART
+#define UART_IRQ 32
+
 // Attach Interrupt Handler for PinePhone Allwinner A64 UART
 static int a64_uart_attach(struct uart_dev_s *dev)
 {
