@@ -325,27 +325,23 @@ int ch = a64_uart_receive(NULL, &amp;status);</code></pre></div>
 // Attach Interrupt Handler for PinePhone Allwinner A64 UART
 static int a64_uart_attach(struct uart_dev_s *dev)
 {
-  int ret;
-
   // Attach UART Interrupt Handler
-  ret = irq_attach(UART_IRQ, a64_uart_irq_handler, dev);
+  int ret = irq_attach(UART_IRQ, a64_uart_irq_handler, dev);
 
   // Set Interrupt Priority in GIC v2
   arm64_gic_irq_set_priority(UART_IRQ, IRQ_TYPE_LEVEL, 0);
 
   // Enable UART Interrupt
-  if (ret == OK)
-    {
-      up_enable_irq(UART_IRQ);
-    }
-  else
-    {
-      sinfo(&quot;error ret=%d\n&quot;, ret);
-    }
+  if (ret == OK) {
+    up_enable_irq(UART_IRQ);
+  } else {
+    sinfo(&quot;error ret=%d\n&quot;, ret);
+  }
   return ret;
 }</code></pre></div>
+<p><strong><code>a64_uart_irq_handler</code></strong> is our UART Interrupt Handler, we’ll cover in a while.</p>
 <p><em>What’s <code>irq_attach</code>?</em></p>
-<p>TODO</p>
+<p>On NuttX, we call <strong><code>irq_attach</code></strong> to attach an Interrupt Handler.</p>
 <p><em>What’s <code>arm64_gic_irq_set_priority</code>?</em></p>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L963-L971">qemu_serial.c</a></p>
