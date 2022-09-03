@@ -24,7 +24,7 @@ Today we'll learn about the __UART Controller__ for the Allwinner A64 SoC inside
 
 And how we implemented PinePhone's __UART Driver__ for [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) 
 
-Let's dive into our __Porting Journal__ for NuttX on PinePhone...
+Let's dive into our __NuttX Porting Journal__ and find out how we made PinePhone chatty over UART...
 
 -   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
 
@@ -119,7 +119,7 @@ _Will this work if we send a huge chunk of text?_
 
 Nope, we'll overflow the __Transmit FIFO Buffer__!
 
-The pic below shows what happens if we print a lot of text... The overflow characters __will get dropped__. (Hence the solitary "`f`")
+The pic below shows what happens if we print too much... The overflow characters __will get dropped__. (Hence the solitary "`f`")
 
 To fix this, we __wait for the UART Port__ to be ready before we transmit. We'll see how in the next section.
 
@@ -135,7 +135,9 @@ _Why we wait for the UART Port before we transmit_
 
 ## Wait To Transmit
 
-To check if the UART Port is ready to accept output data, we read Bit 5 of the __Line Status Register (UART_LSR)__ at Offset `0x14`: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1077-L1093)
+Let's check if the UART Port is __ready to accept output data__ for transmission.
+
+We read Bit 5 of the __Line Status Register (UART_LSR)__ at Offset `0x14`: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1077-L1093)
 
 ```c
 // Return true if Transmit FIFO is not full for PinePhone Allwinner A64 UART
@@ -157,7 +159,7 @@ static bool a64_uart_txready(struct uart_dev_s *dev)
 }
 ```
 
-TODO
+Now we can print to the Serial Console __without dropping characters__...
 
 ```c
 // Wait for UART Port to be ready
@@ -167,7 +169,19 @@ while (!a64_uart_txready(NULL)) {}
 a64_uart_send(NULL, 'A');
 ```
 
-[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1095-L1100)
+_Busy Wait in an Empty Loop? That's wasteful ain't it?_
+
+Yes we're wasting CPU Cycles waiting for UART.
+
+That's why NuttX and other Operating Systems will insist that we implement __UART with Interrupts__ (instead of Polling).
+
+We'll cover this in a while.
+
+Also note that PinePhone's UART Port has a __Transmit FIFO Buffer__ of 16 characters.
+
+Our UART Driver doesn't check for the available space in the Transmit FIFO Buffer.
+
+For efficiency, we should probably fix this: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1095-L1100)
 
 ```c
 // Return true if Transmit FIFO is empty for PinePhone Allwinner A64 UART
