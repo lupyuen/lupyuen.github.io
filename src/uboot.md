@@ -716,6 +716,8 @@ nsh> ls /dev
 
 [__Watch the Demo on YouTube__](https://youtube.com/shorts/WmRzfCiWV6o?feature=share)
 
+[__Another Demo Video__](https://youtu.be/MJDxCcKAv0g)
+
 Yep NuttX boots on PinePhone... After replacing a single __`Image.gz`__ file!
 
 # Upcoming Fixes
