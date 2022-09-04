@@ -327,10 +327,19 @@ int ch = a64_uart_receive(NULL, &amp;status);</code></pre></div>
 static int a64_uart_attach(struct uart_dev_s *dev)
 {
   // Attach UART Interrupt Handler
-  int ret = irq_attach(UART_IRQ, a64_uart_irq_handler, dev);
+  int ret = irq_attach(
+    UART_IRQ,              // Interrupt Number
+    a64_uart_irq_handler,  // Interrupt Handler
+    dev                    // NuttX Device
+  );
 
-  // Set Interrupt Priority in GIC v2
-  arm64_gic_irq_set_priority(UART_IRQ, IRQ_TYPE_LEVEL, 0);
+  // Set Interrupt Priority in 
+  // Generic Interrupt Controller version 2
+  arm64_gic_irq_set_priority(
+    UART_IRQ,        // Interrupt Number
+    IRQ_TYPE_LEVEL,  // Trigger Interrupt on High
+    0                // Interrupt Flags
+  );
 
   // Enable UART Interrupt
   if (ret == OK) {
@@ -342,10 +351,28 @@ static int a64_uart_attach(struct uart_dev_s *dev)
 }</code></pre></div>
 <p><strong><code>a64_uart_irq_handler</code></strong> is our UART Interrupt Handler, we’ll cover in a while.</p>
 <p><em>What’s <code>irq_attach</code>?</em></p>
-<p>On NuttX, we call <strong><code>irq_attach</code></strong> to attach an Interrupt Handler.</p>
+<div class="example-wrap"><pre class="language-c"><code>// Attach UART Interrupt Handler
+int ret = irq_attach(
+  UART_IRQ,              // Interrupt Number
+  a64_uart_irq_handler,  // Interrupt Handler
+  dev                    // NuttX Device
+);</code></pre></div>
+<p>On NuttX, we call <strong><code>irq_attach</code></strong> to attach an Interrupt Handler to the UART Controller.</p>
 <p><em>What’s <code>arm64_gic_irq_set_priority</code>?</em></p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L963-L971">qemu_serial.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Set Interrupt Priority in 
+// Generic Interrupt Controller version 2
+arm64_gic_irq_set_priority(
+  UART_IRQ,        // Interrupt Number
+  IRQ_TYPE_LEVEL,  // Trigger Interrupt on High
+  0                // Interrupt Flags
+);</code></pre></div>
+<p>Arm64 Interrupts are managed on PinePhone by the <strong>Generic Interrupt Controller</strong> in Allwinner A64…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/interrupt#generic-interrupt-controller"><strong>“Generic Interrupt Controller”</strong></a></li>
+</ul>
+<p>The code above calls the Generic Interrupt Controller to set the priority of the UART Interrupt.</p>
+<p><strong>TODO</strong>: Check the parameters</p>
+<p>Later when we’re done with UART Interrupts, we should <strong>detach the Interrupt Handler</strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L963-L971">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Detach Interrupt Handler for PinePhone Allwinner A64 UART
 static void a64_uart_detach(struct uart_dev_s *dev)
 {
