@@ -588,6 +588,8 @@ nsh> ls /dev
 
 [__Watch the Demo on YouTube__](https://youtube.com/shorts/WmRzfCiWV6o?feature=share)
 
+[__Another Demo Video__](https://youtu.be/MJDxCcKAv0g)
+
 Let's talk about EL1...
 
 # Exception Levels
