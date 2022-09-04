@@ -44,7 +44,7 @@ Flip the [__A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_M
 
 PinePhone's Serial Console is connected to __UART0__ at Base Address __`0x01C2` `8000`__
 
-Which we define like so: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L60-L67)
+Which we define like so: [arch/arm64/src/qemu/qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L60-L67)
 
 ```c
 // Use PinePhone Allwinner A64 UART (instead of QEMU PL011)
@@ -61,17 +61,21 @@ Which we define like so: [qemu_serial.c](https://github.com/lupyuen/incubator-nu
 
 Let's read and write UART Data the easier (inefficient) way, via Polling...
 
-![A64 UART Registers UART_RBR and UART_THR](https://lupyuen.github.io/images/uboot-uart2.png)
+![A64 UART Receive and Transmit Registers UART_RBR and UART_THR](https://lupyuen.github.io/images/uboot-uart2.png)
 
-[_A64 UART Registers UART_RBR and UART_THR_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+[_A64 UART Receive and Transmit Registers UART_RBR and UART_THR_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
 
 # UART With Polling
 
 Page 563 of the [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) tells us the UART Registers for __reading and writing UART Data__ (pic above)...
 
--   __Receiver Buffer Register (RBR)__: At Offset `0x00`
+-   __Receiver Buffer Register (RBR)__
 
--   __Transmit Holding Register (THR)__: Also at Offset `0x00`
+    (At Offset `0x00`)
+
+-   __Transmit Holding Register (THR)__
+
+    (Also at Offset `0x00`)
 
 Let's write some UART Data...
 
@@ -87,7 +91,8 @@ static void a64_uart_send(struct uart_dev_s *dev, int ch)
 {
   // Write to UART Transmit Holding Register (UART_THR)
   // Offset: 0x0000
-  uint8_t *uart_thr = (uint8_t *) (UART_BASE_ADDRESS + 0x0);
+  uint8_t *uart_thr = (uint8_t *) 
+    (UART_BASE_ADDRESS + 0x0);
 
   // Bits 7 to 0: Transmit Holding Register (THR)
   // Data to be transmitted on the serial output port . Data should only be
@@ -145,7 +150,8 @@ static bool a64_uart_txready(struct uart_dev_s *dev)
 {
   // Read from UART Line Status Register (UART_LSR)
   // Offset: 0x0014
-  const uint8_t *uart_lsr = (const uint8_t *) (UART_BASE_ADDRESS + 0x14);
+  const uint8_t *uart_lsr = (const uint8_t *) 
+    (UART_BASE_ADDRESS + 0x14);
 
   // Bit 5: TX Holding Register Empty (THRE)
   // If the FIFOs are disabled, this bit is set to "1" whenever the TX Holding
@@ -213,7 +219,8 @@ static int a64_uart_receive(struct uart_dev_s *dev, unsigned int *status)
 
   // Read from UART Receiver Buffer Register (UART_RBR)
   // Offset: 0x0000
-  const uint8_t *uart_rbr = (const uint8_t *) (UART_BASE_ADDRESS + 0x00);
+  const uint8_t *uart_rbr = (const uint8_t *) 
+    (UART_BASE_ADDRESS + 0x00);
 
   // Bits 7 to 0: Receiver Buffer Register (RBR)
   // Data byte received on the serial input port . The data in this register is
@@ -245,7 +252,8 @@ static bool a64_uart_rxavailable(struct uart_dev_s *dev)
 {
   // Read from UART Line Status Register (UART_LSR)
   // Offset: 0x0014
-  const uint8_t *uart_lsr = (const uint8_t *) (UART_BASE_ADDRESS + 0x14);
+  const uint8_t *uart_lsr = (const uint8_t *) 
+    (UART_BASE_ADDRESS + 0x14);
 
   // Bit 0: Data Ready (DR)
   // This is used to indicate that the receiver contains at least one character in
@@ -414,11 +422,21 @@ static void a64_uart_detach(struct uart_dev_s *dev)
 }
 ```
 
+![A64 UART Interrupt Enable Register UART_IER](https://lupyuen.github.io/images/serial-enable.jpg)
+
+[_A64 UART Interrupt Enable Register UART_IER_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+
 ## Enable Interrupt
 
-TODO
+UART Interupts won't happen until we __enable UART Interrupts__. 
 
-[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1012-L1025)
+Page 565 of the [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) tells us the UART Register for enabling UART Interrupts (pic above)...
+
+-   __Interrupt Enable Register (UART_IER)__
+
+    (At Offset `0x04`)
+
+This is how we enable (or disable) __UART Receive Interrupts__: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1014-L1029)
 
 ```c
 // Enable or disable Receive Interrupts for PinePhone Allwinner A64 UART
@@ -426,7 +444,8 @@ static void a64_uart_rxint(struct uart_dev_s *dev, bool enable)
 {
   // Write to UART Interrupt Enable Register (UART_IER)
   // Offset: 0x0004
-  uint8_t *uart_ier = (uint8_t *) (UART_BASE_ADDRESS + 0x04);
+  uint8_t *uart_ier = (uint8_t *) 
+    (UART_BASE_ADDRESS + 0x04);
 
   // Bit 0: Enable Received Data Available Interrupt (ERBFI)
   // This is used to enable/disable the generation of Received Data Available Interrupt and the Character Timeout Interrupt (if in FIFO mode and FIFOs enabled). These are the second highest priority interrupts.
@@ -437,7 +456,7 @@ static void a64_uart_rxint(struct uart_dev_s *dev, bool enable)
 }
 ```
 
-TODO
+And this is how we enable (or disable) __UART Transmit Interrupts__: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1064-L1079)
 
 ```c
 // Enable or disable Transmit Interrupts for PinePhone Allwinner A64 UART
@@ -445,7 +464,8 @@ static void a64_uart_txint(struct uart_dev_s *dev, bool enable)
 {
   // Write to UART Interrupt Enable Register (UART_IER)
   // Offset: 0x0004
-  uint8_t *uart_ier = (uint8_t *) (UART_BASE_ADDRESS + 0x04);
+  uint8_t *uart_ier = (uint8_t *) 
+    (UART_BASE_ADDRESS + 0x04);
 
   // Bit 1: Enable Transmit Holding Register Empty Interrupt (ETBEI)
   // This is used to enable/disable the generation of Transmitter Holding Register Empty Interrupt. This is the third highest priority interrupt.
@@ -568,6 +588,30 @@ static int a64_uart_ioctl(struct file *filep, int cmd, unsigned long arg)
 # NuttX Serial Driver
 
 TODO
+
+[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L761-L779)
+
+```c
+//  Serial driver UART operations for PinePhone Allwinner A64 UART
+static const struct uart_ops_s g_uart_ops =
+{
+  .setup    = a64_uart_setup,
+  .shutdown = a64_uart_shutdown,
+  .attach   = a64_uart_attach,
+  .detach   = a64_uart_detach,
+  .ioctl    = a64_uart_ioctl,
+  .receive  = a64_uart_receive,
+  .rxint    = a64_uart_rxint,
+  .rxavailable = a64_uart_rxavailable,
+#ifdef CONFIG_SERIAL_IFLOWCONTROL
+  .rxflowcontrol    = NULL,
+#endif
+  .send     = a64_uart_send,
+  .txint    = a64_uart_txint,
+  .txready  = a64_uart_txready,
+  .txempty  = a64_uart_txempty,
+};
+```
 
 ```text
 Starting kernel ...
