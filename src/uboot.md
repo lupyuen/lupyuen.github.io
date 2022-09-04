@@ -730,11 +730,13 @@ We fixed some issues with __Arm64 Interrupts__ on PinePhone...
 
 And we fixed UART Input in our [__UART Driver__](https://lupyuen.github.io/articles/uboot#uart-driver)...
 
--   [arch/arm64/src/qemu/qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c)
+-   [__"NuttX RTOS on PinePhone: UART Driver"__](https://lupyuen.github.io/articles/serial)
 
-We'll write about the UART Driver in the next article!
+Now we're ready to __build the Missing Drivers__ for PinePhone! Like MIPI DSI Display, I2C Touch Panel, LTE Modem, ...
 
-Below are some tips for debugging the __NuttX Boot Sequence__ on PinePhone...
+-   [__"PinePhone Device Tree"__](https://github.com/lupyuen/pinephone-nuttx#pinephone-device-tree)
+
+Below are tips for debugging the __NuttX Boot Sequence__ on PinePhone...
 
 1.  [__"Boot Sequence"__](https://github.com/lupyuen/pinephone-nuttx#boot-sequence)
 
@@ -808,9 +810,11 @@ But today NuttX is ready to turn PinePhone into a valuable __Learning Resource__
 
 There's plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏
 
-Check out the followup article...
+Check out the followup articles...
 
 -   [__"NuttX RTOS on PinePhone: Fixing the Interrupts"__](https://lupyuen.github.io/articles/interrupt)
+
+-   [__"NuttX RTOS on PinePhone: UART Driver"__](https://lupyuen.github.io/articles/serial)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -1074,36 +1078,10 @@ __TODO:__ What is the Serial Clock Frequency (SCLK)?
 
 ## UART Driver
 
-We have partially implemented the __UART Driver__ for PinePhone's Allwinner A64 UART Port...
+We have implemented the __UART Driver__ for PinePhone's Allwinner A64 UART Port...
 
 -   [arch/arm64/src/qemu/qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c) 
 
-We haven't implemented __Transmit and Receive Interrupts__ in our UART Driver, which are needed by NuttX Shell.
+Check out the details in this article...
 
-The (incomplete) __Serial Operations__ for our UART Driver are...
-
--   [__qemu_pl011_setup__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L811-L815): Setup UART 
-
--   [__qemu_pl011_shutdown__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L730-L743): Shutdown UART
-
--   [__qemu_pl011_attach__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L723-L727): Attach UART Interrupt
-
--   [__qemu_pl011_detach__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L669-L672): Detach UART Interrupt
-
--   [__qemu_pl011_ioctl__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L585-L612): UART I/O Control
-
--   [__qemu_pl011_receive__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L578-L582): Receive UART Input
-
--   [__qemu_pl011_rxint__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L517-L520): Enable or disable UART Receive Interrupt
-
--   [__qemu_pl011_rxavailable__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L486-L490): Is UART Input available
-
--   [__qemu_pl011_send__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L452-L457): Send UART Output
-
--   [__qemu_pl011_txint__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L547-L550): Enable or disable UART Transmit Interrupt
-
--   [__qemu_pl011_txready__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L399-L407): Is UART ready to transmit
-
--   [__qemu_pl011_txempty__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L427-L431): Is UART Transmit Buffer empty
-
-The operations above are being ported from [__PL011 UART__](https://krinkinmu.github.io/2020/11/29/PL011.html) to Allwinner A64 UART.
+-   [__"NuttX RTOS on PinePhone: UART Driver"__](https://lupyuen.github.io/articles/serial)

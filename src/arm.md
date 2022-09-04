@@ -901,6 +901,10 @@ Here comes the hard part: We have to __code the Nuttx Driver__ for each PinePhon
 
 -   [__And more...__](https://wiki.pine64.org/wiki/PinePhone_component_list)
 
+PinePhone's __Device Tree__ tells us what drivers we need...
+
+-   [__"PinePhone Device Tree"__](https://github.com/lupyuen/pinephone-nuttx#pinephone-device-tree)
+
 Some drivers might already exist in NuttX...
 
 -   [__NuttX Drivers__](https://github.com/apache/incubator-nuttx/tree/master/drivers)
@@ -950,6 +954,8 @@ Check out the followup articles...
 -   [__"PinePhone boots Apache NuttX RTOS"__](https://lupyuen.github.io/articles/uboot)
 
 -   [__"NuttX RTOS on PinePhone: Fixing the Interrupts"__](https://lupyuen.github.io/articles/interrupt)
+
+-   [__"NuttX RTOS on PinePhone: UART Driver"__](https://lupyuen.github.io/articles/serial)
 
 __NuttX on PinePhone__ might take a while to become a __Daily Driver__...
 
