@@ -303,9 +303,9 @@ Earlier we saw UART with Polling, and how inefficient it can get. Now we talk ab
 
 -   Attach a UART Interrupt Handler
 
--   Enable Interrupts
+-   Enable UART Interrupts
 
--   Handle Interrupts
+-   Handle UART Interrupts
 
 _Does NuttX use UART Polling or Interrupts?_
 
@@ -373,9 +373,9 @@ static int a64_uart_attach(struct uart_dev_s *dev)
 }
 ```
 
-__`a64_uart_irq_handler`__ is our UART Interrupt Handler, we'll cover in a while.
+__a64_uart_irq_handler__ is our UART Interrupt Handler, we'll explain in a while.
 
-_What's `irq_attach`?_
+_What's irq_attach?_
 
 ```c
 // Attach UART Interrupt Handler
@@ -386,9 +386,9 @@ int ret = irq_attach(
 );
 ```
 
-On NuttX, we call __`irq_attach`__ to attach an Interrupt Handler to the UART Controller.
+On NuttX, we call __irq_attach__ to attach an Interrupt Handler to the UART Controller.
 
-_What's `arm64_gic_irq_set_priority`?_
+_What's arm64_gic_irq_set_priority?_
 
 ```c
 // Set Interrupt Priority in 
@@ -406,8 +406,6 @@ Arm64 Interrupts are managed on PinePhone by the __Generic Interrupt Controller_
 
 The code above calls the Generic Interrupt Controller to set the priority of the UART Interrupt.
 
-__TODO__: Check the parameters
-
 Later when we're done with UART Interrupts, we should __detach the Interrupt Handler__: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L963-L971)
 
 ```c
@@ -421,6 +419,8 @@ static void a64_uart_detach(struct uart_dev_s *dev)
   irq_detach(UART_IRQ);
 }
 ```
+
+(__TODO__: Check the parameters of _arm64_gic_irq_set_priority_)
 
 ![A64 UART Interrupt Enable Register UART_IER](https://lupyuen.github.io/images/serial-enable.jpg)
 
