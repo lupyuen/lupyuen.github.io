@@ -341,10 +341,19 @@ Let's __attach our Interrupt Handler__ to handle the UART Interrupts: [qemu_seri
 static int a64_uart_attach(struct uart_dev_s *dev)
 {
   // Attach UART Interrupt Handler
-  int ret = irq_attach(UART_IRQ, a64_uart_irq_handler, dev);
+  int ret = irq_attach(
+    UART_IRQ,              // Interrupt Number
+    a64_uart_irq_handler,  // Interrupt Handler
+    dev                    // NuttX Device
+  );
 
-  // Set Interrupt Priority in GIC v2
-  arm64_gic_irq_set_priority(UART_IRQ, IRQ_TYPE_LEVEL, 0);
+  // Set Interrupt Priority in 
+  // Generic Interrupt Controller version 2
+  arm64_gic_irq_set_priority(
+    UART_IRQ,        // Interrupt Number
+    IRQ_TYPE_LEVEL,  // Trigger Interrupt on High
+    0                // Interrupt Flags
+  );
 
   // Enable UART Interrupt
   if (ret == OK) {
@@ -360,13 +369,38 @@ __`a64_uart_irq_handler`__ is our UART Interrupt Handler, we'll cover in a while
 
 _What's `irq_attach`?_
 
-On NuttX, we call __`irq_attach`__ to attach an Interrupt Handler.
+```c
+// Attach UART Interrupt Handler
+int ret = irq_attach(
+  UART_IRQ,              // Interrupt Number
+  a64_uart_irq_handler,  // Interrupt Handler
+  dev                    // NuttX Device
+);
+```
+
+On NuttX, we call __`irq_attach`__ to attach an Interrupt Handler to the UART Controller.
 
 _What's `arm64_gic_irq_set_priority`?_
 
-TODO
+```c
+// Set Interrupt Priority in 
+// Generic Interrupt Controller version 2
+arm64_gic_irq_set_priority(
+  UART_IRQ,        // Interrupt Number
+  IRQ_TYPE_LEVEL,  // Trigger Interrupt on High
+  0                // Interrupt Flags
+);
+```
 
-[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L963-L971)
+Arm64 Interrupts are managed on PinePhone by the __Generic Interrupt Controller__ in Allwinner A64...
+
+-   [__"Generic Interrupt Controller"__](https://lupyuen.github.io/articles/interrupt#generic-interrupt-controller)
+
+The code above calls the Generic Interrupt Controller to set the priority of the UART Interrupt.
+
+__TODO__: Check the parameters
+
+Later when we're done with UART Interrupts, we should __detach the Interrupt Handler__: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L963-L971)
 
 ```c
 // Detach Interrupt Handler for PinePhone Allwinner A64 UART
