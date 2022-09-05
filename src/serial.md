@@ -561,9 +561,11 @@ if (int_id == 0b0010) {
 
 If the Transmit Holding Register is empty, our Interrupt Handler calls __`uart_xmitchars`__ to transmit more data.
 
-__`uart_xmitchars`__ is a NuttX System Function that calls __`a64_uart_send`__ to transmit data to UART, while buffering the UART Output Data.
+__`uart_xmitchars`__ is a NuttX System Function that calls [__`a64_uart_send`__](https://lupyuen.github.io/articles/serial#transmit-uart) to transmit data to UART, while buffering the UART Output Data.
 
 [(We've seen __`a64_uart_send`__ earlier)](https://lupyuen.github.io/articles/serial#transmit-uart)
+
+__`uart_xmitchars`__ will also call [__`a64_uart_txready`__](https://lupyuen.github.io/articles/serial#wait-to-transmit) to check if the UART Port is ready to accept more data, before transmitting the data.
 
 Now for the other direction...
 
@@ -580,9 +582,11 @@ if (int_id == 0b0100) {
 
 If Received Data is available, our Interrupt Handler calls __`uart_recvchars`__ to read the Received Data.
 
-__`uart_recvchars`__ is a NuttX System Function that calls __`a64_uart_receive`__ to receive data from UART, while buffering the UART Input Data.
+__`uart_recvchars`__ is a NuttX System Function that calls [__`a64_uart_receive`__](https://lupyuen.github.io/articles/serial#receive-uart) to receive data from UART, while buffering the UART Input Data.
 
 [(We've seen __`a64_uart_receive`__ earlier)](https://lupyuen.github.io/articles/serial#receive-uart)
+
+__`uart_recvchars`__ will also call [__`a64_uart_rxavailable`__](https://lupyuen.github.io/articles/serial#wait-to-receive) to check if Received Data is actually available, before reading the data.
 
 And that's how we transmit and receive UART Data with Interrupts!
 
