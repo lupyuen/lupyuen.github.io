@@ -556,40 +556,40 @@ static int a64_uart_ioctl(struct file *filep, int cmd, unsigned long arg)
 <p>We’ve implemented all the <strong>UART Operations</strong> for our PinePhone UART Driver…</p>
 <ul>
 <li>
-<p><a href="https://lupyuen.github.io/articles/serial#initialise-uart"><strong><code>a64_uart_setup</code></strong></a>: TODO</p>
+<p><a href="https://lupyuen.github.io/articles/serial#initialise-uart"><strong><code>a64_uart_setup</code></strong></a>: Initialise UART Driver</p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/serial#initialise-uart"><strong><code>a64_uart_shutdown</code></strong></a>: TODO</p>
+<p><a href="https://lupyuen.github.io/articles/serial#initialise-uart"><strong><code>a64_uart_shutdown</code></strong></a>: Shutdown UART Driver</p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/serial#attach-interrupt-handler"><strong><code>a64_uart_attach</code></strong></a>: TODO</p>
+<p><a href="https://lupyuen.github.io/articles/serial#attach-interrupt-handler"><strong><code>a64_uart_attach</code></strong></a>: Attach Interrupt Handler</p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/serial#attach-interrupt-handler"><strong><code>a64_uart_detach</code></strong></a>: TODO</p>
+<p><a href="https://lupyuen.github.io/articles/serial#attach-interrupt-handler"><strong><code>a64_uart_detach</code></strong></a>: Detach Interrupt Handler</p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/serial#initialise-uart"><strong><code>a64_uart_ioctl</code></strong></a>: TODO</p>
+<p><a href="https://lupyuen.github.io/articles/serial#initialise-uart"><strong><code>a64_uart_ioctl</code></strong></a>: I/O Control</p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/serial#receive-uart"><strong><code>a64_uart_receive</code></strong></a>: TODO</p>
+<p><a href="https://lupyuen.github.io/articles/serial#receive-uart"><strong><code>a64_uart_receive</code></strong></a>: Receive Data</p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/serial#enable-interrupt"><strong><code>a64_uart_rxint</code></strong></a>: TODO</p>
+<p><a href="https://lupyuen.github.io/articles/serial#enable-interrupt"><strong><code>a64_uart_rxint</code></strong></a>: Enable / Disable Receive Interrupt</p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/serial#wait-to-receive"><strong><code>a64_uart_rxavailable</code></strong></a>: TODO</p>
+<p><a href="https://lupyuen.github.io/articles/serial#wait-to-receive"><strong><code>a64_uart_rxavailable</code></strong></a>: Is Received Data Available</p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/serial#transmit-uart"><strong><code>a64_uart_send</code></strong></a>: TODO</p>
+<p><a href="https://lupyuen.github.io/articles/serial#transmit-uart"><strong><code>a64_uart_send</code></strong></a>: Transmit Data</p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/serial#enable-interrupt"><strong><code>a64_uart_txint</code></strong></a>: TODO</p>
+<p><a href="https://lupyuen.github.io/articles/serial#enable-interrupt"><strong><code>a64_uart_txint</code></strong></a>: Enable / Disable Transmit Interrupt</p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/serial#wait-to-transmit"><strong><code>a64_uart_txready</code></strong></a>: TODO</p>
+<p><a href="https://lupyuen.github.io/articles/serial#wait-to-transmit"><strong><code>a64_uart_txready</code></strong></a>: Is UART Ready to Transmit</p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/serial#wait-to-transmit"><strong><code>a64_uart_txempty</code></strong></a>: TODO</p>
+<p><a href="https://lupyuen.github.io/articles/serial#wait-to-transmit"><strong><code>a64_uart_txempty</code></strong></a>: Is Transmit Buffer Empty</p>
 </li>
 </ul>
 <p>NuttX expects us to wrap the UART Operations into a <strong><code>uart_ops_s</code></strong> Struct like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L761-L779">qemu_serial.c</a></p>
@@ -612,8 +612,48 @@ static const struct uart_ops_s g_uart_ops =
   .txready  = a64_uart_txready,
   .txempty  = a64_uart_txempty,
 };</code></pre></div>
-<p>TODO: Startup</p>
+<p>We should <strong>start our UART Driver</strong> like this: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L833-L863">qemu_serial.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// UART1 is console and ttyS0
+#define CONSOLE_DEV g_uart1port
+#define TTYS0_DEV   g_uart1port
+
+// Performs the low level UART initialization early in
+// debug so that the serial console will be available
+// during bootup.  This must be called before arm_serialinit.
+void qemu_earlyserialinit(void)
+{
+  // NOTE: This function assumes that low level hardware configuration
+  // -- including all clocking and pin configuration -- was performed by the
+  // function imx8_lowsetup() earlier in the boot sequence.
+
+  // Enable the console UART.  The other UARTs will be initialized if and
+  // when they are first opened.
+  CONSOLE_DEV.isconsole = true;
+  a64_uart_setup(&amp;CONSOLE_DEV);
+}</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L809-L825">(<strong><code>g_uart1port</code></strong> contains the UART Operations <strong><code>g_uart_ops</code></strong>)</a></p>
+<p>Also this: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L833-L863">qemu_serial.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Register serial console and serial ports.  This assumes
+// that imx_earlyserialinit was called previously.
+void arm64_serialinit(void)
+{
+  int ret;
+
+  ret = uart_register(&quot;/dev/console&quot;, &amp;CONSOLE_DEV);
+  if (ret &lt; 0)
+    {
+      sinfo(&quot;error at register dev/console, ret =%d\n&quot;, ret);
+    }
+
+  ret = uart_register(&quot;/dev/ttyS0&quot;, &amp;TTYS0_DEV);
+
+  if (ret &lt; 0)
+    {
+      sinfo(&quot;error at register dev/ttyS0, ret =%d\n&quot;, ret);
+    }
+}</code></pre></div>
 <p>And we’re done with our PinePhone UART Driver for NuttX!</p>
+<p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 
 HELLO NUTTX ON PINEPHONE!
