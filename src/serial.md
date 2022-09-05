@@ -546,25 +546,45 @@ static int a64_uart_irq_handler(int irq, void *context, void *arg)
 }
 ```
 
-_What's `uart_recvchars`?_
-
-If Received Data is available, we call __`uart_recvchars`__ to read the Received Data.
-
-TODO
-
-_What's `uart_xmitchars`?_
-
-If the Transmit Holding Register is empty, we call __`uart_xmitchars`__ to transmit more data.
-
-TODO
+Let's talk about __`uart_recvchars`__ and __`uart_xmitchars`__...
 
 ## UART Transmit
 
-TODO
+_What's `uart_xmitchars`?_
+
+```c
+// 0010: If THR is empty (Transmit Holding Register)...
+if (int_id == 0b0010) {
+  // Transmit the data
+  uart_xmitchars(dev);
+```
+
+If the Transmit Holding Register is empty, our Interrupt Handler calls __`uart_xmitchars`__ to transmit more data.
+
+__`uart_xmitchars`__ is a NuttX System Function that calls __`a64_uart_send`__ to transmit data to UART, while buffering the UART Output Data.
+
+[(We've seen __`a64_uart_send`__ earlier)](https://lupyuen.github.io/articles/serial#transmit-uart)
+
+Now for the other direction...
 
 ## UART Receive
 
-TODO
+_What's `uart_recvchars`?_
+
+```c
+// 0100: If received data is available...
+if (int_id == 0b0100) {
+  // Receive the data
+  uart_recvchars(dev);
+```
+
+If Received Data is available, our Interrupt Handler calls __`uart_recvchars`__ to read the Received Data.
+
+__`uart_recvchars`__ is a NuttX System Function that calls __`a64_uart_receive`__ to receive data from UART, while buffering the UART Input Data.
+
+[(We've seen __`a64_uart_receive`__ earlier)](https://lupyuen.github.io/articles/serial#receive-uart)
+
+And that's how we transmit and receive UART Data with Interrupts!
 
 # Initialise UART
 
