@@ -652,29 +652,29 @@ _How do we create a PinePhone UART Driver for NuttX?_
 
 We've implemented all the __UART Operations__ for our PinePhone UART Driver...
 
--   [__`a64_uart_setup`__](https://lupyuen.github.io/articles/serial#initialise-uart): TODO
+-   [__`a64_uart_setup`__](https://lupyuen.github.io/articles/serial#initialise-uart): Initialise UART Driver
 
--   [__`a64_uart_shutdown`__](https://lupyuen.github.io/articles/serial#initialise-uart): TODO
+-   [__`a64_uart_shutdown`__](https://lupyuen.github.io/articles/serial#initialise-uart): Shutdown UART Driver
 
--   [__`a64_uart_attach`__](https://lupyuen.github.io/articles/serial#attach-interrupt-handler): TODO
+-   [__`a64_uart_attach`__](https://lupyuen.github.io/articles/serial#attach-interrupt-handler): Attach Interrupt Handler
 
--   [__`a64_uart_detach`__](https://lupyuen.github.io/articles/serial#attach-interrupt-handler): TODO
+-   [__`a64_uart_detach`__](https://lupyuen.github.io/articles/serial#attach-interrupt-handler): Detach Interrupt Handler
 
--   [__`a64_uart_ioctl`__](https://lupyuen.github.io/articles/serial#initialise-uart): TODO
+-   [__`a64_uart_ioctl`__](https://lupyuen.github.io/articles/serial#initialise-uart): I/O Control
 
--   [__`a64_uart_receive`__](https://lupyuen.github.io/articles/serial#receive-uart): TODO
+-   [__`a64_uart_receive`__](https://lupyuen.github.io/articles/serial#receive-uart): Receive Data
 
--   [__`a64_uart_rxint`__](https://lupyuen.github.io/articles/serial#enable-interrupt): TODO
+-   [__`a64_uart_rxint`__](https://lupyuen.github.io/articles/serial#enable-interrupt): Enable / Disable Receive Interrupt
 
--   [__`a64_uart_rxavailable`__](https://lupyuen.github.io/articles/serial#wait-to-receive): TODO
+-   [__`a64_uart_rxavailable`__](https://lupyuen.github.io/articles/serial#wait-to-receive): Is Received Data Available
 
--   [__`a64_uart_send`__](https://lupyuen.github.io/articles/serial#transmit-uart): TODO
+-   [__`a64_uart_send`__](https://lupyuen.github.io/articles/serial#transmit-uart): Transmit Data
 
--   [__`a64_uart_txint`__](https://lupyuen.github.io/articles/serial#enable-interrupt): TODO
+-   [__`a64_uart_txint`__](https://lupyuen.github.io/articles/serial#enable-interrupt): Enable / Disable Transmit Interrupt
 
--   [__`a64_uart_txready`__](https://lupyuen.github.io/articles/serial#wait-to-transmit): TODO
+-   [__`a64_uart_txready`__](https://lupyuen.github.io/articles/serial#wait-to-transmit): Is UART Ready to Transmit
 
--   [__`a64_uart_txempty`__](https://lupyuen.github.io/articles/serial#wait-to-transmit): TODO
+-   [__`a64_uart_txempty`__](https://lupyuen.github.io/articles/serial#wait-to-transmit): Is Transmit Buffer Empty
 
 NuttX expects us to wrap the UART Operations into a __`uart_ops_s`__ Struct like so: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L761-L779)
 
@@ -700,9 +700,58 @@ static const struct uart_ops_s g_uart_ops =
 };
 ```
 
-TODO: Startup
+We should __start our UART Driver__ like this: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L833-L863)
+
+```c
+// UART1 is console and ttyS0
+#define CONSOLE_DEV g_uart1port
+#define TTYS0_DEV   g_uart1port
+
+// Performs the low level UART initialization early in
+// debug so that the serial console will be available
+// during bootup.  This must be called before arm_serialinit.
+void qemu_earlyserialinit(void)
+{
+  // NOTE: This function assumes that low level hardware configuration
+  // -- including all clocking and pin configuration -- was performed by the
+  // function imx8_lowsetup() earlier in the boot sequence.
+
+  // Enable the console UART.  The other UARTs will be initialized if and
+  // when they are first opened.
+  CONSOLE_DEV.isconsole = true;
+  a64_uart_setup(&CONSOLE_DEV);
+}
+```
+
+[(__`g_uart1port`__ contains the UART Operations __`g_uart_ops`__)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L809-L825)
+
+Also this: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L833-L863)
+
+```c
+// Register serial console and serial ports.  This assumes
+// that imx_earlyserialinit was called previously.
+void arm64_serialinit(void)
+{
+  int ret;
+
+  ret = uart_register("/dev/console", &CONSOLE_DEV);
+  if (ret < 0)
+    {
+      sinfo("error at register dev/console, ret =%d\n", ret);
+    }
+
+  ret = uart_register("/dev/ttyS0", &TTYS0_DEV);
+
+  if (ret < 0)
+    {
+      sinfo("error at register dev/ttyS0, ret =%d\n", ret);
+    }
+}
+```
 
 And we're done with our PinePhone UART Driver for NuttX!
+
+TODO
 
 ```text
 Starting kernel ...
