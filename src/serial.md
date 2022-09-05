@@ -478,9 +478,32 @@ static void a64_uart_txint(struct uart_dev_s *dev, bool enable)
 
 ## Handle Interrupt 
 
-TODO
+Earlier we've attached __`a64_uart_irq_handler`__ as our Interrupt Handler for UART Interrupts...
 
-[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1102-L1139)
+```c
+// Attach UART Interrupt Handler
+int ret = irq_attach(
+  UART_IRQ,              // Interrupt Number
+  a64_uart_irq_handler,  // Interrupt Handler
+  dev                    // NuttX Device
+);
+```
+
+Let's look inside the Interrupt Handler.
+
+When UART triggers an Interrupt, it stores the cause of the Interrupt in the __Interrupt Identity Register (UART_IIR)__, Offset `0x08`.
+
+__Bits 0 to 3__ of the Interrupt Identity Register are..
+
+-   __Binary `0010`__ if the Transmit Holding Register is empty
+
+    (Hence we should transmit more data)
+
+-   __Binary `0100`__ if there's Receive Data available
+
+    (Hence we should read the data received)
+
+This is how we handle these conditions in our Interrupt Handler: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1102-L1139)
 
 ```c
 // Interrupt Handler for PinePhone Allwinner A64 UART
@@ -522,6 +545,18 @@ static int a64_uart_irq_handler(int irq, void *context, void *arg)
   return OK;
 }
 ```
+
+_What's `uart_recvchars`?_
+
+If Received Data is available, we call __`uart_recvchars`__ to read the Received Data.
+
+TODO
+
+_What's `uart_xmitchars`?_
+
+If the Transmit Holding Register is empty, we call __`uart_xmitchars`__ to transmit more data.
+
+TODO
 
 ## UART Transmit
 
