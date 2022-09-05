@@ -1,4 +1,4 @@
-# NuttX RTOS on PinePhone: Fixing the Interrupts
+# NuttX RTOS for PinePhone: Fixing the Interrupts
 
 📝 _1 Sep 2022_
 
