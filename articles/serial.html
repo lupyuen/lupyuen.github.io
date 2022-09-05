@@ -431,8 +431,27 @@ static void a64_uart_txint(struct uart_dev_s *dev, bool enable)
   if (enable) { *uart_ier |= 0b00000010; }
   else        { *uart_ier &amp;= 0b11111101; }
 }</code></pre></div><h2 id="handle-interrupt"><a href="#handle-interrupt">3.3 Handle Interrupt</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1102-L1139">qemu_serial.c</a></p>
+<p>Earlier we’ve attached <strong><code>a64_uart_irq_handler</code></strong> as our Interrupt Handler for UART Interrupts…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Attach UART Interrupt Handler
+int ret = irq_attach(
+  UART_IRQ,              // Interrupt Number
+  a64_uart_irq_handler,  // Interrupt Handler
+  dev                    // NuttX Device
+);</code></pre></div>
+<p>Let’s look inside the Interrupt Handler.</p>
+<p>When UART triggers an Interrupt, it stores the cause of the Interrupt in the <strong>Interrupt Identity Register (UART_IIR)</strong>, Offset <code>0x08</code>.</p>
+<p><strong>Bits 0 to 3</strong> of the Interrupt Identity Register are..</p>
+<ul>
+<li>
+<p><strong>Binary <code>0010</code></strong> if the Transmit Holding Register is empty</p>
+<p>(Hence we should transmit more data)</p>
+</li>
+<li>
+<p><strong>Binary <code>0100</code></strong> if there’s Receive Data available</p>
+<p>(Hence we should read the data received)</p>
+</li>
+</ul>
+<p>This is how we handle these conditions in our Interrupt Handler: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L1102-L1139">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Interrupt Handler for PinePhone Allwinner A64 UART
 static int a64_uart_irq_handler(int irq, void *context, void *arg)
 {
@@ -470,7 +489,14 @@ static int a64_uart_irq_handler(int irq, void *context, void *arg)
 
   }
   return OK;
-}</code></pre></div><h2 id="uart-transmit"><a href="#uart-transmit">3.4 UART Transmit</a></h2>
+}</code></pre></div>
+<p><em>What’s <code>uart_recvchars</code>?</em></p>
+<p>If Received Data is available, we call <strong><code>uart_recvchars</code></strong> to read the Received Data.</p>
+<p>TODO</p>
+<p><em>What’s <code>uart_xmitchars</code>?</em></p>
+<p>If the Transmit Holding Register is empty, we call <strong><code>uart_xmitchars</code></strong> to transmit more data.</p>
+<p>TODO</p>
+<h2 id="uart-transmit"><a href="#uart-transmit">3.4 UART Transmit</a></h2>
 <p>TODO</p>
 <h2 id="uart-receive"><a href="#uart-receive">3.5 UART Receive</a></h2>
 <p>TODO</p>
