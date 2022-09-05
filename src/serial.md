@@ -1,4 +1,4 @@
-# NuttX RTOS on PinePhone: UART Driver
+# NuttX RTOS for PinePhone: UART Driver
 
 📝 _9 Sep 2022_
 
