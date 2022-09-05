@@ -440,7 +440,7 @@ int ret = irq_attach(
 );</code></pre></div>
 <p>Let’s look inside the Interrupt Handler.</p>
 <p>When UART triggers an Interrupt, it stores the cause of the Interrupt in the <strong>Interrupt Identity Register (UART_IIR)</strong>, Offset <code>0x08</code>.</p>
-<p><strong>Bits 0 to 3</strong> of the Interrupt Identity Register are..</p>
+<p><strong>Bits 0 to 3</strong> of the Interrupt Identity Register are…</p>
 <ul>
 <li>
 <p><strong>Binary <code>0010</code></strong> if the Transmit Holding Register is empty</p>
