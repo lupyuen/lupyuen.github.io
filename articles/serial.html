@@ -498,8 +498,9 @@ if (int_id == 0b0010) {
   // Transmit the data
   uart_xmitchars(dev);</code></pre></div>
 <p>If the Transmit Holding Register is empty, our Interrupt Handler calls <strong><code>uart_xmitchars</code></strong> to transmit more data.</p>
-<p><strong><code>uart_xmitchars</code></strong> is a NuttX System Function that calls <strong><code>a64_uart_send</code></strong> to transmit data to UART, while buffering the UART Output Data.</p>
+<p><strong><code>uart_xmitchars</code></strong> is a NuttX System Function that calls <a href="https://lupyuen.github.io/articles/serial#transmit-uart"><strong><code>a64_uart_send</code></strong></a> to transmit data to UART, while buffering the UART Output Data.</p>
 <p><a href="https://lupyuen.github.io/articles/serial#transmit-uart">(We’ve seen <strong><code>a64_uart_send</code></strong> earlier)</a></p>
+<p><strong><code>uart_xmitchars</code></strong> will also call <a href="https://lupyuen.github.io/articles/serial#wait-to-transmit"><strong><code>a64_uart_txready</code></strong></a> to check if the UART Port is ready to accept more data, before transmitting the data.</p>
 <p>Now for the other direction…</p>
 <h2 id="uart-receive"><a href="#uart-receive">3.5 UART Receive</a></h2>
 <p><em>What’s <code>uart_recvchars</code>?</em></p>
@@ -508,8 +509,9 @@ if (int_id == 0b0100) {
   // Receive the data
   uart_recvchars(dev);</code></pre></div>
 <p>If Received Data is available, our Interrupt Handler calls <strong><code>uart_recvchars</code></strong> to read the Received Data.</p>
-<p><strong><code>uart_recvchars</code></strong> is a NuttX System Function that calls <strong><code>a64_uart_receive</code></strong> to receive data from UART, while buffering the UART Input Data.</p>
+<p><strong><code>uart_recvchars</code></strong> is a NuttX System Function that calls <a href="https://lupyuen.github.io/articles/serial#receive-uart"><strong><code>a64_uart_receive</code></strong></a> to receive data from UART, while buffering the UART Input Data.</p>
 <p><a href="https://lupyuen.github.io/articles/serial#receive-uart">(We’ve seen <strong><code>a64_uart_receive</code></strong> earlier)</a></p>
+<p><strong><code>uart_recvchars</code></strong> will also call <a href="https://lupyuen.github.io/articles/serial#wait-to-receive"><strong><code>a64_uart_rxavailable</code></strong></a> to check if Received Data is actually available, before reading the data.</p>
 <p>And that’s how we transmit and receive UART Data with Interrupts!</p>
 <h1 id="initialise-uart"><a href="#initialise-uart">4 Initialise UART</a></h1>
 <p>TODO</p>
