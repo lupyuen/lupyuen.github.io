@@ -493,7 +493,7 @@ Let's look inside the Interrupt Handler.
 
 When UART triggers an Interrupt, it stores the cause of the Interrupt in the __Interrupt Identity Register (UART_IIR)__, Offset `0x08`.
 
-__Bits 0 to 3__ of the Interrupt Identity Register are..
+__Bits 0 to 3__ of the Interrupt Identity Register are...
 
 -   __Binary `0010`__ if the Transmit Holding Register is empty
 
