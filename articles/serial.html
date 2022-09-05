@@ -81,7 +81,7 @@
 <li><a href="#uart-transmit">3.4 UART Transmit</a><ul></ul></li>
 <li><a href="#uart-receive">3.5 UART Receive</a><ul></ul></li></ul></li>
 <li><a href="#initialise-uart">4 Initialise UART</a><ul></ul></li>
-<li><a href="#nuttx-serial-driver">5 NuttX Serial Driver</a><ul></ul></li>
+<li><a href="#nuttx-uart-driver">5 NuttX UART Driver</a><ul></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Sep 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/serial-title.jpg" alt="PinePhone Hacking with Pinebook Pro and BLÅHAJ" /></p>
 <p><em>PinePhone Hacking with Pinebook Pro and BLÅHAJ</em></p>
@@ -514,6 +514,7 @@ if (int_id == 0b0100) {
 <p><strong><code>uart_recvchars</code></strong> will also call <a href="https://lupyuen.github.io/articles/serial#wait-to-receive"><strong><code>a64_uart_rxavailable</code></strong></a> to check if Received Data is actually available, before reading the data.</p>
 <p>And that’s how we transmit and receive UART Data with Interrupts!</p>
 <h1 id="initialise-uart"><a href="#initialise-uart">4 Initialise UART</a></h1>
+<p><em>Have we forgotten something?</em></p>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L925-L930">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Setup PinePhone Allwinner A64 UART
@@ -550,9 +551,48 @@ static int a64_uart_ioctl(struct file *filep, int cmd, unsigned long arg)
         }
     }
   return ret;
-}</code></pre></div><h1 id="nuttx-serial-driver"><a href="#nuttx-serial-driver">5 NuttX Serial Driver</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L761-L779">qemu_serial.c</a></p>
+}</code></pre></div><h1 id="nuttx-uart-driver"><a href="#nuttx-uart-driver">5 NuttX UART Driver</a></h1>
+<p><em>How do we create a PinePhone UART Driver for NuttX?</em></p>
+<p>We’ve implemented all the <strong>UART Operations</strong> for our PinePhone UART Driver…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/serial#initialise-uart"><strong><code>a64_uart_setup</code></strong></a>: TODO</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/serial#initialise-uart"><strong><code>a64_uart_shutdown</code></strong></a>: TODO</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/serial#attach-interrupt-handler"><strong><code>a64_uart_attach</code></strong></a>: TODO</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/serial#attach-interrupt-handler"><strong><code>a64_uart_detach</code></strong></a>: TODO</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/serial#initialise-uart"><strong><code>a64_uart_ioctl</code></strong></a>: TODO</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/serial#receive-uart"><strong><code>a64_uart_receive</code></strong></a>: TODO</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/serial#enable-interrupt"><strong><code>a64_uart_rxint</code></strong></a>: TODO</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/serial#wait-to-receive"><strong><code>a64_uart_rxavailable</code></strong></a>: TODO</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/serial#transmit-uart"><strong><code>a64_uart_send</code></strong></a>: TODO</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/serial#enable-interrupt"><strong><code>a64_uart_txint</code></strong></a>: TODO</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/serial#wait-to-transmit"><strong><code>a64_uart_txready</code></strong></a>: TODO</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/serial#wait-to-transmit"><strong><code>a64_uart_txempty</code></strong></a>: TODO</p>
+</li>
+</ul>
+<p>NuttX expects us to wrap the UART Operations into a <strong><code>uart_ops_s</code></strong> Struct like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L761-L779">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Serial driver UART operations for PinePhone Allwinner A64 UART
 static const struct uart_ops_s g_uart_ops =
 {
@@ -571,7 +611,10 @@ static const struct uart_ops_s g_uart_ops =
   .txint    = a64_uart_txint,
   .txready  = a64_uart_txready,
   .txempty  = a64_uart_txempty,
-};</code></pre></div><div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
+};</code></pre></div>
+<p>TODO: Startup</p>
+<p>And we’re done with our PinePhone UART Driver for NuttX!</p>
+<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 
 HELLO NUTTX ON PINEPHONE!
 - Ready to Boot CPU
