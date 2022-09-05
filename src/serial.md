@@ -592,6 +592,8 @@ And that's how we transmit and receive UART Data with Interrupts!
 
 # Initialise UART
 
+_Have we forgotten something?_
+
 TODO
 
 [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L925-L930)
@@ -644,11 +646,37 @@ static int a64_uart_ioctl(struct file *filep, int cmd, unsigned long arg)
 }
 ```
 
-# NuttX Serial Driver
+# NuttX UART Driver
 
-TODO
+_How do we create a PinePhone UART Driver for NuttX?_
 
-[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L761-L779)
+We've implemented all the __UART Operations__ for our PinePhone UART Driver...
+
+-   [__`a64_uart_setup`__](https://lupyuen.github.io/articles/serial#initialise-uart): TODO
+
+-   [__`a64_uart_shutdown`__](https://lupyuen.github.io/articles/serial#initialise-uart): TODO
+
+-   [__`a64_uart_attach`__](https://lupyuen.github.io/articles/serial#attach-interrupt-handler): TODO
+
+-   [__`a64_uart_detach`__](https://lupyuen.github.io/articles/serial#attach-interrupt-handler): TODO
+
+-   [__`a64_uart_ioctl`__](https://lupyuen.github.io/articles/serial#initialise-uart): TODO
+
+-   [__`a64_uart_receive`__](https://lupyuen.github.io/articles/serial#receive-uart): TODO
+
+-   [__`a64_uart_rxint`__](https://lupyuen.github.io/articles/serial#enable-interrupt): TODO
+
+-   [__`a64_uart_rxavailable`__](https://lupyuen.github.io/articles/serial#wait-to-receive): TODO
+
+-   [__`a64_uart_send`__](https://lupyuen.github.io/articles/serial#transmit-uart): TODO
+
+-   [__`a64_uart_txint`__](https://lupyuen.github.io/articles/serial#enable-interrupt): TODO
+
+-   [__`a64_uart_txready`__](https://lupyuen.github.io/articles/serial#wait-to-transmit): TODO
+
+-   [__`a64_uart_txempty`__](https://lupyuen.github.io/articles/serial#wait-to-transmit): TODO
+
+NuttX expects us to wrap the UART Operations into a __`uart_ops_s`__ Struct like so: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L761-L779)
 
 ```c
 //  Serial driver UART operations for PinePhone Allwinner A64 UART
@@ -671,6 +699,10 @@ static const struct uart_ops_s g_uart_ops =
   .txempty  = a64_uart_txempty,
 };
 ```
+
+TODO: Startup
+
+And we're done with our PinePhone UART Driver for NuttX!
 
 ```text
 Starting kernel ...
