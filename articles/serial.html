@@ -490,16 +490,27 @@ static int a64_uart_irq_handler(int irq, void *context, void *arg)
   }
   return OK;
 }</code></pre></div>
-<p><em>What’s <code>uart_recvchars</code>?</em></p>
-<p>If Received Data is available, we call <strong><code>uart_recvchars</code></strong> to read the Received Data.</p>
-<p>TODO</p>
-<p><em>What’s <code>uart_xmitchars</code>?</em></p>
-<p>If the Transmit Holding Register is empty, we call <strong><code>uart_xmitchars</code></strong> to transmit more data.</p>
-<p>TODO</p>
+<p>Let’s talk about <strong><code>uart_recvchars</code></strong> and <strong><code>uart_xmitchars</code></strong>…</p>
 <h2 id="uart-transmit"><a href="#uart-transmit">3.4 UART Transmit</a></h2>
-<p>TODO</p>
+<p><em>What’s <code>uart_xmitchars</code>?</em></p>
+<div class="example-wrap"><pre class="language-c"><code>// 0010: If THR is empty (Transmit Holding Register)...
+if (int_id == 0b0010) {
+  // Transmit the data
+  uart_xmitchars(dev);</code></pre></div>
+<p>If the Transmit Holding Register is empty, our Interrupt Handler calls <strong><code>uart_xmitchars</code></strong> to transmit more data.</p>
+<p><strong><code>uart_xmitchars</code></strong> is a NuttX System Function that calls <strong><code>a64_uart_send</code></strong> to transmit data to UART, while buffering the UART Output Data.</p>
+<p><a href="https://lupyuen.github.io/articles/serial#transmit-uart">(We’ve seen <strong><code>a64_uart_send</code></strong> earlier)</a></p>
+<p>Now for the other direction…</p>
 <h2 id="uart-receive"><a href="#uart-receive">3.5 UART Receive</a></h2>
-<p>TODO</p>
+<p><em>What’s <code>uart_recvchars</code>?</em></p>
+<div class="example-wrap"><pre class="language-c"><code>// 0100: If received data is available...
+if (int_id == 0b0100) {
+  // Receive the data
+  uart_recvchars(dev);</code></pre></div>
+<p>If Received Data is available, our Interrupt Handler calls <strong><code>uart_recvchars</code></strong> to read the Received Data.</p>
+<p><strong><code>uart_recvchars</code></strong> is a NuttX System Function that calls <strong><code>a64_uart_receive</code></strong> to receive data from UART, while buffering the UART Input Data.</p>
+<p><a href="https://lupyuen.github.io/articles/serial#receive-uart">(We’ve seen <strong><code>a64_uart_receive</code></strong> earlier)</a></p>
+<p>And that’s how we transmit and receive UART Data with Interrupts!</p>
 <h1 id="initialise-uart"><a href="#initialise-uart">4 Initialise UART</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L925-L930">qemu_serial.c</a></p>
