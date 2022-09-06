@@ -147,7 +147,7 @@
   ],
   "publications": [
     {
-      "name": "NuttX RTOS on PinePhone: Fixing the Interrupts",
+      "name": "NuttX RTOS for PinePhone: Fixing the Interrupts",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-09-01",
       "website": "https://lupyuen.github.io/articles/interrupt",
