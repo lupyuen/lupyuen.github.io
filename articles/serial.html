@@ -106,8 +106,8 @@
 <p>Handling UART Interrupts</p>
 </li>
 </ul>
-<p>And how we implemented PinePhone’s <strong>UART Driver</strong> for <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> </p>
-<p>Let’s dive into our <strong>NuttX Porting Journal</strong> and find out how we made PinePhone chatty over UART…</p>
+<p>And how we implemented PinePhone’s <strong>UART Driver</strong> for <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a>. </p>
+<p>Let’s dive into our <strong>NuttX Porting Journal</strong> and learn how we made PinePhone chatty over UART…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
 </ul>
@@ -233,6 +233,7 @@ static bool a64_uart_txempty(struct uart_dev_s *dev)
   // Transmit FIFO is empty if Transmit FIFO is not full (for now)
   return a64_uart_txready(dev);
 }</code></pre></div>
+<p>Moving on from UART Transmit to Receive…</p>
 <p><img src="https://lupyuen.github.io/images/uboot-uart2.png" alt="A64 UART Registers UART_RBR and UART_THR" /></p>
 <p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><em>A64 UART Registers UART_RBR and UART_THR</em></a></p>
 <h2 id="receive-uart"><a href="#receive-uart">2.3 Receive UART</a></h2>
@@ -533,7 +534,7 @@ static int a64_uart_setup(struct uart_dev_s *dev)
   // TODO: Set the Baud Rate
   return 0;
 }</code></pre></div>
-<p>Because PinePhone’s <strong>U-Boot Bootloader</strong> has kindly set the Baud Rate for us (115.2 kbps), we skip this for now. More about the bootloader…</p>
+<p>PinePhone’s <strong>U-Boot Bootloader</strong> has kindly set the Baud Rate for us (115.2 kbps), so we skip this for now. More about the bootloader…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/uboot"><strong>“PinePhone boots Apache NuttX RTOS”</strong></a></li>
 </ul>
