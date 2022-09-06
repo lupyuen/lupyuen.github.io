@@ -592,11 +592,9 @@ And that's how we transmit and receive UART Data with Interrupts!
 
 # Initialise UART
 
-_Have we forgotten something?_
+_Did we forget something?_
 
-TODO
-
-[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L925-L930)
+Rightfully we should initialise the __UART Baud Rate__: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L925-L930)
 
 ```c
 // Setup PinePhone Allwinner A64 UART
@@ -607,31 +605,32 @@ static int a64_uart_setup(struct uart_dev_s *dev)
 }
 ```
 
-TODO
+Because PinePhone's __U-Boot Bootloader__ has kindly set the Baud Rate for us (115.2 kbps), we skip this for now. More about the bootloader...
 
-[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L932-L938)
+-   [__"PinePhone boots Apache NuttX RTOS"__](https://lupyuen.github.io/articles/uboot)
+
+_What about UART Shutdown?_
+
+The UART Port is __always active__, thus we don't have to shut it down: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L932-L938)
 
 ```c
 // Shutdown PinePhone Allwinner A64 UART
 static void a64_uart_shutdown(struct uart_dev_s *dev)
 {
   // Should never be called
-  UNUSED(dev);
   sinfo("%s: call unexpected\n", __func__);
 }
 ```
 
-TODO
+_Anything else?_
 
-[qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L973-L990)
+One last thing: For NuttX we need to implement a simple __I/O Control Handler `ioctl`__: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L973-L990)
 
 ```c
 // I/O Control for PinePhone Allwinner A64 UART
 static int a64_uart_ioctl(struct file *filep, int cmd, unsigned long arg)
 {
   int ret = OK;
-  UNUSED(filep);
-  UNUSED(arg);
   switch (cmd)
     {
       case TIOCSBRK:  /* BSD compatibility: Turn break on, unconditionally */
@@ -645,6 +644,8 @@ static int a64_uart_ioctl(struct file *filep, int cmd, unsigned long arg)
   return ret;
 }
 ```
+
+We're almost done with our PinePhone UART Driver for NuttX!
 
 # NuttX UART Driver
 
@@ -750,6 +751,8 @@ void arm64_serialinit(void)
 ```
 
 And we're done with our PinePhone UART Driver for NuttX!
+
+# UART In Action
 
 TODO
 
