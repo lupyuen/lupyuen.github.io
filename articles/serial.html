@@ -657,7 +657,12 @@ void arm64_serialinit(void)
 }</code></pre></div>
 <p>And we’re done with our PinePhone UART Driver for NuttX!</p>
 <h1 id="uart-in-action"><a href="#uart-in-action">6 UART In Action</a></h1>
-<p>TODO</p>
+<p>Let’s watch our UART Driver in action! </p>
+<p>Follow these steps to <strong>build NuttX</strong> and copy to Jumpdrive microSD…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/uboot#pinephone-boots-nuttx"><strong>“PinePhone Boots NuttX”</strong></a></li>
+</ul>
+<p>Insert the microSD into PinePhone and power it on. We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 
 HELLO NUTTX ON PINEPHONE!
@@ -688,9 +693,10 @@ lib_cxx_initialize: _sinit: 0x400a7000 _einit: 0x400a7000 _stext: 0x40080000 _et
 nsh: sysinit: fopen failed: 2
 
 nshn:x _msktfaarttf:s :C PcUo0m:m aBnedg innonti nfgo uInddle  L oNouptt
- Shell (NSH) NuttX-10.3.0-RC2</code></pre></div>
+ Shell (NSH) NuttX-10.3.0-RC2
+nsh&gt; </code></pre></div>
 <p>(Yeah the output is slightly garbled, the UART Driver needs fixing)</p>
-<p>Now that we have UART Interrupts, <strong>NuttX Shell</strong> works perfectly OK on PinePhone…</p>
+<p>Now that we handle UART Interrupts, <strong>NuttX Shell</strong> works perfectly OK on PinePhone…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; uname -a
 NuttX 10.3.0-RC2 fc909c6-dirty Sep  1 2022 17:05:44 arm64 qemu-a53
 
@@ -721,6 +727,7 @@ nsh&gt; ls /dev
  ttyS0
  zero</code></pre></div>
 <p><a href="https://youtube.com/shorts/WmRzfCiWV6o?feature=share"><strong>Watch the Demo on YouTube</strong></a></p>
+<p>TODO</p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
