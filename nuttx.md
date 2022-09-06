@@ -1,4 +1,4 @@
-# Presentation Slides for NuttX Online Workshop 2022
+# Lup's Presentation Slides for NuttX Online Workshop 2022
 
 Join me at [__NuttX Online Workshop 2022__](https://nuttx.events/)! (24-25 Sep 2022)
 
