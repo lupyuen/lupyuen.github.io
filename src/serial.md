@@ -32,7 +32,7 @@ Let's dive into our __NuttX Porting Journal__ and find out how we made PinePhone
 
 [_Allwinner A64 UART Controller Registers_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
 
-# UART Output
+# UART Controller
 
 Our operating system will print some output on PinePhone's __Serial Debug Console__ as it runs. (And receive input too)
 
@@ -58,6 +58,14 @@ Which we define like so: [arch/arm64/src/qemu/qemu_serial.c](https://github.com/
 ```
 
 (We'll talk about `UART_IRQ` in a while)
+
+![PinePhone connected to USB Serial Debug Cable](https://lupyuen.github.io/images/arm-uart2.jpg)
+
+Check that PinePhone is connected to our computer with the __USB Serial Debug Cable__ (pic above) at 115.2 kbps...
+
+-   [__"USB Serial Debug Cable"__](https://lupyuen.github.io/articles/uboot#usb-serial-debug-cable)
+
+-   [__"Boot Log"__](https://lupyuen.github.io/articles/uboot#boot-log)
 
 Let's read and write UART Data the easier (inefficient) way, via Polling...
 
@@ -609,6 +617,10 @@ Because PinePhone's __U-Boot Bootloader__ has kindly set the Baud Rate for us (1
 
 -   [__"PinePhone boots Apache NuttX RTOS"__](https://lupyuen.github.io/articles/uboot)
 
+If we ever need to set the __UART Baud Rate__, the steps are explained here...
+
+-   [__"Initialise UART"__](https://lupyuen.github.io/articles/uboot#initialise-uart)
+
 _What about UART Shutdown?_
 
 The UART Port is __always active__, thus we don't have to shut it down: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L932-L938)
@@ -835,11 +847,9 @@ nsh> ls /dev
 
 [__Watch the Demo on YouTube__](https://youtube.com/shorts/WmRzfCiWV6o?feature=share)
 
-TODO
-
 # What's Next
 
-TODO
+Today we talked about PinePhone UART and how we created the NuttX UART Driver.
 
 There's plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏
 
