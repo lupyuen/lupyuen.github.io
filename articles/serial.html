@@ -67,7 +67,7 @@
 
     <h1 class="title">NuttX RTOS for PinePhone: UART Driver</h1>
     <nav id="TOC"><ul>
-<li><a href="#uart-output">1 UART Output</a><ul></ul></li>
+<li><a href="#uart-controller">1 UART Controller</a><ul></ul></li>
 <li><a href="#uart-with-polling">2 UART With Polling</a><ul>
 <li><a href="#transmit-uart">2.1 Transmit UART</a><ul></ul></li>
 <li><a href="#wait-to-transmit">2.2 Wait To Transmit</a><ul></ul></li>
@@ -113,7 +113,7 @@
 </ul>
 <p><img src="https://lupyuen.github.io/images/uboot-uart1.png" alt="Allwinner A64 UART Controller Registers" /></p>
 <p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><em>Allwinner A64 UART Controller Registers</em></a></p>
-<h1 id="uart-output"><a href="#uart-output">1 UART Output</a></h1>
+<h1 id="uart-controller"><a href="#uart-controller">1 UART Controller</a></h1>
 <p>Our operating system will print some output on PinePhone’s <strong>Serial Debug Console</strong> as it runs. (And receive input too)</p>
 <p>To do that, we’ll talk to the <strong>UART Controller</strong> on the Allwinner A64 SoC…</p>
 <ul>
@@ -131,6 +131,16 @@
 // UART0 Base Address for PinePhone Allwinner A64 UART
 #define UART_BASE_ADDRESS 0x01C28000</code></pre></div>
 <p>(We’ll talk about <code>UART_IRQ</code> in a while)</p>
+<p><img src="https://lupyuen.github.io/images/arm-uart2.jpg" alt="PinePhone connected to USB Serial Debug Cable" /></p>
+<p>Check that PinePhone is connected to our computer with the <strong>USB Serial Debug Cable</strong> (pic above) at 115.2 kbps…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/uboot#usb-serial-debug-cable"><strong>“USB Serial Debug Cable”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/uboot#boot-log"><strong>“Boot Log”</strong></a></p>
+</li>
+</ul>
 <p>Let’s read and write UART Data the easier (inefficient) way, via Polling…</p>
 <p><img src="https://lupyuen.github.io/images/uboot-uart2.png" alt="A64 UART Receive and Transmit Registers UART_RBR and UART_THR" /></p>
 <p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><em>A64 UART Receive and Transmit Registers UART_RBR and UART_THR</em></a></p>
@@ -527,6 +537,10 @@ static int a64_uart_setup(struct uart_dev_s *dev)
 <ul>
 <li><a href="https://lupyuen.github.io/articles/uboot"><strong>“PinePhone boots Apache NuttX RTOS”</strong></a></li>
 </ul>
+<p>If we ever need to set the <strong>UART Baud Rate</strong>, the steps are explained here…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/uboot#initialise-uart"><strong>“Initialise UART”</strong></a></li>
+</ul>
 <p><em>What about UART Shutdown?</em></p>
 <p>The UART Port is <strong>always active</strong>, thus we don’t have to shut it down: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L932-L938">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Shutdown PinePhone Allwinner A64 UART
@@ -727,9 +741,8 @@ nsh&gt; ls /dev
  ttyS0
  zero</code></pre></div>
 <p><a href="https://youtube.com/shorts/WmRzfCiWV6o?feature=share"><strong>Watch the Demo on YouTube</strong></a></p>
-<p>TODO</p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
-<p>TODO</p>
+<p>Today we talked about PinePhone UART and how we created the NuttX UART Driver.</p>
 <p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
