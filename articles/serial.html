@@ -82,7 +82,8 @@
 <li><a href="#uart-receive">3.5 UART Receive</a><ul></ul></li></ul></li>
 <li><a href="#initialise-uart">4 Initialise UART</a><ul></ul></li>
 <li><a href="#nuttx-uart-driver">5 NuttX UART Driver</a><ul></ul></li>
-<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Sep 2022</em></p>
+<li><a href="#uart-in-action">6 UART In Action</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Sep 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/serial-title.jpg" alt="PinePhone Hacking with Pinebook Pro and BLÅHAJ" /></p>
 <p><em>PinePhone Hacking with Pinebook Pro and BLÅHAJ</em></p>
 <p>Last week we spoke about creating our own <strong>Operating System</strong> for <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>…</p>
@@ -514,32 +515,32 @@ if (int_id == 0b0100) {
 <p><strong><code>uart_recvchars</code></strong> will also call <a href="https://lupyuen.github.io/articles/serial#wait-to-receive"><strong><code>a64_uart_rxavailable</code></strong></a> to check if Received Data is actually available, before reading the data.</p>
 <p>And that’s how we transmit and receive UART Data with Interrupts!</p>
 <h1 id="initialise-uart"><a href="#initialise-uart">4 Initialise UART</a></h1>
-<p><em>Have we forgotten something?</em></p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L925-L930">qemu_serial.c</a></p>
+<p><em>Did we forget something?</em></p>
+<p>Rightfully we should initialise the <strong>UART Baud Rate</strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L925-L930">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Setup PinePhone Allwinner A64 UART
 static int a64_uart_setup(struct uart_dev_s *dev)
 {
   // TODO: Set the Baud Rate
   return 0;
 }</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L932-L938">qemu_serial.c</a></p>
+<p>Because PinePhone’s <strong>U-Boot Bootloader</strong> has kindly set the Baud Rate for us (115.2 kbps), we skip this for now. More about the bootloader…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/uboot"><strong>“PinePhone boots Apache NuttX RTOS”</strong></a></li>
+</ul>
+<p><em>What about UART Shutdown?</em></p>
+<p>The UART Port is <strong>always active</strong>, thus we don’t have to shut it down: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L932-L938">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Shutdown PinePhone Allwinner A64 UART
 static void a64_uart_shutdown(struct uart_dev_s *dev)
 {
   // Should never be called
-  UNUSED(dev);
   sinfo(&quot;%s: call unexpected\n&quot;, __func__);
 }</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L973-L990">qemu_serial.c</a></p>
+<p><em>Anything else?</em></p>
+<p>One last thing: For NuttX we need to implement a simple <strong>I/O Control Handler <code>ioctl</code></strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L973-L990">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// I/O Control for PinePhone Allwinner A64 UART
 static int a64_uart_ioctl(struct file *filep, int cmd, unsigned long arg)
 {
   int ret = OK;
-  UNUSED(filep);
-  UNUSED(arg);
   switch (cmd)
     {
       case TIOCSBRK:  /* BSD compatibility: Turn break on, unconditionally */
@@ -551,7 +552,9 @@ static int a64_uart_ioctl(struct file *filep, int cmd, unsigned long arg)
         }
     }
   return ret;
-}</code></pre></div><h1 id="nuttx-uart-driver"><a href="#nuttx-uart-driver">5 NuttX UART Driver</a></h1>
+}</code></pre></div>
+<p>We’re almost done with our PinePhone UART Driver for NuttX!</p>
+<h1 id="nuttx-uart-driver"><a href="#nuttx-uart-driver">5 NuttX UART Driver</a></h1>
 <p><em>How do we create a PinePhone UART Driver for NuttX?</em></p>
 <p>We’ve implemented all the <strong>UART Operations</strong> for our PinePhone UART Driver…</p>
 <ul>
@@ -653,6 +656,7 @@ void arm64_serialinit(void)
     }
 }</code></pre></div>
 <p>And we’re done with our PinePhone UART Driver for NuttX!</p>
+<h1 id="uart-in-action"><a href="#uart-in-action">6 UART In Action</a></h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 
@@ -717,7 +721,7 @@ nsh&gt; ls /dev
  ttyS0
  zero</code></pre></div>
 <p><a href="https://youtube.com/shorts/WmRzfCiWV6o?feature=share"><strong>Watch the Demo on YouTube</strong></a></p>
-<h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
