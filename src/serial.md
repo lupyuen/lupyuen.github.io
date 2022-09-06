@@ -754,7 +754,13 @@ And we're done with our PinePhone UART Driver for NuttX!
 
 # UART In Action
 
-TODO
+Let's watch our UART Driver in action! 
+
+Follow these steps to __build NuttX__ and copy to Jumpdrive microSD...
+
+-   [__"PinePhone Boots NuttX"__](https://lupyuen.github.io/articles/uboot#pinephone-boots-nuttx)
+
+Insert the microSD into PinePhone and power it on. We should see...
 
 ```text
 Starting kernel ...
@@ -788,10 +794,12 @@ nsh: sysinit: fopen failed: 2
 
 nshn:x _msktfaarttf:s :C PcUo0m:m aBnedg innonti nfgo uInddle  L oNouptt
  Shell (NSH) NuttX-10.3.0-RC2
+nsh> 
 ```
+
 (Yeah the output is slightly garbled, the UART Driver needs fixing)
 
-Now that we have UART Interrupts, __NuttX Shell__ works perfectly OK on PinePhone...
+Now that we handle UART Interrupts, __NuttX Shell__ works perfectly OK on PinePhone...
 
 ```text
 nsh> uname -a
@@ -826,6 +834,8 @@ nsh> ls /dev
 ```
 
 [__Watch the Demo on YouTube__](https://youtube.com/shorts/WmRzfCiWV6o?feature=share)
+
+TODO
 
 # What's Next
 
