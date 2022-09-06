@@ -22,9 +22,9 @@ Today we'll learn about the __UART Controller__ for the Allwinner A64 SoC inside
 
 -   Handling UART Interrupts
 
-And how we implemented PinePhone's __UART Driver__ for [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) 
+And how we implemented PinePhone's __UART Driver__ for [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot). 
 
-Let's dive into our __NuttX Porting Journal__ and find out how we made PinePhone chatty over UART...
+Let's dive into our __NuttX Porting Journal__ and learn how we made PinePhone chatty over UART...
 
 -   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
 
@@ -205,6 +205,8 @@ static bool a64_uart_txempty(struct uart_dev_s *dev)
   return a64_uart_txready(dev);
 }
 ```
+
+Moving on from UART Transmit to Receive...
 
 ![A64 UART Registers UART_RBR and UART_THR](https://lupyuen.github.io/images/uboot-uart2.png)
 
@@ -613,7 +615,7 @@ static int a64_uart_setup(struct uart_dev_s *dev)
 }
 ```
 
-Because PinePhone's __U-Boot Bootloader__ has kindly set the Baud Rate for us (115.2 kbps), we skip this for now. More about the bootloader...
+PinePhone's __U-Boot Bootloader__ has kindly set the Baud Rate for us (115.2 kbps), so we skip this for now. More about the bootloader...
 
 -   [__"PinePhone boots Apache NuttX RTOS"__](https://lupyuen.github.io/articles/uboot)
 
