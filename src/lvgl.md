@@ -372,7 +372,8 @@ Hence the __Zig Compiler Options must be the same__ as the GCC Options used to c
 Next comes a quirk specific to BL602: We must __patch the ELF Header__ from Software Floating-Point ABI to Hardware Floating-Point ABI...
 
 ```bash
-##  Patch the ELF Header of `lvgltest.o` from Soft-Float ABI to Hard-Float ABI
+##  Patch the ELF Header of `lvgltest.o` 
+##  from Soft-Float ABI to Hard-Float ABI
 xxd -c 1 lvgltest.o \
   | sed 's/00000024: 01/00000024: 03/' \
   | xxd -r -c 1 - lvgltest2.o
