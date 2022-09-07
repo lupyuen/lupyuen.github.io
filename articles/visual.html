@@ -200,7 +200,7 @@
 <div class="example-wrap"><pre class="language-zig"><code>try sen.readSensor(           // Read BME280 Sensor
   c.struct_sensor_baro,       // Sensor Data Struct
   &quot;temperature&quot;,              // Sensor Data Field
-  &quot;/dev/uorb/sensor_baro0&quot;  // Path of Sensor Device
+  &quot;/dev/uorb/sensor_baro0&quot;    // Path of Sensor Device
 );</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
 <p>This calls our Zig Function <a href="https://lupyuen.github.io/articles/visual#appendix-read-sensor-data"><strong>readSensor</strong></a> to read a NuttX Sensor at the specified path.</p>
@@ -312,21 +312,21 @@ pub fn main() !void {
     const temperature = try sen.readSensor(  // Read BME280 Sensor
       c.struct_sensor_baro,       // Sensor Data Struct
       &quot;temperature&quot;,              // Sensor Data Field
-      &quot;/dev/uorb/sensor_baro0&quot;  // Path of Sensor Device
+      &quot;/dev/uorb/sensor_baro0&quot;    // Path of Sensor Device
     );
     debug(&quot;temperature={}&quot;, .{ temperature });
 
     const pressure = try sen.readSensor(  // Read BME280 Sensor
       c.struct_sensor_baro,       // Sensor Data Struct
       &quot;pressure&quot;,                 // Sensor Data Field
-      &quot;/dev/uorb/sensor_baro0&quot;  // Path of Sensor Device
+      &quot;/dev/uorb/sensor_baro0&quot;    // Path of Sensor Device
     );
     debug(&quot;pressure={}&quot;, .{ pressure });
 
     const humidity = try sen.readSensor(  // Read BME280 Sensor
       c.struct_sensor_humi,       // Sensor Data Struct
       &quot;humidity&quot;,                 // Sensor Data Field
-      &quot;/dev/uorb/sensor_humi0&quot;  // Path of Sensor Device
+      &quot;/dev/uorb/sensor_humi0&quot;    // Path of Sensor Device
     );
     debug(&quot;humidity={}&quot;, .{ humidity });
 
@@ -543,7 +543,7 @@ const msg = try composeCbor(...);</code></pre></div>
 temperature = try sen.readSensor(
   c.struct_sensor_baro,       // Sensor Data Struct
   &quot;temperature&quot;,              // Sensor Data Field
-  &quot;/dev/uorb/sensor_baro0&quot;  // Path of Sensor Device
+  &quot;/dev/uorb/sensor_baro0&quot;    // Path of Sensor Device
 );</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
 <p>Looks concise and tidy, but <strong>readSensor</strong> has 2 surprises…</p>
@@ -760,7 +760,7 @@ while (true) {
 const temperature = try sen.readSensor(
   c.struct_sensor_baro,       // Sensor Data Struct to be read
   &quot;temperature&quot;,              // Sensor Data Field to be returned
-  &quot;/dev/uorb/sensor_baro0&quot;  // Path of Sensor Device
+  &quot;/dev/uorb/sensor_baro0&quot;    // Path of Sensor Device
 );
 
 // Print the Temperature
