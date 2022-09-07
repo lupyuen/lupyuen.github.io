@@ -18,6 +18,8 @@ References:
 
 -   ["Encode Sensor Data with CBOR on Apache NuttX OS"](https://lupyuen.github.io/articles/cbor2)
 
+-   ["LoRa SX1262 on Apache NuttX OS"](https://lupyuen.github.io/articles/sx1262)
+
 -   ["LoRaWAN on Apache NuttX OS"](https://lupyuen.github.io/articles/lorawan3)
 
 -   ["Build an IoT App with Zig and LoRaWAN"](https://lupyuen.github.io/articles/iot)
