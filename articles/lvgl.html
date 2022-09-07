@@ -354,7 +354,8 @@ zig build-obj \
 <p>Hence the <strong>Zig Compiler Options must be the same</strong> as the GCC Options used to compile NuttX.</p>
 <p><a href="https://lupyuen.github.io/articles/lvgl#appendix-compiler-options">(See the GCC Options for NuttX)</a></p>
 <p>Next comes a quirk specific to BL602: We must <strong>patch the ELF Header</strong> from Software Floating-Point ABI to Hardware Floating-Point ABI…</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  Patch the ELF Header of `lvgltest.o` from Soft-Float ABI to Hard-Float ABI
+<div class="example-wrap"><pre class="language-bash"><code>#  Patch the ELF Header of `lvgltest.o` 
+#  from Soft-Float ABI to Hard-Float ABI
 xxd -c 1 lvgltest.o \
   | sed &#39;s/00000024: 01/00000024: 03/&#39; \
   | xxd -r -c 1 - lvgltest2.o
