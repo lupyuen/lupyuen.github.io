@@ -10,15 +10,19 @@ What if we could drag-and-drop NuttX Sensors to create IoT Apps? In this present
 
 We'll also discuss the Zig Programming Language, and why Blockly will generate NuttX Sensor Apps as Zig programs.
 
-Reference: ["Visual Programming with Zig and NuttX Sensors"](https://lupyuen.github.io/articles/visual)
+References: 
 
-## Simpler, safer LVGL Touchscreen Apps with Zig and NuttX
+-   ["Visual Programming with Zig and NuttX Sensors"](https://lupyuen.github.io/articles/visual)
 
-[__Presentation Slides__](https://docs.google.com/presentation/d/1uFCxfNQjWVEWeM3vaHyYKe0soiRMc1LCnfYC4XleMgY/edit?usp=sharing&authuser=0)
+-   ["Zig Visual Programming with Blockly"](https://lupyuen.github.io/articles/blockly)
 
-Is there a simpler and safer way to code Touchscreen Apps with the LVGL Graphics Library? In this presentation we'll talk about migrating a NuttX LVGL App from C to Zig, and the benefits that it brings.
+-   ["Encode Sensor Data with CBOR on Apache NuttX OS"](https://lupyuen.github.io/articles/cbor2)
 
-Reference: ["Build an LVGL Touchscreen App with Zig"](https://lupyuen.github.io/articles/lvgl)
+-   ["LoRaWAN on Apache NuttX OS"](https://lupyuen.github.io/articles/lorawan3)
+
+-   ["Build an IoT App with Zig and LoRaWAN"](https://lupyuen.github.io/articles/iot)
+
+-   ["Monitor IoT Devices in The Things Network with Prometheus and Grafana"](https://lupyuen.github.io/articles/prometheus)
 
 ## NuttX on a RISC-V IoT Gadget: PineDio Stack BL604
 
@@ -28,20 +32,28 @@ Pine64's PineDio Stack BL604 is a RISC-V board that's packed with IoT features: 
 
 References:
 
-["PineDio Stack BL604 runs Apache NuttX RTOS"](https://lupyuen.github.io/articles/pinedio2)
+-   ["PineDio Stack BL604 runs Apache NuttX RTOS"](https://lupyuen.github.io/articles/pinedio2)
 
-["NuttX GPIO Expander for PineDio Stack BL604"](https://lupyuen.github.io/articles/expander)
+-   ["NuttX GPIO Expander for PineDio Stack BL604"](https://lupyuen.github.io/articles/expander)
 
-["NuttX Touch Panel Driver for PineDio Stack BL604"](https://lupyuen.github.io/articles/touch)
+-   ["NuttX Touch Panel Driver for PineDio Stack BL604"](https://lupyuen.github.io/articles/touch)
 
-["ST7789 Display with LVGL Graphics on Apache NuttX RTOS"](https://lupyuen.github.io/articles/st7789)
+-   ["ST7789 Display with LVGL Graphics on Apache NuttX RTOS"](https://lupyuen.github.io/articles/st7789)
 
-["LoRa SX1262 on Apache NuttX OS"](https://lupyuen.github.io/articles/sx1262)
+-   ["LoRa SX1262 on Apache NuttX OS"](https://lupyuen.github.io/articles/sx1262)
 
-["LoRaWAN on Apache NuttX OS"](https://lupyuen.github.io/articles/lorawan3)
+-   ["LoRaWAN on Apache NuttX OS"](https://lupyuen.github.io/articles/lorawan3)
 
-["Build an IoT App with Zig and LoRaWAN"](https://lupyuen.github.io/articles/iot)
+-   ["Build an IoT App with Zig and LoRaWAN"](https://lupyuen.github.io/articles/iot)
 
-["Build an LVGL Touchscreen App with Zig"](https://lupyuen.github.io/articles/lvgl)
+-   ["Build an LVGL Touchscreen App with Zig"](https://lupyuen.github.io/articles/lvgl)
 
-["(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board"](https://lupyuen.github.io/articles/auto2)
+-   ["(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board"](https://lupyuen.github.io/articles/auto2)
+
+## Simpler, safer LVGL Touchscreen Apps with Zig and NuttX
+
+[__Presentation Slides__](https://docs.google.com/presentation/d/1uFCxfNQjWVEWeM3vaHyYKe0soiRMc1LCnfYC4XleMgY/edit?usp=sharing&authuser=0)
+
+Is there a simpler and safer way to code Touchscreen Apps with the LVGL Graphics Library? In this presentation we'll talk about migrating a NuttX LVGL App from C to Zig, and the benefits that it brings.
+
+Reference: ["Build an LVGL Touchscreen App with Zig"](https://lupyuen.github.io/articles/lvgl)
