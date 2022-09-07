@@ -124,7 +124,7 @@ Our Sensor Block will generate this __Zig Code__...
 try sen.readSensor(           // Read BME280 Sensor
   c.struct_sensor_baro,       // Sensor Data Struct
   "temperature",              // Sensor Data Field
-  "/dev/uorb/sensor_baro0"  // Path of Sensor Device
+  "/dev/uorb/sensor_baro0"    // Path of Sensor Device
 );
 ```
 
@@ -304,21 +304,21 @@ pub fn main() !void {
     const temperature = try sen.readSensor(  // Read BME280 Sensor
       c.struct_sensor_baro,       // Sensor Data Struct
       "temperature",              // Sensor Data Field
-      "/dev/uorb/sensor_baro0"  // Path of Sensor Device
+      "/dev/uorb/sensor_baro0"    // Path of Sensor Device
     );
     debug("temperature={}", .{ temperature });
 
     const pressure = try sen.readSensor(  // Read BME280 Sensor
       c.struct_sensor_baro,       // Sensor Data Struct
       "pressure",                 // Sensor Data Field
-      "/dev/uorb/sensor_baro0"  // Path of Sensor Device
+      "/dev/uorb/sensor_baro0"    // Path of Sensor Device
     );
     debug("pressure={}", .{ pressure });
 
     const humidity = try sen.readSensor(  // Read BME280 Sensor
       c.struct_sensor_humi,       // Sensor Data Struct
       "humidity",                 // Sensor Data Field
-      "/dev/uorb/sensor_humi0"  // Path of Sensor Device
+      "/dev/uorb/sensor_humi0"    // Path of Sensor Device
     );
     debug("humidity={}", .{ humidity });
 
@@ -595,7 +595,7 @@ Earlier we saw this for reading the BME280 Sensor...
 temperature = try sen.readSensor(
   c.struct_sensor_baro,       // Sensor Data Struct
   "temperature",              // Sensor Data Field
-  "/dev/uorb/sensor_baro0"  // Path of Sensor Device
+  "/dev/uorb/sensor_baro0"    // Path of Sensor Device
 );
 ```
 
@@ -874,7 +874,7 @@ The Blocks above will generate this __Zig Code__...
 const temperature = try sen.readSensor(
   c.struct_sensor_baro,       // Sensor Data Struct to be read
   "temperature",              // Sensor Data Field to be returned
-  "/dev/uorb/sensor_baro0"  // Path of Sensor Device
+  "/dev/uorb/sensor_baro0"    // Path of Sensor Device
 );
 
 // Print the Temperature
