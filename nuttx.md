@@ -2,6 +2,14 @@
 
 Join me at [__NuttX Online Workshop 2022__](https://nuttx.events/)! (24-25 Sep 2022)
 
+Below are the Presentation Slides for...
+
+-   "Visual Programming with Zig and NuttX Sensors"
+
+-   "NuttX on a RISC-V IoT Gadget: PineDio Stack BL604"
+
+-   "Simpler, safer LVGL Touchscreen Apps with Zig and NuttX"
+
 ## Visual Programming with Zig and NuttX Sensors
 
 [__Presentation Slides__](https://docs.google.com/presentation/d/1IzSqs9p9Kmb6_vVl2E_LuKmKNXB3btu7-ghxRZJfyXc/edit?usp=sharing&authuser=0)
