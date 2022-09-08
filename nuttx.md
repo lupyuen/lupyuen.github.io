@@ -66,4 +66,8 @@ References:
 
 Is there a simpler and safer way to code Touchscreen Apps with the LVGL Graphics Library? In this presentation we'll talk about migrating a NuttX LVGL App from C to Zig, and the benefits that it brings.
 
-Reference: ["Build an LVGL Touchscreen App with Zig"](https://lupyuen.github.io/articles/lvgl)
+References:
+
+-   ["Build an LVGL Touchscreen App with Zig"](https://lupyuen.github.io/articles/lvgl)
+
+-   ["Zig on RISC-V BL602: Quick Peek with Apache NuttX RTOS"](https://lupyuen.github.io/articles/zig)
