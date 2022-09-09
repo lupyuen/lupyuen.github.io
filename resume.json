@@ -147,6 +147,13 @@
   ],
   "publications": [
     {
+      "name": "NuttX RTOS for PinePhone: UART Driver",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2022-09-09",
+      "website": "https://lupyuen.github.io/articles/serial",
+      "summary": "Our PinePhone Operating System will be awfully quiet if we don't implement UART Input and Output... Here's how we implemented the UART Driver for Apache NuttX RTOS"
+    },
+    {
       "name": "NuttX RTOS for PinePhone: Fixing the Interrupts",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-09-01",
