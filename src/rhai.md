@@ -30,7 +30,7 @@ Yep it sounds feasible, let's explore that too.
 
 _One more thing... Can we run Rhai Scripts in a Web Browser? Like on a Simulated BL602?_
 
-Yes we can... Because we've implemented a __BL602 Simulator in WebAsssembly__!
+Yes we can... Because we've implemented a __BL602 Simulator in WebAssembly__!
 
 -   ["Rust on RISC-V BL602: Simulated with WebAssembly"](https://lupyuen.github.io/articles/rustsim)
 

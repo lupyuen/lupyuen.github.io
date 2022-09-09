@@ -777,9 +777,9 @@ _Sensor Data scaled by 100 and encoded as integers_
 
     [(Our Zig Code Generator for Blockly is incomplete)](https://lupyuen.github.io/articles/blockly#code-generator)
 
--   __Double Asssignment__ fails with Zig and Blockly...
+-   __Double Assignment__ fails with Zig and Blockly...
 
-    ![Double Asssignment](https://lupyuen.github.io/images/blockly-run12.jpg)
+    ![Double Assignment](https://lupyuen.github.io/images/blockly-run12.jpg)
 
     [(More about this)](https://lupyuen.github.io/articles/blockly#constants-vs-variables)
 
