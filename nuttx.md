@@ -22,6 +22,8 @@ References:
 
 -   ["Visual Programming with Zig and NuttX Sensors"](https://lupyuen.github.io/articles/visual)
 
+-   ["Read NuttX Sensor Data with Zig"](https://lupyuen.github.io/articles/sensor)
+
 -   ["Zig Visual Programming with Blockly"](https://lupyuen.github.io/articles/blockly)
 
 -   ["Encode Sensor Data with CBOR on Apache NuttX OS"](https://lupyuen.github.io/articles/cbor2)
