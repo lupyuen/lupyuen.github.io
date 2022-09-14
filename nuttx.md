@@ -14,6 +14,8 @@ Below are the Presentation Slides for...
 
 [__Presentation Slides__](https://docs.google.com/presentation/d/1IzSqs9p9Kmb6_vVl2E_LuKmKNXB3btu7-ghxRZJfyXc/edit?usp=sharing&authuser=0)
 
+[__PDF Slides with Transcript__](https://drive.google.com/file/d/1jf2wzwxaZKRfybT2ZNJiRLrPVXUpmHYN/view?usp=sharing)
+
 What if we could drag-and-drop NuttX Sensors to create IoT Apps? In this presentation we'll explore Blockly, the web-based toolkit for Visual Programming, and how we might customise Blockly to create NuttX Sensor Apps.
 
 We'll also discuss the Zig Programming Language, and why Blockly will generate NuttX Sensor Apps as Zig programs.
@@ -40,6 +42,8 @@ References:
 
 [__Presentation Slides__](https://docs.google.com/presentation/d/1xEGRwYbrngK7CdqU3jsALq-5xzB5skL0FrIQZ26WqXg/edit?usp=sharing&authuser=0)
 
+[__PDF Slides with Transcript__](https://drive.google.com/file/d/1m2UOZrVmRHExXtcTxObbSbF0BWKm6MO6/view?usp=sharing)
+
 Pine64's PineDio Stack BL604 is a RISC-V board that's packed with IoT features: Touchscreen, LoRa, WiFi, BLE, GPS and more. In this presentation we'll talk about the porting of NuttX to PineDio Stack, how we simplified the developer onboarding, and our plans to support LoRaWAN and LVGL Apps in Zig.
 
 References:
@@ -65,6 +69,8 @@ References:
 ## Simpler, safer LVGL Touchscreen Apps with Zig and NuttX
 
 [__Presentation Slides__](https://docs.google.com/presentation/d/1uFCxfNQjWVEWeM3vaHyYKe0soiRMc1LCnfYC4XleMgY/edit?usp=sharing&authuser=0)
+
+[__PDF Slides with Transcript__](https://drive.google.com/file/d/1erITSgHKtlwDtukNsm2LNDr22dSJZHZq/view?usp=sharing)
 
 Is there a simpler and safer way to code Touchscreen Apps with the LVGL Graphics Library? In this presentation we'll talk about migrating a NuttX LVGL App from C to Zig, and the benefits that it brings.
 
