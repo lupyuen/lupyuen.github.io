@@ -43,6 +43,13 @@
   },
   "work": [
     {
+      "company": "Apache NuttX RTOS",
+      "position": "Apache NuttX PPMC (Podling Project Management Committee)",
+      "website": "https://nuttx.apache.org/",
+      "startDate": "2022-09-22",
+      "summary": "Promoting IoT Education with Apache NuttX RTOS (Real-Time Operating System)"
+    },
+    {
       "company": "Temasek Polytechnic",
       "location": {
         "region": "Singapore",
@@ -1244,20 +1251,19 @@
       "name": "Internet of Things (IoT)",
       "level": "Master",
       "keywords": [
+        "LoRaWAN",
         "NB-IoT",
         "Sigfox",
-        "LoRa",
-        "AWS IoT",
-        "Google Cloud IoT",
-        "Azure IoT",
-        "thethings.io",
+        "Apache NuttX",
+        "Apache Mynewt",
+        "Embedded Zig",
         "Embedded Rust",
         "Embedded C",
-        "Mynewt",
-        "ESP8266",
-        "STM32",
+        "BL602",
         "nRF52",
-        "BL602"
+        "STM32",
+        "AWS IoT",
+        "Google Cloud IoT"
       ]
     },
     {
