@@ -66,6 +66,8 @@ References:
 
 -   ["(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board"](https://lupyuen.github.io/articles/auto2)
 
+-   ["The RISC-V BL602 Book"](https://lupyuen.github.io/articles/book)
+
 ## Simpler, safer LVGL Touchscreen Apps with Zig and NuttX
 
 [__Presentation Slides__](https://docs.google.com/presentation/d/1uFCxfNQjWVEWeM3vaHyYKe0soiRMc1LCnfYC4XleMgY/edit?usp=sharing&authuser=0)
