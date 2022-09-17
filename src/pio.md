@@ -4,6 +4,10 @@
 
 ![TODO](https://lupyuen.github.io/images/pio-title.webp)
 
+Programming the GPIO Hardware on Pine64 PinePhone looks complicated... But it's no different from microcontrollers!
+
+(Like PineTime Smartwatch and PineCone BL602)
+
 TODO
 
 Let's dive into our __NuttX Porting Journal__ and learn how we blinked the PinePhone LEDs...
@@ -12,7 +16,9 @@ Let's dive into our __NuttX Porting Journal__ and learn how we blinked the PineP
 
 # What's Next
 
-TODO
+TODO: GPIO Driver
+
+TODO: MIPI DSI: I have zero idea what I'm doing... But it would be super hilarious if it works!
 
 There's plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏
 
