@@ -14,4 +14,5 @@
 *.png binary
 *.psd binary
 *.mp4 binary
+*.webp binary
 *.woff binary
