@@ -102,7 +102,7 @@
 <p>How we configure and <strong>flip the GPIOs</strong></p>
 </li>
 <li>
-<p>How to do this in <strong>BASIC</strong> (pic above)</p>
+<p>How to do this in <strong>C and BASIC</strong> (pic above)</p>
 </li>
 </ul>
 <p>We shall experiment with PinePhone’s GPIO Hardware by booting <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> on PinePhone.</p>
@@ -116,10 +116,27 @@
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/pio-schematic.png" alt="LEDs on PinePhone Schematic" /></p>
+<p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LEDs on PinePhone Schematic</em></a></p>
 <h1 id="pinephone-schematic"><a href="#pinephone-schematic">1 PinePhone Schematic</a></h1>
 <p>TODO</p>
 <p>Let’s light up the PinePhone Backlight and the Red / Green / Blue LEDs.</p>
-<p>Based on the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf">PinePhone Schematic</a> (page 11)…</p>
+<p>Based on the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf">PinePhone Schematic</a>…</p>
+<ul>
+<li>
+<p>Red LED is connected to GPIO PD18</p>
+<p>(PD18-LED-R)</p>
+</li>
+<li>
+<p>Green LED is connected to GPIO PD19</p>
+<p>(PD19-LED-G)</p>
+</li>
+<li>
+<p>Blue LED is connected to GPIO PD20 </p>
+<p>(PD20-LED-B)</p>
+</li>
+</ul>
+<p>Now for the Backlight. Based on the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf">PinePhone Schematic</a> (page 11)…</p>
 <ul>
 <li>
 <p>Backlight Enable is connected to GPIO PH10</p>
@@ -176,21 +193,6 @@ static void test_backlight(void)
 <p>The Backlight lights up and the output shows…</p>
 <div class="example-wrap"><pre class="language-text"><code>ph_cfg1_reg=0x7177
 ph_data_reg=0x400</code></pre></div>
-<p>Now for the LEDs. Based on the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf">PinePhone Schematic</a>…</p>
-<ul>
-<li>
-<p>Red LED is connected to GPIO PD18</p>
-<p>(PD18-LED-R)</p>
-</li>
-<li>
-<p>Green LED is connected to GPIO PD19</p>
-<p>(PD19-LED-G)</p>
-</li>
-<li>
-<p>Blue LED is connected to GPIO PD20 </p>
-<p>(PD20-LED-B)</p>
-</li>
-</ul>
 <p>This is how we turn on GPIOs PD18, PD19, PD20 in Allwinner A64 Port Controller (PIO): <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L124-L179">examples/hello/hello_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// PIO Base Address for PinePhone Allwinner A64 Port Controller (GPIO)
 #define PIO_BASE_ADDRESS 0x01C20800
