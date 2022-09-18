@@ -6,33 +6,35 @@
 
 _Blinking the PinePhone LEDs with BASIC... On Apache NuttX RTOS_
 
-Programming the __GPIO Hardware__ on __Pine64 PinePhone__ looks complicated... But it's no different from microcontrollers!
+Programming the __GPIO Hardware__ on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) looks complicated... But it's not that different from microcontrollers!
 
 (Like PineTime Smartwatch and PineCone BL602)
 
 Today we shall learn...
 
--   How to blink the LEDs on PinePhone (pic above)
+-   How to __blink the LEDs__ on PinePhone
 
--   What's the Allwinner A64 Port Controller
+-   What's the __Allwinner A64 Port Controller__
 
--   What's inside the Linux Device Tree
+-   What's inside the __Linux Device Tree__
 
--   How we configure and flip the GPIOs
+-   How we configure and __flip the GPIOs__
 
--   How to do this in BASIC (pic above)
+-   How to do this in __BASIC__ (pic above)
 
-We shall experiment with PinePhone GPIOs by booting __Apache NuttX RTOS__ on PinePhone.
+We shall experiment with PinePhone's GPIO Hardware by booting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) on PinePhone.
 
 _Why boot NuttX RTOS on PinePhone? Why not Linux?_
 
 NuttX RTOS is a super-tiny, Linux-like operating system that gives us __"Unlocked Access"__ to all PinePhone Hardware.
 
-So it's easier to directly manipulate the Hardware Registers on PinePhone.
+Thus it's easier to directly manipulate the Hardware Registers on PinePhone.
 
-_Will it mess up PinePhone Linux?_
+[(Like with __`peek`__ and __`poke`__ in BASIC)](https://en.wikipedia.org/wiki/PEEK_and_POKE)
 
-We'll boot NuttX with a __microSD Card__, we won't touch the Linux Distro on PinePhone.
+_Will it mess up the Linux installed on PinePhone?_
+
+We shall boot NuttX safely with a __microSD Card__, we won't touch the Linux Distro on PinePhone.
 
 Let's dive into our __NuttX Porting Journal__ and find out how we blinked the PinePhone LEDs...
 
