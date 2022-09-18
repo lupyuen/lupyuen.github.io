@@ -46,33 +46,100 @@ Let's dive into our __NuttX Porting Journal__ and find out how we blinked the Pi
 
 # PinePhone Schematic
 
-TODO
+Let's flip to Page 11 of the __PinePhone Schematic__ to understand how the PinePhone LEDs are connected...
 
-Let's light up the PinePhone Backlight and the Red / Green / Blue LEDs.
+-   [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)  
 
-Based on the [PinePhone Schematic](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)...
+From the pic above, we see that PinePhone has __3 LEDs__...
 
--   Red LED is connected to GPIO PD18
+-   __Red LED__ is connected to __PD18__
 
     (PD18-LED-R)
 
--   Green LED is connected to GPIO PD19
+-   __Green LED__ is connected to __PD19__
 
     (PD19-LED-G)
 
--   Blue LED is connected to GPIO PD20 
+-   __Blue LED__ is connected to __PD20__
 
     (PD20-LED-B)
 
-Now for the Backlight. Based on the [PinePhone Schematic](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (page 11)...
+Thus we may control the Red, Green and Blue LEDs by flipping PD18, 19 and 20.
 
--   Backlight Enable is connected to GPIO PH10
+_What are PD18, 19 and 20?_
+
+PD18, 19 and 20 are the GPIO Numbers for the __Allwinner A64 SoC__.
+
+The GPIO Numbers look odd, but we'll explain in the next section.
+
+_Any more LEDs on PinePhone?_
+
+Yep there's a huge LED on PinePhone: __Backlight__ for PinePhone's LCD Display.
+
+Based on the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (page 11)...
+
+-   __Backlight Enable__ is connected to __GPIO PH10__
 
     (PH10-LCD-BL-EN)
 
--   Backlight PWM is connected to PWM PL10 
+-   __Backlight PWM__ is connected to __PWM PL10__
 
     (PL10-LCD-PWM)
+
+In a while we shall flip __GPIO PH10__ to turn the Backlight on and off.
+
+_Why is the Backlight connected to PWM?_
+
+That's a clever way to __dim the Backlight__.
+
+With [__Pulse-Width Modulation (PWM)__](https://en.wikipedia.org/wiki/Pulse-width_modulation), we may blink the Backlight rapidly to make it seem dimmer.
+
+Let's talk about GPIOs...
+
+![Allwinner A64 User Manual (Page 376)](https://lupyuen.github.io/images/pio-register1.png)
+
+[_Allwinner A64 User Manual (Page 376)_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+
+# Allwinner A64 Port Controller
+
+_How many GPIOs does PinePhone support?_
+
+The Allwinner A64 SoC in PinePhone supports a whopping... __103 GPIOs__!
+
+(Plus another 13 Multi-Functional Pins, like for PWM)
+
+_Whoa that's a lot of GPIOs to manage!_
+
+That's why Allwinner A64 divides the 103 GPIOs into __7 Ports__ for easier management.
+
+The 7 Ports are named as __Port B__ to __Port H__. (Pic above)
+
+Remember PD18, 19 and 20 for the PinePhone LEDs?
+
+That's short for __Port D__, Pin Numbers __18, 19 and 20__.
+
+Now it becomes clear what we need to do: We shall configure Port D pins 18, 19 and 20 to control the LEDs.
+
+How will we configure Port D? Let's study the registers...
+
+![Allwinner A64 User Manual (Page 376)](https://lupyuen.github.io/images/pio-register2.png)
+
+[_Allwinner A64 User Manual (Page 376)_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+
+# Port Controller Registers
+
+Page 376 of the [___Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) says that the Port Controller's __Base Address__ is __`0x01C2` `0800`__ (pic above)
+
+Which we define like so...
+
+```c
+// PIO Base Address for PinePhone Allwinner A64 Port Controller (GPIO)
+#define PIO_BASE_ADDRESS 0x01C20800
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L83-L122)
+
+TODO
 
 # Backlight and LEDs
 
@@ -675,5 +742,9 @@ deinterlace@1e00000 {
 ```
 
 [(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1369-L1378)
+
+![TODO](https://lupyuen.github.io/images/pio-register3.png)
+
+![TODO](https://lupyuen.github.io/images/pio-register4.png)
 
 ![TODO](https://lupyuen.github.io/images/pio-title.jpg)
