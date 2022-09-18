@@ -106,11 +106,13 @@ _How many GPIOs does PinePhone support?_
 
 The Allwinner A64 SoC in PinePhone supports a whopping... __103 GPIOs__!
 
+All managed by A64's __Port Controller__.
+
 (Plus another 13 Multi-Functional Pins, like for PWM)
 
 _Whoa that's a lot of GPIOs to manage!_
 
-That's why Allwinner A64 divides the 103 GPIOs into __7 Ports__ for easier management.
+That's A64's Port Controller divides the 103 GPIOs into __7 Ports__ for easier management.
 
 The 7 Ports are named as __Port B__ to __Port H__. (Pic above)
 
@@ -133,11 +135,40 @@ Page 376 of the [___Allwinner A64 User Manual__](https://linux-sunxi.org/File:Al
 Which we define like so...
 
 ```c
-// PIO Base Address for PinePhone Allwinner A64 Port Controller (GPIO)
+// PIO Base Address for PinePhone 
+// Allwinner A64 Port Controller (GPIO)
 #define PIO_BASE_ADDRESS 0x01C20800
 ```
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L83-L122)
+
+Then comes a bunch of registers that will configure the GPIOs and set their values...
+
+-   __Pn_CFG0, 1, 2 and 3__: Configure the GPIO
+
+-   __Pn_DAT__: Read or write the GPIO
+
+Since we're writing to __PD18, 19 and 20__ for the PinePhone LEDs, we shall explore...
+
+-   __PD_CFG2__: To configure GPIOs 18, 19 and 20
+
+-   __PD_DAT__: To write GPIOs 18, 19 and 20
+
+But why __PD_CFG2__ instead of PD_CFG0, 1 or 3? Find out next...
+
+![Allwinner A64 User Manual (Page 387)](https://lupyuen.github.io/images/pio-register3.png)
+
+[_Allwinner A64 User Manual (Page 387)_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+
+# Configure GPIO
+
+TODO
+
+![Allwinner A64 User Manual (Page 388)](https://lupyuen.github.io/images/pio-register4.png)
+
+[_Allwinner A64 User Manual (Page 388)_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+
+# Set GPIO
 
 TODO
 
@@ -742,9 +773,5 @@ deinterlace@1e00000 {
 ```
 
 [(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1369-L1378)
-
-![TODO](https://lupyuen.github.io/images/pio-register3.png)
-
-![TODO](https://lupyuen.github.io/images/pio-register4.png)
 
 ![TODO](https://lupyuen.github.io/images/pio-title.jpg)
