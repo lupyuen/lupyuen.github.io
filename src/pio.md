@@ -20,7 +20,7 @@ Today we shall learn...
 
 -   How we configure and __flip the GPIOs__
 
--   How to do this in __BASIC__ (pic above)
+-   How to do this in __C and BASIC__ (pic above)
 
 We shall experiment with PinePhone's GPIO Hardware by booting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) on PinePhone.
 
@@ -40,13 +40,31 @@ Let's dive into our __NuttX Porting Journal__ and find out how we blinked the Pi
 
 -   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
 
+![LEDs on PinePhone Schematic](https://lupyuen.github.io/images/pio-schematic.png)
+
+[_LEDs on PinePhone Schematic_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
+
 # PinePhone Schematic
 
 TODO
 
 Let's light up the PinePhone Backlight and the Red / Green / Blue LEDs.
 
-Based on the [PinePhone Schematic](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (page 11)...
+Based on the [PinePhone Schematic](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)...
+
+-   Red LED is connected to GPIO PD18
+
+    (PD18-LED-R)
+
+-   Green LED is connected to GPIO PD19
+
+    (PD19-LED-G)
+
+-   Blue LED is connected to GPIO PD20 
+
+    (PD20-LED-B)
+
+Now for the Backlight. Based on the [PinePhone Schematic](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (page 11)...
 
 -   Backlight Enable is connected to GPIO PH10
 
@@ -111,20 +129,6 @@ The Backlight lights up and the output shows...
 ph_cfg1_reg=0x7177
 ph_data_reg=0x400
 ```
-
-Now for the LEDs. Based on the [PinePhone Schematic](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)...
-
--   Red LED is connected to GPIO PD18
-
-    (PD18-LED-R)
-
--   Green LED is connected to GPIO PD19
-
-    (PD19-LED-G)
-
--   Blue LED is connected to GPIO PD20 
-
-    (PD20-LED-B)
 
 This is how we turn on GPIOs PD18, PD19, PD20 in Allwinner A64 Port Controller (PIO): [examples/hello/hello_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L124-L179)
 
