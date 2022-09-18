@@ -67,7 +67,22 @@
 
     <h1 class="title">NuttX RTOS for PinePhone: Blinking the LEDs</h1>
     <nav id="TOC"><ul>
-<li><a href="#whats-next">1 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Sep 2022</em></p>
+<li><a href="#pinephone-schematic">1 PinePhone Schematic</a><ul></ul></li>
+<li><a href="#backlight-and-leds">2 Backlight and LEDs</a><ul></ul></li>
+<li><a href="#basic-blinks-the-leds">3 BASIC Blinks The LEDs</a><ul></ul></li>
+<li><a href="#whats-next">4 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-pinephone-device-tree">5 Appendix: PinePhone Device Tree</a><ul>
+<li><a href="#lcd-controller-tcon0">5.1 LCD Controller (TCON0)</a><ul></ul></li>
+<li><a href="#mipi-dsi-interface">5.2 MIPI DSI Interface</a><ul></ul></li>
+<li><a href="#display-phy">5.3 Display PHY</a><ul></ul></li>
+<li><a href="#backlight-pwm">5.4 Backlight PWM</a><ul></ul></li>
+<li><a href="#led">5.5 LED</a><ul></ul></li>
+<li><a href="#framebuffer">5.6 Framebuffer</a><ul></ul></li>
+<li><a href="#display-engine">5.7 Display Engine</a><ul></ul></li>
+<li><a href="#touch-panel">5.8 Touch Panel</a><ul></ul></li>
+<li><a href="#video-codec">5.9 Video Codec</a><ul></ul></li>
+<li><a href="#gpu">5.10 GPU</a><ul></ul></li>
+<li><a href="#deinterlace">5.11 Deinterlace</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>30 Sep 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/pio-title.webp" alt="Blinking the PinePhone LEDs with BASIC… On Apache NuttX RTOS" /></p>
 <p><em>Blinking the PinePhone LEDs with BASIC… On Apache NuttX RTOS</em></p>
 <p>Programming the <strong>GPIO Hardware</strong> on <strong>Pine64 PinePhone</strong> looks complicated… But it’s no different from microcontrollers!</p>
@@ -79,6 +94,9 @@
 </li>
 <li>
 <p>What’s the Allwinner A64 Port Controller</p>
+</li>
+<li>
+<p>What’s inside the Linux Device Tree</p>
 </li>
 <li>
 <p>How we configure and flip the GPIOs</p>
@@ -97,7 +115,240 @@
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
 </ul>
-<h1 id="whats-next"><a href="#whats-next">1 What’s Next</a></h1>
+<h1 id="pinephone-schematic"><a href="#pinephone-schematic">1 PinePhone Schematic</a></h1>
+<p>TODO</p>
+<p>Let’s light up the PinePhone Backlight and the Red / Green / Blue LEDs.</p>
+<p>Based on the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf">PinePhone Schematic</a>…</p>
+<ul>
+<li>
+<p>Backlight Enable is connected to GPIO PH10</p>
+<p>(PH10-LCD-BL-EN)</p>
+</li>
+<li>
+<p>Backlight PWM is connected to PWM PL10 </p>
+<p>(PL10-LCD-PWM)</p>
+</li>
+</ul>
+<h1 id="backlight-and-leds"><a href="#backlight-and-leds">2 Backlight and LEDs</a></h1>
+<p>TODO</p>
+<p>This is how we turn on GPIO PH10 in Allwinner A64 Port Controller (PIO): <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L83-L122">examples/hello/hello_main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// PIO Base Address for PinePhone Allwinner A64 Port Controller (GPIO)
+#define PIO_BASE_ADDRESS 0x01C20800
+
+// Turn on the PinePhone Backlight
+static void test_backlight(void)
+{
+  // From PinePhone Schematic: https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf
+  // - Backlight Enable: GPIO PH10 (PH10-LCD-BL-EN)
+  // - Backlight PWM:    PWM  PL10 (PL10-LCD-PWM)
+  // We won&#39;t handle the PWM yet
+
+  // Write to PH Configure Register 1 (PH_CFG1_REG)
+  // Offset: 0x100
+  uint32_t *ph_cfg1_reg = (uint32_t *)
+    (PIO_BASE_ADDRESS + 0x100);
+
+  // Bits 10 to 8: PH10_SELECT (Default 0x7)
+  // 000: Input     001: Output
+  // 010: MIC_CLK   011: Reserved
+  // 100: Reserved  101: Reserved
+  // 110: PH_EINT10 111: IO Disable
+  *ph_cfg1_reg = 
+    (*ph_cfg1_reg &amp; ~(0b111 &lt;&lt; 8))  // Clear the bits
+    | (0b001 &lt;&lt; 8);                 // Set the bits for Output
+  printf(&quot;ph_cfg1_reg=0x%x\n&quot;, *ph_cfg1_reg);
+
+  // Write to PH Data Register (PH_DATA_REG)
+  // Offset: 0x10C
+  uint32_t *ph_data_reg = (uint32_t *)
+    (PIO_BASE_ADDRESS + 0x10C);
+
+  // Bits 11 to 0: PH_DAT (Default 0)
+  // If the port is configured as input, the corresponding bit is the pin state. If
+  // the port is configured as output, the pin state is the same as the
+  // corresponding bit. The read bit value is the value setup by software.
+  // If the port is configured as functional pin, the undefined value will
+  // be read.
+  *ph_data_reg |= (1 &lt;&lt; 10);  // Set Bit 10 for PH10
+  printf(&quot;ph_data_reg=0x%x\n&quot;, *ph_data_reg);
+}</code></pre></div>
+<p>The Backlight lights up and the output shows…</p>
+<div class="example-wrap"><pre class="language-text"><code>ph_cfg1_reg=0x7177
+ph_data_reg=0x400</code></pre></div>
+<p>Now for the LEDs. Based on the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf">PinePhone Schematic</a>…</p>
+<ul>
+<li>
+<p>Red LED is connected to GPIO PD18</p>
+<p>(PD18-LED-R)</p>
+</li>
+<li>
+<p>Green LED is connected to GPIO PD19</p>
+<p>(PD19-LED-G)</p>
+</li>
+<li>
+<p>Blue LED is connected to GPIO PD20 </p>
+<p>(PD20-LED-B)</p>
+</li>
+</ul>
+<p>This is how we turn on GPIOs PD18, PD19, PD20 in Allwinner A64 Port Controller (PIO): <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L124-L179">examples/hello/hello_main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// PIO Base Address for PinePhone Allwinner A64 Port Controller (GPIO)
+#define PIO_BASE_ADDRESS 0x01C20800
+
+// Turn on the PinePhone Red, Green and Blue LEDs
+static void test_led(void)
+{
+  // From PinePhone Schematic: https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf
+  // - Red LED:   GPIO PD18 (PD18-LED-R)
+  // - Green LED: GPIO PD19 (PD19-LED-G)
+  // - Blue LED:  GPIO PD20 (PD20-LED-B)
+
+  // Write to PD Configure Register 2 (PD_CFG2_REG)
+  // Offset: 0x74
+  uint32_t *pd_cfg2_reg = (uint32_t *)
+    (PIO_BASE_ADDRESS + 0x74);
+
+  // Bits 10 to 8: PD18_SELECT (Default 0x7)
+  // 000: Input    001: Output
+  // 010: LCD_CLK  011: LVDS_VPC
+  // 100: RGMII_TXD0/MII_TXD0/RMII_TXD0 101: Reserved
+  // 110: Reserved 111: IO Disable
+  *pd_cfg2_reg = 
+    (*pd_cfg2_reg &amp; ~(0b111 &lt;&lt; 8))  // Clear the bits
+    | (0b001 &lt;&lt; 8);                 // Set the bits for Output
+
+  // Bits 14 to 12: PD19_SELECT (Default 0x7)
+  // 000: Input    001: Output
+  // 010: LCD_DE   011: LVDS_VNC
+  // 100: RGMII_TXCK/MII_TXCK/RMII_TXCK 101: Reserved
+  // 110: Reserved 111: IO Disable
+  *pd_cfg2_reg = 
+    (*pd_cfg2_reg &amp; ~(0b111 &lt;&lt; 12))  // Clear the bits
+    | (0b001 &lt;&lt; 12);                 // Set the bits for Output
+
+  // Bits 18 to 16: PD20_SELECT (Default 0x7)
+  // 000: Input     001: Output
+  // 010: LCD_HSYNC 011: LVDS_VP3
+  // 100: RGMII_TXCTL/MII_TXEN/RMII_TXEN 101: Reserved
+  // 110: Reserved  111: IO Disable
+  *pd_cfg2_reg = 
+    (*pd_cfg2_reg &amp; ~(0b111 &lt;&lt; 16))  // Clear the bits
+    | (0b001 &lt;&lt; 16);                 // Set the bits for Output
+  printf(&quot;pd_cfg2_reg=0x%x\n&quot;, *pd_cfg2_reg);
+
+  // Write to PD Data Register (PD_DATA_REG)
+  // Offset: 0x7C
+  uint32_t *pd_data_reg = (uint32_t *)
+    (PIO_BASE_ADDRESS + 0x7C);
+
+  // Bits 24 to 0: PD_DAT (Default 0)
+  // If the port is configured as input, the corresponding bit is the pin state. If
+  // the port is configured as output, the pin state is the same as the
+  // corresponding bit. The read bit value is the value setup by software. If the
+  // port is configured as functional pin, the undefined value will be read.
+  *pd_data_reg |= (1 &lt;&lt; 18);  // Set Bit 18 for PD18
+  *pd_data_reg |= (1 &lt;&lt; 19);  // Set Bit 19 for PD19
+  *pd_data_reg |= (1 &lt;&lt; 20);  // Set Bit 20 for PD20
+  printf(&quot;pd_data_reg=0x%x\n&quot;, *pd_data_reg);
+}</code></pre></div>
+<p>The Red, Green and Blue LEDs turn on (appearing as white) and the output shows…</p>
+<div class="example-wrap"><pre class="language-text"><code>pd_cfg2_reg=0x77711177
+pd_data_reg=0x1c0000</code></pre></div>
+<p><a href="https://youtu.be/MJDxCcKAv0g"><strong>Watch the Demo on YouTube</strong></a></p>
+<p>Here’s the complete log for <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c">examples/hello/hello_main.c</a>…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello
+task_spawn: name=hello entry=0x4009b1a4 file_actions=0x400c9580 attr=0x400c9588 argv=0x400c96d0
+spawn_execattrs: Setting policy=2 priority=100 for pid=3
+ABHello, World!!
+ph_cfg1_reg=0x7177
+ph_data_reg=0x400
+pd_cfg2_reg=0x77711177
+pd_data_reg=0x1c0000
+tcon_gctl_reg=0x80000000
+tcon0_3d_fifo_reg=0x80000631
+tcon0_ctl_reg=0x80000000
+tcon0_basic0_reg=0x630063
+tcon0_lvds_if_reg=0x80000000
+nsh&gt; </code></pre></div><h1 id="basic-blinks-the-leds"><a href="#basic-blinks-the-leds">3 BASIC Blinks The LEDs</a></h1>
+<p>TODO</p>
+<p>In the previous section we lit up PinePhone’s Red, Green and Blue LEDs. Below are the values we wrote to the Allwinner A64 Port Controller…</p>
+<div class="example-wrap"><pre class="language-text"><code>pd_cfg2_reg=0x77711177
+pd_data_reg=0x1c0000</code></pre></div>
+<p>Let’s do the same in BASIC! Which is great for interactive experimenting with PinePhone Hardware.</p>
+<p>This will enable GPIO Output for PD18 (Red), PD19 (Green), PD20 (Blue) in the Register <code>pd_cfg2_reg</code> (0x1C20874)…</p>
+<div class="example-wrap"><pre class="language-text"><code>poke &amp;h1C20874, &amp;h77711177</code></pre></div>
+<p>This will light up Red, Green and Blue LEDs via the Register <code>pd_data_reg</code> (0x1C2087C)…</p>
+<div class="example-wrap"><pre class="language-text"><code>poke &amp;h1C2087C, &amp;h1C0000</code></pre></div>
+<p>And this will turn off all 3 LEDs via <code>pd_data_reg</code> (0x1C2087C)…</p>
+<div class="example-wrap"><pre class="language-text"><code>poke &amp;h1C2087C, &amp;h0000</code></pre></div>
+<p>Install the BASIC Interpreter in NuttX…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/nuttx#enable-basic">“Enable BASIC”</a></li>
+</ul>
+<p>And enter these commands to blink the PinePhone LEDs (off and on)…</p>
+<p><a href="https://youtu.be/OTIHMIRd1s4"><strong>Watch the Demo on YouTube</strong></a></p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; bas
+task_spawn: name=bas entry=0x4009b340 file_actions=0x400f3580 attr=0x400f3588 argv=0x400f36d0
+spawn_execattrs: Setting policy=2 priority=100 for pid=7
+bas 2.4
+Copyright 1999-2014 Michael Haardt.
+This is free software with ABSOLUTELY NO WARRANTY.
+
+&gt; print peek(&amp;h1C20874)
+ 2004316535 
+
+&gt; poke &amp;h1C20874, &amp;h77711177
+
+&gt; print peek(&amp;h1C20874)
+ 2003898743 
+
+&gt; print peek(&amp;h1C2087C)
+ 262144 
+
+&gt; poke &amp;h1C2087C, &amp;h0000
+
+&gt; print peek(&amp;h1C2087C)
+ 0 
+
+&gt; poke &amp;h1C2087C, &amp;h1C0000
+
+&gt; print peek(&amp;h1C2087C)
+ 1835008  </code></pre></div>
+<p>Or run it in a loop like so…</p>
+<div class="example-wrap"><pre class="language-text"><code>10 &#39;Enable GPIO Output for PD18, PD19 and PD20
+20 poke &amp;h1C20874, &amp;h77711177
+30 &#39;Turn off GPIOs PD18, PD19 and PD20
+40 poke &amp;h1C2087C, &amp;h0
+50 sleep 5
+60 &#39;Turn on GPIOs PD18, PD19 and PD20
+70 poke &amp;h1C2087C, &amp;h1C0000
+80 sleep 5
+90 goto 40
+run</code></pre></div>
+<p>We patched NuttX BASIC so that it supports <code>peek</code> and <code>poke</code>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/interpreters/bas/bas_fs.c#L1862-L1889">interpreters/bas/bas_fs.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>int FS_memInput(int address)
+{
+  //  Return the 32-bit word at the specified address.
+  //  TODO: Quit if address is invalid.
+  return *(int *)(uint64_t) address;
+
+  //  Previously:
+  //  FS_errmsg = _(&quot;Direct memory access not available&quot;);
+  //  return -1;
+}
+
+int FS_memOutput(int address, int value)
+{
+  //  Set the 32-bit word at the specified address
+  //  TODO: Quit if address is invalid.
+  *(int *)(uint64_t) address = value;
+  return 0;
+
+  //  Previously:
+  //  FS_errmsg = _(&quot;Direct memory access not available&quot;);
+  //  return -1;
+}</code></pre></div>
+<p>Note that addresses are passed as 32-bit <code>int</code>, so some 64-bit addresses will not be accessible via <code>peek</code> and <code>poke</code>.</p>
+<h1 id="whats-next"><a href="#whats-next">4 What’s Next</a></h1>
 <p>TODO: GPIO Driver</p>
 <p>TODO: MIPI DSI: I have zero idea what I’m doing… But it would be super hilarious if it works!</p>
 <p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
@@ -118,6 +369,258 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pio.md"><strong>lupyuen.github.io/src/pio.md</strong></a></p>
+<h1 id="appendix-pinephone-device-tree"><a href="#appendix-pinephone-device-tree">5 Appendix: PinePhone Device Tree</a></h1>
+<p>TODO</p>
+<p>Let’s figure out how Allwinner A64’s Display Timing Controller (TCON0) talks to PinePhone’s MIPI DSI Display. (So we can build NuttX Drivers)</p>
+<p>More info on PinePhone Display…</p>
+<ul>
+<li><a href="https://genode.org/documentation/genode-platforms-22-05.pdf">“Genode Operating System Framework 22.05”</a>, pages 171 to 197.</li>
+</ul>
+<p>We tried tweaking the TCON0 Controller but the display is still blank (maybe backlight is off?)</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L75-L234">examples/hello/hello_main.c</a></li>
+</ul>
+<p>Below is the Device Tree for PinePhone’s Linux Kernel…</p>
+<ul>
+<li><a href="sun50i-a64-pinephone-1.2.dts">PinePhone Device Tree: sun50i-a64-pinephone-1.2.dts</a></li>
+</ul>
+<p>We converted the Device Tree with this command…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code># <span class="ident">Convert</span> <span class="ident">Device</span> <span class="ident">Tree</span> <span class="ident">to</span> <span class="ident">text</span> <span class="ident">format</span>
+<span class="ident">dtc</span> \
+  <span class="op">-</span><span class="ident">o</span> <span class="ident">sun50i</span><span class="op">-</span><span class="ident">a64</span><span class="op">-</span><span class="ident">pinephone</span><span class="op">-</span><span class="number">1.2</span>.<span class="ident">dts</span> \
+  <span class="op">-</span><span class="ident">O</span> <span class="ident">dts</span> \
+  <span class="op">-</span><span class="ident">I</span> <span class="ident">dtb</span> \
+  <span class="ident">sun50i</span><span class="op">-</span><span class="ident">a64</span><span class="op">-</span><span class="ident">pinephone</span><span class="op">-</span><span class="number">1.2</span>.<span class="ident">dtb</span></code></pre></div>
+<p><code>sun50i-a64-pinephone-1.2.dtb</code> came from the <a href="https://lupyuen.github.io/articles/uboot#pinephone-jumpdrive">Jumpdrive microSD</a>.</p>
+<p>High-level doc of Linux Drivers…</p>
+<ul>
+<li><a href="https://www.kernel.org/doc/Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt">devicetree/bindings/display/sunxi/sun4i-drm.txt</a></li>
+</ul>
+<p>PinePhone Schematic shows the connections for Display, Touch Panel and Backlight…</p>
+<ul>
+<li><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf">PinePhone v1.2b Released Schematic</a></li>
+</ul>
+<p>Here are the interesting bits from the PinePhone Linux Device Tree: <a href="sun50i-a64-pinephone-1.2.dts">sun50i-a64-pinephone-1.2.dts</a></p>
+<h2 id="lcd-controller-tcon0"><a href="#lcd-controller-tcon0">5.1 LCD Controller (TCON0)</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>lcd-controller@1c0c000 {
+  compatible = &quot;allwinner,sun50i-a64-tcon-lcd\0allwinner,sun8i-a83t-tcon-lcd&quot;;
+  reg = &lt;0x1c0c000 0x1000&gt;;
+  interrupts = &lt;0x00 0x56 0x04&gt;;
+  clocks = &lt;0x02 0x2f 0x02 0x64&gt;;
+  clock-names = &quot;ahb\0tcon-ch0&quot;;
+  clock-output-names = &quot;tcon-pixel-clock&quot;;
+  #clock-cells = &lt;0x00&gt;;
+  resets = &lt;0x02 0x18 0x02 0x23&gt;;
+  reset-names = &quot;lcd\0lvds&quot;;
+
+  ports {
+    #address-cells = &lt;0x01&gt;;
+    #size-cells = &lt;0x00&gt;;
+
+    // TCON0: MIPI DSI Display
+    port@0 {
+      #address-cells = &lt;0x01&gt;;
+      #size-cells = &lt;0x00&gt;;
+      reg = &lt;0x00&gt;;
+
+      endpoint@0 {
+        reg = &lt;0x00&gt;;
+        remote-endpoint = &lt;0x22&gt;;
+        phandle = &lt;0x1e&gt;;
+      };
+
+      endpoint@1 {
+        reg = &lt;0x01&gt;;
+        remote-endpoint = &lt;0x23&gt;;
+        phandle = &lt;0x20&gt;;
+      };
+    };
+
+    // TCON1: HDMI
+    port@1 { ... };
+  };
+};</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L446-L492">(Source)</a></p>
+<h2 id="mipi-dsi-interface"><a href="#mipi-dsi-interface">5.2 MIPI DSI Interface</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>dsi@1ca0000 {
+  compatible = &quot;allwinner,sun50i-a64-mipi-dsi&quot;;
+  reg = &lt;0x1ca0000 0x1000&gt;;
+  interrupts = &lt;0x00 0x59 0x04&gt;;
+  clocks = &lt;0x02 0x1c&gt;;
+  resets = &lt;0x02 0x05&gt;;
+  phys = &lt;0x53&gt;;
+  phy-names = &quot;dphy&quot;;
+  status = &quot;okay&quot;;
+  #address-cells = &lt;0x01&gt;;
+  #size-cells = &lt;0x00&gt;;
+  vcc-dsi-supply = &lt;0x45&gt;;
+
+  port {
+
+    endpoint {
+      remote-endpoint = &lt;0x54&gt;;
+      phandle = &lt;0x24&gt;;
+    };
+  };
+
+  panel@0 {
+    compatible = &quot;xingbangda,xbd599&quot;;
+    reg = &lt;0x00&gt;;
+    reset-gpios = &lt;0x2b 0x03 0x17 0x01&gt;;
+    iovcc-supply = &lt;0x55&gt;;
+    vcc-supply = &lt;0x48&gt;;
+    backlight = &lt;0x56&gt;;
+  };
+};</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1327-L1356">(Source)</a></p>
+<h2 id="display-phy"><a href="#display-phy">5.3 Display PHY</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>d-phy@1ca1000 {
+  compatible = &quot;allwinner,sun50i-a64-mipi-dphy\0allwinner,sun6i-a31-mipi-dphy&quot;;
+  reg = &lt;0x1ca1000 0x1000&gt;;
+  clocks = &lt;0x02 0x1c 0x02 0x71&gt;;
+  clock-names = &quot;bus\0mod&quot;;
+  resets = &lt;0x02 0x05&gt;;
+  status = &quot;okay&quot;;
+  #phy-cells = &lt;0x00&gt;;
+  phandle = &lt;0x53&gt;;
+};</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1358-L1367">(Source)</a></p>
+<h2 id="backlight-pwm"><a href="#backlight-pwm">5.4 Backlight PWM</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>backlight {
+  compatible = &quot;pwm-backlight&quot;;
+  pwms = &lt;0x62 0x00 0xc350 0x01&gt;;
+  enable-gpios = &lt;0x2b 0x07 0x0a 0x00&gt;;
+  power-supply = &lt;0x48&gt;;
+  brightness-levels = &lt;0x1388 0x1480 0x1582 0x16e2 0x18c9 0x1b4b 0x1e7d 0x2277 0x274e 0x2d17 0x33e7 0x3bd5 0x44f6 0x4f5f 0x5b28 0x6864 0x7729 0x878e 0x99a7 0xad8b 0xc350&gt;;
+  num-interpolated-steps = &lt;0x32&gt;;
+  default-brightness-level = &lt;0x1f4&gt;;
+  phandle = &lt;0x56&gt;;
+};</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1832-L1841">(Source)</a></p>
+<p>From <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf">PinePhone Schematic</a>…</p>
+<ul>
+<li>
+<p>Backlight Enable: GPIO PH10 (PH10-LCD-BL-EN)</p>
+</li>
+<li>
+<p>Backlight PWM: PWM PL10 (PL10-LCD-PWM)</p>
+</li>
+</ul>
+<h2 id="led"><a href="#led">5.5 LED</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>leds {
+  compatible = &quot;gpio-leds&quot;;
+
+  blue {
+    function = &quot;indicator&quot;;
+    color = &lt;0x03&gt;;
+    gpios = &lt;0x2b 0x03 0x14 0x00&gt;;
+    retain-state-suspended;
+  };
+
+  green {
+    function = &quot;indicator&quot;;
+    color = &lt;0x02&gt;;
+    gpios = &lt;0x2b 0x03 0x12 0x00&gt;;
+    retain-state-suspended;
+  };
+
+  red {
+    function = &quot;indicator&quot;;
+    color = &lt;0x01&gt;;
+    gpios = &lt;0x2b 0x03 0x13 0x00&gt;;
+    retain-state-suspended;
+  };
+};</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1940-L1963">(Source)</a></p>
+<p>From <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf">PinePhone Schematic</a>…</p>
+<ul>
+<li>
+<p>Red LED: GPIO PD18 (PD18-LED-R)</p>
+</li>
+<li>
+<p>Green LED: GPIO PD19 (PD19-LED-G)</p>
+</li>
+<li>
+<p>Blue LED: GPIO PD20 (PD20-LED-B)</p>
+</li>
+</ul>
+<h2 id="framebuffer"><a href="#framebuffer">5.6 Framebuffer</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>framebuffer-lcd {
+  compatible = &quot;allwinner,simple-framebuffer\0simple-framebuffer&quot;;
+  allwinner,pipeline = &quot;mixer0-lcd0&quot;;
+  clocks = &lt;0x02 0x64 0x03 0x06&gt;;
+  status = &quot;disabled&quot;;
+};</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L16-L21">(Source)</a></p>
+<h2 id="display-engine"><a href="#display-engine">5.7 Display Engine</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>display-engine {
+  compatible = &quot;allwinner,sun50i-a64-display-engine&quot;;
+  allwinner,pipelines = &lt;0x07 0x08&gt;;
+  status = &quot;okay&quot;;
+};</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L98-L102">(Source)</a></p>
+<h2 id="touch-panel"><a href="#touch-panel">5.8 Touch Panel</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>touchscreen@5d {
+  compatible = &quot;goodix,gt917s&quot;;
+  reg = &lt;0x5d&gt;;
+  interrupt-parent = &lt;0x2b&gt;;
+  interrupts = &lt;0x07 0x04 0x04&gt;;
+  irq-gpios = &lt;0x2b 0x07 0x04 0x00&gt;;
+  reset-gpios = &lt;0x2b 0x07 0x0b 0x00&gt;;
+  AVDD28-supply = &lt;0x48&gt;;
+  VDDIO-supply = &lt;0x48&gt;;
+  touchscreen-size-x = &lt;0x2d0&gt;;
+  touchscreen-size-y = &lt;0x5a0&gt;;
+};</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1125-L1136">(Source)</a></p>
+<h2 id="video-codec"><a href="#video-codec">5.9 Video Codec</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>video-codec@1c0e000 {
+  compatible = &quot;allwinner,sun50i-a64-video-engine&quot;;
+  reg = &lt;0x1c0e000 0x1000&gt;;
+  clocks = &lt;0x02 0x2e 0x02 0x6a 0x02 0x5f&gt;;
+  clock-names = &quot;ahb\0mod\0ram&quot;;
+  resets = &lt;0x02 0x17&gt;;
+  interrupts = &lt;0x00 0x3a 0x04&gt;;
+  allwinner,sram = &lt;0x28 0x01&gt;;
+};</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L539-L547">(Source)</a></p>
+<h2 id="gpu"><a href="#gpu">5.10 GPU</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>gpu@1c40000 {
+  compatible = &quot;allwinner,sun50i-a64-mali\0arm,mali-400&quot;;
+  reg = &lt;0x1c40000 0x10000&gt;;
+  interrupts = &lt;0x00 0x61 0x04 0x00 0x62 0x04 0x00 0x63 0x04 0x00 0x64 0x04 0x00 0x66 0x04 0x00 0x67 0x04 0x00 0x65 0x04&gt;;
+  interrupt-names = &quot;gp\0gpmmu\0pp0\0ppmmu0\0pp1\0ppmmu1\0pmu&quot;;
+  clocks = &lt;0x02 0x35 0x02 0x72&gt;;
+  clock-names = &quot;bus\0core&quot;;
+  resets = &lt;0x02 0x1f&gt;;
+  assigned-clocks = &lt;0x02 0x72&gt;;
+  assigned-clock-rates = &lt;0x1dcd6500&gt;;
+};</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1246-L1256">(Source)</a></p>
+<h2 id="deinterlace"><a href="#deinterlace">5.11 Deinterlace</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>deinterlace@1e00000 {
+  compatible = &quot;allwinner,sun50i-a64-deinterlace\0allwinner,sun8i-h3-deinterlace&quot;;
+  reg = &lt;0x1e00000 0x20000&gt;;
+  clocks = &lt;0x02 0x31 0x02 0x66 0x02 0x61&gt;;
+  clock-names = &quot;bus\0mod\0ram&quot;;
+  resets = &lt;0x02 0x1a&gt;;
+  interrupts = &lt;0x00 0x5d 0x04&gt;;
+  interconnects = &lt;0x57 0x09&gt;;
+  interconnect-names = &quot;dma-mem&quot;;
+};</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1369-L1378">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/pio-title.jpg" alt="TODO" /></p>
 
     
