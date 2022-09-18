@@ -2,15 +2,37 @@
 
 📝 _30 Sep 2022_
 
-![TODO](https://lupyuen.github.io/images/pio-title.webp)
+![Blinking the PinePhone LEDs with BASIC... On Apache NuttX RTOS](https://lupyuen.github.io/images/pio-title.webp)
 
-Programming the GPIO Hardware on Pine64 PinePhone looks complicated... But it's no different from microcontrollers!
+_Blinking the PinePhone LEDs with BASIC... On Apache NuttX RTOS_
+
+Programming the __GPIO Hardware__ on __Pine64 PinePhone__ looks complicated... But it's no different from microcontrollers!
 
 (Like PineTime Smartwatch and PineCone BL602)
 
-TODO
+Today we shall learn...
 
-Let's dive into our __NuttX Porting Journal__ and learn how we blinked the PinePhone LEDs...
+-   How to blink the LEDs on PinePhone (pic above)
+
+-   What's the Allwinner A64 Port Controller
+
+-   How we configure and flip the GPIOs
+
+-   How to do this in BASIC (pic above)
+
+We shall experiment with PinePhone GPIOs by booting __Apache NuttX RTOS__ on PinePhone.
+
+_Why boot NuttX RTOS on PinePhone? Why not Linux?_
+
+NuttX RTOS is a super-tiny, Linux-like operating system that gives us __"Unlocked Access"__ to all PinePhone Hardware.
+
+So it's easier to directly manipulate the Hardware Registers on PinePhone.
+
+_Will it mess up PinePhone Linux?_
+
+We'll boot NuttX with a __microSD Card__, we won't touch the Linux Distro on PinePhone.
+
+Let's dive into our __NuttX Porting Journal__ and find out how we blinked the PinePhone LEDs...
 
 -   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
 
