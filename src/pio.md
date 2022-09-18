@@ -44,7 +44,7 @@ TODO
 
 Let's light up the PinePhone Backlight and the Red / Green / Blue LEDs.
 
-Based on the [PinePhone Schematic](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)...
+Based on the [PinePhone Schematic](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (page 11)...
 
 -   Backlight Enable is connected to GPIO PH10
 
