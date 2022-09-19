@@ -564,7 +564,7 @@ TODO
 
 TODO: GPIO Driver
 
-TODO: MIPI DSI: I have zero idea what I'm doing... But it would be super hilarious if it works!
+TODO: MIPI DSI: I have zero idea what I'm doing... But it would be super hilarious if it works! [hello_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L181-L378)
 
 There's plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏
 
