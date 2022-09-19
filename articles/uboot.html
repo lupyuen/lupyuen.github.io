@@ -557,7 +557,7 @@ SECTION_FUNC(text, up_earlyserialinit)
 <li>
 <p>Follow these steps to <strong>build Apache NuttX RTOS</strong>…</p>
 <p><a href="https://lupyuen.github.io/articles/uboot#appendix-build-nuttx-for-pinephone"><strong>“Build NuttX for PinePhone”</strong></a></p>
-<p>Or <strong>download <code>nuttx.bin</code></strong> from here…</p>
+<p>Or <strong>download <code>nuttx.bin</code></strong> from here (includes BASIC Interpreter)…</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/nuttx.bin"><strong>NuttX Binary Image for PinePhone: <code>nuttx.bin</code></strong></a></p>
 </li>
 <li>
@@ -566,7 +566,7 @@ SECTION_FUNC(text, up_earlyserialinit)
 cp nuttx.bin Image
 rm -f Image.gz
 gzip Image</code></pre></div>
-<p>Or <strong>download <code>Image.gz</code></strong> from here…</p>
+<p>Or <strong>download <code>Image.gz</code></strong> from here (includes BASIC Interpreter)…</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/Image.gz"><strong>Compressed NuttX Binary Image: <code>Image.gz</code></strong></a></p>
 </li>
 <li>
@@ -856,6 +856,11 @@ aarch64-none-elf-objdump \
 <p><a href="https://gist.github.com/lupyuen/2c5db82c3103f52ed7ca99804f9220c1">(See the Build Log)</a></p>
 <p><a href="https://gist.github.com/lupyuen/7e828ea476d12cffa5e535a215723908">(See our Build Script)</a></p>
 <p>On an old MacBook Pro 2012, NuttX builds in 2 minutes.</p>
+<p>If we wish to use the <strong>BASIC Interpreter</strong>, follow these steps to enable it…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/nuttx#enable-basic"><strong>“Enable BASIC”</strong></a></li>
+</ul>
+<p>Then run <strong><code>make</code></strong> to rebuild NuttX.</p>
 <h2 id="output-files"><a href="#output-files">17.5 Output Files</a></h2>
 <p>The NuttX Output Files may be found here…</p>
 <ul>
