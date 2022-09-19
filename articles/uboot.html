@@ -551,9 +551,14 @@ SECTION_FUNC(text, up_earlyserialinit)
 <p>Let’s do it!</p>
 <ol>
 <li>
-<p>Follow these steps to <strong>build NuttX</strong>…</p>
+<p>Prepare a microSD Card with <strong>PinePhone Jumpdrive</strong>…</p>
+<p><a href="https://lupyuen.github.io/articles/uboot#pinephone-jumpdrive"><strong>“PinePhone Jumpdrive”</strong></a></p>
+</li>
+<li>
+<p>Follow these steps to <strong>build Apache NuttX RTOS</strong>…</p>
 <p><a href="https://lupyuen.github.io/articles/uboot#appendix-build-nuttx-for-pinephone"><strong>“Build NuttX for PinePhone”</strong></a></p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/nuttx.bin">(Or download <strong><code>nuttx.bin</code></strong> from here)</a></p>
+<p>Or <strong>download <code>nuttx.bin</code></strong> from here…</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/nuttx.bin"><strong>NuttX Binary Image for PinePhone: <code>nuttx.bin</code></strong></a></p>
 </li>
 <li>
 <p>Compress the <strong>NuttX Binary Image</strong>…</p>
@@ -561,7 +566,8 @@ SECTION_FUNC(text, up_earlyserialinit)
 cp nuttx.bin Image
 rm -f Image.gz
 gzip Image</code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/Image.gz">(Or download <strong><code>Image.gz</code></strong> from here)</a></p>
+<p>Or <strong>download <code>Image.gz</code></strong> from here…</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/Image.gz"><strong>Compressed NuttX Binary Image: <code>Image.gz</code></strong></a></p>
 </li>
 <li>
 <p>Overwrite <strong><code>Image.gz</code></strong> on <strong>Jumpdrive microSD</strong>…</p>
@@ -569,10 +575,14 @@ gzip Image</code></pre></div>
 # TODO: Change the microSD Path
 cp Image.gz &quot;/Volumes/NO NAME&quot;</code></pre></div></li>
 <li>
+<p>Connect PinePhone to our computer with a <strong>USB Serial Debug Cable</strong>…</p>
+<p><a href="https://lupyuen.github.io/articles/uboot#boot-log"><strong>“Boot Log”</strong></a></p>
+</li>
+<li>
 <p>Insert <strong>Jumpdrive microSD</strong> into PinePhone and power up</p>
 </li>
 </ol>
-<p>On our computer’s Serial Terminal, we see <strong>U-Boot Bootloader</strong> loading our OS into RAM…</p>
+<p>On our computer’s <a href="https://lupyuen.github.io/articles/uboot#boot-log"><strong>Serial Terminal</strong></a>, we see PinePhone’s <strong>U-Boot Bootloader</strong> loading NuttX RTOS into RAM…</p>
 <div class="example-wrap"><pre class="language-text"><code>U-Boot 2020.07 (Nov 08 2020 - 00:15:12 +0100)
 Found U-Boot script /boot.scr
 653 bytes read in 3 ms (211.9 KiB/s)

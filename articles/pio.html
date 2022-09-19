@@ -182,7 +182,7 @@
 <p><img src="https://lupyuen.github.io/images/pio-register2.png" alt="Allwinner A64 User Manual (Page 376)" /></p>
 <p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><em>Allwinner A64 User Manual (Page 376)</em></a></p>
 <h1 id="port-controller-registers"><a href="#port-controller-registers">3 Port Controller Registers</a></h1>
-<p>Page 376 of the <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf">_<strong>Allwinner A64 User Manual</strong></a> says that the Port Controller’s <strong>Base Address</strong> is <strong><code>0x01C2</code> <code>0800</code></strong> (pic above)</p>
+<p>Page 376 of the <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> says that the Port Controller’s <strong>Base Address</strong> is <strong><code>0x01C2</code> <code>0800</code></strong> (pic above)</p>
 <p>Which we define like so…</p>
 <div class="example-wrap"><pre class="language-c"><code>// PIO Base Address for PinePhone 
 // Allwinner A64 Port Controller (GPIO)
@@ -211,7 +211,7 @@
 <p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><em>Allwinner A64 User Manual (Page 387)</em></a></p>
 <h1 id="configure-gpio"><a href="#configure-gpio">4 Configure GPIO</a></h1>
 <p>Remember our mission for today is to configure GPIOs <strong>PD18, 19 and 20</strong>.</p>
-<p>Page 387 of the <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf">_<strong>Allwinner A64 User Manual</strong></a> says that all we need is <strong>PD_CFG2</strong> at Offset <strong><code>0x74</code></strong>. (Pic above)</p>
+<p>Page 387 of the <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> says that all we need is <strong>PD_CFG2</strong> at Offset <strong><code>0x74</code></strong>. (Pic above)</p>
 <p><strong>PD_CFG2</strong> is a 32-bit Hardware Register. The bits that we need to twiddle are…</p>
 <ul>
 <li>
@@ -275,7 +275,7 @@ static void test_led(void)
 <p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><em>Allwinner A64 User Manual (Page 388)</em></a></p>
 <h1 id="set-gpio"><a href="#set-gpio">5 Set GPIO</a></h1>
 <p>Our final job for today: <strong>Set the GPIO Output</strong> for PD18, 19 and 20. So that we can blink the PinePhone LEDs!</p>
-<p>Page 388 of the <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf">_<strong>Allwinner A64 User Manual</strong></a> says that we need to tweak Register <strong>PD_DATA</strong> at Offset <strong><code>0x7C</code></strong>. (Pic above)</p>
+<p>Page 388 of the <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> says that we need to tweak Register <strong>PD_DATA</strong> at Offset <strong><code>0x7C</code></strong>. (Pic above)</p>
 <p>To set PD18, 19 and 20 to High, we set <strong>Bits 18, 19 and 20</strong> of PD_DATA to 1.</p>
 <p>This is how we do it: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L124-L179">hello_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// PIO Base Address for PinePhone Allwinner A64 Port Controller (GPIO)
@@ -310,17 +310,39 @@ static void test_led(void)
 <p>And we’re done lighting up the LEDs on PinePhone!</p>
 <p>Let’s test it on PinePhone…</p>
 <h1 id="boot-nuttx-on-pinephone"><a href="#boot-nuttx-on-pinephone">6 Boot NuttX on PinePhone</a></h1>
-<p>TODO</p>
-<p>The Red, Green and Blue LEDs turn on (appearing as white) and the output shows…</p>
-<div class="example-wrap"><pre class="language-text"><code>pd_cfg2_reg=0x77711177
-pd_data_reg=0x1c0000</code></pre></div>
-<p><a href="https://youtu.be/MJDxCcKAv0g"><strong>Watch the Demo on YouTube</strong></a></p>
-<p>Here’s the log for <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c">examples/hello/hello_main.c</a>…</p>
+<p>Now we shall boot <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> on PinePhone, and watch our C program light up the LEDs!</p>
+<p><em>Will it mess up our PinePhone?</em></p>
+<p>No worries, we shall boot NuttX safely with a <strong>microSD Card</strong>, we won’t touch the Linux Distro on PinePhone.</p>
+<p>Follow these steps to <strong>download NuttX</strong> and copy to a microSD Card…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/uboot#pinephone-boots-nuttx"><strong>“PinePhone Boots NuttX”</strong></a></li>
+</ul>
+<p>Connect PinePhone to our computer with a <strong>USB Serial Debug Cable</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/uboot#boot-log"><strong>“Boot Log”</strong></a></li>
+</ul>
+<p>Insert the microSD into PinePhone and power it on.</p>
+<p>On our computer’s <a href="https://lupyuen.github.io/articles/uboot#boot-log"><strong>Serial Terminal</strong></a>, we should see…</p>
+<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
+HELLO NUTTX ON PINEPHONE!
+- Ready to Boot CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+...
+Shell (NSH) NuttX-10.3.0-RC2
+nsh&gt; </code></pre></div>
+<p>Enter this command to run our <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c">hello_main.c</a> Test Program…</p>
+<div class="example-wrap"><pre class="language-bash"><code>hello</code></pre></div>
+<p>We should see …</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello
 ...
 pd_cfg2_reg=0x77711177
 pd_data_reg=0x1c0000</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#backlight-and-leds">(See the Complete Log)</a></p>
+<p><a href="https://youtu.be/MJDxCcKAv0g">(Watch the Demo on YouTube)</a></p>
+<p>PinePhone’s Red, Green and Blue LEDs turn on and appear as white.</p>
+<p>Yep we have successfully lit up the LEDs on PinePhone!</p>
 <h1 id="backlight-and-leds"><a href="#backlight-and-leds">7 Backlight and LEDs</a></h1>
 <p>TODO</p>
 <p>This is how we turn on GPIO PH10 in Allwinner A64 Port Controller (PIO): <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L83-L122">examples/hello/hello_main.c</a></p>
