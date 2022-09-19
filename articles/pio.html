@@ -497,6 +497,69 @@ pd_data_reg=0x1c0000</code></pre></div>
 <p>For safety, future versions of NuttX RTOS for PinePhone may disable direct access to PinePhone Hardware, by enabling the Arm64 Memory Management Unit.</p>
 <p><a href="https://lupyuen.github.io/articles/pio#appendix-enable-peek-and-poke-in-basic">(How we enabled <strong><code>peek</code></strong> and <strong><code>poke</code></strong> for the BASIC Interpreter)</a></p>
 <h1 id="linux-device-tree"><a href="#linux-device-tree">10 Linux Device Tree</a></h1>
+<p><em>Is there another way to discover the PinePhone Hardware… Without browsing the PinePhone Schematic?</em></p>
+<p>Yep the <strong>Linux Device Tree</strong> describes everything about PinePhone Hardware in Text Format…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/pio#appendix-pinephone-device-tree"><strong>“PinePhone Device Tree”</strong></a></li>
+</ul>
+<p>To access the PinePhone Hardware, the <strong>Linux Kernel</strong> refers to the Linux Device Tree. (Similar to the Windows Registry)</p>
+<p>So the Linux Device Tree will reveal all kinds of goodies about the PinePhone Hardware.</p>
+<p>Here’s the part that describes PinePhone’s <strong>Blue LED</strong>… </p>
+<div class="example-wrap"><pre class="language-text"><code>leds {
+  compatible = &quot;gpio-leds&quot;;
+
+  blue {
+    function = &quot;indicator&quot;;
+    color = &lt;0x03&gt;;
+    gpios = &lt;0x2b 0x03 0x14 0x00&gt;;
+    retain-state-suspended;
+  };</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/pio#led">(Source)</a></p>
+<p>We interpret <strong><code>gpios</code></strong> as…</p>
+<ul>
+<li>
+<p><strong><code>0x2b</code></strong>: GPIO (I think?)</p>
+</li>
+<li>
+<p><strong><code>0x03</code></strong>: GPIO Port 3 (PD)</p>
+</li>
+<li>
+<p><strong><code>0x14</code></strong>: GPIO Pin 20 (PD20)</p>
+</li>
+<li>
+<p><strong><code>0x00</code></strong>: Unusued (I think?)</p>
+</li>
+</ul>
+<p>Which looks correct, since the Blue LED is connected to GPIO PD20.</p>
+<p>The <strong>Green and Red LEDs</strong> (PD18 and 19) look similar…</p>
+<div class="example-wrap"><pre class="language-text"><code>  green {
+    function = &quot;indicator&quot;;
+    color = &lt;0x02&gt;;
+    gpios = &lt;0x2b 0x03 0x12 0x00&gt;;
+    retain-state-suspended;
+  };
+
+  red {
+    function = &quot;indicator&quot;;
+    color = &lt;0x01&gt;;
+    gpios = &lt;0x2b 0x03 0x13 0x00&gt;;
+    retain-state-suspended;
+  };</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/pio#led">(Source)</a></p>
+<p><strong>PinePhone’s Backlight</strong> looks more complicated, since it combines GPIO and <a href="https://en.wikipedia.org/wiki/Pulse-width_modulation"><strong>Pulse-Width Modulation (PWM)</strong></a>…</p>
+<div class="example-wrap"><pre class="language-text"><code>backlight {
+  compatible = &quot;pwm-backlight&quot;;
+  pwms = &lt;0x62 0x00 0xc350 0x01&gt;;
+  enable-gpios = &lt;0x2b 0x07 0x0a 0x00&gt;;
+  power-supply = &lt;0x48&gt;;
+  brightness-levels = &lt;0x1388 0x1480 0x1582 0x16e2 0x18c9 0x1b4b 0x1e7d 0x2277 0x274e 0x2d17 0x33e7 0x3bd5 0x44f6 0x4f5f 0x5b28 0x6864 0x7729 0x878e 0x99a7 0xad8b 0xc350&gt;;
+  num-interpolated-steps = &lt;0x32&gt;;
+  default-brightness-level = &lt;0x1f4&gt;;
+  phandle = &lt;0x56&gt;;
+};</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/pio#backlight-pwm">(Source)</a></p>
+<p>This says that Backlight PWM is PL10 and Backlight GPIO is PH10. (With multiple levels of Backlight Brightness)</p>
+<p><em>Why is the Linux Device Tree helpful?</em></p>
 <p>TODO</p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO: GPIO Driver</p>
