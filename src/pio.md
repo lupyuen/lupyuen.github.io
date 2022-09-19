@@ -337,11 +337,21 @@ PinePhone's Red, Green and Blue LEDs turn on and appear as white.
 
 Yep we have successfully lit up the LEDs on PinePhone!
 
-# Backlight and LEDs
+# PinePhone Backlight
 
-TODO
+Remember we said earlier that __PinePhone's Backlight__ is connected to __GPIO PH10__?
 
-This is how we turn on GPIO PH10 in Allwinner A64 Port Controller (PIO): [examples/hello/hello_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L83-L122)
+To turn on the Backlight, we would need to tweak...
+
+-   __Register PH_CFG1__ (Offset `0x100`): To configure PH10
+
+    (Bits 8 to 10)
+
+-   __Register PH_DATA__ (Offset `0x10C`): To set PH10
+
+    (Bit 10)
+
+Here's how we turn on PinePhone's Backlight connected to GPIO PH10: [examples/hello/hello_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L83-L122)
 
 ```c
 // PIO Base Address for PinePhone Allwinner A64 Port Controller (GPIO)
@@ -386,12 +396,20 @@ static void test_backlight(void)
 }
 ```
 
-The Backlight lights up and the output shows...
+When we run the Test Program, we see...
 
 ```text
+nsh> hello
+...
 ph_cfg1_reg=0x7177
 ph_data_reg=0x400
 ```
+
+[(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx#backlight-and-leds)
+
+[(Watch the Demo on YouTube)](https://youtu.be/MJDxCcKAv0g)
+
+And PinePhone's Backlight lights up!
 
 # BASIC Blinks The LEDs
 
