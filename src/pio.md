@@ -320,7 +320,7 @@ Enter this command to run our [hello_main.c](https://github.com/lupyuen/incubato
 hello
 ```
 
-We should see ...
+We see the values of the Registers PD_CFG2 and PD_DATA...
 
 ```text
 nsh> hello
@@ -396,7 +396,7 @@ static void test_backlight(void)
 }
 ```
 
-When we run the Test Program, we see...
+When we run the Test Program, we see the values of the Registers PH_CFG1 and PH_DATA...
 
 ```text
 nsh> hello
