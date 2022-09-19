@@ -552,7 +552,9 @@ _Is it really OK to `poke` around PinePhone?_
 
 Since we have __full direct access__ to the PinePhone Hardware, make sure we're __`poke`__-ing the right addresses on PinePhone!
 
-For safety, future versions of NuttX RTOS for PinePhone may disable direct access to PinePhone Hardware, by enabling the Arm64 Memory Management Unit.
+For safety, future versions of NuttX RTOS for PinePhone may disable direct access to the Hardware Registers. (By enabling the Arm64 Memory Management Unit)
+
+When that happens, we shall access the PinePhone GPIOs through the protected [__GPIO Driver__](https://lupyuen.github.io/articles/nuttx#gpio-driver) in the NuttX Kernel.
 
 [(How we enabled __`peek`__ and __`poke`__ for the BASIC Interpreter)](https://lupyuen.github.io/articles/pio#appendix-enable-peek-and-poke-in-basic)
 
