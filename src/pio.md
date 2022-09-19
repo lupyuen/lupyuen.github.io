@@ -594,7 +594,7 @@ We interpret __`gpios`__ as...
 
 -   __`0x14`__: GPIO Pin 20 (PD20)
 
--   __`0x00`__: Unusued (I think?)
+-   __`0x00`__: Unused (I think?)
 
 Which looks correct, since the Blue LED is connected to GPIO PD20.
 
