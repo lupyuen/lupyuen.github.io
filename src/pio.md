@@ -421,7 +421,7 @@ _Is there a simpler, interactive way to experiment with PinePhone LEDs?_
 
 The [__BASIC Interpreter__](https://en.wikipedia.org/wiki/BASIC) will let us flip the GPIOs (and LEDs) on the fly!
 
-To start the BASIC Interpreter, enter __"`bas`"__...
+To start the BASIC Interpreter in the NuttX Shell, enter __"`bas`"__...
 
 ```text
 nsh> bas

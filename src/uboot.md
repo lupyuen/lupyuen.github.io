@@ -604,7 +604,7 @@ Let's do it!
 
     [__"Build NuttX for PinePhone"__](https://lupyuen.github.io/articles/uboot#appendix-build-nuttx-for-pinephone)
 
-    Or __download `nuttx.bin`__ from here...
+    Or __download `nuttx.bin`__ from here (includes BASIC Interpreter)...
 
     [__NuttX Binary Image for PinePhone: `nuttx.bin`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/nuttx.bin)
 
@@ -617,7 +617,7 @@ Let's do it!
     gzip Image
     ```
 
-    Or __download `Image.gz`__ from here...
+    Or __download `Image.gz`__ from here (includes BASIC Interpreter)...
 
     [__Compressed NuttX Binary Image: `Image.gz`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/Image.gz)
 
@@ -954,6 +954,12 @@ aarch64-none-elf-objdump \
 [(See our Build Script)](https://gist.github.com/lupyuen/7e828ea476d12cffa5e535a215723908)
 
 On an old MacBook Pro 2012, NuttX builds in 2 minutes.
+
+If we wish to use the __BASIC Interpreter__, follow these steps to enable it...
+
+-   [__"Enable BASIC"__](https://lupyuen.github.io/articles/nuttx#enable-basic)
+
+Then run __`make`__ to rebuild NuttX.
 
 ## Output Files
 
