@@ -451,7 +451,7 @@ When we merge the above with the Register Addresses, we get...
 
     We write the value __`0x1C` `0000`__ to set PD18, 19 and 20 to High.
 
-OK we are ready for BASIC!
+OK we're ready to do this in BASIC! We'll call __`poke`__ with the above Addresses and Values.
 
 At the BASIC Prompt, enter this to __configure PD18, 19 and 20__ for GPIO Output...
 
@@ -470,16 +470,24 @@ Yep PinePhone's Red, Green and Blue LEDs turn on and appear as white!
 Finally enter this to __set PD18, 19 and 20__ to Low...
 
 ```text
-poke &h1C2087C, &h0000
+poke &h1C2087C, &h0
 ```
 
 And watch PinePhone's LEDs switch off!
 
-TODO
+_So the `poke` command will write a value to any address?_
 
-And enter these commands to blink the PinePhone LEDs (off and on)...
+Yep [__`poke`__](https://en.wikipedia.org/wiki/PEEK_and_POKE) is a throwback to the old days when we called it to light up individual pixels on the [__Apple \]\[ Graphics Display__](https://en.wikipedia.org/wiki/Apple_II_graphics).
 
-[__Watch the Demo on YouTube__](https://youtu.be/OTIHMIRd1s4)
+Today we call __`poke`__ to light up the PinePhone LEDs!
+
+[(__`poke`__ works for 32-bit addresses, but not 64-bit addresses)](https://lupyuen.github.io/articles/pio#appendix-enable-peek-and-poke-in-basic)
+
+_Isn't there a `peek` command?_
+
+Indeed! [__`peek`__](https://en.wikipedia.org/wiki/PEEK_and_POKE) will read the value from an address.
+
+Enter these __`peek`__ and __`poke`__ commands to watch the Register Values change as we configure the GPIOs and blink them...
 
 ```text
 > print peek(&h1C20874)
@@ -493,7 +501,7 @@ And enter these commands to blink the PinePhone LEDs (off and on)...
 > print peek(&h1C2087C)
  262144 
 
-> poke &h1C2087C, &h0000
+> poke &h1C2087C, &h0
 
 > print peek(&h1C2087C)
  0 
@@ -504,11 +512,19 @@ And enter these commands to blink the PinePhone LEDs (off and on)...
  1835008  
 ```
 
+[(Watch the Demo on YouTube)](https://youtu.be/OTIHMIRd1s4)
+
+BASIC works great for quick, interactive experiments with PinePhone GPIOs and LEDs!
+
+![Blinking the PinePhone LEDs with BASIC... On Apache NuttX RTOS](https://lupyuen.github.io/images/pio-title.webp)
+
 # BASIC Blinks The LEDs
 
-TODO
+_Isn't BASIC a programming language? Surely we can do sophisticated stuff?_
 
-Run it in a loop like so...
+Yep we can write __BASIC Programs__ the old-school (Apple ][) way and run them on PinePhone!
+
+Paste these lines of BASIC Code into the BASIC Prompt...
 
 ```text
 10 'Enable GPIO Output for PD18, PD19 and PD20
@@ -520,8 +536,21 @@ Run it in a loop like so...
 70 poke &h1C2087C, &h1C0000
 80 sleep 5
 90 goto 40
+```
+
+And run the BASIC Program by entering...
+
+```bash
 run
 ```
+
+PinePhone's LEDs will blink on and off every 5 seconds, exactly like the animated pic above.
+
+Thus we have a simple, scripted way to manipulate PinePhone's Hardware Registers on the fly!
+
+# Linux Device Tree
+
+TODO
 
 # What's Next
 
