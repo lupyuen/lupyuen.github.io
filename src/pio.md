@@ -112,7 +112,7 @@ All managed by A64's __Port Controller__.
 
 _Whoa that's a lot of GPIOs to manage!_
 
-That's A64's Port Controller divides the 103 GPIOs into __7 Ports__ for easier management.
+That's why the A64 Port Controller divides the 103 GPIOs into __7 Ports__ for easier management.
 
 The 7 Ports are named as __Port B__ to __Port H__. (Pic above)
 
@@ -150,9 +150,9 @@ Then comes a bunch of registers that will configure the GPIOs and set their valu
 
 Since we're writing to __PD18, 19 and 20__ for the PinePhone LEDs, we shall explore...
 
--   __PD_CFG2__: To configure GPIOs 18, 19 and 20
+-   __PD_CFG2__: To configure PD18, 19 and 20
 
--   __PD_DAT__: To write GPIOs 18, 19 and 20
+-   __PD_DAT__: To write PD18, 19 and 20
 
 But why __PD_CFG2__ instead of PD_CFG0, 1 or 3? Find out next...
 
