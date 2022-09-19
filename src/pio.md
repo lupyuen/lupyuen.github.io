@@ -558,6 +558,85 @@ For safety, future versions of NuttX RTOS for PinePhone may disable direct acces
 
 # Linux Device Tree
 
+_Is there another way to discover the PinePhone Hardware... Without browsing the PinePhone Schematic?_
+
+Yep the __Linux Device Tree__ describes everything about PinePhone Hardware in Text Format...
+
+-   [__"PinePhone Device Tree"__](https://lupyuen.github.io/articles/pio#appendix-pinephone-device-tree)
+
+To access the PinePhone Hardware, the __Linux Kernel__ refers to the Linux Device Tree. (Similar to the Windows Registry)
+
+So the Linux Device Tree will reveal all kinds of goodies about the PinePhone Hardware.
+
+Here's the part that describes PinePhone's __Blue LED__... 
+
+```text
+leds {
+  compatible = "gpio-leds";
+
+  blue {
+    function = "indicator";
+    color = <0x03>;
+    gpios = <0x2b 0x03 0x14 0x00>;
+    retain-state-suspended;
+  };
+```
+
+[(Source)](https://lupyuen.github.io/articles/pio#led)
+
+We interpret __`gpios`__ as...
+
+-   __`0x2b`__: GPIO (I think?)
+
+-   __`0x03`__: GPIO Port 3 (PD)
+
+-   __`0x14`__: GPIO Pin 20 (PD20)
+
+-   __`0x00`__: Unusued (I think?)
+
+Which looks correct, since the Blue LED is connected to GPIO PD20.
+
+The __Green and Red LEDs__ (PD18 and 19) look similar...
+
+```text
+  green {
+    function = "indicator";
+    color = <0x02>;
+    gpios = <0x2b 0x03 0x12 0x00>;
+    retain-state-suspended;
+  };
+
+  red {
+    function = "indicator";
+    color = <0x01>;
+    gpios = <0x2b 0x03 0x13 0x00>;
+    retain-state-suspended;
+  };
+```
+
+[(Source)](https://lupyuen.github.io/articles/pio#led)
+
+__PinePhone's Backlight__ looks more complicated, since it combines GPIO and [__Pulse-Width Modulation (PWM)__](https://en.wikipedia.org/wiki/Pulse-width_modulation)...
+
+```text
+backlight {
+  compatible = "pwm-backlight";
+  pwms = <0x62 0x00 0xc350 0x01>;
+  enable-gpios = <0x2b 0x07 0x0a 0x00>;
+  power-supply = <0x48>;
+  brightness-levels = <0x1388 0x1480 0x1582 0x16e2 0x18c9 0x1b4b 0x1e7d 0x2277 0x274e 0x2d17 0x33e7 0x3bd5 0x44f6 0x4f5f 0x5b28 0x6864 0x7729 0x878e 0x99a7 0xad8b 0xc350>;
+  num-interpolated-steps = <0x32>;
+  default-brightness-level = <0x1f4>;
+  phandle = <0x56>;
+};
+```
+
+[(Source)](https://lupyuen.github.io/articles/pio#backlight-pwm)
+
+This says that Backlight PWM is PL10 and Backlight GPIO is PH10. (With multiple levels of Backlight Brightness)
+
+_Why is the Linux Device Tree helpful?_
+
 TODO
 
 # What's Next
