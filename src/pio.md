@@ -46,7 +46,7 @@ Let's dive into our __NuttX Porting Journal__ and find out how we blinked the Pi
 
 # PinePhone Schematic
 
-Let's flip to Page 11 of the __PinePhone Schematic__ to understand how the PinePhone LEDs are connected...
+Let's turn to Page 11 of the __PinePhone Schematic__ to understand how the PinePhone LEDs are connected...
 
 -   [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)  
 
@@ -421,7 +421,7 @@ _Is there a simpler, interactive way to experiment with PinePhone LEDs?_
 
 The [__BASIC Interpreter__](https://en.wikipedia.org/wiki/BASIC) will let us flip the GPIOs (and LEDs) on the fly!
 
-To start the BASIC Interpreter in the NuttX Shell, enter __"`bas`"__...
+To start the BASIC Interpreter in NuttX Shell, enter __"`bas`"__...
 
 ```text
 nsh> bas
@@ -430,52 +430,58 @@ Copyright 1999-2014 Michael Haardt.
 > 
 ```
 
-
-TODO
-
-In the previous section we lit up PinePhone's Red, Green and Blue LEDs. Below are the values we wrote to the Allwinner A64 Port Controller...
+Earlier we saw these values for the Registers __PD_CFG2__ (configure GPIO Output) and __PD_DATA__ (write GPIO Output) when lit up the PinePhone LEDs...
 
 ```text
 pd_cfg2_reg=0x77711177
 pd_data_reg=0x1c0000
 ```
 
-Let's do the same in BASIC! Which is great for interactive experimenting with PinePhone Hardware.
+When we merge the above with the Register Addresses, we get...
 
-This will enable GPIO Output for PD18 (Red), PD19 (Green), PD20 (Blue) in the Register `pd_cfg2_reg` (0x1C20874)...
+-   __PD_CFG2__ is at Address __`0x1C2` `0874`__
+
+    (Base Address `0x01C2` `0800` + Offset `0x74`)
+
+    We write the value __`0x7771` `1177`__ to configure PD18, 19 and 20 for GPIO Output.
+
+-   __PD_DATA__ is at Address __`0x1C2` `087C`__
+
+    (Base Address `0x01C2` `0800` + Offset `0x7C`)
+
+    We write the value __`0x1C` `0000`__ to set PD18, 19 and 20 to High.
+
+OK we are ready for BASIC!
+
+At the BASIC Prompt, enter this to __configure PD18, 19 and 20__ for GPIO Output...
 
 ```text
 poke &h1C20874, &h77711177
 ```
 
-This will light up Red, Green and Blue LEDs via the Register `pd_data_reg` (0x1C2087C)...
+Then enter this to __set PD18, 19 and 20__ to High...
 
 ```text
 poke &h1C2087C, &h1C0000
 ```
 
-And this will turn off all 3 LEDs via `pd_data_reg` (0x1C2087C)...
+Yep PinePhone's Red, Green and Blue LEDs turn on and appear as white!
+
+Finally enter this to __set PD18, 19 and 20__ to Low...
 
 ```text
 poke &h1C2087C, &h0000
 ```
 
-Install the BASIC Interpreter in NuttX...
+And watch PinePhone's LEDs switch off!
 
--   ["Enable BASIC"](https://lupyuen.github.io/articles/nuttx#enable-basic)
+TODO
 
 And enter these commands to blink the PinePhone LEDs (off and on)...
 
 [__Watch the Demo on YouTube__](https://youtu.be/OTIHMIRd1s4)
 
 ```text
-nsh> bas
-task_spawn: name=bas entry=0x4009b340 file_actions=0x400f3580 attr=0x400f3588 argv=0x400f36d0
-spawn_execattrs: Setting policy=2 priority=100 for pid=7
-bas 2.4
-Copyright 1999-2014 Michael Haardt.
-This is free software with ABSOLUTELY NO WARRANTY.
-
 > print peek(&h1C20874)
  2004316535 
 
@@ -498,7 +504,11 @@ This is free software with ABSOLUTELY NO WARRANTY.
  1835008  
 ```
 
-Or run it in a loop like so...
+# BASIC Blinks The LEDs
+
+TODO
+
+Run it in a loop like so...
 
 ```text
 10 'Enable GPIO Output for PD18, PD19 and PD20
@@ -512,6 +522,32 @@ Or run it in a loop like so...
 90 goto 40
 run
 ```
+
+# What's Next
+
+TODO: GPIO Driver
+
+TODO: MIPI DSI: I have zero idea what I'm doing... But it would be super hilarious if it works!
+
+There's plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏
+
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+
+-   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__My Current Project: "The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book)
+
+-   [__Check out my articles__](https://lupyuen.github.io)
+
+-   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[__lupyuen.github.io/src/pio.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pio.md)
+
+# Appendix: Enable Peek and Poke in BASIC
+
+TODO
 
 We patched NuttX BASIC so that it supports `peek` and `poke`: [interpreters/bas/bas_fs.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/interpreters/bas/bas_fs.c#L1862-L1889)
 
@@ -541,28 +577,6 @@ int FS_memOutput(int address, int value)
 ```
 
 Note that addresses are passed as 32-bit `int`, so some 64-bit addresses will not be accessible via `peek` and `poke`.
-
-# What's Next
-
-TODO: GPIO Driver
-
-TODO: MIPI DSI: I have zero idea what I'm doing... But it would be super hilarious if it works!
-
-There's plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏
-
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
-
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
-
--   [__My Current Project: "The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book)
-
--   [__Check out my articles__](https://lupyuen.github.io)
-
--   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[__lupyuen.github.io/src/pio.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pio.md)
 
 # Appendix: PinePhone Device Tree
 
