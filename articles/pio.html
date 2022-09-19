@@ -74,7 +74,7 @@
 <li><a href="#set-gpio">5 Set GPIO</a><ul></ul></li>
 <li><a href="#boot-nuttx-on-pinephone">6 Boot NuttX on PinePhone</a><ul></ul></li>
 <li><a href="#pinephone-backlight">7 PinePhone Backlight</a><ul></ul></li>
-<li><a href="#basic-blinks-the-leds">8 BASIC Blinks The LEDs</a><ul></ul></li>
+<li><a href="#control-leds-with-basic">8 Control LEDs With BASIC</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-pinephone-device-tree">10 Appendix: PinePhone Device Tree</a><ul>
 <li><a href="#lcd-controller-tcon0">10.1 LCD Controller (TCON0)</a><ul></ul></li>
@@ -317,6 +317,10 @@ static void test_led(void)
 <ul>
 <li><a href="https://lupyuen.github.io/articles/uboot#pinephone-boots-nuttx"><strong>“PinePhone Boots NuttX”</strong></a></li>
 </ul>
+<p>If we’re building NuttX ourselves, check that the <strong>BASIC Interpreter</strong> has been enabled in the NuttX Build…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/nuttx#enable-basic"><strong>“Enable BASIC”</strong></a></li>
+</ul>
 <p>Connect PinePhone to our computer with a <strong>USB Serial Debug Cable</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/uboot#boot-log"><strong>“Boot Log”</strong></a></li>
@@ -405,7 +409,14 @@ ph_data_reg=0x400</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#backlight-and-leds">(See the Complete Log)</a></p>
 <p><a href="https://youtu.be/MJDxCcKAv0g">(Watch the Demo on YouTube)</a></p>
 <p>And PinePhone’s Backlight lights up!</p>
-<h1 id="basic-blinks-the-leds"><a href="#basic-blinks-the-leds">8 BASIC Blinks The LEDs</a></h1>
+<h1 id="control-leds-with-basic"><a href="#control-leds-with-basic">8 Control LEDs With BASIC</a></h1>
+<p><em>Is there a simpler, interactive way to experiment with PinePhone LEDs?</em></p>
+<p>The <a href="https://en.wikipedia.org/wiki/BASIC"><strong>BASIC Interpreter</strong></a> will let us flip the GPIOs (and LEDs) on the fly!</p>
+<p>To start the BASIC Interpreter, enter <strong>“<code>bas</code>”</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; bas
+bas 2.4
+Copyright 1999-2014 Michael Haardt.
+&gt; </code></pre></div>
 <p>TODO</p>
 <p>In the previous section we lit up PinePhone’s Red, Green and Blue LEDs. Below are the values we wrote to the Allwinner A64 Port Controller…</p>
 <div class="example-wrap"><pre class="language-text"><code>pd_cfg2_reg=0x77711177
