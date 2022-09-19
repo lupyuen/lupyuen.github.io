@@ -494,7 +494,8 @@ pd_data_reg=0x1c0000</code></pre></div>
 <p>Thus we have a simple, scripted way to manipulate PinePhone’s Hardware Registers on the fly!</p>
 <p><em>Is it really OK to <code>poke</code> around PinePhone?</em></p>
 <p>Since we have <strong>full direct access</strong> to the PinePhone Hardware, make sure we’re <strong><code>poke</code></strong>-ing the right addresses on PinePhone!</p>
-<p>For safety, future versions of NuttX RTOS for PinePhone may disable direct access to PinePhone Hardware, by enabling the Arm64 Memory Management Unit.</p>
+<p>For safety, future versions of NuttX RTOS for PinePhone may disable direct access to the Hardware Registers. (By enabling the Arm64 Memory Management Unit)</p>
+<p>When that happens, we shall access the PinePhone GPIOs through the protected <a href="https://lupyuen.github.io/articles/nuttx#gpio-driver"><strong>GPIO Driver</strong></a> in the NuttX Kernel.</p>
 <p><a href="https://lupyuen.github.io/articles/pio#appendix-enable-peek-and-poke-in-basic">(How we enabled <strong><code>peek</code></strong> and <strong><code>poke</code></strong> for the BASIC Interpreter)</a></p>
 <h1 id="linux-device-tree"><a href="#linux-device-tree">10 Linux Device Tree</a></h1>
 <p><em>Is there another way to discover the PinePhone Hardware… Without browsing the PinePhone Schematic?</em></p>
