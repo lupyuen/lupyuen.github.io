@@ -205,7 +205,7 @@ static void test_led(void)
     | (0b001 << 8);                 // Set the bits for Output
 ```
 
-Then we configure __PD19 and 20 for GPIO Output__: [examples/hello/hello_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L124-L179)
+Then we configure __PD19 and 20 for GPIO Output__: [hello_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L124-L179)
 
 ```c
   // Bits 14 to 12: PD19_SELECT (Default 0x7)
@@ -228,9 +228,9 @@ Then we configure __PD19 and 20 for GPIO Output__: [examples/hello/hello_main.c]
   printf("pd_cfg2_reg=0x%x\n", *pd_cfg2_reg);
 ```
 
-GPIOs PD18, 19 and 20 have been configured for GPIO Output!
+PD18, 19 and 20 have been configured for GPIO Output!
 
-Let's set the GPIO Output...
+Now we set the GPIO Output...
 
 ![Allwinner A64 User Manual (Page 388)](https://lupyuen.github.io/images/pio-register4.png)
 
@@ -240,7 +240,7 @@ Let's set the GPIO Output...
 
 TODO
 
-This is how we configure __PD18 for GPIO Output__: [examples/hello/hello_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L124-L179)
+[hello_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L124-L179)
 
 ```c
 // PIO Base Address for PinePhone Allwinner A64 Port Controller (GPIO)
@@ -249,43 +249,8 @@ This is how we configure __PD18 for GPIO Output__: [examples/hello/hello_main.c]
 // Turn on the PinePhone Red, Green and Blue LEDs
 static void test_led(void)
 {
-  // From PinePhone Schematic: https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf
-  // - Red LED:   GPIO PD18 (PD18-LED-R)
-  // - Green LED: GPIO PD19 (PD19-LED-G)
-  // - Blue LED:  GPIO PD20 (PD20-LED-B)
-
-  // Write to PD Configure Register 2 (PD_CFG2_REG)
-  // Offset: 0x74
-  uint32_t *pd_cfg2_reg = (uint32_t *)
-    (PIO_BASE_ADDRESS + 0x74);
-
-  // Bits 10 to 8: PD18_SELECT (Default 0x7)
-  // 000: Input    001: Output
-  // 010: LCD_CLK  011: LVDS_VPC
-  // 100: RGMII_TXD0/MII_TXD0/RMII_TXD0 101: Reserved
-  // 110: Reserved 111: IO Disable
-  *pd_cfg2_reg = 
-    (*pd_cfg2_reg & ~(0b111 << 8))  // Clear the bits
-    | (0b001 << 8);                 // Set the bits for Output
-
-  // Bits 14 to 12: PD19_SELECT (Default 0x7)
-  // 000: Input    001: Output
-  // 010: LCD_DE   011: LVDS_VNC
-  // 100: RGMII_TXCK/MII_TXCK/RMII_TXCK 101: Reserved
-  // 110: Reserved 111: IO Disable
-  *pd_cfg2_reg = 
-    (*pd_cfg2_reg & ~(0b111 << 12))  // Clear the bits
-    | (0b001 << 12);                 // Set the bits for Output
-
-  // Bits 18 to 16: PD20_SELECT (Default 0x7)
-  // 000: Input     001: Output
-  // 010: LCD_HSYNC 011: LVDS_VP3
-  // 100: RGMII_TXCTL/MII_TXEN/RMII_TXEN 101: Reserved
-  // 110: Reserved  111: IO Disable
-  *pd_cfg2_reg = 
-    (*pd_cfg2_reg & ~(0b111 << 16))  // Clear the bits
-    | (0b001 << 16);                 // Set the bits for Output
-  printf("pd_cfg2_reg=0x%x\n", *pd_cfg2_reg);
+  // Omitted: Configure PD18, 19, 20 for GPIO Output
+  ...
 
   // Write to PD Data Register (PD_DATA_REG)
   // Offset: 0x7C
