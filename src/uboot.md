@@ -596,11 +596,17 @@ Earlier we said that we'll overwrite __`Image.gz` on Jumpdrive microSD__ to boot
 
 Let's do it!
 
-1.  Follow these steps to __build NuttX__...
+1.  Prepare a microSD Card with __PinePhone Jumpdrive__...
+
+    [__"PinePhone Jumpdrive"__](https://lupyuen.github.io/articles/uboot#pinephone-jumpdrive)
+
+1.  Follow these steps to __build Apache NuttX RTOS__...
 
     [__"Build NuttX for PinePhone"__](https://lupyuen.github.io/articles/uboot#appendix-build-nuttx-for-pinephone)
 
-    [(Or download __`nuttx.bin`__ from here)](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/nuttx.bin)
+    Or __download `nuttx.bin`__ from here...
+
+    [__NuttX Binary Image for PinePhone: `nuttx.bin`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/nuttx.bin)
 
 1.  Compress the __NuttX Binary Image__...
 
@@ -611,7 +617,9 @@ Let's do it!
     gzip Image
     ```
 
-    [(Or download __`Image.gz`__ from here)](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/Image.gz)
+    Or __download `Image.gz`__ from here...
+
+    [__Compressed NuttX Binary Image: `Image.gz`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/Image.gz)
 
 1.  Overwrite __`Image.gz`__ on __Jumpdrive microSD__...
 
@@ -621,9 +629,13 @@ Let's do it!
     cp Image.gz "/Volumes/NO NAME"
     ```
 
+1.  Connect PinePhone to our computer with a __USB Serial Debug Cable__...
+
+    [__"Boot Log"__](https://lupyuen.github.io/articles/uboot#boot-log)
+
 1.  Insert __Jumpdrive microSD__ into PinePhone and power up
 
-On our computer's Serial Terminal, we see __U-Boot Bootloader__ loading our OS into RAM...
+On our computer's [__Serial Terminal__](https://lupyuen.github.io/articles/uboot#boot-log), we see PinePhone's __U-Boot Bootloader__ loading NuttX RTOS into RAM...
 
 ```text
 U-Boot 2020.07 (Nov 08 2020 - 00:15:12 +0100)

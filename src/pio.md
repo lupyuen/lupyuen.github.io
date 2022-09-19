@@ -130,7 +130,7 @@ How will we configure Port D? Let's study the registers...
 
 # Port Controller Registers
 
-Page 376 of the [___Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) says that the Port Controller's __Base Address__ is __`0x01C2` `0800`__ (pic above)
+Page 376 of the [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) says that the Port Controller's __Base Address__ is __`0x01C2` `0800`__ (pic above)
 
 Which we define like so...
 
@@ -164,7 +164,7 @@ But why __PD_CFG2__ instead of PD_CFG0, 1 or 3? Find out next...
 
 Remember our mission for today is to configure GPIOs __PD18, 19 and 20__.
 
-Page 387 of the [___Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) says that all we need is __PD_CFG2__ at Offset __`0x74`__. (Pic above)
+Page 387 of the [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) says that all we need is __PD_CFG2__ at Offset __`0x74`__. (Pic above)
 
 __PD_CFG2__ is a 32-bit Hardware Register. The bits that we need to twiddle are...
 
@@ -240,7 +240,7 @@ Now we set the GPIO Output...
 
 Our final job for today: __Set the GPIO Output__ for PD18, 19 and 20. So that we can blink the PinePhone LEDs!
 
-Page 388 of the [___Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) says that we need to tweak Register __PD_DATA__ at Offset __`0x7C`__. (Pic above)
+Page 388 of the [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) says that we need to tweak Register __PD_DATA__ at Offset __`0x7C`__. (Pic above)
 
 To set PD18, 19 and 20 to High, we set __Bits 18, 19 and 20__ of PD_DATA to 1.
 
@@ -284,18 +284,43 @@ Let's test it on PinePhone...
 
 # Boot NuttX on PinePhone
 
-TODO
+Now we shall boot [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) on PinePhone, and watch our C program light up the LEDs!
 
-The Red, Green and Blue LEDs turn on (appearing as white) and the output shows...
+_Will it mess up our PinePhone?_
+
+No worries, we shall boot NuttX safely with a __microSD Card__, we won't touch the Linux Distro on PinePhone.
+
+Follow these steps to __download NuttX__ and copy to a microSD Card...
+
+-   [__"PinePhone Boots NuttX"__](https://lupyuen.github.io/articles/uboot#pinephone-boots-nuttx)
+
+Connect PinePhone to our computer with a __USB Serial Debug Cable__...
+
+-   [__"Boot Log"__](https://lupyuen.github.io/articles/uboot#boot-log)
+
+Insert the microSD into PinePhone and power it on.
+
+On our computer's [__Serial Terminal__](https://lupyuen.github.io/articles/uboot#boot-log), we should see...
 
 ```text
-pd_cfg2_reg=0x77711177
-pd_data_reg=0x1c0000
+Starting kernel ...
+HELLO NUTTX ON PINEPHONE!
+- Ready to Boot CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+...
+Shell (NSH) NuttX-10.3.0-RC2
+nsh> 
 ```
 
-[__Watch the Demo on YouTube__](https://youtu.be/MJDxCcKAv0g)
+Enter this command to run our [hello_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c) Test Program...
 
-Here's the log for [examples/hello/hello_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c)...
+```bash
+hello
+```
+
+We should see ...
 
 ```text
 nsh> hello
@@ -305,6 +330,12 @@ pd_data_reg=0x1c0000
 ```
 
 [(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx#backlight-and-leds)
+
+[(Watch the Demo on YouTube)](https://youtu.be/MJDxCcKAv0g)
+
+PinePhone's Red, Green and Blue LEDs turn on and appear as white.
+
+Yep we have successfully lit up the LEDs on PinePhone!
 
 # Backlight and LEDs
 
