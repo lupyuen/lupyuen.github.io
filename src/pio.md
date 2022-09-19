@@ -649,6 +649,16 @@ TODO: MIPI DSI: I have zero idea what I'm doing... But it would be super hilario
 
 There's plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏
 
+Check out the other articles on __NuttX RTOS for PinePhone__...
+
+-   [__"Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone"__](https://lupyuen.github.io/articles/arm)
+
+-   [__"PinePhone boots Apache NuttX RTOS"__](https://lupyuen.github.io/articles/uboot)
+
+-   [__"NuttX RTOS for PinePhone: Fixing the Interrupts"__](https://lupyuen.github.io/articles/interrupt)
+
+-   [__"NuttX RTOS for PinePhone: UART Driver"__](https://lupyuen.github.io/articles/serial)
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
