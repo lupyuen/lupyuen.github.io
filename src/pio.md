@@ -548,6 +548,14 @@ PinePhone's LEDs will blink on and off every 5 seconds, exactly like the animate
 
 Thus we have a simple, scripted way to manipulate PinePhone's Hardware Registers on the fly!
 
+_Is it really OK to `poke` around PinePhone?_
+
+Since we have __full direct access__ to the PinePhone Hardware, make sure we're __`poke`__-ing the right addresses on PinePhone!
+
+For safety, future versions of NuttX RTOS for PinePhone may disable direct access to PinePhone Hardware, by enabling the Arm64 Memory Management Unit.
+
+[(How we enabled __`peek`__ and __`poke`__ for the BASIC Interpreter)](https://lupyuen.github.io/articles/pio#appendix-enable-peek-and-poke-in-basic)
+
 # Linux Device Tree
 
 TODO
