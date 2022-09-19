@@ -294,6 +294,10 @@ Follow these steps to __download NuttX__ and copy to a microSD Card...
 
 -   [__"PinePhone Boots NuttX"__](https://lupyuen.github.io/articles/uboot#pinephone-boots-nuttx)
 
+If we're building NuttX ourselves, check that the __BASIC Interpreter__ has been enabled in the NuttX Build...
+
+-   [__"Enable BASIC"__](https://lupyuen.github.io/articles/nuttx#enable-basic)
+
 Connect PinePhone to our computer with a __USB Serial Debug Cable__...
 
 -   [__"Boot Log"__](https://lupyuen.github.io/articles/uboot#boot-log)
@@ -411,7 +415,21 @@ ph_data_reg=0x400
 
 And PinePhone's Backlight lights up!
 
-# BASIC Blinks The LEDs
+# Control LEDs With BASIC
+
+_Is there a simpler, interactive way to experiment with PinePhone LEDs?_
+
+The [__BASIC Interpreter__](https://en.wikipedia.org/wiki/BASIC) will let us flip the GPIOs (and LEDs) on the fly!
+
+To start the BASIC Interpreter, enter __"`bas`"__...
+
+```text
+nsh> bas
+bas 2.4
+Copyright 1999-2014 Michael Haardt.
+> 
+```
+
 
 TODO
 
