@@ -334,7 +334,7 @@ Shell (NSH) NuttX-10.3.0-RC2
 nsh&gt; </code></pre></div>
 <p>Enter this command to run our <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c">hello_main.c</a> Test Program…</p>
 <div class="example-wrap"><pre class="language-bash"><code>hello</code></pre></div>
-<p>We should see …</p>
+<p>We see the values of the Registers PD_CFG2 and PD_DATA…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello
 ...
 pd_cfg2_reg=0x77711177
@@ -397,7 +397,7 @@ static void test_backlight(void)
   *ph_data_reg |= (1 &lt;&lt; 10);  // Set Bit 10 for PH10
   printf(&quot;ph_data_reg=0x%x\n&quot;, *ph_data_reg);
 }</code></pre></div>
-<p>When we run the Test Program, we see…</p>
+<p>When we run the Test Program, we see the values of the Registers PH_CFG1 and PH_DATA…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello
 ...
 ph_cfg1_reg=0x7177
