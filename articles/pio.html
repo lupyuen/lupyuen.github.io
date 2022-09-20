@@ -689,7 +689,7 @@ int FS_memOutput(int address, int value)
 <ul>
 <li>
 <p><strong>TCON0</strong>: For PinePhone’s LCD Display</p>
-<p>(<a href="https://lupyuen.github.io/articles/pio#mipi-dsi-interface"><strong>MIPI DSI</strong></a> with <a href="https://en.wikipedia.org/wiki/Low-voltage_differential_signaling"><strong>LVDS</strong></a>)</p>
+<p>(<a href="https://lupyuen.github.io/articles/pio#mipi-dsi-interface"><strong>MIPI DSI</strong></a> with <a href="https://lupyuen.github.io/articles/pio#display-phy"><strong>MIPI D-PHY</strong></a> and <a href="https://en.wikipedia.org/wiki/Low-voltage_differential_signaling"><strong>LVDS</strong></a>)</p>
 </li>
 <li>
 <p><strong>TCON1</strong>: For HDMI Output</p>
@@ -737,9 +737,12 @@ int FS_memOutput(int address, int value)
   };
 };</code></pre></div>
 <p>Which looks useful for creating our TCON0 Driver for NuttX RTOS.</p>
-<p>More info on PinePhone Display…</p>
+<p>More about on PinePhone Display…</p>
 <ul>
-<li><a href="https://genode.org/documentation/genode-platforms-22-05.pdf"><strong>“Genode Operating System Framework 22.05”</strong></a>, pages 171 to 197.</li>
+<li>
+<p><a href="https://genode.org/documentation/genode-platforms-22-05.pdf"><strong>“Genode Operating System Framework 22.05”</strong></a></p>
+<p>(Pages 171 to 197)</p>
+</li>
 </ul>
 <p>High-level doc on Linux Driver for TCON0…</p>
 <ul>
