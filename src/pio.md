@@ -795,7 +795,7 @@ We shall only concern ourselves with __TCON0__. (Not TCON1)
 
 (More about TCON in [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf), Section 6.2: "TCON", Page 500)
 
-PinePhone's Linux Device Tree says this about TCON0: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L446-L492)
+PinePhone's Linux Device Tree says this about the __TCON0 Timing Controller__ at Address __`0x1C0` `C000`__: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L446-L492)
 
 ```text
 lcd-controller@1c0c000 {
@@ -873,7 +873,6 @@ dsi@1ca0000 {
   vcc-dsi-supply = <0x45>;
 
   port {
-
     endpoint {
       remote-endpoint = <0x54>;
       phandle = <0x24>;
