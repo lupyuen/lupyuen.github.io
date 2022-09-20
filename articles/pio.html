@@ -688,7 +688,8 @@ int FS_memOutput(int address, int value)
 <p>According to <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> (Chapter 6: “Display”, Page 498), A64 has two TCON Controllers…</p>
 <ul>
 <li>
-<p><strong>TCON0</strong>: For PinePhone’s LCD Display (LVDS on MIPI DSI)</p>
+<p><strong>TCON0</strong>: For PinePhone’s LCD Display</p>
+<p>(<a href="https://lupyuen.github.io/articles/pio#mipi-dsi-interface"><strong>MIPI DSI</strong></a> with <a href="https://en.wikipedia.org/wiki/Low-voltage_differential_signaling"><strong>LVDS</strong></a>)</p>
 </li>
 <li>
 <p><strong>TCON1</strong>: For HDMI Output</p>
@@ -746,6 +747,9 @@ int FS_memOutput(int address, int value)
 </ul>
 <h2 id="mipi-dsi-interface"><a href="#mipi-dsi-interface">13.2 MIPI DSI Interface</a></h2>
 <p>TODO</p>
+<p><a href="https://en.wikipedia.org/wiki/Display_Serial_Interface"><strong>Display Serial Interface (DSI)</strong></a></p>
+<p><a href="https://en.wikipedia.org/wiki/MIPI_Alliance"><strong>Mobile Industry Processor Interface (MIPI) Alliance</strong></a></p>
+<p><a href="https://en.wikipedia.org/wiki/Low-voltage_differential_signaling"><strong>Low-voltage differential signaling (LVDS)</strong></a></p>
 <div class="example-wrap"><pre class="language-text"><code>dsi@1ca0000 {
   compatible = &quot;allwinner,sun50i-a64-mipi-dsi&quot;;
   reg = &lt;0x1ca0000 0x1000&gt;;
