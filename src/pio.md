@@ -896,6 +896,10 @@ dsi@1ca0000 {
 
 TODO
 
+D-PHY is a popular MIPI physical layer standard for Camera Serial Interface (CSI-2) and Display Serial Interface (DSI) protocols
+
+[__MIPI D-PHY__](https://www.intel.com/content/www/us/en/docs/programmable/683092/current/introduction-to-mipi-d-phy.html)
+
 ```text
 d-phy@1ca1000 {
   compatible = "allwinner,sun50i-a64-mipi-dphy\0allwinner,sun6i-a31-mipi-dphy";
