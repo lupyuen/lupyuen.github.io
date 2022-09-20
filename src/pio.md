@@ -740,23 +740,31 @@ Note that Memory Addresses are passed as 32-bit __`int`__, so some 64-bit addres
 
 # Appendix: PinePhone Device Tree
 
-TODO
+The __Linux Device Tree__ describes everything about PinePhone Hardware in Text Format.
 
-Let's figure out how Allwinner A64's Display Timing Controller (TCON0) talks to PinePhone's MIPI DSI Display. (So we can build NuttX Drivers)
+To access the PinePhone Hardware, the __Linux Kernel__ refers to the Linux Device Tree. (Similar to the Windows Registry)
 
-More info on PinePhone Display...
+So the Linux Device Tree will reveal all kinds of goodies about the PinePhone Hardware.
 
--   ["Genode Operating System Framework 22.05"](https://genode.org/documentation/genode-platforms-22-05.pdf), pages 171 to 197.
+Earlier we saw snippets of the Device Tree for PinePhone's LEDs and Backlight...
 
-We tried tweaking the TCON0 Controller but the display is still blank (maybe backlight is off?)
+-   [__"Linux Device Tree"__](https://lupyuen.github.io/articles/pio#linux-device-tree)
 
--   [examples/hello/hello_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L75-L234)
+Now we shall see the parts of the Device Tree relevant to PinePhone's __LCD Display__ and __Touch Panel__.
 
-Below is the Device Tree for PinePhone's Linux Kernel...
+_Why are we doing this?_
 
--   [PinePhone Device Tree: sun50i-a64-pinephone-1.2.dts](sun50i-a64-pinephone-1.2.dts)
+We're now __creating NuttX Drivers__ for PinePhone's LCD Display and Touch Panel.
 
-We converted the Device Tree with this command...
+When we snoop around the Linux Device Tree, we might discover some helpful info for creating the drivers.
+
+_How did we get the Linux Device Tree for PinePhone?_
+
+Below is the Device Tree (in Text Format) for PinePhone's Linux Kernel...
+
+-   [__PinePhone Device Tree: sun50i-a64-pinephone-1.2.dts__](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts)
+
+We converted the Device Tree to Text Format with this command...
 
 ```
 ## Convert Device Tree to text format
@@ -767,21 +775,25 @@ dtc \
   sun50i-a64-pinephone-1.2.dtb
 ```
 
-`sun50i-a64-pinephone-1.2.dtb` came from the [Jumpdrive microSD](https://lupyuen.github.io/articles/uboot#pinephone-jumpdrive).
+__sun50i-a64-pinephone-1.2.dtb__ came from the [__Jumpdrive microSD__](https://lupyuen.github.io/articles/uboot#pinephone-jumpdrive).
 
-High-level doc of Linux Drivers...
-
--   [devicetree/bindings/display/sunxi/sun4i-drm.txt](https://www.kernel.org/doc/Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt)
-
-PinePhone Schematic shows the connections for Display, Touch Panel and Backlight...
-
--   [PinePhone v1.2b Released Schematic](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
-
-Here are the interesting bits from the PinePhone Linux Device Tree: [sun50i-a64-pinephone-1.2.dts](sun50i-a64-pinephone-1.2.dts)
+Here comes the interesting bits from the PinePhone Linux Device Tree: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts)
 
 ## LCD Controller (TCON0)
 
-TODO
+Inside the Allwinner A64 SoC, TCON0 is the [__Timing Controller__](https://www.kernel.org/doc/Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt) for PinePhone's LCD Display.
+
+According to [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) (Chapter 6: "Display", Page 498), A64 has two TCON Controllers...
+
+-   __TCON0__: For PinePhone's LCD Display (LVDS on MIPI DSI)
+
+-   __TCON1__: For HDMI Output
+
+We shall only concern ourselves with __TCON0__. (Not TCON1)
+
+(More about TCON in [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf), Section 6.2: "TCON", Page 500)
+
+PinePhone's Linux Device Tree says this about TCON0: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L446-L492)
 
 ```text
 lcd-controller@1c0c000 {
@@ -824,7 +836,15 @@ lcd-controller@1c0c000 {
 };
 ```
 
-[(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L446-L492)
+Which looks useful for creating our TCON0 Driver for NuttX RTOS.
+
+More info on PinePhone Display...
+
+-   [__"Genode Operating System Framework 22.05"__](https://genode.org/documentation/genode-platforms-22-05.pdf), pages 171 to 197.
+
+High-level doc on Linux Driver for TCON0...
+
+-   [__sun4i-drm.txt__](https://www.kernel.org/doc/Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt)
 
 ## MIPI DSI Interface
 
@@ -884,72 +904,6 @@ d-phy@1ca1000 {
 
 [(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1358-L1367)
 
-## Backlight PWM
-
-TODO
-
-```text
-backlight {
-  compatible = "pwm-backlight";
-  pwms = <0x62 0x00 0xc350 0x01>;
-  enable-gpios = <0x2b 0x07 0x0a 0x00>;
-  power-supply = <0x48>;
-  brightness-levels = <0x1388 0x1480 0x1582 0x16e2 0x18c9 0x1b4b 0x1e7d 0x2277 0x274e 0x2d17 0x33e7 0x3bd5 0x44f6 0x4f5f 0x5b28 0x6864 0x7729 0x878e 0x99a7 0xad8b 0xc350>;
-  num-interpolated-steps = <0x32>;
-  default-brightness-level = <0x1f4>;
-  phandle = <0x56>;
-};
-```
-
-[(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1832-L1841)
-
-From [PinePhone Schematic](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)...
-
--   Backlight Enable: GPIO PH10 (PH10-LCD-BL-EN)
-
--   Backlight PWM: PWM PL10 (PL10-LCD-PWM)
-
-## LED
-
-TODO
-
-```text
-leds {
-  compatible = "gpio-leds";
-
-  blue {
-    function = "indicator";
-    color = <0x03>;
-    gpios = <0x2b 0x03 0x14 0x00>;
-    retain-state-suspended;
-  };
-
-  green {
-    function = "indicator";
-    color = <0x02>;
-    gpios = <0x2b 0x03 0x12 0x00>;
-    retain-state-suspended;
-  };
-
-  red {
-    function = "indicator";
-    color = <0x01>;
-    gpios = <0x2b 0x03 0x13 0x00>;
-    retain-state-suspended;
-  };
-};
-```
-
-[(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1940-L1963)
-
-From [PinePhone Schematic](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)...
-
--   Red LED: GPIO PD18 (PD18-LED-R)
-
--   Green LED: GPIO PD19 (PD19-LED-G)
-
--   Blue LED: GPIO PD20 (PD20-LED-B)
-
 ## Framebuffer
 
 TODO
@@ -968,6 +922,9 @@ framebuffer-lcd {
 ## Display Engine
 
 TODO
+
+"6.1: DE2.0"
+Page 499
 
 ```text
 display-engine {
@@ -1057,4 +1014,70 @@ deinterlace@1e00000 {
 
 [(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1369-L1378)
 
-![TODO](https://lupyuen.github.io/images/pio-title.jpg)
+## LED
+
+TODO
+
+```text
+leds {
+  compatible = "gpio-leds";
+
+  blue {
+    function = "indicator";
+    color = <0x03>;
+    gpios = <0x2b 0x03 0x14 0x00>;
+    retain-state-suspended;
+  };
+
+  green {
+    function = "indicator";
+    color = <0x02>;
+    gpios = <0x2b 0x03 0x12 0x00>;
+    retain-state-suspended;
+  };
+
+  red {
+    function = "indicator";
+    color = <0x01>;
+    gpios = <0x2b 0x03 0x13 0x00>;
+    retain-state-suspended;
+  };
+};
+```
+
+[(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1940-L1963)
+
+From [PinePhone Schematic](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)...
+
+-   Red LED: GPIO PD18 (PD18-LED-R)
+
+-   Green LED: GPIO PD19 (PD19-LED-G)
+
+-   Blue LED: GPIO PD20 (PD20-LED-B)
+
+## Backlight PWM
+
+TODO
+
+```text
+backlight {
+  compatible = "pwm-backlight";
+  pwms = <0x62 0x00 0xc350 0x01>;
+  enable-gpios = <0x2b 0x07 0x0a 0x00>;
+  power-supply = <0x48>;
+  brightness-levels = <0x1388 0x1480 0x1582 0x16e2 0x18c9 0x1b4b 0x1e7d 0x2277 0x274e 0x2d17 0x33e7 0x3bd5 0x44f6 0x4f5f 0x5b28 0x6864 0x7729 0x878e 0x99a7 0xad8b 0xc350>;
+  num-interpolated-steps = <0x32>;
+  default-brightness-level = <0x1f4>;
+  phandle = <0x56>;
+};
+```
+
+[(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1832-L1841)
+
+From [PinePhone Schematic](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)...
+
+-   Backlight Enable: GPIO PH10 (PH10-LCD-BL-EN)
+
+-   Backlight PWM: PWM PL10 (PL10-LCD-PWM)
+
+![Blinking the PinePhone LEDs with BASIC... On Apache NuttX RTOS](https://lupyuen.github.io/images/pio-title.jpg)
