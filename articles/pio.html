@@ -619,8 +619,20 @@ pd_data_reg=0x1c0000</code></pre></div>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pio.md"><strong>lupyuen.github.io/src/pio.md</strong></a></p>
 <h1 id="appendix-enable-peek-and-poke-in-basic"><a href="#appendix-enable-peek-and-poke-in-basic">12 Appendix: Enable Peek and Poke in BASIC</a></h1>
-<p>TODO</p>
-<p>We patched NuttX BASIC so that it supports <code>peek</code> and <code>poke</code>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/interpreters/bas/bas_fs.c#L1862-L1889">interpreters/bas/bas_fs.c</a></p>
+<p>Earlier we ran the <strong>BASIC Interpreter</strong> in NuttX RTOS to experiment with the PinePhone GPIOs and LEDs…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/pio#control-leds-with-basic"><strong>“Control LEDs With BASIC”</strong></a></li>
+</ul>
+<p>Then we entered these <strong><code>peek</code></strong> and <strong><code>poke</code></strong> commands to read and write the Memory Addresses of the GPIO Hardware on PinePhone…</p>
+<div class="example-wrap"><pre class="language-text"><code>&gt; print peek(&amp;h1C20874)
+ 2004316535 
+
+&gt; poke &amp;h1C20874, &amp;h77711177
+
+&gt; print peek(&amp;h1C20874)
+ 2003898743 </code></pre></div>
+<p>For safety, the BASIC Interpreter won’t allow us to <strong><code>peek</code></strong> and <strong><code>poke</code></strong> Memory Addresses.</p>
+<p>This is how we patched the BASIC Interpreter to support <strong><code>peek</code></strong> and <strong><code>poke</code></strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/interpreters/bas/bas_fs.c#L1862-L1889">interpreters/bas/bas_fs.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>int FS_memInput(int address)
 {
   //  Return the 32-bit word at the specified address.
@@ -643,7 +655,7 @@ int FS_memOutput(int address, int value)
   //  FS_errmsg = _(&quot;Direct memory access not available&quot;);
   //  return -1;
 }</code></pre></div>
-<p>Note that addresses are passed as 32-bit <code>int</code>, so some 64-bit addresses will not be accessible via <code>peek</code> and <code>poke</code>.</p>
+<p>Note that Memory Addresses are passed as 32-bit <strong><code>int</code></strong>, so some 64-bit addresses will not be accessible via <strong><code>peek</code></strong> and <strong><code>poke</code></strong>.</p>
 <h1 id="appendix-pinephone-device-tree"><a href="#appendix-pinephone-device-tree">13 Appendix: PinePhone Device Tree</a></h1>
 <p>TODO</p>
 <p>Let’s figure out how Allwinner A64’s Display Timing Controller (TCON0) talks to PinePhone’s MIPI DSI Display. (So we can build NuttX Drivers)</p>
