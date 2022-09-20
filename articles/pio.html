@@ -697,7 +697,7 @@ int FS_memOutput(int address, int value)
 </ul>
 <p>We shall only concern ourselves with <strong>TCON0</strong>. (Not TCON1)</p>
 <p>(More about TCON in <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>, Section 6.2: “TCON”, Page 500)</p>
-<p>PinePhone’s Linux Device Tree says this about TCON0: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L446-L492">sun50i-a64-pinephone-1.2.dts</a></p>
+<p>PinePhone’s Linux Device Tree says this about the <strong>TCON0 Timing Controller</strong> at Address <strong><code>0x1C0</code> <code>C000</code></strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L446-L492">sun50i-a64-pinephone-1.2.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>lcd-controller@1c0c000 {
   compatible = &quot;allwinner,sun50i-a64-tcon-lcd\0allwinner,sun8i-a83t-tcon-lcd&quot;;
   reg = &lt;0x1c0c000 0x1000&gt;;
@@ -764,7 +764,6 @@ int FS_memOutput(int address, int value)
   vcc-dsi-supply = &lt;0x45&gt;;
 
   port {
-
     endpoint {
       remote-endpoint = &lt;0x54&gt;;
       phandle = &lt;0x24&gt;;
