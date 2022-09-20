@@ -787,7 +787,7 @@ According to [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwin
 
 -   __TCON0__: For PinePhone's LCD Display
 
-    ([__MIPI DSI__](https://lupyuen.github.io/articles/pio#mipi-dsi-interface) with [__LVDS__](https://en.wikipedia.org/wiki/Low-voltage_differential_signaling))
+    ([__MIPI DSI__](https://lupyuen.github.io/articles/pio#mipi-dsi-interface) with [__MIPI D-PHY__](https://lupyuen.github.io/articles/pio#display-phy) and [__LVDS__](https://en.wikipedia.org/wiki/Low-voltage_differential_signaling))
 
 -   __TCON1__: For HDMI Output
 
@@ -840,9 +840,11 @@ lcd-controller@1c0c000 {
 
 Which looks useful for creating our TCON0 Driver for NuttX RTOS.
 
-More info on PinePhone Display...
+More about on PinePhone Display...
 
--   [__"Genode Operating System Framework 22.05"__](https://genode.org/documentation/genode-platforms-22-05.pdf), pages 171 to 197.
+-   [__"Genode Operating System Framework 22.05"__](https://genode.org/documentation/genode-platforms-22-05.pdf)
+
+    (Pages 171 to 197)
 
 High-level doc on Linux Driver for TCON0...
 
