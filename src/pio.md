@@ -988,7 +988,7 @@ display-engine {
 
 ## Touch Panel
 
-TODO: PinePhone's __Touch Panel__ 
+PinePhone has a __Goodix GT917S Touch Panel__ that talks on I2C.
 
 Here's the definition in PinePhone's Linux Device Tree: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1125-L1136)
 
@@ -1007,9 +1007,13 @@ touchscreen@5d {
 };
 ```
 
+Searching online for _"goodix,gt917s"_ gives us this __Linux Driver for Goodix GT917S Touch Panel__...
+
+-   [goodix.c](https://github.com/torvalds/linux/blob/master/drivers/input/touchscreen/goodix.c)
+
 ## Video Codec
 
-TODO
+PinePhone's Linux Device Tree includes a __Video Codec__ for A64's Video Engine: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L539-L547)
 
 ```text
 video-codec@1c0e000 {
@@ -1022,8 +1026,6 @@ video-codec@1c0e000 {
   allwinner,sram = <0x28 0x01>;
 };
 ```
-
-[(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L539-L547)
 
 ## GPU
 
