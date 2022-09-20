@@ -637,15 +637,31 @@ backlight {
 
 This says that Backlight PWM is PL10 and Backlight GPIO is PH10. (With multiple levels of Backlight Brightness)
 
-_Why is the Linux Device Tree helpful?_
+_Is the Linux Device Tree helpful?_
 
-TODO
+We're now creating a NuttX Driver for PinePhone's __LCD Display__.
+
+When we snoop around the Linux Device Tree, we might discover some helpful info on PinePhone's Display Hardware...
+
+-   [__"LCD Controller (TCON0)"__](https://lupyuen.github.io/articles/pio#lcd-controller-tcon0)
+
+-   [__"MIPI DSI Interface"__](https://lupyuen.github.io/articles/pio#mipi-dsi-interface)
+
+-   [__"Display PHY"__](https://lupyuen.github.io/articles/pio#display-phy)
+
+-   [__"Framebuffer"__](https://lupyuen.github.io/articles/pio#framebuffer)
+
+-   [__"Display Engine"__](https://lupyuen.github.io/articles/pio#display-engine)
+
+I'm running some simple tests on the MIPI DSI Display: [hello_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L181-L378)
+
+I have zero idea what I'm doing... But it would be super hilarious if it works!
+
+Stay Tuned!
 
 # What's Next
 
 TODO: GPIO Driver
-
-TODO: MIPI DSI: I have zero idea what I'm doing... But it would be super hilarious if it works! [hello_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L181-L378)
 
 There's plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏
 
