@@ -760,7 +760,7 @@ When we snoop around the Linux Device Tree, we might discover some helpful info 
 
 _How did we get the Linux Device Tree for PinePhone?_
 
-Below is the Device Tree (in Text Format) for PinePhone's Linux Kernel...
+This is the Device Tree (in Text Format) for PinePhone's Linux Kernel...
 
 -   [__PinePhone Device Tree: sun50i-a64-pinephone-1.2.dts__](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts)
 
@@ -775,9 +775,11 @@ dtc \
   sun50i-a64-pinephone-1.2.dtb
 ```
 
-__sun50i-a64-pinephone-1.2.dtb__ came from the [__Jumpdrive microSD__](https://lupyuen.github.io/articles/uboot#pinephone-jumpdrive).
+__sun50i-a64-pinephone-1.2.dtb__ came from the [__Jumpdrive microSD__](https://lupyuen.github.io/articles/uboot#pinephone-jumpdrive)...
 
-Here comes the interesting bits from the PinePhone Linux Device Tree: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts)
+-   [__PinePhone Jumpdrive Image: pine64-pinephone.img.xz__](https://github.com/dreemurrs-embedded/Jumpdrive/releases/download/0.8/pine64-pinephone.img.xz)
+
+Below are the interesting bits from the PinePhone Linux Device Tree: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts)
 
 ## LCD Controller (TCON0)
 
@@ -893,6 +895,12 @@ dsi@1ca0000 {
 ```
 
 [(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1327-L1356)
+
+From above we see that PinePhone is connected to [__Xingbangda XBD599__](https://patchwork.kernel.org/project/dri-devel/patch/20200311163329.221840-4-icenowy@aosc.io/) 5.99" 720x1440 MIPI-DSI IPS LCD Panel, which is based on [__Sitronix ST7703 LCD Controller__](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/drm/panel/panel-sitronix-st7703.c?h=v6.0-rc6).
+
+[__xbd599_init_sequence__](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/drm/panel/panel-sitronix-st7703.c?h=v6.0-rc6#n174) describes the ST7703 Commands for initialising the Xingbangda XBD599 LCD Panel.
+
+__DSI DCS__ refers to the [__MIPI-DSI Display Command Set__](https://docs.zephyrproject.org/latest/hardware/peripherals/mipi_dsi.html).
 
 ## Display PHY
 
