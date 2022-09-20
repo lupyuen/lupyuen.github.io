@@ -847,7 +847,7 @@ int FS_memOutput(int address, int value)
   allwinner,pipelines = &lt;0x07 0x08&gt;;
   status = &quot;okay&quot;;
 };</code></pre></div><h2 id="touch-panel"><a href="#touch-panel">13.6 Touch Panel</a></h2>
-<p>TODO: PinePhone’s <strong>Touch Panel</strong> </p>
+<p>PinePhone has a <strong>Goodix GT917S Touch Panel</strong> that talks on I2C.</p>
 <p>Here’s the definition in PinePhone’s Linux Device Tree: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1125-L1136">sun50i-a64-pinephone-1.2.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>touchscreen@5d {
   compatible = &quot;goodix,gt917s&quot;;
@@ -860,8 +860,13 @@ int FS_memOutput(int address, int value)
   VDDIO-supply = &lt;0x48&gt;;
   touchscreen-size-x = &lt;0x2d0&gt;;
   touchscreen-size-y = &lt;0x5a0&gt;;
-};</code></pre></div><h2 id="video-codec"><a href="#video-codec">13.7 Video Codec</a></h2>
-<p>TODO</p>
+};</code></pre></div>
+<p>Searching online for <em>“goodix,gt917s”</em> gives us this <strong>Linux Driver for Goodix GT917S Touch Panel</strong>…</p>
+<ul>
+<li><a href="https://github.com/torvalds/linux/blob/master/drivers/input/touchscreen/goodix.c">goodix.c</a></li>
+</ul>
+<h2 id="video-codec"><a href="#video-codec">13.7 Video Codec</a></h2>
+<p>PinePhone’s Linux Device Tree includes a <strong>Video Codec</strong> for A64’s Video Engine: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L539-L547">sun50i-a64-pinephone-1.2.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>video-codec@1c0e000 {
   compatible = &quot;allwinner,sun50i-a64-video-engine&quot;;
   reg = &lt;0x1c0e000 0x1000&gt;;
@@ -870,9 +875,7 @@ int FS_memOutput(int address, int value)
   resets = &lt;0x02 0x17&gt;;
   interrupts = &lt;0x00 0x3a 0x04&gt;;
   allwinner,sram = &lt;0x28 0x01&gt;;
-};</code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L539-L547">(Source)</a></p>
-<h2 id="gpu"><a href="#gpu">13.8 GPU</a></h2>
+};</code></pre></div><h2 id="gpu"><a href="#gpu">13.8 GPU</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>gpu@1c40000 {
   compatible = &quot;allwinner,sun50i-a64-mali\0arm,mali-400&quot;;
