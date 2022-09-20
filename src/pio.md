@@ -781,17 +781,21 @@ __sun50i-a64-pinephone-1.2.dtb__ came from the [__Jumpdrive microSD__](https://l
 
 Below are the interesting bits from the PinePhone Linux Device Tree: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts)
 
+![Allwinner A64 User Manual (Page 498)](https://lupyuen.github.io/images/pio-display.png)
+
+_[Allwinner A64 User Manual (Page 498)](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)_
+
 ## LCD Controller (TCON0)
 
 Inside the Allwinner A64 SoC, TCON0 is the [__Timing Controller__](https://www.kernel.org/doc/Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt) for PinePhone's LCD Display.
 
-(Yeah the name sounds odd... A64's Timing Controller works like a huge pixel pump too)
+(Yeah the name sounds odd... A64's Timing Controller actually works like a huge pixel pump)
 
-According to [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) (Chapter 6: "Display", Page 498), A64 has two TCON Controllers...
+According to [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) (Chapter 6: "Display", Page 498), A64 has __2 TCON Controllers__ (pic above)...
 
--   __TCON0__: For PinePhone's LCD Display
+-   __TCON0__: For PinePhone's [__Xingbangda XBD599__](https://lupyuen.github.io/articles/pio#mipi-dsi-interface) LCD Display
 
-    ([__MIPI DSI__](https://lupyuen.github.io/articles/pio#mipi-dsi-interface) with [__MIPI D-PHY__](https://lupyuen.github.io/articles/pio#display-phy) and [__LVDS__](https://en.wikipedia.org/wiki/Low-voltage_differential_signaling))
+    ([__MIPI DSI__](https://lupyuen.github.io/articles/pio#mipi-dsi-interface) over [__MIPI D-PHY__](https://lupyuen.github.io/articles/pio#display-phy))
 
 -   __TCON1__: For HDMI Output
 
@@ -846,7 +850,7 @@ Searching online for _"sun8i-a83t-tcon-lcd"_ gives us the __Linux Driver for All
 
 -   [__sun4i_tcon.c__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun4i_tcon.c)
 
-Which looks useful for creating our TCON0 Driver for NuttX RTOS.
+Which looks like a help reference for creating our TCON0 Driver for NuttX RTOS.
 
 Here's the high-level doc for the Linux Driver for Allwinner A64 TCON...
 
@@ -858,11 +862,23 @@ More about PinePhone Display...
 
     (Pages 171 to 197)
 
+_How did we search online for the Linux Driver?_
+
+Head over to [__GitHub Code Search__](https://github.com/search).
+
+Enter the keyword, including quotes: _"sun8i-a83t-tcon-lcd"_
+
+Click __"Code"__. Under __"Languages"__, filter by __C Language__.
+
+We'll see a bunch of matching C Source Files. The Linux Driver we need will be located at [__github.com/torvalds/linux__](https://github.com/torvalds/linux)
+
+![Allwinner A64 User Manual (Page 500)](https://lupyuen.github.io/images/pio-tcon0.png)
+
+_[Allwinner A64 User Manual (Page 500)](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)_
+
 ## MIPI DSI Interface
 
 Allwinner A64's Timing Controller (TCON0) pumps pixels to PinePhone's LCD Display via the [__Display Serial Interface (DSI)__](https://en.wikipedia.org/wiki/Display_Serial_Interface), as defined by the [__Mobile Industry Processor Interface (MIPI) Alliance__](https://en.wikipedia.org/wiki/MIPI_Alliance).
-
-The serial interface uses [__Low-Voltage Differential Signaling (LVDS)__](https://en.wikipedia.org/wiki/Low-voltage_differential_signaling).
 
 PinePhone's Linux Device Tree reveals this about A64's __MIPI DSI Interface__ at Address __`0x1CA` `0000`__: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1327-L1356)
 
@@ -914,7 +930,7 @@ Searching online for _"sun50i-a64-mipi-dsi"_ gives us the __Linux Driver for A64
 
 -   [__sun6i_mipi_dsi.c__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c)
 
-Both Linux Drivers will be helpful for creating our NuttX Driver for A64 MIPI DSI.
+Both Linux Drivers will be a helpful reference for creating our NuttX Driver for A64 MIPI DSI.
 
 ## Display PHY
 
@@ -943,7 +959,7 @@ Searching online for _"sun6i-a31-mipi-dphy"_ uncovers the __Linux Driver for A64
 
 ## Framebuffer
 
-TODO
+PinePhone's Linux Device Tree defines a high-level __Framebuffer__ for apps to render graphics: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L16-L21)
 
 ```text
 framebuffer-lcd {
@@ -954,14 +970,13 @@ framebuffer-lcd {
 };
 ```
 
-[(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L16-L21)
+We might build a similar Framebuffer Device in NuttX for rendering graphics with the LVGL GUI Library.
 
 ## Display Engine
 
-TODO
+According to [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) (Section 6.1: "DE2.0", Page 499), A64 has a __Display Engine__ that handles the display pipeline.
 
-"6.1: DE2.0"
-Page 499
+Here's the definition in PinePhone's Linux Device Tree: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L98-L102)
 
 ```text
 display-engine {
@@ -971,11 +986,11 @@ display-engine {
 };
 ```
 
-[(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L98-L102)
-
 ## Touch Panel
 
-TODO
+TODO: PinePhone's __Touch Panel__ 
+
+Here's the definition in PinePhone's Linux Device Tree: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1125-L1136)
 
 ```text
 touchscreen@5d {
@@ -991,8 +1006,6 @@ touchscreen@5d {
   touchscreen-size-y = <0x5a0>;
 };
 ```
-
-[(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1125-L1136)
 
 ## Video Codec
 
