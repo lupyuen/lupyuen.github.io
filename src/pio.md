@@ -850,7 +850,7 @@ Searching online for _"sun8i-a83t-tcon-lcd"_ gives us the __Linux Driver for All
 
 -   [__sun4i_tcon.c__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun4i_tcon.c)
 
-Which looks like a help reference for creating our TCON0 Driver for NuttX RTOS.
+Which looks like a helpful reference for creating our TCON0 Driver for NuttX RTOS.
 
 Here's the high-level doc for the Linux Driver for Allwinner A64 TCON...
 
