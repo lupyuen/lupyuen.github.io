@@ -840,17 +840,21 @@ lcd-controller@1c0c000 {
 };
 ```
 
+Searching for _"sun8i-a83t-tcon-lcd"_ gives us the __Linux Driver for Allwinner A64 TCON__...
+
+-   [__sun4i_tcon.c__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun4i_tcon.c)
+
 Which looks useful for creating our TCON0 Driver for NuttX RTOS.
 
-More about on PinePhone Display...
+Here's the high-level doc for the Linux Driver for Allwinner A64 TCON...
+
+-   [__sun4i-drm.txt__](https://www.kernel.org/doc/Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt)
+
+More about PinePhone Display...
 
 -   [__"Genode Operating System Framework 22.05"__](https://genode.org/documentation/genode-platforms-22-05.pdf)
 
     (Pages 171 to 197)
-
-High-level doc on Linux Driver for TCON0...
-
--   [__sun4i-drm.txt__](https://www.kernel.org/doc/Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt)
 
 ## MIPI DSI Interface
 
@@ -898,7 +902,7 @@ dsi@1ca0000 {
 
 From above we see that PinePhone is connected to [__Xingbangda XBD599__](https://patchwork.kernel.org/project/dri-devel/patch/20200311163329.221840-4-icenowy@aosc.io/) 5.99" 720x1440 MIPI-DSI IPS LCD Panel, which is based on [__Sitronix ST7703 LCD Controller__](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/drm/panel/panel-sitronix-st7703.c?h=v6.0-rc6).
 
-[__xbd599_init_sequence__](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/drm/panel/panel-sitronix-st7703.c?h=v6.0-rc6#n174) describes the ST7703 Commands for initialising the Xingbangda XBD599 LCD Panel.
+[__xbd599_init_sequence__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333) describes the ST7703 Commands for initialising the Xingbangda XBD599 LCD Panel.
 
 __DSI DCS__ refers to the [__MIPI-DSI Display Command Set__](https://docs.zephyrproject.org/latest/hardware/peripherals/mipi_dsi.html).
 
