@@ -785,7 +785,9 @@ Inside the Allwinner A64 SoC, TCON0 is the [__Timing Controller__](https://www.k
 
 According to [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) (Chapter 6: "Display", Page 498), A64 has two TCON Controllers...
 
--   __TCON0__: For PinePhone's LCD Display (LVDS on MIPI DSI)
+-   __TCON0__: For PinePhone's LCD Display
+
+    ([__MIPI DSI__](https://lupyuen.github.io/articles/pio#mipi-dsi-interface) with [__LVDS__](https://en.wikipedia.org/wiki/Low-voltage_differential_signaling))
 
 -   __TCON1__: For HDMI Output
 
@@ -849,6 +851,12 @@ High-level doc on Linux Driver for TCON0...
 ## MIPI DSI Interface
 
 TODO
+
+[__Display Serial Interface (DSI)__](https://en.wikipedia.org/wiki/Display_Serial_Interface)
+
+[__Mobile Industry Processor Interface (MIPI) Alliance__](https://en.wikipedia.org/wiki/MIPI_Alliance)
+
+[__Low-voltage differential signaling (LVDS)__](https://en.wikipedia.org/wiki/Low-voltage_differential_signaling)
 
 ```text
 dsi@1ca0000 {
