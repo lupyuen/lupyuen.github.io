@@ -691,9 +691,25 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Enable Peek and Poke in BASIC
 
-TODO
+Earlier we ran the __BASIC Interpreter__ in NuttX RTOS to experiment with the PinePhone GPIOs and LEDs...
 
-We patched NuttX BASIC so that it supports `peek` and `poke`: [interpreters/bas/bas_fs.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/interpreters/bas/bas_fs.c#L1862-L1889)
+-   [__"Control LEDs With BASIC"__](https://lupyuen.github.io/articles/pio#control-leds-with-basic)
+
+Then we entered these __`peek`__ and __`poke`__ commands to read and write the Memory Addresses of the GPIO Hardware on PinePhone...
+
+```text
+> print peek(&h1C20874)
+ 2004316535 
+
+> poke &h1C20874, &h77711177
+
+> print peek(&h1C20874)
+ 2003898743 
+```
+
+For safety, the BASIC Interpreter won't allow us to __`peek`__ and __`poke`__ Memory Addresses.
+
+This is how we patched the BASIC Interpreter to support __`peek`__ and __`poke`__: [interpreters/bas/bas_fs.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/interpreters/bas/bas_fs.c#L1862-L1889)
 
 ```c
 int FS_memInput(int address)
@@ -720,7 +736,7 @@ int FS_memOutput(int address, int value)
 }
 ```
 
-Note that addresses are passed as 32-bit `int`, so some 64-bit addresses will not be accessible via `peek` and `poke`.
+Note that Memory Addresses are passed as 32-bit __`int`__, so some 64-bit addresses will not be accessible via __`peek`__ and __`poke`__.
 
 # Appendix: PinePhone Device Tree
 
