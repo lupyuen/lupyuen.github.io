@@ -739,17 +739,21 @@ int FS_memOutput(int address, int value)
     port@1 { ... };
   };
 };</code></pre></div>
+<p>Searching for <em>“sun8i-a83t-tcon-lcd”</em> gives us the <strong>Linux Driver for Allwinner A64 TCON</strong>…</p>
+<ul>
+<li><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun4i_tcon.c"><strong>sun4i_tcon.c</strong></a></li>
+</ul>
 <p>Which looks useful for creating our TCON0 Driver for NuttX RTOS.</p>
-<p>More about on PinePhone Display…</p>
+<p>Here’s the high-level doc for the Linux Driver for Allwinner A64 TCON…</p>
+<ul>
+<li><a href="https://www.kernel.org/doc/Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt"><strong>sun4i-drm.txt</strong></a></li>
+</ul>
+<p>More about PinePhone Display…</p>
 <ul>
 <li>
 <p><a href="https://genode.org/documentation/genode-platforms-22-05.pdf"><strong>“Genode Operating System Framework 22.05”</strong></a></p>
 <p>(Pages 171 to 197)</p>
 </li>
-</ul>
-<p>High-level doc on Linux Driver for TCON0…</p>
-<ul>
-<li><a href="https://www.kernel.org/doc/Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt"><strong>sun4i-drm.txt</strong></a></li>
 </ul>
 <h2 id="mipi-dsi-interface"><a href="#mipi-dsi-interface">13.2 MIPI DSI Interface</a></h2>
 <p>TODO</p>
@@ -787,7 +791,7 @@ int FS_memOutput(int address, int value)
 };</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1327-L1356">(Source)</a></p>
 <p>From above we see that PinePhone is connected to <a href="https://patchwork.kernel.org/project/dri-devel/patch/20200311163329.221840-4-icenowy@aosc.io/"><strong>Xingbangda XBD599</strong></a> 5.99“ 720x1440 MIPI-DSI IPS LCD Panel, which is based on <a href="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/drm/panel/panel-sitronix-st7703.c?h=v6.0-rc6"><strong>Sitronix ST7703 LCD Controller</strong></a>.</p>
-<p><a href="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/drm/panel/panel-sitronix-st7703.c?h=v6.0-rc6#n174"><strong>xbd599_init_sequence</strong></a> describes the ST7703 Commands for initialising the Xingbangda XBD599 LCD Panel.</p>
+<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333"><strong>xbd599_init_sequence</strong></a> describes the ST7703 Commands for initialising the Xingbangda XBD599 LCD Panel.</p>
 <p><strong>DSI DCS</strong> refers to the <a href="https://docs.zephyrproject.org/latest/hardware/peripherals/mipi_dsi.html"><strong>MIPI-DSI Display Command Set</strong></a>.</p>
 <h2 id="display-phy"><a href="#display-phy">13.3 Display PHY</a></h2>
 <p>TODO</p>
