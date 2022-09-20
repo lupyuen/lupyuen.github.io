@@ -688,6 +688,7 @@ int FS_memOutput(int address, int value)
 <p>Below are the interesting bits from the PinePhone Linux Device Tree: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts">sun50i-a64-pinephone-1.2.dts</a></p>
 <h2 id="lcd-controller-tcon0"><a href="#lcd-controller-tcon0">13.1 LCD Controller (TCON0)</a></h2>
 <p>Inside the Allwinner A64 SoC, TCON0 is the <a href="https://www.kernel.org/doc/Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt"><strong>Timing Controller</strong></a> for PinePhone’s LCD Display.</p>
+<p>(Yeah the name sounds odd… A64’s Timing Controller works like a huge pixel pump too)</p>
 <p>According to <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> (Chapter 6: “Display”, Page 498), A64 has two TCON Controllers…</p>
 <ul>
 <li>
@@ -739,7 +740,7 @@ int FS_memOutput(int address, int value)
     port@1 { ... };
   };
 };</code></pre></div>
-<p>Searching for <em>“sun8i-a83t-tcon-lcd”</em> gives us the <strong>Linux Driver for Allwinner A64 TCON</strong>…</p>
+<p>Searching online for <em>“sun8i-a83t-tcon-lcd”</em> gives us the <strong>Linux Driver for Allwinner A64 TCON</strong>…</p>
 <ul>
 <li><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun4i_tcon.c"><strong>sun4i_tcon.c</strong></a></li>
 </ul>
@@ -756,10 +757,9 @@ int FS_memOutput(int address, int value)
 </li>
 </ul>
 <h2 id="mipi-dsi-interface"><a href="#mipi-dsi-interface">13.2 MIPI DSI Interface</a></h2>
-<p>TODO</p>
-<p><a href="https://en.wikipedia.org/wiki/Display_Serial_Interface"><strong>Display Serial Interface (DSI)</strong></a></p>
-<p><a href="https://en.wikipedia.org/wiki/MIPI_Alliance"><strong>Mobile Industry Processor Interface (MIPI) Alliance</strong></a></p>
-<p><a href="https://en.wikipedia.org/wiki/Low-voltage_differential_signaling"><strong>Low-voltage differential signaling (LVDS)</strong></a></p>
+<p>Allwinner A64’s Timing Controller (TCON0) pumps pixels to PinePhone’s LCD Display via the <a href="https://en.wikipedia.org/wiki/Display_Serial_Interface"><strong>Display Serial Interface (DSI)</strong></a>, as defined by the <a href="https://en.wikipedia.org/wiki/MIPI_Alliance"><strong>Mobile Industry Processor Interface (MIPI) Alliance</strong></a>.</p>
+<p>The serial interface uses <a href="https://en.wikipedia.org/wiki/Low-voltage_differential_signaling"><strong>Low-Voltage Differential Signaling (LVDS)</strong></a>.</p>
+<p>PinePhone’s Linux Device Tree reveals this about A64’s <strong>MIPI DSI Interface</strong> at Address <strong><code>0x1CA</code> <code>0000</code></strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1327-L1356">sun50i-a64-pinephone-1.2.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>dsi@1ca0000 {
   compatible = &quot;allwinner,sun50i-a64-mipi-dsi&quot;;
   reg = &lt;0x1ca0000 0x1000&gt;;
@@ -789,14 +789,25 @@ int FS_memOutput(int address, int value)
     backlight = &lt;0x56&gt;;
   };
 };</code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1327-L1356">(Source)</a></p>
-<p>From above we see that PinePhone is connected to <a href="https://patchwork.kernel.org/project/dri-devel/patch/20200311163329.221840-4-icenowy@aosc.io/"><strong>Xingbangda XBD599</strong></a> 5.99“ 720x1440 MIPI-DSI IPS LCD Panel, which is based on <a href="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/drm/panel/panel-sitronix-st7703.c?h=v6.0-rc6"><strong>Sitronix ST7703 LCD Controller</strong></a>.</p>
-<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333"><strong>xbd599_init_sequence</strong></a> describes the ST7703 Commands for initialising the Xingbangda XBD599 LCD Panel.</p>
-<p><strong>DSI DCS</strong> refers to the <a href="https://docs.zephyrproject.org/latest/hardware/peripherals/mipi_dsi.html"><strong>MIPI-DSI Display Command Set</strong></a>.</p>
+<p>From above we see that PinePhone is connected to <a href="https://patchwork.kernel.org/project/dri-devel/patch/20200311163329.221840-4-icenowy@aosc.io/"><strong>Xingbangda XBD599</strong></a> 5.99“ 720x1440 MIPI-DSI IPS LCD Panel, which is based on <strong>Sitronix ST7703 LCD Controller</strong>…</p>
+<ul>
+<li><a href="http://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>Sitronix ST7703 LCD Controller Datasheet</strong></a></li>
+</ul>
+<p>Searching online for <em>“xingbangda,xbd599”</em> gives us the <strong>Linux Driver for Sitronix ST7703 LCD Controller</strong>…</p>
+<ul>
+<li><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c"><strong>panel-sitronix-st7703.c</strong></a></li>
+</ul>
+<p>In that file, <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333"><strong>xbd599_init_sequence</strong></a> describes the ST7703 Commands for initialising the Xingbangda XBD599 LCD Panel.</p>
+<p>(<strong>DSI DCS</strong> refers to the <a href="https://docs.zephyrproject.org/latest/hardware/peripherals/mipi_dsi.html"><strong>MIPI-DSI Display Command Set</strong></a>)</p>
+<p>Searching online for <em>“sun50i-a64-mipi-dsi”</em> gives us the <strong>Linux Driver for A64 MIPI DSI</strong>…</p>
+<ul>
+<li><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c"><strong>sun6i_mipi_dsi.c</strong></a></li>
+</ul>
+<p>Both Linux Drivers will be helpful for creating our NuttX Driver for A64 MIPI DSI.</p>
 <h2 id="display-phy"><a href="#display-phy">13.3 Display PHY</a></h2>
-<p>TODO</p>
-<p>D-PHY is a popular MIPI physical layer standard for Camera Serial Interface (CSI-2) and Display Serial Interface (DSI) protocols</p>
-<p><a href="https://www.intel.com/content/www/us/en/docs/programmable/683092/current/introduction-to-mipi-d-phy.html"><strong>MIPI D-PHY</strong></a></p>
+<p><a href="https://www.intel.com/content/www/us/en/docs/programmable/683092/current/introduction-to-mipi-d-phy.html"><strong>MIPI D-PHY</strong></a> is the <strong>Physical Layer Standard</strong> for the <a href="https://lupyuen.github.io/articles/pio#mipi-dsi-interface"><strong>MIPI DSI Protocol</strong></a>.</p>
+<p>It specifies how Allwinner A64’s <a href="https://lupyuen.github.io/articles/pio#mipi-dsi-interface"><strong>MIPI DSI Interface</strong></a> should talk to PinePhone’s <a href="https://lupyuen.github.io/articles/pio#mipi-dsi-interface"><strong>Xingbangda XBD599 LCD Display</strong></a> over Physical Wires.</p>
+<p>PinePhone’s Linux Device Tree says this about Allwinner A64’s <strong>MIPI D-PHY</strong> at Address <strong><code>0x1CA</code> <code>1000</code></strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1358-L1367">sun50i-a64-pinephone-1.2.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>d-phy@1ca1000 {
   compatible = &quot;allwinner,sun50i-a64-mipi-dphy\0allwinner,sun6i-a31-mipi-dphy&quot;;
   reg = &lt;0x1ca1000 0x1000&gt;;
@@ -807,7 +818,10 @@ int FS_memOutput(int address, int value)
   #phy-cells = &lt;0x00&gt;;
   phandle = &lt;0x53&gt;;
 };</code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1358-L1367">(Source)</a></p>
+<p>Searching online for <em>“sun6i-a31-mipi-dphy”</em> uncovers the <strong>Linux Driver for A64 MIPI D-PHY</strong>…</p>
+<ul>
+<li><a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c"><strong>phy-sun6i-mipi-dphy.c</strong></a></li>
+</ul>
 <h2 id="framebuffer"><a href="#framebuffer">13.4 Framebuffer</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>framebuffer-lcd {
