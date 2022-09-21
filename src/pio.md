@@ -94,6 +94,8 @@ That's a clever way to __dim the Backlight__.
 
 With [__Pulse-Width Modulation (PWM)__](https://en.wikipedia.org/wiki/Pulse-width_modulation), we may blink the Backlight rapidly to make it seem dimmer.
 
+(There's also the __Flash LED__ for PinePhone's Back Camera, enabled by __GPIO PC3__ and triggered by __GPIO PD24__. See page 10 of the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf))
+
 Let's talk about GPIOs...
 
 ![Allwinner A64 User Manual (Page 376)](https://lupyuen.github.io/images/pio-register1.png)
