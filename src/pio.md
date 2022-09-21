@@ -671,7 +671,11 @@ Stay Tuned!
 
 # What's Next
 
-TODO: GPIO Driver
+Today we had fun with __`peek`__ and __`poke`__ while experimenting with PinePhone's LEDs and GPIOs.
+
+Soon we shall create a [__NuttX GPIO Driver__](https://lupyuen.github.io/articles/nuttx#gpio-driver) that will access PinePhone's GPIO Hardware in the NuttX Kernel.
+
+And eventually we shall build NuttX Drivers for PinePhone's [__LCD Display__](https://lupyuen.github.io/articles/pio#lcd-controller-tcon0) and [__Touch Panel__](https://lupyuen.github.io/articles/pio#touch-panel)!
 
 There's plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏
 
