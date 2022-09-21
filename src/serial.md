@@ -30,7 +30,7 @@ Let's dive into our __NuttX Porting Journal__ and learn how we made PinePhone ch
 
 ![Allwinner A64 UART Controller Registers](https://lupyuen.github.io/images/uboot-uart1.png)
 
-[_Allwinner A64 UART Controller Registers_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+[_Allwinner A64 UART Controller Registers_](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)
 
 # UART Controller
 
@@ -38,9 +38,9 @@ Our operating system will print some output on PinePhone's __Serial Debug Consol
 
 To do that, we'll talk to the __UART Controller__ on the Allwinner A64 SoC...
 
--   [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+-   [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)
 
-Flip the [__A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) to page 562 ("UART") and we'll see the __UART Registers__. (Pic above)
+Flip the [__A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf) to page 562 ("UART") and we'll see the __UART Registers__. (Pic above)
 
 PinePhone's Serial Console is connected to __UART0__ at Base Address __`0x01C2` `8000`__
 
@@ -71,11 +71,11 @@ Let's read and write UART Data the easier (inefficient) way, via Polling...
 
 ![A64 UART Receive and Transmit Registers UART_RBR and UART_THR](https://lupyuen.github.io/images/uboot-uart2.png)
 
-[_A64 UART Receive and Transmit Registers UART_RBR and UART_THR_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+[_A64 UART Receive and Transmit Registers UART_RBR and UART_THR_](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)
 
 # UART With Polling
 
-Page 563 of the [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) tells us the UART Registers for __reading and writing UART Data__ (pic above)...
+Page 563 of the [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf) tells us the UART Registers for __reading and writing UART Data__ (pic above)...
 
 -   __Receiver Buffer Register (RBR)__
 
@@ -210,7 +210,7 @@ Moving on from UART Transmit to Receive...
 
 ![A64 UART Registers UART_RBR and UART_THR](https://lupyuen.github.io/images/uboot-uart2.png)
 
-[_A64 UART Registers UART_RBR and UART_THR_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+[_A64 UART Registers UART_RBR and UART_THR_](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)
 
 ## Receive UART
 
@@ -347,7 +347,7 @@ PinePhone's UART Controller will trigger an Interrupt for __Transmit and Receive
 
 -   Received Data becomes available
 
-The [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) (page 211, "GIC") reveals that UART0 Interrupts will be triggered at __Interrupt Number 32__. (Pic above)
+The [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf) (page 211, "GIC") reveals that UART0 Interrupts will be triggered at __Interrupt Number 32__. (Pic above)
 
 Let's __attach our Interrupt Handler__ to handle the UART Interrupts: [qemu_serial.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L940-L961)
 
@@ -434,13 +434,13 @@ static void a64_uart_detach(struct uart_dev_s *dev)
 
 ![A64 UART Interrupt Enable Register UART_IER](https://lupyuen.github.io/images/serial-enable.jpg)
 
-[_A64 UART Interrupt Enable Register UART_IER_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+[_A64 UART Interrupt Enable Register UART_IER_](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)
 
 ## Enable Interrupt
 
 UART Interupts won't happen until we __enable UART Interrupts__. 
 
-Page 565 of the [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) tells us the UART Register for enabling UART Interrupts (pic above)...
+Page 565 of the [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf) tells us the UART Register for enabling UART Interrupts (pic above)...
 
 -   __Interrupt Enable Register (UART_IER)__
 

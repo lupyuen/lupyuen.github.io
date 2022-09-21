@@ -24,7 +24,7 @@ Let's walk through the steps to create our own __PinePhone Operating System__...
 
 ![Allwinner A64 SoC User Manual](https://lupyuen.github.io/images/uboot-a64.jpg)
 
-[_Allwinner A64 SoC User Manual_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+[_Allwinner A64 SoC User Manual_](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)
 
 # Allwinner A64 SoC
 
@@ -36,7 +36,7 @@ At the heart of PinePhone is the [__Allwinner A64 SoC__](https://linux-sunxi.org
 
 -   [__Allwinner A64 Info__](https://linux-sunxi.org/A64)
 
--   [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+-   [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)
 
 The A64 SoC in PinePhone comes with __2GB RAM__ (or 3GB RAM via a mainboard upgrade)...
 
@@ -461,7 +461,7 @@ Not yet. We need to implement the UART Driver...
 
 ![Allwinner A64 UART Controller Registers](https://lupyuen.github.io/images/uboot-uart1.png)
 
-[_Allwinner A64 UART Controller Registers_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+[_Allwinner A64 UART Controller Registers_](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)
 
 # UART Output
 
@@ -469,9 +469,9 @@ Our operating system will show some output on PinePhone's __Serial Debug Console
 
 To do that, we'll talk to the __UART Controller__ on the Allwinner A64 SoC...
 
--   [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+-   [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)
 
-Flip the [__A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) to page 562 ("UART") and we'll see the __UART Registers__. (Pic above)
+Flip the [__A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf) to page 562 ("UART") and we'll see the __UART Registers__. (Pic above)
 
 PinePhone's Serial Console is connected to __UART0__ at Base Address __`0x01C2` `8000`__
 
@@ -995,7 +995,7 @@ Let's talk about the implementation...
 
 ![Allwinner A64 UART Register UART_THR](https://lupyuen.github.io/images/uboot-uart2.png)
 
-[_Allwinner A64 UART Register UART_THR_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+[_Allwinner A64 UART Register UART_THR_](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)
 
 ## Wait for UART Ready
 
@@ -1003,7 +1003,7 @@ _How do we wait for the UART Port to be ready before we transmit data?_
 
 See the pic above. According to the __Allwinner A64 UART__ doc (page 563, "UART")...
 
--   [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+-   [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)
 
 We should write data to the UART Port...
 
@@ -1045,7 +1045,7 @@ _How will we initialise the UART Port?_
 
 According to the __Allwinner A64 UART__ doc (page 562, "UART")...
 
--   [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+-   [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)
 
 We might __initialise the UART Port__ in [__`up_earlyserialinit`__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72) like so...
 

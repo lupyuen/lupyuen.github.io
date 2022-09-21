@@ -821,7 +821,7 @@ We'll redo the code above for the __PinePhone UART Driver__ (based on Allwinner 
 
 -   [__Allwinner A64 UART__](https://linux-sunxi.org/UART)
 
--   [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+-   [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)
 
 -   [__Allwinner A64 Info__](https://linux-sunxi.org/A64)
 

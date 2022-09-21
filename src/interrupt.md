@@ -92,7 +92,7 @@ arm64_gic_initialize: no distributor detected, giving up
 
 When we boot NuttX RTOS, it expects PinePhone to provide a modern __Generic Interrupt Controller (GIC), Version 3__.
 
-But the [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) (page 210, "GIC") says that PinePhone runs on...
+But the [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf) (page 210, "GIC") says that PinePhone runs on...
 
 -   [__Arm GIC PL400__](https://developer.arm.com/documentation/ddi0471/b/introduction/about-the-gic-400), which is based on...
 
@@ -141,7 +141,7 @@ _What are GICD and GICR?_
 
 __GICD (GIC Distributor)__ and __GICR (GIC CPU Interface)__ are the addresses for accessing the GIC on PinePhone.
 
-According to [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) (page 74, "Memory Mapping"), the GIC is located at...
+According to [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf) (page 74, "Memory Mapping"), the GIC is located at...
 
 | Module | Address | Remarks
 | :----- | :------ | :------
