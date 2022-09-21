@@ -440,7 +440,7 @@ pd_data_reg=0x1c0000</code></pre></div>
 <p>We write the value <strong><code>0x1C</code> <code>0000</code></strong> to set PD18, 19 and 20 to High.</p>
 </li>
 </ul>
-<p>OK we’re ready to do this in BASIC! We’ll call <strong><code>poke</code></strong> with the above Addresses and Values.</p>
+<p>OK we’re ready to do this in BASIC! We’ll call <a href="https://en.wikipedia.org/wiki/PEEK_and_POKE"><strong><code>poke</code></strong></a> with the above Addresses and Values.</p>
 <p>At the BASIC Prompt, enter this to configure <strong>PD18, 19 and 20 for GPIO Output</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>poke &amp;h1C20874, &amp;h77711177</code></pre></div>
 <p>Then enter this to set <strong>PD18, 19 and 20 to High</strong>…</p>
@@ -449,6 +449,7 @@ pd_data_reg=0x1c0000</code></pre></div>
 <p>Finally enter this to set <strong>PD18, 19 and 20 to Low</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>poke &amp;h1C2087C, &amp;h0</code></pre></div>
 <p>And watch PinePhone’s LEDs switch off!</p>
+<p><a href="https://youtu.be/OTIHMIRd1s4">(Watch the Demo on YouTube)</a></p>
 <p><em>So the <code>poke</code> command will write a value to any address?</em></p>
 <p>Yep <a href="https://en.wikipedia.org/wiki/PEEK_and_POKE"><strong><code>poke</code></strong></a> is a throwback to the old days when we called it to light up individual pixels on the <a href="https://en.wikipedia.org/wiki/Apple_II_graphics"><strong>Apple ][ Graphics Display</strong></a>.</p>
 <p>Today we call <strong><code>poke</code></strong> to light up the PinePhone LEDs!</p>
@@ -476,7 +477,6 @@ pd_data_reg=0x1c0000</code></pre></div>
 
 &gt; print peek(&amp;h1C2087C)
  1835008  </code></pre></div>
-<p><a href="https://youtu.be/OTIHMIRd1s4">(Watch the Demo on YouTube)</a></p>
 <p>BASIC works great for quick, interactive experiments with PinePhone GPIOs and LEDs!</p>
 <p><img src="https://lupyuen.github.io/images/pio-title.webp" alt="Blinking the PinePhone LEDs with BASIC… On Apache NuttX RTOS" /></p>
 <h1 id="basic-blinks-the-leds"><a href="#basic-blinks-the-leds">9 BASIC Blinks The LEDs</a></h1>
@@ -701,7 +701,7 @@ int FS_memOutput(int address, int value)
 <ul>
 <li>
 <p><strong>TCON0</strong>: For PinePhone’s <a href="https://lupyuen.github.io/articles/pio#mipi-dsi-interface"><strong>Xingbangda XBD599</strong></a> LCD Display</p>
-<p>(<a href="https://lupyuen.github.io/articles/pio#mipi-dsi-interface"><strong>MIPI DSI</strong></a> over <a href="https://lupyuen.github.io/articles/pio#display-phy"><strong>MIPI D-PHY</strong></a>)</p>
+<p>(With <a href="https://lupyuen.github.io/articles/pio#mipi-dsi-interface"><strong>MIPI DSI</strong></a> and <a href="https://lupyuen.github.io/articles/pio#display-phy"><strong>MIPI D-PHY</strong></a>)</p>
 </li>
 <li>
 <p><strong>TCON1</strong>: For HDMI Output</p>
@@ -765,6 +765,8 @@ int FS_memOutput(int address, int value)
 </li>
 </ul>
 <p><em>How did we search online for the Linux Driver?</em></p>
+<p>Suppose we’re searching for the Allwinner A64 TCON Driver.</p>
+<p>From the Linux Device Tree above, the <strong>“compatible”</strong> field reveals the name of the driver: <em>“sun8i-a83t-tcon-lcd”</em></p>
 <p>Head over to <a href="https://github.com/search"><strong>GitHub Code Search</strong></a>.</p>
 <p>Enter the <strong>Driver Name</strong>, including quotes: <em>“sun8i-a83t-tcon-lcd”</em></p>
 <p>Click <strong>“Code”</strong>. Under <strong>“Languages”</strong>, filter by <strong>C Language</strong>.</p>
@@ -773,7 +775,7 @@ int FS_memOutput(int address, int value)
 <p><img src="https://lupyuen.github.io/images/pio-tcon0.png" alt="Allwinner A64 User Manual (Page 500)" /></p>
 <p><em><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf">Allwinner A64 User Manual (Page 500)</a></em></p>
 <h2 id="mipi-dsi-interface"><a href="#mipi-dsi-interface">13.2 MIPI DSI Interface</a></h2>
-<p>Allwinner A64’s Timing Controller (TCON0) pumps pixels to PinePhone’s LCD Display via the <a href="https://en.wikipedia.org/wiki/Display_Serial_Interface"><strong>Display Serial Interface (DSI)</strong></a>, as defined by the <a href="https://en.wikipedia.org/wiki/MIPI_Alliance"><strong>Mobile Industry Processor Interface (MIPI) Alliance</strong></a>.</p>
+<p>Allwinner A64’s Timing Controller (TCON0) controls PinePhone’s LCD Display via the <a href="https://en.wikipedia.org/wiki/Display_Serial_Interface"><strong>Display Serial Interface (DSI)</strong></a>, as defined by the <a href="https://en.wikipedia.org/wiki/MIPI_Alliance"><strong>Mobile Industry Processor Interface (MIPI) Alliance</strong></a>.</p>
 <p>PinePhone’s Linux Device Tree reveals this about A64’s <strong>MIPI DSI Interface</strong> at Address <strong><code>0x1CA</code> <code>0000</code></strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1327-L1356">sun50i-a64-pinephone-1.2.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>dsi@1ca0000 {
   compatible = &quot;allwinner,sun50i-a64-mipi-dsi&quot;;
@@ -917,6 +919,7 @@ int FS_memOutput(int address, int value)
   interconnects = &lt;0x57 0x09&gt;;
   interconnect-names = &quot;dma-mem&quot;;
 };</code></pre></div>
+<p>Which might not be necessary if we’re building a simple Display Driver.</p>
 <p><img src="https://lupyuen.github.io/images/pio-schematic.png" alt="LEDs on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LEDs on PinePhone Schematic (Page 11)</em></a></p>
 <h2 id="led"><a href="#led">13.10 LED</a></h2>
