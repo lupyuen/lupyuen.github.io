@@ -100,7 +100,7 @@ Let's talk about GPIOs...
 
 ![Allwinner A64 User Manual (Page 376)](https://lupyuen.github.io/images/pio-register1.png)
 
-[_Allwinner A64 User Manual (Page 376)_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+[_Allwinner A64 User Manual (Page 376)_](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)
 
 # Allwinner A64 Port Controller
 
@@ -128,11 +128,11 @@ How will we configure Port D? Let's study the registers...
 
 ![Allwinner A64 User Manual (Page 376)](https://lupyuen.github.io/images/pio-register2.png)
 
-[_Allwinner A64 User Manual (Page 376)_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+[_Allwinner A64 User Manual (Page 376)_](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)
 
 # Port Controller Registers
 
-Page 376 of the [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) says that the Port Controller's __Base Address__ is __`0x01C2` `0800`__ (pic above)
+Page 376 of the [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf) says that the Port Controller's __Base Address__ is __`0x01C2` `0800`__ (pic above)
 
 Which we define like so...
 
@@ -160,13 +160,13 @@ But why __PD_CFG2__ instead of PD_CFG0, 1 or 3? Find out next...
 
 ![Allwinner A64 User Manual (Page 387)](https://lupyuen.github.io/images/pio-register3.png)
 
-[_Allwinner A64 User Manual (Page 387)_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+[_Allwinner A64 User Manual (Page 387)_](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)
 
 # Configure GPIO
 
 Remember our mission for today is to configure GPIOs __PD18, 19 and 20__.
 
-Page 387 of the [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) says that all we need is __PD_CFG2__ at Offset __`0x74`__. (Pic above)
+Page 387 of the [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf) says that all we need is __PD_CFG2__ at Offset __`0x74`__. (Pic above)
 
 __PD_CFG2__ is a 32-bit Hardware Register. The bits that we need to twiddle are...
 
@@ -236,13 +236,13 @@ Now we set the GPIO Output...
 
 ![Allwinner A64 User Manual (Page 388)](https://lupyuen.github.io/images/pio-register4.png)
 
-[_Allwinner A64 User Manual (Page 388)_](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)
+[_Allwinner A64 User Manual (Page 388)_](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)
 
 # Set GPIO
 
 Our final job for today: __Set the GPIO Output__ for PD18, 19 and 20. So that we can blink the PinePhone LEDs!
 
-Page 388 of the [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) says that we need to tweak Register __PD_DATA__ at Offset __`0x7C`__. (Pic above)
+Page 388 of the [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf) says that we need to tweak Register __PD_DATA__ at Offset __`0x7C`__. (Pic above)
 
 To set PD18, 19 and 20 to High, we set __Bits 18, 19 and 20__ of PD_DATA to 1.
 
@@ -695,6 +695,8 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
 
+-   [__Discuss this article on Reddit__](https://www.reddit.com/r/PINE64official/comments/xjzack/nuttx_rtos_for_pinephone_blinking_the_leds/)
+
 -   [__My Current Project: "The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book)
 
 -   [__Check out my articles__](https://lupyuen.github.io)
@@ -801,7 +803,7 @@ Below are the interesting bits from the PinePhone Linux Device Tree: [sun50i-a64
 
 ![Allwinner A64 User Manual (Page 498)](https://lupyuen.github.io/images/pio-display.png)
 
-_[Allwinner A64 User Manual (Page 498)](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)_
+_[Allwinner A64 User Manual (Page 498)](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)_
 
 ## LCD Controller (TCON0)
 
@@ -809,7 +811,7 @@ Inside the Allwinner A64 SoC, TCON0 is the [__Timing Controller__](https://www.k
 
 (Yeah the name sounds odd... A64's Timing Controller actually works like a huge pixel pump)
 
-According to [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) (Chapter 6: "Display", Page 498), A64 has __2 TCON Controllers__ (pic above)...
+According to [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf) (Chapter 6: "Display", Page 498), A64 has __2 TCON Controllers__ (pic above)...
 
 -   __TCON0__: For PinePhone's [__Xingbangda XBD599__](https://lupyuen.github.io/articles/pio#mipi-dsi-interface) LCD Display
 
@@ -819,7 +821,7 @@ According to [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwin
 
 We shall only concern ourselves with __TCON0__. (Not TCON1)
 
-(More about TCON in [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf), Section 6.2: "TCON", Page 500)
+(More about TCON in [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf), Section 6.2: "TCON", Page 500)
 
 PinePhone's Linux Device Tree says this about the __TCON0 Timing Controller__ at Address __`0x1C0` `C000`__: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L446-L492)
 
@@ -898,7 +900,7 @@ The Linux Driver we seek shall be located at [__github.com/torvalds/linux/driver
 
 ![Allwinner A64 User Manual (Page 500)](https://lupyuen.github.io/images/pio-tcon0.png)
 
-_[Allwinner A64 User Manual (Page 500)](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf)_
+_[Allwinner A64 User Manual (Page 500)](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)_
 
 ## MIPI DSI Interface
 
@@ -1004,7 +1006,7 @@ We might build a similar Framebuffer Device in NuttX for rendering graphics with
 
 ## Display Engine
 
-According to [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf) (Section 6.1: "DE2.0", Page 499), A64 has a __Display Engine__ that handles the display pipeline.
+According to [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf) (Section 6.1: "DE2.0", Page 499), A64 has a __Display Engine__ that handles the display pipeline.
 
 Here's the definition in PinePhone's Linux Device Tree: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L98-L102)
 
