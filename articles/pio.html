@@ -124,8 +124,8 @@
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/pio-schematic.png" alt="LEDs on PinePhone Schematic" /></p>
-<p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LEDs on PinePhone Schematic</em></a></p>
+<p><img src="https://lupyuen.github.io/images/pio-schematic.png" alt="LEDs on PinePhone Schematic (Page 11)" /></p>
+<p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LEDs on PinePhone Schematic (Page 11)</em></a></p>
 <h1 id="pinephone-schematic"><a href="#pinephone-schematic">1 PinePhone Schematic</a></h1>
 <p>Let’s turn to Page 11 of the <strong>PinePhone Schematic</strong> to understand how the PinePhone LEDs are connected…</p>
 <ul>
@@ -350,8 +350,10 @@ pd_data_reg=0x1c0000</code></pre></div>
 <p><a href="https://youtu.be/MJDxCcKAv0g">(Watch the Demo on YouTube)</a></p>
 <p>PinePhone’s Red, Green and Blue LEDs turn on and appear as white.</p>
 <p>Yep we have successfully lit up the LEDs on PinePhone!</p>
+<p><img src="https://lupyuen.github.io/images/pio-backlight.png" alt="Backlight on PinePhone Schematic (Page 11)" /></p>
+<p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>Backlight on PinePhone Schematic (Page 11)</em></a></p>
 <h1 id="pinephone-backlight"><a href="#pinephone-backlight">7 PinePhone Backlight</a></h1>
-<p>Remember we said earlier that <strong>PinePhone’s Backlight</strong> is connected to <strong>GPIO PH10</strong>?</p>
+<p>Remember we said earlier that <strong>PinePhone’s Backlight</strong> is connected to <strong>GPIO PH10</strong>? (Pic above)</p>
 <p>To turn on the Backlight, we would need to tweak…</p>
 <ul>
 <li>
@@ -914,6 +916,8 @@ int FS_memOutput(int address, int value)
   interconnect-names = &quot;dma-mem&quot;;
 };</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1369-L1378">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/pio-schematic.png" alt="LEDs on PinePhone Schematic (Page 11)" /></p>
+<p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LEDs on PinePhone Schematic (Page 11)</em></a></p>
 <h2 id="led"><a href="#led">13.10 LED</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>leds {
@@ -953,6 +957,8 @@ int FS_memOutput(int address, int value)
 <p>Blue LED: GPIO PD20 (PD20-LED-B)</p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/pio-backlight.png" alt="Backlight on PinePhone Schematic (Page 11)" /></p>
+<p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>Backlight on PinePhone Schematic (Page 11)</em></a></p>
 <h2 id="backlight-pwm"><a href="#backlight-pwm">13.11 Backlight PWM</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>backlight {
