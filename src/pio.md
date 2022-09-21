@@ -942,7 +942,7 @@ dsi@1ca0000 {
 
 From above we see that PinePhone is connected to [__Xingbangda XBD599__](https://patchwork.kernel.org/project/dri-devel/patch/20200311163329.221840-4-icenowy@aosc.io/) 5.99-inch 720x1440 MIPI-DSI IPS LCD Panel, which is based on __Sitronix ST7703 LCD Controller__...
 
--   [__Sitronix ST7703 LCD Controller Datasheet__](http://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf)
+-   [__Sitronix ST7703 LCD Controller Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf)
 
 Searching online for _"xingbangda,xbd599"_ gives us the __Linux Driver for Sitronix ST7703 LCD Controller__...
 
