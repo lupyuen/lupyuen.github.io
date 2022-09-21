@@ -437,12 +437,12 @@ pd_data_reg=0x1c0000</code></pre></div>
 </li>
 </ul>
 <p>OK we’re ready to do this in BASIC! We’ll call <strong><code>poke</code></strong> with the above Addresses and Values.</p>
-<p>At the BASIC Prompt, enter this to <strong>configure PD18, 19 and 20</strong> for GPIO Output…</p>
+<p>At the BASIC Prompt, enter this to configure <strong>PD18, 19 and 20 for GPIO Output</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>poke &amp;h1C20874, &amp;h77711177</code></pre></div>
-<p>Then enter this to <strong>set PD18, 19 and 20</strong> to High…</p>
+<p>Then enter this to set <strong>PD18, 19 and 20 to High</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>poke &amp;h1C2087C, &amp;h1C0000</code></pre></div>
 <p>Yep PinePhone’s Red, Green and Blue LEDs turn on and appear as white!</p>
-<p>Finally enter this to <strong>set PD18, 19 and 20</strong> to Low…</p>
+<p>Finally enter this to set <strong>PD18, 19 and 20 to Low</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>poke &amp;h1C2087C, &amp;h0</code></pre></div>
 <p>And watch PinePhone’s LEDs switch off!</p>
 <p><em>So the <code>poke</code> command will write a value to any address?</em></p>
@@ -760,9 +760,10 @@ int FS_memOutput(int address, int value)
 </ul>
 <p><em>How did we search online for the Linux Driver?</em></p>
 <p>Head over to <a href="https://github.com/search"><strong>GitHub Code Search</strong></a>.</p>
-<p>Enter the keyword, including quotes: <em>“sun8i-a83t-tcon-lcd”</em></p>
+<p>Enter the <strong>Driver Name</strong>, including quotes: <em>“sun8i-a83t-tcon-lcd”</em></p>
 <p>Click <strong>“Code”</strong>. Under <strong>“Languages”</strong>, filter by <strong>C Language</strong>.</p>
-<p>We’ll see a bunch of matching C Source Files. The Linux Driver we need will be located at <a href="https://github.com/torvalds/linux"><strong>github.com/torvalds/linux</strong></a></p>
+<p>We’ll see a bunch of matching C Source Files. Take note of the <strong>File Path</strong>, like <em>“gpu/drm/sun4i/sun4i_tcon.c”</em></p>
+<p>The Linux Driver we seek shall be located at <a href="https://github.com/torvalds/linux/tree/master/drivers"><strong>github.com/torvalds/linux/drivers</strong></a>, concatenated with the File Path.</p>
 <p><img src="https://lupyuen.github.io/images/pio-tcon0.png" alt="Allwinner A64 User Manual (Page 500)" /></p>
 <p><em><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf">Allwinner A64 User Manual (Page 500)</a></em></p>
 <h2 id="mipi-dsi-interface"><a href="#mipi-dsi-interface">13.2 MIPI DSI Interface</a></h2>
@@ -797,7 +798,7 @@ int FS_memOutput(int address, int value)
     backlight = &lt;0x56&gt;;
   };
 };</code></pre></div>
-<p>From above we see that PinePhone is connected to <a href="https://patchwork.kernel.org/project/dri-devel/patch/20200311163329.221840-4-icenowy@aosc.io/"><strong>Xingbangda XBD599</strong></a> 5.99“ 720x1440 MIPI-DSI IPS LCD Panel, which is based on <strong>Sitronix ST7703 LCD Controller</strong>…</p>
+<p>From above we see that PinePhone is connected to <a href="https://patchwork.kernel.org/project/dri-devel/patch/20200311163329.221840-4-icenowy@aosc.io/"><strong>Xingbangda XBD599</strong></a> 5.99-inch 720x1440 MIPI-DSI IPS LCD Panel, which is based on <strong>Sitronix ST7703 LCD Controller</strong>…</p>
 <ul>
 <li><a href="http://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>Sitronix ST7703 LCD Controller Datasheet</strong></a></li>
 </ul>
@@ -811,7 +812,18 @@ int FS_memOutput(int address, int value)
 <ul>
 <li><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c"><strong>sun6i_mipi_dsi.c</strong></a></li>
 </ul>
-<p>Both Linux Drivers will be a helpful reference for creating our NuttX Driver for A64 MIPI DSI.</p>
+<p>Zephyr OS has a <strong>Generic MIPI DSI Driver</strong>, which might be helpful since it has the same licensing as NuttX RTOS…</p>
+<ul>
+<li>
+<p><a href="https://github.com/zephyrproject-rtos/zephyr/blob/main/include/zephyr/drivers/mipi_dsi.h"><strong>mipi_dsi.h</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/zephyrproject-rtos/zephyr/blob/main/drivers/mipi_dsi/mipi_dsi.c"><strong>mipi_dsi.c</strong></a></p>
+</li>
+<li>
+<p><a href="https://docs.zephyrproject.org/latest/hardware/peripherals/mipi_dsi.html"><strong>Zephyr Docs for MIPI DSI</strong></a></p>
+</li>
+</ul>
 <h2 id="display-phy"><a href="#display-phy">13.3 Display PHY</a></h2>
 <p><a href="https://www.intel.com/content/www/us/en/docs/programmable/683092/current/introduction-to-mipi-d-phy.html"><strong>MIPI D-PHY</strong></a> is the <strong>Physical Layer Standard</strong> for the <a href="https://lupyuen.github.io/articles/pio#mipi-dsi-interface"><strong>MIPI DSI Protocol</strong></a>.</p>
 <p>It specifies how Allwinner A64’s <a href="https://lupyuen.github.io/articles/pio#mipi-dsi-interface"><strong>MIPI DSI Interface</strong></a> should talk to PinePhone’s <a href="https://lupyuen.github.io/articles/pio#mipi-dsi-interface"><strong>Xingbangda XBD599 LCD Display</strong></a> over Physical Wires.</p>
