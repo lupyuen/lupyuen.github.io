@@ -90,7 +90,7 @@
 <li><a href="#gpu">13.8 GPU</a><ul></ul></li>
 <li><a href="#deinterlace">13.9 Deinterlace</a><ul></ul></li>
 <li><a href="#led">13.10 LED</a><ul></ul></li>
-<li><a href="#backlight-pwm">13.11 Backlight PWM</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>30 Sep 2022</em></p>
+<li><a href="#backlight-pwm">13.11 Backlight PWM</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>22 Sep 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/pio-title.webp" alt="Blinking the PinePhone LEDs with BASIC… On Apache NuttX RTOS" /></p>
 <p><em>Blinking the PinePhone LEDs with BASIC… On Apache NuttX RTOS</em></p>
 <p>Programming the <strong>GPIO Hardware</strong> on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> looks complicated… But it’s not that different from microcontrollers!</p>
@@ -501,9 +501,10 @@ pd_data_reg=0x1c0000</code></pre></div>
 <p>For safety, future versions of NuttX RTOS for PinePhone may disable direct access to the Hardware Registers. (By enabling the Arm64 Memory Management Unit)</p>
 <p>When that happens, we shall access the PinePhone GPIOs through the protected <a href="https://lupyuen.github.io/articles/nuttx#gpio-driver"><strong>GPIO Driver</strong></a> in the NuttX Kernel.</p>
 <p><a href="https://lupyuen.github.io/articles/pio#appendix-enable-peek-and-poke-in-basic">(How we enabled <strong><code>peek</code></strong> and <strong><code>poke</code></strong> for the BASIC Interpreter)</a></p>
+<p><img src="https://lupyuen.github.io/images/pio-devicetree.png" alt="PinePhone’s Linux Device Tree" /></p>
 <h1 id="linux-device-tree"><a href="#linux-device-tree">10 Linux Device Tree</a></h1>
 <p><em>Is there another way to discover the PinePhone Hardware… Without browsing the PinePhone Schematic?</em></p>
-<p>Yep the <strong>Linux Device Tree</strong> describes everything about PinePhone Hardware in Text Format…</p>
+<p>Yep the <strong>Linux Device Tree</strong> describes everything about PinePhone Hardware in Text Format (pic above)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/pio#appendix-pinephone-device-tree"><strong>“PinePhone Device Tree”</strong></a></li>
 </ul>
@@ -660,6 +661,7 @@ int FS_memOutput(int address, int value)
   //  return -1;
 }</code></pre></div>
 <p>Note that Memory Addresses are passed as 32-bit <strong><code>int</code></strong>, so some 64-bit addresses will not be accessible via <strong><code>peek</code></strong> and <strong><code>poke</code></strong>.</p>
+<p><img src="https://lupyuen.github.io/images/pio-devicetree.png" alt="PinePhone’s Linux Device Tree" /></p>
 <h1 id="appendix-pinephone-device-tree"><a href="#appendix-pinephone-device-tree">13 Appendix: PinePhone Device Tree</a></h1>
 <p>The <strong>Linux Device Tree</strong> describes everything about PinePhone Hardware in Text Format.</p>
 <p>To access the PinePhone Hardware, the <strong>Linux Kernel</strong> refers to the Linux Device Tree. (Similar to the Windows Registry)</p>
