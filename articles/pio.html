@@ -892,7 +892,7 @@ int FS_memOutput(int address, int value)
   interrupts = &lt;0x00 0x3a 0x04&gt;;
   allwinner,sram = &lt;0x28 0x01&gt;;
 };</code></pre></div><h2 id="gpu"><a href="#gpu">13.8 GPU</a></h2>
-<p>TODO</p>
+<p>PinePhone’s Linux Device Tree talks about the <strong>GPU</strong> too: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1246-L1256">sun50i-a64-pinephone-1.2.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>gpu@1c40000 {
   compatible = &quot;allwinner,sun50i-a64-mali\0arm,mali-400&quot;;
   reg = &lt;0x1c40000 0x10000&gt;;
@@ -903,10 +903,8 @@ int FS_memOutput(int address, int value)
   resets = &lt;0x02 0x1f&gt;;
   assigned-clocks = &lt;0x02 0x72&gt;;
   assigned-clock-rates = &lt;0x1dcd6500&gt;;
-};</code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1246-L1256">(Source)</a></p>
-<h2 id="deinterlace"><a href="#deinterlace">13.9 Deinterlace</a></h2>
-<p>TODO</p>
+};</code></pre></div><h2 id="deinterlace"><a href="#deinterlace">13.9 Deinterlace</a></h2>
+<p>And this is probably for <strong>Deinterlacing Videos</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1369-L1378">sun50i-a64-pinephone-1.2.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>deinterlace@1e00000 {
   compatible = &quot;allwinner,sun50i-a64-deinterlace\0allwinner,sun8i-h3-deinterlace&quot;;
   reg = &lt;0x1e00000 0x20000&gt;;
@@ -917,11 +915,10 @@ int FS_memOutput(int address, int value)
   interconnects = &lt;0x57 0x09&gt;;
   interconnect-names = &quot;dma-mem&quot;;
 };</code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1369-L1378">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/pio-schematic.png" alt="LEDs on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LEDs on PinePhone Schematic (Page 11)</em></a></p>
 <h2 id="led"><a href="#led">13.10 LED</a></h2>
-<p>TODO</p>
+<p>PinePhone’s Linux Device Tree describes the <strong>Red, Green and Blue LEDs</strong> like so: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1940-L1963">sun50i-a64-pinephone-1.2.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>leds {
   compatible = &quot;gpio-leds&quot;;
 
@@ -946,23 +943,38 @@ int FS_memOutput(int address, int value)
     retain-state-suspended;
   };
 };</code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1940-L1963">(Source)</a></p>
-<p>From <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf">PinePhone Schematic</a>…</p>
+<p>For the Blue LED, we interpret <strong><code>gpios</code></strong> as…</p>
 <ul>
 <li>
-<p>Red LED: GPIO PD18 (PD18-LED-R)</p>
+<p><strong><code>0x2b</code></strong>: GPIO (I think?)</p>
 </li>
 <li>
-<p>Green LED: GPIO PD19 (PD19-LED-G)</p>
+<p><strong><code>0x03</code></strong>: GPIO Port 3 (PD)</p>
 </li>
 <li>
-<p>Blue LED: GPIO PD20 (PD20-LED-B)</p>
+<p><strong><code>0x14</code></strong>: GPIO Pin 20 (PD20)</p>
+</li>
+<li>
+<p><strong><code>0x00</code></strong>: Unused (I think?)</p>
 </li>
 </ul>
+<p>Based on the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> (page 11, pic above), we know that the LEDs are connected to…</p>
+<ul>
+<li>
+<p><strong>Red LED:</strong> GPIO PD18 (PD18-LED-R)</p>
+</li>
+<li>
+<p><strong>Green LED:</strong> GPIO PD19 (PD19-LED-G)</p>
+</li>
+<li>
+<p><strong>Blue LED:</strong> GPIO PD20 (PD20-LED-B)</p>
+</li>
+</ul>
+<p>Hence the Device Tree matches the PinePhone Schematic.</p>
 <p><img src="https://lupyuen.github.io/images/pio-backlight.png" alt="Backlight on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>Backlight on PinePhone Schematic (Page 11)</em></a></p>
 <h2 id="backlight-pwm"><a href="#backlight-pwm">13.11 Backlight PWM</a></h2>
-<p>TODO</p>
+<p>PinePhone’s Linux Device Tree describes the <strong>Backlight</strong> like this: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1832-L1841">sun50i-a64-pinephone-1.2.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>backlight {
   compatible = &quot;pwm-backlight&quot;;
   pwms = &lt;0x62 0x00 0xc350 0x01&gt;;
@@ -973,16 +985,31 @@ int FS_memOutput(int address, int value)
   default-brightness-level = &lt;0x1f4&gt;;
   phandle = &lt;0x56&gt;;
 };</code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1832-L1841">(Source)</a></p>
-<p>From <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf">PinePhone Schematic</a>…</p>
+<p>We interpret <strong><code>enable-gpios</code></strong> as…</p>
 <ul>
 <li>
-<p>Backlight Enable: GPIO PH10 (PH10-LCD-BL-EN)</p>
+<p><strong><code>0x2b</code></strong>: GPIO (I think?)</p>
 </li>
 <li>
-<p>Backlight PWM: PWM PL10 (PL10-LCD-PWM)</p>
+<p><strong><code>0x07</code></strong>: GPIO Port 7 (PH)</p>
+</li>
+<li>
+<p><strong><code>0x0a</code></strong>: GPIO Pin 10 (PH10)</p>
+</li>
+<li>
+<p><strong><code>0x00</code></strong>: Unused (I think?)</p>
 </li>
 </ul>
+<p>From the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> (page 11, pic above) we see that the Backlight is connected to…</p>
+<ul>
+<li>
+<p><strong>Backlight Enable:</strong> GPIO PH10 (PH10-LCD-BL-EN)</p>
+</li>
+<li>
+<p><strong>Backlight PWM:</strong> PWM PL10 (PL10-LCD-PWM)</p>
+</li>
+</ul>
+<p>Thus the Device Tree matches the PinePhone Schematic.</p>
 <p><img src="https://lupyuen.github.io/images/pio-title.jpg" alt="Blinking the PinePhone LEDs with BASIC… On Apache NuttX RTOS" /></p>
 
     
