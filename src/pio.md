@@ -282,6 +282,8 @@ And we're done lighting up the LEDs on PinePhone!
 
 Let's test it on PinePhone...
 
+![Booting NuttX on PinePhone](https://lupyuen.github.io/images/pio-run1.png)
+
 # Boot NuttX on PinePhone
 
 Now we shall boot [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) on PinePhone, and watch our C program light up the LEDs!
@@ -418,6 +420,8 @@ ph_data_reg=0x400
 [(Watch the Demo on YouTube)](https://youtu.be/MJDxCcKAv0g)
 
 And PinePhone's Backlight lights up!
+
+![Controlling PinePhone's LEDs With BASIC](https://lupyuen.github.io/images/pio-run2.png)
 
 # Control LEDs With BASIC
 
