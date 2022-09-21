@@ -146,7 +146,7 @@ arm64_gic_initialize: no distributor detected, giving up</code></pre></div>
 - Boot to C runtime for OS Initialize
 arm64_gic_initialize: no distributor detected, giving up</code></pre></div>
 <p>When we boot NuttX RTOS, it expects PinePhone to provide a modern <strong>Generic Interrupt Controller (GIC), Version 3</strong>.</p>
-<p>But the <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> (page 210, “GIC”) says that PinePhone runs on…</p>
+<p>But the <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> (page 210, “GIC”) says that PinePhone runs on…</p>
 <ul>
 <li>
 <p><a href="https://developer.arm.com/documentation/ddi0471/b/introduction/about-the-gic-400"><strong>Arm GIC PL400</strong></a>, which is based on…</p>
@@ -183,7 +183,7 @@ GIC Version is 2</code></pre></div>
 <p>Yep PinePhone runs on <strong>GIC Version 2</strong>. Bummer.</p>
 <p><em>What are GICD and GICR?</em></p>
 <p><strong>GICD (GIC Distributor)</strong> and <strong>GICR (GIC CPU Interface)</strong> are the addresses for accessing the GIC on PinePhone.</p>
-<p>According to <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> (page 74, “Memory Mapping”), the GIC is located at…</p>
+<p>According to <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> (page 74, “Memory Mapping”), the GIC is located at…</p>
 <div><table><thead><tr><th style="text-align: left">Module</th><th style="text-align: left">Address</th><th style="text-align: left">Remarks</th></tr></thead><tbody>
 <tr><td style="text-align: left">GIC_DIST</td><td style="text-align: left"><code>0x01C8</code> <code>0000</code> + <code>0x1000</code></td><td style="text-align: left">GIC Distributor (GICD)</td></tr>
 <tr><td style="text-align: left">GIC_CPUIF</td><td style="text-align: left"><code>0x01C8</code> <code>0000</code> + <code>0x2000</code></td><td style="text-align: left">GIC CPU Interface (GICR)</td></tr>

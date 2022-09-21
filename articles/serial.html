@@ -112,14 +112,14 @@
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/uboot-uart1.png" alt="Allwinner A64 UART Controller Registers" /></p>
-<p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><em>Allwinner A64 UART Controller Registers</em></a></p>
+<p><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><em>Allwinner A64 UART Controller Registers</em></a></p>
 <h1 id="uart-controller"><a href="#uart-controller">1 UART Controller</a></h1>
 <p>Our operating system will print some output on PinePhone’s <strong>Serial Debug Console</strong> as it runs. (And receive input too)</p>
 <p>To do that, we’ll talk to the <strong>UART Controller</strong> on the Allwinner A64 SoC…</p>
 <ul>
-<li><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a></li>
+<li><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a></li>
 </ul>
-<p>Flip the <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>A64 User Manual</strong></a> to page 562 (“UART”) and we’ll see the <strong>UART Registers</strong>. (Pic above)</p>
+<p>Flip the <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>A64 User Manual</strong></a> to page 562 (“UART”) and we’ll see the <strong>UART Registers</strong>. (Pic above)</p>
 <p>PinePhone’s Serial Console is connected to <strong>UART0</strong> at Base Address <strong><code>0x01C2</code> <code>8000</code></strong></p>
 <p>Which we define like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L60-L67">arch/arm64/src/qemu/qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Use PinePhone Allwinner A64 UART (instead of QEMU PL011)
@@ -143,9 +143,9 @@
 </ul>
 <p>Let’s read and write UART Data the easier (inefficient) way, via Polling…</p>
 <p><img src="https://lupyuen.github.io/images/uboot-uart2.png" alt="A64 UART Receive and Transmit Registers UART_RBR and UART_THR" /></p>
-<p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><em>A64 UART Receive and Transmit Registers UART_RBR and UART_THR</em></a></p>
+<p><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><em>A64 UART Receive and Transmit Registers UART_RBR and UART_THR</em></a></p>
 <h1 id="uart-with-polling"><a href="#uart-with-polling">2 UART With Polling</a></h1>
-<p>Page 563 of the <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> tells us the UART Registers for <strong>reading and writing UART Data</strong> (pic above)…</p>
+<p>Page 563 of the <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> tells us the UART Registers for <strong>reading and writing UART Data</strong> (pic above)…</p>
 <ul>
 <li>
 <p><strong>Receiver Buffer Register (RBR)</strong></p>
@@ -235,7 +235,7 @@ static bool a64_uart_txempty(struct uart_dev_s *dev)
 }</code></pre></div>
 <p>Moving on from UART Transmit to Receive…</p>
 <p><img src="https://lupyuen.github.io/images/uboot-uart2.png" alt="A64 UART Registers UART_RBR and UART_THR" /></p>
-<p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><em>A64 UART Registers UART_RBR and UART_THR</em></a></p>
+<p><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><em>A64 UART Registers UART_RBR and UART_THR</em></a></p>
 <h2 id="receive-uart"><a href="#receive-uart">2.3 Receive UART</a></h2>
 <p>Now that PinePhone can talk to us, let’s make sure we can talk back!</p>
 <p>Anything that we type into PinePhone’s Serial Console will appear in the <strong>Receiver Buffer Register (RBR)</strong>, byte by byte.</p>
@@ -336,7 +336,7 @@ int ch = a64_uart_receive(NULL, &amp;status);</code></pre></div>
 <p>Received Data becomes available</p>
 </li>
 </ul>
-<p>The <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> (page 211, “GIC”) reveals that UART0 Interrupts will be triggered at <strong>Interrupt Number 32</strong>. (Pic above)</p>
+<p>The <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> (page 211, “GIC”) reveals that UART0 Interrupts will be triggered at <strong>Interrupt Number 32</strong>. (Pic above)</p>
 <p>Let’s <strong>attach our Interrupt Handler</strong> to handle the UART Interrupts: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c#L940-L961">qemu_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// UART0 IRQ Number for PinePhone Allwinner A64 UART
 #define UART_IRQ 32
@@ -401,10 +401,10 @@ static void a64_uart_detach(struct uart_dev_s *dev)
 }</code></pre></div>
 <p>(<strong>TODO</strong>: Check the parameters of <em>arm64_gic_irq_set_priority</em>)</p>
 <p><img src="https://lupyuen.github.io/images/serial-enable.jpg" alt="A64 UART Interrupt Enable Register UART_IER" /></p>
-<p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><em>A64 UART Interrupt Enable Register UART_IER</em></a></p>
+<p><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><em>A64 UART Interrupt Enable Register UART_IER</em></a></p>
 <h2 id="enable-interrupt"><a href="#enable-interrupt">3.2 Enable Interrupt</a></h2>
 <p>UART Interupts won’t happen until we <strong>enable UART Interrupts</strong>. </p>
-<p>Page 565 of the <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> tells us the UART Register for enabling UART Interrupts (pic above)…</p>
+<p>Page 565 of the <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> tells us the UART Register for enabling UART Interrupts (pic above)…</p>
 <ul>
 <li>
 <p><strong>Interrupt Enable Register (UART_IER)</strong></p>
