@@ -459,7 +459,7 @@ When we merge the above with the Register Addresses, we get...
 
     We write the value __`0x1C` `0000`__ to set PD18, 19 and 20 to High.
 
-OK we're ready to do this in BASIC! We'll call __`poke`__ with the above Addresses and Values.
+OK we're ready to do this in BASIC! We'll call [__`poke`__](https://en.wikipedia.org/wiki/PEEK_and_POKE) with the above Addresses and Values.
 
 At the BASIC Prompt, enter this to configure __PD18, 19 and 20 for GPIO Output__...
 
@@ -482,6 +482,8 @@ poke &h1C2087C, &h0
 ```
 
 And watch PinePhone's LEDs switch off!
+
+[(Watch the Demo on YouTube)](https://youtu.be/OTIHMIRd1s4)
 
 _So the `poke` command will write a value to any address?_
 
@@ -519,8 +521,6 @@ Enter these __`peek`__ and __`poke`__ commands to watch the Register Values chan
 > print peek(&h1C2087C)
  1835008  
 ```
-
-[(Watch the Demo on YouTube)](https://youtu.be/OTIHMIRd1s4)
 
 BASIC works great for quick, interactive experiments with PinePhone GPIOs and LEDs!
 
@@ -807,7 +807,7 @@ According to [__Allwinner A64 User Manual__](https://linux-sunxi.org/File:Allwin
 
 -   __TCON0__: For PinePhone's [__Xingbangda XBD599__](https://lupyuen.github.io/articles/pio#mipi-dsi-interface) LCD Display
 
-    ([__MIPI DSI__](https://lupyuen.github.io/articles/pio#mipi-dsi-interface) over [__MIPI D-PHY__](https://lupyuen.github.io/articles/pio#display-phy))
+    (With [__MIPI DSI__](https://lupyuen.github.io/articles/pio#mipi-dsi-interface) and [__MIPI D-PHY__](https://lupyuen.github.io/articles/pio#display-phy))
 
 -   __TCON1__: For HDMI Output
 
@@ -876,6 +876,10 @@ More about PinePhone Display...
 
 _How did we search online for the Linux Driver?_
 
+Suppose we're searching for the Allwinner A64 TCON Driver.
+
+From the Linux Device Tree above, the __"compatible"__ field reveals the name of the driver: _"sun8i-a83t-tcon-lcd"_
+
 Head over to [__GitHub Code Search__](https://github.com/search).
 
 Enter the __Driver Name__, including quotes: _"sun8i-a83t-tcon-lcd"_
@@ -892,7 +896,7 @@ _[Allwinner A64 User Manual (Page 500)](https://linux-sunxi.org/File:Allwinner_A
 
 ## MIPI DSI Interface
 
-Allwinner A64's Timing Controller (TCON0) pumps pixels to PinePhone's LCD Display via the [__Display Serial Interface (DSI)__](https://en.wikipedia.org/wiki/Display_Serial_Interface), as defined by the [__Mobile Industry Processor Interface (MIPI) Alliance__](https://en.wikipedia.org/wiki/MIPI_Alliance).
+Allwinner A64's Timing Controller (TCON0) controls PinePhone's LCD Display via the [__Display Serial Interface (DSI)__](https://en.wikipedia.org/wiki/Display_Serial_Interface), as defined by the [__Mobile Industry Processor Interface (MIPI) Alliance__](https://en.wikipedia.org/wiki/MIPI_Alliance).
 
 PinePhone's Linux Device Tree reveals this about A64's __MIPI DSI Interface__ at Address __`0x1CA` `0000`__: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1327-L1356)
 
@@ -1081,6 +1085,8 @@ deinterlace@1e00000 {
   interconnect-names = "dma-mem";
 };
 ```
+
+Which might not be necessary if we're building a simple Display Driver.
 
 ![LEDs on PinePhone Schematic (Page 11)](https://lupyuen.github.io/images/pio-schematic.png)
 
