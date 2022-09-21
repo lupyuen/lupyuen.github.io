@@ -1045,7 +1045,7 @@ video-codec@1c0e000 {
 
 ## GPU
 
-TODO
+PinePhone's Linux Device Tree talks about the __GPU__ too: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1246-L1256)
 
 ```text
 gpu@1c40000 {
@@ -1061,11 +1061,9 @@ gpu@1c40000 {
 };
 ```
 
-[(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1246-L1256)
-
 ## Deinterlace
 
-TODO
+And this is probably for __Deinterlacing Videos__: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1369-L1378)
 
 ```text
 deinterlace@1e00000 {
@@ -1080,15 +1078,13 @@ deinterlace@1e00000 {
 };
 ```
 
-[(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1369-L1378)
-
 ![LEDs on PinePhone Schematic (Page 11)](https://lupyuen.github.io/images/pio-schematic.png)
 
 [_LEDs on PinePhone Schematic (Page 11)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
 
 ## LED
 
-TODO
+PinePhone's Linux Device Tree describes the __Red, Green and Blue LEDs__ like so: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1940-L1963)
 
 ```text
 leds {
@@ -1117,15 +1113,25 @@ leds {
 };
 ```
 
-[(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1940-L1963)
+For the Blue LED, we interpret __`gpios`__ as...
 
-From [PinePhone Schematic](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)...
+-   __`0x2b`__: GPIO (I think?)
 
--   Red LED: GPIO PD18 (PD18-LED-R)
+-   __`0x03`__: GPIO Port 3 (PD)
 
--   Green LED: GPIO PD19 (PD19-LED-G)
+-   __`0x14`__: GPIO Pin 20 (PD20)
 
--   Blue LED: GPIO PD20 (PD20-LED-B)
+-   __`0x00`__: Unused (I think?)
+
+Based on the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (page 11, pic above), we know that the LEDs are connected to...
+
+-   __Red LED:__ GPIO PD18 (PD18-LED-R)
+
+-   __Green LED:__ GPIO PD19 (PD19-LED-G)
+
+-   __Blue LED:__ GPIO PD20 (PD20-LED-B)
+
+Hence the Device Tree matches the PinePhone Schematic.
 
 ![Backlight on PinePhone Schematic (Page 11)](https://lupyuen.github.io/images/pio-backlight.png)
 
@@ -1133,7 +1139,7 @@ From [PinePhone Schematic](https://files.pine64.org/doc/PinePhone/PinePhone%20v1
 
 ## Backlight PWM
 
-TODO
+PinePhone's Linux Device Tree describes the __Backlight__ like this: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1832-L1841)
 
 ```text
 backlight {
@@ -1148,12 +1154,22 @@ backlight {
 };
 ```
 
-[(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1832-L1841)
+We interpret __`enable-gpios`__ as...
 
-From [PinePhone Schematic](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)...
+-   __`0x2b`__: GPIO (I think?)
 
--   Backlight Enable: GPIO PH10 (PH10-LCD-BL-EN)
+-   __`0x07`__: GPIO Port 7 (PH)
 
--   Backlight PWM: PWM PL10 (PL10-LCD-PWM)
+-   __`0x0a`__: GPIO Pin 10 (PH10)
+
+-   __`0x00`__: Unused (I think?)
+
+From the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (page 11, pic above) we see that the Backlight is connected to...
+
+-   __Backlight Enable:__ GPIO PH10 (PH10-LCD-BL-EN)
+
+-   __Backlight PWM:__ PWM PL10 (PL10-LCD-PWM)
+
+Thus the Device Tree matches the PinePhone Schematic.
 
 ![Blinking the PinePhone LEDs with BASIC... On Apache NuttX RTOS](https://lupyuen.github.io/images/pio-title.jpg)
