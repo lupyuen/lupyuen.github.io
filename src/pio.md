@@ -866,7 +866,7 @@ lcd-controller@1c0c000 {
 };
 ```
 
-Searching online for _"sun8i-a83t-tcon-lcd"_ gives us the __Linux Driver for Allwinner A64 TCON__...
+Searching online for `"sun8i-a83t-tcon-lcd"` gives us the __Linux Driver for Allwinner A64 TCON__...
 
 -   [__sun4i_tcon.c__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun4i_tcon.c)
 
@@ -886,11 +886,11 @@ _How did we search online for the Linux Driver?_
 
 Suppose we're searching for the Allwinner A64 TCON Driver.
 
-From the Linux Device Tree above, the __"compatible"__ field reveals the name of the driver: _"sun8i-a83t-tcon-lcd"_
+From the Linux Device Tree above, the __"compatible"__ field reveals the name of the driver: `sun8i-a83t-tcon-lcd`
 
 Head over to [__GitHub Code Search__](https://github.com/search).
 
-Enter the __Driver Name__, including quotes: _"sun8i-a83t-tcon-lcd"_
+Enter the __Driver Name__, including quotes: `"sun8i-a83t-tcon-lcd"`
 
 Click __"Code"__. Under __"Languages"__, filter by __C Language__.
 
@@ -944,7 +944,7 @@ From above we see that PinePhone is connected to [__Xingbangda XBD599__](https:/
 
 -   [__Sitronix ST7703 LCD Controller Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf)
 
-Searching online for _"xingbangda,xbd599"_ gives us the __Linux Driver for Sitronix ST7703 LCD Controller__...
+Searching online for `"xingbangda,xbd599"` gives us the __Linux Driver for Sitronix ST7703 LCD Controller__...
 
 -   [__panel-sitronix-st7703.c__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c)
 
@@ -952,7 +952,7 @@ In that file, [__xbd599_init_sequence__](https://github.com/torvalds/linux/blob/
 
 (__DSI DCS__ refers to the [__MIPI-DSI Display Command Set__](https://docs.zephyrproject.org/latest/hardware/peripherals/mipi_dsi.html))
 
-Searching online for _"sun50i-a64-mipi-dsi"_ gives us the __Linux Driver for A64 MIPI DSI__...
+Searching online for `"sun50i-a64-mipi-dsi"` gives us the __Linux Driver for A64 MIPI DSI__...
 
 -   [__sun6i_mipi_dsi.c__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c)
 
@@ -985,7 +985,7 @@ d-phy@1ca1000 {
 };
 ```
 
-Searching online for _"sun6i-a31-mipi-dphy"_ uncovers the __Linux Driver for A64 MIPI D-PHY__...
+Searching online for `"sun6i-a31-mipi-dphy"` uncovers the __Linux Driver for A64 MIPI D-PHY__...
 
 -   [__phy-sun6i-mipi-dphy.c__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c)
 
@@ -1039,7 +1039,7 @@ touchscreen@5d {
 };
 ```
 
-Searching online for _"goodix,gt917s"_ gives us this __Linux Driver for Goodix GT917S Touch Panel__...
+Searching online for `"goodix,gt917s"` gives us this __Linux Driver for Goodix GT917S Touch Panel__...
 
 -   [goodix.c](https://github.com/torvalds/linux/blob/master/drivers/input/touchscreen/goodix.c)
 
