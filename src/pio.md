@@ -453,13 +453,13 @@ When we merge the above with the Register Addresses, we get...
 
 OK we're ready to do this in BASIC! We'll call __`poke`__ with the above Addresses and Values.
 
-At the BASIC Prompt, enter this to __configure PD18, 19 and 20__ for GPIO Output...
+At the BASIC Prompt, enter this to configure __PD18, 19 and 20 for GPIO Output__...
 
 ```text
 poke &h1C20874, &h77711177
 ```
 
-Then enter this to __set PD18, 19 and 20__ to High...
+Then enter this to set __PD18, 19 and 20 to High__...
 
 ```text
 poke &h1C2087C, &h1C0000
@@ -467,7 +467,7 @@ poke &h1C2087C, &h1C0000
 
 Yep PinePhone's Red, Green and Blue LEDs turn on and appear as white!
 
-Finally enter this to __set PD18, 19 and 20__ to Low...
+Finally enter this to set __PD18, 19 and 20 to Low__...
 
 ```text
 poke &h1C2087C, &h0
@@ -866,11 +866,13 @@ _How did we search online for the Linux Driver?_
 
 Head over to [__GitHub Code Search__](https://github.com/search).
 
-Enter the keyword, including quotes: _"sun8i-a83t-tcon-lcd"_
+Enter the __Driver Name__, including quotes: _"sun8i-a83t-tcon-lcd"_
 
 Click __"Code"__. Under __"Languages"__, filter by __C Language__.
 
-We'll see a bunch of matching C Source Files. The Linux Driver we need will be located at [__github.com/torvalds/linux__](https://github.com/torvalds/linux)
+We'll see a bunch of matching C Source Files. Take note of the __File Path__, like _"gpu/drm/sun4i/sun4i_tcon.c"_
+
+The Linux Driver we seek shall be located at [__github.com/torvalds/linux/drivers__](https://github.com/torvalds/linux/tree/master/drivers), concatenated with the File Path.
 
 ![Allwinner A64 User Manual (Page 500)](https://lupyuen.github.io/images/pio-tcon0.png)
 
@@ -914,7 +916,7 @@ dsi@1ca0000 {
 };
 ```
 
-From above we see that PinePhone is connected to [__Xingbangda XBD599__](https://patchwork.kernel.org/project/dri-devel/patch/20200311163329.221840-4-icenowy@aosc.io/) 5.99" 720x1440 MIPI-DSI IPS LCD Panel, which is based on __Sitronix ST7703 LCD Controller__...
+From above we see that PinePhone is connected to [__Xingbangda XBD599__](https://patchwork.kernel.org/project/dri-devel/patch/20200311163329.221840-4-icenowy@aosc.io/) 5.99-inch 720x1440 MIPI-DSI IPS LCD Panel, which is based on __Sitronix ST7703 LCD Controller__...
 
 -   [__Sitronix ST7703 LCD Controller Datasheet__](http://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf)
 
@@ -930,7 +932,13 @@ Searching online for _"sun50i-a64-mipi-dsi"_ gives us the __Linux Driver for A64
 
 -   [__sun6i_mipi_dsi.c__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c)
 
-Both Linux Drivers will be a helpful reference for creating our NuttX Driver for A64 MIPI DSI.
+Zephyr OS has a __Generic MIPI DSI Driver__, which might be helpful since it has the same licensing as NuttX RTOS...
+
+-   [__mipi_dsi.h__](https://github.com/zephyrproject-rtos/zephyr/blob/main/include/zephyr/drivers/mipi_dsi.h)
+
+-   [__mipi_dsi.c__](https://github.com/zephyrproject-rtos/zephyr/blob/main/drivers/mipi_dsi/mipi_dsi.c)
+
+-   [__Zephyr Docs for MIPI DSI__](https://docs.zephyrproject.org/latest/hardware/peripherals/mipi_dsi.html)
 
 ## Display PHY
 
