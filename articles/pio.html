@@ -170,7 +170,7 @@
 <p>(There’s also the <strong>Flash LED</strong> for PinePhone’s Back Camera, enabled by <strong>GPIO PC3</strong> and triggered by <strong>GPIO PD24</strong>. See page 10 of the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a>)</p>
 <p>Let’s talk about GPIOs…</p>
 <p><img src="https://lupyuen.github.io/images/pio-register1.png" alt="Allwinner A64 User Manual (Page 376)" /></p>
-<p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><em>Allwinner A64 User Manual (Page 376)</em></a></p>
+<p><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><em>Allwinner A64 User Manual (Page 376)</em></a></p>
 <h1 id="allwinner-a64-port-controller"><a href="#allwinner-a64-port-controller">2 Allwinner A64 Port Controller</a></h1>
 <p><em>How many GPIOs does PinePhone support?</em></p>
 <p>The Allwinner A64 SoC in PinePhone supports a whopping… <strong>103 GPIOs</strong>!</p>
@@ -184,9 +184,9 @@
 <p>Now it becomes clear what we need to do: We shall configure Port D pins 18, 19 and 20 to control the LEDs.</p>
 <p>How will we configure Port D? Let’s study the registers…</p>
 <p><img src="https://lupyuen.github.io/images/pio-register2.png" alt="Allwinner A64 User Manual (Page 376)" /></p>
-<p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><em>Allwinner A64 User Manual (Page 376)</em></a></p>
+<p><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><em>Allwinner A64 User Manual (Page 376)</em></a></p>
 <h1 id="port-controller-registers"><a href="#port-controller-registers">3 Port Controller Registers</a></h1>
-<p>Page 376 of the <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> says that the Port Controller’s <strong>Base Address</strong> is <strong><code>0x01C2</code> <code>0800</code></strong> (pic above)</p>
+<p>Page 376 of the <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> says that the Port Controller’s <strong>Base Address</strong> is <strong><code>0x01C2</code> <code>0800</code></strong> (pic above)</p>
 <p>Which we define like so…</p>
 <div class="example-wrap"><pre class="language-c"><code>// PIO Base Address for PinePhone 
 // Allwinner A64 Port Controller (GPIO)
@@ -212,10 +212,10 @@
 </ul>
 <p>But why <strong>PD_CFG2</strong> instead of PD_CFG0, 1 or 3? Find out next…</p>
 <p><img src="https://lupyuen.github.io/images/pio-register3.png" alt="Allwinner A64 User Manual (Page 387)" /></p>
-<p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><em>Allwinner A64 User Manual (Page 387)</em></a></p>
+<p><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><em>Allwinner A64 User Manual (Page 387)</em></a></p>
 <h1 id="configure-gpio"><a href="#configure-gpio">4 Configure GPIO</a></h1>
 <p>Remember our mission for today is to configure GPIOs <strong>PD18, 19 and 20</strong>.</p>
-<p>Page 387 of the <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> says that all we need is <strong>PD_CFG2</strong> at Offset <strong><code>0x74</code></strong>. (Pic above)</p>
+<p>Page 387 of the <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> says that all we need is <strong>PD_CFG2</strong> at Offset <strong><code>0x74</code></strong>. (Pic above)</p>
 <p><strong>PD_CFG2</strong> is a 32-bit Hardware Register. The bits that we need to twiddle are…</p>
 <ul>
 <li>
@@ -276,10 +276,10 @@ static void test_led(void)
 <p>PD18, 19 and 20 have been configured for GPIO Output!</p>
 <p>Now we set the GPIO Output…</p>
 <p><img src="https://lupyuen.github.io/images/pio-register4.png" alt="Allwinner A64 User Manual (Page 388)" /></p>
-<p><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><em>Allwinner A64 User Manual (Page 388)</em></a></p>
+<p><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><em>Allwinner A64 User Manual (Page 388)</em></a></p>
 <h1 id="set-gpio"><a href="#set-gpio">5 Set GPIO</a></h1>
 <p>Our final job for today: <strong>Set the GPIO Output</strong> for PD18, 19 and 20. So that we can blink the PinePhone LEDs!</p>
-<p>Page 388 of the <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> says that we need to tweak Register <strong>PD_DATA</strong> at Offset <strong><code>0x7C</code></strong>. (Pic above)</p>
+<p>Page 388 of the <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> says that we need to tweak Register <strong>PD_DATA</strong> at Offset <strong><code>0x7C</code></strong>. (Pic above)</p>
 <p>To set PD18, 19 and 20 to High, we set <strong>Bits 18, 19 and 20</strong> of PD_DATA to 1.</p>
 <p>This is how we do it: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L124-L179">hello_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// PIO Base Address for PinePhone Allwinner A64 Port Controller (GPIO)
@@ -615,6 +615,9 @@ pd_data_reg=0x1c0000</code></pre></div>
 <p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
 </li>
 <li>
+<p><a href="https://www.reddit.com/r/PINE64official/comments/xjzack/nuttx_rtos_for_pinephone_blinking_the_leds/"><strong>Discuss this article on Reddit</strong></a></p>
+</li>
+<li>
 <p><a href="https://lupyuen.github.io/articles/book"><strong>My Current Project: “The RISC-V BL602 Book”</strong></a></p>
 </li>
 <li>
@@ -696,11 +699,11 @@ int FS_memOutput(int address, int value)
 </ul>
 <p>Below are the interesting bits from the PinePhone Linux Device Tree: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts">sun50i-a64-pinephone-1.2.dts</a></p>
 <p><img src="https://lupyuen.github.io/images/pio-display.png" alt="Allwinner A64 User Manual (Page 498)" /></p>
-<p><em><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf">Allwinner A64 User Manual (Page 498)</a></em></p>
+<p><em><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf">Allwinner A64 User Manual (Page 498)</a></em></p>
 <h2 id="lcd-controller-tcon0"><a href="#lcd-controller-tcon0">13.1 LCD Controller (TCON0)</a></h2>
 <p>Inside the Allwinner A64 SoC, TCON0 is the <a href="https://www.kernel.org/doc/Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt"><strong>Timing Controller</strong></a> for PinePhone’s LCD Display.</p>
 <p>(Yeah the name sounds odd… A64’s Timing Controller actually works like a huge pixel pump)</p>
-<p>According to <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> (Chapter 6: “Display”, Page 498), A64 has <strong>2 TCON Controllers</strong> (pic above)…</p>
+<p>According to <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> (Chapter 6: “Display”, Page 498), A64 has <strong>2 TCON Controllers</strong> (pic above)…</p>
 <ul>
 <li>
 <p><strong>TCON0</strong>: For PinePhone’s <a href="https://lupyuen.github.io/articles/pio#mipi-dsi-interface"><strong>Xingbangda XBD599</strong></a> LCD Display</p>
@@ -711,7 +714,7 @@ int FS_memOutput(int address, int value)
 </li>
 </ul>
 <p>We shall only concern ourselves with <strong>TCON0</strong>. (Not TCON1)</p>
-<p>(More about TCON in <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>, Section 6.2: “TCON”, Page 500)</p>
+<p>(More about TCON in <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>, Section 6.2: “TCON”, Page 500)</p>
 <p>PinePhone’s Linux Device Tree says this about the <strong>TCON0 Timing Controller</strong> at Address <strong><code>0x1C0</code> <code>C000</code></strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L446-L492">sun50i-a64-pinephone-1.2.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>lcd-controller@1c0c000 {
   compatible = &quot;allwinner,sun50i-a64-tcon-lcd\0allwinner,sun8i-a83t-tcon-lcd&quot;;
@@ -776,7 +779,7 @@ int FS_memOutput(int address, int value)
 <p>We’ll see a bunch of matching C Source Files. Take note of the <strong>File Path</strong>, like <em>“gpu/drm/sun4i/sun4i_tcon.c”</em></p>
 <p>The Linux Driver we seek shall be located at <a href="https://github.com/torvalds/linux/tree/master/drivers"><strong>github.com/torvalds/linux/drivers</strong></a>, concatenated with the File Path.</p>
 <p><img src="https://lupyuen.github.io/images/pio-tcon0.png" alt="Allwinner A64 User Manual (Page 500)" /></p>
-<p><em><a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf">Allwinner A64 User Manual (Page 500)</a></em></p>
+<p><em><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf">Allwinner A64 User Manual (Page 500)</a></em></p>
 <h2 id="mipi-dsi-interface"><a href="#mipi-dsi-interface">13.2 MIPI DSI Interface</a></h2>
 <p>Allwinner A64’s Timing Controller (TCON0) controls PinePhone’s LCD Display via the <a href="https://en.wikipedia.org/wiki/Display_Serial_Interface"><strong>Display Serial Interface (DSI)</strong></a>, as defined by the <a href="https://en.wikipedia.org/wiki/MIPI_Alliance"><strong>Mobile Industry Processor Interface (MIPI) Alliance</strong></a>.</p>
 <p>PinePhone’s Linux Device Tree reveals this about A64’s <strong>MIPI DSI Interface</strong> at Address <strong><code>0x1CA</code> <code>0000</code></strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1327-L1356">sun50i-a64-pinephone-1.2.dts</a></p>
@@ -863,7 +866,7 @@ int FS_memOutput(int address, int value)
 };</code></pre></div>
 <p>We might build a similar Framebuffer Device in NuttX for rendering graphics with the LVGL GUI Library.</p>
 <h2 id="display-engine"><a href="#display-engine">13.5 Display Engine</a></h2>
-<p>According to <a href="https://linux-sunxi.org/File:Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> (Section 6.1: “DE2.0”, Page 499), A64 has a <strong>Display Engine</strong> that handles the display pipeline.</p>
+<p>According to <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> (Section 6.1: “DE2.0”, Page 499), A64 has a <strong>Display Engine</strong> that handles the display pipeline.</p>
 <p>Here’s the definition in PinePhone’s Linux Device Tree: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L98-L102">sun50i-a64-pinephone-1.2.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>display-engine {
   compatible = &quot;allwinner,sun50i-a64-display-engine&quot;;
