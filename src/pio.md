@@ -964,6 +964,8 @@ Zephyr OS has a __Generic MIPI DSI Driver__, which might be helpful since it has
 
 -   [__Zephyr Docs for MIPI DSI__](https://docs.zephyrproject.org/latest/hardware/peripherals/mipi_dsi.html)
 
+-   [__Zephyr Test for MIPI DSI__](https://github.com/zephyrproject-rtos/zephyr-testing/blob/main/tests/drivers/mipi_dsi/api/src/main.c)
+
 ## Display PHY
 
 [__MIPI D-PHY__](https://www.intel.com/content/www/us/en/docs/programmable/683092/current/introduction-to-mipi-d-phy.html) is the __Physical Layer Standard__ for the [__MIPI DSI Protocol__](https://lupyuen.github.io/articles/pio#mipi-dsi-interface).
