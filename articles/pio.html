@@ -342,7 +342,7 @@ Shell (NSH) NuttX-10.3.0-RC2
 nsh&gt; </code></pre></div>
 <p>Enter this command to run our <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c">hello_main.c</a> Test Program…</p>
 <div class="example-wrap"><pre class="language-bash"><code>hello</code></pre></div>
-<p>We see the values of the Registers PD_CFG2 and PD_DATA…</p>
+<p>We see the values of the Registers PD_CFG2 and PD_DATA (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello
 ...
 pd_cfg2_reg=0x77711177
@@ -455,7 +455,7 @@ pd_data_reg=0x1c0000</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pio#appendix-enable-peek-and-poke-in-basic">(<strong><code>poke</code></strong> works for 32-bit addresses, but not 64-bit addresses)</a></p>
 <p><em>Isn’t there a <code>peek</code> command?</em></p>
 <p>Indeed! <a href="https://en.wikipedia.org/wiki/PEEK_and_POKE"><strong><code>peek</code></strong></a> will read the value from an address.</p>
-<p>Enter these <strong><code>peek</code></strong> and <strong><code>poke</code></strong> commands to watch the Register Values change as we configure the GPIOs and blink them…</p>
+<p>Enter these <strong><code>peek</code></strong> and <strong><code>poke</code></strong> commands to watch the Register Values change as we configure the GPIOs and blink them (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>&gt; print peek(&amp;h1C20874)
  2004316535 
 
