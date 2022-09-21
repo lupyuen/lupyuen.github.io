@@ -326,7 +326,7 @@ Enter this command to run our [hello_main.c](https://github.com/lupyuen/incubato
 hello
 ```
 
-We see the values of the Registers PD_CFG2 and PD_DATA...
+We see the values of the Registers PD_CFG2 and PD_DATA (pic above)...
 
 ```text
 nsh> hello
@@ -495,7 +495,7 @@ _Isn't there a `peek` command?_
 
 Indeed! [__`peek`__](https://en.wikipedia.org/wiki/PEEK_and_POKE) will read the value from an address.
 
-Enter these __`peek`__ and __`poke`__ commands to watch the Register Values change as we configure the GPIOs and blink them...
+Enter these __`peek`__ and __`poke`__ commands to watch the Register Values change as we configure the GPIOs and blink them (pic above)...
 
 ```text
 > print peek(&h1C20874)
