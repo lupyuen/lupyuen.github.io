@@ -40,9 +40,9 @@ Let's dive into our __NuttX Porting Journal__ and find out how we blinked the Pi
 
 -   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
 
-![LEDs on PinePhone Schematic](https://lupyuen.github.io/images/pio-schematic.png)
+![LEDs on PinePhone Schematic (Page 11)](https://lupyuen.github.io/images/pio-schematic.png)
 
-[_LEDs on PinePhone Schematic_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
+[_LEDs on PinePhone Schematic (Page 11)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
 
 # PinePhone Schematic
 
@@ -341,9 +341,13 @@ PinePhone's Red, Green and Blue LEDs turn on and appear as white.
 
 Yep we have successfully lit up the LEDs on PinePhone!
 
+![Backlight on PinePhone Schematic (Page 11)](https://lupyuen.github.io/images/pio-backlight.png)
+
+[_Backlight on PinePhone Schematic (Page 11)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
+
 # PinePhone Backlight
 
-Remember we said earlier that __PinePhone's Backlight__ is connected to __GPIO PH10__?
+Remember we said earlier that __PinePhone's Backlight__ is connected to __GPIO PH10__? (Pic above)
 
 To turn on the Backlight, we would need to tweak...
 
@@ -1074,6 +1078,10 @@ deinterlace@1e00000 {
 
 [(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1369-L1378)
 
+![LEDs on PinePhone Schematic (Page 11)](https://lupyuen.github.io/images/pio-schematic.png)
+
+[_LEDs on PinePhone Schematic (Page 11)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
+
 ## LED
 
 TODO
@@ -1114,6 +1122,10 @@ From [PinePhone Schematic](https://files.pine64.org/doc/PinePhone/PinePhone%20v1
 -   Green LED: GPIO PD19 (PD19-LED-G)
 
 -   Blue LED: GPIO PD20 (PD20-LED-B)
+
+![Backlight on PinePhone Schematic (Page 11)](https://lupyuen.github.io/images/pio-backlight.png)
+
+[_Backlight on PinePhone Schematic (Page 11)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
 
 ## Backlight PWM
 
