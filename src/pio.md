@@ -1,6 +1,6 @@
 # NuttX RTOS for PinePhone: Blinking the LEDs
 
-📝 _30 Sep 2022_
+📝 _22 Sep 2022_
 
 ![Blinking the PinePhone LEDs with BASIC... On Apache NuttX RTOS](https://lupyuen.github.io/images/pio-title.webp)
 
@@ -566,11 +566,13 @@ When that happens, we shall access the PinePhone GPIOs through the protected [__
 
 [(How we enabled __`peek`__ and __`poke`__ for the BASIC Interpreter)](https://lupyuen.github.io/articles/pio#appendix-enable-peek-and-poke-in-basic)
 
+![PinePhone's Linux Device Tree](https://lupyuen.github.io/images/pio-devicetree.png)
+
 # Linux Device Tree
 
 _Is there another way to discover the PinePhone Hardware... Without browsing the PinePhone Schematic?_
 
-Yep the __Linux Device Tree__ describes everything about PinePhone Hardware in Text Format...
+Yep the __Linux Device Tree__ describes everything about PinePhone Hardware in Text Format (pic above)...
 
 -   [__"PinePhone Device Tree"__](https://lupyuen.github.io/articles/pio#appendix-pinephone-device-tree)
 
@@ -745,6 +747,8 @@ int FS_memOutput(int address, int value)
 ```
 
 Note that Memory Addresses are passed as 32-bit __`int`__, so some 64-bit addresses will not be accessible via __`peek`__ and __`poke`__.
+
+![PinePhone's Linux Device Tree](https://lupyuen.github.io/images/pio-devicetree.png)
 
 # Appendix: PinePhone Device Tree
 

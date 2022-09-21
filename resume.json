@@ -154,6 +154,13 @@
   ],
   "publications": [
     {
+      "name": "NuttX RTOS for PinePhone: Blinking the LEDs",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2022-09-22",
+      "website": "https://lupyuen.github.io/articles/pio",
+      "summary": "Let's experiment with the GPIO Hardware on Pine64 PinePhone... With a little help from Apache NuttX RTOS"
+    },
+    {
       "name": "NuttX RTOS for PinePhone: UART Driver",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-09-09",

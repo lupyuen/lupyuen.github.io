@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>NuttX RTOS for PinePhone: Blinking the LEDs</title>
+            <link>https://lupyuen.github.io/articles/pio</link>
+            <description><![CDATA[Let's experiment with the GPIO Hardware on Pine64 PinePhone... With a little help from Apache NuttX RTOS]]></description>
+            <guid>https://lupyuen.github.io/articles/pio</guid>
+            <pubDate>Thu, 22 Sep 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>NuttX RTOS for PinePhone: UART Driver</title>
             <link>https://lupyuen.github.io/articles/serial</link>
             <description><![CDATA[Our PinePhone Operating System will be awfully quiet if we don't implement UART Input and Output... Here's how we implemented the UART Driver for Apache NuttX RTOS]]></description>
