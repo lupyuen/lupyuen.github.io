@@ -754,7 +754,7 @@ int FS_memOutput(int address, int value)
     port@1 { ... };
   };
 };</code></pre></div>
-<p>Searching online for <em>“sun8i-a83t-tcon-lcd”</em> gives us the <strong>Linux Driver for Allwinner A64 TCON</strong>…</p>
+<p>Searching online for <code>&quot;sun8i-a83t-tcon-lcd&quot;</code> gives us the <strong>Linux Driver for Allwinner A64 TCON</strong>…</p>
 <ul>
 <li><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun4i_tcon.c"><strong>sun4i_tcon.c</strong></a></li>
 </ul>
@@ -772,9 +772,9 @@ int FS_memOutput(int address, int value)
 </ul>
 <p><em>How did we search online for the Linux Driver?</em></p>
 <p>Suppose we’re searching for the Allwinner A64 TCON Driver.</p>
-<p>From the Linux Device Tree above, the <strong>“compatible”</strong> field reveals the name of the driver: <em>“sun8i-a83t-tcon-lcd”</em></p>
+<p>From the Linux Device Tree above, the <strong>“compatible”</strong> field reveals the name of the driver: <code>sun8i-a83t-tcon-lcd</code></p>
 <p>Head over to <a href="https://github.com/search"><strong>GitHub Code Search</strong></a>.</p>
-<p>Enter the <strong>Driver Name</strong>, including quotes: <em>“sun8i-a83t-tcon-lcd”</em></p>
+<p>Enter the <strong>Driver Name</strong>, including quotes: <code>&quot;sun8i-a83t-tcon-lcd&quot;</code></p>
 <p>Click <strong>“Code”</strong>. Under <strong>“Languages”</strong>, filter by <strong>C Language</strong>.</p>
 <p>We’ll see a bunch of matching C Source Files. Take note of the <strong>File Path</strong>, like <em>“gpu/drm/sun4i/sun4i_tcon.c”</em></p>
 <p>The Linux Driver we seek shall be located at <a href="https://github.com/torvalds/linux/tree/master/drivers"><strong>github.com/torvalds/linux/drivers</strong></a>, concatenated with the File Path.</p>
@@ -816,13 +816,13 @@ int FS_memOutput(int address, int value)
 <ul>
 <li><a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>Sitronix ST7703 LCD Controller Datasheet</strong></a></li>
 </ul>
-<p>Searching online for <em>“xingbangda,xbd599”</em> gives us the <strong>Linux Driver for Sitronix ST7703 LCD Controller</strong>…</p>
+<p>Searching online for <code>&quot;xingbangda,xbd599&quot;</code> gives us the <strong>Linux Driver for Sitronix ST7703 LCD Controller</strong>…</p>
 <ul>
 <li><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c"><strong>panel-sitronix-st7703.c</strong></a></li>
 </ul>
 <p>In that file, <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333"><strong>xbd599_init_sequence</strong></a> describes the ST7703 Commands for initialising the Xingbangda XBD599 LCD Panel.</p>
 <p>(<strong>DSI DCS</strong> refers to the <a href="https://docs.zephyrproject.org/latest/hardware/peripherals/mipi_dsi.html"><strong>MIPI-DSI Display Command Set</strong></a>)</p>
-<p>Searching online for <em>“sun50i-a64-mipi-dsi”</em> gives us the <strong>Linux Driver for A64 MIPI DSI</strong>…</p>
+<p>Searching online for <code>&quot;sun50i-a64-mipi-dsi&quot;</code> gives us the <strong>Linux Driver for A64 MIPI DSI</strong>…</p>
 <ul>
 <li><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c"><strong>sun6i_mipi_dsi.c</strong></a></li>
 </ul>
@@ -852,7 +852,7 @@ int FS_memOutput(int address, int value)
   #phy-cells = &lt;0x00&gt;;
   phandle = &lt;0x53&gt;;
 };</code></pre></div>
-<p>Searching online for <em>“sun6i-a31-mipi-dphy”</em> uncovers the <strong>Linux Driver for A64 MIPI D-PHY</strong>…</p>
+<p>Searching online for <code>&quot;sun6i-a31-mipi-dphy&quot;</code> uncovers the <strong>Linux Driver for A64 MIPI D-PHY</strong>…</p>
 <ul>
 <li><a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c"><strong>phy-sun6i-mipi-dphy.c</strong></a></li>
 </ul>
@@ -887,7 +887,7 @@ int FS_memOutput(int address, int value)
   touchscreen-size-x = &lt;0x2d0&gt;;
   touchscreen-size-y = &lt;0x5a0&gt;;
 };</code></pre></div>
-<p>Searching online for <em>“goodix,gt917s”</em> gives us this <strong>Linux Driver for Goodix GT917S Touch Panel</strong>…</p>
+<p>Searching online for <code>&quot;goodix,gt917s&quot;</code> gives us this <strong>Linux Driver for Goodix GT917S Touch Panel</strong>…</p>
 <ul>
 <li><a href="https://github.com/torvalds/linux/blob/master/drivers/input/touchscreen/goodix.c">goodix.c</a></li>
 </ul>
