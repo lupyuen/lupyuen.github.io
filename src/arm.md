@@ -949,13 +949,15 @@ Stay tuned for updates!
 
 # What's Next
 
-Check out the followup articles...
+Check out the other articles on __NuttX RTOS for PinePhone__...
 
 -   [__"PinePhone boots Apache NuttX RTOS"__](https://lupyuen.github.io/articles/uboot)
 
--   [__"NuttX RTOS on PinePhone: Fixing the Interrupts"__](https://lupyuen.github.io/articles/interrupt)
+-   [__"NuttX RTOS for PinePhone: Fixing the Interrupts"__](https://lupyuen.github.io/articles/interrupt)
 
--   [__"NuttX RTOS on PinePhone: UART Driver"__](https://lupyuen.github.io/articles/serial)
+-   [__"NuttX RTOS for PinePhone: UART Driver"__](https://lupyuen.github.io/articles/serial)
+
+-   [__"NuttX RTOS for PinePhone: Blinking the LEDs"__](https://lupyuen.github.io/articles/pio)
 
 __NuttX on PinePhone__ might take a while to become a __Daily Driver__...
 

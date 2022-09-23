@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _17 Sep 2022_
+📝 _24 Sep 2022_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -16,7 +16,7 @@ Is there a book about the __BL602 / BL604 SoC__ (RISC-V, WiFi and Bluetooth LE) 
 
 _You're reading the book right now!_
 
-Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(65 articles and still growing!)__
+Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(66 articles and still growing!)__
 
 The programs in these articles have been tested on __PineDio Stack BL604__ and __PineCone BL602__, but they should work on other __BL602 and BL604 Boards: Pinenut BL602, DT-BL10, MagicHome BL602__.
 
@@ -561,6 +561,8 @@ Check this book again for future updates...
 -   [__NuttX UART on PinePhone__](https://lupyuen.github.io/articles/serial)
 
 -   [__NuttX GPIO on PinePhone__](https://lupyuen.github.io/articles/pio)
+
+-   [__NuttX Display on PinePhone__](https://lupyuen.github.io/articles/dsi)
 
 -   [__Zig on PinePhone__](https://lupyuen.github.io/articles/pinephone)
 
