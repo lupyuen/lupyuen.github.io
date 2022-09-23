@@ -956,6 +956,12 @@ Searching online for `"sun50i-a64-mipi-dsi"` gives us the __Linux Driver for A64
 
 -   [__sun6i_mipi_dsi.c__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c)
 
+The __MIPI DSI Registers__ are not documented in the A64 User Manual. However they seem to be documented in the __Allwinner A31 User Manual__...
+
+-   [__Allwinner A31 User Manual__](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
+
+    (Section 7.6: "MIPI DSI", Page 836)
+
 Zephyr OS has a __Generic MIPI DSI Driver__, which might be helpful since it has the same licensing as NuttX RTOS...
 
 -   [__mipi_dsi.h__](https://github.com/zephyrproject-rtos/zephyr/blob/main/include/zephyr/drivers/mipi_dsi.h)
