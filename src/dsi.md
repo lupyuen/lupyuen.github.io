@@ -47,3 +47,23 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/dsi.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/dsi.md)
+
+TODO1
+
+![TODO](https://lupyuen.github.io/images/dsi-connector.png)
+
+TODO2
+
+![TODO](https://lupyuen.github.io/images/dsi-sitronix1.png)
+
+TODO3
+
+![TODO](https://lupyuen.github.io/images/dsi-sitronix2.png)
+
+TODO4
+
+![TODO](https://lupyuen.github.io/images/dsi-registers.png)
+
+TODO5
+
+![TODO](https://lupyuen.github.io/images/dsi-datatype.png)
