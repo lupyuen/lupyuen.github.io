@@ -68,7 +68,12 @@
     <h1 class="title">Understanding PinePhone&#39;s Display (MIPI DSI)</h1>
     <nav id="TOC"><ul>
 <li><a href="#from-pinetime-to-pinephone">1 From PineTime To PinePhone</a><ul></ul></li>
-<li><a href="#whats-next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Oct 2022</em></p>
+<li><a href="#mipi-dsi-connector">2 MIPI DSI Connector</a><ul></ul></li>
+<li><a href="#pinephone-vs-pinetime">3 PinePhone vs PineTime</a><ul></ul></li>
+<li><a href="#mipi-dsi-registers">4 MIPI DSI Registers</a><ul></ul></li>
+<li><a href="#mipi-dsi-data-types">5 MIPI DSI Data Types</a><ul></ul></li>
+<li><a href="#todo">6 TODO</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Oct 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/dsi-title.jpg" alt="PinePhone’s LCD Display in the PinePhone Block Diagram" /></p>
 <p>How does <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> control its <strong>LCD Display</strong>?</p>
 <p>Let’s uncover all the secrets about PinePhone’s mysterious LCD Display and its <strong>MIPI Digital Serial Interface</strong>!</p>
@@ -118,7 +123,211 @@ Supersized version of ST7789</p>
 easier to understand
 Start with pinetime and pinedio stack bl604
 St7789</p>
-<h1 id="whats-next"><a href="#whats-next">2 What’s Next</a></h1>
+<h1 id="mipi-dsi-connector"><a href="#mipi-dsi-connector">2 MIPI DSI Connector</a></h1>
+<p>TODO1</p>
+<p><img src="https://lupyuen.github.io/images/dsi-connector.png" alt="TODO" /></p>
+<h1 id="pinephone-vs-pinetime"><a href="#pinephone-vs-pinetime">3 PinePhone vs PineTime</a></h1>
+<p>TODO2</p>
+<p><img src="https://lupyuen.github.io/images/dsi-sitronix1.png" alt="TODO" /></p>
+<p>TODO3</p>
+<p><img src="https://lupyuen.github.io/images/dsi-sitronix2.png" alt="TODO" /></p>
+<h1 id="mipi-dsi-registers"><a href="#mipi-dsi-registers">4 MIPI DSI Registers</a></h1>
+<p>TODO4</p>
+<p><img src="https://lupyuen.github.io/images/dsi-registers.png" alt="TODO" /></p>
+<h1 id="mipi-dsi-data-types"><a href="#mipi-dsi-data-types">5 MIPI DSI Data Types</a></h1>
+<p>TODO5</p>
+<p><img src="https://lupyuen.github.io/images/dsi-datatype.png" alt="TODO" /></p>
+<h1 id="todo"><a href="#todo">6 TODO</a></h1>
+<p>Schematic
+Block Diagram
+<a href="https://en.wikipedia.org/wiki/Display_Serial_Interface">MIPI DSI</a></p>
+<p>MIPI Connector
+Direct to a64
+Clock:
+MIPI-DSI-CKN
+MIPI-DSI-CKP</p>
+<p>4 lanes
+MIPI-DSI-D0P
+MIPI-DSI-D0N
+MIPI-DSI-D1P
+MIPI-DSI-D1N
+MIPI-DSI-D2P
+MIPI-DSI-D2N
+MIPI-DSI-D3P
+MIPI-DSI-D3N
+Why the N and P?
+Because P=NP… Kidding!
+N means Negative, P means Positive
+P and N means differential
+Previously Spi Single lane</p>
+<p><a href="https://www.sitronix.com.tw/en/products/aiot-device-ddi/">AIoT device DDI</a>
+ram vs ramless
+dsi interface</p>
+<p>SPI Interface (SCL, SDA, DCX, …)
+OR
+DSI Interface (CKN, CKP, D0P, D0N, …)
+-&gt; Command Decoder
+Suggests that DSI is just a wrapper over the old ST77xx commands
+&lt;&lt;
+DSI-compliant peripherals support either of two basic modes of operation: Command Mode and Video Mode. Which mode is used depends on the architecture and capabilities of the peripheral. The ST7703 only support Video mode. </p>
+<p>Video Mode refers to operation in which transfers from the host processor to the peripheral take the form of a real-time pixel stream. In normal operation, the driver IC relies on the host processor to provide image data at sufficient bandwidth to avoid flicker or other visible artifacts in the displayed image. Video information should only be transmitted using High Speed Mode. 
+&gt;&gt;</p>
+<p>Lane 0 is special: Bus Turnaround</p>
+<p>Page 19
+&lt;&lt;
+Lane Pair HOST(Master)/ Driver IC(Slave)
+Clock Lane</p>
+<ul>
+<li>Unidirectional Lane</li>
+<li>Clock Only</li>
+<li>Escape mode (ULPS only)
+Data Lane 0</li>
+<li>Bi-directional Lane</li>
+<li>Forward High Speed</li>
+<li>Bi-directional Escape Mode</li>
+<li>Bi-directional LPDT
+Data Lane 1
+Data Lane 2
+Data Lane 3</li>
+<li>Unidirectional Lane</li>
+<li>Forward High Speed</li>
+<li>Escape mode (ULPS only)</li>
+<li>NO LPDT
+Table 5.2: MIPI Interface Configuration
+&gt;&gt;</li>
+</ul>
+<p>Low-Power Data Transmission (LPDT)
+Ultra Low Power State (ULPS)</p>
+<p>&lt;&lt;
+Escape Command Command Type Entry Command Pattern
+(First BitLast Bit Transmitted)
+Low Power Data Transmission 
+Mode 
+1110 0001
+Ultra-Low Power mode 
+Mode 
+0001 1110
+Remote Application Reset 
+Trigger 
+0110 0010
+Tearing Effect 
+Trigger 
+0101 1101
+Acknowledge 
+Trigger 
+0010 0001
+Table 5.5: Escape Mode Commands
+&gt;&gt;</p>
+<p>Page 32
+short packets format include an 8-bit Data ID followed by zero to seven bytes and an 8-bit ECC
+Long packets can be from 6 to 65,541 bytes in length. 
+&lt;&lt;
+SOT: Start of Transmission
+DI(Data ID): 8-bit Contain Virtual Channel Identifier and Data Type.
+Data 0 and Data 1: Packet Data (8+8bit)
+ECC(Error Correction Code): The Error Correction Code allows single-bit errors to be corrected and
+2-bit errors to be detected in the Packet Header.
+Figure 5.23: Structure of the short packet
+&gt;&gt;</p>
+<p>&lt;&lt;
+DI (Data ID)：Contain Virtual Channel Identifier and Data Type.
+WC (Word Count)：8+8 bits The receiver use WC to define packet end.
+ECC (Error Correction Code)：The Error Correction Code allows single-bit errors to be corrected and
+2-bit errors to be detected in the Packet Header.
+PF(Packet Footer)：Mean 16-bit Checksum.
+Figure 5.24: Structure of the long packet
+&gt;&gt;</p>
+<p>No ram buffer
+Need constant refresh
+Tcon</p>
+<p>NuttX Driver
+ST7789 is closest</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/st7789.c">st7789.c</a></p>
+<p>Init the display first
+Maybe the display will light up (backlight)
+Then try to draw some pixels
+TCON might be harder</p>
+<p><a href="https://www.reddit.com/user/immibis/">u/immibis</a></p>
+<p>&lt;&lt;
+I had a go. I was able to instruct the MIPI DSI to run commands (by copying from Linux) but I wasn’t able to receive a response from the screen. Chat reckons that simply doesn’t work. I get the impression what’s in Linux might be just a translated version of the BSP SDK and nobody really knows how it works.</p>
+<p>I ordered a Pine A64 and official touchscreen. Same chip (maybe not the same screen) and should be less fiddly to debug with an oscilloscope.</p>
+<p>MIPI DSI registers are partially documented in the sun6i (whichever chip that is) user manual. I got this hint because the Linux driver files are called sun6i even though the chip is actually sun8i.</p>
+<p>To actually display pixels on the screen you also need to program DE and TCON. I saw something somewhere about a test pattern that might be able to bypass this, and a framebuffer mode that bypasses the mixing IIRC.
+&gt;&gt;</p>
+<p><a href="https://www.reddit.com/r/PINE64official/comments/xjzack/comment/ipd6fsy/?utm_source=share&amp;utm_medium=web2x&amp;context=3">(Source)</a></p>
+<p><a href="https://github.com/zephyrproject-rtos/zephyr-testing/blob/main/tests/drivers/mipi_dsi/api/src/main.c">Zephyr Driver for MIPI DSI</a></p>
+<p>ST7703 Init
+<a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333">panel-sitronix-st7703.c</a>
+Calls dsi_dcs_write_seq
+Calls mipi_dsi_dcs_write</p>
+<p>A64 MIPI DSI Driver
+<a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c">sun6i_mipi_dsi.c</a></p>
+<p>sun6i_dsi_dcs_write_short
+<a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L869-L880">sun6i_mipi_dsi.c</a>
+Calls sun6i_dsi_start(dsi, DSI_START_LPTX);</p>
+<p>sun6i_dsi_dcs_write_long
+<a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L882-L921">sun6i_mipi_dsi.c</a>
+Calls sun6i_dsi_start(dsi, DSI_START_LPTX);
+sun6i_dsi_inst_wait_for_completion</p>
+<p>sun6i_dsi_dcs_read
+<a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L923-L960">sun6i_mipi_dsi.c</a></p>
+<p>sun6i_dsi_transfer
+<a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L996-L1034">sun6i_mipi_dsi.c</a></p>
+<p>sun6i_dsi_start
+<a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L670-L714">sun6i_mipi_dsi.c</a></p>
+<p>sun6i_dsi_encoder_enable
+<a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L716-L795">sun6i_mipi_dsi.c</a></p>
+<p>Calls D-PHY:
+phy_init
+phy_mipi_dphy_get_default_config
+phy_set_mode
+phy_configure
+phy_power_on</p>
+<p>A64 MIPI D-PHY Driver
+<a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c">phy-sun6i-mipi-dphy.c</a></p>
+<p>sun6i_dphy_tx_power_on
+<a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L154-L243">phy-sun6i-mipi-dphy.c</a></p>
+<p>sun6i_dphy_rx_power_on
+<a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L245-L341">phy-sun6i-mipi-dphy.c</a></p>
+<p>sun6i_dphy_power_on
+<a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L343-L355">phy-sun6i-mipi-dphy.c</a></p>
+<p>&lt;&lt; several important registers used by the driver aren’t documented (the command registers) but the basic format is shown in the driver source code &gt;&gt;</p>
+<p>&lt;&lt; You’re right, I can’t find the MIPI DSI Transmit / Receive Registers in the A64 User Manual: SUN6I_DSI_CMD_RX_REG, SUN6I_DSI_CMD_TX_REG &gt;&gt;</p>
+<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L1233">sun6i_mipi_dsi.c</a>
+MODULE_DESCRIPTION(“Allwinner A31 DSI Driver”);</p>
+<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L1215-L1219">sun6i_mipi_dsi.c</a>
+static const struct of_device_id sun6i_dsi_of_table[] = {
+{ .compatible = “allwinner,sun6i-a31-mipi-dsi” },
+{ .compatible = “allwinner,sun50i-a64-mipi-dsi” },
+{ }
+};</p>
+<ul>
+<li><a href="https://linux-sunxi.org/A31">A31</a></li>
+<li><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_Datasheet_v1.5_20150510.pdf">A31 Datasheet</a></li>
+<li><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf">A31 User Manual</a></li>
+</ul>
+<p>&lt;&lt; UPDATE: I found the MIPI DSI Registers in the Allwinner A31 User Manual, page 843 &gt;&gt;</p>
+<p>The <strong>MIPI DSI Registers</strong> are not documented in the A64 User Manual. However they seem to be documented in the <strong>Allwinner A31 User Manual</strong>…</p>
+<ul>
+<li>
+<p><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf"><strong>Allwinner A31 User Manual</strong></a></p>
+<p>(Section 7.6: “MIPI DSI”, Page 836)</p>
+</li>
+</ul>
+<p>7.6.4.30. DSI_CMD_TX_REG
+Page 856
+DSI_CMD_TX_REG 
+0x300+N*0x04
+(N=0~63) 
+DSI LP TX Package Register</p>
+<p>&lt;&lt; That’s probably the one, but the module is running a little instruction set and the manual conspicuously omits any description of the instructions or even the registers where you put the instructions. &gt;&gt;</p>
+<p>Packet Header: 32-bits
+sun6i_dsi_dcs_build_pkt_hdr
+<a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L850-L867">sun6i_mipi_dsi.c</a></p>
+<p>Data Type = MIPI_DSI_DCS_LONG_WRITE</p>
+<p><a href="https://github.com/torvalds/linux/blob/master/include/video/mipi_display.h#L47">mipi_display.h</a>
+MIPI_DSI_DCS_LONG_WRITE				= 0x39,</p>
+<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>And eventually we shall build NuttX Drivers for PinePhone’s <a href="https://lupyuen.github.io/articles/pio#lcd-controller-tcon0"><strong>LCD Display</strong></a> and <a href="https://lupyuen.github.io/articles/pio#touch-panel"><strong>Touch Panel</strong></a>!</p>
 <p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
@@ -157,16 +366,6 @@ St7789</p>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/dsi.md"><strong>lupyuen.github.io/src/dsi.md</strong></a></p>
-<p>TODO1</p>
-<p><img src="https://lupyuen.github.io/images/dsi-connector.png" alt="TODO" /></p>
-<p>TODO2</p>
-<p><img src="https://lupyuen.github.io/images/dsi-sitronix1.png" alt="TODO" /></p>
-<p>TODO3</p>
-<p><img src="https://lupyuen.github.io/images/dsi-sitronix2.png" alt="TODO" /></p>
-<p>TODO4</p>
-<p><img src="https://lupyuen.github.io/images/dsi-registers.png" alt="TODO" /></p>
-<p>TODO5</p>
-<p><img src="https://lupyuen.github.io/images/dsi-datatype.png" alt="TODO" /></p>
 
     
 </body>
