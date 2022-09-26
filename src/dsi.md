@@ -12,7 +12,7 @@ Let's uncover all the secrets about PinePhone's mysterious LCD Display and its _
 
 -   What's inside PinePhone's LCD Display
 
--   How is it similar to PineTime's ST7789 Display Controller
+-   How it's similar to PineTime's ST7789 Display Controller
 
 -   One lane for Commands, but 4 lanes for Data!
 
@@ -32,13 +32,23 @@ We'll come back to this. Let's continue the journey from our __NuttX Porting Jou
 
 -   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
 
-# Before We Start
+# From PineTime To PinePhone
 
-_Does PinePhone's Display have anything in common with PineTime Smartwatch?_
+_Why PineTime Smartwatch? Is it really similar to PinePhone's Display?_
 
 Sounds unbelievable, but PineTime's __ST7789 Display Controller__ has plenty in common with PinePhone's Display!
 
 TODO
+
+The same ST7789 Display Controller is found in Pine64's PineDio Stack BL604...
+
+Init Commands
+
+SPI: Data / Command
+
+One Lane for Data and Commands
+
+RAM vs RAM-less
 
 Monstrously complicated
 today we shall uncover the mysteries
