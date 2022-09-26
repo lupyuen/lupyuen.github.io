@@ -12,7 +12,7 @@ Below are the Presentation Slides for...
 
 ## Visual Programming with Zig and NuttX Sensors
 
-[__Video Presentation__](https://drive.google.com/file/d/1_UFFZCFoY1Uy3GD5pS5uHpbNowBQ4NVW/view?usp=sharing)
+[__Video Presentation__](https://youtu.be/1O5Eb8bKxXA)
 
 [__Presentation Slides__](https://docs.google.com/presentation/d/1IzSqs9p9Kmb6_vVl2E_LuKmKNXB3btu7-ghxRZJfyXc/edit?usp=sharing&authuser=0)
 
@@ -42,7 +42,7 @@ References:
 
 ## NuttX on a RISC-V IoT Gadget: PineDio Stack BL604
 
-[__Video Presentation__](https://drive.google.com/file/d/1WQOG9Xi2YUOHMgSQ9ce0CFqLqxPinvak/view?usp=sharing)
+[__Video Presentation__](https://youtu.be/_vADRu939sI)
 
 [__Presentation Slides__](https://docs.google.com/presentation/d/1xEGRwYbrngK7CdqU3jsALq-5xzB5skL0FrIQZ26WqXg/edit?usp=sharing&authuser=0)
 
@@ -74,7 +74,7 @@ References:
 
 ## Simpler, safer LVGL Touchscreen Apps with Zig and NuttX
 
-[__Video Presentation__](https://drive.google.com/file/d/1DlKGrTFBGMvajVbnaUyPzhZfK9s2q8p9/view?usp=sharing)
+[__Video Presentation__](https://youtu.be/-2OIHur8X1E)
 
 [__Presentation Slides__](https://docs.google.com/presentation/d/1uFCxfNQjWVEWeM3vaHyYKe0soiRMc1LCnfYC4XleMgY/edit?usp=sharing&authuser=0)
 
