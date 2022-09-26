@@ -42,36 +42,45 @@ _Why PineTime Smartwatch? Is it really similar to PinePhone's Display?_
 
 Sounds unbelievable, but PineTime's __ST7789 Display Controller__ has plenty in common with PinePhone's Display!
 
-TODO
+(Think of PinePhone as a Super-Sized PineTime)
 
-The same ST7789 Display Controller is found in Pine64's PineDio Stack BL604...
+In this article we shall explain PinePhone's Display by __comparing it with PineTime__.
 
-Init Commands
+A quick recap of __PineTime's ST7789 Display__...
 
-SPI: Data / Command
+-   PineTime talks to its display over SPI (single data lane)...
 
-["Initialise The Display"](https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot#initialise-the-display)
+    [__"Connect ST7789 Display"__](https://lupyuen.github.io/articles/st7789#connect-st7789-display)
 
-["Draw A Line"](https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot#draw-a-line)
+    (We'll soon see that PinePhone talks to its display over 4 data lanes)
 
-["ST7789 Data / Command Pin"](https://lupyuen.github.io/articles/st7789#st7789-data--command-pin)
+-   PineTime uses an extra pin to indicate whether it's sending Commands or Data
 
-One Lane for Data and Commands
+    [__"ST7789 Data / Command Pin"__](https://lupyuen.github.io/articles/st7789#st7789-data--command-pin)
 
-RAM vs RAM-less
+    (PinePhone won't need this)
 
-Monstrously complicated
-today we shall uncover the mysteries
-Supersized version of ST7789
+-   At startup, PineTime sends a bunch of Commands to initialise the display...
 
-st7789 articles
-easier to understand
-Start with pinetime and pinedio stack bl604
-St7789
+    [__"Initialise The Display"__](https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot#initialise-the-display)
 
-_OK we have read the docs! Please move on!_
+    (PinePhone will send similar Commands)
 
-OK great!
+-   PineTime renders a rectangular chunk of the display at a time...
+
+    [__"Draw A Line"__](https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot#draw-a-line)
+
+    (PinePhone will refresh its entire display continously)
+
+If we're not familiar with PineTime's ST7789 Display, please read the docs above!
+
+_We've read the docs, please move on!_
+
+OK great! To understand how PinePhone's Display differs from PineTime, let's begin with the schematic...
+
+![LCD Display in PinePhone Schematic (Page 2)](https://lupyuen.github.io/images/dsi-title.jpg)
+
+[_LCD Display in PinePhone Schematic (Page 2)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
 
 # PinePhone Schematic
 
