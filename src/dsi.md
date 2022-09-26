@@ -103,11 +103,27 @@ TODO
 
 ![TODO](https://lupyuen.github.io/images/dsi-registers.png)
 
+TODO
+
+![TODO](https://lupyuen.github.io/images/dsi-registers2.png)
+
 # Data Types for MIPI DSI
 
 TODO
 
 ![TODO](https://lupyuen.github.io/images/dsi-datatype.png)
+
+# Video Mode for MIPI DSI
+
+TODO
+
+![TODO](https://lupyuen.github.io/images/dsi-modes.png)
+
+# Transmit over MIPI DSI
+
+TODO
+
+![TODO](https://lupyuen.github.io/images/dsi-tx.png)
 
 # TODO
 
