@@ -50,6 +50,12 @@ Init Commands
 
 SPI: Data / Command
 
+["Initialise The Display"](https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot#initialise-the-display)
+
+["Draw A Line"](https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot#draw-a-line)
+
+["ST7789 Data / Command Pin"](https://lupyuen.github.io/articles/st7789#st7789-data--command-pin)
+
 One Lane for Data and Commands
 
 RAM vs RAM-less
@@ -63,31 +69,43 @@ easier to understand
 Start with pinetime and pinedio stack bl604
 St7789
 
-# MIPI DSI Connector
+_OK we have read the docs! Please move on!_
 
-TODO1
+OK great!
+
+# PinePhone Schematic
+
+TODO
+
+# What Is MIPI DSI
+
+TODO
+
+# Connector for MIPI DSI
+
+TODO
 
 ![TODO](https://lupyuen.github.io/images/dsi-connector.png)
 
 # PinePhone vs PineTime
 
-TODO2
+TODO
 
 ![TODO](https://lupyuen.github.io/images/dsi-sitronix1.png)
 
-TODO3
+TODO
 
 ![TODO](https://lupyuen.github.io/images/dsi-sitronix2.png)
 
-# MIPI DSI Registers
+# Registers for MIPI DSI
 
-TODO4
+TODO
 
 ![TODO](https://lupyuen.github.io/images/dsi-registers.png)
 
-# MIPI DSI Data Types
+# Data Types for MIPI DSI
 
-TODO5
+TODO
 
 ![TODO](https://lupyuen.github.io/images/dsi-datatype.png)
 
