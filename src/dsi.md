@@ -2,7 +2,7 @@
 
 📝 _7 Oct 2022_
 
-![PinePhone's LCD Display](https://lupyuen.github.io/images/dsi-title.jpg)
+![PinePhone's LCD Display in the PinePhone Block Diagram](https://lupyuen.github.io/images/dsi-title.jpg)
 
 How does [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) control its __LCD Display__?
 
@@ -31,6 +31,10 @@ That's why we're probing the internals of PinePhone to create a __NuttX Display 
 We'll come back to this. Let's continue the journey from our __NuttX Porting Journal__...
 
 -   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
+
+![PineTime Smartwatch](https://lupyuen.github.io/images/dsi-pinetime.jpg)
+
+_PineTime Smartwatch with ST7789 Display Controller_
 
 # From PineTime To PinePhone
 
