@@ -93,17 +93,16 @@
 </li>
 </ul>
 <p><em>Why are we doing this?</em></p>
-<p>TODO</p>
-<p>We’re now porting <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> to PinePhone
-But it wouldn’t be interesting
-Until we show something on the display!
-Creating a NuttX Driver
-We’ll come back to this</p>
-<p>Let’s continue the journey from our <strong>NuttX Porting Journal</strong>…</p>
+<p>We’re now porting <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> to PinePhone.</p>
+<p>But it will look awfully dull until we <strong>render something</strong> on PinePhone’s LCD Display!</p>
+<p>That’s why we’re probing the internals of PinePhone to create a <strong>NuttX Display Driver</strong>.</p>
+<p>We’ll come back to this. Let’s continue the journey from our <strong>NuttX Porting Journal</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
 </ul>
 <h1 id="before-we-start"><a href="#before-we-start">1 Before We Start</a></h1>
+<p><em>Does PinePhone’s Display have anything in common with PineTime Smartwatch?</em></p>
+<p>Sounds unbelievable, but PineTime’s <strong>ST7789 Display Controller</strong> has plenty in common with PinePhone’s Display!</p>
 <p>TODO</p>
 <p>Monstrously complicated
 today we shall uncover the mysteries
