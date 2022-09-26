@@ -101,10 +101,6 @@ TODO
 
 TODO
 
-![TODO](https://lupyuen.github.io/images/dsi-registers.png)
-
-TODO
-
 ![TODO](https://lupyuen.github.io/images/dsi-registers2.png)
 
 # Data Types for MIPI DSI
