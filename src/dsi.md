@@ -6,13 +6,15 @@
 
 How does [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) control its __LCD Display__?
 
-Let's find out everything about PinePhone's mysterious LCD Display and its __MIPI Digital Serial Interface__!
+Let's uncover all the secrets about PinePhone's mysterious LCD Display and its __MIPI Digital Serial Interface__!
 
 -   What's a MIPI Digital Serial Interface (DSI)
 
 -   What's inside PinePhone's LCD Display
 
 -   How is it similar to PineTime's ST7789 Display Controller
+
+-   One lane for Commands, but 4 lanes for Data!
 
 -   Implications of a RAM-less Display Controller
 
@@ -28,7 +30,7 @@ Until we show something on the display!
 Creating a NuttX Driver
 We'll come back to this
 
-Let's dive into our __NuttX Porting Journal__...
+Let's continue the journey from our __NuttX Porting Journal__...
 
 -   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
 
