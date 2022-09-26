@@ -22,19 +22,21 @@ Let's uncover all the secrets about PinePhone's mysterious LCD Display and its _
 
 _Why are we doing this?_
 
-TODO
+We're now porting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) to PinePhone.
 
-We're now porting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) to PinePhone
-But it wouldn't be interesting
-Until we show something on the display!
-Creating a NuttX Driver
-We'll come back to this
+But it will look awfully dull until we __render something__ on PinePhone's LCD Display!
 
-Let's continue the journey from our __NuttX Porting Journal__...
+That's why we're probing the internals of PinePhone to create a __NuttX Display Driver__.
+
+We'll come back to this. Let's continue the journey from our __NuttX Porting Journal__...
 
 -   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
 
 # Before We Start
+
+_Does PinePhone's Display have anything in common with PineTime Smartwatch?_
+
+Sounds unbelievable, but PineTime's __ST7789 Display Controller__ has plenty in common with PinePhone's Display!
 
 TODO
 
