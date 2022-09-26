@@ -76,13 +76,25 @@ If we're not familiar with PineTime's ST7789 Display, please read the docs above
 
 _We've read the docs, please move on!_
 
-OK great! To understand how PinePhone's Display differs from PineTime, let's begin with the schematic...
+OK great! To understand how PinePhone's Display differs from PineTime, we begin with the schematic...
 
 ![LCD Display in PinePhone Schematic (Page 2)](https://lupyuen.github.io/images/dsi-title.jpg)
 
 [_LCD Display in PinePhone Schematic (Page 2)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
 
 # PinePhone Schematic
+
+Let's turn to Page 2 of the __PinePhone Schematic__ to understand how PinePhone's Display is connected...
+
+-   [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)  
+
+From the pic above, we see that the LCD Display is connected to the Allwinner A64 SoC via a __MIPI Digital Serial Interface (DSI)__.
+
+[(MIPI is the __Mobile Industry Processor Interface Alliance__)](https://en.wikipedia.org/wiki/MIPI_Alliance)
+
+_What's a MIPI Digital Serial Interface?_
+
+Think of it as SPI, but supercharged with __Multiple Data Lanes__!
 
 TODO
 
