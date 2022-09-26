@@ -67,7 +67,7 @@
 
     <h1 class="title">Understanding PinePhone&#39;s Display (MIPI DSI)</h1>
     <nav id="TOC"><ul>
-<li><a href="#before-we-start">1 Before We Start</a><ul></ul></li>
+<li><a href="#from-pinetime-to-pinephone">1 From PineTime To PinePhone</a><ul></ul></li>
 <li><a href="#whats-next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Oct 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/dsi-title.jpg" alt="PinePhone’s LCD Display" /></p>
 <p>How does <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> control its <strong>LCD Display</strong>?</p>
@@ -80,7 +80,7 @@
 <p>What’s inside PinePhone’s LCD Display</p>
 </li>
 <li>
-<p>How is it similar to PineTime’s ST7789 Display Controller</p>
+<p>How it’s similar to PineTime’s ST7789 Display Controller</p>
 </li>
 <li>
 <p>One lane for Commands, but 4 lanes for Data!</p>
@@ -100,10 +100,15 @@
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
 </ul>
-<h1 id="before-we-start"><a href="#before-we-start">1 Before We Start</a></h1>
-<p><em>Does PinePhone’s Display have anything in common with PineTime Smartwatch?</em></p>
+<h1 id="from-pinetime-to-pinephone"><a href="#from-pinetime-to-pinephone">1 From PineTime To PinePhone</a></h1>
+<p><em>Why PineTime Smartwatch? Is it really similar to PinePhone’s Display?</em></p>
 <p>Sounds unbelievable, but PineTime’s <strong>ST7789 Display Controller</strong> has plenty in common with PinePhone’s Display!</p>
 <p>TODO</p>
+<p>The same ST7789 Display Controller is found in Pine64’s PineDio Stack BL604…</p>
+<p>Init Commands</p>
+<p>SPI: Data / Command</p>
+<p>One Lane for Data and Commands</p>
+<p>RAM vs RAM-less</p>
 <p>Monstrously complicated
 today we shall uncover the mysteries
 Supersized version of ST7789</p>
