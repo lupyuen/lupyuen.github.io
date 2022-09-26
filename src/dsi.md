@@ -8,13 +8,13 @@ How does [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) con
 
 Let's find out everything about PinePhone's mysterious LCD Display and its __MIPI Digital Serial Interface__!
 
--   What is MIPI Digital Serial Interface
+-   What's a MIPI Digital Serial Interface (DSI)
 
 -   What's inside PinePhone's LCD Display
 
 -   How is it similar to PineTime's ST7789 Display Controller
 
--   What's the implication of a RAM-less Display Controller
+-   Implications of a RAM-less Display Controller
 
 -   What is PinePhone's Timing Controller (TCON)
 
@@ -22,12 +22,19 @@ _Why are we doing this?_
 
 TODO
 
-We're now porting NuttX to PinePhone
+We're now porting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) to PinePhone
 But it wouldn't be interesting
 Until we show something on the display!
 Creating a NuttX Driver
 We'll come back to this
 
+Let's dive into our __NuttX Porting Journal__...
+
+-   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
+
+# Before We Start
+
+TODO
 
 Monstrously complicated
 today we shall uncover the mysteries
@@ -37,13 +44,6 @@ st7789 articles
 easier to understand
 Start with pinetime and pinedio stack bl604
 St7789
-
-
-[__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot)
-
-Let's dive into our __NuttX Porting Journal__...
-
--   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
 
 # What's Next
 
