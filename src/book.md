@@ -240,6 +240,8 @@ For __Apache NuttX RTOS__
 
 -   [__"Build an LVGL Touchscreen App with Zig"__](https://lupyuen.github.io/articles/lvgl)
 
+-   [__"Simpler, safer LVGL Touchscreen Apps with Zig and NuttX" (Presentation)__](https://lupyuen.github.io/nuttx#simpler-safer-lvgl-touchscreen-apps-with-zig-and-nuttx)
+
 For __BL602 IoT SDK__
 
 -   [__"PineCone BL602 Blasting Pixels to ST7789 Display with LVGL Library"__](https://lupyuen.github.io/articles/display)
@@ -344,7 +346,11 @@ For __Apache NuttX RTOS__
 
 -   [__"Visual Programming with Zig and NuttX Sensors"__](https://lupyuen.github.io/articles/visual)
 
+-   [__"Visual Programming with Zig and NuttX Sensors" (Presentation)__](https://lupyuen.github.io/nuttx#visual-programming-with-zig-and-nuttx-sensors)
+
 -   [__"Build an LVGL Touchscreen App with Zig"__](https://lupyuen.github.io/articles/lvgl)
+
+-   [__"Simpler, safer LVGL Touchscreen Apps with Zig and NuttX" (Presentation)__](https://lupyuen.github.io/nuttx#simpler-safer-lvgl-touchscreen-apps-with-zig-and-nuttx)
 
 ![Rust on BL602](https://lupyuen.github.io/images/book-rust.jpg)
 
@@ -405,6 +411,8 @@ For __Apache NuttX RTOS__
 -   [__"Zig Visual Programming with Blockly"__](https://lupyuen.github.io/articles/blockly)
 
 -   [__"Visual Programming with Zig and NuttX Sensors"__](https://lupyuen.github.io/articles/visual)
+
+-   [__"Visual Programming with Zig and NuttX Sensors" (Presentation)__](https://lupyuen.github.io/nuttx#visual-programming-with-zig-and-nuttx-sensors)
 
 For __BL602 IoT SDK__
 
@@ -485,6 +493,8 @@ Sneak preview of the new __PineDio Stack BL604__ with ST7789 Display and onboard
 For __Apache NuttX RTOS__
 
 -   [__"PineDio Stack BL604 runs Apache NuttX RTOS"__](https://lupyuen.github.io/articles/pinedio2)
+
+-   [__"NuttX on a RISC-V IoT Gadget: PineDio Stack BL604" (Presentation)__](https://lupyuen.github.io/nuttx#nuttx-on-a-risc-v-iot-gadget-pinedio-stack-bl604)
 
 -   [__"NuttX Touch Panel Driver for PineDio Stack BL604"__](https://lupyuen.github.io/articles/touch)
 

@@ -4,6 +4,27 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>NuttX on a RISC-V IoT Gadget: PineDio Stack BL604</title>
+            <link>https://lupyuen.github.io/nuttx#nuttx-on-a-risc-v-iot-gadget-pinedio-stack-bl604</link>
+            <description><![CDATA[Pine64’s PineDio Stack BL604 is a RISC-V board that’s packed with IoT features: Touchscreen, LoRa, WiFi, BLE, GPS and more. In this presentation we’ll talk about the porting of NuttX to PineDio Stack, how we simplified the developer onboarding, and our plans to support LoRaWAN and LVGL Apps in Zig.]]></description>
+            <guid>https://lupyuen.github.io/nuttx#nuttx-on-a-risc-v-iot-gadget-pinedio-stack-bl604</guid>
+            <pubDate>Sun, 25 Sep 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Visual Programming with Zig and NuttX Sensors</title>
+            <link>https://lupyuen.github.io/nuttx#visual-programming-with-zig-and-nuttx-sensors</link>
+            <description><![CDATA[What if we could drag-and-drop NuttX Sensors to create IoT Apps? In this presentation we’ll explore Blockly, the web-based toolkit for Visual Programming, and how we might customise Blockly to create NuttX Sensor Apps. We’ll also discuss the Zig Programming Language, and why Blockly will generate NuttX Sensor Apps as Zig programs.]]></description>
+            <guid>https://lupyuen.github.io/nuttx#visual-programming-with-zig-and-nuttx-sensors</guid>
+            <pubDate>Sat, 24 Sep 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Simpler, safer LVGL Touchscreen Apps with Zig and NuttX</title>
+            <link>https://lupyuen.github.io/nuttx#simpler-safer-lvgl-touchscreen-apps-with-zig-and-nuttx</link>
+            <description><![CDATA[Is there a simpler and safer way to code Touchscreen Apps with the LVGL Graphics Library? In this presentation we’ll talk about migrating a NuttX LVGL App from C to Zig, and the benefits that it brings.]]></description>
+            <guid>https://lupyuen.github.io/nuttx#simpler-safer-lvgl-touchscreen-apps-with-zig-and-nuttx</guid>
+            <pubDate>Sat, 24 Sep 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>NuttX RTOS for PinePhone: Blinking the LEDs</title>
             <link>https://lupyuen.github.io/articles/pio</link>
             <description><![CDATA[Let's experiment with the GPIO Hardware on Pine64 PinePhone... With a little help from Apache NuttX RTOS]]></description>

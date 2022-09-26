@@ -154,6 +154,27 @@
   ],
   "publications": [
     {
+      "name": "NuttX on a RISC-V IoT Gadget: PineDio Stack BL604",
+      "publisher": "NuttX Online Workshop 2022",
+      "releaseDate": "2022-09-25",
+      "website": "https://lupyuen.github.io/nuttx#nuttx-on-a-risc-v-iot-gadget-pinedio-stack-bl604",
+      "summary": "Pine64’s PineDio Stack BL604 is a RISC-V board that’s packed with IoT features: Touchscreen, LoRa, WiFi, BLE, GPS and more. In this presentation we’ll talk about the porting of NuttX to PineDio Stack, how we simplified the developer onboarding, and our plans to support LoRaWAN and LVGL Apps in Zig."
+    },
+    {
+      "name": "Visual Programming with Zig and NuttX Sensors",
+      "publisher": "NuttX Online Workshop 2022",
+      "releaseDate": "2022-09-24",
+      "website": "https://lupyuen.github.io/nuttx#visual-programming-with-zig-and-nuttx-sensors",
+      "summary": "What if we could drag-and-drop NuttX Sensors to create IoT Apps? In this presentation we’ll explore Blockly, the web-based toolkit for Visual Programming, and how we might customise Blockly to create NuttX Sensor Apps. We’ll also discuss the Zig Programming Language, and why Blockly will generate NuttX Sensor Apps as Zig programs."
+    },
+    {
+      "name": "Simpler, safer LVGL Touchscreen Apps with Zig and NuttX",
+      "publisher": "NuttX Online Workshop 2022",
+      "releaseDate": "2022-09-24",
+      "website": "https://lupyuen.github.io/nuttx#simpler-safer-lvgl-touchscreen-apps-with-zig-and-nuttx",
+      "summary": "Is there a simpler and safer way to code Touchscreen Apps with the LVGL Graphics Library? In this presentation we’ll talk about migrating a NuttX LVGL App from C to Zig, and the benefits that it brings."
+    },
+    {
       "name": "NuttX RTOS for PinePhone: Blinking the LEDs",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-09-22",
