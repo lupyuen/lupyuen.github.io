@@ -182,7 +182,7 @@ Let's probe deeper...
 
 _Sitronix ST7703 sounds familiar?_
 
-Sitronix makes the LCD Controllers for BOTH PineTime and PinePhone!
+Yep Sitronix makes the LCD Controllers for BOTH PineTime and PinePhone!
 
 In fact they're from the [__same family__](https://www.sitronix.com.tw/en/products/aiot-device-ddi/) of LCD Controllers. (ST7789 vs ST7703)
 
@@ -202,7 +202,7 @@ _What's the implication of a RAM-less display?_
 
 Because PinePhone's LCD Controller doesn't have any RAM inside to remember the pixels drawn...
 
-PinePhone's A64 SoC will need to __pump a constant stream of pixels__ to refresh the display.
+PinePhone's A64 SoC will __pump a constant stream of pixels__ to refresh the display.
 
 (Yep PinePhone is way more complicated than PineTime!)
 
