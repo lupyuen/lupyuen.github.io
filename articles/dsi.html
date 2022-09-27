@@ -72,13 +72,12 @@
 <li><a href="#connector-for-mipi-dsi">3 Connector for MIPI DSI</a><ul></ul></li>
 <li><a href="#xingbangda-xbd599-lcd-panel">4 Xingbangda XBD599 LCD Panel</a><ul></ul></li>
 <li><a href="#sitronix-st7703-lcd-controller">5 Sitronix ST7703 LCD Controller</a><ul></ul></li>
-<li><a href="#pinephone-vs-pinetime">6 PinePhone vs PineTime</a><ul></ul></li>
-<li><a href="#registers-for-mipi-dsi">7 Registers for MIPI DSI</a><ul></ul></li>
-<li><a href="#data-types-for-mipi-dsi">8 Data Types for MIPI DSI</a><ul></ul></li>
-<li><a href="#video-mode-for-mipi-dsi">9 Video Mode for MIPI DSI</a><ul></ul></li>
-<li><a href="#transmit-over-mipi-dsi">10 Transmit over MIPI DSI</a><ul></ul></li>
-<li><a href="#todo">11 TODO</a><ul></ul></li>
-<li><a href="#whats-next">12 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Oct 2022</em></p>
+<li><a href="#registers-for-mipi-dsi">6 Registers for MIPI DSI</a><ul></ul></li>
+<li><a href="#data-types-for-mipi-dsi">7 Data Types for MIPI DSI</a><ul></ul></li>
+<li><a href="#video-mode-for-mipi-dsi">8 Video Mode for MIPI DSI</a><ul></ul></li>
+<li><a href="#transmit-over-mipi-dsi">9 Transmit over MIPI DSI</a><ul></ul></li>
+<li><a href="#todo">10 TODO</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Oct 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/dsi-title.jpg" alt="PinePhone’s LCD Display in the PinePhone Block Diagram" /></p>
 <p>How does <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> control its <strong>LCD Display</strong>?</p>
 <p>Let’s uncover all the secrets about PinePhone’s mysterious LCD Display and its <strong>MIPI Digital Serial Interface</strong>!</p>
@@ -172,18 +171,18 @@
 <p>(Similar to SPI Clock)</p>
 </li>
 <li>
-<p><strong>D0P and D0N</strong> are for DSI Data Lane 0</p>
+<p><strong>D0P and D0N</strong> for DSI Data Lane 0</p>
 <p>(Similar to SPI MISO / MOSI)</p>
 </li>
 <li>
-<p><strong>D1P and D1P</strong> are for DSI Data Line 1</p>
+<p><strong>D1P and D1P</strong> for DSI Data Line 1</p>
 <p>(Yep DSI has more data lanes than SPI)</p>
 </li>
 <li>
-<p><strong>D2P and D2P</strong> are for DSI Data Line 2</p>
+<p><strong>D2P and D2P</strong> for DSI Data Line 2</p>
 </li>
 <li>
-<p><strong>D3P and D3P</strong> are for DSI Data Line 3</p>
+<p><strong>D3P and D3P</strong> for DSI Data Line 3</p>
 <p>(DSI has 4 data lanes!)</p>
 </li>
 </ul>
@@ -191,41 +190,58 @@
 <p>Because P=NP… Kidding!</p>
 <p><strong>N</strong> means Negative, <strong>P</strong> means Positive.</p>
 <p>This means that DSI uses <a href="https://en.wikipedia.org/wiki/Differential_signalling"><strong>Differential Signalling</strong></a> for high-speed data transfers. (4.5 Gbps per lane)</p>
-<p>(Which looks quite similar to <a href="https://en.wikipedia.org/wiki/HDMI"><strong>HDMI</strong></a>)</p>
+<p>(Differential Signalling is also used in <a href="https://en.wikipedia.org/wiki/HDMI"><strong>HDMI</strong></a> and <a href="https://en.wikipedia.org/wiki/USB#Signaling"><strong>USB</strong></a>)</p>
 <p>Let’s dig deeper into MIPI DSI…</p>
 <p><img src="https://lupyuen.github.io/images/dsi-lcd.png" alt="Xingbangda XBD599 in PinePhone’s Linux Device Tree" /></p>
 <p><a href="https://lupyuen.github.io/articles/pio#mipi-dsi-interface"><em>Xingbangda XBD599 in PinePhone’s Linux Device Tree</em></a></p>
 <h1 id="xingbangda-xbd599-lcd-panel"><a href="#xingbangda-xbd599-lcd-panel">4 Xingbangda XBD599 LCD Panel</a></h1>
 <p><em>What’s connected to this MIPI DSI Connector?</em></p>
-<p>TODO</p>
-<p>From above we see that PinePhone is connected to <a href="https://patchwork.kernel.org/project/dri-devel/patch/20200311163329.221840-4-icenowy@aosc.io/"><strong>Xingbangda XBD599</strong></a> 5.99-inch 720x1440 MIPI-DSI IPS LCD Panel</p>
-<h1 id="sitronix-st7703-lcd-controller"><a href="#sitronix-st7703-lcd-controller">5 Sitronix ST7703 LCD Controller</a></h1>
-<p>TODO</p>
-<p><strong>Sitronix ST7703 LCD Controller</strong>…</p>
+<p>The <a href="https://lupyuen.github.io/articles/pio#appendix-pinephone-device-tree"><strong>Linux Device Tree</strong></a> describes everything about PinePhone Hardware in a single text file. Let’s snoop around the Device Tree!</p>
+<p>First we follow these steps to dump PinePhone’s Linux Device Tree in text format…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/pio#appendix-pinephone-device-tree"><strong>“PinePhone Device Tree”</strong></a></li>
+</ul>
+<p>Then we search for <strong>MIPI DSI</strong> in the Device Tree…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts"><strong>PinePhone Device Tree: sun50i-a64-pinephone-1.2.dts</strong></a></li>
+</ul>
+<p>From the pic above we see that PinePhone’s MIPI DSI Connector is connected to <a href="https://patchwork.kernel.org/project/dri-devel/patch/20200311163329.221840-4-icenowy@aosc.io/"><strong>Xingbangda XBD599</strong></a>.</p>
+<p>This is a 5.99-inch 720x1440 MIPI DSI IPS LCD Panel.</p>
+<p>But what’s super interesting is that Xingbangda XBD599 has a <strong>Sitronix ST7703 LCD Controller</strong> inside!</p>
 <ul>
 <li><a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>Sitronix ST7703 LCD Controller Datasheet</strong></a></li>
 </ul>
-<h1 id="pinephone-vs-pinetime"><a href="#pinephone-vs-pinetime">6 PinePhone vs PineTime</a></h1>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/dsi-sitronix1.png" alt="TODO" /></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/dsi-sitronix2.png" alt="TODO" /></p>
-<h1 id="registers-for-mipi-dsi"><a href="#registers-for-mipi-dsi">7 Registers for MIPI DSI</a></h1>
+<p>Let’s probe deeper…</p>
+<p><img src="https://lupyuen.github.io/images/dsi-sitronix2.png" alt="PineTime (ST7789) vs PinePhone (ST7703)" /></p>
+<p><a href="https://www.sitronix.com.tw/en/products/aiot-device-ddi/"><em>PineTime (ST7789) vs PinePhone (ST7703)</em></a></p>
+<h1 id="sitronix-st7703-lcd-controller"><a href="#sitronix-st7703-lcd-controller">5 Sitronix ST7703 LCD Controller</a></h1>
+<p><em>Sitronix ST7703 sounds familiar?</em></p>
+<p>Sitronix makes the LCD Controllers for BOTH PineTime and PinePhone!</p>
+<p>In fact they’re from the <a href="https://www.sitronix.com.tw/en/products/aiot-device-ddi/"><strong>same family</strong></a> of LCD Controllers. (ST7789 vs ST7703)</p>
+<p>Just that PineTime uses an SPI Interface while PinePhone uses a <strong>MIPI DSI Interface</strong>. (Pic above)</p>
+<p>The resolutions are different too. PinePhone has a <strong>huge display</strong> with more colours…</p>
+<p><img src="https://lupyuen.github.io/images/dsi-sitronix1.png" alt="PineTime (ST7789) vs PinePhone (ST7703)" /></p>
+<p><a href="https://www.sitronix.com.tw/en/products/aiot-device-ddi/">(Source)</a></p>
+<p>Which means that PinePhone’s LCD Controller is <strong>RAM-less</strong>…</p>
+<p>It <strong>doesn’t have any RAM</strong> inside to remember the pixels. (Unlike PineTime)</p>
+<p><em>What’s the implication of a RAM-less display?</em></p>
+<p>Because PinePhone’s LCD Controller doesn’t have any RAM inside to remember the pixels drawn…</p>
+<p>PinePhone’s A64 SoC will need to <strong>pump a constant stream of pixels</strong> to refresh the display.</p>
+<p>(Yep PinePhone is way more complicated than PineTime!)</p>
+<p>This pixel pumping is done by A64’s <a href="https://lupyuen.github.io/articles/pio#lcd-controller-tcon0"><strong>Timing Controller (TCON0)</strong></a>. We’ll come back to this.</p>
+<h1 id="registers-for-mipi-dsi"><a href="#registers-for-mipi-dsi">6 Registers for MIPI DSI</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/dsi-registers2.png" alt="TODO" /></p>
-<h1 id="data-types-for-mipi-dsi"><a href="#data-types-for-mipi-dsi">8 Data Types for MIPI DSI</a></h1>
+<h1 id="data-types-for-mipi-dsi"><a href="#data-types-for-mipi-dsi">7 Data Types for MIPI DSI</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/dsi-datatype.png" alt="TODO" /></p>
-<h1 id="video-mode-for-mipi-dsi"><a href="#video-mode-for-mipi-dsi">9 Video Mode for MIPI DSI</a></h1>
+<h1 id="video-mode-for-mipi-dsi"><a href="#video-mode-for-mipi-dsi">8 Video Mode for MIPI DSI</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/dsi-modes.png" alt="TODO" /></p>
-<h1 id="transmit-over-mipi-dsi"><a href="#transmit-over-mipi-dsi">10 Transmit over MIPI DSI</a></h1>
+<h1 id="transmit-over-mipi-dsi"><a href="#transmit-over-mipi-dsi">9 Transmit over MIPI DSI</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/dsi-tx.png" alt="TODO" /></p>
-<h1 id="todo"><a href="#todo">11 TODO</a></h1>
-<p><a href="https://www.sitronix.com.tw/en/products/aiot-device-ddi/">AIoT device DDI</a>
-ram vs ramless
-dsi interface</p>
+<h1 id="todo"><a href="#todo">10 TODO</a></h1>
 <p>SPI Interface (SCL, SDA, DCX, …)
 OR
 DSI Interface (CKN, CKP, D0P, D0N, …)
@@ -390,7 +406,7 @@ sun6i_dsi_dcs_build_pkt_hdr
 <p>Data Type = MIPI_DSI_DCS_LONG_WRITE</p>
 <p><a href="https://github.com/torvalds/linux/blob/master/include/video/mipi_display.h#L47">mipi_display.h</a>
 MIPI_DSI_DCS_LONG_WRITE				= 0x39,</p>
-<h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>And eventually we shall build NuttX Drivers for PinePhone’s <a href="https://lupyuen.github.io/articles/pio#lcd-controller-tcon0"><strong>LCD Display</strong></a> and <a href="https://lupyuen.github.io/articles/pio#touch-panel"><strong>Touch Panel</strong></a>!</p>
 <p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
