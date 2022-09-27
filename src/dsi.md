@@ -261,7 +261,17 @@ static const struct st7703_panel_desc xbd599_desc = {
 };
 ```
 
-# Registers for MIPI DSI
+[sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L751-L755)
+
+```c
+	regmap_write(dsi->regs, SUN6I_DSI_BASIC_CTL1_REG,
+		     SUN6I_DSI_BASIC_CTL1_VIDEO_ST_DELAY(delay) |
+		     SUN6I_DSI_BASIC_CTL1_VIDEO_FILL |
+		     SUN6I_DSI_BASIC_CTL1_VIDEO_PRECISION |
+		     SUN6I_DSI_BASIC_CTL1_VIDEO_MODE);
+```
+
+# A64 Registers for MIPI DSI
 
 TODO
 
@@ -277,7 +287,11 @@ TODO
 
 TODO
 
-![TODO](https://lupyuen.github.io/images/dsi-modes.png)
+![TODO](https://lupyuen.github.io/images/dsi-modes2.png)
+
+TODO
+
+![TODO](https://lupyuen.github.io/images/dsi-control.png)
 
 # Transmit over MIPI DSI
 
