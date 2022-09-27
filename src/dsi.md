@@ -144,11 +144,15 @@ This means that DSI uses [__Differential Signalling__](https://en.wikipedia.org/
 
 (Which looks quite similar to [__HDMI__](https://en.wikipedia.org/wiki/HDMI))
 
+Let's dig deeper into MIPI DSI...
+
+![Xingbangda XBD599 in PinePhone's Linux Device Tree](https://lupyuen.github.io/images/dsi-lcd.png)
+
+[_Xingbangda XBD599 in PinePhone's Linux Device Tree_](https://lupyuen.github.io/articles/pio#mipi-dsi-interface)
+
 # Xingbangda XBD599 LCD Panel
 
 _What's connected to this MIPI DSI Connector?_
-
-
 
 TODO
 
