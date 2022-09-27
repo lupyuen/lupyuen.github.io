@@ -154,7 +154,7 @@
 <p><a href="https://en.wikipedia.org/wiki/MIPI_Alliance">(MIPI is the <strong>Mobile Industry Processor Interface Alliance</strong>)</a></p>
 <p><em>What’s a MIPI Digital Serial Interface?</em></p>
 <p>Think of it as SPI, but supercharged with <strong>Multiple Data Lanes</strong>!</p>
-<p>Here’s the (dull) technical explanation of DSI…</p>
+<p>The (dull) technical details of DSI are covered here…</p>
 <ul>
 <li><a href="https://en.wikipedia.org/wiki/Display_Serial_Interface"><strong>Display Serial Interface (DSI)</strong></a></li>
 </ul>
@@ -165,27 +165,35 @@
 <p><em>How shall we learn about MIPI DSI?</em></p>
 <p>We’ll learn plenty about MIPI DSI (Display Serial Interface)… Just by looking at <strong>PinePhone’s Connector for the LCD Display</strong>!</p>
 <p>Flip to Page 11 of the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> and we’ll see the <strong>MIPI DSI Connector</strong>. (Pic above)</p>
-<p>The MIPI DSI Connector connects PinePhone’s Allwinner A64 SoC to the LCD Display.</p>
-<p>TODO</p>
-<p>Direct to a64
-Clock:
-MIPI-DSI-CKN
-MIPI-DSI-CKP</p>
-<p>4 lanes
-MIPI-DSI-D0P
-MIPI-DSI-D0N
-MIPI-DSI-D1P
-MIPI-DSI-D1N
-MIPI-DSI-D2P
-MIPI-DSI-D2N
-MIPI-DSI-D3P
-MIPI-DSI-D3N
-Why the N and P?
-Because P=NP… Kidding!
-N means Negative, P means Positive
-P and N means differential
-Previously Spi Single lane</p>
+<p>The MIPI DSI Connector connects PinePhone’s <strong>Allwinner A64 SoC</strong> directly to the LCD Display. In the pic above we see these connections…</p>
+<ul>
+<li>
+<p><strong>CKN and CKP</strong> are the DSI Clock Lines</p>
+<p>(Similar to SPI Clock)</p>
+</li>
+<li>
+<p><strong>D0P and D0N</strong> are for DSI Data Lane 0</p>
+<p>(Similar to SPI MISO / MOSI)</p>
+</li>
+<li>
+<p><strong>D1P and D1P</strong> are for DSI Data Line 1</p>
+<p>(Yep DSI has more data lanes than SPI)</p>
+</li>
+<li>
+<p><strong>D2P and D2P</strong> are for DSI Data Line 2</p>
+</li>
+<li>
+<p><strong>D3P and D3P</strong> are for DSI Data Line 3</p>
+<p>(DSI has 4 data lanes!)</p>
+</li>
+</ul>
+<p><em>Why the N and P?</em></p>
+<p>Because P=NP… Kidding!</p>
+<p><strong>N</strong> means Negative, <strong>P</strong> means Positive.</p>
+<p>This means that DSI uses <a href="https://en.wikipedia.org/wiki/Differential_signalling"><strong>Differential Signalling</strong></a> for high-speed data transfers. (4.5 Gbps per lane)</p>
+<p>(Which looks quite similar to <a href="https://en.wikipedia.org/wiki/HDMI"><strong>HDMI</strong></a>)</p>
 <h1 id="xingbangda-xbd599-lcd-panel"><a href="#xingbangda-xbd599-lcd-panel">4 Xingbangda XBD599 LCD Panel</a></h1>
+<p><em>What’s connected to this MIPI DSI Connector?</em></p>
 <p>TODO</p>
 <p>From above we see that PinePhone is connected to <a href="https://patchwork.kernel.org/project/dri-devel/patch/20200311163329.221840-4-icenowy@aosc.io/"><strong>Xingbangda XBD599</strong></a> 5.99-inch 720x1440 MIPI-DSI IPS LCD Panel</p>
 <h1 id="sitronix-st7703-lcd-controller"><a href="#sitronix-st7703-lcd-controller">5 Sitronix ST7703 LCD Controller</a></h1>
