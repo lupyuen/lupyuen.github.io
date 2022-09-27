@@ -120,17 +120,17 @@ The MIPI DSI Connector connects PinePhone's __Allwinner A64 SoC__ directly to th
 
     (Similar to SPI Clock)
 
--   __D0P and D0N__ are for DSI Data Lane 0
+-   __D0P and D0N__ for DSI Data Lane 0
 
     (Similar to SPI MISO / MOSI)
 
--   __D1P and D1P__ are for DSI Data Line 1
+-   __D1P and D1P__ for DSI Data Line 1
 
     (Yep DSI has more data lanes than SPI)
 
--   __D2P and D2P__ are for DSI Data Line 2
+-   __D2P and D2P__ for DSI Data Line 2
 
--   __D3P and D3P__ are for DSI Data Line 3
+-   __D3P and D3P__ for DSI Data Line 3
 
     (DSI has 4 data lanes!)
 
@@ -142,7 +142,7 @@ __N__ means Negative, __P__ means Positive.
 
 This means that DSI uses [__Differential Signalling__](https://en.wikipedia.org/wiki/Differential_signalling) for high-speed data transfers. (4.5 Gbps per lane)
 
-(Which looks quite similar to [__HDMI__](https://en.wikipedia.org/wiki/HDMI))
+(Differential Signalling is also used in [__HDMI__](https://en.wikipedia.org/wiki/HDMI) and [__USB__](https://en.wikipedia.org/wiki/USB#Signaling))
 
 Let's dig deeper into MIPI DSI...
 
@@ -154,27 +154,59 @@ Let's dig deeper into MIPI DSI...
 
 _What's connected to this MIPI DSI Connector?_
 
-TODO
+The [__Linux Device Tree__](https://lupyuen.github.io/articles/pio#appendix-pinephone-device-tree) describes everything about PinePhone Hardware in a single text file. Let's snoop around the Device Tree!
 
-From above we see that PinePhone is connected to [__Xingbangda XBD599__](https://patchwork.kernel.org/project/dri-devel/patch/20200311163329.221840-4-icenowy@aosc.io/) 5.99-inch 720x1440 MIPI-DSI IPS LCD Panel
+First we follow these steps to dump PinePhone's Linux Device Tree in text format...
 
-# Sitronix ST7703 LCD Controller
+-   [__"PinePhone Device Tree"__](https://lupyuen.github.io/articles/pio#appendix-pinephone-device-tree)
 
-TODO
+Then we search for __MIPI DSI__ in the Device Tree...
 
-__Sitronix ST7703 LCD Controller__...
+-   [__PinePhone Device Tree: sun50i-a64-pinephone-1.2.dts__](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts)
+
+From the pic above we see that PinePhone's MIPI DSI Connector is connected to [__Xingbangda XBD599__](https://patchwork.kernel.org/project/dri-devel/patch/20200311163329.221840-4-icenowy@aosc.io/).
+
+This is a 5.99-inch 720x1440 MIPI DSI IPS LCD Panel.
+
+But what's super interesting is that Xingbangda XBD599 has a __Sitronix ST7703 LCD Controller__ inside!
 
 -   [__Sitronix ST7703 LCD Controller Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf)
 
-# PinePhone vs PineTime
+Let's probe deeper...
 
-TODO
+![PineTime (ST7789) vs PinePhone (ST7703)](https://lupyuen.github.io/images/dsi-sitronix2.png)
 
-![TODO](https://lupyuen.github.io/images/dsi-sitronix1.png)
+[_PineTime (ST7789) vs PinePhone (ST7703)_](https://www.sitronix.com.tw/en/products/aiot-device-ddi/)
 
-TODO
+# Sitronix ST7703 LCD Controller
 
-![TODO](https://lupyuen.github.io/images/dsi-sitronix2.png)
+_Sitronix ST7703 sounds familiar?_
+
+Sitronix makes the LCD Controllers for BOTH PineTime and PinePhone!
+
+In fact they're from the [__same family__](https://www.sitronix.com.tw/en/products/aiot-device-ddi/) of LCD Controllers. (ST7789 vs ST7703)
+
+Just that PineTime uses an SPI Interface while PinePhone uses a __MIPI DSI Interface__. (Pic above)
+
+The resolutions are different too. PinePhone has a __huge display__ with more colours...
+
+![PineTime (ST7789) vs PinePhone (ST7703)](https://lupyuen.github.io/images/dsi-sitronix1.png)
+
+[(Source)](https://www.sitronix.com.tw/en/products/aiot-device-ddi/)
+
+Which means that PinePhone's LCD Controller is __RAM-less__...
+
+It __doesn't have any RAM__ inside to remember the pixels. (Unlike PineTime)
+
+_What's the implication of a RAM-less display?_
+
+Because PinePhone's LCD Controller doesn't have any RAM inside to remember the pixels drawn...
+
+PinePhone's A64 SoC will need to __pump a constant stream of pixels__ to refresh the display.
+
+(Yep PinePhone is way more complicated than PineTime!)
+
+This pixel pumping is done by A64's [__Timing Controller (TCON0)__](https://lupyuen.github.io/articles/pio#lcd-controller-tcon0). We'll come back to this.
 
 # Registers for MIPI DSI
 
@@ -202,9 +234,6 @@ TODO
 
 # TODO
 
-[AIoT device DDI](https://www.sitronix.com.tw/en/products/aiot-device-ddi/)
-ram vs ramless
-dsi interface
 
 SPI Interface (SCL, SDA, DCX, ...)
 OR
