@@ -232,6 +232,28 @@
 <p>This pixel pumping is done by A64’s <a href="https://lupyuen.github.io/articles/pio#lcd-controller-tcon0"><strong>Timing Controller (TCON0)</strong></a>. We’ll come back to this.</p>
 <h1 id="initialise-lcd-controller"><a href="#initialise-lcd-controller">6 Initialise LCD Controller</a></h1>
 <p>TODO</p>
+<ul>
+<li><a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>Sitronix ST7703 LCD Controller Datasheet</strong></a></li>
+</ul>
+<div class="example-wrap"><pre class="language-c"><code>6.2.50 SETEXTC
+Page 131
+#define ST7703_CMD_SETEXTC	 0xB9
+SETEXTC: This command is used to enable USER Command.
+ST7703_CMD_SETEXTC, 0xF1, 0x12, 0x83
+
+6.2.58 SETMIPI (BAh)
+Page 144
+#define ST7703_CMD_SETMIPI	 0xBA
+ST7703_CMD_SETMIPI, 
+0x33, 
+0x81, 
+0x05, 
+0xF9, 
+0x0E, 0x0E, ...</code></pre></div>
+<p>ST7703 Init</p>
+<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333">panel-sitronix-st7703.c</a></p>
+<p>Calls dsi_dcs_write_seq</p>
+<p>Calls mipi_dsi_dcs_write</p>
 <h1 id="registers-for-mipi-dsi"><a href="#registers-for-mipi-dsi">7 Registers for MIPI DSI</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/dsi-registers2.png" alt="TODO" /></p>
@@ -338,10 +360,6 @@ I had a go. I was able to instruct the MIPI DSI to run commands (by copying from
 &gt;&gt;</p>
 <p><a href="https://www.reddit.com/r/PINE64official/comments/xjzack/comment/ipd6fsy/?utm_source=share&amp;utm_medium=web2x&amp;context=3">(Source)</a></p>
 <p><a href="https://github.com/zephyrproject-rtos/zephyr-testing/blob/main/tests/drivers/mipi_dsi/api/src/main.c">Zephyr Driver for MIPI DSI</a></p>
-<p>ST7703 Init
-<a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333">panel-sitronix-st7703.c</a>
-Calls dsi_dcs_write_seq
-Calls mipi_dsi_dcs_write</p>
 <p>A64 MIPI DSI Driver
 <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c">sun6i_mipi_dsi.c</a></p>
 <p>sun6i_dsi_dcs_write_short
