@@ -72,12 +72,13 @@
 <li><a href="#connector-for-mipi-dsi">3 Connector for MIPI DSI</a><ul></ul></li>
 <li><a href="#xingbangda-xbd599-lcd-panel">4 Xingbangda XBD599 LCD Panel</a><ul></ul></li>
 <li><a href="#sitronix-st7703-lcd-controller">5 Sitronix ST7703 LCD Controller</a><ul></ul></li>
-<li><a href="#registers-for-mipi-dsi">6 Registers for MIPI DSI</a><ul></ul></li>
-<li><a href="#data-types-for-mipi-dsi">7 Data Types for MIPI DSI</a><ul></ul></li>
-<li><a href="#video-mode-for-mipi-dsi">8 Video Mode for MIPI DSI</a><ul></ul></li>
-<li><a href="#transmit-over-mipi-dsi">9 Transmit over MIPI DSI</a><ul></ul></li>
-<li><a href="#todo">10 TODO</a><ul></ul></li>
-<li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Oct 2022</em></p>
+<li><a href="#initialise-lcd-controller">6 Initialise LCD Controller</a><ul></ul></li>
+<li><a href="#registers-for-mipi-dsi">7 Registers for MIPI DSI</a><ul></ul></li>
+<li><a href="#data-types-for-mipi-dsi">8 Data Types for MIPI DSI</a><ul></ul></li>
+<li><a href="#video-mode-for-mipi-dsi">9 Video Mode for MIPI DSI</a><ul></ul></li>
+<li><a href="#transmit-over-mipi-dsi">10 Transmit over MIPI DSI</a><ul></ul></li>
+<li><a href="#todo">11 TODO</a><ul></ul></li>
+<li><a href="#whats-next">12 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Oct 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/dsi-title.jpg" alt="PinePhone’s LCD Display in the PinePhone Block Diagram" /></p>
 <p>How does <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> control its <strong>LCD Display</strong>?</p>
 <p>Let’s uncover all the secrets about PinePhone’s mysterious LCD Display and its <strong>MIPI Digital Serial Interface</strong>!</p>
@@ -229,19 +230,21 @@
 <p>PinePhone’s A64 SoC will <strong>pump a constant stream of pixels</strong> to refresh the display.</p>
 <p>(Yep PinePhone is way more complicated than PineTime!)</p>
 <p>This pixel pumping is done by A64’s <a href="https://lupyuen.github.io/articles/pio#lcd-controller-tcon0"><strong>Timing Controller (TCON0)</strong></a>. We’ll come back to this.</p>
-<h1 id="registers-for-mipi-dsi"><a href="#registers-for-mipi-dsi">6 Registers for MIPI DSI</a></h1>
+<h1 id="initialise-lcd-controller"><a href="#initialise-lcd-controller">6 Initialise LCD Controller</a></h1>
+<p>TODO</p>
+<h1 id="registers-for-mipi-dsi"><a href="#registers-for-mipi-dsi">7 Registers for MIPI DSI</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/dsi-registers2.png" alt="TODO" /></p>
-<h1 id="data-types-for-mipi-dsi"><a href="#data-types-for-mipi-dsi">7 Data Types for MIPI DSI</a></h1>
+<h1 id="data-types-for-mipi-dsi"><a href="#data-types-for-mipi-dsi">8 Data Types for MIPI DSI</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/dsi-datatype.png" alt="TODO" /></p>
-<h1 id="video-mode-for-mipi-dsi"><a href="#video-mode-for-mipi-dsi">8 Video Mode for MIPI DSI</a></h1>
+<h1 id="video-mode-for-mipi-dsi"><a href="#video-mode-for-mipi-dsi">9 Video Mode for MIPI DSI</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/dsi-modes.png" alt="TODO" /></p>
-<h1 id="transmit-over-mipi-dsi"><a href="#transmit-over-mipi-dsi">9 Transmit over MIPI DSI</a></h1>
+<h1 id="transmit-over-mipi-dsi"><a href="#transmit-over-mipi-dsi">10 Transmit over MIPI DSI</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/dsi-tx.png" alt="TODO" /></p>
-<h1 id="todo"><a href="#todo">10 TODO</a></h1>
+<h1 id="todo"><a href="#todo">11 TODO</a></h1>
 <p>SPI Interface (SCL, SDA, DCX, …)
 OR
 DSI Interface (CKN, CKP, D0P, D0N, …)
@@ -406,7 +409,7 @@ sun6i_dsi_dcs_build_pkt_hdr
 <p>Data Type = MIPI_DSI_DCS_LONG_WRITE</p>
 <p><a href="https://github.com/torvalds/linux/blob/master/include/video/mipi_display.h#L47">mipi_display.h</a>
 MIPI_DSI_DCS_LONG_WRITE				= 0x39,</p>
-<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
 <p>TODO</p>
 <p>And eventually we shall build NuttX Drivers for PinePhone’s <a href="https://lupyuen.github.io/articles/pio#lcd-controller-tcon0"><strong>LCD Display</strong></a> and <a href="https://lupyuen.github.io/articles/pio#touch-panel"><strong>Touch Panel</strong></a>!</p>
 <p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
