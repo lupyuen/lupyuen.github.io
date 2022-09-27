@@ -216,7 +216,7 @@
 <p><a href="https://www.sitronix.com.tw/en/products/aiot-device-ddi/"><em>PineTime (ST7789) vs PinePhone (ST7703)</em></a></p>
 <h1 id="sitronix-st7703-lcd-controller"><a href="#sitronix-st7703-lcd-controller">5 Sitronix ST7703 LCD Controller</a></h1>
 <p><em>Sitronix ST7703 sounds familiar?</em></p>
-<p>Sitronix makes the LCD Controllers for BOTH PineTime and PinePhone!</p>
+<p>Yep Sitronix makes the LCD Controllers for BOTH PineTime and PinePhone!</p>
 <p>In fact they’re from the <a href="https://www.sitronix.com.tw/en/products/aiot-device-ddi/"><strong>same family</strong></a> of LCD Controllers. (ST7789 vs ST7703)</p>
 <p>Just that PineTime uses an SPI Interface while PinePhone uses a <strong>MIPI DSI Interface</strong>. (Pic above)</p>
 <p>The resolutions are different too. PinePhone has a <strong>huge display</strong> with more colours…</p>
@@ -226,7 +226,7 @@
 <p>It <strong>doesn’t have any RAM</strong> inside to remember the pixels. (Unlike PineTime)</p>
 <p><em>What’s the implication of a RAM-less display?</em></p>
 <p>Because PinePhone’s LCD Controller doesn’t have any RAM inside to remember the pixels drawn…</p>
-<p>PinePhone’s A64 SoC will need to <strong>pump a constant stream of pixels</strong> to refresh the display.</p>
+<p>PinePhone’s A64 SoC will <strong>pump a constant stream of pixels</strong> to refresh the display.</p>
 <p>(Yep PinePhone is way more complicated than PineTime!)</p>
 <p>This pixel pumping is done by A64’s <a href="https://lupyuen.github.io/articles/pio#lcd-controller-tcon0"><strong>Timing Controller (TCON0)</strong></a>. We’ll come back to this.</p>
 <h1 id="registers-for-mipi-dsi"><a href="#registers-for-mipi-dsi">6 Registers for MIPI DSI</a></h1>
