@@ -73,15 +73,15 @@
 <li><a href="#xingbangda-xbd599-lcd-panel">4 Xingbangda XBD599 LCD Panel</a><ul></ul></li>
 <li><a href="#sitronix-st7703-lcd-controller">5 Sitronix ST7703 LCD Controller</a><ul></ul></li>
 <li><a href="#initialise-lcd-controller">6 Initialise LCD Controller</a><ul></ul></li>
-<li><a href="#data-types-for-mipi-dsi">7 Data Types for MIPI DSI</a><ul></ul></li>
-<li><a href="#video-mode-for-mipi-dsi">8 Video Mode for MIPI DSI</a><ul></ul></li>
+<li><a href="#display-command-set-for-mipi-dsi">7 Display Command Set for MIPI DSI</a><ul></ul></li>
+<li><a href="#video-mode-only-for-mipi-dsi">8 Video Mode Only for MIPI DSI</a><ul></ul></li>
 <li><a href="#a64-registers-for-mipi-dsi">9 A64 Registers for MIPI DSI</a><ul></ul></li>
 <li><a href="#transmit-over-mipi-dsi">10 Transmit over MIPI DSI</a><ul></ul></li>
 <li><a href="#todo">11 TODO</a><ul></ul></li>
 <li><a href="#whats-next">12 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Oct 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/dsi-title.jpg" alt="PinePhone’s LCD Display in the PinePhone Block Diagram" /></p>
 <p>How does <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> control its <strong>LCD Display</strong>?</p>
-<p>Let’s uncover all the secrets about PinePhone’s mysterious LCD Display and its <strong>MIPI Digital Serial Interface</strong>!</p>
+<p>Let’s uncover all the secrets about PinePhone’s mysterious LCD Display and its <strong>MIPI Digital Serial Interface</strong>…</p>
 <ul>
 <li>
 <p>What’s a MIPI Digital Serial Interface (DSI)</p>
@@ -141,7 +141,7 @@
 </li>
 </ul>
 <p>If we’re not familiar with PineTime’s ST7789 Display, please read the docs above!</p>
-<p><em>We’ve read the docs, please move on!</em></p>
+<p><em>We’ve read the docs, can we move on?</em></p>
 <p>OK great! To understand how PinePhone’s Display differs from PineTime, we begin with the schematic…</p>
 <p><img src="https://lupyuen.github.io/images/dsi-title.jpg" alt="LCD Display on PinePhone Schematic (Page 2)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LCD Display on PinePhone Schematic (Page 2)</em></a></p>
@@ -254,11 +254,20 @@
 <li><a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>Sitronix ST7703 LCD Controller Datasheet</strong></a></li>
 </ul>
 <p><em>How shall we send the Init Sequence to ST7703?</em></p>
+<p>We’ll send the Command Bytes to ST7703 via a MIPI DSI Display Command: <strong>DCS Long Write</strong>. Which we’ll explain next…</p>
+<p><img src="https://lupyuen.github.io/images/dsi-datatype.png" alt="MIPI DSI Display Command Set from A31 User Manual (Page 837)" /></p>
+<p><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Display Command Set from A31 User Manual (Page 837)</em></a></p>
+<h1 id="display-command-set-for-mipi-dsi"><a href="#display-command-set-for-mipi-dsi">7 Display Command Set for MIPI DSI</a></h1>
+<p>MIPI Digital Serial Interface (DSI) defines a standard list of commands for controlling the display: <strong>DSI Display Command Set (DCS)</strong>. (Pic above)</p>
+<p>To send the Initialisation Sequence to ST7703, we shall transmit the <strong>DCS Long Write</strong> command. (Data Type <code>0x39</code>)</p>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/dsi-datatype.png" alt="TODO" /></p>
-<h1 id="data-types-for-mipi-dsi"><a href="#data-types-for-mipi-dsi">7 Data Types for MIPI DSI</a></h1>
-<p>TODO</p>
-<h1 id="video-mode-for-mipi-dsi"><a href="#video-mode-for-mipi-dsi">8 Video Mode for MIPI DSI</a></h1>
+<blockquote>
+<p>DSI-compliant peripherals support either of two basic modes of operation: Command Mode and Video Mode. Which mode is used depends on the architecture and capabilities of the peripheral. The ST7703 only support Video mode. </p>
+</blockquote>
+<blockquote>
+<p>Video Mode refers to operation in which transfers from the host processor to the peripheral take the form of a real-time pixel stream. In normal operation, the driver IC relies on the host processor to provide image data at sufficient bandwidth to avoid flicker or other visible artifacts in the displayed image. Video information should only be transmitted using High Speed Mode. </p>
+</blockquote>
+<h1 id="video-mode-only-for-mipi-dsi"><a href="#video-mode-only-for-mipi-dsi">8 Video Mode Only for MIPI DSI</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/dsi-modes2.png" alt="TODO" /></p>
 <p>TODO</p>
@@ -304,12 +313,6 @@
 <p>DSI Interface (CKN, CKP, D0P, D0N, …)</p>
 <p>-&gt; Command Decoder</p>
 <p>Suggests that DSI is just a wrapper over the old ST77xx commands</p>
-<blockquote>
-<p>DSI-compliant peripherals support either of two basic modes of operation: Command Mode and Video Mode. Which mode is used depends on the architecture and capabilities of the peripheral. The ST7703 only support Video mode. </p>
-</blockquote>
-<blockquote>
-<p>Video Mode refers to operation in which transfers from the host processor to the peripheral take the form of a real-time pixel stream. In normal operation, the driver IC relies on the host processor to provide image data at sufficient bandwidth to avoid flicker or other visible artifacts in the displayed image. Video information should only be transmitted using High Speed Mode. </p>
-</blockquote>
 <p>Lane 0 is special: Bus Turnaround</p>
 <p>Page 19</p>
 <div class="example-wrap"><pre class="language-text"><code>Lane Pair HOST(Master)/ Driver IC(Slave)
