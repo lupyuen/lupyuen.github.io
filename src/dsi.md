@@ -212,28 +212,32 @@ This pixel pumping is done by A64's [__Timing Controller (TCON0)__](https://lupy
 
 _What happens inside PinePhone's ST7703 LCD Controller?_
 
-TODO
+Let's figure out by looking at the initialisation of PinePhone's ST7703 LCD Controller.
 
--   [__Sitronix ST7703 LCD Controller Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf)
+Xingbangda has provided a list of [__Initialisation Commands__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333) that we should send to the LCD Controller at startup...
 
-| Byte | Remarks |
-|------|---------|
+| Byte | Purpose |
+|:----:|:---------|
 | `B9` | __SETEXTC:__ Enable USER Command (Page 131)
 | `F1` | - Enable USER Command
 | `12` | - (Continued)
 | `83` | - (Continued)
 | `BA` | __SETMIPI:__ Set MIPI Registers (Page 144)
-| `33` | - Virtual Channel ID, Lane Number
-| `81` | - DSI_LDO_SEL, RTERM
-| `05` | - IHSRX
-| `F9` | - Tx_clk_s
-| `0E` | - HFP_OS
-| `0E` | - HBP_OS
-| ...  | (And plenty more)
+| `33` | - Virtual Channel (0), Number of Lanes (4)
+| `81` | - LDO Volatge, Terminal Registance
+| `05` | - MIPI Low High Speed driving ability
+| `F9` | - TXCLK speed in DSI LP mode
+| `0E` | - Minimum HFP number
+| `0E` | - Minimum HBP number
+| ...  | [(And plenty more, see this list)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333)
+
+The above commands are documented in the ST7703 Datasheet...
+
+-   [__Sitronix ST7703 LCD Controller Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf)
+
+_How shall we send the Init Commands to ST7703?_
 
 ST7703 Init
-
-[panel-sitronix-st7703.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333)
 
 Calls dsi_dcs_write_seq
 
