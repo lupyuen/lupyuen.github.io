@@ -73,7 +73,7 @@
 <li><a href="#xingbangda-xbd599-lcd-panel">4 Xingbangda XBD599 LCD Panel</a><ul></ul></li>
 <li><a href="#sitronix-st7703-lcd-controller">5 Sitronix ST7703 LCD Controller</a><ul></ul></li>
 <li><a href="#initialise-lcd-controller">6 Initialise LCD Controller</a><ul></ul></li>
-<li><a href="#registers-for-mipi-dsi">7 Registers for MIPI DSI</a><ul></ul></li>
+<li><a href="#a64-registers-for-mipi-dsi">7 A64 Registers for MIPI DSI</a><ul></ul></li>
 <li><a href="#data-types-for-mipi-dsi">8 Data Types for MIPI DSI</a><ul></ul></li>
 <li><a href="#video-mode-for-mipi-dsi">9 Video Mode for MIPI DSI</a><ul></ul></li>
 <li><a href="#transmit-over-mipi-dsi">10 Transmit over MIPI DSI</a><ul></ul></li>
@@ -273,7 +273,13 @@
 	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE,
 	.format = MIPI_DSI_FMT_RGB888,
 	.init_sequence = xbd599_init_sequence,
-};</code></pre></div><h1 id="registers-for-mipi-dsi"><a href="#registers-for-mipi-dsi">7 Registers for MIPI DSI</a></h1>
+};</code></pre></div>
+<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L751-L755">sun6i_mipi_dsi.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>	regmap_write(dsi-&gt;regs, SUN6I_DSI_BASIC_CTL1_REG,
+		     SUN6I_DSI_BASIC_CTL1_VIDEO_ST_DELAY(delay) |
+		     SUN6I_DSI_BASIC_CTL1_VIDEO_FILL |
+		     SUN6I_DSI_BASIC_CTL1_VIDEO_PRECISION |
+		     SUN6I_DSI_BASIC_CTL1_VIDEO_MODE);</code></pre></div><h1 id="a64-registers-for-mipi-dsi"><a href="#a64-registers-for-mipi-dsi">7 A64 Registers for MIPI DSI</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/dsi-registers2.png" alt="TODO" /></p>
 <h1 id="data-types-for-mipi-dsi"><a href="#data-types-for-mipi-dsi">8 Data Types for MIPI DSI</a></h1>
@@ -281,7 +287,9 @@
 <p><img src="https://lupyuen.github.io/images/dsi-datatype.png" alt="TODO" /></p>
 <h1 id="video-mode-for-mipi-dsi"><a href="#video-mode-for-mipi-dsi">9 Video Mode for MIPI DSI</a></h1>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/dsi-modes.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/dsi-modes2.png" alt="TODO" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/dsi-control.png" alt="TODO" /></p>
 <h1 id="transmit-over-mipi-dsi"><a href="#transmit-over-mipi-dsi">10 Transmit over MIPI DSI</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/dsi-tx.png" alt="TODO" /></p>
