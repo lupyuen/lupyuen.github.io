@@ -78,9 +78,9 @@ _We've read the docs, please move on!_
 
 OK great! To understand how PinePhone's Display differs from PineTime, we begin with the schematic...
 
-![LCD Display in PinePhone Schematic (Page 2)](https://lupyuen.github.io/images/dsi-title.jpg)
+![LCD Display on PinePhone Schematic (Page 2)](https://lupyuen.github.io/images/dsi-title.jpg)
 
-[_LCD Display in PinePhone Schematic (Page 2)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
+[_LCD Display on PinePhone Schematic (Page 2)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
 
 # PinePhone Schematic
 
@@ -96,17 +96,21 @@ _What's a MIPI Digital Serial Interface?_
 
 Think of it as SPI, but supercharged with __Multiple Data Lanes__!
 
-TODO
+Here's the (dull) technical explanation of DSI...
 
-# What Is MIPI DSI
+-   [__Display Serial Interface (DSI)__](https://en.wikipedia.org/wiki/Display_Serial_Interface)
 
-TODO
+But if we're seeking a gentler intro to DSI, please follow me to the next section!
+
+![_MIPI DSI Connector on PinePhone Schematic (Page 11)_](https://lupyuen.github.io/images/dsi-connector.png)
+
+[_MIPI DSI Connector on PinePhone Schematic (Page 11)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
 
 # Connector for MIPI DSI
 
-TODO
+We'll learn plenty about MIPI DSI (Display Serial Interface)... Just by looking at the __connector for PinePhone's LCD Display__!
 
-![TODO](https://lupyuen.github.io/images/dsi-connector.png)
+TODO
 
 # PinePhone vs PineTime
 
