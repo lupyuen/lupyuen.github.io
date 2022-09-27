@@ -232,27 +232,29 @@
 <p>This pixel pumping is done by A64’s <a href="https://lupyuen.github.io/articles/pio#lcd-controller-tcon0"><strong>Timing Controller (TCON0)</strong></a>. We’ll come back to this.</p>
 <h1 id="initialise-lcd-controller"><a href="#initialise-lcd-controller">6 Initialise LCD Controller</a></h1>
 <p><em>What happens inside PinePhone’s ST7703 LCD Controller?</em></p>
-<p>TODO</p>
+<p>Let’s figure out by looking at the initialisation of PinePhone’s ST7703 LCD Controller.</p>
+<p>Xingbangda has provided a list of <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333"><strong>Initialisation Commands</strong></a> that we should send to the LCD Controller at startup…</p>
+<div><table><thead><tr><th style="text-align: center">Byte</th><th style="text-align: left">Purpose</th></tr></thead><tbody>
+<tr><td style="text-align: center"><code>B9</code></td><td style="text-align: left"><strong>SETEXTC:</strong> Enable USER Command (Page 131)</td></tr>
+<tr><td style="text-align: center"><code>F1</code></td><td style="text-align: left">- Enable USER Command</td></tr>
+<tr><td style="text-align: center"><code>12</code></td><td style="text-align: left">- (Continued)</td></tr>
+<tr><td style="text-align: center"><code>83</code></td><td style="text-align: left">- (Continued)</td></tr>
+<tr><td style="text-align: center"><code>BA</code></td><td style="text-align: left"><strong>SETMIPI:</strong> Set MIPI Registers (Page 144)</td></tr>
+<tr><td style="text-align: center"><code>33</code></td><td style="text-align: left">- Virtual Channel (0), Number of Lanes (4)</td></tr>
+<tr><td style="text-align: center"><code>81</code></td><td style="text-align: left">- LDO Volatge, Terminal Registance</td></tr>
+<tr><td style="text-align: center"><code>05</code></td><td style="text-align: left">- MIPI Low High Speed driving ability</td></tr>
+<tr><td style="text-align: center"><code>F9</code></td><td style="text-align: left">- TXCLK speed in DSI LP mode</td></tr>
+<tr><td style="text-align: center"><code>0E</code></td><td style="text-align: left">- Minimum HFP number</td></tr>
+<tr><td style="text-align: center"><code>0E</code></td><td style="text-align: left">- Minimum HBP number</td></tr>
+<tr><td style="text-align: center">…</td><td style="text-align: left"><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333">(And plenty more, see this list)</a></td></tr>
+</tbody></table>
+</div>
+<p>The above commands are documented in the ST7703 Datasheet…</p>
 <ul>
 <li><a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>Sitronix ST7703 LCD Controller Datasheet</strong></a></li>
 </ul>
-<div><table><thead><tr><th>Byte</th><th>Remarks</th></tr></thead><tbody>
-<tr><td><code>B9</code></td><td><strong>SETEXTC:</strong> Enable USER Command (Page 131)</td></tr>
-<tr><td><code>F1</code></td><td>- Enable USER Command</td></tr>
-<tr><td><code>12</code></td><td>- (Continued)</td></tr>
-<tr><td><code>83</code></td><td>- (Continued)</td></tr>
-<tr><td><code>BA</code></td><td><strong>SETMIPI:</strong> Set MIPI Registers (Page 144)</td></tr>
-<tr><td><code>33</code></td><td>- Virtual Channel ID, Lane Number</td></tr>
-<tr><td><code>81</code></td><td>- DSI_LDO_SEL, RTERM</td></tr>
-<tr><td><code>05</code></td><td>- IHSRX</td></tr>
-<tr><td><code>F9</code></td><td>- Tx_clk_s</td></tr>
-<tr><td><code>0E</code></td><td>- HFP_OS</td></tr>
-<tr><td><code>0E</code></td><td>- HBP_OS</td></tr>
-<tr><td>…</td><td>(And plenty more)</td></tr>
-</tbody></table>
-</div>
+<p><em>How shall we send the Init Commands to ST7703?</em></p>
 <p>ST7703 Init</p>
-<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333">panel-sitronix-st7703.c</a></p>
 <p>Calls dsi_dcs_write_seq</p>
 <p>Calls mipi_dsi_dcs_write</p>
 <h1 id="registers-for-mipi-dsi"><a href="#registers-for-mipi-dsi">7 Registers for MIPI DSI</a></h1>
