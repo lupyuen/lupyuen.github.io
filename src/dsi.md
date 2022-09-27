@@ -212,6 +212,34 @@ This pixel pumping is done by A64's [__Timing Controller (TCON0)__](https://lupy
 
 TODO
 
+-   [__Sitronix ST7703 LCD Controller Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf)
+
+```c
+6.2.50 SETEXTC
+Page 131
+#define ST7703_CMD_SETEXTC	 0xB9
+SETEXTC: This command is used to enable USER Command.
+ST7703_CMD_SETEXTC, 0xF1, 0x12, 0x83
+
+6.2.58 SETMIPI (BAh)
+Page 144
+#define ST7703_CMD_SETMIPI	 0xBA
+ST7703_CMD_SETMIPI, 
+0x33, 
+0x81, 
+0x05, 
+0xF9, 
+0x0E, 0x0E, ...
+```
+
+ST7703 Init
+
+[panel-sitronix-st7703.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333)
+
+Calls dsi_dcs_write_seq
+
+Calls mipi_dsi_dcs_write
+
 # Registers for MIPI DSI
 
 TODO
@@ -348,11 +376,6 @@ To actually display pixels on the screen you also need to program DE and TCON. I
 [(Source)](https://www.reddit.com/r/PINE64official/comments/xjzack/comment/ipd6fsy/?utm_source=share&utm_medium=web2x&context=3)
 
 [Zephyr Driver for MIPI DSI](https://github.com/zephyrproject-rtos/zephyr-testing/blob/main/tests/drivers/mipi_dsi/api/src/main.c)
-
-ST7703 Init
-[panel-sitronix-st7703.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333)
-Calls dsi_dcs_write_seq
-Calls mipi_dsi_dcs_write
 
 A64 MIPI DSI Driver
 [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c)
