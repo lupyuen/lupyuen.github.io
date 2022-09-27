@@ -6,7 +6,7 @@
 
 How does [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) control its __LCD Display__?
 
-Let's uncover all the secrets about PinePhone's mysterious LCD Display and its __MIPI Digital Serial Interface__!
+Let's uncover all the secrets about PinePhone's mysterious LCD Display and its __MIPI Digital Serial Interface__...
 
 -   What's a MIPI Digital Serial Interface (DSI)
 
@@ -74,7 +74,7 @@ A quick recap of __PineTime's ST7789 Display__...
 
 If we're not familiar with PineTime's ST7789 Display, please read the docs above!
 
-_We've read the docs, please move on!_
+_We've read the docs, can we move on?_
 
 OK great! To understand how PinePhone's Display differs from PineTime, we begin with the schematic...
 
@@ -237,15 +237,25 @@ The above commands are (mostly) documented in the ST7703 Datasheet...
 
 _How shall we send the Init Sequence to ST7703?_
 
+We'll send the Command Bytes to ST7703 via a MIPI DSI Display Command: __DCS Long Write__. Which we'll explain next...
+
+![MIPI DSI Display Command Set from A31 User Manual (Page 837)](https://lupyuen.github.io/images/dsi-datatype.png)
+
+[_MIPI DSI Display Command Set from A31 User Manual (Page 837)_](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
+
+# Display Command Set for MIPI DSI
+
+MIPI Digital Serial Interface (DSI) defines a standard list of commands for controlling the display: __DSI Display Command Set (DCS)__. (Pic above)
+
+To send the Initialisation Sequence to ST7703, we shall transmit the __DCS Long Write__ command. (Data Type `0x39`)
+
 TODO
 
-![TODO](https://lupyuen.github.io/images/dsi-datatype.png)
+> DSI-compliant peripherals support either of two basic modes of operation: Command Mode and Video Mode. Which mode is used depends on the architecture and capabilities of the peripheral. The ST7703 only support Video mode. 
 
-# Data Types for MIPI DSI
+> Video Mode refers to operation in which transfers from the host processor to the peripheral take the form of a real-time pixel stream. In normal operation, the driver IC relies on the host processor to provide image data at sufficient bandwidth to avoid flicker or other visible artifacts in the displayed image. Video information should only be transmitted using High Speed Mode. 
 
-TODO
-
-# Video Mode for MIPI DSI
+# Video Mode Only for MIPI DSI
 
 TODO
 
@@ -323,9 +333,7 @@ DSI Interface (CKN, CKP, D0P, D0N, ...)
 -> Command Decoder
 
 Suggests that DSI is just a wrapper over the old ST77xx commands
-> DSI-compliant peripherals support either of two basic modes of operation: Command Mode and Video Mode. Which mode is used depends on the architecture and capabilities of the peripheral. The ST7703 only support Video mode. 
 
-> Video Mode refers to operation in which transfers from the host processor to the peripheral take the form of a real-time pixel stream. In normal operation, the driver IC relies on the host processor to provide image data at sufficient bandwidth to avoid flicker or other visible artifacts in the displayed image. Video information should only be transmitted using High Speed Mode. 
 
 Lane 0 is special: Bus Turnaround
 
