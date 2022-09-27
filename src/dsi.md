@@ -108,9 +108,49 @@ But if we're seeking a gentler intro to DSI, please follow me to the next sectio
 
 # Connector for MIPI DSI
 
-We'll learn plenty about MIPI DSI (Display Serial Interface)... Just by looking at the __connector for PinePhone's LCD Display__!
+_How shall we learn about MIPI DSI?_
+
+We'll learn plenty about MIPI DSI (Display Serial Interface)... Just by looking at __PinePhone's Connector for the LCD Display__!
+
+Flip to Page 11 of the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) and we'll see the __MIPI DSI Connector__. (Pic above)
+
+The MIPI DSI Connector connects PinePhone's Allwinner A64 SoC to the LCD Display.
 
 TODO
+
+Direct to a64
+Clock:
+MIPI-DSI-CKN
+MIPI-DSI-CKP
+
+4 lanes
+MIPI-DSI-D0P
+MIPI-DSI-D0N
+MIPI-DSI-D1P
+MIPI-DSI-D1N
+MIPI-DSI-D2P
+MIPI-DSI-D2N
+MIPI-DSI-D3P
+MIPI-DSI-D3N
+Why the N and P?
+Because P=NP... Kidding!
+N means Negative, P means Positive
+P and N means differential
+Previously Spi Single lane
+
+# Xingbangda XBD599 LCD Panel
+
+TODO
+
+From above we see that PinePhone is connected to [__Xingbangda XBD599__](https://patchwork.kernel.org/project/dri-devel/patch/20200311163329.221840-4-icenowy@aosc.io/) 5.99-inch 720x1440 MIPI-DSI IPS LCD Panel
+
+# Sitronix ST7703 LCD Controller
+
+TODO
+
+__Sitronix ST7703 LCD Controller__...
+
+-   [__Sitronix ST7703 LCD Controller Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf)
 
 # PinePhone vs PineTime
 
@@ -147,31 +187,6 @@ TODO
 ![TODO](https://lupyuen.github.io/images/dsi-tx.png)
 
 # TODO
-
-Schematic
-Block Diagram
-[MIPI DSI](https://en.wikipedia.org/wiki/Display_Serial_Interface)
-
-MIPI Connector
-Direct to a64
-Clock:
-MIPI-DSI-CKN
-MIPI-DSI-CKP
-
-4 lanes
-MIPI-DSI-D0P
-MIPI-DSI-D0N
-MIPI-DSI-D1P
-MIPI-DSI-D1N
-MIPI-DSI-D2P
-MIPI-DSI-D2N
-MIPI-DSI-D3P
-MIPI-DSI-D3N
-Why the N and P?
-Because P=NP... Kidding!
-N means Negative, P means Positive
-P and N means differential
-Previously Spi Single lane
 
 [AIoT device DDI](https://www.sitronix.com.tw/en/products/aiot-device-ddi/)
 ram vs ramless
