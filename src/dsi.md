@@ -210,27 +210,26 @@ This pixel pumping is done by A64's [__Timing Controller (TCON0)__](https://lupy
 
 # Initialise LCD Controller
 
+_What happens inside PinePhone's ST7703 LCD Controller?_
+
 TODO
 
 -   [__Sitronix ST7703 LCD Controller Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf)
 
-```c
-6.2.50 SETEXTC
-Page 131
-#define ST7703_CMD_SETEXTC	 0xB9
-SETEXTC: This command is used to enable USER Command.
-ST7703_CMD_SETEXTC, 0xF1, 0x12, 0x83
-
-6.2.58 SETMIPI (BAh)
-Page 144
-#define ST7703_CMD_SETMIPI	 0xBA
-ST7703_CMD_SETMIPI, 
-0x33, 
-0x81, 
-0x05, 
-0xF9, 
-0x0E, 0x0E, ...
-```
+| Byte | Remarks |
+|------|---------|
+| `B9` | __SETEXTC:__ Enable USER Command (Page 131)
+| `F1` | - Enable USER Command
+| `12` | - (Continued)
+| `83` | - (Continued)
+| `BA` | __SETMIPI:__ Set MIPI Registers (Page 144)
+| `33` | - Virtual Channel ID, Lane Number
+| `81` | - DSI_LDO_SEL, RTERM
+| `05` | - IHSRX
+| `F9` | - Tx_clk_s
+| `0E` | - HFP_OS
+| `0E` | - HBP_OS
+| ...  | (And plenty more)
 
 ST7703 Init
 
