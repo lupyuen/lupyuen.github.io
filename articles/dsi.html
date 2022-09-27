@@ -231,25 +231,26 @@
 <p>(Yep PinePhone is way more complicated than PineTime!)</p>
 <p>This pixel pumping is done by A64’s <a href="https://lupyuen.github.io/articles/pio#lcd-controller-tcon0"><strong>Timing Controller (TCON0)</strong></a>. We’ll come back to this.</p>
 <h1 id="initialise-lcd-controller"><a href="#initialise-lcd-controller">6 Initialise LCD Controller</a></h1>
+<p><em>What happens inside PinePhone’s ST7703 LCD Controller?</em></p>
 <p>TODO</p>
 <ul>
 <li><a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>Sitronix ST7703 LCD Controller Datasheet</strong></a></li>
 </ul>
-<div class="example-wrap"><pre class="language-c"><code>6.2.50 SETEXTC
-Page 131
-#define ST7703_CMD_SETEXTC	 0xB9
-SETEXTC: This command is used to enable USER Command.
-ST7703_CMD_SETEXTC, 0xF1, 0x12, 0x83
-
-6.2.58 SETMIPI (BAh)
-Page 144
-#define ST7703_CMD_SETMIPI	 0xBA
-ST7703_CMD_SETMIPI, 
-0x33, 
-0x81, 
-0x05, 
-0xF9, 
-0x0E, 0x0E, ...</code></pre></div>
+<div><table><thead><tr><th>Byte</th><th>Remarks</th></tr></thead><tbody>
+<tr><td><code>B9</code></td><td><strong>SETEXTC:</strong> Enable USER Command (Page 131)</td></tr>
+<tr><td><code>F1</code></td><td>- Enable USER Command</td></tr>
+<tr><td><code>12</code></td><td>- (Continued)</td></tr>
+<tr><td><code>83</code></td><td>- (Continued)</td></tr>
+<tr><td><code>BA</code></td><td><strong>SETMIPI:</strong> Set MIPI Registers (Page 144)</td></tr>
+<tr><td><code>33</code></td><td>- Virtual Channel ID, Lane Number</td></tr>
+<tr><td><code>81</code></td><td>- DSI_LDO_SEL, RTERM</td></tr>
+<tr><td><code>05</code></td><td>- IHSRX</td></tr>
+<tr><td><code>F9</code></td><td>- Tx_clk_s</td></tr>
+<tr><td><code>0E</code></td><td>- HFP_OS</td></tr>
+<tr><td><code>0E</code></td><td>- HBP_OS</td></tr>
+<tr><td>…</td><td>(And plenty more)</td></tr>
+</tbody></table>
+</div>
 <p>ST7703 Init</p>
 <p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333">panel-sitronix-st7703.c</a></p>
 <p>Calls dsi_dcs_write_seq</p>
