@@ -60,11 +60,11 @@ A quick recap of __PineTime's ST7789 Display__...
 
     (PinePhone won't need this)
 
--   At startup, PineTime sends a bunch of Commands to initialise the display...
+-   At startup, PineTime sends an Initialisation Sequence of Commands to initialise the display...
 
     [__"Initialise The Display"__](https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot#initialise-the-display)
 
-    (PinePhone will send similar Commands)
+    (PinePhone will send a similar Initialisation Sequence)
 
 -   PineTime renders a rectangular chunk of the display at a time...
 
@@ -214,7 +214,7 @@ _What happens inside PinePhone's ST7703 LCD Controller?_
 
 Let's figure out by looking at the initialisation of PinePhone's ST7703 LCD Controller.
 
-Xingbangda has provided a list of [__Initialisation Commands__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333) that we should send to the LCD Controller at startup...
+Xingbangda has provided an [__Initialisation Sequence__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333) of ST7703 Commands that we should send to the LCD Controller at startup...
 
 | Byte | Purpose |
 |:----:|:---------|
@@ -231,13 +231,29 @@ Xingbangda has provided a list of [__Initialisation Commands__](https://github.c
 | `0E` | - Minimum HBP number
 | ...  | [(And many more commands, see this list)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333)
 
-The above commands are documented in the ST7703 Datasheet...
+The above commands are (mostly) documented in the ST7703 Datasheet...
 
 -   [__Sitronix ST7703 LCD Controller Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf)
 
-_How shall we send the Init Commands to ST7703?_
+_How shall we send the Init Sequence to ST7703?_
 
 TODO
+
+![TODO](https://lupyuen.github.io/images/dsi-datatype.png)
+
+# Data Types for MIPI DSI
+
+TODO
+
+# Video Mode for MIPI DSI
+
+TODO
+
+![TODO](https://lupyuen.github.io/images/dsi-modes2.png)
+
+TODO
+
+![TODO](https://lupyuen.github.io/images/dsi-control.png)
 
 xbd599_init_sequence
 -   Calls dsi_dcs_write_seq
@@ -271,27 +287,23 @@ static const struct st7703_panel_desc xbd599_desc = {
 		     SUN6I_DSI_BASIC_CTL1_VIDEO_MODE);
 ```
 
+Packet Header: 32-bits
+
+sun6i_dsi_dcs_build_pkt_hdr: [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L850-L867)
+
+Data Type = MIPI_DSI_DCS_LONG_WRITE
+
+[mipi_display.h](https://github.com/torvalds/linux/blob/master/include/video/mipi_display.h#L47)
+
+```c
+	MIPI_DSI_DCS_LONG_WRITE				= 0x39,
+```
+
 # A64 Registers for MIPI DSI
 
 TODO
 
 ![TODO](https://lupyuen.github.io/images/dsi-registers2.png)
-
-# Data Types for MIPI DSI
-
-TODO
-
-![TODO](https://lupyuen.github.io/images/dsi-datatype.png)
-
-# Video Mode for MIPI DSI
-
-TODO
-
-![TODO](https://lupyuen.github.io/images/dsi-modes2.png)
-
-TODO
-
-![TODO](https://lupyuen.github.io/images/dsi-control.png)
 
 # Transmit over MIPI DSI
 
