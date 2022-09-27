@@ -96,7 +96,7 @@ _What's a MIPI Digital Serial Interface?_
 
 Think of it as SPI, but supercharged with __Multiple Data Lanes__!
 
-Here's the (dull) technical explanation of DSI...
+The (dull) technical details of DSI are covered here...
 
 -   [__Display Serial Interface (DSI)__](https://en.wikipedia.org/wiki/Display_Serial_Interface)
 
@@ -114,31 +114,41 @@ We'll learn plenty about MIPI DSI (Display Serial Interface)... Just by looking 
 
 Flip to Page 11 of the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) and we'll see the __MIPI DSI Connector__. (Pic above)
 
-The MIPI DSI Connector connects PinePhone's Allwinner A64 SoC to the LCD Display.
+The MIPI DSI Connector connects PinePhone's __Allwinner A64 SoC__ directly to the LCD Display. In the pic above we see these connections...
 
-TODO
+-   __CKN and CKP__ are the DSI Clock Lines
 
-Direct to a64
-Clock:
-MIPI-DSI-CKN
-MIPI-DSI-CKP
+    (Similar to SPI Clock)
 
-4 lanes
-MIPI-DSI-D0P
-MIPI-DSI-D0N
-MIPI-DSI-D1P
-MIPI-DSI-D1N
-MIPI-DSI-D2P
-MIPI-DSI-D2N
-MIPI-DSI-D3P
-MIPI-DSI-D3N
-Why the N and P?
+-   __D0P and D0N__ are for DSI Data Lane 0
+
+    (Similar to SPI MISO / MOSI)
+
+-   __D1P and D1P__ are for DSI Data Line 1
+
+    (Yep DSI has more data lanes than SPI)
+
+-   __D2P and D2P__ are for DSI Data Line 2
+
+-   __D3P and D3P__ are for DSI Data Line 3
+
+    (DSI has 4 data lanes!)
+
+_Why the N and P?_
+
 Because P=NP... Kidding!
-N means Negative, P means Positive
-P and N means differential
-Previously Spi Single lane
+
+__N__ means Negative, __P__ means Positive.
+
+This means that DSI uses [__Differential Signalling__](https://en.wikipedia.org/wiki/Differential_signalling) for high-speed data transfers. (4.5 Gbps per lane)
+
+(Which looks quite similar to [__HDMI__](https://en.wikipedia.org/wiki/HDMI))
 
 # Xingbangda XBD599 LCD Panel
+
+_What's connected to this MIPI DSI Connector?_
+
+
 
 TODO
 
