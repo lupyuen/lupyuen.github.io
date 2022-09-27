@@ -208,6 +208,10 @@ PinePhone's A64 SoC will __pump a constant stream of pixels__ to refresh the dis
 
 This pixel pumping is done by A64's [__Timing Controller (TCON0)__](https://lupyuen.github.io/articles/pio#lcd-controller-tcon0). We'll come back to this.
 
+# Initialise LCD Controller
+
+TODO
+
 # Registers for MIPI DSI
 
 TODO
