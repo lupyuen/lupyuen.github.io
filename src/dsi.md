@@ -249,73 +249,49 @@ MIPI Digital Serial Interface (DSI) defines a standard list of commands for cont
 
 To send the Initialisation Sequence to ST7703, we shall transmit the __DCS Long Write__ command. (Data Type `0x39`)
 
-TODO
+And we shall transmit the DCS Long Write command in __DSI Video Mode__.
 
-> DSI-compliant peripherals support either of two basic modes of operation: Command Mode and Video Mode. Which mode is used depends on the architecture and capabilities of the peripheral. The ST7703 only support Video mode. 
+Let's talk about DSI Video Mode...
 
-> Video Mode refers to operation in which transfers from the host processor to the peripheral take the form of a real-time pixel stream. In normal operation, the driver IC relies on the host processor to provide image data at sufficient bandwidth to avoid flicker or other visible artifacts in the displayed image. Video information should only be transmitted using High Speed Mode. 
+![DSI Video Mode from A31 User Manual (Page 841)](https://lupyuen.github.io/images/dsi-modes2.png)
+
+[_DSI Video Mode from A31 User Manual (Page 841)_](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
 
 # Video Mode Only for MIPI DSI
 
-TODO
+_What's MIPI DSI Video Mode?_
 
-![TODO](https://lupyuen.github.io/images/dsi-modes2.png)
+MIPI Digital Serial Interface (DSI) supports 2 modes of operation (pic above)...
 
-TODO
+-   __DSI Command Mode__: For sending DCS Commands (Display Command Set) to the display
 
-![TODO](https://lupyuen.github.io/images/dsi-control.png)
+-   __DSI Video Mode__: For blasting pixels to the display
 
-TODO
+    (That's why PinePhone's Display doesn't need a Data / Command Pin like PineTime)
 
-xbd599_init_sequence: [panel-sitronix-st7703.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333)
--   Calls dsi_dcs_write_seq: [panel-sitronix-st7703.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L165-L171)
--   Calls mipi_dsi_dcs_write: [drm_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/drm_mipi_dsi.c#L813-L855)
--   Calls mipi_dsi_dcs_write_buffer (msg.type = MIPI_DSI_DCS_LONG_WRITE): [drm_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/drm_mipi_dsi.c#L771-L811)
--   Calls mipi_dsi_device_transfer: [drm_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/drm_mipi_dsi.c#L429-L441)
--   Calls sun6i_dsi_transfer: [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L996-L1034)
--   Calls sun6i_dsi_dcs_write_long: [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L882-L921)
-    -   Calls sun6i_dsi_start(dsi, DSI_START_LPTX): [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L670-L714)
-    -   And sun6i_dsi_inst_wait_for_completion: [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L304-L312)
+But the [__Sitronix ST7703 LCD Controller Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf) (page 19) says...
 
-Data Type = MIPI_DSI_DCS_LONG_WRITE
+> ST7703 only support __Video mode__. Video Mode refers to operation in which transfers from the host processor to the peripheral take the form of a real-time pixel stream. 
 
-[mipi_display.h](https://github.com/torvalds/linux/blob/master/include/video/mipi_display.h#L47)
+> In normal operation, the driver IC relies on the host processor to provide image data at sufficient bandwidth to avoid flicker or other visible artifacts in the displayed image. Video information should only be transmitted using High Speed Mode. 
 
-```c
-	MIPI_DSI_DCS_LONG_WRITE				= 0x39,
-```
+_So we shall transmit our DCS Commands in Video Mode? Even though it's meant for blasting pixels?_
 
-Packet Header: 32-bits
+Yeah earlier we talked about sending the __DCS Long Write__ command for initialising PinePhone's ST7703 LCD Controller...
 
-sun6i_dsi_dcs_build_pkt_hdr: [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L850-L867)
+-   [__"Initialise LCD Controller"__](https://lupyuen.github.io/articles/dsi#initialise-lcd-controller)
 
-Video Mode: [panel-sitronix-st7703.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L350-L356)
-
-```c
-static const struct st7703_panel_desc xbd599_desc = {
-	.mode = &xbd599_mode,
-	.lanes = 4,
-	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE,
-	.format = MIPI_DSI_FMT_RGB888,
-	.init_sequence = xbd599_init_sequence,
-};
-```
-
-Video Mode: [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L751-L755)
-
-```c
-	regmap_write(dsi->regs, SUN6I_DSI_BASIC_CTL1_REG,
-		     SUN6I_DSI_BASIC_CTL1_VIDEO_ST_DELAY(delay) |
-		     SUN6I_DSI_BASIC_CTL1_VIDEO_FILL |
-		     SUN6I_DSI_BASIC_CTL1_VIDEO_PRECISION |
-		     SUN6I_DSI_BASIC_CTL1_VIDEO_MODE);
-```
+We will have to transmit the command in __DSI Video Mode__. (Instead of DSI Command Mode)
 
 # A64 Registers for MIPI DSI
 
 TODO
 
 ![TODO](https://lupyuen.github.io/images/dsi-registers2.png)
+
+TODO
+
+![TODO](https://lupyuen.github.io/images/dsi-control.png)
 
 # Transmit over MIPI DSI
 
@@ -561,6 +537,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Notes
 
-1.  We recorded some notes while reverse-enginnering the PinePhone MIPI DSI Driver...
+1.  We recorded some notes while reverse-engineering the PinePhone MIPI DSI Driver...
 
     [__"Reverse Engineering PinePhone's LCD Display (MIPI DSI)"__](https://gist.github.com/lupyuen/43204d20c35ecb23dfbff12f2f570565)
