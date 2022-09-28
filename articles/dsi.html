@@ -306,6 +306,17 @@
 <p><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Registers from A31 User Manual (Page 842)</em></a></p>
 <h1 id="a64-registers-for-mipi-dsi"><a href="#a64-registers-for-mipi-dsi">9 A64 Registers for MIPI DSI</a></h1>
 <p><em>How shall we send a DCS Long Write command to PinePhone’s Display?</em></p>
+<p>To send a DCS Long Write command, we’ll set some Hardware Registers in A64’s <strong>MIPI DSI Controller</strong>.</p>
+<p><em>The MIPI DSI Registers are missing from the A64 docs!</em></p>
+<p>Yep it’s totally odd, but the A64 MIPI DSI Registers are actually documented in the Allwinner A31 SoC, which is a 32-bit SoC!</p>
+<ul>
+<li><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf"><strong>Allwinner A31 User Manual (Page 842)</strong></a></li>
+</ul>
+<p>A64’s MIPI DSI Hardware is identical to A31 because both SoCs use the <strong>same MIPI DSI Driver</strong>: <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L1215-L1219">sun6i_mipi_dsi.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static const struct of_device_id sun6i_dsi_of_table[] = {
+  { .compatible = &quot;allwinner,sun6i-a31-mipi-dsi&quot; },
+  { .compatible = &quot;allwinner,sun50i-a64-mipi-dsi&quot; },</code></pre></div>
+<p>The pic above shows the list of <strong>MIPI DSI Registers</strong> for A64 SoC.</p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/dsi-control.png" alt="TODO" /></p>
 <h1 id="transmit-over-mipi-dsi"><a href="#transmit-over-mipi-dsi">10 Transmit over MIPI DSI</a></h1>
