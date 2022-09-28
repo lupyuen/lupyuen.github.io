@@ -272,18 +272,27 @@
 <p><img src="https://lupyuen.github.io/images/dsi-modes2.png" alt="TODO" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/dsi-control.png" alt="TODO" /></p>
-<p>xbd599_init_sequence</p>
+<p>TODO</p>
+<p>xbd599_init_sequence: <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333">panel-sitronix-st7703.c</a></p>
 <ul>
-<li>Calls dsi_dcs_write_seq</li>
-<li>Calls mipi_dsi_dcs_write</li>
-</ul>
-<p>sun6i_dsi_dcs_write_long: <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L882-L921">sun6i_mipi_dsi.c</a></p>
+<li>Calls dsi_dcs_write_seq: <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L165-L171">panel-sitronix-st7703.c</a></li>
+<li>Calls mipi_dsi_dcs_write: <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/drm_mipi_dsi.c#L813-L855">drm_mipi_dsi.c</a></li>
+<li>Calls mipi_dsi_dcs_write_buffer (msg.type = MIPI_DSI_DCS_LONG_WRITE): <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/drm_mipi_dsi.c#L771-L811">drm_mipi_dsi.c</a></li>
+<li>Calls mipi_dsi_device_transfer: <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/drm_mipi_dsi.c#L429-L441">drm_mipi_dsi.c</a></li>
+<li>Calls sun6i_dsi_transfer: <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L996-L1034">sun6i_mipi_dsi.c</a></li>
+<li>Calls sun6i_dsi_dcs_write_long: <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L882-L921">sun6i_mipi_dsi.c</a>
 <ul>
-<li>Calls sun6i_dsi_start(dsi, DSI_START_LPTX);</li>
-<li>sun6i_dsi_inst_wait_for_completion</li>
+<li>Calls sun6i_dsi_start(dsi, DSI_START_LPTX): <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L670-L714">sun6i_mipi_dsi.c</a></li>
+<li>And sun6i_dsi_inst_wait_for_completion: <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L304-L312">sun6i_mipi_dsi.c</a></li>
 </ul>
-<p>sun6i_dsi_start: <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L670-L714">sun6i_mipi_dsi.c</a></p>
-<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L350-L356">panel-sitronix-st7703.c</a></p>
+</li>
+</ul>
+<p>Data Type = MIPI_DSI_DCS_LONG_WRITE</p>
+<p><a href="https://github.com/torvalds/linux/blob/master/include/video/mipi_display.h#L47">mipi_display.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>	MIPI_DSI_DCS_LONG_WRITE				= 0x39,</code></pre></div>
+<p>Packet Header: 32-bits</p>
+<p>sun6i_dsi_dcs_build_pkt_hdr: <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L850-L867">sun6i_mipi_dsi.c</a></p>
+<p>Video Mode: <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L350-L356">panel-sitronix-st7703.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static const struct st7703_panel_desc xbd599_desc = {
 	.mode = &amp;xbd599_mode,
 	.lanes = 4,
@@ -291,17 +300,12 @@
 	.format = MIPI_DSI_FMT_RGB888,
 	.init_sequence = xbd599_init_sequence,
 };</code></pre></div>
-<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L751-L755">sun6i_mipi_dsi.c</a></p>
+<p>Video Mode: <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L751-L755">sun6i_mipi_dsi.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>	regmap_write(dsi-&gt;regs, SUN6I_DSI_BASIC_CTL1_REG,
 		     SUN6I_DSI_BASIC_CTL1_VIDEO_ST_DELAY(delay) |
 		     SUN6I_DSI_BASIC_CTL1_VIDEO_FILL |
 		     SUN6I_DSI_BASIC_CTL1_VIDEO_PRECISION |
-		     SUN6I_DSI_BASIC_CTL1_VIDEO_MODE);</code></pre></div>
-<p>Packet Header: 32-bits</p>
-<p>sun6i_dsi_dcs_build_pkt_hdr: <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L850-L867">sun6i_mipi_dsi.c</a></p>
-<p>Data Type = MIPI_DSI_DCS_LONG_WRITE</p>
-<p><a href="https://github.com/torvalds/linux/blob/master/include/video/mipi_display.h#L47">mipi_display.h</a></p>
-<div class="example-wrap"><pre class="language-c"><code>	MIPI_DSI_DCS_LONG_WRITE				= 0x39,</code></pre></div><h1 id="a64-registers-for-mipi-dsi"><a href="#a64-registers-for-mipi-dsi">9 A64 Registers for MIPI DSI</a></h1>
+		     SUN6I_DSI_BASIC_CTL1_VIDEO_MODE);</code></pre></div><h1 id="a64-registers-for-mipi-dsi"><a href="#a64-registers-for-mipi-dsi">9 A64 Registers for MIPI DSI</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/dsi-registers2.png" alt="TODO" /></p>
 <h1 id="transmit-over-mipi-dsi"><a href="#transmit-over-mipi-dsi">10 Transmit over MIPI DSI</a></h1>
