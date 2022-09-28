@@ -287,6 +287,8 @@ We will have to transmit the command in __DSI Video Mode__. (Instead of DSI Comm
 
 # A64 Registers for MIPI DSI
 
+_How shall we send a DCS Long Write command to PinePhone's Display?_
+
 TODO
 
 ![TODO](https://lupyuen.github.io/images/dsi-registers2.png)
