@@ -237,7 +237,7 @@ The above commands are (mostly) documented in the ST7703 Datasheet...
 
 _How to send the Init Sequence to ST7703?_
 
-We'll send the above Command Bytes to ST7703 via a MIPI DSI Display Command: __DCS Long Write__.
+We'll send the above commands to ST7703 via a MIPI DSI Display Command: __DCS Long Write__.
 
 Which we'll explain next...
 
@@ -251,9 +251,19 @@ MIPI Digital Serial Interface (DSI) defines a standard list of commands for cont
 
 To send the Initialisation Sequence to ST7703, we shall transmit the __DCS Long Write__ command. (Data Type `0x39`)
 
+Which is described in the [__ST7703 Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf) (page 19)...
+
+> __Display Command Set (DCS) Long Write__ is always using a Long Packet from the HOST to the driver IC.
+
+> The content can include Command (No Parameters) or Command with 1 or more parameters.
+
+(More about "Long Packet" in a while)
+
 And we shall transmit the DCS Long Write command in __DSI Video Mode__.
 
 Let's talk about DSI Video Mode...
+
+(Note: We might need to use __DCS Short Write No Parameters__ `0x05` for single-byte ST7703 Commands, __DCS Short Write 1 Parameter__ `0x15` for 2-byte ST7703 Commands. The docs look confusing)
 
 ![DSI Video Mode from A31 User Manual (Page 841)](https://lupyuen.github.io/images/dsi-modes2.png)
 
