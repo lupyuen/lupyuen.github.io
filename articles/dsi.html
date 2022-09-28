@@ -257,15 +257,24 @@
 <li><a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>Sitronix ST7703 LCD Controller Datasheet</strong></a></li>
 </ul>
 <p><em>How to send the Init Sequence to ST7703?</em></p>
-<p>We’ll send the above Command Bytes to ST7703 via a MIPI DSI Display Command: <strong>DCS Long Write</strong>.</p>
+<p>We’ll send the above commands to ST7703 via a MIPI DSI Display Command: <strong>DCS Long Write</strong>.</p>
 <p>Which we’ll explain next…</p>
 <p><img src="https://lupyuen.github.io/images/dsi-datatype.png" alt="MIPI DSI Display Command Set from A31 User Manual (Page 837)" /></p>
 <p><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Display Command Set from A31 User Manual (Page 837)</em></a></p>
 <h1 id="display-command-set-for-mipi-dsi"><a href="#display-command-set-for-mipi-dsi">7 Display Command Set for MIPI DSI</a></h1>
 <p>MIPI Digital Serial Interface (DSI) defines a standard list of commands for controlling the display: <strong>DSI Display Command Set (DCS)</strong>. (Pic above)</p>
 <p>To send the Initialisation Sequence to ST7703, we shall transmit the <strong>DCS Long Write</strong> command. (Data Type <code>0x39</code>)</p>
+<p>Which is described in the <a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>ST7703 Datasheet</strong></a> (page 19)…</p>
+<blockquote>
+<p><strong>Display Command Set (DCS) Long Write</strong> is always using a Long Packet from the HOST to the driver IC.</p>
+</blockquote>
+<blockquote>
+<p>The content can include Command (No Parameters) or Command with 1 or more parameters.</p>
+</blockquote>
+<p>(More about “Long Packet” in a while)</p>
 <p>And we shall transmit the DCS Long Write command in <strong>DSI Video Mode</strong>.</p>
 <p>Let’s talk about DSI Video Mode…</p>
+<p>(Note: We might need to use <strong>DCS Short Write No Parameters</strong> <code>0x05</code> for single-byte ST7703 Commands, <strong>DCS Short Write 1 Parameter</strong> <code>0x15</code> for 2-byte ST7703 Commands. The docs look confusing)</p>
 <p><img src="https://lupyuen.github.io/images/dsi-modes2.png" alt="DSI Video Mode from A31 User Manual (Page 841)" /></p>
 <p><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf"><em>DSI Video Mode from A31 User Manual (Page 841)</em></a></p>
 <h1 id="video-mode-only-for-mipi-dsi"><a href="#video-mode-only-for-mipi-dsi">8 Video Mode Only for MIPI DSI</a></h1>
