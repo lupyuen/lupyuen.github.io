@@ -371,15 +371,47 @@ Though eventually we shall use these too...
 
 [_MIPI DSI Configuration Register 1 from A31 User Manual (Page 846)_](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
 
-# A64 Configuration Register for MIPI DSI
+# Initialise MIPI DSI
 
-Remember we should send DCS Long Write to ST7703 in __DSI Video Mode__?
+We said earlier that PinePhone's ST7789 LCD Controller needs to run in __DSI Video Mode__ (instead of DSI Command Mode)...
 
-TODO
+-   [__"Video Mode Only for MIPI DSI"__](https://lupyuen.github.io/articles/dsi#video-mode-only-for-mipi-dsi)
 
--   __DSI_BASIC_CTL1_REG__ (Offset `0x14`)
+At startup, our PinePhone Display Driver shall set __DSI_Mode__ to 1. (Pic above)
 
-    DSI Configuration Register 1
+That's __Bit 0__ of __DSI_BASIC_CTL1_REG__ (DSI Configuration Register 1) at Offset `0x14`.
+
+Our driver shall also set __Video_Start_Delay__,__Video_Precision_Mode_Align__ (to 1) and __Video_Frame_Start__ (to 1).
+
+[(Here's how we set __DSI_Mode__)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L751-L755)
+
+_Anything else we should init at startup?_
+
+At startup our PinePhone Display Driver shall initialise these A64 Registers for MIPI DSI...
+
+-   __DSI_CTL_REG__ (Offset `0x00`):
+
+    Enable MIPI DSI
+
+-   __DSI_BASIC_CTL0_REG__ (Offset `0x10`):
+
+    Enable ECC and CRC
+
+-   __DSI_TRANS_START_REG__ (Offset `0x60`):
+
+    Set to 10 (Why?)
+
+-   __DSI_TRANS_ZERO_REG__ (Offset `0x78`):
+
+    Set to 0 (Why?)
+
+-   __DSI_DEBUG_DATA_REG__ (Offset `0x2f8`):
+
+    Set to `0xFF` (Why?)
+
+[(Here's how we initialise the registers)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L735-L748)
+
+Now that we have initialised A64 MIPI DSI, we're ready to send our DCS Command...
 
 # Packet Format for MIPI DSI
 
@@ -418,7 +450,7 @@ Figure 5.23: Structure of the short packet:
 -   Data 0 and Data 1: Packet Data (8+8bit)
 -   ECC(Error Correction Code): The Error Correction Code allows single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header.
 
-# A64 Transmit Register for MIPI DSI
+# Transmit over MIPI DSI
 
 TODO
 
