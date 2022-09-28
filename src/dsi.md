@@ -100,7 +100,7 @@ The (dull) technical details of DSI are covered here...
 
 -   [__Display Serial Interface (DSI)__](https://en.wikipedia.org/wiki/Display_Serial_Interface)
 
-But if we're seeking a gentler intro to DSI, please follow me to the next section!
+But if we're seeking a gentler intro to DSI, please follow me to the next section...
 
 ![_MIPI DSI Connector on PinePhone Schematic (Page 11)_](https://lupyuen.github.io/images/dsi-connector.png)
 
