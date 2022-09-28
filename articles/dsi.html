@@ -275,10 +275,9 @@
 </li>
 <li>
 <p><strong>DSI Video Mode</strong>: For blasting pixels to the display</p>
-<p>(That’s why PinePhone’s Display doesn’t need a Data / Command Pin like PineTime)</p>
 </li>
 </ul>
-<p>But the <a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>Sitronix ST7703 LCD Controller Datasheet</strong></a> (page 19) says…</p>
+<p>But the <a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>ST7703 Datasheet</strong></a> (page 19) says…</p>
 <blockquote>
 <p>ST7703 only support <strong>Video mode</strong>. Video Mode refers to operation in which transfers from the host processor to the peripheral take the form of a real-time pixel stream. </p>
 </blockquote>
@@ -290,11 +289,23 @@
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#initialise-lcd-controller"><strong>“Initialise LCD Controller”</strong></a></li>
 </ul>
-<p>We will have to transmit the command in <strong>DSI Video Mode</strong>. (Instead of DSI Command Mode)</p>
+<p>We’ll have to transmit the command in <strong>DSI Video Mode</strong>. (Instead of DSI Command Mode)</p>
+<p>It sounds odd, but that’s how ST7703 works!</p>
+<p><em>Wait we’re mixing DCS Commands and Pixel Data in the same mode? Won’t ST7703 LCD Controller get confused?</em></p>
+<p>If we flip back to the Display Command Set…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/dsi#display-command-set-for-mipi-dsi"><strong>“Display Command Set for MIPI DSI”</strong></a></p>
+<p>(Also in the <a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>ST7703 Datasheet</strong></a>, page 34)</p>
+</li>
+</ul>
+<p>We see that the <strong>DCS Long Write</strong> command has a different <strong>Data Type</strong> (<code>0x39</code>) from the other Pixel Stream commands.</p>
+<p>(Like “Packed Pixel Stream, 24-bit RGB, 8-8-8 Format”, Data Type <code>0x3E</code>)</p>
+<p>That’s why PinePhone’s Display doesn’t need a Data / Command Pin like PineTime.</p>
+<p><img src="https://lupyuen.github.io/images/dsi-registers2.png" alt="MIPI DSI Registers from A31 User Manual (Page 842)" /></p>
+<p><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Registers from A31 User Manual (Page 842)</em></a></p>
 <h1 id="a64-registers-for-mipi-dsi"><a href="#a64-registers-for-mipi-dsi">9 A64 Registers for MIPI DSI</a></h1>
 <p><em>How shall we send a DCS Long Write command to PinePhone’s Display?</em></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/dsi-registers2.png" alt="TODO" /></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/dsi-control.png" alt="TODO" /></p>
 <h1 id="transmit-over-mipi-dsi"><a href="#transmit-over-mipi-dsi">10 Transmit over MIPI DSI</a></h1>
