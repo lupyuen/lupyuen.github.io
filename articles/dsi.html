@@ -234,7 +234,7 @@
 <h1 id="initialise-lcd-controller"><a href="#initialise-lcd-controller">6 Initialise LCD Controller</a></h1>
 <p><em>What happens inside PinePhone’s ST7703 LCD Controller?</em></p>
 <p>Let’s figure out by looking at the initialisation of PinePhone’s ST7703 LCD Controller.</p>
-<p>Xingbangda has provided an <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333"><strong>Initialisation Sequence</strong></a> of ST7703 Commands that we should send to the LCD Controller at startup…</p>
+<p>Xingbangda has provided an <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333"><strong>Initialisation Sequence</strong></a> of (magical) ST7703 Commands that we should send to the LCD Controller at startup…</p>
 <div><table><thead><tr><th style="text-align: center">Byte</th><th style="text-align: left">Purpose</th></tr></thead><tbody>
 <tr><td style="text-align: center"><code>B9</code></td><td style="text-align: left"><strong>SETEXTC:</strong> Enable USER Command (Page 131)</td></tr>
 <tr><td style="text-align: center"><code>F1</code></td><td style="text-align: left">- Enable USER Command</td></tr>
@@ -254,8 +254,9 @@
 <ul>
 <li><a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>Sitronix ST7703 LCD Controller Datasheet</strong></a></li>
 </ul>
-<p><em>How shall we send the Init Sequence to ST7703?</em></p>
-<p>We’ll send the Command Bytes to ST7703 via a MIPI DSI Display Command: <strong>DCS Long Write</strong>. Which we’ll explain next…</p>
+<p><em>How to send the Init Sequence to ST7703?</em></p>
+<p>We’ll send the above Command Bytes to ST7703 via a MIPI DSI Display Command: <strong>DCS Long Write</strong>.</p>
+<p>Which we’ll explain next…</p>
 <p><img src="https://lupyuen.github.io/images/dsi-datatype.png" alt="MIPI DSI Display Command Set from A31 User Manual (Page 837)" /></p>
 <p><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Display Command Set from A31 User Manual (Page 837)</em></a></p>
 <h1 id="display-command-set-for-mipi-dsi"><a href="#display-command-set-for-mipi-dsi">7 Display Command Set for MIPI DSI</a></h1>
@@ -277,14 +278,15 @@
 <p><strong>DSI Video Mode</strong>: For blasting pixels to the display</p>
 </li>
 </ul>
-<p>But the <a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>ST7703 Datasheet</strong></a> (page 19) says…</p>
+<p>But the <a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>ST7703 Datasheet</strong></a> (page 19) says that DSI Command Mode is NOT supported…</p>
 <blockquote>
 <p>ST7703 only support <strong>Video mode</strong>. Video Mode refers to operation in which transfers from the host processor to the peripheral take the form of a real-time pixel stream. </p>
 </blockquote>
+<p>And while we’re in DSI Video Mode, we need to <strong>pump pixels continuously</strong> to ST7703 (or the display goes blank)…</p>
 <blockquote>
 <p>In normal operation, the driver IC relies on the host processor to provide image data at sufficient bandwidth to avoid flicker or other visible artifacts in the displayed image. Video information should only be transmitted using High Speed Mode. </p>
 </blockquote>
-<p><em>So we shall transmit our DCS Commands in Video Mode? Even though it’s meant for blasting pixels?</em></p>
+<p><em>So we’ll transmit our DCS Commands in DSI Video Mode? Even though it’s meant for blasting pixels?</em></p>
 <p>Yeah earlier we talked about sending the <strong>DCS Long Write</strong> command for initialising PinePhone’s ST7703 LCD Controller…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#initialise-lcd-controller"><strong>“Initialise LCD Controller”</strong></a></li>
