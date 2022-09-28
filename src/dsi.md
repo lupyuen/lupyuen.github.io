@@ -367,48 +367,64 @@ Though eventually we shall use these too...
 
     DSI Low Power Receive Package Register
 
-# Control Register for A64 MIPI DSI
+![MIPI DSI Configuration Register 1 from A31 User Manual (Page 846)](https://lupyuen.github.io/images/dsi-control.png)
+
+[_MIPI DSI Configuration Register 1 from A31 User Manual (Page 846)_](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
+
+# A64 Configuration Register for MIPI DSI
+
+Remember we should send DCS Long Write to ST7703 in __DSI Video Mode__?
 
 TODO
 
-![TODO](https://lupyuen.github.io/images/dsi-control.png)
+-   __DSI_BASIC_CTL1_REG__ (Offset `0x14`)
+
+    DSI Configuration Register 1
 
 # Packet Format for MIPI DSI
 
 TODO
 
 Page 32
-> short packets format include an 8-bit Data ID followed by zero to seven bytes and an 8-bit ECC
 
 > Long packets can be from 6 to 65,541 bytes in length. 
 
-Figure 5.23: Structure of the short packet:
-
-```text
-SOT: Start of Transmission
-DI(Data ID): 8-bit Contain Virtual Channel Identifier and Data Type.
-Data 0 and Data 1: Packet Data (8+8bit)
-ECC(Error Correction Code): The Error Correction Code allows single-bit errors to be corrected and
-2-bit errors to be detected in the Packet Header.
-```
 
 Figure 5.24: Structure of the long packet:
 
-```text
-DI (Data ID)：Contain Virtual Channel Identifier and Data Type.
-WC (Word Count)：8+8 bits The receiver use WC to define packet end.
-ECC (Error Correction Code)：The Error Correction Code allows single-bit errors to be corrected and
-2-bit errors to be detected in the Packet Header.
-PF(Packet Footer)：Mean 16-bit Checksum.
-```
+Packet Header
+-   DI (Data ID)：Contain Virtual Channel Identifier and Data Type.
+-   WC (Word Count)：8+8 bits The receiver use WC to define packet end.
+-   ECC (Error Correction Code)：The Error Correction Code allows single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header
+
+Packet Data (Payload)
+-   0 to 65,541 bytes in length
+
+Packet Footer
+-   Mean 16-bit Checksum
 
 Packet Header: 32-bits
 
 sun6i_dsi_dcs_build_pkt_hdr: [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L850-L867)
 
-# Transmit Register for A64 MIPI DSI
+Page 32
+
+> short packets format include an 8-bit Data ID followed by zero to seven bytes and an 8-bit ECC
+
+Figure 5.23: Structure of the short packet:
+
+-   SOT: Start of Transmission
+-   DI(Data ID): 8-bit Contain Virtual Channel Identifier and Data Type.
+-   Data 0 and Data 1: Packet Data (8+8bit)
+-   ECC(Error Correction Code): The Error Correction Code allows single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header.
+
+# A64 Transmit Register for MIPI DSI
 
 TODO
+
+-   __DSI_CMD_TX_REG__ (Offset `0x300` to `0x3FC`):
+
+    DSI Low Power Transmit Package Register
 
 ```text
 7.6.4.30. DSI_CMD_TX_REG
@@ -419,7 +435,9 @@ DSI_CMD_TX_REG
 DSI LP TX Package Register
 ```
 
-![TODO](https://lupyuen.github.io/images/dsi-tx.png)
+![MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)](https://lupyuen.github.io/images/dsi-tx.png)
+
+[_MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)_](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
 
 # TODO
 
