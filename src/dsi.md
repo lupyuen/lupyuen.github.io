@@ -263,7 +263,9 @@ _What's MIPI DSI Video Mode?_
 
 MIPI Digital Serial Interface (DSI) supports 2 modes of operation (pic above)...
 
--   __DSI Command Mode__: For sending DCS Commands (Display Command Set) to the display
+-   __DSI Command Mode__: For sending DCS Commands to the display
+
+    (DCS is the [__Display Command Set__](https://lupyuen.github.io/articles/dsi#display-command-set-for-mipi-dsi))
 
 -   __DSI Video Mode__: For blasting pixels to the display
 
