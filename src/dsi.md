@@ -54,17 +54,17 @@ A quick recap of __PineTime's ST7789 Display__...
 
     (We'll soon see that PinePhone talks to its display over 4 data lanes)
 
--   PineTime uses an extra pin to indicate whether it's sending Commands or Data
+-   PineTime uses an extra pin to indicate whether it's sending Commands or Pixel Data
 
     [__"ST7789 Data / Command Pin"__](https://lupyuen.github.io/articles/st7789#st7789-data--command-pin)
 
-    (PinePhone won't need this)
+    (PinePhone won't need this, we'll learn why)
 
 -   At startup, PineTime sends an Initialisation Sequence of Commands to initialise the display...
 
     [__"Initialise The Display"__](https://lupyuen.github.io/pinetime-rust-mynewt/articles/mcuboot#initialise-the-display)
 
-    (PinePhone will send a similar Initialisation Sequence)
+    (PinePhone will send a similar Initialisation Sequence, but much longer)
 
 -   PineTime renders a rectangular chunk of the display at a time...
 
