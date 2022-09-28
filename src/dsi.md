@@ -214,7 +214,7 @@ _What happens inside PinePhone's ST7703 LCD Controller?_
 
 Let's figure out by looking at the initialisation of PinePhone's ST7703 LCD Controller.
 
-Xingbangda has provided an [__Initialisation Sequence__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333) of ST7703 Commands that we should send to the LCD Controller at startup...
+Xingbangda has provided an [__Initialisation Sequence__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333) of (magical) ST7703 Commands that we should send to the LCD Controller at startup...
 
 | Byte | Purpose |
 |:----:|:---------|
@@ -235,9 +235,11 @@ The above commands are (mostly) documented in the ST7703 Datasheet...
 
 -   [__Sitronix ST7703 LCD Controller Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf)
 
-_How shall we send the Init Sequence to ST7703?_
+_How to send the Init Sequence to ST7703?_
 
-We'll send the Command Bytes to ST7703 via a MIPI DSI Display Command: __DCS Long Write__. Which we'll explain next...
+We'll send the above Command Bytes to ST7703 via a MIPI DSI Display Command: __DCS Long Write__.
+
+Which we'll explain next...
 
 ![MIPI DSI Display Command Set from A31 User Manual (Page 837)](https://lupyuen.github.io/images/dsi-datatype.png)
 
@@ -269,13 +271,15 @@ MIPI Digital Serial Interface (DSI) supports 2 modes of operation (pic above)...
 
 -   __DSI Video Mode__: For blasting pixels to the display
 
-But the [__ST7703 Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf) (page 19) says...
+But the [__ST7703 Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf) (page 19) says that DSI Command Mode is NOT supported...
 
 > ST7703 only support __Video mode__. Video Mode refers to operation in which transfers from the host processor to the peripheral take the form of a real-time pixel stream. 
 
+And while we're in DSI Video Mode, we need to __pump pixels continuously__ to ST7703 (or the display goes blank)...
+
 > In normal operation, the driver IC relies on the host processor to provide image data at sufficient bandwidth to avoid flicker or other visible artifacts in the displayed image. Video information should only be transmitted using High Speed Mode. 
 
-_So we shall transmit our DCS Commands in Video Mode? Even though it's meant for blasting pixels?_
+_So we'll transmit our DCS Commands in DSI Video Mode? Even though it's meant for blasting pixels?_
 
 Yeah earlier we talked about sending the __DCS Long Write__ command for initialising PinePhone's ST7703 LCD Controller...
 
