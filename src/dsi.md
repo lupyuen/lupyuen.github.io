@@ -269,9 +269,7 @@ MIPI Digital Serial Interface (DSI) supports 2 modes of operation (pic above)...
 
 -   __DSI Video Mode__: For blasting pixels to the display
 
-    (That's why PinePhone's Display doesn't need a Data / Command Pin like PineTime)
-
-But the [__Sitronix ST7703 LCD Controller Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf) (page 19) says...
+But the [__ST7703 Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf) (page 19) says...
 
 > ST7703 only support __Video mode__. Video Mode refers to operation in which transfers from the host processor to the peripheral take the form of a real-time pixel stream. 
 
@@ -283,15 +281,31 @@ Yeah earlier we talked about sending the __DCS Long Write__ command for initiali
 
 -   [__"Initialise LCD Controller"__](https://lupyuen.github.io/articles/dsi#initialise-lcd-controller)
 
-We will have to transmit the command in __DSI Video Mode__. (Instead of DSI Command Mode)
+We'll have to transmit the command in __DSI Video Mode__. (Instead of DSI Command Mode)
+
+It sounds odd, but that's how ST7703 works!
+
+_Wait we're mixing DCS Commands and Pixel Data in the same mode? Won't ST7703 LCD Controller get confused?_
+
+If we flip back to the Display Command Set...
+
+-   [__"Display Command Set for MIPI DSI"__](https://lupyuen.github.io/articles/dsi#display-command-set-for-mipi-dsi)
+
+    (Also in the [__ST7703 Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf), page 34)
+
+We see that the __DCS Long Write__ command has a different __Data Type__ (`0x39`) from the other Pixel Stream commands.
+
+(Like "Packed Pixel Stream, 24-bit RGB, 8-8-8 Format", Data Type `0x3E`)
+
+That's why PinePhone's Display doesn't need a Data / Command Pin like PineTime.
+
+![MIPI DSI Registers from A31 User Manual (Page 842)](https://lupyuen.github.io/images/dsi-registers2.png)
+
+[_MIPI DSI Registers from A31 User Manual (Page 842)_](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
 
 # A64 Registers for MIPI DSI
 
 _How shall we send a DCS Long Write command to PinePhone's Display?_
-
-TODO
-
-![TODO](https://lupyuen.github.io/images/dsi-registers2.png)
 
 TODO
 
