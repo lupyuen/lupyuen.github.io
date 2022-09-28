@@ -315,7 +315,7 @@ To send a DCS Long Write command, we'll set some Hardware Registers in A64's __M
 
 _The MIPI DSI Registers are missing from the A64 docs!_
 
-Yep it's totally odd, but the A64 MIPI DSI Registers are actually documented in the Allwinner A31 SoC, which is a 32-bit SoC!
+Yep it's totally odd, but the A64 MIPI DSI Registers are actually documented in the [__Allwinner A31 SoC__](https://linux-sunxi.org/A31), which is a 32-bit SoC!
 
 -   [__Allwinner A31 User Manual (Page 842)__](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
 
@@ -329,13 +329,85 @@ static const struct of_device_id sun6i_dsi_of_table[] = {
 
 The pic above shows the list of __MIPI DSI Registers__ for A64 SoC.
 
+For today we shall study 2 of the above registers...
+
+-   __DSI_BASIC_CTL1_REG__ (Offset `0x14`)
+
+    DSI Configuration Register 1
+
+-   __DSI_CMD_TX_REG__ (Offset `0x300` to `0x3FC`):
+
+    DSI Low Power Transmit Package Register
+
+Though eventually we shall use these too...
+
+-   __DSI_CTL_REG__ (Offset `0x00`)
+
+    DSI Control Register
+
+-   __DSI_BASIC_CTL0_REG__ (Offset `0x10`)
+
+    DSI Configuration Register 0
+
+-   __DSI_CMD_CTL_REG__ (Offset `0x200`)
+
+    DSI Low Power Control Register
+
+-   __DSI_CMD_RX_REG__ (Offset `0x240` to `0x25C`)
+
+    DSI Low Power Receive Package Register
+
+# Control Register for A64 MIPI DSI
+
 TODO
 
 ![TODO](https://lupyuen.github.io/images/dsi-control.png)
 
-# Transmit over MIPI DSI
+# Packet Format for MIPI DSI
 
 TODO
+
+Page 32
+> short packets format include an 8-bit Data ID followed by zero to seven bytes and an 8-bit ECC
+
+> Long packets can be from 6 to 65,541 bytes in length. 
+
+Figure 5.23: Structure of the short packet:
+
+```text
+SOT: Start of Transmission
+DI(Data ID): 8-bit Contain Virtual Channel Identifier and Data Type.
+Data 0 and Data 1: Packet Data (8+8bit)
+ECC(Error Correction Code): The Error Correction Code allows single-bit errors to be corrected and
+2-bit errors to be detected in the Packet Header.
+```
+
+Figure 5.24: Structure of the long packet:
+
+```text
+DI (Data ID)：Contain Virtual Channel Identifier and Data Type.
+WC (Word Count)：8+8 bits The receiver use WC to define packet end.
+ECC (Error Correction Code)：The Error Correction Code allows single-bit errors to be corrected and
+2-bit errors to be detected in the Packet Header.
+PF(Packet Footer)：Mean 16-bit Checksum.
+```
+
+Packet Header: 32-bits
+
+sun6i_dsi_dcs_build_pkt_hdr: [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L850-L867)
+
+# Transmit Register for A64 MIPI DSI
+
+TODO
+
+```text
+7.6.4.30. DSI_CMD_TX_REG
+Page 856
+DSI_CMD_TX_REG 
+0x300+N*0x04
+(N=0~63) 
+DSI LP TX Package Register
+```
 
 ![TODO](https://lupyuen.github.io/images/dsi-tx.png)
 
@@ -400,29 +472,6 @@ Acknowledge
 Trigger 
 0010 0001
 Table 5.5: Escape Mode Commands
-```
-
-Page 32
-> short packets format include an 8-bit Data ID followed by zero to seven bytes and an 8-bit ECC
-
-> Long packets can be from 6 to 65,541 bytes in length. 
-
-```text
-SOT: Start of Transmission
-DI(Data ID): 8-bit Contain Virtual Channel Identifier and Data Type.
-Data 0 and Data 1: Packet Data (8+8bit)
-ECC(Error Correction Code): The Error Correction Code allows single-bit errors to be corrected and
-2-bit errors to be detected in the Packet Header.
-Figure 5.23: Structure of the short packet
-```
-
-```text
-DI (Data ID)：Contain Virtual Channel Identifier and Data Type.
-WC (Word Count)：8+8 bits The receiver use WC to define packet end.
-ECC (Error Correction Code)：The Error Correction Code allows single-bit errors to be corrected and
-2-bit errors to be detected in the Packet Header.
-PF(Packet Footer)：Mean 16-bit Checksum.
-Figure 5.24: Structure of the long packet
 ```
 
 No ram buffer
@@ -498,40 +547,12 @@ sun6i_dphy_power_on: [phy-sun6i-mipi-dphy.c](https://github.com/torvalds/linux/b
 MODULE_DESCRIPTION("Allwinner A31 DSI Driver");
 ```
 
-[sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L1215-L1219)
-
-```c
-static const struct of_device_id sun6i_dsi_of_table[] = {
-	{ .compatible = "allwinner,sun6i-a31-mipi-dsi" },
-	{ .compatible = "allwinner,sun50i-a64-mipi-dsi" },
-	{ }
-};
-```
-
 -   [A31](https://linux-sunxi.org/A31)
 -   [A31 Datasheet](https://github.com/allwinner-zh/documents/raw/master/A31/A31_Datasheet_v1.5_20150510.pdf)
 -   [A31 User Manual](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
 
-The __MIPI DSI Registers__ are not documented in the A64 User Manual. However they seem to be documented in the __Allwinner A31 User Manual__...
-
--   [__Allwinner A31 User Manual__](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
-
-    (Section 7.6: "MIPI DSI", Page 836)
-
-```text
-7.6.4.30. DSI_CMD_TX_REG
-Page 856
-DSI_CMD_TX_REG 
-0x300+N*0x04
-(N=0~63) 
-DSI LP TX Package Register
-```
-
 > That's probably the one, but the module is running a little instruction set and the manual conspicuously omits any description of the instructions or even the registers where you put the instructions.
 
-Packet Header: 32-bits
-
-sun6i_dsi_dcs_build_pkt_hdr: [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L850-L867)
 
 Data Type = MIPI_DSI_DCS_LONG_WRITE
 
