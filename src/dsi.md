@@ -98,7 +98,7 @@ Think of it as SPI, but supercharged with __Multiple Data Lanes__!
 
 The (dull) technical details of DSI are covered here...
 
--   [__Display Serial Interface (DSI)__](https://en.wikipedia.org/wiki/Display_Serial_Interface)
+-   [__"Display Serial Interface (DSI)"__](https://en.wikipedia.org/wiki/Display_Serial_Interface)
 
 But if we're seeking a gentler intro to DSI, please follow me to the next section...
 
@@ -132,7 +132,7 @@ The MIPI DSI Connector connects PinePhone's __Allwinner A64 SoC__ directly to th
 
 -   __D3P and D3P__ for DSI Data Line 3
 
-    (DSI has 4 data lanes!)
+    (MIPI DSI has 4 data lanes!)
 
 _Why the N and P?_
 
@@ -140,7 +140,7 @@ Because P=NP... Kidding!
 
 __N__ means Negative, __P__ means Positive.
 
-This means that DSI uses [__Differential Signalling__](https://en.wikipedia.org/wiki/Differential_signalling) for high-speed data transfers. (4.5 Gbps per lane)
+This means that MIPI DSI uses [__Differential Signalling__](https://en.wikipedia.org/wiki/Differential_signalling) for high-speed data transfers. (4.5 Gbps per lane)
 
 (Differential Signalling is also used in [__HDMI__](https://en.wikipedia.org/wiki/HDMI) and [__USB__](https://en.wikipedia.org/wiki/USB#Signaling))
 
