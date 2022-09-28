@@ -76,9 +76,9 @@
 <li><a href="#display-command-set-for-mipi-dsi">7 Display Command Set for MIPI DSI</a><ul></ul></li>
 <li><a href="#video-mode-only-for-mipi-dsi">8 Video Mode Only for MIPI DSI</a><ul></ul></li>
 <li><a href="#a64-registers-for-mipi-dsi">9 A64 Registers for MIPI DSI</a><ul></ul></li>
-<li><a href="#a64-configuration-register-for-mipi-dsi">10 A64 Configuration Register for MIPI DSI</a><ul></ul></li>
+<li><a href="#initialise-mipi-dsi">10 Initialise MIPI DSI</a><ul></ul></li>
 <li><a href="#packet-format-for-mipi-dsi">11 Packet Format for MIPI DSI</a><ul></ul></li>
-<li><a href="#a64-transmit-register-for-mipi-dsi">12 A64 Transmit Register for MIPI DSI</a><ul></ul></li>
+<li><a href="#transmit-over-mipi-dsi">12 Transmit over MIPI DSI</a><ul></ul></li>
 <li><a href="#todo">13 TODO</a><ul></ul></li>
 <li><a href="#whats-next">14 What’s Next</a><ul></ul></li>
 <li><a href="#notes">15 Notes</a><ul></ul></li></ul></nav><p>📝 <em>7 Oct 2022</em></p>
@@ -362,15 +362,41 @@
 </ul>
 <p><img src="https://lupyuen.github.io/images/dsi-control.png" alt="MIPI DSI Configuration Register 1 from A31 User Manual (Page 846)" /></p>
 <p><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Configuration Register 1 from A31 User Manual (Page 846)</em></a></p>
-<h1 id="a64-configuration-register-for-mipi-dsi"><a href="#a64-configuration-register-for-mipi-dsi">10 A64 Configuration Register for MIPI DSI</a></h1>
-<p>Remember we should send DCS Long Write to ST7703 in <strong>DSI Video Mode</strong>?</p>
-<p>TODO</p>
+<h1 id="initialise-mipi-dsi"><a href="#initialise-mipi-dsi">10 Initialise MIPI DSI</a></h1>
+<p>We said earlier that PinePhone’s ST7789 LCD Controller needs to run in <strong>DSI Video Mode</strong> (instead of DSI Command Mode)…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/dsi#video-mode-only-for-mipi-dsi"><strong>“Video Mode Only for MIPI DSI”</strong></a></li>
+</ul>
+<p>At startup, our PinePhone Display Driver shall set <strong>DSI_Mode</strong> to 1. (Pic above)</p>
+<p>That’s <strong>Bit 0</strong> of <strong>DSI_BASIC_CTL1_REG</strong> (DSI Configuration Register 1) at Offset <code>0x14</code>.</p>
+<p>Our driver shall also set <strong>Video_Start_Delay</strong>,<strong>Video_Precision_Mode_Align</strong> (to 1) and <strong>Video_Frame_Start</strong> (to 1).</p>
+<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L751-L755">(Here’s how we set <strong>DSI_Mode</strong>)</a></p>
+<p><em>Anything else we should init at startup?</em></p>
+<p>At startup our PinePhone Display Driver shall initialise these A64 Registers for MIPI DSI…</p>
 <ul>
 <li>
-<p><strong>DSI_BASIC_CTL1_REG</strong> (Offset <code>0x14</code>)</p>
-<p>DSI Configuration Register 1</p>
+<p><strong>DSI_CTL_REG</strong> (Offset <code>0x00</code>):</p>
+<p>Enable MIPI DSI</p>
+</li>
+<li>
+<p><strong>DSI_BASIC_CTL0_REG</strong> (Offset <code>0x10</code>):</p>
+<p>Enable ECC and CRC</p>
+</li>
+<li>
+<p><strong>DSI_TRANS_START_REG</strong> (Offset <code>0x60</code>):</p>
+<p>Set to 10 (Why?)</p>
+</li>
+<li>
+<p><strong>DSI_TRANS_ZERO_REG</strong> (Offset <code>0x78</code>):</p>
+<p>Set to 0 (Why?)</p>
+</li>
+<li>
+<p><strong>DSI_DEBUG_DATA_REG</strong> (Offset <code>0x2f8</code>):</p>
+<p>Set to <code>0xFF</code> (Why?)</p>
 </li>
 </ul>
+<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L735-L748">(Here’s how we initialise the registers)</a></p>
+<p>Now that we have initialised A64 MIPI DSI, we’re ready to send our DCS Command…</p>
 <h1 id="packet-format-for-mipi-dsi"><a href="#packet-format-for-mipi-dsi">11 Packet Format for MIPI DSI</a></h1>
 <p>TODO</p>
 <p>Page 32</p>
@@ -405,7 +431,7 @@
 <li>Data 0 and Data 1: Packet Data (8+8bit)</li>
 <li>ECC(Error Correction Code): The Error Correction Code allows single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header.</li>
 </ul>
-<h1 id="a64-transmit-register-for-mipi-dsi"><a href="#a64-transmit-register-for-mipi-dsi">12 A64 Transmit Register for MIPI DSI</a></h1>
+<h1 id="transmit-over-mipi-dsi"><a href="#transmit-over-mipi-dsi">12 Transmit over MIPI DSI</a></h1>
 <p>TODO</p>
 <ul>
 <li>
