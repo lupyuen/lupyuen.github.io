@@ -307,6 +307,24 @@ That's why PinePhone's Display doesn't need a Data / Command Pin like PineTime.
 
 _How shall we send a DCS Long Write command to PinePhone's Display?_
 
+To send a DCS Long Write command, we'll set some Hardware Registers in A64's __MIPI DSI Controller__.
+
+_The MIPI DSI Registers are missing from the A64 docs!_
+
+Yep it's totally odd, but the A64 MIPI DSI Registers are actually documented in the Allwinner A31 SoC, which is a 32-bit SoC!
+
+-   [__Allwinner A31 User Manual (Page 842)__](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
+
+A64's MIPI DSI Hardware is identical to A31 because both SoCs use the __same MIPI DSI Driver__: [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L1215-L1219)
+
+```c
+static const struct of_device_id sun6i_dsi_of_table[] = {
+  { .compatible = "allwinner,sun6i-a31-mipi-dsi" },
+  { .compatible = "allwinner,sun50i-a64-mipi-dsi" },
+```
+
+The pic above shows the list of __MIPI DSI Registers__ for A64 SoC.
+
 TODO
 
 ![TODO](https://lupyuen.github.io/images/dsi-control.png)
