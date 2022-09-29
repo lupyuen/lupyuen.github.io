@@ -381,7 +381,7 @@ At startup, our PinePhone Display Driver shall set __DSI_Mode__ to 1. (Pic above
 
 That's __Bit 0__ of __DSI_BASIC_CTL1_REG__ (DSI Configuration Register 1) at Offset `0x14`.
 
-Our driver shall also set __Video_Start_Delay__,__Video_Precision_Mode_Align__ (to 1) and __Video_Frame_Start__ (to 1).
+Our driver shall also set __Video_Precision_Mode_Align__ to 1, __Video_Frame_Start__ to 1 and __Video_Start_Delay__. (What's the delay value?)
 
 [(Here's how we set __DSI_Mode__)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L751-L755)
 
