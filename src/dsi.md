@@ -146,7 +146,9 @@ This means that MIPI DSI uses [__Differential Signalling__](https://en.wikipedia
 
 _Are all 4 DSI Data Lanes identical?_
 
-For sending commands to the Display Controller, only DSI Lane 0 is used. (Lane 0 is bidirectional)
+For sending commands to the Display Controller, only DSI Lane 0 is used.
+
+(Lane 0 is Bidirectional, it supports Direction Turnaround)
 
 For sending pixel data, all 4 DSI Lanes will be used. (Unidirectional)
 
