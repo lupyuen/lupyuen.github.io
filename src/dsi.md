@@ -632,3 +632,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 1.  How did we find the Reference Code for the MIPI DSI Driver? We used GitHub Code Search...
 
     [__"Searching online for the driver"__](https://lupyuen.github.io/articles/pio#lcd-controller-tcon0)
+
+1.  This doc explains MIPI DSI rather well...
+
+    [__"BL808 Reference Manual"__](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf)
+
+    (Page 181, Chapter 12: "DSI")
