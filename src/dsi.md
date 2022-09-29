@@ -561,12 +561,6 @@ TCON might be harder
 
 [u/immibis](https://www.reddit.com/user/immibis/)
 
-> I had a go. I was able to instruct the MIPI DSI to run commands (by copying from Linux) but I wasn't able to receive a response from the screen. Chat reckons that simply doesn't work. I get the impression what's in Linux might be just a translated version of the BSP SDK and nobody really knows how it works.
-
-> I ordered a Pine A64 and official touchscreen. Same chip (maybe not the same screen) and should be less fiddly to debug with an oscilloscope.
-
-> MIPI DSI registers are partially documented in the sun6i (whichever chip that is) user manual. I got this hint because the Linux driver files are called sun6i even though the chip is actually sun8i.
-
 > To actually display pixels on the screen you also need to program DE and TCON. I saw something somewhere about a test pattern that might be able to bypass this, and a framebuffer mode that bypasses the mixing IIRC.
 
 > several important registers used by the driver aren't documented (the command registers) but the basic format is shown in the driver source code
