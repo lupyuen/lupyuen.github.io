@@ -179,14 +179,14 @@
 <p>(Similar to SPI MISO / MOSI)</p>
 </li>
 <li>
-<p><strong>D1P and D1P</strong> for DSI Data Line 1</p>
+<p><strong>D1P and D1P</strong> for DSI Data Lane 1</p>
 <p>(Yep DSI has more data lanes than SPI)</p>
 </li>
 <li>
-<p><strong>D2P and D2P</strong> for DSI Data Line 2</p>
+<p><strong>D2P and D2P</strong> for DSI Data Lane 2</p>
 </li>
 <li>
-<p><strong>D3P and D3P</strong> for DSI Data Line 3</p>
+<p><strong>D3P and D3P</strong> for DSI Data Lane 3</p>
 <p>(MIPI DSI has 4 data lanes!)</p>
 </li>
 </ul>
@@ -195,6 +195,9 @@
 <p><strong>N</strong> means Negative, <strong>P</strong> means Positive.</p>
 <p>This means that MIPI DSI uses <a href="https://en.wikipedia.org/wiki/Differential_signalling"><strong>Differential Signalling</strong></a> for high-speed data transfers. (4.5 Gbps per lane)</p>
 <p>(Differential Signalling is also used in <a href="https://en.wikipedia.org/wiki/HDMI"><strong>HDMI</strong></a> and <a href="https://en.wikipedia.org/wiki/USB#Signaling"><strong>USB</strong></a>)</p>
+<p><em>Are all 4 DSI Data Lanes identical?</em></p>
+<p>For sending commands to the Display Controller, only DSI Lane 0 is used. (Lane 0 is bidirectional)</p>
+<p>For sending pixel data, all 4 DSI Lanes will be used. (Unidirectional)</p>
 <p>Let’s dig deeper into MIPI DSI…</p>
 <p><img src="https://lupyuen.github.io/images/dsi-lcd.png" alt="Xingbangda XBD599 in PinePhone’s Linux Device Tree" /></p>
 <p><a href="https://lupyuen.github.io/articles/pio#mipi-dsi-interface"><em>Xingbangda XBD599 in PinePhone’s Linux Device Tree</em></a></p>
