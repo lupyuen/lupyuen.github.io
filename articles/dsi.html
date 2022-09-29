@@ -421,6 +421,7 @@
 <li>
 <p><strong>Error Correction Code</strong> (1 byte):</p>
 <p>Allow single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header</p>
+<p><a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf">(See “12.3.6.12: Error Correction Code”, Page 208)</a></p>
 <p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L850-L867">(How we compose the Packet Header)</a></p>
 </li>
 </ul>
@@ -431,7 +432,9 @@
 <p><strong>Packet Footer:</strong></p>
 <ul>
 <li>
-<p><strong>Checksum</strong> (2 bytes)</p>
+<p><strong>Checksum</strong> (2 bytes):</p>
+<p>16-bit Cyclic Redundancy Check (CRC)</p>
+<p><a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf">(See “12.3.6.13: Packet Footer”, Page 210)</a></p>
 <p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L254-L257">(How we compute the Checksum)</a></p>
 </li>
 </ul>
