@@ -6,9 +6,9 @@
 
 How does [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) control its __LCD Display__?
 
-Let's uncover all the secrets about PinePhone's mysterious LCD Display and its __MIPI Digital Serial Interface__...
+Let's uncover all the secrets about PinePhone's mysterious LCD Display and its __MIPI Display Serial Interface__...
 
--   What's a MIPI Digital Serial Interface (DSI)
+-   What's a MIPI Display Serial Interface (DSI)
 
 -   What's inside PinePhone's LCD Display
 
@@ -88,11 +88,11 @@ Let's turn to Page 2 of the __PinePhone Schematic__ to understand how PinePhone'
 
 -   [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)  
 
-From the pic above, we see that the LCD Display is connected to the Allwinner A64 SoC via a __MIPI Digital Serial Interface (DSI)__.
+From the pic above, we see that the LCD Display is connected to the Allwinner A64 SoC via a __MIPI Display Serial Interface (DSI)__.
 
 [(MIPI is the __Mobile Industry Processor Interface Alliance__)](https://en.wikipedia.org/wiki/MIPI_Alliance)
 
-_What's a MIPI Digital Serial Interface?_
+_What's a MIPI Display Serial Interface?_
 
 Think of it as SPI, but supercharged with __Multiple Data Lanes__!
 
@@ -247,7 +247,7 @@ Which we'll explain next...
 
 # Display Command Set for MIPI DSI
 
-MIPI Digital Serial Interface (DSI) defines a standard list of commands for controlling the display: __DSI Display Command Set (DCS)__. (Pic above)
+MIPI Display Serial Interface (DSI) defines a standard list of commands for controlling the display: __DSI Display Command Set (DCS)__. (Pic above)
 
 To send the Initialisation Sequence to ST7703, we shall transmit the __DCS Long Write__ command. (Data Type `0x39`)
 
@@ -273,7 +273,7 @@ Let's talk about DSI Video Mode...
 
 _What's MIPI DSI Video Mode?_
 
-MIPI Digital Serial Interface (DSI) supports 2 modes of operation (pic above)...
+MIPI Display Serial Interface (DSI) supports 2 modes of operation (pic above)...
 
 -   __DSI Command Mode__: For sending DCS Commands to the display
 
