@@ -445,6 +445,9 @@ __Packet Header__ (4 bytes):
 
     Allow single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header
 
+    [(See "12.3.6.12: Error Correction Code", Page 208)](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf)
+
+
     [(How we compose the Packet Header)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L850-L867)
 
 __Packet Payload:__
@@ -453,7 +456,11 @@ __Packet Payload:__
 
 __Packet Footer:__
 
--   __Checksum__ (2 bytes)
+-   __Checksum__ (2 bytes):
+
+    16-bit Cyclic Redundancy Check (CRC)
+
+    [(See "12.3.6.13: Packet Footer", Page 210)](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf)
 
     [(How we compute the Checksum)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L254-L257)
 
