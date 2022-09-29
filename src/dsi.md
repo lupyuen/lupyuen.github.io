@@ -124,13 +124,13 @@ The MIPI DSI Connector connects PinePhone's __Allwinner A64 SoC__ directly to th
 
     (Similar to SPI MISO / MOSI)
 
--   __D1P and D1P__ for DSI Data Line 1
+-   __D1P and D1P__ for DSI Data Lane 1
 
     (Yep DSI has more data lanes than SPI)
 
--   __D2P and D2P__ for DSI Data Line 2
+-   __D2P and D2P__ for DSI Data Lane 2
 
--   __D3P and D3P__ for DSI Data Line 3
+-   __D3P and D3P__ for DSI Data Lane 3
 
     (MIPI DSI has 4 data lanes!)
 
@@ -143,6 +143,12 @@ __N__ means Negative, __P__ means Positive.
 This means that MIPI DSI uses [__Differential Signalling__](https://en.wikipedia.org/wiki/Differential_signalling) for high-speed data transfers. (4.5 Gbps per lane)
 
 (Differential Signalling is also used in [__HDMI__](https://en.wikipedia.org/wiki/HDMI) and [__USB__](https://en.wikipedia.org/wiki/USB#Signaling))
+
+_Are all 4 DSI Data Lanes identical?_
+
+For sending commands to the Display Controller, only DSI Lane 0 is used. (Lane 0 is bidirectional)
+
+For sending pixel data, all 4 DSI Lanes will be used. (Unidirectional)
 
 Let's dig deeper into MIPI DSI...
 
