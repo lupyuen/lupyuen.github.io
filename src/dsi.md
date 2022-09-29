@@ -391,11 +391,11 @@ At startup our PinePhone Display Driver shall initialise these A64 Registers for
 
 -   __DSI_CTL_REG__ (Offset `0x00`):
 
-    Enable MIPI DSI
+    Enable MIPI DSI (Bit 0)
 
 -   __DSI_BASIC_CTL0_REG__ (Offset `0x10`):
 
-    Enable ECC and CRC
+    Enable Error Correction Code (Bit 16) and CRC (Bit 17)
 
 -   __DSI_TRANS_START_REG__ (Offset `0x60`):
 
@@ -413,42 +413,47 @@ At startup our PinePhone Display Driver shall initialise these A64 Registers for
 
 Now that we have initialised A64 MIPI DSI, we're ready to send our DCS Command...
 
-# Packet Format for MIPI DSI
+# Long Packet for MIPI DSI
 
-TODO
+Earlier we talked about transmitting a __DCS Long Write__ command (Data Type `0x39`) to ST7703 LCD Controller...
 
-Page 32
+-   [__"Display Command Set for MIPI DSI"__](https://lupyuen.github.io/articles/dsi#display-command-set-for-mipi-dsi)
 
-> Long packets can be from 6 to 65,541 bytes in length. 
+Page 32 of the [__ST7703 Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf) says that we need to transmit a __Long Packet__ in this format...
 
+__Packet Header__ (4 bytes):
 
-Figure 5.24: Structure of the long packet:
+-   __Data Identifier__ (1 byte):
 
-Packet Header
--   DI (Data ID)：Contain Virtual Channel Identifier and Data Type.
--   WC (Word Count)：8+8 bits The receiver use WC to define packet end.
--   ECC (Error Correction Code)：The Error Correction Code allows single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header
+    Virtual Channel Identifier (Bits 6 to 7)
 
-Packet Data (Payload)
--   0 to 65,541 bytes in length
+    Data Type (Bits 0 to 5)
 
-Packet Footer
--   Mean 16-bit Checksum
+-   __Word Count__ (2 bytes)：
 
-Packet Header: 32-bits
+    Define the end of packet
 
-sun6i_dsi_dcs_build_pkt_hdr: [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L850-L867)
+-   __Error Correction Code__ (1 byte):
 
-Page 32
+    Allow single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header
 
-> short packets format include an 8-bit Data ID followed by zero to seven bytes and an 8-bit ECC
+__Packet Data:__
 
-Figure 5.23: Structure of the short packet:
+-   __Payload__ (0 to 65,541 bytes)
 
--   SOT: Start of Transmission
--   DI(Data ID): 8-bit Contain Virtual Channel Identifier and Data Type.
--   Data 0 and Data 1: Packet Data (8+8bit)
--   ECC(Error Correction Code): The Error Correction Code allows single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header.
+__Packet Footer:__
+
+-   __Checksum__ (2 bytes)
+
+[(Here's how we compose the Packet Header)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L850-L867)
+
+Let's program A64 to send this Long Packet format...
+
+(Page 32 of the [__ST7703 Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf) also defines a __Short Packet__ format, which we won't cover today)
+
+![MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)](https://lupyuen.github.io/images/dsi-tx.png)
+
+[_MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)_](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
 
 # Transmit over MIPI DSI
 
@@ -467,72 +472,9 @@ DSI_CMD_TX_REG
 DSI LP TX Package Register
 ```
 
-![MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)](https://lupyuen.github.io/images/dsi-tx.png)
-
-[_MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)_](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
+Wait for completion
 
 # TODO
-
-
-SPI Interface (SCL, SDA, DCX, ...)
-
-OR
-
-DSI Interface (CKN, CKP, D0P, D0N, ...)
-
--> Command Decoder
-
-Suggests that DSI is just a wrapper over the old ST77xx commands
-
-
-Lane 0 is special: Bus Turnaround
-
-Page 19
-```text
-Lane Pair HOST(Master)/ Driver IC(Slave)
-Clock Lane
-- Unidirectional Lane
-- Clock Only
-- Escape mode (ULPS only)
-Data Lane 0
-- Bi-directional Lane
-- Forward High Speed
-- Bi-directional Escape Mode
-- Bi-directional LPDT
-Data Lane 1
-Data Lane 2
-Data Lane 3
-- Unidirectional Lane
-- Forward High Speed
-- Escape mode (ULPS only)
-- NO LPDT
-Table 5.2: MIPI Interface Configuration
-```
-
-Low-Power Data Transmission (LPDT)
-
-Ultra Low Power State (ULPS)
-
-```text
-Escape Command Command Type Entry Command Pattern
-(First BitLast Bit Transmitted)
-Low Power Data Transmission 
-Mode 
-1110 0001
-Ultra-Low Power mode 
-Mode 
-0001 1110
-Remote Application Reset 
-Trigger 
-0110 0010
-Tearing Effect 
-Trigger 
-0101 1101
-Acknowledge 
-Trigger 
-0010 0001
-Table 5.5: Escape Mode Commands
-```
 
 No ram buffer
 
@@ -563,22 +505,13 @@ TCON might be harder
 
 > To actually display pixels on the screen you also need to program DE and TCON. I saw something somewhere about a test pattern that might be able to bypass this, and a framebuffer mode that bypasses the mixing IIRC.
 
+> several important registers used by the driver aren't documented (the command registers) but the basic format is shown in the driver source code
+
+> That's probably the one, but the module is running a little instruction set and the manual conspicuously omits any description of the instructions or even the registers where you put the instructions.
+
 [(Source)](https://www.reddit.com/r/PINE64official/comments/xjzack/comment/ipd6fsy/?utm_source=share&utm_medium=web2x&context=3)
 
 [Zephyr Driver for MIPI DSI](https://github.com/zephyrproject-rtos/zephyr-testing/blob/main/tests/drivers/mipi_dsi/api/src/main.c)
-
-A64 MIPI DSI Driver: [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c)
-
-sun6i_dsi_dcs_write_short: [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L869-L880)
--   Calls sun6i_dsi_start(dsi, DSI_START_LPTX);
-
-sun6i_dsi_dcs_write_long: [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L882-L921)
--   Calls sun6i_dsi_start(dsi, DSI_START_LPTX);
--   sun6i_dsi_inst_wait_for_completion
-
-sun6i_dsi_dcs_read: [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L923-L960)
-
-sun6i_dsi_transfer: [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L996-L1034)
 
 sun6i_dsi_start: [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L670-L714)
 
@@ -598,29 +531,6 @@ sun6i_dphy_tx_power_on: [phy-sun6i-mipi-dphy.c](https://github.com/torvalds/linu
 sun6i_dphy_rx_power_on: [phy-sun6i-mipi-dphy.c](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L245-L341)
 
 sun6i_dphy_power_on: [phy-sun6i-mipi-dphy.c](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L343-L355)
-
-> several important registers used by the driver aren't documented (the command registers) but the basic format is shown in the driver source code
-
-[sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L1233)
-
-```c
-MODULE_DESCRIPTION("Allwinner A31 DSI Driver");
-```
-
--   [A31](https://linux-sunxi.org/A31)
--   [A31 Datasheet](https://github.com/allwinner-zh/documents/raw/master/A31/A31_Datasheet_v1.5_20150510.pdf)
--   [A31 User Manual](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
-
-> That's probably the one, but the module is running a little instruction set and the manual conspicuously omits any description of the instructions or even the registers where you put the instructions.
-
-
-Data Type = MIPI_DSI_DCS_LONG_WRITE
-
-[mipi_display.h](https://github.com/torvalds/linux/blob/master/include/video/mipi_display.h#L47)
-
-```c
-	MIPI_DSI_DCS_LONG_WRITE				= 0x39,
-```
 
 # What's Next
 
