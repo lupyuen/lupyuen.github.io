@@ -84,10 +84,10 @@
 <li><a href="#notes">15 Notes</a><ul></ul></li></ul></nav><p>📝 <em>7 Oct 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/dsi-title.jpg" alt="PinePhone’s LCD Display in the PinePhone Block Diagram" /></p>
 <p>How does <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> control its <strong>LCD Display</strong>?</p>
-<p>Let’s uncover all the secrets about PinePhone’s mysterious LCD Display and its <strong>MIPI Digital Serial Interface</strong>…</p>
+<p>Let’s uncover all the secrets about PinePhone’s mysterious LCD Display and its <strong>MIPI Display Serial Interface</strong>…</p>
 <ul>
 <li>
-<p>What’s a MIPI Digital Serial Interface (DSI)</p>
+<p>What’s a MIPI Display Serial Interface (DSI)</p>
 </li>
 <li>
 <p>What’s inside PinePhone’s LCD Display</p>
@@ -153,9 +153,9 @@
 <ul>
 <li><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a></li>
 </ul>
-<p>From the pic above, we see that the LCD Display is connected to the Allwinner A64 SoC via a <strong>MIPI Digital Serial Interface (DSI)</strong>.</p>
+<p>From the pic above, we see that the LCD Display is connected to the Allwinner A64 SoC via a <strong>MIPI Display Serial Interface (DSI)</strong>.</p>
 <p><a href="https://en.wikipedia.org/wiki/MIPI_Alliance">(MIPI is the <strong>Mobile Industry Processor Interface Alliance</strong>)</a></p>
-<p><em>What’s a MIPI Digital Serial Interface?</em></p>
+<p><em>What’s a MIPI Display Serial Interface?</em></p>
 <p>Think of it as SPI, but supercharged with <strong>Multiple Data Lanes</strong>!</p>
 <p>The (dull) technical details of DSI are covered here…</p>
 <ul>
@@ -262,7 +262,7 @@
 <p><img src="https://lupyuen.github.io/images/dsi-datatype.png" alt="MIPI DSI Display Command Set from A31 User Manual (Page 837)" /></p>
 <p><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Display Command Set from A31 User Manual (Page 837)</em></a></p>
 <h1 id="display-command-set-for-mipi-dsi"><a href="#display-command-set-for-mipi-dsi">7 Display Command Set for MIPI DSI</a></h1>
-<p>MIPI Digital Serial Interface (DSI) defines a standard list of commands for controlling the display: <strong>DSI Display Command Set (DCS)</strong>. (Pic above)</p>
+<p>MIPI Display Serial Interface (DSI) defines a standard list of commands for controlling the display: <strong>DSI Display Command Set (DCS)</strong>. (Pic above)</p>
 <p>To send the Initialisation Sequence to ST7703, we shall transmit the <strong>DCS Long Write</strong> command. (Data Type <code>0x39</code>)</p>
 <p>Which is described in the <a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>ST7703 Datasheet</strong></a> (page 19)…</p>
 <blockquote>
@@ -279,7 +279,7 @@
 <p><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf"><em>DSI Video Mode from A31 User Manual (Page 841)</em></a></p>
 <h1 id="video-mode-only-for-mipi-dsi"><a href="#video-mode-only-for-mipi-dsi">8 Video Mode Only for MIPI DSI</a></h1>
 <p><em>What’s MIPI DSI Video Mode?</em></p>
-<p>MIPI Digital Serial Interface (DSI) supports 2 modes of operation (pic above)…</p>
+<p>MIPI Display Serial Interface (DSI) supports 2 modes of operation (pic above)…</p>
 <ul>
 <li>
 <p><strong>DSI Command Mode</strong>: For sending DCS Commands to the display</p>
