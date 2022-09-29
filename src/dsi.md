@@ -475,20 +475,19 @@ We can rewrite the table without N like this...
 
 (And so on)
 
-```text
-7.6.4.30. DSI_CMD_TX_REG
-Page 856
-DSI_CMD_TX_REG 
-0x300+N*0x04
-(N=0~63) 
-DSI LP TX Package Register
-```
+-   __DSI_CMD_CTL_REG__ (Offset `0x200`)
+
+    DSI Low Power Control Register
 
 [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L904)
 
 ```c
-	regmap_write(dsi->regs, SUN6I_DSI_CMD_CTL_REG, len + 4 - 1);
+	regmap_write(dsi->regs, DSI_CMD_CTL_REG, len + 4 - 1);
 ```
+
+DSI_START_LPTX
+
+__DSI_INST_JUMP_SEL_REG__ (Offset `0x48`)
 
 [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L670-L678)
 
@@ -498,7 +497,7 @@ static int sun6i_dsi_start(struct sun6i_dsi *dsi,
 {
 	switch (func) {
 	case DSI_START_LPTX:
-		regmap_write(dsi->regs, SUN6I_DSI_INST_JUMP_SEL_REG,
+		regmap_write(dsi->regs, DSI_INST_JUMP_SEL_REG,
 			     DSI_INST_ID_LPDT << (4 * DSI_INST_ID_LP11) |
 			     DSI_INST_ID_END  << (4 * DSI_INST_ID_LPDT));
 		break;
@@ -506,9 +505,11 @@ static int sun6i_dsi_start(struct sun6i_dsi *dsi,
 
 Wait for completion
 
-[sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L304-L312)
+-   __DSI_BASIC_CTL0_REG__ (Offset `0x10`)
 
-SUN6I_DSI_BASIC_CTL0_REG
+    DSI Configuration Register 0
+
+[sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L304-L312)
 
 # TODO
 
