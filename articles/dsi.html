@@ -467,10 +467,12 @@
 <p>We also need to…</p>
 <ul>
 <li>
+<p>Disable DSI Processing:</p>
 <p>Set <strong>Instru_En</strong> to 0 <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L291-L295">(Like this)</a></p>
 </li>
 <li>
-<p>Then set <strong>Instru_En</strong> to 1 <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L297-L302">(Like this)</a></p>
+<p>Then Enable DSI Processing: </p>
+<p>Set <strong>Instru_En</strong> to 1 <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L297-L302">(Like this)</a></p>
 </li>
 </ul>
 <p><strong>Instru_En</strong> is Bit 0 of <strong>DSI_BASIC_CTL0_REG</strong> (DSI Configuration Register 0) at Offset <code>0x10</code>.</p>
