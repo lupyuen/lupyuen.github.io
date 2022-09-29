@@ -372,7 +372,7 @@
 <p>Our driver shall also set <strong>Video_Precision_Mode_Align</strong> to 1, <strong>Video_Frame_Start</strong> to 1 and <strong>Video_Start_Delay</strong>. (What’s the delay value?)</p>
 <p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L751-L755">(Here’s how we set <strong>DSI_Mode</strong>)</a></p>
 <p><em>Anything else we should init at startup?</em></p>
-<p>At startup our PinePhone Display Driver shall initialise these A64 Registers for MIPI DSI…</p>
+<p>Actually we should turn on the MIPI DSI Controller BEFORE setting the Video Mode. At startup our driver shall set these registers…</p>
 <ul>
 <li>
 <p><strong>DSI_CTL_REG</strong> (Offset <code>0x00</code>):</p>
@@ -395,7 +395,7 @@
 <p>Set to <code>0xFF</code> (Why?)</p>
 </li>
 </ul>
-<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L735-L748">(Here’s how we initialise the registers)</a></p>
+<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L735-L748">(Here’s how we set the registers)</a></p>
 <p>Now that we have initialised A64 MIPI DSI, we’re ready to send our DCS Command…</p>
 <h1 id="long-packet-for-mipi-dsi"><a href="#long-packet-for-mipi-dsi">11 Long Packet for MIPI DSI</a></h1>
 <p>Earlier we talked about transmitting a <strong>DCS Long Write</strong> command (Data Type <code>0x39</code>) to ST7703 LCD Controller…</p>
@@ -428,7 +428,7 @@
 <li><strong>Checksum</strong> (2 bytes)</li>
 </ul>
 <p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L850-L867">(Here’s how we compose the Packet Header)</a></p>
-<p>Let’s program A64 to send this Long Packet format…</p>
+<p>Let’s program A64 to send this Long Packet…</p>
 <p>(Page 32 of the <a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>ST7703 Datasheet</strong></a> also defines a <strong>Short Packet</strong> format, which we won’t cover today)</p>
 <p><img src="https://lupyuen.github.io/images/dsi-tx.png" alt="MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)" /></p>
 <p><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)</em></a></p>
@@ -440,13 +440,36 @@
 <p>DSI Low Power Transmit Package Register</p>
 </li>
 </ul>
+<p><em>What’s N in the table above?</em></p>
+<p>We can rewrite the table without N like this…</p>
+<div><table><thead><tr><th>Offset</th><th style="text-align: center">Bits 31 to 24</th><th style="text-align: center">23 to 16</th><th style="text-align: center">15 to 8</th><th style="text-align: center">7 to 0</th></tr></thead><tbody>
+<tr><td><code>0x300</code></td><td style="text-align: center">Byte 3</td><td style="text-align: center">Byte 2</td><td style="text-align: center">Byte 1</td><td style="text-align: center">Byte 0</td></tr>
+<tr><td><code>0x304</code></td><td style="text-align: center">Byte 7</td><td style="text-align: center">Byte 6</td><td style="text-align: center">Byte 5</td><td style="text-align: center">Byte 4</td></tr>
+<tr><td><code>0x308</code></td><td style="text-align: center">Byte 11</td><td style="text-align: center">Byte 10</td><td style="text-align: center">Byte 9</td><td style="text-align: center">Byte 8</td></tr>
+</tbody></table>
+</div>
+<p>(And so on)</p>
 <div class="example-wrap"><pre class="language-text"><code>7.6.4.30. DSI_CMD_TX_REG
 Page 856
 DSI_CMD_TX_REG 
 0x300+N*0x04
 (N=0~63) 
 DSI LP TX Package Register</code></pre></div>
+<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L904">sun6i_mipi_dsi.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>	regmap_write(dsi-&gt;regs, SUN6I_DSI_CMD_CTL_REG, len + 4 - 1);</code></pre></div>
+<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L670-L678">sun6i_mipi_dsi.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static int sun6i_dsi_start(struct sun6i_dsi *dsi,
+			   enum sun6i_dsi_start_inst func)
+{
+	switch (func) {
+	case DSI_START_LPTX:
+		regmap_write(dsi-&gt;regs, SUN6I_DSI_INST_JUMP_SEL_REG,
+			     DSI_INST_ID_LPDT &lt;&lt; (4 * DSI_INST_ID_LP11) |
+			     DSI_INST_ID_END  &lt;&lt; (4 * DSI_INST_ID_LPDT));
+		break;</code></pre></div>
 <p>Wait for completion</p>
+<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L304-L312">sun6i_mipi_dsi.c</a></p>
+<p>SUN6I_DSI_BASIC_CTL0_REG</p>
 <h1 id="todo"><a href="#todo">13 TODO</a></h1>
 <p>No ram buffer</p>
 <p>Need constant refresh</p>
