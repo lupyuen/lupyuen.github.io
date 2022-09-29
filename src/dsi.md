@@ -387,7 +387,7 @@ Our driver shall also set __Video_Precision_Mode_Align__ to 1, __Video_Frame_Sta
 
 _Anything else we should init at startup?_
 
-At startup our PinePhone Display Driver shall initialise these A64 Registers for MIPI DSI...
+Actually we should turn on the MIPI DSI Controller BEFORE setting the Video Mode. At startup our driver shall set these registers...
 
 -   __DSI_CTL_REG__ (Offset `0x00`):
 
@@ -409,7 +409,7 @@ At startup our PinePhone Display Driver shall initialise these A64 Registers for
 
     Set to `0xFF` (Why?)
 
-[(Here's how we initialise the registers)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L735-L748)
+[(Here's how we set the registers)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L735-L748)
 
 Now that we have initialised A64 MIPI DSI, we're ready to send our DCS Command...
 
@@ -447,7 +447,7 @@ __Packet Footer:__
 
 [(Here's how we compose the Packet Header)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L850-L867)
 
-Let's program A64 to send this Long Packet format...
+Let's program A64 to send this Long Packet...
 
 (Page 32 of the [__ST7703 Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf) also defines a __Short Packet__ format, which we won't cover today)
 
@@ -463,6 +463,18 @@ TODO
 
     DSI Low Power Transmit Package Register
 
+_What's N in the table above?_
+
+We can rewrite the table without N like this...
+
+| Offset | Bits 31 to 24 | 23 to 16 | 15 to 8 | 7 to 0 |
+|--------|:-------------:|:--------:|:-------:|:------:|
+| `0x300` | Byte 3 | Byte 2 | Byte 1 | Byte 0
+| `0x304` | Byte 7 | Byte 6 | Byte 5 | Byte 4
+| `0x308` | Byte 11 | Byte 10 | Byte 9 | Byte 8
+
+(And so on)
+
 ```text
 7.6.4.30. DSI_CMD_TX_REG
 Page 856
@@ -472,7 +484,31 @@ DSI_CMD_TX_REG
 DSI LP TX Package Register
 ```
 
+[sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L904)
+
+```c
+	regmap_write(dsi->regs, SUN6I_DSI_CMD_CTL_REG, len + 4 - 1);
+```
+
+[sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L670-L678)
+
+```c
+static int sun6i_dsi_start(struct sun6i_dsi *dsi,
+			   enum sun6i_dsi_start_inst func)
+{
+	switch (func) {
+	case DSI_START_LPTX:
+		regmap_write(dsi->regs, SUN6I_DSI_INST_JUMP_SEL_REG,
+			     DSI_INST_ID_LPDT << (4 * DSI_INST_ID_LP11) |
+			     DSI_INST_ID_END  << (4 * DSI_INST_ID_LPDT));
+		break;
+```
+
 Wait for completion
+
+[sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L304-L312)
+
+SUN6I_DSI_BASIC_CTL0_REG
 
 # TODO
 
