@@ -397,15 +397,15 @@ Actually we should turn on the MIPI DSI Controller BEFORE setting the Video Mode
 
     Enable Error Correction Code (Bit 16) and CRC (Bit 17)
 
--   __DSI_TRANS_START_REG__ (Offset `0x60`):
+-   __DSI_TRANS_START_REG__ (Offset `0x60`, undocumented):
 
     Set to 10 (Why?)
 
--   __DSI_TRANS_ZERO_REG__ (Offset `0x78`):
+-   __DSI_TRANS_ZERO_REG__ (Offset `0x78`, undocumented):
 
     Set to 0 (Why?)
 
--   __DSI_DEBUG_DATA_REG__ (Offset `0x2f8`):
+-   __DSI_DEBUG_DATA_REG__ (Offset `0x2f8`, undocumented):
 
     Set to `0xFF` (Why?)
 
@@ -437,15 +437,17 @@ __Packet Header__ (4 bytes):
 
     Allow single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header
 
-__Packet Data:__
+    [(How we compose the Packet Header)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L850-L867)
 
--   __Payload__ (0 to 65,541 bytes)
+__Packet Payload:__
+
+-   __Data__ (0 to 65,541 bytes)
 
 __Packet Footer:__
 
 -   __Checksum__ (2 bytes)
 
-[(Here's how we compose the Packet Header)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L850-L867)
+    [(How we compute the Checksum)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L254-L257)
 
 Let's program A64 to send this Long Packet...
 
@@ -455,17 +457,25 @@ Let's program A64 to send this Long Packet...
 
 [_MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)_](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
 
-# Transmit over MIPI DSI
+# Transmit Packet over MIPI DSI
 
-TODO
+We're finally ready to transmit the __DCS Long Write__ command to ST7703 LCD Controller!
 
--   __DSI_CMD_TX_REG__ (Offset `0x300` to `0x3FC`):
+We have composed a __Long Packet__ containing the DCS Long Write command...
 
-    DSI Low Power Transmit Package Register
+-   [__"Long Packet for MIPI DSI"__](https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi)
+
+The Long Packet contains...
+
+-   Packet Header
+-   Packet Payload
+-   Packet Footer (Checksum)
+
+Now we write the Long Packet to __DSI_CMD_TX_REG__ (DSI Low Power Transmit Package Register) at Offset `0x300` to `0x3FC`. (Pic above)
 
 _What's N in the table above?_
 
-We can rewrite the table without N like this...
+We can rewrite the table without N like so...
 
 | Offset | Bits 31 to 24 | 23 to 16 | 15 to 8 | 7 to 0 |
 |--------|:-------------:|:--------:|:-------:|:------:|
@@ -475,41 +485,39 @@ We can rewrite the table without N like this...
 
 (And so on)
 
--   __DSI_CMD_CTL_REG__ (Offset `0x200`)
+Thus __DSI_CMD_TX_REG__ works like a Packet Buffer that will contain the data to be transmitted over MIPI DSI.
 
-    DSI Low Power Control Register
+[(How we write the Packet Header)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L889-L890)
 
-[sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L904)
+[(How we write the Packet Payload and Checksum)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L882-L903)
 
-```c
-	regmap_write(dsi->regs, DSI_CMD_CTL_REG, len + 4 - 1);
-```
+Then we set the __Packet Length (TX_Size)__ in Bits 0 to 7 of __DSI_CMD_CTL_REG__ (DSI Low Power Control Register) at Offset `0x200`.
 
-DSI_START_LPTX
+[(Like this)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L904)
 
-__DSI_INST_JUMP_SEL_REG__ (Offset `0x48`)
+Finally we set __DSI_INST_JUMP_SEL_REG__ (Offset `0x48`, undocumented) to begin the Low Power Transmission.
 
-[sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L670-L678)
+[(See __DSI_START_LPTX__)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L670-L678)
 
-```c
-static int sun6i_dsi_start(struct sun6i_dsi *dsi,
-			   enum sun6i_dsi_start_inst func)
-{
-	switch (func) {
-	case DSI_START_LPTX:
-		regmap_write(dsi->regs, DSI_INST_JUMP_SEL_REG,
-			     DSI_INST_ID_LPDT << (4 * DSI_INST_ID_LP11) |
-			     DSI_INST_ID_END  << (4 * DSI_INST_ID_LPDT));
-		break;
-```
+We also need to...
 
-Wait for completion
+-   Set __Instru_En__ to 0 [(Like this)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L291-L295)
 
--   __DSI_BASIC_CTL0_REG__ (Offset `0x10`)
+-   Then set __Instru_En__ to 1 [(Like this)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L297-L302)
 
-    DSI Configuration Register 0
+__Instru_En__ is Bit 0 of __DSI_BASIC_CTL0_REG__ (DSI Configuration Register 0) at Offset `0x10`.
 
-[sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L304-L312)
+_How will we know when the transmission is complete?_
+
+To check whether the transmission is complete, we poll on __Instru_En__.
+
+[(Like this)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L304-L312)
+
+_Wow this looks super complicated!_
+
+Yeah. The complete steps to initialise the ST7703 LCD Controller will look similar to this...
+
+-   [__"Initialise ST7703 LCD Controller"__](https://gist.github.com/lupyuen/43204d20c35ecb23dfbff12f2f570565#initialise-st7703-lcd-controller)
 
 # TODO
 
