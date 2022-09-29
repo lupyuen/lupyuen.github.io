@@ -449,27 +449,34 @@
 </tbody></table>
 </div>
 <p>(And so on)</p>
-<div class="example-wrap"><pre class="language-text"><code>7.6.4.30. DSI_CMD_TX_REG
-Page 856
-DSI_CMD_TX_REG 
-0x300+N*0x04
-(N=0~63) 
-DSI LP TX Package Register</code></pre></div>
+<ul>
+<li>
+<p><strong>DSI_CMD_CTL_REG</strong> (Offset <code>0x200</code>)</p>
+<p>DSI Low Power Control Register</p>
+</li>
+</ul>
 <p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L904">sun6i_mipi_dsi.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>	regmap_write(dsi-&gt;regs, SUN6I_DSI_CMD_CTL_REG, len + 4 - 1);</code></pre></div>
+<div class="example-wrap"><pre class="language-c"><code>	regmap_write(dsi-&gt;regs, DSI_CMD_CTL_REG, len + 4 - 1);</code></pre></div>
+<p>DSI_START_LPTX</p>
+<p><strong>DSI_INST_JUMP_SEL_REG</strong> (Offset <code>0x48</code>)</p>
 <p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L670-L678">sun6i_mipi_dsi.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static int sun6i_dsi_start(struct sun6i_dsi *dsi,
 			   enum sun6i_dsi_start_inst func)
 {
 	switch (func) {
 	case DSI_START_LPTX:
-		regmap_write(dsi-&gt;regs, SUN6I_DSI_INST_JUMP_SEL_REG,
+		regmap_write(dsi-&gt;regs, DSI_INST_JUMP_SEL_REG,
 			     DSI_INST_ID_LPDT &lt;&lt; (4 * DSI_INST_ID_LP11) |
 			     DSI_INST_ID_END  &lt;&lt; (4 * DSI_INST_ID_LPDT));
 		break;</code></pre></div>
 <p>Wait for completion</p>
+<ul>
+<li>
+<p><strong>DSI_BASIC_CTL0_REG</strong> (Offset <code>0x10</code>)</p>
+<p>DSI Configuration Register 0</p>
+</li>
+</ul>
 <p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L304-L312">sun6i_mipi_dsi.c</a></p>
-<p>SUN6I_DSI_BASIC_CTL0_REG</p>
 <h1 id="todo"><a href="#todo">13 TODO</a></h1>
 <p>No ram buffer</p>
 <p>Need constant refresh</p>
