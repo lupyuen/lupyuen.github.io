@@ -501,9 +501,13 @@ Finally we set __DSI_INST_JUMP_SEL_REG__ (Offset `0x48`, undocumented) to begin 
 
 We also need to...
 
--   Set __Instru_En__ to 0 [(Like this)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L291-L295)
+-   Disable DSI Processing:
 
--   Then set __Instru_En__ to 1 [(Like this)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L297-L302)
+    Set __Instru_En__ to 0 [(Like this)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L291-L295)
+
+-   Then Enable DSI Processing: 
+
+    Set __Instru_En__ to 1 [(Like this)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L297-L302)
 
 __Instru_En__ is Bit 0 of __DSI_BASIC_CTL0_REG__ (DSI Configuration Register 0) at Offset `0x10`.
 
