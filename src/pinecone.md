@@ -132,6 +132,8 @@ _Which dev boards are supported?_
 
 Firmware built with NuttX, BL602 IoT SDK and BL602 MCU SDK will work fine on...
 
+1.  [__Ai-Thinker Ai-WB2__](https://docs.ai-thinker.com/en/wb2)
+
 1.  [__Pine64 PineCone BL602__](https://wiki.pine64.org/wiki/Nutcracker#PineCone_BL602_EVB_information_and_schematics)
 
 1.  [__Pine64 Pinenut BL602__](https://wiki.pine64.org/wiki/Nutcracker#Pinenut-01S_Module_information_and_schematics)

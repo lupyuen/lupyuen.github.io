@@ -525,7 +525,7 @@ Here's how we flash the Rust Firmware file `sdk_app_rust.bin` to BL602...
 
     -   Release the D8 Button
 
-    __For Pinenut and MagicHome BL602:__
+    __For [Ai-Thinker Ai-WB2](https://docs.ai-thinker.com/en/wb2), Pinenut and MagicHome BL602:__
 
     -   Disconnect the board from the USB Port
 
@@ -612,7 +612,7 @@ Finally we run the BL602 Rust Firmware...
 
     -   Press and release the __EN Button (Reset)__
 
-    __For Pinenut and MagicHome BL602:__
+    __For [Ai-Thinker Ai-WB2](https://docs.ai-thinker.com/en/wb2), Pinenut and MagicHome BL602:__
 
     -   Disconnect the board from the USB Port
 

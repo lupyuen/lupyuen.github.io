@@ -26,7 +26,7 @@ _Amazing! Will this work with any BL602 Board?_
 
 We have tested this with [__PineCone BL602__](https://lupyuen.github.io/articles/pinecone) and its onboard LED.
 
-It will probably work with any BL602 / BL604 Board with an __onboard or external LED:__ PineDio Stack, Pinenut, DT-BL10, MagicHome BL602, ...
+It will probably work with any BL602 / BL604 Board with an __onboard or external LED:__ [__Ai-Thinker Ai-WB2__](https://docs.ai-thinker.com/en/wb2), PineDio Stack, Pinenut, DT-BL10, MagicHome BL602, ...
 
 _Will our Light Sensor detect any kind of light?_
 
@@ -926,7 +926,7 @@ Here's how we flash the Rust Firmware file `sdk_app_rust_adc.bin` to BL602...
 
     -   Release the D8 Button
 
-    __For Pinenut and MagicHome BL602:__
+    __For [Ai-Thinker Ai-WB2](https://docs.ai-thinker.com/en/wb2), Pinenut and MagicHome BL602:__
 
     -   Disconnect the board from the USB Port
 
@@ -1015,7 +1015,7 @@ Finally we run the BL602 Rust Firmware...
 
     -   Press and release the __EN Button (Reset)__
 
-    __For Pinenut and MagicHome BL602:__
+    __For [Ai-Thinker Ai-WB2](https://docs.ai-thinker.com/en/wb2), Pinenut and MagicHome BL602:__
 
     -   Disconnect the board from the USB Port
 

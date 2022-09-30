@@ -18,7 +18,7 @@ Today we shall...
 
 ![Internal Temperature Sensor visualised with Grafana](https://lupyuen.github.io/images/tsen-title.jpg)
 
-The firmware has been tested on [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2) (pic below). But it should work on __any BL602 or BL604 Board__: PineCone BL602, Pinenut, DT-BL10, MagicHome BL602, ...
+The firmware has been tested on [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2) (pic below). But it should work on __any BL602 or BL604 Board__: [__Ai-Thinker Ai-WB2__](https://docs.ai-thinker.com/en/wb2), PineCone BL602, Pinenut, DT-BL10, MagicHome BL602, ...
 
 ![PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)](https://lupyuen.github.io/images/ttn-title.jpg)
 
@@ -610,7 +610,7 @@ __For BL10:__
 
 1.  Release the D8 Button
 
-__For Pinenut and MagicHome BL602:__
+__For [Ai-Thinker Ai-WB2](https://docs.ai-thinker.com/en/wb2), Pinenut and MagicHome BL602:__
 
 1.  Disconnect the board from the USB Port
 
@@ -661,7 +661,7 @@ __For BL10:__
 
 1.  Press and release the __EN Button (Reset)__
 
-__For Pinenut and MagicHome BL602:__
+__For [Ai-Thinker Ai-WB2](https://docs.ai-thinker.com/en/wb2), Pinenut and MagicHome BL602:__
 
 1.  Disconnect the board from the USB Port
 
@@ -783,7 +783,7 @@ __For BL10:__
 
 1.  Release the D8 Button
 
-__For Pinenut and MagicHome BL602:__
+__For [Ai-Thinker Ai-WB2](https://docs.ai-thinker.com/en/wb2), Pinenut and MagicHome BL602:__
 
 1.  Disconnect the board from the USB Port
 
@@ -834,7 +834,7 @@ __For BL10:__
 
 1.  Press and release the __EN Button (Reset)__
 
-__For Pinenut and MagicHome BL602:__
+__For [Ai-Thinker Ai-WB2](https://docs.ai-thinker.com/en/wb2), Pinenut and MagicHome BL602:__
 
 1.  Disconnect the board from the USB Port
 

@@ -111,7 +111,7 @@ _Flashing PineCone BL602 with Manjaro Linux Arm64 on Pinebook Pro_
     
     1.  Release the D8 Button
 
-    __For Pinenut and MagicHome BL602:__
+    __For [Ai-Thinker Ai-WB2](https://docs.ai-thinker.com/en/wb2), Pinenut and MagicHome BL602:__
 
     1.  Disconnect the board from the USB Port
 
@@ -274,7 +274,7 @@ _Firmware running on PineCone_
 
     1.  Press and release the __EN Button (Reset)__
     
-    __For Pinenut and MagicHome BL602:__
+    __For [Ai-Thinker Ai-WB2](https://docs.ai-thinker.com/en/wb2), Pinenut and MagicHome BL602:__
 
     1.  Disconnect the board from the USB Port
 

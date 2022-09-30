@@ -27,7 +27,7 @@ Today we'll learn to encode Sensor Data with the __TinyCBOR Library__ that we ha
 
 -   [__lupyuen/tinycbor-bl602__](https://github.com/lupyuen/tinycbor-bl602)
 
-The library has been tested on [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2), but it should work on __any BL602 or BL604 Board__: PineCone BL602, Pinenut, DT-BL10, MagicHome BL602, ...
+The library has been tested on [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2), but it should work on __any BL602 or BL604 Board__: [__Ai-Thinker Ai-WB2__](https://docs.ai-thinker.com/en/wb2), PineCone BL602, Pinenut, DT-BL10, MagicHome BL602, ...
 
 _Must we scrimp and save every single byte?_
 
@@ -821,7 +821,7 @@ __For BL10:__
 
 1.  Release the D8 Button
 
-__For Pinenut and MagicHome BL602:__
+__For [Ai-Thinker Ai-WB2](https://docs.ai-thinker.com/en/wb2), Pinenut and MagicHome BL602:__
 
 1.  Disconnect the board from the USB Port
 
@@ -872,7 +872,7 @@ __For BL10:__
 
 1.  Press and release the __EN Button (Reset)__
 
-__For Pinenut and MagicHome BL602:__
+__For [Ai-Thinker Ai-WB2](https://docs.ai-thinker.com/en/wb2), Pinenut and MagicHome BL602:__
 
 1.  Disconnect the board from the USB Port
 
@@ -1036,7 +1036,7 @@ __For BL10:__
 
 1.  Release the D8 Button
 
-__For Pinenut and MagicHome BL602:__
+__For [Ai-Thinker Ai-WB2](https://docs.ai-thinker.com/en/wb2), Pinenut and MagicHome BL602:__
 
 1.  Disconnect the board from the USB Port
 
@@ -1087,7 +1087,7 @@ __For BL10:__
 
 1.  Press and release the __EN Button (Reset)__
 
-__For Pinenut and MagicHome BL602:__
+__For [Ai-Thinker Ai-WB2](https://docs.ai-thinker.com/en/wb2), Pinenut and MagicHome BL602:__
 
 1.  Disconnect the board from the USB Port
 

@@ -26,7 +26,7 @@ Among all Embedded Operating Systems, __Apache NuttX is truly unique__ because..
 
 Today we shall __build, flash and run__ NuttX on the [__PineCone BL602__](https://lupyuen.github.io/articles/pinecone) and [__PineDio Stack BL604__](https://lupyuen.github.io/articles/pinedio2) RISC-V Boards. (Pic above)
 
-(The steps in this NuttX tutorial / primer should work on __any BL602 or BL604 Board__: Pinenut, DT-BL10, MagicHome BL602, ...)
+(The steps in this NuttX tutorial / primer should work on __any BL602 or BL604 Board__: [__Ai-Thinker Ai-WB2__](https://docs.ai-thinker.com/en/wb2), Pinenut, DT-BL10, MagicHome BL602, ...)
 
 We'll briefly explore the __internals of NuttX__ to understand how it works...
 
@@ -1101,7 +1101,7 @@ __For BL10:__
 
 1.  Release the D8 Button
 
-__For Pinenut and MagicHome BL602:__
+__For [Ai-Thinker Ai-WB2](https://docs.ai-thinker.com/en/wb2), Pinenut and MagicHome BL602:__
 
 1.  Disconnect the board from the USB Port
 
@@ -1158,7 +1158,7 @@ __For BL10:__
 
 1.  Press and release the __EN Button (Reset)__
 
-__For Pinenut and MagicHome BL602:__
+__For [Ai-Thinker Ai-WB2](https://docs.ai-thinker.com/en/wb2), Pinenut and MagicHome BL602:__
 
 1.  Disconnect the board from the USB Port
 
