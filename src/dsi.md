@@ -345,6 +345,8 @@ static const struct of_device_id sun6i_dsi_of_table[] = {
   { .compatible = "allwinner,sun50i-a64-mipi-dsi" },
 ```
 
+The __Base Address__ of A64's MIPI DSI Controller is __`0x01CA` `0000`__
+
 The pic above shows the list of __MIPI DSI Registers__ for A64 SoC.
 
 For today we shall study 2 of the above registers...
