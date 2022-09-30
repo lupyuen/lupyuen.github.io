@@ -403,7 +403,12 @@
 </li>
 </ul>
 <p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L735-L748">(Here’s how we set the registers)</a></p>
-<p>TODO: MIPI DPHY</p>
+<p><em>Is that all?</em></p>
+<p>There’s something else that needs to be initialised: <strong>MIPI DPHY</strong>, the Display Physical Layer for MIPI DSI.</p>
+<p>Sadly A64’s MIPI DPHY doesn’t seem to be documented, so we might need to do Reverse Engineering. See this…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/dsi#appendix-mipi-dphy"><strong>“MIPI DPHY”</strong></a></li>
+</ul>
 <p>Now that we have initialised A64 MIPI DSI, we’re ready to send our DCS Command…</p>
 <h1 id="long-packet-for-mipi-dsi"><a href="#long-packet-for-mipi-dsi">11 Long Packet for MIPI DSI</a></h1>
 <p>Earlier we talked about transmitting a <strong>DCS Long Write</strong> command (Data Type <code>0x39</code>) to ST7703 LCD Controller…</p>
@@ -598,6 +603,8 @@ ST7789 is closest</p>
 </ol>
 <h1 id="appendix-mipi-dphy"><a href="#appendix-mipi-dphy">18 Appendix: MIPI DPHY</a></h1>
 <p>TODO</p>
+<p>There’s something else that needs to be initialised: <strong>MIPI DPHY</strong>, the Display Physical Layer for MIPI DSI.</p>
+<p>Sadly A64’s MIPI DPHY doesn’t seem to be documented, so we might need to do Reverse Engineering.</p>
 
     
 </body>
