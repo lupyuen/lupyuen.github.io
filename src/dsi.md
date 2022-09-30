@@ -419,7 +419,13 @@ Actually we should turn on the MIPI DSI Controller BEFORE setting the Video Mode
 
 [(Here's how we set the registers)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L735-L748)
 
-TODO: MIPI DPHY
+_Is that all?_
+
+There's something else that needs to be initialised: __MIPI DPHY__, the Display Physical Layer for MIPI DSI.
+
+Sadly A64's MIPI DPHY doesn't seem to be documented, so we might need to do Reverse Engineering. See this...
+
+-   [__"MIPI DPHY"__](https://lupyuen.github.io/articles/dsi#appendix-mipi-dphy)
 
 Now that we have initialised A64 MIPI DSI, we're ready to send our DCS Command...
 
@@ -663,3 +669,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Appendix: MIPI DPHY
 
 TODO
+
+There's something else that needs to be initialised: __MIPI DPHY__, the Display Physical Layer for MIPI DSI.
+
+Sadly A64's MIPI DPHY doesn't seem to be documented, so we might need to do Reverse Engineering.
