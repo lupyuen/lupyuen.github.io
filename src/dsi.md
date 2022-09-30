@@ -554,25 +554,29 @@ _OK we have initialised the ST7703 display..._
 
 _What about rendering the display?_
 
-TODO
+Remember we said that the ST7703 LCD Controller is RAM-less? And thus we need to __pump a constant stream of pixels__ to the display?
 
-[u/immibis](https://www.reddit.com/user/immibis/)
+To do this, we need to program two controllers in Allwinner A64...
+
+-   [__Display Engine (DE)__](https://lupyuen.github.io/articles/pio#display-engine): Execute the Rendering Pipeline to generate the pixels for display
+
+    (Handles image scaling, mixing, ...)
+
+-   [__Timing Controller (TCON0)__](https://lupyuen.github.io/articles/pio#lcd-controller-tcon0): Pump the generated pixels at the right clock frequency to the display
+
+We'll cover these in the next article!
+
+[__u/immibis on Reddit__](https://www.reddit.com/r/PINE64official/comments/xjzack/comment/ipd6fsy/?utm_source=share&utm_medium=web2x&context=3) has shared some helpful insights...
 
 > To actually display pixels on the screen you also need to program DE and TCON. I saw something somewhere about a test pattern that might be able to bypass this, and a framebuffer mode that bypasses the mixing IIRC.
 
-[(Source)](https://www.reddit.com/r/PINE64official/comments/xjzack/comment/ipd6fsy/?utm_source=share&utm_medium=web2x&context=3)
+And we might hit some __undocumented A64 Registers__...
 
 > several important registers used by the driver aren't documented (the command registers) but the basic format is shown in the driver source code
 
 > ...the module is running a little instruction set and the manual conspicuously omits any description of the instructions or even the registers where you put the instructions.
 
-Next article
-
-DE and TCON
-
-We might hit some roadblocks
-
-Maybe send command to render pixels?
+We'll find out soon in the next article!
 
 When we have implemented the Display Engine and Timing Controller, our PinePhone Display Driver will look something like this...
 
@@ -580,7 +584,13 @@ When we have implemented the Display Engine and Timing Controller, our PinePhone
 
     [(Originally from __megous.com/p-boot__)](https://megous.com/git/p-boot/)
 
-# NuttX Driver
+# NuttX Display Driver for PinePhone
+
+_Why are we doing all this?_
+
+TODO
+
+_How shall we build the NuttX Driver for PinePhone's Display?_
 
 TODO
 
@@ -589,13 +599,17 @@ ST7789 is closest
 
 [st7789.c](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/st7789.c)
 
+-   [__"Configure GPIO"__](https://lupyuen.github.io/articles/pio#configure-gpio)
+
 Init the display first
 
 Maybe the display will light up (backlight)
 
 Then try to draw some pixels
 
-[Zephyr Driver for MIPI DSI](https://github.com/zephyrproject-rtos/zephyr-testing/blob/main/tests/drivers/mipi_dsi/api/src/main.c)
+The Zephyr Driver for MIPI DSI (Apache-licensed) might be a helpful reference...
+
+-   [__"Zephyr Driver for MIPI DSI"__](https://github.com/zephyrproject-rtos/zephyr-testing/blob/main/tests/drivers/mipi_dsi/api/src/main.c)
 
 # What's Next
 
@@ -653,11 +667,21 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: MIPI DPHY
 
-TODO
+Earlier we talked about initialising the MIPI DSI Controller...
 
-There's something else that needs to be initialised: __MIPI DPHY__, the Display Physical Layer for MIPI DSI.
+-   [__"Initialise MIPI DSI"__](https://lupyuen.github.io/articles/dsi#initialise-mipi-dsi)
+
+There's something else that needs to be initialised: __MIPI DPHY__, the __Display Physical Layer__ for MIPI DSI...
+
+-   [__"A64 MIPI DPHY"__](https://lupyuen.github.io/articles/pio#display-phy)
+
+MIPI DPHY is the __"Physical Layer"__ in the pic above.
+
+(MIPI DSI runs in the layers above MIPI DPHY)
 
 Sadly A64's MIPI DPHY doesn't seem to be documented, so we might need to do Reverse Engineering.
+
+TODO
 
 sun6i_dsi_encoder_enable: [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L716-L795) calls D-PHY:
 -	phy_init / sun6i_dphy_init: [phy-sun6i-mipi-dphy.c](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L129-L138)
