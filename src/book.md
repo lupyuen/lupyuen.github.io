@@ -18,7 +18,7 @@ _You're reading the book right now!_
 
 Use this book to navigate the numerous BL602 / BL604 articles that have been published on this site. __(66 articles and still growing!)__
 
-The programs in these articles have been tested on __PineDio Stack BL604__ and __PineCone BL602__, but they should work on other __BL602 and BL604 Boards: Pinenut BL602, DT-BL10, MagicHome BL602__.
+The programs in these articles have been tested on __PineDio Stack BL604__ and __PineCone BL602__, but they should work on other __BL602 and BL604 Boards: [Ai-Thinker Ai-WB2](https://docs.ai-thinker.com/en/wb2), Pinenut BL602, DT-BL10, MagicHome BL602__.
 
 Many thanks to __Pine64__ for supporting my work on BL602 Open Source Education! Thanks also to __Bouffalo Lab__ for the encouraging notes.
 
