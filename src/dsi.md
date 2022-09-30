@@ -552,6 +552,10 @@ Yeah. The complete steps to initialise the ST7703 LCD Controller will look simil
 
 -   [__"Initialise ST7703 LCD Controller"__](https://gist.github.com/lupyuen/43204d20c35ecb23dfbff12f2f570565#initialise-st7703-lcd-controller)
 
+![Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)](https://lupyuen.github.io/images/pio-display.png)
+
+[_Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)_](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)
+
 # Render Display
 
 _OK we have initialised the ST7703 display..._
@@ -567,6 +571,8 @@ To do this, we need to program two controllers in Allwinner A64...
     (Handles image buffering, scaling, mixing, ...)
 
 -   [__Timing Controller (TCON0)__](https://lupyuen.github.io/articles/pio#lcd-controller-tcon0): Pump the generated pixels at the right clock frequency to the display
+
+    (Pic above)
 
 We'll explain these in the next article!
 
@@ -587,6 +593,10 @@ When we have implemented the Display Engine and Timing Controller, our PinePhone
 -   [__p-boot/display.c__](https://github.com/davidwed/p-boot/blob/master/src/display.c#L1565-L2132)
 
     [(Originally from __megous.com/p-boot__)](https://megous.com/git/p-boot/)
+
+![Apache NuttX RTOS booting on PinePhone](https://lupyuen.github.io/images/serial-title.jpg)
+
+[_Apache NuttX RTOS booting on PinePhone_](https://lupyuen.github.io/articles/uboot)
 
 # NuttX Display Driver for PinePhone
 
