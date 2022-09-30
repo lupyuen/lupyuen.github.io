@@ -414,6 +414,8 @@
 <li><a href="https://lupyuen.github.io/articles/pio#pinephone-backlight"><strong>“PinePhone Backlight”</strong></a></li>
 </ul>
 <p>Now that we have initialised A64 MIPI DSI, we’re ready to send our DCS Command…</p>
+<p><img src="https://lupyuen.github.io/images/dsi-packet.png" alt="MIPI DSI Long Packet (Page 203)" /></p>
+<p><a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf"><em>MIPI DSI Long Packet (Page 203)</em></a></p>
 <h1 id="long-packet-for-mipi-dsi"><a href="#long-packet-for-mipi-dsi">11 Long Packet for MIPI DSI</a></h1>
 <p>Earlier we talked about transmitting a <strong>DCS Long Write</strong> command (Data Type <code>0x39</code>) to ST7703 LCD Controller…</p>
 <ul>
@@ -423,16 +425,16 @@
 <p><strong>Packet Header</strong> (4 bytes):</p>
 <ul>
 <li>
-<p><strong>Data Identifier</strong> (1 byte):</p>
+<p><strong>Data Identifier (DI)</strong> (1 byte):</p>
 <p>Virtual Channel Identifier (Bits 6 to 7)</p>
 <p>Data Type (Bits 0 to 5)</p>
 </li>
 <li>
-<p><strong>Word Count</strong> (2 bytes)：</p>
-<p>Define the end of packet</p>
+<p><strong>Word Count (WC)</strong> (2 bytes)：</p>
+<p>Number of bytes in the Packet Payload</p>
 </li>
 <li>
-<p><strong>Error Correction Code</strong> (1 byte):</p>
+<p><strong>Error Correction Code (ECC)</strong> (1 byte):</p>
 <p>Allow single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header</p>
 <p><a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf">(See “12.3.6.12: Error Correction Code”, Page 208)</a></p>
 <p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L850-L867">(How we compose the Packet Header)</a></p>
@@ -440,12 +442,15 @@
 </ul>
 <p><strong>Packet Payload:</strong></p>
 <ul>
-<li><strong>Data</strong> (0 to 65,541 bytes)</li>
+<li>
+<p><strong>Data</strong> (0 to 65,541 bytes):</p>
+<p>Number of data bytes should match the Word Count (WC)</p>
+</li>
 </ul>
 <p><strong>Packet Footer:</strong></p>
 <ul>
 <li>
-<p><strong>Checksum</strong> (2 bytes):</p>
+<p><strong>Checksum (CS)</strong> (2 bytes):</p>
 <p>16-bit Cyclic Redundancy Check (CRC)</p>
 <p><a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf">(See “12.3.6.13: Packet Footer”, Page 210)</a></p>
 <p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L254-L257">(How we compute the Checksum)</a></p>
