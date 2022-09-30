@@ -409,6 +409,10 @@
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#appendix-mipi-dphy"><strong>“MIPI DPHY”</strong></a></li>
 </ul>
+<p>Don’t forget to switch on the <strong>Display Backlight</strong>!</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/pio#pinephone-backlight"><strong>“PinePhone Backlight”</strong></a></li>
+</ul>
 <p>Now that we have initialised A64 MIPI DSI, we’re ready to send our DCS Command…</p>
 <h1 id="long-packet-for-mipi-dsi"><a href="#long-packet-for-mipi-dsi">11 Long Packet for MIPI DSI</a></h1>
 <p>Earlier we talked about transmitting a <strong>DCS Long Write</strong> command (Data Type <code>0x39</code>) to ST7703 LCD Controller…</p>
@@ -508,14 +512,14 @@
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/pio#display-engine"><strong>Display Engine (DE)</strong></a>: Execute the Rendering Pipeline to generate the pixels for display</p>
-<p>(Handles image scaling, mixing, …)</p>
+<p>(Handles image buffering, scaling, mixing, …)</p>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/pio#lcd-controller-tcon0"><strong>Timing Controller (TCON0)</strong></a>: Pump the generated pixels at the right clock frequency to the display</p>
 </li>
 </ul>
-<p>We’ll cover these in the next article!</p>
-<p><a href="https://www.reddit.com/r/PINE64official/comments/xjzack/comment/ipd6fsy/?utm_source=share&amp;utm_medium=web2x&amp;context=3"><strong>u/immibis on Reddit</strong></a> has shared some helpful insights…</p>
+<p>We’ll explain these in the next article!</p>
+<p><a href="https://www.reddit.com/r/PINE64official/comments/xjzack/comment/ipd6fsy/?utm_source=share&amp;utm_medium=web2x&amp;context=3"><strong>u/immibis on Reddit</strong></a> has shared some helpful info…</p>
 <blockquote>
 <p>To actually display pixels on the screen you also need to program DE and TCON. I saw something somewhere about a test pattern that might be able to bypass this, and a framebuffer mode that bypasses the mixing IIRC.</p>
 </blockquote>
@@ -621,17 +625,17 @@ ST7789 is closest</p>
 <p>MIPI DPHY is the <strong>“Physical Layer”</strong> in the pic above.</p>
 <p>(MIPI DSI runs in the layers above MIPI DPHY)</p>
 <p>Sadly A64’s MIPI DPHY doesn’t seem to be documented, so we might need to do Reverse Engineering.</p>
-<p>TODO</p>
-<p>sun6i_dsi_encoder_enable: <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L716-L795">sun6i_mipi_dsi.c</a> calls D-PHY:</p>
+<p>Here’s the sequence of calls for <strong>initialising the A64 MIPI DPHY</strong> in PinePhone Linux…</p>
+<p>At startup, <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L716-L795"><strong>sun6i_dsi_encoder_enable</strong></a> calls…</p>
 <ul>
-<li>phy_init / sun6i_dphy_init: <a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L129-L138">phy-sun6i-mipi-dphy.c</a></li>
+<li>phy_init / <a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L129-L138"><strong>sun6i_dphy_init</strong></a></li>
 <li>phy_mipi_dphy_get_default_config</li>
 <li>phy_set_mode</li>
-<li>phy_configure / sun6i_dphy_configure: <a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L140-L152">phy-sun6i-mipi-dphy.c</a></li>
-<li>phy_power_on / sun6i_dphy_power_on: <a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L343-L355">phy-sun6i-mipi-dphy.c</a>
+<li>phy_configure / <a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L140-L152"><strong>sun6i_dphy_configure</strong></a></li>
+<li>phy_power_on / <a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L343-L355"><strong>sun6i_dphy_power_on</strong></a>
 <ul>
-<li>Calls sun6i_dphy_tx_power_on: <a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L154-L243">phy-sun6i-mipi-dphy.c</a></li>
-<li>Or sun6i_dphy_rx_power_on: <a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L245-L341">phy-sun6i-mipi-dphy.c</a></li>
+<li>Calls <a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L154-L243"><strong>sun6i_dphy_tx_power_on</strong></a></li>
+<li>Or <a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L245-L341"><strong>sun6i_dphy_rx_power_on</strong></a></li>
 </ul>
 </li>
 </ul>
