@@ -691,6 +691,8 @@ Check out the other articles on __NuttX RTOS for PinePhone__...
 
 -   [__"NuttX RTOS for PinePhone: UART Driver"__](https://lupyuen.github.io/articles/serial)
 
+-   [__"Understanding PinePhone's Display (MIPI DSI)"__](https://lupyuen.github.io/articles/dsi)
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
@@ -904,6 +906,10 @@ _[Allwinner A64 User Manual (Page 500)](https://dl.linux-sunxi.org/A64/A64_Datas
 
 ## MIPI DSI Interface
 
+Check out the article...
+
+-   [__"Understanding PinePhone's Display (MIPI DSI)"__](https://lupyuen.github.io/articles/dsi)
+
 Allwinner A64's Timing Controller (TCON0) controls PinePhone's LCD Display via the [__Display Serial Interface (DSI)__](https://en.wikipedia.org/wiki/Display_Serial_Interface), as defined by the [__Mobile Industry Processor Interface (MIPI) Alliance__](https://en.wikipedia.org/wiki/MIPI_Alliance).
 
 PinePhone's Linux Device Tree reveals this about A64's __MIPI DSI Interface__ at Address __`0x1CA` `0000`__: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1327-L1356)
@@ -999,7 +1005,9 @@ Searching online for `"sun6i-a31-mipi-dphy"` uncovers the __Linux Driver for A64
 
 ## Display Engine
 
-According to [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf) (Section 6.1: "DE2.0", Page 499), A64 has a __Display Engine__ that handles the display pipeline.
+According to [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf) (Section 6.1: "DE2.0", Page 499), A64 has a __Display Engine__ that renders the display pipeline.
+
+(Display Engine handles image buffering, scaling, mixing, ...)
 
 Here's the definition in PinePhone's Linux Device Tree: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L98-L102)
 
