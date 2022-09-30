@@ -548,7 +548,9 @@ Yeah. The complete steps to initialise the ST7703 LCD Controller will look simil
 
 # Render Display
 
-_OK we have initialised the ST7703 display. What about rendering the display?_
+_OK we have initialised the ST7703 display..._
+
+_What about rendering the display?_
 
 TODO
 
@@ -559,6 +561,12 @@ DE and TCON
 We might hit some roadblocks
 
 Maybe send command to render pixels?
+
+When we have implemented the Display Engine and Timing Controller, our PinePhone Display Driver will look something like this...
+
+-   [__p-boot/display.c__](https://github.com/davidwed/p-boot/blob/master/src/display.c#L1565-L2132)
+
+    [(Originally from __megous.com/p-boot__)](https://megous.com/git/p-boot/)
 
 # NuttX Driver
 
