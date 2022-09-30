@@ -624,11 +624,19 @@ The __Zephyr Driver__ for MIPI DSI (Apache-licensed) might be a helpful referenc
 
 # What's Next
 
-TODO
+I hope we learnt lots about PinePhone's Display...
 
-And eventually we shall build NuttX Drivers for PinePhone's [__LCD Display__](https://lupyuen.github.io/articles/pio#lcd-controller-tcon0) and [__Touch Panel__](https://lupyuen.github.io/articles/pio#touch-panel)!
+-   What's a [__MIPI Display Serial Interface (DSI)__](https://lupyuen.github.io/articles/dsi#connector-for-mipi-dsi)
 
-There's plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏
+-   What's inside [__PinePhone's LCD Display__](https://lupyuen.github.io/articles/dsi#xingbangda-xbd599-lcd-panel)
+
+-   How it's similar to [__PineTime's Display Controller__](https://lupyuen.github.io/articles/dsi#sitronix-st7703-lcd-controller)
+
+-   Implications of a [__RAM-less Display Controller__](https://lupyuen.github.io/articles/dsi#render-display)
+
+-   What are PinePhone's [__Display Engine (DE)__](https://lupyuen.github.io/articles/dsi#render-display) and [__Timing Controller (TCON)__](https://lupyuen.github.io/articles/dsi#render-display)
+
+Please join me in the next article when we'll talk about PinePhone's Display Engine and Timing Controller!
 
 Check out the other articles on __NuttX RTOS for PinePhone__...
 
