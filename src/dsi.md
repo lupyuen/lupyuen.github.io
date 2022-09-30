@@ -435,6 +435,10 @@ Don't forget to switch on the __Display Backlight__!
 
 Now that we have initialised A64 MIPI DSI, we're ready to send our DCS Command...
 
+![MIPI DSI Long Packet (Page 203)](https://lupyuen.github.io/images/dsi-packet.png)
+
+[_MIPI DSI Long Packet (Page 203)_](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf)
+
 # Long Packet for MIPI DSI
 
 Earlier we talked about transmitting a __DCS Long Write__ command (Data Type `0x39`) to ST7703 LCD Controller...
@@ -445,17 +449,17 @@ Page 32 of the [__ST7703 Datasheet__](https://files.pine64.org/doc/datasheet/pin
 
 __Packet Header__ (4 bytes):
 
--   __Data Identifier__ (1 byte):
+-   __Data Identifier (DI)__ (1 byte):
 
     Virtual Channel Identifier (Bits 6 to 7)
 
     Data Type (Bits 0 to 5)
 
--   __Word Count__ (2 bytes)：
+-   __Word Count (WC)__ (2 bytes)：
 
-    Define the end of packet
+    Number of bytes in the Packet Payload
 
--   __Error Correction Code__ (1 byte):
+-   __Error Correction Code (ECC)__ (1 byte):
 
     Allow single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header
 
@@ -466,11 +470,13 @@ __Packet Header__ (4 bytes):
 
 __Packet Payload:__
 
--   __Data__ (0 to 65,541 bytes)
+-   __Data__ (0 to 65,541 bytes):
+
+    Number of data bytes should match the Word Count (WC)
 
 __Packet Footer:__
 
--   __Checksum__ (2 bytes):
+-   __Checksum (CS)__ (2 bytes):
 
     16-bit Cyclic Redundancy Check (CRC)
 
