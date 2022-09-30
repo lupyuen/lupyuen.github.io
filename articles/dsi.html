@@ -81,10 +81,9 @@
 <li><a href="#transmit-packet-over-mipi-dsi">12 Transmit Packet over MIPI DSI</a><ul></ul></li>
 <li><a href="#render-display">13 Render Display</a><ul></ul></li>
 <li><a href="#nuttx-driver">14 NuttX Driver</a><ul></ul></li>
-<li><a href="#todo">15 TODO</a><ul></ul></li>
-<li><a href="#whats-next">16 What’s Next</a><ul></ul></li>
-<li><a href="#notes">17 Notes</a><ul></ul></li>
-<li><a href="#appendix-mipi-dphy">18 Appendix: MIPI DPHY</a><ul></ul></li></ul></nav><p>📝 <em>7 Oct 2022</em></p>
+<li><a href="#whats-next">15 What’s Next</a><ul></ul></li>
+<li><a href="#notes">16 Notes</a><ul></ul></li>
+<li><a href="#appendix-mipi-dphy">17 Appendix: MIPI DPHY</a><ul></ul></li></ul></nav><p>📝 <em>7 Oct 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/dsi-title.jpg" alt="PinePhone’s LCD Display in the PinePhone Block Diagram" /></p>
 <p>How does <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> control its <strong>LCD Display</strong>?</p>
 <p>Let’s uncover all the secrets about PinePhone’s mysterious LCD Display and its <strong>MIPI Display Serial Interface</strong>…</p>
@@ -504,6 +503,17 @@
 <p><em>OK we have initialised the ST7703 display…</em></p>
 <p><em>What about rendering the display?</em></p>
 <p>TODO</p>
+<p><a href="https://www.reddit.com/user/immibis/">u/immibis</a></p>
+<blockquote>
+<p>To actually display pixels on the screen you also need to program DE and TCON. I saw something somewhere about a test pattern that might be able to bypass this, and a framebuffer mode that bypasses the mixing IIRC.</p>
+</blockquote>
+<p><a href="https://www.reddit.com/r/PINE64official/comments/xjzack/comment/ipd6fsy/?utm_source=share&amp;utm_medium=web2x&amp;context=3">(Source)</a></p>
+<blockquote>
+<p>several important registers used by the driver aren’t documented (the command registers) but the basic format is shown in the driver source code</p>
+</blockquote>
+<blockquote>
+<p>…the module is running a little instruction set and the manual conspicuously omits any description of the instructions or even the registers where you put the instructions.</p>
+</blockquote>
 <p>Next article</p>
 <p>DE and TCON</p>
 <p>We might hit some roadblocks</p>
@@ -517,44 +527,14 @@
 </ul>
 <h1 id="nuttx-driver"><a href="#nuttx-driver">14 NuttX Driver</a></h1>
 <p>TODO</p>
-<h1 id="todo"><a href="#todo">15 TODO</a></h1>
-<p>No ram buffer</p>
-<p>Need constant refresh</p>
-<p>Tcon</p>
 <p>NuttX Driver
 ST7789 is closest</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/st7789.c">st7789.c</a></p>
 <p>Init the display first</p>
 <p>Maybe the display will light up (backlight)</p>
 <p>Then try to draw some pixels</p>
-<p>TCON might be harder</p>
-<p><a href="https://www.reddit.com/user/immibis/">u/immibis</a></p>
-<blockquote>
-<p>To actually display pixels on the screen you also need to program DE and TCON. I saw something somewhere about a test pattern that might be able to bypass this, and a framebuffer mode that bypasses the mixing IIRC.</p>
-</blockquote>
-<blockquote>
-<p>several important registers used by the driver aren’t documented (the command registers) but the basic format is shown in the driver source code</p>
-</blockquote>
-<blockquote>
-<p>That’s probably the one, but the module is running a little instruction set and the manual conspicuously omits any description of the instructions or even the registers where you put the instructions.</p>
-</blockquote>
-<p><a href="https://www.reddit.com/r/PINE64official/comments/xjzack/comment/ipd6fsy/?utm_source=share&amp;utm_medium=web2x&amp;context=3">(Source)</a></p>
 <p><a href="https://github.com/zephyrproject-rtos/zephyr-testing/blob/main/tests/drivers/mipi_dsi/api/src/main.c">Zephyr Driver for MIPI DSI</a></p>
-<p>sun6i_dsi_start: <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L670-L714">sun6i_mipi_dsi.c</a></p>
-<p>sun6i_dsi_encoder_enable: <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L716-L795">sun6i_mipi_dsi.c</a></p>
-<p>Calls D-PHY:</p>
-<ul>
-<li>phy_init</li>
-<li>phy_mipi_dphy_get_default_config</li>
-<li>phy_set_mode</li>
-<li>phy_configure</li>
-<li>phy_power_on</li>
-</ul>
-<p>A64 MIPI D-PHY Driver: <a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c">phy-sun6i-mipi-dphy.c</a></p>
-<p>sun6i_dphy_tx_power_on: <a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L154-L243">phy-sun6i-mipi-dphy.c</a></p>
-<p>sun6i_dphy_rx_power_on: <a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L245-L341">phy-sun6i-mipi-dphy.c</a></p>
-<p>sun6i_dphy_power_on: <a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L343-L355">phy-sun6i-mipi-dphy.c</a></p>
-<h1 id="whats-next"><a href="#whats-next">16 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">15 What’s Next</a></h1>
 <p>TODO</p>
 <p>And eventually we shall build NuttX Drivers for PinePhone’s <a href="https://lupyuen.github.io/articles/pio#lcd-controller-tcon0"><strong>LCD Display</strong></a> and <a href="https://lupyuen.github.io/articles/pio#touch-panel"><strong>Touch Panel</strong></a>!</p>
 <p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
@@ -593,7 +573,7 @@ ST7789 is closest</p>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/dsi.md"><strong>lupyuen.github.io/src/dsi.md</strong></a></p>
-<h1 id="notes"><a href="#notes">17 Notes</a></h1>
+<h1 id="notes"><a href="#notes">16 Notes</a></h1>
 <ol>
 <li>
 <p>We recorded some notes while reverse-engineering the PinePhone MIPI DSI Driver…</p>
@@ -609,10 +589,25 @@ ST7789 is closest</p>
 <p>(Page 181, Chapter 12: “DSI”)</p>
 </li>
 </ol>
-<h1 id="appendix-mipi-dphy"><a href="#appendix-mipi-dphy">18 Appendix: MIPI DPHY</a></h1>
+<p><img src="https://lupyuen.github.io/images/dsi-layer.png" alt="MIPI DSI Protocol Layers (Page 183)" /></p>
+<p><a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf"><em>MIPI DSI Protocol Layers (Page 183)</em></a></p>
+<h1 id="appendix-mipi-dphy"><a href="#appendix-mipi-dphy">17 Appendix: MIPI DPHY</a></h1>
 <p>TODO</p>
 <p>There’s something else that needs to be initialised: <strong>MIPI DPHY</strong>, the Display Physical Layer for MIPI DSI.</p>
 <p>Sadly A64’s MIPI DPHY doesn’t seem to be documented, so we might need to do Reverse Engineering.</p>
+<p>sun6i_dsi_encoder_enable: <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L716-L795">sun6i_mipi_dsi.c</a> calls D-PHY:</p>
+<ul>
+<li>phy_init / sun6i_dphy_init: <a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L129-L138">phy-sun6i-mipi-dphy.c</a></li>
+<li>phy_mipi_dphy_get_default_config</li>
+<li>phy_set_mode</li>
+<li>phy_configure / sun6i_dphy_configure: <a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L140-L152">phy-sun6i-mipi-dphy.c</a></li>
+<li>phy_power_on / sun6i_dphy_power_on: <a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L343-L355">phy-sun6i-mipi-dphy.c</a>
+<ul>
+<li>Calls sun6i_dphy_tx_power_on: <a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L154-L243">phy-sun6i-mipi-dphy.c</a></li>
+<li>Or sun6i_dphy_rx_power_on: <a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L245-L341">phy-sun6i-mipi-dphy.c</a></li>
+</ul>
+</li>
+</ul>
 
     
 </body>
