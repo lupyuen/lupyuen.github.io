@@ -592,26 +592,23 @@ When we have implemented the Display Engine and Timing Controller, our PinePhone
 
 _Once again, why are we doing all this?_
 
-TODO
+We're now porting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) to PinePhone.
+
+But it will look awfully dull until we __render something__ on PinePhone's LCD Display!
+
+That's why we're probing the internals of PinePhone to create a __NuttX Display Driver__.
 
 _How shall we build the NuttX Driver for PinePhone's Display?_
 
-TODO
+We shall create a __NuttX Driver for Sitronix ST7703__, based on the code from ST7789...
 
-NuttX Driver
-ST7789 is closest
+-   [__nuttx/drivers/lcd/st7789.c__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/st7789.c)
 
-[st7789.c](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/st7789.c)
+But before that, we shall __test the driver code__ by directly accessing the A64 Hardware Registers, similar to this...
 
 -   [__"Configure GPIO"__](https://lupyuen.github.io/articles/pio#configure-gpio)
 
-Init the display first
-
-Maybe the display will light up (backlight)
-
-Then try to draw some pixels
-
-The Zephyr Driver for MIPI DSI (Apache-licensed) might be a helpful reference...
+The __Zephyr Driver__ for MIPI DSI (Apache-licensed) might be a helpful reference...
 
 -   [__"Zephyr Driver for MIPI DSI"__](https://github.com/zephyrproject-rtos/zephyr-testing/blob/main/tests/drivers/mipi_dsi/api/src/main.c)
 
