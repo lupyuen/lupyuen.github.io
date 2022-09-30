@@ -540,19 +540,19 @@
 </ul>
 <h1 id="nuttx-display-driver-for-pinephone"><a href="#nuttx-display-driver-for-pinephone">14 NuttX Display Driver for PinePhone</a></h1>
 <p><em>Once again, why are we doing all this?</em></p>
-<p>TODO</p>
+<p>We’re now porting <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> to PinePhone.</p>
+<p>But it will look awfully dull until we <strong>render something</strong> on PinePhone’s LCD Display!</p>
+<p>That’s why we’re probing the internals of PinePhone to create a <strong>NuttX Display Driver</strong>.</p>
 <p><em>How shall we build the NuttX Driver for PinePhone’s Display?</em></p>
-<p>TODO</p>
-<p>NuttX Driver
-ST7789 is closest</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/st7789.c">st7789.c</a></p>
+<p>We shall create a <strong>NuttX Driver for Sitronix ST7703</strong>, based on the code from ST7789…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/st7789.c"><strong>nuttx/drivers/lcd/st7789.c</strong></a></li>
+</ul>
+<p>But before that, we shall <strong>test the driver code</strong> by directly accessing the A64 Hardware Registers, similar to this…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/pio#configure-gpio"><strong>“Configure GPIO”</strong></a></li>
 </ul>
-<p>Init the display first</p>
-<p>Maybe the display will light up (backlight)</p>
-<p>Then try to draw some pixels</p>
-<p>The Zephyr Driver for MIPI DSI (Apache-licensed) might be a helpful reference…</p>
+<p>The <strong>Zephyr Driver</strong> for MIPI DSI (Apache-licensed) might be a helpful reference…</p>
 <ul>
 <li><a href="https://github.com/zephyrproject-rtos/zephyr-testing/blob/main/tests/drivers/mipi_dsi/api/src/main.c"><strong>“Zephyr Driver for MIPI DSI”</strong></a></li>
 </ul>
