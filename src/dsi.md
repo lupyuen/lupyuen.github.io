@@ -18,7 +18,7 @@ Let's uncover all the secrets about PinePhone's mysterious LCD Display and its _
 
 -   Implications of a RAM-less Display Controller
 
--   What is PinePhone's Timing Controller (TCON)
+-   What are PinePhone's Display Engine (DE) and Timing Controller (TCON)
 
 _Why are we doing this?_
 
@@ -214,7 +214,7 @@ PinePhone's A64 SoC will __pump a constant stream of pixels__ to refresh the dis
 
 (Yep PinePhone is way more complicated than PineTime!)
 
-This pixel pumping is done by A64's [__Timing Controller (TCON0)__](https://lupyuen.github.io/articles/pio#lcd-controller-tcon0). We'll come back to this.
+This pixel pumping is done by A64's [__Display Engine (DE)__](https://lupyuen.github.io/articles/pio#display-engine) and [__Timing Controller (TCON0)__](https://lupyuen.github.io/articles/pio#lcd-controller-tcon0). We'll come back to this.
 
 # Initialise LCD Controller
 
@@ -419,6 +419,8 @@ Actually we should turn on the MIPI DSI Controller BEFORE setting the Video Mode
 
 [(Here's how we set the registers)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L735-L748)
 
+TODO: MIPI DPHY
+
 Now that we have initialised A64 MIPI DSI, we're ready to send our DCS Command...
 
 # Long Packet for MIPI DSI
@@ -538,6 +540,24 @@ Yeah. The complete steps to initialise the ST7703 LCD Controller will look simil
 
 -   [__"Initialise ST7703 LCD Controller"__](https://gist.github.com/lupyuen/43204d20c35ecb23dfbff12f2f570565#initialise-st7703-lcd-controller)
 
+# Render Display
+
+_OK we have initialised the ST7703 display. What about rendering the display?_
+
+TODO
+
+Next article
+
+DE and TCON
+
+We might hit some roadblocks
+
+Maybe send command to render pixels?
+
+# NuttX Driver
+
+TODO
+
 # TODO
 
 No ram buffer
@@ -639,3 +659,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     [__"BL808 Reference Manual"__](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf)
 
     (Page 181, Chapter 12: "DSI")
+
+# Appendix: MIPI DPHY
+
+TODO
