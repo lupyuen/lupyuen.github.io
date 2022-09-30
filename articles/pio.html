@@ -83,8 +83,8 @@
 <li><a href="#lcd-controller-tcon0">13.1 LCD Controller (TCON0)</a><ul></ul></li>
 <li><a href="#mipi-dsi-interface">13.2 MIPI DSI Interface</a><ul></ul></li>
 <li><a href="#display-phy">13.3 Display PHY</a><ul></ul></li>
-<li><a href="#framebuffer">13.4 Framebuffer</a><ul></ul></li>
-<li><a href="#display-engine">13.5 Display Engine</a><ul></ul></li>
+<li><a href="#display-engine">13.4 Display Engine</a><ul></ul></li>
+<li><a href="#framebuffer">13.5 Framebuffer</a><ul></ul></li>
 <li><a href="#touch-panel">13.6 Touch Panel</a><ul></ul></li>
 <li><a href="#video-codec">13.7 Video Codec</a><ul></ul></li>
 <li><a href="#gpu">13.8 GPU</a><ul></ul></li>
@@ -866,7 +866,19 @@ int FS_memOutput(int address, int value)
 <ul>
 <li><a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c"><strong>phy-sun6i-mipi-dphy.c</strong></a></li>
 </ul>
-<h2 id="framebuffer"><a href="#framebuffer">13.4 Framebuffer</a></h2>
+<h2 id="display-engine"><a href="#display-engine">13.4 Display Engine</a></h2>
+<p>According to <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> (Section 6.1: “DE2.0”, Page 499), A64 has a <strong>Display Engine</strong> that handles the display pipeline.</p>
+<p>Here’s the definition in PinePhone’s Linux Device Tree: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L98-L102">sun50i-a64-pinephone-1.2.dts</a></p>
+<div class="example-wrap"><pre class="language-text"><code>display-engine {
+  compatible = &quot;allwinner,sun50i-a64-display-engine&quot;;
+  allwinner,pipelines = &lt;0x07 0x08&gt;;
+  status = &quot;okay&quot;;
+};</code></pre></div>
+<p>Searching online for <code>&quot;sun50i-a64-display-engine&quot;</code> gives us this <strong>Linux Driver for A64 Display Engine</strong>…</p>
+<ul>
+<li><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun4i_drv.c"><strong>sun4i_drv.c</strong></a></li>
+</ul>
+<h2 id="framebuffer"><a href="#framebuffer">13.5 Framebuffer</a></h2>
 <p>PinePhone’s Linux Device Tree defines a high-level <strong>Framebuffer</strong> for apps to render graphics: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L16-L21">sun50i-a64-pinephone-1.2.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>framebuffer-lcd {
   compatible = &quot;allwinner,simple-framebuffer\0simple-framebuffer&quot;;
@@ -875,14 +887,7 @@ int FS_memOutput(int address, int value)
   status = &quot;disabled&quot;;
 };</code></pre></div>
 <p>We might build a similar Framebuffer Device in NuttX for rendering graphics with the LVGL GUI Library.</p>
-<h2 id="display-engine"><a href="#display-engine">13.5 Display Engine</a></h2>
-<p>According to <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> (Section 6.1: “DE2.0”, Page 499), A64 has a <strong>Display Engine</strong> that handles the display pipeline.</p>
-<p>Here’s the definition in PinePhone’s Linux Device Tree: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L98-L102">sun50i-a64-pinephone-1.2.dts</a></p>
-<div class="example-wrap"><pre class="language-text"><code>display-engine {
-  compatible = &quot;allwinner,sun50i-a64-display-engine&quot;;
-  allwinner,pipelines = &lt;0x07 0x08&gt;;
-  status = &quot;okay&quot;;
-};</code></pre></div><h2 id="touch-panel"><a href="#touch-panel">13.6 Touch Panel</a></h2>
+<h2 id="touch-panel"><a href="#touch-panel">13.6 Touch Panel</a></h2>
 <p>PinePhone has a <strong>Goodix GT917S Touch Panel</strong> that talks on I2C.</p>
 <p>Here’s the definition in PinePhone’s Linux Device Tree: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1125-L1136">sun50i-a64-pinephone-1.2.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>touchscreen@5d {
