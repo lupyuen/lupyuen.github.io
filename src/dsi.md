@@ -590,7 +590,7 @@ When we have implemented the Display Engine and Timing Controller, our PinePhone
 
 # NuttX Display Driver for PinePhone
 
-_Why are we doing all this?_
+_Once again, why are we doing all this?_
 
 TODO
 
