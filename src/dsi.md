@@ -429,6 +429,10 @@ Sadly A64's MIPI DPHY doesn't seem to be documented, so we might need to do Reve
 
 -   [__"MIPI DPHY"__](https://lupyuen.github.io/articles/dsi#appendix-mipi-dphy)
 
+Don't forget to switch on the __Display Backlight__!
+
+-   [__"PinePhone Backlight"__](https://lupyuen.github.io/articles/pio#pinephone-backlight)
+
 Now that we have initialised A64 MIPI DSI, we're ready to send our DCS Command...
 
 # Long Packet for MIPI DSI
@@ -560,13 +564,13 @@ To do this, we need to program two controllers in Allwinner A64...
 
 -   [__Display Engine (DE)__](https://lupyuen.github.io/articles/pio#display-engine): Execute the Rendering Pipeline to generate the pixels for display
 
-    (Handles image scaling, mixing, ...)
+    (Handles image buffering, scaling, mixing, ...)
 
 -   [__Timing Controller (TCON0)__](https://lupyuen.github.io/articles/pio#lcd-controller-tcon0): Pump the generated pixels at the right clock frequency to the display
 
-We'll cover these in the next article!
+We'll explain these in the next article!
 
-[__u/immibis on Reddit__](https://www.reddit.com/r/PINE64official/comments/xjzack/comment/ipd6fsy/?utm_source=share&utm_medium=web2x&context=3) has shared some helpful insights...
+[__u/immibis on Reddit__](https://www.reddit.com/r/PINE64official/comments/xjzack/comment/ipd6fsy/?utm_source=share&utm_medium=web2x&context=3) has shared some helpful info...
 
 > To actually display pixels on the screen you also need to program DE and TCON. I saw something somewhere about a test pattern that might be able to bypass this, and a framebuffer mode that bypasses the mixing IIRC.
 
@@ -681,13 +685,13 @@ MIPI DPHY is the __"Physical Layer"__ in the pic above.
 
 Sadly A64's MIPI DPHY doesn't seem to be documented, so we might need to do Reverse Engineering.
 
-TODO
+Here's the sequence of calls for __initialising the A64 MIPI DPHY__ in PinePhone Linux...
 
-sun6i_dsi_encoder_enable: [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L716-L795) calls D-PHY:
--	phy_init / sun6i_dphy_init: [phy-sun6i-mipi-dphy.c](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L129-L138)
+At startup, [__sun6i_dsi_encoder_enable__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L716-L795) calls...
+-	phy_init / [__sun6i_dphy_init__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L129-L138)
 -	phy_mipi_dphy_get_default_config
 -	phy_set_mode
--	phy_configure / sun6i_dphy_configure: [phy-sun6i-mipi-dphy.c](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L140-L152)
--	phy_power_on / sun6i_dphy_power_on: [phy-sun6i-mipi-dphy.c](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L343-L355)
-	-   Calls sun6i_dphy_tx_power_on: [phy-sun6i-mipi-dphy.c](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L154-L243)
-	-   Or sun6i_dphy_rx_power_on: [phy-sun6i-mipi-dphy.c](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L245-L341)
+-	phy_configure / [__sun6i_dphy_configure__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L140-L152)
+-	phy_power_on / [__sun6i_dphy_power_on__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L343-L355)
+	-   Calls [__sun6i_dphy_tx_power_on__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L154-L243)
+	-   Or [__sun6i_dphy_rx_power_on__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L245-L341)
