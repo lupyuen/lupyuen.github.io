@@ -997,6 +997,24 @@ Searching online for `"sun6i-a31-mipi-dphy"` uncovers the __Linux Driver for A64
 
 -   [__phy-sun6i-mipi-dphy.c__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c)
 
+## Display Engine
+
+According to [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf) (Section 6.1: "DE2.0", Page 499), A64 has a __Display Engine__ that handles the display pipeline.
+
+Here's the definition in PinePhone's Linux Device Tree: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L98-L102)
+
+```text
+display-engine {
+  compatible = "allwinner,sun50i-a64-display-engine";
+  allwinner,pipelines = <0x07 0x08>;
+  status = "okay";
+};
+```
+
+Searching online for `"sun50i-a64-display-engine"` gives us this __Linux Driver for A64 Display Engine__...
+
+-   [__sun4i_drv.c__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun4i_drv.c)
+
 ## Framebuffer
 
 PinePhone's Linux Device Tree defines a high-level __Framebuffer__ for apps to render graphics: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L16-L21)
@@ -1011,20 +1029,6 @@ framebuffer-lcd {
 ```
 
 We might build a similar Framebuffer Device in NuttX for rendering graphics with the LVGL GUI Library.
-
-## Display Engine
-
-According to [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf) (Section 6.1: "DE2.0", Page 499), A64 has a __Display Engine__ that handles the display pipeline.
-
-Here's the definition in PinePhone's Linux Device Tree: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L98-L102)
-
-```text
-display-engine {
-  compatible = "allwinner,sun50i-a64-display-engine";
-  allwinner,pipelines = <0x07 0x08>;
-  status = "okay";
-};
-```
 
 ## Touch Panel
 
