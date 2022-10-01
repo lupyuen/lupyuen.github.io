@@ -1,6 +1,6 @@
 # Understanding PinePhone's Display (MIPI DSI)
 
-📝 _7 Oct 2022_
+📝 _2 Oct 2022_
 
 ![PinePhone's LCD Display in the PinePhone Block Diagram](https://lupyuen.github.io/images/dsi-title.jpg)
 
@@ -690,6 +690,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     [__"BL808 Reference Manual"__](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf)
 
     (Page 181, Chapter 12: "DSI")
+
+1.  ST7703 always runs in __DSI Video Mode__ (instead of Command Mode).
+
+    Does this mean that all DCS Commands are sent over all 4 DSI Data Lanes? (Instead of DSI Lane 0 only)
 
 ![MIPI DSI Protocol Layers (Page 183)](https://lupyuen.github.io/images/dsi-layer.png)
 

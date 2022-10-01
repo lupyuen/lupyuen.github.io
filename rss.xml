@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Understanding PinePhone&apos;s Display (MIPI DSI)</title>
+            <link>https://lupyuen.github.io/articles/dsi</link>
+            <description><![CDATA[How does Pine64 PinePhone control its LCD Display over MIPI Display Serial Interface? Let's find out!]]></description>
+            <guid>https://lupyuen.github.io/articles/dsi</guid>
+            <pubDate>Sun, 02 Oct 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>NuttX on a RISC-V IoT Gadget: PineDio Stack BL604</title>
             <link>https://lupyuen.github.io/nuttx#nuttx-on-a-risc-v-iot-gadget-pinedio-stack-bl604</link>
             <description><![CDATA[Pine64’s PineDio Stack BL604 is a RISC-V board that’s packed with IoT features: Touchscreen, LoRa, WiFi, BLE, GPS and more. In this presentation we’ll talk about the porting of NuttX to PineDio Stack, how we simplified the developer onboarding, and our plans to support LoRaWAN and LVGL Apps in Zig.]]></description>

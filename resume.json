@@ -154,6 +154,13 @@
   ],
   "publications": [
     {
+      "name": "Understanding PinePhone's Display (MIPI DSI)",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2022-10-02",
+      "website": "https://lupyuen.github.io/articles/dsi",
+      "summary": "How does Pine64 PinePhone control its LCD Display over MIPI Display Serial Interface? Let's find out!"
+    },
+    {
       "name": "NuttX on a RISC-V IoT Gadget: PineDio Stack BL604",
       "publisher": "NuttX Online Workshop 2022",
       "releaseDate": "2022-09-25",
