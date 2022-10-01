@@ -601,7 +601,7 @@ We'll find out soon in the next article!
 
 When we have implemented the Display Engine and Timing Controller, our PinePhone Display Driver will look something like this...
 
--   [__p-boot/display.c__](https://github.com/davidwed/p-boot/blob/master/src/display.c#L1565-L2132)
+-   [__display.c__](https://github.com/davidwed/p-boot/blob/master/src/display.c#L1565-L2132) and [__dtest.c__](https://github.com/davidwed/p-boot/blob/master/src/dtest.c)
 
     [(Originally from __megous.com/p-boot__)](https://megous.com/git/p-boot/)
 
