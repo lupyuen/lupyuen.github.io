@@ -88,7 +88,7 @@ Let's turn to Page 2 of the __PinePhone Schematic__ to understand how PinePhone'
 
 -   [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)  
 
-From the pic above, we see that the LCD Display is connected to the Allwinner A64 SoC via a __MIPI Display Serial Interface (DSI)__.
+From the pic above, we see that the LCD Display is connected to the [__Allwinner A64 SoC__](https://linux-sunxi.org/A64) via a __MIPI Display Serial Interface (DSI)__.
 
 [(MIPI is the __Mobile Industry Processor Interface Alliance__)](https://en.wikipedia.org/wiki/MIPI_Alliance)
 
@@ -146,11 +146,11 @@ This means that MIPI DSI uses [__Differential Signalling__](https://en.wikipedia
 
 _Are all 4 DSI Data Lanes identical?_
 
-For sending commands to the Display Controller, only DSI Lane 0 is used.
+For sending commands to the Display Controller, only __DSI Lane 0__ is used.
 
 (Lane 0 is Bidirectional, it supports Direction Turnaround)
 
-For sending pixel data, all 4 DSI Lanes will be used. (Unidirectional)
+For sending pixel data, __all 4 DSI Lanes__ will be used. (Unidirectional)
 
 Let's dig deeper into MIPI DSI...
 
@@ -170,7 +170,7 @@ First we follow these steps to dump PinePhone's Linux Device Tree in text format
 
 Then we search for __MIPI DSI__ in the Device Tree...
 
--   [__PinePhone Device Tree: sun50i-a64-pinephone-1.2.dts__](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts)
+-   [__sun50i-a64-pinephone-1.2.dts__](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1327-L1356)
 
 From the pic above we see that PinePhone's MIPI DSI Connector is connected to [__Xingbangda XBD599__](https://patchwork.kernel.org/project/dri-devel/patch/20200311163329.221840-4-icenowy@aosc.io/).
 
@@ -293,7 +293,7 @@ But the [__ST7703 Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/
 
 > ST7703 only support __Video mode__. Video Mode refers to operation in which transfers from the host processor to the peripheral take the form of a real-time pixel stream. 
 
-And while we're in DSI Video Mode, we need to __pump pixels continuously__ to ST7703 (or the display goes blank)...
+And while we're in DSI Video Mode, PinePhone needs to __pump pixels continuously__ to ST7703 (or the display goes blank)...
 
 > In normal operation, the driver IC relies on the host processor to provide image data at sufficient bandwidth to avoid flicker or other visible artifacts in the displayed image. Video information should only be transmitted using High Speed Mode. 
 
@@ -337,7 +337,7 @@ Yep it's totally odd, but the A64 MIPI DSI Registers are actually documented in 
 
 -   [__Allwinner A31 User Manual (Page 842)__](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
 
-A64's MIPI DSI Hardware is identical to A31 because both SoCs use the __same MIPI DSI Driver__: [sun6i_mipi_dsi.c](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L1215-L1219)
+A64's MIPI DSI Hardware is identical to A31 because both SoCs use the __same MIPI DSI Driver__...
 
 ```c
 static const struct of_device_id sun6i_dsi_of_table[] = {
@@ -345,9 +345,11 @@ static const struct of_device_id sun6i_dsi_of_table[] = {
   { .compatible = "allwinner,sun50i-a64-mipi-dsi" },
 ```
 
-The __Base Address__ of A64's MIPI DSI Controller is __`0x01CA` `0000`__
+[(Source)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L1215-L1219)
 
-The pic above shows the list of __MIPI DSI Registers__ for A64 SoC.
+The __Base Address__ of A64's MIPI DSI Controller is __`0x01CA` `0000`__. (Pic above)
+
+Also in the pic above is list of __MIPI DSI Registers__ for A64 SoC.
 
 For today we shall study 2 of the above registers...
 
@@ -393,7 +395,7 @@ That's __Bit 0__ of __DSI_BASIC_CTL1_REG__ (DSI Configuration Register 1) at Off
 
 Our driver shall also set __Video_Precision_Mode_Align__ to 1, __Video_Frame_Start__ to 1 and __Video_Start_Delay__. (What's the delay value?)
 
-[(Here's how we set __DSI_Mode__)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L751-L755)
+[(Here's how we set __DSI_BASIC_CTL1_REG__)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L751-L755)
 
 _Anything else we should init at startup?_
 
@@ -405,7 +407,9 @@ Actually we should turn on the MIPI DSI Controller BEFORE setting the Video Mode
 
 -   __DSI_BASIC_CTL0_REG__ (Offset `0x10`):
 
-    Enable Error Correction Code (Bit 16) and CRC (Bit 17)
+    Enable Error Correction Code (Bit 16)
+    
+    Enable Cyclic Redundancy Check (Bit 17)
 
 -   __DSI_TRANS_START_REG__ (Offset `0x60`, undocumented):
 
@@ -455,6 +459,8 @@ __Packet Header__ (4 bytes):
 
     Data Type (Bits 0 to 5)
 
+    [(Virtual Channel should be 0, I think)](https://lupyuen.github.io/articles/dsi#initialise-lcd-controller)
+
 -   __Word Count (WC)__ (2 bytes)：
 
     Number of bytes in the Packet Payload
@@ -484,9 +490,9 @@ __Packet Footer:__
 
     [(How we compute the Checksum)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L254-L257)
 
-Let's program A64 to send this Long Packet...
+Let's program A64 to send this Long Packet.
 
-(Page 32 of the [__ST7703 Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf) also defines a __Short Packet__ format, which we won't cover today)
+(Page 32 of the [__ST7703 Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf) also defines a __Short Packet__ format, which we won't discuss today)
 
 ![MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)](https://lupyuen.github.io/images/dsi-tx.png)
 
@@ -504,27 +510,26 @@ The Long Packet contains...
 
 -   Packet Header
 -   Packet Payload
--   Packet Footer (Checksum)
+-   Packet Footer
 
 Now we write the Long Packet to __DSI_CMD_TX_REG__ (DSI Low Power Transmit Package Register) at Offset `0x300` to `0x3FC`. (Pic above)
 
 _What's N in the table above?_
 
-We can rewrite the table without N like so...
+We may rewrite the table without N like so...
 
 | Offset | Bits 31 to 24 | 23 to 16 | 15 to 8 | 7 to 0 |
 |--------|:-------------:|:--------:|:-------:|:------:|
 | `0x300` | Byte 3 | Byte 2 | Byte 1 | Byte 0
 | `0x304` | Byte 7 | Byte 6 | Byte 5 | Byte 4
 | `0x308` | Byte 11 | Byte 10 | Byte 9 | Byte 8
-
-(And so on)
+| ...
 
 Thus __DSI_CMD_TX_REG__ works like a Packet Buffer that will contain the data to be transmitted over MIPI DSI.
 
 [(How we write the Packet Header)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L889-L890)
 
-[(How we write the Packet Payload and Checksum)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L882-L903)
+[(How we write the Packet Payload and Footer)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L882-L903)
 
 Then we set the __Packet Length (TX_Size)__ in Bits 0 to 7 of __DSI_CMD_CTL_REG__ (DSI Low Power Control Register) at Offset `0x200`.
 
@@ -570,27 +575,27 @@ _What about rendering the display?_
 
 Remember we said that the ST7703 LCD Controller is RAM-less? And thus we need to __pump a constant stream of pixels__ to the display?
 
-To do this, we need to program two controllers in Allwinner A64...
+To do this, we program two controllers in Allwinner A64...
 
 -   [__Display Engine (DE)__](https://lupyuen.github.io/articles/pio#display-engine): Execute the Rendering Pipeline to generate the pixels for display
 
     (Handles image buffering, scaling, mixing, ...)
 
--   [__Timing Controller (TCON0)__](https://lupyuen.github.io/articles/pio#lcd-controller-tcon0): Pump the generated pixels at the right clock frequency to the display
+-   [__Timing Controller (TCON0)__](https://lupyuen.github.io/articles/pio#lcd-controller-tcon0): Pump the generated pixels at the right clock frequency to the MIPI DSI display
 
     (Pic above)
 
-We'll explain these in the next article!
+Which shall be explained in the next article!
 
-[__u/immibis on Reddit__](https://www.reddit.com/r/PINE64official/comments/xjzack/comment/ipd6fsy/?utm_source=share&utm_medium=web2x&context=3) has shared some helpful info...
+[__u/immibis on Reddit__](https://www.reddit.com/r/PINE64official/comments/xjzack/comment/ipd6fsy/?utm_source=share&utm_medium=web2x&context=3) has shared some helpful tips...
 
-> To actually display pixels on the screen you also need to program DE and TCON. I saw something somewhere about a test pattern that might be able to bypass this, and a framebuffer mode that bypasses the mixing IIRC.
+> "To actually display pixels on the screen you also need to program DE and TCON. I saw something somewhere about a test pattern that might be able to bypass this, and a framebuffer mode that bypasses the mixing IIRC."
 
 And we might hit some __undocumented A64 Registers__...
 
-> several important registers used by the driver aren't documented (the command registers) but the basic format is shown in the driver source code
+> "several important registers used by the driver aren't documented (the command registers) but the basic format is shown in the driver source code"
 
-> ...the module is running a little instruction set and the manual conspicuously omits any description of the instructions or even the registers where you put the instructions.
+> "...the module is running a little instruction set and the manual conspicuously omits any description of the instructions or even the registers where you put the instructions."
 
 We'll find out soon in the next article!
 
@@ -616,7 +621,7 @@ That's why we're probing the internals of PinePhone to create a __NuttX Display 
 
 _How shall we build the NuttX Driver for PinePhone's Display?_
 
-We shall create a __NuttX Driver for Sitronix ST7703__, based on the code from ST7789...
+We shall create a __NuttX Driver for Sitronix ST7703__ based on the code from ST7789...
 
 -   [__nuttx/drivers/lcd/st7789.c__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/st7789.c)
 
@@ -642,7 +647,7 @@ I hope we learnt lots about PinePhone's Display...
 
 -   What are PinePhone's [__Display Engine (DE)__](https://lupyuen.github.io/articles/dsi#render-display) and [__Timing Controller (TCON)__](https://lupyuen.github.io/articles/dsi#render-display)
 
-Please join me in the next article when we'll talk about PinePhone's Display Engine and Timing Controller!
+Please join me in the next article when we'll dive inside PinePhone's Display Engine and Timing Controller!
 
 Check out the other articles on __NuttX RTOS for PinePhone__...
 
@@ -709,10 +714,31 @@ Sadly A64's MIPI DPHY doesn't seem to be documented, so we might need to do Reve
 Here's the sequence of calls for __initialising the A64 MIPI DPHY__ in PinePhone Linux...
 
 At startup, [__sun6i_dsi_encoder_enable__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L716-L795) calls...
--	phy_init / [__sun6i_dphy_init__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L129-L138)
--	phy_mipi_dphy_get_default_config
--	phy_set_mode
--	phy_configure / [__sun6i_dphy_configure__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L140-L152)
--	phy_power_on / [__sun6i_dphy_power_on__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L343-L355)
-	-   Calls [__sun6i_dphy_tx_power_on__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L154-L243)
-	-   Or [__sun6i_dphy_rx_power_on__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L245-L341)
+
+-	Initialise DPHY:
+
+    phy_init → [__sun6i_dphy_init__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L129-L138)
+
+-	Get DPHY Configuration:
+
+    [__phy_mipi_dphy_get_default_config__](https://github.com/torvalds/linux/blob/master/drivers/phy/phy-core-mipi-dphy.c#L15-L78)
+
+-	Set DPHY Mode:
+
+    phy_set_mode
+
+-	Configure DPHY:
+
+    phy_configure → [__sun6i_dphy_configure__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L140-L152)
+
+-	Power On DPHY:
+
+    phy_power_on → [__sun6i_dphy_power_on__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L343-L355)
+
+	-   For Transmit: 
+    
+        [__sun6i_dphy_tx_power_on__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L154-L243)
+
+	-   For Receive: 
+    
+        [__sun6i_dphy_rx_power_on__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L245-L341)
