@@ -212,7 +212,7 @@ Because PinePhone's LCD Controller doesn't have any RAM inside to remember the p
 
 PinePhone's A64 SoC will __pump a constant stream of pixels__ to refresh the display.
 
-(Yep PinePhone is way more complicated than PineTime!)
+(Just like an old CRT TV!)
 
 This pixel pumping is done by A64's [__Display Engine (DE)__](https://lupyuen.github.io/articles/pio#display-engine) and [__Timing Controller (TCON0)__](https://lupyuen.github.io/articles/pio#lcd-controller-tcon0). We'll come back to this.
 
