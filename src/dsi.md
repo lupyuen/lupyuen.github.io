@@ -697,6 +697,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     Does this mean that all DCS Commands are sent over all 4 DSI Data Lanes? (Instead of DSI Lane 0 only)
 
+1.  Can we __receive data__ from ST7703?
+
+    [(See this)](https://www.reddit.com/r/PINE64official/comments/xsteb3/comment/iqostm5/?utm_source=share&utm_medium=web2x&context=3)
+
 ![MIPI DSI Protocol Layers (Page 183)](https://lupyuen.github.io/images/dsi-layer.png)
 
 [_MIPI DSI Protocol Layers (Page 183)_](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf)
