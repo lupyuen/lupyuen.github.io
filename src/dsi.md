@@ -605,6 +605,10 @@ When we have implemented the Display Engine and Timing Controller, our PinePhone
 
     [(Originally from __megous.com/p-boot__)](https://megous.com/git/p-boot/)
 
+    [(Running p-boot on Apache NuttX RTOS)](https://gist.github.com/lupyuen/ee3adf76e76881609845d0ab0f768a95)
+
+    [(How it looks on NuttX)](https://twitter.com/MisterTechBlog/status/1576543316912484352)
+
 ![Apache NuttX RTOS booting on PinePhone](https://lupyuen.github.io/images/serial-title.jpg)
 
 [_Apache NuttX RTOS booting on PinePhone_](https://lupyuen.github.io/articles/uboot)
