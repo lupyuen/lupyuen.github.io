@@ -1009,6 +1009,10 @@ According to [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_
 
 (Display Engine handles image buffering, scaling, mixing, ...)
 
+See this doc for the details...
+
+-   [__Allwinner Display Engine 2.0 Specifications__](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
 Here's the definition in PinePhone's Linux Device Tree: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L98-L102)
 
 ```text
