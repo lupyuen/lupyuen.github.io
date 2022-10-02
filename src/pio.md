@@ -1023,6 +1023,10 @@ Searching online for `"sun50i-a64-display-engine"` gives us this __Linux Driver 
 
 -   [__sun4i_drv.c__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun4i_drv.c)
 
+The __u-boot Project__ has another driver for A64 Display Engine...
+
+-   [__sunxi_de2.c__](https://github.com/ARM-software/u-boot/blob/master/drivers/video/sunxi/sunxi_de2.c)
+
 ## Framebuffer
 
 PinePhone's Linux Device Tree defines a high-level __Framebuffer__ for apps to render graphics: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L16-L21)
