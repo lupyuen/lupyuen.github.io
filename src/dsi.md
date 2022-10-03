@@ -635,7 +635,13 @@ But before that, we shall __test the driver code__ by directly accessing the A64
 
 The __Zephyr Driver__ for MIPI DSI (Apache-licensed) might be a helpful reference...
 
--   [__"Zephyr Driver for MIPI DSI"__](https://github.com/zephyrproject-rtos/zephyr-testing/blob/main/tests/drivers/mipi_dsi/api/src/main.c)
+-   [__mipi_dsi.h__](https://github.com/zephyrproject-rtos/zephyr/blob/main/include/zephyr/drivers/mipi_dsi.h)
+
+-   [__mipi_dsi.c__](https://github.com/zephyrproject-rtos/zephyr/blob/main/drivers/mipi_dsi/mipi_dsi.c)
+
+-   [__Zephyr Docs for MIPI DSI__](https://docs.zephyrproject.org/latest/hardware/peripherals/mipi_dsi.html)
+
+-   [__Zephyr Test for MIPI DSI__](https://github.com/zephyrproject-rtos/zephyr-testing/blob/main/tests/drivers/mipi_dsi/api/src/main.c)
 
 # What's Next
 
