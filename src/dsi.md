@@ -531,7 +531,7 @@ Thus __DSI_CMD_TX_REG__ works like a Packet Buffer that will contain the data to
 
 [(How we write the Packet Payload and Footer)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L882-L903)
 
-Then we set the __Packet Length (TX_Size)__ in Bits 0 to 7 of __DSI_CMD_CTL_REG__ (DSI Low Power Control Register) at Offset `0x200`.
+Then we set __Packet Length - 1__ in Bits 0 to 7 __(TX_Size)__ of __DSI_CMD_CTL_REG__ (DSI Low Power Control Register) at Offset `0x200`.
 
 [(Like this)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L904)
 
