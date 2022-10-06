@@ -488,7 +488,7 @@
 <p>Thus <strong>DSI_CMD_TX_REG</strong> works like a Packet Buffer that will contain the data to be transmitted over MIPI DSI.</p>
 <p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L889-L890">(How we write the Packet Header)</a></p>
 <p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L882-L903">(How we write the Packet Payload and Footer)</a></p>
-<p>Then we set the <strong>Packet Length (TX_Size)</strong> in Bits 0 to 7 of <strong>DSI_CMD_CTL_REG</strong> (DSI Low Power Control Register) at Offset <code>0x200</code>.</p>
+<p>Then we set <strong>Packet Length - 1</strong> in Bits 0 to 7 <strong>(TX_Size)</strong> of <strong>DSI_CMD_CTL_REG</strong> (DSI Low Power Control Register) at Offset <code>0x200</code>.</p>
 <p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L904">(Like this)</a></p>
 <p>Finally we set <strong>DSI_INST_JUMP_SEL_REG</strong> (Offset <code>0x48</code>, undocumented) to begin the Low Power Transmission.</p>
 <p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L670-L678">(See <strong>DSI_START_LPTX</strong>)</a></p>
