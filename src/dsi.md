@@ -271,7 +271,7 @@ And we shall transmit the DCS Long Write command in __DSI Video Mode__.
 
 Let's talk about DSI Video Mode...
 
-(Note: We might need to use __DCS Short Write No Parameters__ `0x05` for single-byte ST7703 Commands, __DCS Short Write 1 Parameter__ `0x15` for 2-byte ST7703 Commands. The docs look confusing)
+(Note: We might need to use __DCS Short Write No Parameters__ `0x05` for single-byte ST7703 Commands, __DCS Short Write 1 Parameter__ `0x15` for 2-byte ST7703 Commands. See the Appendix for details)
 
 ![DSI Video Mode from A31 User Manual (Page 841)](https://lupyuen.github.io/images/dsi-modes2.png)
 
@@ -492,7 +492,7 @@ __Packet Footer:__
 
 Let's program A64 to send this Long Packet.
 
-(Page 32 of the [__ST7703 Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf) also defines a __Short Packet__ format, which we won't discuss today)
+(Page 32 of the [__ST7703 Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf) also defines a __Short Packet__ format, which is explained in the Appendix)
 
 ![MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)](https://lupyuen.github.io/images/dsi-tx.png)
 
@@ -643,6 +643,14 @@ The __Zephyr Driver__ for MIPI DSI (Apache-licensed) might be a helpful referenc
 
 -   [__Zephyr Test for MIPI DSI__](https://github.com/zephyrproject-rtos/zephyr-testing/blob/main/tests/drivers/mipi_dsi/api/src/main.c)
 
+We have started the __Zig Implementation__ of the NuttX Driver...
+
+-   [__"Zig Driver for PinePhone MIPI DSI"__](https://github.com/lupyuen/pinephone-nuttx#zig-driver-for-pinephone-mipi-dsi)
+
+-   [__"Compose MIPI DSI Long Packet in Zig"__](https://github.com/lupyuen/pinephone-nuttx#compose-mipi-dsi-long-packet-in-zig)
+
+-   [__"Compute Error Correction Code in Zig"__](https://github.com/lupyuen/pinephone-nuttx#compute-error-correction-code-in-zig)
+
 # What's Next
 
 I hope we learnt lots about PinePhone's Display...
@@ -710,6 +718,26 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 1.  Can we __receive data__ from ST7703?
 
     [(See this)](https://www.reddit.com/r/PINE64official/comments/xsteb3/comment/iqostm5/?utm_source=share&utm_medium=web2x&context=3)
+
+![MIPI DSI Short Packet (Page 201)](https://lupyuen.github.io/images/dsi-short.png)
+
+[_MIPI DSI Short Packet (Page 201)_](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf)
+
+# Appendix: Short Packet for MIPI DSI
+
+From [__BL808 Reference Manual__](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf) (Page 201)...
+
+> A __Short Packet__ consists of 8-bit data identification (DI), two bytes of commands or data, and 8-bit ECC.
+
+> The length of a short packet is 4 bytes including ECC.
+
+Thus a MIPI DSI __Short Packet__ (compared with Long Packet)...
+
+-   Doesn't have Packet Payload and Packet Footer (CRC)
+
+-   Instead of Word Count (WC), the Packet Header now has 2 bytes of data
+
+Everything else is the same.
 
 ![MIPI DSI Protocol Layers (Page 183)](https://lupyuen.github.io/images/dsi-layer.png)
 
