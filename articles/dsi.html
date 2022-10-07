@@ -83,7 +83,8 @@
 <li><a href="#nuttx-display-driver-for-pinephone">14 NuttX Display Driver for PinePhone</a><ul></ul></li>
 <li><a href="#whats-next">15 What’s Next</a><ul></ul></li>
 <li><a href="#notes">16 Notes</a><ul></ul></li>
-<li><a href="#appendix-mipi-dphy">17 Appendix: MIPI DPHY</a><ul></ul></li></ul></nav><p>📝 <em>2 Oct 2022</em></p>
+<li><a href="#appendix-short-packet-for-mipi-dsi">17 Appendix: Short Packet for MIPI DSI</a><ul></ul></li>
+<li><a href="#appendix-mipi-dphy">18 Appendix: MIPI DPHY</a><ul></ul></li></ul></nav><p>📝 <em>2 Oct 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/dsi-title.jpg" alt="PinePhone’s LCD Display in the PinePhone Block Diagram" /></p>
 <p>How does <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> control its <strong>LCD Display</strong>?</p>
 <p>Let’s uncover all the secrets about PinePhone’s mysterious LCD Display and its <strong>MIPI Display Serial Interface</strong>…</p>
@@ -280,7 +281,7 @@
 <p>(More about “Long Packet” in a while)</p>
 <p>And we shall transmit the DCS Long Write command in <strong>DSI Video Mode</strong>.</p>
 <p>Let’s talk about DSI Video Mode…</p>
-<p>(Note: We might need to use <strong>DCS Short Write No Parameters</strong> <code>0x05</code> for single-byte ST7703 Commands, <strong>DCS Short Write 1 Parameter</strong> <code>0x15</code> for 2-byte ST7703 Commands. The docs look confusing)</p>
+<p>(Note: We might need to use <strong>DCS Short Write No Parameters</strong> <code>0x05</code> for single-byte ST7703 Commands, <strong>DCS Short Write 1 Parameter</strong> <code>0x15</code> for 2-byte ST7703 Commands. See the Appendix for details)</p>
 <p><img src="https://lupyuen.github.io/images/dsi-modes2.png" alt="DSI Video Mode from A31 User Manual (Page 841)" /></p>
 <p><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf"><em>DSI Video Mode from A31 User Manual (Page 841)</em></a></p>
 <h1 id="video-mode-only-for-mipi-dsi"><a href="#video-mode-only-for-mipi-dsi">8 Video Mode Only for MIPI DSI</a></h1>
@@ -460,7 +461,7 @@
 </li>
 </ul>
 <p>Let’s program A64 to send this Long Packet.</p>
-<p>(Page 32 of the <a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>ST7703 Datasheet</strong></a> also defines a <strong>Short Packet</strong> format, which we won’t discuss today)</p>
+<p>(Page 32 of the <a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>ST7703 Datasheet</strong></a> also defines a <strong>Short Packet</strong> format, which is explained in the Appendix)</p>
 <p><img src="https://lupyuen.github.io/images/dsi-tx.png" alt="MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)" /></p>
 <p><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)</em></a></p>
 <h1 id="transmit-packet-over-mipi-dsi"><a href="#transmit-packet-over-mipi-dsi">12 Transmit Packet over MIPI DSI</a></h1>
@@ -582,6 +583,18 @@
 <p><a href="https://github.com/zephyrproject-rtos/zephyr-testing/blob/main/tests/drivers/mipi_dsi/api/src/main.c"><strong>Zephyr Test for MIPI DSI</strong></a></p>
 </li>
 </ul>
+<p>We have started the <strong>Zig Implementation</strong> of the NuttX Driver…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#zig-driver-for-pinephone-mipi-dsi"><strong>“Zig Driver for PinePhone MIPI DSI”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#compose-mipi-dsi-long-packet-in-zig"><strong>“Compose MIPI DSI Long Packet in Zig”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#compute-error-correction-code-in-zig"><strong>“Compute Error Correction Code in Zig”</strong></a></p>
+</li>
+</ul>
 <h1 id="whats-next"><a href="#whats-next">15 What’s Next</a></h1>
 <p>I hope we learnt lots about PinePhone’s Display…</p>
 <ul>
@@ -664,9 +677,29 @@
 <p><a href="https://www.reddit.com/r/PINE64official/comments/xsteb3/comment/iqostm5/?utm_source=share&amp;utm_medium=web2x&amp;context=3">(See this)</a></p>
 </li>
 </ol>
+<p><img src="https://lupyuen.github.io/images/dsi-short.png" alt="MIPI DSI Short Packet (Page 201)" /></p>
+<p><a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf"><em>MIPI DSI Short Packet (Page 201)</em></a></p>
+<h1 id="appendix-short-packet-for-mipi-dsi"><a href="#appendix-short-packet-for-mipi-dsi">17 Appendix: Short Packet for MIPI DSI</a></h1>
+<p>From <a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf"><strong>BL808 Reference Manual</strong></a> (Page 201)…</p>
+<blockquote>
+<p>A <strong>Short Packet</strong> consists of 8-bit data identification (DI), two bytes of commands or data, and 8-bit ECC.</p>
+</blockquote>
+<blockquote>
+<p>The length of a short packet is 4 bytes including ECC.</p>
+</blockquote>
+<p>Thus a MIPI DSI <strong>Short Packet</strong> (compared with Long Packet)…</p>
+<ul>
+<li>
+<p>Doesn’t have Packet Payload and Packet Footer (CRC)</p>
+</li>
+<li>
+<p>Instead of Word Count (WC), the Packet Header now has 2 bytes of data</p>
+</li>
+</ul>
+<p>Everything else is the same.</p>
 <p><img src="https://lupyuen.github.io/images/dsi-layer.png" alt="MIPI DSI Protocol Layers (Page 183)" /></p>
 <p><a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf"><em>MIPI DSI Protocol Layers (Page 183)</em></a></p>
-<h1 id="appendix-mipi-dphy"><a href="#appendix-mipi-dphy">17 Appendix: MIPI DPHY</a></h1>
+<h1 id="appendix-mipi-dphy"><a href="#appendix-mipi-dphy">18 Appendix: MIPI DPHY</a></h1>
 <p>Earlier we talked about initialising the MIPI DSI Controller…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#initialise-mipi-dsi"><strong>“Initialise MIPI DSI”</strong></a></li>
