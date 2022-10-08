@@ -478,7 +478,7 @@
 <p><strong>TX_Flag</strong> (Bit 9): Clear flag for “Transmit has started”</p>
 </li>
 </ul>
-<p>All other bits must be 0. <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L1006-L1009">(Like this)</a></p>
+<p>All other bits must be set to 0. <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L1006-L1009">(Like this)</a></p>
 <p>We compose a <strong>Long Packet</strong> (or Short Packet) containing the DCS Long Write (or DCS Short Write) command…</p>
 <ul>
 <li>
