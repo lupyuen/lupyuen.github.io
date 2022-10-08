@@ -466,17 +466,41 @@
 <p><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)</em></a></p>
 <h1 id="transmit-packet-over-mipi-dsi"><a href="#transmit-packet-over-mipi-dsi">12 Transmit Packet over MIPI DSI</a></h1>
 <p>We’re finally ready to transmit the <strong>DCS Long Write</strong> command to ST7703 LCD Controller!</p>
-<p>We have composed a <strong>Long Packet</strong> containing the DCS Long Write command…</p>
+<p>We begin by clearing the following flags in <strong>DSI_CMD_CTL_REG</strong> (DSI Low Power Control Register) at Offset <code>0x200</code>…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi"><strong>“Long Packet for MIPI DSI”</strong></a></li>
+<li>
+<p><strong>RX_Overflow</strong> (Bit 26): Receive overflow</p>
+</li>
+<li>
+<p><strong>RX_Flag</strong> (Bit 25): Receive has started</p>
+</li>
+<li>
+<p><strong>TX_Flag</strong> (Bit 9): Transmit has started</p>
+<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L1006-L1009">(Like this)</a></p>
+</li>
 </ul>
-<p>The Long Packet contains…</p>
+<p>We compose a <strong>Long Packet</strong> (or Short Packet) containing the DCS Long Write (or DCS Short Write) command…</p>
 <ul>
-<li>Packet Header</li>
-<li>Packet Payload</li>
-<li>Packet Footer</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi"><strong>“Long Packet for MIPI DSI”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi"><strong>“Short Packet for MIPI DSI”</strong></a></p>
+</li>
 </ul>
-<p>Now we write the Long Packet to <strong>DSI_CMD_TX_REG</strong> (DSI Low Power Transmit Package Register) at Offset <code>0x300</code> to <code>0x3FC</code>. (Pic above)</p>
+<p>The packet contains…</p>
+<ul>
+<li>
+<p>Packet Header</p>
+</li>
+<li>
+<p>Packet Payload <em>(only for Long Packet)</em></p>
+</li>
+<li>
+<p>Packet Footer <em>(only for Long Packet)</em></p>
+</li>
+</ul>
+<p>Now we write the packet to <strong>DSI_CMD_TX_REG</strong> (DSI Low Power Transmit Package Register) at Offset <code>0x300</code> to <code>0x3FC</code>. (Pic above)</p>
 <p><em>What’s N in the table above?</em></p>
 <p>We may rewrite the table without N like so…</p>
 <div><table><thead><tr><th>Offset</th><th style="text-align: center">Bits 31 to 24</th><th style="text-align: center">23 to 16</th><th style="text-align: center">15 to 8</th><th style="text-align: center">7 to 0</th></tr></thead><tbody>
@@ -680,7 +704,7 @@
 <p><img src="https://lupyuen.github.io/images/dsi-short.png" alt="MIPI DSI Short Packet (Page 201)" /></p>
 <p><a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf"><em>MIPI DSI Short Packet (Page 201)</em></a></p>
 <h1 id="appendix-short-packet-for-mipi-dsi"><a href="#appendix-short-packet-for-mipi-dsi">17 Appendix: Short Packet for MIPI DSI</a></h1>
-<p>From <a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf"><strong>BL808 Reference Manual</strong></a> (Page 201)…</p>
+<p>According to <a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf"><strong>BL808 Reference Manual</strong></a> (Page 201, pic above)…</p>
 <blockquote>
 <p>A <strong>Short Packet</strong> consists of 8-bit data identification (DI), two bytes of commands or data, and 8-bit ECC.</p>
 </blockquote>
