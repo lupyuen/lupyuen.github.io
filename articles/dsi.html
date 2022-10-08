@@ -466,7 +466,7 @@
 <p><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)</em></a></p>
 <h1 id="transmit-packet-over-mipi-dsi"><a href="#transmit-packet-over-mipi-dsi">12 Transmit Packet over MIPI DSI</a></h1>
 <p>We’re finally ready to transmit the <strong>DCS Long Write</strong> command to ST7703 LCD Controller!</p>
-<p>We begin by setting the following bits in <strong>DSI_CMD_CTL_REG</strong> (DSI Low Power Control Register) at Offset <code>0x200</code>…</p>
+<p>We begin by setting the following bits to 1 in <strong>DSI_CMD_CTL_REG</strong> (DSI Low Power Control Register) at Offset <code>0x200</code>…</p>
 <ul>
 <li>
 <p><strong>RX_Overflow</strong> (Bit 26): Clear flag for “Receive overflow”</p>
@@ -476,9 +476,9 @@
 </li>
 <li>
 <p><strong>TX_Flag</strong> (Bit 9): Clear flag for “Transmit has started”</p>
-<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L1006-L1009">(Like this)</a></p>
 </li>
 </ul>
+<p>All other bits must be 0. <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L1006-L1009">(Like this)</a></p>
 <p>We compose a <strong>Long Packet</strong> (or Short Packet) containing the DCS Long Write (or DCS Short Write) command…</p>
 <ul>
 <li>
