@@ -510,7 +510,7 @@ We begin by setting the following bits to 1 in __DSI_CMD_CTL_REG__ (DSI Low Powe
 
 -   __TX_Flag__ (Bit 9): Clear flag for "Transmit has started"
 
-All other bits must be 0. [(Like this)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L1006-L1009)
+All other bits must be set to 0. [(Like this)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L1006-L1009)
 
 We compose a __Long Packet__ (or Short Packet) containing the DCS Long Write (or DCS Short Write) command...
 
