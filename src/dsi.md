@@ -502,13 +502,13 @@ Let's program A64 to send this Long Packet.
 
 We're finally ready to transmit the __DCS Long Write__ command to ST7703 LCD Controller!
 
-We begin by clearing the following flags in __DSI_CMD_CTL_REG__ (DSI Low Power Control Register) at Offset `0x200`...
+We begin by setting the following bits in __DSI_CMD_CTL_REG__ (DSI Low Power Control Register) at Offset `0x200`...
 
--   __RX_Overflow__ (Bit 26): Receive overflow
+-   __RX_Overflow__ (Bit 26): Clear flag for "Receive overflow"
 
--   __RX_Flag__ (Bit 25): Receive has started
+-   __RX_Flag__ (Bit 25): Clear flag for "Receive has started"
 
--   __TX_Flag__ (Bit 9): Transmit has started
+-   __TX_Flag__ (Bit 9): Clear flag for "Transmit has started"
 
     [(Like this)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L1006-L1009)
 
