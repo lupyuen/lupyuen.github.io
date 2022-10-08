@@ -502,17 +502,31 @@ Let's program A64 to send this Long Packet.
 
 We're finally ready to transmit the __DCS Long Write__ command to ST7703 LCD Controller!
 
-We have composed a __Long Packet__ containing the DCS Long Write command...
+We begin by clearing the following flags in __DSI_CMD_CTL_REG__ (DSI Low Power Control Register) at Offset `0x200`...
+
+-   __RX_Overflow__ (Bit 26): Receive overflow
+
+-   __RX_Flag__ (Bit 25): Receive has started
+
+-   __TX_Flag__ (Bit 9): Transmit has started
+
+    [(Like this)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L1006-L1009)
+
+We compose a __Long Packet__ (or Short Packet) containing the DCS Long Write (or DCS Short Write) command...
 
 -   [__"Long Packet for MIPI DSI"__](https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi)
 
-The Long Packet contains...
+-   [__"Short Packet for MIPI DSI"__](https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi)
+
+The packet contains...
 
 -   Packet Header
--   Packet Payload
--   Packet Footer
 
-Now we write the Long Packet to __DSI_CMD_TX_REG__ (DSI Low Power Transmit Package Register) at Offset `0x300` to `0x3FC`. (Pic above)
+-   Packet Payload _(only for Long Packet)_
+
+-   Packet Footer _(only for Long Packet)_
+
+Now we write the packet to __DSI_CMD_TX_REG__ (DSI Low Power Transmit Package Register) at Offset `0x300` to `0x3FC`. (Pic above)
 
 _What's N in the table above?_
 
@@ -725,7 +739,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Short Packet for MIPI DSI
 
-From [__BL808 Reference Manual__](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf) (Page 201)...
+According to [__BL808 Reference Manual__](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf) (Page 201, pic above)...
 
 > A __Short Packet__ consists of 8-bit data identification (DI), two bytes of commands or data, and 8-bit ECC.
 
