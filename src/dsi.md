@@ -804,3 +804,326 @@ At startup, [__sun6i_dsi_encoder_enable__](https://github.com/torvalds/linux/blo
 	-   For Receive: 
     
         [__sun6i_dphy_rx_power_on__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L245-L341)
+
+# Appendix: Initialise LCD Controller
+
+TODO
+
+| Byte | Purpose |
+|:----:|:---------|
+| #1
+| `0xB9` | SETEXTC (Page 131): <br> Enable USER Command
+| `0xF1` | Enable User command
+| `0x12` | _(Continued)_
+| `0x83` | _(Continued)_
+|
+| #2
+| `0xBA` | SETMIPI (Page 144): <br> Set MIPI related register
+| `0x33` | Virtual Channel = 0 <br> _(VC_Main = 0)_ <br> Number of Lanes = 4 <br> _(Lane_Number = 3)_
+| `0x81` | LDO = 1.7 V <br> _(DSI_LDO_SEL = 4)_ <br> Terminal Resistance = 90 Ohm <br> _(RTERM = 1)_
+| `0x05` | MIPI Low High Speed driving ability = x6 <br> _(IHSRX = 5)_
+| `0xF9` | TXCLK speed in DSI LP mode = fDSICLK / 16 <br> _(Tx_clk_sel = 2)_
+| `0x0E` | Min HFP number in DSI mode = 14 <br> _(HFP_OSC = 14)_
+| `0x0E` | Min HBP number in DSI mode = 14 <br> _(HBP_OSC = 14)_
+| `0x20` | Undocumented
+| `0x00` | Undocumented
+| `0x00` | Undocumented
+| `0x00` | Undocumented
+| `0x00` | Undocumented
+| `0x00` | Undocumented
+| `0x00` | Undocumented
+| `0x00` | Undocumented
+| `0x44` | Undocumented
+| `0x25` | Undocumented
+| `0x00` | Undocumented
+| `0x91` | Undocumented
+| `0x0a` | Undocumented
+| `0x00` | Undocumented
+| `0x00` | Undocumented
+| `0x02` | Undocumented
+| `0x4F` | Undocumented
+| `0x11` | Undocumented
+| `0x00` | Undocumented
+| `0x00` | Undocumented
+| `0x37` | Undocumented
+|
+| #3
+| `0xB8` | SETPOWER_EXT (Page 142): <br> Set display related register
+| `0x25` | External power IC or PFM: VSP = FL1002, VSN = FL1002 <br> _(PCCS = 2)_ <br> VCSW1 / VCSW2 Frequency for Pumping VSP / VSN = 1/4 Hsync <br> _(ECP_DC_DIV = 5)_
+| `0x22` | VCSW1/VCSW2 soft start time = 15 ms <br> _(DT = 2)_ <br> Pumping ratio of VSP / VSN with VCI = x2 <br> _(XDK_ECP = 1)_
+| `0x20` | PFM operation frequency FoscD = Fosc/1 <br> _(PFM_DC_DIV = 0)_
+| `0x03` | Enable power IC pumping frequency synchronization = Synchronize with external Hsync <br> _(ECP_SYNC_EN = 1)_ <br> Enable VGH/VGL pumping frequency synchronization = Synchronize with external Hsync <br> _(VGX_SYNC_EN = 1)_
+|
+| #4
+| `0xB3` | SETRGBIF (Page 134): <br> Control RGB I/F porch timing for internal use
+| `0x10` | Vertical back porch HS number in Blank Frame Period  = Hsync number 16 <br> _(VBP_RGB_GEN = 16)_
+| `0x10` | Vertical front porch HS number in Blank Frame Period = Hsync number 16 <br> _(VFP_RGB_GEN = 16)_
+| `0x05` | HBP OSC number in Blank Frame Period = OSC number 5 <br> _(DE_BP_RGB_GEN = 5)_
+| `0x05` | HFP OSC number in Blank Frame Period = OSC number 5 <br> _(DE_FP_RGB_GEN = 5)_
+| `0x03` | Undocumented
+| `0xFF` | Undocumented
+| `0x00` | Undocumented
+| `0x00` | Undocumented
+| `0x00` | Undocumented
+| `0x00` | Undocumented
+|
+| #5
+| `0xC0` | SETSCR (Page 147): <br> Set related setting of Source driving
+| `0x73` | Source OP Amp driving period for positive polarity in Normal Mode: Source OP Period = 115*4/Fosc <br> _(N_POPON = 115)_
+| `0x73` | Source OP Amp driving period for negative polarity in Normal Mode: Source OP Period = 115*4/Fosc <br> _(N_NOPON = 115)_
+| `0x50` | Source OP Amp driving period for positive polarity in Idle mode: Source OP Period   = 80*4/Fosc <br> _(I_POPON = 80)_
+| `0x50` | Source OP Amp dirivng period for negative polarity in Idle Mode: Source OP Period   = 80*4/Fosc <br> _(I_NOPON = 80)_
+| `0x00` | _(SCR Bits 24-31 = 0x00)_
+| `0xC0` | _(SCR Bits 16-23 = 0xC0)_ 
+| `0x08` | Gamma bias current fine tune: Current xIbias   = 4 <br> _(SCR Bits 9-13 = 4)_ <br> _(SCR Bits  8-15 = 0x08)_ 
+| `0x70` | Source and Gamma bias current core tune: Ibias = 1 <br> _(SCR Bits 0-3 = 0)_ <br> Source bias current fine tune: Current xIbias = 7 <br> _(SCR Bits 4-8 = 7)_ <br> _(SCR Bits  0-7  = 0x70)_
+| `0x00` | Undocumented
+|
+| #6
+| `0xBC` | SETVDC (Page 146): <br> Control NVDDD/VDDD Voltage
+| `0x4E` | NVDDD voltage = -1.8 V <br> _(NVDDD_SEL = 4)_ <br> VDDD voltage = 1.9 V <br> _(VDDD_SEL = 6)_
+|
+| #7
+| `0xCC` | SETPANEL (Page 154): <br> Set display related register
+| `0x0B` | Enable reverse the source scan direction <br> _(SS_PANEL = 1)_ <br> Normal vertical scan direction <br> _(GS_PANEL = 0)_ <br> Normally black panel <br> _(REV_PANEL = 1)_ <br> S1:S2:S3 = B:G:R <br> _(BGR_PANEL = 1)_
+|
+| #8
+| `0xB4` | SETCYC (Page 135): <br> Control display inversion type
+| `0x80` | Extra source for Zig-Zag Inversion = S2401 <br> _(ZINV_S2401_EN = 1)_ <br> Row source data dislocates = Even row <br> _(ZINV_G_EVEN_EN = 0)_ <br> Disable Zig-Zag Inversion <br> _(ZINV_EN = 0)_ <br> Enable Zig-Zag1 Inversion <br> _(ZINV2_EN = 0)_ <br> Normal mode inversion type = Column inversion <br> _(N_NW = 0)_
+|
+| #9
+| `0xB2` | SETDISP (Page 132): <br> Control the display resolution
+| `0xF0` | Gate number of vertical direction = 480 + <br> _(240*4)_ <br> _(NL = 240)_
+| `0x12` | _(RES_V_LSB = 0)_ <br> Non-display area source output control: Source output = VSSD <br> _(BLK_CON = 1)_ <br> Channel number of source direction = 720RGB <br> _(RESO_SEL = 2)_
+| `0xF0` | Source voltage during Blanking Time when accessing Sleep-Out / Sleep-In = GND <br> _(WHITE_GND_EN = 1)_ <br> Blank timing control when access sleep out command: Blank Frame Period = 7 Frames <br> _(WHITE_FRAME_SEL = 7)_ <br> Source output refresh control: Refresh Period = 0 Frames <br> _(ISC = 0)_
+|
+| #10
+| `0xE3` | SETEQ (Page 159): <br> Set EQ related register
+| `0x00` | Temporal spacing between HSYNC and PEQGND = 0*4/Fosc <br> _(PNOEQ = 0)_
+| `0x00` | Temporal spacing between HSYNC and NEQGND = 0*4/Fosc <br> _(NNOEQ = 0)_
+| `0x0B` | Source EQ GND period when Source up to positive voltage   = 11*4/Fosc <br> _(PEQGND = 11)_
+| `0x0B` | Source EQ GND period when Source down to negative voltage = 11*4/Fosc <br> _(NEQGND = 11)_
+| `0x10` | Source EQ VCI period when Source up to positive voltage   = 16*4/Fosc <br> _(PEQVCI = 16)_
+| `0x10` | Source EQ VCI period when Source down to negative voltage = 16*4/Fosc <br> _(NEQVCI = 16)_
+| `0x00` | Temporal period of PEQVCI1 = 0*4/Fosc <br> _(PEQVCI1 = 0)_
+| `0x00` | Temporal period of NEQVCI1 = 0*4/Fosc <br> _(NEQVCI1 = 0)_
+| `0x00` | _(Reserved)_
+| `0x00` | _(Reserved)_
+| `0xFF` | _(Undocumented)_
+| `0x00` | _(Reserved)_
+| `0xC0` | White pattern to protect GOA glass <br> _(ESD_DET_DATA_WHITE = 1)_ <br> Enable ESD detection function to protect GOA glass <br> _(ESD_WHITE_EN = 1)_
+| `0x10` | No Need VSYNC <br> _(additional frame)_ after Sleep-In to display sleep-in blanking frame then into Sleep-In State <br> _(SLPIN_OPTION = 1)_ <br> Enable video function detection <br> _(VEDIO_NO_CHECK_EN = 0)_ <br> Disable ESD white pattern scanning voltage pull ground <br> _(ESD_WHITE_GND_EN = 0)_ <br> ESD detection function period = 0 Frames <br> _(ESD_DET_TIME_SEL = 0)_
+|
+| #11
+| `0xC6` | Undocumented
+| `0x01` | Undocumented
+| `0x00` | Undocumented
+| `0xFF` | Undocumented
+| `0xFF` | Undocumented
+| `0x00` | Undocumented
+|
+| #12
+| `0xC1` | SETPOWER (Page 149): <br> Set related setting of power
+| `0x74` | VGH Voltage Adjustment = 17 V <br> _(VBTHS = 7)_ <br> VGL Voltage Adjustment = -11 V <br> _(VBTLS = 4)_
+| `0x00` | Enable VGH feedback voltage detection. Output voltage = VBTHS <br> _(FBOFF_VGH = 0)_ <br> Enable VGL feedback voltage detection. Output voltage = VBTLS <br> _(FBOFF_VGL = 0)_
+| `0x32` | VSPROUT Voltage = <br> _(VRH[5:0] x 0.05 + 3.3)_ x <br> _(VREF/4.8)_ if VREF [4]=0 <br> _(VRP = 50)_
+| `0x32` | VSNROUT Voltage = <br> _(VRH[5:0] x 0.05 + 3.3)_ x <br> _(VREF/5.6)_ if VREF [4]=1 <br> _(VRN = 50)_
+| `0x77` | Undocumented
+| `0xF1` | Enable VGL voltage Detect Function = VGL voltage Abnormal <br> _(VGL_DET_EN = 1)_ <br> Enable VGH voltage Detect Function = VGH voltage Abnormal <br> _(VGH_DET_EN = 1)_ <br> Enlarge VGL Voltage at "FBOFF_VGL=1" = "VGL=-15V" <br> _(VGL_TURBO = 1)_ <br> Enlarge VGH Voltage at "FBOFF_VGH=1" = "VGH=20V" <br> _(VGH_TURBO = 1)_ <br> _(APS = 1)_
+| `0xFF` | Left side VGH stage 1 pumping frequency  = 1.5 MHz <br> _(VGH1_L_DIV = 15)_ <br> Left side VGL stage 1 pumping frequency  = 1.5 MHz <br> _(VGL1_L_DIV = 15)_
+| `0xFF` | Right side VGH stage 1 pumping frequency = 1.5 MHz <br> _(VGH1_R_DIV = 15)_ <br> Right side VGL stage 1 pumping frequency = 1.5 MHz <br> _(VGL1_R_DIV = 15)_
+| `0xCC` | Left side VGH stage 2 pumping frequency  = 2.6 MHz <br> _(VGH2_L_DIV = 12)_ <br> Left side VGL stage 2 pumping frequency  = 2.6 MHz <br> _(VGL2_L_DIV = 12)_
+| `0xCC` | Right side VGH stage 2 pumping frequency = 2.6 MHz <br> _(VGH2_R_DIV = 12)_ <br> Right side VGL stage 2 pumping frequency = 2.6 MHz <br> _(VGL2_R_DIV = 12)_
+| `0x77` | Left side VGH stage 3 pumping frequency  = 4.5 MHz <br> _(VGH3_L_DIV = 7)_  <br> Left side VGL stage 3 pumping frequency  = 4.5 MHz <br> _(VGL3_L_DIV = 7)_
+| `0x77` | Right side VGH stage 3 pumping frequency = 4.5 MHz <br> _(VGH3_R_DIV = 7)_  <br> Right side VGL stage 3 pumping frequency = 4.5 MHz <br> _(VGL3_R_DIV = 7)_
+|
+| #13
+| `0xB5` | SETBGP (Page 136): <br> Internal reference voltage setting
+| `0x07` | VREF Voltage: 4.2 V <br> _(VREF_SEL = 7)_
+| `0x07` | NVREF Voltage: 4.2 V <br> _(NVREF_SEL = 7)_
+|
+| #14
+| `0xB6` | SETVCOM (Page 137): <br> Set VCOM Voltage
+| `0x2C` | VCOMDC voltage at "GS_PANEL=0" = -0.67 V <br> _(VCOMDC_F = 0x2C)_
+| `0x2C` | VCOMDC voltage at "GS_PANEL=1" = -0.67 V <br> _(VCOMDC_B = 0x2C)_
+|
+| #15
+| `0xBF` | Undocumented
+| `0x02` | Undocumented
+| `0x11` | Undocumented
+| `0x00` | Undocumented
+|
+| #16
+| `0xE9` | SETGIP1 (Page 163): <br> Set forward GIP timing
+| `0x82` | SHR0, SHR1, CHR, CHR2 refer to Internal DE <br> _(REF_EN = 1)_ <br> _(PANEL_SEL = 2)_
+| `0x10` | Starting position of GIP STV group 0 = 4102 HSYNC <br> _(SHR0 Bits 8-12 = 0x10)_
+| `0x06` | _(SHR0 Bits 0-7  = 0x06)_
+| `0x05` | Starting position of GIP STV group 1 = 1442 HSYNC <br> _(SHR1 Bits 8-12 = 0x05)_
+| `0xA2` | _(SHR1 Bits 0-7  = 0xA2)_
+| `0x0A` | Distance of STV rising edge and HYSNC  = 10*2  Fosc <br> _(SPON  Bits 0-7 = 0x0A)_
+| `0xA5` | Distance of STV falling edge and HYSNC = 165*2 Fosc <br> _(SPOFF Bits 0-7 = 0xA5)_
+| `0x12` | STV0_1 distance with STV0_0 = 1 HSYNC <br> _(SHR0_1 = 1)_ <br> STV0_2 distance with STV0_0 = 2 HSYNC <br> _(SHR0_2 = 2)_
+| `0x31` | STV0_3 distance with STV0_0 = 3 HSYNC <br> _(SHR0_3 = 3)_ <br> STV1_1 distance with STV1_0 = 1 HSYNC <br> _(SHR1_1 = 1)_
+| `0x23` | STV1_2 distance with STV1_0 = 2 HSYNC <br> _(SHR1_2 = 2)_ <br> STV1_3 distance with STV1_0 = 3 HSYNC <br> _(SHR1_3 = 3)_
+| `0x37` | STV signal high pulse width = 3 HSYNC <br> _(SHP = 3)_ <br> Total number of STV signal = 7 <br> _(SCP = 7)_
+| `0x83` | Starting position of GIP CKV group 0 <br> _(CKV0_0)_ = 131 HSYNC <br> _(CHR = 0x83)_
+| `0x04` | Distance of CKV rising edge and HYSNC  = 4*2   Fosc <br> _(CON  Bits 0-7 = 0x04)_
+| `0xBC` | Distance of CKV falling edge and HYSNC = 188*2 Fosc <br> _(COFF Bits 0-7 = 0xBC)_
+| `0x27` | CKV signal high pulse width = 2 HSYNC <br> _(CHP = 2)_ <br> Total period cycle of CKV signal = 7 HSYNC <br> _(CCP = 7)_
+| `0x38` | Extra gate counter at blanking area: Gate number = 56 <br> _(USER_GIP_GATE = 0x38)_
+| `0x0C` | Left side GIP output pad signal = ??? <br> _(CGTS_L Bits 16-21 = 0x0C)_
+| `0x00` | _(CGTS_L Bits  8-15 = 0x00)_
+| `0x03` | _(CGTS_L Bits  0-7  = 0x03)_
+| `0x00` | Normal polarity of Left side GIP output pad signal <br> _(CGTS_INV_L Bits 16-21 = 0x00)_
+| `0x00` | _(CGTS_INV_L Bits  8-15 = 0x00)_
+| `0x00` | _(CGTS_INV_L Bits  0-7  = 0x00)_
+| `0x0C` | Right side GIP output pad signal = ??? <br> _(CGTS_R Bits 16-21 = 0x0C)_
+| `0x00` | _(CGTS_R Bits  8-15 = 0x00)_
+| `0x03` | _(CGTS_R Bits  0-7  = 0x03)_
+| `0x00` | Normal polarity of Right side GIP output pad signal <br> _(CGTS_INV_R Bits 16-21 = 0x00)_
+| `0x00` | _(CGTS_INV_R Bits  8-15 = 0x00)_
+| `0x00` | _(CGTS_INV_R Bits  0-7  = 0x00)_
+| `0x75` | Left side GIP output pad signal = ??? <br> _(COS1_L = 7)_ <br> Left side GIP output pad signal = ??? <br> _(COS2_L = 5)_
+| `0x75` | Left side GIP output pad signal = ??? <br> _(COS3_L = 7)_ <br> _(COS4_L = 5)_
+| `0x31` | Left side GIP output pad signal = ??? <br> _(COS5_L = 3)_ <br> _(COS6_L = 1)_
+| `0x88` | Reserved _(Parameter 32)_
+| `0x88` | Reserved _(Parameter 33)_
+| `0x88` | Reserved _(Parameter 34)_
+| `0x88` | Reserved _(Parameter 35)_
+| `0x88` | Reserved _(Parameter 36)_
+| `0x88` | Left side GIP output pad signal  = ??? <br> _(COS17_L = 8)_ <br> Left side GIP output pad signal  = ??? <br> _(COS18_L = 8)_
+| `0x13` | Left side GIP output pad signal  = ??? <br> _(COS19_L = 1)_ <br> Left side GIP output pad signal  = ??? <br> _(COS20_L = 3)_
+| `0x88` | Left side GIP output pad signal  = ??? <br> _(COS21_L = 8)_ <br> Left side GIP output pad signal  = ??? <br> _(COS22_L = 8)_
+| `0x64` | Right side GIP output pad signal = ??? <br> _(COS1_R  = 6)_ <br> Right side GIP output pad signal = ??? <br> _(COS2_R  = 4)_
+| `0x64` | Right side GIP output pad signal = ??? <br> _(COS3_R  = 6)_ <br> Right side GIP output pad signal = ??? <br> _(COS4_R  = 4)_
+| `0x20` | Right side GIP output pad signal = ??? <br> _(COS5_R  = 2)_ <br> Right side GIP output pad signal = ??? <br> _(COS6_R  = 0)_
+| `0x88` | Reserved _(Parameter 43)_
+| `0x88` | Reserved _(Parameter 44)_
+| `0x88` | Reserved _(Parameter 45)_
+| `0x88` | Reserved _(Parameter 46)_
+| `0x88` | Reserved _(Parameter 47)_
+| `0x88` | Right side GIP output pad signal = ??? <br> _(COS17_R = 8)_ <br> Right side GIP output pad signal = ??? <br> _(COS18_R = 8)_
+| `0x02` | Right side GIP output pad signal = ??? <br> _(COS19_R = 0)_ <br> Right side GIP output pad signal = ??? <br> _(COS20_R = 2)_
+| `0x88` | Right side GIP output pad signal = ??? <br> _(COS21_R = 8)_ <br> Right side GIP output pad signal = ??? <br> _(COS22_R = 8)_
+| `0x00` | _(TCON_OPT = 0x00)_
+| `0x00` | _(GIP_OPT Bits 16-22 = 0x00)_
+| `0x00` | _(GIP_OPT Bits  8-15 = 0x00)_
+| `0x00` | _(GIP_OPT Bits  0-7  = 0x00)_
+| `0x00` | Starting position of GIP CKV group 1 <br> _(CKV1_0)_ = 0 HSYNC <br> _(CHR2 = 0x00)_
+| `0x00` | Distance of CKV1 rising edge and HYSNC  = 0*2 Fosc <br> _(CON2  Bits 0-7 = 0x00)_
+| `0x00` | Distance of CKV1 falling edge and HYSNC = 0*2 Fosc <br> _(COFF2 Bits 0-7 = 0x00)_
+| `0x00` | CKV1 signal high pulse width = 0 HSYNC <br> _(CHP2 = 0)_ <br> Total period cycle of CKV1 signal = 0 HSYNC <br> _(CCP2 = 0)_
+| `0x00` | _(CKS Bits 16-21 = 0x00)_
+| `0x00` | _(CKS Bits  8-15 = 0x00)_
+| `0x00` | _(CKS Bits  0-7  = 0x00)_
+| `0x00` | _(COFF Bits 8-9 = 0)_ <br> _(CON Bits 8-9 = 0)_ <br> _(SPOFF Bits 8-9 = 0)_ <br> _(SPON Bits 8-9 = 0)_
+| `0x00` | _(COFF2 Bits 8-9 = 0)_ <br> _(CON2 Bits 8-9 = 0)_
+|
+| #17
+| `0xEA` | SETGIP2 (Page 170): <br> Set backward GIP timing
+| `0x02` | YS2 Signal Mode = INYS1/INYS2 <br> _(YS2_SEL = 0)_ <br> YS2 Signal Mode = INYS1/INYS2 <br> _(YS1_SEL = 0)_ <br> Don't reverse YS2 signal <br> _(YS2_XOR = 0)_ <br> Don't reverse YS1 signal <br> _(YS1_XOR = 0)_ <br> Enable YS signal function <br> _(YS_FLAG_EN = 1)_ <br> Disable ALL ON function <br> _(ALL_ON_EN = 0)_
+| `0x21` | _(GATE = 0x21)_
+| `0x00` | _(CK_ALL_ON_EN = 0)_ <br> _(STV_ALL_ON_EN = 0)_ <br> Timing of YS1 and YS2 signal = ??? <br> _(CK_ALL_ON_WIDTH1 = 0)_
+| `0x00` | Timing of YS1 and YS2 signal = ??? <br> _(CK_ALL_ON_WIDTH2 = 0)_
+| `0x00` | Timing of YS1 and YS2 signal = ??? <br> _(CK_ALL_ON_WIDTH3 = 0)_
+| `0x00` | _(YS_FLAG_PERIOD = 0)_
+| `0x00` | _(YS2_SEL_2 = 0)_ <br> _(YS1_SEL_2 = 0)_ <br> _(YS2_XOR_2 = 0)_ <br> _(YS_FLAG_EN_2 = 0)_ <br> _(ALL_ON_EN_2 = 0)_
+| `0x00` | Distance of GIP ALL On rising edge and DE = ??? <br> _(USER_GIP_GATE1_2 = 0)_
+| `0x00` | _(CK_ALL_ON_EN_2 = 0)_ <br> _(STV_ALL_ON_EN_2 = 0)_ <br> _(CK_ALL_ON_WIDTH1_2 = 0)_
+| `0x00` | _(CK_ALL_ON_WIDTH2_2 = 0)_
+| `0x00` | _(CK_ALL_ON_WIDTH3_2 = 0)_
+| `0x00` | _(YS_FLAG_PERIOD_2 = 0)_
+| `0x02` | _(COS1_L_GS = 0)_ <br> _(COS2_L_GS = 2)_
+| `0x46` | _(COS3_L_GS = 4)_ <br> _(COS4_L_GS = 6)_
+| `0x02` | _(COS5_L_GS = 0)_ <br> _(COS6_L_GS = 2)_
+| `0x88` | Reserved _(Parameter 16)_
+| `0x88` | Reserved _(Parameter 17)_
+| `0x88` | Reserved _(Parameter 18)_
+| `0x88` | Reserved _(Parameter 19)_
+| `0x88` | Reserved _(Parameter 20)_
+| `0x88` | _(COS17_L_GS = 8)_ <br> _(COS18_L_GS = 8)_
+| `0x64` | _(COS19_L_GS = 6)_ <br> _(COS20_L_GS = 4)_
+| `0x88` | _(COS21_L_GS = 8)_ <br> _(COS22_L_GS = 8)_
+| `0x13` | _(COS1_R_GS = 1)_ <br> _(COS2_R_GS = 3)_
+| `0x57` | _(COS3_R_GS = 5)_ <br> _(COS4_R_GS = 7)_
+| `0x13` | _(COS5_R_GS = 1)_ <br> _(COS6_R_GS = 3)_
+| `0x88` | Reserved _(Parameter 27)_
+| `0x88` | Reserved _(Parameter 28)_
+| `0x88` | Reserved _(Parameter 29)_
+| `0x88` | Reserved _(Parameter 30)_
+| `0x88` | Reserved _(Parameter 31)_
+| `0x88` | _(COS17_R_GS = 8)_ <br> _(COS18_R_GS = 8)_
+| `0x75` | _(COS19_R_GS = 7)_ <br> _(COS20_R_GS = 5)_
+| `0x88` | _(COS21_R_GS = 8)_ <br> _(COS22_R_GS = 8)_
+| `0x23` | GIP output EQ signal: P_EQ = Yes, N_EQ = No <br> _(EQOPT = 2)_ <br>  GIP output EQ signal level: P_EQ = GND, N_EQ = GND <br> _(EQ_SEL = 3)_
+| `0x14` | Distance of EQ rising edge and HYSNC = 20 Fosc <br> _(EQ_DELAY = 0x14)_
+| `0x00` | Distance of EQ rising edge and HYSNC = 0 HSYNC <br> _(EQ_DELAY_HSYNC = 0)_
+| `0x00` | _(HSYNC_TO_CL1_CNT10 Bits 8-9 = 0)_
+| `0x02` | GIP reference HSYNC between external HSYNC = 2 Fosc <br> _(HSYNC_TO_CL1_CNT10 Bits 0-7 = 2)_
+| `0x00` | Undocumented _(Parameter 40)_
+| `0x00` | Undocumented _(Parameter 41)_
+| `0x00` | Undocumented _(Parameter 42)_
+| `0x00` | Undocumented _(Parameter 43)_
+| `0x00` | Undocumented _(Parameter 44)_
+| `0x00` | Undocumented _(Parameter 45)_
+| `0x00` | Undocumented _(Parameter 46)_
+| `0x00` | Undocumented _(Parameter 47)_
+| `0x00` | Undocumented _(Parameter 48)_
+| `0x00` | Undocumented _(Parameter 49)_
+| `0x00` | Undocumented _(Parameter 50)_
+| `0x00` | Undocumented _(Parameter 51)_
+| `0x00` | Undocumented _(Parameter 52)_
+| `0x00` | Undocumented _(Parameter 53)_
+| `0x00` | Undocumented _(Parameter 54)_
+| `0x03` | Undocumented _(Parameter 55)_
+| `0x0A` | Undocumented _(Parameter 56)_
+| `0xA5` | Undocumented _(Parameter 57)_
+| `0x00` | Undocumented _(Parameter 58)_
+| `0x00` | Undocumented _(Parameter 59)_
+| `0x00` | Undocumented _(Parameter 60)_
+| `0x00` | Undocumented _(Parameter 61)_
+|
+| #18
+| `0xE0` | SETGAMMA (Page 158): <br> Set the gray scale voltage to adjust the gamma characteristics of the TFT panel
+| `0x00` | _(PVR0 = 0x00)_
+| `0x09` | _(PVR1 = 0x09)_
+| `0x0D` | _(PVR2 = 0x0D)_
+| `0x23` | _(PVR3 = 0x23)_
+| `0x27` | _(PVR4 = 0x27)_
+| `0x3C` | _(PVR5 = 0x3C)_
+| `0x41` | _(PPR0 = 0x41)_
+| `0x35` | _(PPR1 = 0x35)_
+| `0x07` | _(PPK0 = 0x07)_
+| `0x0D` | _(PPK1 = 0x0D)_
+| `0x0E` | _(PPK2 = 0x0E)_
+| `0x12` | _(PPK3 = 0x12)_
+| `0x13` | _(PPK4 = 0x13)_
+| `0x10` | _(PPK5 = 0x10)_
+| `0x12` | _(PPK6 = 0x12)_
+| `0x12` | _(PPK7 = 0x12)_
+| `0x18` | _(PPK8 = 0x18)_
+| `0x00` | _(NVR0 = 0x00)_
+| `0x09` | _(NVR1 = 0x09)_
+| `0x0D` | _(NVR2 = 0x0D)_
+| `0x23` | _(NVR3 = 0x23)_
+| `0x27` | _(NVR4 = 0x27)_
+| `0x3C` | _(NVR5 = 0x3C)_
+| `0x41` | _(NPR0 = 0x41)_
+| `0x35` | _(NPR1 = 0x35)_
+| `0x07` | _(NPK0 = 0x07)_
+| `0x0D` | _(NPK1 = 0x0D)_
+| `0x0E` | _(NPK2 = 0x0E)_
+| `0x12` | _(NPK3 = 0x12)_
+| `0x13` | _(NPK4 = 0x13)_
+| `0x10` | _(NPK5 = 0x10)_
+| `0x12` | _(NPK6 = 0x12)_
+| `0x12` | _(NPK7 = 0x12)_
+| `0x18` | _(NPK8 = 0x18)_
+|
+| #19    
+| `0x11` | SLPOUT (Page 89): <br> Turns off sleep mode <br> _(MIPI_DCS_EXIT_SLEEP_MODE)_
+|
+| `!!!` | __INSERT DELAY HERE:__ <br> Wait 120 milliseconds
+|
+| #20
+| `0x29` | Display On (Page 97): <br> Recover from DISPLAY OFF mode <br> _(MIPI_DCS_SET_DISPLAY_ON)_
