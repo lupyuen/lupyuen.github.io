@@ -84,7 +84,8 @@
 <li><a href="#whats-next">15 What’s Next</a><ul></ul></li>
 <li><a href="#notes">16 Notes</a><ul></ul></li>
 <li><a href="#appendix-short-packet-for-mipi-dsi">17 Appendix: Short Packet for MIPI DSI</a><ul></ul></li>
-<li><a href="#appendix-mipi-dphy">18 Appendix: MIPI DPHY</a><ul></ul></li></ul></nav><p>📝 <em>2 Oct 2022</em></p>
+<li><a href="#appendix-mipi-dphy">18 Appendix: MIPI DPHY</a><ul></ul></li>
+<li><a href="#appendix-initialise-lcd-controller">19 Appendix: Initialise LCD Controller</a><ul></ul></li></ul></nav><p>📝 <em>2 Oct 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/dsi-title.jpg" alt="PinePhone’s LCD Display in the PinePhone Block Diagram" /></p>
 <p>How does <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> control its <strong>LCD Display</strong>?</p>
 <p>Let’s uncover all the secrets about PinePhone’s mysterious LCD Display and its <strong>MIPI Display Serial Interface</strong>…</p>
@@ -769,7 +770,327 @@
 </ul>
 </li>
 </ul>
-
+<h1 id="appendix-initialise-lcd-controller"><a href="#appendix-initialise-lcd-controller">19 Appendix: Initialise LCD Controller</a></h1>
+<p>TODO</p>
+<div><table><thead><tr><th style="text-align: center">Byte</th><th style="text-align: left">Purpose</th></tr></thead><tbody>
+<tr><td style="text-align: center">#1</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>0xB9</code></td><td style="text-align: left">SETEXTC (Page 131): <br> Enable USER Command</td></tr>
+<tr><td style="text-align: center"><code>0xF1</code></td><td style="text-align: left">Enable User command</td></tr>
+<tr><td style="text-align: center"><code>0x12</code></td><td style="text-align: left"><em>(Continued)</em></td></tr>
+<tr><td style="text-align: center"><code>0x83</code></td><td style="text-align: left"><em>(Continued)</em></td></tr>
+<tr><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center">#2</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>0xBA</code></td><td style="text-align: left">SETMIPI (Page 144): <br> Set MIPI related register</td></tr>
+<tr><td style="text-align: center"><code>0x33</code></td><td style="text-align: left">Virtual Channel = 0 <br> <em>(VC_Main = 0)</em> <br> Number of Lanes = 4 <br> <em>(Lane_Number = 3)</em></td></tr>
+<tr><td style="text-align: center"><code>0x81</code></td><td style="text-align: left">LDO = 1.7 V <br> <em>(DSI_LDO_SEL = 4)</em> <br> Terminal Resistance = 90 Ohm <br> <em>(RTERM = 1)</em></td></tr>
+<tr><td style="text-align: center"><code>0x05</code></td><td style="text-align: left">MIPI Low High Speed driving ability = x6 <br> <em>(IHSRX = 5)</em></td></tr>
+<tr><td style="text-align: center"><code>0xF9</code></td><td style="text-align: left">TXCLK speed in DSI LP mode = fDSICLK / 16 <br> <em>(Tx_clk_sel = 2)</em></td></tr>
+<tr><td style="text-align: center"><code>0x0E</code></td><td style="text-align: left">Min HFP number in DSI mode = 14 <br> <em>(HFP_OSC = 14)</em></td></tr>
+<tr><td style="text-align: center"><code>0x0E</code></td><td style="text-align: left">Min HBP number in DSI mode = 14 <br> <em>(HBP_OSC = 14)</em></td></tr>
+<tr><td style="text-align: center"><code>0x20</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x44</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x25</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x91</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x0a</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x02</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x4F</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x11</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x37</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center">#3</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>0xB8</code></td><td style="text-align: left">SETPOWER_EXT (Page 142): <br> Set display related register</td></tr>
+<tr><td style="text-align: center"><code>0x25</code></td><td style="text-align: left">External power IC or PFM: VSP = FL1002, VSN = FL1002 <br> <em>(PCCS = 2)</em> <br> VCSW1 / VCSW2 Frequency for Pumping VSP / VSN = 1/4 Hsync <br> <em>(ECP_DC_DIV = 5)</em></td></tr>
+<tr><td style="text-align: center"><code>0x22</code></td><td style="text-align: left">VCSW1/VCSW2 soft start time = 15 ms <br> <em>(DT = 2)</em> <br> Pumping ratio of VSP / VSN with VCI = x2 <br> <em>(XDK_ECP = 1)</em></td></tr>
+<tr><td style="text-align: center"><code>0x20</code></td><td style="text-align: left">PFM operation frequency FoscD = Fosc/1 <br> <em>(PFM_DC_DIV = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x03</code></td><td style="text-align: left">Enable power IC pumping frequency synchronization = Synchronize with external Hsync <br> <em>(ECP_SYNC_EN = 1)</em> <br> Enable VGH/VGL pumping frequency synchronization = Synchronize with external Hsync <br> <em>(VGX_SYNC_EN = 1)</em></td></tr>
+<tr><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center">#4</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>0xB3</code></td><td style="text-align: left">SETRGBIF (Page 134): <br> Control RGB I/F porch timing for internal use</td></tr>
+<tr><td style="text-align: center"><code>0x10</code></td><td style="text-align: left">Vertical back porch HS number in Blank Frame Period  = Hsync number 16 <br> <em>(VBP_RGB_GEN = 16)</em></td></tr>
+<tr><td style="text-align: center"><code>0x10</code></td><td style="text-align: left">Vertical front porch HS number in Blank Frame Period = Hsync number 16 <br> <em>(VFP_RGB_GEN = 16)</em></td></tr>
+<tr><td style="text-align: center"><code>0x05</code></td><td style="text-align: left">HBP OSC number in Blank Frame Period = OSC number 5 <br> <em>(DE_BP_RGB_GEN = 5)</em></td></tr>
+<tr><td style="text-align: center"><code>0x05</code></td><td style="text-align: left">HFP OSC number in Blank Frame Period = OSC number 5 <br> <em>(DE_FP_RGB_GEN = 5)</em></td></tr>
+<tr><td style="text-align: center"><code>0x03</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0xFF</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center">#5</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>0xC0</code></td><td style="text-align: left">SETSCR (Page 147): <br> Set related setting of Source driving</td></tr>
+<tr><td style="text-align: center"><code>0x73</code></td><td style="text-align: left">Source OP Amp driving period for positive polarity in Normal Mode: Source OP Period = 115*4/Fosc <br> <em>(N_POPON = 115)</em></td></tr>
+<tr><td style="text-align: center"><code>0x73</code></td><td style="text-align: left">Source OP Amp driving period for negative polarity in Normal Mode: Source OP Period = 115*4/Fosc <br> <em>(N_NOPON = 115)</em></td></tr>
+<tr><td style="text-align: center"><code>0x50</code></td><td style="text-align: left">Source OP Amp driving period for positive polarity in Idle mode: Source OP Period   = 80*4/Fosc <br> <em>(I_POPON = 80)</em></td></tr>
+<tr><td style="text-align: center"><code>0x50</code></td><td style="text-align: left">Source OP Amp dirivng period for negative polarity in Idle Mode: Source OP Period   = 80*4/Fosc <br> <em>(I_NOPON = 80)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(SCR Bits 24-31 = 0x00)</em></td></tr>
+<tr><td style="text-align: center"><code>0xC0</code></td><td style="text-align: left"><em>(SCR Bits 16-23 = 0xC0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x08</code></td><td style="text-align: left">Gamma bias current fine tune: Current xIbias   = 4 <br> <em>(SCR Bits 9-13 = 4)</em> <br> <em>(SCR Bits  8-15 = 0x08)</em></td></tr>
+<tr><td style="text-align: center"><code>0x70</code></td><td style="text-align: left">Source and Gamma bias current core tune: Ibias = 1 <br> <em>(SCR Bits 0-3 = 0)</em> <br> Source bias current fine tune: Current xIbias = 7 <br> <em>(SCR Bits 4-8 = 7)</em> <br> <em>(SCR Bits  0-7  = 0x70)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center">#6</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>0xBC</code></td><td style="text-align: left">SETVDC (Page 146): <br> Control NVDDD/VDDD Voltage</td></tr>
+<tr><td style="text-align: center"><code>0x4E</code></td><td style="text-align: left">NVDDD voltage = -1.8 V <br> <em>(NVDDD_SEL = 4)</em> <br> VDDD voltage = 1.9 V <br> <em>(VDDD_SEL = 6)</em></td></tr>
+<tr><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center">#7</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>0xCC</code></td><td style="text-align: left">SETPANEL (Page 154): <br> Set display related register</td></tr>
+<tr><td style="text-align: center"><code>0x0B</code></td><td style="text-align: left">Enable reverse the source scan direction <br> <em>(SS_PANEL = 1)</em> <br> Normal vertical scan direction <br> <em>(GS_PANEL = 0)</em> <br> Normally black panel <br> <em>(REV_PANEL = 1)</em> <br> S1:S2:S3 = B:G:R <br> <em>(BGR_PANEL = 1)</em></td></tr>
+<tr><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center">#8</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>0xB4</code></td><td style="text-align: left">SETCYC (Page 135): <br> Control display inversion type</td></tr>
+<tr><td style="text-align: center"><code>0x80</code></td><td style="text-align: left">Extra source for Zig-Zag Inversion = S2401 <br> <em>(ZINV_S2401_EN = 1)</em> <br> Row source data dislocates = Even row <br> <em>(ZINV_G_EVEN_EN = 0)</em> <br> Disable Zig-Zag Inversion <br> <em>(ZINV_EN = 0)</em> <br> Enable Zig-Zag1 Inversion <br> <em>(ZINV2_EN = 0)</em> <br> Normal mode inversion type = Column inversion <br> <em>(N_NW = 0)</em></td></tr>
+<tr><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center">#9</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>0xB2</code></td><td style="text-align: left">SETDISP (Page 132): <br> Control the display resolution</td></tr>
+<tr><td style="text-align: center"><code>0xF0</code></td><td style="text-align: left">Gate number of vertical direction = 480 + <br> <em>(240*4)</em> <br> <em>(NL = 240)</em></td></tr>
+<tr><td style="text-align: center"><code>0x12</code></td><td style="text-align: left"><em>(RES_V_LSB = 0)</em> <br> Non-display area source output control: Source output = VSSD <br> <em>(BLK_CON = 1)</em> <br> Channel number of source direction = 720RGB <br> <em>(RESO_SEL = 2)</em></td></tr>
+<tr><td style="text-align: center"><code>0xF0</code></td><td style="text-align: left">Source voltage during Blanking Time when accessing Sleep-Out / Sleep-In = GND <br> <em>(WHITE_GND_EN = 1)</em> <br> Blank timing control when access sleep out command: Blank Frame Period = 7 Frames <br> <em>(WHITE_FRAME_SEL = 7)</em> <br> Source output refresh control: Refresh Period = 0 Frames <br> <em>(ISC = 0)</em></td></tr>
+<tr><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center">#10</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>0xE3</code></td><td style="text-align: left">SETEQ (Page 159): <br> Set EQ related register</td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Temporal spacing between HSYNC and PEQGND = 0*4/Fosc <br> <em>(PNOEQ = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Temporal spacing between HSYNC and NEQGND = 0*4/Fosc <br> <em>(NNOEQ = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x0B</code></td><td style="text-align: left">Source EQ GND period when Source up to positive voltage   = 11*4/Fosc <br> <em>(PEQGND = 11)</em></td></tr>
+<tr><td style="text-align: center"><code>0x0B</code></td><td style="text-align: left">Source EQ GND period when Source down to negative voltage = 11*4/Fosc <br> <em>(NEQGND = 11)</em></td></tr>
+<tr><td style="text-align: center"><code>0x10</code></td><td style="text-align: left">Source EQ VCI period when Source up to positive voltage   = 16*4/Fosc <br> <em>(PEQVCI = 16)</em></td></tr>
+<tr><td style="text-align: center"><code>0x10</code></td><td style="text-align: left">Source EQ VCI period when Source down to negative voltage = 16*4/Fosc <br> <em>(NEQVCI = 16)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Temporal period of PEQVCI1 = 0*4/Fosc <br> <em>(PEQVCI1 = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Temporal period of NEQVCI1 = 0*4/Fosc <br> <em>(NEQVCI1 = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(Reserved)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(Reserved)</em></td></tr>
+<tr><td style="text-align: center"><code>0xFF</code></td><td style="text-align: left"><em>(Undocumented)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(Reserved)</em></td></tr>
+<tr><td style="text-align: center"><code>0xC0</code></td><td style="text-align: left">White pattern to protect GOA glass <br> <em>(ESD_DET_DATA_WHITE = 1)</em> <br> Enable ESD detection function to protect GOA glass <br> <em>(ESD_WHITE_EN = 1)</em></td></tr>
+<tr><td style="text-align: center"><code>0x10</code></td><td style="text-align: left">No Need VSYNC <br> <em>(additional frame)</em> after Sleep-In to display sleep-in blanking frame then into Sleep-In State <br> <em>(SLPIN_OPTION = 1)</em> <br> Enable video function detection <br> <em>(VEDIO_NO_CHECK_EN = 0)</em> <br> Disable ESD white pattern scanning voltage pull ground <br> <em>(ESD_WHITE_GND_EN = 0)</em> <br> ESD detection function period = 0 Frames <br> <em>(ESD_DET_TIME_SEL = 0)</em></td></tr>
+<tr><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center">#11</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>0xC6</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x01</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0xFF</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0xFF</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center">#12</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>0xC1</code></td><td style="text-align: left">SETPOWER (Page 149): <br> Set related setting of power</td></tr>
+<tr><td style="text-align: center"><code>0x74</code></td><td style="text-align: left">VGH Voltage Adjustment = 17 V <br> <em>(VBTHS = 7)</em> <br> VGL Voltage Adjustment = -11 V <br> <em>(VBTLS = 4)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Enable VGH feedback voltage detection. Output voltage = VBTHS <br> <em>(FBOFF_VGH = 0)</em> <br> Enable VGL feedback voltage detection. Output voltage = VBTLS <br> <em>(FBOFF_VGL = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x32</code></td><td style="text-align: left">VSPROUT Voltage = <br> <em>(VRH[5:0] x 0.05 + 3.3)</em> x <br> <em>(VREF/4.8)</em> if VREF [4]=0 <br> <em>(VRP = 50)</em></td></tr>
+<tr><td style="text-align: center"><code>0x32</code></td><td style="text-align: left">VSNROUT Voltage = <br> <em>(VRH[5:0] x 0.05 + 3.3)</em> x <br> <em>(VREF/5.6)</em> if VREF [4]=1 <br> <em>(VRN = 50)</em></td></tr>
+<tr><td style="text-align: center"><code>0x77</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0xF1</code></td><td style="text-align: left">Enable VGL voltage Detect Function = VGL voltage Abnormal <br> <em>(VGL_DET_EN = 1)</em> <br> Enable VGH voltage Detect Function = VGH voltage Abnormal <br> <em>(VGH_DET_EN = 1)</em> <br> Enlarge VGL Voltage at “FBOFF_VGL=1” = “VGL=-15V” <br> <em>(VGL_TURBO = 1)</em> <br> Enlarge VGH Voltage at “FBOFF_VGH=1” = “VGH=20V” <br> <em>(VGH_TURBO = 1)</em> <br> <em>(APS = 1)</em></td></tr>
+<tr><td style="text-align: center"><code>0xFF</code></td><td style="text-align: left">Left side VGH stage 1 pumping frequency  = 1.5 MHz <br> <em>(VGH1_L_DIV = 15)</em> <br> Left side VGL stage 1 pumping frequency  = 1.5 MHz <br> <em>(VGL1_L_DIV = 15)</em></td></tr>
+<tr><td style="text-align: center"><code>0xFF</code></td><td style="text-align: left">Right side VGH stage 1 pumping frequency = 1.5 MHz <br> <em>(VGH1_R_DIV = 15)</em> <br> Right side VGL stage 1 pumping frequency = 1.5 MHz <br> <em>(VGL1_R_DIV = 15)</em></td></tr>
+<tr><td style="text-align: center"><code>0xCC</code></td><td style="text-align: left">Left side VGH stage 2 pumping frequency  = 2.6 MHz <br> <em>(VGH2_L_DIV = 12)</em> <br> Left side VGL stage 2 pumping frequency  = 2.6 MHz <br> <em>(VGL2_L_DIV = 12)</em></td></tr>
+<tr><td style="text-align: center"><code>0xCC</code></td><td style="text-align: left">Right side VGH stage 2 pumping frequency = 2.6 MHz <br> <em>(VGH2_R_DIV = 12)</em> <br> Right side VGL stage 2 pumping frequency = 2.6 MHz <br> <em>(VGL2_R_DIV = 12)</em></td></tr>
+<tr><td style="text-align: center"><code>0x77</code></td><td style="text-align: left">Left side VGH stage 3 pumping frequency  = 4.5 MHz <br> <em>(VGH3_L_DIV = 7)</em>  <br> Left side VGL stage 3 pumping frequency  = 4.5 MHz <br> <em>(VGL3_L_DIV = 7)</em></td></tr>
+<tr><td style="text-align: center"><code>0x77</code></td><td style="text-align: left">Right side VGH stage 3 pumping frequency = 4.5 MHz <br> <em>(VGH3_R_DIV = 7)</em>  <br> Right side VGL stage 3 pumping frequency = 4.5 MHz <br> <em>(VGL3_R_DIV = 7)</em></td></tr>
+<tr><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center">#13</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>0xB5</code></td><td style="text-align: left">SETBGP (Page 136): <br> Internal reference voltage setting</td></tr>
+<tr><td style="text-align: center"><code>0x07</code></td><td style="text-align: left">VREF Voltage: 4.2 V <br> <em>(VREF_SEL = 7)</em></td></tr>
+<tr><td style="text-align: center"><code>0x07</code></td><td style="text-align: left">NVREF Voltage: 4.2 V <br> <em>(NVREF_SEL = 7)</em></td></tr>
+<tr><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center">#14</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>0xB6</code></td><td style="text-align: left">SETVCOM (Page 137): <br> Set VCOM Voltage</td></tr>
+<tr><td style="text-align: center"><code>0x2C</code></td><td style="text-align: left">VCOMDC voltage at “GS_PANEL=0” = -0.67 V <br> <em>(VCOMDC_F = 0x2C)</em></td></tr>
+<tr><td style="text-align: center"><code>0x2C</code></td><td style="text-align: left">VCOMDC voltage at “GS_PANEL=1” = -0.67 V <br> <em>(VCOMDC_B = 0x2C)</em></td></tr>
+<tr><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center">#15</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>0xBF</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x02</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x11</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented</td></tr>
+<tr><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center">#16</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>0xE9</code></td><td style="text-align: left">SETGIP1 (Page 163): <br> Set forward GIP timing</td></tr>
+<tr><td style="text-align: center"><code>0x82</code></td><td style="text-align: left">SHR0, SHR1, CHR, CHR2 refer to Internal DE <br> <em>(REF_EN = 1)</em> <br> <em>(PANEL_SEL = 2)</em></td></tr>
+<tr><td style="text-align: center"><code>0x10</code></td><td style="text-align: left">Starting position of GIP STV group 0 = 4102 HSYNC <br> <em>(SHR0 Bits 8-12 = 0x10)</em></td></tr>
+<tr><td style="text-align: center"><code>0x06</code></td><td style="text-align: left"><em>(SHR0 Bits 0-7  = 0x06)</em></td></tr>
+<tr><td style="text-align: center"><code>0x05</code></td><td style="text-align: left">Starting position of GIP STV group 1 = 1442 HSYNC <br> <em>(SHR1 Bits 8-12 = 0x05)</em></td></tr>
+<tr><td style="text-align: center"><code>0xA2</code></td><td style="text-align: left"><em>(SHR1 Bits 0-7  = 0xA2)</em></td></tr>
+<tr><td style="text-align: center"><code>0x0A</code></td><td style="text-align: left">Distance of STV rising edge and HYSNC  = 10*2  Fosc <br> <em>(SPON  Bits 0-7 = 0x0A)</em></td></tr>
+<tr><td style="text-align: center"><code>0xA5</code></td><td style="text-align: left">Distance of STV falling edge and HYSNC = 165*2 Fosc <br> <em>(SPOFF Bits 0-7 = 0xA5)</em></td></tr>
+<tr><td style="text-align: center"><code>0x12</code></td><td style="text-align: left">STV0_1 distance with STV0_0 = 1 HSYNC <br> <em>(SHR0_1 = 1)</em> <br> STV0_2 distance with STV0_0 = 2 HSYNC <br> <em>(SHR0_2 = 2)</em></td></tr>
+<tr><td style="text-align: center"><code>0x31</code></td><td style="text-align: left">STV0_3 distance with STV0_0 = 3 HSYNC <br> <em>(SHR0_3 = 3)</em> <br> STV1_1 distance with STV1_0 = 1 HSYNC <br> <em>(SHR1_1 = 1)</em></td></tr>
+<tr><td style="text-align: center"><code>0x23</code></td><td style="text-align: left">STV1_2 distance with STV1_0 = 2 HSYNC <br> <em>(SHR1_2 = 2)</em> <br> STV1_3 distance with STV1_0 = 3 HSYNC <br> <em>(SHR1_3 = 3)</em></td></tr>
+<tr><td style="text-align: center"><code>0x37</code></td><td style="text-align: left">STV signal high pulse width = 3 HSYNC <br> <em>(SHP = 3)</em> <br> Total number of STV signal = 7 <br> <em>(SCP = 7)</em></td></tr>
+<tr><td style="text-align: center"><code>0x83</code></td><td style="text-align: left">Starting position of GIP CKV group 0 <br> <em>(CKV0_0)</em> = 131 HSYNC <br> <em>(CHR = 0x83)</em></td></tr>
+<tr><td style="text-align: center"><code>0x04</code></td><td style="text-align: left">Distance of CKV rising edge and HYSNC  = 4*2   Fosc <br> <em>(CON  Bits 0-7 = 0x04)</em></td></tr>
+<tr><td style="text-align: center"><code>0xBC</code></td><td style="text-align: left">Distance of CKV falling edge and HYSNC = 188*2 Fosc <br> <em>(COFF Bits 0-7 = 0xBC)</em></td></tr>
+<tr><td style="text-align: center"><code>0x27</code></td><td style="text-align: left">CKV signal high pulse width = 2 HSYNC <br> <em>(CHP = 2)</em> <br> Total period cycle of CKV signal = 7 HSYNC <br> <em>(CCP = 7)</em></td></tr>
+<tr><td style="text-align: center"><code>0x38</code></td><td style="text-align: left">Extra gate counter at blanking area: Gate number = 56 <br> <em>(USER_GIP_GATE = 0x38)</em></td></tr>
+<tr><td style="text-align: center"><code>0x0C</code></td><td style="text-align: left">Left side GIP output pad signal = ??? <br> <em>(CGTS_L Bits 16-21 = 0x0C)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(CGTS_L Bits  8-15 = 0x00)</em></td></tr>
+<tr><td style="text-align: center"><code>0x03</code></td><td style="text-align: left"><em>(CGTS_L Bits  0-7  = 0x03)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Normal polarity of Left side GIP output pad signal <br> <em>(CGTS_INV_L Bits 16-21 = 0x00)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(CGTS_INV_L Bits  8-15 = 0x00)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(CGTS_INV_L Bits  0-7  = 0x00)</em></td></tr>
+<tr><td style="text-align: center"><code>0x0C</code></td><td style="text-align: left">Right side GIP output pad signal = ??? <br> <em>(CGTS_R Bits 16-21 = 0x0C)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(CGTS_R Bits  8-15 = 0x00)</em></td></tr>
+<tr><td style="text-align: center"><code>0x03</code></td><td style="text-align: left"><em>(CGTS_R Bits  0-7  = 0x03)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Normal polarity of Right side GIP output pad signal <br> <em>(CGTS_INV_R Bits 16-21 = 0x00)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(CGTS_INV_R Bits  8-15 = 0x00)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(CGTS_INV_R Bits  0-7  = 0x00)</em></td></tr>
+<tr><td style="text-align: center"><code>0x75</code></td><td style="text-align: left">Left side GIP output pad signal = ??? <br> <em>(COS1_L = 7)</em> <br> Left side GIP output pad signal = ??? <br> <em>(COS2_L = 5)</em></td></tr>
+<tr><td style="text-align: center"><code>0x75</code></td><td style="text-align: left">Left side GIP output pad signal = ??? <br> <em>(COS3_L = 7)</em> <br> <em>(COS4_L = 5)</em></td></tr>
+<tr><td style="text-align: center"><code>0x31</code></td><td style="text-align: left">Left side GIP output pad signal = ??? <br> <em>(COS5_L = 3)</em> <br> <em>(COS6_L = 1)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 32)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 33)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 34)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 35)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 36)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Left side GIP output pad signal  = ??? <br> <em>(COS17_L = 8)</em> <br> Left side GIP output pad signal  = ??? <br> <em>(COS18_L = 8)</em></td></tr>
+<tr><td style="text-align: center"><code>0x13</code></td><td style="text-align: left">Left side GIP output pad signal  = ??? <br> <em>(COS19_L = 1)</em> <br> Left side GIP output pad signal  = ??? <br> <em>(COS20_L = 3)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Left side GIP output pad signal  = ??? <br> <em>(COS21_L = 8)</em> <br> Left side GIP output pad signal  = ??? <br> <em>(COS22_L = 8)</em></td></tr>
+<tr><td style="text-align: center"><code>0x64</code></td><td style="text-align: left">Right side GIP output pad signal = ??? <br> <em>(COS1_R  = 6)</em> <br> Right side GIP output pad signal = ??? <br> <em>(COS2_R  = 4)</em></td></tr>
+<tr><td style="text-align: center"><code>0x64</code></td><td style="text-align: left">Right side GIP output pad signal = ??? <br> <em>(COS3_R  = 6)</em> <br> Right side GIP output pad signal = ??? <br> <em>(COS4_R  = 4)</em></td></tr>
+<tr><td style="text-align: center"><code>0x20</code></td><td style="text-align: left">Right side GIP output pad signal = ??? <br> <em>(COS5_R  = 2)</em> <br> Right side GIP output pad signal = ??? <br> <em>(COS6_R  = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 43)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 44)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 45)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 46)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 47)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Right side GIP output pad signal = ??? <br> <em>(COS17_R = 8)</em> <br> Right side GIP output pad signal = ??? <br> <em>(COS18_R = 8)</em></td></tr>
+<tr><td style="text-align: center"><code>0x02</code></td><td style="text-align: left">Right side GIP output pad signal = ??? <br> <em>(COS19_R = 0)</em> <br> Right side GIP output pad signal = ??? <br> <em>(COS20_R = 2)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Right side GIP output pad signal = ??? <br> <em>(COS21_R = 8)</em> <br> Right side GIP output pad signal = ??? <br> <em>(COS22_R = 8)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(TCON_OPT = 0x00)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(GIP_OPT Bits 16-22 = 0x00)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(GIP_OPT Bits  8-15 = 0x00)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(GIP_OPT Bits  0-7  = 0x00)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Starting position of GIP CKV group 1 <br> <em>(CKV1_0)</em> = 0 HSYNC <br> <em>(CHR2 = 0x00)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Distance of CKV1 rising edge and HYSNC  = 0*2 Fosc <br> <em>(CON2  Bits 0-7 = 0x00)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Distance of CKV1 falling edge and HYSNC = 0*2 Fosc <br> <em>(COFF2 Bits 0-7 = 0x00)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">CKV1 signal high pulse width = 0 HSYNC <br> <em>(CHP2 = 0)</em> <br> Total period cycle of CKV1 signal = 0 HSYNC <br> <em>(CCP2 = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(CKS Bits 16-21 = 0x00)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(CKS Bits  8-15 = 0x00)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(CKS Bits  0-7  = 0x00)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(COFF Bits 8-9 = 0)</em> <br> <em>(CON Bits 8-9 = 0)</em> <br> <em>(SPOFF Bits 8-9 = 0)</em> <br> <em>(SPON Bits 8-9 = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(COFF2 Bits 8-9 = 0)</em> <br> <em>(CON2 Bits 8-9 = 0)</em></td></tr>
+<tr><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center">#17</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>0xEA</code></td><td style="text-align: left">SETGIP2 (Page 170): <br> Set backward GIP timing</td></tr>
+<tr><td style="text-align: center"><code>0x02</code></td><td style="text-align: left">YS2 Signal Mode = INYS1/INYS2 <br> <em>(YS2_SEL = 0)</em> <br> YS2 Signal Mode = INYS1/INYS2 <br> <em>(YS1_SEL = 0)</em> <br> Don’t reverse YS2 signal <br> <em>(YS2_XOR = 0)</em> <br> Don’t reverse YS1 signal <br> <em>(YS1_XOR = 0)</em> <br> Enable YS signal function <br> <em>(YS_FLAG_EN = 1)</em> <br> Disable ALL ON function <br> <em>(ALL_ON_EN = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x21</code></td><td style="text-align: left"><em>(GATE = 0x21)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(CK_ALL_ON_EN = 0)</em> <br> <em>(STV_ALL_ON_EN = 0)</em> <br> Timing of YS1 and YS2 signal = ??? <br> <em>(CK_ALL_ON_WIDTH1 = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Timing of YS1 and YS2 signal = ??? <br> <em>(CK_ALL_ON_WIDTH2 = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Timing of YS1 and YS2 signal = ??? <br> <em>(CK_ALL_ON_WIDTH3 = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(YS_FLAG_PERIOD = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(YS2_SEL_2 = 0)</em> <br> <em>(YS1_SEL_2 = 0)</em> <br> <em>(YS2_XOR_2 = 0)</em> <br> <em>(YS_FLAG_EN_2 = 0)</em> <br> <em>(ALL_ON_EN_2 = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Distance of GIP ALL On rising edge and DE = ??? <br> <em>(USER_GIP_GATE1_2 = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(CK_ALL_ON_EN_2 = 0)</em> <br> <em>(STV_ALL_ON_EN_2 = 0)</em> <br> <em>(CK_ALL_ON_WIDTH1_2 = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(CK_ALL_ON_WIDTH2_2 = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(CK_ALL_ON_WIDTH3_2 = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(YS_FLAG_PERIOD_2 = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x02</code></td><td style="text-align: left"><em>(COS1_L_GS = 0)</em> <br> <em>(COS2_L_GS = 2)</em></td></tr>
+<tr><td style="text-align: center"><code>0x46</code></td><td style="text-align: left"><em>(COS3_L_GS = 4)</em> <br> <em>(COS4_L_GS = 6)</em></td></tr>
+<tr><td style="text-align: center"><code>0x02</code></td><td style="text-align: left"><em>(COS5_L_GS = 0)</em> <br> <em>(COS6_L_GS = 2)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 16)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 17)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 18)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 19)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 20)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left"><em>(COS17_L_GS = 8)</em> <br> <em>(COS18_L_GS = 8)</em></td></tr>
+<tr><td style="text-align: center"><code>0x64</code></td><td style="text-align: left"><em>(COS19_L_GS = 6)</em> <br> <em>(COS20_L_GS = 4)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left"><em>(COS21_L_GS = 8)</em> <br> <em>(COS22_L_GS = 8)</em></td></tr>
+<tr><td style="text-align: center"><code>0x13</code></td><td style="text-align: left"><em>(COS1_R_GS = 1)</em> <br> <em>(COS2_R_GS = 3)</em></td></tr>
+<tr><td style="text-align: center"><code>0x57</code></td><td style="text-align: left"><em>(COS3_R_GS = 5)</em> <br> <em>(COS4_R_GS = 7)</em></td></tr>
+<tr><td style="text-align: center"><code>0x13</code></td><td style="text-align: left"><em>(COS5_R_GS = 1)</em> <br> <em>(COS6_R_GS = 3)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 27)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 28)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 29)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 30)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 31)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left"><em>(COS17_R_GS = 8)</em> <br> <em>(COS18_R_GS = 8)</em></td></tr>
+<tr><td style="text-align: center"><code>0x75</code></td><td style="text-align: left"><em>(COS19_R_GS = 7)</em> <br> <em>(COS20_R_GS = 5)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left"><em>(COS21_R_GS = 8)</em> <br> <em>(COS22_R_GS = 8)</em></td></tr>
+<tr><td style="text-align: center"><code>0x23</code></td><td style="text-align: left">GIP output EQ signal: P_EQ = Yes, N_EQ = No <br> <em>(EQOPT = 2)</em> <br>  GIP output EQ signal level: P_EQ = GND, N_EQ = GND <br> <em>(EQ_SEL = 3)</em></td></tr>
+<tr><td style="text-align: center"><code>0x14</code></td><td style="text-align: left">Distance of EQ rising edge and HYSNC = 20 Fosc <br> <em>(EQ_DELAY = 0x14)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Distance of EQ rising edge and HYSNC = 0 HSYNC <br> <em>(EQ_DELAY_HSYNC = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(HSYNC_TO_CL1_CNT10 Bits 8-9 = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x02</code></td><td style="text-align: left">GIP reference HSYNC between external HSYNC = 2 Fosc <br> <em>(HSYNC_TO_CL1_CNT10 Bits 0-7 = 2)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented <em>(Parameter 40)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented <em>(Parameter 41)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented <em>(Parameter 42)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented <em>(Parameter 43)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented <em>(Parameter 44)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented <em>(Parameter 45)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented <em>(Parameter 46)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented <em>(Parameter 47)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented <em>(Parameter 48)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented <em>(Parameter 49)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented <em>(Parameter 50)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented <em>(Parameter 51)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented <em>(Parameter 52)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented <em>(Parameter 53)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented <em>(Parameter 54)</em></td></tr>
+<tr><td style="text-align: center"><code>0x03</code></td><td style="text-align: left">Undocumented <em>(Parameter 55)</em></td></tr>
+<tr><td style="text-align: center"><code>0x0A</code></td><td style="text-align: left">Undocumented <em>(Parameter 56)</em></td></tr>
+<tr><td style="text-align: center"><code>0xA5</code></td><td style="text-align: left">Undocumented <em>(Parameter 57)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented <em>(Parameter 58)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented <em>(Parameter 59)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented <em>(Parameter 60)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Undocumented <em>(Parameter 61)</em></td></tr>
+<tr><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center">#18</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>0xE0</code></td><td style="text-align: left">SETGAMMA (Page 158): <br> Set the gray scale voltage to adjust the gamma characteristics of the TFT panel</td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(PVR0 = 0x00)</em></td></tr>
+<tr><td style="text-align: center"><code>0x09</code></td><td style="text-align: left"><em>(PVR1 = 0x09)</em></td></tr>
+<tr><td style="text-align: center"><code>0x0D</code></td><td style="text-align: left"><em>(PVR2 = 0x0D)</em></td></tr>
+<tr><td style="text-align: center"><code>0x23</code></td><td style="text-align: left"><em>(PVR3 = 0x23)</em></td></tr>
+<tr><td style="text-align: center"><code>0x27</code></td><td style="text-align: left"><em>(PVR4 = 0x27)</em></td></tr>
+<tr><td style="text-align: center"><code>0x3C</code></td><td style="text-align: left"><em>(PVR5 = 0x3C)</em></td></tr>
+<tr><td style="text-align: center"><code>0x41</code></td><td style="text-align: left"><em>(PPR0 = 0x41)</em></td></tr>
+<tr><td style="text-align: center"><code>0x35</code></td><td style="text-align: left"><em>(PPR1 = 0x35)</em></td></tr>
+<tr><td style="text-align: center"><code>0x07</code></td><td style="text-align: left"><em>(PPK0 = 0x07)</em></td></tr>
+<tr><td style="text-align: center"><code>0x0D</code></td><td style="text-align: left"><em>(PPK1 = 0x0D)</em></td></tr>
+<tr><td style="text-align: center"><code>0x0E</code></td><td style="text-align: left"><em>(PPK2 = 0x0E)</em></td></tr>
+<tr><td style="text-align: center"><code>0x12</code></td><td style="text-align: left"><em>(PPK3 = 0x12)</em></td></tr>
+<tr><td style="text-align: center"><code>0x13</code></td><td style="text-align: left"><em>(PPK4 = 0x13)</em></td></tr>
+<tr><td style="text-align: center"><code>0x10</code></td><td style="text-align: left"><em>(PPK5 = 0x10)</em></td></tr>
+<tr><td style="text-align: center"><code>0x12</code></td><td style="text-align: left"><em>(PPK6 = 0x12)</em></td></tr>
+<tr><td style="text-align: center"><code>0x12</code></td><td style="text-align: left"><em>(PPK7 = 0x12)</em></td></tr>
+<tr><td style="text-align: center"><code>0x18</code></td><td style="text-align: left"><em>(PPK8 = 0x18)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(NVR0 = 0x00)</em></td></tr>
+<tr><td style="text-align: center"><code>0x09</code></td><td style="text-align: left"><em>(NVR1 = 0x09)</em></td></tr>
+<tr><td style="text-align: center"><code>0x0D</code></td><td style="text-align: left"><em>(NVR2 = 0x0D)</em></td></tr>
+<tr><td style="text-align: center"><code>0x23</code></td><td style="text-align: left"><em>(NVR3 = 0x23)</em></td></tr>
+<tr><td style="text-align: center"><code>0x27</code></td><td style="text-align: left"><em>(NVR4 = 0x27)</em></td></tr>
+<tr><td style="text-align: center"><code>0x3C</code></td><td style="text-align: left"><em>(NVR5 = 0x3C)</em></td></tr>
+<tr><td style="text-align: center"><code>0x41</code></td><td style="text-align: left"><em>(NPR0 = 0x41)</em></td></tr>
+<tr><td style="text-align: center"><code>0x35</code></td><td style="text-align: left"><em>(NPR1 = 0x35)</em></td></tr>
+<tr><td style="text-align: center"><code>0x07</code></td><td style="text-align: left"><em>(NPK0 = 0x07)</em></td></tr>
+<tr><td style="text-align: center"><code>0x0D</code></td><td style="text-align: left"><em>(NPK1 = 0x0D)</em></td></tr>
+<tr><td style="text-align: center"><code>0x0E</code></td><td style="text-align: left"><em>(NPK2 = 0x0E)</em></td></tr>
+<tr><td style="text-align: center"><code>0x12</code></td><td style="text-align: left"><em>(NPK3 = 0x12)</em></td></tr>
+<tr><td style="text-align: center"><code>0x13</code></td><td style="text-align: left"><em>(NPK4 = 0x13)</em></td></tr>
+<tr><td style="text-align: center"><code>0x10</code></td><td style="text-align: left"><em>(NPK5 = 0x10)</em></td></tr>
+<tr><td style="text-align: center"><code>0x12</code></td><td style="text-align: left"><em>(NPK6 = 0x12)</em></td></tr>
+<tr><td style="text-align: center"><code>0x12</code></td><td style="text-align: left"><em>(NPK7 = 0x12)</em></td></tr>
+<tr><td style="text-align: center"><code>0x18</code></td><td style="text-align: left"><em>(NPK8 = 0x18)</em></td></tr>
+<tr><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center">#19</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>0x11</code></td><td style="text-align: left">SLPOUT (Page 89): <br> Turns off sleep mode <br> <em>(MIPI_DCS_EXIT_SLEEP_MODE)</em></td></tr>
+<tr><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>!!!</code></td><td style="text-align: left"><strong>INSERT DELAY HERE:</strong> <br> Wait 120 milliseconds</td></tr>
+<tr><td style="text-align: center"></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center">#20</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>0x29</code></td><td style="text-align: left">Display On (Page 97): <br> Recover from DISPLAY OFF mode <br> <em>(MIPI_DCS_SET_DISPLAY_ON)</em></td></tr>
+</tbody></table>
+</div>
     
 </body>
 </html>
