@@ -1,6 +1,6 @@
 # The RISC-V BL602 Book
 
-📝 _24 Sep 2022_
+📝 _10 Oct 2022_
 
 ![PineCone BL602 RISC-V Board with Grove E-Ink Display](https://lupyuen.github.io/images/book-title.jpg)
 
@@ -573,6 +573,8 @@ Check this book again for future updates...
 -   [__NuttX GPIO on PinePhone__](https://lupyuen.github.io/articles/pio)
 
 -   [__NuttX Display on PinePhone__](https://lupyuen.github.io/articles/dsi)
+
+-   [__NuttX Display Driver for PinePhone__](https://lupyuen.github.io/articles/dsi2)
 
 -   [__Zig on PinePhone__](https://lupyuen.github.io/articles/pinephone)
 
