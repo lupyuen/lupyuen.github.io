@@ -38,6 +38,229 @@ Let's continue the journey from our __NuttX Porting Journal__...
 
 -   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
 
+
+# Zig on PinePhone
+
+TODO
+
+`make --trace` shows these GCC Compiler Options when building Nuttx for PinePhone...
+
+```bash
+aarch64-none-elf-gcc
+  -c
+  -fno-common
+  -Wall
+  -Wstrict-prototypes
+  -Wshadow
+  -Wundef
+  -Werror
+  -Os
+  -fno-strict-aliasing
+  -fomit-frame-pointer
+  -g
+  -march=armv8-a
+  -mtune=cortex-a53
+  -isystem "/Users/Luppy/PinePhone/nuttx/nuttx/include"
+  -D__NuttX__ 
+  -pipe
+  -I "/Users/Luppy/PinePhone/nuttx/apps/include"
+  -Dmain=hello_main  hello_main.c
+  -o  hello_main.c.Users.Luppy.PinePhone.nuttx.apps.examples.hello.o
+```
+
+Let's run this Zig App: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig)
+
+Enable the Null Example App: make menuconfig, select "Application Configuration" > "Examples" > "Null Example"
+
+Compile the Zig App (based on the above GCC Compiler Options)...
+
+```bash
+#  Compile the Zig App for PinePhone 
+#  (armv8-a with cortex-a53)
+#  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
+zig build-obj \
+  -target aarch64-freestanding-none \
+  -mcpu cortex_a53 \
+  -isystem "$HOME/nuttx/nuttx/include" \
+  -I "$HOME/nuttx/apps/include" \
+  display.zig
+
+#  Copy the compiled app to NuttX and overwrite `null.o`
+#  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
+cp display.o \
+  $HOME/nuttx/apps/examples/null/*null.o
+
+#  Build NuttX to link the Zig Object from `null.o`
+#  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
+cd $HOME/nuttx/nuttx
+make
+```
+
+Run the Zig App...
+
+```text
+nsh> null
+HELLO ZIG ON PINEPHONE!
+```
+
+# Zig Driver for PinePhone MIPI DSI
+
+TODO
+
+With Zig, we create a Quick Prototype of the NuttX Driver for MIPI DSI: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig)
+
+[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L62-L167)
+
+This MIPI DSI Interface is compatible with Zephyr MIPI DSI...
+
+-   [zephyr/drivers/mipi_dsi.h](https://github.com/zephyrproject-rtos/zephyr/blob/main/include/zephyr/drivers/mipi_dsi.h)
+
+_Why Zig for the MIPI DSI Driver?_
+
+We're doing Quick Prototyping, so it's great to have Zig catch any Runtime Problems caused by our Bad Coding. (Underflow / Overflow / Array Out Of Bounds)
+
+And yet Zig is so similar to C that we can test the Zig Driver with the rest of the C code.
+
+Also `comptime` Compile-Time Expressions in Zig will be helpful when we initialise the ST7703 LCD Controller. [(See this)](https://lupyuen.github.io/articles/dsi#initialise-lcd-controller)
+
+# Compose MIPI DSI Long Packet in Zig
+
+TODO
+
+To initialise PinePhone's ST7703 LCD Controller, our PinePhone Display Driver for NuttX shall send MIPI DSI Long Packets to ST7703...
+
+-   ["Long Packet for MIPI DSI"](https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi)
+
+This is how our Zig Driver composes a MIPI DSI Long Packet...
+
+[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L140-L204)
+
+# Compose MIPI DSI Short Packet in Zig
+
+TODO
+
+For 1 or 2 bytes of data, our PinePhone Display Driver shall send MIPI DSI Short Packets (instead of Long Packets)...
+
+-   ["Short Packet for MIPI DSI"](https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi)
+
+This is how our Zig Driver composes a MIPI DSI Short Packet...
+
+[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L206-L261)
+
+# Compute Error Correction Code in Zig
+
+TODO
+
+In our PinePhone Display Driver for NuttX, this is how we compute the Error Correction Code for a MIPI DSI Packet...
+
+[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L263-L304)
+
+The Error Correction Code is the last byte of the 4-byte Packet Header for Long Packets and Short Packets.
+
+# Compute Cyclic Redundancy Check in Zig
+
+TODO
+
+This is how our PinePhone Display Driver computes the 16-bit Cyclic Redundancy Check (CCITT) in Zig...
+
+[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L306-L366)
+
+The Cyclic Redundancy Check is the 2-byte Packet Footer for Long Packets.
+
+# Test PinePhone MIPI DSI Driver with QEMU
+
+TODO
+
+The above Zig Code for composing Long Packets and Short Packets was tested in QEMU for Arm64 with GIC Version 2...
+
+[lupyuen/incubator-nuttx/tree/gicv2](https://github.com/lupyuen/incubator-nuttx/tree/gicv2)
+
+Here's the NuttX Test Log for QEMU Arm64...
+
+```text
+NuttShell (NSH) NuttX-11.0.0-RC2
+nsh> uname -a
+NuttX 11.0.0-RC2 c938291 Oct  7 2022 16:54:31 arm64 qemu-a53
+
+nsh> null
+HELLO ZIG ON PINEPHONE!
+Testing Compose Short Packet (Without Parameter)...
+composeShortPacket: channel=0, cmd=0x5, len=1
+Result:
+05 11 00 36 
+Testing Compose Short Packet (With Parameter)...
+composeShortPacket: channel=0, cmd=0x15, len=2
+Result:
+15 bc 4e 35 
+Testing Compose Long Packet...
+composeLongPacket: channel=0, cmd=0x39, len=64
+Result:
+39 40 00 25 e9 82 10 06 
+05 a2 0a a5 12 31 23 37 
+83 04 bc 27 38 0c 00 03 
+00 00 00 0c 00 03 00 00 
+00 75 75 31 88 88 88 88 
+88 88 13 88 64 64 20 88 
+88 88 88 88 88 02 88 00 
+00 00 00 00 00 00 00 00 
+00 00 00 00 65 03 
+```
+
+# Test Case for PinePhone MIPI DSI Driver
+
+TODO
+
+This is how we write a Test Case for the PinePhone MIPI DSI Driver on NuttX...
+
+[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L593-L639)
+
+The above Test Case shows this output on QEMU Arm64...
+
+```text
+Testing Compose Long Packet...
+composeLongPacket: channel=0, cmd=0x39, len=64
+Result:
+39 40 00 25 e9 82 10 06 
+05 a2 0a a5 12 31 23 37 
+83 04 bc 27 38 0c 00 03 
+00 00 00 0c 00 03 00 00 
+00 75 75 31 88 88 88 88 
+88 88 13 88 64 64 20 88 
+88 88 88 88 88 02 88 00 
+00 00 00 00 00 00 00 00 
+00 00 00 00 65 03 
+```
+
+# Initialise ST7703 LCD Controller in Zig
+
+TODO
+
+PinePhone's ST7703 LCD Controller needs to be initialised with these 20 Commands...
+
+-   ["Initialise LCD Controller"](https://lupyuen.github.io/articles/dsi#initialise-lcd-controller)
+
+This is how we send the 20 Commands with our NuttX Driver in Zig, as DCS Short Writes and DCS Long Writes...
+
+[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L62-L429)
+
+To send a command, `writeDcs` executes a DCS Short Write or DCS Long Write, depending on the length of the command...
+
+[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L431-L453)
+
+# Test Zig Display Driver for PinePhone
+
+TODO
+
+Our NuttX Zig Display Driver powers on the PinePhone Display and works exactly like the C Driver! 🎉
+
+![Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/dsi2-title.jpg)
+
+_Can our driver render graphics on PinePhone Display?_
+
+Our PinePhone Display Driver isn't complete. It handles MIPI DSI (for initialising ST7703) but doesn't support Allwinner A64's Display Engine (DE) and Timing Controller (TCON), which are needed for rendering graphics.
+
+We'll implement DE and TCON next.
+
 # What's Next
 
 TODO
