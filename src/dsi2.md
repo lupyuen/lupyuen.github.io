@@ -12,7 +12,7 @@ Today we shall create a __PinePhone Display Driver in Zig__... That will run on 
 
 _Why build the Display Driver in Zig? Instead of C?_
 
-Sadly some parts of PinePhone's [__ST7703 LCD Controller__](https://lupyuen.github.io/articles/dsi#sitronix-st7703-lcd-controller) and [__A64 Allwinner SoC__](https://lupyuen.github.io/articles/dsi#initialise-mipi-dsi) are poorly documented. (Sigh)
+Sadly some parts of PinePhone's [__ST7703 LCD Controller__](https://lupyuen.github.io/articles/dsi#sitronix-st7703-lcd-controller) and [__Allwinner A64 SoC__](https://lupyuen.github.io/articles/dsi#initialise-mipi-dsi) are poorly documented. (Sigh)
 
 Thus we're building a __Quick Prototype__ in Zig to be sure we're setting the Hardware Registers correctly.
 
