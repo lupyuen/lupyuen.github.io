@@ -68,16 +68,16 @@
     <h1 class="title">NuttX RTOS for PinePhone: Display Driver in Zig</h1>
     <nav id="TOC"><ul>
 <li><a href="#whats-next">1 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>17 Oct 2022</em></p>
-<p><img src="https://lupyuen.github.io/images/dsi2-title.jpg" alt="TODO" /></p>
-<p>In our last article we talked about <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> and its <strong>LCD Display</strong>, connected via the (complicated) <strong>MIPI Display Serial Interface</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/dsi2-title.jpg" alt="Apache NuttX RTOS rendering something on PinePhone’s LCD Display" /></p>
+<p>In our last article we talked about <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> and its <a href="https://lupyuen.github.io/articles/dsi#xingbangda-xbd599-lcd-panel"><strong>LCD Display</strong></a>, connected via the (super complicated) <a href="https://lupyuen.github.io/articles/dsi#connector-for-mipi-dsi"><strong>MIPI Display Serial Interface</strong></a>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi"><strong>“Understanding PinePhone’s Display (MIPI DSI)”</strong></a></li>
 </ul>
-<p>Today we shall create a <strong>PinePhone Display Driver in Zig</strong>… That will run on our fresh new port of <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> to PinePhone.</p>
+<p>Today we shall create a <strong>PinePhone Display Driver in Zig</strong>… That will run on our fresh new port of <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> for PinePhone.</p>
 <p><em>Why build the Display Driver in Zig? Instead of C?</em></p>
-<p>Sadly some parts of PinePhone’s <strong>ST7703 LCD Controller</strong> and <strong>A64 Allwinner SoC</strong> are poorly documented. (Sigh)</p>
+<p>Sadly some parts of PinePhone’s <a href="https://lupyuen.github.io/articles/dsi#sitronix-st7703-lcd-controller"><strong>ST7703 LCD Controller</strong></a> and <a href="https://lupyuen.github.io/articles/dsi#initialise-mipi-dsi"><strong>A64 Allwinner SoC</strong></a> are poorly documented. (Sigh)</p>
 <p>Thus we’re building a <strong>Quick Prototype</strong> in Zig to be sure we’re setting the Hardware Registers correctly.</p>
-<p>And while rushing through the reckless coding, it’s great to have Zig cover our backs and catch <strong>Common Runtime Problems</strong>.</p>
+<p>And while rushing through the reckless coding, it’s great to have Zig cover our backs and catch <a href="https://ziglang.org/documentation/master/#Undefined-Behavior"><strong>Common Runtime Problems</strong></a>.</p>
 <p>Like Null Pointers, Underflow, Overflow, Array Out Of Bounds, …</p>
 <p><em>Will our final driver be in Zig or C?</em></p>
 <p>Maybe Zig, maybe C?</p>
