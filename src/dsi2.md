@@ -2,21 +2,21 @@
 
 📝 _17 Oct 2022_
 
-![TODO](https://lupyuen.github.io/images/dsi2-title.jpg)
+![Apache NuttX RTOS rendering something on PinePhone's LCD Display](https://lupyuen.github.io/images/dsi2-title.jpg)
 
-In our last article we talked about [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) and its __LCD Display__, connected via the (complicated) __MIPI Display Serial Interface__...
+In our last article we talked about [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) and its [__LCD Display__](https://lupyuen.github.io/articles/dsi#xingbangda-xbd599-lcd-panel), connected via the (super complicated) [__MIPI Display Serial Interface__](https://lupyuen.github.io/articles/dsi#connector-for-mipi-dsi)...
 
 -   [__"Understanding PinePhone's Display (MIPI DSI)"__](https://lupyuen.github.io/articles/dsi)
 
-Today we shall create a __PinePhone Display Driver in Zig__... That will run on our fresh new port of [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) to PinePhone.
+Today we shall create a __PinePhone Display Driver in Zig__... That will run on our fresh new port of [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) for PinePhone.
 
 _Why build the Display Driver in Zig? Instead of C?_
 
-Sadly some parts of PinePhone's __ST7703 LCD Controller__ and __A64 Allwinner SoC__ are poorly documented. (Sigh)
+Sadly some parts of PinePhone's [__ST7703 LCD Controller__](https://lupyuen.github.io/articles/dsi#sitronix-st7703-lcd-controller) and [__A64 Allwinner SoC__](https://lupyuen.github.io/articles/dsi#initialise-mipi-dsi) are poorly documented. (Sigh)
 
 Thus we're building a __Quick Prototype__ in Zig to be sure we're setting the Hardware Registers correctly.
 
-And while rushing through the reckless coding, it's great to have Zig cover our backs and catch __Common Runtime Problems__.
+And while rushing through the reckless coding, it's great to have Zig cover our backs and catch [__Common Runtime Problems__](https://ziglang.org/documentation/master/#Undefined-Behavior).
 
 Like Null Pointers, Underflow, Overflow, Array Out Of Bounds, ...
 
