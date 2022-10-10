@@ -24,7 +24,9 @@ _Will our final driver be in Zig or C?_
 
 Maybe Zig, maybe C?
 
-This driver goes into the __NuttX RTOS Kernel__. So most folks would expect the driver to be delivered in C?
+It's awfully nice to use Zig to simplify the complicated driver code. Zig's [__Runtime Safety Checks__](https://ziglang.org/documentation/master/#Undefined-Behavior) are extremely helpful too.
+
+But this driver goes into the __NuttX RTOS Kernel__. So most folks would expect the final driver to be delivered in C?
 
 In any case, Zig and C look highly similar. Converting the Zig Driver to C should be straightforward.
 
