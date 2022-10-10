@@ -1134,6 +1134,10 @@ The Initialisation Sequence consists of the following __20 DCS Commands__ that w
 | #20
 | `0x29` | __Display On__ (Page 97): <br> Recover from DISPLAY OFF mode <br> _(MIPI_DCS_SET_DISPLAY_ON)_
 
-The Initialisation Sequence was originally specified here...
+The above commands were originally specified here (partially annotated)...
 
 -   [__Initialisation Sequence__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333)
+
+We added the last 2 commands (__SLPOUT__ and __Display On__) to be consistent with the __p-boot Version__, which was tested OK on NuttX...
+
+-   [__p-boot Initialisation Sequence__](https://megous.com/git/p-boot/tree/src/display.c#n216)
