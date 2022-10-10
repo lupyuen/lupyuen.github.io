@@ -85,7 +85,7 @@
 </ul>
 <p>Today we shall create a <strong>PinePhone Display Driver in Zig</strong>… That will run on our fresh new port of <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> for PinePhone.</p>
 <p><em>Why build the Display Driver in Zig? Instead of C?</em></p>
-<p>Sadly some parts of PinePhone’s <a href="https://lupyuen.github.io/articles/dsi#sitronix-st7703-lcd-controller"><strong>ST7703 LCD Controller</strong></a> and <a href="https://lupyuen.github.io/articles/dsi#initialise-mipi-dsi"><strong>A64 Allwinner SoC</strong></a> are poorly documented. (Sigh)</p>
+<p>Sadly some parts of PinePhone’s <a href="https://lupyuen.github.io/articles/dsi#sitronix-st7703-lcd-controller"><strong>ST7703 LCD Controller</strong></a> and <a href="https://lupyuen.github.io/articles/dsi#initialise-mipi-dsi"><strong>Allwinner A64 SoC</strong></a> are poorly documented. (Sigh)</p>
 <p>Thus we’re building a <strong>Quick Prototype</strong> in Zig to be sure we’re setting the Hardware Registers correctly.</p>
 <p>And while rushing through the reckless coding, it’s great to have Zig cover our backs and catch <a href="https://ziglang.org/documentation/master/#Undefined-Behavior"><strong>Common Runtime Problems</strong></a>.</p>
 <p>Like Null Pointers, Underflow, Overflow, Array Out Of Bounds, …</p>
