@@ -1096,9 +1096,13 @@
 <tr><td style="text-align: center"><code>0x29</code></td><td style="text-align: left"><strong>Display On</strong> (Page 97): <br> Recover from DISPLAY OFF mode <br> <em>(MIPI_DCS_SET_DISPLAY_ON)</em></td></tr>
 </tbody></table>
 </div>
-<p>The Initialisation Sequence was originally specified here…</p>
+<p>The above commands were originally specified here (partially annotated)…</p>
 <ul>
 <li><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333"><strong>Initialisation Sequence</strong></a></li>
+</ul>
+<p>We added the last 2 commands (<strong>SLPOUT</strong> and <strong>Display On</strong>) to be consistent with the <strong>p-boot Version</strong>, which was tested OK on NuttX…</p>
+<ul>
+<li><a href="https://megous.com/git/p-boot/tree/src/display.c#n216"><strong>p-boot Initialisation Sequence</strong></a></li>
 </ul>
 
     
