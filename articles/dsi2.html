@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>NuttX RTOS for PinePhone: Display Driver in Zig</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="NuttX RTOS for PinePhone: Display Driver in Zig" 
+    data-rh="true">
+<meta property="og:description" 
+    content="Let's build a PinePhone Display Driver in Zig... That will run on Apache NuttX RTOS"
+    data-rh="true">
+<meta name="description" 
+    content="Let's build a PinePhone Display Driver in Zig... That will run on Apache NuttX RTOS">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/dsi2-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">NuttX RTOS for PinePhone: Display Driver in Zig</h1>
+    <nav id="TOC"><ul>
+<li><a href="#whats-next">1 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>17 Oct 2022</em></p>
+<p><img src="https://lupyuen.github.io/images/dsi2-title.jpg" alt="TODO" /></p>
+<p>In our last article we talked about <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> and its <strong>LCD Display</strong>, connected via the (complicated) <strong>MIPI Display Serial Interface</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/dsi"><strong>“Understanding PinePhone’s Display (MIPI DSI)”</strong></a></li>
+</ul>
+<p>Today we shall create a <strong>PinePhone Display Driver in Zig</strong>… That will run on our fresh new port of <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> to PinePhone.</p>
+<p><em>Why build the Display Driver in Zig? Instead of C?</em></p>
+<p>Sadly some parts of PinePhone’s <strong>ST7703 LCD Controller</strong> and <strong>A64 Allwinner SoC</strong> are poorly documented. (Sigh)</p>
+<p>Thus we’re building a <strong>Quick Prototype</strong> in Zig to be sure we’re setting the Hardware Registers correctly.</p>
+<p>And while rushing through the reckless coding, it’s great to have Zig cover our backs and catch <strong>Common Runtime Problems</strong>.</p>
+<p>Like Null Pointers, Underflow, Overflow, Array Out Of Bounds, …</p>
+<p><em>Will our final driver be in Zig or C?</em></p>
+<p>Maybe Zig, maybe C?</p>
+<p>This driver goes into the <strong>NuttX RTOS Kernel</strong>. So most folks would expect the driver to be delivered in C?</p>
+<p>In any case, Zig and C look highly similar. Converting the Zig Driver to C should be straightforward.</p>
+<p>(Minus the Runtime Safety Checks)</p>
+<p>Zig or C? Lemme know what you think! 🙏</p>
+<p>Let’s continue the journey from our <strong>NuttX Porting Journal</strong>…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
+</ul>
+<h1 id="whats-next"><a href="#whats-next">1 What’s Next</a></h1>
+<p>TODO</p>
+<p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
+<p>Check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/arm"><strong>“Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/uboot"><strong>“PinePhone boots Apache NuttX RTOS”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/interrupt"><strong>“NuttX RTOS for PinePhone: Fixing the Interrupts”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/serial"><strong>“NuttX RTOS for PinePhone: UART Driver”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/dsi"><strong>“Understanding PinePhone’s Display (MIPI DSI)”</strong></a></p>
+</li>
+</ul>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/book"><strong>My Current Project: “The RISC-V BL602 Book”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/dsi2.md"><strong>lupyuen.github.io/src/dsi2.md</strong></a></p>
+
+    
+</body>
+</html>
