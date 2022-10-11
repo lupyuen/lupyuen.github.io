@@ -67,19 +67,20 @@
 
     <h1 class="title">NuttX RTOS for PinePhone: Display Driver in Zig</h1>
     <nav id="TOC"><ul>
-<li><a href="#zig-on-pinephone">1 Zig on PinePhone</a><ul></ul></li>
-<li><a href="#zig-driver-for-pinephone-mipi-dsi">2 Zig Driver for PinePhone MIPI DSI</a><ul></ul></li>
-<li><a href="#compose-mipi-dsi-long-packet-in-zig">3 Compose MIPI DSI Long Packet in Zig</a><ul></ul></li>
-<li><a href="#compose-mipi-dsi-short-packet-in-zig">4 Compose MIPI DSI Short Packet in Zig</a><ul></ul></li>
-<li><a href="#compute-error-correction-code-in-zig">5 Compute Error Correction Code in Zig</a><ul></ul></li>
-<li><a href="#compute-cyclic-redundancy-check-in-zig">6 Compute Cyclic Redundancy Check in Zig</a><ul></ul></li>
-<li><a href="#test-pinephone-mipi-dsi-driver-with-qemu">7 Test PinePhone MIPI DSI Driver with QEMU</a><ul></ul></li>
-<li><a href="#test-case-for-pinephone-mipi-dsi-driver">8 Test Case for PinePhone MIPI DSI Driver</a><ul></ul></li>
-<li><a href="#initialise-st7703-lcd-controller-in-zig">9 Initialise ST7703 LCD Controller in Zig</a><ul></ul></li>
-<li><a href="#test-zig-display-driver-for-pinephone">10 Test Zig Display Driver for PinePhone</a><ul></ul></li>
-<li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>17 Oct 2022</em></p>
+<li><a href="#inside-pinephone">1 Inside PinePhone</a><ul></ul></li>
+<li><a href="#zig-on-pinephone">2 Zig on PinePhone</a><ul></ul></li>
+<li><a href="#zig-driver-for-pinephone-mipi-dsi">3 Zig Driver for PinePhone MIPI DSI</a><ul></ul></li>
+<li><a href="#compose-mipi-dsi-long-packet-in-zig">4 Compose MIPI DSI Long Packet in Zig</a><ul></ul></li>
+<li><a href="#compose-mipi-dsi-short-packet-in-zig">5 Compose MIPI DSI Short Packet in Zig</a><ul></ul></li>
+<li><a href="#compute-error-correction-code-in-zig">6 Compute Error Correction Code in Zig</a><ul></ul></li>
+<li><a href="#compute-cyclic-redundancy-check-in-zig">7 Compute Cyclic Redundancy Check in Zig</a><ul></ul></li>
+<li><a href="#test-pinephone-mipi-dsi-driver-with-qemu">8 Test PinePhone MIPI DSI Driver with QEMU</a><ul></ul></li>
+<li><a href="#test-case-for-pinephone-mipi-dsi-driver">9 Test Case for PinePhone MIPI DSI Driver</a><ul></ul></li>
+<li><a href="#initialise-st7703-lcd-controller-in-zig">10 Initialise ST7703 LCD Controller in Zig</a><ul></ul></li>
+<li><a href="#test-zig-display-driver-for-pinephone">11 Test Zig Display Driver for PinePhone</a><ul></ul></li>
+<li><a href="#whats-next">12 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>17 Oct 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/dsi2-title.jpg" alt="Apache NuttX RTOS rendering something on PinePhone’s LCD Display" /></p>
-<p>In our last article we talked about <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> and its <a href="https://lupyuen.github.io/articles/dsi#xingbangda-xbd599-lcd-panel"><strong>LCD Display</strong></a>, connected via the (super complicated) <a href="https://lupyuen.github.io/articles/dsi#connector-for-mipi-dsi"><strong>MIPI Display Serial Interface</strong></a>…</p>
+<p>In our last article we talked about <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> (pic above) and its <a href="https://lupyuen.github.io/articles/dsi#xingbangda-xbd599-lcd-panel"><strong>LCD Display</strong></a>, connected via the (super complicated) <a href="https://lupyuen.github.io/articles/dsi#connector-for-mipi-dsi"><strong>MIPI Display Serial Interface</strong></a>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi"><strong>“Understanding PinePhone’s Display (MIPI DSI)”</strong></a></li>
 </ul>
@@ -100,7 +101,51 @@
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
 </ul>
-<h1 id="zig-on-pinephone"><a href="#zig-on-pinephone">1 Zig on PinePhone</a></h1>
+<p><img src="https://lupyuen.github.io/images/dsi-title.jpg" alt="LCD Display on PinePhone Schematic (Page 2)" /></p>
+<p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LCD Display on PinePhone Schematic (Page 2)</em></a></p>
+<h1 id="inside-pinephone"><a href="#inside-pinephone">1 Inside PinePhone</a></h1>
+<p><em>How is the LCD Display connected inside PinePhone?</em></p>
+<p>Inside PinePhone is a <strong>Xingbangda XBD599</strong> LCD Panel…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/dsi#xingbangda-xbd599-lcd-panel"><strong>“Xingbangda XBD599 LCD Panel”</strong></a></li>
+</ul>
+<p>The LCD Display is connected to the <a href="https://linux-sunxi.org/A64"><strong>Allwinner A64 SoC</strong></a> via a <strong>MIPI Display Serial Interface (DSI)</strong>. (Pic above)</p>
+<p><a href="https://en.wikipedia.org/wiki/MIPI_Alliance">(MIPI is the <strong>Mobile Industry Processor Interface Alliance</strong>)</a></p>
+<p><em>What’s a MIPI Display Serial Interface?</em></p>
+<p>Think of it as SPI, but supercharged with <strong>Multiple Data Lanes</strong>!</p>
+<p>This pic below shows the MIPI DSI Connector that connects PinePhone’s <strong>Allwinner A64 SoC</strong> directly to the LCD Display…</p>
+<ul>
+<li>
+<p><strong>CKN and CKP</strong> are the DSI Clock Lines</p>
+<p>(Similar to SPI Clock)</p>
+</li>
+<li>
+<p><strong>D0N and D0P</strong> for DSI Data Lane 0</p>
+<p>(Similar to SPI MISO / MOSI)</p>
+</li>
+<li>
+<p><strong>D1N and D1P</strong> for DSI Data Lane 1</p>
+<p>(Yep DSI has more data lanes than SPI)</p>
+</li>
+<li>
+<p><strong>D2N and D2P</strong> for DSI Data Lane 2</p>
+</li>
+<li>
+<p><strong>D3N and D3P</strong> for DSI Data Lane 3</p>
+<p>(MIPI DSI has 4 data lanes!)</p>
+</li>
+</ul>
+<p><em>Why two connections per Data Lane?</em></p>
+<p><strong>N</strong> means Negative, <strong>P</strong> means Positive.</p>
+<p>MIPI DSI uses <a href="https://en.wikipedia.org/wiki/Differential_signalling"><strong>Differential Signalling</strong></a> for high-speed data transfers. (4.5 Gbps per lane)</p>
+<p>(Differential Signalling is also used in <a href="https://en.wikipedia.org/wiki/HDMI"><strong>HDMI</strong></a> and <a href="https://en.wikipedia.org/wiki/USB#Signaling"><strong>USB</strong></a>)</p>
+<p>The (dull) technical details of DSI are covered here…</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Display_Serial_Interface"><strong>“Display Serial Interface (DSI)”</strong></a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/dsi-connector.png" alt="MIPI DSI Connector on PinePhone Schematic (Page 11)" /></p>
+<p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>MIPI DSI Connector on PinePhone Schematic (Page 11)</em></a></p>
+<h1 id="zig-on-pinephone"><a href="#zig-on-pinephone">2 Zig on PinePhone</a></h1>
 <p>TODO</p>
 <p><code>make --trace</code> shows these GCC Compiler Options when building Nuttx for PinePhone…</p>
 <div class="example-wrap"><pre class="language-bash"><code>aarch64-none-elf-gcc
@@ -140,7 +185,7 @@ cd $HOME/nuttx/nuttx
 make</code></pre></div>
 <p>Run the Zig App…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; null
-HELLO ZIG ON PINEPHONE!</code></pre></div><h1 id="zig-driver-for-pinephone-mipi-dsi"><a href="#zig-driver-for-pinephone-mipi-dsi">2 Zig Driver for PinePhone MIPI DSI</a></h1>
+HELLO ZIG ON PINEPHONE!</code></pre></div><h1 id="zig-driver-for-pinephone-mipi-dsi"><a href="#zig-driver-for-pinephone-mipi-dsi">3 Zig Driver for PinePhone MIPI DSI</a></h1>
 <p>TODO</p>
 <p>With Zig, we create a Quick Prototype of the NuttX Driver for MIPI DSI: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig">display.zig</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L62-L167">display.zig</a></p>
@@ -152,7 +197,7 @@ HELLO ZIG ON PINEPHONE!</code></pre></div><h1 id="zig-driver-for-pinephone-mipi-
 <p>We’re doing Quick Prototyping, so it’s great to have Zig catch any Runtime Problems caused by our Bad Coding. (Underflow / Overflow / Array Out Of Bounds)</p>
 <p>And yet Zig is so similar to C that we can test the Zig Driver with the rest of the C code.</p>
 <p>Also <code>comptime</code> Compile-Time Expressions in Zig will be helpful when we initialise the ST7703 LCD Controller. <a href="https://lupyuen.github.io/articles/dsi#initialise-lcd-controller">(See this)</a></p>
-<h1 id="compose-mipi-dsi-long-packet-in-zig"><a href="#compose-mipi-dsi-long-packet-in-zig">3 Compose MIPI DSI Long Packet in Zig</a></h1>
+<h1 id="compose-mipi-dsi-long-packet-in-zig"><a href="#compose-mipi-dsi-long-packet-in-zig">4 Compose MIPI DSI Long Packet in Zig</a></h1>
 <p>TODO</p>
 <p>To initialise PinePhone’s ST7703 LCD Controller, our PinePhone Display Driver for NuttX shall send MIPI DSI Long Packets to ST7703…</p>
 <ul>
@@ -160,7 +205,7 @@ HELLO ZIG ON PINEPHONE!</code></pre></div><h1 id="zig-driver-for-pinephone-mipi-
 </ul>
 <p>This is how our Zig Driver composes a MIPI DSI Long Packet…</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L140-L204">display.zig</a></p>
-<h1 id="compose-mipi-dsi-short-packet-in-zig"><a href="#compose-mipi-dsi-short-packet-in-zig">4 Compose MIPI DSI Short Packet in Zig</a></h1>
+<h1 id="compose-mipi-dsi-short-packet-in-zig"><a href="#compose-mipi-dsi-short-packet-in-zig">5 Compose MIPI DSI Short Packet in Zig</a></h1>
 <p>TODO</p>
 <p>For 1 or 2 bytes of data, our PinePhone Display Driver shall send MIPI DSI Short Packets (instead of Long Packets)…</p>
 <ul>
@@ -168,17 +213,17 @@ HELLO ZIG ON PINEPHONE!</code></pre></div><h1 id="zig-driver-for-pinephone-mipi-
 </ul>
 <p>This is how our Zig Driver composes a MIPI DSI Short Packet…</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L206-L261">display.zig</a></p>
-<h1 id="compute-error-correction-code-in-zig"><a href="#compute-error-correction-code-in-zig">5 Compute Error Correction Code in Zig</a></h1>
+<h1 id="compute-error-correction-code-in-zig"><a href="#compute-error-correction-code-in-zig">6 Compute Error Correction Code in Zig</a></h1>
 <p>TODO</p>
 <p>In our PinePhone Display Driver for NuttX, this is how we compute the Error Correction Code for a MIPI DSI Packet…</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L263-L304">display.zig</a></p>
 <p>The Error Correction Code is the last byte of the 4-byte Packet Header for Long Packets and Short Packets.</p>
-<h1 id="compute-cyclic-redundancy-check-in-zig"><a href="#compute-cyclic-redundancy-check-in-zig">6 Compute Cyclic Redundancy Check in Zig</a></h1>
+<h1 id="compute-cyclic-redundancy-check-in-zig"><a href="#compute-cyclic-redundancy-check-in-zig">7 Compute Cyclic Redundancy Check in Zig</a></h1>
 <p>TODO</p>
 <p>This is how our PinePhone Display Driver computes the 16-bit Cyclic Redundancy Check (CCITT) in Zig…</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L306-L366">display.zig</a></p>
 <p>The Cyclic Redundancy Check is the 2-byte Packet Footer for Long Packets.</p>
-<h1 id="test-pinephone-mipi-dsi-driver-with-qemu"><a href="#test-pinephone-mipi-dsi-driver-with-qemu">7 Test PinePhone MIPI DSI Driver with QEMU</a></h1>
+<h1 id="test-pinephone-mipi-dsi-driver-with-qemu"><a href="#test-pinephone-mipi-dsi-driver-with-qemu">8 Test PinePhone MIPI DSI Driver with QEMU</a></h1>
 <p>TODO</p>
 <p>The above Zig Code for composing Long Packets and Short Packets was tested in QEMU for Arm64 with GIC Version 2…</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/tree/gicv2">lupyuen/incubator-nuttx/tree/gicv2</a></p>
@@ -208,7 +253,7 @@ Result:
 88 88 13 88 64 64 20 88 
 88 88 88 88 88 02 88 00 
 00 00 00 00 00 00 00 00 
-00 00 00 00 65 03 </code></pre></div><h1 id="test-case-for-pinephone-mipi-dsi-driver"><a href="#test-case-for-pinephone-mipi-dsi-driver">8 Test Case for PinePhone MIPI DSI Driver</a></h1>
+00 00 00 00 65 03 </code></pre></div><h1 id="test-case-for-pinephone-mipi-dsi-driver"><a href="#test-case-for-pinephone-mipi-dsi-driver">9 Test Case for PinePhone MIPI DSI Driver</a></h1>
 <p>TODO</p>
 <p>This is how we write a Test Case for the PinePhone MIPI DSI Driver on NuttX…</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L593-L639">display.zig</a></p>
@@ -224,7 +269,7 @@ Result:
 88 88 13 88 64 64 20 88 
 88 88 88 88 88 02 88 00 
 00 00 00 00 00 00 00 00 
-00 00 00 00 65 03 </code></pre></div><h1 id="initialise-st7703-lcd-controller-in-zig"><a href="#initialise-st7703-lcd-controller-in-zig">9 Initialise ST7703 LCD Controller in Zig</a></h1>
+00 00 00 00 65 03 </code></pre></div><h1 id="initialise-st7703-lcd-controller-in-zig"><a href="#initialise-st7703-lcd-controller-in-zig">10 Initialise ST7703 LCD Controller in Zig</a></h1>
 <p>TODO</p>
 <p>PinePhone’s ST7703 LCD Controller needs to be initialised with these 20 Commands…</p>
 <ul>
@@ -234,14 +279,14 @@ Result:
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L62-L429">display.zig</a></p>
 <p>To send a command, <code>writeDcs</code> executes a DCS Short Write or DCS Long Write, depending on the length of the command…</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L431-L453">display.zig</a></p>
-<h1 id="test-zig-display-driver-for-pinephone"><a href="#test-zig-display-driver-for-pinephone">10 Test Zig Display Driver for PinePhone</a></h1>
+<h1 id="test-zig-display-driver-for-pinephone"><a href="#test-zig-display-driver-for-pinephone">11 Test Zig Display Driver for PinePhone</a></h1>
 <p>TODO</p>
 <p>Our NuttX Zig Display Driver powers on the PinePhone Display and works exactly like the C Driver! 🎉</p>
 <p><img src="https://lupyuen.github.io/images/dsi2-title.jpg" alt="Apache NuttX RTOS on PinePhone" /></p>
 <p><em>Can our driver render graphics on PinePhone Display?</em></p>
 <p>Our PinePhone Display Driver isn’t complete. It handles MIPI DSI (for initialising ST7703) but doesn’t support Allwinner A64’s Display Engine (DE) and Timing Controller (TCON), which are needed for rendering graphics.</p>
 <p>We’ll implement DE and TCON next.</p>
-<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
 <p>TODO</p>
 <p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
 <p>Check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
