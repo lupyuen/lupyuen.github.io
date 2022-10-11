@@ -105,15 +105,16 @@
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LCD Display on PinePhone Schematic (Page 2)</em></a></p>
 <h1 id="pinephone-lcd-display"><a href="#pinephone-lcd-display">1 PinePhone LCD Display</a></h1>
 <p><em>How is the LCD Display connected inside PinePhone?</em></p>
-<p>Inside PinePhone is a <strong>XBD599 LCD Panel</strong> by Xingbangda…</p>
+<p>Inside PinePhone is a <strong>XBD599 LCD Panel</strong> by Xingbangda (pic above)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#xingbangda-xbd599-lcd-panel"><strong>“Xingbangda XBD599 LCD Panel”</strong></a></li>
 </ul>
-<p>The LCD Display is connected to the <a href="https://linux-sunxi.org/A64"><strong>Allwinner A64 SoC</strong></a> via a <strong>MIPI Display Serial Interface (DSI)</strong>. (Pic above)</p>
+<p>The LCD Display is connected to the <a href="https://linux-sunxi.org/A64"><strong>Allwinner A64 SoC</strong></a> via a <strong>MIPI Display Serial Interface (DSI)</strong>.</p>
 <p><a href="https://en.wikipedia.org/wiki/MIPI_Alliance">(MIPI is the <strong>Mobile Industry Processor Interface Alliance</strong>)</a></p>
 <p><em>What’s a MIPI Display Serial Interface?</em></p>
 <p>Think of it as SPI, but supercharged with <strong>Multiple Data Lanes</strong>!</p>
-<p>TODO</p>
+<p>PinePhone’s MIPI Display Serial Interface runs on <strong>4 Data Lanes</strong> that will transmit 4 streams of pixel data concurrently.</p>
+<p><a href="https://en.wikipedia.org/wiki/Display_Serial_Interface">(More about Display Serial Interface)</a></p>
 <p><em>How do we control PinePhone’s LCD Display?</em></p>
 <p>The XBD599 LCD Panel has a <strong>Sitronix ST7703 LCD Controller</strong> inside…</p>
 <ul>
@@ -121,7 +122,7 @@
 </ul>
 <p>Which means our PinePhone Display Driver shall <strong>send commands to the ST7703 LCD Controller</strong> over the MIPI Display Serial Interface.</p>
 <p><em>What commands will our Display Driver send to ST7703?</em></p>
-<p>At startup, our driver shall these 20 <strong>Initialisation Commands</strong> to the ST7703 LCD Controller…</p>
+<p>At startup, our driver shall send these 20 <strong>Initialisation Commands</strong> to the ST7703 LCD Controller…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller"><strong>“Initialise LCD Controller”</strong></a></li>
 </ul>
