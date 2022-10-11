@@ -94,6 +94,10 @@ The (dull) technical details of DSI are covered here...
 
 [_MIPI DSI Connector on PinePhone Schematic (Page 11)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
 
+# Sitronix ST7703 LCD Controller
+
+TODO
+
 # Zig on PinePhone
 
 TODO
