@@ -138,15 +138,19 @@
 </ul>
 <p><em>Why two connections per Data Lane?</em></p>
 <p><strong>N</strong> means Negative, <strong>P</strong> means Positive.</p>
-<p>MIPI DSI uses <a href="https://en.wikipedia.org/wiki/Differential_signalling"><strong>Differential Signalling</strong></a> for high-speed data transfers. (4.5 Gbps per lane)</p>
+<p>MIPI DSI uses <a href="https://en.wikipedia.org/wiki/Differential_signalling"><strong>Differential Signalling</strong></a> for high-speed data transfers.</p>
 <p>(Differential Signalling is also used in <a href="https://en.wikipedia.org/wiki/HDMI"><strong>HDMI</strong></a> and <a href="https://en.wikipedia.org/wiki/USB#Signaling"><strong>USB</strong></a>)</p>
-<p>The (dull) technical details of DSI are covered here…</p>
-<ul>
-<li><a href="https://en.wikipedia.org/wiki/Display_Serial_Interface"><strong>“Display Serial Interface (DSI)”</strong></a></li>
-</ul>
+<p><a href="https://en.wikipedia.org/wiki/Display_Serial_Interface">(More about Display Serial Interface)</a></p>
+<p>Let’s look inside the XBD599 LCD Panel…</p>
 <p><img src="https://lupyuen.github.io/images/dsi-connector.png" alt="MIPI DSI Connector on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>MIPI DSI Connector on PinePhone Schematic (Page 11)</em></a></p>
 <h1 id="sitronix-st7703-lcd-controller"><a href="#sitronix-st7703-lcd-controller">2 Sitronix ST7703 LCD Controller</a></h1>
+<p><em>How do we control PinePhone’s LCD Display?</em></p>
+<p>The XBD599 LCD Panel has a <strong>Sitronix ST7703 LCD Controller</strong> inside…</p>
+<ul>
+<li><a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>Sitronix ST7703 LCD Controller Datasheet</strong></a></li>
+</ul>
+<p>Which means our PinePhone Display Driver shall <strong>send commands to the ST7703 LCD Controller</strong> over the MIPI Display Serial Interface.</p>
 <p>TODO</p>
 <h1 id="zig-on-pinephone"><a href="#zig-on-pinephone">3 Zig on PinePhone</a></h1>
 <p>TODO</p>
