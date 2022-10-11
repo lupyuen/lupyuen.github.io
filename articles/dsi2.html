@@ -151,8 +151,89 @@
 <li><a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>Sitronix ST7703 LCD Controller Datasheet</strong></a></li>
 </ul>
 <p>Which means our PinePhone Display Driver shall <strong>send commands to the ST7703 LCD Controller</strong> over the MIPI Display Serial Interface.</p>
+<p><em>What commands will our Display Driver send to ST7703?</em></p>
+<p>At startup, our driver shall these 20 <strong>Initialisation Commands</strong> to the ST7703 LCD Controller…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller"><strong>“Initialise LCD Controller”</strong></a></li>
+</ul>
 <p>TODO</p>
-<h1 id="zig-on-pinephone"><a href="#zig-on-pinephone">3 Zig on PinePhone</a></h1>
+<div><table><thead><tr><th style="text-align: center">Byte</th><th style="text-align: left">Purpose</th></tr></thead><tbody>
+<tr><td style="text-align: center">#1</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>0xB9</code></td><td style="text-align: left"><strong>SETEXTC</strong> (Page 131): <br> Enable USER Command</td></tr>
+<tr><td style="text-align: center"><code>0xF1</code></td><td style="text-align: left">Enable User command</td></tr>
+<tr><td style="text-align: center"><code>0x12</code></td><td style="text-align: left"><em>(Continued)</em></td></tr>
+<tr><td style="text-align: center"><code>0x83</code></td><td style="text-align: left"><em>(Continued)</em></td></tr>
+</tbody></table>
+</div>
+<p>TODO</p>
+<div><table><thead><tr><th style="text-align: center">Byte</th><th style="text-align: left">Purpose</th></tr></thead><tbody>
+<tr><td style="text-align: center">#16</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: center"><code>0xE9</code></td><td style="text-align: left"><strong>SETGIP1</strong> (Page 163): <br> Set forward GIP timing</td></tr>
+<tr><td style="text-align: center"><code>0x82</code></td><td style="text-align: left">SHR0, SHR1, CHR, CHR2 refer to Internal DE <br> <em>(REF_EN = 1)</em> <br> <em>(PANEL_SEL = 2)</em></td></tr>
+<tr><td style="text-align: center"><code>0x10</code></td><td style="text-align: left">Starting position of GIP STV group 0 = 4102 HSYNC <br> <em>(SHR0 Bits 8-12 = <code>0x10</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x06</code></td><td style="text-align: left"><em>(SHR0 Bits 0-7  = <code>0x06</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x05</code></td><td style="text-align: left">Starting position of GIP STV group 1 = 1442 HSYNC <br> <em>(SHR1 Bits 8-12 = <code>0x05</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0xA2</code></td><td style="text-align: left"><em>(SHR1 Bits 0-7  = <code>0xA2</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x0A</code></td><td style="text-align: left">Distance of STV rising edge and HYSNC  = 10*2  Fosc <br> <em>(SPON  Bits 0-7 = <code>0x0A</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0xA5</code></td><td style="text-align: left">Distance of STV falling edge and HYSNC = 165*2 Fosc <br> <em>(SPOFF Bits 0-7 = <code>0xA5</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x12</code></td><td style="text-align: left">STV0_1 distance with STV0_0 = 1 HSYNC <br> <em>(SHR0_1 = 1)</em> <br> STV0_2 distance with STV0_0 = 2 HSYNC <br> <em>(SHR0_2 = 2)</em></td></tr>
+<tr><td style="text-align: center"><code>0x31</code></td><td style="text-align: left">STV0_3 distance with STV0_0 = 3 HSYNC <br> <em>(SHR0_3 = 3)</em> <br> STV1_1 distance with STV1_0 = 1 HSYNC <br> <em>(SHR1_1 = 1)</em></td></tr>
+<tr><td style="text-align: center"><code>0x23</code></td><td style="text-align: left">STV1_2 distance with STV1_0 = 2 HSYNC <br> <em>(SHR1_2 = 2)</em> <br> STV1_3 distance with STV1_0 = 3 HSYNC <br> <em>(SHR1_3 = 3)</em></td></tr>
+<tr><td style="text-align: center"><code>0x37</code></td><td style="text-align: left">STV signal high pulse width = 3 HSYNC <br> <em>(SHP = 3)</em> <br> Total number of STV signal = 7 <br> <em>(SCP = 7)</em></td></tr>
+<tr><td style="text-align: center"><code>0x83</code></td><td style="text-align: left">Starting position of GIP CKV group 0 <br> <em>(CKV0_0)</em> = 131 HSYNC <br> <em>(CHR = <code>0x83</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x04</code></td><td style="text-align: left">Distance of CKV rising edge and HYSNC  = 4*2   Fosc <br> <em>(CON  Bits 0-7 = <code>0x04</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0xBC</code></td><td style="text-align: left">Distance of CKV falling edge and HYSNC = 188*2 Fosc <br> <em>(COFF Bits 0-7 = <code>0xBC</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x27</code></td><td style="text-align: left">CKV signal high pulse width = 2 HSYNC <br> <em>(CHP = 2)</em> <br> Total period cycle of CKV signal = 7 HSYNC <br> <em>(CCP = 7)</em></td></tr>
+<tr><td style="text-align: center"><code>0x38</code></td><td style="text-align: left">Extra gate counter at blanking area: Gate number = 56 <br> <em>(USER_GIP_GATE = <code>0x38</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x0C</code></td><td style="text-align: left">Left side GIP output pad signal = ??? <br> <em>(CGTS_L Bits 16-21 = <code>0x0C</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(CGTS_L Bits  8-15 = <code>0x00</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x03</code></td><td style="text-align: left"><em>(CGTS_L Bits  0-7  = <code>0x03</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Normal polarity of Left side GIP output pad signal <br> <em>(CGTS_INV_L Bits 16-21 = <code>0x00</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(CGTS_INV_L Bits  8-15 = <code>0x00</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(CGTS_INV_L Bits  0-7  = <code>0x00</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x0C</code></td><td style="text-align: left">Right side GIP output pad signal = ??? <br> <em>(CGTS_R Bits 16-21 = <code>0x0C</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(CGTS_R Bits  8-15 = <code>0x00</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x03</code></td><td style="text-align: left"><em>(CGTS_R Bits  0-7  = <code>0x03</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Normal polarity of Right side GIP output pad signal <br> <em>(CGTS_INV_R Bits 16-21 = <code>0x00</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(CGTS_INV_R Bits  8-15 = <code>0x00</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(CGTS_INV_R Bits  0-7  = <code>0x00</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x75</code></td><td style="text-align: left">Left side GIP output pad signal = ??? <br> <em>(COS1_L = 7)</em> <br> Left side GIP output pad signal = ??? <br> <em>(COS2_L = 5)</em></td></tr>
+<tr><td style="text-align: center"><code>0x75</code></td><td style="text-align: left">Left side GIP output pad signal = ??? <br> <em>(COS3_L = 7)</em> <br> <em>(COS4_L = 5)</em></td></tr>
+<tr><td style="text-align: center"><code>0x31</code></td><td style="text-align: left">Left side GIP output pad signal = ??? <br> <em>(COS5_L = 3)</em> <br> <em>(COS6_L = 1)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 32)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 33)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 34)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 35)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 36)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Left side GIP output pad signal  = ??? <br> <em>(COS17_L = 8)</em> <br> Left side GIP output pad signal  = ??? <br> <em>(COS18_L = 8)</em></td></tr>
+<tr><td style="text-align: center"><code>0x13</code></td><td style="text-align: left">Left side GIP output pad signal  = ??? <br> <em>(COS19_L = 1)</em> <br> Left side GIP output pad signal  = ??? <br> <em>(COS20_L = 3)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Left side GIP output pad signal  = ??? <br> <em>(COS21_L = 8)</em> <br> Left side GIP output pad signal  = ??? <br> <em>(COS22_L = 8)</em></td></tr>
+<tr><td style="text-align: center"><code>0x64</code></td><td style="text-align: left">Right side GIP output pad signal = ??? <br> <em>(COS1_R  = 6)</em> <br> Right side GIP output pad signal = ??? <br> <em>(COS2_R  = 4)</em></td></tr>
+<tr><td style="text-align: center"><code>0x64</code></td><td style="text-align: left">Right side GIP output pad signal = ??? <br> <em>(COS3_R  = 6)</em> <br> Right side GIP output pad signal = ??? <br> <em>(COS4_R  = 4)</em></td></tr>
+<tr><td style="text-align: center"><code>0x20</code></td><td style="text-align: left">Right side GIP output pad signal = ??? <br> <em>(COS5_R  = 2)</em> <br> Right side GIP output pad signal = ??? <br> <em>(COS6_R  = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 43)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 44)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 45)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 46)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Reserved <em>(Parameter 47)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Right side GIP output pad signal = ??? <br> <em>(COS17_R = 8)</em> <br> Right side GIP output pad signal = ??? <br> <em>(COS18_R = 8)</em></td></tr>
+<tr><td style="text-align: center"><code>0x02</code></td><td style="text-align: left">Right side GIP output pad signal = ??? <br> <em>(COS19_R = 0)</em> <br> Right side GIP output pad signal = ??? <br> <em>(COS20_R = 2)</em></td></tr>
+<tr><td style="text-align: center"><code>0x88</code></td><td style="text-align: left">Right side GIP output pad signal = ??? <br> <em>(COS21_R = 8)</em> <br> Right side GIP output pad signal = ??? <br> <em>(COS22_R = 8)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(TCON_OPT = <code>0x00</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(GIP_OPT Bits 16-22 = <code>0x00</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(GIP_OPT Bits  8-15 = <code>0x00</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(GIP_OPT Bits  0-7  = <code>0x00</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Starting position of GIP CKV group 1 <br> <em>(CKV1_0)</em> = 0 HSYNC <br> <em>(CHR2 = <code>0x00</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Distance of CKV1 rising edge and HYSNC  = 0*2 Fosc <br> <em>(CON2  Bits 0-7 = <code>0x00</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">Distance of CKV1 falling edge and HYSNC = 0*2 Fosc <br> <em>(COFF2 Bits 0-7 = <code>0x00</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left">CKV1 signal high pulse width = 0 HSYNC <br> <em>(CHP2 = 0)</em> <br> Total period cycle of CKV1 signal = 0 HSYNC <br> <em>(CCP2 = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(CKS Bits 16-21 = <code>0x00</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(CKS Bits  8-15 = <code>0x00</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(CKS Bits  0-7  = <code>0x00</code>)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(COFF Bits 8-9 = 0)</em> <br> <em>(CON Bits 8-9 = 0)</em> <br> <em>(SPOFF Bits 8-9 = 0)</em> <br> <em>(SPON Bits 8-9 = 0)</em></td></tr>
+<tr><td style="text-align: center"><code>0x00</code></td><td style="text-align: left"><em>(COFF2 Bits 8-9 = 0)</em> <br> <em>(CON2 Bits 8-9 = 0)</em></td></tr>
+</tbody></table>
+</div><h1 id="zig-on-pinephone"><a href="#zig-on-pinephone">3 Zig on PinePhone</a></h1>
 <p>TODO</p>
 <p><code>make --trace</code> shows these GCC Compiler Options when building Nuttx for PinePhone…</p>
 <div class="example-wrap"><pre class="language-bash"><code>aarch64-none-elf-gcc
