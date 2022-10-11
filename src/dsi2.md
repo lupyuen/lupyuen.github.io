@@ -46,11 +46,11 @@ Let's continue the journey from our __NuttX Porting Journal__...
 
 _How is the LCD Display connected inside PinePhone?_
 
-Inside PinePhone is a __XBD599 LCD Panel__ by Xingbangda...
+Inside PinePhone is a __XBD599 LCD Panel__ by Xingbangda (pic above)...
 
 -   [__"Xingbangda XBD599 LCD Panel"__](https://lupyuen.github.io/articles/dsi#xingbangda-xbd599-lcd-panel)
 
-The LCD Display is connected to the [__Allwinner A64 SoC__](https://linux-sunxi.org/A64) via a __MIPI Display Serial Interface (DSI)__. (Pic above)
+The LCD Display is connected to the [__Allwinner A64 SoC__](https://linux-sunxi.org/A64) via a __MIPI Display Serial Interface (DSI)__.
 
 [(MIPI is the __Mobile Industry Processor Interface Alliance__)](https://en.wikipedia.org/wiki/MIPI_Alliance)
 
@@ -58,7 +58,9 @@ _What's a MIPI Display Serial Interface?_
 
 Think of it as SPI, but supercharged with __Multiple Data Lanes__!
 
-TODO
+PinePhone's MIPI Display Serial Interface runs on __4 Data Lanes__ that will transmit 4 streams of pixel data concurrently.
+
+[(More about Display Serial Interface)](https://en.wikipedia.org/wiki/Display_Serial_Interface)
 
 _How do we control PinePhone's LCD Display?_
 
@@ -70,7 +72,7 @@ Which means our PinePhone Display Driver shall __send commands to the ST7703 LCD
 
 _What commands will our Display Driver send to ST7703?_
 
-At startup, our driver shall these 20 __Initialisation Commands__ to the ST7703 LCD Controller...
+At startup, our driver shall send these 20 __Initialisation Commands__ to the ST7703 LCD Controller...
 
 -   [__"Initialise LCD Controller"__](https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller)
 
