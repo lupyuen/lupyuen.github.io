@@ -72,7 +72,7 @@ The pic below shows the MIPI DSI Connector that connects PinePhone's __Allwinner
 
 -   __D3N and D3P__ for DSI Data Lane 3
 
-    (MIPI DSI has 4 data lanes!)
+    (MIPI DSI has 4 data lanes)
 
 _Why two connections per Data Lane?_
 
