@@ -120,17 +120,17 @@ The MIPI DSI Connector connects PinePhone's __Allwinner A64 SoC__ directly to th
 
     (Similar to SPI Clock)
 
--   __D0P and D0N__ for DSI Data Lane 0
+-   __D0N and D0P__ for DSI Data Lane 0
 
     (Similar to SPI MISO / MOSI)
 
--   __D1P and D1P__ for DSI Data Lane 1
+-   __D1N and D1P__ for DSI Data Lane 1
 
     (Yep DSI has more data lanes than SPI)
 
--   __D2P and D2P__ for DSI Data Lane 2
+-   __D2N and D2P__ for DSI Data Lane 2
 
--   __D3P and D3P__ for DSI Data Lane 3
+-   __D3N and D3P__ for DSI Data Lane 3
 
     (MIPI DSI has 4 data lanes!)
 

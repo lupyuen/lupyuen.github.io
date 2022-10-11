@@ -4,7 +4,7 @@
 
 ![Apache NuttX RTOS rendering something on PinePhone's LCD Display](https://lupyuen.github.io/images/dsi2-title.jpg)
 
-In our last article we talked about [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) and its [__LCD Display__](https://lupyuen.github.io/articles/dsi#xingbangda-xbd599-lcd-panel), connected via the (super complicated) [__MIPI Display Serial Interface__](https://lupyuen.github.io/articles/dsi#connector-for-mipi-dsi)...
+In our last article we talked about [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) (pic above) and its [__LCD Display__](https://lupyuen.github.io/articles/dsi#xingbangda-xbd599-lcd-panel), connected via the (super complicated) [__MIPI Display Serial Interface__](https://lupyuen.github.io/articles/dsi#connector-for-mipi-dsi)...
 
 -   [__"Understanding PinePhone's Display (MIPI DSI)"__](https://lupyuen.github.io/articles/dsi)
 
@@ -38,6 +38,61 @@ Let's continue the journey from our __NuttX Porting Journal__...
 
 -   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
 
+![LCD Display on PinePhone Schematic (Page 2)](https://lupyuen.github.io/images/dsi-title.jpg)
+
+[_LCD Display on PinePhone Schematic (Page 2)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
+
+# Inside PinePhone
+
+_How is the LCD Display connected inside PinePhone?_
+
+Inside PinePhone is a __Xingbangda XBD599__ LCD Panel...
+
+-   [__"Xingbangda XBD599 LCD Panel"__](https://lupyuen.github.io/articles/dsi#xingbangda-xbd599-lcd-panel)
+
+The LCD Display is connected to the [__Allwinner A64 SoC__](https://linux-sunxi.org/A64) via a __MIPI Display Serial Interface (DSI)__. (Pic above)
+
+[(MIPI is the __Mobile Industry Processor Interface Alliance__)](https://en.wikipedia.org/wiki/MIPI_Alliance)
+
+_What's a MIPI Display Serial Interface?_
+
+Think of it as SPI, but supercharged with __Multiple Data Lanes__!
+
+This pic below shows the MIPI DSI Connector that connects PinePhone's __Allwinner A64 SoC__ directly to the LCD Display...
+
+-   __CKN and CKP__ are the DSI Clock Lines
+
+    (Similar to SPI Clock)
+
+-   __D0N and D0P__ for DSI Data Lane 0
+
+    (Similar to SPI MISO / MOSI)
+
+-   __D1N and D1P__ for DSI Data Lane 1
+
+    (Yep DSI has more data lanes than SPI)
+
+-   __D2N and D2P__ for DSI Data Lane 2
+
+-   __D3N and D3P__ for DSI Data Lane 3
+
+    (MIPI DSI has 4 data lanes!)
+
+_Why two connections per Data Lane?_
+
+__N__ means Negative, __P__ means Positive.
+
+MIPI DSI uses [__Differential Signalling__](https://en.wikipedia.org/wiki/Differential_signalling) for high-speed data transfers. (4.5 Gbps per lane)
+
+(Differential Signalling is also used in [__HDMI__](https://en.wikipedia.org/wiki/HDMI) and [__USB__](https://en.wikipedia.org/wiki/USB#Signaling))
+
+The (dull) technical details of DSI are covered here...
+
+-   [__"Display Serial Interface (DSI)"__](https://en.wikipedia.org/wiki/Display_Serial_Interface)
+
+![_MIPI DSI Connector on PinePhone Schematic (Page 11)_](https://lupyuen.github.io/images/dsi-connector.png)
+
+[_MIPI DSI Connector on PinePhone Schematic (Page 11)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
 
 # Zig on PinePhone
 
