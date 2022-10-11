@@ -101,91 +101,11 @@ E9 82 10 06 05 A2 0A A5
 00 00 00 00 00 00 00 00 
 ```
 
-We shall send the bytes to ST7703 in a specific packet format...
+We'll send these 20 commands to ST7703 in a specific packet format...
 
-# Zig on PinePhone
-
-TODO
-
-`make --trace` shows these GCC Compiler Options when building Nuttx for PinePhone...
-
-```bash
-aarch64-none-elf-gcc
-  -c
-  -fno-common
-  -Wall
-  -Wstrict-prototypes
-  -Wshadow
-  -Wundef
-  -Werror
-  -Os
-  -fno-strict-aliasing
-  -fomit-frame-pointer
-  -g
-  -march=armv8-a
-  -mtune=cortex-a53
-  -isystem "/Users/Luppy/PinePhone/nuttx/nuttx/include"
-  -D__NuttX__ 
-  -pipe
-  -I "/Users/Luppy/PinePhone/nuttx/apps/include"
-  -Dmain=hello_main  hello_main.c
-  -o  hello_main.c.Users.Luppy.PinePhone.nuttx.apps.examples.hello.o
-```
-
-Let's run this Zig App: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig)
-
-Enable the Null Example App: make menuconfig, select "Application Configuration" > "Examples" > "Null Example"
-
-Compile the Zig App (based on the above GCC Compiler Options)...
-
-```bash
-#  Compile the Zig App for PinePhone 
-#  (armv8-a with cortex-a53)
-#  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
-zig build-obj \
-  -target aarch64-freestanding-none \
-  -mcpu cortex_a53 \
-  -isystem "$HOME/nuttx/nuttx/include" \
-  -I "$HOME/nuttx/apps/include" \
-  display.zig
-
-#  Copy the compiled app to NuttX and overwrite `null.o`
-#  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
-cp display.o \
-  $HOME/nuttx/apps/examples/null/*null.o
-
-#  Build NuttX to link the Zig Object from `null.o`
-#  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
-cd $HOME/nuttx/nuttx
-make
-```
-
-Run the Zig App...
-
-```text
-nsh> null
-HELLO ZIG ON PINEPHONE!
-```
-
-# Zig Driver for PinePhone MIPI DSI
+# MIPI DSI Long Packet
 
 TODO
-
-With Zig, we create a Quick Prototype of the NuttX Driver for MIPI DSI: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig)
-
-[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L62-L167)
-
-This MIPI DSI Interface is compatible with Zephyr MIPI DSI...
-
--   [zephyr/drivers/mipi_dsi.h](https://github.com/zephyrproject-rtos/zephyr/blob/main/include/zephyr/drivers/mipi_dsi.h)
-
-_Why Zig for the MIPI DSI Driver?_
-
-We're doing Quick Prototyping, so it's great to have Zig catch any Runtime Problems caused by our Bad Coding. (Underflow / Overflow / Array Out Of Bounds)
-
-And yet Zig is so similar to C that we can test the Zig Driver with the rest of the C code.
-
-Also `comptime` Compile-Time Expressions in Zig will be helpful when we initialise the ST7703 LCD Controller. [(See this)](https://lupyuen.github.io/articles/dsi#initialise-lcd-controller)
 
 # Compose MIPI DSI Long Packet in Zig
 
@@ -356,3 +276,67 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/dsi2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/dsi2.md)
+
+# Appendix: Zig on PinePhone
+
+TODO
+
+`make --trace` shows these GCC Compiler Options when building Nuttx for PinePhone...
+
+```bash
+aarch64-none-elf-gcc
+  -c
+  -fno-common
+  -Wall
+  -Wstrict-prototypes
+  -Wshadow
+  -Wundef
+  -Werror
+  -Os
+  -fno-strict-aliasing
+  -fomit-frame-pointer
+  -g
+  -march=armv8-a
+  -mtune=cortex-a53
+  -isystem "/Users/Luppy/PinePhone/nuttx/nuttx/include"
+  -D__NuttX__ 
+  -pipe
+  -I "/Users/Luppy/PinePhone/nuttx/apps/include"
+  -Dmain=hello_main  hello_main.c
+  -o  hello_main.c.Users.Luppy.PinePhone.nuttx.apps.examples.hello.o
+```
+
+Let's run this Zig App: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig)
+
+Enable the Null Example App: make menuconfig, select "Application Configuration" > "Examples" > "Null Example"
+
+Compile the Zig App (based on the above GCC Compiler Options)...
+
+```bash
+#  Compile the Zig App for PinePhone 
+#  (armv8-a with cortex-a53)
+#  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
+zig build-obj \
+  -target aarch64-freestanding-none \
+  -mcpu cortex_a53 \
+  -isystem "$HOME/nuttx/nuttx/include" \
+  -I "$HOME/nuttx/apps/include" \
+  display.zig
+
+#  Copy the compiled app to NuttX and overwrite `null.o`
+#  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
+cp display.o \
+  $HOME/nuttx/apps/examples/null/*null.o
+
+#  Build NuttX to link the Zig Object from `null.o`
+#  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
+cd $HOME/nuttx/nuttx
+make
+```
+
+Run the Zig App...
+
+```text
+nsh> null
+HELLO ZIG ON PINEPHONE!
+```
