@@ -104,7 +104,91 @@ The XBD599 LCD Panel has a __Sitronix ST7703 LCD Controller__ inside...
 
 Which means our PinePhone Display Driver shall __send commands to the ST7703 LCD Controller__ over the MIPI Display Serial Interface.
 
+_What commands will our Display Driver send to ST7703?_
+
+At startup, our driver shall these 20 __Initialisation Commands__ to the ST7703 LCD Controller...
+
+-   [__"Initialise LCD Controller"__](https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller)
+
 TODO
+
+| Byte | Purpose |
+|:----:|:---------|
+| #1
+| `0xB9` | __SETEXTC__ (Page 131): <br> Enable USER Command
+| `0xF1` | Enable User command
+| `0x12` | _(Continued)_
+| `0x83` | _(Continued)_
+
+TODO
+
+| Byte | Purpose |
+|:----:|:---------|
+| #16
+| `0xE9` | __SETGIP1__ (Page 163): <br> Set forward GIP timing
+| `0x82` | SHR0, SHR1, CHR, CHR2 refer to Internal DE <br> _(REF_EN = 1)_ <br> _(PANEL_SEL = 2)_
+| `0x10` | Starting position of GIP STV group 0 = 4102 HSYNC <br> _(SHR0 Bits 8-12 = `0x10`)_
+| `0x06` | _(SHR0 Bits 0-7  = `0x06`)_
+| `0x05` | Starting position of GIP STV group 1 = 1442 HSYNC <br> _(SHR1 Bits 8-12 = `0x05`)_
+| `0xA2` | _(SHR1 Bits 0-7  = `0xA2`)_
+| `0x0A` | Distance of STV rising edge and HYSNC  = 10*2  Fosc <br> _(SPON  Bits 0-7 = `0x0A`)_
+| `0xA5` | Distance of STV falling edge and HYSNC = 165*2 Fosc <br> _(SPOFF Bits 0-7 = `0xA5`)_
+| `0x12` | STV0_1 distance with STV0_0 = 1 HSYNC <br> _(SHR0_1 = 1)_ <br> STV0_2 distance with STV0_0 = 2 HSYNC <br> _(SHR0_2 = 2)_
+| `0x31` | STV0_3 distance with STV0_0 = 3 HSYNC <br> _(SHR0_3 = 3)_ <br> STV1_1 distance with STV1_0 = 1 HSYNC <br> _(SHR1_1 = 1)_
+| `0x23` | STV1_2 distance with STV1_0 = 2 HSYNC <br> _(SHR1_2 = 2)_ <br> STV1_3 distance with STV1_0 = 3 HSYNC <br> _(SHR1_3 = 3)_
+| `0x37` | STV signal high pulse width = 3 HSYNC <br> _(SHP = 3)_ <br> Total number of STV signal = 7 <br> _(SCP = 7)_
+| `0x83` | Starting position of GIP CKV group 0 <br> _(CKV0_0)_ = 131 HSYNC <br> _(CHR = `0x83`)_
+| `0x04` | Distance of CKV rising edge and HYSNC  = 4*2   Fosc <br> _(CON  Bits 0-7 = `0x04`)_
+| `0xBC` | Distance of CKV falling edge and HYSNC = 188*2 Fosc <br> _(COFF Bits 0-7 = `0xBC`)_
+| `0x27` | CKV signal high pulse width = 2 HSYNC <br> _(CHP = 2)_ <br> Total period cycle of CKV signal = 7 HSYNC <br> _(CCP = 7)_
+| `0x38` | Extra gate counter at blanking area: Gate number = 56 <br> _(USER_GIP_GATE = `0x38`)_
+| `0x0C` | Left side GIP output pad signal = ??? <br> _(CGTS_L Bits 16-21 = `0x0C`)_
+| `0x00` | _(CGTS_L Bits  8-15 = `0x00`)_
+| `0x03` | _(CGTS_L Bits  0-7  = `0x03`)_
+| `0x00` | Normal polarity of Left side GIP output pad signal <br> _(CGTS_INV_L Bits 16-21 = `0x00`)_
+| `0x00` | _(CGTS_INV_L Bits  8-15 = `0x00`)_
+| `0x00` | _(CGTS_INV_L Bits  0-7  = `0x00`)_
+| `0x0C` | Right side GIP output pad signal = ??? <br> _(CGTS_R Bits 16-21 = `0x0C`)_
+| `0x00` | _(CGTS_R Bits  8-15 = `0x00`)_
+| `0x03` | _(CGTS_R Bits  0-7  = `0x03`)_
+| `0x00` | Normal polarity of Right side GIP output pad signal <br> _(CGTS_INV_R Bits 16-21 = `0x00`)_
+| `0x00` | _(CGTS_INV_R Bits  8-15 = `0x00`)_
+| `0x00` | _(CGTS_INV_R Bits  0-7  = `0x00`)_
+| `0x75` | Left side GIP output pad signal = ??? <br> _(COS1_L = 7)_ <br> Left side GIP output pad signal = ??? <br> _(COS2_L = 5)_
+| `0x75` | Left side GIP output pad signal = ??? <br> _(COS3_L = 7)_ <br> _(COS4_L = 5)_
+| `0x31` | Left side GIP output pad signal = ??? <br> _(COS5_L = 3)_ <br> _(COS6_L = 1)_
+| `0x88` | Reserved _(Parameter 32)_
+| `0x88` | Reserved _(Parameter 33)_
+| `0x88` | Reserved _(Parameter 34)_
+| `0x88` | Reserved _(Parameter 35)_
+| `0x88` | Reserved _(Parameter 36)_
+| `0x88` | Left side GIP output pad signal  = ??? <br> _(COS17_L = 8)_ <br> Left side GIP output pad signal  = ??? <br> _(COS18_L = 8)_
+| `0x13` | Left side GIP output pad signal  = ??? <br> _(COS19_L = 1)_ <br> Left side GIP output pad signal  = ??? <br> _(COS20_L = 3)_
+| `0x88` | Left side GIP output pad signal  = ??? <br> _(COS21_L = 8)_ <br> Left side GIP output pad signal  = ??? <br> _(COS22_L = 8)_
+| `0x64` | Right side GIP output pad signal = ??? <br> _(COS1_R  = 6)_ <br> Right side GIP output pad signal = ??? <br> _(COS2_R  = 4)_
+| `0x64` | Right side GIP output pad signal = ??? <br> _(COS3_R  = 6)_ <br> Right side GIP output pad signal = ??? <br> _(COS4_R  = 4)_
+| `0x20` | Right side GIP output pad signal = ??? <br> _(COS5_R  = 2)_ <br> Right side GIP output pad signal = ??? <br> _(COS6_R  = 0)_
+| `0x88` | Reserved _(Parameter 43)_
+| `0x88` | Reserved _(Parameter 44)_
+| `0x88` | Reserved _(Parameter 45)_
+| `0x88` | Reserved _(Parameter 46)_
+| `0x88` | Reserved _(Parameter 47)_
+| `0x88` | Right side GIP output pad signal = ??? <br> _(COS17_R = 8)_ <br> Right side GIP output pad signal = ??? <br> _(COS18_R = 8)_
+| `0x02` | Right side GIP output pad signal = ??? <br> _(COS19_R = 0)_ <br> Right side GIP output pad signal = ??? <br> _(COS20_R = 2)_
+| `0x88` | Right side GIP output pad signal = ??? <br> _(COS21_R = 8)_ <br> Right side GIP output pad signal = ??? <br> _(COS22_R = 8)_
+| `0x00` | _(TCON_OPT = `0x00`)_
+| `0x00` | _(GIP_OPT Bits 16-22 = `0x00`)_
+| `0x00` | _(GIP_OPT Bits  8-15 = `0x00`)_
+| `0x00` | _(GIP_OPT Bits  0-7  = `0x00`)_
+| `0x00` | Starting position of GIP CKV group 1 <br> _(CKV1_0)_ = 0 HSYNC <br> _(CHR2 = `0x00`)_
+| `0x00` | Distance of CKV1 rising edge and HYSNC  = 0*2 Fosc <br> _(CON2  Bits 0-7 = `0x00`)_
+| `0x00` | Distance of CKV1 falling edge and HYSNC = 0*2 Fosc <br> _(COFF2 Bits 0-7 = `0x00`)_
+| `0x00` | CKV1 signal high pulse width = 0 HSYNC <br> _(CHP2 = 0)_ <br> Total period cycle of CKV1 signal = 0 HSYNC <br> _(CCP2 = 0)_
+| `0x00` | _(CKS Bits 16-21 = `0x00`)_
+| `0x00` | _(CKS Bits  8-15 = `0x00`)_
+| `0x00` | _(CKS Bits  0-7  = `0x00`)_
+| `0x00` | _(COFF Bits 8-9 = 0)_ <br> _(CON Bits 8-9 = 0)_ <br> _(SPOFF Bits 8-9 = 0)_ <br> _(SPON Bits 8-9 = 0)_
+| `0x00` | _(COFF2 Bits 8-9 = 0)_ <br> _(CON2 Bits 8-9 = 0)_
 
 # Zig on PinePhone
 
