@@ -82,19 +82,27 @@ _Why two connections per Data Lane?_
 
 __N__ means Negative, __P__ means Positive.
 
-MIPI DSI uses [__Differential Signalling__](https://en.wikipedia.org/wiki/Differential_signalling) for high-speed data transfers. (4.5 Gbps per lane)
+MIPI DSI uses [__Differential Signalling__](https://en.wikipedia.org/wiki/Differential_signalling) for high-speed data transfers.
 
 (Differential Signalling is also used in [__HDMI__](https://en.wikipedia.org/wiki/HDMI) and [__USB__](https://en.wikipedia.org/wiki/USB#Signaling))
 
-The (dull) technical details of DSI are covered here...
+[(More about Display Serial Interface)](https://en.wikipedia.org/wiki/Display_Serial_Interface)
 
--   [__"Display Serial Interface (DSI)"__](https://en.wikipedia.org/wiki/Display_Serial_Interface)
+Let's look inside the XBD599 LCD Panel...
 
 ![_MIPI DSI Connector on PinePhone Schematic (Page 11)_](https://lupyuen.github.io/images/dsi-connector.png)
 
 [_MIPI DSI Connector on PinePhone Schematic (Page 11)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
 
 # Sitronix ST7703 LCD Controller
+
+_How do we control PinePhone's LCD Display?_
+
+The XBD599 LCD Panel has a __Sitronix ST7703 LCD Controller__ inside...
+
+-   [__Sitronix ST7703 LCD Controller Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf)
+
+Which means our PinePhone Display Driver shall __send commands to the ST7703 LCD Controller__ over the MIPI Display Serial Interface.
 
 TODO
 
