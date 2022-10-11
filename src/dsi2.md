@@ -94,7 +94,7 @@ Let's look inside the XBD599 LCD Panel...
 
 [_MIPI DSI Connector on PinePhone Schematic (Page 11)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
 
-# Sitronix ST7703 LCD Controller
+# Send Commands to LCD Controller
 
 _How do we control PinePhone's LCD Display?_
 
