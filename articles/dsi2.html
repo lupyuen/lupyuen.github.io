@@ -85,6 +85,7 @@
 <li><a href="https://lupyuen.github.io/articles/dsi"><strong>“Understanding PinePhone’s Display (MIPI DSI)”</strong></a></li>
 </ul>
 <p>Today we shall create a <strong>PinePhone Display Driver in Zig</strong>… That will run on our fresh new port of <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> for PinePhone.</p>
+<p>If we’re not familiar with Zig: No worries! This article will explain the Zig-specific parts with C.</p>
 <p><em>Why build the Display Driver in Zig? Instead of C?</em></p>
 <p>Sadly some parts of PinePhone’s <a href="https://lupyuen.github.io/articles/dsi#sitronix-st7703-lcd-controller"><strong>ST7703 LCD Controller</strong></a> and <a href="https://lupyuen.github.io/articles/dsi#initialise-mipi-dsi"><strong>Allwinner A64 SoC</strong></a> are poorly documented. (Sigh)</p>
 <p>Thus we’re building a <strong>Quick Prototype</strong> in Zig to be sure we’re setting the Hardware Registers correctly.</p>
@@ -184,68 +185,68 @@
 <p>This is how our Zig Driver composes a MIPI DSI Long Packet: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L47-L111">display.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Compose MIPI DSI Long Packet. See https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi
 fn composeLongPacket(
-    pkt: []u8,    // Buffer for the Long Packet
-    channel: u8,  // Virtual Channel ID
-    cmd: u8,      // DCS Command
-    buf: [*c]const u8,  // Transmit Buffer
-    len: usize          // Buffer Length
+  pkt: []u8,    // Buffer for the Long Packet
+  channel: u8,  // Virtual Channel ID
+  cmd: u8,      // DCS Command
+  buf: [*c]const u8,  // Transmit Buffer
+  len: usize          // Buffer Length
 ) []const u8 {          // Returns the Long Packet
-    debug(&quot;composeLongPacket: channel={}, cmd=0x{x}, len={}&quot;, .{ channel, cmd, len });
-    // Data Identifier (DI) (1 byte):
-    // - Virtual Channel Identifier (Bits 6 to 7)
-    // - Data Type (Bits 0 to 5)
-    // (Virtual Channel should be 0, I think)
-    assert(channel &lt; 4);
-    assert(cmd &lt; (1 &lt;&lt; 6));
-    const vc: u8 = channel;
-    const dt: u8 = cmd;
-    const di: u8 = (vc &lt;&lt; 6) | dt;
+  debug(&quot;composeLongPacket: channel={}, cmd=0x{x}, len={}&quot;, .{ channel, cmd, len });
+  // Data Identifier (DI) (1 byte):
+  // - Virtual Channel Identifier (Bits 6 to 7)
+  // - Data Type (Bits 0 to 5)
+  // (Virtual Channel should be 0, I think)
+  assert(channel &lt; 4);
+  assert(cmd &lt; (1 &lt;&lt; 6));
+  const vc: u8 = channel;
+  const dt: u8 = cmd;
+  const di: u8 = (vc &lt;&lt; 6) | dt;
 
-    // Word Count (WC) (2 bytes)：
-    // - Number of bytes in the Packet Payload
-    const wc: u16 = @intCast(u16, len);
-    const wcl: u8 = @intCast(u8, wc &amp; 0xff);
-    const wch: u8 = @intCast(u8, wc &gt;&gt; 8);
+  // Word Count (WC) (2 bytes)：
+  // - Number of bytes in the Packet Payload
+  const wc: u16 = @intCast(u16, len);
+  const wcl: u8 = @intCast(u8, wc &amp; 0xff);
+  const wch: u8 = @intCast(u8, wc &gt;&gt; 8);
 
-    // Data Identifier + Word Count (3 bytes): For computing Error Correction Code (ECC)
-    const di_wc = [3]u8 { di, wcl, wch };
+  // Data Identifier + Word Count (3 bytes): For computing Error Correction Code (ECC)
+  const di_wc = [3]u8 { di, wcl, wch };
 
-    // Compute Error Correction Code (ECC) for Data Identifier + Word Count
-    const ecc: u8 = computeEcc(di_wc);
+  // Compute Error Correction Code (ECC) for Data Identifier + Word Count
+  const ecc: u8 = computeEcc(di_wc);
 
-    // Packet Header (4 bytes):
-    // - Data Identifier + Word Count + Error Correction COde
-    const header = [4]u8 { di_wc[0], di_wc[1], di_wc[2], ecc };
+  // Packet Header (4 bytes):
+  // - Data Identifier + Word Count + Error Correction COde
+  const header = [4]u8 { di_wc[0], di_wc[1], di_wc[2], ecc };
 
-    // Packet Payload:
-    // - Data (0 to 65,541 bytes):
-    // Number of data bytes should match the Word Count (WC)
-    assert(len &lt;= 65_541);
-    const payload = buf[0..len];
+  // Packet Payload:
+  // - Data (0 to 65,541 bytes):
+  // Number of data bytes should match the Word Count (WC)
+  assert(len &lt;= 65_541);
+  const payload = buf[0..len];
 
-    // Checksum (CS) (2 bytes):
-    // - 16-bit Cyclic Redundancy Check (CRC) of the Payload (not the entire packet)
-    const cs: u16 = computeCrc(payload);
-    const csl: u8 = @intCast(u8, cs &amp; 0xff);
-    const csh: u8 = @intCast(u8, cs &gt;&gt; 8);
+  // Checksum (CS) (2 bytes):
+  // - 16-bit Cyclic Redundancy Check (CRC) of the Payload (not the entire packet)
+  const cs: u16 = computeCrc(payload);
+  const csl: u8 = @intCast(u8, cs &amp; 0xff);
+  const csh: u8 = @intCast(u8, cs &gt;&gt; 8);
 
-    // Packet Footer (2 bytes)
-    // - Checksum (CS)
-    const footer = [2]u8 { csl, csh };
+  // Packet Footer (2 bytes)
+  // - Checksum (CS)
+  const footer = [2]u8 { csl, csh };
 
-    // Packet:
-    // - Packet Header (4 bytes)
-    // - Payload (`len` bytes)
-    // - Packet Footer (2 bytes)
-    const pktlen = header.len + len + footer.len;
-    assert(pktlen &lt;= pkt.len);  // Increase `pkt` size
-    std.mem.copy(u8, pkt[0..header.len], &amp;header); // 4 bytes
-    std.mem.copy(u8, pkt[header.len..], payload);  // `len` bytes
-    std.mem.copy(u8, pkt[(header.len + len)..], &amp;footer);  // 2 bytes
+  // Packet:
+  // - Packet Header (4 bytes)
+  // - Payload (`len` bytes)
+  // - Packet Footer (2 bytes)
+  const pktlen = header.len + len + footer.len;
+  assert(pktlen &lt;= pkt.len);  // Increase `pkt` size
+  std.mem.copy(u8, pkt[0..header.len], &amp;header); // 4 bytes
+  std.mem.copy(u8, pkt[header.len..], payload);  // `len` bytes
+  std.mem.copy(u8, pkt[(header.len + len)..], &amp;footer);  // 2 bytes
 
-    // Return the packet
-    const result = pkt[0..pktlen];
-    return result;
+  // Return the packet
+  const result = pkt[0..pktlen];
+  return result;
 }</code></pre></div><h1 id="compose-mipi-dsi-short-packet-in-zig"><a href="#compose-mipi-dsi-short-packet-in-zig">4 Compose MIPI DSI Short Packet in Zig</a></h1>
 <p>TODO</p>
 <p>For 1 or 2 bytes of data, our PinePhone Display Driver shall send MIPI DSI Short Packets (instead of Long Packets)…</p>
@@ -255,59 +256,59 @@ fn composeLongPacket(
 <p>This is how our Zig Driver composes a MIPI DSI Short Packet: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L113-L168">display.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Compose MIPI DSI Short Packet. See https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi
 fn composeShortPacket(
-    pkt: []u8,    // Buffer for the Long Packet
-    channel: u8,  // Virtual Channel ID
-    cmd: u8,      // DCS Command
-    buf: [*c]const u8,  // Transmit Buffer
-    len: usize          // Buffer Length
+  pkt: []u8,    // Buffer for the Long Packet
+  channel: u8,  // Virtual Channel ID
+  cmd: u8,      // DCS Command
+  buf: [*c]const u8,  // Transmit Buffer
+  len: usize          // Buffer Length
 ) []const u8 {          // Returns the Short Packet
-    debug(&quot;composeShortPacket: channel={}, cmd=0x{x}, len={}&quot;, .{ channel, cmd, len });
-    assert(len == 1 or len == 2);
+  debug(&quot;composeShortPacket: channel={}, cmd=0x{x}, len={}&quot;, .{ channel, cmd, len });
+  assert(len == 1 or len == 2);
 
-    // From BL808 Reference Manual (Page 201): https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf
-    //   A Short Packet consists of 8-bit data identification (DI),
-    //   two bytes of commands or data, and 8-bit ECC.
-    //   The length of a short packet is 4 bytes including ECC.
-    // Thus a MIPI DSI Short Packet (compared with Long Packet)...
-    // - Doesn&#39;t have Packet Payload and Packet Footer (CRC)
-    // - Instead of Word Count (WC), the Packet Header now has 2 bytes of data
-    // Everything else is the same.
+  // From BL808 Reference Manual (Page 201): https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf
+  //   A Short Packet consists of 8-bit data identification (DI),
+  //   two bytes of commands or data, and 8-bit ECC.
+  //   The length of a short packet is 4 bytes including ECC.
+  // Thus a MIPI DSI Short Packet (compared with Long Packet)...
+  // - Doesn&#39;t have Packet Payload and Packet Footer (CRC)
+  // - Instead of Word Count (WC), the Packet Header now has 2 bytes of data
+  // Everything else is the same.
 
-    // Data Identifier (DI) (1 byte):
-    // - Virtual Channel Identifier (Bits 6 to 7)
-    // - Data Type (Bits 0 to 5)
-    // (Virtual Channel should be 0, I think)
-    assert(channel &lt; 4);
-    assert(cmd &lt; (1 &lt;&lt; 6));
-    const vc: u8 = channel;
-    const dt: u8 = cmd;
-    const di: u8 = (vc &lt;&lt; 6) | dt;
+  // Data Identifier (DI) (1 byte):
+  // - Virtual Channel Identifier (Bits 6 to 7)
+  // - Data Type (Bits 0 to 5)
+  // (Virtual Channel should be 0, I think)
+  assert(channel &lt; 4);
+  assert(cmd &lt; (1 &lt;&lt; 6));
+  const vc: u8 = channel;
+  const dt: u8 = cmd;
+  const di: u8 = (vc &lt;&lt; 6) | dt;
 
-    // Data (2 bytes), fill with 0 if Second Byte is missing
-    const data = [2]u8 {
-        buf[0],                       // First Byte
-        if (len == 2) buf[1] else 0,  // Second Byte
-    };
+  // Data (2 bytes), fill with 0 if Second Byte is missing
+  const data = [2]u8 {
+    buf[0],                       // First Byte
+    if (len == 2) buf[1] else 0,  // Second Byte
+  };
 
-    // Data Identifier + Data (3 bytes): For computing Error Correction Code (ECC)
-    const di_data = [3]u8 { di, data[0], data[1] };
+  // Data Identifier + Data (3 bytes): For computing Error Correction Code (ECC)
+  const di_data = [3]u8 { di, data[0], data[1] };
 
-    // Compute Error Correction Code (ECC) for Data Identifier + Word Count
-    const ecc: u8 = computeEcc(di_data);
+  // Compute Error Correction Code (ECC) for Data Identifier + Word Count
+  const ecc: u8 = computeEcc(di_data);
 
-    // Packet Header (4 bytes):
-    // - Data Identifier + Word Count + Error Correction COde
-    const header = [4]u8 { di_data[0], di_data[1], di_data[2], ecc };
+  // Packet Header (4 bytes):
+  // - Data Identifier + Word Count + Error Correction COde
+  const header = [4]u8 { di_data[0], di_data[1], di_data[2], ecc };
 
-    // Packet:
-    // - Packet Header (4 bytes)
-    const pktlen = header.len;
-    assert(pktlen &lt;= pkt.len);  // Increase `pkt` size
-    std.mem.copy(u8, pkt[0..header.len], &amp;header); // 4 bytes
+  // Packet:
+  // - Packet Header (4 bytes)
+  const pktlen = header.len;
+  assert(pktlen &lt;= pkt.len);  // Increase `pkt` size
+  std.mem.copy(u8, pkt[0..header.len], &amp;header); // 4 bytes
 
-    // Return the packet
-    const result = pkt[0..pktlen];
-    return result;
+  // Return the packet
+  const result = pkt[0..pktlen];
+  return result;
 }</code></pre></div><h1 id="compute-error-correction-code-in-zig"><a href="#compute-error-correction-code-in-zig">5 Compute Error Correction Code in Zig</a></h1>
 <p>TODO</p>
 <p>In our PinePhone Display Driver for NuttX, this is how we compute the Error Correction Code for a MIPI DSI Packet…</p>
