@@ -10,7 +10,7 @@ In our last article we talked about [__Pine64 PinePhone__](https://wiki.pine64.o
 
 Today we shall create a __PinePhone Display Driver in Zig__... That will run on our fresh new port of [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) for PinePhone.
 
-If we're not familiar with Zig: No worries! This article will explain the Zig-specific parts with C.
+If we're not familiar with Zig: No worries! This article will explain the tricky Zig parts with C.
 
 _Why build the Display Driver in Zig? Instead of C?_
 
@@ -143,7 +143,7 @@ __Packet Footer:__
 
 Let's do this in Zig...
 
-# Compose Long Packet in Zig
+# Compose Long Packet
 
 TODO
 
@@ -161,8 +161,36 @@ fn composeLongPacket(
   cmd: u8,      // DCS Command
   buf: [*c]const u8,  // Transmit Buffer
   len: usize          // Buffer Length
-) []const u8 {          // Returns the Long Packet
-  debug("composeLongPacket: channel={}, cmd=0x{x}, len={}", .{ channel, cmd, len });
+) []const u8 {        // Returns the Long Packet
+```
+
+TODO: Why the function signature?
+
+-   pkt: []u8
+
+    Buffer for the Long Packet
+
+-   channel: u8
+
+    Virtual Channel ID
+
+-   cmd: u8
+
+    DCS Command
+
+-   buf: [*c]const u8
+
+    Transmit Buffer
+
+-   len: usize
+
+    Buffer Length
+
+## Packet Header
+
+TODO
+
+```zig
   // Data Identifier (DI) (1 byte):
   // - Virtual Channel Identifier (Bits 6 to 7)
   // - Data Type (Bits 0 to 5)
@@ -172,39 +200,75 @@ fn composeLongPacket(
   const vc: u8 = channel;
   const dt: u8 = cmd;
   const di: u8 = (vc << 6) | dt;
+```
 
+TODO
+
+```zig
   // Word Count (WC) (2 bytes)：
   // - Number of bytes in the Packet Payload
   const wc: u16 = @intCast(u16, len);
   const wcl: u8 = @intCast(u8, wc & 0xff);
   const wch: u8 = @intCast(u8, wc >> 8);
+```
 
+TODO
+
+```zig
   // Data Identifier + Word Count (3 bytes): For computing Error Correction Code (ECC)
   const di_wc = [3]u8 { di, wcl, wch };
 
   // Compute Error Correction Code (ECC) for Data Identifier + Word Count
   const ecc: u8 = computeEcc(di_wc);
+```
 
+TODO
+
+```zig
   // Packet Header (4 bytes):
   // - Data Identifier + Word Count + Error Correction COde
   const header = [4]u8 { di_wc[0], di_wc[1], di_wc[2], ecc };
+```
 
+TODO
+
+## Packet Payload
+
+TODO
+
+```zig
   // Packet Payload:
   // - Data (0 to 65,541 bytes):
   // Number of data bytes should match the Word Count (WC)
   assert(len <= 65_541);
   const payload = buf[0..len];
+```
 
+TODO
+
+## Packet Footer
+
+TODO
+
+```zig
   // Checksum (CS) (2 bytes):
   // - 16-bit Cyclic Redundancy Check (CRC) of the Payload (not the entire packet)
   const cs: u16 = computeCrc(payload);
   const csl: u8 = @intCast(u8, cs & 0xff);
   const csh: u8 = @intCast(u8, cs >> 8);
+```
 
+TODO
+
+```zig
   // Packet Footer (2 bytes)
   // - Checksum (CS)
   const footer = [2]u8 { csl, csh };
+```
 
+TODO
+
+```zig
   // Packet:
   // - Packet Header (4 bytes)
   // - Payload (`len` bytes)
@@ -214,14 +278,28 @@ fn composeLongPacket(
   std.mem.copy(u8, pkt[0..header.len], &header); // 4 bytes
   std.mem.copy(u8, pkt[header.len..], payload);  // `len` bytes
   std.mem.copy(u8, pkt[(header.len + len)..], &footer);  // 2 bytes
+```
 
+TODO
+
+```zig
   // Return the packet
   const result = pkt[0..pktlen];
   return result;
 }
 ```
 
-# Compose MIPI DSI Short Packet in Zig
+# Compute Error Correction Code
+
+TODO
+
+In our PinePhone Display Driver for NuttX, this is how we compute the Error Correction Code for a MIPI DSI Packet...
+
+[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L263-L304)
+
+The Error Correction Code is the last byte of the 4-byte Packet Header for Long Packets and Short Packets.
+
+# Compose Short Packet
 
 TODO
 
@@ -289,26 +367,6 @@ fn composeShortPacket(
   return result;
 }
 ```
-
-# Compute Error Correction Code in Zig
-
-TODO
-
-In our PinePhone Display Driver for NuttX, this is how we compute the Error Correction Code for a MIPI DSI Packet...
-
-[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L263-L304)
-
-The Error Correction Code is the last byte of the 4-byte Packet Header for Long Packets and Short Packets.
-
-# Compute Cyclic Redundancy Check in Zig
-
-TODO
-
-This is how our PinePhone Display Driver computes the 16-bit Cyclic Redundancy Check (CCITT) in Zig...
-
-[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L306-L366)
-
-The Cyclic Redundancy Check is the 2-byte Packet Footer for Long Packets.
 
 # Test PinePhone MIPI DSI Driver with QEMU
 
@@ -499,3 +557,13 @@ Run the Zig App...
 nsh> null
 HELLO ZIG ON PINEPHONE!
 ```
+
+# Appendix: Compute Cyclic Redundancy Check
+
+TODO
+
+This is how our PinePhone Display Driver computes the 16-bit Cyclic Redundancy Check (CCITT) in Zig...
+
+[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L306-L366)
+
+The Cyclic Redundancy Check is the 2-byte Packet Footer for Long Packets.
