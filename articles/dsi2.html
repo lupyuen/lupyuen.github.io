@@ -180,45 +180,75 @@
 </ul>
 <p>Let’s do this in Zig…</p>
 <h1 id="compose-long-packet"><a href="#compose-long-packet">3 Compose Long Packet</a></h1>
-<p>TODO</p>
-<p>To initialise PinePhone’s ST7703 LCD Controller, our PinePhone Display Driver for NuttX shall send MIPI DSI Long Packets to ST7703…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi">“Long Packet for MIPI DSI”</a></li>
-</ul>
-<p>This is how our Zig Driver composes a MIPI DSI Long Packet: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L47-L111">display.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>// Compose MIPI DSI Long Packet. See https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi
+<p>Now we look at our <strong>Zig Function</strong> that composes a <strong>Long Packet</strong> for MIPI Display Serial Interface: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L47-L111">display.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// Compose MIPI DSI Long Packet.
+// See https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi
 fn composeLongPacket(
-  pkt: []u8,    // Buffer for the Long Packet
-  channel: u8,  // Virtual Channel ID
-  cmd: u8,      // DCS Command
-  buf: [*c]const u8,  // Transmit Buffer
-  len: usize          // Buffer Length
-) []const u8 {        // Returns the Long Packet</code></pre></div>
-<p>TODO: Why the function signature?</p>
+  pkt:     []u8,  // Buffer for the Returns Long Packet
+  channel: u8,    // Virtual Channel ID
+  cmd:     u8,    // DCS Command
+  buf:     [*c]const u8,  // Transmit Buffer
+  len:     usize          // Buffer Length
+) []const u8 {  // Returns the Long Packet
+  ...</code></pre></div>
+<p>(<strong><code>u8</code></strong> in Zig is the same as <strong><code>uint8_t</code></strong> in C)</p>
+<p>Our Zig Function <strong><code>composeLongPacket</code></strong> accepts the following parameters…</p>
 <ul>
 <li>
-<p>pkt: []u8</p>
-<p>Buffer for the Long Packet</p>
+<p><strong><code>pkt</code></strong>: This is the buffer that we’ll use to write the Long Packet and return it.</p>
+<p>It’s declared as “<strong><code>[]u8</code></strong>” which is a Slice of Bytes, roughly similar to “<strong><code>uint8_t *</code></strong>” in C.</p>
+<p>(Except that the Buffer Size is also passed in the Slice)</p>
 </li>
 <li>
-<p>channel: u8</p>
-<p>Virtual Channel ID</p>
+<p><strong><code>channel</code></strong>: MIPI Display Serial Interface supports multiple Virtual Channels, we’ll stick to <strong>Virtual Channel 0</strong> for today</p>
 </li>
 <li>
-<p>cmd: u8</p>
-<p>DCS Command</p>
+<p><strong><code>cmd</code></strong>: Refers to the <a href="https://lupyuen.github.io/articles/dsi#display-command-set-for-mipi-dsi"><strong>Display Command Set (DCS)</strong></a> that we’ll send over the MIPI Display Serial Interface.</p>
+<p>For Long Packets, we’ll send the <a href="https://lupyuen.github.io/articles/dsi#display-command-set-for-mipi-dsi"><strong>DCS Long Write Command</strong></a>.</p>
+<p>(Later we’ll see the DCS Short Write Command)</p>
 </li>
 <li>
-<p>buf: [*c]const u8</p>
-<p>Transmit Buffer</p>
+<p><strong><code>buf</code></strong>: This is a C Pointer to the <strong>Transmit Buffer</strong> that will be packed inside the Long Packet. (As Packet Payload)</p>
+<p>It’s declared as “<strong><code>[*c]const u8</code></strong>”, which is the same as “<strong><code>const uint8_t *</code></strong>” in C.</p>
+<p>(“<strong><code>[*c]</code></strong>” means that Zig will handle it as a C Pointer)</p>
 </li>
 <li>
-<p>len: usize</p>
-<p>Buffer Length</p>
+<p><strong><code>len</code></strong>: Number of bytes in the <strong>Transmit Buffer</strong></p>
 </li>
 </ul>
+<p>Our Zig Function <strong><code>composeLongPacket</code></strong> returns a Slice of Bytes that will contain the Long Packet.</p>
+<p>(Declared as “<strong><code>[]const u8</code></strong>”. Yep the returned Slice will be a Sub-Slice of <strong><code>pkt</code></strong>)</p>
+<p><em>Why do we mix Slices and Pointers in the Parameters?</em></p>
+<p>The parameters <strong><code>buf</code></strong> and <strong><code>len</code></strong> could have been passed as a Byte Slice in Zig…</p>
+<p>Instead we’re passing as an old-school <strong>C Pointer</strong> so that it’s compatible with the <strong>C Interface</strong> for our function…</p>
+<div class="example-wrap"><pre class="language-c"><code>// (Eventual) C Interface for our function
+ssize_t mipi_dsi_dcs_write(
+  const struct device *dev,  // MIPI DSI Device
+  uint8_t     channel,  // Virtual Channel ID
+  uint8_t     cmd,      // DCS Command
+  const void *buf,      // Transmit Buffer
+  size_t      len       // Buffer Length
+);</code></pre></div>
+<p>This C Interface is identical to the implementation of <strong>MIPI DSI in Zephyr OS</strong>. <a href="https://github.com/zephyrproject-rtos/zephyr/blob/main/include/zephyr/drivers/mipi_dsi.h#L325-L337">(See this)</a></p>
+<p>Let’s compose the Packet Header…</p>
 <h2 id="packet-header"><a href="#packet-header">3.1 Packet Header</a></h2>
 <p>TODO</p>
+<p><strong>Packet Header</strong> (4 bytes):</p>
+<ul>
+<li>
+<p><strong>Data Identifier (DI)</strong> (1 byte):</p>
+<p>Virtual Channel Identifier (Bits 6 to 7)</p>
+<p>Data Type (Bits 0 to 5)</p>
+</li>
+<li>
+<p><strong>Word Count (WC)</strong> (2 bytes)：</p>
+<p>Number of bytes in the Packet Payload</p>
+</li>
+<li>
+<p><strong>Error Correction Code (ECC)</strong> (1 byte):</p>
+<p>Allow single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header</p>
+</li>
+</ul>
 <div class="example-wrap"><pre class="language-zig"><code>  // Data Identifier (DI) (1 byte):
   // - Virtual Channel Identifier (Bits 6 to 7)
   // - Data Type (Bits 0 to 5)
@@ -247,6 +277,13 @@ fn composeLongPacket(
 <p>TODO</p>
 <h2 id="packet-payload"><a href="#packet-payload">3.2 Packet Payload</a></h2>
 <p>TODO</p>
+<p><strong>Packet Payload:</strong></p>
+<ul>
+<li>
+<p><strong>Data</strong> (0 to 65,541 bytes):</p>
+<p>Number of data bytes should match the Word Count (WC)</p>
+</li>
+</ul>
 <div class="example-wrap"><pre class="language-zig"><code>  // Packet Payload:
   // - Data (0 to 65,541 bytes):
   // Number of data bytes should match the Word Count (WC)
@@ -255,6 +292,13 @@ fn composeLongPacket(
 <p>TODO</p>
 <h2 id="packet-footer"><a href="#packet-footer">3.3 Packet Footer</a></h2>
 <p>TODO</p>
+<p><strong>Packet Footer:</strong></p>
+<ul>
+<li>
+<p><strong>Checksum (CS)</strong> (2 bytes):</p>
+<p>16-bit Cyclic Redundancy Check (CCITT CRC)</p>
+</li>
+</ul>
 <div class="example-wrap"><pre class="language-zig"><code>  // Checksum (CS) (2 bytes):
   // - 16-bit Cyclic Redundancy Check (CRC) of the Payload (not the entire packet)
   const cs: u16 = computeCrc(payload);
@@ -292,7 +336,7 @@ fn composeLongPacket(
 <p>This is how our Zig Driver composes a MIPI DSI Short Packet: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L113-L168">display.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Compose MIPI DSI Short Packet. See https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi
 fn composeShortPacket(
-  pkt: []u8,    // Buffer for the Long Packet
+  pkt: []u8,    // Buffer for the Returned Short Packet
   channel: u8,  // Virtual Channel ID
   cmd: u8,      // DCS Command
   buf: [*c]const u8,  // Transmit Buffer
