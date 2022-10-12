@@ -69,23 +69,26 @@
     <nav id="TOC"><ul>
 <li><a href="#pinephone-lcd-display">1 PinePhone LCD Display</a><ul></ul></li>
 <li><a href="#long-packet-for-mipi-dsi">2 Long Packet for MIPI DSI</a><ul></ul></li>
-<li><a href="#compose-long-packet-in-zig">3 Compose Long Packet in Zig</a><ul></ul></li>
-<li><a href="#compose-mipi-dsi-short-packet-in-zig">4 Compose MIPI DSI Short Packet in Zig</a><ul></ul></li>
-<li><a href="#compute-error-correction-code-in-zig">5 Compute Error Correction Code in Zig</a><ul></ul></li>
-<li><a href="#compute-cyclic-redundancy-check-in-zig">6 Compute Cyclic Redundancy Check in Zig</a><ul></ul></li>
-<li><a href="#test-pinephone-mipi-dsi-driver-with-qemu">7 Test PinePhone MIPI DSI Driver with QEMU</a><ul></ul></li>
-<li><a href="#test-case-for-pinephone-mipi-dsi-driver">8 Test Case for PinePhone MIPI DSI Driver</a><ul></ul></li>
-<li><a href="#initialise-st7703-lcd-controller-in-zig">9 Initialise ST7703 LCD Controller in Zig</a><ul></ul></li>
-<li><a href="#test-zig-display-driver-for-pinephone">10 Test Zig Display Driver for PinePhone</a><ul></ul></li>
-<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-zig-on-pinephone">12 Appendix: Zig on PinePhone</a><ul></ul></li></ul></nav><p>📝 <em>17 Oct 2022</em></p>
+<li><a href="#compose-long-packet">3 Compose Long Packet</a><ul>
+<li><a href="#packet-header">3.1 Packet Header</a><ul></ul></li>
+<li><a href="#packet-payload">3.2 Packet Payload</a><ul></ul></li>
+<li><a href="#packet-footer">3.3 Packet Footer</a><ul></ul></li></ul></li>
+<li><a href="#compute-error-correction-code">4 Compute Error Correction Code</a><ul></ul></li>
+<li><a href="#compose-short-packet">5 Compose Short Packet</a><ul></ul></li>
+<li><a href="#test-pinephone-mipi-dsi-driver-with-qemu">6 Test PinePhone MIPI DSI Driver with QEMU</a><ul></ul></li>
+<li><a href="#test-case-for-pinephone-mipi-dsi-driver">7 Test Case for PinePhone MIPI DSI Driver</a><ul></ul></li>
+<li><a href="#initialise-st7703-lcd-controller-in-zig">8 Initialise ST7703 LCD Controller in Zig</a><ul></ul></li>
+<li><a href="#test-zig-display-driver-for-pinephone">9 Test Zig Display Driver for PinePhone</a><ul></ul></li>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-zig-on-pinephone">11 Appendix: Zig on PinePhone</a><ul></ul></li>
+<li><a href="#appendix-compute-cyclic-redundancy-check">12 Appendix: Compute Cyclic Redundancy Check</a><ul></ul></li></ul></nav><p>📝 <em>17 Oct 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/dsi2-title.jpg" alt="Apache NuttX RTOS rendering something on PinePhone’s LCD Display" /></p>
 <p>In our last article we talked about <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> (pic above) and its <a href="https://lupyuen.github.io/articles/dsi#xingbangda-xbd599-lcd-panel"><strong>LCD Display</strong></a>, connected via the (super complicated) <a href="https://lupyuen.github.io/articles/dsi#connector-for-mipi-dsi"><strong>MIPI Display Serial Interface</strong></a>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi"><strong>“Understanding PinePhone’s Display (MIPI DSI)”</strong></a></li>
 </ul>
 <p>Today we shall create a <strong>PinePhone Display Driver in Zig</strong>… That will run on our fresh new port of <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> for PinePhone.</p>
-<p>If we’re not familiar with Zig: No worries! This article will explain the Zig-specific parts with C.</p>
+<p>If we’re not familiar with Zig: No worries! This article will explain the tricky Zig parts with C.</p>
 <p><em>Why build the Display Driver in Zig? Instead of C?</em></p>
 <p>Sadly some parts of PinePhone’s <a href="https://lupyuen.github.io/articles/dsi#sitronix-st7703-lcd-controller"><strong>ST7703 LCD Controller</strong></a> and <a href="https://lupyuen.github.io/articles/dsi#initialise-mipi-dsi"><strong>Allwinner A64 SoC</strong></a> are poorly documented. (Sigh)</p>
 <p>Thus we’re building a <strong>Quick Prototype</strong> in Zig to be sure we’re setting the Hardware Registers correctly.</p>
@@ -176,7 +179,7 @@
 </li>
 </ul>
 <p>Let’s do this in Zig…</p>
-<h1 id="compose-long-packet-in-zig"><a href="#compose-long-packet-in-zig">3 Compose Long Packet in Zig</a></h1>
+<h1 id="compose-long-packet"><a href="#compose-long-packet">3 Compose Long Packet</a></h1>
 <p>TODO</p>
 <p>To initialise PinePhone’s ST7703 LCD Controller, our PinePhone Display Driver for NuttX shall send MIPI DSI Long Packets to ST7703…</p>
 <ul>
@@ -190,9 +193,33 @@ fn composeLongPacket(
   cmd: u8,      // DCS Command
   buf: [*c]const u8,  // Transmit Buffer
   len: usize          // Buffer Length
-) []const u8 {          // Returns the Long Packet
-  debug(&quot;composeLongPacket: channel={}, cmd=0x{x}, len={}&quot;, .{ channel, cmd, len });
-  // Data Identifier (DI) (1 byte):
+) []const u8 {        // Returns the Long Packet</code></pre></div>
+<p>TODO: Why the function signature?</p>
+<ul>
+<li>
+<p>pkt: []u8</p>
+<p>Buffer for the Long Packet</p>
+</li>
+<li>
+<p>channel: u8</p>
+<p>Virtual Channel ID</p>
+</li>
+<li>
+<p>cmd: u8</p>
+<p>DCS Command</p>
+</li>
+<li>
+<p>buf: [*c]const u8</p>
+<p>Transmit Buffer</p>
+</li>
+<li>
+<p>len: usize</p>
+<p>Buffer Length</p>
+</li>
+</ul>
+<h2 id="packet-header"><a href="#packet-header">3.1 Packet Header</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Data Identifier (DI) (1 byte):
   // - Virtual Channel Identifier (Bits 6 to 7)
   // - Data Type (Bits 0 to 5)
   // (Virtual Channel should be 0, I think)
@@ -200,41 +227,45 @@ fn composeLongPacket(
   assert(cmd &lt; (1 &lt;&lt; 6));
   const vc: u8 = channel;
   const dt: u8 = cmd;
-  const di: u8 = (vc &lt;&lt; 6) | dt;
-
-  // Word Count (WC) (2 bytes)：
+  const di: u8 = (vc &lt;&lt; 6) | dt;</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Word Count (WC) (2 bytes)：
   // - Number of bytes in the Packet Payload
   const wc: u16 = @intCast(u16, len);
   const wcl: u8 = @intCast(u8, wc &amp; 0xff);
-  const wch: u8 = @intCast(u8, wc &gt;&gt; 8);
-
-  // Data Identifier + Word Count (3 bytes): For computing Error Correction Code (ECC)
+  const wch: u8 = @intCast(u8, wc &gt;&gt; 8);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Data Identifier + Word Count (3 bytes): For computing Error Correction Code (ECC)
   const di_wc = [3]u8 { di, wcl, wch };
 
   // Compute Error Correction Code (ECC) for Data Identifier + Word Count
-  const ecc: u8 = computeEcc(di_wc);
-
-  // Packet Header (4 bytes):
+  const ecc: u8 = computeEcc(di_wc);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Packet Header (4 bytes):
   // - Data Identifier + Word Count + Error Correction COde
-  const header = [4]u8 { di_wc[0], di_wc[1], di_wc[2], ecc };
-
-  // Packet Payload:
+  const header = [4]u8 { di_wc[0], di_wc[1], di_wc[2], ecc };</code></pre></div>
+<p>TODO</p>
+<h2 id="packet-payload"><a href="#packet-payload">3.2 Packet Payload</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Packet Payload:
   // - Data (0 to 65,541 bytes):
   // Number of data bytes should match the Word Count (WC)
   assert(len &lt;= 65_541);
-  const payload = buf[0..len];
-
-  // Checksum (CS) (2 bytes):
+  const payload = buf[0..len];</code></pre></div>
+<p>TODO</p>
+<h2 id="packet-footer"><a href="#packet-footer">3.3 Packet Footer</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Checksum (CS) (2 bytes):
   // - 16-bit Cyclic Redundancy Check (CRC) of the Payload (not the entire packet)
   const cs: u16 = computeCrc(payload);
   const csl: u8 = @intCast(u8, cs &amp; 0xff);
-  const csh: u8 = @intCast(u8, cs &gt;&gt; 8);
-
-  // Packet Footer (2 bytes)
+  const csh: u8 = @intCast(u8, cs &gt;&gt; 8);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Packet Footer (2 bytes)
   // - Checksum (CS)
-  const footer = [2]u8 { csl, csh };
-
-  // Packet:
+  const footer = [2]u8 { csl, csh };</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Packet:
   // - Packet Header (4 bytes)
   // - Payload (`len` bytes)
   // - Packet Footer (2 bytes)
@@ -242,12 +273,17 @@ fn composeLongPacket(
   assert(pktlen &lt;= pkt.len);  // Increase `pkt` size
   std.mem.copy(u8, pkt[0..header.len], &amp;header); // 4 bytes
   std.mem.copy(u8, pkt[header.len..], payload);  // `len` bytes
-  std.mem.copy(u8, pkt[(header.len + len)..], &amp;footer);  // 2 bytes
-
-  // Return the packet
+  std.mem.copy(u8, pkt[(header.len + len)..], &amp;footer);  // 2 bytes</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Return the packet
   const result = pkt[0..pktlen];
   return result;
-}</code></pre></div><h1 id="compose-mipi-dsi-short-packet-in-zig"><a href="#compose-mipi-dsi-short-packet-in-zig">4 Compose MIPI DSI Short Packet in Zig</a></h1>
+}</code></pre></div><h1 id="compute-error-correction-code"><a href="#compute-error-correction-code">4 Compute Error Correction Code</a></h1>
+<p>TODO</p>
+<p>In our PinePhone Display Driver for NuttX, this is how we compute the Error Correction Code for a MIPI DSI Packet…</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L263-L304">display.zig</a></p>
+<p>The Error Correction Code is the last byte of the 4-byte Packet Header for Long Packets and Short Packets.</p>
+<h1 id="compose-short-packet"><a href="#compose-short-packet">5 Compose Short Packet</a></h1>
 <p>TODO</p>
 <p>For 1 or 2 bytes of data, our PinePhone Display Driver shall send MIPI DSI Short Packets (instead of Long Packets)…</p>
 <ul>
@@ -309,17 +345,7 @@ fn composeShortPacket(
   // Return the packet
   const result = pkt[0..pktlen];
   return result;
-}</code></pre></div><h1 id="compute-error-correction-code-in-zig"><a href="#compute-error-correction-code-in-zig">5 Compute Error Correction Code in Zig</a></h1>
-<p>TODO</p>
-<p>In our PinePhone Display Driver for NuttX, this is how we compute the Error Correction Code for a MIPI DSI Packet…</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L263-L304">display.zig</a></p>
-<p>The Error Correction Code is the last byte of the 4-byte Packet Header for Long Packets and Short Packets.</p>
-<h1 id="compute-cyclic-redundancy-check-in-zig"><a href="#compute-cyclic-redundancy-check-in-zig">6 Compute Cyclic Redundancy Check in Zig</a></h1>
-<p>TODO</p>
-<p>This is how our PinePhone Display Driver computes the 16-bit Cyclic Redundancy Check (CCITT) in Zig…</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L306-L366">display.zig</a></p>
-<p>The Cyclic Redundancy Check is the 2-byte Packet Footer for Long Packets.</p>
-<h1 id="test-pinephone-mipi-dsi-driver-with-qemu"><a href="#test-pinephone-mipi-dsi-driver-with-qemu">7 Test PinePhone MIPI DSI Driver with QEMU</a></h1>
+}</code></pre></div><h1 id="test-pinephone-mipi-dsi-driver-with-qemu"><a href="#test-pinephone-mipi-dsi-driver-with-qemu">6 Test PinePhone MIPI DSI Driver with QEMU</a></h1>
 <p>TODO</p>
 <p>The above Zig Code for composing Long Packets and Short Packets was tested in QEMU for Arm64 with GIC Version 2…</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/tree/gicv2">lupyuen/incubator-nuttx/tree/gicv2</a></p>
@@ -349,7 +375,7 @@ Result:
 88 88 13 88 64 64 20 88 
 88 88 88 88 88 02 88 00 
 00 00 00 00 00 00 00 00 
-00 00 00 00 65 03 </code></pre></div><h1 id="test-case-for-pinephone-mipi-dsi-driver"><a href="#test-case-for-pinephone-mipi-dsi-driver">8 Test Case for PinePhone MIPI DSI Driver</a></h1>
+00 00 00 00 65 03 </code></pre></div><h1 id="test-case-for-pinephone-mipi-dsi-driver"><a href="#test-case-for-pinephone-mipi-dsi-driver">7 Test Case for PinePhone MIPI DSI Driver</a></h1>
 <p>TODO</p>
 <p>This is how we write a Test Case for the PinePhone MIPI DSI Driver on NuttX…</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L593-L639">display.zig</a></p>
@@ -365,7 +391,7 @@ Result:
 88 88 13 88 64 64 20 88 
 88 88 88 88 88 02 88 00 
 00 00 00 00 00 00 00 00 
-00 00 00 00 65 03 </code></pre></div><h1 id="initialise-st7703-lcd-controller-in-zig"><a href="#initialise-st7703-lcd-controller-in-zig">9 Initialise ST7703 LCD Controller in Zig</a></h1>
+00 00 00 00 65 03 </code></pre></div><h1 id="initialise-st7703-lcd-controller-in-zig"><a href="#initialise-st7703-lcd-controller-in-zig">8 Initialise ST7703 LCD Controller in Zig</a></h1>
 <p>TODO</p>
 <p>PinePhone’s ST7703 LCD Controller needs to be initialised with these 20 Commands…</p>
 <ul>
@@ -375,14 +401,14 @@ Result:
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L62-L429">display.zig</a></p>
 <p>To send a command, <code>writeDcs</code> executes a DCS Short Write or DCS Long Write, depending on the length of the command…</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L431-L453">display.zig</a></p>
-<h1 id="test-zig-display-driver-for-pinephone"><a href="#test-zig-display-driver-for-pinephone">10 Test Zig Display Driver for PinePhone</a></h1>
+<h1 id="test-zig-display-driver-for-pinephone"><a href="#test-zig-display-driver-for-pinephone">9 Test Zig Display Driver for PinePhone</a></h1>
 <p>TODO</p>
 <p>Our NuttX Zig Display Driver powers on the PinePhone Display and works exactly like the C Driver! 🎉</p>
 <p><img src="https://lupyuen.github.io/images/dsi2-title.jpg" alt="Apache NuttX RTOS on PinePhone" /></p>
 <p><em>Can our driver render graphics on PinePhone Display?</em></p>
 <p>Our PinePhone Display Driver isn’t complete. It handles MIPI DSI (for initialising ST7703) but doesn’t support Allwinner A64’s Display Engine (DE) and Timing Controller (TCON), which are needed for rendering graphics.</p>
 <p>We’ll implement DE and TCON next.</p>
-<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
 <p>Check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
@@ -420,7 +446,7 @@ Result:
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/dsi2.md"><strong>lupyuen.github.io/src/dsi2.md</strong></a></p>
-<h1 id="appendix-zig-on-pinephone"><a href="#appendix-zig-on-pinephone">12 Appendix: Zig on PinePhone</a></h1>
+<h1 id="appendix-zig-on-pinephone"><a href="#appendix-zig-on-pinephone">11 Appendix: Zig on PinePhone</a></h1>
 <p>TODO</p>
 <p><code>make --trace</code> shows these GCC Compiler Options when building Nuttx for PinePhone…</p>
 <div class="example-wrap"><pre class="language-bash"><code>aarch64-none-elf-gcc
@@ -460,7 +486,12 @@ cd $HOME/nuttx/nuttx
 make</code></pre></div>
 <p>Run the Zig App…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; null
-HELLO ZIG ON PINEPHONE!</code></pre></div>
+HELLO ZIG ON PINEPHONE!</code></pre></div><h1 id="appendix-compute-cyclic-redundancy-check"><a href="#appendix-compute-cyclic-redundancy-check">12 Appendix: Compute Cyclic Redundancy Check</a></h1>
+<p>TODO</p>
+<p>This is how our PinePhone Display Driver computes the 16-bit Cyclic Redundancy Check (CCITT) in Zig…</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L306-L366">display.zig</a></p>
+<p>The Cyclic Redundancy Check is the 2-byte Packet Footer for Long Packets.</p>
+
     
 </body>
 </html>
