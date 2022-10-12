@@ -180,6 +180,8 @@
 </li>
 </ul>
 <p>Let’s do this in Zig…</p>
+<p><img src="https://lupyuen.github.io/images/dsi2-code1.png" alt="Compose Long Packet in Zig" /></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L47-L111">(Source)</a></p>
 <h1 id="compose-long-packet"><a href="#compose-long-packet">3 Compose Long Packet</a></h1>
 <p>Now we look at our <strong>Zig Function</strong> that composes a <strong>Long Packet</strong> for MIPI Display Serial Interface: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L47-L111">display.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Compose MIPI DSI Long Packet.
@@ -250,7 +252,7 @@ ssize_t mipi_dsi_dcs_write(
 <p>Allow single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header</p>
 </li>
 </ul>
-<p>This is how we compose the <strong>Packet Header</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L47-L111">display.zig</a></p>
+<p>This is how we compose the <strong>Packet Header</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L47-L81">display.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Data Identifier (DI) (1 byte):
   // - Virtual Channel Identifier (Bits 6 to 7)
   // - Data Type (Bits 0 to 5)
@@ -289,7 +291,7 @@ ssize_t mipi_dsi_dcs_write(
 <p>Moving on to the Packet Payload…</p>
 <h2 id="packet-payload"><a href="#packet-payload">3.2 Packet Payload</a></h2>
 <p>Remember that our <strong>Packet Payload</strong> is passed in as C-style <strong><code>buf</code></strong> (Buffer Pointer) and <strong><code>len</code></strong> (Buffer Length)?</p>
-<p>This is how we convert the Packet Payload to a <strong>Byte Slice</strong>…</p>
+<p>This is how we convert the Packet Payload to a <strong>Byte Slice</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L81-L87">display.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Packet Payload:
   // Data (0 to 65,541 bytes).
   // Number of data bytes should match the Word Count (WC)
@@ -300,39 +302,70 @@ ssize_t mipi_dsi_dcs_write(
 <p>We’ll concatenate the Packet Payload with the Header and Footer in a while.</p>
 <p>(Packet Header and Footer are also Byte Slices)</p>
 <h2 id="packet-footer"><a href="#packet-footer">3.3 Packet Footer</a></h2>
-<p>TODO</p>
-<p><strong>Packet Footer:</strong></p>
-<ul>
-<li>
-<p><strong>Checksum (CS)</strong> (2 bytes):</p>
-<p>16-bit Cyclic Redundancy Check (CCITT CRC)</p>
-</li>
-</ul>
+<p>At the end of our Long Packet is the <strong>Packet Footer</strong>: A 16-bit <strong>Cyclic Redundancy Check</strong> (CCITT CRC).</p>
+<p>This is how we compute the CRC: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L87-L97">display.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Checksum (CS) (2 bytes):
   // 16-bit Cyclic Redundancy Check (CRC) of the Payload
   // (not the entire packet)
-  const cs: u16 = computeCrc(payload);
+  const cs: u16 = computeCrc(payload);</code></pre></div>
+<p>(<strong><code>computeCrc</code></strong> is explained in the Appendix)</p>
+<p>The CRC goes into the 2-byte <strong>Packet Footer</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Convert CRC to 2 bytes
   const csl: u8 = @intCast(u8, cs &amp; 0xff);
-  const csh: u8 = @intCast(u8, cs &gt;&gt; 8);</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>  // Packet Footer (2 bytes):
+  const csh: u8 = @intCast(u8, cs &gt;&gt; 8);
+
+  // Packet Footer (2 bytes):
   // Checksum (CS)
-  const footer = [2]u8 { csl, csh };</code></pre></div><h2 id="combine-header-payload-and-footer"><a href="#combine-header-payload-and-footer">3.4 Combine Header, Payload and Footer</a></h2>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>  // Packet:
-  // - Packet Header (4 bytes)
-  // - Payload (`len` bytes)
-  // - Packet Footer (2 bytes)
+  const footer = [2]u8 { csl, csh };</code></pre></div>
+<p>Finally we’re ready to put the Header, Payload and Footer together!</p>
+<h2 id="combine-header-payload-and-footer"><a href="#combine-header-payload-and-footer">3.4 Combine Header, Payload and Footer</a></h2>
+<p>Our Long Packet will contain…</p>
+<ul>
+<li>
+<p><strong>Packet Header</strong> (4 bytes)</p>
+</li>
+<li>
+<p><strong>Packet Payload</strong> (<code>len</code> bytes)</p>
+</li>
+<li>
+<p><strong>Packet Footer</strong> (2 bytes)</p>
+</li>
+</ul>
+<p>Let’s combine the <strong>Header, Payload and Footer</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L97-L112">display.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Verify the Packet Buffer Length
   const pktlen = header.len + len + footer.len;
-  assert(pktlen &lt;= pkt.len);  // Increase `pkt` size
-  std.mem.copy(u8, pkt[0..header.len], &amp;header); // 4 bytes
-  std.mem.copy(u8, pkt[header.len..], payload);  // `len` bytes
-  std.mem.copy(u8, pkt[(header.len + len)..], &amp;footer);  // 2 bytes</code></pre></div>
-<p>TODO</p>
+  assert(pktlen &lt;= pkt.len);  // Increase `pkt` size if this fails
+
+  // Copy Header to Packet Buffer
+  std.mem.copy(
+    u8,                  // Type
+    pkt[0..header.len],  // Destination
+    &amp;header              // Source (4 bytes)
+  );
+
+  // Copy Payload to Packet Buffer
+  // (After the Header)
+  std.mem.copy(
+    u8,                  // Type
+    pkt[header.len..],   // Destination
+    payload              // Source (`len` bytes)
+  );
+
+  // Copy Footer to Packet Buffer
+  // (After the Payload)
+  std.mem.copy(
+    u8,                  // Type
+    pkt[(header.len + len)..],  // Destination
+    &amp;footer              // Source (2 bytes)
+  );</code></pre></div>
+<p>(<a href="https://ziglang.org/documentation/master/std/#root;mem.copy"><strong><code>std.mem.copy</code></strong></a> copies one Slice to another. It works like <strong><code>memcpy</code></strong> in C)</p>
+<p>And we return the Byte Slice that contains our Long Packet, sized accordingly…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Return the packet
   const result = pkt[0..pktlen];
   return result;
-}</code></pre></div><h1 id="compute-error-correction-code"><a href="#compute-error-correction-code">4 Compute Error Correction Code</a></h1>
+}</code></pre></div>
+<p>That’s how we compose a MIPI DSI Long Packet in Zig!</p>
+<h1 id="compute-error-correction-code"><a href="#compute-error-correction-code">4 Compute Error Correction Code</a></h1>
 <p>TODO</p>
 <p>In our PinePhone Display Driver for NuttX, this is how we compute the Error Correction Code for a MIPI DSI Packet…</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L263-L304">display.zig</a></p>
