@@ -408,7 +408,7 @@ Earlier we talked about computing the __Error Correction Code (ECC)__ for the Pa
 
 -   [__"Packet Header"__](https://lupyuen.github.io/articles/dsi2#packet-header)
 
-The __8-bit ECC__ shall be computed with this formula...
+The __8-bit ECC__ shall be computed with this (magic) formula: [(Page 209)](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf)
 
 ```text
 ECC[7] = 0
@@ -438,7 +438,11 @@ fn computeEcc(
   ...
 ```
 
-TODO
+Our Zig Function __`computeEcc`__ accepts a 3-byte array, containing the first 3 bytes of the Packet Header.
+
+("__`[3]u8`__" is equivalent to "__`uint8_t[3]`__" in C)
+
+We combine the 3 bytes into a __24-bit word__...
 
 ```zig
   // Combine DI and WC into a 24-bit word
@@ -448,11 +452,14 @@ TODO
     | (@intCast(u32, di_wc[2]) << 16);
 ```
 
-TODO
+Then we extract the 24 bits into __`d[0]`__ to __`d[23]`__...
 
 ```zig
-  // Extract the 24 bits from the word
+  // Allocate an array of 24 bits from the stack,
+  // initialised to zeros
   var d = std.mem.zeroes([24]u1);
+
+  // Extract the 24 bits from the word
   var i: usize = 0;
   while (i < 24) : (i += 1) {
     d[i] = @intCast(u1, di_wc_word & 1);
@@ -460,11 +467,22 @@ TODO
   }
 ```
 
-TODO
+([__`std.mem.zeroes`__](https://ziglang.org/documentation/master/std/#root;mem.zeroes) allocates an array from the stack, initialised to zeroes)
+
+Note that we're working with __Bit Values__...
+
+-   "__`u1`__" represents a Single Bit Value
+
+-   "__`[24]u1`__" is an Array of 24 Bits
+
+We compute the __ECC Bits__ according to the Magic Formula...
 
 ```zig
-  // Compute the ECC bits
+  // Allocate an array of 8 bits from the stack,
+  // initialised to zeros
   var ecc = std.mem.zeroes([8]u1);
+
+  // Compute the ECC bits
   ecc[7] = 0;
   ecc[6] = 0;
   ecc[5] = d[10] ^ d[11] ^ d[12] ^ d[13] ^ d[14] ^ d[15] ^ d[16] ^ d[17] ^ d[18] ^ d[19] ^ d[21] ^ d[22] ^ d[23];
@@ -475,7 +493,7 @@ TODO
   ecc[0] = d[0]  ^ d[1]  ^ d[2]  ^ d[4]  ^ d[5]  ^ d[7]  ^ d[10] ^ d[11] ^ d[13] ^ d[16] ^ d[20] ^ d[21] ^ d[22] ^ d[23];
 ```
 
-TODO
+Finally we __merge the ECC Bits__ into a single byte and return it...
 
 ```zig
   // Merge the ECC bits
@@ -490,11 +508,13 @@ TODO
 }
 ```
 
-TODO
+And we're done with the Error Correction Code!
 
 # Compose Short Packet
 
 TODO
+
+_We've seen the Long Packet. Is there a Short Packet?_
 
 For 1 or 2 bytes of data, our PinePhone Display Driver shall send MIPI DSI Short Packets (instead of Long Packets)...
 
