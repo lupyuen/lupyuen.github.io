@@ -313,9 +313,7 @@ We'll concatenate the Packet Payload with the Header and Footer in a while.
 
 (Packet Header and Footer are also Byte Slices)
 
-From this code it looks clear that a [__Zig Slice__](https://ziglang.org/documentation/master/#Slices) is nothing more than a __Pointer__ and a __Length__.
-
-It's the tidier and safer way to pass buffers in Zig!
+From this code it's clear that a [__Zig Slice__](https://ziglang.org/documentation/master/#Slices) is nothing more than a __Pointer__ and a __Length__... It's the tidier and safer way to pass buffers in Zig!
 
 ## Packet Footer
 
@@ -400,15 +398,81 @@ And we return the Byte Slice that contains our Long Packet, sized accordingly...
 
 That's how we compose a MIPI DSI Long Packet in Zig!
 
-# Compute Error Correction Code
+![MIPI DSI Error Correction Code (Page 209)](https://lupyuen.github.io/images/dsi2-ecc.png)
+
+[_MIPI DSI Error Correction Code (Page 209)_](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf)
+
+# Error Correction Code
+
+Earlier we talked about computing the __Error Correction Code (ECC)__ for the Packet Header...
+
+-   [__"Packet Header"__](https://lupyuen.github.io/articles/dsi2#packet-header)
+
+The __8-bit ECC__ shall be computed with this formula...
+
+```text
+ECC[7] = 0
+ECC[6] = 0
+ECC[5] = D10^D11^D12^D13^D14^D15^D16^D17^D18^D19^D21^D22^D23
+ECC[4] = D4^D5^D6^D7^D8^D9^D16^D17^D18^D19^D20^D22^D23
+ECC[3] = D1^D2^D3^D7^D8^D9^D13^D14^D15^D19^D20^D21^D23
+ECC[2] = D0^D2^D3^D5^D6^D9^D11^D12^D15^D18^D20^D21^D22
+ECC[1] = D0^D1^D3^D4^D6^D8^D10^D12^D14^D17^D20^D21^D22^D23
+ECC[0] = D0^D1^D2^D4^D5^D7^D10^D11^D13^D16^D20^D21^D22^D23
+```
+
+("__`^`__" means Exclusive OR)
+
+(__`D0`__ to __`D23`__ refer to the pic above)
+
+This is how we compute the ECC: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L170-L211)
+
+```zig
+/// Compute the Error Correction Code (ECC) (1 byte):
+/// Allow single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header
+/// See "12.3.6.12: Error Correction Code", Page 208 of BL808 Reference Manual:
+/// https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf
+fn computeEcc(
+    di_wc: [3]u8  // Data Identifier + Word Count (3 bytes)
+) u8 {
+    // Combine DI and WC into a 24-bit word
+    var di_wc_word: u32 = 
+        di_wc[0] 
+        | (@intCast(u32, di_wc[1]) << 8)
+        | (@intCast(u32, di_wc[2]) << 16);
+
+    // Extract the 24 bits from the word
+    var d = std.mem.zeroes([24]u1);
+    var i: usize = 0;
+    while (i < 24) : (i += 1) {
+        d[i] = @intCast(u1, di_wc_word & 1);
+        di_wc_word >>= 1;
+    }
+
+    // Compute the ECC bits
+    var ecc = std.mem.zeroes([8]u1);
+    ecc[7] = 0;
+    ecc[6] = 0;
+    ecc[5] = d[10] ^ d[11] ^ d[12] ^ d[13] ^ d[14] ^ d[15] ^ d[16] ^ d[17] ^ d[18] ^ d[19] ^ d[21] ^ d[22] ^ d[23];
+    ecc[4] = d[4]  ^ d[5]  ^ d[6]  ^ d[7]  ^ d[8]  ^ d[9]  ^ d[16] ^ d[17] ^ d[18] ^ d[19] ^ d[20] ^ d[22] ^ d[23];
+    ecc[3] = d[1]  ^ d[2]  ^ d[3]  ^ d[7]  ^ d[8]  ^ d[9]  ^ d[13] ^ d[14] ^ d[15] ^ d[19] ^ d[20] ^ d[21] ^ d[23];
+    ecc[2] = d[0]  ^ d[2]  ^ d[3]  ^ d[5]  ^ d[6]  ^ d[9]  ^ d[11] ^ d[12] ^ d[15] ^ d[18] ^ d[20] ^ d[21] ^ d[22];
+    ecc[1] = d[0]  ^ d[1]  ^ d[3]  ^ d[4]  ^ d[6]  ^ d[8]  ^ d[10] ^ d[12] ^ d[14] ^ d[17] ^ d[20] ^ d[21] ^ d[22] ^ d[23];
+    ecc[0] = d[0]  ^ d[1]  ^ d[2]  ^ d[4]  ^ d[5]  ^ d[7]  ^ d[10] ^ d[11] ^ d[13] ^ d[16] ^ d[20] ^ d[21] ^ d[22] ^ d[23];
+
+    // Merge the ECC bits
+    return @intCast(u8, ecc[0])
+        | (@intCast(u8, ecc[1]) << 1)
+        | (@intCast(u8, ecc[2]) << 2)
+        | (@intCast(u8, ecc[3]) << 3)
+        | (@intCast(u8, ecc[4]) << 4)
+        | (@intCast(u8, ecc[5]) << 5)
+        | (@intCast(u8, ecc[6]) << 6)
+        | (@intCast(u8, ecc[7]) << 7);
+}
+```
 
 TODO
-
-In our PinePhone Display Driver for NuttX, this is how we compute the Error Correction Code for a MIPI DSI Packet...
-
-[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L263-L304)
-
-The Error Correction Code is the last byte of the 4-byte Packet Header for Long Packets and Short Packets.
 
 # Compose Short Packet
 
@@ -669,7 +733,7 @@ nsh> null
 HELLO ZIG ON PINEPHONE!
 ```
 
-# Appendix: Compute Cyclic Redundancy Check
+# Appendix: Cyclic Redundancy Check
 
 TODO
 
