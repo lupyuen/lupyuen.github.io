@@ -103,11 +103,45 @@ E9 82 10 06 05 A2 0A A5
 
 We'll send these 20 commands to ST7703 in a specific packet format...
 
-# MIPI DSI Long Packet
+![MIPI DSI Long Packet (Page 203)](https://lupyuen.github.io/images/dsi-packet.png)
 
-TODO
+[_MIPI DSI Long Packet (Page 203)_](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf)
 
-# Compose MIPI DSI Long Packet in Zig
+# Long Packet for MIPI DSI
+
+To send an ST7703 Command, we'll transmit a [__MIPI DSI Long Packet__](https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi) in this format (pic above)...
+
+__Packet Header__ (4 bytes):
+
+-   __Data Identifier (DI)__ (1 byte):
+
+    Virtual Channel Identifier (Bits 6 to 7)
+
+    Data Type (Bits 0 to 5)
+
+-   __Word Count (WC)__ (2 bytes)：
+
+    Number of bytes in the Packet Payload
+
+-   __Error Correction Code (ECC)__ (1 byte):
+
+    Allow single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header
+
+__Packet Payload:__
+
+-   __Data__ (0 to 65,541 bytes):
+
+    Number of data bytes should match the Word Count (WC)
+
+__Packet Footer:__
+
+-   __Checksum (CS)__ (2 bytes):
+
+    16-bit Cyclic Redundancy Check (CCITT CRC)
+
+Let's do this in Zig...
+
+# Compose Long Packet in Zig
 
 TODO
 
