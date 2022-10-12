@@ -213,15 +213,15 @@ Let's compose the Packet Header...
 
 ## Packet Header
 
-TODO
-
-__Packet Header__ (4 bytes):
+The __Packet Header__ (4 bytes) of our Long Packet will contain...
 
 -   __Data Identifier (DI)__ (1 byte):
 
     Virtual Channel Identifier (Bits 6 to 7)
 
     Data Type (Bits 0 to 5)
+
+    (Data Type is the DCS Command)
 
 -   __Word Count (WC)__ (2 bytes)：
 
@@ -231,11 +231,12 @@ __Packet Header__ (4 bytes):
 
     Allow single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header
 
+This is how we compose the __Packet Header__: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L47-L111)
+
 ```zig
   // Data Identifier (DI) (1 byte):
   // - Virtual Channel Identifier (Bits 6 to 7)
   // - Data Type (Bits 0 to 5)
-  // (Virtual Channel should be 0, I think)
   assert(channel < 4);
   assert(cmd < (1 << 6));
   const vc: u8 = channel;
@@ -243,35 +244,50 @@ __Packet Header__ (4 bytes):
   const di: u8 = (vc << 6) | dt;
 ```
 
-TODO
+First we populate the __Data Indentifier (DI)__ with the Virtual Channel and DCS Command.
+
+Then we convert the 16-bit __Word Count (WC)__ to bytes...
 
 ```zig
   // Word Count (WC) (2 bytes)：
-  // - Number of bytes in the Packet Payload
+  // Number of bytes in the Packet Payload
   const wc: u16 = @intCast(u16, len);
   const wcl: u8 = @intCast(u8, wc & 0xff);
   const wch: u8 = @intCast(u8, wc >> 8);
 ```
 
-TODO
+(__`@intCast`__ will halt with a Runtime Panic if __`len`__ is too big to be converted into a 16-bit unsigned integer __`u16`__)
+
+Next comes the __Error Correction Code (ECC)__. Which we compute based on the Data Identifier and Word Count...
 
 ```zig
-  // Data Identifier + Word Count (3 bytes): For computing Error Correction Code (ECC)
+  // Data Identifier + Word Count (3 bytes): 
+  // For computing Error Correction Code (ECC)
   const di_wc = [3]u8 { di, wcl, wch };
 
-  // Compute Error Correction Code (ECC) for Data Identifier + Word Count
+  // Compute Error Correction Code (ECC) for
+  // Data Identifier + Word Count
   const ecc: u8 = computeEcc(di_wc);
 ```
 
-TODO
+("__`[3]u8`__" allocates a 3-byte array from the stack)
+
+We'll cover __`computeEcc`__ in a while.
+
+Finally we pack everything into our 4-byte __Packet Header__...
 
 ```zig
   // Packet Header (4 bytes):
-  // - Data Identifier + Word Count + Error Correction COde
-  const header = [4]u8 { di_wc[0], di_wc[1], di_wc[2], ecc };
+  // Data Identifier + Word Count + Error Correction Code
+  const header = [4]u8 { 
+    di_wc[0],  // Data Identifier
+    di_wc[1],  // Word Count (Low Byte)
+    di_wc[2],  // Word Count (High Byte)
+    ecc        // Error Correction Code
+  };
 ```
 
-TODO
+Moving on to the Packet Payload...
 
 ## Packet Payload
 
@@ -406,7 +422,7 @@ fn composeShortPacket(
   const ecc: u8 = computeEcc(di_data);
 
   // Packet Header (4 bytes):
-  // - Data Identifier + Word Count + Error Correction COde
+  // - Data Identifier + Word Count + Error Correction Code
   const header = [4]u8 { di_data[0], di_data[1], di_data[2], ecc };
 
   // Packet:
