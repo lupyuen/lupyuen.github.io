@@ -145,50 +145,91 @@ Let's do this in Zig...
 
 # Compose Long Packet
 
-TODO
-
-To initialise PinePhone's ST7703 LCD Controller, our PinePhone Display Driver for NuttX shall send MIPI DSI Long Packets to ST7703...
-
--   ["Long Packet for MIPI DSI"](https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi)
-
-This is how our Zig Driver composes a MIPI DSI Long Packet: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L47-L111)
+Now we look at our __Zig Function__ that composes a __Long Packet__ for MIPI Display Serial Interface: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L47-L111)
 
 ```zig
-// Compose MIPI DSI Long Packet. See https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi
+// Compose MIPI DSI Long Packet.
+// See https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi
 fn composeLongPacket(
-  pkt: []u8,    // Buffer for the Long Packet
-  channel: u8,  // Virtual Channel ID
-  cmd: u8,      // DCS Command
-  buf: [*c]const u8,  // Transmit Buffer
-  len: usize          // Buffer Length
-) []const u8 {        // Returns the Long Packet
+  pkt:     []u8,  // Buffer for the Returns Long Packet
+  channel: u8,    // Virtual Channel ID
+  cmd:     u8,    // DCS Command
+  buf:     [*c]const u8,  // Transmit Buffer
+  len:     usize          // Buffer Length
+) []const u8 {  // Returns the Long Packet
+  ...
 ```
 
-TODO: Why the function signature?
+(__`u8`__ in Zig is the same as __`uint8_t`__ in C)
 
--   pkt: []u8
+Our Zig Function __`composeLongPacket`__ accepts the following parameters...
 
-    Buffer for the Long Packet
+-   __`pkt`__: This is the buffer that we'll use to write the Long Packet and return it.
 
--   channel: u8
+    It's declared as "__`[]u8`__" which is a Slice of Bytes, roughly similar to "__`uint8_t *`__" in C.
+    
+    (Except that the Buffer Size is also passed in the Slice)
 
-    Virtual Channel ID
+-   __`channel`__: MIPI Display Serial Interface supports multiple Virtual Channels, we'll stick to __Virtual Channel 0__ for today
 
--   cmd: u8
+-   __`cmd`__: Refers to the [__Display Command Set (DCS)__](https://lupyuen.github.io/articles/dsi#display-command-set-for-mipi-dsi) that we'll send over the MIPI Display Serial Interface.
 
-    DCS Command
+    For Long Packets, we'll send the [__DCS Long Write Command__](https://lupyuen.github.io/articles/dsi#display-command-set-for-mipi-dsi).
 
--   buf: [*c]const u8
+    (Later we'll see the DCS Short Write Command)
 
-    Transmit Buffer
+-   __`buf`__: This is a C Pointer to the __Transmit Buffer__ that will be packed inside the Long Packet. (As Packet Payload)
 
--   len: usize
+    It's declared as "__`[*c]const u8`__", which is the same as "__`const uint8_t *`__" in C.
 
-    Buffer Length
+    ("__`[*c]`__" means that Zig will handle it as a C Pointer)
+
+-   __`len`__: Number of bytes in the __Transmit Buffer__
+
+Our Zig Function __`composeLongPacket`__ returns a Slice of Bytes that will contain the Long Packet.
+
+(Declared as "__`[]const u8`__". Yep the returned Slice will be a Sub-Slice of __`pkt`__)
+
+_Why do we mix Slices and Pointers in the Parameters?_
+
+The parameters __`buf`__ and __`len`__ could have been passed as a Byte Slice in Zig...
+
+Instead we're passing as an old-school __C Pointer__ so that it's compatible with the __C Interface__ for our function...
+
+```c
+// (Eventual) C Interface for our function
+ssize_t mipi_dsi_dcs_write(
+  const struct device *dev,  // MIPI DSI Device
+  uint8_t     channel,  // Virtual Channel ID
+  uint8_t     cmd,      // DCS Command
+  const void *buf,      // Transmit Buffer
+  size_t      len       // Buffer Length
+);
+```
+
+This C Interface is identical to the implementation of __MIPI DSI in Zephyr OS__. [(See this)](https://github.com/zephyrproject-rtos/zephyr/blob/main/include/zephyr/drivers/mipi_dsi.h#L325-L337)
+
+Let's compose the Packet Header...
 
 ## Packet Header
 
 TODO
+
+__Packet Header__ (4 bytes):
+
+-   __Data Identifier (DI)__ (1 byte):
+
+    Virtual Channel Identifier (Bits 6 to 7)
+
+    Data Type (Bits 0 to 5)
+
+-   __Word Count (WC)__ (2 bytes)：
+
+    Number of bytes in the Packet Payload
+
+-   __Error Correction Code (ECC)__ (1 byte):
+
+    Allow single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header
 
 ```zig
   // Data Identifier (DI) (1 byte):
@@ -236,6 +277,12 @@ TODO
 
 TODO
 
+__Packet Payload:__
+
+-   __Data__ (0 to 65,541 bytes):
+
+    Number of data bytes should match the Word Count (WC)
+
 ```zig
   // Packet Payload:
   // - Data (0 to 65,541 bytes):
@@ -249,6 +296,12 @@ TODO
 ## Packet Footer
 
 TODO
+
+__Packet Footer:__
+
+-   __Checksum (CS)__ (2 bytes):
+
+    16-bit Cyclic Redundancy Check (CCITT CRC)
 
 ```zig
   // Checksum (CS) (2 bytes):
@@ -312,7 +365,7 @@ This is how our Zig Driver composes a MIPI DSI Short Packet: [display.zig](https
 ```zig
 // Compose MIPI DSI Short Packet. See https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi
 fn composeShortPacket(
-  pkt: []u8,    // Buffer for the Long Packet
+  pkt: []u8,    // Buffer for the Returned Short Packet
   channel: u8,  // Virtual Channel ID
   cmd: u8,      // DCS Command
   buf: [*c]const u8,  // Transmit Buffer
