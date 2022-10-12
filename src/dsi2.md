@@ -291,23 +291,23 @@ Moving on to the Packet Payload...
 
 ## Packet Payload
 
-TODO
+Remember that our __Packet Payload__ is passed in as C-style __`buf`__ (Buffer Pointer) and __`len`__ (Buffer Length)?
 
-__Packet Payload:__
-
--   __Data__ (0 to 65,541 bytes):
-
-    Number of data bytes should match the Word Count (WC)
+This is how we convert the Packet Payload to a __Byte Slice__...
 
 ```zig
   // Packet Payload:
-  // - Data (0 to 65,541 bytes):
+  // Data (0 to 65,541 bytes).
   // Number of data bytes should match the Word Count (WC)
   assert(len <= 65_541);
+
+  // Convert to Byte Slice
   const payload = buf[0..len];
 ```
 
-TODO
+We'll concatenate the Packet Payload with the Header and Footer in a while.
+
+(Packet Header and Footer are also Byte Slices)
 
 ## Packet Footer
 
@@ -321,7 +321,8 @@ __Packet Footer:__
 
 ```zig
   // Checksum (CS) (2 bytes):
-  // - 16-bit Cyclic Redundancy Check (CRC) of the Payload (not the entire packet)
+  // 16-bit Cyclic Redundancy Check (CRC) of the Payload
+  // (not the entire packet)
   const cs: u16 = computeCrc(payload);
   const csl: u8 = @intCast(u8, cs & 0xff);
   const csh: u8 = @intCast(u8, cs >> 8);
@@ -330,10 +331,12 @@ __Packet Footer:__
 TODO
 
 ```zig
-  // Packet Footer (2 bytes)
-  // - Checksum (CS)
+  // Packet Footer (2 bytes):
+  // Checksum (CS)
   const footer = [2]u8 { csl, csh };
 ```
+
+## Combine Header, Payload and Footer
 
 TODO
 
