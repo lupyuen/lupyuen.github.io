@@ -313,6 +313,10 @@ We'll concatenate the Packet Payload with the Header and Footer in a while.
 
 (Packet Header and Footer are also Byte Slices)
 
+From this code it looks clear that a [__Zig Slice__](https://ziglang.org/documentation/master/#Slices) is nothing more than a __Pointer__ and a __Length__.
+
+It's the tidier and safer way to pass buffers in Zig!
+
 ## Packet Footer
 
 At the end of our Long Packet is the __Packet Footer__: A 16-bit __Cyclic Redundancy Check__ (CCITT CRC).
