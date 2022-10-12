@@ -373,7 +373,7 @@ ssize_t mipi_dsi_dcs_write(
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi2#packet-header"><strong>“Packet Header”</strong></a></li>
 </ul>
-<p>The <strong>8-bit ECC</strong> shall be computed with this formula…</p>
+<p>The <strong>8-bit ECC</strong> shall be computed with this (magic) formula: <a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf">(Page 209)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>ECC[7] = 0
 ECC[6] = 0
 ECC[5] = D10^D11^D12^D13^D14^D15^D16^D17^D18^D19^D21^D22^D23
@@ -393,23 +393,41 @@ fn computeEcc(
   di_wc: [3]u8  // Data Identifier + Word Count (3 bytes)
 ) u8 {
   ...</code></pre></div>
-<p>TODO</p>
+<p>Our Zig Function <strong><code>computeEcc</code></strong> accepts a 3-byte array, containing the first 3 bytes of the Packet Header.</p>
+<p>(“<strong><code>[3]u8</code></strong>” is equivalent to “<strong><code>uint8_t[3]</code></strong>” in C)</p>
+<p>We combine the 3 bytes into a <strong>24-bit word</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Combine DI and WC into a 24-bit word
   var di_wc_word: u32 = 
     di_wc[0] 
     | (@intCast(u32, di_wc[1]) &lt;&lt; 8)
     | (@intCast(u32, di_wc[2]) &lt;&lt; 16);</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>  // Extract the 24 bits from the word
+<p>Then we extract the 24 bits into <strong><code>d[0]</code></strong> to <strong><code>d[23]</code></strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Allocate an array of 24 bits from the stack,
+  // initialised to zeros
   var d = std.mem.zeroes([24]u1);
+
+  // Extract the 24 bits from the word
   var i: usize = 0;
   while (i &lt; 24) : (i += 1) {
     d[i] = @intCast(u1, di_wc_word &amp; 1);
     di_wc_word &gt;&gt;= 1;
   }</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>  // Compute the ECC bits
+<p>(<a href="https://ziglang.org/documentation/master/std/#root;mem.zeroes"><strong><code>std.mem.zeroes</code></strong></a> allocates an array from the stack, initialised to zeroes)</p>
+<p>Note that we’re working with <strong>Bit Values</strong>…</p>
+<ul>
+<li>
+<p>“<strong><code>u1</code></strong>” represents a Single Bit Value</p>
+</li>
+<li>
+<p>“<strong><code>[24]u1</code></strong>” is an Array of 24 Bits</p>
+</li>
+</ul>
+<p>We compute the <strong>ECC Bits</strong> according to the Magic Formula…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Allocate an array of 8 bits from the stack,
+  // initialised to zeros
   var ecc = std.mem.zeroes([8]u1);
+
+  // Compute the ECC bits
   ecc[7] = 0;
   ecc[6] = 0;
   ecc[5] = d[10] ^ d[11] ^ d[12] ^ d[13] ^ d[14] ^ d[15] ^ d[16] ^ d[17] ^ d[18] ^ d[19] ^ d[21] ^ d[22] ^ d[23];
@@ -418,7 +436,7 @@ fn computeEcc(
   ecc[2] = d[0]  ^ d[2]  ^ d[3]  ^ d[5]  ^ d[6]  ^ d[9]  ^ d[11] ^ d[12] ^ d[15] ^ d[18] ^ d[20] ^ d[21] ^ d[22];
   ecc[1] = d[0]  ^ d[1]  ^ d[3]  ^ d[4]  ^ d[6]  ^ d[8]  ^ d[10] ^ d[12] ^ d[14] ^ d[17] ^ d[20] ^ d[21] ^ d[22] ^ d[23];
   ecc[0] = d[0]  ^ d[1]  ^ d[2]  ^ d[4]  ^ d[5]  ^ d[7]  ^ d[10] ^ d[11] ^ d[13] ^ d[16] ^ d[20] ^ d[21] ^ d[22] ^ d[23];</code></pre></div>
-<p>TODO</p>
+<p>Finally we <strong>merge the ECC Bits</strong> into a single byte and return it…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Merge the ECC bits
   return @intCast(u8, ecc[0])
     | (@intCast(u8, ecc[1]) &lt;&lt; 1)
@@ -429,9 +447,10 @@ fn computeEcc(
     | (@intCast(u8, ecc[6]) &lt;&lt; 6)
     | (@intCast(u8, ecc[7]) &lt;&lt; 7);
 }</code></pre></div>
-<p>TODO</p>
+<p>And we’re done with the Error Correction Code!</p>
 <h1 id="compose-short-packet"><a href="#compose-short-packet">5 Compose Short Packet</a></h1>
 <p>TODO</p>
+<p><em>We’ve seen the Long Packet. Is there a Short Packet?</em></p>
 <p>For 1 or 2 bytes of data, our PinePhone Display Driver shall send MIPI DSI Short Packets (instead of Long Packets)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi">“Short Packet for MIPI DSI”</a></li>
