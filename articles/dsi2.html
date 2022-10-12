@@ -68,8 +68,8 @@
     <h1 class="title">NuttX RTOS for PinePhone: Display Driver in Zig</h1>
     <nav id="TOC"><ul>
 <li><a href="#pinephone-lcd-display">1 PinePhone LCD Display</a><ul></ul></li>
-<li><a href="#mipi-dsi-long-packet">2 MIPI DSI Long Packet</a><ul></ul></li>
-<li><a href="#compose-mipi-dsi-long-packet-in-zig">3 Compose MIPI DSI Long Packet in Zig</a><ul></ul></li>
+<li><a href="#long-packet-for-mipi-dsi">2 Long Packet for MIPI DSI</a><ul></ul></li>
+<li><a href="#compose-long-packet-in-zig">3 Compose Long Packet in Zig</a><ul></ul></li>
 <li><a href="#compose-mipi-dsi-short-packet-in-zig">4 Compose MIPI DSI Short Packet in Zig</a><ul></ul></li>
 <li><a href="#compute-error-correction-code-in-zig">5 Compute Error Correction Code in Zig</a><ul></ul></li>
 <li><a href="#compute-cyclic-redundancy-check-in-zig">6 Compute Cyclic Redundancy Check in Zig</a><ul></ul></li>
@@ -140,9 +140,42 @@
 88 02 88 00 00 00 00 00 
 00 00 00 00 00 00 00 00 </code></pre></div>
 <p>We’ll send these 20 commands to ST7703 in a specific packet format…</p>
-<h1 id="mipi-dsi-long-packet"><a href="#mipi-dsi-long-packet">2 MIPI DSI Long Packet</a></h1>
-<p>TODO</p>
-<h1 id="compose-mipi-dsi-long-packet-in-zig"><a href="#compose-mipi-dsi-long-packet-in-zig">3 Compose MIPI DSI Long Packet in Zig</a></h1>
+<p><img src="https://lupyuen.github.io/images/dsi-packet.png" alt="MIPI DSI Long Packet (Page 203)" /></p>
+<p><a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf"><em>MIPI DSI Long Packet (Page 203)</em></a></p>
+<h1 id="long-packet-for-mipi-dsi"><a href="#long-packet-for-mipi-dsi">2 Long Packet for MIPI DSI</a></h1>
+<p>To send an ST7703 Command, we’ll transmit a <a href="https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi"><strong>MIPI DSI Long Packet</strong></a> in this format (pic above)…</p>
+<p><strong>Packet Header</strong> (4 bytes):</p>
+<ul>
+<li>
+<p><strong>Data Identifier (DI)</strong> (1 byte):</p>
+<p>Virtual Channel Identifier (Bits 6 to 7)</p>
+<p>Data Type (Bits 0 to 5)</p>
+</li>
+<li>
+<p><strong>Word Count (WC)</strong> (2 bytes)：</p>
+<p>Number of bytes in the Packet Payload</p>
+</li>
+<li>
+<p><strong>Error Correction Code (ECC)</strong> (1 byte):</p>
+<p>Allow single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header</p>
+</li>
+</ul>
+<p><strong>Packet Payload:</strong></p>
+<ul>
+<li>
+<p><strong>Data</strong> (0 to 65,541 bytes):</p>
+<p>Number of data bytes should match the Word Count (WC)</p>
+</li>
+</ul>
+<p><strong>Packet Footer:</strong></p>
+<ul>
+<li>
+<p><strong>Checksum (CS)</strong> (2 bytes):</p>
+<p>16-bit Cyclic Redundancy Check (CCITT CRC)</p>
+</li>
+</ul>
+<p>Let’s do this in Zig…</p>
+<h1 id="compose-long-packet-in-zig"><a href="#compose-long-packet-in-zig">3 Compose Long Packet in Zig</a></h1>
 <p>TODO</p>
 <p>To initialise PinePhone’s ST7703 LCD Controller, our PinePhone Display Driver for NuttX shall send MIPI DSI Long Packets to ST7703…</p>
 <ul>
