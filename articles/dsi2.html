@@ -72,7 +72,8 @@
 <li><a href="#compose-long-packet">3 Compose Long Packet</a><ul>
 <li><a href="#packet-header">3.1 Packet Header</a><ul></ul></li>
 <li><a href="#packet-payload">3.2 Packet Payload</a><ul></ul></li>
-<li><a href="#packet-footer">3.3 Packet Footer</a><ul></ul></li></ul></li>
+<li><a href="#packet-footer">3.3 Packet Footer</a><ul></ul></li>
+<li><a href="#combine-header-payload-and-footer">3.4 Combine Header, Payload and Footer</a><ul></ul></li></ul></li>
 <li><a href="#compute-error-correction-code">4 Compute Error Correction Code</a><ul></ul></li>
 <li><a href="#compose-short-packet">5 Compose Short Packet</a><ul></ul></li>
 <li><a href="#test-pinephone-mipi-dsi-driver-with-qemu">6 Test PinePhone MIPI DSI Driver with QEMU</a><ul></ul></li>
@@ -287,20 +288,17 @@ ssize_t mipi_dsi_dcs_write(
   };</code></pre></div>
 <p>Moving on to the Packet Payload…</p>
 <h2 id="packet-payload"><a href="#packet-payload">3.2 Packet Payload</a></h2>
-<p>TODO</p>
-<p><strong>Packet Payload:</strong></p>
-<ul>
-<li>
-<p><strong>Data</strong> (0 to 65,541 bytes):</p>
-<p>Number of data bytes should match the Word Count (WC)</p>
-</li>
-</ul>
+<p>Remember that our <strong>Packet Payload</strong> is passed in as C-style <strong><code>buf</code></strong> (Buffer Pointer) and <strong><code>len</code></strong> (Buffer Length)?</p>
+<p>This is how we convert the Packet Payload to a <strong>Byte Slice</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Packet Payload:
-  // - Data (0 to 65,541 bytes):
+  // Data (0 to 65,541 bytes).
   // Number of data bytes should match the Word Count (WC)
   assert(len &lt;= 65_541);
+
+  // Convert to Byte Slice
   const payload = buf[0..len];</code></pre></div>
-<p>TODO</p>
+<p>We’ll concatenate the Packet Payload with the Header and Footer in a while.</p>
+<p>(Packet Header and Footer are also Byte Slices)</p>
 <h2 id="packet-footer"><a href="#packet-footer">3.3 Packet Footer</a></h2>
 <p>TODO</p>
 <p><strong>Packet Footer:</strong></p>
@@ -311,14 +309,15 @@ ssize_t mipi_dsi_dcs_write(
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-zig"><code>  // Checksum (CS) (2 bytes):
-  // - 16-bit Cyclic Redundancy Check (CRC) of the Payload (not the entire packet)
+  // 16-bit Cyclic Redundancy Check (CRC) of the Payload
+  // (not the entire packet)
   const cs: u16 = computeCrc(payload);
   const csl: u8 = @intCast(u8, cs &amp; 0xff);
   const csh: u8 = @intCast(u8, cs &gt;&gt; 8);</code></pre></div>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>  // Packet Footer (2 bytes)
-  // - Checksum (CS)
-  const footer = [2]u8 { csl, csh };</code></pre></div>
+<div class="example-wrap"><pre class="language-zig"><code>  // Packet Footer (2 bytes):
+  // Checksum (CS)
+  const footer = [2]u8 { csl, csh };</code></pre></div><h2 id="combine-header-payload-and-footer"><a href="#combine-header-payload-and-footer">3.4 Combine Header, Payload and Footer</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Packet:
   // - Packet Header (4 bytes)
