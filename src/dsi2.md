@@ -143,6 +143,10 @@ __Packet Footer:__
 
 Let's do this in Zig...
 
+![Compose Long Packet in Zig](https://lupyuen.github.io/images/dsi2-code1.png)
+
+[(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L47-L111)
+
 # Compose Long Packet
 
 Now we look at our __Zig Function__ that composes a __Long Packet__ for MIPI Display Serial Interface: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L47-L111)
@@ -231,7 +235,7 @@ The __Packet Header__ (4 bytes) of our Long Packet will contain...
 
     Allow single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header
 
-This is how we compose the __Packet Header__: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L47-L111)
+This is how we compose the __Packet Header__: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L47-L81)
 
 ```zig
   // Data Identifier (DI) (1 byte):
@@ -293,7 +297,7 @@ Moving on to the Packet Payload...
 
 Remember that our __Packet Payload__ is passed in as C-style __`buf`__ (Buffer Pointer) and __`len`__ (Buffer Length)?
 
-This is how we convert the Packet Payload to a __Byte Slice__...
+This is how we convert the Packet Payload to a __Byte Slice__: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L81-L87)
 
 ```zig
   // Packet Payload:
@@ -311,48 +315,77 @@ We'll concatenate the Packet Payload with the Header and Footer in a while.
 
 ## Packet Footer
 
-TODO
+At the end of our Long Packet is the __Packet Footer__: A 16-bit __Cyclic Redundancy Check__ (CCITT CRC).
 
-__Packet Footer:__
-
--   __Checksum (CS)__ (2 bytes):
-
-    16-bit Cyclic Redundancy Check (CCITT CRC)
+This is how we compute the CRC: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L87-L97)
 
 ```zig
   // Checksum (CS) (2 bytes):
   // 16-bit Cyclic Redundancy Check (CRC) of the Payload
   // (not the entire packet)
   const cs: u16 = computeCrc(payload);
-  const csl: u8 = @intCast(u8, cs & 0xff);
-  const csh: u8 = @intCast(u8, cs >> 8);
 ```
 
-TODO
+(__`computeCrc`__ is explained in the Appendix)
+
+The CRC goes into the 2-byte __Packet Footer__...
 
 ```zig
+  // Convert CRC to 2 bytes
+  const csl: u8 = @intCast(u8, cs & 0xff);
+  const csh: u8 = @intCast(u8, cs >> 8);
+
   // Packet Footer (2 bytes):
   // Checksum (CS)
   const footer = [2]u8 { csl, csh };
 ```
 
+Finally we're ready to put the Header, Payload and Footer together!
+
 ## Combine Header, Payload and Footer
 
-TODO
+Our Long Packet will contain...
+
+-   __Packet Header__ (4 bytes)
+
+-   __Packet Payload__ (`len` bytes)
+
+-   __Packet Footer__ (2 bytes)
+
+Let's combine the __Header, Payload and Footer__: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L97-L112)
 
 ```zig
-  // Packet:
-  // - Packet Header (4 bytes)
-  // - Payload (`len` bytes)
-  // - Packet Footer (2 bytes)
+  // Verify the Packet Buffer Length
   const pktlen = header.len + len + footer.len;
-  assert(pktlen <= pkt.len);  // Increase `pkt` size
-  std.mem.copy(u8, pkt[0..header.len], &header); // 4 bytes
-  std.mem.copy(u8, pkt[header.len..], payload);  // `len` bytes
-  std.mem.copy(u8, pkt[(header.len + len)..], &footer);  // 2 bytes
+  assert(pktlen <= pkt.len);  // Increase `pkt` size if this fails
+
+  // Copy Header to Packet Buffer
+  std.mem.copy(
+    u8,                  // Type
+    pkt[0..header.len],  // Destination
+    &header              // Source (4 bytes)
+  );
+
+  // Copy Payload to Packet Buffer
+  // (After the Header)
+  std.mem.copy(
+    u8,                  // Type
+    pkt[header.len..],   // Destination
+    payload              // Source (`len` bytes)
+  );
+
+  // Copy Footer to Packet Buffer
+  // (After the Payload)
+  std.mem.copy(
+    u8,                  // Type
+    pkt[(header.len + len)..],  // Destination
+    &footer              // Source (2 bytes)
+  );
 ```
 
-TODO
+([__`std.mem.copy`__](https://ziglang.org/documentation/master/std/#root;mem.copy) copies one Slice to another. It works like __`memcpy`__ in C)
+
+And we return the Byte Slice that contains our Long Packet, sized accordingly...
 
 ```zig
   // Return the packet
@@ -360,6 +393,8 @@ TODO
   return result;
 }
 ```
+
+That's how we compose a MIPI DSI Long Packet in Zig!
 
 # Compute Error Correction Code
 
