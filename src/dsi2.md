@@ -433,42 +433,60 @@ This is how we compute the ECC: [display.zig](https://github.com/lupyuen/pinepho
 /// See "12.3.6.12: Error Correction Code", Page 208 of BL808 Reference Manual:
 /// https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf
 fn computeEcc(
-    di_wc: [3]u8  // Data Identifier + Word Count (3 bytes)
+  di_wc: [3]u8  // Data Identifier + Word Count (3 bytes)
 ) u8 {
-    // Combine DI and WC into a 24-bit word
-    var di_wc_word: u32 = 
-        di_wc[0] 
-        | (@intCast(u32, di_wc[1]) << 8)
-        | (@intCast(u32, di_wc[2]) << 16);
+  ...
+```
 
-    // Extract the 24 bits from the word
-    var d = std.mem.zeroes([24]u1);
-    var i: usize = 0;
-    while (i < 24) : (i += 1) {
-        d[i] = @intCast(u1, di_wc_word & 1);
-        di_wc_word >>= 1;
-    }
+TODO
 
-    // Compute the ECC bits
-    var ecc = std.mem.zeroes([8]u1);
-    ecc[7] = 0;
-    ecc[6] = 0;
-    ecc[5] = d[10] ^ d[11] ^ d[12] ^ d[13] ^ d[14] ^ d[15] ^ d[16] ^ d[17] ^ d[18] ^ d[19] ^ d[21] ^ d[22] ^ d[23];
-    ecc[4] = d[4]  ^ d[5]  ^ d[6]  ^ d[7]  ^ d[8]  ^ d[9]  ^ d[16] ^ d[17] ^ d[18] ^ d[19] ^ d[20] ^ d[22] ^ d[23];
-    ecc[3] = d[1]  ^ d[2]  ^ d[3]  ^ d[7]  ^ d[8]  ^ d[9]  ^ d[13] ^ d[14] ^ d[15] ^ d[19] ^ d[20] ^ d[21] ^ d[23];
-    ecc[2] = d[0]  ^ d[2]  ^ d[3]  ^ d[5]  ^ d[6]  ^ d[9]  ^ d[11] ^ d[12] ^ d[15] ^ d[18] ^ d[20] ^ d[21] ^ d[22];
-    ecc[1] = d[0]  ^ d[1]  ^ d[3]  ^ d[4]  ^ d[6]  ^ d[8]  ^ d[10] ^ d[12] ^ d[14] ^ d[17] ^ d[20] ^ d[21] ^ d[22] ^ d[23];
-    ecc[0] = d[0]  ^ d[1]  ^ d[2]  ^ d[4]  ^ d[5]  ^ d[7]  ^ d[10] ^ d[11] ^ d[13] ^ d[16] ^ d[20] ^ d[21] ^ d[22] ^ d[23];
+```zig
+  // Combine DI and WC into a 24-bit word
+  var di_wc_word: u32 = 
+    di_wc[0] 
+    | (@intCast(u32, di_wc[1]) << 8)
+    | (@intCast(u32, di_wc[2]) << 16);
+```
 
-    // Merge the ECC bits
-    return @intCast(u8, ecc[0])
-        | (@intCast(u8, ecc[1]) << 1)
-        | (@intCast(u8, ecc[2]) << 2)
-        | (@intCast(u8, ecc[3]) << 3)
-        | (@intCast(u8, ecc[4]) << 4)
-        | (@intCast(u8, ecc[5]) << 5)
-        | (@intCast(u8, ecc[6]) << 6)
-        | (@intCast(u8, ecc[7]) << 7);
+TODO
+
+```zig
+  // Extract the 24 bits from the word
+  var d = std.mem.zeroes([24]u1);
+  var i: usize = 0;
+  while (i < 24) : (i += 1) {
+    d[i] = @intCast(u1, di_wc_word & 1);
+    di_wc_word >>= 1;
+  }
+```
+
+TODO
+
+```zig
+  // Compute the ECC bits
+  var ecc = std.mem.zeroes([8]u1);
+  ecc[7] = 0;
+  ecc[6] = 0;
+  ecc[5] = d[10] ^ d[11] ^ d[12] ^ d[13] ^ d[14] ^ d[15] ^ d[16] ^ d[17] ^ d[18] ^ d[19] ^ d[21] ^ d[22] ^ d[23];
+  ecc[4] = d[4]  ^ d[5]  ^ d[6]  ^ d[7]  ^ d[8]  ^ d[9]  ^ d[16] ^ d[17] ^ d[18] ^ d[19] ^ d[20] ^ d[22] ^ d[23];
+  ecc[3] = d[1]  ^ d[2]  ^ d[3]  ^ d[7]  ^ d[8]  ^ d[9]  ^ d[13] ^ d[14] ^ d[15] ^ d[19] ^ d[20] ^ d[21] ^ d[23];
+  ecc[2] = d[0]  ^ d[2]  ^ d[3]  ^ d[5]  ^ d[6]  ^ d[9]  ^ d[11] ^ d[12] ^ d[15] ^ d[18] ^ d[20] ^ d[21] ^ d[22];
+  ecc[1] = d[0]  ^ d[1]  ^ d[3]  ^ d[4]  ^ d[6]  ^ d[8]  ^ d[10] ^ d[12] ^ d[14] ^ d[17] ^ d[20] ^ d[21] ^ d[22] ^ d[23];
+  ecc[0] = d[0]  ^ d[1]  ^ d[2]  ^ d[4]  ^ d[5]  ^ d[7]  ^ d[10] ^ d[11] ^ d[13] ^ d[16] ^ d[20] ^ d[21] ^ d[22] ^ d[23];
+```
+
+TODO
+
+```zig
+  // Merge the ECC bits
+  return @intCast(u8, ecc[0])
+    | (@intCast(u8, ecc[1]) << 1)
+    | (@intCast(u8, ecc[2]) << 2)
+    | (@intCast(u8, ecc[3]) << 3)
+    | (@intCast(u8, ecc[4]) << 4)
+    | (@intCast(u8, ecc[5]) << 5)
+    | (@intCast(u8, ecc[6]) << 6)
+    | (@intCast(u8, ecc[7]) << 7);
 }
 ```
 
@@ -495,7 +513,11 @@ fn composeShortPacket(
 ) []const u8 {          // Returns the Short Packet
   debug("composeShortPacket: channel={}, cmd=0x{x}, len={}", .{ channel, cmd, len });
   assert(len == 1 or len == 2);
+```
 
+TODO
+
+```zig
   // From BL808 Reference Manual (Page 201): https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf
   //   A Short Packet consists of 8-bit data identification (DI),
   //   two bytes of commands or data, and 8-bit ECC.
@@ -504,7 +526,11 @@ fn composeShortPacket(
   // - Doesn't have Packet Payload and Packet Footer (CRC)
   // - Instead of Word Count (WC), the Packet Header now has 2 bytes of data
   // Everything else is the same.
+```
 
+TODO
+
+```zig
   // Data Identifier (DI) (1 byte):
   // - Virtual Channel Identifier (Bits 6 to 7)
   // - Data Type (Bits 0 to 5)
@@ -514,29 +540,53 @@ fn composeShortPacket(
   const vc: u8 = channel;
   const dt: u8 = cmd;
   const di: u8 = (vc << 6) | dt;
+```
 
+TODO
+
+```zig
   // Data (2 bytes), fill with 0 if Second Byte is missing
   const data = [2]u8 {
     buf[0],                       // First Byte
     if (len == 2) buf[1] else 0,  // Second Byte
   };
+```
 
+TODO
+
+```zig
   // Data Identifier + Data (3 bytes): For computing Error Correction Code (ECC)
   const di_data = [3]u8 { di, data[0], data[1] };
+```
 
+TODO
+
+```zig
   // Compute Error Correction Code (ECC) for Data Identifier + Word Count
   const ecc: u8 = computeEcc(di_data);
+```
 
+TODO
+
+```zig
   // Packet Header (4 bytes):
   // - Data Identifier + Word Count + Error Correction Code
   const header = [4]u8 { di_data[0], di_data[1], di_data[2], ecc };
+```
 
+TODO
+
+```zig
   // Packet:
   // - Packet Header (4 bytes)
   const pktlen = header.len;
   assert(pktlen <= pkt.len);  // Increase `pkt` size
   std.mem.copy(u8, pkt[0..header.len], &header); // 4 bytes
+```
 
+TODO
+
+```zig
   // Return the packet
   const result = pkt[0..pktlen];
   return result;
