@@ -510,11 +510,15 @@ Finally we __merge the ECC Bits__ into a single byte and return it...
 
 And we're done with the Error Correction Code!
 
+![MIPI DSI Short Packet (Page 201)](https://lupyuen.github.io/images/dsi-short.png)
+
+[_MIPI DSI Short Packet (Page 201)_](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf)
+
 # Compose Short Packet
 
 _We've seen the Long Packet. Is there a Short Packet?_
 
-Yep! If we're transmitting 1 or 2 bytes to the ST7703 LCD Controller, we may send a __MIPI DSI Short Packet__...
+Yep! If we're transmitting 1 or 2 bytes to the ST7703 LCD Controller, we may send a __MIPI DSI Short Packet__ (pic above)...
 
 -   [__"Short Packet for MIPI DSI"__](https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi)
 
