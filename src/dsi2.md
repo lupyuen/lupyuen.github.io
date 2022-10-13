@@ -636,11 +636,13 @@ And we return the Byte Slice that contains our Short Packet, sized accordingly..
 
 We're done with Long and Short Packets for MIPI DSI, let's test them...
 
-# Test PinePhone MIPI DSI Driver with QEMU
+![Testing MIPI DSI Driver with QEMU](https://lupyuen.github.io/images/dsi2-qemu.png)
+
+# Test MIPI DSI Driver with QEMU
 
 TODO
 
-_Can we test without a PinePhone?_
+_Can we test this code on Apache NuttX RTOS... Without a PinePhone?_
 
 The above Zig Code for composing Long Packets and Short Packets was tested in QEMU for Arm64 with GIC Version 2...
 
