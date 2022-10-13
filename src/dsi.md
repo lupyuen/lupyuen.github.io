@@ -751,6 +751,12 @@ Thus a MIPI DSI __Short Packet__ (compared with Long Packet)...
 
 -   Instead of Word Count (WC), the Packet Header now has 2 bytes of data
 
+-   DCS Command (Data Type) is...
+
+    __DCS Short Write Without Parameter (`0x05`)__ for sending 1 byte of data
+    
+    __DCS Short Write With Parameter (`0x15`)__ for sending 2 bytes of data
+
 Everything else is the same.
 
 ![MIPI DSI Protocol Layers (Page 183)](https://lupyuen.github.io/images/dsi-layer.png)

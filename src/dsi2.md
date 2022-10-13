@@ -512,23 +512,27 @@ And we're done with the Error Correction Code!
 
 # Compose Short Packet
 
-TODO
-
 _We've seen the Long Packet. Is there a Short Packet?_
 
-A MIPI DSI __Short Packet__ (compared with Long Packet)...
+Yep! If we're transmitting 1 or 2 bytes to the ST7703 LCD Controller, we may send a __MIPI DSI Short Packet__...
+
+-   [__"Short Packet for MIPI DSI"__](https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi)
+
+A MIPI DSI Short Packet (compared with Long Packet)...
 
 -   Doesn't have Packet Payload and Packet Footer (CRC)
 
 -   Instead of Word Count (WC), the Packet Header now has 2 bytes of data
 
-Everything else is the same.
+-   DCS Command (Data Type) is...
 
-For 1 or 2 bytes of data, our PinePhone Display Driver shall send MIPI DSI Short Packets (instead of Long Packets)...
+    __DCS Short Write Without Parameter (`0x05`)__ for sending 1 byte of data
+    
+    __DCS Short Write With Parameter (`0x15`)__ for sending 2 bytes of data
 
--   ["Short Packet for MIPI DSI"](https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi)
+-   Everything else is the same
 
-This is how we compose a MIPI DSI Short Packet: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L113-L168)
+This is how we __compose a Short Packet__: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L113-L168)
 
 ```zig
 // Compose MIPI DSI Short Packet. 
@@ -545,9 +549,9 @@ fn composeShortPacket(
   assert(len == 1 or len == 2);
 ```
 
-TODO
+__`composeShortPacket`__ accepts the same parameters as __`composeLongPacket`__.
 
-First we populate the __Data Indentifier (DI)__ with the Virtual Channel and DCS Command.
+We populate __Data Indentifier (DI)__ the same way, with Virtual Channel and DCS Command...
 
 ```zig
   // Data Identifier (DI) (1 byte):
@@ -560,17 +564,18 @@ First we populate the __Data Indentifier (DI)__ with the Virtual Channel and DCS
   const di: u8 = (vc << 6) | dt;
 ```
 
-TODO
+Our __Packet Header__ will include two bytes of data...
 
 ```zig
-  // Data (2 bytes), fill with 0 if Second Byte is missing
+  // Data (2 bytes), fill with 0 
+  // if Second Byte is missing
   const data = [2]u8 {
     buf[0],                       // First Data Byte
     if (len == 2) buf[1] else 0,  // Second Data Byte
   };
 ```
 
-TODO
+We compute the __Error Correction Code (ECC)__ based on the Data Identifier and the two Data Bytes...
 
 ```zig
   // Data Identifier + Data (3 bytes): 
@@ -580,19 +585,13 @@ TODO
     data[0],  // First Data Byte
     data[1]   // Second Data Byte
   };
-```
 
-TODO
-
-Next comes the __Error Correction Code (ECC)__. Which we compute based on the Data Identifier and the two Data Bytes...
-
-```zig
   // Compute Error Correction Code (ECC) 
   // for Data Identifier + Word Count
   const ecc: u8 = computeEcc(di_data);
 ```
 
-TODO
+[(__`computeEcc`__ is explained here)](https://lupyuen.github.io/articles/dsi2#error-correction-code)
 
 We pack everything into our 4-byte __Packet Header__...
 
@@ -607,7 +606,7 @@ We pack everything into our 4-byte __Packet Header__...
   };
 ```
 
-TODO
+We __copy the Packet Header__ into our Packet Buffer...
 
 ```zig
   // Verify the Packet Buffer Length
@@ -622,8 +621,6 @@ TODO
   );
 ```
 
-TODO
-
 And we return the Byte Slice that contains our Short Packet, sized accordingly...
 
 ```zig
@@ -632,6 +629,8 @@ And we return the Byte Slice that contains our Short Packet, sized accordingly..
   return result;
 }
 ```
+
+We're done with Long and Short Packets for MIPI DSI, let's test them...
 
 # Test PinePhone MIPI DSI Driver with QEMU
 
