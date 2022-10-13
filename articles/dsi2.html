@@ -207,7 +207,7 @@ fn composeLongPacket(
 </li>
 <li>
 <p><strong><code>cmd</code></strong>: Refers to the <a href="https://lupyuen.github.io/articles/dsi#display-command-set-for-mipi-dsi"><strong>Display Command Set (DCS)</strong></a> that we’ll send over the MIPI Display Serial Interface.</p>
-<p>For Long Packets, we’ll send the <a href="https://lupyuen.github.io/articles/dsi#display-command-set-for-mipi-dsi"><strong>DCS Long Write Command</strong></a>.</p>
+<p>For Long Packets, we’ll send the <a href="https://lupyuen.github.io/articles/dsi#display-command-set-for-mipi-dsi"><strong>DCS Long Write Command</strong></a>. (Which has Data Type <code>0x39</code>)</p>
 <p>(Later we’ll see the DCS Short Write Command)</p>
 </li>
 <li>
@@ -268,7 +268,7 @@ ssize_t mipi_dsi_dcs_write(
   const wc: u16 = @intCast(u16, len);
   const wcl: u8 = @intCast(u8, wc &amp; 0xff);
   const wch: u8 = @intCast(u8, wc &gt;&gt; 8);</code></pre></div>
-<p>(<strong><code>@intCast</code></strong> will halt with a Runtime Panic if <strong><code>len</code></strong> is too big to be converted into a 16-bit unsigned integer <strong><code>u16</code></strong>)</p>
+<p>(<a href="https://ziglang.org/documentation/master/#intCast"><strong><code>@intCast</code></strong></a> will halt with a Runtime Panic if <strong><code>len</code></strong> is too big to be converted into a 16-bit unsigned integer <strong><code>u16</code></strong>)</p>
 <p>Next comes the <strong>Error Correction Code (ECC)</strong>. Which we compute based on the Data Identifier and Word Count…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Data Identifier + Word Count (3 bytes): 
   // For computing Error Correction Code (ECC)
