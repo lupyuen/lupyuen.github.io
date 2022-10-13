@@ -146,7 +146,7 @@
 00 00 00 00 00 00 00 00 </code></pre></div>
 <p>We’ll send these 20 commands to ST7703 in a specific packet format…</p>
 <p><img src="https://lupyuen.github.io/images/dsi-packet.png" alt="MIPI DSI Long Packet (Page 203)" /></p>
-<p><a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf"><em>MIPI DSI Long Packet (Page 203)</em></a></p>
+<p><a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf"><em>MIPI DSI Long Packet (Page 203)</em></a></p>
 <h1 id="long-packet-for-mipi-dsi"><a href="#long-packet-for-mipi-dsi">2 Long Packet for MIPI DSI</a></h1>
 <p>To send a command to the ST7703 LCD Controller, we’ll transmit a <a href="https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi"><strong>MIPI DSI Long Packet</strong></a> in this format (pic above)…</p>
 <p><strong>Packet Header</strong> (4 bytes):</p>
@@ -367,13 +367,13 @@ ssize_t mipi_dsi_dcs_write(
 }</code></pre></div>
 <p>That’s how we compose a MIPI DSI Long Packet in Zig!</p>
 <p><img src="https://lupyuen.github.io/images/dsi2-ecc.png" alt="MIPI DSI Error Correction Code (Page 209)" /></p>
-<p><a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf"><em>MIPI DSI Error Correction Code (Page 209)</em></a></p>
+<p><a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf"><em>MIPI DSI Error Correction Code (Page 209)</em></a></p>
 <h1 id="error-correction-code"><a href="#error-correction-code">4 Error Correction Code</a></h1>
 <p>Earlier we talked about computing the <strong>Error Correction Code (ECC)</strong> for the Packet Header…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi2#packet-header"><strong>“Packet Header”</strong></a></li>
 </ul>
-<p>The <strong>8-bit ECC</strong> shall be computed with this (magic) formula: <a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf">(Page 209)</a></p>
+<p>The <strong>8-bit ECC</strong> shall be computed with this (magic) formula: <a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf">(Page 209)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>ECC[7] = 0
 ECC[6] = 0
 ECC[5] = D10^D11^D12^D13^D14^D15^D16^D17^D18^D19^D21^D22^D23
@@ -388,7 +388,7 @@ ECC[0] = D0^D1^D2^D4^D5^D7^D10^D11^D13^D16^D20^D21^D22^D23</code></pre></div>
 <div class="example-wrap"><pre class="language-zig"><code>/// Compute the Error Correction Code (ECC) (1 byte):
 /// Allow single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header
 /// See &quot;12.3.6.12: Error Correction Code&quot;, Page 208 of BL808 Reference Manual:
-/// https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf
+/// https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf
 fn computeEcc(
   di_wc: [3]u8  // Data Identifier + Word Count (3 bytes)
 ) u8 {
@@ -449,7 +449,7 @@ fn computeEcc(
 }</code></pre></div>
 <p>And we’re done with the Error Correction Code!</p>
 <p><img src="https://lupyuen.github.io/images/dsi-short.png" alt="MIPI DSI Short Packet (Page 201)" /></p>
-<p><a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf"><em>MIPI DSI Short Packet (Page 201)</em></a></p>
+<p><a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf"><em>MIPI DSI Short Packet (Page 201)</em></a></p>
 <h1 id="compose-short-packet"><a href="#compose-short-packet">5 Compose Short Packet</a></h1>
 <p><em>We’ve seen the Long Packet. Is there a Short Packet?</em></p>
 <p>Yep! If we’re transmitting 1 or 2 bytes to the ST7703 LCD Controller, we may send a <strong>MIPI DSI Short Packet</strong> (pic above)…</p>

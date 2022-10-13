@@ -419,7 +419,7 @@
 </ul>
 <p>Now that we have initialised A64 MIPI DSI, we’re ready to send our DCS Command…</p>
 <p><img src="https://lupyuen.github.io/images/dsi-packet.png" alt="MIPI DSI Long Packet (Page 203)" /></p>
-<p><a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf"><em>MIPI DSI Long Packet (Page 203)</em></a></p>
+<p><a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf"><em>MIPI DSI Long Packet (Page 203)</em></a></p>
 <h1 id="long-packet-for-mipi-dsi"><a href="#long-packet-for-mipi-dsi">11 Long Packet for MIPI DSI</a></h1>
 <p>Earlier we talked about transmitting a <strong>DCS Long Write</strong> command (Data Type <code>0x39</code>) to ST7703 LCD Controller…</p>
 <ul>
@@ -441,7 +441,7 @@
 <li>
 <p><strong>Error Correction Code (ECC)</strong> (1 byte):</p>
 <p>Allow single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header</p>
-<p><a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf">(See “12.3.6.12: Error Correction Code”, Page 208)</a></p>
+<p><a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf">(See “12.3.6.12: Error Correction Code”, Page 208)</a></p>
 <p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L850-L867">(How we compose the Packet Header)</a></p>
 </li>
 </ul>
@@ -457,7 +457,7 @@
 <li>
 <p><strong>Checksum (CS)</strong> (2 bytes):</p>
 <p>16-bit Cyclic Redundancy Check (CRC)</p>
-<p><a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf">(See “12.3.6.13: Packet Footer”, Page 210)</a></p>
+<p><a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf">(See “12.3.6.13: Packet Footer”, Page 210)</a></p>
 <p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L254-L257">(How we compute the Checksum)</a></p>
 </li>
 </ul>
@@ -690,7 +690,7 @@
 </li>
 <li>
 <p>This doc explains MIPI DSI rather well…</p>
-<p><a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf"><strong>“BL808 Reference Manual”</strong></a></p>
+<p><a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf"><strong>“BL808 Reference Manual”</strong></a></p>
 <p>(Page 181, Chapter 12: “DSI”)</p>
 </li>
 <li>
@@ -703,9 +703,9 @@
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/dsi-short.png" alt="MIPI DSI Short Packet (Page 201)" /></p>
-<p><a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf"><em>MIPI DSI Short Packet (Page 201)</em></a></p>
+<p><a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf"><em>MIPI DSI Short Packet (Page 201)</em></a></p>
 <h1 id="appendix-short-packet-for-mipi-dsi"><a href="#appendix-short-packet-for-mipi-dsi">17 Appendix: Short Packet for MIPI DSI</a></h1>
-<p>According to <a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf"><strong>BL808 Reference Manual</strong></a> (Page 201, pic above)…</p>
+<p>According to <a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf"><strong>BL808 Reference Manual</strong></a> (Page 201, pic above)…</p>
 <blockquote>
 <p>A <strong>Short Packet</strong> consists of 8-bit data identification (DI), two bytes of commands or data, and 8-bit ECC.</p>
 </blockquote>
@@ -728,7 +728,7 @@
 </ul>
 <p>Everything else is the same.</p>
 <p><img src="https://lupyuen.github.io/images/dsi-layer.png" alt="MIPI DSI Protocol Layers (Page 183)" /></p>
-<p><a href="https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf"><em>MIPI DSI Protocol Layers (Page 183)</em></a></p>
+<p><a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf"><em>MIPI DSI Protocol Layers (Page 183)</em></a></p>
 <h1 id="appendix-mipi-dphy"><a href="#appendix-mipi-dphy">18 Appendix: MIPI DPHY</a></h1>
 <p>Earlier we talked about initialising the MIPI DSI Controller…</p>
 <ul>
