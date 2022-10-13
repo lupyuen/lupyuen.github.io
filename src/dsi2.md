@@ -640,6 +640,8 @@ We're done with Long and Short Packets for MIPI DSI, let's test them...
 
 TODO
 
+_Can we test without a PinePhone?_
+
 The above Zig Code for composing Long Packets and Short Packets was tested in QEMU for Arm64 with GIC Version 2...
 
 [lupyuen/incubator-nuttx/tree/gicv2](https://github.com/lupyuen/incubator-nuttx/tree/gicv2)
