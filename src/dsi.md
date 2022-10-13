@@ -441,7 +441,7 @@ Now that we have initialised A64 MIPI DSI, we're ready to send our DCS Command..
 
 ![MIPI DSI Long Packet (Page 203)](https://lupyuen.github.io/images/dsi-packet.png)
 
-[_MIPI DSI Long Packet (Page 203)_](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf)
+[_MIPI DSI Long Packet (Page 203)_](https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf)
 
 # Long Packet for MIPI DSI
 
@@ -469,7 +469,7 @@ __Packet Header__ (4 bytes):
 
     Allow single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header
 
-    [(See "12.3.6.12: Error Correction Code", Page 208)](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf)
+    [(See "12.3.6.12: Error Correction Code", Page 208)](https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf)
 
 
     [(How we compose the Packet Header)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L850-L867)
@@ -486,7 +486,7 @@ __Packet Footer:__
 
     16-bit Cyclic Redundancy Check (CRC)
 
-    [(See "12.3.6.13: Packet Footer", Page 210)](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf)
+    [(See "12.3.6.13: Packet Footer", Page 210)](https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf)
 
     [(How we compute the Checksum)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L254-L257)
 
@@ -721,7 +721,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This doc explains MIPI DSI rather well...
 
-    [__"BL808 Reference Manual"__](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf)
+    [__"BL808 Reference Manual"__](https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf)
 
     (Page 181, Chapter 12: "DSI")
 
@@ -735,11 +735,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 ![MIPI DSI Short Packet (Page 201)](https://lupyuen.github.io/images/dsi-short.png)
 
-[_MIPI DSI Short Packet (Page 201)_](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf)
+[_MIPI DSI Short Packet (Page 201)_](https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf)
 
 # Appendix: Short Packet for MIPI DSI
 
-According to [__BL808 Reference Manual__](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf) (Page 201, pic above)...
+According to [__BL808 Reference Manual__](https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf) (Page 201, pic above)...
 
 > A __Short Packet__ consists of 8-bit data identification (DI), two bytes of commands or data, and 8-bit ECC.
 
@@ -761,7 +761,7 @@ Everything else is the same.
 
 ![MIPI DSI Protocol Layers (Page 183)](https://lupyuen.github.io/images/dsi-layer.png)
 
-[_MIPI DSI Protocol Layers (Page 183)_](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf)
+[_MIPI DSI Protocol Layers (Page 183)_](https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf)
 
 # Appendix: MIPI DPHY
 

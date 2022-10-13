@@ -107,7 +107,7 @@ We'll send these 20 commands to ST7703 in a specific packet format...
 
 ![MIPI DSI Long Packet (Page 203)](https://lupyuen.github.io/images/dsi-packet.png)
 
-[_MIPI DSI Long Packet (Page 203)_](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf)
+[_MIPI DSI Long Packet (Page 203)_](https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf)
 
 # Long Packet for MIPI DSI
 
@@ -400,7 +400,7 @@ That's how we compose a MIPI DSI Long Packet in Zig!
 
 ![MIPI DSI Error Correction Code (Page 209)](https://lupyuen.github.io/images/dsi2-ecc.png)
 
-[_MIPI DSI Error Correction Code (Page 209)_](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf)
+[_MIPI DSI Error Correction Code (Page 209)_](https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf)
 
 # Error Correction Code
 
@@ -408,7 +408,7 @@ Earlier we talked about computing the __Error Correction Code (ECC)__ for the Pa
 
 -   [__"Packet Header"__](https://lupyuen.github.io/articles/dsi2#packet-header)
 
-The __8-bit ECC__ shall be computed with this (magic) formula: [(Page 209)](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf)
+The __8-bit ECC__ shall be computed with this (magic) formula: [(Page 209)](https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf)
 
 ```text
 ECC[7] = 0
@@ -431,7 +431,7 @@ This is how we compute the ECC: [display.zig](https://github.com/lupyuen/pinepho
 /// Compute the Error Correction Code (ECC) (1 byte):
 /// Allow single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header
 /// See "12.3.6.12: Error Correction Code", Page 208 of BL808 Reference Manual:
-/// https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf
+/// https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf
 fn computeEcc(
   di_wc: [3]u8  // Data Identifier + Word Count (3 bytes)
 ) u8 {
@@ -512,7 +512,7 @@ And we're done with the Error Correction Code!
 
 ![MIPI DSI Short Packet (Page 201)](https://lupyuen.github.io/images/dsi-short.png)
 
-[_MIPI DSI Short Packet (Page 201)_](https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf)
+[_MIPI DSI Short Packet (Page 201)_](https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf)
 
 # Compose Short Packet
 
