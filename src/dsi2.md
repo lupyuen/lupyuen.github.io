@@ -155,7 +155,7 @@ Now we look at our __Zig Function__ that composes a __Long Packet__ for MIPI Dis
 // Compose MIPI DSI Long Packet.
 // See https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi
 fn composeLongPacket(
-  pkt:     []u8,  // Buffer for the Returns Long Packet
+  pkt:     []u8,  // Buffer for the Returned Long Packet
   channel: u8,    // Virtual Channel ID
   cmd:     u8,    // DCS Command
   buf:     [*c]const u8,  // Transmit Buffer
@@ -516,45 +516,43 @@ TODO
 
 _We've seen the Long Packet. Is there a Short Packet?_
 
+A MIPI DSI __Short Packet__ (compared with Long Packet)...
+
+-   Doesn't have Packet Payload and Packet Footer (CRC)
+
+-   Instead of Word Count (WC), the Packet Header now has 2 bytes of data
+
+Everything else is the same.
+
 For 1 or 2 bytes of data, our PinePhone Display Driver shall send MIPI DSI Short Packets (instead of Long Packets)...
 
 -   ["Short Packet for MIPI DSI"](https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi)
 
-This is how our Zig Driver composes a MIPI DSI Short Packet: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L113-L168)
+This is how we compose a MIPI DSI Short Packet: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L113-L168)
 
 ```zig
-// Compose MIPI DSI Short Packet. See https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi
+// Compose MIPI DSI Short Packet. 
+// See https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi
 fn composeShortPacket(
-  pkt: []u8,    // Buffer for the Returned Short Packet
-  channel: u8,  // Virtual Channel ID
-  cmd: u8,      // DCS Command
-  buf: [*c]const u8,  // Transmit Buffer
-  len: usize          // Buffer Length
-) []const u8 {          // Returns the Short Packet
-  debug("composeShortPacket: channel={}, cmd=0x{x}, len={}", .{ channel, cmd, len });
+  pkt:     []u8,    // Buffer for the Returned Short Packet
+  channel: u8,      // Virtual Channel ID
+  cmd:     u8,      // DCS Command
+  buf:     [*c]const u8,  // Transmit Buffer
+  len:     usize          // Buffer Length
+) []const u8 {  // Returns the Short Packet
+  
+  // Short Packet can only have 1 or 2 data bytes
   assert(len == 1 or len == 2);
 ```
 
 TODO
 
-```zig
-  // From BL808 Reference Manual (Page 201): https://github.com/sipeed/sipeed2022_autumn_competition/blob/main/assets/BL808_RM_en.pdf
-  //   A Short Packet consists of 8-bit data identification (DI),
-  //   two bytes of commands or data, and 8-bit ECC.
-  //   The length of a short packet is 4 bytes including ECC.
-  // Thus a MIPI DSI Short Packet (compared with Long Packet)...
-  // - Doesn't have Packet Payload and Packet Footer (CRC)
-  // - Instead of Word Count (WC), the Packet Header now has 2 bytes of data
-  // Everything else is the same.
-```
-
-TODO
+First we populate the __Data Indentifier (DI)__ with the Virtual Channel and DCS Command.
 
 ```zig
   // Data Identifier (DI) (1 byte):
   // - Virtual Channel Identifier (Bits 6 to 7)
   // - Data Type (Bits 0 to 5)
-  // (Virtual Channel should be 0, I think)
   assert(channel < 4);
   assert(cmd < (1 << 6));
   const vc: u8 = channel;
@@ -567,44 +565,66 @@ TODO
 ```zig
   // Data (2 bytes), fill with 0 if Second Byte is missing
   const data = [2]u8 {
-    buf[0],                       // First Byte
-    if (len == 2) buf[1] else 0,  // Second Byte
+    buf[0],                       // First Data Byte
+    if (len == 2) buf[1] else 0,  // Second Data Byte
   };
 ```
 
 TODO
 
 ```zig
-  // Data Identifier + Data (3 bytes): For computing Error Correction Code (ECC)
-  const di_data = [3]u8 { di, data[0], data[1] };
+  // Data Identifier + Data (3 bytes): 
+  // For computing Error Correction Code (ECC)
+  const di_data = [3]u8 { 
+    di,       // Data Identifier
+    data[0],  // First Data Byte
+    data[1]   // Second Data Byte
+  };
 ```
 
 TODO
 
+Next comes the __Error Correction Code (ECC)__. Which we compute based on the Data Identifier and the two Data Bytes...
+
 ```zig
-  // Compute Error Correction Code (ECC) for Data Identifier + Word Count
+  // Compute Error Correction Code (ECC) 
+  // for Data Identifier + Word Count
   const ecc: u8 = computeEcc(di_data);
 ```
 
 TODO
 
+We pack everything into our 4-byte __Packet Header__...
+
 ```zig
   // Packet Header (4 bytes):
-  // - Data Identifier + Word Count + Error Correction Code
-  const header = [4]u8 { di_data[0], di_data[1], di_data[2], ecc };
+  // Data Identifier + Data + Error Correction Code
+  const header = [4]u8 { 
+    di_data[0],  // Data Identifier
+    di_data[1],  // First Data Byte
+    di_data[2],  // Second Data Byte
+    ecc          // Error Correction Code
+  };
 ```
 
 TODO
 
 ```zig
-  // Packet:
-  // - Packet Header (4 bytes)
+  // Verify the Packet Buffer Length
   const pktlen = header.len;
   assert(pktlen <= pkt.len);  // Increase `pkt` size
-  std.mem.copy(u8, pkt[0..header.len], &header); // 4 bytes
+
+  // Copy Header to Packet Buffer
+  std.mem.copy(
+    u8,                  // Type
+    pkt[0..header.len],  // Destination
+    &header              // Source (4 bytes)
+  );
 ```
 
 TODO
+
+And we return the Byte Slice that contains our Short Packet, sized accordingly...
 
 ```zig
   // Return the packet
