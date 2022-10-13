@@ -178,7 +178,7 @@ Our Zig Function __`composeLongPacket`__ accepts the following parameters...
 
 -   __`cmd`__: Refers to the [__Display Command Set (DCS)__](https://lupyuen.github.io/articles/dsi#display-command-set-for-mipi-dsi) that we'll send over the MIPI Display Serial Interface.
 
-    For Long Packets, we'll send the [__DCS Long Write Command__](https://lupyuen.github.io/articles/dsi#display-command-set-for-mipi-dsi).
+    For Long Packets, we'll send the [__DCS Long Write Command__](https://lupyuen.github.io/articles/dsi#display-command-set-for-mipi-dsi). (Which has Data Type `0x39`)
 
     (Later we'll see the DCS Short Write Command)
 
@@ -260,7 +260,7 @@ Then we convert the 16-bit __Word Count (WC)__ to bytes...
   const wch: u8 = @intCast(u8, wc >> 8);
 ```
 
-(__`@intCast`__ will halt with a Runtime Panic if __`len`__ is too big to be converted into a 16-bit unsigned integer __`u16`__)
+([__`@intCast`__](https://ziglang.org/documentation/master/#intCast) will halt with a Runtime Panic if __`len`__ is too big to be converted into a 16-bit unsigned integer __`u16`__)
 
 Next comes the __Error Correction Code (ECC)__. Which we compute based on the Data Identifier and Word Count...
 
