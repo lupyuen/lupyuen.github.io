@@ -640,7 +640,7 @@ We're done with Long and Short Packets for MIPI DSI, let's test them...
 
 [(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L997-L1036)
 
-# Test Case for MIPI DSI
+# Test MIPI DSI Driver
 
 _How will we know if our Long and Short Packets are created correctly?_
 
@@ -713,7 +713,7 @@ TODO
 
 ![Testing MIPI DSI Driver with QEMU](https://lupyuen.github.io/images/dsi2-qemu.png)
 
-# Test MIPI DSI Driver with QEMU
+# Run MIPI DSI Driver on QEMU
 
 TODO
 
