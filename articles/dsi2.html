@@ -551,22 +551,31 @@ fn composeShortPacket(
 const short_pkt_param = [_]u8 {
   0xbc, 0x4e,
 };</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>// Allocate Packet Buffer
-var pkt_buf = std.mem.zeroes([128]u8);
+<p>We’ll compose a Short Packet that will pack the 2 bytes above.</p>
+<p>(We write “<strong><code>[_]u8</code></strong>” to declare a Byte Array in Zig)</p>
+<p>First we allocate a <strong>Packet Buffer</strong> from the Stack, initialised to zeroes…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Allocate Packet Buffer of 128 bytes
+var pkt_buf = std.mem.zeroes([128]u8);</code></pre></div>
+<p>(“<strong><code>[128]u8</code></strong>” is equivalent to “<strong><code>uint8_t[128]</code></strong>” in C)</p>
+<p>Then we call <strong><code>composeShortPacket</code></strong> to construct the Short Packet…</p>
 
-// Compose a Short Packet (With Parameter)
-const short_pkt_param_result = composeShortPacket(
-  &amp;pkt_buf,  //  Packet Buffer
-  0,         //  Virtual Channel
-  MIPI_DSI_DCS_SHORT_WRITE_PARAM, // DCS Command
-  &amp;short_pkt_param,    // Transmit Buffer
-  short_pkt_param.len  // Buffer Length
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Compose a Short Packet (With Parameter)</span>
+<span class="kw">const</span> <span class="ident">short_pkt_param_result</span> <span class="op">=</span> <span class="ident">composeShortPacket</span>(
+  <span class="kw-2">&amp;</span><span class="ident">pkt_buf</span>,  <span class="comment">//  Packet Buffer</span>
+  <span class="number">0</span>,         <span class="comment">//  Virtual Channel</span>
+  <span class="ident">MIPI_DSI_DCS_SHORT_WRITE_PARAM</span>, <span class="comment">// DCS Command</span>
+  <span class="kw-2">&amp;</span><span class="ident">short_pkt_param</span>,    <span class="comment">// Transmit Buffer</span>
+  <span class="ident">short_pkt_param</span>.<span class="ident">len</span>  <span class="comment">// Buffer Length</span>
 );</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>debug(&quot;Result:&quot;, .{});
-dump_buffer(&amp;short_pkt_param_result[0], short_pkt_param_result.len);</code></pre></div>
-<p>TODO</p>
+<p>We <strong>dump the contents</strong> of the returned packet…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Dump the Returned Packet
+debug(&quot;Result:&quot;, .{});
+dump_buffer(
+  &amp;short_pkt_param_result[0],  // Pointer to Packet
+  short_pkt_param_result.len   // Length of Packet
+);</code></pre></div>
+<p>(We’ll talk about <strong><code>dump_buffer</code></strong> in a while)</p>
+<p>Finally we verify that the result is “<strong><code>15</code> <code>BC</code> <code>4E</code> <code>35</code></strong>”…</p>
 <div class="example-wrap"><pre class="language-zig"><code>assert(  //  Verify result
   std.mem.eql(
     u8,
@@ -576,6 +585,8 @@ dump_buffer(&amp;short_pkt_param_result[0], short_pkt_param_result.len);</code><
     }
   )
 );</code></pre></div>
+<p>TODO: (std.mem.eql)</p>
+<p>TODO: dump_buffer</p>
 <p>The above Test Case shows this output on QEMU Arm64…</p>
 <div class="example-wrap"><pre class="language-text"><code>Testing Compose Short Packet (With Parameter)...
 composeShortPacket: channel=0, cmd=0x15, len=2
