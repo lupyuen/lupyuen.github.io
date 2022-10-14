@@ -673,7 +673,7 @@ Then we call __`composeShortPacket`__ to construct the Short Packet...
 const short_pkt_param_result = composeShortPacket(
   &pkt_buf,  //  Packet Buffer
   0,         //  Virtual Channel
-  MIPI_DSI_DCS_SHORT_WRITE_PARAM, // DCS Command
+  MIPI_DSI_DCS_SHORT_WRITE_PARAM, // DCS Command: 0x15
   &short_pkt_param,    // Transmit Buffer
   short_pkt_param.len  // Buffer Length
 );
@@ -695,28 +695,30 @@ dump_buffer(
 Finally we verify that the result is "__`15` `BC` `4E` `35`__"...
 
 ```zig
-assert(  //  Verify result
-  std.mem.eql(
-    u8,
-    short_pkt_param_result,
-    &[_]u8 { 
-        0x15, 0xbc, 0x4e, 0x35 
+//  Verify the Returned Packet
+assert(
+  std.mem.eql(  // Compare 2 Slices...
+    u8,         // Slice Type
+    short_pkt_param_result,   // First Slice
+    &[_]u8 {                  // Second Slice
+      0x15, 0xbc, 0x4e, 0x35  // Expected Data
     }
   )
 );
 ```
 
-TODO: (std.mem.eql)
+([__`std.mem.eql`__](https://ziglang.org/documentation/master/std/#root;mem.eql) returns True if the two Slices are identical)
 
-TODO: dump_buffer
+TODO: [__`dump_buffer`__](https://github.com/lupyuen/incubator-nuttx-apps/blob/de/examples/hello/hello_main.c#L197-L205)
 
 The above Test Case shows this output on QEMU Arm64...
 
 ```text
 Testing Compose Short Packet (With Parameter)...
-composeShortPacket: channel=0, cmd=0x15, len=2
+composeShortPacket:
+  channel=0, cmd=0x15, len=2
 Result:
-15 bc 4e 35 
+  15 bc 4e 35 
 ```
 
 [(Source)](https://github.com/lupyuen/pinephone-nuttx#testing-nuttx-zig-driver-for-mipi-dsi-on-qemu)
