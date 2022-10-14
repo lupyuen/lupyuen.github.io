@@ -76,7 +76,7 @@
 <li><a href="#combine-header-payload-and-footer">3.4 Combine Header, Payload and Footer</a><ul></ul></li></ul></li>
 <li><a href="#error-correction-code">4 Error Correction Code</a><ul></ul></li>
 <li><a href="#compose-short-packet">5 Compose Short Packet</a><ul></ul></li>
-<li><a href="#test-case-for-mipi-dsi-driver">6 Test Case for MIPI DSI Driver</a><ul></ul></li>
+<li><a href="#test-case-for-mipi-dsi">6 Test Case for MIPI DSI</a><ul></ul></li>
 <li><a href="#test-mipi-dsi-driver-with-qemu">7 Test MIPI DSI Driver with QEMU</a><ul></ul></li>
 <li><a href="#initialise-st7703-lcd-controller-in-zig">8 Initialise ST7703 LCD Controller in Zig</a><ul></ul></li>
 <li><a href="#test-zig-display-driver-for-pinephone">9 Test Zig Display Driver for PinePhone</a><ul></ul></li>
@@ -544,18 +544,19 @@ fn composeShortPacket(
 <p>We’re done with Long and Short Packets for MIPI DSI, let’s test them…</p>
 <p><img src="https://lupyuen.github.io/images/dsi2-test.png" alt="Test Case for MIPI DSI Driver" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L997-L1036">(Source)</a></p>
-<h1 id="test-case-for-mipi-dsi-driver"><a href="#test-case-for-mipi-dsi-driver">6 Test Case for MIPI DSI Driver</a></h1>
-<p>TODO</p>
-<p>This is how we write a Test Case for the PinePhone MIPI DSI Driver on NuttX…</p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L965-L987">display.zig</a></p>
+<h1 id="test-case-for-mipi-dsi"><a href="#test-case-for-mipi-dsi">6 Test Case for MIPI DSI</a></h1>
+<p><em>How will we know if our Long and Short Packets are created correctly?</em></p>
+<p>Let’s write a <strong>Test Case</strong> to verify that our MIPI DSI Packets are constructed correctly: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L965-L987">display.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Test Compose Short Packet (With Parameter)
-debug(&quot;Testing Compose Short Packet (With Parameter)...&quot;, .{});
 const short_pkt_param = [_]u8 {
   0xbc, 0x4e,
 };</code></pre></div>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>const short_pkt_param_result = composeShortPacket(
+<div class="example-wrap"><pre class="language-zig"><code>// Allocate Packet Buffer
+var pkt_buf = std.mem.zeroes([128]u8);
+
+// Compose a Short Packet (With Parameter)
+const short_pkt_param_result = composeShortPacket(
   &amp;pkt_buf,  //  Packet Buffer
   0,         //  Virtual Channel
   MIPI_DSI_DCS_SHORT_WRITE_PARAM, // DCS Command
@@ -581,6 +582,10 @@ composeShortPacket: channel=0, cmd=0x15, len=2
 Result:
 15 bc 4e 35 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-nuttx-zig-driver-for-mipi-dsi-on-qemu">(Source)</a></p>
+<p>TODO</p>
+<p><a href="https://gist.github.com/lupyuen/ee3adf76e76881609845d0ab0f768a95">p-boot Display Code</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L931-L955">Test Compose Short Packet (Without Parameter)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L997-L1036">Test Compose Long Packet</a></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/dsi2-qemu.png" alt="Testing MIPI DSI Driver with QEMU" /></p>
 <h1 id="test-mipi-dsi-driver-with-qemu"><a href="#test-mipi-dsi-driver-with-qemu">7 Test MIPI DSI Driver with QEMU</a></h1>
