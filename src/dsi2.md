@@ -709,9 +709,7 @@ assert(
 
 ([__`std.mem.eql`__](https://ziglang.org/documentation/master/std/#root;mem.eql) returns True if the two Slices are identical)
 
-TODO: [__`dump_buffer`__](https://github.com/lupyuen/incubator-nuttx-apps/blob/de/examples/hello/hello_main.c#L197-L205)
-
-The above Test Case shows this output on QEMU Arm64...
+The above Test Case shows this output...
 
 ```text
 Testing Compose Short Packet (With Parameter)...
@@ -723,15 +721,39 @@ Result:
 
 [(Source)](https://github.com/lupyuen/pinephone-nuttx#testing-nuttx-zig-driver-for-mipi-dsi-on-qemu)
 
-TODO
+In the next chapter we'll learn to run the Test Case on the QEMU Emulator for Arm64.
 
-[p-boot Display Code](https://gist.github.com/lupyuen/ee3adf76e76881609845d0ab0f768a95)
+_What's `dump_buffer`?_
 
-[Test Compose Short Packet (Without Parameter)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L931-L955)
+__`dump_buffer`__ is a C Function that dumps a packet to the console. We imported the C Function into Zig like so: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1205-L1206)
 
-[Test Compose Long Packet](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L997-L1036)
+```zig
+/// Import `dump_buffer` Function from C
+extern fn dump_buffer(
+  data: [*c]const u8,  // C Pointer to Packet
+  len: usize           // Length of Packet
+) void;                // No Return Value
+```
 
-TODO
+__`dump_buffer`__ is defined here: [hello_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de/examples/hello/hello_main.c#L197-L205)
+
+_What about testing Long Packets?_
+
+We have __3 Test Cases__ for testing the creation of Long and Short Packets...
+
+-   [__Short Packet Without Parameter__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L931-L955)
+
+-   [__Short Packet With Parameter__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L965-L987)
+
+-   [__Long Packet__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L997-L1036)
+
+_How did we get the Expected Result for our Test Cases?_
+
+We ran the [__p-boot Display Code__](https://gist.github.com/lupyuen/ee3adf76e76881609845d0ab0f768a95) (in C) on Apache NuttX RTOS and captured the Expected Packet Contents.
+
+So we can be sure that our Zig Code will produce the same results as the (poorly documented) C Version.
+
+Let's find out how we ran the Test Cases on QEMU Emulator...
 
 ![Testing MIPI DSI Driver with QEMU](https://lupyuen.github.io/images/dsi2-qemu.png)
 
