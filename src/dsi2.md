@@ -640,19 +640,14 @@ We're done with Long and Short Packets for MIPI DSI, let's test them...
 
 [(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L997-L1036)
 
-# Test Case for MIPI DSI Driver
+# Test Case for MIPI DSI
 
-TODO
+_How will we know if our Long and Short Packets are created correctly?_
 
-This is how we write a Test Case for the PinePhone MIPI DSI Driver on NuttX...
-
-TODO
-
-[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L965-L987)
+Let's write a __Test Case__ to verify that our MIPI DSI Packets are constructed correctly: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L965-L987)
 
 ```zig
 // Test Compose Short Packet (With Parameter)
-debug("Testing Compose Short Packet (With Parameter)...", .{});
 const short_pkt_param = [_]u8 {
   0xbc, 0x4e,
 };
@@ -661,6 +656,10 @@ const short_pkt_param = [_]u8 {
 TODO
 
 ```zig
+// Allocate Packet Buffer
+var pkt_buf = std.mem.zeroes([128]u8);
+
+// Compose a Short Packet (With Parameter)
 const short_pkt_param_result = composeShortPacket(
   &pkt_buf,  //  Packet Buffer
   0,         //  Virtual Channel
@@ -701,6 +700,14 @@ Result:
 ```
 
 [(Source)](https://github.com/lupyuen/pinephone-nuttx#testing-nuttx-zig-driver-for-mipi-dsi-on-qemu)
+
+TODO
+
+[p-boot Display Code](https://gist.github.com/lupyuen/ee3adf76e76881609845d0ab0f768a95)
+
+[Test Compose Short Packet (Without Parameter)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L931-L955)
+
+[Test Compose Long Packet](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L997-L1036)
 
 TODO
 
