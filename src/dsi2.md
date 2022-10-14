@@ -653,12 +653,22 @@ const short_pkt_param = [_]u8 {
 };
 ```
 
-TODO
+We'll compose a Short Packet that will pack the 2 bytes above.
+
+(We write "__`[_]u8`__" to declare a Byte Array in Zig)
+
+First we allocate a __Packet Buffer__ from the Stack, initialised to zeroes...
 
 ```zig
-// Allocate Packet Buffer
+// Allocate Packet Buffer of 128 bytes
 var pkt_buf = std.mem.zeroes([128]u8);
+```
 
+("__`[128]u8`__" is equivalent to "__`uint8_t[128]`__" in C)
+
+Then we call __`composeShortPacket`__ to construct the Short Packet...
+
+```
 // Compose a Short Packet (With Parameter)
 const short_pkt_param_result = composeShortPacket(
   &pkt_buf,  //  Packet Buffer
@@ -669,14 +679,20 @@ const short_pkt_param_result = composeShortPacket(
 );
 ```
 
-TODO
+We __dump the contents__ of the returned packet...
 
 ```zig
+// Dump the Returned Packet
 debug("Result:", .{});
-dump_buffer(&short_pkt_param_result[0], short_pkt_param_result.len);
+dump_buffer(
+  &short_pkt_param_result[0],  // Pointer to Packet
+  short_pkt_param_result.len   // Length of Packet
+);
 ```
 
-TODO
+(We'll talk about __`dump_buffer`__ in a while)
+
+Finally we verify that the result is "__`15` `BC` `4E` `35`__"...
 
 ```zig
 assert(  //  Verify result
@@ -689,6 +705,10 @@ assert(  //  Verify result
   )
 );
 ```
+
+TODO: (std.mem.eql)
+
+TODO: dump_buffer
 
 The above Test Case shows this output on QEMU Arm64...
 
