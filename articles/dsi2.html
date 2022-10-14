@@ -563,29 +563,29 @@ Result:
 00 00 00 00 65 03 </code></pre></div>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L965-L987">display.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>    // Test Compose Short Packet (With Parameter)
-    debug(&quot;Testing Compose Short Packet (With Parameter)...&quot;, .{});
-    const short_pkt_param = [_]u8 {
-        0xbc, 0x4e,
-    };
-    const short_pkt_param_result = composeShortPacket(
-        &amp;pkt_buf,  //  Packet Buffer
-        0,         //  Virtual Channel
-        MIPI_DSI_DCS_SHORT_WRITE_PARAM, // DCS Command
-        &amp;short_pkt_param,    // Transmit Buffer
-        short_pkt_param.len  // Buffer Length
-    );
-    debug(&quot;Result:&quot;, .{});
-    dump_buffer(&amp;short_pkt_param_result[0], short_pkt_param_result.len);
-    assert(  //  Verify result
-        std.mem.eql(
-            u8,
-            short_pkt_param_result,
-            &amp;[_]u8 { 
-                0x15, 0xbc, 0x4e, 0x35 
-            }
-        )
-    );</code></pre></div>
+<div class="example-wrap"><pre class="language-zig"><code>// Test Compose Short Packet (With Parameter)
+debug(&quot;Testing Compose Short Packet (With Parameter)...&quot;, .{});
+const short_pkt_param = [_]u8 {
+  0xbc, 0x4e,
+};
+const short_pkt_param_result = composeShortPacket(
+  &amp;pkt_buf,  //  Packet Buffer
+  0,         //  Virtual Channel
+  MIPI_DSI_DCS_SHORT_WRITE_PARAM, // DCS Command
+  &amp;short_pkt_param,    // Transmit Buffer
+  short_pkt_param.len  // Buffer Length
+);
+debug(&quot;Result:&quot;, .{});
+dump_buffer(&amp;short_pkt_param_result[0], short_pkt_param_result.len);
+assert(  //  Verify result
+  std.mem.eql(
+    u8,
+    short_pkt_param_result,
+    &amp;[_]u8 { 
+        0x15, 0xbc, 0x4e, 0x35 
+    }
+  )
+);</code></pre></div>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/dsi2-qemu.png" alt="Testing MIPI DSI Driver with QEMU" /></p>
 <h1 id="test-mipi-dsi-driver-with-qemu"><a href="#test-mipi-dsi-driver-with-qemu">7 Test MIPI DSI Driver with QEMU</a></h1>
