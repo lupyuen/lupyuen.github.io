@@ -636,6 +636,67 @@ And we return the Byte Slice that contains our Short Packet, sized accordingly..
 
 We're done with Long and Short Packets for MIPI DSI, let's test them...
 
+![Test Case for MIPI DSI Driver](https://lupyuen.github.io/images/dsi2-test.png)
+
+[(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L997-L1036)
+
+# Test Case for MIPI DSI Driver
+
+TODO
+
+This is how we write a Test Case for the PinePhone MIPI DSI Driver on NuttX...
+
+[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L593-L639)
+
+The above Test Case shows this output on QEMU Arm64...
+
+```text
+Testing Compose Long Packet...
+composeLongPacket: channel=0, cmd=0x39, len=64
+Result:
+39 40 00 25 e9 82 10 06 
+05 a2 0a a5 12 31 23 37 
+83 04 bc 27 38 0c 00 03 
+00 00 00 0c 00 03 00 00 
+00 75 75 31 88 88 88 88 
+88 88 13 88 64 64 20 88 
+88 88 88 88 88 02 88 00 
+00 00 00 00 00 00 00 00 
+00 00 00 00 65 03 
+```
+
+TODO
+
+[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L965-L987)
+
+```zig
+    // Test Compose Short Packet (With Parameter)
+    debug("Testing Compose Short Packet (With Parameter)...", .{});
+    const short_pkt_param = [_]u8 {
+        0xbc, 0x4e,
+    };
+    const short_pkt_param_result = composeShortPacket(
+        &pkt_buf,  //  Packet Buffer
+        0,         //  Virtual Channel
+        MIPI_DSI_DCS_SHORT_WRITE_PARAM, // DCS Command
+        &short_pkt_param,    // Transmit Buffer
+        short_pkt_param.len  // Buffer Length
+    );
+    debug("Result:", .{});
+    dump_buffer(&short_pkt_param_result[0], short_pkt_param_result.len);
+    assert(  //  Verify result
+        std.mem.eql(
+            u8,
+            short_pkt_param_result,
+            &[_]u8 { 
+                0x15, 0xbc, 0x4e, 0x35 
+            }
+        )
+    );
+```
+
+TODO
+
 ![Testing MIPI DSI Driver with QEMU](https://lupyuen.github.io/images/dsi2-qemu.png)
 
 # Test MIPI DSI Driver with QEMU
@@ -665,31 +726,6 @@ Testing Compose Short Packet (With Parameter)...
 composeShortPacket: channel=0, cmd=0x15, len=2
 Result:
 15 bc 4e 35 
-Testing Compose Long Packet...
-composeLongPacket: channel=0, cmd=0x39, len=64
-Result:
-39 40 00 25 e9 82 10 06 
-05 a2 0a a5 12 31 23 37 
-83 04 bc 27 38 0c 00 03 
-00 00 00 0c 00 03 00 00 
-00 75 75 31 88 88 88 88 
-88 88 13 88 64 64 20 88 
-88 88 88 88 88 02 88 00 
-00 00 00 00 00 00 00 00 
-00 00 00 00 65 03 
-```
-
-# Test Case for PinePhone MIPI DSI Driver
-
-TODO
-
-This is how we write a Test Case for the PinePhone MIPI DSI Driver on NuttX...
-
-[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L593-L639)
-
-The above Test Case shows this output on QEMU Arm64...
-
-```text
 Testing Compose Long Packet...
 composeLongPacket: channel=0, cmd=0x39, len=64
 Result:
