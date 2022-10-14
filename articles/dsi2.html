@@ -76,8 +76,8 @@
 <li><a href="#combine-header-payload-and-footer">3.4 Combine Header, Payload and Footer</a><ul></ul></li></ul></li>
 <li><a href="#error-correction-code">4 Error Correction Code</a><ul></ul></li>
 <li><a href="#compose-short-packet">5 Compose Short Packet</a><ul></ul></li>
-<li><a href="#test-case-for-mipi-dsi">6 Test Case for MIPI DSI</a><ul></ul></li>
-<li><a href="#test-mipi-dsi-driver-with-qemu">7 Test MIPI DSI Driver with QEMU</a><ul></ul></li>
+<li><a href="#test-mipi-dsi-driver">6 Test MIPI DSI Driver</a><ul></ul></li>
+<li><a href="#run-mipi-dsi-driver-on-qemu">7 Run MIPI DSI Driver on QEMU</a><ul></ul></li>
 <li><a href="#initialise-st7703-lcd-controller-in-zig">8 Initialise ST7703 LCD Controller in Zig</a><ul></ul></li>
 <li><a href="#test-zig-display-driver-for-pinephone">9 Test Zig Display Driver for PinePhone</a><ul></ul></li>
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
@@ -544,7 +544,7 @@ fn composeShortPacket(
 <p>We’re done with Long and Short Packets for MIPI DSI, let’s test them…</p>
 <p><img src="https://lupyuen.github.io/images/dsi2-test.png" alt="Test Case for MIPI DSI Driver" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L997-L1036">(Source)</a></p>
-<h1 id="test-case-for-mipi-dsi"><a href="#test-case-for-mipi-dsi">6 Test Case for MIPI DSI</a></h1>
+<h1 id="test-mipi-dsi-driver"><a href="#test-mipi-dsi-driver">6 Test MIPI DSI Driver</a></h1>
 <p><em>How will we know if our Long and Short Packets are created correctly?</em></p>
 <p>Let’s write a <strong>Test Case</strong> to verify that our MIPI DSI Packets are constructed correctly: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L965-L987">display.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Test Compose Short Packet (With Parameter)
@@ -588,7 +588,7 @@ Result:
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L997-L1036">Test Compose Long Packet</a></p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/dsi2-qemu.png" alt="Testing MIPI DSI Driver with QEMU" /></p>
-<h1 id="test-mipi-dsi-driver-with-qemu"><a href="#test-mipi-dsi-driver-with-qemu">7 Test MIPI DSI Driver with QEMU</a></h1>
+<h1 id="run-mipi-dsi-driver-on-qemu"><a href="#run-mipi-dsi-driver-on-qemu">7 Run MIPI DSI Driver on QEMU</a></h1>
 <p>TODO</p>
 <p><em>Can we test this code on Apache NuttX RTOS… Without a PinePhone?</em></p>
 <p>The above Zig Code for composing Long Packets and Short Packets was tested in QEMU for Arm64 with GIC Version 2…</p>
