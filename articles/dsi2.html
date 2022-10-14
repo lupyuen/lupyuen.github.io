@@ -587,19 +587,39 @@ assert(
   )
 );</code></pre></div>
 <p>(<a href="https://ziglang.org/documentation/master/std/#root;mem.eql"><strong><code>std.mem.eql</code></strong></a> returns True if the two Slices are identical)</p>
-<p>TODO: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de/examples/hello/hello_main.c#L197-L205"><strong><code>dump_buffer</code></strong></a></p>
-<p>The above Test Case shows this output on QEMU Arm64…</p>
+<p>The above Test Case shows this output…</p>
 <div class="example-wrap"><pre class="language-text"><code>Testing Compose Short Packet (With Parameter)...
 composeShortPacket:
   channel=0, cmd=0x15, len=2
 Result:
   15 bc 4e 35 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-nuttx-zig-driver-for-mipi-dsi-on-qemu">(Source)</a></p>
-<p>TODO</p>
-<p><a href="https://gist.github.com/lupyuen/ee3adf76e76881609845d0ab0f768a95">p-boot Display Code</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L931-L955">Test Compose Short Packet (Without Parameter)</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L997-L1036">Test Compose Long Packet</a></p>
-<p>TODO</p>
+<p>In the next chapter we’ll learn to run the Test Case on the QEMU Emulator for Arm64.</p>
+<p><em>What’s <code>dump_buffer</code>?</em></p>
+<p><strong><code>dump_buffer</code></strong> is a C Function that dumps a packet to the console. We imported the C Function into Zig like so: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1205-L1206">display.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Import `dump_buffer` Function from C
+extern fn dump_buffer(
+  data: [*c]const u8,  // C Pointer to Packet
+  len: usize           // Length of Packet
+) void;                // No Return Value</code></pre></div>
+<p><strong><code>dump_buffer</code></strong> is defined here: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de/examples/hello/hello_main.c#L197-L205">hello_main.c</a></p>
+<p><em>What about testing Long Packets?</em></p>
+<p>We have <strong>3 Test Cases</strong> for testing the creation of Long and Short Packets…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L931-L955"><strong>Short Packet Without Parameter</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L965-L987"><strong>Short Packet With Parameter</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L997-L1036"><strong>Long Packet</strong></a></p>
+</li>
+</ul>
+<p><em>How did we get the Expected Result for our Test Cases?</em></p>
+<p>We ran the <a href="https://gist.github.com/lupyuen/ee3adf76e76881609845d0ab0f768a95"><strong>p-boot Display Code</strong></a> (in C) on Apache NuttX RTOS and captured the Expected Packet Contents.</p>
+<p>So we can be sure that our Zig Code will produce the same results as the (poorly documented) C Version.</p>
+<p>Let’s find out how we ran the Test Cases on QEMU Emulator…</p>
 <p><img src="https://lupyuen.github.io/images/dsi2-qemu.png" alt="Testing MIPI DSI Driver with QEMU" /></p>
 <h1 id="run-mipi-dsi-driver-on-qemu"><a href="#run-mipi-dsi-driver-on-qemu">7 Run MIPI DSI Driver on QEMU</a></h1>
 <p>TODO</p>
