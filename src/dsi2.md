@@ -670,29 +670,29 @@ TODO
 [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L965-L987)
 
 ```zig
-    // Test Compose Short Packet (With Parameter)
-    debug("Testing Compose Short Packet (With Parameter)...", .{});
-    const short_pkt_param = [_]u8 {
-        0xbc, 0x4e,
-    };
-    const short_pkt_param_result = composeShortPacket(
-        &pkt_buf,  //  Packet Buffer
-        0,         //  Virtual Channel
-        MIPI_DSI_DCS_SHORT_WRITE_PARAM, // DCS Command
-        &short_pkt_param,    // Transmit Buffer
-        short_pkt_param.len  // Buffer Length
-    );
-    debug("Result:", .{});
-    dump_buffer(&short_pkt_param_result[0], short_pkt_param_result.len);
-    assert(  //  Verify result
-        std.mem.eql(
-            u8,
-            short_pkt_param_result,
-            &[_]u8 { 
-                0x15, 0xbc, 0x4e, 0x35 
-            }
-        )
-    );
+// Test Compose Short Packet (With Parameter)
+debug("Testing Compose Short Packet (With Parameter)...", .{});
+const short_pkt_param = [_]u8 {
+  0xbc, 0x4e,
+};
+const short_pkt_param_result = composeShortPacket(
+  &pkt_buf,  //  Packet Buffer
+  0,         //  Virtual Channel
+  MIPI_DSI_DCS_SHORT_WRITE_PARAM, // DCS Command
+  &short_pkt_param,    // Transmit Buffer
+  short_pkt_param.len  // Buffer Length
+);
+debug("Result:", .{});
+dump_buffer(&short_pkt_param_result[0], short_pkt_param_result.len);
+assert(  //  Verify result
+  std.mem.eql(
+    u8,
+    short_pkt_param_result,
+    &[_]u8 { 
+        0x15, 0xbc, 0x4e, 0x35 
+    }
+  )
+);
 ```
 
 TODO
