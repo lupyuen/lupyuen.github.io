@@ -646,25 +646,6 @@ TODO
 
 This is how we write a Test Case for the PinePhone MIPI DSI Driver on NuttX...
 
-[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L593-L639)
-
-The above Test Case shows this output on QEMU Arm64...
-
-```text
-Testing Compose Long Packet...
-composeLongPacket: channel=0, cmd=0x39, len=64
-Result:
-39 40 00 25 e9 82 10 06 
-05 a2 0a a5 12 31 23 37 
-83 04 bc 27 38 0c 00 03 
-00 00 00 0c 00 03 00 00 
-00 75 75 31 88 88 88 88 
-88 88 13 88 64 64 20 88 
-88 88 88 88 88 02 88 00 
-00 00 00 00 00 00 00 00 
-00 00 00 00 65 03 
-```
-
 TODO
 
 [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L965-L987)
@@ -675,6 +656,11 @@ debug("Testing Compose Short Packet (With Parameter)...", .{});
 const short_pkt_param = [_]u8 {
   0xbc, 0x4e,
 };
+```
+
+TODO
+
+```zig
 const short_pkt_param_result = composeShortPacket(
   &pkt_buf,  //  Packet Buffer
   0,         //  Virtual Channel
@@ -682,8 +668,18 @@ const short_pkt_param_result = composeShortPacket(
   &short_pkt_param,    // Transmit Buffer
   short_pkt_param.len  // Buffer Length
 );
+```
+
+TODO
+
+```zig
 debug("Result:", .{});
 dump_buffer(&short_pkt_param_result[0], short_pkt_param_result.len);
+```
+
+TODO
+
+```zig
 assert(  //  Verify result
   std.mem.eql(
     u8,
@@ -694,6 +690,17 @@ assert(  //  Verify result
   )
 );
 ```
+
+The above Test Case shows this output on QEMU Arm64...
+
+```text
+Testing Compose Short Packet (With Parameter)...
+composeShortPacket: channel=0, cmd=0x15, len=2
+Result:
+15 bc 4e 35 
+```
+
+[(Source)](https://github.com/lupyuen/pinephone-nuttx#testing-nuttx-zig-driver-for-mipi-dsi-on-qemu)
 
 TODO
 
