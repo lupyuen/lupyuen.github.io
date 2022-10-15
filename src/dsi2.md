@@ -1,6 +1,6 @@
 # NuttX RTOS for PinePhone: Display Driver in Zig
 
-📝 _17 Oct 2022_
+📝 _19 Oct 2022_
 
 ![Apache NuttX RTOS rendering something on PinePhone's LCD Display](https://lupyuen.github.io/images/dsi2-title.jpg)
 
