@@ -759,21 +759,72 @@ Let's find out how we ran the Test Cases on QEMU Emulator...
 
 # Run MIPI DSI Driver on QEMU
 
-TODO
+_Can we test our MIPI DSI code on Apache NuttX RTOS... Without a PinePhone?_
 
-_Can we test this code on Apache NuttX RTOS... Without a PinePhone?_
+Yep! Let's test our Zig code on the [__QEMU Emulator for Arm64__](https://www.qemu.org/docs/master/system/target-arm.html), running Apache NuttX RTOS.
 
-The above Zig Code for composing Long Packets and Short Packets was tested in QEMU for Arm64 with GIC Version 2...
+Follow these steps to build __NuttX RTOS for QEMU Arm64__...
 
-[lupyuen/incubator-nuttx/tree/gicv2](https://github.com/lupyuen/incubator-nuttx/tree/gicv2)
+-   [__"Test PinePhone MIPI DSI Driver with QEMU"__](https://github.com/lupyuen/pinephone-nuttx#test-pinephone-mipi-dsi-driver-with-qemu)
 
-Here's the NuttX Test Log for QEMU Arm64...
+Then we compile our [__Zig App (display.zig)__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig) and link it with NuttX...
+
+```bash
+##  Download the Zig App
+git clone --recursive https://github.com/lupyuen/pinephone-nuttx
+cd pinephone-nuttx
+
+##  Compile the Zig App for PinePhone 
+##  (armv8-a with cortex-a53)
+##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
+zig build-obj \
+  -target aarch64-freestanding-none \
+  -mcpu cortex_a53 \
+  -isystem "$HOME/nuttx/nuttx/include" \
+  -I "$HOME/nuttx/apps/include" \
+  display.zig
+
+##  Copy the compiled app to NuttX and overwrite `null.o`
+##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
+cp display.o \
+  $HOME/nuttx/apps/examples/null/*null.o
+
+##  Build NuttX to link the Zig Object from `null.o`
+##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
+cd $HOME/nuttx/nuttx
+make
+```
+
+[(Source)](https://github.com/lupyuen/pinephone-nuttx#zig-on-pinephone)
+
+We __start QEMU__ to boot NuttX...
+
+```bash
+## Run GIC v2 with QEMU
+qemu-system-aarch64 \
+  -smp 4 \
+  -cpu cortex-a53 \
+  -nographic \
+  -machine virt,virtualization=on,gic-version=2 \
+  -net none \
+  -chardev stdio,id=con,mux=on \
+  -serial chardev:con \
+  -mon chardev=con,mode=readline \
+  -kernel ./nuttx
+```
+
+(We chose [__GIC Version 2__](https://lupyuen.github.io/articles/interrupt#allwinner-a64-gic) to be consistent with PinePhone)
+
+At the NuttX Shell, enter this command to run our __Zig Test Cases__...
+
+```bash
+null
+```
+
+Our [__Test Cases for Long and Short Packets__](https://lupyuen.github.io/articles/dsi2#test-mipi-dsi-driver) should complete without Assertion Failures...
 
 ```text
 NuttShell (NSH) NuttX-11.0.0-RC2
-nsh> uname -a
-NuttX 11.0.0-RC2 c938291 Oct  7 2022 16:54:31 arm64 qemu-a53
-
 nsh> null
 HELLO ZIG ON PINEPHONE!
 Testing Compose Short Packet (Without Parameter)...
@@ -796,7 +847,10 @@ Result:
 88 88 88 88 88 02 88 00 
 00 00 00 00 00 00 00 00 
 00 00 00 00 65 03 
+nsh> 
 ```
+
+Yep we have successfully tested our MIPI DSI Code on NuttX RTOS and QEMU Arm64!
 
 # Allwinner A64 MIPI DSI
 
