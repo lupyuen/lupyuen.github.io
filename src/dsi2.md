@@ -1127,7 +1127,7 @@ And we're done transmitting a MIPI DSI Packet to PinePhone's Display!
 
 ![Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/dsi2-title.jpg)
 
-# Test Zig Display Driver on PinePhone
+# Test MIPI DSI Driver on PinePhone
 
 _Are we sure that our Zig Driver talks OK to PinePhone's MIPI DSI Display?_
 
