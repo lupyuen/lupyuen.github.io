@@ -149,7 +149,7 @@ Let's do this in Zig...
 
 # Compose Long Packet
 
-Now we look at our __Zig Function__ that composes a __Long Packet__ for MIPI Display Serial Interface: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L47-L111)
+This is our __Zig Function__ that composes a __Long Packet__ for MIPI Display Serial Interface: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L47-L111)
 
 ```zig
 // Compose MIPI DSI Long Packet.
@@ -170,7 +170,7 @@ Our Zig Function __`composeLongPacket`__ accepts the following parameters...
 
 -   __`pkt`__: This is the buffer that we'll use to write the Long Packet and return it.
 
-    It's declared as "__`[]u8`__" which is a Slice of Bytes, roughly similar to "__`uint8_t *`__" in C.
+    It's declared as "__`[]u8`__" which is a Slice of Bytes, roughly similar to "__`uint8_t[]`__" in C.
     
     (Except that the Buffer Size is also passed in the Slice)
 
@@ -668,7 +668,7 @@ var pkt_buf = std.mem.zeroes([128]u8);
 
 Then we call __`composeShortPacket`__ to construct the Short Packet...
 
-```
+```zig
 // Compose a Short Packet (With Parameter)
 const short_pkt_param_result = composeShortPacket(
   &pkt_buf,  //  Packet Buffer
@@ -1173,7 +1173,7 @@ At the NuttX Shell, enter this command to __test our Zig Display Driver__...
 hello
 ```
 
-We should see our Zig Driver composing the __MIPI DSI Packets__ and manipulating the __Hardware Registers__ of the Allwinner A64 SoC...
+We should see our Zig Driver composing the __MIPI DSI Packets__ and setting the __Hardware Registers__ of the Allwinner A64 SoC...
 
 ```text
 HELLO NUTTX ON PINEPHONE!
@@ -1199,7 +1199,7 @@ modifyreg32: addr=0x010, val=0x00000001
 
 [(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx#testing-nuttx-zig-driver-for-mipi-dsi-on-pinephone)
 
-Our Zig Display Driver powers on the PinePhone Display and __renders the Test Pattern__... Exactly like the earlier (undocumented) code in C! 🎉
+Our Zig Display Driver powers on the PinePhone Display and __renders the Test Pattern__... Exactly like the earlier code in C! 🎉
 
 _Are we really sure that our Zig Driver works OK?_
 
