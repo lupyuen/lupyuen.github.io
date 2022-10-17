@@ -1209,15 +1209,31 @@ Our PinePhone Display Driver in Zig has successfully...
 
 But we haven't actually rendered any graphics to the display yet...
 
+![Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)](https://lupyuen.github.io/images/pio-display.png)
+
+[_Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)_](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)
+
 # Render Graphics on PinePhone Display
 
 _Can our driver render graphics on the PinePhone Display?_
 
-TODO
+Sadly our PinePhone Display Driver __isn't complete__... Rendering graphics on PinePhone's Display isn't done with MIPI DSI Packets.
 
-Our PinePhone Display Driver isn't complete. 
+Instead we shall program these two controllers in PinePhone's Allwinner A64 SoC...
 
-It handles MIPI DSI (for initialising ST7703) but doesn't support Allwinner A64's Display Engine (DE) and Timing Controller (TCON), which are needed for rendering graphics.
+-   [__Display Engine (DE)__](https://lupyuen.github.io/articles/pio#display-engine): Execute the Rendering Pipeline to generate the pixels for display
+
+    (Handles image buffering, scaling, mixing, ...)
+
+-   [__Timing Controller (TCON0)__](https://lupyuen.github.io/articles/pio#lcd-controller-tcon0): Pump the generated pixels at the right clock frequency to the MIPI DSI display
+
+    (Pic above)
+
+_Why won't PinePhone's Display accept MIPI DSI Packets for graphics?_
+
+Remember we said that the ST7703 LCD Controller is RAM-less? And thus we need to __pump a constant stream of pixels__ to the display?
+
+
 
 We'll implement DE and TCON next.
 
