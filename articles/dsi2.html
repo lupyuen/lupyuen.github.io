@@ -985,8 +985,14 @@ modifyreg32: addr=0x010, val=0x00000001
 </li>
 </ul>
 <p><em>Why won’t PinePhone’s Display accept MIPI DSI Packets for graphics?</em></p>
-<p>Remember we said that the ST7703 LCD Controller is RAM-less? And thus we need to <strong>pump a constant stream of pixels</strong> to the display?</p>
-<p>We’ll implement DE and TCON next.</p>
+<p>PinePhone’s ST7703 LCD Controller <strong>doesn’t have any RAM</strong> inside…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/dsi#sitronix-st7703-lcd-controller"><strong>“Sitronix ST7703 LCD Controller”</strong></a></li>
+</ul>
+<p>Thus we need to <strong>pump a constant stream of pixels</strong> to the display. Which won’t work with MIPI DSI Packets. (Because it’s too inefficient)</p>
+<p>A64’s <strong>Display Engine (DE)</strong> and <strong>Timing Controller (TCON0)</strong> were created to blast the pixels efficiently from PinePhone’s RAM to the ST7703 LCD Controller.</p>
+<p><a href="https://gist.github.com/lupyuen/ee3adf76e76881609845d0ab0f768a95#file-test_display-c-L147-L254">(All fully automated, no interrupts needed!)</a></p>
+<p>We’ll talk about DE and TCON0 in the next article.</p>
 <h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
 <p>TODO</p>
 <p>(I took longer to write this article… Than to code the Zig Driver!)</p>
