@@ -765,18 +765,18 @@ fn writeDcs(buf: []const u8) void {
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L296-L321">(Source)</a></p>
 <h1 id="send-mipi-dsi-packet"><a href="#send-mipi-dsi-packet">9 Send MIPI DSI Packet</a></h1>
 <p>Finally we’re ready to access the <strong>Hardware Registers</strong> of PinePhone’s Allwinner A64 SoC, to send MIPI DSI Packets to the display.</p>
-<p>Here are the Zig Functions that we’ll call to manipulate the Hardware Registers…</p>
+<p>We’ll call these Zig Functions to manipulate <strong>A64’s Hardware Registers</strong>…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L479-L483"><strong><code>getreg32</code></strong></a>: Read the Value of the Hardware Register at the specified Address…</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L479-L483"><strong><code>getreg32</code></strong></a>: Read the Value of the Hardware Register at the specified Address</p>
 <div class="example-wrap"><pre class="language-zig"><code>fn getreg32(addr: u64) u32</code></pre></div></li>
 <li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L485-L489"><strong><code>putreg32</code></strong></a>: Set the Value of the Hardware Register at the specified Address…</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L485-L489"><strong><code>putreg32</code></strong></a>: Set the Value of the Hardware Register at the specified Address</p>
 <div class="example-wrap"><pre class="language-zig"><code>fn putreg32(val: u32, addr: u64)</code></pre></div>
 <p>(Note that the Value comes <strong>before</strong> the Address)</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L463-L477"><strong><code>modifyreg32</code></strong></a>: Clear and set the bits of the Hardware Register at the Address…</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L463-L477"><strong><code>modifyreg32</code></strong></a>: Clear and set the bits of the Hardware Register at the Address</p>
 <div class="example-wrap"><pre class="language-zig"><code>fn modifyreg32(
   addr: u64,       // Address to modify
   clearbits: u32,  // Bits to clear, like (1 &lt;&lt; bit)
@@ -908,6 +908,8 @@ fn waitForTransmit() isize {
 <p>TODO</p>
 <h1 id="test-zig-display-driver-for-pinephone"><a href="#test-zig-display-driver-for-pinephone">10 Test Zig Display Driver for PinePhone</a></h1>
 <p>TODO</p>
+<p><em>Are we really sure that our Zig Driver talks OK to PinePhone’s MIPI DSI Display?</em></p>
+<p>Let’s test it!</p>
 <p>Our NuttX Zig Display Driver powers on the PinePhone Display and works exactly like the C Driver! 🎉</p>
 <p><img src="https://lupyuen.github.io/images/dsi2-title.jpg" alt="Apache NuttX RTOS on PinePhone" /></p>
 <p><em>Can our driver render graphics on PinePhone Display?</em></p>
