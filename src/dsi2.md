@@ -1231,11 +1231,17 @@ Instead we shall program these two controllers in PinePhone's Allwinner A64 SoC.
 
 _Why won't PinePhone's Display accept MIPI DSI Packets for graphics?_
 
-Remember we said that the ST7703 LCD Controller is RAM-less? And thus we need to __pump a constant stream of pixels__ to the display?
+PinePhone's ST7703 LCD Controller __doesn't have any RAM__ inside...
 
+-   [__"Sitronix ST7703 LCD Controller"__](https://lupyuen.github.io/articles/dsi#sitronix-st7703-lcd-controller)
 
+Thus we need to __pump a constant stream of pixels__ to the display. Which won't work with MIPI DSI Packets. (Because it's too inefficient)
 
-We'll implement DE and TCON next.
+A64's __Display Engine (DE)__ and __Timing Controller (TCON0)__ were created to blast the pixels efficiently from PinePhone's RAM to the ST7703 LCD Controller.
+
+[(All fully automated, no interrupts needed!)](https://gist.github.com/lupyuen/ee3adf76e76881609845d0ab0f768a95#file-test_display-c-L147-L254)
+
+We'll talk about DE and TCON0 in the next article.
 
 # What's Next
 
