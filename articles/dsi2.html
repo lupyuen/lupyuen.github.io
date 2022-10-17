@@ -909,10 +909,21 @@ pub export fn nuttx_mipi_dsi_dcs_write(
 </li>
 </ul>
 <p>Let’s test it with Apache NuttX RTOS on PinePhone!</p>
-<p>This <strong>p-boot Display Code</strong> (in C) renders a Test Pattern (pic above) on PinePhone’s Display…</p>
+<p>This <strong>p-boot Display Code</strong> (in C) renders a “Test Pattern” (pic above) on PinePhone’s Display…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/ee3adf76e76881609845d0ab0f768a95"><strong>“Experimenting with PinePhone p-boot Display Code”</strong></a></li>
 </ul>
+<p>Inside the above code is the C Function <strong><code>panel_init</code></strong> that sends the 20 commands to initialise PinePhone’s Display…</p>
+<ul>
+<li><a href="https://megous.com/git/p-boot/tree/src/display.c#n223"><strong><code>panel_init</code> in p-boot</strong></a></li>
+</ul>
+<p>We modify <strong><code>panel_init</code></strong> so that it calls our <strong>Zig Driver</strong> instead…</p>
+<div class="example-wrap"><pre class="language-c"><code>// p-boot calls this to init ST7703
+static void panel_init(void) {
+  // We call Zig Driver to init ST7703
+  nuttx_panel_init();
+}</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/dsi2#initialise-st7703-lcd-controller">(<strong><code>nuttx_panel_init</code></strong> is explained here)</a></p>
 <p>TODO</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx/releases/tag/pboot4"><strong>p-boot Display Code modified for Zig</strong></a></li>
