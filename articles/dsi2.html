@@ -184,7 +184,7 @@
 <p><img src="https://lupyuen.github.io/images/dsi2-code1.png" alt="Compose Long Packet in Zig" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L47-L111">(Source)</a></p>
 <h1 id="compose-long-packet"><a href="#compose-long-packet">3 Compose Long Packet</a></h1>
-<p>Now we look at our <strong>Zig Function</strong> that composes a <strong>Long Packet</strong> for MIPI Display Serial Interface: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L47-L111">display.zig</a></p>
+<p>This is our <strong>Zig Function</strong> that composes a <strong>Long Packet</strong> for MIPI Display Serial Interface: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L47-L111">display.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Compose MIPI DSI Long Packet.
 // See https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi
 fn composeLongPacket(
@@ -200,7 +200,7 @@ fn composeLongPacket(
 <ul>
 <li>
 <p><strong><code>pkt</code></strong>: This is the buffer that we’ll use to write the Long Packet and return it.</p>
-<p>It’s declared as “<strong><code>[]u8</code></strong>” which is a Slice of Bytes, roughly similar to “<strong><code>uint8_t *</code></strong>” in C.</p>
+<p>It’s declared as “<strong><code>[]u8</code></strong>” which is a Slice of Bytes, roughly similar to “<strong><code>uint8_t[]</code></strong>” in C.</p>
 <p>(Except that the Buffer Size is also passed in the Slice)</p>
 </li>
 <li>
@@ -559,14 +559,13 @@ const short_pkt_param = [_]u8 {
 var pkt_buf = std.mem.zeroes([128]u8);</code></pre></div>
 <p>(“<strong><code>[128]u8</code></strong>” is equivalent to “<strong><code>uint8_t[128]</code></strong>” in C)</p>
 <p>Then we call <strong><code>composeShortPacket</code></strong> to construct the Short Packet…</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Compose a Short Packet (With Parameter)</span>
-<span class="kw">const</span> <span class="ident">short_pkt_param_result</span> <span class="op">=</span> <span class="ident">composeShortPacket</span>(
-  <span class="kw-2">&amp;</span><span class="ident">pkt_buf</span>,  <span class="comment">//  Packet Buffer</span>
-  <span class="number">0</span>,         <span class="comment">//  Virtual Channel</span>
-  <span class="ident">MIPI_DSI_DCS_SHORT_WRITE_PARAM</span>, <span class="comment">// DCS Command: 0x15</span>
-  <span class="kw-2">&amp;</span><span class="ident">short_pkt_param</span>,    <span class="comment">// Transmit Buffer</span>
-  <span class="ident">short_pkt_param</span>.<span class="ident">len</span>  <span class="comment">// Buffer Length</span>
+<div class="example-wrap"><pre class="language-zig"><code>// Compose a Short Packet (With Parameter)
+const short_pkt_param_result = composeShortPacket(
+  &amp;pkt_buf,  //  Packet Buffer
+  0,         //  Virtual Channel
+  MIPI_DSI_DCS_SHORT_WRITE_PARAM, // DCS Command: 0x15
+  &amp;short_pkt_param,    // Transmit Buffer
+  short_pkt_param.len  // Buffer Length
 );</code></pre></div>
 <p>We <strong>dump the contents</strong> of the returned packet…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Dump the Returned Packet
@@ -933,7 +932,7 @@ static void panel_init(void) {
 <p>Boot PinePhone with NuttX RTOS in the microSD Card.</p>
 <p>At the NuttX Shell, enter this command to <strong>test our Zig Display Driver</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>hello</code></pre></div>
-<p>We should see our Zig Driver composing the <strong>MIPI DSI Packets</strong> and manipulating the <strong>Hardware Registers</strong> of the Allwinner A64 SoC…</p>
+<p>We should see our Zig Driver composing the <strong>MIPI DSI Packets</strong> and setting the <strong>Hardware Registers</strong> of the Allwinner A64 SoC…</p>
 <div class="example-wrap"><pre class="language-text"><code>HELLO NUTTX ON PINEPHONE!
 ...
 Shell (NSH) NuttX-11.0.0-RC2
@@ -954,7 +953,7 @@ modifyreg32: addr=0x010, val=0x00000000
 modifyreg32: addr=0x010, val=0x00000001
 ...</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-nuttx-zig-driver-for-mipi-dsi-on-pinephone">(See the Complete Log)</a></p>
-<p>Our Zig Display Driver powers on the PinePhone Display and <strong>renders the Test Pattern</strong>… Exactly like the earlier (undocumented) code in C! 🎉</p>
+<p>Our Zig Display Driver powers on the PinePhone Display and <strong>renders the Test Pattern</strong>… Exactly like the earlier code in C! 🎉</p>
 <p><em>Are we really sure that our Zig Driver works OK?</em></p>
 <p>100% Yep! If our Zig Driver didn’t send the ST7703 Commands correctly, PinePhone’s Display would stay dark.</p>
 <p>Our PinePhone Display Driver in Zig has successfully…</p>
