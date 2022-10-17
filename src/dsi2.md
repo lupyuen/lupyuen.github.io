@@ -1133,7 +1133,7 @@ Our Zig Driver sends __20 commands over MIPI DSI__ to initialise PinePhone's Dis
 
 -   [__"Send MIPI DSI Packet"__](https://lupyuen.github.io/articles/dsi2#send-mipi-dsi-packet)
 
-Let's test it!
+Let's test it with Apache NuttX RTOS on PinePhone!
 
 TODO
 
