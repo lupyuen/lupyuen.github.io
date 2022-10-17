@@ -795,7 +795,7 @@ cd $HOME/nuttx/nuttx
 make
 ```
 
-[(Source)](https://github.com/lupyuen/pinephone-nuttx#zig-on-pinephone)
+[(We copied the Zig Compiler Options from GCC)](https://github.com/lupyuen/pinephone-nuttx#zig-on-pinephone)
 
 We __start QEMU__ to boot NuttX...
 
@@ -1200,6 +1200,10 @@ modifyreg32: addr=0x010, val=0x00000001
 [(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx#testing-nuttx-zig-driver-for-mipi-dsi-on-pinephone)
 
 Our Zig Display Driver powers on the PinePhone Display and __renders the Test Pattern__... Exactly like the earlier (undocumented) code in C! 🎉
+
+_Are we really sure that our Zig Driver works OK?_
+
+100% Yep! If our Zig Driver didn't send the ST7703 Commands correctly, PinePhone's Display would stay dark.
 
 Our PinePhone Display Driver in Zig has successfully...
 
