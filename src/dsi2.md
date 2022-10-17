@@ -1285,9 +1285,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/dsi2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/dsi2.md)
 
+![MIPI DSI Cyclic Redundancy Check (Page 210)](https://lupyuen.github.io/images/dsi2-checksum.png)
+
+[_MIPI DSI Cyclic Redundancy Check (Page 210)_](https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf)
+
 # Appendix: Cyclic Redundancy Check
 
-Earlier we talked about computing the 16-bit __Cyclic Redundancy Check (CCITT CRC)__ for the MIPI DSI Packet Footer...
+Earlier we talked about computing the 16-bit __Cyclic Redundancy Check (CCITT CRC)__ for the MIPI DSI Packet Footer (pic above)...
 
 -   [__"Packet Footer"__](https://lupyuen.github.io/articles/dsi2#packet-footer)
 
