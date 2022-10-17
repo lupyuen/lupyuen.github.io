@@ -1137,9 +1137,25 @@ Our Zig Driver sends __20 commands over MIPI DSI__ to initialise PinePhone's Dis
 
 Let's test it with Apache NuttX RTOS on PinePhone!
 
-This __p-boot Display Code__ (in C) renders a Test Pattern (pic above) on PinePhone's Display...
+This __p-boot Display Code__ (in C) renders a "Test Pattern" (pic above) on PinePhone's Display...
 
 -   [__"Experimenting with PinePhone p-boot Display Code"__](https://gist.github.com/lupyuen/ee3adf76e76881609845d0ab0f768a95)
+
+Inside the above code is the C Function __`panel_init`__ that sends the 20 commands to initialise PinePhone's Display...
+
+-   [__`panel_init` in p-boot__](https://megous.com/git/p-boot/tree/src/display.c#n223)
+
+We modify __`panel_init`__ so that it calls our __Zig Driver__ instead...
+
+```c
+// p-boot calls this to init ST7703
+static void panel_init(void) {
+  // We call Zig Driver to init ST7703
+  nuttx_panel_init();
+}
+```
+
+[(__`nuttx_panel_init`__ is explained here)](https://lupyuen.github.io/articles/dsi2#initialise-st7703-lcd-controller)
 
 TODO
 
