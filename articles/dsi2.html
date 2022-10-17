@@ -968,11 +968,24 @@ modifyreg32: addr=0x010, val=0x00000001
 </li>
 </ul>
 <p>But we haven’t actually rendered any graphics to the display yet…</p>
+<p><img src="https://lupyuen.github.io/images/pio-display.png" alt="Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)" /></p>
+<p><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><em>Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)</em></a></p>
 <h1 id="render-graphics-on-pinephone-display"><a href="#render-graphics-on-pinephone-display">11 Render Graphics on PinePhone Display</a></h1>
 <p><em>Can our driver render graphics on the PinePhone Display?</em></p>
-<p>TODO</p>
-<p>Our PinePhone Display Driver isn’t complete. </p>
-<p>It handles MIPI DSI (for initialising ST7703) but doesn’t support Allwinner A64’s Display Engine (DE) and Timing Controller (TCON), which are needed for rendering graphics.</p>
+<p>Sadly our PinePhone Display Driver <strong>isn’t complete</strong>… Rendering graphics on PinePhone’s Display isn’t done with MIPI DSI Packets.</p>
+<p>Instead we shall program these two controllers in PinePhone’s Allwinner A64 SoC…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/pio#display-engine"><strong>Display Engine (DE)</strong></a>: Execute the Rendering Pipeline to generate the pixels for display</p>
+<p>(Handles image buffering, scaling, mixing, …)</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/pio#lcd-controller-tcon0"><strong>Timing Controller (TCON0)</strong></a>: Pump the generated pixels at the right clock frequency to the MIPI DSI display</p>
+<p>(Pic above)</p>
+</li>
+</ul>
+<p><em>Why won’t PinePhone’s Display accept MIPI DSI Packets for graphics?</em></p>
+<p>Remember we said that the ST7703 LCD Controller is RAM-less? And thus we need to <strong>pump a constant stream of pixels</strong> to the display?</p>
 <p>We’ll implement DE and TCON next.</p>
 <h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
 <p>TODO</p>
