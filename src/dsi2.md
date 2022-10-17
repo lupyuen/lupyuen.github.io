@@ -981,7 +981,9 @@ pub export fn nuttx_mipi_dsi_dcs_write(
   ...
 ```
 
-TODO
+Our function accepts a __DCS Long Write__ or __DCS Short Write__ command. (Depending on the packet size)
+
+Based on the DCS Command received, we compose a __Long Packet or Short Packet__...
 
 ```zig
   // Allocate Packet Buffer
@@ -1005,7 +1007,11 @@ TODO
   };
 ```
 
-TODO
+[(__composeLongPacket__ is explained here)](https://lupyuen.github.io/articles/dsi2#compose-long-packet)
+
+[(__composeShortPacket__ is explained here)](https://lupyuen.github.io/articles/dsi2#compose-short-packet)
+
+To prepare for Packet Transmission, we initialise the A64 Hardware Register __DSI_CMD_CTL_REG__ (DSI Low Power Control Register)...
 
 ```zig
   // Set the following bits to 1 in DSI_CMD_CTL_REG (DSI Low Power Control Register) at Offset 0x200:
@@ -1023,7 +1029,9 @@ TODO
   );
 ```
 
-TODO
+[(__DSI_CMD_CTL_REG__ is explained here)](https://lupyuen.github.io/articles/dsi#transmit-packet-over-mipi-dsi)
+
+Next we write the Long or Short Packet to __DSI_CMD_TX_REG__ (DSI Low Power Transmit Package Register) in 4-byte chunks...
 
 ```zig
   // Write the Long Packet to DSI_CMD_TX_REG 
@@ -1054,7 +1062,9 @@ TODO
   }
 ```
 
-TODO
+[(__DSI_CMD_TX_REG__ is explained here)](https://lupyuen.github.io/articles/dsi#transmit-packet-over-mipi-dsi)
+
+We set the Packet Length in __DSI_CMD_CTL_REG__ (DSI Low Power Control Register)...
 
 ```zig
   // Set Packet Length - 1 in Bits 0 to 7 (TX_Size) of
@@ -1062,7 +1072,9 @@ TODO
   modifyreg32(DSI_CMD_CTL_REG, 0xFF, @intCast(u32, pkt.len) - 1);
 ```
 
-TODO
+[(__DSI_CMD_CTL_REG__ is explained here)](https://lupyuen.github.io/articles/dsi#transmit-packet-over-mipi-dsi)
+
+We begin MIPI DSI Low Power Transmission by writing to __DSI_INST_JUMP_SEL_REG__...
 
 ```zig
   // Set DSI_INST_JUMP_SEL_REG (Offset 0x48, undocumented) 
@@ -1078,7 +1090,9 @@ TODO
   );
 ```
 
-TODO
+[(__DSI_INST_JUMP_SEL_REG__ is explained here)](https://lupyuen.github.io/articles/dsi#transmit-packet-over-mipi-dsi)
+
+Our MIPI DSI Packet gets transmitted when we toggle the __DSI Processing State__...
 
 ```zig
   // Disable DSI Processing then Enable DSI Processing
@@ -1086,7 +1100,11 @@ TODO
   enableDsiProcessing();
 ```
 
-TODO
+[(__disableDsiProcessing__ is defined here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L451-L455)
+
+[(__enableDsiProcessing__ is defined here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L457-L461)
+
+We must __wait for the Packet Transmission__ to complete...
 
 ```zig
   // Wait for transmission to complete
@@ -1095,43 +1113,15 @@ TODO
     disableDsiProcessing();
     return res;
   }
-```
 
-TODO
-
-```zig
   // Return number of written bytes
   return @intCast(isize, len);
 }
 ```
 
-TODO
+[(__waitForTransmit__ is defined here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L432-L449)
 
-[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L432-L449)
-
-```zig
-/// Wait for transmit to complete. Returns 0 if completed, -1 if timeout.
-/// See https://lupyuen.github.io/articles/dsi#transmit-packet-over-mipi-dsi
-fn waitForTransmit() isize {
-  // Wait up to 5,000 microseconds
-  var i: usize = 0;
-  while (i < 5_000) : (i += 1) {
-    // To check whether the transmission is complete, we poll on Instru_En
-    if ((getreg32(DSI_BASIC_CTL0_REG) & Instru_En) == 0) {
-      // If Instru_En is 0, then transmission is complete
-      return 0;
-    }
-    // Sleep 1 microsecond
-    _ = c.usleep(1);
-  }
-  // Return Timeout
-  std.log.err("waitForTransmit: timeout", .{});
-  return -1;
-}
-```
-
-TODO
-
+And we're done transmitting a MIPI DSI Packet to PinePhone's Display!
 
 # Test Zig Display Driver for PinePhone
 
