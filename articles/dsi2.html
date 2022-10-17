@@ -80,7 +80,7 @@
 <li><a href="#run-mipi-dsi-driver-on-qemu">7 Run MIPI DSI Driver on QEMU</a><ul></ul></li>
 <li><a href="#initialise-st7703-lcd-controller">8 Initialise ST7703 LCD Controller</a><ul></ul></li>
 <li><a href="#send-mipi-dsi-packet">9 Send MIPI DSI Packet</a><ul></ul></li>
-<li><a href="#test-zig-display-driver-for-pinephone">10 Test Zig Display Driver for PinePhone</a><ul></ul></li>
+<li><a href="#test-zig-display-driver-on-pinephone">10 Test Zig Display Driver on PinePhone</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-zig-on-pinephone">12 Appendix: Zig on PinePhone</a><ul></ul></li>
 <li><a href="#appendix-cyclic-redundancy-check">13 Appendix: Cyclic Redundancy Check</a><ul></ul></li></ul></nav><p>📝 <em>19 Oct 2022</em></p>
@@ -896,10 +896,19 @@ pub export fn nuttx_mipi_dsi_dcs_write(
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L432-L449">(<strong>waitForTransmit</strong> is defined here)</a></p>
 <p>And we’re done transmitting a MIPI DSI Packet to PinePhone’s Display!</p>
-<h1 id="test-zig-display-driver-for-pinephone"><a href="#test-zig-display-driver-for-pinephone">10 Test Zig Display Driver for PinePhone</a></h1>
-<p>TODO</p>
+<h1 id="test-zig-display-driver-on-pinephone"><a href="#test-zig-display-driver-on-pinephone">10 Test Zig Display Driver on PinePhone</a></h1>
 <p><em>Are we really sure that our Zig Driver talks OK to PinePhone’s MIPI DSI Display?</em></p>
+<p>Our Zig Driver sends <strong>20 commands over MIPI DSI</strong> to initialise PinePhone’s Display…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/dsi2#initialise-st7703-lcd-controller"><strong>“Initialise ST7703 LCD Controller”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/dsi2#send-mipi-dsi-packet"><strong>“Send MIPI DSI Packet”</strong></a></p>
+</li>
+</ul>
 <p>Let’s test it!</p>
+<p>TODO</p>
 <p>Our NuttX Zig Display Driver powers on the PinePhone Display and works exactly like the C Driver! 🎉</p>
 <p><img src="https://lupyuen.github.io/images/dsi2-title.jpg" alt="Apache NuttX RTOS on PinePhone" /></p>
 <p><em>Can our driver render graphics on PinePhone Display?</em></p>
