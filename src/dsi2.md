@@ -1123,13 +1123,19 @@ We must __wait for the Packet Transmission__ to complete...
 
 And we're done transmitting a MIPI DSI Packet to PinePhone's Display!
 
-# Test Zig Display Driver for PinePhone
-
-TODO
+# Test Zig Display Driver on PinePhone
 
 _Are we really sure that our Zig Driver talks OK to PinePhone's MIPI DSI Display?_
 
+Our Zig Driver sends __20 commands over MIPI DSI__ to initialise PinePhone's Display...
+
+-   [__"Initialise ST7703 LCD Controller"__](https://lupyuen.github.io/articles/dsi2#initialise-st7703-lcd-controller)
+
+-   [__"Send MIPI DSI Packet"__](https://lupyuen.github.io/articles/dsi2#send-mipi-dsi-packet)
+
 Let's test it!
+
+TODO
 
 Our NuttX Zig Display Driver powers on the PinePhone Display and works exactly like the C Driver! 🎉
 
