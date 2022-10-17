@@ -939,9 +939,35 @@ Let's study our Zig Function that sends Long Packets and Short Packets over MIPI
 
 # Send MIPI DSI Packet
 
-TODO
+Finally we're ready to access the __Hardware Registers__ of PinePhone's Allwinner A64 SoC, to send MIPI DSI Packets to the display.
 
-[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L323-L430)
+Here are the Zig Functions that we'll call to manipulate the Hardware Registers...
+
+-   [__`getreg32`__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L479-L483): Read the Value of the Hardware Register at the specified Address...
+
+    ```zig
+    fn getreg32(addr: u64) u32
+    ```
+
+-   [__`putreg32`__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L485-L489): Set the Value of the Hardware Register at the specified Address...
+
+    ```zig
+    fn putreg32(val: u32, addr: u64)
+    ```
+
+    (Note that the Value comes __before__ the Address)
+
+-   [__`modifyreg32`__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L463-L477): Clear and set the bits of the Hardware Register at the Address...
+
+    ```zig
+    fn modifyreg32(
+      addr: u64,       // Address to modify
+      clearbits: u32,  // Bits to clear, like (1 << bit)
+      setbits: u32     // Bit to set, like (1 << bit)
+    )
+    ```
+
+This is how we __send MIPI DSI Packets__ to PinePhone's Display: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L323-L430)
 
 ```zig
 /// Write Packet to MIPI DSI. See https://lupyuen.github.io/articles/dsi#transmit-packet-over-mipi-dsi
@@ -952,15 +978,7 @@ pub export fn nuttx_mipi_dsi_dcs_write(
   buf:     [*c]const u8,  // Transmit Buffer
   len:     usize          // Buffer Length
 ) isize {  // On Success: Return number of written bytes. On Error: Return negative error code
-```
-
-TODO
-
-```zig
-  _ = dev;
-  debug("mipi_dsi_dcs_write: channel={}, cmd=0x{x}, len={}", .{ channel, cmd, len });
-  if (cmd == MIPI_DSI_DCS_SHORT_WRITE)       { assert(len == 1); }
-  if (cmd == MIPI_DSI_DCS_SHORT_WRITE_PARAM) { assert(len == 2); }
+  ...
 ```
 
 TODO
@@ -968,11 +986,7 @@ TODO
 ```zig
   // Allocate Packet Buffer
   var pkt_buf = std.mem.zeroes([128]u8);
-```
 
-TODO
-
-```zig
   // Compose Short or Long Packet depending on DCS Command
   const pkt = switch (cmd) {
 
@@ -989,14 +1003,6 @@ TODO
     // DCS Command not supported
     else => unreachable,
   };
-```
-
-TODO
-
-```zig
-  // Dump the packet
-  debug("packet: len={}", .{ pkt.len });
-  dump_buffer(&pkt[0], pkt.len);
 ```
 
 TODO
