@@ -1123,6 +1123,8 @@ We must __wait for the Packet Transmission__ to complete...
 
 And we're done transmitting a MIPI DSI Packet to PinePhone's Display!
 
+![Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/dsi2-title.jpg)
+
 # Test Zig Display Driver on PinePhone
 
 _Are we really sure that our Zig Driver talks OK to PinePhone's MIPI DSI Display?_
@@ -1135,11 +1137,15 @@ Our Zig Driver sends __20 commands over MIPI DSI__ to initialise PinePhone's Dis
 
 Let's test it with Apache NuttX RTOS on PinePhone!
 
+This __p-boot Display Code__ (in C) renders a Test Pattern (pic above) on PinePhone's Display...
+
+-   [__"Experimenting with PinePhone p-boot Display Code"__](https://gist.github.com/lupyuen/ee3adf76e76881609845d0ab0f768a95)
+
 TODO
 
-Our NuttX Zig Display Driver powers on the PinePhone Display and works exactly like the C Driver! 🎉
+-   [__p-boot Display Code modified for Zig__](https://github.com/lupyuen/pinephone-nuttx/releases/tag/pboot4)
 
-![Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/dsi2-title.jpg)
+Our NuttX Zig Display Driver powers on the PinePhone Display and works exactly like the C Driver! 🎉
 
 _Can our driver render graphics on PinePhone Display?_
 
