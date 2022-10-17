@@ -1157,9 +1157,10 @@ static void panel_init(void) {
 
 [(__`nuttx_panel_init`__ is explained here)](https://lupyuen.github.io/articles/dsi2#initialise-st7703-lcd-controller)
 
+[(__p-boot Display Code__ modified for Zig)](https://github.com/lupyuen/pinephone-nuttx/releases/tag/pboot4)
+
 TODO
 
--   [__p-boot Display Code modified for Zig__](https://github.com/lupyuen/pinephone-nuttx/releases/tag/pboot4)
 
 Our NuttX Zig Display Driver powers on the PinePhone Display and works exactly like the C Driver! 🎉
 
