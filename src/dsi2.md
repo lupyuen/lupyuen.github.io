@@ -1127,7 +1127,7 @@ And we're done transmitting a MIPI DSI Packet to PinePhone's Display!
 
 # Test Zig Display Driver on PinePhone
 
-_Are we really sure that our Zig Driver talks OK to PinePhone's MIPI DSI Display?_
+_Are we sure that our Zig Driver talks OK to PinePhone's MIPI DSI Display?_
 
 Our Zig Driver sends __20 commands over MIPI DSI__ to initialise PinePhone's Display...
 
@@ -1135,7 +1135,7 @@ Our Zig Driver sends __20 commands over MIPI DSI__ to initialise PinePhone's Dis
 
 -   [__"Send MIPI DSI Packet"__](https://lupyuen.github.io/articles/dsi2#send-mipi-dsi-packet)
 
-Let's test it with Apache NuttX RTOS on PinePhone!
+Let's test it with __Apache NuttX RTOS__ on PinePhone!
 
 This __p-boot Display Code__ (in C) renders a "Test Pattern" (pic above) on PinePhone's Display...
 
@@ -1159,14 +1159,65 @@ static void panel_init(void) {
 
 [(__p-boot Display Code__ modified for Zig)](https://github.com/lupyuen/pinephone-nuttx/releases/tag/pboot4)
 
+Follow these steps to build __Apache NuttX RTOS__ and our Zig Display Driver...
+
+-   [__"Test Zig Display Driver for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx#test-zig-display-driver-for-pinephone)
+
+Boot PinePhone with NuttX RTOS in the microSD Card.
+
+At the NuttX Shell, enter this command to __test our Zig Display Driver__...
+
+```bash
+hello
+```
+
+We should see our Zig Driver composing the __MIPI DSI Packets__ and manipulating the __Hardware Registers__ of the Allwinner A64 SoC...
+
+```text
+HELLO NUTTX ON PINEPHONE!
+...
+Shell (NSH) NuttX-11.0.0-RC2
+nsh> hello
+...
+writeDcs: len=4
+b9 f1 12 83 
+mipi_dsi_dcs_write: channel=0, cmd=0x39, len=4
+composeLongPacket: channel=0, cmd=0x39, len=4
+packet: len=10
+39 04 00 2c b9 f1 12 83 
+84 5d 
+modifyreg32: addr=0x300, val=0x2c000439
+modifyreg32: addr=0x304, val=0x8312f1b9
+modifyreg32: addr=0x308, val=0x00005d84
+modifyreg32: addr=0x200, val=0x00000009
+modifyreg32: addr=0x010, val=0x00000000
+modifyreg32: addr=0x010, val=0x00000001
+...
+```
+
+[(Source)](https://github.com/lupyuen/pinephone-nuttx#testing-nuttx-zig-driver-for-mipi-dsi-on-pinephone)
+
+Our Zig Display Driver powers on the PinePhone Display and __renders the Test Pattern__... Exactly like the earlier (undocumented) code in C! 🎉
+
+Our PinePhone Display Driver in Zig has successfully...
+
+-   Sent __20 MIPI DSI Commands__ to initialise PinePhone's ST7703 LCD Controller
+
+-   With the correct MIPI DSI __Long Packets and Short Packets__
+
+-   By accessing the correct __Hardware Registers__ in PinePhone's Allwinner A64 SoC
+
+But we haven't actually rendered any graphics to the display yet...
+
+# Render Graphics on PinePhone Display
+
+_Can our driver render graphics on the PinePhone Display?_
+
 TODO
 
+Our PinePhone Display Driver isn't complete. 
 
-Our NuttX Zig Display Driver powers on the PinePhone Display and works exactly like the C Driver! 🎉
-
-_Can our driver render graphics on PinePhone Display?_
-
-Our PinePhone Display Driver isn't complete. It handles MIPI DSI (for initialising ST7703) but doesn't support Allwinner A64's Display Engine (DE) and Timing Controller (TCON), which are needed for rendering graphics.
+It handles MIPI DSI (for initialising ST7703) but doesn't support Allwinner A64's Display Engine (DE) and Timing Controller (TCON), which are needed for rendering graphics.
 
 We'll implement DE and TCON next.
 
