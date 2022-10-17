@@ -764,8 +764,26 @@ fn writeDcs(buf: []const u8) void {
 <p><img src="https://lupyuen.github.io/images/dsi2-code3.png" alt="Writing a DCS Command to MIPI DSI" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L296-L321">(Source)</a></p>
 <h1 id="send-mipi-dsi-packet"><a href="#send-mipi-dsi-packet">9 Send MIPI DSI Packet</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L323-L430">display.zig</a></p>
+<p>Finally we’re ready to access the <strong>Hardware Registers</strong> of PinePhone’s Allwinner A64 SoC, to send MIPI DSI Packets to the display.</p>
+<p>Here are the Zig Functions that we’ll call to manipulate the Hardware Registers…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L479-L483"><strong><code>getreg32</code></strong></a>: Read the Value of the Hardware Register at the specified Address…</p>
+<div class="example-wrap"><pre class="language-zig"><code>fn getreg32(addr: u64) u32</code></pre></div></li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L485-L489"><strong><code>putreg32</code></strong></a>: Set the Value of the Hardware Register at the specified Address…</p>
+<div class="example-wrap"><pre class="language-zig"><code>fn putreg32(val: u32, addr: u64)</code></pre></div>
+<p>(Note that the Value comes <strong>before</strong> the Address)</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L463-L477"><strong><code>modifyreg32</code></strong></a>: Clear and set the bits of the Hardware Register at the Address…</p>
+<div class="example-wrap"><pre class="language-zig"><code>fn modifyreg32(
+  addr: u64,       // Address to modify
+  clearbits: u32,  // Bits to clear, like (1 &lt;&lt; bit)
+  setbits: u32     // Bit to set, like (1 &lt;&lt; bit)
+)</code></pre></div></li>
+</ul>
+<p>This is how we <strong>send MIPI DSI Packets</strong> to PinePhone’s Display: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L323-L430">display.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Write Packet to MIPI DSI. See https://lupyuen.github.io/articles/dsi#transmit-packet-over-mipi-dsi
 pub export fn nuttx_mipi_dsi_dcs_write(
   dev:     [*c]const mipi_dsi_device,  // MIPI DSI Host Device
@@ -773,17 +791,13 @@ pub export fn nuttx_mipi_dsi_dcs_write(
   cmd:     u8,  // DCS Command
   buf:     [*c]const u8,  // Transmit Buffer
   len:     usize          // Buffer Length
-) isize {  // On Success: Return number of written bytes. On Error: Return negative error code</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>  _ = dev;
-  debug(&quot;mipi_dsi_dcs_write: channel={}, cmd=0x{x}, len={}&quot;, .{ channel, cmd, len });
-  if (cmd == MIPI_DSI_DCS_SHORT_WRITE)       { assert(len == 1); }
-  if (cmd == MIPI_DSI_DCS_SHORT_WRITE_PARAM) { assert(len == 2); }</code></pre></div>
+) isize {  // On Success: Return number of written bytes. On Error: Return negative error code
+  ...</code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Allocate Packet Buffer
-  var pkt_buf = std.mem.zeroes([128]u8);</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>  // Compose Short or Long Packet depending on DCS Command
+  var pkt_buf = std.mem.zeroes([128]u8);
+
+  // Compose Short or Long Packet depending on DCS Command
   const pkt = switch (cmd) {
 
     // For DCS Long Write: Compose Long Packet
@@ -799,10 +813,6 @@ pub export fn nuttx_mipi_dsi_dcs_write(
     // DCS Command not supported
     else =&gt; unreachable,
   };</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>  // Dump the packet
-  debug(&quot;packet: len={}&quot;, .{ pkt.len });
-  dump_buffer(&amp;pkt[0], pkt.len);</code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Set the following bits to 1 in DSI_CMD_CTL_REG (DSI Low Power Control Register) at Offset 0x200:
   // RX_Overflow (Bit 26): Clear flag for &quot;Receive Overflow&quot;
