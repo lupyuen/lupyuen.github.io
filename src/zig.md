@@ -240,7 +240,7 @@ zig build-obj \
 
 ##  Copy the compiled app to NuttX and overwrite `hello.o`
 ##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
-cp hello_zig_main.o $HOME/nuttx/apps/examples/hello/*hello.o
+cp hello_zig_main.o $HOME/nuttx/apps/examples/hello_zig/*hello.o
 
 ##  Build NuttX to link the Zig Object from `hello.o`
 ##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
@@ -347,7 +347,7 @@ Let's sniff the __NuttX Object Files__ produced by the NuttX Build...
 ##  Dump the ABI for the compiled NuttX code.
 ##  Do this BEFORE overwriting hello.o by hello_zig_main.o.
 ##  "*hello.o" expands to something like "hello_main.c.home.user.nuttx.apps.examples.hello.o"
-$ riscv64-unknown-elf-readelf -h -A $HOME/nuttx/apps/examples/hello/*hello.o
+$ riscv64-unknown-elf-readelf -h -A $HOME/nuttx/apps/examples/hello_zig/*hello.o
 ELF Header:
   Flags: 0x3, RVC, single-float ABI
   ...
