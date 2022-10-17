@@ -80,7 +80,7 @@
 <li><a href="#run-mipi-dsi-driver-on-qemu">7 Run MIPI DSI Driver on QEMU</a><ul></ul></li>
 <li><a href="#initialise-st7703-lcd-controller">8 Initialise ST7703 LCD Controller</a><ul></ul></li>
 <li><a href="#send-mipi-dsi-packet">9 Send MIPI DSI Packet</a><ul></ul></li>
-<li><a href="#test-zig-display-driver-on-pinephone">10 Test Zig Display Driver on PinePhone</a><ul></ul></li>
+<li><a href="#test-mipi-dsi-driver-on-pinephone">10 Test MIPI DSI Driver on PinePhone</a><ul></ul></li>
 <li><a href="#render-graphics-on-pinephone-display">11 Render Graphics on PinePhone Display</a><ul></ul></li>
 <li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-cyclic-redundancy-check">13 Appendix: Cyclic Redundancy Check</a><ul></ul></li></ul></nav><p>📝 <em>19 Oct 2022</em></p>
@@ -898,7 +898,7 @@ pub export fn nuttx_mipi_dsi_dcs_write(
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L432-L449">(<strong>waitForTransmit</strong> is defined here)</a></p>
 <p>And we’re done transmitting a MIPI DSI Packet to PinePhone’s Display!</p>
 <p><img src="https://lupyuen.github.io/images/dsi2-title.jpg" alt="Apache NuttX RTOS on PinePhone" /></p>
-<h1 id="test-zig-display-driver-on-pinephone"><a href="#test-zig-display-driver-on-pinephone">10 Test Zig Display Driver on PinePhone</a></h1>
+<h1 id="test-mipi-dsi-driver-on-pinephone"><a href="#test-mipi-dsi-driver-on-pinephone">10 Test MIPI DSI Driver on PinePhone</a></h1>
 <p><em>Are we sure that our Zig Driver talks OK to PinePhone’s MIPI DSI Display?</em></p>
 <p>Our Zig Driver sends <strong>20 commands over MIPI DSI</strong> to initialise PinePhone’s Display…</p>
 <ul>
