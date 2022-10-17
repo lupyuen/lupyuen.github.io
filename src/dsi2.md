@@ -1151,6 +1151,8 @@ We'll implement DE and TCON next.
 
 TODO
 
+(I took longer to write this article... Than to code the Zig Driver!)
+
 There's plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏
 
 Check out the other articles on __NuttX RTOS for PinePhone__...
