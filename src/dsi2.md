@@ -931,35 +931,48 @@ fn writeDcs(buf: []const u8) void {
 }
 ```
 
-Let's study __nuttx_mipi_dsi_dcs_write__...
+Let's study our Zig Function that sends Long Packets and Short Packets over MIPI DSI: __nuttx_mipi_dsi_dcs_write__...
 
 ![Writing a DCS Command to MIPI DSI](https://lupyuen.github.io/images/dsi2-code3.png)
 
 [(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L296-L321)
 
-# Allwinner A64 MIPI DSI
+# Send MIPI DSI Packet
 
 TODO
 
 [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L323-L430)
 
 ```zig
-/// Write to MIPI DSI. See https://lupyuen.github.io/articles/dsi#transmit-packet-over-mipi-dsi
+/// Write Packet to MIPI DSI. See https://lupyuen.github.io/articles/dsi#transmit-packet-over-mipi-dsi
 pub export fn nuttx_mipi_dsi_dcs_write(
-  dev: [*c]const mipi_dsi_device,  // MIPI DSI Host Device
+  dev:     [*c]const mipi_dsi_device,  // MIPI DSI Host Device
   channel: u8,  // Virtual Channel ID
-  cmd: u8,      // DCS Command
-  buf: [*c]const u8,  // Transmit Buffer
-  len: usize          // Buffer Length
+  cmd:     u8,  // DCS Command
+  buf:     [*c]const u8,  // Transmit Buffer
+  len:     usize          // Buffer Length
 ) isize {  // On Success: Return number of written bytes. On Error: Return negative error code
+```
+
+TODO
+
+```zig
   _ = dev;
   debug("mipi_dsi_dcs_write: channel={}, cmd=0x{x}, len={}", .{ channel, cmd, len });
   if (cmd == MIPI_DSI_DCS_SHORT_WRITE)       { assert(len == 1); }
   if (cmd == MIPI_DSI_DCS_SHORT_WRITE_PARAM) { assert(len == 2); }
+```
 
+TODO
+
+```zig
   // Allocate Packet Buffer
   var pkt_buf = std.mem.zeroes([128]u8);
+```
 
+TODO
+
+```zig
   // Compose Short or Long Packet depending on DCS Command
   const pkt = switch (cmd) {
 
@@ -976,11 +989,19 @@ pub export fn nuttx_mipi_dsi_dcs_write(
     // DCS Command not supported
     else => unreachable,
   };
+```
 
+TODO
+
+```zig
   // Dump the packet
   debug("packet: len={}", .{ pkt.len });
   dump_buffer(&pkt[0], pkt.len);
+```
 
+TODO
+
+```zig
   // Set the following bits to 1 in DSI_CMD_CTL_REG (DSI Low Power Control Register) at Offset 0x200:
   // RX_Overflow (Bit 26): Clear flag for "Receive Overflow"
   // RX_Flag (Bit 25): Clear flag for "Receive has started"
@@ -994,7 +1015,11 @@ pub export fn nuttx_mipi_dsi_dcs_write(
     RX_Overflow | RX_Flag | TX_Flag,
     DSI_CMD_CTL_REG
   );
+```
 
+TODO
+
+```zig
   // Write the Long Packet to DSI_CMD_TX_REG 
   // (DSI Low Power Transmit Package Register) at Offset 0x300 to 0x3FC
   const DSI_CMD_TX_REG = DSI_BASE_ADDRESS + 0x300;
@@ -1021,11 +1046,19 @@ pub export fn nuttx_mipi_dsi_dcs_write(
     modifyreg32(addr, 0xFFFF_FFFF, v);
     addr += 4;
   }
+```
 
+TODO
+
+```zig
   // Set Packet Length - 1 in Bits 0 to 7 (TX_Size) of
   // DSI_CMD_CTL_REG (DSI Low Power Control Register) at Offset 0x200
   modifyreg32(DSI_CMD_CTL_REG, 0xFF, @intCast(u32, pkt.len) - 1);
+```
 
+TODO
+
+```zig
   // Set DSI_INST_JUMP_SEL_REG (Offset 0x48, undocumented) 
   // to begin the Low Power Transmission (LPTX)
   const DSI_INST_JUMP_SEL_REG = DSI_BASE_ADDRESS + 0x48;
@@ -1037,18 +1070,30 @@ pub export fn nuttx_mipi_dsi_dcs_write(
     DSI_INST_ID_END  << (4 * DSI_INST_ID_LPDT),
     DSI_INST_JUMP_SEL_REG
   );
+```
 
+TODO
+
+```zig
   // Disable DSI Processing then Enable DSI Processing
   disableDsiProcessing();
   enableDsiProcessing();
+```
 
+TODO
+
+```zig
   // Wait for transmission to complete
   const res = waitForTransmit();
   if (res < 0) {
     disableDsiProcessing();
     return res;
   }
+```
 
+TODO
+
+```zig
   // Return number of written bytes
   return @intCast(isize, len);
 }
