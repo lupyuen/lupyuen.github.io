@@ -478,7 +478,7 @@ We're ready to link the __Patched Object File__ with NuttX...
 ```bash
 ##  Copy the modified object file to NuttX and overwrite `hello.o`
 ##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
-cp hello_zig_main.o $HOME/nuttx/apps/examples/hello/*hello.o
+cp hello_zig_main.o $HOME/nuttx/apps/examples/hello_zig/*hello.o
 
 ##  Build NuttX to link the Zig Object from `hello.o`
 ##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
