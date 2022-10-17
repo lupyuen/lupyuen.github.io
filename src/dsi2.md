@@ -852,27 +852,28 @@ nsh>
 
 Yep we have successfully tested our MIPI DSI Code on NuttX RTOS and QEMU Arm64!
 
+![Initialising ST7703 LCD Controller](https://lupyuen.github.io/images/dsi2-code2.png)
+
+[(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L494-L859)
+
 # Initialise ST7703 LCD Controller
 
 _But our MIPI DSI Driver hasn't talked to the PinePhone Display!_
 
 Here comes the tougher (and poorly documented) part... Accessing the __Hardware Registers__ of the Allwinner A64 SoC. So that we can __send MIPI DSI Packets__ to PinePhone's Display.
 
-TODO
+Before that, let's prepare the MIPI DSI Packets (Long and Short) that we'll send to the display...
 
-PinePhone's ST7703 LCD Controller needs to be initialised with these 20 Commands...
+Earlier we talked about the __20 Initialisation Commands__ that our Zig Driver will send to the __ST7703 LCD Controller__ (over MIPI DSI)...
 
--   ["Initialise LCD Controller"](https://lupyuen.github.io/articles/dsi#initialise-lcd-controller)
+-   [__"PinePhone LCD Display"__](https://lupyuen.github.io/articles/dsi2#pinephone-lcd-display)
 
-This is how we send the 20 Commands with our NuttX Driver in Zig, as DCS Short Writes and DCS Long Writes...
-
-[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L494-L859)
+This is how we __send the 20 commands__: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L494-L859)
 
 ```zig
 /// Initialise the ST7703 LCD Controller in Xingbangda XBD599 LCD Panel.
 /// See https://lupyuen.github.io/articles/dsi#initialise-lcd-controller
 pub export fn nuttx_panel_init() void {
-  debug("nuttx_panel_init", .{});
 
   // Most of these commands are documented in the ST7703 Datasheet:
   // https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf
@@ -885,6 +886,7 @@ pub export fn nuttx_panel_init() void {
     0x83   // (Continued)
   });
 
+  // Omitted: Commands #2 to #19
   ...
 
   // Wait 120 milliseconds
@@ -897,30 +899,29 @@ pub export fn nuttx_panel_init() void {
 }
 ```
 
-To send a command, `writeDcs` executes a DCS Short Write or DCS Long Write, depending on the length of the command...
-
-[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L296-L321)
+To send a command to ST7703 Controller, __`writeDcs`__ executes a __DCS Short Write__ or __DCS Long Write__ over MIPI DSI, depending on the length of the command: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L296-L321)
 
 ```zig
 /// Write the DCS Command to MIPI DSI
 fn writeDcs(buf: []const u8) void {
-  debug("writeDcs: len={}", .{ buf.len });
-  dump_buffer(&buf[0], buf.len);
-  assert(buf.len > 0);
 
   // Do DCS Short Write or Long Write depending on command length
+  assert(buf.len > 0);
   const res = switch (buf.len) {
 
+    // If Command Length is 1:
     // DCS Short Write (without parameter)
     1 => nuttx_mipi_dsi_dcs_write(null, 0, 
       MIPI_DSI_DCS_SHORT_WRITE, 
       &buf[0], buf.len),
 
+    // If Command Length is 2:
     // DCS Short Write (with parameter)
     2 => nuttx_mipi_dsi_dcs_write(null, 0, 
       MIPI_DSI_DCS_SHORT_WRITE_PARAM, 
       &buf[0], buf.len),
 
+    // If Command Length is 3 or longer:
     // DCS Long Write
     else => nuttx_mipi_dsi_dcs_write(null, 0, 
       MIPI_DSI_DCS_LONG_WRITE, 
@@ -929,6 +930,12 @@ fn writeDcs(buf: []const u8) void {
   assert(res == buf.len);
 }
 ```
+
+Let's study __nuttx_mipi_dsi_dcs_write__...
+
+![Writing a DCS Command to MIPI DSI](https://lupyuen.github.io/images/dsi2-code3.png)
+
+[(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L296-L321)
 
 # Allwinner A64 MIPI DSI
 
