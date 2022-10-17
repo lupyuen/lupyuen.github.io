@@ -941,15 +941,15 @@ Let's study our Zig Function that sends Long Packets and Short Packets over MIPI
 
 Finally we're ready to access the __Hardware Registers__ of PinePhone's Allwinner A64 SoC, to send MIPI DSI Packets to the display.
 
-Here are the Zig Functions that we'll call to manipulate the Hardware Registers...
+We'll call these Zig Functions to manipulate __A64's Hardware Registers__...
 
--   [__`getreg32`__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L479-L483): Read the Value of the Hardware Register at the specified Address...
+-   [__`getreg32`__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L479-L483): Read the Value of the Hardware Register at the specified Address
 
     ```zig
     fn getreg32(addr: u64) u32
     ```
 
--   [__`putreg32`__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L485-L489): Set the Value of the Hardware Register at the specified Address...
+-   [__`putreg32`__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L485-L489): Set the Value of the Hardware Register at the specified Address
 
     ```zig
     fn putreg32(val: u32, addr: u64)
@@ -957,7 +957,7 @@ Here are the Zig Functions that we'll call to manipulate the Hardware Registers.
 
     (Note that the Value comes __before__ the Address)
 
--   [__`modifyreg32`__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L463-L477): Clear and set the bits of the Hardware Register at the Address...
+-   [__`modifyreg32`__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L463-L477): Clear and set the bits of the Hardware Register at the Address
 
     ```zig
     fn modifyreg32(
@@ -1136,6 +1136,10 @@ TODO
 # Test Zig Display Driver for PinePhone
 
 TODO
+
+_Are we really sure that our Zig Driver talks OK to PinePhone's MIPI DSI Display?_
+
+Let's test it!
 
 Our NuttX Zig Display Driver powers on the PinePhone Display and works exactly like the C Driver! 🎉
 
