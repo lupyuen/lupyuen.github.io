@@ -924,10 +924,8 @@ static void panel_init(void) {
   nuttx_panel_init();
 }</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/dsi2#initialise-st7703-lcd-controller">(<strong><code>nuttx_panel_init</code></strong> is explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/tag/pboot4">(<strong>p-boot Display Code</strong> modified for Zig)</a></p>
 <p>TODO</p>
-<ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx/releases/tag/pboot4"><strong>p-boot Display Code modified for Zig</strong></a></li>
-</ul>
 <p>Our NuttX Zig Display Driver powers on the PinePhone Display and works exactly like the C Driver! 🎉</p>
 <p><em>Can our driver render graphics on PinePhone Display?</em></p>
 <p>Our PinePhone Display Driver isn’t complete. It handles MIPI DSI (for initialising ST7703) but doesn’t support Allwinner A64’s Display Engine (DE) and Timing Controller (TCON), which are needed for rendering graphics.</p>
