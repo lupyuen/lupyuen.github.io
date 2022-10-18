@@ -238,9 +238,9 @@ zig build-obj \
   -mcpu sifive_e76 \
   hello_zig_main.zig
 
-##  Copy the compiled app to NuttX and overwrite `hello.o`
+##  Copy the compiled app to NuttX and overwrite `hello_zig.o`
 ##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
-cp hello_zig_main.o $HOME/nuttx/apps/examples/hello_zig/*hello.o
+cp hello_zig_main.o $HOME/nuttx/apps/examples/hello_zig/*hello_zig.o
 
 ##  Build NuttX to link the Zig Object from `hello.o`
 ##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
@@ -346,8 +346,8 @@ Let's sniff the __NuttX Object Files__ produced by the NuttX Build...
 ```bash
 ##  Dump the ABI for the compiled NuttX code.
 ##  Do this BEFORE overwriting hello.o by hello_zig_main.o.
-##  "*hello.o" expands to something like "hello_main.c.home.user.nuttx.apps.examples.hello.o"
-$ riscv64-unknown-elf-readelf -h -A $HOME/nuttx/apps/examples/hello_zig/*hello.o
+##  "*hello_zig.o" expands to something like "hello_main.c.home.user.nuttx.apps.examples.hello_zig.o"
+$ riscv64-unknown-elf-readelf -h -A $HOME/nuttx/apps/examples/hello_zig/*hello_zig.o
 ELF Header:
   Flags: 0x3, RVC, single-float ABI
   ...
@@ -476,9 +476,9 @@ This generates the Patched Object File at `hello_zig_main2.o`
 We're ready to link the __Patched Object File__ with NuttX...
 
 ```bash
-##  Copy the modified object file to NuttX and overwrite `hello.o`
+##  Copy the modified object file to NuttX and overwrite `hello_zig.o`
 ##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
-cp hello_zig_main.o $HOME/nuttx/apps/examples/hello_zig/*hello.o
+cp hello_zig_main.o $HOME/nuttx/apps/examples/hello_zig/*hello_zig.o
 
 ##  Build NuttX to link the Zig Object from `hello.o`
 ##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
@@ -686,3 +686,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 1.  This __Revert Commit__ might tell us what's missing from the NuttX Makefiles...
 
     [__"Revert Zig Build"__](https://github.com/apache/incubator-nuttx/pull/5762/commits/ad17dfca52606671564636cdd773b09af8fb154e)
+
+1.  We made two __Temporary Fixes to the NuttX Makefiles__ so that the Zig Object Files will be generated...
+
+    [__nuttx/tools/Config.mk__](https://github.com/lupyuen/incubator-nuttx/commit/825531f3f571621754ba4c69f32406440dd0d9f3)
+
+    [__apps/Application.mk__](https://github.com/lupyuen/incubator-nuttx-apps/commit/7fd9964b910add04f47780f519e3054f8e2692c9)
