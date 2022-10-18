@@ -154,6 +154,13 @@
   ],
   "publications": [
     {
+      "name": "NuttX RTOS for PinePhone: Display Driver in Zig",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2022-10-18",
+      "website": "https://lupyuen.github.io/articles/dsi2",
+      "summary": "Let's build a PinePhone Display Driver in Zig... That will run on Apache NuttX RTOS"
+    },
+    {
       "name": "Understanding PinePhone's Display (MIPI DSI)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-10-02",

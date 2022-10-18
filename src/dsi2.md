@@ -1,6 +1,6 @@
 # NuttX RTOS for PinePhone: Display Driver in Zig
 
-📝 _19 Oct 2022_
+📝 _18 Oct 2022_
 
 ![Apache NuttX RTOS rendering something on PinePhone's LCD Display](https://lupyuen.github.io/images/dsi2-title.jpg)
 
@@ -1249,13 +1249,23 @@ A64's __Display Engine (DE)__ and __Timing Controller (TCON0)__ were created to 
 
 We'll talk about DE and TCON0 in the next article.
 
+_The PinePhone Display Driver that we're building... What interface will it expose?_
+
+Our PinePhone Display Driver (in C or Zig) shall expose the standard __Display Driver Interface__ that's expected by Apache NuttX RTOS.
+
+Here's the implementation of the Display Driver Interface for the __Sitronix ST7789 LCD Controller__...
+
+-   [__nuttx/drivers/lcd/st7789.c__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/st7789.c)
+
 # What's Next
 
-TODO
+Today we've seen the Zig Internals of our new PinePhone Display Driver for Apache NuttX RTOS. I hope that coding the driver in Zig has made it a little easier to understand what's inside.
 
-I hope that coding the driver in Zig made it a little easier to understand the internals of the driver.
+Some parts of the driver were simpler to code in Zig than in C. I'm glad I chose Zig for the driver!
 
 (I took longer to write this article... Than to code the Zig Driver!)
+
+In the next article we shall implement the rendering features of the PinePhone Display Driver.
 
 There's plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏
 

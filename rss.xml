@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>NuttX RTOS for PinePhone: Display Driver in Zig</title>
+            <link>https://lupyuen.github.io/articles/dsi2</link>
+            <description><![CDATA[Let's build a PinePhone Display Driver in Zig... That will run on Apache NuttX RTOS]]></description>
+            <guid>https://lupyuen.github.io/articles/dsi2</guid>
+            <pubDate>Tue, 18 Oct 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Understanding PinePhone&apos;s Display (MIPI DSI)</title>
             <link>https://lupyuen.github.io/articles/dsi</link>
             <description><![CDATA[How does Pine64 PinePhone control its LCD Display over MIPI Display Serial Interface? Let's find out!]]></description>
