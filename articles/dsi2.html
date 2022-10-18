@@ -760,6 +760,7 @@ fn writeDcs(buf: []const u8) void {
   };
   assert(res == buf.len);
 }</code></pre></div>
+<p>(We write “<strong><code>&amp;buf[0]</code></strong>” to convert a Slice into a Pointer)</p>
 <p>Let’s study our Zig Function that sends Long Packets and Short Packets over MIPI DSI: <strong>nuttx_mipi_dsi_dcs_write</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/dsi2-code3.png" alt="Writing a DCS Command to MIPI DSI" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L296-L321">(Source)</a></p>
