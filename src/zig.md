@@ -461,6 +461,7 @@ Yep enter this at the Command Line to __patch the ELF Header__...
 xxd -c 1 hello_zig_main.o \
   | sed 's/00000024: 01/00000024: 03/' \
   | xxd -r -c 1 - hello_zig_main2.o
+cp hello_zig_main2.o hello_zig_main.o
 ```
 
 This generates the Patched Object File at `hello_zig_main2.o`
