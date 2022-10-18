@@ -381,7 +381,8 @@ zig build-obj \
 <p>Yep enter this at the Command Line to <strong>patch the ELF Header</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>xxd -c 1 hello_zig_main.o \
   | sed &#39;s/00000024: 01/00000024: 03/&#39; \
-  | xxd -r -c 1 - hello_zig_main2.o</code></pre></div>
+  | xxd -r -c 1 - hello_zig_main2.o
+cp hello_zig_main2.o hello_zig_main.o</code></pre></div>
 <p>This generates the Patched Object File at <code>hello_zig_main2.o</code></p>
 <p><a href="https://www.tutorialspoint.com/unix_commands/xxd.htm">(More about <code>xxd</code>)</a></p>
 <p><img src="https://lupyuen.github.io/images/pinecone-jumperl.jpg" alt="Pine64 PineCone BL602 RISC-V Board" /></p>
