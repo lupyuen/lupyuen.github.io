@@ -10,7 +10,7 @@ In our last article we talked about [__Pine64 PinePhone__](https://wiki.pine64.o
 
 Today we shall create a __PinePhone Display Driver in Zig__... That will run on our fresh new port of [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) for PinePhone.
 
-If we're not familiar with Zig: No worries! This article will explain the tricky Zig parts with C.
+If we're not familiar with the [__Zig Programming Language__](https://ziglang.org/): No worries! This article will explain the tricky Zig parts with C.
 
 _Why build the Display Driver in Zig? Instead of C?_
 
