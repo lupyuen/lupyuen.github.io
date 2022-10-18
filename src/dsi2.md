@@ -1139,7 +1139,7 @@ Our Zig Driver sends __20 commands over MIPI DSI__ to initialise PinePhone's Dis
 
 Let's test it with __Apache NuttX RTOS__ on PinePhone!
 
-This __p-boot Display Code__ (in C) renders a "Test Pattern" (pic above) on PinePhone's Display...
+This __p-boot Display Code__ (in C) renders a [__"Test Pattern"__](https://gist.github.com/lupyuen/ee3adf76e76881609845d0ab0f768a95#file-test_display-c-L154-L251) (pic above) on PinePhone's Display...
 
 -   [__"Experimenting with PinePhone p-boot Display Code"__](https://gist.github.com/lupyuen/ee3adf76e76881609845d0ab0f768a95)
 
