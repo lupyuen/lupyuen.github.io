@@ -230,9 +230,9 @@ zig build-obj \
   -mcpu sifive_e76 \
   hello_zig_main.zig
 
-#  Copy the compiled app to NuttX and overwrite `hello.o`
+#  Copy the compiled app to NuttX and overwrite `hello_zig.o`
 #  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
-cp hello_zig_main.o $HOME/nuttx/apps/examples/hello_zig/*hello.o
+cp hello_zig_main.o $HOME/nuttx/apps/examples/hello_zig/*hello_zig.o
 
 #  Build NuttX to link the Zig Object from `hello.o`
 #  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
@@ -309,8 +309,8 @@ can&#39;t link soft-float modules with single-float modules</code></pre></div>
 <p>Let’s sniff the <strong>NuttX Object Files</strong> produced by the NuttX Build…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Dump the ABI for the compiled NuttX code.
 #  Do this BEFORE overwriting hello.o by hello_zig_main.o.
-#  &quot;*hello.o&quot; expands to something like &quot;hello_main.c.home.user.nuttx.apps.examples.hello.o&quot;
-$ riscv64-unknown-elf-readelf -h -A $HOME/nuttx/apps/examples/hello_zig/*hello.o
+#  &quot;*hello_zig.o&quot; expands to something like &quot;hello_main.c.home.user.nuttx.apps.examples.hello_zig.o&quot;
+$ riscv64-unknown-elf-readelf -h -A $HOME/nuttx/apps/examples/hello_zig/*hello_zig.o
 ELF Header:
   Flags: 0x3, RVC, single-float ABI
   ...
@@ -388,9 +388,9 @@ zig build-obj \
 <p><a href="https://lupyuen.github.io/articles/pinecone"><em>Pine64 PineCone BL602 RISC-V Board</em></a></p>
 <h1 id="zig-runs-ok"><a href="#zig-runs-ok">8 Zig Runs OK!</a></h1>
 <p>We’re ready to link the <strong>Patched Object File</strong> with NuttX…</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  Copy the modified object file to NuttX and overwrite `hello.o`
+<div class="example-wrap"><pre class="language-bash"><code>#  Copy the modified object file to NuttX and overwrite `hello_zig.o`
 #  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
-cp hello_zig_main.o $HOME/nuttx/apps/examples/hello_zig/*hello.o
+cp hello_zig_main.o $HOME/nuttx/apps/examples/hello_zig/*hello_zig.o
 
 #  Build NuttX to link the Zig Object from `hello.o`
 #  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
@@ -581,6 +581,11 @@ fn busyloop() void {
 <li>
 <p>This <strong>Revert Commit</strong> might tell us what’s missing from the NuttX Makefiles…</p>
 <p><a href="https://github.com/apache/incubator-nuttx/pull/5762/commits/ad17dfca52606671564636cdd773b09af8fb154e"><strong>“Revert Zig Build”</strong></a></p>
+</li>
+<li>
+<p>We made two <strong>Temporary Fixes to the NuttX Makefiles</strong> so that the Zig Object Files will be generated…</p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/825531f3f571621754ba4c69f32406440dd0d9f3"><strong>nuttx/tools/Config.mk</strong></a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/commit/7fd9964b910add04f47780f519e3054f8e2692c9"><strong>apps/Application.mk</strong></a></p>
 </li>
 </ol>
 
