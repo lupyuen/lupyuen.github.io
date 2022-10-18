@@ -933,6 +933,8 @@ fn writeDcs(buf: []const u8) void {
 }
 ```
 
+(We write "__`&buf[0]`__" to convert a Slice into a Pointer)
+
 Let's study our Zig Function that sends Long Packets and Short Packets over MIPI DSI: __nuttx_mipi_dsi_dcs_write__...
 
 ![Writing a DCS Command to MIPI DSI](https://lupyuen.github.io/images/dsi2-code3.png)
