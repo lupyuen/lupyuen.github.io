@@ -679,7 +679,9 @@ I hope we learnt lots about PinePhone's Display...
 
 -   What are PinePhone's [__Display Engine (DE)__](https://lupyuen.github.io/articles/dsi#render-display) and [__Timing Controller (TCON)__](https://lupyuen.github.io/articles/dsi#render-display)
 
-Please join me in the next article when we'll dive inside PinePhone's Display Engine and Timing Controller!
+Please join me in the next article when we'll build a PinePhone Display Driver in Zig!
+
+-   [__"NuttX RTOS for PinePhone: Display Driver in Zig"__](https://lupyuen.github.io/articles/dsi2)
 
 Check out the other articles on __NuttX RTOS for PinePhone__...
 

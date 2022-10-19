@@ -959,6 +959,10 @@ Check out the other articles on __NuttX RTOS for PinePhone__...
 
 -   [__"NuttX RTOS for PinePhone: Blinking the LEDs"__](https://lupyuen.github.io/articles/pio)
 
+-   [__"Understanding PinePhone's Display (MIPI DSI)"__](https://lupyuen.github.io/articles/dsi)
+
+-   [__"NuttX RTOS for PinePhone: Display Driver in Zig"__](https://lupyuen.github.io/articles/dsi2)
+
 __NuttX on PinePhone__ might take a while to become a __Daily Driver__...
 
 But today NuttX is ready to turn PinePhone into a valuable __Learning Resource__!
