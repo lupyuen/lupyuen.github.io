@@ -2,7 +2,19 @@
 
 📝 _2 Nov 2022_
 
-![TODO](https://lupyuen.github.io/images/de-title.jpg)
+![PinePhone rendering Mandelbrot Set on Apache NuttX RTOS](https://lupyuen.github.io/images/de-title.jpg)
+
+_PinePhone rendering Mandelbrot Set on Apache NuttX RTOS_
+
+In the last 2 articles we talked about [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) (pic above) and how we built a __Display Driver__ for PinePhone's MIPI Display Serial Interface...
+
+-   [__"Understanding PinePhone's Display (MIPI DSI)"__](https://lupyuen.github.io/articles/dsi)
+
+-   [__"NuttX RTOS for PinePhone: Display Driver in Zig"__](https://lupyuen.github.io/articles/dsi2)
+
+But our PinePhone Display Driver isn't complete... It won't render any graphics!
+
+Today we'll ???
 
 TODO
 
