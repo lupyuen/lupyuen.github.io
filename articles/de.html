@@ -86,19 +86,19 @@
 <p>What’s the <strong>Display Engine (DE)</strong> inside PinePhone</p>
 </li>
 <li>
-<p>What’s the <strong>Timing Controller (TCON0)</strong> and how it controls PinePhone’s LCD Display</p>
+<p>How the <strong>Timing Controller (TCON0)</strong> controls PinePhone’s LCD Display</p>
 </li>
 <li>
 <p>How we call DE and TCON0 to <strong>render graphics</strong></p>
 </li>
 <li>
-<p>How our <strong>PinePhone Display Driver</strong> shall support DE and TCON0</p>
+<p>How our new <strong>PinePhone Display Driver</strong> will support DE and TCON0</p>
 </li>
 </ul>
 <p><em>Why are we doing this?</em></p>
-<p>We’re now porting <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> to PinePhone.</p>
-<p>TODO</p>
-<p>Let’s continue the journey from our <strong>NuttX Porting Journal</strong>…</p>
+<p>We’re now porting <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> to PinePhone and we have created a (barebones) <a href="https://lupyuen.github.io/articles/dsi2"><strong>Display Driver in Zig</strong></a> that initialises the LCD Display.</p>
+<p>To finish the driver, we need to understand what’s inside PinePhone’s Display Engine and Timing Controller.</p>
+<p>Let’s dive in and continue the journey from our <strong>NuttX Porting Journal</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
 </ul>
