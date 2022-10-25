@@ -38,15 +38,17 @@ Let's dive in and continue the journey from our (super long) __NuttX Porting Jou
 
 # Display Engine in Allwinner A64
 
+_What's the Display Engine in PinePhone?_
+
 TODO
 
-Let's look inside PinePhone's Allwinner A64 Display Engine ... And render some graphics with Apache NuttX RTOS.
+_Where's the doc for the Display Engine?_
 
-Here's the doc for the Display Engine...
+The doc for the A64 Display Engine is here...
 
 -   [__Allwinner Display Engine 2.0 Specifications__](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-_Which Display Engine for A64 (sun50iw1): H8, H3, H5 or A83?_
+_But the doc doesn't mention A64?_
 
 PinePhone's A64 Display Engine is hidden in the Allwinner H3 Docs, because Allwinner A64 is actually a H3 upgraded with 64-bit Cores...
 
