@@ -34,6 +34,7 @@ Let's dive in and continue the journey from our (super long) __NuttX Porting Jou
 
 -   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
 
+![A64 Display Engine](https://lupyuen.github.io/images/de-block1a.jpg)
 
 # Display Engine in Allwinner A64
 
@@ -57,7 +58,7 @@ According to the doc, DE Base Address is 0x0100 0000 (Page 24)
 
 Let's look at the DE Mixers...
 
-![A64 Display Engine](https://lupyuen.github.io/images/de-block1a.jpg)
+![A64 Display Engine MIXER0](https://lupyuen.github.io/images/de-mixer1a.jpg)
 
 # Display Engine Mixers
 
@@ -86,8 +87,6 @@ __DE RT-MIXER0__ has 4 Channels (DE Offset 0x10 0000, Page 87)
     -   OVL_UI(CH2) (UI Overlay / Channel 2) at MIXER0 Offset 0x4000
     -   OVL_UI(CH3) (UI Overlay / Channel 3) at MIXER0 Offset 0x5000
     -   POST_PROC2 at MIXER0 Offset 0xB0000 (de_csc_regs)
-
-![A64 Display Engine MIXER0](https://lupyuen.github.io/images/de-mixer1a.jpg)
 
 __DE RT-MIXER1__ has 2 Channels (DE Offset 0x20 0000, Page 23)
 -   Channel 0 for Video: DMA0, Video Overlay, Video Scaler
