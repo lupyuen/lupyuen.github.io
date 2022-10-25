@@ -30,9 +30,633 @@ We're now porting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/ubo
 
 To finish the driver, we need to understand what's inside PinePhone's Display Engine and Timing Controller.
 
-Let's dive in and continue the journey from our __NuttX Porting Journal__...
+Let's dive in and continue the journey from our (super long) __NuttX Porting Journal__...
 
 -   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
+
+
+# Display Engine in Allwinner A64
+
+TODO
+
+Let's look inside PinePhone's Allwinner A64 Display Engine ... And render some graphics with Apache NuttX RTOS.
+
+Here's the doc for the Display Engine...
+
+-   [__Allwinner Display Engine 2.0 Specifications__](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+_Which Display Engine for A64 (sun50iw1): H8, H3, H5 or A83?_
+
+PinePhone's A64 Display Engine is hidden in the Allwinner H3 Docs, because Allwinner A64 is actually a H3 upgraded with 64-bit Cores...
+
+> The A64 is basically an Allwinner H3 with the Cortex-A7 cores replaced with Cortex-A53 cores (ARM64 architecture). They share most of the memory map, clocks, interrupts and also uses the same IP blocks.
+
+[(Source)](https://linux-sunxi.org/A64)
+
+According to the doc, DE Base Address is 0x0100 0000 (Page 24)
+
+Let's look at the DE Mixers...
+
+![A64 Display Engine](https://lupyuen.github.io/images/de-block1a.jpg)
+
+# Display Engine Mixers
+
+TODO
+
+_What's a Display Engine Mixer?_
+
+__DE RT-MIXER:__ (Page 87)
+> The RT-mixer Core consist of dma, overlay, scaler and blender block. It supports 4 layers overlay in one pipe, and its result can scaler up or down to blender in the next processing.
+
+The Display Engine has 2 Mixers: RT-MIXER0 and RT-MIXER1...
+
+__DE RT-MIXER0__ has 4 Channels (DE Offset 0x10 0000, Page 87)
+-   Channel 0 for Video: DMA0, Video Overlay, Video Scaler
+-   Channels 1, 2, 3 for UI: DMA1 / 2 / 3, UI Overlays, UI Scalers, UI Blenders
+-   4 Overlay Layers per Channel
+-   Layer priority is Layer 3 > Layer2 > Layer 1 > Layer 0 (Page 89)
+-   Channel 0 is unused (we don't use video right now)
+-   Channel 1 has format XRGB 8888
+-   Channels 2 and 3 have format ARGB 8888
+-   MIXER0 Registers:
+    -   GLB at MIXER0 Offset 0x00000 (de_glb_regs)
+    -   BLD (Blender) at MIXER0 Offset 0x01000 (de_bld_regs)
+    -   OVL_V(CH0) (Video Overlay / Channel 0) at MIXER0 Offset 0x2000 (Unused)
+    -   OVL_UI(CH1) (UI Overlay / Channel 1) at MIXER0 Offset 0x3000
+    -   OVL_UI(CH2) (UI Overlay / Channel 2) at MIXER0 Offset 0x4000
+    -   OVL_UI(CH3) (UI Overlay / Channel 3) at MIXER0 Offset 0x5000
+    -   POST_PROC2 at MIXER0 Offset 0xB0000 (de_csc_regs)
+
+![A64 Display Engine MIXER0](https://lupyuen.github.io/images/de-mixer1a.jpg)
+
+__DE RT-MIXER1__ has 2 Channels (DE Offset 0x20 0000, Page 23)
+-   Channel 0 for Video: DMA0, Video Overlay, Video Scaler
+-   Channel 1 for UI: DMA1, UI Overlay, UI Scaler, UI Blender
+-   We don't use MIXER1 right now
+
+RT-MIXER0 and RT-MIXER1 are multiplexed to Timing Controller TCON0.
+
+(TCON0 is connected to ST7703 over MIPI DSI)
+
+So MIXER0 mixes 1 Video Channel with 3 UI Channels over DMA ... And pumps the pixels continuously to ST7703 LCD Controller (via the Timing Controller)
+
+Let's use the 3 UI Channels to render: 1️⃣ Mandelbrot Set 2️⃣ Blue Square 3️⃣ Green Circle
+
+![Mandelbrot Set with UI Overlays on PinePhone](https://lupyuen.github.io/images/de-overlay.jpg)
+
+_Why 2 Mixers in A64 Display Engine?_
+
+Maybe because A64 (or H3) was designed for [OTT Set-Top Boxes](https://linux-sunxi.org/H3) with Picture-In-Picture Overlay Videos?
+
+The 3 UI Overlay Channels would be useful for overlaying a Text UI on top of a Video Channel.
+
+(Is that why Allwinner calls them "Channels"?)
+
+[(Wait... Wasn't Pine64 created thanks to OTT Boxes? 🤔)](https://en.wikipedia.org/wiki/Pine64#:~:text=Pine64%20initially%20operated%20as%20Pine%20Microsystems%20Inc.%20(Fremont%2C%20California)%2C%20founded%20by%20TL%20Lim%2C%20the%20inventor%20of%20the%20PopBox%20and%20Popcorn%20Hour%20series%20of%20media%20players%20sold%20under%20the%20Syabas%20and%20Cloud%20Media%20brands.%5B2%5D)
+
+# Render Colours
+
+TODO
+
+Let's render simple colour blocks on the PinePhone Display.
+
+We allocate the Framebuffer: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
+
+```c
+// Init Framebuffer 0:
+// Fullscreen 720 x 1440 (4 bytes per RGBA pixel)
+static uint32_t fb0[720 * 1440];
+int fb0_len = sizeof(fb0) / sizeof(fb0[0]);
+```
+
+We fill the Framebuffer with Blue, Green and Red: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
+
+```c
+// Fill with Blue, Green and Red
+for (int i = 0; i < fb0_len; i++) {
+    // Colours are in ARGB format
+    if (i < fb0_len / 4) {
+        // Blue for top quarter
+        fb0[i] = 0x80000080;
+    } else if (i < fb0_len / 2) {
+        // Green for next quarter
+        fb0[i] = 0x80008000;
+    } else {
+        // Red for lower half
+        fb0[i] = 0x80800000;
+    }
+}
+```
+
+We allocate 3 UI Channels: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
+
+```c
+// Allocate 3 UI Channels
+static struct display disp;
+memset(&disp, 0, sizeof(disp));
+struct display *d = &disp;
+```
+
+We init the 3 Channels and render them: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
+
+```c
+// Init UI Channel 1: (Base Channel)
+// Fullscreen 720 x 1440
+d->planes[0].fb_start = (uintptr_t) fb0;  // Framebuffer Address
+d->planes[0].fb_pitch = 720 * 4;  // Framebuffer Pitch
+d->planes[0].src_w    = 720;   // Source Width
+d->planes[0].src_h    = 1440;  // Source Height
+d->planes[0].dst_w    = 720;   // Dest Width
+d->planes[0].dst_h    = 1440;  // Dest Height
+
+// Init UI Channel 2: (First Overlay)
+// Square 600 x 600
+d->planes[1].fb_start = 0;  // To Disable Channel
+
+// Init UI Channel 3: (Second Overlay)
+// Fullscreen 720 x 1440 with Alpha Blending
+d->planes[2].fb_start = 0;  // To Disable Channel
+
+// Render the UI Channels
+display_commit(d);
+```
+
+`display_commit` is defined in the p-boot Display Code: [display.c](https://megous.com/git/p-boot/tree/src/display.c#n2017)
+
+We should see these Blue, Green and Red Blocks...
+
+![Blue, Green, Red Blocks on PinePhone](https://lupyuen.github.io/images/de-rgb.jpg)
+
+(Why the black lines?)
+
+Channels 2 and 3 are disabled for now. We'll use them to render UI Overlays later.
+
+# Render Mandelbrot Set
+
+TODO
+
+Let's render something more interesting... Mandelbrot Set: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
+
+```c
+// Fill with Mandelbrot Set
+for (int y = 0; y < 1440; y++) {
+    for (int x = 0; x < 720; x++) {
+        // Convert Pixel Coordinates to a Complex Number
+        float cx = x_start + (y / 1440.0) * (x_end - x_start);
+        float cy = y_start + (x / 720.0)  * (y_end - y_start);
+
+        // Compute Manelbrot Set
+        int m = mandelbrot(cx, cy);
+
+        // Color depends on the number of iterations
+        uint8_t hue = 255.0 * m / MAX_ITER;
+        uint8_t saturation = 255;
+        uint8_t value = (m < MAX_ITER) ? 255 : 0;
+
+        // Convert Hue / Saturation / Value to RGB
+        uint32_t rgb = hsvToRgb(hue, saturation, value);
+
+        // Set the Pixel Colour (ARGB Format)
+        int p = (y * 720) + x;
+        assert(p < fb0_len);
+        fb0[p] = 0x80000000 | rgb;
+    }
+}
+```
+
+`mandelbrot` and `hsvToRgb` are defined here: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L330-L426)
+
+We should see this Mandelbrot Set...
+
+![Mandelbrot Set on PinePhone](https://lupyuen.github.io/images/de-title.jpg)
+
+# Animate Madelbrot Set
+
+TODO
+
+Now we animate the Mandelbrot Set: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
+
+```c
+// Omitted: Init UI Channels 1, 2 and 3
+...
+// Render the UI Channels
+display_commit(d);
+
+// Animate the Mandelbrot Set forever...
+for (;;) {
+    // Fill with Mandelbrot Set
+    for (int y = 0; y < 1440; y++) {
+        for (int x = 0; x < 720; x++) {
+            // Convert Pixel Coordinates to a Complex Number
+            float cx = x_start + (y / 1440.0) * (x_end - x_start);
+            float cy = y_start + (x / 720.0)  * (y_end - y_start);
+
+            // Compute Manelbrot Set
+            int m = mandelbrot(cx, cy);
+
+            // Color depends on the number of iterations
+            uint8_t hue = 255.0 * m / MAX_ITER;
+            uint8_t saturation = 255;
+            uint8_t value = (m < MAX_ITER) ? 255 : 0;
+
+            // Convert Hue / Saturation / Value to RGB
+            uint32_t rgb = hsvToRgb(hue, saturation, value);
+
+            // Set the Pixel Colour (ARGB Format)
+            int p = (y * 720) + x;
+            assert(p < fb0_len);
+            fb0[p] = 0x80000000 | rgb;
+        }
+    }
+    // Zoom in to (-1.4, 0)
+    float x_dest = -1.4;
+    float y_dest = 0;
+    x_start += (x_dest - x_start) * 0.05;
+    x_end   -= (x_end  - x_dest)  * 0.05;
+    y_start += (y_dest - y_start) * 0.05;
+    y_end   -= (y_end  - y_dest)  * 0.05;
+}
+```
+
+We should see the Animated Mandelbrot Set...
+
+-   [Demo Video on YouTube](https://youtu.be/toC9iiPRwRI)
+
+_Don't we need to call `display_commit` after every frame?_
+
+Nope, remember that the Display Engine reads our Framebuffer directly via DMA.
+
+So any updates to the Framebuffer will be pushed to the display instantly.
+
+# Render Square Overlay
+
+TODO
+
+This is how we render a Blue Square as an Overlay on UI Channel 2: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
+
+```c
+// Init Framebuffer 1:
+// Square 600 x 600 (4 bytes per RGBA pixel)
+static uint32_t fb1[600 * 600];
+int fb1_len = sizeof(fb1) / sizeof(fb1[0]);
+
+// Fill with Blue
+for (int i = 0; i < fb1_len; i++) {
+    // Colours are in ARGB format
+    fb1[i] = 0x80000080;
+}
+
+// Init UI Channel 2: (First Overlay)
+// Square 600 x 600
+d->planes[1].fb_start = (uintptr_t) fb1;  // Framebuffer Address
+d->planes[1].fb_pitch = 600 * 4;  // Framebuffer Pitch
+d->planes[1].src_w    = 600;  // Source Width
+d->planes[1].src_h    = 600;  // Source Height
+d->planes[1].dst_w    = 600;  // Dest Width
+d->planes[1].dst_h    = 600;  // Dest Height
+d->planes[1].dst_x    = 52;   // Dest X
+d->planes[1].dst_y    = 52;   // Dest Y
+```
+
+# Render Circle Overlay
+
+TODO
+
+This is how we render a Green Circle as an Overlay on UI Channel 3: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
+
+```c
+// Init Framebuffer 2:
+// Fullscreen 720 x 1440 (4 bytes per RGBA pixel)
+static uint32_t fb2[720 * 1440];
+int fb2_len = sizeof(fb2) / sizeof(fb2[0]);
+
+// Fill with Green Circle
+for (int y = 0; y < 1440; y++) {
+    for (int x = 0; x < 720; x++) {
+        // Get pixel index
+        int p = (y * 720) + x;
+        assert(p < fb2_len);
+
+        // Shift coordinates so that centre of screen is (0,0)
+        int x_shift = x - 360;
+        int y_shift = y - 720;
+
+        // If x^2 + y^2 < radius^2, set the pixel to Green
+        if (x_shift*x_shift + y_shift*y_shift < 360*360) {
+            fb2[p] = 0x80008000;  // Green in ARGB Format
+        } else {  // Otherwise set to Black
+            fb2[p] = 0x00000000;  // Black in ARGB Format
+        }
+    }
+}
+
+// Init UI Channel 3: (Second Overlay)
+// Fullscreen 720 x 1440 with Alpha Blending
+d->planes[2].fb_start = (uintptr_t) fb2;  // Framebuffer Address
+d->planes[2].fb_pitch = 720 * 4;  // Framebuffer Pitch
+d->planes[2].src_w    = 720;   // Source Width
+d->planes[2].src_h    = 1440;  // Source Height
+d->planes[2].dst_w    = 720;   // Dest Width
+d->planes[2].dst_h    = 1440;  // Dest Height
+d->planes[2].dst_x    = 0;     // Dest X
+d->planes[2].dst_y    = 0;     // Dest Y
+d->planes[2].alpha    = 128;   // Dest Alpha
+```
+
+Note that we set the Destination Alpha. So the black pixels will appear transparent.
+
+We should see the Animated Mandelbrot Set, with Blue Square and Green Circle as Overlays...
+
+![Mandelbrot Set with Blue Square and Green Circle on PinePhone](https://lupyuen.github.io/images/de-overlay.jpg)
+
+(Why the missing horizontal lines in the Blue Square and Green Circle?)
+
+# Test PinePhone Display Engine
+
+TODO
+
+To test the A64 Display Engine with NuttX on PinePhone, we'll run this p-boot Display Code...
+
+-   [display.c](https://megous.com/git/p-boot/tree/src/display.c#n2017)
+
+With our Test App...
+
+-   [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
+
+Here are the steps to download these files and build them...
+
+```text
+nuttx
+├── apps (NuttX Apps for PinePhone including Display Engine Version 2)
+│   ├── Application.mk
+│   ├── DISCLAIMER
+│   ├── Directory.mk
+...
+├── nuttx (NuttX OS for PinePhone)
+│   ├── AUTHORS
+│   ├── CONTRIBUTING.md
+│   ├── DISCLAIMER
+...
+├── p-boot (Modified p-boot Display Code)
+│   ├── HACKING
+│   ├── LICENSE
+│   ├── NEWS
+...
+└── pinephone-nuttx (Zig MIPI DSI Driver for PinePhone)
+    ├── LICENSE
+    ├── README.md
+    ├── display.o
+    └── display.zig
+```
+
+1.  Create the NuttX Directory...
+
+    ```bash
+    mkdir nuttx
+    cd nuttx
+    ```
+
+1.  Download the Modified Instrumented p-boot Display Code `p-boot.6.zip` from...
+
+    [pinephone-nuttx/releases/tag/pboot6](https://github.com/lupyuen/pinephone-nuttx/releases/tag/pboot6)
+
+    Extract into the `nuttx` folder and rename as `p-boot`
+
+1.  Download and build NuttX for PinePhone inside the `nuttx` folder...
+
+    ```bash
+    ## TODO: Install Build Prerequisites
+    ## https://lupyuen.github.io/articles/uboot#install-prerequisites
+
+    ## Download NuttX OS for PinePhone
+    git clone \
+        --recursive \
+        --branch pinephone \
+        https://github.com/lupyuen/incubator-nuttx \
+        nuttx
+
+    ## Download NuttX Apps for PinePhone including Display Engine (Version 2)
+    git clone \
+        --recursive \
+        --branch de2 \
+        https://github.com/lupyuen/incubator-nuttx-apps \
+        apps
+
+    ## We'll build NuttX inside nuttx/nuttx
+    cd nuttx
+
+    ## Configure NuttX for Single Core
+    ./tools/configure.sh -l qemu-a53:nsh
+
+    ## Build NuttX. Ignore the Linker Errors
+    make
+    ```
+
+1.  Follow these steps to compile our Zig MIPI DSI Driver and link into NuttX...
+
+    -   ["Zig on PinePhone"](https://github.com/lupyuen/pinephone-nuttx#zig-on-pinephone)
+
+1.  Compress the NuttX Binary Image...
+
+    ```bash
+    cp nuttx.bin Image
+    rm -f Image.gz
+    gzip Image
+    ```
+
+1.  Copy the compressed NuttX Binary Image to Jumpdrive microSD...
+
+    ```bash
+    ## Copy compressed NuttX Binary Image to Jumpdrive microSD.
+    ## How to create Jumpdrive microSD: https://lupyuen.github.io/articles/uboot#pinephone-jumpdrive
+    ## TODO: Change the microSD Path
+    cp Image.gz "/Volumes/NO NAME"
+    ```
+
+1.  To access the UART Port on PinePhone, we'll connect this USB Serial Debug Cable (at 115.2 kbps)...
+
+    [PinePhone Serial Debug Cable](https://wiki.pine64.org/index.php/PinePhone#Serial_console)
+
+1.  Insert the Jumpdrive microSD into PinePhone and power up
+
+1.  At the NuttX Shell, enter `hello`
+
+(The steps look messy today, hopefully we'll remove p-boot after we have created our NuttX Display Driver)
+
+We should see the Animated Mandelbrot Set, with Blue Square and Green Circle as Overlays...
+
+![Mandelbrot Set with Blue Square and Green Circle on PinePhone](https://lupyuen.github.io/images/de-overlay.jpg)
+
+(Why the missing horizontal lines in the Blue Square and Green Circle?)
+
+# Display Engine Usage
+
+TODO
+
+Based on the log captured from our instrumented [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c), we have identified the steps to render 3 UI Channels (1 to 3) with the Display Engine [(`display_commit`)](https://megous.com/git/p-boot/tree/src/display.c#n2017)
+
+This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that implements Display Rendering...
+
+1.  Configure Blender...
+    -   BLD BkColor (BLD_BK_COLOR Offset 0x88): BLD background color register
+    -   BLD Premultiply (BLD_PREMUL_CTL Offset 0x84): BLD pre-multiply control register
+
+    ```text
+    Configure Blender
+    BLD BkColor:     0x110 1088 = 0xff000000
+    BLD Premultiply: 0x110 1084 = 0x0
+    ```
+
+1.  For Channels 1 to 3...
+
+    1.  If Channel is unused, disable Overlay, Pipe and Scaler. Skip to next Channel
+
+        -   UI Config Attr (OVL_UI_ATTCTL @ OVL_UI Offset 0x00): OVL_UI attribute control register
+        -   Mixer (??? @ 0x113 0000 + 0x10000 * Channel)
+
+        ```text
+        Channel 2: Disable Overlay and Pipe
+        UI Config Attr: 0x110 4000 = 0x0
+
+        Channel 3: Disable Overlay and Pipe
+        UI Config Attr: 0x110 5000 = 0x0
+
+        Channel 2: Disable Scaler
+        Mixer: 0x115 0000 = 0x0
+
+        Channel 3: Disable Scaler
+        Mixer: 0x116 0000 = 0x0
+        ```
+
+    1.  Channel 1 has format XRGB 8888, Channel 2 and 3 have format ARGB 8888
+
+    1.  Set Overlay (Assume Layer = 0)
+        -   UI Config Attr (OVL_UI_ATTCTL @ OVL_UI Offset 0x00): OVL_UI attribute control register
+        -   UI Config Top LAddr (OVL_UI_TOP_LADD @ OVL_UI Offset 0x10): OVL_UI top field memory block low address register
+        -   UI Config Pitch (OVL_UI_PITCH @ OVL_UI Offset 0x0C): OVL_UI memory pitch register
+        -   UI Config Size (OVL_UI_MBSIZE @ OVL_UI Offset 0x04): OVL_UI memory block size register
+        -   UI Overlay Size (OVL_UI_SIZE @ OVL_UI Offset 0x88): OVL_UI overlay window size register
+        -   IO Config Coord (OVL_UI_COOR @ OVL_UI Offset 0x08): OVL_UI memory block coordinate register
+
+        ```text
+        Channel 1: Set Overlay (fb0 is 720 x 1440)
+        UI Config Attr:      0x110 3000 = 0xff00 0405
+        UI Config Top LAddr: 0x110 3010 = 0x4064 a6ac (Address of fb0)
+        UI Config Pitch:     0x110 300c = 0xb40 (720 * 4)
+        UI Config Size:      0x110 3004 = 0x59f 02cf (1439 << 16 + 719)
+        UI Overlay Size:     0x110 3088 = 0x59f 02cf (1439 << 16 + 719)
+        IO Config Coord:     0x110 3008 = 0x0
+
+        Channel 2: Set Overlay (fb1 is 600 x 600)
+        UI Config Attr:      0x110 4000 = 0xff00 0005
+        UI Config Top LAddr: 0x110 4010 = 0x404e adac (Address of fb1)
+        UI Config Pitch:     0x110 400c = 0x960 (600 * 4)
+        UI Config Size:      0x110 4004 = 0x257 0257 (599 << 16 + 599)
+        UI Overlay Size:     0x110 4088 = 0x257 0257 (599 << 16 + 599)
+        IO Config Coord:     0x110 4008 = 0x0
+
+        Channel 3: Set Overlay (fb2 is 720 x 1440)
+        UI Config Attr:      0x110 5000 = 0x7f00 0005
+        UI Config Top LAddr: 0x110 5010 = 0x400f 65ac (Address of fb2)
+        UI Config Pitch:     0x110 500c = 0xb40 (720 * 4)
+        UI Config Size:      0x110 5004 = 0x59f 02cf (1439 << 16 + 719)
+        UI Overlay Size:     0x110 5088 = 0x59f 02cf (1439 << 16 + 719)
+        IO Config Coord:     0x110 5008 = 0x0
+        ```
+
+        Note that UI Config Size and UI Overlay Size are `(height-1) << 16 + (width-1)`
+
+    1.  For Channel 1: Set Blender Output
+        -   BLD Output Size (BLD_SIZE @ BLD Offset 0x08C): BLD output size setting register
+        -   GLB Size (GLB_SIZE @ GLB Offset 0x00C): Global size register
+
+        ```text
+        Channel 1: Set Blender Output
+        BLD Output Size: 0x110 108c = 0x59f 02cf (1439 * 16 + 719)
+        GLB Size:        0x110 000c = 0x59f 02cf (1439 * 16 + 719)
+        ```
+
+    1.  Set Blender Input Pipe (N = Pipe Number, from 0 to 2 for Channels 1 to 3)
+        -   BLD Pipe InSize (BLD_CH_ISIZE @ BLD Offset 0x008 + N*0x14): BLD input memory size register(N=0,1,2,3,4)
+        -   BLD Pipe FColor (BLD_FILL_COLOR @ BLD Offset 0x004 + N*0x14): BLD fill color register(N=0,1,2,3,4)
+        -   BLD Pipe Offset (BLD_CH_OFFSET @ BLD Offset 0x00C + N*0x14): BLD input memory offset register(N=0,1,2,3,4)
+        -   BLD Pipe Mode (BLD_CTL @ BLD Offset 0x090 – 0x09C): BLD control register
+
+        (Should `N*0x14` be `N*0x10` instead?)
+
+        ```text
+        Channel 1: Set Blender Input Pipe 0 (fb0 is 720 x 1440)
+        BLD Pipe InSize: 0x110 1008 = 0x59f 02cf (1439 * 16 + 719)
+        BLD Pipe FColor: 0x110 1004 = 0xff00 0000
+        BLD Pipe Offset: 0x110 100c = 0x0
+        BLD Pipe Mode:   0x110 1090 = 0x301 0301
+
+        Channel 2: Set Blender Input Pipe 1 (fb1 is 600 x 600)
+        BLD Pipe InSize: 0x110 1018 = 0x257 0257 (599 << 16 + 599)
+        BLD Pipe FColor: 0x110 1014 = 0xff00 0000
+        BLD Pipe Offset: 0x110 101c = 0x34 0034
+        BLD Pipe Mode:   0x110 1094 = 0x301 0301
+
+        Channel 3: Set Blender Input Pipe 2 (fb2 is 720 x 1440)
+        BLD Pipe InSize: 0x110 1028 = 0x59f 02cf (1439 * 16 + 719)
+        BLD Pipe FColor: 0x110 1024 = 0xff00 0000
+        BLD Pipe Offset: 0x110 102c = 0x0
+        BLD Pipe Mode:   0x110 1098 = 0x301 0301
+        ```
+
+        Note that BLD Pipe InSize is `(height-1) << 16 + (width-1)`
+
+    1.  Disable Scaler (assuming we're not using Scaler)
+
+        ```text
+        Channel 1: Disable Scaler
+        Mixer: 0x114 0000 = 0x0
+
+        Channel 2: Disable Scaler
+        Mixer: 0x115 0000 = 0x0
+
+        Channel 3: Disable Scaler
+        Mixer: 0x116 0000 = 0x0
+        ```
+
+1.  Set BLD Route and BLD FColor Control
+    -   BLD Route (BLD_CH_RTCTL @ BLD Offset 0x080): BLD routing control register
+    -   BLD FColor Control (BLD_FILLCOLOR_CTL @ BLD Offset 0x000): BLD fill color control register
+
+    ```text
+    Set BLD Route and BLD FColor Control
+    BLD Route:          0x110 1080 = 0x321
+    BLD FColor Control: 0x110 1000 = 0x701
+    ```
+
+1.  Apply Settings: GLB DBuff
+    -   GLB DBuff (GLB_DBUFFER @ GLB Offset 0x008): Global double buffer control register
+
+    ```text
+    Apply Settings
+    GLB DBuff: 0x110 0008 = 0x1
+    ```
+
+[(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx#testing-p-boot-display-engine-on-pinephone)
+
+(See Memory Mapping List and Register List at Page 90)
+
+# Other Display Engine Features
+
+TODO
+
+We won't use these Display Engine Features today...
+
+__DE RT-WB:__ (Page 116)
+> The Real-time write-back controller (RT-WB) provides data capture function for display engine. It captures data from RT-mixer module, performs the image resizing function, and then write-back to SDRAM.
+
+(For screen capture?)
+
+__DE VSU:__ (Page 128)
+> The Video Scaler (VS) provides YUV format image resizing function for display engine. It receives data from overlay module, performs the image resizing function, and outputs to video post-processing modules. 
+
+__DE Rotation:__ (Page 137)
+> There are several types of rotation: clockwise 0/90/180/270 degree Rotation and H-Flip/V-Flip. Operation of Copy is the same as a 0 degree rotation.
 
 # What's Next
 
