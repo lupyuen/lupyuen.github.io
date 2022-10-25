@@ -18,19 +18,19 @@ Today we'll learn about the missing bits in our Display Driver...
 
 -   What's the __Display Engine (DE)__ inside PinePhone
 
--   What's the __Timing Controller (TCON0)__ and how it controls PinePhone's LCD Display
+-   How the __Timing Controller (TCON0)__ controls PinePhone's LCD Display
 
 -   How we call DE and TCON0 to __render graphics__
 
--   How our __PinePhone Display Driver__ shall support DE and TCON0
+-   How our new __PinePhone Display Driver__ will support DE and TCON0
 
 _Why are we doing this?_
 
-We're now porting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) to PinePhone.
+We're now porting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) to PinePhone and we have created a (barebones) [__Display Driver in Zig__](https://lupyuen.github.io/articles/dsi2) that initialises the LCD Display.
 
-TODO
+To finish the driver, we need to understand what's inside PinePhone's Display Engine and Timing Controller.
 
-Let's continue the journey from our __NuttX Porting Journal__...
+Let's dive in and continue the journey from our __NuttX Porting Journal__...
 
 -   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
 
