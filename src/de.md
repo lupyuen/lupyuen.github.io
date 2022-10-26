@@ -88,7 +88,7 @@ Let's look inside the Display Engine...
 
 # Display Engine in Allwinner A64
 
-Recall that Allwinner A64's Display Engine is a __Real-Time Mixer__ that handles real-time __DMA, Overlay, Scaling and Blending__ of the Pixel Data (from the Framebuffers)...
+Recall that Allwinner A64's Display Engine is a __Real-Time Mixer__ that handles real-time __DMA, Overlay, Scaling and Blending__ of the Framebuffers...
 
 And the Display Engine pushes the output pixels to the __Timing Controller (TCON0)__ for display on PinePhone's LCD Display.
 
@@ -104,7 +104,7 @@ The official doc for the A64 Display Engine is here...
 
 Though it doesn't describe the actual steps for programming the Display Engine.
 
-In a while we'll boot Apache NuttX RTOS on PinePhone and experiment with the Display Engine, to understand it better.
+In a while we'll boot [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) on PinePhone and experiment with the Display Engine, to understand it better.
 
 [(Overview of A64 Display Engine)](https://github.com/lupyuen/pinephone-nuttx#display-engine-mixers)
 
@@ -120,7 +120,7 @@ _Why are there 2 Mixers in the A64 Display Engine?_
 
 Maybe because A64 (or H3) was designed for [__OTT Set-Top Boxes__](https://linux-sunxi.org/H3) with Picture-In-Picture Overlay Videos?
 
-The 3 UI Overlay Channels would be super useful for overlaying a Graphical UI on top of a Video Channel.
+The 3 UI Overlay Channels would be super helpful for overlaying an OTT Graphical UI on top of a Video Channel.
 
 [(Wait... Wasn't Pine64 created thanks to OTT Boxes? 🤔)](https://en.wikipedia.org/wiki/Pine64#History)
 
