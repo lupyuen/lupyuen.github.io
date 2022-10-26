@@ -180,17 +180,21 @@
 <p>Maybe because A64 (or H3) was designed for <a href="https://linux-sunxi.org/H3"><strong>OTT Set-Top Boxes</strong></a> with Picture-In-Picture Overlay Videos?</p>
 <p>The 3 UI Overlay Channels would be super helpful for overlaying an OTT Graphical UI on top of a Video Channel.</p>
 <p><a href="https://en.wikipedia.org/wiki/Pine64#History">(Wait… Wasn’t Pine64 created thanks to OTT Boxes? 🤔)</a></p>
-<p><img src="https://lupyuen.github.io/images/de-rgb.jpg" alt="Blue, Green, Red Blocks on PinePhone" /></p>
+<p><img src="https://lupyuen.github.io/images/de-code1a.png" alt="Rendering simple Colour Blocks on the PinePhone Display" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L201-L214">(Source)</a></p>
 <h1 id="render-colours"><a href="#render-colours">3 Render Colours</a></h1>
 <p><em>How do we program the A64 Display Engine to render graphics?</em></p>
-<p>Let’s begin by rendering simple <strong>Colour Blocks</strong> on the PinePhone Display. (Pic above)</p>
-<p>TODO</p>
-<p>We allocate the Framebuffer: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c">test_display.c</a></p>
+<p>Let’s begin by rendering simple <strong>Colour Blocks</strong> on the PinePhone Display…</p>
+<p><img src="https://lupyuen.github.io/images/de-rgb.jpg" alt="Blue, Green, Red Blocks on PinePhone" /></p>
+<p>First we <strong>allocate the Framebuffer</strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L170-L175">test_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init Framebuffer 0:
-// Fullscreen 720 x 1440 (4 bytes per RGBA pixel)
+// Fullscreen 720 x 1440 (4 bytes per ARGB pixel)
+// fb0_len is 720 * 1440
 static uint32_t fb0[720 * 1440];
 int fb0_len = sizeof(fb0) / sizeof(fb0[0]);</code></pre></div>
-<p>We fill the Framebuffer with Blue, Green and Red: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c">test_display.c</a></p>
+<p><a href="https://en.wikipedia.org/wiki/PinePhone">(PinePhone’s display resolution is 720 x 1440)</a></p>
+<p>Each Pixel occupies <strong>4 bytes</strong>. (ARGB 8888 Format)</p>
+<p>Then we <strong>fill the Framebuffer</strong> with Blue, Green and Red: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L201-L214">test_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Fill with Blue, Green and Red
 for (int i = 0; i &lt; fb0_len; i++) {
   // Colours are in ARGB format
@@ -205,11 +209,22 @@ for (int i = 0; i &lt; fb0_len; i++) {
     fb0[i] = 0x80800000;
   }
 }</code></pre></div>
+<p>Each Pixel in the Framebuffer is stored as <strong>32-bit ARGB 8888</strong>.</p>
+<p>Thus <strong><code>0x8000</code> <code>8000</code></strong> means…</p>
+<div><table><thead><tr><th style="text-align: left">Channel</th><th>Value</th></tr></thead><tbody>
+<tr><td style="text-align: left">Alpha</td><td><code>0x80</code></td></tr>
+<tr><td style="text-align: left">Red</td><td><code>0x00</code></td></tr>
+<tr><td style="text-align: left">Green</td><td><code>0x80</code></td></tr>
+<tr><td style="text-align: left">Blue</td><td><code>0x00</code></td></tr>
+</tbody></table>
+</div>
+<p>TODO</p>
 <p>We allocate 3 UI Channels: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c">test_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Allocate 3 UI Channels
 static struct display disp;
 memset(&amp;disp, 0, sizeof(disp));
 struct display *d = &amp;disp;</code></pre></div>
+<p>TODO: display</p>
 <p>We init the 3 Channels and render them: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c">test_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init UI Channel 1: (Base Channel)
 // Fullscreen 720 x 1440
@@ -218,15 +233,15 @@ d-&gt;planes[0].fb_pitch = 720 * 4;  // Framebuffer Pitch
 d-&gt;planes[0].src_w    = 720;   // Source Width
 d-&gt;planes[0].src_h    = 1440;  // Source Height
 d-&gt;planes[0].dst_w    = 720;   // Dest Width
-d-&gt;planes[0].dst_h    = 1440;  // Dest Height
-
-// Init UI Channel 2: (First Overlay)
-// Square 600 x 600
-d-&gt;planes[1].fb_start = 0;  // To Disable Channel
+d-&gt;planes[0].dst_h    = 1440;  // Dest Height</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>// Init UI Channel 2: (First Overlay)
+// Disable Channel for now
+d-&gt;planes[1].fb_start = 0;
 
 // Init UI Channel 3: (Second Overlay)
-// Fullscreen 720 x 1440 with Alpha Blending
-d-&gt;planes[2].fb_start = 0;  // To Disable Channel
+// Disable Channel for now
+d-&gt;planes[2].fb_start = 0;
 
 // Render the UI Channels
 display_commit(d);</code></pre></div>
@@ -235,7 +250,6 @@ display_commit(d);</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/de-rgb.jpg" alt="Blue, Green, Red Blocks on PinePhone" /></p>
 <p>(Why the black lines?)</p>
 <p>Channels 2 and 3 are disabled for now. We’ll use them to render UI Overlays later.</p>
-<p><img src="https://lupyuen.github.io/images/de-code1a.png" alt="TODO" /></p>
 <h1 id="render-mandelbrot-set"><a href="#render-mandelbrot-set">4 Render Mandelbrot Set</a></h1>
 <p>TODO</p>
 <p>Let’s render something more interesting… Mandelbrot Set: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c">test_display.c</a></p>
@@ -321,7 +335,8 @@ for (;;) {
 <p>TODO</p>
 <p>This is how we render a Blue Square as an Overlay on UI Channel 2: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c">test_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init Framebuffer 1:
-// Square 600 x 600 (4 bytes per RGBA pixel)
+// Square 600 x 600 (4 bytes per ARGB pixel)
+// fb1_len is 600 * 600
 static uint32_t fb1[600 * 600];
 int fb1_len = sizeof(fb1) / sizeof(fb1[0]);
 
@@ -346,7 +361,8 @@ d-&gt;planes[1].dst_y    = 52;   // Dest Y</code></pre></div>
 <p>TODO</p>
 <p>This is how we render a Green Circle as an Overlay on UI Channel 3: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c">test_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init Framebuffer 2:
-// Fullscreen 720 x 1440 (4 bytes per RGBA pixel)
+// Fullscreen 720 x 1440 (4 bytes per ARGB pixel)
+// fb2_len is 720 * 1440
 static uint32_t fb2[720 * 1440];
 int fb2_len = sizeof(fb2) / sizeof(fb2[0]);
 
