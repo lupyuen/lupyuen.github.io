@@ -158,6 +158,8 @@
 <h1 id="display-engine-in-allwinner-a64"><a href="#display-engine-in-allwinner-a64">2 Display Engine in Allwinner A64</a></h1>
 <p>Recall that Allwinner A64’s Display Engine is a <strong>Real-Time Mixer</strong> that handles real-time <strong>DMA, Overlay, Scaling and Blending</strong> of the Pixel Data (from the Framebuffers)…</p>
 <p>And the Display Engine pushes the output pixels to the <strong>Timing Controller (TCON0)</strong> for display on PinePhone’s LCD Display.</p>
+<p>The pic above shows how the Display Engine mixes together <strong>3 UI Channels (Framebuffers)</strong> via DMA1, 2 and 3.</p>
+<p>(Plus a Video Channel on DMA0, but we won’t use it today)</p>
 <p><em>Is the Display Engine documented?</em></p>
 <p>The official doc for the A64 Display Engine is here…</p>
 <ul>
@@ -165,6 +167,7 @@
 </ul>
 <p>Though it doesn’t describe the actual steps for programming the Display Engine.</p>
 <p>In a while we’ll boot Apache NuttX RTOS on PinePhone and experiment with the Display Engine, to understand it better.</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#display-engine-mixers">(Overview of A64 Display Engine)</a></p>
 <p><em>But the Display Engine doc doesn’t mention A64?</em></p>
 <p>PinePhone’s A64 Display Engine is hidden in the <strong>Allwinner H3 Docs</strong>, because Allwinner A64 is actually a H3 upgraded with 64-bit Cores…</p>
 <blockquote>
