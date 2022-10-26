@@ -124,26 +124,33 @@ The 3 UI Overlay Channels would be super helpful for overlaying an OTT Graphical
 
 [(Wait... Wasn't Pine64 created thanks to OTT Boxes? 🤔)](https://en.wikipedia.org/wiki/Pine64#History)
 
-![Blue, Green, Red Blocks on PinePhone](https://lupyuen.github.io/images/de-rgb.jpg)
+![Rendering simple Colour Blocks on the PinePhone Display](https://lupyuen.github.io/images/de-code1a.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L201-L214)
 
 # Render Colours
 
 _How do we program the A64 Display Engine to render graphics?_
 
-Let's begin by rendering simple __Colour Blocks__ on the PinePhone Display. (Pic above)
+Let's begin by rendering simple __Colour Blocks__ on the PinePhone Display...
 
-TODO
+![Blue, Green, Red Blocks on PinePhone](https://lupyuen.github.io/images/de-rgb.jpg)
 
-We allocate the Framebuffer: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
+First we __allocate the Framebuffer__: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L170-L175)
 
 ```c
 // Init Framebuffer 0:
-// Fullscreen 720 x 1440 (4 bytes per RGBA pixel)
+// Fullscreen 720 x 1440 (4 bytes per ARGB pixel)
+// fb0_len is 720 * 1440
 static uint32_t fb0[720 * 1440];
 int fb0_len = sizeof(fb0) / sizeof(fb0[0]);
 ```
 
-We fill the Framebuffer with Blue, Green and Red: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
+[(PinePhone's display resolution is 720 x 1440)](https://en.wikipedia.org/wiki/PinePhone)
+
+Each Pixel occupies __4 bytes__. (ARGB 8888 Format)
+
+Then we __fill the Framebuffer__ with Blue, Green and Red: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L201-L214)
 
 ```c
 // Fill with Blue, Green and Red
@@ -162,6 +169,19 @@ for (int i = 0; i < fb0_len; i++) {
 }
 ```
 
+Each Pixel in the Framebuffer is stored as __32-bit ARGB 8888__.
+
+Thus __`0x8000` `8000`__ means...
+
+| Channel | Value |
+|:--------|-------|
+| Alpha | `0x80` |
+| Red   | `0x00` |
+| Green | `0x80` |
+| Blue  | `0x00` |
+
+TODO
+
 We allocate 3 UI Channels: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
 
 ```c
@@ -170,6 +190,8 @@ static struct display disp;
 memset(&disp, 0, sizeof(disp));
 struct display *d = &disp;
 ```
+
+TODO: display
 
 We init the 3 Channels and render them: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
 
@@ -182,14 +204,18 @@ d->planes[0].src_w    = 720;   // Source Width
 d->planes[0].src_h    = 1440;  // Source Height
 d->planes[0].dst_w    = 720;   // Dest Width
 d->planes[0].dst_h    = 1440;  // Dest Height
+```
 
+TODO
+
+```c
 // Init UI Channel 2: (First Overlay)
-// Square 600 x 600
-d->planes[1].fb_start = 0;  // To Disable Channel
+// Disable Channel for now
+d->planes[1].fb_start = 0;
 
 // Init UI Channel 3: (Second Overlay)
-// Fullscreen 720 x 1440 with Alpha Blending
-d->planes[2].fb_start = 0;  // To Disable Channel
+// Disable Channel for now
+d->planes[2].fb_start = 0;
 
 // Render the UI Channels
 display_commit(d);
@@ -204,8 +230,6 @@ We should see these Blue, Green and Red Blocks...
 (Why the black lines?)
 
 Channels 2 and 3 are disabled for now. We'll use them to render UI Overlays later.
-
-![TODO](https://lupyuen.github.io/images/de-code1a.png)
 
 # Render Mandelbrot Set
 
@@ -316,7 +340,8 @@ This is how we render a Blue Square as an Overlay on UI Channel 2: [test_display
 
 ```c
 // Init Framebuffer 1:
-// Square 600 x 600 (4 bytes per RGBA pixel)
+// Square 600 x 600 (4 bytes per ARGB pixel)
+// fb1_len is 600 * 600
 static uint32_t fb1[600 * 600];
 int fb1_len = sizeof(fb1) / sizeof(fb1[0]);
 
@@ -348,7 +373,8 @@ This is how we render a Green Circle as an Overlay on UI Channel 3: [test_displa
 
 ```c
 // Init Framebuffer 2:
-// Fullscreen 720 x 1440 (4 bytes per RGBA pixel)
+// Fullscreen 720 x 1440 (4 bytes per ARGB pixel)
+// fb2_len is 720 * 1440
 static uint32_t fb2[720 * 1440];
 int fb2_len = sizeof(fb2) / sizeof(fb2[0]);
 
