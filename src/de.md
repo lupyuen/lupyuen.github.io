@@ -80,7 +80,7 @@ That's why we need to __pump a constant stream of pixels__ to the display via DM
 
 [(Sounds a bit like the Amiga Video Toaster)](https://en.wikipedia.org/wiki/Video_Toaster)
 
-Let's look inside the Display Engine...
+In a while we'll boot Apache NuttX RTOS and experiment with PinePhone's Display Engine. But first let's look inside the Display Engine...
 
 # Display Engine in Allwinner A64
 
