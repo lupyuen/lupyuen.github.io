@@ -112,74 +112,27 @@ _But the Display Engine doc doesn't mention A64?_
 
 PinePhone's A64 Display Engine is hidden in the __Allwinner H3 Docs__, because Allwinner A64 is actually a H3 upgraded with 64-bit Cores...
 
-> The A64 is basically an Allwinner H3 with the Cortex-A7 cores replaced with Cortex-A53 cores (ARM64 architecture). They share most of the memory map, clocks, interrupts and also uses the same IP blocks.
+> "The A64 is basically an Allwinner H3 with the Cortex-A7 cores replaced with Cortex-A53 cores (ARM64 architecture). They share most of the memory map, clocks, interrupts and also uses the same IP blocks."
 
-[(Source)](https://linux-sunxi.org/A64)
+> [(Source)](https://linux-sunxi.org/A64)
 
-TODO
+_Why are there 2 Mixers in the A64 Display Engine?_
 
-According to the doc, DE Base Address is 0x0100 0000 (Page 24)
+Maybe because A64 (or H3) was designed for [__OTT Set-Top Boxes__](https://linux-sunxi.org/H3) with Picture-In-Picture Overlay Videos?
 
-Let's look at the DE Mixers...
+The 3 UI Overlay Channels would be super useful for overlaying a Graphical UI on top of a Video Channel.
 
-# Display Engine Mixers
+[(Wait... Wasn't Pine64 created thanks to OTT Boxes? 🤔)](https://en.wikipedia.org/wiki/Pine64#History)
 
-TODO
-
-_What's a Display Engine Mixer?_
-
-__DE RT-MIXER:__ (Page 87)
-> The RT-mixer Core consist of dma, overlay, scaler and blender block. It supports 4 layers overlay in one pipe, and its result can scaler up or down to blender in the next processing.
-
-The Display Engine has 2 Mixers: RT-MIXER0 and RT-MIXER1...
-
-__DE RT-MIXER0__ has 4 Channels (DE Offset 0x10 0000, Page 87)
--   Channel 0 for Video: DMA0, Video Overlay, Video Scaler
--   Channels 1, 2, 3 for UI: DMA1 / 2 / 3, UI Overlays, UI Scalers, UI Blenders
--   4 Overlay Layers per Channel
--   Layer priority is Layer 3 > Layer2 > Layer 1 > Layer 0 (Page 89)
--   Channel 0 is unused (we don't use video right now)
--   Channel 1 has format XRGB 8888
--   Channels 2 and 3 have format ARGB 8888
--   MIXER0 Registers:
-    -   GLB at MIXER0 Offset 0x00000 (de_glb_regs)
-    -   BLD (Blender) at MIXER0 Offset 0x01000 (de_bld_regs)
-    -   OVL_V(CH0) (Video Overlay / Channel 0) at MIXER0 Offset 0x2000 (Unused)
-    -   OVL_UI(CH1) (UI Overlay / Channel 1) at MIXER0 Offset 0x3000
-    -   OVL_UI(CH2) (UI Overlay / Channel 2) at MIXER0 Offset 0x4000
-    -   OVL_UI(CH3) (UI Overlay / Channel 3) at MIXER0 Offset 0x5000
-    -   POST_PROC2 at MIXER0 Offset 0xB0000 (de_csc_regs)
-
-__DE RT-MIXER1__ has 2 Channels (DE Offset 0x20 0000, Page 23)
--   Channel 0 for Video: DMA0, Video Overlay, Video Scaler
--   Channel 1 for UI: DMA1, UI Overlay, UI Scaler, UI Blender
--   We don't use MIXER1 right now
-
-RT-MIXER0 and RT-MIXER1 are multiplexed to Timing Controller TCON0.
-
-(TCON0 is connected to ST7703 over MIPI DSI)
-
-So MIXER0 mixes 1 Video Channel with 3 UI Channels over DMA ... And pumps the pixels continuously to ST7703 LCD Controller (via the Timing Controller)
-
-Let's use the 3 UI Channels to render: 1️⃣ Mandelbrot Set 2️⃣ Blue Square 3️⃣ Green Circle
-
-![Mandelbrot Set with UI Overlays on PinePhone](https://lupyuen.github.io/images/de-overlay.jpg)
-
-_Why 2 Mixers in A64 Display Engine?_
-
-Maybe because A64 (or H3) was designed for [OTT Set-Top Boxes](https://linux-sunxi.org/H3) with Picture-In-Picture Overlay Videos?
-
-The 3 UI Overlay Channels would be useful for overlaying a Text UI on top of a Video Channel.
-
-(Is that why Allwinner calls them "Channels"?)
-
-[(Wait... Wasn't Pine64 created thanks to OTT Boxes? 🤔)](https://en.wikipedia.org/wiki/Pine64#:~:text=Pine64%20initially%20operated%20as%20Pine%20Microsystems%20Inc.%20(Fremont%2C%20California)%2C%20founded%20by%20TL%20Lim%2C%20the%20inventor%20of%20the%20PopBox%20and%20Popcorn%20Hour%20series%20of%20media%20players%20sold%20under%20the%20Syabas%20and%20Cloud%20Media%20brands.%5B2%5D)
+![Blue, Green, Red Blocks on PinePhone](https://lupyuen.github.io/images/de-rgb.jpg)
 
 # Render Colours
 
-TODO
+_How do we program the A64 Display Engine to render graphics?_
 
-Let's render simple colour blocks on the PinePhone Display.
+Let's begin by rendering simple __Colour Blocks__ on the PinePhone Display. (Pic above)
+
+TODO
 
 We allocate the Framebuffer: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
 
@@ -195,17 +148,17 @@ We fill the Framebuffer with Blue, Green and Red: [test_display.c](https://githu
 ```c
 // Fill with Blue, Green and Red
 for (int i = 0; i < fb0_len; i++) {
-    // Colours are in ARGB format
-    if (i < fb0_len / 4) {
-        // Blue for top quarter
-        fb0[i] = 0x80000080;
-    } else if (i < fb0_len / 2) {
-        // Green for next quarter
-        fb0[i] = 0x80008000;
-    } else {
-        // Red for lower half
-        fb0[i] = 0x80800000;
-    }
+  // Colours are in ARGB format
+  if (i < fb0_len / 4) {
+    // Blue for top quarter
+    fb0[i] = 0x80000080;
+  } else if (i < fb0_len / 2) {
+    // Green for next quarter
+    fb0[i] = 0x80008000;
+  } else {
+    // Red for lower half
+    fb0[i] = 0x80800000;
+  }
 }
 ```
 
@@ -252,6 +205,8 @@ We should see these Blue, Green and Red Blocks...
 
 Channels 2 and 3 are disabled for now. We'll use them to render UI Overlays later.
 
+![TODO](https://lupyuen.github.io/images/de-code1a.png)
+
 # Render Mandelbrot Set
 
 TODO
@@ -261,27 +216,27 @@ Let's render something more interesting... Mandelbrot Set: [test_display.c](http
 ```c
 // Fill with Mandelbrot Set
 for (int y = 0; y < 1440; y++) {
-    for (int x = 0; x < 720; x++) {
-        // Convert Pixel Coordinates to a Complex Number
-        float cx = x_start + (y / 1440.0) * (x_end - x_start);
-        float cy = y_start + (x / 720.0)  * (y_end - y_start);
+  for (int x = 0; x < 720; x++) {
+    // Convert Pixel Coordinates to a Complex Number
+    float cx = x_start + (y / 1440.0) * (x_end - x_start);
+    float cy = y_start + (x / 720.0)  * (y_end - y_start);
 
-        // Compute Manelbrot Set
-        int m = mandelbrot(cx, cy);
+    // Compute Manelbrot Set
+    int m = mandelbrot(cx, cy);
 
-        // Color depends on the number of iterations
-        uint8_t hue = 255.0 * m / MAX_ITER;
-        uint8_t saturation = 255;
-        uint8_t value = (m < MAX_ITER) ? 255 : 0;
+    // Color depends on the number of iterations
+    uint8_t hue = 255.0 * m / MAX_ITER;
+    uint8_t saturation = 255;
+    uint8_t value = (m < MAX_ITER) ? 255 : 0;
 
-        // Convert Hue / Saturation / Value to RGB
-        uint32_t rgb = hsvToRgb(hue, saturation, value);
+    // Convert Hue / Saturation / Value to RGB
+    uint32_t rgb = hsvToRgb(hue, saturation, value);
 
-        // Set the Pixel Colour (ARGB Format)
-        int p = (y * 720) + x;
-        assert(p < fb0_len);
-        fb0[p] = 0x80000000 | rgb;
-    }
+    // Set the Pixel Colour (ARGB Format)
+    int p = (y * 720) + x;
+    assert(p < fb0_len);
+    fb0[p] = 0x80000000 | rgb;
+  }
 }
 ```
 
@@ -290,6 +245,8 @@ for (int y = 0; y < 1440; y++) {
 We should see this Mandelbrot Set...
 
 ![Mandelbrot Set on PinePhone](https://lupyuen.github.io/images/de-title.jpg)
+
+![TODO](https://lupyuen.github.io/images/de-code2a.png)
 
 # Animate Madelbrot Set
 
@@ -305,37 +262,37 @@ display_commit(d);
 
 // Animate the Mandelbrot Set forever...
 for (;;) {
-    // Fill with Mandelbrot Set
-    for (int y = 0; y < 1440; y++) {
-        for (int x = 0; x < 720; x++) {
-            // Convert Pixel Coordinates to a Complex Number
-            float cx = x_start + (y / 1440.0) * (x_end - x_start);
-            float cy = y_start + (x / 720.0)  * (y_end - y_start);
+  // Fill with Mandelbrot Set
+  for (int y = 0; y < 1440; y++) {
+    for (int x = 0; x < 720; x++) {
+      // Convert Pixel Coordinates to a Complex Number
+      float cx = x_start + (y / 1440.0) * (x_end - x_start);
+      float cy = y_start + (x / 720.0)  * (y_end - y_start);
 
-            // Compute Manelbrot Set
-            int m = mandelbrot(cx, cy);
+      // Compute Manelbrot Set
+      int m = mandelbrot(cx, cy);
 
-            // Color depends on the number of iterations
-            uint8_t hue = 255.0 * m / MAX_ITER;
-            uint8_t saturation = 255;
-            uint8_t value = (m < MAX_ITER) ? 255 : 0;
+      // Color depends on the number of iterations
+      uint8_t hue = 255.0 * m / MAX_ITER;
+      uint8_t saturation = 255;
+      uint8_t value = (m < MAX_ITER) ? 255 : 0;
 
-            // Convert Hue / Saturation / Value to RGB
-            uint32_t rgb = hsvToRgb(hue, saturation, value);
+      // Convert Hue / Saturation / Value to RGB
+      uint32_t rgb = hsvToRgb(hue, saturation, value);
 
-            // Set the Pixel Colour (ARGB Format)
-            int p = (y * 720) + x;
-            assert(p < fb0_len);
-            fb0[p] = 0x80000000 | rgb;
-        }
+      // Set the Pixel Colour (ARGB Format)
+      int p = (y * 720) + x;
+      assert(p < fb0_len);
+      fb0[p] = 0x80000000 | rgb;
     }
-    // Zoom in to (-1.4, 0)
-    float x_dest = -1.4;
-    float y_dest = 0;
-    x_start += (x_dest - x_start) * 0.05;
-    x_end   -= (x_end  - x_dest)  * 0.05;
-    y_start += (y_dest - y_start) * 0.05;
-    y_end   -= (y_end  - y_dest)  * 0.05;
+  }
+  // Zoom in to (-1.4, 0)
+  float x_dest = -1.4;
+  float y_dest = 0;
+  x_start += (x_dest - x_start) * 0.05;
+  x_end   -= (x_end  - x_dest)  * 0.05;
+  y_start += (y_dest - y_start) * 0.05;
+  y_end   -= (y_end  - y_dest)  * 0.05;
 }
 ```
 
@@ -348,6 +305,8 @@ _Don't we need to call `display_commit` after every frame?_
 Nope, remember that the Display Engine reads our Framebuffer directly via DMA.
 
 So any updates to the Framebuffer will be pushed to the display instantly.
+
+![TODO](https://lupyuen.github.io/images/de-code3a.png)
 
 # Render Square Overlay
 
@@ -363,8 +322,8 @@ int fb1_len = sizeof(fb1) / sizeof(fb1[0]);
 
 // Fill with Blue
 for (int i = 0; i < fb1_len; i++) {
-    // Colours are in ARGB format
-    fb1[i] = 0x80000080;
+  // Colours are in ARGB format
+  fb1[i] = 0x80000080;
 }
 
 // Init UI Channel 2: (First Overlay)
@@ -378,6 +337,8 @@ d->planes[1].dst_h    = 600;  // Dest Height
 d->planes[1].dst_x    = 52;   // Dest X
 d->planes[1].dst_y    = 52;   // Dest Y
 ```
+
+![TODO](https://lupyuen.github.io/images/de-code4a.png)
 
 # Render Circle Overlay
 
@@ -393,22 +354,22 @@ int fb2_len = sizeof(fb2) / sizeof(fb2[0]);
 
 // Fill with Green Circle
 for (int y = 0; y < 1440; y++) {
-    for (int x = 0; x < 720; x++) {
-        // Get pixel index
-        int p = (y * 720) + x;
-        assert(p < fb2_len);
+  for (int x = 0; x < 720; x++) {
+    // Get pixel index
+    int p = (y * 720) + x;
+    assert(p < fb2_len);
 
-        // Shift coordinates so that centre of screen is (0,0)
-        int x_shift = x - 360;
-        int y_shift = y - 720;
+    // Shift coordinates so that centre of screen is (0,0)
+    int x_shift = x - 360;
+    int y_shift = y - 720;
 
-        // If x^2 + y^2 < radius^2, set the pixel to Green
-        if (x_shift*x_shift + y_shift*y_shift < 360*360) {
-            fb2[p] = 0x80008000;  // Green in ARGB Format
-        } else {  // Otherwise set to Black
-            fb2[p] = 0x00000000;  // Black in ARGB Format
-        }
+    // If x^2 + y^2 < radius^2, set the pixel to Green
+    if (x_shift*x_shift + y_shift*y_shift < 360*360) {
+      fb2[p] = 0x80008000;  // Green in ARGB Format
+    } else {  // Otherwise set to Black
+      fb2[p] = 0x00000000;  // Black in ARGB Format
     }
+  }
 }
 
 // Init UI Channel 3: (Second Overlay)
@@ -431,6 +392,10 @@ We should see the Animated Mandelbrot Set, with Blue Square and Green Circle as 
 ![Mandelbrot Set with Blue Square and Green Circle on PinePhone](https://lupyuen.github.io/images/de-overlay.jpg)
 
 (Why the missing horizontal lines in the Blue Square and Green Circle?)
+
+![TODO](https://lupyuen.github.io/images/de-code5a.png)
+
+![TODO](https://lupyuen.github.io/images/de-code6a.png)
 
 # Test PinePhone Display Engine
 
@@ -550,7 +515,99 @@ We should see the Animated Mandelbrot Set, with Blue Square and Green Circle as 
 
 (Why the missing horizontal lines in the Blue Square and Green Circle?)
 
-# Display Engine Usage
+# Other Display Engine Features
+
+TODO
+
+We won't use these Display Engine Features today...
+
+__DE RT-WB:__ (Page 116)
+> The Real-time write-back controller (RT-WB) provides data capture function for display engine. It captures data from RT-mixer module, performs the image resizing function, and then write-back to SDRAM.
+
+(For screen capture?)
+
+__DE VSU:__ (Page 128)
+> The Video Scaler (VS) provides YUV format image resizing function for display engine. It receives data from overlay module, performs the image resizing function, and outputs to video post-processing modules. 
+
+__DE Rotation:__ (Page 137)
+> There are several types of rotation: clockwise 0/90/180/270 degree Rotation and H-Flip/V-Flip. Operation of Copy is the same as a 0 degree rotation.
+
+# What's Next
+
+TODO
+
+Check out the other articles on __NuttX RTOS for PinePhone__...
+
+-   [__"Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone"__](https://lupyuen.github.io/articles/arm)
+
+-   [__"PinePhone boots Apache NuttX RTOS"__](https://lupyuen.github.io/articles/uboot)
+
+-   [__"NuttX RTOS for PinePhone: Fixing the Interrupts"__](https://lupyuen.github.io/articles/interrupt)
+
+-   [__"NuttX RTOS for PinePhone: UART Driver"__](https://lupyuen.github.io/articles/serial)
+
+-   [__"NuttX RTOS for PinePhone: Blinking the LEDs"__](https://lupyuen.github.io/articles/pio)
+
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+
+-   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__My Current Project: "The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book)
+
+-   [__Check out my articles__](https://lupyuen.github.io)
+
+-   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[__lupyuen.github.io/src/de.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/de.md)
+
+# Appendix: Overview of Allwinner A64 Display Engine
+
+TODO
+
+According to the doc, DE Base Address is 0x0100 0000 (Page 24)
+
+_What's a Display Engine Mixer?_
+
+__DE RT-MIXER:__ (Page 87)
+> The RT-mixer Core consist of dma, overlay, scaler and blender block. It supports 4 layers overlay in one pipe, and its result can scaler up or down to blender in the next processing.
+
+The Display Engine has 2 Mixers: RT-MIXER0 and RT-MIXER1...
+
+__DE RT-MIXER0__ has 4 Channels (DE Offset 0x10 0000, Page 87)
+-   Channel 0 for Video: DMA0, Video Overlay, Video Scaler
+-   Channels 1, 2, 3 for UI: DMA1 / 2 / 3, UI Overlays, UI Scalers, UI Blenders
+-   4 Overlay Layers per Channel
+-   Layer priority is Layer 3 > Layer2 > Layer 1 > Layer 0 (Page 89)
+-   Channel 0 is unused (we don't use video right now)
+-   Channel 1 has format XRGB 8888
+-   Channels 2 and 3 have format ARGB 8888
+-   MIXER0 Registers:
+    -   GLB at MIXER0 Offset 0x00000 (de_glb_regs)
+    -   BLD (Blender) at MIXER0 Offset 0x01000 (de_bld_regs)
+    -   OVL_V(CH0) (Video Overlay / Channel 0) at MIXER0 Offset 0x2000 (Unused)
+    -   OVL_UI(CH1) (UI Overlay / Channel 1) at MIXER0 Offset 0x3000
+    -   OVL_UI(CH2) (UI Overlay / Channel 2) at MIXER0 Offset 0x4000
+    -   OVL_UI(CH3) (UI Overlay / Channel 3) at MIXER0 Offset 0x5000
+    -   POST_PROC2 at MIXER0 Offset 0xB0000 (de_csc_regs)
+
+__DE RT-MIXER1__ has 2 Channels (DE Offset 0x20 0000, Page 23)
+-   Channel 0 for Video: DMA0, Video Overlay, Video Scaler
+-   Channel 1 for UI: DMA1, UI Overlay, UI Scaler, UI Blender
+-   We don't use MIXER1 right now
+
+RT-MIXER0 and RT-MIXER1 are multiplexed to Timing Controller TCON0.
+
+(TCON0 is connected to ST7703 over MIPI DSI)
+
+So MIXER0 mixes 1 Video Channel with 3 UI Channels over DMA ... And pumps the pixels continuously to ST7703 LCD Controller (via the Timing Controller)
+
+Let's use the 3 UI Channels to render: 1️⃣ Mandelbrot Set 2️⃣ Blue Square 3️⃣ Green Circle
+
+![Mandelbrot Set with UI Overlays on PinePhone](https://lupyuen.github.io/images/de-overlay.jpg)
+
+# Appendix: Display Engine Usage
 
 TODO
 
@@ -701,50 +758,3 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 [(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx#testing-p-boot-display-engine-on-pinephone)
 
 (See Memory Mapping List and Register List at Page 90)
-
-# Other Display Engine Features
-
-TODO
-
-We won't use these Display Engine Features today...
-
-__DE RT-WB:__ (Page 116)
-> The Real-time write-back controller (RT-WB) provides data capture function for display engine. It captures data from RT-mixer module, performs the image resizing function, and then write-back to SDRAM.
-
-(For screen capture?)
-
-__DE VSU:__ (Page 128)
-> The Video Scaler (VS) provides YUV format image resizing function for display engine. It receives data from overlay module, performs the image resizing function, and outputs to video post-processing modules. 
-
-__DE Rotation:__ (Page 137)
-> There are several types of rotation: clockwise 0/90/180/270 degree Rotation and H-Flip/V-Flip. Operation of Copy is the same as a 0 degree rotation.
-
-# What's Next
-
-TODO
-
-Check out the other articles on __NuttX RTOS for PinePhone__...
-
--   [__"Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone"__](https://lupyuen.github.io/articles/arm)
-
--   [__"PinePhone boots Apache NuttX RTOS"__](https://lupyuen.github.io/articles/uboot)
-
--   [__"NuttX RTOS for PinePhone: Fixing the Interrupts"__](https://lupyuen.github.io/articles/interrupt)
-
--   [__"NuttX RTOS for PinePhone: UART Driver"__](https://lupyuen.github.io/articles/serial)
-
--   [__"NuttX RTOS for PinePhone: Blinking the LEDs"__](https://lupyuen.github.io/articles/pio)
-
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
-
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
-
--   [__My Current Project: "The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book)
-
--   [__Check out my articles__](https://lupyuen.github.io)
-
--   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[__lupyuen.github.io/src/de.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/de.md)
