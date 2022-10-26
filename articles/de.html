@@ -156,7 +156,7 @@
 <p><img src="https://lupyuen.github.io/images/de-mixer1a.jpg" alt="Real-Time Mixer in A64 Display Engine (Page 22)" /></p>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf"><em>Real-Time Mixer in A64 Display Engine (Page 22)</em></a></p>
 <h1 id="display-engine-in-allwinner-a64"><a href="#display-engine-in-allwinner-a64">2 Display Engine in Allwinner A64</a></h1>
-<p>Recall that Allwinner A64’s Display Engine is a <strong>Real-Time Mixer</strong> that handles real-time <strong>DMA, Overlay, Scaling and Blending</strong> of the Pixel Data (from the Framebuffers)…</p>
+<p>Recall that Allwinner A64’s Display Engine is a <strong>Real-Time Mixer</strong> that handles real-time <strong>DMA, Overlay, Scaling and Blending</strong> of the Framebuffers…</p>
 <p>And the Display Engine pushes the output pixels to the <strong>Timing Controller (TCON0)</strong> for display on PinePhone’s LCD Display.</p>
 <p>The pic above shows how the Display Engine mixes together <strong>3 UI Channels (Framebuffers)</strong> via DMA1, 2 and 3.</p>
 <p>(Plus a Video Channel on DMA0, but we won’t use it today)</p>
@@ -166,7 +166,7 @@
 <li><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf"><strong>Allwinner Display Engine 2.0 Specifications</strong></a></li>
 </ul>
 <p>Though it doesn’t describe the actual steps for programming the Display Engine.</p>
-<p>In a while we’ll boot Apache NuttX RTOS on PinePhone and experiment with the Display Engine, to understand it better.</p>
+<p>In a while we’ll boot <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> on PinePhone and experiment with the Display Engine, to understand it better.</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#display-engine-mixers">(Overview of A64 Display Engine)</a></p>
 <p><em>But the Display Engine doc doesn’t mention A64?</em></p>
 <p>PinePhone’s A64 Display Engine is hidden in the <strong>Allwinner H3 Docs</strong>, because Allwinner A64 is actually a H3 upgraded with 64-bit Cores…</p>
@@ -178,7 +178,7 @@
 </blockquote>
 <p><em>Why are there 2 Mixers in the A64 Display Engine?</em></p>
 <p>Maybe because A64 (or H3) was designed for <a href="https://linux-sunxi.org/H3"><strong>OTT Set-Top Boxes</strong></a> with Picture-In-Picture Overlay Videos?</p>
-<p>The 3 UI Overlay Channels would be super useful for overlaying a Graphical UI on top of a Video Channel.</p>
+<p>The 3 UI Overlay Channels would be super helpful for overlaying an OTT Graphical UI on top of a Video Channel.</p>
 <p><a href="https://en.wikipedia.org/wiki/Pine64#History">(Wait… Wasn’t Pine64 created thanks to OTT Boxes? 🤔)</a></p>
 <p><img src="https://lupyuen.github.io/images/de-rgb.jpg" alt="Blue, Green, Red Blocks on PinePhone" /></p>
 <h1 id="render-colours"><a href="#render-colours">3 Render Colours</a></h1>
