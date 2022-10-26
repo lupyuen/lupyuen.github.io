@@ -76,37 +76,45 @@ PinePhone's ST7703 LCD Controller __doesn't have any RAM__ inside...
 
 -   [__"Sitronix ST7703 LCD Controller"__](https://lupyuen.github.io/articles/dsi#sitronix-st7703-lcd-controller)
 
-That's why we need to __pump a constant stream of pixels__ to the display via DMA, Display Engine and Timing Controller.
+That's why we need to __pump a constant stream of pixels__ to the LCD Display via DMA, Display Engine and Timing Controller... Otherwise the display stays blank!
 
 [(Sounds a bit like the Amiga Video Toaster)](https://en.wikipedia.org/wiki/Video_Toaster)
 
-In a while we'll boot Apache NuttX RTOS and experiment with PinePhone's Display Engine. But first let's look inside the Display Engine...
+Let's look inside the Display Engine...
+
+![Real-Time Mixer in A64 Display Engine (Page 22)](https://lupyuen.github.io/images/de-mixer1a.jpg)
+
+[_Real-Time Mixer in A64 Display Engine (Page 22)_](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 # Display Engine in Allwinner A64
 
-TODO
+Recall that Allwinner A64's Display Engine is a __Real-Time Mixer__ that handles real-time __DMA, Overlay, Scaling and Blending__ of the Pixel Data (from the Framebuffers)...
 
-Display Engine is a __Real-Time Mixer__ that handles real-time __DMA, Overlay, Scaling and Blending__ of the Pixel Data (from the Framebuffers)
+And the Display Engine pushes the output pixels to the __Timing Controller (TCON0)__ for display on PinePhone's LCD Display.
 
-_Where's the doc for the Display Engine?_
+_Is the Display Engine documented?_
 
-The doc for the A64 Display Engine is here...
+The official doc for the A64 Display Engine is here...
 
 -   [__Allwinner Display Engine 2.0 Specifications__](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-_But the doc doesn't mention A64?_
+Though it doesn't describe the actual steps for programming the Display Engine.
 
-PinePhone's A64 Display Engine is hidden in the Allwinner H3 Docs, because Allwinner A64 is actually a H3 upgraded with 64-bit Cores...
+In a while we'll boot Apache NuttX RTOS on PinePhone and experiment with the Display Engine, to understand it better.
+
+_But the Display Engine doc doesn't mention A64?_
+
+PinePhone's A64 Display Engine is hidden in the __Allwinner H3 Docs__, because Allwinner A64 is actually a H3 upgraded with 64-bit Cores...
 
 > The A64 is basically an Allwinner H3 with the Cortex-A7 cores replaced with Cortex-A53 cores (ARM64 architecture). They share most of the memory map, clocks, interrupts and also uses the same IP blocks.
 
 [(Source)](https://linux-sunxi.org/A64)
 
+TODO
+
 According to the doc, DE Base Address is 0x0100 0000 (Page 24)
 
 Let's look at the DE Mixers...
-
-![A64 Display Engine MIXER0](https://lupyuen.github.io/images/de-mixer1a.jpg)
 
 # Display Engine Mixers
 
