@@ -656,6 +656,32 @@ We should see the Animated Mandelbrot Set, with Blue Square and Green Circle as 
 
 (Why the missing horizontal lines in the Blue Square and Green Circle?)
 
+# p-boot Display Code
+
+TODO
+
+_How does `display_commit` talk to the A64 Display Engine?_
+
+[__`display_commit`__](https://megous.com/git/p-boot/tree/src/display.c#n2017) comes from the super-helpful [__p-boot PinePhone Bootloader__](https://xnux.eu/p-boot/).
+
+To test the A64 Display Engine on Apache NuttX RTOS, we borrowed these [__Source Files__](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L135-L142) (relevant to the Display Engine) from p-boot...
+
+-   [__display.c__](https://megous.com/git/p-boot/tree/src/display.c)
+-   [__pmic.c__](https://megous.com/git/p-boot/tree/src/pmic.c)
+-   [__clock_sun6i.c__](https://megous.com/git/p-boot/tree/src/uboot/arch/arm/mach-sunxi/clock_sun6i.c)
+-   [__sunxi_gpio.c__](https://megous.com/git/p-boot/tree/src/uboot/drivers/gpio/sunxi_gpio.c)
+-   [__pinmux.c__](https://megous.com/git/p-boot/tree/src/uboot/arch/arm/mach-sunxi/pinmux.c)
+
+[(Plus a whole bunch of Header Files)](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L115-L135)
+
+Which we have modified to compile on NuttX:
+
+`p-boot.6.zip`
+
+[pinephone-nuttx/releases/tag/pboot6](https://github.com/lupyuen/pinephone-nuttx/releases/tag/pboot6)
+
+TODO
+
 # Other Display Engine Features
 
 TODO
