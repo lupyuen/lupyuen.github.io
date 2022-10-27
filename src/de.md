@@ -282,9 +282,9 @@ for (int y = 0; y < 1440; y++) {
 }
 ```
 
-`mandelbrot` and `hsvToRgb` are defined here: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L330-L426)
+[(__`mandelbrot`__ and __`hsvToRgb`__ are defined here)](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L335-L432)
 
-We should see this Mandelbrot Set...
+TODO: We should see this Mandelbrot Set...
 
 # Animate Madelbrot Set
 
