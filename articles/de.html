@@ -362,10 +362,10 @@ for (;;) {
 <ul>
 <li><a href="https://youtu.be/toC9iiPRwRI"><strong>Demo Video on YouTube</strong></a></li>
 </ul>
-<p>Yep DMA works correctly for rendering our Framebuffers on the fly!</p>
+<p>Thus DMA works correctly for rendering our Framebuffers on the fly!</p>
 <p><em>We don’t call <code>display_commit</code> after every frame?</em></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L296-L299"><strong><code>display_commit</code></strong></a> only needs to be called once. It configures the Display Engine to read our Framebuffer directly via DMA.</p>
-<p>Subsequent updates to the Framebuffer will be automatically pushed to the display.</p>
+<p>Subsequent updates to the Framebuffer will be automatically pushed to the display via DMA.</p>
 <p><img src="https://lupyuen.github.io/images/de-code5b.png" alt="Rendering a Square Overlay on PinePhone" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L215-L226">(Source)</a></p>
 <h1 id="render-square-overlay"><a href="#render-square-overlay">6 Render Square Overlay</a></h1>
