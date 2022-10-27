@@ -398,8 +398,9 @@ for (int i = 0; i &lt; fb1_len; i++) {
   // Colours are in ARGB format
   fb1[i] = 0x80000080;
 }</code></pre></div>
-<p>Note that the new Framebuffer is a little <strong>smaller than the Screen Width</strong>. (600 pixels vs 720 pixels)</p>
-<p>Thanks to <strong>Framebuffer Blending</strong> in A64 Display Engine, it’s perfectly OK to render the new Framebuffer at 600 x 600 (as a partial screen region): <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L271-L283">test_display.c</a></p>
+<p>The new Framebuffer is a little <strong>smaller than the Screen Width</strong>. (600 pixels vs 720 pixels)</p>
+<p>Thanks to <strong>Framebuffer Blending</strong> in A64 Display Engine, it’s perfectly OK to render the new Framebuffer at 600 x 600 (as a partial screen region).</p>
+<p>This is how we set <strong>UI Channel 2</strong> to the 600 x 600 Framebuffer: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L271-L283">test_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init UI Channel 2: (First Overlay)
 // Square 600 x 600
 d-&gt;planes[1].fb_start = (uintptr_t) fb1;  // Framebuffer Address
@@ -452,16 +453,18 @@ for (int y = 0; y &lt; 1440; y++) {
     int x_shift = x - 360;
     int y_shift = y - 720;
 
-    // If x^2 + y^2 &lt; radius^2, set the pixel to Green
+    // If pixel is inside circle (x^2 + y^2 &lt; radius^2)...
+    // Set the pixel to Semi-Transparent Green
     if (x_shift*x_shift + y_shift*y_shift &lt; 360*360) {
-      fb2[p] = 0x80008000;  // Green in ARGB Format
-    } else {  // Otherwise set to Black
-      fb2[p] = 0x00000000;  // Black in ARGB Format
+      fb2[p] = 0x80008000;  // Semi-Transparent Green in ARGB Format
+    } else {  // Otherwise set to Transparent Black
+      fb2[p] = 0x00000000;  // Transparent Black in ARGB Format
     }
   }
 }</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L283-L296">test_display.c</a></p>
+<p>Note that pixels outside the circle are set to <strong>Transparent Black</strong>.</p>
+<p>(Which makes them invisible)</p>
+<p>Next we point <strong>UI Channel 3</strong> to the Fullscreen Framebuffer: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L283-L296">test_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init UI Channel 3: (Second Overlay)
 // Fullscreen 720 x 1440 with Alpha Blending
 d-&gt;planes[2].fb_start = (uintptr_t) fb2;  // Framebuffer Address
@@ -473,11 +476,14 @@ d-&gt;planes[2].dst_h    = 1440;  // Dest Height
 d-&gt;planes[2].dst_x    = 0;     // Dest X
 d-&gt;planes[2].dst_y    = 0;     // Dest Y
 d-&gt;planes[2].alpha    = 128;   // Dest Alpha</code></pre></div>
-<p>Note that we set the Destination Alpha. So the black pixels will appear transparent.</p>
-<p>We should see the Animated Mandelbrot Set, with Blue Square and Green Circle as Overlays…</p>
+<p>Note that we set the <strong>Destination Alpha</strong>. So our Green Circle will appear super transparent.</p>
+<p>Finally we render the 3 UI Channels…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Render the UI Channels over DMA
+display_commit(d);</code></pre></div>
+<p>We should see the Animated Mandelbrot Set, with Blue Square and (very faint) Green Circle as Overlays…</p>
 <p><img src="https://lupyuen.github.io/images/de-overlay.jpg" alt="Mandelbrot Set with Blue Square and Green Circle on PinePhone" /></p>
+<p>That’s how we render 3 UI Channels (with overlay blending) on PinePhone’s Display Engine!</p>
 <p>(Why the missing horizontal lines in the Blue Square and Green Circle?)</p>
-<p><img src="https://lupyuen.github.io/images/de-code6a.png" alt="TODO" /></p>
 <h1 id="test-pinephone-display-engine"><a href="#test-pinephone-display-engine">8 Test PinePhone Display Engine</a></h1>
 <p>TODO</p>
 <p>To test the A64 Display Engine with NuttX on PinePhone, we’ll run this p-boot Display Code…</p>
