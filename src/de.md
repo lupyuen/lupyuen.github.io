@@ -385,13 +385,13 @@ We should see this Animated Mandelbrot Set...
 
 -   [__Demo Video on YouTube__](https://youtu.be/toC9iiPRwRI)
 
-Yep DMA works correctly for rendering our Framebuffers on the fly!
+Thus DMA works correctly for rendering our Framebuffers on the fly!
 
 _We don't call `display_commit` after every frame?_
 
 [__`display_commit`__](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L296-L299) only needs to be called once. It configures the Display Engine to read our Framebuffer directly via DMA.
 
-Subsequent updates to the Framebuffer will be automatically pushed to the display.
+Subsequent updates to the Framebuffer will be automatically pushed to the display via DMA.
 
 ![Rendering a Square Overlay on PinePhone](https://lupyuen.github.io/images/de-code5b.png)
 
