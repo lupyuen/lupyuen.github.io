@@ -110,7 +110,7 @@ In a while we'll boot [__Apache NuttX RTOS__](https://lupyuen.github.io/articles
 
 _But the Display Engine doc doesn't mention A64?_
 
-PinePhone's A64 Display Engine is hidden in the __Allwinner H3 Docs__, because Allwinner A64 is actually a H3 upgraded with 64-bit Cores...
+PinePhone's A64 Display Engine is hidden under [__Allwinner H3 (page 22)__](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf), because Allwinner A64 is actually a H3 upgraded with 64-bit Cores...
 
 > "The A64 is basically an Allwinner H3 with the Cortex-A7 cores replaced with Cortex-A53 cores (ARM64 architecture). They share most of the memory map, clocks, interrupts and also uses the same IP blocks."
 
@@ -239,13 +239,21 @@ __UI Channel 1__ is the Base UI Channel, so the Alpha Channel has no effect.
 
 In a while we'll set the Alpha Channels for UI Channels 2 and 3. And the UI Channels will appear as semi-transparent overlays.
 
+![Rendering Mandelbrot Set on PinePhone](https://lupyuen.github.io/images/de-code3a.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L175-L200)
+
 # Render Mandelbrot Set
+
+_Rendering colour blocks is so blah. Are we sure we can render every single pixel correctly?_
+
+Let's render something more detailed and sophisticated... [__Mandelbrot Set__](https://en.wikipedia.org/wiki/Mandelbrot_set)!
+
+![Mandelbrot Set on PinePhone](https://lupyuen.github.io/images/de-title.jpg)
 
 TODO
 
-_Rendering colour blocks is so... blah. Are we sure that we can render every single pixel correctly?_
-
-Let's render something more interesting... Mandelbrot Set: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
+[test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L175-L200)
 
 ```c
 // Fill with Mandelbrot Set
@@ -277,10 +285,6 @@ for (int y = 0; y < 1440; y++) {
 `mandelbrot` and `hsvToRgb` are defined here: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L330-L426)
 
 We should see this Mandelbrot Set...
-
-![Mandelbrot Set on PinePhone](https://lupyuen.github.io/images/de-title.jpg)
-
-![TODO](https://lupyuen.github.io/images/de-code2a.png)
 
 # Animate Madelbrot Set
 
