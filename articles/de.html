@@ -490,22 +490,41 @@ display_commit(d);</code></pre></div>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c"><strong>test_display.c</strong></a></li>
 </ul>
-<p>Follow these steps to build NuttX RTOS and our Test App…</p>
+<p>Follow these steps to <strong>download NuttX RTOS</strong> (with our Test App inside) to a microSD Card…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx#test-pinephone-display-engine"><strong>“Test PinePhone Display Engine”</strong></a></li>
 </ul>
 <p>Boot PinePhone with NuttX RTOS in the microSD Card.</p>
-<p>At the NuttX Shell, enter this command to <strong>test our Zig Display Driver</strong>…</p>
+<p>At the NuttX Shell, enter this command to run our <strong>Test App</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>hello</code></pre></div>
-<p>We should see our Test App controlling the Hardware Registers on A64 Display Engine…</p>
+<p>Our Test App controls the A64 Display Engine by setting the Hardware Registers (for the 3 UI Channels)…</p>
 <div class="example-wrap"><pre class="language-text"><code>HELLO NUTTX ON PINEPHONE!
 ...
 Shell (NSH) NuttX-11.0.0-RC2
 nsh&gt; hello
 ...
-TODO
-...</code></pre></div>
-<p><a href="">(TODO: See the Complete Log)</a></p>
+display_commit
+Configure Blender
+  BLD BkColor: 0x1101088 = 0xff000000
+  BLD Premultiply: 0x1101084 = 0x0
+Channel 1: Set Overlay ...
+Channel 1: Set Blender Output ...
+Channel 1: Set Blender Input Pipe 0 ...
+Channel 1: Disable Scaler ...
+Channel 2: Set Overlay ...
+Channel 2: Set Blender Input Pipe 1 ...
+Channel 2: Disable Scaler ...
+Channel 3: Set Overlay ...
+Channel 3: Set Blender Input Pipe 2 ...
+Channel 3: Disable Scaler ...
+Set BLD Route and BLD FColor Control
+  BLD Route: 0x1101080 = 0x321
+  BLD FColor Control: 0x1101000 = 0x701
+Apply Settings
+  GLB DBuff: 0x1100008 = 0x1</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-p-boot-display-engine-on-pinephone">(See the Complete Log)</a></p>
+<p>And the Mandelbrot Set appears on PinePhone, together with the Blue Square and Green Circle as overlays. (Pic above)</p>
+<p>Yep we have successfully tested the A64 Display Engine on PinePhone! 🎉</p>
 <p><em>Hmmm building the Test Code looks complicated…</em></p>
 <p>Yeah we need a few steps to build the Test Code because we patched together a few programs to make it work…</p>
 <ul>
