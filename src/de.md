@@ -608,6 +608,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 TODO
 
+[DE2_Register_Guide](https://linux-sunxi.org/DE2_Register_Guide)
+
 According to the doc, DE Base Address is 0x0100 0000 (Page 24)
 
 _What's a Display Engine Mixer?_
