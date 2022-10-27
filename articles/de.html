@@ -210,7 +210,7 @@ for (int i = 0; i &lt; fb0_len; i++) {
   }
 }</code></pre></div>
 <p>Each Pixel in the Framebuffer is stored as <strong>32-bit ARGB 8888</strong>.</p>
-<p>Thus <strong><code>0x8000</code> <code>8000</code></strong> means…</p>
+<p>Thus <strong><code>0x8000</code> <code>8000</code></strong> means Semi-Transparent Green…</p>
 <div><table><thead><tr><th style="text-align: left">Channel</th><th>Value</th></tr></thead><tbody>
 <tr><td style="text-align: left">Alpha</td><td><code>0x80</code></td></tr>
 <tr><td style="text-align: left">Red</td><td><code>0x00</code></td></tr>
@@ -218,14 +218,14 @@ for (int i = 0; i &lt; fb0_len; i++) {
 <tr><td style="text-align: left">Blue</td><td><code>0x00</code></td></tr>
 </tbody></table>
 </div>
-<p>TODO</p>
-<p>We allocate 3 UI Channels: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c">test_display.c</a></p>
+<p>A64 Display Engine lets us render of 3 Framebuffers as <strong>3 UI Channels</strong>.</p>
+<p>This is how we allocate the 3 UI Channels: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L257-L262">test_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Allocate 3 UI Channels
 static struct display disp;
 memset(&amp;disp, 0, sizeof(disp));
 struct display *d = &amp;disp;</code></pre></div>
-<p>TODO: display</p>
-<p>We init the 3 Channels and render them: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c">test_display.c</a></p>
+<p><a href="https://megous.com/git/p-boot/tree/src/display.h#n28">(<strong><code>display</code></strong> struct is defined here)</a></p>
+<p>We point the <strong>First UI Channel</strong> to our Framebuffer: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L262-L271">test_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init UI Channel 1: (Base Channel)
 // Fullscreen 720 x 1440
 d-&gt;planes[0].fb_start = (uintptr_t) fb0;  // Framebuffer Address
@@ -234,7 +234,8 @@ d-&gt;planes[0].src_w    = 720;   // Source Width
 d-&gt;planes[0].src_h    = 1440;  // Source Height
 d-&gt;planes[0].dst_w    = 720;   // Dest Width
 d-&gt;planes[0].dst_h    = 1440;  // Dest Height</code></pre></div>
-<p>TODO</p>
+<p>(<strong><code>fb_pitch</code></strong> is the number of bytes per row of pixels)</p>
+<p>We disable the <strong>Second and Third UI Channels</strong> for now: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L271-L299">test_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init UI Channel 2: (First Overlay)
 // Disable Channel for now
 d-&gt;planes[1].fb_start = 0;
@@ -245,11 +246,14 @@ d-&gt;planes[2].fb_start = 0;
 
 // Render the UI Channels
 display_commit(d);</code></pre></div>
-<p><code>display_commit</code> is defined in the p-boot Display Code: <a href="https://megous.com/git/p-boot/tree/src/display.c#n2017">display.c</a></p>
-<p>We should see these Blue, Green and Red Blocks…</p>
-<p><img src="https://lupyuen.github.io/images/de-rgb.jpg" alt="Blue, Green, Red Blocks on PinePhone" /></p>
-<p>(Why the black lines?)</p>
-<p>Channels 2 and 3 are disabled for now. We’ll use them to render UI Overlays later.</p>
+<p>And we <strong>render the 3 UI Channels</strong>.</p>
+<p>(<a href="https://megous.com/git/p-boot/tree/src/display.c#n2017"><strong><code>display_commit</code></strong></a> is defined in the p-boot Display Code, we’ll come back to this)</p>
+<p>That’s it! We should see the <a href="https://lupyuen.github.io/images/de-rgb.jpg"><strong>Blue, Green and Red Blocks</strong></a> like in the pic above.</p>
+<p>(Not sure why there are black lines, needs investigation)</p>
+<p><em>Didn’t we set the Alpha Channel to <code>0x80</code>?</em></p>
+<p><strong>UI Channel 1</strong> is the Base UI Channel, so the Alpha Channel has no effect.</p>
+<p>(Actually UI Channel 1 is configured as <strong>XRGB 8888</strong>)</p>
+<p>In a while we’ll set the Alpha Channels for UI Channels 2 and 3. And the UI Channels will appear as semi-transparent overlays.</p>
 <h1 id="render-mandelbrot-set"><a href="#render-mandelbrot-set">4 Render Mandelbrot Set</a></h1>
 <p>TODO</p>
 <p>Let’s render something more interesting… Mandelbrot Set: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c">test_display.c</a></p>
