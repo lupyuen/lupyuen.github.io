@@ -435,9 +435,11 @@ for (int i = 0; i < fb1_len; i++) {
 }
 ```
 
-Note that the new Framebuffer is a little __smaller than the Screen Width__. (600 pixels vs 720 pixels)
+The new Framebuffer is a little __smaller than the Screen Width__. (600 pixels vs 720 pixels)
 
-Thanks to __Framebuffer Blending__ in A64 Display Engine, it's perfectly OK to render the new Framebuffer at 600 x 600 (as a partial screen region): [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L271-L283)
+Thanks to __Framebuffer Blending__ in A64 Display Engine, it's perfectly OK to render the new Framebuffer at 600 x 600 (as a partial screen region).
+
+This is how we set __UI Channel 2__ to the 600 x 600 Framebuffer: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L271-L283)
 
 ```c
 // Init UI Channel 2: (First Overlay)
@@ -500,19 +502,22 @@ for (int y = 0; y < 1440; y++) {
     int x_shift = x - 360;
     int y_shift = y - 720;
 
-    // If x^2 + y^2 < radius^2, set the pixel to Green
+    // If pixel is inside circle (x^2 + y^2 < radius^2)...
+    // Set the pixel to Semi-Transparent Green
     if (x_shift*x_shift + y_shift*y_shift < 360*360) {
-      fb2[p] = 0x80008000;  // Green in ARGB Format
-    } else {  // Otherwise set to Black
-      fb2[p] = 0x00000000;  // Black in ARGB Format
+      fb2[p] = 0x80008000;  // Semi-Transparent Green in ARGB Format
+    } else {  // Otherwise set to Transparent Black
+      fb2[p] = 0x00000000;  // Transparent Black in ARGB Format
     }
   }
 }
 ```
 
-TODO
+Note that pixels outside the circle are set to __Transparent Black__.
 
-[test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L283-L296)
+(Which makes them invisible)
+
+Next we point __UI Channel 3__ to the Fullscreen Framebuffer: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L283-L296)
 
 ```c
 // Init UI Channel 3: (Second Overlay)
@@ -528,15 +533,22 @@ d->planes[2].dst_y    = 0;     // Dest Y
 d->planes[2].alpha    = 128;   // Dest Alpha
 ```
 
-Note that we set the Destination Alpha. So the black pixels will appear transparent.
+Note that we set the __Destination Alpha__. So our Green Circle will appear super transparent.
 
-We should see the Animated Mandelbrot Set, with Blue Square and Green Circle as Overlays...
+Finally we render the 3 UI Channels...
+
+```c
+// Render the UI Channels over DMA
+display_commit(d);
+```
+
+We should see the Animated Mandelbrot Set, with Blue Square and (very faint) Green Circle as Overlays...
 
 ![Mandelbrot Set with Blue Square and Green Circle on PinePhone](https://lupyuen.github.io/images/de-overlay.jpg)
 
-(Why the missing horizontal lines in the Blue Square and Green Circle?)
+That's how we render 3 UI Channels (with overlay blending) on PinePhone's Display Engine!
 
-![TODO](https://lupyuen.github.io/images/de-code6a.png)
+(Why the missing horizontal lines in the Blue Square and Green Circle?)
 
 # Test PinePhone Display Engine
 
