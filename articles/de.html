@@ -244,11 +244,11 @@ d-&gt;planes[1].fb_start = 0;
 // Disable Channel for now
 d-&gt;planes[2].fb_start = 0;
 
-// Render the UI Channels
+// Render the UI Channels over DMA
 display_commit(d);</code></pre></div>
 <p>And we <strong>render the 3 UI Channels</strong>.</p>
 <p>(<a href="https://megous.com/git/p-boot/tree/src/display.c#n2017"><strong><code>display_commit</code></strong></a> is defined in the p-boot Display Code, we’ll come back to this)</p>
-<p>That’s it! We should see the <a href="https://lupyuen.github.io/images/de-rgb.jpg"><strong>Blue, Green and Red Blocks</strong></a> like in the pic above.</p>
+<p>That’s all! We should see the <a href="https://lupyuen.github.io/images/de-rgb.jpg"><strong>Blue, Green and Red Blocks</strong></a> like in the pic above.</p>
 <p>(Not sure why there are black lines, needs investigation)</p>
 <p><em>Didn’t we set the Alpha Channel to <code>0x80</code>?</em></p>
 <p><strong>UI Channel 1</strong> is the Base UI Channel, so the Alpha Channel has no effect.</p>
@@ -258,13 +258,22 @@ display_commit(d);</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L175-L200">(Source)</a></p>
 <h1 id="render-mandelbrot-set"><a href="#render-mandelbrot-set">4 Render Mandelbrot Set</a></h1>
 <p><em>Rendering colour blocks is so blah. Are we sure we can render every single pixel correctly?</em></p>
-<p>Let’s render something more detailed and sophisticated… <a href="https://en.wikipedia.org/wiki/Mandelbrot_set"><strong>Mandelbrot Set</strong></a>!</p>
+<p>Let’s render something infinitely more detailed and sophisticated… <a href="https://en.wikipedia.org/wiki/Mandelbrot_set"><strong>Mandelbrot Set</strong></a>!</p>
 <p><img src="https://lupyuen.github.io/images/de-title.jpg" alt="Mandelbrot Set on PinePhone" /></p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L175-L200">test_display.c</a></p>
+<p>Earlier we created a <strong>Fullscreen Framebuffer</strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L170-L175">test_display.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Init Framebuffer 0:
+// Fullscreen 720 x 1440 (4 bytes per ARGB pixel)
+// fb0_len is 720 * 1440
+static uint32_t fb0[720 * 1440];
+int fb0_len = sizeof(fb0) / sizeof(fb0[0]);</code></pre></div>
+<p>Now we fill the Framebuffer with the <strong>Mandelbrot Set</strong>, pixel by pixel: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L175-L200">test_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Fill with Mandelbrot Set
+// For every pixel row...
 for (int y = 0; y &lt; 1440; y++) {
+
+  // For every pixel column...
   for (int x = 0; x &lt; 720; x++) {
+
     // Convert Pixel Coordinates to a Complex Number
     float cx = x_start + (y / 1440.0) * (x_end - x_start);
     float cy = y_start + (x / 720.0)  * (y_end - y_start);
@@ -287,22 +296,38 @@ for (int y = 0; y &lt; 1440; y++) {
   }
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L335-L432">(<strong><code>mandelbrot</code></strong> and <strong><code>hsvToRgb</code></strong> are defined here)</a></p>
-<p>TODO: We should see this Mandelbrot Set…</p>
+<p>Then we initialise the <strong>3 UI Channels</strong> and render them. <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L257-L299">(Like this)</a></p>
+<p>The <a href="https://lupyuen.github.io/images/de-title.jpg"><strong>Mandelbrot Set</strong></a> appears on PinePhone, like in the pic above.</p>
+<p>Yep we can render every single pixel precisely on PinePhone!</p>
+<p><img src="https://lupyuen.github.io/images/de-code4a.png" alt="Animating the Madelbrot Set" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L299-L334">(Source)</a></p>
 <h1 id="animate-madelbrot-set"><a href="#animate-madelbrot-set">5 Animate Madelbrot Set</a></h1>
-<p>TODO</p>
-<p><em>Earlier we said DMA. Can we prove it?</em></p>
-<p>Now we animate the Mandelbrot Set: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c">test_display.c</a></p>
+<p><em>Earlier we said that updates to the Framebuffer are instantly pushed to PinePhone’s Display via DMA…</em></p>
+<p><em>Can we prove it?</em></p>
+<p>Yep let’s <strong>animate the Mandelbrot Set</strong> in our Framebuffer. And watch the updates appear instantly on PinePhone’s Display, thanks to <strong>Direct Memory Access (DMA)</strong>!</p>
+<p>This is how we animate the Mandelbrot Set: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L257-L334">test_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Omitted: Init UI Channels 1, 2 and 3
+d-&gt;planes[0].fb_start = ...
+d-&gt;planes[1].fb_start = ...
+d-&gt;planes[2].fb_start = ...
 ...
-// Render the UI Channels
+
+// Render the UI Channels over DMA
 display_commit(d);
 
-// Animate the Mandelbrot Set forever...
+// Animate the Mandelbrot Set forever.
+// For every frame of animation...
 for (;;) {
+
   // Fill with Mandelbrot Set
+  // For every pixel row...
   for (int y = 0; y &lt; 1440; y++) {
-    for (int x = 0; x &lt; 720; x++) {
-      // Convert Pixel Coordinates to a Complex Number
+
+    // For every pixel column...
+    for (int x = 0; x &lt; 720; x++) {</code></pre></div>
+<p>In the code above, we <strong>repeatly render</strong> the Mandelbrot Set for every frame of animation.</p>
+<p>We <strong>render each frame</strong> the exact same way as before…</p>
+<div class="example-wrap"><pre class="language-c"><code>      // Convert Pixel Coordinates to a Complex Number
       float cx = x_start + (y / 1440.0) * (x_end - x_start);
       float cy = y_start + (x / 720.0)  * (y_end - y_start);
 
@@ -322,8 +347,9 @@ for (;;) {
       assert(p &lt; fb0_len);
       fb0[p] = 0x80000000 | rgb;
     }
-  }
-  // Zoom in to (-1.4, 0)
+  }</code></pre></div>
+<p>But now we <strong>tweak slightly the position</strong> of the Mandelbrot Set…</p>
+<div class="example-wrap"><pre class="language-c"><code>  // Zoom in to (-1.4, 0)
   float x_dest = -1.4;
   float y_dest = 0;
   x_start += (x_dest - x_start) * 0.05;
@@ -331,17 +357,20 @@ for (;;) {
   y_start += (y_dest - y_start) * 0.05;
   y_end   -= (y_end  - y_dest)  * 0.05;
 }</code></pre></div>
-<p>We should see the Animated Mandelbrot Set…</p>
+<p>Before looping back to render the next frame.</p>
+<p>We should see this Animated Mandelbrot Set…</p>
 <ul>
-<li><a href="https://youtu.be/toC9iiPRwRI">Demo Video on YouTube</a></li>
+<li><a href="https://youtu.be/toC9iiPRwRI"><strong>Demo Video on YouTube</strong></a></li>
 </ul>
-<p><em>Don’t we need to call <code>display_commit</code> after every frame?</em></p>
-<p>Nope, remember that the Display Engine reads our Framebuffer directly via DMA.</p>
-<p>So any updates to the Framebuffer will be pushed to the display instantly.</p>
-<p><img src="https://lupyuen.github.io/images/de-code3a.png" alt="TODO" /></p>
+<p>Yep DMA works correctly for rendering our Framebuffers on the fly!</p>
+<p><em>We don’t call <code>display_commit</code> after every frame?</em></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L296-L299"><strong><code>display_commit</code></strong></a> only needs to be called once. It configures the Display Engine to read our Framebuffer directly via DMA.</p>
+<p>Subsequent updates to the Framebuffer will be automatically pushed to the display.</p>
+<p><img src="https://lupyuen.github.io/images/de-code5b.png" alt="Rendering a Square Overlay on PinePhone" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L215-L226">(Source)</a></p>
 <h1 id="render-square-overlay"><a href="#render-square-overlay">6 Render Square Overlay</a></h1>
 <p>TODO</p>
-<p>This is how we render a Blue Square as an Overlay on UI Channel 2: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c">test_display.c</a></p>
+<p>This is how we render a Blue Square as an Overlay on UI Channel 2: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L215-L226">test_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init Framebuffer 1:
 // Square 600 x 600 (4 bytes per ARGB pixel)
 // fb1_len is 600 * 600
@@ -364,10 +393,11 @@ d-&gt;planes[1].dst_w    = 600;  // Dest Width
 d-&gt;planes[1].dst_h    = 600;  // Dest Height
 d-&gt;planes[1].dst_x    = 52;   // Dest X
 d-&gt;planes[1].dst_y    = 52;   // Dest Y</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/de-code4a.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/de-code5c.png" alt="Rendering a Circle Overlay on PinePhone" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L226-L251">(Source)</a></p>
 <h1 id="render-circle-overlay"><a href="#render-circle-overlay">7 Render Circle Overlay</a></h1>
 <p>TODO</p>
-<p>This is how we render a Green Circle as an Overlay on UI Channel 3: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c">test_display.c</a></p>
+<p>This is how we render a Green Circle as an Overlay on UI Channel 3: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L226-L251">test_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init Framebuffer 2:
 // Fullscreen 720 x 1440 (4 bytes per ARGB pixel)
 // fb2_len is 720 * 1440
@@ -409,7 +439,6 @@ d-&gt;planes[2].alpha    = 128;   // Dest Alpha</code></pre></div>
 <p>We should see the Animated Mandelbrot Set, with Blue Square and Green Circle as Overlays…</p>
 <p><img src="https://lupyuen.github.io/images/de-overlay.jpg" alt="Mandelbrot Set with Blue Square and Green Circle on PinePhone" /></p>
 <p>(Why the missing horizontal lines in the Blue Square and Green Circle?)</p>
-<p><img src="https://lupyuen.github.io/images/de-code5a.png" alt="TODO" /></p>
 <p><img src="https://lupyuen.github.io/images/de-code6a.png" alt="TODO" /></p>
 <h1 id="test-pinephone-display-engine"><a href="#test-pinephone-display-engine">8 Test PinePhone Display Engine</a></h1>
 <p>TODO</p>
