@@ -399,9 +399,27 @@ Subsequent updates to the Framebuffer will be automatically pushed to the displa
 
 # Render Square Overlay
 
-TODO
+_Earlier we said that A64 Display Engine can render Framebuffers as Overlays. How can we do it?_
 
-This is how we render a Blue Square as an Overlay on UI Channel 2: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L215-L226)
+The pic below shows that A64 Display Engine can render __3 Framebuffers (UI Channels)__ as overlays, via DMA1, 2 and 3...
+
+![Real-Time Mixer in A64 Display Engine (Page 22)](https://lupyuen.github.io/images/de-mixer1a.jpg)
+
+[_Real-Time Mixer in A64 Display Engine (Page 22)_](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+(Skipping DMA0 because it's for Video only)
+
+The UI Channels are rendered as overlays in a specific sequence (pic above)...
+
+-   __UI Channel 3__ (DMA3) is rendered on top of __UI Channel 2__ (DMA2)
+
+-   __UI Channel 2__ (DMA2) is rendered on top of __UI Channel 1__ (DMA1)
+
+Our Mandelbrot Set is rendered on __UI Channel 1__ (DMA1), which is the Base Channel.
+
+Let's overlay a __Blue Square__ on __UI Channel 2__ (DMA2).
+
+First we prepare a __600 x 600 Framebuffer__ that contains a Semi-Transparent Blue Square: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L215-L226)
 
 ```c
 // Init Framebuffer 1:
@@ -410,12 +428,18 @@ This is how we render a Blue Square as an Overlay on UI Channel 2: [test_display
 static uint32_t fb1[600 * 600];
 int fb1_len = sizeof(fb1) / sizeof(fb1[0]);
 
-// Fill with Blue
+// Fill with Semi-Transparent Blue
 for (int i = 0; i < fb1_len; i++) {
   // Colours are in ARGB format
   fb1[i] = 0x80000080;
 }
+```
 
+Note that the new Framebuffer is a little __smaller than the Screen Width__. (600 pixels vs 720 pixels)
+
+Thanks to __Framebuffer Blending__ in A64 Display Engine, it's perfectly OK to render the new Framebuffer at 600 x 600 (as a partial screen region): [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L271-L283)
+
+```c
 // Init UI Channel 2: (First Overlay)
 // Square 600 x 600
 d->planes[1].fb_start = (uintptr_t) fb1;  // Framebuffer Address
@@ -428,15 +452,31 @@ d->planes[1].dst_x    = 52;   // Dest X
 d->planes[1].dst_y    = 52;   // Dest Y
 ```
 
+(We specify the X and Y Offset in __`dst_x`__ and __`dst_y`__)
+
+_Can the Dest Width / Height be different from the Source Width / Height?_
+
+Yes, because the Display Engine supports Scaling. But we won't do that today, to simplify our discussion.
+
+Before we watch the outcome, let's render another overlay...
+
 ![Rendering a Circle Overlay on PinePhone](https://lupyuen.github.io/images/de-code5c.png)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L226-L251)
 
 # Render Circle Overlay
 
-TODO
+Our PinePhone UI Overlay Sandwich has these goodies inside...
 
-This is how we render a Green Circle as an Overlay on UI Channel 3: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L226-L251)
+-   __UI Channel 1__: Mandelbrot Set (Base Channel)
+
+-   __UI Channel 2__: Semi-Transparent Blue Square
+
+Let's top off our Cucumber Sandwich...
+
+-   __UI Channel 3__: Semi-Transparent Green Circle
+
+First we fill a Fullscreen Framebuffer with a __Semi-Transparent Green Circle__: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L226-L251)
 
 ```c
 // Init Framebuffer 2:
@@ -445,9 +485,13 @@ This is how we render a Green Circle as an Overlay on UI Channel 3: [test_displa
 static uint32_t fb2[720 * 1440];
 int fb2_len = sizeof(fb2) / sizeof(fb2[0]);
 
-// Fill with Green Circle
+// Fill with Semi-Transparent Green Circle.
+// For every pixel row...
 for (int y = 0; y < 1440; y++) {
+
+  // For every pixel column...
   for (int x = 0; x < 720; x++) {
+
     // Get pixel index
     int p = (y * 720) + x;
     assert(p < fb2_len);
@@ -464,7 +508,13 @@ for (int y = 0; y < 1440; y++) {
     }
   }
 }
+```
 
+TODO
+
+[test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L283-L296)
+
+```c
 // Init UI Channel 3: (Second Overlay)
 // Fullscreen 720 x 1440 with Alpha Blending
 d->planes[2].fb_start = (uintptr_t) fb2;  // Framebuffer Address
