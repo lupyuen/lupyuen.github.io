@@ -169,7 +169,7 @@
 <p>In a while we’ll boot <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> on PinePhone and experiment with the Display Engine, to understand it better.</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#display-engine-mixers">(Overview of A64 Display Engine)</a></p>
 <p><em>But the Display Engine doc doesn’t mention A64?</em></p>
-<p>PinePhone’s A64 Display Engine is hidden in the <strong>Allwinner H3 Docs</strong>, because Allwinner A64 is actually a H3 upgraded with 64-bit Cores…</p>
+<p>PinePhone’s A64 Display Engine is hidden under <a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf"><strong>Allwinner H3 (page 22)</strong></a>, because Allwinner A64 is actually a H3 upgraded with 64-bit Cores…</p>
 <blockquote>
 <p>“The A64 is basically an Allwinner H3 with the Cortex-A7 cores replaced with Cortex-A53 cores (ARM64 architecture). They share most of the memory map, clocks, interrupts and also uses the same IP blocks.”</p>
 </blockquote>
@@ -254,10 +254,14 @@ display_commit(d);</code></pre></div>
 <p><strong>UI Channel 1</strong> is the Base UI Channel, so the Alpha Channel has no effect.</p>
 <p>(Actually UI Channel 1 is configured as <strong>XRGB 8888</strong>)</p>
 <p>In a while we’ll set the Alpha Channels for UI Channels 2 and 3. And the UI Channels will appear as semi-transparent overlays.</p>
+<p><img src="https://lupyuen.github.io/images/de-code3a.png" alt="Rendering Mandelbrot Set on PinePhone" /></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L175-L200">(Source)</a></p>
 <h1 id="render-mandelbrot-set"><a href="#render-mandelbrot-set">4 Render Mandelbrot Set</a></h1>
+<p><em>Rendering colour blocks is so blah. Are we sure we can render every single pixel correctly?</em></p>
+<p>Let’s render something more detailed and sophisticated… <a href="https://en.wikipedia.org/wiki/Mandelbrot_set"><strong>Mandelbrot Set</strong></a>!</p>
+<p><img src="https://lupyuen.github.io/images/de-title.jpg" alt="Mandelbrot Set on PinePhone" /></p>
 <p>TODO</p>
-<p><em>Rendering colour blocks is so… blah. Are we sure that we can render every single pixel correctly?</em></p>
-<p>Let’s render something more interesting… Mandelbrot Set: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c">test_display.c</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L175-L200">test_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Fill with Mandelbrot Set
 for (int y = 0; y &lt; 1440; y++) {
   for (int x = 0; x &lt; 720; x++) {
@@ -284,8 +288,6 @@ for (int y = 0; y &lt; 1440; y++) {
 }</code></pre></div>
 <p><code>mandelbrot</code> and <code>hsvToRgb</code> are defined here: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L330-L426">test_display.c</a></p>
 <p>We should see this Mandelbrot Set…</p>
-<p><img src="https://lupyuen.github.io/images/de-title.jpg" alt="Mandelbrot Set on PinePhone" /></p>
-<p><img src="https://lupyuen.github.io/images/de-code2a.png" alt="TODO" /></p>
 <h1 id="animate-madelbrot-set"><a href="#animate-madelbrot-set">5 Animate Madelbrot Set</a></h1>
 <p>TODO</p>
 <p><em>Earlier we said DMA. Can we prove it?</em></p>
