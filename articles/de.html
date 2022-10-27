@@ -256,6 +256,7 @@ display_commit(d);</code></pre></div>
 <p>In a while we’ll set the Alpha Channels for UI Channels 2 and 3. And the UI Channels will appear as semi-transparent overlays.</p>
 <h1 id="render-mandelbrot-set"><a href="#render-mandelbrot-set">4 Render Mandelbrot Set</a></h1>
 <p>TODO</p>
+<p><em>Rendering colour blocks is so… blah. Are we sure that we can render every single pixel correctly?</em></p>
 <p>Let’s render something more interesting… Mandelbrot Set: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c">test_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Fill with Mandelbrot Set
 for (int y = 0; y &lt; 1440; y++) {
@@ -287,6 +288,7 @@ for (int y = 0; y &lt; 1440; y++) {
 <p><img src="https://lupyuen.github.io/images/de-code2a.png" alt="TODO" /></p>
 <h1 id="animate-madelbrot-set"><a href="#animate-madelbrot-set">5 Animate Madelbrot Set</a></h1>
 <p>TODO</p>
+<p><em>Earlier we said DMA. Can we prove it?</em></p>
 <p>Now we animate the Mandelbrot Set: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c">test_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Omitted: Init UI Channels 1, 2 and 3
 ...
