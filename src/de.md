@@ -542,31 +542,25 @@ Finally we render the 3 UI Channels...
 display_commit(d);
 ```
 
-We should see the Animated Mandelbrot Set, with Blue Square and (very faint) Green Circle as Overlays...
-
-![Mandelbrot Set with Blue Square and Green Circle on PinePhone](https://lupyuen.github.io/images/de-overlay.jpg)
+We should see the Animated Mandelbrot Set, with Blue Square and (very faint) Green Circle as Overlays. (Pic below)
 
 That's how we render 3 UI Channels (with overlay blending) on PinePhone's Display Engine!
 
 (Why the missing horizontal lines in the Blue Square and Green Circle?)
 
+![Mandelbrot Set with Blue Square and Green Circle on PinePhone](https://lupyuen.github.io/images/de-overlay.jpg)
+
 # Test PinePhone Display Engine
 
-TODO
+_We've seen the Test Code for Display Engine... How do we run the code?_
 
-To test the A64 Display Engine with NuttX on PinePhone, we'll run this p-boot Display Code...
+To test the A64 Display Engine, we'll boot __Apache NuttX RTOS__ on PinePhone and run our Test App...
 
--   [display.c](https://megous.com/git/p-boot/tree/src/display.c#n2017)
+-   [__test_display.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
 
-With our Test App...
+Follow these steps to build NuttX RTOS and our Test App...
 
--   [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
-
-TODO
-
-Follow these steps to build __Apache NuttX RTOS__ and our Zig Display Driver...
-
--   [__"Test Zig Display Driver for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx#test-zig-display-driver-for-pinephone)
+-   [__"Test PinePhone Display Engine"__](https://github.com/lupyuen/pinephone-nuttx#test-pinephone-display-engine)
 
 Boot PinePhone with NuttX RTOS in the microSD Card.
 
@@ -576,7 +570,7 @@ At the NuttX Shell, enter this command to __test our Zig Display Driver__...
 hello
 ```
 
-We should see our Zig Driver composing the __MIPI DSI Packets__ and setting the __Hardware Registers__ of the Allwinner A64 SoC...
+We should see our Test App controlling the Hardware Registers on A64 Display Engine...
 
 ```text
 HELLO NUTTX ON PINEPHONE!
@@ -584,23 +578,27 @@ HELLO NUTTX ON PINEPHONE!
 Shell (NSH) NuttX-11.0.0-RC2
 nsh> hello
 ...
-writeDcs: len=4
-b9 f1 12 83 
-mipi_dsi_dcs_write: channel=0, cmd=0x39, len=4
-composeLongPacket: channel=0, cmd=0x39, len=4
-packet: len=10
-39 04 00 2c b9 f1 12 83 
-84 5d 
-modifyreg32: addr=0x300, val=0x2c000439
-modifyreg32: addr=0x304, val=0x8312f1b9
-modifyreg32: addr=0x308, val=0x00005d84
-modifyreg32: addr=0x200, val=0x00000009
-modifyreg32: addr=0x010, val=0x00000000
-modifyreg32: addr=0x010, val=0x00000001
+TODO
 ...
 ```
 
-[(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx#testing-nuttx-zig-driver-for-mipi-dsi-on-pinephone)
+[(TODO: See the Complete Log)]()
+
+_Hmmm building the Test Code looks complicated..._
+
+Yeah we need a few steps to build the Test Code because we patched together a few programs to make it work...
+
+-   __Apache NuttX RTOS for PinePhone__
+
+-   __Zig Driver for MIPI Display Serial Interface__
+
+    [(More about this)](https://lupyuen.github.io/articles/dsi2)
+
+-   __p-boot Display Code__
+
+    [(See the next chapter)](https://lupyuen.github.io/articles/de#p-boot-display-code)
+
+The steps will be a lot simpler when we have completed the  Display Engine Driver for NuttX.
 
 # p-boot Display Code
 
