@@ -1163,7 +1163,7 @@ static void panel_init(void) {
 
 [(__p-boot Display Code__ modified for Zig)](https://github.com/lupyuen/pinephone-nuttx/releases/tag/pboot4)
 
-Follow these steps to build __Apache NuttX RTOS__ and our Zig Display Driver...
+Follow these steps to __download NuttX RTOS__ (with our Zig Driver inside) to a microSD Card...
 
 -   [__"Test Zig Display Driver for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx#test-zig-display-driver-for-pinephone)
 
