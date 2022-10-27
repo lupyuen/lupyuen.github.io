@@ -219,7 +219,7 @@ d->planes[1].fb_start = 0;
 // Disable Channel for now
 d->planes[2].fb_start = 0;
 
-// Render the UI Channels
+// Render the UI Channels over DMA
 display_commit(d);
 ```
 
@@ -227,7 +227,7 @@ And we __render the 3 UI Channels__.
 
 ([__`display_commit`__](https://megous.com/git/p-boot/tree/src/display.c#n2017) is defined in the p-boot Display Code, we'll come back to this)
 
-That's it! We should see the [__Blue, Green and Red Blocks__](https://lupyuen.github.io/images/de-rgb.jpg) like in the pic above.
+That's all! We should see the [__Blue, Green and Red Blocks__](https://lupyuen.github.io/images/de-rgb.jpg) like in the pic above.
 
 (Not sure why there are black lines, needs investigation)
 
@@ -247,18 +247,30 @@ In a while we'll set the Alpha Channels for UI Channels 2 and 3. And the UI Chan
 
 _Rendering colour blocks is so blah. Are we sure we can render every single pixel correctly?_
 
-Let's render something more detailed and sophisticated... [__Mandelbrot Set__](https://en.wikipedia.org/wiki/Mandelbrot_set)!
+Let's render something infinitely more detailed and sophisticated... [__Mandelbrot Set__](https://en.wikipedia.org/wiki/Mandelbrot_set)!
 
 ![Mandelbrot Set on PinePhone](https://lupyuen.github.io/images/de-title.jpg)
 
-TODO
+Earlier we created a __Fullscreen Framebuffer__: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L170-L175)
 
-[test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L175-L200)
+```c
+// Init Framebuffer 0:
+// Fullscreen 720 x 1440 (4 bytes per ARGB pixel)
+// fb0_len is 720 * 1440
+static uint32_t fb0[720 * 1440];
+int fb0_len = sizeof(fb0) / sizeof(fb0[0]);
+```
+
+Now we fill the Framebuffer with the __Mandelbrot Set__, pixel by pixel: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L175-L200)
 
 ```c
 // Fill with Mandelbrot Set
+// For every pixel row...
 for (int y = 0; y < 1440; y++) {
+
+  // For every pixel column...
   for (int x = 0; x < 720; x++) {
+
     // Convert Pixel Coordinates to a Complex Number
     float cx = x_start + (y / 1440.0) * (x_end - x_start);
     float cy = y_start + (x / 720.0)  * (y_end - y_start);
@@ -284,27 +296,53 @@ for (int y = 0; y < 1440; y++) {
 
 [(__`mandelbrot`__ and __`hsvToRgb`__ are defined here)](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L335-L432)
 
-TODO: We should see this Mandelbrot Set...
+Then we initialise the __3 UI Channels__ and render them. [(Like this)](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L257-L299)
+
+The [__Mandelbrot Set__](https://lupyuen.github.io/images/de-title.jpg) appears on PinePhone, like in the pic above.
+
+Yep we can render every single pixel precisely on PinePhone!
+
+![Animating the Madelbrot Set](https://lupyuen.github.io/images/de-code4a.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L299-L334)
 
 # Animate Madelbrot Set
 
-TODO
+_Earlier we said that updates to the Framebuffer are instantly pushed to PinePhone's Display via DMA..._
 
-_Earlier we said DMA. Can we prove it?_
+_Can we prove it?_
 
-Now we animate the Mandelbrot Set: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
+Yep let's __animate the Mandelbrot Set__ in our Framebuffer. And watch the updates appear instantly on PinePhone's Display, thanks to __Direct Memory Access (DMA)__!
+
+This is how we animate the Mandelbrot Set: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L257-L334)
 
 ```c
 // Omitted: Init UI Channels 1, 2 and 3
+d->planes[0].fb_start = ...
+d->planes[1].fb_start = ...
+d->planes[2].fb_start = ...
 ...
-// Render the UI Channels
+
+// Render the UI Channels over DMA
 display_commit(d);
 
-// Animate the Mandelbrot Set forever...
+// Animate the Mandelbrot Set forever.
+// For every frame of animation...
 for (;;) {
+
   // Fill with Mandelbrot Set
+  // For every pixel row...
   for (int y = 0; y < 1440; y++) {
+
+    // For every pixel column...
     for (int x = 0; x < 720; x++) {
+```
+
+In the code above, we __repeatly render__ the Mandelbrot Set for every frame of animation.
+
+We __render each frame__ the exact same way as before...
+
+```c
       // Convert Pixel Coordinates to a Complex Number
       float cx = x_start + (y / 1440.0) * (x_end - x_start);
       float cy = y_start + (x / 720.0)  * (y_end - y_start);
@@ -326,6 +364,11 @@ for (;;) {
       fb0[p] = 0x80000000 | rgb;
     }
   }
+```
+
+But now we __tweak slightly the position__ of the Mandelbrot Set...
+
+```c
   // Zoom in to (-1.4, 0)
   float x_dest = -1.4;
   float y_dest = 0;
@@ -336,23 +379,29 @@ for (;;) {
 }
 ```
 
-We should see the Animated Mandelbrot Set...
+Before looping back to render the next frame.
 
--   [Demo Video on YouTube](https://youtu.be/toC9iiPRwRI)
+We should see this Animated Mandelbrot Set...
 
-_Don't we need to call `display_commit` after every frame?_
+-   [__Demo Video on YouTube__](https://youtu.be/toC9iiPRwRI)
 
-Nope, remember that the Display Engine reads our Framebuffer directly via DMA.
+Yep DMA works correctly for rendering our Framebuffers on the fly!
 
-So any updates to the Framebuffer will be pushed to the display instantly.
+_We don't call `display_commit` after every frame?_
 
-![TODO](https://lupyuen.github.io/images/de-code3a.png)
+[__`display_commit`__](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L296-L299) only needs to be called once. It configures the Display Engine to read our Framebuffer directly via DMA.
+
+Subsequent updates to the Framebuffer will be automatically pushed to the display.
+
+![Rendering a Square Overlay on PinePhone](https://lupyuen.github.io/images/de-code5b.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L215-L226)
 
 # Render Square Overlay
 
 TODO
 
-This is how we render a Blue Square as an Overlay on UI Channel 2: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
+This is how we render a Blue Square as an Overlay on UI Channel 2: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L215-L226)
 
 ```c
 // Init Framebuffer 1:
@@ -379,13 +428,15 @@ d->planes[1].dst_x    = 52;   // Dest X
 d->planes[1].dst_y    = 52;   // Dest Y
 ```
 
-![TODO](https://lupyuen.github.io/images/de-code4a.png)
+![Rendering a Circle Overlay on PinePhone](https://lupyuen.github.io/images/de-code5c.png)
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L226-L251)
 
 # Render Circle Overlay
 
 TODO
 
-This is how we render a Green Circle as an Overlay on UI Channel 3: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
+This is how we render a Green Circle as an Overlay on UI Channel 3: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L226-L251)
 
 ```c
 // Init Framebuffer 2:
@@ -434,8 +485,6 @@ We should see the Animated Mandelbrot Set, with Blue Square and Green Circle as 
 ![Mandelbrot Set with Blue Square and Green Circle on PinePhone](https://lupyuen.github.io/images/de-overlay.jpg)
 
 (Why the missing horizontal lines in the Blue Square and Green Circle?)
-
-![TODO](https://lupyuen.github.io/images/de-code5a.png)
 
 ![TODO](https://lupyuen.github.io/images/de-code6a.png)
 
