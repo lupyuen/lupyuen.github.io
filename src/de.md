@@ -673,27 +673,9 @@ We shall create a __NuttX Driver for Sitronix ST7703__ based on the code from ST
 
 -   [__nuttx/drivers/lcd/st7789.c__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/st7789.c)
 
-But before that, we shall __test the driver code__ by directly accessing the A64 Hardware Registers, similar to this...
-
--   [__"Configure GPIO"__](https://lupyuen.github.io/articles/pio#configure-gpio)
-
-The __Zephyr Driver__ for MIPI DSI (Apache-licensed) might be a helpful reference...
-
--   [__mipi_dsi.h__](https://github.com/zephyrproject-rtos/zephyr/blob/main/include/zephyr/drivers/mipi_dsi.h)
-
--   [__mipi_dsi.c__](https://github.com/zephyrproject-rtos/zephyr/blob/main/drivers/mipi_dsi/mipi_dsi.c)
-
--   [__Zephyr Docs for MIPI DSI__](https://docs.zephyrproject.org/latest/hardware/peripherals/mipi_dsi.html)
-
--   [__Zephyr Test for MIPI DSI__](https://github.com/zephyrproject-rtos/zephyr-testing/blob/main/tests/drivers/mipi_dsi/api/src/main.c)
-
 We have started the __Zig Implementation__ of the NuttX Driver...
 
--   [__"Zig Driver for PinePhone MIPI DSI"__](https://github.com/lupyuen/pinephone-nuttx#zig-driver-for-pinephone-mipi-dsi)
-
--   [__"Compose MIPI DSI Long Packet in Zig"__](https://github.com/lupyuen/pinephone-nuttx#compose-mipi-dsi-long-packet-in-zig)
-
--   [__"Compute Error Correction Code in Zig"__](https://github.com/lupyuen/pinephone-nuttx#compute-error-correction-code-in-zig)
+-   [__"NuttX RTOS for PinePhone: Display Driver in Zig"__](https://lupyuen.github.io/articles/dsi2)
 
 # Other Display Engine Features
 

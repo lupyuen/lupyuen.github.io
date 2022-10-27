@@ -659,11 +659,7 @@ The __Zephyr Driver__ for MIPI DSI (Apache-licensed) might be a helpful referenc
 
 We have started the __Zig Implementation__ of the NuttX Driver...
 
--   [__"Zig Driver for PinePhone MIPI DSI"__](https://github.com/lupyuen/pinephone-nuttx#zig-driver-for-pinephone-mipi-dsi)
-
--   [__"Compose MIPI DSI Long Packet in Zig"__](https://github.com/lupyuen/pinephone-nuttx#compose-mipi-dsi-long-packet-in-zig)
-
--   [__"Compute Error Correction Code in Zig"__](https://github.com/lupyuen/pinephone-nuttx#compute-error-correction-code-in-zig)
+-   [__"NuttX RTOS for PinePhone: Display Driver in Zig"__](https://lupyuen.github.io/articles/dsi2)
 
 # What's Next
 
