@@ -106,7 +106,7 @@ Though it doesn't describe the actual steps for programming the Display Engine.
 
 In a while we'll boot [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) on PinePhone and experiment with the Display Engine, to understand it better.
 
-[(Overview of A64 Display Engine)](https://github.com/lupyuen/pinephone-nuttx#display-engine-mixers)
+[(Overview of A64 Display Engine)](https://lupyuen.github.io/articles/de#appendix-overview-of-allwinner-a64-display-engine)
 
 _But the Display Engine doc doesn't mention A64?_
 
@@ -562,117 +562,51 @@ With our Test App...
 
 -   [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
 
-Here are the steps to download these files and build them...
+TODO
 
-```text
-nuttx
-├── apps (NuttX Apps for PinePhone including Display Engine Version 2)
-│   ├── Application.mk
-│   ├── DISCLAIMER
-│   ├── Directory.mk
-...
-├── nuttx (NuttX OS for PinePhone)
-│   ├── AUTHORS
-│   ├── CONTRIBUTING.md
-│   ├── DISCLAIMER
-...
-├── p-boot (Modified p-boot Display Code)
-│   ├── HACKING
-│   ├── LICENSE
-│   ├── NEWS
-...
-└── pinephone-nuttx (Zig MIPI DSI Driver for PinePhone)
-    ├── LICENSE
-    ├── README.md
-    ├── display.o
-    └── display.zig
+Follow these steps to build __Apache NuttX RTOS__ and our Zig Display Driver...
+
+-   [__"Test Zig Display Driver for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx#test-zig-display-driver-for-pinephone)
+
+Boot PinePhone with NuttX RTOS in the microSD Card.
+
+At the NuttX Shell, enter this command to __test our Zig Display Driver__...
+
+```bash
+hello
 ```
 
-1.  Create the NuttX Directory...
+We should see our Zig Driver composing the __MIPI DSI Packets__ and setting the __Hardware Registers__ of the Allwinner A64 SoC...
 
-    ```bash
-    mkdir nuttx
-    cd nuttx
-    ```
+```text
+HELLO NUTTX ON PINEPHONE!
+...
+Shell (NSH) NuttX-11.0.0-RC2
+nsh> hello
+...
+writeDcs: len=4
+b9 f1 12 83 
+mipi_dsi_dcs_write: channel=0, cmd=0x39, len=4
+composeLongPacket: channel=0, cmd=0x39, len=4
+packet: len=10
+39 04 00 2c b9 f1 12 83 
+84 5d 
+modifyreg32: addr=0x300, val=0x2c000439
+modifyreg32: addr=0x304, val=0x8312f1b9
+modifyreg32: addr=0x308, val=0x00005d84
+modifyreg32: addr=0x200, val=0x00000009
+modifyreg32: addr=0x010, val=0x00000000
+modifyreg32: addr=0x010, val=0x00000001
+...
+```
 
-1.  Download the Modified Instrumented p-boot Display Code `p-boot.6.zip` from...
-
-    [pinephone-nuttx/releases/tag/pboot6](https://github.com/lupyuen/pinephone-nuttx/releases/tag/pboot6)
-
-    Extract into the `nuttx` folder and rename as `p-boot`
-
-1.  Download and build NuttX for PinePhone inside the `nuttx` folder...
-
-    ```bash
-    ## TODO: Install Build Prerequisites
-    ## https://lupyuen.github.io/articles/uboot#install-prerequisites
-
-    ## Download NuttX OS for PinePhone
-    git clone \
-        --recursive \
-        --branch pinephone \
-        https://github.com/lupyuen/incubator-nuttx \
-        nuttx
-
-    ## Download NuttX Apps for PinePhone including Display Engine (Version 2)
-    git clone \
-        --recursive \
-        --branch de2 \
-        https://github.com/lupyuen/incubator-nuttx-apps \
-        apps
-
-    ## We'll build NuttX inside nuttx/nuttx
-    cd nuttx
-
-    ## Configure NuttX for Single Core
-    ./tools/configure.sh -l qemu-a53:nsh
-
-    ## Build NuttX. Ignore the Linker Errors
-    make
-    ```
-
-1.  Follow these steps to compile our Zig MIPI DSI Driver and link into NuttX...
-
-    -   ["Zig on PinePhone"](https://github.com/lupyuen/pinephone-nuttx#zig-on-pinephone)
-
-1.  Compress the NuttX Binary Image...
-
-    ```bash
-    cp nuttx.bin Image
-    rm -f Image.gz
-    gzip Image
-    ```
-
-1.  Copy the compressed NuttX Binary Image to Jumpdrive microSD...
-
-    ```bash
-    ## Copy compressed NuttX Binary Image to Jumpdrive microSD.
-    ## How to create Jumpdrive microSD: https://lupyuen.github.io/articles/uboot#pinephone-jumpdrive
-    ## TODO: Change the microSD Path
-    cp Image.gz "/Volumes/NO NAME"
-    ```
-
-1.  To access the UART Port on PinePhone, we'll connect this USB Serial Debug Cable (at 115.2 kbps)...
-
-    [PinePhone Serial Debug Cable](https://wiki.pine64.org/index.php/PinePhone#Serial_console)
-
-1.  Insert the Jumpdrive microSD into PinePhone and power up
-
-1.  At the NuttX Shell, enter `hello`
-
-(The steps look messy today, hopefully we'll remove p-boot after we have created our NuttX Display Driver)
-
-We should see the Animated Mandelbrot Set, with Blue Square and Green Circle as Overlays...
-
-![Mandelbrot Set with Blue Square and Green Circle on PinePhone](https://lupyuen.github.io/images/de-overlay.jpg)
-
-(Why the missing horizontal lines in the Blue Square and Green Circle?)
+[(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx#testing-nuttx-zig-driver-for-mipi-dsi-on-pinephone)
 
 # p-boot Display Code
 
 TODO
 
-_How does `display_commit` talk to the A64 Display Engine?_
+_About the code that talks to A64 Display Engine... Where is `display_commit` defined?_
 
 [__`display_commit`__](https://megous.com/git/p-boot/tree/src/display.c#n2017) comes from the super-helpful [__p-boot PinePhone Bootloader__](https://xnux.eu/p-boot/).
 
@@ -691,6 +625,10 @@ Which we have modified to compile on NuttX:
 `p-boot.6.zip`
 
 [pinephone-nuttx/releases/tag/pboot6](https://github.com/lupyuen/pinephone-nuttx/releases/tag/pboot6)
+
+TODO
+
+_How does `display_commit` talk to the A64 Display Engine?_
 
 TODO
 
@@ -788,7 +726,7 @@ Let's use the 3 UI Channels to render: 1️⃣ Mandelbrot Set 2️⃣ Blue Squar
 
 ![Mandelbrot Set with UI Overlays on PinePhone](https://lupyuen.github.io/images/de-overlay.jpg)
 
-# Appendix: Display Engine Usage
+# Appendix: Programming the A64 Display Engine
 
 TODO
 
