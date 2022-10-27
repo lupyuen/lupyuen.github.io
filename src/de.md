@@ -243,6 +243,8 @@ In a while we'll set the Alpha Channels for UI Channels 2 and 3. And the UI Chan
 
 TODO
 
+_Rendering colour blocks is so... blah. Are we sure that we can render every single pixel correctly?_
+
 Let's render something more interesting... Mandelbrot Set: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
 
 ```c
@@ -283,6 +285,8 @@ We should see this Mandelbrot Set...
 # Animate Madelbrot Set
 
 TODO
+
+_Earlier we said DMA. Can we prove it?_
 
 Now we animate the Mandelbrot Set: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
 
