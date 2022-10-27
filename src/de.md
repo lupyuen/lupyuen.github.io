@@ -623,11 +623,9 @@ The steps will be a lot simpler when we have completed the  Display Engine Drive
 
 # p-boot Display Code
 
-TODO
+_About the code that controls A64 Display Engine... Where is `display_commit` defined?_
 
-_About the code that talks to A64 Display Engine... Where is `display_commit` defined?_
-
-[__`display_commit`__](https://megous.com/git/p-boot/tree/src/display.c#n2017) comes from the super-helpful [__p-boot PinePhone Bootloader__](https://xnux.eu/p-boot/).
+[__`display_commit`__](https://megous.com/git/p-boot/tree/src/display.c#n2017) comes from the super-helpful [__p-boot PinePhone Bootloader__](https://xnux.eu/p-boot/) project, which runs directly on PinePhone Hardware ("Bare Metal").
 
 To test the A64 Display Engine on Apache NuttX RTOS, we borrowed these [__Source Files__](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L135-L142) (relevant to the Display Engine) from p-boot...
 
@@ -639,17 +637,63 @@ To test the A64 Display Engine on Apache NuttX RTOS, we borrowed these [__Source
 
 [(Plus a whole bunch of Header Files)](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L115-L135)
 
-Which we have modified to compile on NuttX:
+We modified the files above to compile on NuttX...
 
-`p-boot.6.zip`
+-   [__Modified p-boot Display Code__](https://github.com/lupyuen/pinephone-nuttx/releases/download/pboot6/p-boot.6.zip)
 
-[pinephone-nuttx/releases/tag/pboot6](https://github.com/lupyuen/pinephone-nuttx/releases/tag/pboot6)
+Which lets us experiment with the A64 Display Engine on NuttX.
+
+_How does `display_commit` control the A64 Display Engine?_
+
+[__`display_commit`__](https://megous.com/git/p-boot/tree/src/display.c#n2017) controls the A64 Display Engine by writing to the __Hardware Registers__ for the Display Engine.
+
+The Display Engine's Hardware Registers are described here...
+
+-   [__"Overview of Allwinner A64 Display Engine"__](https://lupyuen.github.io/articles/de#appendix-overview-of-allwinner-a64-display-engine)
 
 TODO
 
-_How does `display_commit` talk to the A64 Display Engine?_
+-   [__"Programming the A64 Display Engine"__](https://lupyuen.github.io/articles/de#appendix-programming-the-a64-display-engine)
+
+# NuttX Display Driver for PinePhone
 
 TODO
+
+_Once again, why are we doing all this?_
+
+We're now porting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) to PinePhone.
+
+But it will look awfully dull until we __render something__ on PinePhone's LCD Display!
+
+That's why we're probing the internals of PinePhone to create a __NuttX Display Driver__.
+
+_How shall we build the NuttX Driver for PinePhone's Display?_
+
+We shall create a __NuttX Driver for Sitronix ST7703__ based on the code from ST7789...
+
+-   [__nuttx/drivers/lcd/st7789.c__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/st7789.c)
+
+But before that, we shall __test the driver code__ by directly accessing the A64 Hardware Registers, similar to this...
+
+-   [__"Configure GPIO"__](https://lupyuen.github.io/articles/pio#configure-gpio)
+
+The __Zephyr Driver__ for MIPI DSI (Apache-licensed) might be a helpful reference...
+
+-   [__mipi_dsi.h__](https://github.com/zephyrproject-rtos/zephyr/blob/main/include/zephyr/drivers/mipi_dsi.h)
+
+-   [__mipi_dsi.c__](https://github.com/zephyrproject-rtos/zephyr/blob/main/drivers/mipi_dsi/mipi_dsi.c)
+
+-   [__Zephyr Docs for MIPI DSI__](https://docs.zephyrproject.org/latest/hardware/peripherals/mipi_dsi.html)
+
+-   [__Zephyr Test for MIPI DSI__](https://github.com/zephyrproject-rtos/zephyr-testing/blob/main/tests/drivers/mipi_dsi/api/src/main.c)
+
+We have started the __Zig Implementation__ of the NuttX Driver...
+
+-   [__"Zig Driver for PinePhone MIPI DSI"__](https://github.com/lupyuen/pinephone-nuttx#zig-driver-for-pinephone-mipi-dsi)
+
+-   [__"Compose MIPI DSI Long Packet in Zig"__](https://github.com/lupyuen/pinephone-nuttx#compose-mipi-dsi-long-packet-in-zig)
+
+-   [__"Compute Error Correction Code in Zig"__](https://github.com/lupyuen/pinephone-nuttx#compute-error-correction-code-in-zig)
 
 # Other Display Engine Features
 
