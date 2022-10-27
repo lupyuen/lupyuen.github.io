@@ -264,7 +264,7 @@ int fb0_len = sizeof(fb0) / sizeof(fb0[0]);
 Now we fill the Framebuffer with the __Mandelbrot Set__, pixel by pixel: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L175-L200)
 
 ```c
-// Fill with Mandelbrot Set
+// Fill with Mandelbrot Set.
 // For every pixel row...
 for (int y = 0; y < 1440; y++) {
 
@@ -330,7 +330,7 @@ display_commit(d);
 // For every frame of animation...
 for (;;) {
 
-  // Fill with Mandelbrot Set
+  // Fill with Mandelbrot Set.
   // For every pixel row...
   for (int y = 0; y < 1440; y++) {
 
