@@ -580,36 +580,9 @@ Apply Settings
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/st7789.c"><strong>nuttx/drivers/lcd/st7789.c</strong></a></li>
 </ul>
-<p>But before that, we shall <strong>test the driver code</strong> by directly accessing the A64 Hardware Registers, similar to this…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/pio#configure-gpio"><strong>“Configure GPIO”</strong></a></li>
-</ul>
-<p>The <strong>Zephyr Driver</strong> for MIPI DSI (Apache-licensed) might be a helpful reference…</p>
-<ul>
-<li>
-<p><a href="https://github.com/zephyrproject-rtos/zephyr/blob/main/include/zephyr/drivers/mipi_dsi.h"><strong>mipi_dsi.h</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/zephyrproject-rtos/zephyr/blob/main/drivers/mipi_dsi/mipi_dsi.c"><strong>mipi_dsi.c</strong></a></p>
-</li>
-<li>
-<p><a href="https://docs.zephyrproject.org/latest/hardware/peripherals/mipi_dsi.html"><strong>Zephyr Docs for MIPI DSI</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/zephyrproject-rtos/zephyr-testing/blob/main/tests/drivers/mipi_dsi/api/src/main.c"><strong>Zephyr Test for MIPI DSI</strong></a></p>
-</li>
-</ul>
 <p>We have started the <strong>Zig Implementation</strong> of the NuttX Driver…</p>
 <ul>
-<li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx#zig-driver-for-pinephone-mipi-dsi"><strong>“Zig Driver for PinePhone MIPI DSI”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx#compose-mipi-dsi-long-packet-in-zig"><strong>“Compose MIPI DSI Long Packet in Zig”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx#compute-error-correction-code-in-zig"><strong>“Compute Error Correction Code in Zig”</strong></a></p>
-</li>
+<li><a href="https://lupyuen.github.io/articles/dsi2"><strong>“NuttX RTOS for PinePhone: Display Driver in Zig”</strong></a></li>
 </ul>
 <h1 id="other-display-engine-features"><a href="#other-display-engine-features">11 Other Display Engine Features</a></h1>
 <p>TODO</p>
