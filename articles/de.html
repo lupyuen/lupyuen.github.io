@@ -75,10 +75,11 @@
 <li><a href="#render-square-overlay">6 Render Square Overlay</a><ul></ul></li>
 <li><a href="#render-circle-overlay">7 Render Circle Overlay</a><ul></ul></li>
 <li><a href="#test-pinephone-display-engine">8 Test PinePhone Display Engine</a><ul></ul></li>
-<li><a href="#other-display-engine-features">9 Other Display Engine Features</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-overview-of-allwinner-a64-display-engine">11 Appendix: Overview of Allwinner A64 Display Engine</a><ul></ul></li>
-<li><a href="#appendix-display-engine-usage">12 Appendix: Display Engine Usage</a><ul></ul></li></ul></nav><p>📝 <em>2 Nov 2022</em></p>
+<li><a href="#p-boot-display-code">9 p-boot Display Code</a><ul></ul></li>
+<li><a href="#other-display-engine-features">10 Other Display Engine Features</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-overview-of-allwinner-a64-display-engine">12 Appendix: Overview of Allwinner A64 Display Engine</a><ul></ul></li>
+<li><a href="#appendix-display-engine-usage">13 Appendix: Display Engine Usage</a><ul></ul></li></ul></nav><p>📝 <em>2 Nov 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/de-title.jpg" alt="PinePhone rendering Mandelbrot Set on Apache NuttX RTOS" /></p>
 <p><em>PinePhone rendering Mandelbrot Set on Apache NuttX RTOS</em></p>
 <p>In the last 2 articles we talked about <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> (pic above) and how we built a <strong>Display Driver</strong> for PinePhone’s MIPI Display Serial Interface…</p>
@@ -578,7 +579,24 @@ cp Image.gz &quot;/Volumes/NO NAME&quot;</code></pre></div></li>
 <p>We should see the Animated Mandelbrot Set, with Blue Square and Green Circle as Overlays…</p>
 <p><img src="https://lupyuen.github.io/images/de-overlay.jpg" alt="Mandelbrot Set with Blue Square and Green Circle on PinePhone" /></p>
 <p>(Why the missing horizontal lines in the Blue Square and Green Circle?)</p>
-<h1 id="other-display-engine-features"><a href="#other-display-engine-features">9 Other Display Engine Features</a></h1>
+<h1 id="p-boot-display-code"><a href="#p-boot-display-code">9 p-boot Display Code</a></h1>
+<p>TODO</p>
+<p><em>How does <code>display_commit</code> talk to the A64 Display Engine?</em></p>
+<p><a href="https://megous.com/git/p-boot/tree/src/display.c#n2017"><strong><code>display_commit</code></strong></a> comes from the super-helpful <a href="https://xnux.eu/p-boot/"><strong>p-boot PinePhone Bootloader</strong></a>.</p>
+<p>To test the A64 Display Engine on Apache NuttX RTOS, we borrowed these <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L135-L142"><strong>Source Files</strong></a> (relevant to the Display Engine) from p-boot…</p>
+<ul>
+<li><a href="https://megous.com/git/p-boot/tree/src/display.c"><strong>display.c</strong></a></li>
+<li><a href="https://megous.com/git/p-boot/tree/src/pmic.c"><strong>pmic.c</strong></a></li>
+<li><a href="https://megous.com/git/p-boot/tree/src/uboot/arch/arm/mach-sunxi/clock_sun6i.c"><strong>clock_sun6i.c</strong></a></li>
+<li><a href="https://megous.com/git/p-boot/tree/src/uboot/drivers/gpio/sunxi_gpio.c"><strong>sunxi_gpio.c</strong></a></li>
+<li><a href="https://megous.com/git/p-boot/tree/src/uboot/arch/arm/mach-sunxi/pinmux.c"><strong>pinmux.c</strong></a></li>
+</ul>
+<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L115-L135">(Plus a whole bunch of Header Files)</a></p>
+<p>Which we have modified to compile on NuttX:</p>
+<p><code>p-boot.6.zip</code></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/tag/pboot6">pinephone-nuttx/releases/tag/pboot6</a></p>
+<p>TODO</p>
+<h1 id="other-display-engine-features"><a href="#other-display-engine-features">10 Other Display Engine Features</a></h1>
 <p>TODO</p>
 <p>We won’t use these Display Engine Features today…</p>
 <p><strong>DE RT-WB:</strong> (Page 116)</p>
@@ -594,7 +612,7 @@ cp Image.gz &quot;/Volumes/NO NAME&quot;</code></pre></div></li>
 <blockquote>
 <p>There are several types of rotation: clockwise 0/90/180/270 degree Rotation and H-Flip/V-Flip. Operation of Copy is the same as a 0 degree rotation.</p>
 </blockquote>
-<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>Check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
 <ul>
@@ -631,7 +649,7 @@ cp Image.gz &quot;/Volumes/NO NAME&quot;</code></pre></div></li>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/de.md"><strong>lupyuen.github.io/src/de.md</strong></a></p>
-<h1 id="appendix-overview-of-allwinner-a64-display-engine"><a href="#appendix-overview-of-allwinner-a64-display-engine">11 Appendix: Overview of Allwinner A64 Display Engine</a></h1>
+<h1 id="appendix-overview-of-allwinner-a64-display-engine"><a href="#appendix-overview-of-allwinner-a64-display-engine">12 Appendix: Overview of Allwinner A64 Display Engine</a></h1>
 <p>TODO</p>
 <p><a href="https://linux-sunxi.org/DE2_Register_Guide">DE2_Register_Guide</a></p>
 <p>According to the doc, DE Base Address is 0x0100 0000 (Page 24)</p>
@@ -673,7 +691,7 @@ cp Image.gz &quot;/Volumes/NO NAME&quot;</code></pre></div></li>
 <p>So MIXER0 mixes 1 Video Channel with 3 UI Channels over DMA … And pumps the pixels continuously to ST7703 LCD Controller (via the Timing Controller)</p>
 <p>Let’s use the 3 UI Channels to render: 1️⃣ Mandelbrot Set 2️⃣ Blue Square 3️⃣ Green Circle</p>
 <p><img src="https://lupyuen.github.io/images/de-overlay.jpg" alt="Mandelbrot Set with UI Overlays on PinePhone" /></p>
-<h1 id="appendix-display-engine-usage"><a href="#appendix-display-engine-usage">12 Appendix: Display Engine Usage</a></h1>
+<h1 id="appendix-display-engine-usage"><a href="#appendix-display-engine-usage">13 Appendix: Display Engine Usage</a></h1>
 <p>TODO</p>
 <p>Based on the log captured from our instrumented <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c">test_display.c</a>, we have identified the steps to render 3 UI Channels (1 to 3) with the Display Engine <a href="https://megous.com/git/p-boot/tree/src/display.c#n2017">(<code>display_commit</code>)</a></p>
 <p>This is how we’ll create a NuttX Driver for PinePhone’s A64 Display Engine that implements Display Rendering…</p>
