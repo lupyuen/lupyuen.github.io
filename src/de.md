@@ -171,7 +171,7 @@ for (int i = 0; i < fb0_len; i++) {
 
 Each Pixel in the Framebuffer is stored as __32-bit ARGB 8888__.
 
-Thus __`0x8000` `8000`__ means...
+Thus __`0x8000` `8000`__ means Semi-Transparent Green...
 
 | Channel | Value |
 |:--------|-------|
@@ -180,9 +180,9 @@ Thus __`0x8000` `8000`__ means...
 | Green | `0x80` |
 | Blue  | `0x00` |
 
-TODO
+A64 Display Engine lets us render of 3 Framebuffers as __3 UI Channels__.
 
-We allocate 3 UI Channels: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
+This is how we allocate the 3 UI Channels: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L257-L262)
 
 ```c
 // Allocate 3 UI Channels
@@ -191,9 +191,9 @@ memset(&disp, 0, sizeof(disp));
 struct display *d = &disp;
 ```
 
-TODO: display
+[(__`display`__ struct is defined here)](https://megous.com/git/p-boot/tree/src/display.h#n28)
 
-We init the 3 Channels and render them: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
+We point the __First UI Channel__ to our Framebuffer: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L262-L271)
 
 ```c
 // Init UI Channel 1: (Base Channel)
@@ -206,7 +206,9 @@ d->planes[0].dst_w    = 720;   // Dest Width
 d->planes[0].dst_h    = 1440;  // Dest Height
 ```
 
-TODO
+(__`fb_pitch`__ is the number of bytes per row of pixels)
+
+We disable the __Second and Third UI Channels__ for now: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L271-L299)
 
 ```c
 // Init UI Channel 2: (First Overlay)
@@ -221,15 +223,21 @@ d->planes[2].fb_start = 0;
 display_commit(d);
 ```
 
-`display_commit` is defined in the p-boot Display Code: [display.c](https://megous.com/git/p-boot/tree/src/display.c#n2017)
+And we __render the 3 UI Channels__.
 
-We should see these Blue, Green and Red Blocks...
+([__`display_commit`__](https://megous.com/git/p-boot/tree/src/display.c#n2017) is defined in the p-boot Display Code, we'll come back to this)
 
-![Blue, Green, Red Blocks on PinePhone](https://lupyuen.github.io/images/de-rgb.jpg)
+That's it! We should see the [__Blue, Green and Red Blocks__](https://lupyuen.github.io/images/de-rgb.jpg) like in the pic above.
 
-(Why the black lines?)
+(Not sure why there are black lines, needs investigation)
 
-Channels 2 and 3 are disabled for now. We'll use them to render UI Overlays later.
+_Didn't we set the Alpha Channel to `0x80`?_
+
+__UI Channel 1__ is the Base UI Channel, so the Alpha Channel has no effect.
+
+(Actually UI Channel 1 is configured as __XRGB 8888__)
+
+In a while we'll set the Alpha Channels for UI Channels 2 and 3. And the UI Channels will appear as semi-transparent overlays.
 
 # Render Mandelbrot Set
 
