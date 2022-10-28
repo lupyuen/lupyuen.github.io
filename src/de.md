@@ -708,7 +708,7 @@ Someday we hope to have a __fully-functional PinePhone__ running on NuttX RTOS..
 
 -   [__"PinePhone on RTOS"__](https://lupyuen.github.io/articles/arm#pinephone-on-rtos)
 
-(Or maybe run PinePhone as an interactive touchscreen gadget)
+(Or maybe just run PinePhone as an interactive touchscreen gadget)
 
 To do that, we need a __NuttX Display Driver__. That's why we're probing the internals of PinePhone to build the driver.
 
