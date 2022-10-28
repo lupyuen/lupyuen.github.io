@@ -606,6 +606,8 @@ Channel 2: ...</code></pre></div>
 <li><a href="https://lupyuen.github.io/articles/de#appendix-programming-the-a64-display-engine"><strong>“Programming the A64 Display Engine”</strong></a></li>
 </ul>
 <p>This is extremely helpful when we create the NuttX Display Driver for PinePhone…</p>
+<p><img src="https://lupyuen.github.io/images/dsi2-title.jpg" alt="Testing the NuttX Display Driver for PinePhone" /></p>
+<p><a href="https://lupyuen.github.io/articles/dsi2"><em>Testing the NuttX Display Driver for PinePhone</em></a></p>
 <h1 id="nuttx-display-driver-for-pinephone"><a href="#nuttx-display-driver-for-pinephone">10 NuttX Display Driver for PinePhone</a></h1>
 <p><em>Once again, why are we doing all this?</em></p>
 <p>We’re now porting <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> to PinePhone.</p>
@@ -614,7 +616,12 @@ Channel 2: ...</code></pre></div>
 <li><a href="https://lupyuen.github.io/articles/arm#pinephone-on-rtos"><strong>“PinePhone on RTOS”</strong></a></li>
 </ul>
 <p>(Or maybe just run PinePhone as an interactive touchscreen gadget)</p>
-<p>To do that, we need a <strong>NuttX Display Driver</strong>. That’s why we’re probing the internals of PinePhone to build the driver.</p>
+<p>To do that, we need a <strong>NuttX Display Driver</strong>.</p>
+<p>That’s why we’re probing the internals of PinePhone, to learn everything we need to build the driver.</p>
+<p>We have documented our earlier research here…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/dsi"><strong>“Understanding PinePhone’s Display (MIPI DSI)”</strong></a></li>
+</ul>
 <p><em>How shall we build the NuttX Driver for PinePhone’s Display?</em></p>
 <p>We shall create the PinePhone Display Driver based on the <strong>NuttX Driver for Sitronix ST7789</strong>…</p>
 <ul>
@@ -644,6 +651,12 @@ Channel 2: ...</code></pre></div>
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/pio"><strong>“NuttX RTOS for PinePhone: Blinking the LEDs”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/dsi"><strong>“Understanding PinePhone’s Display (MIPI DSI)”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/dsi2"><strong>“NuttX RTOS for PinePhone: Display Driver in Zig”</strong></a></p>
 </li>
 </ul>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
