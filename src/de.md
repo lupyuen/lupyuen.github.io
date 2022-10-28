@@ -566,6 +566,8 @@ Follow these steps to __download NuttX RTOS__ (with our Test App inside) to a mi
 
 Boot PinePhone with NuttX RTOS in the microSD Card.
 
+(NuttX won't disturb the eMMC Flash Memory)
+
 At the NuttX Shell, enter this command to run our __Test App__...
 
 ```bash

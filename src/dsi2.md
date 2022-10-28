@@ -1169,6 +1169,8 @@ Follow these steps to __download NuttX RTOS__ (with our Zig Driver inside) to a 
 
 Boot PinePhone with NuttX RTOS in the microSD Card.
 
+(NuttX won't disturb the eMMC Flash Memory)
+
 At the NuttX Shell, enter this command to __test our Zig Display Driver__...
 
 ```bash
