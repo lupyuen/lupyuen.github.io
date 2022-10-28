@@ -702,7 +702,7 @@ When we study the log, we'll understand how we should __program the A64 Display 
 
 Our findings are documented here...
 
--   [__"Programming the A64 Display Engine"__](https://lupyuen.github.io/articles/de#appendix-programming-the-a64-display-engine)
+-   [__"Programming the Allwinner A64 Display Engine"__](https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine)
 
 This is extremely helpful when we create the NuttX Display Driver for PinePhone...
 
@@ -790,6 +790,8 @@ The official doc for the __Allwinner A64 Display Engine__ is here...
 
 PinePhone's A64 Display Engine is hidden under [__Allwinner H3 (page 22)__](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf), because Allwinner A64 is actually a H3 upgraded with 64-bit Cores.
 
+(Also check out this [__DE2 Register Guide__](https://linux-sunxi.org/DE2_Register_Guide))
+
 Earlier we said that Allwinner A64's Display Engine is a __Real-Time Mixer__ that handles real-time __DMA, Overlay, Scaling and Blending__ of the Framebuffers...
 
 And the Display Engine pushes the output pixels to the __Timing Controller (TCON0)__ for display on PinePhone's LCD Display...
@@ -860,15 +862,17 @@ __DE RT-MIXER1__ has 2 Channels (DE Offset __`0x20` `0000`__, Page 23)
 
     (DMA1, UI Overlay, UI Scaler, UI Blender)
 
--   We don't use RT-MIXER1 right now
+(We don't use RT-MIXER1 right now)
 
 RT-MIXER0 and RT-MIXER1 are multiplexed to __Timing Controller TCON0__. [(Like this)](https://lupyuen.github.io/images/de-block1a.jpg)
 
 TCON0 is connected to PinePhone's __ST7703 LCD Controller__ over MIPI Display Serial Interface. [(See this)](https://lupyuen.github.io/articles/dsi)
 
-So RT-MIXER0 __mixes 1 Video Channel with 3 UI Channels__ over DMA. And pumps the pixels continuously to ST7703 LCD Controller. (Via the Timing Controller TCON0)
+Hence RT-MIXER0 __mixes 1 Video Channel with 3 UI Channels__ over DMA. And pumps the pixels continuously to ST7703 LCD Controller. (Via the Timing Controller TCON0)
 
-In today's demo we used the 3 UI Channels to render: 1️⃣ Mandelbrot Set 2️⃣ Blue Square 3️⃣ Green Circle...
+In today's demo we used the 3 UI Channels to render: 1️⃣ Mandelbrot Set 2️⃣ Blue Square 3️⃣ Green Circle. (Pic below)
+
+In the next chapter we explain how the 3 UI Channels were rendered by setting the Hardware Registers for A64 Display Engine.
 
 ![Mandelbrot Set with Blue Square and Green Circle as Overlays](https://lupyuen.github.io/images/de-overlay.jpg)
 
@@ -887,9 +891,7 @@ __DE VSU (Video Scaler):__ (Page 128)
 __DE Rotation:__ (Page 137)
 > "There are several types of rotation: clockwise 0/90/180/270 degree Rotation and H-Flip/V-Flip. Operation of Copy is the same as a 0 degree rotation."
 
-(Also check out this [__DE2 Register Guide__](https://linux-sunxi.org/DE2_Register_Guide))
-
-# Appendix: Programming the A64 Display Engine
+# Appendix: Programming the Allwinner A64 Display Engine
 
 TODO
 
