@@ -677,74 +677,122 @@ Channel 2: ...</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/de.md"><strong>lupyuen.github.io/src/de.md</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/de-block1a.jpg" alt="Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)" /></p>
+<p><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><em>Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)</em></a></p>
 <h1 id="appendix-overview-of-allwinner-a64-display-engine"><a href="#appendix-overview-of-allwinner-a64-display-engine">12 Appendix: Overview of Allwinner A64 Display Engine</a></h1>
-<p>TODO</p>
-<p><a href="https://linux-sunxi.org/DE2_Register_Guide">DE2_Register_Guide</a></p>
-<p>According to the doc, DE Base Address is 0x0100 0000 (Page 24)</p>
+<p>The official doc for the <strong>Allwinner A64 Display Engine</strong> is here…</p>
+<ul>
+<li><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf"><strong>Allwinner Display Engine 2.0 Specifications</strong></a></li>
+</ul>
+<p>PinePhone’s A64 Display Engine is hidden under <a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf"><strong>Allwinner H3 (page 22)</strong></a>, because Allwinner A64 is actually a H3 upgraded with 64-bit Cores.</p>
+<p>Earlier we said that Allwinner A64’s Display Engine is a <strong>Real-Time Mixer</strong> that handles real-time <strong>DMA, Overlay, Scaling and Blending</strong> of the Framebuffers…</p>
+<p>And the Display Engine pushes the output pixels to the <strong>Timing Controller (TCON0)</strong> for display on PinePhone’s LCD Display…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/de#display-rendering-on-pinephone"><strong>“Display Rendering on PinePhone”</strong></a></li>
+</ul>
+<p>According to the doc, the <strong>Display Engine Base Address</strong> is <strong><code>0x0100</code> <code>0000</code></strong> (Page 24)</p>
 <p><em>What’s a Display Engine Mixer?</em></p>
 <p><strong>DE RT-MIXER:</strong> (Page 87)</p>
 <blockquote>
-<p>The RT-mixer Core consist of dma, overlay, scaler and blender block. It supports 4 layers overlay in one pipe, and its result can scaler up or down to blender in the next processing.</p>
+<p>“The RT-mixer Core consist of dma, overlay, scaler and blender block. It supports 4 layers overlay in one pipe, and its result can scaler up or down to blender in the next processing.”</p>
 </blockquote>
-<p>The Display Engine has 2 Mixers: RT-MIXER0 and RT-MIXER1…</p>
-<p><strong>DE RT-MIXER0</strong> has 4 Channels (DE Offset 0x10 0000, Page 87)</p>
+<p>The Display Engine has 2 Mixers: RT-MIXER0 and RT-MIXER1.</p>
+<p><strong>DE RT-MIXER0</strong> has 4 Channels (DE Offset <strong><code>0x10</code> <code>0000</code></strong>, Page 87)</p>
 <ul>
-<li>Channel 0 for Video: DMA0, Video Overlay, Video Scaler</li>
-<li>Channels 1, 2, 3 for UI: DMA1 / 2 / 3, UI Overlays, UI Scalers, UI Blenders</li>
-<li>4 Overlay Layers per Channel</li>
-<li>Layer priority is Layer 3 &gt; Layer2 &gt; Layer 1 &gt; Layer 0 (Page 89)</li>
-<li>Channel 0 is unused (we don’t use video right now)</li>
-<li>Channel 1 has format XRGB 8888</li>
-<li>Channels 2 and 3 have format ARGB 8888</li>
-<li>MIXER0 Registers:
-<ul>
-<li>GLB at MIXER0 Offset 0x00000 (de_glb_regs)</li>
-<li>BLD (Blender) at MIXER0 Offset 0x01000 (de_bld_regs)</li>
-<li>OVL_V(CH0) (Video Overlay / Channel 0) at MIXER0 Offset 0x2000 (Unused)</li>
-<li>OVL_UI(CH1) (UI Overlay / Channel 1) at MIXER0 Offset 0x3000</li>
-<li>OVL_UI(CH2) (UI Overlay / Channel 2) at MIXER0 Offset 0x4000</li>
-<li>OVL_UI(CH3) (UI Overlay / Channel 3) at MIXER0 Offset 0x5000</li>
-<li>POST_PROC2 at MIXER0 Offset 0xB0000 (de_csc_regs)</li>
-</ul>
+<li>
+<p><strong>Channel 0</strong> for Video</p>
+<p>(DMA0, Video Overlay, Video Scaler)</p>
+</li>
+<li>
+<p><strong>Channels 1, 2 and 3</strong> for UI</p>
+<p>(DMA1, 2 and 3, 3 x UI Overlays, 3 x UI Scalers, 3 x UI Blenders)</p>
+</li>
+<li>
+<p><strong>4 Overlay Layers</strong> per Channel</p>
+<p>(We only use 1 Overlay Layer per Channel)</p>
+</li>
+<li>
+<p><strong>Layer Priority</strong> is Layer 3 &gt; Layer2 &gt; Layer 1 &gt; Layer 0 (Page 89)</p>
 </li>
 </ul>
-<p><strong>DE RT-MIXER1</strong> has 2 Channels (DE Offset 0x20 0000, Page 23)</p>
+<p>Our Display Engine Demo <strong>configures the 4 Channels</strong> as follows…</p>
 <ul>
-<li>Channel 0 for Video: DMA0, Video Overlay, Video Scaler</li>
-<li>Channel 1 for UI: DMA1, UI Overlay, UI Scaler, UI Blender</li>
-<li>We don’t use MIXER1 right now</li>
+<li>
+<p><strong>Channel 0</strong> is unused</p>
+<p>(No video right now)</p>
+</li>
+<li>
+<p><strong>Channel 1</strong> has Pixel Format XRGB 8888</p>
+<p>(Alpha Channel is disabled)</p>
+</li>
+<li>
+<p><strong>Channels 2 and 3</strong> have Pixel Format ARGB 8888</p>
+<p>(Alpha Channel is enabled)</p>
+</li>
 </ul>
-<p>RT-MIXER0 and RT-MIXER1 are multiplexed to Timing Controller TCON0.</p>
-<p>(TCON0 is connected to ST7703 over MIPI DSI)</p>
-<p>So MIXER0 mixes 1 Video Channel with 3 UI Channels over DMA … And pumps the pixels continuously to ST7703 LCD Controller (via the Timing Controller)</p>
-<p>TODO</p>
-<p>Let’s use the 3 UI Channels to render: 1️⃣ Mandelbrot Set 2️⃣ Blue Square 3️⃣ Green Circle</p>
-<p><img src="https://lupyuen.github.io/images/de-overlay.jpg" alt="Mandelbrot Set with UI Overlays on PinePhone" /></p>
-<p>TODO: Other Display Engine Features</p>
+<p><strong>Hardware Registers</strong> for RT-MIXER0…</p>
+<ul>
+<li><strong>GLB</strong> at MIXER0 Offset <strong><code>0x0000</code></strong></li>
+<li><strong>BLD</strong> (Blender) at MIXER0 Offset <strong><code>0x1000</code></strong></li>
+<li><strong>OVL_V(CH0)</strong> (Video Overlay / Channel 0) at MIXER0 Offset <strong><code>0x2000</code></strong> (Unused)</li>
+<li><strong>OVL_UI(CH1)</strong> (UI Overlay / Channel 1) at MIXER0 Offset <strong><code>0x3000</code></strong></li>
+<li><strong>OVL_UI(CH2)</strong> (UI Overlay / Channel 2) at MIXER0 Offset <strong><code>0x4000</code></strong></li>
+<li><strong>OVL_UI(CH3)</strong> (UI Overlay / Channel 3) at MIXER0 Offset <strong><code>0x5000</code></strong></li>
+<li><strong>POST_PROC2</strong> at MIXER0 Offset <strong><code>0xB0000</code></strong></li>
+</ul>
+<p>The pic below shows how DE RT-MIXER0 mixes together <strong>3 UI Channels (Framebuffers)</strong> via DMA1, 2 and 3 (plus a Video Channel on DMA0)…</p>
+<p><img src="https://lupyuen.github.io/images/de-mixer1a.jpg" alt="Real-Time Mixer in A64 Display Engine (Page 22)" /></p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf"><em>Real-Time Mixer in A64 Display Engine (Page 22)</em></a></p>
+<p><strong>DE RT-MIXER1</strong> has 2 Channels (DE Offset <strong><code>0x20</code> <code>0000</code></strong>, Page 23)</p>
+<ul>
+<li>
+<p><strong>Channel 0</strong> for Video </p>
+<p>(DMA0, Video Overlay, Video Scaler)</p>
+</li>
+<li>
+<p><strong>Channel 1</strong> for UI </p>
+<p>(DMA1, UI Overlay, UI Scaler, UI Blender)</p>
+</li>
+<li>
+<p>We don’t use RT-MIXER1 right now</p>
+</li>
+</ul>
+<p>RT-MIXER0 and RT-MIXER1 are multiplexed to <strong>Timing Controller TCON0</strong>. <a href="https://lupyuen.github.io/images/de-block1a.jpg">(Like this)</a></p>
+<p>TCON0 is connected to PinePhone’s <strong>ST7703 LCD Controller</strong> over MIPI Display Serial Interface. <a href="https://lupyuen.github.io/articles/dsi">(See this)</a></p>
+<p>So RT-MIXER0 <strong>mixes 1 Video Channel with 3 UI Channels</strong> over DMA. And pumps the pixels continuously to ST7703 LCD Controller. (Via the Timing Controller TCON0)</p>
+<p>In today’s demo we used the 3 UI Channels to render: 1️⃣ Mandelbrot Set 2️⃣ Blue Square 3️⃣ Green Circle…</p>
+<p><img src="https://lupyuen.github.io/images/de-overlay.jpg" alt="Mandelbrot Set with Blue Square and Green Circle as Overlays" /></p>
+<p><a href="https://lupyuen.github.io/articles/de#test-pinephone-display-engine"><em>Mandelbrot Set with Blue Square and Green Circle as Overlays</em></a></p>
 <p>We won’t use these Display Engine Features today…</p>
-<p><strong>DE RT-WB:</strong> (Page 116)</p>
+<p><strong>DE RT-WB (Write-Back Controller):</strong> (Page 116)</p>
 <blockquote>
-<p>The Real-time write-back controller (RT-WB) provides data capture function for display engine. It captures data from RT-mixer module, performs the image resizing function, and then write-back to SDRAM.</p>
+<p>“The Real-time write-back controller (RT-WB) provides data capture function for display engine. It captures data from RT-mixer module, performs the image resizing function, and then write-back to SDRAM.”</p>
 </blockquote>
 <p>(For screen capture?)</p>
-<p><strong>DE VSU:</strong> (Page 128)</p>
+<p><strong>DE VSU (Video Scaler):</strong> (Page 128)</p>
 <blockquote>
-<p>The Video Scaler (VS) provides YUV format image resizing function for display engine. It receives data from overlay module, performs the image resizing function, and outputs to video post-processing modules. </p>
+<p>“The Video Scaler (VS) provides YUV format image resizing function for display engine. It receives data from overlay module, performs the image resizing function, and outputs to video post-processing modules.”</p>
 </blockquote>
 <p><strong>DE Rotation:</strong> (Page 137)</p>
 <blockquote>
-<p>There are several types of rotation: clockwise 0/90/180/270 degree Rotation and H-Flip/V-Flip. Operation of Copy is the same as a 0 degree rotation.</p>
+<p>“There are several types of rotation: clockwise 0/90/180/270 degree Rotation and H-Flip/V-Flip. Operation of Copy is the same as a 0 degree rotation.”</p>
 </blockquote>
+<p>(Also check out this <a href="https://linux-sunxi.org/DE2_Register_Guide"><strong>DE2 Register Guide</strong></a>)</p>
 <h1 id="appendix-programming-the-a64-display-engine"><a href="#appendix-programming-the-a64-display-engine">13 Appendix: Programming the A64 Display Engine</a></h1>
 <p>TODO</p>
 <p>Based on the log captured from our instrumented <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c">test_display.c</a>, we have identified the steps to render 3 UI Channels (1 to 3) with the Display Engine <a href="https://megous.com/git/p-boot/tree/src/display.c#n2017">(<code>display_commit</code>)</a></p>
 <p>This is how we’ll create a NuttX Driver for PinePhone’s A64 Display Engine that implements Display Rendering…</p>
+<p>(Refer to Memory Mapping List and Register List at Page 90)</p>
 <ol>
 <li>
 <p>Configure Blender…</p>
 <ul>
-<li>BLD BkColor (BLD_BK_COLOR Offset 0x88): BLD background color register</li>
-<li>BLD Premultiply (BLD_PREMUL_CTL Offset 0x84): BLD pre-multiply control register</li>
+<li>
+<p>BLD BkColor (<strong>BLD_BK_COLOR</strong> Offset <code>0x88</code>): BLD background color register</p>
+</li>
+<li>
+<p>BLD Premultiply (<strong>BLD_PREMUL_CTL</strong> Offset <code>0x84</code>): BLD pre-multiply control register</p>
+</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Configure Blender
 BLD BkColor:     0x110 1088 = 0xff000000
@@ -755,8 +803,12 @@ BLD Premultiply: 0x110 1084 = 0x0</code></pre></div></li>
 <li>
 <p>If Channel is unused, disable Overlay, Pipe and Scaler. Skip to next Channel</p>
 <ul>
-<li>UI Config Attr (OVL_UI_ATTCTL @ OVL_UI Offset 0x00): OVL_UI attribute control register</li>
-<li>Mixer (??? @ 0x113 0000 + 0x10000 * Channel)</li>
+<li>
+<p>UI Config Attr (<strong>OVL_UI_ATTCTL</strong> @ OVL_UI Offset <code>0x00</code>): OVL_UI attribute control register</p>
+</li>
+<li>
+<p>Mixer (<strong>???</strong> @ <code>0x113</code> <code>0000</code> + <code>0x10000</code> * Channel)</p>
+</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Channel 2: Disable Overlay and Pipe
 UI Config Attr: 0x110 4000 = 0x0
@@ -775,12 +827,24 @@ Mixer: 0x116 0000 = 0x0</code></pre></div></li>
 <li>
 <p>Set Overlay (Assume Layer = 0)</p>
 <ul>
-<li>UI Config Attr (OVL_UI_ATTCTL @ OVL_UI Offset 0x00): OVL_UI attribute control register</li>
-<li>UI Config Top LAddr (OVL_UI_TOP_LADD @ OVL_UI Offset 0x10): OVL_UI top field memory block low address register</li>
-<li>UI Config Pitch (OVL_UI_PITCH @ OVL_UI Offset 0x0C): OVL_UI memory pitch register</li>
-<li>UI Config Size (OVL_UI_MBSIZE @ OVL_UI Offset 0x04): OVL_UI memory block size register</li>
-<li>UI Overlay Size (OVL_UI_SIZE @ OVL_UI Offset 0x88): OVL_UI overlay window size register</li>
-<li>IO Config Coord (OVL_UI_COOR @ OVL_UI Offset 0x08): OVL_UI memory block coordinate register</li>
+<li>
+<p>UI Config Attr (<strong>OVL_UI_ATTCTL</strong> @ OVL_UI Offset <code>0x00</code>): OVL_UI attribute control register</p>
+</li>
+<li>
+<p>UI Config Top LAddr (<strong>OVL_UI_TOP_LADD</strong> @ OVL_UI Offset <code>0x10</code>): OVL_UI top field memory block low address register</p>
+</li>
+<li>
+<p>UI Config Pitch (<strong>OVL_UI_PITCH</strong> @ OVL_UI Offset <code>0x0C</code>): OVL_UI memory pitch register</p>
+</li>
+<li>
+<p>UI Config Size (<strong>OVL_UI_MBSIZE</strong> @ OVL_UI Offset <code>0x04</code>): OVL_UI memory block size register</p>
+</li>
+<li>
+<p>UI Overlay Size (<strong>OVL_UI_SIZE</strong> @ OVL_UI Offset <code>0x88</code>): OVL_UI overlay window size register</p>
+</li>
+<li>
+<p>IO Config Coord (<strong>OVL_UI_COOR</strong> @ OVL_UI Offset <code>0x08</code>): OVL_UI memory block coordinate register</p>
+</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Channel 1: Set Overlay (fb0 is 720 x 1440)
 UI Config Attr:      0x110 3000 = 0xff00 0405
@@ -810,8 +874,12 @@ IO Config Coord:     0x110 5008 = 0x0</code></pre></div>
 <li>
 <p>For Channel 1: Set Blender Output</p>
 <ul>
-<li>BLD Output Size (BLD_SIZE @ BLD Offset 0x08C): BLD output size setting register</li>
-<li>GLB Size (GLB_SIZE @ GLB Offset 0x00C): Global size register</li>
+<li>
+<p>BLD Output Size (<strong>BLD_SIZE</strong> @ BLD Offset <code>0x08C</code>): BLD output size setting register</p>
+</li>
+<li>
+<p>GLB Size (<strong>GLB_SIZE</strong> @ GLB Offset <code>0x00C</code>): Global size register</p>
+</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Channel 1: Set Blender Output
 BLD Output Size: 0x110 108c = 0x59f 02cf (1439 * 16 + 719)
@@ -819,10 +887,18 @@ GLB Size:        0x110 000c = 0x59f 02cf (1439 * 16 + 719)</code></pre></div></l
 <li>
 <p>Set Blender Input Pipe (N = Pipe Number, from 0 to 2 for Channels 1 to 3)</p>
 <ul>
-<li>BLD Pipe InSize (BLD_CH_ISIZE @ BLD Offset 0x008 + N*0x14): BLD input memory size register(N=0,1,2,3,4)</li>
-<li>BLD Pipe FColor (BLD_FILL_COLOR @ BLD Offset 0x004 + N*0x14): BLD fill color register(N=0,1,2,3,4)</li>
-<li>BLD Pipe Offset (BLD_CH_OFFSET @ BLD Offset 0x00C + N*0x14): BLD input memory offset register(N=0,1,2,3,4)</li>
-<li>BLD Pipe Mode (BLD_CTL @ BLD Offset 0x090 – 0x09C): BLD control register</li>
+<li>
+<p>BLD Pipe InSize (<strong>BLD_CH_ISIZE</strong> @ BLD Offset <code>0x008</code> + <code>N*0x14</code>): BLD input memory size register(N=0,1,2,3,4)</p>
+</li>
+<li>
+<p>BLD Pipe FColor (<strong>BLD_FILL_COLOR</strong> @ BLD Offset <code>0x004</code> + <code>N*0x14</code>): BLD fill color register(N=0,1,2,3,4)</p>
+</li>
+<li>
+<p>BLD Pipe Offset (<strong>BLD_CH_OFFSET</strong> @ BLD Offset <code>0x00C</code> + <code>N*0x14</code>): BLD input memory offset register(N=0,1,2,3,4)</p>
+</li>
+<li>
+<p>BLD Pipe Mode (<strong>BLD_CTL</strong> @ BLD Offset <code>0x090</code> – <code>0x09C</code>): BLD control register</p>
+</li>
 </ul>
 <p>(Should <code>N*0x14</code> be <code>N*0x10</code> instead?)</p>
 <div class="example-wrap"><pre class="language-text"><code>Channel 1: Set Blender Input Pipe 0 (fb0 is 720 x 1440)
@@ -859,8 +935,12 @@ Mixer: 0x116 0000 = 0x0</code></pre></div></li>
 <li>
 <p>Set BLD Route and BLD FColor Control</p>
 <ul>
-<li>BLD Route (BLD_CH_RTCTL @ BLD Offset 0x080): BLD routing control register</li>
-<li>BLD FColor Control (BLD_FILLCOLOR_CTL @ BLD Offset 0x000): BLD fill color control register</li>
+<li>
+<p>BLD Route (<strong>BLD_CH_RTCTL</strong> @ BLD Offset <code>0x080</code>): BLD routing control register</p>
+</li>
+<li>
+<p>BLD FColor Control (<strong>BLD_FILLCOLOR_CTL</strong> @ BLD Offset <code>0x000</code>): BLD fill color control register</p>
+</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Set BLD Route and BLD FColor Control
 BLD Route:          0x110 1080 = 0x321
@@ -868,13 +948,12 @@ BLD FColor Control: 0x110 1000 = 0x701</code></pre></div></li>
 <li>
 <p>Apply Settings: GLB DBuff</p>
 <ul>
-<li>GLB DBuff (GLB_DBUFFER @ GLB Offset 0x008): Global double buffer control register</li>
+<li>GLB DBuff (<strong>GLB_DBUFFER</strong> @ GLB Offset <code>0x008</code>): Global double buffer control register</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Apply Settings
 GLB DBuff: 0x110 0008 = 0x1</code></pre></div></li>
 </ol>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-p-boot-display-engine-on-pinephone">(See the Complete Log)</a></p>
-<p>(See Memory Mapping List and Register List at Page 90)</p>
 
     
 </body>
