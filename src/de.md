@@ -546,9 +546,11 @@ We should see the Animated Mandelbrot Set, with Blue Square and (very faint) Gre
 
 That's how we render 3 UI Channels (with overlay blending) on PinePhone's Display Engine!
 
-(Why the missing horizontal lines in the Blue Square and Green Circle?)
+(Why the horizontal lines in the Blue Square and Green Circle?)
 
-![Mandelbrot Set with Blue Square and Green Circle on PinePhone](https://lupyuen.github.io/images/de-overlay.jpg)
+![Mandelbrot Set with Blue Square and Green Circle as Overlays](https://lupyuen.github.io/images/de-overlay.jpg)
+
+_Mandelbrot Set with Blue Square and Green Circle as Overlays_
 
 # Test PinePhone Display Engine
 
@@ -620,6 +622,10 @@ Yeah we need a few steps to build the Test Code because we patched together a fe
     [(See the next chapter)](https://lupyuen.github.io/articles/de#p-boot-display-code)
 
 The steps will be a lot simpler when we have completed the  Display Engine Driver for NuttX.
+
+![Running p-boot Display Code on Apache NuttX RTOS with logging](https://lupyuen.github.io/images/de-run.png)
+
+_Running p-boot Display Code on Apache NuttX RTOS with logging_
 
 # p-boot Display Code
 
