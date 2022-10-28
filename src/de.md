@@ -627,7 +627,7 @@ The steps will be a lot simpler when we have completed the  Display Engine Drive
 
 ![Running p-boot Display Code on Apache NuttX RTOS with logging](https://lupyuen.github.io/images/de-run.png)
 
-_Running p-boot Display Code on Apache NuttX RTOS with logging_
+[_Running p-boot Display Code on Apache NuttX RTOS with logging_](https://github.com/lupyuen/pinephone-nuttx#testing-p-boot-display-engine-on-pinephone)
 
 # p-boot Display Code
 
