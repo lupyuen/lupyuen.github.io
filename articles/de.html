@@ -826,23 +826,23 @@ Mixer: 0x115 0000 = 0x0
 Channel 3: Disable Scaler
 Mixer: 0x116 0000 = 0x0</code></pre></div></li>
 <li>
-<p>Channel 1 has Pixel Format <strong>XRGB 8888</strong></p>
-<p>(<strong>OVL_V_ATTCTL → LAY_FBFMT</strong> = <code>0x04</code>)</p>
-<p>Channels 2 and 3 have Pixel Format <strong>ARGB 8888</strong></p>
-<p>(<strong>OVL_V_ATTCTL → LAY_FBFMT</strong> = <code>0x01</code>)</p>
-<p>(See page 94)</p>
+<p>Channel 1 has Pixel Format <strong>XRGB 8888</strong>:</p>
+<p><strong>OVL_V_ATTCTL → LAY_FBFMT</strong> = <code>0x04</code></p>
+<p>Channels 2 and 3 have Pixel Format <strong>ARGB 8888</strong>:</p>
+<p><strong>OVL_V_ATTCTL → LAY_FBFMT</strong> = <code>0x01</code></p>
+<p><em>(See page 94)</em></p>
 </li>
 <li>
 <p><strong>Set Overlay</strong> (Assume Layer = 0)</p>
 <ul>
 <li>
 <p>UI Config Attr (<strong>OVL_UI_ATTCTL</strong> @ OVL_UI Offset <code>0x00</code>): <em>OVL_UI attribute control register</em></p>
-<p>For Channel 1: Set to <code>0xff00</code> <code>0405</code> (Why?)</p>
-<p>For Channels 2 and 3: <code>0xff00</code> <code>0005</code> (Why?)</p>
+<p><strong>For Channel 1:</strong> Set to <code>0xff00</code> <code>0405</code> <em>(Why?)</em></p>
+<p><strong>For Channels 2 and 3:</strong> <code>0xff00</code> <code>0005</code> <em>(Why?)</em></p>
 </li>
 <li>
 <p>UI Config Top LAddr (<strong>OVL_UI_TOP_LADD</strong> @ OVL_UI Offset <code>0x10</code>): <em>OVL_UI top field memory block low address register</em></p>
-<p>Set to Framebuffer Address: <code>fb0</code>, <code>fb1</code>, <code>fb2</code></p>
+<p>Set to Framebuffer Address: <code>fb0</code>, <code>fb1</code> or <code>fb2</code></p>
 </li>
 <li>
 <p>UI Config Pitch (<strong>OVL_UI_PITCH</strong> @ OVL_UI Offset <code>0x0C</code>): <em>OVL_UI memory pitch register</em></p>
@@ -903,23 +903,23 @@ GLB Size:        0x110 000c = 0x59f 02cf (1439 * 16 + 719)</code></pre></div></l
 <p><strong>Set Blender Input Pipe</strong> (N = Pipe Number, from 0 to 2 for Channels 1 to 3)</p>
 <ul>
 <li>
-<p>BLD Pipe InSize (<strong>BLD_CH_ISIZE</strong> @ BLD Offset <code>0x008</code> + <code>N*0x14</code>): <em>BLD input memory size register(N=0,1,2,3,4)</em></p>
+<p>BLD Pipe InSize (<strong>BLD_CH_ISIZE</strong> @ BLD Offset <code>0x008</code> + <code>N*0x10</code>): <em>BLD input memory size register(N=0,1,2,3,4)</em></p>
 <p>Set to <code>(height-1) &lt;&lt; 16 + (width-1)</code></p>
 </li>
 <li>
-<p>BLD Pipe FColor (<strong>BLD_FILL_COLOR</strong> @ BLD Offset <code>0x004</code> + <code>N*0x14</code>): <em>BLD fill color register(N=0,1,2,3,4)</em></p>
-<p>Set to <code>0xff00</code> <code>0000</code> (Why?)</p>
+<p>BLD Pipe FColor (<strong>BLD_FILL_COLOR</strong> @ BLD Offset <code>0x004</code> + <code>N*0x10</code>): <em>BLD fill color register(N=0,1,2,3,4)</em></p>
+<p>Set to <code>0xff00</code> <code>0000</code> <em>(Why?)</em></p>
 </li>
 <li>
-<p>BLD Pipe Offset (<strong>BLD_CH_OFFSET</strong> @ BLD Offset <code>0x00C</code> + <code>N*0x14</code>): <em>BLD input memory offset register(N=0,1,2,3,4)</em></p>
-<p>Set to 0 or <code>0x34</code> <code>0034</code> (Why?)</p>
+<p>BLD Pipe Offset (<strong>BLD_CH_OFFSET</strong> @ BLD Offset <code>0x00C</code> + <code>N*0x10</code>): <em>BLD input memory offset register(N=0,1,2,3,4)</em></p>
+<p>Set to 0 or <code>0x34</code> <code>0034</code> <em>(Why?)</em></p>
 </li>
 <li>
 <p>BLD Pipe Mode (<strong>BLD_CTL</strong> @ BLD Offset <code>0x090</code> – <code>0x09C</code>): <em>BLD control register</em></p>
-<p>Set to <code>0x301</code> <code>0301</code> (Why?)</p>
+<p>Set to <code>0x301</code> <code>0301</code> <em>(Why?)</em></p>
 </li>
 </ul>
-<p><strong>Note: Should <code>N*0x14</code> be <code>N*0x10</code> instead?</strong></p>
+<p><strong>Note: Log shows <code>N*0x10</code>, doc says <code>N*0x14</code></strong></p>
 <div class="example-wrap"><pre class="language-text"><code>Channel 1: Set Blender Input Pipe 0 (fb0 is 720 x 1440)
 BLD Pipe InSize: 0x110 1008 = 0x59f 02cf (1439 * 16 + 719)
 BLD Pipe FColor: 0x110 1004 = 0xff00 0000
@@ -960,11 +960,11 @@ Mixer: 0x116 0000 = 0x0</code></pre></div></li>
 <ul>
 <li>
 <p>BLD Route (<strong>BLD_CH_RTCTL</strong> @ BLD Offset <code>0x080</code>): <em>BLD routing control register</em></p>
-<p>Set to <code>0x321</code> (Why?)</p>
+<p>Set to <code>0x321</code> <em>(Why?)</em></p>
 </li>
 <li>
 <p>BLD FColor Control (<strong>BLD_FILLCOLOR_CTL</strong> @ BLD Offset <code>0x000</code>): <em>BLD fill color control register</em></p>
-<p>Set to <code>0x701</code> (Why?)</p>
+<p>Set to <code>0x701</code> <em>(Why?)</em></p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Set BLD Route and BLD FColor Control
@@ -975,7 +975,7 @@ BLD FColor Control: 0x110 1000 = 0x701</code></pre></div></li>
 <ul>
 <li>
 <p>GLB DBuff (<strong>GLB_DBUFFER</strong> @ GLB Offset <code>0x008</code>): <em>Global double buffer control register</em></p>
-<p>Set to 1 (Why?)</p>
+<p>Set to 1 <em>(Why?)</em></p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Apply Settings
