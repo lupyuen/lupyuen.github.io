@@ -778,69 +778,116 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/de.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/de.md)
 
+![Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)](https://lupyuen.github.io/images/de-block1a.jpg)
+
+[_Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)_](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)
+
 # Appendix: Overview of Allwinner A64 Display Engine
 
-TODO
+The official doc for the __Allwinner A64 Display Engine__ is here...
 
-[DE2_Register_Guide](https://linux-sunxi.org/DE2_Register_Guide)
+-   [__Allwinner Display Engine 2.0 Specifications__](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-According to the doc, DE Base Address is 0x0100 0000 (Page 24)
+PinePhone's A64 Display Engine is hidden under [__Allwinner H3 (page 22)__](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf), because Allwinner A64 is actually a H3 upgraded with 64-bit Cores.
+
+Earlier we said that Allwinner A64's Display Engine is a __Real-Time Mixer__ that handles real-time __DMA, Overlay, Scaling and Blending__ of the Framebuffers...
+
+And the Display Engine pushes the output pixels to the __Timing Controller (TCON0)__ for display on PinePhone's LCD Display...
+
+-   [__"Display Rendering on PinePhone"__](https://lupyuen.github.io/articles/de#display-rendering-on-pinephone)
+
+According to the doc, the __Display Engine Base Address__ is __`0x0100` `0000`__ (Page 24)
 
 _What's a Display Engine Mixer?_
 
 __DE RT-MIXER:__ (Page 87)
-> The RT-mixer Core consist of dma, overlay, scaler and blender block. It supports 4 layers overlay in one pipe, and its result can scaler up or down to blender in the next processing.
+> "The RT-mixer Core consist of dma, overlay, scaler and blender block. It supports 4 layers overlay in one pipe, and its result can scaler up or down to blender in the next processing."
 
-The Display Engine has 2 Mixers: RT-MIXER0 and RT-MIXER1...
+The Display Engine has 2 Mixers: RT-MIXER0 and RT-MIXER1.
 
-__DE RT-MIXER0__ has 4 Channels (DE Offset 0x10 0000, Page 87)
--   Channel 0 for Video: DMA0, Video Overlay, Video Scaler
--   Channels 1, 2, 3 for UI: DMA1 / 2 / 3, UI Overlays, UI Scalers, UI Blenders
--   4 Overlay Layers per Channel
--   Layer priority is Layer 3 > Layer2 > Layer 1 > Layer 0 (Page 89)
--   Channel 0 is unused (we don't use video right now)
--   Channel 1 has format XRGB 8888
--   Channels 2 and 3 have format ARGB 8888
--   MIXER0 Registers:
-    -   GLB at MIXER0 Offset 0x00000 (de_glb_regs)
-    -   BLD (Blender) at MIXER0 Offset 0x01000 (de_bld_regs)
-    -   OVL_V(CH0) (Video Overlay / Channel 0) at MIXER0 Offset 0x2000 (Unused)
-    -   OVL_UI(CH1) (UI Overlay / Channel 1) at MIXER0 Offset 0x3000
-    -   OVL_UI(CH2) (UI Overlay / Channel 2) at MIXER0 Offset 0x4000
-    -   OVL_UI(CH3) (UI Overlay / Channel 3) at MIXER0 Offset 0x5000
-    -   POST_PROC2 at MIXER0 Offset 0xB0000 (de_csc_regs)
+__DE RT-MIXER0__ has 4 Channels (DE Offset __`0x10` `0000`__, Page 87)
 
-__DE RT-MIXER1__ has 2 Channels (DE Offset 0x20 0000, Page 23)
--   Channel 0 for Video: DMA0, Video Overlay, Video Scaler
--   Channel 1 for UI: DMA1, UI Overlay, UI Scaler, UI Blender
--   We don't use MIXER1 right now
+-   __Channel 0__ for Video
 
-RT-MIXER0 and RT-MIXER1 are multiplexed to Timing Controller TCON0.
+    (DMA0, Video Overlay, Video Scaler)
 
-(TCON0 is connected to ST7703 over MIPI DSI)
+-   __Channels 1, 2 and 3__ for UI
 
-So MIXER0 mixes 1 Video Channel with 3 UI Channels over DMA ... And pumps the pixels continuously to ST7703 LCD Controller (via the Timing Controller)
+    (DMA1, 2 and 3, 3 x UI Overlays, 3 x UI Scalers, 3 x UI Blenders)
 
-TODO
+-   __4 Overlay Layers__ per Channel
 
-Let's use the 3 UI Channels to render: 1️⃣ Mandelbrot Set 2️⃣ Blue Square 3️⃣ Green Circle
+    (We only use 1 Overlay Layer per Channel)
 
-![Mandelbrot Set with UI Overlays on PinePhone](https://lupyuen.github.io/images/de-overlay.jpg)
+-   __Layer Priority__ is Layer 3 > Layer2 > Layer 1 > Layer 0 (Page 89)
 
-TODO: Other Display Engine Features
+Our Display Engine Demo __configures the 4 Channels__ as follows...
+
+-   __Channel 0__ is unused
+
+    (No video right now)
+
+-   __Channel 1__ has Pixel Format XRGB 8888
+
+    (Alpha Channel is disabled)
+
+-   __Channels 2 and 3__ have Pixel Format ARGB 8888
+
+    (Alpha Channel is enabled)
+
+__Hardware Registers__ for RT-MIXER0...
+
+-   __GLB__ at MIXER0 Offset __`0x0000`__
+-   __BLD__ (Blender) at MIXER0 Offset __`0x1000`__
+-   __OVL_V(CH0)__ (Video Overlay / Channel 0) at MIXER0 Offset __`0x2000`__ (Unused)
+-   __OVL_UI(CH1)__ (UI Overlay / Channel 1) at MIXER0 Offset __`0x3000`__
+-   __OVL_UI(CH2)__ (UI Overlay / Channel 2) at MIXER0 Offset __`0x4000`__
+-   __OVL_UI(CH3)__ (UI Overlay / Channel 3) at MIXER0 Offset __`0x5000`__
+-   __POST_PROC2__ at MIXER0 Offset __`0xB0000`__
+
+The pic below shows how DE RT-MIXER0 mixes together __3 UI Channels (Framebuffers)__ via DMA1, 2 and 3 (plus a Video Channel on DMA0)...
+
+![Real-Time Mixer in A64 Display Engine (Page 22)](https://lupyuen.github.io/images/de-mixer1a.jpg)
+
+[_Real-Time Mixer in A64 Display Engine (Page 22)_](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+__DE RT-MIXER1__ has 2 Channels (DE Offset __`0x20` `0000`__, Page 23)
+-   __Channel 0__ for Video 
+
+    (DMA0, Video Overlay, Video Scaler)
+
+-   __Channel 1__ for UI 
+
+    (DMA1, UI Overlay, UI Scaler, UI Blender)
+
+-   We don't use RT-MIXER1 right now
+
+RT-MIXER0 and RT-MIXER1 are multiplexed to __Timing Controller TCON0__. [(Like this)](https://lupyuen.github.io/images/de-block1a.jpg)
+
+TCON0 is connected to PinePhone's __ST7703 LCD Controller__ over MIPI Display Serial Interface. [(See this)](https://lupyuen.github.io/articles/dsi)
+
+So RT-MIXER0 __mixes 1 Video Channel with 3 UI Channels__ over DMA. And pumps the pixels continuously to ST7703 LCD Controller. (Via the Timing Controller TCON0)
+
+In today's demo we used the 3 UI Channels to render: 1️⃣ Mandelbrot Set 2️⃣ Blue Square 3️⃣ Green Circle...
+
+![Mandelbrot Set with Blue Square and Green Circle as Overlays](https://lupyuen.github.io/images/de-overlay.jpg)
+
+[_Mandelbrot Set with Blue Square and Green Circle as Overlays_](https://lupyuen.github.io/articles/de#test-pinephone-display-engine)
 
 We won't use these Display Engine Features today...
 
-__DE RT-WB:__ (Page 116)
-> The Real-time write-back controller (RT-WB) provides data capture function for display engine. It captures data from RT-mixer module, performs the image resizing function, and then write-back to SDRAM.
+__DE RT-WB (Write-Back Controller):__ (Page 116)
+> "The Real-time write-back controller (RT-WB) provides data capture function for display engine. It captures data from RT-mixer module, performs the image resizing function, and then write-back to SDRAM."
 
 (For screen capture?)
 
-__DE VSU:__ (Page 128)
-> The Video Scaler (VS) provides YUV format image resizing function for display engine. It receives data from overlay module, performs the image resizing function, and outputs to video post-processing modules. 
+__DE VSU (Video Scaler):__ (Page 128)
+> "The Video Scaler (VS) provides YUV format image resizing function for display engine. It receives data from overlay module, performs the image resizing function, and outputs to video post-processing modules."
 
 __DE Rotation:__ (Page 137)
-> There are several types of rotation: clockwise 0/90/180/270 degree Rotation and H-Flip/V-Flip. Operation of Copy is the same as a 0 degree rotation.
+> "There are several types of rotation: clockwise 0/90/180/270 degree Rotation and H-Flip/V-Flip. Operation of Copy is the same as a 0 degree rotation."
+
+(Also check out this [__DE2 Register Guide__](https://linux-sunxi.org/DE2_Register_Guide))
 
 # Appendix: Programming the A64 Display Engine
 
@@ -850,9 +897,13 @@ Based on the log captured from our instrumented [test_display.c](https://github.
 
 This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that implements Display Rendering...
 
+(Refer to Memory Mapping List and Register List at Page 90)
+
 1.  Configure Blender...
-    -   BLD BkColor (BLD_BK_COLOR Offset 0x88): BLD background color register
-    -   BLD Premultiply (BLD_PREMUL_CTL Offset 0x84): BLD pre-multiply control register
+
+    -   BLD BkColor (__BLD_BK_COLOR__ Offset `0x88`): BLD background color register
+
+    -   BLD Premultiply (__BLD_PREMUL_CTL__ Offset `0x84`): BLD pre-multiply control register
 
     ```text
     Configure Blender
@@ -864,8 +915,9 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
     1.  If Channel is unused, disable Overlay, Pipe and Scaler. Skip to next Channel
 
-        -   UI Config Attr (OVL_UI_ATTCTL @ OVL_UI Offset 0x00): OVL_UI attribute control register
-        -   Mixer (??? @ 0x113 0000 + 0x10000 * Channel)
+        -   UI Config Attr (__OVL_UI_ATTCTL__ @ OVL_UI Offset `0x00`): OVL_UI attribute control register
+
+        -   Mixer (__???__ @ `0x113` `0000` + `0x10000` * Channel)
 
         ```text
         Channel 2: Disable Overlay and Pipe
@@ -884,12 +936,18 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
     1.  Channel 1 has format XRGB 8888, Channel 2 and 3 have format ARGB 8888
 
     1.  Set Overlay (Assume Layer = 0)
-        -   UI Config Attr (OVL_UI_ATTCTL @ OVL_UI Offset 0x00): OVL_UI attribute control register
-        -   UI Config Top LAddr (OVL_UI_TOP_LADD @ OVL_UI Offset 0x10): OVL_UI top field memory block low address register
-        -   UI Config Pitch (OVL_UI_PITCH @ OVL_UI Offset 0x0C): OVL_UI memory pitch register
-        -   UI Config Size (OVL_UI_MBSIZE @ OVL_UI Offset 0x04): OVL_UI memory block size register
-        -   UI Overlay Size (OVL_UI_SIZE @ OVL_UI Offset 0x88): OVL_UI overlay window size register
-        -   IO Config Coord (OVL_UI_COOR @ OVL_UI Offset 0x08): OVL_UI memory block coordinate register
+
+        -   UI Config Attr (__OVL_UI_ATTCTL__ @ OVL_UI Offset `0x00`): OVL_UI attribute control register
+
+        -   UI Config Top LAddr (__OVL_UI_TOP_LADD__ @ OVL_UI Offset `0x10`): OVL_UI top field memory block low address register
+
+        -   UI Config Pitch (__OVL_UI_PITCH__ @ OVL_UI Offset `0x0C`): OVL_UI memory pitch register
+
+        -   UI Config Size (__OVL_UI_MBSIZE__ @ OVL_UI Offset `0x04`): OVL_UI memory block size register
+
+        -   UI Overlay Size (__OVL_UI_SIZE__ @ OVL_UI Offset `0x88`): OVL_UI overlay window size register
+
+        -   IO Config Coord (__OVL_UI_COOR__ @ OVL_UI Offset `0x08`): OVL_UI memory block coordinate register
 
         ```text
         Channel 1: Set Overlay (fb0 is 720 x 1440)
@@ -920,8 +978,10 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
         Note that UI Config Size and UI Overlay Size are `(height-1) << 16 + (width-1)`
 
     1.  For Channel 1: Set Blender Output
-        -   BLD Output Size (BLD_SIZE @ BLD Offset 0x08C): BLD output size setting register
-        -   GLB Size (GLB_SIZE @ GLB Offset 0x00C): Global size register
+
+        -   BLD Output Size (__BLD_SIZE__ @ BLD Offset `0x08C`): BLD output size setting register
+
+        -   GLB Size (__GLB_SIZE__ @ GLB Offset `0x00C`): Global size register
 
         ```text
         Channel 1: Set Blender Output
@@ -930,10 +990,14 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
         ```
 
     1.  Set Blender Input Pipe (N = Pipe Number, from 0 to 2 for Channels 1 to 3)
-        -   BLD Pipe InSize (BLD_CH_ISIZE @ BLD Offset 0x008 + N*0x14): BLD input memory size register(N=0,1,2,3,4)
-        -   BLD Pipe FColor (BLD_FILL_COLOR @ BLD Offset 0x004 + N*0x14): BLD fill color register(N=0,1,2,3,4)
-        -   BLD Pipe Offset (BLD_CH_OFFSET @ BLD Offset 0x00C + N*0x14): BLD input memory offset register(N=0,1,2,3,4)
-        -   BLD Pipe Mode (BLD_CTL @ BLD Offset 0x090 – 0x09C): BLD control register
+
+        -   BLD Pipe InSize (__BLD_CH_ISIZE__ @ BLD Offset `0x008` + `N*0x14`): BLD input memory size register(N=0,1,2,3,4)
+
+        -   BLD Pipe FColor (__BLD_FILL_COLOR__ @ BLD Offset `0x004` + `N*0x14`): BLD fill color register(N=0,1,2,3,4)
+
+        -   BLD Pipe Offset (__BLD_CH_OFFSET__ @ BLD Offset `0x00C` + `N*0x14`): BLD input memory offset register(N=0,1,2,3,4)
+
+        -   BLD Pipe Mode (__BLD_CTL__ @ BLD Offset `0x090` – `0x09C`): BLD control register
 
         (Should `N*0x14` be `N*0x10` instead?)
 
@@ -973,8 +1037,10 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
         ```
 
 1.  Set BLD Route and BLD FColor Control
-    -   BLD Route (BLD_CH_RTCTL @ BLD Offset 0x080): BLD routing control register
-    -   BLD FColor Control (BLD_FILLCOLOR_CTL @ BLD Offset 0x000): BLD fill color control register
+
+    -   BLD Route (__BLD_CH_RTCTL__ @ BLD Offset `0x080`): BLD routing control register
+
+    -   BLD FColor Control (__BLD_FILLCOLOR_CTL__ @ BLD Offset `0x000`): BLD fill color control register
 
     ```text
     Set BLD Route and BLD FColor Control
@@ -983,7 +1049,8 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
     ```
 
 1.  Apply Settings: GLB DBuff
-    -   GLB DBuff (GLB_DBUFFER @ GLB Offset 0x008): Global double buffer control register
+
+    -   GLB DBuff (__GLB_DBUFFER__ @ GLB Offset `0x008`): Global double buffer control register
 
     ```text
     Apply Settings
@@ -991,5 +1058,3 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
     ```
 
 [(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx#testing-p-boot-display-engine-on-pinephone)
-
-(See Memory Mapping List and Register List at Page 90)
