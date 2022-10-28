@@ -615,6 +615,8 @@ Yeah we need a few steps to build the Test Code because we patched together a fe
 
 -   __Apache NuttX RTOS for PinePhone__
 
+    [(See this)](https://lupyuen.github.io/articles/uboot)
+
 -   __Zig Driver for MIPI Display Serial Interface__
 
     [(More about this)](https://lupyuen.github.io/articles/dsi2)
@@ -624,6 +626,8 @@ Yeah we need a few steps to build the Test Code because we patched together a fe
     [(See the next chapter)](https://lupyuen.github.io/articles/de#p-boot-display-code)
 
 The steps will be a lot simpler when we have completed the  Display Engine Driver for NuttX.
+
+Let's talk about the p-boot Display Code...
 
 ![Running p-boot Display Code on Apache NuttX RTOS with logging](https://lupyuen.github.io/images/de-run.png)
 
@@ -645,7 +649,7 @@ To test the A64 Display Engine on Apache NuttX RTOS, we borrowed these [__Source
 
 [(Plus a whole bunch of Header Files)](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L115-L135)
 
-We modified the files above to compile on NuttX...
+Then we modified the above files to compile on NuttX...
 
 -   [__Modified p-boot Display Code__](https://github.com/lupyuen/pinephone-nuttx/releases/download/pboot6/p-boot.6.zip)
 
@@ -704,7 +708,7 @@ Our findings are documented here...
 
 -   [__"Programming the Allwinner A64 Display Engine"__](https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine)
 
-This is extremely helpful when we create the NuttX Display Driver for PinePhone...
+This is very helpful when we create the NuttX Display Driver for PinePhone...
 
 ![Testing the NuttX Display Driver for PinePhone](https://lupyuen.github.io/images/dsi2-title.jpg)
 
