@@ -907,7 +907,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
 (Refer to Memory Mapping List and Register List at Page 90)
 
-1.  Configure Blender...
+1.  __Configure Blender...__
 
     -   BLD BkColor (__BLD_BK_COLOR__ Offset `0x88`): BLD background color register
 
@@ -919,13 +919,17 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
     BLD Premultiply: 0x110 1084 = 0x0
     ```
 
-1.  For Channels 1 to 3...
+1.  __For Channels 1 to 3...__
 
-    1.  If Channel is unused, disable Overlay, Pipe and Scaler. Skip to next Channel
+    1.  __If Channel is unused,__ disable Overlay, Pipe and Scaler. Skip to next Channel
 
-        -   UI Config Attr (__OVL_UI_ATTCTL__ @ OVL_UI Offset `0x00`): OVL_UI attribute control register
+        -   UI Config Attr (__OVL_UI_ATTCTL__ @ OVL_UI Offset `0x00`): _OVL_UI attribute control register_
+
+            Set to 0
 
         -   Mixer (__???__ @ `0x113` `0000` + `0x10000` * Channel)
+
+            Set to 0
 
         ```text
         Channel 2: Disable Overlay and Pipe
@@ -941,21 +945,43 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
         Mixer: 0x116 0000 = 0x0
         ```
 
-    1.  Channel 1 has format XRGB 8888, Channel 2 and 3 have format ARGB 8888
+    1.  Channel 1 has Pixel Format __XRGB 8888__
 
-    1.  Set Overlay (Assume Layer = 0)
+        (__OVL_V_ATTCTL → LAY_FBFMT__ = `0x04`)
+    
+        Channels 2 and 3 have Pixel Format __ARGB 8888__
 
-        -   UI Config Attr (__OVL_UI_ATTCTL__ @ OVL_UI Offset `0x00`): OVL_UI attribute control register
+        (__OVL_V_ATTCTL → LAY_FBFMT__ = `0x01`)
 
-        -   UI Config Top LAddr (__OVL_UI_TOP_LADD__ @ OVL_UI Offset `0x10`): OVL_UI top field memory block low address register
+        (See page 94)
 
-        -   UI Config Pitch (__OVL_UI_PITCH__ @ OVL_UI Offset `0x0C`): OVL_UI memory pitch register
+    1.  __Set Overlay__ (Assume Layer = 0)
 
-        -   UI Config Size (__OVL_UI_MBSIZE__ @ OVL_UI Offset `0x04`): OVL_UI memory block size register
+        -   UI Config Attr (__OVL_UI_ATTCTL__ @ OVL_UI Offset `0x00`): _OVL_UI attribute control register_
 
-        -   UI Overlay Size (__OVL_UI_SIZE__ @ OVL_UI Offset `0x88`): OVL_UI overlay window size register
+            For Channel 1: Set to `0xff00` `0405` (Why?)
 
-        -   IO Config Coord (__OVL_UI_COOR__ @ OVL_UI Offset `0x08`): OVL_UI memory block coordinate register
+            For Channels 2 and 3: `0xff00` `0005` (Why?)
+
+        -   UI Config Top LAddr (__OVL_UI_TOP_LADD__ @ OVL_UI Offset `0x10`): _OVL_UI top field memory block low address register_
+
+            Set to Framebuffer Address: `fb0`, `fb1`, `fb2`
+
+        -   UI Config Pitch (__OVL_UI_PITCH__ @ OVL_UI Offset `0x0C`): _OVL_UI memory pitch register_
+
+            Set to `(width * 4)`
+
+        -   UI Config Size (__OVL_UI_MBSIZE__ @ OVL_UI Offset `0x04`): _OVL_UI memory block size register_
+
+            Set to `(height-1) << 16 + (width-1)`
+
+        -   UI Overlay Size (__OVL_UI_SIZE__ @ OVL_UI Offset `0x88`): _OVL_UI overlay window size register_
+
+            Set to `(height-1) << 16 + (width-1)`
+
+        -   IO Config Coord (__OVL_UI_COOR__ @ OVL_UI Offset `0x08`): _OVL_UI memory block coordinate register_
+
+            Set to 0
 
         ```text
         Channel 1: Set Overlay (fb0 is 720 x 1440)
@@ -983,13 +1009,15 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
         IO Config Coord:     0x110 5008 = 0x0
         ```
 
-        Note that UI Config Size and UI Overlay Size are `(height-1) << 16 + (width-1)`
+    1.  __For Channel 1:__ Set Blender Output
 
-    1.  For Channel 1: Set Blender Output
+        -   BLD Output Size (__BLD_SIZE__ @ BLD Offset `0x08C`): _BLD output size setting register_
 
-        -   BLD Output Size (__BLD_SIZE__ @ BLD Offset `0x08C`): BLD output size setting register
+            Set to `(height-1) << 16 + (width-1)`
+            
+        -   GLB Size (__GLB_SIZE__ @ GLB Offset `0x00C`): _Global size register_
 
-        -   GLB Size (__GLB_SIZE__ @ GLB Offset `0x00C`): Global size register
+            Set to `(height-1) << 16 + (width-1)`
 
         ```text
         Channel 1: Set Blender Output
@@ -997,17 +1025,25 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
         GLB Size:        0x110 000c = 0x59f 02cf (1439 * 16 + 719)
         ```
 
-    1.  Set Blender Input Pipe (N = Pipe Number, from 0 to 2 for Channels 1 to 3)
+    1.  __Set Blender Input Pipe__ (N = Pipe Number, from 0 to 2 for Channels 1 to 3)
 
-        -   BLD Pipe InSize (__BLD_CH_ISIZE__ @ BLD Offset `0x008` + `N*0x14`): BLD input memory size register(N=0,1,2,3,4)
+        -   BLD Pipe InSize (__BLD_CH_ISIZE__ @ BLD Offset `0x008` + `N*0x14`): _BLD input memory size register(N=0,1,2,3,4)_
 
-        -   BLD Pipe FColor (__BLD_FILL_COLOR__ @ BLD Offset `0x004` + `N*0x14`): BLD fill color register(N=0,1,2,3,4)
+            Set to `(height-1) << 16 + (width-1)`
 
-        -   BLD Pipe Offset (__BLD_CH_OFFSET__ @ BLD Offset `0x00C` + `N*0x14`): BLD input memory offset register(N=0,1,2,3,4)
+        -   BLD Pipe FColor (__BLD_FILL_COLOR__ @ BLD Offset `0x004` + `N*0x14`): _BLD fill color register(N=0,1,2,3,4)_
 
-        -   BLD Pipe Mode (__BLD_CTL__ @ BLD Offset `0x090` – `0x09C`): BLD control register
+            Set to `0xff00` `0000` (Why?)
 
-        (Should `N*0x14` be `N*0x10` instead?)
+        -   BLD Pipe Offset (__BLD_CH_OFFSET__ @ BLD Offset `0x00C` + `N*0x14`): _BLD input memory offset register(N=0,1,2,3,4)_
+
+            Set to 0 or `0x34` `0034` (Why?)
+
+        -   BLD Pipe Mode (__BLD_CTL__ @ BLD Offset `0x090` – `0x09C`): _BLD control register_
+
+            Set to `0x301` `0301` (Why?)
+
+        __Note: Should `N*0x14` be `N*0x10` instead?__
 
         ```text
         Channel 1: Set Blender Input Pipe 0 (fb0 is 720 x 1440)
@@ -1029,9 +1065,11 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
         BLD Pipe Mode:   0x110 1098 = 0x301 0301
         ```
 
-        Note that BLD Pipe InSize is `(height-1) << 16 + (width-1)`
+    1.  __Disable Scaler__ (Assume we're not scaling)
 
-    1.  Disable Scaler (assuming we're not using Scaler)
+        -   Mixer (__???__ @ `0x113` `0000` + `0x10000` * Channel)
+
+            Set to 0
 
         ```text
         Channel 1: Disable Scaler
@@ -1044,11 +1082,15 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
         Mixer: 0x116 0000 = 0x0
         ```
 
-1.  Set BLD Route and BLD FColor Control
+1.  __Set BLD Route and BLD FColor Control__
 
-    -   BLD Route (__BLD_CH_RTCTL__ @ BLD Offset `0x080`): BLD routing control register
+    -   BLD Route (__BLD_CH_RTCTL__ @ BLD Offset `0x080`): _BLD routing control register_
 
-    -   BLD FColor Control (__BLD_FILLCOLOR_CTL__ @ BLD Offset `0x000`): BLD fill color control register
+        Set to `0x321` (Why?)
+
+    -   BLD FColor Control (__BLD_FILLCOLOR_CTL__ @ BLD Offset `0x000`): _BLD fill color control register_
+
+        Set to `0x701` (Why?)
 
     ```text
     Set BLD Route and BLD FColor Control
@@ -1056,9 +1098,11 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
     BLD FColor Control: 0x110 1000 = 0x701
     ```
 
-1.  Apply Settings: GLB DBuff
+1.  __Apply Settings__
 
-    -   GLB DBuff (__GLB_DBUFFER__ @ GLB Offset `0x008`): Global double buffer control register
+    -   GLB DBuff (__GLB_DBUFFER__ @ GLB Offset `0x008`): _Global double buffer control register_
+
+        Set to 1 (Why?)
 
     ```text
     Apply Settings
