@@ -482,8 +482,9 @@ d-&gt;planes[2].alpha    = 128;   // Dest Alpha</code></pre></div>
 display_commit(d);</code></pre></div>
 <p>We should see the Animated Mandelbrot Set, with Blue Square and (very faint) Green Circle as Overlays. (Pic below)</p>
 <p>That’s how we render 3 UI Channels (with overlay blending) on PinePhone’s Display Engine!</p>
-<p>(Why the missing horizontal lines in the Blue Square and Green Circle?)</p>
-<p><img src="https://lupyuen.github.io/images/de-overlay.jpg" alt="Mandelbrot Set with Blue Square and Green Circle on PinePhone" /></p>
+<p>(Why the horizontal lines in the Blue Square and Green Circle?)</p>
+<p><img src="https://lupyuen.github.io/images/de-overlay.jpg" alt="Mandelbrot Set with Blue Square and Green Circle as Overlays" /></p>
+<p><em>Mandelbrot Set with Blue Square and Green Circle as Overlays</em></p>
 <h1 id="test-pinephone-display-engine"><a href="#test-pinephone-display-engine">8 Test PinePhone Display Engine</a></h1>
 <p><em>We’ve seen the Test Code for Display Engine… How do we run the code?</em></p>
 <p>To test the A64 Display Engine, we’ll boot <strong>Apache NuttX RTOS</strong> on PinePhone and run our Test App…</p>
@@ -541,6 +542,8 @@ Apply Settings
 </li>
 </ul>
 <p>The steps will be a lot simpler when we have completed the  Display Engine Driver for NuttX.</p>
+<p><img src="https://lupyuen.github.io/images/de-run.png" alt="Running p-boot Display Code on Apache NuttX RTOS with logging" /></p>
+<p><em>Running p-boot Display Code on Apache NuttX RTOS with logging</em></p>
 <h1 id="p-boot-display-code"><a href="#p-boot-display-code">9 p-boot Display Code</a></h1>
 <p><em>About the code that controls A64 Display Engine… Where is <code>display_commit</code> defined?</em></p>
 <p><a href="https://megous.com/git/p-boot/tree/src/display.c#n2017"><strong><code>display_commit</code></strong></a> comes from the super-helpful <a href="https://xnux.eu/p-boot/"><strong>p-boot PinePhone Bootloader</strong></a> project, which runs directly on PinePhone Hardware. (“Bare Metal”)</p>
