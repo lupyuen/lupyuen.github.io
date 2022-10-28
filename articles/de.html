@@ -79,7 +79,7 @@
 <li><a href="#nuttx-display-driver-for-pinephone">10 NuttX Display Driver for PinePhone</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-overview-of-allwinner-a64-display-engine">12 Appendix: Overview of Allwinner A64 Display Engine</a><ul></ul></li>
-<li><a href="#appendix-programming-the-a64-display-engine">13 Appendix: Programming the A64 Display Engine</a><ul></ul></li></ul></nav><p>📝 <em>2 Nov 2022</em></p>
+<li><a href="#appendix-programming-the-allwinner-a64-display-engine">13 Appendix: Programming the Allwinner A64 Display Engine</a><ul></ul></li></ul></nav><p>📝 <em>2 Nov 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/de-title.jpg" alt="PinePhone rendering Mandelbrot Set on Apache NuttX RTOS" /></p>
 <p><em>PinePhone rendering Mandelbrot Set on Apache NuttX RTOS</em></p>
 <p>In the last 2 articles we talked about <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> (pic above) and how we built a <strong>Display Driver</strong> for PinePhone’s MIPI Display Serial Interface…</p>
@@ -604,7 +604,7 @@ Channel 2: ...</code></pre></div>
 <p>When we study the log, we’ll understand how we should <strong>program the A64 Display Engine</strong> to render the 3 UI Channels.</p>
 <p>Our findings are documented here…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/de#appendix-programming-the-a64-display-engine"><strong>“Programming the A64 Display Engine”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine"><strong>“Programming the Allwinner A64 Display Engine”</strong></a></li>
 </ul>
 <p>This is extremely helpful when we create the NuttX Display Driver for PinePhone…</p>
 <p><img src="https://lupyuen.github.io/images/dsi2-title.jpg" alt="Testing the NuttX Display Driver for PinePhone" /></p>
@@ -685,6 +685,7 @@ Channel 2: ...</code></pre></div>
 <li><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf"><strong>Allwinner Display Engine 2.0 Specifications</strong></a></li>
 </ul>
 <p>PinePhone’s A64 Display Engine is hidden under <a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf"><strong>Allwinner H3 (page 22)</strong></a>, because Allwinner A64 is actually a H3 upgraded with 64-bit Cores.</p>
+<p>(Also check out this <a href="https://linux-sunxi.org/DE2_Register_Guide"><strong>DE2 Register Guide</strong></a>)</p>
 <p>Earlier we said that Allwinner A64’s Display Engine is a <strong>Real-Time Mixer</strong> that handles real-time <strong>DMA, Overlay, Scaling and Blending</strong> of the Framebuffers…</p>
 <p>And the Display Engine pushes the output pixels to the <strong>Timing Controller (TCON0)</strong> for display on PinePhone’s LCD Display…</p>
 <ul>
@@ -753,14 +754,13 @@ Channel 2: ...</code></pre></div>
 <p><strong>Channel 1</strong> for UI </p>
 <p>(DMA1, UI Overlay, UI Scaler, UI Blender)</p>
 </li>
-<li>
-<p>We don’t use RT-MIXER1 right now</p>
-</li>
 </ul>
+<p>(We don’t use RT-MIXER1 right now)</p>
 <p>RT-MIXER0 and RT-MIXER1 are multiplexed to <strong>Timing Controller TCON0</strong>. <a href="https://lupyuen.github.io/images/de-block1a.jpg">(Like this)</a></p>
 <p>TCON0 is connected to PinePhone’s <strong>ST7703 LCD Controller</strong> over MIPI Display Serial Interface. <a href="https://lupyuen.github.io/articles/dsi">(See this)</a></p>
-<p>So RT-MIXER0 <strong>mixes 1 Video Channel with 3 UI Channels</strong> over DMA. And pumps the pixels continuously to ST7703 LCD Controller. (Via the Timing Controller TCON0)</p>
-<p>In today’s demo we used the 3 UI Channels to render: 1️⃣ Mandelbrot Set 2️⃣ Blue Square 3️⃣ Green Circle…</p>
+<p>Hence RT-MIXER0 <strong>mixes 1 Video Channel with 3 UI Channels</strong> over DMA. And pumps the pixels continuously to ST7703 LCD Controller. (Via the Timing Controller TCON0)</p>
+<p>In today’s demo we used the 3 UI Channels to render: 1️⃣ Mandelbrot Set 2️⃣ Blue Square 3️⃣ Green Circle. (Pic below)</p>
+<p>In the next chapter we explain how the 3 UI Channels were rendered by setting the Hardware Registers for A64 Display Engine.</p>
 <p><img src="https://lupyuen.github.io/images/de-overlay.jpg" alt="Mandelbrot Set with Blue Square and Green Circle as Overlays" /></p>
 <p><a href="https://lupyuen.github.io/articles/de#test-pinephone-display-engine"><em>Mandelbrot Set with Blue Square and Green Circle as Overlays</em></a></p>
 <p>We won’t use these Display Engine Features today…</p>
@@ -777,8 +777,7 @@ Channel 2: ...</code></pre></div>
 <blockquote>
 <p>“There are several types of rotation: clockwise 0/90/180/270 degree Rotation and H-Flip/V-Flip. Operation of Copy is the same as a 0 degree rotation.”</p>
 </blockquote>
-<p>(Also check out this <a href="https://linux-sunxi.org/DE2_Register_Guide"><strong>DE2 Register Guide</strong></a>)</p>
-<h1 id="appendix-programming-the-a64-display-engine"><a href="#appendix-programming-the-a64-display-engine">13 Appendix: Programming the A64 Display Engine</a></h1>
+<h1 id="appendix-programming-the-allwinner-a64-display-engine"><a href="#appendix-programming-the-allwinner-a64-display-engine">13 Appendix: Programming the Allwinner A64 Display Engine</a></h1>
 <p>TODO</p>
 <p>Based on the log captured from our instrumented <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c">test_display.c</a>, we have identified the steps to render 3 UI Channels (1 to 3) with the Display Engine <a href="https://megous.com/git/p-boot/tree/src/display.c#n2017">(<code>display_commit</code>)</a></p>
 <p>This is how we’ll create a NuttX Driver for PinePhone’s A64 Display Engine that implements Display Rendering…</p>
