@@ -580,7 +580,7 @@ nsh> hello
 ...
 display_commit
 Configure Blender
-  BLD BkColor: 0x1101088 = 0xff000000
+  BLD BkColor:     0x1101088 = 0xff000000
   BLD Premultiply: 0x1101084 = 0x0
 Channel 1: Set Overlay ...
 Channel 1: Set Blender Output ...
@@ -593,7 +593,7 @@ Channel 3: Set Overlay ...
 Channel 3: Set Blender Input Pipe 2 ...
 Channel 3: Disable Scaler ...
 Set BLD Route and BLD FColor Control
-  BLD Route: 0x1101080 = 0x321
+  BLD Route:          0x1101080 = 0x321
   BLD FColor Control: 0x1101000 = 0x701
 Apply Settings
   GLB DBuff: 0x1100008 = 0x1
@@ -625,7 +625,7 @@ The steps will be a lot simpler when we have completed the  Display Engine Drive
 
 _About the code that controls A64 Display Engine... Where is `display_commit` defined?_
 
-[__`display_commit`__](https://megous.com/git/p-boot/tree/src/display.c#n2017) comes from the super-helpful [__p-boot PinePhone Bootloader__](https://xnux.eu/p-boot/) project, which runs directly on PinePhone Hardware ("Bare Metal").
+[__`display_commit`__](https://megous.com/git/p-boot/tree/src/display.c#n2017) comes from the super-helpful [__p-boot PinePhone Bootloader__](https://xnux.eu/p-boot/) project, which runs directly on PinePhone Hardware. ("Bare Metal")
 
 To test the A64 Display Engine on Apache NuttX RTOS, we borrowed these [__Source Files__](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L135-L142) (relevant to the Display Engine) from p-boot...
 
@@ -651,48 +651,80 @@ The Display Engine's Hardware Registers are described here...
 
 -   [__"Overview of Allwinner A64 Display Engine"__](https://lupyuen.github.io/articles/de#appendix-overview-of-allwinner-a64-display-engine)
 
-TODO
+_But what values does `display_commit` write to the Hardware Registers?_
+
+To find out how [__`display_commit`__](https://megous.com/git/p-boot/tree/src/display.c#n2017) updates the Hardware Registers (while rendering the UI Channels), we modded the p-boot Display Code to __log all Register Writes__...
+
+-   [__Modified p-boot Display Code__](https://github.com/lupyuen/pinephone-nuttx/releases/download/pboot6/p-boot.6.zip)
+
+Which tells us all the __Hardware Registers and their values__...
+
+```text
+Configure Blender
+  BLD BkColor:     0x1101088 = 0xff000000
+  BLD Premultiply: 0x1101084 = 0x0
+
+Channel 1: Set Overlay
+  UI Config Attr:      0x1103000 = 0xff000405
+  UI Config Top LAddr: 0x1103010 = 0x4064a6ac
+  UI Config Pitch:     0x110300c = 0xb40
+  UI Config Size:      0x1103004 = 0x59f02cf
+  UI Overlay Size:     0x1103088 = 0x59f02cf
+  IO Config Coord:     0x1103008 = 0x0
+
+Channel 1: Set Blender Output
+  BLD Output Size: 0x110108c = 0x59f02cf
+  GLB Size:        0x110000c = 0x59f02cf
+
+Channel 1: Set Blender Input Pipe 0
+  BLD Pipe InSize: 0x1101008 = 0x59f02cf
+  BLD Pipe FColor: 0x1101004 = 0xff000000
+  BLD Pipe Offset: 0x110100c = 0x0
+  BLD Pipe Mode:   0x1101090 = 0x3010301
+
+Channel 1: Disable Scaler
+  Mixer: 0x1140000 = 0x0
+
+Channel 2: ...
+```
+
+[(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx#testing-p-boot-display-engine-on-pinephone)
+
+When we study the log, we'll understand how we should __program the A64 Display Engine__ to render the 3 UI Channels.
+
+Our findings are documented here...
 
 -   [__"Programming the A64 Display Engine"__](https://lupyuen.github.io/articles/de#appendix-programming-the-a64-display-engine)
 
-# NuttX Display Driver for PinePhone
+This is extremely helpful when we create the NuttX Display Driver for PinePhone...
 
-TODO
+# NuttX Display Driver for PinePhone
 
 _Once again, why are we doing all this?_
 
 We're now porting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) to PinePhone.
 
-But it will look awfully dull until we __render something__ on PinePhone's LCD Display!
+Someday we hope to have a __fully-functional PinePhone__ running on NuttX RTOS...
 
-That's why we're probing the internals of PinePhone to create a __NuttX Display Driver__.
+-   [__"PinePhone on RTOS"__](https://lupyuen.github.io/articles/arm#pinephone-on-rtos)
+
+(Or maybe run PinePhone as an interactive touchscreen gadget)
+
+To do that, we need a __NuttX Display Driver__. That's why we're probing the internals of PinePhone to build the driver.
 
 _How shall we build the NuttX Driver for PinePhone's Display?_
 
-We shall create a __NuttX Driver for Sitronix ST7703__ based on the code from ST7789...
+We shall create the PinePhone Display Driver based on the __NuttX Driver for Sitronix ST7789__...
 
 -   [__nuttx/drivers/lcd/st7789.c__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/st7789.c)
 
-We have started the __Zig Implementation__ of the NuttX Driver...
+(ST7789 is somewhat similar to PinePhone's ST7703 LCD Controller)
+
+We have started the __Zig Implementation__ of the NuttX Driver for MIPI Display Serial Interface...
 
 -   [__"NuttX RTOS for PinePhone: Display Driver in Zig"__](https://lupyuen.github.io/articles/dsi2)
 
-# Other Display Engine Features
-
-TODO
-
-We won't use these Display Engine Features today...
-
-__DE RT-WB:__ (Page 116)
-> The Real-time write-back controller (RT-WB) provides data capture function for display engine. It captures data from RT-mixer module, performs the image resizing function, and then write-back to SDRAM.
-
-(For screen capture?)
-
-__DE VSU:__ (Page 128)
-> The Video Scaler (VS) provides YUV format image resizing function for display engine. It receives data from overlay module, performs the image resizing function, and outputs to video post-processing modules. 
-
-__DE Rotation:__ (Page 137)
-> There are several types of rotation: clockwise 0/90/180/270 degree Rotation and H-Flip/V-Flip. Operation of Copy is the same as a 0 degree rotation.
+We'll add the A64 Display Engine in the next article!
 
 # What's Next
 
@@ -767,9 +799,26 @@ RT-MIXER0 and RT-MIXER1 are multiplexed to Timing Controller TCON0.
 
 So MIXER0 mixes 1 Video Channel with 3 UI Channels over DMA ... And pumps the pixels continuously to ST7703 LCD Controller (via the Timing Controller)
 
+TODO
+
 Let's use the 3 UI Channels to render: 1️⃣ Mandelbrot Set 2️⃣ Blue Square 3️⃣ Green Circle
 
 ![Mandelbrot Set with UI Overlays on PinePhone](https://lupyuen.github.io/images/de-overlay.jpg)
+
+TODO: Other Display Engine Features
+
+We won't use these Display Engine Features today...
+
+__DE RT-WB:__ (Page 116)
+> The Real-time write-back controller (RT-WB) provides data capture function for display engine. It captures data from RT-mixer module, performs the image resizing function, and then write-back to SDRAM.
+
+(For screen capture?)
+
+__DE VSU:__ (Page 128)
+> The Video Scaler (VS) provides YUV format image resizing function for display engine. It receives data from overlay module, performs the image resizing function, and outputs to video post-processing modules. 
+
+__DE Rotation:__ (Page 137)
+> There are several types of rotation: clockwise 0/90/180/270 degree Rotation and H-Flip/V-Flip. Operation of Copy is the same as a 0 degree rotation.
 
 # Appendix: Programming the A64 Display Engine
 
