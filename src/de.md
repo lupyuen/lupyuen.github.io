@@ -738,9 +738,15 @@ We'll create the PinePhone Display Driver based on the __NuttX Driver for Sitron
 
 -   [__nuttx/drivers/lcd/st7789.c__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/st7789.c)
 
-(ST7789 is somewhat similar to PinePhone's ST7703 LCD Controller)
+That's because ST7789 is somewhat similar to PinePhone's ST7703 LCD Controller.
 
-We have started the __Zig Implementation__ of the NuttX Driver for MIPI Display Serial Interface...
+_But ST7789 doesn't support Framebuffers?_
+
+Yeah for PinePhone we'll call this implementation of __NuttX Framebuffers__...
+
+-   [__nuttx/drivers/lcd/lcd_framebuffer.c__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/lcd_framebuffer.c)
+
+We have started the __Zig Implementation__ of the NuttX Driver (for MIPI Display Serial Interface)...
 
 -   [__"NuttX RTOS for PinePhone: Display Driver in Zig"__](https://lupyuen.github.io/articles/dsi2)
 
