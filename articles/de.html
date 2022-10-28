@@ -532,6 +532,7 @@ Apply Settings
 <ul>
 <li>
 <p><strong>Apache NuttX RTOS for PinePhone</strong></p>
+<p><a href="https://lupyuen.github.io/articles/uboot">(See this)</a></p>
 </li>
 <li>
 <p><strong>Zig Driver for MIPI Display Serial Interface</strong></p>
@@ -543,6 +544,7 @@ Apply Settings
 </li>
 </ul>
 <p>The steps will be a lot simpler when we have completed the  Display Engine Driver for NuttX.</p>
+<p>Let’s talk about the p-boot Display Code…</p>
 <p><img src="https://lupyuen.github.io/images/de-run.png" alt="Running p-boot Display Code on Apache NuttX RTOS with logging" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-p-boot-display-engine-on-pinephone"><em>Running p-boot Display Code on Apache NuttX RTOS with logging</em></a></p>
 <h1 id="p-boot-display-code"><a href="#p-boot-display-code">9 p-boot Display Code</a></h1>
@@ -557,7 +559,7 @@ Apply Settings
 <li><a href="https://megous.com/git/p-boot/tree/src/uboot/arch/arm/mach-sunxi/pinmux.c"><strong>pinmux.c</strong></a></li>
 </ul>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L115-L135">(Plus a whole bunch of Header Files)</a></p>
-<p>We modified the files above to compile on NuttX…</p>
+<p>Then we modified the above files to compile on NuttX…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/pboot6/p-boot.6.zip"><strong>Modified p-boot Display Code</strong></a></li>
 </ul>
@@ -606,7 +608,7 @@ Channel 2: ...</code></pre></div>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine"><strong>“Programming the Allwinner A64 Display Engine”</strong></a></li>
 </ul>
-<p>This is extremely helpful when we create the NuttX Display Driver for PinePhone…</p>
+<p>This is very helpful when we create the NuttX Display Driver for PinePhone…</p>
 <p><img src="https://lupyuen.github.io/images/dsi2-title.jpg" alt="Testing the NuttX Display Driver for PinePhone" /></p>
 <p><a href="https://lupyuen.github.io/articles/dsi2"><em>Testing the NuttX Display Driver for PinePhone</em></a></p>
 <h1 id="nuttx-display-driver-for-pinephone"><a href="#nuttx-display-driver-for-pinephone">10 NuttX Display Driver for PinePhone</a></h1>
