@@ -720,19 +720,21 @@ Someday we hope to have a __fully-functional PinePhone__ running on NuttX RTOS..
 
 -   [__"PinePhone on RTOS"__](https://lupyuen.github.io/articles/arm#pinephone-on-rtos)
 
-(Or maybe just run PinePhone as an interactive touchscreen gadget)
+(Or maybe just run PinePhone on NuttX as a simple touchscreen gadget)
 
 To do that, we need a __NuttX Display Driver__.
 
 That's why we're probing the internals of PinePhone, to learn everything we need to build the driver.
 
-We have documented our earlier research here...
+We've documented our earlier research on PinePhone's __MIPI Display Serial Interface__...
 
 -   [__"Understanding PinePhone's Display (MIPI DSI)"__](https://lupyuen.github.io/articles/dsi)
 
+And today we learnt so much about PinePhone's A64 Display Engine!
+
 _How shall we build the NuttX Driver for PinePhone's Display?_
 
-We shall create the PinePhone Display Driver based on the __NuttX Driver for Sitronix ST7789__...
+We'll create the PinePhone Display Driver based on the __NuttX Driver for Sitronix ST7789__...
 
 -   [__nuttx/drivers/lcd/st7789.c__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/st7789.c)
 
