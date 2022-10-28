@@ -891,6 +891,10 @@ __DE VSU (Video Scaler):__ (Page 128)
 __DE Rotation:__ (Page 137)
 > "There are several types of rotation: clockwise 0/90/180/270 degree Rotation and H-Flip/V-Flip. Operation of Copy is the same as a 0 degree rotation."
 
+![Running p-boot Display Code on Apache NuttX RTOS with logging](https://lupyuen.github.io/images/de-run.png)
+
+[_Running p-boot Display Code on Apache NuttX RTOS with logging_](https://lupyuen.github.io/articles/de#p-boot-display-code)
+
 # Appendix: Programming the Allwinner A64 Display Engine
 
 TODO
