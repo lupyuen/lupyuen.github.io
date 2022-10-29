@@ -154,6 +154,13 @@
   ],
   "publications": [
     {
+      "name": "Rendering PinePhone's Display (DE and TCON0)",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2022-10-30",
+      "website": "https://lupyuen.github.io/articles/de",
+      "summary": "How does Pine64 PinePhone render graphics on its LCD Display? Let's find out about the Allwinner A64 SoC's Display Engine (DE) and Timing Controller (TCON0)."
+    },
+    {
       "name": "NuttX RTOS for PinePhone: Display Driver in Zig",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-10-18",

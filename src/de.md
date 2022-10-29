@@ -1,6 +1,6 @@
 # Rendering PinePhone's Display (DE and TCON0)
 
-📝 _2 Nov 2022_
+📝 _30 Oct 2022_
 
 ![PinePhone rendering Mandelbrot Set on Apache NuttX RTOS](https://lupyuen.github.io/images/de-title.jpg)
 
@@ -770,21 +770,17 @@ We'll add the A64 Display Engine in the next article!
 
 # What's Next
 
-TODO
+I hope we learnt lots today about __Display Rendering on PinePhone__...
 
-I hope we've learnt lots today about __Display Rendering on PinePhone__...
+-   What's the [__Display Engine (DE)__](https://lupyuen.github.io/articles/de#display-rendering-on-pinephone) inside PinePhone
 
-TODO
+-   How the [__Timing Controller (TCON0)__](https://lupyuen.github.io/articles/pio#lcd-controller-tcon0) controls PinePhone's LCD Display
 
--   What's the __Display Engine (DE)__ inside PinePhone
+-   How we call DE and TCON0 to [__render graphics__](https://lupyuen.github.io/articles/de#render-colours)
 
--   How the __Timing Controller (TCON0)__ controls PinePhone's LCD Display
+-   How our new [__PinePhone Display Driver__](https://lupyuen.github.io/articles/de#nuttx-display-driver-for-pinephone) will support DE and TCON0
 
--   How we call DE and TCON0 to __render graphics__
-
--   How our new __PinePhone Display Driver__ will support DE and TCON0
-
-TODO
+Please join me in the next article as we create the PinePhone Display Engine Driver for [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot)!
 
 Check out the other articles on __NuttX RTOS for PinePhone__...
 
