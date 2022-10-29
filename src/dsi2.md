@@ -1167,6 +1167,8 @@ Follow these steps to __download NuttX RTOS__ (with our Zig Driver inside) to a 
 
 -   [__"Test Zig Display Driver for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx#test-zig-display-driver-for-pinephone)
 
+Connect our computer to PinePhone via a [__USB Serial Debug Cable__](https://wiki.pine64.org/index.php/PinePhone#Serial_console). (At 115.2 kbps)
+
 Boot PinePhone with NuttX RTOS in the microSD Card.
 
 (NuttX won't disturb the eMMC Flash Memory)
