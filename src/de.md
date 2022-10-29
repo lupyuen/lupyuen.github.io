@@ -752,6 +752,10 @@ Yeah for PinePhone we'll call this implementation of __NuttX Framebuffers__...
 
 -   [__nuttx/drivers/lcd/lcd_framebuffer.c__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/lcd_framebuffer.c)
 
+And we might get inspired by this implementation of __Display Overlays__ in the STM32 LCD TFT Display Controller (LTDC)...
+
+-   [__nuttx/arch/arm/src/stm32/stm32_ltdc.c__](https://github.com/lupyuen/incubator-nuttx/blob/master/arch/arm/src/stm32/stm32_ltdc.c)
+
 We have started the __Zig Implementation__ of the NuttX Driver (for MIPI Display Serial Interface)...
 
 -   [__"NuttX RTOS for PinePhone: Display Driver in Zig"__](https://lupyuen.github.io/articles/dsi2)
