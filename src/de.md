@@ -758,6 +758,8 @@ We have started the __Zig Implementation__ of the NuttX Driver (for MIPI Display
 
 We'll add the A64 Display Engine in the next article!
 
+![Testing the A64 Display Engine on PinePhone](https://lupyuen.github.io/images/de-test.jpg)
+
 # What's Next
 
 TODO
