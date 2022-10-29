@@ -736,9 +736,13 @@ We've documented our earlier research on PinePhone's __MIPI Display Serial Inter
 
 -   [__"Understanding PinePhone's Display (MIPI DSI)"__](https://lupyuen.github.io/articles/dsi)
 
-And today we learnt so much about PinePhone's A64 Display Engine!
+Today we learnt so much about PinePhone's __A64 Display Engine__...
 
-_How shall we build the NuttX Driver for PinePhone's Display?_
+-   [__"Programming the Allwinner A64 Display Engine"__](https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine)
+
+We're all set to build the NuttX Display Driver for PinePhone!
+
+_How shall we build the PinePhone Display Driver?_
 
 We'll create the PinePhone Display Driver based on the __NuttX Driver for Sitronix ST7789__...
 
@@ -748,7 +752,7 @@ That's because ST7789 is somewhat similar to PinePhone's ST7703 LCD Controller.
 
 _But ST7789 doesn't support Framebuffers?_
 
-Yeah for PinePhone we'll call this implementation of __NuttX Framebuffers__...
+Yeah for PinePhone we'll wrap the A64 DMA Framebuffers with this interface for __NuttX Framebuffers__...
 
 -   [__nuttx/drivers/lcd/lcd_framebuffer.c__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/lcd_framebuffer.c)
 
