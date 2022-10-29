@@ -762,6 +762,20 @@ We'll add the A64 Display Engine in the next article!
 
 TODO
 
+I hope we've learnt lots today about __Display Rendering on PinePhone__...
+
+TODO
+
+-   What's the __Display Engine (DE)__ inside PinePhone
+
+-   How the __Timing Controller (TCON0)__ controls PinePhone's LCD Display
+
+-   How we call DE and TCON0 to __render graphics__
+
+-   How our new __PinePhone Display Driver__ will support DE and TCON0
+
+TODO
+
 Check out the other articles on __NuttX RTOS for PinePhone__...
 
 -   [__"Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone"__](https://lupyuen.github.io/articles/arm)
@@ -916,13 +930,29 @@ __DE Rotation:__ (Page 137)
 
 # Appendix: Programming the Allwinner A64 Display Engine
 
-TODO
+We've seen the __Hardware Registers__ for the Allwinner A64 Display Engine...
 
-Based on the log captured from our instrumented [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c), we have identified the steps to render 3 UI Channels (1 to 3) with the Display Engine [(`display_commit`)](https://megous.com/git/p-boot/tree/src/display.c#n2017)
+-   [__"Overview of Allwinner A64 Display Engine"__](https://lupyuen.github.io/articles/de#appendix-overview-of-allwinner-a64-display-engine)
+
+And we need to program the Hardware Registers to create the __NuttX Display Driver__ for PinePhone...
+
+-   [__"NuttX Display Driver for PinePhone"__](https://lupyuen.github.io/articles/de#nuttx-display-driver-for-pinephone)
+
+_How will we program the Hardware Registers to render the UI Channels?_
+
+To find out how [__`display_commit`__](https://megous.com/git/p-boot/tree/src/display.c#n2017) updates the Hardware Registers (while rendering the UI Channels), we modded the p-boot Display Code to __log all Register Writes__...
+
+-   [__Modified p-boot Display Code__](https://github.com/lupyuen/pinephone-nuttx/releases/download/pboot6/p-boot.6.zip)
+
+Which produces a log that tells us all the __Hardware Registers and their values__...
+
+-   [__"Testing p-boot Display Engine on PinePhone"__](https://github.com/lupyuen/pinephone-nuttx#testing-p-boot-display-engine-on-pinephone)
+
+After studying the log, we have identified the steps to render the 3 UI Channels with the Display Engine.
 
 This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that implements Display Rendering...
 
-(Refer to Memory Mapping List and Register List at Page 90)
+[(Refer to __Memory Mapping List__ and __Register List__ at Page 90)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 1.  __Configure Blender...__
 
