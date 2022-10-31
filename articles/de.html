@@ -641,7 +641,12 @@ Channel 2: ...</code></pre></div>
 <p><em>But ST7789 doesn’t support Framebuffers?</em></p>
 <p>Yeah for PinePhone we’ll wrap the A64 DMA Framebuffers with this interface for <strong>NuttX Framebuffers</strong>…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/lcd_framebuffer.c"><strong>nuttx/drivers/lcd/lcd_framebuffer.c</strong></a></li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/video/fb.h"><strong>nuttx/include/nuttx/video/fb.h</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/lcd_framebuffer.c"><strong>nuttx/drivers/lcd/lcd_framebuffer.c</strong></a></p>
+</li>
 </ul>
 <p>And we might get inspired by this implementation of <strong>Display Overlays</strong> in the STM32 LCD TFT Display Controller (LTDC)…</p>
 <ul>
