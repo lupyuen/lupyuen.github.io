@@ -968,11 +968,11 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
 1.  __Configure Blender...__
 
-    -   BLD BkColor (__BLD_BK_COLOR__ Offset `0x88`): BLD background color register
+    -   BLD BkColor (__BLD_BK_COLOR__ @ BLD Offset `0x88`): BLD background color register
 
         Set to `0xff00` `0000` _(Why?)_
 
-    -   BLD Premultiply (__BLD_PREMUL_CTL__ Offset `0x84`): BLD pre-multiply control register
+    -   BLD Premultiply (__BLD_PREMUL_CTL__ @ BLD Offset `0x84`): BLD pre-multiply control register
 
         Set to 0
 
