@@ -981,7 +981,9 @@ GLB Size:        0x110 000c = 0x59f 02cf (1439 * 16 + 719)</code></pre></div></l
 </li>
 <li>
 <p>BLD Pipe Offset (<strong>BLD_CH_OFFSET</strong> @ BLD Offset <code>0x00C</code> + <code>N*0x10</code>): <em>BLD input memory offset register(N=0,1,2,3,4)</em></p>
-<p>Set to 0 or <code>0x34</code> <code>0034</code> <em>(Why?)</em></p>
+<p><strong>For Channel 1:</strong> Set to 0 <em>(Why?)</em></p>
+<p><strong>For Channel 2:</strong> Set to <code>0x34</code> <code>0034</code> <em>(Why?)</em></p>
+<p><strong>For Channel 3:</strong> Set to 0 <em>(Why?)</em></p>
 </li>
 <li>
 <p>BLD Pipe Mode (<strong>BLD_CTL</strong> @ BLD Offset <code>0x090</code> – <code>0x09C</code>): <em>BLD control register</em></p>
