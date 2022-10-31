@@ -1024,7 +1024,9 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             __For Channel 1:__ Set to `0xff00` `0405` _(Why?)_
 
-            __For Channels 2 and 3:__ `0xff00` `0005` _(Why?)_
+            __For Channel 2:__ `0xff00` `0005` _(Why?)_
+
+            __For Channel 3:__ `0x7f00` `0005` _(Why?)_
 
         -   UI Config Top LAddr (__OVL_UI_TOP_LADD__ @ OVL_UI Offset `0x10`): _OVL_UI top field memory block low address register_
 
