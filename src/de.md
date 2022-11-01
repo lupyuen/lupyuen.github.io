@@ -1112,7 +1112,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             Set to `0x301` `0301` _(Why?)_
 
-        __Note: Log shows `N*0x10`, doc says `N*0x14`__
+        __Note: Log shows BLD_CH_ISIZE, BLD_FILL_COLOR and  BLD_CH_OFFSET are at `N*0x10`, but doc says `N*0x14`__
 
         ```text
         Channel 1: Set Blender Input Pipe 0 (fb0 is 720 x 1440)
