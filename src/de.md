@@ -1108,7 +1108,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             __For Channel 3:__ Set to 0 _(Why?)_
 
-        -   BLD Pipe Mode (__BLD_CTL__ @ BLD Offset `0x090` – `0x09C`): _BLD control register_
+        -   BLD Pipe Mode (__BLD_CTL__ @ BLD Offset `0x090` + `N*4`): _BLD control register_
 
             Set to `0x301` `0301` _(Why?)_
 
