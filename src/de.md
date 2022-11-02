@@ -1163,16 +1163,24 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
     -   BLD Route (__BLD_CH_RTCTL__ @ BLD Offset `0x080`): _BLD routing control register_
 
-        Set to `0x321` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
+        __For 3 UI Channels:__ Set to `0x321` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
+
+        __For 1 UI Channel:__ Set to `1` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
 
     -   BLD FColor Control (__BLD_FILLCOLOR_CTL__ @ BLD Offset `0x000`): _BLD fill color control register_
 
-        Set to `0x701` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
+        __For 3 UI Channels:__ Set to `0x701` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
+
+        __For 1 UI Channels:__ Set to `0x101` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
 
     ```text
-    Set BLD Route and BLD FColor Control
+    For 3 UI Channels: Set BLD Route and BLD FColor Control
     BLD Route:          0x110 1080 = 0x321 (DMB)
     BLD FColor Control: 0x110 1000 = 0x701 (DMB)
+
+    For 1 UI Channel: Set BLD Route and BLD FColor Control
+    BLD Route:          0x110 1080 = 0x1   (DMB)
+    BLD FColor Control: 0x110 1000 = 0x101 (DMB)
     ```
 
 1.  __Apply Settings__
