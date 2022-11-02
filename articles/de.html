@@ -1040,16 +1040,22 @@ Mixer: 0x116 0000 = 0x0</code></pre></div></li>
 <ul>
 <li>
 <p>BLD Route (<strong>BLD_CH_RTCTL</strong> @ BLD Offset <code>0x080</code>): <em>BLD routing control register</em></p>
-<p>Set to <code>0x321</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
+<p><strong>For 3 UI Channels:</strong> Set to <code>0x321</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
+<p><strong>For 1 UI Channel:</strong> Set to <code>1</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
 </li>
 <li>
 <p>BLD FColor Control (<strong>BLD_FILLCOLOR_CTL</strong> @ BLD Offset <code>0x000</code>): <em>BLD fill color control register</em></p>
-<p>Set to <code>0x701</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
+<p><strong>For 3 UI Channels:</strong> Set to <code>0x701</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
+<p><strong>For 1 UI Channels:</strong> Set to <code>0x101</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
 </li>
 </ul>
-<div class="example-wrap"><pre class="language-text"><code>Set BLD Route and BLD FColor Control
+<div class="example-wrap"><pre class="language-text"><code>For 3 UI Channels: Set BLD Route and BLD FColor Control
 BLD Route:          0x110 1080 = 0x321 (DMB)
-BLD FColor Control: 0x110 1000 = 0x701 (DMB)</code></pre></div></li>
+BLD FColor Control: 0x110 1000 = 0x701 (DMB)
+
+For 1 UI Channel: Set BLD Route and BLD FColor Control
+BLD Route:          0x110 1080 = 0x1   (DMB)
+BLD FColor Control: 0x110 1000 = 0x101 (DMB)</code></pre></div></li>
 <li>
 <p><strong>Apply Settings</strong></p>
 <ul>
