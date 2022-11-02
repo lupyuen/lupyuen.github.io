@@ -772,6 +772,14 @@ We'll add the A64 Display Engine in the next article!
 
 ![Testing the A64 Display Engine on PinePhone](https://lupyuen.github.io/images/de-test.jpg)
 
+# Notes
+
+1.  Some parts of the PinePhone DE and TCON0 Drivers still need to be reverse-engineered...
+
+    [__de2_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#de2_init)
+
+    [__tcon0_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init)
+
 # What's Next
 
 I hope we learnt lots today about __Display Rendering on PinePhone__...

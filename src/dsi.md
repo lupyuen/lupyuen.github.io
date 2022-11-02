@@ -721,6 +721,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [__"Reverse Engineering PinePhone's LCD Display (MIPI DSI)"__](https://gist.github.com/lupyuen/43204d20c35ecb23dfbff12f2f570565)
 
+1.  Some parts of the PinePhone MIPI DSI Driver still need to be reverse-engineered...
+
+    [__dsi_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dsi_init)
+
 1.  How did we find the Reference Code for the MIPI DSI Driver? We used GitHub Code Search...
 
     [__"Searching online for the driver"__](https://lupyuen.github.io/articles/pio#lcd-controller-tcon0)
