@@ -1031,26 +1031,26 @@ Mixer: 0x116 0000 = 0x0</code></pre></div></li>
 <ul>
 <li>
 <p>BLD Route (<strong>BLD_CH_RTCTL</strong> @ BLD Offset <code>0x080</code>): <em>BLD routing control register</em></p>
-<p>Set to <code>0x321</code> <em>(Why?)</em></p>
+<p>Set to <code>0x321</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
 </li>
 <li>
 <p>BLD FColor Control (<strong>BLD_FILLCOLOR_CTL</strong> @ BLD Offset <code>0x000</code>): <em>BLD fill color control register</em></p>
-<p>Set to <code>0x701</code> <em>(Why?)</em></p>
+<p>Set to <code>0x701</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Set BLD Route and BLD FColor Control
-BLD Route:          0x110 1080 = 0x321
-BLD FColor Control: 0x110 1000 = 0x701</code></pre></div></li>
+BLD Route:          0x110 1080 = 0x321 (DMB)
+BLD FColor Control: 0x110 1000 = 0x701 (DMB)</code></pre></div></li>
 <li>
 <p><strong>Apply Settings</strong></p>
 <ul>
 <li>
 <p>GLB DBuff (<strong>GLB_DBUFFER</strong> @ GLB Offset <code>0x008</code>): <em>Global double buffer control register</em></p>
-<p>Set to 1 <em>(Why?)</em></p>
+<p>Set to 1 <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Apply Settings
-GLB DBuff: 0x110 0008 = 0x1</code></pre></div></li>
+GLB DBuff: 0x110 0008 = 0x1 (DMB)</code></pre></div></li>
 </ol>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-p-boot-display-engine-on-pinephone">(See the Complete Log)</a></p>
 

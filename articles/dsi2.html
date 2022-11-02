@@ -83,7 +83,8 @@
 <li><a href="#test-mipi-dsi-driver-on-pinephone">10 Test MIPI DSI Driver on PinePhone</a><ul></ul></li>
 <li><a href="#render-graphics-on-pinephone-display">11 Render Graphics on PinePhone Display</a><ul></ul></li>
 <li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-cyclic-redundancy-check">13 Appendix: Cyclic Redundancy Check</a><ul></ul></li></ul></nav><p>📝 <em>18 Oct 2022</em></p>
+<li><a href="#notes">13 Notes</a><ul></ul></li>
+<li><a href="#appendix-cyclic-redundancy-check">14 Appendix: Cyclic Redundancy Check</a><ul></ul></li></ul></nav><p>📝 <em>18 Oct 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/dsi2-title.jpg" alt="Apache NuttX RTOS rendering something on PinePhone’s LCD Display" /></p>
 <p>In our last article we talked about <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> (pic above) and its <a href="https://lupyuen.github.io/articles/dsi#xingbangda-xbd599-lcd-panel"><strong>LCD Display</strong></a>, connected via the (super complicated) <a href="https://lupyuen.github.io/articles/dsi#connector-for-mipi-dsi"><strong>MIPI Display Serial Interface</strong></a>…</p>
 <ul>
@@ -1060,9 +1061,16 @@ modifyreg32: addr=0x010, val=0x00000001
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/dsi2.md"><strong>lupyuen.github.io/src/dsi2.md</strong></a></p>
+<h1 id="notes"><a href="#notes">13 Notes</a></h1>
+<ol>
+<li>
+<p>All writes to MIPI DSI Hardware Registers must use <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>Data Memory Barrier (DMB)</strong></a></p>
+<p><a href="https://megous.com/git/p-boot/tree/src/display.c#n756">(According to this)</a></p>
+</li>
+</ol>
 <p><img src="https://lupyuen.github.io/images/dsi2-checksum.png" alt="MIPI DSI Cyclic Redundancy Check (Page 210)" /></p>
 <p><a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf"><em>MIPI DSI Cyclic Redundancy Check (Page 210)</em></a></p>
-<h1 id="appendix-cyclic-redundancy-check"><a href="#appendix-cyclic-redundancy-check">13 Appendix: Cyclic Redundancy Check</a></h1>
+<h1 id="appendix-cyclic-redundancy-check"><a href="#appendix-cyclic-redundancy-check">14 Appendix: Cyclic Redundancy Check</a></h1>
 <p>Earlier we talked about computing the 16-bit <strong>Cyclic Redundancy Check (CCITT CRC)</strong> for the MIPI DSI Packet Footer (pic above)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi2#packet-footer"><strong>“Packet Footer”</strong></a></li>
