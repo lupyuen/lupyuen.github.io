@@ -1312,6 +1312,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/dsi2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/dsi2.md)
 
+# Notes
+
+1.  All writes to MIPI DSI Hardware Registers must use [__Data Memory Barrier (DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb)
+
+    [(According to this)](https://megous.com/git/p-boot/tree/src/display.c#n756)
+
 ![MIPI DSI Cyclic Redundancy Check (Page 210)](https://lupyuen.github.io/images/dsi2-checksum.png)
 
 [_MIPI DSI Cyclic Redundancy Check (Page 210)_](https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf)

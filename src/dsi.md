@@ -713,6 +713,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Notes
 
+1.  All writes to MIPI DSI Hardware Registers must use [__Data Memory Barrier (DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb)
+
+    [(According to this)](https://megous.com/git/p-boot/tree/src/display.c#n756)
+
 1.  We recorded some notes while reverse-engineering the PinePhone MIPI DSI Driver...
 
     [__"Reverse Engineering PinePhone's LCD Display (MIPI DSI)"__](https://gist.github.com/lupyuen/43204d20c35ecb23dfbff12f2f570565)
