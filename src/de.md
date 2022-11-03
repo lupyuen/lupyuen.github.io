@@ -889,19 +889,19 @@ __Hardware Registers__ for RT-MIXER0 (Page 90)...
 
 | Hardware Register | RT-MIXER0 Offset 
 |--------------------|-----------------
-|__GLB__ (Global Registers) | __`0x00000`__
-|__BLD__ (Blender) | __`0x01000`__
-|__OVL_V(CH0)__ (Video Overlay / Channel 0) | __`0x02000`__
-|__OVL_UI(CH1)__ (UI Overlay / Channel 1) | __`0x03000`__
-|__OVL_UI(CH2)__ (UI Overlay / Channel 2) | __`0x04000`__
-|__OVL_UI(CH3)__ (UI Overlay / Channel 3) | __`0x05000`__
-|__VIDEO_SCALER(CH0)__ (Video Scaler / Channel 0) | __`0x20000`__
-|__UI_SCALER1(CH1)__ (UI Scaler / Channel 1) | __`0x40000`__
-|__UI_SCALER2(CH2)__ (UI Scaler / Channel 2) | __` 0x50000`__
-|__UI_SCALER3(CH3)__ (UI Scaler / Channel 3) | __` 0x60000`__
-|__POST_PROC1__ (Post Processor 1) | __`0xA0000`__
-|__POST_PROC2__ (Post Processor 2) | __`0xB0000`__
-|__DMA__ (Direct Memory Access) | __`0xC0000`__
+|__GLB__ (Global Registers) | __`0x00` `0000`__
+|__BLD__ (Blender) | __`0x00` `1000`__
+|__OVL_V(CH0)__ (Video Overlay / Channel 0) | __`0x00` `2000`__
+|__OVL_UI(CH1)__ (UI Overlay / Channel 1) | __`0x00` `3000`__
+|__OVL_UI(CH2)__ (UI Overlay / Channel 2) | __`0x00` `4000`__
+|__OVL_UI(CH3)__ (UI Overlay / Channel 3) | __`0x00` `5000`__
+|__VIDEO_SCALER(CH0)__ (Video Scaler / Channel 0) | __`0x02` `0000`__
+|__UI_SCALER1(CH1)__ (UI Scaler / Channel 1) | __`0x04` `0000`__
+|__UI_SCALER2(CH2)__ (UI Scaler / Channel 2) | __` 0x05` `0000`__
+|__UI_SCALER3(CH3)__ (UI Scaler / Channel 3) | __` 0x06` `0000`__
+|__POST_PROC1__ (Post Processor 1) | __`0x0A` `0000`__
+|__POST_PROC2__ (Post Processor 2) | __`0x0B` `0000`__
+|__DMA__ (Direct Memory Access) | __`0x0C` `0000`__
 
 The pic below shows how DE RT-MIXER0 mixes together __3 UI Channels (Framebuffers)__ via DMA1, 2 and 3 (plus a Video Channel on DMA0)...
 
