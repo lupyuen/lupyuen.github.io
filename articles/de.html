@@ -80,7 +80,8 @@
 <li><a href="#notes">11 Notes</a><ul></ul></li>
 <li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-overview-of-allwinner-a64-display-engine">13 Appendix: Overview of Allwinner A64 Display Engine</a><ul></ul></li>
-<li><a href="#appendix-programming-the-allwinner-a64-display-engine">14 Appendix: Programming the Allwinner A64 Display Engine</a><ul></ul></li></ul></nav><p>📝 <em>30 Oct 2022</em></p>
+<li><a href="#appendix-initialising-the-allwinner-a64-display-engine">14 Appendix: Initialising the Allwinner A64 Display Engine</a><ul></ul></li>
+<li><a href="#appendix-programming-the-allwinner-a64-display-engine">15 Appendix: Programming the Allwinner A64 Display Engine</a><ul></ul></li></ul></nav><p>📝 <em>30 Oct 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/de-title.jpg" alt="PinePhone rendering Mandelbrot Set on Apache NuttX RTOS" /></p>
 <p><em>PinePhone rendering Mandelbrot Set on Apache NuttX RTOS</em></p>
 <p>In the last 2 articles we talked about <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> (pic above) and how we built a <strong>Display Driver</strong> for PinePhone’s MIPI Display Serial Interface…</p>
@@ -785,15 +786,21 @@ Channel 2: ...</code></pre></div>
 <p>(Alpha Channel is enabled)</p>
 </li>
 </ul>
-<p><strong>Hardware Registers</strong> for RT-MIXER0…</p>
+<p><strong>Hardware Registers</strong> for RT-MIXER0 (Page 90)…</p>
 <div><table><thead><tr><th>Hardware Register</th><th>RT-MIXER0 Offset</th></tr></thead><tbody>
-<tr><td><strong>GLB</strong></td><td><strong><code>0x0000</code></strong></td></tr>
-<tr><td><strong>BLD</strong> (Blender)</td><td><strong><code>0x1000</code></strong></td></tr>
-<tr><td><strong>OVL_V(CH0)</strong> (Video Overlay / Channel 0)</td><td><strong><code>0x2000</code></strong></td></tr>
-<tr><td><strong>OVL_UI(CH1)</strong> (UI Overlay / Channel 1)</td><td><strong><code>0x3000</code></strong></td></tr>
-<tr><td><strong>OVL_UI(CH2)</strong> (UI Overlay / Channel 2)</td><td><strong><code>0x4000</code></strong></td></tr>
-<tr><td><strong>OVL_UI(CH3)</strong> (UI Overlay / Channel 3)</td><td><strong><code>0x5000</code></strong></td></tr>
-<tr><td><strong>POST_PROC2</strong></td><td><strong><code>0xB0000</code></strong></td></tr>
+<tr><td><strong>GLB</strong> (Global Registers)</td><td><strong><code>0x00000</code></strong></td></tr>
+<tr><td><strong>BLD</strong> (Blender)</td><td><strong><code>0x01000</code></strong></td></tr>
+<tr><td><strong>OVL_V(CH0)</strong> (Video Overlay / Channel 0)</td><td><strong><code>0x02000</code></strong></td></tr>
+<tr><td><strong>OVL_UI(CH1)</strong> (UI Overlay / Channel 1)</td><td><strong><code>0x03000</code></strong></td></tr>
+<tr><td><strong>OVL_UI(CH2)</strong> (UI Overlay / Channel 2)</td><td><strong><code>0x04000</code></strong></td></tr>
+<tr><td><strong>OVL_UI(CH3)</strong> (UI Overlay / Channel 3)</td><td><strong><code>0x05000</code></strong></td></tr>
+<tr><td><strong>VIDEO_SCALER(CH0)</strong> (Video Scaler / Channel 0)</td><td><strong><code>0x20000</code></strong></td></tr>
+<tr><td><strong>UI_SCALER1(CH1)</strong> (UI Scaler / Channel 1)</td><td><strong><code>0x40000</code></strong></td></tr>
+<tr><td><strong>UI_SCALER2(CH2)</strong> (UI Scaler / Channel 2)</td><td><strong><code> 0x50000</code></strong></td></tr>
+<tr><td><strong>UI_SCALER3(CH3)</strong> (UI Scaler / Channel 3)</td><td><strong><code> 0x60000</code></strong></td></tr>
+<tr><td><strong>POST_PROC1</strong> (Post Processor 1)</td><td><strong><code>0xA0000</code></strong></td></tr>
+<tr><td><strong>POST_PROC2</strong> (Post Processor 2)</td><td><strong><code>0xB0000</code></strong></td></tr>
+<tr><td><strong>DMA</strong> (Direct Memory Access)</td><td><strong><code>0xC0000</code></strong></td></tr>
 </tbody></table>
 </div>
 <p>The pic below shows how DE RT-MIXER0 mixes together <strong>3 UI Channels (Framebuffers)</strong> via DMA1, 2 and 3 (plus a Video Channel on DMA0)…</p>
@@ -837,9 +844,50 @@ Channel 2: ...</code></pre></div>
 <blockquote>
 <p>“There are several types of rotation: clockwise 0/90/180/270 degree Rotation and H-Flip/V-Flip. Operation of Copy is the same as a 0 degree rotation.”</p>
 </blockquote>
+<h1 id="appendix-initialising-the-allwinner-a64-display-engine"><a href="#appendix-initialising-the-allwinner-a64-display-engine">14 Appendix: Initialising the Allwinner A64 Display Engine</a></h1>
+<p>TODO</p>
+<p>Based on the log captured from <a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#de2_init">de2_init</a></p>
+<div class="example-wrap"><pre class="language-text"><code>Set SRAM for video use
+  0x1c00004 = 0x0 (DMB)</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Setup DE2 PLL
+clock_set_pll_de: clk=297000000
+PLL10 rate = 24000000 * n / m
+  0x1c20048 = 0x81001701 (DMB)
+  while (!(readl(0x1c20048) &amp; 0x10000000))</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Enable DE2 special clock
+  clrsetbits 0x1c20104, 0x3000000, 0x81000000</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Enable DE2 ahb
+  setbits 0x1c202c4, 0x1000
+  setbits 0x1c20064, 0x1000</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Enable clock for mixer 0, set route MIXER0-&gt;TCON0
+  setbits 0x1000000, 0x1
+  setbits 0x1000008, 0x1
+  setbits 0x1000004, 0x1
+  clrbits 0x1000010, 0x1</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Clear all registers
+  0x1100000 to 0x1105fff = 0x0
+  0x1120000 = 0x0
+  0x1130000 = 0x0
+  0x1140000 = 0x0
+  0x1150000 = 0x0
+  0x11a0000 = 0x0
+  0x11a2000 = 0x0
+  0x11a4000 = 0x0
+  0x11a6000 = 0x0
+  0x11a8000 = 0x0
+  0x11aa000 = 0x0
+  0x11b0000 = 0x0</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Enable mixer
+  0x1100000 = 0x1 (DMB)</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/de-run.png" alt="Running p-boot Display Code on Apache NuttX RTOS with logging" /></p>
 <p><a href="https://lupyuen.github.io/articles/de#p-boot-display-code"><em>Running p-boot Display Code on Apache NuttX RTOS with logging</em></a></p>
-<h1 id="appendix-programming-the-allwinner-a64-display-engine"><a href="#appendix-programming-the-allwinner-a64-display-engine">14 Appendix: Programming the Allwinner A64 Display Engine</a></h1>
+<h1 id="appendix-programming-the-allwinner-a64-display-engine"><a href="#appendix-programming-the-allwinner-a64-display-engine">15 Appendix: Programming the Allwinner A64 Display Engine</a></h1>
 <p>We’ve seen the <strong>Hardware Registers</strong> for the Allwinner A64 Display Engine…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/de#appendix-overview-of-allwinner-a64-display-engine"><strong>“Overview of Allwinner A64 Display Engine”</strong></a></li>
