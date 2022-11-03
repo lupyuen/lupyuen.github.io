@@ -788,19 +788,19 @@ Channel 2: ...</code></pre></div>
 </ul>
 <p><strong>Hardware Registers</strong> for RT-MIXER0 (Page 90)…</p>
 <div><table><thead><tr><th>Hardware Register</th><th>RT-MIXER0 Offset</th></tr></thead><tbody>
-<tr><td><strong>GLB</strong> (Global Registers)</td><td><strong><code>0x00000</code></strong></td></tr>
-<tr><td><strong>BLD</strong> (Blender)</td><td><strong><code>0x01000</code></strong></td></tr>
-<tr><td><strong>OVL_V(CH0)</strong> (Video Overlay / Channel 0)</td><td><strong><code>0x02000</code></strong></td></tr>
-<tr><td><strong>OVL_UI(CH1)</strong> (UI Overlay / Channel 1)</td><td><strong><code>0x03000</code></strong></td></tr>
-<tr><td><strong>OVL_UI(CH2)</strong> (UI Overlay / Channel 2)</td><td><strong><code>0x04000</code></strong></td></tr>
-<tr><td><strong>OVL_UI(CH3)</strong> (UI Overlay / Channel 3)</td><td><strong><code>0x05000</code></strong></td></tr>
-<tr><td><strong>VIDEO_SCALER(CH0)</strong> (Video Scaler / Channel 0)</td><td><strong><code>0x20000</code></strong></td></tr>
-<tr><td><strong>UI_SCALER1(CH1)</strong> (UI Scaler / Channel 1)</td><td><strong><code>0x40000</code></strong></td></tr>
-<tr><td><strong>UI_SCALER2(CH2)</strong> (UI Scaler / Channel 2)</td><td><strong><code> 0x50000</code></strong></td></tr>
-<tr><td><strong>UI_SCALER3(CH3)</strong> (UI Scaler / Channel 3)</td><td><strong><code> 0x60000</code></strong></td></tr>
-<tr><td><strong>POST_PROC1</strong> (Post Processor 1)</td><td><strong><code>0xA0000</code></strong></td></tr>
-<tr><td><strong>POST_PROC2</strong> (Post Processor 2)</td><td><strong><code>0xB0000</code></strong></td></tr>
-<tr><td><strong>DMA</strong> (Direct Memory Access)</td><td><strong><code>0xC0000</code></strong></td></tr>
+<tr><td><strong>GLB</strong> (Global Registers)</td><td><strong><code>0x00</code> <code>0000</code></strong></td></tr>
+<tr><td><strong>BLD</strong> (Blender)</td><td><strong><code>0x00</code> <code>1000</code></strong></td></tr>
+<tr><td><strong>OVL_V(CH0)</strong> (Video Overlay / Channel 0)</td><td><strong><code>0x00</code> <code>2000</code></strong></td></tr>
+<tr><td><strong>OVL_UI(CH1)</strong> (UI Overlay / Channel 1)</td><td><strong><code>0x00</code> <code>3000</code></strong></td></tr>
+<tr><td><strong>OVL_UI(CH2)</strong> (UI Overlay / Channel 2)</td><td><strong><code>0x00</code> <code>4000</code></strong></td></tr>
+<tr><td><strong>OVL_UI(CH3)</strong> (UI Overlay / Channel 3)</td><td><strong><code>0x00</code> <code>5000</code></strong></td></tr>
+<tr><td><strong>VIDEO_SCALER(CH0)</strong> (Video Scaler / Channel 0)</td><td><strong><code>0x02</code> <code>0000</code></strong></td></tr>
+<tr><td><strong>UI_SCALER1(CH1)</strong> (UI Scaler / Channel 1)</td><td><strong><code>0x04</code> <code>0000</code></strong></td></tr>
+<tr><td><strong>UI_SCALER2(CH2)</strong> (UI Scaler / Channel 2)</td><td><strong><code> 0x05</code> <code>0000</code></strong></td></tr>
+<tr><td><strong>UI_SCALER3(CH3)</strong> (UI Scaler / Channel 3)</td><td><strong><code> 0x06</code> <code>0000</code></strong></td></tr>
+<tr><td><strong>POST_PROC1</strong> (Post Processor 1)</td><td><strong><code>0x0A</code> <code>0000</code></strong></td></tr>
+<tr><td><strong>POST_PROC2</strong> (Post Processor 2)</td><td><strong><code>0x0B</code> <code>0000</code></strong></td></tr>
+<tr><td><strong>DMA</strong> (Direct Memory Access)</td><td><strong><code>0x0C</code> <code>0000</code></strong></td></tr>
 </tbody></table>
 </div>
 <p>The pic below shows how DE RT-MIXER0 mixes together <strong>3 UI Channels (Framebuffers)</strong> via DMA1, 2 and 3 (plus a Video Channel on DMA0)…</p>
