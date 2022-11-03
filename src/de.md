@@ -885,17 +885,23 @@ Our Display Engine Demo __configures the 4 Channels__ as follows...
 
     (Alpha Channel is enabled)
 
-__Hardware Registers__ for RT-MIXER0...
+__Hardware Registers__ for RT-MIXER0 (Page 90)...
 
 | Hardware Register | RT-MIXER0 Offset 
 |--------------------|-----------------
-|__GLB__ | __`0x0000`__
-|__BLD__ (Blender) | __`0x1000`__
-|__OVL_V(CH0)__ (Video Overlay / Channel 0) | __`0x2000`__
-|__OVL_UI(CH1)__ (UI Overlay / Channel 1) | __`0x3000`__
-|__OVL_UI(CH2)__ (UI Overlay / Channel 2) | __`0x4000`__
-|__OVL_UI(CH3)__ (UI Overlay / Channel 3) | __`0x5000`__
-|__POST_PROC2__ | __`0xB0000`__
+|__GLB__ (Global Registers) | __`0x00000`__
+|__BLD__ (Blender) | __`0x01000`__
+|__OVL_V(CH0)__ (Video Overlay / Channel 0) | __`0x02000`__
+|__OVL_UI(CH1)__ (UI Overlay / Channel 1) | __`0x03000`__
+|__OVL_UI(CH2)__ (UI Overlay / Channel 2) | __`0x04000`__
+|__OVL_UI(CH3)__ (UI Overlay / Channel 3) | __`0x05000`__
+|__VIDEO_SCALER(CH0)__ (Video Scaler / Channel 0) | __`0x20000`__
+|__UI_SCALER1(CH1)__ (UI Scaler / Channel 1) | __`0x40000`__
+|__UI_SCALER2(CH2)__ (UI Scaler / Channel 2) | __` 0x50000`__
+|__UI_SCALER3(CH3)__ (UI Scaler / Channel 3) | __` 0x60000`__
+|__POST_PROC1__ (Post Processor 1) | __`0xA0000`__
+|__POST_PROC2__ (Post Processor 2) | __`0xB0000`__
+|__DMA__ (Direct Memory Access) | __`0xC0000`__
 
 The pic below shows how DE RT-MIXER0 mixes together __3 UI Channels (Framebuffers)__ via DMA1, 2 and 3 (plus a Video Channel on DMA0)...
 
@@ -943,6 +949,77 @@ __DE VSU (Video Scaler):__ (Page 128)
 
 __DE Rotation:__ (Page 137)
 > "There are several types of rotation: clockwise 0/90/180/270 degree Rotation and H-Flip/V-Flip. Operation of Copy is the same as a 0 degree rotation."
+
+# Appendix: Initialising the Allwinner A64 Display Engine
+
+TODO
+
+Based on the log captured from [de2_init](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#de2_init)
+
+```text
+Set SRAM for video use
+  0x1c00004 = 0x0 (DMB)
+```
+
+TODO
+
+```text
+Setup DE2 PLL
+clock_set_pll_de: clk=297000000
+PLL10 rate = 24000000 * n / m
+  0x1c20048 = 0x81001701 (DMB)
+  while (!(readl(0x1c20048) & 0x10000000))
+```
+
+TODO
+
+```text
+Enable DE2 special clock
+  clrsetbits 0x1c20104, 0x3000000, 0x81000000
+```
+
+TODO
+
+```text
+Enable DE2 ahb
+  setbits 0x1c202c4, 0x1000
+  setbits 0x1c20064, 0x1000
+```
+
+TODO
+
+```text
+Enable clock for mixer 0, set route MIXER0->TCON0
+  setbits 0x1000000, 0x1
+  setbits 0x1000008, 0x1
+  setbits 0x1000004, 0x1
+  clrbits 0x1000010, 0x1
+```
+
+TODO
+
+```text
+Clear all registers
+  0x1100000 to 0x1105fff = 0x0
+  0x1120000 = 0x0
+  0x1130000 = 0x0
+  0x1140000 = 0x0
+  0x1150000 = 0x0
+  0x11a0000 = 0x0
+  0x11a2000 = 0x0
+  0x11a4000 = 0x0
+  0x11a6000 = 0x0
+  0x11a8000 = 0x0
+  0x11aa000 = 0x0
+  0x11b0000 = 0x0
+```
+
+TODO
+
+```text
+Enable mixer
+  0x1100000 = 0x1 (DMB)
+```
 
 ![Running p-boot Display Code on Apache NuttX RTOS with logging](https://lupyuen.github.io/images/de-run.png)
 
