@@ -956,9 +956,11 @@ TODO
 
 Below are the steps to initialise the Allwinner A64 Display Engine.
 
-Based on the [de2_init log](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#de2_init)
+Based on the [`de2_init` log](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#de2_init) and [`clock_set_pll_de` log](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#clock_set_pll_de)
 
-[(Captured from p-boot `de2_init`)](https://megous.com/git/p-boot/tree/src/display.c#n1871)
+[(Log captured from p-boot `de2_init`)](https://megous.com/git/p-boot/tree/src/display.c#n1871)
+
+[(Log also captured from p-boot `clock_set_pll_de`)](https://megous.com/git/p-boot/tree/src/uboot/arch/arm/mach-sunxi/clock_sun6i.c#n260)
 
 1.  Set SRAM for video use
 
