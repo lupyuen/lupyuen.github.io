@@ -931,7 +931,11 @@ In today's demo we used the 3 UI Channels to render (pic below)...
 1.  Blue Square
 1.  Green Circle
 
-In the next chapter we explain how the 3 UI Channels were rendered by setting the Hardware Registers for A64 Display Engine.
+In the following chapters we explain how the 3 UI Channels were initialised and rendered by setting the Hardware Registers for A64 Display Engine...
+
+-   [__"Initialising the Allwinner A64 Display Engine"__](https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine)
+
+-   [__"Programming the Allwinner A64 Display Engine"__](https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine)
 
 ![Mandelbrot Set with Blue Square and Green Circle as Overlays](https://lupyuen.github.io/images/de-overlay.jpg)
 
@@ -962,27 +966,23 @@ Based on the [`de2_init` log](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c
 
 [(Log also captured from p-boot `clock_set_pll_de`)](https://megous.com/git/p-boot/tree/src/uboot/arch/arm/mach-sunxi/clock_sun6i.c#n260)
 
-1.  Set SRAM for video use
+1.  __Set High Speed SRAM__ to DMA Mode...
 
-    TODO
+    -   Set __BIST_DMA_CTRL_SEL__ to __0__ for DMA
+    
+        (A31 Page 191)
 
+    -   __BIST_DMA_CTRL_SEL__ (Bist and DMA Control Select) is __Bit 0__ of SRAM_CTRL_REG1
+
+    -   __SRAM_CTRL_REG1__ (SRAM Control Register 1) is at SRAM Registers __Offset `0x4`__
+
+    -   __SRAM Registers__ Base Address is __`0x01C0` `0000`__
+    
+        (A31 Page 191)
+    
     ```text
     Set SRAM for video use
       0x1c00004 = 0x0 (DMB)
-
-    3.7.2. SYSTEM CONTROL REGISTER LIST
-    Module Name Base Address
-    SRAM 0x01C00000
-    A31 Page 191
-
-    3.7.3.2.SRAM CONTROL REGISTER 1 (DEFAULT: 0X00001300)
-    Offset:0x4 Register Name: SRAM_CTRL_REG1
-    Bit Read/Write Default/Hex Description
-    31 R/W 0x0
-    BIST_DMA_CTRL_SEL.
-    Bist and DMA control select.
-    0: DMA, 1: Bist.
-    A31 Page 191
     ```
 
 1.  Setup DE2 PLL
