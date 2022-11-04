@@ -954,485 +954,516 @@ __DE Rotation:__ (Page 137)
 
 TODO
 
-Based on the log captured from [de2_init](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#de2_init)
+Below are the steps to initialise the Allwinner A64 Display Engine.
 
-```text
-Set SRAM for video use
-  0x1c00004 = 0x0 (DMB)
+Based on the [de2_init log](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#de2_init)
 
-3.7.2. SYSTEM CONTROL REGISTER LIST
-Module Name Base Address
-SRAM 0x01C00000
-A31 Page 191
+[(Captured from p-boot `de2_init`)](https://megous.com/git/p-boot/tree/src/display.c#n1871)
 
-3.7.3.2.SRAM CONTROL REGISTER 1 (DEFAULT: 0X00001300)
-Offset:0x4 Register Name: SRAM_CTRL_REG1
-Bit Read/Write Default/Hex Description
-31 R/W 0x0
-BIST_DMA_CTRL_SEL.
-Bist and DMA control select.
-0: DMA, 1: Bist.
-A31 Page 191
-```
+1.  Set SRAM for video use
 
-TODO
+    TODO
 
-```text
-Setup DE2 PLL
-clock_set_pll_de: clk=297000000
-PLL10 rate = 24000000 * n / m
-  0x1c20048 = 0x81001701 (DMB)
-  while (!(readl(0x1c20048) & 0x10000000))
+    ```text
+    Set SRAM for video use
+      0x1c00004 = 0x0 (DMB)
 
-3.3.4. Register List
-Module Name Base Address
-CCU 0x01C20000
-A64 Page 81
+    3.7.2. SYSTEM CONTROL REGISTER LIST
+    Module Name Base Address
+    SRAM 0x01C00000
+    A31 Page 191
 
-PLL_DE_CTRL_REG 0x0048 PLL_DE Control Register
-A64 Page 96
-3.3.5.12. PLL_DE Control Register (Default Value: 0x03006207)
-Offset: 0x0048 Register Name: PLL_DE_CTRL_REG
-Bit R/W Default/Hex Description
-31 R/W 0x0 PLL_ENABLE.
-0: Disable
-1: Enable
-In the integer mode, The PLL Output= (24MHz*N)/M.
-In the fractional mode, the PLL Output is select by bit 25.
-Note: 8≤N/M≤25
-(24MHz*N)/M must be in the range of 192MHz~600MHz.
-Its default is 297MHz.
-30:29 / / /
-System
-28 R 0x0 LOCK
-0: Unlocked
-1: Locked (It indicates that the PLL has been stable.)
-27:26 / / /
-25 R/W 0x1 FRAC_CLK_OUT.
-PLL clock output when PLL_MODE_SEL=0(PLL_PREDIV_M factor must be
-set to 0); no meaning when PLL_MODE_SEL =1.
-0: PLL Output=270MHz
-1: PLL Output =297MHz
-24 R/W 0x1 PLL_MODE_SEL.
-0: Fractional Mode
-1: Integer Mode
-Note: When in Fractional mode, the Pre Divider M should be set to 0.
-23:21 / / /
-20 R/W 0x0 PLL_SDM_EN.
-0: Disable
-1: Enable
-19:15 / / /
-14:8 R/W 0x62 PLL_FACTOR_N
-PLL Factor N.
-Factor=0, N=1
-Factor=1, N=2
-Factor=2, N=3
-……
-Factor=0x7F, N=128
-7:4 / / /
-3:0 R/W 0x7 PLL_PRE_DIV_M.
-PLL Per Divider (M = Factor+1).
-The range is from 1 to 16.
-```
+    3.7.3.2.SRAM CONTROL REGISTER 1 (DEFAULT: 0X00001300)
+    Offset:0x4 Register Name: SRAM_CTRL_REG1
+    Bit Read/Write Default/Hex Description
+    31 R/W 0x0
+    BIST_DMA_CTRL_SEL.
+    Bist and DMA control select.
+    0: DMA, 1: Bist.
+    A31 Page 191
+    ```
 
-TODO
+1.  Setup DE2 PLL
 
-```text
-Enable DE2 special clock
-  clrsetbits 0x1c20104, 0x3000000, 0x81000000
+    TODO
 
-DE_CLK_REG 0x0104 DE Clock Register
-A64 Page 117
-3.3.5.41. DE Clock Gating Register (Default Value: 0x00000000)
-Offset: 0x0104 Register Name: DE_CLK_REG
-Bit R/W Default/Hex Description
-31 R/W 0x0 SCLK_GATING.
-Gating Special Clock
-0: Clock is OFF
-1: Clock is ON
-This special clock = Clock Source/Divider M.
-30:27 / / /
-26:24 R/W 0x0 CLK_SRC_SEL.
-Clock Source Select
-000: PLL_PERIPH0(2X)
-001: PLL_DE
-Others: /
-23:4 / / /
-3:0 R/W 0x0 CLK_DIV_RATIO_M.
-Clock Divide Ratio (m)
-The pre-divided clock is divided by (m+1). The divider is from 1 to 16.
-```
+    ```text
+    Setup DE2 PLL
+    clock_set_pll_de: clk=297000000
+    PLL10 rate = 24000000 * n / m
+      0x1c20048 = 0x81001701 (DMB)
+      while (!(readl(0x1c20048) & 0x10000000))
 
-TODO
+    3.3.4. Register List
+    Module Name Base Address
+    CCU 0x01C20000
+    A64 Page 81
 
-```text
-Enable DE2 ahb
-  setbits 0x1c202c4, 0x1000
-  setbits 0x1c20064, 0x1000
+    PLL_DE_CTRL_REG 0x0048 PLL_DE Control Register
+    A64 Page 96
+    3.3.5.12. PLL_DE Control Register (Default Value: 0x03006207)
+    Offset: 0x0048 Register Name: PLL_DE_CTRL_REG
+    Bit R/W Default/Hex Description
+    31 R/W 0x0 PLL_ENABLE.
+    0: Disable
+    1: Enable
+    In the integer mode, The PLL Output= (24MHz*N)/M.
+    In the fractional mode, the PLL Output is select by bit 25.
+    Note: 8≤N/M≤25
+    (24MHz*N)/M must be in the range of 192MHz~600MHz.
+    Its default is 297MHz.
+    30:29 / / /
+    System
+    28 R 0x0 LOCK
+    0: Unlocked
+    1: Locked (It indicates that the PLL has been stable.)
+    27:26 / / /
+    25 R/W 0x1 FRAC_CLK_OUT.
+    PLL clock output when PLL_MODE_SEL=0(PLL_PREDIV_M factor must be
+    set to 0); no meaning when PLL_MODE_SEL =1.
+    0: PLL Output=270MHz
+    1: PLL Output =297MHz
+    24 R/W 0x1 PLL_MODE_SEL.
+    0: Fractional Mode
+    1: Integer Mode
+    Note: When in Fractional mode, the Pre Divider M should be set to 0.
+    23:21 / / /
+    20 R/W 0x0 PLL_SDM_EN.
+    0: Disable
+    1: Enable
+    19:15 / / /
+    14:8 R/W 0x62 PLL_FACTOR_N
+    PLL Factor N.
+    Factor=0, N=1
+    Factor=1, N=2
+    Factor=2, N=3
+    ……
+    Factor=0x7F, N=128
+    7:4 / / /
+    3:0 R/W 0x7 PLL_PRE_DIV_M.
+    PLL Per Divider (M = Factor+1).
+    The range is from 1 to 16.
+    ```
 
-BUS_SOFT_RST_REG1 0x02C4 Bus Software Reset Register 1
-A64 Page 140
-3.3.5.87. Bus Software Reset Register 1 (Default Value: 0x00000000)
-Offset: 0x02C4 Register Name: BUS_SOFT_RST_REG1
-Bit R/W Default/Hex Description
-31 R/W 0x0 DBGSYS_RST.
-DBGSYS Reset.
-0: Assert
-1: De-assert
-30:23 / / /
-22 R/W 0x0 SPINLOCK_RST.
-SPINLOCK Reset.
-0: Assert
-1: De-assert.
-21 R/W 0x0 MSGBOX_RST.
-MSGBOX Reset.
-0: Assert
-1: De-assert.
-20 R/W 0x0 GPU_RST.
-GPU Reset.
-0: Assert
-1: De-assert.
-19:13 / / /
-12 R/W 0x0 DE_RST.
-DE Reset.
-0: Assert
-1: De-assert.
-11 R/W 0x0 HDMI1_RST.
-HDMI1 Reset.
-0: Assert
-1: De-assert.
-10 R/W 0x0 HDMI0_RST.
-HDMI0 Reset.
-0: Assert
-1: De-assert.
-9 / / /
-8 R/W 0x0 CSI_RST.
-CSI Reset.
-0: Assert
-1: De-assert.
-7:6 / / /
-5 R/W 0x0 DEINTERLACE_RST.
-DEINTERLACE Reset.
-0: Assert
-1:De-assert
-4 R/W 0x0 TCON1_RST.
-TCON1 Reset.
-0: Assert
-1: De-assert.
-3 R/W 0x0 TCON0_RST.
-TCON0 Reset.
-0: Assert
-1: De-assert.
-2:1 / / /
-0 R/W 0x0 VE_RST.
-VE Reset.
-0: Assert
-1: De-assert.
+1.  Enable DE2 special clock
 
-BUS_CLK_GATING_REG1 0x0064 Bus Clock Gating Register 1
-A64 Page 102
-3.3.5.19. Bus Clock Gating Register1 (Default Value: 0x00000000)
-Offset: 0x0064 Register Name: BUS_CLK_GATING_REG1
-Bit R/W Default/Hex Description
-31:23 / / /
-22 R/W 0x0 SPINLOCK_GATING.
-0: Mask
-1: Pass.
-21 R/W 0x0 MSGBOX_GATING.
-0: Mask
-1: Pass.
-20 R/W 0x0 GPU_GATING.
-0: Mask
-1: Pass.
-19:13 / / /
-12 R/W 0x0 DE_GATING.
-0: Mask
-1: Pass.
-11 R/W 0x0 HDMI_GATING.
-0: Mask
-1: Pass.
-10:9 / / /
-8 R/W 0x0 CSI_GATING.
-0: Mask
-1: Pass.
-7:6 / / /
-5 R/W 0x0 DEINTERLACE_GATING.
-Gating Clock For DEINTERLACE
-0: Mask
-1: Pass
-4 R/W 0x0 TCON1_GATING.
-Gating Clock For TCON1
-0: Mask
-1: Pass.
-3 R/W 0x0 TCON0_GATING.
-Gating Clock For TCON0
-0: Mask
-1: Pass.
-2:1 / / /
-0 R/W 0x0 VE_GATING.
-Gating Clock For VE
-0: Mask
-1: Pass.
-```
+    TODO
 
-TODO
+    ```text
+    Enable DE2 special clock
+      clrsetbits 0x1c20104, 0x3000000, 0x81000000
 
-```text
-Enable clock for mixer 0, set route MIXER0->TCON0
-  setbits 0x1000000, 0x1
-  setbits 0x1000008, 0x1
-  setbits 0x1000004, 0x1
-  clrbits 0x1000010, 0x1
+    DE_CLK_REG 0x0104 DE Clock Register
+    A64 Page 117
+    3.3.5.41. DE Clock Gating Register (Default Value: 0x00000000)
+    Offset: 0x0104 Register Name: DE_CLK_REG
+    Bit R/W Default/Hex Description
+    31 R/W 0x0 SCLK_GATING.
+    Gating Special Clock
+    0: Clock is OFF
+    1: Clock is ON
+    This special clock = Clock Source/Divider M.
+    30:27 / / /
+    26:24 R/W 0x0 CLK_SRC_SEL.
+    Clock Source Select
+    000: PLL_PERIPH0(2X)
+    001: PLL_DE
+    Others: /
+    23:4 / / /
+    3:0 R/W 0x0 CLK_DIV_RATIO_M.
+    Clock Divide Ratio (m)
+    The pre-divided clock is divided by (m+1). The divider is from 1 to 16.
+    ```
 
-DE 0x01000000
-DE Page 24
+1.  Enable DE2 ahb
 
-SCLK_GATE 0x000
-DE Page 25
-2.5.1 SCLK_GATE
-Offset: 0x000 Register Name: SCLK_GATE
-Bit Read/Write Default/Hex Description
-31:3 / / Reserved
-2 R/W 0x0
-RT_WB_SCLK_GATE
-0: clock gate
-1: clock pass
-1 R/W 0x0
-CORE1_SCLK_GATE
-0: clock gate
-1: clock pass
-0 R/W 0x0
-CORE0_SCLK_GATE
-0: clock gate
-1: clock pass
+    TODO
 
-AHB_RESET 0x008
-DE Page 25
-2.5.3 AHB_RESET
-Offset: 0x008 Register Name: AHB_RESET
-Bit Read/Write Default/Hex Description
-29:4 / / Reserved
-2 R/W 0x0 RT_WB_SCLK_RESET
-0: reset on
-1: reset off
-1 R/W 0x0
-CORE1_SCLK_RESET
-0: reset on
-1: reset off
-0 R/W 0x0
-CORE0_HCLK_RESET
-0: reset on
-1: reset off
+    ```text
+    Enable DE2 ahb
+      setbits 0x1c202c4, 0x1000
+      setbits 0x1c20064, 0x1000
 
-HCLK_GATE 0x004
-DE Page 25
-2.5.2 HCLK_GATE
-Offset: 0x004 Register Name: HCLK_GATE
-Bit Read/Write Default/Hex Description
-29:3 / / Reserved
-2 R/W 0x0
-RT_WB_HCLK_GATE
-0: clock gate
-1: clock pass
-1 R/W 0x0
-CORE1_HCLK_GATE
-0: clock gate
-1: clock pass
-0 R/W 0x0
-CORE0_HCLK_GATE
-0: clock gate
-1: clock pass
+    BUS_SOFT_RST_REG1 0x02C4 Bus Software Reset Register 1
+    A64 Page 140
+    3.3.5.87. Bus Software Reset Register 1 (Default Value: 0x00000000)
+    Offset: 0x02C4 Register Name: BUS_SOFT_RST_REG1
+    Bit R/W Default/Hex Description
+    31 R/W 0x0 DBGSYS_RST.
+    DBGSYS Reset.
+    0: Assert
+    1: De-assert
+    30:23 / / /
+    22 R/W 0x0 SPINLOCK_RST.
+    SPINLOCK Reset.
+    0: Assert
+    1: De-assert.
+    21 R/W 0x0 MSGBOX_RST.
+    MSGBOX Reset.
+    0: Assert
+    1: De-assert.
+    20 R/W 0x0 GPU_RST.
+    GPU Reset.
+    0: Assert
+    1: De-assert.
+    19:13 / / /
+    12 R/W 0x0 DE_RST.
+    DE Reset.
+    0: Assert
+    1: De-assert.
+    11 R/W 0x0 HDMI1_RST.
+    HDMI1 Reset.
+    0: Assert
+    1: De-assert.
+    10 R/W 0x0 HDMI0_RST.
+    HDMI0 Reset.
+    0: Assert
+    1: De-assert.
+    9 / / /
+    8 R/W 0x0 CSI_RST.
+    CSI Reset.
+    0: Assert
+    1: De-assert.
+    7:6 / / /
+    5 R/W 0x0 DEINTERLACE_RST.
+    DEINTERLACE Reset.
+    0: Assert
+    1:De-assert
+    4 R/W 0x0 TCON1_RST.
+    TCON1 Reset.
+    0: Assert
+    1: De-assert.
+    3 R/W 0x0 TCON0_RST.
+    TCON0 Reset.
+    0: Assert
+    1: De-assert.
+    2:1 / / /
+    0 R/W 0x0 VE_RST.
+    VE Reset.
+    0: Assert
+    1: De-assert.
 
-DE2TCON_MUX 0X010
-DE Page 26
-2.5.5 DE2TCON_MUX
-Offset: 0x010 Register Name: DE2TCON_MUX
-Bit Read/Write Default/Hex Description
-31:1 / / Reserved
-0 R/W 0x0
-DE2TCON_MUX
-0: MIXER0-〉TCON0；MIXER1-〉TCON1
-1: MIXER0-〉TCON1；MIXER1-〉TCON0
-```
+    BUS_CLK_GATING_REG1 0x0064 Bus Clock Gating Register 1
+    A64 Page 102
+    3.3.5.19. Bus Clock Gating Register1 (Default Value: 0x00000000)
+    Offset: 0x0064 Register Name: BUS_CLK_GATING_REG1
+    Bit R/W Default/Hex Description
+    31:23 / / /
+    22 R/W 0x0 SPINLOCK_GATING.
+    0: Mask
+    1: Pass.
+    21 R/W 0x0 MSGBOX_GATING.
+    0: Mask
+    1: Pass.
+    20 R/W 0x0 GPU_GATING.
+    0: Mask
+    1: Pass.
+    19:13 / / /
+    12 R/W 0x0 DE_GATING.
+    0: Mask
+    1: Pass.
+    11 R/W 0x0 HDMI_GATING.
+    0: Mask
+    1: Pass.
+    10:9 / / /
+    8 R/W 0x0 CSI_GATING.
+    0: Mask
+    1: Pass.
+    7:6 / / /
+    5 R/W 0x0 DEINTERLACE_GATING.
+    Gating Clock For DEINTERLACE
+    0: Mask
+    1: Pass
+    4 R/W 0x0 TCON1_GATING.
+    Gating Clock For TCON1
+    0: Mask
+    1: Pass.
+    3 R/W 0x0 TCON0_GATING.
+    Gating Clock For TCON0
+    0: Mask
+    1: Pass.
+    2:1 / / /
+    0 R/W 0x0 VE_GATING.
+    Gating Clock For VE
+    0: Mask
+    1: Pass.
+    ```
 
-TODO
+1.  Enable clock for mixer 0, set route MIXER0->TCON0
 
-```text
-Clear all registers
-  0x1100000 to 0x1105fff = 0x0
-  0x1120000 = 0x0
-  0x1130000 = 0x0
-  0x1140000 = 0x0
-  0x1150000 = 0x0
-  0x11a0000 = 0x0
-  0x11a2000 = 0x0
-  0x11a4000 = 0x0
-  0x11a6000 = 0x0
-  0x11a8000 = 0x0
-  0x11aa000 = 0x0
-  0x11b0000 = 0x0
+    TODO
 
-0x1100000 to 0x1105fff
-GLB 4K 0x00000
-BLD 4K 0x01000
-OVL_V(CH0) 4K 0x02000
-OVL_UI(CH1) 4K 0x03000
-OVL_UI(CH2) 4K 0x04000
-OVL_UI(CH3) 4K 0x05000
-DE Page 90
+    ```text
+    Enable clock for mixer 0, set route MIXER0->TCON0
+      setbits 0x1000000, 0x1
+      setbits 0x1000008, 0x1
+      setbits 0x1000004, 0x1
+      clrbits 0x1000010, 0x1
 
-0x1120000
-VIDEO_SCALER(CH0) 128K 0x20000
-DE Page 90
+    DE 0x01000000
+    DE Page 24
 
-Offset: 0x000 Register Name: VS_CTRL_REG
-0 R/W 0x0
-EN
-Video Scaler enable
-0: Disable
-1: Enable
-Note: When module disabled, the core clock to the core circuit will be gated.
-DE Page 130
+    SCLK_GATE 0x000
+    DE Page 25
+    2.5.1 SCLK_GATE
+    Offset: 0x000 Register Name: SCLK_GATE
+    Bit Read/Write Default/Hex Description
+    31:3 / / Reserved
+    2 R/W 0x0
+    RT_WB_SCLK_GATE
+    0: clock gate
+    1: clock pass
+    1 R/W 0x0
+    CORE1_SCLK_GATE
+    0: clock gate
+    1: clock pass
+    0 R/W 0x0
+    CORE0_SCLK_GATE
+    0: clock gate
+    1: clock pass
 
-0x1130000
-Undocumented
+    AHB_RESET 0x008
+    DE Page 25
+    2.5.3 AHB_RESET
+    Offset: 0x008 Register Name: AHB_RESET
+    Bit Read/Write Default/Hex Description
+    29:4 / / Reserved
+    2 R/W 0x0 RT_WB_SCLK_RESET
+    0: reset on
+    1: reset off
+    1 R/W 0x0
+    CORE1_SCLK_RESET
+    0: reset on
+    1: reset off
+    0 R/W 0x0
+    CORE0_HCLK_RESET
+    0: reset on
+    1: reset off
 
-0x1140000
-UI_SCALER1(CH1) 64K 0x40000
-DE Page 90
+    HCLK_GATE 0x004
+    DE Page 25
+    2.5.2 HCLK_GATE
+    Offset: 0x004 Register Name: HCLK_GATE
+    Bit Read/Write Default/Hex Description
+    29:3 / / Reserved
+    2 R/W 0x0
+    RT_WB_HCLK_GATE
+    0: clock gate
+    1: clock pass
+    1 R/W 0x0
+    CORE1_HCLK_GATE
+    0: clock gate
+    1: clock pass
+    0 R/W 0x0
+    CORE0_HCLK_GATE
+    0: clock gate
+    1: clock pass
 
-Offset: 0x000 Register Name: UIS_CTRL_REG
-0 R/W 0x0
-EN
-UI Scaler enable
-0: Disable
-1: Enable
-Note: When module disabled, the core clock to the core circuit will be gated, and
-the input data will be bypassed to down-stream module.
-DE Page 66
+    DE2TCON_MUX 0X010
+    DE Page 26
+    2.5.5 DE2TCON_MUX
+    Offset: 0x010 Register Name: DE2TCON_MUX
+    Bit Read/Write Default/Hex Description
+    31:1 / / Reserved
+    0 R/W 0x0
+    DE2TCON_MUX
+    0: MIXER0-〉TCON0；MIXER1-〉TCON1
+    1: MIXER0-〉TCON1；MIXER1-〉TCON0
+    ```
 
-0x1150000
-UI_SCALER2(CH2) 64K 0x50000
-DE Page 90
+1.  Clear all registers
 
-Offset: 0x000 Register Name: UIS_CTRL_REG
-0 R/W 0x0
-EN
-UI Scaler enable
-0: Disable
-1: Enable
-Note: When module disabled, the core clock to the core circuit will be gated, and
-the input data will be bypassed to down-stream module.
-DE Page 66
+    TODO
 
-Missing: UI_SCALER3(CH3) 64K 0x60000
-DE Page 90
+    ```text
+    Clear all registers
+      0x1100000 to 0x1105fff = 0x0
+      0x1120000 = 0x0
+      0x1130000 = 0x0
+      0x1140000 = 0x0
+      0x1150000 = 0x0
+      0x11a0000 = 0x0
+      0x11a2000 = 0x0
+      0x11a4000 = 0x0
+      0x11a6000 = 0x0
+      0x11a8000 = 0x0
+      0x11aa000 = 0x0
+      0x11b0000 = 0x0
 
-0x11a0000
-Module name Memory Range Offset Address
-FCE 8K 0xA0000
-DE Page 61
+    0x1100000 to 0x1105fff
+    GLB 4K 0x00000
+    BLD 4K 0x01000
+    OVL_V(CH0) 4K 0x02000
+    OVL_UI(CH1) 4K 0x03000
+    OVL_UI(CH2) 4K 0x04000
+    OVL_UI(CH3) 4K 0x05000
+    DE Page 90
 
-5.6.3.1 GCTRL_REG
-Offset: 0x000 Register Name: GCTRL_REG
-0 R/W 0x0
-EN
-FCE module enable
-0: Disable
-1: Enable
-Note: When module disable, the clock of the calculation circuit will be gated
-automatically. 
-DE Page 62
+    0x1120000
+    VIDEO_SCALER(CH0) 128K 0x20000
+    DE Page 90
 
-0x11a2000
-Module name Memory Range Offset Address
-BWS 8K 0xA2000
-DE Page 42
+    Offset: 0x000 Register Name: VS_CTRL_REG
+    0 R/W 0x0
+    EN
+    Video Scaler enable
+    0: Disable
+    1: Enable
+    Note: When module disabled, the core clock to the core circuit will be gated.
+    DE Page 130
 
-Offset: 0x000 Register Name: GCTRL_REG
-0 R/W 0x0
-EN
-BWS module enable
-0: Disable
-1: Enable
-Note: When module disable, the clock of the calculation circuit will be gated
-automatically. 
-DE Page 42
+    0x1130000
+    Undocumented
 
-0x11a4000
-Module name Memory Range Offset Address
-LTI 8K 0xA4000
-DE Page 71
+    0x1140000
+    UI_SCALER1(CH1) 64K 0x40000
+    DE Page 90
 
-5.8.3.1 Global control register
-Offset: 0x000 Register Name: LTI_CTL
-0 R/W 0x0
-LTI_EN
-0: LTI close
-1: LTI open
-DE Page 72
+    Offset: 0x000 Register Name: UIS_CTRL_REG
+    0 R/W 0x0
+    EN
+    UI Scaler enable
+    0: Disable
+    1: Enable
+    Note: When module disabled, the core clock to the core circuit will be gated, and
+    the input data will be bypassed to down-stream module.
+    DE Page 66
 
-0x11a6000
-Module name Memory Range Offset Address
-PEAKING 8K 0xA6000
-DE Page 80
+    0x1150000
+    UI_SCALER2(CH2) 64K 0x50000
+    DE Page 90
 
-Offset: 0x00 Register name: LP_CTRL_REG
-0 R/W 0x0
-EN
-LP Module enable
-0: Disable
-1: Enable
-DE Page 80
+    Offset: 0x000 Register Name: UIS_CTRL_REG
+    0 R/W 0x0
+    EN
+    UI Scaler enable
+    0: Disable
+    1: Enable
+    Note: When module disabled, the core clock to the core circuit will be gated, and
+    the input data will be bypassed to down-stream module.
+    DE Page 66
 
-0x11a8000
-Module name Memory Range Offset Address
-ASE 8K 0xA8000
-DE Page 40
+    Missing: UI_SCALER3(CH3) 64K 0x60000
+    DE Page 90
 
-Offset: 0x000 Register Name: ASE_CTL_REG
-0 R/W 0x0
-ASE_EN
-0: disable
-1: enable
-DE Page 40
+    0x11a0000
+    Module name Memory Range Offset Address
+    FCE 8K 0xA0000
+    DE Page 61
 
-0x11aa000
-Module name Memory Range Offset Address
-FCC 8K 0xAA000
-DE Page 56
+    5.6.3.1 GCTRL_REG
+    Offset: 0x000 Register Name: GCTRL_REG
+    0 R/W 0x0
+    EN
+    FCE module enable
+    0: Disable
+    1: Enable
+    Note: When module disable, the clock of the calculation circuit will be gated
+    automatically. 
+    DE Page 62
 
-5.5.3.1 FCC_CTRL_REG(Default Value: 0x0000_0000)
-Offset: 0x000 Register Name: FCC_CTL_REG
-0 R/W 0x0
-Enable
-Enable control
-0:disable
-1:enable
-If the bit is disabled, the input data will by-pass to next module.
+    0x11a2000
+    Module name Memory Range Offset Address
+    BWS 8K 0xA2000
+    DE Page 42
 
-0x11b0000
-Module Offset Address Memory Range
-DRC 0x011b0000
-DE Page 48
+    Offset: 0x000 Register Name: GCTRL_REG
+    0 R/W 0x0
+    EN
+    BWS module enable
+    0: Disable
+    1: Enable
+    Note: When module disable, the clock of the calculation circuit will be gated
+    automatically. 
+    DE Page 42
 
-5.4.3.1 General control register (Default Value: 0x0000_0000)
-Offset: 0x0000 Register Name: GNECTL_REG
-Bit Read/Write Default/Hex Description
-31 R/W 0x0
-BIST_EN
-BIST enable
-0x0: disable
-0x1: enable
-DE Page 49
-```
+    0x11a4000
+    Module name Memory Range Offset Address
+    LTI 8K 0xA4000
+    DE Page 71
 
-TODO
+    5.8.3.1 Global control register
+    Offset: 0x000 Register Name: LTI_CTL
+    0 R/W 0x0
+    LTI_EN
+    0: LTI close
+    1: LTI open
+    DE Page 72
 
-```text
-Enable mixer
-  0x1100000 = 0x1 (DMB)
-```
+    0x11a6000
+    Module name Memory Range Offset Address
+    PEAKING 8K 0xA6000
+    DE Page 80
+
+    Offset: 0x00 Register name: LP_CTRL_REG
+    0 R/W 0x0
+    EN
+    LP Module enable
+    0: Disable
+    1: Enable
+    DE Page 80
+
+    0x11a8000
+    Module name Memory Range Offset Address
+    ASE 8K 0xA8000
+    DE Page 40
+
+    Offset: 0x000 Register Name: ASE_CTL_REG
+    0 R/W 0x0
+    ASE_EN
+    0: disable
+    1: enable
+    DE Page 40
+
+    0x11aa000
+    Module name Memory Range Offset Address
+    FCC 8K 0xAA000
+    DE Page 56
+
+    5.5.3.1 FCC_CTRL_REG(Default Value: 0x0000_0000)
+    Offset: 0x000 Register Name: FCC_CTL_REG
+    0 R/W 0x0
+    Enable
+    Enable control
+    0:disable
+    1:enable
+    If the bit is disabled, the input data will by-pass to next module.
+
+    0x11b0000
+    Module Offset Address Memory Range
+    DRC 0x011b0000
+    DE Page 48
+
+    5.4.3.1 General control register (Default Value: 0x0000_0000)
+    Offset: 0x0000 Register Name: GNECTL_REG
+    Bit Read/Write Default/Hex Description
+    31 R/W 0x0
+    BIST_EN
+    BIST enable
+    0x0: disable
+    0x1: enable
+    DE Page 49
+    ```
+
+1.  Enable mixer
+
+    TODO
+
+    ```text
+    Enable mixer
+      0x1100000 = 0x1 (DMB)
+
+    GLB 4K 0x00000
+    DE Page 90
+
+    Offset: 0x000 Register Name: GLB_CTL
+    0 R/W 0x0
+    EN
+    RT enable/disable
+    0: disable
+    1: enable
+    DE Page 92
+    ```
 
 ![Running p-boot Display Code on Apache NuttX RTOS with logging](https://lupyuen.github.io/images/de-run.png)
 
@@ -1685,3 +1716,5 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
     ```
 
 [(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx#testing-p-boot-display-engine-on-pinephone)
+
+[(Captured from p-boot `display_commit`)](https://megous.com/git/p-boot/tree/src/display.c#n2017)
