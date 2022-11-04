@@ -708,6 +708,8 @@ When we study the log, we'll understand how we should __program the A64 Display 
 
 Our findings are documented here...
 
+-   [__"Initialising the Allwinner A64 Display Engine"__](https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine)
+
 -   [__"Programming the Allwinner A64 Display Engine"__](https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine)
 
 This is very helpful as we create the NuttX Display Driver for PinePhone...
@@ -737,6 +739,8 @@ We've documented our earlier research on PinePhone's __MIPI Display Serial Inter
 -   [__"Understanding PinePhone's Display (MIPI DSI)"__](https://lupyuen.github.io/articles/dsi)
 
 Today we learnt so much about PinePhone's __A64 Display Engine__...
+
+-   [__"Initialising the Allwinner A64 Display Engine"__](https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine)
 
 -   [__"Programming the Allwinner A64 Display Engine"__](https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine)
 
@@ -1202,6 +1206,132 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     TODO
 
+    0x1120000
+
+    -   VIDEO_SCALER(CH0) at MIXER0 Offset 0x20000
+        
+        (DE Page 90)
+
+    -   VS_CTRL_REG at VIDEO_SCALER(CH0) Offset 0
+
+        EN (Bit 0) = 0 (Disable Video Scaler)
+
+        (DE Page 130)
+
+    TODO: 0x1130000 is Undocumented
+
+    0x1140000
+
+    -   UI_SCALER1(CH1) at MIXER0 Offset 0x40000
+
+        (DE Page 90)
+
+    -   UIS_CTRL_REG at UI_SCALER1(CH1) Offset 0
+
+        EN (Bit 0) = 0 (Disable UI Scaler) 
+
+        (DE Page 66)
+
+    0x1150000
+
+    -   UI_SCALER2(CH2) at MIXER0 Offset 0x50000
+    
+        (DE Page 90)
+
+    -   UIS_CTRL_REG at UI_SCALER2(CH2) Offset 0
+
+        EN (Bit 0) = 0 (Disable UI Scaler)
+
+        (DE Page 66)
+
+    TODO: Missing: UI_SCALER3(CH3) at MIXER0 Offset 0x60000
+
+    (DE Page 90)
+
+    0x11a0000
+
+    -   FCE at MIXER0 Offset 0xA0000
+
+        (DE Page 61)
+
+    -   GCTRL_REG at FCE Offset 0
+
+        EN (Bit 0) = 0 (Disable FCE)
+
+        (DE Page 62)
+
+    0x11a2000
+
+    -   BWS at MIXER0 Offset 0xA2000
+
+        (DE Page 42)
+
+    -   GCTRL_REG at BWS Offset 0
+
+        EN (Bit 0) = 0 (Disable BWS)
+
+        (DE Page 42)
+
+    0x11a4000
+
+    -   LTI at MIXER0 Offset 0xA4000
+
+        (DE Page 71)
+
+    -   LTI_CTL at LTI Offset 0
+
+        LTI_EN (Bit 0) = 0 (Close LTI)
+
+        (DE Page 72)
+
+    0x11a6000
+
+    -   PEAKING at MIXER0 Offset 0xA6000
+
+        (DE Page 80)
+
+    -   LP_CTRL_REG at PEAKING Offset 0
+
+        EN (Bit 0) = 0 (Disable PEAKING)
+
+        (DE Page 80)
+
+    0x11a8000
+
+    -   ASE at MIXER0 Offset 0xA8000
+
+        (DE Page 40)
+
+    -   ASE_CTL_REG at ASE Offset 0
+
+        ASE_EN (Bit 0) = 0 (Disable ASE)
+
+        (DE Page 40)
+
+    0x11aa000
+
+    -   FCC at MIXER0 Offset 0xAA000
+
+        (DE Page 56)
+
+    -   FCC_CTL_REG at FCC Offset 0
+
+        Enable (Bit 0) = 0 (Disable FCC)
+
+        (DE Page 56)
+
+    0x11b0000
+
+    -   DRC at Base Address 0x011B0000
+    
+        (DE Page 48)
+
+    -   GNECTL_REG at DRC Offset 0
+
+        BIST_EN (Bit 0) = 0 (Disable BIST)
+
+    DE Page 49
+
     ```text
     Clear all registers
       0x1120000 = 0x0
@@ -1215,151 +1345,6 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
       0x11a8000 = 0x0
       0x11aa000 = 0x0
       0x11b0000 = 0x0
-
-    0x1120000
-    VIDEO_SCALER(CH0) 128K 0x20000
-    DE Page 90
-
-    Offset: 0x000 Register Name: VS_CTRL_REG
-    0 R/W 0x0
-    EN
-    Video Scaler enable
-    0: Disable
-    1: Enable
-    Note: When module disabled, the core clock to the core circuit will be gated.
-    DE Page 130
-
-    0x1130000
-    Undocumented
-
-    0x1140000
-    UI_SCALER1(CH1) 64K 0x40000
-    DE Page 90
-
-    Offset: 0x000 Register Name: UIS_CTRL_REG
-    0 R/W 0x0
-    EN
-    UI Scaler enable
-    0: Disable
-    1: Enable
-    Note: When module disabled, the core clock to the core circuit will be gated, and
-    the input data will be bypassed to down-stream module.
-    DE Page 66
-
-    0x1150000
-    UI_SCALER2(CH2) 64K 0x50000
-    DE Page 90
-
-    Offset: 0x000 Register Name: UIS_CTRL_REG
-    0 R/W 0x0
-    EN
-    UI Scaler enable
-    0: Disable
-    1: Enable
-    Note: When module disabled, the core clock to the core circuit will be gated, and
-    the input data will be bypassed to down-stream module.
-    DE Page 66
-
-    Missing: UI_SCALER3(CH3) 64K 0x60000
-    DE Page 90
-
-    0x11a0000
-    Module name Memory Range Offset Address
-    FCE 8K 0xA0000
-    DE Page 61
-
-    5.6.3.1 GCTRL_REG
-    Offset: 0x000 Register Name: GCTRL_REG
-    0 R/W 0x0
-    EN
-    FCE module enable
-    0: Disable
-    1: Enable
-    Note: When module disable, the clock of the calculation circuit will be gated
-    automatically. 
-    DE Page 62
-
-    0x11a2000
-    Module name Memory Range Offset Address
-    BWS 8K 0xA2000
-    DE Page 42
-
-    Offset: 0x000 Register Name: GCTRL_REG
-    0 R/W 0x0
-    EN
-    BWS module enable
-    0: Disable
-    1: Enable
-    Note: When module disable, the clock of the calculation circuit will be gated
-    automatically. 
-    DE Page 42
-
-    0x11a4000
-    Module name Memory Range Offset Address
-    LTI 8K 0xA4000
-    DE Page 71
-
-    5.8.3.1 Global control register
-    Offset: 0x000 Register Name: LTI_CTL
-    0 R/W 0x0
-    LTI_EN
-    0: LTI close
-    1: LTI open
-    DE Page 72
-
-    0x11a6000
-    Module name Memory Range Offset Address
-    PEAKING 8K 0xA6000
-    DE Page 80
-
-    Offset: 0x00 Register name: LP_CTRL_REG
-    0 R/W 0x0
-    EN
-    LP Module enable
-    0: Disable
-    1: Enable
-    DE Page 80
-
-    0x11a8000
-    Module name Memory Range Offset Address
-    ASE 8K 0xA8000
-    DE Page 40
-
-    Offset: 0x000 Register Name: ASE_CTL_REG
-    0 R/W 0x0
-    ASE_EN
-    0: disable
-    1: enable
-    DE Page 40
-
-    0x11aa000
-    Module name Memory Range Offset Address
-    FCC 8K 0xAA000
-    DE Page 56
-
-    5.5.3.1 FCC_CTRL_REG(Default Value: 0x0000_0000)
-    Offset: 0x000 Register Name: FCC_CTL_REG
-    0 R/W 0x0
-    Enable
-    Enable control
-    0:disable
-    1:enable
-    If the bit is disabled, the input data will by-pass to next module.
-
-    0x11b0000
-    Module Offset Address Memory Range
-    DRC 0x011b0000
-    DE Page 48
-
-    5.4.3.1 General control register (Default Value: 0x0000_0000)
-    Offset: 0x0000 Register Name: GNECTL_REG
-    Bit Read/Write Default/Hex Description
-    31 R/W 0x0
-    BIST_EN
-    BIST enable
-    0x0: disable
-    0x1: enable
-    DE Page 49
     ```
 
 1.  Enable __MIXER0__
