@@ -865,7 +865,7 @@ Channel 2: ...</code></pre></div>
 <p>(Captured from <a href="https://megous.com/git/p-boot/tree/src/uboot/arch/arm/mach-sunxi/clock_sun6i.c#n260"><strong>p-boot <code>clock_set_pll_de</code></strong></a>)</p>
 </li>
 </ul>
-<p>Below are the steps to initialise the Allwinner A64 Display Engine…</p>
+<p>Below are the steps to <strong>initialise the Allwinner A64 Display Engine</strong> at startup…</p>
 <ol>
 <li>
 <p>Set <strong>High Speed SRAM</strong> to DMA Mode…</p>
@@ -983,11 +983,11 @@ Channel 2: ...</code></pre></div>
 <p><strong>CORE0_SCLK_GATE</strong> (Bit 0) = 1 (Clock Pass)</p>
 </li>
 <li>
-<p><strong>SCLK_GATE</strong> is at DE GLB Offset <strong><code>0x000</code></strong></p>
+<p><strong>SCLK_GATE</strong> is at DE Offset <strong><code>0x000</code></strong></p>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 25)</a></p>
 </li>
 <li>
-<p><strong>Display Engine Global Registers (DE GLB)</strong> Base Address is <strong><code>0x0100</code> <code>0000</code></strong></p>
+<p><strong>Display Engine (DE)</strong> Base Address is <strong><code>0x0100</code> <code>0000</code></strong></p>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 24)</a></p>
 </li>
 </ul>
@@ -1001,11 +1001,11 @@ Channel 2: ...</code></pre></div>
 <p><strong>CORE0_HCLK_RESET</strong> (Bit 0) = 1 (Reset Off)</p>
 </li>
 <li>
-<p><strong>AHB_RESET</strong> is at DE GLB Offset <strong><code>0x008</code></strong></p>
+<p><strong>AHB_RESET</strong> is at DE Offset <strong><code>0x008</code></strong></p>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 25)</a></p>
 </li>
 <li>
-<p><strong>Display Engine Global Registers (DE GLB)</strong> Base Address is <strong><code>0x0100</code> <code>0000</code></strong></p>
+<p><strong>Display Engine (DE)</strong> Base Address is <strong><code>0x0100</code> <code>0000</code></strong></p>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 24)</a></p>
 </li>
 </ul>
@@ -1019,11 +1019,11 @@ Channel 2: ...</code></pre></div>
 <p><strong>CORE0_HCLK_GATE</strong> (Bit 0) = 1 (Clock Pass)</p>
 </li>
 <li>
-<p><strong>HCLK_GATE</strong> is at DE GLB Offset <strong><code>0x004</code></strong></p>
+<p><strong>HCLK_GATE</strong> is at DE Offset <strong><code>0x004</code></strong></p>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 25)</a></p>
 </li>
 <li>
-<p><strong>Display Engine Global Registers (DE GLB)</strong> Base Address is <strong><code>0x0100</code> <code>0000</code></strong></p>
+<p><strong>Display Engine (DE)</strong> Base Address is <strong><code>0x0100</code> <code>0000</code></strong></p>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 24)</a></p>
 </li>
 </ul>
@@ -1038,30 +1038,40 @@ Channel 2: ...</code></pre></div>
 <p>(Route MIXER0 to TCON0; Route MIXER1 to TCON1)</p>
 </li>
 <li>
-<p><strong>DE2TCON_MUX</strong> is at DE GLB Offset <strong><code>0x010</code></strong></p>
+<p><strong>DE2TCON_MUX</strong> is at DE Offset <strong><code>0x010</code></strong></p>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 26)</a></p>
 </li>
 <li>
-<p><strong>Display Engine Global Registers (DE GLB)</strong> Base Address is <strong><code>0x0100</code> <code>0000</code></strong></p>
+<p><strong>Display Engine (DE)</strong> Base Address is <strong><code>0x0100</code> <code>0000</code></strong></p>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 24)</a></p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Enable clock for mixer 0, set route MIXER0-&gt;TCON0
   clrbits 0x1000010, 0x1</code></pre></div></li>
 <li>
-<p>Clear <strong>MIXER0 Registers</strong></p>
-<p>TODO</p>
+<p>Clear <strong>MIXER0 Registers</strong>: GLB, BLD, Video Overlay, UI Overlay</p>
+<ul>
+<li>
+<p>Set <strong>MIXER0</strong> Offsets <strong><code>0x0000</code></strong> - <strong><code>0x5FFF</code></strong> to 0</p>
+<p><strong>GLB</strong> (Global Regisers) at MIXER0 Offset <strong><code>0x0000</code></strong></p>
+<p><strong>BLD</strong> (Blender) at MIXER0 Offset <strong><code>0x1000</code></strong></p>
+<p><strong>OVL_V(CH0)</strong> (Video Overlay) at MIXER0 Offset <strong><code>0x2000</code></strong></p>
+<p><strong>OVL_UI(CH1)</strong> (UI Overlay 1) at MIXER0 Offset <strong><code>0x3000</code></strong></p>
+<p><strong>OVL_UI(CH2)</strong> (UI Overlay 2) at MIXER0 Offset <strong><code>0x4000</code></strong></p>
+<p><strong>OVL_UI(CH3)</strong> (UI Overlay 3) at MIXER0 Offset <strong><code>0x5000</code></strong></p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 90)</a></p>
+</li>
+<li>
+<p><strong>MIXER0</strong> is at DE Offset <strong><code>0x0010</code> <code>0000</code></strong></p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 24)</a></p>
+</li>
+<li>
+<p><strong>Display Engine (DE)</strong> Base Address is <strong><code>0x0100</code> <code>0000</code></strong></p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 24)</a></p>
+</li>
+</ul>
 <div class="example-wrap"><pre class="language-text"><code>Clear all registers
-  0x1100000 to 0x1105fff = 0x0
-
-0x1100000 to 0x1105fff
-GLB 4K 0x00000
-BLD 4K 0x01000
-OVL_V(CH0) 4K 0x02000
-OVL_UI(CH1) 4K 0x03000
-OVL_UI(CH2) 4K 0x04000
-OVL_UI(CH3) 4K 0x05000
-DE Page 90</code></pre></div></li>
+  0x1100000 to 0x1105fff = 0x0</code></pre></div></li>
 <li>
 <p>Disable <strong>MIXER0 Modules</strong></p>
 <p>TODO</p>
