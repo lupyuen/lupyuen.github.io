@@ -827,7 +827,15 @@ Channel 2: ...</code></pre></div>
 <li>Blue Square</li>
 <li>Green Circle</li>
 </ol>
-<p>In the next chapter we explain how the 3 UI Channels were rendered by setting the Hardware Registers for A64 Display Engine.</p>
+<p>In the following chapters we explain how the 3 UI Channels were initialised and rendered by setting the Hardware Registers for A64 Display Engine…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine"><strong>“Initialising the Allwinner A64 Display Engine”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine"><strong>“Programming the Allwinner A64 Display Engine”</strong></a></p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/de-overlay.jpg" alt="Mandelbrot Set with Blue Square and Green Circle as Overlays" /></p>
 <p><a href="https://lupyuen.github.io/articles/de#test-pinephone-display-engine"><em>Mandelbrot Set with Blue Square and Green Circle as Overlays</em></a></p>
 <p>We won’t use these Display Engine Features today…</p>
@@ -852,24 +860,25 @@ Channel 2: ...</code></pre></div>
 <p><a href="https://megous.com/git/p-boot/tree/src/uboot/arch/arm/mach-sunxi/clock_sun6i.c#n260">(Log also captured from p-boot <code>clock_set_pll_de</code>)</a></p>
 <ol>
 <li>
-<p>Set SRAM for video use</p>
-<p>TODO</p>
+<p><strong>Set High Speed SRAM</strong> to DMA Mode…</p>
+<ul>
+<li>
+<p>Set <strong>BIST_DMA_CTRL_SEL</strong> to <strong>0</strong> for DMA</p>
+<p>(A31 Page 191)</p>
+</li>
+<li>
+<p><strong>BIST_DMA_CTRL_SEL</strong> (Bist and DMA Control Select) is <strong>Bit 0</strong> of SRAM_CTRL_REG1</p>
+</li>
+<li>
+<p><strong>SRAM_CTRL_REG1</strong> (SRAM Control Register 1) is at SRAM Registers <strong>Offset <code>0x4</code></strong></p>
+</li>
+<li>
+<p><strong>SRAM Registers</strong> Base Address is <strong><code>0x01C0</code> <code>0000</code></strong></p>
+<p>(A31 Page 191)</p>
+</li>
+</ul>
 <div class="example-wrap"><pre class="language-text"><code>Set SRAM for video use
-  0x1c00004 = 0x0 (DMB)
-
-3.7.2. SYSTEM CONTROL REGISTER LIST
-Module Name Base Address
-SRAM 0x01C00000
-A31 Page 191
-
-3.7.3.2.SRAM CONTROL REGISTER 1 (DEFAULT: 0X00001300)
-Offset:0x4 Register Name: SRAM_CTRL_REG1
-Bit Read/Write Default/Hex Description
-31 R/W 0x0
-BIST_DMA_CTRL_SEL.
-Bist and DMA control select.
-0: DMA, 1: Bist.
-A31 Page 191</code></pre></div></li>
+  0x1c00004 = 0x0 (DMB)</code></pre></div></li>
 <li>
 <p>Setup DE2 PLL</p>
 <p>TODO</p>
