@@ -846,7 +846,13 @@ Channel 2: ...</code></pre></div>
 </blockquote>
 <h1 id="appendix-initialising-the-allwinner-a64-display-engine"><a href="#appendix-initialising-the-allwinner-a64-display-engine">14 Appendix: Initialising the Allwinner A64 Display Engine</a></h1>
 <p>TODO</p>
-<p>Based on the log captured from <a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#de2_init">de2_init</a></p>
+<p>Below are the steps to initialise the Allwinner A64 Display Engine.</p>
+<p>Based on the <a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#de2_init">de2_init log</a></p>
+<p><a href="https://megous.com/git/p-boot/tree/src/display.c#n1871">(Captured from p-boot <code>de2_init</code>)</a></p>
+<ol>
+<li>
+<p>Set SRAM for video use</p>
+<p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Set SRAM for video use
   0x1c00004 = 0x0 (DMB)
 
@@ -862,7 +868,9 @@ Bit Read/Write Default/Hex Description
 BIST_DMA_CTRL_SEL.
 Bist and DMA control select.
 0: DMA, 1: Bist.
-A31 Page 191</code></pre></div>
+A31 Page 191</code></pre></div></li>
+<li>
+<p>Setup DE2 PLL</p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Setup DE2 PLL
 clock_set_pll_de: clk=297000000
@@ -918,7 +926,9 @@ Factor=0x7F, N=128
 7:4 / / /
 3:0 R/W 0x7 PLL_PRE_DIV_M.
 PLL Per Divider (M = Factor+1).
-The range is from 1 to 16.</code></pre></div>
+The range is from 1 to 16.</code></pre></div></li>
+<li>
+<p>Enable DE2 special clock</p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Enable DE2 special clock
   clrsetbits 0x1c20104, 0x3000000, 0x81000000
@@ -942,7 +952,9 @@ Others: /
 23:4 / / /
 3:0 R/W 0x0 CLK_DIV_RATIO_M.
 Clock Divide Ratio (m)
-The pre-divided clock is divided by (m+1). The divider is from 1 to 16.</code></pre></div>
+The pre-divided clock is divided by (m+1). The divider is from 1 to 16.</code></pre></div></li>
+<li>
+<p>Enable DE2 ahb</p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Enable DE2 ahb
   setbits 0x1c202c4, 0x1000
@@ -1050,7 +1062,9 @@ Gating Clock For TCON0
 0 R/W 0x0 VE_GATING.
 Gating Clock For VE
 0: Mask
-1: Pass.</code></pre></div>
+1: Pass.</code></pre></div></li>
+<li>
+<p>Enable clock for mixer 0, set route MIXER0-&gt;TCON0</p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Enable clock for mixer 0, set route MIXER0-&gt;TCON0
   setbits 0x1000000, 0x1
@@ -1126,7 +1140,9 @@ Bit Read/Write Default/Hex Description
 0 R/W 0x0
 DE2TCON_MUX
 0: MIXER0-〉TCON0；MIXER1-〉TCON1
-1: MIXER0-〉TCON1；MIXER1-〉TCON0</code></pre></div>
+1: MIXER0-〉TCON1；MIXER1-〉TCON0</code></pre></div></li>
+<li>
+<p>Clear all registers</p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Clear all registers
   0x1100000 to 0x1105fff = 0x0
@@ -1294,10 +1310,24 @@ BIST_EN
 BIST enable
 0x0: disable
 0x1: enable
-DE Page 49</code></pre></div>
+DE Page 49</code></pre></div></li>
+<li>
+<p>Enable mixer</p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Enable mixer
-  0x1100000 = 0x1 (DMB)</code></pre></div>
+  0x1100000 = 0x1 (DMB)
+
+GLB 4K 0x00000
+DE Page 90
+
+Offset: 0x000 Register Name: GLB_CTL
+0 R/W 0x0
+EN
+RT enable/disable
+0: disable
+1: enable
+DE Page 92</code></pre></div></li>
+</ol>
 <p><img src="https://lupyuen.github.io/images/de-run.png" alt="Running p-boot Display Code on Apache NuttX RTOS with logging" /></p>
 <p><a href="https://lupyuen.github.io/articles/de#p-boot-display-code"><em>Running p-boot Display Code on Apache NuttX RTOS with logging</em></a></p>
 <h1 id="appendix-programming-the-allwinner-a64-display-engine"><a href="#appendix-programming-the-allwinner-a64-display-engine">15 Appendix: Programming the Allwinner A64 Display Engine</a></h1>
@@ -1529,6 +1559,7 @@ BLD FColor Control: 0x110 1000 = 0x101 (DMB)</code></pre></div></li>
 GLB DBuff: 0x110 0008 = 0x1 (DMB)</code></pre></div></li>
 </ol>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-p-boot-display-engine-on-pinephone">(See the Complete Log)</a></p>
+<p><a href="https://megous.com/git/p-boot/tree/src/display.c#n2017">(Captured from p-boot <code>display_commit</code>)</a></p>
 
     
 </body>
