@@ -987,7 +987,7 @@ Below are the steps to initialise the Allwinner A64 Display Engine...
       0x1c00004 = 0x0 (DMB)
     ```
 
-1.  Set __Display Engine PLL Clock__ to 297 MHz...
+1.  Set __Display Engine PLL__ to 297 MHz...
 
     -   Set __PLL_DE_CTRL_REG__ to __`0x8100` `1701`__ [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb)
 
@@ -1016,7 +1016,7 @@ Below are the steps to initialise the Allwinner A64 Display Engine...
       0x1c20048 = 0x81001701 (DMB)
     ```
 
-1.  Wait for __Display Engine PLL Clock__ to be set...
+1.  Wait for __Display Engine PLL__ to be set...
 
     -   Poll __PLL_DE_CTRL_REG__ (from above) until it's non-zero
 
@@ -1026,36 +1026,27 @@ Below are the steps to initialise the Allwinner A64 Display Engine...
       while (!(readl(0x1c20048) & 0x10000000))
     ```
 
-1.  Enable DE2 special clock
+1.  Set __Special Clock__ to Display Engine PLL...
 
-    TODO
+    -   Clear __DE_CLK_REG__ bits __`0x0300` `0000`__
+
+        Set __DE_CLK_REG__   bits __`0x8100` `0000`__
+
+        __SCLK_GATING__ (Bit 31) = 1 (Enable Special Clock)        
+
+        __CLK_SRC_SEL__ (Bits 24 to 26) = 1 (Clock Source is Display Engine PLL)
+
+    -   __DE_CLK_REG__ (Display Engine Clock Register) is at CCU Offset __`0x0104`__
+    
+        [(A64 Page 117)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+
+    -   __CCU__ (Clock Control Unit) Base Address is __`0x01C2` `0000`__
+
+        [(A64 Page 81)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
 
     ```text
     Enable DE2 special clock
       clrsetbits 0x1c20104, 0x3000000, 0x81000000
-
-    DE_CLK_REG 0x0104 DE Clock Register
-    A64 Page 117
-
-    3.3.5.41. DE Clock Gating Register (Default Value: 0x00000000)
-    Offset: 0x0104 Register Name: DE_CLK_REG
-    Bit R/W Default/Hex Description
-
-    31 R/W 0x0 SCLK_GATING.
-    Gating Special Clock
-    0: Clock is OFF
-    1: Clock is ON
-    This special clock = Clock Source/Divider M.
-
-    26:24 R/W 0x0 CLK_SRC_SEL.
-    Clock Source Select
-    000: PLL_PERIPH0(2X)
-    001: PLL_DE
-    Others: /
-
-    3:0 R/W 0x0 CLK_DIV_RATIO_M.
-    Clock Divide Ratio (m)
-    The pre-divided clock is divided by (m+1). The divider is from 1 to 16.
     ```
 
 1.  Enable DE2 ahb
