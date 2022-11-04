@@ -746,14 +746,14 @@ Channel 2: ...</code></pre></div>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/de#display-rendering-on-pinephone"><strong>“Display Rendering on PinePhone”</strong></a></li>
 </ul>
-<p>According to the doc, the <strong>Display Engine Base Address</strong> is <strong><code>0x0100</code> <code>0000</code></strong> (Page 24)</p>
+<p>According to the doc, the <strong>Display Engine Base Address</strong> is <strong><code>0x0100</code> <code>0000</code></strong> <a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 24)</a></p>
 <p><em>What’s a Display Engine Mixer?</em></p>
-<p><strong>DE RT-MIXER:</strong> (Page 87)</p>
+<p><strong>DE RT-MIXER:</strong> <a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 87)</a></p>
 <blockquote>
 <p>“The RT-mixer Core consist of dma, overlay, scaler and blender block. It supports 4 layers overlay in one pipe, and its result can scaler up or down to blender in the next processing.”</p>
 </blockquote>
 <p>The Display Engine has 2 Mixers: RT-MIXER0 and RT-MIXER1.</p>
-<p><strong>DE RT-MIXER0</strong> has 4 Channels (DE Offset <strong><code>0x10</code> <code>0000</code></strong>, Page 87)</p>
+<p><strong>DE RT-MIXER0</strong> has 4 Channels (DE Offset <strong><code>0x10</code> <code>0000</code></strong>, <a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">DE Page 87</a>)</p>
 <ul>
 <li>
 <p><strong>Channel 0</strong> for Video</p>
@@ -768,7 +768,7 @@ Channel 2: ...</code></pre></div>
 <p>(We only use 1 Overlay Layer per Channel)</p>
 </li>
 <li>
-<p><strong>Layer Priority</strong> is Layer 3 &gt; Layer2 &gt; Layer 1 &gt; Layer 0 (Page 89)</p>
+<p><strong>Layer Priority</strong> is Layer 3 &gt; Layer2 &gt; Layer 1 &gt; Layer 0 <a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 89)</a></p>
 </li>
 </ul>
 <p>Our Display Engine Demo <strong>configures the 4 Channels</strong> as follows…</p>
@@ -786,7 +786,7 @@ Channel 2: ...</code></pre></div>
 <p>(Alpha Channel is enabled)</p>
 </li>
 </ul>
-<p><strong>Hardware Registers</strong> for RT-MIXER0 (Page 90)…</p>
+<p><strong>Hardware Registers</strong> for RT-MIXER0 <a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 90)</a>…</p>
 <div><table><thead><tr><th>Hardware Register</th><th>RT-MIXER0 Offset</th></tr></thead><tbody>
 <tr><td><strong>GLB</strong> (Global Registers)</td><td><strong><code>0x00</code> <code>0000</code></strong></td></tr>
 <tr><td><strong>BLD</strong> (Blender)</td><td><strong><code>0x00</code> <code>1000</code></strong></td></tr>
@@ -806,7 +806,7 @@ Channel 2: ...</code></pre></div>
 <p>The pic below shows how DE RT-MIXER0 mixes together <strong>3 UI Channels (Framebuffers)</strong> via DMA1, 2 and 3 (plus a Video Channel on DMA0)…</p>
 <p><img src="https://lupyuen.github.io/images/de-mixer1a.jpg" alt="Real-Time Mixer in A64 Display Engine (Page 22)" /></p>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf"><em>Real-Time Mixer in A64 Display Engine (Page 22)</em></a></p>
-<p><strong>DE RT-MIXER1</strong> has 2 Channels (DE Offset <strong><code>0x20</code> <code>0000</code></strong>, Page 23)</p>
+<p><strong>DE RT-MIXER1</strong> has 2 Channels (DE Offset <strong><code>0x20</code> <code>0000</code></strong>, <a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">DE Page 23</a>)</p>
 <ul>
 <li>
 <p><strong>Channel 0</strong> for Video </p>
@@ -839,20 +839,21 @@ Channel 2: ...</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/de-overlay.jpg" alt="Mandelbrot Set with Blue Square and Green Circle as Overlays" /></p>
 <p><a href="https://lupyuen.github.io/articles/de#test-pinephone-display-engine"><em>Mandelbrot Set with Blue Square and Green Circle as Overlays</em></a></p>
 <p>We won’t use these Display Engine Features today…</p>
-<p><strong>DE RT-WB (Write-Back Controller):</strong> (Page 116)</p>
+<p><strong>DE RT-WB (Write-Back Controller):</strong> <a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 116)</a></p>
 <blockquote>
 <p>“The Real-time write-back controller (RT-WB) provides data capture function for display engine. It captures data from RT-mixer module, performs the image resizing function, and then write-back to SDRAM.”</p>
 </blockquote>
 <p>(For screen capture?)</p>
-<p><strong>DE VSU (Video Scaler):</strong> (Page 128)</p>
+<p><strong>DE VSU (Video Scaler):</strong> <a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 128)</a></p>
 <blockquote>
 <p>“The Video Scaler (VS) provides YUV format image resizing function for display engine. It receives data from overlay module, performs the image resizing function, and outputs to video post-processing modules.”</p>
 </blockquote>
-<p><strong>DE Rotation:</strong> (Page 137)</p>
+<p><strong>DE Rotation:</strong> <a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 137)</a></p>
 <blockquote>
 <p>“There are several types of rotation: clockwise 0/90/180/270 degree Rotation and H-Flip/V-Flip. Operation of Copy is the same as a 0 degree rotation.”</p>
 </blockquote>
 <h1 id="appendix-initialising-the-allwinner-a64-display-engine"><a href="#appendix-initialising-the-allwinner-a64-display-engine">14 Appendix: Initialising the Allwinner A64 Display Engine</a></h1>
+<p><em>How do we initialise PinePhone’s Allwinner A64 Display Engine at startup?</em></p>
 <p>As deciphered from the following logs…</p>
 <ul>
 <li>
