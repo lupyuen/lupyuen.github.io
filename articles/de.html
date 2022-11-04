@@ -610,7 +610,12 @@ Channel 2: ...</code></pre></div>
 <p>When we study the log, we’ll understand how we should <strong>program the A64 Display Engine</strong> to render the 3 UI Channels.</p>
 <p>Our findings are documented here…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine"><strong>“Programming the Allwinner A64 Display Engine”</strong></a></li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine"><strong>“Initialising the Allwinner A64 Display Engine”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine"><strong>“Programming the Allwinner A64 Display Engine”</strong></a></p>
+</li>
 </ul>
 <p>This is very helpful as we create the NuttX Display Driver for PinePhone…</p>
 <p><img src="https://lupyuen.github.io/images/dsi2-title.jpg" alt="Testing the NuttX Display Driver for PinePhone" /></p>
@@ -631,7 +636,12 @@ Channel 2: ...</code></pre></div>
 </ul>
 <p>Today we learnt so much about PinePhone’s <strong>A64 Display Engine</strong>…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine"><strong>“Programming the Allwinner A64 Display Engine”</strong></a></li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine"><strong>“Initialising the Allwinner A64 Display Engine”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine"><strong>“Programming the Allwinner A64 Display Engine”</strong></a></p>
+</li>
 </ul>
 <p>We’re all set to build the NuttX Display Driver for PinePhone!</p>
 <p><em>How shall we build the PinePhone Display Driver?</em></p>
@@ -1075,6 +1085,129 @@ Channel 2: ...</code></pre></div>
 <li>
 <p>Disable <strong>MIXER0 Modules</strong></p>
 <p>TODO</p>
+<p>0x1120000</p>
+<ul>
+<li>
+<p>VIDEO_SCALER(CH0) at MIXER0 Offset 0x20000</p>
+<p>(DE Page 90)</p>
+</li>
+<li>
+<p>VS_CTRL_REG at VIDEO_SCALER(CH0) Offset 0</p>
+<p>EN (Bit 0) = 0 (Disable Video Scaler)</p>
+<p>(DE Page 130)</p>
+</li>
+</ul>
+<p>TODO: 0x1130000 is Undocumented</p>
+<p>0x1140000</p>
+<ul>
+<li>
+<p>UI_SCALER1(CH1) at MIXER0 Offset 0x40000</p>
+<p>(DE Page 90)</p>
+</li>
+<li>
+<p>UIS_CTRL_REG at UI_SCALER1(CH1) Offset 0</p>
+<p>EN (Bit 0) = 0 (Disable UI Scaler) </p>
+<p>(DE Page 66)</p>
+</li>
+</ul>
+<p>0x1150000</p>
+<ul>
+<li>
+<p>UI_SCALER2(CH2) at MIXER0 Offset 0x50000</p>
+<p>(DE Page 90)</p>
+</li>
+<li>
+<p>UIS_CTRL_REG at UI_SCALER2(CH2) Offset 0</p>
+<p>EN (Bit 0) = 0 (Disable UI Scaler)</p>
+<p>(DE Page 66)</p>
+</li>
+</ul>
+<p>TODO: Missing: UI_SCALER3(CH3) at MIXER0 Offset 0x60000</p>
+<p>(DE Page 90)</p>
+<p>0x11a0000</p>
+<ul>
+<li>
+<p>FCE at MIXER0 Offset 0xA0000</p>
+<p>(DE Page 61)</p>
+</li>
+<li>
+<p>GCTRL_REG at FCE Offset 0</p>
+<p>EN (Bit 0) = 0 (Disable FCE)</p>
+<p>(DE Page 62)</p>
+</li>
+</ul>
+<p>0x11a2000</p>
+<ul>
+<li>
+<p>BWS at MIXER0 Offset 0xA2000</p>
+<p>(DE Page 42)</p>
+</li>
+<li>
+<p>GCTRL_REG at BWS Offset 0</p>
+<p>EN (Bit 0) = 0 (Disable BWS)</p>
+<p>(DE Page 42)</p>
+</li>
+</ul>
+<p>0x11a4000</p>
+<ul>
+<li>
+<p>LTI at MIXER0 Offset 0xA4000</p>
+<p>(DE Page 71)</p>
+</li>
+<li>
+<p>LTI_CTL at LTI Offset 0</p>
+<p>LTI_EN (Bit 0) = 0 (Close LTI)</p>
+<p>(DE Page 72)</p>
+</li>
+</ul>
+<p>0x11a6000</p>
+<ul>
+<li>
+<p>PEAKING at MIXER0 Offset 0xA6000</p>
+<p>(DE Page 80)</p>
+</li>
+<li>
+<p>LP_CTRL_REG at PEAKING Offset 0</p>
+<p>EN (Bit 0) = 0 (Disable PEAKING)</p>
+<p>(DE Page 80)</p>
+</li>
+</ul>
+<p>0x11a8000</p>
+<ul>
+<li>
+<p>ASE at MIXER0 Offset 0xA8000</p>
+<p>(DE Page 40)</p>
+</li>
+<li>
+<p>ASE_CTL_REG at ASE Offset 0</p>
+<p>ASE_EN (Bit 0) = 0 (Disable ASE)</p>
+<p>(DE Page 40)</p>
+</li>
+</ul>
+<p>0x11aa000</p>
+<ul>
+<li>
+<p>FCC at MIXER0 Offset 0xAA000</p>
+<p>(DE Page 56)</p>
+</li>
+<li>
+<p>FCC_CTL_REG at FCC Offset 0</p>
+<p>Enable (Bit 0) = 0 (Disable FCC)</p>
+<p>(DE Page 56)</p>
+</li>
+</ul>
+<p>0x11b0000</p>
+<ul>
+<li>
+<p>DRC at Base Address 0x011B0000</p>
+<p>(DE Page 48)</p>
+</li>
+<li>
+<p>GNECTL_REG at DRC Offset 0</p>
+<p>BIST_EN (Bit 0) = 0 (Disable BIST)</p>
+</li>
+</ul>
+<p>DE Page 49</p>
 <div class="example-wrap"><pre class="language-text"><code>Clear all registers
   0x1120000 = 0x0
   0x1130000 = 0x0
@@ -1086,152 +1219,7 @@ Channel 2: ...</code></pre></div>
   0x11a6000 = 0x0
   0x11a8000 = 0x0
   0x11aa000 = 0x0
-  0x11b0000 = 0x0
-
-0x1120000
-VIDEO_SCALER(CH0) 128K 0x20000
-DE Page 90
-
-Offset: 0x000 Register Name: VS_CTRL_REG
-0 R/W 0x0
-EN
-Video Scaler enable
-0: Disable
-1: Enable
-Note: When module disabled, the core clock to the core circuit will be gated.
-DE Page 130
-
-0x1130000
-Undocumented
-
-0x1140000
-UI_SCALER1(CH1) 64K 0x40000
-DE Page 90
-
-Offset: 0x000 Register Name: UIS_CTRL_REG
-0 R/W 0x0
-EN
-UI Scaler enable
-0: Disable
-1: Enable
-Note: When module disabled, the core clock to the core circuit will be gated, and
-the input data will be bypassed to down-stream module.
-DE Page 66
-
-0x1150000
-UI_SCALER2(CH2) 64K 0x50000
-DE Page 90
-
-Offset: 0x000 Register Name: UIS_CTRL_REG
-0 R/W 0x0
-EN
-UI Scaler enable
-0: Disable
-1: Enable
-Note: When module disabled, the core clock to the core circuit will be gated, and
-the input data will be bypassed to down-stream module.
-DE Page 66
-
-Missing: UI_SCALER3(CH3) 64K 0x60000
-DE Page 90
-
-0x11a0000
-Module name Memory Range Offset Address
-FCE 8K 0xA0000
-DE Page 61
-
-5.6.3.1 GCTRL_REG
-Offset: 0x000 Register Name: GCTRL_REG
-0 R/W 0x0
-EN
-FCE module enable
-0: Disable
-1: Enable
-Note: When module disable, the clock of the calculation circuit will be gated
-automatically. 
-DE Page 62
-
-0x11a2000
-Module name Memory Range Offset Address
-BWS 8K 0xA2000
-DE Page 42
-
-Offset: 0x000 Register Name: GCTRL_REG
-0 R/W 0x0
-EN
-BWS module enable
-0: Disable
-1: Enable
-Note: When module disable, the clock of the calculation circuit will be gated
-automatically. 
-DE Page 42
-
-0x11a4000
-Module name Memory Range Offset Address
-LTI 8K 0xA4000
-DE Page 71
-
-5.8.3.1 Global control register
-Offset: 0x000 Register Name: LTI_CTL
-0 R/W 0x0
-LTI_EN
-0: LTI close
-1: LTI open
-DE Page 72
-
-0x11a6000
-Module name Memory Range Offset Address
-PEAKING 8K 0xA6000
-DE Page 80
-
-Offset: 0x00 Register name: LP_CTRL_REG
-0 R/W 0x0
-EN
-LP Module enable
-0: Disable
-1: Enable
-DE Page 80
-
-0x11a8000
-Module name Memory Range Offset Address
-ASE 8K 0xA8000
-DE Page 40
-
-Offset: 0x000 Register Name: ASE_CTL_REG
-0 R/W 0x0
-ASE_EN
-0: disable
-1: enable
-DE Page 40
-
-0x11aa000
-Module name Memory Range Offset Address
-FCC 8K 0xAA000
-DE Page 56
-
-5.5.3.1 FCC_CTRL_REG(Default Value: 0x0000_0000)
-Offset: 0x000 Register Name: FCC_CTL_REG
-0 R/W 0x0
-Enable
-Enable control
-0:disable
-1:enable
-If the bit is disabled, the input data will by-pass to next module.
-
-0x11b0000
-Module Offset Address Memory Range
-DRC 0x011b0000
-DE Page 48
-
-5.4.3.1 General control register (Default Value: 0x0000_0000)
-Offset: 0x0000 Register Name: GNECTL_REG
-Bit Read/Write Default/Hex Description
-31 R/W 0x0
-BIST_EN
-BIST enable
-0x0: disable
-0x1: enable
-DE Page 49</code></pre></div></li>
+  0x11b0000 = 0x0</code></pre></div></li>
 <li>
 <p>Enable <strong>MIXER0</strong></p>
 <p>TODO</p>
