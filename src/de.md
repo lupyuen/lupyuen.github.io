@@ -970,7 +970,7 @@ Based on the [`de2_init` log](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c
 
     -   Set __BIST_DMA_CTRL_SEL__ to __0__ for DMA
     
-        (A31 Page 191)
+        [(A31 Page 191)](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
 
     -   __BIST_DMA_CTRL_SEL__ (Bist and DMA Control Select) is __Bit 0__ of SRAM_CTRL_REG1
 
@@ -978,7 +978,7 @@ Based on the [`de2_init` log](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c
 
     -   __SRAM Registers__ Base Address is __`0x01C0` `0000`__
     
-        (A31 Page 191)
+        [(A31 Page 191)](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
     
     ```text
     Set SRAM for video use
