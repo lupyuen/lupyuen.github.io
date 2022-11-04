@@ -939,129 +939,41 @@ Channel 2: ...</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>Enable DE2 special clock
   clrsetbits 0x1c20104, 0x3000000, 0x81000000</code></pre></div></li>
 <li>
-<p>Enable DE2 ahb</p>
-<p>TODO</p>
+<p>Enable <strong>AHB (AMBA High-speed Bus)</strong> for Display Engine: De-Assert Display Engine…</p>
+<ul>
+<li>
+<p>Set <strong>BUS_SOFT_RST_REG1</strong> bits <strong><code>0x1000</code></strong></p>
+<p><strong>DE_RST</strong> (Bit 12) = 1 (De-Assert Display Engine)</p>
+</li>
+<li>
+<p><strong>BUS_SOFT_RST_REG1</strong> (Bus Software Reset Register 1) is at CCU Offset <code>0x02C4</code></p>
+<p><a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 140)</a></p>
+</li>
+<li>
+<p><strong>CCU</strong> (Clock Control Unit) Base Address is <strong><code>0x01C2</code> <code>0000</code></strong></p>
+<p><a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 81)</a></p>
+</li>
+</ul>
 <div class="example-wrap"><pre class="language-text"><code>Enable DE2 ahb
-  setbits 0x1c202c4, 0x1000
-  setbits 0x1c20064, 0x1000
-
-BUS_SOFT_RST_REG1 0x02C4 Bus Software Reset Register 1
-A64 Page 140
-
-3.3.5.87. Bus Software Reset Register 1 (Default Value: 0x00000000)
-Offset: 0x02C4 Register Name: BUS_SOFT_RST_REG1
-Bit R/W Default/Hex Description
-
-31 R/W 0x0 DBGSYS_RST.
-DBGSYS Reset.
-0: Assert
-1: De-assert
-
-22 R/W 0x0 SPINLOCK_RST.
-SPINLOCK Reset.
-0: Assert
-1: De-assert.
-
-21 R/W 0x0 MSGBOX_RST.
-MSGBOX Reset.
-0: Assert
-1: De-assert.
-
-20 R/W 0x0 GPU_RST.
-GPU Reset.
-0: Assert
-1: De-assert.
-
-12 R/W 0x0 DE_RST.
-DE Reset.
-0: Assert
-1: De-assert.
-
-11 R/W 0x0 HDMI1_RST.
-HDMI1 Reset.
-0: Assert
-1: De-assert.
-
-10 R/W 0x0 HDMI0_RST.
-HDMI0 Reset.
-0: Assert
-1: De-assert.
-
-8 R/W 0x0 CSI_RST.
-CSI Reset.
-0: Assert
-1: De-assert.
-
-5 R/W 0x0 DEINTERLACE_RST.
-DEINTERLACE Reset.
-0: Assert
-1:De-assert
-
-4 R/W 0x0 TCON1_RST.
-TCON1 Reset.
-0: Assert
-1: De-assert.
-
-3 R/W 0x0 TCON0_RST.
-TCON0 Reset.
-0: Assert
-1: De-assert.
-
-0 R/W 0x0 VE_RST.
-VE Reset.
-0: Assert
-1: De-assert.
-
-BUS_CLK_GATING_REG1 0x0064 Bus Clock Gating Register 1
-A64 Page 102
-
-3.3.5.19. Bus Clock Gating Register1 (Default Value: 0x00000000)
-Offset: 0x0064 Register Name: BUS_CLK_GATING_REG1
-Bit R/W Default/Hex Description
-
-22 R/W 0x0 SPINLOCK_GATING.
-0: Mask
-1: Pass.
-
-21 R/W 0x0 MSGBOX_GATING.
-0: Mask
-1: Pass.
-
-20 R/W 0x0 GPU_GATING.
-0: Mask
-1: Pass.
-
-12 R/W 0x0 DE_GATING.
-0: Mask
-1: Pass.
-
-11 R/W 0x0 HDMI_GATING.
-0: Mask
-1: Pass.
-
-8 R/W 0x0 CSI_GATING.
-0: Mask
-1: Pass.
-
-5 R/W 0x0 DEINTERLACE_GATING.
-Gating Clock For DEINTERLACE
-0: Mask
-1: Pass
-
-4 R/W 0x0 TCON1_GATING.
-Gating Clock For TCON1
-0: Mask
-1: Pass.
-
-3 R/W 0x0 TCON0_GATING.
-Gating Clock For TCON0
-0: Mask
-1: Pass.
-
-0 R/W 0x0 VE_GATING.
-Gating Clock For VE
-0: Mask
-1: Pass.</code></pre></div></li>
+  setbits 0x1c202c4, 0x1000</code></pre></div></li>
+<li>
+<p>Enable <strong>AHB (AMBA High-speed Bus)</strong> for Display Engine: Gate Pass Display Engine…</p>
+<ul>
+<li>
+<p>Set <strong>BUS_CLK_GATING_REG1</strong> bits <strong><code>0x1000</code></strong></p>
+<p><strong>DE_GATING</strong> (Bit 12) = 1 (Gate Pass Display Engine)</p>
+</li>
+<li>
+<p><strong>BUS_CLK_GATING_REG1</strong> (Bus Clock Gating Register 1) is at CCU Offset <strong><code>0x0064</code></strong></p>
+<p><a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 102)</a></p>
+</li>
+<li>
+<p><strong>CCU</strong> (Clock Control Unit) Base Address is <strong><code>0x01C2</code> <code>0000</code></strong></p>
+<p><a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 81)</a></p>
+</li>
+</ul>
+<div class="example-wrap"><pre class="language-text"><code>Enable DE2 ahb
+  setbits 0x1c20064, 0x1000</code></pre></div></li>
 <li>
 <p>Enable clock for mixer 0, set route MIXER0-&gt;TCON0</p>
 <p>TODO</p>
