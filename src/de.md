@@ -1150,7 +1150,9 @@ Below are the steps to initialise the Allwinner A64 Display Engine...
 
     -   Clear __DE2TCON_MUX__ bits __`0x1`__
 
-        __DE2TCON_MUX__ (Bit 0) = 0 (Route MIXER0 to TCON0; Route MIXER1 to TCON1)
+        __DE2TCON_MUX__ (Bit 0) = 0
+        
+        (Route MIXER0 to TCON0; Route MIXER1 to TCON1)
 
     -   __DE2TCON_MUX__ is at DE GLB Offset __`0x010`__
     
