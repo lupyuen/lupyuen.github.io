@@ -887,7 +887,7 @@ Channel 2: ...</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>Set SRAM for video use
   0x1c00004 = 0x0 (DMB)</code></pre></div></li>
 <li>
-<p>Set <strong>Display Engine PLL Clock</strong> to 297 MHz…</p>
+<p>Set <strong>Display Engine PLL</strong> to 297 MHz…</p>
 <ul>
 <li>
 <p>Set <strong>PLL_DE_CTRL_REG</strong> to <strong><code>0x8100</code> <code>1701</code></strong> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a></p>
@@ -911,7 +911,7 @@ Channel 2: ...</code></pre></div>
   PLL10 rate = 24000000 * n / m
   0x1c20048 = 0x81001701 (DMB)</code></pre></div></li>
 <li>
-<p>Wait for <strong>Display Engine PLL Clock</strong> to be set…</p>
+<p>Wait for <strong>Display Engine PLL</strong> to be set…</p>
 <ul>
 <li>Poll <strong>PLL_DE_CTRL_REG</strong> (from above) until it’s non-zero</li>
 </ul>
@@ -919,33 +919,25 @@ Channel 2: ...</code></pre></div>
   ...
   while (!(readl(0x1c20048) &amp; 0x10000000))</code></pre></div></li>
 <li>
-<p>Enable DE2 special clock</p>
-<p>TODO</p>
+<p>Set <strong>Special Clock</strong> to Display Engine PLL…</p>
+<ul>
+<li>
+<p>Clear <strong>DE_CLK_REG</strong> bits <strong><code>0x0300</code> <code>0000</code></strong></p>
+<p>Set <strong>DE_CLK_REG</strong>   bits <strong><code>0x8100</code> <code>0000</code></strong></p>
+<p><strong>SCLK_GATING</strong> (Bit 31) = 1 (Enable Special Clock)</p>
+<p><strong>CLK_SRC_SEL</strong> (Bits 24 to 26) = 1 (Clock Source is Display Engine PLL)</p>
+</li>
+<li>
+<p><strong>DE_CLK_REG</strong> (Display Engine Clock Register) is at CCU Offset <strong><code>0x0104</code></strong></p>
+<p><a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 117)</a></p>
+</li>
+<li>
+<p><strong>CCU</strong> (Clock Control Unit) Base Address is <strong><code>0x01C2</code> <code>0000</code></strong></p>
+<p><a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 81)</a></p>
+</li>
+</ul>
 <div class="example-wrap"><pre class="language-text"><code>Enable DE2 special clock
-  clrsetbits 0x1c20104, 0x3000000, 0x81000000
-
-DE_CLK_REG 0x0104 DE Clock Register
-A64 Page 117
-
-3.3.5.41. DE Clock Gating Register (Default Value: 0x00000000)
-Offset: 0x0104 Register Name: DE_CLK_REG
-Bit R/W Default/Hex Description
-
-31 R/W 0x0 SCLK_GATING.
-Gating Special Clock
-0: Clock is OFF
-1: Clock is ON
-This special clock = Clock Source/Divider M.
-
-26:24 R/W 0x0 CLK_SRC_SEL.
-Clock Source Select
-000: PLL_PERIPH0(2X)
-001: PLL_DE
-Others: /
-
-3:0 R/W 0x0 CLK_DIV_RATIO_M.
-Clock Divide Ratio (m)
-The pre-divided clock is divided by (m+1). The divider is from 1 to 16.</code></pre></div></li>
+  clrsetbits 0x1c20104, 0x3000000, 0x81000000</code></pre></div></li>
 <li>
 <p>Enable DE2 ahb</p>
 <p>TODO</p>
