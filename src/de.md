@@ -956,25 +956,27 @@ __DE Rotation:__ (Page 137)
 
 # Appendix: Initialising the Allwinner A64 Display Engine
 
-TODO
+As deciphered from the following logs...
 
-Below are the steps to initialise the Allwinner A64 Display Engine.
+-   [__`de2_init` Log__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#de2_init) 
 
-Based on the [`de2_init` log](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#de2_init) and [`clock_set_pll_de` log](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#clock_set_pll_de)
+    (Captured from [__p-boot `de2_init`__](https://megous.com/git/p-boot/tree/src/display.c#n1871))
 
-[(Log captured from p-boot `de2_init`)](https://megous.com/git/p-boot/tree/src/display.c#n1871)
+-   [__`clock_set_pll_de` Log__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#clock_set_pll_de)
 
-[(Log also captured from p-boot `clock_set_pll_de`)](https://megous.com/git/p-boot/tree/src/uboot/arch/arm/mach-sunxi/clock_sun6i.c#n260)
+    (Captured from [__p-boot `clock_set_pll_de`__](https://megous.com/git/p-boot/tree/src/uboot/arch/arm/mach-sunxi/clock_sun6i.c#n260))
 
-1.  __Set High Speed SRAM__ to DMA Mode...
+Below are the steps to initialise the Allwinner A64 Display Engine...
 
-    -   Set __BIST_DMA_CTRL_SEL__ to __0__ for DMA
+1.  Set __High Speed SRAM__ to DMA Mode...
+
+    -   Set __BIST_DMA_CTRL_SEL__ to __0__ for DMA [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb)
     
         [(A31 Page 191)](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
 
     -   __BIST_DMA_CTRL_SEL__ (Bist and DMA Control Select) is __Bit 0__ of SRAM_CTRL_REG1
 
-    -   __SRAM_CTRL_REG1__ (SRAM Control Register 1) is at SRAM Registers __Offset `0x4`__
+    -   __SRAM_CTRL_REG1__ (SRAM Control Register 1) is at SRAM Registers Offset __`0x4`__
 
     -   __SRAM Registers__ Base Address is __`0x01C0` `0000`__
     
@@ -985,66 +987,43 @@ Based on the [`de2_init` log](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c
       0x1c00004 = 0x0 (DMB)
     ```
 
-1.  Setup DE2 PLL
+1.  Set __Display Engine PLL Clock__ to 297 MHz...
 
-    TODO
+    -   Set __PLL_DE_CTRL_REG__ to __`0x8100` `1701`__ [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb)
+
+        __PLL_ENABLE__ (Bit 31) = 1 (Enable PLL)
+
+        __PLL_MODE_SEL__ (Bit 24) = 1 (Integer Mode)
+
+        __PLL_FACTOR_N__ (Bits 8 to 14) = 23 (N = 24)
+
+        __PLL_PRE_DIV_M__ (Bits 0 to 3) = 1 (M = 2)
+
+        (PLL Output = 24 MHz * N / M = 288 MHz, due to truncation)
+
+    -   __PLL_DE_CTRL_REG__ (PLL Display Engine Control Register) is at CCU Offset __`0x0048`__
+
+        [(A64 Page 96)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+
+    -   __CCU__ (Clock Control Unit) Base Address is __`0x01C2` `0000`__
+
+        [(A64 Page 81)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
 
     ```text
     Setup DE2 PLL
-    clock_set_pll_de: clk=297000000
-    PLL10 rate = 24000000 * n / m
+      clock_set_pll_de: clk=297000000
+      PLL10 rate = 24000000 * n / m
       0x1c20048 = 0x81001701 (DMB)
+    ```
+
+1.  Wait for __Display Engine PLL Clock__ to be set...
+
+    -   Poll __PLL_DE_CTRL_REG__ (from above) until it's non-zero
+
+    ```text
+    Setup DE2 PLL
+      ...
       while (!(readl(0x1c20048) & 0x10000000))
-
-    3.3.4. Register List
-    Module Name Base Address
-    CCU 0x01C20000
-    A64 Page 81
-
-    PLL_DE_CTRL_REG 0x0048 PLL_DE Control Register
-    A64 Page 96
-    3.3.5.12. PLL_DE Control Register (Default Value: 0x03006207)
-    Offset: 0x0048 Register Name: PLL_DE_CTRL_REG
-    Bit R/W Default/Hex Description
-    31 R/W 0x0 PLL_ENABLE.
-    0: Disable
-    1: Enable
-    In the integer mode, The PLL Output= (24MHz*N)/M.
-    In the fractional mode, the PLL Output is select by bit 25.
-    Note: 8≤N/M≤25
-    (24MHz*N)/M must be in the range of 192MHz~600MHz.
-    Its default is 297MHz.
-    30:29 / / /
-    System
-    28 R 0x0 LOCK
-    0: Unlocked
-    1: Locked (It indicates that the PLL has been stable.)
-    27:26 / / /
-    25 R/W 0x1 FRAC_CLK_OUT.
-    PLL clock output when PLL_MODE_SEL=0(PLL_PREDIV_M factor must be
-    set to 0); no meaning when PLL_MODE_SEL =1.
-    0: PLL Output=270MHz
-    1: PLL Output =297MHz
-    24 R/W 0x1 PLL_MODE_SEL.
-    0: Fractional Mode
-    1: Integer Mode
-    Note: When in Fractional mode, the Pre Divider M should be set to 0.
-    23:21 / / /
-    20 R/W 0x0 PLL_SDM_EN.
-    0: Disable
-    1: Enable
-    19:15 / / /
-    14:8 R/W 0x62 PLL_FACTOR_N
-    PLL Factor N.
-    Factor=0, N=1
-    Factor=1, N=2
-    Factor=2, N=3
-    ……
-    Factor=0x7F, N=128
-    7:4 / / /
-    3:0 R/W 0x7 PLL_PRE_DIV_M.
-    PLL Per Divider (M = Factor+1).
-    The range is from 1 to 16.
     ```
 
 1.  Enable DE2 special clock
@@ -1057,21 +1036,23 @@ Based on the [`de2_init` log](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c
 
     DE_CLK_REG 0x0104 DE Clock Register
     A64 Page 117
+
     3.3.5.41. DE Clock Gating Register (Default Value: 0x00000000)
     Offset: 0x0104 Register Name: DE_CLK_REG
     Bit R/W Default/Hex Description
+
     31 R/W 0x0 SCLK_GATING.
     Gating Special Clock
     0: Clock is OFF
     1: Clock is ON
     This special clock = Clock Source/Divider M.
-    30:27 / / /
+
     26:24 R/W 0x0 CLK_SRC_SEL.
     Clock Source Select
     000: PLL_PERIPH0(2X)
     001: PLL_DE
     Others: /
-    23:4 / / /
+
     3:0 R/W 0x0 CLK_DIV_RATIO_M.
     Clock Divide Ratio (m)
     The pre-divided clock is divided by (m+1). The divider is from 1 to 16.
@@ -1088,58 +1069,66 @@ Based on the [`de2_init` log](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c
 
     BUS_SOFT_RST_REG1 0x02C4 Bus Software Reset Register 1
     A64 Page 140
+
     3.3.5.87. Bus Software Reset Register 1 (Default Value: 0x00000000)
     Offset: 0x02C4 Register Name: BUS_SOFT_RST_REG1
     Bit R/W Default/Hex Description
+
     31 R/W 0x0 DBGSYS_RST.
     DBGSYS Reset.
     0: Assert
     1: De-assert
-    30:23 / / /
+
     22 R/W 0x0 SPINLOCK_RST.
     SPINLOCK Reset.
     0: Assert
     1: De-assert.
+
     21 R/W 0x0 MSGBOX_RST.
     MSGBOX Reset.
     0: Assert
     1: De-assert.
+
     20 R/W 0x0 GPU_RST.
     GPU Reset.
     0: Assert
     1: De-assert.
-    19:13 / / /
+
     12 R/W 0x0 DE_RST.
     DE Reset.
     0: Assert
     1: De-assert.
+
     11 R/W 0x0 HDMI1_RST.
     HDMI1 Reset.
     0: Assert
     1: De-assert.
+
     10 R/W 0x0 HDMI0_RST.
     HDMI0 Reset.
     0: Assert
     1: De-assert.
-    9 / / /
+
     8 R/W 0x0 CSI_RST.
     CSI Reset.
     0: Assert
     1: De-assert.
-    7:6 / / /
+
     5 R/W 0x0 DEINTERLACE_RST.
     DEINTERLACE Reset.
     0: Assert
     1:De-assert
+
     4 R/W 0x0 TCON1_RST.
     TCON1 Reset.
     0: Assert
     1: De-assert.
+
     3 R/W 0x0 TCON0_RST.
     TCON0 Reset.
     0: Assert
     1: De-assert.
-    2:1 / / /
+
     0 R/W 0x0 VE_RST.
     VE Reset.
     0: Assert
@@ -1147,44 +1136,50 @@ Based on the [`de2_init` log](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c
 
     BUS_CLK_GATING_REG1 0x0064 Bus Clock Gating Register 1
     A64 Page 102
+
     3.3.5.19. Bus Clock Gating Register1 (Default Value: 0x00000000)
     Offset: 0x0064 Register Name: BUS_CLK_GATING_REG1
     Bit R/W Default/Hex Description
-    31:23 / / /
+
     22 R/W 0x0 SPINLOCK_GATING.
     0: Mask
     1: Pass.
+
     21 R/W 0x0 MSGBOX_GATING.
     0: Mask
     1: Pass.
+
     20 R/W 0x0 GPU_GATING.
     0: Mask
     1: Pass.
-    19:13 / / /
+
     12 R/W 0x0 DE_GATING.
     0: Mask
     1: Pass.
+
     11 R/W 0x0 HDMI_GATING.
     0: Mask
     1: Pass.
-    10:9 / / /
+
     8 R/W 0x0 CSI_GATING.
     0: Mask
     1: Pass.
-    7:6 / / /
+
     5 R/W 0x0 DEINTERLACE_GATING.
     Gating Clock For DEINTERLACE
     0: Mask
     1: Pass
+
     4 R/W 0x0 TCON1_GATING.
     Gating Clock For TCON1
     0: Mask
     1: Pass.
+
     3 R/W 0x0 TCON0_GATING.
     Gating Clock For TCON0
     0: Mask
     1: Pass.
-    2:1 / / /
+
     0 R/W 0x0 VE_GATING.
     Gating Clock For VE
     0: Mask
@@ -1207,18 +1202,21 @@ Based on the [`de2_init` log](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c
 
     SCLK_GATE 0x000
     DE Page 25
+
     2.5.1 SCLK_GATE
     Offset: 0x000 Register Name: SCLK_GATE
     Bit Read/Write Default/Hex Description
-    31:3 / / Reserved
+
     2 R/W 0x0
     RT_WB_SCLK_GATE
     0: clock gate
     1: clock pass
+
     1 R/W 0x0
     CORE1_SCLK_GATE
     0: clock gate
     1: clock pass
+
     0 R/W 0x0
     CORE0_SCLK_GATE
     0: clock gate
@@ -1226,17 +1224,20 @@ Based on the [`de2_init` log](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c
 
     AHB_RESET 0x008
     DE Page 25
+
     2.5.3 AHB_RESET
     Offset: 0x008 Register Name: AHB_RESET
     Bit Read/Write Default/Hex Description
-    29:4 / / Reserved
+
     2 R/W 0x0 RT_WB_SCLK_RESET
     0: reset on
     1: reset off
+
     1 R/W 0x0
     CORE1_SCLK_RESET
     0: reset on
     1: reset off
+
     0 R/W 0x0
     CORE0_HCLK_RESET
     0: reset on
@@ -1244,18 +1245,21 @@ Based on the [`de2_init` log](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c
 
     HCLK_GATE 0x004
     DE Page 25
+
     2.5.2 HCLK_GATE
     Offset: 0x004 Register Name: HCLK_GATE
     Bit Read/Write Default/Hex Description
-    29:3 / / Reserved
+
     2 R/W 0x0
     RT_WB_HCLK_GATE
     0: clock gate
     1: clock pass
+
     1 R/W 0x0
     CORE1_HCLK_GATE
     0: clock gate
     1: clock pass
+
     0 R/W 0x0
     CORE0_HCLK_GATE
     0: clock gate
@@ -1263,10 +1267,11 @@ Based on the [`de2_init` log](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c
 
     DE2TCON_MUX 0X010
     DE Page 26
+
     2.5.5 DE2TCON_MUX
     Offset: 0x010 Register Name: DE2TCON_MUX
     Bit Read/Write Default/Hex Description
-    31:1 / / Reserved
+
     0 R/W 0x0
     DE2TCON_MUX
     0: MIXER0-〉TCON0；MIXER1-〉TCON1
