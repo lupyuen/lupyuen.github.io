@@ -1056,7 +1056,77 @@ Gating Clock For VE
   setbits 0x1000000, 0x1
   setbits 0x1000008, 0x1
   setbits 0x1000004, 0x1
-  clrbits 0x1000010, 0x1</code></pre></div>
+  clrbits 0x1000010, 0x1
+
+DE 0x01000000
+DE Page 24
+
+SCLK_GATE 0x000
+DE Page 25
+2.5.1 SCLK_GATE
+Offset: 0x000 Register Name: SCLK_GATE
+Bit Read/Write Default/Hex Description
+31:3 / / Reserved
+2 R/W 0x0
+RT_WB_SCLK_GATE
+0: clock gate
+1: clock pass
+1 R/W 0x0
+CORE1_SCLK_GATE
+0: clock gate
+1: clock pass
+0 R/W 0x0
+CORE0_SCLK_GATE
+0: clock gate
+1: clock pass
+
+AHB_RESET 0x008
+DE Page 25
+2.5.3 AHB_RESET
+Offset: 0x008 Register Name: AHB_RESET
+Bit Read/Write Default/Hex Description
+29:4 / / Reserved
+2 R/W 0x0 RT_WB_SCLK_RESET
+0: reset on
+1: reset off
+1 R/W 0x0
+CORE1_SCLK_RESET
+0: reset on
+1: reset off
+0 R/W 0x0
+CORE0_HCLK_RESET
+0: reset on
+1: reset off
+
+HCLK_GATE 0x004
+DE Page 25
+2.5.2 HCLK_GATE
+Offset: 0x004 Register Name: HCLK_GATE
+Bit Read/Write Default/Hex Description
+29:3 / / Reserved
+2 R/W 0x0
+RT_WB_HCLK_GATE
+0: clock gate
+1: clock pass
+1 R/W 0x0
+CORE1_HCLK_GATE
+0: clock gate
+1: clock pass
+0 R/W 0x0
+CORE0_HCLK_GATE
+0: clock gate
+1: clock pass
+
+DE2TCON_MUX 0X010
+DE Page 26
+2.5.5 DE2TCON_MUX
+Offset: 0x010 Register Name: DE2TCON_MUX
+Bit Read/Write Default/Hex Description
+31:1 / / Reserved
+0 R/W 0x0
+DE2TCON_MUX
+0: MIXER0-〉TCON0；MIXER1-〉TCON1
+1: MIXER0-〉TCON1；MIXER1-〉TCON0</code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Clear all registers
   0x1100000 to 0x1105fff = 0x0
@@ -1070,7 +1140,161 @@ Gating Clock For VE
   0x11a6000 = 0x0
   0x11a8000 = 0x0
   0x11aa000 = 0x0
-  0x11b0000 = 0x0</code></pre></div>
+  0x11b0000 = 0x0
+
+0x1100000 to 0x1105fff
+GLB 4K 0x00000
+BLD 4K 0x01000
+OVL_V(CH0) 4K 0x02000
+OVL_UI(CH1) 4K 0x03000
+OVL_UI(CH2) 4K 0x04000
+OVL_UI(CH3) 4K 0x05000
+DE Page 90
+
+0x1120000
+VIDEO_SCALER(CH0) 128K 0x20000
+DE Page 90
+
+Offset: 0x000 Register Name: VS_CTRL_REG
+0 R/W 0x0
+EN
+Video Scaler enable
+0: Disable
+1: Enable
+Note: When module disabled, the core clock to the core circuit will be gated.
+DE Page 130
+
+0x1130000
+Undocumented
+
+0x1140000
+UI_SCALER1(CH1) 64K 0x40000
+DE Page 90
+
+Offset: 0x000 Register Name: UIS_CTRL_REG
+0 R/W 0x0
+EN
+UI Scaler enable
+0: Disable
+1: Enable
+Note: When module disabled, the core clock to the core circuit will be gated, and
+the input data will be bypassed to down-stream module.
+DE Page 66
+
+0x1150000
+UI_SCALER2(CH2) 64K 0x50000
+DE Page 90
+
+Offset: 0x000 Register Name: UIS_CTRL_REG
+0 R/W 0x0
+EN
+UI Scaler enable
+0: Disable
+1: Enable
+Note: When module disabled, the core clock to the core circuit will be gated, and
+the input data will be bypassed to down-stream module.
+DE Page 66
+
+Missing: UI_SCALER3(CH3) 64K 0x60000
+DE Page 90
+
+0x11a0000
+Module name Memory Range Offset Address
+FCE 8K 0xA0000
+DE Page 61
+
+5.6.3.1 GCTRL_REG
+Offset: 0x000 Register Name: GCTRL_REG
+0 R/W 0x0
+EN
+FCE module enable
+0: Disable
+1: Enable
+Note: When module disable, the clock of the calculation circuit will be gated
+automatically. 
+DE Page 62
+
+0x11a2000
+Module name Memory Range Offset Address
+BWS 8K 0xA2000
+DE Page 42
+
+Offset: 0x000 Register Name: GCTRL_REG
+0 R/W 0x0
+EN
+BWS module enable
+0: Disable
+1: Enable
+Note: When module disable, the clock of the calculation circuit will be gated
+automatically. 
+DE Page 42
+
+0x11a4000
+Module name Memory Range Offset Address
+LTI 8K 0xA4000
+DE Page 71
+
+5.8.3.1 Global control register
+Offset: 0x000 Register Name: LTI_CTL
+0 R/W 0x0
+LTI_EN
+0: LTI close
+1: LTI open
+DE Page 72
+
+0x11a6000
+Module name Memory Range Offset Address
+PEAKING 8K 0xA6000
+DE Page 80
+
+Offset: 0x00 Register name: LP_CTRL_REG
+0 R/W 0x0
+EN
+LP Module enable
+0: Disable
+1: Enable
+DE Page 80
+
+0x11a8000
+Module name Memory Range Offset Address
+ASE 8K 0xA8000
+DE Page 40
+
+Offset: 0x000 Register Name: ASE_CTL_REG
+0 R/W 0x0
+ASE_EN
+0: disable
+1: enable
+DE Page 40
+
+0x11aa000
+Module name Memory Range Offset Address
+FCC 8K 0xAA000
+DE Page 56
+
+5.5.3.1 FCC_CTRL_REG(Default Value: 0x0000_0000)
+Offset: 0x000 Register Name: FCC_CTL_REG
+0 R/W 0x0
+Enable
+Enable control
+0:disable
+1:enable
+If the bit is disabled, the input data will by-pass to next module.
+
+0x11b0000
+Module Offset Address Memory Range
+DRC 0x011b0000
+DE Page 48
+
+5.4.3.1 General control register (Default Value: 0x0000_0000)
+Offset: 0x0000 Register Name: GNECTL_REG
+Bit Read/Write Default/Hex Description
+31 R/W 0x0
+BIST_EN
+BIST enable
+0x0: disable
+0x1: enable
+DE Page 49</code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Enable mixer
   0x1100000 = 0x1 (DMB)</code></pre></div>
