@@ -1070,11 +1070,11 @@ Below are the steps to initialise the Allwinner A64 Display Engine...
       setbits 0x1c202c4, 0x1000
     ```
 
-1.  Enable __AHB (AMBA High-speed Bus)__ for Display Engine: Gate Pass Display Engine...
+1.  Enable __AHB (AMBA High-speed Bus)__ for Display Engine: Pass Display Engine...
 
     -   Set __BUS_CLK_GATING_REG1__ bits __`0x1000`__
 
-        __DE_GATING__ (Bit 12) = 1 (Gate Pass Display Engine)
+        __DE_GATING__ (Bit 12) = 1 (Pass Display Engine)
 
     -   __BUS_CLK_GATING_REG1__ (Bus Clock Gating Register 1) is at CCU Offset __`0x0064`__
         
@@ -1089,96 +1089,80 @@ Below are the steps to initialise the Allwinner A64 Display Engine...
       setbits 0x1c20064, 0x1000
     ```
 
-1.  Enable clock for mixer 0, set route MIXER0->TCON0
+1.  Enable __Clock for Mixer 0__: SCLK Clock Pass
 
-    TODO
+    -   Set __SCLK_GATE__ bits __`0x1`__
+
+        __CORE0_SCLK_GATE__ (Bit 0) = 1 (Clock Pass)
+
+    -   __SCLK_GATE__ is at DE GLB Offset __`0x000`__
+    
+        [(DE Page 25)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+    -   __Display Engine Global Registers (DE GLB)__ Base Address is __`0x0100` `0000`__
+    
+        [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     ```text
     Enable clock for mixer 0, set route MIXER0->TCON0
       setbits 0x1000000, 0x1
+    ```
+
+1.  Enable __Clock for Mixer 0__: HCLK Clock Reset Off
+
+    -   Set __AHB_RESET__ bits __`0x1`__
+
+        __CORE0_HCLK_RESET__ (Bit 0) = 1 (Reset Off)
+
+    -   __AHB_RESET__ is at DE GLB Offset __`0x008`__
+    
+        [(DE Page 25)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+    -   __Display Engine Global Registers (DE GLB)__ Base Address is __`0x0100` `0000`__
+    
+        [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+    ```text
+    Enable clock for mixer 0, set route MIXER0->TCON0
       setbits 0x1000008, 0x1
+    ```
+
+1.  Enable __Clock for Mixer 0__: HCLK Clock Pass
+
+    -   Set __HCLK_GATE__ bits __`0x1`__
+
+        __CORE0_HCLK_GATE__ (Bit 0) = 1 (Clock Pass)
+
+    -   __HCLK_GATE__ is at DE GLB Offset __`0x004`__
+    
+        [(DE Page 25)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+    -   __Display Engine Global Registers (DE GLB)__ Base Address is __`0x0100` `0000`__
+    
+        [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+    ```text
+    Enable clock for mixer 0, set route MIXER0->TCON0
       setbits 0x1000004, 0x1
+    ```
+
+1.  Route __MIXER0 to TCON0__
+
+    -   Clear __DE2TCON_MUX__ bits __`0x1`__
+
+        __DE2TCON_MUX__ (Bit 0) = 0 (Route MIXER0 to TCON0; Route MIXER1 to TCON1)
+
+    -   __DE2TCON_MUX__ is at DE GLB Offset __`0x010`__
+    
+        [(DE Page 26)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+    -   __Display Engine Global Registers (DE GLB)__ Base Address is __`0x0100` `0000`__
+    
+        [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+    ```text
+    Enable clock for mixer 0, set route MIXER0->TCON0
       clrbits 0x1000010, 0x1
-
-    DE 0x01000000
-    DE Page 24
-
-    SCLK_GATE 0x000
-    DE Page 25
-
-    2.5.1 SCLK_GATE
-    Offset: 0x000 Register Name: SCLK_GATE
-    Bit Read/Write Default/Hex Description
-
-    2 R/W 0x0
-    RT_WB_SCLK_GATE
-    0: clock gate
-    1: clock pass
-
-    1 R/W 0x0
-    CORE1_SCLK_GATE
-    0: clock gate
-    1: clock pass
-
-    0 R/W 0x0
-    CORE0_SCLK_GATE
-    0: clock gate
-    1: clock pass
-
-    AHB_RESET 0x008
-    DE Page 25
-
-    2.5.3 AHB_RESET
-    Offset: 0x008 Register Name: AHB_RESET
-    Bit Read/Write Default/Hex Description
-
-    2 R/W 0x0 RT_WB_SCLK_RESET
-    0: reset on
-    1: reset off
-
-    1 R/W 0x0
-    CORE1_SCLK_RESET
-    0: reset on
-    1: reset off
-
-    0 R/W 0x0
-    CORE0_HCLK_RESET
-    0: reset on
-    1: reset off
-
-    HCLK_GATE 0x004
-    DE Page 25
-
-    2.5.2 HCLK_GATE
-    Offset: 0x004 Register Name: HCLK_GATE
-    Bit Read/Write Default/Hex Description
-
-    2 R/W 0x0
-    RT_WB_HCLK_GATE
-    0: clock gate
-    1: clock pass
-
-    1 R/W 0x0
-    CORE1_HCLK_GATE
-    0: clock gate
-    1: clock pass
-
-    0 R/W 0x0
-    CORE0_HCLK_GATE
-    0: clock gate
-    1: clock pass
-
-    DE2TCON_MUX 0X010
-    DE Page 26
-
-    2.5.5 DE2TCON_MUX
-    Offset: 0x010 Register Name: DE2TCON_MUX
-    Bit Read/Write Default/Hex Description
-
-    0 R/W 0x0
-    DE2TCON_MUX
-    0: MIXER0-〉TCON0；MIXER1-〉TCON1
-    1: MIXER0-〉TCON1；MIXER1-〉TCON0
     ```
 
 1.  Clear all registers
