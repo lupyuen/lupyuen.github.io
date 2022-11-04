@@ -1382,6 +1382,10 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
     DE Page 92
     ```
 
+We have __implemented in Zig__ the above A64 Display Engine Initialisation...
+
+-   [__pinephone-nuttx/render.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig)
+
 ![Running p-boot Display Code on Apache NuttX RTOS with logging](https://lupyuen.github.io/images/de-run.png)
 
 [_Running p-boot Display Code on Apache NuttX RTOS with logging_](https://lupyuen.github.io/articles/de#p-boot-display-code)
@@ -1635,3 +1639,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 [(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx#testing-p-boot-display-engine-on-pinephone)
 
 [(Captured from p-boot `display_commit`)](https://megous.com/git/p-boot/tree/src/display.c#n2017)
+
+We have __implemented in Zig__ the above A64 Display Engine Rendering...
+
+-   [__pinephone-nuttx/render.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig)
