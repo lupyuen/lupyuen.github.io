@@ -968,7 +968,7 @@ As deciphered from the following logs...
 
     (Captured from [__p-boot `clock_set_pll_de`__](https://megous.com/git/p-boot/tree/src/uboot/arch/arm/mach-sunxi/clock_sun6i.c#n260))
 
-Below are the steps to initialise the Allwinner A64 Display Engine...
+Below are the steps to __initialise the Allwinner A64 Display Engine__ at startup...
 
 1.  Set __High Speed SRAM__ to DMA Mode...
 
@@ -1095,11 +1095,11 @@ Below are the steps to initialise the Allwinner A64 Display Engine...
 
         __CORE0_SCLK_GATE__ (Bit 0) = 1 (Clock Pass)
 
-    -   __SCLK_GATE__ is at DE GLB Offset __`0x000`__
+    -   __SCLK_GATE__ is at DE Offset __`0x000`__
     
         [(DE Page 25)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-    -   __Display Engine Global Registers (DE GLB)__ Base Address is __`0x0100` `0000`__
+    -   __Display Engine (DE)__ Base Address is __`0x0100` `0000`__
     
         [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
@@ -1114,11 +1114,11 @@ Below are the steps to initialise the Allwinner A64 Display Engine...
 
         __CORE0_HCLK_RESET__ (Bit 0) = 1 (Reset Off)
 
-    -   __AHB_RESET__ is at DE GLB Offset __`0x008`__
+    -   __AHB_RESET__ is at DE Offset __`0x008`__
     
         [(DE Page 25)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-    -   __Display Engine Global Registers (DE GLB)__ Base Address is __`0x0100` `0000`__
+    -   __Display Engine (DE)__ Base Address is __`0x0100` `0000`__
     
         [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
@@ -1133,11 +1133,11 @@ Below are the steps to initialise the Allwinner A64 Display Engine...
 
         __CORE0_HCLK_GATE__ (Bit 0) = 1 (Clock Pass)
 
-    -   __HCLK_GATE__ is at DE GLB Offset __`0x004`__
+    -   __HCLK_GATE__ is at DE Offset __`0x004`__
     
         [(DE Page 25)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-    -   __Display Engine Global Registers (DE GLB)__ Base Address is __`0x0100` `0000`__
+    -   __Display Engine (DE)__ Base Address is __`0x0100` `0000`__
     
         [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
@@ -1154,11 +1154,11 @@ Below are the steps to initialise the Allwinner A64 Display Engine...
         
         (Route MIXER0 to TCON0; Route MIXER1 to TCON1)
 
-    -   __DE2TCON_MUX__ is at DE GLB Offset __`0x010`__
+    -   __DE2TCON_MUX__ is at DE Offset __`0x010`__
     
         [(DE Page 26)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-    -   __Display Engine Global Registers (DE GLB)__ Base Address is __`0x0100` `0000`__
+    -   __Display Engine (DE)__ Base Address is __`0x0100` `0000`__
     
         [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
@@ -1167,22 +1167,35 @@ Below are the steps to initialise the Allwinner A64 Display Engine...
       clrbits 0x1000010, 0x1
     ```
 
-1.  Clear __MIXER0 Registers__
+1.  Clear __MIXER0 Registers__: GLB, BLD, Video Overlay, UI Overlay
 
-    TODO
+    -   Set __MIXER0__ Offsets __`0x0000`__ - __`0x5FFF`__ to 0
+
+        __GLB__ (Global Regisers) at MIXER0 Offset __`0x0000`__
+
+        __BLD__ (Blender) at MIXER0 Offset __`0x1000`__
+
+        __OVL_V(CH0)__ (Video Overlay) at MIXER0 Offset __`0x2000`__
+
+        __OVL_UI(CH1)__ (UI Overlay 1) at MIXER0 Offset __`0x3000`__
+
+        __OVL_UI(CH2)__ (UI Overlay 2) at MIXER0 Offset __`0x4000`__
+
+        __OVL_UI(CH3)__ (UI Overlay 3) at MIXER0 Offset __`0x5000`__
+
+        [(DE Page 90)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+    -   __MIXER0__ is at DE Offset __`0x0010` `0000`__
+
+        [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+    -   __Display Engine (DE)__ Base Address is __`0x0100` `0000`__
+    
+        [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     ```text
     Clear all registers
       0x1100000 to 0x1105fff = 0x0
-
-    0x1100000 to 0x1105fff
-    GLB 4K 0x00000
-    BLD 4K 0x01000
-    OVL_V(CH0) 4K 0x02000
-    OVL_UI(CH1) 4K 0x03000
-    OVL_UI(CH2) 4K 0x04000
-    OVL_UI(CH3) 4K 0x05000
-    DE Page 90
     ```
 
 1.  Disable __MIXER0 Modules__
