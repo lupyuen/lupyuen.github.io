@@ -1089,7 +1089,7 @@ Below are the steps to initialise the Allwinner A64 Display Engine...
       setbits 0x1c20064, 0x1000
     ```
 
-1.  Enable __Clock for Mixer 0__: SCLK Clock Pass
+1.  Enable __Clock for MIXER0__: SCLK Clock Pass
 
     -   Set __SCLK_GATE__ bits __`0x1`__
 
@@ -1108,7 +1108,7 @@ Below are the steps to initialise the Allwinner A64 Display Engine...
       setbits 0x1000000, 0x1
     ```
 
-1.  Enable __Clock for Mixer 0__: HCLK Clock Reset Off
+1.  Enable __Clock for MIXER0__: HCLK Clock Reset Off
 
     -   Set __AHB_RESET__ bits __`0x1`__
 
@@ -1127,7 +1127,7 @@ Below are the steps to initialise the Allwinner A64 Display Engine...
       setbits 0x1000008, 0x1
     ```
 
-1.  Enable __Clock for Mixer 0__: HCLK Clock Pass
+1.  Enable __Clock for MIXER0__: HCLK Clock Pass
 
     -   Set __HCLK_GATE__ bits __`0x1`__
 
@@ -1167,13 +1167,30 @@ Below are the steps to initialise the Allwinner A64 Display Engine...
       clrbits 0x1000010, 0x1
     ```
 
-1.  Clear all registers
+1.  Clear __MIXER0 Registers__
 
     TODO
 
     ```text
     Clear all registers
       0x1100000 to 0x1105fff = 0x0
+
+    0x1100000 to 0x1105fff
+    GLB 4K 0x00000
+    BLD 4K 0x01000
+    OVL_V(CH0) 4K 0x02000
+    OVL_UI(CH1) 4K 0x03000
+    OVL_UI(CH2) 4K 0x04000
+    OVL_UI(CH3) 4K 0x05000
+    DE Page 90
+    ```
+
+1.  Disable __MIXER0 Modules__
+
+    TODO
+
+    ```text
+    Clear all registers
       0x1120000 = 0x0
       0x1130000 = 0x0
       0x1140000 = 0x0
@@ -1185,15 +1202,6 @@ Below are the steps to initialise the Allwinner A64 Display Engine...
       0x11a8000 = 0x0
       0x11aa000 = 0x0
       0x11b0000 = 0x0
-
-    0x1100000 to 0x1105fff
-    GLB 4K 0x00000
-    BLD 4K 0x01000
-    OVL_V(CH0) 4K 0x02000
-    OVL_UI(CH1) 4K 0x03000
-    OVL_UI(CH2) 4K 0x04000
-    OVL_UI(CH3) 4K 0x05000
-    DE Page 90
 
     0x1120000
     VIDEO_SCALER(CH0) 128K 0x20000
@@ -1341,7 +1349,7 @@ Below are the steps to initialise the Allwinner A64 Display Engine...
     DE Page 49
     ```
 
-1.  Enable mixer
+1.  Enable __MIXER0__
 
     TODO
 
