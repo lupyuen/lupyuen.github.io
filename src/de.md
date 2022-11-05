@@ -1393,6 +1393,8 @@ We have __implemented in Zig__ the above A64 Display Engine Initialisation...
 
 -   [__pinephone-nuttx/render.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig)
 
+-   [__Output Log for render.zig__](https://gist.github.com/lupyuen/2df0f8c016dae54f4e4210866a7cd118)
+
 ![Running p-boot Display Code on Apache NuttX RTOS with logging](https://lupyuen.github.io/images/de-run.png)
 
 [_Running p-boot Display Code on Apache NuttX RTOS with logging_](https://lupyuen.github.io/articles/de#p-boot-display-code)
@@ -1650,3 +1652,5 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 We have __implemented in Zig__ the above A64 Display Engine Rendering...
 
 -   [__pinephone-nuttx/render.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig)
+
+-   [__Output Log for render.zig__](https://gist.github.com/lupyuen/2df0f8c016dae54f4e4210866a7cd118)
