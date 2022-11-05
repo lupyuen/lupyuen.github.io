@@ -1015,7 +1015,9 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
         __PLL_PRE_DIV_M__ (Bits 0 to 3) = 1 (M = 2)
 
-        (PLL Output = 24 MHz * N / M = 288 MHz, due to truncation)
+        Actual PLL Output = 24 MHz * N / M = 288 MHz
+        
+        (Slighltly below 297 MHz due to truncation)
 
     -   __PLL_DE_CTRL_REG__ (PLL Display Engine Control Register) is at CCU Offset __`0x0048`__
 
