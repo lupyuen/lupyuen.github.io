@@ -974,7 +974,7 @@ As deciphered from the following logs...
 
 Below are the steps to __initialise the Allwinner A64 Display Engine__ at startup...
 
-1.  Set __High Speed SRAM__ to DMA Mode...
+1.  Set __High Speed SRAM__ to DMA Mode
 
     -   Set __BIST_DMA_CTRL_SEL__ to __0__ for DMA [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb)
     
@@ -993,7 +993,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
       0x1c00004 = 0x0 (DMB)
     ```
 
-1.  Set __Display Engine PLL__ to 297 MHz...
+1.  Set __Display Engine PLL__ to 297 MHz
 
     -   Set __PLL_DE_CTRL_REG__ to __`0x8100` `1701`__ [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb)
 
@@ -1022,7 +1022,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
       0x1c20048 = 0x81001701 (DMB)
     ```
 
-1.  Wait for __Display Engine PLL__ to be set...
+1.  Wait for __Display Engine PLL__ to be set
 
     -   Poll __PLL_DE_CTRL_REG__ (from above) until it's non-zero
 
@@ -1032,7 +1032,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
       while (!(readl(0x1c20048) & 0x10000000))
     ```
 
-1.  Set __Special Clock__ to Display Engine PLL...
+1.  Set __Special Clock__ to Display Engine PLL
 
     -   Clear __DE_CLK_REG__ bits __`0x0300` `0000`__
 
@@ -1055,7 +1055,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
       clrsetbits 0x1c20104, 0x3000000, 0x81000000
     ```
 
-1.  Enable __AHB (AMBA High-speed Bus)__ for Display Engine: De-Assert Display Engine...
+1.  Enable __AHB (AMBA High-speed Bus)__ for Display Engine: De-Assert Display Engine
 
     -   Set __BUS_SOFT_RST_REG1__ bits __`0x1000`__
 
@@ -1074,7 +1074,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
       setbits 0x1c202c4, 0x1000
     ```
 
-1.  Enable __AHB (AMBA High-speed Bus)__ for Display Engine: Pass Display Engine...
+1.  Enable __AHB (AMBA High-speed Bus)__ for Display Engine: Pass Display Engine
 
     -   Set __BUS_CLK_GATING_REG1__ bits __`0x1000`__
 
@@ -1202,135 +1202,117 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
       0x1100000 to 0x1105fff = 0x0
     ```
 
-1.  Disable __MIXER0 Modules__
+1.  Disable __MIXER0 Modules__: Video Scaler, UI Scaler, FCE, BWS, LTI, PEAKING, ASE, FCC, DRC
 
-    TODO
+    Set to __`0`__ the following registers...
 
-    0x1120000
-
-    -   VIDEO_SCALER(CH0) at MIXER0 Offset 0x20000
-        
-        (DE Page 90)
-
-    -   VS_CTRL_REG at VIDEO_SCALER(CH0) Offset 0
+    -   __VS_CTRL_REG__ at VIDEO_SCALER(CH0) Offset 0
 
         EN (Bit 0) = 0 (Disable Video Scaler)
 
-        (DE Page 130)
+        (DE Page 130, 0x1120000)
 
-    TODO: 0x1130000 is Undocumented
+    -   TODO: __0x1130000__ is Undocumented
 
-    0x1140000
-
-    -   UI_SCALER1(CH1) at MIXER0 Offset 0x40000
-
-        (DE Page 90)
-
-    -   UIS_CTRL_REG at UI_SCALER1(CH1) Offset 0
+    -   __UIS_CTRL_REG__ at UI_SCALER1(CH1) Offset 0
 
         EN (Bit 0) = 0 (Disable UI Scaler) 
 
-        (DE Page 66)
+        (DE Page 66, 0x1140000)
 
-    0x1150000
-
-    -   UI_SCALER2(CH2) at MIXER0 Offset 0x50000
-    
-        (DE Page 90)
-
-    -   UIS_CTRL_REG at UI_SCALER2(CH2) Offset 0
+    -   __UIS_CTRL_REG__ at UI_SCALER2(CH2) Offset 0
 
         EN (Bit 0) = 0 (Disable UI Scaler)
 
-        (DE Page 66)
+        (DE Page 66, 0x1150000)
 
-    TODO: Missing: UI_SCALER3(CH3) at MIXER0 Offset 0x60000
+    -   TODO: Missing __UI_SCALER3(CH3)__ at MIXER0 Offset 0x60000
 
-    (DE Page 90)
+        (DE Page 90, 0x1160000)
 
-    0x11a0000
-
-    -   FCE at MIXER0 Offset 0xA0000
-
-        (DE Page 61)
-
-    -   GCTRL_REG at FCE Offset 0
+    -   __GCTRL_REG(FCE)__ at FCE Offset 0
 
         EN (Bit 0) = 0 (Disable FCE)
 
-        (DE Page 62)
+        (DE Page 62, 0x11A0000)
 
-    0x11a2000
-
-    -   BWS at MIXER0 Offset 0xA2000
-
-        (DE Page 42)
-
-    -   GCTRL_REG at BWS Offset 0
+    -   __GCTRL_REG(BWS)__ at BWS Offset 0
 
         EN (Bit 0) = 0 (Disable BWS)
 
-        (DE Page 42)
+        (DE Page 42, 0x11A2000)
 
-    0x11a4000
-
-    -   LTI at MIXER0 Offset 0xA4000
-
-        (DE Page 71)
-
-    -   LTI_CTL at LTI Offset 0
+    -   __LTI_CTL__ at LTI Offset 0
 
         LTI_EN (Bit 0) = 0 (Close LTI)
 
-        (DE Page 72)
+        (DE Page 72, 0x11A4000)
 
-    0x11a6000
-
-    -   PEAKING at MIXER0 Offset 0xA6000
-
-        (DE Page 80)
-
-    -   LP_CTRL_REG at PEAKING Offset 0
+    -   __LP_CTRL_REG__ at PEAKING Offset 0
 
         EN (Bit 0) = 0 (Disable PEAKING)
 
-        (DE Page 80)
+        (DE Page 80, 0x11A6000)
 
-    0x11a8000
-
-    -   ASE at MIXER0 Offset 0xA8000
-
-        (DE Page 40)
-
-    -   ASE_CTL_REG at ASE Offset 0
+    -   __ASE_CTL_REG__ at ASE Offset 0
 
         ASE_EN (Bit 0) = 0 (Disable ASE)
 
-        (DE Page 40)
+        (DE Page 40, 0x11A8000)
 
-    0x11aa000
-
-    -   FCC at MIXER0 Offset 0xAA000
-
-        (DE Page 56)
-
-    -   FCC_CTL_REG at FCC Offset 0
+    -   __FCC_CTL_REG__ at FCC Offset 0
 
         Enable (Bit 0) = 0 (Disable FCC)
 
-        (DE Page 56)
+        (DE Page 56, 0x11AA000)
 
-    0x11b0000
-
-    -   DRC at Base Address 0x011B0000
-    
-        (DE Page 48)
-
-    -   GNECTL_REG at DRC Offset 0
+    -   __GNECTL_REG__ at DRC Offset 0
 
         BIST_EN (Bit 0) = 0 (Disable BIST)
 
-    DE Page 49
+        (DE Page 49, 0x11B0000)
+
+    Offsets of the above registers...
+
+    -   __VIDEO_SCALER(CH0)__ is at MIXER0 Offset 0x20000
+        
+        (DE Page 90, 0x1120000)
+
+    -   __UI_SCALER1(CH1)__ is at MIXER0 Offset 0x40000
+
+        (DE Page 90, 0x1140000)
+
+    -   __UI_SCALER2(CH2)__ is at MIXER0 Offset 0x50000
+    
+        (DE Page 90, 0x1150000)
+
+    -   __FCE__ is at MIXER0 Offset 0xA0000
+
+        (DE Page 61, 0x11A0000)
+
+    -   __BWS__ is at MIXER0 Offset 0xA2000
+
+        (DE Page 42, 0x11A2000)
+
+    -   __LTI__ is at MIXER0 Offset 0xA4000
+
+        (DE Page 71, 0x11A4000)
+
+    -   __PEAKING__ is at MIXER0 Offset 0xA6000
+
+        (DE Page 80, 0x11A6000)
+
+    -   __ASE__ is at MIXER0 Offset 0xA8000
+
+        (DE Page 40, 0x11A8000)
+
+    -   __FCC__ is at MIXER0 Offset 0xAA000
+
+        (DE Page 56, 0x11AA000)
+
+    -   __DRC__ is at Base Address 0x011B0000
+    
+        (DE Page 48, 0x11B0000)
 
     ```text
     Clear all registers
