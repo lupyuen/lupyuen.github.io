@@ -990,7 +990,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
     
     ```text
     Set SRAM for video use
-      0x1c00004 = 0x0 (DMB)
+      0x1c0 0004 = 0x0 (DMB)
     ```
 
 1.  Set __Display Engine PLL__ to 297 MHz
@@ -1019,17 +1019,18 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
     Setup DE2 PLL
       clock_set_pll_de: clk=297000000
       PLL10 rate = 24000000 * n / m
-      0x1c20048 = 0x81001701 (DMB)
+      0x1c2 0048 = 0x8100 1701 (DMB)
     ```
 
-1.  Wait for __Display Engine PLL__ to be set
+1.  Wait for __Display Engine PLL__ to be stable
 
-    -   Poll __PLL_DE_CTRL_REG__ (from above) until it's non-zero
+    -   Poll __PLL_DE_CTRL_REG__ (from above) until __LOCK__ (Bit 28) is 1
+    
+        (PLL is Locked and Stable)
 
     ```text
     Setup DE2 PLL
-      ...
-      while (!(readl(0x1c20048) & 0x10000000))
+      while (!(readl(0x1c2 0048) & 0x1000 0000))
     ```
 
 1.  Set __Special Clock__ to Display Engine PLL
@@ -1052,7 +1053,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     ```text
     Enable DE2 special clock
-      clrsetbits 0x1c20104, 0x3000000, 0x81000000
+      clrsetbits 0x1c2 0104, 0x300 0000, 0x8100 0000
     ```
 
 1.  Enable __AHB (AMBA High-speed Bus)__ for Display Engine: De-Assert Display Engine
@@ -1071,7 +1072,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     ```text
     Enable DE2 ahb
-      setbits 0x1c202c4, 0x1000
+      setbits 0x1c2 02c4, 0x1000
     ```
 
 1.  Enable __AHB (AMBA High-speed Bus)__ for Display Engine: Pass Display Engine
@@ -1090,7 +1091,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     ```text
     Enable DE2 ahb
-      setbits 0x1c20064, 0x1000
+      setbits 0x1c2 0064, 0x1000
     ```
 
 1.  Enable __Clock for MIXER0__: SCLK Clock Pass
@@ -1109,7 +1110,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     ```text
     Enable clock for mixer 0, set route MIXER0->TCON0
-      setbits 0x1000000, 0x1
+      setbits 0x100 0000, 0x1
     ```
 
 1.  Enable __Clock for MIXER0__: HCLK Clock Reset Off
@@ -1128,7 +1129,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     ```text
     Enable clock for mixer 0, set route MIXER0->TCON0
-      setbits 0x1000008, 0x1
+      setbits 0x100 0008, 0x1
     ```
 
 1.  Enable __Clock for MIXER0__: HCLK Clock Pass
@@ -1147,7 +1148,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     ```text
     Enable clock for mixer 0, set route MIXER0->TCON0
-      setbits 0x1000004, 0x1
+      setbits 0x100 0004, 0x1
     ```
 
 1.  Route __MIXER0 to TCON0__
@@ -1168,7 +1169,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     ```text
     Enable clock for mixer 0, set route MIXER0->TCON0
-      clrbits 0x1000010, 0x1
+      clrbits 0x100 0010, 0x1
     ```
 
 1.  Clear __MIXER0 Registers__: GLB, BLD, Video Overlay, UI Overlay
@@ -1199,7 +1200,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     ```text
     Clear all registers
-      0x1100000 to 0x1105fff = 0x0
+      0x110 0000 to 0x110 5fff = 0x0
     ```
 
 1.  Disable __MIXER0 Modules__: Video Scaler, UI Scaler, FCE, BWS, LTI, PEAKING, ASE, FCC, DRC
@@ -1324,17 +1325,17 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     ```text
     Clear all registers
-      0x1120000 = 0x0
-      0x1130000 = 0x0
-      0x1140000 = 0x0
-      0x1150000 = 0x0
-      0x11a0000 = 0x0
-      0x11a2000 = 0x0
-      0x11a4000 = 0x0
-      0x11a6000 = 0x0
-      0x11a8000 = 0x0
-      0x11aa000 = 0x0
-      0x11b0000 = 0x0
+      0x112 0000 = 0x0
+      0x113 0000 = 0x0
+      0x114 0000 = 0x0
+      0x115 0000 = 0x0
+      0x11a 0000 = 0x0
+      0x11a 2000 = 0x0
+      0x11a 4000 = 0x0
+      0x11a 6000 = 0x0
+      0x11a 8000 = 0x0
+      0x11a a000 = 0x0
+      0x11b 0000 = 0x0
     ```
 
 1.  Enable __MIXER0__
@@ -1359,7 +1360,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     ```text
     Enable mixer
-      0x1100000 = 0x1 (DMB)
+      0x110 0000 = 0x1 (DMB)
     ```
 
 We have __implemented in Zig__ the above A64 Display Engine Initialisation...
@@ -1400,7 +1401,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
     -   BLD BkColor (__BLD_BK_COLOR__ @ BLD Offset `0x88`): BLD background color register
 
-        Set to `0xff00` `0000` _(Why?)_
+        Set to `0xFF00` `0000` _(Why?)_
 
     -   BLD Premultiply (__BLD_PREMUL_CTL__ @ BLD Offset `0x84`): BLD pre-multiply control register
 
@@ -1452,11 +1453,11 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
         -   UI Config Attr (__OVL_UI_ATTCTL__ @ OVL_UI Offset `0x00`): _OVL_UI attribute control register_
 
-            __For Channel 1:__ Set to `0xff00` `0405` _(Why?)_
+            __For Channel 1:__ Set to `0xFF00` `0405` _(Why?)_
 
-            __For Channel 2:__ `0xff00` `0005` _(Why?)_
+            __For Channel 2:__ `0xFF00` `0005` _(Why?)_
 
-            __For Channel 3:__ `0x7f00` `0005` _(Why?)_
+            __For Channel 3:__ `0x7F00` `0005` _(Why?)_
 
         -   UI Config Top LAddr (__OVL_UI_TOP_LADD__ @ OVL_UI Offset `0x10`): _OVL_UI top field memory block low address register_
 
@@ -1528,7 +1529,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
         -   BLD Pipe FColor (__BLD_FILL_COLOR__ @ BLD Offset `0x004` + `N*0x10`): _BLD fill color register(N=0,1,2,3,4)_
 
-            Set to `0xff00` `0000` _(Why?)_
+            Set to `0xFF00` `0000` _(Why?)_
 
         -   BLD Pipe Offset (__BLD_CH_OFFSET__ @ BLD Offset `0x00C` + `N*0x10`): _BLD input memory offset register(N=0,1,2,3,4)_
 
