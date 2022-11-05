@@ -978,7 +978,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     -   Set __BIST_DMA_CTRL_SEL__ to __0__ for DMA [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb)
     
-        [(A31 Page 191)](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
+        [(A31 Page 191, `0x1C0` `0004`)](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
 
     -   __BIST_DMA_CTRL_SEL__ (Bist and DMA Control Select) is __Bit 0__ of SRAM_CTRL_REG1
 
@@ -1009,7 +1009,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     -   __PLL_DE_CTRL_REG__ (PLL Display Engine Control Register) is at CCU Offset __`0x0048`__
 
-        [(A64 Page 96)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+        [(A64 Page 96, `0x1C2` `0048`)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
 
     -   __CCU__ (Clock Control Unit) Base Address is __`0x01C2` `0000`__
 
@@ -1044,7 +1044,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     -   __DE_CLK_REG__ (Display Engine Clock Register) is at CCU Offset __`0x0104`__
     
-        [(A64 Page 117)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+        [(A64 Page 117, `0x1C2` `0104`)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
 
     -   __CCU__ (Clock Control Unit) Base Address is __`0x01C2` `0000`__
 
@@ -1063,7 +1063,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     -   __BUS_SOFT_RST_REG1__ (Bus Software Reset Register 1) is at CCU Offset `0x02C4`
 
-        [(A64 Page 140)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+        [(A64 Page 140, `0x1C2` `02C4`)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
 
     -   __CCU__ (Clock Control Unit) Base Address is __`0x01C2` `0000`__
 
@@ -1082,7 +1082,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     -   __BUS_CLK_GATING_REG1__ (Bus Clock Gating Register 1) is at CCU Offset __`0x0064`__
         
-        [(A64 Page 102)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+        [(A64 Page 102, `0x1C2` `0064`)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
 
     -   __CCU__ (Clock Control Unit) Base Address is __`0x01C2` `0000`__
 
@@ -1101,7 +1101,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     -   __SCLK_GATE__ is at DE Offset __`0x000`__
     
-        [(DE Page 25)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 25, `0x100` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __Display Engine (DE)__ Base Address is __`0x0100` `0000`__
     
@@ -1120,7 +1120,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     -   __AHB_RESET__ is at DE Offset __`0x008`__
     
-        [(DE Page 25)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 25, `0x100` `0008`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __Display Engine (DE)__ Base Address is __`0x0100` `0000`__
     
@@ -1139,7 +1139,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     -   __HCLK_GATE__ is at DE Offset __`0x004`__
     
-        [(DE Page 25)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 25, `0x100` `0004`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __Display Engine (DE)__ Base Address is __`0x0100` `0000`__
     
@@ -1160,7 +1160,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     -   __DE2TCON_MUX__ is at DE Offset __`0x010`__
     
-        [(DE Page 26)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 26, `0x100` `0010`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __Display Engine (DE)__ Base Address is __`0x0100` `0000`__
     
@@ -1187,7 +1187,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
         __OVL_UI(CH3)__ (UI Overlay 3) at MIXER0 Offset __`0x5000`__
 
-        [(DE Page 90)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 90, `0x110` `0000` - `0x110` `5FFF`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __MIXER0__ is at DE Offset __`0x0010` `0000`__
 
@@ -1210,7 +1210,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
         EN (Bit 0) = 0 (Disable Video Scaler)
 
-        (DE Page 130, 0x1120000)
+        (DE Page 130, `0x112` `0000`)
 
     -   TODO: __0x1130000__ is Undocumented
 
@@ -1218,101 +1218,109 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
         EN (Bit 0) = 0 (Disable UI Scaler) 
 
-        (DE Page 66, 0x1140000)
+        (DE Page 66, `0x114` `0000`)
 
     -   __UIS_CTRL_REG__ at UI_SCALER2(CH2) Offset 0
 
         EN (Bit 0) = 0 (Disable UI Scaler)
 
-        (DE Page 66, 0x1150000)
+        (DE Page 66, `0x115` `0000`)
 
-    -   TODO: Missing __UI_SCALER3(CH3)__ at MIXER0 Offset 0x60000
+    -   TODO: Missing __UI_SCALER3(CH3)__ at MIXER0 Offset `0x06` `0000`
 
-        (DE Page 90, 0x1160000)
+        (DE Page 90, `0x116` `0000`)
 
     -   __GCTRL_REG(FCE)__ at FCE Offset 0
 
         EN (Bit 0) = 0 (Disable FCE)
 
-        (DE Page 62, 0x11A0000)
+        (DE Page 62, `0x11A` `0000`)
 
     -   __GCTRL_REG(BWS)__ at BWS Offset 0
 
         EN (Bit 0) = 0 (Disable BWS)
 
-        (DE Page 42, 0x11A2000)
+        (DE Page 42, `0x11A` `2000`)
 
     -   __LTI_CTL__ at LTI Offset 0
 
         LTI_EN (Bit 0) = 0 (Close LTI)
 
-        (DE Page 72, 0x11A4000)
+        (DE Page 72, `0x11A` `4000`)
 
     -   __LP_CTRL_REG__ at PEAKING Offset 0
 
         EN (Bit 0) = 0 (Disable PEAKING)
 
-        (DE Page 80, 0x11A6000)
+        (DE Page 80, `0x11A` `6000`)
 
     -   __ASE_CTL_REG__ at ASE Offset 0
 
         ASE_EN (Bit 0) = 0 (Disable ASE)
 
-        (DE Page 40, 0x11A8000)
+        (DE Page 40, `0x11A` `8000`)
 
     -   __FCC_CTL_REG__ at FCC Offset 0
 
         Enable (Bit 0) = 0 (Disable FCC)
 
-        (DE Page 56, 0x11AA000)
+        (DE Page 56, `0x11A` `A000`)
 
     -   __GNECTL_REG__ at DRC Offset 0
 
         BIST_EN (Bit 0) = 0 (Disable BIST)
 
-        (DE Page 49, 0x11B0000)
+        (DE Page 49, `0x11B` `0000`)
 
     Offsets of the above registers...
 
-    -   __VIDEO_SCALER(CH0)__ is at MIXER0 Offset 0x20000
+    -   __VIDEO_SCALER(CH0)__ is at MIXER0 Offset `0x02` `0000`
         
-        (DE Page 90, 0x1120000)
+        (DE Page 90, `0x112` `0000`)
 
-    -   __UI_SCALER1(CH1)__ is at MIXER0 Offset 0x40000
+    -   __UI_SCALER1(CH1)__ is at MIXER0 Offset `0x04` `0000`
 
-        (DE Page 90, 0x1140000)
+        (DE Page 90, `0x114` `0000`)
 
-    -   __UI_SCALER2(CH2)__ is at MIXER0 Offset 0x50000
+    -   __UI_SCALER2(CH2)__ is at MIXER0 Offset `0x05` `0000`
     
-        (DE Page 90, 0x1150000)
+        (DE Page 90, `0x115` `0000`)
 
-    -   __FCE__ is at MIXER0 Offset 0xA0000
+    -   __FCE__ is at MIXER0 Offset `0x0A` `0000`
 
-        (DE Page 61, 0x11A0000)
+        (DE Page 61, `0x11A` `0000`)
 
-    -   __BWS__ is at MIXER0 Offset 0xA2000
+    -   __BWS__ is at MIXER0 Offset `0x0A` `2000`
 
-        (DE Page 42, 0x11A2000)
+        (DE Page 42, `0x11A` `2000`)
 
-    -   __LTI__ is at MIXER0 Offset 0xA4000
+    -   __LTI__ is at MIXER0 Offset `0x0A` `4000`
 
-        (DE Page 71, 0x11A4000)
+        (DE Page 71, `0x11A` `4000`)
 
-    -   __PEAKING__ is at MIXER0 Offset 0xA6000
+    -   __PEAKING__ is at MIXER0 Offset `0x0A` `6000`
 
-        (DE Page 80, 0x11A6000)
+        (DE Page 80, `0x11A` `6000`)
 
-    -   __ASE__ is at MIXER0 Offset 0xA8000
+    -   __ASE__ is at MIXER0 Offset `0x0A` `8000`
 
-        (DE Page 40, 0x11A8000)
+        (DE Page 40, `0x11A` `8000`)
 
-    -   __FCC__ is at MIXER0 Offset 0xAA000
+    -   __FCC__ is at MIXER0 Offset `0x0A` `A000`
 
-        (DE Page 56, 0x11AA000)
+        (DE Page 56, `0x11A` `A000`)
 
-    -   __DRC__ is at Base Address 0x011B0000
+    -   __DRC__ is at Address `0x011B` `0000`
     
-        (DE Page 48, 0x11B0000)
+        (DE Page 48, `0x11B` `0000`)
+
+    -   __MIXER0__ is at DE Offset __`0x0010` `0000`__
+
+        [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+    -   __Display Engine (DE)__ Base Address is __`0x0100` `0000`__
+    
+        [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     ```text
     Clear all registers
