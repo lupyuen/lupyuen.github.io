@@ -916,7 +916,8 @@ Channel 2: ...</code></pre></div>
 <p><strong>PLL_MODE_SEL</strong> (Bit 24) = 1 (Integer Mode)</p>
 <p><strong>PLL_FACTOR_N</strong> (Bits 8 to 14) = 23 (N = 24)</p>
 <p><strong>PLL_PRE_DIV_M</strong> (Bits 0 to 3) = 1 (M = 2)</p>
-<p>(PLL Output = 24 MHz * N / M = 288 MHz, due to truncation)</p>
+<p>Actual PLL Output = 24 MHz * N / M = 288 MHz</p>
+<p>(Slighltly below 297 MHz due to truncation)</p>
 </li>
 <li>
 <p><strong>PLL_DE_CTRL_REG</strong> (PLL Display Engine Control Register) is at CCU Offset <strong><code>0x0048</code></strong></p>
