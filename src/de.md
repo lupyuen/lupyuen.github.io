@@ -958,6 +958,16 @@ __DE VSU (Video Scaler):__ [(DE Page 128)](https://linux-sunxi.org/images/7/7b/A
 __DE Rotation:__ [(DE Page 137)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 > "There are several types of rotation: clockwise 0/90/180/270 degree Rotation and H-Flip/V-Flip. Operation of Copy is the same as a 0 degree rotation."
 
+Nope to these too...
+
+-   Fresh and Contrast Enhancement (FCE)
+-   Black and White Stetch (BWS)
+-   Luminance Transient Improvement (LTI)
+-   Luma Peaking (PEAKING)
+-   Adaptive Saturation Enhancement (ASE)
+-   Fancy Color Curvature Change (FCC)
+-   Dynamic Range Controller (DRC)
+
 # Appendix: Initialising the Allwinner A64 Display Engine
 
 _How do we initialise PinePhone's Allwinner A64 Display Engine at startup?_
@@ -1172,7 +1182,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
       clrbits 0x100 0010, 0x1
     ```
 
-1.  Clear __MIXER0 Registers__: GLB, BLD, Video Overlay, UI Overlay
+1.  Clear __MIXER0 Registers__: Global Registers (GLB), Blender (BLD), Video Overlay (OVL_V), UI Overlay (OVL_UI)
 
     -   Set __MIXER0__ Offsets __`0x0000`__ - __`0x5FFF`__ to 0
 
@@ -1203,7 +1213,17 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
       0x110 0000 to 0x110 5fff = 0x0
     ```
 
-1.  Disable __MIXER0 Modules__: Video Scaler, UI Scaler, FCE, BWS, LTI, PEAKING, ASE, FCC, DRC
+1.  Disable __MIXER0 Modules__...
+
+    -   Video Scaler (VSU)
+    -   UI Scaler (UIS)
+    -   Fresh and Contrast Enhancement (FCE)
+    -   Black and White Stetch (BWS)
+    -   Luminance Transient Improvement (LTI)
+    -   Luma Peaking (PEAKING)
+    -   Adaptive Saturation Enhancement (ASE)
+    -   Fancy Color Curvature Change (FCC)
+    -   Dynamic Range Controller (DRC)
 
     Set to __`0`__ the following registers...
 
@@ -1213,7 +1233,9 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
         [(DE Page 130, `0x112` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-    -   TODO: __0x1130000__ is Undocumented
+    -   TODO: __`0x113` `0000`__ is Undocumented
+
+        (Is there a mixup with UI_SCALER3?)
 
     -   __UIS_CTRL_REG__ at UI_SCALER1(CH1) Offset 0
 
@@ -1230,6 +1252,8 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
     -   TODO: Missing __UI_SCALER3(CH3)__ at MIXER0 Offset `0x06` `0000`
 
         [(DE Page 90, `0x116` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+        (Is there a mixup with `0x113` `0000` above?)
 
     -   __GCTRL_REG(FCE)__ at FCE Offset 0
 
