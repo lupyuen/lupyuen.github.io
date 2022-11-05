@@ -896,7 +896,7 @@ Channel 2: ...</code></pre></div>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Set SRAM for video use
-  0x1c00004 = 0x0 (DMB)</code></pre></div></li>
+  0x1c0 0004 = 0x0 (DMB)</code></pre></div></li>
 <li>
 <p>Set <strong>Display Engine PLL</strong> to 297 MHz</p>
 <ul>
@@ -920,15 +920,17 @@ Channel 2: ...</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>Setup DE2 PLL
   clock_set_pll_de: clk=297000000
   PLL10 rate = 24000000 * n / m
-  0x1c20048 = 0x81001701 (DMB)</code></pre></div></li>
+  0x1c2 0048 = 0x8100 1701 (DMB)</code></pre></div></li>
 <li>
-<p>Wait for <strong>Display Engine PLL</strong> to be set</p>
+<p>Wait for <strong>Display Engine PLL</strong> to be stable</p>
 <ul>
-<li>Poll <strong>PLL_DE_CTRL_REG</strong> (from above) until it’s non-zero</li>
+<li>
+<p>Poll <strong>PLL_DE_CTRL_REG</strong> (from above) until <strong>LOCK</strong> (Bit 28) is 1</p>
+<p>(PLL is Locked and Stable)</p>
+</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Setup DE2 PLL
-  ...
-  while (!(readl(0x1c20048) &amp; 0x10000000))</code></pre></div></li>
+  while (!(readl(0x1c2 0048) &amp; 0x1000 0000))</code></pre></div></li>
 <li>
 <p>Set <strong>Special Clock</strong> to Display Engine PLL</p>
 <ul>
@@ -948,7 +950,7 @@ Channel 2: ...</code></pre></div>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Enable DE2 special clock
-  clrsetbits 0x1c20104, 0x3000000, 0x81000000</code></pre></div></li>
+  clrsetbits 0x1c2 0104, 0x300 0000, 0x8100 0000</code></pre></div></li>
 <li>
 <p>Enable <strong>AHB (AMBA High-speed Bus)</strong> for Display Engine: De-Assert Display Engine</p>
 <ul>
@@ -966,7 +968,7 @@ Channel 2: ...</code></pre></div>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Enable DE2 ahb
-  setbits 0x1c202c4, 0x1000</code></pre></div></li>
+  setbits 0x1c2 02c4, 0x1000</code></pre></div></li>
 <li>
 <p>Enable <strong>AHB (AMBA High-speed Bus)</strong> for Display Engine: Pass Display Engine</p>
 <ul>
@@ -984,7 +986,7 @@ Channel 2: ...</code></pre></div>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Enable DE2 ahb
-  setbits 0x1c20064, 0x1000</code></pre></div></li>
+  setbits 0x1c2 0064, 0x1000</code></pre></div></li>
 <li>
 <p>Enable <strong>Clock for MIXER0</strong>: SCLK Clock Pass</p>
 <ul>
@@ -1002,7 +1004,7 @@ Channel 2: ...</code></pre></div>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Enable clock for mixer 0, set route MIXER0-&gt;TCON0
-  setbits 0x1000000, 0x1</code></pre></div></li>
+  setbits 0x100 0000, 0x1</code></pre></div></li>
 <li>
 <p>Enable <strong>Clock for MIXER0</strong>: HCLK Clock Reset Off</p>
 <ul>
@@ -1020,7 +1022,7 @@ Channel 2: ...</code></pre></div>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Enable clock for mixer 0, set route MIXER0-&gt;TCON0
-  setbits 0x1000008, 0x1</code></pre></div></li>
+  setbits 0x100 0008, 0x1</code></pre></div></li>
 <li>
 <p>Enable <strong>Clock for MIXER0</strong>: HCLK Clock Pass</p>
 <ul>
@@ -1038,7 +1040,7 @@ Channel 2: ...</code></pre></div>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Enable clock for mixer 0, set route MIXER0-&gt;TCON0
-  setbits 0x1000004, 0x1</code></pre></div></li>
+  setbits 0x100 0004, 0x1</code></pre></div></li>
 <li>
 <p>Route <strong>MIXER0 to TCON0</strong></p>
 <ul>
@@ -1057,7 +1059,7 @@ Channel 2: ...</code></pre></div>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Enable clock for mixer 0, set route MIXER0-&gt;TCON0
-  clrbits 0x1000010, 0x1</code></pre></div></li>
+  clrbits 0x100 0010, 0x1</code></pre></div></li>
 <li>
 <p>Clear <strong>MIXER0 Registers</strong>: GLB, BLD, Video Overlay, UI Overlay</p>
 <ul>
@@ -1081,7 +1083,7 @@ Channel 2: ...</code></pre></div>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Clear all registers
-  0x1100000 to 0x1105fff = 0x0</code></pre></div></li>
+  0x110 0000 to 0x110 5fff = 0x0</code></pre></div></li>
 <li>
 <p>Disable <strong>MIXER0 Modules</strong>: Video Scaler, UI Scaler, FCE, BWS, LTI, PEAKING, ASE, FCC, DRC</p>
 <p>Set to <strong><code>0</code></strong> the following registers…</p>
@@ -1196,17 +1198,17 @@ Channel 2: ...</code></pre></div>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Clear all registers
-  0x1120000 = 0x0
-  0x1130000 = 0x0
-  0x1140000 = 0x0
-  0x1150000 = 0x0
-  0x11a0000 = 0x0
-  0x11a2000 = 0x0
-  0x11a4000 = 0x0
-  0x11a6000 = 0x0
-  0x11a8000 = 0x0
-  0x11aa000 = 0x0
-  0x11b0000 = 0x0</code></pre></div></li>
+  0x112 0000 = 0x0
+  0x113 0000 = 0x0
+  0x114 0000 = 0x0
+  0x115 0000 = 0x0
+  0x11a 0000 = 0x0
+  0x11a 2000 = 0x0
+  0x11a 4000 = 0x0
+  0x11a 6000 = 0x0
+  0x11a 8000 = 0x0
+  0x11a a000 = 0x0
+  0x11b 0000 = 0x0</code></pre></div></li>
 <li>
 <p>Enable <strong>MIXER0</strong></p>
 <ul>
@@ -1229,7 +1231,7 @@ Channel 2: ...</code></pre></div>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Enable mixer
-  0x1100000 = 0x1 (DMB)</code></pre></div></li>
+  0x110 0000 = 0x1 (DMB)</code></pre></div></li>
 </ol>
 <p>We have <strong>implemented in Zig</strong> the above A64 Display Engine Initialisation…</p>
 <ul>
@@ -1264,7 +1266,7 @@ Channel 2: ...</code></pre></div>
 <ul>
 <li>
 <p>BLD BkColor (<strong>BLD_BK_COLOR</strong> @ BLD Offset <code>0x88</code>): BLD background color register</p>
-<p>Set to <code>0xff00</code> <code>0000</code> <em>(Why?)</em></p>
+<p>Set to <code>0xFF00</code> <code>0000</code> <em>(Why?)</em></p>
 </li>
 <li>
 <p>BLD Premultiply (<strong>BLD_PREMUL_CTL</strong> @ BLD Offset <code>0x84</code>): BLD pre-multiply control register</p>
@@ -1312,9 +1314,9 @@ Mixer: 0x116 0000 = 0x0</code></pre></div></li>
 <ul>
 <li>
 <p>UI Config Attr (<strong>OVL_UI_ATTCTL</strong> @ OVL_UI Offset <code>0x00</code>): <em>OVL_UI attribute control register</em></p>
-<p><strong>For Channel 1:</strong> Set to <code>0xff00</code> <code>0405</code> <em>(Why?)</em></p>
-<p><strong>For Channel 2:</strong> <code>0xff00</code> <code>0005</code> <em>(Why?)</em></p>
-<p><strong>For Channel 3:</strong> <code>0x7f00</code> <code>0005</code> <em>(Why?)</em></p>
+<p><strong>For Channel 1:</strong> Set to <code>0xFF00</code> <code>0405</code> <em>(Why?)</em></p>
+<p><strong>For Channel 2:</strong> <code>0xFF00</code> <code>0005</code> <em>(Why?)</em></p>
+<p><strong>For Channel 3:</strong> <code>0x7F00</code> <code>0005</code> <em>(Why?)</em></p>
 </li>
 <li>
 <p>UI Config Top LAddr (<strong>OVL_UI_TOP_LADD</strong> @ OVL_UI Offset <code>0x10</code>): <em>OVL_UI top field memory block low address register</em></p>
@@ -1384,7 +1386,7 @@ GLB Size:        0x110 000c = 0x59f 02cf (1439 * 16 + 719)</code></pre></div></l
 </li>
 <li>
 <p>BLD Pipe FColor (<strong>BLD_FILL_COLOR</strong> @ BLD Offset <code>0x004</code> + <code>N*0x10</code>): <em>BLD fill color register(N=0,1,2,3,4)</em></p>
-<p>Set to <code>0xff00</code> <code>0000</code> <em>(Why?)</em></p>
+<p>Set to <code>0xFF00</code> <code>0000</code> <em>(Why?)</em></p>
 </li>
 <li>
 <p>BLD Pipe Offset (<strong>BLD_CH_OFFSET</strong> @ BLD Offset <code>0x00C</code> + <code>N*0x10</code>): <em>BLD input memory offset register(N=0,1,2,3,4)</em></p>
