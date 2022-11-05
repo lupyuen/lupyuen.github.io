@@ -882,7 +882,7 @@ Channel 2: ...</code></pre></div>
 <ul>
 <li>
 <p>Set <strong>BIST_DMA_CTRL_SEL</strong> to <strong>0</strong> for DMA <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a></p>
-<p><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 191)</a></p>
+<p><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 191, <code>0x1C0</code> <code>0004</code>)</a></p>
 </li>
 <li>
 <p><strong>BIST_DMA_CTRL_SEL</strong> (Bist and DMA Control Select) is <strong>Bit 0</strong> of SRAM_CTRL_REG1</p>
@@ -910,7 +910,7 @@ Channel 2: ...</code></pre></div>
 </li>
 <li>
 <p><strong>PLL_DE_CTRL_REG</strong> (PLL Display Engine Control Register) is at CCU Offset <strong><code>0x0048</code></strong></p>
-<p><a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 96)</a></p>
+<p><a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 96, <code>0x1C2</code> <code>0048</code>)</a></p>
 </li>
 <li>
 <p><strong>CCU</strong> (Clock Control Unit) Base Address is <strong><code>0x01C2</code> <code>0000</code></strong></p>
@@ -940,7 +940,7 @@ Channel 2: ...</code></pre></div>
 </li>
 <li>
 <p><strong>DE_CLK_REG</strong> (Display Engine Clock Register) is at CCU Offset <strong><code>0x0104</code></strong></p>
-<p><a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 117)</a></p>
+<p><a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 117, <code>0x1C2</code> <code>0104</code>)</a></p>
 </li>
 <li>
 <p><strong>CCU</strong> (Clock Control Unit) Base Address is <strong><code>0x01C2</code> <code>0000</code></strong></p>
@@ -958,7 +958,7 @@ Channel 2: ...</code></pre></div>
 </li>
 <li>
 <p><strong>BUS_SOFT_RST_REG1</strong> (Bus Software Reset Register 1) is at CCU Offset <code>0x02C4</code></p>
-<p><a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 140)</a></p>
+<p><a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 140, <code>0x1C2</code> <code>02C4</code>)</a></p>
 </li>
 <li>
 <p><strong>CCU</strong> (Clock Control Unit) Base Address is <strong><code>0x01C2</code> <code>0000</code></strong></p>
@@ -976,7 +976,7 @@ Channel 2: ...</code></pre></div>
 </li>
 <li>
 <p><strong>BUS_CLK_GATING_REG1</strong> (Bus Clock Gating Register 1) is at CCU Offset <strong><code>0x0064</code></strong></p>
-<p><a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 102)</a></p>
+<p><a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 102, <code>0x1C2</code> <code>0064</code>)</a></p>
 </li>
 <li>
 <p><strong>CCU</strong> (Clock Control Unit) Base Address is <strong><code>0x01C2</code> <code>0000</code></strong></p>
@@ -994,7 +994,7 @@ Channel 2: ...</code></pre></div>
 </li>
 <li>
 <p><strong>SCLK_GATE</strong> is at DE Offset <strong><code>0x000</code></strong></p>
-<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 25)</a></p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 25, <code>0x100</code> <code>0000</code>)</a></p>
 </li>
 <li>
 <p><strong>Display Engine (DE)</strong> Base Address is <strong><code>0x0100</code> <code>0000</code></strong></p>
@@ -1012,7 +1012,7 @@ Channel 2: ...</code></pre></div>
 </li>
 <li>
 <p><strong>AHB_RESET</strong> is at DE Offset <strong><code>0x008</code></strong></p>
-<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 25)</a></p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 25, <code>0x100</code> <code>0008</code>)</a></p>
 </li>
 <li>
 <p><strong>Display Engine (DE)</strong> Base Address is <strong><code>0x0100</code> <code>0000</code></strong></p>
@@ -1030,7 +1030,7 @@ Channel 2: ...</code></pre></div>
 </li>
 <li>
 <p><strong>HCLK_GATE</strong> is at DE Offset <strong><code>0x004</code></strong></p>
-<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 25)</a></p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 25, <code>0x100</code> <code>0004</code>)</a></p>
 </li>
 <li>
 <p><strong>Display Engine (DE)</strong> Base Address is <strong><code>0x0100</code> <code>0000</code></strong></p>
@@ -1049,7 +1049,7 @@ Channel 2: ...</code></pre></div>
 </li>
 <li>
 <p><strong>DE2TCON_MUX</strong> is at DE Offset <strong><code>0x010</code></strong></p>
-<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 26)</a></p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 26, <code>0x100</code> <code>0010</code>)</a></p>
 </li>
 <li>
 <p><strong>Display Engine (DE)</strong> Base Address is <strong><code>0x0100</code> <code>0000</code></strong></p>
@@ -1069,7 +1069,7 @@ Channel 2: ...</code></pre></div>
 <p><strong>OVL_UI(CH1)</strong> (UI Overlay 1) at MIXER0 Offset <strong><code>0x3000</code></strong></p>
 <p><strong>OVL_UI(CH2)</strong> (UI Overlay 2) at MIXER0 Offset <strong><code>0x4000</code></strong></p>
 <p><strong>OVL_UI(CH3)</strong> (UI Overlay 3) at MIXER0 Offset <strong><code>0x5000</code></strong></p>
-<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 90)</a></p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 90, <code>0x110</code> <code>0000</code> - <code>0x110</code> <code>5FFF</code>)</a></p>
 </li>
 <li>
 <p><strong>MIXER0</strong> is at DE Offset <strong><code>0x0010</code> <code>0000</code></strong></p>
@@ -1089,7 +1089,7 @@ Channel 2: ...</code></pre></div>
 <li>
 <p><strong>VS_CTRL_REG</strong> at VIDEO_SCALER(CH0) Offset 0</p>
 <p>EN (Bit 0) = 0 (Disable Video Scaler)</p>
-<p>(DE Page 130, 0x1120000)</p>
+<p>(DE Page 130, <code>0x112</code> <code>0000</code>)</p>
 </li>
 <li>
 <p>TODO: <strong>0x1130000</strong> is Undocumented</p>
@@ -1097,94 +1097,102 @@ Channel 2: ...</code></pre></div>
 <li>
 <p><strong>UIS_CTRL_REG</strong> at UI_SCALER1(CH1) Offset 0</p>
 <p>EN (Bit 0) = 0 (Disable UI Scaler) </p>
-<p>(DE Page 66, 0x1140000)</p>
+<p>(DE Page 66, <code>0x114</code> <code>0000</code>)</p>
 </li>
 <li>
 <p><strong>UIS_CTRL_REG</strong> at UI_SCALER2(CH2) Offset 0</p>
 <p>EN (Bit 0) = 0 (Disable UI Scaler)</p>
-<p>(DE Page 66, 0x1150000)</p>
+<p>(DE Page 66, <code>0x115</code> <code>0000</code>)</p>
 </li>
 <li>
-<p>TODO: Missing <strong>UI_SCALER3(CH3)</strong> at MIXER0 Offset 0x60000</p>
-<p>(DE Page 90, 0x1160000)</p>
+<p>TODO: Missing <strong>UI_SCALER3(CH3)</strong> at MIXER0 Offset <code>0x06</code> <code>0000</code></p>
+<p>(DE Page 90, <code>0x116</code> <code>0000</code>)</p>
 </li>
 <li>
 <p><strong>GCTRL_REG(FCE)</strong> at FCE Offset 0</p>
 <p>EN (Bit 0) = 0 (Disable FCE)</p>
-<p>(DE Page 62, 0x11A0000)</p>
+<p>(DE Page 62, <code>0x11A</code> <code>0000</code>)</p>
 </li>
 <li>
 <p><strong>GCTRL_REG(BWS)</strong> at BWS Offset 0</p>
 <p>EN (Bit 0) = 0 (Disable BWS)</p>
-<p>(DE Page 42, 0x11A2000)</p>
+<p>(DE Page 42, <code>0x11A</code> <code>2000</code>)</p>
 </li>
 <li>
 <p><strong>LTI_CTL</strong> at LTI Offset 0</p>
 <p>LTI_EN (Bit 0) = 0 (Close LTI)</p>
-<p>(DE Page 72, 0x11A4000)</p>
+<p>(DE Page 72, <code>0x11A</code> <code>4000</code>)</p>
 </li>
 <li>
 <p><strong>LP_CTRL_REG</strong> at PEAKING Offset 0</p>
 <p>EN (Bit 0) = 0 (Disable PEAKING)</p>
-<p>(DE Page 80, 0x11A6000)</p>
+<p>(DE Page 80, <code>0x11A</code> <code>6000</code>)</p>
 </li>
 <li>
 <p><strong>ASE_CTL_REG</strong> at ASE Offset 0</p>
 <p>ASE_EN (Bit 0) = 0 (Disable ASE)</p>
-<p>(DE Page 40, 0x11A8000)</p>
+<p>(DE Page 40, <code>0x11A</code> <code>8000</code>)</p>
 </li>
 <li>
 <p><strong>FCC_CTL_REG</strong> at FCC Offset 0</p>
 <p>Enable (Bit 0) = 0 (Disable FCC)</p>
-<p>(DE Page 56, 0x11AA000)</p>
+<p>(DE Page 56, <code>0x11A</code> <code>A000</code>)</p>
 </li>
 <li>
 <p><strong>GNECTL_REG</strong> at DRC Offset 0</p>
 <p>BIST_EN (Bit 0) = 0 (Disable BIST)</p>
-<p>(DE Page 49, 0x11B0000)</p>
+<p>(DE Page 49, <code>0x11B</code> <code>0000</code>)</p>
 </li>
 </ul>
 <p>Offsets of the above registers…</p>
 <ul>
 <li>
-<p><strong>VIDEO_SCALER(CH0)</strong> is at MIXER0 Offset 0x20000</p>
-<p>(DE Page 90, 0x1120000)</p>
+<p><strong>VIDEO_SCALER(CH0)</strong> is at MIXER0 Offset <code>0x02</code> <code>0000</code></p>
+<p>(DE Page 90, <code>0x112</code> <code>0000</code>)</p>
 </li>
 <li>
-<p><strong>UI_SCALER1(CH1)</strong> is at MIXER0 Offset 0x40000</p>
-<p>(DE Page 90, 0x1140000)</p>
+<p><strong>UI_SCALER1(CH1)</strong> is at MIXER0 Offset <code>0x04</code> <code>0000</code></p>
+<p>(DE Page 90, <code>0x114</code> <code>0000</code>)</p>
 </li>
 <li>
-<p><strong>UI_SCALER2(CH2)</strong> is at MIXER0 Offset 0x50000</p>
-<p>(DE Page 90, 0x1150000)</p>
+<p><strong>UI_SCALER2(CH2)</strong> is at MIXER0 Offset <code>0x05</code> <code>0000</code></p>
+<p>(DE Page 90, <code>0x115</code> <code>0000</code>)</p>
 </li>
 <li>
-<p><strong>FCE</strong> is at MIXER0 Offset 0xA0000</p>
-<p>(DE Page 61, 0x11A0000)</p>
+<p><strong>FCE</strong> is at MIXER0 Offset <code>0x0A</code> <code>0000</code></p>
+<p>(DE Page 61, <code>0x11A</code> <code>0000</code>)</p>
 </li>
 <li>
-<p><strong>BWS</strong> is at MIXER0 Offset 0xA2000</p>
-<p>(DE Page 42, 0x11A2000)</p>
+<p><strong>BWS</strong> is at MIXER0 Offset <code>0x0A</code> <code>2000</code></p>
+<p>(DE Page 42, <code>0x11A</code> <code>2000</code>)</p>
 </li>
 <li>
-<p><strong>LTI</strong> is at MIXER0 Offset 0xA4000</p>
-<p>(DE Page 71, 0x11A4000)</p>
+<p><strong>LTI</strong> is at MIXER0 Offset <code>0x0A</code> <code>4000</code></p>
+<p>(DE Page 71, <code>0x11A</code> <code>4000</code>)</p>
 </li>
 <li>
-<p><strong>PEAKING</strong> is at MIXER0 Offset 0xA6000</p>
-<p>(DE Page 80, 0x11A6000)</p>
+<p><strong>PEAKING</strong> is at MIXER0 Offset <code>0x0A</code> <code>6000</code></p>
+<p>(DE Page 80, <code>0x11A</code> <code>6000</code>)</p>
 </li>
 <li>
-<p><strong>ASE</strong> is at MIXER0 Offset 0xA8000</p>
-<p>(DE Page 40, 0x11A8000)</p>
+<p><strong>ASE</strong> is at MIXER0 Offset <code>0x0A</code> <code>8000</code></p>
+<p>(DE Page 40, <code>0x11A</code> <code>8000</code>)</p>
 </li>
 <li>
-<p><strong>FCC</strong> is at MIXER0 Offset 0xAA000</p>
-<p>(DE Page 56, 0x11AA000)</p>
+<p><strong>FCC</strong> is at MIXER0 Offset <code>0x0A</code> <code>A000</code></p>
+<p>(DE Page 56, <code>0x11A</code> <code>A000</code>)</p>
 </li>
 <li>
-<p><strong>DRC</strong> is at Base Address 0x011B0000</p>
-<p>(DE Page 48, 0x11B0000)</p>
+<p><strong>DRC</strong> is at Address <code>0x011B</code> <code>0000</code></p>
+<p>(DE Page 48, <code>0x11B</code> <code>0000</code>)</p>
+</li>
+<li>
+<p><strong>MIXER0</strong> is at DE Offset <strong><code>0x0010</code> <code>0000</code></strong></p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 24)</a></p>
+</li>
+<li>
+<p><strong>Display Engine (DE)</strong> Base Address is <strong><code>0x0100</code> <code>0000</code></strong></p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 24)</a></p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Clear all registers
