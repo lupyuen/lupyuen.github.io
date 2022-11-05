@@ -1210,7 +1210,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
         EN (Bit 0) = 0 (Disable Video Scaler)
 
-        (DE Page 130, `0x112` `0000`)
+        [(DE Page 130, `0x112` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   TODO: __0x1130000__ is Undocumented
 
@@ -1218,101 +1218,101 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
         EN (Bit 0) = 0 (Disable UI Scaler) 
 
-        (DE Page 66, `0x114` `0000`)
+        [(DE Page 66, `0x114` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __UIS_CTRL_REG__ at UI_SCALER2(CH2) Offset 0
 
         EN (Bit 0) = 0 (Disable UI Scaler)
 
-        (DE Page 66, `0x115` `0000`)
+        [(DE Page 66, `0x115` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   TODO: Missing __UI_SCALER3(CH3)__ at MIXER0 Offset `0x06` `0000`
 
-        (DE Page 90, `0x116` `0000`)
+        [(DE Page 90, `0x116` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __GCTRL_REG(FCE)__ at FCE Offset 0
 
         EN (Bit 0) = 0 (Disable FCE)
 
-        (DE Page 62, `0x11A` `0000`)
+        [(DE Page 62, `0x11A` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __GCTRL_REG(BWS)__ at BWS Offset 0
 
         EN (Bit 0) = 0 (Disable BWS)
 
-        (DE Page 42, `0x11A` `2000`)
+        [(DE Page 42, `0x11A` `2000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __LTI_CTL__ at LTI Offset 0
 
         LTI_EN (Bit 0) = 0 (Close LTI)
 
-        (DE Page 72, `0x11A` `4000`)
+        [(DE Page 72, `0x11A` `4000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __LP_CTRL_REG__ at PEAKING Offset 0
 
         EN (Bit 0) = 0 (Disable PEAKING)
 
-        (DE Page 80, `0x11A` `6000`)
+        [(DE Page 80, `0x11A` `6000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __ASE_CTL_REG__ at ASE Offset 0
 
         ASE_EN (Bit 0) = 0 (Disable ASE)
 
-        (DE Page 40, `0x11A` `8000`)
+        [(DE Page 40, `0x11A` `8000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __FCC_CTL_REG__ at FCC Offset 0
 
         Enable (Bit 0) = 0 (Disable FCC)
 
-        (DE Page 56, `0x11A` `A000`)
+        [(DE Page 56, `0x11A` `A000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __GNECTL_REG__ at DRC Offset 0
 
         BIST_EN (Bit 0) = 0 (Disable BIST)
 
-        (DE Page 49, `0x11B` `0000`)
+        [(DE Page 49, `0x11B` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     Offsets of the above registers...
 
     -   __VIDEO_SCALER(CH0)__ is at MIXER0 Offset `0x02` `0000`
         
-        (DE Page 90, `0x112` `0000`)
+        [(DE Page 90, `0x112` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __UI_SCALER1(CH1)__ is at MIXER0 Offset `0x04` `0000`
 
-        (DE Page 90, `0x114` `0000`)
+        [(DE Page 90, `0x114` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __UI_SCALER2(CH2)__ is at MIXER0 Offset `0x05` `0000`
     
-        (DE Page 90, `0x115` `0000`)
+        [(DE Page 90, `0x115` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __FCE__ is at MIXER0 Offset `0x0A` `0000`
 
-        (DE Page 61, `0x11A` `0000`)
+        [(DE Page 61, `0x11A` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __BWS__ is at MIXER0 Offset `0x0A` `2000`
 
-        (DE Page 42, `0x11A` `2000`)
+        [(DE Page 42, `0x11A` `2000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __LTI__ is at MIXER0 Offset `0x0A` `4000`
 
-        (DE Page 71, `0x11A` `4000`)
+        [(DE Page 71, `0x11A` `4000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __PEAKING__ is at MIXER0 Offset `0x0A` `6000`
 
-        (DE Page 80, `0x11A` `6000`)
+        [(DE Page 80, `0x11A` `6000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __ASE__ is at MIXER0 Offset `0x0A` `8000`
 
-        (DE Page 40, `0x11A` `8000`)
+        [(DE Page 40, `0x11A` `8000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __FCC__ is at MIXER0 Offset `0x0A` `A000`
 
-        (DE Page 56, `0x11A` `A000`)
+        [(DE Page 56, `0x11A` `A000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __DRC__ is at Address `0x011B` `0000`
     
-        (DE Page 48, `0x11B` `0000`)
+        [(DE Page 48, `0x11B` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __MIXER0__ is at DE Offset __`0x0010` `0000`__
 
@@ -1339,22 +1339,27 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
 1.  Enable __MIXER0__
 
-    TODO
+    -   Set __GLB_CTL__ to 1 [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb)
+
+        EN (Bit 0) = 1 (Enable Mixer)
+
+        [(DE Page 92)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+    -   __GLB_CTL__ is at MIXER0 Offset 0
+
+        [(DE Page 90, `0x110` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+    -   __MIXER0__ is at DE Offset __`0x0010` `0000`__
+
+        [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+    -   __Display Engine (DE)__ Base Address is __`0x0100` `0000`__
+    
+        [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     ```text
     Enable mixer
       0x1100000 = 0x1 (DMB)
-
-    GLB 4K 0x00000
-    DE Page 90
-
-    Offset: 0x000 Register Name: GLB_CTL
-    0 R/W 0x0
-    EN
-    RT enable/disable
-    0: disable
-    1: enable
-    DE Page 92
     ```
 
 We have __implemented in Zig__ the above A64 Display Engine Initialisation...
