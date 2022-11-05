@@ -862,6 +862,16 @@ Channel 2: ...</code></pre></div>
 <blockquote>
 <p>“There are several types of rotation: clockwise 0/90/180/270 degree Rotation and H-Flip/V-Flip. Operation of Copy is the same as a 0 degree rotation.”</p>
 </blockquote>
+<p>Nope to these too…</p>
+<ul>
+<li>Fresh and Contrast Enhancement (FCE)</li>
+<li>Black and White Stetch (BWS)</li>
+<li>Luminance Transient Improvement (LTI)</li>
+<li>Luma Peaking (PEAKING)</li>
+<li>Adaptive Saturation Enhancement (ASE)</li>
+<li>Fancy Color Curvature Change (FCC)</li>
+<li>Dynamic Range Controller (DRC)</li>
+</ul>
 <h1 id="appendix-initialising-the-allwinner-a64-display-engine"><a href="#appendix-initialising-the-allwinner-a64-display-engine">14 Appendix: Initialising the Allwinner A64 Display Engine</a></h1>
 <p><em>How do we initialise PinePhone’s Allwinner A64 Display Engine at startup?</em></p>
 <p>As deciphered from the following logs…</p>
@@ -1061,7 +1071,7 @@ Channel 2: ...</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>Enable clock for mixer 0, set route MIXER0-&gt;TCON0
   clrbits 0x100 0010, 0x1</code></pre></div></li>
 <li>
-<p>Clear <strong>MIXER0 Registers</strong>: GLB, BLD, Video Overlay, UI Overlay</p>
+<p>Clear <strong>MIXER0 Registers</strong>: Global Registers (GLB), Blender (BLD), Video Overlay (OVL_V), UI Overlay (OVL_UI)</p>
 <ul>
 <li>
 <p>Set <strong>MIXER0</strong> Offsets <strong><code>0x0000</code></strong> - <strong><code>0x5FFF</code></strong> to 0</p>
@@ -1085,7 +1095,18 @@ Channel 2: ...</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>Clear all registers
   0x110 0000 to 0x110 5fff = 0x0</code></pre></div></li>
 <li>
-<p>Disable <strong>MIXER0 Modules</strong>: Video Scaler, UI Scaler, FCE, BWS, LTI, PEAKING, ASE, FCC, DRC</p>
+<p>Disable <strong>MIXER0 Modules</strong>…</p>
+<ul>
+<li>Video Scaler (VSU)</li>
+<li>UI Scaler (UIS)</li>
+<li>Fresh and Contrast Enhancement (FCE)</li>
+<li>Black and White Stetch (BWS)</li>
+<li>Luminance Transient Improvement (LTI)</li>
+<li>Luma Peaking (PEAKING)</li>
+<li>Adaptive Saturation Enhancement (ASE)</li>
+<li>Fancy Color Curvature Change (FCC)</li>
+<li>Dynamic Range Controller (DRC)</li>
+</ul>
 <p>Set to <strong><code>0</code></strong> the following registers…</p>
 <ul>
 <li>
@@ -1094,7 +1115,8 @@ Channel 2: ...</code></pre></div>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 130, <code>0x112</code> <code>0000</code>)</a></p>
 </li>
 <li>
-<p>TODO: <strong>0x1130000</strong> is Undocumented</p>
+<p>TODO: <strong><code>0x113</code> <code>0000</code></strong> is Undocumented</p>
+<p>(Is there a mixup with UI_SCALER3?)</p>
 </li>
 <li>
 <p><strong>UIS_CTRL_REG</strong> at UI_SCALER1(CH1) Offset 0</p>
@@ -1109,6 +1131,7 @@ Channel 2: ...</code></pre></div>
 <li>
 <p>TODO: Missing <strong>UI_SCALER3(CH3)</strong> at MIXER0 Offset <code>0x06</code> <code>0000</code></p>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 90, <code>0x116</code> <code>0000</code>)</a></p>
+<p>(Is there a mixup with <code>0x113</code> <code>0000</code> above?)</p>
 </li>
 <li>
 <p><strong>GCTRL_REG(FCE)</strong> at FCE Offset 0</p>
