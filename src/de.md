@@ -1744,19 +1744,87 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
     -   __BLD_CH_RTCTL__ (Blender Routing Control) at BLD Offset `0x080`
 
-        __If Rendering 3 UI Channels:__ Set to `0x321` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
+        __If Rendering 3 UI Channels:__ Set to `0x321` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb)
 
-        __If Rendering 1 UI Channel:__ Set to `1` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
+        P2_RTCTL (Bits 8 to 11) = 3 (Pipe 2 from Channel 3)
 
-        (DE Page ???)
+        P1_RTCTL (Bits 4 to 7) = 2 (Pipe 1 from Channel 2)
 
-    -   __BLD_FILLCOLOR_CTL__ (Blender Fill Color Control) at BLD Offset `0x000`
+        P0_RTCTL (Bits 0 to 3) = 1 (Pipe 0 from Channel 1)
+
+        __If Rendering 1 UI Channel:__ Set to `1` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb)
+
+        P0_RTCTL (Bits 0 to 3) = 1 (Pipe 0 from Channel 1)
+
+        (DE Page 108, `0x110 1080`)
+
+    -   __BLD_FILL_COLOR_CTL__ (Blender Fill Color Control) at BLD Offset `0x000`
 
         __If Rendering 3 UI Channels:__ Set to `0x701` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
 
         __If Rendering 1 UI Channel:__ Set to `0x101` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
 
-        (DE Page ???)
+12 R/W 0x0
+P4_EN
+Pipe4 enable/disable
+0: disabled
+1: enabled
+
+11 R/W 0x0
+P3_EN
+Pipe3 enable/disable
+0: disabled
+1: enabled
+
+10 R/W 0x0
+P2_EN
+Pipe2 enable/disable
+0: disabled
+1: enabled
+
+9 R/W 0x0
+P1_EN
+Pipe1 enable/disable
+0: disabled
+1: enabled
+
+8 R/W 0x0
+P0_EN
+Pipe0 enable/disable
+0: disabled
+1: enabled
+
+4 R/W 0x0
+P4_FCEN
+Pipe4 fill color enable/disable
+0: disabled
+1: enabled
+
+3 R/W 0x0
+P3_FCEN
+Pipe3 fill color enable/disable
+0: disabled
+1: enabled
+
+2 R/W 0x0
+P2_FCEN
+Pipe2 fill color enable/disable
+0: disabled
+1: enabled
+
+1 R/W 0x0
+P1_FCEN
+Pipe1 fill color enable/disable
+0: disabled
+1: enabled
+
+0 R/W 0x0
+P0_FCEN
+Pipe0 fill color enable/disable
+0: disabled
+1: enabled
+
+        (DE Page 106, `0x110 1000`)
 
     ```text
     For 3 UI Channels: Set BLD Route and BLD FColor Control
