@@ -1294,11 +1294,11 @@ Channel 2: ...</code></pre></div>
 <p><strong>Configure Blender…</strong></p>
 <ul>
 <li>
-<p>BLD BkColor (<strong>BLD_BK_COLOR</strong> @ BLD Offset <code>0x88</code>): BLD background color register</p>
+<p><strong>BLD_BK_COLOR</strong> (Blender Background Color) at BLD Offset <code>0x88</code></p>
 <p>Set to <code>0xFF00</code> <code>0000</code> <em>(Why?)</em></p>
 </li>
 <li>
-<p>BLD Premultiply (<strong>BLD_PREMUL_CTL</strong> @ BLD Offset <code>0x84</code>): BLD pre-multiply control register</p>
+<p><strong>BLD_PREMUL_CTL</strong> (Blender Pre-Multiply Control) at BLD Offset <code>0x84</code></p>
 <p>Set to 0</p>
 </li>
 </ul>
@@ -1312,7 +1312,7 @@ BLD Premultiply: 0x110 1084 = 0x0</code></pre></div></li>
 <p><strong>If Channel is unused,</strong> disable Overlay, Pipe and Scaler. Skip to next Channel</p>
 <ul>
 <li>
-<p>UI Config Attr (<strong>OVL_UI_ATTCTL</strong> @ OVL_UI Offset <code>0x00</code>): <em>OVL_UI attribute control register</em></p>
+<p><strong>OVL_UI_ATTCTL</strong> (UI Overlay Attribute Control) at OVL_UI Offset <code>0x00</code></p>
 <p>Set to 0</p>
 </li>
 <li>
@@ -1342,29 +1342,29 @@ Mixer: 0x116 0000 = 0x0</code></pre></div></li>
 <p><strong>Set Overlay</strong> (Assume Layer = 0)</p>
 <ul>
 <li>
-<p>UI Config Attr (<strong>OVL_UI_ATTCTL</strong> @ OVL_UI Offset <code>0x00</code>): <em>OVL_UI attribute control register</em></p>
+<p><strong>OVL_UI_ATTCTL</strong> (UI Overlay Attribute Control) at OVL_UI Offset <code>0x00</code></p>
 <p><strong>For Channel 1:</strong> Set to <code>0xFF00</code> <code>0405</code> <em>(Why?)</em></p>
 <p><strong>For Channel 2:</strong> <code>0xFF00</code> <code>0005</code> <em>(Why?)</em></p>
 <p><strong>For Channel 3:</strong> <code>0x7F00</code> <code>0005</code> <em>(Why?)</em></p>
 </li>
 <li>
-<p>UI Config Top LAddr (<strong>OVL_UI_TOP_LADD</strong> @ OVL_UI Offset <code>0x10</code>): <em>OVL_UI top field memory block low address register</em></p>
+<p><strong>OVL_UI_TOP_LADD</strong> (UI Overlay Top Field Memory Block Low Address) at OVL_UI Offset <code>0x10</code></p>
 <p>Set to Framebuffer Address: <code>fb0</code>, <code>fb1</code> or <code>fb2</code></p>
 </li>
 <li>
-<p>UI Config Pitch (<strong>OVL_UI_PITCH</strong> @ OVL_UI Offset <code>0x0C</code>): <em>OVL_UI memory pitch register</em></p>
+<p><strong>OVL_UI_PITCH</strong> (UI Overlay Memory Pitch) at OVL_UI Offset <code>0x0C</code></p>
 <p>Set to <code>(width * 4)</code></p>
 </li>
 <li>
-<p>UI Config Size (<strong>OVL_UI_MBSIZE</strong> @ OVL_UI Offset <code>0x04</code>): <em>OVL_UI memory block size register</em></p>
+<p><strong>OVL_UI_MBSIZE</strong> (UI Overlay Memory Block Size) at OVL_UI Offset <code>0x04</code></p>
 <p>Set to <code>(height-1) &lt;&lt; 16 + (width-1)</code></p>
 </li>
 <li>
-<p>UI Overlay Size (<strong>OVL_UI_SIZE</strong> @ OVL_UI Offset <code>0x88</code>): <em>OVL_UI overlay window size register</em></p>
+<p><strong>OVL_UI_SIZE</strong> (UI Overlay Overlay Window Size) at OVL_UI Offset <code>0x88</code></p>
 <p>Set to <code>(height-1) &lt;&lt; 16 + (width-1)</code></p>
 </li>
 <li>
-<p>IO Config Coord (<strong>OVL_UI_COOR</strong> @ OVL_UI Offset <code>0x08</code>): <em>OVL_UI memory block coordinate register</em></p>
+<p><strong>OVL_UI_COOR</strong> (UI Overlay Memory Block Coordinate) at OVL_UI Offset <code>0x08</code></p>
 <p>Set to 0</p>
 </li>
 </ul>
@@ -1395,11 +1395,11 @@ IO Config Coord:     0x110 5008 = 0x0</code></pre></div></li>
 <p><strong>For Channel 1:</strong> Set Blender Output</p>
 <ul>
 <li>
-<p>BLD Output Size (<strong>BLD_SIZE</strong> @ BLD Offset <code>0x08C</code>): <em>BLD output size setting register</em></p>
+<p><strong>BLD_SIZE</strong> (BLD Output Size Setting) at BLD Offset <code>0x08C</code></p>
 <p>Set to <code>(height-1) &lt;&lt; 16 + (width-1)</code></p>
 </li>
 <li>
-<p>GLB Size (<strong>GLB_SIZE</strong> @ GLB Offset <code>0x00C</code>): <em>Global size register</em></p>
+<p><strong>GLB_SIZE</strong> (Global Size) at GLB Offset <code>0x00C</code></p>
 <p>Set to <code>(height-1) &lt;&lt; 16 + (width-1)</code></p>
 </li>
 </ul>
@@ -1410,21 +1410,21 @@ GLB Size:        0x110 000c = 0x59f 02cf (1439 * 16 + 719)</code></pre></div></l
 <p><strong>Set Blender Input Pipe</strong> (N = Pipe Number, from 0 to 2 for Channels 1 to 3)</p>
 <ul>
 <li>
-<p>BLD Pipe InSize (<strong>BLD_CH_ISIZE</strong> @ BLD Offset <code>0x008</code> + <code>N*0x10</code>): <em>BLD input memory size register(N=0,1,2,3,4)</em></p>
+<p><strong>BLD_CH_ISIZE</strong> (Blender Input Memory Size) at BLD Offset <code>0x008</code> + <code>N*0x10</code> (N=0,1,2,3,4) </p>
 <p>Set to <code>(height-1) &lt;&lt; 16 + (width-1)</code></p>
 </li>
 <li>
-<p>BLD Pipe FColor (<strong>BLD_FILL_COLOR</strong> @ BLD Offset <code>0x004</code> + <code>N*0x10</code>): <em>BLD fill color register(N=0,1,2,3,4)</em></p>
+<p><strong>BLD_FILL_COLOR</strong> (Blender Fill Color) at BLD Offset <code>0x004</code> + <code>N*0x10</code> (N=0,1,2,3,4)</p>
 <p>Set to <code>0xFF00</code> <code>0000</code> <em>(Why?)</em></p>
 </li>
 <li>
-<p>BLD Pipe Offset (<strong>BLD_CH_OFFSET</strong> @ BLD Offset <code>0x00C</code> + <code>N*0x10</code>): <em>BLD input memory offset register(N=0,1,2,3,4)</em></p>
+<p><strong>BLD_CH_OFFSET</strong> (Blender Input Memory Offset) at BLD Offset <code>0x00C</code> + <code>N*0x10</code> (N=0,1,2,3,4)</p>
 <p><strong>For Channel 1:</strong> Set to 0 <em>(Why?)</em></p>
 <p><strong>For Channel 2:</strong> Set to <code>0x34</code> <code>0034</code> <em>(Why?)</em></p>
 <p><strong>For Channel 3:</strong> Set to 0 <em>(Why?)</em></p>
 </li>
 <li>
-<p>BLD Pipe Mode (<strong>BLD_CTL</strong> @ BLD Offset <code>0x090</code> + <code>N*4</code>): <em>BLD control register</em></p>
+<p><strong>BLD_CTL</strong> (Blender Control) at BLD Offset <code>0x090</code> + <code>N*4</code></p>
 <p>Set to <code>0x301</code> <code>0301</code> <em>(Why?)</em></p>
 </li>
 </ul>
@@ -1465,15 +1465,15 @@ Mixer: 0x116 0000 = 0x0</code></pre></div></li>
 </ol>
 </li>
 <li>
-<p><strong>Set BLD Route and BLD FColor Control</strong></p>
+<p><strong>Set Blender Route and Fill Color</strong></p>
 <ul>
 <li>
-<p>BLD Route (<strong>BLD_CH_RTCTL</strong> @ BLD Offset <code>0x080</code>): <em>BLD routing control register</em></p>
+<p><strong>BLD_CH_RTCTL</strong> (Blender Routing Control) at BLD Offset <code>0x080</code></p>
 <p><strong>For 3 UI Channels:</strong> Set to <code>0x321</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
 <p><strong>For 1 UI Channel:</strong> Set to <code>1</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
 </li>
 <li>
-<p>BLD FColor Control (<strong>BLD_FILLCOLOR_CTL</strong> @ BLD Offset <code>0x000</code>): <em>BLD fill color control register</em></p>
+<p><strong>BLD_FILLCOLOR_CTL</strong> (Blender Fill Color Control) at BLD Offset <code>0x000</code></p>
 <p><strong>For 3 UI Channels:</strong> Set to <code>0x701</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
 <p><strong>For 1 UI Channels:</strong> Set to <code>0x101</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
 </li>
@@ -1489,7 +1489,7 @@ BLD FColor Control: 0x110 1000 = 0x101 (DMB)</code></pre></div></li>
 <p><strong>Apply Settings</strong></p>
 <ul>
 <li>
-<p>GLB DBuff (<strong>GLB_DBUFFER</strong> @ GLB Offset <code>0x008</code>): <em>Global double buffer control register</em></p>
+<p><strong>GLB_DBUFFER</strong> (Global double buffer control register) at GLB Offset <code>0x008</code></p>
 <p>Set to 1 <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
 </li>
 </ul>
