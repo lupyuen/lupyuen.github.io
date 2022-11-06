@@ -183,6 +183,7 @@
 <p>Maybe because A64 (or H3) was designed for <a href="https://linux-sunxi.org/H3"><strong>OTT Set-Top Boxes</strong></a> with Picture-In-Picture Overlay Video?</p>
 <p>The 3 UI Overlay Channels would be super helpful for overlaying an OTT Graphical UI on top of a Video Channel.</p>
 <p><a href="https://en.wikipedia.org/wiki/Pine64#History">(Wait… Wasn’t Pine64 created thanks to OTT Boxes? 🤔)</a></p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>DE2TCON_MUX</strong> at Page 26 says that Mixer 0 is for TCON0 MIPI DSI, Mixer 1 for TCON1 HDMI Output)</a></p>
 <p><img src="https://lupyuen.github.io/images/de-code1a.png" alt="Rendering simple Colour Blocks on the PinePhone Display" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L201-L214">(Source)</a></p>
 <h1 id="render-colours"><a href="#render-colours">3 Render Colours</a></h1>
@@ -1075,6 +1076,7 @@ Channel 2: ...</code></pre></div>
 <ul>
 <li>
 <p>Set <strong>MIXER0</strong> Offsets <strong><code>0x0000</code></strong> - <strong><code>0x5FFF</code></strong> to 0</p>
+<p>Which covers…</p>
 <p><strong>GLB</strong> (Global Regisers) at MIXER0 Offset <strong><code>0x0000</code></strong></p>
 <p><strong>BLD</strong> (Blender) at MIXER0 Offset <strong><code>0x1000</code></strong></p>
 <p><strong>OVL_V(CH0)</strong> (Video Overlay) at MIXER0 Offset <strong><code>0x2000</code></strong></p>
@@ -1320,10 +1322,10 @@ BLD Premultiply: 0x110 1084 = 0x0</code></pre></div></li>
 <p><strong>If Channel is unused,</strong> disable Overlay, Pipe and Scaler. Skip to next Channel</p>
 <ul>
 <li>
-<p><strong>OVL_UI_ATTCTL</strong> (UI Overlay Attribute Control) at OVL_UI Offset <code>0x00</code></p>
+<p><strong>OVL_UI_ATTR_CTL</strong> (UI Overlay Attribute Control) at OVL_UI Offset <code>0x00</code></p>
 <p>Set to 0 (Disable UI Overlay Channel)</p>
 <p>LAY_EN (Bit 0) = 0 (Disable Layer)</p>
-<p>(DE Page 102)</p>
+<p>(DE Page 102, <code>0x110</code> <code>3000</code> / <code>0x110</code> <code>4000</code> / <code>0x110</code> <code>5000</code>)</p>
 </li>
 <li>
 <p><strong>UIS_CTRL_REG</strong> at Offset 0 of UI_SCALER1(CH1) or UI_SCALER2(CH2) or UI_SCALER3(CH3)</p>
@@ -1332,6 +1334,12 @@ BLD Premultiply: 0x110 1084 = 0x0</code></pre></div></li>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 66, <code>0x114</code> <code>0000</code> / <code>0x115</code> <code>0000</code> / <code>0x116</code> <code>0000</code>)</a></p>
 </li>
 <li>
+<p><strong>OVL_UI(CH1)</strong> (UI Overlay 1) is at MIXER0 Offset <code>0x3000</code></p>
+<p>(DE Page 102, <code>0x110</code> <code>3000</code>)</p>
+<p><strong>OVL_UI(CH2)</strong> (UI Overlay 2) is at MIXER0 Offset <code>0x4000</code></p>
+<p>(DE Page 102, <code>0x110</code> <code>4000</code>)</p>
+<p><strong>OVL_UI(CH3)</strong> (UI Overlay 3) is at MIXER0 Offset <code>0x5000</code></p>
+<p>(DE Page 102, <code>0x110</code> <code>5000</code>)</p>
 <p><strong>UI_SCALER1(CH1)</strong> is at MIXER0 Offset <code>0x04</code> <code>0000</code></p>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 90, <code>0x114</code> <code>0000</code>)</a></p>
 <p><strong>UI_SCALER2(CH2)</strong> is at MIXER0 Offset <code>0x05</code> <code>0000</code></p>
@@ -1340,8 +1348,6 @@ BLD Premultiply: 0x110 1084 = 0x0</code></pre></div></li>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 90, <code>0x116</code> <code>0000</code>)</a></p>
 <p><strong>MIXER0</strong> is at DE Offset <code>0x0010</code> <code>0000</code></p>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 24, <code>0x110</code> <code>0000</code>)</a></p>
-</li>
-<li>
 <p><strong>Display Engine (DE)</strong> Base Address is <code>0x0100</code> <code>0000</code></p>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 24)</a></p>
 </li>
@@ -1359,39 +1365,53 @@ Channel 3: Disable Scaler
 Mixer: 0x116 0000 = 0x0</code></pre></div></li>
 <li>
 <p>Channel 1 has Pixel Format <strong>XRGB 8888</strong>:</p>
-<p><strong>OVL_V_ATTCTL → LAY_FBFMT</strong> = <code>0x04</code></p>
+<p><strong>OVL_UI_ATTR_CTL → LAY_FBFMT</strong> = 4</p>
 <p>Channels 2 and 3 have Pixel Format <strong>ARGB 8888</strong>:</p>
-<p><strong>OVL_V_ATTCTL → LAY_FBFMT</strong> = <code>0x01</code></p>
-<p><em>(See page 94)</em></p>
+<p><strong>OVL_UI_ATTR_CTL → LAY_FBFMT</strong> = 0</p>
+<p>(DE Page 94)</p>
 </li>
 <li>
 <p><strong>Set Overlay</strong> (Assume Layer = 0)</p>
 <ul>
 <li>
-<p><strong>OVL_UI_ATTCTL</strong> (UI Overlay Attribute Control) at OVL_UI Offset <code>0x00</code></p>
-<p><strong>For Channel 1:</strong> Set to <code>0xFF00</code> <code>0405</code> <em>(Why?)</em></p>
-<p><strong>For Channel 2:</strong> <code>0xFF00</code> <code>0005</code> <em>(Why?)</em></p>
-<p><strong>For Channel 3:</strong> <code>0x7F00</code> <code>0005</code> <em>(Why?)</em></p>
+<p><strong>OVL_UI_ATTR_CTL</strong> (UI Overlay Attribute Control) at OVL_UI Offset <code>0x00</code></p>
+<p><strong>For Channel 1:</strong> Set to <code>0xFF00</code> <code>0405</code></p>
+<p><strong>For Channel 2:</strong> Set to <code>0xFF00</code> <code>0005</code></p>
+<p><strong>For Channel 3:</strong> Set to <code>0x7F00</code> <code>0005</code></p>
+<p>LAY_GLBALPHA (Bits 24 to 31) = <code>0xFF</code> or <code>0x7F</code></p>
+<p>(Global Alpha Value is Opaque or Semi-Transparent)</p>
+<p>LAY_FBFMT (Bits 8 to 12) = 4 or 0</p>
+<p>(Input Data Format is XRGB 8888 or ARGB 8888)</p>
+<p>LAY_ALPHA_MODE (Bits 1 to 2) = 2</p>
+<p>(Global Alpha is mixed with Pixel Alpha)</p>
+<p>(Input Alpha Value = Global Alpha Value * Pixel’s Alpha Value)</p>
+<p>LAY_EN (Bit 0) = 1 (Enable Layer)</p>
+<p>(DE Page 102, <code>0x110</code> <code>3000</code> / <code>0x110</code> <code>4000</code> / <code>0x110</code> <code>5000</code>)</p>
 </li>
 <li>
 <p><strong>OVL_UI_TOP_LADD</strong> (UI Overlay Top Field Memory Block Low Address) at OVL_UI Offset <code>0x10</code></p>
 <p>Set to Framebuffer Address: <code>fb0</code>, <code>fb1</code> or <code>fb2</code></p>
+<p>(DE Page 104, <code>0x110</code> <code>3010</code> / <code>0x110</code> <code>4010</code> / <code>0x110</code> <code>5010</code>)</p>
 </li>
 <li>
 <p><strong>OVL_UI_PITCH</strong> (UI Overlay Memory Pitch) at OVL_UI Offset <code>0x0C</code></p>
-<p>Set to <code>(width * 4)</code></p>
+<p>Set to <code>(width * 4)</code>, number of bytes per row</p>
+<p>(DE Page 104, <code>0x110</code> <code>300C</code> / <code>0x110</code> <code>400C</code> / <code>0x110</code> <code>500C</code>)</p>
 </li>
 <li>
 <p><strong>OVL_UI_MBSIZE</strong> (UI Overlay Memory Block Size) at OVL_UI Offset <code>0x04</code></p>
 <p>Set to <code>(height-1) &lt;&lt; 16 + (width-1)</code></p>
+<p>(DE Page 104, <code>0x110</code> <code>3004</code> / <code>0x110</code> <code>4004</code> / <code>0x110</code> <code>5004</code>)</p>
 </li>
 <li>
 <p><strong>OVL_UI_SIZE</strong> (UI Overlay Overlay Window Size) at OVL_UI Offset <code>0x88</code></p>
 <p>Set to <code>(height-1) &lt;&lt; 16 + (width-1)</code></p>
+<p>(DE Page 106, <code>0x110</code> <code>3088</code> / <code>0x110</code> <code>4088</code> / <code>0x110</code> <code>5088</code>)</p>
 </li>
 <li>
 <p><strong>OVL_UI_COOR</strong> (UI Overlay Memory Block Coordinate) at OVL_UI Offset <code>0x08</code></p>
-<p>Set to 0</p>
+<p>Set to 0 (Overlay at X=0, Y=0)</p>
+<p>(DE Page 104, <code>0x110</code> <code>3008</code> / <code>0x110</code> <code>4008</code> / <code>0x110</code> <code>5008</code>)</p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Channel 1: Set Overlay (fb0 is 720 x 1440)
@@ -1421,12 +1441,14 @@ IO Config Coord:     0x110 5008 = 0x0</code></pre></div></li>
 <p><strong>For Channel 1:</strong> Set Blender Output</p>
 <ul>
 <li>
-<p><strong>BLD_SIZE</strong> (BLD Output Size Setting) at BLD Offset <code>0x08C</code></p>
+<p><strong>BLD_SIZE</strong> (Blender Output Size Setting) at BLD Offset <code>0x08C</code></p>
 <p>Set to <code>(height-1) &lt;&lt; 16 + (width-1)</code></p>
+<p>(DE Page 110, <code>0x110</code> <code>108C</code>)</p>
 </li>
 <li>
 <p><strong>GLB_SIZE</strong> (Global Size) at GLB Offset <code>0x00C</code></p>
 <p>Set to <code>(height-1) &lt;&lt; 16 + (width-1)</code></p>
+<p>(DE Page 93, <code>0x110</code> <code>000C</code>)</p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Channel 1: Set Blender Output
@@ -1438,23 +1460,40 @@ GLB Size:        0x110 000c = 0x59f 02cf (1439 * 16 + 719)</code></pre></div></l
 <li>
 <p><strong>BLD_CH_ISIZE</strong> (Blender Input Memory Size) at BLD Offset <code>0x008</code> + <code>N*0x10</code> (N=0,1,2,3,4) </p>
 <p>Set to <code>(height-1) &lt;&lt; 16 + (width-1)</code></p>
+<p>(DE Page 108, <code>0x110 1008</code> / <code>0x110 1018</code> / <code>0x110 1028</code>)</p>
 </li>
 <li>
 <p><strong>BLD_FILL_COLOR</strong> (Blender Fill Color) at BLD Offset <code>0x004</code> + <code>N*0x10</code> (N=0,1,2,3,4)</p>
-<p>Set to <code>0xFF00</code> <code>0000</code> <em>(Why?)</em></p>
+<p>Set to <code>0xFF00</code> <code>0000</code> (Opaque Black)</p>
+<p>ALPHA (Bits 24 to 31) = <code>0xFF</code></p>
+<p>RED (Bits 16 to 23) = 0</p>
+<p>GREEN (Bits 8 to 15) = 0</p>
+<p>BLUE (Bits 0 to 7) = 0</p>
+<p>(DE Page 107, <code>0x110 1004</code> / <code>0x110</code> <code>1014</code> / <code>0x110</code> <code>1024</code>)</p>
 </li>
 <li>
 <p><strong>BLD_CH_OFFSET</strong> (Blender Input Memory Offset) at BLD Offset <code>0x00C</code> + <code>N*0x10</code> (N=0,1,2,3,4)</p>
-<p><strong>For Channel 1:</strong> Set to 0 <em>(Why?)</em></p>
-<p><strong>For Channel 2:</strong> Set to <code>0x34</code> <code>0034</code> <em>(Why?)</em></p>
-<p><strong>For Channel 3:</strong> Set to 0 <em>(Why?)</em></p>
+<p>Set to <code>y_offset &lt;&lt; 16 + x_offset</code></p>
+<p><strong>For Channel 1:</strong> Set to 0</p>
+<p><strong>For Channel 2:</strong> Set to <code>0x34</code> <code>0034</code></p>
+<p><strong>For Channel 3:</strong> Set to 0</p>
+<p>(DE Page 108, <code>0x110</code> <code>100C</code> / <code>0x110</code> <code>101C</code> / <code>0x110</code> <code>102C</code>)</p>
 </li>
 <li>
 <p><strong>BLD_CTL</strong> (Blender Control) at BLD Offset <code>0x090</code> + <code>N*4</code></p>
-<p>Set to <code>0x301</code> <code>0301</code> <em>(Why?)</em></p>
+<p>Set to <code>0x301</code> <code>0301</code></p>
+<p>BLEND_AFD (Bits 24 to 27) = 3</p>
+<p>(Coefficient for destination alpha data Q[d] is 1-A[s])</p>
+<p>BLEND_AFS (Bits 16 to 19) = 1</p>
+<p>(Coefficient for source alpha data Q[s] is 1)</p>
+<p>BLEND_PFD (Bits 8 to 11) = 3</p>
+<p>(Coefficient for destination pixel data F[d] is 1-A[s])</p>
+<p>BLEND_PFS (Bits 0 to 3) = 1</p>
+<p>(Coefficient for source pixel data F[s] is 1)</p>
+<p>(DE Page 110, <code>0x110</code> <code>1090</code> / <code>0x110</code> <code>1094</code> / <code>0x110</code> <code>1098</code>)</p>
 </li>
 </ul>
-<p><strong>Note: Log shows BLD_CH_ISIZE, BLD_FILL_COLOR and  BLD_CH_OFFSET are at <code>N*0x10</code>, but doc says <code>N*0x14</code></strong></p>
+<p><strong>Note:</strong> DE Page 91 shows incorrect offset <code>N*0x14</code> for <strong>BLD_CH_ISIZE</strong>, <strong>BLD_FILL_COLOR</strong> and <strong>BLD_CH_OFFSET</strong>. Correct offset is <code>N*0x10</code>, see DE Page 108</p>
 <div class="example-wrap"><pre class="language-text"><code>Channel 1: Set Blender Input Pipe 0 (fb0 is 720 x 1440)
 BLD Pipe InSize: 0x110 1008 = 0x59f 02cf (1439 * 16 + 719)
 BLD Pipe FColor: 0x110 1004 = 0xff00 0000
@@ -1476,8 +1515,10 @@ BLD Pipe Mode:   0x110 1098 = 0x301 0301</code></pre></div></li>
 <p><strong>Disable Scaler</strong> (Assume we’re not scaling)</p>
 <ul>
 <li>
-<p>Mixer (<strong>???</strong> @ <code>0x113</code> <code>0000</code> + <code>0x10000</code> * Channel)</p>
-<p>Set to 0</p>
+<p><strong>UIS_CTRL_REG</strong> at Offset 0 of UI_SCALER1(CH1) or UI_SCALER2(CH2) or UI_SCALER3(CH3)</p>
+<p>Set to 0 (Disable UI Scaler)</p>
+<p>EN (Bit 0) = 0 (Disable UI Scaler) </p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 66, <code>0x114</code> <code>0000</code> / <code>0x115</code> <code>0000</code> / <code>0x116</code> <code>0000</code>)</a></p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Channel 1: Disable Scaler
@@ -1495,13 +1536,15 @@ Mixer: 0x116 0000 = 0x0</code></pre></div></li>
 <ul>
 <li>
 <p><strong>BLD_CH_RTCTL</strong> (Blender Routing Control) at BLD Offset <code>0x080</code></p>
-<p><strong>For 3 UI Channels:</strong> Set to <code>0x321</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
-<p><strong>For 1 UI Channel:</strong> Set to <code>1</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
+<p><strong>If Rendering 3 UI Channels:</strong> Set to <code>0x321</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
+<p><strong>If Rendering 1 UI Channel:</strong> Set to <code>1</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
+<p>(DE Page ???)</p>
 </li>
 <li>
 <p><strong>BLD_FILLCOLOR_CTL</strong> (Blender Fill Color Control) at BLD Offset <code>0x000</code></p>
-<p><strong>For 3 UI Channels:</strong> Set to <code>0x701</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
-<p><strong>For 1 UI Channels:</strong> Set to <code>0x101</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
+<p><strong>If Rendering 3 UI Channels:</strong> Set to <code>0x701</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
+<p><strong>If Rendering 1 UI Channel:</strong> Set to <code>0x101</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
+<p>(DE Page ???)</p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>For 3 UI Channels: Set BLD Route and BLD FColor Control
@@ -1517,6 +1560,7 @@ BLD FColor Control: 0x110 1000 = 0x101 (DMB)</code></pre></div></li>
 <li>
 <p><strong>GLB_DBUFFER</strong> (Global double buffer control register) at GLB Offset <code>0x008</code></p>
 <p>Set to 1 <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
+<p>(DE Page ???)</p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Apply Settings
