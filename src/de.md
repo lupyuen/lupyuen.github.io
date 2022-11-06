@@ -1439,7 +1439,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
         BLUE (Bits 0 to 7) = 0
 
-        (DE Page 109, `0x110` `1088`)
+        [(DE Page 109, `0x110` `1088`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __BLD_PREMUL_CTL__ (Blender Pre-Multiply Control) at BLD Offset `0x84`
 
@@ -1453,7 +1453,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
         P0_ALPHA_MODE (Bit 0) = 0 (Pipe 0: No Pre-Multiply)
 
-        (DE Page 109, `0x110` `1084`)
+        [(DE Page 109, `0x110` `1084`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     ```text
     Configure Blender
@@ -1471,7 +1471,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             LAY_EN (Bit 0) = 0 (Disable Layer)
 
-            (DE Page 102, `0x110` `3000` / `0x110` `4000` / `0x110` `5000`)
+            [(DE Page 102, `0x110` `3000` / `0x110` `4000` / `0x110` `5000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         -   __UIS_CTRL_REG__ at Offset 0 of UI_SCALER1(CH1) or UI_SCALER2(CH2) or UI_SCALER3(CH3)
 
@@ -1483,15 +1483,15 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
         -   __OVL_UI(CH1)__ (UI Overlay 1) is at MIXER0 Offset `0x3000`
 
-            (DE Page 102, `0x110` `3000`)
+            [(DE Page 102, `0x110` `3000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
             __OVL_UI(CH2)__ (UI Overlay 2) is at MIXER0 Offset `0x4000`
 
-            (DE Page 102, `0x110` `4000`)
+            [(DE Page 102, `0x110` `4000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
             __OVL_UI(CH3)__ (UI Overlay 3) is at MIXER0 Offset `0x5000`
 
-            (DE Page 102, `0x110` `5000`)
+            [(DE Page 102, `0x110` `5000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
             __UI_SCALER1(CH1)__ is at MIXER0 Offset `0x04` `0000`
 
@@ -1535,7 +1535,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
         __OVL_UI_ATTR_CTL → LAY_FBFMT__ = 0
 
-        (DE Page 94)
+        [(DE Page 94)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     1.  __Set Overlay__ (Assume Layer = 0)
 
@@ -1563,37 +1563,37 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             LAY_EN (Bit 0) = 1 (Enable Layer)
 
-            (DE Page 102, `0x110` `3000` / `0x110` `4000` / `0x110` `5000`)
+            [(DE Page 102, `0x110` `3000` / `0x110` `4000` / `0x110` `5000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         -   __OVL_UI_TOP_LADD__ (UI Overlay Top Field Memory Block Low Address) at OVL_UI Offset `0x10`
 
             Set to Framebuffer Address: `fb0`, `fb1` or `fb2`
 
-            (DE Page 104, `0x110` `3010` / `0x110` `4010` / `0x110` `5010`)
+            [(DE Page 104, `0x110` `3010` / `0x110` `4010` / `0x110` `5010`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         -   __OVL_UI_PITCH__ (UI Overlay Memory Pitch) at OVL_UI Offset `0x0C`
 
             Set to `(width * 4)`, number of bytes per row
 
-            (DE Page 104, `0x110` `300C` / `0x110` `400C` / `0x110` `500C`)
+            [(DE Page 104, `0x110` `300C` / `0x110` `400C` / `0x110` `500C`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         -   __OVL_UI_MBSIZE__ (UI Overlay Memory Block Size) at OVL_UI Offset `0x04`
 
             Set to `(height-1) << 16 + (width-1)`
 
-            (DE Page 104, `0x110` `3004` / `0x110` `4004` / `0x110` `5004`)
+            [(DE Page 104, `0x110` `3004` / `0x110` `4004` / `0x110` `5004`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         -   __OVL_UI_SIZE__ (UI Overlay Overlay Window Size) at OVL_UI Offset `0x88`
 
             Set to `(height-1) << 16 + (width-1)`
 
-            (DE Page 106, `0x110` `3088` / `0x110` `4088` / `0x110` `5088`)
+            [(DE Page 106, `0x110` `3088` / `0x110` `4088` / `0x110` `5088`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         -   __OVL_UI_COOR__ (UI Overlay Memory Block Coordinate) at OVL_UI Offset `0x08`
 
             Set to 0 (Overlay at X=0, Y=0)
 
-            (DE Page 104, `0x110` `3008` / `0x110` `4008` / `0x110` `5008`)
+            [(DE Page 104, `0x110` `3008` / `0x110` `4008` / `0x110` `5008`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         ```text
         Channel 1: Set Overlay (fb0 is 720 x 1440)
@@ -1627,13 +1627,13 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             Set to `(height-1) << 16 + (width-1)`
 
-            (DE Page 110, `0x110` `108C`)
+            [(DE Page 110, `0x110` `108C`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         -   __GLB_SIZE__ (Global Size) at GLB Offset `0x00C`
 
             Set to `(height-1) << 16 + (width-1)`
 
-            (DE Page 93, `0x110` `000C`)
+            [(DE Page 93, `0x110` `000C`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         ```text
         Channel 1: Set Blender Output
@@ -1647,7 +1647,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             Set to `(height-1) << 16 + (width-1)`
 
-            (DE Page 108, `0x110 1008` / `0x110 1018` / `0x110 1028`)
+            [(DE Page 108, `0x110 1008` / `0x110 1018` / `0x110 1028`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         -   __BLD_FILL_COLOR__ (Blender Fill Color) at BLD Offset `0x004` + `N*0x10` (N=0,1,2,3,4)
 
@@ -1661,7 +1661,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             BLUE (Bits 0 to 7) = 0
 
-            (DE Page 107, `0x110 1004` / `0x110` `1014` / `0x110` `1024`)
+            [(DE Page 107, `0x110 1004` / `0x110` `1014` / `0x110` `1024`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         -   __BLD_CH_OFFSET__ (Blender Input Memory Offset) at BLD Offset `0x00C` + `N*0x10` (N=0,1,2,3,4)
 
@@ -1673,7 +1673,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             __For Channel 3:__ Set to 0
 
-            (DE Page 108, `0x110` `100C` / `0x110` `101C` / `0x110` `102C`)
+            [(DE Page 108, `0x110` `100C` / `0x110` `101C` / `0x110` `102C`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         -   __BLD_CTL__ (Blender Control) at BLD Offset `0x090` + `N*4`
 
@@ -1695,9 +1695,9 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             (Coefficient for source pixel data F[s] is 1)
 
-            (DE Page 110, `0x110` `1090` / `0x110` `1094` / `0x110` `1098`)
+            [(DE Page 110, `0x110` `1090` / `0x110` `1094` / `0x110` `1098`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-        __Note:__ DE Page 91 shows incorrect offset `N*0x14` for __BLD_CH_ISIZE__, __BLD_FILL_COLOR__ and __BLD_CH_OFFSET__. Correct offset is `N*0x10`, see DE Page 108
+        __Note:__ [DE Page 91](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf) shows incorrect offset `N*0x14` for __BLD_CH_ISIZE__, __BLD_FILL_COLOR__ and __BLD_CH_OFFSET__. Correct offset is `N*0x10`, see [DE Page 108](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         ```text
         Channel 1: Set Blender Input Pipe 0 (fb0 is 720 x 1440)
@@ -1756,11 +1756,11 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
         P0_RTCTL (Bits 0 to 3) = 1 (Pipe 0 from Channel 1)
 
-        (DE Page 108, `0x110` `1080`)
+        [(DE Page 108, `0x110` `1080`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __BLD_FILL_COLOR_CTL__ (Blender Fill Color Control) at BLD Offset `0x000`
 
-        __If Rendering 3 UI Channels:__ Set to `0x701` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
+        __If Rendering 3 UI Channels:__ Set to `0x701` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb)
 
         P2_EN (Bit 10) = 1 (Enable Pipe 2)
 
@@ -1770,13 +1770,13 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
         P0_FCEN (Bit 0) = 1 (Enable Pipe 0 Fill Color)
 
-        __If Rendering 1 UI Channel:__ Set to `0x101` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
+        __If Rendering 1 UI Channel:__ Set to `0x101` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb)
 
         P0_EN (Bit 8) = 1 (Enable Pipe 0)
 
         P0_FCEN (Bit 0) = 1 (Enable Pipe 0 Fill Color)
 
-        (DE Page 106, `0x110` `1000`)
+        [(DE Page 106, `0x110` `1000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     ```text
     For 3 UI Channels: Set BLD Route and BLD FColor Control
@@ -1790,11 +1790,15 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
 1.  __Apply Settings__
 
-    -   __GLB_DBUFFER__ (Global double buffer control register) at GLB Offset `0x008`
+    -   __GLB_DBUFFER__ (Global Double Buffer Control) at GLB Offset `0x008`
 
-        Set to 1 [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
+        Set to 1 [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb)
 
-        (DE Page ???, `0x110` `0008`)
+        DOUBLE_BUFFER_RDY (Bit 0) = 1
+
+        (Register Value is ready for update)
+
+        [(DE Page 93, `0x110` `0008`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     ```text
     Apply Settings
