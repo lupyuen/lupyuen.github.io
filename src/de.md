@@ -124,6 +124,8 @@ The 3 UI Overlay Channels would be super helpful for overlaying an OTT Graphical
 
 [(Wait... Wasn't Pine64 created thanks to OTT Boxes? 🤔)](https://en.wikipedia.org/wiki/Pine64#History)
 
+[(__DE2TCON_MUX__ at Page 26 says that Mixer 0 is for TCON0 MIPI DSI, Mixer 1 for TCON1 HDMI Output)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
 ![Rendering simple Colour Blocks on the PinePhone Display](https://lupyuen.github.io/images/de-code1a.png)
 
 [(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L201-L214)
@@ -1186,6 +1188,8 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     -   Set __MIXER0__ Offsets __`0x0000`__ - __`0x5FFF`__ to 0
 
+        Which covers...
+
         __GLB__ (Global Regisers) at MIXER0 Offset __`0x0000`__
 
         __BLD__ (Blender) at MIXER0 Offset __`0x1000`__
@@ -1461,13 +1465,13 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
     1.  __If Channel is unused,__ disable Overlay, Pipe and Scaler. Skip to next Channel
 
-        -   __OVL_UI_ATTCTL__ (UI Overlay Attribute Control) at OVL_UI Offset `0x00`
+        -   __OVL_UI_ATTR_CTL__ (UI Overlay Attribute Control) at OVL_UI Offset `0x00`
 
             Set to 0 (Disable UI Overlay Channel)
 
             LAY_EN (Bit 0) = 0 (Disable Layer)
 
-            (DE Page 102)
+            (DE Page 102, `0x110` `3000` / `0x110` `4000` / `0x110` `5000`)
 
         -   __UIS_CTRL_REG__ at Offset 0 of UI_SCALER1(CH1) or UI_SCALER2(CH2) or UI_SCALER3(CH3)
 
@@ -1477,7 +1481,19 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             [(DE Page 66, `0x114` `0000` / `0x115` `0000` / `0x116` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-        -   __UI_SCALER1(CH1)__ is at MIXER0 Offset `0x04` `0000`
+        -   __OVL_UI(CH1)__ (UI Overlay 1) is at MIXER0 Offset `0x3000`
+
+            (DE Page 102, `0x110` `3000`)
+
+            __OVL_UI(CH2)__ (UI Overlay 2) is at MIXER0 Offset `0x4000`
+
+            (DE Page 102, `0x110` `4000`)
+
+            __OVL_UI(CH3)__ (UI Overlay 3) is at MIXER0 Offset `0x5000`
+
+            (DE Page 102, `0x110` `5000`)
+
+            __UI_SCALER1(CH1)__ is at MIXER0 Offset `0x04` `0000`
 
             [(DE Page 90, `0x114` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
@@ -1493,7 +1509,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             [(DE Page 24, `0x110` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-        -   __Display Engine (DE)__ Base Address is `0x0100` `0000`
+            __Display Engine (DE)__ Base Address is `0x0100` `0000`
     
             [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
@@ -1513,43 +1529,71 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
     1.  Channel 1 has Pixel Format __XRGB 8888__:
 
-        __OVL_V_ATTCTL → LAY_FBFMT__ = `0x04`
+        __OVL_UI_ATTR_CTL → LAY_FBFMT__ = 4
     
         Channels 2 and 3 have Pixel Format __ARGB 8888__:
 
-        __OVL_V_ATTCTL → LAY_FBFMT__ = `0x01`
+        __OVL_UI_ATTR_CTL → LAY_FBFMT__ = 0
 
-        _(See page 94)_
+        (DE Page 94)
 
     1.  __Set Overlay__ (Assume Layer = 0)
 
-        -   __OVL_UI_ATTCTL__ (UI Overlay Attribute Control) at OVL_UI Offset `0x00`
+        -   __OVL_UI_ATTR_CTL__ (UI Overlay Attribute Control) at OVL_UI Offset `0x00`
 
-            __For Channel 1:__ Set to `0xFF00` `0405` _(Why?)_
+            __For Channel 1:__ Set to `0xFF00` `0405`
 
-            __For Channel 2:__ `0xFF00` `0005` _(Why?)_
+            __For Channel 2:__ Set to `0xFF00` `0005`
 
-            __For Channel 3:__ `0x7F00` `0005` _(Why?)_
+            __For Channel 3:__ Set to `0x7F00` `0005`
+
+            LAY_GLBALPHA (Bits 24 to 31) = `0xFF` or `0x7F`
+            
+            (Global Alpha Value is Opaque or Semi-Transparent)
+
+            LAY_FBFMT (Bits 8 to 12) = 4 or 0
+            
+            (Input Data Format is XRGB 8888 or ARGB 8888)
+
+            LAY_ALPHA_MODE (Bits 1 to 2) = 2
+            
+            (Global Alpha is mixed with Pixel Alpha)
+
+            (Input Alpha Value = Global Alpha Value * Pixel's Alpha Value)
+
+            LAY_EN (Bit 0) = 1 (Enable Layer)
+
+            (DE Page 102, `0x110` `3000` / `0x110` `4000` / `0x110` `5000`)
 
         -   __OVL_UI_TOP_LADD__ (UI Overlay Top Field Memory Block Low Address) at OVL_UI Offset `0x10`
 
             Set to Framebuffer Address: `fb0`, `fb1` or `fb2`
 
+            (DE Page 104, `0x110` `3010` / `0x110` `4010` / `0x110` `5010`)
+
         -   __OVL_UI_PITCH__ (UI Overlay Memory Pitch) at OVL_UI Offset `0x0C`
 
-            Set to `(width * 4)`
+            Set to `(width * 4)`, number of bytes per row
+
+            (DE Page 104, `0x110` `300C` / `0x110` `400C` / `0x110` `500C`)
 
         -   __OVL_UI_MBSIZE__ (UI Overlay Memory Block Size) at OVL_UI Offset `0x04`
 
             Set to `(height-1) << 16 + (width-1)`
 
+            (DE Page 104, `0x110` `3004` / `0x110` `4004` / `0x110` `5004`)
+
         -   __OVL_UI_SIZE__ (UI Overlay Overlay Window Size) at OVL_UI Offset `0x88`
 
             Set to `(height-1) << 16 + (width-1)`
 
+            (DE Page 106, `0x110` `3088` / `0x110` `4088` / `0x110` `5088`)
+
         -   __OVL_UI_COOR__ (UI Overlay Memory Block Coordinate) at OVL_UI Offset `0x08`
 
-            Set to 0
+            Set to 0 (Overlay at X=0, Y=0)
+
+            (DE Page 104, `0x110` `3008` / `0x110` `4008` / `0x110` `5008`)
 
         ```text
         Channel 1: Set Overlay (fb0 is 720 x 1440)
@@ -1579,13 +1623,17 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
     1.  __For Channel 1:__ Set Blender Output
 
-        -   __BLD_SIZE__ (BLD Output Size Setting) at BLD Offset `0x08C`
+        -   __BLD_SIZE__ (Blender Output Size Setting) at BLD Offset `0x08C`
 
             Set to `(height-1) << 16 + (width-1)`
-            
+
+            (DE Page 110, `0x110` `108C`)
+
         -   __GLB_SIZE__ (Global Size) at GLB Offset `0x00C`
 
             Set to `(height-1) << 16 + (width-1)`
+
+            (DE Page 93, `0x110` `000C`)
 
         ```text
         Channel 1: Set Blender Output
@@ -1599,23 +1647,57 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             Set to `(height-1) << 16 + (width-1)`
 
+            (DE Page 108, `0x110 1008` / `0x110 1018` / `0x110 1028`)
+
         -   __BLD_FILL_COLOR__ (Blender Fill Color) at BLD Offset `0x004` + `N*0x10` (N=0,1,2,3,4)
 
-            Set to `0xFF00` `0000` _(Why?)_
+            Set to `0xFF00` `0000` (Opaque Black)
+
+            ALPHA (Bits 24 to 31) = `0xFF`
+
+            RED (Bits 16 to 23) = 0
+
+            GREEN (Bits 8 to 15) = 0
+
+            BLUE (Bits 0 to 7) = 0
+
+            (DE Page 107, `0x110 1004` / `0x110` `1014` / `0x110` `1024`)
 
         -   __BLD_CH_OFFSET__ (Blender Input Memory Offset) at BLD Offset `0x00C` + `N*0x10` (N=0,1,2,3,4)
 
-            __For Channel 1:__ Set to 0 _(Why?)_
+            Set to `y_offset << 16 + x_offset`
 
-            __For Channel 2:__ Set to `0x34` `0034` _(Why?)_
+            __For Channel 1:__ Set to 0
 
-            __For Channel 3:__ Set to 0 _(Why?)_
+            __For Channel 2:__ Set to `0x34` `0034`
+
+            __For Channel 3:__ Set to 0
+
+            (DE Page 108, `0x110` `100C` / `0x110` `101C` / `0x110` `102C`)
 
         -   __BLD_CTL__ (Blender Control) at BLD Offset `0x090` + `N*4`
 
-            Set to `0x301` `0301` _(Why?)_
+            Set to `0x301` `0301`
 
-        __Note: Log shows BLD_CH_ISIZE, BLD_FILL_COLOR and  BLD_CH_OFFSET are at `N*0x10`, but doc says `N*0x14`__
+            BLEND_AFD (Bits 24 to 27) = 3
+
+            (Coefficient for destination alpha data Q[d] is 1-A[s])
+
+            BLEND_AFS (Bits 16 to 19) = 1
+
+            (Coefficient for source alpha data Q[s] is 1)
+
+            BLEND_PFD (Bits 8 to 11) = 3
+
+            (Coefficient for destination pixel data F[d] is 1-A[s])
+
+            BLEND_PFS (Bits 0 to 3) = 1
+
+            (Coefficient for source pixel data F[s] is 1)
+
+            (DE Page 110, `0x110` `1090` / `0x110` `1094` / `0x110` `1098`)
+
+        __Note:__ DE Page 91 shows incorrect offset `N*0x14` for __BLD_CH_ISIZE__, __BLD_FILL_COLOR__ and __BLD_CH_OFFSET__. Correct offset is `N*0x10`, see DE Page 108
 
         ```text
         Channel 1: Set Blender Input Pipe 0 (fb0 is 720 x 1440)
@@ -1639,9 +1721,13 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
     1.  __Disable Scaler__ (Assume we're not scaling)
 
-        -   Mixer (__???__ @ `0x113` `0000` + `0x10000` * Channel)
+        -   __UIS_CTRL_REG__ at Offset 0 of UI_SCALER1(CH1) or UI_SCALER2(CH2) or UI_SCALER3(CH3)
 
-            Set to 0
+            Set to 0 (Disable UI Scaler)
+
+            EN (Bit 0) = 0 (Disable UI Scaler) 
+
+            [(DE Page 66, `0x114` `0000` / `0x115` `0000` / `0x116` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         ```text
         Channel 1: Disable Scaler
@@ -1658,15 +1744,19 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
     -   __BLD_CH_RTCTL__ (Blender Routing Control) at BLD Offset `0x080`
 
-        __For 3 UI Channels:__ Set to `0x321` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
+        __If Rendering 3 UI Channels:__ Set to `0x321` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
 
-        __For 1 UI Channel:__ Set to `1` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
+        __If Rendering 1 UI Channel:__ Set to `1` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
+
+        (DE Page ???)
 
     -   __BLD_FILLCOLOR_CTL__ (Blender Fill Color Control) at BLD Offset `0x000`
 
-        __For 3 UI Channels:__ Set to `0x701` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
+        __If Rendering 3 UI Channels:__ Set to `0x701` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
 
-        __For 1 UI Channels:__ Set to `0x101` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
+        __If Rendering 1 UI Channel:__ Set to `0x101` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
+
+        (DE Page ???)
 
     ```text
     For 3 UI Channels: Set BLD Route and BLD FColor Control
@@ -1683,6 +1773,8 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
     -   __GLB_DBUFFER__ (Global double buffer control register) at GLB Offset `0x008`
 
         Set to 1 [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
+
+        (DE Page ???)
 
     ```text
     Apply Settings
