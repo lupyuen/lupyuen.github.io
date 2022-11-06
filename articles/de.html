@@ -1536,24 +1536,85 @@ Mixer: 0x116 0000 = 0x0</code></pre></div></li>
 <ul>
 <li>
 <p><strong>BLD_CH_RTCTL</strong> (Blender Routing Control) at BLD Offset <code>0x080</code></p>
-<p><strong>If Rendering 3 UI Channels:</strong> Set to <code>0x321</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
-<p><strong>If Rendering 1 UI Channel:</strong> Set to <code>1</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
-<p>(DE Page ???)</p>
+<p><strong>If Rendering 3 UI Channels:</strong> Set to <code>0x321</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a></p>
+<p>P2_RTCTL (Bits 8 to 11) = 3 (Pipe 2 from Channel 3)</p>
+<p>P1_RTCTL (Bits 4 to 7) = 2 (Pipe 1 from Channel 2)</p>
+<p>P0_RTCTL (Bits 0 to 3) = 1 (Pipe 0 from Channel 1)</p>
+<p><strong>If Rendering 1 UI Channel:</strong> Set to <code>1</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a></p>
+<p>P0_RTCTL (Bits 0 to 3) = 1 (Pipe 0 from Channel 1)</p>
+<p>(DE Page 108, <code>0x110 1080</code>)</p>
 </li>
 <li>
-<p><strong>BLD_FILLCOLOR_CTL</strong> (Blender Fill Color Control) at BLD Offset <code>0x000</code></p>
+<p><strong>BLD_FILL_COLOR_CTL</strong> (Blender Fill Color Control) at BLD Offset <code>0x000</code></p>
 <p><strong>If Rendering 3 UI Channels:</strong> Set to <code>0x701</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
 <p><strong>If Rendering 1 UI Channel:</strong> Set to <code>0x101</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
-<p>(DE Page ???)</p>
 </li>
 </ul>
-<div class="example-wrap"><pre class="language-text"><code>For 3 UI Channels: Set BLD Route and BLD FColor Control
-BLD Route:          0x110 1080 = 0x321 (DMB)
-BLD FColor Control: 0x110 1000 = 0x701 (DMB)
+</li>
+</ol>
+<p>12 R/W 0x0
+P4_EN
+Pipe4 enable/disable
+0: disabled
+1: enabled</p>
+<p>11 R/W 0x0
+P3_EN
+Pipe3 enable/disable
+0: disabled
+1: enabled</p>
+<p>10 R/W 0x0
+P2_EN
+Pipe2 enable/disable
+0: disabled
+1: enabled</p>
+<p>9 R/W 0x0
+P1_EN
+Pipe1 enable/disable
+0: disabled
+1: enabled</p>
+<p>8 R/W 0x0
+P0_EN
+Pipe0 enable/disable
+0: disabled
+1: enabled</p>
+<p>4 R/W 0x0
+P4_FCEN
+Pipe4 fill color enable/disable
+0: disabled
+1: enabled</p>
+<p>3 R/W 0x0
+P3_FCEN
+Pipe3 fill color enable/disable
+0: disabled
+1: enabled</p>
+<p>2 R/W 0x0
+P2_FCEN
+Pipe2 fill color enable/disable
+0: disabled
+1: enabled</p>
+<p>1 R/W 0x0
+P1_FCEN
+Pipe1 fill color enable/disable
+0: disabled
+1: enabled</p>
+<p>0 R/W 0x0
+P0_FCEN
+Pipe0 fill color enable/disable
+0: disabled
+1: enabled</p>
 
-For 1 UI Channel: Set BLD Route and BLD FColor Control
-BLD Route:          0x110 1080 = 0x1   (DMB)
-BLD FColor Control: 0x110 1000 = 0x101 (DMB)</code></pre></div></li>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    (<span class="ident">DE</span> <span class="ident">Page</span> <span class="number">106</span>, `<span class="number">0x110</span> <span class="number">1000</span>`)
+
+```<span class="ident">text</span>
+<span class="ident">For</span> <span class="number">3</span> <span class="ident">UI</span> <span class="ident">Channels</span>: <span class="ident">Set</span> <span class="ident">BLD</span> <span class="ident">Route</span> <span class="ident">and</span> <span class="ident">BLD</span> <span class="ident">FColor</span> <span class="ident">Control</span>
+<span class="ident">BLD</span> <span class="ident">Route</span>:          <span class="number">0x110</span> <span class="number">1080</span> <span class="op">=</span> <span class="number">0x321</span> (<span class="ident">DMB</span>)
+<span class="ident">BLD</span> <span class="ident">FColor</span> <span class="ident">Control</span>: <span class="number">0x110</span> <span class="number">1000</span> <span class="op">=</span> <span class="number">0x701</span> (<span class="ident">DMB</span>)
+
+<span class="ident">For</span> <span class="number">1</span> <span class="ident">UI</span> <span class="ident">Channel</span>: <span class="ident">Set</span> <span class="ident">BLD</span> <span class="ident">Route</span> <span class="ident">and</span> <span class="ident">BLD</span> <span class="ident">FColor</span> <span class="ident">Control</span>
+<span class="ident">BLD</span> <span class="ident">Route</span>:          <span class="number">0x110</span> <span class="number">1080</span> <span class="op">=</span> <span class="number">0x1</span>   (<span class="ident">DMB</span>)
+<span class="ident">BLD</span> <span class="ident">FColor</span> <span class="ident">Control</span>: <span class="number">0x110</span> <span class="number">1000</span> <span class="op">=</span> <span class="number">0x101</span> (<span class="ident">DMB</span>)
+```</code></pre></div>
+<ol>
 <li>
 <p><strong>Apply Settings</strong></p>
 <ul>
