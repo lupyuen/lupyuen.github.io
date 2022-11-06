@@ -1300,7 +1300,7 @@ Channel 2: ...</code></pre></div>
 <p>RED (Bits 16 to 23) = 0</p>
 <p>GREEN (Bits 8 to 15) = 0</p>
 <p>BLUE (Bits 0 to 7) = 0</p>
-<p>(DE Page 109, <code>0x110</code> <code>1088</code>)</p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 109, <code>0x110</code> <code>1088</code>)</a></p>
 </li>
 <li>
 <p><strong>BLD_PREMUL_CTL</strong> (Blender Pre-Multiply Control) at BLD Offset <code>0x84</code></p>
@@ -1309,7 +1309,7 @@ Channel 2: ...</code></pre></div>
 <p>P2_ALPHA_MODE (Bit 2) = 0 (Pipe 2: No Pre-Multiply)</p>
 <p>P1_ALPHA_MODE (Bit 1) = 0 (Pipe 1: No Pre-Multiply)</p>
 <p>P0_ALPHA_MODE (Bit 0) = 0 (Pipe 0: No Pre-Multiply)</p>
-<p>(DE Page 109, <code>0x110</code> <code>1084</code>)</p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 109, <code>0x110</code> <code>1084</code>)</a></p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Configure Blender
@@ -1325,7 +1325,7 @@ BLD Premultiply: 0x110 1084 = 0x0</code></pre></div></li>
 <p><strong>OVL_UI_ATTR_CTL</strong> (UI Overlay Attribute Control) at OVL_UI Offset <code>0x00</code></p>
 <p>Set to 0 (Disable UI Overlay Channel)</p>
 <p>LAY_EN (Bit 0) = 0 (Disable Layer)</p>
-<p>(DE Page 102, <code>0x110</code> <code>3000</code> / <code>0x110</code> <code>4000</code> / <code>0x110</code> <code>5000</code>)</p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 102, <code>0x110</code> <code>3000</code> / <code>0x110</code> <code>4000</code> / <code>0x110</code> <code>5000</code>)</a></p>
 </li>
 <li>
 <p><strong>UIS_CTRL_REG</strong> at Offset 0 of UI_SCALER1(CH1) or UI_SCALER2(CH2) or UI_SCALER3(CH3)</p>
@@ -1335,11 +1335,11 @@ BLD Premultiply: 0x110 1084 = 0x0</code></pre></div></li>
 </li>
 <li>
 <p><strong>OVL_UI(CH1)</strong> (UI Overlay 1) is at MIXER0 Offset <code>0x3000</code></p>
-<p>(DE Page 102, <code>0x110</code> <code>3000</code>)</p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 102, <code>0x110</code> <code>3000</code>)</a></p>
 <p><strong>OVL_UI(CH2)</strong> (UI Overlay 2) is at MIXER0 Offset <code>0x4000</code></p>
-<p>(DE Page 102, <code>0x110</code> <code>4000</code>)</p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 102, <code>0x110</code> <code>4000</code>)</a></p>
 <p><strong>OVL_UI(CH3)</strong> (UI Overlay 3) is at MIXER0 Offset <code>0x5000</code></p>
-<p>(DE Page 102, <code>0x110</code> <code>5000</code>)</p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 102, <code>0x110</code> <code>5000</code>)</a></p>
 <p><strong>UI_SCALER1(CH1)</strong> is at MIXER0 Offset <code>0x04</code> <code>0000</code></p>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 90, <code>0x114</code> <code>0000</code>)</a></p>
 <p><strong>UI_SCALER2(CH2)</strong> is at MIXER0 Offset <code>0x05</code> <code>0000</code></p>
@@ -1368,7 +1368,7 @@ Mixer: 0x116 0000 = 0x0</code></pre></div></li>
 <p><strong>OVL_UI_ATTR_CTL → LAY_FBFMT</strong> = 4</p>
 <p>Channels 2 and 3 have Pixel Format <strong>ARGB 8888</strong>:</p>
 <p><strong>OVL_UI_ATTR_CTL → LAY_FBFMT</strong> = 0</p>
-<p>(DE Page 94)</p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 94)</a></p>
 </li>
 <li>
 <p><strong>Set Overlay</strong> (Assume Layer = 0)</p>
@@ -1386,32 +1386,32 @@ Mixer: 0x116 0000 = 0x0</code></pre></div></li>
 <p>(Global Alpha is mixed with Pixel Alpha)</p>
 <p>(Input Alpha Value = Global Alpha Value * Pixel’s Alpha Value)</p>
 <p>LAY_EN (Bit 0) = 1 (Enable Layer)</p>
-<p>(DE Page 102, <code>0x110</code> <code>3000</code> / <code>0x110</code> <code>4000</code> / <code>0x110</code> <code>5000</code>)</p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 102, <code>0x110</code> <code>3000</code> / <code>0x110</code> <code>4000</code> / <code>0x110</code> <code>5000</code>)</a></p>
 </li>
 <li>
 <p><strong>OVL_UI_TOP_LADD</strong> (UI Overlay Top Field Memory Block Low Address) at OVL_UI Offset <code>0x10</code></p>
 <p>Set to Framebuffer Address: <code>fb0</code>, <code>fb1</code> or <code>fb2</code></p>
-<p>(DE Page 104, <code>0x110</code> <code>3010</code> / <code>0x110</code> <code>4010</code> / <code>0x110</code> <code>5010</code>)</p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 104, <code>0x110</code> <code>3010</code> / <code>0x110</code> <code>4010</code> / <code>0x110</code> <code>5010</code>)</a></p>
 </li>
 <li>
 <p><strong>OVL_UI_PITCH</strong> (UI Overlay Memory Pitch) at OVL_UI Offset <code>0x0C</code></p>
 <p>Set to <code>(width * 4)</code>, number of bytes per row</p>
-<p>(DE Page 104, <code>0x110</code> <code>300C</code> / <code>0x110</code> <code>400C</code> / <code>0x110</code> <code>500C</code>)</p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 104, <code>0x110</code> <code>300C</code> / <code>0x110</code> <code>400C</code> / <code>0x110</code> <code>500C</code>)</a></p>
 </li>
 <li>
 <p><strong>OVL_UI_MBSIZE</strong> (UI Overlay Memory Block Size) at OVL_UI Offset <code>0x04</code></p>
 <p>Set to <code>(height-1) &lt;&lt; 16 + (width-1)</code></p>
-<p>(DE Page 104, <code>0x110</code> <code>3004</code> / <code>0x110</code> <code>4004</code> / <code>0x110</code> <code>5004</code>)</p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 104, <code>0x110</code> <code>3004</code> / <code>0x110</code> <code>4004</code> / <code>0x110</code> <code>5004</code>)</a></p>
 </li>
 <li>
 <p><strong>OVL_UI_SIZE</strong> (UI Overlay Overlay Window Size) at OVL_UI Offset <code>0x88</code></p>
 <p>Set to <code>(height-1) &lt;&lt; 16 + (width-1)</code></p>
-<p>(DE Page 106, <code>0x110</code> <code>3088</code> / <code>0x110</code> <code>4088</code> / <code>0x110</code> <code>5088</code>)</p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 106, <code>0x110</code> <code>3088</code> / <code>0x110</code> <code>4088</code> / <code>0x110</code> <code>5088</code>)</a></p>
 </li>
 <li>
 <p><strong>OVL_UI_COOR</strong> (UI Overlay Memory Block Coordinate) at OVL_UI Offset <code>0x08</code></p>
 <p>Set to 0 (Overlay at X=0, Y=0)</p>
-<p>(DE Page 104, <code>0x110</code> <code>3008</code> / <code>0x110</code> <code>4008</code> / <code>0x110</code> <code>5008</code>)</p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 104, <code>0x110</code> <code>3008</code> / <code>0x110</code> <code>4008</code> / <code>0x110</code> <code>5008</code>)</a></p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Channel 1: Set Overlay (fb0 is 720 x 1440)
@@ -1443,12 +1443,12 @@ IO Config Coord:     0x110 5008 = 0x0</code></pre></div></li>
 <li>
 <p><strong>BLD_SIZE</strong> (Blender Output Size Setting) at BLD Offset <code>0x08C</code></p>
 <p>Set to <code>(height-1) &lt;&lt; 16 + (width-1)</code></p>
-<p>(DE Page 110, <code>0x110</code> <code>108C</code>)</p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 110, <code>0x110</code> <code>108C</code>)</a></p>
 </li>
 <li>
 <p><strong>GLB_SIZE</strong> (Global Size) at GLB Offset <code>0x00C</code></p>
 <p>Set to <code>(height-1) &lt;&lt; 16 + (width-1)</code></p>
-<p>(DE Page 93, <code>0x110</code> <code>000C</code>)</p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 93, <code>0x110</code> <code>000C</code>)</a></p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Channel 1: Set Blender Output
@@ -1460,7 +1460,7 @@ GLB Size:        0x110 000c = 0x59f 02cf (1439 * 16 + 719)</code></pre></div></l
 <li>
 <p><strong>BLD_CH_ISIZE</strong> (Blender Input Memory Size) at BLD Offset <code>0x008</code> + <code>N*0x10</code> (N=0,1,2,3,4) </p>
 <p>Set to <code>(height-1) &lt;&lt; 16 + (width-1)</code></p>
-<p>(DE Page 108, <code>0x110 1008</code> / <code>0x110 1018</code> / <code>0x110 1028</code>)</p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 108, <code>0x110 1008</code> / <code>0x110 1018</code> / <code>0x110 1028</code>)</a></p>
 </li>
 <li>
 <p><strong>BLD_FILL_COLOR</strong> (Blender Fill Color) at BLD Offset <code>0x004</code> + <code>N*0x10</code> (N=0,1,2,3,4)</p>
@@ -1469,7 +1469,7 @@ GLB Size:        0x110 000c = 0x59f 02cf (1439 * 16 + 719)</code></pre></div></l
 <p>RED (Bits 16 to 23) = 0</p>
 <p>GREEN (Bits 8 to 15) = 0</p>
 <p>BLUE (Bits 0 to 7) = 0</p>
-<p>(DE Page 107, <code>0x110 1004</code> / <code>0x110</code> <code>1014</code> / <code>0x110</code> <code>1024</code>)</p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 107, <code>0x110 1004</code> / <code>0x110</code> <code>1014</code> / <code>0x110</code> <code>1024</code>)</a></p>
 </li>
 <li>
 <p><strong>BLD_CH_OFFSET</strong> (Blender Input Memory Offset) at BLD Offset <code>0x00C</code> + <code>N*0x10</code> (N=0,1,2,3,4)</p>
@@ -1477,7 +1477,7 @@ GLB Size:        0x110 000c = 0x59f 02cf (1439 * 16 + 719)</code></pre></div></l
 <p><strong>For Channel 1:</strong> Set to 0</p>
 <p><strong>For Channel 2:</strong> Set to <code>0x34</code> <code>0034</code></p>
 <p><strong>For Channel 3:</strong> Set to 0</p>
-<p>(DE Page 108, <code>0x110</code> <code>100C</code> / <code>0x110</code> <code>101C</code> / <code>0x110</code> <code>102C</code>)</p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 108, <code>0x110</code> <code>100C</code> / <code>0x110</code> <code>101C</code> / <code>0x110</code> <code>102C</code>)</a></p>
 </li>
 <li>
 <p><strong>BLD_CTL</strong> (Blender Control) at BLD Offset <code>0x090</code> + <code>N*4</code></p>
@@ -1490,10 +1490,10 @@ GLB Size:        0x110 000c = 0x59f 02cf (1439 * 16 + 719)</code></pre></div></l
 <p>(Coefficient for destination pixel data F[d] is 1-A[s])</p>
 <p>BLEND_PFS (Bits 0 to 3) = 1</p>
 <p>(Coefficient for source pixel data F[s] is 1)</p>
-<p>(DE Page 110, <code>0x110</code> <code>1090</code> / <code>0x110</code> <code>1094</code> / <code>0x110</code> <code>1098</code>)</p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 110, <code>0x110</code> <code>1090</code> / <code>0x110</code> <code>1094</code> / <code>0x110</code> <code>1098</code>)</a></p>
 </li>
 </ul>
-<p><strong>Note:</strong> DE Page 91 shows incorrect offset <code>N*0x14</code> for <strong>BLD_CH_ISIZE</strong>, <strong>BLD_FILL_COLOR</strong> and <strong>BLD_CH_OFFSET</strong>. Correct offset is <code>N*0x10</code>, see DE Page 108</p>
+<p><strong>Note:</strong> <a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">DE Page 91</a> shows incorrect offset <code>N*0x14</code> for <strong>BLD_CH_ISIZE</strong>, <strong>BLD_FILL_COLOR</strong> and <strong>BLD_CH_OFFSET</strong>. Correct offset is <code>N*0x10</code>, see <a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">DE Page 108</a></p>
 <div class="example-wrap"><pre class="language-text"><code>Channel 1: Set Blender Input Pipe 0 (fb0 is 720 x 1440)
 BLD Pipe InSize: 0x110 1008 = 0x59f 02cf (1439 * 16 + 719)
 BLD Pipe FColor: 0x110 1004 = 0xff00 0000
@@ -1542,19 +1542,19 @@ Mixer: 0x116 0000 = 0x0</code></pre></div></li>
 <p>P0_RTCTL (Bits 0 to 3) = 1 (Pipe 0 from Channel 1)</p>
 <p><strong>If Rendering 1 UI Channel:</strong> Set to <code>1</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a></p>
 <p>P0_RTCTL (Bits 0 to 3) = 1 (Pipe 0 from Channel 1)</p>
-<p>(DE Page 108, <code>0x110</code> <code>1080</code>)</p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 108, <code>0x110</code> <code>1080</code>)</a></p>
 </li>
 <li>
 <p><strong>BLD_FILL_COLOR_CTL</strong> (Blender Fill Color Control) at BLD Offset <code>0x000</code></p>
-<p><strong>If Rendering 3 UI Channels:</strong> Set to <code>0x701</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
+<p><strong>If Rendering 3 UI Channels:</strong> Set to <code>0x701</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a></p>
 <p>P2_EN (Bit 10) = 1 (Enable Pipe 2)</p>
 <p>P1_EN (Bit 9) = 1 (Enable Pipe 1)</p>
 <p>P0_EN (Bit 8) = 1 (Enable Pipe 0)</p>
 <p>P0_FCEN (Bit 0) = 1 (Enable Pipe 0 Fill Color)</p>
-<p><strong>If Rendering 1 UI Channel:</strong> Set to <code>0x101</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
+<p><strong>If Rendering 1 UI Channel:</strong> Set to <code>0x101</code> <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a></p>
 <p>P0_EN (Bit 8) = 1 (Enable Pipe 0)</p>
 <p>P0_FCEN (Bit 0) = 1 (Enable Pipe 0 Fill Color)</p>
-<p>(DE Page 106, <code>0x110</code> <code>1000</code>)</p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 106, <code>0x110</code> <code>1000</code>)</a></p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>For 3 UI Channels: Set BLD Route and BLD FColor Control
@@ -1568,9 +1568,11 @@ BLD FColor Control: 0x110 1000 = 0x101 (DMB)</code></pre></div></li>
 <p><strong>Apply Settings</strong></p>
 <ul>
 <li>
-<p><strong>GLB_DBUFFER</strong> (Global double buffer control register) at GLB Offset <code>0x008</code></p>
-<p>Set to 1 <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a> <em>(Why?)</em></p>
-<p>(DE Page ???, <code>0x110</code> <code>0008</code>)</p>
+<p><strong>GLB_DBUFFER</strong> (Global Double Buffer Control) at GLB Offset <code>0x008</code></p>
+<p>Set to 1 <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>(DMB)</strong></a></p>
+<p>DOUBLE_BUFFER_RDY (Bit 0) = 1</p>
+<p>(Register Value is ready for update)</p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 93, <code>0x110</code> <code>0008</code>)</a></p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Apply Settings
