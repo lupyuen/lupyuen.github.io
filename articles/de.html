@@ -676,8 +676,7 @@ Channel 2: ...</code></pre></div>
 <h1 id="notes"><a href="#notes">11 Notes</a></h1>
 <ol>
 <li>
-<p>Some parts of the PinePhone DE and TCON0 Drivers still need to be reverse-engineered…</p>
-<p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#de2_init"><strong>de2_init</strong></a></p>
+<p>The PinePhone TCON0 Driver still needs to be reverse-engineered…</p>
 <p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init"><strong>tcon0_init</strong></a></p>
 </li>
 </ol>
@@ -1247,7 +1246,7 @@ Channel 2: ...</code></pre></div>
 </li>
 <li>
 <p><strong>MIXER0</strong> is at DE Offset <strong><code>0x0010</code> <code>0000</code></strong></p>
-<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 24)</a></p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 24, <code>0x110</code> <code>0000</code>)</a></p>
 </li>
 <li>
 <p><strong>Display Engine (DE)</strong> Base Address is <strong><code>0x0100</code> <code>0000</code></strong></p>
@@ -1288,22 +1287,31 @@ Channel 2: ...</code></pre></div>
 </ul>
 <p>After studying the log, we have identified the steps to render the 3 UI Channels with the Display Engine.</p>
 <p>This is how we’ll create a NuttX Driver for PinePhone’s A64 Display Engine that implements Display Rendering…</p>
-<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(Refer to <strong>Memory Mapping List</strong> and <strong>Register List</strong> at Page 90)</a></p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(Refer to <strong>Memory Mapping List</strong> and <strong>Register List</strong> at DE Page 90)</a></p>
 <ol>
 <li>
-<p><strong>Configure Blender…</strong></p>
+<p>Set <strong>Blender Background and Pre-Multiply…</strong></p>
 <ul>
 <li>
 <p><strong>BLD_BK_COLOR</strong> (Blender Background Color) at BLD Offset <code>0x88</code></p>
-<p>Set to <code>0xFF00</code> <code>0000</code> <em>(Why?)</em></p>
+<p>Set to <code>0xFF00</code> <code>0000</code> (Black Background Color)</p>
+<p>RED (Bits 16 to 23) = 0</p>
+<p>GREEN (Bits 8 to 15) = 0</p>
+<p>BLUE (Bits 0 to 7) = 0</p>
+<p>(DE Page 109, <code>0x110</code> <code>1088</code>)</p>
 </li>
 <li>
 <p><strong>BLD_PREMUL_CTL</strong> (Blender Pre-Multiply Control) at BLD Offset <code>0x84</code></p>
-<p>Set to 0</p>
+<p>Set to 0 (No Pre-Multiply for Alpha, Pipes 0 to 3)</p>
+<p>P3_ALPHA_MODE (Bit 3) = 0 (Pipe 3: No Pre-Multiply)</p>
+<p>P2_ALPHA_MODE (Bit 2) = 0 (Pipe 2: No Pre-Multiply)</p>
+<p>P1_ALPHA_MODE (Bit 1) = 0 (Pipe 1: No Pre-Multiply)</p>
+<p>P0_ALPHA_MODE (Bit 0) = 0 (Pipe 0: No Pre-Multiply)</p>
+<p>(DE Page 109, <code>0x110</code> <code>1084</code>)</p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Configure Blender
-BLD BkColor:     0x110 1088 = 0xff000000
+BLD BkColor:     0x110 1088 = 0xff00 0000
 BLD Premultiply: 0x110 1084 = 0x0</code></pre></div></li>
 <li>
 <p><strong>For Channels 1 to 3…</strong></p>
@@ -1313,11 +1321,29 @@ BLD Premultiply: 0x110 1084 = 0x0</code></pre></div></li>
 <ul>
 <li>
 <p><strong>OVL_UI_ATTCTL</strong> (UI Overlay Attribute Control) at OVL_UI Offset <code>0x00</code></p>
-<p>Set to 0</p>
+<p>Set to 0 (Disable UI Overlay Channel)</p>
+<p>LAY_EN (Bit 0) = 0 (Disable Layer)</p>
+<p>(DE Page 102)</p>
 </li>
 <li>
-<p>Mixer (<strong>???</strong> @ <code>0x113</code> <code>0000</code> + <code>0x10000</code> * Channel)</p>
-<p>Set to 0</p>
+<p><strong>UIS_CTRL_REG</strong> at Offset 0 of UI_SCALER1(CH1) or UI_SCALER2(CH2) or UI_SCALER3(CH3)</p>
+<p>Set to 0 (Disable UI Scaler)</p>
+<p>EN (Bit 0) = 0 (Disable UI Scaler) </p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 66, <code>0x114</code> <code>0000</code> / <code>0x115</code> <code>0000</code> / <code>0x116</code> <code>0000</code>)</a></p>
+</li>
+<li>
+<p><strong>UI_SCALER1(CH1)</strong> is at MIXER0 Offset <code>0x04</code> <code>0000</code></p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 90, <code>0x114</code> <code>0000</code>)</a></p>
+<p><strong>UI_SCALER2(CH2)</strong> is at MIXER0 Offset <code>0x05</code> <code>0000</code></p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 90, <code>0x115</code> <code>0000</code>)</a></p>
+<p><strong>UI_SCALER3(CH3)</strong> is at MIXER0 Offset <code>0x06</code> <code>0000</code></p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 90, <code>0x116</code> <code>0000</code>)</a></p>
+<p><strong>MIXER0</strong> is at DE Offset <code>0x0010</code> <code>0000</code></p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 24, <code>0x110</code> <code>0000</code>)</a></p>
+</li>
+<li>
+<p><strong>Display Engine (DE)</strong> Base Address is <code>0x0100</code> <code>0000</code></p>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(DE Page 24)</a></p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>Channel 2: Disable Overlay and Pipe
