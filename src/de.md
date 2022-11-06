@@ -1756,75 +1756,27 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
         P0_RTCTL (Bits 0 to 3) = 1 (Pipe 0 from Channel 1)
 
-        (DE Page 108, `0x110 1080`)
+        (DE Page 108, `0x110` `1080`)
 
     -   __BLD_FILL_COLOR_CTL__ (Blender Fill Color Control) at BLD Offset `0x000`
 
         __If Rendering 3 UI Channels:__ Set to `0x701` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
 
+        P2_EN (Bit 10) = 1 (Enable Pipe 2)
+
+        P1_EN (Bit 9) = 1 (Enable Pipe 1)
+
+        P0_EN (Bit 8) = 1 (Enable Pipe 0)
+
+        P0_FCEN (Bit 0) = 1 (Enable Pipe 0 Fill Color)
+
         __If Rendering 1 UI Channel:__ Set to `0x101` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
 
-12 R/W 0x0
-P4_EN
-Pipe4 enable/disable
-0: disabled
-1: enabled
+        P0_EN (Bit 8) = 1 (Enable Pipe 0)
 
-11 R/W 0x0
-P3_EN
-Pipe3 enable/disable
-0: disabled
-1: enabled
+        P0_FCEN (Bit 0) = 1 (Enable Pipe 0 Fill Color)
 
-10 R/W 0x0
-P2_EN
-Pipe2 enable/disable
-0: disabled
-1: enabled
-
-9 R/W 0x0
-P1_EN
-Pipe1 enable/disable
-0: disabled
-1: enabled
-
-8 R/W 0x0
-P0_EN
-Pipe0 enable/disable
-0: disabled
-1: enabled
-
-4 R/W 0x0
-P4_FCEN
-Pipe4 fill color enable/disable
-0: disabled
-1: enabled
-
-3 R/W 0x0
-P3_FCEN
-Pipe3 fill color enable/disable
-0: disabled
-1: enabled
-
-2 R/W 0x0
-P2_FCEN
-Pipe2 fill color enable/disable
-0: disabled
-1: enabled
-
-1 R/W 0x0
-P1_FCEN
-Pipe1 fill color enable/disable
-0: disabled
-1: enabled
-
-0 R/W 0x0
-P0_FCEN
-Pipe0 fill color enable/disable
-0: disabled
-1: enabled
-
-        (DE Page 106, `0x110 1000`)
+        (DE Page 106, `0x110` `1000`)
 
     ```text
     For 3 UI Channels: Set BLD Route and BLD FColor Control
@@ -1842,7 +1794,7 @@ Pipe0 fill color enable/disable
 
         Set to 1 [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
 
-        (DE Page ???)
+        (DE Page ???, `0x110` `0008`)
 
     ```text
     Apply Settings
