@@ -778,9 +778,7 @@ We'll add the A64 Display Engine in the next article!
 
 # Notes
 
-1.  Some parts of the PinePhone DE and TCON0 Drivers still need to be reverse-engineered...
-
-    [__de2_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#de2_init)
+1.  The PinePhone TCON0 Driver still needs to be reverse-engineered...
 
     [__tcon0_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init)
 
@@ -1378,7 +1376,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     -   __MIXER0__ is at DE Offset __`0x0010` `0000`__
 
-        [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 24, `0x110` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __Display Engine (DE)__ Base Address is __`0x0100` `0000`__
     
@@ -1423,21 +1421,39 @@ After studying the log, we have identified the steps to render the 3 UI Channels
 
 This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that implements Display Rendering...
 
-[(Refer to __Memory Mapping List__ and __Register List__ at Page 90)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+[(Refer to __Memory Mapping List__ and __Register List__ at DE Page 90)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-1.  __Configure Blender...__
+1.  Set __Blender Background and Pre-Multiply...__
 
     -   __BLD_BK_COLOR__ (Blender Background Color) at BLD Offset `0x88`
 
-        Set to `0xFF00` `0000` _(Why?)_
+        Set to `0xFF00` `0000` (Black Background Color)
+
+        RED (Bits 16 to 23) = 0
+
+        GREEN (Bits 8 to 15) = 0
+
+        BLUE (Bits 0 to 7) = 0
+
+        (DE Page 109, `0x110` `1088`)
 
     -   __BLD_PREMUL_CTL__ (Blender Pre-Multiply Control) at BLD Offset `0x84`
 
-        Set to 0
+        Set to 0 (No Pre-Multiply for Alpha, Pipes 0 to 3)
+
+        P3_ALPHA_MODE (Bit 3) = 0 (Pipe 3: No Pre-Multiply)
+
+        P2_ALPHA_MODE (Bit 2) = 0 (Pipe 2: No Pre-Multiply)
+
+        P1_ALPHA_MODE (Bit 1) = 0 (Pipe 1: No Pre-Multiply)
+
+        P0_ALPHA_MODE (Bit 0) = 0 (Pipe 0: No Pre-Multiply)
+
+        (DE Page 109, `0x110` `1084`)
 
     ```text
     Configure Blender
-    BLD BkColor:     0x110 1088 = 0xff000000
+    BLD BkColor:     0x110 1088 = 0xff00 0000
     BLD Premultiply: 0x110 1084 = 0x0
     ```
 
@@ -1447,11 +1463,39 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
         -   __OVL_UI_ATTCTL__ (UI Overlay Attribute Control) at OVL_UI Offset `0x00`
 
-            Set to 0
+            Set to 0 (Disable UI Overlay Channel)
 
-        -   Mixer (__???__ @ `0x113` `0000` + `0x10000` * Channel)
+            LAY_EN (Bit 0) = 0 (Disable Layer)
 
-            Set to 0
+            (DE Page 102)
+
+        -   __UIS_CTRL_REG__ at Offset 0 of UI_SCALER1(CH1) or UI_SCALER2(CH2) or UI_SCALER3(CH3)
+
+            Set to 0 (Disable UI Scaler)
+
+            EN (Bit 0) = 0 (Disable UI Scaler) 
+
+            [(DE Page 66, `0x114` `0000` / `0x115` `0000` / `0x116` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+        -   __UI_SCALER1(CH1)__ is at MIXER0 Offset `0x04` `0000`
+
+            [(DE Page 90, `0x114` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+            __UI_SCALER2(CH2)__ is at MIXER0 Offset `0x05` `0000`
+        
+            [(DE Page 90, `0x115` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+            __UI_SCALER3(CH3)__ is at MIXER0 Offset `0x06` `0000`
+        
+            [(DE Page 90, `0x116` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+            __MIXER0__ is at DE Offset `0x0010` `0000`
+
+            [(DE Page 24, `0x110` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+        -   __Display Engine (DE)__ Base Address is `0x0100` `0000`
+    
+            [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         ```text
         Channel 2: Disable Overlay and Pipe
