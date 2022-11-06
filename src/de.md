@@ -1427,11 +1427,11 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
 1.  __Configure Blender...__
 
-    -   BLD BkColor (__BLD_BK_COLOR__ @ BLD Offset `0x88`): BLD background color register
+    -   __BLD_BK_COLOR__ (Blender Background Color) at BLD Offset `0x88`
 
         Set to `0xFF00` `0000` _(Why?)_
 
-    -   BLD Premultiply (__BLD_PREMUL_CTL__ @ BLD Offset `0x84`): BLD pre-multiply control register
+    -   __BLD_PREMUL_CTL__ (Blender Pre-Multiply Control) at BLD Offset `0x84`
 
         Set to 0
 
@@ -1445,7 +1445,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
     1.  __If Channel is unused,__ disable Overlay, Pipe and Scaler. Skip to next Channel
 
-        -   UI Config Attr (__OVL_UI_ATTCTL__ @ OVL_UI Offset `0x00`): _OVL_UI attribute control register_
+        -   __OVL_UI_ATTCTL__ (UI Overlay Attribute Control) at OVL_UI Offset `0x00`
 
             Set to 0
 
@@ -1479,7 +1479,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
     1.  __Set Overlay__ (Assume Layer = 0)
 
-        -   UI Config Attr (__OVL_UI_ATTCTL__ @ OVL_UI Offset `0x00`): _OVL_UI attribute control register_
+        -   __OVL_UI_ATTCTL__ (UI Overlay Attribute Control) at OVL_UI Offset `0x00`
 
             __For Channel 1:__ Set to `0xFF00` `0405` _(Why?)_
 
@@ -1487,23 +1487,23 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             __For Channel 3:__ `0x7F00` `0005` _(Why?)_
 
-        -   UI Config Top LAddr (__OVL_UI_TOP_LADD__ @ OVL_UI Offset `0x10`): _OVL_UI top field memory block low address register_
+        -   __OVL_UI_TOP_LADD__ (UI Overlay Top Field Memory Block Low Address) at OVL_UI Offset `0x10`
 
             Set to Framebuffer Address: `fb0`, `fb1` or `fb2`
 
-        -   UI Config Pitch (__OVL_UI_PITCH__ @ OVL_UI Offset `0x0C`): _OVL_UI memory pitch register_
+        -   __OVL_UI_PITCH__ (UI Overlay Memory Pitch) at OVL_UI Offset `0x0C`
 
             Set to `(width * 4)`
 
-        -   UI Config Size (__OVL_UI_MBSIZE__ @ OVL_UI Offset `0x04`): _OVL_UI memory block size register_
+        -   __OVL_UI_MBSIZE__ (UI Overlay Memory Block Size) at OVL_UI Offset `0x04`
 
             Set to `(height-1) << 16 + (width-1)`
 
-        -   UI Overlay Size (__OVL_UI_SIZE__ @ OVL_UI Offset `0x88`): _OVL_UI overlay window size register_
+        -   __OVL_UI_SIZE__ (UI Overlay Overlay Window Size) at OVL_UI Offset `0x88`
 
             Set to `(height-1) << 16 + (width-1)`
 
-        -   IO Config Coord (__OVL_UI_COOR__ @ OVL_UI Offset `0x08`): _OVL_UI memory block coordinate register_
+        -   __OVL_UI_COOR__ (UI Overlay Memory Block Coordinate) at OVL_UI Offset `0x08`
 
             Set to 0
 
@@ -1535,11 +1535,11 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
     1.  __For Channel 1:__ Set Blender Output
 
-        -   BLD Output Size (__BLD_SIZE__ @ BLD Offset `0x08C`): _BLD output size setting register_
+        -   __BLD_SIZE__ (BLD Output Size Setting) at BLD Offset `0x08C`
 
             Set to `(height-1) << 16 + (width-1)`
             
-        -   GLB Size (__GLB_SIZE__ @ GLB Offset `0x00C`): _Global size register_
+        -   __GLB_SIZE__ (Global Size) at GLB Offset `0x00C`
 
             Set to `(height-1) << 16 + (width-1)`
 
@@ -1551,15 +1551,15 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
     1.  __Set Blender Input Pipe__ (N = Pipe Number, from 0 to 2 for Channels 1 to 3)
 
-        -   BLD Pipe InSize (__BLD_CH_ISIZE__ @ BLD Offset `0x008` + `N*0x10`): _BLD input memory size register(N=0,1,2,3,4)_
+        -   __BLD_CH_ISIZE__ (Blender Input Memory Size) at BLD Offset `0x008` + `N*0x10` (N=0,1,2,3,4) 
 
             Set to `(height-1) << 16 + (width-1)`
 
-        -   BLD Pipe FColor (__BLD_FILL_COLOR__ @ BLD Offset `0x004` + `N*0x10`): _BLD fill color register(N=0,1,2,3,4)_
+        -   __BLD_FILL_COLOR__ (Blender Fill Color) at BLD Offset `0x004` + `N*0x10` (N=0,1,2,3,4)
 
             Set to `0xFF00` `0000` _(Why?)_
 
-        -   BLD Pipe Offset (__BLD_CH_OFFSET__ @ BLD Offset `0x00C` + `N*0x10`): _BLD input memory offset register(N=0,1,2,3,4)_
+        -   __BLD_CH_OFFSET__ (Blender Input Memory Offset) at BLD Offset `0x00C` + `N*0x10` (N=0,1,2,3,4)
 
             __For Channel 1:__ Set to 0 _(Why?)_
 
@@ -1567,7 +1567,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             __For Channel 3:__ Set to 0 _(Why?)_
 
-        -   BLD Pipe Mode (__BLD_CTL__ @ BLD Offset `0x090` + `N*4`): _BLD control register_
+        -   __BLD_CTL__ (Blender Control) at BLD Offset `0x090` + `N*4`
 
             Set to `0x301` `0301` _(Why?)_
 
@@ -1610,15 +1610,15 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
         Mixer: 0x116 0000 = 0x0
         ```
 
-1.  __Set BLD Route and BLD FColor Control__
+1.  __Set Blender Route and Fill Color__
 
-    -   BLD Route (__BLD_CH_RTCTL__ @ BLD Offset `0x080`): _BLD routing control register_
+    -   __BLD_CH_RTCTL__ (Blender Routing Control) at BLD Offset `0x080`
 
         __For 3 UI Channels:__ Set to `0x321` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
 
         __For 1 UI Channel:__ Set to `1` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
 
-    -   BLD FColor Control (__BLD_FILLCOLOR_CTL__ @ BLD Offset `0x000`): _BLD fill color control register_
+    -   __BLD_FILLCOLOR_CTL__ (Blender Fill Color Control) at BLD Offset `0x000`
 
         __For 3 UI Channels:__ Set to `0x701` [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
 
@@ -1636,7 +1636,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
 1.  __Apply Settings__
 
-    -   GLB DBuff (__GLB_DBUFFER__ @ GLB Offset `0x008`): _Global double buffer control register_
+    -   __GLB_DBUFFER__ (Global double buffer control register) at GLB Offset `0x008`
 
         Set to 1 [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) _(Why?)_
 
