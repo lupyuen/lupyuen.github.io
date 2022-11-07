@@ -1433,6 +1433,8 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
         Set to `0xFF00` `0000` (Black Background Color)
 
+        RESERVED (Bits 24 to 31) = 0xFF (Undocumented)
+
         RED (Bits 16 to 23) = 0
 
         GREEN (Bits 8 to 15) = 0
