@@ -10,13 +10,21 @@ Plenty happens when we render graphics on [__Pine64 PinePhone__](https://wiki.pi
 
 To understand the internals of PinePhone, let's build a __Display Driver__ that will talk directly to PinePhone's Display Hardware. ("Bare Metal")
 
+We'll do this with the [__Zig Programming Language__](https://ziglang.org/), running on [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot).
+
+_Why Zig? Why not C?_
+
+TODO
+
+_Why Apache NuttX RTOS on PinePhone?_
+
 TODO
 
 How we render graphics directly to PinePhone's Display Hardware... With Zig and Apache NuttX RTOS
 
-Today we shall create a __PinePhone Display Driver in Zig__... That will run on our fresh new port of [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) for PinePhone.
+Today we shall create a __PinePhone Display Driver in Zig__... That will run on our fresh new port of  for PinePhone.
 
-If we're not familiar with the [__Zig Programming Language__](https://ziglang.org/): No worries! This article will explain the tricky Zig parts with C.
+If we're not familiar with the : No worries! This article will explain the tricky Zig parts with C.
 
 _Why build the Display Driver in Zig? Instead of C?_
 
