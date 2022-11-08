@@ -73,14 +73,10 @@
 <li><a href="#multiple-framebuffers">1.3 Multiple Framebuffers</a><ul></ul></li></ul></li>
 <li><a href="#whats-next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Nov 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/de2-title.jpg" alt="TODO" /></p>
-<p><em>What happens when we render graphics to PinePhone’s LCD Display?</em></p>
-<p>Plenty happens when we render graphics on Pine64 PinePhone… Because PinePhone’s Display Hardware is so complex!</p>
+<p><em>What happens when we render graphics on PinePhone’s LCD Display?</em></p>
+<p>Plenty happens when we render graphics on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> (pic above)… Because PinePhone’s Display Hardware is so complex!</p>
 <p>TODO</p>
 <p>How we render graphics directly to PinePhone’s Display Hardware… With Zig and Apache NuttX RTOS</p>
-<p><a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> (pic above) and its <a href="https://lupyuen.github.io/articles/dsi#xingbangda-xbd599-lcd-panel"><strong>LCD Display</strong></a>, connected via the (super complicated) <a href="https://lupyuen.github.io/articles/dsi#connector-for-mipi-dsi"><strong>MIPI Display Serial Interface</strong></a>…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/dsi"><strong>“Understanding PinePhone’s Display (MIPI DSI)”</strong></a></li>
-</ul>
 <p>Today we shall create a <strong>PinePhone Display Driver in Zig</strong>… That will run on our fresh new port of <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> for PinePhone.</p>
 <p>If we’re not familiar with the <a href="https://ziglang.org/"><strong>Zig Programming Language</strong></a>: No worries! This article will explain the tricky Zig parts with C.</p>
 <p><em>Why build the Display Driver in Zig? Instead of C?</em></p>
