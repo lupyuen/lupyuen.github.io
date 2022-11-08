@@ -67,11 +67,11 @@
 
     <h1 class="title">NuttX RTOS for PinePhone: Render Graphics in Zig</h1>
     <nav id="TOC"><ul>
-<li><a href="#todo">1 TODO</a><ul>
-<li><a href="#configure-framebuffer">1.1 Configure Framebuffer</a><ul></ul></li>
-<li><a href="#configure-blender">1.2 Configure Blender</a><ul></ul></li>
-<li><a href="#multiple-framebuffers">1.3 Multiple Framebuffers</a><ul></ul></li></ul></li>
-<li><a href="#whats-next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Nov 2022</em></p>
+<li><a href="#graphics-framebuffer">1 Graphics Framebuffer</a><ul></ul></li>
+<li><a href="#configure-framebuffer">2 Configure Framebuffer</a><ul></ul></li>
+<li><a href="#configure-blender">3 Configure Blender</a><ul></ul></li>
+<li><a href="#multiple-framebuffers">4 Multiple Framebuffers</a><ul></ul></li>
+<li><a href="#whats-next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Nov 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/de2-title.jpg" alt="TODO" /></p>
 <p><em>What happens when we render graphics on PinePhone’s LCD Display?</em></p>
 <p>Plenty happens when we render graphics on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> (pic above)… Because PinePhone’s <strong>Display Hardware is so complex!</strong></p>
@@ -89,9 +89,32 @@
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
 </ul>
-<h1 id="todo"><a href="#todo">1 TODO</a></h1>
+<h1 id="graphics-framebuffer"><a href="#graphics-framebuffer">1 Graphics Framebuffer</a></h1>
 <p>TODO</p>
-<h2 id="configure-framebuffer"><a href="#configure-framebuffer">1.1 Configure Framebuffer</a></h2>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L652-L659">render.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// NuttX Video Controller for PinePhone (3 UI Channels)
+const videoInfo = c.fb_videoinfo_s {
+    .fmt       = c.FB_FMT_RGBA32,  // Pixel format (XRGB 8888)
+    .xres      = 720,   // Horizontal resolution in pixel columns
+    .yres      = 1440,  // Vertical resolution in pixel rows
+    .nplanes   = 1,     // Number of color planes supported (Base UI Channel)
+    .noverlays = 2,     // Number of overlays supported (2 Overlay UI Channels)
+};</code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L661-L673">render.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// NuttX Color Plane for PinePhone (Base UI Channel):
+/// Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
+const planeInfo = c.fb_planeinfo_s {
+    .fbmem   = &amp;fb0,     // Start of frame buffer memory
+    .fblen   = @sizeOf( @TypeOf(fb0) ),  // Length of frame buffer memory in bytes
+    .stride  = 720 * 4,  // Length of a line in bytes (4 bytes per pixel)
+    .display = 0,        // Display number (Unused)
+    .bpp     = 32,       // Bits per pixel (XRGB 8888)
+    .xres_virtual = 720,   // Virtual Horizontal resolution in pixel columns
+    .yres_virtual = 1440,  // Virtual Vertical resolution in pixel rows
+    .xoffset      = 0,     // Offset from virtual to visible resolution
+    .yoffset      = 0,     // Offset from virtual to visible resolution
+};</code></pre></div><h1 id="configure-framebuffer"><a href="#configure-framebuffer">2 Configure Framebuffer</a></h1>
 <p>TODO</p>
 <ol>
 <li>
@@ -125,7 +148,7 @@
 <p>Disable Scaler (UIS_CTRL_REG)</p>
 </li>
 </ol>
-<h2 id="configure-blender"><a href="#configure-blender">1.2 Configure Blender</a></h2>
+<h1 id="configure-blender"><a href="#configure-blender">3 Configure Blender</a></h1>
 <p>TODO</p>
 <p>Configure Blender Output (For Channel 1 Only)</p>
 <ol>
@@ -165,9 +188,9 @@
 <p>(Coefficient for source pixel data F[s] is 1)</p>
 </li>
 </ol>
-<h2 id="multiple-framebuffers"><a href="#multiple-framebuffers">1.3 Multiple Framebuffers</a></h2>
+<h1 id="multiple-framebuffers"><a href="#multiple-framebuffers">4 Multiple Framebuffers</a></h1>
 <p>TODO</p>
-<h1 id="whats-next"><a href="#whats-next">2 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">5 What’s Next</a></h1>
 <p>TODO</p>
 <p>Today we’ve seen the Zig Internals of our new PinePhone Display Driver for Apache NuttX RTOS. I hope that coding the driver in Zig has made it a little easier to understand what’s inside.</p>
 <p>Some parts of the driver were simpler to code in Zig than in C. I’m glad I chose Zig for the driver!</p>
