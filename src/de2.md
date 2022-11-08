@@ -18,7 +18,7 @@ We could have done it in C... But our driver code in Zig looks neater, more conc
 
 (We'll explain the tricky Zig parts with C)
 
-Zig looks highly similar to C. In future we might convert the Zig driver code to C.
+Zig looks highly similar to C. If we ever need to convert the driver code to C... Easy peasy!
 
 _Why NuttX on PinePhone?_
 
@@ -69,6 +69,8 @@ const planeInfo = c.fb_planeinfo_s {
 };
 ```
 
+# Fill Framebuffer
+
 TODO
 
 [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L92-L107)
@@ -96,93 +98,141 @@ TODO
 
 TODO
 
-1.  Set Framebuffer Address (OVL_UI_TOP_LADD)
+## Framebuffer Address
 
-    Set to Framebuffer Address: fb0, fb1 or fb2
-
-2.  Set Framebuffer Pitch (OVL_UI_PITCH)
-
-    Set to (width * 4), number of bytes per row
-
-3.  Set Framebuffer Size (OVL_UI_MBSIZE, OVL_UI_SIZE)
-
-    Set to (height-1) << 16 + (width-1)
-
-4.  Set Framebuffer Coordinates (OVL_UI_COOR)
-
-    Set to 0 (Overlay at X=0, Y=0)
-
-5.  Set Framebuffer Attributes (OVL_UI_ATTR_CTL)
-
-    Global Alpha: LAY_GLBALPHA
-
-    (Global Alpha Value is Opaque or Semi-Transparent)
-
-    Pixel Format: LAY_FBFMT
-
-    (Input Data Format is XRGB 8888 or ARGB 8888)
-
-    Global Alpha Mode: LAY_ALPHA_MODE
-
-    (Global Alpha is mixed with Pixel Alpha)
-
-    (Input Alpha Value = Global Alpha Value * Pixel’s Alpha Value)
-
-    Enable Layer: LAY_EN
-
-6.  Disable Scaler (UIS_CTRL_REG)
-
-# Configure Blender
+_(OVL_UI_TOP_LADD)_
 
 TODO
 
-Configure Blender Output (For Channel 1 Only)
+Set to Framebuffer Address: fb0, fb1 or fb2
 
-1.  Set Blender Output Size (BLD_SIZE, GLB_SIZE)
+## Framebuffer Pitch
 
-    Set to (height-1) << 16 + (width-1)
+_(OVL_UI_PITCH)_
 
-Configure Blender Input
+TODO
 
-1.  Set Blender Input Size (BLD_CH_ISIZE)
+Set to (width * 4), number of bytes per row
 
-    Set to (height-1) << 16 + (width-1)
+## Framebuffer Size
 
-2.  Set Blender Fill Color (BLD_FILL_COLOR)
+_(OVL_UI_MBSIZE, OVL_UI_SIZE)_
 
-    Set to 0xFF00 0000 (Opaque Black)
+TODO
 
-    ALPHA (Bits 24 to 31) = 0xFF
+Set to (height-1) << 16 + (width-1)
 
-    RED (Bits 16 to 23) = 0
+## Framebuffer Coordinates
 
-    GREEN (Bits 8 to 15) = 0
+_(OVL_UI_COOR)_
 
-    BLUE (Bits 0 to 7) = 0
+TODO
 
-3.  Set Blender Input Offset (BLD_CH_OFFSET)
+Set to 0 (Overlay at X=0, Y=0)
 
-    Set to y_offset << 16 + x_offset
+## Framebuffer Attributes
 
-4.  Set Blender Attributes (BLD_CTL)
+_(OVL_UI_ATTR_CTL)_
 
-    Set to 0x301 0301
+TODO
 
-    BLEND_AFD (Bits 24 to 27) = 3
+Global Alpha: LAY_GLBALPHA
 
-    (Coefficient for destination alpha data Q[d] is 1-A[s])
+(Global Alpha Value is Opaque or Semi-Transparent)
 
-    BLEND_AFS (Bits 16 to 19) = 1
+Pixel Format: LAY_FBFMT
 
-    (Coefficient for source alpha data Q[s] is 1)
+(Input Data Format is XRGB 8888 or ARGB 8888)
 
-    BLEND_PFD (Bits 8 to 11) = 3
+Global Alpha Mode: LAY_ALPHA_MODE
 
-    (Coefficient for destination pixel data F[d] is 1-A[s])
+(Global Alpha is mixed with Pixel Alpha)
 
-    BLEND_PFS (Bits 0 to 3) = 1
+(Input Alpha Value = Global Alpha Value * Pixel’s Alpha Value)
 
-    (Coefficient for source pixel data F[s] is 1)
+Enable Layer: LAY_EN
+
+## Disable Scaler
+
+_(UIS_CTRL_REG)_
+
+TODO
+
+# Configure Blender Output
+
+TODO
+
+## Blender Output Size
+
+_(BLD_SIZE, GLB_SIZE)_
+
+TODO
+
+(For Channel 1 Only)
+
+Set Blender Output Size
+
+Set to (height-1) << 16 + (width-1)
+
+# Configure Blender Input
+
+TODO
+
+## Input Size
+
+_(BLD_CH_ISIZE)_
+
+TODO
+
+Set to (height-1) << 16 + (width-1)
+
+## Fill Color 
+
+_(BLD_FILL_COLOR)_
+
+TODO
+
+Set to 0xFF00 0000 (Opaque Black)
+
+ALPHA (Bits 24 to 31) = 0xFF
+
+RED (Bits 16 to 23) = 0
+
+GREEN (Bits 8 to 15) = 0
+
+BLUE (Bits 0 to 7) = 0
+
+## Input Offset
+
+_(BLD_CH_OFFSET)_
+
+TODO
+
+Set to y_offset << 16 + x_offset
+
+## Blender Attributes 
+
+_(BLD_CTL)_
+
+TODO
+
+Set to 0x301 0301
+
+BLEND_AFD (Bits 24 to 27) = 3
+
+(Coefficient for destination alpha data Q[d] is 1-A[s])
+
+BLEND_AFS (Bits 16 to 19) = 1
+
+(Coefficient for source alpha data Q[s] is 1)
+
+BLEND_PFD (Bits 8 to 11) = 3
+
+(Coefficient for destination pixel data F[d] is 1-A[s])
+
+BLEND_PFS (Bits 0 to 3) = 1
+
+(Coefficient for source pixel data F[s] is 1)
 
 # Multiple Framebuffers
 
