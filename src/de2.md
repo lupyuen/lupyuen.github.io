@@ -54,9 +54,10 @@ TODO
 [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L709-L712)
 
 ```zig
-// Framebuffer 0: (Base UI Channel)
-// Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
-var fb0 = std.mem.zeroes([720 * 1440] u32);
+// Framebuffer of 720 x 1440 pixels
+var fb0 = std.mem.zeroes(  // Init to zeroes...
+  [720 * 1440] u32         // 720 x 1440 pixels
+);                         // (4 bytes per pixel)
 ```
 
 (Each pixel is __`u32`__, equivalent to __`uint32_t`__ in C)
