@@ -162,7 +162,7 @@ TODO
 
 TODO
 
-## Blender Output Size
+## Output Size
 
 _(BLD_SIZE, GLB_SIZE)_
 
