@@ -104,7 +104,7 @@ const len = framebuffer.len;</code></pre></div>
 <p><em>Why NuttX on PinePhone?</em></p>
 <p><a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> gives us <strong>direct access</strong> to PinePhone’s Hardware Registers, so nothing gets in our way. (Like Memory Protection)</p>
 <p>(NuttX boots from microSD, so it won’t affect the Linux Distro installed on PinePhone)</p>
-<p>The code from this article will someday become the PinePhone Display Driver for NuttX RTOS.</p>
+<p>The code that we discuss today will soon become the PinePhone Display Driver for NuttX RTOS.</p>
 <p>Let’s continue the journey from our <strong>NuttX Porting Journal</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
@@ -118,15 +118,7 @@ var fb0 = std.mem.zeroes(  // Init to zeroes...
 );                         // (4 bytes per pixel)</code></pre></div>
 <p>(Each pixel is <strong><code>u32</code></strong>, equivalent to <strong><code>uint32_t</code></strong> in C)</p>
 <p><a href="https://ziglang.org/documentation/master/std/#root;mem.zeroes"><strong><code>std.mem.zeroes</code></strong></a> allocates an array of 720 x 1440 pixels, filled with zeroes.</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L652-L659">render.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// NuttX Video Controller for PinePhone (3 UI Channels)
-const videoInfo = c.fb_videoinfo_s {
-  .fmt       = c.FB_FMT_RGBA32,  // Pixel format (XRGB 8888)
-  .xres      = 720,   // Horizontal resolution in pixel columns
-  .yres      = 1440,  // Vertical resolution in pixel rows
-  .nplanes   = 1,     // Number of color planes supported (Base UI Channel)
-  .noverlays = 2,     // Number of overlays supported (2 Overlay UI Channels)
-};</code></pre></div>
+<p>Let’s describe the Framebuffer…</p>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L661-L673">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// NuttX Color Plane for PinePhone (Base UI Channel):
@@ -141,7 +133,20 @@ const planeInfo = c.fb_planeinfo_s {
   .yres_virtual = 1440,  // Virtual Vertical resolution in pixel rows
   .xoffset      = 0,     // Offset from virtual to visible resolution
   .yoffset      = 0,     // Offset from virtual to visible resolution
-};</code></pre></div><h1 id="fill-framebuffer"><a href="#fill-framebuffer">2 Fill Framebuffer</a></h1>
+};</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L314-L331">(<strong><code>fb_planeinfo_s</code></strong> is defined here)</a></p>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L652-L659">render.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// NuttX Video Controller for PinePhone (3 UI Channels)
+const videoInfo = c.fb_videoinfo_s {
+  .fmt       = c.FB_FMT_RGBA32,  // Pixel format (XRGB 8888)
+  .xres      = 720,   // Horizontal resolution in pixel columns
+  .yres      = 1440,  // Vertical resolution in pixel rows
+  .nplanes   = 1,     // Number of color planes supported (Base UI Channel)
+  .noverlays = 2,     // Number of overlays supported (2 Overlay UI Channels)
+};</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L299-L313">(<strong><code>fb_videoinfo_s</code></strong> is defined here)</a></p>
+<h1 id="fill-framebuffer"><a href="#fill-framebuffer">2 Fill Framebuffer</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L92-L107">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Init Framebuffer 0:
