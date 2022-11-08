@@ -4,6 +4,8 @@
 
 ![TODO](https://lupyuen.github.io/images/de2-title.jpg)
 
+_What happens when we render graphics to PinePhone's LCD Display?_
+
 TODO
 
 How we render graphics directly to PinePhone's Display Hardware... With Zig and Apache NuttX RTOS
