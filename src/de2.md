@@ -4,17 +4,13 @@
 
 ![TODO](https://lupyuen.github.io/images/de2-title.jpg)
 
-_What happens when we render graphics to PinePhone's LCD Display?_
+_What happens when we render graphics on PinePhone's LCD Display?_
 
-Plenty happens when we render graphics on Pine64 PinePhone... Because PinePhone's Display Hardware is so complex!
+Plenty happens when we render graphics on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) (pic above)... Because PinePhone's Display Hardware is so complex!
 
 TODO
 
 How we render graphics directly to PinePhone's Display Hardware... With Zig and Apache NuttX RTOS
-
-[__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) (pic above) and its [__LCD Display__](https://lupyuen.github.io/articles/dsi#xingbangda-xbd599-lcd-panel), connected via the (super complicated) [__MIPI Display Serial Interface__](https://lupyuen.github.io/articles/dsi#connector-for-mipi-dsi)...
-
--   [__"Understanding PinePhone's Display (MIPI DSI)"__](https://lupyuen.github.io/articles/dsi)
 
 Today we shall create a __PinePhone Display Driver in Zig__... That will run on our fresh new port of [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) for PinePhone.
 
