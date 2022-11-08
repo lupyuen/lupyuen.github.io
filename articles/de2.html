@@ -92,8 +92,15 @@
 <p>We’ll do this with the <a href="https://ziglang.org/"><strong>Zig Programming Language</strong></a>, running on <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a>.</p>
 <p><em>Why Zig? Why not C?</em></p>
 <p>We could have done it in C… But our driver code in Zig looks neater, more concise and (hopefully) easier to understand.</p>
-<p>(We’ll explain the tricky Zig parts with C)</p>
+<p>So instead of writing this in C…</p>
+<div class="example-wrap"><pre class="language-c"><code>// In C: Get the framebuffer length
+int len = sizeof(framebuffer)
+  / sizeof(framebuffer[0]);</code></pre></div>
+<p>We use the shorter form in Zig…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// In Zig: Get the framebuffer length
+const len = framebuffer.len;</code></pre></div>
 <p>Zig looks highly similar to C. If we ever need to convert the driver code to C… Easy peasy!</p>
+<p>(In this article we’ll explain the tricky Zig parts with C)</p>
 <p><em>Why NuttX on PinePhone?</em></p>
 <p><a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> gives us <strong>direct access</strong> to PinePhone’s Hardware Registers, so nothing gets in our way. (Like Memory Protection)</p>
 <p>(We’ll boot NuttX RTOS on microSD, so it won’t affect the Linux Distro installed on PinePhone)</p>
