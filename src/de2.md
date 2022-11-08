@@ -6,6 +6,8 @@
 
 _What happens when we render graphics to PinePhone's LCD Display?_
 
+Plenty happens when we render graphics on Pine64 PinePhone... Because PinePhone's Display Hardware is so complex!
+
 TODO
 
 How we render graphics directly to PinePhone's Display Hardware... With Zig and Apache NuttX RTOS
