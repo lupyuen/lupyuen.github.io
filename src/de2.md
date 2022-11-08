@@ -14,11 +14,11 @@ We'll do this with the [__Zig Programming Language__](https://ziglang.org/), run
 
 _Why Zig? Why not C?_
 
-We could have done it in C... But Zig looks neater and more concise.
+We could have done it in C... But our driver code in Zig looks neater, more concise and (hopefully) easier to understand.
 
 (We'll explain the tricky Zig parts with C)
 
-In future we might convert the Zig code to C, since Zig looks so similar to C.
+Zig looks highly similar to C. In future we might convert the Zig driver code to C.
 
 _Why NuttX on PinePhone?_
 
