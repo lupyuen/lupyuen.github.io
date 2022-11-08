@@ -78,9 +78,9 @@
 <p>To understand the internals of PinePhone, let’s build a <strong>Display Driver</strong> that will talk directly to PinePhone’s Display Hardware. (“Bare Metal”)</p>
 <p>We’ll do this with the <a href="https://ziglang.org/"><strong>Zig Programming Language</strong></a>, running on <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a>.</p>
 <p><em>Why Zig? Why not C?</em></p>
-<p>We could have done it in C… But Zig looks neater and more concise.</p>
+<p>We could have done it in C… But our driver code in Zig looks neater, more concise and (hopefully) easier to understand.</p>
 <p>(We’ll explain the tricky Zig parts with C)</p>
-<p>In future we might convert the Zig code to C, since Zig looks so similar to C.</p>
+<p>Zig looks highly similar to C. In future we might convert the Zig driver code to C.</p>
 <p><em>Why NuttX on PinePhone?</em></p>
 <p><a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> gives us <strong>direct access</strong> to PinePhone’s Hardware Registers, so nothing gets in our way. (Like Memory Protection)</p>
 <p>(We’ll boot NuttX RTOS on microSD, so it won’t affect the Linux Distro installed on PinePhone)</p>
