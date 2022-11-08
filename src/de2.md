@@ -6,7 +6,9 @@
 
 _What happens when we render graphics on PinePhone's LCD Display?_
 
-Plenty happens when we render graphics on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) (pic above)... Because PinePhone's Display Hardware is so complex!
+Plenty happens when we render graphics on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) (pic above)... Because PinePhone's __Display Hardware is so complex!__
+
+To understand the internals of PinePhone, let's build a __Display Driver__ that will talk directly to PinePhone's Display Hardware. ("Bare Metal")
 
 TODO
 
