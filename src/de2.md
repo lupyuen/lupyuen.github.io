@@ -32,11 +32,44 @@ Let's continue the journey from our __NuttX Porting Journal__...
 
 -   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
 
-# TODO
+# Graphics Framebuffer
 
 TODO
 
-## Configure Framebuffer
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L652-L659)
+
+```zig
+/// NuttX Video Controller for PinePhone (3 UI Channels)
+const videoInfo = c.fb_videoinfo_s {
+    .fmt       = c.FB_FMT_RGBA32,  // Pixel format (XRGB 8888)
+    .xres      = 720,   // Horizontal resolution in pixel columns
+    .yres      = 1440,  // Vertical resolution in pixel rows
+    .nplanes   = 1,     // Number of color planes supported (Base UI Channel)
+    .noverlays = 2,     // Number of overlays supported (2 Overlay UI Channels)
+};
+```
+
+TODO
+
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L661-L673)
+
+```zig
+/// NuttX Color Plane for PinePhone (Base UI Channel):
+/// Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
+const planeInfo = c.fb_planeinfo_s {
+    .fbmem   = &fb0,     // Start of frame buffer memory
+    .fblen   = @sizeOf( @TypeOf(fb0) ),  // Length of frame buffer memory in bytes
+    .stride  = 720 * 4,  // Length of a line in bytes (4 bytes per pixel)
+    .display = 0,        // Display number (Unused)
+    .bpp     = 32,       // Bits per pixel (XRGB 8888)
+    .xres_virtual = 720,   // Virtual Horizontal resolution in pixel columns
+    .yres_virtual = 1440,  // Virtual Vertical resolution in pixel rows
+    .xoffset      = 0,     // Offset from virtual to visible resolution
+    .yoffset      = 0,     // Offset from virtual to visible resolution
+};
+```
+
+# Configure Framebuffer
 
 TODO
 
@@ -76,7 +109,7 @@ TODO
 
 6.  Disable Scaler (UIS_CTRL_REG)
 
-## Configure Blender
+# Configure Blender
 
 TODO
 
@@ -128,7 +161,7 @@ Configure Blender Input
 
     (Coefficient for source pixel data F[s] is 1)
 
-## Multiple Framebuffers
+# Multiple Framebuffers
 
 TODO
 
