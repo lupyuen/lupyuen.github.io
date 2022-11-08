@@ -112,9 +112,10 @@ const len = framebuffer.len;</code></pre></div>
 <h1 id="graphics-framebuffer"><a href="#graphics-framebuffer">1 Graphics Framebuffer</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L709-L712">render.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>// Framebuffer 0: (Base UI Channel)
-// Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
-var fb0 = std.mem.zeroes([720 * 1440] u32);</code></pre></div>
+<div class="example-wrap"><pre class="language-zig"><code>// Framebuffer of 720 x 1440 pixels
+var fb0 = std.mem.zeroes(  // Init to zeroes...
+  [720 * 1440] u32         // 720 x 1440 pixels
+);                         // (4 bytes per pixel)</code></pre></div>
 <p>(Each pixel is <strong><code>u32</code></strong>, equivalent to <strong><code>uint32_t</code></strong> in C)</p>
 <p><a href="https://ziglang.org/documentation/master/std/#root;mem.zeroes"><strong><code>std.mem.zeroes</code></strong></a> allocates an array of 720 x 1440 pixels, filled with zeroes.</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L652-L659">render.zig</a></p>
