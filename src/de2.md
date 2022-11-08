@@ -41,7 +41,7 @@ _Why NuttX on PinePhone?_
 
 (NuttX boots from microSD, so it won't affect the Linux Distro installed on PinePhone)
 
-The code from this article will someday become the PinePhone Display Driver for NuttX RTOS.
+The code that we discuss today will soon become the PinePhone Display Driver for NuttX RTOS.
 
 Let's continue the journey from our __NuttX Porting Journal__...
 
@@ -64,18 +64,7 @@ var fb0 = std.mem.zeroes(  // Init to zeroes...
 
 [__`std.mem.zeroes`__](https://ziglang.org/documentation/master/std/#root;mem.zeroes) allocates an array of 720 x 1440 pixels, filled with zeroes.
 
-[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L652-L659)
-
-```zig
-/// NuttX Video Controller for PinePhone (3 UI Channels)
-const videoInfo = c.fb_videoinfo_s {
-  .fmt       = c.FB_FMT_RGBA32,  // Pixel format (XRGB 8888)
-  .xres      = 720,   // Horizontal resolution in pixel columns
-  .yres      = 1440,  // Vertical resolution in pixel rows
-  .nplanes   = 1,     // Number of color planes supported (Base UI Channel)
-  .noverlays = 2,     // Number of overlays supported (2 Overlay UI Channels)
-};
-```
+Let's describe the Framebuffer...
 
 TODO
 
@@ -96,6 +85,25 @@ const planeInfo = c.fb_planeinfo_s {
   .yoffset      = 0,     // Offset from virtual to visible resolution
 };
 ```
+
+[(__`fb_planeinfo_s`__ is defined here)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L314-L331)
+
+TODO
+
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L652-L659)
+
+```zig
+/// NuttX Video Controller for PinePhone (3 UI Channels)
+const videoInfo = c.fb_videoinfo_s {
+  .fmt       = c.FB_FMT_RGBA32,  // Pixel format (XRGB 8888)
+  .xres      = 720,   // Horizontal resolution in pixel columns
+  .yres      = 1440,  // Vertical resolution in pixel rows
+  .nplanes   = 1,     // Number of color planes supported (Base UI Channel)
+  .noverlays = 2,     // Number of overlays supported (2 Overlay UI Channels)
+};
+```
+
+[(__`fb_videoinfo_s`__ is defined here)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L299-L313)
 
 # Fill Framebuffer
 
