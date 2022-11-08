@@ -68,10 +68,23 @@
     <h1 class="title">NuttX RTOS for PinePhone: Render Graphics in Zig</h1>
     <nav id="TOC"><ul>
 <li><a href="#graphics-framebuffer">1 Graphics Framebuffer</a><ul></ul></li>
-<li><a href="#configure-framebuffer">2 Configure Framebuffer</a><ul></ul></li>
-<li><a href="#configure-blender">3 Configure Blender</a><ul></ul></li>
-<li><a href="#multiple-framebuffers">4 Multiple Framebuffers</a><ul></ul></li>
-<li><a href="#whats-next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Nov 2022</em></p>
+<li><a href="#fill-framebuffer">2 Fill Framebuffer</a><ul></ul></li>
+<li><a href="#configure-framebuffer">3 Configure Framebuffer</a><ul>
+<li><a href="#framebuffer-address">3.1 Framebuffer Address</a><ul></ul></li>
+<li><a href="#framebuffer-pitch">3.2 Framebuffer Pitch</a><ul></ul></li>
+<li><a href="#framebuffer-size">3.3 Framebuffer Size</a><ul></ul></li>
+<li><a href="#framebuffer-coordinates">3.4 Framebuffer Coordinates</a><ul></ul></li>
+<li><a href="#framebuffer-attributes">3.5 Framebuffer Attributes</a><ul></ul></li>
+<li><a href="#disable-scaler">3.6 Disable Scaler</a><ul></ul></li></ul></li>
+<li><a href="#configure-blender-output">4 Configure Blender Output</a><ul>
+<li><a href="#blender-output-size">4.1 Blender Output Size</a><ul></ul></li></ul></li>
+<li><a href="#configure-blender-input">5 Configure Blender Input</a><ul>
+<li><a href="#input-size">5.1 Input Size</a><ul></ul></li>
+<li><a href="#fill-color">5.2 Fill Color</a><ul></ul></li>
+<li><a href="#input-offset">5.3 Input Offset</a><ul></ul></li>
+<li><a href="#blender-attributes">5.4 Blender Attributes</a><ul></ul></li></ul></li>
+<li><a href="#multiple-framebuffers">6 Multiple Framebuffers</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Nov 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/de2-title.jpg" alt="TODO" /></p>
 <p><em>What happens when we render graphics on PinePhone’s LCD Display?</em></p>
 <p>Plenty happens when we render graphics on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> (pic above)… Because PinePhone’s <strong>Display Hardware is so complex!</strong></p>
@@ -80,7 +93,7 @@
 <p><em>Why Zig? Why not C?</em></p>
 <p>We could have done it in C… But our driver code in Zig looks neater, more concise and (hopefully) easier to understand.</p>
 <p>(We’ll explain the tricky Zig parts with C)</p>
-<p>Zig looks highly similar to C. In future we might convert the Zig driver code to C.</p>
+<p>Zig looks highly similar to C. If we ever need to convert the driver code to C… Easy peasy!</p>
 <p><em>Why NuttX on PinePhone?</em></p>
 <p><a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> gives us <strong>direct access</strong> to PinePhone’s Hardware Registers, so nothing gets in our way. (Like Memory Protection)</p>
 <p>(We’ll boot NuttX RTOS on microSD, so it won’t affect the Linux Distro installed on PinePhone)</p>
@@ -114,7 +127,7 @@ const planeInfo = c.fb_planeinfo_s {
     .yres_virtual = 1440,  // Virtual Vertical resolution in pixel rows
     .xoffset      = 0,     // Offset from virtual to visible resolution
     .yoffset      = 0,     // Offset from virtual to visible resolution
-};</code></pre></div>
+};</code></pre></div><h1 id="fill-framebuffer"><a href="#fill-framebuffer">2 Fill Framebuffer</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L92-L107">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>    // Init Framebuffer 0:
@@ -132,27 +145,27 @@ const planeInfo = c.fb_planeinfo_s {
             // Red for lower half
             fb0[i] = 0x80800000;
         }
-    }</code></pre></div><h1 id="configure-framebuffer"><a href="#configure-framebuffer">2 Configure Framebuffer</a></h1>
+    }</code></pre></div><h1 id="configure-framebuffer"><a href="#configure-framebuffer">3 Configure Framebuffer</a></h1>
 <p>TODO</p>
-<ol>
-<li>
-<p>Set Framebuffer Address (OVL_UI_TOP_LADD)</p>
+<h2 id="framebuffer-address"><a href="#framebuffer-address">3.1 Framebuffer Address</a></h2>
+<p><em>(OVL_UI_TOP_LADD)</em></p>
+<p>TODO</p>
 <p>Set to Framebuffer Address: fb0, fb1 or fb2</p>
-</li>
-<li>
-<p>Set Framebuffer Pitch (OVL_UI_PITCH)</p>
+<h2 id="framebuffer-pitch"><a href="#framebuffer-pitch">3.2 Framebuffer Pitch</a></h2>
+<p><em>(OVL_UI_PITCH)</em></p>
+<p>TODO</p>
 <p>Set to (width * 4), number of bytes per row</p>
-</li>
-<li>
-<p>Set Framebuffer Size (OVL_UI_MBSIZE, OVL_UI_SIZE)</p>
+<h2 id="framebuffer-size"><a href="#framebuffer-size">3.3 Framebuffer Size</a></h2>
+<p><em>(OVL_UI_MBSIZE, OVL_UI_SIZE)</em></p>
+<p>TODO</p>
 <p>Set to (height-1) &lt;&lt; 16 + (width-1)</p>
-</li>
-<li>
-<p>Set Framebuffer Coordinates (OVL_UI_COOR)</p>
+<h2 id="framebuffer-coordinates"><a href="#framebuffer-coordinates">3.4 Framebuffer Coordinates</a></h2>
+<p><em>(OVL_UI_COOR)</em></p>
+<p>TODO</p>
 <p>Set to 0 (Overlay at X=0, Y=0)</p>
-</li>
-<li>
-<p>Set Framebuffer Attributes (OVL_UI_ATTR_CTL)</p>
+<h2 id="framebuffer-attributes"><a href="#framebuffer-attributes">3.5 Framebuffer Attributes</a></h2>
+<p><em>(OVL_UI_ATTR_CTL)</em></p>
+<p>TODO</p>
 <p>Global Alpha: LAY_GLBALPHA</p>
 <p>(Global Alpha Value is Opaque or Semi-Transparent)</p>
 <p>Pixel Format: LAY_FBFMT</p>
@@ -161,40 +174,38 @@ const planeInfo = c.fb_planeinfo_s {
 <p>(Global Alpha is mixed with Pixel Alpha)</p>
 <p>(Input Alpha Value = Global Alpha Value * Pixel’s Alpha Value)</p>
 <p>Enable Layer: LAY_EN</p>
-</li>
-<li>
-<p>Disable Scaler (UIS_CTRL_REG)</p>
-</li>
-</ol>
-<h1 id="configure-blender"><a href="#configure-blender">3 Configure Blender</a></h1>
+<h2 id="disable-scaler"><a href="#disable-scaler">3.6 Disable Scaler</a></h2>
+<p><em>(UIS_CTRL_REG)</em></p>
 <p>TODO</p>
-<p>Configure Blender Output (For Channel 1 Only)</p>
-<ol>
-<li>
-<p>Set Blender Output Size (BLD_SIZE, GLB_SIZE)</p>
+<h1 id="configure-blender-output"><a href="#configure-blender-output">4 Configure Blender Output</a></h1>
+<p>TODO</p>
+<h2 id="blender-output-size"><a href="#blender-output-size">4.1 Blender Output Size</a></h2>
+<p><em>(BLD_SIZE, GLB_SIZE)</em></p>
+<p>TODO</p>
+<p>(For Channel 1 Only)</p>
+<p>Set Blender Output Size</p>
 <p>Set to (height-1) &lt;&lt; 16 + (width-1)</p>
-</li>
-</ol>
-<p>Configure Blender Input</p>
-<ol>
-<li>
-<p>Set Blender Input Size (BLD_CH_ISIZE)</p>
+<h1 id="configure-blender-input"><a href="#configure-blender-input">5 Configure Blender Input</a></h1>
+<p>TODO</p>
+<h2 id="input-size"><a href="#input-size">5.1 Input Size</a></h2>
+<p><em>(BLD_CH_ISIZE)</em></p>
+<p>TODO</p>
 <p>Set to (height-1) &lt;&lt; 16 + (width-1)</p>
-</li>
-<li>
-<p>Set Blender Fill Color (BLD_FILL_COLOR)</p>
+<h2 id="fill-color"><a href="#fill-color">5.2 Fill Color</a></h2>
+<p><em>(BLD_FILL_COLOR)</em></p>
+<p>TODO</p>
 <p>Set to 0xFF00 0000 (Opaque Black)</p>
 <p>ALPHA (Bits 24 to 31) = 0xFF</p>
 <p>RED (Bits 16 to 23) = 0</p>
 <p>GREEN (Bits 8 to 15) = 0</p>
 <p>BLUE (Bits 0 to 7) = 0</p>
-</li>
-<li>
-<p>Set Blender Input Offset (BLD_CH_OFFSET)</p>
+<h2 id="input-offset"><a href="#input-offset">5.3 Input Offset</a></h2>
+<p><em>(BLD_CH_OFFSET)</em></p>
+<p>TODO</p>
 <p>Set to y_offset &lt;&lt; 16 + x_offset</p>
-</li>
-<li>
-<p>Set Blender Attributes (BLD_CTL)</p>
+<h2 id="blender-attributes"><a href="#blender-attributes">5.4 Blender Attributes</a></h2>
+<p><em>(BLD_CTL)</em></p>
+<p>TODO</p>
 <p>Set to 0x301 0301</p>
 <p>BLEND_AFD (Bits 24 to 27) = 3</p>
 <p>(Coefficient for destination alpha data Q[d] is 1-A[s])</p>
@@ -204,11 +215,9 @@ const planeInfo = c.fb_planeinfo_s {
 <p>(Coefficient for destination pixel data F[d] is 1-A[s])</p>
 <p>BLEND_PFS (Bits 0 to 3) = 1</p>
 <p>(Coefficient for source pixel data F[s] is 1)</p>
-</li>
-</ol>
-<h1 id="multiple-framebuffers"><a href="#multiple-framebuffers">4 Multiple Framebuffers</a></h1>
+<h1 id="multiple-framebuffers"><a href="#multiple-framebuffers">6 Multiple Framebuffers</a></h1>
 <p>TODO</p>
-<h1 id="whats-next"><a href="#whats-next">5 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>Today we’ve seen the Zig Internals of our new PinePhone Display Driver for Apache NuttX RTOS. I hope that coding the driver in Zig has made it a little easier to understand what’s inside.</p>
 <p>Some parts of the driver were simpler to code in Zig than in C. I’m glad I chose Zig for the driver!</p>
