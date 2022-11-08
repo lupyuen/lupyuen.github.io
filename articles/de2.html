@@ -78,24 +78,13 @@
 <p>To understand the internals of PinePhone, let’s build a <strong>Display Driver</strong> that will talk directly to PinePhone’s Display Hardware. (“Bare Metal”)</p>
 <p>We’ll do this with the <a href="https://ziglang.org/"><strong>Zig Programming Language</strong></a>, running on <a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a>.</p>
 <p><em>Why Zig? Why not C?</em></p>
-<p>TODO</p>
-<p><em>Why Apache NuttX RTOS on PinePhone?</em></p>
-<p>TODO</p>
-<p>How we render graphics directly to PinePhone’s Display Hardware… With Zig and Apache NuttX RTOS</p>
-<p>Today we shall create a <strong>PinePhone Display Driver in Zig</strong>… That will run on our fresh new port of  for PinePhone.</p>
-<p>If we’re not familiar with the : No worries! This article will explain the tricky Zig parts with C.</p>
-<p><em>Why build the Display Driver in Zig? Instead of C?</em></p>
-<p>Sadly some parts of PinePhone’s <a href="https://lupyuen.github.io/articles/dsi#sitronix-st7703-lcd-controller"><strong>ST7703 LCD Controller</strong></a> and <a href="https://lupyuen.github.io/articles/dsi#initialise-mipi-dsi"><strong>Allwinner A64 SoC</strong></a> are poorly documented. (Sigh)</p>
-<p>Thus we’re building a <strong>Quick Prototype</strong> in Zig to be sure we’re setting the Hardware Registers correctly.</p>
-<p>And while rushing through the reckless coding, it’s great to have Zig cover our backs and catch <a href="https://ziglang.org/documentation/master/#Undefined-Behavior"><strong>Common Runtime Problems</strong></a>.</p>
-<p>Like Null Pointers, Underflow, Overflow, Array Out Of Bounds, …</p>
-<p><em>Will our final driver be in Zig or C?</em></p>
-<p>Maybe Zig, maybe C?</p>
-<p>It’s awfully nice to use Zig to simplify the complicated driver code. Zig’s <a href="https://ziglang.org/documentation/master/#Undefined-Behavior"><strong>Runtime Safety Checks</strong></a> are extremely helpful too.</p>
-<p>But this driver goes into the <strong>NuttX RTOS Kernel</strong>. So most folks would expect the final driver to be delivered in C?</p>
-<p>In any case, Zig and C look highly similar. Converting the Zig Driver to C should be straightforward.</p>
-<p>(Minus the Runtime Safety Checks)</p>
-<p>Zig or C? Lemme know what you think! 🙏</p>
+<p>We could have done it in C… But Zig looks neater and more concise.</p>
+<p>(We’ll explain the tricky Zig parts with C)</p>
+<p>In future we might convert the Zig code to C, since Zig looks so similar to C.</p>
+<p><em>Why NuttX on PinePhone?</em></p>
+<p><a href="https://lupyuen.github.io/articles/uboot"><strong>Apache NuttX RTOS</strong></a> gives us <strong>direct access</strong> to PinePhone’s Hardware Registers, so nothing gets in our way. (Like Memory Protection)</p>
+<p>(We’ll boot NuttX RTOS on microSD, so it won’t affect the Linux Distro installed on PinePhone)</p>
+<p>The code from this article will someday become the PinePhone Display Driver for NuttX RTOS.</p>
 <p>Let’s continue the journey from our <strong>NuttX Porting Journal</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
