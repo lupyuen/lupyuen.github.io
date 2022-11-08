@@ -114,7 +114,25 @@ const planeInfo = c.fb_planeinfo_s {
     .yres_virtual = 1440,  // Virtual Vertical resolution in pixel rows
     .xoffset      = 0,     // Offset from virtual to visible resolution
     .yoffset      = 0,     // Offset from virtual to visible resolution
-};</code></pre></div><h1 id="configure-framebuffer"><a href="#configure-framebuffer">2 Configure Framebuffer</a></h1>
+};</code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L92-L107">render.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>    // Init Framebuffer 0:
+    // Fill with Blue, Green and Red
+    var i: usize = 0;
+    while (i &lt; fb0.len) : (i += 1) {
+        // Colours are in XRGB 8888 format
+        if (i &lt; fb0.len / 4) {
+            // Blue for top quarter
+            fb0[i] = 0x80000080;
+        } else if (i &lt; fb0.len / 2) {
+            // Green for next quarter
+            fb0[i] = 0x80008000;
+        } else {
+            // Red for lower half
+            fb0[i] = 0x80800000;
+        }
+    }</code></pre></div><h1 id="configure-framebuffer"><a href="#configure-framebuffer">2 Configure Framebuffer</a></h1>
 <p>TODO</p>
 <ol>
 <li>
