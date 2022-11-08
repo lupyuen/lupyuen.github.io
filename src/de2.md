@@ -123,6 +123,30 @@ TODO
 
 Set to Framebuffer Address: fb0, fb1 or fb2
 
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L511-L517)
+
+```zig
+// OVL_UI_TOP_LADD (UI Overlay Top Field Memory Block Low Address) at OVL_UI Offset 0x10
+// Set to Framebuffer Address: fb0, fb1 or fb2
+// (DE Page 104)
+
+const ptr = @ptrToInt(fbmem.?);
+const OVL_UI_TOP_LADD = OVL_UI_BASE_ADDRESS + 0x10;
+putreg32(@intCast(u32, ptr), OVL_UI_TOP_LADD);
+```
+
+TODO
+
+```zig
+comptime{ 
+  assert(
+    OVL_UI_TOP_LADD == 0x110_3010 
+    or OVL_UI_TOP_LADD == 0x110_4010 
+    or OVL_UI_TOP_LADD == 0x110_5010
+  );
+}
+```
+
 ## Framebuffer Pitch
 
 _(OVL_UI_PITCH)_
