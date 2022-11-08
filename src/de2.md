@@ -109,6 +109,8 @@ TODO
     }
 ```
 
+[(Alternatively: Zig __`for`__ loops lets us iterate over arrays)](https://zig-by-example.com/for)
+
 # Configure Framebuffer
 
 TODO
