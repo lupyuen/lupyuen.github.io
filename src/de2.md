@@ -51,6 +51,18 @@ Let's continue the journey from our __NuttX Porting Journal__...
 
 TODO
 
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L709-L712)
+
+```zig
+// Framebuffer 0: (Base UI Channel)
+// Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
+var fb0 = std.mem.zeroes([720 * 1440] u32);
+```
+
+(Each pixel is __`u32`__, equivalent to __`uint32_t`__ in C)
+
+[__`std.mem.zeroes`__](https://ziglang.org/documentation/master/std/#root;mem.zeroes) allocates an array of 720 x 1440 pixels, filled with zeroes.
+
 [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L652-L659)
 
 ```zig
