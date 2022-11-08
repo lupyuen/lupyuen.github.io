@@ -16,9 +16,24 @@ _Why Zig? Why not C?_
 
 We could have done it in C... But our driver code in Zig looks neater, more concise and (hopefully) easier to understand.
 
-(We'll explain the tricky Zig parts with C)
+So instead of writing this in C...
+
+```c
+// In C: Get the framebuffer length
+int len = sizeof(framebuffer)
+  / sizeof(framebuffer[0]);
+```
+
+We use the shorter form in Zig...
+
+```zig
+// In Zig: Get the framebuffer length
+const len = framebuffer.len;
+```
 
 Zig looks highly similar to C. If we ever need to convert the driver code to C... Easy peasy!
+
+(In this article we'll explain the tricky Zig parts with C)
 
 _Why NuttX on PinePhone?_
 
