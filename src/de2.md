@@ -69,6 +69,29 @@ const planeInfo = c.fb_planeinfo_s {
 };
 ```
 
+TODO
+
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L92-L107)
+
+```zig
+    // Init Framebuffer 0:
+    // Fill with Blue, Green and Red
+    var i: usize = 0;
+    while (i < fb0.len) : (i += 1) {
+        // Colours are in XRGB 8888 format
+        if (i < fb0.len / 4) {
+            // Blue for top quarter
+            fb0[i] = 0x80000080;
+        } else if (i < fb0.len / 2) {
+            // Green for next quarter
+            fb0[i] = 0x80008000;
+        } else {
+            // Red for lower half
+            fb0[i] = 0x80800000;
+        }
+    }
+```
+
 # Configure Framebuffer
 
 TODO
