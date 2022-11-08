@@ -39,7 +39,7 @@ _Why NuttX on PinePhone?_
 
 [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot) gives us __direct access__ to PinePhone's Hardware Registers, so nothing gets in our way. (Like Memory Protection)
 
-(We'll boot NuttX RTOS on microSD, so it won't affect the Linux Distro installed on PinePhone)
+(NuttX boots from microSD, so it won't affect the Linux Distro installed on PinePhone)
 
 The code from this article will someday become the PinePhone Display Driver for NuttX RTOS.
 
