@@ -134,9 +134,7 @@ var fb0 = std.mem.zeroes(  // Init to zeroes...
 </li>
 </ul>
 <p>So <strong><code>0x8080</code> <code>0000</code></strong> is Semi-Transparent Red. (Alpha: <code>0x80</code>, Red: <code>0x80</code>)</p>
-<p>Let’s describe the Framebuffer…</p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L661-L673">render.zig</a></p>
+<p>Let’s describe the Framebuffer with a NuttX Struct: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L661-L673">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// NuttX Color Plane for PinePhone (Base UI Channel):
 /// Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
 const planeInfo = c.fb_planeinfo_s {
@@ -151,28 +149,46 @@ const planeInfo = c.fb_planeinfo_s {
   .yoffset      = 0,     // Offset from virtual to visible resolution
 };</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L314-L331">(<strong><code>fb_planeinfo_s</code></strong> is defined here)</a></p>
+<p>Later we’ll use these values to render the Framebuffer. First we paint some colours…</p>
+<p><img src="https://lupyuen.github.io/images/de-rgb.jpg" alt="Blue, Green, Red Blocks on PinePhone" /></p>
 <h1 id="fill-framebuffer"><a href="#fill-framebuffer">2 Fill Framebuffer</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L92-L107">render.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>// Init Framebuffer 0:
-// Fill with Blue, Green and Red
-var i: usize = 0;
+<p>This is how we <strong>fill the Framebuffer</strong> with Blue, Green and Red (pic above): <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L92-L107">render.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// Fill Framebuffer with Blue, Green and Red
+var i: usize = 0;  // usize is similar to size_t
 while (i &lt; fb0.len) : (i += 1) {
+
   // Colours are in XRGB 8888 format
   if (i &lt; fb0.len / 4) {
     // Blue for top quarter
-    fb0[i] = 0x80000080;
+    fb0[i] = 0x8000_0080;
   } else if (i &lt; fb0.len / 2) {
     // Green for next quarter
-    fb0[i] = 0x80008000;
+    fb0[i] = 0x8000_8000;
   } else {
     // Red for lower half
-    fb0[i] = 0x80800000;
+    fb0[i] = 0x8080_0000;
   }
 }</code></pre></div>
-<p>(Yeah Zig’s <strong><code>while</code></strong> loop looks rather odd, but there’s a simpler way to iterate over arrays: <a href="https://zig-by-example.com/for"><strong><code>for</code> loop</strong></a>)</p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L652-L659">render.zig</a></p>
+<p>(Yeah Zig’s <a href="https://zig-by-example.com/while"><strong><code>while</code> loop</strong></a> looks rather odd, but there’s a simpler way to iterate over arrays: <a href="https://zig-by-example.com/for"><strong><code>for</code> loop</strong></a>)</p>
+<p>Remember that pixels are in 32-bit <strong>ARGB 8888</strong> format. So <strong><code>0x8080</code></strong> <strong><code>0000</code></strong> means…</p>
+<ul>
+<li>
+<p><strong>Alpha</strong> (8 bits): <code>0x80</code></p>
+</li>
+<li>
+<p><strong>Red</strong> (8 bits): <code>0x80</code></p>
+</li>
+<li>
+<p><strong>Green</strong> (8 bits): <code>0x00</code></p>
+</li>
+<li>
+<p><strong>Blue</strong> (8 bits): <code>0x00</code></p>
+</li>
+</ul>
+<p>(Or Semi-Transparent Red)</p>
+<p>We’re now ready to render our Framebuffer!</p>
+<p><em>Does PinePhone support multiple Framebuffers?</em></p>
+<p>Yep PinePhone supports <strong>3 Framebuffers</strong>: One Base Framebuffer plus 2 Overlay Framebuffers: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L652-L659">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// NuttX Video Controller for PinePhone (3 UI Channels)
 const videoInfo = c.fb_videoinfo_s {
   .fmt       = c.FB_FMT_RGBA32,  // Pixel format (XRGB 8888)
@@ -182,7 +198,9 @@ const videoInfo = c.fb_videoinfo_s {
   .noverlays = 2,     // Number of overlays supported (2 Overlay UI Channels)
 };</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L299-L313">(<strong><code>fb_videoinfo_s</code></strong> is defined here)</a></p>
+<p>We’ll test the Overlay Framebuffers later.</p>
 <h1 id="configure-framebuffer"><a href="#configure-framebuffer">3 Configure Framebuffer</a></h1>
+<p><em>How do we render the Framebuffer on PinePhone?</em></p>
 <p>TODO</p>
 <h2 id="framebuffer-address"><a href="#framebuffer-address">3.1 Framebuffer Address</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_TOP_LADD</strong>, Page 104)</a></p>
