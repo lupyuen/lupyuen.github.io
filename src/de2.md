@@ -94,7 +94,7 @@ const planeInfo = c.fb_planeinfo_s {
 };
 ```
 
-[(__`fb_planeinfo_s`__ is defined here)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L314-L331)
+[(__`fb_planeinfo_s`__ comes from NuttX RTOS)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L314-L331)
 
 Later we'll pass the above values to render the Framebuffer: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L143-L153)
 
@@ -170,7 +170,7 @@ const videoInfo = c.fb_videoinfo_s {
 };
 ```
 
-[(__`fb_videoinfo_s`__ is defined here)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L299-L313)
+[(__`fb_videoinfo_s`__ comes from NuttX RTOS)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L299-L313)
 
 We'll test the Overlay Framebuffers later.
 
@@ -319,6 +319,24 @@ putreg32(              // Write to Hardware Register...
   OVL_UI_TOP_LADD      // Address
 );
 ```
+
+(Recall that __`fbmem`__ is the Address of __`fb0`__)
+
+For our safety, Zig gets strict about __Null Values__ and __Range Checking__...
+
+-   [__`fbmem.?`__](https://ziglang.org/documentation/master/#Optional-Pointers) returns the non-null value of `fbmem`
+
+    (It halts with a Runtime Panic if null)
+
+-   [__`@ptrToInt`__](https://ziglang.org/documentation/master/#ptrToInt) converts `fbmem` from 64-bit Pointer to 64-bit Integer
+
+-   [__`@intCast`__](https://ziglang.org/documentation/master/#intCast) converts the 64-bit Integer to 32-bit
+
+    (It halts if it won't fit)
+
+-   [__`putreg32`__](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L1052-L1057) writes the 32-bit Integer to the Address of the Hardware Register
+
+    [(As defined here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L1052-L1057)
 
 TODO
 
