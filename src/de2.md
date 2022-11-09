@@ -331,9 +331,8 @@ TODO
 comptime { 
   // Halt during compilation if verification fails
   assert(
-    OVL_UI_TOP_LADD == 0x110_3010     // For Channel 1
-    or OVL_UI_TOP_LADD == 0x110_4010  // For Channel 2
-    or OVL_UI_TOP_LADD == 0x110_5010  // For Channel 3
+    // Register Address for Channel 1
+    OVL_UI_TOP_LADD == 0x110_3010
   );
 }
 ```
@@ -344,11 +343,21 @@ TODO
 
 ```zig
 // OVL_UI(CH1) (UI Overlay 1) is at MIXER0 Offset 0x3000
-// OVL_UI(CH2) (UI Overlay 2) is at MIXER0 Offset 0x4000
-// OVL_UI(CH3) (UI Overlay 3) is at MIXER0 Offset 0x5000
-// (DE Page 102, 0x110 3000 / 0x110 4000 / 0x110 5000)
+// (DE Page 102, 0x110 3000)
 const OVL_UI_BASE_ADDRESS = OVL_UI_CH1_BASE_ADDRESS
   + @intCast(u64, channel - 1) * 0x1000;
+
+// OVL_UI(CH1) (UI Overlay 1) is at MIXER0 Offset 0x3000
+// (DE Page 102, 0x110 3000)
+const OVL_UI_CH1_BASE_ADDRESS = MIXER0_BASE_ADDRESS + 0x3000;
+
+// MIXER0 is at DE Offset 0x10 0000
+// (DE Page 24, 0x110 0000)
+const MIXER0_BASE_ADDRESS = DISPLAY_ENGINE_BASE_ADDRESS + 0x10_0000;
+
+// Display Engine Base Address is 0x0100 0000
+// (DE Page 24)
+const DISPLAY_ENGINE_BASE_ADDRESS = 0x0100_0000;
 ```
 
 ## Framebuffer Pitch
