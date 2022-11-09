@@ -76,11 +76,7 @@ Each pixel has the format __ARGB 8888__ (32 bits)...
 
 So __`0x8080` `0000`__ is Semi-Transparent Red. (Alpha: `0x80`, Red: `0x80`)
 
-Let's describe the Framebuffer...
-
-TODO
-
-[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L661-L673)
+Let's describe the Framebuffer with a NuttX Struct: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L661-L673)
 
 ```zig
 /// NuttX Color Plane for PinePhone (Base UI Channel):
@@ -100,36 +96,52 @@ const planeInfo = c.fb_planeinfo_s {
 
 [(__`fb_planeinfo_s`__ is defined here)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L314-L331)
 
+Later we'll use these values to render the Framebuffer. First we paint some colours...
+
+![Blue, Green, Red Blocks on PinePhone](https://lupyuen.github.io/images/de-rgb.jpg)
+
 # Fill Framebuffer
 
-TODO
-
-[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L92-L107)
+This is how we __fill the Framebuffer__ with Blue, Green and Red (pic above): [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L92-L107)
 
 ```zig
-// Init Framebuffer 0:
-// Fill with Blue, Green and Red
-var i: usize = 0;
+// Fill Framebuffer with Blue, Green and Red
+var i: usize = 0;  // usize is similar to size_t
 while (i < fb0.len) : (i += 1) {
+
   // Colours are in XRGB 8888 format
   if (i < fb0.len / 4) {
     // Blue for top quarter
-    fb0[i] = 0x80000080;
+    fb0[i] = 0x8000_0080;
   } else if (i < fb0.len / 2) {
     // Green for next quarter
-    fb0[i] = 0x80008000;
+    fb0[i] = 0x8000_8000;
   } else {
     // Red for lower half
-    fb0[i] = 0x80800000;
+    fb0[i] = 0x8080_0000;
   }
 }
 ```
 
-(Yeah Zig's __`while`__ loop looks rather odd, but there's a simpler way to iterate over arrays: [__`for` loop__](https://zig-by-example.com/for))
+(Yeah Zig's [__`while` loop__](https://zig-by-example.com/while) looks rather odd, but there's a simpler way to iterate over arrays: [__`for` loop__](https://zig-by-example.com/for))
 
-TODO
+Remember that pixels are in 32-bit __ARGB 8888__ format. So __`0x8080`__ __`0000`__ means...
 
-[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L652-L659)
+-   __Alpha__ (8 bits): `0x80`
+
+-   __Red__ (8 bits): `0x80`
+
+-   __Green__ (8 bits): `0x00`
+
+-   __Blue__ (8 bits): `0x00`
+
+(Or Semi-Transparent Red)
+
+We're now ready to render our Framebuffer!
+
+_Does PinePhone support multiple Framebuffers?_
+
+Yep PinePhone supports __3 Framebuffers__: One Base Framebuffer plus 2 Overlay Framebuffers: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L652-L659)
 
 ```zig
 /// NuttX Video Controller for PinePhone (3 UI Channels)
@@ -144,7 +156,11 @@ const videoInfo = c.fb_videoinfo_s {
 
 [(__`fb_videoinfo_s`__ is defined here)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L299-L313)
 
+We'll test the Overlay Framebuffers later.
+
 # Configure Framebuffer
+
+_How do we render the Framebuffer on PinePhone?_
 
 TODO
 
