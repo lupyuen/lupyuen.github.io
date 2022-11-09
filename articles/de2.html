@@ -148,7 +148,7 @@ const planeInfo = c.fb_planeinfo_s {
   .xoffset      = 0,     // Offset from virtual to visible resolution
   .yoffset      = 0,     // Offset from virtual to visible resolution
 };</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L314-L331">(<strong><code>fb_planeinfo_s</code></strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L314-L331">(<strong><code>fb_planeinfo_s</code></strong> comes from NuttX RTOS)</a></p>
 <p>Later we’ll pass the above values to render the Framebuffer: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L143-L153">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Init the Base UI Channel with the Framebuffer
 initUiChannel(
@@ -209,7 +209,7 @@ const videoInfo = c.fb_videoinfo_s {
   .nplanes   = 1,     // Number of color planes supported (Base UI Channel)
   .noverlays = 2,     // Number of overlays supported (2 Overlay UI Channels)
 };</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L299-L313">(<strong><code>fb_videoinfo_s</code></strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L299-L313">(<strong><code>fb_videoinfo_s</code></strong> comes from NuttX RTOS)</a></p>
 <p>We’ll test the Overlay Framebuffers later.</p>
 <h1 id="configure-framebuffer"><a href="#configure-framebuffer">3 Configure Framebuffer</a></h1>
 <p><em>How do we render the Framebuffer on PinePhone?</em></p>
@@ -336,6 +336,25 @@ putreg32(              // Write to Hardware Register...
   @intCast(u32, ptr),  // Value
   OVL_UI_TOP_LADD      // Address
 );</code></pre></div>
+<p>(Recall that <strong><code>fbmem</code></strong> is the Address of <strong><code>fb0</code></strong>)</p>
+<p>For our safety, Zig gets strict about <strong>Null Values</strong> and <strong>Range Checking</strong>…</p>
+<ul>
+<li>
+<p><a href="https://ziglang.org/documentation/master/#Optional-Pointers"><strong><code>fbmem.?</code></strong></a> returns the non-null value of <code>fbmem</code></p>
+<p>(It halts with a Runtime Panic if null)</p>
+</li>
+<li>
+<p><a href="https://ziglang.org/documentation/master/#ptrToInt"><strong><code>@ptrToInt</code></strong></a> converts <code>fbmem</code> from 64-bit Pointer to 64-bit Integer</p>
+</li>
+<li>
+<p><a href="https://ziglang.org/documentation/master/#intCast"><strong><code>@intCast</code></strong></a> converts the 64-bit Integer to 32-bit</p>
+<p>(It halts if it won’t fit)</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L1052-L1057"><strong><code>putreg32</code></strong></a> writes the 32-bit Integer to the Address of the Hardware Register</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L1052-L1057">(As defined here)</a></p>
+</li>
+</ul>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Verify Register Address at Compile-Time
 comptime { 
