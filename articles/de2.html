@@ -111,14 +111,29 @@ const len = framebuffer.len;</code></pre></div>
 </ul>
 <p><img src="https://lupyuen.github.io/images/de2-fb.jpg" alt="PinePhone Framebuffer" /></p>
 <h1 id="graphics-framebuffer"><a href="#graphics-framebuffer">1 Graphics Framebuffer</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L709-L712">render.zig</a></p>
+<p>We begin with a <strong>Graphics Framebuffer</strong> that we’ll render on PinePhone’s 720 x 1440 display (pic above): <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L709-L712">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Framebuffer of 720 x 1440 pixels
 var fb0 = std.mem.zeroes(  // Init to zeroes...
   [720 * 1440] u32         // 720 x 1440 pixels
 );                         // (4 bytes per pixel)</code></pre></div>
-<p>(Each pixel is <strong><code>u32</code></strong>, equivalent to <strong><code>uint32_t</code></strong> in C)</p>
+<p>Each pixel is <strong><code>u32</code></strong>, equivalent to <strong><code>uint32_t</code></strong> in C.</p>
 <p><a href="https://ziglang.org/documentation/master/std/#root;mem.zeroes"><strong><code>std.mem.zeroes</code></strong></a> allocates an array of 720 x 1440 pixels, filled with zeroes.</p>
+<p>Each pixel has the format <strong>ARGB 8888</strong> (32 bits)…</p>
+<ul>
+<li>
+<p><strong>Alpha:</strong> 8 bits</p>
+</li>
+<li>
+<p><strong>Red:</strong> 8 bits</p>
+</li>
+<li>
+<p><strong>Green:</strong> 8 bits</p>
+</li>
+<li>
+<p><strong>Blue:</strong> 8 bits</p>
+</li>
+</ul>
+<p>So <strong><code>0x8080</code> <code>0000</code></strong> is Semi-Transparent Red. (Alpha: <code>0x80</code>, Red: <code>0x80</code>)</p>
 <p>Let’s describe the Framebuffer…</p>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L661-L673">render.zig</a></p>
