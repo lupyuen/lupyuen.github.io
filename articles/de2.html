@@ -307,20 +307,22 @@ fn initUiChannel(
 <p>(Framebuffer Y Offset)</p>
 </li>
 </ul>
-<p>We’ll explain <strong><code>comptime</code></strong> in a while.</p>
 <p><em>Why is the Framebuffer Address declared as “<code>?*anyopaque</code>”?</em></p>
 <p>That’s because…</p>
 <ul>
 <li>
-<p>“<strong><code>*anyopaque</code></strong>” is similar to “<strong><code>void *</code></strong>” in C</p>
+<p>“<strong><code>*anyopaque</code></strong>” is similar to “<strong><code>void *</code></strong>” in C (non-null)</p>
 </li>
 <li>
 <p>“<strong><code>?*anyopaque</code></strong>” is the same, except that <strong>null values</strong> are allowed</p>
 </li>
 </ul>
 <p>So the Framebuffer Address can be null.</p>
-<p>(To disable the Overlay Framebuffers)</p>
-<p>Let’s look inside our function <strong><code>initUiChannel</code></strong></p>
+<p>(Which will disable the Overlay Framebuffers)</p>
+<p><em>What’s <code>comptime</code>?</em></p>
+<p><a href="https://ziglang.org/documentation/master/#comptime"><strong><code>comptime</code></strong></a> substitutes the Parameter Values at <strong>Compile-Time</strong>. (Instead of Runtime)</p>
+<p>We’ll explain why in a while.</p>
+<p>Let’s look inside our function <strong><code>initUiChannel</code></strong>…</p>
 <h2 id="framebuffer-address"><a href="#framebuffer-address">3.1 Framebuffer Address</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_TOP_LADD</strong>, Page 104)</a></p>
 <p>The first Hardware Register we’ll set is the <strong>Framebuffer Address</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L511-L517">render.zig</a></p>
@@ -387,7 +389,8 @@ comptime {
   );
 }</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#comptime"><strong><code>comptime</code></strong></a> means that the Assertion Check is performed by the Zig Compiler at <strong>Compile-Time</strong>. (Instead of Runtime)</p>
-<p>This verification is super helpful as we create the new Display Driver for PinePhone. (Works like an <strong>“Executable Specification”</strong> of PinePhone’s Hardware)</p>
+<p>This verification is super helpful as we create the new Display Driver for PinePhone.</p>
+<p>(Works like an <a href="https://qoto.org/@lupyuen/109306036122238530"><strong>“Executable Specification”</strong></a> of PinePhone’s Hardware)</p>
 <h2 id="framebuffer-pitch"><a href="#framebuffer-pitch">3.2 Framebuffer Pitch</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_PITCH</strong>, Page 104)</a></p>
 <p>TODO</p>
