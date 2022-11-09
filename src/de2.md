@@ -303,11 +303,7 @@ Let's look inside our function __`initUiChannel`__
 
 [(__OVL_UI_TOP_LADD__, Page 104)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-TODO
-
-Set to Framebuffer Address: fb0, fb1 or fb2
-
-[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L511-L517)
+The first Hardware Register we'll set is the __Framebuffer Address__: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L511-L517)
 
 ```zig
 // OVL_UI_TOP_LADD (UI Overlay Top Field Memory Block Low Address)
