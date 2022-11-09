@@ -201,7 +201,34 @@ const videoInfo = c.fb_videoinfo_s {
 <p>We’ll test the Overlay Framebuffers later.</p>
 <h1 id="configure-framebuffer"><a href="#configure-framebuffer">3 Configure Framebuffer</a></h1>
 <p><em>How do we render the Framebuffer on PinePhone?</em></p>
+<p>Remember that we’re talking directly to PinePhone’s <strong>Display Hardware</strong> (“Bare Metal”), without any Display Driver. So this part might sound a little more complicated than we expect…</p>
 <p>TODO</p>
+<ol>
+<li>
+<p>Set <strong>Framebuffer Address</strong></p>
+<p>(For DMA: Direct Memmory Access)</p>
+</li>
+<li>
+<p>Set <strong>Framebuffer Pitch</strong></p>
+<p>(Number of bytes per row)</p>
+</li>
+<li>
+<p>Set <strong>Framebuffer Size</strong></p>
+<p>(Width and Height)</p>
+</li>
+<li>
+<p>Set <strong>Framebuffer Coordinates</strong></p>
+<p>(X and Y Offsets)</p>
+</li>
+<li>
+<p>Set <strong>Framebuffer Attributes</strong></p>
+<p>(Global Alpha Values)</p>
+</li>
+<li>
+<p>Disable <strong>Framebuffer Scaler</strong></p>
+<p>(Because we’re not scaling the Framebuffer)</p>
+</li>
+</ol>
 <h2 id="framebuffer-address"><a href="#framebuffer-address">3.1 Framebuffer Address</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_TOP_LADD</strong>, Page 104)</a></p>
 <p>TODO</p>
