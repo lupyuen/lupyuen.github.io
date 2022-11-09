@@ -99,7 +99,7 @@ const planeInfo = c.fb_planeinfo_s {
 Later we'll pass the above values to render the Framebuffer: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L143-L153)
 
 ```zig
-// Init the Base UI Channel
+// Init the Base UI Channel with the Framebuffer
 initUiChannel(
   1,  // UI Channel Number (1 for Base UI Channel)
   planeInfo.fbmem,    // Start of frame buffer memory
@@ -210,9 +210,27 @@ In a while we'll do the following through the Hardware Registers...
 
 This sounds really low level... But hopefully we'll learn more about PinePhone's Internals!
 
-TODO: initUiChannel
+_How do we get the above Framebuffer values?_
 
-[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L406-L418)
+Our program calls __`initUiChannel`__, passing the Framebuffer Settings: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L143-L153)
+
+```zig
+// Init the Base UI Channel with the Framebuffer
+initUiChannel(
+  1,  // UI Channel Number (1 for Base UI Channel)
+  planeInfo.fbmem,    // Start of frame buffer memory
+  planeInfo.fblen,    // Length of frame buffer memory in bytes
+  planeInfo.stride,   // Length of a line in bytes (4 bytes per pixel)
+  planeInfo.xres_virtual,  // Horizontal resolution in pixel columns
+  planeInfo.yres_virtual,  // Vertical resolution in pixel rows
+  planeInfo.xoffset,  // Horizontal offset in pixel columns
+  planeInfo.yoffset,  // Vertical offset in pixel rows
+);
+```
+
+[(We've seen __`planeInfo`__ earlier)](https://lupyuen.github.io/articles/de2#graphics-framebuffer)
+
+Our function __`initUiChannel`__ is defined in [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L406-L418)
 
 ```zig
 /// Initialise a UI Channel for PinePhone's A64 Display Engine.
@@ -230,6 +248,42 @@ fn initUiChannel(
 ) void {
     ...
 ```
+
+Which means...
+
+TODO
+
+-   channel is 10
+    
+    u8,   // UI Channel Number: 1, 2 or 3
+
+-   fbmem is fb0
+
+    (Framebuffer Address)
+
+    : ?*anyopaque,     // Start of frame buffer memory, or null if this channel should be disabled
+
+-   fblen is 720 * 1280 * 4
+
+    (Framebuffer Size in Bytes)
+
+-   stride:  c.fb_coord_t,  // 
+
+    Length of a line in bytes (4 bytes per pixel)
+
+-   xres:    c.fb_coord_t,  // 
+
+    (Framebuffer Width)
+
+-   yres:    c.fb_coord_t,  // 
+
+    (Framebuffer Height)
+
+    Vertical resolution in pixel rows
+
+-   xoffset: c.fb_coord_t,  // Horizontal offset in pixel columns
+
+-   yoffset: c.fb_coord_t,  // Vertical offset in pixel rows
 
 ## Framebuffer Address
 
