@@ -96,7 +96,23 @@ const planeInfo = c.fb_planeinfo_s {
 
 [(__`fb_planeinfo_s`__ is defined here)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L314-L331)
 
-Later we'll use these values to render the Framebuffer. First we paint some colours...
+Later we'll pass the above values to render the Framebuffer: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L143-L153)
+
+```zig
+// Init the Base UI Channel
+initUiChannel(
+  1,  // UI Channel Number (1 for Base UI Channel)
+  planeInfo.fbmem,    // Start of frame buffer memory
+  planeInfo.fblen,    // Length of frame buffer memory in bytes
+  planeInfo.stride,   // Length of a line in bytes (4 bytes per pixel)
+  planeInfo.xres_virtual,  // Horizontal resolution in pixel columns
+  planeInfo.yres_virtual,  // Vertical resolution in pixel rows
+  planeInfo.xoffset,  // Horizontal offset in pixel columns
+  planeInfo.yoffset,  // Vertical offset in pixel rows
+);
+```
+
+First we paint some colours...
 
 ![Blue, Green, Red Blocks on PinePhone](https://lupyuen.github.io/images/de-rgb.jpg)
 
@@ -193,6 +209,27 @@ In a while we'll do the following through the Hardware Registers...
     (Because we're not scaling the graphics)
 
 This sounds really low level... But hopefully we'll learn more about PinePhone's Internals!
+
+TODO: initUiChannel
+
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L406-L418)
+
+```zig
+/// Initialise a UI Channel for PinePhone's A64 Display Engine.
+/// We use 3 UI Channels: Base UI Channel (#1) plus 2 Overlay UI Channels (#2, #3).
+/// See https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine
+fn initUiChannel(
+  comptime channel: u8,   // UI Channel Number: 1, 2 or 3
+  fbmem: ?*anyopaque,     // Start of frame buffer memory, or null if this channel should be disabled
+  comptime fblen: usize,           // Length of frame buffer memory in bytes
+  comptime stride:  c.fb_coord_t,  // Length of a line in bytes (4 bytes per pixel)
+  comptime xres:    c.fb_coord_t,  // Horizontal resolution in pixel columns
+  comptime yres:    c.fb_coord_t,  // Vertical resolution in pixel rows
+  comptime xoffset: c.fb_coord_t,  // Horizontal offset in pixel columns
+  comptime yoffset: c.fb_coord_t,  // Vertical offset in pixel rows
+) void {
+    ...
+```
 
 ## Framebuffer Address
 
