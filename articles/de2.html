@@ -323,9 +323,7 @@ fn initUiChannel(
 <p>Let’s look inside our function <strong><code>initUiChannel</code></strong></p>
 <h2 id="framebuffer-address"><a href="#framebuffer-address">3.1 Framebuffer Address</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_TOP_LADD</strong>, Page 104)</a></p>
-<p>TODO</p>
-<p>Set to Framebuffer Address: fb0, fb1 or fb2</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L511-L517">render.zig</a></p>
+<p>The first Hardware Register we’ll set is the <strong>Framebuffer Address</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L511-L517">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// OVL_UI_TOP_LADD (UI Overlay Top Field Memory Block Low Address)
 // At OVL_UI Offset 0x10
 // Set to Framebuffer Address fb0
