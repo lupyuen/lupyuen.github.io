@@ -164,11 +164,13 @@ _How do we render the Framebuffer on PinePhone?_
 
 Remember that we're talking directly to PinePhone's __Display Hardware__ ("Bare Metal"), without any Display Driver. So this part might sound a little more complicated than we expect...
 
-TODO
+To control PinePhone's Display Hardware, we'll set the Hardware Registers for the [__Allwinner A64 Display Engine__](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf) inside PinePhone.
+
+In a while we'll do the following through the Hardware Registers...
 
 1.  Set __Framebuffer Address__
 
-    (For DMA: Direct Memmory Access)
+    (To activate DMA: Direct Memory Access)
 
 1.  Set __Framebuffer Pitch__
 
@@ -188,7 +190,9 @@ TODO
 
 1.  Disable __Framebuffer Scaler__
 
-    (Because we're not scaling the Framebuffer)
+    (Because we're not scaling the graphics)
+
+This sounds really low level... But hopefully we'll learn more about PinePhone's Internals!
 
 ## Framebuffer Address
 
