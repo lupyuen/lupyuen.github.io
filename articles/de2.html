@@ -96,7 +96,7 @@
 <div class="example-wrap"><pre class="language-c"><code>// In C: Get the framebuffer length
 int len = sizeof(framebuffer)
   / sizeof(framebuffer[0]);</code></pre></div>
-<p>We use the shorter form in Zig…</p>
+<p>We use the shorter readable form in Zig…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// In Zig: Get the framebuffer length
 const len = framebuffer.len;</code></pre></div>
 <p>Zig looks highly similar to C. If we ever need to convert the driver code to C… Easy peasy!</p>
@@ -135,17 +135,6 @@ const planeInfo = c.fb_planeinfo_s {
   .yoffset      = 0,     // Offset from virtual to visible resolution
 };</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L314-L331">(<strong><code>fb_planeinfo_s</code></strong> is defined here)</a></p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L652-L659">render.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// NuttX Video Controller for PinePhone (3 UI Channels)
-const videoInfo = c.fb_videoinfo_s {
-  .fmt       = c.FB_FMT_RGBA32,  // Pixel format (XRGB 8888)
-  .xres      = 720,   // Horizontal resolution in pixel columns
-  .yres      = 1440,  // Vertical resolution in pixel rows
-  .nplanes   = 1,     // Number of color planes supported (Base UI Channel)
-  .noverlays = 2,     // Number of overlays supported (2 Overlay UI Channels)
-};</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L299-L313">(<strong><code>fb_videoinfo_s</code></strong> is defined here)</a></p>
 <h1 id="fill-framebuffer"><a href="#fill-framebuffer">2 Fill Framebuffer</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L92-L107">render.zig</a></p>
@@ -166,6 +155,17 @@ while (i &lt; fb0.len) : (i += 1) {
   }
 }</code></pre></div>
 <p>(Yeah Zig’s <strong><code>while</code></strong> loop looks rather odd, but there’s a simpler way to iterate over arrays: <a href="https://zig-by-example.com/for"><strong><code>for</code> loop</strong></a>)</p>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L652-L659">render.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// NuttX Video Controller for PinePhone (3 UI Channels)
+const videoInfo = c.fb_videoinfo_s {
+  .fmt       = c.FB_FMT_RGBA32,  // Pixel format (XRGB 8888)
+  .xres      = 720,   // Horizontal resolution in pixel columns
+  .yres      = 1440,  // Vertical resolution in pixel rows
+  .nplanes   = 1,     // Number of color planes supported (Base UI Channel)
+  .noverlays = 2,     // Number of overlays supported (2 Overlay UI Channels)
+};</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L299-L313">(<strong><code>fb_videoinfo_s</code></strong> is defined here)</a></p>
 <h1 id="configure-framebuffer"><a href="#configure-framebuffer">3 Configure Framebuffer</a></h1>
 <p>TODO</p>
 <h2 id="framebuffer-address"><a href="#framebuffer-address">3.1 Framebuffer Address</a></h2>
