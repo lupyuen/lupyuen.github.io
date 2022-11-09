@@ -283,21 +283,25 @@ Which means that our function __`initUiChannel`__ will receive the following val
 
     (Framebuffer Y Offset)
 
-We'll explain __`comptime`__ in a while.
-
 _Why is the Framebuffer Address declared as "`?*anyopaque`"?_
 
 That's because...
 
--   "__`*anyopaque`__" is similar to "__`void *`__" in C
+-   "__`*anyopaque`__" is similar to "__`void *`__" in C (non-null)
 
 -   "__`?*anyopaque`__" is the same, except that __null values__ are allowed
 
 So the Framebuffer Address can be null.
 
-(To disable the Overlay Framebuffers)
+(Which will disable the Overlay Framebuffers)
 
-Let's look inside our function __`initUiChannel`__
+_What's `comptime`?_
+
+[__`comptime`__](https://ziglang.org/documentation/master/#comptime) substitutes the Parameter Values at __Compile-Time__. (Instead of Runtime)
+
+We'll explain why in a while.
+
+Let's look inside our function __`initUiChannel`__...
 
 ## Framebuffer Address
 
@@ -383,7 +387,9 @@ comptime {
 
 [__`comptime`__](https://ziglang.org/documentation/master/#comptime) means that the Assertion Check is performed by the Zig Compiler at __Compile-Time__. (Instead of Runtime)
 
-This verification is super helpful as we create the new Display Driver for PinePhone. (Works like an __"Executable Specification"__ of PinePhone's Hardware)
+This verification is super helpful as we create the new Display Driver for PinePhone.
+
+(Works like an [__"Executable Specification"__](https://qoto.org/@lupyuen/109306036122238530) of PinePhone's Hardware)
 
 ## Framebuffer Pitch
 
