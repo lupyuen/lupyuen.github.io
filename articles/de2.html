@@ -149,7 +149,19 @@ const planeInfo = c.fb_planeinfo_s {
   .yoffset      = 0,     // Offset from virtual to visible resolution
 };</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L314-L331">(<strong><code>fb_planeinfo_s</code></strong> is defined here)</a></p>
-<p>Later we’ll use these values to render the Framebuffer. First we paint some colours…</p>
+<p>Later we’ll pass the above values to render the Framebuffer: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L143-L153">render.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// Init the Base UI Channel
+initUiChannel(
+  1,  // UI Channel Number (1 for Base UI Channel)
+  planeInfo.fbmem,    // Start of frame buffer memory
+  planeInfo.fblen,    // Length of frame buffer memory in bytes
+  planeInfo.stride,   // Length of a line in bytes (4 bytes per pixel)
+  planeInfo.xres_virtual,  // Horizontal resolution in pixel columns
+  planeInfo.yres_virtual,  // Vertical resolution in pixel rows
+  planeInfo.xoffset,  // Horizontal offset in pixel columns
+  planeInfo.yoffset,  // Vertical offset in pixel rows
+);</code></pre></div>
+<p>First we paint some colours…</p>
 <p><img src="https://lupyuen.github.io/images/de-rgb.jpg" alt="Blue, Green, Red Blocks on PinePhone" /></p>
 <h1 id="fill-framebuffer"><a href="#fill-framebuffer">2 Fill Framebuffer</a></h1>
 <p>This is how we <strong>fill the Framebuffer</strong> with Blue, Green and Red (pic above): <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L92-L107">render.zig</a></p>
@@ -231,7 +243,22 @@ const videoInfo = c.fb_videoinfo_s {
 </li>
 </ol>
 <p>This sounds really low level… But hopefully we’ll learn more about PinePhone’s Internals!</p>
-<h2 id="framebuffer-address"><a href="#framebuffer-address">3.1 Framebuffer Address</a></h2>
+<p>TODO: initUiChannel</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L406-L418">render.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Initialise a UI Channel for PinePhone&#39;s A64 Display Engine.
+/// We use 3 UI Channels: Base UI Channel (#1) plus 2 Overlay UI Channels (#2, #3).
+/// See https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine
+fn initUiChannel(
+  comptime channel: u8,   // UI Channel Number: 1, 2 or 3
+  fbmem: ?*anyopaque,     // Start of frame buffer memory, or null if this channel should be disabled
+  comptime fblen: usize,           // Length of frame buffer memory in bytes
+  comptime stride:  c.fb_coord_t,  // Length of a line in bytes (4 bytes per pixel)
+  comptime xres:    c.fb_coord_t,  // Horizontal resolution in pixel columns
+  comptime yres:    c.fb_coord_t,  // Vertical resolution in pixel rows
+  comptime xoffset: c.fb_coord_t,  // Horizontal offset in pixel columns
+  comptime yoffset: c.fb_coord_t,  // Vertical offset in pixel rows
+) void {
+    ...</code></pre></div><h2 id="framebuffer-address"><a href="#framebuffer-address">3.1 Framebuffer Address</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_TOP_LADD</strong>, Page 104)</a></p>
 <p>TODO</p>
 <p>Set to Framebuffer Address: fb0, fb1 or fb2</p>
