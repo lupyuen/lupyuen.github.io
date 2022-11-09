@@ -355,19 +355,13 @@ putreg32(              // Write to Hardware Register...
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L1052-L1057">(As defined here)</a></p>
 </li>
 </ul>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>// Verify Register Address at Compile-Time
-comptime { 
-  // Halt during compilation if verification fails
-  assert(
-    // Register Address for Channel 1
-    OVL_UI_TOP_LADD == 0x110_3010
-  );
-}</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L429-L434">render.zig</a></p>
+<p><em>We’re force-fitting a 64-bit Physical Address into a 32-bit Integer?</em></p>
+<p>That’s OK because PinePhone only supports up to 3 GB of Physical RAM.</p>
+<p><em>What’s OVL_UI_BASE_ADDRESS?</em></p>
+<p><strong>OVL_UI_BASE_ADDRESS</strong> is computed though a chain of Hardware Register addresses: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L429-L434">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// OVL_UI(CH1) (UI Overlay 1) is at MIXER0 Offset 0x3000
 // (DE Page 102, 0x110 3000)
+// We convert channel to 64-bit to prevent overflow
 const OVL_UI_BASE_ADDRESS = OVL_UI_CH1_BASE_ADDRESS
   + @intCast(u64, channel - 1) * 0x1000;
 
@@ -381,7 +375,20 @@ const MIXER0_BASE_ADDRESS = DISPLAY_ENGINE_BASE_ADDRESS + 0x10_0000;
 
 // Display Engine Base Address is 0x0100 0000
 // (DE Page 24)
-const DISPLAY_ENGINE_BASE_ADDRESS = 0x0100_0000;</code></pre></div><h2 id="framebuffer-pitch"><a href="#framebuffer-pitch">3.2 Framebuffer Pitch</a></h2>
+const DISPLAY_ENGINE_BASE_ADDRESS = 0x0100_0000;</code></pre></div>
+<p><em>Hmmm this looks error-prone…</em></p>
+<p>That’s why we added <strong>Assertion Checks</strong> to verify that the addresses of Hardware Registers are computed correctly: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L511-L517">render.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// Verify Register Address at Compile-Time
+comptime { 
+  // Halt during compilation if verification fails
+  assert(
+    // Register Address should be this...
+    OVL_UI_TOP_LADD == 0x110_3010
+  );
+}</code></pre></div>
+<p><a href="https://ziglang.org/documentation/master/#comptime"><strong><code>comptime</code></strong></a> means that the Assertion Check is performed by the Zig Compiler at <strong>Compile-Time</strong>. (Instead of Runtime)</p>
+<p>This verification is super helpful as we create the new Display Driver for PinePhone. (Works like an <strong>“Executable Specification”</strong> of PinePhone’s Hardware)</p>
+<h2 id="framebuffer-pitch"><a href="#framebuffer-pitch">3.2 Framebuffer Pitch</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_PITCH</strong>, Page 104)</a></p>
 <p>TODO</p>
 <p>Set to (width * 4), number of bytes per row</p>
