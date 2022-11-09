@@ -112,7 +112,7 @@ initUiChannel(
 );
 ```
 
-First we paint some colours...
+But first we paint some colours...
 
 ![Blue, Green, Red Blocks on PinePhone](https://lupyuen.github.io/images/de-rgb.jpg)
 
@@ -180,7 +180,7 @@ _How do we render the Framebuffer on PinePhone?_
 
 Remember that we're talking directly to PinePhone's __Display Hardware__ ("Bare Metal"), without any Display Driver. So this part might sound a little more complicated than we expect...
 
-To control PinePhone's Display Hardware, we'll set the Hardware Registers for the [__Allwinner A64 Display Engine__](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf) inside PinePhone.
+To control PinePhone's Display Hardware, we'll set the Hardware Registers for the [__Allwinner A64 Display Engine__](https://lupyuen.github.io/articles/de) inside PinePhone.
 
 In a while we'll do the following through the Hardware Registers...
 
@@ -249,41 +249,55 @@ fn initUiChannel(
     ...
 ```
 
-Which means...
+Which means that our function __`initUiChannel`__ will receive the following values...
 
-TODO
+-   __`channel`__ is `1`
 
--   channel is 10
+    (We'll see Channels 2 and 3 later)
     
-    u8,   // UI Channel Number: 1, 2 or 3
-
--   fbmem is fb0
+-   __`fbmem`__ is `fb0`
 
     (Framebuffer Address)
 
-    : ?*anyopaque,     // Start of frame buffer memory, or null if this channel should be disabled
-
--   fblen is 720 * 1280 * 4
+-   __`fblen`__ is `720 * 1280 * 4`
 
     (Framebuffer Size in Bytes)
 
--   stride:  c.fb_coord_t,  // 
+-   __`stride`__ is `720 * 4`
 
-    Length of a line in bytes (4 bytes per pixel)
+    (Number of Bytes in a Row)
 
--   xres:    c.fb_coord_t,  // 
+-   __`xres`__ is `720`
 
     (Framebuffer Width)
 
--   yres:    c.fb_coord_t,  // 
+-   __`yres`__ is `1440`
 
     (Framebuffer Height)
 
-    Vertical resolution in pixel rows
+-   __`xoffset`__ is `0`
 
--   xoffset: c.fb_coord_t,  // Horizontal offset in pixel columns
+    (Framebuffer X Offset)
 
--   yoffset: c.fb_coord_t,  // Vertical offset in pixel rows
+-   __`yoffset`__ is `0`
+
+    (Framebuffer Y Offset)
+
+We'll explain __`comptime`__ in a while.
+
+_Why is the Framebuffer Address declared as "`?*anyopaque`"?_
+
+That's because...
+
+-   "__`*anyopaque`__" is similar to "__`void *`__" in C
+
+-   "__`?*anyopaque`__" is the same, except that __null values__ are allowed
+
+So the Framebuffer Address can be null.
+
+(To disable the Overlay Framebuffers)
+
+Let's look inside our function __`initUiChannel`__
 
 ## Framebuffer Address
 
@@ -296,25 +310,45 @@ Set to Framebuffer Address: fb0, fb1 or fb2
 [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L511-L517)
 
 ```zig
-// OVL_UI_TOP_LADD (UI Overlay Top Field Memory Block Low Address) at OVL_UI Offset 0x10
-// Set to Framebuffer Address: fb0, fb1 or fb2
+// OVL_UI_TOP_LADD (UI Overlay Top Field Memory Block Low Address)
+// At OVL_UI Offset 0x10
+// Set to Framebuffer Address fb0
 // (DE Page 104)
 
 const ptr = @ptrToInt(fbmem.?);
-const OVL_UI_TOP_LADD = OVL_UI_BASE_ADDRESS + 0x10;
-putreg32(@intCast(u32, ptr), OVL_UI_TOP_LADD);
+const OVL_UI_TOP_LADD = 
+  OVL_UI_BASE_ADDRESS + 0x10;
+putreg32(              // Write to Hardware Register...
+  @intCast(u32, ptr),  // Value
+  OVL_UI_TOP_LADD      // Address
+);
 ```
 
 TODO
 
 ```zig
-comptime{ 
+// Verify Register Address at Compile-Time
+comptime { 
+  // Halt during compilation if verification fails
   assert(
-    OVL_UI_TOP_LADD == 0x110_3010 
-    or OVL_UI_TOP_LADD == 0x110_4010 
-    or OVL_UI_TOP_LADD == 0x110_5010
+    OVL_UI_TOP_LADD == 0x110_3010     // For Channel 1
+    or OVL_UI_TOP_LADD == 0x110_4010  // For Channel 2
+    or OVL_UI_TOP_LADD == 0x110_5010  // For Channel 3
   );
 }
+```
+
+TODO
+
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L429-L434)
+
+```zig
+// OVL_UI(CH1) (UI Overlay 1) is at MIXER0 Offset 0x3000
+// OVL_UI(CH2) (UI Overlay 2) is at MIXER0 Offset 0x4000
+// OVL_UI(CH3) (UI Overlay 3) is at MIXER0 Offset 0x5000
+// (DE Page 102, 0x110 3000 / 0x110 4000 / 0x110 5000)
+const OVL_UI_BASE_ADDRESS = OVL_UI_CH1_BASE_ADDRESS
+  + @intCast(u64, channel - 1) * 0x1000;
 ```
 
 ## Framebuffer Pitch
