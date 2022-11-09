@@ -138,7 +138,7 @@ TODO
 
 ## Framebuffer Address
 
-_(OVL_UI_TOP_LADD)_
+[(__OVL_UI_TOP_LADD__, Page 104)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 TODO
 
@@ -170,31 +170,79 @@ comptime{
 
 ## Framebuffer Pitch
 
-_(OVL_UI_PITCH)_
+[(__OVL_UI_PITCH__, Page 104)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 TODO
 
 Set to (width * 4), number of bytes per row
 
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L519-L524)
+
+```zig
+    // OVL_UI_PITCH (UI Overlay Memory Pitch) at OVL_UI Offset 0x0C
+    // Set to (width * 4), number of bytes per row
+    // (DE Page 104, 0x110 300C / 0x110 400C / 0x110 500C)
+    const OVL_UI_PITCH = OVL_UI_BASE_ADDRESS + 0x0C;
+    comptime{ assert(OVL_UI_PITCH == 0x110_300C or OVL_UI_PITCH == 0x110_400C or OVL_UI_PITCH == 0x110_500C); }
+    putreg32(xres * 4, OVL_UI_PITCH);
+```
+
 ## Framebuffer Size
 
-_(OVL_UI_MBSIZE, OVL_UI_SIZE)_
+[(__OVL_UI_MBSIZE / OVL_UI_SIZE__, Page 104 / 106)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 TODO
 
 Set to (height-1) << 16 + (width-1)
 
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L526-L533)
+
+```zig
+    // OVL_UI_MBSIZE (UI Overlay Memory Block Size) at OVL_UI Offset 0x04
+    // Set to (height-1) << 16 + (width-1)
+    // (DE Page 104, 0x110 3004 / 0x110 4004 / 0x110 5004)
+    const height_width: u32 = @intCast(u32, yres - 1) << 16
+        | (xres - 1);
+    const OVL_UI_MBSIZE = OVL_UI_BASE_ADDRESS + 0x04;
+    comptime{ assert(OVL_UI_MBSIZE == 0x110_3004 or OVL_UI_MBSIZE == 0x110_4004 or OVL_UI_MBSIZE == 0x110_5004); }
+    putreg32(height_width, OVL_UI_MBSIZE);
+```
+
+TODO
+
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L535-L540)
+
+```zig
+    // OVL_UI_SIZE (UI Overlay Overlay Window Size) at OVL_UI Offset 0x88
+    // Set to (height-1) << 16 + (width-1)
+    // (DE Page 106, 0x110 3088 / 0x110 4088 / 0x110 5088)
+    const OVL_UI_SIZE = OVL_UI_BASE_ADDRESS + 0x88;
+    comptime{ assert(OVL_UI_SIZE == 0x110_3088 or OVL_UI_SIZE == 0x110_4088 or OVL_UI_SIZE == 0x110_5088); }
+    putreg32(height_width, OVL_UI_SIZE);
+```
+
 ## Framebuffer Coordinates
 
-_(OVL_UI_COOR)_
+[(__OVL_UI_COOR__, Page 104)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 TODO
 
 Set to 0 (Overlay at X=0, Y=0)
 
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L542-L547)
+
+```zig
+    // OVL_UI_COOR (UI Overlay Memory Block Coordinate) at OVL_UI Offset 0x08
+    // Set to 0 (Overlay at X=0, Y=0)
+    // (DE Page 104, 0x110 3008 / 0x110 4008 / 0x110 5008)
+    const OVL_UI_COOR = OVL_UI_BASE_ADDRESS + 0x08;
+    comptime{ assert(OVL_UI_COOR == 0x110_3008 or OVL_UI_COOR == 0x110_4008 or OVL_UI_COOR == 0x110_5008); }
+    putreg32(0, OVL_UI_COOR);
+```
+
 ## Framebuffer Attributes
 
-_(OVL_UI_ATTR_CTL)_
+[(__OVL_UI_ATTR_CTL__, Page 102)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 TODO
 
@@ -214,11 +262,70 @@ Global Alpha Mode: LAY_ALPHA_MODE
 
 Enable Layer: LAY_EN
 
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L470-L509)
+
+```zig
+    // Set Overlay (Assume Layer = 0)
+    // OVL_UI_ATTR_CTL (UI Overlay Attribute Control) at OVL_UI Offset 0x00
+    // For Channel 1: Set to 0xFF00 0405
+    // For Channel 2: Set to 0xFF00 0005
+    // For Channel 3: Set to 0x7F00 0005
+    // LAY_GLBALPHA (Bits 24 to 31) = 0xFF or 0x7F
+    //   (Global Alpha Value is Opaque or Semi-Transparent)
+    // LAY_FBFMT (Bits 8 to 12) = 4 or 0
+    //   (Input Data Format is XRGB 8888 or ARGB 8888)
+    // LAY_ALPHA_MODE (Bits 1 to 2) = 2
+    //   (Global Alpha is mixed with Pixel Alpha)
+    //   (Input Alpha Value = Global Alpha Value * Pixel’s Alpha Value)
+    // LAY_EN (Bit 0) = 1 (Enable Layer)
+    // (DE Page 102, 0x110 3000 / 0x110 4000 / 0x110 5000)
+    debug("Channel {}: Set Overlay ({} x {})", .{ channel, xres, yres });
+    const LAY_GLBALPHA: u32 = switch (channel) {  // For Global Alpha Value...
+        1 => 0xFF,  // Channel 1: Opaque
+        2 => 0xFF,  // Channel 2: Opaque
+        3 => 0x7F,  // Channel 3: Semi-Transparent
+        else => unreachable,
+    } << 24;  // Bits 24 to 31
+
+    const LAY_FBFMT: u13 = switch (channel) {  // For Input Data Format...
+        1 => 4,  // Channel 1: XRGB 8888
+        2 => 0,  // Channel 2: ARGB 8888
+        3 => 0,  // Channel 3: ARGB 8888
+        else => unreachable,
+    } << 8;  // Bits 8 to 12
+
+    const LAY_ALPHA_MODE: u3 = 2 << 1;  // Global Alpha is mixed with Pixel Alpha
+    const LAY_EN:         u1 = 1 << 0;  // Enable Layer
+    const attr = LAY_GLBALPHA
+        | LAY_FBFMT
+        | LAY_ALPHA_MODE
+        | LAY_EN;
+    comptime{ assert(attr == 0xFF00_0405 or attr == 0xFF00_0005 or attr == 0x7F00_0005); }
+
+    const OVL_UI_ATTR_CTL = OVL_UI_BASE_ADDRESS + 0x00;
+    comptime{ assert(OVL_UI_ATTR_CTL == 0x110_3000 or OVL_UI_ATTR_CTL == 0x110_4000 or OVL_UI_ATTR_CTL == 0x110_5000); }
+    putreg32(attr, OVL_UI_ATTR_CTL);
+```
+
 ## Disable Scaler
 
-_(UIS_CTRL_REG)_
+[(__UIS_CTRL_REG__, Page 66)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 TODO
+
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L641-L649)
+
+```zig
+    // Disable Scaler (Assume we’re not scaling)
+    // UIS_CTRL_REG at Offset 0 of UI_SCALER1(CH1) or UI_SCALER2(CH2) or UI_SCALER3(CH3)
+    // Set to 0 (Disable UI Scaler)
+    // EN (Bit 0) = 0 (Disable UI Scaler)
+    // (DE Page 66, 0x114 0000 / 0x115 0000 / 0x116 0000)
+    debug("Channel {}: Disable Scaler", .{ channel });
+    const UIS_CTRL_REG = UI_SCALER_BASE_ADDRESS + 0;
+    comptime{ assert(UIS_CTRL_REG == 0x114_0000 or UIS_CTRL_REG == 0x115_0000 or UIS_CTRL_REG == 0x116_0000); }
+    putreg32(0, UIS_CTRL_REG);
+```
 
 # Configure Blender Output
 
@@ -226,7 +333,7 @@ TODO
 
 ## Output Size
 
-_(BLD_SIZE, GLB_SIZE)_
+[(__BLD_SIZE / GLB_SIZE__, Page 110 / 93)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 TODO
 
@@ -236,21 +343,59 @@ Set Blender Output Size
 
 Set to (height-1) << 16 + (width-1)
 
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L551-L564)
+
+```zig
+        // BLD_SIZE (Blender Output Size Setting) at BLD Offset 0x08C
+        // Set to (height-1) << 16 + (width-1)
+        // (DE Page 110, 0x110 108C)
+        debug("Channel {}: Set Blender Output", .{ channel });
+        const BLD_SIZE = BLD_BASE_ADDRESS + 0x08C;
+        comptime{ assert(BLD_SIZE == 0x110_108C); }
+        putreg32(height_width, BLD_SIZE);
+                
+        // GLB_SIZE (Global Size) at GLB Offset 0x00C
+        // Set to (height-1) << 16 + (width-1)
+        // (DE Page 93, 0x110 000C)
+        const GLB_SIZE = GLB_BASE_ADDRESS + 0x00C;
+        comptime{ assert(GLB_SIZE == 0x110_000C); }
+        putreg32(height_width, GLB_SIZE);
+```
+
 # Configure Blender Input
 
 TODO
 
 ## Input Size
 
-_(BLD_CH_ISIZE)_
+[(__BLD_CH_ISIZE__, Page 108)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 TODO
 
 Set to (height-1) << 16 + (width-1)
 
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L567-L580)
+
+```zig
+    // Set Blender Input Pipe (N = Pipe Number, from 0 to 2 for Channels 1 to 3)
+    const pipe: u64 = channel - 1;
+    debug("Channel {}: Set Blender Input Pipe {} ({} x {})", .{ channel, pipe, xres, yres });
+
+    // Note: DE Page 91 shows incorrect offset N*0x14 for 
+    // BLD_CH_ISIZE, BLD_FILL_COLOR and BLD_CH_OFFSET. 
+    // Correct offset is N*0x10, see DE Page 108
+
+    // BLD_CH_ISIZE (Blender Input Memory Size) at BLD Offset 0x008 + N*0x10 (N=0,1,2,3,4)
+    // Set to (height-1) << 16 + (width-1)
+    // (DE Page 108, 0x110 1008 / 0x110 1018 / 0x110 1028)
+    const BLD_CH_ISIZE = BLD_BASE_ADDRESS + 0x008 + pipe * 0x10;
+    comptime{ assert(BLD_CH_ISIZE == 0x110_1008 or BLD_CH_ISIZE == 0x110_1018 or BLD_CH_ISIZE == 0x110_1028); }
+    putreg32(height_width, BLD_CH_ISIZE);
+```
+
 ## Fill Color 
 
-_(BLD_FILL_COLOR)_
+[(__BLD_FILL_COLOR__, Page 107)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 TODO
 
@@ -264,17 +409,60 @@ GREEN (Bits 8 to 15) = 0
 
 BLUE (Bits 0 to 7) = 0
 
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L582-L601)
+
+```zig
+    // BLD_FILL_COLOR (Blender Fill Color) at BLD Offset 0x004 + N*0x10 (N=0,1,2,3,4)
+    // Set to 0xFF00 0000 (Opaque Black)
+    // ALPHA (Bits 24 to 31) = 0xFF
+    // RED (Bits 16 to 23) = 0
+    // GREEN (Bits 8 to 15) = 0
+    // BLUE (Bits 0 to 7) = 0
+    // (DE Page 107, 0x110 1004 / 0x110 1014 / 0x110 1024)
+    const ALPHA: u32 = 0xFF << 24;  // Opaque
+    const RED:   u24 = 0    << 16;  // Black
+    const GREEN: u18 = 0    << 8;
+    const BLUE:  u8  = 0    << 0;
+    const color = ALPHA
+        | RED
+        | GREEN
+        | BLUE;
+    comptime{ assert(color == 0xFF00_0000); }
+
+    const BLD_FILL_COLOR = BLD_BASE_ADDRESS + 0x004 + pipe * 0x10;
+    comptime{ assert(BLD_FILL_COLOR == 0x110_1004 or BLD_FILL_COLOR == 0x110_1014 or BLD_FILL_COLOR == 0x110_1024); }
+    putreg32(color, BLD_FILL_COLOR);
+```
+
 ## Input Offset
 
-_(BLD_CH_OFFSET)_
+[(__BLD_CH_OFFSET__, Page 108)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 TODO
 
 Set to y_offset << 16 + x_offset
 
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L603-L615)
+
+```zig
+    // BLD_CH_OFFSET (Blender Input Memory Offset) at BLD Offset 0x00C + N*0x10 (N=0,1,2,3,4)
+    // Set to y_offset << 16 + x_offset
+    // For Channel 1: Set to 0
+    // For Channel 2: Set to 0x34 0034
+    // For Channel 3: Set to 0
+    // (DE Page 108, 0x110 100C / 0x110 101C / 0x110 102C)
+    const offset = @intCast(u32, yoffset) << 16
+        | xoffset;
+    comptime{ assert(offset == 0 or offset == 0x34_0034); }
+
+    const BLD_CH_OFFSET = BLD_BASE_ADDRESS + 0x00C + pipe * 0x10;
+    comptime{ assert(BLD_CH_OFFSET == 0x110_100C or BLD_CH_OFFSET == 0x110_101C or BLD_CH_OFFSET == 0x110_102C); }
+    putreg32(offset, BLD_CH_OFFSET);
+```
+
 ## Blender Attributes 
 
-_(BLD_CTL)_
+[(__BLD_CTL__, Page 110)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 TODO
 
@@ -295,6 +483,34 @@ BLEND_PFD (Bits 8 to 11) = 3
 BLEND_PFS (Bits 0 to 3) = 1
 
 (Coefficient for source pixel data F[s] is 1)
+
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L617-L639)
+
+```zig
+    // BLD_CTL (Blender Control) at BLD Offset 0x090 + N*4
+    // Set to 0x301 0301
+    // BLEND_AFD (Bits 24 to 27) = 3
+    //   (Coefficient for destination alpha data Q[d] is 1-A[s])
+    // BLEND_AFS (Bits 16 to 19) = 1
+    //   (Coefficient for source alpha data Q[s] is 1)
+    // BLEND_PFD (Bits 8 to 11) = 3
+    //   (Coefficient for destination pixel data F[d] is 1-A[s])
+    // BLEND_PFS (Bits 0 to 3) = 1
+    //   (Coefficient for source pixel data F[s] is 1)
+    // (DE Page 110, 0x110 1090 / 0x110 1094 / 0x110 1098)
+    const BLEND_AFD: u28 = 3 << 24;  // Coefficient for destination alpha data Q[d] is 1-A[s]
+    const BLEND_AFS: u20 = 1 << 16;  // Coefficient for source alpha data Q[s] is 1
+    const BLEND_PFD: u12 = 3 << 8;   // Coefficient for destination pixel data F[d] is 1-A[s]
+    const BLEND_PFS: u4  = 1 << 0;   // Coefficient for source pixel data F[s] is 1
+    const blend = BLEND_AFD
+        | BLEND_AFS
+        | BLEND_PFD
+        | BLEND_PFS;
+
+    const BLD_CTL = BLD_BASE_ADDRESS + 0x090 + pipe * 4;
+    comptime{ assert(BLD_CTL == 0x110_1090 or BLD_CTL == 0x110_1094 or BLD_CTL == 0x110_1098); }
+    putreg32(blend, BLD_CTL);
+```
 
 # Multiple Framebuffers
 
