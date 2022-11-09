@@ -47,6 +47,8 @@ Let's continue the journey from our __NuttX Porting Journal__...
 
 -   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
 
+![PinePhone Framebuffer](https://lupyuen.github.io/images/de2-fb.jpg)
+
 # Graphics Framebuffer
 
 TODO
