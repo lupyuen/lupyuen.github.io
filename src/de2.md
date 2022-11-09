@@ -51,9 +51,7 @@ Let's continue the journey from our __NuttX Porting Journal__...
 
 # Graphics Framebuffer
 
-TODO
-
-[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L709-L712)
+We begin with a __Graphics Framebuffer__ that we'll render on PinePhone's 720 x 1440 display (pic above): [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L709-L712)
 
 ```zig
 // Framebuffer of 720 x 1440 pixels
@@ -62,9 +60,21 @@ var fb0 = std.mem.zeroes(  // Init to zeroes...
 );                         // (4 bytes per pixel)
 ```
 
-(Each pixel is __`u32`__, equivalent to __`uint32_t`__ in C)
+Each pixel is __`u32`__, equivalent to __`uint32_t`__ in C.
 
 [__`std.mem.zeroes`__](https://ziglang.org/documentation/master/std/#root;mem.zeroes) allocates an array of 720 x 1440 pixels, filled with zeroes.
+
+Each pixel has the format __ARGB 8888__ (32 bits)...
+
+-   __Alpha:__ 8 bits
+
+-   __Red:__ 8 bits
+
+-   __Green:__ 8 bits
+
+-   __Blue:__ 8 bits
+
+So __`0x8080` `0000`__ is Semi-Transparent Red. (Alpha: `0x80`, Red: `0x80`)
 
 Let's describe the Framebuffer...
 
