@@ -202,11 +202,12 @@ const videoInfo = c.fb_videoinfo_s {
 <h1 id="configure-framebuffer"><a href="#configure-framebuffer">3 Configure Framebuffer</a></h1>
 <p><em>How do we render the Framebuffer on PinePhone?</em></p>
 <p>Remember that we’re talking directly to PinePhone’s <strong>Display Hardware</strong> (“Bare Metal”), without any Display Driver. So this part might sound a little more complicated than we expect…</p>
-<p>TODO</p>
+<p>To control PinePhone’s Display Hardware, we’ll set the Hardware Registers for the <a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf"><strong>Allwinner A64 Display Engine</strong></a> inside PinePhone.</p>
+<p>In a while we’ll do the following through the Hardware Registers…</p>
 <ol>
 <li>
 <p>Set <strong>Framebuffer Address</strong></p>
-<p>(For DMA: Direct Memmory Access)</p>
+<p>(To activate DMA: Direct Memory Access)</p>
 </li>
 <li>
 <p>Set <strong>Framebuffer Pitch</strong></p>
@@ -226,9 +227,10 @@ const videoInfo = c.fb_videoinfo_s {
 </li>
 <li>
 <p>Disable <strong>Framebuffer Scaler</strong></p>
-<p>(Because we’re not scaling the Framebuffer)</p>
+<p>(Because we’re not scaling the graphics)</p>
 </li>
 </ol>
+<p>This sounds really low level… But hopefully we’ll learn more about PinePhone’s Internals!</p>
 <h2 id="framebuffer-address"><a href="#framebuffer-address">3.1 Framebuffer Address</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_TOP_LADD</strong>, Page 104)</a></p>
 <p>TODO</p>
