@@ -161,7 +161,7 @@ initUiChannel(
   planeInfo.xoffset,  // Horizontal offset in pixel columns
   planeInfo.yoffset,  // Vertical offset in pixel rows
 );</code></pre></div>
-<p>First we paint some colours…</p>
+<p>But first we paint some colours…</p>
 <p><img src="https://lupyuen.github.io/images/de-rgb.jpg" alt="Blue, Green, Red Blocks on PinePhone" /></p>
 <h1 id="fill-framebuffer"><a href="#fill-framebuffer">2 Fill Framebuffer</a></h1>
 <p>This is how we <strong>fill the Framebuffer</strong> with Blue, Green and Red (pic above): <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L92-L107">render.zig</a></p>
@@ -214,7 +214,7 @@ const videoInfo = c.fb_videoinfo_s {
 <h1 id="configure-framebuffer"><a href="#configure-framebuffer">3 Configure Framebuffer</a></h1>
 <p><em>How do we render the Framebuffer on PinePhone?</em></p>
 <p>Remember that we’re talking directly to PinePhone’s <strong>Display Hardware</strong> (“Bare Metal”), without any Display Driver. So this part might sound a little more complicated than we expect…</p>
-<p>To control PinePhone’s Display Hardware, we’ll set the Hardware Registers for the <a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf"><strong>Allwinner A64 Display Engine</strong></a> inside PinePhone.</p>
+<p>To control PinePhone’s Display Hardware, we’ll set the Hardware Registers for the <a href="https://lupyuen.github.io/articles/de"><strong>Allwinner A64 Display Engine</strong></a> inside PinePhone.</p>
 <p>In a while we’ll do the following through the Hardware Registers…</p>
 <ol>
 <li>
@@ -272,62 +272,90 @@ fn initUiChannel(
   comptime yoffset: c.fb_coord_t,  // Vertical offset in pixel rows
 ) void {
     ...</code></pre></div>
-<p>Which means…</p>
-<p>TODO</p>
+<p>Which means that our function <strong><code>initUiChannel</code></strong> will receive the following values…</p>
 <ul>
 <li>
-<p>channel is 10</p>
-<p>u8,   // UI Channel Number: 1, 2 or 3</p>
+<p><strong><code>channel</code></strong> is <code>1</code></p>
+<p>(We’ll see Channels 2 and 3 later)</p>
 </li>
 <li>
-<p>fbmem is fb0</p>
+<p><strong><code>fbmem</code></strong> is <code>fb0</code></p>
 <p>(Framebuffer Address)</p>
-<p>: ?*anyopaque,     // Start of frame buffer memory, or null if this channel should be disabled</p>
 </li>
 <li>
-<p>fblen is 720 * 1280 * 4</p>
+<p><strong><code>fblen</code></strong> is <code>720 * 1280 * 4</code></p>
 <p>(Framebuffer Size in Bytes)</p>
 </li>
 <li>
-<p>stride:  c.fb_coord_t,  // </p>
-<p>Length of a line in bytes (4 bytes per pixel)</p>
+<p><strong><code>stride</code></strong> is <code>720 * 4</code></p>
+<p>(Number of Bytes in a Row)</p>
 </li>
 <li>
-<p>xres:    c.fb_coord_t,  // </p>
+<p><strong><code>xres</code></strong> is <code>720</code></p>
 <p>(Framebuffer Width)</p>
 </li>
 <li>
-<p>yres:    c.fb_coord_t,  // </p>
+<p><strong><code>yres</code></strong> is <code>1440</code></p>
 <p>(Framebuffer Height)</p>
-<p>Vertical resolution in pixel rows</p>
 </li>
 <li>
-<p>xoffset: c.fb_coord_t,  // Horizontal offset in pixel columns</p>
+<p><strong><code>xoffset</code></strong> is <code>0</code></p>
+<p>(Framebuffer X Offset)</p>
 </li>
 <li>
-<p>yoffset: c.fb_coord_t,  // Vertical offset in pixel rows</p>
+<p><strong><code>yoffset</code></strong> is <code>0</code></p>
+<p>(Framebuffer Y Offset)</p>
 </li>
 </ul>
+<p>We’ll explain <strong><code>comptime</code></strong> in a while.</p>
+<p><em>Why is the Framebuffer Address declared as “<code>?*anyopaque</code>”?</em></p>
+<p>That’s because…</p>
+<ul>
+<li>
+<p>“<strong><code>*anyopaque</code></strong>” is similar to “<strong><code>void *</code></strong>” in C</p>
+</li>
+<li>
+<p>“<strong><code>?*anyopaque</code></strong>” is the same, except that <strong>null values</strong> are allowed</p>
+</li>
+</ul>
+<p>So the Framebuffer Address can be null.</p>
+<p>(To disable the Overlay Framebuffers)</p>
+<p>Let’s look inside our function <strong><code>initUiChannel</code></strong></p>
 <h2 id="framebuffer-address"><a href="#framebuffer-address">3.1 Framebuffer Address</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_TOP_LADD</strong>, Page 104)</a></p>
 <p>TODO</p>
 <p>Set to Framebuffer Address: fb0, fb1 or fb2</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L511-L517">render.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>// OVL_UI_TOP_LADD (UI Overlay Top Field Memory Block Low Address) at OVL_UI Offset 0x10
-// Set to Framebuffer Address: fb0, fb1 or fb2
+<div class="example-wrap"><pre class="language-zig"><code>// OVL_UI_TOP_LADD (UI Overlay Top Field Memory Block Low Address)
+// At OVL_UI Offset 0x10
+// Set to Framebuffer Address fb0
 // (DE Page 104)
 
 const ptr = @ptrToInt(fbmem.?);
-const OVL_UI_TOP_LADD = OVL_UI_BASE_ADDRESS + 0x10;
-putreg32(@intCast(u32, ptr), OVL_UI_TOP_LADD);</code></pre></div>
+const OVL_UI_TOP_LADD = 
+  OVL_UI_BASE_ADDRESS + 0x10;
+putreg32(              // Write to Hardware Register...
+  @intCast(u32, ptr),  // Value
+  OVL_UI_TOP_LADD      // Address
+);</code></pre></div>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>comptime{ 
+<div class="example-wrap"><pre class="language-zig"><code>// Verify Register Address at Compile-Time
+comptime { 
+  // Halt during compilation if verification fails
   assert(
-    OVL_UI_TOP_LADD == 0x110_3010 
-    or OVL_UI_TOP_LADD == 0x110_4010 
-    or OVL_UI_TOP_LADD == 0x110_5010
+    OVL_UI_TOP_LADD == 0x110_3010     // For Channel 1
+    or OVL_UI_TOP_LADD == 0x110_4010  // For Channel 2
+    or OVL_UI_TOP_LADD == 0x110_5010  // For Channel 3
   );
-}</code></pre></div><h2 id="framebuffer-pitch"><a href="#framebuffer-pitch">3.2 Framebuffer Pitch</a></h2>
+}</code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L429-L434">render.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// OVL_UI(CH1) (UI Overlay 1) is at MIXER0 Offset 0x3000
+// OVL_UI(CH2) (UI Overlay 2) is at MIXER0 Offset 0x4000
+// OVL_UI(CH3) (UI Overlay 3) is at MIXER0 Offset 0x5000
+// (DE Page 102, 0x110 3000 / 0x110 4000 / 0x110 5000)
+const OVL_UI_BASE_ADDRESS = OVL_UI_CH1_BASE_ADDRESS
+  + @intCast(u64, channel - 1) * 0x1000;</code></pre></div><h2 id="framebuffer-pitch"><a href="#framebuffer-pitch">3.2 Framebuffer Pitch</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_PITCH</strong>, Page 104)</a></p>
 <p>TODO</p>
 <p>Set to (width * 4), number of bytes per row</p>
