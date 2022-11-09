@@ -338,26 +338,18 @@ For our safety, Zig gets strict about __Null Values__ and __Range Checking__...
 
     [(As defined here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L1052-L1057)
 
-TODO
+_We're force-fitting a 64-bit Physical Address into a 32-bit Integer?_
 
-```zig
-// Verify Register Address at Compile-Time
-comptime { 
-  // Halt during compilation if verification fails
-  assert(
-    // Register Address for Channel 1
-    OVL_UI_TOP_LADD == 0x110_3010
-  );
-}
-```
+That's OK because PinePhone only supports up to 3 GB of Physical RAM.
 
-TODO
+_What's OVL_UI_BASE_ADDRESS?_
 
-[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L429-L434)
+__OVL_UI_BASE_ADDRESS__ is computed though a chain of Hardware Register addresses: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L429-L434)
 
 ```zig
 // OVL_UI(CH1) (UI Overlay 1) is at MIXER0 Offset 0x3000
 // (DE Page 102, 0x110 3000)
+// We convert channel to 64-bit to prevent overflow
 const OVL_UI_BASE_ADDRESS = OVL_UI_CH1_BASE_ADDRESS
   + @intCast(u64, channel - 1) * 0x1000;
 
@@ -373,6 +365,25 @@ const MIXER0_BASE_ADDRESS = DISPLAY_ENGINE_BASE_ADDRESS + 0x10_0000;
 // (DE Page 24)
 const DISPLAY_ENGINE_BASE_ADDRESS = 0x0100_0000;
 ```
+
+_Hmmm this looks error-prone..._
+
+That's why we added __Assertion Checks__ to verify that the addresses of Hardware Registers are computed correctly: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L511-L517)
+
+```zig
+// Verify Register Address at Compile-Time
+comptime { 
+  // Halt during compilation if verification fails
+  assert(
+    // Register Address should be this...
+    OVL_UI_TOP_LADD == 0x110_3010
+  );
+}
+```
+
+[__`comptime`__](https://ziglang.org/documentation/master/#comptime) means that the Assertion Check is performed by the Zig Compiler at __Compile-Time__. (Instead of Runtime)
+
+This verification is super helpful as we create the new Display Driver for PinePhone. (Works like an __"Executable Specification"__ of PinePhone's Hardware)
 
 ## Framebuffer Pitch
 
