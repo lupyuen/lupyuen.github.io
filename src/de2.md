@@ -162,7 +162,33 @@ We'll test the Overlay Framebuffers later.
 
 _How do we render the Framebuffer on PinePhone?_
 
+Remember that we're talking directly to PinePhone's __Display Hardware__ ("Bare Metal"), without any Display Driver. So this part might sound a little more complicated than we expect...
+
 TODO
+
+1.  Set __Framebuffer Address__
+
+    (For DMA: Direct Memmory Access)
+
+1.  Set __Framebuffer Pitch__
+
+    (Number of bytes per row)
+
+1.  Set __Framebuffer Size__
+
+    (Width and Height)
+
+1.  Set __Framebuffer Coordinates__
+
+    (X and Y Offsets)
+
+1.  Set __Framebuffer Attributes__
+
+    (Global Alpha Values)  
+
+1.  Disable __Framebuffer Scaler__
+
+    (Because we're not scaling the Framebuffer)
 
 ## Framebuffer Address
 
