@@ -592,6 +592,8 @@ TODO
 
 Set to (height-1) << 16 + (width-1)
 
+pipe = 0
+
 [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L567-L580)
 
 ```zig
@@ -729,6 +731,18 @@ const blend = BLEND_AFD
 const BLD_CTL = BLD_BASE_ADDRESS + 0x090 + pipe * 4;
 putreg32(blend, BLD_CTL);
 ```
+
+TODO
+
+Set Blender Route: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L322-L353)
+
+TODO
+
+Enable Blender Pipes: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L354-L389)
+
+TODO
+
+Apply Settings: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L390-L404)
 
 # Multiple Framebuffers
 
