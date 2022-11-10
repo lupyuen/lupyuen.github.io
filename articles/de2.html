@@ -401,7 +401,10 @@ comptime {
 // (DE Page 104, 0x110 300C / 0x110 400C / 0x110 500C)
 
 const OVL_UI_PITCH = OVL_UI_BASE_ADDRESS + 0x0C;
-putreg32(xres * 4, OVL_UI_PITCH);</code></pre></div><h2 id="framebuffer-size"><a href="#framebuffer-size">3.3 Framebuffer Size</a></h2>
+putreg32(       // Write to Hardware Register...
+  xres * 4,     // xres is 720
+  OVL_UI_PITCH  // Address of Hardware Register
+);</code></pre></div><h2 id="framebuffer-size"><a href="#framebuffer-size">3.3 Framebuffer Size</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_MBSIZE / OVL_UI_SIZE</strong>, Page 104 / 106)</a></p>
 <p>TODO</p>
 <p>Set to (height-1) &lt;&lt; 16 + (width-1)</p>
