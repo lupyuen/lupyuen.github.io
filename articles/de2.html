@@ -481,7 +481,14 @@ const attr = LAY_GLBALPHA
   | LAY_ALPHA_MODE
   | LAY_EN;
 const OVL_UI_ATTR_CTL = OVL_UI_BASE_ADDRESS + 0x00;
-putreg32(attr, OVL_UI_ATTR_CTL);</code></pre></div><h2 id="disable-scaler"><a href="#disable-scaler">3.6 Disable Scaler</a></h2>
+putreg32(attr, OVL_UI_ATTR_CTL);</code></pre></div>
+<p><em>Why <code>u3</code> and <code>u13</code>?</em></p>
+<p>That’s for 3-Bit and 13-Bit Integers. If we make a mistake and specify an invalid value, the Zig Compiler will stop us…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Zig Compiler won&#39;t allow this
+// because it needs 4 bits
+const LAY_ALPHA_MODE: u3 = 4 &lt;&lt; 1;</code></pre></div>
+<p><a href="https://ziglang.org/documentation/master/#packed-struct">(Zig also supports <strong>Packed Structs</strong> with Bit Fields)</a></p>
+<h2 id="disable-scaler"><a href="#disable-scaler">3.6 Disable Scaler</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>UIS_CTRL_REG</strong>, Page 66)</a></p>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L641-L649">render.zig</a></p>
