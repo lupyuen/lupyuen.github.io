@@ -549,7 +549,7 @@ Let's talk about PinePhone's Blender...
 
 (Will PinePhone Blend? Yep for sure!)
 
-# Configure Blender Output
+# Configure Blender
 
 TODO
 
@@ -583,10 +583,6 @@ putreg32(height_width, BLD_SIZE);
 const GLB_SIZE = GLB_BASE_ADDRESS + 0x00C;
 putreg32(height_width, GLB_SIZE);
 ```
-
-# Configure Blender Input
-
-TODO
 
 ## Input Size
 
