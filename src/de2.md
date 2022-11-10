@@ -515,6 +515,18 @@ const OVL_UI_ATTR_CTL = OVL_UI_BASE_ADDRESS + 0x00;
 putreg32(attr, OVL_UI_ATTR_CTL);
 ```
 
+_Why `u3` and `u13`?_
+
+That's for 3-Bit and 13-Bit Integers. If we make a mistake and specify an invalid value, the Zig Compiler will stop us...
+
+```zig
+// Zig Compiler won't allow this
+// because it needs 4 bits
+const LAY_ALPHA_MODE: u3 = 4 << 1;
+```
+
+[(Zig also supports __Packed Structs__ with Bit Fields)](https://ziglang.org/documentation/master/#packed-struct)
+
 ## Disable Scaler
 
 [(__UIS_CTRL_REG__, Page 66)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
