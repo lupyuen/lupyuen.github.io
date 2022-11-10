@@ -488,43 +488,31 @@ Enable Layer: LAY_EN
 [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L470-L509)
 
 ```zig
-// Set Overlay (Assume Layer = 0)
 // OVL_UI_ATTR_CTL (UI Overlay Attribute Control)
 // At OVL_UI Offset 0x00
-// For Channel 1: Set to 0xFF00 0405
-// For Channel 2: Set to 0xFF00 0005
-// For Channel 3: Set to 0x7F00 0005
-// LAY_GLBALPHA (Bits 24 to 31) = 0xFF or 0x7F
-//   (Global Alpha Value is Opaque or Semi-Transparent)
-// LAY_FBFMT (Bits 8 to 12) = 4 or 0
-//   (Input Data Format is XRGB 8888 or ARGB 8888)
-// LAY_ALPHA_MODE (Bits 1 to 2) = 2
-//   (Global Alpha is mixed with Pixel Alpha)
-//   (Input Alpha Value = Global Alpha Value * Pixel’s Alpha Value)
-// LAY_EN (Bit 0) = 1 (Enable Layer)
-// (DE Page 102, 0x110 3000 / 0x110 4000 / 0x110 5000)
+// LAY_GLBALPHA   (Bits 24 to 31) = Global Alpha Value
+// LAY_FBFMT      (Bits 8  to 12) = Input Data Format
+// LAY_ALPHA_MODE (Bits 1  to 2)  = Mix Global Alpha with Pixel Alpha
+// LAY_EN         (Bit 0)         = Enable Layer
+// (DE Page 102)
 
-const LAY_GLBALPHA: u32 = switch (channel) {  // For Global Alpha Value...
-  1 => 0xFF,  // Channel 1: Opaque
-  2 => 0xFF,  // Channel 2: Opaque
-  3 => 0x7F,  // Channel 3: Semi-Transparent
-  else => unreachable,
-} << 24;  // Bits 24 to 31
+// Global Alpha Value is Opaque
+const LAY_GLBALPHA: u32 = 0xFF << 24;
 
-const LAY_FBFMT: u13 = switch (channel) {  // For Input Data Format...
-  1 => 4,  // Channel 1: XRGB 8888
-  2 => 0,  // Channel 2: ARGB 8888
-  3 => 0,  // Channel 3: ARGB 8888
-  else => unreachable,
-} << 8;  // Bits 8 to 12
+// Input Data Format is XRGB 8888
+const LAY_FBFMT: u13 = 4 << 8;
 
-const LAY_ALPHA_MODE: u3 = 2 << 1;  // Global Alpha is mixed with Pixel Alpha
-const LAY_EN:         u1 = 1 << 0;  // Enable Layer
+// Global Alpha is mixed with Pixel Alpha
+const LAY_ALPHA_MODE: u3 = 2 << 1;
+
+// Enable Layer
+const LAY_EN: u1 = 1 << 0;
+
+// Combine the bits and set the register
 const attr = LAY_GLBALPHA
   | LAY_FBFMT
   | LAY_ALPHA_MODE
   | LAY_EN;
-
 const OVL_UI_ATTR_CTL = OVL_UI_BASE_ADDRESS + 0x00;
 putreg32(attr, OVL_UI_ATTR_CTL);
 ```
