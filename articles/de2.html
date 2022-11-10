@@ -446,43 +446,31 @@ putreg32(0, OVL_UI_COOR);</code></pre></div><h2 id="framebuffer-attributes"><a h
 <p>(Input Alpha Value = Global Alpha Value * Pixel’s Alpha Value)</p>
 <p>Enable Layer: LAY_EN</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L470-L509">render.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>// Set Overlay (Assume Layer = 0)
-// OVL_UI_ATTR_CTL (UI Overlay Attribute Control)
+<div class="example-wrap"><pre class="language-zig"><code>// OVL_UI_ATTR_CTL (UI Overlay Attribute Control)
 // At OVL_UI Offset 0x00
-// For Channel 1: Set to 0xFF00 0405
-// For Channel 2: Set to 0xFF00 0005
-// For Channel 3: Set to 0x7F00 0005
-// LAY_GLBALPHA (Bits 24 to 31) = 0xFF or 0x7F
-//   (Global Alpha Value is Opaque or Semi-Transparent)
-// LAY_FBFMT (Bits 8 to 12) = 4 or 0
-//   (Input Data Format is XRGB 8888 or ARGB 8888)
-// LAY_ALPHA_MODE (Bits 1 to 2) = 2
-//   (Global Alpha is mixed with Pixel Alpha)
-//   (Input Alpha Value = Global Alpha Value * Pixel’s Alpha Value)
-// LAY_EN (Bit 0) = 1 (Enable Layer)
-// (DE Page 102, 0x110 3000 / 0x110 4000 / 0x110 5000)
+// LAY_GLBALPHA   (Bits 24 to 31) = Global Alpha Value
+// LAY_FBFMT      (Bits 8  to 12) = Input Data Format
+// LAY_ALPHA_MODE (Bits 1  to 2)  = Mix Global Alpha with Pixel Alpha
+// LAY_EN         (Bit 0)         = Enable Layer
+// (DE Page 102)
 
-const LAY_GLBALPHA: u32 = switch (channel) {  // For Global Alpha Value...
-  1 =&gt; 0xFF,  // Channel 1: Opaque
-  2 =&gt; 0xFF,  // Channel 2: Opaque
-  3 =&gt; 0x7F,  // Channel 3: Semi-Transparent
-  else =&gt; unreachable,
-} &lt;&lt; 24;  // Bits 24 to 31
+// Global Alpha Value is Opaque
+const LAY_GLBALPHA: u32 = 0xFF &lt;&lt; 24;
 
-const LAY_FBFMT: u13 = switch (channel) {  // For Input Data Format...
-  1 =&gt; 4,  // Channel 1: XRGB 8888
-  2 =&gt; 0,  // Channel 2: ARGB 8888
-  3 =&gt; 0,  // Channel 3: ARGB 8888
-  else =&gt; unreachable,
-} &lt;&lt; 8;  // Bits 8 to 12
+// Input Data Format is XRGB 8888
+const LAY_FBFMT: u13 = 4 &lt;&lt; 8;
 
-const LAY_ALPHA_MODE: u3 = 2 &lt;&lt; 1;  // Global Alpha is mixed with Pixel Alpha
-const LAY_EN:         u1 = 1 &lt;&lt; 0;  // Enable Layer
+// Global Alpha is mixed with Pixel Alpha
+const LAY_ALPHA_MODE: u3 = 2 &lt;&lt; 1;
+
+// Enable Layer
+const LAY_EN: u1 = 1 &lt;&lt; 0;
+
+// Combine the bits and set the register
 const attr = LAY_GLBALPHA
   | LAY_FBFMT
   | LAY_ALPHA_MODE
   | LAY_EN;
-
 const OVL_UI_ATTR_CTL = OVL_UI_BASE_ADDRESS + 0x00;
 putreg32(attr, OVL_UI_ATTR_CTL);</code></pre></div><h2 id="disable-scaler"><a href="#disable-scaler">3.6 Disable Scaler</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>UIS_CTRL_REG</strong>, Page 66)</a></p>
