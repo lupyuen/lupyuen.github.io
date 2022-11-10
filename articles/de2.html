@@ -320,7 +320,7 @@ fn initUiChannel(
 <p>So the Framebuffer Address can be null.</p>
 <p>(Which will disable the Overlay Framebuffers)</p>
 <p><em>What’s <code>comptime</code>?</em></p>
-<p><a href="https://ziglang.org/documentation/master/#comptime"><strong><code>comptime</code></strong></a> substitutes the Parameter Values at <strong>Compile-Time</strong>. (Instead of Runtime)</p>
+<p><a href="https://ziglang.org/documentation/master/#comptime"><strong><code>comptime</code></strong></a> substitutes the Parameter Values at <strong>Compile-Time</strong>. (Somewhat like a C Macro)</p>
 <p>We’ll explain why in a while.</p>
 <p>Let’s look inside our function <strong><code>initUiChannel</code></strong>…</p>
 <h2 id="framebuffer-address"><a href="#framebuffer-address">3.1 Framebuffer Address</a></h2>
@@ -357,8 +357,8 @@ putreg32(              // Write to Hardware Register...
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L1052-L1057">(As defined here)</a></p>
 </li>
 </ul>
-<p><em>We’re force-fitting a 64-bit Physical Address into a 32-bit Integer?</em></p>
-<p>That’s OK because PinePhone only supports up to 3 GB of Physical RAM.</p>
+<p><em>Huh we’re force-fitting a 64-bit Physical Address into a 32-bit Integer?</em></p>
+<p>That’s perfectly OK because PinePhone only supports up to 3 GB of Physical RAM.</p>
 <p><em>What’s OVL_UI_BASE_ADDRESS?</em></p>
 <p><strong>OVL_UI_BASE_ADDRESS</strong> is computed though a chain of Hardware Register addresses: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L429-L434">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// OVL_UI(CH1) (UI Overlay 1) is at MIXER0 Offset 0x3000
