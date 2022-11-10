@@ -531,20 +531,21 @@ const LAY_ALPHA_MODE: u3 = 4 << 1;
 
 [(__UIS_CTRL_REG__, Page 66)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-TODO
-
-[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L641-L649)
+PinePhone's A64 Display Engine includes a __UI Scaler__ that will do Hardware Scaling of our Framebuffer. Let's disable it: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L641-L649)
 
 ```zig
-// Disable Scaler (Assume we’re not scaling)
 // UIS_CTRL_REG at Offset 0 of UI_SCALER1(CH1) or UI_SCALER2(CH2) or UI_SCALER3(CH3)
 // Set to 0 (Disable UI Scaler)
 // EN (Bit 0) = 0 (Disable UI Scaler)
-// (DE Page 66, 0x114 0000 / 0x115 0000 / 0x116 0000)
+// (DE Page 66)
 
 const UIS_CTRL_REG = UI_SCALER_BASE_ADDRESS + 0;
 putreg32(0, UIS_CTRL_REG);
 ```
+
+And we're done configuring the PinePhone Display Engine for our Framebuffer!
+
+Let's talk about PinePhone's Blender...
 
 # Configure Blender Output
 
