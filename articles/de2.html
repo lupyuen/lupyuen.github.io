@@ -490,16 +490,17 @@ const LAY_ALPHA_MODE: u3 = 4 &lt;&lt; 1;</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#packed-struct">(Zig also supports <strong>Packed Structs</strong> with Bit Fields)</a></p>
 <h2 id="disable-scaler"><a href="#disable-scaler">3.6 Disable Scaler</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>UIS_CTRL_REG</strong>, Page 66)</a></p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L641-L649">render.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>// Disable Scaler (Assume we’re not scaling)
-// UIS_CTRL_REG at Offset 0 of UI_SCALER1(CH1) or UI_SCALER2(CH2) or UI_SCALER3(CH3)
+<p>PinePhone’s A64 Display Engine includes a <strong>UI Scaler</strong> that will do Hardware Scaling of our Framebuffer. Let’s disable it: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L641-L649">render.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// UIS_CTRL_REG at Offset 0 of UI_SCALER1(CH1) or UI_SCALER2(CH2) or UI_SCALER3(CH3)
 // Set to 0 (Disable UI Scaler)
 // EN (Bit 0) = 0 (Disable UI Scaler)
-// (DE Page 66, 0x114 0000 / 0x115 0000 / 0x116 0000)
+// (DE Page 66)
 
 const UIS_CTRL_REG = UI_SCALER_BASE_ADDRESS + 0;
-putreg32(0, UIS_CTRL_REG);</code></pre></div><h1 id="configure-blender-output"><a href="#configure-blender-output">4 Configure Blender Output</a></h1>
+putreg32(0, UIS_CTRL_REG);</code></pre></div>
+<p>And we’re done configuring the PinePhone Display Engine for our Framebuffer!</p>
+<p>Let’s talk about PinePhone’s Blender…</p>
+<h1 id="configure-blender-output"><a href="#configure-blender-output">4 Configure Blender Output</a></h1>
 <p>TODO</p>
 <h2 id="output-size"><a href="#output-size">4.1 Output Size</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_SIZE / GLB_SIZE</strong>, Page 110 / 93)</a></p>
