@@ -407,7 +407,10 @@ Set to (width * 4), number of bytes per row
 // (DE Page 104, 0x110 300C / 0x110 400C / 0x110 500C)
 
 const OVL_UI_PITCH = OVL_UI_BASE_ADDRESS + 0x0C;
-putreg32(xres * 4, OVL_UI_PITCH);
+putreg32(       // Write to Hardware Register...
+  xres * 4,     // xres is 720
+  OVL_UI_PITCH  // Address of Hardware Register
+);
 ```
 
 ## Framebuffer Size
