@@ -467,25 +467,23 @@ putreg32(0, OVL_UI_COOR);
 
 [(__OVL_UI_ATTR_CTL__, Page 102)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-TODO
+We set the __Framebuffer Attributes__...
 
-Global Alpha: LAY_GLBALPHA
+-   Framebuffer is __Opaque__
 
-(Global Alpha Value is Opaque or Semi-Transparent)
+    (Non-Transparent)
 
-Pixel Format: LAY_FBFMT
+-   Framebuffer Pixel Format is 32-bit __XRGB 8888__
 
-(Input Data Format is XRGB 8888 or ARGB 8888)
+    ("X" means Pixel Alpha Value is ignored)
 
-Global Alpha Mode: LAY_ALPHA_MODE
+-   Framebuffer Alpha is __mixed with Pixel Alpha__
 
-(Global Alpha is mixed with Pixel Alpha)
+    (Effective Alpha Value = Framebuffer Alpha Value * Pixel’s Alpha Value)
 
-(Input Alpha Value = Global Alpha Value * Pixel’s Alpha Value)
+-   Enable Framebuffer
 
-Enable Layer: LAY_EN
-
-[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L470-L509)
+This is how we set the above attributes as Bit Fields: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L470-L509)
 
 ```zig
 // OVL_UI_ATTR_CTL (UI Overlay Attribute Control)
@@ -496,16 +494,16 @@ Enable Layer: LAY_EN
 // LAY_EN         (Bit 0)         = Enable Layer
 // (DE Page 102)
 
-// Global Alpha Value is Opaque
+// Framebuffer is Opaque
 const LAY_GLBALPHA: u32 = 0xFF << 24;
 
-// Input Data Format is XRGB 8888
+// Framebuffer Pixel Format is XRGB 8888
 const LAY_FBFMT: u13 = 4 << 8;
 
-// Global Alpha is mixed with Pixel Alpha
+// Framebuffer Alpha is mixed with Pixel Alpha
 const LAY_ALPHA_MODE: u3 = 2 << 1;
 
-// Enable Layer
+// Enable Framebuffer
 const LAY_EN: u1 = 1 << 0;
 
 // Combine the bits and set the register
