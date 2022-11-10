@@ -297,7 +297,7 @@ So the Framebuffer Address can be null.
 
 _What's `comptime`?_
 
-[__`comptime`__](https://ziglang.org/documentation/master/#comptime) substitutes the Parameter Values at __Compile-Time__. (Instead of Runtime)
+[__`comptime`__](https://ziglang.org/documentation/master/#comptime) substitutes the Parameter Values at __Compile-Time__. (Somewhat like a C Macro)
 
 We'll explain why in a while.
 
@@ -342,9 +342,9 @@ For our safety, Zig gets strict about __Null Values__ and __Range Checking__...
 
     [(As defined here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L1052-L1057)
 
-_We're force-fitting a 64-bit Physical Address into a 32-bit Integer?_
+_Huh we're force-fitting a 64-bit Physical Address into a 32-bit Integer?_
 
-That's OK because PinePhone only supports up to 3 GB of Physical RAM.
+That's perfectly OK because PinePhone only supports up to 3 GB of Physical RAM.
 
 _What's OVL_UI_BASE_ADDRESS?_
 
