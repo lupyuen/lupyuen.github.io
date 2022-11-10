@@ -76,15 +76,14 @@
 <li><a href="#framebuffer-coordinates">3.4 Framebuffer Coordinates</a><ul></ul></li>
 <li><a href="#framebuffer-attributes">3.5 Framebuffer Attributes</a><ul></ul></li>
 <li><a href="#disable-scaler">3.6 Disable Scaler</a><ul></ul></li></ul></li>
-<li><a href="#configure-blender-output">4 Configure Blender Output</a><ul>
-<li><a href="#output-size">4.1 Output Size</a><ul></ul></li></ul></li>
-<li><a href="#configure-blender-input">5 Configure Blender Input</a><ul>
-<li><a href="#input-size">5.1 Input Size</a><ul></ul></li>
-<li><a href="#fill-color">5.2 Fill Color</a><ul></ul></li>
-<li><a href="#input-offset">5.3 Input Offset</a><ul></ul></li>
-<li><a href="#blender-attributes">5.4 Blender Attributes</a><ul></ul></li></ul></li>
-<li><a href="#multiple-framebuffers">6 Multiple Framebuffers</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Nov 2022</em></p>
+<li><a href="#configure-blender">4 Configure Blender</a><ul>
+<li><a href="#output-size">4.1 Output Size</a><ul></ul></li>
+<li><a href="#input-size">4.2 Input Size</a><ul></ul></li>
+<li><a href="#fill-color">4.3 Fill Color</a><ul></ul></li>
+<li><a href="#input-offset">4.4 Input Offset</a><ul></ul></li>
+<li><a href="#blender-attributes">4.5 Blender Attributes</a><ul></ul></li></ul></li>
+<li><a href="#multiple-framebuffers">5 Multiple Framebuffers</a><ul></ul></li>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Nov 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/de2-title.jpg" alt="TODO" /></p>
 <p><em>What happens when we render graphics on PinePhone’s LCD Display?</em></p>
 <p>Plenty happens when we render graphics on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> (pic above)… Because PinePhone’s <strong>Display Hardware is so complex!</strong></p>
@@ -501,7 +500,7 @@ putreg32(0, UIS_CTRL_REG);</code></pre></div>
 <p>And we’re done configuring the PinePhone Display Engine for our Framebuffer!</p>
 <p>Let’s talk about PinePhone’s Blender…</p>
 <p>(Will PinePhone Blend? Yep for sure!)</p>
-<h1 id="configure-blender-output"><a href="#configure-blender-output">4 Configure Blender Output</a></h1>
+<h1 id="configure-blender"><a href="#configure-blender">4 Configure Blender</a></h1>
 <p>TODO</p>
 <h2 id="output-size"><a href="#output-size">4.1 Output Size</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_SIZE / GLB_SIZE</strong>, Page 110 / 93)</a></p>
@@ -523,9 +522,7 @@ putreg32(height_width, BLD_SIZE);
 // (DE Page 93, 0x110 000C)
 
 const GLB_SIZE = GLB_BASE_ADDRESS + 0x00C;
-putreg32(height_width, GLB_SIZE);</code></pre></div><h1 id="configure-blender-input"><a href="#configure-blender-input">5 Configure Blender Input</a></h1>
-<p>TODO</p>
-<h2 id="input-size"><a href="#input-size">5.1 Input Size</a></h2>
+putreg32(height_width, GLB_SIZE);</code></pre></div><h2 id="input-size"><a href="#input-size">4.2 Input Size</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_CH_ISIZE</strong>, Page 108)</a></p>
 <p>TODO</p>
 <p>Set to (height-1) &lt;&lt; 16 + (width-1)</p>
@@ -543,7 +540,7 @@ const pipe: u64 = channel - 1;
 // (DE Page 108, 0x110 1008 / 0x110 1018 / 0x110 1028)
 
 const BLD_CH_ISIZE = BLD_BASE_ADDRESS + 0x008 + pipe * 0x10;
-putreg32(height_width, BLD_CH_ISIZE);</code></pre></div><h2 id="fill-color"><a href="#fill-color">5.2 Fill Color</a></h2>
+putreg32(height_width, BLD_CH_ISIZE);</code></pre></div><h2 id="fill-color"><a href="#fill-color">4.3 Fill Color</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_FILL_COLOR</strong>, Page 107)</a></p>
 <p>TODO</p>
 <p>Set to 0xFF00 0000 (Opaque Black)</p>
@@ -571,7 +568,7 @@ const color = ALPHA
   | BLUE;
 
 const BLD_FILL_COLOR = BLD_BASE_ADDRESS + 0x004 + pipe * 0x10;
-putreg32(color, BLD_FILL_COLOR);</code></pre></div><h2 id="input-offset"><a href="#input-offset">5.3 Input Offset</a></h2>
+putreg32(color, BLD_FILL_COLOR);</code></pre></div><h2 id="input-offset"><a href="#input-offset">4.4 Input Offset</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_CH_OFFSET</strong>, Page 108)</a></p>
 <p>TODO</p>
 <p>Set to y_offset &lt;&lt; 16 + x_offset</p>
@@ -587,7 +584,7 @@ putreg32(color, BLD_FILL_COLOR);</code></pre></div><h2 id="input-offset"><a href
 const offset = @intCast(u32, yoffset) &lt;&lt; 16
   | xoffset;
 const BLD_CH_OFFSET = BLD_BASE_ADDRESS + 0x00C + pipe * 0x10;
-putreg32(offset, BLD_CH_OFFSET);</code></pre></div><h2 id="blender-attributes"><a href="#blender-attributes">5.4 Blender Attributes</a></h2>
+putreg32(offset, BLD_CH_OFFSET);</code></pre></div><h2 id="blender-attributes"><a href="#blender-attributes">4.5 Blender Attributes</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_CTL</strong>, Page 110)</a></p>
 <p>TODO</p>
 <p>Set to 0x301 0301</p>
@@ -623,9 +620,9 @@ const blend = BLEND_AFD
   | BLEND_PFS;
 
 const BLD_CTL = BLD_BASE_ADDRESS + 0x090 + pipe * 4;
-putreg32(blend, BLD_CTL);</code></pre></div><h1 id="multiple-framebuffers"><a href="#multiple-framebuffers">6 Multiple Framebuffers</a></h1>
+putreg32(blend, BLD_CTL);</code></pre></div><h1 id="multiple-framebuffers"><a href="#multiple-framebuffers">5 Multiple Framebuffers</a></h1>
 <p>TODO</p>
-<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
 <p>TODO</p>
 <p>Today we’ve seen the Zig Internals of our new PinePhone Display Driver for Apache NuttX RTOS. I hope that coding the driver in Zig has made it a little easier to understand what’s inside.</p>
 <p>Some parts of the driver were simpler to code in Zig than in C. I’m glad I chose Zig for the driver!</p>
