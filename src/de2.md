@@ -547,6 +547,8 @@ And we're done configuring the PinePhone Display Engine for our Framebuffer!
 
 Let's talk about PinePhone's Blender...
 
+(Will PinePhone Blend? Yep for sure!)
+
 # Configure Blender Output
 
 TODO
