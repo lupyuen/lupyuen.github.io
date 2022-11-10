@@ -393,12 +393,11 @@ comptime {
 <p>(Works like an <a href="https://qoto.org/@lupyuen/109306036122238530"><strong>“Executable Specification”</strong></a> of PinePhone’s Hardware)</p>
 <h2 id="framebuffer-pitch"><a href="#framebuffer-pitch">3.2 Framebuffer Pitch</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_PITCH</strong>, Page 104)</a></p>
-<p>TODO</p>
-<p>Set to (width * 4), number of bytes per row</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L519-L524">render.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>// OVL_UI_PITCH (UI Overlay Memory Pitch) at OVL_UI Offset 0x0C
+<p>Next we set the <strong>Framebuffer Pitch</strong> to the number of bytes per row (<code>720 * 4</code>): <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L519-L524">render.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// OVL_UI_PITCH (UI Overlay Memory Pitch)
+// At OVL_UI Offset 0x0C
 // Set to (width * 4), number of bytes per row
-// (DE Page 104, 0x110 300C / 0x110 400C / 0x110 500C)
+// (DE Page 104)
 
 const OVL_UI_PITCH = OVL_UI_BASE_ADDRESS + 0x0C;
 putreg32(       // Write to Hardware Register...
@@ -406,32 +405,33 @@ putreg32(       // Write to Hardware Register...
   OVL_UI_PITCH  // Address of Hardware Register
 );</code></pre></div><h2 id="framebuffer-size"><a href="#framebuffer-size">3.3 Framebuffer Size</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_MBSIZE / OVL_UI_SIZE</strong>, Page 104 / 106)</a></p>
-<p>TODO</p>
-<p>Set to (height-1) &lt;&lt; 16 + (width-1)</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L526-L533">render.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>// OVL_UI_MBSIZE (UI Overlay Memory Block Size) at OVL_UI Offset 0x04
+<p>We set the <strong>Framebuffer Size</strong> with this rather odd formula…</p>
+<div class="example-wrap"><pre class="language-text"><code>(height - 1) &lt;&lt; 16 + (width - 1)</code></pre></div>
+<p>This is how we do it: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L526-L533">render.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// OVL_UI_MBSIZE (UI Overlay Memory Block Size)
+// At OVL_UI Offset 0x04
 // Set to (height-1) &lt;&lt; 16 + (width-1)
-// (DE Page 104, 0x110 3004 / 0x110 4004 / 0x110 5004)
+// (DE Page 104)
 
-const height_width: u32 = @intCast(u32, yres - 1) &lt;&lt; 16
-  | (xres - 1);
+const height_width: u32 =
+  @intCast(u32, yres - 1) &lt;&lt; 16  // yres is 1440
+  | (xres - 1);                  // xres is 720
 const OVL_UI_MBSIZE = OVL_UI_BASE_ADDRESS + 0x04;
 putreg32(height_width, OVL_UI_MBSIZE);</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L535-L540">render.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>// OVL_UI_SIZE (UI Overlay Overlay Window Size) at OVL_UI Offset 0x88
+<p>We do the same for another Hardware Register: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L535-L540">render.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// OVL_UI_SIZE (UI Overlay Overlay Window Size)
+// At OVL_UI Offset 0x88
 // Set to (height-1) &lt;&lt; 16 + (width-1)
-// (DE Page 106, 0x110 3088 / 0x110 4088 / 0x110 5088)
+// (DE Page 106)
 
 const OVL_UI_SIZE = OVL_UI_BASE_ADDRESS + 0x88;
 putreg32(height_width, OVL_UI_SIZE);</code></pre></div><h2 id="framebuffer-coordinates"><a href="#framebuffer-coordinates">3.4 Framebuffer Coordinates</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_COOR</strong>, Page 104)</a></p>
-<p>TODO</p>
-<p>Set to 0 (Overlay at X=0, Y=0)</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L542-L547">render.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>// OVL_UI_COOR (UI Overlay Memory Block Coordinate) at OVL_UI Offset 0x08
+<p>Our Framebuffer will be rendered at X = 0, Y = 0. We set this in the <strong>Framebuffer Coordinates</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L542-L547">render.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// OVL_UI_COOR (UI Overlay Memory Block Coordinate)
+// At OVL_UI Offset 0x08
 // Set to 0 (Overlay at X=0, Y=0)
-// (DE Page 104, 0x110 3008 / 0x110 4008 / 0x110 5008)
+// (DE Page 104)
 
 const OVL_UI_COOR = OVL_UI_BASE_ADDRESS + 0x08;
 putreg32(0, OVL_UI_COOR);</code></pre></div><h2 id="framebuffer-attributes"><a href="#framebuffer-attributes">3.5 Framebuffer Attributes</a></h2>
@@ -447,7 +447,8 @@ putreg32(0, OVL_UI_COOR);</code></pre></div><h2 id="framebuffer-attributes"><a h
 <p>Enable Layer: LAY_EN</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L470-L509">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Set Overlay (Assume Layer = 0)
-// OVL_UI_ATTR_CTL (UI Overlay Attribute Control) at OVL_UI Offset 0x00
+// OVL_UI_ATTR_CTL (UI Overlay Attribute Control)
+// At OVL_UI Offset 0x00
 // For Channel 1: Set to 0xFF00 0405
 // For Channel 2: Set to 0xFF00 0005
 // For Channel 3: Set to 0x7F00 0005
@@ -503,7 +504,8 @@ putreg32(0, UIS_CTRL_REG);</code></pre></div><h1 id="configure-blender-output"><
 <p>Set Blender Output Size</p>
 <p>Set to (height-1) &lt;&lt; 16 + (width-1)</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L551-L564">render.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>// BLD_SIZE (Blender Output Size Setting) at BLD Offset 0x08C
+<div class="example-wrap"><pre class="language-zig"><code>// BLD_SIZE (Blender Output Size Setting)
+// At BLD Offset 0x08C
 // Set to (height-1) &lt;&lt; 16 + (width-1)
 // (DE Page 110, 0x110 108C)
 
@@ -529,7 +531,8 @@ const pipe: u64 = channel - 1;
 // BLD_CH_ISIZE, BLD_FILL_COLOR and BLD_CH_OFFSET. 
 // Correct offset is N*0x10, see DE Page 108
 
-// BLD_CH_ISIZE (Blender Input Memory Size) at BLD Offset 0x008 + N*0x10 (N=0,1,2,3,4)
+// BLD_CH_ISIZE (Blender Input Memory Size)
+// At BLD Offset 0x008 + N*0x10 (N=0,1,2,3,4)
 // Set to (height-1) &lt;&lt; 16 + (width-1)
 // (DE Page 108, 0x110 1008 / 0x110 1018 / 0x110 1028)
 
@@ -543,7 +546,8 @@ putreg32(height_width, BLD_CH_ISIZE);</code></pre></div><h2 id="fill-color"><a h
 <p>GREEN (Bits 8 to 15) = 0</p>
 <p>BLUE (Bits 0 to 7) = 0</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L582-L601">render.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>// BLD_FILL_COLOR (Blender Fill Color) at BLD Offset 0x004 + N*0x10 (N=0,1,2,3,4)
+<div class="example-wrap"><pre class="language-zig"><code>// BLD_FILL_COLOR (Blender Fill Color)
+// At BLD Offset 0x004 + N*0x10 (N=0,1,2,3,4)
 // Set to 0xFF00 0000 (Opaque Black)
 // ALPHA (Bits 24 to 31) = 0xFF
 // RED (Bits 16 to 23) = 0
@@ -566,7 +570,8 @@ putreg32(color, BLD_FILL_COLOR);</code></pre></div><h2 id="input-offset"><a href
 <p>TODO</p>
 <p>Set to y_offset &lt;&lt; 16 + x_offset</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L603-L615">render.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>// BLD_CH_OFFSET (Blender Input Memory Offset) at BLD Offset 0x00C + N*0x10 (N=0,1,2,3,4)
+<div class="example-wrap"><pre class="language-zig"><code>// BLD_CH_OFFSET (Blender Input Memory Offset)
+// At BLD Offset 0x00C + N*0x10 (N=0,1,2,3,4)
 // Set to y_offset &lt;&lt; 16 + x_offset
 // For Channel 1: Set to 0
 // For Channel 2: Set to 0x34 0034
@@ -589,7 +594,8 @@ putreg32(offset, BLD_CH_OFFSET);</code></pre></div><h2 id="blender-attributes"><
 <p>BLEND_PFS (Bits 0 to 3) = 1</p>
 <p>(Coefficient for source pixel data F[s] is 1)</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L617-L639">render.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>// BLD_CTL (Blender Control) at BLD Offset 0x090 + N*4
+<div class="example-wrap"><pre class="language-zig"><code>// BLD_CTL (Blender Control)
+// At BLD Offset 0x090 + N*4
 // Set to 0x301 0301
 // BLEND_AFD (Bits 24 to 27) = 3
 //   (Coefficient for destination alpha data Q[d] is 1-A[s])
