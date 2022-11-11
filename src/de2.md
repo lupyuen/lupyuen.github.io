@@ -800,13 +800,13 @@ const GLB_DBUFFER = GLB_BASE_ADDRESS + 0x008;
 putreg32(DOUBLE_BUFFER_RDY, GLB_DBUFFER);  // TODO: DMB
 ```
 
-We're ready to test our Zig Display Driver on PinePhone!
+And that's all for rendering our Framebuffer!
 
 ![Blue, Green, Red Blocks on PinePhone](https://lupyuen.github.io/images/de-rgb.jpg)
 
 # Test PinePhone Display Driver
 
-TODO
+We're ready to test our Zig Display Driver on PinePhone!
 
 Follow these steps to __download NuttX RTOS__ (with our Zig Driver inside) to a microSD Card...
 
@@ -824,26 +824,50 @@ At the NuttX Shell, enter this command to __test our Zig Display Driver__...
 hello 1
 ```
 
-TODO: We should see our Zig Driver composing the __MIPI DSI Packets__ and setting the __Hardware Registers__ of the Allwinner A64 SoC...
+We should see our Zig Driver setting the __Hardware Registers__ of the Allwinner A64 Display Engine...
 
 ```text
 HELLO NUTTX ON PINEPHONE!
-...
 Shell (NSH) NuttX-11.0.0-RC2
 nsh> hello 1
 ...
-TODO
+initUiChannel: start
+Channel 1: Set Overlay (720 x 1440)
+  *0x1103000 = 0xff000405
+  *0x1103010 = 0x4010c000
+  *0x110300c = 0xb40
+  *0x1103004 = 0x59f02cf
+  *0x1103088 = 0x59f02cf
+  *0x1103008 = 0x0
+Channel 1: Set Blender Output
+Channel 1: Set Blender Input Pipe 0 (720 x 1440)
+Channel 1: Disable Scaler
+...
+Channel 2: Disable Overlay and Pipe
+Channel 2: Disable Scaler
+...
+Channel 3: Disable Overlay and Pipe
+Channel 3: Disable Scaler
+...
+Set Blender Route
+Enable Blender Pipes
+Apply Settings
 ```
 
-TODO: [(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx#testing-nuttx-zig-driver-for-mipi-dsi-on-pinephone)
+[(See the Complete Log)](https://gist.github.com/lupyuen/9824d0cece10bfdaa13da3660c6d9cf5)
 
 TODO: Our Zig Display Driver 🎉
+
 
 ![TODO](https://lupyuen.github.io/images/de2-blender.jpg)
 
 # Multiple Framebuffers
 
 TODO
+
+1.  Or enter `hello 3` to render the same colour bars with Blue Square and Green Circle as Overlays
+
+    [(See the Complete Log)](https://gist.github.com/lupyuen/d8d6710ab2ed16765816157cb97e54e7)
 
 # What's Next
 
