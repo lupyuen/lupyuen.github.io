@@ -224,15 +224,15 @@ const videoInfo = c.fb_videoinfo_s {
 </li>
 <li>
 <p>Set <strong>Framebuffer Pitch</strong></p>
-<p>(Number of bytes per row)</p>
+<p>(Number of bytes per row: 720 * 4)</p>
 </li>
 <li>
 <p>Set <strong>Framebuffer Size</strong></p>
-<p>(Width and Height)</p>
+<p>(Width and Height are 720 x 1440)</p>
 </li>
 <li>
 <p>Set <strong>Framebuffer Coordinates</strong></p>
-<p>(X and Y Offsets)</p>
+<p>(X and Y Offsets are 0)</p>
 </li>
 <li>
 <p>Set <strong>Framebuffer Attributes</strong></p>
@@ -513,32 +513,34 @@ putreg32(0, UIS_CTRL_REG);</code></pre></div>
 <ol>
 <li>
 <p>Set <strong>Output Size</strong></p>
+<p>(Screen Size is 720 x 1440)</p>
 </li>
 <li>
 <p>Set <strong>Input Size</strong></p>
+<p>(Framebuffer Size is 720 x 1440)</p>
 </li>
 <li>
 <p>Set <strong>Fill Color</strong></p>
+<p>(Background is Opaque Black)</p>
 </li>
 <li>
 <p>Set <strong>Input Offset</strong></p>
+<p>(X and Y Offsets are 0)</p>
 </li>
 <li>
 <p>Set <strong>Blender Attributes</strong></p>
+<p>(For Alpha Blending)</p>
 </li>
 <li>
 <p><strong>Enable Blender</strong></p>
+<p>(For Blender Pipe 0)</p>
 </li>
 </ol>
 <h2 id="output-size"><a href="#output-size">4.1 Output Size</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_SIZE / GLB_SIZE</strong>, Page 110 / 93)</a></p>
-<p>TODO</p>
-<p>We set the <strong>Framebuffer Size</strong> with this rather odd formula…</p>
+<p>We set the <strong>Output Size</strong> of our Blender to 720 x 1440 with this odd formula (that we’ve seen earlier)…</p>
 <div class="example-wrap"><pre class="language-text"><code>(height - 1) &lt;&lt; 16 + (width - 1)</code></pre></div>
-<p>(For Channel 1 Only)</p>
-<p>Set Blender Output Size</p>
-<p>Set to (height-1) &lt;&lt; 16 + (width-1)</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L551-L564">render.zig</a></p>
+<p>This is how we set the Hardware Registers: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L551-L564">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// BLD_SIZE (Blender Output Size Setting)
 // At BLD Offset 0x08C
 // Set to (height-1) &lt;&lt; 16 + (width-1)
@@ -558,35 +560,28 @@ putreg32(height_width, BLD_SIZE);
 const GLB_SIZE = GLB_BASE_ADDRESS + 0x00C;
 putreg32(height_width, GLB_SIZE);</code></pre></div><h2 id="input-size"><a href="#input-size">4.2 Input Size</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_CH_ISIZE</strong>, Page 108)</a></p>
-<p>TODO</p>
-<p>Set to (height-1) &lt;&lt; 16 + (width-1)</p>
-<p>pipe = 0</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L567-L580">render.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>// Set Blender Input Pipe (N = Pipe Number, from 0 to 2 for Channels 1 to 3)
-const pipe: u64 = channel - 1;
-
-// Note: DE Page 91 shows incorrect offset N*0x14 for 
+<p>According to the pic above, we’re configuring <strong>Blender Pipe 0</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L567-L580">render.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// Set Blender Input Pipe to Pipe 0
+// (For Channel 1)
+const pipe: u64 = channel - 1;</code></pre></div>
+<p>This is how we set the <strong>Input Size</strong> to 720 x 1440 for Blender Pipe 0: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L567-L580">render.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// Note: DE Page 91 shows incorrect offset N*0x14 for 
 // BLD_CH_ISIZE, BLD_FILL_COLOR and BLD_CH_OFFSET. 
 // Correct offset is N*0x10, see DE Page 108
 
 // BLD_CH_ISIZE (Blender Input Memory Size)
-// At BLD Offset 0x008 + N*0x10 (N=0,1,2,3,4)
+// At BLD Offset 0x008 + N*0x10 (N=0 for Channel 1)
 // Set to (height-1) &lt;&lt; 16 + (width-1)
 // (DE Page 108)
 
 const BLD_CH_ISIZE = BLD_BASE_ADDRESS + 0x008 + pipe * 0x10;
-putreg32(height_width, BLD_CH_ISIZE);</code></pre></div><h2 id="fill-color"><a href="#fill-color">4.3 Fill Color</a></h2>
+putreg32(height_width, BLD_CH_ISIZE);</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/de2#output-size">(We’ve seen <strong><code>height_width</code></strong> earlier)</a></p>
+<h2 id="fill-color"><a href="#fill-color">4.3 Fill Color</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_FILL_COLOR</strong>, Page 107)</a></p>
-<p>TODO</p>
-<p>Set to 0xFF00 0000 (Opaque Black)</p>
-<p>ALPHA (Bits 24 to 31) = 0xFF</p>
-<p>RED (Bits 16 to 23) = 0</p>
-<p>GREEN (Bits 8 to 15) = 0</p>
-<p>BLUE (Bits 0 to 7) = 0</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L582-L601">render.zig</a></p>
+<p>We set the <strong>Background Fill Color</strong> for the Blender to Opaque Black: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L582-L601">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// BLD_FILL_COLOR (Blender Fill Color)
-// At BLD Offset 0x004 + N*0x10 (N=0,1,2,3,4)
-// Set to 0xFF00 0000 (Opaque Black)
+// At BLD Offset 0x004 + N*0x10 (N=0 for Channel 1)
 // ALPHA (Bits 24 to 31) = 0xFF
 // RED   (Bits 16 to 23) = 0
 // GREEN (Bits 8  to 15) = 0
@@ -605,36 +600,36 @@ const color = ALPHA
 const BLD_FILL_COLOR = BLD_BASE_ADDRESS + 0x004 + pipe * 0x10;
 putreg32(color, BLD_FILL_COLOR);</code></pre></div><h2 id="input-offset"><a href="#input-offset">4.4 Input Offset</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_CH_OFFSET</strong>, Page 108)</a></p>
-<p>TODO</p>
-<p>Set to y_offset &lt;&lt; 16 + x_offset</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L603-L615">render.zig</a></p>
+<p>We set the <strong>Input Offset</strong> of the Blender to X = 0, Y = 0: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L603-L615">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// BLD_CH_OFFSET (Blender Input Memory Offset)
-// At BLD Offset 0x00C + N*0x10 (N=0,1,2,3,4)
-// Set to y_offset &lt;&lt; 16 + x_offset
-// For Channel 1: Set to 0
-// For Channel 2: Set to 0x34 0034
-// For Channel 3: Set to 0
+// At BLD Offset 0x00C + N*0x10 (N=0 for Channel 1)
 // (DE Page 108)
 
-const offset = @intCast(u32, yoffset) &lt;&lt; 16
-  | xoffset;
+const offset = 
+  @intCast(u32, yoffset) &lt;&lt; 16  // yoffset is 0
+  | xoffset;                    // xoffset is 0
 const BLD_CH_OFFSET = BLD_BASE_ADDRESS + 0x00C + pipe * 0x10;
 putreg32(offset, BLD_CH_OFFSET);</code></pre></div><h2 id="blender-attributes"><a href="#blender-attributes">4.5 Blender Attributes</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_CTL</strong>, Page 110)</a></p>
-<p>TODO</p>
-<p>Set to 0x301 0301</p>
-<p>BLEND_AFD (Bits 24 to 27) = 3</p>
-<p>(Coefficient for destination alpha data Q[d] is 1-A[s])</p>
-<p>BLEND_AFS (Bits 16 to 19) = 1</p>
-<p>(Coefficient for source alpha data Q[s] is 1)</p>
-<p>BLEND_PFD (Bits 8 to 11) = 3</p>
-<p>(Coefficient for destination pixel data F[d] is 1-A[s])</p>
-<p>BLEND_PFS (Bits 0 to 3) = 1</p>
-<p>(Coefficient for source pixel data F[s] is 1)</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L617-L639">render.zig</a></p>
+<p>We set these <strong>Blender Attributes</strong>…</p>
+<ul>
+<li>
+<p>Coefficient for Destination Alpha Data Q[d] is 1-A[s]</p>
+</li>
+<li>
+<p>Coefficient for Source Alpha Data Q[s] is 1</p>
+</li>
+<li>
+<p>Coefficient for Destination Pixel Data F[d] is 1-A[s]</p>
+</li>
+<li>
+<p>Coefficient for Source Pixel Data F[s] is 1</p>
+<p>(Why?)</p>
+</li>
+</ul>
+<p>Like so: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L617-L639">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// BLD_CTL (Blender Control)
-// At BLD Offset 0x090 + N*4
-// Set to 0x301 0301
+// At BLD Offset 0x090 + N*4 (N=0 for Channel 1)
 // BLEND_AFD (Bits 24 to 27) = 3
 //   (Coefficient for destination alpha data Q[d] is 1-A[s])
 // BLEND_AFS (Bits 16 to 19) = 1
@@ -660,7 +655,7 @@ putreg32(blend, BLD_CTL);</code></pre></div>
 <h2 id="enable-blender"><a href="#enable-blender">4.6 Enable Blender</a></h2>
 <p>TODO</p>
 <p>Set Blender Route: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L322-L353">render.zig</a></p>
-<p>TODO</p>
+<p>TODO: Enable Pipe 0, Disable Pipes 1 and 2</p>
 <p>Enable Blender Pipes: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L354-L389">render.zig</a></p>
 <p>TODO</p>
 <p>Apply Settings: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L390-L404">render.zig</a></p>
