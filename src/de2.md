@@ -182,7 +182,7 @@ _How do we render the Framebuffer on PinePhone?_
 
 Remember that we're talking directly to PinePhone's __Display Hardware__ ("Bare Metal"), without any Display Driver. So this part might sound a little more complicated than we expect...
 
-To control PinePhone's Display Hardware, we'll set the Hardware Registers for the [__Allwinner A64 Display Engine__](https://lupyuen.github.io/articles/de) inside PinePhone.
+To control PinePhone's Display Hardware, we'll set the Hardware Registers for the [__Allwinner A64 Display Engine__](https://lupyuen.github.io/articles/de) inside PinePhone. (Pic above)
 
 In a while we'll do the following through the Hardware Registers...
 
@@ -597,14 +597,14 @@ Set to (height-1) << 16 + (width-1)
 // BLD_SIZE (Blender Output Size Setting)
 // At BLD Offset 0x08C
 // Set to (height-1) << 16 + (width-1)
-// (DE Page 110, 0x110 108C)
+// (DE Page 110)
 
 const BLD_SIZE = BLD_BASE_ADDRESS + 0x08C;
 putreg32(height_width, BLD_SIZE);
         
 // GLB_SIZE (Global Size) at GLB Offset 0x00C
 // Set to (height-1) << 16 + (width-1)
-// (DE Page 93, 0x110 000C)
+// (DE Page 93)
 
 const GLB_SIZE = GLB_BASE_ADDRESS + 0x00C;
 putreg32(height_width, GLB_SIZE);
@@ -633,7 +633,7 @@ const pipe: u64 = channel - 1;
 // BLD_CH_ISIZE (Blender Input Memory Size)
 // At BLD Offset 0x008 + N*0x10 (N=0,1,2,3,4)
 // Set to (height-1) << 16 + (width-1)
-// (DE Page 108, 0x110 1008 / 0x110 1018 / 0x110 1028)
+// (DE Page 108)
 
 const BLD_CH_ISIZE = BLD_BASE_ADDRESS + 0x008 + pipe * 0x10;
 putreg32(height_width, BLD_CH_ISIZE);
@@ -662,10 +662,10 @@ BLUE (Bits 0 to 7) = 0
 // At BLD Offset 0x004 + N*0x10 (N=0,1,2,3,4)
 // Set to 0xFF00 0000 (Opaque Black)
 // ALPHA (Bits 24 to 31) = 0xFF
-// RED (Bits 16 to 23) = 0
-// GREEN (Bits 8 to 15) = 0
-// BLUE (Bits 0 to 7) = 0
-// (DE Page 107, 0x110 1004 / 0x110 1014 / 0x110 1024)
+// RED   (Bits 16 to 23) = 0
+// GREEN (Bits 8  to 15) = 0
+// BLUE  (Bits 0  to 7)  = 0
+// (DE Page 107)
 
 const ALPHA: u32 = 0xFF << 24;  // Opaque
 const RED:   u24 = 0    << 16;  // Black
@@ -697,7 +697,7 @@ Set to y_offset << 16 + x_offset
 // For Channel 1: Set to 0
 // For Channel 2: Set to 0x34 0034
 // For Channel 3: Set to 0
-// (DE Page 108, 0x110 100C / 0x110 101C / 0x110 102C)
+// (DE Page 108)
 
 const offset = @intCast(u32, yoffset) << 16
   | xoffset;
@@ -743,7 +743,7 @@ BLEND_PFS (Bits 0 to 3) = 1
 //   (Coefficient for destination pixel data F[d] is 1-A[s])
 // BLEND_PFS (Bits 0 to 3) = 1
 //   (Coefficient for source pixel data F[s] is 1)
-// (DE Page 110, 0x110 1090 / 0x110 1094 / 0x110 1098)
+// (DE Page 110)
 
 const BLEND_AFD: u28 = 3 << 24;  // Coefficient for destination alpha data Q[d] is 1-A[s]
 const BLEND_AFS: u20 = 1 << 16;  // Coefficient for source alpha data Q[s] is 1
@@ -757,6 +757,8 @@ const blend = BLEND_AFD
 const BLD_CTL = BLD_BASE_ADDRESS + 0x090 + pipe * 4;
 putreg32(blend, BLD_CTL);
 ```
+
+![TODO](https://lupyuen.github.io/images/de2-blender2.jpg)
 
 ## Enable Blender
 
