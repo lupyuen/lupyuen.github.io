@@ -533,6 +533,8 @@ putreg32(0, UIS_CTRL_REG);</code></pre></div>
 <h2 id="output-size"><a href="#output-size">4.1 Output Size</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_SIZE / GLB_SIZE</strong>, Page 110 / 93)</a></p>
 <p>TODO</p>
+<p>We set the <strong>Framebuffer Size</strong> with this rather odd formula…</p>
+<div class="example-wrap"><pre class="language-text"><code>(height - 1) &lt;&lt; 16 + (width - 1)</code></pre></div>
 <p>(For Channel 1 Only)</p>
 <p>Set Blender Output Size</p>
 <p>Set to (height-1) &lt;&lt; 16 + (width-1)</p>
@@ -542,10 +544,14 @@ putreg32(0, UIS_CTRL_REG);</code></pre></div>
 // Set to (height-1) &lt;&lt; 16 + (width-1)
 // (DE Page 110)
 
+const height_width: u32 =
+  @intCast(u32, yres - 1) &lt;&lt; 16  // yres is 1440
+  | (xres - 1);                  // xres is 720
 const BLD_SIZE = BLD_BASE_ADDRESS + 0x08C;
 putreg32(height_width, BLD_SIZE);
         
-// GLB_SIZE (Global Size) at GLB Offset 0x00C
+// GLB_SIZE (Global Size)
+// At GLB Offset 0x00C
 // Set to (height-1) &lt;&lt; 16 + (width-1)
 // (DE Page 93)
 
