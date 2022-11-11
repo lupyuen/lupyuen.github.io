@@ -210,6 +210,7 @@ const videoInfo = c.fb_videoinfo_s {
 };</code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L299-L313">(<strong><code>fb_videoinfo_s</code></strong> comes from NuttX RTOS)</a></p>
 <p>We’ll test the Overlay Framebuffers later.</p>
+<p><img src="https://lupyuen.github.io/images/de2-blender2.jpg" alt="TODO" /></p>
 <h1 id="configure-framebuffer"><a href="#configure-framebuffer">3 Configure Framebuffer</a></h1>
 <p><em>How do we render the Framebuffer on PinePhone?</em></p>
 <p>Remember that we’re talking directly to PinePhone’s <strong>Display Hardware</strong> (“Bare Metal”), without any Display Driver. So this part might sound a little more complicated than we expect…</p>
@@ -500,6 +501,7 @@ putreg32(0, UIS_CTRL_REG);</code></pre></div>
 <p>And we’re done configuring the PinePhone Display Engine for our Framebuffer!</p>
 <p>Let’s talk about PinePhone’s Blender…</p>
 <p>(Will PinePhone Blend? Yep for sure!)</p>
+<p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="TODO" /></p>
 <h1 id="configure-blender"><a href="#configure-blender">4 Configure Blender</a></h1>
 <p>TODO</p>
 <h2 id="output-size"><a href="#output-size">4.1 Output Size</a></h2>
@@ -628,6 +630,7 @@ putreg32(blend, BLD_CTL);</code></pre></div>
 <p>Enable Blender Pipes: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L354-L389">render.zig</a></p>
 <p>TODO</p>
 <p>Apply Settings: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L390-L404">render.zig</a></p>
+<p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="TODO" /></p>
 <h1 id="multiple-framebuffers"><a href="#multiple-framebuffers">5 Multiple Framebuffers</a></h1>
 <p>TODO</p>
 <h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
