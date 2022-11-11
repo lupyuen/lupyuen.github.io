@@ -2,7 +2,7 @@
 
 📝 _15 Nov 2022_
 
-![TODO](https://lupyuen.github.io/images/de2-title.jpg)
+![Our Zig Driver rendering Colour Blocks on Pine64 PinePhone](https://lupyuen.github.io/images/de2-title.jpg)
 
 _What happens when we render graphics on PinePhone's LCD Display?_
 
@@ -802,7 +802,7 @@ putreg32(DOUBLE_BUFFER_RDY, GLB_DBUFFER);  // TODO: DMB
 
 And that's all for rendering our Framebuffer!
 
-![Blue, Green, Red Blocks on PinePhone](https://lupyuen.github.io/images/de-rgb.jpg)
+![Blue, Green, Red Blocks on PinePhone](https://lupyuen.github.io/images/de2-test1.jpg)
 
 # Test PinePhone Display Driver
 
@@ -856,10 +856,11 @@ Apply Settings
 
 [(See the Complete Log)](https://gist.github.com/lupyuen/9824d0cece10bfdaa13da3660c6d9cf5)
 
-TODO: Our Zig Display Driver 🎉
+On PinePhone we see the __Blue, Green and Red__ colour bars. (Pic above)
 
+Yep our Zig Display Driver renders graphics correctly on PinePhone! 🎉
 
-![TODO](https://lupyuen.github.io/images/de2-blender.jpg)
+![Multiple Framebuffers](https://lupyuen.github.io/images/de2-blender.jpg)
 
 # Multiple Framebuffers
 
@@ -868,6 +869,8 @@ TODO
 1.  Or enter `hello 3` to render the same colour bars with Blue Square and Green Circle as Overlays
 
     [(See the Complete Log)](https://gist.github.com/lupyuen/d8d6710ab2ed16765816157cb97e54e7)
+
+![Blue, Green, Red Blocks with Overlays](https://lupyuen.github.io/images/de2-test3.jpg)
 
 # What's Next
 
