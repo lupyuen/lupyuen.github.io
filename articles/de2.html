@@ -81,7 +81,8 @@
 <li><a href="#input-size">4.2 Input Size</a><ul></ul></li>
 <li><a href="#fill-color">4.3 Fill Color</a><ul></ul></li>
 <li><a href="#input-offset">4.4 Input Offset</a><ul></ul></li>
-<li><a href="#blender-attributes">4.5 Blender Attributes</a><ul></ul></li></ul></li>
+<li><a href="#blender-attributes">4.5 Blender Attributes</a><ul></ul></li>
+<li><a href="#enable-blender">4.6 Enable Blender</a><ul></ul></li></ul></li>
 <li><a href="#multiple-framebuffers">5 Multiple Framebuffers</a><ul></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Nov 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/de2-title.jpg" alt="TODO" /></p>
@@ -503,7 +504,32 @@ putreg32(0, UIS_CTRL_REG);</code></pre></div>
 <p>(Will PinePhone Blend? Yep for sure!)</p>
 <p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="TODO" /></p>
 <h1 id="configure-blender"><a href="#configure-blender">4 Configure Blender</a></h1>
-<p>TODO</p>
+<p><em>What’s the Blender inside PinePhone?</em></p>
+<p>PinePhone’s A64 Display Engine supports <strong>3 Framebuffers</strong> (pic above). PinePhone’s Blender combines the 3 Framebuffers into a single image for display.</p>
+<p>Our job now is to <strong>configure the Blender</strong> so that it renders the Framebuffer correctly.</p>
+<p><em>But we’re using only one Framebuffer?</em></p>
+<p>For now. Which makes the Blender Configuration a little simpler.</p>
+<p>Up next: We’ll set PinePhone’s Hardware Registers to configure the Blender…</p>
+<ol>
+<li>
+<p>Set <strong>Output Size</strong></p>
+</li>
+<li>
+<p>Set <strong>Input Size</strong></p>
+</li>
+<li>
+<p>Set <strong>Fill Color</strong></p>
+</li>
+<li>
+<p>Set <strong>Input Offset</strong></p>
+</li>
+<li>
+<p>Set <strong>Blender Attributes</strong></p>
+</li>
+<li>
+<p><strong>Enable Blender</strong></p>
+</li>
+</ol>
 <h2 id="output-size"><a href="#output-size">4.1 Output Size</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_SIZE / GLB_SIZE</strong>, Page 110 / 93)</a></p>
 <p>TODO</p>
@@ -623,7 +649,7 @@ const blend = BLEND_AFD
   | BLEND_PFS;
 
 const BLD_CTL = BLD_BASE_ADDRESS + 0x090 + pipe * 4;
-putreg32(blend, BLD_CTL);</code></pre></div>
+putreg32(blend, BLD_CTL);</code></pre></div><h2 id="enable-blender"><a href="#enable-blender">4.6 Enable Blender</a></h2>
 <p>TODO</p>
 <p>Set Blender Route: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L322-L353">render.zig</a></p>
 <p>TODO</p>
