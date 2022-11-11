@@ -1742,7 +1742,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
         Mixer: 0x116 0000 = 0x0
         ```
 
-1.  __Set Blender Route and Fill Color__
+1.  __Set Blender Route and Enable Blender Pipes__
 
     -   __BLD_CH_RTCTL__ (Blender Routing Control) at BLD Offset `0x080`
 
