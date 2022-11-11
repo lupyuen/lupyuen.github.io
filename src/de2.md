@@ -585,6 +585,12 @@ Up next: We'll set PinePhone's Hardware Registers to __configure the Blender__ f
 
 TODO
 
+We set the __Framebuffer Size__ with this rather odd formula...
+
+```text
+(height - 1) << 16 + (width - 1)
+```
+
 (For Channel 1 Only)
 
 Set Blender Output Size
@@ -599,10 +605,14 @@ Set to (height-1) << 16 + (width-1)
 // Set to (height-1) << 16 + (width-1)
 // (DE Page 110)
 
+const height_width: u32 =
+  @intCast(u32, yres - 1) << 16  // yres is 1440
+  | (xres - 1);                  // xres is 720
 const BLD_SIZE = BLD_BASE_ADDRESS + 0x08C;
 putreg32(height_width, BLD_SIZE);
         
-// GLB_SIZE (Global Size) at GLB Offset 0x00C
+// GLB_SIZE (Global Size)
+// At GLB Offset 0x00C
 // Set to (height-1) << 16 + (width-1)
 // (DE Page 93)
 
