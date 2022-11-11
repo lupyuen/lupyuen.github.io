@@ -565,7 +565,7 @@ _But we're using only one Framebuffer?_
 
 For now. Which makes the Blender Configuration a little simpler.
 
-Up next: We'll set PinePhone's Hardware Registers to configure the Blender...
+Up next: We'll set PinePhone's Hardware Registers to __configure the Blender__ for a single Framebuffer...
 
 1.  Set __Output Size__
 
