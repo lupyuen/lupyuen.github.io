@@ -174,6 +174,8 @@ const videoInfo = c.fb_videoinfo_s {
 
 We'll test the Overlay Framebuffers later.
 
+![TODO](https://lupyuen.github.io/images/de2-blender2.jpg)
+
 # Configure Framebuffer
 
 _How do we render the Framebuffer on PinePhone?_
@@ -549,6 +551,8 @@ Let's talk about PinePhone's Blender...
 
 (Will PinePhone Blend? Yep for sure!)
 
+![TODO](https://lupyuen.github.io/images/de2-blender.jpg)
+
 # Configure Blender
 
 TODO
@@ -743,6 +747,8 @@ Enable Blender Pipes: [render.zig](https://github.com/lupyuen/pinephone-nuttx/bl
 TODO
 
 Apply Settings: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L390-L404)
+
+![TODO](https://lupyuen.github.io/images/de2-blender.jpg)
 
 # Multiple Framebuffers
 
