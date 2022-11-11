@@ -704,7 +704,7 @@ putreg32(offset, BLD_CH_OFFSET);
 
 [(__BLD_CTL__, Page 110)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-We set these __Blender Attributes__...
+We set these (mysterious) __Blender Attributes__...
 
 -   Coefficient for Destination Alpha Data Q[d] is 1-A[s]
 
@@ -748,17 +748,65 @@ putreg32(blend, BLD_CTL);
 
 ## Enable Blender
 
+[(__BLD_CH_RTCTL / BLD_FILL_COLOR_CTL / GLB_DBUFFER__, Page 108 / 106 / 93)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+Finally we enable __Blender Pipe 0__ (pic above): [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L322-L353)
+
+```zig
+// Set Blender Route
+// BLD_CH_RTCTL (Blender Routing Control)
+// At BLD Offset 0x080
+//   P0_RTCTL (Bits 0 to 3) = 1 (Pipe 0 from Channel 1)
+// (DE Page 108)
+
+const P0_RTCTL: u4 = 1 << 0;  // Select Pipe 0 from UI Channel 1
+const route = P0_RTCTL;
+
+const BLD_CH_RTCTL = BLD_BASE_ADDRESS + 0x080;
+putreg32(route, BLD_CH_RTCTL);  // TODO: DMB
+```
+
+We __disable Pipes 1 and 2__ since they're not used: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L354-L389)
+
+```zig
+// Enable Blender Pipes
+// BLD_FILL_COLOR_CTL (Blender Fill Color Control)
+// At BLD Offset 0x000
+//   P0_EN   (Bit 8)  = 1 (Enable Pipe 0)
+//   P0_FCEN (Bit 0)  = 1 (Enable Pipe 0 Fill Color)
+// (DE Page 106)
+
+const P0_EN:   u9 = 1 << 8;  // Enable Pipe 0
+const P0_FCEN: u1 = 1 << 0;  // Enable Pipe 0 Fill Color
+const fill = P0_EN
+    | P0_FCEN;
+
+const BLD_FILL_COLOR_CTL = BLD_BASE_ADDRESS + 0x000;
+putreg32(fill, BLD_FILL_COLOR_CTL);  // TODO: DMB
+```
+
+Our Framebuffer appears on PinePhone's Display when we __apply the settings__ for the Display Engine: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L390-L404)
+
+```zig
+// Apply Settings
+// GLB_DBUFFER (Global Double Buffer Control)
+// At GLB Offset 0x008
+// DOUBLE_BUFFER_RDY (Bit 0) = 1
+// (Register Value is ready for update)
+// (DE Page 93)
+
+const DOUBLE_BUFFER_RDY: u1 = 1 << 0;  // Register Value is ready for update
+const GLB_DBUFFER = GLB_BASE_ADDRESS + 0x008;
+putreg32(DOUBLE_BUFFER_RDY, GLB_DBUFFER);  // TODO: DMB
+```
+
+We're ready to test our Zig Display Driver on PinePhone!
+
+![Blue, Green, Red Blocks on PinePhone](https://lupyuen.github.io/images/de-rgb.jpg)
+
+# Test PinePhone Display Driver
+
 TODO
-
-Set Blender Route: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L322-L353)
-
-TODO: Enable Pipe 0, Disable Pipes 1 and 2
-
-Enable Blender Pipes: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L354-L389)
-
-TODO
-
-Apply Settings: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L390-L404)
 
 ![TODO](https://lupyuen.github.io/images/de2-blender.jpg)
 
