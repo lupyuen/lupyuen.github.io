@@ -83,8 +83,9 @@
 <li><a href="#input-offset">4.4 Input Offset</a><ul></ul></li>
 <li><a href="#blender-attributes">4.5 Blender Attributes</a><ul></ul></li>
 <li><a href="#enable-blender">4.6 Enable Blender</a><ul></ul></li></ul></li>
-<li><a href="#multiple-framebuffers">5 Multiple Framebuffers</a><ul></ul></li>
-<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Nov 2022</em></p>
+<li><a href="#test-pinephone-display-driver">5 Test PinePhone Display Driver</a><ul></ul></li>
+<li><a href="#multiple-framebuffers">6 Multiple Framebuffers</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Nov 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/de2-title.jpg" alt="TODO" /></p>
 <p><em>What happens when we render graphics on PinePhone’s LCD Display?</em></p>
 <p>Plenty happens when we render graphics on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> (pic above)… Because PinePhone’s <strong>Display Hardware is so complex!</strong></p>
@@ -611,7 +612,7 @@ const offset =
 const BLD_CH_OFFSET = BLD_BASE_ADDRESS + 0x00C + pipe * 0x10;
 putreg32(offset, BLD_CH_OFFSET);</code></pre></div><h2 id="blender-attributes"><a href="#blender-attributes">4.5 Blender Attributes</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_CTL</strong>, Page 110)</a></p>
-<p>We set these <strong>Blender Attributes</strong>…</p>
+<p>We set these (mysterious) <strong>Blender Attributes</strong>…</p>
 <ul>
 <li>
 <p>Coefficient for Destination Alpha Data Q[d] is 1-A[s]</p>
@@ -653,16 +654,53 @@ const BLD_CTL = BLD_BASE_ADDRESS + 0x090 + pipe * 4;
 putreg32(blend, BLD_CTL);</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/de2-blender2.jpg" alt="TODO" /></p>
 <h2 id="enable-blender"><a href="#enable-blender">4.6 Enable Blender</a></h2>
+<p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_CH_RTCTL / BLD_FILL_COLOR_CTL / GLB_DBUFFER</strong>, Page 108 / 106 / 93)</a></p>
+<p>Finally we enable <strong>Blender Pipe 0</strong> (pic above): <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L322-L353">render.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// Set Blender Route
+// BLD_CH_RTCTL (Blender Routing Control)
+// At BLD Offset 0x080
+//   P0_RTCTL (Bits 0 to 3) = 1 (Pipe 0 from Channel 1)
+// (DE Page 108)
+
+const P0_RTCTL: u4 = 1 &lt;&lt; 0;  // Select Pipe 0 from UI Channel 1
+const route = P0_RTCTL;
+
+const BLD_CH_RTCTL = BLD_BASE_ADDRESS + 0x080;
+putreg32(route, BLD_CH_RTCTL);  // TODO: DMB</code></pre></div>
+<p>We <strong>disable Pipes 1 and 2</strong> since they’re not used: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L354-L389">render.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// Enable Blender Pipes
+// BLD_FILL_COLOR_CTL (Blender Fill Color Control)
+// At BLD Offset 0x000
+//   P0_EN   (Bit 8)  = 1 (Enable Pipe 0)
+//   P0_FCEN (Bit 0)  = 1 (Enable Pipe 0 Fill Color)
+// (DE Page 106)
+
+const P0_EN:   u9 = 1 &lt;&lt; 8;  // Enable Pipe 0
+const P0_FCEN: u1 = 1 &lt;&lt; 0;  // Enable Pipe 0 Fill Color
+const fill = P0_EN
+    | P0_FCEN;
+
+const BLD_FILL_COLOR_CTL = BLD_BASE_ADDRESS + 0x000;
+putreg32(fill, BLD_FILL_COLOR_CTL);  // TODO: DMB</code></pre></div>
+<p>Our Framebuffer appears on PinePhone’s Display when we <strong>apply the settings</strong> for the Display Engine: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L390-L404">render.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// Apply Settings
+// GLB_DBUFFER (Global Double Buffer Control)
+// At GLB Offset 0x008
+// DOUBLE_BUFFER_RDY (Bit 0) = 1
+// (Register Value is ready for update)
+// (DE Page 93)
+
+const DOUBLE_BUFFER_RDY: u1 = 1 &lt;&lt; 0;  // Register Value is ready for update
+const GLB_DBUFFER = GLB_BASE_ADDRESS + 0x008;
+putreg32(DOUBLE_BUFFER_RDY, GLB_DBUFFER);  // TODO: DMB</code></pre></div>
+<p>We’re ready to test our Zig Display Driver on PinePhone!</p>
+<p><img src="https://lupyuen.github.io/images/de-rgb.jpg" alt="Blue, Green, Red Blocks on PinePhone" /></p>
+<h1 id="test-pinephone-display-driver"><a href="#test-pinephone-display-driver">5 Test PinePhone Display Driver</a></h1>
 <p>TODO</p>
-<p>Set Blender Route: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L322-L353">render.zig</a></p>
-<p>TODO: Enable Pipe 0, Disable Pipes 1 and 2</p>
-<p>Enable Blender Pipes: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L354-L389">render.zig</a></p>
-<p>TODO</p>
-<p>Apply Settings: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L390-L404">render.zig</a></p>
 <p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="TODO" /></p>
-<h1 id="multiple-framebuffers"><a href="#multiple-framebuffers">5 Multiple Framebuffers</a></h1>
+<h1 id="multiple-framebuffers"><a href="#multiple-framebuffers">6 Multiple Framebuffers</a></h1>
 <p>TODO</p>
-<h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>Today we’ve seen the Zig Internals of our new PinePhone Display Driver for Apache NuttX RTOS. I hope that coding the driver in Zig has made it a little easier to understand what’s inside.</p>
 <p>Some parts of the driver were simpler to code in Zig than in C. I’m glad I chose Zig for the driver!</p>
