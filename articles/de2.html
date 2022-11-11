@@ -697,9 +697,24 @@ putreg32(DOUBLE_BUFFER_RDY, GLB_DBUFFER);  // TODO: DMB</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/de-rgb.jpg" alt="Blue, Green, Red Blocks on PinePhone" /></p>
 <h1 id="test-pinephone-display-driver"><a href="#test-pinephone-display-driver">5 Test PinePhone Display Driver</a></h1>
 <p>TODO</p>
+<p>Follow these steps to <strong>download NuttX RTOS</strong> (with our Zig Driver inside) to a microSD Card…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx#test-zig-driver-for-pinephone-display-engine"><strong>“Test Zig Driver for PinePhone Display Engine”</strong></a></li>
 </ul>
+<p>Connect our computer to PinePhone with a <a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><strong>USB Serial Debug Cable</strong></a>. (At 115.2 kbps)</p>
+<p>Boot PinePhone with NuttX RTOS in the microSD Card.</p>
+<p>(NuttX won’t disturb the eMMC Flash Memory)</p>
+<p>At the NuttX Shell, enter this command to <strong>test our Zig Display Driver</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>hello 1</code></pre></div>
+<p>TODO: We should see our Zig Driver composing the <strong>MIPI DSI Packets</strong> and setting the <strong>Hardware Registers</strong> of the Allwinner A64 SoC…</p>
+<div class="example-wrap"><pre class="language-text"><code>HELLO NUTTX ON PINEPHONE!
+...
+Shell (NSH) NuttX-11.0.0-RC2
+nsh&gt; hello 1
+...
+TODO</code></pre></div>
+<p>TODO: <a href="https://github.com/lupyuen/pinephone-nuttx#testing-nuttx-zig-driver-for-mipi-dsi-on-pinephone">(See the Complete Log)</a></p>
+<p>TODO: Our Zig Display Driver 🎉</p>
 <p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="TODO" /></p>
 <h1 id="multiple-framebuffers"><a href="#multiple-framebuffers">6 Multiple Framebuffers</a></h1>
 <p>TODO</p>
