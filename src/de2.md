@@ -808,6 +808,8 @@ We're ready to test our Zig Display Driver on PinePhone!
 
 TODO
 
+-   [__"Test Zig Driver for PinePhone Display Engine"__](https://github.com/lupyuen/pinephone-nuttx#test-zig-driver-for-pinephone-display-engine)
+
 ![TODO](https://lupyuen.github.io/images/de2-blender.jpg)
 
 # Multiple Framebuffers
