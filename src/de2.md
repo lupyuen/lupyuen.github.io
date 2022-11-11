@@ -555,7 +555,29 @@ Let's talk about PinePhone's Blender...
 
 # Configure Blender
 
-TODO
+_What's the Blender inside PinePhone?_
+
+PinePhone's A64 Display Engine supports __3 Framebuffers__ (pic above). PinePhone's Blender combines the 3 Framebuffers into a single image for display.
+
+Our job now is to __configure the Blender__ so that it renders the Framebuffer correctly.
+
+_But we're using only one Framebuffer?_
+
+For now. Which makes the Blender Configuration a little simpler.
+
+Up next: We'll set PinePhone's Hardware Registers to configure the Blender...
+
+1.  Set __Output Size__
+
+1.  Set __Input Size__
+
+1.  Set __Fill Color__
+
+1.  Set __Input Offset__
+
+1.  Set __Blender Attributes__
+
+1.  __Enable Blender__
 
 ## Output Size
 
@@ -735,6 +757,8 @@ const blend = BLEND_AFD
 const BLD_CTL = BLD_BASE_ADDRESS + 0x090 + pipe * 4;
 putreg32(blend, BLD_CTL);
 ```
+
+## Enable Blender
 
 TODO
 
