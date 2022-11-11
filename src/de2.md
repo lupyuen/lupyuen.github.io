@@ -51,7 +51,7 @@ Let's continue the journey from our __NuttX Porting Journal__...
 
 # Graphics Framebuffer
 
-We begin with a __Graphics Framebuffer__ that we'll render on PinePhone's 720 x 1440 display (pic above): [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L709-L712)
+We begin with a __Graphics Framebuffer__ that we'll render on PinePhone's 720 x 1440 display (pic above): [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L653-L656)
 
 ```zig
 // Framebuffer of 720 x 1440 pixels
@@ -76,7 +76,7 @@ Each pixel has the format __ARGB 8888__ (32 bits)...
 
 So __`0x8080` `0000`__ is Semi-Transparent Red. (Alpha: `0x80`, Red: `0x80`)
 
-Let's describe the Framebuffer with a NuttX Struct: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L661-L673)
+Let's describe the Framebuffer with a NuttX Struct: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L605-L617)
 
 ```zig
 /// NuttX Color Plane for PinePhone (Base UI Channel):
@@ -157,7 +157,7 @@ We're now ready to render our Framebuffer!
 
 _Does PinePhone support multiple Framebuffers?_
 
-Yep PinePhone supports __3 Framebuffers__: One Base Framebuffer plus 2 Overlay Framebuffers: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L652-L659)
+Yep PinePhone supports __3 Framebuffers__: One Base Framebuffer plus 2 Overlay Framebuffers: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L596-L603)
 
 ```zig
 /// NuttX Video Controller for PinePhone (3 UI Channels)
@@ -232,7 +232,7 @@ initUiChannel(
 
 [(We've seen __`planeInfo`__ earlier)](https://lupyuen.github.io/articles/de2#graphics-framebuffer)
 
-Our function __`initUiChannel`__ is defined in [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L406-L418)
+Our function __`initUiChannel`__ is defined in [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L350-L362)
 
 ```zig
 /// Initialise a UI Channel for PinePhone's A64 Display Engine.
@@ -309,7 +309,7 @@ Let's look inside our function __`initUiChannel`__...
 
 [(__OVL_UI_TOP_LADD__, Page 104)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-The first Hardware Register we'll set is the __Framebuffer Address__: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L511-L517)
+The first Hardware Register we'll set is the __Framebuffer Address__: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L455-L461)
 
 ```zig
 // OVL_UI_TOP_LADD (UI Overlay Top Field Memory Block Low Address)
@@ -350,7 +350,7 @@ That's perfectly OK because PinePhone only supports up to 3 GB of Physical RAM.
 
 _What's OVL_UI_BASE_ADDRESS?_
 
-__OVL_UI_BASE_ADDRESS__ is computed though a chain of Hardware Register addresses: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L429-L434)
+__OVL_UI_BASE_ADDRESS__ is computed though a chain of Hardware Register addresses: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L373-L378)
 
 ```zig
 // OVL_UI(CH1) (UI Overlay 1) is at MIXER0 Offset 0x3000
@@ -374,7 +374,7 @@ const DISPLAY_ENGINE_BASE_ADDRESS = 0x0100_0000;
 
 _Hmmm this looks error-prone..._
 
-That's why we added __Assertion Checks__ to verify that the addresses of Hardware Registers are computed correctly: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L511-L517)
+That's why we added __Assertion Checks__ to verify that the addresses of Hardware Registers are computed correctly: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L455-L461)
 
 ```zig
 // Verify Register Address at Compile-Time
@@ -397,7 +397,7 @@ This verification is super helpful as we create the new Display Driver for PineP
 
 [(__OVL_UI_PITCH__, Page 104)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-Next we set the __Framebuffer Pitch__ to the number of bytes per row (`720 * 4`): [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L519-L524)
+Next we set the __Framebuffer Pitch__ to the number of bytes per row (`720 * 4`): [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L463-L468)
 
 ```zig
 // OVL_UI_PITCH (UI Overlay Memory Pitch)
@@ -422,7 +422,7 @@ We set the __Framebuffer Size__ with this rather odd formula...
 (height - 1) << 16 + (width - 1)
 ```
 
-This is how we do it: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L526-L533)
+This is how we do it: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L470-L477)
 
 ```zig
 // OVL_UI_MBSIZE (UI Overlay Memory Block Size)
@@ -437,7 +437,7 @@ const OVL_UI_MBSIZE = OVL_UI_BASE_ADDRESS + 0x04;
 putreg32(height_width, OVL_UI_MBSIZE);
 ```
 
-We do the same for another Hardware Register: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L535-L540)
+We do the same for another Hardware Register: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L479-L484)
 
 ```zig
 // OVL_UI_SIZE (UI Overlay Overlay Window Size)
@@ -453,7 +453,7 @@ putreg32(height_width, OVL_UI_SIZE);
 
 [(__OVL_UI_COOR__, Page 104)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-Our Framebuffer will be rendered at X = 0, Y = 0. We set this in the __Framebuffer Coordinates__: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L542-L547)
+Our Framebuffer will be rendered at X = 0, Y = 0. We set this in the __Framebuffer Coordinates__: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L486-L491)
 
 ```zig
 // OVL_UI_COOR (UI Overlay Memory Block Coordinate)
@@ -485,7 +485,7 @@ We set the __Framebuffer Attributes__...
 
 -   Enable Framebuffer
 
-This is how we set the above attributes as Bit Fields: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L470-L509)
+This is how we set the above attributes as Bit Fields: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L414-L453)
 
 ```zig
 // OVL_UI_ATTR_CTL (UI Overlay Attribute Control)
@@ -533,7 +533,7 @@ const LAY_ALPHA_MODE: u3 = 4 << 1;
 
 [(__UIS_CTRL_REG__, Page 66)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-PinePhone's A64 Display Engine includes a __UI Scaler__ that will do Hardware Scaling of our Framebuffer. Let's disable it: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L641-L649)
+PinePhone's A64 Display Engine includes a __UI Scaler__ that will do Hardware Scaling of our Framebuffer. Let's disable it: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L585-L593)
 
 ```zig
 // UIS_CTRL_REG at Offset 0 of UI_SCALER1(CH1) or UI_SCALER2(CH2) or UI_SCALER3(CH3)
@@ -601,7 +601,7 @@ We set the __Output Size__ of our Blender to 720 x 1440 with this odd formula (t
 (height - 1) << 16 + (width - 1)
 ```
 
-This is how we set the Hardware Registers: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L551-L564)
+This is how we set the Hardware Registers: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L495-L508)
 
 ```zig
 // BLD_SIZE (Blender Output Size Setting)
@@ -628,7 +628,7 @@ putreg32(height_width, GLB_SIZE);
 
 [(__BLD_CH_ISIZE__, Page 108)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-According to the pic above, we're configuring __Blender Pipe 0__: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L567-L580)
+According to the pic above, we're configuring __Blender Pipe 0__: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L511-L524)
 
 ```zig
 // Set Blender Input Pipe to Pipe 0
@@ -636,7 +636,7 @@ According to the pic above, we're configuring __Blender Pipe 0__: [render.zig](h
 const pipe: u64 = channel - 1;
 ```
 
-This is how we set the __Input Size__ to 720 x 1440 for Blender Pipe 0: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L567-L580)
+This is how we set the __Input Size__ to 720 x 1440 for Blender Pipe 0: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L511-L524)
 
 ```zig
 // Note: DE Page 91 shows incorrect offset N*0x14 for 
@@ -658,7 +658,7 @@ putreg32(height_width, BLD_CH_ISIZE);
 
 [(__BLD_FILL_COLOR__, Page 107)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-We set the __Background Fill Color__ for the Blender to Opaque Black: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L582-L601)
+We set the __Background Fill Color__ for the Blender to Opaque Black: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L526-L545)
 
 ```zig
 // BLD_FILL_COLOR (Blender Fill Color)
@@ -686,7 +686,7 @@ putreg32(color, BLD_FILL_COLOR);
 
 [(__BLD_CH_OFFSET__, Page 108)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-We set the __Input Offset__ of the Blender to X = 0, Y = 0: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L603-L615)
+We set the __Input Offset__ of the Blender to X = 0, Y = 0: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L547-L559)
 
 ```zig
 // BLD_CH_OFFSET (Blender Input Memory Offset)
@@ -716,7 +716,7 @@ We set these (mysterious) __Blender Attributes__...
 
     (Why?)
 
-Like so: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L617-L639)
+Like so: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L561-L583)
 
 ```zig
 // BLD_CTL (Blender Control)
@@ -750,7 +750,7 @@ putreg32(blend, BLD_CTL);
 
 [(__BLD_CH_RTCTL / BLD_FILL_COLOR_CTL / GLB_DBUFFER__, Page 108 / 106 / 93)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-Finally we enable __Blender Pipe 0__ (pic above): [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L322-L353)
+Finally we enable __Blender Pipe 0__ (pic above): [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L266-L297)
 
 ```zig
 // Set Blender Route
@@ -766,7 +766,7 @@ const BLD_CH_RTCTL = BLD_BASE_ADDRESS + 0x080;
 putreg32(route, BLD_CH_RTCTL);  // TODO: DMB
 ```
 
-We __disable Pipes 1 and 2__ since they're not used: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L354-L389)
+We __disable Pipes 1 and 2__ since they're not used: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L298-L333)
 
 ```zig
 // Enable Blender Pipes
@@ -785,7 +785,7 @@ const BLD_FILL_COLOR_CTL = BLD_BASE_ADDRESS + 0x000;
 putreg32(fill, BLD_FILL_COLOR_CTL);  // TODO: DMB
 ```
 
-Our Framebuffer appears on PinePhone's Display when we __apply the settings__ for the Display Engine: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L390-L404)
+Our Framebuffer appears on PinePhone's Display when we __apply the settings__ for the Display Engine: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L334-L348)
 
 ```zig
 // Apply Settings
