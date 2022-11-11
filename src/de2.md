@@ -192,15 +192,15 @@ In a while we'll do the following through the Hardware Registers...
 
 1.  Set __Framebuffer Pitch__
 
-    (Number of bytes per row)
+    (Number of bytes per row: 720 * 4)
 
 1.  Set __Framebuffer Size__
 
-    (Width and Height)
+    (Width and Height are 720 x 1440)
 
 1.  Set __Framebuffer Coordinates__
 
-    (X and Y Offsets)
+    (X and Y Offsets are 0)
 
 1.  Set __Framebuffer Attributes__
 
@@ -569,35 +569,39 @@ Up next: We'll set PinePhone's Hardware Registers to __configure the Blender__ f
 
 1.  Set __Output Size__
 
+    (Screen Size is 720 x 1440)
+
 1.  Set __Input Size__
+
+    (Framebuffer Size is 720 x 1440)
 
 1.  Set __Fill Color__
 
+    (Background is Opaque Black)
+
 1.  Set __Input Offset__
+
+    (X and Y Offsets are 0)
 
 1.  Set __Blender Attributes__
 
+    (For Alpha Blending)
+
 1.  __Enable Blender__
+
+    (For Blender Pipe 0)
 
 ## Output Size
 
 [(__BLD_SIZE / GLB_SIZE__, Page 110 / 93)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-TODO
-
-We set the __Framebuffer Size__ with this rather odd formula...
+We set the __Output Size__ of our Blender to 720 x 1440 with this odd formula (that we've seen earlier)...
 
 ```text
 (height - 1) << 16 + (width - 1)
 ```
 
-(For Channel 1 Only)
-
-Set Blender Output Size
-
-Set to (height-1) << 16 + (width-1)
-
-[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L551-L564)
+This is how we set the Hardware Registers: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L551-L564)
 
 ```zig
 // BLD_SIZE (Blender Output Size Setting)
@@ -624,24 +628,23 @@ putreg32(height_width, GLB_SIZE);
 
 [(__BLD_CH_ISIZE__, Page 108)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-TODO
-
-Set to (height-1) << 16 + (width-1)
-
-pipe = 0
-
-[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L567-L580)
+According to the pic above, we're configuring __Blender Pipe 0__: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L567-L580)
 
 ```zig
-// Set Blender Input Pipe (N = Pipe Number, from 0 to 2 for Channels 1 to 3)
+// Set Blender Input Pipe to Pipe 0
+// (For Channel 1)
 const pipe: u64 = channel - 1;
+```
 
+This is how we set the __Input Size__ to 720 x 1440 for Blender Pipe 0: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L567-L580)
+
+```zig
 // Note: DE Page 91 shows incorrect offset N*0x14 for 
 // BLD_CH_ISIZE, BLD_FILL_COLOR and BLD_CH_OFFSET. 
 // Correct offset is N*0x10, see DE Page 108
 
 // BLD_CH_ISIZE (Blender Input Memory Size)
-// At BLD Offset 0x008 + N*0x10 (N=0,1,2,3,4)
+// At BLD Offset 0x008 + N*0x10 (N=0 for Channel 1)
 // Set to (height-1) << 16 + (width-1)
 // (DE Page 108)
 
@@ -649,28 +652,17 @@ const BLD_CH_ISIZE = BLD_BASE_ADDRESS + 0x008 + pipe * 0x10;
 putreg32(height_width, BLD_CH_ISIZE);
 ```
 
+[(We've seen __`height_width`__ earlier)](https://lupyuen.github.io/articles/de2#output-size)
+
 ## Fill Color 
 
 [(__BLD_FILL_COLOR__, Page 107)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-TODO
-
-Set to 0xFF00 0000 (Opaque Black)
-
-ALPHA (Bits 24 to 31) = 0xFF
-
-RED (Bits 16 to 23) = 0
-
-GREEN (Bits 8 to 15) = 0
-
-BLUE (Bits 0 to 7) = 0
-
-[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L582-L601)
+We set the __Background Fill Color__ for the Blender to Opaque Black: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L582-L601)
 
 ```zig
 // BLD_FILL_COLOR (Blender Fill Color)
-// At BLD Offset 0x004 + N*0x10 (N=0,1,2,3,4)
-// Set to 0xFF00 0000 (Opaque Black)
+// At BLD Offset 0x004 + N*0x10 (N=0 for Channel 1)
 // ALPHA (Bits 24 to 31) = 0xFF
 // RED   (Bits 16 to 23) = 0
 // GREEN (Bits 8  to 15) = 0
@@ -694,23 +686,16 @@ putreg32(color, BLD_FILL_COLOR);
 
 [(__BLD_CH_OFFSET__, Page 108)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-TODO
-
-Set to y_offset << 16 + x_offset
-
-[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L603-L615)
+We set the __Input Offset__ of the Blender to X = 0, Y = 0: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L603-L615)
 
 ```zig
 // BLD_CH_OFFSET (Blender Input Memory Offset)
-// At BLD Offset 0x00C + N*0x10 (N=0,1,2,3,4)
-// Set to y_offset << 16 + x_offset
-// For Channel 1: Set to 0
-// For Channel 2: Set to 0x34 0034
-// For Channel 3: Set to 0
+// At BLD Offset 0x00C + N*0x10 (N=0 for Channel 1)
 // (DE Page 108)
 
-const offset = @intCast(u32, yoffset) << 16
-  | xoffset;
+const offset = 
+  @intCast(u32, yoffset) << 16  // yoffset is 0
+  | xoffset;                    // xoffset is 0
 const BLD_CH_OFFSET = BLD_BASE_ADDRESS + 0x00C + pipe * 0x10;
 putreg32(offset, BLD_CH_OFFSET);
 ```
@@ -719,32 +704,23 @@ putreg32(offset, BLD_CH_OFFSET);
 
 [(__BLD_CTL__, Page 110)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-TODO
+We set these __Blender Attributes__...
 
-Set to 0x301 0301
+-   Coefficient for Destination Alpha Data Q[d] is 1-A[s]
 
-BLEND_AFD (Bits 24 to 27) = 3
+-   Coefficient for Source Alpha Data Q[s] is 1
 
-(Coefficient for destination alpha data Q[d] is 1-A[s])
+-   Coefficient for Destination Pixel Data F[d] is 1-A[s]
 
-BLEND_AFS (Bits 16 to 19) = 1
+-   Coefficient for Source Pixel Data F[s] is 1
 
-(Coefficient for source alpha data Q[s] is 1)
+    (Why?)
 
-BLEND_PFD (Bits 8 to 11) = 3
-
-(Coefficient for destination pixel data F[d] is 1-A[s])
-
-BLEND_PFS (Bits 0 to 3) = 1
-
-(Coefficient for source pixel data F[s] is 1)
-
-[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L617-L639)
+Like so: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L617-L639)
 
 ```zig
 // BLD_CTL (Blender Control)
-// At BLD Offset 0x090 + N*4
-// Set to 0x301 0301
+// At BLD Offset 0x090 + N*4 (N=0 for Channel 1)
 // BLEND_AFD (Bits 24 to 27) = 3
 //   (Coefficient for destination alpha data Q[d] is 1-A[s])
 // BLEND_AFS (Bits 16 to 19) = 1
@@ -776,7 +752,7 @@ TODO
 
 Set Blender Route: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L322-L353)
 
-TODO
+TODO: Enable Pipe 0, Disable Pipes 1 and 2
 
 Enable Blender Pipes: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L354-L389)
 
