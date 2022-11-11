@@ -808,7 +808,36 @@ We're ready to test our Zig Display Driver on PinePhone!
 
 TODO
 
+Follow these steps to __download NuttX RTOS__ (with our Zig Driver inside) to a microSD Card...
+
 -   [__"Test Zig Driver for PinePhone Display Engine"__](https://github.com/lupyuen/pinephone-nuttx#test-zig-driver-for-pinephone-display-engine)
+
+Connect our computer to PinePhone with a [__USB Serial Debug Cable__](https://wiki.pine64.org/index.php/PinePhone#Serial_console). (At 115.2 kbps)
+
+Boot PinePhone with NuttX RTOS in the microSD Card.
+
+(NuttX won't disturb the eMMC Flash Memory)
+
+At the NuttX Shell, enter this command to __test our Zig Display Driver__...
+
+```bash
+hello 1
+```
+
+TODO: We should see our Zig Driver composing the __MIPI DSI Packets__ and setting the __Hardware Registers__ of the Allwinner A64 SoC...
+
+```text
+HELLO NUTTX ON PINEPHONE!
+...
+Shell (NSH) NuttX-11.0.0-RC2
+nsh> hello 1
+...
+TODO
+```
+
+TODO: [(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx#testing-nuttx-zig-driver-for-mipi-dsi-on-pinephone)
+
+TODO: Our Zig Display Driver 🎉
 
 ![TODO](https://lupyuen.github.io/images/de2-blender.jpg)
 
