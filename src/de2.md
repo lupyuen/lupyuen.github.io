@@ -57,7 +57,7 @@ We begin with a __Graphics Framebuffer__ that we'll render on PinePhone's 720 x 
 // Framebuffer of 720 x 1440 pixels
 var fb0 = std.mem.zeroes(  // Init to zeroes...
   [720 * 1440] u32         // 720 x 1440 pixels
-);                         // (4 bytes per pixel)
+);                         // (4 bytes per pixel: XRGB 8888)
 ```
 
 Each pixel is __`u32`__, equivalent to __`uint32_t`__ in C.
@@ -872,13 +872,17 @@ On PinePhone we see the __Blue, Green and Red__ colour blocks. (Pic above)
 
 Yep our Zig Display Driver renders graphics correctly on PinePhone! 🎉
 
-We've rendered a single Framebuffer, now we do 3 Framebuffers...
+We've rendered a single Framebuffer. Now we push PinePhone's Display Hardware to the max with 3 Framebuffers...
 
 ![Multiple Framebuffers](https://lupyuen.github.io/images/de2-blender.jpg)
 
 # Multiple Framebuffers
 
-_PinePhone's Display Hardware supports 3 Framebuffers. How do we render them?_
+_PinePhone's Display Hardware supports max 3 Framebuffers. How do we render them?_
+
+TODO
+
+## Allocate Framebuffers
 
 TODO
 
@@ -887,14 +891,18 @@ TODO
 ```zig
 // Framebuffer 1: (First Overlay UI Channel)
 // Square 600 x 600 (4 bytes per ARGB 8888 pixel)
-// TODO: Does alignment prevent flickering?
-var fb1 align(0x1000) = std.mem.zeroes([600 * 600] u32);
+var fb1 = std.mem.zeroes(  // Init to zeroes...
+  [600 * 600] u32          // 600 x 600 pixels
+);                         // (4 bytes per pixel: ARGB 8888)
 
 // Framebuffer 2: (Second Overlay UI Channel)
 // Fullscreen 720 x 1440 (4 bytes per ARGB 8888 pixel)
-// TODO: Does alignment prevent flickering?
-var fb2 align(0x1000) = std.mem.zeroes([720 * 1440] u32);
+var fb2 = std.mem.zeroes(  // Init to zeroes...
+  [720 * 1440] u32         // 720 x 1440 pixels
+);                         // (4 bytes per pixel: ARGB 8888)
 ```
+
+## Fill Framebuffers
 
 TODO
 
@@ -938,6 +946,8 @@ TODO
         }
     }
 ```
+
+## Render Framebuffers
 
 TODO
 
