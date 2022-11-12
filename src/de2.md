@@ -904,6 +904,8 @@ var fb2 = std.mem.zeroes(  // Init to zeroes...
 );                         // (4 bytes per pixel: ARGB 8888)
 ```
 
+![Blue, Green, Red Blocks with Overlays](https://lupyuen.github.io/images/de2-overlay.jpg)
+
 ## Fill Framebuffers
 
 TODO
