@@ -768,6 +768,8 @@ const BLD_CH_RTCTL = BLD_BASE_ADDRESS + 0x080;
 putreg32(route, BLD_CH_RTCTL);  // TODO: DMB
 ```
 
+[(DMB means __Data Memory Barrier__)](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb)
+
 We __disable Pipes 1 and 2__ since they're not used: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L298-L333)
 
 ```zig
@@ -1050,7 +1052,7 @@ We set the __Framebuffer Attributes__...
 
     (Non-Transparent)
 
--   Framebuffer Pixel Format is 32-bit __XRGB 8888__
+-   TODO: Framebuffer Pixel Format is 32-bit __XRGB 8888__
 
     ("X" means Pixel Alpha Value is ignored)
 
@@ -1063,33 +1065,46 @@ We set the __Framebuffer Attributes__...
 This is how we set the above attributes as Bit Fields: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L414-L453)
 
 ```zig
-// OVL_UI_ATTR_CTL (UI Overlay Attribute Control)
-// At OVL_UI Offset 0x00
-// LAY_GLBALPHA   (Bits 24 to 31) = Global Alpha Value
-// LAY_FBFMT      (Bits 8  to 12) = Input Data Format
-// LAY_ALPHA_MODE (Bits 1  to 2)  = Mix Global Alpha with Pixel Alpha
-// LAY_EN         (Bit 0)         = Enable Layer
-// (DE Page 102)
+    // Set Overlay (Assume Layer = 0)
+    // OVL_UI_ATTR_CTL (UI Overlay Attribute Control) at OVL_UI Offset 0x00
+    // For Channel 1: Set to 0xFF00 0405
+    // For Channel 2: Set to 0xFF00 0005
+    // For Channel 3: Set to 0x7F00 0005
+    // LAY_GLBALPHA (Bits 24 to 31) = 0xFF or 0x7F
+    //   (Global Alpha Value is Opaque or Semi-Transparent)
+    // LAY_FBFMT (Bits 8 to 12) = 4 or 0
+    //   (Input Data Format is XRGB 8888 or ARGB 8888)
+    // LAY_ALPHA_MODE (Bits 1 to 2) = 2
+    //   (Global Alpha is mixed with Pixel Alpha)
+    //   (Input Alpha Value = Global Alpha Value * Pixel’s Alpha Value)
+    // LAY_EN (Bit 0) = 1 (Enable Layer)
+    // (DE Page 102, 0x110 3000 / 0x110 4000 / 0x110 5000)
+    debug("Channel {}: Set Overlay ({} x {})", .{ channel, xres, yres });
+    const LAY_GLBALPHA: u32 = switch (channel) {  // For Global Alpha Value...
+        1 => 0xFF,  // Channel 1: Opaque
+        2 => 0xFF,  // Channel 2: Opaque
+        3 => 0x7F,  // Channel 3: Semi-Transparent
+        else => unreachable,
+    } << 24;  // Bits 24 to 31
 
-// Framebuffer is Opaque
-const LAY_GLBALPHA: u32 = 0xFF << 24;
+    const LAY_FBFMT: u13 = switch (channel) {  // For Input Data Format...
+        1 => 4,  // Channel 1: XRGB 8888
+        2 => 0,  // Channel 2: ARGB 8888
+        3 => 0,  // Channel 3: ARGB 8888
+        else => unreachable,
+    } << 8;  // Bits 8 to 12
 
-// Framebuffer Pixel Format is XRGB 8888
-const LAY_FBFMT: u13 = 4 << 8;
+    const LAY_ALPHA_MODE: u3 = 2 << 1;  // Global Alpha is mixed with Pixel Alpha
+    const LAY_EN:         u1 = 1 << 0;  // Enable Layer
+    const attr = LAY_GLBALPHA
+        | LAY_FBFMT
+        | LAY_ALPHA_MODE
+        | LAY_EN;
+    comptime{ assert(attr == 0xFF00_0405 or attr == 0xFF00_0005 or attr == 0x7F00_0005); }
 
-// Framebuffer Alpha is mixed with Pixel Alpha
-const LAY_ALPHA_MODE: u3 = 2 << 1;
-
-// Enable Framebuffer
-const LAY_EN: u1 = 1 << 0;
-
-// Combine the bits and set the register
-const attr = LAY_GLBALPHA
-  | LAY_FBFMT
-  | LAY_ALPHA_MODE
-  | LAY_EN;
-const OVL_UI_ATTR_CTL = OVL_UI_BASE_ADDRESS + 0x00;
-putreg32(attr, OVL_UI_ATTR_CTL);
+    const OVL_UI_ATTR_CTL = OVL_UI_BASE_ADDRESS + 0x00;
+    comptime{ assert(OVL_UI_ATTR_CTL == 0x110_3000 or OVL_UI_ATTR_CTL == 0x110_4000 or OVL_UI_ATTR_CTL == 0x110_5000); }
+    putreg32(attr, OVL_UI_ATTR_CTL);
 ```
 
 ## Set Blender Route
@@ -1098,37 +1113,78 @@ putreg32(attr, OVL_UI_ATTR_CTL);
 
 TODO
 
-Finally we enable __Blender Pipe 0__ (pic above): [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L266-L297)
+TODO: Finally we enable __Blender Pipe 0__ (pic above): [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L266-L297)
 
 ```zig
-// Set Blender Route
-// BLD_CH_RTCTL (Blender Routing Control)
-// At BLD Offset 0x080
-//   P0_RTCTL (Bits 0 to 3) = 1 (Pipe 0 from Channel 1)
-// (DE Page 108)
+    // Set Blender Route
+    // BLD_CH_RTCTL (Blender Routing Control) at BLD Offset 0x080
+    // If Rendering 3 UI Channels: Set to 0x321 (DMB)
+    //   P2_RTCTL (Bits 8 to 11) = 3 (Pipe 2 from Channel 3)
+    //   P1_RTCTL (Bits 4 to 7)  = 2 (Pipe 1 from Channel 2)
+    //   P0_RTCTL (Bits 0 to 3)  = 1 (Pipe 0 from Channel 1)
+    // If Rendering 1 UI Channel: Set to 1 (DMB)
+    //   P0_RTCTL (Bits 0 to 3) = 1 (Pipe 0 from Channel 1)
+    // (DE Page 108, 0x110 1080)
+    debug("Set Blender Route", .{});
+    const P2_RTCTL: u12 = switch (channels) {  // For Pipe 2...
+        3 => 3,  // 3 UI Channels: Select Pipe 2 from UI Channel 3
+        1 => 0,  // 1 UI Channel:  Unused Pipe 2
+        else => unreachable,
+    } << 8;  // Bits 8 to 11
 
-const P0_RTCTL: u4 = 1 << 0;  // Select Pipe 0 from UI Channel 1
-const route = P0_RTCTL;
+    const P1_RTCTL: u8 = switch (channels) {  // For Pipe 1...
+        3 => 2,  // 3 UI Channels: Select Pipe 1 from UI Channel 2
+        1 => 0,  // 1 UI Channel:  Unused Pipe 1
+        else => unreachable,
+    } << 4;  // Bits 4 to 7
 
-const BLD_CH_RTCTL = BLD_BASE_ADDRESS + 0x080;
-putreg32(route, BLD_CH_RTCTL);  // TODO: DMB
+    const P0_RTCTL: u4 = 1 << 0;  // Select Pipe 0 from UI Channel 1
+    const route = P2_RTCTL
+        | P1_RTCTL
+        | P0_RTCTL;
+    comptime{ assert(route == 0x321 or route == 1); }
+
+    const BLD_CH_RTCTL = BLD_BASE_ADDRESS + 0x080;
+    comptime{ assert(BLD_CH_RTCTL == 0x110_1080); }
+    putreg32(route, BLD_CH_RTCTL);  // TODO: DMB
 ```
 
-We __disable Pipes 1 and 2__ since they're not used: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L298-L333)
+TODO: We __disable Pipes 1 and 2__ since they're not used: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L298-L333)
 
 ```zig
-// Enable Blender Pipes
-// BLD_FILL_COLOR_CTL (Blender Fill Color Control)
-// At BLD Offset 0x000
-//   P0_EN   (Bit 8)  = 1 (Enable Pipe 0)
-//   P0_FCEN (Bit 0)  = 1 (Enable Pipe 0 Fill Color)
-// (DE Page 106)
+    // Enable Blender Pipes
+    // BLD_FILL_COLOR_CTL (Blender Fill Color Control) at BLD Offset 0x000
+    // If Rendering 3 UI Channels: Set to 0x701 (DMB)
+    //   P2_EN   (Bit 10) = 1 (Enable Pipe 2)
+    //   P1_EN   (Bit 9)  = 1 (Enable Pipe 1)
+    //   P0_EN   (Bit 8)  = 1 (Enable Pipe 0)
+    //   P0_FCEN (Bit 0)  = 1 (Enable Pipe 0 Fill Color)
+    // If Rendering 1 UI Channel: Set to 0x101 (DMB)
+    //   P0_EN   (Bit 8)  = 1 (Enable Pipe 0)
+    //   P0_FCEN (Bit 0)  = 1 (Enable Pipe 0 Fill Color)
+    // (DE Page 106, 0x110 1000)
+    debug("Enable Blender Pipes", .{});
+    const P2_EN: u11 = switch (channels) {  // For Pipe 2...
+        3 => 1,  // 3 UI Channels: Enable Pipe 2
+        1 => 0,  // 1 UI Channel:  Disable Pipe 2
+        else => unreachable,
+    } << 10;  // Bit 10
 
-const P0_EN:   u9 = 1 << 8;  // Enable Pipe 0
-const P0_FCEN: u1 = 1 << 0;  // Enable Pipe 0 Fill Color
-const fill = P0_EN
-    | P0_FCEN;
+    const P1_EN: u10 = switch (channels) {  // For Pipe 1...
+        3 => 1,  // 3 UI Channels: Enable Pipe 1
+        1 => 0,  // 1 UI Channel:  Disable Pipe 1
+        else => unreachable,
+    } << 9;  // Bit 9
 
-const BLD_FILL_COLOR_CTL = BLD_BASE_ADDRESS + 0x000;
-putreg32(fill, BLD_FILL_COLOR_CTL);  // TODO: DMB
+    const P0_EN:   u9 = 1 << 8;  // Enable Pipe 0
+    const P0_FCEN: u1 = 1 << 0;  // Enable Pipe 0 Fill Color
+    const fill = P2_EN
+        | P1_EN
+        | P0_EN
+        | P0_FCEN;
+    comptime{ assert(fill == 0x701 or fill == 0x101); }
+
+    const BLD_FILL_COLOR_CTL = BLD_BASE_ADDRESS + 0x000;
+    comptime{ assert(BLD_FILL_COLOR_CTL == 0x110_1000); }
+    putreg32(fill, BLD_FILL_COLOR_CTL);  // TODO: DMB
 ```
