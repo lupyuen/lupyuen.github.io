@@ -694,7 +694,7 @@ const DOUBLE_BUFFER_RDY: u1 = 1 &lt;&lt; 0;  // Register Value is ready for upda
 const GLB_DBUFFER = GLB_BASE_ADDRESS + 0x008;
 putreg32(DOUBLE_BUFFER_RDY, GLB_DBUFFER);  // TODO: DMB</code></pre></div>
 <p>And that’s all for rendering our Framebuffer!</p>
-<p><img src="https://lupyuen.github.io/images/de2-test1.jpg" alt="Blue, Green, Red Blocks on PinePhone" /></p>
+<p><img src="https://lupyuen.github.io/images/de2-run1.png" alt="Testing our PinePhone Display Driver" /></p>
 <h1 id="test-pinephone-display-driver"><a href="#test-pinephone-display-driver">5 Test PinePhone Display Driver</a></h1>
 <p>We’re ready to test our Zig Display Driver on PinePhone!</p>
 <p>Follow these steps to <strong>download NuttX RTOS</strong> (with our Zig Driver inside) to a microSD Card…</p>
@@ -706,7 +706,7 @@ putreg32(DOUBLE_BUFFER_RDY, GLB_DBUFFER);  // TODO: DMB</code></pre></div>
 <p>(NuttX won’t disturb the eMMC Flash Memory)</p>
 <p>At the NuttX Shell, enter this command to <strong>test our Zig Display Driver</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>hello 1</code></pre></div>
-<p>We should see our Zig Driver setting the <strong>Hardware Registers</strong> of the Allwinner A64 Display Engine…</p>
+<p>We should see our Zig Driver setting the <strong>Hardware Registers</strong> of the Allwinner A64 Display Engine (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>HELLO NUTTX ON PINEPHONE!
 Shell (NSH) NuttX-11.0.0-RC2
 nsh&gt; hello 1
@@ -733,6 +733,7 @@ Set Blender Route
 Enable Blender Pipes
 Apply Settings</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9824d0cece10bfdaa13da3660c6d9cf5">(See the Complete Log)</a></p>
+<p><img src="https://lupyuen.github.io/images/de2-test1.jpg" alt="Blue, Green, Red Blocks on PinePhone" /></p>
 <p>On PinePhone we see the <strong>Blue, Green and Red</strong> colour bars. (Pic above)</p>
 <p>Yep our Zig Display Driver renders graphics correctly on PinePhone! 🎉</p>
 <p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="Multiple Framebuffers" /></p>
