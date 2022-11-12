@@ -84,7 +84,10 @@
 <li><a href="#blender-attributes">4.5 Blender Attributes</a><ul></ul></li>
 <li><a href="#enable-blender">4.6 Enable Blender</a><ul></ul></li></ul></li>
 <li><a href="#test-pinephone-display-driver">5 Test PinePhone Display Driver</a><ul></ul></li>
-<li><a href="#multiple-framebuffers">6 Multiple Framebuffers</a><ul></ul></li>
+<li><a href="#multiple-framebuffers">6 Multiple Framebuffers</a><ul>
+<li><a href="#allocate-framebuffers">6.1 Allocate Framebuffers</a><ul></ul></li>
+<li><a href="#fill-framebuffers">6.2 Fill Framebuffers</a><ul></ul></li>
+<li><a href="#render-framebuffers">6.3 Render Framebuffers</a><ul></ul></li></ul></li>
 <li><a href="#test-multiple-framebuffers">7 Test Multiple Framebuffers</a><ul></ul></li>
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-render-multiple-framebuffers">9 Appendix: Render Multiple Framebuffers</a><ul>
@@ -120,7 +123,7 @@ const len = framebuffer.len;</code></pre></div>
 <div class="example-wrap"><pre class="language-zig"><code>// Framebuffer of 720 x 1440 pixels
 var fb0 = std.mem.zeroes(  // Init to zeroes...
   [720 * 1440] u32         // 720 x 1440 pixels
-);                         // (4 bytes per pixel)</code></pre></div>
+);                         // (4 bytes per pixel: XRGB 8888)</code></pre></div>
 <p>Each pixel is <strong><code>u32</code></strong>, equivalent to <strong><code>uint32_t</code></strong> in C.</p>
 <p><a href="https://ziglang.org/documentation/master/std/#root;mem.zeroes"><strong><code>std.mem.zeroes</code></strong></a> allocates an array of 720 x 1440 pixels, filled with zeroes.</p>
 <p>Each pixel has the format <strong>ARGB 8888</strong> (32 bits)…</p>
@@ -745,21 +748,25 @@ Apply Settings</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/de2-test1.jpg" alt="Blue, Green, Red Blocks on PinePhone" /></p>
 <p>On PinePhone we see the <strong>Blue, Green and Red</strong> colour blocks. (Pic above)</p>
 <p>Yep our Zig Display Driver renders graphics correctly on PinePhone! 🎉</p>
-<p>We’ve rendered a single Framebuffer, now we do 3 Framebuffers…</p>
+<p>We’ve rendered a single Framebuffer. Now we push PinePhone’s Display Hardware to the max with 3 Framebuffers…</p>
 <p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="Multiple Framebuffers" /></p>
 <h1 id="multiple-framebuffers"><a href="#multiple-framebuffers">6 Multiple Framebuffers</a></h1>
-<p><em>PinePhone’s Display Hardware supports 3 Framebuffers. How do we render them?</em></p>
+<p><em>PinePhone’s Display Hardware supports max 3 Framebuffers. How do we render them?</em></p>
+<p>TODO</p>
+<h2 id="allocate-framebuffers"><a href="#allocate-framebuffers">6.1 Allocate Framebuffers</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L658-L666">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Framebuffer 1: (First Overlay UI Channel)
 // Square 600 x 600 (4 bytes per ARGB 8888 pixel)
-// TODO: Does alignment prevent flickering?
-var fb1 align(0x1000) = std.mem.zeroes([600 * 600] u32);
+var fb1 = std.mem.zeroes(  // Init to zeroes...
+  [600 * 600] u32          // 600 x 600 pixels
+);                         // (4 bytes per pixel: ARGB 8888)
 
 // Framebuffer 2: (Second Overlay UI Channel)
 // Fullscreen 720 x 1440 (4 bytes per ARGB 8888 pixel)
-// TODO: Does alignment prevent flickering?
-var fb2 align(0x1000) = std.mem.zeroes([720 * 1440] u32);</code></pre></div>
+var fb2 = std.mem.zeroes(  // Init to zeroes...
+  [720 * 1440] u32         // 720 x 1440 pixels
+);                         // (4 bytes per pixel: ARGB 8888)</code></pre></div><h2 id="fill-framebuffers"><a href="#fill-framebuffers">6.2 Fill Framebuffers</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L109-L115">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>    // Init Framebuffer 1:
@@ -792,7 +799,7 @@ var fb2 align(0x1000) = std.mem.zeroes([720 * 1440] u32);</code></pre></div>
                 fb2[p] = 0x0000_0000;  // Transparent Black in ARGB 8888 Format
             }
         }
-    }</code></pre></div>
+    }</code></pre></div><h2 id="render-framebuffers"><a href="#render-framebuffers">6.3 Render Framebuffers</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L140-L170">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>    // Init the UI Blender for PinePhone&#39;s A64 Display Engine
