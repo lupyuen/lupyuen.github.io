@@ -744,6 +744,8 @@ const BLD_CTL = BLD_BASE_ADDRESS + 0x090 + pipe * 4;
 putreg32(blend, BLD_CTL);
 ```
 
+We're almost done with our Blender Configuration...
+
 ![TODO](https://lupyuen.github.io/images/de2-blender2.jpg)
 
 ## Enable Blender
@@ -856,21 +858,37 @@ Apply Settings
 
 [(See the Complete Log)](https://gist.github.com/lupyuen/9824d0cece10bfdaa13da3660c6d9cf5)
 
+_Why are Channels 2 and 3 disabled?_
+
+PinePhone supports 3 Framebuffers, but this demo uses only a single Framebuffer. (On Channel 1)
+
+That's why we disabled Channels 2 and 3 for the unused Framebuffers.
+
+[(Here's how)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L388-L412)
+
 ![Blue, Green, Red Blocks on PinePhone](https://lupyuen.github.io/images/de2-test1.jpg)
 
-On PinePhone we see the __Blue, Green and Red__ colour bars. (Pic above)
+On PinePhone we see the __Blue, Green and Red__ colour blocks. (Pic above)
 
 Yep our Zig Display Driver renders graphics correctly on PinePhone! 🎉
+
+We've rendered a single Framebuffer, now we do 3 Framebuffers...
 
 ![Multiple Framebuffers](https://lupyuen.github.io/images/de2-blender.jpg)
 
 # Multiple Framebuffers
 
+_PinePhone's Display Hardware supports 3 Framebuffers. How do we render them?_
+
 TODO
 
-1.  Or enter `hello 3` to render the same colour bars with Blue Square and Green Circle as Overlays
+# Test Multiple Framebuffers
 
-    [(See the Complete Log)](https://gist.github.com/lupyuen/d8d6710ab2ed16765816157cb97e54e7)
+TODO
+
+Or enter `hello 3` to render the same colour bars with Blue Square and Green Circle as Overlays
+
+[(See the Complete Log)](https://gist.github.com/lupyuen/d8d6710ab2ed16765816157cb97e54e7)
 
 ![Blue, Green, Red Blocks with Overlays](https://lupyuen.github.io/images/de2-test3.jpg)
 
