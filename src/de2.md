@@ -860,7 +860,7 @@ Apply Settings
 
 _Why are Channels 2 and 3 disabled?_
 
-PinePhone supports 3 Framebuffers, but this demo uses only a single Framebuffer. (On Channel 1)
+PinePhone supports 3 Framebuffers, but our demo uses only a single Framebuffer. (On Channel 1)
 
 That's why we disabled Channels 2 and 3 for the unused Framebuffers.
 
@@ -881,6 +881,92 @@ We've rendered a single Framebuffer, now we do 3 Framebuffers...
 _PinePhone's Display Hardware supports 3 Framebuffers. How do we render them?_
 
 TODO
+
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L658-L666)
+
+```zig
+// Framebuffer 1: (First Overlay UI Channel)
+// Square 600 x 600 (4 bytes per ARGB 8888 pixel)
+// TODO: Does alignment prevent flickering?
+var fb1 align(0x1000) = std.mem.zeroes([600 * 600] u32);
+
+// Framebuffer 2: (Second Overlay UI Channel)
+// Fullscreen 720 x 1440 (4 bytes per ARGB 8888 pixel)
+// TODO: Does alignment prevent flickering?
+var fb2 align(0x1000) = std.mem.zeroes([720 * 1440] u32);
+```
+
+TODO
+
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L109-L115)
+
+```zig
+    // Init Framebuffer 1:
+    // Fill with Semi-Transparent Blue
+    i = 0;
+    while (i < fb1.len) : (i += 1) {
+        // Colours are in ARGB 8888 format
+        fb1[i] = 0x8000_0080;
+    }
+```
+
+TODO
+
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L117-L138)
+
+```zig
+    // Init Framebuffer 2:
+    // Fill with Semi-Transparent Green Circle
+    var y: usize = 0;
+    while (y < 1440) : (y += 1) {
+        var x: usize = 0;
+        while (x < 720) : (x += 1) {
+            // Get pixel index
+            const p = (y * 720) + x;
+            assert(p < fb2.len);
+
+            // Shift coordinates so that centre of screen is (0,0)
+            const x_shift = @intCast(isize, x) - 360;
+            const y_shift = @intCast(isize, y) - 720;
+
+            // If x^2 + y^2 < radius^2, set the pixel to Semi-Transparent Green
+            if (x_shift*x_shift + y_shift*y_shift < 360*360) {
+                fb2[p] = 0x8000_8000;  // Semi-Transparent Green in ARGB 8888 Format
+            } else {  // Otherwise set to Transparent Black
+                fb2[p] = 0x0000_0000;  // Transparent Black in ARGB 8888 Format
+            }
+        }
+    }
+```
+
+TODO
+
+[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L140-L170)
+
+```zig
+    // Init the UI Blender for PinePhone's A64 Display Engine
+    initUiBlender();
+
+    // Omitted: Init the Base UI Channel from earlier
+    initUiChannel(1, ...);
+
+    // Init the 2 Overlay UI Channels
+    inline for (overlayInfo) | ov, ov_index | {
+        initUiChannel(
+            @intCast(u8, ov_index + 2),  // UI Channel Number (2 and 3 for Overlay UI Channels)
+            if (channels == 3) ov.fbmem else null,  // Start of frame buffer memory
+            ov.fblen,    // Length of frame buffer memory in bytes
+            ov.stride,   // Length of a line in bytes (4 bytes per pixel)
+            ov.sarea.w,  // Horizontal resolution in pixel columns
+            ov.sarea.h,  // Vertical resolution in pixel rows
+            ov.sarea.x,  // Horizontal offset in pixel columns
+            ov.sarea.y,  // Vertical offset in pixel rows
+        );
+    }
+
+    // Set UI Blender Route, enable Blender Pipes and apply the settings
+    applySettings(channels);
+```
 
 # Test Multiple Framebuffers
 
@@ -938,3 +1024,101 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/de2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/de2.md)
 
+# Appendix: Render Multiple Framebuffers
+
+TODO
+
+## Set Framebuffer Attributes
+
+[(__OVL_UI_ATTR_CTL__, Page 102)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+TODO
+
+We set the __Framebuffer Attributes__...
+
+-   Framebuffer is __Opaque__
+
+    (Non-Transparent)
+
+-   Framebuffer Pixel Format is 32-bit __XRGB 8888__
+
+    ("X" means Pixel Alpha Value is ignored)
+
+-   Framebuffer Alpha is __mixed with Pixel Alpha__
+
+    (Effective Alpha Value = Framebuffer Alpha Value * Pixel’s Alpha Value)
+
+-   Enable Framebuffer
+
+This is how we set the above attributes as Bit Fields: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L414-L453)
+
+```zig
+// OVL_UI_ATTR_CTL (UI Overlay Attribute Control)
+// At OVL_UI Offset 0x00
+// LAY_GLBALPHA   (Bits 24 to 31) = Global Alpha Value
+// LAY_FBFMT      (Bits 8  to 12) = Input Data Format
+// LAY_ALPHA_MODE (Bits 1  to 2)  = Mix Global Alpha with Pixel Alpha
+// LAY_EN         (Bit 0)         = Enable Layer
+// (DE Page 102)
+
+// Framebuffer is Opaque
+const LAY_GLBALPHA: u32 = 0xFF << 24;
+
+// Framebuffer Pixel Format is XRGB 8888
+const LAY_FBFMT: u13 = 4 << 8;
+
+// Framebuffer Alpha is mixed with Pixel Alpha
+const LAY_ALPHA_MODE: u3 = 2 << 1;
+
+// Enable Framebuffer
+const LAY_EN: u1 = 1 << 0;
+
+// Combine the bits and set the register
+const attr = LAY_GLBALPHA
+  | LAY_FBFMT
+  | LAY_ALPHA_MODE
+  | LAY_EN;
+const OVL_UI_ATTR_CTL = OVL_UI_BASE_ADDRESS + 0x00;
+putreg32(attr, OVL_UI_ATTR_CTL);
+```
+
+## Set Blender Route
+
+[(__BLD_CH_RTCTL / BLD_FILL_COLOR_CTL / GLB_DBUFFER__, Page 108 / 106 / 93)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+TODO
+
+Finally we enable __Blender Pipe 0__ (pic above): [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L266-L297)
+
+```zig
+// Set Blender Route
+// BLD_CH_RTCTL (Blender Routing Control)
+// At BLD Offset 0x080
+//   P0_RTCTL (Bits 0 to 3) = 1 (Pipe 0 from Channel 1)
+// (DE Page 108)
+
+const P0_RTCTL: u4 = 1 << 0;  // Select Pipe 0 from UI Channel 1
+const route = P0_RTCTL;
+
+const BLD_CH_RTCTL = BLD_BASE_ADDRESS + 0x080;
+putreg32(route, BLD_CH_RTCTL);  // TODO: DMB
+```
+
+We __disable Pipes 1 and 2__ since they're not used: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L298-L333)
+
+```zig
+// Enable Blender Pipes
+// BLD_FILL_COLOR_CTL (Blender Fill Color Control)
+// At BLD Offset 0x000
+//   P0_EN   (Bit 8)  = 1 (Enable Pipe 0)
+//   P0_FCEN (Bit 0)  = 1 (Enable Pipe 0 Fill Color)
+// (DE Page 106)
+
+const P0_EN:   u9 = 1 << 8;  // Enable Pipe 0
+const P0_FCEN: u1 = 1 << 0;  // Enable Pipe 0 Fill Color
+const fill = P0_EN
+    | P0_FCEN;
+
+const BLD_FILL_COLOR_CTL = BLD_BASE_ADDRESS + 0x000;
+putreg32(fill, BLD_FILL_COLOR_CTL);  // TODO: DMB
+```
