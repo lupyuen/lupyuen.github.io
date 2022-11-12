@@ -802,7 +802,7 @@ putreg32(DOUBLE_BUFFER_RDY, GLB_DBUFFER);  // TODO: DMB
 
 And that's all for rendering our Framebuffer!
 
-![Blue, Green, Red Blocks on PinePhone](https://lupyuen.github.io/images/de2-test1.jpg)
+![Testing our PinePhone Display Driver](https://lupyuen.github.io/images/de2-run1.png)
 
 # Test PinePhone Display Driver
 
@@ -824,7 +824,7 @@ At the NuttX Shell, enter this command to __test our Zig Display Driver__...
 hello 1
 ```
 
-We should see our Zig Driver setting the __Hardware Registers__ of the Allwinner A64 Display Engine...
+We should see our Zig Driver setting the __Hardware Registers__ of the Allwinner A64 Display Engine (pic above)...
 
 ```text
 HELLO NUTTX ON PINEPHONE!
@@ -855,6 +855,8 @@ Apply Settings
 ```
 
 [(See the Complete Log)](https://gist.github.com/lupyuen/9824d0cece10bfdaa13da3660c6d9cf5)
+
+![Blue, Green, Red Blocks on PinePhone](https://lupyuen.github.io/images/de2-test1.jpg)
 
 On PinePhone we see the __Blue, Green and Red__ colour bars. (Pic above)
 
