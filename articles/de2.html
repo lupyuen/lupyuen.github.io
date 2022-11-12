@@ -85,7 +85,8 @@
 <li><a href="#enable-blender">4.6 Enable Blender</a><ul></ul></li></ul></li>
 <li><a href="#test-pinephone-display-driver">5 Test PinePhone Display Driver</a><ul></ul></li>
 <li><a href="#multiple-framebuffers">6 Multiple Framebuffers</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Nov 2022</em></p>
+<li><a href="#test-multiple-framebuffers">7 Test Multiple Framebuffers</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>15 Nov 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/de2-title.jpg" alt="Our Zig Driver rendering Colour Blocks on Pine64 PinePhone" /></p>
 <p><em>What happens when we render graphics on PinePhone’s LCD Display?</em></p>
 <p>Plenty happens when we render graphics on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> (pic above)… Because PinePhone’s <strong>Display Hardware is so complex!</strong></p>
@@ -652,6 +653,7 @@ const blend = BLEND_AFD
 
 const BLD_CTL = BLD_BASE_ADDRESS + 0x090 + pipe * 4;
 putreg32(blend, BLD_CTL);</code></pre></div>
+<p>We’re almost done with our Blender Configuration…</p>
 <p><img src="https://lupyuen.github.io/images/de2-blender2.jpg" alt="TODO" /></p>
 <h2 id="enable-blender"><a href="#enable-blender">4.6 Enable Blender</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_CH_RTCTL / BLD_FILL_COLOR_CTL / GLB_DBUFFER</strong>, Page 108 / 106 / 93)</a></p>
@@ -733,20 +735,24 @@ Set Blender Route
 Enable Blender Pipes
 Apply Settings</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9824d0cece10bfdaa13da3660c6d9cf5">(See the Complete Log)</a></p>
+<p><em>Why are Channels 2 and 3 disabled?</em></p>
+<p>PinePhone supports 3 Framebuffers, but this demo uses only a single Framebuffer. (On Channel 1)</p>
+<p>That’s why we disabled Channels 2 and 3 for the unused Framebuffers.</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L388-L412">(Here’s how)</a></p>
 <p><img src="https://lupyuen.github.io/images/de2-test1.jpg" alt="Blue, Green, Red Blocks on PinePhone" /></p>
-<p>On PinePhone we see the <strong>Blue, Green and Red</strong> colour bars. (Pic above)</p>
+<p>On PinePhone we see the <strong>Blue, Green and Red</strong> colour blocks. (Pic above)</p>
 <p>Yep our Zig Display Driver renders graphics correctly on PinePhone! 🎉</p>
+<p>We’ve rendered a single Framebuffer, now we do 3 Framebuffers…</p>
 <p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="Multiple Framebuffers" /></p>
 <h1 id="multiple-framebuffers"><a href="#multiple-framebuffers">6 Multiple Framebuffers</a></h1>
+<p><em>PinePhone’s Display Hardware supports 3 Framebuffers. How do we render them?</em></p>
 <p>TODO</p>
-<ol>
-<li>
+<h1 id="test-multiple-framebuffers"><a href="#test-multiple-framebuffers">7 Test Multiple Framebuffers</a></h1>
+<p>TODO</p>
 <p>Or enter <code>hello 3</code> to render the same colour bars with Blue Square and Green Circle as Overlays</p>
 <p><a href="https://gist.github.com/lupyuen/d8d6710ab2ed16765816157cb97e54e7">(See the Complete Log)</a></p>
-</li>
-</ol>
 <p><img src="https://lupyuen.github.io/images/de2-test3.jpg" alt="Blue, Green, Red Blocks with Overlays" /></p>
-<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
 <p>Today we’ve seen the Zig Internals of our new PinePhone Display Driver for Apache NuttX RTOS. I hope that coding the driver in Zig has made it a little easier to understand what’s inside.</p>
 <p>Some parts of the driver were simpler to code in Zig than in C. I’m glad I chose Zig for the driver!</p>
