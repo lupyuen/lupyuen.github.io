@@ -909,13 +909,13 @@ TODO
 [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L109-L115)
 
 ```zig
-    // Init Framebuffer 1:
-    // Fill with Semi-Transparent Blue
-    i = 0;
-    while (i < fb1.len) : (i += 1) {
-        // Colours are in ARGB 8888 format
-        fb1[i] = 0x8000_0080;
-    }
+// Init Framebuffer 1:
+// Fill with Semi-Transparent Blue
+i = 0;
+while (i < fb1.len) : (i += 1) {
+  // Colours are in ARGB 8888 format
+  fb1[i] = 0x8000_0080;
+}
 ```
 
 TODO
@@ -923,28 +923,28 @@ TODO
 [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L117-L138)
 
 ```zig
-    // Init Framebuffer 2:
-    // Fill with Semi-Transparent Green Circle
-    var y: usize = 0;
-    while (y < 1440) : (y += 1) {
-        var x: usize = 0;
-        while (x < 720) : (x += 1) {
-            // Get pixel index
-            const p = (y * 720) + x;
-            assert(p < fb2.len);
+// Init Framebuffer 2:
+// Fill with Semi-Transparent Green Circle
+var y: usize = 0;
+while (y < 1440) : (y += 1) {
+  var x: usize = 0;
+  while (x < 720) : (x += 1) {
+    // Get pixel index
+    const p = (y * 720) + x;
+    assert(p < fb2.len);
 
-            // Shift coordinates so that centre of screen is (0,0)
-            const x_shift = @intCast(isize, x) - 360;
-            const y_shift = @intCast(isize, y) - 720;
+    // Shift coordinates so that centre of screen is (0,0)
+    const x_shift = @intCast(isize, x) - 360;
+    const y_shift = @intCast(isize, y) - 720;
 
-            // If x^2 + y^2 < radius^2, set the pixel to Semi-Transparent Green
-            if (x_shift*x_shift + y_shift*y_shift < 360*360) {
-                fb2[p] = 0x8000_8000;  // Semi-Transparent Green in ARGB 8888 Format
-            } else {  // Otherwise set to Transparent Black
-                fb2[p] = 0x0000_0000;  // Transparent Black in ARGB 8888 Format
-            }
-        }
+    // If x^2 + y^2 < radius^2, set the pixel to Semi-Transparent Green
+    if (x_shift*x_shift + y_shift*y_shift < 360*360) {
+      fb2[p] = 0x8000_8000;  // Semi-Transparent Green in ARGB 8888 Format
+    } else {  // Otherwise set to Transparent Black
+      fb2[p] = 0x0000_0000;  // Transparent Black in ARGB 8888 Format
     }
+  }
+}
 ```
 
 ## Render Framebuffers
@@ -954,28 +954,28 @@ TODO
 [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L140-L170)
 
 ```zig
-    // Init the UI Blender for PinePhone's A64 Display Engine
-    initUiBlender();
+// Init the UI Blender for PinePhone's A64 Display Engine
+initUiBlender();
 
-    // Omitted: Init the Base UI Channel from earlier
-    initUiChannel(1, ...);
+// Omitted: Init the Base UI Channel from earlier
+initUiChannel(1, ...);
 
-    // Init the 2 Overlay UI Channels
-    inline for (overlayInfo) | ov, ov_index | {
-        initUiChannel(
-            @intCast(u8, ov_index + 2),  // UI Channel Number (2 and 3 for Overlay UI Channels)
-            if (channels == 3) ov.fbmem else null,  // Start of frame buffer memory
-            ov.fblen,    // Length of frame buffer memory in bytes
-            ov.stride,   // Length of a line in bytes (4 bytes per pixel)
-            ov.sarea.w,  // Horizontal resolution in pixel columns
-            ov.sarea.h,  // Vertical resolution in pixel rows
-            ov.sarea.x,  // Horizontal offset in pixel columns
-            ov.sarea.y,  // Vertical offset in pixel rows
-        );
-    }
+// Init the 2 Overlay UI Channels
+inline for (overlayInfo) | ov, ov_index | {
+  initUiChannel(
+    @intCast(u8, ov_index + 2),  // UI Channel Number (2 and 3 for Overlay UI Channels)
+    if (channels == 3) ov.fbmem else null,  // Start of frame buffer memory
+    ov.fblen,    // Length of frame buffer memory in bytes
+    ov.stride,   // Length of a line in bytes (4 bytes per pixel)
+    ov.sarea.w,  // Horizontal resolution in pixel columns
+    ov.sarea.h,  // Vertical resolution in pixel rows
+    ov.sarea.x,  // Horizontal offset in pixel columns
+    ov.sarea.y,  // Vertical offset in pixel rows
+  );
+}
 
-    // Set UI Blender Route, enable Blender Pipes and apply the settings
-    applySettings(channels);
+// Set UI Blender Route, enable Blender Pipes and apply the settings
+applySettings(channels);
 ```
 
 # Test Multiple Framebuffers
