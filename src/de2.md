@@ -910,7 +910,9 @@ var fb2 = std.mem.zeroes(  // Init to zeroes...
 
 _PinePhone supports Framebuffers that are not Fullscreen?_
 
-TODO 
+Yep Framebuffer 1 doesn't cover the screen completely, and it's OK!
+
+Later we'll set the X and Y Offsets of Framebuffer 1, to centre it horizontally.
 
 ![Blue, Green, Red Blocks with Overlays](https://lupyuen.github.io/images/de2-overlay.jpg)
 
