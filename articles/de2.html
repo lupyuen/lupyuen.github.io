@@ -752,8 +752,30 @@ Apply Settings</code></pre></div>
 <p>We’ve rendered a single Framebuffer. Now we push PinePhone’s Display Hardware to the max with 3 Framebuffers…</p>
 <p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="Multiple Framebuffers" /></p>
 <h1 id="multiple-framebuffers"><a href="#multiple-framebuffers">6 Multiple Framebuffers</a></h1>
-<p><em>PinePhone’s Display Hardware supports max 3 Framebuffers. How do we render them?</em></p>
-<p>TODO</p>
+<p><em>Can we render Multiple Framebuffers?</em></p>
+<p>Yep PinePhone’s Display Hardware supports up to <strong>3 Framebuffers</strong> (pic above)…</p>
+<ul>
+<li>
+<p><strong>One Base Framebuffer</strong></p>
+<p>(Which we’ve just rendered)</p>
+</li>
+<li>
+<p><strong>Two Overlay Framebuffers</strong></p>
+<p>(Which we’ll render now)</p>
+</li>
+</ul>
+<p>Let’s walk through the steps to…</p>
+<ol>
+<li>
+<p>Allocate the 2 Overlay Framebuffers</p>
+</li>
+<li>
+<p>Fill the 2 Framebuffers</p>
+</li>
+<li>
+<p>Render the 2 Framebuffers as Overlays</p>
+</li>
+</ol>
 <h2 id="allocate-framebuffers"><a href="#allocate-framebuffers">6.1 Allocate Framebuffers</a></h2>
 <p>First we <strong>allocate 2 Framebuffers</strong>…</p>
 <ul>
