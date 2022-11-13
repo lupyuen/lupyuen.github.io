@@ -896,17 +896,23 @@ Let's walk through the steps to...
 
 1.  Allocate the 2 Overlay Framebuffers
 
-1.  Fill the 2 Framebuffers
+1.  Fill the pixels of the 2 Framebuffers
 
 1.  Render the 2 Framebuffers as Overlays
 
 ## Allocate Framebuffers
 
-First we __allocate 2 Framebuffers__...
+Earlier we have allocated the [__Base Framebuffer__](https://lupyuen.github.io/articles/de2#graphics-framebuffer)...
 
--  __Framebuffer 1:__ 600 x 600 pixels (Square)
+-   __Framebuffer 0:__ 720 x 1440 pixels (Fullscreen)
 
--  __Framebuffer 2:__ 720 x 1440 pixels (Fullscreen)
+    (With the Blue / Green / Red blocks)
+
+Now we __allocate 2 Overlay Framebuffers__...
+
+-   __Framebuffer 1:__ 600 x 600 pixels (Square)
+
+-   __Framebuffer 2:__ 720 x 1440 pixels (Fullscreen)
 
 Like so: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L658-L666)
 
