@@ -993,15 +993,13 @@ Note that pixels outside the circle are filled with 0. (Transparent Black)
 
 ## Render Framebuffers
 
-TODO
-
-[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L140-L170)
+For our final step, we __render all 3 Framebuffers__: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L140-L170)
 
 ```zig
 // Init the UI Blender for PinePhone's A64 Display Engine
 initUiBlender();
 
-// Omitted: Init the Base UI Channel from earlier
+// Omitted: Init the Base UI Channel (as seen earlier)
 initUiChannel(1, ...);
 
 // Init the 2 Overlay UI Channels
@@ -1018,9 +1016,26 @@ inline for (overlayInfo) | ov, ov_index | {
   );
 }
 
-// Set UI Blender Route, enable Blender Pipes and apply the settings
+// Set UI Blender Route, enable Blender Pipes
+// and apply the settings
 applySettings(channels);
 ```
+
+[(__initUiBlender__ is defined here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L205-L256)
+
+[(__initUiChannel__ is defined here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L350-L594)
+
+[(__applySettings__ is defined here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L258-L348)
+
+_What's `overlayInfo`?_
+
+__`overlayInfo`__ defines the properties of the 2 Overlay Framebuffers.
+
+[(__overlayInfo__ is defined here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L619-L651)
+
+_Why `inline for`?_
+
+TODO
 
 # Test Multiple Framebuffers
 
