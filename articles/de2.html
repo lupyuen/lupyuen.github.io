@@ -777,7 +777,8 @@ var fb2 = std.mem.zeroes(  // Init to zeroes...
   [720 * 1440] u32         // 720 x 1440 pixels
 );                         // (4 bytes per pixel: ARGB 8888)</code></pre></div>
 <p><em>PinePhone supports Framebuffers that are not Fullscreen?</em></p>
-<p>TODO </p>
+<p>Yep Framebuffer 1 doesn’t cover the screen completely, and it’s OK!</p>
+<p>Later we’ll set the X and Y Offsets of Framebuffer 1, to centre it horizontally.</p>
 <p><img src="https://lupyuen.github.io/images/de2-overlay.jpg" alt="Blue, Green, Red Blocks with Overlays" /></p>
 <h2 id="fill-framebuffers"><a href="#fill-framebuffers">6.2 Fill Framebuffers</a></h2>
 <p>TODO</p>
