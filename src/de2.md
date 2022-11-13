@@ -1006,7 +1006,7 @@ initUiChannel(1, ...);
 inline for (overlayInfo) | ov, ov_index | {
   initUiChannel(
     @intCast(u8, ov_index + 2),  // UI Channel Number (2 and 3 for Overlay UI Channels)
-    if (channels == 3) ov.fbmem else null,  // Start of frame buffer memory
+    ov.fbmem,    // Start of frame buffer memory
     ov.fblen,    // Length of frame buffer memory in bytes
     ov.stride,   // Length of a line in bytes (4 bytes per pixel)
     ov.sarea.w,  // Horizontal resolution in pixel columns
@@ -1023,19 +1023,29 @@ applySettings(channels);
 
 [(__initUiBlender__ is defined here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L205-L256)
 
-[(__initUiChannel__ is defined here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L350-L594)
-
 [(__applySettings__ is defined here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L258-L348)
+
+Earlier we've seen [__initUiChannel__](https://lupyuen.github.io/articles/de2#configure-framebuffer) for rendering a single Framebuffer.
+
+We made some changes to support __Multiple Framebuffers__...
+
+-   [__"Render Multiple Framebuffers"__](https://lupyuen.github.io/articles/de2#appendix-render-multiple-framebuffers)
 
 _What's `overlayInfo`?_
 
-__`overlayInfo`__ defines the properties of the 2 Overlay Framebuffers.
+__`overlayInfo`__ is the array that defines the properties of the 2 Overlay Framebuffers.
 
 [(__overlayInfo__ is defined here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L619-L651)
 
-_Why `inline for`?_
+_Why "`inline for`"?_
 
-TODO
+["__`inline for`__"](https://ziglang.org/documentation/master/#inline-for) expands (or unrolls) the loop at Compile-Time.
+
+We need this because we're passing the arguments to [__initUiChannel__](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L350-L594) as __`comptime`__ Compile-Time Constants.
+
+[(As explained previously)](https://lupyuen.github.io/articles/de2#framebuffer-address)
+
+![Blue, Green, Red Blocks with Overlays](https://lupyuen.github.io/images/de2-test3.jpg)
 
 # Test Multiple Framebuffers
 
@@ -1044,8 +1054,6 @@ TODO
 Or enter `hello 3` to render the same colour bars with Blue Square and Green Circle as Overlays
 
 [(See the Complete Log)](https://gist.github.com/lupyuen/d8d6710ab2ed16765816157cb97e54e7)
-
-![Blue, Green, Red Blocks with Overlays](https://lupyuen.github.io/images/de2-test3.jpg)
 
 # What's Next
 
