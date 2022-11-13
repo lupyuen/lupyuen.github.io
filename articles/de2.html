@@ -755,8 +755,16 @@ Apply Settings</code></pre></div>
 <p><em>PinePhone’s Display Hardware supports max 3 Framebuffers. How do we render them?</em></p>
 <p>TODO</p>
 <h2 id="allocate-framebuffers"><a href="#allocate-framebuffers">6.1 Allocate Framebuffers</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L658-L666">render.zig</a></p>
+<p>First we <strong>allocate 2 Framebuffers</strong>…</p>
+<ul>
+<li>
+<p><strong>Framebuffer 1:</strong> 600 x 600 pixels (Square)</p>
+</li>
+<li>
+<p><strong>Framebuffer 2:</strong> 720 x 1440 pixels (Fullscreen)</p>
+</li>
+</ul>
+<p>Like so: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L658-L666">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Framebuffer 1: (First Overlay UI Channel)
 // Square 600 x 600 (4 bytes per ARGB 8888 pixel)
 var fb1 = std.mem.zeroes(  // Init to zeroes...
