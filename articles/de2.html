@@ -854,12 +854,11 @@ while (y &lt; 1440) : (y += 1) {
 <p>(<strong><code>0x8000_8000</code></strong> means Alpha = <code>0x80</code>, Green = <code>0x80</code>)</p>
 <p>Note that pixels outside the circle are filled with 0. (Transparent Black)</p>
 <h2 id="render-framebuffers"><a href="#render-framebuffers">6.3 Render Framebuffers</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L140-L170">render.zig</a></p>
+<p>For our final step, we <strong>render all 3 Framebuffers</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L140-L170">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Init the UI Blender for PinePhone&#39;s A64 Display Engine
 initUiBlender();
 
-// Omitted: Init the Base UI Channel from earlier
+// Omitted: Init the Base UI Channel (as seen earlier)
 initUiChannel(1, ...);
 
 // Init the 2 Overlay UI Channels
@@ -876,8 +875,18 @@ inline for (overlayInfo) | ov, ov_index | {
   );
 }
 
-// Set UI Blender Route, enable Blender Pipes and apply the settings
-applySettings(channels);</code></pre></div><h1 id="test-multiple-framebuffers"><a href="#test-multiple-framebuffers">7 Test Multiple Framebuffers</a></h1>
+// Set UI Blender Route, enable Blender Pipes
+// and apply the settings
+applySettings(channels);</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L205-L256">(<strong>initUiBlender</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L350-L594">(<strong>initUiChannel</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L258-L348">(<strong>applySettings</strong> is defined here)</a></p>
+<p><em>What’s <code>overlayInfo</code>?</em></p>
+<p><strong><code>overlayInfo</code></strong> defines the properties of the 2 Overlay Framebuffers.</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L619-L651">(<strong>overlayInfo</strong> is defined here)</a></p>
+<p><em>Why <code>inline for</code>?</em></p>
+<p>TODO</p>
+<h1 id="test-multiple-framebuffers"><a href="#test-multiple-framebuffers">7 Test Multiple Framebuffers</a></h1>
 <p>TODO</p>
 <p>Or enter <code>hello 3</code> to render the same colour bars with Blue Square and Green Circle as Overlays</p>
 <p><a href="https://gist.github.com/lupyuen/d8d6710ab2ed16765816157cb97e54e7">(See the Complete Log)</a></p>
