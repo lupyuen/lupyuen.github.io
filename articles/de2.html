@@ -865,7 +865,7 @@ initUiChannel(1, ...);
 inline for (overlayInfo) | ov, ov_index | {
   initUiChannel(
     @intCast(u8, ov_index + 2),  // UI Channel Number (2 and 3 for Overlay UI Channels)
-    if (channels == 3) ov.fbmem else null,  // Start of frame buffer memory
+    ov.fbmem,    // Start of frame buffer memory
     ov.fblen,    // Length of frame buffer memory in bytes
     ov.stride,   // Length of a line in bytes (4 bytes per pixel)
     ov.sarea.w,  // Horizontal resolution in pixel columns
@@ -879,18 +879,24 @@ inline for (overlayInfo) | ov, ov_index | {
 // and apply the settings
 applySettings(channels);</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L205-L256">(<strong>initUiBlender</strong> is defined here)</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L350-L594">(<strong>initUiChannel</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L258-L348">(<strong>applySettings</strong> is defined here)</a></p>
+<p>Earlier we’ve seen <a href="https://lupyuen.github.io/articles/de2#configure-framebuffer"><strong>initUiChannel</strong></a> for rendering a single Framebuffer.</p>
+<p>We made some changes to support <strong>Multiple Framebuffers</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/de2#appendix-render-multiple-framebuffers"><strong>“Render Multiple Framebuffers”</strong></a></li>
+</ul>
 <p><em>What’s <code>overlayInfo</code>?</em></p>
-<p><strong><code>overlayInfo</code></strong> defines the properties of the 2 Overlay Framebuffers.</p>
+<p><strong><code>overlayInfo</code></strong> is the array that defines the properties of the 2 Overlay Framebuffers.</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L619-L651">(<strong>overlayInfo</strong> is defined here)</a></p>
-<p><em>Why <code>inline for</code>?</em></p>
-<p>TODO</p>
+<p><em>Why “<code>inline for</code>”?</em></p>
+<p><a href="https://ziglang.org/documentation/master/#inline-for">“<strong><code>inline for</code></strong>”</a> expands (or unrolls) the loop at Compile-Time.</p>
+<p>We need this because we’re passing the arguments to <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L350-L594"><strong>initUiChannel</strong></a> as <strong><code>comptime</code></strong> Compile-Time Constants.</p>
+<p><a href="https://lupyuen.github.io/articles/de2#framebuffer-address">(As explained previously)</a></p>
+<p><img src="https://lupyuen.github.io/images/de2-test3.jpg" alt="Blue, Green, Red Blocks with Overlays" /></p>
 <h1 id="test-multiple-framebuffers"><a href="#test-multiple-framebuffers">7 Test Multiple Framebuffers</a></h1>
 <p>TODO</p>
 <p>Or enter <code>hello 3</code> to render the same colour bars with Blue Square and Green Circle as Overlays</p>
 <p><a href="https://gist.github.com/lupyuen/d8d6710ab2ed16765816157cb97e54e7">(See the Complete Log)</a></p>
-<p><img src="https://lupyuen.github.io/images/de2-test3.jpg" alt="Blue, Green, Red Blocks with Overlays" /></p>
 <h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
 <p>Today we’ve seen the Zig Internals of our new PinePhone Display Driver for Apache NuttX RTOS. I hope that coding the driver in Zig has made it a little easier to understand what’s inside.</p>
