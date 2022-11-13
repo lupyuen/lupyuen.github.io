@@ -880,9 +880,25 @@ We've rendered a single Framebuffer. Now we push PinePhone's Display Hardware to
 
 # Multiple Framebuffers
 
-_PinePhone's Display Hardware supports max 3 Framebuffers. How do we render them?_
+_Can we render Multiple Framebuffers?_
 
-TODO
+Yep PinePhone's Display Hardware supports up to __3 Framebuffers__ (pic above)...
+
+-   __One Base Framebuffer__
+
+    (Which we've just rendered)
+
+-   __Two Overlay Framebuffers__
+
+    (Which we'll render now)
+
+Let's walk through the steps to...
+
+1.  Allocate the 2 Overlay Framebuffers
+
+1.  Fill the 2 Framebuffers
+
+1.  Render the 2 Framebuffers as Overlays
 
 ## Allocate Framebuffers
 
