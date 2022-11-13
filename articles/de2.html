@@ -810,8 +810,16 @@ var fb2 = std.mem.zeroes(  // Init to zeroes...
 <p>Later we’ll set the X and Y Offsets of Framebuffer 1, to centre it horizontally.</p>
 <p><img src="https://lupyuen.github.io/images/de2-overlay.jpg" alt="Blue, Green, Red Blocks with Overlays" /></p>
 <h2 id="fill-framebuffers"><a href="#fill-framebuffers">6.2 Fill Framebuffers</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L109-L115">render.zig</a></p>
+<p>Let’s <strong>fill the pixels</strong> of the 2 Overlay Framebuffers (pic above)…</p>
+<ul>
+<li>
+<p><strong>Framebuffer 1</strong>: Semi-Transparent Blue Square</p>
+</li>
+<li>
+<p><strong>Framebuffer 2</strong>: Semi-Transparent Green Circle</p>
+</li>
+</ul>
+<p>This is how we <strong>fill Framebuffer 1</strong> with a Semi-Transparent Blue Square: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L109-L115">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Init Framebuffer 1:
 // Fill with Semi-Transparent Blue
 i = 0;
@@ -819,8 +827,8 @@ while (i &lt; fb1.len) : (i += 1) {
   // Colours are in ARGB 8888 format
   fb1[i] = 0x8000_0080;
 }</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L117-L138">render.zig</a></p>
+<p>(<strong><code>0x8000_0080</code></strong> means Alpha = <code>0x80</code>, Blue = <code>0x80</code>)</p>
+<p>And this is how we <strong>fill Framebuffer 2</strong> with a Semi-Transparent Green Circle: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L117-L138">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Init Framebuffer 2:
 // Fill with Semi-Transparent Green Circle
 var y: usize = 0;
@@ -842,7 +850,10 @@ while (y &lt; 1440) : (y += 1) {
       fb2[p] = 0x0000_0000;  // Transparent Black in ARGB 8888 Format
     }
   }
-}</code></pre></div><h2 id="render-framebuffers"><a href="#render-framebuffers">6.3 Render Framebuffers</a></h2>
+}</code></pre></div>
+<p>(<strong><code>0x8000_8000</code></strong> means Alpha = <code>0x80</code>, Green = <code>0x80</code>)</p>
+<p>Note that pixels outside the circle are filled with 0. (Transparent Black)</p>
+<h2 id="render-framebuffers"><a href="#render-framebuffers">6.3 Render Framebuffers</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L140-L170">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Init the UI Blender for PinePhone&#39;s A64 Display Engine
