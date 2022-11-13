@@ -940,9 +940,13 @@ Later we'll set the X and Y Offsets of Framebuffer 1, to centre it horizontally.
 
 ## Fill Framebuffers
 
-TODO
+Let's __fill the pixels__ of the 2 Overlay Framebuffers (pic above)...
 
-[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L109-L115)
+-   __Framebuffer 1__: Semi-Transparent Blue Square
+
+-   __Framebuffer 2__: Semi-Transparent Green Circle
+
+This is how we __fill Framebuffer 1__ with a Semi-Transparent Blue Square: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L109-L115)
 
 ```zig
 // Init Framebuffer 1:
@@ -954,9 +958,9 @@ while (i < fb1.len) : (i += 1) {
 }
 ```
 
-TODO
+(__`0x8000_0080`__ means Alpha = `0x80`, Blue = `0x80`)
 
-[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L117-L138)
+And this is how we __fill Framebuffer 2__ with a Semi-Transparent Green Circle: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L117-L138)
 
 ```zig
 // Init Framebuffer 2:
@@ -982,6 +986,10 @@ while (y < 1440) : (y += 1) {
   }
 }
 ```
+
+(__`0x8000_8000`__ means Alpha = `0x80`, Green = `0x80`)
+
+Note that pixels outside the circle are filled with 0. (Transparent Black)
 
 ## Render Framebuffers
 
