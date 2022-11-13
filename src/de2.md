@@ -886,9 +886,13 @@ TODO
 
 ## Allocate Framebuffers
 
-TODO
+First we __allocate 2 Framebuffers__...
 
-[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L658-L666)
+-  __Framebuffer 1:__ 600 x 600 pixels (Square)
+
+-  __Framebuffer 2:__ 720 x 1440 pixels (Fullscreen)
+
+Like so: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L658-L666)
 
 ```zig
 // Framebuffer 1: (First Overlay UI Channel)
