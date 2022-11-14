@@ -391,7 +391,7 @@ comptime {
 
 This verification is super helpful as we create the new Display Driver for PinePhone.
 
-(Works like an [__"Executable Specification"__](https://qoto.org/@lupyuen/109306036122238530) of PinePhone's Hardware)
+(We verify both __Register Addresses and Values__ at Compile-Time. This becomes an [__"Executable Specification"__](https://qoto.org/@lupyuen/109306036122238530) of PinePhone's Hardware)
 
 ## Framebuffer Pitch
 
@@ -1059,6 +1059,8 @@ Enter `hello 3` to render the same colour bars with Blue Square and Green Circle
 
 TODO
 
+Time to merge
+
 Today we've seen the Zig Internals of our new PinePhone Display Driver for Apache NuttX RTOS. I hope that coding the driver in Zig has made it a little easier to understand what's inside.
 
 Some parts of the driver were simpler to code in Zig than in C. I'm glad I chose Zig for the driver!
@@ -1101,6 +1103,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/de2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/de2.md)
 
+![Multiple Framebuffers](https://lupyuen.github.io/images/de2-blender.jpg)
+
 # Appendix: Render Multiple Framebuffers
 
 Earlier we've seen __`initUiChannel`__ for rendering a single Framebuffer...
@@ -1111,31 +1115,23 @@ Then we modified __`initUiChannel`__ to render 3 Framebuffers...
 
 -   [__"Multiple Framebuffers"__](https://lupyuen.github.io/articles/de2#multiple-framebuffers)
 
-This Appendix explains the changes we made to render 3 Framebuffers.
+This Appendix explains the changes we made to render 3 Framebuffers. (Pic above)
+
+![Blue, Green, Red Blocks with Overlays](https://lupyuen.github.io/images/de2-overlay.jpg)
 
 ## Set Framebuffer Attributes
 
 [(__OVL_UI_ATTR_CTL__, Page 102)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-TODO
+For __Framebuffer Alpha__: We configured Framebuffer 2 (Channel 3) to be __Globally Semi-Transparent__. (Global Alpha = `0x7F`)
 
-We set the __Framebuffer Attributes__...
+This means that the Global Alpha will be mixed with the Pixel Alpha. So the pixels will look extra faint for Framebuffer 2. (Green Circle, pic above)
 
--   Framebuffer is __Opaque__
+For __Pixel Format__: We configured Framebuffers 1 and 2 (Channels 2 and 3) for Pixel Format __ARGB 8888__. (8-bit Alpha, 8-bit Red, 8-bit Green, 8-bit Blue)
 
-    (Non-Transparent)
+This differs from Framebuffer 0, which we configured for __XRGB 8888__. (Alpha is ignored)
 
--   TODO: Framebuffer Pixel Format is 32-bit __XRGB 8888__
-
-    ("X" means Pixel Alpha Value is ignored)
-
--   Framebuffer Alpha is __mixed with Pixel Alpha__
-
-    (Effective Alpha Value = Framebuffer Alpha Value * Pixel’s Alpha Value)
-
--   Enable Framebuffer
-
-This is how we set the above attributes as Bit Fields: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L414-L453)
+This is how we set the __Framebuffer Attributes__: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L414-L453)
 
 ```zig
 // Set Overlay (Assume Layer = 0)
@@ -1178,7 +1174,7 @@ putreg32(attr, OVL_UI_ATTR_CTL);
 
 ## Set Blender Route
 
-[(__BLD_CH_RTCTL / BLD_FILL_COLOR_CTL / GLB_DBUFFER__, Page 108 / 106 / 93)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+[(__BLD_CH_RTCTL__, Page 108)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 TODO
 
@@ -1217,42 +1213,47 @@ const BLD_CH_RTCTL = BLD_BASE_ADDRESS + 0x080;
 putreg32(route, BLD_CH_RTCTL);  // TODO: DMB
 ```
 
-TODO: We __disable Pipes 1 and 2__ since they're not used: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L298-L333)
+## Enable Blender Pipes
+
+[(__BLD_FILL_COLOR_CTL__, Page 106)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+TODO
+
+We __disable Pipes 1 and 2__ since they're not used: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L298-L333)
 
 ```zig
-    // Enable Blender Pipes
-    // BLD_FILL_COLOR_CTL (Blender Fill Color Control) at BLD Offset 0x000
-    // If Rendering 3 UI Channels: Set to 0x701 (DMB)
-    //   P2_EN   (Bit 10) = 1 (Enable Pipe 2)
-    //   P1_EN   (Bit 9)  = 1 (Enable Pipe 1)
-    //   P0_EN   (Bit 8)  = 1 (Enable Pipe 0)
-    //   P0_FCEN (Bit 0)  = 1 (Enable Pipe 0 Fill Color)
-    // If Rendering 1 UI Channel: Set to 0x101 (DMB)
-    //   P0_EN   (Bit 8)  = 1 (Enable Pipe 0)
-    //   P0_FCEN (Bit 0)  = 1 (Enable Pipe 0 Fill Color)
-    // (DE Page 106, 0x110 1000)
-    debug("Enable Blender Pipes", .{});
-    const P2_EN: u11 = switch (channels) {  // For Pipe 2...
-        3 => 1,  // 3 UI Channels: Enable Pipe 2
-        1 => 0,  // 1 UI Channel:  Disable Pipe 2
-        else => unreachable,
-    } << 10;  // Bit 10
+// Enable Blender Pipes
+// BLD_FILL_COLOR_CTL (Blender Fill Color Control)
+// At BLD Offset 0x000
+// If Rendering 3 UI Channels:
+//   P2_EN   (Bit 10) = 1 (Enable Pipe 2)
+//   P1_EN   (Bit 9)  = 1 (Enable Pipe 1)
+//   P0_EN   (Bit 8)  = 1 (Enable Pipe 0)
+//   P0_FCEN (Bit 0)  = 1 (Enable Pipe 0 Fill Color)
+// If Rendering 1 UI Channel:
+//   P0_EN   (Bit 8)  = 1 (Enable Pipe 0)
+//   P0_FCEN (Bit 0)  = 1 (Enable Pipe 0 Fill Color)
+// (DE Page 106)
 
-    const P1_EN: u10 = switch (channels) {  // For Pipe 1...
-        3 => 1,  // 3 UI Channels: Enable Pipe 1
-        1 => 0,  // 1 UI Channel:  Disable Pipe 1
-        else => unreachable,
-    } << 9;  // Bit 9
+const P2_EN: u11 = switch (channels) {  // For Pipe 2...
+  3 => 1,  // 3 UI Channels: Enable Pipe 2
+  1 => 0,  // 1 UI Channel:  Disable Pipe 2
+  else => unreachable,
+} << 10;  // Bit 10
 
-    const P0_EN:   u9 = 1 << 8;  // Enable Pipe 0
-    const P0_FCEN: u1 = 1 << 0;  // Enable Pipe 0 Fill Color
-    const fill = P2_EN
-        | P1_EN
-        | P0_EN
-        | P0_FCEN;
-    comptime{ assert(fill == 0x701 or fill == 0x101); }
+const P1_EN: u10 = switch (channels) {  // For Pipe 1...
+  3 => 1,  // 3 UI Channels: Enable Pipe 1
+  1 => 0,  // 1 UI Channel:  Disable Pipe 1
+  else => unreachable,
+} << 9;  // Bit 9
 
-    const BLD_FILL_COLOR_CTL = BLD_BASE_ADDRESS + 0x000;
-    comptime{ assert(BLD_FILL_COLOR_CTL == 0x110_1000); }
-    putreg32(fill, BLD_FILL_COLOR_CTL);  // TODO: DMB
+const P0_EN:   u9 = 1 << 8;  // Enable Pipe 0
+const P0_FCEN: u1 = 1 << 0;  // Enable Pipe 0 Fill Color
+const fill = P2_EN
+  | P1_EN
+  | P0_EN
+  | P0_FCEN;
+
+const BLD_FILL_COLOR_CTL = BLD_BASE_ADDRESS + 0x000;
+putreg32(fill, BLD_FILL_COLOR_CTL);  // TODO: DMB
 ```
