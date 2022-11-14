@@ -1049,11 +1049,70 @@ We need this because we're passing the arguments to [__`initUiChannel`__](https:
 
 # Test Multiple Framebuffers
 
-TODO
+We're ready for the final demo: __Rendering of Multiple Framebuffers__ with our Zig Driver on PinePhone!
 
-Enter `hello 3` to render the same colour bars with Blue Square and Green Circle as Overlays
+Follow the earlier steps to download __Apache NuttX RTOS__ to a microSD Card and boot it on PinePhone...
+
+-   [__"Test PinePhone Display Driver"__](https://lupyuen.github.io/articles/de2#test-pinephone-display-driver)
+
+At the NuttX Shell, enter this command to __render Multiple Framebuffers__ with our Zig Display Driver...
+
+```bash
+hello 3
+```
+
+Our Zig Driver sets the __Hardware Registers__ of the Allwinner A64 Display Engine...
+
+```text
+HELLO NUTTX ON PINEPHONE!
+Shell (NSH) NuttX-11.0.0-RC2
+nsh> hello 3
+...
+initUiChannel: start
+Channel 1: Set Overlay (720 x 1440)
+  *0x1103000 = 0xff000405
+  *0x1103010 = 0x4010c000
+  *0x110300c = 0xb40
+  *0x1103004 = 0x59f02cf
+  *0x1103088 = 0x59f02cf
+  *0x1103008 = 0x0
+Channel 1: Set Blender Output
+Channel 1: Set Blender Input Pipe 0 (720 x 1440)
+...
+Channel 2: Set Overlay (600 x 600)
+Channel 2: Set Blender Input Pipe 1 (600 x 600)
+...
+Channel 3: Set Overlay (720 x 1440)
+Channel 3: Set Blender Input Pipe 2 (720 x 1440)
+...
+Set Blender Route
+Enable Blender Pipes
+Apply Settings
+```
 
 [(See the Complete Log)](https://gist.github.com/lupyuen/d8d6710ab2ed16765816157cb97e54e7)
+
+Note that __Channels 2 and 3 are now enabled__. This means that Framebuffers 1 and 2 will be visible.
+
+On PinePhone we see the __Blue, Green and Red__ colour blocks as before, plus 2 overlays...
+
+-   __Framebuffer 1:__ Semi-Transparent Blue Square
+
+    (Sorry the Top Half vanished into the Blue Block)
+
+-   __Framebuffer 2:__ Semi-Transparent Green Circle
+
+    (Pic above)
+
+Our Zig Display Driver renders all 3 Framebuffers correctly on PinePhone yay!
+
+_The Green Circle looks really faint? Compared with the Blue Square?_
+
+That's because we applied a __Global Alpha Value__ to the Green Circle...
+
+-   [__"Set Framebuffer Attributes"__](https://lupyuen.github.io/articles/de2#set-framebuffer-attributes)
+
+This further reduces the opacity of the Semi-Transparent Pixels of the Green Circle, making it look really faint.
 
 # What's Next
 
