@@ -895,9 +895,58 @@ applySettings(channels);</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/de2#framebuffer-address">(As explained previously)</a></p>
 <p><img src="https://lupyuen.github.io/images/de2-test3.jpg" alt="Blue, Green, Red Blocks with Overlays" /></p>
 <h1 id="test-multiple-framebuffers"><a href="#test-multiple-framebuffers">7 Test Multiple Framebuffers</a></h1>
-<p>TODO</p>
-<p>Enter <code>hello 3</code> to render the same colour bars with Blue Square and Green Circle as Overlays</p>
+<p>We’re ready for the final demo: <strong>Rendering of Multiple Framebuffers</strong> with our Zig Driver on PinePhone!</p>
+<p>Follow the earlier steps to download <strong>Apache NuttX RTOS</strong> to a microSD Card and boot it on PinePhone…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/de2#test-pinephone-display-driver"><strong>“Test PinePhone Display Driver”</strong></a></li>
+</ul>
+<p>At the NuttX Shell, enter this command to <strong>render Multiple Framebuffers</strong> with our Zig Display Driver…</p>
+<div class="example-wrap"><pre class="language-bash"><code>hello 3</code></pre></div>
+<p>Our Zig Driver sets the <strong>Hardware Registers</strong> of the Allwinner A64 Display Engine…</p>
+<div class="example-wrap"><pre class="language-text"><code>HELLO NUTTX ON PINEPHONE!
+Shell (NSH) NuttX-11.0.0-RC2
+nsh&gt; hello 3
+...
+initUiChannel: start
+Channel 1: Set Overlay (720 x 1440)
+  *0x1103000 = 0xff000405
+  *0x1103010 = 0x4010c000
+  *0x110300c = 0xb40
+  *0x1103004 = 0x59f02cf
+  *0x1103088 = 0x59f02cf
+  *0x1103008 = 0x0
+Channel 1: Set Blender Output
+Channel 1: Set Blender Input Pipe 0 (720 x 1440)
+...
+Channel 2: Set Overlay (600 x 600)
+Channel 2: Set Blender Input Pipe 1 (600 x 600)
+...
+Channel 3: Set Overlay (720 x 1440)
+Channel 3: Set Blender Input Pipe 2 (720 x 1440)
+...
+Set Blender Route
+Enable Blender Pipes
+Apply Settings</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/d8d6710ab2ed16765816157cb97e54e7">(See the Complete Log)</a></p>
+<p>Note that <strong>Channels 2 and 3 are now enabled</strong>. This means that Framebuffers 1 and 2 will be visible.</p>
+<p>On PinePhone we see the <strong>Blue, Green and Red</strong> colour blocks as before, plus 2 overlays…</p>
+<ul>
+<li>
+<p><strong>Framebuffer 1:</strong> Semi-Transparent Blue Square</p>
+<p>(Sorry the Top Half vanished into the Blue Block)</p>
+</li>
+<li>
+<p><strong>Framebuffer 2:</strong> Semi-Transparent Green Circle</p>
+<p>(Pic above)</p>
+</li>
+</ul>
+<p>Our Zig Display Driver renders all 3 Framebuffers correctly on PinePhone yay!</p>
+<p><em>The Green Circle looks really faint? Compared with the Blue Square?</em></p>
+<p>That’s because we applied a <strong>Global Alpha Value</strong> to the Green Circle…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/de2#set-framebuffer-attributes"><strong>“Set Framebuffer Attributes”</strong></a></li>
+</ul>
+<p>This further reduces the opacity of the Semi-Transparent Pixels of the Green Circle, making it look really faint.</p>
 <h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
 <p>Time to merge</p>
