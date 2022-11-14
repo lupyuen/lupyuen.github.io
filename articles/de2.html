@@ -1004,10 +1004,24 @@ const attr = LAY_GLBALPHA
   | LAY_EN;
 
 const OVL_UI_ATTR_CTL = OVL_UI_BASE_ADDRESS + 0x00;
-putreg32(attr, OVL_UI_ATTR_CTL);</code></pre></div><h2 id="set-blender-route"><a href="#set-blender-route">9.2 Set Blender Route</a></h2>
+putreg32(attr, OVL_UI_ATTR_CTL);</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="Multiple Framebuffers" /></p>
+<h2 id="set-blender-route"><a href="#set-blender-route">9.2 Set Blender Route</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_CH_RTCTL</strong>, Page 108)</a></p>
-<p>TODO</p>
-<p>TODO: Finally we enable <strong>Blender Pipe 0</strong> (pic above): <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L266-L297">render.zig</a></p>
+<p>Now that we render 3 Framebuffers instead of 1, we need to <strong>connect the Blender Pipes</strong> to their respective Framebuffers (Channels)…</p>
+<ul>
+<li>
+<p><strong>Framebuffer 0</strong> (Channel 1) connects to <strong>Blender Pipe 0</strong></p>
+</li>
+<li>
+<p><strong>Framebuffer 1</strong> (Channel 2) connects to <strong>Blender Pipe 1</strong></p>
+</li>
+<li>
+<p><strong>Framebuffer 2</strong> (Channel 3) connects to <strong>Blender Pipe 2</strong></p>
+<p>(Pic above)</p>
+</li>
+</ul>
+<p>Here’s how we connect the pipes: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L266-L297">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Set Blender Route
 // BLD_CH_RTCTL (Blender Routing Control)
 // At BLD Offset 0x080
@@ -1037,10 +1051,11 @@ const route = P2_RTCTL
   | P0_RTCTL;
 
 const BLD_CH_RTCTL = BLD_BASE_ADDRESS + 0x080;
-putreg32(route, BLD_CH_RTCTL);  // TODO: DMB</code></pre></div><h2 id="enable-blender-pipes"><a href="#enable-blender-pipes">9.3 Enable Blender Pipes</a></h2>
+putreg32(route, BLD_CH_RTCTL);  // TODO: DMB</code></pre></div>
+<p>(<strong><code>channels</code></strong> is 3 when we render 3 Framebuffers)</p>
+<h2 id="enable-blender-pipes"><a href="#enable-blender-pipes">9.3 Enable Blender Pipes</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_FILL_COLOR_CTL</strong>, Page 106)</a></p>
-<p>TODO</p>
-<p>We <strong>disable Pipes 1 and 2</strong> since they’re not used: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L298-L333">render.zig</a></p>
+<p>After connecting the Blender Pipes, we <strong>enable all 3 Blender Pipes</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L298-L333">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Enable Blender Pipes
 // BLD_FILL_COLOR_CTL (Blender Fill Color Control)
 // At BLD Offset 0x000
@@ -1075,6 +1090,8 @@ const fill = P2_EN
 
 const BLD_FILL_COLOR_CTL = BLD_BASE_ADDRESS + 0x000;
 putreg32(fill, BLD_FILL_COLOR_CTL);  // TODO: DMB</code></pre></div>
+<p>(<strong><code>channels</code></strong> is 3 when we render 3 Framebuffers)</p>
+
     
 </body>
 </html>
