@@ -340,9 +340,9 @@ For our safety, Zig gets strict about __Null Values__ and __Range Checking__...
 
     (It halts if it won't fit)
 
--   [__`putreg32`__](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L1052-L1057) writes the 32-bit Integer to the Address of the Hardware Register
+-   [__`putreg32`__](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L996-L1002) writes the 32-bit Integer to the Address of the Hardware Register
 
-    [(As defined here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L1052-L1057)
+    [(As defined here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L996-L1002)
 
 _Huh we're force-fitting a 64-bit Physical Address into a 32-bit Integer?_
 
@@ -639,10 +639,6 @@ const pipe: u64 = channel - 1;
 This is how we set the __Input Size__ to 720 x 1440 for Blender Pipe 0: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L511-L524)
 
 ```zig
-// Note: DE Page 91 shows incorrect offset N*0x14 for 
-// BLD_CH_ISIZE, BLD_FILL_COLOR and BLD_CH_OFFSET. 
-// Correct offset is N*0x10, see DE Page 108
-
 // BLD_CH_ISIZE (Blender Input Memory Size)
 // At BLD Offset 0x008 + N*0x10 (N=0 for Channel 1)
 // Set to (height-1) << 16 + (width-1)
@@ -874,7 +870,15 @@ On PinePhone we see the __Blue, Green and Red__ colour blocks. (Pic above)
 
 Yep our Zig Display Driver renders graphics correctly on PinePhone! 🎉
 
-We've rendered a single Framebuffer. Now we push PinePhone's Display Hardware to the max with 3 Framebuffers...
+We've successfully rendered a single Framebuffer. In the next chapter we push PinePhone's Display Hardware to the max with 3 Framebuffers.
+
+_The Blue / Green / Red Blocks look kinda bright. Didn't we [set the Alpha Channel](https://lupyuen.github.io/articles/de2#fill-framebuffer) to be Semi-Transparent?_
+
+Aha! That's because we're rendering a Single Framebuffer, and we disregard the Alpha Channel for the Framebuffer.
+
+That's why we configured the Framebuffer for __XRGB 8888__ instead of ARGB 8888. [(See this)](https://lupyuen.github.io/articles/de2#framebuffer-attributes)
+
+In a while we'll render 2 Overlay Framebuffers configured for ARGB 8888. (To prove that the Alpha Channel really works!)
 
 ![Multiple Framebuffers](https://lupyuen.github.io/images/de2-blender.jpg)
 
@@ -1037,6 +1041,8 @@ __`overlayInfo`__ is the array that defines the properties of the 2 Overlay Fram
 
 [(__overlayInfo__ is defined here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L619-L651)
 
+[(__fb_overlayinfo_s__ comes from NuttX RTOS)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L350-L367)
+
 _Why "`inline for`"?_
 
 ["__`inline for`__"](https://ziglang.org/documentation/master/#inline-for) expands (or unrolls) the loop at Compile-Time.
@@ -1049,7 +1055,7 @@ We need this because we're passing the arguments to [__`initUiChannel`__](https:
 
 # Test Multiple Framebuffers
 
-We're ready for the final demo: __Rendering of Multiple Framebuffers__ with our Zig Driver on PinePhone!
+We're ready for the final demo: __Render Multiple Framebuffers__ with our Zig Driver on PinePhone!
 
 Follow the earlier steps to download __Apache NuttX RTOS__ to a microSD Card and boot it on PinePhone...
 
@@ -1113,6 +1119,16 @@ That's because we applied a __Global Alpha Value__ to the Green Circle...
 -   [__"Set Framebuffer Attributes"__](https://lupyuen.github.io/articles/de2#set-framebuffer-attributes)
 
 This further reduces the opacity of the Semi-Transparent Pixels of the Green Circle, making it look really faint.
+
+_When we update the pixels in the Framebuffers, how do we refresh the display?_
+
+No refresh necessary, __Framebuffer Updates are automatically pushed__ to PinePhone's Display!
+
+That's because PinePhone's A64 Display Engine is connected to the Framebuffers via __Direct Memory Access (DMA)__.
+
+The pixel data goes directly from the Framebuffers in RAM to PinePhone's Display.
+
+[(Here's the proof)](https://lupyuen.github.io/articles/de#animate-madelbrot-set)
 
 ![PinePhone rendering Mandelbrot Set on Apache NuttX RTOS](https://lupyuen.github.io/images/de-title.jpg)
 
@@ -1226,6 +1242,8 @@ const attr = LAY_GLBALPHA
 const OVL_UI_ATTR_CTL = OVL_UI_BASE_ADDRESS + 0x00;
 putreg32(attr, OVL_UI_ATTR_CTL);
 ```
+
+Next we configure the Blender...
 
 ![Multiple Framebuffers](https://lupyuen.github.io/images/de2-blender.jpg)
 
@@ -1355,4 +1373,6 @@ Some features are still __missing from our Zig Display Driver__...
 
     [__`backlight_enable`__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#backlight_enable)
 
-We hope to implement the missing features and complete the documentation for PinePhone's Display Driver. Stay tuned!
+We hope to implement the missing features and complete the documentation for PinePhone's Display Driver. Stay Tuned!
+
+(The Guitar And The Fish!)
