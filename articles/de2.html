@@ -952,6 +952,9 @@ Apply Settings</code></pre></div>
 <p>Today we’ve shown that it’s indeed possible to write a Zig Display Driver that talks directly to PinePhone’s Hardware.</p>
 <p>(Bonus: Our Zig Driver includes an <a href="https://lupyuen.github.io/articles/de2#framebuffer-address"><strong>“Executable Specification”</strong></a> of PinePhone’s Hardware Registers, with their addresses and values!)</p>
 <p>The code we’ve seen today will eventually become the PinePhone Display Driver for <strong>Apache NuttX RTOS</strong>. Though there are some bits still missing…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/de2#appendix-upcoming-features-in-pinephone-display-driver"><strong>“Upcoming Features in PinePhone Display Driver”</strong></a></li>
+</ul>
 <p>TODO</p>
 <p>Time to merge</p>
 <p>Today we’ve seen the Zig Internals of our new PinePhone Display Driver for Apache NuttX RTOS. I hope that coding the driver in Zig has made it a little easier to understand what’s inside.</p>
@@ -1145,7 +1148,37 @@ const BLD_FILL_COLOR_CTL = BLD_BASE_ADDRESS + 0x000;
 putreg32(fill, BLD_FILL_COLOR_CTL);  // TODO: DMB</code></pre></div>
 <p>(<strong><code>channels</code></strong> is 3 when we render 3 Framebuffers)</p>
 <h1 id="appendix-upcoming-features-in-pinephone-display-driver"><a href="#appendix-upcoming-features-in-pinephone-display-driver">10 Appendix: Upcoming Features in PinePhone Display Driver</a></h1>
-<p>TODO</p>
+<p>We have completed in Zig three major chunks of PinePhone’s Display Driver…</p>
+<ul>
+<li>
+<p>Initialise PinePhone’s <strong>ST7703 LCD Controller</strong></p>
+<p><a href="https://lupyuen.github.io/articles/dsi2#initialise-st7703-lcd-controller"><strong><code>nuttx_panel_init</code></strong></a></p>
+</li>
+<li>
+<p>Initialise PinePhone’s <strong>Allwinner A64 Display Engine</strong></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L707-L967"><strong><code>de2_init</code></strong></a></p>
+</li>
+<li>
+<p>Render Graphics on PinePhone’s <strong>Allwinner A64 Display Engine</strong></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L55-L171"><strong><code>renderGraphics</code></strong></a></p>
+</li>
+</ul>
+<p>Some features are still <strong>missing from our Zig Display Driver</strong>…</p>
+<ul>
+<li>
+<p>Initialise PinePhone’s <strong>Allwinner A64 Timing Controller (TCON0)</strong></p>
+<p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init"><strong><code>tcon0_init</code></strong></a></p>
+</li>
+<li>
+<p>Initialise PinePhone’s <strong>Allwinner A64 MIPI Display Serial Interface</strong> (including MIPI DPHY)</p>
+<p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dsi_init"><strong><code>dsi_init</code></strong></a></p>
+</li>
+<li>
+<p>Turn on PinePhone’s <strong>Backlight</strong></p>
+<p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#backlight_enable"><strong><code>backlight_enable</code></strong></a></p>
+</li>
+</ul>
+<p>We hope to implement the missing features and complete the documentation for PinePhone’s Display Driver. Stay tuned!</p>
 
     
 </body>
