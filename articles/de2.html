@@ -400,7 +400,7 @@ comptime {
 }</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#comptime"><strong><code>comptime</code></strong></a> means that the Assertion Check is performed by the Zig Compiler at <strong>Compile-Time</strong>. (Instead of Runtime)</p>
 <p>This verification is super helpful as we create the new Display Driver for PinePhone.</p>
-<p>(We verify both <strong>Register Addresses and Values</strong> at Compile-Time. This becomes an <a href="https://qoto.org/@lupyuen/109306036122238530"><strong>“Executable Specification”</strong></a> of PinePhone’s Hardware)</p>
+<p>(We verify both <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L442-L454"><strong>Register Addresses and Values</strong></a> at Compile-Time. This becomes an <a href="https://qoto.org/@lupyuen/109306036122238530"><strong>“Executable Specification”</strong></a> of PinePhone’s Hardware)</p>
 <h2 id="framebuffer-pitch"><a href="#framebuffer-pitch">3.2 Framebuffer Pitch</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_PITCH</strong>, Page 104)</a></p>
 <p>Next we set the <strong>Framebuffer Pitch</strong> to the number of bytes per row (<code>720 * 4</code>): <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L463-L468">render.zig</a></p>
