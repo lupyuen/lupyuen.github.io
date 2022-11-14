@@ -1120,7 +1120,7 @@ Today we've shown that it's indeed possible to write a Zig Display Driver that t
 
 (Bonus: Our Zig Driver includes an [__"Executable Specification"__](https://lupyuen.github.io/articles/de2#framebuffer-address) of PinePhone's Hardware Registers, with their addresses and values!)
 
-The code we've seen today will eventually become the PinePhone Display Driver for __Apache NuttX RTOS__...
+The code we've seen today will eventually become the PinePhone Display Driver for __Apache NuttX RTOS__. Though there are some bits still missing...
 
 TODO
 
@@ -1334,3 +1334,7 @@ putreg32(fill, BLD_FILL_COLOR_CTL);  // TODO: DMB
 ```
 
 (__`channels`__ is 3 when we render 3 Framebuffers)
+
+# Appendix: Upcoming Features in PinePhone Display Driver
+
+TODO
