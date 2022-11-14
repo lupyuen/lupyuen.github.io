@@ -1118,7 +1118,7 @@ This further reduces the opacity of the Semi-Transparent Pixels of the Green Cir
 
 Today we've shown that it's indeed possible to write a Zig Display Driver that talks directly to PinePhone's Hardware.
 
-(Bonus: Our Zig Driver includes an [__"Executable Specification"__](https://lupyuen.github.io/articles/de2#framebuffer-address) of PinePhone's Hardware Registers, with their addresses and values!)
+(Bonus: Our Zig Driver includes an [__"Executable Specification"__](https://lupyuen.github.io/articles/de2#framebuffer-address) of PinePhone's Display Hardware Registers, with their addresses and values!)
 
 The code we've seen today will eventually become the PinePhone Display Driver for __Apache NuttX RTOS__. Though there are some bits still missing...
 
