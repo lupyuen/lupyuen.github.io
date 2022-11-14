@@ -1172,13 +1172,23 @@ const OVL_UI_ATTR_CTL = OVL_UI_BASE_ADDRESS + 0x00;
 putreg32(attr, OVL_UI_ATTR_CTL);
 ```
 
+![Multiple Framebuffers](https://lupyuen.github.io/images/de2-blender.jpg)
+
 ## Set Blender Route
 
 [(__BLD_CH_RTCTL__, Page 108)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-TODO
+Now that we render 3 Framebuffers instead of 1, we need to __connect the Blender Pipes__ to their respective Framebuffers (Channels)...
 
-TODO: Finally we enable __Blender Pipe 0__ (pic above): [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L266-L297)
+-   __Framebuffer 0__ (Channel 1) connects to __Blender Pipe 0__
+
+-   __Framebuffer 1__ (Channel 2) connects to __Blender Pipe 1__
+
+-   __Framebuffer 2__ (Channel 3) connects to __Blender Pipe 2__
+
+    (Pic above)
+
+Here's how we connect the pipes: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L266-L297)
 
 ```zig
 // Set Blender Route
@@ -1213,13 +1223,13 @@ const BLD_CH_RTCTL = BLD_BASE_ADDRESS + 0x080;
 putreg32(route, BLD_CH_RTCTL);  // TODO: DMB
 ```
 
+(__`channels`__ is 3 when we render 3 Framebuffers)
+
 ## Enable Blender Pipes
 
 [(__BLD_FILL_COLOR_CTL__, Page 106)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-TODO
-
-We __disable Pipes 1 and 2__ since they're not used: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L298-L333)
+After connecting the Blender Pipes, we __enable all 3 Blender Pipes__: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L298-L333)
 
 ```zig
 // Enable Blender Pipes
@@ -1257,3 +1267,5 @@ const fill = P2_EN
 const BLD_FILL_COLOR_CTL = BLD_BASE_ADDRESS + 0x000;
 putreg32(fill, BLD_FILL_COLOR_CTL);  // TODO: DMB
 ```
+
+(__`channels`__ is 3 when we render 3 Framebuffers)
