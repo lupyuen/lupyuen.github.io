@@ -1122,6 +1122,8 @@ Today we've shown that it's indeed possible to write a Zig Display Driver that t
 
 The code we've seen today will eventually become the PinePhone Display Driver for __Apache NuttX RTOS__. Though there are some bits still missing...
 
+-   [__"Upcoming Features in PinePhone Display Driver"__](https://lupyuen.github.io/articles/de2#appendix-upcoming-features-in-pinephone-display-driver)
+
 TODO
 
 Time to merge
@@ -1337,4 +1339,32 @@ putreg32(fill, BLD_FILL_COLOR_CTL);  // TODO: DMB
 
 # Appendix: Upcoming Features in PinePhone Display Driver
 
-TODO
+We have completed in Zig three major chunks of PinePhone's Display Driver...
+
+-   Initialise PinePhone's __ST7703 LCD Controller__
+
+    [__`nuttx_panel_init`__](https://lupyuen.github.io/articles/dsi2#initialise-st7703-lcd-controller)
+
+-   Initialise PinePhone's __Allwinner A64 Display Engine__
+
+    [__`de2_init`__](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L707-L967)
+
+-   Render Graphics on PinePhone's __Allwinner A64 Display Engine__
+
+    [__`renderGraphics`__](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L55-L171)
+
+Some features are still __missing from our Zig Display Driver__...
+
+-   Initialise PinePhone's __Allwinner A64 Timing Controller (TCON0)__
+
+    [__`tcon0_init`__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init)
+
+-   Initialise PinePhone's __Allwinner A64 MIPI Display Serial Interface__ (including MIPI DPHY)
+
+    [__`dsi_init`__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dsi_init)
+
+-   Turn on PinePhone's __Backlight__
+
+    [__`backlight_enable`__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#backlight_enable)
+
+We hope to implement the missing features and complete the documentation for PinePhone's Display Driver. Stay tuned!
