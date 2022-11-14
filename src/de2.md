@@ -391,7 +391,7 @@ comptime {
 
 This verification is super helpful as we create the new Display Driver for PinePhone.
 
-(We verify both __Register Addresses and Values__ at Compile-Time. This becomes an [__"Executable Specification"__](https://qoto.org/@lupyuen/109306036122238530) of PinePhone's Hardware)
+(We verify both [__Register Addresses and Values__](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L442-L454) at Compile-Time. This becomes an [__"Executable Specification"__](https://qoto.org/@lupyuen/109306036122238530) of PinePhone's Hardware)
 
 ## Framebuffer Pitch
 
