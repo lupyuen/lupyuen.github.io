@@ -890,12 +890,12 @@ applySettings(channels);</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L619-L651">(<strong>overlayInfo</strong> is defined here)</a></p>
 <p><em>Why “<code>inline for</code>”?</em></p>
 <p><a href="https://ziglang.org/documentation/master/#inline-for">“<strong><code>inline for</code></strong>”</a> expands (or unrolls) the loop at Compile-Time.</p>
-<p>We need this because we’re passing the arguments to <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L350-L594"><strong>initUiChannel</strong></a> as <strong><code>comptime</code></strong> Compile-Time Constants.</p>
+<p>We need this because we’re passing the arguments to <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L350-L594"><strong><code>initUiChannel</code></strong></a> as <strong><code>comptime</code></strong> Compile-Time Constants.</p>
 <p><a href="https://lupyuen.github.io/articles/de2#framebuffer-address">(As explained previously)</a></p>
 <p><img src="https://lupyuen.github.io/images/de2-test3.jpg" alt="Blue, Green, Red Blocks with Overlays" /></p>
 <h1 id="test-multiple-framebuffers"><a href="#test-multiple-framebuffers">7 Test Multiple Framebuffers</a></h1>
 <p>TODO</p>
-<p>Or enter <code>hello 3</code> to render the same colour bars with Blue Square and Green Circle as Overlays</p>
+<p>Enter <code>hello 3</code> to render the same colour bars with Blue Square and Green Circle as Overlays</p>
 <p><a href="https://gist.github.com/lupyuen/d8d6710ab2ed16765816157cb97e54e7">(See the Complete Log)</a></p>
 <h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
@@ -949,7 +949,15 @@ applySettings(channels);</code></pre></div>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/de2.md"><strong>lupyuen.github.io/src/de2.md</strong></a></p>
 <h1 id="appendix-render-multiple-framebuffers"><a href="#appendix-render-multiple-framebuffers">9 Appendix: Render Multiple Framebuffers</a></h1>
-<p>TODO</p>
+<p>Earlier we’ve seen <strong><code>initUiChannel</code></strong> for rendering a single Framebuffer…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/de2#configure-framebuffer"><strong>“Configure Framebuffer”</strong></a></li>
+</ul>
+<p>Then we modified <strong><code>initUiChannel</code></strong> to render 3 Framebuffers…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/de2#multiple-framebuffers"><strong>“Multiple Framebuffers”</strong></a></li>
+</ul>
+<p>This Appendix explains the changes we made to render 3 Framebuffers.</p>
 <h2 id="set-framebuffer-attributes"><a href="#set-framebuffer-attributes">9.1 Set Framebuffer Attributes</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_ATTR_CTL</strong>, Page 102)</a></p>
 <p>TODO</p>
@@ -972,80 +980,75 @@ applySettings(channels);</code></pre></div>
 </li>
 </ul>
 <p>This is how we set the above attributes as Bit Fields: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L414-L453">render.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>    // Set Overlay (Assume Layer = 0)
-    // OVL_UI_ATTR_CTL (UI Overlay Attribute Control) at OVL_UI Offset 0x00
-    // For Channel 1: Set to 0xFF00 0405
-    // For Channel 2: Set to 0xFF00 0005
-    // For Channel 3: Set to 0x7F00 0005
-    // LAY_GLBALPHA (Bits 24 to 31) = 0xFF or 0x7F
-    //   (Global Alpha Value is Opaque or Semi-Transparent)
-    // LAY_FBFMT (Bits 8 to 12) = 4 or 0
-    //   (Input Data Format is XRGB 8888 or ARGB 8888)
-    // LAY_ALPHA_MODE (Bits 1 to 2) = 2
-    //   (Global Alpha is mixed with Pixel Alpha)
-    //   (Input Alpha Value = Global Alpha Value * Pixel’s Alpha Value)
-    // LAY_EN (Bit 0) = 1 (Enable Layer)
-    // (DE Page 102, 0x110 3000 / 0x110 4000 / 0x110 5000)
-    debug(&quot;Channel {}: Set Overlay ({} x {})&quot;, .{ channel, xres, yres });
-    const LAY_GLBALPHA: u32 = switch (channel) {  // For Global Alpha Value...
-        1 =&gt; 0xFF,  // Channel 1: Opaque
-        2 =&gt; 0xFF,  // Channel 2: Opaque
-        3 =&gt; 0x7F,  // Channel 3: Semi-Transparent
-        else =&gt; unreachable,
-    } &lt;&lt; 24;  // Bits 24 to 31
+<div class="example-wrap"><pre class="language-zig"><code>// Set Overlay (Assume Layer = 0)
+// OVL_UI_ATTR_CTL (UI Overlay Attribute Control)
+// At OVL_UI Offset 0x00
+// LAY_GLBALPHA (Bits 24 to 31) = 0xFF or 0x7F
+//   (Global Alpha Value is Opaque or Semi-Transparent)
+// LAY_FBFMT (Bits 8 to 12) = 4 or 0
+//   (Input Data Format is XRGB 8888 or ARGB 8888)
+// LAY_ALPHA_MODE (Bits 1 to 2) = 2
+//   (Global Alpha is mixed with Pixel Alpha)
+//   (Input Alpha Value = Global Alpha Value * Pixel’s Alpha Value)
+// LAY_EN (Bit 0) = 1 (Enable Layer)
+// (DE Page 102)
 
-    const LAY_FBFMT: u13 = switch (channel) {  // For Input Data Format...
-        1 =&gt; 4,  // Channel 1: XRGB 8888
-        2 =&gt; 0,  // Channel 2: ARGB 8888
-        3 =&gt; 0,  // Channel 3: ARGB 8888
-        else =&gt; unreachable,
-    } &lt;&lt; 8;  // Bits 8 to 12
+const LAY_GLBALPHA: u32 = switch (channel) {  // For Global Alpha Value...
+  1 =&gt; 0xFF,  // Channel 1: Opaque
+  2 =&gt; 0xFF,  // Channel 2: Opaque
+  3 =&gt; 0x7F,  // Channel 3: Semi-Transparent
+  else =&gt; unreachable,
+} &lt;&lt; 24;  // Bits 24 to 31
 
-    const LAY_ALPHA_MODE: u3 = 2 &lt;&lt; 1;  // Global Alpha is mixed with Pixel Alpha
-    const LAY_EN:         u1 = 1 &lt;&lt; 0;  // Enable Layer
-    const attr = LAY_GLBALPHA
-        | LAY_FBFMT
-        | LAY_ALPHA_MODE
-        | LAY_EN;
-    comptime{ assert(attr == 0xFF00_0405 or attr == 0xFF00_0005 or attr == 0x7F00_0005); }
+const LAY_FBFMT: u13 = switch (channel) {  // For Input Data Format...
+  1 =&gt; 4,  // Channel 1: XRGB 8888
+  2 =&gt; 0,  // Channel 2: ARGB 8888
+  3 =&gt; 0,  // Channel 3: ARGB 8888
+  else =&gt; unreachable,
+} &lt;&lt; 8;  // Bits 8 to 12
 
-    const OVL_UI_ATTR_CTL = OVL_UI_BASE_ADDRESS + 0x00;
-    comptime{ assert(OVL_UI_ATTR_CTL == 0x110_3000 or OVL_UI_ATTR_CTL == 0x110_4000 or OVL_UI_ATTR_CTL == 0x110_5000); }
-    putreg32(attr, OVL_UI_ATTR_CTL);</code></pre></div><h2 id="set-blender-route"><a href="#set-blender-route">9.2 Set Blender Route</a></h2>
+const LAY_ALPHA_MODE: u3 = 2 &lt;&lt; 1;  // Global Alpha is mixed with Pixel Alpha
+const LAY_EN:         u1 = 1 &lt;&lt; 0;  // Enable Layer
+const attr = LAY_GLBALPHA
+  | LAY_FBFMT
+  | LAY_ALPHA_MODE
+  | LAY_EN;
+
+const OVL_UI_ATTR_CTL = OVL_UI_BASE_ADDRESS + 0x00;
+putreg32(attr, OVL_UI_ATTR_CTL);</code></pre></div><h2 id="set-blender-route"><a href="#set-blender-route">9.2 Set Blender Route</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_CH_RTCTL / BLD_FILL_COLOR_CTL / GLB_DBUFFER</strong>, Page 108 / 106 / 93)</a></p>
 <p>TODO</p>
 <p>TODO: Finally we enable <strong>Blender Pipe 0</strong> (pic above): <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L266-L297">render.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>    // Set Blender Route
-    // BLD_CH_RTCTL (Blender Routing Control) at BLD Offset 0x080
-    // If Rendering 3 UI Channels: Set to 0x321 (DMB)
-    //   P2_RTCTL (Bits 8 to 11) = 3 (Pipe 2 from Channel 3)
-    //   P1_RTCTL (Bits 4 to 7)  = 2 (Pipe 1 from Channel 2)
-    //   P0_RTCTL (Bits 0 to 3)  = 1 (Pipe 0 from Channel 1)
-    // If Rendering 1 UI Channel: Set to 1 (DMB)
-    //   P0_RTCTL (Bits 0 to 3) = 1 (Pipe 0 from Channel 1)
-    // (DE Page 108, 0x110 1080)
-    debug(&quot;Set Blender Route&quot;, .{});
-    const P2_RTCTL: u12 = switch (channels) {  // For Pipe 2...
-        3 =&gt; 3,  // 3 UI Channels: Select Pipe 2 from UI Channel 3
-        1 =&gt; 0,  // 1 UI Channel:  Unused Pipe 2
-        else =&gt; unreachable,
-    } &lt;&lt; 8;  // Bits 8 to 11
+<div class="example-wrap"><pre class="language-zig"><code>// Set Blender Route
+// BLD_CH_RTCTL (Blender Routing Control)
+// At BLD Offset 0x080
+// If Rendering 3 UI Channels:
+//   P2_RTCTL (Bits 8 to 11) = 3 (Pipe 2 from Channel 3)
+//   P1_RTCTL (Bits 4 to 7)  = 2 (Pipe 1 from Channel 2)
+//   P0_RTCTL (Bits 0 to 3)  = 1 (Pipe 0 from Channel 1)
+// If Rendering 1 UI Channel:
+//   P0_RTCTL (Bits 0 to 3) = 1 (Pipe 0 from Channel 1)
+// (DE Page 108)
 
-    const P1_RTCTL: u8 = switch (channels) {  // For Pipe 1...
-        3 =&gt; 2,  // 3 UI Channels: Select Pipe 1 from UI Channel 2
-        1 =&gt; 0,  // 1 UI Channel:  Unused Pipe 1
-        else =&gt; unreachable,
-    } &lt;&lt; 4;  // Bits 4 to 7
+const P2_RTCTL: u12 = switch (channels) {  // For Pipe 2...
+  3 =&gt; 3,  // 3 UI Channels: Select Pipe 2 from UI Channel 3
+  1 =&gt; 0,  // 1 UI Channel:  Unused Pipe 2
+  else =&gt; unreachable,
+} &lt;&lt; 8;  // Bits 8 to 11
 
-    const P0_RTCTL: u4 = 1 &lt;&lt; 0;  // Select Pipe 0 from UI Channel 1
-    const route = P2_RTCTL
-        | P1_RTCTL
-        | P0_RTCTL;
-    comptime{ assert(route == 0x321 or route == 1); }
+const P1_RTCTL: u8 = switch (channels) {  // For Pipe 1...
+  3 =&gt; 2,  // 3 UI Channels: Select Pipe 1 from UI Channel 2
+  1 =&gt; 0,  // 1 UI Channel:  Unused Pipe 1
+  else =&gt; unreachable,
+} &lt;&lt; 4;  // Bits 4 to 7
 
-    const BLD_CH_RTCTL = BLD_BASE_ADDRESS + 0x080;
-    comptime{ assert(BLD_CH_RTCTL == 0x110_1080); }
-    putreg32(route, BLD_CH_RTCTL);  // TODO: DMB</code></pre></div>
+const P0_RTCTL: u4 = 1 &lt;&lt; 0;  // Select Pipe 0 from UI Channel 1
+const route = P2_RTCTL
+  | P1_RTCTL
+  | P0_RTCTL;
+
+const BLD_CH_RTCTL = BLD_BASE_ADDRESS + 0x080;
+putreg32(route, BLD_CH_RTCTL);  // TODO: DMB</code></pre></div>
 <p>TODO: We <strong>disable Pipes 1 and 2</strong> since they’re not used: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L298-L333">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>    // Enable Blender Pipes
     // BLD_FILL_COLOR_CTL (Blender Fill Color Control) at BLD Offset 0x000
