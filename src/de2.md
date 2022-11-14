@@ -1114,31 +1114,19 @@ That's because we applied a __Global Alpha Value__ to the Green Circle...
 
 This further reduces the opacity of the Semi-Transparent Pixels of the Green Circle, making it look really faint.
 
+![PinePhone rendering Mandelbrot Set on Apache NuttX RTOS](https://lupyuen.github.io/images/de-title.jpg)
+
 # What's Next
 
-Today we've shown that it's indeed possible to write a Zig Display Driver that talks directly to PinePhone's Hardware.
+Today we've shown that it's indeed possible to write a Zig Display Driver that talks directly to PinePhone's Hardware to render graphics.
 
 (Bonus: Our Zig Driver includes an [__"Executable Specification"__](https://lupyuen.github.io/articles/de2#framebuffer-address) of PinePhone's Display Hardware Registers, with their addresses and values!)
 
-The code we've seen today will eventually become the PinePhone Display Driver for __Apache NuttX RTOS__. Though there are some bits still missing...
+The code we've seen today will eventually become the PinePhone Display Driver for __Apache NuttX RTOS__. Though some bits are still missing...
 
 -   [__"Upcoming Features in PinePhone Display Driver"__](https://lupyuen.github.io/articles/de2#appendix-upcoming-features-in-pinephone-display-driver)
 
-TODO
-
-Time to merge
-
-Today we've seen the Zig Internals of our new PinePhone Display Driver for Apache NuttX RTOS. I hope that coding the driver in Zig has made it a little easier to understand what's inside.
-
-Some parts of the driver were simpler to code in Zig than in C. I'm glad I chose Zig for the driver!
-
-(I took longer to write this article... Than to code the Zig Driver!)
-
-In the next article we shall implement the rendering features of the PinePhone Display Driver...
-
--   [__"Rendering PinePhone's Display (DE and TCON0)"__](https://lupyuen.github.io/articles/de)
-
-There's plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏
+But now it's time to __merge our code__ into NuttX Mainline! I'll explain the process in the next couple of articles, stay tuned!
 
 Check out the other articles on __NuttX RTOS for PinePhone__...
 
