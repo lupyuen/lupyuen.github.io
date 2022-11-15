@@ -154,6 +154,13 @@
   ],
   "publications": [
     {
+      "name": "NuttX RTOS for PinePhone: Render Graphics in Zig",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2022-11-15",
+      "website": "https://lupyuen.github.io/articles/de2",
+      "summary": "How we render graphics directly to PinePhone's Display Hardware... With the Zig Programming Language and Apache NuttX RTOS"
+    },
+    {
       "name": "Rendering PinePhone's Display (DE and TCON0)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-10-30",

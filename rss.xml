@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>NuttX RTOS for PinePhone: Render Graphics in Zig</title>
+            <link>https://lupyuen.github.io/articles/de2</link>
+            <description><![CDATA[How we render graphics directly to PinePhone's Display Hardware... With the Zig Programming Language and Apache NuttX RTOS]]></description>
+            <guid>https://lupyuen.github.io/articles/de2</guid>
+            <pubDate>Tue, 15 Nov 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Rendering PinePhone&apos;s Display (DE and TCON0)</title>
             <link>https://lupyuen.github.io/articles/de</link>
             <description><![CDATA[How does Pine64 PinePhone render graphics on its LCD Display? Let's find out about the Allwinner A64 SoC's Display Engine (DE) and Timing Controller (TCON0).]]></description>
