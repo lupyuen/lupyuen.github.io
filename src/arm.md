@@ -965,6 +965,8 @@ Check out the other articles on __NuttX RTOS for PinePhone__...
 
 -   [__"Rendering PinePhone's Display (DE and TCON0)"__](https://lupyuen.github.io/articles/de)
 
+-   [__"NuttX RTOS for PinePhone: Render Graphics in Zig"__](https://lupyuen.github.io/articles/de2)
+
 __NuttX on PinePhone__ might take a while to become a __Daily Driver__...
 
 But today NuttX is ready to turn PinePhone into a valuable __Learning Resource__!

@@ -697,6 +697,8 @@ Check out the other articles on __NuttX RTOS for PinePhone__...
 
 -   [__"Rendering PinePhone's Display (DE and TCON0)"__](https://lupyuen.github.io/articles/de)
 
+-   [__"NuttX RTOS for PinePhone: Render Graphics in Zig"__](https://lupyuen.github.io/articles/de2)
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
@@ -910,9 +912,11 @@ _[Allwinner A64 User Manual (Page 500)](https://dl.linux-sunxi.org/A64/A64_Datas
 
 ## MIPI DSI Interface
 
-Check out the article...
+Check out the articles...
 
 -   [__"Understanding PinePhone's Display (MIPI DSI)"__](https://lupyuen.github.io/articles/dsi)
+
+-   [__"NuttX RTOS for PinePhone: Display Driver in Zig"__](https://lupyuen.github.io/articles/dsi2)
 
 Allwinner A64's Timing Controller (TCON0) controls PinePhone's LCD Display via the [__Display Serial Interface (DSI)__](https://en.wikipedia.org/wiki/Display_Serial_Interface), as defined by the [__Mobile Industry Processor Interface (MIPI) Alliance__](https://en.wikipedia.org/wiki/MIPI_Alliance).
 
@@ -984,6 +988,8 @@ Zephyr OS has a __Generic MIPI DSI Driver__, which might be helpful since it has
 
 ## Display PHY
 
+__UPDATE:__ We're now creating the MIPI Display PHY Driver for NuttX [(See this)](https://lupyuen.github.io/articles/de2#appendix-upcoming-features-in-pinephone-display-driver)
+
 [__MIPI D-PHY__](https://www.intel.com/content/www/us/en/docs/programmable/683092/current/introduction-to-mipi-d-phy.html) is the __Physical Layer Standard__ for the [__MIPI DSI Protocol__](https://lupyuen.github.io/articles/pio#mipi-dsi-interface).
 
 It specifies how Allwinner A64's [__MIPI DSI Interface__](https://lupyuen.github.io/articles/pio#mipi-dsi-interface) should talk to PinePhone's [__Xingbangda XBD599 LCD Display__](https://lupyuen.github.io/articles/pio#mipi-dsi-interface) over Physical Wires.
@@ -1008,6 +1014,12 @@ Searching online for `"sun6i-a31-mipi-dphy"` uncovers the __Linux Driver for A64
 -   [__phy-sun6i-mipi-dphy.c__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c)
 
 ## Display Engine
+
+Check out the articles...
+
+-   [__"Rendering PinePhone's Display (DE and TCON0)"__](https://lupyuen.github.io/articles/de)
+
+-   [__"NuttX RTOS for PinePhone: Render Graphics in Zig"__](https://lupyuen.github.io/articles/de2)
 
 According to [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf) (Section 6.1: "DE2.0", Page 499), A64 has a __Display Engine__ that renders the display pipeline.
 

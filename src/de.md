@@ -776,6 +776,8 @@ We have started the __Zig Implementation__ of the NuttX Driver (for MIPI Display
 
 We'll add the A64 Display Engine in the next article!
 
+-   [__"NuttX RTOS for PinePhone: Render Graphics in Zig"__](https://lupyuen.github.io/articles/de2)
+
 ![Testing the A64 Display Engine on PinePhone](https://lupyuen.github.io/images/de-test.jpg)
 
 # Notes
@@ -798,6 +800,8 @@ I hope we learnt lots today about __Display Rendering on PinePhone__...
 
 Please join me in the next article as we create the PinePhone Display Engine Driver for [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/uboot)!
 
+-   [__"NuttX RTOS for PinePhone: Render Graphics in Zig"__](https://lupyuen.github.io/articles/de2)
+
 Check out the other articles on __NuttX RTOS for PinePhone__...
 
 -   [__"Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone"__](https://lupyuen.github.io/articles/arm)
@@ -813,6 +817,8 @@ Check out the other articles on __NuttX RTOS for PinePhone__...
 -   [__"Understanding PinePhone's Display (MIPI DSI)"__](https://lupyuen.github.io/articles/dsi)
 
 -   [__"NuttX RTOS for PinePhone: Display Driver in Zig"__](https://lupyuen.github.io/articles/dsi2)
+
+-   [__"NuttX RTOS for PinePhone: Render Graphics in Zig"__](https://lupyuen.github.io/articles/de2)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
