@@ -1363,15 +1363,15 @@ We have completed in Zig three major chunks of PinePhone's Display Driver...
 
 Some features are still __missing from our Zig Display Driver__...
 
--   Initialise PinePhone's __Allwinner A64 Timing Controller (TCON0)__
+-   Initialise PinePhone's [__Allwinner A64 Timing Controller (TCON0)__](https://lupyuen.github.io/articles/de#display-rendering-on-pinephone)
 
     [__`tcon0_init`__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init)
 
--   Initialise PinePhone's __Allwinner A64 MIPI Display Serial Interface__ (including MIPI DPHY)
+-   Initialise PinePhone's [__Allwinner A64 MIPI Display Serial Interface__](https://lupyuen.github.io/articles/dsi) (including [__MIPI DPHY__](https://lupyuen.github.io/articles/pio#display-phy))
 
     [__`dsi_init`__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dsi_init)
 
--   Turn on PinePhone's __Backlight__
+-   Turn on PinePhone's [__Backlight__](https://lupyuen.github.io/articles/pio#backlight-pwm)
 
     [__`backlight_enable`__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#backlight_enable)
 

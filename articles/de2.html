@@ -1168,15 +1168,15 @@ putreg32(fill, BLD_FILL_COLOR_CTL);  // TODO: DMB</code></pre></div>
 <p>Some features are still <strong>missing from our Zig Display Driver</strong>…</p>
 <ul>
 <li>
-<p>Initialise PinePhone’s <strong>Allwinner A64 Timing Controller (TCON0)</strong></p>
+<p>Initialise PinePhone’s <a href="https://lupyuen.github.io/articles/de#display-rendering-on-pinephone"><strong>Allwinner A64 Timing Controller (TCON0)</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init"><strong><code>tcon0_init</code></strong></a></p>
 </li>
 <li>
-<p>Initialise PinePhone’s <strong>Allwinner A64 MIPI Display Serial Interface</strong> (including MIPI DPHY)</p>
+<p>Initialise PinePhone’s <a href="https://lupyuen.github.io/articles/dsi"><strong>Allwinner A64 MIPI Display Serial Interface</strong></a> (including <a href="https://lupyuen.github.io/articles/pio#display-phy"><strong>MIPI DPHY</strong></a>)</p>
 <p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dsi_init"><strong><code>dsi_init</code></strong></a></p>
 </li>
 <li>
-<p>Turn on PinePhone’s <strong>Backlight</strong></p>
+<p>Turn on PinePhone’s <a href="https://lupyuen.github.io/articles/pio#backlight-pwm"><strong>Backlight</strong></a></p>
 <p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#backlight_enable"><strong><code>backlight_enable</code></strong></a></p>
 </li>
 </ul>
