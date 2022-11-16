@@ -998,9 +998,14 @@ modifyreg32: addr=0x010, val=0x00000001
 <p>Thus we need to <strong>pump a constant stream of pixels</strong> to the display. Which won’t work with MIPI DSI Packets. (Because it’s too inefficient)</p>
 <p>A64’s <strong>Display Engine (DE)</strong> and <strong>Timing Controller (TCON0)</strong> were created to blast the pixels efficiently from PinePhone’s RAM to the ST7703 LCD Controller.</p>
 <p><a href="https://gist.github.com/lupyuen/ee3adf76e76881609845d0ab0f768a95#file-test_display-c-L147-L254">(All fully automated, no interrupts needed!)</a></p>
-<p>We’ll talk about DE and TCON0 in the next article…</p>
+<p>We’ll talk about DE and TCON0 in the next 2 articles…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/de"><strong>“Rendering PinePhone’s Display (DE and TCON0)”</strong></a></li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/de"><strong>“Rendering PinePhone’s Display (DE and TCON0)”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/de2"><strong>“NuttX RTOS for PinePhone: Render Graphics in Zig”</strong></a></p>
+</li>
 </ul>
 <p><em>The PinePhone Display Driver that we’re building… What interface will it expose?</em></p>
 <p>Our PinePhone Display Driver (in C or Zig) shall expose the standard <strong>Display Driver Interface</strong> that’s expected by Apache NuttX RTOS.</p>
@@ -1014,7 +1019,7 @@ modifyreg32: addr=0x010, val=0x00000001
 <p>(I took longer to write this article… Than to code the Zig Driver!)</p>
 <p>In the next article we shall implement the rendering features of the PinePhone Display Driver…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/de"><strong>“Rendering PinePhone’s Display (DE and TCON0)”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/de2"><strong>“NuttX RTOS for PinePhone: Render Graphics in Zig”</strong></a></li>
 </ul>
 <p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
 <p>Check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
