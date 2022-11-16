@@ -1254,9 +1254,11 @@ A64's __Display Engine (DE)__ and __Timing Controller (TCON0)__ were created to 
 
 [(All fully automated, no interrupts needed!)](https://gist.github.com/lupyuen/ee3adf76e76881609845d0ab0f768a95#file-test_display-c-L147-L254)
 
-We'll talk about DE and TCON0 in the next article...
+We'll talk about DE and TCON0 in the next 2 articles...
 
 -   [__"Rendering PinePhone's Display (DE and TCON0)"__](https://lupyuen.github.io/articles/de)
+
+-   [__"NuttX RTOS for PinePhone: Render Graphics in Zig"__](https://lupyuen.github.io/articles/de2)
 
 _The PinePhone Display Driver that we're building... What interface will it expose?_
 
@@ -1276,7 +1278,7 @@ Some parts of the driver were simpler to code in Zig than in C. I'm glad I chose
 
 In the next article we shall implement the rendering features of the PinePhone Display Driver...
 
--   [__"Rendering PinePhone's Display (DE and TCON0)"__](https://lupyuen.github.io/articles/de)
+-   [__"NuttX RTOS for PinePhone: Render Graphics in Zig"__](https://lupyuen.github.io/articles/de2)
 
 There's plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏
 
