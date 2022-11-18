@@ -194,6 +194,22 @@ For __BL602 IoT SDK__
 
 ![PWM on BL602](https://lupyuen.github.io/images/book-pwm.jpg)
 
+![DMA on BL602](https://lupyuen.github.io/images/book-dma.jpg)
+
+# DMA on BL602
+
+How we __accelerate data transfers with DMA__ on BL602 and BL604.
+
+For __Apache NuttX RTOS__
+
+-   [__"SPI DMA on BL602 NuttX"__](https://lupyuen.github.io/articles/spi2#appendix-spi-dma-on-bl602-nuttx)
+
+For __BL602 IoT SDK__
+
+-   [__"SPI with Direct Memory Access"__](https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access)
+
+-   [__Read LED via ADC DMA__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c)
+
 # PWM on BL602
 
 Duty Cycle, Frequency and everything else about the __BL602 / BL604 PWM Functions__.
@@ -201,18 +217,6 @@ Duty Cycle, Frequency and everything else about the __BL602 / BL604 PWM Function
 For __BL602 IoT SDK__
 
 -   [__"From GPIO to Pulse Width Modulation (PWM)"__](https://lupyuen.github.io/articles/led#from-gpio-to-pulse-width-modulation-pwm)
-
-![DMA on BL602](https://lupyuen.github.io/images/book-dma.jpg)
-
-# DMA on BL602
-
-How we __accelerate data transfers with DMA__ on BL602 and BL604.
-
-For __BL602 IoT SDK__
-
--   [__"SPI with Direct Memory Access"__](https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access)
-
--   [__Read LED via ADC DMA__](https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_adc2/sdk_app_adc2/demo.c)
 
 ![WiFi on BL602](https://lupyuen.github.io/images/book-wifi.jpg)
 

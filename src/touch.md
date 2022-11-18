@@ -785,6 +785,10 @@ More about SPI DMA on BL602 / BL604...
 
 -   [__"Execute DMA Linked List"__](https://lupyuen.github.io/articles/spi#hal_spi_dma_trans-execute-spi-transfer-with-dma)
 
+__UPDATE:__ SPI DMA is now supported on BL602 NuttX...
+
+-   [__"SPI DMA on BL602 NuttX"__](https://lupyuen.github.io/articles/spi2#appendix-spi-dma-on-bl602-nuttx)
+
 Let's inspect the log...
 
 (__TODO:__ We should [add a button](https://docs.lvgl.io/7.11/get-started/quick-overview.html#button-with-label) and [a message box](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L185-L197) to the [LVGL Test App](https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L110-L198) to demo the touchscreen)

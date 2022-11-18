@@ -927,6 +927,10 @@ More about SPI DMA on BL602 / BL604...
 
 -   [__"Execute DMA Linked List"__](https://lupyuen.github.io/articles/spi#hal_spi_dma_trans-execute-spi-transfer-with-dma)
 
+__UPDATE:__ SPI DMA is now supported on BL602 / BL604 NuttX...
+
+-   [__"SPI DMA on BL602 NuttX"__](https://lupyuen.github.io/articles/spi2#appendix-spi-dma-on-bl602-nuttx)
+
 ![PineCone BL602 RISC-V Board (bottom) connected to Single-Board Computer (top) for Auto Flash and Test](https://lupyuen.github.io/images/auto-title.jpg)
 
 _PineCone BL602 RISC-V Board (bottom) connected to Single-Board Computer (top) for Auto Flash and Test_
@@ -1895,6 +1899,10 @@ We configured the SPI Frequency in menuconfig at...
 In future we should implement SPI with __Direct Memory Access__ (DMA) to avoid busy-polling the SPI Bus. [(See this)](https://lupyuen.github.io/articles/pinedio2#spi-direct-memory-access)
 
 Hopefully this will improve the responsiveness of the touchscreen.
+
+__UPDATE:__ SPI DMA is now supported on BL602 / BL604 NuttX...
+
+-   [__"SPI DMA on BL602 NuttX"__](https://lupyuen.github.io/articles/spi2#appendix-spi-dma-on-bl602-nuttx)
 
 ## SX1262 Chip Select
 

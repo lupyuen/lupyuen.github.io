@@ -1301,7 +1301,9 @@ We could port the implementation of SPI DMA from __BL602 IoT SDK__ to NuttX...
 
 -   [__"Execute SPI Transfer with DMA"__](https://lupyuen.github.io/articles/spi#hal_spi_dma_trans-execute-spi-transfer-with-dma)
 
-Stay tuned for updates!
+__UPDATE:__ SPI DMA is now supported on BL602 NuttX...
+
+-   [__"SPI DMA on BL602 NuttX"__](https://lupyuen.github.io/articles/spi2#appendix-spi-dma-on-bl602-nuttx)
 
 ![Inside PineDio Stack BL604](https://lupyuen.github.io/images/spi2-pinedio1.jpg)
 
