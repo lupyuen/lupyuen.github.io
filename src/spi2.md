@@ -1244,6 +1244,16 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     (Which won't get revamped overnight!)
 
+# Appendix: SPI DMA on BL602 NuttX
+
+TODO
+
+System Type > BL602 Peripheral Support
+
+Enable DMA
+
+Enable SPI DMA Support
+
 # Appendix: Create a NuttX Device Driver
 
 _(For BL602 and ESP32)_
