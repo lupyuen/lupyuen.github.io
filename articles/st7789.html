@@ -506,6 +506,10 @@ FAR struct lcd_dev_s *st7789_lcdinitialize(FAR struct spi_dev_s *spi) {
 <p><a href="https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access">(More about this)</a></p>
 </li>
 </ul>
+<p><strong>UPDATE:</strong> SPI DMA is now supported on BL602 NuttX…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi2#appendix-spi-dma-on-bl602-nuttx"><strong>“SPI DMA on BL602 NuttX”</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/st7789-boot.jpg" alt="When NuttX boots, we should see a pink screen" /></p>
 <h1 id="lvgl-demo-app"><a href="#lvgl-demo-app">9 LVGL Demo App</a></h1>
 <p>The ST7789 Driver works great on NuttX… Let’s render some graphics!</p>
@@ -728,6 +732,10 @@ static int bl602_spi_lock(struct spi_dev_s *dev, bool lock) {
 <p><em>ST7789 receives plenty of data on the SPI Bus (for screen updates). Will there be contention?</em></p>
 <p>Most definitely. That’s why we need to implement <a href="https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access"><strong>SPI DMA on BL602</strong></a> so that our gadget can do other tasks while painting the ST7789 Display.</p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/st7789/arch/risc-v/src/bl602/bl602_spi.c#L805-L855">(Right now the BL602 SPI Driver polls the SPI Port when transferring SPI data)</a></p>
+<p><strong>UPDATE:</strong> SPI DMA is now supported on BL602 NuttX…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi2#appendix-spi-dma-on-bl602-nuttx"><strong>“SPI DMA on BL602 NuttX”</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio2a.jpg" alt="Pine64 PineDio Stack BL604" /></p>
 <p><em>Pine64 PineDio Stack BL604</em></p>
 <h1 id="whats-next"><a href="#whats-next">14 What’s Next</a></h1>

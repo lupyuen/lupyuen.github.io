@@ -913,6 +913,10 @@ includes a <strong>Secure Chip ATECC608A</strong>. We talk about it here…</p>
 <p><a href="https://lupyuen.github.io/articles/spi#hal_spi_dma_trans-execute-spi-transfer-with-dma"><strong>“Execute DMA Linked List”</strong></a></p>
 </li>
 </ul>
+<p><strong>UPDATE:</strong> SPI DMA is now supported on BL602 / BL604 NuttX…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi2#appendix-spi-dma-on-bl602-nuttx"><strong>“SPI DMA on BL602 NuttX”</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/auto-title.jpg" alt="PineCone BL602 RISC-V Board (bottom) connected to Single-Board Computer (top) for Auto Flash and Test" /></p>
 <p><em>PineCone BL602 RISC-V Board (bottom) connected to Single-Board Computer (top) for Auto Flash and Test</em></p>
 <h2 id="automated-testing"><a href="#automated-testing">14.9 Automated Testing</a></h2>
@@ -1676,6 +1680,10 @@ monitor_cb: 57600 px refreshed in 1110 ms</code></pre></div>
 </ul>
 <p>In future we should implement SPI with <strong>Direct Memory Access</strong> (DMA) to avoid busy-polling the SPI Bus. <a href="https://lupyuen.github.io/articles/pinedio2#spi-direct-memory-access">(See this)</a></p>
 <p>Hopefully this will improve the responsiveness of the touchscreen.</p>
+<p><strong>UPDATE:</strong> SPI DMA is now supported on BL602 / BL604 NuttX…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/spi2#appendix-spi-dma-on-bl602-nuttx"><strong>“SPI DMA on BL602 NuttX”</strong></a></li>
+</ul>
 <h2 id="sx1262-chip-select"><a href="#sx1262-chip-select">16.11 SX1262 Chip Select</a></h2>
 <p>There’s a potential Race Condition if we use the SX1262 Driver concurrently with the ST7789 Driver…</p>
 <ul>
