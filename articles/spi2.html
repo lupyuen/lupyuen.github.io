@@ -1044,10 +1044,28 @@ SX1262 Register 8 is 0x80</code></pre></div>
 </li>
 </ol>
 <h1 id="appendix-spi-dma-on-bl602-nuttx"><a href="#appendix-spi-dma-on-bl602-nuttx">12 Appendix: SPI DMA on BL602 NuttX</a></h1>
-<p>TODO</p>
-<p>System Type &gt; BL602 Peripheral Support</p>
-<p>Enable DMA</p>
-<p>Enable SPI DMA Support</p>
+<p>SPI on BL602 NuttX now supports <strong>Direct Memory Access (DMA)</strong> for speedy data transfers!</p>
+<p>This is how we <strong>enable SPI DMA</strong> on BL602…</p>
+<ol>
+<li>
+<p>Enter this command to configure the NuttX Build…</p>
+<div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div></li>
+<li>
+<p>Select <strong>“System Type”</strong> → <strong>“BL602 Peripheral Support”</strong> </p>
+</li>
+<li>
+<p>Enable <strong>“DMA”</strong></p>
+</li>
+<li>
+<p>Enable <strong>“SPI DMA Support”</strong></p>
+</li>
+<li>
+<p>Save the configuration and exit</p>
+</li>
+<li>
+<p>Rebuild NuttX…</p>
+<div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div></li>
+</ol>
 <h1 id="appendix-create-a-nuttx-device-driver"><a href="#appendix-create-a-nuttx-device-driver">13 Appendix: Create a NuttX Device Driver</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>This section explains the steps to create a <strong>NuttX Device Driver</strong> named <strong>“spi_test_driver”</strong>.</p>
