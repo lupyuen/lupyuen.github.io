@@ -1269,6 +1269,8 @@ This is how we __enable SPI DMA__ on BL602...
     ```bash
     make
     ```
+    
+Many thanks to [__Brennan Ashton__](https://github.com/apache/incubator-nuttx/pull/7229) for the implementation of DMA on BL602!
 
 # Appendix: Create a NuttX Device Driver
 
