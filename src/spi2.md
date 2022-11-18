@@ -1246,13 +1246,29 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: SPI DMA on BL602 NuttX
 
-TODO
+SPI on BL602 NuttX now supports __Direct Memory Access (DMA)__ for speedy data transfers!
 
-System Type > BL602 Peripheral Support
+This is how we __enable SPI DMA__ on BL602...
 
-Enable DMA
+1.  Enter this command to configure the NuttX Build...
 
-Enable SPI DMA Support
+    ```bash
+    make menuconfig
+    ```
+
+1.  Select __"System Type"__ → __"BL602 Peripheral Support"__ 
+
+1.  Enable __"DMA"__
+
+1.  Enable __"SPI DMA Support"__
+
+1.  Save the configuration and exit
+
+1.  Rebuild NuttX...
+
+    ```bash
+    make
+    ```
 
 # Appendix: Create a NuttX Device Driver
 
