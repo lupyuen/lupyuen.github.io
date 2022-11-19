@@ -601,6 +601,8 @@ To do this, we program two controllers in Allwinner A64...
 
 Which shall be explained in the next article!
 
+-   [__"Rendering PinePhone's Display (DE and TCON0)"__](https://lupyuen.github.io/articles/de)
+
 [__u/immibis on Reddit__](https://www.reddit.com/r/PINE64official/comments/xjzack/comment/ipd6fsy/?utm_source=share&utm_medium=web2x&context=3) has shared some helpful tips...
 
 > "To actually display pixels on the screen you also need to program DE and TCON. I saw something somewhere about a test pattern that might be able to bypass this, and a framebuffer mode that bypasses the mixing IIRC."
@@ -612,6 +614,8 @@ And we might hit some __undocumented A64 Registers__...
 > "...the module is running a little instruction set and the manual conspicuously omits any description of the instructions or even the registers where you put the instructions."
 
 We'll find out soon in the next article!
+
+-   [__"Rendering PinePhone's Display (DE and TCON0)"__](https://lupyuen.github.io/articles/de)
 
 When we have implemented the Display Engine and Timing Controller, our PinePhone Display Driver will look something like this...
 
