@@ -665,11 +665,15 @@ When we snoop around the Linux Device Tree, we might discover some helpful info 
 
 -   [__"Display Engine"__](https://lupyuen.github.io/articles/pio#display-engine)
 
-I'm running some simple tests on the MIPI DSI Display: [hello_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L181-L378)
+__UPDATE:__ We have documented PinePhone's MIPI Display Serial Interface and Display Engine in these articles...
 
-I have zero idea what I'm doing... But it would be super hilarious if it works!
+-   [__"Understanding PinePhone's Display (MIPI DSI)"__](https://lupyuen.github.io/articles/dsi)
 
-Stay Tuned!
+-   [__"NuttX RTOS for PinePhone: Display Driver in Zig"__](https://lupyuen.github.io/articles/dsi2)
+
+-   [__"Rendering PinePhone's Display (DE and TCON0)"__](https://lupyuen.github.io/articles/de)
+
+-   [__"NuttX RTOS for PinePhone: Render Graphics in Zig"__](https://lupyuen.github.io/articles/de2)
 
 # What's Next
 
