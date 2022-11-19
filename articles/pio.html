@@ -586,9 +586,21 @@ pd_data_reg=0x1c0000</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pio#display-engine"><strong>“Display Engine”</strong></a></p>
 </li>
 </ul>
-<p>I’m running some simple tests on the MIPI DSI Display: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L181-L378">hello_main.c</a></p>
-<p>I have zero idea what I’m doing… But it would be super hilarious if it works!</p>
-<p>Stay Tuned!</p>
+<p><strong>UPDATE:</strong> We have documented PinePhone’s MIPI Display Serial Interface and Display Engine in these articles…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/dsi"><strong>“Understanding PinePhone’s Display (MIPI DSI)”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/dsi2"><strong>“NuttX RTOS for PinePhone: Display Driver in Zig”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/de"><strong>“Rendering PinePhone’s Display (DE and TCON0)”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/de2"><strong>“NuttX RTOS for PinePhone: Render Graphics in Zig”</strong></a></p>
+</li>
+</ul>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>Today we had fun with <strong><code>peek</code></strong> and <strong><code>poke</code></strong> while experimenting with PinePhone’s LEDs and GPIOs.</p>
 <p>Soon we shall create a <a href="https://lupyuen.github.io/articles/nuttx#gpio-driver"><strong>NuttX GPIO Driver</strong></a> that will access PinePhone’s GPIO Hardware in the NuttX Kernel.</p>
