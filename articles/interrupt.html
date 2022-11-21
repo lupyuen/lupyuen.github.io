@@ -268,6 +268,7 @@ uint64_t * arm64_decodeirq(uint64_t * regs) {
 </ul>
 <p><em>Injecting Arm32 code into Arm64 sounds so reckless… Will it work?</em></p>
 <p>Let’s test our reckless GIC Version 2 with QEMU Emulator…</p>
+<p><strong>UPDATE:</strong> NuttX Mainline now supports GIC Version 2 <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_gicv2.c">(See this)</a></p>
 <p><img src="https://lupyuen.github.io/images/interrupt-title2.png" alt="Tracing Arm64 Interrupts on QEMU Emulator can get… Really messy" /></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/3331de1b84fd7579edfe726abb71b18beeac29e6/nuttx.log"><em>Tracing Arm64 Interrupts on QEMU Emulator can get… Really messy</em></a></p>
 <h1 id="test-pinephone-gic-with-qemu"><a href="#test-pinephone-gic-with-qemu">4 Test PinePhone GIC with QEMU</a></h1>
@@ -358,6 +359,7 @@ compatible = &quot;arm,cortex-a15-gic&quot;;</code></pre></div>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/gicv2/arch/arm64/include/qemu/chip.h#L38-L40">arch/arm64/include/qemu/chip.h</a></li>
 </ul>
+<p><strong>UPDATE:</strong> NuttX Mainline now provides a Board Config “<code>qemu-armv8a:nsh_gicv2</code>” for testing GIC Version 2 with QEMU <a href="qemu-armv8a:nsh_gicv2">(See this)</a></p>
 <h1 id="pinephone-hangs-at-startup"><a href="#pinephone-hangs-at-startup">5 PinePhone Hangs At Startup</a></h1>
 <p><em>NuttX should boot OK on PinePhone right?</em></p>
 <p>We followed these steps to <strong>boot NuttX on PinePhone</strong> (with GIC Version 2)…</p>
