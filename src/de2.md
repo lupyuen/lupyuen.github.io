@@ -1144,6 +1144,8 @@ The code we've seen today will eventually become the PinePhone Display Driver fo
 
 But now it's time to __merge our code__ into NuttX Mainline! I'll explain the process in the next couple of articles, stay tuned!
 
+-   [__"Add support for Generic Interrupt Controller Version 2"__](https://github.com/apache/incubator-nuttx/pull/7630)
+
 Check out the other articles on __NuttX RTOS for PinePhone__...
 
 -   [__"Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone"__](https://lupyuen.github.io/articles/arm)
