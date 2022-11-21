@@ -1178,6 +1178,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/de2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/de2.md)
 
+# Notes
+
+1.  Sorry I took so long to merge the PinePhone code into NuttX Mainline... I wanted to be really sure that PinePhone is sufficiently stable on NuttX.
+
+    Our experiments today proved that PinePhone works well indeed on NuttX!
+
 ![Multiple Framebuffers](https://lupyuen.github.io/images/de2-blender.jpg)
 
 # Appendix: Render Multiple Framebuffers
