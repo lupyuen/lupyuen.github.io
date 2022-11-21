@@ -90,11 +90,12 @@
 <li><a href="#render-framebuffers">6.3 Render Framebuffers</a><ul></ul></li></ul></li>
 <li><a href="#test-multiple-framebuffers">7 Test Multiple Framebuffers</a><ul></ul></li>
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-render-multiple-framebuffers">9 Appendix: Render Multiple Framebuffers</a><ul>
-<li><a href="#set-framebuffer-attributes">9.1 Set Framebuffer Attributes</a><ul></ul></li>
-<li><a href="#set-blender-route">9.2 Set Blender Route</a><ul></ul></li>
-<li><a href="#enable-blender-pipes">9.3 Enable Blender Pipes</a><ul></ul></li></ul></li>
-<li><a href="#appendix-upcoming-features-in-pinephone-display-driver">10 Appendix: Upcoming Features in PinePhone Display Driver</a><ul></ul></li></ul></nav><p>📝 <em>15 Nov 2022</em></p>
+<li><a href="#notes">9 Notes</a><ul></ul></li>
+<li><a href="#appendix-render-multiple-framebuffers">10 Appendix: Render Multiple Framebuffers</a><ul>
+<li><a href="#set-framebuffer-attributes">10.1 Set Framebuffer Attributes</a><ul></ul></li>
+<li><a href="#set-blender-route">10.2 Set Blender Route</a><ul></ul></li>
+<li><a href="#enable-blender-pipes">10.3 Enable Blender Pipes</a><ul></ul></li></ul></li>
+<li><a href="#appendix-upcoming-features-in-pinephone-display-driver">11 Appendix: Upcoming Features in PinePhone Display Driver</a><ul></ul></li></ul></nav><p>📝 <em>15 Nov 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/de2-title.jpg" alt="Our Zig Driver rendering Colour Blocks on Pine64 PinePhone" /></p>
 <p><em>What happens when we render graphics on PinePhone’s LCD Display?</em></p>
 <p>Plenty happens when we render graphics on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> (pic above)… Because PinePhone’s <strong>Display Hardware is so complex!</strong></p>
@@ -1010,8 +1011,15 @@ Apply Settings</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/de2.md"><strong>lupyuen.github.io/src/de2.md</strong></a></p>
+<h1 id="notes"><a href="#notes">9 Notes</a></h1>
+<ol>
+<li>
+<p>Sorry I took so long to merge the PinePhone code into NuttX Mainline… I wanted to be really sure that PinePhone is sufficiently stable on NuttX.</p>
+<p>Our experiments today proved that PinePhone works well indeed on NuttX!</p>
+</li>
+</ol>
 <p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="Multiple Framebuffers" /></p>
-<h1 id="appendix-render-multiple-framebuffers"><a href="#appendix-render-multiple-framebuffers">9 Appendix: Render Multiple Framebuffers</a></h1>
+<h1 id="appendix-render-multiple-framebuffers"><a href="#appendix-render-multiple-framebuffers">10 Appendix: Render Multiple Framebuffers</a></h1>
 <p>Earlier we’ve seen <strong><code>initUiChannel</code></strong> for rendering a single Framebuffer…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/de2#configure-framebuffer"><strong>“Configure Framebuffer”</strong></a></li>
@@ -1022,7 +1030,7 @@ Apply Settings</code></pre></div>
 </ul>
 <p>This Appendix explains the changes we made to render 3 Framebuffers. (Pic above)</p>
 <p><img src="https://lupyuen.github.io/images/de2-overlay.jpg" alt="Blue, Green, Red Blocks with Overlays" /></p>
-<h2 id="set-framebuffer-attributes"><a href="#set-framebuffer-attributes">9.1 Set Framebuffer Attributes</a></h2>
+<h2 id="set-framebuffer-attributes"><a href="#set-framebuffer-attributes">10.1 Set Framebuffer Attributes</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>OVL_UI_ATTR_CTL</strong>, Page 102)</a></p>
 <p>For <strong>Framebuffer Alpha</strong>: We configured Framebuffer 2 (Channel 3) to be <strong>Globally Semi-Transparent</strong>. (Global Alpha = <code>0x7F</code>)</p>
 <p>This means that the Global Alpha will be mixed with the Pixel Alpha. So the pixels will look extra faint for Framebuffer 2. (Green Circle, pic above)</p>
@@ -1067,7 +1075,7 @@ const OVL_UI_ATTR_CTL = OVL_UI_BASE_ADDRESS + 0x00;
 putreg32(attr, OVL_UI_ATTR_CTL);</code></pre></div>
 <p>Next we configure the Blender…</p>
 <p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="Multiple Framebuffers" /></p>
-<h2 id="set-blender-route"><a href="#set-blender-route">9.2 Set Blender Route</a></h2>
+<h2 id="set-blender-route"><a href="#set-blender-route">10.2 Set Blender Route</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_CH_RTCTL</strong>, Page 108)</a></p>
 <p>Now that we render 3 Framebuffers instead of 1, we need to <strong>connect the Blender Pipes</strong> to their respective Framebuffers (Channels)…</p>
 <ul>
@@ -1114,7 +1122,7 @@ const route = P2_RTCTL
 const BLD_CH_RTCTL = BLD_BASE_ADDRESS + 0x080;
 putreg32(route, BLD_CH_RTCTL);  // TODO: DMB</code></pre></div>
 <p>(<strong><code>channels</code></strong> is 3 when we render 3 Framebuffers)</p>
-<h2 id="enable-blender-pipes"><a href="#enable-blender-pipes">9.3 Enable Blender Pipes</a></h2>
+<h2 id="enable-blender-pipes"><a href="#enable-blender-pipes">10.3 Enable Blender Pipes</a></h2>
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf">(<strong>BLD_FILL_COLOR_CTL</strong>, Page 106)</a></p>
 <p>After connecting the Blender Pipes, we <strong>enable all 3 Blender Pipes</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L298-L333">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Enable Blender Pipes
@@ -1152,7 +1160,7 @@ const fill = P2_EN
 const BLD_FILL_COLOR_CTL = BLD_BASE_ADDRESS + 0x000;
 putreg32(fill, BLD_FILL_COLOR_CTL);  // TODO: DMB</code></pre></div>
 <p>(<strong><code>channels</code></strong> is 3 when we render 3 Framebuffers)</p>
-<h1 id="appendix-upcoming-features-in-pinephone-display-driver"><a href="#appendix-upcoming-features-in-pinephone-display-driver">10 Appendix: Upcoming Features in PinePhone Display Driver</a></h1>
+<h1 id="appendix-upcoming-features-in-pinephone-display-driver"><a href="#appendix-upcoming-features-in-pinephone-display-driver">11 Appendix: Upcoming Features in PinePhone Display Driver</a></h1>
 <p>We have completed in Zig three major chunks of PinePhone’s Display Driver…</p>
 <ul>
 <li>
