@@ -1146,6 +1146,8 @@ But now it's time to __merge our code__ into NuttX Mainline! I'll explain the pr
 
 -   [__"Add support for Generic Interrupt Controller Version 2"__](https://github.com/apache/incubator-nuttx/pull/7630)
 
+-   [__"Add support for PINE64 PinePhone"__](https://github.com/apache/incubator-nuttx/pull/7692)
+
 Check out the other articles on __NuttX RTOS for PinePhone__...
 
 -   [__"Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone"__](https://lupyuen.github.io/articles/arm)
