@@ -161,36 +161,36 @@ void blinky(char *buf, int len, int argc, char **argv) {
 <h1 id="bl602-blinky-in-rust"><a href="#bl602-blinky-in-rust">2 BL602 Blinky in Rust</a></h1>
 <p>Here’s our BL602 Blinky Firmware, coded in Rust: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/src/lib.rs#L1-L8"><code>rust/src/lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">//!  Main Rust Application for BL602 Firmware</span>
-<span class="attribute">#![<span class="ident">no_std</span>]</span>  <span class="comment">//  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">//!  Main Rust Application for BL602 Firmware
+</span><span class="attribute">#![no_std]  </span><span class="comment">//  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems
 
-<span class="comment">//  Import the Rust Core Library</span>
-<span class="kw">use</span> <span class="ident">core</span>::{
-    <span class="ident">panic::PanicInfo</span>,  <span class="comment">//  For `PanicInfo` type used by `panic` function</span>
-    <span class="ident">str::FromStr</span>,      <span class="comment">//  For converting `str` to `String`</span>
-};</code></pre></div>
+//  Import the Rust Core Library
+</span><span class="kw">use </span>core::{
+    panic::PanicInfo,  <span class="comment">//  For `PanicInfo` type used by `panic` function
+    </span>str::FromStr,      <span class="comment">//  For converting `str` to `String`
+</span>};</code></pre></div>
 <p>First we tell the Rust Compiler to use the <strong>Rust Core Library</strong>.</p>
 <p>(Instead of the Rust Standard Library, which is too heavy for microcontrollers)</p>
 <p>We import <code>PanicInfo</code> and <code>FromStr</code> to handle Errors and String Conversion. (We’ll see later)</p>
 <p>Our Rust Blinky Function looks similar to the C version: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/src/lib.rs#L10-L44"><code>lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// `rust_main` will be called by the BL602 command-line interface</span>
-<span class="attribute">#[<span class="ident">no_mangle</span>]</span>              <span class="comment">//  Don&#39;t mangle the name `rust_main`</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rust_main</span>(  <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by BL602 firmware</span>
-    <span class="ident">_buf</span>:  <span class="kw-2">*const</span> <span class="ident">u8</span>,        <span class="comment">//  Command line (char *)</span>
-    <span class="ident">_len</span>:  <span class="ident">i32</span>,              <span class="comment">//  Length of command line (int)</span>
-    <span class="ident">_argc</span>: <span class="ident">i32</span>,              <span class="comment">//  Number of command line args (int)</span>
-    <span class="ident">_argv</span>: <span class="kw-2">*const</span> <span class="kw-2">*const</span> <span class="ident">u8</span>  <span class="comment">//  Array of command line args (char **)</span>
-) {
-    <span class="comment">//  Show a message on the serial console</span>
-    <span class="ident">puts</span>(<span class="string">&quot;Hello from Rust!&quot;</span>);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// `rust_main` will be called by the BL602 command-line interface
+</span><span class="attribute">#[no_mangle]              </span><span class="comment">//  Don&#39;t mangle the name `rust_main`
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>rust_main(  <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by BL602 firmware
+    </span>_buf:  <span class="kw-2">*const </span>u8,        <span class="comment">//  Command line (char *)
+    </span>_len:  i32,              <span class="comment">//  Length of command line (int)
+    </span>_argc: i32,              <span class="comment">//  Number of command line args (int)
+    </span>_argv: <span class="kw-2">*const *const </span>u8  <span class="comment">//  Array of command line args (char **)
+</span>) {
+    <span class="comment">//  Show a message on the serial console
+    </span>puts(<span class="string">&quot;Hello from Rust!&quot;</span>);
 
-    <span class="comment">//  PineCone Blue LED is connected on BL602 GPIO 11</span>
-    <span class="kw">const</span> <span class="ident">LED_GPIO</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="number">11</span>;  <span class="comment">//  `u8` is 8-bit unsigned integer</span>
+    <span class="comment">//  PineCone Blue LED is connected on BL602 GPIO 11
+    </span><span class="kw">const </span>LED_GPIO: u8 = <span class="number">11</span>;  <span class="comment">//  `u8` is 8-bit unsigned integer
 
-    <span class="comment">//  Configure the LED GPIO for output (instead of input)</span>
-    <span class="ident">bl_gpio_enable_output</span>(<span class="ident">LED_GPIO</span>, <span class="number">0</span>, <span class="number">0</span>)      <span class="comment">//  No pullup, no pulldown</span>
-        .<span class="ident">expect</span>(<span class="string">&quot;GPIO enable output failed&quot;</span>);  <span class="comment">//  Halt on error</span></code></pre></div>
+    //  Configure the LED GPIO for output (instead of input)
+    </span>bl_gpio_enable_output(LED_GPIO, <span class="number">0</span>, <span class="number">0</span>)      <span class="comment">//  No pullup, no pulldown
+        </span>.expect(<span class="string">&quot;GPIO enable output failed&quot;</span>);  <span class="comment">//  Halt on error</span></code></pre></div>
 <p>When <strong>code-switching from C to Rust</strong> we consciously…</p>
 <ol>
 <li>
@@ -205,37 +205,37 @@ void blinky(char *buf, int len, int argc, char **argv) {
 </ol>
 <p>The rest of the Rust function looks similar to C…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">//  Blink the LED 5 times</span>
-    <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">10</span> {  <span class="comment">//  Iterates 10 times from 0 to 9 (`..` excludes 10)</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">//  Blink the LED 5 times
+    </span><span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..<span class="number">10 </span>{  <span class="comment">//  Iterates 10 times from 0 to 9 (`..` excludes 10)
 
-        <span class="comment">//  Toggle the LED GPIO between 0 (on) and 1 (off)</span>
-        <span class="ident">bl_gpio_output_set</span>(  <span class="comment">//  Set the GPIO output (from BL602 GPIO HAL)</span>
-            <span class="ident">LED_GPIO</span>,        <span class="comment">//  GPIO pin number</span>
-            <span class="ident">i</span> <span class="op">%</span> <span class="number">2</span>            <span class="comment">//  0 for low, 1 for high</span>
-        ).<span class="ident">expect</span>(<span class="string">&quot;GPIO output failed&quot;</span>);  <span class="comment">//  Halt on error</span>
+        //  Toggle the LED GPIO between 0 (on) and 1 (off)
+        </span>bl_gpio_output_set(  <span class="comment">//  Set the GPIO output (from BL602 GPIO HAL)
+            </span>LED_GPIO,        <span class="comment">//  GPIO pin number
+            </span>i % <span class="number">2            </span><span class="comment">//  0 for low, 1 for high
+        </span>).expect(<span class="string">&quot;GPIO output failed&quot;</span>);  <span class="comment">//  Halt on error
 
-        <span class="comment">//  Sleep 1 second</span>
-        <span class="ident">time_delay</span>(                   <span class="comment">//  Sleep by number of ticks (from NimBLE Porting Layer)</span>
-            <span class="ident">time_ms_to_ticks32</span>(<span class="number">1000</span>)  <span class="comment">//  Convert 1,000 milliseconds to ticks (from NimBLE Porting Layer)</span>
-        );
+        //  Sleep 1 second
+        </span>time_delay(                   <span class="comment">//  Sleep by number of ticks (from NimBLE Porting Layer)
+            </span>time_ms_to_ticks32(<span class="number">1000</span>)  <span class="comment">//  Convert 1,000 milliseconds to ticks (from NimBLE Porting Layer)
+        </span>);
     }
 
-    <span class="comment">//  Return to the BL602 command-line interface</span>
-}</code></pre></div>
+    <span class="comment">//  Return to the BL602 command-line interface
+</span>}</code></pre></div>
 <p>(Yep the <code>for</code> loop looks a little different in Rust)</p>
 <p>For Embedded Rust we need to include a <strong>Panic Handler</strong> that will handle errors (like Expect / Assertion Failures): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/src/lib.rs#L46-L57"><code>lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// This function is called on panic, like an assertion failure</span>
-<span class="attribute">#[<span class="ident">panic_handler</span>]</span>
-<span class="kw">fn</span> <span class="ident">panic</span>(<span class="ident">_info</span>: <span class="kw-2">&amp;</span><span class="ident">PanicInfo</span>) -&gt; <span class="op">!</span> {  <span class="comment">//  `!` means that panic handler will never return</span>
-    <span class="comment">//  TODO: Implement the complete panic handler like this:</span>
-    <span class="comment">//  https://github.com/lupyuen/pinetime-rust-mynewt/blob/master/rust/app/src/lib.rs#L115-L146</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// This function is called on panic, like an assertion failure
+</span><span class="attribute">#[panic_handler]
+</span><span class="kw">fn </span>panic(_info: <span class="kw-2">&amp;</span>PanicInfo) -&gt; ! {  <span class="comment">//  `!` means that panic handler will never return
+    //  TODO: Implement the complete panic handler like this:
+    //  https://github.com/lupyuen/pinetime-rust-mynewt/blob/master/rust/app/src/lib.rs#L115-L146
 
-    <span class="comment">//  For now we display a message</span>
-    <span class="ident">puts</span>(<span class="string">&quot;TODO: Rust panic&quot;</span>); 
+    //  For now we display a message
+    </span>puts(<span class="string">&quot;TODO: Rust panic&quot;</span>); 
 
-	<span class="comment">//  Loop forever, do not pass go, do not collect $200</span>
-    <span class="kw">loop</span> {}
+	<span class="comment">//  Loop forever, do not pass go, do not collect $200
+    </span><span class="kw">loop </span>{}
 }</code></pre></div>
 <p>We’re not done with Rust yet! Let’s find out how we import the BL602 IoT SDK (and NimBLE Porting Library) into Rust.</p>
 <p>Here’s our code switching from C to Rust so far…</p>
@@ -245,11 +245,11 @@ void blinky(char *buf, int len, int argc, char **argv) {
 <p>As we import the functions from BL602 IoT SDK into Rust, let’s create <strong>Wrapper Functions</strong> that will expose a cleaner, neater interface to our Rust callers.</p>
 <p>We start with <strong><code>bl_gpio_output_set</code></strong>, the function from BL602 GPIO HAL (Hardware Abstraction Layer) that sets the GPIO Pin output: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/src/lib.rs#L118-L141"><code>lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Set the GPIO pin output to high or low.</span>
-<span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(
-    <span class="ident">pin</span>:   <span class="ident">u8</span>,  <span class="comment">//  GPIO pin number (uint8_t)</span>
-    <span class="ident">value</span>: <span class="ident">u8</span>   <span class="comment">//  0 for low, 1 to high</span>
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">i32</span><span class="op">&gt;</span> {  <span class="comment">//  Returns an error code (int)</span></code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Set the GPIO pin output to high or low.
+</span><span class="kw">fn </span>bl_gpio_output_set(
+    pin:   u8,  <span class="comment">//  GPIO pin number (uint8_t)
+    </span>value: u8   <span class="comment">//  0 for low, 1 to high
+</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), i32&gt; {  <span class="comment">//  Returns an error code (int)</span></code></pre></div>
 <p><em>The C version of <code>bl_gpio_output_set</code> returns an <code>int</code> result code (0 for success, non-zero for error)…</em></p>
 <p><em>Why does the Rust version return <code>Result&lt;(),i32&gt;</code>?</em></p>
 <p>Because <strong><code>Result&lt;...&gt;</code></strong> lets us return a meaningful result to our Rust caller…</p>
@@ -264,24 +264,24 @@ void blinky(char *buf, int len, int argc, char **argv) {
 <p>This makes the error handling easier (with <code>expect</code>). We’ll see the returned result in a while.</p>
 <p>Inside the wrapper, we <strong>import the C function</strong> like so…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {  <span class="comment">//  Import C Function</span>
-        <span class="doccomment">/// Set the GPIO pin output to high or low (from BL602 GPIO HAL)</span>
-        <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) -&gt; <span class="ident">i32</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{  <span class="comment">//  Import C Function
+        </span><span class="doccomment">/// Set the GPIO pin output to high or low (from BL602 GPIO HAL)
+        </span><span class="kw">fn </span>bl_gpio_output_set(pin: u8, value: u8) -&gt; i32;
     }</code></pre></div>
 <p>Next our wrapper <strong>calls the imported C function</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">//  Call the C function</span>
-    <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="kw">unsafe</span> {  <span class="comment">//  Flag this code as unsafe because we&#39;re calling a C function</span>
-        <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>, <span class="ident">value</span>)
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">//  Call the C function
+    </span><span class="kw">let </span>res = <span class="kw">unsafe </span>{  <span class="comment">//  Flag this code as unsafe because we&#39;re calling a C function
+        </span>bl_gpio_output_set(pin, value)
     };</code></pre></div>
 <p>Rust requires us to flag this code as <strong><code>unsafe</code></strong> because we’re calling a C function.</p>
 <p>Finally we <strong>match the result</strong> returned by the C function: 0 for success, non-zero for error…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">//  Check the result code</span>
-    <span class="kw">match</span> <span class="ident">res</span> {
-        <span class="number">0</span> =&gt; <span class="prelude-val">Ok</span>(()),   <span class="comment">//  If no error, return OK</span>
-        <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">res</span>)  <span class="comment">//  Else return the result code as an error</span>
-    }
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">//  Check the result code
+    </span><span class="kw">match </span>res {
+        <span class="number">0 </span>=&gt; <span class="prelude-val">Ok</span>(()),   <span class="comment">//  If no error, return OK
+        </span><span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(res)  <span class="comment">//  Else return the result code as an error
+    </span>}
 }</code></pre></div>
 <p>“<code>match</code>” works like “<code>switch...case</code>” in C. (“<code>_</code>” matches anything, similar to “<code>default</code>” in C)</p>
 <p>Here we return <code>Ok</code> for success, or <code>Err</code> with an error code inside.</p>
@@ -291,50 +291,50 @@ void blinky(char *buf, int len, int argc, char **argv) {
 <p>(Rust strings have an internal field that remembers the string length)</p>
 <p>To pass strings from C to Rust, our wrapper needs to <strong>copy the string and pad it with null</strong>.  Here’s how: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/src/lib.rs#L64-L90"><code>lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Print a message to the serial console.</span>
-<span class="doccomment">/// `&amp;str` is a reference to a string slice, similar to `const char *` in C</span>
-<span class="kw">fn</span> <span class="ident">puts</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">i32</span> {</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Print a message to the serial console.
+/// `&amp;str` is a reference to a string slice, similar to `const char *` in C
+</span><span class="kw">fn </span>puts(s: <span class="kw-2">&amp;</span>str) -&gt; i32 {</code></pre></div>
 <p>Our wrapper for <code>puts</code> accepts a string and returns an <code>int</code>.</p>
 <p>“<code>&amp;str</code>” is a <strong>Reference to a String Slice</strong>. It’s similar to “<code>const char *</code>” in C.</p>
 <p>We <strong>import the <code>puts</code> function</strong> from BL602 IoT SDK (<code>stdio</code> library)…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {  <span class="comment">//  Import C Function</span>
-        <span class="doccomment">/// Print a message to the serial console (from C stdio library)</span>
-        <span class="kw">fn</span> <span class="ident">puts</span>(<span class="ident">s</span>: <span class="kw-2">*const</span> <span class="ident">u8</span>) -&gt; <span class="ident">i32</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{  <span class="comment">//  Import C Function
+        </span><span class="doccomment">/// Print a message to the serial console (from C stdio library)
+        </span><span class="kw">fn </span>puts(s: <span class="kw-2">*const </span>u8) -&gt; i32;
     }</code></pre></div>
 <p>When importing “<code>const char *</code>” from C, we rewrite it as “<code>*const u8</code>” (const pointer to unsigned byte).</p>
 <p>Next we make a <strong>copy of the input string</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">//  Convert `str` to `String`, which similar to `char [64]` in C</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s_with_null</span> <span class="op">=</span> <span class="ident">String::from_str</span>(<span class="ident">s</span>)  <span class="comment">//  `mut` because we will modify it</span>
-        .<span class="ident">expect</span>(<span class="string">&quot;puts conversion failed&quot;</span>);     <span class="comment">//  If it exceeds 64 chars, halt with an error</span></code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">//  Convert `str` to `String`, which similar to `char [64]` in C
+    </span><span class="kw">let </span><span class="kw-2">mut </span>s_with_null = String::from_str(s)  <span class="comment">//  `mut` because we will modify it
+        </span>.expect(<span class="string">&quot;puts conversion failed&quot;</span>);     <span class="comment">//  If it exceeds 64 chars, halt with an error</span></code></pre></div>
 <p>“<code>String</code>” is similar to “<code>char[64]</code>” in C.</p>
 <p>Here we create a “<code>String</code>” (instead of “<code>&amp;str</code>”) because “<code>String</code>” will allocate storage (on the stack) to hold the copied string.</p>
 <p>If our input string exceeds 64 characters, the copying fails with an error.</p>
 <p>(More about “<code>String</code>” in a while)</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">//  Terminate the string with null, since we will be passing to C</span>
-    <span class="ident">s_with_null</span>.<span class="ident">push</span>(<span class="string">&#39;\0&#39;</span>)
-        .<span class="ident">expect</span>(<span class="string">&quot;puts overflow&quot;</span>);  <span class="comment">//  If we exceed 64 chars, halt with an error</span></code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">//  Terminate the string with null, since we will be passing to C
+    </span>s_with_null.push(<span class="string">&#39;\0&#39;</span>)
+        .expect(<span class="string">&quot;puts overflow&quot;</span>);  <span class="comment">//  If we exceed 64 chars, halt with an error</span></code></pre></div>
 <p>Here we <strong>pad the copied string with null</strong>.</p>
 <p>This also fails with an error if the padded string exceeds 64 characters.</p>
 <p>Finally we <strong>fetch the pointer</strong> to our null-terminated string, and pass it to the C function…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">//  Convert the null-terminated string to a pointer</span>
-    <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">s_with_null</span>.<span class="ident">as_str</span>().<span class="ident">as_ptr</span>();
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">//  Convert the null-terminated string to a pointer
+    </span><span class="kw">let </span>p = s_with_null.as_str().as_ptr();
 
-    <span class="comment">//  Call the C function</span>
-    <span class="kw">unsafe</span> {  <span class="comment">//  Flag this code as unsafe because we&#39;re calling a C function</span>
-        <span class="ident">puts</span>(<span class="ident">p</span>)
+    <span class="comment">//  Call the C function
+    </span><span class="kw">unsafe </span>{  <span class="comment">//  Flag this code as unsafe because we&#39;re calling a C function
+        </span>puts(p)
     }
 
-    <span class="comment">//  No semicolon `;` here, so the value returned by the C function will be passed to our caller</span>
-}</code></pre></div>
+    <span class="comment">//  No semicolon `;` here, so the value returned by the C function will be passed to our caller
+</span>}</code></pre></div>
 <p><strong><code>String</code></strong> is a custom <strong>heapless string</strong> type that’s allocated on the stack or static memory. (Instead of heap memory)</p>
 <p>We define <code>String</code> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/src/lib.rs#L179-L180"><code>lib.rs</code></a>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Limit Strings to 64 chars, similar to `char[64]` in C</span>
-<span class="kw">type</span> <span class="ident">String</span> <span class="op">=</span> <span class="ident">heapless::String</span>::<span class="op">&lt;</span><span class="ident">heapless::consts::U64</span><span class="op">&gt;</span>;</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Limit Strings to 64 chars, similar to `char[64]` in C
+</span><span class="kw">type </span>String = heapless::String::&lt;heapless::consts::U64&gt;;</code></pre></div>
 <p>For safety, we limit our strings to <strong>64 characters</strong>.</p>
 <p><code>String</code> uses the <strong>heapless library</strong>, as specified in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/Cargo.toml#L9-L11"><code>rust/Cargo.toml</code></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code># External Rust libraries used by this module.  See crates.io.

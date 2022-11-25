@@ -413,135 +413,135 @@ export APP_NAME=sdk_app_rust_adc</code></pre></div></li>
 <h2 id="definitions-1"><a href="#definitions-1">3.1 Definitions</a></h2>
 <p>We start by declaring to the Rust Compiler that we’re calling the <strong>Rust Core Library</strong> (instead of Rust Standard Library): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L1-L37"><code>lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attribute">#![<span class="ident">no_std</span>]</span>  <span class="comment">//  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems</span></code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attribute">#![no_std]  </span><span class="comment">//  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems</span></code></pre></div>
 <p>(Rust Standard Library is too heavy for embedded programs)</p>
 <p>Next we <strong>import the functions</strong> from Rust Core Library that will be used in a while…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Import Libraries</span>
-<span class="kw">use</span> <span class="ident">core</span>::{          <span class="comment">//  Rust Core Library</span>
-  <span class="ident">fmt::Write</span>,        <span class="comment">//  String Formatting    </span>
-  <span class="ident">mem::transmute</span>,    <span class="comment">//  Pointer Casting</span>
-  <span class="ident">panic::PanicInfo</span>,  <span class="comment">//  Panic Handler</span>
-};</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Import Libraries
+</span><span class="kw">use </span>core::{          <span class="comment">//  Rust Core Library
+  </span>fmt::Write,        <span class="comment">//  String Formatting    
+  </span>mem::transmute,    <span class="comment">//  Pointer Casting
+  </span>panic::PanicInfo,  <span class="comment">//  Panic Handler
+</span>};</code></pre></div>
 <p>We import the <strong>Rust Wrapper for BL602 IoT SDK</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">bl602_sdk</span>::{     <span class="comment">//  Rust Wrapper for BL602 IoT SDK</span>
-  <span class="ident">adc</span>,               <span class="comment">//  ADC HAL</span>
-  <span class="ident">dma</span>,               <span class="comment">//  DMA HAL</span>
-  <span class="ident">puts</span>,              <span class="comment">//  Console Output</span>
-  <span class="ident">Ptr</span>,               <span class="comment">//  C Pointer</span>
-  <span class="ident">String</span>,            <span class="comment">//  Strings (limited to 64 chars)</span>
-};</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bl602_sdk::{     <span class="comment">//  Rust Wrapper for BL602 IoT SDK
+  </span>adc,               <span class="comment">//  ADC HAL
+  </span>dma,               <span class="comment">//  DMA HAL
+  </span>puts,              <span class="comment">//  Console Output
+  </span>Ptr,               <span class="comment">//  C Pointer
+  </span>String,            <span class="comment">//  Strings (limited to 64 chars)
+</span>};</code></pre></div>
 <p>We shall read <strong>GPIO 11</strong> (the Blue LED) as ADC Input…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// GPIO Pin Number that will be configured as ADC Input.</span>
-<span class="doccomment">/// PineCone Blue LED is connected on BL602 GPIO 11.</span>
-<span class="doccomment">/// PineCone Green LED is connected on BL602 GPIO 14.</span>
-<span class="doccomment">/// Only these GPIOs are supported: 4, 5, 6, 9, 10, 11, 12, 13, 14, 15</span>
-<span class="doccomment">/// TODO: Change the GPIO Pin Number for your BL602 board</span>
-<span class="kw">const</span> <span class="ident">ADC_GPIO</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="number">11</span>;</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// GPIO Pin Number that will be configured as ADC Input.
+/// PineCone Blue LED is connected on BL602 GPIO 11.
+/// PineCone Green LED is connected on BL602 GPIO 14.
+/// Only these GPIOs are supported: 4, 5, 6, 9, 10, 11, 12, 13, 14, 15
+/// TODO: Change the GPIO Pin Number for your BL602 board
+</span><span class="kw">const </span>ADC_GPIO: i32 = <span class="number">11</span>;</code></pre></div>
 <p>BL602 ADC Controller shall read <strong>10,000 ADC Samples per second</strong>, and remember the last <strong>100 ADC Samples</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// We set the ADC Frequency to 10 kHz according to &lt;https://wiki.analog.com/university/courses/electronics/electronics-lab-led-sensor?rev=1551786227&gt;</span>
-<span class="doccomment">/// This is 10,000 samples per second.</span>
-<span class="kw">const</span> <span class="ident">ADC_FREQUENCY</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">10000</span>;  <span class="comment">//  Hz</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// We set the ADC Frequency to 10 kHz according to &lt;https://wiki.analog.com/university/courses/electronics/electronics-lab-led-sensor?rev=1551786227&gt;
+/// This is 10,000 samples per second.
+</span><span class="kw">const </span>ADC_FREQUENCY: u32 = <span class="number">10000</span>;  <span class="comment">//  Hz
 
-<span class="doccomment">/// We shall read 100 ADC samples, which will take 0.01 seconds</span>
-<span class="kw">const</span> <span class="ident">ADC_SAMPLES</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">100</span>;</code></pre></div>
+</span><span class="doccomment">/// We shall read 100 ADC samples, which will take 0.01 seconds
+</span><span class="kw">const </span>ADC_SAMPLES: usize = <span class="number">100</span>;</code></pre></div>
 <p>(<code>usize</code> is similar to <code>size_t</code> in C, it’s used to represent the size of arrays)</p>
 <p>We shall set the <strong>ADC Gain</strong> to increase the ADC sensitivity…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Set ADC Gain to Level 1 to increase the ADC sensitivity.</span>
-<span class="doccomment">/// To disable ADC Gain, set `ADC_GAIN1` and `ADC_GAIN2` to `ADC_PGA_GAIN_NONE`.</span>
-<span class="doccomment">/// See &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_adc.h#L133-L144&gt;</span>
-<span class="kw">const</span> <span class="ident">ADC_GAIN1</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">ADC_PGA_GAIN_1</span>;
-<span class="kw">const</span> <span class="ident">ADC_GAIN2</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">ADC_PGA_GAIN_1</span>;</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Set ADC Gain to Level 1 to increase the ADC sensitivity.
+/// To disable ADC Gain, set `ADC_GAIN1` and `ADC_GAIN2` to `ADC_PGA_GAIN_NONE`.
+/// See &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_adc.h#L133-L144&gt;
+</span><span class="kw">const </span>ADC_GAIN1: u32 = ADC_PGA_GAIN_1;
+<span class="kw">const </span>ADC_GAIN2: u32 = ADC_PGA_GAIN_1;</code></pre></div>
 <p>But <strong><code>ADC_PGA_GAIN_1</code></strong> is missing from our Rust Wrapper.</p>
 <p>Thus we copy the value from BL602 IoT SDK and define it here…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">const</span> <span class="ident">ADC_PGA_GAIN_1</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">1</span>;  <span class="comment">//  From &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_adc.h#L133-L144&gt;</span></code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">const </span>ADC_PGA_GAIN_1: u32 = <span class="number">1</span>;  <span class="comment">//  From &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Inc/bl602_adc.h#L133-L144&gt;</span></code></pre></div>
 <p><img src="https://lupyuen.github.io/images/adc-rust.png" alt="Rust Firmware for BL602 ADC" /></p>
 <h2 id="initialise-the-adc-channel-1"><a href="#initialise-the-adc-channel-1">3.2 Initialise the ADC Channel</a></h2>
 <p>Here’s our Rust Function <strong><code>init_adc</code></strong> that will be called by the BL602 Command-Line Interface: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L39-L100"><code>lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Command to init the ADC Channel and start reading the ADC Samples.</span>
-<span class="doccomment">/// Based on `hal_adc_init` in &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_adc.c#L50-L102&gt;</span>
-<span class="attribute">#[<span class="ident">no_mangle</span>]</span>             <span class="comment">//  Don&#39;t mangle the function name</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">init_adc</span>(  <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by BL602 firmware</span>
-  <span class="ident">_result</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>,        <span class="comment">//  Result to be returned to command-line interface (char *)</span>
-  <span class="ident">_len</span>:  <span class="ident">i32</span>,              <span class="comment">//  Size of result buffer (int)</span>
-  <span class="ident">_argc</span>: <span class="ident">i32</span>,              <span class="comment">//  Number of command line args (int)</span>
-  <span class="ident">_argv</span>: <span class="kw-2">*const</span> <span class="kw-2">*const</span> <span class="ident">u8</span>  <span class="comment">//  Array of command line args (char **)</span>
-) {
-  <span class="ident">puts</span>(<span class="string">&quot;[Rust] Init ADC&quot;</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Command to init the ADC Channel and start reading the ADC Samples.
+/// Based on `hal_adc_init` in &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_adc.c#L50-L102&gt;
+</span><span class="attribute">#[no_mangle]             </span><span class="comment">//  Don&#39;t mangle the function name
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>init_adc(  <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by BL602 firmware
+  </span>_result: <span class="kw-2">*mut </span>u8,        <span class="comment">//  Result to be returned to command-line interface (char *)
+  </span>_len:  i32,              <span class="comment">//  Size of result buffer (int)
+  </span>_argc: i32,              <span class="comment">//  Number of command line args (int)
+  </span>_argv: <span class="kw-2">*const *const </span>u8  <span class="comment">//  Array of command line args (char **)
+</span>) {
+  puts(<span class="string">&quot;[Rust] Init ADC&quot;</span>);</code></pre></div>
 <p>(We won’t be parsing the command-line arguments, so let’s ignore the parameters passed to <code>init_adc</code>)</p>
 <p>We start by validating the GPIO Pin Number and ADC Frequency…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Only these GPIOs are supported: 4, 5, 6, 9, 10, 11, 12, 13, 14, 15</span>
-  <span class="macro">assert!</span>(<span class="ident">ADC_GPIO</span><span class="op">==</span><span class="number">4</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">==</span><span class="number">5</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">==</span><span class="number">6</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">==</span><span class="number">9</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">==</span><span class="number">10</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">==</span><span class="number">11</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">==</span><span class="number">12</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">==</span><span class="number">13</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">==</span><span class="number">14</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ADC_GPIO</span><span class="op">==</span><span class="number">15</span>);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Only these GPIOs are supported: 4, 5, 6, 9, 10, 11, 12, 13, 14, 15
+  </span><span class="macro">assert!</span>(ADC_GPIO==<span class="number">4 </span>|| ADC_GPIO==<span class="number">5 </span>|| ADC_GPIO==<span class="number">6 </span>|| ADC_GPIO==<span class="number">9 </span>|| ADC_GPIO==<span class="number">10 </span>|| ADC_GPIO==<span class="number">11 </span>|| ADC_GPIO==<span class="number">12 </span>|| ADC_GPIO==<span class="number">13 </span>|| ADC_GPIO==<span class="number">14 </span>|| ADC_GPIO==<span class="number">15</span>);
 
-  <span class="comment">//  For Single-Channel Conversion Mode, frequency must be between 500 and 16,000 Hz</span>
-  <span class="macro">assert!</span>(<span class="ident">ADC_FREQUENCY</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">500</span> <span class="op">&amp;&amp;</span> <span class="ident">ADC_FREQUENCY</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">16000</span>);</code></pre></div>
+  <span class="comment">//  For Single-Channel Conversion Mode, frequency must be between 500 and 16,000 Hz
+  </span><span class="macro">assert!</span>(ADC_FREQUENCY &gt;= <span class="number">500 </span>&amp;&amp; ADC_FREQUENCY &lt;= <span class="number">16000</span>);</code></pre></div>
 <p>(Remember: Not all GPIOs are supported for ADC!)</p>
 <p>Next we select <strong>ADC Mode 1</strong> (Single-Channel Conversion) and set the <strong>ADC Frequency</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init the ADC Frequency for Single-Channel Conversion Mode</span>
-  <span class="ident">adc::freq_init</span>(<span class="number">1</span>, <span class="ident">ADC_FREQUENCY</span>)
-    .<span class="ident">expect</span>(<span class="string">&quot;ADC Freq failed&quot;</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init the ADC Frequency for Single-Channel Conversion Mode
+  </span>adc::freq_init(<span class="number">1</span>, ADC_FREQUENCY)
+    .expect(<span class="string">&quot;ADC Freq failed&quot;</span>);</code></pre></div>
 <p>We set the <strong>ADC GPIO Pin Number</strong> for ADC Mode 1…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init the ADC GPIO for Single-Channel Conversion Mode</span>
-  <span class="ident">adc::init</span>(<span class="number">1</span>, <span class="ident">ADC_GPIO</span>)
-    .<span class="ident">expect</span>(<span class="string">&quot;ADC Init failed&quot;</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init the ADC GPIO for Single-Channel Conversion Mode
+  </span>adc::init(<span class="number">1</span>, ADC_GPIO)
+    .expect(<span class="string">&quot;ADC Init failed&quot;</span>);</code></pre></div>
 <p>To increase the ADC sensitivity, we set the <strong>ADC Gain</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Enable ADC Gain to increase the ADC sensitivity</span>
-  <span class="kw">let</span> <span class="ident">rc</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">set_adc_gain</span>(<span class="ident">ADC_GAIN1</span>, <span class="ident">ADC_GAIN2</span>) };  <span class="comment">//  Unsafe because we are calling C function</span>
-  <span class="macro">assert!</span>(<span class="ident">rc</span> <span class="op">==</span> <span class="number">0</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Enable ADC Gain to increase the ADC sensitivity
+  </span><span class="kw">let </span>rc = <span class="kw">unsafe </span>{ set_adc_gain(ADC_GAIN1, ADC_GAIN2) };  <span class="comment">//  Unsafe because we are calling C function
+  </span><span class="macro">assert!</span>(rc == <span class="number">0</span>);</code></pre></div>
 <p>(This calls our C function <code>set_adc_gain</code>, which shall be explained below)</p>
 <p>BL602 ADC Controller shall transfer the ADC Samples directly into RAM, thanks to the <strong>Direct Memory Access (DMA) Controller</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init DMA for the ADC Channel for Single-Channel Conversion Mode</span>
-  <span class="ident">adc::dma_init</span>(<span class="number">1</span>, <span class="ident">ADC_SAMPLES</span> <span class="kw">as</span> <span class="ident">u32</span>)
-    .<span class="ident">expect</span>(<span class="string">&quot;DMA Init failed&quot;</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init DMA for the ADC Channel for Single-Channel Conversion Mode
+  </span>adc::dma_init(<span class="number">1</span>, ADC_SAMPLES <span class="kw">as </span>u32)
+    .expect(<span class="string">&quot;DMA Init failed&quot;</span>);</code></pre></div>
 <p>(First parameter of <code>dma_init</code> is the ADC Mode)</p>
 <p>We configure the GPIO Pin for <strong>ADC Input</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Configure the GPIO Pin as ADC Input, no pullup, no pulldown</span>
-  <span class="ident">adc::gpio_init</span>(<span class="ident">ADC_GPIO</span>)
-    .<span class="ident">expect</span>(<span class="string">&quot;ADC GPIO failed&quot;</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Configure the GPIO Pin as ADC Input, no pullup, no pulldown
+  </span>adc::gpio_init(ADC_GPIO)
+    .expect(<span class="string">&quot;ADC GPIO failed&quot;</span>);</code></pre></div>
 <p>And we fetch the <strong>DMA Context</strong> for the ADC Channel…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Get the ADC Channel Number for the GPIO Pin</span>
-  <span class="kw">let</span> <span class="ident">channel</span> <span class="op">=</span> <span class="ident">adc::get_channel_by_gpio</span>(<span class="ident">ADC_GPIO</span>)
-    .<span class="ident">expect</span>(<span class="string">&quot;ADC Channel failed&quot;</span>);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Get the ADC Channel Number for the GPIO Pin
+  </span><span class="kw">let </span>channel = adc::get_channel_by_gpio(ADC_GPIO)
+    .expect(<span class="string">&quot;ADC Channel failed&quot;</span>);
 
-  <span class="comment">//  Get the DMA Context for the ADC Channel</span>
-  <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">dma::find_ctx_by_channel</span>(<span class="ident">adc::ADC_DMA_CHANNEL</span> <span class="kw">as</span> <span class="ident">i32</span>)
-    .<span class="ident">expect</span>(<span class="string">&quot;DMA Ctx failed&quot;</span>);</code></pre></div>
+  <span class="comment">//  Get the DMA Context for the ADC Channel
+  </span><span class="kw">let </span>ptr = dma::find_ctx_by_channel(adc::ADC_DMA_CHANNEL <span class="kw">as </span>i32)
+    .expect(<span class="string">&quot;DMA Ctx failed&quot;</span>);</code></pre></div>
 <p>However the returned pointer <code>ptr</code> is actually a “<code>void *</code>” pointer from C.</p>
 <p>To use the pointer in Rust, we cast it to a <strong>DMA Context Pointer</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Cast the returned C Pointer (void *) to a DMA Context Pointer (adc_ctx *)</span>
-  <span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="kw">unsafe</span> {     <span class="comment">//  Unsafe because we are casting a pointer</span>
-    <span class="ident">transmute</span>::<span class="op">&lt;</span>         <span class="comment">//  Cast the type...</span>
-      <span class="ident">Ptr</span>,               <span class="comment">//  From C Pointer (void *)</span>
-      <span class="kw-2">*mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
-    <span class="op">&gt;</span>(<span class="ident">ptr</span>)               <span class="comment">//  For this pointer</span>
-  };</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Cast the returned C Pointer (void *) to a DMA Context Pointer (adc_ctx *)
+  </span><span class="kw">let </span>ctx = <span class="kw">unsafe </span>{     <span class="comment">//  Unsafe because we are casting a pointer
+    </span>transmute::&lt;         <span class="comment">//  Cast the type...
+      </span>Ptr,               <span class="comment">//  From C Pointer (void *)
+      </span><span class="kw-2">*mut </span>adc::adc_ctx  <span class="comment">//  To DMA Context Pointer (adc_ctx *)
+    </span>&gt;(ptr)               <span class="comment">//  For this pointer
+  </span>};</code></pre></div>
 <p>(More about <code>transmute</code> in the Appendix)</p>
 <p>Now we may update the <strong>DMA Context</strong> for the ADC Channel…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Indicate that the GPIO has been configured for ADC</span>
-  <span class="kw">unsafe</span> {  <span class="comment">//  Unsafe because we are dereferencing a pointer</span>
-    (<span class="kw-2">*</span><span class="ident">ctx</span>).<span class="ident">chan_init_table</span> <span class="op">|</span><span class="op">=</span> <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">channel</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Indicate that the GPIO has been configured for ADC
+  </span><span class="kw">unsafe </span>{  <span class="comment">//  Unsafe because we are dereferencing a pointer
+    </span>(<span class="kw-2">*</span>ctx).chan_init_table |= <span class="number">1 </span>&lt;&lt; channel;
   }</code></pre></div>
 <p>(We flag this as <code>unsafe</code> because we’re dereferencing a pointer: <code>ctx</code>)</p>
 <p>Finally we <strong>start the ADC Channel</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Start reading the ADC via DMA</span>
-  <span class="ident">adc::start</span>()
-    .<span class="ident">expect</span>(<span class="string">&quot;ADC Start failed&quot;</span>);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Start reading the ADC via DMA
+  </span>adc::start()
+    .expect(<span class="string">&quot;ADC Start failed&quot;</span>);
 }</code></pre></div>
 <p>BL602 ADC Controller will <strong>read the ADC Samples continuously</strong> (from the GPIO Pin) into RAM (until we stop the ADC Channel).</p>
 <p><img src="https://lupyuen.github.io/images/adc-rust2.png" alt="Rust Firmware to read BL602 ADC" /></p>
@@ -549,89 +549,89 @@ export APP_NAME=sdk_app_rust_adc</code></pre></div></li>
 <p><em>Our ADC Channel has been started, how do we average the ADC Samples that have been read?</em></p>
 <p>Let’s check out the Rust Function <strong><code>read_adc</code></strong> in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L102-L165"><code>lib.rs</code></a> …</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Command to compute the average value of the ADC Samples that have just been read.</span>
-<span class="doccomment">/// Based on `hal_adc_get_data` in &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_adc.c#L142-L179&gt;</span>
-<span class="attribute">#[<span class="ident">no_mangle</span>]</span>              <span class="comment">//  Don&#39;t mangle the function name</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">read_adc</span>(   <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by BL602 firmware</span>
-  <span class="ident">_result</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>,        <span class="comment">//  Result to be returned to command-line interface (char *)</span>
-  <span class="ident">_len</span>:  <span class="ident">i32</span>,              <span class="comment">//  Size of result buffer (int)</span>
-  <span class="ident">_argc</span>: <span class="ident">i32</span>,              <span class="comment">//  Number of command line args (int)</span>
-  <span class="ident">_argv</span>: <span class="kw-2">*const</span> <span class="kw-2">*const</span> <span class="ident">u8</span>  <span class="comment">//  Array of command line args (char **)</span>
-) {</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Command to compute the average value of the ADC Samples that have just been read.
+/// Based on `hal_adc_get_data` in &lt;https://github.com/lupyuen/bl_iot_sdk/blob/master/components/hal_drv/bl602_hal/hal_adc.c#L142-L179&gt;
+</span><span class="attribute">#[no_mangle]              </span><span class="comment">//  Don&#39;t mangle the function name
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>read_adc(   <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by BL602 firmware
+  </span>_result: <span class="kw-2">*mut </span>u8,        <span class="comment">//  Result to be returned to command-line interface (char *)
+  </span>_len:  i32,              <span class="comment">//  Size of result buffer (int)
+  </span>_argc: i32,              <span class="comment">//  Number of command line args (int)
+  </span>_argv: <span class="kw-2">*const *const </span>u8  <span class="comment">//  Array of command line args (char **)
+</span>) {</code></pre></div>
 <p>First we fetch the <strong>DMA Context</strong> for the ADC Channel…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Get the ADC Channel Number for the GPIO Pin</span>
-  <span class="kw">let</span> <span class="ident">channel</span> <span class="op">=</span> <span class="ident">adc::get_channel_by_gpio</span>(<span class="ident">ADC_GPIO</span>)
-    .<span class="ident">expect</span>(<span class="string">&quot;ADC Channel failed&quot;</span>);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Get the ADC Channel Number for the GPIO Pin
+  </span><span class="kw">let </span>channel = adc::get_channel_by_gpio(ADC_GPIO)
+    .expect(<span class="string">&quot;ADC Channel failed&quot;</span>);
   
-  <span class="comment">//  Get the DMA Context for the ADC Channel</span>
-  <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">dma::find_ctx_by_channel</span>(<span class="ident">adc::ADC_DMA_CHANNEL</span> <span class="kw">as</span> <span class="ident">i32</span>)
-    .<span class="ident">expect</span>(<span class="string">&quot;DMA Ctx failed&quot;</span>);</code></pre></div>
+  <span class="comment">//  Get the DMA Context for the ADC Channel
+  </span><span class="kw">let </span>ptr = dma::find_ctx_by_channel(adc::ADC_DMA_CHANNEL <span class="kw">as </span>i32)
+    .expect(<span class="string">&quot;DMA Ctx failed&quot;</span>);</code></pre></div>
 <p>Again we cast the returned C pointer <code>ptr</code> to a <strong>DMA Context Pointer</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Cast the returned C Pointer (void *) to a DMA Context Pointer (adc_ctx *)</span>
-  <span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="kw">unsafe</span> {     <span class="comment">//  Unsafe because we are casting a pointer</span>
-    <span class="ident">transmute</span>::<span class="op">&lt;</span>         <span class="comment">//  Cast the type...</span>
-      <span class="ident">Ptr</span>,               <span class="comment">//  From C Pointer (void *)</span>
-      <span class="kw-2">*mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
-    <span class="op">&gt;</span>(<span class="ident">ptr</span>)               <span class="comment">//  For this pointer</span>
-  };</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Cast the returned C Pointer (void *) to a DMA Context Pointer (adc_ctx *)
+  </span><span class="kw">let </span>ctx = <span class="kw">unsafe </span>{     <span class="comment">//  Unsafe because we are casting a pointer
+    </span>transmute::&lt;         <span class="comment">//  Cast the type...
+      </span>Ptr,               <span class="comment">//  From C Pointer (void *)
+      </span><span class="kw-2">*mut </span>adc::adc_ctx  <span class="comment">//  To DMA Context Pointer (adc_ctx *)
+    </span>&gt;(ptr)               <span class="comment">//  For this pointer
+  </span>};</code></pre></div>
 <p>(More about <code>transmute</code> in the Appendix)</p>
 <p>Now we may verify the <strong>DMA Context</strong> for the ADC Channel…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Verify that the GPIO has been configured for ADC</span>
-  <span class="kw">unsafe</span> {  <span class="comment">//  Unsafe because we are dereferencing a pointer</span>
-    <span class="macro">assert!</span>(((<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">channel</span>) <span class="op">&amp;</span> (<span class="kw-2">*</span><span class="ident">ctx</span>).<span class="ident">chan_init_table</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Verify that the GPIO has been configured for ADC
+  </span><span class="kw">unsafe </span>{  <span class="comment">//  Unsafe because we are dereferencing a pointer
+    </span><span class="macro">assert!</span>(((<span class="number">1 </span>&lt;&lt; channel) &amp; (<span class="kw-2">*</span>ctx).chan_init_table) != <span class="number">0</span>);
   }</code></pre></div>
 <p>(We flag this as <code>unsafe</code> because we’re dereferencing a pointer: <code>ctx</code>)</p>
 <p>And we check whether the <strong>ADC Sampling</strong> has been completed for the ADC Channel (<code>channel_data</code> shouldn’t be null)…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  If ADC Sampling is not finished, try again later    </span>
-  <span class="kw">if</span> <span class="kw">unsafe</span> { (<span class="kw-2">*</span><span class="ident">ctx</span>).<span class="ident">channel_data</span>.<span class="ident">is_null</span>() } {  <span class="comment">//  Unsafe because we are dereferencing a pointer</span>
-    <span class="ident">puts</span>(<span class="string">&quot;ADC Sampling not finished&quot;</span>);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  If ADC Sampling is not finished, try again later    
+  </span><span class="kw">if unsafe </span>{ (<span class="kw-2">*</span>ctx).channel_data.is_null() } {  <span class="comment">//  Unsafe because we are dereferencing a pointer
+    </span>puts(<span class="string">&quot;ADC Sampling not finished&quot;</span>);
     <span class="kw">return</span>;
   }</code></pre></div>
 <p>(Again we flag as <code>unsafe</code> because we’re dereferencing the pointer <code>ctx</code>)</p>
 <p>Remember that the BL602 ADC Controller will <strong>read ADC Samples continuously</strong> and write the last 100 samples to RAM (via DMA).</p>
 <p>We define an array <code>adc_data</code> to store the last 100 samples temporarily (on the stack)…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Array that will store the last 100 ADC Samples</span>
-  <span class="comment">//  (`ADC_SAMPLES` is 100)</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">adc_data</span>: [<span class="ident">u32</span>; <span class="ident">ADC_SAMPLES</span>]
-    <span class="op">=</span> [<span class="number">0</span>; <span class="ident">ADC_SAMPLES</span>];  <span class="comment">//  Init array to 100 zeroes</span></code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Array that will store the last 100 ADC Samples
+  //  (`ADC_SAMPLES` is 100)
+  </span><span class="kw">let </span><span class="kw-2">mut </span>adc_data: [u32; ADC_SAMPLES]
+    = [<span class="number">0</span>; ADC_SAMPLES];  <span class="comment">//  Init array to 100 zeroes</span></code></pre></div>
 <p>(Rust requires all variables to be initialised, so we set the array to 100 zeroes)</p>
 <p>Let’s <strong>copy the last 100 ADC Samples</strong> from the DMA Context (in RAM) to our array <code>adc_data</code> (on the stack)…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Copy the read ADC Samples to the array</span>
-  <span class="kw">unsafe</span> {                    <span class="comment">//  Unsafe because we are copying raw memory</span>
-    <span class="ident">core::ptr::copy</span>(          <span class="comment">//  Copy the memory...</span>
-      (<span class="kw-2">*</span><span class="ident">ctx</span>).<span class="ident">channel_data</span>,    <span class="comment">//  From Source (ADC DMA data)</span>
-      <span class="ident">adc_data</span>.<span class="ident">as_mut_ptr</span>(),  <span class="comment">//  To Destination (mutable pointer to adc_data)</span>
-      <span class="ident">adc_data</span>.<span class="ident">len</span>()          <span class="comment">//  Number of Items (each item is uint32 or 4 bytes)</span>
-    );    
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Copy the read ADC Samples to the array
+  </span><span class="kw">unsafe </span>{                    <span class="comment">//  Unsafe because we are copying raw memory
+    </span>core::ptr::copy(          <span class="comment">//  Copy the memory...
+      </span>(<span class="kw-2">*</span>ctx).channel_data,    <span class="comment">//  From Source (ADC DMA data)
+      </span>adc_data.as_mut_ptr(),  <span class="comment">//  To Destination (mutable pointer to adc_data)
+      </span>adc_data.len()          <span class="comment">//  Number of Items (each item is uint32 or 4 bytes)
+    </span>);    
   }</code></pre></div>
 <p>(More about this in the Appendix)</p>
 <p>(<code>adc_data.len()</code> returns the array length: 100)</p>
 <p>Then we compute the <strong>average value of the ADC Samples</strong> in <code>adc_data</code>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Compute the average value of the ADC Samples</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sum</span> <span class="op">=</span> <span class="number">0</span>;
-  <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">ADC_SAMPLES</span> {  <span class="comment">//  From 0 to 99, `..` excludes 100</span>
-    <span class="comment">//  Scale up the ADC Sample to the range 0 to 3199</span>
-    <span class="kw">let</span> <span class="ident">scaled</span> <span class="op">=</span> ((<span class="ident">adc_data</span>[<span class="ident">i</span>] <span class="op">&amp;</span> <span class="number">0xffff</span>) <span class="op">*</span> <span class="number">3200</span>) <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">16</span>;
-    <span class="ident">sum</span> <span class="op">+</span><span class="op">=</span> <span class="ident">scaled</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Compute the average value of the ADC Samples
+  </span><span class="kw">let </span><span class="kw-2">mut </span>sum = <span class="number">0</span>;
+  <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..ADC_SAMPLES {  <span class="comment">//  From 0 to 99, `..` excludes 100
+    //  Scale up the ADC Sample to the range 0 to 3199
+    </span><span class="kw">let </span>scaled = ((adc_data[i] &amp; <span class="number">0xffff</span>) * <span class="number">3200</span>) &gt;&gt; <span class="number">16</span>;
+    sum += scaled;
   }
-  <span class="kw">let</span> <span class="ident">avg</span> <span class="op">=</span> <span class="ident">sum</span> <span class="op">/</span> <span class="ident">ADC_SAMPLES</span> <span class="kw">as</span> <span class="ident">u32</span>;</code></pre></div>
+  <span class="kw">let </span>avg = sum / ADC_SAMPLES <span class="kw">as </span>u32;</code></pre></div>
 <p>We scale each ADC Sample to the range <strong>0 to 3199</strong>. (Because the default ADC Configuration produces 12-bit samples)</p>
 <p>Finally we compose a <strong>formatted string with the average value</strong> and display it…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Format the output</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">String::new</span>();
-  <span class="macro">write!</span>(<span class="ident">buf</span>, <span class="string">&quot;[Rust] Average: {}&quot;</span>, <span class="ident">avg</span>)
-    .<span class="ident">expect</span>(<span class="string">&quot;buf overflow&quot;</span>);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Format the output
+  </span><span class="kw">let </span><span class="kw-2">mut </span>buf = String::new();
+  <span class="macro">write!</span>(buf, <span class="string">&quot;[Rust] Average: {}&quot;</span>, avg)
+    .expect(<span class="string">&quot;buf overflow&quot;</span>);
 
-  <span class="comment">//  Display the formatted output</span>
-  <span class="ident">puts</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>);
+  <span class="comment">//  Display the formatted output
+  </span>puts(<span class="kw-2">&amp;</span>buf);
 }</code></pre></div>
 <p>(Yep Rust will helpfully <strong>check for buffer overflow</strong>… safer than <code>sprintf</code>!)</p>
 <p>Default String Size is <strong>64 characters</strong>, as defined in the BL602 Rust Wrapper.</p>
@@ -960,40 +960,40 @@ read_adc
 <li>
 <p><strong>Calling C Functions</strong></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Call the C function `set_adc_gain`</span>
-<span class="kw">unsafe</span> { <span class="ident">set_adc_gain</span>(<span class="ident">ADC_GAIN1</span>, <span class="ident">ADC_GAIN2</span>) };</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Call the C function `set_adc_gain`
+</span><span class="kw">unsafe </span>{ set_adc_gain(ADC_GAIN1, ADC_GAIN2) };</code></pre></div>
 <p>(More about this in the Appendix)</p>
 </li>
 <li>
 <p><strong>Casting C Pointers</strong> to Rust</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Cast a C Pointer to a Rust Pointer</span>
-<span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-  <span class="ident">transmute</span>::<span class="op">&lt;</span>         <span class="comment">//  Cast the type...</span>
-    <span class="ident">Ptr</span>,               <span class="comment">//  From C Pointer (void *)</span>
-    <span class="kw-2">*mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
-  <span class="op">&gt;</span>(<span class="ident">ptr</span>)               <span class="comment">//  For this pointer</span>
-};</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Cast a C Pointer to a Rust Pointer
+</span><span class="kw">let </span>ctx = <span class="kw">unsafe </span>{
+  transmute::&lt;         <span class="comment">//  Cast the type...
+    </span>Ptr,               <span class="comment">//  From C Pointer (void *)
+    </span><span class="kw-2">*mut </span>adc::adc_ctx  <span class="comment">//  To DMA Context Pointer (adc_ctx *)
+  </span>&gt;(ptr)               <span class="comment">//  For this pointer
+</span>};</code></pre></div>
 <p>(More about this in the Appendix)</p>
 </li>
 <li>
 <p><strong>Dereferencing C Pointers</strong></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Dereference a C Pointer (ctx)</span>
-<span class="kw">unsafe</span> {
-  (<span class="kw-2">*</span><span class="ident">ctx</span>).<span class="ident">chan_init_table</span> <span class="op">=</span> ...
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Dereference a C Pointer (ctx)
+</span><span class="kw">unsafe </span>{
+  (<span class="kw-2">*</span>ctx).chan_init_table = ...
 }</code></pre></div>
 </li>
 <li>
 <p><strong>Copying Memory</strong> with C Pointers</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Copy memory with a C Pointer (channel_data)</span>
-<span class="kw">unsafe</span> {
-  <span class="ident">core::ptr::copy</span>(          <span class="comment">//  Copy the memory...</span>
-    (<span class="kw-2">*</span><span class="ident">ctx</span>).<span class="ident">channel_data</span>,    <span class="comment">//  From Source (ADC DMA data)</span>
-    <span class="ident">adc_data</span>.<span class="ident">as_mut_ptr</span>(),  <span class="comment">//  To Destination (mutable pointer to adc_data)</span>
-    <span class="ident">adc_data</span>.<span class="ident">len</span>()          <span class="comment">//  Number of Items (each item is uint32 or 4 bytes)</span>
-  );    
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Copy memory with a C Pointer (channel_data)
+</span><span class="kw">unsafe </span>{
+  core::ptr::copy(          <span class="comment">//  Copy the memory...
+    </span>(<span class="kw-2">*</span>ctx).channel_data,    <span class="comment">//  From Source (ADC DMA data)
+    </span>adc_data.as_mut_ptr(),  <span class="comment">//  To Destination (mutable pointer to adc_data)
+    </span>adc_data.len()          <span class="comment">//  Number of Items (each item is uint32 or 4 bytes)
+  </span>);    
 }</code></pre></div>
 <p>(More about this in the Appendix)</p>
 </li>
@@ -1002,30 +1002,30 @@ read_adc
 <h2 id="static-variables-in-rust"><a href="#static-variables-in-rust">7.2 Static Variables in Rust</a></h2>
 <p>Earlier we saw this Rust code for <strong>averaging the ADC Samples</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  `adc_data` will store 100 ADC Samples (`ADC_SAMPLES` is 100)</span>
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">adc_data</span>: [<span class="ident">u32</span>; <span class="ident">ADC_SAMPLES</span>] <span class="op">=</span> [<span class="number">0</span>; <span class="ident">ADC_SAMPLES</span>];
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  `adc_data` will store 100 ADC Samples (`ADC_SAMPLES` is 100)
+</span><span class="kw">let </span><span class="kw-2">mut </span>adc_data: [u32; ADC_SAMPLES] = [<span class="number">0</span>; ADC_SAMPLES];
 
-<span class="comment">//  Omitted: Copy data into `adc_data`</span>
-...
+<span class="comment">//  Omitted: Copy data into `adc_data`
+</span>...
 
-<span class="comment">//  Compute average of `adc_data`</span>
-<span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">ADC_SAMPLES</span> {
-  <span class="comment">//  Get value from `adc_data`</span>
-  <span class="kw">let</span> <span class="ident">scaled</span> <span class="op">=</span> <span class="ident">adc_data</span>[<span class="ident">i</span>] <span class="op">&amp;</span> ...</code></pre></div>
+<span class="comment">//  Compute average of `adc_data`
+</span><span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..ADC_SAMPLES {
+  <span class="comment">//  Get value from `adc_data`
+  </span><span class="kw">let </span>scaled = adc_data[i] &amp; ...</code></pre></div>
 <p>Note that <strong><code>adc_data</code> lives on the stack</strong>.</p>
 <p>That’s a huge chunk of data on the stack… <strong>400 bytes!</strong></p>
 <p><em>What if we turn <code>adc_data</code> into a Static Array?</em></p>
 <p>We convert <code>adc_data</code> to a Static Array like this…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  `adc_data` becomes a Static Array</span>
-<span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">adc_data</span>: [<span class="ident">u32</span>; <span class="ident">ADC_SAMPLES</span>] <span class="op">=</span> [<span class="number">0</span>; <span class="ident">ADC_SAMPLES</span>];</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  `adc_data` becomes a Static Array
+</span><span class="kw">static </span><span class="kw-2">mut </span>adc_data: [u32; ADC_SAMPLES] = [<span class="number">0</span>; ADC_SAMPLES];</code></pre></div>
 <p><code>adc_data</code> no longer lives on the stack, it’s now in Static Memory.</p>
 <p><em>What’s the catch?</em></p>
 <p>Unfortunately <strong>Static Variables in Rust are <code>unsafe</code></strong>.</p>
 <p>Thus all references to <code>adc_data</code> must be <strong>flagged as <code>unsafe</code></strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  `adc_data` is now unsafe because it&#39;s a Static Variable</span>
-<span class="kw">let</span> <span class="ident">scaled</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">adc_data</span>[<span class="ident">i</span>] } <span class="op">&amp;</span> ...</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  `adc_data` is now unsafe because it&#39;s a Static Variable
+</span><span class="kw">let </span>scaled = <span class="kw">unsafe </span>{ adc_data[i] } &amp; ...</code></pre></div>
 <p>Which makes the code harder to read. That’s why we left <code>adc_data</code> on the stack for this tutorial.</p>
 <p><em>Why are Static Variables <code>unsafe</code>?</em></p>
 <p>Because it’s potentially possible to execute the above code in <strong>multiple tasks</strong>…</p>
@@ -1199,15 +1199,15 @@ bl602-sdk = &quot;0.0.6&quot;  # Rust Wrapper for BL602 IoT SDK: https://crates.
 <p><em>How do we call our own C Functions from Rust?</em></p>
 <p>Earlier we saw this Rust code that <strong>sets the ADC Gain</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L64-L66"><code>lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  In Rust: Enable ADC Gain to increase the ADC sensitivity</span>
-<span class="kw">unsafe</span> { <span class="ident">set_adc_gain</span>(<span class="ident">ADC_GAIN1</span>, <span class="ident">ADC_GAIN2</span>) };  <span class="comment">//  Unsafe because we are calling C function</span></code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  In Rust: Enable ADC Gain to increase the ADC sensitivity
+</span><span class="kw">unsafe </span>{ set_adc_gain(ADC_GAIN1, ADC_GAIN2) };  <span class="comment">//  Unsafe because we are calling C function</span></code></pre></div>
 <p>This calls the C Function <code>set_adc_gain</code>, which we have <strong>imported into Rust</strong> here: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L180-L184"><code>lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  In Rust: Import C Function</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
-  <span class="doccomment">/// Enable ADC Gain to increase the ADC sensitivity.</span>
-  <span class="doccomment">/// Defined in customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c</span>
-  <span class="kw">fn</span> <span class="ident">set_adc_gain</span>(<span class="ident">gain1</span>: <span class="ident">u32</span>, <span class="ident">gain2</span>: <span class="ident">u32</span>) -&gt; <span class="ident">i32</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  In Rust: Import C Function
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
+  <span class="doccomment">/// Enable ADC Gain to increase the ADC sensitivity.
+  /// Defined in customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c
+  </span><span class="kw">fn </span>set_adc_gain(gain1: u32, gain2: u32) -&gt; i32;
 }</code></pre></div>
 <p><strong><code>set_adc_gain</code></strong> is defined in this C source file: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c#L11-L42"><code>demo.c</code></a></p>
 <p><em>What about the rest of the code in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/sdk_app_rust_adc/demo.c"><code>demo.c</code></a>?</em></p>
@@ -1234,19 +1234,19 @@ struct adc_ctx *ctx = (struct adc_ctx *) ptr;</code></pre></div>
 <p>Here we’re <a href="https://en.wikipedia.org/wiki/Downcasting">Downcasting</a> a General Type (<code>void *</code>) to a Specific Type (<code>adc_ctx *</code>).</p>
 <p>To do the same in Rust, we need to be super explicit about <strong>what we’re casting</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L119-L129"><code>lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  In Rust: Get the C Pointer (void *) for DMA Context</span>
-<span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> ...
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  In Rust: Get the C Pointer (void *) for DMA Context
+</span><span class="kw">let </span>ptr = ...
 
-<span class="comment">//  Cast the returned C Pointer (void *) to a DMA Context Pointer (adc_ctx *)</span>
-<span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="kw">unsafe</span> {     <span class="comment">//  Unsafe because we are casting a pointer</span>
-  <span class="ident">transmute</span>::<span class="op">&lt;</span>         <span class="comment">//  Cast the type...</span>
-    <span class="ident">Ptr</span>,               <span class="comment">//  From C Pointer (void *)</span>
-    <span class="kw-2">*mut</span> <span class="ident">adc::adc_ctx</span>  <span class="comment">//  To DMA Context Pointer (adc_ctx *)</span>
-  <span class="op">&gt;</span>(<span class="ident">ptr</span>)               <span class="comment">//  For this pointer</span>
-};</code></pre></div>
+<span class="comment">//  Cast the returned C Pointer (void *) to a DMA Context Pointer (adc_ctx *)
+</span><span class="kw">let </span>ctx = <span class="kw">unsafe </span>{     <span class="comment">//  Unsafe because we are casting a pointer
+  </span>transmute::&lt;         <span class="comment">//  Cast the type...
+    </span>Ptr,               <span class="comment">//  From C Pointer (void *)
+    </span><span class="kw-2">*mut </span>adc::adc_ctx  <span class="comment">//  To DMA Context Pointer (adc_ctx *)
+  </span>&gt;(ptr)               <span class="comment">//  For this pointer
+</span>};</code></pre></div>
 <p><strong><code>transmute</code></strong> is the Rust Core Library Function that will cast our value (<code>ptr</code>) from one type to another…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="ident">transmute</span>::<span class="op">&lt;</span> <span class="ident">FromType</span> , <span class="ident">ToType</span> <span class="op">&gt;</span>( <span class="ident">ptr</span> )</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>transmute::&lt; FromType , ToType &gt;( ptr )</code></pre></div>
 <p>Where…</p>
 <ul>
 <li>
@@ -1277,17 +1277,17 @@ memcpy(
 <p>This code <strong>copies the ADC Samples</strong> from the DMA buffer to the array <code>adc_data</code>.</p>
 <p>Here’s the equivalent code in Rust: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust_adc/rust/src/lib.rs#L142-L149"><code>lib.rs</code></a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Array that will store the last 100 ADC Samples (`ADC_SAMPLES` is 100)</span>
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">adc_data</span>: [<span class="ident">u32</span>; <span class="ident">ADC_SAMPLES</span>]
-  <span class="op">=</span> [<span class="number">0</span>; <span class="ident">ADC_SAMPLES</span>];  <span class="comment">//  Init array to 100 zeroes</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Array that will store the last 100 ADC Samples (`ADC_SAMPLES` is 100)
+</span><span class="kw">let </span><span class="kw-2">mut </span>adc_data: [u32; ADC_SAMPLES]
+  = [<span class="number">0</span>; ADC_SAMPLES];  <span class="comment">//  Init array to 100 zeroes
 
-<span class="comment">//  Copy the read ADC Samples to the array</span>
-<span class="kw">unsafe</span> {                    <span class="comment">//  Unsafe because we are copying raw memory</span>
-  <span class="ident">core::ptr::copy</span>(          <span class="comment">//  Copy the memory...</span>
-    (<span class="kw-2">*</span><span class="ident">ctx</span>).<span class="ident">channel_data</span>,    <span class="comment">//  From Source (ADC DMA data)</span>
-    <span class="ident">adc_data</span>.<span class="ident">as_mut_ptr</span>(),  <span class="comment">//  To Destination (mutable pointer to adc_data)</span>
-    <span class="ident">adc_data</span>.<span class="ident">len</span>()          <span class="comment">//  Number of Items (each item is uint32 or 4 bytes)</span>
-  );    
+//  Copy the read ADC Samples to the array
+</span><span class="kw">unsafe </span>{                    <span class="comment">//  Unsafe because we are copying raw memory
+  </span>core::ptr::copy(          <span class="comment">//  Copy the memory...
+    </span>(<span class="kw-2">*</span>ctx).channel_data,    <span class="comment">//  From Source (ADC DMA data)
+    </span>adc_data.as_mut_ptr(),  <span class="comment">//  To Destination (mutable pointer to adc_data)
+    </span>adc_data.len()          <span class="comment">//  Number of Items (each item is uint32 or 4 bytes)
+  </span>);    
 }</code></pre></div>
 <p>Note the differences…</p>
 <ol>
@@ -1347,13 +1347,13 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);</code></pre></div>
 <li><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/bl602-sdk/src">More Bindings</a></li>
 </ul>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Rust Bindings for BL602 GPIO generated by gen-bindings.sh</span>
-<span class="attribute">#[<span class="ident">safe_wrap</span>(<span class="kw">_</span>)]</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bl_gpio_enable_output</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">pullup</span>: <span class="ident">u8</span>, <span class="ident">pulldown</span>: <span class="ident">u8</span>) -&gt; <span class="ident">::cty::c_int</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Rust Bindings for BL602 GPIO generated by gen-bindings.sh
+</span><span class="attribute">#[safe_wrap(<span class="kw">_</span>)] </span><span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
+    <span class="kw">pub fn </span>bl_gpio_enable_output(pin: u8, pullup: u8, pulldown: u8) -&gt; ::cty::c_int;
 }
 
-<span class="attribute">#[<span class="ident">safe_wrap</span>(<span class="kw">_</span>)]</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) -&gt; <span class="ident">::cty::c_int</span>;
+<span class="attribute">#[safe_wrap(<span class="kw">_</span>)] </span><span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
+    <span class="kw">pub fn </span>bl_gpio_output_set(pin: u8, value: u8) -&gt; ::cty::c_int;
 }</code></pre></div>
 <p>(<code>safe_wrap</code> was inserted by an <code>sed</code> script in <code>gen-bindings.sh</code>)</p>
 <p>When the above Rust Bindings are compiled, they invoke the <strong><code>safe_wrap</code> Procedural Macro</strong>…</p>
@@ -1365,47 +1365,47 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);</code></pre></div>
 <li><a href="https://github.com/lupyuen/bl602-rust-wrapper/blob/master/logs/sdk-expanded.rs">Expanded <code>safe_wrap</code> macros: <code>logs/sdk-expanded.rs</code></a></li>
 </ul>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Expanded version of `safe_wrap` macros for the GPIO Rust Bindings</span>
-<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Configure a GPIO Pin for Output Mode. See `bl_gpio_enable_output` in \&quot;Enable GPIO\&quot; &lt;https://lupyuen.github.io/articles/led#enable-gpio&gt;&quot;</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">enable_output</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">pullup</span>: <span class="ident">u8</span>, <span class="ident">pulldown</span>: <span class="ident">u8</span>)
-    -&gt; <span class="ident">BlResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Expanded version of `safe_wrap` macros for the GPIO Rust Bindings
+</span><span class="attribute">#[doc = <span class="string">&quot;Configure a GPIO Pin for Output Mode. See `bl_gpio_enable_output` in \&quot;Enable GPIO\&quot; &lt;https://lupyuen.github.io/articles/led#enable-gpio&gt;&quot;</span>]
+</span><span class="kw">pub fn </span>enable_output(pin: u8, pullup: u8, pulldown: u8)
+    -&gt; BlResult&lt;()&gt; {
     <span class="string">&quot;----------Extern Decl----------&quot;</span>;
-    <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bl_gpio_enable_output</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">pullup</span>: <span class="ident">u8</span>, <span class="ident">pulldown</span>: <span class="ident">u8</span>)
-        -&gt; <span class="ident">::cty::c_int</span>;
+    <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
+        <span class="kw">pub fn </span>bl_gpio_enable_output(pin: u8, pullup: u8, pulldown: u8)
+        -&gt; ::cty::c_int;
     }
     <span class="string">&quot;----------Validation----------&quot;</span>;
-    <span class="kw">unsafe</span> {
+    <span class="kw">unsafe </span>{
         <span class="string">&quot;----------Call----------&quot;</span>;
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span>
-            <span class="ident">bl_gpio_enable_output</span>(<span class="ident">pin</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">pullup</span> <span class="kw">as</span> <span class="ident">u8</span>,
-                                    <span class="ident">pulldown</span> <span class="kw">as</span> <span class="ident">u8</span>);
+        <span class="kw">let </span>res =
+            bl_gpio_enable_output(pin <span class="kw">as </span>u8, pullup <span class="kw">as </span>u8,
+                                    pulldown <span class="kw">as </span>u8);
         <span class="string">&quot;----------Result----------&quot;</span>;
-        <span class="kw">match</span> <span class="ident">res</span> { <span class="number">0</span> =&gt; <span class="prelude-val">Ok</span>(()), <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">BlError::from</span>(<span class="ident">res</span>)), }
+        <span class="kw">match </span>res { <span class="number">0 </span>=&gt; <span class="prelude-val">Ok</span>(()), <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(BlError::from(res)), }
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Set output value of GPIO Pin. See `bl_gpio_output_set` in \&quot;Read and Write GPIO\&quot; &lt;https://lupyuen.github.io/articles/led#read-and-write-gpio&gt;&quot;</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) -&gt; <span class="ident">BlResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="attribute">#[doc = <span class="string">&quot;Set output value of GPIO Pin. See `bl_gpio_output_set` in \&quot;Read and Write GPIO\&quot; &lt;https://lupyuen.github.io/articles/led#read-and-write-gpio&gt;&quot;</span>]
+</span><span class="kw">pub fn </span>output_set(pin: u8, value: u8) -&gt; BlResult&lt;()&gt; {
     <span class="string">&quot;----------Extern Decl----------&quot;</span>;
-    <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>)
-        -&gt; <span class="ident">::cty::c_int</span>;
+    <span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
+        <span class="kw">pub fn </span>bl_gpio_output_set(pin: u8, value: u8)
+        -&gt; ::cty::c_int;
     }
     <span class="string">&quot;----------Validation----------&quot;</span>;
-    <span class="kw">unsafe</span> {
+    <span class="kw">unsafe </span>{
         <span class="string">&quot;----------Call----------&quot;</span>;
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">bl_gpio_output_set</span>(<span class="ident">pin</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">value</span> <span class="kw">as</span> <span class="ident">u8</span>);
+        <span class="kw">let </span>res = bl_gpio_output_set(pin <span class="kw">as </span>u8, value <span class="kw">as </span>u8);
         <span class="string">&quot;----------Result----------&quot;</span>;
-        <span class="kw">match</span> <span class="ident">res</span> { <span class="number">0</span> =&gt; <span class="prelude-val">Ok</span>(()), <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">BlError::from</span>(<span class="ident">res</span>)), }
+        <span class="kw">match </span>res { <span class="number">0 </span>=&gt; <span class="prelude-val">Ok</span>(()), <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(BlError::from(res)), }
     }
 }</code></pre></div>
 <p>(More about <strong><code>doc</code></strong> in the next section)</p>
 <p>Note that the <code>safe_wrap</code> macro converts the BL602 return values to a <strong>Rust Result Type</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">match</span> <span class="ident">res</span> { 
-    <span class="number">0</span> =&gt; <span class="prelude-val">Ok</span>(()), 
-    <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">BlError::from</span>(<span class="ident">res</span>))
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">match </span>res { 
+    <span class="number">0 </span>=&gt; <span class="prelude-val">Ok</span>(()), 
+    <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(BlError::from(res))
 }</code></pre></div>
 <p>Which enables the caller to check for errors with <strong><code>expect</code></strong>.</p>
 <p>We build the docs and the test project with this script…</p>
@@ -1431,12 +1431,12 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value);</code></pre></div>
 <p>So we linked each Rust Wrapper Function to the relevant section in “The RISC-V BL602 Book”.</p>
 <p>We do this through the <strong>Rust <code>doc</code> Attribute</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Expanded version of `safe_wrap` macros for the GPIO Rust Bindings</span>
-<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Configure a GPIO Pin for Output Mode. See `bl_gpio_enable_output` in \&quot;Enable GPIO\&quot; &lt;https://lupyuen.github.io/articles/led#enable-gpio&gt;&quot;</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">enable_output</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">pullup</span>: <span class="ident">u8</span>, <span class="ident">pulldown</span>: <span class="ident">u8</span>) { ...
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Expanded version of `safe_wrap` macros for the GPIO Rust Bindings
+</span><span class="attribute">#[doc = <span class="string">&quot;Configure a GPIO Pin for Output Mode. See `bl_gpio_enable_output` in \&quot;Enable GPIO\&quot; &lt;https://lupyuen.github.io/articles/led#enable-gpio&gt;&quot;</span>]
+</span><span class="kw">pub fn </span>enable_output(pin: u8, pullup: u8, pulldown: u8) { ...
 
-<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Set output value of GPIO Pin. See `bl_gpio_output_set` in \&quot;Read and Write GPIO\&quot; &lt;https://lupyuen.github.io/articles/led#read-and-write-gpio&gt;&quot;</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">output_set</span>(<span class="ident">pin</span>: <span class="ident">u8</span>, <span class="ident">value</span>: <span class="ident">u8</span>) -&gt; <span class="ident">BlResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> { ...</code></pre></div>
+<span class="attribute">#[doc = <span class="string">&quot;Set output value of GPIO Pin. See `bl_gpio_output_set` in \&quot;Read and Write GPIO\&quot; &lt;https://lupyuen.github.io/articles/led#read-and-write-gpio&gt;&quot;</span>]
+</span><span class="kw">pub fn </span>output_set(pin: u8, value: u8) -&gt; BlResult&lt;()&gt; { ...</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/adc-doclink.png" alt="Documentation links to be injected" /></p>
 <p><em>How did we inject the doc links into the <code>doc</code> Attribute?</em></p>
 <p>For each Rust Wrapper Function, the links to <a href="https://lupyuen.github.io/articles/book">“The RISC-V BL602 Book”</a> are defined in this <strong>Markdown Text File</strong>…</p>

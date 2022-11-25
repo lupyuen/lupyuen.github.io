@@ -301,10 +301,10 @@ stty \
 <p>(Otherwise the output will be garbled)</p>
 <p>Then our script <strong>streams the output</strong> from BL602 over USB UART…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>#  <span class="ident">Show</span> <span class="ident">the</span> <span class="ident">BL602</span> <span class="ident">output</span> <span class="ident">and</span> <span class="ident">capture</span> <span class="ident">to</span> <span class="op">/</span><span class="ident">tmp</span><span class="op">/</span><span class="ident">test</span>.<span class="ident">log</span>.
-#  <span class="ident">Run</span> <span class="ident">this</span> <span class="kw">in</span> <span class="ident">the</span> <span class="ident">background</span> <span class="ident">so</span> <span class="ident">we</span> <span class="ident">can</span> <span class="ident">kill</span> <span class="ident">it</span> <span class="ident">later</span>.
-<span class="ident">cat</span> <span class="op">/</span><span class="ident">dev</span><span class="op">/</span><span class="ident">ttyUSB0</span> \
-  <span class="op">|</span> <span class="ident">tee</span> <span class="op">/</span><span class="ident">tmp</span><span class="op">/</span><span class="ident">test</span>.<span class="ident">log</span> <span class="kw-2">&amp;</span></code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>#  Show the BL602 output and capture to /tmp/test.log.
+#  Run this <span class="kw">in </span>the background so we can kill it later.
+cat /dev/ttyUSB0 \
+  | tee /tmp/test.log <span class="kw-2">&amp;</span></code></pre></div>
 <p>And captures the output to <strong>test.log</strong> for analysis. (Which we’ll explain shortly)</p>
 <p>This runs as a <strong>Background Task</strong> (<code>&amp;</code>) because we want the script to continue running (in the Foreground) as the BL602 output continues to stream (in the Background).</p>
 <p><em>But nothing appears in the output?</em></p>

@@ -130,43 +130,43 @@
 <h1 id="rust-meets-nuttx"><a href="#rust-meets-nuttx">1 Rust Meets NuttX</a></h1>
 <p>This is the <strong>simplest Rust program</strong> that will run on NuttX and print <em>“Hello World!”</em>: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L22-L56">lib.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attribute">#![<span class="ident">no_std</span>]</span>  <span class="comment">//  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attribute">#![no_std]  </span><span class="comment">//  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems
 
-<span class="attribute">#[<span class="ident">no_mangle</span>]</span>  <span class="comment">//  Don&#39;t mangle the function name</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rust_main</span>() {  <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by NuttX</span>
+</span><span class="attribute">#[no_mangle]  </span><span class="comment">//  Don&#39;t mangle the function name
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>rust_main() {  <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by NuttX
 
-  <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {  <span class="comment">//  Import C Function</span>
-    <span class="doccomment">/// Print a message to the serial console (from C stdio library)</span>
-    <span class="kw">fn</span> <span class="ident">puts</span>(<span class="ident">s</span>: <span class="kw-2">*const</span> <span class="ident">u8</span>) -&gt; <span class="ident">i32</span>;
+  </span><span class="kw">extern </span><span class="string">&quot;C&quot; </span>{  <span class="comment">//  Import C Function
+    </span><span class="doccomment">/// Print a message to the serial console (from C stdio library)
+    </span><span class="kw">fn </span>puts(s: <span class="kw-2">*const </span>u8) -&gt; i32;
   }
 
-  <span class="kw">unsafe</span> {  <span class="comment">//  Mark as unsafe because we are calling C</span>
-    <span class="comment">//  Print a message to the serial console</span>
-    <span class="ident">puts</span>(
-      <span class="string">b&quot;Hello World!\0&quot;</span>  <span class="comment">//  Byte String terminated with null</span>
-        .<span class="ident">as_ptr</span>()        <span class="comment">//  Convert to pointer</span>
-    );
+  <span class="kw">unsafe </span>{  <span class="comment">//  Mark as unsafe because we are calling C
+    //  Print a message to the serial console
+    </span>puts(
+      <span class="string">b&quot;Hello World!\0&quot;  </span><span class="comment">//  Byte String terminated with null
+        </span>.as_ptr()        <span class="comment">//  Convert to pointer
+    </span>);
   }
 }</code></pre></div>
 <p>Let’s break it down from the top…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Use the Rust Core Library instead of the Rust Standard Library,</span>
-<span class="comment">//  which is not compatible with embedded systems</span>
-<span class="attribute">#![<span class="ident">no_std</span>]</span></code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Use the Rust Core Library instead of the Rust Standard Library,
+//  which is not compatible with embedded systems
+</span><span class="attribute">#![no_std]</span></code></pre></div>
 <p>We select the <strong>Rust Core Library</strong> (for embedded platforms), which is a subset of the Rust Standard Library (for desktops and servers).</p>
 <p>Next we declare the <strong>Rust Function</strong> that will be called by NuttX…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Don&#39;t mangle the function name</span>
-<span class="attribute">#[<span class="ident">no_mangle</span>]</span>
-<span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by NuttX</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">rust_main</span>() {</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Don&#39;t mangle the function name
+</span><span class="attribute">#[no_mangle]
+</span><span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by NuttX
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>rust_main() {</code></pre></div>
 <p>(Why is it named <strong>“rust_main”</strong>? We’ll find out in a while)</p>
 <p>NuttX provides the <strong>“puts”</strong> function because it’s POSIX Compliant (like Linux), so we import it from C…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Import C Function</span>
-  <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
-    <span class="doccomment">/// Print a message to the serial console (from C stdio library)</span>
-    <span class="kw">fn</span> <span class="ident">puts</span>(<span class="ident">s</span>: <span class="kw-2">*const</span> <span class="ident">u8</span>) -&gt; <span class="ident">i32</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Import C Function
+  </span><span class="kw">extern </span><span class="string">&quot;C&quot; </span>{
+    <span class="doccomment">/// Print a message to the serial console (from C stdio library)
+    </span><span class="kw">fn </span>puts(s: <span class="kw-2">*const </span>u8) -&gt; i32;
   }</code></pre></div>
 <p>This declares that <strong>“puts”</strong>…</p>
 <ul>
@@ -181,13 +181,13 @@
 </ul>
 <p>We call <strong>“puts”</strong> like so…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Mark as unsafe because we are calling C</span>
-  <span class="kw">unsafe</span> {
-    <span class="comment">//  Print a message to the serial console</span>
-    <span class="ident">puts</span>(
-      <span class="string">b&quot;Hello World!\0&quot;</span>  <span class="comment">//  Byte String terminated with null</span>
-        .<span class="ident">as_ptr</span>()        <span class="comment">//  Convert to pointer</span>
-    );
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Mark as unsafe because we are calling C
+  </span><span class="kw">unsafe </span>{
+    <span class="comment">//  Print a message to the serial console
+    </span>puts(
+      <span class="string">b&quot;Hello World!\0&quot;  </span><span class="comment">//  Byte String terminated with null
+        </span>.as_ptr()        <span class="comment">//  Convert to pointer
+    </span>);
   }</code></pre></div>
 <p>Passing a string from Rust to C looks rather cumbersome…</p>
 <ul>
@@ -216,18 +216,18 @@ Hello World!</code></pre></div>
 <p><em>Do we really need the cumbersome syntax for <strong>“puts”</strong> when we print things?</em></p>
 <p>We can do better! Let’s wrap this cumbersome code…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Mark as unsafe because we are calling C</span>
-<span class="kw">unsafe</span> {
-  <span class="comment">//  Print a message to the serial console</span>
-  <span class="ident">puts</span>(
-    <span class="string">b&quot;Hello World!\0&quot;</span>  <span class="comment">//  Byte String terminated with null</span>
-      .<span class="ident">as_ptr</span>()        <span class="comment">//  Convert to pointer</span>
-  );
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Mark as unsafe because we are calling C
+</span><span class="kw">unsafe </span>{
+  <span class="comment">//  Print a message to the serial console
+  </span>puts(
+    <span class="string">b&quot;Hello World!\0&quot;  </span><span class="comment">//  Byte String terminated with null
+      </span>.as_ptr()        <span class="comment">//  Convert to pointer
+  </span>);
 }</code></pre></div>
 <p>…with a <strong>Rust Macro</strong>. And we’ll get this…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Print a message to the serial console</span>
-<span class="macro">println!</span>(<span class="string">&quot;Hello World!&quot;</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Print a message to the serial console
+</span><span class="macro">println!</span>(<span class="string">&quot;Hello World!&quot;</span>);</code></pre></div>
 <p>Much neater! We’ll see later that <strong>“println!”</strong> supports Formatted Output too.</p>
 <p><a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/macros.rs">(<strong>println!</strong> is defined here. Thanks Huang Qi! 👍)</a></p>
 <p><a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L175-L216">(<strong>puts</strong> is wrapped here)</a></p>
@@ -249,37 +249,37 @@ int main(int argc, FAR char *argv[]) {
 <h1 id="flipping-gpio"><a href="#flipping-gpio">3 Flipping GPIO</a></h1>
 <p>Since we can call NuttX Functions from Rust, let’s <strong>flip a GPIO High and Low</strong> the POSIX way: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L56-L133">lib.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Open GPIO Output</span>
-<span class="kw">let</span> <span class="ident">cs</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-  <span class="ident">open</span>(<span class="string">b&quot;/dev/gpio1\0&quot;</span>.<span class="ident">as_ptr</span>(), <span class="ident">O_RDWR</span>) 
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Open GPIO Output
+</span><span class="kw">let </span>cs = <span class="kw">unsafe </span>{
+  open(<span class="string">b&quot;/dev/gpio1\0&quot;</span>.as_ptr(), O_RDWR) 
 };
-<span class="macro">assert!</span>(<span class="ident">cs</span> <span class="op">&gt;</span> <span class="number">0</span>);</code></pre></div>
+<span class="macro">assert!</span>(cs &gt; <span class="number">0</span>);</code></pre></div>
 <p>We open the GPIO Output at <strong>“/dev/gpio1”</strong> with read-write access.</p>
 <p>Then we call <strong>ioctl</strong> to set the <strong>GPIO Output to Low</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Set GPIO Output to Low</span>
-<span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { 
-  <span class="ident">ioctl</span>(<span class="ident">cs</span>, <span class="ident">GPIOC_WRITE</span>, <span class="number">0</span>) 
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Set GPIO Output to Low
+</span><span class="kw">let </span>ret = <span class="kw">unsafe </span>{ 
+  ioctl(cs, GPIOC_WRITE, <span class="number">0</span>) 
 };
-<span class="macro">assert!</span>(<span class="ident">ret</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>);</code></pre></div>
+<span class="macro">assert!</span>(ret &gt;= <span class="number">0</span>);</code></pre></div>
 <p>We sleep for 1 second…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Sleep 1 second</span>
-<span class="kw">unsafe</span> { 
-  <span class="ident">sleep</span>(<span class="number">1</span>); 
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Sleep 1 second
+</span><span class="kw">unsafe </span>{ 
+  sleep(<span class="number">1</span>); 
 }</code></pre></div>
 <p>We set the <strong>GPIO Output to High</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Set GPIO Output to High</span>
-<span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { 
-  <span class="ident">ioctl</span>(<span class="ident">cs</span>, <span class="ident">GPIOC_WRITE</span>, <span class="number">1</span>) 
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Set GPIO Output to High
+</span><span class="kw">let </span>ret = <span class="kw">unsafe </span>{ 
+  ioctl(cs, GPIOC_WRITE, <span class="number">1</span>) 
 };
-<span class="macro">assert!</span>(<span class="ident">ret</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>);</code></pre></div>
+<span class="macro">assert!</span>(ret &gt;= <span class="number">0</span>);</code></pre></div>
 <p>Finally we <strong>close the GPIO Output</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Close the GPIO Output</span>
-<span class="kw">unsafe</span> {
-  <span class="ident">close</span>(<span class="ident">cs</span>);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Close the GPIO Output
+</span><span class="kw">unsafe </span>{
+  close(cs);
 }</code></pre></div>
 <p>This code works OK for <strong>blinking an LED</strong> on a GPIO pin, but we’ll do something more ambitious… Transfer data over SPI!</p>
 <p><em>Won’t this code get really messy when we do lots of GPIO and SPI?</em></p>
@@ -289,23 +289,23 @@ int main(int argc, FAR char *argv[]) {
 <p><em>How did we import the NuttX Functions: open, ioctl, sleep, close, …?</em></p>
 <p>We <strong>imported the NuttX Functions</strong> like so: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L248-L257">lib.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {  <span class="comment">//  Import NuttX Functions. TODO: Import with bindgen</span>
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">open</span>(<span class="ident">path</span>: <span class="kw-2">*const</span> <span class="ident">u8</span>, <span class="ident">oflag</span>: <span class="ident">i32</span>, ...) -&gt; <span class="ident">i32</span>;
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="ident">fd</span>: <span class="ident">i32</span>, <span class="ident">buf</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">count</span>: <span class="ident">u32</span>) -&gt; <span class="ident">i32</span>;
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="ident">fd</span>: <span class="ident">i32</span>, <span class="ident">buf</span>: <span class="kw-2">*const</span> <span class="ident">u8</span>, <span class="ident">count</span>: <span class="ident">u32</span>) -&gt; <span class="ident">i32</span>;
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">close</span>(<span class="ident">fd</span>: <span class="ident">i32</span>) -&gt; <span class="ident">i32</span>;
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ioctl</span>(<span class="ident">fd</span>: <span class="ident">i32</span>, <span class="ident">request</span>: <span class="ident">i32</span>, ...) -&gt; <span class="ident">i32</span>;  <span class="comment">//  On NuttX: request is i32, not u64 like Linux</span>
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sleep</span>(<span class="ident">secs</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span>;
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">usleep</span>(<span class="ident">usec</span>: <span class="ident">u32</span>) -&gt; <span class="ident">u32</span>;
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exit</span>(<span class="ident">status</span>: <span class="ident">u32</span>) -&gt; <span class="op">!</span>;  <span class="comment">//  Does not return</span>
-}</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">extern </span><span class="string">&quot;C&quot; </span>{  <span class="comment">//  Import NuttX Functions. TODO: Import with bindgen
+  </span><span class="kw">pub fn </span>open(path: <span class="kw-2">*const </span>u8, oflag: i32, ...) -&gt; i32;
+  <span class="kw">pub fn </span>read(fd: i32, buf: <span class="kw-2">*mut </span>u8, count: u32) -&gt; i32;
+  <span class="kw">pub fn </span>write(fd: i32, buf: <span class="kw-2">*const </span>u8, count: u32) -&gt; i32;
+  <span class="kw">pub fn </span>close(fd: i32) -&gt; i32;
+  <span class="kw">pub fn </span>ioctl(fd: i32, request: i32, ...) -&gt; i32;  <span class="comment">//  On NuttX: request is i32, not u64 like Linux
+  </span><span class="kw">pub fn </span>sleep(secs: u32) -&gt; u32;
+  <span class="kw">pub fn </span>usleep(usec: u32) -&gt; u32;
+  <span class="kw">pub fn </span>exit(status: u32) -&gt; !;  <span class="comment">//  Does not return
+</span>}</code></pre></div>
 <p>We (very carefully) <strong>imported the NuttX Constants</strong> as well: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L259-L277">lib.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Import NuttX Constants. TODO: Import with bindgen from https://github.com/lupyuen/incubator-nuttx/blob/rust/include/nuttx/ioexpander/gpio.h</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">GPIOC_WRITE</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="ident">_GPIOBASE</span> <span class="op">|</span> <span class="number">1</span>;  <span class="comment">//  _GPIOC(1)</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">GPIOC_READ</span>:  <span class="ident">i32</span> <span class="op">=</span> <span class="ident">_GPIOBASE</span> <span class="op">|</span> <span class="number">2</span>;  <span class="comment">//  _GPIOC(2)</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">_GPIOBASE</span>:   <span class="ident">i32</span> <span class="op">=</span> <span class="number">0x2300</span>;         <span class="comment">//  GPIO driver commands</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">O_RDWR</span>:      <span class="ident">i32</span> <span class="op">=</span> <span class="ident">O_RDOK</span><span class="op">|</span><span class="ident">O_WROK</span>;  <span class="comment">//  Open for both read &amp; write access</span></code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Import NuttX Constants. TODO: Import with bindgen from https://github.com/lupyuen/incubator-nuttx/blob/rust/include/nuttx/ioexpander/gpio.h
+</span><span class="kw">pub const </span>GPIOC_WRITE: i32 = _GPIOBASE | <span class="number">1</span>;  <span class="comment">//  _GPIOC(1)
+</span><span class="kw">pub const </span>GPIOC_READ:  i32 = _GPIOBASE | <span class="number">2</span>;  <span class="comment">//  _GPIOC(2)
+</span><span class="kw">pub const </span>_GPIOBASE:   i32 = <span class="number">0x2300</span>;         <span class="comment">//  GPIO driver commands
+</span><span class="kw">pub const </span>O_RDWR:      i32 = O_RDOK|O_WROK;  <span class="comment">//  Open for both read &amp; write access</span></code></pre></div>
 <p><a href="https://rust-lang.github.io/rust-bindgen/">(Someday we should auto-generate the Rust Bindings for NuttX with the <strong>bindgen</strong> tool)</a></p>
 <p><img src="https://lupyuen.github.io/images/rust2-hal.png" alt="Rust Embedded HAL" /></p>
 <h1 id="rust-embedded-hal"><a href="#rust-embedded-hal">5 Rust Embedded HAL</a></h1>
@@ -337,42 +337,42 @@ sx126x = { git = &quot;https://github.com/lupyuen/sx126x-rs-nuttx&quot; }  </cod
 <p>(We’ll see the <strong>sx126x</strong> driver in a while)</p>
 <p>We import the <strong>Rust Embedded Traits</strong> (GPIO, SPI and Delay) that we’ll call from our app: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L12-L18">lib.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Import Embedded Traits</span>
-<span class="kw">use</span> <span class="ident">embedded_hal</span>::{       <span class="comment">//  Rust Embedded HAL</span>
-  <span class="ident">digital::v2::OutputPin</span>, <span class="comment">//  GPIO Output</span>
-  <span class="ident">blocking</span>::{             <span class="comment">//  Blocking I/O</span>
-    <span class="ident">delay::DelayMs</span>,       <span class="comment">//  Delay Interface</span>
-    <span class="ident">spi::Transfer</span>,        <span class="comment">//  SPI Transfer</span>
-  },
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Import Embedded Traits
+</span><span class="kw">use </span>embedded_hal::{       <span class="comment">//  Rust Embedded HAL
+  </span>digital::v2::OutputPin, <span class="comment">//  GPIO Output
+  </span>blocking::{             <span class="comment">//  Blocking I/O
+    </span>delay::DelayMs,       <span class="comment">//  Delay Interface
+    </span>spi::Transfer,        <span class="comment">//  SPI Transfer
+  </span>},
 };</code></pre></div>
 <p>To open GPIO Output <strong>“/dev/gpio1”</strong> we do this: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L133-L174">lib.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Open GPIO Output</span>
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cs</span> <span class="op">=</span> <span class="ident">nuttx_embedded_hal::OutputPin</span>
-  <span class="ident">::new</span>(<span class="string">&quot;/dev/gpio1&quot;</span>)
-  .<span class="ident">expect</span>(<span class="string">&quot;open gpio failed&quot;</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Open GPIO Output
+</span><span class="kw">let </span><span class="kw-2">mut </span>cs = nuttx_embedded_hal::OutputPin
+  ::new(<span class="string">&quot;/dev/gpio1&quot;</span>)
+  .expect(<span class="string">&quot;open gpio failed&quot;</span>);</code></pre></div>
 <p>(This halts with an error if “/dev/gpio1” doesn’t exist)</p>
 <p>We declare it as <strong>“<code>mut</code>”</strong> (mutable) because we expect its Internal State to change as we flip the GPIO.</p>
 <p>Next we fetch the <strong>Delay Interface</strong> that we’ll call to sleep…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Get a Delay Interface</span>
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">delay</span> <span class="op">=</span> <span class="ident">nuttx_embedded_hal::Delay</span>;</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Get a Delay Interface
+</span><span class="kw">let </span><span class="kw-2">mut </span>delay = nuttx_embedded_hal::Delay;</code></pre></div>
 <p>Then we set the <strong>GPIO Output to Low</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Set GPIO Output to Low</span>
-<span class="ident">cs</span>.<span class="ident">set_low</span>()
-  .<span class="ident">expect</span>(<span class="string">&quot;cs failed&quot;</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Set GPIO Output to Low
+</span>cs.set_low()
+  .expect(<span class="string">&quot;cs failed&quot;</span>);</code></pre></div>
 <p>(“<code>expect</code>” works like an Assertion Check)</p>
 <p>We sleep for 1 second…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Wait 1 second (1,000 milliseconds)</span>
-<span class="ident">delay</span>.<span class="ident">delay_ms</span>(<span class="number">1000_u32</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Wait 1 second (1,000 milliseconds)
+</span>delay.delay_ms(<span class="number">1000_u32</span>);</code></pre></div>
 <p>(“<code>u32</code>” says that this is an unsigned 32-bit integer)</p>
 <p>Finally we set the <strong>GPIO Output to High</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Set GPIO Output to High</span>
-<span class="ident">cs</span>.<span class="ident">set_high</span>()
-  .<span class="ident">expect</span>(<span class="string">&quot;cs failed&quot;</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Set GPIO Output to High
+</span>cs.set_high()
+  .expect(<span class="string">&quot;cs failed&quot;</span>);</code></pre></div>
 <p>Rust Embedded HAL makes GPIO programming more fun! Let’s do SPI now.</p>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio1.jpg" alt="Inside PineDio Stack BL604" /></p>
 <h1 id="spi-transfer"><a href="#spi-transfer">6 SPI Transfer</a></h1>
@@ -380,44 +380,44 @@ sx126x = { git = &quot;https://github.com/lupyuen/sx126x-rs-nuttx&quot; }  </cod
 <p>For PineDio Stack BL604 with its onboard SX1262 (pic above), we control <strong>SPI Chip Select</strong> ourselves via GPIO Output <strong>“/dev/gpio1”</strong></p>
 <p>We begin by opening the <strong>GPIO Output</strong> for SPI Chip Select: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L133-L174">lib.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Test the NuttX Embedded HAL by reading SX1262 Register 8</span>
-<span class="kw">fn</span> <span class="ident">test_hal</span>() {
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Test the NuttX Embedded HAL by reading SX1262 Register 8
+</span><span class="kw">fn </span>test_hal() {
 
-  <span class="comment">//  Open GPIO Output for SX1262 Chip Select</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cs</span> <span class="op">=</span> <span class="ident">nuttx_embedded_hal::OutputPin</span>
-    <span class="ident">::new</span>(<span class="string">&quot;/dev/gpio1&quot;</span>)
-    .<span class="ident">expect</span>(<span class="string">&quot;open gpio failed&quot;</span>);</code></pre></div>
+  <span class="comment">//  Open GPIO Output for SX1262 Chip Select
+  </span><span class="kw">let </span><span class="kw-2">mut </span>cs = nuttx_embedded_hal::OutputPin
+    ::new(<span class="string">&quot;/dev/gpio1&quot;</span>)
+    .expect(<span class="string">&quot;open gpio failed&quot;</span>);</code></pre></div>
 <p>Next we open the <strong>SPI Bus</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Open SPI Bus for SX1262</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spi</span> <span class="op">=</span> <span class="ident">nuttx_embedded_hal::Spi</span>
-    <span class="ident">::new</span>(<span class="string">&quot;/dev/spitest0&quot;</span>)
-    .<span class="ident">expect</span>(<span class="string">&quot;open spi failed&quot;</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Open SPI Bus for SX1262
+  </span><span class="kw">let </span><span class="kw-2">mut </span>spi = nuttx_embedded_hal::Spi
+    ::new(<span class="string">&quot;/dev/spitest0&quot;</span>)
+    .expect(<span class="string">&quot;open spi failed&quot;</span>);</code></pre></div>
 <p><strong>“/dev/spitest0”</strong> is our <strong>SPI Test Driver</strong> that simplifies SPI programming. <a href="https://lupyuen.github.io/articles/spi2">(See this)</a></p>
 <p>Before talking to SX1262, we set <strong>Chip Select to Low</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Set SX1262 Chip Select to Low</span>
-  <span class="ident">cs</span>.<span class="ident">set_low</span>()
-    .<span class="ident">expect</span>(<span class="string">&quot;cs failed&quot;</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Set SX1262 Chip Select to Low
+  </span>cs.set_low()
+    .expect(<span class="string">&quot;cs failed&quot;</span>);</code></pre></div>
 <p>We transmit <strong>5 bytes of data</strong> to SX1262 over SPI…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Define the SX1262 Command: Read Register 8</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">data</span>: [ <span class="ident">u8</span>; <span class="number">5</span> ] <span class="op">=</span> [ <span class="number">0x1d</span>, <span class="number">0x00</span>, <span class="number">0x08</span>, <span class="number">0x00</span>, <span class="number">0x00</span> ];
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Define the SX1262 Command: Read Register 8
+  </span><span class="kw">let </span><span class="kw-2">mut </span>data: [ u8; <span class="number">5 </span>] = [ <span class="number">0x1d</span>, <span class="number">0x00</span>, <span class="number">0x08</span>, <span class="number">0x00</span>, <span class="number">0x00 </span>];
 
-  <span class="comment">//  Transfer the command to SX1262 over SPI</span>
-  <span class="ident">spi</span>.<span class="ident">transfer</span>(<span class="kw-2">&amp;mut</span> <span class="ident">data</span>)
-    .<span class="ident">expect</span>(<span class="string">&quot;spi failed&quot;</span>);</code></pre></div>
+  <span class="comment">//  Transfer the command to SX1262 over SPI
+  </span>spi.transfer(<span class="kw-2">&amp;mut </span>data)
+    .expect(<span class="string">&quot;spi failed&quot;</span>);</code></pre></div>
 <p>The data transmitted over SPI is the <strong>SX1262 Command</strong> that will read <strong>SX1262 Register 8</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>  1D 00 08 00 00</code></pre></div>
 <p>We pass the data as a <strong>Mutable Reference</strong> “<code>&amp;mut</code>” because we expect the contents to be changed during the SPI Transfer.</p>
 <p>The value of SX1262 Register 8 is returned as the <strong>last byte</strong> of the SPI Response…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="macro">println!</span>(<span class="string">&quot;test_hal: SX1262 Register 8 is 0x{:02x}&quot;</span>, <span class="ident">data</span>[<span class="number">4</span>]);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="macro">println!</span>(<span class="string">&quot;test_hal: SX1262 Register 8 is 0x{:02x}&quot;</span>, data[<span class="number">4</span>]);</code></pre></div>
 <p>We set <strong>Chip Select to High</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Set SX1262 Chip Select to High</span>
-  <span class="ident">cs</span>.<span class="ident">set_high</span>()
-    .<span class="ident">expect</span>(<span class="string">&quot;cs failed&quot;</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Set SX1262 Chip Select to High
+  </span>cs.set_high()
+    .expect(<span class="string">&quot;cs failed&quot;</span>);</code></pre></div>
 <p>And we’re done! Running this Rust code on NuttX shows…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; rust_test
 ...
@@ -439,78 +439,78 @@ test_hal: SX1262 Register 8 is 0x80</code></pre></div>
 <p>Let’s do the same test as last chapter: <strong>Read SX1262 Register 8</strong></p>
 <p>We begin by opening the <strong>GPIO Input, Output and Interrupt Pins</strong> for SX1262: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L21-L84">sx1262.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Test the SX1262 Driver by reading a register.</span>
-<span class="doccomment">/// Based on https://github.com/tweedegolf/sx126x-rs/blob/master/examples/stm32f103-ping-pong.rs</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_sx1262</span>() {
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Test the SX1262 Driver by reading a register.
+/// Based on https://github.com/tweedegolf/sx126x-rs/blob/master/examples/stm32f103-ping-pong.rs
+</span><span class="kw">pub fn </span>test_sx1262() {
 
-  <span class="comment">//  Open GPIO Input for SX1262 Busy Pin</span>
-  <span class="kw">let</span> <span class="ident">lora_busy</span> <span class="op">=</span> <span class="ident">nuttx_embedded_hal::InputPin</span>
-    <span class="ident">::new</span>(<span class="string">&quot;/dev/gpio0&quot;</span>)
-    .<span class="ident">expect</span>(<span class="string">&quot;open gpio failed&quot;</span>);
+  <span class="comment">//  Open GPIO Input for SX1262 Busy Pin
+  </span><span class="kw">let </span>lora_busy = nuttx_embedded_hal::InputPin
+    ::new(<span class="string">&quot;/dev/gpio0&quot;</span>)
+    .expect(<span class="string">&quot;open gpio failed&quot;</span>);
 
-  <span class="comment">//  Open GPIO Output for SX1262 Chip Select</span>
-  <span class="kw">let</span> <span class="ident">lora_nss</span> <span class="op">=</span> <span class="ident">nuttx_embedded_hal::OutputPin</span>
-    <span class="ident">::new</span>(<span class="string">&quot;/dev/gpio1&quot;</span>)
-    .<span class="ident">expect</span>(<span class="string">&quot;open gpio failed&quot;</span>);
+  <span class="comment">//  Open GPIO Output for SX1262 Chip Select
+  </span><span class="kw">let </span>lora_nss = nuttx_embedded_hal::OutputPin
+    ::new(<span class="string">&quot;/dev/gpio1&quot;</span>)
+    .expect(<span class="string">&quot;open gpio failed&quot;</span>);
 
-  <span class="comment">//  Open GPIO Interrupt for SX1262 DIO1 Pin</span>
-  <span class="kw">let</span> <span class="ident">lora_dio1</span> <span class="op">=</span> <span class="ident">nuttx_embedded_hal::InterruptPin</span>
-    <span class="ident">::new</span>(<span class="string">&quot;/dev/gpio2&quot;</span>)
-    .<span class="ident">expect</span>(<span class="string">&quot;open gpio failed&quot;</span>);</code></pre></div>
+  <span class="comment">//  Open GPIO Interrupt for SX1262 DIO1 Pin
+  </span><span class="kw">let </span>lora_dio1 = nuttx_embedded_hal::InterruptPin
+    ::new(<span class="string">&quot;/dev/gpio2&quot;</span>)
+    .expect(<span class="string">&quot;open gpio failed&quot;</span>);</code></pre></div>
 <p>(We won’t handle interrupts today)</p>
 <p>The <strong>NRESET and Antenna Pins</strong> are unused for now…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  TODO: Open GPIO Output for SX1262 NRESET Pin</span>
-  <span class="kw">let</span> <span class="ident">lora_nreset</span> <span class="op">=</span> <span class="ident">nuttx_embedded_hal::UnusedPin</span>
-    <span class="ident">::new</span>()
-    .<span class="ident">expect</span>(<span class="string">&quot;open gpio failed&quot;</span>);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  TODO: Open GPIO Output for SX1262 NRESET Pin
+  </span><span class="kw">let </span>lora_nreset = nuttx_embedded_hal::UnusedPin
+    ::new()
+    .expect(<span class="string">&quot;open gpio failed&quot;</span>);
 
-  <span class="comment">//  TODO: Open GPIO Output for SX1262 Antenna Pin</span>
-  <span class="kw">let</span> <span class="ident">lora_ant</span> <span class="op">=</span> <span class="ident">nuttx_embedded_hal::UnusedPin</span>
-    <span class="ident">::new</span>()
-    .<span class="ident">expect</span>(<span class="string">&quot;open gpio failed&quot;</span>);
+  <span class="comment">//  TODO: Open GPIO Output for SX1262 Antenna Pin
+  </span><span class="kw">let </span>lora_ant = nuttx_embedded_hal::UnusedPin
+    ::new()
+    .expect(<span class="string">&quot;open gpio failed&quot;</span>);
 
-  <span class="comment">//  Open SPI Bus for SX1262</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spi1</span> <span class="op">=</span> <span class="ident">nuttx_embedded_hal::Spi</span>
-    <span class="ident">::new</span>(<span class="string">&quot;/dev/spitest0&quot;</span>)
-    .<span class="ident">expect</span>(<span class="string">&quot;open spi failed&quot;</span>);</code></pre></div>
+  <span class="comment">//  Open SPI Bus for SX1262
+  </span><span class="kw">let </span><span class="kw-2">mut </span>spi1 = nuttx_embedded_hal::Spi
+    ::new(<span class="string">&quot;/dev/spitest0&quot;</span>)
+    .expect(<span class="string">&quot;open spi failed&quot;</span>);</code></pre></div>
 <p>And we open the <strong>SPI Bus</strong> like before.</p>
 <p>We <strong>define the pins</strong> for our SX1262 Driver…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Define the SX1262 Pins</span>
-  <span class="kw">let</span> <span class="ident">lora_pins</span> <span class="op">=</span> (
-    <span class="ident">lora_nss</span>,    <span class="comment">// /dev/gpio1</span>
-    <span class="ident">lora_nreset</span>, <span class="comment">// TODO</span>
-    <span class="ident">lora_busy</span>,   <span class="comment">// /dev/gpio0</span>
-    <span class="ident">lora_ant</span>,    <span class="comment">// TODO</span>
-    <span class="ident">lora_dio1</span>,   <span class="comment">// /dev/gpio2</span>
-  );
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Define the SX1262 Pins
+  </span><span class="kw">let </span>lora_pins = (
+    lora_nss,    <span class="comment">// /dev/gpio1
+    </span>lora_nreset, <span class="comment">// TODO
+    </span>lora_busy,   <span class="comment">// /dev/gpio0
+    </span>lora_ant,    <span class="comment">// TODO
+    </span>lora_dio1,   <span class="comment">// /dev/gpio2
+  </span>);
 
-  <span class="comment">//  Init a busy-waiting delay</span>
-  <span class="kw">let</span> <span class="ident">delay</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="ident">nuttx_hal::Delay</span>;</code></pre></div>
+  <span class="comment">//  Init a busy-waiting delay
+  </span><span class="kw">let </span>delay = <span class="kw-2">&amp;mut </span>nuttx_hal::Delay;</code></pre></div>
 <p>We <strong>initialise the SX1262 Driver</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Build the SX1262 Configuration</span>
-  <span class="kw">let</span> <span class="ident">conf</span> <span class="op">=</span> <span class="ident">build_config</span>();
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Build the SX1262 Configuration
+  </span><span class="kw">let </span>conf = build_config();
 
-  <span class="comment">//  Construct the SX1262 Driver</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lora</span> <span class="op">=</span> <span class="ident">SX126x::new</span>(<span class="ident">lora_pins</span>);
+  <span class="comment">//  Construct the SX1262 Driver
+  </span><span class="kw">let </span><span class="kw-2">mut </span>lora = SX126x::new(lora_pins);
 
-  <span class="comment">//  Init the SX1262 Driver</span>
-  <span class="ident">lora</span>.<span class="ident">init</span>(<span class="kw-2">&amp;mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="ident">conf</span>)
-    .<span class="ident">expect</span>(<span class="string">&quot;sx1262 init failed&quot;</span>);</code></pre></div>
+  <span class="comment">//  Init the SX1262 Driver
+  </span>lora.init(<span class="kw-2">&amp;mut </span>spi1, delay, conf)
+    .expect(<span class="string">&quot;sx1262 init failed&quot;</span>);</code></pre></div>
 <p><a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L117-L157">(<strong>build_config</strong> is defined here)</a></p>
 <p>Lastly we <strong>read SX1262 Register 8</strong> and print the result…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init Result Buffer as 1 byte of 0x00</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span>: [ <span class="ident">u8</span>; <span class="number">1</span> ] <span class="op">=</span> [ <span class="number">0</span>; <span class="number">1</span> ];
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init Result Buffer as 1 byte of 0x00
+  </span><span class="kw">let </span><span class="kw-2">mut </span>result: [ u8; <span class="number">1 </span>] = [ <span class="number">0</span>; <span class="number">1 </span>];
 
-  <span class="comment">//  Read SX1262 Register 8 into Result Buffer</span>
-  <span class="ident">lora</span>.<span class="ident">read_register</span>(<span class="kw-2">&amp;mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="number">8</span>, <span class="kw-2">&amp;mut</span> <span class="ident">result</span>)
-    .<span class="ident">expect</span>(<span class="string">&quot;sx1262 read register failed&quot;</span>);
+  <span class="comment">//  Read SX1262 Register 8 into Result Buffer
+  </span>lora.read_register(<span class="kw-2">&amp;mut </span>spi1, delay, <span class="number">8</span>, <span class="kw-2">&amp;mut </span>result)
+    .expect(<span class="string">&quot;sx1262 read register failed&quot;</span>);
 
-  <span class="comment">//  Show the register value</span>
-  <span class="macro">println!</span>(<span class="string">&quot;test_sx1262: SX1262 Register 8 is 0x{:02x}&quot;</span>, <span class="ident">result</span>[<span class="number">0</span>]);</code></pre></div>
+  <span class="comment">//  Show the register value
+  </span><span class="macro">println!</span>(<span class="string">&quot;test_sx1262: SX1262 Register 8 is 0x{:02x}&quot;</span>, result[<span class="number">0</span>]);</code></pre></div>
 <p>When we run the Rust code we’ll see…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; rust_test
 ...
@@ -523,48 +523,48 @@ test_sx1262: SX1262 Register 8 is 0x80</code></pre></div>
 <p>For our final test we shall transmit a <a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/"><strong>LoRa Message</strong></a> with the Rust Driver for SX1262.</p>
 <p>We configure the <strong>LoRa Frequency</strong> for our region like so: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L14-L17">sx1262.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// TODO: Change this to your LoRa Frequency</span>
-<span class="comment">//  const RF_FREQUENCY: u32 = 868_000_000;  //  868 MHz (EU)</span>
-<span class="comment">//  const RF_FREQUENCY: u32 = 915_000_000;  //  915 MHz (US)</span>
-<span class="kw">const</span> <span class="ident">RF_FREQUENCY</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">923_000_000</span>;  <span class="comment">//  923 MHz (Asia)</span></code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// TODO: Change this to your LoRa Frequency
+</span><span class="comment">//  const RF_FREQUENCY: u32 = 868_000_000;  //  868 MHz (EU)
+//  const RF_FREQUENCY: u32 = 915_000_000;  //  915 MHz (US)
+</span><span class="kw">const </span>RF_FREQUENCY: u32 = <span class="number">923_000_000</span>;  <span class="comment">//  923 MHz (Asia)</span></code></pre></div>
 <p>We prepare for LoRa Transmission by <strong>setting some SX1262 Registers</strong>: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L85-L115">sx1262.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Transmit a LoRa Message.</span>
-<span class="doccomment">/// Based on https://github.com/tweedegolf/sx126x-rs/blob/master/examples/stm32f103-ping-pong.rs</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_sx1262</span>() {
-  <span class="comment">//  Omitted: Init the SX1262 Driver</span>
-  ...
-  <span class="comment">//  Write SX1262 Registers to prepare for transmitting LoRa message.</span>
-  <span class="comment">//  Based on https://gist.github.com/lupyuen/5fdede131ad0e327478994872f190668</span>
-  <span class="comment">//  and https://docs.google.com/spreadsheets/d/14Pczf2sP_Egnzi5_nikukauL2iTKA03Qgq715e50__0/edit?usp=sharing</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Transmit a LoRa Message.
+/// Based on https://github.com/tweedegolf/sx126x-rs/blob/master/examples/stm32f103-ping-pong.rs
+</span><span class="kw">pub fn </span>test_sx1262() {
+  <span class="comment">//  Omitted: Init the SX1262 Driver
+  </span>...
+  <span class="comment">//  Write SX1262 Registers to prepare for transmitting LoRa message.
+  //  Based on https://gist.github.com/lupyuen/5fdede131ad0e327478994872f190668
+  //  and https://docs.google.com/spreadsheets/d/14Pczf2sP_Egnzi5_nikukauL2iTKA03Qgq715e50__0/edit?usp=sharing
 
-  <span class="comment">//  Write Register 0x889: 0x04 (TxModulation)</span>
-  <span class="ident">lora</span>.<span class="ident">write_register</span>(<span class="kw-2">&amp;mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="ident">Register::TxModulaton</span>, <span class="kw-2">&amp;</span>[<span class="number">0x04</span>])
-    .<span class="ident">expect</span>(<span class="string">&quot;write register failed&quot;</span>);
+  //  Write Register 0x889: 0x04 (TxModulation)
+  </span>lora.write_register(<span class="kw-2">&amp;mut </span>spi1, delay, Register::TxModulaton, <span class="kw-2">&amp;</span>[<span class="number">0x04</span>])
+    .expect(<span class="string">&quot;write register failed&quot;</span>);
 
-  <span class="comment">//  Write Register 0x8D8: 0xFE (TxClampConfig)</span>
-  <span class="ident">lora</span>.<span class="ident">write_register</span>(<span class="kw-2">&amp;mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="ident">Register::TxClampConfig</span>, <span class="kw-2">&amp;</span>[<span class="number">0xFE</span>])
-    .<span class="ident">expect</span>(<span class="string">&quot;write register failed&quot;</span>);
+  <span class="comment">//  Write Register 0x8D8: 0xFE (TxClampConfig)
+  </span>lora.write_register(<span class="kw-2">&amp;mut </span>spi1, delay, Register::TxClampConfig, <span class="kw-2">&amp;</span>[<span class="number">0xFE</span>])
+    .expect(<span class="string">&quot;write register failed&quot;</span>);
 
-  <span class="comment">//  Write Register 0x8E7: 0x38 (Over Current Protection)</span>
-  <span class="ident">lora</span>.<span class="ident">write_register</span>(<span class="kw-2">&amp;mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="ident">Register::OcpConfiguration</span>, <span class="kw-2">&amp;</span>[<span class="number">0x38</span>])
-    .<span class="ident">expect</span>(<span class="string">&quot;write register failed&quot;</span>);
+  <span class="comment">//  Write Register 0x8E7: 0x38 (Over Current Protection)
+  </span>lora.write_register(<span class="kw-2">&amp;mut </span>spi1, delay, Register::OcpConfiguration, <span class="kw-2">&amp;</span>[<span class="number">0x38</span>])
+    .expect(<span class="string">&quot;write register failed&quot;</span>);
 
-  <span class="comment">//  Write Register 0x736: 0x0D (Inverted IQ)</span>
-  <span class="ident">lora</span>.<span class="ident">write_register</span>(<span class="kw-2">&amp;mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="ident">Register::IqPolaritySetup</span>, <span class="kw-2">&amp;</span>[<span class="number">0x0D</span>])
-    .<span class="ident">expect</span>(<span class="string">&quot;write register failed&quot;</span>);</code></pre></div>
+  <span class="comment">//  Write Register 0x736: 0x0D (Inverted IQ)
+  </span>lora.write_register(<span class="kw-2">&amp;mut </span>spi1, delay, Register::IqPolaritySetup, <span class="kw-2">&amp;</span>[<span class="number">0x0D</span>])
+    .expect(<span class="string">&quot;write register failed&quot;</span>);</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/rust2#set-registers">(More about this)</a></p>
 <p>Then we <strong>transmit a LoRa Message</strong> over the airwaves…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Send a LoRa message</span>
-  <span class="ident">lora</span>.<span class="ident">write_bytes</span>(
-    <span class="kw-2">&amp;mut</span> <span class="ident">spi1</span>,  <span class="comment">//  SPI Interface</span>
-    <span class="ident">delay</span>,      <span class="comment">//  Delay Interface</span>
-    <span class="string">b&quot;Hello from Rust on NuttX!&quot;</span>,  <span class="comment">//  Payload</span>
-    <span class="number">0</span>.<span class="ident">into</span>(),   <span class="comment">//  Disable Transmit Timeout</span>
-    <span class="number">8</span>,          <span class="comment">//  Preamble Length</span>
-    <span class="ident">packet::lora::LoRaCrcType::CrcOn</span>,  <span class="comment">//  Enable CRC</span>
-  ).<span class="ident">expect</span>(<span class="string">&quot;send failed&quot;</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Send a LoRa message
+  </span>lora.write_bytes(
+    <span class="kw-2">&amp;mut </span>spi1,  <span class="comment">//  SPI Interface
+    </span>delay,      <span class="comment">//  Delay Interface
+    </span><span class="string">b&quot;Hello from Rust on NuttX!&quot;</span>,  <span class="comment">//  Payload
+    </span><span class="number">0</span>.into(),   <span class="comment">//  Disable Transmit Timeout
+    </span><span class="number">8</span>,          <span class="comment">//  Preamble Length
+    </span>packet::lora::LoRaCrcType::CrcOn,  <span class="comment">//  Enable CRC
+  </span>).expect(<span class="string">&quot;send failed&quot;</span>);</code></pre></div>
 <p>Containing the <strong>Message Payload</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Hello from Rust on NuttX!</code></pre></div>
 <p>And we’re done! We’ll see the results in a while. But first we run through the steps to build and flash our Rusty NuttX Firmware.</p>
@@ -807,11 +807,11 @@ Done!</code></pre></div>
 <p>Possibly, if we extend <code>libc</code> to cover NuttX.</p>
 <p>Note that the Function Signatures are slightly different: <code>libc</code> declares <strong>ioctl</strong> as…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn</span> <span class="ident">ioctl</span>(<span class="ident">fd</span>: <span class="ident">i32</span>, <span class="ident">request</span>: <span class="ident">u64</span>, ...) -&gt; <span class="ident">i32</span></code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn </span>ioctl(fd: i32, request: u64, ...) -&gt; i32</code></pre></div>
 <p><a href="https://docs.rs/libc/latest/libc/fn.ioctl.html">(Source)</a></p>
 <p>Whereas NuttX declares <strong>ioctl</strong> as…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn</span> <span class="ident">ioctl</span>(<span class="ident">fd</span>: <span class="ident">i32</span>, <span class="ident">request</span>: <span class="ident">i32</span>, ...) -&gt; <span class="ident">i32</span></code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn </span>ioctl(fd: i32, request: i32, ...) -&gt; i32</code></pre></div>
 <p><a href="https://github.com/apache/incubator-nuttx/blob/master/include/sys/ioctl.h#L114">(Source)</a></p>
 <p>The type of the <strong>request</strong> parameter is different: <strong><code>u64</code> vs <code>i32</code></strong>.</p>
 <p>So beware!</p>
@@ -842,58 +842,58 @@ Done!</code></pre></div>
 <p>Let’s look at the HAL for <strong>GPIO Output</strong> (OutputPin), since GPIO Input (InputPin) and GPIO Interrupt (InterruptPin) are implemented the same way.</p>
 <p>Our <strong>OutputPin Struct</strong> contains a <strong>NuttX File Descriptor</strong>: <a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L479-L485">nuttx-embedded-hal/src/hal.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX GPIO Output Struct</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OutputPin</span> {
-  <span class="doccomment">/// NuttX File Descriptor</span>
-  <span class="ident">fd</span>: <span class="ident">i32</span>,
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX GPIO Output Struct
+</span><span class="kw">pub struct </span>OutputPin {
+  <span class="doccomment">/// NuttX File Descriptor
+  </span>fd: i32,
 }</code></pre></div>
 <p>We set the File Descriptor when we <strong>create the OutputPin</strong>: <a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L381-L395">nuttx-embedded-hal/src/hal.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of GPIO Output</span>
-<span class="kw">impl</span> <span class="ident">OutputPin</span> {
-  <span class="doccomment">/// Create a GPIO Output Pin from a Device Path (e.g. &quot;/dev/gpio1&quot;)</span>
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">i32</span><span class="op">&gt;</span> {
-    <span class="comment">//  Open the NuttX Device Path (e.g. &quot;/dev/gpio1&quot;) for read-write</span>
-    <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">open</span>(<span class="ident">path</span>, <span class="ident">O_RDWR</span>);
-    <span class="kw">if</span> <span class="ident">fd</span> <span class="op">&lt;</span> <span class="number">0</span> { <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">fd</span>) }
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of GPIO Output
+</span><span class="kw">impl </span>OutputPin {
+  <span class="doccomment">/// Create a GPIO Output Pin from a Device Path (e.g. &quot;/dev/gpio1&quot;)
+  </span><span class="kw">pub fn </span>new(path: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, i32&gt; {
+    <span class="comment">//  Open the NuttX Device Path (e.g. &quot;/dev/gpio1&quot;) for read-write
+    </span><span class="kw">let </span>fd = open(path, O_RDWR);
+    <span class="kw">if </span>fd &lt; <span class="number">0 </span>{ <span class="kw">return </span><span class="prelude-val">Err</span>(fd) }
 
-    <span class="comment">//  Return the pin</span>
-    <span class="prelude-val">Ok</span>(<span class="self">Self</span> { <span class="ident">fd</span> })
+    <span class="comment">//  Return the pin
+    </span><span class="prelude-val">Ok</span>(<span class="self">Self </span>{ fd })
   }
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L498-L522">(<strong>open</strong> is defined here)</a></p>
 <p>To set the OutputPin High or Low, we call <strong>ioctl</strong> on the File Descriptor: <a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L201-L225">nuttx-embedded-hal/src/hal.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of GPIO Output</span>
-<span class="kw">impl</span> <span class="ident">v2::OutputPin</span> <span class="kw">for</span> <span class="ident">OutputPin</span> {
-  <span class="doccomment">/// Error Type</span>
-  <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">i32</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of GPIO Output
+</span><span class="kw">impl </span>v2::OutputPin <span class="kw">for </span>OutputPin {
+  <span class="doccomment">/// Error Type
+  </span><span class="kw">type </span>Error = i32;
 
-  <span class="doccomment">/// Set the GPIO Output to High</span>
-  <span class="kw">fn</span> <span class="ident">set_high</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { 
-      <span class="ident">ioctl</span>(<span class="self">self</span>.<span class="ident">fd</span>, <span class="ident">GPIOC_WRITE</span>, <span class="number">1</span>) 
+  <span class="doccomment">/// Set the GPIO Output to High
+  </span><span class="kw">fn </span>set_high(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
+    <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ 
+      ioctl(<span class="self">self</span>.fd, GPIOC_WRITE, <span class="number">1</span>) 
     };
-    <span class="macro">assert!</span>(<span class="ident">ret</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>);
+    <span class="macro">assert!</span>(ret &gt;= <span class="number">0</span>);
     <span class="prelude-val">Ok</span>(())
   }
 
-  <span class="doccomment">/// Set the GPIO Output to low</span>
-  <span class="kw">fn</span> <span class="ident">set_low</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { 
-      <span class="ident">ioctl</span>(<span class="self">self</span>.<span class="ident">fd</span>, <span class="ident">GPIOC_WRITE</span>, <span class="number">0</span>) 
+  <span class="doccomment">/// Set the GPIO Output to low
+  </span><span class="kw">fn </span>set_low(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
+    <span class="kw">let </span>ret = <span class="kw">unsafe </span>{ 
+      ioctl(<span class="self">self</span>.fd, GPIOC_WRITE, <span class="number">0</span>) 
     };
-    <span class="macro">assert!</span>(<span class="ident">ret</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>);
+    <span class="macro">assert!</span>(ret &gt;= <span class="number">0</span>);
     <span class="prelude-val">Ok</span>(())
   }
 }</code></pre></div>
 <p>When we’re done with OutputPin, we <strong>close the File Descriptor</strong>: <a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L443-L451">nuttx-embedded-hal/src/hal.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of GPIO Output</span>
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">OutputPin</span> {
-  <span class="doccomment">/// Close the GPIO Output</span>
-  <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-    <span class="kw">unsafe</span> { <span class="ident">close</span>(<span class="self">self</span>.<span class="ident">fd</span>) };
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of GPIO Output
+</span><span class="kw">impl </span>Drop <span class="kw">for </span>OutputPin {
+  <span class="doccomment">/// Close the GPIO Output
+  </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+    <span class="kw">unsafe </span>{ close(<span class="self">self</span>.fd) };
   }
 }</code></pre></div>
 <p>Check out the GPIO demo and docs…</p>
@@ -916,73 +916,73 @@ Done!</code></pre></div>
 <p>Now we study the <strong>SPI HAL</strong> for NuttX.</p>
 <p>Our <strong>Spi Struct</strong> also contains a <strong>File Descriptor</strong>: <a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L353-L473">nuttx-embedded-hal/src/hal.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX SPI Struct</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Spi</span> {
-  <span class="doccomment">/// NuttX File Descriptor</span>
-  <span class="ident">fd</span>: <span class="ident">i32</span>,
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX SPI Struct
+</span><span class="kw">pub struct </span>Spi {
+  <span class="doccomment">/// NuttX File Descriptor
+  </span>fd: i32,
 }
 
-<span class="doccomment">/// NuttX Implementation of SPI Bus</span>
-<span class="kw">impl</span> <span class="ident">Spi</span> {
-  <span class="doccomment">/// Create an SPI Bus from a Device Path (e.g. &quot;/dev/spitest0&quot;)</span>
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">i32</span><span class="op">&gt;</span> {
-    <span class="comment">//  Open the NuttX Device Path (e.g. &quot;/dev/spitest0&quot;) for read-write</span>
-    <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">open</span>(<span class="ident">path</span>, <span class="ident">O_RDWR</span>);
-    <span class="kw">if</span> <span class="ident">fd</span> <span class="op">&lt;</span> <span class="number">0</span> { <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">fd</span>) }
+<span class="doccomment">/// NuttX Implementation of SPI Bus
+</span><span class="kw">impl </span>Spi {
+  <span class="doccomment">/// Create an SPI Bus from a Device Path (e.g. &quot;/dev/spitest0&quot;)
+  </span><span class="kw">pub fn </span>new(path: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, i32&gt; {
+    <span class="comment">//  Open the NuttX Device Path (e.g. &quot;/dev/spitest0&quot;) for read-write
+    </span><span class="kw">let </span>fd = open(path, O_RDWR);
+    <span class="kw">if </span>fd &lt; <span class="number">0 </span>{ <span class="kw">return </span><span class="prelude-val">Err</span>(fd) }
 
-    <span class="comment">//  Return the SPI Bus</span>
-    <span class="prelude-val">Ok</span>(<span class="self">Self</span> { <span class="ident">fd</span> })
+    <span class="comment">//  Return the SPI Bus
+    </span><span class="prelude-val">Ok</span>(<span class="self">Self </span>{ fd })
   }
 }
 
-<span class="doccomment">/// NuttX Implementation of SPI Bus</span>
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Spi</span> {
-  <span class="doccomment">/// Close the SPI Bus</span>
-  <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-    <span class="kw">unsafe</span> { <span class="ident">close</span>(<span class="self">self</span>.<span class="ident">fd</span>) };
+<span class="doccomment">/// NuttX Implementation of SPI Bus
+</span><span class="kw">impl </span>Drop <span class="kw">for </span>Spi {
+  <span class="doccomment">/// Close the SPI Bus
+  </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+    <span class="kw">unsafe </span>{ close(<span class="self">self</span>.fd) };
   }
 }</code></pre></div>
 <p>We <strong>open and close</strong> the File Descriptor the same way as OutputPin.</p>
 <p>To do SPI Write, we <strong>write to the File Descriptor</strong>: <a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L185-L201">nuttx-embedded-hal/src/hal.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of SPI Write</span>
-<span class="kw">impl</span> <span class="ident">spi::Write</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Spi</span>{
-  <span class="doccomment">/// Error Type</span>
-  <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">i32</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of SPI Write
+</span><span class="kw">impl </span>spi::Write&lt;u8&gt; <span class="kw">for </span>Spi{
+  <span class="doccomment">/// Error Type
+  </span><span class="kw">type </span>Error = i32;
 
-  <span class="doccomment">/// Write SPI data</span>
-  <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">words</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
-    <span class="comment">//  Transmit data</span>
-    <span class="kw">let</span> <span class="ident">bytes_written</span> <span class="op">=</span> <span class="kw">unsafe</span> { 
-        <span class="ident">write</span>(<span class="self">self</span>.<span class="ident">fd</span>, <span class="ident">words</span>.<span class="ident">as_ptr</span>(), <span class="ident">words</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>) 
+  <span class="doccomment">/// Write SPI data
+  </span><span class="kw">fn </span>write(<span class="kw-2">&amp;mut </span><span class="self">self</span>, words: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
+    <span class="comment">//  Transmit data
+    </span><span class="kw">let </span>bytes_written = <span class="kw">unsafe </span>{ 
+        write(<span class="self">self</span>.fd, words.as_ptr(), words.len() <span class="kw">as </span>u32) 
     };
-    <span class="macro">assert_eq!</span>(<span class="ident">bytes_written</span>, <span class="ident">words</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">i32</span>);
+    <span class="macro">assert_eq!</span>(bytes_written, words.len() <span class="kw">as </span>i32);
     <span class="prelude-val">Ok</span>(())
   }
 }</code></pre></div>
 <p>SPI Transfer works the same way, except that we also <strong>copy the SPI Response</strong> and return it to the caller: <a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L161-L185">nuttx-embedded-hal/src/hal.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of SPI Transfer</span>
-<span class="kw">impl</span> <span class="ident">spi::Transfer</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Spi</span> {
-  <span class="doccomment">/// Error Type</span>
-  <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">i32</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of SPI Transfer
+</span><span class="kw">impl </span>spi::Transfer&lt;u8&gt; <span class="kw">for </span>Spi {
+  <span class="doccomment">/// Error Type
+  </span><span class="kw">type </span>Error = i32;
 
-  <span class="doccomment">/// Transfer SPI data</span>
-  <span class="kw">fn</span> <span class="ident">transfer</span><span class="op">&lt;</span><span class="lifetime">&#39;w</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">words</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;w</span> [<span class="ident">u8</span>], <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
-    <span class="comment">//  Transmit data</span>
-    <span class="kw">let</span> <span class="ident">bytes_written</span> <span class="op">=</span> <span class="kw">unsafe</span> { 
-        <span class="ident">write</span>(<span class="self">self</span>.<span class="ident">fd</span>, <span class="ident">words</span>.<span class="ident">as_ptr</span>(), <span class="ident">words</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>) 
+  <span class="doccomment">/// Transfer SPI data
+  </span><span class="kw">fn </span>transfer&lt;<span class="lifetime">&#39;w</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, words: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span><span class="kw-2">mut </span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>[u8], <span class="self">Self</span>::Error&gt; {
+    <span class="comment">//  Transmit data
+    </span><span class="kw">let </span>bytes_written = <span class="kw">unsafe </span>{ 
+        write(<span class="self">self</span>.fd, words.as_ptr(), words.len() <span class="kw">as </span>u32) 
     };
-    <span class="macro">assert_eq!</span>(<span class="ident">bytes_written</span>, <span class="ident">words</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">i32</span>);
+    <span class="macro">assert_eq!</span>(bytes_written, words.len() <span class="kw">as </span>i32);
 
-    <span class="comment">//  Read response</span>
-    <span class="kw">let</span> <span class="ident">bytes_read</span> <span class="op">=</span> <span class="kw">unsafe</span> { 
-        <span class="ident">read</span>(<span class="self">self</span>.<span class="ident">fd</span>, <span class="ident">words</span>.<span class="ident">as_mut_ptr</span>(), <span class="ident">words</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>) 
+    <span class="comment">//  Read response
+    </span><span class="kw">let </span>bytes_read = <span class="kw">unsafe </span>{ 
+        read(<span class="self">self</span>.fd, words.as_mut_ptr(), words.len() <span class="kw">as </span>u32) 
     };
-    <span class="macro">assert_eq!</span>(<span class="ident">bytes_read</span>, <span class="ident">words</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">i32</span>);
+    <span class="macro">assert_eq!</span>(bytes_read, words.len() <span class="kw">as </span>i32);
 
-    <span class="comment">//  Return response</span>
-    <span class="prelude-val">Ok</span>(<span class="ident">words</span>)
+    <span class="comment">//  Return response
+    </span><span class="prelude-val">Ok</span>(words)
   }
 }</code></pre></div>
 <p>Check out the SPI demo and docs…</p>
@@ -1036,47 +1036,47 @@ Done!</code></pre></div>
 <p>This fails on NuttX because the SPI Request needs to be in <strong>one contiguous block</strong> as Chip Select flips from High to Low and High.</p>
 <p>To fix this, we buffer all SPI Requests in the Chip Select Guard: <a href="https://github.com/lupyuen/sx126x-rs-nuttx/blob/master/src/sx/slave_select.rs#L86-L126">sx126x-rs-nuttx/src/sx/slave_select.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;nss</span>, <span class="lifetime">&#39;spi</span>, <span class="ident">TNSS</span>, <span class="ident">TSPI</span>, <span class="ident">TSPIERR</span><span class="op">&gt;</span> <span class="ident">Transfer</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SlaveSelectGuard</span><span class="op">&lt;</span><span class="lifetime">&#39;nss</span>, <span class="lifetime">&#39;spi</span>, <span class="ident">TNSS</span>, <span class="ident">TSPI</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-  <span class="ident">TNSS</span>: <span class="ident">OutputPin</span>,
-  <span class="ident">TSPI</span>: <span class="ident">Write</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">TSPIERR</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Transfer</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">TSPIERR</span><span class="op">&gt;</span>,
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">impl</span>&lt;<span class="lifetime">&#39;nss</span>, <span class="lifetime">&#39;spi</span>, TNSS, TSPI, TSPIERR&gt; Transfer&lt;u8&gt; <span class="kw">for </span>SlaveSelectGuard&lt;<span class="lifetime">&#39;nss</span>, <span class="lifetime">&#39;spi</span>, TNSS, TSPI&gt;
+<span class="kw">where
+  </span>TNSS: OutputPin,
+  TSPI: Write&lt;u8, Error = TSPIERR&gt; + Transfer&lt;u8, Error = TSPIERR&gt;,
 {
-  <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">SpiError</span><span class="op">&lt;</span><span class="ident">TSPIERR</span><span class="op">&gt;</span>;
-  <span class="kw">fn</span> <span class="ident">transfer</span><span class="op">&lt;</span><span class="lifetime">&#39;w</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">words</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;w</span> [<span class="ident">u8</span>], <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
-    <span class="kw">unsafe</span> {
-      <span class="comment">//  Prevent a second transfer</span>
-      <span class="macro">debug_assert!</span>(<span class="op">!</span><span class="ident">TRANSFERRED</span>);
+  <span class="kw">type </span>Error = SpiError&lt;TSPIERR&gt;;
+  <span class="kw">fn </span>transfer&lt;<span class="lifetime">&#39;w</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, words: <span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span><span class="kw-2">mut </span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;w </span>[u8], <span class="self">Self</span>::Error&gt; {
+    <span class="kw">unsafe </span>{
+      <span class="comment">//  Prevent a second transfer
+      </span><span class="macro">debug_assert!</span>(!TRANSFERRED);
 
-      <span class="comment">//  Copy the transmit data to the buffer</span>
-      <span class="ident">BUF</span>[<span class="ident">BUFLEN</span>..(<span class="ident">BUFLEN</span> <span class="op">+</span> <span class="ident">words</span>.<span class="ident">len</span>())]
-        .<span class="ident">clone_from_slice</span>(<span class="ident">words</span>);
-      <span class="ident">BUFLEN</span> <span class="op">+</span><span class="op">=</span> <span class="ident">words</span>.<span class="ident">len</span>();
+      <span class="comment">//  Copy the transmit data to the buffer
+      </span>BUF[BUFLEN..(BUFLEN + words.len())]
+        .clone_from_slice(words);
+      BUFLEN += words.len();
 
-      <span class="comment">//  Transfer the data over SPI</span>
-      <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">spi</span>.<span class="ident">transfer</span>(<span class="kw-2">&amp;mut</span> <span class="ident">BUF</span>[<span class="number">0</span>..<span class="ident">BUFLEN</span>])
-        .<span class="ident">map_err</span>(<span class="ident">SpiError::Transfer</span>);
+      <span class="comment">//  Transfer the data over SPI
+      </span><span class="kw">let </span>res = <span class="self">self</span>.spi.transfer(<span class="kw-2">&amp;mut </span>BUF[<span class="number">0</span>..BUFLEN])
+        .map_err(SpiError::Transfer);
 
-      <span class="comment">//  Copy the result from SPI</span>
-      <span class="ident">words</span>.<span class="ident">clone_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">BUF</span>[<span class="ident">BUFLEN</span> <span class="op">-</span> <span class="ident">words</span>.<span class="ident">len</span>()..<span class="ident">BUFLEN</span>]);
+      <span class="comment">//  Copy the result from SPI
+      </span>words.clone_from_slice(<span class="kw-2">&amp;</span>BUF[BUFLEN - words.len()..BUFLEN]);
 
-      <span class="comment">//  Empty the buffer</span>
-      <span class="ident">BUFLEN</span> <span class="op">=</span> <span class="number">0</span>;
+      <span class="comment">//  Empty the buffer
+      </span>BUFLEN = <span class="number">0</span>;
 
-      <span class="comment">//  Prevent a second write or transfer</span>
-      <span class="ident">TRANSFERRED</span> <span class="op">=</span> <span class="bool-val">true</span>;
-      <span class="ident">res</span>
+      <span class="comment">//  Prevent a second write or transfer
+      </span>TRANSFERRED = <span class="bool-val">true</span>;
+      res
     }
   }
 }
 
-<span class="doccomment">/// Buffer for SPI Transfer. Max packet size (256) + 2 bytes for Write Buffer Command.</span>
-<span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">BUF</span>: [ <span class="ident">u8</span>; <span class="number">258</span> ] <span class="op">=</span> [ <span class="number">0</span>; <span class="number">258</span> ];
+<span class="doccomment">/// Buffer for SPI Transfer. Max packet size (256) + 2 bytes for Write Buffer Command.
+</span><span class="kw">static </span><span class="kw-2">mut </span>BUF: [ u8; <span class="number">258 </span>] = [ <span class="number">0</span>; <span class="number">258 </span>];
 
-<span class="doccomment">/// Length of buffer for SPI Transfer</span>
-<span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">BUFLEN</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0</span>;
+<span class="doccomment">/// Length of buffer for SPI Transfer
+</span><span class="kw">static </span><span class="kw-2">mut </span>BUFLEN: usize = <span class="number">0</span>;
 
-<span class="doccomment">/// True if we have just executed an SPI Transfer</span>
-<span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">TRANSFERRED</span>: <span class="ident">bool</span> <span class="op">=</span> <span class="bool-val">false</span>;</code></pre></div>
+<span class="doccomment">/// True if we have just executed an SPI Transfer
+</span><span class="kw">static </span><span class="kw-2">mut </span>TRANSFERRED: bool = <span class="bool-val">false</span>;</code></pre></div>
 <p>Then we patched the driver code to ensure that all SPI Request chains consist of…</p>
 <ul>
 <li>
@@ -1089,63 +1089,63 @@ Done!</code></pre></div>
 <p>Such that we flush the buffer of SPI Requests only after the final SPI Write or final SPI Transfer.</p>
 <p>So this chain of SPI Requests…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="ident">spi</span>.<span class="ident">transfer</span>(<span class="kw-2">&amp;mut</span> [<span class="number">0x1D</span>])
-  .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">spi</span>.<span class="ident">transfer</span>(<span class="kw-2">&amp;mut</span> <span class="ident">start_addr</span>))
-  .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">spi</span>.<span class="ident">transfer</span>(<span class="kw-2">&amp;mut</span> [<span class="number">0x00</span>]))
-  .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">spi</span>.<span class="ident">transfer</span>(<span class="ident">result</span>))<span class="question-mark">?</span>;</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>spi.transfer(<span class="kw-2">&amp;mut </span>[<span class="number">0x1D</span>])
+  .and_then(|<span class="kw">_</span>| spi.transfer(<span class="kw-2">&amp;mut </span>start_addr))
+  .and_then(|<span class="kw">_</span>| spi.transfer(<span class="kw-2">&amp;mut </span>[<span class="number">0x00</span>]))
+  .and_then(|<span class="kw">_</span>| spi.transfer(result))<span class="question-mark">?</span>;</code></pre></div>
 <p>After patching becomes…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="ident">spi</span>.<span class="ident">write</span>(<span class="kw-2">&amp;</span>[<span class="number">0x1D</span>])  <span class="comment">//  Changed from `transfer` to `write`</span>
-  .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">spi</span>.<span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="ident">start_addr</span>))  <span class="comment">//  Changed from `transfer` to `write`</span>
-  .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">spi</span>.<span class="ident">write</span>(<span class="kw-2">&amp;</span>[<span class="number">0x00</span>]))      <span class="comment">//  Changed from `transfer` to `write`</span>
-  .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">spi</span>.<span class="ident">transfer</span>(<span class="ident">result</span>))<span class="question-mark">?</span>;  <span class="comment">//  Final transfer is OK</span></code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>spi.write(<span class="kw-2">&amp;</span>[<span class="number">0x1D</span>])  <span class="comment">//  Changed from `transfer` to `write`
+  </span>.and_then(|<span class="kw">_</span>| spi.write(<span class="kw-2">&amp;</span>start_addr))  <span class="comment">//  Changed from `transfer` to `write`
+  </span>.and_then(|<span class="kw">_</span>| spi.write(<span class="kw-2">&amp;</span>[<span class="number">0x00</span>]))      <span class="comment">//  Changed from `transfer` to `write`
+  </span>.and_then(|<span class="kw">_</span>| spi.transfer(result))<span class="question-mark">?</span>;  <span class="comment">//  Final transfer is OK</span></code></pre></div>
 <p><a href="https://github.com/lupyuen/sx126x-rs-nuttx/blob/master/src/sx/mod.rs#L241-L244">(Source)</a></p>
 <p>The driver works OK on NuttX after merging the SPI Requests…</p>
 <p><img src="https://lupyuen.github.io/images/rust2-driver2.png" alt="SPI Transfers after merging" /></p>
 <h2 id="read-register"><a href="#read-register">17.2 Read Register</a></h2>
 <p>We inserted a null byte for the Read Register command, because Read Requests should have minimum 5 bytes (instead of 4): <a href="https://github.com/lupyuen/sx126x-rs-nuttx/blob/master/src/sx/mod.rs#L229-L246">sx126x-rs-nuttx/src/sx/mod.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Read data from a register</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_register</span><span class="op">&lt;</span><span class="lifetime">&#39;spi</span><span class="op">&gt;</span>(
-  <span class="kw-2">&amp;</span><span class="lifetime">&#39;spi</span> <span class="kw-2">mut</span> <span class="self">self</span>,
-  <span class="ident">spi</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;spi</span> <span class="kw-2">mut</span> <span class="ident">TSPI</span>,
-  <span class="ident">delay</span>: <span class="kw-2">&amp;mut</span> <span class="kw">impl</span> <span class="ident">DelayUs</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
-  <span class="ident">start_addr</span>: <span class="ident">u16</span>,
-  <span class="ident">result</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>],
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">SxError</span><span class="op">&lt;</span><span class="ident">TSPIERR</span>, <span class="ident">TPINERR</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-  <span class="macro">debug_assert!</span>(<span class="ident">result</span>.<span class="ident">len</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="number">1</span>);
-  <span class="kw">let</span> <span class="ident">start_addr</span> <span class="op">=</span> <span class="ident">start_addr</span>.<span class="ident">to_be_bytes</span>();
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spi</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">slave_select</span>(<span class="ident">spi</span>, <span class="ident">delay</span>)<span class="question-mark">?</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Read data from a register
+</span><span class="kw">pub fn </span>read_register&lt;<span class="lifetime">&#39;spi</span>&gt;(
+  <span class="kw-2">&amp;</span><span class="lifetime">&#39;spi </span><span class="kw-2">mut </span><span class="self">self</span>,
+  spi: <span class="kw-2">&amp;</span><span class="lifetime">&#39;spi </span><span class="kw-2">mut </span>TSPI,
+  delay: <span class="kw-2">&amp;mut </span><span class="kw">impl </span>DelayUs&lt;u32&gt;,
+  start_addr: u16,
+  result: <span class="kw-2">&amp;mut </span>[u8],
+) -&gt; <span class="prelude-ty">Result</span>&lt;(), SxError&lt;TSPIERR, TPINERR&gt;&gt; {
+  <span class="macro">debug_assert!</span>(result.len() &gt;= <span class="number">1</span>);
+  <span class="kw">let </span>start_addr = start_addr.to_be_bytes();
+  <span class="kw">let </span><span class="kw-2">mut </span>spi = <span class="self">self</span>.slave_select(spi, delay)<span class="question-mark">?</span>;
 
-  <span class="ident">spi</span>.<span class="ident">write</span>(<span class="kw-2">&amp;</span>[<span class="number">0x1D</span>])
-    .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">spi</span>.<span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="ident">start_addr</span>))
-    <span class="comment">//  Inserted this null byte</span>
-    .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">spi</span>.<span class="ident">write</span>(<span class="kw-2">&amp;</span>[<span class="number">0x00</span>]))
-    .<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">spi</span>.<span class="ident">transfer</span>(<span class="ident">result</span>))<span class="question-mark">?</span>;
+  spi.write(<span class="kw-2">&amp;</span>[<span class="number">0x1D</span>])
+    .and_then(|<span class="kw">_</span>| spi.write(<span class="kw-2">&amp;</span>start_addr))
+    <span class="comment">//  Inserted this null byte
+    </span>.and_then(|<span class="kw">_</span>| spi.write(<span class="kw-2">&amp;</span>[<span class="number">0x00</span>]))
+    .and_then(|<span class="kw">_</span>| spi.transfer(result))<span class="question-mark">?</span>;
   <span class="prelude-val">Ok</span>(())
 }</code></pre></div>
 <h2 id="set-registers"><a href="#set-registers">17.3 Set Registers</a></h2>
 <p>The following registers need to be set for the LoRa Transmission to work correctly: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L73-L91">rust_test/rust/src/sx1262.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Write SX1262 Registers to prepare for transmitting LoRa message.</span>
-<span class="comment">//  Based on https://gist.github.com/lupyuen/5fdede131ad0e327478994872f190668</span>
-<span class="comment">//  and https://docs.google.com/spreadsheets/d/14Pczf2sP_Egnzi5_nikukauL2iTKA03Qgq715e50__0/edit?usp=sharing</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Write SX1262 Registers to prepare for transmitting LoRa message.
+//  Based on https://gist.github.com/lupyuen/5fdede131ad0e327478994872f190668
+//  and https://docs.google.com/spreadsheets/d/14Pczf2sP_Egnzi5_nikukauL2iTKA03Qgq715e50__0/edit?usp=sharing
 
-<span class="comment">//  Write Register 0x889: 0x04 (TxModulation)</span>
-<span class="ident">lora</span>.<span class="ident">write_register</span>(<span class="kw-2">&amp;mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="ident">Register::TxModulaton</span>, <span class="kw-2">&amp;</span>[<span class="number">0x04</span>])
-  .<span class="ident">expect</span>(<span class="string">&quot;write register failed&quot;</span>);
+//  Write Register 0x889: 0x04 (TxModulation)
+</span>lora.write_register(<span class="kw-2">&amp;mut </span>spi1, delay, Register::TxModulaton, <span class="kw-2">&amp;</span>[<span class="number">0x04</span>])
+  .expect(<span class="string">&quot;write register failed&quot;</span>);
 
-<span class="comment">//  Write Register 0x8D8: 0xFE (TxClampConfig)</span>
-<span class="ident">lora</span>.<span class="ident">write_register</span>(<span class="kw-2">&amp;mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="ident">Register::TxClampConfig</span>, <span class="kw-2">&amp;</span>[<span class="number">0xFE</span>])
-  .<span class="ident">expect</span>(<span class="string">&quot;write register failed&quot;</span>);
+<span class="comment">//  Write Register 0x8D8: 0xFE (TxClampConfig)
+</span>lora.write_register(<span class="kw-2">&amp;mut </span>spi1, delay, Register::TxClampConfig, <span class="kw-2">&amp;</span>[<span class="number">0xFE</span>])
+  .expect(<span class="string">&quot;write register failed&quot;</span>);
 
-<span class="comment">//  Write Register 0x8E7: 0x38 (Over Current Protection)</span>
-<span class="ident">lora</span>.<span class="ident">write_register</span>(<span class="kw-2">&amp;mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="ident">Register::OcpConfiguration</span>, <span class="kw-2">&amp;</span>[<span class="number">0x38</span>])
-  .<span class="ident">expect</span>(<span class="string">&quot;write register failed&quot;</span>);
+<span class="comment">//  Write Register 0x8E7: 0x38 (Over Current Protection)
+</span>lora.write_register(<span class="kw-2">&amp;mut </span>spi1, delay, Register::OcpConfiguration, <span class="kw-2">&amp;</span>[<span class="number">0x38</span>])
+  .expect(<span class="string">&quot;write register failed&quot;</span>);
 
-<span class="comment">//  Write Register 0x736: 0x0D (Inverted IQ)</span>
-<span class="ident">lora</span>.<span class="ident">write_register</span>(<span class="kw-2">&amp;mut</span> <span class="ident">spi1</span>, <span class="ident">delay</span>, <span class="ident">Register::IqPolaritySetup</span>, <span class="kw-2">&amp;</span>[<span class="number">0x0D</span>])
-  .<span class="ident">expect</span>(<span class="string">&quot;write register failed&quot;</span>);</code></pre></div>
+<span class="comment">//  Write Register 0x736: 0x0D (Inverted IQ)
+</span>lora.write_register(<span class="kw-2">&amp;mut </span>spi1, delay, Register::IqPolaritySetup, <span class="kw-2">&amp;</span>[<span class="number">0x0D</span>])
+  .expect(<span class="string">&quot;write register failed&quot;</span>);</code></pre></div>
 <p>We derived the registers from the log generated by the SX1262 driver in C…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/5fdede131ad0e327478994872f190668"><strong>Log from SX1262 Driver in C</strong></a></li>
@@ -1162,29 +1162,29 @@ Done!</code></pre></div>
 <p>The <a href="https://github.com/tweedegolf/sx126x-rs"><strong>sx126x-rs</strong></a> crate depends on the <a href="https://crates.io/crates/cortex-m"><strong>cortex-m</strong></a> crate, which works only on Arm, not RISC-V (BL602).</p>
 <p>We defined the following functions to fill in for the missing functions on RISC-V: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/sx1262.rs#L146-L168">rust_test/rust/src/sx1262.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Read Priority Mask Register. Missing function called by sx126x crate (Arm only, not RISC-V).</span>
-<span class="doccomment">/// See https://github.com/rust-embedded/cortex-m/blob/master/src/register/primask.rs#L29</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>))]</span>  <span class="comment">//  If architecture is not Arm...</span>
-<span class="attribute">#[<span class="ident">no_mangle</span>]</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">__primask_r</span>() -&gt; <span class="ident">u32</span> { <span class="number">0</span> }
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Read Priority Mask Register. Missing function called by sx126x crate (Arm only, not RISC-V).
+/// See https://github.com/rust-embedded/cortex-m/blob/master/src/register/primask.rs#L29
+</span><span class="attribute">#[cfg(not(target_arch = <span class="string">&quot;arm&quot;</span>))]  </span><span class="comment">//  If architecture is not Arm...
+</span><span class="attribute">#[no_mangle]
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>__primask_r() -&gt; u32 { <span class="number">0 </span>}
 
-<span class="doccomment">/// Disables all interrupts. Missing function called by sx126x crate (Arm only, not RISC-V).</span>
-<span class="doccomment">/// See https://github.com/rust-embedded/cortex-m/blob/master/src/interrupt.rs#L29</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>))]</span>  <span class="comment">//  If architecture is not Arm...</span>
-<span class="attribute">#[<span class="ident">no_mangle</span>]</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">__cpsid</span>() {}
+<span class="doccomment">/// Disables all interrupts. Missing function called by sx126x crate (Arm only, not RISC-V).
+/// See https://github.com/rust-embedded/cortex-m/blob/master/src/interrupt.rs#L29
+</span><span class="attribute">#[cfg(not(target_arch = <span class="string">&quot;arm&quot;</span>))]  </span><span class="comment">//  If architecture is not Arm...
+</span><span class="attribute">#[no_mangle]
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>__cpsid() {}
 
-<span class="doccomment">/// Enables all interrupts. Missing function called by sx126x crate (Arm only, not RISC-V).</span>
-<span class="doccomment">/// See https://github.com/rust-embedded/cortex-m/blob/master/src/interrupt.rs#L39</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>))]</span>  <span class="comment">//  If architecture is not Arm...</span>
-<span class="attribute">#[<span class="ident">no_mangle</span>]</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">__cpsie</span>() {}
+<span class="doccomment">/// Enables all interrupts. Missing function called by sx126x crate (Arm only, not RISC-V).
+/// See https://github.com/rust-embedded/cortex-m/blob/master/src/interrupt.rs#L39
+</span><span class="attribute">#[cfg(not(target_arch = <span class="string">&quot;arm&quot;</span>))]  </span><span class="comment">//  If architecture is not Arm...
+</span><span class="attribute">#[no_mangle]
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>__cpsie() {}
 
-<span class="doccomment">/// No operation. Missing function called by sx126x crate (Arm only, not RISC-V).</span>
-<span class="doccomment">/// See https://github.com/rust-embedded/cortex-m/blob/master/src/asm.rs#L35</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;arm&quot;</span>))]</span>  <span class="comment">//  If architecture is not Arm...</span>
-<span class="attribute">#[<span class="ident">no_mangle</span>]</span>
-<span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">__nop</span>() {}</code></pre></div>
+<span class="doccomment">/// No operation. Missing function called by sx126x crate (Arm only, not RISC-V).
+/// See https://github.com/rust-embedded/cortex-m/blob/master/src/asm.rs#L35
+</span><span class="attribute">#[cfg(not(target_arch = <span class="string">&quot;arm&quot;</span>))]  </span><span class="comment">//  If architecture is not Arm...
+</span><span class="attribute">#[no_mangle]
+</span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>__nop() {}</code></pre></div>
 <p>We haven’t tested the driver for receiving LoRa Messages, we might need more fixes for NuttX on RISC-V.</p>
 <p>(But then again we might not need to receive LoRa Messages if we’re building a simple IoT Sensor)</p>
 <p><img src="https://lupyuen.github.io/images/rust2-build.png" alt="Rust Build Script for NuttX" /></p>

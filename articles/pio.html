@@ -711,12 +711,12 @@ int FS_memOutput(int address, int value)
 </ul>
 <p>We converted the Device Tree to Text Format with this command…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code># <span class="ident">Convert</span> <span class="ident">Device</span> <span class="ident">Tree</span> <span class="ident">to</span> <span class="ident">text</span> <span class="ident">format</span>
-<span class="ident">dtc</span> \
-  <span class="op">-</span><span class="ident">o</span> <span class="ident">sun50i</span><span class="op">-</span><span class="ident">a64</span><span class="op">-</span><span class="ident">pinephone</span><span class="op">-</span><span class="number">1.2</span>.<span class="ident">dts</span> \
-  <span class="op">-</span><span class="ident">O</span> <span class="ident">dts</span> \
-  <span class="op">-</span><span class="ident">I</span> <span class="ident">dtb</span> \
-  <span class="ident">sun50i</span><span class="op">-</span><span class="ident">a64</span><span class="op">-</span><span class="ident">pinephone</span><span class="op">-</span><span class="number">1.2</span>.<span class="ident">dtb</span></code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code># Convert Device Tree to text format
+dtc \
+  -o sun50i-a64-pinephone-<span class="number">1.2</span>.dts \
+  -O dts \
+  -I dtb \
+  sun50i-a64-pinephone-<span class="number">1.2</span>.dtb</code></pre></div>
 <p><strong>sun50i-a64-pinephone-1.2.dtb</strong> came from the <a href="https://lupyuen.github.io/articles/uboot#pinephone-jumpdrive"><strong>Jumpdrive microSD</strong></a>…</p>
 <ul>
 <li><a href="https://github.com/dreemurrs-embedded/Jumpdrive/releases/download/0.8/pine64-pinephone.img.xz"><strong>PinePhone Jumpdrive Image: pine64-pinephone.img.xz</strong></a></li>

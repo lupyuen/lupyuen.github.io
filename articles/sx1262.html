@@ -2988,10 +2988,10 @@ void SX126xSetSleep( SleepParams_t sleepConfig ) {
 <h1 id="appendix-gpio-pin-type-issue"><a href="#appendix-gpio-pin-type-issue">16 Appendix: GPIO Pin Type Issue</a></h1>
 <p>When we switch a GPIO Interrupt Pin Type to Trigger On Rising Edge, it crashes with an Assertion Failure… </p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="ident">nsh</span><span class="op">&gt;</span> <span class="ident">gpio</span> <span class="op">-</span><span class="ident">t</span> <span class="number">8</span> <span class="op">-</span><span class="ident">w</span> <span class="number">1</span> <span class="op">/</span><span class="ident">dev</span><span class="op">/</span><span class="ident">gpio2</span>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>nsh&gt; gpio -t <span class="number">8 </span>-w <span class="number">1 </span>/dev/gpio2
 
-<span class="ident">Driver</span>: <span class="op">/</span><span class="ident">dev</span><span class="op">/</span><span class="ident">gpio2</span>
-<span class="ident">up_assert</span>: <span class="ident">Assertion</span> <span class="ident">failed</span> <span class="ident">at</span> <span class="ident">file</span>:<span class="ident">ioexpander</span><span class="op">/</span><span class="ident">gpio</span>.<span class="ident">c</span> <span class="ident">line</span>: <span class="number">544</span> <span class="ident">task</span>: <span class="ident">gpio</span></code></pre></div>
+Driver: /dev/gpio2
+up_assert: Assertion failed at file:ioexpander/gpio.c line: <span class="number">544 </span>task: gpio</code></pre></div>
 <p>(For PineDio Stack BL604: Use “/dev/gpio19”)</p>
 <p>I’ll submit a NuttX Issue, meanwhile I have disabled the assertion…</p>
 <ul>

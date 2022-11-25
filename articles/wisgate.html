@@ -277,8 +277,8 @@ void loop() {
 }</code></pre></div><h2 id="join-lorawan-network"><a href="#join-lorawan-network">4.3 Join LoRaWAN Network</a></h2>
 <p>During startup we called <code>lmh_join</code> to send the <strong>Join LoRaWAN Network Request</strong> to WisGate…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Start Join procedure</span>
-<span class="ident">lmh_join</span>();</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Start Join procedure
+</span>lmh_join();</code></pre></div>
 <p>When <strong>WisGate accepts the Join Request</strong> and returns an acknowledgement packet, this Callback Function will be called: <a href="https://github.com/lupyuen/wisblock-lorawan/blob/master/src/main.cpp#L222-L236"><code>main.cpp</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Function that is called when we have joined the LoRaWAN network
 void lorawan_has_joined_handler(void) {

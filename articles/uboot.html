@@ -442,6 +442,7 @@ __start:
 real_start: ... </code></pre></div>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L105">(<strong><code>_e_initstack</code></strong> is End of Stack Space)</a></p>
 <p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L41-L49">(<strong><code>__HEAD_FLAGS</code></strong> is defined here)</a></p>
+<p><a href="https://github.com/apache/incubator-nuttx/pull/7692#issuecomment-1327103980">(UPDATE: We don’t need to change the Image Load Offset)</a></p>
 <p><em>What’s the value of <code>__start</code>?</em></p>
 <p>Remember <strong><code>kernel_addr_r</code></strong>, the <a href="https://lupyuen.github.io/articles/uboot#boot-address"><strong>Kernel Start Address</strong></a> from U-Boot?</p>
 <p>In NuttX, we define the Kernel Start Address <strong><code>__start</code></strong> as <strong><code>0x4008</code> <code>0000</code></strong> in our Linker Script: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L34">boards/arm64/qemu/qemu-a53/scripts/dramboot</a></p>

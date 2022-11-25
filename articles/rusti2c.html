@@ -103,56 +103,56 @@
 <h1 id="read-sensor-data-from-bme280"><a href="#read-sensor-data-from-bme280">1 Read Sensor Data from BME280</a></h1>
 <p>Here’s how we read the <strong>Temperature, Humidity and Air Pressure</strong> from the BME280 Sensor: <a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/bme280.rs">rust/src/bme280.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Read Temperature, Pressure and Humidity from BME280 Sensor over I2C</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_bme280</span>() {
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Read Temperature, Pressure and Humidity from BME280 Sensor over I2C
+</span><span class="kw">pub fn </span>read_bme280() {
 
-  <span class="comment">//  Open I2C Port</span>
-  <span class="kw">let</span> <span class="ident">i2c</span> <span class="op">=</span> <span class="ident">nuttx_embedded_hal::I2c::new</span>(
-    <span class="string">&quot;/dev/i2c0&quot;</span>,  <span class="comment">//  I2C Port</span>
-    <span class="number">400000</span>,       <span class="comment">//  I2C Frequency: 400 kHz</span>
-  ).<span class="ident">expect</span>(<span class="string">&quot;open failed&quot;</span>);</code></pre></div>
+  <span class="comment">//  Open I2C Port
+  </span><span class="kw">let </span>i2c = nuttx_embedded_hal::I2c::new(
+    <span class="string">&quot;/dev/i2c0&quot;</span>,  <span class="comment">//  I2C Port
+    </span><span class="number">400000</span>,       <span class="comment">//  I2C Frequency: 400 kHz
+  </span>).expect(<span class="string">&quot;open failed&quot;</span>);</code></pre></div>
 <p>We begin by opening the I2C Port “<strong>/dev/i2c0</strong>”, configured for 400 kHz.</p>
 <p>(This halts with an error if the I2C Port doesn’t exist)</p>
 <p><em>What’s nuttx_embedded_hal?</em></p>
 <p>That’s the <strong>Hardware Abstraction Layer</strong> (HAL) for NuttX, coded in Rust. (More about this in a while)</p>
 <p>Next we <strong>initialise the BME280 Driver</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init the BME280 Driver</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bme280</span> <span class="op">=</span> <span class="ident">bme280::BME280::new</span>(
-    <span class="ident">i2c</span>,   <span class="comment">//  I2C Port</span>
-    <span class="number">0x77</span>,  <span class="comment">//  I2C Address of BME280</span>
-    <span class="ident">nuttx_embedded_hal::Delay</span>  <span class="comment">//  Delay Interface</span>
-  );</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init the BME280 Driver
+  </span><span class="kw">let </span><span class="kw-2">mut </span>bme280 = bme280::BME280::new(
+    i2c,   <span class="comment">//  I2C Port
+    </span><span class="number">0x77</span>,  <span class="comment">//  I2C Address of BME280
+    </span>nuttx_embedded_hal::Delay  <span class="comment">//  Delay Interface
+  </span>);</code></pre></div>
 <p><strong>BME280</strong> comes from the BME280 Driver Crate. (As we’ll see soon)</p>
 <p>Before reading the BME280 Sensor, we <strong>initialise the sensor</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init the BME280 Sensor</span>
-  <span class="ident">bme280</span>.<span class="ident">init</span>()
-    .<span class="ident">expect</span>(<span class="string">&quot;init failed&quot;</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init the BME280 Sensor
+  </span>bme280.init()
+    .expect(<span class="string">&quot;init failed&quot;</span>);</code></pre></div>
 <p>(This halts with an error if the initialisation fails)</p>
 <p>We’re ready to read the <strong>Temperature, Humidity and Air Pressure</strong> from the BME280 Sensor…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Measure Temperature, Pressure and Humidity</span>
-  <span class="kw">let</span> <span class="ident">measurements</span> <span class="op">=</span> <span class="ident">bme280</span>.<span class="ident">measure</span>()
-    .<span class="ident">expect</span>(<span class="string">&quot;measure failed&quot;</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Measure Temperature, Pressure and Humidity
+  </span><span class="kw">let </span>measurements = bme280.measure()
+    .expect(<span class="string">&quot;measure failed&quot;</span>);</code></pre></div>
 <p>Finally we <strong>print the Sensor Data</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Print the measurements</span>
-  <span class="macro">println!</span>(<span class="string">&quot;Relative Humidity = {}%&quot;</span>, 
-    <span class="ident">measurements</span>.<span class="ident">humidity</span>);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Print the measurements
+  </span><span class="macro">println!</span>(<span class="string">&quot;Relative Humidity = {}%&quot;</span>, 
+    measurements.humidity);
   <span class="macro">println!</span>(<span class="string">&quot;Temperature = {} deg C&quot;</span>,  
-    <span class="ident">measurements</span>.<span class="ident">temperature</span>);
+    measurements.temperature);
   <span class="macro">println!</span>(<span class="string">&quot;Pressure = {} pascals&quot;</span>,   
-    <span class="ident">measurements</span>.<span class="ident">pressure</span>);
+    measurements.pressure);
 }</code></pre></div>
 <p>That’s all we need to read the Sensor Data from the BME280 Sensor!</p>
 <p><em>Where is println defined?</em></p>
 <p><a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/macros.rs"><strong>println</strong></a> comes from our NuttX Embedded HAL. We import it at the top…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Import Libraries</span>
-<span class="kw">use</span> <span class="ident">nuttx_embedded_hal</span>::{  <span class="comment">//  NuttX Embedded HAL</span>
-  <span class="ident">println</span>,                 <span class="comment">//  Print a formatted message</span>
-};</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Import Libraries
+</span><span class="kw">use </span>nuttx_embedded_hal::{  <span class="comment">//  NuttX Embedded HAL
+  </span>println,                 <span class="comment">//  Print a formatted message
+</span>};</code></pre></div>
 <p>Before running our Rust App, let’s connect the BME280 Sensor.</p>
 <p><img src="https://lupyuen.github.io/images/bme280-connect.jpg" alt="Bosch BME280 Sensor connected to Pine64 PineCone BL602 RISC-V Board" /></p>
 <h1 id="connect-bme280"><a href="#connect-bme280">2 Connect BME280</a></h1>
@@ -235,9 +235,9 @@ Done!</code></pre></div>
 <p><em>We ran the Rust Driver for BME280 on NuttX… Without any code changes?</em></p>
 <p>Yeah amazing right? Earlier we saw this: <a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/bme280.rs">rust/src/bme280.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init the BME280 Driver</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bme280</span> <span class="op">=</span> <span class="ident">bme280::BME280</span>
-    <span class="ident">::new</span>( ... );</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Init the BME280 Driver
+  </span><span class="kw">let </span><span class="kw-2">mut </span>bme280 = bme280::BME280
+    ::new( ... );</code></pre></div>
 <p><strong>BME280</strong> comes from the Rust Embedded Driver for BME280 (pic above)…</p>
 <ul>
 <li><a href="https://crates.io/crates/bme280"><strong>crates.io/bme280</strong></a></li>
@@ -270,19 +270,19 @@ embedded-hal = &quot;0.2.7&quot;  </code></pre></div>
 </ul>
 <p>Earlier we called NuttX Embedded HAL to <strong>open the I2C Port</strong>: <a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/bme280.rs">bme280.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Open I2C Port</span>
-<span class="kw">let</span> <span class="ident">i2c</span> <span class="op">=</span> <span class="ident">nuttx_embedded_hal::I2c::new</span>(
-  <span class="string">&quot;/dev/i2c0&quot;</span>,  <span class="comment">//  I2C Port</span>
-  <span class="number">400000</span>,       <span class="comment">//  I2C Frequency: 400 kHz</span>
-).<span class="ident">expect</span>(<span class="string">&quot;open failed&quot;</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Open I2C Port
+</span><span class="kw">let </span>i2c = nuttx_embedded_hal::I2c::new(
+  <span class="string">&quot;/dev/i2c0&quot;</span>,  <span class="comment">//  I2C Port
+  </span><span class="number">400000</span>,       <span class="comment">//  I2C Frequency: 400 kHz
+</span>).expect(<span class="string">&quot;open failed&quot;</span>);</code></pre></div>
 <p>And we passed it to the BME280 Driver…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Init the BME280 Driver</span>
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bme280</span> <span class="op">=</span> <span class="ident">bme280::BME280::new</span>(
-  <span class="ident">i2c</span>,   <span class="comment">//  I2C Port</span>
-  <span class="number">0x77</span>,  <span class="comment">//  I2C Address of BME280</span>
-  <span class="ident">nuttx_embedded_hal::Delay</span>  <span class="comment">//  Delay Interface</span>
-);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Init the BME280 Driver
+</span><span class="kw">let </span><span class="kw-2">mut </span>bme280 = bme280::BME280::new(
+  i2c,   <span class="comment">//  I2C Port
+  </span><span class="number">0x77</span>,  <span class="comment">//  I2C Address of BME280
+  </span>nuttx_embedded_hal::Delay  <span class="comment">//  Delay Interface
+</span>);</code></pre></div>
 <p>(<a href="https://docs.rs/nuttx-embedded-hal/latest/nuttx_embedded_hal/struct.Delay.html"><strong>Delay</strong></a> also comes from NuttX Embedded HAL)</p>
 <p><em>But BME280 Driver doesn’t know anything about NuttX?</em></p>
 <p>That’s OK because the BME280 Driver and NuttX Embedded HAL both talk through the same interface: <a href="https://docs.rs/embedded-hal/latest/embedded_hal/"><strong>Rust Embedded HAL</strong></a>. (Pic above)</p>
@@ -297,31 +297,31 @@ embedded-hal = &quot;0.2.7&quot;  </code></pre></div>
 <p><em>Can we call NuttX Embedded HAL in our own Rust Programs?</em></p>
 <p>Yes we can! This is how we call NuttX Embedded HAL to <strong>read an I2C Register</strong> on BME280: <a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/test.rs#L29-L62">test.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Read an I2C Register</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_hal_read</span>() {
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Read an I2C Register
+</span><span class="kw">pub fn </span>test_hal_read() {
 
-  <span class="comment">//  Open I2C Port</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">i2c</span> <span class="op">=</span> <span class="ident">nuttx_embedded_hal::I2c::new</span>(
-    <span class="string">&quot;/dev/i2c0&quot;</span>,  <span class="comment">//  I2C Port</span>
-    <span class="number">400000</span>,       <span class="comment">//  I2C Frequency: 400 kHz</span>
-  ).<span class="ident">expect</span>(<span class="string">&quot;open failed&quot;</span>);</code></pre></div>
+  <span class="comment">//  Open I2C Port
+  </span><span class="kw">let </span><span class="kw-2">mut </span>i2c = nuttx_embedded_hal::I2c::new(
+    <span class="string">&quot;/dev/i2c0&quot;</span>,  <span class="comment">//  I2C Port
+    </span><span class="number">400000</span>,       <span class="comment">//  I2C Frequency: 400 kHz
+  </span>).expect(<span class="string">&quot;open failed&quot;</span>);</code></pre></div>
 <p>This opens the I2C Port “<strong>/dev/i2c0</strong>” at 400 kHz. (We’ve seen this earlier)</p>
 <p>Next we prepare a one-byte <strong>Receive Buffer</strong> that will receive the Register Value…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Buffer for received Register Value (1 byte)</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span> ; <span class="number">1</span>];  <span class="comment">//  Init to 0</span></code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Buffer for received Register Value (1 byte)
+  </span><span class="kw">let </span><span class="kw-2">mut </span>buf = [<span class="number">0 </span>; <span class="number">1</span>];  <span class="comment">//  Init to 0</span></code></pre></div>
 <p>Then we call NuttX Embedded HAL to <strong>read Register <code>0xD0</code></strong> from I2C Address <code>0x77</code>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Read I2C Register</span>
-  <span class="ident">i2c</span>.<span class="ident">write_read</span>(
-    <span class="number">0x77</span>,     <span class="comment">//  I2C Address</span>
-    <span class="kw-2">&amp;</span>[<span class="number">0xD0</span>],  <span class="comment">//  Register ID</span>
-    <span class="kw-2">&amp;mut</span> <span class="ident">buf</span>  <span class="comment">//  Buffer to be received (Register Value)</span>
-  ).<span class="ident">expect</span>(<span class="string">&quot;read register failed&quot;</span>);</code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Read I2C Register
+  </span>i2c.write_read(
+    <span class="number">0x77</span>,     <span class="comment">//  I2C Address
+    </span><span class="kw-2">&amp;</span>[<span class="number">0xD0</span>],  <span class="comment">//  Register ID
+    </span><span class="kw-2">&amp;mut </span>buf  <span class="comment">//  Buffer to be received (Register Value)
+  </span>).expect(<span class="string">&quot;read register failed&quot;</span>);</code></pre></div>
 <p>Our Receive Buffer now contains the <strong>Register Value</strong> <code>0x60</code>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Register Value must be BME280 Device ID (0x60)</span>
-  <span class="macro">assert_eq!</span>(<span class="ident">buf</span>[<span class="number">0</span>], <span class="number">0x60</span>);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Register Value must be BME280 Device ID (0x60)
+  </span><span class="macro">assert_eq!</span>(buf[<span class="number">0</span>], <span class="number">0x60</span>);
 }</code></pre></div>
 <p>That’s how we call NuttX Embedded HAL to read an I2C Register!</p>
 <p><img src="https://lupyuen.github.io/images/rusti2c-arch.jpg" alt="NuttX Embedded HAL" /></p>
@@ -337,20 +337,20 @@ embedded-hal = &quot;0.2.7&quot;  </code></pre></div>
 <p><em>What about writing to I2C Registers?</em></p>
 <p>This code calls NuttX Embedded HAL to <strong>write an I2C Register</strong>: <a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/test.rs#L64-L116">test.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Write an I2C Register</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_hal_write</span>() {
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Write an I2C Register
+</span><span class="kw">pub fn </span>test_hal_write() {
 
-  <span class="comment">//  Open I2C Port</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">i2c</span> <span class="op">=</span> <span class="ident">nuttx_embedded_hal::I2c::new</span>(
-    <span class="string">&quot;/dev/i2c0&quot;</span>,  <span class="comment">//  I2C Port</span>
-    <span class="number">400000</span>,       <span class="comment">//  I2C Frequency: 400 kHz</span>
-  ).<span class="ident">expect</span>(<span class="string">&quot;open failed&quot;</span>);
+  <span class="comment">//  Open I2C Port
+  </span><span class="kw">let </span><span class="kw-2">mut </span>i2c = nuttx_embedded_hal::I2c::new(
+    <span class="string">&quot;/dev/i2c0&quot;</span>,  <span class="comment">//  I2C Port
+    </span><span class="number">400000</span>,       <span class="comment">//  I2C Frequency: 400 kHz
+  </span>).expect(<span class="string">&quot;open failed&quot;</span>);
 
-  <span class="comment">//  Write 0xA0 to Register 0xF5</span>
-  <span class="ident">i2c</span>.<span class="ident">write</span>(
-    <span class="number">0x77</span>,          <span class="comment">//  I2C Address</span>
-    <span class="kw-2">&amp;</span>[<span class="number">0xF5</span>, <span class="number">0xA0</span>]  <span class="comment">//  Register ID and value</span>
-  ).<span class="ident">expect</span>(<span class="string">&quot;write register failed&quot;</span>);</code></pre></div>
+  <span class="comment">//  Write 0xA0 to Register 0xF5
+  </span>i2c.write(
+    <span class="number">0x77</span>,          <span class="comment">//  I2C Address
+    </span><span class="kw-2">&amp;</span>[<span class="number">0xF5</span>, <span class="number">0xA0</span>]  <span class="comment">//  Register ID and value
+  </span>).expect(<span class="string">&quot;write register failed&quot;</span>);</code></pre></div>
 <p>The implementation of <strong>i2c.write</strong> in NuttX Embedded HAL is explained here…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/rusti2c#appendix-write-i2c-register-in-embedded-hal"><strong>“Write I2C Register in Embedded HAL”</strong></a></li>
@@ -416,23 +416,23 @@ Setup Read to [0xEF] + ACK
 <p>NuttX Embedded HAL accesses the I2C Port by calling the <strong>NuttX I2C Interface</strong>: open(), ioctl() and close(). (Pic above)</p>
 <p>To understand why, let’s look at a NuttX Rust Program that <strong>reads an I2C Register</strong> on BME280: <a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/src/test.rs#L117-L193">rust/src/test.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Read an I2C Register</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">test_i2c</span>() {
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Read an I2C Register
+</span><span class="kw">pub fn </span>test_i2c() {
 
-  <span class="comment">//  Open I2C Port</span>
-  <span class="kw">let</span> <span class="ident">i2c</span> <span class="op">=</span> <span class="kw">unsafe</span> { 
-    <span class="ident">open</span>(<span class="string">b&quot;/dev/i2c0\0&quot;</span>.<span class="ident">as_ptr</span>(), <span class="ident">O_RDWR</span>) 
+  <span class="comment">//  Open I2C Port
+  </span><span class="kw">let </span>i2c = <span class="kw">unsafe </span>{ 
+    open(<span class="string">b&quot;/dev/i2c0\0&quot;</span>.as_ptr(), O_RDWR) 
   };
-  <span class="macro">assert!</span>(<span class="ident">i2c</span> <span class="op">&gt;</span> <span class="number">0</span>);</code></pre></div>
+  <span class="macro">assert!</span>(i2c &gt; <span class="number">0</span>);</code></pre></div>
 <p>We begin by calling <strong>open()</strong> to open the I2C Port.</p>
 <p>This is flagged as “<code>unsafe</code>” because we’re calling a C Function. <a href="https://lupyuen.github.io/articles/rust2#rust-meets-nuttx">(See this)</a></p>
 <p>Next we prepare the buffers that will be <strong>sent and received</strong> over I2C…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Send the Register ID 0xD0 (1 byte)</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">start</span> <span class="op">=</span> [<span class="number">0xD0</span> ; <span class="number">1</span>];
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Send the Register ID 0xD0 (1 byte)
+  </span><span class="kw">let </span><span class="kw-2">mut </span>start = [<span class="number">0xD0 </span>; <span class="number">1</span>];
 
-  <span class="comment">//  Receive the Register Value (1 byte)</span>
-  <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span>   <span class="op">=</span> [<span class="number">0</span> ; <span class="number">1</span>];</code></pre></div>
+  <span class="comment">//  Receive the Register Value (1 byte)
+  </span><span class="kw">let </span><span class="kw-2">mut </span>buf   = [<span class="number">0 </span>; <span class="number">1</span>];</code></pre></div>
 <p>We’ll read the I2C Register in 2 steps…</p>
 <ol>
 <li>
@@ -444,62 +444,62 @@ Setup Read to [0xEF] + ACK
 </ol>
 <p>We define the First Step: Send the <strong>Register ID</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Compose I2C Transfers</span>
-  <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> [
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Compose I2C Transfers
+  </span><span class="kw">let </span>msg = [
 
-    <span class="comment">//  First I2C Message: Send Register ID</span>
-    <span class="ident">i2c_msg_s</span> {
-      <span class="ident">frequency</span>: <span class="number">400000</span>,  <span class="comment">//  I2C Frequency: 400 kHz</span>
-      <span class="ident">addr</span>:      <span class="number">0x77</span>,    <span class="comment">//  I2C Address</span>
-      <span class="ident">buffer</span>:    <span class="ident">start</span>.<span class="ident">as_mut_ptr</span>(),      <span class="comment">//  Buffer to be sent (Register ID)</span>
-      <span class="ident">length</span>:    <span class="ident">start</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">ssize_t</span>,  <span class="comment">//  Length of the buffer in bytes</span>
+    <span class="comment">//  First I2C Message: Send Register ID
+    </span>i2c_msg_s {
+      frequency: <span class="number">400000</span>,  <span class="comment">//  I2C Frequency: 400 kHz
+      </span>addr:      <span class="number">0x77</span>,    <span class="comment">//  I2C Address
+      </span>buffer:    start.as_mut_ptr(),      <span class="comment">//  Buffer to be sent (Register ID)
+      </span>length:    start.len() <span class="kw">as </span>ssize_t,  <span class="comment">//  Length of the buffer in bytes
 
-      <span class="comment">//  For BL602: Register ID must be passed as I2C Sub Address</span>
-      <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;riscv32&quot;</span>)]</span>  <span class="comment">//  If architecture is RISC-V 32-bit...</span>
-      <span class="ident">flags</span>:     <span class="ident">I2C_M_NOSTOP</span>,  <span class="comment">//  I2C Flags: Send I2C Sub Address</span>
+      //  For BL602: Register ID must be passed as I2C Sub Address
+      </span><span class="attribute">#[cfg(target_arch = <span class="string">&quot;riscv32&quot;</span>)]  </span><span class="comment">//  If architecture is RISC-V 32-bit...
+      </span>flags:     I2C_M_NOSTOP,  <span class="comment">//  I2C Flags: Send I2C Sub Address
         
-      <span class="comment">//  Otherwise pass Register ID as I2C Data</span>
-      <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;riscv32&quot;</span>))]</span>  <span class="comment">//  If architecture is not RISC-V 32-bit...</span>
-      <span class="ident">flags</span>:     <span class="number">0</span>,  <span class="comment">//  I2C Flags: None</span>
+      //  Otherwise pass Register ID as I2C Data
+      </span><span class="attribute">#[cfg(not(target_arch = <span class="string">&quot;riscv32&quot;</span>))]  </span><span class="comment">//  If architecture is not RISC-V 32-bit...
+      </span>flags:     <span class="number">0</span>,  <span class="comment">//  I2C Flags: None
 
-      <span class="comment">//  TODO: Check for BL602 specifically, not just RISC-V 32-bit</span>
-    },</code></pre></div>
+      //  TODO: Check for BL602 specifically, not just RISC-V 32-bit
+    </span>},</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/bme280#appendix-quirks-in-bl602-nuttx-i2c-driver">(<strong>I2C_M_NOSTOP</strong> is needed because of a BL602 quirk)</a></p>
 <p>And here’s the Second Step: Receive the <strong>Register Value</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">//  Second I2C Message: Receive Register Value</span>
-    <span class="ident">i2c_msg_s</span> {
-      <span class="ident">frequency</span>: <span class="number">400000</span>,  <span class="comment">//  I2C Frequency: 400 kHz</span>
-      <span class="ident">addr</span>:      <span class="number">0x77</span>,    <span class="comment">//  I2C Address</span>
-      <span class="ident">buffer</span>:    <span class="ident">buf</span>.<span class="ident">as_mut_ptr</span>(),      <span class="comment">//  Buffer to be received</span>
-      <span class="ident">length</span>:    <span class="ident">buf</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">ssize_t</span>,  <span class="comment">//  Length of the buffer in bytes</span>
-      <span class="ident">flags</span>:     <span class="ident">I2C_M_READ</span>,   <span class="comment">//  I2C Flags: Read from I2C Device</span>
-    },
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">//  Second I2C Message: Receive Register Value
+    </span>i2c_msg_s {
+      frequency: <span class="number">400000</span>,  <span class="comment">//  I2C Frequency: 400 kHz
+      </span>addr:      <span class="number">0x77</span>,    <span class="comment">//  I2C Address
+      </span>buffer:    buf.as_mut_ptr(),      <span class="comment">//  Buffer to be received
+      </span>length:    buf.len() <span class="kw">as </span>ssize_t,  <span class="comment">//  Length of the buffer in bytes
+      </span>flags:     I2C_M_READ,   <span class="comment">//  I2C Flags: Read from I2C Device
+    </span>},
   ];</code></pre></div>
 <p>Finally we execute the two steps by calling <strong>ioctl()</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Compose ioctl Argument</span>
-  <span class="kw">let</span> <span class="ident">xfer</span> <span class="op">=</span> <span class="ident">i2c_transfer_s</span> {
-    <span class="ident">msgv</span>: <span class="ident">msg</span>.<span class="ident">as_ptr</span>(),         <span class="comment">//  Array of I2C messages for the transfer</span>
-    <span class="ident">msgc</span>: <span class="ident">msg</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">size_t</span>,  <span class="comment">//  Number of messages in the array</span>
-  };
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Compose ioctl Argument
+  </span><span class="kw">let </span>xfer = i2c_transfer_s {
+    msgv: msg.as_ptr(),         <span class="comment">//  Array of I2C messages for the transfer
+    </span>msgc: msg.len() <span class="kw">as </span>size_t,  <span class="comment">//  Number of messages in the array
+  </span>};
 
-  <span class="comment">//  Execute I2C Transfers</span>
-  <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { 
-    <span class="ident">ioctl</span>(
-      <span class="ident">i2c</span>,              <span class="comment">//  I2C Port</span>
-      <span class="ident">I2CIOC_TRANSFER</span>,  <span class="comment">//  I2C Transfer</span>
-      <span class="kw-2">&amp;</span><span class="ident">xfer</span>             <span class="comment">//  I2C Messages for the transfer</span>
-    )
+  <span class="comment">//  Execute I2C Transfers
+  </span><span class="kw">let </span>ret = <span class="kw">unsafe </span>{ 
+    ioctl(
+      i2c,              <span class="comment">//  I2C Port
+      </span>I2CIOC_TRANSFER,  <span class="comment">//  I2C Transfer
+      </span><span class="kw-2">&amp;</span>xfer             <span class="comment">//  I2C Messages for the transfer
+    </span>)
   };
-  <span class="macro">assert!</span>(<span class="ident">ret</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>);</code></pre></div>
+  <span class="macro">assert!</span>(ret &gt;= <span class="number">0</span>);</code></pre></div>
 <p>The <strong>Register Value</strong> appears in our Receive Buffer…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Register Value must be BME280 Device ID (0x60)</span>
-  <span class="macro">assert!</span>(<span class="ident">buf</span>[<span class="number">0</span>] <span class="op">==</span> <span class="number">0x60</span>);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">//  Register Value must be BME280 Device ID (0x60)
+  </span><span class="macro">assert!</span>(buf[<span class="number">0</span>] == <span class="number">0x60</span>);
      
-  <span class="comment">//  Close the I2C Port</span>
-  <span class="kw">unsafe</span> { <span class="ident">close</span>(<span class="ident">i2c</span>); }
+  <span class="comment">//  Close the I2C Port
+  </span><span class="kw">unsafe </span>{ close(i2c); }
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/rust-i2c-nuttx#test-i2c-port">(See the Output Log)</a></p>
 <p>The above Rust code looks highly similar to the C version…</p>
@@ -514,34 +514,34 @@ Setup Read to [0xEF] + ACK
 <p>They are <strong>NuttX I2C Types</strong> that we have ported from C to Rust.</p>
 <p><strong>i2c_msg_s</strong> is the <strong>I2C Message Struct</strong> that defines each message that will be sent or received over I2C: <a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/lib.rs#L125-L153">nuttx-embedded-hal/src/lib.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// I2C Message Struct: I2C transaction segment beginning with a START. A number of these can</span>
-<span class="doccomment">/// be transferred together to form an arbitrary sequence of write/read</span>
-<span class="doccomment">/// transfer to an I2C device.</span>
-<span class="doccomment">/// Ported from C: https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L208-L215</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">i2c_msg_s</span> {
-    <span class="doccomment">/// I2C Frequency</span>
-    <span class="kw">pub</span> <span class="ident">frequency</span>: <span class="ident">u32</span>,
-    <span class="doccomment">/// I2C Address</span>
-    <span class="kw">pub</span> <span class="ident">addr</span>: <span class="ident">u16</span>,
-    <span class="doccomment">/// I2C Flags (I2C_M_*)</span>
-    <span class="kw">pub</span> <span class="ident">flags</span>: <span class="ident">u16</span>,
-    <span class="doccomment">/// Buffer to be transferred</span>
-    <span class="kw">pub</span> <span class="ident">buffer</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>,
-    <span class="doccomment">/// Length of the buffer in bytes</span>
-    <span class="kw">pub</span> <span class="ident">length</span>: <span class="ident">ssize_t</span>,
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// I2C Message Struct: I2C transaction segment beginning with a START. A number of these can
+/// be transferred together to form an arbitrary sequence of write/read
+/// transfer to an I2C device.
+/// Ported from C: https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L208-L215
+</span><span class="attribute">#[repr(C)]
+</span><span class="kw">pub struct </span>i2c_msg_s {
+    <span class="doccomment">/// I2C Frequency
+    </span><span class="kw">pub </span>frequency: u32,
+    <span class="doccomment">/// I2C Address
+    </span><span class="kw">pub </span>addr: u16,
+    <span class="doccomment">/// I2C Flags (I2C_M_*)
+    </span><span class="kw">pub </span>flags: u16,
+    <span class="doccomment">/// Buffer to be transferred
+    </span><span class="kw">pub </span>buffer: <span class="kw-2">*mut </span>u8,
+    <span class="doccomment">/// Length of the buffer in bytes
+    </span><span class="kw">pub </span>length: ssize_t,
 }</code></pre></div>
 <p><strong>i2c_transfer_s</strong> contains an <strong>array of I2C Message Structs</strong> that will be sent / received when we call ioctl() to execute the I2C Transfer…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// I2C Transfer Struct: This structure is used to communicate with the I2C character driver in</span>
-<span class="doccomment">/// order to perform IOCTL transfers.</span>
-<span class="doccomment">/// Ported from C: https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L231-L235</span>
-<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">i2c_transfer_s</span> {
-    <span class="doccomment">/// Array of I2C messages for the transfer</span>
-    <span class="kw">pub</span> <span class="ident">msgv</span>: <span class="kw-2">*const</span> <span class="ident">i2c_msg_s</span>,
-    <span class="doccomment">/// Number of messages in the array</span>
-    <span class="kw">pub</span> <span class="ident">msgc</span>: <span class="ident">size_t</span>,
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// I2C Transfer Struct: This structure is used to communicate with the I2C character driver in
+/// order to perform IOCTL transfers.
+/// Ported from C: https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L231-L235
+</span><span class="attribute">#[repr(C)]
+</span><span class="kw">pub struct </span>i2c_transfer_s {
+    <span class="doccomment">/// Array of I2C messages for the transfer
+    </span><span class="kw">pub </span>msgv: <span class="kw-2">*const </span>i2c_msg_s,
+    <span class="doccomment">/// Number of messages in the array
+    </span><span class="kw">pub </span>msgc: size_t,
 }</code></pre></div>
 <p><em>What about I2C_M_NOSTOP, I2C_M_READ and I2CIOC_TRANSFER?</em></p>
 <p><strong>I2C_M_NOSTOP</strong>, <strong>I2C_M_READ</strong> and <strong>I2CIOC_TRANSFER</strong> are <strong>NuttX I2C Constants</strong> that we have ported from C to Rust.</p>
@@ -554,55 +554,55 @@ Setup Read to [0xEF] + ACK
 <p><a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L97-L160">(Source)</a></p>
 <p>This conforms to the I2C Interface that’s expected by <strong>Rust Embedded HAL</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of I2C WriteRead</span>
-<span class="kw">impl</span> <span class="ident">i2c::WriteRead</span> <span class="kw">for</span> <span class="ident">I2c</span> {
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of I2C WriteRead
+</span><span class="kw">impl </span>i2c::WriteRead <span class="kw">for </span>I2c {
   ...
-  <span class="doccomment">/// Write `wbuf` to I2C Port and read `rbuf` from I2C Port.</span>
-  <span class="doccomment">/// We assume this is a Read I2C Register operation, with Register ID at `wbuf[0]`.</span>
-  <span class="doccomment">/// TODO: Handle other kinds of I2C operations</span>
-  <span class="kw">fn</span> <span class="ident">write_read</span>(
-      <span class="kw-2">&amp;mut</span> <span class="self">self</span>,       <span class="comment">//  I2C Bus</span>
-      <span class="ident">addr</span>: <span class="ident">u8</span>,        <span class="comment">//  I2C Address</span>
-      <span class="ident">wbuf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],     <span class="comment">//  Buffer to be sent (Register ID)</span>
-      <span class="ident">rbuf</span>: <span class="kw-2">&amp;mut</span> [<span class="ident">u8</span>]  <span class="comment">//  Buffer to be received</span>
-  ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span>  <span class="comment">//  In case of error, return an error code</span>
-  { ... }</code></pre></div>
+  <span class="doccomment">/// Write `wbuf` to I2C Port and read `rbuf` from I2C Port.
+  /// We assume this is a Read I2C Register operation, with Register ID at `wbuf[0]`.
+  /// TODO: Handle other kinds of I2C operations
+  </span><span class="kw">fn </span>write_read(
+      <span class="kw-2">&amp;mut </span><span class="self">self</span>,       <span class="comment">//  I2C Bus
+      </span>addr: u8,        <span class="comment">//  I2C Address
+      </span>wbuf: <span class="kw-2">&amp;</span>[u8],     <span class="comment">//  Buffer to be sent (Register ID)
+      </span>rbuf: <span class="kw-2">&amp;mut </span>[u8]  <span class="comment">//  Buffer to be received
+  </span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt;  <span class="comment">//  In case of error, return an error code
+  </span>{ ... }</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L97-L160">(Source)</a></p>
 <p><em>What about the calls to open() and close()?</em></p>
 <p>We moved open() into the <strong>new()</strong> constructor: <a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L340-L351">hal.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of I2C Bus</span>
-<span class="kw">impl</span> <span class="ident">I2c</span> {
-  <span class="doccomment">/// Create an I2C Bus from a Device Path (e.g. &quot;/dev/i2c0&quot;)</span>
-  <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">frequency</span>: <span class="ident">u32</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">i32</span><span class="op">&gt;</span> {
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of I2C Bus
+</span><span class="kw">impl </span>I2c {
+  <span class="doccomment">/// Create an I2C Bus from a Device Path (e.g. &quot;/dev/i2c0&quot;)
+  </span><span class="kw">pub fn </span>new(path: <span class="kw-2">&amp;</span>str, frequency: u32) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, i32&gt; {
 
-    <span class="comment">//  Open the NuttX Device Path (e.g. &quot;/dev/i2c0&quot;) for read-write</span>
-    <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="ident">open</span>(<span class="ident">path</span>, <span class="ident">O_RDWR</span>);
-    <span class="kw">if</span> <span class="ident">fd</span> <span class="op">&lt;</span> <span class="number">0</span> { <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">fd</span>) }
+    <span class="comment">//  Open the NuttX Device Path (e.g. &quot;/dev/i2c0&quot;) for read-write
+    </span><span class="kw">let </span>fd = open(path, O_RDWR);
+    <span class="kw">if </span>fd &lt; <span class="number">0 </span>{ <span class="kw">return </span><span class="prelude-val">Err</span>(fd) }
 
-    <span class="comment">//  Return the I2C Bus</span>
-    <span class="prelude-val">Ok</span>(<span class="self">Self</span> { <span class="ident">fd</span>, <span class="ident">frequency</span> })
+    <span class="comment">//  Return the I2C Bus
+    </span><span class="prelude-val">Ok</span>(<span class="self">Self </span>{ fd, frequency })
   }
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L492-L516">(<strong>open</strong> is defined here)</a></p>
 <p>And we moved close() into the <strong>drop()</strong> destructor: <a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L414-L420">hal.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of I2C Bus</span>
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">I2c</span> {
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of I2C Bus
+</span><span class="kw">impl </span>Drop <span class="kw">for </span>I2c {
 
-  <span class="doccomment">/// Close the I2C Bus</span>
-  <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-    <span class="kw">unsafe</span> { <span class="ident">close</span>(<span class="self">self</span>.<span class="ident">fd</span>) };
+  <span class="doccomment">/// Close the I2C Bus
+  </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+    <span class="kw">unsafe </span>{ close(<span class="self">self</span>.fd) };
   }
 }</code></pre></div>
 <p><strong>I2c</strong> Struct contains a NuttX File Descriptor and the I2C Frequency: <a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L454-L461">hal.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX I2C Bus</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">I2c</span> {
-  <span class="doccomment">/// NuttX File Descriptor</span>
-  <span class="ident">fd</span>: <span class="ident">i32</span>,
-  <span class="doccomment">/// I2C Frequency in Hz</span>
-  <span class="ident">frequency</span>: <span class="ident">u32</span>,
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX I2C Bus
+</span><span class="kw">pub struct </span>I2c {
+  <span class="doccomment">/// NuttX File Descriptor
+  </span>fd: i32,
+  <span class="doccomment">/// I2C Frequency in Hz
+  </span>frequency: u32,
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/rust-i2c-nuttx#test-i2c-hal">(See the Output Log)</a></p>
 <p><img src="https://lupyuen.github.io/images/rusti2c-code8a.png" alt="Write I2C Register in Embedded HAL" /></p>
@@ -623,67 +623,67 @@ Setup Read to [0xEF] + ACK
 </ol>
 <p>Here’s the implementation in NuttX Embedded HAL: <a href="https://github.com/lupyuen/nuttx-embedded-hal/blob/main/src/hal.rs#L33-L96">hal.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of I2C Write</span>
-<span class="kw">impl</span> <span class="ident">i2c::Write</span> <span class="kw">for</span> <span class="ident">I2c</span> {
-    <span class="doccomment">/// Error Type</span>
-    <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">i32</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// NuttX Implementation of I2C Write
+</span><span class="kw">impl </span>i2c::Write <span class="kw">for </span>I2c {
+    <span class="doccomment">/// Error Type
+    </span><span class="kw">type </span>Error = i32;
 
-    <span class="doccomment">/// Write `buf` to I2C Port.</span>
-    <span class="doccomment">/// We assume this is a Write I2C Register operation, with Register ID at `buf[0]`.</span>
-    <span class="doccomment">/// TODO: Handle other kinds of I2C operations</span>
-    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">addr</span>: <span class="ident">u8</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
-        <span class="comment">//  Copy to local buffer because we need a mutable reference</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf2</span> <span class="op">=</span> [<span class="number">0</span> ; <span class="number">64</span>];
-        <span class="macro">assert!</span>(<span class="ident">buf</span>.<span class="ident">len</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="ident">buf2</span>.<span class="ident">len</span>());
-        <span class="ident">buf2</span>[..<span class="ident">buf</span>.<span class="ident">len</span>()].<span class="ident">copy_from_slice</span>(<span class="ident">buf</span>);
+    <span class="doccomment">/// Write `buf` to I2C Port.
+    /// We assume this is a Write I2C Register operation, with Register ID at `buf[0]`.
+    /// TODO: Handle other kinds of I2C operations
+    </span><span class="kw">fn </span>write(<span class="kw-2">&amp;mut </span><span class="self">self</span>, addr: u8, buf: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
+        <span class="comment">//  Copy to local buffer because we need a mutable reference
+        </span><span class="kw">let </span><span class="kw-2">mut </span>buf2 = [<span class="number">0 </span>; <span class="number">64</span>];
+        <span class="macro">assert!</span>(buf.len() &lt;= buf2.len());
+        buf2[..buf.len()].copy_from_slice(buf);
 
-        <span class="comment">//  Buffer for received I2C data</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rbuf</span> <span class="op">=</span> [<span class="number">0</span> ; <span class="number">1</span>];
+        <span class="comment">//  Buffer for received I2C data
+        </span><span class="kw">let </span><span class="kw-2">mut </span>rbuf = [<span class="number">0 </span>; <span class="number">1</span>];
 
-        <span class="comment">//  Compose I2C Transfer</span>
-        <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> [
-            <span class="comment">//  First I2C Message: Send Register ID and I2C Data as I2C Sub Address</span>
-            <span class="ident">i2c_msg_s</span> {
-                <span class="ident">frequency</span>: <span class="self">self</span>.<span class="ident">frequency</span>,  <span class="comment">//  I2C Frequency</span>
-                <span class="ident">addr</span>:      <span class="ident">addr</span> <span class="kw">as</span> <span class="ident">u16</span>,     <span class="comment">//  I2C Address</span>
-                <span class="ident">buffer</span>:    <span class="ident">buf2</span>.<span class="ident">as_mut_ptr</span>(),     <span class="comment">//  Buffer to be sent</span>
-                <span class="ident">length</span>:    <span class="ident">buf</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">ssize_t</span>,  <span class="comment">//  Number of bytes to send</span>
+        <span class="comment">//  Compose I2C Transfer
+        </span><span class="kw">let </span>msg = [
+            <span class="comment">//  First I2C Message: Send Register ID and I2C Data as I2C Sub Address
+            </span>i2c_msg_s {
+                frequency: <span class="self">self</span>.frequency,  <span class="comment">//  I2C Frequency
+                </span>addr:      addr <span class="kw">as </span>u16,     <span class="comment">//  I2C Address
+                </span>buffer:    buf2.as_mut_ptr(),     <span class="comment">//  Buffer to be sent
+                </span>length:    buf.len() <span class="kw">as </span>ssize_t,  <span class="comment">//  Number of bytes to send
 
-                <span class="comment">//  For BL602: Register ID must be passed as I2C Sub Address</span>
-                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;riscv32&quot;</span>)]</span>  <span class="comment">//  If architecture is RISC-V 32-bit...</span>
-                <span class="ident">flags</span>:     <span class="ident"><span class="kw">crate</span>::I2C_M_NOSTOP</span>,  <span class="comment">//  I2C Flags: Send I2C Sub Address</span>
+                //  For BL602: Register ID must be passed as I2C Sub Address
+                </span><span class="attribute">#[cfg(target_arch = <span class="string">&quot;riscv32&quot;</span>)]  </span><span class="comment">//  If architecture is RISC-V 32-bit...
+                </span>flags:     <span class="kw">crate</span>::I2C_M_NOSTOP,  <span class="comment">//  I2C Flags: Send I2C Sub Address
                 
-                <span class="comment">//  Otherwise pass Register ID as I2C Data</span>
-                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;riscv32&quot;</span>))]</span>  <span class="comment">//  If architecture is not RISC-V 32-bit...</span>
-                <span class="ident">flags</span>:     <span class="number">0</span>,  <span class="comment">//  I2C Flags: None</span>
+                //  Otherwise pass Register ID as I2C Data
+                </span><span class="attribute">#[cfg(not(target_arch = <span class="string">&quot;riscv32&quot;</span>))]  </span><span class="comment">//  If architecture is not RISC-V 32-bit...
+                </span>flags:     <span class="number">0</span>,  <span class="comment">//  I2C Flags: None
 
-                <span class="comment">//  TODO: Check for BL602 specifically (by target_abi?), not just RISC-V 32-bit</span>
-            },
-            <span class="comment">//  Second I2C Message: Read I2C Data, because this forces BL602 to send the first message correctly</span>
-            <span class="ident">i2c_msg_s</span> {
-                <span class="ident">frequency</span>: <span class="self">self</span>.<span class="ident">frequency</span>,  <span class="comment">//  I2C Frequency</span>
-                <span class="ident">addr</span>:      <span class="ident">addr</span> <span class="kw">as</span> <span class="ident">u16</span>,     <span class="comment">//  I2C Address</span>
-                <span class="ident">buffer</span>:    <span class="ident">rbuf</span>.<span class="ident">as_mut_ptr</span>(),      <span class="comment">//  Buffer to be received</span>
-                <span class="ident">length</span>:    <span class="ident">rbuf</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">ssize_t</span>,  <span class="comment">//  Number of bytes to receive</span>
-                <span class="ident">flags</span>:     <span class="ident">I2C_M_READ</span>,  <span class="comment">//  I2C Flags: Read I2C Data</span>
-            },
+                //  TODO: Check for BL602 specifically (by target_abi?), not just RISC-V 32-bit
+            </span>},
+            <span class="comment">//  Second I2C Message: Read I2C Data, because this forces BL602 to send the first message correctly
+            </span>i2c_msg_s {
+                frequency: <span class="self">self</span>.frequency,  <span class="comment">//  I2C Frequency
+                </span>addr:      addr <span class="kw">as </span>u16,     <span class="comment">//  I2C Address
+                </span>buffer:    rbuf.as_mut_ptr(),      <span class="comment">//  Buffer to be received
+                </span>length:    rbuf.len() <span class="kw">as </span>ssize_t,  <span class="comment">//  Number of bytes to receive
+                </span>flags:     I2C_M_READ,  <span class="comment">//  I2C Flags: Read I2C Data
+            </span>},
         ];
         
-        <span class="comment">//  Compose ioctl Argument to write I2C Registers</span>
-        <span class="kw">let</span> <span class="ident">xfer</span> <span class="op">=</span> <span class="ident">i2c_transfer_s</span> {
-            <span class="ident">msgv</span>: <span class="ident">msg</span>.<span class="ident">as_ptr</span>(),         <span class="comment">//  Array of I2C messages for the transfer</span>
-            <span class="ident">msgc</span>: <span class="ident">msg</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">size_t</span>,  <span class="comment">//  Number of messages in the array</span>
-        };
+        <span class="comment">//  Compose ioctl Argument to write I2C Registers
+        </span><span class="kw">let </span>xfer = i2c_transfer_s {
+            msgv: msg.as_ptr(),         <span class="comment">//  Array of I2C messages for the transfer
+            </span>msgc: msg.len() <span class="kw">as </span>size_t,  <span class="comment">//  Number of messages in the array
+        </span>};
 
-        <span class="comment">//  Execute I2C Transfer to write I2C Registers</span>
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">unsafe</span> { 
-            <span class="ident">ioctl</span>(
-                <span class="self">self</span>.<span class="ident">fd</span>,          <span class="comment">//  I2C Port</span>
-                <span class="ident">I2CIOC_TRANSFER</span>,  <span class="comment">//  I2C Transfer</span>
-                <span class="kw-2">&amp;</span><span class="ident">xfer</span>             <span class="comment">//  I2C Messages for the transfer</span>
-            )
+        <span class="comment">//  Execute I2C Transfer to write I2C Registers
+        </span><span class="kw">let </span>ret = <span class="kw">unsafe </span>{ 
+            ioctl(
+                <span class="self">self</span>.fd,          <span class="comment">//  I2C Port
+                </span>I2CIOC_TRANSFER,  <span class="comment">//  I2C Transfer
+                </span><span class="kw-2">&amp;</span>xfer             <span class="comment">//  I2C Messages for the transfer
+            </span>)
         };
-        <span class="macro">assert!</span>(<span class="ident">ret</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span>);   
+        <span class="macro">assert!</span>(ret &gt;= <span class="number">0</span>);   
         <span class="prelude-val">Ok</span>(())
     }
 }</code></pre></div>
