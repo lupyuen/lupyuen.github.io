@@ -678,6 +678,8 @@ In a while we'll see that Start of RAM is __`0x4000` `0000`__ and Image Load Off
 
 [(UPDATE: Start of RAM should be __`0x4008` `0000`__ instead)](https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log)
 
+[(UPDATE: We don't need to change the Image Load Offset)](https://github.com/apache/incubator-nuttx/pull/7692#issuecomment-1327103980)
+
 (What's the significance of `0x4028` `0000`? Something specific to NXP i.MX8?)
 
 ![For "Language" select AARCH64:LE:v8A:default](https://lupyuen.github.io/images/arm-ghidra7.png)
@@ -1283,6 +1285,8 @@ This is how we analyse the __PinePhone Linux Kernel Image__ with [__Ghidra__](ht
     __Image Load Offset__ is `0` according to the Linux Kernel Header (offset `0x08`)
 
     [(UPDATE: Start of RAM should be __`0x4008` `0000`__ instead)](https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log)
+
+    [(UPDATE: We don't need to change the Image Load Offset)](https://github.com/apache/incubator-nuttx/pull/7692#issuecomment-1327103980)
 
 1.  So we shift our PinePhone Image to start at __`0x4000` `0000`__...
 

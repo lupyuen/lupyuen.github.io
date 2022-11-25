@@ -435,6 +435,8 @@ real_start: ...
 
 [(__`__HEAD_FLAGS`__ is defined here)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L41-L49)
 
+[(UPDATE: We don't need to change the Image Load Offset)](https://github.com/apache/incubator-nuttx/pull/7692#issuecomment-1327103980)
+
 _What's the value of `__start`?_
 
 Remember __`kernel_addr_r`__, the [__Kernel Start Address__](https://lupyuen.github.io/articles/uboot#boot-address) from U-Boot?
