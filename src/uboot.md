@@ -886,6 +886,10 @@ Follow these steps to build and boot the __`master` branch of NuttX__...
 
     [(Clone the git Repositories)](https://nuttx.apache.org/docs/latest/quickstart/install.html#download-nuttx)
 
+Or download the __Build Outputs__ from...
+
+-   [__"Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-11.0.0-pinephone)
+
 We have updated these articles to point to the PinePhone code in NuttX Mainline...
 
 -   [__"Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone"__](https://lupyuen.github.io/articles/arm)
