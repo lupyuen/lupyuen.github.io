@@ -83,16 +83,17 @@
 <li><a href="#nuttx-source-code">14 NuttX Source Code</a><ul></ul></li>
 <li><a href="#whats-next">15 What’s Next</a><ul></ul></li>
 <li><a href="#notes">16 Notes</a><ul></ul></li>
-<li><a href="#appendix-build-nuttx-for-pinephone">17 Appendix: Build NuttX for PinePhone</a><ul>
-<li><a href="#download-nuttx">17.1 Download NuttX</a><ul></ul></li>
-<li><a href="#install-prerequisites">17.2 Install Prerequisites</a><ul></ul></li>
-<li><a href="#download-toolchain">17.3 Download Toolchain</a><ul></ul></li>
-<li><a href="#build-nuttx">17.4 Build NuttX</a><ul></ul></li>
-<li><a href="#output-files">17.5 Output Files</a><ul></ul></li></ul></li>
-<li><a href="#appendix-allwinner-a64-uart">18 Appendix: Allwinner A64 UART</a><ul>
-<li><a href="#wait-for-uart-ready">18.1 Wait for UART Ready</a><ul></ul></li>
-<li><a href="#initialise-uart">18.2 Initialise UART</a><ul></ul></li>
-<li><a href="#uart-driver">18.3 UART Driver</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>28 Aug 2022</em></p>
+<li><a href="#appendix-pinephone-is-now-supported-by-apache-nuttx-rtos">17 Appendix: PinePhone is now supported by Apache NuttX RTOS</a><ul></ul></li>
+<li><a href="#appendix-build-nuttx-for-pinephone">18 Appendix: Build NuttX for PinePhone</a><ul>
+<li><a href="#download-nuttx">18.1 Download NuttX</a><ul></ul></li>
+<li><a href="#install-prerequisites">18.2 Install Prerequisites</a><ul></ul></li>
+<li><a href="#download-toolchain">18.3 Download Toolchain</a><ul></ul></li>
+<li><a href="#build-nuttx">18.4 Build NuttX</a><ul></ul></li>
+<li><a href="#output-files">18.5 Output Files</a><ul></ul></li></ul></li>
+<li><a href="#appendix-allwinner-a64-uart">19 Appendix: Allwinner A64 UART</a><ul>
+<li><a href="#wait-for-uart-ready">19.1 Wait for UART Ready</a><ul></ul></li>
+<li><a href="#initialise-uart">19.2 Initialise UART</a><ul></ul></li>
+<li><a href="#uart-driver">19.3 UART Driver</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>28 Aug 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/uboot-title.png" alt="Apache NuttX RTOS booting on Pine64 PinePhone" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#nuttx-boot-log"><em>Apache NuttX RTOS booting on Pine64 PinePhone</em></a></p>
 <p>Suppose we’re creating our own <strong>Operating System</strong> (non-Linux) for <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>…</p>
@@ -807,10 +808,12 @@ nsh&gt; ls /dev
 <p>PinePhone’s <strong>LTE Modem</strong> is covered in pages 198 to 204.</p>
 </li>
 </ol>
+<h1 id="appendix-pinephone-is-now-supported-by-apache-nuttx-rtos"><a href="#appendix-pinephone-is-now-supported-by-apache-nuttx-rtos">17 Appendix: PinePhone is now supported by Apache NuttX RTOS</a></h1>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/arm-build.png" alt="Build NuttX" /></p>
-<h1 id="appendix-build-nuttx-for-pinephone"><a href="#appendix-build-nuttx-for-pinephone">17 Appendix: Build NuttX for PinePhone</a></h1>
+<h1 id="appendix-build-nuttx-for-pinephone"><a href="#appendix-build-nuttx-for-pinephone">18 Appendix: Build NuttX for PinePhone</a></h1>
 <p>Follow these steps to build <strong>Apache NuttX RTOS</strong> for PinePhone…</p>
-<h2 id="download-nuttx"><a href="#download-nuttx">17.1 Download NuttX</a></h2>
+<h2 id="download-nuttx"><a href="#download-nuttx">18.1 Download NuttX</a></h2>
 <p>Download the Source Code for NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Create NuttX Directory
 mkdir nuttx
@@ -831,12 +834,12 @@ git clone \
   apps
 
 # We&#39;ll build NuttX inside nuttx/nuttx
-cd nuttx</code></pre></div><h2 id="install-prerequisites"><a href="#install-prerequisites">17.2 Install Prerequisites</a></h2>
+cd nuttx</code></pre></div><h2 id="install-prerequisites"><a href="#install-prerequisites">18.2 Install Prerequisites</a></h2>
 <p>Install the <strong>Build Prerequisites</strong> below, but skip the RISC-V Toolchain…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></li>
 </ul>
-<h2 id="download-toolchain"><a href="#download-toolchain">17.3 Download Toolchain</a></h2>
+<h2 id="download-toolchain"><a href="#download-toolchain">18.3 Download Toolchain</a></h2>
 <p>Download the Arm Toolchain for <strong>AArch64 ELF Bare-Metal Target <code>aarch64-none-elf</code></strong>…</p>
 <ul>
 <li><a href="https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads"><strong>Arm GNU Toolchain Downloads</strong></a></li>
@@ -858,7 +861,7 @@ export PATH=&quot;$PATH:$HOME/gcc-arm-11.2-2022.02-x86_64-aarch64-none-elf/bin&q
 export PATH=&quot;$PATH:/Applications/ArmGNUToolchain/11.3.rel1/aarch64-none-elf/bin&quot;</code></pre></div>
 <p>Check the Arm Toolchain…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ aarch64-none-elf-gcc -v
-gcc version 11.3.1 20220712 (Arm GNU Toolchain 11.3.Rel1)</code></pre></div><h2 id="build-nuttx"><a href="#build-nuttx">17.4 Build NuttX</a></h2>
+gcc version 11.3.1 20220712 (Arm GNU Toolchain 11.3.Rel1)</code></pre></div><h2 id="build-nuttx"><a href="#build-nuttx">18.4 Build NuttX</a></h2>
 <p>Finally we <strong>configure and build</strong> NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Configure NuttX for Arm Cortex-A53 Single Core
 ./tools/configure.sh -l qemu-a53:nsh
@@ -880,7 +883,7 @@ aarch64-none-elf-objdump \
 <li><a href="https://lupyuen.github.io/articles/nuttx#enable-basic"><strong>“Enable BASIC”</strong></a></li>
 </ul>
 <p>Then run <strong><code>make</code></strong> to rebuild NuttX.</p>
-<h2 id="output-files"><a href="#output-files">17.5 Output Files</a></h2>
+<h2 id="output-files"><a href="#output-files">18.5 Output Files</a></h2>
 <p>The NuttX Output Files may be found here…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.12"><strong>Apache NuttX RTOS for PinePhone</strong></a></li>
@@ -902,7 +905,7 @@ aarch64-none-elf-objdump \
 <ul>
 <li><a href="https://lupyuen.github.io/articles/arm#appendix-analyse-nuttx-image-with-ghidra"><strong>“Analyse NuttX Image with Ghidra”</strong></a></li>
 </ul>
-<h1 id="appendix-allwinner-a64-uart"><a href="#appendix-allwinner-a64-uart">18 Appendix: Allwinner A64 UART</a></h1>
+<h1 id="appendix-allwinner-a64-uart"><a href="#appendix-allwinner-a64-uart">19 Appendix: Allwinner A64 UART</a></h1>
 <p>Earlier we said that our implementation of <strong>Allwinner A64 UART</strong> is incomplete…</p>
 <ul>
 <li>
@@ -918,7 +921,7 @@ aarch64-none-elf-objdump \
 <p>Let’s talk about the implementation…</p>
 <p><img src="https://lupyuen.github.io/images/uboot-uart2.png" alt="Allwinner A64 UART Register UART_THR" /></p>
 <p><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><em>Allwinner A64 UART Register UART_THR</em></a></p>
-<h2 id="wait-for-uart-ready"><a href="#wait-for-uart-ready">18.1 Wait for UART Ready</a></h2>
+<h2 id="wait-for-uart-ready"><a href="#wait-for-uart-ready">19.1 Wait for UART Ready</a></h2>
 <p><em>How do we wait for the UART Port to be ready before we transmit data?</em></p>
 <p>See the pic above. According to the <strong>Allwinner A64 UART</strong> doc (page 563, “UART”)…</p>
 <ul>
@@ -947,7 +950,7 @@ aarch64-none-elf-objdump \
 
   /* If UART is not ready (THRE=0), jump back to label `1:` */
   b.eq  1b                     
-.endm</code></pre></div><h2 id="initialise-uart"><a href="#initialise-uart">18.2 Initialise UART</a></h2>
+.endm</code></pre></div><h2 id="initialise-uart"><a href="#initialise-uart">19.2 Initialise UART</a></h2>
 <p><em>How will we initialise the UART Port?</em></p>
 <p>According to the <strong>Allwinner A64 UART</strong> doc (page 562, “UART”)…</p>
 <ul>
@@ -994,7 +997,7 @@ strb w0, [x15, #0x0C]</code></pre></div></li>
 </li>
 </ul>
 <p><strong>TODO:</strong> What is the Serial Clock Frequency (SCLK)?</p>
-<h2 id="uart-driver"><a href="#uart-driver">18.3 UART Driver</a></h2>
+<h2 id="uart-driver"><a href="#uart-driver">19.3 UART Driver</a></h2>
 <p>We have implemented the <strong>UART Driver</strong> for PinePhone’s Allwinner A64 UART Port…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c">arch/arm64/src/qemu/qemu_serial.c</a> </li>
