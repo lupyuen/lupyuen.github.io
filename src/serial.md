@@ -6,6 +6,8 @@
 
 _PinePhone Hacking with Pinebook Pro and BLÅHAJ_
 
+__UPDATE:__ PinePhone is now officially supported by Apache NuttX RTOS [(See this)](https://lupyuen.github.io/articles/uboot#appendix-pinephone-is-now-supported-by-apache-nuttx-rtos)
+
 Last week we spoke about creating our own __Operating System__ for [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)...
 
 -   [__"PinePhone boots Apache NuttX RTOS"__](https://lupyuen.github.io/articles/uboot)

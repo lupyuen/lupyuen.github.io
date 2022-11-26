@@ -6,6 +6,8 @@
 
 _Ghidra with Apache NuttX RTOS for Arm Cortex-A53_
 
+__UPDATE:__ PinePhone is now officially supported by Apache NuttX RTOS [(See this)](https://lupyuen.github.io/articles/uboot#appendix-pinephone-is-now-supported-by-apache-nuttx-rtos)
+
 [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) (Real-Time Operating System) runs on 64-bit __Arm Cortex-A53__ with Multiple Cores...
 
 -   [__NuttX on Arm Cortex-A53__](https://github.com/apache/incubator-nuttx/tree/master/boards/arm64/qemu/qemu-a53)

@@ -4,6 +4,8 @@
 
 ![Tracing Arm64 Interrupts on QEMU Emulator can get... Really messy](https://lupyuen.github.io/images/interrupt-title.jpg)
 
+__UPDATE:__ PinePhone is now officially supported by Apache NuttX RTOS [(See this)](https://lupyuen.github.io/articles/uboot#appendix-pinephone-is-now-supported-by-apache-nuttx-rtos)
+
 Creating our own __Operating System__ (non-Linux) for [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) can be super challenging...
 
 -   How does PinePhone handle Interrupts?

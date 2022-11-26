@@ -6,6 +6,8 @@
 
 [_Apache NuttX RTOS booting on Pine64 PinePhone_](https://github.com/lupyuen/pinephone-nuttx#nuttx-boot-log)
 
+__UPDATE:__ PinePhone is now officially supported by Apache NuttX RTOS [(See this)](https://lupyuen.github.io/articles/uboot#appendix-pinephone-is-now-supported-by-apache-nuttx-rtos)
+
 Suppose we're creating our own __Operating System__ (non-Linux) for [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)...
 
 -   What's the File Format?
@@ -873,6 +875,16 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     PinePhone's __LTE Modem__ is covered in pages 198 to 204.
 
 # Appendix: PinePhone is now supported by Apache NuttX RTOS
+
+PinePhone is now officially supported by __Apache NuttX Mainline!__
+
+Follow these steps to build and boot the __`master` branch of NuttX__...
+
+-   [__"Apache NuttX RTOS for PINE64 PinePhone"__](https://github.com/apache/nuttx/blob/master/Documentation/platforms/arm/a64/boards/pinephone/index.rst)
+
+    [(Install the Prerequisites)](https://nuttx.apache.org/docs/latest/quickstart/install.html#prerequisites)
+
+    [(Clone the git Repositories)](https://nuttx.apache.org/docs/latest/quickstart/install.html#download-nuttx)
 
 TODO
 

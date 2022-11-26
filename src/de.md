@@ -6,6 +6,8 @@
 
 _PinePhone rendering Mandelbrot Set on Apache NuttX RTOS_
 
+__UPDATE:__ PinePhone is now officially supported by Apache NuttX RTOS [(See this)](https://lupyuen.github.io/articles/uboot#appendix-pinephone-is-now-supported-by-apache-nuttx-rtos)
+
 In the last 2 articles we talked about [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) (pic above) and how we built a __Display Driver__ for PinePhone's MIPI Display Serial Interface...
 
 -   [__"Understanding PinePhone's Display (MIPI DSI)"__](https://lupyuen.github.io/articles/dsi)
