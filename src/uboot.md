@@ -876,9 +876,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: PinePhone is now supported by Apache NuttX RTOS
 
-PinePhone is now officially supported by __Apache NuttX Mainline!__
+PinePhone is now officially supported by [__Apache NuttX Mainline!__](https://github.com/apache/nuttx)
 
-Follow these steps to build and boot the __`master` branch of NuttX__...
+Follow these steps to build and boot the [__`master` branch of NuttX__](https://github.com/apache/nuttx)...
 
 -   [__"Apache NuttX RTOS for PINE64 PinePhone"__](https://github.com/apache/nuttx/blob/master/Documentation/platforms/arm/a64/boards/pinephone/index.rst)
 
@@ -890,7 +890,7 @@ Or download the __Build Outputs__ from...
 
 -   [__"Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-11.0.0-pinephone)
 
-This is what we'll see on the __Serial Console__...
+We'll see on the __Serial Console__...
 
 -   [__"Log of Apache NuttX RTOS on PinePhone"__](https://gist.github.com/lupyuen/e49a22a9e39b7c024b984bea40377712)
 
