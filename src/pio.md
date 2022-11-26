@@ -300,9 +300,21 @@ Follow these steps to __download NuttX__ and copy to a microSD Card...
 
 -   [__"PinePhone Boots NuttX"__](https://lupyuen.github.io/articles/uboot#pinephone-boots-nuttx)
 
-If we're building NuttX ourselves, check that the __BASIC Interpreter__ has been enabled in the NuttX Build...
+If we're building NuttX ourselves...
 
--   [__"Enable BASIC"__](https://lupyuen.github.io/articles/nuttx#enable-basic)
+-   Copy the code from [__hello_main.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c) to...
+
+    ```text
+    apps/examples/hello/hello_main.c
+    ```
+
+-   Check that the __BASIC Interpreter__ has been enabled in the NuttX Build...
+
+    [__"Enable BASIC"__](https://lupyuen.github.io/articles/nuttx#enable-basic)
+
+-   Apply this patch to enable __Peek and Poke__ in BASIC...
+
+    [__"Enable Peek and Poke in BASIC"__](https://lupyuen.github.io/articles/pio#appendix-enable-peek-and-poke-in-basic)
 
 Connect PinePhone to our computer with a __USB Serial Debug Cable__...
 
@@ -820,6 +832,10 @@ Below are the interesting bits from the PinePhone Linux Device Tree: [sun50i-a64
 _[Allwinner A64 User Manual (Page 498)](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)_
 
 ## LCD Controller (TCON0)
+
+Check out the article...
+
+-   [__"Rendering PinePhone's Display (DE and TCON0)"__](https://lupyuen.github.io/articles/de)
 
 Inside the Allwinner A64 SoC, TCON0 is the [__Timing Controller__](https://www.kernel.org/doc/Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt) for PinePhone's LCD Display.
 
