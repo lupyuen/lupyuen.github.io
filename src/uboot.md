@@ -890,6 +890,10 @@ Or download the __Build Outputs__ from...
 
 -   [__"Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-11.0.0-pinephone)
 
+This is what we'll see on the __Serial Console__...
+
+-   [__"Log of Apache NuttX RTOS on PinePhone"__](https://gist.github.com/lupyuen/e49a22a9e39b7c024b984bea40377712)
+
 We have updated these articles to point to the PinePhone code in NuttX Mainline...
 
 -   [__"Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone"__](https://lupyuen.github.io/articles/arm)
@@ -901,6 +905,30 @@ We have updated these articles to point to the PinePhone code in NuttX Mainline.
 -   [__"NuttX RTOS for PinePhone: UART Driver"__](https://lupyuen.github.io/articles/serial)
 
 -   [__"NuttX RTOS for PinePhone: Blinking the LEDs"__](https://lupyuen.github.io/articles/pio)
+
+__Upcoming Features__ for NuttX on PinePhone...
+
+-   Fix the garbled __Startup Messages__
+
+    [(More about this)](https://github.com/apache/nuttx/pull/7692)
+
+-   __GPIO and PWM Drivers__ for Allwinner A64
+
+    [(Needed for PinePhone Backlight)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#backlight_enable)
+
+-   __MIPI Display Serial Interface Driver__ for Allwinner A64
+
+    [(Based on this)](https://lupyuen.github.io/articles/dsi2)
+
+-   __Display Engine Driver__ for Allwinner A64
+
+    [(Based on this)](https://lupyuen.github.io/articles/de2)
+
+-   __DPHY and TCON0 Drivers__ for Allwinner A64
+
+    [(Based on this)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dphy_enable)
+
+And we will be able to render some graphics on PinePhone. Stay Tuned!
 
 ![Build NuttX](https://lupyuen.github.io/images/arm-build.png)
 
