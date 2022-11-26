@@ -821,9 +821,27 @@ nsh&gt; ls /dev
 <p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html#download-nuttx">(Clone the git Repositories)</a></p>
 </li>
 </ul>
-<p>TODO</p>
+<p>We have updated these articles to point to the PinePhone code in NuttX Mainline…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/arm"><strong>“Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/uboot"><strong>“PinePhone boots Apache NuttX RTOS”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/interrupt"><strong>“NuttX RTOS for PinePhone: Fixing the Interrupts”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/serial"><strong>“NuttX RTOS for PinePhone: UART Driver”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/pio"><strong>“NuttX RTOS for PinePhone: Blinking the LEDs”</strong></a></p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/arm-build.png" alt="Build NuttX" /></p>
 <h1 id="appendix-build-nuttx-for-pinephone"><a href="#appendix-build-nuttx-for-pinephone">18 Appendix: Build NuttX for PinePhone</a></h1>
+<p><strong>UPDATE:</strong> PinePhone is now officially supported by Apache NuttX RTOS <a href="https://lupyuen.github.io/articles/uboot#appendix-pinephone-is-now-supported-by-apache-nuttx-rtos">(See this)</a></p>
 <p>Follow these steps to build <strong>Apache NuttX RTOS</strong> for PinePhone…</p>
 <h2 id="download-nuttx"><a href="#download-nuttx">18.1 Download NuttX</a></h2>
 <p>Download the Source Code for NuttX…</p>
@@ -833,16 +851,12 @@ cd nuttx
 
 # Download NuttX OS
 git clone \
-  --recursive \
-  --branch pinephone \
-  https://github.com/lupyuen/incubator-nuttx \
+  https://github.com/apache/nuttx \
   nuttx
 
 # Download NuttX Apps
 git clone \
-  --recursive \
-  --branch pinephone \
-  https://github.com/lupyuen/incubator-nuttx-apps \
+  https://github.com/apache/nuttx-apps \
   apps
 
 # We&#39;ll build NuttX inside nuttx/nuttx
@@ -852,9 +866,12 @@ cd nuttx</code></pre></div><h2 id="install-prerequisites"><a href="#install-prer
 <li><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></li>
 </ul>
 <h2 id="download-toolchain"><a href="#download-toolchain">18.3 Download Toolchain</a></h2>
-<p>Download the Arm Toolchain for <strong>AArch64 ELF Bare-Metal Target <code>aarch64-none-elf</code></strong>…</p>
+<p>Download the Arm Toolchain for <strong>AArch64 Bare-Metal Target <code>aarch64-none-elf</code></strong>…</p>
 <ul>
-<li><a href="https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads"><strong>Arm GNU Toolchain Downloads</strong></a></li>
+<li>
+<p><a href="https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads"><strong>Arm GNU Toolchain Downloads</strong></a></p>
+<p>(Skip the section for Beta Releases)</p>
+</li>
 </ul>
 <p>For Linux x64 and WSL:</p>
 <ul>
@@ -876,6 +893,7 @@ export PATH=&quot;$PATH:/Applications/ArmGNUToolchain/11.3.rel1/aarch64-none-elf
 gcc version 11.3.1 20220712 (Arm GNU Toolchain 11.3.Rel1)</code></pre></div><h2 id="build-nuttx"><a href="#build-nuttx">18.4 Build NuttX</a></h2>
 <p>Finally we <strong>configure and build</strong> NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Configure NuttX for Arm Cortex-A53 Single Core
+# For PinePhone: Change &quot;qemu-armv8a:nsh&quot; to &quot;pinephone:nsh&quot;
 ./tools/configure.sh -l qemu-armv8a:nsh
 
 # Build NuttX
@@ -895,6 +913,11 @@ aarch64-none-elf-objdump \
 <li><a href="https://lupyuen.github.io/articles/nuttx#enable-basic"><strong>“Enable BASIC”</strong></a></li>
 </ul>
 <p>Then run <strong><code>make</code></strong> to rebuild NuttX.</p>
+<p>If the build fails with this error…</p>
+<div class="example-wrap"><pre class="language-text"><code>token &quot;@&quot; is not valid in preprocessor</code></pre></div>
+<p>Look for this file in the Arm64 Toolchain…</p>
+<div class="example-wrap"><pre class="language-text"><code>gcc-arm-none-eabi/arm-none-eabi/include/_newlib_version.h</code></pre></div>
+<p>And <a href="https://github.com/apache/incubator-nuttx/pull/7284/commits/518b0eb31cb66f25b590ae9a79ab16c319b96b94#diff-12291efd8a0ded1bc38bad733d99e4840ae5112b465c04287f91ba5169612c73"><strong>apply this patch</strong></a>.</p>
 <h2 id="output-files"><a href="#output-files">18.5 Output Files</a></h2>
 <p>The NuttX Output Files may be found here…</p>
 <ul>
