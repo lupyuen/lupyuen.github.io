@@ -84,7 +84,6 @@ _Allwinner A64 runs on Arm GIC Version 2_
 _What's this GIC error we saw earlier?_
 
 ```text
-HELLO NUTTX ON PINEPHONE!
 - Ready to Boot CPU
 - Boot from EL2
 - Boot from EL1
@@ -126,6 +125,8 @@ int arm64_gic_initialize(void) {
   DEBUGASSERT(version == 2);
 ```
 
+[(Update)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_gicv2.c#L669-L706)
+
 Here's the output...
 
 ```text
@@ -150,7 +151,7 @@ According to [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_
 | GIC_DIST | `0x01C8` `0000` + `0x1000`| GIC Distributor (GICD)
 | GIC_CPUIF | `0x01C8` `0000` + `0x2000`| GIC CPU Interface (GICR)
 
-Which we define in NuttX as: [arch/arm64/include/qemu/chip.h](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/include/qemu/chip.h#L38-L62)
+Which we define in NuttX as: [arch/arm64/include/a64/chip.h](https://github.com/apache/nuttx/blob/master/arch/arm64/include/a64/chip.h#L39-L44)
 
 ```c
 // PinePhone Generic Interrupt Controller
@@ -362,7 +363,7 @@ compatible = "arm,cortex-a15-gic";
 
 Which we defined in NuttX at...
 
--   [arch/arm64/include/qemu/chip.h](https://github.com/lupyuen/incubator-nuttx/blob/gicv2/arch/arm64/include/qemu/chip.h#L38-L40)
+-   [arch/arm64/include/qemu/chip.h](https://github.com/apache/nuttx/blob/master/arch/arm64/include/qemu/chip.h#L37-L51)
 
 __UPDATE:__ NuttX Mainline now provides a Board Config "`qemu-armv8a:nsh_gicv2`" for testing GIC Version 2 with QEMU [(See this)](qemu-armv8a:nsh_gicv2)
 
@@ -400,6 +401,8 @@ Remember that the System Timer will trigger Interrupts periodically...
 Perhaps we're __handling Interrupts incorrectly?__
 
 Let's investigate...
+
+__UPDATE:__ This problem doesn't happen with the latest code in NuttX Mainline [(See this)](https://github.com/apache/incubator-nuttx/pull/7692#issuecomment-1327103980)
 
 # Timer Interrupt Isn't Handled
 
@@ -453,9 +456,9 @@ The __Arm64 Vector Table__ looks like this...
 
 ![Arm64 Vector Table](https://lupyuen.github.io/images/interrupt-vector.png)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L93-L131)
+[(Source)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vector_table.S#L92-L130)
 
-Which we define in NuttX as __`_vector_table`__: [arch/arm64/src/common/arm64_vector_table.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L93-L232)
+Which we define in NuttX as __`_vector_table`__: [arch/arm64/src/common/arm64_vector_table.S](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vector_table.S#L130-L233)
 
 ```text
 GTEXT(_vector_table)
@@ -472,7 +475,7 @@ SECTION_SUBSEC_FUNC(exc_vector_table,_vector_table_section,_vector_table)
   b    arm64_irq_handler
 ```
 
-[(__`arm64_enter_exception`__ saves the Arm64 Registers)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_vector_table.S#L41-L87)
+[(__`arm64_enter_exception`__ saves the Arm64 Registers)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vector_table.S#L41-L87)
 
 [(__`arm64_irq_handler`__ is the NuttX IRQ Handler)](https://github.com/lupyuen/pinephone-nuttx#handling-interrupts)
 
@@ -598,6 +601,8 @@ nsh> ls /dev
 
 Let's talk about EL1...
 
+__UPDATE:__ This patching isn't needed with the latest code in NuttX Mainline [(See this)](https://github.com/apache/incubator-nuttx/pull/7692#issuecomment-1327103980)
+
 # Exception Levels
 
 _What's EL1?_
@@ -638,7 +643,7 @@ Indeed! Each Exception Level has its own Arm64 Vector Table.
 
 _Who loads the EL1 Vector Base Address Register?_
 
-The EL1 Vector Base Address Register is loaded during __EL1 Initialisation__ at startup: [arch/arm64/src/common/arm64_boot.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_boot.c#L132-L162)
+The EL1 Vector Base Address Register is loaded during __EL1 Initialisation__ at startup: [arch/arm64/src/common/arm64_boot.c](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L132-L162)
 
 ```c
 void arm64_boot_el1_init(void) {
@@ -647,7 +652,7 @@ void arm64_boot_el1_init(void) {
   ARM64_ISB();
 ```
 
-__`arm64_boot_el1_init`__ is called by our Startup Code: [arch/arm64/src/common/arm64_head.S](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L216-L230)
+__`arm64_boot_el1_init`__ is called by our Startup Code: [arch/arm64/src/common/arm64_head.S](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L210-L227)
 
 ```text
     PRINT(switch_el1, "- Boot from EL1\r\n")
@@ -668,16 +673,6 @@ jump_to_c_entry:
 The __Boot Sequence__ for NuttX RTOS is explained here...
 
 -   [__"Boot Sequence"__](https://github.com/lupyuen/pinephone-nuttx#boot-sequence)
-
-_So how did our Vector Base Address Register get messed up? And why is it off by exactly `0x18` `0000`?_
-
-We might have missed something when we changed the __Kernel Start Address__ from `0x4028` `0000` to `0x4008` `0000` in [dramboot.ld](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L34).
-
-Or maybe we made a mistake in our __Memory Map__...
-
--   [__"Memory Map"__](https://github.com/lupyuen/pinephone-nuttx#memory-map)
-
-We'll check some more.
 
 # What's Next
 
