@@ -886,11 +886,23 @@ Follow these steps to build and boot the __`master` branch of NuttX__...
 
     [(Clone the git Repositories)](https://nuttx.apache.org/docs/latest/quickstart/install.html#download-nuttx)
 
-TODO
+We have updated these articles to point to the PinePhone code in NuttX Mainline...
+
+-   [__"Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone"__](https://lupyuen.github.io/articles/arm)
+
+-   [__"PinePhone boots Apache NuttX RTOS"__](https://lupyuen.github.io/articles/uboot)
+
+-   [__"NuttX RTOS for PinePhone: Fixing the Interrupts"__](https://lupyuen.github.io/articles/interrupt)
+
+-   [__"NuttX RTOS for PinePhone: UART Driver"__](https://lupyuen.github.io/articles/serial)
+
+-   [__"NuttX RTOS for PinePhone: Blinking the LEDs"__](https://lupyuen.github.io/articles/pio)
 
 ![Build NuttX](https://lupyuen.github.io/images/arm-build.png)
 
 # Appendix: Build NuttX for PinePhone
+
+__UPDATE:__ PinePhone is now officially supported by Apache NuttX RTOS [(See this)](https://lupyuen.github.io/articles/uboot#appendix-pinephone-is-now-supported-by-apache-nuttx-rtos)
 
 Follow these steps to build __Apache NuttX RTOS__ for PinePhone...
 
@@ -905,16 +917,12 @@ cd nuttx
 
 ## Download NuttX OS
 git clone \
-  --recursive \
-  --branch pinephone \
-  https://github.com/lupyuen/incubator-nuttx \
+  https://github.com/apache/nuttx \
   nuttx
 
 ## Download NuttX Apps
 git clone \
-  --recursive \
-  --branch pinephone \
-  https://github.com/lupyuen/incubator-nuttx-apps \
+  https://github.com/apache/nuttx-apps \
   apps
 
 ## We'll build NuttX inside nuttx/nuttx
@@ -929,9 +937,11 @@ Install the __Build Prerequisites__ below, but skip the RISC-V Toolchain...
 
 ## Download Toolchain
 
-Download the Arm Toolchain for __AArch64 ELF Bare-Metal Target `aarch64-none-elf`__...
+Download the Arm Toolchain for __AArch64 Bare-Metal Target `aarch64-none-elf`__...
 
 -   [__Arm GNU Toolchain Downloads__](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
+
+    (Skip the section for Beta Releases)
 
 For Linux x64 and WSL:
 
@@ -966,6 +976,7 @@ Finally we __configure and build__ NuttX...
 
 ```bash
 ## Configure NuttX for Arm Cortex-A53 Single Core
+## For PinePhone: Change "qemu-armv8a:nsh" to "pinephone:nsh"
 ./tools/configure.sh -l qemu-armv8a:nsh
 
 ## Build NuttX
@@ -990,6 +1001,20 @@ If we wish to use the __BASIC Interpreter__, follow these steps to enable it...
 -   [__"Enable BASIC"__](https://lupyuen.github.io/articles/nuttx#enable-basic)
 
 Then run __`make`__ to rebuild NuttX.
+
+If the build fails with this error...
+
+```text
+token "@" is not valid in preprocessor
+```
+
+Look for this file in the Arm64 Toolchain...
+
+```text
+gcc-arm-none-eabi/arm-none-eabi/include/_newlib_version.h
+```
+
+And [__apply this patch__](https://github.com/apache/incubator-nuttx/pull/7284/commits/518b0eb31cb66f25b590ae9a79ab16c319b96b94#diff-12291efd8a0ded1bc38bad733d99e4840ae5112b465c04287f91ba5169612c73).
 
 ## Output Files
 
