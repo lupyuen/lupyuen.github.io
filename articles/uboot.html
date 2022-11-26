@@ -401,7 +401,7 @@ u32 res5;               /* reserved (used for PE COFF offset) */</code></pre></d
 <h1 id="nuttx-header"><a href="#nuttx-header">9 NuttX Header</a></h1>
 <p><em>How do we make a Linux Kernel Header in our non-Linux OS?</em></p>
 <p>Apache NuttX RTOS can help!</p>
-<p>This is how we created the <strong>Arm64 Linux Kernel Header</strong> in NuttX: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L79-L117">arch/arm64/src/common/arm64_head.S</a></p>
+<p>This is how we created the <strong>Arm64 Linux Kernel Header</strong> in NuttX: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L79-L117">arch/arm64/src/common/arm64_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>  /* Kernel startup entry point.
    * ---------------------------
    *
@@ -442,12 +442,12 @@ __start:
 
 /* NuttX OS Code begins here, after the header */
 real_start: ... </code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L105">(<strong><code>_e_initstack</code></strong> is End of Stack Space)</a></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L41-L49">(<strong><code>__HEAD_FLAGS</code></strong> is defined here)</a></p>
-<p><a href="https://github.com/apache/incubator-nuttx/pull/7692#issuecomment-1327103980">(UPDATE: We don’t need to change the Image Load Offset)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/scripts/dramboot.ld#L97-L106">(<strong><code>_e_initstack</code></strong> is End of Stack Space)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L41-L49">(<strong><code>__HEAD_FLAGS</code></strong> is defined here)</a></p>
+<p><a href="https://github.com/apache/incubator-nuttx/pull/7692#issuecomment-1327103980">(<strong>UPDATE:</strong> We don’t need to change the Image Load Offset)</a></p>
 <p><em>What’s the value of <code>__start</code>?</em></p>
 <p>Remember <strong><code>kernel_addr_r</code></strong>, the <a href="https://lupyuen.github.io/articles/uboot#boot-address"><strong>Kernel Start Address</strong></a> from U-Boot?</p>
-<p>In NuttX, we define the Kernel Start Address <strong><code>__start</code></strong> as <strong><code>0x4008</code> <code>0000</code></strong> in our Linker Script: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L34">boards/arm64/qemu/qemu-a53/scripts/dramboot</a></p>
+<p>In NuttX, we define the Kernel Start Address <strong><code>__start</code></strong> as <strong><code>0x4008</code> <code>0000</code></strong> in our Linker Script: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/scripts/dramboot.ld#L30-L34">boards/arm64/qemu/qemu-a53/scripts/dramboot</a></p>
 <div class="example-wrap"><pre class="language-text"><code>SECTIONS
 {
   /* PinePhone uboot load address (kernel_addr_r) */
@@ -481,36 +481,36 @@ real_start: ... </code></pre></div>
 <h1 id="nuttx-uart-macros"><a href="#nuttx-uart-macros">11 NuttX UART Macros</a></h1>
 <p>NuttX writes to the UART Port with some clever <strong>Arm Assembly Macros</strong>.</p>
 <p>This Assembly Code in NuttX…</p>
-<div class="example-wrap"><pre class="language-text"><code>hello:
-  PRINT(hello, &quot;HELLO NUTTX ON PINEPHONE!\r\n&quot;)</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L178-L179">(Source)</a></p>
-<p>Calls our <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L58-L69"><strong><code>PRINT</code> Macro</strong></a> to print a string at startup.</p>
-<p>Which is super convenient because our <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S"><strong>Startup Code</strong></a> has plenty of Assembly Code!</p>
+<div class="example-wrap"><pre class="language-text"><code>cpu_boot:
+  PRINT(cpu_boot, &quot;- Ready to Boot CPU\r\n&quot;)</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L176-L179">(Source)</a></p>
+<p>Calls our <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L58-L69"><strong><code>PRINT</code> Macro</strong></a> to print a string at startup.</p>
+<p>Which is super convenient because our <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S"><strong>Startup Code</strong></a> has plenty of Assembly Code!</p>
 <p><em>What’s inside the macro?</em></p>
-<p>Our <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L58-L69"><strong><code>PRINT</code> Macro</strong></a> calls…</p>
+<p>Our <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L58-L69"><strong><code>PRINT</code> Macro</strong></a> calls…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L292-L308"><strong><code>boot_stage_puts</code></strong></a> Function, which calls…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L292-L308"><strong><code>boot_stage_puts</code></strong></a> Function, which calls…</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L96-L105"><strong><code>up_lowputc</code></strong></a> Function</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_lowputc.S#L81-L91"><strong><code>up_lowputc</code></strong></a> Function</p>
 </li>
 </ul>
 <p>Which loads our <strong>UART Base Address</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>/* PinePhone Allwinner A64 UART0 Base Address: */
-#define UART1_BASE_ADDRESS 0x01C28000
+#define UART0_BASE_ADDRESS 0x1C28000
 
 /* Print a character on the UART - this function is called by C
  * x0: character to print
  */
 GTEXT(up_lowputc)
 SECTION_FUNC(text, up_lowputc)
-  ldr   x15, =UART1_BASE_ADDRESS  /* Load UART Base Address */
+  ldr   x15, =UART0_BASE_ADDRESS  /* Load UART Base Address */
   early_uart_ready    x15, w2     /* Wait for UART ready    */
   early_uart_transmit x15, w0     /* Transmit to UART       */
   ret</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L96-L105">(Source)</a> </p>
-<p>And calls <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L87-L94"><strong><code>early_uart_transmit</code></strong></a> Macro to transmit a character…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_lowputc.S#L81-L91">(Source)</a> </p>
+<p>And calls <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_lowputc.S#L87-L94"><strong><code>early_uart_transmit</code></strong></a> Macro to transmit a character…</p>
 <div class="example-wrap"><pre class="language-text"><code>/* UART transmit character
  * xb: register which contains the UART base address
  * wt: register which contains the character to transmit
@@ -519,7 +519,7 @@ SECTION_FUNC(text, up_lowputc)
   /* Write to UART_THR (Transmit Holding Register) */
   strb  \wt, [\xb]
 .endm</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L87-L94">(Source)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_lowputc.S#L81-L91">(Source)</a></p>
 <p>That’s how we print a string to the console at startup!</p>
 <p><em>What’s <code>early_uart_ready</code>?</em></p>
 <p><strong><code>early_uart_ready</code></strong> Macro waits for the UART Port to be <strong>ready to transmit</strong>, as explained here…</p>
@@ -527,7 +527,7 @@ SECTION_FUNC(text, up_lowputc)
 <li><a href="https://lupyuen.github.io/articles/uboot#wait-for-uart-ready"><strong>“Wait for UART Ready”</strong></a></li>
 </ul>
 <p><em>How do we initialise the UART Port?</em></p>
-<p>Right now we don’t <strong>initialise the UART Port</strong> because U-Boot has kindly done it for us. Eventually this needs to be fixed: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72">qemu_lowputc.S</a></p>
+<p>Right now we don’t <strong>initialise the UART Port</strong> because U-Boot has kindly done it for us. Eventually this needs to be fixed: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_lowputc.S#L51-L72">qemu_lowputc.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* UART initialization
  * xb: register which contains the UART base address
  * c: scratch register number
@@ -537,7 +537,7 @@ SECTION_FUNC(text, up_earlyserialinit)
   # TODO: Set PinePhone Allwinner A64 Baud Rate Divisor:
   # Write to UART_LCR (DLAB), UART_DLL and UART_DLH
   ...</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S#L171-L175">(<strong><code>up_earlyserialinit</code></strong> is called by our Startup Code)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L168-L176">(<strong><code>up_earlyserialinit</code></strong> is called by our Startup Code)</a></p>
 <p>More about this in the Appendix…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/uboot#initialise-uart"><strong>“Initialise UART”</strong></a></li>
@@ -705,31 +705,33 @@ nsh&gt; ls /dev
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/arm-source.png" alt="Arm64 Source Files in NuttX" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common"><em>Arm64 Source Files in NuttX</em></a></p>
+<p><a href="https://github.com/apache/nuttx/tree/master/arch/arm64/src/common"><em>Arm64 Source Files in NuttX</em></a></p>
 <h1 id="nuttx-source-code"><a href="#nuttx-source-code">14 NuttX Source Code</a></h1>
 <p>Apache NuttX RTOS has plenty of <strong>Arm64 Code</strong> that will be helpful to creators of PinePhone Operating Systems.</p>
 <p>The <strong>Arm64 Architecture Functions</strong> (pic above) are defined here…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common">arch/arm64/src/common</a></li>
+<li><a href="https://github.com/apache/nuttx/tree/master/arch/arm64/src/common">arch/arm64/src/common</a></li>
 </ul>
-<p>These functions implement all kinds of Arm64 Features: <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_fpu.c"><strong>FPU</strong></a>, <a href="https://github.com/lupyuen/pinephone-nuttx#interrupt-controller"><strong>Interrupts</strong></a>, <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_mmu.c"><strong>MMU</strong></a>, <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_task_sched.c"><strong>Tasks</strong></a>, <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/common/arm64_arch_timer.c"><strong>Timers</strong></a>, …</p>
+<p>These functions implement all kinds of Arm64 Features: <a href="https://github.com/apache/nuttx/tree/master/arch/arm64/src/common/arm64_fpu.c"><strong>FPU</strong></a>, <a href="https://github.com/lupyuen/pinephone-nuttx#interrupt-controller"><strong>Interrupts</strong></a>, <a href="https://github.com/apache/nuttx/tree/master/arch/arm64/src/common/arm64_mmu.c"><strong>MMU</strong></a>, <a href="https://github.com/apache/nuttx/tree/master/arch/arm64/src/common/arm64_task_sched.c"><strong>Tasks</strong></a>, <a href="https://github.com/apache/nuttx/tree/master/arch/arm64/src/common/arm64_arch_timer.c"><strong>Timers</strong></a>, …</p>
 <p>The <strong>Arm64 Startup Code</strong> (including Linux Kernel Header) is at…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_head.S">arch/arm64/src/common/arm64_head.S</a></li>
+<li><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S">arch/arm64/src/common/arm64_head.S</a></li>
 </ul>
-<p>Officially NuttX supports only one <strong>Arm64 Target Board</strong>: QEMU Emulator.</p>
+<p>Previously NuttX supports only one <strong>Arm64 Target Board</strong>: QEMU Emulator.</p>
 <p>Below are the Source Files and Build Configuration for <strong>QEMU Emulator</strong>…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/boards/arm64/qemu/qemu-a53">boards/arm64/qemu/qemu-a53</a></li>
+<li><a href="https://github.com/apache/nuttx/tree/master/boards/arm64/qemu/qemu-armv8a">boards/arm64/qemu/qemu-armv8a</a></li>
 </ul>
-<p>(We’ll clone this to create a Target Board for PinePhone)</p>
-<p>The <strong>Board-Specific Drivers</strong> for QEMU are started in <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/boards/arm64/qemu/qemu-a53/src/qemu_bringup.c">qemu_bringup.c</a></p>
-<p>(We’ll start the PinePhone Drivers here)</p>
-<p>The QEMU Board calls the <strong>QEMU Architecture-Specific Drivers</strong> at…</p>
+<p>We clone this to create a Target Board for PinePhone…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/qemu">arch/arm64/src/qemu</a></li>
+<li><a href="https://github.com/apache/nuttx/tree/master/boards/arm64/a64/pinephone">boards/arm64/a64/pinephone</a></li>
 </ul>
-<p>The <strong>UART Driver</strong> is located at <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c">qemu_serial.c</a> and <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinephone/arch/arm64/src/qemu/qemu_lowputc.S">qemu_lowputc.S</a></p>
+<p>And we start the <strong>Board-Specific Drivers</strong> for PinePhone in <a href="https://github.com/apache/nuttx/tree/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c">pinephone_bringup.c</a></p>
+<p>Our Board calls the <strong>Architecture-Specific Drivers</strong> at…</p>
+<ul>
+<li><a href="https://github.com/apache/nuttx/tree/master/arch/arm64/src/a64">arch/arm64/src/a64</a></li>
+</ul>
+<p>The <strong>UART Driver</strong> is located at <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c">a64_serial.c</a> and <a href="https://github.com/apache/nuttx/tree/master/arch/arm64/src/a64/a64_lowputc.S">a64_lowputc.S</a></p>
 <p><a href="https://lupyuen.github.io/articles/uboot#uart-driver">(More about UART Driver)</a></p>
 <p>The <strong>QEMU Target for NuttX</strong> is described in this article…</p>
 <ul>
@@ -916,19 +918,19 @@ aarch64-none-elf-objdump \
 <li><a href="https://lupyuen.github.io/articles/arm#appendix-analyse-nuttx-image-with-ghidra"><strong>“Analyse NuttX Image with Ghidra”</strong></a></li>
 </ul>
 <h1 id="appendix-allwinner-a64-uart"><a href="#appendix-allwinner-a64-uart">19 Appendix: Allwinner A64 UART</a></h1>
-<p>Earlier we said that our implementation of <strong>Allwinner A64 UART</strong> is incomplete…</p>
+<p>Earlier we talked about our implementation of <strong>Allwinner A64 UART</strong>…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L74-L85"><strong><code>early_uart_ready</code></strong></a> needs to wait for UART to be <strong>ready to transmit</strong></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_lowputc.S#L72-L85"><strong><code>early_uart_ready</code></strong></a> needs to wait for UART to be <strong>ready to transmit</strong></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72"><strong><code>up_earlyserialinit</code></strong></a> needs to <strong>initialise the UART Port</strong></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_lowputc.S#L51-L60"><strong><code>up_earlyserialinit</code></strong></a> needs to <strong>initialise the UART Port</strong></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c"><strong>UART Driver</strong></a> needs to support <strong>UART Input</strong></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c"><strong>UART Driver</strong></a> needs to support <strong>UART Input</strong></p>
 </li>
 </ul>
-<p>Let’s talk about the implementation…</p>
+<p>Let’s talk about these changes…</p>
 <p><img src="https://lupyuen.github.io/images/uboot-uart2.png" alt="Allwinner A64 UART Register UART_THR" /></p>
 <p><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><em>Allwinner A64 UART Register UART_THR</em></a></p>
 <h2 id="wait-for-uart-ready"><a href="#wait-for-uart-ready">19.1 Wait for UART Ready</a></h2>
@@ -943,7 +945,7 @@ aarch64-none-elf-objdump \
 <p><em>Where’s the THRE Bit?</em></p>
 <p>THRE Bit is <strong>Bit 5</strong> (<code>0x20</code>) of UART_LSR.</p>
 <p><strong>UART_LSR</strong> (Line Status Register) is at <strong>Offset <code>0x14</code></strong> from the UART Base Address.</p>
-<p>In Arm64 Assembly, this is how we wait for the UART to be ready: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L74-L89">qemu_lowputc.S</a></p>
+<p>In Arm64 Assembly, this is how we wait for the UART to be ready: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_lowputc.S#L60-L72">a64_lowputc.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* PinePhone Allwinner A64: 
  * Wait for UART to be ready to transmit
  * xb: register which contains the UART base address
@@ -966,7 +968,7 @@ aarch64-none-elf-objdump \
 <ul>
 <li><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a></li>
 </ul>
-<p>We might <strong>initialise the UART Port</strong> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_lowputc.S#L55-L72"><strong><code>up_earlyserialinit</code></strong></a> like so…</p>
+<p>We might <strong>initialise the UART Port</strong> in <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_lowputc.S#L51-L60"><strong><code>up_earlyserialinit</code></strong></a> like so…</p>
 <ol>
 <li>
 <p>Set <strong>DLAB Flag</strong> to allow update of UART Divisor…</p>
@@ -1010,7 +1012,7 @@ strb w0, [x15, #0x0C]</code></pre></div></li>
 <h2 id="uart-driver"><a href="#uart-driver">19.3 UART Driver</a></h2>
 <p>We have implemented the <strong>UART Driver</strong> for PinePhone’s Allwinner A64 UART Port…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/qemu/qemu_serial.c">arch/arm64/src/qemu/qemu_serial.c</a> </li>
+<li><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c">arch/arm64/src/a64/a64_serial.c</a> </li>
 </ul>
 <p>Check out the details in this article…</p>
 <ul>
