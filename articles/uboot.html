@@ -825,6 +825,10 @@ nsh&gt; ls /dev
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-11.0.0-pinephone"><strong>“Apache NuttX RTOS for PinePhone”</strong></a></li>
 </ul>
+<p>This is what we’ll see on the <strong>Serial Console</strong>…</p>
+<ul>
+<li><a href="https://gist.github.com/lupyuen/e49a22a9e39b7c024b984bea40377712"><strong>“Log of Apache NuttX RTOS on PinePhone”</strong></a></li>
+</ul>
 <p>We have updated these articles to point to the PinePhone code in NuttX Mainline…</p>
 <ul>
 <li>
@@ -843,6 +847,30 @@ nsh&gt; ls /dev
 <p><a href="https://lupyuen.github.io/articles/pio"><strong>“NuttX RTOS for PinePhone: Blinking the LEDs”</strong></a></p>
 </li>
 </ul>
+<p><strong>Upcoming Features</strong> for NuttX on PinePhone…</p>
+<ul>
+<li>
+<p>Fix the garbled <strong>Startup Messages</strong></p>
+<p><a href="https://github.com/apache/nuttx/pull/7692">(More about this)</a></p>
+</li>
+<li>
+<p><strong>GPIO and PWM Drivers</strong> for Allwinner A64</p>
+<p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#backlight_enable">(Needed for PinePhone Backlight)</a></p>
+</li>
+<li>
+<p><strong>MIPI Display Serial Interface Driver</strong> for Allwinner A64</p>
+<p><a href="https://lupyuen.github.io/articles/dsi2">(Based on this)</a></p>
+</li>
+<li>
+<p><strong>Display Engine Driver</strong> for Allwinner A64</p>
+<p><a href="https://lupyuen.github.io/articles/de2">(Based on this)</a></p>
+</li>
+<li>
+<p><strong>DPHY and TCON0 Drivers</strong> for Allwinner A64</p>
+<p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dphy_enable">(Based on this)</a></p>
+</li>
+</ul>
+<p>And we will be able to render some graphics on PinePhone. Stay Tuned!</p>
 <p><img src="https://lupyuen.github.io/images/arm-build.png" alt="Build NuttX" /></p>
 <h1 id="appendix-build-nuttx-for-pinephone"><a href="#appendix-build-nuttx-for-pinephone">18 Appendix: Build NuttX for PinePhone</a></h1>
 <p><strong>UPDATE:</strong> PinePhone is now officially supported by Apache NuttX RTOS <a href="https://lupyuen.github.io/articles/uboot#appendix-pinephone-is-now-supported-by-apache-nuttx-rtos">(See this)</a></p>
