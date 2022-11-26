@@ -872,6 +872,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     PinePhone's __LTE Modem__ is covered in pages 198 to 204.
 
+# Appendix: PinePhone is now supported by Apache NuttX RTOS
+
+TODO
+
 ![Build NuttX](https://lupyuen.github.io/images/arm-build.png)
 
 # Appendix: Build NuttX for PinePhone
