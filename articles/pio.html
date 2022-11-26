@@ -323,9 +323,19 @@ static void test_led(void)
 <ul>
 <li><a href="https://lupyuen.github.io/articles/uboot#pinephone-boots-nuttx"><strong>“PinePhone Boots NuttX”</strong></a></li>
 </ul>
-<p>If we’re building NuttX ourselves, check that the <strong>BASIC Interpreter</strong> has been enabled in the NuttX Build…</p>
+<p>If we’re building NuttX ourselves…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/nuttx#enable-basic"><strong>“Enable BASIC”</strong></a></li>
+<li>
+<p>Copy the code from <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c"><strong>hello_main.c</strong></a> to…</p>
+<div class="example-wrap"><pre class="language-text"><code>apps/examples/hello/hello_main.c</code></pre></div></li>
+<li>
+<p>Check that the <strong>BASIC Interpreter</strong> has been enabled in the NuttX Build…</p>
+<p><a href="https://lupyuen.github.io/articles/nuttx#enable-basic"><strong>“Enable BASIC”</strong></a></p>
+</li>
+<li>
+<p>Apply this patch to enable <strong>Peek and Poke</strong> in BASIC…</p>
+<p><a href="https://lupyuen.github.io/articles/pio#appendix-enable-peek-and-poke-in-basic"><strong>“Enable Peek and Poke in BASIC”</strong></a></p>
+</li>
 </ul>
 <p>Connect PinePhone to our computer with a <strong>USB Serial Debug Cable</strong>…</p>
 <ul>
@@ -726,6 +736,10 @@ dtc \
 <p><img src="https://lupyuen.github.io/images/pio-display.png" alt="Allwinner A64 User Manual (Page 498)" /></p>
 <p><em><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf">Allwinner A64 User Manual (Page 498)</a></em></p>
 <h2 id="lcd-controller-tcon0"><a href="#lcd-controller-tcon0">13.1 LCD Controller (TCON0)</a></h2>
+<p>Check out the article…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/de"><strong>“Rendering PinePhone’s Display (DE and TCON0)”</strong></a></li>
+</ul>
 <p>Inside the Allwinner A64 SoC, TCON0 is the <a href="https://www.kernel.org/doc/Documentation/devicetree/bindings/display/sunxi/sun4i-drm.txt"><strong>Timing Controller</strong></a> for PinePhone’s LCD Display.</p>
 <p>(Yeah the name sounds odd… A64’s Timing Controller actually works like a huge pixel pump)</p>
 <p>According to <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> (Chapter 6: “Display”, Page 498), A64 has <strong>2 TCON Controllers</strong> (pic above)…</p>
