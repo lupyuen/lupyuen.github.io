@@ -819,7 +819,7 @@ Now that we handle UART Interrupts, __NuttX Shell__ works perfectly OK on PinePh
 
 ```text
 nsh> uname -a
-NuttX 10.3.0-RC2 fc909c6-dirty Sep  1 2022 17:05:44 arm64 qemu-a53
+NuttX 10.3.0-RC2 fc909c6-dirty Sep  1 2022 17:05:44 arm64 qemu-armv8a
 
 nsh> help
 help usage:  help [-v] [<cmd>]

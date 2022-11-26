@@ -700,7 +700,7 @@ __NuttX Shell__ works perfectly OK on PinePhone...
 
 ```text
 nsh> uname -a
-NuttX 10.3.0-RC2 fc909c6-dirty Sep  1 2022 17:05:44 arm64 qemu-a53
+NuttX 10.3.0-RC2 fc909c6-dirty Sep  1 2022 17:05:44 arm64 qemu-armv8a
 
 nsh> help
 help usage:  help [-v] [<cmd>]
@@ -966,7 +966,7 @@ Finally we __configure and build__ NuttX...
 
 ```bash
 ## Configure NuttX for Arm Cortex-A53 Single Core
-./tools/configure.sh -l qemu-a53:nsh
+./tools/configure.sh -l qemu-armv8a:nsh
 
 ## Build NuttX
 make
