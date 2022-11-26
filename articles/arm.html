@@ -92,7 +92,7 @@
 <p><strong>UPDATE:</strong> PinePhone is now officially supported by Apache NuttX RTOS <a href="https://lupyuen.github.io/articles/uboot#appendix-pinephone-is-now-supported-by-apache-nuttx-rtos">(See this)</a></p>
 <p><a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) runs on 64-bit <strong>Arm Cortex-A53</strong> with Multiple Cores…</p>
 <ul>
-<li><a href="https://github.com/apache/incubator-nuttx/tree/master/boards/arm64/qemu/qemu-a53"><strong>NuttX on Arm Cortex-A53</strong></a></li>
+<li><a href="https://github.com/apache/incubator-nuttx/tree/master/boards/arm64/qemu/qemu-armv8a"><strong>NuttX on Arm Cortex-A53</strong></a></li>
 </ul>
 <p><strong>Pine64 PinePhone</strong> is based on the <a href="https://linux-sunxi.org/A64"><strong>Allwinner A64 SoC</strong></a> with 4 Cores of Arm Cortex-A53…</p>
 <ul>
@@ -118,13 +118,13 @@ cd nuttx
 # Download NuttX OS
 git clone \
     --recursive \
-    https://github.com/apache/incubator-nuttx \
+    https://github.com/apache/nuttx \
     nuttx
 
 # Download NuttX Apps
 git clone \
     --recursive \
-    https://github.com/apache/incubator-nuttx-apps \
+    https://github.com/apache/nuttx-apps \
     apps
 
 # We&#39;ll build NuttX inside nuttx/nuttx
@@ -159,7 +159,7 @@ export PATH=&quot;$PATH:/Applications/ArmGNUToolchain/11.3.rel1/aarch64-none-elf
 <p>Check the Arm Toolchain…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ aarch64-none-elf-gcc -v
 gcc version 11.3.1 20220712 (Arm GNU Toolchain 11.3.Rel1)</code></pre></div>
-<p><a href="https://github.com/apache/incubator-nuttx/tree/master/boards/arm64/qemu/qemu-a53">(Based on the instructions here)</a></p>
+<p><a href="https://github.com/apache/incubator-nuttx/tree/master/boards/arm64/qemu/qemu-armv8a">(Based on the instructions here)</a></p>
 <h1 id="download-qemu"><a href="#download-qemu">3 Download QEMU</a></h1>
 <p>Our experiment today will run on any Linux / macOS / Windows computer, <strong>no PinePhone needed</strong>.</p>
 <p>That’s because we’re emulating Arm Cortex-A53 with the awesome <a href="https://www.qemu.org/"><strong>QEMU Machine Emulator</strong></a>.</p>
@@ -184,7 +184,7 @@ gcc version 11.3.1 20220712 (Arm GNU Toolchain 11.3.Rel1)</code></pre></div>
 <p>Which works like 4 Arm64 Processors running in parallel, similar to PinePhone.</p>
 <p>First we build NuttX for a <strong>Single Core</strong> of Arm Cortex-A53…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Configure NuttX for Single Core
-./tools/configure.sh -l qemu-a53:nsh
+./tools/configure.sh -l qemu-armv8a:nsh
 
 # Build NuttX
 make
@@ -258,7 +258,7 @@ Builtin Apps:
   getprime  hello     nsh       ostest    sh        </code></pre></div>
 <p>To be really sure that we’re <strong>emulating Arm64</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; uname -a
-NuttX 10.3.0-RC2 1e8f2a8 Aug 23 2022 07:04:54 arm64 qemu-a53</code></pre></div>
+NuttX 10.3.0-RC2 1e8f2a8 Aug 23 2022 07:04:54 arm64 qemu-armv8a</code></pre></div>
 <p><a href="https://github.com/apache/incubator-nuttx-apps/blob/master/examples/hello/hello_main.c"><strong>“Hello World”</strong></a> works as expected…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello
 task_spawn: name=hello entry=0x4029b594 file_actions=0x402c9580 attr=0x402c9588 argv=0x402c96d0
@@ -312,7 +312,7 @@ mount -t vfat /dev/ram2 /tmp</code></pre></div>
 make distclean
 
 # Configure NuttX for 4 Cores
-./tools/configure.sh -l qemu-a53:nsh_smp
+./tools/configure.sh -l qemu-armv8a:nsh_smp
 
 # Build NuttX
 make
@@ -404,7 +404,7 @@ NuttShell (NSH) NuttX-10.4.0
 nsh&gt;</code></pre></div>
 <p>Even though we have 4 Cores, everything works as expected…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; uname -a
-NuttX 10.3.0-RC2 1e8f2a8 Aug 21 2022 15:57:35 arm64 qemu-a53
+NuttX 10.3.0-RC2 1e8f2a8 Aug 21 2022 15:57:35 arm64 qemu-armv8a
 
 nsh&gt; hello
 [CPU0] task_spawn: name=hello entry=0x4029cee4 file_actions=0x402e52b0 attr=0x402e52b8 argv=0x402e5400
@@ -419,10 +419,10 @@ Hello, World!</code></pre></div>
 <p>Let’s browse the <strong>Source Files</strong> for the implementation of Cortex-A53 on NuttX.</p>
 <p>NuttX treats QEMU as a <strong>Target Board</strong> (as though it was a dev board). Here are the Source Files and Build Configuration for the <strong>QEMU Board</strong>…</p>
 <ul>
-<li><a href="https://github.com/apache/incubator-nuttx/tree/master/boards/arm64/qemu/qemu-a53">boards/arm64/qemu/qemu-a53</a></li>
+<li><a href="https://github.com/apache/incubator-nuttx/tree/master/boards/arm64/qemu/qemu-armv8a">boards/arm64/qemu/qemu-armv8a</a></li>
 </ul>
 <p>(We’ll clone this to create a Target Board for PinePhone)</p>
-<p>The <strong>Board-Specific Drivers</strong> for QEMU are started in <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/src/qemu_bringup.c">qemu_bringup.c</a></p>
+<p>The <strong>Board-Specific Drivers</strong> for QEMU are started in <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/src/qemu_bringup.c">qemu_bringup.c</a></p>
 <p>(We’ll start the PinePhone Drivers here)</p>
 <p>The QEMU Board calls the <strong>QEMU Architecture-Specific Drivers</strong> at…</p>
 <ul>
@@ -524,7 +524,7 @@ u32 res5;                     /* reserved (used for PE COFF offset) */</code></p
 <p><img src="https://lupyuen.github.io/images/arm-ram.png" alt="NuttX RAM" /></p>
 <h1 id="nuttx-ram"><a href="#nuttx-ram">10 NuttX RAM</a></h1>
 <p><em>How do we know that RAM starts at <code>0x4000</code> <code>0000</code>?</em></p>
-<p><strong>RAM Size and RAM Start</strong> are defined in the NuttX Configuration for Arm64 (pic above): <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/configs/nsh/defconfig#L48-L49">nsh/defconfig</a> and <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48">nsh_smp/defconfig</a></p>
+<p><strong>RAM Size and RAM Start</strong> are defined in the NuttX Configuration for Arm64 (pic above): <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/configs/nsh/defconfig#L48-L49">nsh/defconfig</a> and <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/configs/nsh_smp/defconfig#L47-L48">nsh_smp/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_RAM_SIZE=134217728
 CONFIG_RAM_START=0x40000000</code></pre></div>
 <p>That’s 128 MB RAM. Which should fit inside PinePhone’s 2 GB RAM.</p>
@@ -535,7 +535,7 @@ CONFIG_RAM_START=0x40000000</code></pre></div>
   -nostdlib \
   --cref \
   -Map=nuttx/nuttx/nuttx.map \
-  -Tnuttx/nuttx/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld  \
+  -Tnuttx/nuttx/boards/arm64/qemu/qemu-armv8a/scripts/dramboot.ld  \
   -L nuttx/nuttx/staging \
   -L nuttx/nuttx/arch/arm64/src/board  \
   -o nuttx/nuttx/nuttx arm64_head.o  \
@@ -553,7 +553,7 @@ CONFIG_RAM_START=0x40000000</code></pre></div>
   --end-group</code></pre></div>
 <p>In the Linker Command above, we see the <strong>NuttX Linker Script</strong>…</p>
 <ul>
-<li><a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L33">boards/arm64/qemu/qemu-a53/scripts/dramboot.ld</a></li>
+<li><a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/scripts/dramboot.ld#L30-L33">boards/arm64/qemu/qemu-armv8a/scripts/dramboot.ld</a></li>
 </ul>
 <p>Which defines <strong><code>_start</code></strong> as <code>0x4028</code> <code>0000</code>…</p>
 <div class="example-wrap"><pre class="language-text"><code>SECTIONS
@@ -639,7 +639,7 @@ tar xvf initramfs</code></pre></div></li>
 <p>Yep 3 things we’ll modify in NuttX, as mentioned earlier…</p>
 <ul>
 <li>
-<p>Change <strong><code>_start</code></strong> to <strong><code>0x4000</code> <code>0000</code></strong> (from <code>0x4028</code> <code>0000</code>) in the NuttX Linker Script: <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/scripts/dramboot.ld#L30-L33">dramboot.ld</a></p>
+<p>Change <strong><code>_start</code></strong> to <strong><code>0x4000</code> <code>0000</code></strong> (from <code>0x4028</code> <code>0000</code>) in the NuttX Linker Script: <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/scripts/dramboot.ld#L30-L33">dramboot.ld</a></p>
 <div class="example-wrap"><pre class="language-text"><code>SECTIONS
 {
 /* TODO: Change to 0x40000000 for PinePhone */
@@ -652,7 +652,7 @@ _start = .;</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>/* TODO: Change to 0x0 for PinePhone */
 .quad   0x480000  /* Image load offset from start of RAM */</code></pre></div></li>
 <li>
-<p>Increase the <strong>RAM Size</strong> to <strong>2 GB</strong> (from 128 MB): <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/configs/nsh/defconfig#L48-L49">nsh/defconfig</a> and <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-a53/configs/nsh_smp/defconfig#L47-L48">nsh_smp/defconfig</a></p>
+<p>Increase the <strong>RAM Size</strong> to <strong>2 GB</strong> (from 128 MB): <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/configs/nsh/defconfig#L48-L49">nsh/defconfig</a> and <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/configs/nsh_smp/defconfig#L47-L48">nsh_smp/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* TODO: Increase to 2 GB for PinePhone */
 CONFIG_RAM_SIZE=134217728
 CONFIG_RAM_START=0x40000000</code></pre></div>

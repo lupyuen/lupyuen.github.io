@@ -635,7 +635,7 @@ nshn:x _msktfaarttf:s :C PcUo0m:m aBnedg innonti nfgo uInddle  L oNouptt
 <p>(Yeah the output is slightly garbled, the UART Driver needs fixing)</p>
 <p><strong>NuttX Shell</strong> works perfectly OK on PinePhone…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; uname -a
-NuttX 10.3.0-RC2 fc909c6-dirty Sep  1 2022 17:05:44 arm64 qemu-a53
+NuttX 10.3.0-RC2 fc909c6-dirty Sep  1 2022 17:05:44 arm64 qemu-armv8a
 
 nsh&gt; help
 help usage:  help [-v] [&lt;cmd&gt;]
@@ -874,7 +874,7 @@ export PATH=&quot;$PATH:/Applications/ArmGNUToolchain/11.3.rel1/aarch64-none-elf
 gcc version 11.3.1 20220712 (Arm GNU Toolchain 11.3.Rel1)</code></pre></div><h2 id="build-nuttx"><a href="#build-nuttx">18.4 Build NuttX</a></h2>
 <p>Finally we <strong>configure and build</strong> NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code># Configure NuttX for Arm Cortex-A53 Single Core
-./tools/configure.sh -l qemu-a53:nsh
+./tools/configure.sh -l qemu-armv8a:nsh
 
 # Build NuttX
 make
