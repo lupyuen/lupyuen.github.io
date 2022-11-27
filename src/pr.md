@@ -161,6 +161,70 @@ $HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2.c
 - Best if can convert to NuttX style 
 - Check one last time
 
+So this...
+
+```c
+// Initialize GIC. Called by CPU0 only.
+int arm64_gic_initialize(void) {
+  // Verify that GIC Version is 2
+  int err = gic_validate_dist_version();
+  if (err) { sinfo("no distributor detected, giving up ret=%d\n", err); return err; }
+
+  // CPU0-specific initialization for GIC
+  arm_gic0_initialize();
+
+  // CPU-generic initialization for GIC
+  arm_gic_initialize();
+  return 0;
+}
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L717-L743)
+
+Becomes this...
+
+```c
+/****************************************************************************
+ * Name: arm64_gic_initialize
+ *
+ * Description:
+ *   Initialize GIC. Called by CPU0 only.
+ *
+ * Input Parameters
+ *   None
+ *
+ * Returned Value:
+ *   Zero (OK) on success; a negated errno value is returned on any failure.
+ *
+ ****************************************************************************/
+
+int arm64_gic_initialize(void)
+{
+  int err;
+
+  /* Verify that GIC Version is 2 */
+
+  err = gic_validate_dist_version();
+  if (err)
+    {
+      sinfo("no distributor detected, giving up ret=%d\n", err);
+      return err;
+    }
+
+  /* CPU0-specific initialization for GIC */
+
+  arm_gic0_initialize();
+
+  /* CPU-generic initialization for GIC */
+
+  arm_gic_initialize();
+
+  return 0;
+}
+```
+
+[(Source)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_gicv2.c#L1325-L1363)
+
 # Write the Pull Request
 
 TODO
