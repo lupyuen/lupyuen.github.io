@@ -72,11 +72,11 @@
 <li><a href="#regression-testing">2.1 Regression Testing</a><ul></ul></li>
 <li><a href="#documentation">2.2 Documentation</a><ul></ul></li></ul></li>
 <li><a href="#check-coding-style">3 Check Coding Style</a><ul></ul></li>
-<li><a href="#squash-the-commits">4 Squash the Commits</a><ul></ul></li>
-<li><a href="#write-the-pull-request">5 Write the Pull Request</a><ul>
-<li><a href="#summary">5.1 Summary</a><ul></ul></li>
-<li><a href="#impact">5.2 Impact</a><ul></ul></li>
-<li><a href="#testing">5.3 Testing</a><ul></ul></li></ul></li>
+<li><a href="#write-the-pull-request">4 Write the Pull Request</a><ul>
+<li><a href="#summary">4.1 Summary</a><ul></ul></li>
+<li><a href="#impact">4.2 Impact</a><ul></ul></li>
+<li><a href="#testing">4.3 Testing</a><ul></ul></li></ul></li>
+<li><a href="#squash-the-commits">5 Squash the Commits</a><ul></ul></li>
 <li><a href="#meditate">6 Meditate</a><ul></ul></li>
 <li><a href="#submit-the-pull-request">7 Submit the Pull Request</a><ul></ul></li>
 <li><a href="#fix-the-pull-request">8 Fix the Pull Request</a><ul></ul></li>
@@ -138,7 +138,7 @@ git clone \
   --branch gic \
   https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
   apps</code></pre></div>
-<p>We’re now ready to code!</p>
+<p>We’re ready to code!</p>
 </li>
 </ol>
 <h1 id="build-and-test"><a href="#build-and-test">2 Build and Test</a></h1>
@@ -214,8 +214,25 @@ $HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2.c</
 <li>Best if can convert to NuttX style </li>
 <li>Check one last time</li>
 </ul>
+<h1 id="write-the-pull-request"><a href="#write-the-pull-request">4 Write the Pull Request</a></h1>
+<p>TODO</p>
+<ul>
+<li><a href="https://gist.github.com/lupyuen/4dbe011143dfc5404e1791ba74a79deb">Markdown PR</a></li>
+<li>Update Doc</li>
+<li>(optional) commands used for testing</li>
+<li>(optional) logs, super helpful for debugging</li>
+<li>regression testing</li>
+</ul>
+<p><a href="https://github.com/apache/nuttx/pull/7630">arch/arm64: Add support for Generic Interrupt Controller Version 2</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/7692">arch/arm64: Add support for PINE64 PinePhone</a></p>
+<h2 id="summary"><a href="#summary">4.1 Summary</a></h2>
+<p>TODO</p>
+<h2 id="impact"><a href="#impact">4.2 Impact</a></h2>
+<p>TODO</p>
+<h2 id="testing"><a href="#testing">4.3 Testing</a></h2>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/pr-squash1.png" alt="Squash Commits with GitHub Desktop" /></p>
-<h1 id="squash-the-commits"><a href="#squash-the-commits">4 Squash the Commits</a></h1>
+<h1 id="squash-the-commits"><a href="#squash-the-commits">5 Squash the Commits</a></h1>
 <p><em>What’s this “squashing”?</em></p>
 <p>“Squashing” means we’re <strong>combining Multiple Commits</strong> into One Single Commit.</p>
 <p>Our <strong>Commit History</strong> can get awfully messy during development…</p>
@@ -266,31 +283,17 @@ $HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2.c</
 <p>Click “<strong>Force Push Origin</strong>”</p>
 <p><img src="https://lupyuen.github.io/images/pr-squash4.png" alt="Squash Commits with GitHub Desktop" /></p>
 </li>
+<li>
+<p>Click “<strong>I’m Sure</strong>”</p>
+<p><img src="https://lupyuen.github.io/images/pr-squash5.png" alt="Squash Commits with GitHub Desktop" /></p>
+<p>And we’re ready to merge upstream! (Like the salmon)</p>
+</li>
 </ol>
-<p>TODO</p>
+<p><em>What if we prefer the Git Command Line?</em></p>
+<p>Here are the steps to Squash Commits with the <strong>Git Command Line</strong>…</p>
 <ul>
-<li>Why squash commits </li>
-<li>GitHub Desktop</li>
-<li>Select commits and squash them</li>
-<li>Force push</li>
+<li><a href="https://github.com/k88hudson/git-flight-rules#i-need-to-combine-commits"><strong>“Flight rules for Git: I need to combine commits”</strong></a></li>
 </ul>
-<h1 id="write-the-pull-request"><a href="#write-the-pull-request">5 Write the Pull Request</a></h1>
-<p>TODO</p>
-<ul>
-<li><a href="https://gist.github.com/lupyuen/4dbe011143dfc5404e1791ba74a79deb">Markdown PR</a></li>
-<li>Update Doc</li>
-<li>(optional) commands used for testing</li>
-<li>(optional) logs, super helpful for debugging</li>
-<li>regression testing</li>
-</ul>
-<p><a href="https://github.com/apache/nuttx/pull/7630">arch/arm64: Add support for Generic Interrupt Controller Version 2</a></p>
-<p><a href="https://github.com/apache/nuttx/pull/7692">arch/arm64: Add support for PINE64 PinePhone</a></p>
-<h2 id="summary"><a href="#summary">5.1 Summary</a></h2>
-<p>TODO</p>
-<h2 id="impact"><a href="#impact">5.2 Impact</a></h2>
-<p>TODO</p>
-<h2 id="testing"><a href="#testing">5.3 Testing</a></h2>
-<p>TODO</p>
 <h1 id="meditate"><a href="#meditate">6 Meditate</a></h1>
 <p>TODO</p>
 <ul>
