@@ -79,6 +79,7 @@ We begin by __creating our forks__ for the __`nuttx`__ and __`apps`__ repositori
 
 # Build and Test
 
+
 TODO
 
 - test locally
@@ -92,6 +93,12 @@ TODO
 - sometimes GitHub Actions will fail. Just re-run the failed jobs [(Like this)](https://lupyuen.github.io/images/pr-rerun.png)
 
 ## Regression Testing
+
+_Will our modified code break other parts of NuttX?_
+
+That's why it's good to run a __Regression Test__ (if possible) to be sure that other parts of NuttX aren't affected by our modified code.
+
+TODO
 
 - regression testing
 - (optional) logs, super helpful for debugging
@@ -155,6 +162,22 @@ TODO
 - (optional) logs, super helpful for debugging
 - regression testing
 
+[arch/arm64: Add support for Generic Interrupt Controller Version 2](https://github.com/apache/nuttx/pull/7630)
+
+[arch/arm64: Add support for PINE64 PinePhone](https://github.com/apache/nuttx/pull/7692)
+
+## Summary
+
+TODO
+
+## Impact
+
+TODO
+
+## Testing
+
+TODO
+
 # Meditate
 
 TODO
@@ -187,10 +210,6 @@ TODO
 - create a new branch for the next feature
 
 Command Line: [Flight rules for Git](https://github.com/k88hudson/git-flight-rules)
-
-[arch/arm64: Add support for Generic Interrupt Controller Version 2](https://github.com/apache/nuttx/pull/7630)
-
-[arch/arm64: Add support for PINE64 PinePhone](https://github.com/apache/nuttx/pull/7692)
 
 # What's Next
 
