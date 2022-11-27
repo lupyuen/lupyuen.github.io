@@ -164,9 +164,11 @@ git clone \
 <p>sometimes GitHub Actions will fail. Just re-run the failed jobs <a href="https://lupyuen.github.io/images/pr-rerun.png">(Like this)</a></p>
 </li>
 </ul>
-<h2 id="regression-testing"><a href="#regression-testing">2.1 Regression Testing</a></h2>
+<div class="example-wrap"><pre class="language-text"><code>Error response from daemon:
+login attempt to https://ghcr.io/v2/
+failed with status: 503 Service Unavailable&quot;</code></pre></div><h2 id="regression-testing"><a href="#regression-testing">2.1 Regression Testing</a></h2>
 <p><em>Will our modified code break other parts of NuttX?</em></p>
-<p>That’s why it’s good to run a <strong>Regression Test</strong> (if possible) to be sure that other parts of NuttX aren’t affected by our modified code.</p>
+<p>That’s why it’s good to run a <a href="https://en.wikipedia.org/wiki/Regression_testing"><strong>Regression Test</strong></a> (if feasible) to be sure that other parts of NuttX aren’t affected by our modified code.</p>
 <p>TODO</p>
 <ul>
 <li>regression testing</li>
@@ -180,6 +182,7 @@ git clone \
 <li>How to support PinePhone UART in QEMU?</li>
 <li>Zig Extension?</li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/pr-nxstyle.png" alt="Check Coding Style with nxstyle" /></p>
 <h1 id="check-coding-style"><a href="#check-coding-style">3 Check Coding Style</a></h1>
 <p>TODO</p>
 <p><a href="https://nuttx.apache.org/docs/latest/contributing/coding_style.html">NuttX C Coding Standard</a></p>
