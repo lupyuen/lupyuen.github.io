@@ -92,6 +92,8 @@ TODO
 - testable (QEMU)
 - small modular self-contained feature
 
+[(I configured `F1` in VSCode to run this Build Script)](https://gist.github.com/lupyuen/5e2fba642a33bf64d3378df3795042d7)
+
 - sometimes GitHub Actions will fail. Just re-run the failed jobs [(Like this)](https://lupyuen.github.io/images/pr-rerun.png)
 
 ```text
