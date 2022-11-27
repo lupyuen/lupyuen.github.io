@@ -167,6 +167,78 @@ $HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2.c
 
 _What's this "squashing"?_
 
+"Squashing" means we're __combining Multiple Commits__ into One Single Commit.
+
+Our __Commit History__ can get awfully messy during development...
+
+```text
+- Initial Commit
+- Fixing Build
+- Build OK!
+- Oops fixing bug
+- Tested OK yay!
+```
+
+[(Source)](https://github.com/lupyuen/incubator-nuttx/commits/pinephone/arch/arm64/src/qemu/qemu_serial.c)
+
+So we always __Squash the Commits__ into One Single Commit (to help future maintainers)...
+
+```text
+- arch/arm64: Add support for Generic Interrupt Controller Version 2
+```
+
+[(Source)](https://github.com/apache/nuttx/pull/7630/commits)
+
+_How do we squash the commits?_
+
+We'll use [__GitHub Desktop__](https://desktop.github.com/) (because I'm terrible with the Git Command Line)...
+
+1.  Install [__GitHub Desktop__](https://desktop.github.com/) and launch it
+
+1.  Click "__File → Add Local Repository__"
+
+    Select our downloaded __`nuttx`__ folder.
+
+    Click "__Add Repository__"
+
+1.  Click the "__History__" tab to reveal the Commit History
+
+    [(Pic above)](https://lupyuen.github.io/images/pr-squash1.png)
+
+1.  Select the Commits to be Squashed.
+
+    Right-click the Commits.
+
+    Select "__Squash Commits__"
+
+    [(Pic above)](https://lupyuen.github.io/images/pr-squash1.png)
+
+1.  Copy the __Title__ of our Pull Request and paste into the __Title Box__...
+
+    ```text
+    arch/arm64: Add support for Generic Interrupt Controller Version 2
+    ```
+
+    Copy the __Summary__ of our Pull Request and paste into the __Description Box__...
+
+    ```text
+    This PR adds support for GIC Version 2.
+    - `boards/arm64/qemu/qemu-armv8a/configs/nsh_gicv2/defconfig`: Added the Board Configuration
+    ```
+
+    Click "__Squash Commits__"
+
+    ![Squash Commits with GitHub Desktop](https://lupyuen.github.io/images/pr-squash2.png)
+
+1.  Click "__Begin Squash__"
+
+    ![Squash Commits with GitHub Desktop](https://lupyuen.github.io/images/pr-squash3.png)
+
+1.  Click "__Force Push Origin__"
+
+    ![Squash Commits with GitHub Desktop](https://lupyuen.github.io/images/pr-squash4.png)
+
+
 TODO
 
 - Why squash commits 
