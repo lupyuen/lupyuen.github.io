@@ -77,7 +77,7 @@ We begin by __creating our forks__ for the __`nuttx`__ and __`apps`__ repositori
       apps
     ```
 
-    We're now ready to code!
+    We're ready to code!
 
 # Build and Test
 
@@ -161,6 +161,32 @@ $HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2.c
 - Best if can convert to NuttX style 
 - Check one last time
 
+# Write the Pull Request
+
+TODO
+
+- [Markdown PR](https://gist.github.com/lupyuen/4dbe011143dfc5404e1791ba74a79deb)
+- Update Doc
+- (optional) commands used for testing
+- (optional) logs, super helpful for debugging
+- regression testing
+
+[arch/arm64: Add support for Generic Interrupt Controller Version 2](https://github.com/apache/nuttx/pull/7630)
+
+[arch/arm64: Add support for PINE64 PinePhone](https://github.com/apache/nuttx/pull/7692)
+
+## Summary
+
+TODO
+
+## Impact
+
+TODO
+
+## Testing
+
+TODO
+
 ![Squash Commits with GitHub Desktop](https://lupyuen.github.io/images/pr-squash1.png)
 
 # Squash the Commits
@@ -238,39 +264,17 @@ We'll use [__GitHub Desktop__](https://desktop.github.com/) (because I'm terribl
 
     ![Squash Commits with GitHub Desktop](https://lupyuen.github.io/images/pr-squash4.png)
 
+1.  Click "__I'm Sure__"
 
-TODO
+    ![Squash Commits with GitHub Desktop](https://lupyuen.github.io/images/pr-squash5.png)
 
-- Why squash commits 
-- GitHub Desktop
-- Select commits and squash them
-- Force push
+    And we're ready to merge upstream! (Like the salmon)
 
-# Write the Pull Request
+_What if we prefer the Git Command Line?_
 
-TODO
+Here are the steps to Squash Commits with the __Git Command Line__...
 
-- [Markdown PR](https://gist.github.com/lupyuen/4dbe011143dfc5404e1791ba74a79deb)
-- Update Doc
-- (optional) commands used for testing
-- (optional) logs, super helpful for debugging
-- regression testing
-
-[arch/arm64: Add support for Generic Interrupt Controller Version 2](https://github.com/apache/nuttx/pull/7630)
-
-[arch/arm64: Add support for PINE64 PinePhone](https://github.com/apache/nuttx/pull/7692)
-
-## Summary
-
-TODO
-
-## Impact
-
-TODO
-
-## Testing
-
-TODO
+-   [__"Flight rules for Git: I need to combine commits"__](https://github.com/k88hudson/git-flight-rules#i-need-to-combine-commits)
 
 # Meditate
 
