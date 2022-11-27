@@ -4,13 +4,15 @@
 
 ![TODO](https://lupyuen.github.io/images/pr-title.jpg)
 
-This article explains how I prepared my Pull Requests for submission to [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html). So if we're contributing code to NuttX, just follow these steps and things will (probably) go hunky dory!
+This article explains how I prepared my Pull Requests for submission to [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html). So if we're contributing code to NuttX, just follow these steps and things will (probably) go Hunky Dory!
 
-Before we begin, please check out the official __Development Workflow__ for NuttX...
+(Like the fish)
+
+Before we begin, please swim over to the official __Development Workflow__ for NuttX...
 
 -   [__"NuttX Development Workflow"__](https://nuttx.apache.org/docs/latest/contributing/workflow.html)
 
-OK let's dive in!
+OK let's dive in! (Like the fish)
 
 ![Create Fork](https://lupyuen.github.io/images/pr-fork.png)
 
@@ -162,6 +164,8 @@ $HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2.c
 ![Squash Commits with GitHub Desktop](https://lupyuen.github.io/images/pr-squash1.png)
 
 # Squash the Commits
+
+_What's this "squashing"?_
 
 TODO
 
