@@ -73,23 +73,24 @@
 <li><a href="#documentation">2.2 Documentation</a><ul></ul></li></ul></li>
 <li><a href="#check-coding-style">3 Check Coding Style</a><ul></ul></li>
 <li><a href="#write-the-pull-request">4 Write the Pull Request</a><ul>
-<li><a href="#summary">4.1 Summary</a><ul></ul></li>
-<li><a href="#impact">4.2 Impact</a><ul></ul></li>
-<li><a href="#testing">4.3 Testing</a><ul></ul></li></ul></li>
+<li><a href="#title">4.1 Title</a><ul></ul></li>
+<li><a href="#summary">4.2 Summary</a><ul></ul></li>
+<li><a href="#impact">4.3 Impact</a><ul></ul></li>
+<li><a href="#testing">4.4 Testing</a><ul></ul></li></ul></li>
 <li><a href="#squash-the-commits">5 Squash the Commits</a><ul></ul></li>
 <li><a href="#meditate">6 Meditate</a><ul></ul></li>
 <li><a href="#submit-the-pull-request">7 Submit the Pull Request</a><ul></ul></li>
 <li><a href="#fix-the-pull-request">8 Fix the Pull Request</a><ul></ul></li>
 <li><a href="#update-our-repositories">9 Update Our Repositories</a><ul></ul></li>
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Nov 2022</em></p>
-<p><img src="https://lupyuen.github.io/images/pr-title.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/pr-title.jpg" alt="Typical Pull Request for Apache NuttX RTOS" /></p>
 <p>This article explains how I prepared my Pull Requests for submission to <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>. So if we’re contributing code to NuttX, just follow these steps and things will (probably) go Hunky Dory!</p>
 <p>(Like the fish)</p>
 <p>Before we begin, please swim over to the official <strong>Development Workflow</strong> for NuttX…</p>
 <ul>
 <li><a href="https://nuttx.apache.org/docs/latest/contributing/workflow.html"><strong>“NuttX Development Workflow”</strong></a></li>
 </ul>
-<p>OK let’s dive in! (Like the fish)</p>
+<p>Ready? Let’s dive in! (Like the fish)</p>
 <p><img src="https://lupyuen.github.io/images/pr-fork.png" alt="Create Fork" /></p>
 <h1 id="nuttx-repositories"><a href="#nuttx-repositories">1 NuttX Repositories</a></h1>
 <p>We begin by <strong>creating our forks</strong> for the <strong><code>nuttx</code></strong> and <strong><code>apps</code></strong> repositories…</p>
@@ -177,8 +178,15 @@ failed with status: 503 Service Unavailable&quot;</code></pre></div><h2 id="regr
 <li>(optional) logs, super helpful for debugging</li>
 </ul>
 <p>For our Pull Request…</p>
-<p><a href="https://github.com/apache/nuttx/pull/7630">arch/arm64: Add support for Generic Interrupt Controller Version 2</a></p>
-<p><a href="https://gist.github.com/lupyuen/5e2fba642a33bf64d3378df3795042d7">run.sh QEMU</a></p>
+<ul>
+<li><a href="https://github.com/apache/nuttx/pull/7630"><strong>“arch/arm64: Add support for Generic Interrupt Controller Version 2”</strong></a></li>
+</ul>
+<p>We tested with QEMU our <strong>new implementation</strong> of GIC v2…</p>
+<div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh qemu-armv8a:nsh_gicv2 ; make ; qemu-system-aarch64 ...</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/7537da777d728a22ab379b1ef234a2d1">(See the NuttX QEMU Log)</a></p>
+<p>And for Regression Testing: We tested the <strong>existing implementation</strong> of GIC v3…</p>
+<div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh qemu-armv8a:nsh ; make ; qemu-system-aarch64 ...</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/dec66bc348092a998772b32993e5ed65">(See the NuttX QEMU Log)</a></p>
 <ul>
 <li>QEMU good for regression testing</li>
 <li>Since we might not have the actual hw</li>
@@ -270,21 +278,96 @@ int arm64_gic_initialize(void)
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_gicv2.c#L1325-L1363">(Source)</a></p>
 <h1 id="write-the-pull-request"><a href="#write-the-pull-request">4 Write the Pull Request</a></h1>
 <p>TODO</p>
+<p>Our Pull Request will have…</p>
+<ol>
+<li>
+<p><strong>Title</strong>: NuttX Subsystem and One-Line Summary</p>
+</li>
+<li>
+<p><strong>Summary</strong>: What’s the purpose of the Pull Request? What files are changed?</p>
+</li>
+<li>
+<p><strong>Impact</strong>: Which parts of NuttX are affected by the Pull Request? Which parts <em>won’t</em> be affected?</p>
+</li>
+<li>
+<p><strong>Testing</strong>: Provide evidence that our Pull Request does what it’s supposed to do.</p>
+<p>(And that it won’t do what it’s <em>not supposed</em> to do)</p>
+</li>
+</ol>
+<p>To explain the above items, let’s walk through these Pull Requests…</p>
+<ul>
+<li>
+<p><a href="https://github.com/apache/nuttx/pull/7630"><strong>“arch/arm64: Add support for Generic Interrupt Controller Version 2”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/apache/nuttx/pull/7692"><strong>“arch/arm64: Add support for PINE64 PinePhone”</strong></a></p>
+</li>
+</ul>
+<h2 id="title"><a href="#title">4.1 Title</a></h2>
+<p>TODO</p>
+<p>NuttX Subsystem and One-Line Summary</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/4dbe011143dfc5404e1791ba74a79deb">Markdown PR</a></li>
-<li>Update Doc</li>
+</ul>
+<blockquote>
+<p><em>“arch/arm64: Add support for Generic Interrupt Controller Version 2”</em></p>
+</blockquote>
+<p><a href="https://github.com/apache/nuttx/pull/7630">(Source)</a></p>
+<h2 id="summary"><a href="#summary">4.2 Summary</a></h2>
+<p>TODO</p>
+<p>What’s the purpose of the Pull Request? What files are changed?</p>
+<blockquote>
+<p><em>“This PR adds support for GIC Version 2, which is needed by Pine64 PinePhone.”</em></p>
+</blockquote>
+<p><a href="https://github.com/apache/nuttx/pull/7630">(Source)</a></p>
+<blockquote>
+<p><em>“<code>arch/arm64/Kconfig</code>: Under “ARM64 Options”, we added an integer option ARM_GIC_VERSION (“GIC version”) that selects the GIC Version. Valid values are 2, 3 and 4, default is 3.“</em></p>
+</blockquote>
+<p><a href="https://github.com/apache/nuttx/pull/7630">(Source)</a></p>
+<p>Break into multiple sections:</p>
+<p><a href="https://github.com/apache/nuttx/pull/7692">arch/arm64: Add support for PINE64 PinePhone</a></p>
+<h2 id="impact"><a href="#impact">4.3 Impact</a></h2>
+<p>TODO</p>
+<p>Which parts of NuttX are affected by the Pull Request? Which parts <em>won’t</em> be affected?</p>
+<blockquote>
+<p><em>“With this PR, NuttX now supports GIC v2 on Arm64.</em></p>
+</blockquote>
+<blockquote>
+<p><em>There is no impact on the existing implementation of GIC v3, as tested below.“</em></p>
+</blockquote>
+<p><a href="https://github.com/apache/nuttx/pull/7630">(Source)</a></p>
+<h2 id="testing"><a href="#testing">4.4 Testing</a></h2>
+<p>TODO</p>
+<p>Provide evidence that our Pull Request does what it’s supposed to do.</p>
+<p>(And that it won’t do what it’s <em>not supposed</em> to do)</p>
+<ul>
 <li>(optional) commands used for testing</li>
 <li>(optional) logs, super helpful for debugging</li>
-<li>regression testing</li>
 </ul>
-<p><a href="https://github.com/apache/nuttx/pull/7630">arch/arm64: Add support for Generic Interrupt Controller Version 2</a></p>
-<p><a href="https://github.com/apache/nuttx/pull/7692">arch/arm64: Add support for PINE64 PinePhone</a></p>
-<h2 id="summary"><a href="#summary">4.1 Summary</a></h2>
-<p>TODO</p>
-<h2 id="impact"><a href="#impact">4.2 Impact</a></h2>
-<p>TODO</p>
-<h2 id="testing"><a href="#testing">4.3 Testing</a></h2>
-<p>TODO</p>
+<blockquote>
+<p><em>“We tested with QEMU our implementation of GIC v2:</em></p>
+</blockquote>
+<blockquote>
+<p><em><code>tools/configure.sh qemu-armv8a:nsh_gicv2 ; make ; qemu-system-aarch64 ...</code></em></p>
+</blockquote>
+<blockquote>
+<p><em><a href="https://gist.github.com/lupyuen/7537da777d728a22ab379b1ef234a2d1">(See the NuttX QEMU Log)</a></em></p>
+</blockquote>
+<blockquote>
+<p><em>The log shows that GIC v2 has correctly handled interrupts“</em></p>
+</blockquote>
+<p><a href="https://github.com/apache/nuttx/pull/7630">(Source)</a></p>
+<p>TODO: Regression Testing</p>
+<blockquote>
+<p><em>“For Regression Testing: We tested the existing implementation of GIC v3…”</em></p>
+</blockquote>
+<blockquote>
+<p><em><code>tools/configure.sh qemu-armv8a:nsh ; make ; qemu-system-aarch64 ...</code></em></p>
+</blockquote>
+<blockquote>
+<p><em><a href="https://gist.github.com/lupyuen/dec66bc348092a998772b32993e5ed65">(See the NuttX QEMU Log)</a></em></p>
+</blockquote>
+<p><a href="https://github.com/apache/nuttx/pull/7630">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/pr-squash1.png" alt="Squash Commits with GitHub Desktop" /></p>
 <h1 id="squash-the-commits"><a href="#squash-the-commits">5 Squash the Commits</a></h1>
 <p><em>What’s this “squashing”?</em></p>
