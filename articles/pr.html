@@ -152,7 +152,7 @@ git clone \
 <p><a href="https://github.com/apache/nuttx/pull/7692"><strong>“arch/arm64: Add support for PINE64 PinePhone”</strong></a></p>
 </li>
 <li>
-<p>Modify the code in <strong><code>nuttx</code></strong> and <strong><code>apps</code></strong> to implement our awesome new feature.</p>
+<p><strong>Modify the code</strong> in <strong><code>nuttx</code></strong> and <strong><code>apps</code></strong> to implement our awesome new feature.</p>
 </li>
 <li>
 <p><strong>Build and test</strong> the modified code.</p>
@@ -281,11 +281,11 @@ int arm64_gic_initialize(void)
 <p>If we see this error…</p>
 <div class="example-wrap"><pre class="language-text"><code>/* */ not balanced</code></pre></div>
 <p>Check that our stars “<strong><code>*</code></strong>” are aligned (heh)…</p>
-<div class="example-wrap"><pre class="language-text"><code>/***************************************************
- * Name: oops_the_line_below_is_missing_an_asterisk
+<div class="example-wrap"><pre class="language-text"><code>/******************************
+ * Name: missing_asterisk_below
  *
- **************************************************/</code></pre></div>
-<p>Check one last time</p>
+ *****************************/</code></pre></div>
+<p>After fixing, <strong>test our code</strong> one last time.</p>
 <h1 id="write-the-pull-request"><a href="#write-the-pull-request">4 Write the Pull Request</a></h1>
 <p>Our Pull Request will have…</p>
 <ol>
@@ -321,20 +321,29 @@ int arm64_gic_initialize(void)
 <blockquote>
 <p><em>“arch/arm64: Add support for Generic Interrupt Controller Version 2”</em></p>
 </blockquote>
+<blockquote>
 <p><a href="https://github.com/apache/nuttx/pull/7630">(Source)</a></p>
+</blockquote>
 <h2 id="summary"><a href="#summary">4.2 Summary</a></h2>
 <p>TODO</p>
 <p>What’s the purpose of the Pull Request? What files are changed?</p>
 <blockquote>
 <p><em>“This PR adds support for GIC Version 2, which is needed by Pine64 PinePhone.”</em></p>
 </blockquote>
+<blockquote>
 <p><a href="https://github.com/apache/nuttx/pull/7630">(Source)</a></p>
+</blockquote>
+<p>TODO</p>
 <blockquote>
 <p><em>“<code>arch/arm64/Kconfig</code>: Under “ARM64 Options”, we added an integer option ARM_GIC_VERSION (“GIC version”) that selects the GIC Version. Valid values are 2, 3 and 4, default is 3.“</em></p>
 </blockquote>
+<blockquote>
 <p><a href="https://github.com/apache/nuttx/pull/7630">(Source)</a></p>
+</blockquote>
 <p>Break into multiple sections:</p>
-<p><a href="https://github.com/apache/nuttx/pull/7692">arch/arm64: Add support for PINE64 PinePhone</a></p>
+<ul>
+<li><a href="https://github.com/apache/nuttx/pull/7692"><strong>arch/arm64: Add support for PINE64 PinePhone</strong></a></li>
+</ul>
 <h2 id="impact"><a href="#impact">4.3 Impact</a></h2>
 <p>TODO</p>
 <p>Which parts of NuttX are affected by the Pull Request? Which parts <em>won’t</em> be affected?</p>
@@ -344,7 +353,9 @@ int arm64_gic_initialize(void)
 <blockquote>
 <p><em>There is no impact on the existing implementation of GIC v3, as tested below.“</em></p>
 </blockquote>
+<blockquote>
 <p><a href="https://github.com/apache/nuttx/pull/7630">(Source)</a></p>
+</blockquote>
 <h2 id="testing"><a href="#testing">4.4 Testing</a></h2>
 <p>TODO</p>
 <p>Provide evidence that our Pull Request does what it’s supposed to do.</p>
@@ -365,7 +376,9 @@ int arm64_gic_initialize(void)
 <blockquote>
 <p><em>The log shows that GIC v2 has correctly handled interrupts“</em></p>
 </blockquote>
+<blockquote>
 <p><a href="https://github.com/apache/nuttx/pull/7630">(Source)</a></p>
+</blockquote>
 <p>TODO: Regression Testing</p>
 <blockquote>
 <p><em>“For Regression Testing: We tested the existing implementation of GIC v3…”</em></p>
@@ -376,7 +389,9 @@ int arm64_gic_initialize(void)
 <blockquote>
 <p><em><a href="https://gist.github.com/lupyuen/dec66bc348092a998772b32993e5ed65">(See the NuttX QEMU Log)</a></em></p>
 </blockquote>
+<blockquote>
 <p><a href="https://github.com/apache/nuttx/pull/7630">(Source)</a></p>
+</blockquote>
 <p><strong>Test Logs are super helpful</strong> for NuttX Maintainers!</p>
 <p>(Because we can’t tell which way the train went… By staring at the track!)</p>
 <p><img src="https://lupyuen.github.io/images/pr-squash1.png" alt="Squash Commits with GitHub Desktop" /></p>
@@ -443,18 +458,26 @@ int arm64_gic_initialize(void)
 <li><a href="https://github.com/k88hudson/git-flight-rules#i-need-to-combine-commits"><strong>“Flight rules for Git: I need to combine commits”</strong></a></li>
 </ul>
 <h1 id="meditate"><a href="#meditate">6 Meditate</a></h1>
-<p>TODO</p>
+<p><strong>Breathe. Take a break.</strong></p>
+<p>We’re about to make <strong>NuttX History</strong>… Our changes will be recorded for posterity!</p>
+<p>Take a long walk and ponder…</p>
 <ul>
-<li>We’re about to make NuttX History…</li>
-<li>Our PR will be recorded for posterity!</li>
-<li>Breathe. Take a long walk and ponder who might benefit from the PR, how we might help them</li>
-<li>I walked 12 km (3 hours) while meditating on the PR</li>
-<li>Submit the PR</li>
-<li>(Touch up the PR and resquashif we get an epiphany during the long walk)</li>
+<li>
+<p><strong>Who might benefit</strong> from our Pull Request</p>
+</li>
+<li>
+<p>How we might <strong>best help them</strong></p>
+</li>
 </ul>
+<p>(I walked 12 km for 3 hours while meditating on my Pull Request)</p>
+<p>If we get an inspiration or epiphany, touch up the Pull Request.</p>
+<p>(And resquash the commits)</p>
+<p><em>What’s your epiphany?</em></p>
+<p>TODO</p>
 <h1 id="submit-the-pull-request"><a href="#submit-the-pull-request">7 Submit the Pull Request</a></h1>
 <p>TODO</p>
 <ul>
+<li>Submit the PR</li>
 <li>Grab a coffee and standby!</li>
 <li>let the CI run and fix errors</li>
 <li>wait for others to review and comment</li>
