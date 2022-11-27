@@ -68,9 +68,10 @@
     <h1 class="title">Preparing a Pull Request for Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
 <li><a href="#nuttx-repositories">1 NuttX Repositories</a><ul></ul></li>
-<li><a href="#build-and-test">2 Build and Test</a><ul></ul></li>
+<li><a href="#build-and-test">2 Build and Test</a><ul>
+<li><a href="#regression-testing">2.1 Regression Testing</a><ul></ul></li></ul></li>
 <li><a href="#check-coding-style">3 Check Coding Style</a><ul></ul></li>
-<li><a href="#sqash-the-commits">4 Sqash the Commits</a><ul></ul></li>
+<li><a href="#squash-the-commits">4 Squash the Commits</a><ul></ul></li>
 <li><a href="#write-the-pull-request">5 Write the Pull Request</a><ul></ul></li>
 <li><a href="#meditate">6 Meditate</a><ul></ul></li>
 <li><a href="#submit-the-pull-request">7 Submit the Pull Request</a><ul></ul></li>
@@ -78,20 +79,74 @@
 <li><a href="#update-our-repositories">9 Update Our Repositories</a><ul></ul></li>
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Nov 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/pr-title.jpg" alt="TODO" /></p>
-<p>TODO</p>
-<p>This article explains how I prepared my Pull Requests for submission to Apache NuttX RTOS. So if we’re contributing code to NuttX, just follow these steps and things will (probably) go hunky dory!</p>
-<p><a href="https://nuttx.apache.org/docs/latest/contributing/workflow.html">Development Workflow</a></p>
+<p>This article explains how I prepared my Pull Requests for submission to <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>. So if we’re contributing code to NuttX, just follow these steps and things will (probably) go hunky dory!</p>
+<p>Before we begin, please check out the official <strong>Development Workflow</strong> for NuttX…</p>
+<ul>
+<li><a href="https://nuttx.apache.org/docs/latest/contributing/workflow.html"><strong>“NuttX Development Workflow”</strong></a></li>
+</ul>
+<p>OK let’s dive in!</p>
+<p><img src="https://lupyuen.github.io/images/pr-fork.png" alt="Create Fork" /></p>
 <h1 id="nuttx-repositories"><a href="#nuttx-repositories">1 NuttX Repositories</a></h1>
+<p>We begin by <strong>creating our forks</strong> for the <strong><code>nuttx</code></strong> and <strong><code>apps</code></strong> repositories…</p>
+<ol>
+<li>
+<p>Browse to <strong>NuttX Repository</strong>…</p>
+<p><a href="https://github.com/apache/nuttx"><strong>github.com/apache/nuttx</strong></a></p>
+<p>Click “<strong>Fork</strong>” to create our fork. (Pic above)</p>
+<p>Click “<strong>Actions</strong>” and enable GitHub Actions…</p>
+<p><img src="https://lupyuen.github.io/images/pr-actions.png" alt="Enable GitHub Actions" /></p>
+<p>(This will check that our code compiles OK at every commit)</p>
+</li>
+<li>
+<p>Do the same for the <strong>NuttX Apps Repository</strong>…</p>
+<p><a href="https://github.com/apache/nuttx-apps"><strong>github.com/apache/nuttx-apps</strong></a></p>
+<p>Click “<strong>Fork</strong>” to create our fork.</p>
+<p>Click “<strong>Actions</strong>” and enable GitHub Actions.</p>
+</li>
+<li>
+<p>As a principle, let’s keep our <strong><code>master</code></strong> branch <strong>always in sync</strong> with the NuttX Mainline <strong><code>master</code></strong> branch.</p>
+<p>(This seems cleaner for syncing upstream updates into our repo)</p>
+<p>Let’s <strong>create a branch</strong> to make our changes…</p>
+</li>
+<li>
+<p>In our NuttX Repository, click <strong><code>master</code></strong>.</p>
+<p>Enter the name of our new branch.</p>
+<p>Click “<strong>Create Branch</strong>”</p>
+<p><img src="https://lupyuen.github.io/images/pr-branch.png" alt="Create Branch" /></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/gic">(I named my branch <strong><code>gic</code></strong> for Generic Interrupt Controller)</a></p>
+</li>
+<li>
+<p>Do the same for our <strong>NuttX Apps Repository</strong></p>
+<p>(Because we should sync <strong><code>nuttx</code></strong> and <strong><code>apps</code></strong> too)</p>
+</li>
+<li>
+<p>Download the new branches of our <strong><code>nuttx</code></strong> and <strong><code>apps</code></strong> repositories…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Download the &quot;gic&quot; branch of &quot;lupyuen2/wip-pinephone-nuttx&quot;
+# TODO: Change the branch name and repo URLs
+mkdir nuttx
+cd nuttx
+git clone \
+  --branch gic \
+  https://github.com/lupyuen2/wip-pinephone-nuttx \
+  nuttx
+git clone \
+  --branch gic \
+  https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
+  apps</code></pre></div>
+<p>We’re now ready to code!</p>
+</li>
+</ol>
+<h1 id="build-and-test"><a href="#build-and-test">2 Build and Test</a></h1>
 <p>TODO</p>
 <ul>
 <li>
-<p>master branch always in sync with mainline</p>
+<p>test locally</p>
 </li>
 <li>
-<p>Enable github actions</p>
+<p>capture the log</p>
 </li>
 <li>
-<p>Why lupyuen2</p>
+<p>don’t wait too long because upstream may change</p>
 </li>
 <li>
 <p>create a PR in a branch</p>
@@ -102,13 +157,12 @@
 <li>
 <p>small modular self-contained feature</p>
 </li>
+<li>
+<p>sometimes GitHub Actions will fail. Just re-run the failed jobs <a href="https://lupyuen.github.io/images/pr-rerun.png">(Like this)</a></p>
+</li>
 </ul>
-<h1 id="build-and-test"><a href="#build-and-test">2 Build and Test</a></h1>
-<p>TODO</p>
+<h2 id="regression-testing"><a href="#regression-testing">2.1 Regression Testing</a></h2>
 <ul>
-<li>test locally</li>
-<li>capture the log</li>
-<li>don’t wait too long because upstream may change</li>
 <li>regression testing</li>
 <li>(optional) logs, super helpful for debugging</li>
 </ul>
@@ -143,10 +197,13 @@ $HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm64/src/common/arm64_gicv3.
 <li>Best if can convert to NuttX style </li>
 <li>Check one last time</li>
 </ul>
-<h1 id="sqash-the-commits"><a href="#sqash-the-commits">4 Sqash the Commits</a></h1>
+<p><img src="https://lupyuen.github.io/images/pr-squash1.png" alt="Squash Commits with GitHub Desktop" /></p>
+<h1 id="squash-the-commits"><a href="#squash-the-commits">4 Squash the Commits</a></h1>
 <p>TODO</p>
 <ul>
 <li>Why squash commits </li>
+<li>GitHub Desktop</li>
+<li>Select commits and squash them</li>
 <li>Force push</li>
 </ul>
 <h1 id="write-the-pull-request"><a href="#write-the-pull-request">5 Write the Pull Request</a></h1>
