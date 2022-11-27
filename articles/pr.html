@@ -206,8 +206,11 @@ failed with status: 503 Service Unavailable&quot;</code></pre></div></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/pr-nxstyle.png" alt="Check Coding Style with nxstyle" /></p>
 <h1 id="check-coding-style"><a href="#check-coding-style">3 Check Coding Style</a></h1>
+<p>Our NuttX Code will follow this Coding Standard…</p>
+<ul>
+<li><a href="https://nuttx.apache.org/docs/latest/contributing/coding_style.html"><strong>“NuttX C Coding Standard”</strong></a></li>
+</ul>
 <p>TODO</p>
-<p><a href="https://nuttx.apache.org/docs/latest/contributing/coding_style.html">NuttX C Coding Standard</a></p>
 <p>nxstyle:</p>
 <div class="example-wrap"><pre class="language-bash"><code>gcc -o $HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/tools/nxstyle.c
 
@@ -220,16 +223,7 @@ $HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm64/src/common/arm64_gicv3.
 ../nxstyle boards/arm64/qemu/qemu-armv8a/README.txt
 ../nxstyle boards/arm64/qemu/qemu-armv8a/configs/nsh_gicv2/defconfig
 
-/* */ not balanced
-
 $HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2.c</code></pre></div>
-<p>check that our stars are aligned (heh)</p>
-<ul>
-<li>VSCode Extension?</li>
-<li><a href="https://marketplace.visualstudio.com/items?itemName=idanp.checkpatch">Linux checkpatch?</a></li>
-<li>Best if can convert to NuttX style </li>
-<li>Check one last time</li>
-</ul>
 <p>So this…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Initialize GIC. Called by CPU0 only.
 int arm64_gic_initialize(void) {
@@ -284,8 +278,20 @@ int arm64_gic_initialize(void)
   return 0;
 }</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_gicv2.c#L1325-L1363">(Source)</a></p>
+<p>If we see this error…</p>
+<div class="example-wrap"><pre class="language-text"><code>/* */ not balanced</code></pre></div>
+<p>Check that our stars “<strong><code>*</code></strong>” are aligned (heh)…</p>
+<div class="example-wrap"><pre class="language-text"><code>/***************************************************
+ * Name: oops_the_line_below_is_missing_an_asterisk
+ *
+ **************************************************/</code></pre></div>
+<ul>
+<li>VSCode Extension?</li>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=idanp.checkpatch">Linux checkpatch?</a></li>
+<li>Best if can convert to NuttX style </li>
+<li>Check one last time</li>
+</ul>
 <h1 id="write-the-pull-request"><a href="#write-the-pull-request">4 Write the Pull Request</a></h1>
-<p>TODO</p>
 <p>Our Pull Request will have…</p>
 <ol>
 <li>
@@ -302,7 +308,7 @@ int arm64_gic_initialize(void)
 <p>(And that it won’t do what it’s <em>not supposed</em> to do)</p>
 </li>
 </ol>
-<p>To explain the above items, let’s walk through these Pull Requests…</p>
+<p>To write the above items, let’s walk through these Pull Requests…</p>
 <ul>
 <li>
 <p><a href="https://github.com/apache/nuttx/pull/7630"><strong>“arch/arm64: Add support for Generic Interrupt Controller Version 2”</strong></a></p>
