@@ -91,7 +91,7 @@ We're ready to code!
 
     [__"arch/arm64: Add support for PINE64 PinePhone"__](https://github.com/apache/nuttx/pull/7692)
 
-1.  Modify the code in __`nuttx`__ and __`apps`__ to implement our awesome new feature.
+1.  __Modify the code__ in __`nuttx`__ and __`apps`__ to implement our awesome new feature.
 
 1.  __Build and test__ the modified code.
 
@@ -261,13 +261,13 @@ If we see this error...
 Check that our stars "__`*`__" are aligned (heh)...
 
 ```text
-/***************************************************
- * Name: oops_the_line_below_is_missing_an_asterisk
+/******************************
+ * Name: missing_asterisk_below
  *
- **************************************************/
+ *****************************/
 ```
 
-Check one last time
+After fixing, __test our code__ one last time.
 
 # Write the Pull Request
 
@@ -299,7 +299,7 @@ NuttX Subsystem and One-Line Summary
 
 >   _"arch/arm64: Add support for Generic Interrupt Controller Version 2"_
 
-[(Source)](https://github.com/apache/nuttx/pull/7630)
+>   [(Source)](https://github.com/apache/nuttx/pull/7630)
 
 ## Summary
 
@@ -309,15 +309,17 @@ What's the purpose of the Pull Request? What files are changed?
 
 >   _"This PR adds support for GIC Version 2, which is needed by Pine64 PinePhone."_
 
-[(Source)](https://github.com/apache/nuttx/pull/7630)
+>   [(Source)](https://github.com/apache/nuttx/pull/7630)
+
+TODO
 
 >   _"`arch/arm64/Kconfig`: Under "ARM64 Options", we added an integer option ARM_GIC_VERSION ("GIC version") that selects the GIC Version. Valid values are 2, 3 and 4, default is 3."_
 
-[(Source)](https://github.com/apache/nuttx/pull/7630)
+>   [(Source)](https://github.com/apache/nuttx/pull/7630)
 
 Break into multiple sections:
 
-[arch/arm64: Add support for PINE64 PinePhone](https://github.com/apache/nuttx/pull/7692)
+-   [__arch/arm64: Add support for PINE64 PinePhone__](https://github.com/apache/nuttx/pull/7692)
 
 ## Impact
 
@@ -329,7 +331,7 @@ Which parts of NuttX are affected by the Pull Request? Which parts _won't_ be af
 
 >   _There is no impact on the existing implementation of GIC v3, as tested below."_
 
-[(Source)](https://github.com/apache/nuttx/pull/7630)
+>   [(Source)](https://github.com/apache/nuttx/pull/7630)
 
 ## Testing
 
@@ -350,7 +352,7 @@ Provide evidence that our Pull Request does what it's supposed to do.
 
 >   _The log shows that GIC v2 has correctly handled interrupts"_
 
-[(Source)](https://github.com/apache/nuttx/pull/7630)
+>   [(Source)](https://github.com/apache/nuttx/pull/7630)
 
 TODO: Regression Testing
 
@@ -360,7 +362,7 @@ TODO: Regression Testing
 
 >   _[(See the NuttX QEMU Log)](https://gist.github.com/lupyuen/dec66bc348092a998772b32993e5ed65)_
 
-[(Source)](https://github.com/apache/nuttx/pull/7630)
+>   [(Source)](https://github.com/apache/nuttx/pull/7630)
 
 __Test Logs are super helpful__ for NuttX Maintainers!
 
@@ -457,19 +459,31 @@ Here are the steps to Squash Commits with the __Git Command Line__...
 
 # Meditate
 
-TODO
+__Breathe. Take a break.__
 
-- We're about to make NuttX History...
-- Our PR will be recorded for posterity!
-- Breathe. Take a long walk and ponder who might benefit from the PR, how we might help them
-- I walked 12 km (3 hours) while meditating on the PR
-- Submit the PR
-- (Touch up the PR and resquashif we get an epiphany during the long walk)
+We're about to make __NuttX History__... Our changes will be recorded for posterity!
+
+Take a long walk and ponder...
+
+-   __Who might benefit__ from our Pull Request
+
+-   How we might __best help them__
+
+(I walked 12 km for 3 hours while meditating on my Pull Request)
+
+If we get an inspiration or epiphany, touch up the Pull Request.
+
+(And resquash the commits)
+
+_What's your epiphany?_
+
+TODO
 
 # Submit the Pull Request
 
 TODO
 
+- Submit the PR
 - Grab a coffee and standby!
 - let the CI run and fix errors
 - wait for others to review and comment
