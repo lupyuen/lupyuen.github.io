@@ -267,10 +267,7 @@ Check that our stars "__`*`__" are aligned (heh)...
  **************************************************/
 ```
 
-- VSCode Extension?
-- [Linux checkpatch?](https://marketplace.visualstudio.com/items?itemName=idanp.checkpatch)
-- Best if can convert to NuttX style 
-- Check one last time
+Check one last time
 
 # Write the Pull Request
 
@@ -476,7 +473,7 @@ TODO
 - Grab a coffee and standby!
 - let the CI run and fix errors
 - wait for others to review and comment
-- Standby to fix the PR (have a strong cup of coffee)
+- Standby to fix the PR
 
 # Fix the Pull Request
 
@@ -519,3 +516,7 @@ TODO
 - Since we might not have the actual hw
 - How to support PinePhone UART in QEMU?
 - Zig Extension?
+
+- VSCode Extension?
+- [Linux checkpatch?](https://marketplace.visualstudio.com/items?itemName=idanp.checkpatch)
+- Best if can convert to NuttX style 
