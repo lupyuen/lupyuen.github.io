@@ -158,6 +158,12 @@ tools/configure.sh qemu-armv8a:nsh ; make ; qemu-system-aarch64 ...
 
 TODO
 
+please update the documentation 
+
+text file 
+
+or official nuttx docs
+
 [NuttX Documentation](https://nuttx.apache.org/docs/latest/contributing/documentation.html)
 
 ![Check Coding Style with nxstyle](https://lupyuen.github.io/images/pr-nxstyle.png)
