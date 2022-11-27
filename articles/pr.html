@@ -217,6 +217,56 @@ $HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2.c</
 <p><img src="https://lupyuen.github.io/images/pr-squash1.png" alt="Squash Commits with GitHub Desktop" /></p>
 <h1 id="squash-the-commits"><a href="#squash-the-commits">4 Squash the Commits</a></h1>
 <p><em>What’s this “squashing”?</em></p>
+<p>“Squashing” means we’re <strong>combining Multiple Commits</strong> into One Single Commit.</p>
+<p>Our <strong>Commit History</strong> can get awfully messy during development…</p>
+<div class="example-wrap"><pre class="language-text"><code>- Initial Commit
+- Fixing Build
+- Build OK!
+- Oops fixing bug
+- Tested OK yay!</code></pre></div>
+<p><a href="https://github.com/lupyuen/incubator-nuttx/commits/pinephone/arch/arm64/src/qemu/qemu_serial.c">(Source)</a></p>
+<p>So we always <strong>Squash the Commits</strong> into One Single Commit (to help future maintainers)…</p>
+<div class="example-wrap"><pre class="language-text"><code>- arch/arm64: Add support for Generic Interrupt Controller Version 2</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/pull/7630/commits">(Source)</a></p>
+<p><em>How do we squash the commits?</em></p>
+<p>We’ll use <a href="https://desktop.github.com/"><strong>GitHub Desktop</strong></a> (because I’m terrible with the Git Command Line)…</p>
+<ol>
+<li>
+<p>Install <a href="https://desktop.github.com/"><strong>GitHub Desktop</strong></a> and launch it</p>
+</li>
+<li>
+<p>Click “<strong>File → Add Local Repository</strong>”</p>
+<p>Select our downloaded <strong><code>nuttx</code></strong> folder.</p>
+<p>Click “<strong>Add Repository</strong>”</p>
+</li>
+<li>
+<p>Click the “<strong>History</strong>” tab to reveal the Commit History</p>
+<p><a href="https://lupyuen.github.io/images/pr-squash1.png">(Pic above)</a></p>
+</li>
+<li>
+<p>Select the Commits to be Squashed.</p>
+<p>Right-click the Commits.</p>
+<p>Select “<strong>Squash Commits</strong>”</p>
+<p><a href="https://lupyuen.github.io/images/pr-squash1.png">(Pic above)</a></p>
+</li>
+<li>
+<p>Copy the <strong>Title</strong> of our Pull Request and paste into the <strong>Title Box</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>arch/arm64: Add support for Generic Interrupt Controller Version 2</code></pre></div>
+<p>Copy the <strong>Summary</strong> of our Pull Request and paste into the <strong>Description Box</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>This PR adds support for GIC Version 2.
+- `boards/arm64/qemu/qemu-armv8a/configs/nsh_gicv2/defconfig`: Added the Board Configuration</code></pre></div>
+<p>Click “<strong>Squash Commits</strong>”</p>
+<p><img src="https://lupyuen.github.io/images/pr-squash2.png" alt="Squash Commits with GitHub Desktop" /></p>
+</li>
+<li>
+<p>Click “<strong>Begin Squash</strong>”</p>
+<p><img src="https://lupyuen.github.io/images/pr-squash3.png" alt="Squash Commits with GitHub Desktop" /></p>
+</li>
+<li>
+<p>Click “<strong>Force Push Origin</strong>”</p>
+<p><img src="https://lupyuen.github.io/images/pr-squash4.png" alt="Squash Commits with GitHub Desktop" /></p>
+</li>
+</ol>
 <p>TODO</p>
 <ul>
 <li>Why squash commits </li>
