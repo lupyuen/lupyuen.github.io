@@ -92,11 +92,17 @@ TODO
 
 - sometimes GitHub Actions will fail. Just re-run the failed jobs [(Like this)](https://lupyuen.github.io/images/pr-rerun.png)
 
+```text
+Error response from daemon:
+login attempt to https://ghcr.io/v2/
+failed with status: 503 Service Unavailable"
+```
+
 ## Regression Testing
 
 _Will our modified code break other parts of NuttX?_
 
-That's why it's good to run a __Regression Test__ (if possible) to be sure that other parts of NuttX aren't affected by our modified code.
+That's why it's good to run a [__Regression Test__](https://en.wikipedia.org/wiki/Regression_testing) (if feasible) to be sure that other parts of NuttX aren't affected by our modified code.
 
 TODO
 
@@ -110,6 +116,8 @@ run.sh QEMU: https://gist.github.com/lupyuen/5e2fba642a33bf64d3378df3795042d7
 - Since we might not have the actual hw
 - How to support PinePhone UART in QEMU?
 - Zig Extension?
+
+![Check Coding Style with nxstyle](https://lupyuen.github.io/images/pr-nxstyle.png)
 
 # Check Coding Style
 
