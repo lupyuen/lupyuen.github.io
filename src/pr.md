@@ -77,61 +77,55 @@ We begin by __creating our forks__ for the __`nuttx`__ and __`apps`__ repositori
       apps
     ```
 
-    We're ready to code!
-
 # Build and Test
 
+We're ready to code!
 
-TODO
+1.  Consider breaking our Pull Request into __Smaller Pull Requests__.
 
-modify the code in nuttx and apps to implement our awesome new feature 
+    This Pull Request implements __One Single Feature__ (Generic Interrupt Controller)...
 
+    [__"arch/arm64: Add support for Generic Interrupt Controller Version 2"__](https://github.com/apache/nuttx/pull/7630)
 
-consider breaking into smaller pr
+    That's called by another Pull Request...
 
+    [__"arch/arm64: Add support for PINE64 PinePhone"__](https://github.com/apache/nuttx/pull/7692)
 
-this pr implements one single feature
+1.  Modify the code in __`nuttx`__ and __`apps`__ to implement our awesome new feature.
 
-that is called by this pr
+1.  __Build and test__ the modified code.
 
-test logs are super helpful for nuttx maintainers
+    [(I configured `F1` in VSCode to run this __Build Script__)](https://gist.github.com/lupyuen/5e2fba642a33bf64d3378df3795042d7)
 
-because we can't tell which way the train went... unless we have the test logs
+1.  Capture the __Output Log__ and save it as a [__GitHub Gist__](https://gist.github.com/lupyuen/7537da777d728a22ab379b1ef234a2d1)...
 
-- test locally
-- capture the log
-- don't wait too long because upstream may change
+    -   [__"NuttX QEMU Log for Generic Interrupt Controller"__](https://gist.github.com/lupyuen/7537da777d728a22ab379b1ef234a2d1)
 
-- create a PR in a branch
-- testable (QEMU)
-- small modular self-contained feature
+    We'll add this to our Pull Request. __Test Logs are super helpful__ for NuttX Maintainers!
 
-[(I configured `F1` in VSCode to run this Build Script)](https://gist.github.com/lupyuen/5e2fba642a33bf64d3378df3795042d7)
+    (Because we can't tell which way the train went... Unless we have the Test Logs!)
 
-- sometimes GitHub Actions will fail. Just re-run the failed jobs [(Like this)](https://lupyuen.github.io/images/pr-rerun.png)
+1.  __Commit the modified code__ to our repositories.
 
-```text
-Error response from daemon:
-login attempt to https://ghcr.io/v2/
-failed with status: 503 Service Unavailable"
-```
+    Sometimes the __GitHub Actions Workflow__ will fail with a strange error (like below). Just re-run the failed jobs. [(Like this)](https://lupyuen.github.io/images/pr-rerun.png)
 
-## Regression Testing
+    ```text
+    Error response from daemon:
+    login attempt to https://ghcr.io/v2/
+    failed with status: 503 Service Unavailable"
+    ```
+
+## Regression Test
 
 _Will our modified code break other parts of NuttX?_
 
 That's why it's good to run a [__Regression Test__](https://en.wikipedia.org/wiki/Regression_testing) (if feasible) to be sure that other parts of NuttX aren't affected by our modified code.
 
-TODO
-
-- regression testing
-- (optional) logs, super helpful for debugging
-
 For our Pull Request...
 
 -   [__"arch/arm64: Add support for Generic Interrupt Controller Version 2"__](https://github.com/apache/nuttx/pull/7630)
 
-We tested with QEMU our __new implementation__ of GIC v2...
+We tested with QEMU Emulator our __new implementation__ of Generic Interrupt Controller v2...
 
 ```bash
 tools/configure.sh qemu-armv8a:nsh_gicv2 ; make ; qemu-system-aarch64 ...
@@ -139,7 +133,7 @@ tools/configure.sh qemu-armv8a:nsh_gicv2 ; make ; qemu-system-aarch64 ...
 
 [(See the NuttX QEMU Log)](https://gist.github.com/lupyuen/7537da777d728a22ab379b1ef234a2d1)
 
-And for Regression Testing: We tested the __existing implementation__ of GIC v3...
+And for Regression Testing we tested the __existing implementation__ of Generic Interrupt Controller v3...
 
 ```bash
 tools/configure.sh qemu-armv8a:nsh ; make ; qemu-system-aarch64 ...
@@ -147,24 +141,25 @@ tools/configure.sh qemu-armv8a:nsh ; make ; qemu-system-aarch64 ...
 
 [(See the NuttX QEMU Log)](https://gist.github.com/lupyuen/dec66bc348092a998772b32993e5ed65)
 
-- QEMU good for regression testing
-- Since we might not have the actual hw
-- How to support PinePhone UART in QEMU?
-- Zig Extension?
+Remember to capture the __Output Log__, we'll add it to our Pull Request.
 
 (Yeah it will be hard to run a Regression Test if it requires hardware that we don't have)
 
 ## Documentation
 
-TODO
+Please update the __Documentation__. The Documentation might be in a __Text File__...
 
-please update the documentation 
+-   [__nuttx/.../README.txt__](https://github.com/apache/nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/README.txt)
 
-text file 
+Or in the __Official NuttX Docs__...
 
-or official nuttx docs
+-   [__nuttx/Documentation/.../index.rst__](https://github.com/apache/nuttx/blob/master/Documentation/platforms/arm/a64/boards/pinephone/index.rst)
 
-[NuttX Documentation](https://nuttx.apache.org/docs/latest/contributing/documentation.html)
+To update the Official NuttX Docs, follow the instructions here...
+
+-   [__"NuttX Documentation"__](https://nuttx.apache.org/docs/latest/contributing/documentation.html)
+
+    [(See the Log)](https://gist.github.com/lupyuen/c061ac688f430ef11a1c60e0b284a1fe)
 
 ![Check Coding Style with nxstyle](https://lupyuen.github.io/images/pr-nxstyle.png)
 
@@ -359,9 +354,9 @@ TODO: Regression Testing
 
 [(Source)](https://github.com/apache/nuttx/pull/7630)
 
-test logs are super helpful for nuttx maintainers
+__Test Logs are super helpful__ for NuttX Maintainers!
 
-because we can't tell which way the train went by looking at the tracks
+(Because we can't tell which way the train went... By staring at the track!)
 
 ![Squash Commits with GitHub Desktop](https://lupyuen.github.io/images/pr-squash1.png)
 
@@ -504,3 +499,12 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/pr.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pr.md)
+
+# Notes
+
+TODO
+
+- QEMU good for regression testing
+- Since we might not have the actual hw
+- How to support PinePhone UART in QEMU?
+- Zig Extension?
