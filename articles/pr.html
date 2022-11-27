@@ -69,7 +69,8 @@
     <nav id="TOC"><ul>
 <li><a href="#nuttx-repositories">1 NuttX Repositories</a><ul></ul></li>
 <li><a href="#build-and-test">2 Build and Test</a><ul>
-<li><a href="#regression-testing">2.1 Regression Testing</a><ul></ul></li></ul></li>
+<li><a href="#regression-testing">2.1 Regression Testing</a><ul></ul></li>
+<li><a href="#documentation">2.2 Documentation</a><ul></ul></li></ul></li>
 <li><a href="#check-coding-style">3 Check Coding Style</a><ul></ul></li>
 <li><a href="#squash-the-commits">4 Squash the Commits</a><ul></ul></li>
 <li><a href="#write-the-pull-request">5 Write the Pull Request</a><ul>
@@ -96,15 +97,15 @@
 <p>Browse to <strong>NuttX Repository</strong>…</p>
 <p><a href="https://github.com/apache/nuttx"><strong>github.com/apache/nuttx</strong></a></p>
 <p>Click “<strong>Fork</strong>” to create our fork. (Pic above)</p>
-<p>Click “<strong>Actions</strong>” and enable GitHub Actions…</p>
-<p><img src="https://lupyuen.github.io/images/pr-actions.png" alt="Enable GitHub Actions" /></p>
+<p>Click “<strong>Actions</strong>” and enable workflows…</p>
+<p><img src="https://lupyuen.github.io/images/pr-actions.png" alt="Enable Workflows" /></p>
 <p>(This will check that our code compiles OK at every commit)</p>
 </li>
 <li>
 <p>Do the same for the <strong>NuttX Apps Repository</strong>…</p>
 <p><a href="https://github.com/apache/nuttx-apps"><strong>github.com/apache/nuttx-apps</strong></a></p>
 <p>Click “<strong>Fork</strong>” to create our fork.</p>
-<p>Click “<strong>Actions</strong>” and enable GitHub Actions.</p>
+<p>Click “<strong>Actions</strong>” and enable workflows.</p>
 </li>
 <li>
 <p>As a principle, let’s keep our <strong><code>master</code></strong> branch <strong>always in sync</strong> with the NuttX Mainline <strong><code>master</code></strong> branch.</p>
@@ -174,7 +175,8 @@ failed with status: 503 Service Unavailable&quot;</code></pre></div><h2 id="regr
 <li>regression testing</li>
 <li>(optional) logs, super helpful for debugging</li>
 </ul>
-<p>Docs: https://nuttx.apache.org/docs/latest/contributing/documentation.html</p>
+<p>For our Pull Request…</p>
+<p><a href="https://github.com/apache/nuttx/pull/7630">arch/arm64: Add support for Generic Interrupt Controller Version 2</a></p>
 <p>run.sh QEMU: https://gist.github.com/lupyuen/5e2fba642a33bf64d3378df3795042d7</p>
 <ul>
 <li>QEMU good for regression testing</li>
@@ -182,6 +184,10 @@ failed with status: 503 Service Unavailable&quot;</code></pre></div><h2 id="regr
 <li>How to support PinePhone UART in QEMU?</li>
 <li>Zig Extension?</li>
 </ul>
+<p>(Yeah it will be hard to run a Regression Test if it requires hardware that we don’t have)</p>
+<h2 id="documentation"><a href="#documentation">2.2 Documentation</a></h2>
+<p>TODO</p>
+<p>Docs: https://nuttx.apache.org/docs/latest/contributing/documentation.html</p>
 <p><img src="https://lupyuen.github.io/images/pr-nxstyle.png" alt="Check Coding Style with nxstyle" /></p>
 <h1 id="check-coding-style"><a href="#check-coding-style">3 Check Coding Style</a></h1>
 <p>TODO</p>
