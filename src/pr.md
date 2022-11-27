@@ -4,23 +4,78 @@
 
 ![TODO](https://lupyuen.github.io/images/pr-title.jpg)
 
-TODO
+This article explains how I prepared my Pull Requests for submission to [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html). So if we're contributing code to NuttX, just follow these steps and things will (probably) go hunky dory!
 
-This article explains how I prepared my Pull Requests for submission to Apache NuttX RTOS. So if we're contributing code to NuttX, just follow these steps and things will (probably) go hunky dory!
+Before we begin, please check out the official __Development Workflow__ for NuttX...
 
-[Development Workflow](https://nuttx.apache.org/docs/latest/contributing/workflow.html)
+-   [__"NuttX Development Workflow"__](https://nuttx.apache.org/docs/latest/contributing/workflow.html)
+
+OK let's dive in!
+
+![Create Fork](https://lupyuen.github.io/images/pr-fork.png)
 
 # NuttX Repositories
 
-TODO
+We begin by __creating our forks__ for the __`nuttx`__ and __`apps`__ repositories...
 
-- master branch always in sync with mainline
-- Enable github actions
-- Why lupyuen2
+1.  Browse to __NuttX Repository__...
 
-- create a PR in a branch
-- testable (QEMU)
-- small modular self-contained feature
+    [__github.com/apache/nuttx__](https://github.com/apache/nuttx)
+
+    Click "__Fork__" to create our fork. (Pic above)
+
+    Click "__Actions__" and enable GitHub Actions...
+
+    ![Enable GitHub Actions](https://lupyuen.github.io/images/pr-actions.png)
+
+    (This will check that our code compiles OK at every commit)
+
+1.  Do the same for the __NuttX Apps Repository__...
+
+    [__github.com/apache/nuttx-apps__](https://github.com/apache/nuttx-apps)
+
+    Click "__Fork__" to create our fork.
+
+    Click "__Actions__" and enable GitHub Actions.
+
+1.  As a principle, let's keep our __`master`__ branch __always in sync__ with the NuttX Mainline __`master`__ branch.
+
+    (This seems cleaner for syncing upstream updates into our repo)
+
+    Let's __create a branch__ to make our changes...
+
+1.  In our NuttX Repository, click __`master`__.
+
+    Enter the name of our new branch.
+    
+    Click "__Create Branch__"
+
+    ![Create Branch](https://lupyuen.github.io/images/pr-branch.png)
+
+    [(I named my branch __`gic`__ for Generic Interrupt Controller)](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/gic)
+
+1.  Do the same for our __NuttX Apps Repository__
+
+    (Because we should sync __`nuttx`__ and __`apps`__ too)
+
+1.  Download the new branches of our __`nuttx`__ and __`apps`__ repositories...
+
+    ```bash
+    ## Download the "gic" branch of "lupyuen2/wip-pinephone-nuttx"
+    ## TODO: Change the branch name and repo URLs
+    mkdir nuttx
+    cd nuttx
+    git clone \
+      --branch gic \
+      https://github.com/lupyuen2/wip-pinephone-nuttx \
+      nuttx
+    git clone \
+      --branch gic \
+      https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
+      apps
+    ```
+
+    We're now ready to code!
 
 # Build and Test
 
@@ -29,6 +84,15 @@ TODO
 - test locally
 - capture the log
 - don't wait too long because upstream may change
+
+- create a PR in a branch
+- testable (QEMU)
+- small modular self-contained feature
+
+- sometimes GitHub Actions will fail. Just re-run the failed jobs [(Like this)](https://lupyuen.github.io/images/pr-rerun.png)
+
+## Regression Testing
+
 - regression testing
 - (optional) logs, super helpful for debugging
 
@@ -70,11 +134,15 @@ $HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2.c
 - Best if can convert to NuttX style 
 - Check one last time
 
-# Sqash the Commits
+![Squash Commits with GitHub Desktop](https://lupyuen.github.io/images/pr-squash1.png)
+
+# Squash the Commits
 
 TODO
 
 - Why squash commits 
+- GitHub Desktop
+- Select commits and squash them
 - Force push
 
 # Write the Pull Request
