@@ -165,9 +165,11 @@ To update the Official NuttX Docs, follow the instructions here...
 
 # Check Coding Style
 
-TODO
+Our NuttX Code will follow this Coding Standard...
 
-[NuttX C Coding Standard](https://nuttx.apache.org/docs/latest/contributing/coding_style.html)
+-   [__"NuttX C Coding Standard"__](https://nuttx.apache.org/docs/latest/contributing/coding_style.html)
+
+TODO
 
 nxstyle:
 
@@ -183,17 +185,8 @@ $HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm64/src/common/arm64_gicv3.
 ../nxstyle boards/arm64/qemu/qemu-armv8a/README.txt
 ../nxstyle boards/arm64/qemu/qemu-armv8a/configs/nsh_gicv2/defconfig
 
-/* */ not balanced
-
 $HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2.c
 ```
-
-check that our stars are aligned (heh)
-
-- VSCode Extension?
-- [Linux checkpatch?](https://marketplace.visualstudio.com/items?itemName=idanp.checkpatch)
-- Best if can convert to NuttX style 
-- Check one last time
 
 So this...
 
@@ -259,9 +252,27 @@ int arm64_gic_initialize(void)
 
 [(Source)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_gicv2.c#L1325-L1363)
 
-# Write the Pull Request
+If we see this error...
 
-TODO
+```text
+/* */ not balanced
+```
+
+Check that our stars "__`*`__" are aligned (heh)...
+
+```text
+/***************************************************
+ * Name: oops_the_line_below_is_missing_an_asterisk
+ *
+ **************************************************/
+```
+
+- VSCode Extension?
+- [Linux checkpatch?](https://marketplace.visualstudio.com/items?itemName=idanp.checkpatch)
+- Best if can convert to NuttX style 
+- Check one last time
+
+# Write the Pull Request
 
 Our Pull Request will have...
 
@@ -275,7 +286,7 @@ Our Pull Request will have...
 
     (And that it won't do what it's _not supposed_ to do)
 
-To explain the above items, let's walk through these Pull Requests...
+To write the above items, let's walk through these Pull Requests...
 
 -   [__"arch/arm64: Add support for Generic Interrupt Controller Version 2"__](https://github.com/apache/nuttx/pull/7630)
 
