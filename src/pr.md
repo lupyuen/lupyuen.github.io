@@ -113,7 +113,7 @@ For our Pull Request...
 
 [arch/arm64: Add support for Generic Interrupt Controller Version 2](https://github.com/apache/nuttx/pull/7630)
 
-run.sh QEMU: https://gist.github.com/lupyuen/5e2fba642a33bf64d3378df3795042d7
+[run.sh QEMU](https://gist.github.com/lupyuen/5e2fba642a33bf64d3378df3795042d7)
 - QEMU good for regression testing
 - Since we might not have the actual hw
 - How to support PinePhone UART in QEMU?
@@ -125,7 +125,7 @@ run.sh QEMU: https://gist.github.com/lupyuen/5e2fba642a33bf64d3378df3795042d7
 
 TODO
 
-Docs: https://nuttx.apache.org/docs/latest/contributing/documentation.html
+[NuttX Documentation](https://nuttx.apache.org/docs/latest/contributing/documentation.html)
 
 ![Check Coding Style with nxstyle](https://lupyuen.github.io/images/pr-nxstyle.png)
 
@@ -150,12 +150,12 @@ $HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm64/src/common/arm64_gicv3.
 ../nxstyle boards/arm64/qemu/qemu-armv8a/configs/nsh_gicv2/defconfig
 
 /* */ not balanced
-```
 
 $HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2.c
+```
 
 - VSCode Extension?
-- Linux checkpatch? https://marketplace.visualstudio.com/items?itemName=idanp.checkpatch
+- [Linux checkpatch?](https://marketplace.visualstudio.com/items?itemName=idanp.checkpatch)
 - Best if can convert to NuttX style 
 - Check one last time
 
@@ -174,7 +174,7 @@ TODO
 
 TODO
 
-- Markdown PR: https://gist.github.com/lupyuen/4dbe011143dfc5404e1791ba74a79deb
+- [Markdown PR](https://gist.github.com/lupyuen/4dbe011143dfc5404e1791ba74a79deb)
 - Update Doc
 - (optional) commands used for testing
 - (optional) logs, super helpful for debugging
