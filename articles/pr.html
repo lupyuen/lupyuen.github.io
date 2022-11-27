@@ -69,7 +69,7 @@
     <nav id="TOC"><ul>
 <li><a href="#nuttx-repositories">1 NuttX Repositories</a><ul></ul></li>
 <li><a href="#build-and-test">2 Build and Test</a><ul>
-<li><a href="#regression-testing">2.1 Regression Testing</a><ul></ul></li>
+<li><a href="#regression-test">2.1 Regression Test</a><ul></ul></li>
 <li><a href="#documentation">2.2 Documentation</a><ul></ul></li></ul></li>
 <li><a href="#check-coding-style">3 Check Coding Style</a><ul></ul></li>
 <li><a href="#write-the-pull-request">4 Write the Pull Request</a><ul>
@@ -82,7 +82,8 @@
 <li><a href="#submit-the-pull-request">7 Submit the Pull Request</a><ul></ul></li>
 <li><a href="#fix-the-pull-request">8 Fix the Pull Request</a><ul></ul></li>
 <li><a href="#update-our-repositories">9 Update Our Repositories</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Nov 2022</em></p>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
+<li><a href="#notes">11 Notes</a><ul></ul></li></ul></nav><p>📝 <em>30 Nov 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/pr-title.jpg" alt="Typical Pull Request for Apache NuttX RTOS" /></p>
 <p>This article explains how I prepared my Pull Requests for submission to <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>. So if we’re contributing code to NuttX, just follow these steps and things will (probably) go Hunky Dory!</p>
 <p>(Like the fish)</p>
@@ -138,75 +139,71 @@ git clone \
 git clone \
   --branch gic \
   https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
-  apps</code></pre></div>
-<p>We’re ready to code!</p>
-</li>
+  apps</code></pre></div></li>
 </ol>
 <h1 id="build-and-test"><a href="#build-and-test">2 Build and Test</a></h1>
-<p>TODO</p>
-<p>modify the code in nuttx and apps to implement our awesome new feature </p>
-<p>consider breaking into smaller pr</p>
-<p>this pr implements one single feature</p>
-<p>that is called by this pr</p>
-<p>test logs are super helpful for nuttx maintainers</p>
-<p>because we can’t tell which way the train went… unless we have the test logs</p>
+<p>We’re ready to code!</p>
+<ol>
+<li>
+<p>Consider breaking our Pull Request into <strong>Smaller Pull Requests</strong>.</p>
+<p>This Pull Request implements <strong>One Single Feature</strong> (Generic Interrupt Controller)…</p>
+<p><a href="https://github.com/apache/nuttx/pull/7630"><strong>“arch/arm64: Add support for Generic Interrupt Controller Version 2”</strong></a></p>
+<p>That’s called by another Pull Request…</p>
+<p><a href="https://github.com/apache/nuttx/pull/7692"><strong>“arch/arm64: Add support for PINE64 PinePhone”</strong></a></p>
+</li>
+<li>
+<p>Modify the code in <strong><code>nuttx</code></strong> and <strong><code>apps</code></strong> to implement our awesome new feature.</p>
+</li>
+<li>
+<p><strong>Build and test</strong> the modified code.</p>
+<p><a href="https://gist.github.com/lupyuen/5e2fba642a33bf64d3378df3795042d7">(I configured <code>F1</code> in VSCode to run this <strong>Build Script</strong>)</a></p>
+</li>
+<li>
+<p>Capture the <strong>Output Log</strong> and save it as a <a href="https://gist.github.com/lupyuen/7537da777d728a22ab379b1ef234a2d1"><strong>GitHub Gist</strong></a>…</p>
 <ul>
-<li>
-<p>test locally</p>
-</li>
-<li>
-<p>capture the log</p>
-</li>
-<li>
-<p>don’t wait too long because upstream may change</p>
-</li>
-<li>
-<p>create a PR in a branch</p>
-</li>
-<li>
-<p>testable (QEMU)</p>
-</li>
-<li>
-<p>small modular self-contained feature</p>
-</li>
+<li><a href="https://gist.github.com/lupyuen/7537da777d728a22ab379b1ef234a2d1"><strong>“NuttX QEMU Log for Generic Interrupt Controller”</strong></a></li>
 </ul>
-<p><a href="https://gist.github.com/lupyuen/5e2fba642a33bf64d3378df3795042d7">(I configured <code>F1</code> in VSCode to run this Build Script)</a></p>
-<ul>
-<li>sometimes GitHub Actions will fail. Just re-run the failed jobs <a href="https://lupyuen.github.io/images/pr-rerun.png">(Like this)</a></li>
-</ul>
+<p>We’ll add this to our Pull Request. <strong>Test Logs are super helpful</strong> for NuttX Maintainers!</p>
+<p>(Because we can’t tell which way the train went… Unless we have the Test Logs!)</p>
+</li>
+<li>
+<p><strong>Commit the modified code</strong> to our repositories.</p>
+<p>Sometimes the <strong>GitHub Actions Workflow</strong> will fail with a strange error (like below). Just re-run the failed jobs. <a href="https://lupyuen.github.io/images/pr-rerun.png">(Like this)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>Error response from daemon:
 login attempt to https://ghcr.io/v2/
-failed with status: 503 Service Unavailable&quot;</code></pre></div><h2 id="regression-testing"><a href="#regression-testing">2.1 Regression Testing</a></h2>
+failed with status: 503 Service Unavailable&quot;</code></pre></div></li>
+</ol>
+<h2 id="regression-test"><a href="#regression-test">2.1 Regression Test</a></h2>
 <p><em>Will our modified code break other parts of NuttX?</em></p>
 <p>That’s why it’s good to run a <a href="https://en.wikipedia.org/wiki/Regression_testing"><strong>Regression Test</strong></a> (if feasible) to be sure that other parts of NuttX aren’t affected by our modified code.</p>
-<p>TODO</p>
-<ul>
-<li>regression testing</li>
-<li>(optional) logs, super helpful for debugging</li>
-</ul>
 <p>For our Pull Request…</p>
 <ul>
 <li><a href="https://github.com/apache/nuttx/pull/7630"><strong>“arch/arm64: Add support for Generic Interrupt Controller Version 2”</strong></a></li>
 </ul>
-<p>We tested with QEMU our <strong>new implementation</strong> of GIC v2…</p>
+<p>We tested with QEMU Emulator our <strong>new implementation</strong> of Generic Interrupt Controller v2…</p>
 <div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh qemu-armv8a:nsh_gicv2 ; make ; qemu-system-aarch64 ...</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/7537da777d728a22ab379b1ef234a2d1">(See the NuttX QEMU Log)</a></p>
-<p>And for Regression Testing: We tested the <strong>existing implementation</strong> of GIC v3…</p>
+<p>And for Regression Testing we tested the <strong>existing implementation</strong> of Generic Interrupt Controller v3…</p>
 <div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh qemu-armv8a:nsh ; make ; qemu-system-aarch64 ...</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/dec66bc348092a998772b32993e5ed65">(See the NuttX QEMU Log)</a></p>
-<ul>
-<li>QEMU good for regression testing</li>
-<li>Since we might not have the actual hw</li>
-<li>How to support PinePhone UART in QEMU?</li>
-<li>Zig Extension?</li>
-</ul>
+<p>Remember to capture the <strong>Output Log</strong>, we’ll add it to our Pull Request.</p>
 <p>(Yeah it will be hard to run a Regression Test if it requires hardware that we don’t have)</p>
 <h2 id="documentation"><a href="#documentation">2.2 Documentation</a></h2>
-<p>TODO</p>
-<p>please update the documentation </p>
-<p>text file </p>
-<p>or official nuttx docs</p>
-<p><a href="https://nuttx.apache.org/docs/latest/contributing/documentation.html">NuttX Documentation</a></p>
+<p>Please update the <strong>Documentation</strong>. The Documentation might be in a <strong>Text File</strong>…</p>
+<ul>
+<li><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/README.txt"><strong>nuttx/…/README.txt</strong></a></li>
+</ul>
+<p>Or in the <strong>Official NuttX Docs</strong>…</p>
+<ul>
+<li><a href="https://github.com/apache/nuttx/blob/master/Documentation/platforms/arm/a64/boards/pinephone/index.rst"><strong>nuttx/Documentation/…/index.rst</strong></a></li>
+</ul>
+<p>To update the Official NuttX Docs, follow the instructions here…</p>
+<ul>
+<li>
+<p><a href="https://nuttx.apache.org/docs/latest/contributing/documentation.html"><strong>“NuttX Documentation”</strong></a></p>
+<p><a href="https://gist.github.com/lupyuen/c061ac688f430ef11a1c60e0b284a1fe">(See the Log)</a></p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/pr-nxstyle.png" alt="Check Coding Style with nxstyle" /></p>
 <h1 id="check-coding-style"><a href="#check-coding-style">3 Check Coding Style</a></h1>
 <p>TODO</p>
@@ -379,8 +376,8 @@ int arm64_gic_initialize(void)
 <p><em><a href="https://gist.github.com/lupyuen/dec66bc348092a998772b32993e5ed65">(See the NuttX QEMU Log)</a></em></p>
 </blockquote>
 <p><a href="https://github.com/apache/nuttx/pull/7630">(Source)</a></p>
-<p>test logs are super helpful for nuttx maintainers</p>
-<p>because we can’t tell which way the train went by looking at the tracks</p>
+<p><strong>Test Logs are super helpful</strong> for NuttX Maintainers!</p>
+<p>(Because we can’t tell which way the train went… By staring at the track!)</p>
 <p><img src="https://lupyuen.github.io/images/pr-squash1.png" alt="Squash Commits with GitHub Desktop" /></p>
 <h1 id="squash-the-commits"><a href="#squash-the-commits">5 Squash the Commits</a></h1>
 <p><em>What’s this “squashing”?</em></p>
@@ -493,6 +490,14 @@ int arm64_gic_initialize(void)
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pr.md"><strong>lupyuen.github.io/src/pr.md</strong></a></p>
+<h1 id="notes"><a href="#notes">11 Notes</a></h1>
+<p>TODO</p>
+<ul>
+<li>QEMU good for regression testing</li>
+<li>Since we might not have the actual hw</li>
+<li>How to support PinePhone UART in QEMU?</li>
+<li>Zig Extension?</li>
+</ul>
 
     
 </body>
