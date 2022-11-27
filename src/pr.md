@@ -24,9 +24,9 @@ We begin by __creating our forks__ for the __`nuttx`__ and __`apps`__ repositori
 
     Click "__Fork__" to create our fork. (Pic above)
 
-    Click "__Actions__" and enable GitHub Actions...
+    Click "__Actions__" and enable workflows...
 
-    ![Enable GitHub Actions](https://lupyuen.github.io/images/pr-actions.png)
+    ![Enable Workflows](https://lupyuen.github.io/images/pr-actions.png)
 
     (This will check that our code compiles OK at every commit)
 
@@ -36,7 +36,7 @@ We begin by __creating our forks__ for the __`nuttx`__ and __`apps`__ repositori
 
     Click "__Fork__" to create our fork.
 
-    Click "__Actions__" and enable GitHub Actions.
+    Click "__Actions__" and enable workflows.
 
 1.  As a principle, let's keep our __`master`__ branch __always in sync__ with the NuttX Mainline __`master`__ branch.
 
@@ -109,13 +109,23 @@ TODO
 - regression testing
 - (optional) logs, super helpful for debugging
 
-Docs: https://nuttx.apache.org/docs/latest/contributing/documentation.html
+For our Pull Request...
+
+[arch/arm64: Add support for Generic Interrupt Controller Version 2](https://github.com/apache/nuttx/pull/7630)
 
 run.sh QEMU: https://gist.github.com/lupyuen/5e2fba642a33bf64d3378df3795042d7
 - QEMU good for regression testing
 - Since we might not have the actual hw
 - How to support PinePhone UART in QEMU?
 - Zig Extension?
+
+(Yeah it will be hard to run a Regression Test if it requires hardware that we don't have)
+
+## Documentation
+
+TODO
+
+Docs: https://nuttx.apache.org/docs/latest/contributing/documentation.html
 
 ![Check Coding Style with nxstyle](https://lupyuen.github.io/images/pr-nxstyle.png)
 
