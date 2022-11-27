@@ -2,7 +2,7 @@
 
 📝 _30 Nov 2022_
 
-![TODO](https://lupyuen.github.io/images/pr-title.jpg)
+![Typical Pull Request for Apache NuttX RTOS](https://lupyuen.github.io/images/pr-title.jpg)
 
 This article explains how I prepared my Pull Requests for submission to [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html). So if we're contributing code to NuttX, just follow these steps and things will (probably) go Hunky Dory!
 
@@ -12,7 +12,7 @@ Before we begin, please swim over to the official __Development Workflow__ for N
 
 -   [__"NuttX Development Workflow"__](https://nuttx.apache.org/docs/latest/contributing/workflow.html)
 
-OK let's dive in! (Like the fish)
+Ready? Let's dive in! (Like the fish)
 
 ![Create Fork](https://lupyuen.github.io/images/pr-fork.png)
 
@@ -113,9 +113,24 @@ TODO
 
 For our Pull Request...
 
-[arch/arm64: Add support for Generic Interrupt Controller Version 2](https://github.com/apache/nuttx/pull/7630)
+-   [__"arch/arm64: Add support for Generic Interrupt Controller Version 2"__](https://github.com/apache/nuttx/pull/7630)
 
-[run.sh QEMU](https://gist.github.com/lupyuen/5e2fba642a33bf64d3378df3795042d7)
+We tested with QEMU our __new implementation__ of GIC v2...
+
+```bash
+tools/configure.sh qemu-armv8a:nsh_gicv2 ; make ; qemu-system-aarch64 ...
+```
+
+[(See the NuttX QEMU Log)](https://gist.github.com/lupyuen/7537da777d728a22ab379b1ef234a2d1)
+
+And for Regression Testing: We tested the __existing implementation__ of GIC v3...
+
+```bash
+tools/configure.sh qemu-armv8a:nsh ; make ; qemu-system-aarch64 ...
+```
+
+[(See the NuttX QEMU Log)](https://gist.github.com/lupyuen/dec66bc348092a998772b32993e5ed65)
+
 - QEMU good for regression testing
 - Since we might not have the actual hw
 - How to support PinePhone UART in QEMU?
@@ -229,27 +244,96 @@ int arm64_gic_initialize(void)
 
 TODO
 
+Our Pull Request will have...
+
+1.  __Title__: NuttX Subsystem and One-Line Summary
+
+1.  __Summary__: What's the purpose of the Pull Request? What files are changed?
+
+1.  __Impact__: Which parts of NuttX are affected by the Pull Request? Which parts _won't_ be affected?
+
+1.  __Testing__: Provide evidence that our Pull Request does what it's supposed to do.
+
+    (And that it won't do what it's _not supposed_ to do)
+
+To explain the above items, let's walk through these Pull Requests...
+
+-   [__"arch/arm64: Add support for Generic Interrupt Controller Version 2"__](https://github.com/apache/nuttx/pull/7630)
+
+-   [__"arch/arm64: Add support for PINE64 PinePhone"__](https://github.com/apache/nuttx/pull/7692)
+
+## Title
+
+TODO
+
+NuttX Subsystem and One-Line Summary
+
 - [Markdown PR](https://gist.github.com/lupyuen/4dbe011143dfc5404e1791ba74a79deb)
-- Update Doc
-- (optional) commands used for testing
-- (optional) logs, super helpful for debugging
-- regression testing
 
-[arch/arm64: Add support for Generic Interrupt Controller Version 2](https://github.com/apache/nuttx/pull/7630)
+>   _"arch/arm64: Add support for Generic Interrupt Controller Version 2"_
 
-[arch/arm64: Add support for PINE64 PinePhone](https://github.com/apache/nuttx/pull/7692)
+[(Source)](https://github.com/apache/nuttx/pull/7630)
 
 ## Summary
 
 TODO
 
+What's the purpose of the Pull Request? What files are changed?
+
+>   _"This PR adds support for GIC Version 2, which is needed by Pine64 PinePhone."_
+
+[(Source)](https://github.com/apache/nuttx/pull/7630)
+
+>   _"`arch/arm64/Kconfig`: Under "ARM64 Options", we added an integer option ARM_GIC_VERSION ("GIC version") that selects the GIC Version. Valid values are 2, 3 and 4, default is 3."_
+
+[(Source)](https://github.com/apache/nuttx/pull/7630)
+
+Break into multiple sections:
+
+[arch/arm64: Add support for PINE64 PinePhone](https://github.com/apache/nuttx/pull/7692)
+
 ## Impact
 
 TODO
 
+Which parts of NuttX are affected by the Pull Request? Which parts _won't_ be affected?
+
+>   _"With this PR, NuttX now supports GIC v2 on Arm64._
+
+>   _There is no impact on the existing implementation of GIC v3, as tested below."_
+
+[(Source)](https://github.com/apache/nuttx/pull/7630)
+
 ## Testing
 
 TODO
+
+Provide evidence that our Pull Request does what it's supposed to do.
+
+(And that it won't do what it's _not supposed_ to do)
+
+- (optional) commands used for testing
+- (optional) logs, super helpful for debugging
+
+>   _"We tested with QEMU our implementation of GIC v2:_
+
+>   _`tools/configure.sh qemu-armv8a:nsh_gicv2 ; make ; qemu-system-aarch64 ...`_
+
+>   _[(See the NuttX QEMU Log)](https://gist.github.com/lupyuen/7537da777d728a22ab379b1ef234a2d1)_
+
+>   _The log shows that GIC v2 has correctly handled interrupts"_
+
+[(Source)](https://github.com/apache/nuttx/pull/7630)
+
+TODO: Regression Testing
+
+>   _"For Regression Testing: We tested the existing implementation of GIC v3..."_
+
+>   _`tools/configure.sh qemu-armv8a:nsh ; make ; qemu-system-aarch64 ...`_
+
+>   _[(See the NuttX QEMU Log)](https://gist.github.com/lupyuen/dec66bc348092a998772b32993e5ed65)_
+
+[(Source)](https://github.com/apache/nuttx/pull/7630)
 
 ![Squash Commits with GitHub Desktop](https://lupyuen.github.io/images/pr-squash1.png)
 
