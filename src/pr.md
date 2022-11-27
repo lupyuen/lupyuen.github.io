@@ -84,6 +84,20 @@ We begin by __creating our forks__ for the __`nuttx`__ and __`apps`__ repositori
 
 TODO
 
+modify the code in nuttx and apps to implement our awesome new feature 
+
+
+consider breaking into smaller pr
+
+
+this pr implements one single feature
+
+that is called by this pr
+
+test logs are super helpful for nuttx maintainers
+
+because we can't tell which way the train went... unless we have the test logs
+
 - test locally
 - capture the log
 - don't wait too long because upstream may change
@@ -172,6 +186,8 @@ $HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm64/src/common/arm64_gicv3.
 
 $HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2.c
 ```
+
+check that our stars are aligned (heh)
 
 - VSCode Extension?
 - [Linux checkpatch?](https://marketplace.visualstudio.com/items?itemName=idanp.checkpatch)
@@ -336,6 +352,10 @@ TODO: Regression Testing
 >   _[(See the NuttX QEMU Log)](https://gist.github.com/lupyuen/dec66bc348092a998772b32993e5ed65)_
 
 [(Source)](https://github.com/apache/nuttx/pull/7630)
+
+test logs are super helpful for nuttx maintainers
+
+because we can't tell which way the train went by looking at the tracks
 
 ![Squash Commits with GitHub Desktop](https://lupyuen.github.io/images/pr-squash1.png)
 
