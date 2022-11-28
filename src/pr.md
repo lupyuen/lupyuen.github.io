@@ -502,19 +502,39 @@ TODO
 
 # Submit the Pull Request
 
-TODO
+Finally it's time to submit our Pull Request!
 
-- Submit the PR
-- Grab a coffee and standby!
-- let the CI run and fix errors
-- wait for others to review and comment
-- Standby to fix the PR
+1.  Create the __Pull Request__ (pic above)
 
-![Submit the Pull Request](https://lupyuen.github.io/images/pr-pullrequest2.png)
+1.  Verify that it has only __One Single Commit__ (pic above)
 
-# Fix the Pull Request
+    [(Squash the Commits)](https://lupyuen.github.io/articles/pr#squash-the-commits)
 
-TODO
+1.  Copy these into the Pull Request...
+
+    [__Title__](https://lupyuen.github.io/articles/pr#title)
+
+    [__Summary__](https://lupyuen.github.io/articles/pr#summary)
+
+    [__Impact__](https://lupyuen.github.io/articles/pr#impact)
+
+    [__Testing__](https://lupyuen.github.io/articles/pr#testing)
+
+    [(Like this)](https://github.com/apache/nuttx/pull/7630)
+
+1.  Submit the Pull Request
+
+1.  Wait for the __Automated Checks__ to be completed (might take an hour)...
+
+    ![Automated Checks for Pull Request](https://lupyuen.github.io/images/pr-pullrequest2.png)
+
+1.  __Fix any errors__ in the Automated Checks
+
+1.  Wait for the NuttX Team to __review and comment__ on our Pull Request.
+
+    This might take a while (due to the time zones)... Grab a coffee and standby for fixes!
+
+    If all goes Hunky Dory, our Pull Request will be __approved and merged!__ 🎉
 
 # Update Our Repositories
 
