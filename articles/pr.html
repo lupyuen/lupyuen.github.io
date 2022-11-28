@@ -321,8 +321,7 @@ int arm64_gic_initialize(void)
 </li>
 </ul>
 <h2 id="title"><a href="#title">4.1 Title</a></h2>
-<p>TODO</p>
-<p>NuttX Subsystem and One-Line Summary</p>
+<p>Inside our Title is the <strong>NuttX Subsystem</strong> and <strong>One-Line Summary</strong>…</p>
 <blockquote>
 <p><em>“arch/arm64: Add support for Generic Interrupt Controller Version 2”</em></p>
 </blockquote>
@@ -338,28 +337,27 @@ int arm64_gic_initialize(void)
 </ul>
 <p>We’ll add the following sections to the Markdown File…</p>
 <h2 id="summary"><a href="#summary">4.2 Summary</a></h2>
-<p>TODO</p>
-<p>What’s the purpose of the Pull Request? What files are changed?</p>
+<p>In the Summary we write the <strong>purpose of the Pull Request</strong>…</p>
 <blockquote>
 <p><em>“This PR adds support for GIC Version 2, which is needed by Pine64 PinePhone.”</em></p>
 </blockquote>
 <blockquote>
 <p><a href="https://github.com/apache/nuttx/pull/7630">(Source)</a></p>
 </blockquote>
-<p>TODO</p>
+<p>And we list the <strong>files that we changed</strong>…</p>
 <blockquote>
 <p><em>“<code>arch/arm64/Kconfig</code>: Under “ARM64 Options”, we added an integer option ARM_GIC_VERSION (“GIC version”) that selects the GIC Version. Valid values are 2, 3 and 4, default is 3.“</em></p>
 </blockquote>
 <blockquote>
 <p><a href="https://github.com/apache/nuttx/pull/7630">(Source)</a></p>
 </blockquote>
-<p>Break into multiple sections:</p>
+<p>If it’s a long list, we might break into subsections like this…</p>
 <ul>
 <li><a href="https://github.com/apache/nuttx/pull/7692"><strong>arch/arm64: Add support for PINE64 PinePhone</strong></a></li>
 </ul>
 <h2 id="impact"><a href="#impact">4.3 Impact</a></h2>
-<p>TODO</p>
-<p>Which parts of NuttX are affected by the Pull Request? Which parts <em>won’t</em> be affected?</p>
+<p>Under “Impact”, we write <strong>which parts of NuttX are affected</strong> by the Pull Request. </p>
+<p>(And which parts <em>won’t</em> be affected)</p>
 <blockquote>
 <p><em>“With this PR, NuttX now supports GIC v2 on Arm64.</em></p>
 </blockquote>
@@ -370,13 +368,16 @@ int arm64_gic_initialize(void)
 <p><a href="https://github.com/apache/nuttx/pull/7630">(Source)</a></p>
 </blockquote>
 <h2 id="testing"><a href="#testing">4.4 Testing</a></h2>
-<p>TODO</p>
-<p>Provide evidence that our Pull Request does what it’s supposed to do.</p>
-<p>(And that it won’t do what it’s <em>not supposed</em> to do)</p>
+<p>Under “Testing”, we provide evidence that our Pull Request <strong>does what it’s supposed to do.</strong> We fill in the…</p>
 <ul>
-<li>(optional) commands used for testing</li>
-<li>(optional) logs, super helpful for debugging</li>
+<li>
+<p><strong>Commands</strong> used for testing</p>
+</li>
+<li>
+<p><strong>Output Logs</strong> captured from our testing</p>
+</li>
 </ul>
+<p>Like this…</p>
 <blockquote>
 <p><em>“We tested with QEMU our implementation of GIC v2:</em></p>
 </blockquote>
@@ -392,7 +393,7 @@ int arm64_gic_initialize(void)
 <blockquote>
 <p><a href="https://github.com/apache/nuttx/pull/7630">(Source)</a></p>
 </blockquote>
-<p>TODO: Regression Testing</p>
+<p>If we have done a <a href="https://lupyuen.github.io/articles/pr#regression-test"><strong>Regression Test</strong></a>, provide the details too…</p>
 <blockquote>
 <p><em>“For Regression Testing: We tested the existing implementation of GIC v3…”</em></p>
 </blockquote>
@@ -407,6 +408,7 @@ int arm64_gic_initialize(void)
 </blockquote>
 <p><strong>Test Logs are super helpful</strong> for NuttX Maintainers!</p>
 <p>(Because we can’t tell which way the train went… By staring at the track!)</p>
+<p>Now we tidy up our commits…</p>
 <p><img src="https://lupyuen.github.io/images/pr-squash1.png" alt="Squash Commits with GitHub Desktop" /></p>
 <h1 id="squash-the-commits"><a href="#squash-the-commits">5 Squash the Commits</a></h1>
 <p><em>What’s this “squashing”?</em></p>
