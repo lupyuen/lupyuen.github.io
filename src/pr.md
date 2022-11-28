@@ -575,7 +575,11 @@ And that's the Complete Lifecycle of a Pull Request for Apache NuttX RTOS!
 
 # What's Next
 
-TODO
+I hope this article will be helpful for folks contributing code to NuttX for the very first time.
+
+In the next article we'll explain this complex Pull Request that adds a __new SoC and new Board__ to NuttX. Stay Tuned!
+
+-   [__"arch/arm64: Add support for PINE64 PinePhone"__](https://github.com/apache/nuttx/pull/7692)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
