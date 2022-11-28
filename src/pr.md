@@ -479,6 +479,8 @@ _What's your epiphany?_
 
 TODO
 
+![Submit the Pull Request](https://lupyuen.github.io/images/pr-pullrequest1.png)
+
 # Submit the Pull Request
 
 TODO
@@ -488,6 +490,8 @@ TODO
 - let the CI run and fix errors
 - wait for others to review and comment
 - Standby to fix the PR
+
+![Submit the Pull Request](https://lupyuen.github.io/images/pr-pullrequest2.png)
 
 # Fix the Pull Request
 
