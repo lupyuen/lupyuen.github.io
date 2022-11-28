@@ -308,9 +308,7 @@ To write the above items, let's walk through these Pull Requests...
 
 ## Title
 
-TODO
-
-NuttX Subsystem and One-Line Summary
+Inside our Title is the __NuttX Subsystem__ and __One-Line Summary__...
 
 >   _"arch/arm64: Add support for Generic Interrupt Controller Version 2"_
 
@@ -326,29 +324,27 @@ We'll add the following sections to the Markdown File...
 
 ## Summary
 
-TODO
-
-What's the purpose of the Pull Request? What files are changed?
+In the Summary we write the __purpose of the Pull Request__...
 
 >   _"This PR adds support for GIC Version 2, which is needed by Pine64 PinePhone."_
 
 >   [(Source)](https://github.com/apache/nuttx/pull/7630)
 
-TODO
+And we list the __files that we changed__...
 
 >   _"`arch/arm64/Kconfig`: Under "ARM64 Options", we added an integer option ARM_GIC_VERSION ("GIC version") that selects the GIC Version. Valid values are 2, 3 and 4, default is 3."_
 
 >   [(Source)](https://github.com/apache/nuttx/pull/7630)
 
-Break into multiple sections:
+If it's a long list, we might break into subsections like this...
 
 -   [__arch/arm64: Add support for PINE64 PinePhone__](https://github.com/apache/nuttx/pull/7692)
 
 ## Impact
 
-TODO
+Under "Impact", we write __which parts of NuttX are affected__ by the Pull Request. 
 
-Which parts of NuttX are affected by the Pull Request? Which parts _won't_ be affected?
+(And which parts _won't_ be affected)
 
 >   _"With this PR, NuttX now supports GIC v2 on Arm64._
 
@@ -358,14 +354,13 @@ Which parts of NuttX are affected by the Pull Request? Which parts _won't_ be af
 
 ## Testing
 
-TODO
+Under "Testing", we provide evidence that our Pull Request __does what it's supposed to do.__ We fill in the...
 
-Provide evidence that our Pull Request does what it's supposed to do.
+- __Commands__ used for testing
 
-(And that it won't do what it's _not supposed_ to do)
+- __Output Logs__ captured from our testing
 
-- (optional) commands used for testing
-- (optional) logs, super helpful for debugging
+Like this...
 
 >   _"We tested with QEMU our implementation of GIC v2:_
 
@@ -377,7 +372,7 @@ Provide evidence that our Pull Request does what it's supposed to do.
 
 >   [(Source)](https://github.com/apache/nuttx/pull/7630)
 
-TODO: Regression Testing
+If we have done a [__Regression Test__](https://lupyuen.github.io/articles/pr#regression-test), provide the details too...
 
 >   _"For Regression Testing: We tested the existing implementation of GIC v3..."_
 
@@ -390,6 +385,8 @@ TODO: Regression Testing
 __Test Logs are super helpful__ for NuttX Maintainers!
 
 (Because we can't tell which way the train went... By staring at the track!)
+
+Now we tidy up our commits...
 
 ![Squash Commits with GitHub Desktop](https://lupyuen.github.io/images/pr-squash1.png)
 
