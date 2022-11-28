@@ -161,7 +161,7 @@ To update the Official NuttX Docs, follow the instructions here...
 
     [(See the Log)](https://gist.github.com/lupyuen/c061ac688f430ef11a1c60e0b284a1fe)
 
-![Check Coding Style with nxstyle](https://lupyuen.github.io/images/pr-nxstyle.png)
+![Check Coding Style with nxstyle](https://lupyuen.github.io/images/pr-nxstyle.jpg)
 
 # Check Coding Style
 
@@ -474,7 +474,7 @@ Here are the steps to Squash Commits with the __Git Command Line__...
 
 -   [__"Flight rules for Git: I need to combine commits"__](https://github.com/k88hudson/git-flight-rules#i-need-to-combine-commits)
 
-![Taking a long walk](https://lupyuen.github.io/images/pr-walk.png)
+![Taking a long walk](https://lupyuen.github.io/images/pr-walk.jpg)
 
 # Meditate
 
