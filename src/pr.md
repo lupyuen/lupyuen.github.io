@@ -539,14 +539,35 @@ Finally it's time to submit our Pull Request!
 
     If all goes Hunky Dory, our Pull Request will be __approved and merged!__ 🎉
 
+![Pull Updates from NuttX Mainline](https://lupyuen.github.io/images/pr-update.png)
+
 # Update Our Repositories
 
-TODO
+After our Pull Request has been merged into NuttX Mainline, __pull the updates__ into our repositories...
 
-- After merge: pull updates
-- create a new branch for the next feature
+1.  Browse to the __`master`__ branch of our __`nuttx`__ repository.
 
-Command Line: [Flight rules for Git](https://github.com/k88hudson/git-flight-rules)
+    Click "__Sync Fork → Update Branch__"
+
+    (Pic above)
+
+1.  Do the same for the __`master`__ branch of our __`apps`__ repository.
+
+    Click "__Sync Fork → Update Branch__"
+
+When we're ready to add our next awesome feature...
+
+1.  In our NuttX Repository, click __`master`__.
+
+    Enter the name of our new branch.
+    
+    Click "__Create Branch__"
+
+    ![Create Branch](https://lupyuen.github.io/images/pr-branch.png)
+
+1.  Do the same for our __NuttX Apps Repository__
+
+And that's the Complete Lifecycle of a Pull Request for Apache NuttX RTOS!
 
 # What's Next
 
@@ -571,6 +592,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Notes
 
 TODO
+
+- Command Line: [Flight rules for Git](https://github.com/k88hudson/git-flight-rules)
 
 - QEMU good for regression testing
 - Since we might not have the actual hw
