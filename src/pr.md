@@ -169,26 +169,43 @@ Our NuttX Code will follow this Coding Standard...
 
 -   [__"NuttX C Coding Standard"__](https://nuttx.apache.org/docs/latest/contributing/coding_style.html)
 
-TODO
-
-nxstyle:
+NuttX provides a tool __`nxstyle`__ that will check the Coding Style of our source files...
 
 ```bash
-gcc -o $HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/tools/nxstyle.c
+## Compile nxstyle
+## TODO: Change "$HOME/nuttx" to our NuttX Project Folder
+gcc -o $HOME/nxstyle $HOME/nuttx/nuttx/tools/nxstyle.c
 
-$HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm64/Kconfig
-../nxstyle arch/arm64/include/qemu/chip.h
-../nxstyle arch/arm64/src/common/Make.defs
-../nxstyle arch/arm64/src/common/arm64_gic.h
-../nxstyle arch/arm64/src/common/arm64_gicv2.c
-$HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm64/src/common/arm64_gicv3.c
-../nxstyle boards/arm64/qemu/qemu-armv8a/README.txt
-../nxstyle boards/arm64/qemu/qemu-armv8a/configs/nsh_gicv2/defconfig
-
-$HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2.c
+## Check coding style for our modified source files
+## TODO: Change the file paths
+$HOME/nxstyle $HOME/nuttx/nuttx/arch/arm64/Kconfig
+$HOME/nxstyle $HOME/nuttx/nuttx/arch/arm64/src/common/Make.defs
+$HOME/nxstyle $HOME/nuttx/nuttx/arch/arm64/src/common/arm64_gic.h
+$HOME/nxstyle $HOME/nuttx/nuttx/arch/arm64/src/common/arm64_gicv2.c
 ```
 
-So this...
+[(`nxstyle.c` is here)](https://github.com/apache/nuttx/blob/master/tools/nxstyle.c)
+
+[(How I run `nxstyle` in my __Build Script__)](https://gist.github.com/lupyuen/5e2fba642a33bf64d3378df3795042d7)
+
+_Will `nxstyle` check Kconfig and Makefiles?_
+
+Not yet, but maybe someday? That's why we passed all the modified files to `nxstyle` for checking.
+
+_How do we fix our code?_
+
+The pic above shows the output from __`nxstyle`__. We'll see messages like...
+
+```text
+- C++ style comment
+- Long line found
+- Mixed case identifier found
+- Operator/assignment must be followed/preceded with whitespace
+- Upper case hex constant found
+- #include outside of 'Included Files' section
+```
+
+We modify our code so that this...
 
 ```c
 // Initialize GIC. Called by CPU0 only.
@@ -252,7 +269,7 @@ int arm64_gic_initialize(void)
 
 [(Source)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_gicv2.c#L1325-L1363)
 
-If we see this error...
+If we see this...
 
 ```text
 /* */ not balanced
