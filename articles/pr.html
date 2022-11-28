@@ -82,7 +82,7 @@
 <li><a href="#submit-the-pull-request">7 Submit the Pull Request</a><ul></ul></li>
 <li><a href="#update-our-repositories">8 Update Our Repositories</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#notes">10 Notes</a><ul></ul></li></ul></nav><p>📝 <em>30 Nov 2022</em></p>
+<li><a href="#notes">10 Notes</a><ul></ul></li></ul></nav><p>📝 <em>28 Nov 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/pr-title.jpg" alt="Typical Pull Request for Apache NuttX RTOS" /></p>
 <p>This article explains how I prepared my Pull Requests for submission to <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a>. So if we’re contributing code to NuttX, just follow these steps and things will (probably) go Hunky Dory!</p>
 <p>(Like the fish)</p>
@@ -179,7 +179,7 @@ failed with status: 503 Service Unavailable&quot;</code></pre></div></li>
 <ul>
 <li><a href="https://github.com/apache/nuttx/pull/7630"><strong>“arch/arm64: Add support for Generic Interrupt Controller Version 2”</strong></a></li>
 </ul>
-<p>We tested with QEMU Emulator our <strong>new implementation</strong> of Generic Interrupt Controller v2…</p>
+<p>We tested with <a href="https://www.qemu.org/docs/master/system/target-arm.html"><strong>QEMU Emulator</strong></a> our <strong>new implementation</strong> of Generic Interrupt Controller v2…</p>
 <div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh qemu-armv8a:nsh_gicv2 ; make ; qemu-system-aarch64 ...</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/7537da777d728a22ab379b1ef234a2d1">(See the NuttX QEMU Log)</a></p>
 <p>And for Regression Testing we tested the <strong>existing implementation</strong> of Generic Interrupt Controller v3…</p>
@@ -540,17 +540,33 @@ int arm64_gic_initialize(void)
 <p>Do the same for the <strong><code>master</code></strong> branch of our <strong><code>apps</code></strong> repository.</p>
 <p>Click “<strong>Sync Fork → Update Branch</strong>”</p>
 </li>
+<li>
+<p>Test the code from the <strong><code>master</code></strong> branch of our <strong><code>nuttx</code></strong> and <strong><code>apps</code></strong> repositories.</p>
+</li>
 </ol>
-<p>When we’re ready to add our next awesome feature…</p>
+<p>When we’re ready to add our <strong>next awesome feature</strong>…</p>
 <ol>
 <li>
-<p>In our NuttX Repository, click <strong><code>master</code></strong>.</p>
+<p>Pull the updates from NuttX Mainline into our <strong><code>nuttx</code></strong> repository…</p>
+<p>Select the <strong><code>master</code></strong> branch.</p>
+<p>Click “<strong>Sync Fork → Update Branch</strong>”</p>
+<p>(Pic above)</p>
+</li>
+<li>
+<p>Do the same for our <strong><code>apps</code></strong> repository.</p>
+</li>
+<li>
+<p>In our <strong><code>nuttx</code></strong> repository, click <strong><code>master</code></strong>.</p>
 <p>Enter the name of our new branch.</p>
 <p>Click “<strong>Create Branch</strong>”</p>
 <p><img src="https://lupyuen.github.io/images/pr-branch.png" alt="Create Branch" /></p>
 </li>
 <li>
-<p>Do the same for our <strong>NuttX Apps Repository</strong></p>
+<p>Do the same for our <strong><code>apps</code></strong> repository.</p>
+</li>
+<li>
+<p>Modify the code in the new branch of our <strong><code>nuttx</code></strong> and <strong><code>apps</code></strong> repositories.</p>
+<p>Build, test and submit our new Pull Request.</p>
 </li>
 </ol>
 <p>And that’s the Complete Lifecycle of a Pull Request for Apache NuttX RTOS!</p>
@@ -581,33 +597,22 @@ int arm64_gic_initialize(void)
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pr.md"><strong>lupyuen.github.io/src/pr.md</strong></a></p>
 <h1 id="notes"><a href="#notes">10 Notes</a></h1>
-<p>TODO</p>
-<ul>
+<ol>
 <li>
-<p>Command Line: <a href="https://github.com/k88hudson/git-flight-rules">Flight rules for Git</a></p>
+<p>Here’s an excellent guide for the <strong>Git Command Line</strong>…</p>
+<p><a href="https://github.com/k88hudson/git-flight-rules"><strong>“Flight rules for Git”</strong></a></p>
 </li>
 <li>
-<p>QEMU good for regression testing</p>
+<p>Converting our code to the <a href="https://nuttx.apache.org/docs/latest/contributing/coding_style.html"><strong>“NuttX C Coding Standard”</strong></a>…</p>
+<p>Can we automate this with a <strong>VSCode Extension?</strong></p>
+<p>Maybe like the <a href="https://marketplace.visualstudio.com/items?itemName=idanp.checkpatch"><strong>Linux checkpatch Extension</strong></a>, but it will actually auto-reformat our lines?</p>
 </li>
 <li>
-<p>Since we might not have the actual hw</p>
+<p><a href="https://www.qemu.org/docs/master/system/target-arm.html"><strong>QEMU Emulator</strong></a> is incredibly helpful for Regression Testing…</p>
+<p>Can we extend it to <strong>emulate PinePhone</strong>? Maybe just the UART Hardware?</p>
+<p>(I’d love to build a QEMU Extension in Zig!)</p>
 </li>
-<li>
-<p>How to support PinePhone UART in QEMU?</p>
-</li>
-<li>
-<p>Zig Extension?</p>
-</li>
-<li>
-<p>VSCode Extension?</p>
-</li>
-<li>
-<p><a href="https://marketplace.visualstudio.com/items?itemName=idanp.checkpatch">Linux checkpatch?</a></p>
-</li>
-<li>
-<p>Best if can convert to NuttX style </p>
-</li>
-</ul>
+</ol>
 
     
 </body>
