@@ -312,11 +312,17 @@ TODO
 
 NuttX Subsystem and One-Line Summary
 
-- [Markdown PR](https://gist.github.com/lupyuen/4dbe011143dfc5404e1791ba74a79deb)
-
 >   _"arch/arm64: Add support for Generic Interrupt Controller Version 2"_
 
 >   [(Source)](https://github.com/apache/nuttx/pull/7630)
+
+Let's write this into a __Markdown File__ for easier copying...
+
+-   [__Sample Pull Request__](https://gist.github.com/lupyuen/4dbe011143dfc5404e1791ba74a79deb)
+
+    [(See the Markdown Code)](https://gist.githubusercontent.com/lupyuen/4dbe011143dfc5404e1791ba74a79deb/raw/b8731c9132c428050e6146c0d2097e7bb7c6eb03/sample-nuttx-pull-request.md)
+
+We'll add the following sections to the Markdown File...
 
 ## Summary
 
