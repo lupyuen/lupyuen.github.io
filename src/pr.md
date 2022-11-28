@@ -457,6 +457,8 @@ Here are the steps to Squash Commits with the __Git Command Line__...
 
 -   [__"Flight rules for Git: I need to combine commits"__](https://github.com/k88hudson/git-flight-rules#i-need-to-combine-commits)
 
+![Taking a long walk](https://lupyuen.github.io/images/pr-walk.png)
+
 # Meditate
 
 __Breathe. Take a break.__
