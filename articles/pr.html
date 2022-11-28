@@ -210,21 +210,30 @@ failed with status: 503 Service Unavailable&quot;</code></pre></div></li>
 <ul>
 <li><a href="https://nuttx.apache.org/docs/latest/contributing/coding_style.html"><strong>“NuttX C Coding Standard”</strong></a></li>
 </ul>
-<p>TODO</p>
-<p>nxstyle:</p>
-<div class="example-wrap"><pre class="language-bash"><code>gcc -o $HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/tools/nxstyle.c
+<p>NuttX provides a tool <strong><code>nxstyle</code></strong> that will check the Coding Style of our source files…</p>
+<div class="example-wrap"><pre class="language-bash"><code># Compile nxstyle
+# TODO: Change &quot;$HOME/nuttx&quot; to our NuttX Project Folder
+gcc -o $HOME/nxstyle $HOME/nuttx/nuttx/tools/nxstyle.c
 
-$HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm64/Kconfig
-../nxstyle arch/arm64/include/qemu/chip.h
-../nxstyle arch/arm64/src/common/Make.defs
-../nxstyle arch/arm64/src/common/arm64_gic.h
-../nxstyle arch/arm64/src/common/arm64_gicv2.c
-$HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm64/src/common/arm64_gicv3.c
-../nxstyle boards/arm64/qemu/qemu-armv8a/README.txt
-../nxstyle boards/arm64/qemu/qemu-armv8a/configs/nsh_gicv2/defconfig
-
-$HOME/nxstyle $HOME/PinePhone/wip-nuttx/nuttx/arch/arm/src/armv7-a/arm_gicv2.c</code></pre></div>
-<p>So this…</p>
+# Check coding style for our modified source files
+# TODO: Change the file paths
+$HOME/nxstyle $HOME/nuttx/nuttx/arch/arm64/Kconfig
+$HOME/nxstyle $HOME/nuttx/nuttx/arch/arm64/src/common/Make.defs
+$HOME/nxstyle $HOME/nuttx/nuttx/arch/arm64/src/common/arm64_gic.h
+$HOME/nxstyle $HOME/nuttx/nuttx/arch/arm64/src/common/arm64_gicv2.c</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/tools/nxstyle.c">(<code>nxstyle.c</code> is here)</a></p>
+<p><a href="https://gist.github.com/lupyuen/5e2fba642a33bf64d3378df3795042d7">(How I run <code>nxstyle</code> in my <strong>Build Script</strong>)</a></p>
+<p><em>Will <code>nxstyle</code> check Kconfig and Makefiles?</em></p>
+<p>Not yet, but maybe someday? That’s why we passed all the modified files to <code>nxstyle</code> for checking.</p>
+<p><em>How do we fix our code?</em></p>
+<p>The pic above shows the output from <strong><code>nxstyle</code></strong>. We’ll see messages like…</p>
+<div class="example-wrap"><pre class="language-text"><code>- C++ style comment
+- Long line found
+- Mixed case identifier found
+- Operator/assignment must be followed/preceded with whitespace
+- Upper case hex constant found
+- #include outside of &#39;Included Files&#39; section</code></pre></div>
+<p>We modify our code so that this…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Initialize GIC. Called by CPU0 only.
 int arm64_gic_initialize(void) {
   // Verify that GIC Version is 2
@@ -278,7 +287,7 @@ int arm64_gic_initialize(void)
   return 0;
 }</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_gicv2.c#L1325-L1363">(Source)</a></p>
-<p>If we see this error…</p>
+<p>If we see this…</p>
 <div class="example-wrap"><pre class="language-text"><code>/* */ not balanced</code></pre></div>
 <p>Check that our stars “<strong><code>*</code></strong>” are aligned (heh)…</p>
 <div class="example-wrap"><pre class="language-text"><code>/******************************
