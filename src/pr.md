@@ -499,7 +499,11 @@ If we get an inspiration or epiphany, touch up the Pull Request.
 
 _What's your epiphany?_
 
-TODO
+Through my Pull Requests, I hope to turn NuttX into a valuable tool for teaching the internals of __Smartphone Operating Systems__.
+
+That's my motivation for [__porting NuttX to PINE64 PinePhone__](https://github.com/apache/nuttx/pull/7692).
+
+But for now... Let's finish our Pull Request!
 
 ![Submit the Pull Request](https://lupyuen.github.io/images/pr-pullrequest1.png)
 
