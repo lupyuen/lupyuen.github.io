@@ -1,6 +1,6 @@
 # Preparing a Pull Request for Apache NuttX RTOS
 
-📝 _30 Nov 2022_
+📝 _28 Nov 2022_
 
 ![Typical Pull Request for Apache NuttX RTOS](https://lupyuen.github.io/images/pr-title.jpg)
 
@@ -125,7 +125,7 @@ For our Pull Request...
 
 -   [__"arch/arm64: Add support for Generic Interrupt Controller Version 2"__](https://github.com/apache/nuttx/pull/7630)
 
-We tested with QEMU Emulator our __new implementation__ of Generic Interrupt Controller v2...
+We tested with [__QEMU Emulator__](https://www.qemu.org/docs/master/system/target-arm.html) our __new implementation__ of Generic Interrupt Controller v2...
 
 ```bash
 tools/configure.sh qemu-armv8a:nsh_gicv2 ; make ; qemu-system-aarch64 ...
@@ -559,9 +559,21 @@ After our Pull Request has been merged into NuttX Mainline, __pull the updates__
 
     Click "__Sync Fork → Update Branch__"
 
-When we're ready to add our next awesome feature...
+1.  Test the code from the __`master`__ branch of our __`nuttx`__ and __`apps`__ repositories.
 
-1.  In our NuttX Repository, click __`master`__.
+When we're ready to add our __next awesome feature__...
+
+1.  Pull the updates from NuttX Mainline into our __`nuttx`__ repository...
+
+    Select the __`master`__ branch.
+
+    Click "__Sync Fork → Update Branch__"
+
+    (Pic above)
+
+1.  Do the same for our __`apps`__ repository.
+
+1.  In our __`nuttx`__ repository, click __`master`__.
 
     Enter the name of our new branch.
     
@@ -569,7 +581,11 @@ When we're ready to add our next awesome feature...
 
     ![Create Branch](https://lupyuen.github.io/images/pr-branch.png)
 
-1.  Do the same for our __NuttX Apps Repository__
+1.  Do the same for our __`apps`__ repository.
+
+1.  Modify the code in the new branch of our __`nuttx`__ and __`apps`__ repositories.
+
+    Build, test and submit our new Pull Request.
 
 And that's the Complete Lifecycle of a Pull Request for Apache NuttX RTOS!
 
@@ -599,15 +615,18 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Notes
 
-TODO
+1.  Here's an excellent guide for the __Git Command Line__...
 
-- Command Line: [Flight rules for Git](https://github.com/k88hudson/git-flight-rules)
+    [__"Flight rules for Git"__](https://github.com/k88hudson/git-flight-rules)
 
-- QEMU good for regression testing
-- Since we might not have the actual hw
-- How to support PinePhone UART in QEMU?
-- Zig Extension?
+1.  Converting our code to the [__"NuttX C Coding Standard"__](https://nuttx.apache.org/docs/latest/contributing/coding_style.html)...
 
-- VSCode Extension?
-- [Linux checkpatch?](https://marketplace.visualstudio.com/items?itemName=idanp.checkpatch)
-- Best if can convert to NuttX style 
+    Can we automate this with a __VSCode Extension?__
+
+    Maybe like the [__Linux checkpatch Extension__](https://marketplace.visualstudio.com/items?itemName=idanp.checkpatch), but it will actually auto-reformat our lines?
+
+1.  [__QEMU Emulator__](https://www.qemu.org/docs/master/system/target-arm.html) is incredibly helpful for Regression Testing...
+
+    Can we extend it to __emulate PinePhone__? Maybe just the UART Hardware?
+
+    (I'd love to build a QEMU Extension in Zig!)
