@@ -42,7 +42,7 @@ We begin by __creating our forks__ for the __`nuttx`__ and __`apps`__ repositori
 
 1.  As a principle, let's keep our __`master`__ branch __always in sync__ with the NuttX Mainline __`master`__ branch.
 
-    (This seems cleaner for syncing upstream updates into our repo)
+    (This seems cleaner for [__syncing upstream updates__](https://lupyuen.github.io/articles/pr#update-our-repositories) into our repo)
 
     Let's __create a branch__ to make our changes...
 
