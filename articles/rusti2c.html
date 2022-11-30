@@ -164,7 +164,7 @@
 <tr><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: center"><code>GND</code></td><td style="text-align: left">Black</td></tr>
 </tbody></table>
 </div>
-<p>The <strong>I2C Pins</strong> on BL602 are defined here: <a href="https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/boards/risc-v/bl602/bl602evb/include/board.h#L85-L88">board.h</a></p>
+<p>The <strong>I2C Pins</strong> on BL602 are defined here: <a href="https://github.com/lupyuen/nuttx/blob/rusti2c/boards/risc-v/bl602/bl602evb/include/board.h#L85-L88">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* I2C Configuration */
 #define BOARD_I2C_SCL \
   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
@@ -173,7 +173,7 @@
   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
   GPIO_PIN3)</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/expander#pin-functions">(Which pins can be used? See this)</a></p>
-<p>We disabled the <strong>UART1 Port</strong> because it uses the same pins as I2C: <a href="https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/boards/risc-v/bl602/bl602evb/include/board.h#L63-L68">board.h</a></p>
+<p>We disabled the <strong>UART1 Port</strong> because it uses the same pins as I2C: <a href="https://github.com/lupyuen/nuttx/blob/rusti2c/boards/risc-v/bl602/bl602evb/include/board.h#L63-L68">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef TODO  /* Remember to check for duplicate pins! */
 #define BOARD_UART_1_RX_PIN \
   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_UART | \
@@ -184,7 +184,7 @@
 #endif  /* TODO */</code></pre></div>
 <p>(UART0 is used by the Serial Console)</p>
 <p><em>What if we’re connecting to ESP32?</em></p>
-<p><strong>For ESP32:</strong> The GPIO Pin Numbers for the I2C Port (I2C0) are defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/arch/xtensa/src/esp32/Kconfig#L797-L805">Kconfig</a> and menuconfig…</p>
+<p><strong>For ESP32:</strong> The GPIO Pin Numbers for the I2C Port (I2C0) are defined in <a href="https://github.com/lupyuen/nuttx/blob/rusti2c/arch/xtensa/src/esp32/Kconfig#L797-L805">Kconfig</a> and menuconfig…</p>
 <div class="example-wrap"><pre class="language-text"><code>config ESP32_I2C0_SCLPIN
   int &quot;I2C0 SCL Pin&quot;
   default 22
@@ -517,7 +517,7 @@ Setup Read to [0xEF] + ACK
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// I2C Message Struct: I2C transaction segment beginning with a START. A number of these can
 /// be transferred together to form an arbitrary sequence of write/read
 /// transfer to an I2C device.
-/// Ported from C: https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L208-L215
+/// Ported from C: https://github.com/lupyuen/nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L208-L215
 </span><span class="attribute">#[repr(C)]
 </span><span class="kw">pub struct </span>i2c_msg_s {
     <span class="doccomment">/// I2C Frequency
@@ -535,7 +535,7 @@ Setup Read to [0xEF] + ACK
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// I2C Transfer Struct: This structure is used to communicate with the I2C character driver in
 /// order to perform IOCTL transfers.
-/// Ported from C: https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L231-L235
+/// Ported from C: https://github.com/lupyuen/nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L231-L235
 </span><span class="attribute">#[repr(C)]
 </span><span class="kw">pub struct </span>i2c_transfer_s {
     <span class="doccomment">/// Array of I2C messages for the transfer
@@ -736,7 +736,7 @@ Setup Read to [0xEF] + ACK
   struct i2c_msg_s msg[2];
   ...
   int ret = i2cdev_transfer(fd, msg, 2);</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rusti2c/system/i2c/i2c_get.c#L158-L206">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-apps/blob/rusti2c/system/i2c/i2c_get.c#L158-L206">(Source)</a></p>
 <p><strong>i2cdev_transfer</strong> is defined as…</p>
 <div class="example-wrap"><pre class="language-c"><code>int i2cdev_transfer(int fd, FAR struct i2c_msg_s *msgv, int msgc)
 {
@@ -751,7 +751,7 @@ Setup Read to [0xEF] + ACK
 
   return ioctl(fd, I2CIOC_TRANSFER, (unsigned long)((uintptr_t)&amp;xfer));
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/rusti2c/system/i2c/i2c_devif.c#L117-L129">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-apps/blob/rusti2c/system/i2c/i2c_devif.c#L117-L129">(Source)</a></p>
 <p>We ported the code above to NuttX Embedded HAL. <a href="https://lupyuen.github.io/articles/rusti2c#into-embedded-hal">(See this)</a></p>
 <h2 id="c-types-and-constants"><a href="#c-types-and-constants">12.1 C Types and Constants</a></h2>
 <p>Earlier we’ve seen <strong>i2c_msg_s</strong> and <strong>i2c_transfer_s</strong>. They are defined as…</p>
@@ -763,24 +763,24 @@ Setup Read to [0xEF] + ACK
   FAR uint8_t *buffer;        /* Buffer to be transferred */
   ssize_t length;             /* Length of the buffer in bytes */
 };</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L208-L215">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L208-L215">(Source)</a></p>
 <div class="example-wrap"><pre class="language-c"><code>struct i2c_transfer_s
 {
   FAR struct i2c_msg_s *msgv; /* Array of I2C messages for the transfer */
   size_t msgc;                /* Number of messages in the array. */
 };</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L231-L235">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L231-L235">(Source)</a></p>
 <p><strong>I2CIOC_TRANSFER</strong> is defined as…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define I2CIOC_TRANSFER      _I2CIOC(0x0001)</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L105-L129">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L105-L129">(Source)</a></p>
 <p>_<strong>I2CIOC</strong> is defined as…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define _I2CIOC(nr)       _IOC(_I2CBASE,nr)</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/include/nuttx/fs/ioctl.h#L467-L468">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/rusti2c/include/nuttx/fs/ioctl.h#L467-L468">(Source)</a></p>
 <p>_<strong>IOC</strong> and _<strong>I2CBASE</strong> are defined as…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define _IOC(type,nr)   ((type)|(nr))</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/include/nuttx/fs/ioctl.h#L107">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/rusti2c/include/nuttx/fs/ioctl.h#L107">(Source)</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define _I2CBASE        (0x2100) /* I2C driver commands */</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/rusti2c/include/nuttx/fs/ioctl.h#L73">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/rusti2c/include/nuttx/fs/ioctl.h#L73">(Source)</a></p>
 <p>We ported these C Types and Constants to NuttX Embedded HAL. <a href="https://lupyuen.github.io/articles/rusti2c#nuttx-types-and-constants">(See this)</a></p>
 <h1 id="appendix-build-flash-and-run-nuttx"><a href="#appendix-build-flash-and-run-nuttx">13 Appendix: Build, Flash and Run NuttX</a></h1>
 <p><em>(For BL602, BL604 and ESP32)</em></p>
@@ -792,8 +792,8 @@ Setup Read to [0xEF] + ACK
 <p>Download the modified source code for <strong>NuttX OS and NuttX Apps</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
-git clone --recursive --branch rusti2c https://github.com/lupyuen/incubator-nuttx nuttx
-git clone --recursive --branch rusti2c https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
+git clone --recursive --branch rusti2c https://github.com/lupyuen/nuttx nuttx
+git clone --recursive --branch rusti2c https://github.com/lupyuen/nuttx-apps apps</code></pre></div>
 <p>Or if we prefer to <strong>add the Rust Library and App</strong> to our NuttX Project, follow these instructions…</p>
 <ol>
 <li>
@@ -1025,7 +1025,7 @@ blflash flash nuttx.bin \
 blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
 <p>For WSL: Do this under plain old Windows CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
-<p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
 <h2 id="run-nuttx"><a href="#run-nuttx">13.6 Run NuttX</a></h2>

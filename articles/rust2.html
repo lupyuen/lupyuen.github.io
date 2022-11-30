@@ -301,7 +301,7 @@ int main(int argc, FAR char *argv[]) {
 </span>}</code></pre></div>
 <p>We (very carefully) <strong>imported the NuttX Constants</strong> as well: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L259-L277">lib.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Import NuttX Constants. TODO: Import with bindgen from https://github.com/lupyuen/incubator-nuttx/blob/rust/include/nuttx/ioexpander/gpio.h
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Import NuttX Constants. TODO: Import with bindgen from https://github.com/lupyuen/nuttx/blob/rust/include/nuttx/ioexpander/gpio.h
 </span><span class="kw">pub const </span>GPIOC_WRITE: i32 = _GPIOBASE | <span class="number">1</span>;  <span class="comment">//  _GPIOC(1)
 </span><span class="kw">pub const </span>GPIOC_READ:  i32 = _GPIOBASE | <span class="number">2</span>;  <span class="comment">//  _GPIOC(2)
 </span><span class="kw">pub const </span>_GPIOBASE:   i32 = <span class="number">0x2300</span>;         <span class="comment">//  GPIO driver commands
@@ -572,8 +572,8 @@ test_sx1262: SX1262 Register 8 is 0x80</code></pre></div>
 <p>To run Rust on NuttX, download the modified source code for <strong>NuttX OS and NuttX Apps</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
-git clone --recursive --branch rusti2c https://github.com/lupyuen/incubator-nuttx nuttx
-git clone --recursive --branch rusti2c https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
+git clone --recursive --branch rusti2c https://github.com/lupyuen/nuttx nuttx
+git clone --recursive --branch rusti2c https://github.com/lupyuen/nuttx-apps apps</code></pre></div>
 <p>Or if we prefer to <strong>add the Rust Library and App</strong> to our NuttX Project, follow these instructions…</p>
 <ol>
 <li>
@@ -583,7 +583,7 @@ git clone --recursive --branch rusti2c https://github.com/lupyuen/incubator-nutt
 <p><a href="https://github.com/lupyuen/rust_test"><strong>“Install Rust Test App”</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/tree/lorawan/drivers/rf"><strong>“Install SPI Test Driver”</strong></a></p>
+<p><a href="https://github.com/lupyuen/nuttx/tree/lorawan/drivers/rf"><strong>“Install SPI Test Driver”</strong></a></p>
 </li>
 </ol>
 <p><a href="https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features">(<strong>For PineDio Stack BL604:</strong> The Rust Library and App are already preinstalled)</a></p>
@@ -605,7 +605,7 @@ nuttx/boards/risc-v/bl602/bl602evb/include/board.h
 
 # For ESP32: Change &quot;esp32-devkitc&quot; to our ESP32 board 
 nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c</code></pre></div>
-<p>Check that the <strong>Semtech SX1262 Pins</strong> are configured correctly in <a href="https://github.com/lupyuen/incubator-nuttx/blob/lorawan/boards/risc-v/bl602/bl602evb/include/board.h#L36-L95"><strong>board.h</strong></a> or <a href="https://github.com/lupyuen/incubator-nuttx/blob/lorawan/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c#L43-L67"><strong>esp32_gpio.c</strong></a>…</p>
+<p>Check that the <strong>Semtech SX1262 Pins</strong> are configured correctly in <a href="https://github.com/lupyuen/nuttx/blob/lorawan/boards/risc-v/bl602/bl602evb/include/board.h#L36-L95"><strong>board.h</strong></a> or <a href="https://github.com/lupyuen/nuttx/blob/lorawan/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c#L43-L67"><strong>esp32_gpio.c</strong></a>…</p>
 <p><a href="https://lupyuen.github.io/articles/expander#pin-functions">(Which pins can be used? See this)</a></p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#connect-sx1262-transceiver"><strong>“Connect SX1262 Transceiver”</strong></a></p>
 </li>
@@ -812,7 +812,7 @@ Done!</code></pre></div>
 <p>Whereas NuttX declares <strong>ioctl</strong> as…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn </span>ioctl(fd: i32, request: i32, ...) -&gt; i32</code></pre></div>
-<p><a href="https://github.com/apache/incubator-nuttx/blob/master/include/sys/ioctl.h#L114">(Source)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/include/sys/ioctl.h#L114">(Source)</a></p>
 <p>The type of the <strong>request</strong> parameter is different: <strong><code>u64</code> vs <code>i32</code></strong>.</p>
 <p>So beware!</p>
 </li>
@@ -1446,7 +1446,7 @@ blflash flash nuttx.bin \
 blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
 <p>For WSL: Do this under plain old Windows CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
-<p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
 <h2 id="run-nuttx"><a href="#run-nuttx">19.3 Run NuttX</a></h2>

@@ -192,7 +192,7 @@
 <div class="example-wrap"><pre class="language-c"><code>// PIO Base Address for PinePhone 
 // Allwinner A64 Port Controller (GPIO)
 #define PIO_BASE_ADDRESS 0x01C20800</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L83-L122">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L83-L122">(Source)</a></p>
 <p>Then comes a bunch of registers that will configure the GPIOs and set their values…</p>
 <ul>
 <li>
@@ -230,7 +230,7 @@
 </li>
 </ul>
 <p>The pic above says we need to set the bits to <strong><code>001</code></strong> to configure the <strong>GPIOs for Output</strong>.</p>
-<p>This is how we configure <strong>PD18 for GPIO Output</strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L124-L179">examples/hello/hello_main.c</a></p>
+<p>This is how we configure <strong>PD18 for GPIO Output</strong>: <a href="https://github.com/lupyuen/nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L124-L179">examples/hello/hello_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// PIO Base Address for PinePhone Allwinner A64 Port Controller (GPIO)
 #define PIO_BASE_ADDRESS 0x01C20800
 
@@ -255,7 +255,7 @@ static void test_led(void)
   *pd_cfg2_reg = 
     (*pd_cfg2_reg &amp; ~(0b111 &lt;&lt; 8))  // Clear the bits
     | (0b001 &lt;&lt; 8);                 // Set the bits for Output</code></pre></div>
-<p>Then we configure <strong>PD19 and 20 for GPIO Output</strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L124-L179">hello_main.c</a></p>
+<p>Then we configure <strong>PD19 and 20 for GPIO Output</strong>: <a href="https://github.com/lupyuen/nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L124-L179">hello_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Bits 14 to 12: PD19_SELECT (Default 0x7)
   // 000: Input    001: Output
   // 010: LCD_DE   011: LVDS_VNC
@@ -282,7 +282,7 @@ static void test_led(void)
 <p>Our final job for today: <strong>Set the GPIO Output</strong> for PD18, 19 and 20. So that we can blink the PinePhone LEDs!</p>
 <p>Page 388 of the <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> says that we need to tweak Register <strong>PD_DATA</strong> at Offset <strong><code>0x7C</code></strong>. (Pic above)</p>
 <p>To set PD18, 19 and 20 to High, we set <strong>Bits 18, 19 and 20</strong> of PD_DATA to 1.</p>
-<p>This is how we do it: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L124-L179">hello_main.c</a></p>
+<p>This is how we do it: <a href="https://github.com/lupyuen/nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L124-L179">hello_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// PIO Base Address for PinePhone Allwinner A64 Port Controller (GPIO)
 #define PIO_BASE_ADDRESS 0x01C20800
 
@@ -326,7 +326,7 @@ static void test_led(void)
 <p>If we’re building NuttX ourselves…</p>
 <ul>
 <li>
-<p>Copy the code from <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c"><strong>hello_main.c</strong></a> to…</p>
+<p>Copy the code from <a href="https://github.com/lupyuen/nuttx-apps/blob/pinephone/examples/hello/hello_main.c"><strong>hello_main.c</strong></a> to…</p>
 <div class="example-wrap"><pre class="language-text"><code>apps/examples/hello/hello_main.c</code></pre></div></li>
 <li>
 <p>Check that the <strong>BASIC Interpreter</strong> has been enabled in the NuttX Build…</p>
@@ -352,7 +352,7 @@ HELLO NUTTX ON PINEPHONE!
 ...
 Shell (NSH) NuttX-10.3.0-RC2
 nsh&gt; </code></pre></div>
-<p>Enter this command to run our <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c">hello_main.c</a> Test Program…</p>
+<p>Enter this command to run our <a href="https://github.com/lupyuen/nuttx-apps/blob/pinephone/examples/hello/hello_main.c">hello_main.c</a> Test Program…</p>
 <div class="example-wrap"><pre class="language-bash"><code>hello</code></pre></div>
 <p>We see the values of the Registers PD_CFG2 and PD_DATA (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello
@@ -378,7 +378,7 @@ pd_data_reg=0x1c0000</code></pre></div>
 <p>(Bit 10)</p>
 </li>
 </ul>
-<p>Here’s how we turn on PinePhone’s Backlight connected to GPIO PH10: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L83-L122">examples/hello/hello_main.c</a></p>
+<p>Here’s how we turn on PinePhone’s Backlight connected to GPIO PH10: <a href="https://github.com/lupyuen/nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L83-L122">examples/hello/hello_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// PIO Base Address for PinePhone Allwinner A64 Port Controller (GPIO)
 #define PIO_BASE_ADDRESS 0x01C20800
 
@@ -681,7 +681,7 @@ pd_data_reg=0x1c0000</code></pre></div>
 &gt; print peek(&amp;h1C20874)
  2003898743 </code></pre></div>
 <p>For safety, the BASIC Interpreter won’t allow us to <strong><code>peek</code></strong> and <strong><code>poke</code></strong> Memory Addresses.</p>
-<p>This is how we patched the BASIC Interpreter to support <strong><code>peek</code></strong> and <strong><code>poke</code></strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/interpreters/bas/bas_fs.c#L1862-L1889">interpreters/bas/bas_fs.c</a></p>
+<p>This is how we patched the BASIC Interpreter to support <strong><code>peek</code></strong> and <strong><code>poke</code></strong>: <a href="https://github.com/lupyuen/nuttx-apps/blob/pinephone/interpreters/bas/bas_fs.c#L1862-L1889">interpreters/bas/bas_fs.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>int FS_memInput(int address)
 {
   //  Return the 32-bit word at the specified address.

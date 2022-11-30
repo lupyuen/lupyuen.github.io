@@ -246,7 +246,7 @@ int arm64_gic_initialize(void) {
   arm_gic_initialize();
   return 0;
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L717-L743">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L717-L743">(Source)</a></p>
 <p>Becomes this…</p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
  * Name: arm64_gic_initialize
@@ -419,7 +419,7 @@ int arm64_gic_initialize(void)
 - Build OK!
 - Oops fixing bug
 - Tested OK yay!</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/commits/pinephone/arch/arm64/src/qemu/qemu_serial.c">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/commits/pinephone/arch/arm64/src/qemu/qemu_serial.c">(Source)</a></p>
 <p>So we always <strong>Squash the Commits</strong> into One Single Commit (to help future maintainers)…</p>
 <div class="example-wrap"><pre class="language-text"><code>- arch/arm64: Add support for Generic Interrupt Controller Version 2</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/pull/7630/commits">(Source)</a></p>

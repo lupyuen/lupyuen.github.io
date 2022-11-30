@@ -160,7 +160,7 @@ const planeInfo = c.fb_planeinfo_s {
   .xoffset      = 0,     // Offset from virtual to visible resolution
   .yoffset      = 0,     // Offset from virtual to visible resolution
 };</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L314-L331">(<strong><code>fb_planeinfo_s</code></strong> comes from NuttX RTOS)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinephone/include/nuttx/video/fb.h#L314-L331">(<strong><code>fb_planeinfo_s</code></strong> comes from NuttX RTOS)</a></p>
 <p>Later we’ll pass the above values to render the Framebuffer: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L143-L153">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Init the Base UI Channel with the Framebuffer
 initUiChannel(
@@ -221,7 +221,7 @@ const videoInfo = c.fb_videoinfo_s {
   .nplanes   = 1,     // Number of color planes supported (Base UI Channel)
   .noverlays = 2,     // Number of overlays supported (2 Overlay UI Channels)
 };</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L299-L313">(<strong><code>fb_videoinfo_s</code></strong> comes from NuttX RTOS)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinephone/include/nuttx/video/fb.h#L299-L313">(<strong><code>fb_videoinfo_s</code></strong> comes from NuttX RTOS)</a></p>
 <p>We’ll test the Overlay Framebuffers later.</p>
 <p><img src="https://lupyuen.github.io/images/de2-blender2.jpg" alt="TODO" /></p>
 <h1 id="configure-framebuffer"><a href="#configure-framebuffer">3 Configure Framebuffer</a></h1>
@@ -892,7 +892,7 @@ applySettings(channels);</code></pre></div>
 <p><em>What’s <code>overlayInfo</code>?</em></p>
 <p><strong><code>overlayInfo</code></strong> is the array that defines the properties of the 2 Overlay Framebuffers.</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L619-L651">(<strong>overlayInfo</strong> is defined here)</a></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L350-L367">(<strong>fb_overlayinfo_s</strong> comes from NuttX RTOS)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinephone/include/nuttx/video/fb.h#L350-L367">(<strong>fb_overlayinfo_s</strong> comes from NuttX RTOS)</a></p>
 <p><em>Why “<code>inline for</code>”?</em></p>
 <p><a href="https://ziglang.org/documentation/master/#inline-for">“<strong><code>inline for</code></strong>”</a> expands (or unrolls) the loop at Compile-Time.</p>
 <p>We need this because we’re passing the arguments to <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L350-L594"><strong><code>initUiChannel</code></strong></a> as <strong><code>comptime</code></strong> Compile-Time Constants.</p>
@@ -967,10 +967,10 @@ Apply Settings</code></pre></div>
 <p>But now it’s time to <strong>merge our code</strong> into NuttX Mainline! I’ll explain the process in the next couple of articles, stay tuned!</p>
 <ul>
 <li>
-<p><a href="https://github.com/apache/incubator-nuttx/pull/7630"><strong>“Add support for Generic Interrupt Controller Version 2”</strong></a></p>
+<p><a href="https://github.com/apache/nuttx/pull/7630"><strong>“Add support for Generic Interrupt Controller Version 2”</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/apache/incubator-nuttx/pull/7692"><strong>“Add support for PINE64 PinePhone”</strong></a></p>
+<p><a href="https://github.com/apache/nuttx/pull/7692"><strong>“Add support for PINE64 PinePhone”</strong></a></p>
 </li>
 </ul>
 <p>Check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>

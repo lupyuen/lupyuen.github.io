@@ -208,11 +208,11 @@
 <p><em>What’s <code>try</code>?</em></p>
 <p>That’s how we <strong>handle errors</strong> in Zig. If <strong>readSensor</strong> fails with an error, we stop the current function and return the error to the caller.</p>
 <p><em>But struct_sensor_baro is not a value, it’s a Struct Type!</em></p>
-<p>Yep <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355"><strong>struct_sensor_baro</strong></a> is actually a Struct Type that Zig has auto-imported from NuttX. <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355">(As defined here)</a></p>
+<p>Yep <a href="https://github.com/lupyuen/nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355"><strong>struct_sensor_baro</strong></a> is actually a Struct Type that Zig has auto-imported from NuttX. <a href="https://github.com/lupyuen/nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355">(As defined here)</a></p>
 <p><em>So Zig will let us pass Struct Types to a Function?</em></p>
 <p>That’s the neat thing about Zig… It will let us pass <strong>Compile-Time Expressions</strong> (like Struct Types) to Zig Functions (like <strong>readSensor</strong>).</p>
 <p>The Zig Compiler will <strong>substitute the Struct Type</strong> inside the code for <strong>readSensor</strong>. (Which works like a C Macro)</p>
-<p>Another neat thing: <strong>“temperature”</strong> above is also a Compile-Time Expression, because it’s a Field Name in the <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355"><strong>sensor_baro</strong></a> Struct. Metaprogramming gets so cool!</p>
+<p>Another neat thing: <strong>“temperature”</strong> above is also a Compile-Time Expression, because it’s a Field Name in the <a href="https://github.com/lupyuen/nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355"><strong>sensor_baro</strong></a> Struct. Metaprogramming gets so cool!</p>
 <p><a href="https://lupyuen.github.io/articles/visual#appendix-read-sensor-data">(More about <strong>readSensor</strong> in the Appendix)</a></p>
 <p><em>Why the full path “/dev/uorb/sensor_baro0”? Why not just “baro0”?</em></p>
 <p>Call me stupendously stubborn, but I think it might be better for learners to see the full path of NuttX Sensors?</p>
@@ -366,7 +366,7 @@ pub fn main() !void {
 <tr><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: center"><code>GND</code></td><td style="text-align: left">Black</td></tr>
 </tbody></table>
 </div>
-<p>The <strong>I2C Pins</strong> on BL602 are defined here: <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L91-L98">board.h</a></p>
+<p>The <strong>I2C Pins</strong> on BL602 are defined here: <a href="https://github.com/lupyuen/nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L91-L98">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* I2C Configuration */
 #define BOARD_I2C_SCL \
   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
@@ -549,12 +549,12 @@ temperature = try sen.readSensor(
 <p>Looks concise and tidy, but <strong>readSensor</strong> has 2 surprises…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355"><strong>struct_sensor_baro</strong></a> is actually a <strong>Struct Type</strong></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355"><strong>struct_sensor_baro</strong></a> is actually a <strong>Struct Type</strong></p>
 <p>(Auto-imported by Zig from NuttX)</p>
 </li>
 <li>
 <p><strong>“temperature”</strong> is actually a <strong>Struct Field Name</strong></p>
-<p>(From the <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355"><strong>sensor_baro</strong></a> Struct)</p>
+<p>(From the <a href="https://github.com/lupyuen/nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355"><strong>sensor_baro</strong></a> Struct)</p>
 </li>
 </ul>
 <p>The Zig Compiler will <strong>substitute the Struct Type</strong> and Field Name inside the code for <strong>readSensor</strong>. (Which works like a C Macro)</p>
@@ -769,12 +769,12 @@ debug(&quot;temperature={}&quot;, .{ temperature });</code></pre></div>
 <p>Looks concise and tidy, but <strong>readSensor</strong> has 2 surprises…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355"><strong>struct_sensor_baro</strong></a> is actually a <strong>Struct Type</strong></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355"><strong>struct_sensor_baro</strong></a> is actually a <strong>Struct Type</strong></p>
 <p>(Auto-imported by Zig from NuttX)</p>
 </li>
 <li>
 <p><strong>“temperature”</strong> is actually a <strong>Struct Field Name</strong></p>
-<p>(From the <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355"><strong>sensor_baro</strong></a> Struct)</p>
+<p>(From the <a href="https://github.com/lupyuen/nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355"><strong>sensor_baro</strong></a> Struct)</p>
 </li>
 </ul>
 <p>The Zig Compiler will <strong>substitute the Struct Type</strong> and Field Name inside the code for <strong>readSensor</strong>. (Which works like a C Macro)</p>
@@ -796,7 +796,7 @@ pub fn readSensor(
 <p><strong>field_name</strong> changes to <strong>“temperature”</strong></p>
 </li>
 </ul>
-<p><strong>readSensor</strong> will then use <strong>SensorType</strong> to refer to the <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355"><strong>sensor_baro</strong></a> Struct…</p>
+<p><strong>readSensor</strong> will then use <strong>SensorType</strong> to refer to the <a href="https://github.com/lupyuen/nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355"><strong>sensor_baro</strong></a> Struct…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Define the Sensor Data Type.
   // Zig Compiler replaces `SensorType` by `c.struct_sensor_baro`
   var sensor_data = std.mem.zeroes(

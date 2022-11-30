@@ -211,7 +211,7 @@ pub export fn hello_zig_main(
 riscv64-unknown-elf-ld: nuttx/staging/libapps.a(builtin_list.c.home.user.nuttx.apps.builtin.o):(.rodata.g_builtins+0xbc): 
 undefined reference to `hello_zig_main&#39;</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/497c90b862aef48b57ff3124f2ea94d8">(Source)</a></p>
-<p>Which is probably due to some <strong>incomplete Build Rules</strong> in the NuttX Makefiles. <a href="https://github.com/apache/incubator-nuttx/issues/6219">(See this)</a></p>
+<p>Which is probably due to some <strong>incomplete Build Rules</strong> in the NuttX Makefiles. <a href="https://github.com/apache/nuttx/issues/6219">(See this)</a></p>
 <p>But no worries! Let’s compile the Zig App ourselves and link it into the NuttX Firmware.</p>
 <h1 id="compile-zig-app"><a href="#compile-zig-app">4 Compile Zig App</a></h1>
 <p>Follow these steps to install the <strong>Zig Compiler</strong>…</p>
@@ -581,12 +581,12 @@ fn busyloop() void {
 </li>
 <li>
 <p>This <strong>Revert Commit</strong> might tell us what’s missing from the NuttX Makefiles…</p>
-<p><a href="https://github.com/apache/incubator-nuttx/pull/5762/commits/ad17dfca52606671564636cdd773b09af8fb154e"><strong>“Revert Zig Build”</strong></a></p>
+<p><a href="https://github.com/apache/nuttx/pull/5762/commits/ad17dfca52606671564636cdd773b09af8fb154e"><strong>“Revert Zig Build”</strong></a></p>
 </li>
 <li>
 <p>We made two <strong>Temporary Fixes to the NuttX Makefiles</strong> so that the Zig Object Files will be generated…</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/825531f3f571621754ba4c69f32406440dd0d9f3"><strong>nuttx/tools/Config.mk</strong></a></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/commit/7fd9964b910add04f47780f519e3054f8e2692c9"><strong>apps/Application.mk</strong></a></p>
+<p><a href="https://github.com/lupyuen/nuttx/commit/825531f3f571621754ba4c69f32406440dd0d9f3"><strong>nuttx/tools/Config.mk</strong></a></p>
+<p><a href="https://github.com/lupyuen/nuttx-apps/commit/7fd9964b910add04f47780f519e3054f8e2692c9"><strong>apps/Application.mk</strong></a></p>
 </li>
 </ol>
 

@@ -221,8 +221,8 @@ static void test_cbor(void) {
 <p>To test CBOR Encoding on NuttX, download the modified source code for <strong>NuttX OS and NuttX Apps</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
-git clone --recursive --branch cbor https://github.com/lupyuen/incubator-nuttx nuttx
-git clone --recursive --branch cbor https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
+git clone --recursive --branch cbor https://github.com/lupyuen/nuttx nuttx
+git clone --recursive --branch cbor https://github.com/lupyuen/nuttx-apps apps</code></pre></div>
 <p>Or if we prefer to <strong>add TinyCBOR</strong> to our NuttX Project, follow these instructions…</p>
 <ul>
 <li>
@@ -726,7 +726,7 @@ blflash flash nuttx.bin \
 blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
 <p>For WSL: Do this under plain old Windows CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
-<p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
 <h2 id="run-nuttx"><a href="#run-nuttx">8.3 Run NuttX</a></h2>

@@ -212,7 +212,7 @@
 <p>To convert the 5V UART Port to 3.3V, we connect 3 Resistors (of the same resistance) as a <a href="https://learn.sparkfun.com/tutorials/voltage-dividers/all"><strong>Voltage Divider</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/ikea-divider3a.jpg" alt="IKEA VINDRIKTNING Air Quality Sensor connected to Pine64 PineDio Stack BL604 RISC-V Board with Voltage Divider" /></p>
 <p><em>How did we get GPIO 3 and 4?</em></p>
-<p>The <strong>GPIO Pin Numbers</strong> for the UART Port (UART1) are defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/ikea/boards/risc-v/bl602/bl602evb/include/board.h#L63-L66">board.h</a></p>
+<p>The <strong>GPIO Pin Numbers</strong> for the UART Port (UART1) are defined in <a href="https://github.com/lupyuen/nuttx/blob/ikea/boards/risc-v/bl602/bl602evb/include/board.h#L63-L66">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define BOARD_UART_1_RX_PIN \
   (GPIO_INPUT     | GPIO_PULLUP | \
    GPIO_FUNC_UART | GPIO_PIN3)
@@ -221,7 +221,7 @@
   (GPIO_INPUT     | GPIO_PULLUP | \
    GPIO_FUNC_UART | GPIO_PIN4)</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/expander#pin-functions">(Which pins can be used? See this)</a></p>
-<p><strong>For ESP32:</strong> The GPIO Pin Numbers for the UART Port (UART1) are defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/ikea/arch/xtensa/src/esp32/Kconfig#L661-L669">Kconfig</a> and menuconfig…</p>
+<p><strong>For ESP32:</strong> The GPIO Pin Numbers for the UART Port (UART1) are defined in <a href="https://github.com/lupyuen/nuttx/blob/ikea/arch/xtensa/src/esp32/Kconfig#L661-L669">Kconfig</a> and menuconfig…</p>
 <div class="example-wrap"><pre class="language-text"><code>config ESP32_UART1_TXPIN
   int &quot;UART1 Tx Pin&quot;
   default 10
@@ -645,8 +645,8 @@ UART LIVE DISPLAY, } TO STOP</code></pre></div>
 <p>To use the IKEA Air Quality Sensor with NuttX, download the modified source code for <strong>NuttX OS and NuttX Apps</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
-git clone --recursive --branch ikea https://github.com/lupyuen/incubator-nuttx nuttx
-git clone --recursive --branch ikea https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
+git clone --recursive --branch ikea https://github.com/lupyuen/nuttx nuttx
+git clone --recursive --branch ikea https://github.com/lupyuen/nuttx-apps apps</code></pre></div>
 <p>Or if we prefer to <strong>add the IKEA Air Quality Sensor App</strong> to our NuttX Project, follow these instructions…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/ikea_air_quality_sensor#install-app"><strong>“Install IKEA Air Quality Sensor App”</strong></a></li>
@@ -815,7 +815,7 @@ blflash flash nuttx.bin \
 blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
 <p>For WSL: Do this under plain old Windows CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
-<p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
 <h2 id="run-nuttx"><a href="#run-nuttx">10.5 Run NuttX</a></h2>

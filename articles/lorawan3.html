@@ -162,7 +162,7 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 <p><a href="https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer">(See this)</a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/tree/lorawan/drivers/rf"><strong>spi_test_driver (/dev/spitest0)</strong></a></p>
+<p><a href="https://github.com/lupyuen/nuttx/tree/lorawan/drivers/rf"><strong>spi_test_driver (/dev/spitest0)</strong></a></p>
 <p>SPI Test Driver</p>
 <p><a href="https://lupyuen.github.io/articles/spi2">(See this)</a></p>
 </li>
@@ -225,13 +225,13 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 <p>To run LoRaWAN on NuttX, download the modified source code for <strong>NuttX OS and NuttX Apps</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
-git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nuttx nuttx
-git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
+git clone --recursive --branch lorawan https://github.com/lupyuen/nuttx nuttx
+git clone --recursive --branch lorawan https://github.com/lupyuen/nuttx-apps apps</code></pre></div>
 <p>Or if we prefer to <strong>add the LoRaWAN Library</strong> to our NuttX Project, follow these instructions…</p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features">(<strong>For PineDio Stack BL604:</strong> The features below are already preinstalled)</a></p>
 <ol>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/tree/lorawan/drivers/rf"><strong>“Install SPI Test Driver”</strong></a></p>
+<p><a href="https://github.com/lupyuen/nuttx/tree/lorawan/drivers/rf"><strong>“Install SPI Test Driver”</strong></a></p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/nimble-porting-nuttx"><strong>“Install NimBLE Porting Layer”</strong></a></p>
@@ -375,7 +375,7 @@ nuttx/boards/risc-v/bl602/bl602evb/include/board.h
 
 # For ESP32: Change &quot;esp32-devkitc&quot; to our ESP32 board 
 nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c</code></pre></div>
-<p>Check that the <strong>Semtech SX1262 Pins</strong> are configured correctly in <a href="https://github.com/lupyuen/incubator-nuttx/blob/lorawan/boards/risc-v/bl602/bl602evb/include/board.h#L36-L95"><strong>board.h</strong></a> or <a href="https://github.com/lupyuen/incubator-nuttx/blob/lorawan/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c#L43-L67"><strong>esp32_gpio.c</strong></a>…</p>
+<p>Check that the <strong>Semtech SX1262 Pins</strong> are configured correctly in <a href="https://github.com/lupyuen/nuttx/blob/lorawan/boards/risc-v/bl602/bl602evb/include/board.h#L36-L95"><strong>board.h</strong></a> or <a href="https://github.com/lupyuen/nuttx/blob/lorawan/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c#L43-L67"><strong>esp32_gpio.c</strong></a>…</p>
 <p><a href="https://lupyuen.github.io/articles/expander#pin-functions">(Which pins can be used? See this)</a></p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#connect-sx1262-transceiver"><strong>“Connect SX1262 Transceiver”</strong></a></p>
 </li>
@@ -1048,7 +1048,7 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
 <ul>
 <li>
 <p>NuttX on BL602 / BL604 executes <strong>SPI Data Transfer with Polling</strong> (not DMA)</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/lorawan/arch/risc-v/src/bl602/bl602_spi.c#L734-L803">(See this)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/lorawan/arch/risc-v/src/bl602/bl602_spi.c#L734-L803">(See this)</a></p>
 </li>
 <li>
 <p>LoRaWAN is <strong>Time Sensitive</strong>, as explained earlier. SPI with Polling might cause <strong>incoming packets to be dropped</strong>.</p>
@@ -1142,8 +1142,8 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lorawan#appendix-lora-carrier-sensing">(Here’s an example)</a></p>
 </li>
 <li>
-<p>Alternatively we may implement LoRa and LoRaWAN as <strong>External Libraries</strong>, similar to <a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/master/wireless/bluetooth/nimble"><strong>NimBLE for NuttX</strong></a>.</p>
-<p>(The <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/wireless/bluetooth/nimble/Makefile#L33"><strong>Makefile</strong></a> downloads the External Library during build)</p>
+<p>Alternatively we may implement LoRa and LoRaWAN as <strong>External Libraries</strong>, similar to <a href="https://github.com/lupyuen/nuttx-apps/tree/master/wireless/bluetooth/nimble"><strong>NimBLE for NuttX</strong></a>.</p>
+<p>(The <a href="https://github.com/lupyuen/nuttx-apps/blob/master/wireless/bluetooth/nimble/Makefile#L33"><strong>Makefile</strong></a> downloads the External Library during build)</p>
 <p>But then we won’t get a proper NuttX Driver that exposes the ioctl() interface to NuttX Apps.</p>
 </li>
 </ul>
@@ -1364,7 +1364,7 @@ blflash flash nuttx.bin \
 blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
 <p>For WSL: Do this under plain old Windows CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
-<p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
 <h2 id="run-nuttx"><a href="#run-nuttx">19.3 Run NuttX</a></h2>

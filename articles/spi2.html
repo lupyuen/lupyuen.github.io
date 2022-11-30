@@ -167,11 +167,11 @@
 <ol>
 <li>
 <p>If our SPI Device is supported by an <strong>existing NuttX Device Driver</strong>, just go ahead and use the driver!</p>
-<p><a href="https://github.com/apache/incubator-nuttx/tree/master/drivers">(Browse the NuttX Device Drivers)</a></p>
+<p><a href="https://github.com/apache/nuttx/tree/master/drivers">(Browse the NuttX Device Drivers)</a></p>
 </li>
 <li>
-<p>If we’re transferring data over SPI <strong>for testing only</strong> (not for a real app), we may call the <a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi_transfer.h"><strong>SPI Transfer Interface</strong></a></p>
-<p><a href="https://github.com/apache/incubator-nuttx-apps/blob/master/system/spi">(Here’s how… It’s complicated)</a></p>
+<p>If we’re transferring data over SPI <strong>for testing only</strong> (not for a real app), we may call the <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/spi/spi_transfer.h"><strong>SPI Transfer Interface</strong></a></p>
+<p><a href="https://github.com/apache/nuttx-apps/blob/master/system/spi">(Here’s how… It’s complicated)</a></p>
 </li>
 <li>
 <p>But today we experiment with a <strong>Custom Device Driver</strong> that will talk to our own SPI Device.</p>
@@ -194,8 +194,8 @@
 <p>Let’s study the code in our <strong>SPI Test Driver</strong>…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c"><strong>drivers/rf/spi_test_driver.c</strong></a></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/include/nuttx/rf/spi_test_driver.h">(Header File)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/spi_test/drivers/rf/spi_test_driver.c"><strong>drivers/rf/spi_test_driver.c</strong></a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/spi_test/include/nuttx/rf/spi_test_driver.h">(Header File)</a></p>
 </li>
 </ul>
 <p>We created the SPI Test Driver by cloning another device driver, as explained here…</p>
@@ -204,7 +204,7 @@
 </ul>
 <p>In the following sections we explain the SPI features that we have implemented in the driver.</p>
 <p><img src="https://lupyuen.github.io/images/spi2-driver2a.png" alt="File operations implemented by our driver" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L80-L89">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L80-L89">(Source)</a></p>
 <h2 id="file-operations"><a href="#file-operations">2.1 File Operations</a></h2>
 <p>Every <a href="https://nuttx.apache.org/docs/latest/components/drivers/character/index.html"><strong>NuttX Character Device Driver</strong></a> defines a list of supported <strong>File Operations</strong>…</p>
 <ul>
@@ -225,7 +225,7 @@
 </li>
 </ul>
 <p>(Plus others: seek(), poll(), …)</p>
-<p>Our driver defines the File Operations like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L88-L97">spi_test_driver.c</a></p>
+<p>Our driver defines the File Operations like so: <a href="https://github.com/lupyuen/nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L88-L97">spi_test_driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static const struct file_operations g_spi_test_driver_fops =
 {
   spi_test_driver_open,
@@ -263,7 +263,7 @@ register_driver(
 <p>Then <strong>read()</strong> returns the received data from the <strong>Receive Buffer</strong></p>
 </li>
 </ol>
-<p>The <strong>Receive Buffer</strong> is defined like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L99-L101">spi_test_driver.c</a></p>
+<p>The <strong>Receive Buffer</strong> is defined like so: <a href="https://github.com/lupyuen/nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L99-L101">spi_test_driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static char recv_buffer[256];  /* Buffer for SPI response */
 
 static int recv_buffer_len = 0;  /* Length of SPI response */</code></pre></div>
@@ -287,7 +287,7 @@ static int recv_buffer_len = 0;  /* Length of SPI response */</code></pre></div>
 <p><strong>Deselect</strong> the device and <strong>unlock</strong> the bus</p>
 </li>
 </ol>
-<p>Below is the implementation: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208">spi_test_driver.c</a></p>
+<p>Below is the implementation: <a href="https://github.com/lupyuen/nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208">spi_test_driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Write the buffer to the SPI device */
 
 static ssize_t spi_test_driver_write(
@@ -342,10 +342,10 @@ static ssize_t spi_test_driver_write(
 <p>That’s the <strong>SPI Interface</strong> for NuttX.</p>
 <p><a href="https://lupyuen.github.io/articles/spi2#appendix-nuttx-spi-interface">(More about NuttX SPI Interface)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-driver2.png" alt="Write Operation" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208">(Source)</a></p>
 <h2 id="read-operation"><a href="#read-operation">2.3 Read Operation</a></h2>
 <p>Remember that the write() operation has saved the received SPI data into the <strong>Receive Buffer</strong>.</p>
-<p>Thus for the read() operation we simply return the data in the Receive Buffer: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L210-L233">spi_test_driver.c</a></p>
+<p>Thus for the read() operation we simply return the data in the Receive Buffer: <a href="https://github.com/lupyuen/nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L210-L233">spi_test_driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Return the data received from the SPI device */
 
 static ssize_t spi_test_driver_read(
@@ -367,7 +367,7 @@ static ssize_t spi_test_driver_read(
   return recv_buffer_len;
 }</code></pre></div><h2 id="configure-spi"><a href="#configure-spi">2.4 Configure SPI</a></h2>
 <p>Earlier we called <strong>spi_test_driver_configspi</strong> to configure the SPI Interface.</p>
-<p>Below is the implementation: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L107-L129">spi_test_driver.c</a></p>
+<p>Below is the implementation: <a href="https://github.com/lupyuen/nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L107-L129">spi_test_driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static inline void spi_test_driver_configspi(FAR struct spi_dev_s *spi)
 {
   DEBUGASSERT(spi != NULL);
@@ -399,7 +399,7 @@ static ssize_t spi_test_driver_read(
 <p><strong>SPI Frequency</strong>: 1 MHz</p>
 </li>
 </ul>
-<p><strong>SPI Mode</strong> and <strong>SPI Frequency</strong> are defined below: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L45-L57">spi_test_driver.c</a></p>
+<p><strong>SPI Mode</strong> and <strong>SPI Frequency</strong> are defined below: <a href="https://github.com/lupyuen/nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L45-L57">spi_test_driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* We set SPI Frequency to 1 MHz */
 
 #ifndef CONFIG_SPI_TEST_DRIVER_SPI_FREQUENCY
@@ -416,11 +416,11 @@ static ssize_t spi_test_driver_read(
 <p>BL602 uses <strong>SPI Mode 1</strong> (instead of Mode 0) because of an <strong>SPI Mode Quirk</strong> in BL602. </p>
 <p><a href="https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk">(More about the SPI Mode Quirk)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-newdriver4.png" alt="Register SPI Test Driver at startup" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617">(Source)</a></p>
 <h1 id="load-the-spi-test-driver"><a href="#load-the-spi-test-driver">3 Load the SPI Test Driver</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p><em>How do we load our SPI Test Driver at startup?</em></p>
-<p>During NuttX Startup, we <strong>load our SPI Test Driver</strong> like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617">bl602_bringup.c</a></p>
+<p>During NuttX Startup, we <strong>load our SPI Test Driver</strong> like so: <a href="https://github.com/lupyuen/nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617">bl602_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>int bl602_bringup(void)
 {
   ...
@@ -443,8 +443,8 @@ static ssize_t spi_test_driver_read(
     }
 
 #endif /* CONFIG_RF_SPI_TEST_DRIVER */</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L367-L620"><strong>bl602_bringup</strong></a> is the NuttX Startup Function for BL602.</p>
-<p>(<a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426"><strong>esp32_bringup</strong></a> for ESP32)</p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L367-L620"><strong>bl602_bringup</strong></a> is the NuttX Startup Function for BL602.</p>
+<p>(<a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426"><strong>esp32_bringup</strong></a> for ESP32)</p>
 <p>We modified the Startup Function to <strong>register our SPI Test Driver</strong>, which loads the driver into NuttX at startup.</p>
 <p>Let’s run NuttX on BL602 / ESP32 and check that our <strong>SPI Test Driver loads correctly</strong>…</p>
 <ol>
@@ -456,8 +456,8 @@ static ssize_t spi_test_driver_read(
 <p>Download the modified source code…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
-git clone --branch spi_test https://github.com/lupyuen/incubator-nuttx nuttx
-git clone --branch spi_test https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
+git clone --branch spi_test https://github.com/lupyuen/nuttx nuttx
+git clone --branch spi_test https://github.com/lupyuen/nuttx-apps apps</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features">(<strong>For PineDio Stack BL604:</strong> The SPI Test Driver is already preinstalled)</a></p>
 </li>
 <li>
@@ -496,7 +496,7 @@ make menuconfig </code></pre></div></li>
 <p><a href="https://gist.github.com/lupyuen/93b553fdfcfa0221ccd6276706e72caf">(Here’s the .config for BL602)</a></p>
 </li>
 <li>
-<p><strong>For ESP32:</strong> Edit <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426"><strong>esp32_bringup.c</strong></a> to register our SPI Test Driver <a href="https://lupyuen.github.io/articles/spi2#register-device-driver">(See this)</a></p>
+<p><strong>For ESP32:</strong> Edit <a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426"><strong>esp32_bringup.c</strong></a> to register our SPI Test Driver <a href="https://lupyuen.github.io/articles/spi2#register-device-driver">(See this)</a></p>
 </li>
 <li>
 <p>Build, flash and run the NuttX Firmware on BL602 or ESP32…</p>
@@ -516,7 +516,7 @@ make menuconfig </code></pre></div></li>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>We’ve seen the write() and read() operations in our SPI Test Driver.  Now we learn how they are called by our <strong>SPI Test App</strong>…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test"><strong>examples/spi_test</strong></a></li>
+<li><a href="https://github.com/lupyuen/nuttx-apps/blob/spi_test/examples/spi_test"><strong>examples/spi_test</strong></a></li>
 </ul>
 <p>We created the SPI Test App by cloning another app, as explained here…</p>
 <ul>
@@ -539,7 +539,7 @@ make menuconfig </code></pre></div></li>
 </ol>
 <h2 id="open-spi-test-driver"><a href="#open-spi-test-driver">4.1 Open SPI Test Driver</a></h2>
 <p>Earlier we saw that our SPI Test Driver appears in NuttX as <strong>“/dev/spitest0”</strong></p>
-<p>Let’s open the driver: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c">spi_test_main.c</a></p>
+<p>Let’s open the driver: <a href="https://github.com/lupyuen/nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c">spi_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>int main(int argc, FAR char *argv[])
 {
   /* Open SPI Test Driver */
@@ -566,7 +566,7 @@ make menuconfig </code></pre></div></li>
   static char rx_data[256];  /* Buffer for SPI response */
   int bytes_read = read(fd, rx_data, sizeof(rx_data));
   assert(bytes_read == sizeof(get_status));</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L65-L69">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L65-L69">(Source)</a></p>
 <p>This code isn’t in our SPI Test App, we’ll see this later when we test with Semtech SX1262.</p>
 <h2 id="close-spi-test-driver"><a href="#close-spi-test-driver">4.4 Close SPI Test Driver</a></h2>
 <p>Finally we close the File Descriptor for our SPI Test Driver…</p>
@@ -577,7 +577,7 @@ make menuconfig </code></pre></div></li>
 }</code></pre></div>
 <p>Let’s run our SPI Test App!</p>
 <p><img src="https://lupyuen.github.io/images/spi2-app4.png" alt="SPI Test App" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c">(Source)</a></p>
 <h1 id="run-the-spi-test-app"><a href="#run-the-spi-test-app">5 Run the SPI Test App</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>Follow these steps to run our SPI Test App on BL602 or ESP32…</p>
@@ -627,13 +627,13 @@ make menuconfig </code></pre></div></li>
 </div>
 <p><img src="https://lupyuen.github.io/images/spi2-logic4.jpg" alt="Logic Analyser connected to PineCone BL602" /></p>
 <p><em>How did we get the GPIO Pin Numbers for the SPI Port?</em></p>
-<p><strong>For BL602:</strong> SPI Pins are defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L87-L92">board.h</a></p>
+<p><strong>For BL602:</strong> SPI Pins are defined in <a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L87-L92">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define BOARD_SPI_CS   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN2)
 #define BOARD_SPI_MOSI (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN1)
 #define BOARD_SPI_MISO (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN0)
 #define BOARD_SPI_CLK  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN3)</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/expander#pin-functions">(Which pins can be used? See this)</a></p>
-<p><strong>For ESP32:</strong> SPI Pins are defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/xtensa/src/esp32/Kconfig#L799-L817">Kconfig</a></p>
+<p><strong>For ESP32:</strong> SPI Pins are defined in <a href="https://github.com/lupyuen/nuttx/blob/spi_test/arch/xtensa/src/esp32/Kconfig#L799-L817">Kconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>config ESP32_SPI2_CSPIN
 	int &quot;SPI2 CS Pin&quot;
 	default 15
@@ -676,7 +676,7 @@ config ESP32_SPI2_MISOPIN
 <p>For such boards we’ll have to control each Chip Select Pin with GPIO.</p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2">(PineDio Stack BL604 shares its SPI Bus with SX1262 Transceiver, ST7789 Display and SPI Flash)</a></p>
 <h2 id="gpio-output-as-chip-select"><a href="#gpio-output-as-chip-select">7.1 GPIO Output as Chip Select</a></h2>
-<p>Let’s look at the code in <strong>SPI Test App #2</strong> that controls Chip Select with GPIO: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L42-L74">spi_test2_main.c</a></p>
+<p>Let’s look at the code in <strong>SPI Test App #2</strong> that controls Chip Select with GPIO: <a href="https://github.com/lupyuen/nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L42-L74">spi_test2_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Open GPIO Output for SPI Chip Select */
 
 int cs = open(&quot;/dev/gpout1&quot;, O_RDWR);
@@ -720,11 +720,11 @@ close(cs);</code></pre></div>
 <p>Let’s watch SPI Test App #2 in action with Semtech SX1262.</p>
 <p><a href="https://lupyuen.github.io/articles/nuttx#gpio-demo">(More about GPIO Output)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-sx5.png" alt="Control Chip Select with GPIO" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L42-L74">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L42-L74">(Source)</a></p>
 <h1 id="test-with-semtech-sx1262"><a href="#test-with-semtech-sx1262">8 Test with Semtech SX1262</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p><a href="https://www.semtech.com/products/wireless-rf/lora-core/sx1262"><strong>Semtech SX1262</strong></a> is a LoRa Transceiver (Radio Transmitter + Receiver) that’s not yet supported by NuttX.</p>
-<p><a href="https://github.com/apache/incubator-nuttx/tree/master/drivers/wireless/lpwan/sx127x">(Though the older model SX1276 is supported by NuttX)</a></p>
+<p><a href="https://github.com/apache/nuttx/tree/master/drivers/wireless/lpwan/sx127x">(Though the older model SX1276 is supported by NuttX)</a></p>
 <p>Today we shall send two short commands to SX1262 for testing…</p>
 <ul>
 <li>
@@ -742,7 +742,7 @@ close(cs);</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lorawan#troubleshoot-lorawan">(Register <code>0x08</code> is expected to have value <code>0x80</code> at startup)</a></p>
 </li>
 </ul>
-<p>We send the <strong>“Get Status”</strong> command with this code: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L59-L83">spi_test2_main.c</a></p>
+<p>We send the <strong>“Get Status”</strong> command with this code: <a href="https://github.com/lupyuen/nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L59-L83">spi_test2_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Transmit command to SX1262: Get Status */
 
 static char get_status[] = { 0xc0, 0x00 };
@@ -758,7 +758,7 @@ assert(bytes_read == sizeof(get_status));
 /* Show the received status */
 
 printf(&quot;\nSX1262 Status is %d\n&quot;, (rx_data[1] &gt;&gt; 4) &amp; 0b111);  /* Bits 6:4 */</code></pre></div>
-<p>And the <strong>“Read Register 0x08”</strong> command with this code: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L94-L117">spi_test2_main.c</a></p>
+<p>And the <strong>“Read Register 0x08”</strong> command with this code: <a href="https://github.com/lupyuen/nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L94-L117">spi_test2_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Transmit command to SX1262: Read Register 8 */
 
 static char read_reg[] = { 0x1d, 0x00, 0x08, 0x00, 0x00 };
@@ -773,7 +773,7 @@ assert(bytes_read == sizeof(read_reg));
 /* Show the received register value */
 
 printf(&quot;\nSX1262 Register 8 is 0x%02x\n&quot;, rx_data[4]);</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c">(See the complete program)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c">(See the complete program)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-sx6.png" alt="Transmit command to SX1262: Read Register 0x08" /></p>
 <h2 id="connect-sx1262"><a href="#connect-sx1262">8.1 Connect SX1262</a></h2>
 <p>We connect SX1262 to BL602 / ESP32 as follows…</p>
@@ -793,13 +793,13 @@ printf(&quot;\nSX1262 Register 8 is 0x%02x\n&quot;, rx_data[4]);</code></pre></d
 <p>(Busy and DIO1 Pins are not connected, we’ll need them for LoRa in the next artice)</p>
 <p><em>Why did we connect Chip Select to GPIO 11 / 15 / 16?</em></p>
 <p>Remember that we’re controlling SPI Chip Select ourselves through <strong>GPIO Output</strong>, which is defined as follows…</p>
-<p><strong>For BL602:</strong> GPIO Output Pin is defined as <strong>GPIO 11</strong> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L48-L49">board.h</a></p>
+<p><strong>For BL602:</strong> GPIO Output Pin is defined as <strong>GPIO 11</strong> in <a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L48-L49">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define BOARD_GPIO_OUT1 \
   (GPIO_OUTPUT | GPIO_FLOAT | \
   GPIO_FUNC_SWGPIO | GPIO_PIN11)</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/nuttx#configure-pins">(More about this)</a></p>
 <p><strong>For ESP32:</strong> GPIO Output Pin depends on our ESP32 Board (and may be customised)…</p>
-<p>ESP32-DevKitC defines <strong>GPIO 15</strong> as the default GPIO Output Pin: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c#L43-L67">esp32_gpio.c</a></p>
+<p>ESP32-DevKitC defines <strong>GPIO 15</strong> as the default GPIO Output Pin: <a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c#L43-L67">esp32_gpio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Output pins. GPIO15 is used as an example, any other outputs could be used. */
 #define GPIO_OUT1    15
 
@@ -812,11 +812,11 @@ printf(&quot;\nSX1262 Register 8 is 0x%02x\n&quot;, rx_data[4]);</code></pre></d
  * used.
  */
 #define GPIO_IRQPIN1  22</code></pre></div>
-<p>ESP32-WROVER-KIT uses <strong>GPIO 16</strong> for GPIO Output: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-wrover-kit/src/esp32_gpio.c#L43-L67">esp32_gpio.c</a></p>
+<p>ESP32-WROVER-KIT uses <strong>GPIO 16</strong> for GPIO Output: <a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/xtensa/esp32/esp32-wrover-kit/src/esp32_gpio.c#L43-L67">esp32_gpio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define GPIO_OUT1    16
 #define GPIO_IN1     17
 #define GPIO_IRQPIN1 22</code></pre></div>
-<p>TTGO-LoRa-ESP32 uses <strong>GPIO 15</strong> for GPIO Output: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/ttgo_lora_esp32/src/esp32_gpio.c#L43-L67">esp32_gpio.c</a></p>
+<p>TTGO-LoRa-ESP32 uses <strong>GPIO 15</strong> for GPIO Output: <a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/xtensa/esp32/ttgo_lora_esp32/src/esp32_gpio.c#L43-L67">esp32_gpio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define GPIO_OUT1    15
 #define GPIO_IN1     18
 #define GPIO_IRQPIN1 22</code></pre></div><h2 id="test-sx1262"><a href="#test-sx1262">8.2 Test SX1262</a></h2>
@@ -890,7 +890,7 @@ SX1262 Register 8 is 0x80</code></pre></div>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio3.png" alt="SX1262 Interface on PineDio Stack" /></p>
 </blockquote>
-<p>We update the following <strong>BL604 Pin Definitions</strong> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95">board.h</a></p>
+<p>We update the following <strong>BL604 Pin Definitions</strong> in <a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95">board.h</a></p>
 <div><table><thead><tr><th style="text-align: center">SX1262</th><th style="text-align: center">BL604 Pin</th><th style="text-align: left">NuttX Pin</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong>MOSI</strong></td><td style="text-align: center">GPIO 13</td><td style="text-align: left">BOARD_SPI_MOSI</td></tr>
 <tr><td style="text-align: center"><strong>MISO</strong></td><td style="text-align: center">GPIO 0</td><td style="text-align: left">BOARD_SPI_MISO</td></tr>
@@ -935,7 +935,7 @@ SX1262 Register 8 is 0x80</code></pre></div>
 </li>
 <li>
 <p>Edit the <strong>Pin Definitions</strong> as shown above…</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95">boards/risc-v/bl602/bl602evb/include/board.h</a> </p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95">boards/risc-v/bl602/bl602evb/include/board.h</a> </p>
 </li>
 <li>
 <p>Build, flash and run the NuttX Firmware…</p>
@@ -970,12 +970,12 @@ SX1262 Register 8 is 0x80</code></pre></div>
 <div class="example-wrap"><pre class="language-c"><code>#define BOARD_GPIO_OUT1 \
   (GPIO_OUTPUT | GPIO_FLOAT | \
   GPIO_FUNC_SWGPIO | GPIO_PIN11)</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L48-L49">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L48-L49">(Source)</a></p>
 <p>On PineDio Stack BL604 we do this…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define BOARD_GPIO_OUT1 \
   (GPIO_OUTPUT | GPIO_PULLUP | \
   GPIO_FUNC_SWGPIO | GPIO_PIN15)</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L47-L50">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L47-L50">(Source)</a></p>
 <p>See the difference? PineCone BL602 configures the GPIO Output (Chip Select) as <strong>GPIO_FLOAT</strong>, whereas BL604 configures it as <strong>GPIO_PULLUP</strong>.</p>
 <p>With <strong>GPIO_FLOAT</strong>, Chip Select defaults to the <strong>Low State</strong> at startup.</p>
 <p>Which <strong>activates SX1262</strong> on the SPI Bus at startup, possibly interpreting spurious commands and causing the “Get Status” command to fail.</p>
@@ -1066,28 +1066,28 @@ SX1262 Register 8 is 0x80</code></pre></div>
 <p>Rebuild NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div></li>
 </ol>
-<p>Many thanks to <a href="https://github.com/apache/incubator-nuttx/pull/7229"><strong>Brennan Ashton</strong></a> for the implementation of DMA on BL602!</p>
+<p>Many thanks to <a href="https://github.com/apache/nuttx/pull/7229"><strong>Brennan Ashton</strong></a> for the implementation of DMA on BL602!</p>
 <h1 id="appendix-create-a-nuttx-device-driver"><a href="#appendix-create-a-nuttx-device-driver">13 Appendix: Create a NuttX Device Driver</a></h1>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>This section explains the steps to create a <strong>NuttX Device Driver</strong> named <strong>“spi_test_driver”</strong>.</p>
 <p>(Change “spi_test_driver” to the desired name of our driver)</p>
 <ol>
 <li>
-<p>Browse to the <a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf"><strong>“nuttx/nuttx/drivers/rf”</strong></a> folder</p>
+<p>Browse to the <a href="https://github.com/lupyuen/nuttx/blob/newdriver/drivers/rf"><strong>“nuttx/nuttx/drivers/rf”</strong></a> folder</p>
 </li>
 <li>
 <p>Copy the file <strong>“dat-31r5-sp.c”</strong> and paste it as <strong>“spi_test_driver.c”</strong></p>
 <p><img src="https://lupyuen.github.io/images/spi2-newdriver.png" alt="Copy “dat-31r5-sp.c” to “spi_test_driver.c”" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/spi_test_driver.c">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/newdriver/drivers/rf/spi_test_driver.c">(Source)</a></p>
 </li>
 <li>
 <p>Inside the <strong>“spi_test_driver.c”</strong> file, search and replace all <strong>“dat31r5sp”</strong> by <strong>“spi_test_driver”</strong></p>
 <p>Be sure to <strong>Preserve Case!</strong></p>
 <p><img src="https://lupyuen.github.io/images/spi2-newdriver2.png" alt="Change all “dat31r5sp” to “spi_test_driver”" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/8fee69215163180b77dc9d5b9e7449ebe00ac1cc">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/commit/8fee69215163180b77dc9d5b9e7449ebe00ac1cc">(Source)</a></p>
 </li>
 <li>
-<p>Browse to the <a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/include/nuttx/rf"><strong>“nuttx/nuttx/include/nuttx/rf”</strong></a> folder</p>
+<p>Browse to the <a href="https://github.com/lupyuen/nuttx/blob/newdriver/include/nuttx/rf"><strong>“nuttx/nuttx/include/nuttx/rf”</strong></a> folder</p>
 </li>
 <li>
 <p>Copy the file <strong>“dat-31r5-sp.h”</strong> and paste it as <strong>“spi_test_driver.h”</strong></p>
@@ -1097,14 +1097,14 @@ SX1262 Register 8 is 0x80</code></pre></div>
 <p>Remember to <strong>Preserve Case!</strong></p>
 <p>The Header File should look like this…</p>
 <p><img src="https://lupyuen.github.io/images/spi2-newdriver3.png" alt="spi_test_driver.h" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/include/nuttx/rf/spi_test_driver.h">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/newdriver/include/nuttx/rf/spi_test_driver.h">(Source)</a></p>
 </li>
 </ol>
 <h2 id="update-makefile-and-kconfig"><a href="#update-makefile-and-kconfig">13.1 Update Makefile and Kconfig</a></h2>
 <p>Now we update the Makefile so that NuttX will build our Device Driver…</p>
 <ol>
 <li>
-<p>Browse to the <a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf"><strong>“nuttx/nuttx/drivers/rf”</strong></a> folder</p>
+<p>Browse to the <a href="https://github.com/lupyuen/nuttx/blob/newdriver/drivers/rf"><strong>“nuttx/nuttx/drivers/rf”</strong></a> folder</p>
 </li>
 <li>
 <p>Edit the file <strong>“Make.defs”</strong></p>
@@ -1116,7 +1116,7 @@ SX1262 Register 8 is 0x80</code></pre></div>
 endif</code></pre></div>
 <p>As shown below…</p>
 <p><img src="https://lupyuen.github.io/images/spi2-newdriver9.png" alt="Update “Make.defs”" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/Make.defs#L33-L37">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/newdriver/drivers/rf/Make.defs#L33-L37">(Source)</a></p>
 </li>
 <li>
 <p>Edit the file <strong>“Kconfig”</strong></p>
@@ -1129,11 +1129,11 @@ endif</code></pre></div>
         Enable SPI Test Driver.</code></pre></div>
 <p>As shown below…</p>
 <p><img src="https://lupyuen.github.io/images/spi2-newdriver5.png" alt="Update “Kconfig”" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/drivers/rf/Kconfig#L22-L27">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/newdriver/drivers/rf/Kconfig#L22-L27">(Source)</a></p>
 </li>
 <li>
 <p>Enter the following…</p>
-<div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the path of our &quot;incubator-nuttx&quot; folder
+<div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the path of our &quot;nuttx&quot; folder
 cd nuttx/nuttx
 
 # Preserve the Build Config
@@ -1222,14 +1222,14 @@ SPI Informational Output</code></pre></div></li>
 <ol>
 <li>
 <p>Browse to the <strong>Board Folder</strong>…</p>
-<p><strong>For BL602:</strong> <a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src"><strong>nuttx/nuttx/boards/ risc-v/bl602/bl602evb</strong></a> </p>
-<p><strong>For ESP32:</strong> <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src"><strong>nuttx/nuttx/boards/ xtensa/esp32/esp32-devkitc</strong></a></p>
+<p><strong>For BL602:</strong> <a href="https://github.com/lupyuen/nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src"><strong>nuttx/nuttx/boards/ risc-v/bl602/bl602evb</strong></a> </p>
+<p><strong>For ESP32:</strong> <a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src"><strong>nuttx/nuttx/boards/ xtensa/esp32/esp32-devkitc</strong></a></p>
 <p>(Change “esp32-devkitc” to our ESP32 board)</p>
 </li>
 <li>
 <p>Edit the <strong>Bringup Code</strong>…</p>
-<p><strong>For BL602:</strong> <a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617"><strong>bl602_bringup.c</strong></a></p>
-<p><strong>For ESP32:</strong> <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426"><strong>esp32_bringup.c</strong></a></p>
+<p><strong>For BL602:</strong> <a href="https://github.com/lupyuen/nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617"><strong>bl602_bringup.c</strong></a></p>
+<p><strong>For ESP32:</strong> <a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426"><strong>esp32_bringup.c</strong></a></p>
 </li>
 <li>
 <p>Edit the function <strong>bl602_bringup()</strong> to register our Device Driver as <strong>“/dev/spitest0”</strong>…</p>
@@ -1273,9 +1273,9 @@ int bl602_bringup(void)
 
   return ret;
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617">(Source)</a></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/4cae36747314bacb49ff0bba3632fbb8136f3f66#diff-387529ed7b85b38e4e96d58de6cab8a83e706c26c97e9fc71db5ea5ff20be297">(See the changes)</a></p>
-<p><strong>For ESP32:</strong> Edit the function <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426"><strong>esp32_bringup()</strong></a> and insert the code above. Change <strong>“bl602_spibus_initialize(0)”</strong> to <strong>“esp32_spibus_initialize(2)”</strong>. <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/common/src/esp32_board_spidev.c#L47-L72">(Like this)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/commit/4cae36747314bacb49ff0bba3632fbb8136f3f66#diff-387529ed7b85b38e4e96d58de6cab8a83e706c26c97e9fc71db5ea5ff20be297">(See the changes)</a></p>
+<p><strong>For ESP32:</strong> Edit the function <a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426"><strong>esp32_bringup()</strong></a> and insert the code above. Change <strong>“bl602_spibus_initialize(0)”</strong> to <strong>“esp32_spibus_initialize(2)”</strong>. <a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/xtensa/esp32/common/src/esp32_board_spidev.c#L47-L72">(Like this)</a></p>
 <p><a href="https://twitter.com/4ever_freedom/status/1546857560623517699">(Thanks @4ever_freedom!)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-newdriver4.png" alt="Register our device driver at startup" /></p>
 </li>
@@ -1324,28 +1324,28 @@ int bl602_bringup(void)
 <p>(Change “spi_test” to the desired name of our app)</p>
 <ol>
 <li>
-<p>Browse to the <a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/newapp/examples"><strong>“nuttx/apps/examples”</strong></a> folder</p>
+<p>Browse to the <a href="https://github.com/lupyuen/nuttx-apps/tree/newapp/examples"><strong>“nuttx/apps/examples”</strong></a> folder</p>
 </li>
 <li>
 <p>Copy the <strong>“hello”</strong> subfolder and paste it as <strong>“spi_test”</strong></p>
 <p><img src="https://lupyuen.github.io/images/spi2-newapp.jpg" alt="Copy the “hello” subfolder and paste it as “spi_test”" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/commit/9af4ad6cab225d333ce0dae98c65a2a48621b3b4">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-apps/commit/9af4ad6cab225d333ce0dae98c65a2a48621b3b4">(Source)</a></p>
 </li>
 <li>
 <p>Inside the <strong>“spi_test”</strong> folder, rename <strong>“hello_main.c”</strong> to <strong>“spi_test_main.c”</strong></p>
 <p><img src="https://lupyuen.github.io/images/spi2-newapp2.png" alt="Rename “hello_main.c” to “spi_test_main.c”" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/commit/a4f884c67dc4c1042831d0554aed1d55a0e28b40">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-apps/commit/a4f884c67dc4c1042831d0554aed1d55a0e28b40">(Source)</a></p>
 </li>
 <li>
 <p>Inside the <strong>“spi_test”</strong> folder, search and replace all <strong>“hello”</strong> by <strong>“spi_test”</strong></p>
 <p>Be sure to <strong>Preserve Case!</strong></p>
 <p><img src="https://lupyuen.github.io/images/spi2-newapp3.png" alt="Change all “hello” to “spi_test”" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/commit/0e19613b3059882f002eee948c0a79f622eccb74">(Source)</a></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/newapp/examples/spi_test">(See “spi_test” folder)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-apps/commit/0e19613b3059882f002eee948c0a79f622eccb74">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-apps/tree/newapp/examples/spi_test">(See “spi_test” folder)</a></p>
 </li>
 <li>
 <p>Enter the following…</p>
-<div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the path of our &quot;incubator-nuttx&quot; folder
+<div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the path of our &quot;nuttx&quot; folder
 cd nuttx/nuttx
 
 # Preserve the Build Config
@@ -1522,7 +1522,7 @@ blflash flash nuttx.bin \
 blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
 <p>For WSL: Do this under plain old Windows CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
-<p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
 <h2 id="run-nuttx"><a href="#run-nuttx">15.3 Run NuttX</a></h2>
@@ -1584,8 +1584,8 @@ nsh&gt;</code></pre></div>
 <p><em>(For BL602 and ESP32)</em></p>
 <p>In this section we dig deep into NuttX OS to understand how the <strong>SPI Functions</strong> work.</p>
 <p><img src="https://lupyuen.github.io/images/spi2-interface.png" alt="NuttX SPI Interface" /></p>
-<p><a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h">(Source)</a></p>
-<p>The <strong>NuttX SPI Interface</strong> (pic above) is defined as C Macros in <a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h">include/nuttx/spi/spi.h</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/spi/spi.h">(Source)</a></p>
+<p>The <strong>NuttX SPI Interface</strong> (pic above) is defined as C Macros in <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/spi/spi.h">include/nuttx/spi/spi.h</a></p>
 <ul>
 <li>
 <p><strong>SPI_LOCK</strong>: Lock the SPI Bus for exclusive access</p>
@@ -1635,7 +1635,7 @@ nsh&gt;</code></pre></div>
 </ul>
 <p><a href="https://nuttx.apache.org/docs/latest/components/drivers/special/spi.html">(More about NuttX SPI)</a></p>
 <h2 id="spi-device"><a href="#spi-device">16.1 SPI Device</a></h2>
-<p>The above SPI Interface is meant to be called by <strong>NuttX Device Drivers</strong> like so: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208">spi_test_driver.c</a></p>
+<p>The above SPI Interface is meant to be called by <strong>NuttX Device Drivers</strong> like so: <a href="https://github.com/lupyuen/nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208">spi_test_driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Write the buffer to the SPI device */
 
 static ssize_t spi_test_driver_write(
@@ -1656,15 +1656,15 @@ static ssize_t spi_test_driver_write(
 <p><strong>SPI_EXCHANGE</strong> is defined in the SPI Interface as…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define SPI_EXCHANGE(d,t,r,l) \
   ((d)-&gt;ops-&gt;exchange(d,t,r,l))</code></pre></div>
-<p><a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/spi/spi.h#L372-L395">(Source)</a></p>
-<p>Which maps to <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L932-L967"><strong>bl602_spi_exchange</strong></a> for BL602…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/spi/spi.h#L372-L395">(Source)</a></p>
+<p>Which maps to <a href="https://github.com/lupyuen/nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L932-L967"><strong>bl602_spi_exchange</strong></a> for BL602…</p>
 <div class="example-wrap"><pre class="language-c"><code>static void bl602_spi_exchange(
   struct spi_dev_s *dev,
   const void *txbuffer, 
   void *rxbuffer,
   size_t nwords) {
   ...</code></pre></div>
-<p>(Or <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/xtensa/src/esp32/esp32_spi.c#L1132-L1174"><strong>esp32_spi_exchange</strong></a> for ESP32)</p>
+<p>(Or <a href="https://github.com/lupyuen/nuttx/blob/spi_test/arch/xtensa/src/esp32/esp32_spi.c#L1132-L1174"><strong>esp32_spi_exchange</strong></a> for ESP32)</p>
 <p>Note that the SPI Interface requires an <strong>SPI Device</strong> (spi_dev_s) to be passed in.</p>
 <p>Which is available to NuttX Device Drivers.</p>
 <p><em>Can a NuttX App call the SPI Interface directly like this?</em></p>
@@ -1672,7 +1672,7 @@ static ssize_t spi_test_driver_write(
 <p>Nope this won’t work, because NuttX Apps <strong>can’t access the SPI Device</strong> (spi_dev_s).</p>
 <p>Let’s dig into NuttX OS and find out why.</p>
 <p><img src="https://lupyuen.github.io/images/spi2-interface3.png" alt="SPI Interface needs an SPI Device (spi_dev_s)" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L932-L967">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L932-L967">(Source)</a></p>
 <h2 id="file-descriptor"><a href="#file-descriptor">16.2 File Descriptor</a></h2>
 <p>In a NuttX App we may open the SPI Port <strong>“/dev/spi0”</strong> to get a <strong>File Descriptor</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>int fd = open(&quot;/dev/spi0&quot;, O_RDWR);</code></pre></div>
@@ -1680,15 +1680,15 @@ static ssize_t spi_test_driver_write(
 <p>Well we use the File Descriptor to execute <strong>File Operations</strong>: read(), write(), ioctl(), …</p>
 <p>Tracing through the NuttX <strong>Virtual File System</strong>, we see that ioctl() maps the File Descriptor to a <strong>File Struct</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/spi2-interface4.png" alt="ioctl() maps a File Descriptor to a File Struct" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/fs/vfs/fs_ioctl.c#L118-L138">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/master/fs/vfs/fs_ioctl.c#L118-L138">(Source)</a></p>
 <h2 id="file-struct"><a href="#file-struct">16.3 File Struct</a></h2>
 <p>The <strong>File Struct</strong> contains a Private Pointer to the <strong>SPI Driver</strong> (spi_driver_s)…</p>
 <p><img src="https://lupyuen.github.io/images/spi2-interface5.png" alt="File Struct contains a Private Pointer to the SPI Driver (spi_driver_s)" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/spi/spi_driver.c#L112-L147">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/master/drivers/spi/spi_driver.c#L112-L147">(Source)</a></p>
 <h2 id="spi-driver"><a href="#spi-driver">16.4 SPI Driver</a></h2>
 <p>The <strong>SPI Driver</strong> (spi_driver_s) contains the <strong>SPI Device</strong> (spi_dev_s)… </p>
 <p><img src="https://lupyuen.github.io/images/spi2-interface6.png" alt="SPI Driver (spi_driver_s) contains the SPI Device (spi_dev_s)" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/spi/spi_driver.c#L55-L65">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/master/drivers/spi/spi_driver.c#L55-L65">(Source)</a></p>
 <p>Which is what we need for calling the <strong>SPI Interface</strong>!</p>
 <p>But sadly the SPI Device is <strong>private to NuttX OS</strong> and we can’t access it from the NuttX App.</p>
 <p>That’s why we wrote our own <strong>SPI Test Driver</strong> (which runs inside NuttX OS) to get access to the SPI Device and call the SPI Interface.</p>
@@ -1712,7 +1712,7 @@ static ssize_t spi_test_driver_write(
 </ol>
 <p>The fix has been merged into NuttX…</p>
 <ul>
-<li><a href="https://github.com/apache/incubator-nuttx/pull/4984"><strong>“riscv/bl602: Swap SPI MISO and MOSI”</strong></a></li>
+<li><a href="https://github.com/apache/nuttx/pull/4984"><strong>“riscv/bl602: Swap SPI MISO and MOSI”</strong></a></li>
 </ul>
 <p>(Thank you NuttX Maintainers! 🙂 )</p>
 <p>Note that the <strong>SPI Mode needs to be 1</strong> (instead of 0) for the SPI interface to operate correctly…</p>
@@ -1720,7 +1720,7 @@ static ssize_t spi_test_driver_write(
 <li><a href="https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk"><strong>“SPI Mode Quirk”</strong></a></li>
 </ul>
 <h2 id="reproduce-the-issue"><a href="#reproduce-the-issue">17.1 Reproduce the issue</a></h2>
-<p>The default SPI Pins for NuttX are defined in <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L78-L83">board.h</a></p>
+<p>The default SPI Pins for NuttX are defined in <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L78-L83">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* SPI Configuration */
 
 #define BOARD_SPI_CS   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN2)
@@ -1730,7 +1730,7 @@ static ssize_t spi_test_driver_write(
 <p>This says that <strong>MISO</strong> is GPIO 0, <strong>MOSI</strong> is GPIO 1.</p>
 <p>This is consistent with the <strong>Pin Description Table</strong> from <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en"><strong>BL602 Reference Manual</strong></a> (Version 1.2, 17 Dec 2020, page 26)</p>
 <p><img src="https://lupyuen.github.io/images/spi2-driver6.png" alt="Pin Description from BL602 Reference Manual" /></p>
-<p>We test the SPI Port with an <strong>SPI Test Driver</strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208">spi_test_driver.c</a></p>
+<p>We test the SPI Port with an <strong>SPI Test Driver</strong>: <a href="https://github.com/lupyuen/nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L168-L208">spi_test_driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Write the buffer to the SPI device */
 
 static ssize_t spi_test_driver_write(
@@ -1743,7 +1743,7 @@ static ssize_t spi_test_driver_write(
 
   SPI_EXCHANGE(priv-&gt;spi, buffer, recv_buffer, buflen);
   recv_buffer_len = buflen;</code></pre></div>
-<p>Which is called by an <strong>SPI Test App</strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c">spi_test_main.c</a></p>
+<p>Which is called by an <strong>SPI Test App</strong>: <a href="https://github.com/lupyuen/nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c">spi_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>int main(int argc, FAR char *argv[])
 {
   /* Open SPI Test Driver */
@@ -1795,7 +1795,7 @@ BL_Err_Type GLB_Swap_SPI_0_MOSI_With_MISO(BL_Fun_Type newState)
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1281-L1298">(Source)</a></p>
 <p>This function swaps MISO and MOSI by setting the GLB Hardware Register <strong>GLB_PARM</strong> at bit <strong>GLB_REG_SPI_0_SWAP</strong>.</p>
-<p>For NuttX we propose to port this function as <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104"><strong>bl602_swap_spi_0_mosi_with_miso()</strong></a> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104">arch/risc-v/src/bl602/bl602_spi.c</a></p>
+<p>For NuttX we propose to port this function as <a href="https://github.com/lupyuen/nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104"><strong>bl602_swap_spi_0_mosi_with_miso()</strong></a> in <a href="https://github.com/lupyuen/nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104">arch/risc-v/src/bl602/bl602_spi.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
  * Name: bl602_swap_spi_0_mosi_with_miso
  *
@@ -1821,8 +1821,8 @@ static void bl602_swap_spi_0_mosi_with_miso(uint8_t swap)
       modifyreg32(BL602_GLB_GLB_PARM, GLB_PARM_REG_SPI_0_SWAP, 0);
     }
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104">(Source)</a></p>
-<p>The function above will be called by <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1106-L1141"><strong>bl602_spi_init()</strong></a> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1106-L1141">arch/risc-v/src/bl602/bl602_spi.c</a> to swap MISO and MOSI during startup…</p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104">(Source)</a></p>
+<p>The function above will be called by <a href="https://github.com/lupyuen/nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1106-L1141"><strong>bl602_spi_init()</strong></a> in <a href="https://github.com/lupyuen/nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1106-L1141">arch/risc-v/src/bl602/bl602_spi.c</a> to swap MISO and MOSI during startup…</p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
  * Name: bl602_spi_init
  *
@@ -1858,7 +1858,7 @@ static void bl602_spi_init(struct spi_dev_s *dev)
   /* swap MOSI with MISO to be consistent with BL602 Reference Manual */
 
   bl602_swap_spi_0_mosi_with_miso(1);</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1106-L1141">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1106-L1141">(Source)</a></p>
 <h2 id="test-the-fix"><a href="#test-the-fix">17.3 Test the fix</a></h2>
 <p>After applying the fix, we see that the <strong>MOSI output is now correct</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/spi2-logic2.png" alt="Logic Analyser after applying the fix" /></p>
@@ -1872,7 +1872,7 @@ static void bl602_spi_init(struct spi_dev_s *dev)
 </ul>
 <p>The fix has been merged into NuttX…</p>
 <ul>
-<li><a href="https://github.com/apache/incubator-nuttx/pull/4984"><strong>“riscv/bl602: Swap SPI MISO and MOSI”</strong></a></li>
+<li><a href="https://github.com/apache/nuttx/pull/4984"><strong>“riscv/bl602: Swap SPI MISO and MOSI”</strong></a></li>
 </ul>
 <p>(Thank you NuttX Maintainers! 🙂 )</p>
 <p>Note that the <strong>SPI Mode needs to be 1</strong> (instead of 0) for our test to succeed…</p>
@@ -1883,7 +1883,7 @@ static void bl602_spi_init(struct spi_dev_s *dev)
 <p><em>(For BL602 only)</em></p>
 <p>Due to an <strong>SPI Mode Quirk</strong> in BL602, we configure BL602 to talk to Semtech SX1262 with <strong>SPI Mode 1</strong> (instead of Mode 0).</p>
 <p>(Which is quirky because SX1262 supports Mode 0, not Mode 1)</p>
-<p>This is defined in <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L45-L57">spi_test_driver.c</a></p>
+<p>This is defined in <a href="https://github.com/lupyuen/nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L45-L57">spi_test_driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* For BL602 we use SPI Mode 1 instead of Mode 0 due to SPI quirk */
 
 #ifdef CONFIG_BL602_SPI0
@@ -1893,7 +1893,7 @@ static void bl602_spi_init(struct spi_dev_s *dev)
 #endif /* CONFIG_BL602_SPI0 */</code></pre></div>
 <p>Let’s watch what happens if we use <strong>SPI Mode 0</strong> (instead of Mode 1) when BL602 talks to Semtech SX1262…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define SPI_TEST_DRIVER_SPI_MODE (SPIDEV_MODE0) /* SPI Mode 0: CPOL=0,CPHA=0 */</code></pre></div>
-<p>We run <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L94-L117">spi_test2_main.c</a> to <strong>Read Register <code>0x08</code></strong> from SX1262 over SPI…</p>
+<p>We run <a href="https://github.com/lupyuen/nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L94-L117">spi_test2_main.c</a> to <strong>Read Register <code>0x08</code></strong> from SX1262 over SPI…</p>
 <div class="example-wrap"><pre class="language-c"><code>/* Transmit command to SX1262: Read Register 8 */
 
 static char read_reg[] = { 0x1d, 0x00, 0x08, 0x00, 0x00 };
@@ -1937,7 +1937,7 @@ SX1262 Register 8 is 0x80</code></pre></div>
 <p>This is why we always use SPI Mode 1 instead of Mode 0 on BL602.</p>
 <p><strong>UPDATE:</strong> BL602 talks to SPI Devices in SPI Mode 1 or Mode 3, depending on whether the MISO / MOSI Pins are swapped. <a href="https://lupyuen.github.io/articles/pinedio2#st7789-spi-mode">(See this)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-sx7.png" alt="Using SPI Mode 1 instead of Mode 0 on BL602" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L51-L57">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L51-L57">(Source)</a></p>
 
     
 </body>

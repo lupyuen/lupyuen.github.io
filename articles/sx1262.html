@@ -138,10 +138,10 @@
 <p>Yep NuttX has a standalone LoRa Driver for <strong>Semtech SX1276 Transceiver</strong> (Radio Transmitter + Receiver)…</p>
 <ul>
 <li>
-<p><a href="https://github.com/apache/incubator-nuttx/tree/master/drivers/wireless/lpwan/sx127x"><strong>NuttX SX127x Driver</strong></a></p>
+<p><a href="https://github.com/apache/nuttx/tree/master/drivers/wireless/lpwan/sx127x"><strong>NuttX SX127x Driver</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/apache/incubator-nuttx-apps/tree/master/examples/sx127x_demo"><strong>NuttX SX127x Demo</strong></a></p>
+<p><a href="https://github.com/apache/nuttx-apps/tree/master/examples/sx127x_demo"><strong>NuttX SX127x Demo</strong></a></p>
 </li>
 </ul>
 <p>(That doesn’t work with LoRaWAN yet)</p>
@@ -151,7 +151,7 @@
 <p><a href="https://github.com/lupyuen/lora-sx1262/tree/lorawan"><strong>SX1262 Library</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/master/examples/sx1262_test"><strong>SX1262 Test App</strong></a></p>
+<p><a href="https://github.com/lupyuen/nuttx-apps/tree/master/examples/sx1262_test"><strong>SX1262 Test App</strong></a></p>
 </li>
 </ul>
 <p>Our LoRa SX1262 Driver shall be tested on Bouffalo Lab’s <a href="https://lupyuen.github.io/articles/pinecone"><strong>BL602 and BL604 RISC-V SoCs</strong></a>.</p>
@@ -233,7 +233,7 @@ git submodule add --branch nuttx https://github.com/lupyuen/lora-sx1262 libsx126
 <p>(Which will be cumbersome to code)</p>
 </li>
 </ul>
-<p>Check out the <strong>ioctl()</strong> interface for the existing SX1276 Driver in NuttX: <a href="https://github.com/apache/incubator-nuttx/blob/master/drivers/wireless/lpwan/sx127x/sx127x.c#L954-L1162"><strong>sx127x.c</strong></a></p>
+<p>Check out the <strong>ioctl()</strong> interface for the existing SX1276 Driver in NuttX: <a href="https://github.com/apache/nuttx/blob/master/drivers/wireless/lpwan/sx127x/sx127x.c#L954-L1162"><strong>sx127x.c</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-plan2.jpg" alt="SPI Test Driver" /></p>
 <p><em>But how will our library access the NuttX SPI Interface?</em></p>
 <p>The NuttX SPI Interface is accessible by NuttX Drivers, but not NuttX Apps.</p>
@@ -249,7 +249,7 @@ git submodule add --branch nuttx https://github.com/lupyuen/lora-sx1262 libsx126
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/spi2-pinedio3.png" alt="SX1262 Interface on PineDio Stack" /></p>
 </blockquote>
-<p>We have configured the following <strong>BL604 Pin Definitions</strong> in <a href="https://github.com/lupyuen/incubator-nuttx/blob/sx1262/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95">board.h</a></p>
+<p>We have configured the following <strong>BL604 Pin Definitions</strong> in <a href="https://github.com/lupyuen/nuttx/blob/sx1262/boards/risc-v/bl602/bl602evb/include/board.h#L42-L95">board.h</a></p>
 <div><table><thead><tr><th style="text-align: center">SX1262</th><th style="text-align: center">BL604 Pin</th><th style="text-align: left">NuttX Pin</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong>MOSI</strong></td><td style="text-align: center">GPIO 13</td><td style="text-align: left">BOARD_SPI_MOSI</td></tr>
 <tr><td style="text-align: center"><strong>MISO</strong></td><td style="text-align: center">GPIO 0</td><td style="text-align: left">BOARD_SPI_MISO</td></tr>
@@ -283,7 +283,7 @@ git submodule add --branch nuttx https://github.com/lupyuen/lora-sx1262 libsx126
 <p><a href="https://lupyuen.github.io/articles/expander#pin-functions">(Which pins can be used? See this)</a></p>
 <p>GPIO Output <strong>BOARD_GPIO_OUT1</strong> becomes our <strong>SPI Chip Select</strong>. <a href="https://lupyuen.github.io/articles/spi2#control-chip-select-with-gpio">(See this)</a></p>
 <p><strong>BOARD_GPIO_IN1</strong> (Busy Pin) and <strong>BOARD_GPIO_INT1</strong> (DIO1) will be used for LoRaWAN in the next article.</p>
-<p><strong>For BL602:</strong> Connect SX1262 to <a href="https://lupyuen.github.io/articles/spi2#connect-sx1262">these pins</a>. Copy the BL602 Pin Definitions from <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L36-L92">board.h</a> to…</p>
+<p><strong>For BL602:</strong> Connect SX1262 to <a href="https://lupyuen.github.io/articles/spi2#connect-sx1262">these pins</a>. Copy the BL602 Pin Definitions from <a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L36-L92">board.h</a> to…</p>
 <div class="example-wrap"><pre class="language-text"><code>boards/risc-v/bl602/bl602evb/include/board.h</code></pre></div>
 <p><strong>For ESP32:</strong> Connect SX1262 to <a href="https://lupyuen.github.io/articles/spi2#connect-sx1262">these pins</a></p>
 <p>Before testing, remember to connect the <strong>LoRa Antenna</strong>… </p>
@@ -296,11 +296,11 @@ git submodule add --branch nuttx https://github.com/lupyuen/lora-sx1262 libsx126
 <p>Although our SX1262 Library doesn’t use these pins, it works somewhat OK for sending and receiving LoRa Messages.</p>
 <p>(We’ll learn why in a while)</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-read2.png" alt="Reading SX1262 Registers" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L155-L171">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L155-L171">(Source)</a></p>
 <h1 id="read-sx1262-registers"><a href="#read-sx1262-registers">3 Read SX1262 Registers</a></h1>
 <p><em>What’s the simplest way to test our SX1262 Library?</em></p>
 <p>To test whether our SX1262 Library is sending SPI Commands correctly to the SX1262 Transceiver, we can read the <strong>SX1262 Registers</strong>.</p>
-<p>Here’s how: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L155-L171">sx1262_test_main.c</a></p>
+<p>Here’s how: <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L155-L171">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Main Function
 int main(int argc, FAR char *argv[]) {
   //  Read SX1262 registers 0x00 to 0x0F
@@ -391,13 +391,13 @@ static int sx126x_read_register(const void* context, const uint16_t address, uin
 <p>Download the modified source code…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
-git clone --recursive --branch sx1262 https://github.com/lupyuen/incubator-nuttx nuttx
-git clone --recursive --branch sx1262 https://github.com/lupyuen/incubator-nuttx-apps apps</code></pre></div>
+git clone --recursive --branch sx1262 https://github.com/lupyuen/nuttx nuttx
+git clone --recursive --branch sx1262 https://github.com/lupyuen/nuttx-apps apps</code></pre></div>
 <p>Note that we’re using the older <strong>“sx1262”</strong> branches of the NuttX OS and NuttX Apps repos, which <a href="https://lupyuen.github.io/articles/sx1262#appendix-previous-sx1262-library"><strong>don’t use GPIO Interface and NimBLE Porting Layer</strong></a>. (And don’t support LoRaWAN)</p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features">(<strong>For PineDio Stack BL604:</strong> The SX1262 Library and Test App are already preinstalled)</a></p>
 </li>
 <li>
-<p>Edit <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L100-L101"><strong>apps/examples/sx1262_test_main.c</strong></a> and uncomment…</p>
+<p>Edit <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L100-L101"><strong>apps/examples/sx1262_test_main.c</strong></a> and uncomment…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define READ_REGISTERS</code></pre></div></li>
 <li>
 <p>Configure the build…</p>
@@ -451,7 +451,7 @@ make menuconfig </code></pre></div></li>
 <p><a href="https://gist.github.com/lupyuen/ec97cff54064c9f9d7d1c700c035b777">(Here’s the .config for BL602)</a></p>
 </li>
 <li>
-<p><strong>For ESP32:</strong> Edit <a href="https://github.com/lupyuen/incubator-nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426"><strong>esp32_bringup.c</strong></a> to register our SPI Test Driver <a href="https://lupyuen.github.io/articles/spi2#register-device-driver">(See this)</a></p>
+<p><strong>For ESP32:</strong> Edit <a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426"><strong>esp32_bringup.c</strong></a> to register our SPI Test Driver <a href="https://lupyuen.github.io/articles/spi2#register-device-driver">(See this)</a></p>
 </li>
 <li>
 <p>Build, flash and run the NuttX Firmware on BL602 or ESP32…</p>
@@ -524,13 +524,13 @@ Register 0x0a = 0x01</code></pre></div>
 <ul>
 <li><a href="https://www.thethingsnetwork.org/docs/lorawan/frequencies-by-country.html"><strong>LoRa Frequencies by Country</strong></a></li>
 </ul>
-<p>We set the <strong>LoRa Frequency</strong> in our SX1262 Test App like so: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L30-L45">sx1262_test_main.c</a></p>
+<p>We set the <strong>LoRa Frequency</strong> in our SX1262 Test App like so: <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L30-L45">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// TODO: We are using LoRa Frequency 923 MHz 
 /// for Singapore. Change this for your region.
 #define USE_BAND_923</code></pre></div>
 <p>Change <strong>USE_BAND_923</strong> to <strong>USE_BAND_433</strong>, <strong>780</strong>, <strong>868</strong> or <strong>915</strong>.</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L33-L45">(See the complete list)</a></p>
-<p>Below are the other <strong>LoRa Parameters</strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L47-L66">sx1262_test_main.c</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L33-L45">(See the complete list)</a></p>
+<p>Below are the other <strong>LoRa Parameters</strong>: <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L47-L66">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// LoRa Parameters
 #define LORAPING_TX_OUTPUT_POWER            14        /* dBm */
 
@@ -575,7 +575,7 @@ Register 0x0a = 0x01</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/wisblock-title.jpg" alt="RAKwireless WisBlock LPWAN Module mounted on WisBlock Base Board" /></p>
 <h2 id="initialise-lora-sx1262"><a href="#initialise-lora-sx1262">4.1 Initialise LoRa SX1262</a></h2>
 <p>Let’s watch how the LoRa Parameters are used to <strong>initialise the SX1262 Transceiver</strong>.</p>
-<p>The <strong>init_driver</strong> function in our Test App takes the LoRa Parameters and initialises LoRa SX1262 like so: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L173-L227">sx1262_test_main.c</a></p>
+<p>The <strong>init_driver</strong> function in our Test App takes the LoRa Parameters and initialises LoRa SX1262 like so: <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L173-L227">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Command to initialise the LoRa Driver.
 /// Assume that create_task has been called to init the Event Queue.
 static void init_driver(char *buf, int len, int argc, char **argv) {
@@ -652,9 +652,9 @@ static void init_driver(char *buf, int len, int argc, char **argv) {
 </ul>
 <p>(The <strong>Radio</strong> functions will also be called when we implement LoRaWAN)</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-send.jpg" alt="Transmitting a LoRa Message" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L237-L253">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L237-L253">(Source)</a></p>
 <h1 id="transmit-lora-message"><a href="#transmit-lora-message">5 Transmit LoRa Message</a></h1>
-<p>Now we’re ready to <strong>transmit a LoRa Message</strong> in our SX1262 Test App! Here’s how: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L110-L121">sx1262_test_main.c</a></p>
+<p>Now we’re ready to <strong>transmit a LoRa Message</strong> in our SX1262 Test App! Here’s how: <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L110-L121">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Main Function
 int main(void) {
   //  Init SX1262 driver
@@ -669,13 +669,13 @@ int main(void) {
 }</code></pre></div>
 <p>We begin by calling <strong>init_driver</strong> in our Test App to set the LoRa Parameters and the Callback Functions.</p>
 <p>(We’ve seen <strong>init_driver</strong> in the previous section)</p>
-<p>To transmit a LoRa Message, <strong>send_message</strong> calls <strong>send_once</strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L229-L235">sx1262_test_main.c</a></p>
+<p>To transmit a LoRa Message, <strong>send_message</strong> calls <strong>send_once</strong>: <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L229-L235">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Send a LoRa message. Assume that SX1262 driver has been initialised.
 static void send_message(void) {
   //  Send the &quot;PING&quot; message
   send_once(1);
 }</code></pre></div>
-<p><strong>send_once</strong> prepares a 64-byte LoRa Message containing the string “<code>PING</code>”: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L237-L253">sx1262_test_main.c</a></p>
+<p><strong>send_once</strong> prepares a 64-byte LoRa Message containing the string “<code>PING</code>”: <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L237-L253">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// We send a &quot;PING&quot; message and expect a &quot;PONG&quot; response
 const uint8_t loraping_ping_msg[] = &quot;PING&quot;;
 const uint8_t loraping_pong_msg[] = &quot;PONG&quot;;
@@ -704,7 +704,7 @@ static void send_once(int is_ping) {
   Radio.Send(loraping_buffer, sizeof loraping_buffer);
 }</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/sx1262#radiosend-transmit-message">(<strong>RadioSend</strong> is explained here)</a></p>
-<p>When the LoRa Message has been transmitted, the SX1262 Library calls our Callback Function <strong>on_tx_done</strong> defined in <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L267-L280">sx1262_test_main.c</a></p>
+<p>When the LoRa Message has been transmitted, the SX1262 Library calls our Callback Function <strong>on_tx_done</strong> defined in <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L267-L280">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Callback Function that is called when our LoRa message has been transmitted
 static void on_tx_done(void) {
   //  Log the success status
@@ -717,7 +717,7 @@ static void on_tx_done(void) {
 <p><a href="https://lupyuen.github.io/articles/sx1262#radiosleep-switch-to-sleep-mode">(<strong>RadioSleep</strong> is explained here)</a></p>
 <p>Here we log the number of packets transmitted, and put LoRa SX1262 into <strong>low power, sleep mode</strong>.</p>
 <p>Note: <strong>on_tx_done</strong> won’t actually be called in our current driver, because we haven’t implemented Multithreading. (More about this later)</p>
-<p>To handle Transmit Timeout Errors, we define the Callback Function <strong>on_tx_timeout</strong>: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L314-L326">sx1262_test_main.c</a></p>
+<p>To handle Transmit Timeout Errors, we define the Callback Function <strong>on_tx_timeout</strong>: <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L314-L326">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Callback Function that is called when our LoRa message couldn&#39;t be transmitted due to timeout
 static void on_tx_timeout(void) {
   //  Switch the LoRa Transceiver to 
@@ -734,10 +734,10 @@ static void on_tx_timeout(void) {
 <p><a href="https://lupyuen.github.io/articles/sx1262#build-the-firmware"><strong>“Build the Firmware”</strong></a></p>
 </li>
 <li>
-<p>Edit <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L116-L117"><strong>apps/examples/sx1262_test_main.c</strong></a> and uncomment…</p>
+<p>Edit <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L116-L117"><strong>apps/examples/sx1262_test_main.c</strong></a> and uncomment…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define SEND_MESSAGE</code></pre></div></li>
 <li>
-<p>Also edit <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L30-L66"><strong>sx1262_test_main.c</strong></a> and set the <strong>LoRa Parameters</strong>. (As explained earlier)</p>
+<p>Also edit <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L30-L66"><strong>sx1262_test_main.c</strong></a> and set the <strong>LoRa Parameters</strong>. (As explained earlier)</p>
 </li>
 <li>
 <p>Build, flash and run the NuttX Firmware on BL602 or ESP32…</p>
@@ -757,7 +757,7 @@ static void on_tx_timeout(void) {
 <div class="example-wrap"><pre class="language-text"><code>send_message
 RadioSend: size=64
 50 49 4e 47 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18 19 1a 1b 1c 1d 1e 1f 20 21 22 23 24 25 26 27 28 29 2a 2b 2c 2d 2e 2f 30 31 32 33 34 35 36 37 38 39 3a 3b</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L237-L253">(“<code>PING</code>” followed by 0, 1, 2, …)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L237-L253">(“<code>PING</code>” followed by 0, 1, 2, …)</a></p>
 <p><a href="https://gist.github.com/lupyuen/5fdede131ad0e327478994872f190668">(See the Output Log)</a></p>
 </li>
 <li>
@@ -792,9 +792,9 @@ Data=50 49 4e 47 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 
 <li><a href="https://lupyuen.github.io/articles/lora#visualise-lora-with-software-defined-radio"><strong>“Visualise LoRa with Software Defined Radio”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/sx1262-receive.png" alt="Receiving a LoRa Message" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L123-L262">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L123-L262">(Source)</a></p>
 <h1 id="receive-lora-message"><a href="#receive-lora-message">6 Receive LoRa Message</a></h1>
-<p>Watch the (turn)tables turn as we <strong>receive a LoRa Message</strong> with our SX1262 Library! This is how we do it: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L107-L137">sx1262_test_main.c</a></p>
+<p>Watch the (turn)tables turn as we <strong>receive a LoRa Message</strong> with our SX1262 Library! This is how we do it: <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L107-L137">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Main Function
 int main(void) {
   //  TODO: Create a Background Thread 
@@ -827,7 +827,7 @@ int main(void) {
 <p>We call <strong>receive_message</strong> to get SX1262 ready to receive a single LoRa Message.</p>
 <p>Then we call <strong>RadioOnDioIrq</strong> (from our SX1262 Library) to handle the Message Received Event. (If any)</p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#radioondioirq">(<strong>RadioOnDioIrq</strong> is explained here)</a></p>
-<p><strong>receive_message</strong> is defined in our Test App: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L255-L262">sx1262_test_main.c</a></p>
+<p><strong>receive_message</strong> is defined in our Test App: <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L255-L262">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Receive a LoRa message. Assume that SX1262 driver has been initialised.
 /// Assume that create_task has been called to init the Event Queue.
 static void receive_message(void) {
@@ -836,7 +836,7 @@ static void receive_message(void) {
 }</code></pre></div>
 <p>This code calls <strong>RadioRx</strong> (from our SX1262 Library) to prep SX1262 to receive a single LoRa Message.</p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#radiorx-receive-message">(<strong>RadioRx</strong> is explained here)</a></p>
-<p>When our SX1262 Library receives a LoRa Message, it calls our Callback Function <strong>on_rx_done</strong> defined in our Test App: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L282-L312">sx1262_test_main.c</a></p>
+<p>When our SX1262 Library receives a LoRa Message, it calls our Callback Function <strong>on_rx_done</strong> defined in our Test App: <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L282-L312">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Callback Function that is called when a LoRa message has been received
 static void on_rx_done(
   uint8_t *payload,  //  Buffer containing received LoRa message
@@ -865,7 +865,7 @@ static void on_rx_done(
   puts(&quot;&quot;);
 }</code></pre></div>
 <p><em>What happens when we don’t receive a packet in 10 seconds? (LORAPING_RX_TIMEOUT_MS)</em></p>
-<p>Our SX1262 Library calls our Callback Function <strong>on_rx_timeout</strong> defined in our Test App: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L328-L341">sx1262_test_main.c</a></p>
+<p>Our SX1262 Library calls our Callback Function <strong>on_rx_timeout</strong> defined in our Test App: <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L328-L341">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Callback Function that is called when no LoRa messages could be received due to timeout
 static void on_rx_timeout(void) {
   //  Switch the LoRa Transceiver to low power, sleep mode
@@ -876,7 +876,7 @@ static void on_rx_timeout(void) {
 }</code></pre></div>
 <p>We switch the LoRa Transceiver into sleep mode and log the timeout.</p>
 <p>Note: <strong>on_rx_timeout</strong> won’t actually be called in our current driver, because we haven’t implemented Multithreading. (More about this later)</p>
-<p>To handle Receive Errors, we define the Callback Function <strong>on_rx_error</strong> in our Test App: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L343-L355">sx1262_test_main.c</a></p>
+<p>To handle Receive Errors, we define the Callback Function <strong>on_rx_error</strong> in our Test App: <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L343-L355">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// Callback Function that is called when we couldn&#39;t receive a LoRa message due to error
 static void on_rx_error(void) {
   //  Log the error
@@ -892,10 +892,10 @@ static void on_rx_error(void) {
 <p><a href="https://lupyuen.github.io/articles/sx1262#build-the-firmware"><strong>“Build the Firmware”</strong></a></p>
 </li>
 <li>
-<p>Edit <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L123-L124"><strong>apps/examples/sx1262_test_main.c</strong></a> and uncomment…</p>
+<p>Edit <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L123-L124"><strong>apps/examples/sx1262_test_main.c</strong></a> and uncomment…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define RECEIVE_MESSAGE</code></pre></div></li>
 <li>
-<p>Also edit <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L30-L66"><strong>sx1262_test_main.c</strong></a> and set the <strong>LoRa Parameters</strong>. (As explained earlier)</p>
+<p>Also edit <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L30-L66"><strong>sx1262_test_main.c</strong></a> and set the <strong>LoRa Parameters</strong>. (As explained earlier)</p>
 </li>
 <li>
 <p>Build, flash and run the NuttX Firmware on BL602 or ESP32…</p>
@@ -980,7 +980,7 @@ static int init_spi(void) {
   return 0;
 }</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/sx1262#appendix-spi-and-gpio-device-paths">(<strong>SPI_DEVPATH</strong> and <strong>CS_DEVPATH</strong> are explained in the Appendix)</a></p>
-<p><strong>init_spi</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L75-L94"><strong>SX126xIoInit</strong></a>, which is called by <a href="https://lupyuen.github.io/articles/sx1262#radioinit-initialise-lora-module"><strong>RadioInit</strong></a> and <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L173-L227"><strong>init_driver</strong></a></p>
+<p><strong>init_spi</strong> is called by <a href="https://github.com/lupyuen/lora-sx1262/blob/lorawan/src/sx126x-nuttx.c#L75-L94"><strong>SX126xIoInit</strong></a>, which is called by <a href="https://lupyuen.github.io/articles/sx1262#radioinit-initialise-lora-module"><strong>RadioInit</strong></a> and <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L173-L227"><strong>init_driver</strong></a></p>
 <p>(We’ve seen <strong>init_driver</strong> earlier in our Test App)</p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#radioinit-initialise-lora-module">(<strong>RadioInit</strong> is explained here)</a></p>
 <p><em>Where are SPI Mode and SPI Frequency defined?</em></p>
@@ -1201,7 +1201,7 @@ spi rx:
   a2 a2 
   a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2 a2</code></pre></div>
 <p>The <strong>64-byte LoRa Message</strong> transmitted appears in the <strong>SPI Transmit Log</strong> above: <code>50 49 4e 47...</code></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L237-L253">(“<code>50 49 4e 47...</code>” is “<code>PING</code>” followed by 0, 1, 2, …)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L237-L253">(“<code>50 49 4e 47...</code>” is “<code>PING</code>” followed by 0, 1, 2, …)</a></p>
 <p>To receive a LoRa Message, <a href="https://lupyuen.github.io/articles/sx1262#receive-message"><strong>sx126x_read_buffer</strong></a> sends this <strong>ReadBuffer Command</strong> to SX1262 over SPI…</p>
 <ol>
 <li>
@@ -1689,8 +1689,8 @@ static void handle_event_queue(void *arg) {
 <p><a href="https://lupyuen.github.io/articles/lorawan#appendix-lora-carrier-sensing">(Here’s an example)</a></p>
 </li>
 <li>
-<p>Alternatively we may implement LoRa and LoRaWAN as <strong>External Libraries</strong>, similar to <a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/master/wireless/bluetooth/nimble"><strong>NimBLE for NuttX</strong></a>.</p>
-<p>(The <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/wireless/bluetooth/nimble/Makefile#L33"><strong>Makefile</strong></a> downloads the External Library during build)</p>
+<p>Alternatively we may implement LoRa and LoRaWAN as <strong>External Libraries</strong>, similar to <a href="https://github.com/lupyuen/nuttx-apps/tree/master/wireless/bluetooth/nimble"><strong>NimBLE for NuttX</strong></a>.</p>
+<p>(The <a href="https://github.com/lupyuen/nuttx-apps/blob/master/wireless/bluetooth/nimble/Makefile#L33"><strong>Makefile</strong></a> downloads the External Library during build)</p>
 <p>But then we won’t get a proper NuttX Driver that exposes the ioctl() interface to NuttX Apps.</p>
 </li>
 </ul>
@@ -1729,7 +1729,7 @@ static void handle_event_queue(void *arg) {
 CONFIG_LIBSX1262_CS_DEVPATH=&quot;/dev/gpio15&quot;
 CONFIG_LIBSX1262_BUSY_DEVPATH=&quot;/dev/gpio10&quot;
 CONFIG_LIBSX1262_DIO1_DEVPATH=&quot;/dev/gpio19&quot;</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L1141-L1144">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L1141-L1144">(Source)</a></p>
 <p>(Note also the changes to <strong>SPI_DEVPATH</strong>, <strong>CS_DEVPATH</strong> and <strong>BUSY_DEVPATH</strong>)</p>
 <p>For backward compatibility with BL602 (which doesn’t use GPIO Expander), we default <strong><code>DIO1_DEVPATH</code></strong> to “<strong>/dev/gpio2</strong>” if <strong><code>DIO1_DEVPATH</code></strong> isn’t configured…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Define the SPI Test Driver for SX1262. (Not the regular SPI Driver)
@@ -1767,12 +1767,12 @@ CONFIG_LIBSX1262_DIO1_DEVPATH=&quot;/dev/gpio19&quot;</code></pre></div>
 <p>(Change “libsx1262” to the desired name of our library)</p>
 <ol>
 <li>
-<p>Browse to the <a href="https://github.com/lupyuen/incubator-nuttx/tree/newlibrary/libs"><strong>“nuttx/libs”</strong></a> folder</p>
+<p>Browse to the <a href="https://github.com/lupyuen/nuttx/tree/newlibrary/libs"><strong>“nuttx/libs”</strong></a> folder</p>
 </li>
 <li>
 <p>Copy the <strong>“libdsp”</strong> subfolder and paste it as <strong>“libsx1262”</strong></p>
 <p><img src="https://lupyuen.github.io/images/sx1262-clone1.png" alt="Copy the “libdsp” subfolder and paste it as “libsx1262”" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/6596edd6eb47547f41f647e6da1e08d33faacf4f#diff-739a304e183a900711f6497e6544a814ef5367da89ccedad067fc1a3f0814b41">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/commit/6596edd6eb47547f41f647e6da1e08d33faacf4f#diff-739a304e183a900711f6497e6544a814ef5367da89ccedad067fc1a3f0814b41">(Source)</a></p>
 </li>
 <li>
 <p>Inside the <strong>“libsx1262”</strong> folder, delete all source files except <strong>“lib_misc.c”</strong></p>
@@ -1780,14 +1780,14 @@ CONFIG_LIBSX1262_DIO1_DEVPATH=&quot;/dev/gpio19&quot;</code></pre></div>
 <li>
 <p>Edit <strong>“Makefile”</strong>. Remove all “CSRCS” lines except…</p>
 <div class="example-wrap"><pre class="language-text"><code>CSRCS += lib_misc.c</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newlibrary/libs/libsx1262/Makefile">(See Makefile)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/newlibrary/libs/libsx1262/Makefile">(See Makefile)</a></p>
 </li>
 <li>
 <p>Inside the <strong>“libsx1262”</strong> folder, search and replace all <strong>“libdsp”</strong> by <strong>“libsx1262”</strong></p>
 <p>Be sure to <strong>Preserve Case!</strong></p>
 <p><img src="https://lupyuen.github.io/images/sx1262-clone2a.png" alt="Change all “libdsp” to “libsx1262”" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/9fe76d3bca389642e71ac405c8343b280384276d#diff-a9d844356942ef04a0efe9eac47f95390756485e2aec9cd4018831af2e8e9409">(See changes)</a></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/tree/newlibrary/libs/libsx1262">(See libsx1262 folder)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/commit/9fe76d3bca389642e71ac405c8343b280384276d#diff-a9d844356942ef04a0efe9eac47f95390756485e2aec9cd4018831af2e8e9409">(See changes)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/tree/newlibrary/libs/libsx1262">(See libsx1262 folder)</a></p>
 </li>
 <li>
 <p>Edit the file <strong>“Kconfig”</strong></p>
@@ -1798,7 +1798,7 @@ CONFIG_LIBSX1262_DIO1_DEVPATH=&quot;/dev/gpio19&quot;</code></pre></div>
     ---help---
         Enable build for Semtech SX1262 functions    </code></pre></div>
 <p><img src="https://lupyuen.github.io/images/sx1262-clone4.png" alt="Update Kconfig" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newlibrary/libs/libsx1262/Kconfig">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/newlibrary/libs/libsx1262/Kconfig">(Source)</a></p>
 </li>
 <li>
 <p>Edit the file <strong>“lib_misc.c”</strong>.  Remove all the code and add…</p>
@@ -1810,10 +1810,10 @@ void test_libsx1262(void)
   puts(&quot;libsx1262 OK!&quot;);
 }</code></pre></div>
 <p>We’ll call this function in a while.</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newlibrary/libs/libsx1262/lib_misc.c">(See lib_misc.c)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/newlibrary/libs/libsx1262/lib_misc.c">(See lib_misc.c)</a></p>
 </li>
 <li>
-<p>Browse to the <a href="https://github.com/lupyuen/incubator-nuttx/blob/newlibrary/include"><strong>“nuttx/include”</strong></a> folder</p>
+<p>Browse to the <a href="https://github.com/lupyuen/nuttx/blob/newlibrary/include"><strong>“nuttx/include”</strong></a> folder</p>
 </li>
 <li>
 <p>Copy the file <strong>“dsp.h”</strong> and paste it as <strong>“sx1262.h”</strong></p>
@@ -1821,20 +1821,20 @@ void test_libsx1262(void)
 <li>
 <p>Inside the file <strong>“sx1262.h”</strong>, search and replace all <strong>“dsp”</strong> by <strong>“sx1262”</strong></p>
 <p>Remember to <strong>Preserve Case!</strong></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/newlibrary/include/sx1262.h">(See sx1262.h)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/newlibrary/include/sx1262.h">(See sx1262.h)</a></p>
 </li>
 <li>
 <p>Edit the file <strong>“sx1262.h”</strong>, remove all Public Functions Prototypes and add…</p>
 <div class="example-wrap"><pre class="language-c"><code>void test_libsx1262(void);</code></pre></div>
 <p>We’ll test this function in a while.</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/sx1262.h">(See sx1262.h)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/master/include/sx1262.h">(See sx1262.h)</a></p>
 </li>
 </ol>
 <h2 id="update-makefiles-and-kconfig"><a href="#update-makefiles-and-kconfig">13.1 Update Makefiles and Kconfig</a></h2>
 <p>Next we update the Makefiles and Kconfig so that NuttX will build our library…</p>
 <ol>
 <li>
-<p>Browse to the <a href="https://github.com/lupyuen/incubator-nuttx/tree/newlibrary/tools"><strong>“nuttx/tools”</strong></a> folder</p>
+<p>Browse to the <a href="https://github.com/lupyuen/nuttx/tree/newlibrary/tools"><strong>“nuttx/tools”</strong></a> folder</p>
 </li>
 <li>
 <p>Edit the file <strong>“Directories.mk”</strong></p>
@@ -1846,7 +1846,7 @@ CLEANDIRS += libs$(DELIM)libsx1262
 endif</code></pre></div>
 <p>As shown below…</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-clone5.png" alt="Update “Directories.mk”" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/8bd31da9abccbcfdd1b9b1ccfd22bd41803ac7f8#diff-f9d35d43770d39092a663e665e82ae1d84a9e0da3d0d10c407acada6a40cd281">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/commit/8bd31da9abccbcfdd1b9b1ccfd22bd41803ac7f8#diff-f9d35d43770d39092a663e665e82ae1d84a9e0da3d0d10c407acada6a40cd281">(Source)</a></p>
 </li>
 <li>
 <p>Edit the files <strong>“FlatLibs.mk”</strong>, <strong>“KernelLibs.mk”</strong> and <strong>“ProtectedLibs.mk”</strong></p>
@@ -1856,7 +1856,7 @@ NUTTXLIBS += staging$(DELIM)libsx1262$(LIBEXT)
 endif</code></pre></div>
 <p>As shown below…</p>
 <p><img src="https://lupyuen.github.io/images/sx1262-clone6.jpg" alt="Update Makefiles" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/b381a99e7512d09d74db4da982826b5e40b2606a#diff-f9d35d43770d39092a663e665e82ae1d84a9e0da3d0d10c407acada6a40cd281">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/commit/b381a99e7512d09d74db4da982826b5e40b2606a#diff-f9d35d43770d39092a663e665e82ae1d84a9e0da3d0d10c407acada6a40cd281">(Source)</a></p>
 </li>
 <li>
 <p>Edit the file <strong>“LibTargets.mk”</strong></p>
@@ -1869,18 +1869,18 @@ staging$(DELIM)libsx1262$(LIBEXT): libs$(DELIM)libsx1262$(DELIM)libsx1262$(LIBEX
 <p>As shown in the pic above.</p>
 </li>
 <li>
-<p>Browse to the <a href="https://github.com/lupyuen/incubator-nuttx/tree/newlibrary"><strong>“nuttx”</strong></a> folder</p>
+<p>Browse to the <a href="https://github.com/lupyuen/nuttx/tree/newlibrary"><strong>“nuttx”</strong></a> folder</p>
 </li>
 <li>
 <p>Edit the file <strong>“Kconfig”</strong></p>
 <p>Inside the section <strong>menu “Library Routines”</strong>, add this line…</p>
 <div class="example-wrap"><pre class="language-text"><code>source &quot;libs/libsx1262/Kconfig&quot;</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/sx1262-clone3a.png" alt="Update Root Kconfig" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/commit/6a18348842b5fcec6a9fe8672c0de380b889086c">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/commit/6a18348842b5fcec6a9fe8672c0de380b889086c">(Source)</a></p>
 </li>
 <li>
 <p>Run the following…</p>
-<div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the path of our &quot;incubator-nuttx&quot; folder
+<div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the path of our &quot;nuttx&quot; folder
 cd nuttx/nuttx
 
 # Preserve the Build Config
@@ -1924,7 +1924,7 @@ make menuconfig </code></pre></div></li>
 <p>To verify our library…</p>
 <ol>
 <li>
-<p>We create a simple NuttX App: <a href="https://github.com/lupyuen/incubator-nuttx-apps/tree/newlibrary/examples/sx1262_test"><strong>apps/examples/sx1262_test</strong></a></p>
+<p>We create a simple NuttX App: <a href="https://github.com/lupyuen/nuttx-apps/tree/newlibrary/examples/sx1262_test"><strong>apps/examples/sx1262_test</strong></a></p>
 <div class="example-wrap"><pre class="language-c"><code>#include &lt;nuttx/config.h&gt;
 #include &lt;stdio.h&gt;
 #include &lt;assert.h&gt;
@@ -1941,7 +1941,7 @@ int main(int argc, FAR char *argv[])
 
   return 0;
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/newlibrary/examples/sx1262_test/sx1262_test_main.c">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-apps/blob/newlibrary/examples/sx1262_test/sx1262_test_main.c">(Source)</a></p>
 </li>
 <li>
 <p>Build (“make”), flash and run the NuttX Firmware on BL602 or ESP32.</p>
@@ -2074,7 +2074,7 @@ blflash flash nuttx.bin \
 blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
 <p>For WSL: Do this under plain old Windows CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
-<p><a href="https://github.com/apache/incubator-nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">(More details on flashing firmware)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
 <h2 id="run-nuttx"><a href="#run-nuttx">14.3 Run NuttX</a></h2>
@@ -2995,7 +2995,7 @@ up_assert: Assertion failed at file:ioexpander/gpio.c line: <span class="number"
 <p>(For PineDio Stack BL604: Use “/dev/gpio19”)</p>
 <p>I’ll submit a NuttX Issue, meanwhile I have disabled the assertion…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/lorawan/drivers/ioexpander/gpio.c#L544-L547">drivers/ioexpander/gpio.c (line 544)</a></li>
+<li><a href="https://github.com/lupyuen/nuttx/blob/lorawan/drivers/ioexpander/gpio.c#L544-L547">drivers/ioexpander/gpio.c (line 544)</a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/lorawan3-int.png" alt="GPIO Pin Type Issue" /></p>
 <h1 id="appendix-nimble-callout-issue"><a href="#appendix-nimble-callout-issue">17 Appendix: NimBLE Callout Issue</a></h1>
@@ -3019,7 +3019,7 @@ up_assert: Assertion failed at file:ioexpander/gpio.c line: <span class="number"
 <ul>
 <li>
 <p><strong>DIO1</strong>: Because we don’t support GPIO Interrupts (yet), we <strong>poll the SX1262 Status every second</strong> to check if a LoRa Packet has been received.</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L126-L136">(See this)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L126-L136">(See this)</a></p>
 </li>
 <li>
 <p><strong>BUSY</strong>: Instead of reading this pin to check if SX1262 is busy, we <strong>sleep 10 milliseconds</strong>.</p>
@@ -3079,7 +3079,7 @@ up_assert: Assertion failed at file:ioexpander/gpio.c line: <span class="number"
   return 0;
 }</code></pre></div></li>
 </ol>
-<p>When we have implemented <strong>GPIO Interrupts</strong> in our driver, we can remove the <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L126-L136"><strong>Event Polling</strong></a>. And we run a <strong>Background Thread</strong> to handle LoRa Events.</p>
+<p>When we have implemented <strong>GPIO Interrupts</strong> in our driver, we can remove the <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L126-L136"><strong>Event Polling</strong></a>. And we run a <strong>Background Thread</strong> to handle LoRa Events.</p>
 <p><em>How will we receive LoRa Messages with GPIO Interrupts?</em></p>
 <p>After we have implemented <strong>GPIO Interrupts</strong> in our SX1262 Library, this is how we’ll <strong>receive LoRa Messages</strong> without polling (see pic above)…</p>
 <ol>
@@ -3105,7 +3105,7 @@ up_assert: Assertion failed at file:ioexpander/gpio.c line: <span class="number"
 <p>This is especially useful when we implement <strong>LoRaWAN with our SX1262 Library</strong>, because LoRaWAN needs to handle <strong>asynchronous messages</strong> in the background.</p>
 <p><a href="https://lupyuen.github.io/articles/lorawan#join-network-request">(Like when we join a LoRaWAN Network)</a></p>
 <p><em>How will we implement the Background Thread and Event Queue?</em></p>
-<p>The code below shall be updated to <strong>start the Background Thread</strong> by calling NimBLE Porting Layer: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L369-L388">sx1262_test_main.c</a></p>
+<p>The code below shall be updated to <strong>start the Background Thread</strong> by calling NimBLE Porting Layer: <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L369-L388">sx1262_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// TODO: Create a Background Thread to handle LoRa Events
 static void create_task(void) {
   //  Init the Event Queue
@@ -3122,7 +3122,7 @@ static void create_task(void) {
   //  nimble_port_freertos_init(task_callback);
 }</code></pre></div>
 <p>And we shall implement the GPIO Interrupt Handler Function <a href="https://lupyuen.github.io/articles/lora2#gpio-interrupt-handler"><strong>handle_gpio_interrupt</strong></a> for NuttX.</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L357-L432">(We don’t need to code the Event Queue, it has been done here)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L357-L432">(We don’t need to code the Event Queue, it has been done here)</a></p>
 <p><em>When will we begin the implementation?</em></p>
 <p>Very soon! We shall implement the Background Thread and Event Queue as we <strong>port the LoRaWAN Stack to NuttX</strong>.</p>
 <p>(Because LoRaWAN needs multithreading to work)</p>

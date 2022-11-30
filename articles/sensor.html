@@ -101,7 +101,7 @@
 <p><em>But really… What if we prefer to do this in C?</em></p>
 <p>NuttX already provides an excellent <strong>Sensor Test App</strong> in C…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c"><strong>sensortest.c</strong></a></li>
+<li><a href="https://github.com/lupyuen/nuttx-apps/blob/master/testing/sensortest/sensortest.c"><strong>sensortest.c</strong></a></li>
 </ul>
 <p>That inspired the Zig program in this article…</p>
 <ul>
@@ -218,7 +218,7 @@ fn test_sensor() !void {
 <p>Let’s assume that our sensor will measure Sensor Data <strong>every 1 second</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // TODO: Remove this definition when 
   // SNIOC_SET_INTERVAL has been been fixed: 
-  // https://github.com/apache/incubator-nuttx/issues/6642
+  // https://github.com/apache/nuttx/issues/6642
   const SNIOC_SET_INTERVAL = c._SNIOC(0x0081);
 
   // Set Standby Interval
@@ -403,12 +403,12 @@ fn test_sensor2() !void {
 <p><em>Where’s the list of Sensor Data Structs?</em></p>
 <p>The <strong>NuttX Sensor Data Structs</strong> are defined at…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L290-L545"><strong>include/nuttx/sensors/sensor.h</strong></a></li>
+<li><a href="https://github.com/lupyuen/nuttx/blob/master/include/nuttx/sensors/sensor.h#L290-L545"><strong>include/nuttx/sensors/sensor.h</strong></a></li>
 </ul>
 <p><em>What about the Sensor Device Names like baro0 and humi0?</em></p>
 <p>Here’s the list of <strong>NuttX Sensor Device Names</strong>…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c#L86-L119"><strong>testing/sensortest/sensortest.c</strong></a></li>
+<li><a href="https://github.com/lupyuen/nuttx-apps/blob/master/testing/sensortest/sensortest.c#L86-L119"><strong>testing/sensortest/sensortest.c</strong></a></li>
 </ul>
 <p><em>How are test_sensor and test_sensor2 called?</em></p>
 <p>They are called by our <strong>Zig Main Function</strong>.</p>
@@ -453,7 +453,7 @@ pub const c = @cImport({
   @cInclude(&quot;poll.h&quot;);
 });</code></pre></div>
 <p>“types.h” and “limits.h” are needed for NuttX compatibility. <a href="https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc">(See this)</a></p>
-<p>The other includes were copied from the <strong>NuttX Sensor Test App</strong> in C: <a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c#L34-L42">sensortest.c</a></p>
+<p>The other includes were copied from the <strong>NuttX Sensor Test App</strong> in C: <a href="https://github.com/lupyuen/nuttx-apps/blob/master/testing/sensortest/sensortest.c#L34-L42">sensortest.c</a></p>
 <p><em>What about NuttX Structs like sensor_baro and sensor_humi?</em></p>
 <p><strong>NuttX Structs</strong> will be automatically imported with the code above.</p>
 <p>NuttX Macros like <strong>O_RDONLY</strong> and <strong>SNIOC_BATCH</strong> will get imported too.</p>
@@ -606,7 +606,7 @@ const fd = c.open(
 <tr><td style="text-align: center"><strong><code>GND</code></strong></td><td style="text-align: center"><code>GND</code></td><td style="text-align: left">Black</td></tr>
 </tbody></table>
 </div>
-<p>The <strong>I2C Pins</strong> on BL602 are defined here: <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L91-L98">board.h</a></p>
+<p>The <strong>I2C Pins</strong> on BL602 are defined here: <a href="https://github.com/lupyuen/nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L91-L98">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* I2C Configuration */
 #define BOARD_I2C_SCL \
   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
@@ -757,11 +757,11 @@ SensorTest: Received message: humi0, number:1/1</code></pre></div>
 <p><em>Which sensors are supported?</em></p>
 <p>Here’s the list of <strong>Sensor Devices</strong> supported by the app…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c#L86-L119"><strong>testing/sensortest/sensortest.c</strong></a></li>
+<li><a href="https://github.com/lupyuen/nuttx-apps/blob/master/testing/sensortest/sensortest.c#L86-L119"><strong>testing/sensortest/sensortest.c</strong></a></li>
 </ul>
 <p>To understand the printed values (like “value1” and “value2”), we refer to the <strong>Sensor Data Structs</strong>…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L290-L545"><strong>include/nuttx/sensors/sensor.h</strong></a></li>
+<li><a href="https://github.com/lupyuen/nuttx/blob/master/include/nuttx/sensors/sensor.h#L290-L545"><strong>include/nuttx/sensors/sensor.h</strong></a></li>
 </ul>
 <p><em>How does it work?</em></p>
 <p>Inside our Zig Sensor App is a <strong>Multi-Sensor Module</strong> that handles all kinds of sensors…</p>
@@ -770,7 +770,7 @@ SensorTest: Received message: humi0, number:1/1</code></pre></div>
 </ul>
 <p>The Zig code was converted from the <strong>NuttX Sensor Test App</strong> in C…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c"><strong>sensortest.c</strong></a></li>
+<li><a href="https://github.com/lupyuen/nuttx-apps/blob/master/testing/sensortest/sensortest.c"><strong>sensortest.c</strong></a></li>
 </ul>
 <p>Which is explained here…</p>
 <ul>
@@ -885,7 +885,7 @@ SensorTest: Received message: humi0, number:1/1</code></pre></div>
 </li>
 <li>
 <p>The design of the <strong>NuttX Sensor API</strong> is discussed here…</p>
-<p><a href="https://github.com/apache/incubator-nuttx/pull/2039"><strong>“Unified Management for Sensor”</strong></a></p>
+<p><a href="https://github.com/apache/nuttx/pull/2039"><strong>“Unified Management for Sensor”</strong></a></p>
 </li>
 <li>
 <p>Our Zig App includes a <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L281-L316"><strong>Custom Logger</strong></a> and <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L255-L279"><strong>Panic Handler</strong></a>. They are explained below…</p>

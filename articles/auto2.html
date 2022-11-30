@@ -96,7 +96,7 @@
 <p><strong>Alice</strong>: Hi All! I’m building an <strong>I2C Driver</strong> for PineDio Stack’s Accelerometer. Where can I get the latest build of <a href="https://lupyuen.github.io/articles/pinedio2"><strong>Apache NuttX RTOS</strong></a> for PineDio Stack?</p>
 </blockquote>
 <blockquote>
-<p><strong>Bob</strong>: You’ll have to compile it yourself from the <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio"><strong>source code here</strong></a>. But beware… Some folks reported (unconfirmed) that it might run differently depending on the RISC-V Compiler Toolchain.</p>
+<p><strong>Bob</strong>: You’ll have to compile it yourself from the <a href="https://github.com/lupyuen/nuttx/tree/pinedio"><strong>source code here</strong></a>. But beware… Some folks reported (unconfirmed) that it might run differently depending on the RISC-V Compiler Toolchain.</p>
 </blockquote>
 <blockquote>
 <p><strong>Chow</strong>: OH CR*P! PineDio Stack’s <a href="https://lupyuen.github.io/articles/touch"><strong>I2C Touch Panel</strong></a> is no longer responding to touch! What changed?!</p>
@@ -105,7 +105,7 @@
 <p><strong>Alice</strong>: Is it because of the I2C Accelerometer Driver that I just committed to the repo?</p>
 </blockquote>
 <blockquote>
-<p><strong>Bob</strong>: Uhhh I think it might be the BL602 Updates from <a href="https://github.com/apache/incubator-nuttx"><strong>NuttX Mainline</strong></a> that I merged last night. I <strong>forgot to test</strong> the changes. I think <a href="https://lupyuen.github.io/articles/lorawan3"><strong>SPI and LoRaWAN</strong></a> are broken too. Sorry!</p>
+<p><strong>Bob</strong>: Uhhh I think it might be the BL602 Updates from <a href="https://github.com/apache/nuttx"><strong>NuttX Mainline</strong></a> that I merged last night. I <strong>forgot to test</strong> the changes. I think <a href="https://lupyuen.github.io/articles/lorawan3"><strong>SPI and LoRaWAN</strong></a> are broken too. Sorry!</p>
 </blockquote>
 <p>Sounds like a nightmare, but this story could be real. <a href="https://www.robertlipe.com/"><strong>Robert Lipe</strong></a> and I are already facing similar challenges today.</p>
 <p>Let’s intervene and rewrite the narrative…</p>
@@ -113,7 +113,7 @@
 <p><strong>Alice</strong>: Hi All! I’m building an <strong>I2C Driver</strong> for PineDio Stack’s Accelerometer. Where can I get the latest build of <a href="https://lupyuen.github.io/articles/pinedio2"><strong>Apache NuttX RTOS</strong></a> for PineDio Stack?</p>
 </blockquote>
 <blockquote>
-<p><strong>Bob</strong>: Just download the Compiled Firmware from the <a href="https://github.com/lupyuen/incubator-nuttx/releases?q=%22download%2Fpinedio%22&amp;expanded=true"><strong>GitHub Releases here</strong></a>. It was <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml#L33-L76"><strong>built automatically</strong></a> by GitHub Actions with the same RISC-V Compiler Toolchain that we’re all using.</p>
+<p><strong>Bob</strong>: Just download the Compiled Firmware from the <a href="https://github.com/lupyuen/nuttx/releases?q=%22download%2Fpinedio%22&amp;expanded=true"><strong>GitHub Releases here</strong></a>. It was <a href="https://github.com/lupyuen/nuttx/blob/pinedio/.github/workflows/pinedio.yml#L33-L76"><strong>built automatically</strong></a> by GitHub Actions with the same RISC-V Compiler Toolchain that we’re all using.</p>
 </blockquote>
 <blockquote>
 <p><strong>Chow</strong>: Hmmm PineDio Stack’s <a href="https://lupyuen.github.io/articles/touch"><strong>I2C Touch Panel</strong></a> works a little wonky today. What changed?</p>
@@ -122,10 +122,10 @@
 <p><strong>Alice</strong>: It can’t be caused by my new I2C Accelerometer Driver. My changes to the repo are still awaiting <strong>Automated Testing</strong>.</p>
 </blockquote>
 <blockquote>
-<p><strong>Bob</strong>: I merged the BL602 Updates from <a href="https://github.com/apache/incubator-nuttx"><strong>NuttX Mainline</strong></a> last night. The I2C Touch Panel worked perfectly OK during Automated Testing, here’s the evidence: <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10"><strong>Automated Testing Log</strong></a>. Maybe we do some static discharge? Switch off the AC, open the windows, remove all metal objects, …</p>
+<p><strong>Bob</strong>: I merged the BL602 Updates from <a href="https://github.com/apache/nuttx"><strong>NuttX Mainline</strong></a> last night. The I2C Touch Panel worked perfectly OK during Automated Testing, here’s the evidence: <a href="https://github.com/lupyuen/nuttx/releases/tag/pinedio-2022-05-10"><strong>Automated Testing Log</strong></a>. Maybe we do some static discharge? Switch off the AC, open the windows, remove all metal objects, …</p>
 </blockquote>
 <p><img src="https://lupyuen.github.io/images/auto2-release.jpg" alt="Automated Testing Log for PineDio Stack" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10"><em>Automated Testing Log for PineDio Stack</em></a></p>
+<p><a href="https://github.com/lupyuen/nuttx/releases/tag/pinedio-2022-05-10"><em>Automated Testing Log for PineDio Stack</em></a></p>
 <p>This article explains how we accomplished all that with PineDio Stack…</p>
 <ul>
 <li>
@@ -145,7 +145,7 @@
 </li>
 <li>
 <p><strong>Testing Logs</strong> are auto-uploaded to GitHub Releases as Release Notes</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(See the Testing Log)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/releases/tag/pinedio-2022-05-10">(See the Testing Log)</a></p>
 </li>
 </ul>
 <p>Let’s dive into the <strong>Auto Flash and Test Script</strong> for PineDio Stack…</p>
@@ -251,19 +251,19 @@ script -c remote-bl602/scripts/pinedio.sh /tmp/release.log
 remote-bl602/scripts/upload.sh</code></pre></div>
 <p><a href="https://youtu.be/JX7rWqWTOW4">(Watch the demo on YouTube)</a></p>
 <p>This will download and test <strong>Today’s Build</strong> of NuttX for PineDio Stack (published on GitHub Releases).</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Here’s the build for 2022-05-10)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/releases/tag/pinedio-2022-05-10">(Here’s the build for 2022-05-10)</a></p>
 <p>If the Automated Test succeeds, we’ll see…</p>
 <div class="example-wrap"><pre class="language-text"><code>Download the latest pinedio NuttX build for 2022-05-10
 Flash BL602 over USB UART with blflash
 ...
 All OK! BL602 has successfully joined the LoRaWAN Network
 All OK! BL604 has responded to touch</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(See the Test Log)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/releases/tag/pinedio-2022-05-10">(See the Test Log)</a></p>
 <p>Beware: The script <strong>fails silently</strong> if there’s no NuttX Build for today. (Sorry!)</p>
 <p><em>Can we pick a different NuttX Build?</em></p>
 <p>We pick a <strong>NuttX Build</strong> from this list…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/releases?q=%22download%2Fpinedio%22&amp;expanded=true"><strong>NuttX Builds for PineDio Stack</strong></a></li>
+<li><a href="https://github.com/lupyuen/nuttx/releases?q=%22download%2Fpinedio%22&amp;expanded=true"><strong>NuttX Builds for PineDio Stack</strong></a></li>
 </ul>
 <p>Then we set <strong>BUILD_DATE</strong> like so…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Tell the script to download the build for 2022-05-10
@@ -276,10 +276,10 @@ script -c remote-bl602/scripts/pinedio.sh /tmp/release.log</code></pre></div>
 <p>Yep we may run the Automated Test <strong>remotely over SSH</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>ssh my-sbc remote-bl602/scripts/pinedio.sh</code></pre></div><h2 id="automated-nuttx-build"><a href="#automated-nuttx-build">3.1 Automated NuttX Build</a></h2>
 <p><em>How is NuttX for PineDio Stack built and published to GitHub Releases?</em></p>
-<p>Whenever we commit changes to the <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio"><strong>NuttX Repo for PineDio Stack</strong></a>, GitHub Actions will trigger a new NuttX Build and <strong>publish the built firmware</strong> to GitHub Releases…</p>
+<p>Whenever we commit changes to the <a href="https://github.com/lupyuen/nuttx/tree/pinedio"><strong>NuttX Repo for PineDio Stack</strong></a>, GitHub Actions will trigger a new NuttX Build and <strong>publish the built firmware</strong> to GitHub Releases…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml"><strong>GitHub Actions Workflow for PineDio Stack</strong></a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/.github/workflows/pinedio.yml"><strong>GitHub Actions Workflow for PineDio Stack</strong></a></p>
 <p><a href="https://lupyuen.github.io/articles/auto#appendix-build-nuttx-with-github-actions">(More about the GitHub Actions Workflow)</a></p>
 </li>
 </ul>
@@ -288,7 +288,7 @@ script -c remote-bl602/scripts/pinedio.sh /tmp/release.log</code></pre></div>
 #  BUILD_DATE defaults to today&#39;s date, like &quot;2022-05-10&quot;
 
 #  Download the NuttX Firmware from GitHub Releases
-wget -q https://github.com/lupyuen/incubator-nuttx/releases/download/$BUILD_PREFIX-$BUILD_DATE/nuttx.zip -O /tmp/nuttx.zip
+wget -q https://github.com/lupyuen/nuttx/releases/download/$BUILD_PREFIX-$BUILD_DATE/nuttx.zip -O /tmp/nuttx.zip
 pushd /tmp
 unzip -o nuttx.zip
 popd
@@ -317,7 +317,7 @@ Flash BL602 over USB UART with blflash
 Sending eflash_loader...
 Program flash... 
 Success</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
 <p>Our script restarts PineDio Stack in <strong>Flashing Mode</strong> and calls <strong>blflash</strong> to flash the NuttX Firmware.</p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-bl602-firmware-with-linux-macos-and-windows">(<strong>blflash</strong> is explained here)</a></p>
 <p>Next our script restarts PineDio Stack in <strong>Normal Mode</strong> to start the NuttX Firmware…</p>
@@ -408,7 +408,7 @@ echo &quot;uname -a&quot; &gt;/dev/ttyUSB0 ; sleep 1
 echo &quot;ls /dev&quot;  &gt;/dev/ttyUSB0 ; sleep 1</code></pre></div>
 <p>Let’s move on to the second checkpoint.</p>
 <p><img src="https://lupyuen.github.io/images/auto-stack.jpg" alt="NuttX Stack Trace" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17"><em>NuttX Register and Stack Dump</em></a></p>
+<p><a href="https://github.com/lupyuen/nuttx/releases/tag/upstream-2022-01-17"><em>NuttX Register and Stack Dump</em></a></p>
 <h1 id="nuttx-must-not-crash"><a href="#nuttx-must-not-crash">5 NuttX Must Not Crash</a></h1>
 <p><em>(Checkpoint Bravo)</em></p>
 <p><em>What happens when NuttX crashes during testing?</em></p>
@@ -431,11 +431,11 @@ arch/risc-v/src/common/riscv_assert.c:364
 Code Address 230042e2:
 libs/libc/assert/lib_assert.c:37
   exit(EXIT_FAILURE);</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/releases/tag/upstream-2022-01-17">(Source)</a></p>
 <p>Through this Crash Analysis, we get some idea <strong>which lines of code</strong> caused the crash.</p>
 <p>And hopefully we can heal NuttX on PineDio Stack!</p>
 <p><img src="https://lupyuen.github.io/images/auto-stack3.png" alt="NuttX Crash Analysis" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17"><em>NuttX Crash Analysis</em></a></p>
+<p><a href="https://github.com/lupyuen/nuttx/releases/tag/upstream-2022-01-17"><em>NuttX Crash Analysis</em></a></p>
 <h2 id="checkpoint-bravo"><a href="#checkpoint-bravo">5.1 Checkpoint Bravo</a></h2>
 <p>Over to the implementation. Our script detects that NuttX has crashed when it sees the <strong>registerdump</strong> keyword: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/pinedio.sh#L102-L105">pinedio.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Check whether BL602 has crashed
@@ -509,7 +509,7 @@ Read Register 8: received
   a2 a2 a2 a2 80 
 SX1262 Register 8 is 0x80
 SX1262 is OK</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
 <p><strong>spi_test2</strong> says that <strong>SX1262 Register 8</strong> has value <strong><code>0x80</code></strong>, which is correct.</p>
 <p>If we receive any other value for SX1262 Register 8…</p>
 <div class="example-wrap"><pre class="language-text"><code>SX1262 Register 8 is 0x00
@@ -531,7 +531,7 @@ if [ &quot;$match&quot; == &quot;&quot; ]; then
   test_status=unknown</code></pre></div>
 <p>Source code for <strong>spi_test2</strong> is located here…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx-apps/blob/pinedio/examples/spi_test2/spi_test2_main.c"><strong>examples/spi_test2</strong></a></li>
+<li><a href="https://github.com/lupyuen/nuttx-apps/blob/pinedio/examples/spi_test2/spi_test2_main.c"><strong>examples/spi_test2</strong></a></li>
 </ul>
 <p>Note that <strong>spi_test2</strong> calls the <strong>SPI Test Driver “/dev/spitest0”</strong> which is explained here…</p>
 <ul>
@@ -611,7 +611,7 @@ if [ &quot;$match&quot; == &quot;&quot; ]; then
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; lorawan_test
 init_entropy_pool
 temperature = 25.667484 Celsius</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
 <p>The test begins by reading BL604’s <a href="https://lupyuen.github.io/articles/auto#appendix-fix-lorawan-nonce"><strong>Internal Temperature Sensor</strong></a> and using the temperature value to seed the <a href="https://lupyuen.github.io/articles/lorawan3#lorawan-nonce"><strong>Strong Random Number Generator</strong></a>.</p>
 <p>Then we send the <strong>Join LoRaWAN Network</strong> Request to our LoRaWAN Gateway (ChirpStack)…</p>
 <div class="example-wrap"><pre class="language-text"><code>=========== MLME-Request ============
@@ -739,7 +739,7 @@ if [ &quot;$match&quot; != &quot;&quot; ]; then
 tp_init: Opening /dev/input0
 cst816s_open: 
 HELLO HUMAN: TOUCH PINEDIO STACK NOW</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
 <p>The script prompts us to touch the screen.</p>
 <p>When we touch the screen, the <strong>CST816S Touch Panel Driver</strong> shows a <strong>Touch Down Event</strong> with the coordinates of the touched point (read over I2C)…</p>
 <div class="example-wrap"><pre class="language-text"><code>DOWN: id=0, touch=0, x=83, y=106</code></pre></div>
@@ -804,11 +804,11 @@ if [ &quot;$match&quot; != &quot;&quot; ]; then
 <h1 id="upload-test-log"><a href="#upload-test-log">9 Upload Test Log</a></h1>
 <p>The lesson we learnt from Alice, Bob and Chow: It’s super helpful to <strong>preserve the Automated Test Logs</strong> for every NuttX Release!</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10"><strong>Automated Test Log for PineDio Stack</strong></a></li>
+<li><a href="https://github.com/lupyuen/nuttx/releases/tag/pinedio-2022-05-10"><strong>Automated Test Log for PineDio Stack</strong></a></li>
 </ul>
 <p>(Especially when collaborating across time zones)</p>
 <p><img src="https://lupyuen.github.io/images/auto2-release.jpg" alt="Automated Test Log for PineDio Stack" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/releases/tag/pinedio-2022-05-10">(Source)</a></p>
 <p>This how we <strong>upload the Automated Test Log</strong> to GitHub Release Notes…</p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Run the script for Auto Flash and Test for PineDio Stack BL604.
 #  Capture the Test Log in /tmp/release.log
@@ -835,9 +835,9 @@ remote-bl602/scripts/upload.sh</code></pre></div>
 gh auth login --with-token
 
 #  Verify that GitHub CLI can access GitHub Releases
-gh release list --repo lupyuen/incubator-nuttx</code></pre></div>
+gh release list --repo lupyuen/nuttx</code></pre></div>
 <p><em>What’s inside our Upload Script?</em></p>
-<p>Our Upload Script assumes that the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml"><strong>GitHub Actions Workflow</strong></a> has published a <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml#L93-L100"><strong>GitHub Release</strong></a> with <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml#L100"><strong>Auto-Generated Release Notes</strong></a>.</p>
+<p>Our Upload Script assumes that the <a href="https://github.com/lupyuen/nuttx/blob/pinedio/.github/workflows/pinedio.yml"><strong>GitHub Actions Workflow</strong></a> has published a <a href="https://github.com/lupyuen/nuttx/blob/pinedio/.github/workflows/pinedio.yml#L93-L100"><strong>GitHub Release</strong></a> with <a href="https://github.com/lupyuen/nuttx/blob/pinedio/.github/workflows/pinedio.yml#L100"><strong>Auto-Generated Release Notes</strong></a>.</p>
 <p>The script begins by calling the <strong>GitHub CLI to download</strong> the Auto-Generated Release Notes: <a href="https://github.com/lupyuen/remote-bl602/blob/main/scripts/upload.sh">upload.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>#  Assumes the following files are present...
 #  /tmp/release.log: Test Log
@@ -845,12 +845,12 @@ gh release list --repo lupyuen/incubator-nuttx</code></pre></div>
 
 #  Preserve the Auto-Generated GitHub Release Notes.
 #  Fetch the current GitHub Release Notes and extract the body text, like:
-#  &quot;Merge updates from master by @lupyuen in https://github.com/lupyuen/incubator-nuttx/pull/82&quot;
+#  &quot;Merge updates from master by @lupyuen in https://github.com/lupyuen/nuttx/pull/82&quot;
 gh release view \
   `cat /tmp/release.tag` \
   --json body \
   --jq &#39;.body&#39; \
-  --repo lupyuen/incubator-nuttx \
+  --repo lupyuen/nuttx \
   &gt;/tmp/release.old</code></pre></div>
 <p><a href="https://cli.github.com/manual/gh_release_view">(“<strong>gh release view</strong>” is explained here)</a></p>
 <p>In case the script is run twice, we search for the <strong>Previous Automated Test Log</strong>…</p>
@@ -891,14 +891,14 @@ echo &#39;```&#39; &gt;&gt;/tmp/release2.log</code></pre></div>
 gh release edit \
   `cat /tmp/release.tag` \
   --notes-file /tmp/release2.log \
-  --repo lupyuen/incubator-nuttx</code></pre></div>
+  --repo lupyuen/nuttx</code></pre></div>
 <p><a href="https://cli.github.com/manual/gh_release_edit">(“<strong>gh release edit</strong>” is explained here)</a></p>
 <p>That’s it for uploading the Automated Test Log to GitHub!</p>
 <p><img src="https://lupyuen.github.io/images/auto2-connect.jpg" alt="PineDio Stack BL604 (top) and PineCone BL602 (bottom) connected to Single-Board Computer for Automated Testing" /></p>
 <p><em>PineDio Stack BL604 (top) and PineCone BL602 (bottom) connected to Single-Board Computer for Automated Testing</em></p>
 <h1 id="merge-updates-from-nuttx"><a href="#merge-updates-from-nuttx">10 Merge Updates From NuttX</a></h1>
 <p><em>Is PineDio Stack fully supported by NuttX Mainline?</em></p>
-<p>Not yet. Our fork of NuttX for PineDio Stack has <strong>Experimental Features</strong> that aren’t ready to be upstreamed into <a href="https://github.com/apache/incubator-nuttx"><strong>NuttX Mainline</strong></a>…</p>
+<p>Not yet. Our fork of NuttX for PineDio Stack has <strong>Experimental Features</strong> that aren’t ready to be upstreamed into <a href="https://github.com/apache/nuttx"><strong>NuttX Mainline</strong></a>…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/pinedio2#spi-device-table"><strong>SPI Device Table</strong></a></p>
@@ -923,10 +923,10 @@ gh release edit \
 <p>Yep. We’re now testing and maintaining two <strong>Stable Branches</strong> of NuttX for public consumption on BL602 and BL604…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx"><strong>PineCone (Release) Branch</strong></a> for PineCone BL602</p>
+<p><a href="https://github.com/lupyuen/nuttx"><strong>PineCone (Release) Branch</strong></a> for PineCone BL602</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio"><strong>PineDio Branch</strong></a> for PineDio Stack BL604</p>
+<p><a href="https://github.com/lupyuen/nuttx/tree/pinedio"><strong>PineDio Branch</strong></a> for PineDio Stack BL604</p>
 </li>
 </ul>
 <p>(Same for NuttX Apps)</p>
@@ -947,49 +947,49 @@ gh release edit \
 <ol>
 <li>
 <p>Every day we build <strong>Mainline NuttX (Upstream)</strong> every day with GitHub Actions. <a href="https://lupyuen.github.io/articles/auto#appendix-build-nuttx-with-github-actions">(See this)</a></p>
-<p>Also daily we run our <strong>Automated Testing</strong> to verify that the Upstream Build boots OK on PineCone BL602. <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-05-22">(Like this)</a></p>
+<p>Also daily we run our <strong>Automated Testing</strong> to verify that the Upstream Build boots OK on PineCone BL602. <a href="https://github.com/lupyuen/nuttx/releases/tag/upstream-2022-05-22">(Like this)</a></p>
 <p>(Upstream Build doesn’t include the LoRaWAN Stack)</p>
 </li>
 <li>
-<p>Every 2 weeks (roughly), we merge Upstream NuttX into our <a href="https://github.com/lupyuen/incubator-nuttx/tree/downstream"><strong>Downstream Branch</strong></a>. <a href="https://github.com/lupyuen/incubator-nuttx/commit/70decce2bf2754e331648c24bcfbb7e377376f52">(Like this)</a></p>
-<p>GitHub Actions triggers a build for the <strong>Downstream Branch</strong>. <a href="https://github.com/lupyuen/incubator-nuttx/blob/downstream/.github/workflows/bl602-downstream.yml#L7-L272">(See this)</a></p>
-<p>Our <strong>Automated Testing</strong> verifies the Downstream Build with LoRaWAN on PineCone BL602. <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/downstream-2022-05-24">(Like this)</a></p>
+<p>Every 2 weeks (roughly), we merge Upstream NuttX into our <a href="https://github.com/lupyuen/nuttx/tree/downstream"><strong>Downstream Branch</strong></a>. <a href="https://github.com/lupyuen/nuttx/commit/70decce2bf2754e331648c24bcfbb7e377376f52">(Like this)</a></p>
+<p>GitHub Actions triggers a build for the <strong>Downstream Branch</strong>. <a href="https://github.com/lupyuen/nuttx/blob/downstream/.github/workflows/bl602-downstream.yml#L7-L272">(See this)</a></p>
+<p>Our <strong>Automated Testing</strong> verifies the Downstream Build with LoRaWAN on PineCone BL602. <a href="https://github.com/lupyuen/nuttx/releases/tag/downstream-2022-05-24">(Like this)</a></p>
 </li>
 <li>
-<p>If the Downstream Branch has tested OK, we merge the Downstream Branch to the <strong>PineCone (Release) Branch</strong>. <a href="https://github.com/lupyuen/incubator-nuttx/pull/87">(Like this)</a></p>
-<p>GitHub Actions triggers a build for the <strong>PineCone Branch</strong>. <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L7-L272">(See this)</a></p>
-<p>Our <strong>Automated Testing</strong> verifies the PineCone (Release) Build with LoRaWAN on PineCone BL602. <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-05-24">(Like this)</a></p>
+<p>If the Downstream Branch has tested OK, we merge the Downstream Branch to the <strong>PineCone (Release) Branch</strong>. <a href="https://github.com/lupyuen/nuttx/pull/87">(Like this)</a></p>
+<p>GitHub Actions triggers a build for the <strong>PineCone Branch</strong>. <a href="https://github.com/lupyuen/nuttx/blob/master/.github/workflows/bl602-commit.yml#L7-L272">(See this)</a></p>
+<p>Our <strong>Automated Testing</strong> verifies the PineCone (Release) Build with LoRaWAN on PineCone BL602. <a href="https://github.com/lupyuen/nuttx/releases/tag/release-2022-05-24">(Like this)</a></p>
 </li>
 <li>
-<p>If the PineCone Branch has tested OK, we <strong>merge the PineCone (Release) Branch</strong> to the PineDio Branch. <a href="https://github.com/lupyuen/incubator-nuttx/pull/88">(Like this)</a></p>
-<p>GitHub Actions triggers a build for the <strong>PineDio Branch</strong>. <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L7-L272">(See this)</a></p>
-<p>We run our <strong>Automated Testing</strong> on PineDio Stack to verify that the PineDio Build works OK with LoRaWAN and Touch Panel. <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-24">(Like this)</a></p>
+<p>If the PineCone Branch has tested OK, we <strong>merge the PineCone (Release) Branch</strong> to the PineDio Branch. <a href="https://github.com/lupyuen/nuttx/pull/88">(Like this)</a></p>
+<p>GitHub Actions triggers a build for the <strong>PineDio Branch</strong>. <a href="https://github.com/lupyuen/nuttx/blob/master/.github/workflows/bl602-commit.yml#L7-L272">(See this)</a></p>
+<p>We run our <strong>Automated Testing</strong> on PineDio Stack to verify that the PineDio Build works OK with LoRaWAN and Touch Panel. <a href="https://github.com/lupyuen/nuttx/releases/tag/pinedio-2022-05-24">(Like this)</a></p>
 </li>
 </ol>
 <p>That’s what we do today to keep PineCone and PineDio Branches in sync with NuttX Mainline.</p>
-<p>(We do the same for <a href="https://github.com/lupyuen/incubator-nuttx-apps"><strong>NuttX Apps</strong></a>, just before every merge of NuttX OS)</p>
+<p>(We do the same for <a href="https://github.com/lupyuen/nuttx-apps"><strong>NuttX Apps</strong></a>, just before every merge of NuttX OS)</p>
 <p><img src="https://lupyuen.github.io/images/auto2-merge2.jpg" alt="Merge Updates From PineDio Stack to PineCone" /></p>
 <h2 id="pinedio-stack-to-pinecone"><a href="#pinedio-stack-to-pinecone">10.2 PineDio Stack to PineCone</a></h2>
 <p>Now Reverse Uno: The pic above shows how we <strong>merge the updates from PineDio Branch</strong> back to PineCone Branch (like when we add a new feature for PineDio Stack)…</p>
 <ol>
 <li>
-<p>When we commit a change to the <strong>PineDio Branch</strong>, GitHub Actions triggers a build of the branch. <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/.github/workflows/pinedio.yml#L7-L77">(See this)</a></p>
-<p>We run our <strong>Automated Testing</strong> on PineDio Stack to verify that the build works OK with LoRaWAN and Touch Panel. <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/pinedio-2022-05-23">(Like this)</a></p>
+<p>When we commit a change to the <strong>PineDio Branch</strong>, GitHub Actions triggers a build of the branch. <a href="https://github.com/lupyuen/nuttx/blob/pinedio/.github/workflows/pinedio.yml#L7-L77">(See this)</a></p>
+<p>We run our <strong>Automated Testing</strong> on PineDio Stack to verify that the build works OK with LoRaWAN and Touch Panel. <a href="https://github.com/lupyuen/nuttx/releases/tag/pinedio-2022-05-23">(Like this)</a></p>
 </li>
 <li>
-<p>If the PineDio Branch has tested OK, we merge the PineDio Branch to the <strong>PineCone (Release) Branch</strong>. <a href="https://github.com/lupyuen/incubator-nuttx/pull/85">(Like this)</a></p>
-<p>GitHub Actions triggers a build for the <strong>PineCone Branch</strong>. <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L7-L272">(See this)</a></p>
-<p>Our <strong>Automated Testing</strong> verifies the PineCone (Release) Build with LoRaWAN on PineCone BL602. <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-05-23">(Like this)</a></p>
+<p>If the PineDio Branch has tested OK, we merge the PineDio Branch to the <strong>PineCone (Release) Branch</strong>. <a href="https://github.com/lupyuen/nuttx/pull/85">(Like this)</a></p>
+<p>GitHub Actions triggers a build for the <strong>PineCone Branch</strong>. <a href="https://github.com/lupyuen/nuttx/blob/master/.github/workflows/bl602-commit.yml#L7-L272">(See this)</a></p>
+<p>Our <strong>Automated Testing</strong> verifies the PineCone (Release) Build with LoRaWAN on PineCone BL602. <a href="https://github.com/lupyuen/nuttx/releases/tag/release-2022-05-23">(Like this)</a></p>
 </li>
 <li>
-<p>If the PineCone Branch has tested OK, we merge the PineCone (Release) Branch to the <strong>Downstream Branch</strong>. <a href="https://github.com/lupyuen/incubator-nuttx/pull/86">(Like this)</a></p>
-<p>GitHub Actions triggers a build for the <strong>Downstream Branch</strong>. <a href="https://github.com/lupyuen/incubator-nuttx/blob/downstream/.github/workflows/bl602-downstream.yml#L7-L272">(See this)</a></p>
-<p>For one last time, we run our <strong>Automated Testing</strong> on PineCone BL602 to verify that the Downstream Build works OK with LoRaWAN. <a href="https://github.com/lupyuen/incubator-nuttx/releases/tag/downstream-2022-05-23">(Like this)</a></p>
+<p>If the PineCone Branch has tested OK, we merge the PineCone (Release) Branch to the <strong>Downstream Branch</strong>. <a href="https://github.com/lupyuen/nuttx/pull/86">(Like this)</a></p>
+<p>GitHub Actions triggers a build for the <strong>Downstream Branch</strong>. <a href="https://github.com/lupyuen/nuttx/blob/downstream/.github/workflows/bl602-downstream.yml#L7-L272">(See this)</a></p>
+<p>For one last time, we run our <strong>Automated Testing</strong> on PineCone BL602 to verify that the Downstream Build works OK with LoRaWAN. <a href="https://github.com/lupyuen/nuttx/releases/tag/downstream-2022-05-23">(Like this)</a></p>
 <p>Downstream Branch is now ready to <strong>accept new updates</strong> from NuttX Mainline. (Within the next 2 weeks)</p>
 </li>
 </ol>
 <p>That’s what we do today to sync the PineDio and PineCone Branches.</p>
-<p>(We do the same for <a href="https://github.com/lupyuen/incubator-nuttx-apps"><strong>NuttX Apps</strong></a>, just before every merge of NuttX OS)</p>
+<p>(We do the same for <a href="https://github.com/lupyuen/nuttx-apps"><strong>NuttX Apps</strong></a>, just before every merge of NuttX OS)</p>
 <p><img src="https://lupyuen.github.io/images/expander-title.jpg" alt="GPIO Expander for PineDio Stack" /></p>
 <p><a href="https://lupyuen.github.io/articles/expander"><em>GPIO Expander for PineDio Stack</em></a></p>
 <h2 id="merge-conflicts"><a href="#merge-conflicts">10.3 Merge Conflicts</a></h2>
@@ -999,22 +999,22 @@ gh release edit \
 <p>Suppose NuttX Mainline implements a new feature: <a href="https://lupyuen.github.io/articles/pinedio2#spi-direct-memory-access"><strong>SPI DMA for BL602</strong></a>…</p>
 <ul>
 <li>
-<p>We need to merge the SPI DMA changes into <strong>SPI Driver</strong> for the PineCone Branch: <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c"><strong>bl602_spi.c</strong></a></p>
+<p>We need to merge the SPI DMA changes into <strong>SPI Driver</strong> for the PineCone Branch: <a href="https://github.com/lupyuen/nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c"><strong>bl602_spi.c</strong></a></p>
 </li>
 <li>
-<p>But recall that the SPI Driver for the PineCone Branch also includes the <a href="https://lupyuen.github.io/articles/pinedio2#spi-device-table"><strong>SPI Device Table</strong></a> for PineDio Stack: <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L1335-L1473"><strong>bl602_spi.c</strong></a></p>
+<p>But recall that the SPI Driver for the PineCone Branch also includes the <a href="https://lupyuen.github.io/articles/pinedio2#spi-device-table"><strong>SPI Device Table</strong></a> for PineDio Stack: <a href="https://github.com/lupyuen/nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L1335-L1473"><strong>bl602_spi.c</strong></a></p>
 </li>
 <li>
 <p>Thus we need to <strong>merge the SPI DMA</strong> changes very carefully into the SPI Driver. (Possibly changing the SPI Device Table too)</p>
 </li>
 <li>
-<p>To make the merging easier, we have <strong>demarcated the SPI Device Table</strong> with the <strong>PINEDIO_STACK_BL604</strong> macro: <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L1335-L1473"><strong>bl602_spi.c</strong></a></p>
+<p>To make the merging easier, we have <strong>demarcated the SPI Device Table</strong> with the <strong>PINEDIO_STACK_BL604</strong> macro: <a href="https://github.com/lupyuen/nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L1335-L1473"><strong>bl602_spi.c</strong></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  If this is PineDio Stack...
 #ifdef PINEDIO_STACK_BL604
 //  Code for SPI Device Table goes here...
 #endif  //  PINEDIO_STACK_BL604</code></pre></div></li>
 <li>
-<p><strong>PINEDIO_STACK_BL604</strong> is defined below, should probably be improved: <a href="https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L147-L151"><strong>board.h</strong></a></p>
+<p><strong>PINEDIO_STACK_BL604</strong> is defined below, should probably be improved: <a href="https://github.com/lupyuen/nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L147-L151"><strong>board.h</strong></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Identify as PineDio Stack if both ST7789 and CST816S are present
 #if defined(CONFIG_LCD_ST7789) &amp;&amp; defined(CONFIG_INPUT_CST816S)
 #define PINEDIO_STACK_BL604
@@ -1037,8 +1037,8 @@ gh release edit \
 
 # Configure build for PineDio Stack BL604
 ./tools/configure.sh bl602evb:pinedio</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/configs/pinecone/defconfig">(See the PineCone config)</a></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig">(See the PineDio Stack config)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/master/boards/risc-v/bl602/bl602evb/configs/pinecone/defconfig">(See the PineCone config)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig">(See the PineDio Stack config)</a></p>
 <p><a href="https://gist.github.com/lupyuen/a6396ccbe9427087e73e5f29bf570eda">(How we resolve Merge Conflicts between NuttX Mainline and our Downstream Branch)</a></p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-inside5.jpg" alt="Inside PineDio Stack BL604" /></p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2"><em>Inside PineDio Stack BL604</em></a></p>
@@ -1101,7 +1101,7 @@ gh release edit \
 <li>
 <p>The ST7789 Display on our Spare PineDio Stack for Automated Testing is faulty. How will we know if the <strong>ST7789 Driver is working?</strong></p>
 <p>Right now I’m manually running the LVGL Test App on my Main PineDio Stack (with a functioning display), to check if the ST7789 Driver is OK.</p>
-<p>The test results are manually recorded in the Pull Request. <a href="https://github.com/lupyuen/incubator-nuttx/pull/88">(See this)</a></p>
+<p>The test results are manually recorded in the Pull Request. <a href="https://github.com/lupyuen/nuttx/pull/88">(See this)</a></p>
 </li>
 <li>
 <p>What if the Kconfig files in NuttX Mainline get updated? How do we sync the updates to the <strong>PineDio Stack Build Config</strong>?</p>

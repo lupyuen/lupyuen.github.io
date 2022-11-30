@@ -444,7 +444,7 @@ __start:
 real_start: ... </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/scripts/dramboot.ld#L97-L106">(<strong><code>_e_initstack</code></strong> is End of Stack Space)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L41-L49">(<strong><code>__HEAD_FLAGS</code></strong> is defined here)</a></p>
-<p><a href="https://github.com/apache/incubator-nuttx/pull/7692#issuecomment-1327103980">(<strong>UPDATE:</strong> We don’t need to change the Image Load Offset)</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/7692#issuecomment-1327103980">(<strong>UPDATE:</strong> We don’t need to change the Image Load Offset)</a></p>
 <p><em>What’s the value of <code>__start</code>?</em></p>
 <p>Remember <strong><code>kernel_addr_r</code></strong>, the <a href="https://lupyuen.github.io/articles/uboot#boot-address"><strong>Kernel Start Address</strong></a> from U-Boot?</p>
 <p>In NuttX, we define the Kernel Start Address <strong><code>__start</code></strong> as <strong><code>0x4008</code> <code>0000</code></strong> in our Linker Script: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/scripts/dramboot.ld#L30-L34">boards/arm64/qemu/qemu-a53/scripts/dramboot</a></p>
@@ -952,7 +952,7 @@ aarch64-none-elf-objdump \
 <div class="example-wrap"><pre class="language-text"><code>token &quot;@&quot; is not valid in preprocessor</code></pre></div>
 <p>Look for this file in the Arm64 Toolchain…</p>
 <div class="example-wrap"><pre class="language-text"><code>gcc-arm-none-eabi/arm-none-eabi/include/_newlib_version.h</code></pre></div>
-<p>And <a href="https://github.com/apache/incubator-nuttx/pull/7284/commits/518b0eb31cb66f25b590ae9a79ab16c319b96b94#diff-12291efd8a0ded1bc38bad733d99e4840ae5112b465c04287f91ba5169612c73"><strong>apply this patch</strong></a>.</p>
+<p>And <a href="https://github.com/apache/nuttx/pull/7284/commits/518b0eb31cb66f25b590ae9a79ab16c319b96b94#diff-12291efd8a0ded1bc38bad733d99e4840ae5112b465c04287f91ba5169612c73"><strong>apply this patch</strong></a>.</p>
 <h2 id="output-files"><a href="#output-files">18.5 Output Files</a></h2>
 <p>The NuttX Output Files may be found here…</p>
 <ul>

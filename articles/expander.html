@@ -135,7 +135,7 @@
 <p><em>What’s a GPIO Expander?</em></p>
 <p>NuttX lets us create <strong>I/O Expander Drivers</strong> that will manage many GPIOs…</p>
 <ul>
-<li><a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/ioexpander.h"><strong>NuttX I/O Expander Driver Interface</strong></a></li>
+<li><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/ioexpander/ioexpander.h"><strong>NuttX I/O Expander Driver Interface</strong></a></li>
 </ul>
 <p>Well BL604 looks like a <strong>Big Bag o’ GPIOs</strong>. Why not create a <strong>GPIO Expander</strong> that will manage all 23 GPIOs?</p>
 <ul>
@@ -167,36 +167,36 @@
 <p><em>What’s this BL602 EVB?</em></p>
 <p>In NuttX, <strong>BL602 EVB</strong> (“Evaluation Board”) provides the <strong>Board-Specific Functions</strong> for PineDio Stack and other BL602 / BL604 boards…</p>
 <ul>
-<li><strong>NuttX BL602 EVB:</strong> <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio/boards/risc-v/bl602/bl602evb/src"><strong>boards/risc-v/bl602/bl602evb</strong></a></li>
+<li><strong>NuttX BL602 EVB:</strong> <a href="https://github.com/lupyuen/nuttx/tree/pinedio/boards/risc-v/bl602/bl602evb/src"><strong>boards/risc-v/bl602/bl602evb</strong></a></li>
 </ul>
 <p><em>What’s inside BL602 EVB?</em></p>
 <p>The important parts of BL602 EVB are…</p>
 <ul>
 <li>
-<p><strong>Pin Definitions:</strong> <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h"><strong>board.h</strong></a></p>
+<p><strong>Pin Definitions:</strong> <a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h"><strong>board.h</strong></a></p>
 <p>Defines the pins for the GPIO, UART, I2C, SPI and PWM ports.</p>
 </li>
 <li>
-<p><strong>Bring-Up:</strong> <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c"><strong>bl602_bringup.c</strong></a></p>
+<p><strong>Bring-Up:</strong> <a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c"><strong>bl602_bringup.c</strong></a></p>
 <p>Starts the NuttX Drivers and the GPIO / UART / I2C / SPI / PWM ports.</p>
 </li>
 <li>
-<p><strong>EVB GPIO Driver:</strong> <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c"><strong>bl602_gpio.c</strong></a></p>
+<p><strong>EVB GPIO Driver:</strong> <a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c"><strong>bl602_gpio.c</strong></a></p>
 <p>Implements the GPIO Input, Output and Interrupt ports.</p>
-<p>Calls the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c"><strong>BL602 GPIO Driver</strong></a>.</p>
+<p>Calls the <a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c"><strong>BL602 GPIO Driver</strong></a>.</p>
 </li>
 </ul>
 <p>In a while we’ll study the <strong>limitations of BL602 EVB</strong>, to understand why we created the BL602 GPIO Expander.</p>
 <p><em>Wait… Where’s the rest of the BL602 stuff?</em></p>
 <p>The <strong>Architecture-Specific Functions</strong> for BL602 and BL604 are located at…</p>
 <ul>
-<li><strong>NuttX BL602:</strong> <a href="https://github.com/lupyuen/incubator-nuttx/tree/pinedio/arch/risc-v/src/bl602"><strong>arch/risc-v/src/bl602</strong></a></li>
+<li><strong>NuttX BL602:</strong> <a href="https://github.com/lupyuen/nuttx/tree/pinedio/arch/risc-v/src/bl602"><strong>arch/risc-v/src/bl602</strong></a></li>
 </ul>
 <p>This includes the low-level drivers for GPIO, UART, I2C, SPI, PWM, …</p>
 <p>We’re hunky dory with these drivers, though we’ve made tiny mods like for <a href="https://lupyuen.github.io/articles/pinedio2#spi-device-table"><strong>SPI Device Table</strong></a>.</p>
 <p><img src="https://lupyuen.github.io/images/expander-title1a.png" alt="BL602 EVB always maps sequentially the GPIO Pins" /></p>
 <h2 id="pin-definitions"><a href="#pin-definitions">1.1 Pin Definitions</a></h2>
-<p>In BL602 EVB, this is how we <strong>define the pins</strong> for GPIO / UART / I2C / SPI / PWM: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L38-L59">board.h</a></p>
+<p>In BL602 EVB, this is how we <strong>define the pins</strong> for GPIO / UART / I2C / SPI / PWM: <a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L38-L59">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define BOARD_NGPIOIN  1  //  Number of GPIO Input pins
 #define BOARD_NGPIOOUT 1  //  Number of GPIO Output pins
 #define BOARD_NGPIOINT 1  //  Number of GPIO Interrupt pins
@@ -209,7 +209,7 @@
 
 //  GPIO Interrupt: GPIO 19
 #define BOARD_GPIO_INT1 (GPIO_PIN19 | GPIO_INPUT | GPIO_FLOAT | GPIO_FUNC_SWGPIO)</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145">(See the UART / I2C / SPI / PWM Pins)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145">(See the UART / I2C / SPI / PWM Pins)</a></p>
 <p>A couple of issues…</p>
 <ul>
 <li>
@@ -217,14 +217,14 @@
 </li>
 <li>
 <p>We could extend this GPIO Limit, but we’ll have to <strong>modify the EVB GPIO Driver</strong>, which sounds odd</p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L106-L137">(See this)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L106-L137">(See this)</a></p>
 </li>
 <li>
 <p>BL602 EVB always <strong>maps sequentially</strong> the GPIO Pins like so: GPIO Input, then GPIO Output, then GPIO Interrupt (pic above)…</p>
 <p><strong>/dev/gpio0</strong>: GPIO Input <em>(GPIO 10)</em></p>
 <p><strong>/dev/gpio1</strong>: GPIO Output <em>(GPIO 15)</em></p>
 <p><strong>/dev/gpio2</strong>: GPIO Interrupt <em>(GPIO 19)</em></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L550-L604">(See this)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L550-L604">(See this)</a></p>
 </li>
 <li>
 <p>Which becomes super confusing when we <strong>map all 23 GPIOs</strong> on PineDio Stack.</p>
@@ -242,8 +242,8 @@
 <p>BL602 EVB works great for 3 GPIOs, but <strong>doesn’t scale well</strong> beyond that.</p>
 <p>Let’s make this better.</p>
 <p><em>Shouldn’t the pins be defined in Kconfig / menuconfig?</em></p>
-<p>Perhaps. NuttX on ESP32 defines the pins in <strong>Kconfig and menuconfig.</strong> <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/xtensa/src/esp32/Kconfig#L938-L984">(See this)</a></p>
-<p>But for now, let’s keep the Pin Definitions in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L38-L59"><strong>board.h</strong></a>.</p>
+<p>Perhaps. NuttX on ESP32 defines the pins in <strong>Kconfig and menuconfig.</strong> <a href="https://github.com/apache/nuttx/blob/master/arch/xtensa/src/esp32/Kconfig#L938-L984">(See this)</a></p>
+<p>But for now, let’s keep the Pin Definitions in <a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L38-L59"><strong>board.h</strong></a>.</p>
 <p><img src="https://lupyuen.github.io/images/expander-title2a.jpg" alt="Overcome The Limitations" /></p>
 <h1 id="overcome-the-limitations"><a href="#overcome-the-limitations">2 Overcome The Limitations</a></h1>
 <p>We plan to make BL602 EVB <strong>work great with PineDio Stack</strong>…</p>
@@ -280,7 +280,7 @@
 <p><em>So our GPIO Expander works like a NuttX I/O Expander?</em></p>
 <p>Yep, NuttX lets us create <strong>I/O Expander Drivers</strong> that will manage many Input, Output and Interrupt GPIOs…</p>
 <ul>
-<li><a href="https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/ioexpander.h"><strong>NuttX I/O Expander Driver Interface</strong></a></li>
+<li><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/ioexpander/ioexpander.h"><strong>NuttX I/O Expander Driver Interface</strong></a></li>
 </ul>
 <p>I/O Expanders will support reading and writing to GPIOs, also attaching and detaching Interrupt Callbacks. (Pic above)</p>
 <p><em>Isn’t an I/O Expander Driver supposed to be Platform-Independent?</em></p>
@@ -290,7 +290,7 @@ because it meets our needs for PineDio Stack.</p>
 <p><em>Great! How will we get started on GPIO Expander?</em></p>
 <p>NuttX helpfully provides a <strong>Skeleton Driver</strong> for I/O Expander (pic below)…</p>
 <ul>
-<li><a href="https://github.com/apache/incubator-nuttx/blob/master/drivers/ioexpander/skeleton.c"><strong>Skeleton Driver for I/O Expander</strong></a></li>
+<li><a href="https://github.com/apache/nuttx/blob/master/drivers/ioexpander/skeleton.c"><strong>Skeleton Driver for I/O Expander</strong></a></li>
 </ul>
 <p>Let’s flesh out the Skeleton Driver for our GPIO Expander.</p>
 <p><img src="https://lupyuen.github.io/images/expander-code4a.png" alt="Skeleton Driver for I/O Expander" /></p>
@@ -354,10 +354,10 @@ static const struct ioexpander_ops_s g_bl602_expander_ops = {
 <p><a href="https://lupyuen.github.io/articles/expander#appendix-handle-gpio-interrupt"><strong>“Handle GPIO Interrupt”</strong></a></p>
 </li>
 </ul>
-<p><em>Existing NuttX Drivers call <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230"><strong>bl602_gpioread</strong></a> and <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216"><strong>bl602_gpiowrite</strong></a> to read and write BL602 GPIOs. Will they still work?</em></p>
-<p>Yep the <strong>BL602 GPIO Functions</strong> like <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230"><strong>bl602_gpioread</strong></a> and <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216"><strong>bl602_gpiowrite</strong></a> will work fine with GPIO Expander.</p>
+<p><em>Existing NuttX Drivers call <a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230"><strong>bl602_gpioread</strong></a> and <a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216"><strong>bl602_gpiowrite</strong></a> to read and write BL602 GPIOs. Will they still work?</em></p>
+<p>Yep the <strong>BL602 GPIO Functions</strong> like <a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230"><strong>bl602_gpioread</strong></a> and <a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216"><strong>bl602_gpiowrite</strong></a> will work fine with GPIO Expander.</p>
 <p>The <strong>NuttX GPIO Functions</strong> like <code>open()</code> and <code>ioctl()</code> will also work with GPIO Expander.</p>
-<p>(That’s because they call the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c"><strong>GPIO Lower Half Driver</strong></a>, which is integrated with our GPIO Expander)</p>
+<p>(That’s because they call the <a href="https://github.com/lupyuen/nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c"><strong>GPIO Lower Half Driver</strong></a>, which is integrated with our GPIO Expander)</p>
 <p>Let’s look at GPIO Interrupts, which are more complicated…</p>
 <p><img src="https://lupyuen.github.io/images/expander-code5a.png" alt="GPIO Operations" /></p>
 <h1 id="gpio-interrupt"><a href="#gpio-interrupt">4 GPIO Interrupt</a></h1>
@@ -378,10 +378,10 @@ static const struct ioexpander_ops_s g_bl602_expander_ops = {
 <p><em>Anything peculiar about GPIO Interrupts on BL602 and BL604?</em></p>
 <p><strong>GPIO Interrupt Handling</strong> gets tricky for BL602 and BL604…</p>
 <p>All GPIO Interrupts are multiplexed into <strong>One Single GPIO IRQ!</strong></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505">(<strong>BL602_IRQ_GPIO_INT0</strong> is the common GPIO IRQ)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505">(<strong>BL602_IRQ_GPIO_INT0</strong> is the common GPIO IRQ)</a></p>
 <p>BL602 EVB <strong>demultiplexes the GPIO IRQ</strong> and calls the GPIO Interrupt Callbacks.</p>
 <p><img src="https://lupyuen.github.io/images/expander-code2a.png" alt="Attaching a GPIO Interrupt with BL602 EVB" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L477-L505">(Source)</a></p>
 <p><em>So we call BL602 EVB to attach our own GPIO Interrupt Callback?</em></p>
 <p>Sadly we can’t. BL602 EVB <strong>doesn’t expose a Public Function</strong> that we may call to attach our Interrupt Callback.</p>
 <p>(<strong>gpint_attach</strong> is a Private Function, as shown above)</p>
@@ -402,15 +402,15 @@ static const struct ioexpander_ops_s g_bl602_expander_ops = {
 <p>More about the implementation in a moment. Let’s talk about calling the GPIO Expander…</p>
 <h2 id="attach-interrupt-callback"><a href="#attach-interrupt-callback">4.2 Attach Interrupt Callback</a></h2>
 <p><em>How do we attach a GPIO Interrupt Callback?</em></p>
-<p>Because GPIO Expander implements the I/O Expander Interface, we may call <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/ioexpander/ioexpander.h#L235-L257"><strong>IOEP_ATTACH</strong></a> to attach an Interrupt Callback.</p>
-<p>Let’s attach an Interrupt Callback that will be called when we press the <strong>Push Button</strong> (GPIO 12) on PineDio Stack: <a href="https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L696-L704">bl602_bringup.c</a></p>
+<p>Because GPIO Expander implements the I/O Expander Interface, we may call <a href="https://github.com/lupyuen/nuttx/blob/pinedio/include/nuttx/ioexpander/ioexpander.h#L235-L257"><strong>IOEP_ATTACH</strong></a> to attach an Interrupt Callback.</p>
+<p>Let’s attach an Interrupt Callback that will be called when we press the <strong>Push Button</strong> (GPIO 12) on PineDio Stack: <a href="https://github.com/lupyuen/nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L696-L704">bl602_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#include &lt;nuttx/ioexpander/gpio.h&gt;
 #include &lt;nuttx/ioexpander/bl602_expander.h&gt;
 ...
 //  Get the Push Button Pinset and GPIO Pin Number
 gpio_pinset_t pinset = BOARD_BUTTON_INT;
 uint8_t gpio_pin = (pinset &amp; GPIO_PIN_MASK) &gt;&gt; GPIO_PIN_SHIFT;</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L143-L145">(<strong>BOARD_BUTTON_INT</strong> is defined in board.h)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L143-L145">(<strong>BOARD_BUTTON_INT</strong> is defined in board.h)</a></p>
 <p>First we get the <strong>GPIO Pin Number</strong> for the Push Button.</p>
 <p>Then we configure our GPIO Expander to trigger the GPIO Interrupt on the <strong>Falling Edge</strong> (High to Low)…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Configure GPIO interrupt to be triggered on falling edge
@@ -421,7 +421,7 @@ IOEXP_SETOPTION(
   IOEXPANDER_OPTION_INTCFG,            //  Configure interrupt trigger
   (FAR void *) IOEXPANDER_VAL_FALLING  //  Trigger on falling edge
 );</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/ioexpander/ioexpander.h#L91-L110">(<strong>IOEXP_SETOPTION</strong> comes from the I/O Expander)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/include/nuttx/ioexpander/ioexpander.h#L91-L110">(<strong>IOEXP_SETOPTION</strong> comes from the I/O Expander)</a></p>
 <p>Finally we call GPIO Expander to <strong>attach our Interrupt Callback</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Attach our GPIO interrupt callback
 void *handle = IOEP_ATTACH(
@@ -431,14 +431,14 @@ void *handle = IOEP_ATTACH(
   NULL                           //  TODO: Set the callback argument
 );
 DEBUGASSERT(handle != NULL);</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/ioexpander/ioexpander.h#L235-L257">(<strong>IOEP_ATTACH</strong> comes from the I/O Expander)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/include/nuttx/ioexpander/ioexpander.h#L235-L257">(<strong>IOEP_ATTACH</strong> comes from the I/O Expander)</a></p>
 <p>The <strong>Interrupt Callback</strong> is defined as…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Our GPIO Interrupt Callback
 static int button_isr_handler(FAR struct ioexpander_dev_s *dev, ioe_pinset_t pinset, FAR void *arg) {
   gpioinfo(&quot;Button Pressed\n&quot;);
   return 0;
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L1038-L1044">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L1038-L1044">(Source)</a></p>
 <p>Note that the Interrupt Callback runs in the <strong>BL602 Interrupt Context</strong>.</p>
 <p>Be careful!</p>
 <h2 id="gpio-command"><a href="#gpio-command">4.3 GPIO Command</a></h2>
@@ -472,9 +472,9 @@ Verify:        Value=1</code></pre></div>
 <li><a href="https://lupyuen.github.io/articles/sx1262#handle-dio1-interrupt"><strong>“Handle DIO1 Interrupt”</strong></a></li>
 </ul>
 <p>This code calls <strong><code>ioctl()</code></strong> in the User Space (instead of Kernel Space), so it works OK with GPIO Expander without modification.</p>
-<p>(That’s because <strong><code>ioctl()</code></strong> calls the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c"><strong>GPIO Lower Half Driver</strong></a>, which is integrated with our GPIO Expander)</p>
+<p>(That’s because <strong><code>ioctl()</code></strong> calls the <a href="https://github.com/lupyuen/nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c"><strong>GPIO Lower Half Driver</strong></a>, which is integrated with our GPIO Expander)</p>
 <h1 id="load-gpio-expander"><a href="#load-gpio-expander">5 Load GPIO Expander</a></h1>
-<p>Here’s how we <strong>load our GPIO Expander</strong> at startup: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L742-L768">bl602_bringup.c</a></p>
+<p>Here’s how we <strong>load our GPIO Expander</strong> at startup: <a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L742-L768">bl602_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_IOEXPANDER_BL602_EXPANDER
 #include &lt;nuttx/ioexpander/gpio.h&gt;
 #include &lt;nuttx/ioexpander/bl602_expander.h&gt;
@@ -509,11 +509,11 @@ int bl602_bringup(void) {
 #endif  //  CONFIG_IOEXPANDER_BL602_EXPANDER</code></pre></div>
 <p>(We’ll talk about <strong>bl602_gpio_*</strong> in the next chapter)</p>
 <p>We must load the GPIO Expander <strong>before other drivers</strong> (like CST816S Touch Panel), because GPIO Expander provides GPIO functions for the drivers.</p>
-<p>We need to <strong>disable the BL602 EVB GPIO Driver</strong>, because GPIO Expander needs the <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c"><strong>GPIO Lower Half Driver</strong></a> (which can’t coexist with BL602 EVB GPIO)…</p>
+<p>We need to <strong>disable the BL602 EVB GPIO Driver</strong>, because GPIO Expander needs the <a href="https://github.com/lupyuen/nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c"><strong>GPIO Lower Half Driver</strong></a> (which can’t coexist with BL602 EVB GPIO)…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Added CONFIG_GPIO_LOWER_HALF below
 #if defined(CONFIG_DEV_GPIO) &amp;&amp; !defined(CONFIG_GPIO_LOWER_HALF)
   ret = bl602_gpio_initialize();</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L646-L653">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L646-L653">(Source)</a></p>
 <p>Check the following in menuconfig…</p>
 <ul>
 <li>
@@ -528,14 +528,14 @@ int bl602_bringup(void) {
 </ul>
 <p><a href="https://github.com/lupyuen/bl602_expander#install-driver">(Full instrunctions are here)</a></p>
 <p><img src="https://lupyuen.github.io/images/expander-code3a.png" alt="Tracking all 23 GPIOs used by PineDio Stack can get challenging" /></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145">(Source)</a></p>
 <h1 id="validate-gpio"><a href="#validate-gpio">6 Validate GPIO</a></h1>
 <p><em>Managing 23 GPIOs sounds mighty challenging?</em></p>
 <p>Indeed! Tracking all 23 GPIOs used by PineDio Stack can get challenging… We might <strong>reuse the GPIOs</strong> by mistake!</p>
 <p>Thankfully our GPIO Expander can help: It <strong>validates the GPIOs</strong> at startup.</p>
 <p>Here are the <strong>GPIOs currently defined</strong> for PineDio Stack (more to come)…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145">boards/risc-v/bl602/bl602evb/include/board.h</a></li>
+<li><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145">boards/risc-v/bl602/bl602evb/include/board.h</a></li>
 </ul>
 <p>At startup, GPIO Expander verifies that the GPIO, UART, I2C, SPI and PWM Ports <strong>don’t reuse the same GPIO</strong>.</p>
 <p>If a GPIO is reused like so…</p>
@@ -548,7 +548,7 @@ int bl602_bringup(void) {
 <div class="example-wrap"><pre class="language-text"><code>bl602_expander_initialize: ERROR:
 GPIO pin 11 is already in use</code></pre></div>
 <p><em>Awesome! How do we enable this GPIO Validation?</em></p>
-<p>To enable GPIO Validation, we <strong>add all GPIOs</strong> to the arrays <strong>bl602_gpio_inputs</strong>, <strong>bl602_gpio_outputs</strong>, <strong>bl602_gpio_interrupts</strong> and <strong>bl602_other_pins</strong>: <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L126-L222">bl602_bringup.c</a></p>
+<p>To enable GPIO Validation, we <strong>add all GPIOs</strong> to the arrays <strong>bl602_gpio_inputs</strong>, <strong>bl602_gpio_outputs</strong>, <strong>bl602_gpio_interrupts</strong> and <strong>bl602_other_pins</strong>: <a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L126-L222">bl602_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_IOEXPANDER_BL602_EXPANDER
 //  GPIO Input Pins for BL602 GPIO Expander
 static const gpio_pinset_t bl602_gpio_inputs[] =
@@ -650,7 +650,7 @@ bl602_expander = bl602_expander_initialize(
 </ul>
 <p>In NuttX, we set the <strong>Pin Definitions</strong> at…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145">boards/risc-v/bl602/bl602evb/include/board.h</a></li>
+<li><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145">boards/risc-v/bl602/bl602evb/include/board.h</a></li>
 </ul>
 <p><em>Let’s say we’re selecting a pin for SPI MISO?</em></p>
 <p>According to the pic above, <strong>SPI MISO</strong> must be either GPIO 0, 4, 8, 12, 16 or 20.</p>
@@ -658,7 +658,7 @@ bl602_expander = bl602_expander_initialize(
 <p>So this <strong>MISO Pin Definition</strong> is OK…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  GPIO 0 for MISO is OK
 #define BOARD_SPI_MISO (GPIO_PIN0 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L104">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L104">(Source)</a></p>
 <p>But this MISO Pin Definition is no-no…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  GPIO 3 for MISO is NOT OK (Oops!)
 #define BOARD_SPI_MISO (GPIO_PIN3 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)</code></pre></div>
@@ -857,7 +857,7 @@ CHANNEL MASK: 0003</code></pre></div>
 <h1 id="appendix-validate-pin-function"><a href="#appendix-validate-pin-function">10 Appendix: Validate Pin Function</a></h1>
 <p>In NuttX, we set the <strong>Pin Definitions</strong> at…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145">boards/risc-v/bl602/bl602evb/include/board.h</a></li>
+<li><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145">boards/risc-v/bl602/bl602evb/include/board.h</a></li>
 </ul>
 <p>BL602 / BL604 gives us incredible flexibility in <strong>selecting the GPIO Pins</strong> for the UART, I2C, SPI and PWM Ports…</p>
 <ul>
@@ -868,7 +868,7 @@ CHANNEL MASK: 0003</code></pre></div>
 <p>For example, this <strong>MISO Pin Definition</strong> is OK…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  GPIO 0 for MISO is OK
 #define BOARD_SPI_MISO (GPIO_PIN0 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L104">(Source)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L104">(Source)</a></p>
 <p>But this MISO Pin Definition is no-no…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  GPIO 3 for MISO is NOT OK (Oops!)
 #define BOARD_SPI_MISO (GPIO_PIN3 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)</code></pre></div>
@@ -894,7 +894,7 @@ CHANNEL MASK: 0003</code></pre></div>
 <p>Because <strong>SPI_MISO_PIN3</strong> doesn’t exist!</p>
 <p>But to check whether the <strong>Pin Numbers are unique</strong>, we would still need GPIO Expander to do this at runtime.</p>
 <p><em>Shouldn’t the pins be defined in Kconfig / menuconfig?</em></p>
-<p>Perhaps. NuttX on ESP32 uses <strong>Kconfig / menuconfig</strong> to define the pins. <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/xtensa/src/esp32/Kconfig#L938-L984">(See this)</a></p>
+<p>Perhaps. NuttX on ESP32 uses <strong>Kconfig / menuconfig</strong> to define the pins. <a href="https://github.com/apache/nuttx/blob/master/arch/xtensa/src/esp32/Kconfig#L938-L984">(See this)</a></p>
 <p>Then we would need GPIO Expander to validate the Pin Functions at runtime.</p>
 <p><a href="https://mastodon.social/@Ralim/108201458447291513"><strong>@Ralim</strong></a> has an interesting suggestion…</p>
 <blockquote>
@@ -908,7 +908,7 @@ CHANNEL MASK: 0003</code></pre></div>
 <p>Any other GPIO Pin for SPI MISO will be disallowed by our GPIO Expander. (And fail at startup)</p>
 <p><em>But the Pin Definitions only tell us the Function Group (like SPI), not the specific Pin Function (like MISO)?</em></p>
 <p>Yeah we might have to make the Pin Functions position-dependent. So SPI Pins will always be listed in this sequence: CS, MOSI, MISO, then CLK.</p>
-<p>Here’s how <strong>bl602_other_pins</strong> might look in <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L172-L222">bl602_bringup.c</a></p>
+<p>Here’s how <strong>bl602_other_pins</strong> might look in <a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L172-L222">bl602_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Other Pins for BL602 GPIO Expander (For Validation Only) */
 
 static const gpio_pinset_t bl602_other_pins[] =
@@ -967,10 +967,10 @@ static const gpio_pinset_t bl602_other_pins[] =
 <p>Attach the GPIO Expander <strong>Interrupt Handler</strong> to the GPIO IRQ</p>
 </li>
 <li>
-<p>Configure the <strong>GPIO Input, Output and Interrupt Pins</strong> by calling <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><strong>bl602_configgpio</strong></a></p>
+<p>Configure the <strong>GPIO Input, Output and Interrupt Pins</strong> by calling <a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><strong>bl602_configgpio</strong></a></p>
 </li>
 <li>
-<p>Register the GPIOs as “<strong>/dev/gpioN</strong>” by calling <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c#L370-L443"><strong>gpio_lower_half</strong></a></p>
+<p>Register the GPIOs as “<strong>/dev/gpioN</strong>” by calling <a href="https://github.com/lupyuen/nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c#L370-L443"><strong>gpio_lower_half</strong></a></p>
 </li>
 <li>
 <p>Validate the GPIOs and <strong>prevent reuse of GPIOs</strong></p>
@@ -1022,7 +1022,7 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
 <p><a href="https://lupyuen.github.io/articles/expander#appendix-handle-gpio-interrupt">(<strong>bl602_expander_interrupt</strong> is explained here)</a></p>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L164-L197">(<strong>bl602_expander_intmask</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L301-L325">(<strong>bl602_expander_irq_enable</strong> is defined here)</a></p>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/sched/irq/irq_attach.c#L37-L136">(<strong>irq_attach</strong> comes from the BL602 IRQ Driver)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/sched/irq/irq_attach.c#L37-L136">(<strong>irq_attach</strong> comes from the BL602 IRQ Driver)</a></p>
 <p>(Specific GPIO Interrupts are enabled later when we attach an Interrupt Callback to the specific GPIO)</p>
 <p>To prevent reuse of GPIOs, we prepare the array that will <strong>mark the used GPIOs</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Mark the GPIOs in use. CONFIG_IOEXPANDER_NPINS is 23 */
@@ -1030,7 +1030,7 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
   memset(gpio_is_used, 0, sizeof(gpio_is_used));</code></pre></div>
 <p>Now we handle the <strong>GPIO Inputs</strong>.</p>
 <p>Given the BL602 Pinset (from the Pin Definition), we call 
-<a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><strong>bl602_configgpio</strong></a> to <strong>configure each GPIO Input</strong>…</p>
+<a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><strong>bl602_configgpio</strong></a> to <strong>configure each GPIO Input</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Configure and register the GPIO Inputs */
   for (int i = 0; i &lt; gpio_input_count; i++)
     {
@@ -1049,7 +1049,7 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
       DEBUGASSERT(ret == OK);
       gpio_lower_half(&amp;priv-&gt;dev, gpio_pin, GPIO_INPUT_PIN, gpio_pin);
     }</code></pre></div>
-<p>And we call <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c#L370-L443"><strong>gpio_lower_half</strong></a> to register the GPIO Input as “<strong>/dev/gpioN</strong>”.</p>
+<p>And we call <a href="https://github.com/lupyuen/nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c#L370-L443"><strong>gpio_lower_half</strong></a> to register the GPIO Input as “<strong>/dev/gpioN</strong>”.</p>
 <p>(<strong>N</strong> is the GPIO Pin Number)</p>
 <p>We quit if the GPIO is <strong>already in use</strong>.</p>
 <p>We do the same for <strong>GPIO Outputs</strong>…</p>
@@ -1109,8 +1109,8 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
   /* TODO: Validate the Pin Functions (e.g. MISO vs MOSI) */
   return &amp;priv-&gt;dev;
 }</code></pre></div>
-<p>But we don’t call <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><strong>bl602_configgpio</strong></a> because that’s done by the <strong>UART / I2C / SPI / PWM Driver.</strong></p>
-<p>And we don’t call <a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c#L370-L443"><strong>gpio_lower_half</strong></a> because the reserved GPIOs shouldn’t appear as “<strong>/dev/gpioN</strong>”.</p>
+<p>But we don’t call <a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><strong>bl602_configgpio</strong></a> because that’s done by the <strong>UART / I2C / SPI / PWM Driver.</strong></p>
+<p>And we don’t call <a href="https://github.com/lupyuen/nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c#L370-L443"><strong>gpio_lower_half</strong></a> because the reserved GPIOs shouldn’t appear as “<strong>/dev/gpioN</strong>”.</p>
 <p>That’s how we initialise our GPIO Expander at startup!</p>
 <p><img src="https://lupyuen.github.io/images/expander-code6a.png" alt="Initialise GPIO Expander" /></p>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L956-L1121">(Source)</a></p>
@@ -1213,9 +1213,9 @@ static int bl602_expander_option(
   return ret;
 }</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L198-L246">(<strong>bl602_expander_set_intmod</strong> is defined here)</a></p>
-<p>Note that we copied <strong>bl602_expander_set_intmod</strong> from <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L171-L212"><strong>BL602 EVB GPIO Driver</strong></a> and fixed this bug…</p>
+<p>Note that we copied <strong>bl602_expander_set_intmod</strong> from <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L171-L212"><strong>BL602 EVB GPIO Driver</strong></a> and fixed this bug…</p>
 <ul>
-<li><a href="https://github.com/apache/incubator-nuttx/issues/5810#issuecomment-1098633538"><strong>“Incorrect call to bl602_gpio_set_intmod”</strong></a></li>
+<li><a href="https://github.com/apache/nuttx/issues/5810#issuecomment-1098633538"><strong>“Incorrect call to bl602_gpio_set_intmod”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/expander-code7a.png" alt="Set GPIO Option" /></p>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L456-L548">(Source)</a></p>
@@ -1243,7 +1243,7 @@ static int bl602_expander_writepin(
   bl602_expander_unlock(priv);
   return ret;
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216">(<strong>bl602_gpiowrite</strong> comes from the BL602 GPIO Driver)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216">(<strong>bl602_gpiowrite</strong> comes from the BL602 GPIO Driver)</a></p>
 <p><img src="https://lupyuen.github.io/images/expander-code9a.png" alt="Write GPIO" /></p>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L550-L594">(Source)</a></p>
 <h1 id="appendix-read-gpio"><a href="#appendix-read-gpio">15 Appendix: Read GPIO</a></h1>
@@ -1271,7 +1271,7 @@ static int bl602_expander_readpin(
   gpioinfo(&quot;pin=%u, value=%u\n&quot;, pin, *value);
   return ret;
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230">(<strong>bl602_gpioread</strong> comes from the BL602 GPIO Driver)</a></p>
+<p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230">(<strong>bl602_gpioread</strong> comes from the BL602 GPIO Driver)</a></p>
 <p><img src="https://lupyuen.github.io/images/expander-code8a.png" alt="Read GPIO" /></p>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L596-L642">(Source)</a></p>
 <h1 id="appendix-attach-gpio-interrupt"><a href="#appendix-attach-gpio-interrupt">16 Appendix: Attach GPIO Interrupt</a></h1>
@@ -1374,12 +1374,12 @@ static int bl602_expander_detach(
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L908-L950">(Source)</a></p>
 <h1 id="appendix-handle-gpio-interrupt"><a href="#appendix-handle-gpio-interrupt">18 Appendix: Handle GPIO Interrupt</a></h1>
 <p>Below is the <strong>GPIO Expander Interrupt Handler</strong> that handles the GPIO IRQ Interrupt.</p>
-<p>The interrupt-handling logic was copied from the <a href="https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L255-L303"><strong>BL602 EVB GPIO Driver</strong></a>, so some details are a little fuzzy.</p>
+<p>The interrupt-handling logic was copied from the <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L255-L303"><strong>BL602 EVB GPIO Driver</strong></a>, so some details are a little fuzzy.</p>
 <p>(Like clearing the Interrupt Status)</p>
 <p>Remember that all GPIO Interrupts are multiplexed to a <strong>single GPIO IRQ</strong>.</p>
 <p>When the GPIO IRQ is triggered, we check the <strong>Interrupt Status</strong> of each GPIO and handle accordingly: <a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L327-L393">bl602_expander.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Handle GPIO Interrupt. Based on
-//  https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L256-L304
+//  https://github.com/apache/nuttx/blob/master/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L256-L304
 static int bl602_expander_interrupt(
   int irq,        //  IRQ Number
   void *context,  //  Interrupt Context
