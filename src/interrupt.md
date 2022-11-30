@@ -105,7 +105,7 @@ So we need to fix NuttX and downgrade GIC Version 3 __back to GIC Version 2__, s
 
 _We're sure that PinePhone runs on GIC Version 2?_
 
-Let's verify! This code reads the __GIC Version__ from PinePhone: [arch/arm64/src/common/arm64_gicv3.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L710-L734)
+Let's verify! This code reads the __GIC Version__ from PinePhone: [arch/arm64/src/common/arm64_gicv3.c](https://github.com/lupyuen/nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L710-L734)
 
 ```c
 // Init GIC v2 for PinePhone
@@ -169,17 +169,17 @@ _Does NuttX support GIC Version 2 for PinePhone?_
 
 Yes NuttX supports __Generic Interrupt Controller (GIC) Version 2__ but there's a catch... It's for __Arm32 CPUs, not Arm64 CPUs!__
 
--   [arch/arm/src/armv7-a/arm_gicv2.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/armv7-a/arm_gicv2.c)
+-   [arch/arm/src/armv7-a/arm_gicv2.c](https://github.com/lupyuen/nuttx/blob/pinephone/arch/arm/src/armv7-a/arm_gicv2.c)
 
--   [arch/arm/src/armv7-a/arm_gicv2_dump.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/armv7-a/arm_gicv2_dump.c)
+-   [arch/arm/src/armv7-a/arm_gicv2_dump.c](https://github.com/lupyuen/nuttx/blob/pinephone/arch/arm/src/armv7-a/arm_gicv2_dump.c)
 
--   [arch/arm/src/armv7-a/gic.h](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm/src/armv7-a/gic.h)
+-   [arch/arm/src/armv7-a/gic.h](https://github.com/lupyuen/nuttx/blob/pinephone/arch/arm/src/armv7-a/gic.h)
 
 Remember: GIC Version 2 was created for Arm32.
 
 _So we port NuttX's GIC Version 2 from Arm32 to Arm64?_
 
-Kinda. We did a __horrible hack__... Don't try this at home! (Unless you have a ten-foot pole) [arch/arm64/src/common/arm64_gicv3.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L765-L823)
+Kinda. We did a __horrible hack__... Don't try this at home! (Unless you have a ten-foot pole) [arch/arm64/src/common/arm64_gicv3.c](https://github.com/lupyuen/nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L765-L823)
 
 ```c
 // GIC v2 for PinePhone:
@@ -201,7 +201,7 @@ Kinda. We did a __horrible hack__... Don't try this at home! (Unless you have a 
 #include "../arch/arm/src/armv7-a/arm_gicv2.c"
 ```
 
-[(We commented out the __GIC Version 3__ code as __`NOTUSED`__)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c)
+[(We commented out the __GIC Version 3__ code as __`NOTUSED`__)](https://github.com/lupyuen/nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c)
 
 _What! Did we just `#include` the GIC Version 2 Source Code from Arm32 into Arm64?_
 
@@ -209,13 +209,13 @@ Yep it's an awful trick but it seems to work!
 
 We made __minor tweaks__ to GIC Version 2 to compile with Arm64...
 
--   [Changes to arm_gicv2.c](https://github.com/lupyuen/incubator-nuttx/commit/6fa0e7e5d2beddad07890c83d2ee428a3f2b8a62#diff-6e1132aef124dabaf94c200ab06d65c7bc2b9967bf76a46aba71a7f43b5fb219)
+-   [Changes to arm_gicv2.c](https://github.com/lupyuen/nuttx/commit/6fa0e7e5d2beddad07890c83d2ee428a3f2b8a62#diff-6e1132aef124dabaf94c200ab06d65c7bc2b9967bf76a46aba71a7f43b5fb219)
 
--   [Changes to arm_gicv2_dump.c](https://github.com/lupyuen/incubator-nuttx/commit/4fc2669fef62d12ba1dd428f2daf03d3bc362501#diff-eb05c977988d59202a9472f6fa7f9dc290724662ad6d15a4ba99b8f1fc1dc8f8)
+-   [Changes to arm_gicv2_dump.c](https://github.com/lupyuen/nuttx/commit/4fc2669fef62d12ba1dd428f2daf03d3bc362501#diff-eb05c977988d59202a9472f6fa7f9dc290724662ad6d15a4ba99b8f1fc1dc8f8)
 
--   [Changes to gic.h](https://github.com/lupyuen/incubator-nuttx/commit/6fa0e7e5d2beddad07890c83d2ee428a3f2b8a62#diff-b4fcb67b71de954c942ead9bb0868e720a5802c90743f0a1883f84b7565e1a0f)
+-   [Changes to gic.h](https://github.com/lupyuen/nuttx/commit/6fa0e7e5d2beddad07890c83d2ee428a3f2b8a62#diff-b4fcb67b71de954c942ead9bb0868e720a5802c90743f0a1883f84b7565e1a0f)
 
-We rewrote this function for Arm64 because we're passing __64-bit Registers__ (instead of 32-bit): [arm64_gicv3.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L795-L822)
+We rewrote this function for Arm64 because we're passing __64-bit Registers__ (instead of 32-bit): [arm64_gicv3.c](https://github.com/lupyuen/nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L795-L822)
 
 ```c
 // Decode IRQ for PinePhone.
@@ -230,21 +230,21 @@ uint64_t * arm64_decodeirq(uint64_t * regs) {
 
 Everything else stays the same! Well except for...
 
--   [__`arm64_gic_initialize`__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L713-L743)
+-   [__`arm64_gic_initialize`__](https://github.com/lupyuen/nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L713-L743)
 
--   [__`arm64_gic_secondary_init`__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L753-L760)
+-   [__`arm64_gic_secondary_init`__](https://github.com/lupyuen/nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L753-L760)
 
--   [__`arm64_gic_irq_set_priority`__](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L162-L196)
+-   [__`arm64_gic_irq_set_priority`__](https://github.com/lupyuen/nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L162-L196)
 
 _Injecting Arm32 code into Arm64 sounds so reckless... Will it work?_
 
 Let's test our reckless GIC Version 2 with QEMU Emulator...
 
-__UPDATE:__ NuttX Mainline now supports GIC Version 2 [(See this)](https://github.com/apache/incubator-nuttx/blob/master/arch/arm64/src/common/arm64_gicv2.c)
+__UPDATE:__ NuttX Mainline now supports GIC Version 2 [(See this)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_gicv2.c)
 
 ![Tracing Arm64 Interrupts on QEMU Emulator can get... Really messy](https://lupyuen.github.io/images/interrupt-title2.png)
 
-[_Tracing Arm64 Interrupts on QEMU Emulator can get... Really messy_](https://github.com/lupyuen/incubator-nuttx/blob/3331de1b84fd7579edfe726abb71b18beeac29e6/nuttx.log)
+[_Tracing Arm64 Interrupts on QEMU Emulator can get... Really messy_](https://github.com/lupyuen/nuttx/blob/3331de1b84fd7579edfe726abb71b18beeac29e6/nuttx.log)
 
 # Test PinePhone GIC with QEMU
 
@@ -306,7 +306,7 @@ nsh>
 nx_start: CPU0: Beginning Idle Loop
 ```
 
-[(See the Complete Log)](https://github.com/lupyuen/incubator-nuttx/blob/3331de1b84fd7579edfe726abb71b18beeac29e6/nuttx.log)
+[(See the Complete Log)](https://github.com/lupyuen/nuttx/blob/3331de1b84fd7579edfe726abb71b18beeac29e6/nuttx.log)
 
 NuttX with GIC Version 2 boots OK on QEMU, and will probably run on PinePhone!
 
@@ -314,7 +314,7 @@ _We tested Interrupts with GIC Version 2?_
 
 Yep the pic above shows __"TX"__ whenever an Interrupt Handler is dispatched.
 
-(We added Debug Logging to [arm64_vectors.S](https://github.com/lupyuen/incubator-nuttx/blob/gicv2/arch/arm64/src/common/arm64_vectors.S#L337-L350) and [arm64_vector_table.S](https://github.com/lupyuen/incubator-nuttx/blob/gicv2/arch/arm64/src/common/arm64_vector_table.S#L47-L75))
+(We added Debug Logging to [arm64_vectors.S](https://github.com/lupyuen/nuttx/blob/gicv2/arch/arm64/src/common/arm64_vectors.S#L337-L350) and [arm64_vector_table.S](https://github.com/lupyuen/nuttx/blob/gicv2/arch/arm64/src/common/arm64_vector_table.S#L47-L75))
 
 _How did we get the GIC Base Addresses for QEMU?_
 
@@ -346,7 +346,7 @@ dtc \
   gicv2.dtb
 ```
 
-The Base Addresses are revealed in the __GIC Version 2 Device Tree__: [gicv2.dts](https://github.com/lupyuen/incubator-nuttx/blob/gicv2/gicv2.dts#L324)...
+The Base Addresses are revealed in the __GIC Version 2 Device Tree__: [gicv2.dts](https://github.com/lupyuen/nuttx/blob/gicv2/gicv2.dts#L324)...
 
 ```text
 intc@8000000 {
@@ -402,7 +402,7 @@ Perhaps we're __handling Interrupts incorrectly?__
 
 Let's investigate...
 
-__UPDATE:__ This problem doesn't happen with the latest code in NuttX Mainline [(See this)](https://github.com/apache/incubator-nuttx/pull/7692#issuecomment-1327103980)
+__UPDATE:__ This problem doesn't happen with the latest code in NuttX Mainline [(See this)](https://github.com/apache/nuttx/pull/7692#issuecomment-1327103980)
 
 # Timer Interrupt Isn't Handled
 
@@ -410,7 +410,7 @@ _Why did PinePhone hang while handling System Timer Interrupts?_
 
 _Was the Timer Interrupt Handler called?_
 
-We verified that __Timer Interrupt Handler [arm64_arch_timer_compare_isr](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L134-L161)__ was NEVER called.
+We verified that __Timer Interrupt Handler [arm64_arch_timer_compare_isr](https://github.com/lupyuen/nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L134-L161)__ was NEVER called.
 
 (We checked by calling [__`up_putc`__](https://github.com/lupyuen/pinephone-nuttx#boot-debugging), which prints directly to the UART Port)
 
@@ -481,7 +481,7 @@ SECTION_SUBSEC_FUNC(exc_vector_table,_vector_table_section,_vector_table)
 
 _So Vector Base Address Register (EL1) should point to `_vector_table`?_
 
-Let's find out! This is how we read __Vector Base Address Register (EL1)__: [arch/arm64/src/common/arm64_arch_timer.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L212-L235)
+Let's find out! This is how we read __Vector Base Address Register (EL1)__: [arch/arm64/src/common/arm64_arch_timer.c](https://github.com/lupyuen/nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L212-L235)
 
 ```c
 void up_timer_initialize(void) {
@@ -503,7 +503,7 @@ Aha! __`_vector_table`__ is at __`0x400a` `7000`__... But Vector Base Address Re
 
 Our Arm64 CPU is pointing to the __wrong Arm64 Vector Table__... Hence our Interrupt Handler is never called!
 
-Let's fix it: [arch/arm64/src/common/arm64_arch_timer.c](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L212-L235)
+Let's fix it: [arch/arm64/src/common/arm64_arch_timer.c](https://github.com/lupyuen/nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L212-L235)
 
 ```c
   // Write Vector Base Address Register EL1
@@ -601,7 +601,7 @@ nsh> ls /dev
 
 Let's talk about EL1...
 
-__UPDATE:__ This patching isn't needed with the latest code in NuttX Mainline [(See this)](https://github.com/apache/incubator-nuttx/pull/7692#issuecomment-1327103980)
+__UPDATE:__ This patching isn't needed with the latest code in NuttX Mainline [(See this)](https://github.com/apache/nuttx/pull/7692#issuecomment-1327103980)
 
 # Exception Levels
 

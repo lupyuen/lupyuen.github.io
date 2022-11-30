@@ -90,7 +90,7 @@ Program done 4s 82KiB/s
 Success
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-25)
+[(Source)](https://github.com/lupyuen/nuttx/releases/tag/release-2022-01-25)
 
 We see that blflash sends the __EFlash Loader__ to BL602, followed by the __Flashing Image__.
 

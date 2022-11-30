@@ -140,7 +140,7 @@ That's how we __handle errors__ in Zig. If __readSensor__ fails with an error, w
 
 _But struct_sensor_baro is not a value, it's a Struct Type!_
 
-Yep [__struct_sensor_baro__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355) is actually a Struct Type that Zig has auto-imported from NuttX. [(As defined here)](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355)
+Yep [__struct_sensor_baro__](https://github.com/lupyuen/nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355) is actually a Struct Type that Zig has auto-imported from NuttX. [(As defined here)](https://github.com/lupyuen/nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355)
 
 _So Zig will let us pass Struct Types to a Function?_
 
@@ -148,7 +148,7 @@ That's the neat thing about Zig... It will let us pass __Compile-Time Expression
 
 The Zig Compiler will __substitute the Struct Type__ inside the code for __readSensor__. (Which works like a C Macro)
 
-Another neat thing: __"temperature"__ above is also a Compile-Time Expression, because it's a Field Name in the [__sensor_baro__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355) Struct. Metaprogramming gets so cool!
+Another neat thing: __"temperature"__ above is also a Compile-Time Expression, because it's a Field Name in the [__sensor_baro__](https://github.com/lupyuen/nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355) Struct. Metaprogramming gets so cool!
 
 [(More about __readSensor__ in the Appendix)](https://lupyuen.github.io/articles/visual#appendix-read-sensor-data)
 
@@ -372,7 +372,7 @@ For testing our IoT Sensor App, we connect the BME280 Sensor (I2C) to Pine64's [
 | __`3V3`__ | `3.3V` | Red
 | __`GND`__ | `GND` | Black
 
-The __I2C Pins__ on BL602 are defined here: [board.h](https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L91-L98)
+The __I2C Pins__ on BL602 are defined here: [board.h](https://github.com/lupyuen/nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L91-L98)
 
 ```c
 /* I2C Configuration */
@@ -603,13 +603,13 @@ temperature = try sen.readSensor(
 
 Looks concise and tidy, but __readSensor__ has 2 surprises...
 
--   [__struct_sensor_baro__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355) is actually a __Struct Type__
+-   [__struct_sensor_baro__](https://github.com/lupyuen/nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355) is actually a __Struct Type__
 
     (Auto-imported by Zig from NuttX)
 
 -   __"temperature"__ is actually a __Struct Field Name__
 
-    (From the [__sensor_baro__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355) Struct)
+    (From the [__sensor_baro__](https://github.com/lupyuen/nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355) Struct)
 
 The Zig Compiler will __substitute the Struct Type__ and Field Name inside the code for __readSensor__. (Which works like a C Macro)
 
@@ -885,13 +885,13 @@ debug("temperature={}", .{ temperature });
 
 Looks concise and tidy, but __readSensor__ has 2 surprises...
 
--   [__struct_sensor_baro__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355) is actually a __Struct Type__
+-   [__struct_sensor_baro__](https://github.com/lupyuen/nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355) is actually a __Struct Type__
 
     (Auto-imported by Zig from NuttX)
 
 -   __"temperature"__ is actually a __Struct Field Name__
 
-    (From the [__sensor_baro__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355) Struct)
+    (From the [__sensor_baro__](https://github.com/lupyuen/nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355) Struct)
 
 The Zig Compiler will __substitute the Struct Type__ and Field Name inside the code for __readSensor__. (Which works like a C Macro)
 
@@ -916,7 +916,7 @@ Which means that Zig Compiler will __substitute the values__ at Compile-Time (li
 
 -   __field_name__ changes to __"temperature"__
 
-__readSensor__ will then use __SensorType__ to refer to the [__sensor_baro__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355) Struct...
+__readSensor__ will then use __SensorType__ to refer to the [__sensor_baro__](https://github.com/lupyuen/nuttx/blob/master/include/nuttx/sensors/sensor.h#L348-L355) Struct...
 
 ```zig
   // Define the Sensor Data Type.

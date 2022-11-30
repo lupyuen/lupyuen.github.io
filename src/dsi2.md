@@ -737,7 +737,7 @@ extern fn dump_buffer(
 ) void;                // No Return Value
 ```
 
-__`dump_buffer`__ is defined here: [hello_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de/examples/hello/hello_main.c#L197-L205)
+__`dump_buffer`__ is defined here: [hello_main.c](https://github.com/lupyuen/nuttx-apps/blob/de/examples/hello/hello_main.c#L197-L205)
 
 _What about testing Long Packets?_
 
@@ -1268,7 +1268,7 @@ Our PinePhone Display Driver (in C or Zig) shall expose the standard __Display D
 
 Here's the implementation of the Display Driver Interface for the __Sitronix ST7789 LCD Controller__...
 
--   [__nuttx/drivers/lcd/st7789.c__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/st7789.c)
+-   [__nuttx/drivers/lcd/st7789.c__](https://github.com/lupyuen/nuttx/blob/master/drivers/lcd/st7789.c)
 
 # What's Next
 
@@ -1351,7 +1351,7 @@ fn computeCrc(
 }
 
 /// Return a 16-bit CRC-CCITT of the contents of the `src` buffer.
-/// Based on https://github.com/lupyuen/incubator-nuttx/blob/pinephone/libs/libc/misc/lib_crc16.c
+/// Based on https://github.com/lupyuen/nuttx/blob/pinephone/libs/libc/misc/lib_crc16.c
 fn crc16ccitt(src: []const u8, crc16val: u16) u16 {
   var i: usize = 0;
   var v = crc16val;

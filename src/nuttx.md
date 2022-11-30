@@ -30,9 +30,9 @@ Today we shall __build, flash and run__ NuttX on the [__PineCone BL602__](https:
 
 We'll briefly explore the __internals of NuttX__ to understand how it works...
 
--   [__NuttX OS: incubator-nuttx__](https://github.com/apache/incubator-nuttx)
+-   [__NuttX OS: nuttx__](https://github.com/apache/nuttx)
 
--   [__NuttX Apps: incubator-nuttx-apps__](https://github.com/apache/incubator-nuttx-apps)
+-   [__NuttX Apps: nuttx-apps__](https://github.com/apache/nuttx-apps)
 
 Coding a microcontroller with __Linux-like (POSIX)__ functions might sound odd, but we'll appreciate the benefits in a while.
 
@@ -55,9 +55,9 @@ nsh>
 
 The default NuttX Firmware includes two __Demo Apps__...
 
--   [__NuttX Hello Demo__](https://github.com/apache/incubator-nuttx-apps/tree/master/examples/hello)
+-   [__NuttX Hello Demo__](https://github.com/apache/nuttx-apps/tree/master/examples/hello)
 
--   [__NuttX Timer Demo__](https://github.com/apache/incubator-nuttx-apps/tree/master/examples/timer)
+-   [__NuttX Timer Demo__](https://github.com/apache/nuttx-apps/tree/master/examples/timer)
 
 Let's test the Demo Apps.
 
@@ -79,7 +79,7 @@ Hello, World!!
 
 (Yep this is the plain and simple __Hello World__ app!)
 
-The Source Code looks very familiar: [hello_main.c](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/hello/hello_main.c)
+The Source Code looks very familiar: [hello_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/hello/hello_main.c)
 
 ```c
 #include <nuttx/config.h>
@@ -110,7 +110,7 @@ timer
 
 We should see some __Timeout Messages__. (Pic above)
 
-This Demo App accesses the __System Timer__ in an interesting way: [timer_main.c](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/timer/timer_main.c)
+This Demo App accesses the __System Timer__ in an interesting way: [timer_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/timer/timer_main.c)
 
 ![Timer Demo App](https://lupyuen.github.io/images/nuttx-timer2.png)
 
@@ -354,7 +354,7 @@ Let's learn how.
 
 _How do we define the Pin Numbers for GPIO, UART, PWM, I2C, SPI, ...?_
 
-We define the Pin Numbers in [__board.h__](https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h) (Pic above)
+We define the Pin Numbers in [__board.h__](https://github.com/apache/nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h) (Pic above)
 
 __Note: Some pins on BL602 and BL604 may only be assigned to specific functions.__
 
@@ -366,7 +366,7 @@ _How shall we define the GPIO Output Pin for our LED?_
 
 On PineCone BL602 the Blue LED is connected on __GPIO 11__.
 
-We change the Pin Definition for __BOARD_GPIO_OUT1__ like so: [board.h](https://github.com/lupyuen/incubator-nuttx/blob/gpio/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53)
+We change the Pin Definition for __BOARD_GPIO_OUT1__ like so: [board.h](https://github.com/lupyuen/nuttx/blob/gpio/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53)
 
 ```c
 //  GPIO Output Pin:
@@ -473,7 +473,7 @@ Congratulations we have successfully tested the BL602 LED with NuttX!
 
 Let's look inside NuttX to understand how the __GPIO Driver__ works.
 
-We start at the __"gpio"__ command: [gpio_main.c](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/gpio/gpio_main.c)
+We start at the __"gpio"__ command: [gpio_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/gpio/gpio_main.c)
 
 From the pic above we see that the __"gpio"__ command calls...
 
@@ -487,13 +487,13 @@ _What are __GPIOC_READ__ and __GPIOC_WRITE__?_
 
 __GPIOC_READ__ and __GPIOC_WRITE__ are GPIO Driver Commands defined in the NuttX GPIO Interface...
 
--   [__NuttX GPIO Interface__](https://github.com/apache/incubator-nuttx/blob/master/include/nuttx/ioexpander/gpio.h)
+-   [__NuttX GPIO Interface__](https://github.com/apache/nuttx/blob/master/include/nuttx/ioexpander/gpio.h)
 
 The __"gpio"__ command works across all NuttX Platforms because it calls the common GPIO Interface.
 
 ## GPIO Interface
 
-Below is the implementation of the platform-independent __GPIO Interface__ (ioctl): [gpio.c](https://github.com/apache/incubator-nuttx/blob/master/drivers/ioexpander/gpio.c#L296-L337)
+Below is the implementation of the platform-independent __GPIO Interface__ (ioctl): [gpio.c](https://github.com/apache/nuttx/blob/master/drivers/ioexpander/gpio.c#L296-L337)
 
 ```c
 //  Standard character driver ioctl method
@@ -527,9 +527,9 @@ Each Dev Board has __hardware features that are specific__ to the board. Like LE
 
 NuttX isolates these board differences by calling a __Board-Specific Driver__.
 
-[(We're actually calling the Board-Specific Driver for BL602 EVB)](https://github.com/apache/incubator-nuttx/tree/master/boards/risc-v/bl602/bl602evb)
+[(We're actually calling the Board-Specific Driver for BL602 EVB)](https://github.com/apache/nuttx/tree/master/boards/risc-v/bl602/bl602evb)
 
-Here is our __Board-Specific GPIO Driver__: [bl602_gpio.c](https://github.com/apache/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L432-L452)
+Here is our __Board-Specific GPIO Driver__: [bl602_gpio.c](https://github.com/apache/nuttx/blob/master/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L432-L452)
 
 ```c
 //  Board-Specific GPIO Driver: Set the value of an output GPIO
@@ -558,7 +558,7 @@ The __BL602-Specific GPIO Driver__ manipulates the BL602 Hardware Registers to p
 
 (The driver is called by the Board-Specific Drivers for all BL602 boards)
 
-Here's how the BL602-Specific GPIO Driver sets the __GPIO Output__:  [bl602_gpio.c](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209)
+Here's how the BL602-Specific GPIO Driver sets the __GPIO Output__:  [bl602_gpio.c](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209)
 
 ```c
 //  BL602-Specific GPIO Driver: Set the value of an output GPIO
@@ -581,9 +581,9 @@ void bl602_gpiowrite(gpio_pinset_t pinset, bool value)
 }
 ```
 
-[(__modifyreg32__ is defined here)](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/common/riscv_modifyreg32.c#L38-L57)
+[(__modifyreg32__ is defined here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_modifyreg32.c#L38-L57)
 
-[__BL602_GPIO_CFGCTL32__](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/hardware/bl602_glb.h#L167) is the Address of the __GPIO Output Register__: `0x40000188`
+[__BL602_GPIO_CFGCTL32__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/hardware/bl602_glb.h#L167) is the Address of the __GPIO Output Register__: `0x40000188`
 
 This code looks similar to [__GLB_GPIO_Write__](https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L2124-L2148) from BL602 IoT SDK's [__Standard Driver__](https://github.com/lupyuen/bl_iot_sdk/tree/master/components/bl602/bl602_std/bl602_std/StdDriver).
 
@@ -621,15 +621,15 @@ Let's do some BASIC on BL602 NuttX...
 
 1.  BL602 doesn't support environment variables and folders, so we need to patch the source files...
 
-    [__"Disable environment variables and folders"__](https://github.com/lupyuen/incubator-nuttx-apps/commit/bc68ad8a16cb60ecff53d7a8644e6c6d6b8e5fd6#diff-05996067e34eb452c24a3e0966a8f6e974f6b54c4f3d767140a92fb5c67c55ec)
+    [__"Disable environment variables and folders"__](https://github.com/lupyuen/nuttx-apps/commit/bc68ad8a16cb60ecff53d7a8644e6c6d6b8e5fd6#diff-05996067e34eb452c24a3e0966a8f6e974f6b54c4f3d767140a92fb5c67c55ec)
 
-    (See the modified files: [bas_global.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/gpio/interpreters/bas/bas_global.c) and [bas_statement.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/gpio/interpreters/bas/bas_statement.c))
+    (See the modified files: [bas_global.c](https://github.com/lupyuen/nuttx-apps/blob/gpio/interpreters/bas/bas_global.c) and [bas_statement.c](https://github.com/lupyuen/nuttx-apps/blob/gpio/interpreters/bas/bas_statement.c))
 
 1.  We'll use "peek" and "poke" in a while. Patch the source file to enable the commands...
 
-    [__"Enable peek and poke"__](https://github.com/lupyuen/incubator-nuttx-apps/commit/cda8a79fae74ea85f276302b67d32c01adb561bc)
+    [__"Enable peek and poke"__](https://github.com/lupyuen/nuttx-apps/commit/cda8a79fae74ea85f276302b67d32c01adb561bc)
 
-    [(See the modified file)](https://github.com/lupyuen/incubator-nuttx-apps/blob/gpio/interpreters/bas/bas_fs.c)
+    [(See the modified file)](https://github.com/lupyuen/nuttx-apps/blob/gpio/interpreters/bas/bas_fs.c)
 
 1.  Rebuild, reflash and rerun NuttX
 
@@ -735,9 +735,9 @@ Remember that the NuttX Team (with Bouffalo Lab) has created their own __Hardwar
 
 Some features on BL602 / BL604 are __not yet supported by NuttX__. (Pic above)
 
-But NuttX on BL602 is [__getting better every day!__](https://github.com/apache/incubator-nuttx/commits/master/arch/risc-v/src/bl602)
+But NuttX on BL602 is [__getting better every day!__](https://github.com/apache/nuttx/commits/master/arch/risc-v/src/bl602)
 
-[(Though SPI with DMA is not yet supported on BL602 NuttX)](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L734-L761)
+[(Though SPI with DMA is not yet supported on BL602 NuttX)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L734-L761)
 
 _POSIX still looks kinda odd to me. Is there something we could do with Rust?_
 
@@ -878,7 +878,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  How do we use __multiple Input / Output / Interrupt GPIOs__ on BL602?  See this...
 
-    [__"GPIO issues on BL602"__](https://github.com/apache/incubator-nuttx/issues/5810)
+    [__"GPIO issues on BL602"__](https://github.com/apache/nuttx/issues/5810)
 
 1.  Having problems with NuttX? Check out the __NuttX Mail Archive__...
 
@@ -904,7 +904,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     
     Check out the improved __"timer_gpout"__ Demo App, which catches the Timer Signal in real time...
 
-    [__timer_gpout Demo App__](https://github.com/apache/incubator-nuttx-apps/blob/master/examples/timer_gpout/timer_gpout_main.c)
+    [__timer_gpout Demo App__](https://github.com/apache/nuttx-apps/blob/master/examples/timer_gpout/timer_gpout_main.c)
 
     (Thanks to [Sara Monteiro](https://www.linkedin.com/feed/update/urn:li:activity:6868285202649772032?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6868285202649772032%2C6869001192320602112%29) for the tip!)
 
@@ -985,8 +985,8 @@ Next we download and build NuttX...
     ```bash
     mkdir nuttx
     cd nuttx
-    git clone --recursive https://github.com/lupyuen/incubator-nuttx nuttx
-    git clone --recursive https://github.com/lupyuen/incubator-nuttx-apps apps
+    git clone --recursive https://github.com/lupyuen/nuttx nuttx
+    git clone --recursive https://github.com/lupyuen/nuttx-apps apps
     ```
 
     [(Here are the features included)](https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features)
@@ -1130,7 +1130,7 @@ blflash flash c:\blflash\nuttx.bin --port COM5
 
 For WSL: Do this under plain old Windows CMD (not WSL) because __blflash__ needs to access the COM port.
 
-[(Flashing WiFi apps to BL602 / BL604? Remember to use __bl_rfbin__)](https://github.com/apache/incubator-nuttx/issues/4336)
+[(Flashing WiFi apps to BL602 / BL604? Remember to use __bl_rfbin__)](https://github.com/apache/nuttx/issues/4336)
 
 [(More details on flashing firmware)](https://lupyuen.github.io/articles/flash#flash-the-firmware)
 
@@ -1311,7 +1311,7 @@ Here are the steps to enable __NuttX Logging__ for easier troubleshooting...
 
 This section describes the GPIO Output glitch that we observed in the BL602 GPIO Driver, and explains how we fixed it.
 
--   [__riscv/bl602: Enable GPIO output__](https://github.com/apache/incubator-nuttx/pull/4876)
+-   [__riscv/bl602: Enable GPIO output__](https://github.com/apache/nuttx/pull/4876)
 
 The fix has been merged into NuttX. (Thank you NuttX Maintainers! 🙏)
 
@@ -1337,7 +1337,7 @@ PineCone BL602 has a Blue LED connected on __GPIO 11__...
 
 -   Blue LED is __Off__ when GPIO 11 is __High__
 
-We configure GPIO 11 as the GPIO Output Pin __BOARD_GPIO_OUT1__ in [board.h](https://github.com/lupyuen/incubator-nuttx/blob/gpio/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53)
+We configure GPIO 11 as the GPIO Output Pin __BOARD_GPIO_OUT1__ in [board.h](https://github.com/lupyuen/nuttx/blob/gpio/boards/risc-v/bl602/bl602evb/include/board.h#L45-L53)
 
 ```c
 //  GPIO Output Pin:
@@ -1377,13 +1377,13 @@ But the BL602 __LED doesn't blink__. Let's track down the glitch.
 
 ## Trace the glitch
 
-To track down the glitch, we add debug logging to the BL602 GPIO Driver functions [__bl602_configgpio__](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L59-L133) and [__bl602_gpiowrite__](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209)...
+To track down the glitch, we add debug logging to the BL602 GPIO Driver functions [__bl602_configgpio__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L59-L133) and [__bl602_gpiowrite__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209)...
 
--   [__Debug GPIO Output__](https://github.com/lupyuen/incubator-nuttx/commit/3b25611bdfd1ebd8097f3319053a25546ed39052)
+-   [__Debug GPIO Output__](https://github.com/lupyuen/nuttx/commit/3b25611bdfd1ebd8097f3319053a25546ed39052)
 
 ![bl602_gpiowrite writes correctly to the GPIO Output Register](https://lupyuen.github.io/images/nuttx-gpio4b.png)
 
-From the log we see that [__bl602_gpiowrite__](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209) writes correctly to the __GPIO Output Register__ at `0x40000188` (BL602_GPIO_CFGCTL32)...
+From the log we see that [__bl602_gpiowrite__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L190-L209) writes correctly to the __GPIO Output Register__ at `0x40000188` (BL602_GPIO_CFGCTL32)...
 
 ```text
 bl602_gpiowrite high:
@@ -1393,7 +1393,7 @@ bl602_gpiowrite high:
   setbits=0x800
 ```
 
-At startup, [__bl602_configgpio__](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L59-L133) configures GPIO 11 (`0x40000114`) with __GPIO Input Disabled__..
+At startup, [__bl602_configgpio__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L59-L133) configures GPIO 11 (`0x40000114`) with __GPIO Input Disabled__..
 
 ```text
 bl602_configgpio:
@@ -1403,7 +1403,7 @@ bl602_configgpio:
   setbits=0xb000000
 ```
 
-But [__bl602_configgpio__](https://github.com/apache/incubator-nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L59-L133) __doesn't
+But [__bl602_configgpio__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_gpio.c#L59-L133) __doesn't
 enable GPIO Output__ on GPIO 11.
 
 ![bl602_configgpio doesn't enable GPIO Output](https://lupyuen.github.io/images/nuttx-gpio6c.png)
@@ -1426,7 +1426,7 @@ Let's update the GPIO Output Enable Register in NuttX.
 
 ## Fix the glitch
 
-We patch the __bl602_configgpio__ function to update the GPIO Output Enable Register: [bl602_gpio.c](https://github.com/lupyuen/incubator-nuttx/blob/gpio/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137)
+We patch the __bl602_configgpio__ function to update the GPIO Output Enable Register: [bl602_gpio.c](https://github.com/lupyuen/nuttx/blob/gpio/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137)
 
 ```c
 // Existing function
@@ -1455,7 +1455,7 @@ int bl602_configgpio(gpio_pinset_t cfgset)
 
 Here is the patch...
 
--   [__Enable GPIO Output__](https://github.com/apache/incubator-nuttx/pull/4876/files)
+-   [__Enable GPIO Output__](https://github.com/apache/nuttx/pull/4876/files)
 
 Let's test the patch.
 
@@ -1471,7 +1471,7 @@ At startup, the Blue LED is __On__ (because the default GPIO Output is Low)...
 
 (Remember the LED switches on when GPIO 11 is Low)
 
-At startup the patched [__bl602_configgpio__](https://github.com/lupyuen/incubator-nuttx/blob/gpio/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137) function correctly updates the __GPIO Output Enable Register__ at `0x40000190`...
+At startup the patched [__bl602_configgpio__](https://github.com/lupyuen/nuttx/blob/gpio/arch/risc-v/src/bl602/bl602_gpio.c#L133-L137) function correctly updates the __GPIO Output Enable Register__ at `0x40000190`...
 
 ```text
 bl602_configgpio enable output:
@@ -1515,7 +1515,7 @@ We have successfully fixed the GPIO Output glitch!
 
 The fix has been merged into NuttX...
 
--   [__riscv/bl602: Enable GPIO output__](https://github.com/apache/incubator-nuttx/pull/4876)
+-   [__riscv/bl602: Enable GPIO output__](https://github.com/apache/nuttx/pull/4876)
 
 ![PineCone Blue LED blinks correctly](https://lupyuen.github.io/images/nuttx-gpio6d.png)
 

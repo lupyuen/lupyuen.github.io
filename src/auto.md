@@ -42,7 +42,7 @@ _Why are we doing this?_
 
 -   BL602 Devs can easily download the __latest tested build__ from GitHub Releases...
 
-    [__NuttX Releases for BL602__](https://github.com/lupyuen/incubator-nuttx/releases?q=%22download%2Frelease%22&expanded=true)
+    [__NuttX Releases for BL602__](https://github.com/lupyuen/nuttx/releases?q=%22download%2Frelease%22&expanded=true)
 
 _Will this work for other microcontrollers?_
 
@@ -354,20 +354,20 @@ Our script flashes and runs NuttX on BL602 like so...
 
 -   [__Watch the demo on YouTube__](https://www.youtube.com/watch?v=_82og3-gEwA)
 
-Let's study the script output: [__upstream-2022-01-21__](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-21)
+Let's study the script output: [__upstream-2022-01-21__](https://github.com/lupyuen/nuttx/releases/tag/upstream-2022-01-21)
 
 ![Auto Flash and Test Script](https://lupyuen.github.io/images/auto-run.jpg)
 
 ## Download NuttX
 
-Our script begins by [__downloading Today's Upstream Build__](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L20-L40) of NuttX: [upstream-2022-01-21](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-21)
+Our script begins by [__downloading Today's Upstream Build__](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L20-L40) of NuttX: [upstream-2022-01-21](https://github.com/lupyuen/nuttx/releases/tag/upstream-2022-01-21)
 
 ```text
 + BUILD_PREFIX=upstream
 + BUILD_DATE=2022-01-21
 ----- Download the latest upstream NuttX build for 2022-01-21
 + wget -q \
-  https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-21/nuttx.zip \
+  https://github.com/lupyuen/nuttx/releases/download/upstream-2022-01-21/nuttx.zip \
   -O /tmp/nuttx.zip
 ```
 
@@ -475,7 +475,7 @@ Our script [__analyses the output__](https://github.com/lupyuen/remote-bl602/blo
 
 We're done with the __simplest scenario__ for Auto Flash and Test! Now we have a quick and nifty way to discover if Today's Upstream Build of NuttX boots OK on BL602.
 
-[(I run the script every day to check the stability of the BL602 build)](https://github.com/lupyuen/incubator-nuttx/releases)
+[(I run the script every day to check the stability of the BL602 build)](https://github.com/lupyuen/nuttx/releases)
 
 ![Flash & Test NuttX on BL602... Remotely from a Phone!](https://lupyuen.github.io/images/auto-remote.jpg)
 
@@ -487,7 +487,7 @@ NuttX shows a __Stack Trace__ like this...
 
 ![NuttX Stack Trace](https://lupyuen.github.io/images/auto-stack.jpg)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17)
+[(Source)](https://github.com/lupyuen/nuttx/releases/tag/upstream-2022-01-17)
 
 Let's walk through the steps to __decode the Stack Trace__, then we'll learn how our script decodes the Stack Trace for us.
 
@@ -572,11 +572,11 @@ riscv64-unknown-elf-objdump \
   2>&1
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L109-L114)
+[(Source)](https://github.com/lupyuen/nuttx/blob/master/.github/workflows/bl602.yml#L109-L114)
 
 This generates the Disassembly File __nuttx.S__, which we'll use in the next step.
 
-[(Here's a sample __nuttx.S__)](https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-17/nuttx.zip)
+[(Here's a sample __nuttx.S__)](https://github.com/lupyuen/nuttx/releases/download/upstream-2022-01-17/nuttx.zip)
 
 ## Decode Addresses
 
@@ -588,7 +588,7 @@ From the Stack Trace above, we look for __Code and Data Addresses__ and decode t
 
 Let's pick a Code Address: __`230053a0`__
 
-We search for the address in the Disassembly File [__nuttx.S__](https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-17/nuttx.zip) like so...
+We search for the address in the Disassembly File [__nuttx.S__](https://github.com/lupyuen/nuttx/releases/download/upstream-2022-01-17/nuttx.zip) like so...
 
 ```bash
 grep \
@@ -616,13 +616,13 @@ Repeat this process for the __other Code Addresses__: `230042e2`, `23001cdc`, `2
 
 And we should have a fairly good idea how our firmware crashed.
 
-[(See the results)](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17)
+[(See the results)](https://github.com/lupyuen/nuttx/releases/tag/upstream-2022-01-17)
 
 _What about the Data Addresses `42xxxxxx`?_
 
 Let's pick a Data Address: __`42012510`__
 
-We search for the address in the Disassembly File [__nuttx.S__](https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-17/nuttx.zip) like this...
+We search for the address in the Disassembly File [__nuttx.S__](https://github.com/lupyuen/nuttx/releases/download/upstream-2022-01-17/nuttx.zip) like this...
 
 ```bash
 grep \
@@ -660,25 +660,25 @@ Thankfully our __Auto Flash and Test__ Script automates everything for us!
 
 -   It does the same to [__decode BL602 Data Addresses__](https://github.com/lupyuen/remote-bl602/blob/main/scripts/test.sh#L168-L190)
 
--   RISC-V Disassembly for the NuttX Firmware is [__generated by GitHub Actions__](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L109-L114) during the Daily Upstream Build
+-   RISC-V Disassembly for the NuttX Firmware is [__generated by GitHub Actions__](https://github.com/lupyuen/nuttx/blob/master/.github/workflows/bl602.yml#L109-L114) during the Daily Upstream Build
 
 Here's a demo of Auto Flash and Test with __Auto Crash Analysis__...
 
 -   [__Watch the demo on YouTube__](https://www.youtube.com/watch?v=Kf3G1hGoLIs)
 
--   [__See the Output Log__](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17)
+-   [__See the Output Log__](https://github.com/lupyuen/nuttx/releases/tag/upstream-2022-01-17)
 
 The __Source Code__ decoded from a Stack Trace looks like this...
 
 ![Source Code decoded from Stack Trace](https://lupyuen.github.io/images/auto-stack3.png)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17)
+[(Source)](https://github.com/lupyuen/nuttx/releases/tag/upstream-2022-01-17)
 
 These are the __Data Addresses__ decoded from the Stack Trace...
 
 ![Data Addresses in Stack Trace](https://lupyuen.github.io/images/auto-stack4.jpg)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-17)
+[(Source)](https://github.com/lupyuen/nuttx/releases/tag/upstream-2022-01-17)
 
 There's a __Design Flaw__ in our script that needs fixing... It doesn't detect crashes while running the SPI, LoRaWAN and Touch Panel Tests. [(See this)](https://gist.github.com/lupyuen/02764452fde605e04b626614be4562ed)
 
@@ -752,7 +752,7 @@ STATUS: OK
 ###### ===========   JOINED     ============ ######
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
+[(Source)](https://github.com/lupyuen/nuttx/releases/tag/release-2022-01-19)
 
 Which means that BL602 has successfully joined the __LoRaWAN Network__...
 
@@ -760,23 +760,23 @@ Which means that BL602 has successfully joined the __LoRaWAN Network__...
 ===== All OK! BL602 has successfully joined the LoRaWAN Network
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
+[(Source)](https://github.com/lupyuen/nuttx/releases/tag/release-2022-01-19)
 
 And everything has tested OK on NuttX!
 
 ![BL602 successfully joins the LoRaWAN Network](https://lupyuen.github.io/images/auto-lorawan2.png)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
+[(Source)](https://github.com/lupyuen/nuttx/releases/tag/release-2022-01-19)
 
 Here's the demo of the __LoRaWAN Auto-Test__...
 
 -   [__Watch the demo on YouTube__](https://www.youtube.com/watch?v=JtnOyl5cYjo)
 
--   [__See the Output Log__](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
+-   [__See the Output Log__](https://github.com/lupyuen/nuttx/releases/tag/release-2022-01-19)
 
 ![LoRaWAN Auto-Test](https://lupyuen.github.io/images/auto-lorawan.png)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
+[(Source)](https://github.com/lupyuen/nuttx/releases/tag/release-2022-01-19)
 
 # Merge Updates From NuttX
 
@@ -784,15 +784,15 @@ _Back to our original question: Why are we doing all this?_
 
 My situation is kinda complicated, I need to worry about __3 branches__ of the NuttX Code...
 
--   __Upstream Branch__: Daily Upstream Updates from from the [__master branch__](https://github.com/apache/incubator-nuttx) of Apache's NuttX Repo
+-   __Upstream Branch__: Daily Upstream Updates from from the [__master branch__](https://github.com/apache/nuttx) of Apache's NuttX Repo
 
     (Without the LoRaWAN Stack)
 
--   __Release Branch__: This is the [__master branch__](https://github.com/lupyuen/incubator-nuttx) of my repo that I reference in my NuttX Articles
+-   __Release Branch__: This is the [__master branch__](https://github.com/lupyuen/nuttx) of my repo that I reference in my NuttX Articles
 
     (Includes the LoRaWAN Stack)
 
--   __Downstream Branch__: This is the [__downstream branch__](https://github.com/lupyuen/incubator-nuttx/tree/downstream) of my repo that merges the updates from the above 2 branches
+-   __Downstream Branch__: This is the [__downstream branch__](https://github.com/lupyuen/nuttx/tree/downstream) of my repo that merges the updates from the above 2 branches
 
     (Includes the LoRaWAN Stack)
 
@@ -839,7 +839,7 @@ export BUILD_DATE=2022-01-19
 remote-bl602/scripts/test.sh
 ```
 
-[(See the output)](https://github.com/lupyuen/incubator-nuttx/releases/tag/downstream-2022-01-19)
+[(See the output)](https://github.com/lupyuen/nuttx/releases/tag/downstream-2022-01-19)
 
 _Can we solve this by merging the LoRaWAN Stack upstream?_
 
@@ -853,7 +853,7 @@ But for now... No more worries about merging hundreds of upstream commits (and t
 
 ![Merge updates from upstream](https://lupyuen.github.io/images/auto-merge.png)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/pull/21)
+[(Source)](https://github.com/lupyuen/nuttx/pull/21)
 
 # What's Next
 
@@ -903,17 +903,17 @@ Which are consumed by our Flash and Test Script.
 
 In this section we study the workflow for the Upstream Build...
 
--   [__Upstream Build:__ .github/workflows/bl602.yml](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml)
+-   [__Upstream Build:__ .github/workflows/bl602.yml](https://github.com/lupyuen/nuttx/blob/master/.github/workflows/bl602.yml)
 
 Similar workflows are used for the Release and Downstream Builds...
 
--   [__Release Build:__ .github/workflows/bl602-commit.yml](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml)
+-   [__Release Build:__ .github/workflows/bl602-commit.yml](https://github.com/lupyuen/nuttx/blob/master/.github/workflows/bl602-commit.yml)
 
--   [__Downstream Build:__ .github/workflows/bl602-downstream.yml](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-downstream.yml)
+-   [__Downstream Build:__ .github/workflows/bl602-downstream.yml](https://github.com/lupyuen/nuttx/blob/master/.github/workflows/bl602-downstream.yml)
 
 ## Build Schedule
 
-The Upstream Build is scheduled __every day at 0:30 UTC__: [bl602.yml](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml)
+The Upstream Build is scheduled __every day at 0:30 UTC__: [bl602.yml](https://github.com/lupyuen/nuttx/blob/master/.github/workflows/bl602.yml)
 
 ```yaml
 name: BL602 Upstream
@@ -968,17 +968,17 @@ We checkout the __NuttX Source Files__ from the Apache repo...
       run:  |
         mkdir nuttx
         cd nuttx
-        git clone https://github.com/apache/incubator-nuttx nuttx
-        git clone https://github.com/apache/incubator-nuttx-apps apps
+        git clone https://github.com/apache/nuttx nuttx
+        git clone https://github.com/apache/nuttx-apps apps
 ```
 
-[(For Release and Downstream Builds we checkout from the repo __lupyuen/incubator-nuttx__)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L37-L42)
+[(For Release and Downstream Builds we checkout from the repo __lupyuen/nuttx__)](https://github.com/lupyuen/nuttx/blob/master/.github/workflows/bl602-commit.yml#L37-L42)
 
 We're almost ready to build NuttX, but first we configure the NuttX Build.
 
 ![Enable errors, warnings, info messages and assertions](https://lupyuen.github.io/images/auto-workflow2.png)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602.yml#L50-L114)
+[(Source)](https://github.com/lupyuen/nuttx/blob/master/.github/workflows/bl602.yml#L50-L114)
 
 ## Configure Build
 
@@ -1072,11 +1072,11 @@ Finally we copy the Build Config to __nuttx.config__ so that we may download and
 
 We're ready to build NuttX!
 
-[(For Release and Downstream Builds we also enable the LoRaWAN Stack)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L130-L217)
+[(For Release and Downstream Builds we also enable the LoRaWAN Stack)](https://github.com/lupyuen/nuttx/blob/master/.github/workflows/bl602-commit.yml#L130-L217)
 
 ![For the Release and Downstream Builds we also enable the LoRaWAN Stack](https://lupyuen.github.io/images/auto-workflow3.jpg)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L130-L217)
+[(Source)](https://github.com/lupyuen/nuttx/blob/master/.github/workflows/bl602-commit.yml#L130-L217)
 
 ## Build NuttX
 
@@ -1128,7 +1128,7 @@ The final task in our GitHub Actions workflow is to publish the NuttX Build Outp
 
 Let's run through the steps to __publish a GitHub Release__ that looks like this...
 
--   [__upstream-2022-01-19__](https://github.com/lupyuen/incubator-nuttx/releases/tag/upstream-2022-01-19)
+-   [__upstream-2022-01-19__](https://github.com/lupyuen/nuttx/releases/tag/upstream-2022-01-19)
 
 First we zip the NuttX Build Outputs into __nuttx.zip__...
 
@@ -1191,9 +1191,9 @@ The end! That's how we build Upstream NuttX every day and publish the Build Outp
 
 Check out the workflows for the __Release and Downstream__ Builds...
 
--   [__Release Build:__ .github/workflows/bl602-commit.yml](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml)
+-   [__Release Build:__ .github/workflows/bl602-commit.yml](https://github.com/lupyuen/nuttx/blob/master/.github/workflows/bl602-commit.yml)
 
--   [__Downstream Build:__ .github/workflows/bl602-downstream.yml](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-downstream.yml)
+-   [__Downstream Build:__ .github/workflows/bl602-downstream.yml](https://github.com/lupyuen/nuttx/blob/master/.github/workflows/bl602-downstream.yml)
 
 _How are they different from the Upstream Build?_
 
@@ -1201,19 +1201,19 @@ The __Release and Downstream__ Builds...
 
 -   Are __triggered by commits__ to the Release (master) and Downstream Branches (instead of scheduled time)
 
-    [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L5-L14)
+    [(See this)](https://github.com/lupyuen/nuttx/blob/master/.github/workflows/bl602-commit.yml#L5-L14)
 
--   Checkout the Source Files from a different repo: __lupyuen/incubator-nuttx__
+-   Checkout the Source Files from a different repo: __lupyuen/nuttx__
 
-    [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L37-L42)
+    [(See this)](https://github.com/lupyuen/nuttx/blob/master/.github/workflows/bl602-commit.yml#L37-L42)
 
 -   Enable the __LoRaWAN Stack__
 
-    [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L130-L217)
+    [(See this)](https://github.com/lupyuen/nuttx/blob/master/.github/workflows/bl602-commit.yml#L130-L217)
 
 -   Update the __BL602 Pin Definitions__ to accommodate the Semtech SX1262 LoRa Transceiver
 
-    [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/master/.github/workflows/bl602-commit.yml#L44-L80)
+    [(See this)](https://github.com/lupyuen/nuttx/blob/master/.github/workflows/bl602-commit.yml#L44-L80)
 
 ![Duplicate LoRaWAN Nonce](https://lupyuen.github.io/images/auto-nonce.png)
 
@@ -1285,7 +1285,7 @@ This code adds 4 bytes of Temperature Sensor Data 4 times, adding a total of __1
 
 (Which should be sufficiently unpredictable!)
 
-The output shows that the __Internal Temperature__ is indeed random: [release-2022-01-19](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
+The output shows that the __Internal Temperature__ is indeed random: [release-2022-01-19](https://github.com/lupyuen/nuttx/releases/tag/release-2022-01-19)
 
 ```text
 NuttShell (NSH) NuttX-10.2.0-RC0
@@ -1302,4 +1302,4 @@ Our LoRaWAN Stack now generates __different LoRaWAN Nonces__ for every Flash and
 
 ![Join Network Request always succeeds](https://lupyuen.github.io/images/auto-nonce3.jpg)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/releases/tag/release-2022-01-19)
+[(Source)](https://github.com/lupyuen/nuttx/releases/tag/release-2022-01-19)

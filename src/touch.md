@@ -60,7 +60,7 @@ That's because it tries to conserve power: It powers off the I2C Interface when 
 
 So be careful when scanning for CST816S at its __I2C Address `0x15`__. It might seem elusive until we tap the screen.
 
-The I2C Address of CST816S is defined in [bl602_bringup.c](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L102-L107)
+The I2C Address of CST816S is defined in [bl602_bringup.c](https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L102-L107)
 
 ```c
 #ifdef CONFIG_INPUT_CST816S
@@ -89,7 +89,7 @@ According to the schematic above, CST816S is wired to PineDio Stack like so...
 
 (We won't use the __Reset__ pin in our driver)
 
-The __CST816S Pins__ are defined in [board.h](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L92-L131)
+The __CST816S Pins__ are defined in [board.h](https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L92-L131)
 
 ```c
 /* I2C Configuration */
@@ -134,19 +134,19 @@ Touchscreen Drivers are documented here...
 
 We learnt more by inspecting these Touchscreen Drivers...
 
--   [__NuttX I2C Driver for Cypress MBR3108__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/cypress_mbr3108.c)
+-   [__NuttX I2C Driver for Cypress MBR3108__](https://github.com/lupyuen/nuttx/blob/pinedio/drivers/input/cypress_mbr3108.c)
 
--   [__NuttX SPI Driver for Maxim MAX11802__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/max11802.c)
+-   [__NuttX SPI Driver for Maxim MAX11802__](https://github.com/lupyuen/nuttx/blob/pinedio/drivers/input/max11802.c)
 
 The MBR3108 Driver looks structurally similar to our CST816S Driver (since both are I2C). So we copied the code as we built our CST816S Driver.
 
-[(We copied the MAX11802 Driver for reading Touch Data Samples)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/drivers/input/max11802.c#L824-L952)
+[(We copied the MAX11802 Driver for reading Touch Data Samples)](https://github.com/lupyuen/nuttx/blob/pinedio/drivers/input/max11802.c#L824-L952)
 
 Let's talk about the data format...
 
 ![NuttX Touch Data](https://lupyuen.github.io/images/touch-code3a.jpg)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L113-L148)
+[(Source)](https://github.com/lupyuen/nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L113-L148)
 
 ## Touch Data
 
@@ -175,7 +175,7 @@ struct touch_sample_s
 };
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L130-L148)
+[(Source)](https://github.com/lupyuen/nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L130-L148)
 
 For our driver, we'll return only __one Touch Point__.
 
@@ -199,7 +199,7 @@ struct touch_point_s
 };
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L109-L128)
+[(Source)](https://github.com/lupyuen/nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L109-L128)
 
 Our driver returns the first 4 fields...
 
@@ -207,11 +207,11 @@ Our driver returns the first 4 fields...
 
 -   __flags__: We return a combination of these flags...
 
-    [__TOUCH_ID_VALID__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L94): Touch Point ID is always valid
+    [__TOUCH_ID_VALID__](https://github.com/lupyuen/nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L94): Touch Point ID is always valid
 
-    [__TOUCH_DOWN__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L91) or [__TOUCH_UP__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L93): Touch Down or Up
+    [__TOUCH_DOWN__](https://github.com/lupyuen/nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L91) or [__TOUCH_UP__](https://github.com/lupyuen/nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L93): Touch Down or Up
 
-    [__TOUCH_POS_VALID__](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L95): If Touch Coordinates are valid
+    [__TOUCH_POS_VALID__](https://github.com/lupyuen/nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L95): If Touch Coordinates are valid
 
     (Touch Coordinates are valid for Touch Down, not Touch Up)
 
@@ -250,7 +250,7 @@ The code above comes from the [__LVGL Test App__](https://github.com/lupyuen/lvg
 
 # Load The Driver
 
-Before we cover the internals of our driver, let's __load the CST816S Driver__ at NuttX Startup: [bl602_bringup.c](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L829-L846)
+Before we cover the internals of our driver, let's __load the CST816S Driver__ at NuttX Startup: [bl602_bringup.c](https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L829-L846)
 
 ```c
 #ifdef CONFIG_INPUT_CST816S
@@ -769,7 +769,7 @@ Yep our CST816S Driver responds correctly to touch! 🎉
 
 _The touchscreen looks laggy?_
 
-The ST7789 Display feels laggy because of __inefficient SPI Data Transfer__. The SPI Driver polls the SPI Port when transferring data. [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L805-L855)
+The ST7789 Display feels laggy because of __inefficient SPI Data Transfer__. The SPI Driver polls the SPI Port when transferring data. [(See this)](https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L805-L855)
 
 That's why we need to implement [__SPI Direct Memory Access (DMA)__](https://lupyuen.github.io/articles/spi#spi-with-direct-memory-access) so that PineDio Stack can do other tasks (like handling the Touch Panel) while painting the ST7789 Display.
 
@@ -1036,7 +1036,7 @@ This article explains why...
 
 ## I2C Logging
 
-During development we discovered that [__cst816s_get_touch_data__](https://lupyuen.github.io/articles/touch#get-i2c-touch-data) won't return any valid Touch Data unless we __enable these two I2C Warnings__ in the BL602 I2C Driver: [bl602_i2c.c](https://github.com/lupyuen/incubator-nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c#L739-L765)
+During development we discovered that [__cst816s_get_touch_data__](https://lupyuen.github.io/articles/touch#get-i2c-touch-data) won't return any valid Touch Data unless we __enable these two I2C Warnings__ in the BL602 I2C Driver: [bl602_i2c.c](https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_i2c.c#L739-L765)
 
 ```c
 static int bl602_i2c_transfer(struct i2c_master_s *dev, struct i2c_msg_s *msgs, int count) {
@@ -1101,7 +1101,7 @@ Not really. If we enable "Informational Debug Output" (__CONFIG_DEBUG_INFO__) in
 
 Hence we should enable NuttX Info Logging only when needed for troubleshooting.
 
-(__TODO:__ [LoRaWAN Test App](https://github.com/lupyuen/lorawan_test), [LoRaWAN Library](https://github.com/lupyuen/LoRaMac-node-nuttx), [SX1262 Library](https://github.com/lupyuen/lora-sx1262/tree/lorawan), [NimBLE Porting Layer](https://github.com/lupyuen/nimble-porting-nuttx) and [SPI Test Driver](https://github.com/lupyuen/incubator-nuttx/tree/pinedio/drivers/rf) should have their own flags for logging)
+(__TODO:__ [LoRaWAN Test App](https://github.com/lupyuen/lorawan_test), [LoRaWAN Library](https://github.com/lupyuen/LoRaMac-node-nuttx), [SX1262 Library](https://github.com/lupyuen/lora-sx1262/tree/lorawan), [NimBLE Porting Layer](https://github.com/lupyuen/nimble-porting-nuttx) and [SPI Test Driver](https://github.com/lupyuen/nuttx/tree/pinedio/drivers/rf) should have their own flags for logging)
 
 # What's Next
 

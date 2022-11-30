@@ -161,7 +161,7 @@ To convert the 5V UART Port to 3.3V, we connect 3 Resistors (of the same resista
 
 _How did we get GPIO 3 and 4?_
 
-The __GPIO Pin Numbers__ for the UART Port (UART1) are defined in [board.h](https://github.com/lupyuen/incubator-nuttx/blob/ikea/boards/risc-v/bl602/bl602evb/include/board.h#L63-L66)
+The __GPIO Pin Numbers__ for the UART Port (UART1) are defined in [board.h](https://github.com/lupyuen/nuttx/blob/ikea/boards/risc-v/bl602/bl602evb/include/board.h#L63-L66)
 
 ```c
 #define BOARD_UART_1_RX_PIN \
@@ -175,7 +175,7 @@ The __GPIO Pin Numbers__ for the UART Port (UART1) are defined in [board.h](http
 
 [(Which pins can be used? See this)](https://lupyuen.github.io/articles/expander#pin-functions)
 
-__For ESP32:__ The GPIO Pin Numbers for the UART Port (UART1) are defined in [Kconfig](https://github.com/lupyuen/incubator-nuttx/blob/ikea/arch/xtensa/src/esp32/Kconfig#L661-L669) and menuconfig...
+__For ESP32:__ The GPIO Pin Numbers for the UART Port (UART1) are defined in [Kconfig](https://github.com/lupyuen/nuttx/blob/ikea/arch/xtensa/src/esp32/Kconfig#L661-L669) and menuconfig...
 
 ```text
 config ESP32_UART1_TXPIN
@@ -760,8 +760,8 @@ To use the IKEA Air Quality Sensor with NuttX, download the modified source code
 ```bash
 mkdir nuttx
 cd nuttx
-git clone --recursive --branch ikea https://github.com/lupyuen/incubator-nuttx nuttx
-git clone --recursive --branch ikea https://github.com/lupyuen/incubator-nuttx-apps apps
+git clone --recursive --branch ikea https://github.com/lupyuen/nuttx nuttx
+git clone --recursive --branch ikea https://github.com/lupyuen/nuttx-apps apps
 ```
 
 Or if we prefer to __add the IKEA Air Quality Sensor App__ to our NuttX Project, follow these instructions...
@@ -953,7 +953,7 @@ blflash flash c:\blflash\nuttx.bin --port COM5
 
 For WSL: Do this under plain old Windows CMD (not WSL) because __blflash__ needs to access the COM port.
 
-[(Flashing WiFi apps to BL602 / BL604? Remember to use __bl_rfbin__)](https://github.com/apache/incubator-nuttx/issues/4336)
+[(Flashing WiFi apps to BL602 / BL604? Remember to use __bl_rfbin__)](https://github.com/apache/nuttx/issues/4336)
 
 [(More details on flashing firmware)](https://lupyuen.github.io/articles/flash#flash-the-firmware)
 

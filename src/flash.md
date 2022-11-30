@@ -34,7 +34,7 @@ Follow these steps to flash a Firmware Binary File (like `nuttx.bin` or `sdk_app
 
 (On Windows: Use plain old Windows CMD Command Prompt to run the commands, not WSL)
 
--   [Download demo firmware `nuttx.bin`](https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-26/nuttx.zip)
+-   [Download demo firmware `nuttx.bin`](https://github.com/lupyuen/nuttx/releases/download/upstream-2022-01-26/nuttx.zip)
 
 -   [Download demo firmware `sdk_app_helloworld.bin`](https://github.com/lupyuen/bl_iot_sdk/releases/download/v1.0.0/sdk_app_helloworld.bin)
 
@@ -244,7 +244,7 @@ _Flashing PineCone BL602 with Manjaro Linux Arm64 on Pinebook Pro_
 
     Check whether access has been granted for the USB UART port. [(Here's how)](https://lupyuen.github.io/articles/flash#appendix-grant-access-to-usb-uart)
 
-[(Flashing WiFi Firmware for NuttX? See this)](https://github.com/apache/incubator-nuttx/issues/4336)
+[(Flashing WiFi Firmware for NuttX? See this)](https://github.com/apache/nuttx/issues/4336)
 
 [(See the flashing screenshots)](https://lupyuen.github.io/articles/flash#appendix-bl602-flashing-screenshots)
 
@@ -324,7 +324,7 @@ _Firmware running on PineCone_
 
 1.  Press the __`RST` Button__ on PineCone to restart the board.  As PineCone boots, we shall see the console output from our firmware...
 
-    For [`nuttx.bin`](https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-26/nuttx.zip):
+    For [`nuttx.bin`](https://github.com/lupyuen/nuttx/releases/download/upstream-2022-01-26/nuttx.zip):
 
     ```text
     NuttShell (NSH) NuttX-10.2.0
@@ -363,7 +363,7 @@ These steps were tested on Arm64 Linux (Pinebook Pro with Manjaro), macOS Catali
 
 __For MagicHome BL602 WiFi LED Controller:__ This gadget doesn't have a Reset Button, so it will be hard to see the `helloworld` message. Use the NuttX firmware __`nuttx.bin`__ instead...
 
--   [__Download demo firmware `nuttx.bin`__](https://github.com/lupyuen/incubator-nuttx/releases/download/upstream-2022-01-26/nuttx.zip)
+-   [__Download demo firmware `nuttx.bin`__](https://github.com/lupyuen/nuttx/releases/download/upstream-2022-01-26/nuttx.zip)
 
 Or __`sdk_app_gpio.bin` GPIO Demo Firmware__...
 

@@ -96,7 +96,7 @@ const planeInfo = c.fb_planeinfo_s {
 };
 ```
 
-[(__`fb_planeinfo_s`__ comes from NuttX RTOS)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L314-L331)
+[(__`fb_planeinfo_s`__ comes from NuttX RTOS)](https://github.com/lupyuen/nuttx/blob/pinephone/include/nuttx/video/fb.h#L314-L331)
 
 Later we'll pass the above values to render the Framebuffer: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L143-L153)
 
@@ -172,7 +172,7 @@ const videoInfo = c.fb_videoinfo_s {
 };
 ```
 
-[(__`fb_videoinfo_s`__ comes from NuttX RTOS)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L299-L313)
+[(__`fb_videoinfo_s`__ comes from NuttX RTOS)](https://github.com/lupyuen/nuttx/blob/pinephone/include/nuttx/video/fb.h#L299-L313)
 
 We'll test the Overlay Framebuffers later.
 
@@ -1043,7 +1043,7 @@ __`overlayInfo`__ is the array that defines the properties of the 2 Overlay Fram
 
 [(__overlayInfo__ is defined here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L619-L651)
 
-[(__fb_overlayinfo_s__ comes from NuttX RTOS)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/include/nuttx/video/fb.h#L350-L367)
+[(__fb_overlayinfo_s__ comes from NuttX RTOS)](https://github.com/lupyuen/nuttx/blob/pinephone/include/nuttx/video/fb.h#L350-L367)
 
 _Why "`inline for`"?_
 
@@ -1146,9 +1146,9 @@ The code we've seen today will eventually become the PinePhone Display Driver fo
 
 But now it's time to __merge our code__ into NuttX Mainline! I'll explain the process in the next couple of articles, stay tuned!
 
--   [__"Add support for Generic Interrupt Controller Version 2"__](https://github.com/apache/incubator-nuttx/pull/7630)
+-   [__"Add support for Generic Interrupt Controller Version 2"__](https://github.com/apache/nuttx/pull/7630)
 
--   [__"Add support for PINE64 PinePhone"__](https://github.com/apache/incubator-nuttx/pull/7692)
+-   [__"Add support for PINE64 PinePhone"__](https://github.com/apache/nuttx/pull/7692)
 
 Check out the other articles on __NuttX RTOS for PinePhone__...
 

@@ -28,7 +28,7 @@ _But really... What if we prefer to do this in C?_
 
 NuttX already provides an excellent __Sensor Test App__ in C...
 
--   [__sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c)
+-   [__sensortest.c__](https://github.com/lupyuen/nuttx-apps/blob/master/testing/sensortest/sensortest.c)
 
 That inspired the Zig program in this article...
 
@@ -184,7 +184,7 @@ Let's assume that our sensor will measure Sensor Data __every 1 second__...
 ```zig
   // TODO: Remove this definition when 
   // SNIOC_SET_INTERVAL has been been fixed: 
-  // https://github.com/apache/incubator-nuttx/issues/6642
+  // https://github.com/apache/nuttx/issues/6642
   const SNIOC_SET_INTERVAL = c._SNIOC(0x0081);
 
   // Set Standby Interval
@@ -447,13 +447,13 @@ _Where's the list of Sensor Data Structs?_
 
 The __NuttX Sensor Data Structs__ are defined at...
 
--   [__include/nuttx/sensors/sensor.h__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L290-L545)
+-   [__include/nuttx/sensors/sensor.h__](https://github.com/lupyuen/nuttx/blob/master/include/nuttx/sensors/sensor.h#L290-L545)
 
 _What about the Sensor Device Names like baro0 and humi0?_
 
 Here's the list of __NuttX Sensor Device Names__...
 
--   [__testing/sensortest/sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c#L86-L119)
+-   [__testing/sensortest/sensortest.c__](https://github.com/lupyuen/nuttx-apps/blob/master/testing/sensortest/sensortest.c#L86-L119)
 
 _How are test_sensor and test_sensor2 called?_
 
@@ -522,7 +522,7 @@ Then we import the __C Header Files__ for NuttX...
 
 "types.h" and "limits.h" are needed for NuttX compatibility. [(See this)](https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc)
 
-The other includes were copied from the __NuttX Sensor Test App__ in C: [sensortest.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c#L34-L42)
+The other includes were copied from the __NuttX Sensor Test App__ in C: [sensortest.c](https://github.com/lupyuen/nuttx-apps/blob/master/testing/sensortest/sensortest.c#L34-L42)
 
 _What about NuttX Structs like sensor_baro and sensor_humi?_
 
@@ -758,7 +758,7 @@ For testing the Zig Sensor App, we connect the BME280 Sensor (I2C) to Pine64's [
 | __`3V3`__ | `3.3V` | Red
 | __`GND`__ | `GND` | Black
 
-The __I2C Pins__ on BL602 are defined here: [board.h](https://github.com/lupyuen/incubator-nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L91-L98)
+The __I2C Pins__ on BL602 are defined here: [board.h](https://github.com/lupyuen/nuttx/blob/master/boards/risc-v/bl602/bl602evb/include/board.h#L91-L98)
 
 ```c
 /* I2C Configuration */
@@ -969,11 +969,11 @@ _Which sensors are supported?_
 
 Here's the list of __Sensor Devices__ supported by the app...
 
--   [__testing/sensortest/sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c#L86-L119)
+-   [__testing/sensortest/sensortest.c__](https://github.com/lupyuen/nuttx-apps/blob/master/testing/sensortest/sensortest.c#L86-L119)
 
 To understand the printed values (like "value1" and "value2"), we refer to the __Sensor Data Structs__...
 
--   [__include/nuttx/sensors/sensor.h__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/sensors/sensor.h#L290-L545)
+-   [__include/nuttx/sensors/sensor.h__](https://github.com/lupyuen/nuttx/blob/master/include/nuttx/sensors/sensor.h#L290-L545)
 
 _How does it work?_
 
@@ -983,7 +983,7 @@ Inside our Zig Sensor App is a __Multi-Sensor Module__ that handles all kinds of
 
 The Zig code was converted from the __NuttX Sensor Test App__ in C...
 
--   [__sensortest.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/testing/sensortest/sensortest.c)
+-   [__sensortest.c__](https://github.com/lupyuen/nuttx-apps/blob/master/testing/sensortest/sensortest.c)
 
 Which is explained here...
 
@@ -1099,7 +1099,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  The design of the __NuttX Sensor API__ is discussed here...
 
-    [__"Unified Management for Sensor"__](https://github.com/apache/incubator-nuttx/pull/2039)
+    [__"Unified Management for Sensor"__](https://github.com/apache/nuttx/pull/2039)
 
 1.  Our Zig App includes a [__Custom Logger__](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L281-L316) and [__Panic Handler__](https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L255-L279). They are explained below...
 

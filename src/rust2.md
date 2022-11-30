@@ -269,7 +269,7 @@ extern "C" {  //  Import NuttX Functions. TODO: Import with bindgen
 We (very carefully) __imported the NuttX Constants__ as well: [lib.rs](https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L259-L277)
 
 ```rust
-//  Import NuttX Constants. TODO: Import with bindgen from https://github.com/lupyuen/incubator-nuttx/blob/rust/include/nuttx/ioexpander/gpio.h
+//  Import NuttX Constants. TODO: Import with bindgen from https://github.com/lupyuen/nuttx/blob/rust/include/nuttx/ioexpander/gpio.h
 pub const GPIOC_WRITE: i32 = _GPIOBASE | 1;  //  _GPIOC(1)
 pub const GPIOC_READ:  i32 = _GPIOBASE | 2;  //  _GPIOC(2)
 pub const _GPIOBASE:   i32 = 0x2300;         //  GPIO driver commands
@@ -670,8 +670,8 @@ To run Rust on NuttX, download the modified source code for __NuttX OS and NuttX
 ```bash
 mkdir nuttx
 cd nuttx
-git clone --recursive --branch rusti2c https://github.com/lupyuen/incubator-nuttx nuttx
-git clone --recursive --branch rusti2c https://github.com/lupyuen/incubator-nuttx-apps apps
+git clone --recursive --branch rusti2c https://github.com/lupyuen/nuttx nuttx
+git clone --recursive --branch rusti2c https://github.com/lupyuen/nuttx-apps apps
 ```
 
 Or if we prefer to __add the Rust Library and App__ to our NuttX Project, follow these instructions...
@@ -680,7 +680,7 @@ Or if we prefer to __add the Rust Library and App__ to our NuttX Project, follow
 
 1.  [__"Install Rust Test App"__](https://github.com/lupyuen/rust_test)
 
-1.  [__"Install SPI Test Driver"__](https://github.com/lupyuen/incubator-nuttx/tree/lorawan/drivers/rf)
+1.  [__"Install SPI Test Driver"__](https://github.com/lupyuen/nuttx/tree/lorawan/drivers/rf)
 
 [(__For PineDio Stack BL604:__ The Rust Library and App are already preinstalled)](https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features)
 
@@ -706,7 +706,7 @@ Let's build the NuttX Firmware that contains our __Rust App__...
     nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c
     ```
 
-    Check that the __Semtech SX1262 Pins__ are configured correctly in [__board.h__](https://github.com/lupyuen/incubator-nuttx/blob/lorawan/boards/risc-v/bl602/bl602evb/include/board.h#L36-L95) or [__esp32_gpio.c__](https://github.com/lupyuen/incubator-nuttx/blob/lorawan/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c#L43-L67)...
+    Check that the __Semtech SX1262 Pins__ are configured correctly in [__board.h__](https://github.com/lupyuen/nuttx/blob/lorawan/boards/risc-v/bl602/bl602evb/include/board.h#L36-L95) or [__esp32_gpio.c__](https://github.com/lupyuen/nuttx/blob/lorawan/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c#L43-L67)...
 
     [(Which pins can be used? See this)](https://lupyuen.github.io/articles/expander#pin-functions)
 
@@ -967,7 +967,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     fn ioctl(fd: i32, request: i32, ...) -> i32
     ```
 
-    [(Source)](https://github.com/apache/incubator-nuttx/blob/master/include/sys/ioctl.h#L114)
+    [(Source)](https://github.com/apache/nuttx/blob/master/include/sys/ioctl.h#L114)
 
     The type of the __request__ parameter is different: __`u64` vs `i32`__.
 
@@ -1748,7 +1748,7 @@ blflash flash c:\blflash\nuttx.bin --port COM5
 
 For WSL: Do this under plain old Windows CMD (not WSL) because __blflash__ needs to access the COM port.
 
-[(Flashing WiFi apps to BL602 / BL604? Remember to use __bl_rfbin__)](https://github.com/apache/incubator-nuttx/issues/4336)
+[(Flashing WiFi apps to BL602 / BL604? Remember to use __bl_rfbin__)](https://github.com/apache/nuttx/issues/4336)
 
 [(More details on flashing firmware)](https://lupyuen.github.io/articles/flash#flash-the-firmware)
 

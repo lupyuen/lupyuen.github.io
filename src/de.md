@@ -130,7 +130,7 @@ The 3 UI Overlay Channels would be super helpful for overlaying an OTT Graphical
 
 ![Rendering simple Colour Blocks on the PinePhone Display](https://lupyuen.github.io/images/de-code1a.png)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L201-L214)
+[(Source)](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L201-L214)
 
 # Render Colours
 
@@ -140,7 +140,7 @@ Let's begin by rendering simple __Colour Blocks__ on the PinePhone Display...
 
 ![Blue, Green, Red Blocks on PinePhone](https://lupyuen.github.io/images/de-rgb.jpg)
 
-First we __allocate the Framebuffer__: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L170-L175)
+First we __allocate the Framebuffer__: [test_display.c](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L170-L175)
 
 ```c
 // Init Framebuffer 0:
@@ -154,7 +154,7 @@ int fb0_len = sizeof(fb0) / sizeof(fb0[0]);
 
 Each Pixel occupies __4 bytes__. (ARGB 8888 Format)
 
-Then we __fill the Framebuffer__ with Blue, Green and Red: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L201-L214)
+Then we __fill the Framebuffer__ with Blue, Green and Red: [test_display.c](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L201-L214)
 
 ```c
 // Fill with Blue, Green and Red
@@ -186,7 +186,7 @@ Thus __`0x8000` `8000`__ means Semi-Transparent Green...
 
 A64 Display Engine lets us render 3 Framebuffers as __3 UI Channels__.
 
-This is how we allocate the 3 UI Channels: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L257-L262)
+This is how we allocate the 3 UI Channels: [test_display.c](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L257-L262)
 
 ```c
 // Allocate 3 UI Channels
@@ -197,7 +197,7 @@ struct display *d = &disp;
 
 [(__`display`__ struct is defined here)](https://megous.com/git/p-boot/tree/src/display.h#n28)
 
-We point the __First UI Channel__ to our Framebuffer: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L262-L271)
+We point the __First UI Channel__ to our Framebuffer: [test_display.c](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L262-L271)
 
 ```c
 // Init UI Channel 1: (Base Channel)
@@ -212,7 +212,7 @@ d->planes[0].dst_h    = 1440;  // Dest Height
 
 (__`fb_pitch`__ is the number of bytes per row of pixels)
 
-We disable the __Second and Third UI Channels__ for now: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L271-L299)
+We disable the __Second and Third UI Channels__ for now: [test_display.c](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L271-L299)
 
 ```c
 // Init UI Channel 2: (First Overlay)
@@ -245,7 +245,7 @@ In a while we'll set the Alpha Channels for UI Channels 2 and 3. And the UI Chan
 
 ![Rendering Mandelbrot Set on PinePhone](https://lupyuen.github.io/images/de-code3a.png)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L175-L200)
+[(Source)](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L175-L200)
 
 # Render Mandelbrot Set
 
@@ -255,7 +255,7 @@ Let's render something infinitely more detailed and sophisticated... [__Mandelbr
 
 ![Mandelbrot Set on PinePhone](https://lupyuen.github.io/images/de-title.jpg)
 
-Earlier we created a __Fullscreen Framebuffer__: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L170-L175)
+Earlier we created a __Fullscreen Framebuffer__: [test_display.c](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L170-L175)
 
 ```c
 // Init Framebuffer 0:
@@ -265,7 +265,7 @@ static uint32_t fb0[720 * 1440];
 int fb0_len = sizeof(fb0) / sizeof(fb0[0]);
 ```
 
-Now we fill the Framebuffer with the __Mandelbrot Set__, pixel by pixel: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L175-L200)
+Now we fill the Framebuffer with the __Mandelbrot Set__, pixel by pixel: [test_display.c](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L175-L200)
 
 ```c
 // Fill with Mandelbrot Set.
@@ -299,9 +299,9 @@ for (int y = 0; y < 1440; y++) {
 }
 ```
 
-[(__`mandelbrot`__ and __`hsvToRgb`__ are defined here)](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L335-L432)
+[(__`mandelbrot`__ and __`hsvToRgb`__ are defined here)](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L335-L432)
 
-Then we initialise the __3 UI Channels__ and render them. [(Like this)](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L257-L299)
+Then we initialise the __3 UI Channels__ and render them. [(Like this)](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L257-L299)
 
 The [__Mandelbrot Set__](https://lupyuen.github.io/images/de-title.jpg) appears on PinePhone, like in the pic above.
 
@@ -309,7 +309,7 @@ Yep we can render every single pixel precisely on PinePhone!
 
 ![Animating the Madelbrot Set](https://lupyuen.github.io/images/de-code4a.png)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L299-L334)
+[(Source)](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L299-L334)
 
 # Animate Madelbrot Set
 
@@ -319,7 +319,7 @@ _Can we prove it?_
 
 Yep let's __animate the Mandelbrot Set__ in our Framebuffer. And watch the updates appear instantly on PinePhone's Display, thanks to __Direct Memory Access (DMA)__!
 
-This is how we animate the Mandelbrot Set: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L257-L334)
+This is how we animate the Mandelbrot Set: [test_display.c](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L257-L334)
 
 ```c
 // Omitted: Init UI Channels 1, 2 and 3
@@ -395,13 +395,13 @@ Thus DMA works correctly for rendering our Framebuffers on the fly!
 
 _We don't call `display_commit` after every frame?_
 
-[__`display_commit`__](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L296-L299) only needs to be called once. It configures the Display Engine to read our Framebuffer directly via DMA.
+[__`display_commit`__](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L296-L299) only needs to be called once. It configures the Display Engine to read our Framebuffer directly via DMA.
 
 Subsequent updates to the Framebuffer will be automatically pushed to the display over DMA.
 
 ![Rendering a Square Overlay on PinePhone](https://lupyuen.github.io/images/de-code5b.png)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L215-L226)
+[(Source)](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L215-L226)
 
 # Render Square Overlay
 
@@ -425,7 +425,7 @@ Our Mandelbrot Set is rendered on __UI Channel 1__ (DMA1), which is the Base Cha
 
 Let's overlay a __Blue Square__ on __UI Channel 2__ (DMA2).
 
-First we prepare a __600 x 600 Framebuffer__ that contains a Semi-Transparent Blue Square: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L215-L226)
+First we prepare a __600 x 600 Framebuffer__ that contains a Semi-Transparent Blue Square: [test_display.c](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L215-L226)
 
 ```c
 // Init Framebuffer 1:
@@ -445,7 +445,7 @@ The new Framebuffer is a little __smaller than the Screen Width__. (600 pixels v
 
 Thanks to __Framebuffer Blending__ in A64 Display Engine, it's perfectly OK to render the new Framebuffer at 600 x 600. (As a partial screen region).
 
-This is how we set __UI Channel 2__ to the 600 x 600 Framebuffer: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L271-L283)
+This is how we set __UI Channel 2__ to the 600 x 600 Framebuffer: [test_display.c](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L271-L283)
 
 ```c
 // Init UI Channel 2: (First Overlay)
@@ -468,7 +468,7 @@ Before we watch the outcome, let's render another overlay...
 
 ![Rendering a Circle Overlay on PinePhone](https://lupyuen.github.io/images/de-code5c.png)
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L226-L251)
+[(Source)](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L226-L251)
 
 # Render Circle Overlay
 
@@ -482,7 +482,7 @@ Let's top off our Cucumber Sandwich...
 
 -   __UI Channel 3__: Semi-Transparent Green Circle
 
-First we fill a Fullscreen Framebuffer with a __Semi-Transparent Green Circle__: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L226-L251)
+First we fill a Fullscreen Framebuffer with a __Semi-Transparent Green Circle__: [test_display.c](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L226-L251)
 
 ```c
 // Init Framebuffer 2:
@@ -521,7 +521,7 @@ Note that pixels outside the circle are set to __Transparent Black__.
 
 (Which makes them invisible)
 
-Next we point __UI Channel 3__ to the Fullscreen Framebuffer: [test_display.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L283-L296)
+Next we point __UI Channel 3__ to the Fullscreen Framebuffer: [test_display.c](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L283-L296)
 
 ```c
 // Init UI Channel 3: (Second Overlay)
@@ -562,7 +562,7 @@ _We've seen the Test Code for Display Engine... How do we run the code?_
 
 To test the A64 Display Engine, we'll boot __Apache NuttX RTOS__ on PinePhone and run our Test App...
 
--   [__test_display.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c)
+-   [__test_display.c__](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c)
 
 Follow these steps to __download NuttX RTOS__ (with our Test App inside) to a microSD Card...
 
@@ -645,7 +645,7 @@ _About the code that controls A64 Display Engine... Where is `display_commit` de
 
 [__`display_commit`__](https://megous.com/git/p-boot/tree/src/display.c#n2017) comes from the super-helpful [__p-boot PinePhone Bootloader__](https://xnux.eu/p-boot/) project, which runs directly on PinePhone Hardware. ("Bare Metal")
 
-To test the A64 Display Engine on Apache NuttX RTOS, we borrowed these [__Source Files__](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L135-L142) (relevant to the Display Engine) from p-boot...
+To test the A64 Display Engine on Apache NuttX RTOS, we borrowed these [__Source Files__](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L135-L142) (relevant to the Display Engine) from p-boot...
 
 -   [__display.c__](https://megous.com/git/p-boot/tree/src/display.c)
 -   [__pmic.c__](https://megous.com/git/p-boot/tree/src/pmic.c)
@@ -653,7 +653,7 @@ To test the A64 Display Engine on Apache NuttX RTOS, we borrowed these [__Source
 -   [__sunxi_gpio.c__](https://megous.com/git/p-boot/tree/src/uboot/drivers/gpio/sunxi_gpio.c)
 -   [__pinmux.c__](https://megous.com/git/p-boot/tree/src/uboot/arch/arm/mach-sunxi/pinmux.c)
 
-[(Plus a whole bunch of Header Files)](https://github.com/lupyuen/incubator-nuttx-apps/blob/de2/examples/hello/test_display.c#L115-L135)
+[(Plus a whole bunch of Header Files)](https://github.com/lupyuen/nuttx-apps/blob/de2/examples/hello/test_display.c#L115-L135)
 
 Then we modified the above files to compile on NuttX...
 
@@ -754,7 +754,7 @@ _How shall we build the PinePhone Display Driver?_
 
 We'll create the PinePhone Display Driver based on the __NuttX Driver for Sitronix ST7789__...
 
--   [__nuttx/drivers/lcd/st7789.c__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/st7789.c)
+-   [__nuttx/drivers/lcd/st7789.c__](https://github.com/lupyuen/nuttx/blob/master/drivers/lcd/st7789.c)
 
 That's because ST7789 is somewhat similar to PinePhone's ST7703 LCD Controller.
 
@@ -762,15 +762,15 @@ _But ST7789 doesn't support Framebuffers?_
 
 Yeah for PinePhone we'll wrap the A64 DMA Framebuffers with this interface for __NuttX Framebuffers__...
 
--   [__nuttx/include/nuttx/video/fb.h__](https://github.com/lupyuen/incubator-nuttx/blob/master/include/nuttx/video/fb.h)
+-   [__nuttx/include/nuttx/video/fb.h__](https://github.com/lupyuen/nuttx/blob/master/include/nuttx/video/fb.h)
 
--   [__nuttx/drivers/video/fb.c__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/video/fb.c)
+-   [__nuttx/drivers/video/fb.c__](https://github.com/lupyuen/nuttx/blob/master/drivers/video/fb.c)
 
--   [__nuttx/drivers/lcd/lcd_framebuffer.c__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/lcd_framebuffer.c)
+-   [__nuttx/drivers/lcd/lcd_framebuffer.c__](https://github.com/lupyuen/nuttx/blob/master/drivers/lcd/lcd_framebuffer.c)
 
 And we might get inspired by this implementation of __Display Overlays__ in the STM32 LCD TFT Display Controller (LTDC)...
 
--   [__nuttx/arch/arm/src/stm32/stm32_ltdc.c__](https://github.com/lupyuen/incubator-nuttx/blob/master/arch/arm/src/stm32/stm32_ltdc.c)
+-   [__nuttx/arch/arm/src/stm32/stm32_ltdc.c__](https://github.com/lupyuen/nuttx/blob/master/arch/arm/src/stm32/stm32_ltdc.c)
 
 We have started the __Zig Implementation__ of the NuttX Driver (for MIPI Display Serial Interface)...
 

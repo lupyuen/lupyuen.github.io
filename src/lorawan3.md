@@ -91,7 +91,7 @@ Our LoRaWAN Library should work on __any NuttX platform__ (like ESP32), assuming
     
     [(See this)](https://lupyuen.github.io/articles/sx1262#multithreading-with-nimble-porting-layer)
 
--   [__spi_test_driver (/dev/spitest0)__](https://github.com/lupyuen/incubator-nuttx/tree/lorawan/drivers/rf)
+-   [__spi_test_driver (/dev/spitest0)__](https://github.com/lupyuen/nuttx/tree/lorawan/drivers/rf)
 
     SPI Test Driver
     
@@ -156,15 +156,15 @@ To run LoRaWAN on NuttX, download the modified source code for __NuttX OS and Nu
 ```bash
 mkdir nuttx
 cd nuttx
-git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nuttx nuttx
-git clone --recursive --branch lorawan https://github.com/lupyuen/incubator-nuttx-apps apps
+git clone --recursive --branch lorawan https://github.com/lupyuen/nuttx nuttx
+git clone --recursive --branch lorawan https://github.com/lupyuen/nuttx-apps apps
 ```
 
 Or if we prefer to __add the LoRaWAN Library__ to our NuttX Project, follow these instructions...
 
 [(__For PineDio Stack BL604:__ The features below are already preinstalled)](https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features)
 
-1.  [__"Install SPI Test Driver"__](https://github.com/lupyuen/incubator-nuttx/tree/lorawan/drivers/rf)
+1.  [__"Install SPI Test Driver"__](https://github.com/lupyuen/nuttx/tree/lorawan/drivers/rf)
 
 1.  [__"Install NimBLE Porting Layer"__](https://github.com/lupyuen/nimble-porting-nuttx)
 
@@ -340,7 +340,7 @@ Let's build the NuttX Firmware that contains our __LoRaWAN Library__...
     nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c
     ```
 
-    Check that the __Semtech SX1262 Pins__ are configured correctly in [__board.h__](https://github.com/lupyuen/incubator-nuttx/blob/lorawan/boards/risc-v/bl602/bl602evb/include/board.h#L36-L95) or [__esp32_gpio.c__](https://github.com/lupyuen/incubator-nuttx/blob/lorawan/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c#L43-L67)...
+    Check that the __Semtech SX1262 Pins__ are configured correctly in [__board.h__](https://github.com/lupyuen/nuttx/blob/lorawan/boards/risc-v/bl602/bl602evb/include/board.h#L36-L95) or [__esp32_gpio.c__](https://github.com/lupyuen/nuttx/blob/lorawan/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c#L43-L67)...
 
     [(Which pins can be used? See this)](https://lupyuen.github.io/articles/expander#pin-functions)
 
@@ -1279,7 +1279,7 @@ The NuttX implementation of __SPI on BL602 and BL604__ might need some enhanceme
 
 -   NuttX on BL602 / BL604 executes __SPI Data Transfer with Polling__ (not DMA)
 
-    [(See this)](https://github.com/lupyuen/incubator-nuttx/blob/lorawan/arch/risc-v/src/bl602/bl602_spi.c#L734-L803)
+    [(See this)](https://github.com/lupyuen/nuttx/blob/lorawan/arch/risc-v/src/bl602/bl602_spi.c#L734-L803)
 
 -   LoRaWAN is __Time Sensitive__, as explained earlier. SPI with Polling might cause __incoming packets to be dropped__.
 
@@ -1367,9 +1367,9 @@ _NuttX transmits a CBOR Payload to The Things Network Over LoRaWAN_
 
         [(Here's an example)](https://lupyuen.github.io/articles/lorawan#appendix-lora-carrier-sensing)
 
-    -   Alternatively we may implement LoRa and LoRaWAN as __External Libraries__, similar to [__NimBLE for NuttX__](https://github.com/lupyuen/incubator-nuttx-apps/tree/master/wireless/bluetooth/nimble).
+    -   Alternatively we may implement LoRa and LoRaWAN as __External Libraries__, similar to [__NimBLE for NuttX__](https://github.com/lupyuen/nuttx-apps/tree/master/wireless/bluetooth/nimble).
 
-        (The [__Makefile__](https://github.com/lupyuen/incubator-nuttx-apps/blob/master/wireless/bluetooth/nimble/Makefile#L33) downloads the External Library during build)
+        (The [__Makefile__](https://github.com/lupyuen/nuttx-apps/blob/master/wireless/bluetooth/nimble/Makefile#L33) downloads the External Library during build)
 
         But then we won't get a proper NuttX Driver that exposes the ioctl() interface to NuttX Apps.
 
@@ -1594,7 +1594,7 @@ blflash flash c:\blflash\nuttx.bin --port COM5
 
 For WSL: Do this under plain old Windows CMD (not WSL) because __blflash__ needs to access the COM port.
 
-[(Flashing WiFi apps to BL602 / BL604? Remember to use __bl_rfbin__)](https://github.com/apache/incubator-nuttx/issues/4336)
+[(Flashing WiFi apps to BL602 / BL604? Remember to use __bl_rfbin__)](https://github.com/apache/nuttx/issues/4336)
 
 [(More details on flashing firmware)](https://lupyuen.github.io/articles/flash#flash-the-firmware)
 

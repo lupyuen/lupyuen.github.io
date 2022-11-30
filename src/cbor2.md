@@ -202,8 +202,8 @@ To test CBOR Encoding on NuttX, download the modified source code for __NuttX OS
 ```bash
 mkdir nuttx
 cd nuttx
-git clone --recursive --branch cbor https://github.com/lupyuen/incubator-nuttx nuttx
-git clone --recursive --branch cbor https://github.com/lupyuen/incubator-nuttx-apps apps
+git clone --recursive --branch cbor https://github.com/lupyuen/nuttx nuttx
+git clone --recursive --branch cbor https://github.com/lupyuen/nuttx-apps apps
 ```
 
 Or if we prefer to __add TinyCBOR__ to our NuttX Project, follow these instructions...
@@ -777,7 +777,7 @@ blflash flash c:\blflash\nuttx.bin --port COM5
 
 For WSL: Do this under plain old Windows CMD (not WSL) because __blflash__ needs to access the COM port.
 
-[(Flashing WiFi apps to BL602 / BL604? Remember to use __bl_rfbin__)](https://github.com/apache/incubator-nuttx/issues/4336)
+[(Flashing WiFi apps to BL602 / BL604? Remember to use __bl_rfbin__)](https://github.com/apache/nuttx/issues/4336)
 
 [(More details on flashing firmware)](https://lupyuen.github.io/articles/flash#flash-the-firmware)
 

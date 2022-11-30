@@ -223,7 +223,7 @@ int arm64_gic_initialize(void) {
 }
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L717-L743)
+[(Source)](https://github.com/lupyuen/nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L717-L743)
 
 Becomes this...
 
@@ -406,7 +406,7 @@ Our __Commit History__ can get awfully messy during development...
 - Tested OK yay!
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx/commits/pinephone/arch/arm64/src/qemu/qemu_serial.c)
+[(Source)](https://github.com/lupyuen/nuttx/commits/pinephone/arch/arm64/src/qemu/qemu_serial.c)
 
 So we always __Squash the Commits__ into One Single Commit (to help future maintainers)...
 

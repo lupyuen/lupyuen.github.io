@@ -144,7 +144,7 @@ Which we define like so...
 #define PIO_BASE_ADDRESS 0x01C20800
 ```
 
-[(Source)](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L83-L122)
+[(Source)](https://github.com/lupyuen/nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L83-L122)
 
 Then comes a bunch of registers that will configure the GPIOs and set their values...
 
@@ -180,7 +180,7 @@ __PD_CFG2__ is a 32-bit Hardware Register. The bits that we need to twiddle are.
 
 The pic above says we need to set the bits to __`001`__ to configure the __GPIOs for Output__.
 
-This is how we configure __PD18 for GPIO Output__: [examples/hello/hello_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L124-L179)
+This is how we configure __PD18 for GPIO Output__: [examples/hello/hello_main.c](https://github.com/lupyuen/nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L124-L179)
 
 ```c
 // PIO Base Address for PinePhone Allwinner A64 Port Controller (GPIO)
@@ -209,7 +209,7 @@ static void test_led(void)
     | (0b001 << 8);                 // Set the bits for Output
 ```
 
-Then we configure __PD19 and 20 for GPIO Output__: [hello_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L124-L179)
+Then we configure __PD19 and 20 for GPIO Output__: [hello_main.c](https://github.com/lupyuen/nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L124-L179)
 
 ```c
   // Bits 14 to 12: PD19_SELECT (Default 0x7)
@@ -248,7 +248,7 @@ Page 388 of the [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A
 
 To set PD18, 19 and 20 to High, we set __Bits 18, 19 and 20__ of PD_DATA to 1.
 
-This is how we do it: [hello_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L124-L179)
+This is how we do it: [hello_main.c](https://github.com/lupyuen/nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L124-L179)
 
 ```c
 // PIO Base Address for PinePhone Allwinner A64 Port Controller (GPIO)
@@ -302,7 +302,7 @@ Follow these steps to __download NuttX__ and copy to a microSD Card...
 
 If we're building NuttX ourselves...
 
--   Copy the code from [__hello_main.c__](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c) to...
+-   Copy the code from [__hello_main.c__](https://github.com/lupyuen/nuttx-apps/blob/pinephone/examples/hello/hello_main.c) to...
 
     ```text
     apps/examples/hello/hello_main.c
@@ -336,7 +336,7 @@ Shell (NSH) NuttX-10.3.0-RC2
 nsh> 
 ```
 
-Enter this command to run our [hello_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c) Test Program...
+Enter this command to run our [hello_main.c](https://github.com/lupyuen/nuttx-apps/blob/pinephone/examples/hello/hello_main.c) Test Program...
 
 ```bash
 hello
@@ -377,7 +377,7 @@ To turn on the Backlight, we would need to tweak...
 
     (Bit 10)
 
-Here's how we turn on PinePhone's Backlight connected to GPIO PH10: [examples/hello/hello_main.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L83-L122)
+Here's how we turn on PinePhone's Backlight connected to GPIO PH10: [examples/hello/hello_main.c](https://github.com/lupyuen/nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L83-L122)
 
 ```c
 // PIO Base Address for PinePhone Allwinner A64 Port Controller (GPIO)
@@ -755,7 +755,7 @@ Then we entered these __`peek`__ and __`poke`__ commands to read and write the M
 
 For safety, the BASIC Interpreter won't allow us to __`peek`__ and __`poke`__ Memory Addresses.
 
-This is how we patched the BASIC Interpreter to support __`peek`__ and __`poke`__: [interpreters/bas/bas_fs.c](https://github.com/lupyuen/incubator-nuttx-apps/blob/pinephone/interpreters/bas/bas_fs.c#L1862-L1889)
+This is how we patched the BASIC Interpreter to support __`peek`__ and __`poke`__: [interpreters/bas/bas_fs.c](https://github.com/lupyuen/nuttx-apps/blob/pinephone/interpreters/bas/bas_fs.c#L1862-L1889)
 
 ```c
 int FS_memInput(int address)

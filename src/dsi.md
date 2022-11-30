@@ -647,7 +647,7 @@ _How shall we build the NuttX Driver for PinePhone's Display?_
 
 We shall create a __NuttX Driver for Sitronix ST7703__ based on the code from ST7789...
 
--   [__nuttx/drivers/lcd/st7789.c__](https://github.com/lupyuen/incubator-nuttx/blob/master/drivers/lcd/st7789.c)
+-   [__nuttx/drivers/lcd/st7789.c__](https://github.com/lupyuen/nuttx/blob/master/drivers/lcd/st7789.c)
 
 But before that, we shall __test the driver code__ by directly accessing the A64 Hardware Registers, similar to this...
 

@@ -214,7 +214,7 @@ undefined reference to `hello_zig_main'
 
 [(Source)](https://gist.github.com/lupyuen/497c90b862aef48b57ff3124f2ea94d8)
 
-Which is probably due to some __incomplete Build Rules__ in the NuttX Makefiles. [(See this)](https://github.com/apache/incubator-nuttx/issues/6219)
+Which is probably due to some __incomplete Build Rules__ in the NuttX Makefiles. [(See this)](https://github.com/apache/nuttx/issues/6219)
 
 But no worries! Let's compile the Zig App ourselves and link it into the NuttX Firmware.
 
@@ -686,10 +686,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  This __Revert Commit__ might tell us what's missing from the NuttX Makefiles...
 
-    [__"Revert Zig Build"__](https://github.com/apache/incubator-nuttx/pull/5762/commits/ad17dfca52606671564636cdd773b09af8fb154e)
+    [__"Revert Zig Build"__](https://github.com/apache/nuttx/pull/5762/commits/ad17dfca52606671564636cdd773b09af8fb154e)
 
 1.  We made two __Temporary Fixes to the NuttX Makefiles__ so that the Zig Object Files will be generated...
 
-    [__nuttx/tools/Config.mk__](https://github.com/lupyuen/incubator-nuttx/commit/825531f3f571621754ba4c69f32406440dd0d9f3)
+    [__nuttx/tools/Config.mk__](https://github.com/lupyuen/nuttx/commit/825531f3f571621754ba4c69f32406440dd0d9f3)
 
-    [__apps/Application.mk__](https://github.com/lupyuen/incubator-nuttx-apps/commit/7fd9964b910add04f47780f519e3054f8e2692c9)
+    [__apps/Application.mk__](https://github.com/lupyuen/nuttx-apps/commit/7fd9964b910add04f47780f519e3054f8e2692c9)
