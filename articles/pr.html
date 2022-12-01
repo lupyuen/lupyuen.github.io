@@ -351,10 +351,17 @@ int arm64_gic_initialize(void)
 <blockquote>
 <p><a href="https://github.com/apache/nuttx/pull/7630">(Source)</a></p>
 </blockquote>
-<p>If it’s a long list, we might break into subsections like this…</p>
+<p>If it’s a long list, we might <strong>break into subsections</strong> like this…</p>
 <ul>
 <li><a href="https://github.com/apache/nuttx/pull/7692"><strong>arch/arm64: Add support for PINE64 PinePhone</strong></a></li>
 </ul>
+<p>For <strong>Code Provenance</strong> it’s good to state <strong>how we created the code</strong>…</p>
+<blockquote>
+<p><em>“This 64-bit implementation of GIC v2 is mostly identical to the existing GIC v2 for 32-bit Armv7-A (<a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm/src/armv7-a/arm_gicv2.c"><code>arm_gicv2.c</code></a>, <a href="https://github.com/apache/incubator-nuttx/blob/master/arch/arm/src/armv7-a/gic.h"><code>gic.h</code></a>), with minor modifications to support 64-bit Registers (Interrupt Context).”</em></p>
+</blockquote>
+<blockquote>
+<p><a href="https://github.com/apache/nuttx/pull/7630">(Source)</a></p>
+</blockquote>
 <h2 id="impact"><a href="#impact">4.3 Impact</a></h2>
 <p>Under “Impact”, we write <strong>which parts of NuttX are affected</strong> by the Pull Request. </p>
 <p>(And which parts <em>won’t</em> be affected)</p>
