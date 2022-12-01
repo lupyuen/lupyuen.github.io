@@ -1170,11 +1170,11 @@ We added the last 2 commands (__SLPOUT__ and __Display On__) to be consistent wi
 
 # Appendix: Display Backlight
 
-Based on the log captured from [__p-boot backlight_enable__](https://megous.com/git/p-boot/tree/src/display.c#n1929)...
+We captured the log from [__p-boot backlight_enable__](https://megous.com/git/p-boot/tree/src/display.c#n1929)...
 
-And decoding the captured addresses based on [__Allwinner A64 User Manual__](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+-   [__Log from backlight_enable__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#backlight_enable)
 
-We decipher the following steps for turning on the __Display Backlight__...
+By decoding the captured addresses with [__Allwinner A64 User Manual__](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf), we decipher the following steps for turning on the __Display Backlight__...
 
 1.  Configure PL10 for PWM
     - Register PL_CFG1 (Port L Configure Register 1, Offset 4): To configure PL10 for PWM (Bits 8 to 10, Page 412)
@@ -1220,7 +1220,7 @@ We decipher the following steps for turning on the __Display Backlight__...
     ```
 
 1.  Configure PH10 for Output
-    - Register PH_CFG1 (Offset `0x100`): To configure PH10 (Bits 8 to 10)
+    - Register PH_CFG1 (Offset `0x100`): Configure PH10 (Bits 8 to 10)
     - `0x1c20900` = PIO Base Address + `0x100`
 
     ```text
@@ -1231,17 +1231,17 @@ We decipher the following steps for turning on the __Display Backlight__...
     ```
 
 1.  Set PH10 to High
+    - Register PH_DATA (Offset `0x10C`): Set PH10 (Bit 10)
     - `0x1c2090c` = PIO Base Address + `0x10C`
-    - Register PH_DATA (Offset 0x10C): To set PH10 (Bit 10)
 
     ```text
     sunxi_gpio_output: pin=0xea, val=1
     ```
 
-PIO (CPUx-PORT) Base Address: `0x01C2` `0800` (Page 376)
+PIO Base Address (CPUx-PORT): `0x01C2` `0800` (Page 376)
 
-PWM (CPUx-PORT?) Base Address: `0x01C2` `1400` (Page 194)
+PWM Base Address (CPUx-PWM?): `0x01C2` `1400` (Page 194)
 
-R_PIO (CPUs-PORT) Base Address: `0x01F0` `2C00` (Page 410)
+R_PIO Base Address (CPUs-PORT): `0x01F0` `2C00` (Page 410)
 
-R_PWM (CPUs-PWM?) Base Address: `0x01F0` `3800` (CPUs Domain, Page 256)
+R_PWM Base Address (CPUs-PWM?): `0x01F0` `3800` (CPUs Domain, Page 256)
