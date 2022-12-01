@@ -910,27 +910,74 @@ We have updated these articles to point to the PinePhone code in NuttX Mainline.
 
 __Upcoming Features__ for NuttX on PinePhone...
 
--   Fix the garbled __Startup Messages__
+1.  Fix the garbled __Startup Messages__
 
     [(More about this)](https://github.com/apache/nuttx/pull/7692)
 
--   __GPIO and PWM Drivers__ for Allwinner A64
+1.  __PIO and PWM Drivers__ for Allwinner A64
 
     [(Needed for PinePhone Backlight)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#backlight_enable)
 
--   __MIPI Display Serial Interface Driver__ for Allwinner A64
+    PIO Driver will be based on Allwinner A10 [__a1x_pio.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_pio.c), [__a1x_pio.h__](https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_pio.h) and [__hardware/a1x_pio.h__](https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/hardware/a1x_pio.h)
+
+1.  __MIPI Display Serial Interface Driver__ for Allwinner A64
 
     [(Based on this)](https://lupyuen.github.io/articles/dsi2)
 
--   __Display Engine Driver__ for Allwinner A64
+1.  __Display Engine Driver__ for Allwinner A64
 
     [(Based on this)](https://lupyuen.github.io/articles/de2)
 
--   __DPHY and TCON0 Drivers__ for Allwinner A64
+1.  __DPHY and TCON0 Drivers__ for Allwinner A64
 
     [(Based on this)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dphy_enable)
 
-And we will be able to render some graphics on PinePhone. Stay Tuned!
+And we'll be able to render some graphics on PinePhone. Stay Tuned!
+
+__Upcoming Fixes__ for NuttX on PinePhone...
+
+1.  __RAM Size__ will be increased to 2 GB: [chip.h](https://github.com/apache/nuttx/blob/master/arch/arm64/include/a64/chip.h#L45-L48)
+
+    ```c
+    // Allwinner A64 Memory Map
+    // TODO: Increase RAM to 2 GB
+    #define CONFIG_RAMBANK1_ADDR      0x40000000
+    #define CONFIG_RAMBANK1_SIZE      MB(128)
+    ```
+
+1.  Only __Single Core CPU__ has been tested on PinePhone: [pinephone/defconfig](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/nsh/defconfig)
+
+    We shall test __Quad Core CPU__ on PinePhone: [qemu-armv8a/nsh_smp/defconfig](https://github.com/apache/nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/configs/nsh_smp/defconfig#L0-L1)
+
+    ```text
+    ## TODO: Enable Symmetric Multiprocessing (SMP) for PinePhone
+    CONFIG_ARCH_INTERRUPTSTACK=8192
+    CONFIG_DEFAULT_TASK_STACKSIZE=16384
+    CONFIG_IDLETHREAD_STACKSIZE=16384
+    CONFIG_PTHREAD_STACK_MIN=16384
+    CONFIG_SMP=y
+    CONFIG_SYSTEM_TASKSET=y
+    CONFIG_TESTING_OSTEST_STACKSIZE=16384
+    CONFIG_TESTING_SMP=y
+    ```
+
+__Porting Notes__ for NuttX on PinePhone...
+
+1.  [__Image Load Offset__](https://lupyuen.github.io/articles/uboot#nuttx-header) in the Linux Kernel Header isn't used: [arm64_head.S](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L79-L117)
+
+    ```text
+    .quad 0x480000 /* Image load offset from start of RAM */
+    ```
+
+    NuttX boots OK without changing the Image Load Offset.
+
+    (Seems the Image Load Offset is not used by the U-Boot Bootloader. It's probably used by the Linux Kernel only)
+
+1.  Previously the __Vector Base Address Register__ for EL1 was set incorrectly. [(See this)](https://lupyuen.github.io/articles/interrupt#arm64-vector-table-is-wrong)
+
+    The new code doesn't have this problem.
+    
+    (Is it due to the Image Load Offset?)
 
 ![Build NuttX](https://lupyuen.github.io/images/arm-build.png)
 
