@@ -1133,9 +1133,11 @@
 <li><a href="https://megous.com/git/p-boot/tree/src/display.c#n216"><strong>p-boot Initialisation Sequence</strong></a></li>
 </ul>
 <h1 id="appendix-display-backlight"><a href="#appendix-display-backlight">20 Appendix: Display Backlight</a></h1>
-<p>Based on the log captured from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1929"><strong>p-boot backlight_enable</strong></a>…</p>
-<p>And decoding the captured addresses based on <a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a></p>
-<p>We decipher the following steps for turning on the <strong>Display Backlight</strong>…</p>
+<p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1929"><strong>p-boot backlight_enable</strong></a>…</p>
+<ul>
+<li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#backlight_enable"><strong>Log from backlight_enable</strong></a></li>
+</ul>
+<p>By decoding the captured addresses with <a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>, we decipher the following steps for turning on the <strong>Display Backlight</strong>…</p>
 <ol>
 <li>
 <p>Configure PL10 for PWM</p>
@@ -1179,7 +1181,7 @@ clrsetbits 0x1f02c04, 0xf00, 0x200</code></pre></div></li>
 <li>
 <p>Configure PH10 for Output</p>
 <ul>
-<li>Register PH_CFG1 (Offset <code>0x100</code>): To configure PH10 (Bits 8 to 10)</li>
+<li>Register PH_CFG1 (Offset <code>0x100</code>): Configure PH10 (Bits 8 to 10)</li>
 <li><code>0x1c20900</code> = PIO Base Address + <code>0x100</code></li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>enable backlight: GPH(10), 1
@@ -1189,15 +1191,15 @@ clrsetbits 0x1c20900, 0xf00, 0x100</code></pre></div></li>
 <li>
 <p>Set PH10 to High</p>
 <ul>
+<li>Register PH_DATA (Offset <code>0x10C</code>): Set PH10 (Bit 10)</li>
 <li><code>0x1c2090c</code> = PIO Base Address + <code>0x10C</code></li>
-<li>Register PH_DATA (Offset 0x10C): To set PH10 (Bit 10)</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>sunxi_gpio_output: pin=0xea, val=1</code></pre></div></li>
 </ol>
-<p>PIO (CPUx-PORT) Base Address: <code>0x01C2</code> <code>0800</code> (Page 376)</p>
-<p>PWM (CPUx-PORT?) Base Address: <code>0x01C2</code> <code>1400</code> (Page 194)</p>
-<p>R_PIO (CPUs-PORT) Base Address: <code>0x01F0</code> <code>2C00</code> (Page 410)</p>
-<p>R_PWM (CPUs-PWM?) Base Address: <code>0x01F0</code> <code>3800</code> (CPUs Domain, Page 256)</p>
+<p>PIO Base Address (CPUx-PORT): <code>0x01C2</code> <code>0800</code> (Page 376)</p>
+<p>PWM Base Address (CPUx-PWM?): <code>0x01C2</code> <code>1400</code> (Page 194)</p>
+<p>R_PIO Base Address (CPUs-PORT): <code>0x01F0</code> <code>2C00</code> (Page 410)</p>
+<p>R_PWM Base Address (CPUs-PWM?): <code>0x01F0</code> <code>3800</code> (CPUs Domain, Page 256)</p>
 
     
 </body>
