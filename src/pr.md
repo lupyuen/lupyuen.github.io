@@ -336,9 +336,15 @@ And we list the __files that we changed__...
 
 >   [(Source)](https://github.com/apache/nuttx/pull/7630)
 
-If it's a long list, we might break into subsections like this...
+If it's a long list, we might __break into subsections__ like this...
 
 -   [__arch/arm64: Add support for PINE64 PinePhone__](https://github.com/apache/nuttx/pull/7692)
+
+For __Code Provenance__ it's good to state __how we created the code__...
+
+>   _"This 64-bit implementation of GIC v2 is mostly identical to the existing GIC v2 for 32-bit Armv7-A ([`arm_gicv2.c`](https://github.com/apache/incubator-nuttx/blob/master/arch/arm/src/armv7-a/arm_gicv2.c), [`gic.h`](https://github.com/apache/incubator-nuttx/blob/master/arch/arm/src/armv7-a/gic.h)), with minor modifications to support 64-bit Registers (Interrupt Context)."_
+
+>   [(Source)](https://github.com/apache/nuttx/pull/7630)
 
 ## Impact
 
