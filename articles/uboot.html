@@ -851,14 +851,15 @@ nsh&gt; ls /dev
 </li>
 </ul>
 <p><strong>Upcoming Features</strong> for NuttX on PinePhone…</p>
-<ul>
+<ol>
 <li>
 <p>Fix the garbled <strong>Startup Messages</strong></p>
 <p><a href="https://github.com/apache/nuttx/pull/7692">(More about this)</a></p>
 </li>
 <li>
-<p><strong>GPIO and PWM Drivers</strong> for Allwinner A64</p>
+<p><strong>PIO and PWM Drivers</strong> for Allwinner A64</p>
 <p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#backlight_enable">(Needed for PinePhone Backlight)</a></p>
+<p>PIO Driver will be based on Allwinner A10 <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_pio.c"><strong>a1x_pio.c</strong></a>, <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_pio.h"><strong>a1x_pio.h</strong></a> and <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/hardware/a1x_pio.h"><strong>hardware/a1x_pio.h</strong></a></p>
 </li>
 <li>
 <p><strong>MIPI Display Serial Interface Driver</strong> for Allwinner A64</p>
@@ -872,8 +873,43 @@ nsh&gt; ls /dev
 <p><strong>DPHY and TCON0 Drivers</strong> for Allwinner A64</p>
 <p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dphy_enable">(Based on this)</a></p>
 </li>
-</ul>
-<p>And we will be able to render some graphics on PinePhone. Stay Tuned!</p>
+</ol>
+<p>And we’ll be able to render some graphics on PinePhone. Stay Tuned!</p>
+<p><strong>Upcoming Fixes</strong> for NuttX on PinePhone…</p>
+<ol>
+<li>
+<p><strong>RAM Size</strong> will be increased to 2 GB: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/include/a64/chip.h#L45-L48">chip.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Allwinner A64 Memory Map
+// TODO: Increase RAM to 2 GB
+#define CONFIG_RAMBANK1_ADDR      0x40000000
+#define CONFIG_RAMBANK1_SIZE      MB(128)</code></pre></div></li>
+<li>
+<p>Only <strong>Single Core CPU</strong> has been tested on PinePhone: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/nsh/defconfig">pinephone/defconfig</a></p>
+<p>We shall test <strong>Quad Core CPU</strong> on PinePhone: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/qemu/qemu-armv8a/configs/nsh_smp/defconfig#L0-L1">qemu-armv8a/nsh_smp/defconfig</a></p>
+<div class="example-wrap"><pre class="language-text"><code># TODO: Enable Symmetric Multiprocessing (SMP) for PinePhone
+CONFIG_ARCH_INTERRUPTSTACK=8192
+CONFIG_DEFAULT_TASK_STACKSIZE=16384
+CONFIG_IDLETHREAD_STACKSIZE=16384
+CONFIG_PTHREAD_STACK_MIN=16384
+CONFIG_SMP=y
+CONFIG_SYSTEM_TASKSET=y
+CONFIG_TESTING_OSTEST_STACKSIZE=16384
+CONFIG_TESTING_SMP=y</code></pre></div></li>
+</ol>
+<p><strong>Porting Notes</strong> for NuttX on PinePhone…</p>
+<ol>
+<li>
+<p><a href="https://lupyuen.github.io/articles/uboot#nuttx-header"><strong>Image Load Offset</strong></a> in the Linux Kernel Header isn’t used: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L79-L117">arm64_head.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>.quad 0x480000 /* Image load offset from start of RAM */</code></pre></div>
+<p>NuttX boots OK without changing the Image Load Offset.</p>
+<p>(Seems the Image Load Offset is not used by the U-Boot Bootloader. It’s probably used by the Linux Kernel only)</p>
+</li>
+<li>
+<p>Previously the <strong>Vector Base Address Register</strong> for EL1 was set incorrectly. <a href="https://lupyuen.github.io/articles/interrupt#arm64-vector-table-is-wrong">(See this)</a></p>
+<p>The new code doesn’t have this problem.</p>
+<p>(Is it due to the Image Load Offset?)</p>
+</li>
+</ol>
 <p><img src="https://lupyuen.github.io/images/arm-build.png" alt="Build NuttX" /></p>
 <h1 id="appendix-build-nuttx-for-pinephone"><a href="#appendix-build-nuttx-for-pinephone">18 Appendix: Build NuttX for PinePhone</a></h1>
 <p><strong>UPDATE:</strong> PinePhone is now officially supported by Apache NuttX RTOS <a href="https://lupyuen.github.io/articles/uboot#appendix-pinephone-is-now-supported-by-apache-nuttx-rtos">(See this)</a></p>
