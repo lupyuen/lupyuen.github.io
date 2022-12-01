@@ -1167,3 +1167,81 @@ The above commands were originally specified here (partially annotated)...
 We added the last 2 commands (__SLPOUT__ and __Display On__) to be consistent with the __p-boot Version__, which was tested OK on NuttX...
 
 -   [__p-boot Initialisation Sequence__](https://megous.com/git/p-boot/tree/src/display.c#n216)
+
+# Appendix: Display Backlight
+
+Based on the log captured from [__p-boot backlight_enable__](https://megous.com/git/p-boot/tree/src/display.c#n1929)...
+
+And decoding the captured addresses based on [__Allwinner A64 User Manual__](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+
+We decipher the following steps for turning on the __Display Backlight__...
+
+1.  Configure PL10 for PWM
+    - Register PL_CFG1 (Port L Configure Register 1, Offset 4): To configure PL10 for PWM (Bits 8 to 10, Page 412)
+    - `0x1f02c04` = R_PIO Base Address + 4
+
+    ```text
+    backlight_enable: pct=0x5a
+    1.0 has incorrectly documented non-presence of PH10, the circuit is in fact the same as on 1.1+
+    configure pwm: GPL(10), GPL_R_PWM
+    sunxi_gpio_set_cfgpin: pin=0x16a, val=2
+    sunxi_gpio_set_cfgbank: bank_offset=362, val=2
+    clrsetbits 0x1f02c04, 0xf00, 0x200
+    ```
+
+1.  Disable R_PWM (Undocumented)
+    - Register R_PWM_CTRL_REG? (R_PWM Control Register?, Offset 0): To control R_PWM? (Page 194)
+    - Clear `0x40` = SCLK_CH0_GATING (0=mask)
+    - `0x1f03800` = R_PWM Base Address + 0
+
+    ```text
+    clrbits 0x1f03800, 0x40
+    ```
+
+1.  Configure R_PWM Period (Undocumented)
+    - Register R_PWM_CH0_PERIOD? (R_PWM Channel 0 Period Register?, Offset 4): To configure R_PWM period? (Page 195)
+    - PWM_CH0_ENTIRE_CYS = `0x4af` = Period
+    - PWM_CH0_ENTIRE_ACT_CYS = `0x0437` = Period * Percent / 100
+    - Period = `0x4af` (1199)
+    - Percent = `0x5a`
+    - `0x1f03804` = R_PWM Base Address + 4
+
+    ```text
+    0x1f03804 = 0x4af0437
+    ```
+
+1.  Enable R_PWM (Undocumented)
+    - Register R_PWM_CTRL_REG? (R_PWM Control Register?, Offset 0): To control R_PWM? (Page 194)
+    - `0x5f` = SCLK_CH0_GATING (1=pass) + PWM_CH0_EN (1=enable) + PWM_CH0_PRESCAL (Prescalar 1)
+    - `0x1f03800` = R_PWM Base Address + 0
+
+    ```text
+    0x1f03800 = 0x5f
+    ```
+
+1.  Configure PH10 for Output
+    - Register PH_CFG1 (Offset `0x100`): To configure PH10 (Bits 8 to 10)
+    - `0x1c20900` = PIO Base Address + `0x100`
+
+    ```text
+    enable backlight: GPH(10), 1
+    sunxi_gpio_set_cfgpin: pin=0xea, val=1
+    sunxi_gpio_set_cfgbank: bank_offset=234, val=1
+    clrsetbits 0x1c20900, 0xf00, 0x100
+    ```
+
+1.  Set PH10 to High
+    - `0x1c2090c` = PIO Base Address + `0x10C`
+    - Register PH_DATA (Offset 0x10C): To set PH10 (Bit 10)
+
+    ```text
+    sunxi_gpio_output: pin=0xea, val=1
+    ```
+
+PIO (CPUx-PORT) Base Address: `0x01C2` `0800` (Page 376)
+
+PWM (CPUx-PORT?) Base Address: `0x01C2` `1400` (Page 194)
+
+R_PIO (CPUs-PORT) Base Address: `0x01F0` `2C00` (Page 410)
+
+R_PWM (CPUs-PWM?) Base Address: `0x01F0` `3800` (CPUs Domain, Page 256)
