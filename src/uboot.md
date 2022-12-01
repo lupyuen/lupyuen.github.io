@@ -908,6 +908,8 @@ We have updated these articles to point to the PinePhone code in NuttX Mainline.
 
 -   [__"NuttX RTOS for PinePhone: Blinking the LEDs"__](https://lupyuen.github.io/articles/pio)
 
+## Upcoming Features
+
 __Upcoming Features__ for NuttX on PinePhone...
 
 1.  Fix the garbled __Startup Messages__
@@ -934,7 +936,9 @@ __Upcoming Features__ for NuttX on PinePhone...
 
 And we'll be able to render some graphics on PinePhone. Stay Tuned!
 
-__Upcoming Fixes__ for NuttX on PinePhone...
+## Upcoming Fixes
+
+These are the __Upcoming Fixes__ for NuttX on PinePhone...
 
 1.  __RAM Size__ will be increased to 2 GB: [chip.h](https://github.com/apache/nuttx/blob/master/arch/arm64/include/a64/chip.h#L45-L48)
 
@@ -960,6 +964,8 @@ __Upcoming Fixes__ for NuttX on PinePhone...
     CONFIG_TESTING_OSTEST_STACKSIZE=16384
     CONFIG_TESTING_SMP=y
     ```
+
+## Porting Notes
 
 __Porting Notes__ for NuttX on PinePhone...
 
