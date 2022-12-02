@@ -1921,4 +1921,4 @@ Based on the above steps, we have __implemented in Zig__ the Display Backlight D
 
 -   [__pinephone-nuttx/backlight.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig)
 
--   [__TODO: Output Log for backlight.zig__]()
+-   [__Output Log for backlight.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
