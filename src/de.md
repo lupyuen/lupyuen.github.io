@@ -1821,7 +1821,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
 [(Captured from p-boot `display_commit`)](https://megous.com/git/p-boot/tree/src/display.c#n2017)
 
-We have __implemented in Zig__ the above A64 Display Engine Rendering...
+Based on the above steps, we have __implemented in Zig__ the A64 Display Engine Rendering...
 
 -   [__pinephone-nuttx/render.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig)
 
@@ -1833,11 +1833,11 @@ We captured the log from [__p-boot backlight_enable__](https://megous.com/git/p-
 
 -   [__Log from backlight_enable__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#backlight_enable)
 
-By decoding the captured addresses with [__Allwinner A64 User Manual__](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf), we decipher the following steps for turning on the __Display Backlight__...
+By decoding the captured addresses and values, we decipher the following steps for turning on __PinePhone's Display Backlight__...
 
 1.  Configure PL10 for PWM
     - Register PL_CFG1 (Port L Configure Register 1)
-    - At R_PIO Offset 4 (A64 Page 412)
+    - At R_PIO Offset 4 [(A64 Page 412)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
     - Set PL10_SELECT (Bits 8 to 10) to 2 (S_PWM)
 
     ```text
@@ -1852,7 +1852,7 @@ By decoding the captured addresses with [__Allwinner A64 User Manual__](https://
 
 1.  Disable R_PWM (Undocumented)
     - Register R_PWM_CTRL_REG? (R_PWM Control Register?)
-    - At R_PWM Offset 0 (A64 Page 194)
+    - At R_PWM Offset 0 [(A64 Page 194)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
     - Set SCLK_CH0_GATING (Bit 6) to 0 (Mask)
 
     ```text
@@ -1861,7 +1861,7 @@ By decoding the captured addresses with [__Allwinner A64 User Manual__](https://
 
 1.  Configure R_PWM Period (Undocumented)
     - Register R_PWM_CH0_PERIOD? (R_PWM Channel 0 Period Register?)
-    - At R_PWM Offset 4 (A64 Page 195)
+    - At R_PWM Offset 4 [(A64 Page 195)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
     - PWM_CH0_ENTIRE_CYS (Upper 16 Bits) = Period (`0x4af`)
     - PWM_CH0_ENTIRE_ACT_CYS (Lower 16 Bits) = Period * Percent / 100 (`0x0437`)
     - Period = `0x4af` (1199)
@@ -1873,7 +1873,7 @@ By decoding the captured addresses with [__Allwinner A64 User Manual__](https://
 
 1.  Enable R_PWM (Undocumented)
     - Register R_PWM_CTRL_REG? (R_PWM Control Register?)
-    - At R_PWM Offset 0 (A64 Page 194)
+    - At R_PWM Offset 0 [(A64 Page 194)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
     - Set SCLK_CH0_GATING (Bit 6) to 1 (Pass)
     - Set PWM_CH0_EN (Bit 4) to 1 (Enable)
     - Set PWM_CH0_PRESCAL (Bits 0 to 3) to 0b1111 (Prescalar 1)
@@ -1884,7 +1884,7 @@ By decoding the captured addresses with [__Allwinner A64 User Manual__](https://
 
 1.  Configure PH10 for Output
     - Register PH_CFG1 (PH Configure Register 1)
-    - At PIO Offset `0x100` (A64 Page 401)
+    - At PIO Offset `0x100` [(A64 Page 401)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
     - Set PH10_SELECT (Bits 8 to 10) to 1 (Output)
 
     ```text
@@ -1897,7 +1897,7 @@ By decoding the captured addresses with [__Allwinner A64 User Manual__](https://
 
 1.  Set PH10 to High
     - Register PH_DATA (PH Data Register)
-    - At PIO Offset `0x10C` (A64 Page 403)
+    - At PIO Offset `0x10C` [(A64 Page 403)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
     - Set PH10 (Bit 10) to 1 (High)
 
     ```text
@@ -1905,12 +1905,20 @@ By decoding the captured addresses with [__Allwinner A64 User Manual__](https://
     TODO: Set Bit 10 of PH_DATA (0x1c2090c)
     ```
 
+[(See the Complete Log)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#backlight_enable)
+
 The Base Addresses above are...
 
--   __PIO Base Address__ (CPUx-PORT): `0x01C2` `0800` (A64 Page 376)
+-   __PIO Base Address__ (CPUx-PORT): `0x01C2` `0800` [(A64 Page 376)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
 
--   __PWM Base Address__ (CPUx-PWM?): `0x01C2` `1400` (A64 Page 194)
+-   __PWM Base Address__ (CPUx-PWM?): `0x01C2` `1400` [(A64 Page 194)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
 
--   __R_PIO Base Address__ (CPUs-PORT): `0x01F0` `2C00` (A64 Page 410)
+-   __R_PIO Base Address__ (CPUs-PORT): `0x01F0` `2C00` [(A64 Page 410)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
 
--   __R_PWM Base Address__ (CPUs-PWM?): `0x01F0` `3800` (CPUs Domain, A64 Page 256)
+-   __R_PWM Base Address__ (CPUs-PWM?): `0x01F0` `3800` [(CPUs Domain, A64 Page 256)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+
+Based on the above steps, we have __implemented in Zig__ the Display Backlight Driver...
+
+-   [__pinephone-nuttx/backlight.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig)
+
+-   [__TODO: Output Log for backlight.zig__]()
