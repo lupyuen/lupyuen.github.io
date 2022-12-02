@@ -1142,8 +1142,9 @@
 <li>
 <p>Configure PL10 for PWM</p>
 <ul>
-<li>Register PL_CFG1 (Port L Configure Register 1, Offset 4): To configure PL10 for PWM (Bits 8 to 10, Page 412)</li>
-<li><code>0x1f02c04</code> = R_PIO Base Address + 4</li>
+<li>Register PL_CFG1 (Port L Configure Register 1)</li>
+<li>At R_PIO Offset 4 (Page 412)</li>
+<li>Configure PL10 for PWM (Bits 8 to 10)</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>backlight_enable: pct=0x5a
 1.0 has incorrectly documented non-presence of PH10, the circuit is in fact the same as on 1.1+
@@ -1154,52 +1155,67 @@ clrsetbits 0x1f02c04, 0xf00, 0x200</code></pre></div></li>
 <li>
 <p>Disable R_PWM (Undocumented)</p>
 <ul>
-<li>Register R_PWM_CTRL_REG? (R_PWM Control Register?, Offset 0): To control R_PWM? (Page 194)</li>
-<li>Clear <code>0x40</code> = SCLK_CH0_GATING (0=mask)</li>
-<li><code>0x1f03800</code> = R_PWM Base Address + 0</li>
+<li>Register R_PWM_CTRL_REG? (R_PWM Control Register?)</li>
+<li>At R_PWM Offset 0 (Page 194)</li>
+<li>Clear <code>0x40</code>: SCLK_CH0_GATING (0=mask)</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>clrbits 0x1f03800, 0x40</code></pre></div></li>
 <li>
 <p>Configure R_PWM Period (Undocumented)</p>
 <ul>
-<li>Register R_PWM_CH0_PERIOD? (R_PWM Channel 0 Period Register?, Offset 4): To configure R_PWM period? (Page 195)</li>
-<li>PWM_CH0_ENTIRE_CYS = <code>0x4af</code> = Period</li>
-<li>PWM_CH0_ENTIRE_ACT_CYS = <code>0x0437</code> = Period * Percent / 100</li>
+<li>Register R_PWM_CH0_PERIOD? (R_PWM Channel 0 Period Register?)</li>
+<li>At R_PWM Offset 4 (Page 195)</li>
+<li>PWM_CH0_ENTIRE_CYS (Upper 16 Bits) = Period (<code>0x4af</code>)</li>
+<li>PWM_CH0_ENTIRE_ACT_CYS (Lower 16 Bits) = Period * Percent / 100 (<code>0x0437</code>)</li>
 <li>Period = <code>0x4af</code> (1199)</li>
 <li>Percent = <code>0x5a</code></li>
-<li><code>0x1f03804</code> = R_PWM Base Address + 4</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>0x1f03804 = 0x4af0437</code></pre></div></li>
 <li>
 <p>Enable R_PWM (Undocumented)</p>
 <ul>
-<li>Register R_PWM_CTRL_REG? (R_PWM Control Register?, Offset 0): To control R_PWM? (Page 194)</li>
+<li>Register R_PWM_CTRL_REG? (R_PWM Control Register?)</li>
+<li>At R_PWM Offset 0 (Page 194)</li>
 <li><code>0x5f</code> = SCLK_CH0_GATING (1=pass) + PWM_CH0_EN (1=enable) + PWM_CH0_PRESCAL (Prescalar 1)</li>
-<li><code>0x1f03800</code> = R_PWM Base Address + 0</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>0x1f03800 = 0x5f</code></pre></div></li>
 <li>
 <p>Configure PH10 for Output</p>
 <ul>
-<li>Register PH_CFG1 (Offset <code>0x100</code>): Configure PH10 (Bits 8 to 10)</li>
-<li><code>0x1c20900</code> = PIO Base Address + <code>0x100</code></li>
+<li>Register PH_CFG1 (PH Configure Register 1)</li>
+<li>At PIO Offset <code>0x100</code> (Page 401)</li>
+<li>Set PH10_SELECT (Bits 8 to 10) to 1 (Output)</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>enable backlight: GPH(10), 1
 sunxi_gpio_set_cfgpin: pin=0xea, val=1
 sunxi_gpio_set_cfgbank: bank_offset=234, val=1
-clrsetbits 0x1c20900, 0xf00, 0x100</code></pre></div></li>
+clrsetbits 0x1c20900, 0xf00, 0x100
+TODO: Should 0xf00 be 0x700 instead?</code></pre></div></li>
 <li>
 <p>Set PH10 to High</p>
 <ul>
-<li>Register PH_DATA (Offset <code>0x10C</code>): Set PH10 (Bit 10)</li>
-<li><code>0x1c2090c</code> = PIO Base Address + <code>0x10C</code></li>
+<li>Register PH_DATA (PH Data Register)</li>
+<li>At PIO Offset <code>0x10C</code> (Page 403)</li>
+<li>Set PH10 (Bit 10) to 1 (High)</li>
 </ul>
-<div class="example-wrap"><pre class="language-text"><code>sunxi_gpio_output: pin=0xea, val=1</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>sunxi_gpio_output: pin=0xea, val=1
+TODO: Set Bit 10 of PH_DATA (0x1c2090c)</code></pre></div></li>
 </ol>
-<p>PIO Base Address (CPUx-PORT): <code>0x01C2</code> <code>0800</code> (Page 376)</p>
-<p>PWM Base Address (CPUx-PWM?): <code>0x01C2</code> <code>1400</code> (Page 194)</p>
-<p>R_PIO Base Address (CPUs-PORT): <code>0x01F0</code> <code>2C00</code> (Page 410)</p>
-<p>R_PWM Base Address (CPUs-PWM?): <code>0x01F0</code> <code>3800</code> (CPUs Domain, Page 256)</p>
+<p>The Base Addresses above are…</p>
+<ul>
+<li>
+<p><strong>PIO Base Address</strong> (CPUx-PORT): <code>0x01C2</code> <code>0800</code> (Page 376)</p>
+</li>
+<li>
+<p><strong>PWM Base Address</strong> (CPUx-PWM?): <code>0x01C2</code> <code>1400</code> (Page 194)</p>
+</li>
+<li>
+<p><strong>R_PIO Base Address</strong> (CPUs-PORT): <code>0x01F0</code> <code>2C00</code> (Page 410)</p>
+</li>
+<li>
+<p><strong>R_PWM Base Address</strong> (CPUs-PWM?): <code>0x01F0</code> <code>3800</code> (CPUs Domain, Page 256)</p>
+</li>
+</ul>
 
     
 </body>
