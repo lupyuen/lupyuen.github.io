@@ -1864,8 +1864,8 @@ By decoding the captured addresses and values, we decipher the following steps f
     - At R_PWM Offset 4 [(A64 Page 195)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
     - PWM_CH0_ENTIRE_CYS (Upper 16 Bits) = Period (`0x4af`)
     - PWM_CH0_ENTIRE_ACT_CYS (Lower 16 Bits) = Period * Percent / 100 (`0x0437`)
-    - Period = `0x4af` (1199)
-    - Percent = `0x5a`
+    - Period = 1199 (Cycles of PWM Clock)
+    - Percent = 90 (90% Brightness)
 
     ```text
     0x1f03804 = 0x4af0437
