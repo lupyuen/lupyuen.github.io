@@ -1640,8 +1640,8 @@ TODO: Should 0xf00 be 0x700 instead?</code></pre></div></li>
 <li>At R_PWM Offset 4 <a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 195)</a></li>
 <li>PWM_CH0_ENTIRE_CYS (Upper 16 Bits) = Period (<code>0x4af</code>)</li>
 <li>PWM_CH0_ENTIRE_ACT_CYS (Lower 16 Bits) = Period * Percent / 100 (<code>0x0437</code>)</li>
-<li>Period = <code>0x4af</code> (1199)</li>
-<li>Percent = <code>0x5a</code></li>
+<li>Period = 1199 (Cycles of PWM Clock)</li>
+<li>Percent = 90 (90% Brightness)</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>0x1f03804 = 0x4af0437</code></pre></div></li>
 <li>
