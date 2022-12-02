@@ -1853,7 +1853,7 @@ By decoding the captured addresses with [__Allwinner A64 User Manual__](https://
 1.  Disable R_PWM (Undocumented)
     - Register R_PWM_CTRL_REG? (R_PWM Control Register?)
     - At R_PWM Offset 0 (A64 Page 194)
-    - Clear `0x40`: SCLK_CH0_GATING (0=mask)
+    - Set SCLK_CH0_GATING (Bit 6) to 0 (Mask)
 
     ```text
     clrbits 0x1f03800, 0x40
