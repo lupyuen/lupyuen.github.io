@@ -1874,7 +1874,9 @@ By decoding the captured addresses with [__Allwinner A64 User Manual__](https://
 1.  Enable R_PWM (Undocumented)
     - Register R_PWM_CTRL_REG? (R_PWM Control Register?)
     - At R_PWM Offset 0 (A64 Page 194)
-    - `0x5f` = SCLK_CH0_GATING (1=pass) + PWM_CH0_EN (1=enable) + PWM_CH0_PRESCAL (Prescalar 1)
+    - Set SCLK_CH0_GATING (Bit 6) to 1 (Pass)
+    - Set PWM_CH0_EN (Bit 4) to 1 (Enable)
+    - Set PWM_CH0_PRESCAL (Bits 0 to 3) to 0b1111 (Prescalar 1)
 
     ```text
     0x1f03800 = 0x5f
