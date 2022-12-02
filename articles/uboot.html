@@ -857,12 +857,8 @@ nsh&gt; ls /dev
 <p><strong>Upcoming Features</strong> for NuttX on PinePhone…</p>
 <ol>
 <li>
-<p>Fix the garbled <strong>Startup Messages</strong></p>
-<p><a href="https://github.com/apache/nuttx/pull/7692">(More about this)</a></p>
-</li>
-<li>
-<p><strong>PIO and PWM Drivers</strong> for Allwinner A64</p>
-<p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#backlight_enable">(Needed for PinePhone Backlight)</a></p>
+<p><strong>PIO, PWM and LED Drivers</strong> for Allwinner A64</p>
+<p><a href="https://lupyuen.github.io/articles/dsi#appendix-display-backlight">(Needed for PinePhone Backlight)</a></p>
 <p>PIO Driver will be based on Allwinner A10 <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_pio.c"><strong>a1x_pio.c</strong></a>, <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_pio.h"><strong>a1x_pio.h</strong></a> and <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/hardware/a1x_pio.h"><strong>hardware/a1x_pio.h</strong></a></p>
 </li>
 <li>
@@ -882,6 +878,10 @@ nsh&gt; ls /dev
 <h2 id="upcoming-fixes-1"><a href="#upcoming-fixes-1">17.2 Upcoming Fixes</a></h2>
 <p>These are the <strong>Upcoming Fixes</strong> for NuttX on PinePhone…</p>
 <ol>
+<li>
+<p>Fix the garbled <strong>Startup Messages</strong></p>
+<p><a href="https://github.com/apache/nuttx/pull/7692">(More about this)</a></p>
+</li>
 <li>
 <p><strong>RAM Size</strong> will be increased to 2 GB: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/include/a64/chip.h#L45-L48">chip.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Allwinner A64 Memory Map
