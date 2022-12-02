@@ -912,13 +912,9 @@ We have updated these articles to point to the PinePhone code in NuttX Mainline.
 
 __Upcoming Features__ for NuttX on PinePhone...
 
-1.  Fix the garbled __Startup Messages__
+1.  __PIO, PWM and LED Drivers__ for Allwinner A64
 
-    [(More about this)](https://github.com/apache/nuttx/pull/7692)
-
-1.  __PIO and PWM Drivers__ for Allwinner A64
-
-    [(Needed for PinePhone Backlight)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#backlight_enable)
+    [(Needed for PinePhone Backlight)](https://lupyuen.github.io/articles/dsi#appendix-display-backlight)
 
     PIO Driver will be based on Allwinner A10 [__a1x_pio.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_pio.c), [__a1x_pio.h__](https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_pio.h) and [__hardware/a1x_pio.h__](https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/hardware/a1x_pio.h)
 
@@ -939,6 +935,10 @@ And we'll be able to render some graphics on PinePhone. Stay Tuned!
 ## Upcoming Fixes
 
 These are the __Upcoming Fixes__ for NuttX on PinePhone...
+
+1.  Fix the garbled __Startup Messages__
+
+    [(More about this)](https://github.com/apache/nuttx/pull/7692)
 
 1.  __RAM Size__ will be increased to 2 GB: [chip.h](https://github.com/apache/nuttx/blob/master/arch/arm64/include/a64/chip.h#L45-L48)
 
