@@ -1630,7 +1630,7 @@ TODO: Should 0xf00 be 0x700 instead?</code></pre></div></li>
 <ul>
 <li>Register R_PWM_CTRL_REG? (R_PWM Control Register?)</li>
 <li>At R_PWM Offset 0 (A64 Page 194)</li>
-<li>Clear <code>0x40</code>: SCLK_CH0_GATING (0=mask)</li>
+<li>Set SCLK_CH0_GATING (Bit 6) to 0 (Mask)</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>clrbits 0x1f03800, 0x40</code></pre></div></li>
 <li>
