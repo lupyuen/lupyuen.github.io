@@ -914,7 +914,7 @@ __Upcoming Features__ for NuttX on PinePhone...
 
 1.  __PIO, PWM and LED Drivers__ for Allwinner A64
 
-    [(Needed for PinePhone Backlight)](https://lupyuen.github.io/articles/dsi#appendix-display-backlight)
+    [(Needed for PinePhone Backlight)](https://lupyuen.github.io/articles/de#appendix-display-backlight)
 
     PIO Driver will be based on Allwinner A10 [__a1x_pio.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_pio.c), [__a1x_pio.h__](https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_pio.h) and [__hardware/a1x_pio.h__](https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/hardware/a1x_pio.h)
 

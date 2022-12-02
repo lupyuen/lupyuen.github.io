@@ -437,7 +437,7 @@ ph_data_reg=0x400
 
 And PinePhone's Backlight lights up!
 
-__UPDATE:__ PWM also needs to be configured for Port PL10 [(See this)](https://lupyuen.github.io/articles/dsi#appendix-display-backlight)
+__UPDATE:__ PWM also needs to be configured for Port PL10 [(See this)](https://lupyuen.github.io/articles/de#appendix-display-backlight)
 
 ![Controlling PinePhone's LEDs With BASIC](https://lupyuen.github.io/images/pio-run2.png)
 

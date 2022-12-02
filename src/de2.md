@@ -1387,7 +1387,7 @@ Some features are still __missing from our Zig Display Driver__...
 
 -   Turn on PinePhone's [__Backlight__](https://lupyuen.github.io/articles/pio#backlight-pwm)
 
-    [__`backlight_enable`__](https://lupyuen.github.io/articles/dsi#appendix-display-backlight)
+    [__`backlight_enable`__](https://lupyuen.github.io/articles/de#appendix-display-backlight)
 
 We hope to implement the missing features and complete the documentation for PinePhone's Display Driver. Stay Tuned!
 
