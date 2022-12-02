@@ -1595,7 +1595,7 @@ GLB DBuff: 0x110 0008 = 0x1 (DMB)</code></pre></div></li>
 </ol>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-p-boot-display-engine-on-pinephone">(See the Complete Log)</a></p>
 <p><a href="https://megous.com/git/p-boot/tree/src/display.c#n2017">(Captured from p-boot <code>display_commit</code>)</a></p>
-<p>We have <strong>implemented in Zig</strong> the above A64 Display Engine Rendering…</p>
+<p>Based on the above steps, we have <strong>implemented in Zig</strong> the A64 Display Engine Rendering…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig"><strong>pinephone-nuttx/render.zig</strong></a></p>
@@ -1609,13 +1609,13 @@ GLB DBuff: 0x110 0008 = 0x1 (DMB)</code></pre></div></li>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#backlight_enable"><strong>Log from backlight_enable</strong></a></li>
 </ul>
-<p>By decoding the captured addresses with <a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>, we decipher the following steps for turning on the <strong>Display Backlight</strong>…</p>
+<p>By decoding the captured addresses and values, we decipher the following steps for turning on <strong>PinePhone’s Display Backlight</strong>…</p>
 <ol>
 <li>
 <p>Configure PL10 for PWM</p>
 <ul>
 <li>Register PL_CFG1 (Port L Configure Register 1)</li>
-<li>At R_PIO Offset 4 (A64 Page 412)</li>
+<li>At R_PIO Offset 4 <a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 412)</a></li>
 <li>Set PL10_SELECT (Bits 8 to 10) to 2 (S_PWM)</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>backlight_enable: pct=0x5a
@@ -1629,7 +1629,7 @@ TODO: Should 0xf00 be 0x700 instead?</code></pre></div></li>
 <p>Disable R_PWM (Undocumented)</p>
 <ul>
 <li>Register R_PWM_CTRL_REG? (R_PWM Control Register?)</li>
-<li>At R_PWM Offset 0 (A64 Page 194)</li>
+<li>At R_PWM Offset 0 <a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 194)</a></li>
 <li>Set SCLK_CH0_GATING (Bit 6) to 0 (Mask)</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>clrbits 0x1f03800, 0x40</code></pre></div></li>
@@ -1637,7 +1637,7 @@ TODO: Should 0xf00 be 0x700 instead?</code></pre></div></li>
 <p>Configure R_PWM Period (Undocumented)</p>
 <ul>
 <li>Register R_PWM_CH0_PERIOD? (R_PWM Channel 0 Period Register?)</li>
-<li>At R_PWM Offset 4 (A64 Page 195)</li>
+<li>At R_PWM Offset 4 <a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 195)</a></li>
 <li>PWM_CH0_ENTIRE_CYS (Upper 16 Bits) = Period (<code>0x4af</code>)</li>
 <li>PWM_CH0_ENTIRE_ACT_CYS (Lower 16 Bits) = Period * Percent / 100 (<code>0x0437</code>)</li>
 <li>Period = <code>0x4af</code> (1199)</li>
@@ -1648,7 +1648,7 @@ TODO: Should 0xf00 be 0x700 instead?</code></pre></div></li>
 <p>Enable R_PWM (Undocumented)</p>
 <ul>
 <li>Register R_PWM_CTRL_REG? (R_PWM Control Register?)</li>
-<li>At R_PWM Offset 0 (A64 Page 194)</li>
+<li>At R_PWM Offset 0 <a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 194)</a></li>
 <li>Set SCLK_CH0_GATING (Bit 6) to 1 (Pass)</li>
 <li>Set PWM_CH0_EN (Bit 4) to 1 (Enable)</li>
 <li>Set PWM_CH0_PRESCAL (Bits 0 to 3) to 0b1111 (Prescalar 1)</li>
@@ -1658,7 +1658,7 @@ TODO: Should 0xf00 be 0x700 instead?</code></pre></div></li>
 <p>Configure PH10 for Output</p>
 <ul>
 <li>Register PH_CFG1 (PH Configure Register 1)</li>
-<li>At PIO Offset <code>0x100</code> (A64 Page 401)</li>
+<li>At PIO Offset <code>0x100</code> <a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 401)</a></li>
 <li>Set PH10_SELECT (Bits 8 to 10) to 1 (Output)</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>enable backlight: GPH(10), 1
@@ -1670,25 +1670,35 @@ TODO: Should 0xf00 be 0x700 instead?</code></pre></div></li>
 <p>Set PH10 to High</p>
 <ul>
 <li>Register PH_DATA (PH Data Register)</li>
-<li>At PIO Offset <code>0x10C</code> (A64 Page 403)</li>
+<li>At PIO Offset <code>0x10C</code> <a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 403)</a></li>
 <li>Set PH10 (Bit 10) to 1 (High)</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>sunxi_gpio_output: pin=0xea, val=1
 TODO: Set Bit 10 of PH_DATA (0x1c2090c)</code></pre></div></li>
 </ol>
+<p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#backlight_enable">(See the Complete Log)</a></p>
 <p>The Base Addresses above are…</p>
 <ul>
 <li>
-<p><strong>PIO Base Address</strong> (CPUx-PORT): <code>0x01C2</code> <code>0800</code> (A64 Page 376)</p>
+<p><strong>PIO Base Address</strong> (CPUx-PORT): <code>0x01C2</code> <code>0800</code> <a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 376)</a></p>
 </li>
 <li>
-<p><strong>PWM Base Address</strong> (CPUx-PWM?): <code>0x01C2</code> <code>1400</code> (A64 Page 194)</p>
+<p><strong>PWM Base Address</strong> (CPUx-PWM?): <code>0x01C2</code> <code>1400</code> <a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 194)</a></p>
 </li>
 <li>
-<p><strong>R_PIO Base Address</strong> (CPUs-PORT): <code>0x01F0</code> <code>2C00</code> (A64 Page 410)</p>
+<p><strong>R_PIO Base Address</strong> (CPUs-PORT): <code>0x01F0</code> <code>2C00</code> <a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 410)</a></p>
 </li>
 <li>
-<p><strong>R_PWM Base Address</strong> (CPUs-PWM?): <code>0x01F0</code> <code>3800</code> (CPUs Domain, A64 Page 256)</p>
+<p><strong>R_PWM Base Address</strong> (CPUs-PWM?): <code>0x01F0</code> <code>3800</code> <a href="https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf">(CPUs Domain, A64 Page 256)</a></p>
+</li>
+</ul>
+<p>Based on the above steps, we have <strong>implemented in Zig</strong> the Display Backlight Driver…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig"><strong>pinephone-nuttx/backlight.zig</strong></a></p>
+</li>
+<li>
+<p><a href=""><strong>TODO: Output Log for backlight.zig</strong></a></p>
 </li>
 </ul>
 
