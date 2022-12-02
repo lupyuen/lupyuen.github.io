@@ -1649,7 +1649,9 @@ TODO: Should 0xf00 be 0x700 instead?</code></pre></div></li>
 <ul>
 <li>Register R_PWM_CTRL_REG? (R_PWM Control Register?)</li>
 <li>At R_PWM Offset 0 (A64 Page 194)</li>
-<li><code>0x5f</code> = SCLK_CH0_GATING (1=pass) + PWM_CH0_EN (1=enable) + PWM_CH0_PRESCAL (Prescalar 1)</li>
+<li>Set SCLK_CH0_GATING (Bit 6) to 1 (Pass)</li>
+<li>Set PWM_CH0_EN (Bit 4) to 1 (Enable)</li>
+<li>Set PWM_CH0_PRESCAL (Bits 0 to 3) to 0b1111 (Prescalar 1)</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>0x1f03800 = 0x5f</code></pre></div></li>
 <li>
