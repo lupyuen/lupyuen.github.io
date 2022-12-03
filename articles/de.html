@@ -82,7 +82,8 @@
 <li><a href="#appendix-overview-of-allwinner-a64-display-engine">13 Appendix: Overview of Allwinner A64 Display Engine</a><ul></ul></li>
 <li><a href="#appendix-initialising-the-allwinner-a64-display-engine">14 Appendix: Initialising the Allwinner A64 Display Engine</a><ul></ul></li>
 <li><a href="#appendix-programming-the-allwinner-a64-display-engine">15 Appendix: Programming the Allwinner A64 Display Engine</a><ul></ul></li>
-<li><a href="#appendix-display-backlight">16 Appendix: Display Backlight</a><ul></ul></li></ul></nav><p>📝 <em>30 Oct 2022</em></p>
+<li><a href="#appendix-display-backlight">16 Appendix: Display Backlight</a><ul></ul></li>
+<li><a href="#appendix-power-management-integrated-circuit">17 Appendix: Power Management Integrated Circuit</a><ul></ul></li></ul></nav><p>📝 <em>30 Oct 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/de-title.jpg" alt="PinePhone rendering Mandelbrot Set on Apache NuttX RTOS" /></p>
 <p><em>PinePhone rendering Mandelbrot Set on Apache NuttX RTOS</em></p>
 <p><strong>UPDATE:</strong> PinePhone is now officially supported by Apache NuttX RTOS <a href="https://lupyuen.github.io/articles/uboot#appendix-pinephone-is-now-supported-by-apache-nuttx-rtos">(See this)</a></p>
@@ -1699,6 +1700,49 @@ TODO: Set Bit 10 of PH_DATA (0x1c2090c)</code></pre></div></li>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for backlight.zig</strong></a></p>
+</li>
+</ul>
+<h1 id="appendix-power-management-integrated-circuit"><a href="#appendix-power-management-integrated-circuit">17 Appendix: Power Management Integrated Circuit</a></h1>
+<p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1947"><strong>p-boot display_board_init</strong></a>…</p>
+<ul>
+<li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#display_board_init"><strong>Log from display_board_init</strong></a></li>
+</ul>
+<div class="example-wrap"><pre class="language-text"><code>display_board_init: start
+assert reset: GPD(23), 0  // PD23 - LCD-RST (active low)
+sunxi_gpio_set_cfgpin: pin=0x77, val=1
+sunxi_gpio_set_cfgbank: bank_offset=119, val=1
+  clrsetbits 0x1c20874, 0xf0000000, 0x10000000
+sunxi_gpio_output: pin=0x77, val=0
+  before: 0x1c2087c = 0x1c0000
+  after: 0x1c2087c = 0x1c0000 (DMB)
+dldo1 3.3V
+  pmic_write: reg=0x15, val=0x1a
+  rsb_write: rt_addr=0x2d, reg_addr=0x15, value=0x1a
+  pmic_clrsetbits: reg=0x12, clr_mask=0x0, set_mask=0x8
+  rsb_read: rt_addr=0x2d, reg_addr=0x12
+  rsb_write: rt_addr=0x2d, reg_addr=0x12, value=0xd9
+ldo_io0 3.3V
+  pmic_write: reg=0x91, val=0x1a
+  rsb_write: rt_addr=0x2d, reg_addr=0x91, value=0x1a
+  pmic_write: reg=0x90, val=0x3
+  rsb_write: rt_addr=0x2d, reg_addr=0x90, value=0x3
+dldo2 1.8V
+  pmic_write: reg=0x16, val=0xb
+  rsb_write: rt_addr=0x2d, reg_addr=0x16, value=0xb
+  pmic_clrsetbits: reg=0x12, clr_mask=0x0, set_mask=0x10
+  rsb_read: rt_addr=0x2d, reg_addr=0x12
+  rsb_write: rt_addr=0x2d, reg_addr=0x12, value=0xd9
+wait for power supplies and power-on init
+  udelay 15000
+display_board_init: end</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#display_board_init">(Source)</a></p>
+<p>Based on the above log, we have <strong>implemented in Zig</strong> the PinePhone Driver for Power Management Integrated Circuit (PMIC)…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig"><strong>pinephone-nuttx/pmic.zig</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for pmic.zig</strong></a></p>
 </li>
 </ul>
 
