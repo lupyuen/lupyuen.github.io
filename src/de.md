@@ -1922,3 +1922,48 @@ Based on the above steps, we have __implemented in Zig__ the Display Backlight D
 -   [__pinephone-nuttx/backlight.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig)
 
 -   [__Output Log for backlight.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
+
+# Appendix: Power Management Integrated Circuit
+
+We captured the log from [__p-boot display_board_init__](https://megous.com/git/p-boot/tree/src/display.c#n1947)...
+
+-   [__Log from display_board_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#display_board_init)
+
+```text
+display_board_init: start
+assert reset: GPD(23), 0  // PD23 - LCD-RST (active low)
+sunxi_gpio_set_cfgpin: pin=0x77, val=1
+sunxi_gpio_set_cfgbank: bank_offset=119, val=1
+  clrsetbits 0x1c20874, 0xf0000000, 0x10000000
+sunxi_gpio_output: pin=0x77, val=0
+  before: 0x1c2087c = 0x1c0000
+  after: 0x1c2087c = 0x1c0000 (DMB)
+dldo1 3.3V
+  pmic_write: reg=0x15, val=0x1a
+  rsb_write: rt_addr=0x2d, reg_addr=0x15, value=0x1a
+  pmic_clrsetbits: reg=0x12, clr_mask=0x0, set_mask=0x8
+  rsb_read: rt_addr=0x2d, reg_addr=0x12
+  rsb_write: rt_addr=0x2d, reg_addr=0x12, value=0xd9
+ldo_io0 3.3V
+  pmic_write: reg=0x91, val=0x1a
+  rsb_write: rt_addr=0x2d, reg_addr=0x91, value=0x1a
+  pmic_write: reg=0x90, val=0x3
+  rsb_write: rt_addr=0x2d, reg_addr=0x90, value=0x3
+dldo2 1.8V
+  pmic_write: reg=0x16, val=0xb
+  rsb_write: rt_addr=0x2d, reg_addr=0x16, value=0xb
+  pmic_clrsetbits: reg=0x12, clr_mask=0x0, set_mask=0x10
+  rsb_read: rt_addr=0x2d, reg_addr=0x12
+  rsb_write: rt_addr=0x2d, reg_addr=0x12, value=0xd9
+wait for power supplies and power-on init
+  udelay 15000
+display_board_init: end
+```
+
+[(Source)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#display_board_init)
+
+Based on the above log, we have __implemented in Zig__ the PinePhone Driver for Power Management Integrated Circuit (PMIC)...
+
+-   [__pinephone-nuttx/pmic.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig)
+
+-   [__Output Log for pmic.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
