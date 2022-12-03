@@ -1967,3 +1967,57 @@ Based on the above log, we have __implemented in Zig__ the PinePhone Driver for 
 -   [__pinephone-nuttx/pmic.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig)
 
 -   [__Output Log for pmic.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
+
+# Appendix: Timing Controller (TCON0)
+
+We captured the log from [__p-boot tcon0_init__](https://megous.com/git/p-boot/tree/src/display.c#n1567)...
+
+-   [__Log from tcon0_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init)
+
+```text
+tcon0_init: start
+PLL_VIDEO0
+  0x1c20010 = 0x81006207 (DMB)
+PLL_MIPI
+  0x1c20040 = 0xc00000 (DMB)
+  udelay 100
+  0x1c20040 = 0x80c0071a (DMB)
+TCON0 source MIPI_PLL
+  0x1c20118 = 0x80000000 (DMB)
+Clock on
+  0x1c20064 = 0x8 (DMB)
+Reset off
+  0x1c202c4 = 0x8 (DMB)
+Init lcdc: Disable tcon, Disable all interrupts
+  0x1c0c000 = 0x0 (DMB)
+  0x1c0c004 = 0x0
+  0x1c0c008 = 0x0
+Set all io lines to tristate
+  0x1c0c08c = 0xffffffff
+  0x1c0c0f4 = 0xffffffff
+mode set: DCLK = MIPI_PLL / 6
+  0x1c0c044 = 0x80000006
+  0x1c0c040 = 0x81000000
+  0x1c0c048 = 0x2cf059f
+  0x1c0c0f8 = 0x8
+  0x1c0c060 = 0x10010005
+The datasheet says that this should be set higher than 20 * pixel cycle, but it's not clear what a pixel cycle is.
+  0x1c0c160 = 0x2f02cf
+  0x1c0c164 = 0x59f
+  0x1c0c168 = 0x1bc2000a
+The Allwinner BSP has a comment that the period should be the display clock * 15, but uses an hardcoded 3000
+  0x1c0c1f0 = 0xbb80003
+Enable the output on the pins
+  0x1c0c08c = 0xe0000000 (DMB)
+enable tcon as a whole
+  setbits 0x1c0c000, 0x80000000 (DMB)
+tcon0_init: end
+```
+
+[(Source)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init)
+
+Based on the above log, we have __implemented in Zig__ the PinePhone Driver for Allwinner A64 Timing Controller (TCON0)...
+
+-   [__pinephone-nuttx/tcon.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig)
+
+-   [__Output Log for tcon.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
