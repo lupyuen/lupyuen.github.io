@@ -733,7 +733,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  Some parts of the PinePhone MIPI DSI Driver still need to be reverse-engineered...
 
-    [__dsi_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dsi_init)
+    [__"Enable MIPI DSI Block"__](https://lupyuen.github.io/articles/de#appendix-enable-mipi-dsi-block)
+
+    [__"Enable MIPI Display Physical Layer (DPHY)"__](https://lupyuen.github.io/articles/de#appendix-enable-mipi-display-physical-layer-dphy)
+
+    [__"Start MIPI DSI HSC and HSD"__](https://lupyuen.github.io/articles/de#appendix-start-mipi-dsi-hsc-and-hsd)
 
 1.  How did we find the Reference Code for the MIPI DSI Driver? We used GitHub Code Search...
 

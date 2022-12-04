@@ -1375,20 +1375,22 @@ We have completed in Zig three major chunks of PinePhone's Display Driver...
 
     [__`renderGraphics`__](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L55-L171)
 
-Some features are still __missing from our Zig Display Driver__...
+We have recently added these missing features...
 
--   Initialise PinePhone's [__Allwinner A64 Timing Controller (TCON0)__](https://lupyuen.github.io/articles/de#display-rendering-on-pinephone)
+-   [__"Display Backlight"__](https://lupyuen.github.io/articles/de#appendix-display-backlight)
 
-    [__`tcon0_init`__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init)
+-   [__"Power Management Integrated Circuit"__](https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit)
 
--   Initialise PinePhone's [__Allwinner A64 MIPI Display Serial Interface__](https://lupyuen.github.io/articles/dsi) (including [__MIPI DPHY__](https://lupyuen.github.io/articles/pio#display-phy))
+-   [__"Timing Controller (TCON0)"__](https://lupyuen.github.io/articles/de#appendix-timing-controller-tcon0)
 
-    [__`dsi_init`__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dsi_init)
+-   [__"Enable MIPI DSI Block"__](https://lupyuen.github.io/articles/de#appendix-enable-mipi-dsi-block)
 
--   Turn on PinePhone's [__Backlight__](https://lupyuen.github.io/articles/pio#backlight-pwm)
+-   [__"Enable MIPI Display Physical Layer (DPHY)"__](https://lupyuen.github.io/articles/de#appendix-enable-mipi-display-physical-layer-dphy)
 
-    [__`backlight_enable`__](https://lupyuen.github.io/articles/de#appendix-display-backlight)
+-   [__"Reset LCD Panel"__](https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel)
 
-We hope to implement the missing features and complete the documentation for PinePhone's Display Driver. Stay Tuned!
+-   [__"Start MIPI DSI HSC and HSD"__](https://lupyuen.github.io/articles/de#appendix-start-mipi-dsi-hsc-and-hsd)
+
+We hope to complete the documentation for PinePhone's Display Driver. Stay Tuned!
 
 (The Guitar And The Fish!)

@@ -782,12 +782,6 @@ We'll add the A64 Display Engine in the next article!
 
 ![Testing the A64 Display Engine on PinePhone](https://lupyuen.github.io/images/de-test.jpg)
 
-# Notes
-
-1.  The PinePhone TCON0 Driver still needs to be reverse-engineered...
-
-    [__tcon0_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init)
-
 # What's Next
 
 I hope we learnt lots today about __Display Rendering on PinePhone__...
@@ -2126,6 +2120,8 @@ display_malloc: size=2330
 enable_dsi_block: end
 ```
 
+[(Source)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#enable_dsi_block)
+
 Based on the above log, we have __implemented in Zig__ the PinePhone Driver that enables the Allwinner A64 MIPI DSI Block...
 
 -   [__pinephone-nuttx/display.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L884-L1007)
@@ -2167,6 +2163,8 @@ dphy_enable: start
 dphy_enable: end
 ```
 
+[(Source)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dphy_enable)
+
 Based on the above log, we have __implemented in Zig__ the PinePhone Driver that enables the Allwinner A64 MIPI Display Physical Layer (DPHY)...
 
 -   [__pinephone-nuttx/dphy.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/dphy.zig)
@@ -2192,6 +2190,8 @@ wait for initialization
 udelay 15000
 panel_reset: end
 ```
+
+[(Source)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#panel_reset)
 
 Based on the above log, we have __implemented in Zig__ the PinePhone Driver that resets the LCD Panel...
 
@@ -2224,6 +2224,8 @@ dsi_update_bits: 0x01ca0010 : 00030000 -> (00000001) 00000001 (DMB)
   addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
 start_dsi: end
 ```
+
+[(Source)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#start_dsi)
 
 Based on the above log, we have __implemented in Zig__ the PinePhone Driver that starts Allwinner A64 MIPI DSI (in HSC and HSD Modes)...
 

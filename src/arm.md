@@ -678,9 +678,9 @@ We'll change __`_start`__ to __`0x4000` `0000`__ for PinePhone.
 
 In a while we'll see that Start of RAM is __`0x4000` `0000`__ and Image Load Offset is 0 for a PinePhone Linux Image.
 
-[(UPDATE: Start of RAM should be __`0x4008` `0000`__ instead)](https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log)
+[(__UPDATE:__ Start of RAM should be __`0x4008` `0000`__ instead)](https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log)
 
-[(UPDATE: We don't need to change the Image Load Offset)](https://github.com/apache/nuttx/pull/7692#issuecomment-1327103980)
+[(__UPDATE:__ We don't need to change the Image Load Offset)](https://lupyuen.github.io/articles/uboot#porting-notes)
 
 (What's the significance of `0x4028` `0000`? Something specific to NXP i.MX8?)
 
@@ -1288,9 +1288,9 @@ This is how we analyse the __PinePhone Linux Kernel Image__ with [__Ghidra__](ht
 
     __Image Load Offset__ is `0` according to the Linux Kernel Header (offset `0x08`)
 
-    [(UPDATE: Start of RAM should be __`0x4008` `0000`__ instead)](https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log)
+    [(__UPDATE:__ Start of RAM should be __`0x4008` `0000`__ instead)](https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log)
 
-    [(UPDATE: We don't need to change the Image Load Offset)](https://github.com/apache/nuttx/pull/7692#issuecomment-1327103980)
+    [(__UPDATE:__ We don't need to change the Image Load Offset)](https://lupyuen.github.io/articles/uboot#porting-notes)
 
 1.  So we shift our PinePhone Image to start at __`0x4000` `0000`__...
 

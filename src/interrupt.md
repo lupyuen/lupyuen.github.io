@@ -402,7 +402,7 @@ Perhaps we're __handling Interrupts incorrectly?__
 
 Let's investigate...
 
-__UPDATE:__ This problem doesn't happen with the latest code in NuttX Mainline [(See this)](https://github.com/apache/nuttx/pull/7692#issuecomment-1327103980)
+__UPDATE:__ This problem doesn't happen with the latest code in NuttX Mainline [(See this)](https://lupyuen.github.io/articles/uboot#porting-notes)
 
 # Timer Interrupt Isn't Handled
 
@@ -601,7 +601,7 @@ nsh> ls /dev
 
 Let's talk about EL1...
 
-__UPDATE:__ This patching isn't needed with the latest code in NuttX Mainline [(See this)](https://github.com/apache/nuttx/pull/7692#issuecomment-1327103980)
+__UPDATE:__ This patching isn't needed with the latest code in NuttX Mainline [(See this)](https://lupyuen.github.io/articles/uboot#porting-notes)
 
 # Exception Levels
 

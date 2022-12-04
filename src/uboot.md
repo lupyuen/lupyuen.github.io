@@ -437,7 +437,7 @@ real_start: ...
 
 [(__`__HEAD_FLAGS`__ is defined here)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L41-L49)
 
-[(__UPDATE:__ We don't need to change the Image Load Offset)](https://github.com/apache/nuttx/pull/7692#issuecomment-1327103980)
+[(__UPDATE:__ We don't need to change the Image Load Offset)](https://lupyuen.github.io/articles/uboot#porting-notes)
 
 _What's the value of `__start`?_
 
@@ -914,23 +914,35 @@ __Upcoming Features__ for NuttX on PinePhone...
 
 1.  __PIO, PWM and LED Drivers__ for Allwinner A64
 
-    [(Needed for PinePhone Backlight)](https://lupyuen.github.io/articles/de#appendix-display-backlight)
+    (Needed for PinePhone's Display Backlight)
+
+    [__"Display Backlight"__](https://lupyuen.github.io/articles/de#appendix-display-backlight)
 
     PIO Driver will be based on Allwinner A10 [__a1x_pio.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_pio.c), [__a1x_pio.h__](https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_pio.h) and [__hardware/a1x_pio.h__](https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/hardware/a1x_pio.h)
 
-1.  __MIPI Display Serial Interface Driver__ for Allwinner A64
+1.  __MIPI Display Serial Interface Driver__ for Allwinner A64, based on...
 
-    [(Based on this)](https://lupyuen.github.io/articles/dsi2)
+    [__"NuttX RTOS for PinePhone: Display Driver in Zig"__](https://lupyuen.github.io/articles/dsi2)
 
-1.  __Display Engine Driver__ for Allwinner A64
+    [__"Enable MIPI DSI Block"__](https://lupyuen.github.io/articles/de#appendix-enable-mipi-dsi-block)
 
-    [(Based on this)](https://lupyuen.github.io/articles/de2)
+    [__"Start MIPI DSI HSC and HSD"__](https://lupyuen.github.io/articles/de#appendix-start-mipi-dsi-hsc-and-hsd)
 
-1.  __DPHY and TCON0 Drivers__ for Allwinner A64
+1.  __Display Engine Driver__ for Allwinner A64, based on...
 
-    [(Based on this)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dphy_enable)
+    [__"NuttX RTOS for PinePhone: Render Graphics in Zig"__](https://lupyuen.github.io/articles/de2)
 
-And we'll be able to render some graphics on PinePhone. Stay Tuned!
+1.  __PMIC, TCON0, DPHY and LCD Panel Drivers__ for PinePhone and Allwinner A64, based on...
+
+    [__"Power Management Integrated Circuit"__](https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit)
+
+    [__"Timing Controller (TCON0)"__](https://lupyuen.github.io/articles/de#appendix-timing-controller-tcon0)
+
+    [__"Enable MIPI Display Physical Layer (DPHY)"__](https://lupyuen.github.io/articles/de#appendix-enable-mipi-display-physical-layer-dphy)
+
+    [__"Reset LCD Panel"__](https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel)
+
+And we'll be able to render graphics on PinePhone's LCD Display. Stay Tuned!
 
 ## Upcoming Fixes
 
