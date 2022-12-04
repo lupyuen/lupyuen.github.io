@@ -564,8 +564,8 @@ CONFIG_RAM_START=0x40000000</code></pre></div>
 <p><em>Will this work with PinePhone?</em></p>
 <p>We’ll change <strong><code>_start</code></strong> to <strong><code>0x4000</code> <code>0000</code></strong> for PinePhone.</p>
 <p>In a while we’ll see that Start of RAM is <strong><code>0x4000</code> <code>0000</code></strong> and Image Load Offset is 0 for a PinePhone Linux Image.</p>
-<p><a href="https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log">(UPDATE: Start of RAM should be <strong><code>0x4008</code> <code>0000</code></strong> instead)</a></p>
-<p><a href="https://github.com/apache/nuttx/pull/7692#issuecomment-1327103980">(UPDATE: We don’t need to change the Image Load Offset)</a></p>
+<p><a href="https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log">(<strong>UPDATE:</strong> Start of RAM should be <strong><code>0x4008</code> <code>0000</code></strong> instead)</a></p>
+<p><a href="https://lupyuen.github.io/articles/uboot#porting-notes">(<strong>UPDATE:</strong> We don’t need to change the Image Load Offset)</a></p>
 <p>(What’s the significance of <code>0x4028</code> <code>0000</code>? Something specific to NXP i.MX8?)</p>
 <p><img src="https://lupyuen.github.io/images/arm-ghidra7.png" alt="For “Language” select AARCH64:LE:v8A:default" /></p>
 <h1 id="pinephone-image"><a href="#pinephone-image">11 PinePhone Image</a></h1>
@@ -1095,8 +1095,8 @@ ghidraRun.bat</code></pre></div></li>
 <p><strong>Start of RAM</strong> is <code>0x4000</code> <code>0000</code> according to the PinePhone Memory Map…</p>
 <p><a href="https://linux-sunxi.org/A64/Memory_map"><strong>Allwinner A64 Memory Map</strong></a></p>
 <p><strong>Image Load Offset</strong> is <code>0</code> according to the Linux Kernel Header (offset <code>0x08</code>)</p>
-<p><a href="https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log">(UPDATE: Start of RAM should be <strong><code>0x4008</code> <code>0000</code></strong> instead)</a></p>
-<p><a href="https://github.com/apache/nuttx/pull/7692#issuecomment-1327103980">(UPDATE: We don’t need to change the Image Load Offset)</a></p>
+<p><a href="https://lupyuen.github.io/articles/arm#appendix-pinephone-uart-log">(<strong>UPDATE:</strong> Start of RAM should be <strong><code>0x4008</code> <code>0000</code></strong> instead)</a></p>
+<p><a href="https://lupyuen.github.io/articles/uboot#porting-notes">(<strong>UPDATE:</strong> We don’t need to change the Image Load Offset)</a></p>
 </li>
 <li>
 <p>So we shift our PinePhone Image to start at <strong><code>0x4000</code> <code>0000</code></strong>…</p>

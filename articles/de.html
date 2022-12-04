@@ -77,18 +77,17 @@
 <li><a href="#test-pinephone-display-engine">8 Test PinePhone Display Engine</a><ul></ul></li>
 <li><a href="#p-boot-display-code">9 p-boot Display Code</a><ul></ul></li>
 <li><a href="#nuttx-display-driver-for-pinephone">10 NuttX Display Driver for PinePhone</a><ul></ul></li>
-<li><a href="#notes">11 Notes</a><ul></ul></li>
-<li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-overview-of-allwinner-a64-display-engine">13 Appendix: Overview of Allwinner A64 Display Engine</a><ul></ul></li>
-<li><a href="#appendix-initialising-the-allwinner-a64-display-engine">14 Appendix: Initialising the Allwinner A64 Display Engine</a><ul></ul></li>
-<li><a href="#appendix-programming-the-allwinner-a64-display-engine">15 Appendix: Programming the Allwinner A64 Display Engine</a><ul></ul></li>
-<li><a href="#appendix-display-backlight">16 Appendix: Display Backlight</a><ul></ul></li>
-<li><a href="#appendix-power-management-integrated-circuit">17 Appendix: Power Management Integrated Circuit</a><ul></ul></li>
-<li><a href="#appendix-timing-controller-tcon0">18 Appendix: Timing Controller (TCON0)</a><ul></ul></li>
-<li><a href="#appendix-enable-mipi-dsi-block">19 Appendix: Enable MIPI DSI Block</a><ul></ul></li>
-<li><a href="#appendix-enable-mipi-display-physical-layer-dphy">20 Appendix: Enable MIPI Display Physical Layer (DPHY)</a><ul></ul></li>
-<li><a href="#appendix-reset-lcd-panel">21 Appendix: Reset LCD Panel</a><ul></ul></li>
-<li><a href="#appendix-start-mipi-dsi-hsc-and-hsd">22 Appendix: Start MIPI DSI HSC and HSD</a><ul></ul></li></ul></nav><p>📝 <em>30 Oct 2022</em></p>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-overview-of-allwinner-a64-display-engine">12 Appendix: Overview of Allwinner A64 Display Engine</a><ul></ul></li>
+<li><a href="#appendix-initialising-the-allwinner-a64-display-engine">13 Appendix: Initialising the Allwinner A64 Display Engine</a><ul></ul></li>
+<li><a href="#appendix-programming-the-allwinner-a64-display-engine">14 Appendix: Programming the Allwinner A64 Display Engine</a><ul></ul></li>
+<li><a href="#appendix-display-backlight">15 Appendix: Display Backlight</a><ul></ul></li>
+<li><a href="#appendix-power-management-integrated-circuit">16 Appendix: Power Management Integrated Circuit</a><ul></ul></li>
+<li><a href="#appendix-timing-controller-tcon0">17 Appendix: Timing Controller (TCON0)</a><ul></ul></li>
+<li><a href="#appendix-enable-mipi-dsi-block">18 Appendix: Enable MIPI DSI Block</a><ul></ul></li>
+<li><a href="#appendix-enable-mipi-display-physical-layer-dphy">19 Appendix: Enable MIPI Display Physical Layer (DPHY)</a><ul></ul></li>
+<li><a href="#appendix-reset-lcd-panel">20 Appendix: Reset LCD Panel</a><ul></ul></li>
+<li><a href="#appendix-start-mipi-dsi-hsc-and-hsd">21 Appendix: Start MIPI DSI HSC and HSD</a><ul></ul></li></ul></nav><p>📝 <em>30 Oct 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/de-title.jpg" alt="PinePhone rendering Mandelbrot Set on Apache NuttX RTOS" /></p>
 <p><em>PinePhone rendering Mandelbrot Set on Apache NuttX RTOS</em></p>
 <p><strong>UPDATE:</strong> PinePhone is now officially supported by Apache NuttX RTOS <a href="https://lupyuen.github.io/articles/uboot#appendix-pinephone-is-now-supported-by-apache-nuttx-rtos">(See this)</a></p>
@@ -685,14 +684,7 @@ Channel 2: ...</code></pre></div>
 <li><a href="https://lupyuen.github.io/articles/de2"><strong>“NuttX RTOS for PinePhone: Render Graphics in Zig”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/de-test.jpg" alt="Testing the A64 Display Engine on PinePhone" /></p>
-<h1 id="notes"><a href="#notes">11 Notes</a></h1>
-<ol>
-<li>
-<p>The PinePhone TCON0 Driver still needs to be reverse-engineered…</p>
-<p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init"><strong>tcon0_init</strong></a></p>
-</li>
-</ol>
-<h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>I hope we learnt lots today about <strong>Display Rendering on PinePhone</strong>…</p>
 <ul>
 <li>
@@ -764,7 +756,7 @@ Channel 2: ...</code></pre></div>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/de.md"><strong>lupyuen.github.io/src/de.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/de-block1a.jpg" alt="Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)" /></p>
 <p><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><em>Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)</em></a></p>
-<h1 id="appendix-overview-of-allwinner-a64-display-engine"><a href="#appendix-overview-of-allwinner-a64-display-engine">13 Appendix: Overview of Allwinner A64 Display Engine</a></h1>
+<h1 id="appendix-overview-of-allwinner-a64-display-engine"><a href="#appendix-overview-of-allwinner-a64-display-engine">12 Appendix: Overview of Allwinner A64 Display Engine</a></h1>
 <p>The official doc for the <strong>Allwinner A64 Display Engine</strong> is here…</p>
 <ul>
 <li><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf"><strong>Allwinner Display Engine 2.0 Specifications</strong></a></li>
@@ -892,7 +884,7 @@ Channel 2: ...</code></pre></div>
 <li>Fancy Color Curvature Change (FCC)</li>
 <li>Dynamic Range Controller (DRC)</li>
 </ul>
-<h1 id="appendix-initialising-the-allwinner-a64-display-engine"><a href="#appendix-initialising-the-allwinner-a64-display-engine">14 Appendix: Initialising the Allwinner A64 Display Engine</a></h1>
+<h1 id="appendix-initialising-the-allwinner-a64-display-engine"><a href="#appendix-initialising-the-allwinner-a64-display-engine">13 Appendix: Initialising the Allwinner A64 Display Engine</a></h1>
 <p><em>How do we initialise PinePhone’s Allwinner A64 Display Engine at startup?</em></p>
 <p>As deciphered from the following logs…</p>
 <ul>
@@ -1289,7 +1281,7 @@ Channel 2: ...</code></pre></div>
 </ul>
 <p><img src="https://lupyuen.github.io/images/de-run.png" alt="Running p-boot Display Code on Apache NuttX RTOS with logging" /></p>
 <p><a href="https://lupyuen.github.io/articles/de#p-boot-display-code"><em>Running p-boot Display Code on Apache NuttX RTOS with logging</em></a></p>
-<h1 id="appendix-programming-the-allwinner-a64-display-engine"><a href="#appendix-programming-the-allwinner-a64-display-engine">15 Appendix: Programming the Allwinner A64 Display Engine</a></h1>
+<h1 id="appendix-programming-the-allwinner-a64-display-engine"><a href="#appendix-programming-the-allwinner-a64-display-engine">14 Appendix: Programming the Allwinner A64 Display Engine</a></h1>
 <p>We’ve seen the <strong>Hardware Registers</strong> for the Allwinner A64 Display Engine…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/de#appendix-overview-of-allwinner-a64-display-engine"><strong>“Overview of Allwinner A64 Display Engine”</strong></a></li>
@@ -1610,7 +1602,7 @@ GLB DBuff: 0x110 0008 = 0x1 (DMB)</code></pre></div></li>
 <p><a href="https://gist.github.com/lupyuen/2df0f8c016dae54f4e4210866a7cd118"><strong>Output Log for render.zig</strong></a></p>
 </li>
 </ul>
-<h1 id="appendix-display-backlight"><a href="#appendix-display-backlight">16 Appendix: Display Backlight</a></h1>
+<h1 id="appendix-display-backlight"><a href="#appendix-display-backlight">15 Appendix: Display Backlight</a></h1>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1929"><strong>p-boot backlight_enable</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#backlight_enable"><strong>Log from backlight_enable</strong></a></li>
@@ -1707,7 +1699,7 @@ TODO: Set Bit 10 of PH_DATA (0x1c2090c)</code></pre></div></li>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for backlight.zig</strong></a></p>
 </li>
 </ul>
-<h1 id="appendix-power-management-integrated-circuit"><a href="#appendix-power-management-integrated-circuit">17 Appendix: Power Management Integrated Circuit</a></h1>
+<h1 id="appendix-power-management-integrated-circuit"><a href="#appendix-power-management-integrated-circuit">16 Appendix: Power Management Integrated Circuit</a></h1>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1947"><strong>p-boot display_board_init</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#display_board_init"><strong>Log from display_board_init</strong></a></li>
@@ -1750,7 +1742,7 @@ display_board_init: end</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for pmic.zig</strong></a></p>
 </li>
 </ul>
-<h1 id="appendix-timing-controller-tcon0"><a href="#appendix-timing-controller-tcon0">18 Appendix: Timing Controller (TCON0)</a></h1>
+<h1 id="appendix-timing-controller-tcon0"><a href="#appendix-timing-controller-tcon0">17 Appendix: Timing Controller (TCON0)</a></h1>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1567"><strong>p-boot tcon0_init</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init"><strong>Log from tcon0_init</strong></a></li>
@@ -1802,7 +1794,7 @@ tcon0_init: end</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for tcon.zig</strong></a></p>
 </li>
 </ul>
-<h1 id="appendix-enable-mipi-dsi-block"><a href="#appendix-enable-mipi-dsi-block">19 Appendix: Enable MIPI DSI Block</a></h1>
+<h1 id="appendix-enable-mipi-dsi-block"><a href="#appendix-enable-mipi-dsi-block">18 Appendix: Enable MIPI DSI Block</a></h1>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1236"><strong>p-boot dsi_init</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#enable_dsi_block"><strong>Log from dsi_init</strong></a></li>
@@ -1902,6 +1894,7 @@ display_malloc: size=2330
   0x1ca00ec = 0xffff0000 (DMB)
 };
 enable_dsi_block: end</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#enable_dsi_block">(Source)</a></p>
 <p>Based on the above log, we have <strong>implemented in Zig</strong> the PinePhone Driver that enables the Allwinner A64 MIPI DSI Block…</p>
 <ul>
 <li>
@@ -1911,7 +1904,7 @@ enable_dsi_block: end</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for display.zig</strong></a></p>
 </li>
 </ul>
-<h1 id="appendix-enable-mipi-display-physical-layer-dphy"><a href="#appendix-enable-mipi-display-physical-layer-dphy">20 Appendix: Enable MIPI Display Physical Layer (DPHY)</a></h1>
+<h1 id="appendix-enable-mipi-display-physical-layer-dphy"><a href="#appendix-enable-mipi-display-physical-layer-dphy">19 Appendix: Enable MIPI Display Physical Layer (DPHY)</a></h1>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n331"><strong>p-boot dphy_enable</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dphy_enable"><strong>Log from dphy_enable</strong></a></li>
@@ -1942,6 +1935,7 @@ enable_dsi_block: end</code></pre></div>
   update_bits addr=0x1ca1050, mask=0x80000000, val=0x80000000 (DMB)
   update_bits addr=0x1ca1054, mask=0xf000000, val=0xf000000 (DMB)
 dphy_enable: end</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dphy_enable">(Source)</a></p>
 <p>Based on the above log, we have <strong>implemented in Zig</strong> the PinePhone Driver that enables the Allwinner A64 MIPI Display Physical Layer (DPHY)…</p>
 <ul>
 <li>
@@ -1951,7 +1945,7 @@ dphy_enable: end</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for dphy.zig</strong></a></p>
 </li>
 </ul>
-<h1 id="appendix-reset-lcd-panel"><a href="#appendix-reset-lcd-panel">21 Appendix: Reset LCD Panel</a></h1>
+<h1 id="appendix-reset-lcd-panel"><a href="#appendix-reset-lcd-panel">20 Appendix: Reset LCD Panel</a></h1>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1236"><strong>p-boot dsi_init</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#panel_reset"><strong>Log from dsi_init</strong></a></li>
@@ -1967,6 +1961,7 @@ sunxi_gpio_output: pin=0x77, val=1
 wait for initialization
 udelay 15000
 panel_reset: end</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#panel_reset">(Source)</a></p>
 <p>Based on the above log, we have <strong>implemented in Zig</strong> the PinePhone Driver that resets the LCD Panel…</p>
 <ul>
 <li>
@@ -1976,7 +1971,7 @@ panel_reset: end</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for panel.zig</strong></a></p>
 </li>
 </ul>
-<h1 id="appendix-start-mipi-dsi-hsc-and-hsd"><a href="#appendix-start-mipi-dsi-hsc-and-hsd">22 Appendix: Start MIPI DSI HSC and HSD</a></h1>
+<h1 id="appendix-start-mipi-dsi-hsc-and-hsd"><a href="#appendix-start-mipi-dsi-hsc-and-hsd">21 Appendix: Start MIPI DSI HSC and HSD</a></h1>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1236"><strong>p-boot dsi_init</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#start_dsi"><strong>Log from dsi_init</strong></a></li>
@@ -1998,6 +1993,7 @@ dsi_start DSI_START_HSD
 dsi_update_bits: 0x01ca0010 : 00030000 -&gt; (00000001) 00000001 (DMB)
   addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
 start_dsi: end</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#start_dsi">(Source)</a></p>
 <p>Based on the above log, we have <strong>implemented in Zig</strong> the PinePhone Driver that starts Allwinner A64 MIPI DSI (in HSC and HSD Modes)…</p>
 <ul>
 <li>

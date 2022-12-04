@@ -382,7 +382,7 @@ uart_regi</code></pre></div>
 <p>Remember that the System Timer will trigger Interrupts periodically…</p>
 <p>Perhaps we’re <strong>handling Interrupts incorrectly?</strong></p>
 <p>Let’s investigate…</p>
-<p><strong>UPDATE:</strong> This problem doesn’t happen with the latest code in NuttX Mainline <a href="https://github.com/apache/nuttx/pull/7692#issuecomment-1327103980">(See this)</a></p>
+<p><strong>UPDATE:</strong> This problem doesn’t happen with the latest code in NuttX Mainline <a href="https://lupyuen.github.io/articles/uboot#porting-notes">(See this)</a></p>
 <h1 id="timer-interrupt-isnt-handled"><a href="#timer-interrupt-isnt-handled">6 Timer Interrupt Isn’t Handled</a></h1>
 <p><em>Why did PinePhone hang while handling System Timer Interrupts?</em></p>
 <p><em>Was the Timer Interrupt Handler called?</em></p>
@@ -520,7 +520,7 @@ nsh&gt; ls /dev
 <p><a href="https://youtube.com/shorts/WmRzfCiWV6o?feature=share"><strong>Watch the Demo on YouTube</strong></a></p>
 <p><a href="https://youtu.be/MJDxCcKAv0g"><strong>Another Demo Video</strong></a></p>
 <p>Let’s talk about EL1…</p>
-<p><strong>UPDATE:</strong> This patching isn’t needed with the latest code in NuttX Mainline <a href="https://github.com/apache/nuttx/pull/7692#issuecomment-1327103980">(See this)</a></p>
+<p><strong>UPDATE:</strong> This patching isn’t needed with the latest code in NuttX Mainline <a href="https://lupyuen.github.io/articles/uboot#porting-notes">(See this)</a></p>
 <h1 id="exception-levels"><a href="#exception-levels">8 Exception Levels</a></h1>
 <p><em>What’s EL1?</em></p>
 <p>EL1 is <strong>Exception Level 1</strong>. As defined in <a href="https://documentation-service.arm.com/static/5e9075f9c8052b1608761519?token="><strong>Arm Cortex-A53 Technical Reference Manual</strong></a> page 3-5 (“Exception Level”)…</p>

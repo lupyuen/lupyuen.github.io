@@ -447,7 +447,7 @@ __start:
 real_start: ... </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/scripts/dramboot.ld#L97-L106">(<strong><code>_e_initstack</code></strong> is End of Stack Space)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L41-L49">(<strong><code>__HEAD_FLAGS</code></strong> is defined here)</a></p>
-<p><a href="https://github.com/apache/nuttx/pull/7692#issuecomment-1327103980">(<strong>UPDATE:</strong> We don’t need to change the Image Load Offset)</a></p>
+<p><a href="https://lupyuen.github.io/articles/uboot#porting-notes">(<strong>UPDATE:</strong> We don’t need to change the Image Load Offset)</a></p>
 <p><em>What’s the value of <code>__start</code>?</em></p>
 <p>Remember <strong><code>kernel_addr_r</code></strong>, the <a href="https://lupyuen.github.io/articles/uboot#boot-address"><strong>Kernel Start Address</strong></a> from U-Boot?</p>
 <p>In NuttX, we define the Kernel Start Address <strong><code>__start</code></strong> as <strong><code>0x4008</code> <code>0000</code></strong> in our Linker Script: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/scripts/dramboot.ld#L30-L34">boards/arm64/qemu/qemu-a53/scripts/dramboot</a></p>
@@ -858,23 +858,29 @@ nsh&gt; ls /dev
 <ol>
 <li>
 <p><strong>PIO, PWM and LED Drivers</strong> for Allwinner A64</p>
-<p><a href="https://lupyuen.github.io/articles/de#appendix-display-backlight">(Needed for PinePhone Backlight)</a></p>
+<p>(Needed for PinePhone’s Display Backlight)</p>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-display-backlight"><strong>“Display Backlight”</strong></a></p>
 <p>PIO Driver will be based on Allwinner A10 <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_pio.c"><strong>a1x_pio.c</strong></a>, <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_pio.h"><strong>a1x_pio.h</strong></a> and <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/hardware/a1x_pio.h"><strong>hardware/a1x_pio.h</strong></a></p>
 </li>
 <li>
-<p><strong>MIPI Display Serial Interface Driver</strong> for Allwinner A64</p>
-<p><a href="https://lupyuen.github.io/articles/dsi2">(Based on this)</a></p>
+<p><strong>MIPI Display Serial Interface Driver</strong> for Allwinner A64, based on…</p>
+<p><a href="https://lupyuen.github.io/articles/dsi2"><strong>“NuttX RTOS for PinePhone: Display Driver in Zig”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-enable-mipi-dsi-block"><strong>“Enable MIPI DSI Block”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-start-mipi-dsi-hsc-and-hsd"><strong>“Start MIPI DSI HSC and HSD”</strong></a></p>
 </li>
 <li>
-<p><strong>Display Engine Driver</strong> for Allwinner A64</p>
-<p><a href="https://lupyuen.github.io/articles/de2">(Based on this)</a></p>
+<p><strong>Display Engine Driver</strong> for Allwinner A64, based on…</p>
+<p><a href="https://lupyuen.github.io/articles/de2"><strong>“NuttX RTOS for PinePhone: Render Graphics in Zig”</strong></a></p>
 </li>
 <li>
-<p><strong>DPHY and TCON0 Drivers</strong> for Allwinner A64</p>
-<p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dphy_enable">(Based on this)</a></p>
+<p><strong>PMIC, TCON0, DPHY and LCD Panel Drivers</strong> for PinePhone and Allwinner A64, based on…</p>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit"><strong>“Power Management Integrated Circuit”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-timing-controller-tcon0"><strong>“Timing Controller (TCON0)”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-enable-mipi-display-physical-layer-dphy"><strong>“Enable MIPI Display Physical Layer (DPHY)”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel"><strong>“Reset LCD Panel”</strong></a></p>
 </li>
 </ol>
-<p>And we’ll be able to render some graphics on PinePhone. Stay Tuned!</p>
+<p>And we’ll be able to render graphics on PinePhone’s LCD Display. Stay Tuned!</p>
 <h2 id="upcoming-fixes-1"><a href="#upcoming-fixes-1">17.2 Upcoming Fixes</a></h2>
 <p>These are the <strong>Upcoming Fixes</strong> for NuttX on PinePhone…</p>
 <ol>
