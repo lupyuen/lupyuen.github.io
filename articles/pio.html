@@ -135,11 +135,11 @@
 <p>From the pic above, we see that PinePhone has <strong>3 LEDs</strong>…</p>
 <ul>
 <li>
-<p><strong>Red LED</strong> is connected to <strong>PD18</strong></p>
+<p><strong>Green LED</strong> is connected to <strong>PD18</strong></p>
 <p>(PD18-LED-R)</p>
 </li>
 <li>
-<p><strong>Green LED</strong> is connected to <strong>PD19</strong></p>
+<p><strong>Red LED</strong> is connected to <strong>PD19</strong></p>
 <p>(PD19-LED-G)</p>
 </li>
 <li>
@@ -147,7 +147,8 @@
 <p>(PD20-LED-B)</p>
 </li>
 </ul>
-<p>Thus we may control the Red, Green and Blue LEDs by flipping PD18, 19 and 20.</p>
+<p>Thus we may control the Green, Red and Blue LEDs by flipping PD18, 19 and 20.</p>
+<p>(<strong>UPDATE:</strong> Schematic might be incorrect?)</p>
 <p><em>What are PD18, 19 and 20?</em></p>
 <p>PD18, 19 and 20 are the GPIO Numbers for the <strong>Allwinner A64 SoC</strong>.</p>
 <p>The GPIO Numbers look odd, but we’ll explain in the next section.</p>
@@ -167,7 +168,7 @@
 <p>In a while we shall flip <strong>GPIO PH10</strong> to turn the Backlight on and off.</p>
 <p><em>Why is the Backlight connected to PWM?</em></p>
 <p>That’s a clever way to <strong>dim the Backlight</strong>.</p>
-<p>With <a href="https://en.wikipedia.org/wiki/Pulse-width_modulation"><strong>Pulse-Width Modulation (PWM)</strong></a>, we may blink the Backlight rapidly to make it seem dimmer.</p>
+<p>With <a href="https://en.wikipedia.org/wiki/Pulse-width_modulation"><strong>Pulse-Width Modulation (PWM)</strong></a>, we may blink the Backlight rapidly to make it seem dimmer. <a href="https://lupyuen.github.io/articles/de#appendix-display-backlight">(See this)</a></p>
 <p>(There’s also the <strong>Flash LED</strong> for PinePhone’s Back Camera, enabled by <strong>GPIO PC3</strong> and triggered by <strong>GPIO PD24</strong>. See page 10 of the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a>)</p>
 <p>Let’s talk about GPIOs…</p>
 <p><img src="https://lupyuen.github.io/images/pio-register1.png" alt="Allwinner A64 User Manual (Page 376)" /></p>
@@ -238,8 +239,8 @@
 static void test_led(void)
 {
   // From PinePhone Schematic: https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf
-  // - Red LED:   GPIO PD18 (PD18-LED-R)
-  // - Green LED: GPIO PD19 (PD19-LED-G)
+  // - Green LED: GPIO PD18 (PD18-LED-R)
+  // - Red LED:   GPIO PD19 (PD19-LED-G)
   // - Blue LED:  GPIO PD20 (PD20-LED-B)
 
   // Write to PD Configure Register 2 (PD_CFG2_REG)
@@ -290,8 +291,8 @@ static void test_led(void)
 static void test_led(void)
 {
   // From PinePhone Schematic: https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf
-  // - Red LED:   GPIO PD18 (PD18-LED-R)
-  // - Green LED: GPIO PD19 (PD19-LED-G)
+  // - Green LED: GPIO PD18 (PD18-LED-R)
+  // - Red LED:   GPIO PD19 (PD19-LED-G)
   // - Blue LED:  GPIO PD20 (PD20-LED-B)
 
   // Omitted: Configure PD18, 19, 20 for GPIO Output
