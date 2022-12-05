@@ -54,11 +54,11 @@ Let's turn to Page 11 of the __PinePhone Schematic__ to understand how the PineP
 
 From the pic above, we see that PinePhone has __3 LEDs__...
 
--   __Red LED__ is connected to __PD18__
+-   __Green LED__ is connected to __PD18__
 
     (PD18-LED-R)
 
--   __Green LED__ is connected to __PD19__
+-   __Red LED__ is connected to __PD19__
 
     (PD19-LED-G)
 
@@ -66,7 +66,9 @@ From the pic above, we see that PinePhone has __3 LEDs__...
 
     (PD20-LED-B)
 
-Thus we may control the Red, Green and Blue LEDs by flipping PD18, 19 and 20.
+Thus we may control the Green, Red and Blue LEDs by flipping PD18, 19 and 20.
+
+(__UPDATE:__ Schematic might be incorrect?)
 
 _What are PD18, 19 and 20?_
 
@@ -94,7 +96,7 @@ _Why is the Backlight connected to PWM?_
 
 That's a clever way to __dim the Backlight__.
 
-With [__Pulse-Width Modulation (PWM)__](https://en.wikipedia.org/wiki/Pulse-width_modulation), we may blink the Backlight rapidly to make it seem dimmer.
+With [__Pulse-Width Modulation (PWM)__](https://en.wikipedia.org/wiki/Pulse-width_modulation), we may blink the Backlight rapidly to make it seem dimmer. [(See this)](https://lupyuen.github.io/articles/de#appendix-display-backlight)
 
 (There's also the __Flash LED__ for PinePhone's Back Camera, enabled by __GPIO PC3__ and triggered by __GPIO PD24__. See page 10 of the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf))
 
@@ -190,8 +192,8 @@ This is how we configure __PD18 for GPIO Output__: [examples/hello/hello_main.c]
 static void test_led(void)
 {
   // From PinePhone Schematic: https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf
-  // - Red LED:   GPIO PD18 (PD18-LED-R)
-  // - Green LED: GPIO PD19 (PD19-LED-G)
+  // - Green LED: GPIO PD18 (PD18-LED-R)
+  // - Red LED:   GPIO PD19 (PD19-LED-G)
   // - Blue LED:  GPIO PD20 (PD20-LED-B)
 
   // Write to PD Configure Register 2 (PD_CFG2_REG)
@@ -258,8 +260,8 @@ This is how we do it: [hello_main.c](https://github.com/lupyuen/nuttx-apps/blob/
 static void test_led(void)
 {
   // From PinePhone Schematic: https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf
-  // - Red LED:   GPIO PD18 (PD18-LED-R)
-  // - Green LED: GPIO PD19 (PD19-LED-G)
+  // - Green LED: GPIO PD18 (PD18-LED-R)
+  // - Red LED:   GPIO PD19 (PD19-LED-G)
   // - Blue LED:  GPIO PD20 (PD20-LED-B)
 
   // Omitted: Configure PD18, 19, 20 for GPIO Output
