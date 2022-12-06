@@ -2403,6 +2403,138 @@ Based on the above log, we have __implemented in Zig__ the PinePhone Driver for 
 
 -   [__Output Log for tcon.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
 
+TODO: Reverse Engineering
+
+TODO: PLL_VIDEO0
+
+```text
+CCU Base Address: 0x01C20000 (A64 Page 82)
+PLL_VIDEO0_CTRL_REG: Offset 0x10 (A64 Page 86)
+
+PLL_VIDEO0
+  0x1c20010 = 0x81006207 (DMB)
+```
+
+TODO: PLL_MIPI
+
+```text
+PLL_MIPI_CTRL_REG: Offset 0x40 (A64 Page 94)
+
+PLL_MIPI
+  0x1c20040 = 0xc00000 (DMB)
+  udelay 100
+  0x1c20040 = 0x80c0071a (DMB)
+```
+
+TODO: TCON0 source MIPI_PLL
+
+```text
+TCON0_CLK_REG: Offset 0x118 (A64 Page 117)
+
+TCON0 source MIPI_PLL
+  0x1c20118 = 0x80000000 (DMB)
+```
+
+TODO: Clock on
+
+```text
+BUS_CLK_GATING_REG1: Offset 0x64 (A64 Page 102)
+
+Clock on
+  0x1c20064 = 0x8 (DMB)
+```
+
+TODO: Reset off
+
+```text
+BUS_SOFT_RST_REG1: Offset 0x2c4 (A64 Page 140)
+
+Reset off
+  0x1c202c4 = 0x8 (DMB)
+```
+
+TODO: Init lcdc
+
+```text
+TCON0 Base Address: 0x01C0C000 (A64 Page 507)
+TCON_GCTL_REG: Offset 0x00 (A64 Page 508)
+TCON_GINT0_REG: Offset 0x04 (A64 Page 509)
+TCON_GINT1_REG: Offset 0x08 (A64 Page 510)
+
+Init lcdc: Disable tcon, Disable all interrupts
+  0x1c0c000 = 0x0 (DMB)
+  0x1c0c004 = 0x0
+  0x1c0c008 = 0x0
+```
+
+TODO: Set all io lines to tristate
+
+```text
+TCON0_IO_TRI_REG: Offset 0x8c (A64 Page 520)
+Undocumented: Offset 0xf4
+
+Set all io lines to tristate
+  0x1c0c08c = 0xffffffff
+  0x1c0c0f4 = 0xffffffff
+```
+
+TODO: mode set
+
+```text
+TCON0_DCLK_REG: Offset 0x44 (A64 Page 513)
+TCON0_CTL_REG: Offset 0x40 (A64 Page 512)
+TCON0_BASIC0_REG: Offset 0x48 (A64 Page 514)
+Undocumented: Offset 0xf8 (A64 Page cccc)
+TCON0_CPU_IF_REG: Offset 0x60 (A64 Page 516)
+
+mode set: DCLK = MIPI_PLL / 6
+  0x1c0c044 = 0x80000006
+  0x1c0c040 = 0x81000000
+  0x1c0c048 = 0x2cf059f
+  0x1c0c0f8 = 0x8
+  0x1c0c060 = 0x10010005
+```
+
+TODO: Set pixel cycle
+
+```text
+TCON0_CPU_TRI0_REG: Offset 0x160 (A64 Page 521)
+TCON0_CPU_TRI1_REG: Offset 0x164 (A64 Page 522)
+TCON0_CPU_TRI2_REG: Offset 0x168 (A64 Page 522)
+
+The datasheet says that this should be set higher than 20 * pixel cycle, but it's not clear what a pixel cycle is.
+  0x1c0c160 = 0x2f02cf
+  0x1c0c164 = 0x59f
+  0x1c0c168 = 0x1bc2000a
+```
+
+TODO: Set period
+
+```text
+TCON_SAFE_PERIOD_REG: Offset 0x1f0 (A64 Page 525)
+
+The Allwinner BSP has a comment that the period should be the display clock * 15, but uses an hardcoded 3000
+  0x1c0c1f0 = 0xbb80003
+```
+
+TODO: Enable output
+
+```text
+TCON0_IO_TRI_REG: Offset 0x8c (A64 Page 520)
+
+Enable the output on the pins
+  0x1c0c08c = 0xe0000000 (DMB)
+```
+
+TODO: Enable TCON
+
+```text
+TCON_GCTL_REG: Offset 0x00 (A64 Page 527)
+
+enable tcon as a whole
+  setbits 0x1c0c000, 0x80000000 (DMB)
+```
+
 # Appendix: Reset LCD Panel
 
 We captured the log from [__p-boot dsi_init__](https://megous.com/git/p-boot/tree/src/display.c#n1236)...
