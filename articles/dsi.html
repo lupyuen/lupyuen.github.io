@@ -269,7 +269,7 @@
 <p>We’ll send the above commands to ST7703 via a MIPI DSI Display Command: <strong>DCS Long Write</strong>.</p>
 <p>Which we’ll explain next…</p>
 <p><img src="https://lupyuen.github.io/images/dsi-datatype.png" alt="MIPI DSI Display Command Set from A31 User Manual (Page 837)" /></p>
-<p><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Display Command Set from A31 User Manual (Page 837)</em></a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Display Command Set from A31 User Manual (Page 837)</em></a></p>
 <h1 id="display-command-set-for-mipi-dsi"><a href="#display-command-set-for-mipi-dsi">7 Display Command Set for MIPI DSI</a></h1>
 <p>MIPI Display Serial Interface (DSI) defines a standard list of commands for controlling the display: <strong>DSI Display Command Set (DCS)</strong>. (Pic above)</p>
 <p>To send the Initialisation Sequence to ST7703, we shall transmit the <strong>DCS Long Write</strong> command. (Data Type <code>0x39</code>)</p>
@@ -285,7 +285,7 @@
 <p>Let’s talk about DSI Video Mode…</p>
 <p>(Note: We might need to use <strong>DCS Short Write No Parameters</strong> <code>0x05</code> for single-byte ST7703 Commands, <strong>DCS Short Write 1 Parameter</strong> <code>0x15</code> for 2-byte ST7703 Commands. See the Appendix for details)</p>
 <p><img src="https://lupyuen.github.io/images/dsi-modes2.png" alt="DSI Video Mode from A31 User Manual (Page 841)" /></p>
-<p><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf"><em>DSI Video Mode from A31 User Manual (Page 841)</em></a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf"><em>DSI Video Mode from A31 User Manual (Page 841)</em></a></p>
 <h1 id="video-mode-only-for-mipi-dsi"><a href="#video-mode-only-for-mipi-dsi">8 Video Mode Only for MIPI DSI</a></h1>
 <p><em>What’s MIPI DSI Video Mode?</em></p>
 <p>MIPI Display Serial Interface (DSI) supports 2 modes of operation (pic above)…</p>
@@ -325,14 +325,14 @@
 <p>(Like “Packed Pixel Stream, 24-bit RGB, 8-8-8 Format”, Data Type <code>0x3E</code>)</p>
 <p>That’s why PinePhone’s Display doesn’t need a Data / Command Pin like PineTime.</p>
 <p><img src="https://lupyuen.github.io/images/dsi-registers2.png" alt="MIPI DSI Registers from A31 User Manual (Page 842)" /></p>
-<p><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Registers from A31 User Manual (Page 842)</em></a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Registers from A31 User Manual (Page 842)</em></a></p>
 <h1 id="a64-registers-for-mipi-dsi"><a href="#a64-registers-for-mipi-dsi">9 A64 Registers for MIPI DSI</a></h1>
 <p><em>How shall we send a DCS Long Write command to PinePhone’s Display?</em></p>
 <p>To send a DCS Long Write command, we’ll set some Hardware Registers in A64’s <strong>MIPI DSI Controller</strong>.</p>
 <p><em>The MIPI DSI Registers are missing from the A64 docs!</em></p>
 <p>Yep it’s totally odd, but the A64 MIPI DSI Registers are actually documented in the <a href="https://linux-sunxi.org/A31"><strong>Allwinner A31 SoC</strong></a>, which is a 32-bit SoC!</p>
 <ul>
-<li><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf"><strong>Allwinner A31 User Manual (Page 842)</strong></a></li>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf"><strong>Allwinner A31 User Manual (Page 842)</strong></a></li>
 </ul>
 <p>(A64 is actually an Allwinner H3 upgraded with <a href="https://linux-sunxi.org/A64"><strong>64-bit Arm Cores</strong></a>)</p>
 <p>A64’s MIPI DSI Hardware is identical to A31 because both SoCs use the <strong>same MIPI DSI Driver</strong>…</p>
@@ -373,7 +373,7 @@
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/dsi-control.png" alt="MIPI DSI Configuration Register 1 from A31 User Manual (Page 846)" /></p>
-<p><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Configuration Register 1 from A31 User Manual (Page 846)</em></a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Configuration Register 1 from A31 User Manual (Page 846)</em></a></p>
 <h1 id="initialise-mipi-dsi"><a href="#initialise-mipi-dsi">10 Initialise MIPI DSI</a></h1>
 <p>We said earlier that PinePhone’s ST7789 LCD Controller needs to run in <strong>DSI Video Mode</strong> (instead of DSI Command Mode)…</p>
 <ul>
@@ -466,7 +466,7 @@
 <p>Let’s program A64 to send this Long Packet.</p>
 <p>(Page 32 of the <a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>ST7703 Datasheet</strong></a> also defines a <strong>Short Packet</strong> format, which is explained in the Appendix)</p>
 <p><img src="https://lupyuen.github.io/images/dsi-tx.png" alt="MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)" /></p>
-<p><a href="https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)</em></a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf"><em>MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)</em></a></p>
 <h1 id="transmit-packet-over-mipi-dsi"><a href="#transmit-packet-over-mipi-dsi">12 Transmit Packet over MIPI DSI</a></h1>
 <p>We’re finally ready to transmit the <strong>DCS Long Write</strong> command to ST7703 LCD Controller!</p>
 <p>We begin by setting the following bits to 1 in <strong>DSI_CMD_CTL_REG</strong> (DSI Low Power Control Register) at Offset <code>0x200</code>…</p>
