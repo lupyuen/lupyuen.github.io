@@ -1962,60 +1962,6 @@ Based on the above log, we have __implemented in Zig__ the PinePhone Driver for 
 
 -   [__Output Log for pmic.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
 
-# Appendix: Timing Controller (TCON0)
-
-We captured the log from [__p-boot tcon0_init__](https://megous.com/git/p-boot/tree/src/display.c#n1567)...
-
--   [__Log from tcon0_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init)
-
-```text
-tcon0_init: start
-PLL_VIDEO0
-  0x1c20010 = 0x81006207 (DMB)
-PLL_MIPI
-  0x1c20040 = 0xc00000 (DMB)
-  udelay 100
-  0x1c20040 = 0x80c0071a (DMB)
-TCON0 source MIPI_PLL
-  0x1c20118 = 0x80000000 (DMB)
-Clock on
-  0x1c20064 = 0x8 (DMB)
-Reset off
-  0x1c202c4 = 0x8 (DMB)
-Init lcdc: Disable tcon, Disable all interrupts
-  0x1c0c000 = 0x0 (DMB)
-  0x1c0c004 = 0x0
-  0x1c0c008 = 0x0
-Set all io lines to tristate
-  0x1c0c08c = 0xffffffff
-  0x1c0c0f4 = 0xffffffff
-mode set: DCLK = MIPI_PLL / 6
-  0x1c0c044 = 0x80000006
-  0x1c0c040 = 0x81000000
-  0x1c0c048 = 0x2cf059f
-  0x1c0c0f8 = 0x8
-  0x1c0c060 = 0x10010005
-The datasheet says that this should be set higher than 20 * pixel cycle, but it's not clear what a pixel cycle is.
-  0x1c0c160 = 0x2f02cf
-  0x1c0c164 = 0x59f
-  0x1c0c168 = 0x1bc2000a
-The Allwinner BSP has a comment that the period should be the display clock * 15, but uses an hardcoded 3000
-  0x1c0c1f0 = 0xbb80003
-Enable the output on the pins
-  0x1c0c08c = 0xe0000000 (DMB)
-enable tcon as a whole
-  setbits 0x1c0c000, 0x80000000 (DMB)
-tcon0_init: end
-```
-
-[(Source)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init)
-
-Based on the above log, we have __implemented in Zig__ the PinePhone Driver for Allwinner A64 Timing Controller (TCON0)...
-
--   [__pinephone-nuttx/tcon.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig)
-
--   [__Output Log for tcon.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
-
 # Appendix: Enable MIPI DSI Block
 
 We captured the log from [__p-boot dsi_init__](https://megous.com/git/p-boot/tree/src/display.c#n1236)...
@@ -2128,6 +2074,238 @@ Based on the above log, we have __implemented in Zig__ the PinePhone Driver that
 
 -   [__Output Log for display.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
 
+TODO: Reverse Engineering
+
+TODO: mipi dsi bus enable
+
+```text
+CCU Base Address: 0x01C20000 (A64 Page 82)
+BUS_CLK_GATING_REG0: Offset 0x60 (A64 Page 100)
+BUS_SOFT_RST_REG0: Offset 0x2C0 (A64 Page 138)
+
+mipi dsi bus enable
+  setbits 0x1c20060, 0x2 (DMB)
+  setbits 0x1c202c0, 0x2 (DMB)
+```
+
+TODO: Enable the DSI block
+
+```
+DSI Base Address: 0x01CA0000 (A31 Page 842)
+DSI_CTL_REG: Offset 0x0 (A31 Page 843)
+DSI_BASIC_CTL0_REG: Offset 0x10 (A31 Page 845)
+Undocumented: Offset 0x60
+Undocumented: Offset 0x78
+
+Enable the DSI block
+  0x1ca0000 = 0x1 (DMB)
+  0x1ca0010 = 0x30000 (DMB)
+  0x1ca0060 = 0xa (DMB)
+  0x1ca0078 = 0x0 (DMB)
+```
+
+TODO: inst_init
+
+```
+Undocumented: Offset 0x20
+Undocumented: Offset 0x24
+Undocumented: Offset 0x28
+Undocumented: Offset 0x2c
+Undocumented: Offset 0x30
+Undocumented: Offset 0x34
+Undocumented: Offset 0x38
+Undocumented: Offset 0x3c
+Undocumented: Offset 0x4c
+Undocumented: Offset 0x2f8
+
+inst_init
+  0x1ca0020 = 0x1f (DMB)
+  0x1ca0024 = 0x10000001 (DMB)
+  0x1ca0028 = 0x20000010 (DMB)
+  0x1ca002c = 0x2000000f (DMB)
+  0x1ca0030 = 0x30100001 (DMB)
+  0x1ca0034 = 0x40000010 (DMB)
+  0x1ca0038 = 0xf (DMB)
+  0x1ca003c = 0x5000001f (DMB)
+  0x1ca004c = 0x560001 (DMB)
+  0x1ca02f8 = 0xff (DMB)
+```
+
+TODO: get_video_start_delay
+
+```
+DSI_BASIC_CTL1_REG: Offset 0x14 (A31 Page 846)
+
+get_video_start_delay
+  0x1ca0014 = 0x5bc7 (DMB)
+```
+
+TODO: setup_burst
+
+```
+Undocumented: Offset 0x7c
+
+setup_burst
+  0x1ca007c = 0x10000007 (DMB)
+
+Undocumented: Offset 0x40
+Undocumented: Offset 0x44
+Undocumented: Offset 0x54
+```
+
+TODO: setup_inst_loop
+
+```
+setup_inst_loop
+  0x1ca0040 = 0x30000002 (DMB)
+  0x1ca0044 = 0x310031 (DMB)
+  0x1ca0054 = 0x310031 (DMB)
+
+DSI_PIXEL_PH_REG: Offset 0x90 (A31 Page 848)
+DSI_PIXEL_PF0_REG: Offset 0x98 (A31 Page 849)
+DSI_PIXEL_PF1_REG: Offset 0x9c (A31 Page 849)
+DSI_PIXEL_CTL0_REG: Offset 0x80 (A31 Page 847)
+```
+
+TODO: setup_format
+
+```
+setup_format
+  0x1ca0090 = 0x1308703e (DMB)
+  0x1ca0098 = 0xffff (DMB)
+  0x1ca009c = 0xffffffff (DMB)
+  0x1ca0080 = 0x10008 (DMB)
+
+Undocumented: Offset 0x0c
+DSI_SYNC_HSS_REG: Offset 0xb0 (A31 Page 850)
+DSI_SYNC_HSE_REG: Offset 0xb4 (A31 Page 850)
+DSI_SYNC_VSS_REG: Offset 0xb8 (A31 Page 851)
+DSI_SYNC_VSE_REG: Offset 0xbc (A31 Page 851)
+Undocumented: Offset 0x18
+Undocumented: Offset 0x1c
+DSI_BLK_HSA0_REG: Offset 0xc0 (A31 Page 852)
+DSI_BLK_HSA1_REG: Offset 0xc4 (A31 Page 852)
+DSI_BLK_HBP0_REG: Offset 0xc8 (A31 Page 852)
+DSI_BLK_HBP1_REG: Offset 0xcc (A31 Page 852)
+DSI_BLK_HFP0_REG: Offset 0xd0 (A31 Page 852)
+DSI_BLK_HFP1_REG: Offset 0xd4 (A31 Page 853)
+DSI_BLK_HBLK0_REG: Offset 0xe0 (A31 Page 853)
+DSI_BLK_HBLK1_REG: Offset 0xe4 (A31 Page 853)
+DSI_BLK_VBLK0_REG: Offset 0xe8 (A31 Page 854)
+DSI_BLK_VBLK1_REG: Offset 0xec (A31 Page 854)
+```
+
+TODO: setup_timings
+
+```
+setup_timings
+  0x1ca000c = 0x0 (DMB)
+  0x1ca00b0 = 0x12000021 (DMB)
+  0x1ca00b4 = 0x1000031 (DMB)
+  0x1ca00b8 = 0x7000001 (DMB)
+  0x1ca00bc = 0x14000011 (DMB)
+  0x1ca0018 = 0x11000a (DMB)
+  0x1ca001c = 0x5cd05a0 (DMB)
+  0x1ca00c0 = 0x9004a19 (DMB)
+  0x1ca00c4 = 0x50b40000 (DMB)
+  0x1ca00c8 = 0x35005419 (DMB)
+  0x1ca00cc = 0x757a0000 (DMB)
+  0x1ca00d0 = 0x9004a19 (DMB)
+  0x1ca00d4 = 0x50b40000 (DMB)
+  0x1ca00e0 = 0xc091a19 (DMB)
+  0x1ca00e4 = 0x72bd0000 (DMB)
+  0x1ca00e8 = 0x1a000019 (DMB)
+  0x1ca00ec = 0xffff0000 (DMB)
+```
+
+# Appendix: Start MIPI DSI HSC and HSD
+
+We captured the log from [__p-boot dsi_init__](https://megous.com/git/p-boot/tree/src/display.c#n1236)...
+
+-   [__Log from dsi_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#start_dsi)
+
+```text
+start_dsi: start
+dsi_start DSI_START_HSC
+.{ 0x1ca0000 + 0x0048, 0x00000f02 },  // DMB
+  0x1ca0048 = 0xf02 (DMB)
+.{ MAGIC_COMMIT, 0 },  // DMB
+dsi_update_bits: 0x01ca0010 : 00030000 -> (00000001) 00000001 (DMB)
+  addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
+dsi_update_bits: 0x01ca0020 : 0000001f -> (00000010) 00000000 (DMB)
+  addr=0x1ca0020, mask=0x10, val=0x0 (DMB)
+udelay 1000
+dsi_start DSI_START_HSD
+.{ 0x1ca0000 + 0x0048, 0x63f07006 },  // DMB
+  0x1ca0048 = 0x63f07006 (DMB)
+.{ MAGIC_COMMIT, 0 },  // DMB
+dsi_update_bits: 0x01ca0010 : 00030000 -> (00000001) 00000001 (DMB)
+  addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
+start_dsi: end
+```
+
+[(Source)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#start_dsi)
+
+Based on the above log, we have __implemented in Zig__ the PinePhone Driver that starts Allwinner A64 MIPI DSI (in HSC and HSD Modes)...
+
+-   [__pinephone-nuttx/display.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1009-L1047)
+
+-   [__Output Log for display.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
+
+TODO: Reverse Engineering
+
+TODO: DSI_START_HSC
+
+```text
+DSI Base Address: 0x01CA0000 (A31 Page 842)
+Undocumented: Offset 0x48
+
+dsi_start DSI_START_HSC
+  0x1ca0048 = 0xf02 (DMB)
+```
+
+TODO: Commit
+
+```text
+DSI_BASIC_CTL0_REG: Offset 0x10 (A31 Page 845)
+
+dsi_update_bits: 0x01ca0010 : 00030000 -> (00000001) 00000001 (DMB)
+  addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
+```
+
+TODO
+
+```text
+Undocumented: Offset 0x20
+
+dsi_update_bits: 0x01ca0020 : 0000001f -> (00000010) 00000000 (DMB)
+  addr=0x1ca0020, mask=0x10, val=0x0 (DMB)
+```
+
+TODO: Delay
+
+```text
+udelay 1000
+```
+
+TODO: DSI_START_HSD
+
+```text
+Undocumented: Offset 0x48
+
+dsi_start DSI_START_HSD
+  0x1ca0048 = 0x63f07006 (DMB)
+```
+
+TODO: Commit
+
+```text
+DSI_BASIC_CTL0_REG: Offset 0x10 (A31 Page 845)
+
+dsi_update_bits: 0x01ca0010 : 00030000 -> (00000001) 00000001 (DMB)
+  addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
+```
+
 # Appendix: Enable MIPI Display Physical Layer (DPHY)
 
 We captured the log from [__p-boot dphy_enable__](https://megous.com/git/p-boot/tree/src/display.c#n331)...
@@ -2171,6 +2349,60 @@ Based on the above log, we have __implemented in Zig__ the PinePhone Driver that
 
 -   [__Output Log for dphy.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
 
+# Appendix: Timing Controller (TCON0)
+
+We captured the log from [__p-boot tcon0_init__](https://megous.com/git/p-boot/tree/src/display.c#n1567)...
+
+-   [__Log from tcon0_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init)
+
+```text
+tcon0_init: start
+PLL_VIDEO0
+  0x1c20010 = 0x81006207 (DMB)
+PLL_MIPI
+  0x1c20040 = 0xc00000 (DMB)
+  udelay 100
+  0x1c20040 = 0x80c0071a (DMB)
+TCON0 source MIPI_PLL
+  0x1c20118 = 0x80000000 (DMB)
+Clock on
+  0x1c20064 = 0x8 (DMB)
+Reset off
+  0x1c202c4 = 0x8 (DMB)
+Init lcdc: Disable tcon, Disable all interrupts
+  0x1c0c000 = 0x0 (DMB)
+  0x1c0c004 = 0x0
+  0x1c0c008 = 0x0
+Set all io lines to tristate
+  0x1c0c08c = 0xffffffff
+  0x1c0c0f4 = 0xffffffff
+mode set: DCLK = MIPI_PLL / 6
+  0x1c0c044 = 0x80000006
+  0x1c0c040 = 0x81000000
+  0x1c0c048 = 0x2cf059f
+  0x1c0c0f8 = 0x8
+  0x1c0c060 = 0x10010005
+The datasheet says that this should be set higher than 20 * pixel cycle, but it's not clear what a pixel cycle is.
+  0x1c0c160 = 0x2f02cf
+  0x1c0c164 = 0x59f
+  0x1c0c168 = 0x1bc2000a
+The Allwinner BSP has a comment that the period should be the display clock * 15, but uses an hardcoded 3000
+  0x1c0c1f0 = 0xbb80003
+Enable the output on the pins
+  0x1c0c08c = 0xe0000000 (DMB)
+enable tcon as a whole
+  setbits 0x1c0c000, 0x80000000 (DMB)
+tcon0_init: end
+```
+
+[(Source)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init)
+
+Based on the above log, we have __implemented in Zig__ the PinePhone Driver for Allwinner A64 Timing Controller (TCON0)...
+
+-   [__pinephone-nuttx/tcon.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig)
+
+-   [__Output Log for tcon.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
+
 # Appendix: Reset LCD Panel
 
 We captured the log from [__p-boot dsi_init__](https://megous.com/git/p-boot/tree/src/display.c#n1236)...
@@ -2198,37 +2430,3 @@ Based on the above log, we have __implemented in Zig__ the PinePhone Driver that
 -   [__pinephone-nuttx/panel.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig)
 
 -   [__Output Log for panel.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
-
-# Appendix: Start MIPI DSI HSC and HSD
-
-We captured the log from [__p-boot dsi_init__](https://megous.com/git/p-boot/tree/src/display.c#n1236)...
-
--   [__Log from dsi_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#start_dsi)
-
-```text
-start_dsi: start
-dsi_start DSI_START_HSC
-.{ 0x1ca0000 + 0x0048, 0x00000f02 },  // DMB
-  0x1ca0048 = 0xf02 (DMB)
-.{ MAGIC_COMMIT, 0 },  // DMB
-dsi_update_bits: 0x01ca0010 : 00030000 -> (00000001) 00000001 (DMB)
-  addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
-dsi_update_bits: 0x01ca0020 : 0000001f -> (00000010) 00000000 (DMB)
-  addr=0x1ca0020, mask=0x10, val=0x0 (DMB)
-udelay 1000
-dsi_start DSI_START_HSD
-.{ 0x1ca0000 + 0x0048, 0x63f07006 },  // DMB
-  0x1ca0048 = 0x63f07006 (DMB)
-.{ MAGIC_COMMIT, 0 },  // DMB
-dsi_update_bits: 0x01ca0010 : 00030000 -> (00000001) 00000001 (DMB)
-  addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
-start_dsi: end
-```
-
-[(Source)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#start_dsi)
-
-Based on the above log, we have __implemented in Zig__ the PinePhone Driver that starts Allwinner A64 MIPI DSI (in HSC and HSD Modes)...
-
--   [__pinephone-nuttx/display.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1009-L1047)
-
--   [__Output Log for display.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
