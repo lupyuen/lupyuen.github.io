@@ -2349,6 +2349,80 @@ Based on the above log, we have __implemented in Zig__ the PinePhone Driver that
 
 -   [__Output Log for dphy.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
 
+TODO: Reverse Engineering
+
+```text
+CCU Base Address: 0x01C20000 (A64 Page 82)
+MIPI_DSI_CLK_REG: Offset 0x168 (A64 Page 122)
+
+150MHz (600 / 4)
+  0x1c20168 = 0x8203 (DMB)
+```
+
+TODO
+
+```
+DPHY Base Address: 0x01ca1000
+DPHY_TX_CTL_REG: Offset 0x04
+DPHY_TX_TIME0_REG: Offset 0x10
+DPHY_TX_TIME1_REG: Offset 0x14
+DPHY_TX_TIME2_REG: Offset 0x18
+DPHY_TX_TIME3_REG: Offset 0x1c
+
+  0x1ca1004 = 0x10000000 (DMB)
+  0x1ca1010 = 0xa06000e (DMB)
+  0x1ca1014 = 0xa033207 (DMB)
+  0x1ca1018 = 0x1e (DMB)
+  0x1ca101c = 0x0 (DMB)
+```
+
+TODO
+
+```
+DPHY_TX_TIME4_REG: Offset 0x20
+DPHY_GCTL_REG: Offset 0x00
+DPHY_ANA0_REG: Offset 0x4c
+DPHY_ANA1_REG: Offset 0x50
+DPHY_ANA4_REG: Offset 0x5c
+
+  0x1ca1020 = 0x303 (DMB)
+  0x1ca1000 = 0x31 (DMB)
+  0x1ca104c = 0x9f007f00 (DMB)
+  0x1ca1050 = 0x17000000 (DMB)
+  0x1ca105c = 0x1f01555 (DMB)
+```
+
+TODO
+
+```
+DPHY_ANA2_REG: Offset 0x54
+DPHY_ANA3_REG: Offset 0x58
+
+  0x1ca1054 = 0x2 (DMB)
+  udelay 5
+  0x1ca1058 = 0x3040000 (DMB)
+  udelay 1
+```
+
+TODO
+
+```
+DPHY_ANA3_REG: Offset 0x58
+DPHY_ANA3_REG: Offset 0x58
+DPHY_ANA2_REG: Offset 0x54
+DPHY_ANA1_REG: Offset 0x50
+DPHY_ANA2_REG: Offset 0x54
+
+  update_bits addr=0x1ca1058, mask=0xf8000000, val=0xf8000000 (DMB)
+  udelay 1
+  update_bits addr=0x1ca1058, mask=0x4000000, val=0x4000000 (DMB)
+  udelay 1
+  update_bits addr=0x1ca1054, mask=0x10, val=0x10 (DMB)
+  udelay 1
+  update_bits addr=0x1ca1050, mask=0x80000000, val=0x80000000 (DMB)
+  update_bits addr=0x1ca1054, mask=0xf000000, val=0xf000000 (DMB)
+```
+
 # Appendix: Timing Controller (TCON0)
 
 We captured the log from [__p-boot tcon0_init__](https://megous.com/git/p-boot/tree/src/display.c#n1567)...
