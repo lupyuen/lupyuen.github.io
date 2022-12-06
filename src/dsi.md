@@ -339,6 +339,8 @@ Yep it's totally odd, but the A64 MIPI DSI Registers are actually documented in 
 
 -   [__Allwinner A31 User Manual (Page 842)__](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
 
+(A64 is actually an Allwinner H3 upgraded with [__64-bit Arm Cores__](https://linux-sunxi.org/A64))
+
 A64's MIPI DSI Hardware is identical to A31 because both SoCs use the __same MIPI DSI Driver__...
 
 ```c
