@@ -727,10 +727,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [(According to this)](https://megous.com/git/p-boot/tree/src/display.c#n756)
 
-1.  We recorded some notes while reverse-engineering the PinePhone MIPI DSI Driver...
-
-    [__"Reverse Engineering PinePhone's LCD Display (MIPI DSI)"__](https://gist.github.com/lupyuen/43204d20c35ecb23dfbff12f2f570565)
-
 1.  Some parts of the PinePhone MIPI DSI Driver still need to be reverse-engineered...
 
     [__"Enable MIPI DSI Block"__](https://lupyuen.github.io/articles/de#appendix-enable-mipi-dsi-block)
@@ -738,6 +734,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     [__"Enable MIPI Display Physical Layer (DPHY)"__](https://lupyuen.github.io/articles/de#appendix-enable-mipi-display-physical-layer-dphy)
 
     [__"Start MIPI DSI HSC and HSD"__](https://lupyuen.github.io/articles/de#appendix-start-mipi-dsi-hsc-and-hsd)
+
+    We have have already implemented the above in Zig.
+
+1.  We recorded some notes while reverse-engineering the PinePhone MIPI DSI Driver...
+
+    [__"Reverse Engineering PinePhone's LCD Display (MIPI DSI)"__](https://gist.github.com/lupyuen/43204d20c35ecb23dfbff12f2f570565)
 
 1.  How did we find the Reference Code for the MIPI DSI Driver? We used GitHub Code Search...
 
