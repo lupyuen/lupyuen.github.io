@@ -977,6 +977,8 @@ These are the __Upcoming Fixes__ for NuttX on PinePhone...
     CONFIG_TESTING_SMP=y
     ```
 
+1.  Enable __Memory Protection__ so that NuttX Apps can't access NuttX Kernel Memory and Hardware Registers.
+
 ## Porting Notes
 
 __Porting Notes__ for NuttX on PinePhone...
