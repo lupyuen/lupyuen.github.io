@@ -2117,7 +2117,9 @@ TODO: mipi dsi bus enable
 ```text
 CCU Base Address: 0x01C20000 (A64 Page 82)
 BUS_CLK_GATING_REG0: Offset 0x60 (A64 Page 100)
+- Set MIPIDSI_GATING (Bit 1) to 1 (Pass Gating Clock for MIPI DSI)
 BUS_SOFT_RST_REG0: Offset 0x2C0 (A64 Page 138)
+- Set MIPI_DSI_RST (Bit 1) to 1 (Deassert MIPI DSI Reset)
 
 mipi dsi bus enable
   setbits 0x1c20060, 0x2 (DMB)
@@ -2129,9 +2131,14 @@ TODO: Enable the DSI block
 ```text
 DSI Base Address: 0x01CA0000 (A31 Page 842)
 DSI_CTL_REG: Offset 0x0 (A31 Page 843)
+- Set DSI_En (Bit 0) to 1 (Enable DSI)
 DSI_BASIC_CTL0_REG: Offset 0x10 (A31 Page 845)
+- Set CRC_En (Bit 17) to 1 (Enable CRC)
+- Set ECC_En (Bit 16) to 1 (Enable ECC)
 DSI_TRANS_START_REG: Offset 0x60
+- Set to 0xa
 DSI_TRANS_ZERO_REG: Offset 0x78
+- Set to 0x0
 
 Enable the DSI block
   0x1ca0000 = 0x1 (DMB)
@@ -2143,16 +2150,15 @@ Enable the DSI block
 TODO: inst_init
 
 ```text
-DSI_INST_FUNC_REG: Offset 0x20
-Undocumented: Offset 0x24
-Undocumented: Offset 0x28
-Undocumented: Offset 0x2c
-Undocumented: Offset 0x30
-Undocumented: Offset 0x34
-Undocumented: Offset 0x38
-Undocumented: Offset 0x3c
-Undocumented: Offset 0x4c
-DSI_DEBUG_DATA_REG: Offset 0x2f8
+DSI_INST_FUNC_REG(n): (0x020 + (n) * 0x04)
+DSI_INST_FUNC_REG(0): Offset 0x20 (DSI_INST_ID_LP11)
+DSI_INST_FUNC_REG(1): Offset 0x24 (DSI_INST_ID_TBA)
+DSI_INST_FUNC_REG(2): Offset 0x28 (DSI_INST_ID_HSC)
+DSI_INST_FUNC_REG(3): Offset 0x2c (DSI_INST_ID_HSD)
+DSI_INST_FUNC_REG(4): Offset 0x30 (DSI_INST_ID_LPDT)
+DSI_INST_FUNC_REG(5): Offset 0x34 (DSI_INST_ID_HSCEXIT)
+DSI_INST_FUNC_REG(6): Offset 0x38 (DSI_INST_ID_NOP)
+DSI_INST_FUNC_REG(7): Offset 0x3c (DSI_INST_ID_DLY)
 
 inst_init
   0x1ca0020 = 0x1f (DMB)
@@ -2163,6 +2169,15 @@ inst_init
   0x1ca0034 = 0x40000010 (DMB)
   0x1ca0038 = 0xf (DMB)
   0x1ca003c = 0x5000001f (DMB)
+```
+
+TODO
+
+```text
+DSI_INST_JUMP_CFG_REG(n): (0x04c + (n) * 0x04)
+DSI_INST_JUMP_CFG_REG(0): Offset 0x4c (DSI_INST_JUMP_CFG)
+DSI_DEBUG_DATA_REG: Offset 0x2f8
+
   0x1ca004c = 0x560001 (DMB)
   0x1ca02f8 = 0xff (DMB)
 ```
@@ -2171,6 +2186,10 @@ TODO: get_video_start_delay
 
 ```text
 DSI_BASIC_CTL1_REG: Offset 0x14 (A31 Page 846)
+- Set Video_Start_Delay (Bits 4 to 11) to 1468 (Delay by lines)
+- Set Video_Precision_Mode_Align (Bit 2) to 1 (Fill Mode)
+- Set Video_Frame_Start (Bit 1) to 1 (Precision Mode)
+- Set DSI_Mode (Bit 0) to 1 (Video Mode)
 
 get_video_start_delay
   0x1ca0014 = 0x5bc7 (DMB)
@@ -2189,8 +2208,9 @@ TODO: setup_inst_loop
 
 ```text
 DSI_INST_LOOP_SEL_REG: Offset 0x40
-DSI_INST_LOOP_NUM_REG: Offset 0x44
-Undocumented: Offset 0x54
+DSI_INST_LOOP_NUM_REG(n): (0x044 + (n) * 0x10)
+DSI_INST_LOOP_NUM_REG(0): Offset 0x44
+DSI_INST_LOOP_NUM_REG(1): Offset 0x54
 
 setup_inst_loop
   0x1ca0040 = 0x30000002 (DMB)
@@ -2202,9 +2222,19 @@ TODO: setup_format
 
 ```text
 DSI_PIXEL_PH_REG: Offset 0x90 (A31 Page 848)
+- Set ECC (Bits 24 to 31) to 19
+- Set WC (Bits 8 to 23) to 2160 (Byte Numbers of PD in a Pixel Packet)
+- Set VC (Bits 6 to 7) to 0 (Virtual Channel)
+- Set DT (Bits 0 to 5) to 0x3E (24-bit Video Mode)
 DSI_PIXEL_PF0_REG: Offset 0x98 (A31 Page 849)
+- Set CRC_Force (Bits 0 to 15) to 0xffff (Force CRC to this value)
 DSI_PIXEL_PF1_REG: Offset 0x9c (A31 Page 849)
+- Set CRC_Init_LineN (Bits 16 to 31) to 0xffff (CRC initial to this value in transmitions except 1st one)
+- Set CRC_Init_Line0 (Bits 0 to 15) to 0xffff (CRC initial to this value in 1st transmition every frame)
 DSI_PIXEL_CTL0_REG: Offset 0x80 (A31 Page 847)
+- Set PD_Plug_Dis (Bit 16) to 1 (Disable PD plug before pixel bytes)
+- Set Pixel_Endian (Bit 4) to 0 (LSB first)
+- Set Pixel_Format (Bits 0 to 3) to 8 (24-bit RGB888)
 
 setup_format
   0x1ca0090 = 0x1308703e (DMB)
