@@ -1968,36 +1968,81 @@ setup_format
 <p>TODO: setup_timings</p>
 <div class="example-wrap"><pre class="language-text"><code>DSI_BASIC_CTL_REG: Offset 0x0c
 DSI_SYNC_HSS_REG: Offset 0xb0 (A31 Page 850)
+- Set ECC (Bits 24 to 31) to 0x12
+- Set D1 (Bits 16 to 23) to 0
+- Set D0 (Bits 8 to 15) to 0
+- Set VC (Bits 6 to 7) to 0 (Virtual Channel)
+- Set DT (Bits 0 to 5) to 0x21 (HSS)
 DSI_SYNC_HSE_REG: Offset 0xb4 (A31 Page 850)
+- Set ECC (Bits 24 to 31) to 1
+- Set D1 (Bits 16 to 23) to 0
+- Set D0 (Bits 8 to 15) to 0
+- Set VC (Bits 6 to 7) to 0 (Virtual Channel)
+- Set DT (Bits 0 to 5) to 0x31 (HSE)
 DSI_SYNC_VSS_REG: Offset 0xb8 (A31 Page 851)
+- Set ECC (Bits 24 to 31) to 7
+- Set D1 (Bits 16 to 23) to 0
+- Set D0 (Bits 8 to 15) to 0
+- Set VC (Bits 6 to 7) to 0 (Virtual Channel)
+- Set DT (Bits 0 to 5) to 1 (VSS)
 DSI_SYNC_VSE_REG: Offset 0xbc (A31 Page 851)
-DSI_BASIC_SIZE0_REG: Offset 0x18
-DSI_BASIC_SIZE1_REG: Offset 0x1c
-DSI_BLK_HSA0_REG: Offset 0xc0 (A31 Page 852)
-DSI_BLK_HSA1_REG: Offset 0xc4 (A31 Page 852)
-DSI_BLK_HBP0_REG: Offset 0xc8 (A31 Page 852)
-DSI_BLK_HBP1_REG: Offset 0xcc (A31 Page 852)
-DSI_BLK_HFP0_REG: Offset 0xd0 (A31 Page 852)
-DSI_BLK_HFP1_REG: Offset 0xd4 (A31 Page 853)
-DSI_BLK_HBLK0_REG: Offset 0xe0 (A31 Page 853)
-DSI_BLK_HBLK1_REG: Offset 0xe4 (A31 Page 853)
-DSI_BLK_VBLK0_REG: Offset 0xe8 (A31 Page 854)
-DSI_BLK_VBLK1_REG: Offset 0xec (A31 Page 854)
+- Set ECC (Bits 24 to 31) to 0x14
+- Set D1 (Bits 16 to 23) to 0
+- Set D0 (Bits 8 to 15) to 0
+- Set VC (Bits 6 to 7) to 0 (Virtual Channel)
+- Set DT (Bits 0 to 5) to 0x11 (VSE)
 
 setup_timings
   0x1ca000c = 0x0 (DMB)
   0x1ca00b0 = 0x12000021 (DMB)
   0x1ca00b4 = 0x1000031 (DMB)
   0x1ca00b8 = 0x7000001 (DMB)
-  0x1ca00bc = 0x14000011 (DMB)
+  0x1ca00bc = 0x14000011 (DMB)</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>DSI_BASIC_SIZE0_REG: Offset 0x18
+- Set Video_VBP (Bits 16 to 27) to 17
+- Set Video_VSA (Bits 0 to 11) to 10
+DSI_BASIC_SIZE1_REG: Offset 0x1c
+- Set Video_VT (Bits 16 to 28) to 1485
+- Set Video_VACT (Bits 0 to 11) to 1440
+DSI_BLK_HSA0_REG: Offset 0xc0 (A31 Page 852)
+- Set HSA_PH (Bits 0 to 31) to 0x9004a19
+DSI_BLK_HSA1_REG: Offset 0xc4 (A31 Page 852)
+- Set HSA_PF (Bits 16 to 31) to 0x50b4
+- Set HSA_PD (Bits 0 to 7) to 0
+
   0x1ca0018 = 0x11000a (DMB)
   0x1ca001c = 0x5cd05a0 (DMB)
   0x1ca00c0 = 0x9004a19 (DMB)
-  0x1ca00c4 = 0x50b40000 (DMB)
+  0x1ca00c4 = 0x50b40000 (DMB)</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>DSI_BLK_HBP0_REG: Offset 0xc8 (A31 Page 852)
+- Set HBP_PH (Bits 0 to 31) to 0x35005419
+DSI_BLK_HBP1_REG: Offset 0xcc (A31 Page 852)
+- Set HBP_PF (Bits 16 to 31) to 0x757a
+- Set HBP_PD (Bits 0 to 7) to 0
+DSI_BLK_HFP0_REG: Offset 0xd0 (A31 Page 852)
+- Set HFP_PH (Bits 0 to 31) to 0x9004a19
+DSI_BLK_HFP1_REG: Offset 0xd4 (A31 Page 853)
+- Set HFP_PF (Bits 16 to 31) to 0x50b4
+- Set HFP_PD (Bits 0 to 7) to 0
+
   0x1ca00c8 = 0x35005419 (DMB)
   0x1ca00cc = 0x757a0000 (DMB)
   0x1ca00d0 = 0x9004a19 (DMB)
-  0x1ca00d4 = 0x50b40000 (DMB)
+  0x1ca00d4 = 0x50b40000 (DMB)</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>DSI_BLK_HBLK0_REG: Offset 0xe0 (A31 Page 853)
+- Set HBLK_PH (Bits 0 to 31) to 0xc091a19
+DSI_BLK_HBLK1_REG: Offset 0xe4 (A31 Page 853)
+- Set HBLK_PF (Bits 16 to 31) to 0x72bd
+- Set HBLK_PD (Bits 0 to 7) to 0
+DSI_BLK_VBLK0_REG: Offset 0xe8 (A31 Page 854)
+- Set VBLK_PH (Bits 0 to 31) to 0x1a000019
+DSI_BLK_VBLK1_REG: Offset 0xec (A31 Page 854)
+- Set VBLK_PF (Bits 16 to 31) to 0xffff
+- Set VBLK_PD (Bits 0 to 7) to 0
+
   0x1ca00e0 = 0xc091a19 (DMB)
   0x1ca00e4 = 0x72bd0000 (DMB)
   0x1ca00e8 = 0x1a000019 (DMB)
