@@ -2053,95 +2053,52 @@ mipi dsi bus enable
   setbits 0x1c20060, 0x2 (DMB)
   setbits 0x1c202c0, 0x2 (DMB)
 Enable the DSI block
-struct reg_inst dsi_init_seq[] = {
-.{ 0x1ca0000 + 0x0000, 0x00000001 },  // DMB
   0x1ca0000 = 0x1 (DMB)
-.{ 0x1ca0000 + 0x0010, 0x00030000 },  // DMB
   0x1ca0010 = 0x30000 (DMB)
-.{ 0x1ca0000 + 0x0060, 0x0000000a },  // DMB
   0x1ca0060 = 0xa (DMB)
-.{ 0x1ca0000 + 0x0078, 0x00000000 },  // DMB
   0x1ca0078 = 0x0 (DMB)
 inst_init
-.{ 0x1ca0000 + 0x0020, 0x0000001f },  // DMB
   0x1ca0020 = 0x1f (DMB)
-.{ 0x1ca0000 + 0x0024, 0x10000001 },  // DMB
   0x1ca0024 = 0x10000001 (DMB)
-.{ 0x1ca0000 + 0x0028, 0x20000010 },  // DMB
   0x1ca0028 = 0x20000010 (DMB)
-.{ 0x1ca0000 + 0x002c, 0x2000000f },  // DMB
   0x1ca002c = 0x2000000f (DMB)
-.{ 0x1ca0000 + 0x0030, 0x30100001 },  // DMB
   0x1ca0030 = 0x30100001 (DMB)
-.{ 0x1ca0000 + 0x0034, 0x40000010 },  // DMB
   0x1ca0034 = 0x40000010 (DMB)
-.{ 0x1ca0000 + 0x0038, 0x0000000f },  // DMB
   0x1ca0038 = 0xf (DMB)
-.{ 0x1ca0000 + 0x003c, 0x5000001f },  // DMB
   0x1ca003c = 0x5000001f (DMB)
-.{ 0x1ca0000 + 0x004c, 0x00560001 },  // DMB
   0x1ca004c = 0x560001 (DMB)
-.{ 0x1ca0000 + 0x02f8, 0x000000ff },  // DMB
   0x1ca02f8 = 0xff (DMB)
 get_video_start_delay
-.{ 0x1ca0000 + 0x0014, 0x00005bc7 },  // DMB
   0x1ca0014 = 0x5bc7 (DMB)
 setup_burst
-.{ 0x1ca0000 + 0x007c, 0x10000007 },  // DMB
   0x1ca007c = 0x10000007 (DMB)
 setup_inst_loop
-.{ 0x1ca0000 + 0x0040, 0x30000002 },  // DMB
   0x1ca0040 = 0x30000002 (DMB)
-.{ 0x1ca0000 + 0x0044, 0x00310031 },  // DMB
   0x1ca0044 = 0x310031 (DMB)
-.{ 0x1ca0000 + 0x0054, 0x00310031 },  // DMB
   0x1ca0054 = 0x310031 (DMB)
 setup_format
-.{ 0x1ca0000 + 0x0090, 0x1308703e },  // DMB
   0x1ca0090 = 0x1308703e (DMB)
-.{ 0x1ca0000 + 0x0098, 0x0000ffff },  // DMB
   0x1ca0098 = 0xffff (DMB)
-.{ 0x1ca0000 + 0x009c, 0xffffffff },  // DMB
   0x1ca009c = 0xffffffff (DMB)
-.{ 0x1ca0000 + 0x0080, 0x00010008 },  // DMB
   0x1ca0080 = 0x10008 (DMB)
 setup_timings
-display_malloc: size=2330
-.{ 0x1ca0000 + 0x000c, 0x00000000 },  // DMB
   0x1ca000c = 0x0 (DMB)
-.{ 0x1ca0000 + 0x00b0, 0x12000021 },  // DMB
   0x1ca00b0 = 0x12000021 (DMB)
-.{ 0x1ca0000 + 0x00b4, 0x01000031 },  // DMB
   0x1ca00b4 = 0x1000031 (DMB)
-.{ 0x1ca0000 + 0x00b8, 0x07000001 },  // DMB
   0x1ca00b8 = 0x7000001 (DMB)
-.{ 0x1ca0000 + 0x00bc, 0x14000011 },  // DMB
   0x1ca00bc = 0x14000011 (DMB)
-.{ 0x1ca0000 + 0x0018, 0x0011000a },  // DMB
   0x1ca0018 = 0x11000a (DMB)
-.{ 0x1ca0000 + 0x001c, 0x05cd05a0 },  // DMB
   0x1ca001c = 0x5cd05a0 (DMB)
-.{ 0x1ca0000 + 0x00c0, 0x09004a19 },  // DMB
   0x1ca00c0 = 0x9004a19 (DMB)
-.{ 0x1ca0000 + 0x00c4, 0x50b40000 },  // DMB
   0x1ca00c4 = 0x50b40000 (DMB)
-.{ 0x1ca0000 + 0x00c8, 0x35005419 },  // DMB
   0x1ca00c8 = 0x35005419 (DMB)
-.{ 0x1ca0000 + 0x00cc, 0x757a0000 },  // DMB
   0x1ca00cc = 0x757a0000 (DMB)
-.{ 0x1ca0000 + 0x00d0, 0x09004a19 },  // DMB
   0x1ca00d0 = 0x9004a19 (DMB)
-.{ 0x1ca0000 + 0x00d4, 0x50b40000 },  // DMB
   0x1ca00d4 = 0x50b40000 (DMB)
-.{ 0x1ca0000 + 0x00e0, 0x0c091a19 },  // DMB
   0x1ca00e0 = 0xc091a19 (DMB)
-.{ 0x1ca0000 + 0x00e4, 0x72bd0000 },  // DMB
   0x1ca00e4 = 0x72bd0000 (DMB)
-.{ 0x1ca0000 + 0x00e8, 0x1a000019 },  // DMB
   0x1ca00e8 = 0x1a000019 (DMB)
-.{ 0x1ca0000 + 0x00ec, 0xffff0000 },  // DMB
   0x1ca00ec = 0xffff0000 (DMB)
-};
 enable_dsi_block: end
 ```
 
@@ -2169,7 +2126,7 @@ mipi dsi bus enable
 
 TODO: Enable the DSI block
 
-```
+```text
 DSI Base Address: 0x01CA0000 (A31 Page 842)
 DSI_CTL_REG: Offset 0x0 (A31 Page 843)
 DSI_BASIC_CTL0_REG: Offset 0x10 (A31 Page 845)
@@ -2185,7 +2142,7 @@ Enable the DSI block
 
 TODO: inst_init
 
-```
+```text
 DSI_INST_FUNC_REG: Offset 0x20
 Undocumented: Offset 0x24
 Undocumented: Offset 0x28
@@ -2212,7 +2169,7 @@ inst_init
 
 TODO: get_video_start_delay
 
-```
+```text
 DSI_BASIC_CTL1_REG: Offset 0x14 (A31 Page 846)
 
 get_video_start_delay
@@ -2221,7 +2178,7 @@ get_video_start_delay
 
 TODO: setup_burst
 
-```
+```text
 DSI_TCON_DRQ_REG: Offset 0x7c
 
 setup_burst
@@ -2230,7 +2187,7 @@ setup_burst
 
 TODO: setup_inst_loop
 
-```
+```text
 DSI_INST_LOOP_SEL_REG: Offset 0x40
 DSI_INST_LOOP_NUM_REG: Offset 0x44
 Undocumented: Offset 0x54
@@ -2243,7 +2200,7 @@ setup_inst_loop
 
 TODO: setup_format
 
-```
+```text
 DSI_PIXEL_PH_REG: Offset 0x90 (A31 Page 848)
 DSI_PIXEL_PF0_REG: Offset 0x98 (A31 Page 849)
 DSI_PIXEL_PF1_REG: Offset 0x9c (A31 Page 849)
@@ -2258,7 +2215,7 @@ setup_format
 
 TODO: setup_timings
 
-```
+```text
 DSI_BASIC_CTL_REG: Offset 0x0c
 DSI_SYNC_HSS_REG: Offset 0xb0 (A31 Page 850)
 DSI_SYNC_HSE_REG: Offset 0xb4 (A31 Page 850)
@@ -2440,7 +2397,7 @@ MIPI_DSI_CLK_REG: Offset 0x168 (A64 Page 122)
 
 TODO: DPHY Tx Power On
 
-```
+```text
 DPHY Base Address: 0x01ca1000
 DPHY_TX_CTL_REG: Offset 0x04
 DPHY_TX_TIME0_REG: Offset 0x10
@@ -2459,7 +2416,7 @@ DPHY_TX_TIME4_REG: Offset 0x20
 
 TODO
 
-```
+```text
 DPHY_GCTL_REG: Offset 0x00 (Enable DPHY)
 DPHY_ANA0_REG: Offset 0x4c (PWS)
 DPHY_ANA1_REG: Offset 0x50 (CSMPS)
@@ -2473,7 +2430,7 @@ DPHY_ANA4_REG: Offset 0x5c (CKDV)
 
 TODO
 
-```
+```text
 DPHY_ANA2_REG: Offset 0x54 (ENIB)
 DPHY_ANA3_REG: Offset 0x58 (Enable LDOR, LDOC, LDOD)
 DPHY_ANA3_REG: Offset 0x58 (Enable VTTC, VTTD)
@@ -2681,3 +2638,4 @@ TCON_GCTL_REG: Offset 0x00 (A64 Page 527)
 enable tcon as a whole
   setbits 0x1c0c000, 0x80000000 (DMB)
 ```
+
