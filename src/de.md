@@ -2605,6 +2605,14 @@ TODO: PLL_VIDEO0
 ```text
 CCU Base Address: 0x01C20000 (A64 Page 82)
 PLL_VIDEO0_CTRL_REG: Offset 0x10 (A64 Page 86)
+- Set PLL_ENABLE (Bit 31) to 1 (Enable PLL)
+- Set PLL_MODE (Bit 30) to 0 (Manual Mode)
+- Set LOCK (Bit 28) to 0 (Unlocked)
+- Set FRAC_CLK_OUT (Bit 25) to 0
+- Set PLL_MODE_SEL (Bit 24) to 1 (Integer Mode)
+- Set PLL_SDM_EN (Bit 20) to 0 (Disable)
+- Set PLL_FACTOR_N (Bits 8 to 14) to 0x62
+- Set PLL_PREDIV_M (Bits 0 to 3) to 7
 
 PLL_VIDEO0
   0x1c20010 = 0x81006207 (DMB)
