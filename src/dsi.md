@@ -789,6 +789,10 @@ Everything else is the same.
 
 # Appendix: MIPI DPHY
 
+__UPDATE:__ We have implemented the MIPI DPHY Driver in Zig...
+
+-   [__"Enable MIPI Display Physical Layer (DPHY)"__](https://lupyuen.github.io/articles/de#appendix-enable-mipi-display-physical-layer-dphy)
+
 Earlier we talked about initialising the MIPI DSI Controller...
 
 -   [__"Initialise MIPI DSI"__](https://lupyuen.github.io/articles/dsi#initialise-mipi-dsi)
