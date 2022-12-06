@@ -2071,6 +2071,64 @@ dphy_enable: end</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for dphy.zig</strong></a></p>
 </li>
 </ul>
+<p>TODO: Reverse Engineering</p>
+<div class="example-wrap"><pre class="language-text"><code>CCU Base Address: 0x01C20000 (A64 Page 82)
+MIPI_DSI_CLK_REG: Offset 0x168 (A64 Page 122)
+
+150MHz (600 / 4)
+  0x1c20168 = 0x8203 (DMB)</code></pre></div>
+<p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>DPHY Base Address: <span class="number">0x01ca1000
+</span>DPHY_TX_CTL_REG: Offset <span class="number">0x04
+</span>DPHY_TX_TIME0_REG: Offset <span class="number">0x10
+</span>DPHY_TX_TIME1_REG: Offset <span class="number">0x14
+</span>DPHY_TX_TIME2_REG: Offset <span class="number">0x18
+</span>DPHY_TX_TIME3_REG: Offset <span class="number">0x1c
+
+  0x1ca1004 </span>= <span class="number">0x10000000 </span>(DMB)
+  <span class="number">0x1ca1010 </span>= <span class="number">0xa06000e </span>(DMB)
+  <span class="number">0x1ca1014 </span>= <span class="number">0xa033207 </span>(DMB)
+  <span class="number">0x1ca1018 </span>= <span class="number">0x1e </span>(DMB)
+  <span class="number">0x1ca101c </span>= <span class="number">0x0 </span>(DMB)</code></pre></div>
+<p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>DPHY_TX_TIME4_REG: Offset <span class="number">0x20
+</span>DPHY_GCTL_REG: Offset <span class="number">0x00
+</span>DPHY_ANA0_REG: Offset <span class="number">0x4c
+</span>DPHY_ANA1_REG: Offset <span class="number">0x50
+</span>DPHY_ANA4_REG: Offset <span class="number">0x5c
+
+  0x1ca1020 </span>= <span class="number">0x303 </span>(DMB)
+  <span class="number">0x1ca1000 </span>= <span class="number">0x31 </span>(DMB)
+  <span class="number">0x1ca104c </span>= <span class="number">0x9f007f00 </span>(DMB)
+  <span class="number">0x1ca1050 </span>= <span class="number">0x17000000 </span>(DMB)
+  <span class="number">0x1ca105c </span>= <span class="number">0x1f01555 </span>(DMB)</code></pre></div>
+<p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>DPHY_ANA2_REG: Offset <span class="number">0x54
+</span>DPHY_ANA3_REG: Offset <span class="number">0x58
+
+  0x1ca1054 </span>= <span class="number">0x2 </span>(DMB)
+  udelay <span class="number">5
+  0x1ca1058 </span>= <span class="number">0x3040000 </span>(DMB)
+  udelay <span class="number">1</span></code></pre></div>
+<p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>DPHY_ANA3_REG: Offset <span class="number">0x58
+</span>DPHY_ANA3_REG: Offset <span class="number">0x58
+</span>DPHY_ANA2_REG: Offset <span class="number">0x54
+</span>DPHY_ANA1_REG: Offset <span class="number">0x50
+</span>DPHY_ANA2_REG: Offset <span class="number">0x54
+
+  </span>update_bits addr=<span class="number">0x1ca1058</span>, mask=<span class="number">0xf8000000</span>, val=<span class="number">0xf8000000 </span>(DMB)
+  udelay <span class="number">1
+  </span>update_bits addr=<span class="number">0x1ca1058</span>, mask=<span class="number">0x4000000</span>, val=<span class="number">0x4000000 </span>(DMB)
+  udelay <span class="number">1
+  </span>update_bits addr=<span class="number">0x1ca1054</span>, mask=<span class="number">0x10</span>, val=<span class="number">0x10 </span>(DMB)
+  udelay <span class="number">1
+  </span>update_bits addr=<span class="number">0x1ca1050</span>, mask=<span class="number">0x80000000</span>, val=<span class="number">0x80000000 </span>(DMB)
+  update_bits addr=<span class="number">0x1ca1054</span>, mask=<span class="number">0xf000000</span>, val=<span class="number">0xf000000 </span>(DMB)</code></pre></div>
 <h1 id="appendix-timing-controller-tcon0"><a href="#appendix-timing-controller-tcon0">20 Appendix: Timing Controller (TCON0)</a></h1>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1567"><strong>p-boot tcon0_init</strong></a>…</p>
 <ul>
