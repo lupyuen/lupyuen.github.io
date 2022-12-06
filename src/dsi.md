@@ -735,7 +735,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [__"Start MIPI DSI HSC and HSD"__](https://lupyuen.github.io/articles/de#appendix-start-mipi-dsi-hsc-and-hsd)
 
-    We have have already implemented the above in Zig.
+    We have already implemented the above features in Zig. [(See this)](https://github.com/lupyuen/pinephone-nuttx#complete-pinephone-display-driver-in-zig)
 
 1.  We recorded some notes while reverse-engineering the PinePhone MIPI DSI Driver...
 
