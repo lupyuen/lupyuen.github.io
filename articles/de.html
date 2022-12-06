@@ -83,11 +83,11 @@
 <li><a href="#appendix-programming-the-allwinner-a64-display-engine">14 Appendix: Programming the Allwinner A64 Display Engine</a><ul></ul></li>
 <li><a href="#appendix-display-backlight">15 Appendix: Display Backlight</a><ul></ul></li>
 <li><a href="#appendix-power-management-integrated-circuit">16 Appendix: Power Management Integrated Circuit</a><ul></ul></li>
-<li><a href="#appendix-timing-controller-tcon0">17 Appendix: Timing Controller (TCON0)</a><ul></ul></li>
-<li><a href="#appendix-enable-mipi-dsi-block">18 Appendix: Enable MIPI DSI Block</a><ul></ul></li>
+<li><a href="#appendix-enable-mipi-dsi-block">17 Appendix: Enable MIPI DSI Block</a><ul></ul></li>
+<li><a href="#appendix-start-mipi-dsi-hsc-and-hsd">18 Appendix: Start MIPI DSI HSC and HSD</a><ul></ul></li>
 <li><a href="#appendix-enable-mipi-display-physical-layer-dphy">19 Appendix: Enable MIPI Display Physical Layer (DPHY)</a><ul></ul></li>
-<li><a href="#appendix-reset-lcd-panel">20 Appendix: Reset LCD Panel</a><ul></ul></li>
-<li><a href="#appendix-start-mipi-dsi-hsc-and-hsd">21 Appendix: Start MIPI DSI HSC and HSD</a><ul></ul></li></ul></nav><p>📝 <em>30 Oct 2022</em></p>
+<li><a href="#appendix-timing-controller-tcon0">20 Appendix: Timing Controller (TCON0)</a><ul></ul></li>
+<li><a href="#appendix-reset-lcd-panel">21 Appendix: Reset LCD Panel</a><ul></ul></li></ul></nav><p>📝 <em>30 Oct 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/de-title.jpg" alt="PinePhone rendering Mandelbrot Set on Apache NuttX RTOS" /></p>
 <p><em>PinePhone rendering Mandelbrot Set on Apache NuttX RTOS</em></p>
 <p><strong>UPDATE:</strong> PinePhone is now officially supported by Apache NuttX RTOS <a href="https://lupyuen.github.io/articles/uboot#appendix-pinephone-is-now-supported-by-apache-nuttx-rtos">(See this)</a></p>
@@ -1742,59 +1742,7 @@ display_board_init: end</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for pmic.zig</strong></a></p>
 </li>
 </ul>
-<h1 id="appendix-timing-controller-tcon0"><a href="#appendix-timing-controller-tcon0">17 Appendix: Timing Controller (TCON0)</a></h1>
-<p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1567"><strong>p-boot tcon0_init</strong></a>…</p>
-<ul>
-<li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init"><strong>Log from tcon0_init</strong></a></li>
-</ul>
-<div class="example-wrap"><pre class="language-text"><code>tcon0_init: start
-PLL_VIDEO0
-  0x1c20010 = 0x81006207 (DMB)
-PLL_MIPI
-  0x1c20040 = 0xc00000 (DMB)
-  udelay 100
-  0x1c20040 = 0x80c0071a (DMB)
-TCON0 source MIPI_PLL
-  0x1c20118 = 0x80000000 (DMB)
-Clock on
-  0x1c20064 = 0x8 (DMB)
-Reset off
-  0x1c202c4 = 0x8 (DMB)
-Init lcdc: Disable tcon, Disable all interrupts
-  0x1c0c000 = 0x0 (DMB)
-  0x1c0c004 = 0x0
-  0x1c0c008 = 0x0
-Set all io lines to tristate
-  0x1c0c08c = 0xffffffff
-  0x1c0c0f4 = 0xffffffff
-mode set: DCLK = MIPI_PLL / 6
-  0x1c0c044 = 0x80000006
-  0x1c0c040 = 0x81000000
-  0x1c0c048 = 0x2cf059f
-  0x1c0c0f8 = 0x8
-  0x1c0c060 = 0x10010005
-The datasheet says that this should be set higher than 20 * pixel cycle, but it&#39;s not clear what a pixel cycle is.
-  0x1c0c160 = 0x2f02cf
-  0x1c0c164 = 0x59f
-  0x1c0c168 = 0x1bc2000a
-The Allwinner BSP has a comment that the period should be the display clock * 15, but uses an hardcoded 3000
-  0x1c0c1f0 = 0xbb80003
-Enable the output on the pins
-  0x1c0c08c = 0xe0000000 (DMB)
-enable tcon as a whole
-  setbits 0x1c0c000, 0x80000000 (DMB)
-tcon0_init: end</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init">(Source)</a></p>
-<p>Based on the above log, we have <strong>implemented in Zig</strong> the PinePhone Driver for Allwinner A64 Timing Controller (TCON0)…</p>
-<ul>
-<li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig"><strong>pinephone-nuttx/tcon.zig</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for tcon.zig</strong></a></p>
-</li>
-</ul>
-<h1 id="appendix-enable-mipi-dsi-block"><a href="#appendix-enable-mipi-dsi-block">18 Appendix: Enable MIPI DSI Block</a></h1>
+<h1 id="appendix-enable-mipi-dsi-block"><a href="#appendix-enable-mipi-dsi-block">17 Appendix: Enable MIPI DSI Block</a></h1>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1236"><strong>p-boot dsi_init</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#enable_dsi_block"><strong>Log from dsi_init</strong></a></li>
@@ -1904,7 +1852,185 @@ enable_dsi_block: end</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for display.zig</strong></a></p>
 </li>
 </ul>
-<h1 id="appendix-enable-mipi-display-physical-layer-dphy"><a href="#appendix-enable-mipi-display-physical-layer-dphy">19 Appendix: Enable MIPI Display Physical Layer (DPHY)</a></h1>
+<p>TODO: Reverse Engineering</p>
+<p>TODO: mipi dsi bus enable</p>
+<div class="example-wrap"><pre class="language-text"><code>CCU Base Address: 0x01C20000 (A64 Page 82)
+BUS_CLK_GATING_REG0: Offset 0x60 (A64 Page 100)
+BUS_SOFT_RST_REG0: Offset 0x2C0 (A64 Page 138)
+
+mipi dsi bus enable
+  setbits 0x1c20060, 0x2 (DMB)
+  setbits 0x1c202c0, 0x2 (DMB)</code></pre></div>
+<p>TODO: Enable the DSI block</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>DSI Base Address: <span class="number">0x01CA0000 </span>(A31 Page <span class="number">842</span>)
+DSI_CTL_REG: Offset <span class="number">0x0 </span>(A31 Page <span class="number">843</span>)
+DSI_BASIC_CTL0_REG: Offset <span class="number">0x10 </span>(A31 Page <span class="number">845</span>)
+Undocumented: Offset <span class="number">0x60
+</span>Undocumented: Offset <span class="number">0x78
+
+</span>Enable the DSI block
+  <span class="number">0x1ca0000 </span>= <span class="number">0x1 </span>(DMB)
+  <span class="number">0x1ca0010 </span>= <span class="number">0x30000 </span>(DMB)
+  <span class="number">0x1ca0060 </span>= <span class="number">0xa </span>(DMB)
+  <span class="number">0x1ca0078 </span>= <span class="number">0x0 </span>(DMB)</code></pre></div>
+<p>TODO: inst_init</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>Undocumented: Offset <span class="number">0x20
+</span>Undocumented: Offset <span class="number">0x24
+</span>Undocumented: Offset <span class="number">0x28
+</span>Undocumented: Offset <span class="number">0x2c
+</span>Undocumented: Offset <span class="number">0x30
+</span>Undocumented: Offset <span class="number">0x34
+</span>Undocumented: Offset <span class="number">0x38
+</span>Undocumented: Offset <span class="number">0x3c
+</span>Undocumented: Offset <span class="number">0x4c
+</span>Undocumented: Offset <span class="number">0x2f8
+
+</span>inst_init
+  <span class="number">0x1ca0020 </span>= <span class="number">0x1f </span>(DMB)
+  <span class="number">0x1ca0024 </span>= <span class="number">0x10000001 </span>(DMB)
+  <span class="number">0x1ca0028 </span>= <span class="number">0x20000010 </span>(DMB)
+  <span class="number">0x1ca002c </span>= <span class="number">0x2000000f </span>(DMB)
+  <span class="number">0x1ca0030 </span>= <span class="number">0x30100001 </span>(DMB)
+  <span class="number">0x1ca0034 </span>= <span class="number">0x40000010 </span>(DMB)
+  <span class="number">0x1ca0038 </span>= <span class="number">0xf </span>(DMB)
+  <span class="number">0x1ca003c </span>= <span class="number">0x5000001f </span>(DMB)
+  <span class="number">0x1ca004c </span>= <span class="number">0x560001 </span>(DMB)
+  <span class="number">0x1ca02f8 </span>= <span class="number">0xff </span>(DMB)</code></pre></div>
+<p>TODO: get_video_start_delay</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>DSI_BASIC_CTL1_REG: Offset <span class="number">0x14 </span>(A31 Page <span class="number">846</span>)
+
+get_video_start_delay
+  <span class="number">0x1ca0014 </span>= <span class="number">0x5bc7 </span>(DMB)</code></pre></div>
+<p>TODO: setup_burst</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>Undocumented: Offset <span class="number">0x7c
+
+</span>setup_burst
+  <span class="number">0x1ca007c </span>= <span class="number">0x10000007 </span>(DMB)
+
+Undocumented: Offset <span class="number">0x40
+</span>Undocumented: Offset <span class="number">0x44
+</span>Undocumented: Offset <span class="number">0x54</span></code></pre></div>
+<p>TODO: setup_inst_loop</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>setup_inst_loop
+  <span class="number">0x1ca0040 </span>= <span class="number">0x30000002 </span>(DMB)
+  <span class="number">0x1ca0044 </span>= <span class="number">0x310031 </span>(DMB)
+  <span class="number">0x1ca0054 </span>= <span class="number">0x310031 </span>(DMB)
+
+DSI_PIXEL_PH_REG: Offset <span class="number">0x90 </span>(A31 Page <span class="number">848</span>)
+DSI_PIXEL_PF0_REG: Offset <span class="number">0x98 </span>(A31 Page <span class="number">849</span>)
+DSI_PIXEL_PF1_REG: Offset <span class="number">0x9c </span>(A31 Page <span class="number">849</span>)
+DSI_PIXEL_CTL0_REG: Offset <span class="number">0x80 </span>(A31 Page <span class="number">847</span>)</code></pre></div>
+<p>TODO: setup_format</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>setup_format
+  <span class="number">0x1ca0090 </span>= <span class="number">0x1308703e </span>(DMB)
+  <span class="number">0x1ca0098 </span>= <span class="number">0xffff </span>(DMB)
+  <span class="number">0x1ca009c </span>= <span class="number">0xffffffff </span>(DMB)
+  <span class="number">0x1ca0080 </span>= <span class="number">0x10008 </span>(DMB)
+
+Undocumented: Offset <span class="number">0x0c
+</span>DSI_SYNC_HSS_REG: Offset <span class="number">0xb0 </span>(A31 Page <span class="number">850</span>)
+DSI_SYNC_HSE_REG: Offset <span class="number">0xb4 </span>(A31 Page <span class="number">850</span>)
+DSI_SYNC_VSS_REG: Offset <span class="number">0xb8 </span>(A31 Page <span class="number">851</span>)
+DSI_SYNC_VSE_REG: Offset <span class="number">0xbc </span>(A31 Page <span class="number">851</span>)
+Undocumented: Offset <span class="number">0x18
+</span>Undocumented: Offset <span class="number">0x1c
+</span>DSI_BLK_HSA0_REG: Offset <span class="number">0xc0 </span>(A31 Page <span class="number">852</span>)
+DSI_BLK_HSA1_REG: Offset <span class="number">0xc4 </span>(A31 Page <span class="number">852</span>)
+DSI_BLK_HBP0_REG: Offset <span class="number">0xc8 </span>(A31 Page <span class="number">852</span>)
+DSI_BLK_HBP1_REG: Offset <span class="number">0xcc </span>(A31 Page <span class="number">852</span>)
+DSI_BLK_HFP0_REG: Offset <span class="number">0xd0 </span>(A31 Page <span class="number">852</span>)
+DSI_BLK_HFP1_REG: Offset <span class="number">0xd4 </span>(A31 Page <span class="number">853</span>)
+DSI_BLK_HBLK0_REG: Offset <span class="number">0xe0 </span>(A31 Page <span class="number">853</span>)
+DSI_BLK_HBLK1_REG: Offset <span class="number">0xe4 </span>(A31 Page <span class="number">853</span>)
+DSI_BLK_VBLK0_REG: Offset <span class="number">0xe8 </span>(A31 Page <span class="number">854</span>)
+DSI_BLK_VBLK1_REG: Offset <span class="number">0xec </span>(A31 Page <span class="number">854</span>)</code></pre></div>
+<p>TODO: setup_timings</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>setup_timings
+  <span class="number">0x1ca000c </span>= <span class="number">0x0 </span>(DMB)
+  <span class="number">0x1ca00b0 </span>= <span class="number">0x12000021 </span>(DMB)
+  <span class="number">0x1ca00b4 </span>= <span class="number">0x1000031 </span>(DMB)
+  <span class="number">0x1ca00b8 </span>= <span class="number">0x7000001 </span>(DMB)
+  <span class="number">0x1ca00bc </span>= <span class="number">0x14000011 </span>(DMB)
+  <span class="number">0x1ca0018 </span>= <span class="number">0x11000a </span>(DMB)
+  <span class="number">0x1ca001c </span>= <span class="number">0x5cd05a0 </span>(DMB)
+  <span class="number">0x1ca00c0 </span>= <span class="number">0x9004a19 </span>(DMB)
+  <span class="number">0x1ca00c4 </span>= <span class="number">0x50b40000 </span>(DMB)
+  <span class="number">0x1ca00c8 </span>= <span class="number">0x35005419 </span>(DMB)
+  <span class="number">0x1ca00cc </span>= <span class="number">0x757a0000 </span>(DMB)
+  <span class="number">0x1ca00d0 </span>= <span class="number">0x9004a19 </span>(DMB)
+  <span class="number">0x1ca00d4 </span>= <span class="number">0x50b40000 </span>(DMB)
+  <span class="number">0x1ca00e0 </span>= <span class="number">0xc091a19 </span>(DMB)
+  <span class="number">0x1ca00e4 </span>= <span class="number">0x72bd0000 </span>(DMB)
+  <span class="number">0x1ca00e8 </span>= <span class="number">0x1a000019 </span>(DMB)
+  <span class="number">0x1ca00ec </span>= <span class="number">0xffff0000 </span>(DMB)</code></pre></div>
+<h1 id="appendix-start-mipi-dsi-hsc-and-hsd"><a href="#appendix-start-mipi-dsi-hsc-and-hsd">18 Appendix: Start MIPI DSI HSC and HSD</a></h1>
+<p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1236"><strong>p-boot dsi_init</strong></a>…</p>
+<ul>
+<li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#start_dsi"><strong>Log from dsi_init</strong></a></li>
+</ul>
+<div class="example-wrap"><pre class="language-text"><code>start_dsi: start
+dsi_start DSI_START_HSC
+.{ 0x1ca0000 + 0x0048, 0x00000f02 },  // DMB
+  0x1ca0048 = 0xf02 (DMB)
+.{ MAGIC_COMMIT, 0 },  // DMB
+dsi_update_bits: 0x01ca0010 : 00030000 -&gt; (00000001) 00000001 (DMB)
+  addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
+dsi_update_bits: 0x01ca0020 : 0000001f -&gt; (00000010) 00000000 (DMB)
+  addr=0x1ca0020, mask=0x10, val=0x0 (DMB)
+udelay 1000
+dsi_start DSI_START_HSD
+.{ 0x1ca0000 + 0x0048, 0x63f07006 },  // DMB
+  0x1ca0048 = 0x63f07006 (DMB)
+.{ MAGIC_COMMIT, 0 },  // DMB
+dsi_update_bits: 0x01ca0010 : 00030000 -&gt; (00000001) 00000001 (DMB)
+  addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
+start_dsi: end</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#start_dsi">(Source)</a></p>
+<p>Based on the above log, we have <strong>implemented in Zig</strong> the PinePhone Driver that starts Allwinner A64 MIPI DSI (in HSC and HSD Modes)…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1009-L1047"><strong>pinephone-nuttx/display.zig</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for display.zig</strong></a></p>
+</li>
+</ul>
+<p>TODO: Reverse Engineering</p>
+<p>TODO: DSI_START_HSC</p>
+<div class="example-wrap"><pre class="language-text"><code>DSI Base Address: 0x01CA0000 (A31 Page 842)
+Undocumented: Offset 0x48
+
+dsi_start DSI_START_HSC
+  0x1ca0048 = 0xf02 (DMB)</code></pre></div>
+<p>TODO: Commit</p>
+<div class="example-wrap"><pre class="language-text"><code>DSI_BASIC_CTL0_REG: Offset 0x10 (A31 Page 845)
+
+dsi_update_bits: 0x01ca0010 : 00030000 -&gt; (00000001) 00000001 (DMB)
+  addr=0x1ca0010, mask=0x1, val=0x1 (DMB)</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Undocumented: Offset 0x20
+
+dsi_update_bits: 0x01ca0020 : 0000001f -&gt; (00000010) 00000000 (DMB)
+  addr=0x1ca0020, mask=0x10, val=0x0 (DMB)</code></pre></div>
+<p>TODO: Delay</p>
+<div class="example-wrap"><pre class="language-text"><code>udelay 1000</code></pre></div>
+<p>TODO: DSI_START_HSD</p>
+<div class="example-wrap"><pre class="language-text"><code>Undocumented: Offset 0x48
+
+dsi_start DSI_START_HSD
+  0x1ca0048 = 0x63f07006 (DMB)</code></pre></div>
+<p>TODO: Commit</p>
+<div class="example-wrap"><pre class="language-text"><code>DSI_BASIC_CTL0_REG: Offset 0x10 (A31 Page 845)
+
+dsi_update_bits: 0x01ca0010 : 00030000 -&gt; (00000001) 00000001 (DMB)
+  addr=0x1ca0010, mask=0x1, val=0x1 (DMB)</code></pre></div><h1 id="appendix-enable-mipi-display-physical-layer-dphy"><a href="#appendix-enable-mipi-display-physical-layer-dphy">19 Appendix: Enable MIPI Display Physical Layer (DPHY)</a></h1>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n331"><strong>p-boot dphy_enable</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dphy_enable"><strong>Log from dphy_enable</strong></a></li>
@@ -1945,7 +2071,59 @@ dphy_enable: end</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for dphy.zig</strong></a></p>
 </li>
 </ul>
-<h1 id="appendix-reset-lcd-panel"><a href="#appendix-reset-lcd-panel">20 Appendix: Reset LCD Panel</a></h1>
+<h1 id="appendix-timing-controller-tcon0"><a href="#appendix-timing-controller-tcon0">20 Appendix: Timing Controller (TCON0)</a></h1>
+<p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1567"><strong>p-boot tcon0_init</strong></a>…</p>
+<ul>
+<li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init"><strong>Log from tcon0_init</strong></a></li>
+</ul>
+<div class="example-wrap"><pre class="language-text"><code>tcon0_init: start
+PLL_VIDEO0
+  0x1c20010 = 0x81006207 (DMB)
+PLL_MIPI
+  0x1c20040 = 0xc00000 (DMB)
+  udelay 100
+  0x1c20040 = 0x80c0071a (DMB)
+TCON0 source MIPI_PLL
+  0x1c20118 = 0x80000000 (DMB)
+Clock on
+  0x1c20064 = 0x8 (DMB)
+Reset off
+  0x1c202c4 = 0x8 (DMB)
+Init lcdc: Disable tcon, Disable all interrupts
+  0x1c0c000 = 0x0 (DMB)
+  0x1c0c004 = 0x0
+  0x1c0c008 = 0x0
+Set all io lines to tristate
+  0x1c0c08c = 0xffffffff
+  0x1c0c0f4 = 0xffffffff
+mode set: DCLK = MIPI_PLL / 6
+  0x1c0c044 = 0x80000006
+  0x1c0c040 = 0x81000000
+  0x1c0c048 = 0x2cf059f
+  0x1c0c0f8 = 0x8
+  0x1c0c060 = 0x10010005
+The datasheet says that this should be set higher than 20 * pixel cycle, but it&#39;s not clear what a pixel cycle is.
+  0x1c0c160 = 0x2f02cf
+  0x1c0c164 = 0x59f
+  0x1c0c168 = 0x1bc2000a
+The Allwinner BSP has a comment that the period should be the display clock * 15, but uses an hardcoded 3000
+  0x1c0c1f0 = 0xbb80003
+Enable the output on the pins
+  0x1c0c08c = 0xe0000000 (DMB)
+enable tcon as a whole
+  setbits 0x1c0c000, 0x80000000 (DMB)
+tcon0_init: end</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init">(Source)</a></p>
+<p>Based on the above log, we have <strong>implemented in Zig</strong> the PinePhone Driver for Allwinner A64 Timing Controller (TCON0)…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig"><strong>pinephone-nuttx/tcon.zig</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for tcon.zig</strong></a></p>
+</li>
+</ul>
+<h1 id="appendix-reset-lcd-panel"><a href="#appendix-reset-lcd-panel">21 Appendix: Reset LCD Panel</a></h1>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1236"><strong>p-boot dsi_init</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#panel_reset"><strong>Log from dsi_init</strong></a></li>
@@ -1969,38 +2147,6 @@ panel_reset: end</code></pre></div>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for panel.zig</strong></a></p>
-</li>
-</ul>
-<h1 id="appendix-start-mipi-dsi-hsc-and-hsd"><a href="#appendix-start-mipi-dsi-hsc-and-hsd">21 Appendix: Start MIPI DSI HSC and HSD</a></h1>
-<p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1236"><strong>p-boot dsi_init</strong></a>…</p>
-<ul>
-<li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#start_dsi"><strong>Log from dsi_init</strong></a></li>
-</ul>
-<div class="example-wrap"><pre class="language-text"><code>start_dsi: start
-dsi_start DSI_START_HSC
-.{ 0x1ca0000 + 0x0048, 0x00000f02 },  // DMB
-  0x1ca0048 = 0xf02 (DMB)
-.{ MAGIC_COMMIT, 0 },  // DMB
-dsi_update_bits: 0x01ca0010 : 00030000 -&gt; (00000001) 00000001 (DMB)
-  addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
-dsi_update_bits: 0x01ca0020 : 0000001f -&gt; (00000010) 00000000 (DMB)
-  addr=0x1ca0020, mask=0x10, val=0x0 (DMB)
-udelay 1000
-dsi_start DSI_START_HSD
-.{ 0x1ca0000 + 0x0048, 0x63f07006 },  // DMB
-  0x1ca0048 = 0x63f07006 (DMB)
-.{ MAGIC_COMMIT, 0 },  // DMB
-dsi_update_bits: 0x01ca0010 : 00030000 -&gt; (00000001) 00000001 (DMB)
-  addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
-start_dsi: end</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#start_dsi">(Source)</a></p>
-<p>Based on the above log, we have <strong>implemented in Zig</strong> the PinePhone Driver that starts Allwinner A64 MIPI DSI (in HSC and HSD Modes)…</p>
-<ul>
-<li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1009-L1047"><strong>pinephone-nuttx/display.zig</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for display.zig</strong></a></p>
 </li>
 </ul>
 
