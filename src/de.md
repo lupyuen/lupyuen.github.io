@@ -86,7 +86,7 @@ Let's look inside the Display Engine...
 
 ![Real-Time Mixer in A64 Display Engine (Page 22)](https://lupyuen.github.io/images/de-mixer1a.jpg)
 
-[_Real-Time Mixer in A64 Display Engine (Page 22)_](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+[_Real-Time Mixer in A64 Display Engine (Page 22)_](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 # Display Engine in Allwinner A64
 
@@ -102,7 +102,7 @@ _Is the Display Engine documented?_
 
 The official doc for the A64 Display Engine is here...
 
--   [__Allwinner Display Engine 2.0 Specifications__](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+-   [__Allwinner Display Engine 2.0 Specifications__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 Though it doesn't describe the actual steps for programming the Display Engine.
 
@@ -112,7 +112,7 @@ In a while we'll boot [__Apache NuttX RTOS__](https://lupyuen.github.io/articles
 
 _But the Display Engine doc doesn't mention A64?_
 
-PinePhone's A64 Display Engine is hidden under [__Allwinner H3 (page 22)__](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf), because Allwinner A64 is actually a H3 upgraded with 64-bit Arm Cores...
+PinePhone's A64 Display Engine is hidden under [__Allwinner H3 (page 22)__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf), because Allwinner A64 is actually a H3 upgraded with 64-bit Arm Cores...
 
 > "The A64 is basically an Allwinner H3 with the Cortex-A7 cores replaced with Cortex-A53 cores (ARM64 architecture). They share most of the memory map, clocks, interrupts and also uses the same IP blocks."
 
@@ -126,7 +126,7 @@ The 3 UI Overlay Channels would be super helpful for overlaying an OTT Graphical
 
 [(Wait... Wasn't Pine64 created thanks to OTT Boxes? 🤔)](https://en.wikipedia.org/wiki/Pine64#History)
 
-[(__DE2TCON_MUX__ at Page 26 says that Mixer 0 is for TCON0 MIPI DSI, Mixer 1 for TCON1 HDMI Output)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+[(__DE2TCON_MUX__ at Page 26 says that Mixer 0 is for TCON0 MIPI DSI, Mixer 1 for TCON1 HDMI Output)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 ![Rendering simple Colour Blocks on the PinePhone Display](https://lupyuen.github.io/images/de-code1a.png)
 
@@ -411,7 +411,7 @@ The pic below shows that A64 Display Engine can render __3 Framebuffers (UI Chan
 
 ![Real-Time Mixer in A64 Display Engine (Page 22)](https://lupyuen.github.io/images/de-mixer1a.jpg)
 
-[_Real-Time Mixer in A64 Display Engine (Page 22)_](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+[_Real-Time Mixer in A64 Display Engine (Page 22)_](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 (Skipping DMA0 because it's for Video only)
 
@@ -842,9 +842,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 The official doc for the __Allwinner A64 Display Engine__ is here...
 
--   [__Allwinner Display Engine 2.0 Specifications__](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+-   [__Allwinner Display Engine 2.0 Specifications__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-PinePhone's A64 Display Engine is hidden under [__Allwinner H3 (page 22)__](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf), because Allwinner A64 is actually a H3 upgraded with [__64-bit Arm Cores__](https://linux-sunxi.org/A64).
+PinePhone's A64 Display Engine is hidden under [__Allwinner H3 (page 22)__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf), because Allwinner A64 is actually a H3 upgraded with [__64-bit Arm Cores__](https://linux-sunxi.org/A64).
 
 (Also check out this [__DE2 Register Guide__](https://linux-sunxi.org/DE2_Register_Guide))
 
@@ -854,16 +854,16 @@ And the Display Engine pushes the output pixels to the [__Timing Controller (TCO
 
 -   [__"Display Rendering on PinePhone"__](https://lupyuen.github.io/articles/de#display-rendering-on-pinephone)
 
-According to the doc, the __Display Engine Base Address__ is __`0x0100` `0000`__ [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+According to the doc, the __Display Engine Base Address__ is __`0x0100` `0000`__ [(DE Page 24)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 _What's a Display Engine Mixer?_
 
-__DE RT-MIXER:__ [(DE Page 87)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+__DE RT-MIXER:__ [(DE Page 87)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 > "The RT-mixer Core consist of dma, overlay, scaler and blender block. It supports 4 layers overlay in one pipe, and its result can scaler up or down to blender in the next processing."
 
 The Display Engine has 2 Mixers: RT-MIXER0 and RT-MIXER1.
 
-__DE RT-MIXER0__ has 4 Channels (DE Offset __`0x10` `0000`__, [DE Page 87](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf))
+__DE RT-MIXER0__ has 4 Channels (DE Offset __`0x10` `0000`__, [DE Page 87](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf))
 
 -   __Channel 0__ for Video
 
@@ -877,7 +877,7 @@ __DE RT-MIXER0__ has 4 Channels (DE Offset __`0x10` `0000`__, [DE Page 87](https
 
     (We only use 1 Overlay Layer per Channel)
 
--   __Layer Priority__ is Layer 3 > Layer2 > Layer 1 > Layer 0 [(DE Page 89)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+-   __Layer Priority__ is Layer 3 > Layer2 > Layer 1 > Layer 0 [(DE Page 89)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 Our Display Engine Demo __configures the 4 Channels__ as follows...
 
@@ -893,7 +893,7 @@ Our Display Engine Demo __configures the 4 Channels__ as follows...
 
     (Alpha Channel is enabled)
 
-__Hardware Registers__ for RT-MIXER0 [(DE Page 90)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)...
+__Hardware Registers__ for RT-MIXER0 [(DE Page 90)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)...
 
 | Hardware Register | RT-MIXER0 Offset 
 |--------------------|-----------------
@@ -915,9 +915,9 @@ The pic below shows how DE RT-MIXER0 mixes together __3 UI Channels (Framebuffer
 
 ![Real-Time Mixer in A64 Display Engine (Page 22)](https://lupyuen.github.io/images/de-mixer1a.jpg)
 
-[_Real-Time Mixer in A64 Display Engine (Page 22)_](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+[_Real-Time Mixer in A64 Display Engine (Page 22)_](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-__DE RT-MIXER1__ has 2 Channels (DE Offset __`0x20` `0000`__, [DE Page 23](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf))
+__DE RT-MIXER1__ has 2 Channels (DE Offset __`0x20` `0000`__, [DE Page 23](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf))
 -   __Channel 0__ for Video 
 
     (DMA0, Video Overlay, Video Scaler)
@@ -951,15 +951,15 @@ In the following chapters we explain how the 3 UI Channels were initialised and 
 
 We won't use these Display Engine Features today...
 
-__DE RT-WB (Write-Back Controller):__ [(DE Page 116)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+__DE RT-WB (Write-Back Controller):__ [(DE Page 116)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 > "The Real-time write-back controller (RT-WB) provides data capture function for display engine. It captures data from RT-mixer module, performs the image resizing function, and then write-back to SDRAM."
 
 (For screen capture?)
 
-__DE VSU (Video Scaler):__ [(DE Page 128)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+__DE VSU (Video Scaler):__ [(DE Page 128)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 > "The Video Scaler (VS) provides YUV format image resizing function for display engine. It receives data from overlay module, performs the image resizing function, and outputs to video post-processing modules."
 
-__DE Rotation:__ [(DE Page 137)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+__DE Rotation:__ [(DE Page 137)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 > "There are several types of rotation: clockwise 0/90/180/270 degree Rotation and H-Flip/V-Flip. Operation of Copy is the same as a 0 degree rotation."
 
 Nope to these too...
@@ -992,7 +992,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     -   Set __BIST_DMA_CTRL_SEL__ to __0__ for DMA [__(DMB)__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb)
     
-        [(A31 Page 191, `0x1C0` `0004`)](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
+        [(A31 Page 191, `0x1C0` `0004`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
 
     -   __BIST_DMA_CTRL_SEL__ (Bist and DMA Control Select) is __Bit 0__ of SRAM_CTRL_REG1
 
@@ -1000,7 +1000,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     -   __SRAM Registers__ Base Address is __`0x01C0` `0000`__
     
-        [(A31 Page 191)](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
+        [(A31 Page 191)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     
     ```text
     Set SRAM for video use
@@ -1025,11 +1025,11 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     -   __PLL_DE_CTRL_REG__ (PLL Display Engine Control Register) is at CCU Offset __`0x0048`__
 
-        [(A64 Page 96, `0x1C2` `0048`)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+        [(A64 Page 96, `0x1C2` `0048`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
     -   __CCU__ (Clock Control Unit) Base Address is __`0x01C2` `0000`__
 
-        [(A64 Page 81)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+        [(A64 Page 81)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
     ```text
     Setup DE2 PLL
@@ -1061,11 +1061,11 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     -   __DE_CLK_REG__ (Display Engine Clock Register) is at CCU Offset __`0x0104`__
     
-        [(A64 Page 117, `0x1C2` `0104`)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+        [(A64 Page 117, `0x1C2` `0104`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
     -   __CCU__ (Clock Control Unit) Base Address is __`0x01C2` `0000`__
 
-        [(A64 Page 81)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+        [(A64 Page 81)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
     ```text
     Enable DE2 special clock
@@ -1080,11 +1080,11 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     -   __BUS_SOFT_RST_REG1__ (Bus Software Reset Register 1) is at CCU Offset `0x02C4`
 
-        [(A64 Page 140, `0x1C2` `02C4`)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+        [(A64 Page 140, `0x1C2` `02C4`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
     -   __CCU__ (Clock Control Unit) Base Address is __`0x01C2` `0000`__
 
-        [(A64 Page 81)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+        [(A64 Page 81)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
     ```text
     Enable DE2 ahb
@@ -1099,11 +1099,11 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     -   __BUS_CLK_GATING_REG1__ (Bus Clock Gating Register 1) is at CCU Offset __`0x0064`__
         
-        [(A64 Page 102, `0x1C2` `0064`)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+        [(A64 Page 102, `0x1C2` `0064`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
     -   __CCU__ (Clock Control Unit) Base Address is __`0x01C2` `0000`__
 
-        [(A64 Page 81)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+        [(A64 Page 81)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
     ```text
     Enable DE2 ahb
@@ -1118,11 +1118,11 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     -   __SCLK_GATE__ is at DE Offset __`0x000`__
     
-        [(DE Page 25, `0x100` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 25, `0x100` `0000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __Display Engine (DE)__ Base Address is __`0x0100` `0000`__
     
-        [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 24)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     ```text
     Enable clock for mixer 0, set route MIXER0->TCON0
@@ -1137,11 +1137,11 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     -   __AHB_RESET__ is at DE Offset __`0x008`__
     
-        [(DE Page 25, `0x100` `0008`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 25, `0x100` `0008`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __Display Engine (DE)__ Base Address is __`0x0100` `0000`__
     
-        [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 24)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     ```text
     Enable clock for mixer 0, set route MIXER0->TCON0
@@ -1156,11 +1156,11 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     -   __HCLK_GATE__ is at DE Offset __`0x004`__
     
-        [(DE Page 25, `0x100` `0004`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 25, `0x100` `0004`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __Display Engine (DE)__ Base Address is __`0x0100` `0000`__
     
-        [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 24)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     ```text
     Enable clock for mixer 0, set route MIXER0->TCON0
@@ -1177,11 +1177,11 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
     -   __DE2TCON_MUX__ is at DE Offset __`0x010`__
     
-        [(DE Page 26, `0x100` `0010`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 26, `0x100` `0010`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __Display Engine (DE)__ Base Address is __`0x0100` `0000`__
     
-        [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 24)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     ```text
     Enable clock for mixer 0, set route MIXER0->TCON0
@@ -1206,15 +1206,15 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
         __OVL_UI(CH3)__ (UI Overlay 3) at MIXER0 Offset __`0x5000`__
 
-        [(DE Page 90, `0x110` `0000` - `0x110` `5FFF`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 90, `0x110` `0000` - `0x110` `5FFF`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __MIXER0__ is at DE Offset __`0x0010` `0000`__
 
-        [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 24)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __Display Engine (DE)__ Base Address is __`0x0100` `0000`__
     
-        [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 24)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     ```text
     Clear all registers
@@ -1239,7 +1239,7 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
         EN (Bit 0) = 0 (Disable Video Scaler)
 
-        [(DE Page 130, `0x112` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 130, `0x112` `0000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   TODO: __`0x113` `0000`__ is Undocumented
 
@@ -1249,17 +1249,17 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
         EN (Bit 0) = 0 (Disable UI Scaler) 
 
-        [(DE Page 66, `0x114` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 66, `0x114` `0000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __UIS_CTRL_REG__ at UI_SCALER2(CH2) Offset 0
 
         EN (Bit 0) = 0 (Disable UI Scaler)
 
-        [(DE Page 66, `0x115` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 66, `0x115` `0000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   TODO: Missing __UI_SCALER3(CH3)__ at MIXER0 Offset `0x06` `0000`
 
-        [(DE Page 90, `0x116` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 90, `0x116` `0000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         (Is there a mixup with `0x113` `0000` above?)
 
@@ -1267,93 +1267,93 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
         EN (Bit 0) = 0 (Disable FCE)
 
-        [(DE Page 62, `0x11A` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 62, `0x11A` `0000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __GCTRL_REG(BWS)__ at BWS Offset 0
 
         EN (Bit 0) = 0 (Disable BWS)
 
-        [(DE Page 42, `0x11A` `2000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 42, `0x11A` `2000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __LTI_CTL__ at LTI Offset 0
 
         LTI_EN (Bit 0) = 0 (Close LTI)
 
-        [(DE Page 72, `0x11A` `4000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 72, `0x11A` `4000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __LP_CTRL_REG__ at PEAKING Offset 0
 
         EN (Bit 0) = 0 (Disable PEAKING)
 
-        [(DE Page 80, `0x11A` `6000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 80, `0x11A` `6000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __ASE_CTL_REG__ at ASE Offset 0
 
         ASE_EN (Bit 0) = 0 (Disable ASE)
 
-        [(DE Page 40, `0x11A` `8000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 40, `0x11A` `8000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __FCC_CTL_REG__ at FCC Offset 0
 
         Enable (Bit 0) = 0 (Disable FCC)
 
-        [(DE Page 56, `0x11A` `A000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 56, `0x11A` `A000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __GNECTL_REG__ at DRC Offset 0
 
         BIST_EN (Bit 0) = 0 (Disable BIST)
 
-        [(DE Page 49, `0x11B` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 49, `0x11B` `0000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     Offsets of the above registers...
 
     -   __VIDEO_SCALER(CH0)__ is at MIXER0 Offset `0x02` `0000`
         
-        [(DE Page 90, `0x112` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 90, `0x112` `0000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __UI_SCALER1(CH1)__ is at MIXER0 Offset `0x04` `0000`
 
-        [(DE Page 90, `0x114` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 90, `0x114` `0000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __UI_SCALER2(CH2)__ is at MIXER0 Offset `0x05` `0000`
     
-        [(DE Page 90, `0x115` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 90, `0x115` `0000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __FCE__ is at MIXER0 Offset `0x0A` `0000`
 
-        [(DE Page 61, `0x11A` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 61, `0x11A` `0000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __BWS__ is at MIXER0 Offset `0x0A` `2000`
 
-        [(DE Page 42, `0x11A` `2000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 42, `0x11A` `2000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __LTI__ is at MIXER0 Offset `0x0A` `4000`
 
-        [(DE Page 71, `0x11A` `4000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 71, `0x11A` `4000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __PEAKING__ is at MIXER0 Offset `0x0A` `6000`
 
-        [(DE Page 80, `0x11A` `6000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 80, `0x11A` `6000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __ASE__ is at MIXER0 Offset `0x0A` `8000`
 
-        [(DE Page 40, `0x11A` `8000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 40, `0x11A` `8000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __FCC__ is at MIXER0 Offset `0x0A` `A000`
 
-        [(DE Page 56, `0x11A` `A000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 56, `0x11A` `A000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __DRC__ is at Address `0x011B` `0000`
     
-        [(DE Page 48, `0x11B` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 48, `0x11B` `0000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __MIXER0__ is at DE Offset __`0x0010` `0000`__
 
-        [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 24)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __Display Engine (DE)__ Base Address is __`0x0100` `0000`__
     
-        [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 24)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     ```text
     Clear all registers
@@ -1376,19 +1376,19 @@ Below are the steps to __initialise the Allwinner A64 Display Engine__ at startu
 
         EN (Bit 0) = 1 (Enable Mixer)
 
-        [(DE Page 92)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 92)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __GLB_CTL__ is at MIXER0 Offset 0
 
-        [(DE Page 90, `0x110` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 90, `0x110` `0000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __MIXER0__ is at DE Offset __`0x0010` `0000`__
 
-        [(DE Page 24, `0x110` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 24, `0x110` `0000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __Display Engine (DE)__ Base Address is __`0x0100` `0000`__
     
-        [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 24)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     ```text
     Enable mixer
@@ -1429,7 +1429,7 @@ After studying the log, we have identified the steps to render the 3 UI Channels
 
 This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that implements Display Rendering...
 
-[(Refer to __Memory Mapping List__ and __Register List__ at DE Page 90)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+[(Refer to __Memory Mapping List__ and __Register List__ at DE Page 90)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 1.  Set __Blender Background and Pre-Multiply...__
 
@@ -1445,7 +1445,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
         BLUE (Bits 0 to 7) = 0
 
-        [(DE Page 109, `0x110` `1088`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 109, `0x110` `1088`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __BLD_PREMUL_CTL__ (Blender Pre-Multiply Control) at BLD Offset `0x84`
 
@@ -1459,7 +1459,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
         P0_ALPHA_MODE (Bit 0) = 0 (Pipe 0: No Pre-Multiply)
 
-        [(DE Page 109, `0x110` `1084`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 109, `0x110` `1084`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     ```text
     Configure Blender
@@ -1477,7 +1477,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             LAY_EN (Bit 0) = 0 (Disable Layer)
 
-            [(DE Page 102, `0x110` `3000` / `0x110` `4000` / `0x110` `5000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 102, `0x110` `3000` / `0x110` `4000` / `0x110` `5000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         -   __UIS_CTRL_REG__ at Offset 0 of UI_SCALER1(CH1) or UI_SCALER2(CH2) or UI_SCALER3(CH3)
 
@@ -1485,39 +1485,39 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             EN (Bit 0) = 0 (Disable UI Scaler) 
 
-            [(DE Page 66, `0x114` `0000` / `0x115` `0000` / `0x116` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 66, `0x114` `0000` / `0x115` `0000` / `0x116` `0000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         -   __OVL_UI(CH1)__ (UI Overlay 1) is at MIXER0 Offset `0x3000`
 
-            [(DE Page 102, `0x110` `3000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 102, `0x110` `3000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
             __OVL_UI(CH2)__ (UI Overlay 2) is at MIXER0 Offset `0x4000`
 
-            [(DE Page 102, `0x110` `4000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 102, `0x110` `4000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
             __OVL_UI(CH3)__ (UI Overlay 3) is at MIXER0 Offset `0x5000`
 
-            [(DE Page 102, `0x110` `5000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 102, `0x110` `5000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
             __UI_SCALER1(CH1)__ is at MIXER0 Offset `0x04` `0000`
 
-            [(DE Page 90, `0x114` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 90, `0x114` `0000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
             __UI_SCALER2(CH2)__ is at MIXER0 Offset `0x05` `0000`
         
-            [(DE Page 90, `0x115` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 90, `0x115` `0000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
             __UI_SCALER3(CH3)__ is at MIXER0 Offset `0x06` `0000`
         
-            [(DE Page 90, `0x116` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 90, `0x116` `0000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
             __MIXER0__ is at DE Offset `0x0010` `0000`
 
-            [(DE Page 24, `0x110` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 24, `0x110` `0000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
             __Display Engine (DE)__ Base Address is `0x0100` `0000`
     
-            [(DE Page 24)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 24)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         ```text
         Channel 2: Disable Overlay and Pipe
@@ -1541,7 +1541,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
         __OVL_UI_ATTR_CTL → LAY_FBFMT__ = 0
 
-        [(DE Page 94)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 94)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     1.  __Set Overlay__ (Assume Layer = 0)
 
@@ -1569,37 +1569,37 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             LAY_EN (Bit 0) = 1 (Enable Layer)
 
-            [(DE Page 102, `0x110` `3000` / `0x110` `4000` / `0x110` `5000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 102, `0x110` `3000` / `0x110` `4000` / `0x110` `5000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         -   __OVL_UI_TOP_LADD__ (UI Overlay Top Field Memory Block Low Address) at OVL_UI Offset `0x10`
 
             Set to Framebuffer Address: `fb0`, `fb1` or `fb2`
 
-            [(DE Page 104, `0x110` `3010` / `0x110` `4010` / `0x110` `5010`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 104, `0x110` `3010` / `0x110` `4010` / `0x110` `5010`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         -   __OVL_UI_PITCH__ (UI Overlay Memory Pitch) at OVL_UI Offset `0x0C`
 
             Set to `(width * 4)`, number of bytes per row
 
-            [(DE Page 104, `0x110` `300C` / `0x110` `400C` / `0x110` `500C`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 104, `0x110` `300C` / `0x110` `400C` / `0x110` `500C`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         -   __OVL_UI_MBSIZE__ (UI Overlay Memory Block Size) at OVL_UI Offset `0x04`
 
             Set to `(height-1) << 16 + (width-1)`
 
-            [(DE Page 104, `0x110` `3004` / `0x110` `4004` / `0x110` `5004`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 104, `0x110` `3004` / `0x110` `4004` / `0x110` `5004`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         -   __OVL_UI_SIZE__ (UI Overlay Overlay Window Size) at OVL_UI Offset `0x88`
 
             Set to `(height-1) << 16 + (width-1)`
 
-            [(DE Page 106, `0x110` `3088` / `0x110` `4088` / `0x110` `5088`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 106, `0x110` `3088` / `0x110` `4088` / `0x110` `5088`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         -   __OVL_UI_COOR__ (UI Overlay Memory Block Coordinate) at OVL_UI Offset `0x08`
 
             Set to 0 (Overlay at X=0, Y=0)
 
-            [(DE Page 104, `0x110` `3008` / `0x110` `4008` / `0x110` `5008`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 104, `0x110` `3008` / `0x110` `4008` / `0x110` `5008`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         ```text
         Channel 1: Set Overlay (fb0 is 720 x 1440)
@@ -1633,13 +1633,13 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             Set to `(height-1) << 16 + (width-1)`
 
-            [(DE Page 110, `0x110` `108C`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 110, `0x110` `108C`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         -   __GLB_SIZE__ (Global Size) at GLB Offset `0x00C`
 
             Set to `(height-1) << 16 + (width-1)`
 
-            [(DE Page 93, `0x110` `000C`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 93, `0x110` `000C`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         ```text
         Channel 1: Set Blender Output
@@ -1653,7 +1653,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             Set to `(height-1) << 16 + (width-1)`
 
-            [(DE Page 108, `0x110 1008` / `0x110 1018` / `0x110 1028`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 108, `0x110 1008` / `0x110 1018` / `0x110 1028`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         -   __BLD_FILL_COLOR__ (Blender Fill Color) at BLD Offset `0x004` + `N*0x10` (N=0,1,2,3,4)
 
@@ -1667,7 +1667,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             BLUE (Bits 0 to 7) = 0
 
-            [(DE Page 107, `0x110 1004` / `0x110` `1014` / `0x110` `1024`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 107, `0x110 1004` / `0x110` `1014` / `0x110` `1024`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         -   __BLD_CH_OFFSET__ (Blender Input Memory Offset) at BLD Offset `0x00C` + `N*0x10` (N=0,1,2,3,4)
 
@@ -1679,7 +1679,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             __For Channel 3:__ Set to 0
 
-            [(DE Page 108, `0x110` `100C` / `0x110` `101C` / `0x110` `102C`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 108, `0x110` `100C` / `0x110` `101C` / `0x110` `102C`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         -   __BLD_CTL__ (Blender Control) at BLD Offset `0x090` + `N*4`
 
@@ -1701,9 +1701,9 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             (Coefficient for source pixel data F[s] is 1)
 
-            [(DE Page 110, `0x110` `1090` / `0x110` `1094` / `0x110` `1098`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 110, `0x110` `1090` / `0x110` `1094` / `0x110` `1098`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
-        __Note:__ [DE Page 91](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf) shows incorrect offset `N*0x14` for __BLD_CH_ISIZE__, __BLD_FILL_COLOR__ and __BLD_CH_OFFSET__. Correct offset is `N*0x10`, see [DE Page 108](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        __Note:__ [DE Page 91](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf) shows incorrect offset `N*0x14` for __BLD_CH_ISIZE__, __BLD_FILL_COLOR__ and __BLD_CH_OFFSET__. Correct offset is `N*0x10`, see [DE Page 108](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         ```text
         Channel 1: Set Blender Input Pipe 0 (fb0 is 720 x 1440)
@@ -1733,7 +1733,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
             EN (Bit 0) = 0 (Disable UI Scaler) 
 
-            [(DE Page 66, `0x114` `0000` / `0x115` `0000` / `0x116` `0000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+            [(DE Page 66, `0x114` `0000` / `0x115` `0000` / `0x116` `0000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
         ```text
         Channel 1: Disable Scaler
@@ -1762,7 +1762,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
         P0_RTCTL (Bits 0 to 3) = 1 (Pipe 0 from Channel 1)
 
-        [(DE Page 108, `0x110` `1080`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 108, `0x110` `1080`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     -   __BLD_FILL_COLOR_CTL__ (Blender Fill Color Control) at BLD Offset `0x000`
 
@@ -1782,7 +1782,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
         P0_FCEN (Bit 0) = 1 (Enable Pipe 0 Fill Color)
 
-        [(DE Page 106, `0x110` `1000`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 106, `0x110` `1000`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     ```text
     For 3 UI Channels: Set BLD Route and BLD FColor Control
@@ -1804,7 +1804,7 @@ This is how we'll create a NuttX Driver for PinePhone's A64 Display Engine that 
 
         (Register Value is ready for update)
 
-        [(DE Page 93, `0x110` `0008`)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+        [(DE Page 93, `0x110` `0008`)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
     ```text
     Apply Settings
@@ -1831,7 +1831,7 @@ By decoding the captured addresses and values, we decipher the following steps f
 
 1.  Configure PL10 for PWM
     - Register PL_CFG1 (Port L Configure Register 1)
-    - At R_PIO Offset 4 [(A64 Page 412)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+    - At R_PIO Offset 4 [(A64 Page 412)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
     - Set PL10_SELECT (Bits 8 to 10) to 2 (S_PWM)
 
     ```text
@@ -1846,7 +1846,7 @@ By decoding the captured addresses and values, we decipher the following steps f
 
 1.  Disable R_PWM (Undocumented)
     - Register R_PWM_CTRL_REG? (R_PWM Control Register?)
-    - At R_PWM Offset 0 [(A64 Page 194)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+    - At R_PWM Offset 0 [(A64 Page 194)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
     - Set SCLK_CH0_GATING (Bit 6) to 0 (Mask)
 
     ```text
@@ -1855,7 +1855,7 @@ By decoding the captured addresses and values, we decipher the following steps f
 
 1.  Configure R_PWM Period (Undocumented)
     - Register R_PWM_CH0_PERIOD? (R_PWM Channel 0 Period Register?)
-    - At R_PWM Offset 4 [(A64 Page 195)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+    - At R_PWM Offset 4 [(A64 Page 195)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
     - PWM_CH0_ENTIRE_CYS (Upper 16 Bits) = Period (`0x4af`)
     - PWM_CH0_ENTIRE_ACT_CYS (Lower 16 Bits) = Period * Percent / 100 (`0x0437`)
     - Period = 1199 (Cycles of PWM Clock)
@@ -1867,7 +1867,7 @@ By decoding the captured addresses and values, we decipher the following steps f
 
 1.  Enable R_PWM (Undocumented)
     - Register R_PWM_CTRL_REG? (R_PWM Control Register?)
-    - At R_PWM Offset 0 [(A64 Page 194)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+    - At R_PWM Offset 0 [(A64 Page 194)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
     - Set SCLK_CH0_GATING (Bit 6) to 1 (Pass)
     - Set PWM_CH0_EN (Bit 4) to 1 (Enable)
     - Set PWM_CH0_PRESCAL (Bits 0 to 3) to 0b1111 (Prescalar 1)
@@ -1878,7 +1878,7 @@ By decoding the captured addresses and values, we decipher the following steps f
 
 1.  Configure PH10 for Output
     - Register PH_CFG1 (PH Configure Register 1)
-    - At PIO Offset `0x100` [(A64 Page 401)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+    - At PIO Offset `0x100` [(A64 Page 401)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
     - Set PH10_SELECT (Bits 8 to 10) to 1 (Output)
 
     ```text
@@ -1891,7 +1891,7 @@ By decoding the captured addresses and values, we decipher the following steps f
 
 1.  Set PH10 to High
     - Register PH_DATA (PH Data Register)
-    - At PIO Offset `0x10C` [(A64 Page 403)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+    - At PIO Offset `0x10C` [(A64 Page 403)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
     - Set PH10 (Bit 10) to 1 (High)
 
     ```text
@@ -1903,13 +1903,13 @@ By decoding the captured addresses and values, we decipher the following steps f
 
 The Base Addresses above are...
 
--   __PIO Base Address__ (CPUx-PORT): `0x01C2` `0800` [(A64 Page 376)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+-   __PIO Base Address__ (CPUx-PORT): `0x01C2` `0800` [(A64 Page 376)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
--   __PWM Base Address__ (CPUx-PWM?): `0x01C2` `1400` [(A64 Page 194)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+-   __PWM Base Address__ (CPUx-PWM?): `0x01C2` `1400` [(A64 Page 194)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
--   __R_PIO Base Address__ (CPUs-PORT): `0x01F0` `2C00` [(A64 Page 410)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+-   __R_PIO Base Address__ (CPUs-PORT): `0x01F0` `2C00` [(A64 Page 410)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
--   __R_PWM Base Address__ (CPUs-PWM?): `0x01F0` `3800` [(CPUs Domain, A64 Page 256)](https://linux-sunxi.org/images/b/b4/Allwinner_A64_User_Manual_V1.1.pdf)
+-   __R_PWM Base Address__ (CPUs-PWM?): `0x01F0` `3800` [(CPUs Domain, A64 Page 256)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
 Based on the above steps, we have __implemented in Zig__ the Display Backlight Driver...
 

@@ -1006,7 +1006,7 @@ Searching online for `"sun50i-a64-mipi-dsi"` gives us the __Linux Driver for A64
 
 The __MIPI DSI Registers__ are not documented in the A64 User Manual. However they seem to be documented in the __Allwinner A31 User Manual__...
 
--   [__Allwinner A31 User Manual__](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
+-   [__Allwinner A31 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
 
     (Section 7.6: "MIPI DSI", Page 836)
 
@@ -1063,7 +1063,7 @@ According to [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_
 
 See this doc for the details...
 
--   [__Allwinner Display Engine 2.0 Specifications__](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+-   [__Allwinner Display Engine 2.0 Specifications__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 Here's the definition in PinePhone's Linux Device Tree: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L98-L102)
 

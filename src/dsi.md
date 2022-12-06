@@ -253,7 +253,7 @@ Which we'll explain next...
 
 ![MIPI DSI Display Command Set from A31 User Manual (Page 837)](https://lupyuen.github.io/images/dsi-datatype.png)
 
-[_MIPI DSI Display Command Set from A31 User Manual (Page 837)_](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
+[_MIPI DSI Display Command Set from A31 User Manual (Page 837)_](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
 
 # Display Command Set for MIPI DSI
 
@@ -277,7 +277,7 @@ Let's talk about DSI Video Mode...
 
 ![DSI Video Mode from A31 User Manual (Page 841)](https://lupyuen.github.io/images/dsi-modes2.png)
 
-[_DSI Video Mode from A31 User Manual (Page 841)_](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
+[_DSI Video Mode from A31 User Manual (Page 841)_](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
 
 # Video Mode Only for MIPI DSI
 
@@ -325,7 +325,7 @@ That's why PinePhone's Display doesn't need a Data / Command Pin like PineTime.
 
 ![MIPI DSI Registers from A31 User Manual (Page 842)](https://lupyuen.github.io/images/dsi-registers2.png)
 
-[_MIPI DSI Registers from A31 User Manual (Page 842)_](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
+[_MIPI DSI Registers from A31 User Manual (Page 842)_](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
 
 # A64 Registers for MIPI DSI
 
@@ -337,7 +337,7 @@ _The MIPI DSI Registers are missing from the A64 docs!_
 
 Yep it's totally odd, but the A64 MIPI DSI Registers are actually documented in the [__Allwinner A31 SoC__](https://linux-sunxi.org/A31), which is a 32-bit SoC!
 
--   [__Allwinner A31 User Manual (Page 842)__](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
+-   [__Allwinner A31 User Manual (Page 842)__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
 
 (A64 is actually an Allwinner H3 upgraded with [__64-bit Arm Cores__](https://linux-sunxi.org/A64))
 
@@ -385,7 +385,7 @@ Though eventually we shall use these too...
 
 ![MIPI DSI Configuration Register 1 from A31 User Manual (Page 846)](https://lupyuen.github.io/images/dsi-control.png)
 
-[_MIPI DSI Configuration Register 1 from A31 User Manual (Page 846)_](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
+[_MIPI DSI Configuration Register 1 from A31 User Manual (Page 846)_](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
 
 # Initialise MIPI DSI
 
@@ -500,7 +500,7 @@ Let's program A64 to send this Long Packet.
 
 ![MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)](https://lupyuen.github.io/images/dsi-tx.png)
 
-[_MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)_](https://github.com/allwinner-zh/documents/raw/master/A31/A31_User_Manual_v1.3_20150510.pdf)
+[_MIPI DSI Low Power Transmit Package Register from A31 User Manual (Page 856)_](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
 
 # Transmit Packet over MIPI DSI
 

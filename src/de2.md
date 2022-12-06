@@ -309,7 +309,7 @@ Let's look inside our function __`initUiChannel`__...
 
 ## Framebuffer Address
 
-[(__OVL_UI_TOP_LADD__, Page 104)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+[(__OVL_UI_TOP_LADD__, Page 104)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 The first Hardware Register we'll set is the __Framebuffer Address__: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L455-L461)
 
@@ -397,7 +397,7 @@ This verification is super helpful as we create the new Display Driver for PineP
 
 ## Framebuffer Pitch
 
-[(__OVL_UI_PITCH__, Page 104)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+[(__OVL_UI_PITCH__, Page 104)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 Next we set the __Framebuffer Pitch__ to the number of bytes per row (`720 * 4`): [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L463-L468)
 
@@ -416,7 +416,7 @@ putreg32(       // Write to Hardware Register...
 
 ## Framebuffer Size
 
-[(__OVL_UI_MBSIZE / OVL_UI_SIZE__, Page 104 / 106)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+[(__OVL_UI_MBSIZE / OVL_UI_SIZE__, Page 104 / 106)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 We set the __Framebuffer Size__ with this rather odd formula...
 
@@ -453,7 +453,7 @@ putreg32(height_width, OVL_UI_SIZE);
 
 ## Framebuffer Coordinates
 
-[(__OVL_UI_COOR__, Page 104)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+[(__OVL_UI_COOR__, Page 104)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 Our Framebuffer will be rendered at X = 0, Y = 0. We set this in the __Framebuffer Coordinates__: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L486-L491)
 
@@ -469,7 +469,7 @@ putreg32(0, OVL_UI_COOR);
 
 ## Framebuffer Attributes
 
-[(__OVL_UI_ATTR_CTL__, Page 102)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+[(__OVL_UI_ATTR_CTL__, Page 102)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 We set the __Framebuffer Attributes__...
 
@@ -533,7 +533,7 @@ const LAY_ALPHA_MODE: u3 = 4 << 1;
 
 ## Disable Scaler
 
-[(__UIS_CTRL_REG__, Page 66)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+[(__UIS_CTRL_REG__, Page 66)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 PinePhone's A64 Display Engine includes a __UI Scaler__ that will do Hardware Scaling of our Framebuffer. Let's disable it: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L585-L593)
 
@@ -595,7 +595,7 @@ Up next: We'll set PinePhone's Hardware Registers to __configure the Blender__ f
 
 ## Output Size
 
-[(__BLD_SIZE / GLB_SIZE__, Page 110 / 93)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+[(__BLD_SIZE / GLB_SIZE__, Page 110 / 93)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 We set the __Output Size__ of our Blender to 720 x 1440 with this odd formula (that we've seen earlier)...
 
@@ -628,7 +628,7 @@ putreg32(height_width, GLB_SIZE);
 
 ## Input Size
 
-[(__BLD_CH_ISIZE__, Page 108)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+[(__BLD_CH_ISIZE__, Page 108)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 According to the pic above, we're configuring __Blender Pipe 0__: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L511-L524)
 
@@ -654,7 +654,7 @@ putreg32(height_width, BLD_CH_ISIZE);
 
 ## Fill Color 
 
-[(__BLD_FILL_COLOR__, Page 107)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+[(__BLD_FILL_COLOR__, Page 107)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 We set the __Background Fill Color__ for the Blender to Opaque Black: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L526-L545)
 
@@ -682,7 +682,7 @@ putreg32(color, BLD_FILL_COLOR);
 
 ## Input Offset
 
-[(__BLD_CH_OFFSET__, Page 108)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+[(__BLD_CH_OFFSET__, Page 108)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 We set the __Input Offset__ of the Blender to X = 0, Y = 0: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L547-L559)
 
@@ -700,7 +700,7 @@ putreg32(offset, BLD_CH_OFFSET);
 
 ## Blender Attributes 
 
-[(__BLD_CTL__, Page 110)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+[(__BLD_CTL__, Page 110)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 We set these (mysterious) __Blender Attributes__...
 
@@ -748,7 +748,7 @@ We're almost done with our Blender Configuration...
 
 ## Enable Blender
 
-[(__BLD_CH_RTCTL / BLD_FILL_COLOR_CTL / GLB_DBUFFER__, Page 108 / 106 / 93)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+[(__BLD_CH_RTCTL / BLD_FILL_COLOR_CTL / GLB_DBUFFER__, Page 108 / 106 / 93)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 Finally we enable __Blender Pipe 0__ (pic above): [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L266-L297)
 
@@ -1208,7 +1208,7 @@ This Appendix explains the changes we made to render 3 Framebuffers. (Pic above)
 
 ## Set Framebuffer Attributes
 
-[(__OVL_UI_ATTR_CTL__, Page 102)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+[(__OVL_UI_ATTR_CTL__, Page 102)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 For __Framebuffer Alpha__: We configured Framebuffer 2 (Channel 3) to be __Globally Semi-Transparent__. (Global Alpha = `0x7F`)
 
@@ -1265,7 +1265,7 @@ Next we configure the Blender...
 
 ## Set Blender Route
 
-[(__BLD_CH_RTCTL__, Page 108)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+[(__BLD_CH_RTCTL__, Page 108)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 Now that we render 3 Framebuffers instead of 1, we need to __connect the Blender Pipes__ to their respective Framebuffers (Channels)...
 
@@ -1316,7 +1316,7 @@ putreg32(route, BLD_CH_RTCTL);  // TODO: DMB
 
 ## Enable Blender Pipes
 
-[(__BLD_FILL_COLOR_CTL__, Page 106)](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+[(__BLD_FILL_COLOR_CTL__, Page 106)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 After connecting the Blender Pipes, we __enable all 3 Blender Pipes__: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L298-L333)
 
