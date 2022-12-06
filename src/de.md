@@ -1962,6 +1962,85 @@ Based on the above log, we have __implemented in Zig__ the PinePhone Driver for 
 
 -   [__Output Log for pmic.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
 
+TODO: Reverse Engineering
+
+```text
+assert reset: GPD(23), 0  // PD23 - LCD-RST (active low)
+sunxi_gpio_set_cfgpin: pin=0x77, val=1
+sunxi_gpio_set_cfgbank: bank_offset=119, val=1
+  clrsetbits 0x1c20874, 0xf0000000, 0x10000000
+sunxi_gpio_output: pin=0x77, val=0
+  before: 0x1c2087c = 0x1c0000
+  after: 0x1c2087c = 0x1c0000 (DMB)
+```
+
+TODO: dldo1 3.3V
+
+```text
+dldo1 3.3V
+  pmic_write: reg=0x15, val=0x1a
+  rsb_write: rt_addr=0x2d, reg_addr=0x15, value=0x1a
+  pmic_clrsetbits: reg=0x12, clr_mask=0x0, set_mask=0x8
+  rsb_read: rt_addr=0x2d, reg_addr=0x12
+  rsb_write: rt_addr=0x2d, reg_addr=0x12, value=0xd9
+```
+
+TODO: ldo_io0 3.3V
+
+```text
+ldo_io0 3.3V
+  pmic_write: reg=0x91, val=0x1a
+  rsb_write: rt_addr=0x2d, reg_addr=0x91, value=0x1a
+  pmic_write: reg=0x90, val=0x3
+  rsb_write: rt_addr=0x2d, reg_addr=0x90, value=0x3
+```
+
+TODO: dldo2 1.8V
+
+```text
+dldo2 1.8V
+  pmic_write: reg=0x16, val=0xb
+  rsb_write: rt_addr=0x2d, reg_addr=0x16, value=0xb
+  pmic_clrsetbits: reg=0x12, clr_mask=0x0, set_mask=0x10
+  rsb_read: rt_addr=0x2d, reg_addr=0x12
+  rsb_write: rt_addr=0x2d, reg_addr=0x12, value=0xd9
+```
+
+TODO: Wait
+
+```text
+wait for power supplies and power-on init
+  udelay 15000
+```
+
+# Appendix: Reset LCD Panel
+
+We captured the log from [__p-boot dsi_init__](https://megous.com/git/p-boot/tree/src/display.c#n1236)...
+
+-   [__Log from dsi_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#panel_reset)
+
+```text
+panel_reset: start
+deassert reset: GPD(23), 1  // PD23 - LCD-RST (active low)
+sunxi_gpio_set_cfgpin: pin=0x77, val=1
+sunxi_gpio_set_cfgbank: bank_offset=119, val=1
+  clrsetbits 0x1c20874, 0xf0000000, 0x10000000
+sunxi_gpio_output: pin=0x77, val=1
+  before: 0x1c2087c = 0x1c0000
+  after: 0x1c2087c = 0x9c0000 (DMB)
+wait for initialization
+udelay 15000
+panel_reset: end
+```
+
+[(Source)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#panel_reset)
+
+Based on the above log, we have __implemented in Zig__ the PinePhone Driver that resets the LCD Panel...
+
+-   [__pinephone-nuttx/panel.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig)
+
+-   [__Output Log for panel.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
+
 # Appendix: Enable MIPI DSI Block
 
 We captured the log from [__p-boot dsi_init__](https://megous.com/git/p-boot/tree/src/display.c#n1236)...
@@ -2094,8 +2173,8 @@ TODO: Enable the DSI block
 DSI Base Address: 0x01CA0000 (A31 Page 842)
 DSI_CTL_REG: Offset 0x0 (A31 Page 843)
 DSI_BASIC_CTL0_REG: Offset 0x10 (A31 Page 845)
-Undocumented: Offset 0x60
-Undocumented: Offset 0x78
+DSI_TRANS_START_REG: Offset 0x60
+DSI_TRANS_ZERO_REG: Offset 0x78
 
 Enable the DSI block
   0x1ca0000 = 0x1 (DMB)
@@ -2107,7 +2186,7 @@ Enable the DSI block
 TODO: inst_init
 
 ```
-Undocumented: Offset 0x20
+DSI_INST_FUNC_REG: Offset 0x20
 Undocumented: Offset 0x24
 Undocumented: Offset 0x28
 Undocumented: Offset 0x2c
@@ -2116,7 +2195,7 @@ Undocumented: Offset 0x34
 Undocumented: Offset 0x38
 Undocumented: Offset 0x3c
 Undocumented: Offset 0x4c
-Undocumented: Offset 0x2f8
+DSI_DEBUG_DATA_REG: Offset 0x2f8
 
 inst_init
   0x1ca0020 = 0x1f (DMB)
@@ -2143,46 +2222,50 @@ get_video_start_delay
 TODO: setup_burst
 
 ```
-Undocumented: Offset 0x7c
+DSI_TCON_DRQ_REG: Offset 0x7c
 
 setup_burst
   0x1ca007c = 0x10000007 (DMB)
-
-Undocumented: Offset 0x40
-Undocumented: Offset 0x44
-Undocumented: Offset 0x54
 ```
 
 TODO: setup_inst_loop
 
 ```
+DSI_INST_LOOP_SEL_REG: Offset 0x40
+DSI_INST_LOOP_NUM_REG: Offset 0x44
+Undocumented: Offset 0x54
+
 setup_inst_loop
   0x1ca0040 = 0x30000002 (DMB)
   0x1ca0044 = 0x310031 (DMB)
   0x1ca0054 = 0x310031 (DMB)
-
-DSI_PIXEL_PH_REG: Offset 0x90 (A31 Page 848)
-DSI_PIXEL_PF0_REG: Offset 0x98 (A31 Page 849)
-DSI_PIXEL_PF1_REG: Offset 0x9c (A31 Page 849)
-DSI_PIXEL_CTL0_REG: Offset 0x80 (A31 Page 847)
 ```
 
 TODO: setup_format
 
 ```
+DSI_PIXEL_PH_REG: Offset 0x90 (A31 Page 848)
+DSI_PIXEL_PF0_REG: Offset 0x98 (A31 Page 849)
+DSI_PIXEL_PF1_REG: Offset 0x9c (A31 Page 849)
+DSI_PIXEL_CTL0_REG: Offset 0x80 (A31 Page 847)
+
 setup_format
   0x1ca0090 = 0x1308703e (DMB)
   0x1ca0098 = 0xffff (DMB)
   0x1ca009c = 0xffffffff (DMB)
   0x1ca0080 = 0x10008 (DMB)
+```
 
-Undocumented: Offset 0x0c
+TODO: setup_timings
+
+```
+DSI_BASIC_CTL_REG: Offset 0x0c
 DSI_SYNC_HSS_REG: Offset 0xb0 (A31 Page 850)
 DSI_SYNC_HSE_REG: Offset 0xb4 (A31 Page 850)
 DSI_SYNC_VSS_REG: Offset 0xb8 (A31 Page 851)
 DSI_SYNC_VSE_REG: Offset 0xbc (A31 Page 851)
-Undocumented: Offset 0x18
-Undocumented: Offset 0x1c
+DSI_BASIC_SIZE0_REG: Offset 0x18
+DSI_BASIC_SIZE1_REG: Offset 0x1c
 DSI_BLK_HSA0_REG: Offset 0xc0 (A31 Page 852)
 DSI_BLK_HSA1_REG: Offset 0xc4 (A31 Page 852)
 DSI_BLK_HBP0_REG: Offset 0xc8 (A31 Page 852)
@@ -2193,11 +2276,7 @@ DSI_BLK_HBLK0_REG: Offset 0xe0 (A31 Page 853)
 DSI_BLK_HBLK1_REG: Offset 0xe4 (A31 Page 853)
 DSI_BLK_VBLK0_REG: Offset 0xe8 (A31 Page 854)
 DSI_BLK_VBLK1_REG: Offset 0xec (A31 Page 854)
-```
 
-TODO: setup_timings
-
-```
 setup_timings
   0x1ca000c = 0x0 (DMB)
   0x1ca00b0 = 0x12000021 (DMB)
@@ -2258,7 +2337,7 @@ TODO: DSI_START_HSC
 
 ```text
 DSI Base Address: 0x01CA0000 (A31 Page 842)
-Undocumented: Offset 0x48
+DSI_INST_JUMP_SEL_REG: Offset 0x48
 
 dsi_start DSI_START_HSC
   0x1ca0048 = 0xf02 (DMB)
@@ -2276,7 +2355,7 @@ dsi_update_bits: 0x01ca0010 : 00030000 -> (00000001) 00000001 (DMB)
 TODO
 
 ```text
-Undocumented: Offset 0x20
+DSI_INST_FUNC_REG: Offset 0x20
 
 dsi_update_bits: 0x01ca0020 : 0000001f -> (00000010) 00000000 (DMB)
   addr=0x1ca0020, mask=0x10, val=0x0 (DMB)
@@ -2291,7 +2370,7 @@ udelay 1000
 TODO: DSI_START_HSD
 
 ```text
-Undocumented: Offset 0x48
+DSI_INST_JUMP_SEL_REG: Offset 0x48
 
 dsi_start DSI_START_HSD
   0x1ca0048 = 0x63f07006 (DMB)
@@ -2359,7 +2438,7 @@ MIPI_DSI_CLK_REG: Offset 0x168 (A64 Page 122)
   0x1c20168 = 0x8203 (DMB)
 ```
 
-TODO
+TODO: DPHY Tx Power On
 
 ```
 DPHY Base Address: 0x01ca1000
@@ -2368,24 +2447,24 @@ DPHY_TX_TIME0_REG: Offset 0x10
 DPHY_TX_TIME1_REG: Offset 0x14
 DPHY_TX_TIME2_REG: Offset 0x18
 DPHY_TX_TIME3_REG: Offset 0x1c
+DPHY_TX_TIME4_REG: Offset 0x20
 
   0x1ca1004 = 0x10000000 (DMB)
   0x1ca1010 = 0xa06000e (DMB)
   0x1ca1014 = 0xa033207 (DMB)
   0x1ca1018 = 0x1e (DMB)
   0x1ca101c = 0x0 (DMB)
+  0x1ca1020 = 0x303 (DMB)
 ```
 
 TODO
 
 ```
-DPHY_TX_TIME4_REG: Offset 0x20
-DPHY_GCTL_REG: Offset 0x00
-DPHY_ANA0_REG: Offset 0x4c
-DPHY_ANA1_REG: Offset 0x50
-DPHY_ANA4_REG: Offset 0x5c
+DPHY_GCTL_REG: Offset 0x00 (Enable DPHY)
+DPHY_ANA0_REG: Offset 0x4c (PWS)
+DPHY_ANA1_REG: Offset 0x50 (CSMPS)
+DPHY_ANA4_REG: Offset 0x5c (CKDV)
 
-  0x1ca1020 = 0x303 (DMB)
   0x1ca1000 = 0x31 (DMB)
   0x1ca104c = 0x9f007f00 (DMB)
   0x1ca1050 = 0x17000000 (DMB)
@@ -2395,24 +2474,18 @@ DPHY_ANA4_REG: Offset 0x5c
 TODO
 
 ```
-DPHY_ANA2_REG: Offset 0x54
-DPHY_ANA3_REG: Offset 0x58
+DPHY_ANA2_REG: Offset 0x54 (ENIB)
+DPHY_ANA3_REG: Offset 0x58 (Enable LDOR, LDOC, LDOD)
+DPHY_ANA3_REG: Offset 0x58 (Enable VTTC, VTTD)
+DPHY_ANA3_REG: Offset 0x58 (Enable DIV)
+DPHY_ANA2_REG: Offset 0x54 (Enable CK_CPU)
+DPHY_ANA1_REG: Offset 0x50 (VTT Mode)
+DPHY_ANA2_REG: Offset 0x54 (Enable P2S CPU)
 
   0x1ca1054 = 0x2 (DMB)
   udelay 5
   0x1ca1058 = 0x3040000 (DMB)
   udelay 1
-```
-
-TODO
-
-```
-DPHY_ANA3_REG: Offset 0x58
-DPHY_ANA3_REG: Offset 0x58
-DPHY_ANA2_REG: Offset 0x54
-DPHY_ANA1_REG: Offset 0x50
-DPHY_ANA2_REG: Offset 0x54
-
   update_bits addr=0x1ca1058, mask=0xf8000000, val=0xf8000000 (DMB)
   udelay 1
   update_bits addr=0x1ca1058, mask=0x4000000, val=0x4000000 (DMB)
@@ -2608,31 +2681,3 @@ TCON_GCTL_REG: Offset 0x00 (A64 Page 527)
 enable tcon as a whole
   setbits 0x1c0c000, 0x80000000 (DMB)
 ```
-
-# Appendix: Reset LCD Panel
-
-We captured the log from [__p-boot dsi_init__](https://megous.com/git/p-boot/tree/src/display.c#n1236)...
-
--   [__Log from dsi_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#panel_reset)
-
-```text
-panel_reset: start
-deassert reset: GPD(23), 1  // PD23 - LCD-RST (active low)
-sunxi_gpio_set_cfgpin: pin=0x77, val=1
-sunxi_gpio_set_cfgbank: bank_offset=119, val=1
-  clrsetbits 0x1c20874, 0xf0000000, 0x10000000
-sunxi_gpio_output: pin=0x77, val=1
-  before: 0x1c2087c = 0x1c0000
-  after: 0x1c2087c = 0x9c0000 (DMB)
-wait for initialization
-udelay 15000
-panel_reset: end
-```
-
-[(Source)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#panel_reset)
-
-Based on the above log, we have __implemented in Zig__ the PinePhone Driver that resets the LCD Panel...
-
--   [__pinephone-nuttx/panel.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig)
-
--   [__Output Log for panel.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
