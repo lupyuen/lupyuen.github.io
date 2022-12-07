@@ -1211,7 +1211,7 @@ We captured the log from [__p-boot dphy_enable__](https://megous.com/git/p-boot/
 
 By decoding the captured addresses and values, we decipher the following steps to __enable the Allwinner A64 MIPI Display Physical Layer (DPHY)__...
 
-1.  Set DSI Clock to 150 MHz
+1.  Set DSI Clock to 150 MHz (600 MHz / 4)
 
     __MIPI_DSI_CLK_REG__: CCU Offset `0x168` [(A64 Page 122)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
     - Set __DSI_DPHY_GATING__ (Bit 15) to 1 (DSI DPHY Clock is On)
