@@ -924,10 +924,13 @@ By decoding the captured addresses and values, we decipher the following steps t
 1.  Set Video Start Delay
 
     __DSI_BASIC_CTL1_REG__: DSI Offset `0x14` [(A31 Page 846)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
-    - Set __Video_Start_Delay__ (Bits 4 to 11) to 1468 (Line Delay)
+
+    - Set __Video_Start_Delay__ (Bits 4 to 16) to 1468 (Line Delay)
     - Set __Video_Precision_Mode_Align__ (Bit 2) to 1 (Fill Mode)
     - Set __Video_Frame_Start__ (Bit 1) to 1 (Precision Mode)
     - Set __DSI_Mode__ (Bit 0) to 1 (Video Mode)
+
+    (Note: Video_Start_Delay is actually 13 bits, not 8 bits as documented in the A31 User Manual)
 
     ```text
     get_video_start_delay
