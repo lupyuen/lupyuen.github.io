@@ -1829,6 +1829,10 @@ Based on the above steps, we have __implemented in Zig__ the A64 Display Engine 
 
 # Appendix: Timing Controller (TCON0)
 
+Earlier we talked about the sequence of steps that our Display Driver needs to follow...
+
+-   [__"Sequence of Steps for PinePhone Display Driver"__](https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver)
+
 This section explains how we __initialise the Allwinner A64 Timing Controller (TCON0)__.
 
 We captured the log from [__p-boot tcon0_init__](https://megous.com/git/p-boot/tree/src/display.c#n1567)...
@@ -2065,6 +2069,10 @@ Based on the above steps, we have __implemented in Zig__ the PinePhone Driver fo
 
 # Appendix: Display Backlight
 
+Earlier we talked about the sequence of steps that our Display Driver needs to follow...
+
+-   [__"Sequence of Steps for PinePhone Display Driver"__](https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver)
+
 This section explains how we turn on __PinePhone's Display Backlight__.
 
 We captured the log from [__p-boot backlight_enable__](https://megous.com/git/p-boot/tree/src/display.c#n1929)...
@@ -2169,6 +2177,10 @@ Based on the above steps, we have __implemented in Zig__ the Display Backlight D
 
 # Appendix: Power Management Integrated Circuit
 
+Earlier we talked about the sequence of steps that our Display Driver needs to follow...
+
+-   [__"Sequence of Steps for PinePhone Display Driver"__](https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver)
+
 This section explains how we __initialise PinePhone's Power Management Integrated Circuit (PMIC)__, before accessing PinePhone's LCD Display.
 
 We captured the log from [__p-boot display_board_init__](https://megous.com/git/p-boot/tree/src/display.c#n1947)...
@@ -2235,6 +2247,10 @@ Based on the above steps, we have __implemented in Zig__ the PinePhone Driver fo
 -   [__Output Log for pmic.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
 
 # Appendix: Reset LCD Panel
+
+Earlier we talked about the sequence of steps that our Display Driver needs to follow...
+
+-   [__"Sequence of Steps for PinePhone Display Driver"__](https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver)
 
 This section explains how we __reset PinePhone's LCD Panel__, before sending Initialisation Commands to the ST7703 LCD Controller.
 

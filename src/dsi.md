@@ -817,6 +817,10 @@ To render graphics on PinePhone's LCD Display, our Display Driver needs to follo
 
 # Appendix: Enable MIPI DSI Block
 
+Earlier we talked about the sequence of steps that our Display Driver needs to follow...
+
+-   [__"Sequence of Steps for PinePhone Display Driver"__](https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver)
+
 This section explains how we __enable the Allwinner A64 MIPI DSI Block__, before calling it to transmit MIPI DSI Commands to the ST7703 LCD Controller.
 
 We captured the log from [__p-boot dsi_init__](https://megous.com/git/p-boot/tree/src/display.c#n1236)...
@@ -1115,6 +1119,10 @@ Based on the above steps, we have __implemented in Zig__ the PinePhone Driver th
 
 # Appendix: Start MIPI DSI HSC and HSD
 
+Earlier we talked about the sequence of steps that our Display Driver needs to follow...
+
+-   [__"Sequence of Steps for PinePhone Display Driver"__](https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver)
+
 This section explains how we __start Allwinner A64 MIPI DSI in HSC and HSD Modes__, before calling it to transmit MIPI DSI Commands to the ST7703 LCD Controller.
 
 (High Speed Clock Mode and High Speed Data Transmission)
@@ -1366,6 +1374,10 @@ Thus a MIPI DSI __Short Packet__ (compared with Long Packet)...
 Everything else is the same.
 
 # Appendix: Initialise LCD Controller
+
+Earlier we talked about the sequence of steps that our Display Driver needs to follow...
+
+-   [__"Sequence of Steps for PinePhone Display Driver"__](https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver)
 
 Xingbangda has provided an [__Initialisation Sequence__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333) of (magical) ST7703 Commands that we should send to the LCD Controller at startup.
 
