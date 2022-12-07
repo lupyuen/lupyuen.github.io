@@ -1856,7 +1856,7 @@ setup_timings
   0x1ca00ec = 0xffff0000 (DMB)
 enable_dsi_block: end</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#enable_dsi_block">(Source)</a></p>
-<p>Based on the above log, we have <strong>implemented in Zig</strong> the PinePhone Driver that enables the Allwinner A64 MIPI DSI Block…</p>
+<p>Based on the above steps, we have <strong>implemented in Zig</strong> the PinePhone Driver that enables the Allwinner A64 MIPI DSI Block…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L884-L1007"><strong>pinephone-nuttx/display.zig</strong></a></p>
@@ -1866,126 +1866,147 @@ enable_dsi_block: end</code></pre></div>
 </li>
 </ul>
 <p>TODO: Reverse Engineering</p>
-<p>TODO: mipi dsi bus enable</p>
-<div class="example-wrap"><pre class="language-text"><code>CCU Base Address: 0x01C20000 (A64 Page 82)
-BUS_CLK_GATING_REG0: Offset 0x60 (A64 Page 100)
-- Set MIPIDSI_GATING (Bit 1) to 1 (Pass Gating Clock for MIPI DSI)
-BUS_SOFT_RST_REG0: Offset 0x2C0 (A64 Page 138)
-- Set MIPI_DSI_RST (Bit 1) to 1 (Deassert MIPI DSI Reset)
-
-mipi dsi bus enable
-  setbits 0x1c20060, 0x2 (DMB)
-  setbits 0x1c202c0, 0x2 (DMB)</code></pre></div>
-<p>TODO: Enable the DSI block</p>
-<div class="example-wrap"><pre class="language-text"><code>DSI Base Address: 0x01CA0000 (A31 Page 842)
-DSI_CTL_REG: Offset 0x0 (A31 Page 843)
-- Set DSI_En (Bit 0) to 1 (Enable DSI)
-DSI_BASIC_CTL0_REG: Offset 0x10 (A31 Page 845)
-- Set CRC_En (Bit 17) to 1 (Enable CRC)
-- Set ECC_En (Bit 16) to 1 (Enable ECC)
-DSI_TRANS_START_REG: Offset 0x60
-- Set to 0xa
-DSI_TRANS_ZERO_REG: Offset 0x78
-- Set to 0x0
-
-Enable the DSI block
-  0x1ca0000 = 0x1 (DMB)
-  0x1ca0010 = 0x30000 (DMB)
-  0x1ca0060 = 0xa (DMB)
-  0x1ca0078 = 0x0 (DMB)</code></pre></div>
-<p>TODO: inst_init</p>
-<div class="example-wrap"><pre class="language-text"><code>DSI_INST_FUNC_REG(n): (0x020 + (n) * 0x04)
-DSI_INST_FUNC_REG(0): Offset 0x20 (DSI_INST_ID_LP11)
-DSI_INST_FUNC_REG(1): Offset 0x24 (DSI_INST_ID_TBA)
-DSI_INST_FUNC_REG(2): Offset 0x28 (DSI_INST_ID_HSC)
-DSI_INST_FUNC_REG(3): Offset 0x2c (DSI_INST_ID_HSD)
-DSI_INST_FUNC_REG(4): Offset 0x30 (DSI_INST_ID_LPDT)
-DSI_INST_FUNC_REG(5): Offset 0x34 (DSI_INST_ID_HSCEXIT)
-DSI_INST_FUNC_REG(6): Offset 0x38 (DSI_INST_ID_NOP)
-DSI_INST_FUNC_REG(7): Offset 0x3c (DSI_INST_ID_DLY)
-
-inst_init
-  0x1ca0020 = 0x1f (DMB)
-  0x1ca0024 = 0x10000001 (DMB)
-  0x1ca0028 = 0x20000010 (DMB)
-  0x1ca002c = 0x2000000f (DMB)
-  0x1ca0030 = 0x30100001 (DMB)
-  0x1ca0034 = 0x40000010 (DMB)
-  0x1ca0038 = 0xf (DMB)
-  0x1ca003c = 0x5000001f (DMB)</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>DSI_INST_JUMP_CFG_REG(n): (0x04c + (n) * 0x04)
-DSI_INST_JUMP_CFG_REG(0): Offset 0x4c (DSI_INST_JUMP_CFG)
-DSI_DEBUG_DATA_REG: Offset 0x2f8
-
-  0x1ca004c = 0x560001 (DMB)
-  0x1ca02f8 = 0xff (DMB)</code></pre></div>
+<p>By decoding the captured addresses and values, we decipher the following steps to <strong>enable the Allwinner A64 MIPI DSI Block</strong>…</p>
+<ol>
+<li>
+<p>Enable MIPI DSI Bus</p>
+<p>BUS_CLK_GATING_REG0: CCU Offset <code>0x60</code> (A64 Page 100)</p>
+<ul>
+<li>Set MIPIDSI_GATING (Bit 1) to 1 (Pass Gating Clock for MIPI DSI)</li>
+</ul>
+<p>BUS_SOFT_RST_REG0: CCU Offset <code>0x2C0</code> (A64 Page 138)</p>
+<ul>
+<li>Set MIPI_DSI_RST (Bit 1) to 1 (Deassert MIPI DSI Reset)</li>
+</ul>
+<p>CCU Base Address: <code>0x01C2</code> <code>0000</code> (A64 Page 82)</p>
+<div class="example-wrap"><pre class="language-text"><code>mipi dsi bus enable
+setbits 0x1c20060, 0x2 (DMB)
+setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
+<li>
+<p>Enable DSI Block</p>
+<p>DSI_CTL_REG: DSI Offset <code>0x0</code> (A31 Page 843)</p>
+<ul>
+<li>Set DSI_En (Bit 0) to 1 (Enable DSI)</li>
+</ul>
+<p>DSI_BASIC_CTL0_REG: DSI Offset <code>0x10</code> (A31 Page 845)</p>
+<ul>
+<li>Set CRC_En (Bit 17) to 1 (Enable CRC)</li>
+<li>Set ECC_En (Bit 16) to 1 (Enable ECC)</li>
+</ul>
+<p>DSI_TRANS_START_REG: DSI Offset <code>0x60</code> (Undocumented)</p>
+<ul>
+<li>Set to 10</li>
+</ul>
+<p>DSI_TRANS_ZERO_REG: DSI Offset <code>0x78</code> (Undocumented)</p>
+<ul>
+<li>Set to 0</li>
+</ul>
+<p>DSI Base Address: <code>0x01CA</code> <code>0000</code> (A31 Page 842)</p>
+<div class="example-wrap"><pre class="language-text"><code>Enable the DSI block
+0x1ca0000 = 0x1 (DMB)
+0x1ca0010 = 0x30000 (DMB)
+0x1ca0060 = 0xa (DMB)
+0x1ca0078 = 0x0 (DMB)</code></pre></div></li>
+<li>
+<p>Init DSI Instructions (Undocumented)</p>
+<p>DSI_INST_FUNC_REG(0): DSI Offset <code>0x20</code> (DSI_INST_ID_LP11)</p>
+<p>DSI_INST_FUNC_REG(1): DSI Offset <code>0x24</code> (DSI_INST_ID_TBA)</p>
+<p>DSI_INST_FUNC_REG(2): DSI Offset <code>0x28</code> (DSI_INST_ID_HSC)</p>
+<p>DSI_INST_FUNC_REG(3): DSI Offset <code>0x2c</code> (DSI_INST_ID_HSD)</p>
+<p>DSI_INST_FUNC_REG(4): DSI Offset <code>0x30</code> (DSI_INST_ID_LPDT)</p>
+<p>DSI_INST_FUNC_REG(5): DSI Offset <code>0x34</code> (DSI_INST_ID_HSCEXIT)</p>
+<p>DSI_INST_FUNC_REG(6): DSI Offset <code>0x38</code> (DSI_INST_ID_NOP)</p>
+<p>DSI_INST_FUNC_REG(7): DSI Offset <code>0x3c</code> (DSI_INST_ID_DLY)</p>
+<p>(DSI_INST_FUNC_REG(n) is <code>(0x020 + (n) * 0x04)</code>)</p>
+<div class="example-wrap"><pre class="language-text"><code>inst_init
+0x1ca0020 = 0x1f (DMB)
+0x1ca0024 = 0x10000001 (DMB)
+0x1ca0028 = 0x20000010 (DMB)
+0x1ca002c = 0x2000000f (DMB)
+0x1ca0030 = 0x30100001 (DMB)
+0x1ca0034 = 0x40000010 (DMB)
+0x1ca0038 = 0xf (DMB)
+0x1ca003c = 0x5000001f (DMB)</code></pre></div></li>
+<li>
+<p>Configure DSI Jump Instructions (Undocumented)</p>
+<p>DSI_INST_JUMP_CFG_REG(0): DSI Offset 0x4c (DSI_INST_JUMP_CFG)</p>
+<p>(DSI_INST_JUMP_CFG_REG(n) is <code>(0x04c + (n) * 0x04)</code>)</p>
+<p>DSI_DEBUG_DATA_REG: Offset 0x2f8</p>
+<div class="example-wrap"><pre class="language-text"><code>0x1ca004c = 0x560001 (DMB)
+0x1ca02f8 = 0xff (DMB)</code></pre></div>
 <p>TODO: get_video_start_delay</p>
-<div class="example-wrap"><pre class="language-text"><code>DSI_BASIC_CTL1_REG: Offset 0x14 (A31 Page 846)
+<div class="example-wrap"><pre class="language-text"><code>DSI_BASIC_CTL1_REG: DSI Offset 0x14 (A31 Page 846)
 - Set Video_Start_Delay (Bits 4 to 11) to 1468 (Delay by lines)
 - Set Video_Precision_Mode_Align (Bit 2) to 1 (Fill Mode)
 - Set Video_Frame_Start (Bit 1) to 1 (Precision Mode)
 - Set DSI_Mode (Bit 0) to 1 (Video Mode)
 
 get_video_start_delay
-  0x1ca0014 = 0x5bc7 (DMB)</code></pre></div>
+0x1ca0014 = 0x5bc7 (DMB)</code></pre></div>
 <p>TODO: setup_burst</p>
 <div class="example-wrap"><pre class="language-text"><code>DSI_TCON_DRQ_REG: Offset 0x7c
 
 setup_burst
-  0x1ca007c = 0x10000007 (DMB)</code></pre></div>
+0x1ca007c = 0x10000007 (DMB)</code></pre></div>
 <p>TODO: setup_inst_loop</p>
-<div class="example-wrap"><pre class="language-text"><code>DSI_INST_LOOP_SEL_REG: Offset 0x40
+<div class="example-wrap"><pre class="language-text"><code>DSI_INST_LOOP_SEL_REG: DSI Offset 0x40
 DSI_INST_LOOP_NUM_REG(n): (0x044 + (n) * 0x10)
-DSI_INST_LOOP_NUM_REG(0): Offset 0x44
-DSI_INST_LOOP_NUM_REG(1): Offset 0x54
+DSI_INST_LOOP_NUM_REG(0): DSI Offset 0x44
+DSI_INST_LOOP_NUM_REG(1): DSI Offset 0x54
 
 setup_inst_loop
-  0x1ca0040 = 0x30000002 (DMB)
-  0x1ca0044 = 0x310031 (DMB)
-  0x1ca0054 = 0x310031 (DMB)</code></pre></div>
+0x1ca0040 = 0x30000002 (DMB)
+0x1ca0044 = 0x310031 (DMB)
+0x1ca0054 = 0x310031 (DMB)</code></pre></div>
 <p>TODO: setup_format</p>
-<div class="example-wrap"><pre class="language-text"><code>DSI_PIXEL_PH_REG: Offset 0x90 (A31 Page 848)
+<div class="example-wrap"><pre class="language-text"><code>DSI_PIXEL_PH_REG: DSI Offset 0x90 (A31 Page 848)
 - Set ECC (Bits 24 to 31) to 19
 - Set WC (Bits 8 to 23) to 2160 (Byte Numbers of PD in a Pixel Packet)
 - Set VC (Bits 6 to 7) to 0 (Virtual Channel)
 - Set DT (Bits 0 to 5) to 0x3E (24-bit Video Mode)
-DSI_PIXEL_PF0_REG: Offset 0x98 (A31 Page 849)
+
+DSI_PIXEL_PF0_REG: DSI Offset 0x98 (A31 Page 849)
 - Set CRC_Force (Bits 0 to 15) to 0xffff (Force CRC to this value)
-DSI_PIXEL_PF1_REG: Offset 0x9c (A31 Page 849)
+
+DSI_PIXEL_PF1_REG: DSI Offset 0x9c (A31 Page 849)
 - Set CRC_Init_LineN (Bits 16 to 31) to 0xffff (CRC initial to this value in transmitions except 1st one)
 - Set CRC_Init_Line0 (Bits 0 to 15) to 0xffff (CRC initial to this value in 1st transmition every frame)
-DSI_PIXEL_CTL0_REG: Offset 0x80 (A31 Page 847)
+
+DSI_PIXEL_CTL0_REG: DSI Offset 0x80 (A31 Page 847)
 - Set PD_Plug_Dis (Bit 16) to 1 (Disable PD plug before pixel bytes)
 - Set Pixel_Endian (Bit 4) to 0 (LSB first)
 - Set Pixel_Format (Bits 0 to 3) to 8 (24-bit RGB888)
 
 setup_format
-  0x1ca0090 = 0x1308703e (DMB)
-  0x1ca0098 = 0xffff (DMB)
-  0x1ca009c = 0xffffffff (DMB)
-  0x1ca0080 = 0x10008 (DMB)</code></pre></div>
+0x1ca0090 = 0x1308703e (DMB)
+0x1ca0098 = 0xffff (DMB)
+0x1ca009c = 0xffffffff (DMB)
+0x1ca0080 = 0x10008 (DMB)</code></pre></div>
 <p>TODO: setup_timings</p>
-<div class="example-wrap"><pre class="language-text"><code>DSI_BASIC_CTL_REG: Offset 0x0c
-DSI_SYNC_HSS_REG: Offset 0xb0 (A31 Page 850)
+<div class="example-wrap"><pre class="language-text"><code>DSI_BASIC_CTL_REG: DSI Offset 0x0c
+
+DSI_SYNC_HSS_REG: DSI Offset 0xb0 (A31 Page 850)
 - Set ECC (Bits 24 to 31) to 0x12
 - Set D1 (Bits 16 to 23) to 0
 - Set D0 (Bits 8 to 15) to 0
 - Set VC (Bits 6 to 7) to 0 (Virtual Channel)
 - Set DT (Bits 0 to 5) to 0x21 (HSS)
-DSI_SYNC_HSE_REG: Offset 0xb4 (A31 Page 850)
+
+DSI_SYNC_HSE_REG: DSI Offset 0xb4 (A31 Page 850)
 - Set ECC (Bits 24 to 31) to 1
 - Set D1 (Bits 16 to 23) to 0
 - Set D0 (Bits 8 to 15) to 0
 - Set VC (Bits 6 to 7) to 0 (Virtual Channel)
 - Set DT (Bits 0 to 5) to 0x31 (HSE)
-DSI_SYNC_VSS_REG: Offset 0xb8 (A31 Page 851)
+
+DSI_SYNC_VSS_REG: DSI Offset 0xb8 (A31 Page 851)
 - Set ECC (Bits 24 to 31) to 7
 - Set D1 (Bits 16 to 23) to 0
 - Set D0 (Bits 8 to 15) to 0
 - Set VC (Bits 6 to 7) to 0 (Virtual Channel)
 - Set DT (Bits 0 to 5) to 1 (VSS)
-DSI_SYNC_VSE_REG: Offset 0xbc (A31 Page 851)
+
+DSI_SYNC_VSE_REG: DSI Offset 0xbc (A31 Page 851)
 - Set ECC (Bits 24 to 31) to 0x14
 - Set D1 (Bits 16 to 23) to 0
 - Set D0 (Bits 8 to 15) to 0
@@ -1993,83 +2014,91 @@ DSI_SYNC_VSE_REG: Offset 0xbc (A31 Page 851)
 - Set DT (Bits 0 to 5) to 0x11 (VSE)
 
 setup_timings
-  0x1ca000c = 0x0 (DMB)
-  0x1ca00b0 = 0x12000021 (DMB)
-  0x1ca00b4 = 0x1000031 (DMB)
-  0x1ca00b8 = 0x7000001 (DMB)
-  0x1ca00bc = 0x14000011 (DMB)</code></pre></div>
+0x1ca000c = 0x0 (DMB)
+0x1ca00b0 = 0x12000021 (DMB)
+0x1ca00b4 = 0x1000031 (DMB)
+0x1ca00b8 = 0x7000001 (DMB)
+0x1ca00bc = 0x14000011 (DMB)</code></pre></div>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>DSI_BASIC_SIZE0_REG: Offset 0x18
+<div class="example-wrap"><pre class="language-text"><code>DSI_BASIC_SIZE0_REG: DSI Offset 0x18
 - Set Video_VBP (Bits 16 to 27) to 17
 - Set Video_VSA (Bits 0 to 11) to 10
-DSI_BASIC_SIZE1_REG: Offset 0x1c
+
+DSI_BASIC_SIZE1_REG: DSI Offset 0x1c
 - Set Video_VT (Bits 16 to 28) to 1485
 - Set Video_VACT (Bits 0 to 11) to 1440
-DSI_BLK_HSA0_REG: Offset 0xc0 (A31 Page 852)
+
+DSI_BLK_HSA0_REG: DSI Offset 0xc0 (A31 Page 852)
 - Set HSA_PH (Bits 0 to 31) to 0x9004a19
-DSI_BLK_HSA1_REG: Offset 0xc4 (A31 Page 852)
+
+DSI_BLK_HSA1_REG: DSI Offset 0xc4 (A31 Page 852)
+
 - Set HSA_PF (Bits 16 to 31) to 0x50b4
 - Set HSA_PD (Bits 0 to 7) to 0
 
-  0x1ca0018 = 0x11000a (DMB)
-  0x1ca001c = 0x5cd05a0 (DMB)
-  0x1ca00c0 = 0x9004a19 (DMB)
-  0x1ca00c4 = 0x50b40000 (DMB)</code></pre></div>
+0x1ca0018 = 0x11000a (DMB)
+0x1ca001c = 0x5cd05a0 (DMB)
+0x1ca00c0 = 0x9004a19 (DMB)
+0x1ca00c4 = 0x50b40000 (DMB)</code></pre></div>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>DSI_BLK_HBP0_REG: Offset 0xc8 (A31 Page 852)
+<div class="example-wrap"><pre class="language-text"><code>DSI_BLK_HBP0_REG: DSI Offset 0xc8 (A31 Page 852)
 - Set HBP_PH (Bits 0 to 31) to 0x35005419
-DSI_BLK_HBP1_REG: Offset 0xcc (A31 Page 852)
+
+DSI_BLK_HBP1_REG: DSI Offset 0xcc (A31 Page 852)
 - Set HBP_PF (Bits 16 to 31) to 0x757a
 - Set HBP_PD (Bits 0 to 7) to 0
-DSI_BLK_HFP0_REG: Offset 0xd0 (A31 Page 852)
+
+DSI_BLK_HFP0_REG: DSI Offset 0xd0 (A31 Page 852)
 - Set HFP_PH (Bits 0 to 31) to 0x9004a19
-DSI_BLK_HFP1_REG: Offset 0xd4 (A31 Page 853)
+
+DSI_BLK_HFP1_REG: DSI Offset 0xd4 (A31 Page 853)
 - Set HFP_PF (Bits 16 to 31) to 0x50b4
 - Set HFP_PD (Bits 0 to 7) to 0
 
-  0x1ca00c8 = 0x35005419 (DMB)
-  0x1ca00cc = 0x757a0000 (DMB)
-  0x1ca00d0 = 0x9004a19 (DMB)
-  0x1ca00d4 = 0x50b40000 (DMB)</code></pre></div>
+0x1ca00c8 = 0x35005419 (DMB)
+0x1ca00cc = 0x757a0000 (DMB)
+0x1ca00d0 = 0x9004a19 (DMB)
+0x1ca00d4 = 0x50b40000 (DMB)</code></pre></div>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>DSI_BLK_HBLK0_REG: Offset 0xe0 (A31 Page 853)
+<div class="example-wrap"><pre class="language-text"><code>DSI_BLK_HBLK0_REG: DSI Offset 0xe0 (A31 Page 853)
 - Set HBLK_PH (Bits 0 to 31) to 0xc091a19
-DSI_BLK_HBLK1_REG: Offset 0xe4 (A31 Page 853)
+
+DSI_BLK_HBLK1_REG: DSI Offset 0xe4 (A31 Page 853)
 - Set HBLK_PF (Bits 16 to 31) to 0x72bd
 - Set HBLK_PD (Bits 0 to 7) to 0
-DSI_BLK_VBLK0_REG: Offset 0xe8 (A31 Page 854)
+
+DSI_BLK_VBLK0_REG: DSI Offset 0xe8 (A31 Page 854)
 - Set VBLK_PH (Bits 0 to 31) to 0x1a000019
-DSI_BLK_VBLK1_REG: Offset 0xec (A31 Page 854)
+
+DSI_BLK_VBLK1_REG: DSI Offset 0xec (A31 Page 854)
 - Set VBLK_PF (Bits 16 to 31) to 0xffff
 - Set VBLK_PD (Bits 0 to 7) to 0
 
-  0x1ca00e0 = 0xc091a19 (DMB)
-  0x1ca00e4 = 0x72bd0000 (DMB)
-  0x1ca00e8 = 0x1a000019 (DMB)
-  0x1ca00ec = 0xffff0000 (DMB)</code></pre></div><h1 id="appendix-start-mipi-dsi-hsc-and-hsd"><a href="#appendix-start-mipi-dsi-hsc-and-hsd">19 Appendix: Start MIPI DSI HSC and HSD</a></h1>
+0x1ca00e0 = 0xc091a19 (DMB)
+0x1ca00e4 = 0x72bd0000 (DMB)
+0x1ca00e8 = 0x1a000019 (DMB)
+0x1ca00ec = 0xffff0000 (DMB)</code></pre></div></li>
+</ol>
+<h1 id="appendix-start-mipi-dsi-hsc-and-hsd"><a href="#appendix-start-mipi-dsi-hsc-and-hsd">19 Appendix: Start MIPI DSI HSC and HSD</a></h1>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1236"><strong>p-boot dsi_init</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#start_dsi"><strong>Log from dsi_init</strong></a></li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>start_dsi: start
 dsi_start DSI_START_HSC
-.{ 0x1ca0000 + 0x0048, 0x00000f02 },  // DMB
   0x1ca0048 = 0xf02 (DMB)
-.{ MAGIC_COMMIT, 0 },  // DMB
 dsi_update_bits: 0x01ca0010 : 00030000 -&gt; (00000001) 00000001 (DMB)
   addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
 dsi_update_bits: 0x01ca0020 : 0000001f -&gt; (00000010) 00000000 (DMB)
   addr=0x1ca0020, mask=0x10, val=0x0 (DMB)
 udelay 1000
 dsi_start DSI_START_HSD
-.{ 0x1ca0000 + 0x0048, 0x63f07006 },  // DMB
   0x1ca0048 = 0x63f07006 (DMB)
-.{ MAGIC_COMMIT, 0 },  // DMB
 dsi_update_bits: 0x01ca0010 : 00030000 -&gt; (00000001) 00000001 (DMB)
   addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
 start_dsi: end</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#start_dsi">(Source)</a></p>
-<p>Based on the above log, we have <strong>implemented in Zig</strong> the PinePhone Driver that starts Allwinner A64 MIPI DSI (in HSC and HSD Modes)…</p>
+<p>Based on the above steps, we have <strong>implemented in Zig</strong> the PinePhone Driver that starts Allwinner A64 MIPI DSI (in HSC and HSD Modes)…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1009-L1047"><strong>pinephone-nuttx/display.zig</strong></a></p>
@@ -2079,38 +2108,65 @@ start_dsi: end</code></pre></div>
 </li>
 </ul>
 <p>TODO: Reverse Engineering</p>
-<p>TODO: DSI_START_HSC</p>
-<div class="example-wrap"><pre class="language-text"><code>DSI Base Address: 0x01CA0000 (A31 Page 842)
-DSI_INST_JUMP_SEL_REG: Offset 0x48
+<p>By decoding the captured addresses and values, we decipher the following steps to <strong>start Allwinner A64 MIPI DSI (in HSC and HSD Modes)</strong>…</p>
 
-dsi_start DSI_START_HSC
-  0x1ca0048 = 0xf02 (DMB)</code></pre></div>
-<p>TODO: Commit</p>
-<div class="example-wrap"><pre class="language-text"><code>DSI_BASIC_CTL0_REG: Offset 0x10 (A31 Page 845)
-- Set Instru_En (Bit 0) to 1 (Enable DSI Processing from Instruction 0)
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>TODO: DSI_START_HSC
 
-dsi_update_bits: 0x01ca0010 : 00030000 -&gt; (00000001) 00000001 (DMB)
-  addr=0x1ca0010, mask=0x1, val=0x1 (DMB)</code></pre></div>
-<p>TODO: DSI_INST_FUNC_LANE_CEN</p>
-<div class="example-wrap"><pre class="language-text"><code>DSI_INST_FUNC_REG(n): (0x020 + (n) * 0x04)
-DSI_INST_FUNC_REG(0): Offset 0x20 (DSI_INST_ID_LP11)
-- Set DSI_INST_FUNC_LANE_CEN (Bit 4) to 0
+```text
+DSI Base Address: <span class="number">0x01CA0000 </span>(A31 Page <span class="number">842</span>)
 
-dsi_update_bits: 0x01ca0020 : 0000001f -&gt; (00000010) 00000000 (DMB)
-  addr=0x1ca0020, mask=0x10, val=0x0 (DMB)</code></pre></div>
-<p>TODO: Delay</p>
-<div class="example-wrap"><pre class="language-text"><code>udelay 1000</code></pre></div>
-<p>TODO: DSI_START_HSD</p>
-<div class="example-wrap"><pre class="language-text"><code>DSI_INST_JUMP_SEL_REG: Offset 0x48
+DSI_INST_JUMP_SEL_REG: DSI Offset <span class="number">0x48
 
-dsi_start DSI_START_HSD
-  0x1ca0048 = 0x63f07006 (DMB)</code></pre></div>
-<p>TODO: Commit</p>
-<div class="example-wrap"><pre class="language-text"><code>DSI_BASIC_CTL0_REG: Offset 0x10 (A31 Page 845)
-- Set Instru_En (Bit 0) to 1 (Enable DSI Processing from Instruction 0)
+</span>dsi_start DSI_START_HSC
+<span class="number">0x1ca0048 </span>= <span class="number">0xf02 </span>(DMB)
+```
 
-dsi_update_bits: 0x01ca0010 : 00030000 -&gt; (00000001) 00000001 (DMB)
-  addr=0x1ca0010, mask=0x1, val=0x1 (DMB)</code></pre></div><h1 id="appendix-enable-mipi-display-physical-layer-dphy"><a href="#appendix-enable-mipi-display-physical-layer-dphy">20 Appendix: Enable MIPI Display Physical Layer (DPHY)</a></h1>
+TODO: Commit
+
+```text
+DSI_BASIC_CTL0_REG: DSI Offset <span class="number">0x10 </span>(A31 Page <span class="number">845</span>)
+- Set Instru_En (Bit <span class="number">0</span>) to <span class="number">1 </span>(Enable DSI Processing from Instruction <span class="number">0</span>)
+
+dsi_update_bits: <span class="number">0x01ca0010 </span>: <span class="number">00030000 </span>-&gt; (<span class="number">00000001</span>) <span class="number">00000001 </span>(DMB)
+addr=<span class="number">0x1ca0010</span>, mask=<span class="number">0x1</span>, val=<span class="number">0x1 </span>(DMB)
+```
+
+TODO: DSI_INST_FUNC_LANE_CEN
+
+```text
+DSI_INST_FUNC_REG(n): (<span class="number">0x020 </span>+ (n) * <span class="number">0x04</span>)
+DSI_INST_FUNC_REG(<span class="number">0</span>): DSI Offset <span class="number">0x20 </span>(DSI_INST_ID_LP11)
+- Set DSI_INST_FUNC_LANE_CEN (Bit <span class="number">4</span>) to <span class="number">0
+
+</span>dsi_update_bits: <span class="number">0x01ca0020 </span>: <span class="number">0000001f </span>-&gt; (<span class="number">00000010</span>) <span class="number">00000000 </span>(DMB)
+addr=<span class="number">0x1ca0020</span>, mask=<span class="number">0x10</span>, val=<span class="number">0x0 </span>(DMB)
+```
+
+TODO: Delay
+
+```text
+udelay <span class="number">1000
+</span>```
+
+TODO: DSI_START_HSD
+
+```text
+DSI_INST_JUMP_SEL_REG: DSI Offset <span class="number">0x48
+
+</span>dsi_start DSI_START_HSD
+<span class="number">0x1ca0048 </span>= <span class="number">0x63f07006 </span>(DMB)
+```
+
+TODO: Commit
+
+```text
+DSI_BASIC_CTL0_REG: DSI Offset <span class="number">0x10 </span>(A31 Page <span class="number">845</span>)
+- Set Instru_En (Bit <span class="number">0</span>) to <span class="number">1 </span>(Enable DSI Processing from Instruction <span class="number">0</span>)
+
+dsi_update_bits: <span class="number">0x01ca0010 </span>: <span class="number">00030000 </span>-&gt; (<span class="number">00000001</span>) <span class="number">00000001 </span>(DMB)
+addr=<span class="number">0x1ca0010</span>, mask=<span class="number">0x1</span>, val=<span class="number">0x1 </span>(DMB)
+```</code></pre></div>
+<h1 id="appendix-enable-mipi-display-physical-layer-dphy"><a href="#appendix-enable-mipi-display-physical-layer-dphy">20 Appendix: Enable MIPI Display Physical Layer (DPHY)</a></h1>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n331"><strong>p-boot dphy_enable</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dphy_enable"><strong>Log from dphy_enable</strong></a></li>
