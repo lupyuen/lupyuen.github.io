@@ -991,6 +991,7 @@ By decoding the captured addresses and values, we decipher the following steps t
 1.  Set Sync Timings
 
     __DSI_BASIC_CTL_REG__: DSI Offset `0x0c` (Undocumented)
+    - Set to 0
 
     __DSI_SYNC_HSS_REG__: DSI Offset `0xb0` [(A31 Page 850)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __ECC__ (Bits 24 to 31) to `0x12`
