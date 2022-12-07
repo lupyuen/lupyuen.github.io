@@ -83,11 +83,12 @@
 <li><a href="#nuttx-display-driver-for-pinephone">14 NuttX Display Driver for PinePhone</a><ul></ul></li>
 <li><a href="#whats-next">15 What’s Next</a><ul></ul></li>
 <li><a href="#notes">16 Notes</a><ul></ul></li>
-<li><a href="#appendix-short-packet-for-mipi-dsi">17 Appendix: Short Packet for MIPI DSI</a><ul></ul></li>
+<li><a href="#appendix-sequence-of-steps-for-pinephone-display-driver">17 Appendix: Sequence of Steps for PinePhone Display Driver</a><ul></ul></li>
 <li><a href="#appendix-enable-mipi-dsi-block">18 Appendix: Enable MIPI DSI Block</a><ul></ul></li>
 <li><a href="#appendix-start-mipi-dsi-hsc-and-hsd">19 Appendix: Start MIPI DSI HSC and HSD</a><ul></ul></li>
 <li><a href="#appendix-enable-mipi-display-physical-layer-dphy">20 Appendix: Enable MIPI Display Physical Layer (DPHY)</a><ul></ul></li>
-<li><a href="#appendix-initialise-lcd-controller">21 Appendix: Initialise LCD Controller</a><ul></ul></li></ul></nav><p>📝 <em>2 Oct 2022</em></p>
+<li><a href="#appendix-short-packet-for-mipi-dsi">21 Appendix: Short Packet for MIPI DSI</a><ul></ul></li>
+<li><a href="#appendix-initialise-lcd-controller">22 Appendix: Initialise LCD Controller</a><ul></ul></li></ul></nav><p>📝 <em>2 Oct 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/dsi-title.jpg" alt="PinePhone’s LCD Display in the PinePhone Block Diagram" /></p>
 <p><strong>UPDATE:</strong> PinePhone is now officially supported by Apache NuttX RTOS <a href="https://lupyuen.github.io/articles/uboot#appendix-pinephone-is-now-supported-by-apache-nuttx-rtos">(See this)</a></p>
 <p>How does <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> control its <strong>LCD Display</strong>?</p>
@@ -559,7 +560,10 @@
 <p>(Pic above)</p>
 </li>
 </ul>
-<p>Which shall be explained in the next article!</p>
+<p><em>Is there a specific sequence of steps for calling the Display Serial Interface, Display Engine and Timing Controller?</em></p>
+<p>To render graphics on PinePhone’s LCD Display, our Display Driver needs to follow these steps…</p>
+<p>TODO</p>
+<p>We’ll explain all these in the next article!</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/de"><strong>“Rendering PinePhone’s Display (DE and TCON0)”</strong></a></li>
 </ul>
@@ -575,18 +579,6 @@
 <p>“…the module is running a little instruction set and the manual conspicuously omits any description of the instructions or even the registers where you put the instructions.”</p>
 </blockquote>
 <p>We’ll find out soon in the next article!</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/de"><strong>“Rendering PinePhone’s Display (DE and TCON0)”</strong></a></li>
-</ul>
-<p>When we have implemented the Display Engine and Timing Controller, our PinePhone Display Driver will look something like this…</p>
-<ul>
-<li>
-<p><a href="https://github.com/davidwed/p-boot/blob/master/src/display.c#L1565-L2132"><strong>display.c</strong></a> and <a href="https://github.com/davidwed/p-boot/blob/master/src/dtest.c#L276-L348"><strong>dtest.c</strong></a></p>
-<p><a href="https://megous.com/git/p-boot/">(Originally from <strong>megous.com/p-boot</strong>)</a></p>
-<p><a href="https://gist.github.com/lupyuen/ee3adf76e76881609845d0ab0f768a95">(Running p-boot on Apache NuttX RTOS)</a></p>
-<p><a href="https://twitter.com/MisterTechBlog/status/1576543316912484352">(How it looks on NuttX)</a></p>
-</li>
-</ul>
 <p><img src="https://lupyuen.github.io/images/serial-title.jpg" alt="Apache NuttX RTOS booting on PinePhone" /></p>
 <p><a href="https://lupyuen.github.io/articles/uboot"><em>Apache NuttX RTOS booting on PinePhone</em></a></p>
 <h1 id="nuttx-display-driver-for-pinephone"><a href="#nuttx-display-driver-for-pinephone">14 NuttX Display Driver for PinePhone</a></h1>
@@ -730,31 +722,64 @@
 <p><a href="https://www.reddit.com/r/PINE64official/comments/xsteb3/comment/iqostm5/?utm_source=share&amp;utm_medium=web2x&amp;context=3">(See this)</a></p>
 </li>
 </ol>
-<p><img src="https://lupyuen.github.io/images/dsi-short.png" alt="MIPI DSI Short Packet (Page 201)" /></p>
-<p><a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf"><em>MIPI DSI Short Packet (Page 201)</em></a></p>
-<h1 id="appendix-short-packet-for-mipi-dsi"><a href="#appendix-short-packet-for-mipi-dsi">17 Appendix: Short Packet for MIPI DSI</a></h1>
-<p>According to <a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf"><strong>BL808 Reference Manual</strong></a> (Page 201, pic above)…</p>
-<blockquote>
-<p>A <strong>Short Packet</strong> consists of 8-bit data identification (DI), two bytes of commands or data, and 8-bit ECC.</p>
-</blockquote>
-<blockquote>
-<p>The length of a short packet is 4 bytes including ECC.</p>
-</blockquote>
-<p>Thus a MIPI DSI <strong>Short Packet</strong> (compared with Long Packet)…</p>
-<ul>
+<h1 id="appendix-sequence-of-steps-for-pinephone-display-driver"><a href="#appendix-sequence-of-steps-for-pinephone-display-driver">17 Appendix: Sequence of Steps for PinePhone Display Driver</a></h1>
+<p><em>Is there a specific sequence of steps for calling the Display Serial Interface, Display Engine and Timing Controller?</em></p>
+<p>To render graphics on PinePhone’s LCD Display, our Display Driver needs to follow these steps: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L175-L226">render.zig</a></p>
+<ol>
 <li>
-<p>Doesn’t have Packet Payload and Packet Footer (CRC)</p>
+<p>Turn on <strong>Display Backlight</strong></p>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-display-backlight">(Explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig">(Implemented here)</a></p>
 </li>
 <li>
-<p>Instead of Word Count (WC), the Packet Header now has 2 bytes of data</p>
+<p>Initialise <strong>Timing Controller (TCON0)</strong></p>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-timing-controller-tcon0">(Explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig">(Implemented here)</a></p>
 </li>
 <li>
-<p>DCS Command (Data Type) is…</p>
-<p><strong>DCS Short Write Without Parameter (<code>0x05</code>)</strong> for sending 1 byte of data</p>
-<p><strong>DCS Short Write With Parameter (<code>0x15</code>)</strong> for sending 2 bytes of data</p>
+<p>Initialise <strong>Power Management Integrated Circuit (PMIC)</strong></p>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit">(Explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig">(Implemented here)</a></p>
 </li>
-</ul>
-<p>Everything else is the same.</p>
+<li>
+<p>Enable <strong>MIPI DSI Block</strong></p>
+<p><a href="https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block">(Explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L884-L1007">(Implemented here)</a></p>
+</li>
+<li>
+<p>Enable <strong>MIPI Display Physical Layer (DPHY)</strong></p>
+<p><a href="https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-display-physical-layer-dphy">(Explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/dphy.zig">(Implemented here)</a></p>
+</li>
+<li>
+<p>Reset <strong>LCD Panel</strong></p>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel">(Explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig">(Implemented here)</a></p>
+</li>
+<li>
+<p>Initialise <strong>LCD Controller (ST7703)</strong></p>
+<p><a href="https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/dsi2#initialise-st7703-lcd-controller">(Implemented here)</a></p>
+</li>
+<li>
+<p>Start <strong>MIPI DSI HSC and HSD</strong></p>
+<p><a href="https://lupyuen.github.io/articles/dsi#appendix-start-mipi-dsi-hsc-and-hsd">(Explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1009-L1047">(Implemented here)</a></p>
+</li>
+<li>
+<p>Initialise <strong>Display Engine (DE)</strong></p>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine">(Explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L710-L1011">(Implemented here)</a></p>
+</li>
+<li>
+<p>Wait 160 milliseconds</p>
+</li>
+<li>
+<p>Render Graphics with <strong>Display Engine (DE)</strong></p>
+<p><a href="https://lupyuen.github.io/articles/de">(Explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L69-L175">(Implemented here)</a></p>
+</li>
+</ol>
 <h1 id="appendix-enable-mipi-dsi-block"><a href="#appendix-enable-mipi-dsi-block">18 Appendix: Enable MIPI DSI Block</a></h1>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1236"><strong>p-boot dsi_init</strong></a>…</p>
 <ul>
@@ -1253,13 +1278,38 @@ update_bits addr=0x1ca1054, mask=0xf000000, val=0xf000000 (DMB)</code></pre></di
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for dphy.zig</strong></a></p>
 </li>
 </ul>
-<h1 id="appendix-initialise-lcd-controller"><a href="#appendix-initialise-lcd-controller">21 Appendix: Initialise LCD Controller</a></h1>
+<p><img src="https://lupyuen.github.io/images/dsi-short.png" alt="MIPI DSI Short Packet (Page 201)" /></p>
+<p><a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf"><em>MIPI DSI Short Packet (Page 201)</em></a></p>
+<h1 id="appendix-short-packet-for-mipi-dsi"><a href="#appendix-short-packet-for-mipi-dsi">21 Appendix: Short Packet for MIPI DSI</a></h1>
+<p>According to <a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf"><strong>BL808 Reference Manual</strong></a> (Page 201, pic above)…</p>
+<blockquote>
+<p>A <strong>Short Packet</strong> consists of 8-bit data identification (DI), two bytes of commands or data, and 8-bit ECC.</p>
+</blockquote>
+<blockquote>
+<p>The length of a short packet is 4 bytes including ECC.</p>
+</blockquote>
+<p>Thus a MIPI DSI <strong>Short Packet</strong> (compared with Long Packet)…</p>
+<ul>
+<li>
+<p>Doesn’t have Packet Payload and Packet Footer (CRC)</p>
+</li>
+<li>
+<p>Instead of Word Count (WC), the Packet Header now has 2 bytes of data</p>
+</li>
+<li>
+<p>DCS Command (Data Type) is…</p>
+<p><strong>DCS Short Write Without Parameter (<code>0x05</code>)</strong> for sending 1 byte of data</p>
+<p><strong>DCS Short Write With Parameter (<code>0x15</code>)</strong> for sending 2 bytes of data</p>
+</li>
+</ul>
+<p>Everything else is the same.</p>
+<h1 id="appendix-initialise-lcd-controller"><a href="#appendix-initialise-lcd-controller">22 Appendix: Initialise LCD Controller</a></h1>
 <p>Xingbangda has provided an <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333"><strong>Initialisation Sequence</strong></a> of (magical) ST7703 Commands that we should send to the LCD Controller at startup.</p>
 <p>The commands below are (mostly) documented in the ST7703 Datasheet…</p>
 <ul>
 <li><a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>Sitronix ST7703 LCD Controller Datasheet</strong></a></li>
 </ul>
-<p>The Initialisation Sequence consists of the following <strong>20 DCS Commands</strong> that we should send via DCS Short Write or DCS Long Write…</p>
+<p>The Initialisation Sequence consists of the following <strong>20 DCS Commands</strong> that we should send via <a href="https://lupyuen.github.io/articles/dsi#transmit-packet-over-mipi-dsi"><strong>DCS Short Write</strong></a> or <a href="https://lupyuen.github.io/articles/dsi#transmit-packet-over-mipi-dsi"><strong>DCS Long Write</strong></a>…</p>
 <div><table><thead><tr><th style="text-align: center">Byte</th><th style="text-align: left">Purpose</th></tr></thead><tbody>
 <tr><td style="text-align: center">#1</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: center"><code>0xB9</code></td><td style="text-align: left"><strong>SETEXTC</strong> (Page 131): <br> Enable USER Command</td></tr>
