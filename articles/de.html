@@ -2134,63 +2134,47 @@ start_dsi: end</code></pre></div>
 </ul>
 <p>TODO: Reverse Engineering</p>
 <p>By decoding the captured addresses and values, we decipher the following steps to <strong>start Allwinner A64 MIPI DSI (in HSC and HSD Modes)</strong>…</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>TODO: DSI_START_HSC
-
-```text
-DSI Base Address: <span class="number">0x01CA0000 </span>(A31 Page <span class="number">842</span>)
-
-DSI_INST_JUMP_SEL_REG: DSI Offset <span class="number">0x48
-
-</span>dsi_start DSI_START_HSC
-<span class="number">0x1ca0048 </span>= <span class="number">0xf02 </span>(DMB)
-```
-
-TODO: Commit
-
-```text
-DSI_BASIC_CTL0_REG: DSI Offset <span class="number">0x10 </span>(A31 Page <span class="number">845</span>)
-- Set Instru_En (Bit <span class="number">0</span>) to <span class="number">1 </span>(Enable DSI Processing from Instruction <span class="number">0</span>)
-
-dsi_update_bits: <span class="number">0x01ca0010 </span>: <span class="number">00030000 </span>-&gt; (<span class="number">00000001</span>) <span class="number">00000001 </span>(DMB)
-addr=<span class="number">0x1ca0010</span>, mask=<span class="number">0x1</span>, val=<span class="number">0x1 </span>(DMB)
-```
-
-TODO: DSI_INST_FUNC_LANE_CEN
-
-```text
-DSI_INST_FUNC_REG(n): (<span class="number">0x020 </span>+ (n) * <span class="number">0x04</span>)
-DSI_INST_FUNC_REG(<span class="number">0</span>): DSI Offset <span class="number">0x20 </span>(DSI_INST_ID_LP11)
-- Set DSI_INST_FUNC_LANE_CEN (Bit <span class="number">4</span>) to <span class="number">0
-
-</span>dsi_update_bits: <span class="number">0x01ca0020 </span>: <span class="number">0000001f </span>-&gt; (<span class="number">00000010</span>) <span class="number">00000000 </span>(DMB)
-addr=<span class="number">0x1ca0020</span>, mask=<span class="number">0x10</span>, val=<span class="number">0x0 </span>(DMB)
-```
-
-TODO: Delay
-
-```text
-udelay <span class="number">1000
-</span>```
-
-TODO: DSI_START_HSD
-
-```text
-DSI_INST_JUMP_SEL_REG: DSI Offset <span class="number">0x48
-
-</span>dsi_start DSI_START_HSD
-<span class="number">0x1ca0048 </span>= <span class="number">0x63f07006 </span>(DMB)
-```
-
-TODO: Commit
-
-```text
-DSI_BASIC_CTL0_REG: DSI Offset <span class="number">0x10 </span>(A31 Page <span class="number">845</span>)
-- Set Instru_En (Bit <span class="number">0</span>) to <span class="number">1 </span>(Enable DSI Processing from Instruction <span class="number">0</span>)
-
-dsi_update_bits: <span class="number">0x01ca0010 </span>: <span class="number">00030000 </span>-&gt; (<span class="number">00000001</span>) <span class="number">00000001 </span>(DMB)
-addr=<span class="number">0x1ca0010</span>, mask=<span class="number">0x1</span>, val=<span class="number">0x1 </span>(DMB)
-```</code></pre></div>
+<ol>
+<li>
+<p>Start HSC (Undocumented)</p>
+<p>DSI_INST_JUMP_SEL_REG: DSI Offset <code>0x48</code></p>
+<p>DSI Base Address: <code>0x01CA</code> <code>0000</code> (A31 Page 842)</p>
+<div class="example-wrap"><pre class="language-text"><code>dsi_start DSI_START_HSC
+0x1ca0048 = 0xf02 (DMB)</code></pre></div></li>
+<li>
+<p>Commit</p>
+<p>DSI_BASIC_CTL0_REG: DSI Offset <code>0x10</code> (A31 Page 845)</p>
+<ul>
+<li>Set Instru_En (Bit 0) to 1 (Enable DSI Processing from Instruction 0)</li>
+</ul>
+<div class="example-wrap"><pre class="language-text"><code>dsi_update_bits: 0x01ca0010 : 00030000 -&gt; (00000001) 00000001 (DMB)
+addr=0x1ca0010, mask=0x1, val=0x1 (DMB)</code></pre></div></li>
+<li>
+<p>Instruction Function Lane (Documented)</p>
+<p>DSI_INST_FUNC_REG(0): DSI Offset <code>0x20</code> (DSI_INST_ID_LP11)</p>
+<ul>
+<li>Set DSI_INST_FUNC_LANE_CEN (Bit 4) to 0</li>
+</ul>
+<p>(DSI_INST_FUNC_REG(n) is <code>(0x020 + (n) * 0x04)</code>)</p>
+<div class="example-wrap"><pre class="language-text"><code>dsi_update_bits: 0x01ca0020 : 0000001f -&gt; (00000010) 00000000 (DMB)
+addr=0x1ca0020, mask=0x10, val=0x0 (DMB)</code></pre></div></li>
+<li>
+<p>Wait 1,000 microseconds</p>
+<div class="example-wrap"><pre class="language-text"><code>udelay 1000</code></pre></div></li>
+<li>
+<p>Start HSD (Undocumented)</p>
+<p>DSI_INST_JUMP_SEL_REG: DSI Offset <code>0x48</code></p>
+<div class="example-wrap"><pre class="language-text"><code>dsi_start DSI_START_HSD
+0x1ca0048 = 0x63f07006 (DMB)</code></pre></div></li>
+<li>
+<p>Commit</p>
+<p>DSI_BASIC_CTL0_REG: DSI Offset <code>0x10</code> (A31 Page 845)</p>
+<ul>
+<li>Set Instru_En (Bit 0) to 1 (Enable DSI Processing from Instruction 0)</li>
+</ul>
+<div class="example-wrap"><pre class="language-text"><code>dsi_update_bits: 0x01ca0010 : 00030000 -&gt; (00000001) 00000001 (DMB)
+addr=0x1ca0010, mask=0x1, val=0x1 (DMB)</code></pre></div></li>
+</ol>
 <h1 id="appendix-enable-mipi-display-physical-layer-dphy"><a href="#appendix-enable-mipi-display-physical-layer-dphy">20 Appendix: Enable MIPI Display Physical Layer (DPHY)</a></h1>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n331"><strong>p-boot dphy_enable</strong></a>…</p>
 <ul>
