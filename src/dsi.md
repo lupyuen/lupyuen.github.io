@@ -583,7 +583,7 @@ Yeah. The complete steps to initialise the ST7703 LCD Controller will look simil
 
 ![Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)](https://lupyuen.github.io/images/pio-display.png)
 
-[_Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)_](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)
+[_Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)_](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
 # Render Display
 
@@ -797,13 +797,13 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Enable MIPI DSI Bus
 
-    __BUS_CLK_GATING_REG0__: CCU Offset `0x60` (A64 Page 100)
+    __BUS_CLK_GATING_REG0__: CCU Offset `0x60` [(A64 Page 100)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
     - Set __MIPIDSI_GATING__ (Bit 1) to 1 (Pass Gating Clock for MIPI DSI)
 
-    __BUS_SOFT_RST_REG0__: CCU Offset `0x2C0` (A64 Page 138)
+    __BUS_SOFT_RST_REG0__: CCU Offset `0x2C0` [(A64 Page 138)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
     - __Set MIPI_DSI_RST__ (Bit 1) to 1 (Deassert MIPI DSI Reset)
 
-    __CCU Base Address__: `0x01C2` `0000` (A64 Page 82)
+    __CCU Base Address__: `0x01C2` `0000` [(A64 Page 82)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
     ```text
     mipi dsi bus enable
@@ -813,10 +813,10 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Enable DSI Block
 
-    __DSI_CTL_REG__: DSI Offset `0x0` (A31 Page 843)
+    __DSI_CTL_REG__: DSI Offset `0x0` [(A31 Page 843)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __DSI_En__ (Bit 0) to 1 (Enable DSI)
 
-    __DSI_BASIC_CTL0_REG__: DSI Offset `0x10` (A31 Page 845)
+    __DSI_BASIC_CTL0_REG__: DSI Offset `0x10` [(A31 Page 845)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __CRC_En__ (Bit 17) to 1 (Enable CRC)
     - Set __ECC_En__ (Bit 16) to 1 (Enable ECC)
 
@@ -826,7 +826,7 @@ By decoding the captured addresses and values, we decipher the following steps t
     __DSI_TRANS_ZERO_REG__: DSI Offset `0x78` (Undocumented)
     - Set to 0
 
-    DSI Base Address: `0x01CA` `0000` (A31 Page 842)
+    DSI Base Address: `0x01CA` `0000` [(A31 Page 842)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
 
     ```text
     Enable the DSI block
@@ -839,20 +839,28 @@ By decoding the captured addresses and values, we decipher the following steps t
 1.  Set Instructions (Undocumented)
 
     __DSI_INST_FUNC_REG(0)__: DSI Offset `0x20` (DSI_INST_ID_LP11)
+    - Set to `0x1f`
 
     __DSI_INST_FUNC_REG(1)__: DSI Offset `0x24` (DSI_INST_ID_TBA)
+    - Set to `0x1000` `0001`
 
     __DSI_INST_FUNC_REG(2)__: DSI Offset `0x28` (DSI_INST_ID_HSC)
+    - Set to `0x2000` `0010`
 
     __DSI_INST_FUNC_REG(3)__: DSI Offset `0x2c` (DSI_INST_ID_HSD)
+    - Set to `0x2000` `000f`
 
     __DSI_INST_FUNC_REG(4)__: DSI Offset `0x30` (DSI_INST_ID_LPDT)
+    - Set to `0x3010` `0001`
 
     __DSI_INST_FUNC_REG(5)__: DSI Offset `0x34` (DSI_INST_ID_HSCEXIT)
+    - Set to `0x4000` `0010`
 
     __DSI_INST_FUNC_REG(6)__: DSI Offset `0x38` (DSI_INST_ID_NOP)
+    - Set to `0xf`
 
     __DSI_INST_FUNC_REG(7)__: DSI Offset `0x3c` (DSI_INST_ID_DLY)
+    - Set to `0x5000` `001f`
 
     (DSI_INST_FUNC_REG(n) is `(0x020 + (n) * 0x04)`)
 
@@ -871,10 +879,12 @@ By decoding the captured addresses and values, we decipher the following steps t
 1.  Configure Jump Instructions (Undocumented)
 
     __DSI_INST_JUMP_CFG_REG(0)__: DSI Offset `0x4c` (DSI_INST_JUMP_CFG)
+    - Set to `0x56` `0001`
 
     (DSI_INST_JUMP_CFG_REG(n) is `(0x04c + (n) * 0x04)`)
 
     __DSI_DEBUG_DATA_REG__: Offset `0x2f8`
+    - Set to `0xff`
 
     ```text
     0x1ca004c = 0x560001 (DMB)
@@ -883,7 +893,7 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Set Video Start Delay
 
-    __DSI_BASIC_CTL1_REG__: DSI Offset `0x14` (A31 Page 846)
+    __DSI_BASIC_CTL1_REG__: DSI Offset `0x14` [(A31 Page 846)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __Video_Start_Delay__ (Bits 4 to 11) to 1468 (Line Delay)
     - Set __Video_Precision_Mode_Align__ (Bit 2) to 1 (Fill Mode)
     - Set __Video_Frame_Start__ (Bit 1) to 1 (Precision Mode)
@@ -897,6 +907,7 @@ By decoding the captured addresses and values, we decipher the following steps t
 1.  Set Burst (Undocumented)
 
     __DSI_TCON_DRQ_REG__: DSI Offset 0x7c
+    - Set to `0x1000` `0007`
 
     ```text
     setup_burst
@@ -906,10 +917,13 @@ By decoding the captured addresses and values, we decipher the following steps t
 1.  Set Instruction Loop (Undocumented)
 
     __DSI_INST_LOOP_SEL_REG__: DSI Offset `0x40`
+    - Set to `0x3000` `0002`
 
     __DSI_INST_LOOP_NUM_REG(0)__: DSI Offset `0x44`
+    - Set to `0x31` `0031`
 
     __DSI_INST_LOOP_NUM_REG(1)__: DSI Offset `0x54`
+    - Set to `0x31` `0031`
 
     (DSI_INST_LOOP_NUM_REG(n) is `(0x044 + (n) * 0x10)`)
 
@@ -922,20 +936,20 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Set Pixel Format
 
-    __DSI_PIXEL_PH_REG__: DSI Offset `0x90` (A31 Page 848)
+    __DSI_PIXEL_PH_REG__: DSI Offset `0x90` [(A31 Page 848)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __ECC__ (Bits 24 to 31) to 19
     - Set __WC__ (Bits 8 to 23) to 2160 (Byte Numbers of PD in a Pixel Packet)
     - Set __VC__ (Bits 6 to 7) to 0 (Virtual Channel)
     - Set __DT__ (Bits 0 to 5) to `0x3E` (24-bit Video Mode)
 
-    __DSI_PIXEL_PF0_REG__: DSI Offset `0x98` (A31 Page 849)
+    __DSI_PIXEL_PF0_REG__: DSI Offset `0x98` [(A31 Page 849)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __CRC_Force__ (Bits 0 to 15) to `0xffff` (Force CRC to this value)
 
-    __DSI_PIXEL_PF1_REG__: DSI Offset `0x9c` (A31 Page 849)
+    __DSI_PIXEL_PF1_REG__: DSI Offset `0x9c` [(A31 Page 849)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __CRC_Init_LineN__ (Bits 16 to 31) to `0xffff` (CRC initial to this value in transmitions except 1st one)
     - Set __CRC_Init_Line0__ (Bits 0 to 15) to `0xffff` (CRC initial to this value in 1st transmition every frame)
 
-    __DSI_PIXEL_CTL0_REG__: DSI Offset `0x80` (A31 Page 847)
+    __DSI_PIXEL_CTL0_REG__: DSI Offset `0x80` [(A31 Page 847)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __PD_Plug_Dis__ (Bit 16) to 1 (Disable PD plug before pixel bytes)
     - Set __Pixel_Endian__ (Bit 4) to 0 (LSB first)
     - Set __Pixel_Format__ (Bits 0 to 3) to 8 (24-bit RGB888)
@@ -952,28 +966,28 @@ By decoding the captured addresses and values, we decipher the following steps t
 
     __DSI_BASIC_CTL_REG__: DSI Offset `0x0c` (Undocumented)
 
-    __DSI_SYNC_HSS_REG__: DSI Offset `0xb0` (A31 Page 850)
+    __DSI_SYNC_HSS_REG__: DSI Offset `0xb0` [(A31 Page 850)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __ECC__ (Bits 24 to 31) to `0x12`
     - Set __D1__ (Bits 16 to 23) to 0
     - Set __D0__ (Bits 8 to 15) to 0
     - Set __VC__ (Bits 6 to 7) to 0 (Virtual Channel)
     - Set __DT__ (Bits 0 to 5) to `0x21` (HSS)
 
-    __DSI_SYNC_HSE_REG__: DSI Offset `0xb4` (A31 Page 850)
+    __DSI_SYNC_HSE_REG__: DSI Offset `0xb4` [(A31 Page 850)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __ECC__ (Bits 24 to 31) to 1
     - Set __D1__ (Bits 16 to 23) to 0
     - Set __D0__ (Bits 8 to 15) to 0
     - Set __VC__ (Bits 6 to 7) to 0 (Virtual Channel)
     - Set __DT__ (Bits 0 to 5) to `0x31` (HSE)
 
-    __DSI_SYNC_VSS_REG__: DSI Offset `0xb8` (A31 Page 851)
+    __DSI_SYNC_VSS_REG__: DSI Offset `0xb8` [(A31 Page 851)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __ECC__ (Bits 24 to 31) to 7
     - Set __D1__ (Bits 16 to 23) to 0
     - Set __D0__ (Bits 8 to 15) to 0
     - Set __VC__ (Bits 6 to 7) to 0 (Virtual Channel)
     - Set __DT__ (Bits 0 to 5) to 1 (VSS)
 
-    __DSI_SYNC_VSE_REG__: DSI Offset `0xbc` (A31 Page 851)
+    __DSI_SYNC_VSE_REG__: DSI Offset `0xbc` [(A31 Page 851)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __ECC__ (Bits 24 to 31) to `0x14`
     - Set __D1__ (Bits 16 to 23) to 0
     - Set __D0__ (Bits 8 to 15) to 0
@@ -1004,33 +1018,33 @@ By decoding the captured addresses and values, we decipher the following steps t
     0x1ca001c = 0x5cd05a0 (DMB)
     ```
 
-1.  Set Horizontal Blank Packets
+1.  Set Horizontal Blanking
 
-    __DSI_BLK_HSA0_REG__: DSI Offset `0xc0` (A31 Page 852)
+    __DSI_BLK_HSA0_REG__: DSI Offset `0xc0` [(A31 Page 852)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __HSA_PH__ (Bits 0 to 31) to `0x900` `4a19`
 
-    __DSI_BLK_HSA1_REG__: DSI Offset `0xc4` (A31 Page 852)
+    __DSI_BLK_HSA1_REG__: DSI Offset `0xc4` [(A31 Page 852)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __HSA_PF__ (Bits 16 to 31) to `0x50b4`
     - Set __HSA_PD__ (Bits 0 to 7) to 0
 
-    __DSI_BLK_HBP0_REG__: DSI Offset `0xc8` (A31 Page 852)
+    __DSI_BLK_HBP0_REG__: DSI Offset `0xc8` [(A31 Page 852)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __HBP_PH__ (Bits 0 to 31) to `0x3500` `5419`
 
-    __DSI_BLK_HBP1_REG__: DSI Offset `0xcc` (A31 Page 852)
+    __DSI_BLK_HBP1_REG__: DSI Offset `0xcc` [(A31 Page 852)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __HBP_PF__ (Bits 16 to 31) to `0x757a`
     - Set __HBP_PD__ (Bits 0 to 7) to 0
 
-    __DSI_BLK_HFP0_REG__: DSI Offset `0xd0` (A31 Page 852)
+    __DSI_BLK_HFP0_REG__: DSI Offset `0xd0` [(A31 Page 852)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __HFP_PH__ (Bits 0 to 31) to `0x900` `4a19`
 
-    __DSI_BLK_HFP1_REG__: DSI Offset `0xd4` (A31 Page 853)
+    __DSI_BLK_HFP1_REG__: DSI Offset `0xd4` [(A31 Page 853)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __HFP_PF__ (Bits 16 to 31) to `0x50b4`
     - Set __HFP_PD__ (Bits 0 to 7) to 0
 
-    __DSI_BLK_HBLK0_REG__: DSI Offset `0xe0` (A31 Page 853)
+    __DSI_BLK_HBLK0_REG__: DSI Offset `0xe0` [(A31 Page 853)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __HBLK_PH__ (Bits 0 to 31) to `0xc09` `1a19`
 
-    __DSI_BLK_HBLK1_REG__: DSI Offset `0xe4` (A31 Page 853)
+    __DSI_BLK_HBLK1_REG__: DSI Offset `0xe4` [(A31 Page 853)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __HBLK_PF__ (Bits 16 to 31) to `0x72bd`
     - Set __HBLK_PD__ (Bits 0 to 7) to 0
 
@@ -1045,12 +1059,12 @@ By decoding the captured addresses and values, we decipher the following steps t
     0x1ca00e4 = 0x72bd0000 (DMB)
     ```
 
-1.  Set Vertical Blank Packets
+1.  Set Vertical Blanking
 
-    __DSI_BLK_VBLK0_REG__: DSI Offset `0xe8` (A31 Page 854)
+    __DSI_BLK_VBLK0_REG__: DSI Offset `0xe8` [(A31 Page 854)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __VBLK_PH__ (Bits 0 to 31) to `0x1a00` `0019`
 
-    __DSI_BLK_VBLK1_REG__: DSI Offset `0xec` (A31 Page 854)
+    __DSI_BLK_VBLK1_REG__: DSI Offset `0xec` [(A31 Page 854)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __VBLK_PF__ (Bits 16 to 31) to `0xffff`
     - Set __VBLK_PD__ (Bits 0 to 7) to 0
 
@@ -1076,8 +1090,9 @@ By decoding the captured addresses and values, we decipher the following steps t
 1.  Start HSC (Undocumented)
 
     __DSI_INST_JUMP_SEL_REG__: DSI Offset `0x48`
+    - Set to `0xf02`
 
-    __DSI Base Address__: `0x01CA` `0000` (A31 Page 842)
+    __DSI Base Address__: `0x01CA` `0000` [(A31 Page 842)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
 
     ```text
     dsi_start DSI_START_HSC
@@ -1086,7 +1101,7 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Commit
 
-    __DSI_BASIC_CTL0_REG__: DSI Offset `0x10` (A31 Page 845)
+    __DSI_BASIC_CTL0_REG__: DSI Offset `0x10` [(A31 Page 845)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __Instru_En__ (Bit 0) to 1 (Enable DSI Processing from Instruction 0)
 
     ```text
@@ -1094,7 +1109,7 @@ By decoding the captured addresses and values, we decipher the following steps t
     addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
     ```
 
-1.  Instruction Function Lane (Documented)
+1.  Instruction Function Lane (Undocumented)
 
     __DSI_INST_FUNC_REG(0)__: DSI Offset `0x20` (DSI_INST_ID_LP11)
     - Set __DSI_INST_FUNC_LANE_CEN__ (Bit 4) to 0
@@ -1115,6 +1130,7 @@ By decoding the captured addresses and values, we decipher the following steps t
 1.  Start HSD (Undocumented)
 
     __DSI_INST_JUMP_SEL_REG__: DSI Offset `0x48`
+    - Set to `0x63f0` `7006`
 
     ```text
     dsi_start DSI_START_HSD
@@ -1123,7 +1139,7 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Commit
 
-    __DSI_BASIC_CTL0_REG__: DSI Offset `0x10` (A31 Page 845)
+    __DSI_BASIC_CTL0_REG__: DSI Offset `0x10` [(A31 Page 845)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
     - Set __Instru_En__ (Bit 0) to 1 (Enable DSI Processing from Instruction 0)
 
     ```text
@@ -1163,12 +1179,12 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Set DSI Clock to 150 MHz
 
-    __MIPI_DSI_CLK_REG__: CCU Offset `0x168` (A64 Page 122)
+    __MIPI_DSI_CLK_REG__: CCU Offset `0x168` [(A64 Page 122)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
     - Set __DSI_DPHY_GATING__ (Bit 15) to 1 (DSI DPHY Clock is On)
     - Set __DSI_DPHY_SRC_SEL__ (Bits 8 to 9) to `0b10` (DSI DPHY Clock Source is PLL_PERIPH0(1X))
     - Set __DPHY_CLK_DIV_M__ (Bits 0 to 3) to 3 (DSI DPHY Clock divide ratio - 1)
 
-    __CCU Base Address__: `0x01C2` `0000` (A64 Page 82)
+    __CCU Base Address__: `0x01C2` `0000` [(A64 Page 82)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
     ```text
     150MHz (600 / 4)
@@ -1178,16 +1194,22 @@ By decoding the captured addresses and values, we decipher the following steps t
 1.  Power on DPHY Tx (Undocumented)
 
     __DPHY_TX_CTL_REG__: DPHY Offset `0x04`
+    - Set to `0x1000` `0000`
 
     __DPHY_TX_TIME0_REG__: DPHY Offset `0x10`
+    - Set to `0xa06` `000e`
     
     __DPHY_TX_TIME1_REG__: DPHY Offset `0x14`
+    - Set to `0xa03` `3207`
     
     __DPHY_TX_TIME2_REG__: DPHY Offset `0x18`
+    - Set to `0x1e`
     
     __DPHY_TX_TIME3_REG__: DPHY Offset `0x1c`
+    - Set to `0x0`
     
     __DPHY_TX_TIME4_REG__: DPHY Offset `0x20`
+    - Set to `0x303`
 
     __DPHY Base Address__: `0x01ca` `1000`
 
@@ -1203,14 +1225,19 @@ By decoding the captured addresses and values, we decipher the following steps t
 1.  Enable DPHY (Undocumented)
 
     __DPHY_GCTL_REG__: DPHY Offset `0x00` (Enable DPHY)
+    - Set to `0x31`
 
     __DPHY_ANA0_REG__: DPHY Offset `0x4c` (PWS)
+    - Set to `0x9f00` `7f00`
 
     __DPHY_ANA1_REG__: DPHY Offset `0x50` (CSMPS)
+    - Set to `0x1700` `0000`
 
     __DPHY_ANA4_REG__: DPHY Offset `0x5c` (CKDV)
+    - Set to `0x1f0` `1555`
 
     __DPHY_ANA2_REG__: DPHY Offset `0x54` (ENIB)
+    - Set to `0x2`
 
     Wait 5 microseconds
 
@@ -1226,24 +1253,30 @@ By decoding the captured addresses and values, we decipher the following steps t
 1.  Enable LDOR, LDOC, LDOD (Undocumented)
 
     __DPHY_ANA3_REG__: DPHY Offset `0x58` (Enable LDOR, LDOC, LDOD)
+    - Set to `0x304` `0000`
 
     Wait 1 microsecond
 
     __DPHY_ANA3_REG__: DPHY Offset `0x58` (Enable VTTC, VTTD)
+    - Set bits `0xf800` `0000`
 
     Wait 1 microsecond
 
     __DPHY_ANA3_REG__: DPHY Offset `0x58` (Enable DIV)
+    - Set bits `0x400` `0000`
 
     Wait 1 microsecond
 
     __DPHY_ANA2_REG__: DPHY Offset `0x54` (Enable CK_CPU)
+    - Set bits `0x10`
 
     Wait 1 microsecond
 
     __DPHY_ANA1_REG__: DPHY Offset `0x50` (VTT Mode)
+    - Set bits `0x8000` `0000`
 
     __DPHY_ANA2_REG__: DPHY Offset `0x54` (Enable P2S CPU)
+    - Set bits `0xf00` `0000`
 
     ```text
     0x1ca1058 = 0x3040000 (DMB)

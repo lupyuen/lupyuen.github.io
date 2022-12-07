@@ -1831,7 +1831,7 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Configure PLL_VIDEO0
     
-    __PLL_VIDEO0_CTRL_REG__: CCU Offset `0x10` (A64 Page 86)
+    __PLL_VIDEO0_CTRL_REG__: CCU Offset `0x10` [(A64 Page 86)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
     - Set __PLL_ENABLE__ (Bit 31) to 1 (Enable PLL)
     - Set __PLL_MODE__ (Bit 30) to 0 (Manual Mode)
     - Set __LOCK__ (Bit 28) to 0 (Unlocked)
@@ -1841,7 +1841,7 @@ By decoding the captured addresses and values, we decipher the following steps t
     - Set __PLL_FACTOR_N__ (Bits 8 to 14) to `0x62` (PLL Factor N)
     - Set __PLL_PREDIV_M__ (Bits 0 to 3) to 7 (PLL Pre Divider)
 
-    __CCU Base Address__: `0x01C2` `0000` (A64 Page 82)
+    __CCU Base Address__: `0x01C2` `0000` [(A64 Page 82)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
     ```text
     PLL_VIDEO0
@@ -1850,7 +1850,7 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Enable LDO1 and LDO2
 
-    __PLL_MIPI_CTRL_REG__: CCU Offset `0x40` (A64 Page 94)
+    __PLL_MIPI_CTRL_REG__: CCU Offset `0x40` [(A64 Page 94)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
     - Set __LDO1_EN__ (Bit 23) to 1 (Enable On-chip LDO1)
     - Set __LDO2_EN__ (Bit 22) to 1 (Enable On-chip LDO2)
 
@@ -1862,10 +1862,9 @@ By decoding the captured addresses and values, we decipher the following steps t
     udelay 100
     ```
 
-1.  TODO: Configure PLL_MIPI
+1.  Configure MIPI PLL
 
-    ```text
-    PLL_MIPI_CTRL_REG: CCU Offset 0x40 (A64 Page 94)
+    __PLL_MIPI_CTRL_REG__: CCU Offset `0x40` [(A64 Page 94)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
     - Set PLL_ENABLE (Bit 31) to 1 (Enable MIPI PLL)
     - Set LOCK (Bit 28) to 0 (Unlocked)
     - Set SINT_FRAC (Bit 27) to 0 (Integer Mode)
@@ -1881,104 +1880,106 @@ By decoding the captured addresses and values, we decipher the following steps t
     - Set PLL_FACTOR_K (Bits 4 to 5) to 1 (PLL Factor K)
     - Set PLL_PRE_DIV_M (Bits 0 to 3) to 10 (PLL Pre Divider)
 
+    ```text
     0x1c20040 = 0x80c0071a (DMB)
     ```
 
-1.  TODO: TCON0 source MIPI_PLL
+1.  Set TCON0 Clock Source to MIPI PLL
+
+    __TCON0_CLK_REG__: CCU Offset `0x118` [(A64 Page 117)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+    - Set __SCLK_GATING__ (Bit 31) to 1 (Special Clock is On)
+    - Set __CLK_SRC_SEL__ (Bits 24 to 26) to 0 (Clock Source is MIPI PLL)
 
     ```text
-    TCON0_CLK_REG: CCU Offset 0x118 (A64 Page 117)
-    - Set SCLK_GATING (Bit 31) to 1 (Special Clock is On)
-    - Set CLK_SRC_SEL (Bits 24 to 26) to 0 (Clock Source is PLL_MIPI)
-
     TCON0 source MIPI_PLL
     0x1c20118 = 0x80000000 (DMB)
     ```
 
-1.  TODO: Clock on
+1.  Enable TCON0 Clock
+
+    __BUS_CLK_GATING_REG1__: CCU Offset `0x64` [(A64 Page 102)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+    - Set __TCON0_GATING__ (Bit 3) to 1 (Pass Clock for TCON0)
 
     ```text
-    BUS_CLK_GATING_REG1: CCU Offset 0x64 (A64 Page 102)
-    - Set TCON0_GATING (Bit 3) to 1 (Pass Clock for TCON0)
-
     Clock on
     0x1c20064 = 0x8 (DMB)
     ```
 
-1.  TODO: Reset off
+1.  Deassert TCON0 Reset
+
+    __BUS_SOFT_RST_REG1__: CCU Offset `0x2c4` [(A64 Page 140)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+    - Set __TCON0_RST__ (Bit 3) to 1 (Deassert TCON0 Reset)
 
     ```text
-    BUS_SOFT_RST_REG1: CCU Offset 0x2c4 (A64 Page 140)
-    - Set TCON0_RST (Bit 3) to 1 (Deassert TCON0 Reset)
-
     Reset off
     0x1c202c4 = 0x8 (DMB)
     ```
 
-1.  TODO: Init lcdc
+1.  Disable TCON0 and Interrupts
+
+    __TCON_GCTL_REG__: TCON0 Offset `0x00` [(A64 Page 508)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+    - Set __TCON_En__ (Bit 31) to 0 (Disable TCON0)
+
+    __TCON_GINT0_REG__: TCON0 Offset 0x04 [(A64 Page 509)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+    - Set to 0 (Disable TCON0 Interrupts)
+
+    __TCON_GINT1_REG__: TCON0 Offset 0x08 [(A64 Page 510)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+    - Set to 0 (Disable TCON0 Interrupts)
+
+    __TCON0 Base Address__: `0x01C0` `C000` [(A64 Page 507)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
     ```text
-    TCON0 Base Address: 0x01C0C000 (A64 Page 507)
-
-    TCON_GCTL_REG: TCON0 Offset 0x00 (A64 Page 508)
-    - Set TCON_En (Bit 31) to 0 (Disable TCON0)
-
-    TCON_GINT0_REG: TCON0 Offset 0x04 (A64 Page 509)
-    - Set to 0 (Disable TCON0 Interrupts)
-
-    TCON_GINT1_REG: TCON0 Offset 0x08 (A64 Page 510)
-    - Set to 0 (Disable TCON0 Interrupts)
-
     Init lcdc: Disable tcon, Disable all interrupts
     0x1c0c000 = 0x0 (DMB)
     0x1c0c004 = 0x0
     0x1c0c008 = 0x0
     ```
 
-1.  TODO: Set all io lines to tristate
+1.  Enable Tristate Output
+
+    __TCON0_IO_TRI_REG__: TCON0 Offset `0x8c` [(A64 Page 520)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+    - Set to `0xffff` `ffff` to Enable TCON0 Tristate Output
+
+    __TCON1_IO_TRI_REG__: TCON0 Offset `0xf4` (Address Mismatch?)
+    - Set to `0xffff` `ffff` to Enable TCON1 Tristate Output 
 
     ```text
-    TCON0_IO_TRI_REG: TCON0 Offset 0x8c (A64 Page 520)
-    - Set to 0xffffffff to Enable TCON0 Output Tristate
-
-    TCON1_IO_TRI_REG: TCON0 Offset 0xf4 (Undocumented?)
-    - Set to 0xffffffff to Enable TCON1 Output Tristate
-
     Set all io lines to tristate
     0x1c0c08c = 0xffffffff
     0x1c0c0f4 = 0xffffffff
     ```
 
-1.  TODO: mode set
+1.  Set DCLK to MIPI PLL / 6
+
+    __TCON0_DCLK_REG__: TCON0 Offset `0x44` [(A64 Page 513)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+    - Set __TCON0_Dclk_En__ (Bits 28 to 31) to 8 (Enable TCON0 Clocks: DCLK, DCLK1, DCLK2, DCLKM2)
+    - Set __TCON0_Dclk_Div__ (Bits 0 to 6) to 6 (DCLK Divisor)
+
+    __TCON0_CTL_REG__: TCON0 Offset `0x40` [(A64 Page 512)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+    - Set __TCON0_En__ (Bit 31) to 1 (Enable TCON0)
+    - Set __TCON0_Work_Mode__ (Bit 28) to 0 (Normal Work Mode)
+    - Set __TCON0_IF__ (Bits 24 to 25) to 1 (8080 Interface)
+    - Set __TCON0_RB_Swap__ (Bit 23) to 0 (No Red/Blue Swap)
+    - Set __TCON0_FIFO1_Rst__ (Bit 21) to 0 (No FIFO1 Reset)
+    - Set __TCON0_Start_Delay__ (Bits 4 to 8) to 0 (No STA Delay)
+    - Set __TCON0_SRC_SEL__ (Bits 0 to 2) to 0 (TCON0 Source is DE0)
+
+    __TCON0_BASIC0_REG__: TCON0 Offset `0x48` [(A64 Page 514)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+    - Set __TCON0_X__ (Bits 16 to 27) to 719 (Panel Width - 1)
+    - Set __TCON0_Y__ (Bits 0 to 11) to 1439 (Panel Height - 1)
+
+    __TCON0_ECC_FIFO__: Offset 0xf8 (Undocumented)
+    - Set to 8
+
+    __TCON0_CPU_IF_REG__: TCON0 Offset `0x60` [(A64 Page 516)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+    - Set __CPU_Mode__ (Bits 28 to 31) to 1 (24-bit DSI)
+    - Set __AUTO__ (Bit 17) to 0 (Disable Auto Transfer Mode)
+    - Set __FLUSH__ (Bit 16) to 1 (Enable Direct Transfer Mode)
+    - Set __Trigger_FIFO_Bist_En__ (Bit 3) to 0 (Disable FIFO Bist Trigger)
+    - Set __Trigger_FIFO_En__ (Bit 2) to 1 (Enable FIFO Trigger)
+    - Set __Trigger_En__ (Bit 0) to 1 (Enable Trigger Mode)
 
     ```text
-    TCON0_DCLK_REG: TCON0 Offset 0x44 (A64 Page 513)
-    - Set TCON0_Dclk_En (Bits 28 to 31) to 8 (Enable TCON0 Clock: dclk_en = 1; dclk1_en = 1; dclk2_en = 0; dclkm2_en = 0)
-    - Set TCON0_Dclk_Div (Bits 0 to 6) to 6 (DCLK Divisor)
-
-    TCON0_CTL_REG: TCON0 Offset 0x40 (A64 Page 512)
-    - Set TCON0_En (Bit 31) to 1 (Enable TCON0)
-    - Set TCON0_Work_Mode (Bit 28) to 0 (Normal Work Mode)
-    - Set TCON0_IF (Bits 24 to 25) to 1 (8080 Interface)
-    - Set TCON0_RB_Swap (Bit 23) to 0 (No Red/Blue Swap)
-    - Set TCON0_FIFO1_Rst (Bit 21) to 0 (No FIFO1 Reset)
-    - Set TCON0_Start_Delay (Bits 4 to 8) to 0 (No STA Delay)
-    - Set TCON0_SRC_SEL (Bits 0 to 2) to 0 (TCON0 Source is DE0)
-
-    TCON0_BASIC0_REG: TCON0 Offset 0x48 (A64 Page 514)
-    - Set TCON0_X (Bits 16 to 27) to 719 (Panel Width - 1)
-    - Set TCON0_Y (Bits 0 to 11) to 1439 (Panel Height - 1)
-
-    ECC_FIFO: Offset 0xf8 (Undocumented)
-
-    TCON0_CPU_IF_REG: TCON0 Offset 0x60 (A64 Page 516)
-    - Set CPU_Mode (Bits 28 to 31) to 1 (24-bit DSI)
-    - Set AUTO (Bit 17) to 0 (Disable Auto Transfer Mode)
-    - Set FLUSH (Bit 16) to 1 (Enable Direct Transfer Mode)
-    - Set Trigger_FIFO_Bist_En (Bit 3) to 0 (Disable FIFO Bist Trigger)
-    - Set Trigger_FIFO_En (Bit 2) to 1 (Enable FIFO Trigger)
-    - Set Trigger_En (Bit 0) to 1 (Enable Trigger Mode)
-
     mode set: DCLK = MIPI_PLL / 6
     0x1c0c044 = 0x80000006
     0x1c0c040 = 0x81000000
@@ -1987,63 +1988,63 @@ By decoding the captured addresses and values, we decipher the following steps t
     0x1c0c060 = 0x10010005
     ```
 
-1.  TODO: Set pixel cycle
+1.  Set CPU Panel Trigger
+
+    __TCON0_CPU_TRI0_REG__: TCON0 Offset `0x160` [(A64 Page 521)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+    - Set __Block_Space__ (Bits 16 to 27) to 47 (Block Space)
+    - Set __Block_Size__ (Bits 0 to 11) to 719 (Panel Width - 1)
+
+    __TCON0_CPU_TRI1_REG__: TCON0 Offset `0x164` [(A64 Page 522)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+    - Set __Block_Current_Num__ (Bits 16 to 31) to 0 (Block Current Number)
+    - Set __Block_Num__ (Bits 0 to 15) to 1439 (Panel Height - 1)
+
+    __TCON0_CPU_TRI2_REG__: TCON0 Offset `0x168` [(A64 Page 522)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+    - Set __Start_Delay__ (Bits 16 to 31) to 7106 (Start Delay)
+    - Set __Trans_Start_Mode__ (Bit 15) to 0 (Trans Start Mode is ECC FIFO + TRI FIFO)
+    - Set __Sync_Mode__ (Bits 13 to 14) to 0 (Sync Mode is Auto)
+    - Set __Trans_Start_Set__ (Bits 0 to 12) to 10 (Trans Start Set)
 
     ```text
-    TCON0_CPU_TRI0_REG: TCON0 Offset 0x160 (A64 Page 521)
-    - Set Block_Space (Bits 16 to 27) to 47 (Block Space)
-    - Set Block_Size (Bits 0 to 11) to 719 (Panel Width - 1)
-
-    TCON0_CPU_TRI1_REG: TCON0 Offset 0x164 (A64 Page 522)
-    - Set Block_Current_Num (Bits 16 to 31) to 0 (Block Current Number)
-    - Set Block_Num (Bits 0 to 15) to 1439 (Panel Height - 1)
-
-    TCON0_CPU_TRI2_REG: TCON0 Offset 0x168 (A64 Page 522)
-    - Set Start_Delay (Bits 16 to 31) to 7106 (Start Delay)
-    - Set Trans_Start_Mode (Bit 15) to 0 (Trans Start Mode is ECC FIFO + TRI FIFO)
-    - Set Sync_Mode (Bits 13 to 14) to 0 (Sync Mode is Auto)
-    - Set Trans_Start_Set (Bits 0 to 12) to 10 (Trans Start Set)
-
     The datasheet says that this should be set higher than 20 * pixel cycle, but it's not clear what a pixel cycle is.
     0x1c0c160 = 0x2f02cf
     0x1c0c164 = 0x59f
     0x1c0c168 = 0x1bc2000a
     ```
 
-1.  TODO: Set period
+1.  Set Safe Period
+
+    __TCON_SAFE_PERIOD_REG__: TCON0 Offset `0x1f0` [(A64 Page 525)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+    - Set __Safe_Period_FIFO_Num__ (Bits 16 to 28) to 3000
+    - Set __Safe_Period_Line__ (Bits 4 to 15) to 0
+    - Set __Safe_Period_Mode__ (Bits 0 to 2) to 3 (Safe Period Mode: Safe at 2 and safe at sync active)
 
     ```text
-    TCON_SAFE_PERIOD_REG: TCON0 Offset 0x1f0 (A64 Page 525)
-    - Set Safe_Period_FIFO_Num (Bits 16 to 28) to 3000
-    - Set Safe_Period_Line (Bits 4 to 15) to 0
-    - Set Safe_Period_Mode (Bits 0 to 2) to 3 (Safe Period Mode: Safe at 2 and safe at sync active)
-
     The Allwinner BSP has a comment that the period should be the display clock * 15, but uses an hardcoded 3000
     0x1c0c1f0 = 0xbb80003
     ```
 
-1.  TODO: Enable output
+1.  Enable Output Triggers
+
+    __TCON0_IO_TRI_REG__: TCON0 Offset `0x8c` [(A64 Page 520)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+    - Set __Reserved__ (Bits 29 to 31) to `0b111`
+    - Set __RGB_Endian__ (Bit 28) to 0 (Normal RGB Endian)
+    - Set __IO3_Output_Tri_En__ (Bit 27) to 0 (Enable IO3 Output Tri)
+    - Set __IO2_Output_Tri_En__ (Bit 26) to 0 (Enable IO2 Output Tri)
+    - Set __IO1_Output_Tri_En__ (Bit 25) to 0 (Enable IO1 Output Tri)
+    - Set __IO0_Output_Tri_En__ (Bit 24) to 0 (Enable IO0 Output Tri)
+    - Set __Data_Output_Tri_En__ (Bits 0 to 23) to 0 (Enable TCON0 Output Port)
 
     ```text
-    TCON0_IO_TRI_REG: TCON0 Offset 0x8c (A64 Page 520)
-    - Set Reserved (Bits 29 to 31) to 0b111
-    - Set RGB_Endian (Bit 28) to 0 (Normal RGB Endian)
-    - Set IO3_Output_Tri_En (Bit 27) to 0 (Enable IO3 Output Tri)
-    - Set IO2_Output_Tri_En (Bit 26) to 0 (Enable IO2 Output Tri)
-    - Set IO1_Output_Tri_En (Bit 25) to 0 (Enable IO1 Output Tri)
-    - Set IO0_Output_Tri_En (Bit 24) to 0 (Enable IO0 Output Tri)
-    - Set Data_Output_Tri_En (Bits 0 to 23) to 0 (Enable TCON0 Output Port)
-
     Enable the output on the pins
     0x1c0c08c = 0xe0000000 (DMB)
     ```
 
-1.  TODO: Enable TCON0
+1.  Enable TCON0
+
+    __TCON_GCTL_REG__: TCON0 Offset `0x00` [(A64 Page 508)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+    - Set __TCON_En__ (Bit 31) to 1 (Enable TCON0)
 
     ```text
-    TCON_GCTL_REG: TCON0 Offset 0x00 (A64 Page 508)
-    - Set TCON_En (Bit 31) to 1 (Enable TCON0)
-
     enable tcon as a whole
     setbits 0x1c0c000, 0x80000000 (DMB)
     ```
@@ -2227,23 +2228,30 @@ We captured the log from [__p-boot dsi_init__](https://megous.com/git/p-boot/tre
 
 -   [__Log from dsi_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#panel_reset)
 
-```text
-panel_reset: start
-deassert reset: GPD(23), 1  // PD23 - LCD-RST (active low)
-sunxi_gpio_set_cfgpin: pin=0x77, val=1
-sunxi_gpio_set_cfgbank: bank_offset=119, val=1
-  clrsetbits 0x1c20874, 0xf0000000, 0x10000000
-sunxi_gpio_output: pin=0x77, val=1
-  before: 0x1c2087c = 0x1c0000
-  after: 0x1c2087c = 0x9c0000 (DMB)
-wait for initialization
-udelay 15000
-panel_reset: end
-```
+By decoding the captured addresses and values, we decipher the following steps to __reset PinePhone's LCD Panel__...
 
-[(Source)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#panel_reset)
+1.  TODO: Set PD23 to High
 
-Based on the above log, we have __implemented in Zig__ the PinePhone Driver that resets the LCD Panel...
+    ```text
+    deassert reset: GPD(23), 1  // PD23 - LCD-RST (active low)
+    sunxi_gpio_set_cfgpin: pin=0x77, val=1
+    sunxi_gpio_set_cfgbank: bank_offset=119, val=1
+    clrsetbits 0x1c20874, 0xf0000000, 0x10000000
+    sunxi_gpio_output: pin=0x77, val=1
+    before: 0x1c2087c = 0x1c0000
+    after: 0x1c2087c = 0x9c0000 (DMB)
+    ```
+
+1.  Wait for initialization
+
+    (15,000 microseconds)
+
+    ```text
+    wait for initialization
+    udelay 15000
+    ```
+
+Based on the above steps, we have __implemented in Zig__ the PinePhone Driver that resets the LCD Panel...
 
 -   [__pinephone-nuttx/panel.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig)
 
