@@ -884,11 +884,12 @@ setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 <p>Set Video Start Delay</p>
 <p><strong>DSI_BASIC_CTL1_REG</strong>: DSI Offset <code>0x14</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 846)</a></p>
 <ul>
-<li>Set <strong>Video_Start_Delay</strong> (Bits 4 to 11) to 1468 (Line Delay)</li>
+<li>Set <strong>Video_Start_Delay</strong> (Bits 4 to 16) to 1468 (Line Delay)</li>
 <li>Set <strong>Video_Precision_Mode_Align</strong> (Bit 2) to 1 (Fill Mode)</li>
 <li>Set <strong>Video_Frame_Start</strong> (Bit 1) to 1 (Precision Mode)</li>
 <li>Set <strong>DSI_Mode</strong> (Bit 0) to 1 (Video Mode)</li>
 </ul>
+<p>(Note: Video_Start_Delay is actually 13 bits, not 8 bits as documented in the A31 User Manual)</p>
 <div class="example-wrap"><pre class="language-text"><code>get_video_start_delay
 0x1ca0014 = 0x5bc7 (DMB)</code></pre></div></li>
 <li>
