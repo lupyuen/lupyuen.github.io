@@ -1603,11 +1603,12 @@ GLB DBuff: 0x110 0008 = 0x1 (DMB)</code></pre></div></li>
 </li>
 </ul>
 <h1 id="appendix-timing-controller-tcon0"><a href="#appendix-timing-controller-tcon0">15 Appendix: Timing Controller (TCON0)</a></h1>
+<p>This section explains how we <strong>initialise the Allwinner A64 Timing Controller (TCON0)</strong>.</p>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1567"><strong>p-boot tcon0_init</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init"><strong>Log from tcon0_init</strong></a></li>
 </ul>
-<p>By decoding the captured addresses and values, we decipher the following steps to <strong>configure the Allwinner A64 Timing Controller (TCON0)</strong>…</p>
+<p>By decoding the captured addresses and values, we decipher the following steps to <strong>initialise the Allwinner A64 Timing Controller (TCON0)</strong>…</p>
 <ol>
 <li>
 <p>Configure PLL_VIDEO0</p>
@@ -1820,6 +1821,7 @@ setbits 0x1c0c000, 0x80000000 (DMB)</code></pre></div></li>
 </li>
 </ul>
 <h1 id="appendix-display-backlight"><a href="#appendix-display-backlight">16 Appendix: Display Backlight</a></h1>
+<p>This section explains how we turn on <strong>PinePhone’s Display Backlight</strong>.</p>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1929"><strong>p-boot backlight_enable</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#backlight_enable"><strong>Log from backlight_enable</strong></a></li>
@@ -1917,11 +1919,12 @@ TODO: Set Bit 10 of PH_DATA (0x1c2090c)</code></pre></div></li>
 </li>
 </ul>
 <h1 id="appendix-power-management-integrated-circuit"><a href="#appendix-power-management-integrated-circuit">17 Appendix: Power Management Integrated Circuit</a></h1>
+<p>This section explains how we <strong>initialise PinePhone’s Power Management Integrated Circuit (PMIC)</strong>, before accessing PinePhone’s LCD Display.</p>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1947"><strong>p-boot display_board_init</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#display_board_init"><strong>Log from display_board_init</strong></a></li>
 </ul>
-<p>By decoding the captured addresses and values, we decipher the following steps to <strong>configure PinePhone’s Power Management Integrated Circuit (PMIC)</strong>…</p>
+<p>By decoding the captured addresses and values, we decipher the following steps to <strong>initialise PinePhone’s Power Management Integrated Circuit (PMIC)</strong>…</p>
 <ol>
 <li>
 <p>TODO: Set PD23 to Low</p>
@@ -1970,6 +1973,7 @@ udelay 15000</code></pre></div></li>
 </li>
 </ul>
 <h1 id="appendix-reset-lcd-panel"><a href="#appendix-reset-lcd-panel">18 Appendix: Reset LCD Panel</a></h1>
+<p>This section explains how we <strong>reset PinePhone’s LCD Panel</strong>, before sending Initialisation Commands to the ST7703 LCD Controller.</p>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1236"><strong>p-boot dsi_init</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#panel_reset"><strong>Log from dsi_init</strong></a></li>

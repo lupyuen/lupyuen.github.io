@@ -763,6 +763,7 @@
 </li>
 <li>
 <p>Start <strong>MIPI DSI HSC and HSD</strong></p>
+<p>(High Speed Clock Mode and High Speed Data Transmission)</p>
 <p><a href="https://lupyuen.github.io/articles/dsi#appendix-start-mipi-dsi-hsc-and-hsd">(Explained here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1009-L1047">(Implemented here)</a></p>
 </li>
@@ -781,6 +782,7 @@
 </li>
 </ol>
 <h1 id="appendix-enable-mipi-dsi-block"><a href="#appendix-enable-mipi-dsi-block">18 Appendix: Enable MIPI DSI Block</a></h1>
+<p>This section explains how we <strong>enable the Allwinner A64 MIPI DSI Block</strong>, before calling it to transmit MIPI DSI Commands to the ST7703 LCD Controller.</p>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1236"><strong>p-boot dsi_init</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#enable_dsi_block"><strong>Log from dsi_init</strong></a></li>
@@ -1075,11 +1077,13 @@ setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 </li>
 </ul>
 <h1 id="appendix-start-mipi-dsi-hsc-and-hsd"><a href="#appendix-start-mipi-dsi-hsc-and-hsd">19 Appendix: Start MIPI DSI HSC and HSD</a></h1>
+<p>This section explains how we <strong>start Allwinner A64 MIPI DSI in HSC and HSD Modes</strong>, before calling it to transmit MIPI DSI Commands to the ST7703 LCD Controller.</p>
+<p>(High Speed Clock Mode and High Speed Data Transmission)</p>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1236"><strong>p-boot dsi_init</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#start_dsi"><strong>Log from dsi_init</strong></a></li>
 </ul>
-<p>By decoding the captured addresses and values, we decipher the following steps to <strong>start Allwinner A64 MIPI DSI (in HSC and HSD Modes)</strong>…</p>
+<p>By decoding the captured addresses and values, we decipher the following steps to <strong>start Allwinner A64 MIPI DSI in HSC and HSD Modes</strong>…</p>
 <ol>
 <li>
 <p>Start HSC (Undocumented)</p>
