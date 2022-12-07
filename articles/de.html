@@ -2376,8 +2376,18 @@ mode set: DCLK = MIPI_PLL / 6
   0x1c0c060 = 0x10010005</code></pre></div>
 <p>TODO: Set pixel cycle</p>
 <div class="example-wrap"><pre class="language-text"><code>TCON0_CPU_TRI0_REG: Offset 0x160 (A64 Page 521)
+- Set Block_Space (Bits 16 to 27) to 47 (Block Space)
+- Set Block_Size (Bits 0 to 11) to 719 (Panel Width - 1)
+
 TCON0_CPU_TRI1_REG: Offset 0x164 (A64 Page 522)
+- Set Block_Current_Num (Bits 16 to 31) to 0 (Block Current Number)
+- Set Block_Num (Bits 0 to 15) to 1439 (Panel Height - 1)
+
 TCON0_CPU_TRI2_REG: Offset 0x168 (A64 Page 522)
+- Set Start_Delay (Bits 16 to 31) to 7106 (Start Delay)
+- Set Trans_Start_Mode (Bit 15) to 0 (Trans Start Mode is ECC FIFO + TRI FIFO)
+- Set Sync_Mode (Bits 13 to 14) to 0 (Sync Mode is Auto)
+- Set Trans_Start_Set (Bits 0 to 12) to 10 (Trans Start Set)
 
 The datasheet says that this should be set higher than 20 * pixel cycle, but it&#39;s not clear what a pixel cycle is.
   0x1c0c160 = 0x2f02cf
