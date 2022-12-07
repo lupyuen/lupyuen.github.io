@@ -1647,20 +1647,20 @@ udelay 100</code></pre></div></li>
 <p>Configure MIPI PLL</p>
 <p><strong>PLL_MIPI_CTRL_REG</strong>: CCU Offset <code>0x40</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 94)</a></p>
 <ul>
-<li>Set PLL_ENABLE (Bit 31) to 1 (Enable MIPI PLL)</li>
-<li>Set LOCK (Bit 28) to 0 (Unlocked)</li>
-<li>Set SINT_FRAC (Bit 27) to 0 (Integer Mode)</li>
-<li>Set SDIV2 (Bit 26) to 0 (PLL Output)</li>
-<li>Set S6P25_7P5 (Bit 25) to 0 (PLL Output=PLL Input*6.25)</li>
-<li>Set LDO1_EN (Bit 23) to 1 (Enable On-chip LDO1)</li>
-<li>Set LDO2_EN (Bit 22) to 1 (Enable On-chip LDO2)</li>
-<li>Set PLL_SRC (Bit 21) to 0 (PLL Source is VIDEO0 PLL)</li>
-<li>Set PLL_SDM_EN (Bit 20) to 0 (Disable SDM PLL)</li>
-<li>Set PLL_FEEDBACK_DIV (Bit 17) to 0 (PLL Feedback Divider Control: Divide by 5)</li>
-<li>Set VFB_SEL (Bit 16) to 0 (MIPI Mode)</li>
-<li>Set PLL_FACTOR_N (Bits 8 to 11) to 7 (PLL Factor N)</li>
-<li>Set PLL_FACTOR_K (Bits 4 to 5) to 1 (PLL Factor K)</li>
-<li>Set PLL_PRE_DIV_M (Bits 0 to 3) to 10 (PLL Pre Divider)</li>
+<li>Set <strong>PLL_ENABLE</strong> (Bit 31) to 1 (Enable MIPI PLL)</li>
+<li>Set <strong>LOCK</strong> (Bit 28) to 0 (Unlocked)</li>
+<li>Set <strong>SINT_FRAC</strong> (Bit 27) to 0 (Integer Mode)</li>
+<li>Set <strong>SDIV2</strong> (Bit 26) to 0 (PLL Output)</li>
+<li>Set <strong>S6P25_7P5</strong> (Bit 25) to 0 (PLL Output=PLL Input*6.25)</li>
+<li>Set <strong>LDO1_EN</strong> (Bit 23) to 1 (Enable On-chip LDO1)</li>
+<li>Set <strong>LDO2_EN</strong> (Bit 22) to 1 (Enable On-chip LDO2)</li>
+<li>Set <strong>PLL_SRC</strong> (Bit 21) to 0 (PLL Source is VIDEO0 PLL)</li>
+<li>Set <strong>PLL_SDM_EN</strong> (Bit 20) to 0 (Disable SDM PLL)</li>
+<li>Set <strong>PLL_FEEDBACK_DIV</strong> (Bit 17) to 0 (PLL Feedback Divider Control: Divide by 5)</li>
+<li>Set <strong>VFB_SEL</strong> (Bit 16) to 0 (MIPI Mode)</li>
+<li>Set <strong>PLL_FACTOR_N</strong> (Bits 8 to 11) to 7 (PLL Factor N)</li>
+<li>Set <strong>PLL_FACTOR_K</strong> (Bits 4 to 5) to 1 (PLL Factor K)</li>
+<li>Set <strong>PLL_PRE_DIV_M</strong> (Bits 0 to 3) to 10 (PLL Pre Divider)</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>0x1c20040 = 0x80c0071a (DMB)</code></pre></div></li>
 <li>
