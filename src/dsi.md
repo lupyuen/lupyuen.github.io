@@ -607,7 +607,7 @@ _Is there a specific sequence of steps for calling the Display Serial Interface,
 
 To render graphics on PinePhone's LCD Display, our Display Driver needs to follow these steps...
 
-TODO
+-   [__"Sequence of Steps for PinePhone Display Driver"__](https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver)
 
 We'll explain all these in the next article!
 
@@ -658,6 +658,10 @@ The __Zephyr Driver__ for MIPI DSI (Apache-licensed) might be a helpful referenc
 -   [__Zephyr Docs for MIPI DSI__](https://docs.zephyrproject.org/latest/hardware/peripherals/mipi_dsi.html)
 
 -   [__Zephyr Test for MIPI DSI__](https://github.com/zephyrproject-rtos/zephyr-testing/blob/main/tests/drivers/mipi_dsi/api/src/main.c)
+
+Our NuttX Display Driver will implement these sequence of steps...
+
+-   [__"Sequence of Steps for PinePhone Display Driver"__](https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver)
 
 We have started the __Zig Implementation__ of the NuttX Driver...
 

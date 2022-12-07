@@ -754,7 +754,7 @@ _Is there a specific sequence of steps for calling the Display Serial Interface,
 
 To render graphics on PinePhone's LCD Display, our Display Driver needs to follow these steps...
 
-TODO
+-   [__"Sequence of Steps for PinePhone Display Driver"__](https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver)
 
 _How shall we build the PinePhone Display Driver?_
 
