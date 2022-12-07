@@ -948,9 +948,9 @@ __UPDATE:__ We have implemented the MIPI DSI Driver in Zig...
 
 -   [__"NuttX RTOS for PinePhone: Display Driver in Zig"__](https://lupyuen.github.io/articles/dsi2)
 
--   [__"Enable MIPI DSI Block"__](https://lupyuen.github.io/articles/de#appendix-enable-mipi-dsi-block)
+-   [__"Enable MIPI DSI Block"__](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block)
 
--   [__"Start MIPI DSI HSC and HSD"__](https://lupyuen.github.io/articles/de#appendix-start-mipi-dsi-hsc-and-hsd)
+-   [__"Start MIPI DSI HSC and HSD"__](https://lupyuen.github.io/articles/dsi#appendix-start-mipi-dsi-hsc-and-hsd)
 
 Allwinner A64's Timing Controller (TCON0) controls PinePhone's LCD Display via the [__Display Serial Interface (DSI)__](https://en.wikipedia.org/wiki/Display_Serial_Interface), as defined by the [__Mobile Industry Processor Interface (MIPI) Alliance__](https://en.wikipedia.org/wiki/MIPI_Alliance).
 
@@ -1024,7 +1024,7 @@ Zephyr OS has a __Generic MIPI DSI Driver__, which might be helpful since it has
 
 __UPDATE:__ We have implemented the MIPI DPHY Driver in Zig...
 
--   [__"Enable MIPI Display Physical Layer (DPHY)"__](https://lupyuen.github.io/articles/de#appendix-enable-mipi-display-physical-layer-dphy)
+-   [__"Enable MIPI Display Physical Layer (DPHY)"__](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-display-physical-layer-dphy)
 
 [__MIPI D-PHY__](https://www.intel.com/content/www/us/en/docs/programmable/683092/current/introduction-to-mipi-d-phy.html) is the __Physical Layer Standard__ for the [__MIPI DSI Protocol__](https://lupyuen.github.io/articles/pio#mipi-dsi-interface).
 

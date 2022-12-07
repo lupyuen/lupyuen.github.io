@@ -435,7 +435,7 @@ There's something else that needs to be initialised: __MIPI DPHY__, the Display 
 
 Sadly A64's MIPI DPHY doesn't seem to be documented, so we might need to do Reverse Engineering. See this...
 
--   [__"MIPI DPHY"__](https://lupyuen.github.io/articles/dsi#appendix-mipi-dphy)
+-   [__"Enable MIPI Display Physical Layer (DPHY)"__](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-display-physical-layer-dphy)
 
 Don't forget to switch on the __Display Backlight__!
 
@@ -731,11 +731,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  Some parts of the PinePhone MIPI DSI Driver still need to be reverse-engineered...
 
-    [__"Enable MIPI DSI Block"__](https://lupyuen.github.io/articles/de#appendix-enable-mipi-dsi-block)
+    [__"Enable MIPI DSI Block"__](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block)
 
-    [__"Enable MIPI Display Physical Layer (DPHY)"__](https://lupyuen.github.io/articles/de#appendix-enable-mipi-display-physical-layer-dphy)
+    [__"Enable MIPI Display Physical Layer (DPHY)"__](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-display-physical-layer-dphy)
 
-    [__"Start MIPI DSI HSC and HSD"__](https://lupyuen.github.io/articles/de#appendix-start-mipi-dsi-hsc-and-hsd)
+    [__"Start MIPI DSI HSC and HSD"__](https://lupyuen.github.io/articles/dsi#appendix-start-mipi-dsi-hsc-and-hsd)
 
     We have already implemented the above features in Zig. [(See this)](https://github.com/lupyuen/pinephone-nuttx#complete-pinephone-display-driver-in-zig)
 
@@ -1141,11 +1141,7 @@ Based on the above steps, we have __implemented in Zig__ the PinePhone Driver th
 
 [_MIPI DSI Protocol Layers (Page 183)_](https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf)
 
-# Appendix: MIPI DPHY
-
-__UPDATE:__ We have implemented the MIPI DPHY Driver in Zig...
-
--   [__"Enable MIPI Display Physical Layer (DPHY)"__](https://lupyuen.github.io/articles/de#appendix-enable-mipi-display-physical-layer-dphy)
+# Appendix: Enable MIPI Display Physical Layer (DPHY)
 
 Earlier we talked about initialising the MIPI DSI Controller...
 
@@ -1159,39 +1155,114 @@ MIPI DPHY is the __"Physical Layer"__ in the pic above.
 
 (MIPI DSI runs in the layers above MIPI DPHY)
 
-Sadly A64's MIPI DPHY doesn't seem to be documented, so we might need to do Reverse Engineering.
+We captured the log from [__p-boot dphy_enable__](https://megous.com/git/p-boot/tree/src/display.c#n331)...
 
-Here's the sequence of calls for __initialising the A64 MIPI DPHY__ in PinePhone Linux...
+-   [__Log from dphy_enable__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dphy_enable)
 
-At startup, [__sun6i_dsi_encoder_enable__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L716-L795) calls...
+By decoding the captured addresses and values, we decipher the following steps to __enable the Allwinner A64 MIPI Display Physical Layer (DPHY)__...
 
--	Initialise DPHY:
+1.  Set DSI Clock to 150 MHz
 
-    phy_init → [__sun6i_dphy_init__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L129-L138)
+    __MIPI_DSI_CLK_REG__: CCU Offset `0x168` (A64 Page 122)
+    - Set __DSI_DPHY_GATING__ (Bit 15) to 1 (DSI DPHY Clock is On)
+    - Set __DSI_DPHY_SRC_SEL__ (Bits 8 to 9) to `0b10` (DSI DPHY Clock Source is PLL_PERIPH0(1X))
+    - Set __DPHY_CLK_DIV_M__ (Bits 0 to 3) to 3 (DSI DPHY Clock divide ratio - 1)
 
--	Get DPHY Configuration:
+    __CCU Base Address__: `0x01C2` `0000` (A64 Page 82)
 
-    [__phy_mipi_dphy_get_default_config__](https://github.com/torvalds/linux/blob/master/drivers/phy/phy-core-mipi-dphy.c#L15-L78)
+    ```text
+    150MHz (600 / 4)
+    0x1c20168 = 0x8203 (DMB)
+    ```
 
--	Set DPHY Mode:
+1.  Power on DPHY Tx (Undocumented)
 
-    phy_set_mode
+    __DPHY_TX_CTL_REG__: DPHY Offset `0x04`
 
--	Configure DPHY:
-
-    phy_configure → [__sun6i_dphy_configure__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L140-L152)
-
--	Power On DPHY:
-
-    phy_power_on → [__sun6i_dphy_power_on__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L343-L355)
-
-	-   For Transmit: 
+    __DPHY_TX_TIME0_REG__: DPHY Offset `0x10`
     
-        [__sun6i_dphy_tx_power_on__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L154-L243)
-
-	-   For Receive: 
+    __DPHY_TX_TIME1_REG__: DPHY Offset `0x14`
     
-        [__sun6i_dphy_rx_power_on__](https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c#L245-L341)
+    __DPHY_TX_TIME2_REG__: DPHY Offset `0x18`
+    
+    __DPHY_TX_TIME3_REG__: DPHY Offset `0x1c`
+    
+    __DPHY_TX_TIME4_REG__: DPHY Offset `0x20`
+
+    __DPHY Base Address__: `0x01ca` `1000`
+
+    ```text
+    0x1ca1004 = 0x10000000 (DMB)
+    0x1ca1010 = 0xa06000e (DMB)
+    0x1ca1014 = 0xa033207 (DMB)
+    0x1ca1018 = 0x1e (DMB)
+    0x1ca101c = 0x0 (DMB)
+    0x1ca1020 = 0x303 (DMB)
+    ```
+
+1.  Enable DPHY (Undocumented)
+
+    __DPHY_GCTL_REG__: DPHY Offset `0x00` (Enable DPHY)
+
+    __DPHY_ANA0_REG__: DPHY Offset `0x4c` (PWS)
+
+    __DPHY_ANA1_REG__: DPHY Offset `0x50` (CSMPS)
+
+    __DPHY_ANA4_REG__: DPHY Offset `0x5c` (CKDV)
+
+    __DPHY_ANA2_REG__: DPHY Offset `0x54` (ENIB)
+
+    Wait 5 microseconds
+
+    ```text
+    0x1ca1000 = 0x31 (DMB)
+    0x1ca104c = 0x9f007f00 (DMB)
+    0x1ca1050 = 0x17000000 (DMB)
+    0x1ca105c = 0x1f01555 (DMB)
+    0x1ca1054 = 0x2 (DMB)
+    udelay 5
+    ```
+
+1.  Enable LDOR, LDOC, LDOD (Undocumented)
+
+    __DPHY_ANA3_REG__: DPHY Offset `0x58` (Enable LDOR, LDOC, LDOD)
+
+    Wait 1 microsecond
+
+    __DPHY_ANA3_REG__: DPHY Offset `0x58` (Enable VTTC, VTTD)
+
+    Wait 1 microsecond
+
+    __DPHY_ANA3_REG__: DPHY Offset `0x58` (Enable DIV)
+
+    Wait 1 microsecond
+
+    __DPHY_ANA2_REG__: DPHY Offset `0x54` (Enable CK_CPU)
+
+    Wait 1 microsecond
+
+    __DPHY_ANA1_REG__: DPHY Offset `0x50` (VTT Mode)
+
+    __DPHY_ANA2_REG__: DPHY Offset `0x54` (Enable P2S CPU)
+
+    ```text
+    0x1ca1058 = 0x3040000 (DMB)
+    udelay 1
+    update_bits addr=0x1ca1058, mask=0xf8000000, val=0xf8000000 (DMB)
+    udelay 1
+    update_bits addr=0x1ca1058, mask=0x4000000, val=0x4000000 (DMB)
+    udelay 1
+    update_bits addr=0x1ca1054, mask=0x10, val=0x10 (DMB)
+    udelay 1
+    update_bits addr=0x1ca1050, mask=0x80000000, val=0x80000000 (DMB)
+    update_bits addr=0x1ca1054, mask=0xf000000, val=0xf000000 (DMB)
+    ```
+
+Based on the above steps, we have __implemented in Zig__ the PinePhone Driver that enables the Allwinner A64 MIPI Display Physical Layer (DPHY)...
+
+-   [__pinephone-nuttx/dphy.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/dphy.zig)
+
+-   [__Output Log for dphy.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
 
 # Appendix: Initialise LCD Controller
 

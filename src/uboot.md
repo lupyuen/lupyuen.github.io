@@ -924,9 +924,9 @@ __Upcoming Features__ for NuttX on PinePhone...
 
     [__"NuttX RTOS for PinePhone: Display Driver in Zig"__](https://lupyuen.github.io/articles/dsi2)
 
-    [__"Enable MIPI DSI Block"__](https://lupyuen.github.io/articles/de#appendix-enable-mipi-dsi-block)
+    [__"Enable MIPI DSI Block"__](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block)
 
-    [__"Start MIPI DSI HSC and HSD"__](https://lupyuen.github.io/articles/de#appendix-start-mipi-dsi-hsc-and-hsd)
+    [__"Start MIPI DSI HSC and HSD"__](https://lupyuen.github.io/articles/dsi#appendix-start-mipi-dsi-hsc-and-hsd)
 
 1.  __Display Engine Driver__ for Allwinner A64, based on...
 
@@ -938,7 +938,7 @@ __Upcoming Features__ for NuttX on PinePhone...
 
     [__"Timing Controller (TCON0)"__](https://lupyuen.github.io/articles/de#appendix-timing-controller-tcon0)
 
-    [__"Enable MIPI Display Physical Layer (DPHY)"__](https://lupyuen.github.io/articles/de#appendix-enable-mipi-display-physical-layer-dphy)
+    [__"Enable MIPI Display Physical Layer (DPHY)"__](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-display-physical-layer-dphy)
 
     [__"Reset LCD Panel"__](https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel)
 

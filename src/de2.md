@@ -1383,13 +1383,13 @@ We have recently added these missing features...
 
 -   [__"Timing Controller (TCON0)"__](https://lupyuen.github.io/articles/de#appendix-timing-controller-tcon0)
 
--   [__"Enable MIPI DSI Block"__](https://lupyuen.github.io/articles/de#appendix-enable-mipi-dsi-block)
+-   [__"Enable MIPI DSI Block"__](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block)
 
--   [__"Enable MIPI Display Physical Layer (DPHY)"__](https://lupyuen.github.io/articles/de#appendix-enable-mipi-display-physical-layer-dphy)
+-   [__"Enable MIPI Display Physical Layer (DPHY)"__](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-display-physical-layer-dphy)
 
 -   [__"Reset LCD Panel"__](https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel)
 
--   [__"Start MIPI DSI HSC and HSD"__](https://lupyuen.github.io/articles/de#appendix-start-mipi-dsi-hsc-and-hsd)
+-   [__"Start MIPI DSI HSC and HSD"__](https://lupyuen.github.io/articles/dsi#appendix-start-mipi-dsi-hsc-and-hsd)
 
 We hope to complete the documentation for PinePhone's Display Driver. Stay Tuned!
 
