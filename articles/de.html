@@ -2255,7 +2255,7 @@ tcon0_init: end</code></pre></div>
 </li>
 </ul>
 <p>TODO: Reverse Engineering</p>
-<p>TODO: PLL_VIDEO0</p>
+<p>TODO: Configure PLL_VIDEO0</p>
 <div class="example-wrap"><pre class="language-text"><code>CCU Base Address: 0x01C20000 (A64 Page 82)
 PLL_VIDEO0_CTRL_REG: Offset 0x10 (A64 Page 86)
 - Set PLL_ENABLE (Bit 31) to 1 (Enable PLL)
@@ -2264,38 +2264,67 @@ PLL_VIDEO0_CTRL_REG: Offset 0x10 (A64 Page 86)
 - Set FRAC_CLK_OUT (Bit 25) to 0
 - Set PLL_MODE_SEL (Bit 24) to 1 (Integer Mode)
 - Set PLL_SDM_EN (Bit 20) to 0 (Disable)
-- Set PLL_FACTOR_N (Bits 8 to 14) to 0x62
-- Set PLL_PREDIV_M (Bits 0 to 3) to 7
+- Set PLL_FACTOR_N (Bits 8 to 14) to 0x62 (PLL Factor N)
+- Set PLL_PREDIV_M (Bits 0 to 3) to 7 (PLL Pre Divider)
 
 PLL_VIDEO0
   0x1c20010 = 0x81006207 (DMB)</code></pre></div>
-<p>TODO: PLL_MIPI</p>
+<p>TODO: Enable LDO1 and LDO2</p>
 <div class="example-wrap"><pre class="language-text"><code>PLL_MIPI_CTRL_REG: Offset 0x40 (A64 Page 94)
+- Set LDO1_EN (Bit 23) to 1 (Enable On-chip LDO1)
+- Set LDO2_EN (Bit 22) to 1 (Enable On-chip LDO2)
 
 PLL_MIPI
   0x1c20040 = 0xc00000 (DMB)
-  udelay 100
+  udelay 100</code></pre></div>
+<p>TODO: Configure PLL_MIPI</p>
+<div class="example-wrap"><pre class="language-text"><code>PLL_MIPI_CTRL_REG: Offset 0x40 (A64 Page 94)
+- Set PLL_ENABLE (Bit 31) to 1 (Enable MIPI PLL)
+- Set LOCK (Bit 28) to 0 (Unlocked)
+- Set SINT_FRAC (Bit 27) to 0 (Integer Mode)
+- Set SDIV2 (Bit 26) to 0 (PLL Output)
+- Set S6P25_7P5 (Bit 25) to 0 (PLL Output=PLL Input*6.25)
+- Set LDO1_EN (Bit 23) to 1 (Enable On-chip LDO1)
+- Set LDO2_EN (Bit 22) to 1 (Enable On-chip LDO2)
+- Set PLL_SRC (Bit 21) to 0 (PLL Source is VIDEO0 PLL)
+- Set PLL_SDM_EN (Bit 20) to 0 (Disable SDM PLL)
+- Set PLL_FEEDBACK_DIV (Bit 17) to 0 (PLL Feedback Divider Control: Divide by 5)
+- Set VFB_SEL (Bit 16) to 0 (MIPI Mode)
+- Set PLL_FACTOR_N (Bits 8 to 11) to 7 (PLL Factor N)
+- Set PLL_FACTOR_K (Bits 4 to 5) to 1 (PLL Factor K)
+- Set PLL_PRE_DIV_M (Bits 0 to 3) to 10 (PLL Pre Divider)
+
   0x1c20040 = 0x80c0071a (DMB)</code></pre></div>
 <p>TODO: TCON0 source MIPI_PLL</p>
 <div class="example-wrap"><pre class="language-text"><code>TCON0_CLK_REG: Offset 0x118 (A64 Page 117)
+- Set SCLK_GATING (Bit 31) to 1 (Special Clock is On)
+- Set CLK_SRC_SEL (Bits 24 to 26) to 0 (Clock Source is PLL_MIPI)
 
 TCON0 source MIPI_PLL
   0x1c20118 = 0x80000000 (DMB)</code></pre></div>
 <p>TODO: Clock on</p>
 <div class="example-wrap"><pre class="language-text"><code>BUS_CLK_GATING_REG1: Offset 0x64 (A64 Page 102)
+- Set TCON0_GATING (Bit 3) to 1 (Pass Clock for TCON0)
 
 Clock on
   0x1c20064 = 0x8 (DMB)</code></pre></div>
 <p>TODO: Reset off</p>
 <div class="example-wrap"><pre class="language-text"><code>BUS_SOFT_RST_REG1: Offset 0x2c4 (A64 Page 140)
+- Set TCON0_RST (Bit 3) to 1 (Deassert TCON0 Reset)
 
 Reset off
   0x1c202c4 = 0x8 (DMB)</code></pre></div>
 <p>TODO: Init lcdc</p>
 <div class="example-wrap"><pre class="language-text"><code>TCON0 Base Address: 0x01C0C000 (A64 Page 507)
+
 TCON_GCTL_REG: Offset 0x00 (A64 Page 508)
+- Set TCON_En (Bit 31) to 0 (Disable TCON0)
+
 TCON_GINT0_REG: Offset 0x04 (A64 Page 509)
+- Set to 0 (Disable TCON0 Interrupts)
+
 TCON_GINT1_REG: Offset 0x08 (A64 Page 510)
+- Set to 0 (Disable TCON0 Interrupts)
 
 Init lcdc: Disable tcon, Disable all interrupts
   0x1c0c000 = 0x0 (DMB)
@@ -2303,17 +2332,41 @@ Init lcdc: Disable tcon, Disable all interrupts
   0x1c0c008 = 0x0</code></pre></div>
 <p>TODO: Set all io lines to tristate</p>
 <div class="example-wrap"><pre class="language-text"><code>TCON0_IO_TRI_REG: Offset 0x8c (A64 Page 520)
-Undocumented: Offset 0xf4
+- Set to 0xffffffff to Enable TCON0 Output Tristate
+
+TCON1_IO_TRI_REG: Offset 0xf4 (Undocumented?)
+- Set to 0xffffffff to Enable TCON1 Output Tristate
 
 Set all io lines to tristate
   0x1c0c08c = 0xffffffff
   0x1c0c0f4 = 0xffffffff</code></pre></div>
 <p>TODO: mode set</p>
 <div class="example-wrap"><pre class="language-text"><code>TCON0_DCLK_REG: Offset 0x44 (A64 Page 513)
+- Set TCON0_Dclk_En (Bits 28 to 31) to 8 (Enable TCON0 Clock: dclk_en = 1; dclk1_en = 1; dclk2_en = 0; dclkm2_en = 0)
+- Set TCON0_Dclk_Div (Bits 0 to 6) to 6 (DCLK Divisor)
+
 TCON0_CTL_REG: Offset 0x40 (A64 Page 512)
+- Set TCON0_En (Bit 31) to 1 (Enable TCON0)
+- Set TCON0_Work_Mode (Bit 28) to 0 (Normal Work Mode)
+- Set TCON0_IF (Bits 24 to 25) to 1 (8080 Interface)
+- Set TCON0_RB_Swap (Bit 23) to 0 (No Red/Blue Swap)
+- Set TCON0_FIFO1_Rst (Bit 21) to 0 (No FIFO1 Reset)
+- Set TCON0_Start_Delay (Bits 4 to 8) to 0 (No STA Delay)
+- Set TCON0_SRC_SEL (Bits 0 to 2) to 0 (TCON0 Source is DE0)
+
 TCON0_BASIC0_REG: Offset 0x48 (A64 Page 514)
-Undocumented: Offset 0xf8 (A64 Page cccc)
+- Set TCON0_X (Bits 16 to 27) to 719 (Panel Width - 1)
+- Set TCON0_Y (Bits 0 to 11) to 1439 (Panel Height - 1)
+
+ECC_FIFO: Offset 0xf8 (Undocumented)
+
 TCON0_CPU_IF_REG: Offset 0x60 (A64 Page 516)
+- Set CPU_Mode (Bits 28 to 31) to 1 (24-bit DSI)
+- Set AUTO (Bit 17) to 0 (Disable Auto Transfer Mode)
+- Set FLUSH (Bit 16) to 1 (Enable Direct Transfer Mode)
+- Set Trigger_FIFO_Bist_En (Bit 3) to 0 (Disable FIFO Bist Trigger)
+- Set Trigger_FIFO_En (Bit 2) to 1 (Enable FIFO Trigger)
+- Set Trigger_En (Bit 0) to 1 (Enable Trigger Mode)
 
 mode set: DCLK = MIPI_PLL / 6
   0x1c0c044 = 0x80000006
