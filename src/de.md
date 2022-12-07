@@ -1821,6 +1821,350 @@ Based on the above steps, we have __implemented in Zig__ the A64 Display Engine 
 
 -   [__Output Log for render.zig__](https://gist.github.com/lupyuen/2df0f8c016dae54f4e4210866a7cd118)
 
+# Appendix: Enable MIPI Display Physical Layer (DPHY)
+
+We captured the log from [__p-boot dphy_enable__](https://megous.com/git/p-boot/tree/src/display.c#n331)...
+
+-   [__Log from dphy_enable__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dphy_enable)
+
+By decoding the captured addresses and values, we decipher the following steps to __enable the Allwinner A64 MIPI Display Physical Layer (DPHY)__...
+
+1.  Set DSI Clock to 150 MHz
+
+    __MIPI_DSI_CLK_REG__: CCU Offset `0x168` (A64 Page 122)
+    - Set __DSI_DPHY_GATING__ (Bit 15) to 1 (DSI DPHY Clock is On)
+    - Set __DSI_DPHY_SRC_SEL__ (Bits 8 to 9) to `0b10` (DSI DPHY Clock Source is PLL_PERIPH0(1X))
+    - Set __DPHY_CLK_DIV_M__ (Bits 0 to 3) to 3 (DSI DPHY Clock divide ratio - 1)
+
+    __CCU Base Address__: `0x01C2` `0000` (A64 Page 82)
+
+    ```text
+    150MHz (600 / 4)
+    0x1c20168 = 0x8203 (DMB)
+    ```
+
+1.  Power on DPHY Tx (Undocumented)
+
+    __DPHY_TX_CTL_REG__: DPHY Offset `0x04`
+
+    __DPHY_TX_TIME0_REG__: DPHY Offset `0x10`
+    
+    __DPHY_TX_TIME1_REG__: DPHY Offset `0x14`
+    
+    __DPHY_TX_TIME2_REG__: DPHY Offset `0x18`
+    
+    __DPHY_TX_TIME3_REG__: DPHY Offset `0x1c`
+    
+    __DPHY_TX_TIME4_REG__: DPHY Offset `0x20`
+
+    __DPHY Base Address__: `0x01ca` `1000`
+
+    ```text
+    0x1ca1004 = 0x10000000 (DMB)
+    0x1ca1010 = 0xa06000e (DMB)
+    0x1ca1014 = 0xa033207 (DMB)
+    0x1ca1018 = 0x1e (DMB)
+    0x1ca101c = 0x0 (DMB)
+    0x1ca1020 = 0x303 (DMB)
+    ```
+
+1.  Enable DPHY (Undocumented)
+
+    __DPHY_GCTL_REG__: DPHY Offset `0x00` (Enable DPHY)
+
+    __DPHY_ANA0_REG__: DPHY Offset `0x4c` (PWS)
+
+    __DPHY_ANA1_REG__: DPHY Offset `0x50` (CSMPS)
+
+    __DPHY_ANA4_REG__: DPHY Offset `0x5c` (CKDV)
+
+    __DPHY_ANA2_REG__: DPHY Offset `0x54` (ENIB)
+
+    Wait 5 microseconds
+
+    ```text
+    0x1ca1000 = 0x31 (DMB)
+    0x1ca104c = 0x9f007f00 (DMB)
+    0x1ca1050 = 0x17000000 (DMB)
+    0x1ca105c = 0x1f01555 (DMB)
+    0x1ca1054 = 0x2 (DMB)
+    udelay 5
+    ```
+
+1.  Enable LDOR, LDOC, LDOD (Undocumented)
+
+    __DPHY_ANA3_REG__: DPHY Offset `0x58` (Enable LDOR, LDOC, LDOD)
+
+    Wait 1 microsecond
+
+    __DPHY_ANA3_REG__: DPHY Offset `0x58` (Enable VTTC, VTTD)
+
+    Wait 1 microsecond
+
+    __DPHY_ANA3_REG__: DPHY Offset `0x58` (Enable DIV)
+
+    Wait 1 microsecond
+
+    __DPHY_ANA2_REG__: DPHY Offset `0x54` (Enable CK_CPU)
+
+    Wait 1 microsecond
+
+    __DPHY_ANA1_REG__: DPHY Offset `0x50` (VTT Mode)
+
+    __DPHY_ANA2_REG__: DPHY Offset `0x54` (Enable P2S CPU)
+
+    ```text
+    0x1ca1058 = 0x3040000 (DMB)
+    udelay 1
+    update_bits addr=0x1ca1058, mask=0xf8000000, val=0xf8000000 (DMB)
+    udelay 1
+    update_bits addr=0x1ca1058, mask=0x4000000, val=0x4000000 (DMB)
+    udelay 1
+    update_bits addr=0x1ca1054, mask=0x10, val=0x10 (DMB)
+    udelay 1
+    update_bits addr=0x1ca1050, mask=0x80000000, val=0x80000000 (DMB)
+    update_bits addr=0x1ca1054, mask=0xf000000, val=0xf000000 (DMB)
+    ```
+
+Based on the above steps, we have __implemented in Zig__ the PinePhone Driver that enables the Allwinner A64 MIPI Display Physical Layer (DPHY)...
+
+-   [__pinephone-nuttx/dphy.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/dphy.zig)
+
+-   [__Output Log for dphy.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
+
+# Appendix: Timing Controller (TCON0)
+
+We captured the log from [__p-boot tcon0_init__](https://megous.com/git/p-boot/tree/src/display.c#n1567)...
+
+-   [__Log from tcon0_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init)
+
+By decoding the captured addresses and values, we decipher the following steps to __configure the Allwinner A64 Timing Controller (TCON0)__...
+
+1.  Configure PLL_VIDEO0
+    
+    __PLL_VIDEO0_CTRL_REG__: CCU Offset `0x10` (A64 Page 86)
+    - Set __PLL_ENABLE__ (Bit 31) to 1 (Enable PLL)
+    - Set __PLL_MODE__ (Bit 30) to 0 (Manual Mode)
+    - Set __LOCK__ (Bit 28) to 0 (Unlocked)
+    - Set __FRAC_CLK_OUT__ (Bit 25) to 0
+    - Set __PLL_MODE_SEL__ (Bit 24) to 1 (Integer Mode)
+    - Set __PLL_SDM_EN__ (Bit 20) to 0 (Disable)
+    - Set __PLL_FACTOR_N__ (Bits 8 to 14) to `0x62` (PLL Factor N)
+    - Set __PLL_PREDIV_M__ (Bits 0 to 3) to 7 (PLL Pre Divider)
+
+    __CCU Base Address__: `0x01C2` `0000` (A64 Page 82)
+
+    ```text
+    PLL_VIDEO0
+    0x1c20010 = 0x81006207 (DMB)
+    ```
+
+1.  Enable LDO1 and LDO2
+
+    __PLL_MIPI_CTRL_REG__: CCU Offset `0x40` (A64 Page 94)
+    - Set __LDO1_EN__ (Bit 23) to 1 (Enable On-chip LDO1)
+    - Set __LDO2_EN__ (Bit 22) to 1 (Enable On-chip LDO2)
+
+    Wait 100 microseconds
+
+    ```text
+    PLL_MIPI
+    0x1c20040 = 0xc00000 (DMB)
+    udelay 100
+    ```
+
+1.  TODO: Configure PLL_MIPI
+
+    ```text
+    PLL_MIPI_CTRL_REG: CCU Offset 0x40 (A64 Page 94)
+    - Set PLL_ENABLE (Bit 31) to 1 (Enable MIPI PLL)
+    - Set LOCK (Bit 28) to 0 (Unlocked)
+    - Set SINT_FRAC (Bit 27) to 0 (Integer Mode)
+    - Set SDIV2 (Bit 26) to 0 (PLL Output)
+    - Set S6P25_7P5 (Bit 25) to 0 (PLL Output=PLL Input*6.25)
+    - Set LDO1_EN (Bit 23) to 1 (Enable On-chip LDO1)
+    - Set LDO2_EN (Bit 22) to 1 (Enable On-chip LDO2)
+    - Set PLL_SRC (Bit 21) to 0 (PLL Source is VIDEO0 PLL)
+    - Set PLL_SDM_EN (Bit 20) to 0 (Disable SDM PLL)
+    - Set PLL_FEEDBACK_DIV (Bit 17) to 0 (PLL Feedback Divider Control: Divide by 5)
+    - Set VFB_SEL (Bit 16) to 0 (MIPI Mode)
+    - Set PLL_FACTOR_N (Bits 8 to 11) to 7 (PLL Factor N)
+    - Set PLL_FACTOR_K (Bits 4 to 5) to 1 (PLL Factor K)
+    - Set PLL_PRE_DIV_M (Bits 0 to 3) to 10 (PLL Pre Divider)
+
+    0x1c20040 = 0x80c0071a (DMB)
+    ```
+
+1.  TODO: TCON0 source MIPI_PLL
+
+    ```text
+    TCON0_CLK_REG: CCU Offset 0x118 (A64 Page 117)
+    - Set SCLK_GATING (Bit 31) to 1 (Special Clock is On)
+    - Set CLK_SRC_SEL (Bits 24 to 26) to 0 (Clock Source is PLL_MIPI)
+
+    TCON0 source MIPI_PLL
+    0x1c20118 = 0x80000000 (DMB)
+    ```
+
+1.  TODO: Clock on
+
+    ```text
+    BUS_CLK_GATING_REG1: CCU Offset 0x64 (A64 Page 102)
+    - Set TCON0_GATING (Bit 3) to 1 (Pass Clock for TCON0)
+
+    Clock on
+    0x1c20064 = 0x8 (DMB)
+    ```
+
+1.  TODO: Reset off
+
+    ```text
+    BUS_SOFT_RST_REG1: CCU Offset 0x2c4 (A64 Page 140)
+    - Set TCON0_RST (Bit 3) to 1 (Deassert TCON0 Reset)
+
+    Reset off
+    0x1c202c4 = 0x8 (DMB)
+    ```
+
+1.  TODO: Init lcdc
+
+    ```text
+    TCON0 Base Address: 0x01C0C000 (A64 Page 507)
+
+    TCON_GCTL_REG: TCON0 Offset 0x00 (A64 Page 508)
+    - Set TCON_En (Bit 31) to 0 (Disable TCON0)
+
+    TCON_GINT0_REG: TCON0 Offset 0x04 (A64 Page 509)
+    - Set to 0 (Disable TCON0 Interrupts)
+
+    TCON_GINT1_REG: TCON0 Offset 0x08 (A64 Page 510)
+    - Set to 0 (Disable TCON0 Interrupts)
+
+    Init lcdc: Disable tcon, Disable all interrupts
+    0x1c0c000 = 0x0 (DMB)
+    0x1c0c004 = 0x0
+    0x1c0c008 = 0x0
+    ```
+
+1.  TODO: Set all io lines to tristate
+
+    ```text
+    TCON0_IO_TRI_REG: TCON0 Offset 0x8c (A64 Page 520)
+    - Set to 0xffffffff to Enable TCON0 Output Tristate
+
+    TCON1_IO_TRI_REG: TCON0 Offset 0xf4 (Undocumented?)
+    - Set to 0xffffffff to Enable TCON1 Output Tristate
+
+    Set all io lines to tristate
+    0x1c0c08c = 0xffffffff
+    0x1c0c0f4 = 0xffffffff
+    ```
+
+1.  TODO: mode set
+
+    ```text
+    TCON0_DCLK_REG: TCON0 Offset 0x44 (A64 Page 513)
+    - Set TCON0_Dclk_En (Bits 28 to 31) to 8 (Enable TCON0 Clock: dclk_en = 1; dclk1_en = 1; dclk2_en = 0; dclkm2_en = 0)
+    - Set TCON0_Dclk_Div (Bits 0 to 6) to 6 (DCLK Divisor)
+
+    TCON0_CTL_REG: TCON0 Offset 0x40 (A64 Page 512)
+    - Set TCON0_En (Bit 31) to 1 (Enable TCON0)
+    - Set TCON0_Work_Mode (Bit 28) to 0 (Normal Work Mode)
+    - Set TCON0_IF (Bits 24 to 25) to 1 (8080 Interface)
+    - Set TCON0_RB_Swap (Bit 23) to 0 (No Red/Blue Swap)
+    - Set TCON0_FIFO1_Rst (Bit 21) to 0 (No FIFO1 Reset)
+    - Set TCON0_Start_Delay (Bits 4 to 8) to 0 (No STA Delay)
+    - Set TCON0_SRC_SEL (Bits 0 to 2) to 0 (TCON0 Source is DE0)
+
+    TCON0_BASIC0_REG: TCON0 Offset 0x48 (A64 Page 514)
+    - Set TCON0_X (Bits 16 to 27) to 719 (Panel Width - 1)
+    - Set TCON0_Y (Bits 0 to 11) to 1439 (Panel Height - 1)
+
+    ECC_FIFO: Offset 0xf8 (Undocumented)
+
+    TCON0_CPU_IF_REG: TCON0 Offset 0x60 (A64 Page 516)
+    - Set CPU_Mode (Bits 28 to 31) to 1 (24-bit DSI)
+    - Set AUTO (Bit 17) to 0 (Disable Auto Transfer Mode)
+    - Set FLUSH (Bit 16) to 1 (Enable Direct Transfer Mode)
+    - Set Trigger_FIFO_Bist_En (Bit 3) to 0 (Disable FIFO Bist Trigger)
+    - Set Trigger_FIFO_En (Bit 2) to 1 (Enable FIFO Trigger)
+    - Set Trigger_En (Bit 0) to 1 (Enable Trigger Mode)
+
+    mode set: DCLK = MIPI_PLL / 6
+    0x1c0c044 = 0x80000006
+    0x1c0c040 = 0x81000000
+    0x1c0c048 = 0x2cf059f
+    0x1c0c0f8 = 0x8
+    0x1c0c060 = 0x10010005
+    ```
+
+1.  TODO: Set pixel cycle
+
+    ```text
+    TCON0_CPU_TRI0_REG: TCON0 Offset 0x160 (A64 Page 521)
+    - Set Block_Space (Bits 16 to 27) to 47 (Block Space)
+    - Set Block_Size (Bits 0 to 11) to 719 (Panel Width - 1)
+
+    TCON0_CPU_TRI1_REG: TCON0 Offset 0x164 (A64 Page 522)
+    - Set Block_Current_Num (Bits 16 to 31) to 0 (Block Current Number)
+    - Set Block_Num (Bits 0 to 15) to 1439 (Panel Height - 1)
+
+    TCON0_CPU_TRI2_REG: TCON0 Offset 0x168 (A64 Page 522)
+    - Set Start_Delay (Bits 16 to 31) to 7106 (Start Delay)
+    - Set Trans_Start_Mode (Bit 15) to 0 (Trans Start Mode is ECC FIFO + TRI FIFO)
+    - Set Sync_Mode (Bits 13 to 14) to 0 (Sync Mode is Auto)
+    - Set Trans_Start_Set (Bits 0 to 12) to 10 (Trans Start Set)
+
+    The datasheet says that this should be set higher than 20 * pixel cycle, but it's not clear what a pixel cycle is.
+    0x1c0c160 = 0x2f02cf
+    0x1c0c164 = 0x59f
+    0x1c0c168 = 0x1bc2000a
+    ```
+
+1.  TODO: Set period
+
+    ```text
+    TCON_SAFE_PERIOD_REG: TCON0 Offset 0x1f0 (A64 Page 525)
+    - Set Safe_Period_FIFO_Num (Bits 16 to 28) to 3000
+    - Set Safe_Period_Line (Bits 4 to 15) to 0
+    - Set Safe_Period_Mode (Bits 0 to 2) to 3 (Safe Period Mode: Safe at 2 and safe at sync active)
+
+    The Allwinner BSP has a comment that the period should be the display clock * 15, but uses an hardcoded 3000
+    0x1c0c1f0 = 0xbb80003
+    ```
+
+1.  TODO: Enable output
+
+    ```text
+    TCON0_IO_TRI_REG: TCON0 Offset 0x8c (A64 Page 520)
+    - Set Reserved (Bits 29 to 31) to 0b111
+    - Set RGB_Endian (Bit 28) to 0 (Normal RGB Endian)
+    - Set IO3_Output_Tri_En (Bit 27) to 0 (Enable IO3 Output Tri)
+    - Set IO2_Output_Tri_En (Bit 26) to 0 (Enable IO2 Output Tri)
+    - Set IO1_Output_Tri_En (Bit 25) to 0 (Enable IO1 Output Tri)
+    - Set IO0_Output_Tri_En (Bit 24) to 0 (Enable IO0 Output Tri)
+    - Set Data_Output_Tri_En (Bits 0 to 23) to 0 (Enable TCON0 Output Port)
+
+    Enable the output on the pins
+    0x1c0c08c = 0xe0000000 (DMB)
+    ```
+
+1.  TODO: Enable TCON0
+
+    ```text
+    TCON_GCTL_REG: TCON0 Offset 0x00 (A64 Page 508)
+    - Set TCON_En (Bit 31) to 1 (Enable TCON0)
+
+    enable tcon as a whole
+    setbits 0x1c0c000, 0x80000000 (DMB)
+    ```
+
+Based on the above steps, we have __implemented in Zig__ the PinePhone Driver for Allwinner A64 Timing Controller (TCON0)...
+
+-   [__pinephone-nuttx/tcon.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig)
+
+-   [__Output Log for tcon.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
+
 # Appendix: Display Backlight
 
 We captured the log from [__p-boot backlight_enable__](https://megous.com/git/p-boot/tree/src/display.c#n1929)...
@@ -1830,9 +2174,10 @@ We captured the log from [__p-boot backlight_enable__](https://megous.com/git/p-
 By decoding the captured addresses and values, we decipher the following steps for turning on __PinePhone's Display Backlight__...
 
 1.  Configure PL10 for PWM
-    - Register PL_CFG1 (Port L Configure Register 1)
+
+    Register __PL_CFG1__ (Port L Configure Register 1)
     - At R_PIO Offset 4 [(A64 Page 412)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
-    - Set PL10_SELECT (Bits 8 to 10) to 2 (S_PWM)
+    - Set __PL10_SELECT__ (Bits 8 to 10) to 2 (S_PWM)
 
     ```text
     backlight_enable: pct=0x5a
@@ -1845,41 +2190,45 @@ By decoding the captured addresses and values, we decipher the following steps f
     ```
 
 1.  Disable R_PWM (Undocumented)
-    - Register R_PWM_CTRL_REG? (R_PWM Control Register?)
+
+    Register __R_PWM_CTRL_REG__? (R_PWM Control Register?)
     - At R_PWM Offset 0 [(A64 Page 194)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
-    - Set SCLK_CH0_GATING (Bit 6) to 0 (Mask)
+    - Set __SCLK_CH0_GATING__ (Bit 6) to 0 (Mask)
 
     ```text
     clrbits 0x1f03800, 0x40
     ```
 
 1.  Configure R_PWM Period (Undocumented)
-    - Register R_PWM_CH0_PERIOD? (R_PWM Channel 0 Period Register?)
+
+    - Register __R_PWM_CH0_PERIOD__? (R_PWM Channel 0 Period Register?)
     - At R_PWM Offset 4 [(A64 Page 195)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
-    - PWM_CH0_ENTIRE_CYS (Upper 16 Bits) = Period (`0x4af`)
-    - PWM_CH0_ENTIRE_ACT_CYS (Lower 16 Bits) = Period * Percent / 100 (`0x0437`)
-    - Period = 1199 (Cycles of PWM Clock)
-    - Percent = 90 (90% Brightness)
+    - Set __PWM_CH0_ENTIRE_CYS__ (Upper 16 Bits) to Period (`0x4af`)
+    - Set __PWM_CH0_ENTIRE_ACT_CYS__ (Lower 16 Bits) to Period * Percent / 100 (`0x0437`)
+    - __Period__ = 1199 (Cycles of PWM Clock)
+    - __Percent__ = 90 (90% Brightness)
 
     ```text
     0x1f03804 = 0x4af0437
     ```
 
 1.  Enable R_PWM (Undocumented)
-    - Register R_PWM_CTRL_REG? (R_PWM Control Register?)
+
+    - Register __R_PWM_CTRL_REG__? (R_PWM Control Register?)
     - At R_PWM Offset 0 [(A64 Page 194)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
-    - Set SCLK_CH0_GATING (Bit 6) to 1 (Pass)
-    - Set PWM_CH0_EN (Bit 4) to 1 (Enable)
-    - Set PWM_CH0_PRESCAL (Bits 0 to 3) to 0b1111 (Prescalar 1)
+    - Set __SCLK_CH0_GATING__ (Bit 6) to 1 (Pass)
+    - Set __PWM_CH0_EN__ (Bit 4) to 1 (Enable)
+    - Set __PWM_CH0_PRESCAL__ (Bits 0 to 3) to 0b1111 (Prescaler is 1)
 
     ```text
     0x1f03800 = 0x5f
     ```
 
 1.  Configure PH10 for Output
-    - Register PH_CFG1 (PH Configure Register 1)
+
+    - Register __PH_CFG1__ (PH Configure Register 1)
     - At PIO Offset `0x100` [(A64 Page 401)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
-    - Set PH10_SELECT (Bits 8 to 10) to 1 (Output)
+    - Set __PH10_SELECT__ (Bits 8 to 10) to 1 (Output)
 
     ```text
     enable backlight: GPH(10), 1
@@ -1890,9 +2239,10 @@ By decoding the captured addresses and values, we decipher the following steps f
     ```
 
 1.  Set PH10 to High
-    - Register PH_DATA (PH Data Register)
+
+    - Register __PH_DATA__ (PH Data Register)
     - At PIO Offset `0x10C` [(A64 Page 403)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
-    - Set PH10 (Bit 10) to 1 (High)
+    - Set __PH10__ (Bit 10) to 1 (High)
 
     ```text
     sunxi_gpio_output: pin=0xea, val=1
@@ -1923,95 +2273,64 @@ We captured the log from [__p-boot display_board_init__](https://megous.com/git/
 
 -   [__Log from display_board_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#display_board_init)
 
-```text
-display_board_init: start
-assert reset: GPD(23), 0  // PD23 - LCD-RST (active low)
-sunxi_gpio_set_cfgpin: pin=0x77, val=1
-sunxi_gpio_set_cfgbank: bank_offset=119, val=1
-  clrsetbits 0x1c20874, 0xf0000000, 0x10000000
-sunxi_gpio_output: pin=0x77, val=0
-  before: 0x1c2087c = 0x1c0000
-  after: 0x1c2087c = 0x1c0000 (DMB)
-dldo1 3.3V
-  pmic_write: reg=0x15, val=0x1a
-  rsb_write: rt_addr=0x2d, reg_addr=0x15, value=0x1a
-  pmic_clrsetbits: reg=0x12, clr_mask=0x0, set_mask=0x8
-  rsb_read: rt_addr=0x2d, reg_addr=0x12
-  rsb_write: rt_addr=0x2d, reg_addr=0x12, value=0xd9
-ldo_io0 3.3V
-  pmic_write: reg=0x91, val=0x1a
-  rsb_write: rt_addr=0x2d, reg_addr=0x91, value=0x1a
-  pmic_write: reg=0x90, val=0x3
-  rsb_write: rt_addr=0x2d, reg_addr=0x90, value=0x3
-dldo2 1.8V
-  pmic_write: reg=0x16, val=0xb
-  rsb_write: rt_addr=0x2d, reg_addr=0x16, value=0xb
-  pmic_clrsetbits: reg=0x12, clr_mask=0x0, set_mask=0x10
-  rsb_read: rt_addr=0x2d, reg_addr=0x12
-  rsb_write: rt_addr=0x2d, reg_addr=0x12, value=0xd9
-wait for power supplies and power-on init
-  udelay 15000
-display_board_init: end
-```
+By decoding the captured addresses and values, we decipher the following steps to __configure PinePhone's Power Management Integrated Circuit (PMIC)__...
 
-[(Source)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#display_board_init)
+1.  TODO: Set PD23 to Low
 
-Based on the above log, we have __implemented in Zig__ the PinePhone Driver for Power Management Integrated Circuit (PMIC)...
+    ```text
+    assert reset: GPD(23), 0  // PD23 - LCD-RST (active low)
+    sunxi_gpio_set_cfgpin: pin=0x77, val=1
+    sunxi_gpio_set_cfgbank: bank_offset=119, val=1
+    clrsetbits 0x1c20874, 0xf0000000, 0x10000000
+    sunxi_gpio_output: pin=0x77, val=0
+    before: 0x1c2087c = 0x1c0000
+    after: 0x1c2087c = 0x1c0000 (DMB)
+    ```
+
+1.  TODO: dldo1 3.3V
+
+    ```text
+    dldo1 3.3V
+    pmic_write: reg=0x15, val=0x1a
+    rsb_write: rt_addr=0x2d, reg_addr=0x15, value=0x1a
+    pmic_clrsetbits: reg=0x12, clr_mask=0x0, set_mask=0x8
+    rsb_read: rt_addr=0x2d, reg_addr=0x12
+    rsb_write: rt_addr=0x2d, reg_addr=0x12, value=0xd9
+    ```
+
+1.  TODO: ldo_io0 3.3V
+
+    ```text
+    ldo_io0 3.3V
+    pmic_write: reg=0x91, val=0x1a
+    rsb_write: rt_addr=0x2d, reg_addr=0x91, value=0x1a
+    pmic_write: reg=0x90, val=0x3
+    rsb_write: rt_addr=0x2d, reg_addr=0x90, value=0x3
+    ```
+
+1.  TODO: dldo2 1.8V
+
+    ```text
+    dldo2 1.8V
+    pmic_write: reg=0x16, val=0xb
+    rsb_write: rt_addr=0x2d, reg_addr=0x16, value=0xb
+    pmic_clrsetbits: reg=0x12, clr_mask=0x0, set_mask=0x10
+    rsb_read: rt_addr=0x2d, reg_addr=0x12
+    rsb_write: rt_addr=0x2d, reg_addr=0x12, value=0xd9
+    ```
+
+1.  TODO: Wait 15,000 microseconds
+
+    ```text
+    wait for power supplies and power-on init
+    udelay 15000
+    ```
+
+Based on the above steps, we have __implemented in Zig__ the PinePhone Driver for Power Management Integrated Circuit (PMIC)...
 
 -   [__pinephone-nuttx/pmic.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig)
 
 -   [__Output Log for pmic.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
-
-TODO: Reverse Engineering
-
-```text
-assert reset: GPD(23), 0  // PD23 - LCD-RST (active low)
-sunxi_gpio_set_cfgpin: pin=0x77, val=1
-sunxi_gpio_set_cfgbank: bank_offset=119, val=1
-  clrsetbits 0x1c20874, 0xf0000000, 0x10000000
-sunxi_gpio_output: pin=0x77, val=0
-  before: 0x1c2087c = 0x1c0000
-  after: 0x1c2087c = 0x1c0000 (DMB)
-```
-
-TODO: dldo1 3.3V
-
-```text
-dldo1 3.3V
-  pmic_write: reg=0x15, val=0x1a
-  rsb_write: rt_addr=0x2d, reg_addr=0x15, value=0x1a
-  pmic_clrsetbits: reg=0x12, clr_mask=0x0, set_mask=0x8
-  rsb_read: rt_addr=0x2d, reg_addr=0x12
-  rsb_write: rt_addr=0x2d, reg_addr=0x12, value=0xd9
-```
-
-TODO: ldo_io0 3.3V
-
-```text
-ldo_io0 3.3V
-  pmic_write: reg=0x91, val=0x1a
-  rsb_write: rt_addr=0x2d, reg_addr=0x91, value=0x1a
-  pmic_write: reg=0x90, val=0x3
-  rsb_write: rt_addr=0x2d, reg_addr=0x90, value=0x3
-```
-
-TODO: dldo2 1.8V
-
-```text
-dldo2 1.8V
-  pmic_write: reg=0x16, val=0xb
-  rsb_write: rt_addr=0x2d, reg_addr=0x16, value=0xb
-  pmic_clrsetbits: reg=0x12, clr_mask=0x0, set_mask=0x10
-  rsb_read: rt_addr=0x2d, reg_addr=0x12
-  rsb_write: rt_addr=0x2d, reg_addr=0x12, value=0xd9
-```
-
-TODO: Wait
-
-```text
-wait for power supplies and power-on init
-  udelay 15000
-```
 
 # Appendix: Reset LCD Panel
 
@@ -2043,737 +2362,12 @@ Based on the above log, we have __implemented in Zig__ the PinePhone Driver that
 
 # Appendix: Enable MIPI DSI Block
 
-TODO
+Moved here...
 
-We captured the log from [__p-boot dsi_init__](https://megous.com/git/p-boot/tree/src/display.c#n1236)...
-
--   [__Log from dsi_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#enable_dsi_block)
-
-By decoding the captured addresses and values, we decipher the following steps to __enable the Allwinner A64 MIPI DSI Block__...
-
-1.  Enable MIPI DSI Bus
-
-    __BUS_CLK_GATING_REG0__: CCU Offset `0x60` (A64 Page 100)
-    - Set __MIPIDSI_GATING__ (Bit 1) to 1 (Pass Gating Clock for MIPI DSI)
-
-    __BUS_SOFT_RST_REG0__: CCU Offset `0x2C0` (A64 Page 138)
-    - __Set MIPI_DSI_RST__ (Bit 1) to 1 (Deassert MIPI DSI Reset)
-
-    __CCU Base Address__: `0x01C2` `0000` (A64 Page 82)
-
-    ```text
-    mipi dsi bus enable
-    setbits 0x1c20060, 0x2 (DMB)
-    setbits 0x1c202c0, 0x2 (DMB)
-    ```
-
-1.  Enable DSI Block
-
-    __DSI_CTL_REG__: DSI Offset `0x0` (A31 Page 843)
-    - Set __DSI_En__ (Bit 0) to 1 (Enable DSI)
-
-    __DSI_BASIC_CTL0_REG__: DSI Offset `0x10` (A31 Page 845)
-    - Set __CRC_En__ (Bit 17) to 1 (Enable CRC)
-    - Set __ECC_En__ (Bit 16) to 1 (Enable ECC)
-
-    __DSI_TRANS_START_REG__: DSI Offset `0x60` (Undocumented)
-    - Set to 10
-
-    __DSI_TRANS_ZERO_REG__: DSI Offset `0x78` (Undocumented)
-    - Set to 0
-
-    DSI Base Address: `0x01CA` `0000` (A31 Page 842)
-
-    ```text
-    Enable the DSI block
-    0x1ca0000 = 0x1 (DMB)
-    0x1ca0010 = 0x30000 (DMB)
-    0x1ca0060 = 0xa (DMB)
-    0x1ca0078 = 0x0 (DMB)
-    ```
-
-1.  Set Instructions (Undocumented)
-
-    __DSI_INST_FUNC_REG(0)__: DSI Offset `0x20` (DSI_INST_ID_LP11)
-
-    __DSI_INST_FUNC_REG(1)__: DSI Offset `0x24` (DSI_INST_ID_TBA)
-
-    __DSI_INST_FUNC_REG(2)__: DSI Offset `0x28` (DSI_INST_ID_HSC)
-
-    __DSI_INST_FUNC_REG(3)__: DSI Offset `0x2c` (DSI_INST_ID_HSD)
-
-    __DSI_INST_FUNC_REG(4)__: DSI Offset `0x30` (DSI_INST_ID_LPDT)
-
-    __DSI_INST_FUNC_REG(5)__: DSI Offset `0x34` (DSI_INST_ID_HSCEXIT)
-
-    __DSI_INST_FUNC_REG(6)__: DSI Offset `0x38` (DSI_INST_ID_NOP)
-
-    __DSI_INST_FUNC_REG(7)__: DSI Offset `0x3c` (DSI_INST_ID_DLY)
-
-    (DSI_INST_FUNC_REG(n) is `(0x020 + (n) * 0x04)`)
-
-    ```text
-    inst_init
-    0x1ca0020 = 0x1f (DMB)
-    0x1ca0024 = 0x10000001 (DMB)
-    0x1ca0028 = 0x20000010 (DMB)
-    0x1ca002c = 0x2000000f (DMB)
-    0x1ca0030 = 0x30100001 (DMB)
-    0x1ca0034 = 0x40000010 (DMB)
-    0x1ca0038 = 0xf (DMB)
-    0x1ca003c = 0x5000001f (DMB)
-    ```
-
-1.  Configure Jump Instructions (Undocumented)
-
-    __DSI_INST_JUMP_CFG_REG(0)__: DSI Offset `0x4c` (DSI_INST_JUMP_CFG)
-
-    (DSI_INST_JUMP_CFG_REG(n) is `(0x04c + (n) * 0x04)`)
-
-    __DSI_DEBUG_DATA_REG__: Offset `0x2f8`
-
-    ```text
-    0x1ca004c = 0x560001 (DMB)
-    0x1ca02f8 = 0xff (DMB)
-    ```
-
-1.  Set Video Start Delay
-
-    __DSI_BASIC_CTL1_REG__: DSI Offset `0x14` (A31 Page 846)
-    - Set __Video_Start_Delay__ (Bits 4 to 11) to 1468 (Line Delay)
-    - Set __Video_Precision_Mode_Align__ (Bit 2) to 1 (Fill Mode)
-    - Set __Video_Frame_Start__ (Bit 1) to 1 (Precision Mode)
-    - Set __DSI_Mode__ (Bit 0) to 1 (Video Mode)
-
-    ```text
-    get_video_start_delay
-    0x1ca0014 = 0x5bc7 (DMB)
-    ```
-
-1.  Set Burst (Undocumented)
-
-    __DSI_TCON_DRQ_REG__: DSI Offset 0x7c
-
-    ```text
-    setup_burst
-    0x1ca007c = 0x10000007 (DMB)
-    ```
-
-1.  Set Instruction Loop (Undocumented)
-
-    __DSI_INST_LOOP_SEL_REG__: DSI Offset `0x40`
-
-    __DSI_INST_LOOP_NUM_REG(0)__: DSI Offset `0x44`
-
-    __DSI_INST_LOOP_NUM_REG(1)__: DSI Offset `0x54`
-
-    (DSI_INST_LOOP_NUM_REG(n) is `(0x044 + (n) * 0x10)`)
-
-    ```text
-    setup_inst_loop
-    0x1ca0040 = 0x30000002 (DMB)
-    0x1ca0044 = 0x310031 (DMB)
-    0x1ca0054 = 0x310031 (DMB)
-    ```
-
-1.  Set Pixel Format
-
-    __DSI_PIXEL_PH_REG__: DSI Offset `0x90` (A31 Page 848)
-    - Set __ECC__ (Bits 24 to 31) to 19
-    - Set __WC__ (Bits 8 to 23) to 2160 (Byte Numbers of PD in a Pixel Packet)
-    - Set __VC__ (Bits 6 to 7) to 0 (Virtual Channel)
-    - Set __DT__ (Bits 0 to 5) to `0x3E` (24-bit Video Mode)
-
-    __DSI_PIXEL_PF0_REG__: DSI Offset `0x98` (A31 Page 849)
-    - Set __CRC_Force__ (Bits 0 to 15) to `0xffff` (Force CRC to this value)
-
-    __DSI_PIXEL_PF1_REG__: DSI Offset `0x9c` (A31 Page 849)
-    - Set __CRC_Init_LineN__ (Bits 16 to 31) to `0xffff` (CRC initial to this value in transmitions except 1st one)
-    - Set __CRC_Init_Line0__ (Bits 0 to 15) to `0xffff` (CRC initial to this value in 1st transmition every frame)
-
-    __DSI_PIXEL_CTL0_REG__: DSI Offset `0x80` (A31 Page 847)
-    - Set __PD_Plug_Dis__ (Bit 16) to 1 (Disable PD plug before pixel bytes)
-    - Set __Pixel_Endian__ (Bit 4) to 0 (LSB first)
-    - Set __Pixel_Format__ (Bits 0 to 3) to 8 (24-bit RGB888)
-
-    ```text
-    setup_format
-    0x1ca0090 = 0x1308703e (DMB)
-    0x1ca0098 = 0xffff (DMB)
-    0x1ca009c = 0xffffffff (DMB)
-    0x1ca0080 = 0x10008 (DMB)
-    ```
-
-1.  Set Sync Timings
-
-    __DSI_BASIC_CTL_REG__: DSI Offset `0x0c` (Undocumented)
-
-    __DSI_SYNC_HSS_REG__: DSI Offset `0xb0` (A31 Page 850)
-    - Set __ECC__ (Bits 24 to 31) to `0x12`
-    - Set __D1__ (Bits 16 to 23) to 0
-    - Set __D0__ (Bits 8 to 15) to 0
-    - Set __VC__ (Bits 6 to 7) to 0 (Virtual Channel)
-    - Set __DT__ (Bits 0 to 5) to `0x21` (HSS)
-
-    __DSI_SYNC_HSE_REG__: DSI Offset `0xb4` (A31 Page 850)
-    - Set __ECC__ (Bits 24 to 31) to 1
-    - Set __D1__ (Bits 16 to 23) to 0
-    - Set __D0__ (Bits 8 to 15) to 0
-    - Set __VC__ (Bits 6 to 7) to 0 (Virtual Channel)
-    - Set __DT__ (Bits 0 to 5) to `0x31` (HSE)
-
-    __DSI_SYNC_VSS_REG__: DSI Offset `0xb8` (A31 Page 851)
-    - Set __ECC__ (Bits 24 to 31) to 7
-    - Set __D1__ (Bits 16 to 23) to 0
-    - Set __D0__ (Bits 8 to 15) to 0
-    - Set __VC__ (Bits 6 to 7) to 0 (Virtual Channel)
-    - Set __DT__ (Bits 0 to 5) to 1 (VSS)
-
-    __DSI_SYNC_VSE_REG__: DSI Offset `0xbc` (A31 Page 851)
-    - Set __ECC__ (Bits 24 to 31) to `0x14`
-    - Set __D1__ (Bits 16 to 23) to 0
-    - Set __D0__ (Bits 8 to 15) to 0
-    - Set __VC__ (Bits 6 to 7) to 0 (Virtual Channel)
-    - Set __DT__ (Bits 0 to 5) to `0x11` (VSE)
-
-    ```text
-    setup_timings
-    0x1ca000c = 0x0 (DMB)
-    0x1ca00b0 = 0x12000021 (DMB)
-    0x1ca00b4 = 0x1000031 (DMB)
-    0x1ca00b8 = 0x7000001 (DMB)
-    0x1ca00bc = 0x14000011 (DMB)
-    ```
-
-1.  Set Basic Size (Undocumented)
-
-    __DSI_BASIC_SIZE0_REG__: DSI Offset `0x18`
-    - Set __Video_VBP__ (Bits 16 to 27) to 17
-    - Set __Video_VSA__ (Bits 0 to 11) to 10
-
-    __DSI_BASIC_SIZE1_REG__: DSI Offset `0x1c`
-    - Set __Video_VT__ (Bits 16 to 28) to 1485
-    - Set __Video_VACT__ (Bits 0 to 11) to 1440
-
-    ```text
-    0x1ca0018 = 0x11000a (DMB)
-    0x1ca001c = 0x5cd05a0 (DMB)
-    ```
-
-1.  Set Horizontal Blank Packets
-
-    __DSI_BLK_HSA0_REG__: DSI Offset `0xc0` (A31 Page 852)
-    - Set __HSA_PH__ (Bits 0 to 31) to `0x900` `4a19`
-
-    __DSI_BLK_HSA1_REG__: DSI Offset `0xc4` (A31 Page 852)
-    - Set __HSA_PF__ (Bits 16 to 31) to `0x50b4`
-    - Set __HSA_PD__ (Bits 0 to 7) to 0
-
-    __DSI_BLK_HBP0_REG__: DSI Offset `0xc8` (A31 Page 852)
-    - Set __HBP_PH__ (Bits 0 to 31) to `0x3500` `5419`
-
-    __DSI_BLK_HBP1_REG__: DSI Offset `0xcc` (A31 Page 852)
-    - Set __HBP_PF__ (Bits 16 to 31) to `0x757a`
-    - Set __HBP_PD__ (Bits 0 to 7) to 0
-
-    __DSI_BLK_HFP0_REG__: DSI Offset `0xd0` (A31 Page 852)
-    - Set __HFP_PH__ (Bits 0 to 31) to `0x900` `4a19`
-
-    __DSI_BLK_HFP1_REG__: DSI Offset `0xd4` (A31 Page 853)
-    - Set __HFP_PF__ (Bits 16 to 31) to `0x50b4`
-    - Set __HFP_PD__ (Bits 0 to 7) to 0
-
-    __DSI_BLK_HBLK0_REG__: DSI Offset `0xe0` (A31 Page 853)
-    - Set __HBLK_PH__ (Bits 0 to 31) to `0xc09` `1a19`
-
-    __DSI_BLK_HBLK1_REG__: DSI Offset `0xe4` (A31 Page 853)
-    - Set __HBLK_PF__ (Bits 16 to 31) to `0x72bd`
-    - Set __HBLK_PD__ (Bits 0 to 7) to 0
-
-    ```text
-    0x1ca00c0 = 0x9004a19 (DMB)
-    0x1ca00c4 = 0x50b40000 (DMB)
-    0x1ca00c8 = 0x35005419 (DMB)
-    0x1ca00cc = 0x757a0000 (DMB)
-    0x1ca00d0 = 0x9004a19 (DMB)
-    0x1ca00d4 = 0x50b40000 (DMB)
-    0x1ca00e0 = 0xc091a19 (DMB)
-    0x1ca00e4 = 0x72bd0000 (DMB)
-    ```
-
-1.  Set Vertical Blank Packets
-
-    __DSI_BLK_VBLK0_REG__: DSI Offset `0xe8` (A31 Page 854)
-    - Set __VBLK_PH__ (Bits 0 to 31) to `0x1a00` `0019`
-
-    __DSI_BLK_VBLK1_REG__: DSI Offset `0xec` (A31 Page 854)
-    - Set __VBLK_PF__ (Bits 16 to 31) to `0xffff`
-    - Set __VBLK_PD__ (Bits 0 to 7) to 0
-
-    ```text
-    0x1ca00e8 = 0x1a000019 (DMB)
-    0x1ca00ec = 0xffff0000 (DMB)
-    ```
-
-Based on the above steps, we have __implemented in Zig__ the PinePhone Driver that enables the Allwinner A64 MIPI DSI Block...
-
--   [__pinephone-nuttx/display.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L884-L1007)
-
--   [__Output Log for display.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
+-   [__"Enable MIPI DSI Block"__](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block)
 
 # Appendix: Start MIPI DSI HSC and HSD
 
-TODO
+Moved here...
 
-We captured the log from [__p-boot dsi_init__](https://megous.com/git/p-boot/tree/src/display.c#n1236)...
-
--   [__Log from dsi_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#start_dsi)
-
-By decoding the captured addresses and values, we decipher the following steps to __start Allwinner A64 MIPI DSI (in HSC and HSD Modes)__...
-
-1.  Start HSC (Undocumented)
-
-    __DSI_INST_JUMP_SEL_REG__: DSI Offset `0x48`
-
-    __DSI Base Address__: `0x01CA` `0000` (A31 Page 842)
-
-    ```text
-    dsi_start DSI_START_HSC
-    0x1ca0048 = 0xf02 (DMB)
-    ```
-
-1.  Commit
-
-    __DSI_BASIC_CTL0_REG__: DSI Offset `0x10` (A31 Page 845)
-    - Set __Instru_En__ (Bit 0) to 1 (Enable DSI Processing from Instruction 0)
-
-    ```text
-    dsi_update_bits: 0x01ca0010 : 00030000 -> (00000001) 00000001 (DMB)
-    addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
-    ```
-
-1.  Instruction Function Lane (Documented)
-
-    __DSI_INST_FUNC_REG(0)__: DSI Offset `0x20` (DSI_INST_ID_LP11)
-    - Set __DSI_INST_FUNC_LANE_CEN__ (Bit 4) to 0
-
-    (DSI_INST_FUNC_REG(n) is `(0x020 + (n) * 0x04)`)
-
-    ```text
-    dsi_update_bits: 0x01ca0020 : 0000001f -> (00000010) 00000000 (DMB)
-    addr=0x1ca0020, mask=0x10, val=0x0 (DMB)
-    ```
-
-1.  Wait 1,000 microseconds
-
-    ```text
-    udelay 1000
-    ```
-
-1.  Start HSD (Undocumented)
-
-    __DSI_INST_JUMP_SEL_REG__: DSI Offset `0x48`
-
-    ```text
-    dsi_start DSI_START_HSD
-    0x1ca0048 = 0x63f07006 (DMB)
-    ```
-
-1.  Commit
-
-    __DSI_BASIC_CTL0_REG__: DSI Offset `0x10` (A31 Page 845)
-    - Set __Instru_En__ (Bit 0) to 1 (Enable DSI Processing from Instruction 0)
-
-    ```text
-    dsi_update_bits: 0x01ca0010 : 00030000 -> (00000001) 00000001 (DMB)
-    addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
-    ```
-
-Based on the above steps, we have __implemented in Zig__ the PinePhone Driver that starts Allwinner A64 MIPI DSI (in HSC and HSD Modes)...
-
--   [__pinephone-nuttx/display.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1009-L1047)
-
--   [__Output Log for display.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
-
-# Appendix: Enable MIPI Display Physical Layer (DPHY)
-
-We captured the log from [__p-boot dphy_enable__](https://megous.com/git/p-boot/tree/src/display.c#n331)...
-
--   [__Log from dphy_enable__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dphy_enable)
-
-```text
-dphy_enable: start
-150MHz (600 / 4)
-  0x1c20168 = 0x8203 (DMB)
-  0x1ca1004 = 0x10000000 (DMB)
-  0x1ca1010 = 0xa06000e (DMB)
-  0x1ca1014 = 0xa033207 (DMB)
-  0x1ca1018 = 0x1e (DMB)
-  0x1ca101c = 0x0 (DMB)
-  0x1ca1020 = 0x303 (DMB)
-  0x1ca1000 = 0x31 (DMB)
-  0x1ca104c = 0x9f007f00 (DMB)
-  0x1ca1050 = 0x17000000 (DMB)
-  0x1ca105c = 0x1f01555 (DMB)
-  0x1ca1054 = 0x2 (DMB)
-  udelay 5
-  0x1ca1058 = 0x3040000 (DMB)
-  udelay 1
-  update_bits addr=0x1ca1058, mask=0xf8000000, val=0xf8000000 (DMB)
-  udelay 1
-  update_bits addr=0x1ca1058, mask=0x4000000, val=0x4000000 (DMB)
-  udelay 1
-  update_bits addr=0x1ca1054, mask=0x10, val=0x10 (DMB)
-  udelay 1
-  update_bits addr=0x1ca1050, mask=0x80000000, val=0x80000000 (DMB)
-  update_bits addr=0x1ca1054, mask=0xf000000, val=0xf000000 (DMB)
-dphy_enable: end
-```
-
-[(Source)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dphy_enable)
-
-Based on the above log, we have __implemented in Zig__ the PinePhone Driver that enables the Allwinner A64 MIPI Display Physical Layer (DPHY)...
-
--   [__pinephone-nuttx/dphy.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/dphy.zig)
-
--   [__Output Log for dphy.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
-
-TODO: Reverse Engineering
-
-    ```text
-    CCU Base Address: 0x01C20000 (A64 Page 82)
-    MIPI_DSI_CLK_REG: Offset 0x168 (A64 Page 122)
-
-    150MHz (600 / 4)
-    0x1c20168 = 0x8203 (DMB)
-    ```
-
-    TODO: DPHY Tx Power On
-
-    ```text
-    DPHY Base Address: 0x01ca1000
-    DPHY_TX_CTL_REG: Offset 0x04
-    DPHY_TX_TIME0_REG: Offset 0x10
-    DPHY_TX_TIME1_REG: Offset 0x14
-    DPHY_TX_TIME2_REG: Offset 0x18
-    DPHY_TX_TIME3_REG: Offset 0x1c
-    DPHY_TX_TIME4_REG: Offset 0x20
-
-    0x1ca1004 = 0x10000000 (DMB)
-    0x1ca1010 = 0xa06000e (DMB)
-    0x1ca1014 = 0xa033207 (DMB)
-    0x1ca1018 = 0x1e (DMB)
-    0x1ca101c = 0x0 (DMB)
-    0x1ca1020 = 0x303 (DMB)
-    ```
-
-    TODO
-
-    ```text
-    DPHY_GCTL_REG: Offset 0x00 (Enable DPHY)
-    DPHY_ANA0_REG: Offset 0x4c (PWS)
-    DPHY_ANA1_REG: Offset 0x50 (CSMPS)
-    DPHY_ANA4_REG: Offset 0x5c (CKDV)
-
-    0x1ca1000 = 0x31 (DMB)
-    0x1ca104c = 0x9f007f00 (DMB)
-    0x1ca1050 = 0x17000000 (DMB)
-    0x1ca105c = 0x1f01555 (DMB)
-    ```
-
-    TODO
-
-    ```text
-    DPHY_ANA2_REG: Offset 0x54 (ENIB)
-    DPHY_ANA3_REG: Offset 0x58 (Enable LDOR, LDOC, LDOD)
-    DPHY_ANA3_REG: Offset 0x58 (Enable VTTC, VTTD)
-    DPHY_ANA3_REG: Offset 0x58 (Enable DIV)
-    DPHY_ANA2_REG: Offset 0x54 (Enable CK_CPU)
-    DPHY_ANA1_REG: Offset 0x50 (VTT Mode)
-    DPHY_ANA2_REG: Offset 0x54 (Enable P2S CPU)
-
-    0x1ca1054 = 0x2 (DMB)
-    udelay 5
-    0x1ca1058 = 0x3040000 (DMB)
-    udelay 1
-    update_bits addr=0x1ca1058, mask=0xf8000000, val=0xf8000000 (DMB)
-    udelay 1
-    update_bits addr=0x1ca1058, mask=0x4000000, val=0x4000000 (DMB)
-    udelay 1
-    update_bits addr=0x1ca1054, mask=0x10, val=0x10 (DMB)
-    udelay 1
-    update_bits addr=0x1ca1050, mask=0x80000000, val=0x80000000 (DMB)
-    update_bits addr=0x1ca1054, mask=0xf000000, val=0xf000000 (DMB)
-    ```
-
-# Appendix: Timing Controller (TCON0)
-
-We captured the log from [__p-boot tcon0_init__](https://megous.com/git/p-boot/tree/src/display.c#n1567)...
-
--   [__Log from tcon0_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init)
-
-```text
-tcon0_init: start
-PLL_VIDEO0
-  0x1c20010 = 0x81006207 (DMB)
-PLL_MIPI
-  0x1c20040 = 0xc00000 (DMB)
-  udelay 100
-  0x1c20040 = 0x80c0071a (DMB)
-TCON0 source MIPI_PLL
-  0x1c20118 = 0x80000000 (DMB)
-Clock on
-  0x1c20064 = 0x8 (DMB)
-Reset off
-  0x1c202c4 = 0x8 (DMB)
-Init lcdc: Disable tcon, Disable all interrupts
-  0x1c0c000 = 0x0 (DMB)
-  0x1c0c004 = 0x0
-  0x1c0c008 = 0x0
-Set all io lines to tristate
-  0x1c0c08c = 0xffffffff
-  0x1c0c0f4 = 0xffffffff
-mode set: DCLK = MIPI_PLL / 6
-  0x1c0c044 = 0x80000006
-  0x1c0c040 = 0x81000000
-  0x1c0c048 = 0x2cf059f
-  0x1c0c0f8 = 0x8
-  0x1c0c060 = 0x10010005
-The datasheet says that this should be set higher than 20 * pixel cycle, but it's not clear what a pixel cycle is.
-  0x1c0c160 = 0x2f02cf
-  0x1c0c164 = 0x59f
-  0x1c0c168 = 0x1bc2000a
-The Allwinner BSP has a comment that the period should be the display clock * 15, but uses an hardcoded 3000
-  0x1c0c1f0 = 0xbb80003
-Enable the output on the pins
-  0x1c0c08c = 0xe0000000 (DMB)
-enable tcon as a whole
-  setbits 0x1c0c000, 0x80000000 (DMB)
-tcon0_init: end
-```
-
-[(Source)](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init)
-
-Based on the above log, we have __implemented in Zig__ the PinePhone Driver for Allwinner A64 Timing Controller (TCON0)...
-
--   [__pinephone-nuttx/tcon.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig)
-
--   [__Output Log for tcon.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
-
-TODO: Reverse Engineering
-
-    TODO: Configure PLL_VIDEO0
-
-    ```text
-    CCU Base Address: 0x01C20000 (A64 Page 82)
-    PLL_VIDEO0_CTRL_REG: Offset 0x10 (A64 Page 86)
-    - Set PLL_ENABLE (Bit 31) to 1 (Enable PLL)
-    - Set PLL_MODE (Bit 30) to 0 (Manual Mode)
-    - Set LOCK (Bit 28) to 0 (Unlocked)
-    - Set FRAC_CLK_OUT (Bit 25) to 0
-    - Set PLL_MODE_SEL (Bit 24) to 1 (Integer Mode)
-    - Set PLL_SDM_EN (Bit 20) to 0 (Disable)
-    - Set PLL_FACTOR_N (Bits 8 to 14) to 0x62 (PLL Factor N)
-    - Set PLL_PREDIV_M (Bits 0 to 3) to 7 (PLL Pre Divider)
-
-    PLL_VIDEO0
-    0x1c20010 = 0x81006207 (DMB)
-    ```
-
-    TODO: Enable LDO1 and LDO2
-
-    ```text
-    PLL_MIPI_CTRL_REG: Offset 0x40 (A64 Page 94)
-    - Set LDO1_EN (Bit 23) to 1 (Enable On-chip LDO1)
-    - Set LDO2_EN (Bit 22) to 1 (Enable On-chip LDO2)
-
-    PLL_MIPI
-    0x1c20040 = 0xc00000 (DMB)
-    udelay 100
-    ```
-
-    TODO: Configure PLL_MIPI
-
-    ```text
-    PLL_MIPI_CTRL_REG: Offset 0x40 (A64 Page 94)
-    - Set PLL_ENABLE (Bit 31) to 1 (Enable MIPI PLL)
-    - Set LOCK (Bit 28) to 0 (Unlocked)
-    - Set SINT_FRAC (Bit 27) to 0 (Integer Mode)
-    - Set SDIV2 (Bit 26) to 0 (PLL Output)
-    - Set S6P25_7P5 (Bit 25) to 0 (PLL Output=PLL Input*6.25)
-    - Set LDO1_EN (Bit 23) to 1 (Enable On-chip LDO1)
-    - Set LDO2_EN (Bit 22) to 1 (Enable On-chip LDO2)
-    - Set PLL_SRC (Bit 21) to 0 (PLL Source is VIDEO0 PLL)
-    - Set PLL_SDM_EN (Bit 20) to 0 (Disable SDM PLL)
-    - Set PLL_FEEDBACK_DIV (Bit 17) to 0 (PLL Feedback Divider Control: Divide by 5)
-    - Set VFB_SEL (Bit 16) to 0 (MIPI Mode)
-    - Set PLL_FACTOR_N (Bits 8 to 11) to 7 (PLL Factor N)
-    - Set PLL_FACTOR_K (Bits 4 to 5) to 1 (PLL Factor K)
-    - Set PLL_PRE_DIV_M (Bits 0 to 3) to 10 (PLL Pre Divider)
-
-    0x1c20040 = 0x80c0071a (DMB)
-    ```
-
-    TODO: TCON0 source MIPI_PLL
-
-    ```text
-    TCON0_CLK_REG: Offset 0x118 (A64 Page 117)
-    - Set SCLK_GATING (Bit 31) to 1 (Special Clock is On)
-    - Set CLK_SRC_SEL (Bits 24 to 26) to 0 (Clock Source is PLL_MIPI)
-
-    TCON0 source MIPI_PLL
-    0x1c20118 = 0x80000000 (DMB)
-    ```
-
-    TODO: Clock on
-
-    ```text
-    BUS_CLK_GATING_REG1: Offset 0x64 (A64 Page 102)
-    - Set TCON0_GATING (Bit 3) to 1 (Pass Clock for TCON0)
-
-    Clock on
-    0x1c20064 = 0x8 (DMB)
-    ```
-
-    TODO: Reset off
-
-    ```text
-    BUS_SOFT_RST_REG1: Offset 0x2c4 (A64 Page 140)
-    - Set TCON0_RST (Bit 3) to 1 (Deassert TCON0 Reset)
-
-    Reset off
-    0x1c202c4 = 0x8 (DMB)
-    ```
-
-    TODO: Init lcdc
-
-    ```text
-    TCON0 Base Address: 0x01C0C000 (A64 Page 507)
-
-    TCON_GCTL_REG: Offset 0x00 (A64 Page 508)
-    - Set TCON_En (Bit 31) to 0 (Disable TCON0)
-
-    TCON_GINT0_REG: Offset 0x04 (A64 Page 509)
-    - Set to 0 (Disable TCON0 Interrupts)
-
-    TCON_GINT1_REG: Offset 0x08 (A64 Page 510)
-    - Set to 0 (Disable TCON0 Interrupts)
-
-    Init lcdc: Disable tcon, Disable all interrupts
-    0x1c0c000 = 0x0 (DMB)
-    0x1c0c004 = 0x0
-    0x1c0c008 = 0x0
-    ```
-
-    TODO: Set all io lines to tristate
-
-    ```text
-    TCON0_IO_TRI_REG: Offset 0x8c (A64 Page 520)
-    - Set to 0xffffffff to Enable TCON0 Output Tristate
-
-    TCON1_IO_TRI_REG: Offset 0xf4 (Undocumented?)
-    - Set to 0xffffffff to Enable TCON1 Output Tristate
-
-    Set all io lines to tristate
-    0x1c0c08c = 0xffffffff
-    0x1c0c0f4 = 0xffffffff
-    ```
-
-    TODO: mode set
-
-    ```text
-    TCON0_DCLK_REG: Offset 0x44 (A64 Page 513)
-    - Set TCON0_Dclk_En (Bits 28 to 31) to 8 (Enable TCON0 Clock: dclk_en = 1; dclk1_en = 1; dclk2_en = 0; dclkm2_en = 0)
-    - Set TCON0_Dclk_Div (Bits 0 to 6) to 6 (DCLK Divisor)
-
-    TCON0_CTL_REG: Offset 0x40 (A64 Page 512)
-    - Set TCON0_En (Bit 31) to 1 (Enable TCON0)
-    - Set TCON0_Work_Mode (Bit 28) to 0 (Normal Work Mode)
-    - Set TCON0_IF (Bits 24 to 25) to 1 (8080 Interface)
-    - Set TCON0_RB_Swap (Bit 23) to 0 (No Red/Blue Swap)
-    - Set TCON0_FIFO1_Rst (Bit 21) to 0 (No FIFO1 Reset)
-    - Set TCON0_Start_Delay (Bits 4 to 8) to 0 (No STA Delay)
-    - Set TCON0_SRC_SEL (Bits 0 to 2) to 0 (TCON0 Source is DE0)
-
-    TCON0_BASIC0_REG: Offset 0x48 (A64 Page 514)
-    - Set TCON0_X (Bits 16 to 27) to 719 (Panel Width - 1)
-    - Set TCON0_Y (Bits 0 to 11) to 1439 (Panel Height - 1)
-
-    ECC_FIFO: Offset 0xf8 (Undocumented)
-
-    TCON0_CPU_IF_REG: Offset 0x60 (A64 Page 516)
-    - Set CPU_Mode (Bits 28 to 31) to 1 (24-bit DSI)
-    - Set AUTO (Bit 17) to 0 (Disable Auto Transfer Mode)
-    - Set FLUSH (Bit 16) to 1 (Enable Direct Transfer Mode)
-    - Set Trigger_FIFO_Bist_En (Bit 3) to 0 (Disable FIFO Bist Trigger)
-    - Set Trigger_FIFO_En (Bit 2) to 1 (Enable FIFO Trigger)
-    - Set Trigger_En (Bit 0) to 1 (Enable Trigger Mode)
-
-    mode set: DCLK = MIPI_PLL / 6
-    0x1c0c044 = 0x80000006
-    0x1c0c040 = 0x81000000
-    0x1c0c048 = 0x2cf059f
-    0x1c0c0f8 = 0x8
-    0x1c0c060 = 0x10010005
-    ```
-
-    TODO: Set pixel cycle
-
-    ```text
-    TCON0_CPU_TRI0_REG: Offset 0x160 (A64 Page 521)
-    - Set Block_Space (Bits 16 to 27) to 47 (Block Space)
-    - Set Block_Size (Bits 0 to 11) to 719 (Panel Width - 1)
-
-    TCON0_CPU_TRI1_REG: Offset 0x164 (A64 Page 522)
-    - Set Block_Current_Num (Bits 16 to 31) to 0 (Block Current Number)
-    - Set Block_Num (Bits 0 to 15) to 1439 (Panel Height - 1)
-
-    TCON0_CPU_TRI2_REG: Offset 0x168 (A64 Page 522)
-    - Set Start_Delay (Bits 16 to 31) to 7106 (Start Delay)
-    - Set Trans_Start_Mode (Bit 15) to 0 (Trans Start Mode is ECC FIFO + TRI FIFO)
-    - Set Sync_Mode (Bits 13 to 14) to 0 (Sync Mode is Auto)
-    - Set Trans_Start_Set (Bits 0 to 12) to 10 (Trans Start Set)
-
-    The datasheet says that this should be set higher than 20 * pixel cycle, but it's not clear what a pixel cycle is.
-    0x1c0c160 = 0x2f02cf
-    0x1c0c164 = 0x59f
-    0x1c0c168 = 0x1bc2000a
-    ```
-
-    TODO: Set period
-
-    ```text
-    TCON_SAFE_PERIOD_REG: Offset 0x1f0 (A64 Page 525)
-    - Set Safe_Period_FIFO_Num (Bits 16 to 28) to 3000
-    - Set Safe_Period_Line (Bits 4 to 15) to 0
-    - Set Safe_Period_Mode (Bits 0 to 2) to 3 (Safe Period Mode: Safe at 2 and safe at sync active)
-
-    The Allwinner BSP has a comment that the period should be the display clock * 15, but uses an hardcoded 3000
-    0x1c0c1f0 = 0xbb80003
-    ```
-
-    TODO: Enable output
-
-    ```text
-    TCON0_IO_TRI_REG: Offset 0x8c (A64 Page 520)
-    - Set Reserved (Bits 29 to 31) to 0b111
-    - Set RGB_Endian (Bit 28) to 0 (Normal RGB Endian)
-    - Set IO3_Output_Tri_En (Bit 27) to 0 (Enable IO3 Output Tri)
-    - Set IO2_Output_Tri_En (Bit 26) to 0 (Enable IO2 Output Tri)
-    - Set IO1_Output_Tri_En (Bit 25) to 0 (Enable IO1 Output Tri)
-    - Set IO0_Output_Tri_En (Bit 24) to 0 (Enable IO0 Output Tri)
-    - Set Data_Output_Tri_En (Bits 0 to 23) to 0 (Enable TCON0 Output Port)
-
-    Enable the output on the pins
-    0x1c0c08c = 0xe0000000 (DMB)
-    ```
-
-    TODO: Enable TCON
-
-    ```text
-    TCON_GCTL_REG: Offset 0x00 (A64 Page 508)
-    - Set TCON_En (Bit 31) to 1 (Enable TCON0)
-
-    enable tcon as a whole
-    setbits 0x1c0c000, 0x80000000 (DMB)
-    ```
+-   [__"Start MIPI DSI HSC and HSD"__](https://lupyuen.github.io/articles/dsi#appendix-start-mipi-dsi-hsc-and-hsd)
