@@ -805,6 +805,8 @@ To render graphics on PinePhone's LCD Display, our Display Driver needs to follo
 
 1.  Start __MIPI DSI HSC and HSD__
 
+    (High Speed Clock Mode and High Speed Data Transmission)
+
     [(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-start-mipi-dsi-hsc-and-hsd)
 
     [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1009-L1047)
@@ -824,6 +826,8 @@ To render graphics on PinePhone's LCD Display, our Display Driver needs to follo
     [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L69-L175)
 
 # Appendix: Enable MIPI DSI Block
+
+This section explains how we __enable the Allwinner A64 MIPI DSI Block__, before calling it to transmit MIPI DSI Commands to the ST7703 LCD Controller.
 
 We captured the log from [__p-boot dsi_init__](https://megous.com/git/p-boot/tree/src/display.c#n1236)...
 
@@ -1117,11 +1121,15 @@ Based on the above steps, we have __implemented in Zig__ the PinePhone Driver th
 
 # Appendix: Start MIPI DSI HSC and HSD
 
+This section explains how we __start Allwinner A64 MIPI DSI in HSC and HSD Modes__, before calling it to transmit MIPI DSI Commands to the ST7703 LCD Controller.
+
+(High Speed Clock Mode and High Speed Data Transmission)
+
 We captured the log from [__p-boot dsi_init__](https://megous.com/git/p-boot/tree/src/display.c#n1236)...
 
 -   [__Log from dsi_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#start_dsi)
 
-By decoding the captured addresses and values, we decipher the following steps to __start Allwinner A64 MIPI DSI (in HSC and HSD Modes)__...
+By decoding the captured addresses and values, we decipher the following steps to __start Allwinner A64 MIPI DSI in HSC and HSD Modes__...
 
 1.  Start HSC (Undocumented)
 

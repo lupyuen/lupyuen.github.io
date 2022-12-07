@@ -1829,11 +1829,13 @@ Based on the above steps, we have __implemented in Zig__ the A64 Display Engine 
 
 # Appendix: Timing Controller (TCON0)
 
+This section explains how we __initialise the Allwinner A64 Timing Controller (TCON0)__.
+
 We captured the log from [__p-boot tcon0_init__](https://megous.com/git/p-boot/tree/src/display.c#n1567)...
 
 -   [__Log from tcon0_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#tcon0_init)
 
-By decoding the captured addresses and values, we decipher the following steps to __configure the Allwinner A64 Timing Controller (TCON0)__...
+By decoding the captured addresses and values, we decipher the following steps to __initialise the Allwinner A64 Timing Controller (TCON0)__...
 
 1.  Configure PLL_VIDEO0
     
@@ -2063,6 +2065,8 @@ Based on the above steps, we have __implemented in Zig__ the PinePhone Driver fo
 
 # Appendix: Display Backlight
 
+This section explains how we turn on __PinePhone's Display Backlight__.
+
 We captured the log from [__p-boot backlight_enable__](https://megous.com/git/p-boot/tree/src/display.c#n1929)...
 
 -   [__Log from backlight_enable__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#backlight_enable)
@@ -2165,11 +2169,13 @@ Based on the above steps, we have __implemented in Zig__ the Display Backlight D
 
 # Appendix: Power Management Integrated Circuit
 
+This section explains how we __initialise PinePhone's Power Management Integrated Circuit (PMIC)__, before accessing PinePhone's LCD Display.
+
 We captured the log from [__p-boot display_board_init__](https://megous.com/git/p-boot/tree/src/display.c#n1947)...
 
 -   [__Log from display_board_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#display_board_init)
 
-By decoding the captured addresses and values, we decipher the following steps to __configure PinePhone's Power Management Integrated Circuit (PMIC)__...
+By decoding the captured addresses and values, we decipher the following steps to __initialise PinePhone's Power Management Integrated Circuit (PMIC)__...
 
 1.  TODO: Set PD23 to Low
 
@@ -2229,6 +2235,8 @@ Based on the above steps, we have __implemented in Zig__ the PinePhone Driver fo
 -   [__Output Log for pmic.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
 
 # Appendix: Reset LCD Panel
+
+This section explains how we __reset PinePhone's LCD Panel__, before sending Initialisation Commands to the ST7703 LCD Controller.
 
 We captured the log from [__p-boot dsi_init__](https://megous.com/git/p-boot/tree/src/display.c#n1236)...
 
