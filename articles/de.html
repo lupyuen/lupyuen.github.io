@@ -1870,34 +1870,34 @@ enable_dsi_block: end</code></pre></div>
 <ol>
 <li>
 <p>Enable MIPI DSI Bus</p>
-<p>BUS_CLK_GATING_REG0: CCU Offset <code>0x60</code> (A64 Page 100)</p>
+<p><strong>BUS_CLK_GATING_REG0</strong>: CCU Offset <code>0x60</code> (A64 Page 100)</p>
 <ul>
-<li>Set MIPIDSI_GATING (Bit 1) to 1 (Pass Gating Clock for MIPI DSI)</li>
+<li>Set <strong>MIPIDSI_GATING</strong> (Bit 1) to 1 (Pass Gating Clock for MIPI DSI)</li>
 </ul>
-<p>BUS_SOFT_RST_REG0: CCU Offset <code>0x2C0</code> (A64 Page 138)</p>
+<p><strong>BUS_SOFT_RST_REG0</strong>: CCU Offset <code>0x2C0</code> (A64 Page 138)</p>
 <ul>
-<li>Set MIPI_DSI_RST (Bit 1) to 1 (Deassert MIPI DSI Reset)</li>
+<li><strong>Set MIPI_DSI_RST</strong> (Bit 1) to 1 (Deassert MIPI DSI Reset)</li>
 </ul>
-<p>CCU Base Address: <code>0x01C2</code> <code>0000</code> (A64 Page 82)</p>
+<p><strong>CCU Base Address</strong>: <code>0x01C2</code> <code>0000</code> (A64 Page 82)</p>
 <div class="example-wrap"><pre class="language-text"><code>mipi dsi bus enable
 setbits 0x1c20060, 0x2 (DMB)
 setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 <li>
 <p>Enable DSI Block</p>
-<p>DSI_CTL_REG: DSI Offset <code>0x0</code> (A31 Page 843)</p>
+<p><strong>DSI_CTL_REG</strong>: DSI Offset <code>0x0</code> (A31 Page 843)</p>
 <ul>
-<li>Set DSI_En (Bit 0) to 1 (Enable DSI)</li>
+<li>Set <strong>DSI_En</strong> (Bit 0) to 1 (Enable DSI)</li>
 </ul>
-<p>DSI_BASIC_CTL0_REG: DSI Offset <code>0x10</code> (A31 Page 845)</p>
+<p><strong>DSI_BASIC_CTL0_REG</strong>: DSI Offset <code>0x10</code> (A31 Page 845)</p>
 <ul>
-<li>Set CRC_En (Bit 17) to 1 (Enable CRC)</li>
-<li>Set ECC_En (Bit 16) to 1 (Enable ECC)</li>
+<li>Set <strong>CRC_En</strong> (Bit 17) to 1 (Enable CRC)</li>
+<li>Set <strong>ECC_En</strong> (Bit 16) to 1 (Enable ECC)</li>
 </ul>
-<p>DSI_TRANS_START_REG: DSI Offset <code>0x60</code> (Undocumented)</p>
+<p><strong>DSI_TRANS_START_REG</strong>: DSI Offset <code>0x60</code> (Undocumented)</p>
 <ul>
 <li>Set to 10</li>
 </ul>
-<p>DSI_TRANS_ZERO_REG: DSI Offset <code>0x78</code> (Undocumented)</p>
+<p><strong>DSI_TRANS_ZERO_REG</strong>: DSI Offset <code>0x78</code> (Undocumented)</p>
 <ul>
 <li>Set to 0</li>
 </ul>
@@ -1909,14 +1909,14 @@ setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 0x1ca0078 = 0x0 (DMB)</code></pre></div></li>
 <li>
 <p>Set Instructions (Undocumented)</p>
-<p>DSI_INST_FUNC_REG(0): DSI Offset <code>0x20</code> (DSI_INST_ID_LP11)</p>
-<p>DSI_INST_FUNC_REG(1): DSI Offset <code>0x24</code> (DSI_INST_ID_TBA)</p>
-<p>DSI_INST_FUNC_REG(2): DSI Offset <code>0x28</code> (DSI_INST_ID_HSC)</p>
-<p>DSI_INST_FUNC_REG(3): DSI Offset <code>0x2c</code> (DSI_INST_ID_HSD)</p>
-<p>DSI_INST_FUNC_REG(4): DSI Offset <code>0x30</code> (DSI_INST_ID_LPDT)</p>
-<p>DSI_INST_FUNC_REG(5): DSI Offset <code>0x34</code> (DSI_INST_ID_HSCEXIT)</p>
-<p>DSI_INST_FUNC_REG(6): DSI Offset <code>0x38</code> (DSI_INST_ID_NOP)</p>
-<p>DSI_INST_FUNC_REG(7): DSI Offset <code>0x3c</code> (DSI_INST_ID_DLY)</p>
+<p><strong>DSI_INST_FUNC_REG(0)</strong>: DSI Offset <code>0x20</code> (DSI_INST_ID_LP11)</p>
+<p><strong>DSI_INST_FUNC_REG(1)</strong>: DSI Offset <code>0x24</code> (DSI_INST_ID_TBA)</p>
+<p><strong>DSI_INST_FUNC_REG(2)</strong>: DSI Offset <code>0x28</code> (DSI_INST_ID_HSC)</p>
+<p><strong>DSI_INST_FUNC_REG(3)</strong>: DSI Offset <code>0x2c</code> (DSI_INST_ID_HSD)</p>
+<p><strong>DSI_INST_FUNC_REG(4)</strong>: DSI Offset <code>0x30</code> (DSI_INST_ID_LPDT)</p>
+<p><strong>DSI_INST_FUNC_REG(5)</strong>: DSI Offset <code>0x34</code> (DSI_INST_ID_HSCEXIT)</p>
+<p><strong>DSI_INST_FUNC_REG(6)</strong>: DSI Offset <code>0x38</code> (DSI_INST_ID_NOP)</p>
+<p><strong>DSI_INST_FUNC_REG(7)</strong>: DSI Offset <code>0x3c</code> (DSI_INST_ID_DLY)</p>
 <p>(DSI_INST_FUNC_REG(n) is <code>(0x020 + (n) * 0x04)</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>inst_init
 0x1ca0020 = 0x1f (DMB)
@@ -1929,32 +1929,32 @@ setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 0x1ca003c = 0x5000001f (DMB)</code></pre></div></li>
 <li>
 <p>Configure Jump Instructions (Undocumented)</p>
-<p>DSI_INST_JUMP_CFG_REG(0): DSI Offset 0x4c (DSI_INST_JUMP_CFG)</p>
+<p><strong>DSI_INST_JUMP_CFG_REG(0)</strong>: DSI Offset 0x4c (DSI_INST_JUMP_CFG)</p>
 <p>(DSI_INST_JUMP_CFG_REG(n) is <code>(0x04c + (n) * 0x04)</code>)</p>
-<p>DSI_DEBUG_DATA_REG: Offset 0x2f8</p>
+<p><strong>DSI_DEBUG_DATA_REG</strong>: Offset 0x2f8</p>
 <div class="example-wrap"><pre class="language-text"><code>0x1ca004c = 0x560001 (DMB)
 0x1ca02f8 = 0xff (DMB)</code></pre></div></li>
 <li>
 <p>Set Video Start Delay</p>
-<p>DSI_BASIC_CTL1_REG: DSI Offset <code>0x14</code> (A31 Page 846)</p>
+<p><strong>DSI_BASIC_CTL1_REG</strong>: DSI Offset <code>0x14</code> (A31 Page 846)</p>
 <ul>
-<li>Set Video_Start_Delay (Bits 4 to 11) to 1468 (Line Delay)</li>
-<li>Set Video_Precision_Mode_Align (Bit 2) to 1 (Fill Mode)</li>
-<li>Set Video_Frame_Start (Bit 1) to 1 (Precision Mode)</li>
-<li>Set DSI_Mode (Bit 0) to 1 (Video Mode)</li>
+<li>Set <strong>Video_Start_Delay</strong> (Bits 4 to 11) to 1468 (Line Delay)</li>
+<li>Set <strong>Video_Precision_Mode_Align</strong> (Bit 2) to 1 (Fill Mode)</li>
+<li>Set <strong>Video_Frame_Start</strong> (Bit 1) to 1 (Precision Mode)</li>
+<li>Set <strong>DSI_Mode</strong> (Bit 0) to 1 (Video Mode)</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>get_video_start_delay
 0x1ca0014 = 0x5bc7 (DMB)</code></pre></div></li>
 <li>
 <p>Set Burst (Undocumented)</p>
-<p>DSI_TCON_DRQ_REG: DSI Offset 0x7c</p>
+<p><strong>DSI_TCON_DRQ_REG</strong>: DSI Offset 0x7c</p>
 <div class="example-wrap"><pre class="language-text"><code>setup_burst
 0x1ca007c = 0x10000007 (DMB)</code></pre></div></li>
 <li>
 <p>Set Instruction Loop (Undocumented)</p>
-<p>DSI_INST_LOOP_SEL_REG: DSI Offset 0x40</p>
-<p>DSI_INST_LOOP_NUM_REG(0): DSI Offset 0x44</p>
-<p>DSI_INST_LOOP_NUM_REG(1): DSI Offset 0x54</p>
+<p><strong>DSI_INST_LOOP_SEL_REG</strong>: DSI Offset <code>0x40</code></p>
+<p><strong>DSI_INST_LOOP_NUM_REG(0)</strong>: DSI Offset <code>0x44</code></p>
+<p><strong>DSI_INST_LOOP_NUM_REG(1)</strong>: DSI Offset <code>0x54</code></p>
 <p>(DSI_INST_LOOP_NUM_REG(n) is <code>(0x044 + (n) * 0x10)</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>setup_inst_loop
 0x1ca0040 = 0x30000002 (DMB)
@@ -1962,27 +1962,27 @@ setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 0x1ca0054 = 0x310031 (DMB)</code></pre></div></li>
 <li>
 <p>Set Pixel Format</p>
-<p>DSI_PIXEL_PH_REG: DSI Offset <code>0x90</code> (A31 Page 848)</p>
+<p><strong>DSI_PIXEL_PH_REG</strong>: DSI Offset <code>0x90</code> (A31 Page 848)</p>
 <ul>
-<li>Set ECC (Bits 24 to 31) to 19</li>
-<li>Set WC (Bits 8 to 23) to 2160 (Byte Numbers of PD in a Pixel Packet)</li>
-<li>Set VC (Bits 6 to 7) to 0 (Virtual Channel)</li>
-<li>Set DT (Bits 0 to 5) to <code>0x3E</code> (24-bit Video Mode)</li>
+<li>Set <strong>ECC</strong> (Bits 24 to 31) to 19</li>
+<li>Set <strong>WC</strong> (Bits 8 to 23) to 2160 (Byte Numbers of PD in a Pixel Packet)</li>
+<li>Set <strong>VC</strong> (Bits 6 to 7) to 0 (Virtual Channel)</li>
+<li>Set <strong>DT</strong> (Bits 0 to 5) to <code>0x3E</code> (24-bit Video Mode)</li>
 </ul>
-<p>DSI_PIXEL_PF0_REG: DSI Offset <code>0x98</code> (A31 Page 849)</p>
+<p><strong>DSI_PIXEL_PF0_REG</strong>: DSI Offset <code>0x98</code> (A31 Page 849)</p>
 <ul>
-<li>Set CRC_Force (Bits 0 to 15) to <code>0xffff</code> (Force CRC to this value)</li>
+<li>Set <strong>CRC_Force</strong> (Bits 0 to 15) to <code>0xffff</code> (Force CRC to this value)</li>
 </ul>
-<p>DSI_PIXEL_PF1_REG: DSI Offset <code>0x9c</code> (A31 Page 849)</p>
+<p><strong>DSI_PIXEL_PF1_REG</strong>: DSI Offset <code>0x9c</code> (A31 Page 849)</p>
 <ul>
-<li>Set CRC_Init_LineN (Bits 16 to 31) to <code>0xffff</code> (CRC initial to this value in transmitions except 1st one)</li>
-<li>Set CRC_Init_Line0 (Bits 0 to 15) to <code>0xffff</code> (CRC initial to this value in 1st transmition every frame)</li>
+<li>Set <strong>CRC_Init_LineN</strong> (Bits 16 to 31) to <code>0xffff</code> (CRC initial to this value in transmitions except 1st one)</li>
+<li>Set <strong>CRC_Init_Line0</strong> (Bits 0 to 15) to <code>0xffff</code> (CRC initial to this value in 1st transmition every frame)</li>
 </ul>
-<p>DSI_PIXEL_CTL0_REG: DSI Offset <code>0x80</code> (A31 Page 847)</p>
+<p><strong>DSI_PIXEL_CTL0_REG</strong>: DSI Offset <code>0x80</code> (A31 Page 847)</p>
 <ul>
-<li>Set PD_Plug_Dis (Bit 16) to 1 (Disable PD plug before pixel bytes)</li>
-<li>Set Pixel_Endian (Bit 4) to 0 (LSB first)</li>
-<li>Set Pixel_Format (Bits 0 to 3) to 8 (24-bit RGB888)</li>
+<li>Set <strong>PD_Plug_Dis</strong> (Bit 16) to 1 (Disable PD plug before pixel bytes)</li>
+<li>Set <strong>Pixel_Endian</strong> (Bit 4) to 0 (LSB first)</li>
+<li>Set <strong>Pixel_Format</strong> (Bits 0 to 3) to 8 (24-bit RGB888)</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>setup_format
 0x1ca0090 = 0x1308703e (DMB)
@@ -1991,38 +1991,38 @@ setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 0x1ca0080 = 0x10008 (DMB)</code></pre></div></li>
 <li>
 <p>Set Sync Timings</p>
-<p>DSI_BASIC_CTL_REG: DSI Offset <code>0x0c</code> (Undocumented)</p>
-<p>DSI_SYNC_HSS_REG: DSI Offset <code>0xb0</code> (A31 Page 850)</p>
+<p><strong>DSI_BASIC_CTL_REG</strong>: DSI Offset <code>0x0c</code> (Undocumented)</p>
+<p><strong>DSI_SYNC_HSS_REG</strong>: DSI Offset <code>0xb0</code> (A31 Page 850)</p>
 <ul>
-<li>Set ECC (Bits 24 to 31) to 0x12</li>
-<li>Set D1 (Bits 16 to 23) to 0</li>
-<li>Set D0 (Bits 8 to 15) to 0</li>
-<li>Set VC (Bits 6 to 7) to 0 (Virtual Channel)</li>
-<li>Set DT (Bits 0 to 5) to <code>0x21</code> (HSS)</li>
+<li>Set <strong>ECC</strong> (Bits 24 to 31) to <code>0x12</code></li>
+<li>Set <strong>D1</strong> (Bits 16 to 23) to 0</li>
+<li>Set <strong>D0</strong> (Bits 8 to 15) to 0</li>
+<li>Set <strong>VC</strong> (Bits 6 to 7) to 0 (Virtual Channel)</li>
+<li>Set <strong>DT</strong> (Bits 0 to 5) to <code>0x21</code> (HSS)</li>
 </ul>
-<p>DSI_SYNC_HSE_REG: DSI Offset <code>0xb4</code> (A31 Page 850)</p>
+<p><strong>DSI_SYNC_HSE_REG</strong>: DSI Offset <code>0xb4</code> (A31 Page 850)</p>
 <ul>
-<li>Set ECC (Bits 24 to 31) to 1</li>
-<li>Set D1 (Bits 16 to 23) to 0</li>
-<li>Set D0 (Bits 8 to 15) to 0</li>
-<li>Set VC (Bits 6 to 7) to 0 (Virtual Channel)</li>
-<li>Set DT (Bits 0 to 5) to <code>0x31</code> (HSE)</li>
+<li>Set <strong>ECC</strong> (Bits 24 to 31) to 1</li>
+<li>Set <strong>D1</strong> (Bits 16 to 23) to 0</li>
+<li>Set <strong>D0</strong> (Bits 8 to 15) to 0</li>
+<li>Set <strong>VC</strong> (Bits 6 to 7) to 0 (Virtual Channel)</li>
+<li>Set <strong>DT</strong> (Bits 0 to 5) to <code>0x31</code> (HSE)</li>
 </ul>
-<p>DSI_SYNC_VSS_REG: DSI Offset <code>0xb8</code> (A31 Page 851)</p>
+<p><strong>DSI_SYNC_VSS_REG</strong>: DSI Offset <code>0xb8</code> (A31 Page 851)</p>
 <ul>
-<li>Set ECC (Bits 24 to 31) to 7</li>
-<li>Set D1 (Bits 16 to 23) to 0</li>
-<li>Set D0 (Bits 8 to 15) to 0</li>
-<li>Set VC (Bits 6 to 7) to 0 (Virtual Channel)</li>
-<li>Set DT (Bits 0 to 5) to 1 (VSS)</li>
+<li>Set <strong>ECC</strong> (Bits 24 to 31) to 7</li>
+<li>Set <strong>D1</strong> (Bits 16 to 23) to 0</li>
+<li>Set <strong>D0</strong> (Bits 8 to 15) to 0</li>
+<li>Set <strong>VC</strong> (Bits 6 to 7) to 0 (Virtual Channel)</li>
+<li>Set <strong>DT</strong> (Bits 0 to 5) to 1 (VSS)</li>
 </ul>
-<p>DSI_SYNC_VSE_REG: DSI Offset <code>0xbc</code> (A31 Page 851)</p>
+<p><strong>DSI_SYNC_VSE_REG</strong>: DSI Offset <code>0xbc</code> (A31 Page 851)</p>
 <ul>
-<li>Set ECC (Bits 24 to 31) to <code>0x14</code></li>
-<li>Set D1 (Bits 16 to 23) to 0</li>
-<li>Set D0 (Bits 8 to 15) to 0</li>
-<li>Set VC (Bits 6 to 7) to 0 (Virtual Channel)</li>
-<li>Set DT (Bits 0 to 5) to <code>0x11</code> (VSE)</li>
+<li>Set <strong>ECC</strong> (Bits 24 to 31) to <code>0x14</code></li>
+<li>Set <strong>D1</strong> (Bits 16 to 23) to 0</li>
+<li>Set <strong>D0</strong> (Bits 8 to 15) to 0</li>
+<li>Set <strong>VC</strong> (Bits 6 to 7) to 0 (Virtual Channel)</li>
+<li>Set <strong>DT</strong> (Bits 0 to 5) to <code>0x11</code> (VSE)</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>setup_timings
 0x1ca000c = 0x0 (DMB)
