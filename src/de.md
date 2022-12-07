@@ -2794,6 +2794,13 @@ TODO: Enable output
 
 ```text
 TCON0_IO_TRI_REG: Offset 0x8c (A64 Page 520)
+- Set Reserved (Bits 29 to 31) to 0b111
+- Set RGB_Endian (Bit 28) to 0 (Normal RGB Endian)
+- Set IO3_Output_Tri_En (Bit 27) to 0 (Enable IO3 Output Tri)
+- Set IO2_Output_Tri_En (Bit 26) to 0 (Enable IO2 Output Tri)
+- Set IO1_Output_Tri_En (Bit 25) to 0 (Enable IO1 Output Tri)
+- Set IO0_Output_Tri_En (Bit 24) to 0 (Enable IO0 Output Tri)
+- Set Data_Output_Tri_En (Bits 0 to 23) to 0 (Enable TCON0 Output Port)
 
 Enable the output on the pins
   0x1c0c08c = 0xe0000000 (DMB)
@@ -2802,9 +2809,9 @@ Enable the output on the pins
 TODO: Enable TCON
 
 ```text
-TCON_GCTL_REG: Offset 0x00 (A64 Page 527)
+TCON_GCTL_REG: Offset 0x00 (A64 Page 508)
+- Set TCON_En (Bit 31) to 1 (Enable TCON0)
 
 enable tcon as a whole
   setbits 0x1c0c000, 0x80000000 (DMB)
 ```
-
