@@ -2782,6 +2782,9 @@ TODO: Set period
 
 ```text
 TCON_SAFE_PERIOD_REG: Offset 0x1f0 (A64 Page 525)
+- Set Safe_Period_FIFO_Num (Bits 16 to 28) to 3000
+- Set Safe_Period_Line (Bits 4 to 15) to 0
+- Set Safe_Period_Mode (Bits 0 to 2) to 3 (Safe Period Mode: Safe at 2 and safe at sync active)
 
 The Allwinner BSP has a comment that the period should be the display clock * 15, but uses an hardcoded 3000
   0x1c0c1f0 = 0xbb80003
