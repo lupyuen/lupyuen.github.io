@@ -2155,7 +2155,7 @@ By decoding the captured addresses and values, we decipher the following steps t
     0x1ca0078 = 0x0 (DMB)
     ```
 
-1.  Init DSI Instructions (Undocumented)
+1.  Set Instructions (Undocumented)
 
     DSI_INST_FUNC_REG(0): DSI Offset `0x20` (DSI_INST_ID_LP11)
 
@@ -2187,7 +2187,7 @@ By decoding the captured addresses and values, we decipher the following steps t
     0x1ca003c = 0x5000001f (DMB)
     ```
 
-1.  Configure DSI Jump Instructions (Undocumented)
+1.  Configure Jump Instructions (Undocumented)
 
     DSI_INST_JUMP_CFG_REG(0): DSI Offset 0x4c (DSI_INST_JUMP_CFG)
 
@@ -2200,63 +2200,66 @@ By decoding the captured addresses and values, we decipher the following steps t
     0x1ca02f8 = 0xff (DMB)
     ```
 
-    TODO: get_video_start_delay
+1.  Set Video Start Delay
 
-    ```text
-    DSI_BASIC_CTL1_REG: DSI Offset 0x14 (A31 Page 846)
-    - Set Video_Start_Delay (Bits 4 to 11) to 1468 (Delay by lines)
+    DSI_BASIC_CTL1_REG: DSI Offset `0x14` (A31 Page 846)
+    - Set Video_Start_Delay (Bits 4 to 11) to 1468 (Line Delay)
     - Set Video_Precision_Mode_Align (Bit 2) to 1 (Fill Mode)
     - Set Video_Frame_Start (Bit 1) to 1 (Precision Mode)
     - Set DSI_Mode (Bit 0) to 1 (Video Mode)
 
+    ```text
     get_video_start_delay
     0x1ca0014 = 0x5bc7 (DMB)
     ```
 
-    TODO: setup_burst
+1.  Set Burst (Undocumented)
+
+    DSI_TCON_DRQ_REG: DSI Offset 0x7c
 
     ```text
-    DSI_TCON_DRQ_REG: Offset 0x7c
-
     setup_burst
     0x1ca007c = 0x10000007 (DMB)
     ```
 
-    TODO: setup_inst_loop
+1.  Set Instruction Loop (Undocumented)
 
-    ```text
     DSI_INST_LOOP_SEL_REG: DSI Offset 0x40
-    DSI_INST_LOOP_NUM_REG(n): (0x044 + (n) * 0x10)
+
     DSI_INST_LOOP_NUM_REG(0): DSI Offset 0x44
+
     DSI_INST_LOOP_NUM_REG(1): DSI Offset 0x54
 
+    (DSI_INST_LOOP_NUM_REG(n) is `(0x044 + (n) * 0x10)`)
+
+    ```text
     setup_inst_loop
     0x1ca0040 = 0x30000002 (DMB)
     0x1ca0044 = 0x310031 (DMB)
     0x1ca0054 = 0x310031 (DMB)
     ```
 
-    TODO: setup_format
+1.  Set Pixel Format
 
-    ```text
-    DSI_PIXEL_PH_REG: DSI Offset 0x90 (A31 Page 848)
+    DSI_PIXEL_PH_REG: DSI Offset `0x90` (A31 Page 848)
     - Set ECC (Bits 24 to 31) to 19
     - Set WC (Bits 8 to 23) to 2160 (Byte Numbers of PD in a Pixel Packet)
     - Set VC (Bits 6 to 7) to 0 (Virtual Channel)
-    - Set DT (Bits 0 to 5) to 0x3E (24-bit Video Mode)
+    - Set DT (Bits 0 to 5) to `0x3E` (24-bit Video Mode)
 
-    DSI_PIXEL_PF0_REG: DSI Offset 0x98 (A31 Page 849)
-    - Set CRC_Force (Bits 0 to 15) to 0xffff (Force CRC to this value)
+    DSI_PIXEL_PF0_REG: DSI Offset `0x98` (A31 Page 849)
+    - Set CRC_Force (Bits 0 to 15) to `0xffff` (Force CRC to this value)
 
-    DSI_PIXEL_PF1_REG: DSI Offset 0x9c (A31 Page 849)
-    - Set CRC_Init_LineN (Bits 16 to 31) to 0xffff (CRC initial to this value in transmitions except 1st one)
-    - Set CRC_Init_Line0 (Bits 0 to 15) to 0xffff (CRC initial to this value in 1st transmition every frame)
+    DSI_PIXEL_PF1_REG: DSI Offset `0x9c` (A31 Page 849)
+    - Set CRC_Init_LineN (Bits 16 to 31) to `0xffff` (CRC initial to this value in transmitions except 1st one)
+    - Set CRC_Init_Line0 (Bits 0 to 15) to `0xffff` (CRC initial to this value in 1st transmition every frame)
 
-    DSI_PIXEL_CTL0_REG: DSI Offset 0x80 (A31 Page 847)
+    DSI_PIXEL_CTL0_REG: DSI Offset `0x80` (A31 Page 847)
     - Set PD_Plug_Dis (Bit 16) to 1 (Disable PD plug before pixel bytes)
     - Set Pixel_Endian (Bit 4) to 0 (LSB first)
     - Set Pixel_Format (Bits 0 to 3) to 8 (24-bit RGB888)
 
+    ```text
     setup_format
     0x1ca0090 = 0x1308703e (DMB)
     0x1ca0098 = 0xffff (DMB)
@@ -2264,39 +2267,39 @@ By decoding the captured addresses and values, we decipher the following steps t
     0x1ca0080 = 0x10008 (DMB)
     ```
 
-    TODO: setup_timings
+1.  Set Sync Timings
 
-    ```text
-    DSI_BASIC_CTL_REG: DSI Offset 0x0c
+    DSI_BASIC_CTL_REG: DSI Offset `0x0c` (Undocumented)
 
-    DSI_SYNC_HSS_REG: DSI Offset 0xb0 (A31 Page 850)
+    DSI_SYNC_HSS_REG: DSI Offset `0xb0` (A31 Page 850)
     - Set ECC (Bits 24 to 31) to 0x12
     - Set D1 (Bits 16 to 23) to 0
     - Set D0 (Bits 8 to 15) to 0
     - Set VC (Bits 6 to 7) to 0 (Virtual Channel)
-    - Set DT (Bits 0 to 5) to 0x21 (HSS)
+    - Set DT (Bits 0 to 5) to `0x21` (HSS)
 
-    DSI_SYNC_HSE_REG: DSI Offset 0xb4 (A31 Page 850)
+    DSI_SYNC_HSE_REG: DSI Offset `0xb4` (A31 Page 850)
     - Set ECC (Bits 24 to 31) to 1
     - Set D1 (Bits 16 to 23) to 0
     - Set D0 (Bits 8 to 15) to 0
     - Set VC (Bits 6 to 7) to 0 (Virtual Channel)
-    - Set DT (Bits 0 to 5) to 0x31 (HSE)
+    - Set DT (Bits 0 to 5) to `0x31` (HSE)
 
-    DSI_SYNC_VSS_REG: DSI Offset 0xb8 (A31 Page 851)
+    DSI_SYNC_VSS_REG: DSI Offset `0xb8` (A31 Page 851)
     - Set ECC (Bits 24 to 31) to 7
     - Set D1 (Bits 16 to 23) to 0
     - Set D0 (Bits 8 to 15) to 0
     - Set VC (Bits 6 to 7) to 0 (Virtual Channel)
     - Set DT (Bits 0 to 5) to 1 (VSS)
 
-    DSI_SYNC_VSE_REG: DSI Offset 0xbc (A31 Page 851)
-    - Set ECC (Bits 24 to 31) to 0x14
+    DSI_SYNC_VSE_REG: DSI Offset `0xbc` (A31 Page 851)
+    - Set ECC (Bits 24 to 31) to `0x14`
     - Set D1 (Bits 16 to 23) to 0
     - Set D0 (Bits 8 to 15) to 0
     - Set VC (Bits 6 to 7) to 0 (Virtual Channel)
-    - Set DT (Bits 0 to 5) to 0x11 (VSE)
+    - Set DT (Bits 0 to 5) to `0x11` (VSE)
 
+    ```text
     setup_timings
     0x1ca000c = 0x0 (DMB)
     0x1ca00b0 = 0x12000021 (DMB)
@@ -2305,73 +2308,72 @@ By decoding the captured addresses and values, we decipher the following steps t
     0x1ca00bc = 0x14000011 (DMB)
     ```
 
-    TODO
+1.  Set Basic Size (Undocumented)
 
-    ```text
-    DSI_BASIC_SIZE0_REG: DSI Offset 0x18
+    DSI_BASIC_SIZE0_REG: DSI Offset `0x18`
     - Set Video_VBP (Bits 16 to 27) to 17
     - Set Video_VSA (Bits 0 to 11) to 10
 
-    DSI_BASIC_SIZE1_REG: DSI Offset 0x1c
+    DSI_BASIC_SIZE1_REG: DSI Offset `0x1c`
     - Set Video_VT (Bits 16 to 28) to 1485
     - Set Video_VACT (Bits 0 to 11) to 1440
 
-    DSI_BLK_HSA0_REG: DSI Offset 0xc0 (A31 Page 852)
-    - Set HSA_PH (Bits 0 to 31) to 0x9004a19
-
-    DSI_BLK_HSA1_REG: DSI Offset 0xc4 (A31 Page 852)
-
-    - Set HSA_PF (Bits 16 to 31) to 0x50b4
-    - Set HSA_PD (Bits 0 to 7) to 0
-
+    ```text
     0x1ca0018 = 0x11000a (DMB)
     0x1ca001c = 0x5cd05a0 (DMB)
-    0x1ca00c0 = 0x9004a19 (DMB)
-    0x1ca00c4 = 0x50b40000 (DMB)
     ```
 
-    TODO
+1.  Set Horizontal Blank Packets
 
-    ```text
-    DSI_BLK_HBP0_REG: DSI Offset 0xc8 (A31 Page 852)
-    - Set HBP_PH (Bits 0 to 31) to 0x35005419
+    DSI_BLK_HSA0_REG: DSI Offset `0xc0` (A31 Page 852)
+    - Set HSA_PH (Bits 0 to 31) to `0x900` `4a19`
 
-    DSI_BLK_HBP1_REG: DSI Offset 0xcc (A31 Page 852)
-    - Set HBP_PF (Bits 16 to 31) to 0x757a
+    DSI_BLK_HSA1_REG: DSI Offset `0xc4` (A31 Page 852)
+    - Set HSA_PF (Bits 16 to 31) to `0x50b4`
+    - Set HSA_PD (Bits 0 to 7) to 0
+
+    DSI_BLK_HBP0_REG: DSI Offset `0xc8` (A31 Page 852)
+    - Set HBP_PH (Bits 0 to 31) to `0x3500` `5419`
+
+    DSI_BLK_HBP1_REG: DSI Offset `0xcc` (A31 Page 852)
+    - Set HBP_PF (Bits 16 to 31) to `0x757a`
     - Set HBP_PD (Bits 0 to 7) to 0
 
-    DSI_BLK_HFP0_REG: DSI Offset 0xd0 (A31 Page 852)
-    - Set HFP_PH (Bits 0 to 31) to 0x9004a19
+    DSI_BLK_HFP0_REG: DSI Offset `0xd0` (A31 Page 852)
+    - Set HFP_PH (Bits 0 to 31) to `0x900` `4a19`
 
-    DSI_BLK_HFP1_REG: DSI Offset 0xd4 (A31 Page 853)
-    - Set HFP_PF (Bits 16 to 31) to 0x50b4
+    DSI_BLK_HFP1_REG: DSI Offset `0xd4` (A31 Page 853)
+    - Set HFP_PF (Bits 16 to 31) to `0x50b4`
     - Set HFP_PD (Bits 0 to 7) to 0
 
+    DSI_BLK_HBLK0_REG: DSI Offset `0xe0` (A31 Page 853)
+    - Set HBLK_PH (Bits 0 to 31) to `0xc09` `1a19`
+
+    DSI_BLK_HBLK1_REG: DSI Offset `0xe4` (A31 Page 853)
+    - Set HBLK_PF (Bits 16 to 31) to `0x72bd`
+    - Set HBLK_PD (Bits 0 to 7) to 0
+
+    ```text
+    0x1ca00c0 = 0x9004a19 (DMB)
+    0x1ca00c4 = 0x50b40000 (DMB)
     0x1ca00c8 = 0x35005419 (DMB)
     0x1ca00cc = 0x757a0000 (DMB)
     0x1ca00d0 = 0x9004a19 (DMB)
     0x1ca00d4 = 0x50b40000 (DMB)
-    ```
-
-    TODO
-
-    ```text
-    DSI_BLK_HBLK0_REG: DSI Offset 0xe0 (A31 Page 853)
-    - Set HBLK_PH (Bits 0 to 31) to 0xc091a19
-
-    DSI_BLK_HBLK1_REG: DSI Offset 0xe4 (A31 Page 853)
-    - Set HBLK_PF (Bits 16 to 31) to 0x72bd
-    - Set HBLK_PD (Bits 0 to 7) to 0
-
-    DSI_BLK_VBLK0_REG: DSI Offset 0xe8 (A31 Page 854)
-    - Set VBLK_PH (Bits 0 to 31) to 0x1a000019
-
-    DSI_BLK_VBLK1_REG: DSI Offset 0xec (A31 Page 854)
-    - Set VBLK_PF (Bits 16 to 31) to 0xffff
-    - Set VBLK_PD (Bits 0 to 7) to 0
-
     0x1ca00e0 = 0xc091a19 (DMB)
     0x1ca00e4 = 0x72bd0000 (DMB)
+    ```
+
+1.  Set Vertical Blank Packets
+
+    DSI_BLK_VBLK0_REG: DSI Offset `0xe8` (A31 Page 854)
+    - Set VBLK_PH (Bits 0 to 31) to `0x1a00` `0019`
+
+    DSI_BLK_VBLK1_REG: DSI Offset `0xec` (A31 Page 854)
+    - Set VBLK_PF (Bits 16 to 31) to `0xffff`
+    - Set VBLK_PD (Bits 0 to 7) to 0
+
+    ```text
     0x1ca00e8 = 0x1a000019 (DMB)
     0x1ca00ec = 0xffff0000 (DMB)
     ```
