@@ -2116,13 +2116,13 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Enable MIPI DSI Bus
 
-    BUS_CLK_GATING_REG0: CCU Offset `0x60` (A64 Page 100)
-    - Set MIPIDSI_GATING (Bit 1) to 1 (Pass Gating Clock for MIPI DSI)
+    __BUS_CLK_GATING_REG0__: CCU Offset `0x60` (A64 Page 100)
+    - Set __MIPIDSI_GATING__ (Bit 1) to 1 (Pass Gating Clock for MIPI DSI)
 
-    BUS_SOFT_RST_REG0: CCU Offset `0x2C0` (A64 Page 138)
-    - Set MIPI_DSI_RST (Bit 1) to 1 (Deassert MIPI DSI Reset)
+    __BUS_SOFT_RST_REG0__: CCU Offset `0x2C0` (A64 Page 138)
+    - __Set MIPI_DSI_RST__ (Bit 1) to 1 (Deassert MIPI DSI Reset)
 
-    CCU Base Address: `0x01C2` `0000` (A64 Page 82)
+    __CCU Base Address__: `0x01C2` `0000` (A64 Page 82)
 
     ```text
     mipi dsi bus enable
@@ -2132,17 +2132,17 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Enable DSI Block
 
-    DSI_CTL_REG: DSI Offset `0x0` (A31 Page 843)
-    - Set DSI_En (Bit 0) to 1 (Enable DSI)
+    __DSI_CTL_REG__: DSI Offset `0x0` (A31 Page 843)
+    - Set __DSI_En__ (Bit 0) to 1 (Enable DSI)
 
-    DSI_BASIC_CTL0_REG: DSI Offset `0x10` (A31 Page 845)
-    - Set CRC_En (Bit 17) to 1 (Enable CRC)
-    - Set ECC_En (Bit 16) to 1 (Enable ECC)
+    __DSI_BASIC_CTL0_REG__: DSI Offset `0x10` (A31 Page 845)
+    - Set __CRC_En__ (Bit 17) to 1 (Enable CRC)
+    - Set __ECC_En__ (Bit 16) to 1 (Enable ECC)
 
-    DSI_TRANS_START_REG: DSI Offset `0x60` (Undocumented)
+    __DSI_TRANS_START_REG__: DSI Offset `0x60` (Undocumented)
     - Set to 10
 
-    DSI_TRANS_ZERO_REG: DSI Offset `0x78` (Undocumented)
+    __DSI_TRANS_ZERO_REG__: DSI Offset `0x78` (Undocumented)
     - Set to 0
 
     DSI Base Address: `0x01CA` `0000` (A31 Page 842)
@@ -2157,21 +2157,21 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Set Instructions (Undocumented)
 
-    DSI_INST_FUNC_REG(0): DSI Offset `0x20` (DSI_INST_ID_LP11)
+    __DSI_INST_FUNC_REG(0)__: DSI Offset `0x20` (DSI_INST_ID_LP11)
 
-    DSI_INST_FUNC_REG(1): DSI Offset `0x24` (DSI_INST_ID_TBA)
+    __DSI_INST_FUNC_REG(1)__: DSI Offset `0x24` (DSI_INST_ID_TBA)
 
-    DSI_INST_FUNC_REG(2): DSI Offset `0x28` (DSI_INST_ID_HSC)
+    __DSI_INST_FUNC_REG(2)__: DSI Offset `0x28` (DSI_INST_ID_HSC)
 
-    DSI_INST_FUNC_REG(3): DSI Offset `0x2c` (DSI_INST_ID_HSD)
+    __DSI_INST_FUNC_REG(3)__: DSI Offset `0x2c` (DSI_INST_ID_HSD)
 
-    DSI_INST_FUNC_REG(4): DSI Offset `0x30` (DSI_INST_ID_LPDT)
+    __DSI_INST_FUNC_REG(4)__: DSI Offset `0x30` (DSI_INST_ID_LPDT)
 
-    DSI_INST_FUNC_REG(5): DSI Offset `0x34` (DSI_INST_ID_HSCEXIT)
+    __DSI_INST_FUNC_REG(5)__: DSI Offset `0x34` (DSI_INST_ID_HSCEXIT)
 
-    DSI_INST_FUNC_REG(6): DSI Offset `0x38` (DSI_INST_ID_NOP)
+    __DSI_INST_FUNC_REG(6)__: DSI Offset `0x38` (DSI_INST_ID_NOP)
 
-    DSI_INST_FUNC_REG(7): DSI Offset `0x3c` (DSI_INST_ID_DLY)
+    __DSI_INST_FUNC_REG(7)__: DSI Offset `0x3c` (DSI_INST_ID_DLY)
 
     (DSI_INST_FUNC_REG(n) is `(0x020 + (n) * 0x04)`)
 
@@ -2189,11 +2189,11 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Configure Jump Instructions (Undocumented)
 
-    DSI_INST_JUMP_CFG_REG(0): DSI Offset 0x4c (DSI_INST_JUMP_CFG)
+    __DSI_INST_JUMP_CFG_REG(0)__: DSI Offset 0x4c (DSI_INST_JUMP_CFG)
 
     (DSI_INST_JUMP_CFG_REG(n) is `(0x04c + (n) * 0x04)`)
 
-    DSI_DEBUG_DATA_REG: Offset 0x2f8
+    __DSI_DEBUG_DATA_REG__: Offset 0x2f8
 
     ```text
     0x1ca004c = 0x560001 (DMB)
@@ -2202,11 +2202,11 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Set Video Start Delay
 
-    DSI_BASIC_CTL1_REG: DSI Offset `0x14` (A31 Page 846)
-    - Set Video_Start_Delay (Bits 4 to 11) to 1468 (Line Delay)
-    - Set Video_Precision_Mode_Align (Bit 2) to 1 (Fill Mode)
-    - Set Video_Frame_Start (Bit 1) to 1 (Precision Mode)
-    - Set DSI_Mode (Bit 0) to 1 (Video Mode)
+    __DSI_BASIC_CTL1_REG__: DSI Offset `0x14` (A31 Page 846)
+    - Set __Video_Start_Delay__ (Bits 4 to 11) to 1468 (Line Delay)
+    - Set __Video_Precision_Mode_Align__ (Bit 2) to 1 (Fill Mode)
+    - Set __Video_Frame_Start__ (Bit 1) to 1 (Precision Mode)
+    - Set __DSI_Mode__ (Bit 0) to 1 (Video Mode)
 
     ```text
     get_video_start_delay
@@ -2215,7 +2215,7 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Set Burst (Undocumented)
 
-    DSI_TCON_DRQ_REG: DSI Offset 0x7c
+    __DSI_TCON_DRQ_REG__: DSI Offset 0x7c
 
     ```text
     setup_burst
@@ -2224,11 +2224,11 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Set Instruction Loop (Undocumented)
 
-    DSI_INST_LOOP_SEL_REG: DSI Offset 0x40
+    __DSI_INST_LOOP_SEL_REG__: DSI Offset `0x40`
 
-    DSI_INST_LOOP_NUM_REG(0): DSI Offset 0x44
+    __DSI_INST_LOOP_NUM_REG(0)__: DSI Offset `0x44`
 
-    DSI_INST_LOOP_NUM_REG(1): DSI Offset 0x54
+    __DSI_INST_LOOP_NUM_REG(1)__: DSI Offset `0x54`
 
     (DSI_INST_LOOP_NUM_REG(n) is `(0x044 + (n) * 0x10)`)
 
@@ -2241,23 +2241,23 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Set Pixel Format
 
-    DSI_PIXEL_PH_REG: DSI Offset `0x90` (A31 Page 848)
-    - Set ECC (Bits 24 to 31) to 19
-    - Set WC (Bits 8 to 23) to 2160 (Byte Numbers of PD in a Pixel Packet)
-    - Set VC (Bits 6 to 7) to 0 (Virtual Channel)
-    - Set DT (Bits 0 to 5) to `0x3E` (24-bit Video Mode)
+    __DSI_PIXEL_PH_REG__: DSI Offset `0x90` (A31 Page 848)
+    - Set __ECC__ (Bits 24 to 31) to 19
+    - Set __WC__ (Bits 8 to 23) to 2160 (Byte Numbers of PD in a Pixel Packet)
+    - Set __VC__ (Bits 6 to 7) to 0 (Virtual Channel)
+    - Set __DT__ (Bits 0 to 5) to `0x3E` (24-bit Video Mode)
 
-    DSI_PIXEL_PF0_REG: DSI Offset `0x98` (A31 Page 849)
-    - Set CRC_Force (Bits 0 to 15) to `0xffff` (Force CRC to this value)
+    __DSI_PIXEL_PF0_REG__: DSI Offset `0x98` (A31 Page 849)
+    - Set __CRC_Force__ (Bits 0 to 15) to `0xffff` (Force CRC to this value)
 
-    DSI_PIXEL_PF1_REG: DSI Offset `0x9c` (A31 Page 849)
-    - Set CRC_Init_LineN (Bits 16 to 31) to `0xffff` (CRC initial to this value in transmitions except 1st one)
-    - Set CRC_Init_Line0 (Bits 0 to 15) to `0xffff` (CRC initial to this value in 1st transmition every frame)
+    __DSI_PIXEL_PF1_REG__: DSI Offset `0x9c` (A31 Page 849)
+    - Set __CRC_Init_LineN__ (Bits 16 to 31) to `0xffff` (CRC initial to this value in transmitions except 1st one)
+    - Set __CRC_Init_Line0__ (Bits 0 to 15) to `0xffff` (CRC initial to this value in 1st transmition every frame)
 
-    DSI_PIXEL_CTL0_REG: DSI Offset `0x80` (A31 Page 847)
-    - Set PD_Plug_Dis (Bit 16) to 1 (Disable PD plug before pixel bytes)
-    - Set Pixel_Endian (Bit 4) to 0 (LSB first)
-    - Set Pixel_Format (Bits 0 to 3) to 8 (24-bit RGB888)
+    __DSI_PIXEL_CTL0_REG__: DSI Offset `0x80` (A31 Page 847)
+    - Set __PD_Plug_Dis__ (Bit 16) to 1 (Disable PD plug before pixel bytes)
+    - Set __Pixel_Endian__ (Bit 4) to 0 (LSB first)
+    - Set __Pixel_Format__ (Bits 0 to 3) to 8 (24-bit RGB888)
 
     ```text
     setup_format
@@ -2269,35 +2269,35 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Set Sync Timings
 
-    DSI_BASIC_CTL_REG: DSI Offset `0x0c` (Undocumented)
+    __DSI_BASIC_CTL_REG__: DSI Offset `0x0c` (Undocumented)
 
-    DSI_SYNC_HSS_REG: DSI Offset `0xb0` (A31 Page 850)
-    - Set ECC (Bits 24 to 31) to 0x12
-    - Set D1 (Bits 16 to 23) to 0
-    - Set D0 (Bits 8 to 15) to 0
-    - Set VC (Bits 6 to 7) to 0 (Virtual Channel)
-    - Set DT (Bits 0 to 5) to `0x21` (HSS)
+    __DSI_SYNC_HSS_REG__: DSI Offset `0xb0` (A31 Page 850)
+    - Set __ECC__ (Bits 24 to 31) to `0x12`
+    - Set __D1__ (Bits 16 to 23) to 0
+    - Set __D0__ (Bits 8 to 15) to 0
+    - Set __VC__ (Bits 6 to 7) to 0 (Virtual Channel)
+    - Set __DT__ (Bits 0 to 5) to `0x21` (HSS)
 
-    DSI_SYNC_HSE_REG: DSI Offset `0xb4` (A31 Page 850)
-    - Set ECC (Bits 24 to 31) to 1
-    - Set D1 (Bits 16 to 23) to 0
-    - Set D0 (Bits 8 to 15) to 0
-    - Set VC (Bits 6 to 7) to 0 (Virtual Channel)
-    - Set DT (Bits 0 to 5) to `0x31` (HSE)
+    __DSI_SYNC_HSE_REG__: DSI Offset `0xb4` (A31 Page 850)
+    - Set __ECC__ (Bits 24 to 31) to 1
+    - Set __D1__ (Bits 16 to 23) to 0
+    - Set __D0__ (Bits 8 to 15) to 0
+    - Set __VC__ (Bits 6 to 7) to 0 (Virtual Channel)
+    - Set __DT__ (Bits 0 to 5) to `0x31` (HSE)
 
-    DSI_SYNC_VSS_REG: DSI Offset `0xb8` (A31 Page 851)
-    - Set ECC (Bits 24 to 31) to 7
-    - Set D1 (Bits 16 to 23) to 0
-    - Set D0 (Bits 8 to 15) to 0
-    - Set VC (Bits 6 to 7) to 0 (Virtual Channel)
-    - Set DT (Bits 0 to 5) to 1 (VSS)
+    __DSI_SYNC_VSS_REG__: DSI Offset `0xb8` (A31 Page 851)
+    - Set __ECC__ (Bits 24 to 31) to 7
+    - Set __D1__ (Bits 16 to 23) to 0
+    - Set __D0__ (Bits 8 to 15) to 0
+    - Set __VC__ (Bits 6 to 7) to 0 (Virtual Channel)
+    - Set __DT__ (Bits 0 to 5) to 1 (VSS)
 
-    DSI_SYNC_VSE_REG: DSI Offset `0xbc` (A31 Page 851)
-    - Set ECC (Bits 24 to 31) to `0x14`
-    - Set D1 (Bits 16 to 23) to 0
-    - Set D0 (Bits 8 to 15) to 0
-    - Set VC (Bits 6 to 7) to 0 (Virtual Channel)
-    - Set DT (Bits 0 to 5) to `0x11` (VSE)
+    __DSI_SYNC_VSE_REG__: DSI Offset `0xbc` (A31 Page 851)
+    - Set __ECC__ (Bits 24 to 31) to `0x14`
+    - Set __D1__ (Bits 16 to 23) to 0
+    - Set __D0__ (Bits 8 to 15) to 0
+    - Set __VC__ (Bits 6 to 7) to 0 (Virtual Channel)
+    - Set __DT__ (Bits 0 to 5) to `0x11` (VSE)
 
     ```text
     setup_timings
