@@ -1151,7 +1151,7 @@ addr=0x1ca0010, mask=0x1, val=0x1 (DMB)</code></pre></div></li>
 <p>By decoding the captured addresses and values, we decipher the following steps to <strong>enable the Allwinner A64 MIPI Display Physical Layer (DPHY)</strong>…</p>
 <ol>
 <li>
-<p>Set DSI Clock to 150 MHz</p>
+<p>Set DSI Clock to 150 MHz (600 MHz / 4)</p>
 <p><strong>MIPI_DSI_CLK_REG</strong>: CCU Offset <code>0x168</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 122)</a></p>
 <ul>
 <li>Set <strong>DSI_DPHY_GATING</strong> (Bit 15) to 1 (DSI DPHY Clock is On)</li>
