@@ -750,6 +750,12 @@ Today we learnt so much about PinePhone's __A64 Display Engine__...
 
 We're all set to build the NuttX Display Driver for PinePhone!
 
+_Is there a specific sequence of steps for calling the Display Serial Interface, Display Engine and Timing Controller?_
+
+To render graphics on PinePhone's LCD Display, our Display Driver needs to follow these steps...
+
+TODO
+
 _How shall we build the PinePhone Display Driver?_
 
 We'll create the PinePhone Display Driver based on the __NuttX Driver for Sitronix ST7789__...

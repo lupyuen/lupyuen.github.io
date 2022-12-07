@@ -603,7 +603,13 @@ To do this, we program two controllers in Allwinner A64...
 
     (Pic above)
 
-Which shall be explained in the next article!
+_Is there a specific sequence of steps for calling the Display Serial Interface, Display Engine and Timing Controller?_
+
+To render graphics on PinePhone's LCD Display, our Display Driver needs to follow these steps...
+
+TODO
+
+We'll explain all these in the next article!
 
 -   [__"Rendering PinePhone's Display (DE and TCON0)"__](https://lupyuen.github.io/articles/de)
 
@@ -618,18 +624,6 @@ And we might hit some __undocumented A64 Registers__...
 > "...the module is running a little instruction set and the manual conspicuously omits any description of the instructions or even the registers where you put the instructions."
 
 We'll find out soon in the next article!
-
--   [__"Rendering PinePhone's Display (DE and TCON0)"__](https://lupyuen.github.io/articles/de)
-
-When we have implemented the Display Engine and Timing Controller, our PinePhone Display Driver will look something like this...
-
--   [__display.c__](https://github.com/davidwed/p-boot/blob/master/src/display.c#L1565-L2132) and [__dtest.c__](https://github.com/davidwed/p-boot/blob/master/src/dtest.c#L276-L348)
-
-    [(Originally from __megous.com/p-boot__)](https://megous.com/git/p-boot/)
-
-    [(Running p-boot on Apache NuttX RTOS)](https://gist.github.com/lupyuen/ee3adf76e76881609845d0ab0f768a95)
-
-    [(How it looks on NuttX)](https://twitter.com/MisterTechBlog/status/1576543316912484352)
 
 ![Apache NuttX RTOS booting on PinePhone](https://lupyuen.github.io/images/serial-title.jpg)
 
@@ -761,31 +755,73 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [(See this)](https://www.reddit.com/r/PINE64official/comments/xsteb3/comment/iqostm5/?utm_source=share&utm_medium=web2x&context=3)
 
-![MIPI DSI Short Packet (Page 201)](https://lupyuen.github.io/images/dsi-short.png)
+# Appendix: Sequence of Steps for PinePhone Display Driver
 
-[_MIPI DSI Short Packet (Page 201)_](https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf)
+_Is there a specific sequence of steps for calling the Display Serial Interface, Display Engine and Timing Controller?_
 
-# Appendix: Short Packet for MIPI DSI
+To render graphics on PinePhone's LCD Display, our Display Driver needs to follow these steps: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L175-L226)
 
-According to [__BL808 Reference Manual__](https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf) (Page 201, pic above)...
+1.  Turn on __Display Backlight__
 
-> A __Short Packet__ consists of 8-bit data identification (DI), two bytes of commands or data, and 8-bit ECC.
+    [(Explained here)](https://lupyuen.github.io/articles/de#appendix-display-backlight)
 
-> The length of a short packet is 4 bytes including ECC.
+    [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig)
 
-Thus a MIPI DSI __Short Packet__ (compared with Long Packet)...
+1.  Initialise __Timing Controller (TCON0)__
 
--   Doesn't have Packet Payload and Packet Footer (CRC)
+    [(Explained here)](https://lupyuen.github.io/articles/de#appendix-timing-controller-tcon0)
 
--   Instead of Word Count (WC), the Packet Header now has 2 bytes of data
+    [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig)
 
--   DCS Command (Data Type) is...
+1.  Initialise __Power Management Integrated Circuit (PMIC)__
 
-    __DCS Short Write Without Parameter (`0x05`)__ for sending 1 byte of data
-    
-    __DCS Short Write With Parameter (`0x15`)__ for sending 2 bytes of data
+    [(Explained here)](https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit)
 
-Everything else is the same.
+    [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig)
+
+1.  Enable __MIPI DSI Block__
+
+    [(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block)
+
+    [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L884-L1007)
+
+1.  Enable __MIPI Display Physical Layer (DPHY)__
+
+    [(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-display-physical-layer-dphy)
+
+    [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/dphy.zig)
+
+1.  Reset __LCD Panel__
+
+    [(Explained here)](https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel)
+
+    [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig)
+
+1.  Initialise __LCD Controller (ST7703)__
+
+    [(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller)
+
+    [(Implemented here)](https://lupyuen.github.io/articles/dsi2#initialise-st7703-lcd-controller)
+
+1.  Start __MIPI DSI HSC and HSD__
+
+    [(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-start-mipi-dsi-hsc-and-hsd)
+
+    [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1009-L1047)
+
+1.  Initialise __Display Engine (DE)__
+
+    [(Explained here)](https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine)
+
+    [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L710-L1011)
+
+1.  Wait 160 milliseconds
+
+1.  Render Graphics with __Display Engine (DE)__
+
+    [(Explained here)](https://lupyuen.github.io/articles/de)
+
+    [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L69-L175)
 
 # Appendix: Enable MIPI DSI Block
 
@@ -1297,6 +1333,32 @@ Based on the above steps, we have __implemented in Zig__ the PinePhone Driver th
 
 -   [__Output Log for dphy.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
 
+![MIPI DSI Short Packet (Page 201)](https://lupyuen.github.io/images/dsi-short.png)
+
+[_MIPI DSI Short Packet (Page 201)_](https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf)
+
+# Appendix: Short Packet for MIPI DSI
+
+According to [__BL808 Reference Manual__](https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf) (Page 201, pic above)...
+
+> A __Short Packet__ consists of 8-bit data identification (DI), two bytes of commands or data, and 8-bit ECC.
+
+> The length of a short packet is 4 bytes including ECC.
+
+Thus a MIPI DSI __Short Packet__ (compared with Long Packet)...
+
+-   Doesn't have Packet Payload and Packet Footer (CRC)
+
+-   Instead of Word Count (WC), the Packet Header now has 2 bytes of data
+
+-   DCS Command (Data Type) is...
+
+    __DCS Short Write Without Parameter (`0x05`)__ for sending 1 byte of data
+    
+    __DCS Short Write With Parameter (`0x15`)__ for sending 2 bytes of data
+
+Everything else is the same.
+
 # Appendix: Initialise LCD Controller
 
 Xingbangda has provided an [__Initialisation Sequence__](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/panel/panel-sitronix-st7703.c#L174-L333) of (magical) ST7703 Commands that we should send to the LCD Controller at startup.
@@ -1305,7 +1367,7 @@ The commands below are (mostly) documented in the ST7703 Datasheet...
 
 -   [__Sitronix ST7703 LCD Controller Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf)
 
-The Initialisation Sequence consists of the following __20 DCS Commands__ that we should send via DCS Short Write or DCS Long Write...
+The Initialisation Sequence consists of the following __20 DCS Commands__ that we should send via [__DCS Short Write__](https://lupyuen.github.io/articles/dsi#transmit-packet-over-mipi-dsi) or [__DCS Long Write__](https://lupyuen.github.io/articles/dsi#transmit-packet-over-mipi-dsi)...
 
 | Byte | Purpose |
 |:----:|:---------|
