@@ -694,17 +694,6 @@
 <p><a href="https://megous.com/git/p-boot/tree/src/display.c#n756">(According to this)</a></p>
 </li>
 <li>
-<p>Some parts of the PinePhone MIPI DSI Driver still need to be reverse-engineered…</p>
-<p><a href="https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block"><strong>“Enable MIPI DSI Block”</strong></a></p>
-<p><a href="https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-display-physical-layer-dphy"><strong>“Enable MIPI Display Physical Layer (DPHY)”</strong></a></p>
-<p><a href="https://lupyuen.github.io/articles/dsi#appendix-start-mipi-dsi-hsc-and-hsd"><strong>“Start MIPI DSI HSC and HSD”</strong></a></p>
-<p>We have already implemented the above features in Zig. <a href="https://github.com/lupyuen/pinephone-nuttx#complete-pinephone-display-driver-in-zig">(See this)</a></p>
-</li>
-<li>
-<p>We recorded some notes while reverse-engineering the PinePhone MIPI DSI Driver…</p>
-<p><a href="https://gist.github.com/lupyuen/43204d20c35ecb23dfbff12f2f570565"><strong>“Reverse Engineering PinePhone’s LCD Display (MIPI DSI)”</strong></a></p>
-</li>
-<li>
 <p>How did we find the Reference Code for the MIPI DSI Driver? We used GitHub Code Search…</p>
 <p><a href="https://lupyuen.github.io/articles/pio#lcd-controller-tcon0"><strong>“Searching online for the driver”</strong></a></p>
 </li>
@@ -1153,6 +1142,8 @@ addr=0x1ca0010, mask=0x1, val=0x1 (DMB)</code></pre></div></li>
 </ul>
 <p>MIPI DPHY is the <strong>“Physical Layer”</strong> in the pic above.</p>
 <p>(MIPI DSI runs in the layers above MIPI DPHY)</p>
+<p>Sadly Allwinner A64’s MIPI DPHY doesn’t seem to be documented, so we might need to do Reverse Engineering.</p>
+<p><em>How do we implement MIPI DPHY if it’s undocumented?</em></p>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n331"><strong>p-boot dphy_enable</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#dphy_enable"><strong>Log from dphy_enable</strong></a></li>
