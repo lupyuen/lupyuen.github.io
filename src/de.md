@@ -2412,59 +2412,60 @@ TODO: Reverse Engineering
 
 By decoding the captured addresses and values, we decipher the following steps to __start Allwinner A64 MIPI DSI (in HSC and HSD Modes)__...
 
-    TODO: DSI_START_HSC
+1.  Start HSC (Undocumented)
+
+    DSI_INST_JUMP_SEL_REG: DSI Offset `0x48`
+
+    DSI Base Address: `0x01CA` `0000` (A31 Page 842)
 
     ```text
-    DSI Base Address: 0x01CA0000 (A31 Page 842)
-
-    DSI_INST_JUMP_SEL_REG: DSI Offset 0x48
-
     dsi_start DSI_START_HSC
     0x1ca0048 = 0xf02 (DMB)
     ```
 
-    TODO: Commit
+1.  Commit
 
-    ```text
-    DSI_BASIC_CTL0_REG: DSI Offset 0x10 (A31 Page 845)
+    DSI_BASIC_CTL0_REG: DSI Offset `0x10` (A31 Page 845)
     - Set Instru_En (Bit 0) to 1 (Enable DSI Processing from Instruction 0)
 
+    ```text
     dsi_update_bits: 0x01ca0010 : 00030000 -> (00000001) 00000001 (DMB)
     addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
     ```
 
-    TODO: DSI_INST_FUNC_LANE_CEN
+1.  Instruction Function Lane (Documented)
 
-    ```text
-    DSI_INST_FUNC_REG(n): (0x020 + (n) * 0x04)
-    DSI_INST_FUNC_REG(0): DSI Offset 0x20 (DSI_INST_ID_LP11)
+    DSI_INST_FUNC_REG(0): DSI Offset `0x20` (DSI_INST_ID_LP11)
     - Set DSI_INST_FUNC_LANE_CEN (Bit 4) to 0
 
+    (DSI_INST_FUNC_REG(n) is `(0x020 + (n) * 0x04)`)
+
+    ```text
     dsi_update_bits: 0x01ca0020 : 0000001f -> (00000010) 00000000 (DMB)
     addr=0x1ca0020, mask=0x10, val=0x0 (DMB)
     ```
 
-    TODO: Delay
+1.  Wait 1,000 microseconds
 
     ```text
     udelay 1000
     ```
 
-    TODO: DSI_START_HSD
+1.  Start HSD (Undocumented)
+
+    DSI_INST_JUMP_SEL_REG: DSI Offset `0x48`
 
     ```text
-    DSI_INST_JUMP_SEL_REG: DSI Offset 0x48
-
     dsi_start DSI_START_HSD
     0x1ca0048 = 0x63f07006 (DMB)
     ```
 
-    TODO: Commit
+1.  Commit
 
-    ```text
-    DSI_BASIC_CTL0_REG: DSI Offset 0x10 (A31 Page 845)
+    DSI_BASIC_CTL0_REG: DSI Offset `0x10` (A31 Page 845)
     - Set Instru_En (Bit 0) to 1 (Enable DSI Processing from Instruction 0)
 
+    ```text
     dsi_update_bits: 0x01ca0010 : 00030000 -> (00000001) 00000001 (DMB)
     addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
     ```
