@@ -913,7 +913,7 @@ By decoding the captured addresses and values, we decipher the following steps t
 
     (DSI_INST_JUMP_CFG_REG(n) is `(0x04c + (n) * 0x04)`)
 
-    __DSI_DEBUG_DATA_REG__: Offset `0x2f8`
+    __DSI_DEBUG_DATA_REG__: DSI Offset `0x2f8`
     - Set to `0xff`
 
     ```text
