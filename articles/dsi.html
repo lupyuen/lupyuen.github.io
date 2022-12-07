@@ -543,7 +543,7 @@
 <li><a href="https://gist.github.com/lupyuen/43204d20c35ecb23dfbff12f2f570565#initialise-st7703-lcd-controller"><strong>“Initialise ST7703 LCD Controller”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/pio-display.png" alt="Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)" /></p>
-<p><a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><em>Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)</em></a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><em>Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)</em></a></p>
 <h1 id="render-display"><a href="#render-display">13 Render Display</a></h1>
 <p><em>OK we have initialised the ST7703 display…</em></p>
 <p><em>What about rendering the display?</em></p>
@@ -764,25 +764,25 @@
 <ol>
 <li>
 <p>Enable MIPI DSI Bus</p>
-<p><strong>BUS_CLK_GATING_REG0</strong>: CCU Offset <code>0x60</code> (A64 Page 100)</p>
+<p><strong>BUS_CLK_GATING_REG0</strong>: CCU Offset <code>0x60</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 100)</a></p>
 <ul>
 <li>Set <strong>MIPIDSI_GATING</strong> (Bit 1) to 1 (Pass Gating Clock for MIPI DSI)</li>
 </ul>
-<p><strong>BUS_SOFT_RST_REG0</strong>: CCU Offset <code>0x2C0</code> (A64 Page 138)</p>
+<p><strong>BUS_SOFT_RST_REG0</strong>: CCU Offset <code>0x2C0</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 138)</a></p>
 <ul>
 <li><strong>Set MIPI_DSI_RST</strong> (Bit 1) to 1 (Deassert MIPI DSI Reset)</li>
 </ul>
-<p><strong>CCU Base Address</strong>: <code>0x01C2</code> <code>0000</code> (A64 Page 82)</p>
+<p><strong>CCU Base Address</strong>: <code>0x01C2</code> <code>0000</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 82)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>mipi dsi bus enable
 setbits 0x1c20060, 0x2 (DMB)
 setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 <li>
 <p>Enable DSI Block</p>
-<p><strong>DSI_CTL_REG</strong>: DSI Offset <code>0x0</code> (A31 Page 843)</p>
+<p><strong>DSI_CTL_REG</strong>: DSI Offset <code>0x0</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 843)</a></p>
 <ul>
 <li>Set <strong>DSI_En</strong> (Bit 0) to 1 (Enable DSI)</li>
 </ul>
-<p><strong>DSI_BASIC_CTL0_REG</strong>: DSI Offset <code>0x10</code> (A31 Page 845)</p>
+<p><strong>DSI_BASIC_CTL0_REG</strong>: DSI Offset <code>0x10</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 845)</a></p>
 <ul>
 <li>Set <strong>CRC_En</strong> (Bit 17) to 1 (Enable CRC)</li>
 <li>Set <strong>ECC_En</strong> (Bit 16) to 1 (Enable ECC)</li>
@@ -795,7 +795,7 @@ setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 <ul>
 <li>Set to 0</li>
 </ul>
-<p>DSI Base Address: <code>0x01CA</code> <code>0000</code> (A31 Page 842)</p>
+<p>DSI Base Address: <code>0x01CA</code> <code>0000</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 842)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>Enable the DSI block
 0x1ca0000 = 0x1 (DMB)
 0x1ca0010 = 0x30000 (DMB)
@@ -804,13 +804,37 @@ setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 <li>
 <p>Set Instructions (Undocumented)</p>
 <p><strong>DSI_INST_FUNC_REG(0)</strong>: DSI Offset <code>0x20</code> (DSI_INST_ID_LP11)</p>
+<ul>
+<li>Set to <code>0x1f</code></li>
+</ul>
 <p><strong>DSI_INST_FUNC_REG(1)</strong>: DSI Offset <code>0x24</code> (DSI_INST_ID_TBA)</p>
+<ul>
+<li>Set to <code>0x1000</code> <code>0001</code></li>
+</ul>
 <p><strong>DSI_INST_FUNC_REG(2)</strong>: DSI Offset <code>0x28</code> (DSI_INST_ID_HSC)</p>
+<ul>
+<li>Set to <code>0x2000</code> <code>0010</code></li>
+</ul>
 <p><strong>DSI_INST_FUNC_REG(3)</strong>: DSI Offset <code>0x2c</code> (DSI_INST_ID_HSD)</p>
+<ul>
+<li>Set to <code>0x2000</code> <code>000f</code></li>
+</ul>
 <p><strong>DSI_INST_FUNC_REG(4)</strong>: DSI Offset <code>0x30</code> (DSI_INST_ID_LPDT)</p>
+<ul>
+<li>Set to <code>0x3010</code> <code>0001</code></li>
+</ul>
 <p><strong>DSI_INST_FUNC_REG(5)</strong>: DSI Offset <code>0x34</code> (DSI_INST_ID_HSCEXIT)</p>
+<ul>
+<li>Set to <code>0x4000</code> <code>0010</code></li>
+</ul>
 <p><strong>DSI_INST_FUNC_REG(6)</strong>: DSI Offset <code>0x38</code> (DSI_INST_ID_NOP)</p>
+<ul>
+<li>Set to <code>0xf</code></li>
+</ul>
 <p><strong>DSI_INST_FUNC_REG(7)</strong>: DSI Offset <code>0x3c</code> (DSI_INST_ID_DLY)</p>
+<ul>
+<li>Set to <code>0x5000</code> <code>001f</code></li>
+</ul>
 <p>(DSI_INST_FUNC_REG(n) is <code>(0x020 + (n) * 0x04)</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>inst_init
 0x1ca0020 = 0x1f (DMB)
@@ -824,13 +848,19 @@ setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 <li>
 <p>Configure Jump Instructions (Undocumented)</p>
 <p><strong>DSI_INST_JUMP_CFG_REG(0)</strong>: DSI Offset <code>0x4c</code> (DSI_INST_JUMP_CFG)</p>
+<ul>
+<li>Set to <code>0x56</code> <code>0001</code></li>
+</ul>
 <p>(DSI_INST_JUMP_CFG_REG(n) is <code>(0x04c + (n) * 0x04)</code>)</p>
 <p><strong>DSI_DEBUG_DATA_REG</strong>: Offset <code>0x2f8</code></p>
+<ul>
+<li>Set to <code>0xff</code></li>
+</ul>
 <div class="example-wrap"><pre class="language-text"><code>0x1ca004c = 0x560001 (DMB)
 0x1ca02f8 = 0xff (DMB)</code></pre></div></li>
 <li>
 <p>Set Video Start Delay</p>
-<p><strong>DSI_BASIC_CTL1_REG</strong>: DSI Offset <code>0x14</code> (A31 Page 846)</p>
+<p><strong>DSI_BASIC_CTL1_REG</strong>: DSI Offset <code>0x14</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 846)</a></p>
 <ul>
 <li>Set <strong>Video_Start_Delay</strong> (Bits 4 to 11) to 1468 (Line Delay)</li>
 <li>Set <strong>Video_Precision_Mode_Align</strong> (Bit 2) to 1 (Fill Mode)</li>
@@ -842,13 +872,25 @@ setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 <li>
 <p>Set Burst (Undocumented)</p>
 <p><strong>DSI_TCON_DRQ_REG</strong>: DSI Offset 0x7c</p>
+<ul>
+<li>Set to <code>0x1000</code> <code>0007</code></li>
+</ul>
 <div class="example-wrap"><pre class="language-text"><code>setup_burst
 0x1ca007c = 0x10000007 (DMB)</code></pre></div></li>
 <li>
 <p>Set Instruction Loop (Undocumented)</p>
 <p><strong>DSI_INST_LOOP_SEL_REG</strong>: DSI Offset <code>0x40</code></p>
+<ul>
+<li>Set to <code>0x3000</code> <code>0002</code></li>
+</ul>
 <p><strong>DSI_INST_LOOP_NUM_REG(0)</strong>: DSI Offset <code>0x44</code></p>
+<ul>
+<li>Set to <code>0x31</code> <code>0031</code></li>
+</ul>
 <p><strong>DSI_INST_LOOP_NUM_REG(1)</strong>: DSI Offset <code>0x54</code></p>
+<ul>
+<li>Set to <code>0x31</code> <code>0031</code></li>
+</ul>
 <p>(DSI_INST_LOOP_NUM_REG(n) is <code>(0x044 + (n) * 0x10)</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>setup_inst_loop
 0x1ca0040 = 0x30000002 (DMB)
@@ -856,23 +898,23 @@ setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 0x1ca0054 = 0x310031 (DMB)</code></pre></div></li>
 <li>
 <p>Set Pixel Format</p>
-<p><strong>DSI_PIXEL_PH_REG</strong>: DSI Offset <code>0x90</code> (A31 Page 848)</p>
+<p><strong>DSI_PIXEL_PH_REG</strong>: DSI Offset <code>0x90</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 848)</a></p>
 <ul>
 <li>Set <strong>ECC</strong> (Bits 24 to 31) to 19</li>
 <li>Set <strong>WC</strong> (Bits 8 to 23) to 2160 (Byte Numbers of PD in a Pixel Packet)</li>
 <li>Set <strong>VC</strong> (Bits 6 to 7) to 0 (Virtual Channel)</li>
 <li>Set <strong>DT</strong> (Bits 0 to 5) to <code>0x3E</code> (24-bit Video Mode)</li>
 </ul>
-<p><strong>DSI_PIXEL_PF0_REG</strong>: DSI Offset <code>0x98</code> (A31 Page 849)</p>
+<p><strong>DSI_PIXEL_PF0_REG</strong>: DSI Offset <code>0x98</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 849)</a></p>
 <ul>
 <li>Set <strong>CRC_Force</strong> (Bits 0 to 15) to <code>0xffff</code> (Force CRC to this value)</li>
 </ul>
-<p><strong>DSI_PIXEL_PF1_REG</strong>: DSI Offset <code>0x9c</code> (A31 Page 849)</p>
+<p><strong>DSI_PIXEL_PF1_REG</strong>: DSI Offset <code>0x9c</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 849)</a></p>
 <ul>
 <li>Set <strong>CRC_Init_LineN</strong> (Bits 16 to 31) to <code>0xffff</code> (CRC initial to this value in transmitions except 1st one)</li>
 <li>Set <strong>CRC_Init_Line0</strong> (Bits 0 to 15) to <code>0xffff</code> (CRC initial to this value in 1st transmition every frame)</li>
 </ul>
-<p><strong>DSI_PIXEL_CTL0_REG</strong>: DSI Offset <code>0x80</code> (A31 Page 847)</p>
+<p><strong>DSI_PIXEL_CTL0_REG</strong>: DSI Offset <code>0x80</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 847)</a></p>
 <ul>
 <li>Set <strong>PD_Plug_Dis</strong> (Bit 16) to 1 (Disable PD plug before pixel bytes)</li>
 <li>Set <strong>Pixel_Endian</strong> (Bit 4) to 0 (LSB first)</li>
@@ -886,7 +928,7 @@ setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 <li>
 <p>Set Sync Timings</p>
 <p><strong>DSI_BASIC_CTL_REG</strong>: DSI Offset <code>0x0c</code> (Undocumented)</p>
-<p><strong>DSI_SYNC_HSS_REG</strong>: DSI Offset <code>0xb0</code> (A31 Page 850)</p>
+<p><strong>DSI_SYNC_HSS_REG</strong>: DSI Offset <code>0xb0</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 850)</a></p>
 <ul>
 <li>Set <strong>ECC</strong> (Bits 24 to 31) to <code>0x12</code></li>
 <li>Set <strong>D1</strong> (Bits 16 to 23) to 0</li>
@@ -894,7 +936,7 @@ setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 <li>Set <strong>VC</strong> (Bits 6 to 7) to 0 (Virtual Channel)</li>
 <li>Set <strong>DT</strong> (Bits 0 to 5) to <code>0x21</code> (HSS)</li>
 </ul>
-<p><strong>DSI_SYNC_HSE_REG</strong>: DSI Offset <code>0xb4</code> (A31 Page 850)</p>
+<p><strong>DSI_SYNC_HSE_REG</strong>: DSI Offset <code>0xb4</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 850)</a></p>
 <ul>
 <li>Set <strong>ECC</strong> (Bits 24 to 31) to 1</li>
 <li>Set <strong>D1</strong> (Bits 16 to 23) to 0</li>
@@ -902,7 +944,7 @@ setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 <li>Set <strong>VC</strong> (Bits 6 to 7) to 0 (Virtual Channel)</li>
 <li>Set <strong>DT</strong> (Bits 0 to 5) to <code>0x31</code> (HSE)</li>
 </ul>
-<p><strong>DSI_SYNC_VSS_REG</strong>: DSI Offset <code>0xb8</code> (A31 Page 851)</p>
+<p><strong>DSI_SYNC_VSS_REG</strong>: DSI Offset <code>0xb8</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 851)</a></p>
 <ul>
 <li>Set <strong>ECC</strong> (Bits 24 to 31) to 7</li>
 <li>Set <strong>D1</strong> (Bits 16 to 23) to 0</li>
@@ -910,7 +952,7 @@ setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 <li>Set <strong>VC</strong> (Bits 6 to 7) to 0 (Virtual Channel)</li>
 <li>Set <strong>DT</strong> (Bits 0 to 5) to 1 (VSS)</li>
 </ul>
-<p><strong>DSI_SYNC_VSE_REG</strong>: DSI Offset <code>0xbc</code> (A31 Page 851)</p>
+<p><strong>DSI_SYNC_VSE_REG</strong>: DSI Offset <code>0xbc</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 851)</a></p>
 <ul>
 <li>Set <strong>ECC</strong> (Bits 24 to 31) to <code>0x14</code></li>
 <li>Set <strong>D1</strong> (Bits 16 to 23) to 0</li>
@@ -939,39 +981,39 @@ setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 <div class="example-wrap"><pre class="language-text"><code>0x1ca0018 = 0x11000a (DMB)
 0x1ca001c = 0x5cd05a0 (DMB)</code></pre></div></li>
 <li>
-<p>Set Horizontal Blank Packets</p>
-<p><strong>DSI_BLK_HSA0_REG</strong>: DSI Offset <code>0xc0</code> (A31 Page 852)</p>
+<p>Set Horizontal Blanking</p>
+<p><strong>DSI_BLK_HSA0_REG</strong>: DSI Offset <code>0xc0</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 852)</a></p>
 <ul>
 <li>Set <strong>HSA_PH</strong> (Bits 0 to 31) to <code>0x900</code> <code>4a19</code></li>
 </ul>
-<p><strong>DSI_BLK_HSA1_REG</strong>: DSI Offset <code>0xc4</code> (A31 Page 852)</p>
+<p><strong>DSI_BLK_HSA1_REG</strong>: DSI Offset <code>0xc4</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 852)</a></p>
 <ul>
 <li>Set <strong>HSA_PF</strong> (Bits 16 to 31) to <code>0x50b4</code></li>
 <li>Set <strong>HSA_PD</strong> (Bits 0 to 7) to 0</li>
 </ul>
-<p><strong>DSI_BLK_HBP0_REG</strong>: DSI Offset <code>0xc8</code> (A31 Page 852)</p>
+<p><strong>DSI_BLK_HBP0_REG</strong>: DSI Offset <code>0xc8</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 852)</a></p>
 <ul>
 <li>Set <strong>HBP_PH</strong> (Bits 0 to 31) to <code>0x3500</code> <code>5419</code></li>
 </ul>
-<p><strong>DSI_BLK_HBP1_REG</strong>: DSI Offset <code>0xcc</code> (A31 Page 852)</p>
+<p><strong>DSI_BLK_HBP1_REG</strong>: DSI Offset <code>0xcc</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 852)</a></p>
 <ul>
 <li>Set <strong>HBP_PF</strong> (Bits 16 to 31) to <code>0x757a</code></li>
 <li>Set <strong>HBP_PD</strong> (Bits 0 to 7) to 0</li>
 </ul>
-<p><strong>DSI_BLK_HFP0_REG</strong>: DSI Offset <code>0xd0</code> (A31 Page 852)</p>
+<p><strong>DSI_BLK_HFP0_REG</strong>: DSI Offset <code>0xd0</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 852)</a></p>
 <ul>
 <li>Set <strong>HFP_PH</strong> (Bits 0 to 31) to <code>0x900</code> <code>4a19</code></li>
 </ul>
-<p><strong>DSI_BLK_HFP1_REG</strong>: DSI Offset <code>0xd4</code> (A31 Page 853)</p>
+<p><strong>DSI_BLK_HFP1_REG</strong>: DSI Offset <code>0xd4</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 853)</a></p>
 <ul>
 <li>Set <strong>HFP_PF</strong> (Bits 16 to 31) to <code>0x50b4</code></li>
 <li>Set <strong>HFP_PD</strong> (Bits 0 to 7) to 0</li>
 </ul>
-<p><strong>DSI_BLK_HBLK0_REG</strong>: DSI Offset <code>0xe0</code> (A31 Page 853)</p>
+<p><strong>DSI_BLK_HBLK0_REG</strong>: DSI Offset <code>0xe0</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 853)</a></p>
 <ul>
 <li>Set <strong>HBLK_PH</strong> (Bits 0 to 31) to <code>0xc09</code> <code>1a19</code></li>
 </ul>
-<p><strong>DSI_BLK_HBLK1_REG</strong>: DSI Offset <code>0xe4</code> (A31 Page 853)</p>
+<p><strong>DSI_BLK_HBLK1_REG</strong>: DSI Offset <code>0xe4</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 853)</a></p>
 <ul>
 <li>Set <strong>HBLK_PF</strong> (Bits 16 to 31) to <code>0x72bd</code></li>
 <li>Set <strong>HBLK_PD</strong> (Bits 0 to 7) to 0</li>
@@ -985,12 +1027,12 @@ setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 0x1ca00e0 = 0xc091a19 (DMB)
 0x1ca00e4 = 0x72bd0000 (DMB)</code></pre></div></li>
 <li>
-<p>Set Vertical Blank Packets</p>
-<p><strong>DSI_BLK_VBLK0_REG</strong>: DSI Offset <code>0xe8</code> (A31 Page 854)</p>
+<p>Set Vertical Blanking</p>
+<p><strong>DSI_BLK_VBLK0_REG</strong>: DSI Offset <code>0xe8</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 854)</a></p>
 <ul>
 <li>Set <strong>VBLK_PH</strong> (Bits 0 to 31) to <code>0x1a00</code> <code>0019</code></li>
 </ul>
-<p><strong>DSI_BLK_VBLK1_REG</strong>: DSI Offset <code>0xec</code> (A31 Page 854)</p>
+<p><strong>DSI_BLK_VBLK1_REG</strong>: DSI Offset <code>0xec</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 854)</a></p>
 <ul>
 <li>Set <strong>VBLK_PF</strong> (Bits 16 to 31) to <code>0xffff</code></li>
 <li>Set <strong>VBLK_PD</strong> (Bits 0 to 7) to 0</li>
@@ -1017,19 +1059,22 @@ setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 <li>
 <p>Start HSC (Undocumented)</p>
 <p><strong>DSI_INST_JUMP_SEL_REG</strong>: DSI Offset <code>0x48</code></p>
-<p><strong>DSI Base Address</strong>: <code>0x01CA</code> <code>0000</code> (A31 Page 842)</p>
+<ul>
+<li>Set to <code>0xf02</code></li>
+</ul>
+<p><strong>DSI Base Address</strong>: <code>0x01CA</code> <code>0000</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 842)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>dsi_start DSI_START_HSC
 0x1ca0048 = 0xf02 (DMB)</code></pre></div></li>
 <li>
 <p>Commit</p>
-<p><strong>DSI_BASIC_CTL0_REG</strong>: DSI Offset <code>0x10</code> (A31 Page 845)</p>
+<p><strong>DSI_BASIC_CTL0_REG</strong>: DSI Offset <code>0x10</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 845)</a></p>
 <ul>
 <li>Set <strong>Instru_En</strong> (Bit 0) to 1 (Enable DSI Processing from Instruction 0)</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>dsi_update_bits: 0x01ca0010 : 00030000 -&gt; (00000001) 00000001 (DMB)
 addr=0x1ca0010, mask=0x1, val=0x1 (DMB)</code></pre></div></li>
 <li>
-<p>Instruction Function Lane (Documented)</p>
+<p>Instruction Function Lane (Undocumented)</p>
 <p><strong>DSI_INST_FUNC_REG(0)</strong>: DSI Offset <code>0x20</code> (DSI_INST_ID_LP11)</p>
 <ul>
 <li>Set <strong>DSI_INST_FUNC_LANE_CEN</strong> (Bit 4) to 0</li>
@@ -1043,11 +1088,14 @@ addr=0x1ca0020, mask=0x10, val=0x0 (DMB)</code></pre></div></li>
 <li>
 <p>Start HSD (Undocumented)</p>
 <p><strong>DSI_INST_JUMP_SEL_REG</strong>: DSI Offset <code>0x48</code></p>
+<ul>
+<li>Set to <code>0x63f0</code> <code>7006</code></li>
+</ul>
 <div class="example-wrap"><pre class="language-text"><code>dsi_start DSI_START_HSD
 0x1ca0048 = 0x63f07006 (DMB)</code></pre></div></li>
 <li>
 <p>Commit</p>
-<p><strong>DSI_BASIC_CTL0_REG</strong>: DSI Offset <code>0x10</code> (A31 Page 845)</p>
+<p><strong>DSI_BASIC_CTL0_REG</strong>: DSI Offset <code>0x10</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 845)</a></p>
 <ul>
 <li>Set <strong>Instru_En</strong> (Bit 0) to 1 (Enable DSI Processing from Instruction 0)</li>
 </ul>
@@ -1084,23 +1132,41 @@ addr=0x1ca0010, mask=0x1, val=0x1 (DMB)</code></pre></div></li>
 <ol>
 <li>
 <p>Set DSI Clock to 150 MHz</p>
-<p><strong>MIPI_DSI_CLK_REG</strong>: CCU Offset <code>0x168</code> (A64 Page 122)</p>
+<p><strong>MIPI_DSI_CLK_REG</strong>: CCU Offset <code>0x168</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 122)</a></p>
 <ul>
 <li>Set <strong>DSI_DPHY_GATING</strong> (Bit 15) to 1 (DSI DPHY Clock is On)</li>
 <li>Set <strong>DSI_DPHY_SRC_SEL</strong> (Bits 8 to 9) to <code>0b10</code> (DSI DPHY Clock Source is PLL_PERIPH0(1X))</li>
 <li>Set <strong>DPHY_CLK_DIV_M</strong> (Bits 0 to 3) to 3 (DSI DPHY Clock divide ratio - 1)</li>
 </ul>
-<p><strong>CCU Base Address</strong>: <code>0x01C2</code> <code>0000</code> (A64 Page 82)</p>
+<p><strong>CCU Base Address</strong>: <code>0x01C2</code> <code>0000</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 82)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>150MHz (600 / 4)
 0x1c20168 = 0x8203 (DMB)</code></pre></div></li>
 <li>
 <p>Power on DPHY Tx (Undocumented)</p>
 <p><strong>DPHY_TX_CTL_REG</strong>: DPHY Offset <code>0x04</code></p>
+<ul>
+<li>Set to <code>0x1000</code> <code>0000</code></li>
+</ul>
 <p><strong>DPHY_TX_TIME0_REG</strong>: DPHY Offset <code>0x10</code></p>
+<ul>
+<li>Set to <code>0xa06</code> <code>000e</code></li>
+</ul>
 <p><strong>DPHY_TX_TIME1_REG</strong>: DPHY Offset <code>0x14</code></p>
+<ul>
+<li>Set to <code>0xa03</code> <code>3207</code></li>
+</ul>
 <p><strong>DPHY_TX_TIME2_REG</strong>: DPHY Offset <code>0x18</code></p>
+<ul>
+<li>Set to <code>0x1e</code></li>
+</ul>
 <p><strong>DPHY_TX_TIME3_REG</strong>: DPHY Offset <code>0x1c</code></p>
+<ul>
+<li>Set to <code>0x0</code></li>
+</ul>
 <p><strong>DPHY_TX_TIME4_REG</strong>: DPHY Offset <code>0x20</code></p>
+<ul>
+<li>Set to <code>0x303</code></li>
+</ul>
 <p><strong>DPHY Base Address</strong>: <code>0x01ca</code> <code>1000</code></p>
 <div class="example-wrap"><pre class="language-text"><code>0x1ca1004 = 0x10000000 (DMB)
 0x1ca1010 = 0xa06000e (DMB)
@@ -1111,10 +1177,25 @@ addr=0x1ca0010, mask=0x1, val=0x1 (DMB)</code></pre></div></li>
 <li>
 <p>Enable DPHY (Undocumented)</p>
 <p><strong>DPHY_GCTL_REG</strong>: DPHY Offset <code>0x00</code> (Enable DPHY)</p>
+<ul>
+<li>Set to <code>0x31</code></li>
+</ul>
 <p><strong>DPHY_ANA0_REG</strong>: DPHY Offset <code>0x4c</code> (PWS)</p>
+<ul>
+<li>Set to <code>0x9f00</code> <code>7f00</code></li>
+</ul>
 <p><strong>DPHY_ANA1_REG</strong>: DPHY Offset <code>0x50</code> (CSMPS)</p>
+<ul>
+<li>Set to <code>0x1700</code> <code>0000</code></li>
+</ul>
 <p><strong>DPHY_ANA4_REG</strong>: DPHY Offset <code>0x5c</code> (CKDV)</p>
+<ul>
+<li>Set to <code>0x1f0</code> <code>1555</code></li>
+</ul>
 <p><strong>DPHY_ANA2_REG</strong>: DPHY Offset <code>0x54</code> (ENIB)</p>
+<ul>
+<li>Set to <code>0x2</code></li>
+</ul>
 <p>Wait 5 microseconds</p>
 <div class="example-wrap"><pre class="language-text"><code>0x1ca1000 = 0x31 (DMB)
 0x1ca104c = 0x9f007f00 (DMB)
@@ -1125,15 +1206,33 @@ udelay 5</code></pre></div></li>
 <li>
 <p>Enable LDOR, LDOC, LDOD (Undocumented)</p>
 <p><strong>DPHY_ANA3_REG</strong>: DPHY Offset <code>0x58</code> (Enable LDOR, LDOC, LDOD)</p>
+<ul>
+<li>Set to <code>0x304</code> <code>0000</code></li>
+</ul>
 <p>Wait 1 microsecond</p>
 <p><strong>DPHY_ANA3_REG</strong>: DPHY Offset <code>0x58</code> (Enable VTTC, VTTD)</p>
+<ul>
+<li>Set bits <code>0xf800</code> <code>0000</code></li>
+</ul>
 <p>Wait 1 microsecond</p>
 <p><strong>DPHY_ANA3_REG</strong>: DPHY Offset <code>0x58</code> (Enable DIV)</p>
+<ul>
+<li>Set bits <code>0x400</code> <code>0000</code></li>
+</ul>
 <p>Wait 1 microsecond</p>
 <p><strong>DPHY_ANA2_REG</strong>: DPHY Offset <code>0x54</code> (Enable CK_CPU)</p>
+<ul>
+<li>Set bits <code>0x10</code></li>
+</ul>
 <p>Wait 1 microsecond</p>
 <p><strong>DPHY_ANA1_REG</strong>: DPHY Offset <code>0x50</code> (VTT Mode)</p>
+<ul>
+<li>Set bits <code>0x8000</code> <code>0000</code></li>
+</ul>
 <p><strong>DPHY_ANA2_REG</strong>: DPHY Offset <code>0x54</code> (Enable P2S CPU)</p>
+<ul>
+<li>Set bits <code>0xf00</code> <code>0000</code></li>
+</ul>
 <div class="example-wrap"><pre class="language-text"><code>0x1ca1058 = 0x3040000 (DMB)
 udelay 1
 update_bits addr=0x1ca1058, mask=0xf8000000, val=0xf8000000 (DMB)
