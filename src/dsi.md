@@ -787,6 +787,356 @@ Thus a MIPI DSI __Short Packet__ (compared with Long Packet)...
 
 Everything else is the same.
 
+# Appendix: Enable MIPI DSI Block
+
+We captured the log from [__p-boot dsi_init__](https://megous.com/git/p-boot/tree/src/display.c#n1236)...
+
+-   [__Log from dsi_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#enable_dsi_block)
+
+By decoding the captured addresses and values, we decipher the following steps to __enable the Allwinner A64 MIPI DSI Block__...
+
+1.  Enable MIPI DSI Bus
+
+    __BUS_CLK_GATING_REG0__: CCU Offset `0x60` (A64 Page 100)
+    - Set __MIPIDSI_GATING__ (Bit 1) to 1 (Pass Gating Clock for MIPI DSI)
+
+    __BUS_SOFT_RST_REG0__: CCU Offset `0x2C0` (A64 Page 138)
+    - __Set MIPI_DSI_RST__ (Bit 1) to 1 (Deassert MIPI DSI Reset)
+
+    __CCU Base Address__: `0x01C2` `0000` (A64 Page 82)
+
+    ```text
+    mipi dsi bus enable
+    setbits 0x1c20060, 0x2 (DMB)
+    setbits 0x1c202c0, 0x2 (DMB)
+    ```
+
+1.  Enable DSI Block
+
+    __DSI_CTL_REG__: DSI Offset `0x0` (A31 Page 843)
+    - Set __DSI_En__ (Bit 0) to 1 (Enable DSI)
+
+    __DSI_BASIC_CTL0_REG__: DSI Offset `0x10` (A31 Page 845)
+    - Set __CRC_En__ (Bit 17) to 1 (Enable CRC)
+    - Set __ECC_En__ (Bit 16) to 1 (Enable ECC)
+
+    __DSI_TRANS_START_REG__: DSI Offset `0x60` (Undocumented)
+    - Set to 10
+
+    __DSI_TRANS_ZERO_REG__: DSI Offset `0x78` (Undocumented)
+    - Set to 0
+
+    DSI Base Address: `0x01CA` `0000` (A31 Page 842)
+
+    ```text
+    Enable the DSI block
+    0x1ca0000 = 0x1 (DMB)
+    0x1ca0010 = 0x30000 (DMB)
+    0x1ca0060 = 0xa (DMB)
+    0x1ca0078 = 0x0 (DMB)
+    ```
+
+1.  Set Instructions (Undocumented)
+
+    __DSI_INST_FUNC_REG(0)__: DSI Offset `0x20` (DSI_INST_ID_LP11)
+
+    __DSI_INST_FUNC_REG(1)__: DSI Offset `0x24` (DSI_INST_ID_TBA)
+
+    __DSI_INST_FUNC_REG(2)__: DSI Offset `0x28` (DSI_INST_ID_HSC)
+
+    __DSI_INST_FUNC_REG(3)__: DSI Offset `0x2c` (DSI_INST_ID_HSD)
+
+    __DSI_INST_FUNC_REG(4)__: DSI Offset `0x30` (DSI_INST_ID_LPDT)
+
+    __DSI_INST_FUNC_REG(5)__: DSI Offset `0x34` (DSI_INST_ID_HSCEXIT)
+
+    __DSI_INST_FUNC_REG(6)__: DSI Offset `0x38` (DSI_INST_ID_NOP)
+
+    __DSI_INST_FUNC_REG(7)__: DSI Offset `0x3c` (DSI_INST_ID_DLY)
+
+    (DSI_INST_FUNC_REG(n) is `(0x020 + (n) * 0x04)`)
+
+    ```text
+    inst_init
+    0x1ca0020 = 0x1f (DMB)
+    0x1ca0024 = 0x10000001 (DMB)
+    0x1ca0028 = 0x20000010 (DMB)
+    0x1ca002c = 0x2000000f (DMB)
+    0x1ca0030 = 0x30100001 (DMB)
+    0x1ca0034 = 0x40000010 (DMB)
+    0x1ca0038 = 0xf (DMB)
+    0x1ca003c = 0x5000001f (DMB)
+    ```
+
+1.  Configure Jump Instructions (Undocumented)
+
+    __DSI_INST_JUMP_CFG_REG(0)__: DSI Offset `0x4c` (DSI_INST_JUMP_CFG)
+
+    (DSI_INST_JUMP_CFG_REG(n) is `(0x04c + (n) * 0x04)`)
+
+    __DSI_DEBUG_DATA_REG__: Offset `0x2f8`
+
+    ```text
+    0x1ca004c = 0x560001 (DMB)
+    0x1ca02f8 = 0xff (DMB)
+    ```
+
+1.  Set Video Start Delay
+
+    __DSI_BASIC_CTL1_REG__: DSI Offset `0x14` (A31 Page 846)
+    - Set __Video_Start_Delay__ (Bits 4 to 11) to 1468 (Line Delay)
+    - Set __Video_Precision_Mode_Align__ (Bit 2) to 1 (Fill Mode)
+    - Set __Video_Frame_Start__ (Bit 1) to 1 (Precision Mode)
+    - Set __DSI_Mode__ (Bit 0) to 1 (Video Mode)
+
+    ```text
+    get_video_start_delay
+    0x1ca0014 = 0x5bc7 (DMB)
+    ```
+
+1.  Set Burst (Undocumented)
+
+    __DSI_TCON_DRQ_REG__: DSI Offset 0x7c
+
+    ```text
+    setup_burst
+    0x1ca007c = 0x10000007 (DMB)
+    ```
+
+1.  Set Instruction Loop (Undocumented)
+
+    __DSI_INST_LOOP_SEL_REG__: DSI Offset `0x40`
+
+    __DSI_INST_LOOP_NUM_REG(0)__: DSI Offset `0x44`
+
+    __DSI_INST_LOOP_NUM_REG(1)__: DSI Offset `0x54`
+
+    (DSI_INST_LOOP_NUM_REG(n) is `(0x044 + (n) * 0x10)`)
+
+    ```text
+    setup_inst_loop
+    0x1ca0040 = 0x30000002 (DMB)
+    0x1ca0044 = 0x310031 (DMB)
+    0x1ca0054 = 0x310031 (DMB)
+    ```
+
+1.  Set Pixel Format
+
+    __DSI_PIXEL_PH_REG__: DSI Offset `0x90` (A31 Page 848)
+    - Set __ECC__ (Bits 24 to 31) to 19
+    - Set __WC__ (Bits 8 to 23) to 2160 (Byte Numbers of PD in a Pixel Packet)
+    - Set __VC__ (Bits 6 to 7) to 0 (Virtual Channel)
+    - Set __DT__ (Bits 0 to 5) to `0x3E` (24-bit Video Mode)
+
+    __DSI_PIXEL_PF0_REG__: DSI Offset `0x98` (A31 Page 849)
+    - Set __CRC_Force__ (Bits 0 to 15) to `0xffff` (Force CRC to this value)
+
+    __DSI_PIXEL_PF1_REG__: DSI Offset `0x9c` (A31 Page 849)
+    - Set __CRC_Init_LineN__ (Bits 16 to 31) to `0xffff` (CRC initial to this value in transmitions except 1st one)
+    - Set __CRC_Init_Line0__ (Bits 0 to 15) to `0xffff` (CRC initial to this value in 1st transmition every frame)
+
+    __DSI_PIXEL_CTL0_REG__: DSI Offset `0x80` (A31 Page 847)
+    - Set __PD_Plug_Dis__ (Bit 16) to 1 (Disable PD plug before pixel bytes)
+    - Set __Pixel_Endian__ (Bit 4) to 0 (LSB first)
+    - Set __Pixel_Format__ (Bits 0 to 3) to 8 (24-bit RGB888)
+
+    ```text
+    setup_format
+    0x1ca0090 = 0x1308703e (DMB)
+    0x1ca0098 = 0xffff (DMB)
+    0x1ca009c = 0xffffffff (DMB)
+    0x1ca0080 = 0x10008 (DMB)
+    ```
+
+1.  Set Sync Timings
+
+    __DSI_BASIC_CTL_REG__: DSI Offset `0x0c` (Undocumented)
+
+    __DSI_SYNC_HSS_REG__: DSI Offset `0xb0` (A31 Page 850)
+    - Set __ECC__ (Bits 24 to 31) to `0x12`
+    - Set __D1__ (Bits 16 to 23) to 0
+    - Set __D0__ (Bits 8 to 15) to 0
+    - Set __VC__ (Bits 6 to 7) to 0 (Virtual Channel)
+    - Set __DT__ (Bits 0 to 5) to `0x21` (HSS)
+
+    __DSI_SYNC_HSE_REG__: DSI Offset `0xb4` (A31 Page 850)
+    - Set __ECC__ (Bits 24 to 31) to 1
+    - Set __D1__ (Bits 16 to 23) to 0
+    - Set __D0__ (Bits 8 to 15) to 0
+    - Set __VC__ (Bits 6 to 7) to 0 (Virtual Channel)
+    - Set __DT__ (Bits 0 to 5) to `0x31` (HSE)
+
+    __DSI_SYNC_VSS_REG__: DSI Offset `0xb8` (A31 Page 851)
+    - Set __ECC__ (Bits 24 to 31) to 7
+    - Set __D1__ (Bits 16 to 23) to 0
+    - Set __D0__ (Bits 8 to 15) to 0
+    - Set __VC__ (Bits 6 to 7) to 0 (Virtual Channel)
+    - Set __DT__ (Bits 0 to 5) to 1 (VSS)
+
+    __DSI_SYNC_VSE_REG__: DSI Offset `0xbc` (A31 Page 851)
+    - Set __ECC__ (Bits 24 to 31) to `0x14`
+    - Set __D1__ (Bits 16 to 23) to 0
+    - Set __D0__ (Bits 8 to 15) to 0
+    - Set __VC__ (Bits 6 to 7) to 0 (Virtual Channel)
+    - Set __DT__ (Bits 0 to 5) to `0x11` (VSE)
+
+    ```text
+    setup_timings
+    0x1ca000c = 0x0 (DMB)
+    0x1ca00b0 = 0x12000021 (DMB)
+    0x1ca00b4 = 0x1000031 (DMB)
+    0x1ca00b8 = 0x7000001 (DMB)
+    0x1ca00bc = 0x14000011 (DMB)
+    ```
+
+1.  Set Basic Size (Undocumented)
+
+    __DSI_BASIC_SIZE0_REG__: DSI Offset `0x18`
+    - Set __Video_VBP__ (Bits 16 to 27) to 17
+    - Set __Video_VSA__ (Bits 0 to 11) to 10
+
+    __DSI_BASIC_SIZE1_REG__: DSI Offset `0x1c`
+    - Set __Video_VT__ (Bits 16 to 28) to 1485
+    - Set __Video_VACT__ (Bits 0 to 11) to 1440
+
+    ```text
+    0x1ca0018 = 0x11000a (DMB)
+    0x1ca001c = 0x5cd05a0 (DMB)
+    ```
+
+1.  Set Horizontal Blank Packets
+
+    __DSI_BLK_HSA0_REG__: DSI Offset `0xc0` (A31 Page 852)
+    - Set __HSA_PH__ (Bits 0 to 31) to `0x900` `4a19`
+
+    __DSI_BLK_HSA1_REG__: DSI Offset `0xc4` (A31 Page 852)
+    - Set __HSA_PF__ (Bits 16 to 31) to `0x50b4`
+    - Set __HSA_PD__ (Bits 0 to 7) to 0
+
+    __DSI_BLK_HBP0_REG__: DSI Offset `0xc8` (A31 Page 852)
+    - Set __HBP_PH__ (Bits 0 to 31) to `0x3500` `5419`
+
+    __DSI_BLK_HBP1_REG__: DSI Offset `0xcc` (A31 Page 852)
+    - Set __HBP_PF__ (Bits 16 to 31) to `0x757a`
+    - Set __HBP_PD__ (Bits 0 to 7) to 0
+
+    __DSI_BLK_HFP0_REG__: DSI Offset `0xd0` (A31 Page 852)
+    - Set __HFP_PH__ (Bits 0 to 31) to `0x900` `4a19`
+
+    __DSI_BLK_HFP1_REG__: DSI Offset `0xd4` (A31 Page 853)
+    - Set __HFP_PF__ (Bits 16 to 31) to `0x50b4`
+    - Set __HFP_PD__ (Bits 0 to 7) to 0
+
+    __DSI_BLK_HBLK0_REG__: DSI Offset `0xe0` (A31 Page 853)
+    - Set __HBLK_PH__ (Bits 0 to 31) to `0xc09` `1a19`
+
+    __DSI_BLK_HBLK1_REG__: DSI Offset `0xe4` (A31 Page 853)
+    - Set __HBLK_PF__ (Bits 16 to 31) to `0x72bd`
+    - Set __HBLK_PD__ (Bits 0 to 7) to 0
+
+    ```text
+    0x1ca00c0 = 0x9004a19 (DMB)
+    0x1ca00c4 = 0x50b40000 (DMB)
+    0x1ca00c8 = 0x35005419 (DMB)
+    0x1ca00cc = 0x757a0000 (DMB)
+    0x1ca00d0 = 0x9004a19 (DMB)
+    0x1ca00d4 = 0x50b40000 (DMB)
+    0x1ca00e0 = 0xc091a19 (DMB)
+    0x1ca00e4 = 0x72bd0000 (DMB)
+    ```
+
+1.  Set Vertical Blank Packets
+
+    __DSI_BLK_VBLK0_REG__: DSI Offset `0xe8` (A31 Page 854)
+    - Set __VBLK_PH__ (Bits 0 to 31) to `0x1a00` `0019`
+
+    __DSI_BLK_VBLK1_REG__: DSI Offset `0xec` (A31 Page 854)
+    - Set __VBLK_PF__ (Bits 16 to 31) to `0xffff`
+    - Set __VBLK_PD__ (Bits 0 to 7) to 0
+
+    ```text
+    0x1ca00e8 = 0x1a000019 (DMB)
+    0x1ca00ec = 0xffff0000 (DMB)
+    ```
+
+Based on the above steps, we have __implemented in Zig__ the PinePhone Driver that enables the Allwinner A64 MIPI DSI Block...
+
+-   [__pinephone-nuttx/display.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L884-L1007)
+
+-   [__Output Log for display.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
+
+# Appendix: Start MIPI DSI HSC and HSD
+
+We captured the log from [__p-boot dsi_init__](https://megous.com/git/p-boot/tree/src/display.c#n1236)...
+
+-   [__Log from dsi_init__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#start_dsi)
+
+By decoding the captured addresses and values, we decipher the following steps to __start Allwinner A64 MIPI DSI (in HSC and HSD Modes)__...
+
+1.  Start HSC (Undocumented)
+
+    __DSI_INST_JUMP_SEL_REG__: DSI Offset `0x48`
+
+    __DSI Base Address__: `0x01CA` `0000` (A31 Page 842)
+
+    ```text
+    dsi_start DSI_START_HSC
+    0x1ca0048 = 0xf02 (DMB)
+    ```
+
+1.  Commit
+
+    __DSI_BASIC_CTL0_REG__: DSI Offset `0x10` (A31 Page 845)
+    - Set __Instru_En__ (Bit 0) to 1 (Enable DSI Processing from Instruction 0)
+
+    ```text
+    dsi_update_bits: 0x01ca0010 : 00030000 -> (00000001) 00000001 (DMB)
+    addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
+    ```
+
+1.  Instruction Function Lane (Documented)
+
+    __DSI_INST_FUNC_REG(0)__: DSI Offset `0x20` (DSI_INST_ID_LP11)
+    - Set __DSI_INST_FUNC_LANE_CEN__ (Bit 4) to 0
+
+    (DSI_INST_FUNC_REG(n) is `(0x020 + (n) * 0x04)`)
+
+    ```text
+    dsi_update_bits: 0x01ca0020 : 0000001f -> (00000010) 00000000 (DMB)
+    addr=0x1ca0020, mask=0x10, val=0x0 (DMB)
+    ```
+
+1.  Wait 1,000 microseconds
+
+    ```text
+    udelay 1000
+    ```
+
+1.  Start HSD (Undocumented)
+
+    __DSI_INST_JUMP_SEL_REG__: DSI Offset `0x48`
+
+    ```text
+    dsi_start DSI_START_HSD
+    0x1ca0048 = 0x63f07006 (DMB)
+    ```
+
+1.  Commit
+
+    __DSI_BASIC_CTL0_REG__: DSI Offset `0x10` (A31 Page 845)
+    - Set __Instru_En__ (Bit 0) to 1 (Enable DSI Processing from Instruction 0)
+
+    ```text
+    dsi_update_bits: 0x01ca0010 : 00030000 -> (00000001) 00000001 (DMB)
+    addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
+    ```
+
+Based on the above steps, we have __implemented in Zig__ the PinePhone Driver that starts Allwinner A64 MIPI DSI (in HSC and HSD Modes)...
+
+-   [__pinephone-nuttx/display.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1009-L1047)
+
+-   [__Output Log for display.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
+
 ![MIPI DSI Protocol Layers (Page 183)](https://lupyuen.github.io/images/dsi-layer.png)
 
 [_MIPI DSI Protocol Layers (Page 183)_](https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf)
