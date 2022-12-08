@@ -829,37 +829,45 @@ setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 0x1ca0078 = 0x0 (DMB)</code></pre></div></li>
 <li>
 <p>Set Instructions (Undocumented)</p>
-<p><strong>DSI_INST_FUNC_REG(0)</strong>: DSI Offset <code>0x20</code> (DSI_INST_ID_LP11)</p>
+<p><strong>DSI_INST_FUNC_REG(0)</strong>: DSI Offset <code>0x20</code></p>
 <ul>
 <li>Set to <code>0x1f</code></li>
+<li>Index 0 is DSI_INST_ID_LP11</li>
 </ul>
-<p><strong>DSI_INST_FUNC_REG(1)</strong>: DSI Offset <code>0x24</code> (DSI_INST_ID_TBA)</p>
+<p><strong>DSI_INST_FUNC_REG(1)</strong>: DSI Offset <code>0x24</code></p>
 <ul>
 <li>Set to <code>0x1000</code> <code>0001</code></li>
+<li>Index 1 is DSI_INST_ID_TBA</li>
 </ul>
-<p><strong>DSI_INST_FUNC_REG(2)</strong>: DSI Offset <code>0x28</code> (DSI_INST_ID_HSC)</p>
+<p><strong>DSI_INST_FUNC_REG(2)</strong>: DSI Offset <code>0x28</code></p>
 <ul>
 <li>Set to <code>0x2000</code> <code>0010</code></li>
+<li>Index 2 is DSI_INST_ID_HSC</li>
 </ul>
-<p><strong>DSI_INST_FUNC_REG(3)</strong>: DSI Offset <code>0x2c</code> (DSI_INST_ID_HSD)</p>
+<p><strong>DSI_INST_FUNC_REG(3)</strong>: DSI Offset <code>0x2c</code></p>
 <ul>
 <li>Set to <code>0x2000</code> <code>000f</code></li>
+<li>Index 3 is DSI_INST_ID_HSD</li>
 </ul>
-<p><strong>DSI_INST_FUNC_REG(4)</strong>: DSI Offset <code>0x30</code> (DSI_INST_ID_LPDT)</p>
+<p><strong>DSI_INST_FUNC_REG(4)</strong>: DSI Offset <code>0x30</code></p>
 <ul>
 <li>Set to <code>0x3010</code> <code>0001</code></li>
+<li>Index 4 is DSI_INST_ID_LPDT</li>
 </ul>
-<p><strong>DSI_INST_FUNC_REG(5)</strong>: DSI Offset <code>0x34</code> (DSI_INST_ID_HSCEXIT)</p>
+<p><strong>DSI_INST_FUNC_REG(5)</strong>: DSI Offset <code>0x34</code></p>
 <ul>
 <li>Set to <code>0x4000</code> <code>0010</code></li>
+<li>Index 5 is DSI_INST_ID_HSCEXIT</li>
 </ul>
-<p><strong>DSI_INST_FUNC_REG(6)</strong>: DSI Offset <code>0x38</code> (DSI_INST_ID_NOP)</p>
+<p><strong>DSI_INST_FUNC_REG(6)</strong>: DSI Offset <code>0x38</code></p>
 <ul>
 <li>Set to <code>0xf</code></li>
+<li>Index 6 is DSI_INST_ID_NOP</li>
 </ul>
-<p><strong>DSI_INST_FUNC_REG(7)</strong>: DSI Offset <code>0x3c</code> (DSI_INST_ID_DLY)</p>
+<p><strong>DSI_INST_FUNC_REG(7)</strong>: DSI Offset <code>0x3c</code></p>
 <ul>
 <li>Set to <code>0x5000</code> <code>001f</code></li>
+<li>Index 7 is DSI_INST_ID_DLY</li>
 </ul>
 <p>(DSI_INST_FUNC_REG(n) is <code>(0x020 + (n) * 0x04)</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>inst_init
@@ -873,9 +881,10 @@ setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 0x1ca003c = 0x5000001f (DMB)</code></pre></div></li>
 <li>
 <p>Configure Jump Instructions (Undocumented)</p>
-<p><strong>DSI_INST_JUMP_CFG_REG(0)</strong>: DSI Offset <code>0x4c</code> (DSI_INST_JUMP_CFG)</p>
+<p><strong>DSI_INST_JUMP_CFG_REG(0)</strong>: DSI Offset <code>0x4c</code></p>
 <ul>
 <li>Set to <code>0x56</code> <code>0001</code></li>
+<li>Index 0 is DSI_INST_JUMP_CFG</li>
 </ul>
 <p>(DSI_INST_JUMP_CFG_REG(n) is <code>(0x04c + (n) * 0x04)</code>)</p>
 <p><strong>DSI_DEBUG_DATA_REG</strong>: DSI Offset <code>0x2f8</code></p>
@@ -1111,9 +1120,10 @@ setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 addr=0x1ca0010, mask=0x1, val=0x1 (DMB)</code></pre></div></li>
 <li>
 <p>Instruction Function Lane (Undocumented)</p>
-<p><strong>DSI_INST_FUNC_REG(0)</strong>: DSI Offset <code>0x20</code> (DSI_INST_ID_LP11)</p>
+<p><strong>DSI_INST_FUNC_REG(0)</strong>: DSI Offset <code>0x20</code></p>
 <ul>
 <li>Set <strong>DSI_INST_FUNC_LANE_CEN</strong> (Bit 4) to 0</li>
+<li>Index 0 is DSI_INST_ID_LP11</li>
 </ul>
 <p>(DSI_INST_FUNC_REG(n) is <code>(0x020 + (n) * 0x04)</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>dsi_update_bits: 0x01ca0020 : 0000001f -&gt; (00000010) 00000000 (DMB)
