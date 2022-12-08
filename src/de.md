@@ -1982,7 +1982,7 @@ By decoding the captured addresses and values, we decipher the following steps t
     - Set __TCON0_X__ (Bits 16 to 27) to 719 (Panel Width - 1)
     - Set __TCON0_Y__ (Bits 0 to 11) to 1439 (Panel Height - 1)
 
-    __TCON0_ECC_FIFO__: Offset 0xf8 (Undocumented)
+    __TCON0_ECC_FIFO__: TCON0 Offset `0xf8` (Undocumented)
     - Set to 8
 
     __TCON0_CPU_IF_REG__: TCON0 Offset `0x60` [(A64 Page 516)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
