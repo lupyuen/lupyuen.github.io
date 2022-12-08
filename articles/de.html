@@ -1713,10 +1713,11 @@ udelay 100</code></pre></div></li>
 <ul>
 <li>Set to <code>0xffff</code> <code>ffff</code> to Enable TCON0 Tristate Output</li>
 </ul>
-<p><strong>TCON1_IO_TRI_REG</strong>: TCON0 Offset <code>0xf4</code> (Address Mismatch?)</p>
+<p><strong>TCON1_IO_TRI_REG</strong>: TCON0 Offset <code>0xf4</code></p>
 <ul>
 <li>Set to <code>0xffff</code> <code>ffff</code> to Enable TCON1 Tristate Output </li>
 </ul>
+<p>Note: <strong>TCON1_IO_TRI_REG</strong> is actually in TCON0 Address Range, not in TCON1 Address Range as stated in A64 User Manual</p>
 <div class="example-wrap"><pre class="language-text"><code>Set all io lines to tristate
 0x1c0c08c = 0xffffffff
 0x1c0c0f4 = 0xffffffff</code></pre></div></li>
