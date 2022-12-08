@@ -773,7 +773,7 @@ To render graphics on PinePhone's LCD Display, our Display Driver needs to follo
 
     [(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block)
 
-    [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L884-L1007)
+    [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L888-L1379)
 
 1.  Enable __MIPI Display Physical Layer (DPHY)__
 
@@ -799,7 +799,7 @@ To render graphics on PinePhone's LCD Display, our Display Driver needs to follo
 
     [(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-start-mipi-dsi-hsc-and-hsd)
 
-    [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1009-L1047)
+    [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1379-L1437)
 
 1.  Initialise __Display Engine (DE)__
 
@@ -1122,7 +1122,7 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 Based on the above steps, we have __implemented in Zig__ the PinePhone Driver that enables the Allwinner A64 MIPI DSI Block...
 
--   [__pinephone-nuttx/display.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L884-L1007)
+-   [__pinephone-nuttx/display.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L888-L1379)
 
 -   [__Output Log for display.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
 
@@ -1205,7 +1205,7 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 Based on the above steps, we have __implemented in Zig__ the PinePhone Driver that starts Allwinner A64 MIPI DSI (in HSC and HSD Modes)...
 
--   [__pinephone-nuttx/display.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1009-L1047)
+-   [__pinephone-nuttx/display.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1379-L1437)
 
 -   [__Output Log for display.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
 
