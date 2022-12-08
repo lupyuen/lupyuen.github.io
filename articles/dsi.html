@@ -739,7 +739,7 @@
 <li>
 <p>Enable <strong>MIPI DSI Block</strong></p>
 <p><a href="https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block">(Explained here)</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L888-L1379">(Implemented here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L874-L1365">(Implemented here)</a></p>
 </li>
 <li>
 <p>Enable <strong>MIPI Display Physical Layer (DPHY)</strong></p>
@@ -760,7 +760,7 @@
 <p>Start <strong>MIPI DSI HSC and HSD</strong></p>
 <p>(High Speed Clock Mode and High Speed Data Transmission)</p>
 <p><a href="https://lupyuen.github.io/articles/dsi#appendix-start-mipi-dsi-hsc-and-hsd">(Explained here)</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1379-L1437">(Implemented here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1365-L1423">(Implemented here)</a></p>
 </li>
 <li>
 <p>Initialise <strong>Display Engine (DE)</strong></p>
@@ -1082,7 +1082,7 @@ setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 <p>Based on the above steps, we have <strong>implemented in Zig</strong> the PinePhone Driver that enables the Allwinner A64 MIPI DSI Block…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L888-L1379"><strong>pinephone-nuttx/display.zig</strong></a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L874-L1365"><strong>pinephone-nuttx/display.zig</strong></a></p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for display.zig</strong></a></p>
@@ -1151,7 +1151,7 @@ addr=0x1ca0010, mask=0x1, val=0x1 (DMB)</code></pre></div></li>
 <p>Based on the above steps, we have <strong>implemented in Zig</strong> the PinePhone Driver that starts Allwinner A64 MIPI DSI (in HSC and HSD Modes)…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1379-L1437"><strong>pinephone-nuttx/display.zig</strong></a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1365-L1423"><strong>pinephone-nuttx/display.zig</strong></a></p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for display.zig</strong></a></p>
