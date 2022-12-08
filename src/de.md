@@ -2191,19 +2191,32 @@ We captured the log from [__p-boot display_board_init__](https://megous.com/git/
 
 By decoding the captured addresses and values, we decipher the following steps to __initialise PinePhone's Power Management Integrated Circuit (PMIC)__...
 
-1.  TODO: Set PD23 to Low
+1.  Configure PD23 for Output
+    
+    Register __PD_CFG2_REG__ (PD Configure Register 2)
+    -   At PIO Offset `0x74` [(A64 Page 387)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+    -   Set __PD23_SELECT__ (Bits 28 to 30) to 1 (Output)
 
     ```text
     assert reset: GPD(23), 0  // PD23 - LCD-RST (active low)
     sunxi_gpio_set_cfgpin: pin=0x77, val=1
     sunxi_gpio_set_cfgbank: bank_offset=119, val=1
     clrsetbits 0x1c20874, 0xf0000000, 0x10000000
+    ```
+
+1.  Set PD23 to Low
+    
+    Register __PD_DATA_REG__ (PD Data Register)
+    -   At PIO Offset `0x7C` [(A64 Page 388)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+    -   Set __PD23__ (Bit 23) to 0 (Low)
+
+    ```text
     sunxi_gpio_output: pin=0x77, val=0
     before: 0x1c2087c = 0x1c0000
     after: 0x1c2087c = 0x1c0000 (DMB)
     ```
 
-1.  TODO: dldo1 3.3V
+1.  Set DLDO1 Voltage to 3.3V
 
     ```text
     dldo1 3.3V
@@ -2214,17 +2227,22 @@ By decoding the captured addresses and values, we decipher the following steps t
     rsb_write: rt_addr=0x2d, reg_addr=0x12, value=0xd9
     ```
 
-1.  TODO: ldo_io0 3.3V
+1.  Set LDO Voltage to 3.3V
 
     ```text
     ldo_io0 3.3V
     pmic_write: reg=0x91, val=0x1a
     rsb_write: rt_addr=0x2d, reg_addr=0x91, value=0x1a
+    ```
+
+1.  Enable LDO mode on GPIO0
+
+    ```text
     pmic_write: reg=0x90, val=0x3
     rsb_write: rt_addr=0x2d, reg_addr=0x90, value=0x3
     ```
 
-1.  TODO: dldo2 1.8V
+1.  Set DLDO2 Voltage to 1.8V
 
     ```text
     dldo2 1.8V
@@ -2235,7 +2253,9 @@ By decoding the captured addresses and values, we decipher the following steps t
     rsb_write: rt_addr=0x2d, reg_addr=0x12, value=0xd9
     ```
 
-1.  TODO: Wait 15,000 microseconds
+1.  Wait for power supply and power-on init
+
+    (15,000 microseconds)
 
     ```text
     wait for power supplies and power-on init
@@ -2262,13 +2282,26 @@ We captured the log from [__p-boot dsi_init__](https://megous.com/git/p-boot/tre
 
 By decoding the captured addresses and values, we decipher the following steps to __reset PinePhone's LCD Panel__...
 
-1.  TODO: Set PD23 to High
+1.  Configure PD23 for Output
+
+    Register __PD_CFG2_REG__ (PD Configure Register 2)
+    - At PIO Offset `0x74` [(A64 Page 387)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+    - Set __PD23_SELECT__ (Bits 28 to 30) to 1 (Output)
 
     ```text
     deassert reset: GPD(23), 1  // PD23 - LCD-RST (active low)
     sunxi_gpio_set_cfgpin: pin=0x77, val=1
     sunxi_gpio_set_cfgbank: bank_offset=119, val=1
     clrsetbits 0x1c20874, 0xf0000000, 0x10000000
+    ```
+
+1.  Set PD23 to High
+
+    Register __PD_DATA_REG__ (PD Data Register)
+    - At PIO Offset `0x7C` [(A64 Page 388)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+    - Set __PD23__ (Bit 23) to 1 (High)
+
+    ```text
     sunxi_gpio_output: pin=0x77, val=1
     before: 0x1c2087c = 0x1c0000
     after: 0x1c2087c = 0x9c0000 (DMB)
