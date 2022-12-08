@@ -1952,8 +1952,10 @@ By decoding the captured addresses and values, we decipher the following steps t
     __TCON0_IO_TRI_REG__: TCON0 Offset `0x8c` [(A64 Page 520)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
     - Set to `0xffff` `ffff` to Enable TCON0 Tristate Output
 
-    __TCON1_IO_TRI_REG__: TCON0 Offset `0xf4` (Address Mismatch?)
+    __TCON1_IO_TRI_REG__: TCON0 Offset `0xf4`
     - Set to `0xffff` `ffff` to Enable TCON1 Tristate Output 
+
+    Note: __TCON1_IO_TRI_REG__ is actually in TCON0 Address Range, not in TCON1 Address Range as stated in A64 User Manual
 
     ```text
     Set all io lines to tristate

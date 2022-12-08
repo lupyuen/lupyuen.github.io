@@ -934,7 +934,7 @@ By decoding the captured addresses and values, we decipher the following steps t
     - Set __Video_Frame_Start__ (Bit 1) to 1 (Precision Mode)
     - Set __DSI_Mode__ (Bit 0) to 1 (Video Mode)
 
-    (Note: Video_Start_Delay is actually 13 bits, not 8 bits as documented in the A31 User Manual)
+    Note: Video_Start_Delay is actually 13 bits, not 8 bits as stated in the A31 User Manual
 
     ```text
     get_video_start_delay
