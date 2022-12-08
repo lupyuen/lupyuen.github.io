@@ -1942,16 +1942,28 @@ TODO: Set Bit 10 of PH_DATA (0x1c2090c)</code></pre></div></li>
 <p>By decoding the captured addresses and values, we decipher the following steps to <strong>initialise PinePhone’s Power Management Integrated Circuit (PMIC)</strong>…</p>
 <ol>
 <li>
-<p>TODO: Set PD23 to Low</p>
+<p>Configure PD23 for Output</p>
+<p>Register <strong>PD_CFG2_REG</strong> (PD Configure Register 2)</p>
+<ul>
+<li>At PIO Offset <code>0x74</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 387)</a></li>
+<li>Set <strong>PD23_SELECT</strong> (Bits 28 to 30) to 1 (Output)</li>
+</ul>
 <div class="example-wrap"><pre class="language-text"><code>assert reset: GPD(23), 0  // PD23 - LCD-RST (active low)
 sunxi_gpio_set_cfgpin: pin=0x77, val=1
 sunxi_gpio_set_cfgbank: bank_offset=119, val=1
-clrsetbits 0x1c20874, 0xf0000000, 0x10000000
-sunxi_gpio_output: pin=0x77, val=0
+clrsetbits 0x1c20874, 0xf0000000, 0x10000000</code></pre></div></li>
+<li>
+<p>Set PD23 to Low</p>
+<p>Register <strong>PD_DATA_REG</strong> (PD Data Register)</p>
+<ul>
+<li>At PIO Offset <code>0x7C</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 388)</a></li>
+<li>Set <strong>PD23</strong> (Bit 23) to 0 (Low)</li>
+</ul>
+<div class="example-wrap"><pre class="language-text"><code>sunxi_gpio_output: pin=0x77, val=0
 before: 0x1c2087c = 0x1c0000
 after: 0x1c2087c = 0x1c0000 (DMB)</code></pre></div></li>
 <li>
-<p>TODO: dldo1 3.3V</p>
+<p>Set DLDO1 Voltage to 3.3V</p>
 <div class="example-wrap"><pre class="language-text"><code>dldo1 3.3V
 pmic_write: reg=0x15, val=0x1a
 rsb_write: rt_addr=0x2d, reg_addr=0x15, value=0x1a
@@ -1959,14 +1971,16 @@ pmic_clrsetbits: reg=0x12, clr_mask=0x0, set_mask=0x8
 rsb_read: rt_addr=0x2d, reg_addr=0x12
 rsb_write: rt_addr=0x2d, reg_addr=0x12, value=0xd9</code></pre></div></li>
 <li>
-<p>TODO: ldo_io0 3.3V</p>
+<p>Set LDO Voltage to 3.3V</p>
 <div class="example-wrap"><pre class="language-text"><code>ldo_io0 3.3V
 pmic_write: reg=0x91, val=0x1a
-rsb_write: rt_addr=0x2d, reg_addr=0x91, value=0x1a
-pmic_write: reg=0x90, val=0x3
+rsb_write: rt_addr=0x2d, reg_addr=0x91, value=0x1a</code></pre></div></li>
+<li>
+<p>Enable LDO mode on GPIO0</p>
+<div class="example-wrap"><pre class="language-text"><code>pmic_write: reg=0x90, val=0x3
 rsb_write: rt_addr=0x2d, reg_addr=0x90, value=0x3</code></pre></div></li>
 <li>
-<p>TODO: dldo2 1.8V</p>
+<p>Set DLDO2 Voltage to 1.8V</p>
 <div class="example-wrap"><pre class="language-text"><code>dldo2 1.8V
 pmic_write: reg=0x16, val=0xb
 rsb_write: rt_addr=0x2d, reg_addr=0x16, value=0xb
@@ -1974,7 +1988,8 @@ pmic_clrsetbits: reg=0x12, clr_mask=0x0, set_mask=0x10
 rsb_read: rt_addr=0x2d, reg_addr=0x12
 rsb_write: rt_addr=0x2d, reg_addr=0x12, value=0xd9</code></pre></div></li>
 <li>
-<p>TODO: Wait 15,000 microseconds</p>
+<p>Wait for power supply and power-on init</p>
+<p>(15,000 microseconds)</p>
 <div class="example-wrap"><pre class="language-text"><code>wait for power supplies and power-on init
 udelay 15000</code></pre></div></li>
 </ol>
@@ -2000,12 +2015,24 @@ udelay 15000</code></pre></div></li>
 <p>By decoding the captured addresses and values, we decipher the following steps to <strong>reset PinePhone’s LCD Panel</strong>…</p>
 <ol>
 <li>
-<p>TODO: Set PD23 to High</p>
+<p>Configure PD23 for Output</p>
+<p>Register <strong>PD_CFG2_REG</strong> (PD Configure Register 2)</p>
+<ul>
+<li>At PIO Offset <code>0x74</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 387)</a></li>
+<li>Set <strong>PD23_SELECT</strong> (Bits 28 to 30) to 1 (Output)</li>
+</ul>
 <div class="example-wrap"><pre class="language-text"><code>deassert reset: GPD(23), 1  // PD23 - LCD-RST (active low)
 sunxi_gpio_set_cfgpin: pin=0x77, val=1
 sunxi_gpio_set_cfgbank: bank_offset=119, val=1
-clrsetbits 0x1c20874, 0xf0000000, 0x10000000
-sunxi_gpio_output: pin=0x77, val=1
+clrsetbits 0x1c20874, 0xf0000000, 0x10000000</code></pre></div></li>
+<li>
+<p>Set PD23 to High</p>
+<p>Register <strong>PD_DATA_REG</strong> (PD Data Register)</p>
+<ul>
+<li>At PIO Offset <code>0x7C</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 388)</a></li>
+<li>Set <strong>PD23</strong> (Bit 23) to 1 (High)</li>
+</ul>
+<div class="example-wrap"><pre class="language-text"><code>sunxi_gpio_output: pin=0x77, val=1
 before: 0x1c2087c = 0x1c0000
 after: 0x1c2087c = 0x9c0000 (DMB)</code></pre></div></li>
 <li>
