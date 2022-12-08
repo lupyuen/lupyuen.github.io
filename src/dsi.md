@@ -872,29 +872,37 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Set Instructions (Undocumented)
 
-    __DSI_INST_FUNC_REG(0)__: DSI Offset `0x20` (DSI_INST_ID_LP11)
+    __DSI_INST_FUNC_REG(0)__: DSI Offset `0x20`
     - Set to `0x1f`
+    - Index 0 is DSI_INST_ID_LP11
 
-    __DSI_INST_FUNC_REG(1)__: DSI Offset `0x24` (DSI_INST_ID_TBA)
+    __DSI_INST_FUNC_REG(1)__: DSI Offset `0x24`
     - Set to `0x1000` `0001`
+    - Index 1 is DSI_INST_ID_TBA
 
-    __DSI_INST_FUNC_REG(2)__: DSI Offset `0x28` (DSI_INST_ID_HSC)
+    __DSI_INST_FUNC_REG(2)__: DSI Offset `0x28`
     - Set to `0x2000` `0010`
+    - Index 2 is DSI_INST_ID_HSC
 
-    __DSI_INST_FUNC_REG(3)__: DSI Offset `0x2c` (DSI_INST_ID_HSD)
+    __DSI_INST_FUNC_REG(3)__: DSI Offset `0x2c`
     - Set to `0x2000` `000f`
+    - Index 3 is DSI_INST_ID_HSD
 
-    __DSI_INST_FUNC_REG(4)__: DSI Offset `0x30` (DSI_INST_ID_LPDT)
+    __DSI_INST_FUNC_REG(4)__: DSI Offset `0x30`
     - Set to `0x3010` `0001`
+    - Index 4 is DSI_INST_ID_LPDT
 
-    __DSI_INST_FUNC_REG(5)__: DSI Offset `0x34` (DSI_INST_ID_HSCEXIT)
+    __DSI_INST_FUNC_REG(5)__: DSI Offset `0x34`
     - Set to `0x4000` `0010`
+    - Index 5 is DSI_INST_ID_HSCEXIT
 
-    __DSI_INST_FUNC_REG(6)__: DSI Offset `0x38` (DSI_INST_ID_NOP)
+    __DSI_INST_FUNC_REG(6)__: DSI Offset `0x38`
     - Set to `0xf`
+    - Index 6 is DSI_INST_ID_NOP
 
-    __DSI_INST_FUNC_REG(7)__: DSI Offset `0x3c` (DSI_INST_ID_DLY)
+    __DSI_INST_FUNC_REG(7)__: DSI Offset `0x3c`
     - Set to `0x5000` `001f`
+    - Index 7 is DSI_INST_ID_DLY
 
     (DSI_INST_FUNC_REG(n) is `(0x020 + (n) * 0x04)`)
 
@@ -912,8 +920,9 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Configure Jump Instructions (Undocumented)
 
-    __DSI_INST_JUMP_CFG_REG(0)__: DSI Offset `0x4c` (DSI_INST_JUMP_CFG)
+    __DSI_INST_JUMP_CFG_REG(0)__: DSI Offset `0x4c`
     - Set to `0x56` `0001`
+    - Index 0 is DSI_INST_JUMP_CFG
 
     (DSI_INST_JUMP_CFG_REG(n) is `(0x04c + (n) * 0x04)`)
 
@@ -1157,8 +1166,9 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Instruction Function Lane (Undocumented)
 
-    __DSI_INST_FUNC_REG(0)__: DSI Offset `0x20` (DSI_INST_ID_LP11)
+    __DSI_INST_FUNC_REG(0)__: DSI Offset `0x20`
     - Set __DSI_INST_FUNC_LANE_CEN__ (Bit 4) to 0
+    - Index 0 is DSI_INST_ID_LP11
 
     (DSI_INST_FUNC_REG(n) is `(0x020 + (n) * 0x04)`)
 
