@@ -20,9 +20,75 @@ In this article we'll learn...
 
 # Complete Display Driver for PinePhone
 
+_NuttX will render graphics on PinePhone's LCD Display..._
+
+_What's inside the Display Driver for PinePhone?_
+
 Through __Reverse Engineering__ (and plenty of experimenting), we discovered that these steps are needed to create a __Complete Display Driver__ for PinePhone...
 
-TODO
+1.  TODO: Turn on __Display Backlight__
+
+    [(Explained here)](https://lupyuen.github.io/articles/de#appendix-display-backlight)
+
+    [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig)
+
+1.  TODO: Initialise __Timing Controller (TCON0)__
+
+    [(Explained here)](https://lupyuen.github.io/articles/de#appendix-timing-controller-tcon0)
+
+    [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig)
+
+1.  TODO: Initialise __Power Management Integrated Circuit (PMIC)__
+
+    [(Explained here)](https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit)
+
+    [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig)
+
+1.  TODO: Enable __MIPI DSI Block__
+
+    [(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block)
+
+    [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L874-L1365)
+
+1.  TODO: Enable __MIPI Display Physical Layer (DPHY)__
+
+    [(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-display-physical-layer-dphy)
+
+    [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/dphy.zig)
+
+1.  TODO: Reset __LCD Panel__
+
+    [(Explained here)](https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel)
+
+    [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig)
+
+1.  TODO: Initialise __LCD Controller (ST7703)__
+
+    [(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller)
+
+    [(Implemented here)](https://lupyuen.github.io/articles/dsi2#initialise-st7703-lcd-controller)
+
+1.  TODO: Start __MIPI DSI HSC and HSD__
+
+    (High Speed Clock Mode and High Speed Data Transmission)
+
+    [(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-start-mipi-dsi-hsc-and-hsd)
+
+    [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1365-L1423)
+
+1.  TODO: Initialise __Display Engine (DE)__
+
+    [(Explained here)](https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine)
+
+    [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L710-L1011)
+
+1.  Wait 160 milliseconds
+
+1.  TODO: Render Graphics with __Display Engine (DE)__
+
+    [(Explained here)](https://lupyuen.github.io/articles/de)
+
+    [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L69-L175)
 
 # Add MIPI DSI to NuttX Kernel
 
@@ -38,9 +104,9 @@ We're adding the MIPI DSI Driver to the NuttX Kernel...
 
 We created the above NuttX Source Files (in C) by converting our Zig MIPI DSI Driver to C...
 
--   [display.zig](display.zig): Zig Driver for MIPI DSI
+-   [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig): Zig Driver for MIPI DSI
 
--   [dphy.zig](dphy.zig): Zig Driver for MIPI D-PHY
+-   [dphy.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/dphy.zig): Zig Driver for MIPI D-PHY
 
 That we Reverse-Engineered from the logs that we captured from PinePhone p-boot...
 
@@ -58,7 +124,7 @@ Not at all!
 
 Here's the Zig code for our MIPI DSI Driver...
 
-[display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/3d33e5a49a5a3857c39fe8aa79af60902a70088e/display.zig#L115-L170)
+[https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/3d33e5a49a5a3857c39fe8aa79af60902a70088e/display.zig#L115-L170)
 
 And here's the converted C code for NuttX: [mipi_dsi.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm64/src/a64/mipi_dsi.c#L392-L484)
 
@@ -291,13 +357,13 @@ Note that we capture the [Actual Test Log](test/test.log) and we `diff` it with 
 
 TODO: Allwinner A64 Timing Controller TCON0 Driver, convert from Zig to C
 
--   [tcon.zig](tcon.zig)
+-   [tcon.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig)
 
 # Add Display Engine Driver to NuttX Kernel
 
 TODO: Allwinner A64 Display Engine Driver, convert from Zig to C
 
--   [render.zig](render.zig)
+-   [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig)
 
 Our Display Engine Driver will follow the design of STM32F7 Display Driver...
 
@@ -325,7 +391,7 @@ Our Display Engine Driver will follow the design of STM32F7 Display Driver...
 
 TODO: PinePhone Backlight Driver, convert from Zig to C
 
--   [backlight.zig](backlight.zig)
+-   [backlight.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig)
 
 Our Backlight Driver will follow the design of the STM32 Backlight Driver: `stm32_backlight`...
 
@@ -345,7 +411,7 @@ TODO: PinePhone PIO and LEDs are now supported in NuttX Mainline...
 
 TODO: PinePhone LCD Panel Driver, convert from Zig to C
 
--   [panel.zig](panel.zig)
+-   [panel.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig)
 
 The code will go inside our Board LCD Source File, similar to this...
 
@@ -355,11 +421,17 @@ The code will go inside our Board LCD Source File, similar to this...
 
 TODO: PinePhone PMIC, convert from Zig to C, needs more reverse engineering
 
--   [pmic.zig](pmic.zig)
+-   [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig)
 
 The code will go inside our Board LCD Source File, similar to this...
 
 -   [boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c)
+
+# Why Zig
+
+TODO: Prototype in zig
+
+Was it worth the effort?
 
 # What's Next
 
