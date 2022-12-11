@@ -431,6 +431,10 @@ The code will go inside our Board LCD Source File, similar to this...
 
 TODO: Prototype in zig
 
+Concise executable specification
+
+Easy to convert to C
+
 Was it worth the effort?
 
 # What's Next
