@@ -10,17 +10,17 @@ We're building the __NuttX Display Driver__ for PinePhone in small chunks, start
 
 In this article we'll learn...
 
--   What's needed for a __Complete Display Driver__ for PinePhone
+-   What's needed to create a __Complete Display Driver__ for PinePhone
 
 -   How our driver for __MIPI Display Serial Interface__ fits into the grand plan
 
--   How we're __building the missing pieces__ of the PinePhone Display Driver
+-   How we're building the __missing pieces__ of the PinePhone Display Driver
 
 -   Why most of the Display Driver is in the __Zig Programming Language__
 
 # Complete Display Driver for PinePhone
 
-Through __Reverse Engineering__ (and plenty of experimenting), we discovered that these steps are needed for a __Complete Display Driver__ for PinePhone...
+Through __Reverse Engineering__ (and plenty of experimenting), we discovered that these steps are needed to create a __Complete Display Driver__ for PinePhone...
 
 TODO
 
