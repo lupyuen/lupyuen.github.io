@@ -16,6 +16,8 @@ In this article we'll learn...
 
 -   How we're __building the missing pieces__ of the PinePhone Display Driver
 
+-   Why most parts of the Display Driver are in the __Zig Programming Language__
+
 # Complete Display Driver for PinePhone
 
 Through __Reverse Engineering__ (and plenty of experimenting), we discovered that these steps are needed for a __Complete Display Driver__ for PinePhone...
