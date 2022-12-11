@@ -16,6 +16,10 @@ In this article we'll learn...
 
 -   How we're __building the missing pieces__ of the PinePhone Display Driver
 
+# Complete Display Driver for PinePhone
+
+Through __Reverse Engineering__ (and plenty of experimenting), we discovered that these steps are needed for a __Complete Display Driver__ for PinePhone...
+
 TODO
 
 # What's Next
