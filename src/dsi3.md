@@ -4,7 +4,17 @@
 
 ![TODO](https://lupyuen.github.io/images/dsi3-title.jpg)
 
-Pine64 PinePhone will soon support the rendering of graphics on the LCD Display... When we boot the official release of Apache NuttX RTOS!
+__Pine64 PinePhone__ will soon support the rendering of graphics on the LCD Display... When we boot the official release of __Apache NuttX RTOS__!
+
+We're building the __NuttX Display Driver__ for PinePhone in small chunks, starting with the driver for __MIPI Display Serial Interface__.
+
+In this article we'll learn...
+
+-   What's needed for a __Complete Display Driver__ for PinePhone
+
+-   How our driver for __MIPI Display Serial Interface__ fits into the grand plan
+
+-   How we're __building the missing pieces__ of the PinePhone Display Driver
 
 TODO
 
