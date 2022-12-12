@@ -69,15 +69,16 @@
     <nav id="TOC"><ul>
 <li><a href="#complete-display-driver-for-pinephone">1 Complete Display Driver for PinePhone</a><ul></ul></li>
 <li><a href="#nuttx-driver-for-mipi-display-serial-interface">2 NuttX Driver for MIPI Display Serial Interface</a><ul></ul></li>
-<li><a href="#add-mipi-dsi-to-nuttx-kernel">3 Add MIPI DSI to NuttX Kernel</a><ul></ul></li>
-<li><a href="#test-mipi-dsi-for-nuttx-kernel">4 Test MIPI DSI for NuttX Kernel</a><ul></ul></li>
-<li><a href="#nuttx-driver-for-timing-controller-tcon0">5 NuttX Driver for Timing Controller (TCON0)</a><ul></ul></li>
-<li><a href="#nuttx-driver-for-display-engine">6 NuttX Driver for Display Engine</a><ul></ul></li>
-<li><a href="#nuttx-driver-for-backlight">7 NuttX Driver for Backlight</a><ul></ul></li>
-<li><a href="#nuttx-driver-for-lcd-panel-driver">8 NuttX Driver for LCD Panel Driver</a><ul></ul></li>
-<li><a href="#nuttx-driver-for-power-management-integrated-circuit">9 NuttX Driver for Power Management Integrated Circuit</a><ul></ul></li>
-<li><a href="#why-zig">10 Why Zig</a><ul></ul></li>
-<li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>18 Dec 2022</em></p>
+<li><a href="#send-mipi-dsi-packets">3 Send MIPI DSI Packets</a><ul></ul></li>
+<li><a href="#add-mipi-dsi-to-nuttx-kernel">4 Add MIPI DSI to NuttX Kernel</a><ul></ul></li>
+<li><a href="#test-mipi-dsi-for-nuttx-kernel">5 Test MIPI DSI for NuttX Kernel</a><ul></ul></li>
+<li><a href="#nuttx-driver-for-timing-controller-tcon0">6 NuttX Driver for Timing Controller (TCON0)</a><ul></ul></li>
+<li><a href="#nuttx-driver-for-display-engine">7 NuttX Driver for Display Engine</a><ul></ul></li>
+<li><a href="#nuttx-driver-for-backlight">8 NuttX Driver for Backlight</a><ul></ul></li>
+<li><a href="#nuttx-driver-for-lcd-panel-driver">9 NuttX Driver for LCD Panel Driver</a><ul></ul></li>
+<li><a href="#nuttx-driver-for-power-management-integrated-circuit">10 NuttX Driver for Power Management Integrated Circuit</a><ul></ul></li>
+<li><a href="#why-zig">11 Why Zig</a><ul></ul></li>
+<li><a href="#whats-next">12 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>18 Dec 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/dsi3-title.jpg" alt="Rendering graphics on PinePhone with Apache NuttX RTOS" /></p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> (pic above) will soon support the rendering of graphics on the LCD Display… When we boot the official release of <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a>!</p>
 <p>We’re building the <strong>NuttX Display Driver</strong> for PinePhone in small chunks, starting with the driver for <a href="https://lupyuen.github.io/articles/dsi"><strong>MIPI Display Serial Interface</strong></a>.</p>
@@ -158,9 +159,26 @@
 <p><em>Why is MIPI DSI needed in PinePhone?</em></p>
 <p>PinePhone talks to its LCD Panel (<a href="https://lupyuen.github.io/articles/dsi#xingbangda-xbd599-lcd-panel"><strong>Xingbangda XBD599</strong></a>) via the <strong>MIPI DSI Bus</strong> on Allwinner A64 SoC.</p>
 <p>That’s why we need a MIPI DSI Driver in the NuttX Kernel.</p>
-<p><em>So PinePhone uses MIPI DSI to render graphics on the LCD Display?</em></p>
-<p>TODO: Efficiency</p>
-<p>TODO: Init only, not data</p>
+<p><em>So our MIPI DSI Driver will render graphics on PinePhone’s LCD Display?</em></p>
+<p>It gets complicated…</p>
+<ul>
+<li>
+<p><strong>At Startup:</strong> Our driver sends MIPI DSI Commands to initialise PinePhone’s LCD Controller: <a href="https://lupyuen.github.io/articles/dsi#sitronix-st7703-lcd-controller"><strong>Sitronix ST7703</strong></a></p>
+</li>
+<li>
+<p><strong>After Startup:</strong> Allwinner A64’s <a href="https://lupyuen.github.io/articles/de"><strong>Display Engine</strong></a> and <a href="https://lupyuen.github.io/articles/de#display-rendering-on-pinephone"><strong>Timing Controller (TCON0)</strong></a> pumps pixels continuously to the LCD Panel over MIPI DSI.</p>
+<p>(Bypassing our MIPI DSI Driver)</p>
+</li>
+</ul>
+<p>Thus our MIPI DSI Driver is called <strong>only at startup</strong> to initialise the LCD Controller (ST7703).</p>
+<p><em>Sounds super complicated…</em></p>
+<p>Yep but this rendering design is <strong>super efficient</strong>!</p>
+<p>PinePhone doesn’t need to handle Interrupts while rendering the display… Everything is <strong>done in Hardware!</strong> (Allwinner A64 SoC)</p>
+<p>The pixel data is pumped from RAM Framebuffers via Direct Memory Access (DMA). Which is also done in Hardware.</p>
+<p>Let’s dive inside our MIPI DSI Driver…</p>
+<h1 id="send-mipi-dsi-packets"><a href="#send-mipi-dsi-packets">3 Send MIPI DSI Packets</a></h1>
+<p><em>How do we send MIPI DSI Commands to PinePhone’s LCD Controller?</em></p>
+<p>TODO</p>
 <p>Enable <strong>MIPI DSI Block</strong></p>
 <p><a href="https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block">(Explained here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L874-L1365">(Implemented here)</a></p>
@@ -171,7 +189,7 @@
 <p>(High Speed Clock Mode and High Speed Data Transmission)</p>
 <p><a href="https://lupyuen.github.io/articles/dsi#appendix-start-mipi-dsi-hsc-and-hsd">(Explained here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1365-L1423">(Implemented here)</a></p>
-<h1 id="add-mipi-dsi-to-nuttx-kernel"><a href="#add-mipi-dsi-to-nuttx-kernel">3 Add MIPI DSI to NuttX Kernel</a></h1>
+<h1 id="add-mipi-dsi-to-nuttx-kernel"><a href="#add-mipi-dsi-to-nuttx-kernel">4 Add MIPI DSI to NuttX Kernel</a></h1>
 <p>TODO</p>
 <p>We’re adding the MIPI DSI Driver to the NuttX Kernel…</p>
 <ul>
@@ -279,7 +297,7 @@
   return len;
 }</code></pre></div>
 <p>The code looks highly similar!</p>
-<h1 id="test-mipi-dsi-for-nuttx-kernel"><a href="#test-mipi-dsi-for-nuttx-kernel">4 Test MIPI DSI for NuttX Kernel</a></h1>
+<h1 id="test-mipi-dsi-for-nuttx-kernel"><a href="#test-mipi-dsi-for-nuttx-kernel">5 Test MIPI DSI for NuttX Kernel</a></h1>
 <p>TODO</p>
 <p><em>How do we test the MIPI DSI Driver in the NuttX Kernel?</em></p>
 <p>Right now we have implemented the following in the NuttX Kernel…</p>
@@ -394,7 +412,7 @@ nsh&gt; hello 0</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/cdb6bbc8e57ef02104bdbde721f8ff6787d74efc/test/run.sh#L9-L36">run.sh</a></p>
 <p>Note that we capture the <a href="test/test.log">Actual Test Log</a> and we <code>diff</code> it with the <a href="test/expected.log">Expected Test Log</a>. That’s how we detect discrepancies in the Hardware Addresses and the Written Values…</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/c04f1447933665df207a42f626c726ef7a7def65/test/test.log#L4-L20">test.log</a></p>
-<h1 id="nuttx-driver-for-timing-controller-tcon0"><a href="#nuttx-driver-for-timing-controller-tcon0">5 NuttX Driver for Timing Controller (TCON0)</a></h1>
+<h1 id="nuttx-driver-for-timing-controller-tcon0"><a href="#nuttx-driver-for-timing-controller-tcon0">6 NuttX Driver for Timing Controller (TCON0)</a></h1>
 <p>TODO</p>
 <p><a href="https://lupyuen.github.io/articles/de#appendix-timing-controller-tcon0">(Explained here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig">(Implemented here)</a></p>
@@ -402,7 +420,7 @@ nsh&gt; hello 0</code></pre></div>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig">tcon.zig</a></li>
 </ul>
-<h1 id="nuttx-driver-for-display-engine"><a href="#nuttx-driver-for-display-engine">6 NuttX Driver for Display Engine</a></h1>
+<h1 id="nuttx-driver-for-display-engine"><a href="#nuttx-driver-for-display-engine">7 NuttX Driver for Display Engine</a></h1>
 <p>TODO: Initialise <strong>Display Engine (DE)</strong></p>
 <p><a href="https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine">(Explained here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L710-L1011">(Implemented here)</a></p>
@@ -436,7 +454,7 @@ nsh&gt; hello 0</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm/src/stm32f7/stm32_ltdc.c#L864">arch/arm/src/stm32f7/stm32_ltdc.c</a></p>
 </li>
 </ol>
-<h1 id="nuttx-driver-for-backlight"><a href="#nuttx-driver-for-backlight">7 NuttX Driver for Backlight</a></h1>
+<h1 id="nuttx-driver-for-backlight"><a href="#nuttx-driver-for-backlight">8 NuttX Driver for Backlight</a></h1>
 <p>TODO</p>
 <p><a href="https://lupyuen.github.io/articles/de#appendix-display-backlight">(Explained here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig">(Implemented here)</a></p>
@@ -459,7 +477,7 @@ nsh&gt; hello 0</code></pre></div>
 </ul>
 <p>TODO: PinePhone PIO and LEDs are now supported in NuttX Mainline…</p>
 <p><a href="https://github.com/apache/nuttx/pull/7796">apache/nuttx/pull/7796</a></p>
-<h1 id="nuttx-driver-for-lcd-panel-driver"><a href="#nuttx-driver-for-lcd-panel-driver">8 NuttX Driver for LCD Panel Driver</a></h1>
+<h1 id="nuttx-driver-for-lcd-panel-driver"><a href="#nuttx-driver-for-lcd-panel-driver">9 NuttX Driver for LCD Panel Driver</a></h1>
 <p>TODO</p>
 <p>Reset LCD Panel</p>
 <p><a href="https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel">(Explained here)</a></p>
@@ -475,7 +493,7 @@ nsh&gt; hello 0</code></pre></div>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c">boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c</a></li>
 </ul>
-<h1 id="nuttx-driver-for-power-management-integrated-circuit"><a href="#nuttx-driver-for-power-management-integrated-circuit">9 NuttX Driver for Power Management Integrated Circuit</a></h1>
+<h1 id="nuttx-driver-for-power-management-integrated-circuit"><a href="#nuttx-driver-for-power-management-integrated-circuit">10 NuttX Driver for Power Management Integrated Circuit</a></h1>
 <p>TODO</p>
 <p><a href="https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit">(Explained here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig">(Implemented here)</a></p>
@@ -487,12 +505,12 @@ nsh&gt; hello 0</code></pre></div>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c">boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c</a></li>
 </ul>
-<h1 id="why-zig"><a href="#why-zig">10 Why Zig</a></h1>
+<h1 id="why-zig"><a href="#why-zig">11 Why Zig</a></h1>
 <p>TODO: Prototype in zig</p>
 <p>Concise executable specification</p>
 <p>Easy to convert to C</p>
 <p>Was it worth the effort?</p>
-<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
 <p>TODO</p>
 <p>Check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
 <ul>
