@@ -307,7 +307,7 @@ We created the above NuttX Source Files by converting our __Zig MIPI DSI Driver_
 
 -   [__dphy.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/dphy.zig): Zig Driver for MIPI D-PHY
 
-(Why Zig? We'll explain below)
+(Why Zig? We'll come back to this)
 
 We created the Zig Drivers by __Reverse-Engineering__ the logs that we captured from PinePhone's p-boot Bootloader...
 
@@ -328,6 +328,8 @@ Why Reverse Engineer? Because a lot of details are missing from the official doc
 -   [__"Allwinner Display Engine 2.0 Specification"__](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
 
 # Convert Zig to C
+
+_Our NuttX Driver MIPI Driver was converted from Zig to C..._
 
 _Was it difficult to convert Zig to C?_
 
