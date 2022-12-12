@@ -335,6 +335,10 @@ _Was it difficult to convert Zig to C?_
 
 Not at all!
 
+TODO: Manual conversion
+
+TODO: Auto conversion
+
 Here's the Zig code for our MIPI DSI Driver...
 
 TODO
