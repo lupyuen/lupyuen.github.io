@@ -2,7 +2,7 @@
 
 📝 _18 Dec 2022_
 
-![Rendering graphics with Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/dsi3-title.jpg)
+![Rendering graphics on PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/dsi3-title.jpg)
 
 [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) (pic above) will soon support the rendering of graphics on the LCD Display... When we boot the official release of [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/)!
 
@@ -76,11 +76,21 @@ Through __Reverse Engineering__ (and plenty of experimenting), we discovered tha
 
 Let's talk about each step and their NuttX Drivers...
 
+![LCD Display on PinePhone Schematic (Page 2)](https://lupyuen.github.io/images/dsi-title.jpg)
+
+[_LCD Display on PinePhone Schematic (Page 2)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
+
 # NuttX Driver for MIPI Display Serial Interface
 
-TODO
+The very first NuttX Driver we've implemented is for __MIPI Display Serial Interface (DSI)__.
 
-The very first NuttX Driver we've implemented: __MIPI Display Serial Interface (DSI)__.
+_Why is MIPI DSI needed in PinePhone?_
+
+PinePhone talks to its LCD Panel ([__Xingbangda XBD599__](https://lupyuen.github.io/articles/dsi#xingbangda-xbd599-lcd-panel)) via the MIPI DSI Bus.
+
+That's why we need a MIPI DSI Driver in the NuttX Kernel.
+
+TODO
 
 Enable __MIPI DSI Block__
 
