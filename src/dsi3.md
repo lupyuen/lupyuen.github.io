@@ -114,7 +114,148 @@ Let's dive inside our MIPI DSI Driver...
 
 # Send MIPI DSI Packets
 
-_How do we send MIPI DSI Commands to PinePhone's LCD Controller?_
+_How do we send MIPI DSI Commands to initialise PinePhone's LCD Controller?_
+
+Let's take one MIPI DSI Command that initialises the ST7703 LCD Controller: [test_a64_mipi_dsi.c](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c#L52-L60)
+
+```c
+// Command #1 to init ST7703
+const uint8_t cmd1[] = { 
+  0xB9,  // SETEXTC (Page 131): Enable USER Command
+  0xF1,  // Enable User command
+  0x12,  // (Continued)
+  0x83   // (Continued)
+};
+
+// Send the command to ST7703 over MIPI DSI
+write_dcs(cmd1, sizeof(cmd1));
+```
+
+[(ST7703 needs 20 Initialisation Commands)](https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller)
+
+__write_dcs__ sends our command to the MIPI DSI Bus in 3 __DCS Formats__...
+
+-   __DCS Short Write:__ For commands with 1 Byte
+
+-   __DCS Short Write with Parameter:__ For commands with 2 Bytes
+
+-   __DCS Long Write:__ For commands with 3 Bytes or more
+
+(DCS means Display Command Set)
+
+```c
+/// Write the DCS Command to MIPI DSI
+static int write_dcs(FAR const uint8_t *buf, size_t len) {
+  // Do DCS Short Write or Long Write depending on command length.
+  // A64_MIPI_DSI_VIRTUAL_CHANNEL is 0.
+  switch (len) {
+    // DCS Short Write (without parameter)
+    case 1:
+      a64_mipi_dsi_write(A64_MIPI_DSI_VIRTUAL_CHANNEL, 
+        MIPI_DSI_DCS_SHORT_WRITE, 
+        buf, len);
+      break;
+
+    // DCS Short Write (with parameter)
+    case 2:
+      a64_mipi_dsi_write(A64_MIPI_DSI_VIRTUAL_CHANNEL, 
+        MIPI_DSI_DCS_SHORT_WRITE_PARAM, 
+        buf, len);
+      break;
+
+    // DCS Long Write
+    default:
+      a64_mipi_dsi_write(A64_MIPI_DSI_VIRTUAL_CHANNEL, 
+        MIPI_DSI_DCS_LONG_WRITE, 
+        buf, len);
+      break;
+  };
+```
+
+[(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c#L5-L41)
+
+[(We talk to MIPI DSI Bus on Virtual Channel 0)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.h#L35-L39)
+
+__a64_mipi_dsi_write__ comes from our NuttX MIPI DSI Driver: [arch/arm64/src/a64/a64_mipi_dsi.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L332-L498)
+
+```c
+// Transmit the payload data to the MIPI DSI Bus as a MIPI DSI Short or
+// Long Packet. This function is called to initialize the LCD Controller.
+// Assumes that the MIPI DSI Block has been enabled on the SoC.
+// Returns the number of bytes transmitted.
+ssize_t a64_mipi_dsi_write(
+  uint8_t channel,  // Virtual Channel (0)
+  enum mipi_dsi_e cmd,  // DCS Command (Data Type)
+  FAR const uint8_t *txbuf,  // Payload data for the packet
+  size_t txlen)  // Length of payload data (Max 65541 bytes)
+{
+  ...
+  // Compose Short or Long Packet depending on DCS Command
+  switch (cmd) {
+    // For DCS Long Write:
+    // Compose Long Packet
+    case MIPI_DSI_DCS_LONG_WRITE:
+      pktlen = mipi_dsi_long_packet(pkt, sizeof(pkt), channel, cmd, txbuf, txlen);
+      break;
+
+    // For DCS Short Write (with and without parameter):
+    // Compose Short Packet
+    case MIPI_DSI_DCS_SHORT_WRITE:
+      pktlen = mipi_dsi_short_packet(pkt, sizeof(pkt), channel, cmd, txbuf, txlen);
+      break;
+
+    case MIPI_DSI_DCS_SHORT_WRITE_PARAM:
+      pktlen = mipi_dsi_short_packet(pkt, sizeof(pkt), channel, cmd, txbuf, txlen);
+      break;
+  };
+```
+
+Our NuttX Driver calls...
+
+-   [__mipi_dsi_short_packet__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L369-L484): To compose a MIPI DSI [__Short Packet__](https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi)
+
+    [(More about this)](https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi)
+
+-   [__mipi_dsi_long_packet__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L230-L368): To compose a MIPI DSI [__Long Packet__](https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi)
+
+    [(More about this)](https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi)
+
+TODO
+
+```c
+  /* Write the packet to DSI Low Power Transmit Package Register
+   * (A31 Page 856)
+   */
+
+  addr = DSI_CMD_TX_REG;
+  for (i = 0; i < pktlen; i += 4)
+    {
+      /* Fetch the next 4 bytes, fill with 0 if not available */
+
+      const uint32_t b[4] =
+        {
+          pkt[i],
+          (i + 1 < pktlen) ? pkt[i + 1] : 0,
+          (i + 2 < pktlen) ? pkt[i + 2] : 0,
+          (i + 3 < pktlen) ? pkt[i + 3] : 0
+        };
+
+      /* Merge the next 4 bytes into a 32-bit value */
+
+      const uint32_t v = b[0] +
+                        (b[1] << 8) +
+                        (b[2] << 16) +
+                        (b[3] << 24);
+
+      /* Write the 32-bit value */
+
+      DEBUGASSERT(addr <= DSI_CMD_TX_END);
+      modreg32(v,
+               0xffffffff,
+               addr);
+      addr += 4;
+    }
+```
 
 TODO
 
