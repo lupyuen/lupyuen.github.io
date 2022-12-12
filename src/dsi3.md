@@ -216,11 +216,11 @@ ssize_t a64_mipi_dsi_write(
 
 Our NuttX Driver calls...
 
--   [__mipi_dsi_short_packet__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L369-L484): To compose a MIPI DSI [__Short Packet__](https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi)
+-   [__mipi_dsi_short_packet__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L369-L484): Compose a MIPI DSI [__Short Packet__](https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi)
 
     [(More about this)](https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi)
 
--   [__mipi_dsi_long_packet__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L230-L368): To compose a MIPI DSI [__Long Packet__](https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi)
+-   [__mipi_dsi_long_packet__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L230-L368): Compose a MIPI DSI [__Long Packet__](https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi)
 
     [(More about this)](https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi)
 
@@ -257,31 +257,39 @@ We do this 20 times, to send 20 __Initialisation Commands__ to the ST7703 LCD Co
 
 -   [__"Initialise LCD Controller"__](https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller)
 
-TODO
+But wait... We haven't enabled the MIPI DSI Hardware yet!
 
 # Enable MIPI DSI and D-PHY
 
-TODO
+_What about the other MIPI DSI Operations?_
 
-Enable __MIPI DSI Block__
+Before sending MIPI DSI Packets, we need to enable 2 chunks of hardware on Allwinner A64...
 
-[(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block)
+-   Enable Allwinner A64's __MIPI Display Serial Interface (DSI)__
 
-[(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L874-L1365)
+    So we can send MIPI DSI commands to the LCD Panel.
 
-Enable __MIPI Display Physical Layer (DPHY)__
+    [(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block)
 
-[(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-display-physical-layer-dphy)
+    [(Implemented as __a64_mipi_dsi_enable__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L499-L901)
 
-[(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/dphy.zig)
+-   Enable Allwinner A64's __MIPI Display Physical Layer (D-PHY)__
 
-Start __MIPI DSI HSC and HSD__
+    Which is the communications layer inside MIPI DSI.
 
-(High Speed Clock Mode and High Speed Data Transmission)
+    [(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-display-physical-layer-dphy)
 
-[(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-start-mipi-dsi-hsc-and-hsd)
+    [(Implemented as __a64_mipi_dphy_enable__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dphy.c#L85-L161)
 
-[(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1365-L1423)
+And after sending the MIPI DSI Packets to initialise our LCD Controller, we need to...
+
+-   Start Allwinner A64's __MIPI DSI in HSC and HSD Mode__
+
+    That's High Speed Clock Mode with High Speed Data Transmission.
+
+    [(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-start-mipi-dsi-hsc-and-hsd)
+
+    [(Implemented as __a64_mipi_dsi_start__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L901-L984)
 
 # Add MIPI DSI to NuttX Kernel
 
