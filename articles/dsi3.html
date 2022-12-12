@@ -71,7 +71,7 @@
 <li><a href="#nuttx-driver-for-mipi-display-serial-interface">2 NuttX Driver for MIPI Display Serial Interface</a><ul></ul></li>
 <li><a href="#send-mipi-dsi-packet">3 Send MIPI DSI Packet</a><ul></ul></li>
 <li><a href="#enable-mipi-dsi-and-d-phy">4 Enable MIPI DSI and D-PHY</a><ul></ul></li>
-<li><a href="#convert-zig-to-c">5 Convert Zig to C</a><ul></ul></li>
+<li><a href="#converting-zig-to-c">5 Converting Zig to C</a><ul></ul></li>
 <li><a href="#test-mipi-dsi-driver">6 Test MIPI DSI Driver</a><ul></ul></li>
 <li><a href="#nuttx-driver-for-timing-controller-tcon0">7 NuttX Driver for Timing Controller (TCON0)</a><ul></ul></li>
 <li><a href="#nuttx-driver-for-display-engine">8 NuttX Driver for Display Engine</a><ul></ul></li>
@@ -179,6 +179,8 @@
 <p>PinePhone doesn’t need to handle Interrupts while rendering the display… Everything is <strong>done in Hardware!</strong> (Allwinner A64 SoC)</p>
 <p>The pixel data is pumped from RAM Framebuffers via Direct Memory Access (DMA). Which is also done in Hardware.</p>
 <p>Let’s dive inside our MIPI DSI Driver…</p>
+<p><img src="https://lupyuen.github.io/images/dsi3-code.png" alt="Composing a MIPI DSI Short Packet" /></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L369-L484"><em>Composing a MIPI DSI Short Packet</em></a></p>
 <h1 id="send-mipi-dsi-packet"><a href="#send-mipi-dsi-packet">3 Send MIPI DSI Packet</a></h1>
 <p><em>How do we send MIPI DSI Commands to initialise PinePhone’s LCD Controller?</em></p>
 <p>Let’s take one MIPI DSI Command that initialises the ST7703 LCD Controller: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c#L52-L60">test_a64_mipi_dsi.c</a></p>
@@ -381,7 +383,8 @@ ssize_t a64_mipi_dsi_write(
 </li>
 </ul>
 <p>Let’s talk about the Zig-to-C Conversion…</p>
-<h1 id="convert-zig-to-c"><a href="#convert-zig-to-c">5 Convert Zig to C</a></h1>
+<p><img src="https://lupyuen.github.io/images/dsi3-zig.png" alt="Converting Zig to C" /></p>
+<h1 id="converting-zig-to-c"><a href="#converting-zig-to-c">5 Converting Zig to C</a></h1>
 <p><em>Our NuttX Driver MIPI Driver was converted from Zig to C…</em></p>
 <p><em>Was it difficult to convert Zig to C?</em></p>
 <p>Not at all!</p>
@@ -472,6 +475,7 @@ ssize_t mipi_dsi_short_packet(
 }</code></pre></div>
 <p>The C Code looks highly similar to the original Zig Code! Thus manually converting Zig to C (line by line) is a piece of cake.</p>
 <p>(According to <a href="https://www.linkedin.com/feed/update/urn:li:activity:7007500633717035008?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7007500633717035008%2C7007787482456993792%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287007787482456993792%2Curn%3Ali%3Aactivity%3A7007500633717035008%29"><strong>Matheus Catarino França</strong></a>, the Zig-to-C Auto-Translation might work too)</p>
+<p><img src="https://lupyuen.github.io/images/dsi3-test.png" alt="Testing MIPI DSI Driver" /></p>
 <h1 id="test-mipi-dsi-driver"><a href="#test-mipi-dsi-driver">6 Test MIPI DSI Driver</a></h1>
 <p>TODO</p>
 <p><em>How do we test the MIPI DSI Driver in the NuttX Kernel?</em></p>
