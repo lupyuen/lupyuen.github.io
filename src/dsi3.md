@@ -22,13 +22,15 @@ Let's continue the (super looong) journey from our __NuttX Porting Journal__...
 
 -   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
 
+![Steps needed to create a Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
+
 # Complete Display Driver for PinePhone
 
 _NuttX will render graphics on PinePhone's LCD Display..._
 
 _What's inside the Display Driver for PinePhone?_
 
-Through __Reverse Engineering__ (and plenty of experimenting), we discovered that these steps are needed to create a __Complete Display Driver__ for PinePhone...
+Through __Reverse Engineering__ (and plenty of experimenting), we discovered that these steps are needed to create a __Complete Display Driver__ for PinePhone (pic above)...
 
 1.  Turn on PinePhone's __Display Backlight__
 
