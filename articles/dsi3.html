@@ -165,6 +165,7 @@
 <ul>
 <li>
 <p><strong>At Startup:</strong> Our driver sends MIPI DSI Commands to initialise PinePhone’s LCD Controller: <a href="https://lupyuen.github.io/articles/dsi#sitronix-st7703-lcd-controller"><strong>Sitronix ST7703</strong></a></p>
+<p>(ST7703 is inside the Xingbangda XBD599 LCD Panel)</p>
 </li>
 <li>
 <p><strong>After Startup:</strong> Allwinner A64’s <a href="https://lupyuen.github.io/articles/de"><strong>Display Engine</strong></a> and <a href="https://lupyuen.github.io/articles/de#display-rendering-on-pinephone"><strong>Timing Controller (TCON0)</strong></a> pumps pixels continuously to the LCD Panel over MIPI DSI.</p>
@@ -297,7 +298,7 @@ ssize_t a64_mipi_dsi_write(
 
   // Omitted: Wait for DSI Transmission to complete</code></pre></div>
 <p>And that’s how our MIPI DSI Packet gets transmitted to the ST7703 LCD Controller, over the MIPI DSI Bus!</p>
-<p>We do this 20 times, to send 20 <strong>Initialisation Commands</strong> to the LCD Controller…</p>
+<p>We do this 20 times, to send 20 <strong>Initialisation Commands</strong> to the ST7703 LCD Controller…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller"><strong>“Initialise LCD Controller”</strong></a></li>
 </ul>
