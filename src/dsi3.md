@@ -335,7 +335,7 @@ Let's talk about the Zig-to-C Conversion...
 
 ![Converting Zig to C](https://lupyuen.github.io/images/dsi3-zig.png)
 
-# Converting Zig to C
+# Convert Zig to C
 
 _Our NuttX Driver MIPI Driver was converted from Zig to C..._
 
