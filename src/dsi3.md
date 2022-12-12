@@ -116,6 +116,10 @@ The pixel data is pumped from RAM Framebuffers via Direct Memory Access (DMA). W
 
 Let's dive inside our MIPI DSI Driver...
 
+![Composing a MIPI DSI Short Packet](https://lupyuen.github.io/images/dsi3-code.png)
+
+[_Composing a MIPI DSI Short Packet_](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L369-L484)
+
 # Send MIPI DSI Packet
 
 _How do we send MIPI DSI Commands to initialise PinePhone's LCD Controller?_
@@ -329,7 +333,9 @@ Why Reverse Engineer? Because a lot of details are missing from the official doc
 
 Let's talk about the Zig-to-C Conversion...
 
-# Convert Zig to C
+![Converting Zig to C](https://lupyuen.github.io/images/dsi3-zig.png)
+
+# Converting Zig to C
 
 _Our NuttX Driver MIPI Driver was converted from Zig to C..._
 
@@ -433,6 +439,8 @@ ssize_t mipi_dsi_short_packet(
 The C Code looks highly similar to the original Zig Code! Thus manually converting Zig to C (line by line) is a piece of cake.
 
 (According to [__Matheus Catarino França__](https://www.linkedin.com/feed/update/urn:li:activity:7007500633717035008?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7007500633717035008%2C7007787482456993792%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287007787482456993792%2Curn%3Ali%3Aactivity%3A7007500633717035008%29), the Zig-to-C Auto-Translation might work too)
+
+![Testing MIPI DSI Driver](https://lupyuen.github.io/images/dsi3-test.png)
 
 # Test MIPI DSI Driver
 
