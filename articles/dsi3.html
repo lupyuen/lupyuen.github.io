@@ -380,81 +380,98 @@ ssize_t a64_mipi_dsi_write(
 <p><a href="https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf"><strong>“Allwinner Display Engine 2.0 Specification”</strong></a></p>
 </li>
 </ul>
+<p>Let’s talk about the Zig-to-C Conversion…</p>
 <h1 id="convert-zig-to-c"><a href="#convert-zig-to-c">5 Convert Zig to C</a></h1>
 <p><em>Our NuttX Driver MIPI Driver was converted from Zig to C…</em></p>
 <p><em>Was it difficult to convert Zig to C?</em></p>
 <p>Not at all!</p>
-<p>TODO: Manual conversion</p>
-<p>TODO: Auto conversion</p>
-<p>Here’s the Zig code for our MIPI DSI Driver…</p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/3d33e5a49a5a3857c39fe8aa79af60902a70088e/display.zig#L115-L170">https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig</a></p>
-<p>And here’s the converted C code for NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L392-L484">mipi_dsi.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>ssize_t mipi_dsi_short_packet(FAR uint8_t *pktbuf,
-                              size_t pktlen,
-                              uint8_t channel,
-                              enum mipi_dsi_e cmd,
-                              FAR const uint8_t *txbuf,
-                              size_t txlen)
+<p>This is the <strong>Zig Code</strong> for our MIPI DSI Driver: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L115-L170">display.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// Compose MIPI DSI Short Packet
+fn composeShortPacket(
+  pkt: []u8,    // Buffer for the returned packet
+  channel: u8,  // Virtual Channel
+  cmd: u8,      // DCS Command (Data Type)
+  buf: [*c]const u8,  // Payload data for the packet
+  len: usize          // Length of payload data (1 or 2 bytes)
+) []const u8 {        // Returns the Short Packet
+  // Data Identifier (DI) (1 byte):
+  // - Virtual Channel Identifier (Bits 6 to 7)
+  // - Data Type (Bits 0 to 5)
+  const vc: u8 = channel;
+  const dt: u8 = cmd;
+  const di: u8 = (vc &lt;&lt; 6) | dt;
+
+  // Data (2 bytes), fill with 0 if Second Byte is missing
+  const data = [2]u8 {
+    buf[0],                       // First Byte
+    if (len == 2) buf[1] else 0,  // Second Byte
+  };
+
+  // Data Identifier + Data (3 bytes): For computing Error Correction Code (ECC)
+  const di_data = [3]u8 { di, data[0], data[1] };
+
+  // Compute Error Correction Code (ECC) for Data Identifier + Word Count
+  const ecc: u8 = computeEcc(di_data);
+
+  // Packet Header (4 bytes):
+  // - Data Identifier + Data + Error Correction Code
+  const header = [4]u8 { di_data[0], di_data[1], di_data[2], ecc };
+
+  // Packet:
+  // - Packet Header (4 bytes)
+  const pktlen = header.len;
+  std.mem.copy(u8, pkt[0..header.len], &amp;header); // 4 bytes
+
+  // Return the packet
+  const result = pkt[0..pktlen];
+  return result;
+}</code></pre></div>
+<p>We manually converted the <strong>Zig code to C</strong> like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L369-L484">mipi_dsi.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Compose MIPI DSI Short Packet.
+// Returns the Packet Length.
+ssize_t mipi_dsi_short_packet(
+  FAR uint8_t *pktbuf,  // Buffer for the returned packet
+  size_t pktlen,        // Size of the packet buffer
+  uint8_t channel,      // Virtual Channel
+  enum mipi_dsi_e cmd,  // DCS Command (Data Type)
+  FAR const uint8_t *txbuf,  // Payload data for the packet
+  size_t txlen)              // Length of payload data (1 or 2 bytes)
 {
-  /* Data Identifier (DI) (1 byte):
-   * Virtual Channel Identifier (Bits 6 to 7)
-   * Data Type (Bits 0 to 5) */
+  // Data Identifier (DI) (1 byte):
+  // Virtual Channel Identifier (Bits 6 to 7)
+  // Data Type (Bits 0 to 5)
   const uint8_t vc = channel;
   const uint8_t dt = cmd;
-  const uint8_t di = (vc &lt;&lt; 6) |
-                     dt;
+  const uint8_t di = (vc &lt;&lt; 6) | dt;
 
-  /* Data (2 bytes): Fill with 0 if Second Byte is missing */
-  const uint8_t data[2] =
-    {
-      txbuf[0],                     /* First Byte */
-      (txlen == 2) ? txbuf[1] : 0,  /* Second Byte */
-    };
+  // Data (2 bytes): Fill with 0 if Second Byte is missing
+  const uint8_t data[2] = {
+    txbuf[0],                     // First Byte
+    (txlen == 2) ? txbuf[1] : 0,  // Second Byte
+  };
 
-  /* Data Identifier + Data (3 bytes):
-   * For computing Error Correction Code (ECC) */
-  const uint8_t di_data[3] =
-    {
-      di,
-      data[0],
-      data[1]
-    };
+  // Data Identifier + Data (3 bytes):
+  // For computing Error Correction Code (ECC)
+  const uint8_t di_data[3] = { di, data[0], data[1] };
 
-  /* Compute ECC for Data Identifier + Word Count */
-  const uint8_t ecc = compute_ecc(di_data,
-                                  sizeof(di_data));
+  // Compute ECC for Data Identifier + Word Count
+  const uint8_t ecc = compute_ecc(di_data, sizeof(di_data));
 
-  /* Packet Header (4 bytes):
-   * Data Identifier + Data + Error Correction Code */
-  const uint8_t header[4] =
-    {
-      di_data[0],
-      di_data[1],
-      di_data[2],
-      ecc
-    };
+  // Packet Header (4 bytes):
+  // Data Identifier + Data + Error Correction Code
+  const uint8_t header[4] = { di_data[0], di_data[1], di_data[2], ecc };
 
-  /* Packet Length is Packet Header Size (4 bytes) */
+  // Packet Length is Packet Header Size (4 bytes)
   const size_t len = sizeof(header);
 
-  ginfo(&quot;channel=%d, cmd=0x%x, txlen=%ld\n&quot;, channel, cmd, txlen);
-  DEBUGASSERT(pktbuf != NULL &amp;&amp; txbuf != NULL);
-  DEBUGASSERT(channel &lt; 4);
-  DEBUGASSERT(cmd &lt; (1 &lt;&lt; 6));
+  // Copy Packet Header to Packet Buffer
+  memcpy(pktbuf, header, sizeof(header));  // 4 bytes
 
-  if (txlen &lt; 1 || txlen &gt; 2) { DEBUGPANIC(); return ERROR; }
-  if (len &gt; pktlen) { DEBUGPANIC(); return ERROR; }
-
-  /* Copy Packet Header to Packet Buffer */
-  memcpy(pktbuf,
-         header,
-         sizeof(header));  /* 4 bytes */
-
-  /* Return the Packet Length */
+  // Return the Packet Length
   return len;
 }</code></pre></div>
-<p>The code looks highly similar!</p>
+<p>The C Code looks highly similar to the original Zig Code! Thus manually converting Zig to C (line by line) is a piece of cake.</p>
+<p>(According to <a href="https://www.linkedin.com/feed/update/urn:li:activity:7007500633717035008?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7007500633717035008%2C7007787482456993792%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287007787482456993792%2Curn%3Ali%3Aactivity%3A7007500633717035008%29"><strong>Matheus Catarino França</strong></a>, the Zig-to-C Auto-Translation might work too)</p>
 <h1 id="test-mipi-dsi-driver"><a href="#test-mipi-dsi-driver">6 Test MIPI DSI Driver</a></h1>
 <p>TODO</p>
 <p><em>How do we test the MIPI DSI Driver in the NuttX Kernel?</em></p>
