@@ -96,6 +96,8 @@ It gets complicated...
 
 -   __At Startup:__ Our driver sends MIPI DSI Commands to initialise PinePhone's LCD Controller: [__Sitronix ST7703__](https://lupyuen.github.io/articles/dsi#sitronix-st7703-lcd-controller)
 
+    (ST7703 is inside the Xingbangda XBD599 LCD Panel)
+
 -   __After Startup:__ Allwinner A64's [__Display Engine__](https://lupyuen.github.io/articles/de) and [__Timing Controller (TCON0)__](https://lupyuen.github.io/articles/de#display-rendering-on-pinephone) pumps pixels continuously to the LCD Panel over MIPI DSI.
 
     (Bypassing our MIPI DSI Driver)
@@ -249,7 +251,7 @@ Then our NuttX Driver writes the Short or Long Packet to the __MIPI DSI Register
 
 And that's how our MIPI DSI Packet gets transmitted to the ST7703 LCD Controller, over the MIPI DSI Bus!
 
-We do this 20 times, to send 20 __Initialisation Commands__ to the LCD Controller...
+We do this 20 times, to send 20 __Initialisation Commands__ to the ST7703 LCD Controller...
 
 -   [__"Initialise LCD Controller"__](https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller)
 
