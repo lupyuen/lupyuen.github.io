@@ -78,7 +78,7 @@
 <li><a href="#nuttx-driver-for-power-management-integrated-circuit">9 NuttX Driver for Power Management Integrated Circuit</a><ul></ul></li>
 <li><a href="#why-zig">10 Why Zig</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>18 Dec 2022</em></p>
-<p><img src="https://lupyuen.github.io/images/dsi3-title.jpg" alt="Rendering graphics with Apache NuttX RTOS on PinePhone" /></p>
+<p><img src="https://lupyuen.github.io/images/dsi3-title.jpg" alt="Rendering graphics on PinePhone with Apache NuttX RTOS" /></p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> (pic above) will soon support the rendering of graphics on the LCD Display… When we boot the official release of <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a>!</p>
 <p>We’re building the <strong>NuttX Display Driver</strong> for PinePhone in small chunks, starting with the driver for <a href="https://lupyuen.github.io/articles/dsi"><strong>MIPI Display Serial Interface</strong></a>.</p>
 <p>In this article we’ll learn…</p>
@@ -151,9 +151,14 @@
 </li>
 </ol>
 <p>Let’s talk about each step and their NuttX Drivers…</p>
+<p><img src="https://lupyuen.github.io/images/dsi-title.jpg" alt="LCD Display on PinePhone Schematic (Page 2)" /></p>
+<p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LCD Display on PinePhone Schematic (Page 2)</em></a></p>
 <h1 id="nuttx-driver-for-mipi-display-serial-interface"><a href="#nuttx-driver-for-mipi-display-serial-interface">2 NuttX Driver for MIPI Display Serial Interface</a></h1>
+<p>The very first NuttX Driver we’ve implemented is for <strong>MIPI Display Serial Interface (DSI)</strong>.</p>
+<p><em>Why is MIPI DSI needed in PinePhone?</em></p>
+<p>PinePhone talks to its LCD Panel (<a href="https://lupyuen.github.io/articles/dsi#xingbangda-xbd599-lcd-panel"><strong>Xingbangda XBD599</strong></a>) via the MIPI DSI Bus.</p>
+<p>That’s why we need a MIPI DSI Driver in the NuttX Kernel.</p>
 <p>TODO</p>
-<p>The very first NuttX Driver we’ve implemented: <strong>MIPI Display Serial Interface (DSI)</strong>.</p>
 <p>Enable <strong>MIPI DSI Block</strong></p>
 <p><a href="https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block">(Explained here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L874-L1365">(Implemented here)</a></p>
