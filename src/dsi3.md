@@ -114,7 +114,7 @@ The pixel data is pumped from RAM Framebuffers via Direct Memory Access (DMA). W
 
 Let's dive inside our MIPI DSI Driver...
 
-# Send MIPI DSI Packets
+# Send MIPI DSI Packet
 
 _How do we send MIPI DSI Commands to initialise PinePhone's LCD Controller?_
 
