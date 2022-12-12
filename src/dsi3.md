@@ -86,11 +86,15 @@ The very first NuttX Driver we've implemented is for __MIPI Display Serial Inter
 
 _Why is MIPI DSI needed in PinePhone?_
 
-PinePhone talks to its LCD Panel ([__Xingbangda XBD599__](https://lupyuen.github.io/articles/dsi#xingbangda-xbd599-lcd-panel)) via the MIPI DSI Bus.
+PinePhone talks to its LCD Panel ([__Xingbangda XBD599__](https://lupyuen.github.io/articles/dsi#xingbangda-xbd599-lcd-panel)) via the __MIPI DSI Bus__ on Allwinner A64 SoC.
 
 That's why we need a MIPI DSI Driver in the NuttX Kernel.
 
-TODO
+_So PinePhone uses MIPI DSI to render graphics on the LCD Display?_
+
+TODO: Efficiency
+
+TODO: Init only, not data
 
 Enable __MIPI DSI Block__
 
