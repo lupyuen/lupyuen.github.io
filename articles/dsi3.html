@@ -177,7 +177,134 @@
 <p>The pixel data is pumped from RAM Framebuffers via Direct Memory Access (DMA). Which is also done in Hardware.</p>
 <p>Let’s dive inside our MIPI DSI Driver…</p>
 <h1 id="send-mipi-dsi-packets"><a href="#send-mipi-dsi-packets">3 Send MIPI DSI Packets</a></h1>
-<p><em>How do we send MIPI DSI Commands to PinePhone’s LCD Controller?</em></p>
+<p><em>How do we send MIPI DSI Commands to initialise PinePhone’s LCD Controller?</em></p>
+<p>Let’s take one MIPI DSI Command that initialises the ST7703 LCD Controller: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c#L52-L60">test_a64_mipi_dsi.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Command #1 to init ST7703
+const uint8_t cmd1[] = { 
+  0xB9,  // SETEXTC (Page 131): Enable USER Command
+  0xF1,  // Enable User command
+  0x12,  // (Continued)
+  0x83   // (Continued)
+};
+
+// Send the command to ST7703 over MIPI DSI
+write_dcs(cmd1, sizeof(cmd1));</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller">(ST7703 needs 20 Initialisation Commands)</a></p>
+<p><strong>write_dcs</strong> sends our command to the MIPI DSI Bus in 3 <strong>DCS Formats</strong>…</p>
+<ul>
+<li>
+<p><strong>DCS Short Write:</strong> For commands with 1 Byte</p>
+</li>
+<li>
+<p><strong>DCS Short Write with Parameter:</strong> For commands with 2 Bytes</p>
+</li>
+<li>
+<p><strong>DCS Long Write:</strong> For commands with 3 Bytes or more</p>
+</li>
+</ul>
+<p>(DCS means Display Command Set)</p>
+<div class="example-wrap"><pre class="language-c"><code>/// Write the DCS Command to MIPI DSI
+static int write_dcs(FAR const uint8_t *buf, size_t len) {
+  // Do DCS Short Write or Long Write depending on command length.
+  // A64_MIPI_DSI_VIRTUAL_CHANNEL is 0.
+  switch (len) {
+    // DCS Short Write (without parameter)
+    case 1:
+      a64_mipi_dsi_write(A64_MIPI_DSI_VIRTUAL_CHANNEL, 
+        MIPI_DSI_DCS_SHORT_WRITE, 
+        buf, len);
+      break;
+
+    // DCS Short Write (with parameter)
+    case 2:
+      a64_mipi_dsi_write(A64_MIPI_DSI_VIRTUAL_CHANNEL, 
+        MIPI_DSI_DCS_SHORT_WRITE_PARAM, 
+        buf, len);
+      break;
+
+    // DCS Long Write
+    default:
+      a64_mipi_dsi_write(A64_MIPI_DSI_VIRTUAL_CHANNEL, 
+        MIPI_DSI_DCS_LONG_WRITE, 
+        buf, len);
+      break;
+  };</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c#L5-L41">(Source)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.h#L35-L39">(We talk to MIPI DSI Bus on Virtual Channel 0)</a></p>
+<p><strong>a64_mipi_dsi_write</strong> comes from our NuttX MIPI DSI Driver: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L332-L498">arch/arm64/src/a64/a64_mipi_dsi.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Transmit the payload data to the MIPI DSI Bus as a MIPI DSI Short or
+// Long Packet. This function is called to initialize the LCD Controller.
+// Assumes that the MIPI DSI Block has been enabled on the SoC.
+// Returns the number of bytes transmitted.
+ssize_t a64_mipi_dsi_write(
+  uint8_t channel,  // Virtual Channel (0)
+  enum mipi_dsi_e cmd,  // DCS Command (Data Type)
+  FAR const uint8_t *txbuf,  // Payload data for the packet
+  size_t txlen)  // Length of payload data (Max 65541 bytes)
+{
+  ...
+  // Compose Short or Long Packet depending on DCS Command
+  switch (cmd) {
+    // For DCS Long Write:
+    // Compose Long Packet
+    case MIPI_DSI_DCS_LONG_WRITE:
+      pktlen = mipi_dsi_long_packet(pkt, sizeof(pkt), channel, cmd, txbuf, txlen);
+      break;
+
+    // For DCS Short Write (with and without parameter):
+    // Compose Short Packet
+    case MIPI_DSI_DCS_SHORT_WRITE:
+      pktlen = mipi_dsi_short_packet(pkt, sizeof(pkt), channel, cmd, txbuf, txlen);
+      break;
+
+    case MIPI_DSI_DCS_SHORT_WRITE_PARAM:
+      pktlen = mipi_dsi_short_packet(pkt, sizeof(pkt), channel, cmd, txbuf, txlen);
+      break;
+  };</code></pre></div>
+<p>Our NuttX Driver calls…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L369-L484"><strong>mipi_dsi_short_packet</strong></a>: To compose a MIPI DSI <a href="https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi"><strong>Short Packet</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi">(More about this)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L230-L368"><strong>mipi_dsi_long_packet</strong></a>: To compose a MIPI DSI <a href="https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi"><strong>Long Packet</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi">(More about this)</a></p>
+</li>
+</ul>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  /* Write the packet to DSI Low Power Transmit Package Register
+   * (A31 Page 856)
+   */
+
+  addr = DSI_CMD_TX_REG;
+  for (i = 0; i &lt; pktlen; i += 4)
+    {
+      /* Fetch the next 4 bytes, fill with 0 if not available */
+
+      const uint32_t b[4] =
+        {
+          pkt[i],
+          (i + 1 &lt; pktlen) ? pkt[i + 1] : 0,
+          (i + 2 &lt; pktlen) ? pkt[i + 2] : 0,
+          (i + 3 &lt; pktlen) ? pkt[i + 3] : 0
+        };
+
+      /* Merge the next 4 bytes into a 32-bit value */
+
+      const uint32_t v = b[0] +
+                        (b[1] &lt;&lt; 8) +
+                        (b[2] &lt;&lt; 16) +
+                        (b[3] &lt;&lt; 24);
+
+      /* Write the 32-bit value */
+
+      DEBUGASSERT(addr &lt;= DSI_CMD_TX_END);
+      modreg32(v,
+               0xffffffff,
+               addr);
+      addr += 4;
+    }</code></pre></div>
 <p>TODO</p>
 <p>Enable <strong>MIPI DSI Block</strong></p>
 <p><a href="https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block">(Explained here)</a></p>
