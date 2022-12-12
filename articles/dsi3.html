@@ -72,7 +72,9 @@
 <li><a href="#send-mipi-dsi-packet">3 Send MIPI DSI Packet</a><ul></ul></li>
 <li><a href="#enable-mipi-dsi-and-d-phy">4 Enable MIPI DSI and D-PHY</a><ul></ul></li>
 <li><a href="#convert-zig-to-c">5 Convert Zig to C</a><ul></ul></li>
-<li><a href="#test-mipi-dsi-driver">6 Test MIPI DSI Driver</a><ul></ul></li>
+<li><a href="#test-mipi-dsi-driver">6 Test MIPI DSI Driver</a><ul>
+<li><a href="#unit-testing">6.1 Unit Testing</a><ul></ul></li>
+<li><a href="#local-testing">6.2 Local Testing</a><ul></ul></li></ul></li>
 <li><a href="#nuttx-driver-for-timing-controller-tcon0">7 NuttX Driver for Timing Controller (TCON0)</a><ul></ul></li>
 <li><a href="#nuttx-driver-for-display-engine">8 NuttX Driver for Display Engine</a><ul></ul></li>
 <li><a href="#nuttx-driver-for-backlight">9 NuttX Driver for Backlight</a><ul></ul></li>
@@ -547,6 +549,8 @@ nsh&gt; hello 0</code></pre></div>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/f1a02068aeb0785278c482116a4eedc7">Test Log for NuttX MIPI DSI on PinePhone</a></li>
 </ul>
+<h2 id="unit-testing"><a href="#unit-testing">6.1 Unit Testing</a></h2>
+<p>TODO</p>
 <p><em>What about Unit Testing? Can we test the MIPI DSI / D-PHY Driver without other drivers?</em></p>
 <p>Yep! Our MIPI DSI Driver simply writes values to a bunch of A64 Hardware Registers, like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm64/src/a64/a64_mipi_dsi.c#L633-L646">a64_mipi_dsi.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  /* DSI Configuration Register 1 (A31 Page 846)
@@ -582,6 +586,8 @@ nsh&gt; hello 0</code></pre></div>
 <p><em>What about a smaller, self-contained Unit Test for MIPI DSI?</em></p>
 <p>Here’s the Unit Test that verifies MIPI DSI Packets (Long / Short  / Short with Parameter) are composed correctly…</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/46f055eceae268fa7ba20d69c12d4823491a89b9/test/test_mipi_dsi.c#L1-L109">test_mipi_dsi.c</a></p>
+<h2 id="local-testing"><a href="#local-testing">6.2 Local Testing</a></h2>
+<p>TODO</p>
 <p><em>Can we test the MIPI DSI Driver on our Local Computer? Without running on PinePhone?</em></p>
 <p>Most certainly! In fact we test the MIPI DSI Driver on our Local Computer first before testing on PinePhone. Here’s how…</p>
 <p>Remember that our MIPI DSI Driver simply writes values to a bunch of A64 Hardware Registers. So we only need to ensure that the Hardware Addresses and the Written Values are correct.</p>
