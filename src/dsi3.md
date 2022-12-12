@@ -263,7 +263,7 @@ But wait... We haven't enabled the MIPI DSI Hardware yet!
 
 _What about the other MIPI DSI Operations?_
 
-Before sending MIPI DSI Packets, we need to enable 2 chunks of hardware on Allwinner A64...
+Before sending MIPI DSI Packets, our NuttX Driver needs to enable 2 chunks of hardware on Allwinner A64 SoC...
 
 -   Enable Allwinner A64's __MIPI Display Serial Interface (DSI)__
 
@@ -291,33 +291,43 @@ And after sending the MIPI DSI Packets to initialise our LCD Controller, we need
 
     [(Implemented as __a64_mipi_dsi_start__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L901-L984)
 
-# Add MIPI DSI to NuttX Kernel
+_How did we create all this code for our NuttX Driver?_
 
-TODO
+Our __NuttX Driver for MIPI DSI__ (and MIPI D-PHY) lives in the NuttX Kernel as...
 
-We're adding the MIPI DSI Driver to the NuttX Kernel...
+-   [__mipi_dsi.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c): Compose MIPI DSI Packets (Long, Short, Short with Parameter)
 
--   [mipi_dsi.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm64/src/a64/mipi_dsi.c): Compose MIPI DSI Packets (Long, Short, Short with Parameter)
+-   [__a64_mipi_dsi.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c): MIPI Display Serial Interface (DSI) for Allwinner A64
 
--   [a64_mipi_dsi.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm64/src/a64/a64_mipi_dsi.c): MIPI Display Serial Interface (DSI) for Allwinner A64
+-   [__a64_mipi_dphy.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dphy.c): MIPI Display Physical Layer (D-PHY) for Allwinner A64
 
--   [a64_mipi_dphy.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm64/src/a64/a64_mipi_dphy.c): MIPI Display Physical Layer (D-PHY) for Allwinner A64
+We created the above NuttX Source Files by converting our __Zig MIPI DSI Driver__ to C...
 
-We created the above NuttX Source Files (in C) by converting our Zig MIPI DSI Driver to C...
+-   [__display.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig): Zig Driver for MIPI DSI
 
--   [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig): Zig Driver for MIPI DSI
+-   [__dphy.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/dphy.zig): Zig Driver for MIPI D-PHY
 
--   [dphy.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/dphy.zig): Zig Driver for MIPI D-PHY
+(Why Zig? We'll explain below)
 
-That we Reverse-Engineered from the logs that we captured from PinePhone p-boot...
+We created the Zig Drivers by __Reverse-Engineering__ the logs that we captured from PinePhone's p-boot Bootloader...
 
--   ["Understanding PinePhone's Display (MIPI DSI)"](https://lupyuen.github.io/articles/dsi)
+-   [__"Understanding PinePhone's Display (MIPI DSI)"__](https://lupyuen.github.io/articles/dsi)
 
--   ["NuttX RTOS for PinePhone: Display Driver in Zig"](https://lupyuen.github.io/articles/dsi2)
+-   [__"NuttX RTOS for PinePhone: Display Driver in Zig"__](https://lupyuen.github.io/articles/dsi2)
 
--   ["Rendering PinePhone's Display (DE and TCON0)"](https://lupyuen.github.io/articles/de)
+-   [__"Rendering PinePhone's Display (DE and TCON0)"__](https://lupyuen.github.io/articles/de)
 
--   ["NuttX RTOS for PinePhone: Render Graphics in Zig"](https://lupyuen.github.io/articles/de2)
+-   [__"NuttX RTOS for PinePhone: Render Graphics in Zig"__](https://lupyuen.github.io/articles/de2)
+
+Why Reverse Engineer? Because a lot of details are missing from the official docs for Allwinner A64...
+
+-   [__"Allwinner A64 User Manual"__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+
+-   [__"Allwinner A31 User Manual"__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf)
+
+-   [__"Allwinner Display Engine 2.0 Specification"__](https://linux-sunxi.org/images/7/7b/Allwinner_DE2.0_Spec_V1.0.pdf)
+
+# Convert Zig to C
 
 _Was it difficult to convert Zig to C?_
 
@@ -325,9 +335,11 @@ Not at all!
 
 Here's the Zig code for our MIPI DSI Driver...
 
+TODO
+
 [https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/3d33e5a49a5a3857c39fe8aa79af60902a70088e/display.zig#L115-L170)
 
-And here's the converted C code for NuttX: [mipi_dsi.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm64/src/a64/mipi_dsi.c#L392-L484)
+And here's the converted C code for NuttX: [mipi_dsi.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L392-L484)
 
 ```c
 ssize_t mipi_dsi_short_packet(FAR uint8_t *pktbuf,
@@ -398,7 +410,7 @@ ssize_t mipi_dsi_short_packet(FAR uint8_t *pktbuf,
 
 The code looks highly similar!
 
-# Test MIPI DSI for NuttX Kernel
+# Test MIPI DSI Driver
 
 TODO
 
