@@ -309,7 +309,8 @@ ssize_t a64_mipi_dsi_write(
 </ul>
 <p>But wait… We haven’t enabled the MIPI DSI Hardware yet!</p>
 <h1 id="enable-mipi-dsi-and-d-phy"><a href="#enable-mipi-dsi-and-d-phy">4 Enable MIPI DSI and D-PHY</a></h1>
-<p><em>What about the other MIPI DSI Operations?</em></p>
+<p><em>At startup we call the MIPI DSI Driver to send commands to the LCD Controller…</em></p>
+<p><em>What about other MIPI DSI Operations?</em></p>
 <p>Before sending MIPI DSI Packets, our NuttX Driver needs to enable 2 chunks of hardware on Allwinner A64 SoC…</p>
 <ul>
 <li>
@@ -329,7 +330,7 @@ ssize_t a64_mipi_dsi_write(
 <ul>
 <li>
 <p>Start Allwinner A64’s <strong>MIPI DSI in HSC and HSD Mode</strong></p>
-<p>That’s High Speed Clock Mode with High Speed Data Transmission.</p>
+<p>That’s High Speed Clock Mode with High Speed Data Transmission. (Which are probably needed by the Timing Controller TCON0)</p>
 <p><a href="https://lupyuen.github.io/articles/dsi#appendix-start-mipi-dsi-hsc-and-hsd">(Explained here)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L901-L984">(Implemented as <strong>a64_mipi_dsi_start</strong>)</a></p>
 </li>
