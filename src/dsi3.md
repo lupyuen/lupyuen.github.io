@@ -265,7 +265,9 @@ But wait... We haven't enabled the MIPI DSI Hardware yet!
 
 # Enable MIPI DSI and D-PHY
 
-_What about the other MIPI DSI Operations?_
+_At startup we call the MIPI DSI Driver to send commands to the LCD Controller..._
+
+_What about other MIPI DSI Operations?_
 
 Before sending MIPI DSI Packets, our NuttX Driver needs to enable 2 chunks of hardware on Allwinner A64 SoC...
 
@@ -289,7 +291,7 @@ And after sending the MIPI DSI Packets to initialise our LCD Controller, we need
 
 -   Start Allwinner A64's __MIPI DSI in HSC and HSD Mode__
 
-    That's High Speed Clock Mode with High Speed Data Transmission.
+    That's High Speed Clock Mode with High Speed Data Transmission. (Which are probably needed by the Timing Controller TCON0)
 
     [(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-start-mipi-dsi-hsc-and-hsd)
 
