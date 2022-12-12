@@ -220,42 +220,42 @@ Our NuttX Driver calls...
 
     [(More about this)](https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi)
 
-TODO
+Then our NuttX Driver writes the Short or Long Packet to the __MIPI DSI Registers__ of Allwinner A64: [arch/arm64/src/a64/a64_mipi_dsi.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L332-L498)
 
 ```c
-  /* Write the packet to DSI Low Power Transmit Package Register
-   * (A31 Page 856)
-   */
+  // Write the packet to DSI Low Power Transmit Package Register
+  // at DSI Offset 0x300 (A31 Page 856)
+  addr = A64_DSI_ADDR + 0x300;
+  for (i = 0; i < pktlen; i += 4) {
 
-  addr = DSI_CMD_TX_REG;
-  for (i = 0; i < pktlen; i += 4)
-    {
-      /* Fetch the next 4 bytes, fill with 0 if not available */
+    // Fetch the next 4 bytes, fill with 0 if not available
+    const uint32_t b[4] = {
+      pkt[i],
+      (i + 1 < pktlen) ? pkt[i + 1] : 0,
+      (i + 2 < pktlen) ? pkt[i + 2] : 0,
+      (i + 3 < pktlen) ? pkt[i + 3] : 0
+    };
 
-      const uint32_t b[4] =
-        {
-          pkt[i],
-          (i + 1 < pktlen) ? pkt[i + 1] : 0,
-          (i + 2 < pktlen) ? pkt[i + 2] : 0,
-          (i + 3 < pktlen) ? pkt[i + 3] : 0
-        };
+    // Merge the next 4 bytes into a 32-bit value
+    const uint32_t v = b[0] + (b[1] << 8) + (b[2] << 16) + (b[3] << 24);
 
-      /* Merge the next 4 bytes into a 32-bit value */
+    // Write the 32-bit value to DSI Low Power Transmit Package Register
+    modreg32(v, 0xffffffff, addr);
+    addr += 4;
+  }
 
-      const uint32_t v = b[0] +
-                        (b[1] << 8) +
-                        (b[2] << 16) +
-                        (b[3] << 24);
-
-      /* Write the 32-bit value */
-
-      DEBUGASSERT(addr <= DSI_CMD_TX_END);
-      modreg32(v,
-               0xffffffff,
-               addr);
-      addr += 4;
-    }
+  // Omitted: Wait for DSI Transmission to complete
 ```
+
+And that's how our MIPI DSI Packet gets transmitted to the ST7703 LCD Controller, over the MIPI DSI Bus!
+
+We do this 20 times, to send 20 __Initialisation Commands__ to the LCD Controller...
+
+-   [__"Initialise LCD Controller"__](https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller)
+
+TODO
+
+# Enable MIPI DSI and D-PHY
 
 TODO
 
