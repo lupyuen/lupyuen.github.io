@@ -530,6 +530,10 @@ Here's the Test Log for our Zig Test Program running on NuttX and PinePhone...
 
 -   [Test Log for NuttX MIPI DSI on PinePhone](https://gist.github.com/lupyuen/f1a02068aeb0785278c482116a4eedc7)
 
+## Unit Testing
+
+TODO
+
 _What about Unit Testing? Can we test the MIPI DSI / D-PHY Driver without other drivers?_
 
 Yep! Our MIPI DSI Driver simply writes values to a bunch of A64 Hardware Registers, like so: [a64_mipi_dsi.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm64/src/a64/a64_mipi_dsi.c#L633-L646)
@@ -579,6 +583,10 @@ _What about a smaller, self-contained Unit Test for MIPI DSI?_
 Here's the Unit Test that verifies MIPI DSI Packets (Long / Short  / Short with Parameter) are composed correctly...
 
 [test_mipi_dsi.c](https://github.com/lupyuen/pinephone-nuttx/blob/46f055eceae268fa7ba20d69c12d4823491a89b9/test/test_mipi_dsi.c#L1-L109)
+
+## Local Testing
+
+TODO
 
 _Can we test the MIPI DSI Driver on our Local Computer? Without running on PinePhone?_
 
