@@ -352,7 +352,7 @@ ssize_t a64_mipi_dsi_write(
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/dphy.zig"><strong>dphy.zig</strong></a>: Zig Driver for MIPI D-PHY</p>
 </li>
 </ul>
-<p>(Why Zig? We’ll explain below)</p>
+<p>(Why Zig? We’ll come back to this)</p>
 <p>We created the Zig Drivers by <strong>Reverse-Engineering</strong> the logs that we captured from PinePhone’s p-boot Bootloader…</p>
 <ul>
 <li>
@@ -381,6 +381,7 @@ ssize_t a64_mipi_dsi_write(
 </li>
 </ul>
 <h1 id="convert-zig-to-c"><a href="#convert-zig-to-c">5 Convert Zig to C</a></h1>
+<p><em>Our NuttX Driver MIPI Driver was converted from Zig to C…</em></p>
 <p><em>Was it difficult to convert Zig to C?</em></p>
 <p>Not at all!</p>
 <p>Here’s the Zig code for our MIPI DSI Driver…</p>
