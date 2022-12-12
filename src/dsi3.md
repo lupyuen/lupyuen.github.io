@@ -90,11 +90,33 @@ PinePhone talks to its LCD Panel ([__Xingbangda XBD599__](https://lupyuen.github
 
 That's why we need a MIPI DSI Driver in the NuttX Kernel.
 
-_So PinePhone uses MIPI DSI to render graphics on the LCD Display?_
+_So our MIPI DSI Driver will render graphics on PinePhone's LCD Display?_
 
-TODO: Efficiency
+It gets complicated...
 
-TODO: Init only, not data
+-   __At Startup:__ Our driver sends MIPI DSI Commands to initialise PinePhone's LCD Controller: [__Sitronix ST7703__](https://lupyuen.github.io/articles/dsi#sitronix-st7703-lcd-controller)
+
+-   __After Startup:__ Allwinner A64's [__Display Engine__](https://lupyuen.github.io/articles/de) and [__Timing Controller (TCON0)__](https://lupyuen.github.io/articles/de#display-rendering-on-pinephone) pumps pixels continuously to the LCD Panel over MIPI DSI.
+
+    (Bypassing our MIPI DSI Driver)
+
+Thus our MIPI DSI Driver is called __only at startup__ to initialise the LCD Controller (ST7703).
+
+_Sounds super complicated..._
+
+Yep but this rendering design is __super efficient__!
+
+PinePhone doesn't need to handle Interrupts while rendering the display... Everything is __done in Hardware!__ (Allwinner A64 SoC)
+
+The pixel data is pumped from RAM Framebuffers via Direct Memory Access (DMA). Which is also done in Hardware.
+
+Let's dive inside our MIPI DSI Driver...
+
+# Send MIPI DSI Packets
+
+_How do we send MIPI DSI Commands to PinePhone's LCD Controller?_
+
+TODO
 
 Enable __MIPI DSI Block__
 
