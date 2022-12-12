@@ -69,7 +69,7 @@
     <nav id="TOC"><ul>
 <li><a href="#complete-display-driver-for-pinephone">1 Complete Display Driver for PinePhone</a><ul></ul></li>
 <li><a href="#nuttx-driver-for-mipi-display-serial-interface">2 NuttX Driver for MIPI Display Serial Interface</a><ul></ul></li>
-<li><a href="#send-mipi-dsi-packets">3 Send MIPI DSI Packets</a><ul></ul></li>
+<li><a href="#send-mipi-dsi-packet">3 Send MIPI DSI Packet</a><ul></ul></li>
 <li><a href="#enable-mipi-dsi-and-d-phy">4 Enable MIPI DSI and D-PHY</a><ul></ul></li>
 <li><a href="#add-mipi-dsi-to-nuttx-kernel">5 Add MIPI DSI to NuttX Kernel</a><ul></ul></li>
 <li><a href="#test-mipi-dsi-for-nuttx-kernel">6 Test MIPI DSI for NuttX Kernel</a><ul></ul></li>
@@ -178,7 +178,7 @@
 <p>PinePhone doesn’t need to handle Interrupts while rendering the display… Everything is <strong>done in Hardware!</strong> (Allwinner A64 SoC)</p>
 <p>The pixel data is pumped from RAM Framebuffers via Direct Memory Access (DMA). Which is also done in Hardware.</p>
 <p>Let’s dive inside our MIPI DSI Driver…</p>
-<h1 id="send-mipi-dsi-packets"><a href="#send-mipi-dsi-packets">3 Send MIPI DSI Packets</a></h1>
+<h1 id="send-mipi-dsi-packet"><a href="#send-mipi-dsi-packet">3 Send MIPI DSI Packet</a></h1>
 <p><em>How do we send MIPI DSI Commands to initialise PinePhone’s LCD Controller?</em></p>
 <p>Let’s take one MIPI DSI Command that initialises the ST7703 LCD Controller: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c#L52-L60">test_a64_mipi_dsi.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Command #1 to init ST7703
