@@ -446,30 +446,70 @@ The C Code looks highly similar to the original Zig Code! Thus manually converti
 
 # Test MIPI DSI Driver
 
-TODO
+_Our NuttX Display Driver for PinePhone is incomplete..._
 
 _How do we test the MIPI DSI Driver in the NuttX Kernel?_
 
-Right now we have implemented the following in the NuttX Kernel...
+Right now we have implemented the following in the __NuttX Kernel__...
 
 -   Driver for MIPI Display Serial Interface (DSI)
 -   Driver for MIPI Display Physical Layer (D-PHY)
 
-But to render graphics on PinePhone we need the following drivers, which are still in Zig, pending conversion to C...
+But to [__render graphics on PinePhone__](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone) we need the following drivers, which are still in Zig (pending conversion to C)...
 
 -   Driver for Display Backlight
 -   Driver for Timing Controller TCON0
--   Driver for Power Mgmt IC
+-   Driver for Power Management Integrated Circuit
 -   Driver for LCD Panel
 -   Driver for Display Engine
 
-Running an Integration Test across the C and Zig Drivers will be a little interesting. Here's how we run the Integration Test...
+Running an Integration Test across the C and Zig Drivers will be a little tricky. Here's how we run the Integration Test...
 
-We created this program in Zig that calls the C and Zig Drivers, in the right sequence...
+We created this program in Zig that __calls the C and Zig Drivers__, in the right sequence: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L1146-L1182)
 
-[render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/bc560cea04f601542eb1d3d71fb00dbc647d982d/render.zig#L1143-L1176)
+```zig
+/// Main Function that will be called by NuttX
+/// when we run the `hello` app
+pub export fn hello_main(argc: c_int, argv: [*c]const [*c]u8) c_int {
+  // Render graphics on PinePhone in Zig and C:
 
-Then we compile the Zig Test Program targeting PinePhone...
+  // Turn on Display Backlight (in Zig)
+  // Init Timing Controller TCON0 (in Zig)
+  // Init PMIC (in Zig)
+
+  backlight.backlight_enable(90);
+  tcon.tcon0_init();
+  pmic.display_board_init();
+
+  // Enable MIPI DSI Block (in C)
+  // Enable MIPI Display Physical Layer (in C)
+
+  _ = a64_mipi_dsi_enable();
+  _ = a64_mipi_dphy_enable();
+
+  // Reset LCD Panel (in Zig)
+  panel.panel_reset();
+
+  // Init LCD Panel (in C)
+  // Start MIPI DSI HSC and HSD (in C)
+
+  _ = pinephone_panel_init();
+  _ = a64_mipi_dsi_start();
+
+  // Init Display Engine (in Zig)
+  // Wait a while
+  // Render Graphics with Display Engine (in Zig)
+
+  de2_init();
+  _ = c.usleep(160000);
+  renderGraphics(3);  // Render 3 UI Channels
+```
+
+[(__pinephone_panel_init__ is defined here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c#L42-L452)
+
+Then we __compile our Zig Test Program__ targeting PinePhone...
+
+TODO
 
 ```bash
   ##  Configure NuttX
