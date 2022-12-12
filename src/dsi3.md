@@ -74,7 +74,7 @@ Through __Reverse Engineering__ (and plenty of experimenting), we discovered tha
 
 1.  Render Graphics with Allwinner A64's __Display Engine (DE)__
 
-    (Start pumping pixels from RAM Framebuffers via Direct Memory Access)
+    (Start pumping pixels from RAM Framebuffers to DE via Direct Memory Access)
 
 Let's talk about each step and their NuttX Drivers...
 
