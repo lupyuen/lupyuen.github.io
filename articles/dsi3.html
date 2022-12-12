@@ -267,11 +267,11 @@ ssize_t a64_mipi_dsi_write(
 <p>Our NuttX Driver calls…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L369-L484"><strong>mipi_dsi_short_packet</strong></a>: To compose a MIPI DSI <a href="https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi"><strong>Short Packet</strong></a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L369-L484"><strong>mipi_dsi_short_packet</strong></a>: Compose a MIPI DSI <a href="https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi"><strong>Short Packet</strong></a></p>
 <p><a href="https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi">(More about this)</a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L230-L368"><strong>mipi_dsi_long_packet</strong></a>: To compose a MIPI DSI <a href="https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi"><strong>Long Packet</strong></a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L230-L368"><strong>mipi_dsi_long_packet</strong></a>: Compose a MIPI DSI <a href="https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi"><strong>Long Packet</strong></a></p>
 <p><a href="https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi">(More about this)</a></p>
 </li>
 </ul>
@@ -303,19 +303,33 @@ ssize_t a64_mipi_dsi_write(
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller"><strong>“Initialise LCD Controller”</strong></a></li>
 </ul>
-<p>TODO</p>
+<p>But wait… We haven’t enabled the MIPI DSI Hardware yet!</p>
 <h1 id="enable-mipi-dsi-and-d-phy"><a href="#enable-mipi-dsi-and-d-phy">4 Enable MIPI DSI and D-PHY</a></h1>
-<p>TODO</p>
-<p>Enable <strong>MIPI DSI Block</strong></p>
+<p><em>What about the other MIPI DSI Operations?</em></p>
+<p>Before sending MIPI DSI Packets, we need to enable 2 chunks of hardware on Allwinner A64…</p>
+<ul>
+<li>
+<p>Enable Allwinner A64’s <strong>MIPI Display Serial Interface (DSI)</strong></p>
+<p>So we can send MIPI DSI commands to the LCD Panel.</p>
 <p><a href="https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block">(Explained here)</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L874-L1365">(Implemented here)</a></p>
-<p>Enable <strong>MIPI Display Physical Layer (DPHY)</strong></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L499-L901">(Implemented as <strong>a64_mipi_dsi_enable</strong>)</a></p>
+</li>
+<li>
+<p>Enable Allwinner A64’s <strong>MIPI Display Physical Layer (D-PHY)</strong></p>
+<p>Which is the communications layer inside MIPI DSI.</p>
 <p><a href="https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-display-physical-layer-dphy">(Explained here)</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/dphy.zig">(Implemented here)</a></p>
-<p>Start <strong>MIPI DSI HSC and HSD</strong></p>
-<p>(High Speed Clock Mode and High Speed Data Transmission)</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dphy.c#L85-L161">(Implemented as <strong>a64_mipi_dphy_enable</strong>)</a></p>
+</li>
+</ul>
+<p>And after sending the MIPI DSI Packets to initialise our LCD Controller, we need to…</p>
+<ul>
+<li>
+<p>Start Allwinner A64’s <strong>MIPI DSI in HSC and HSD Mode</strong></p>
+<p>That’s High Speed Clock Mode with High Speed Data Transmission.</p>
 <p><a href="https://lupyuen.github.io/articles/dsi#appendix-start-mipi-dsi-hsc-and-hsd">(Explained here)</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1365-L1423">(Implemented here)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L901-L984">(Implemented as <strong>a64_mipi_dsi_start</strong>)</a></p>
+</li>
+</ul>
 <h1 id="add-mipi-dsi-to-nuttx-kernel"><a href="#add-mipi-dsi-to-nuttx-kernel">5 Add MIPI DSI to NuttX Kernel</a></h1>
 <p>TODO</p>
 <p>We’re adding the MIPI DSI Driver to the NuttX Kernel…</p>
