@@ -743,33 +743,30 @@ Set Instructions
 <p><a href="https://lupyuen.github.io/articles/dsi3#display-engine">(Details in the Appendix)</a></p>
 </li>
 <li>
-<p><strong>Display Backlight</strong>: Our new NuttX Driver shall turn on PinePhone’s Display Backlight by calling these functions in Allwinner A64 SoC…</p>
+<p><strong>Display Backlight</strong>: We won’t see anything on PinePhone’s LCD Display… Until we switch on the <strong>Display Backlight!</strong></p>
+<p>PinePhone’s Display Backlight is controlled by A64’s…</p>
 <ul>
 <li>
-<p><strong>Programmable I/O</strong>: Implemented in <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c"><strong>a64_pio.c</strong></a></p>
+<p><strong>Programmable Input / Output (PIO)</strong>: Works like GPIO, implemented in <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c"><strong>a64_pio.c</strong></a></p>
 </li>
 <li>
-<p><strong>Pulse-Width Modulation</strong>: New Implementation</p>
+<p><strong>Pulse-Width Modulation (PWM)</strong>: New Implementation</p>
 </li>
 </ul>
-<p>This will be implemented in our new <strong>Board LCD Driver</strong> for NuttX.</p>
+<p>We’ll call PIO and PWM in our new <strong>Board LCD Driver</strong> for NuttX.</p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#backlight">(Details in the Appendix)</a></p>
 </li>
 <li>
-<p><strong>Power Management Integrated Circuit (PMIC)</strong>:</p>
-<p>TODO</p>
-<p>Initialise PinePhone’s <strong>Power Management Integrated Circuit (PMIC)</strong></p>
-<p>(To power on PinePhone’s LCD Panel)</p>
-<p>Will be implemented in our new <strong>Board LCD Driver</strong> for NuttX.</p>
-<p><a href="https://lupyuen.github.io/articles/dsi3#power-management-integrated-circuit">(Details in the Appendix)</a></p>
+<p><strong>LCD Panel</strong>: Before sending <a href="https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet"><strong>Initialisation Commands</strong></a> to the ST7703 LCD Controller, we need to <strong>reset the LCD Panel.</strong></p>
+<p>We do this with Allwinner A64’s <strong>Programmable Input / Output (PIO)</strong>, implemented in <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c"><strong>a64_pio.c</strong></a>. (Works like GPIO)</p>
+<p>We’ll call PIO in our new <strong>Board LCD Driver</strong> for NuttX.</p>
+<p><a href="https://lupyuen.github.io/articles/dsi3#lcd-panel">(Details in the Appendix)</a></p>
 </li>
 <li>
-<p><strong>LCD Panel</strong>:</p>
-<p>TODO</p>
-<p>Reset PinePhone’s <strong>LCD Panel</strong></p>
-<p>(Prep it to receive MIPI DSI Commands)</p>
-<p>Will be implemented in our new <strong>Board LCD Driver</strong> for NuttX.</p>
-<p><a href="https://lupyuen.github.io/articles/dsi3#lcd-panel">(Details in the Appendix)</a></p>
+<p><strong>Power Management Integrated Circuit (PMIC)</strong>: To power on the LCD Display, we need to program PinePhone’s <strong>Power Management Integrated Circuit (PMIC)</strong>.</p>
+<p>The <strong>AXP803 PMIC</strong> is connected on Allwinner A64’s <strong>Reduced Serial Bus (RSB)</strong>. (Works like I2C)</p>
+<p>We’ll control the PMIC over RSB in our new <strong>Board LCD Driver</strong> for NuttX.</p>
+<p><a href="https://lupyuen.github.io/articles/dsi3#power-management-integrated-circuit">(Details in the Appendix)</a></p>
 </li>
 </ol>
 <p>Very soon the official NuttX Kernel will be rendering graphics on PinePhone’s LCD Display. Stay Tuned!</p>
