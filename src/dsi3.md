@@ -707,11 +707,13 @@ Set Instructions
   *0x1ca003c = 0x5000001f
 ```
 
+![Steps needed to create a Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
+
 # Upcoming NuttX Drivers
 
 _What about the rest of our NuttX Display Driver?_
 
-We talked earlier about the Grand Plan for our __NuttX Display Driver__...
+We talked earlier about the Grand Plan for our __NuttX Display Driver__ (layered like an Onion [Kueh Lapis](https://en.wikipedia.org/wiki/Kue_lapis))...
 
 -   [__"Complete Display Driver for PinePhone"__](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone)
 
@@ -795,9 +797,23 @@ We're now __building the NuttX Drivers__ for the other features (converting from
 
 Very soon the official NuttX Kernel will be rendering graphics on PinePhone's LCD Display. Stay Tuned!
 
+![Converting Zig to C](https://lupyuen.github.io/images/dsi3-zig.png)
+
 # Why Zig
 
-TODO: Prototype in zig
+_Why did we start with Zig? Why not code directly in C?_
+
+Building a NuttX Display Driver for PinePhone feels like a __risky challenge__...
+
+-   Allwinner A64's Display Interfaces are [__poorly documented__](https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy)
+
+-   [__11 Steps__](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone) to be executed precisely, in the right sequence
+
+TODO
+
+_Was it worth the effort? Would you do it again in Zig?_
+
+Yes and yes!
 
 Concise executable specification
 
@@ -813,7 +829,7 @@ Was it worth the effort?
 
 _Once again... Why are we doing all this?_
 
-PinePhone is becoming popular as the Edgy, Alternative Smartphone for folks who love to tinker with their gadgets.
+PinePhone is becoming popular as the Edgy, Alternative Smartphone for folks who love to tinker with their gadgets. (And it's still in stock!)
 
 The best way to understand what's really inside PinePhone: Creating our own PinePhone Display Driver.
 
