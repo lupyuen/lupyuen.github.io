@@ -809,6 +809,14 @@ Building a NuttX Display Driver for PinePhone feels like a __risky challenge__..
 
 -   [__11 Steps__](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone) to be executed precisely, in the right sequence
 
+-   We need an efficient way to __experiment, backtrack and redo things__ in our driver
+
+Zig seems to work really well...
+
+-   Our complete Display Driver Protoype was created in ??? weeks
+
+-   Easy to convert to C
+
 TODO
 
 _Was it worth the effort? Would you do it again in Zig?_
@@ -822,10 +830,6 @@ Comptime Asserts
 Less ambuiguity
 
 Zig Integers won't overflow, Zig Arrays are bounded
-
-Easy to convert to C
-
-Was it worth the effort?
 
 _Once again... Why are we doing all this?_
 
