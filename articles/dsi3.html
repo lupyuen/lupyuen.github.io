@@ -692,9 +692,11 @@ Set Instructions
   *0x1ca0030 = 0x30100001
   *0x1ca0034 = 0x40000010
   *0x1ca0038 = 0xf
-  *0x1ca003c = 0x5000001f</code></pre></div><h1 id="upcoming-nuttx-drivers"><a href="#upcoming-nuttx-drivers">7 Upcoming NuttX Drivers</a></h1>
+  *0x1ca003c = 0x5000001f</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Steps needed to create a Complete Display Driver for PinePhone" /></p>
+<h1 id="upcoming-nuttx-drivers"><a href="#upcoming-nuttx-drivers">7 Upcoming NuttX Drivers</a></h1>
 <p><em>What about the rest of our NuttX Display Driver?</em></p>
-<p>We talked earlier about the Grand Plan for our <strong>NuttX Display Driver</strong>…</p>
+<p>We talked earlier about the Grand Plan for our <strong>NuttX Display Driver</strong> (layered like an Onion <a href="https://en.wikipedia.org/wiki/Kue_lapis">Kueh Lapis</a>)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><strong>“Complete Display Driver for PinePhone”</strong></a></li>
 </ul>
@@ -762,8 +764,21 @@ Set Instructions
 </li>
 </ol>
 <p>Very soon the official NuttX Kernel will be rendering graphics on PinePhone’s LCD Display. Stay Tuned!</p>
+<p><img src="https://lupyuen.github.io/images/dsi3-zig.png" alt="Converting Zig to C" /></p>
 <h1 id="why-zig"><a href="#why-zig">8 Why Zig</a></h1>
-<p>TODO: Prototype in zig</p>
+<p><em>Why did we start with Zig? Why not code directly in C?</em></p>
+<p>Building a NuttX Display Driver for PinePhone feels like a <strong>risky challenge</strong>…</p>
+<ul>
+<li>
+<p>Allwinner A64’s Display Interfaces are <a href="https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy"><strong>poorly documented</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><strong>11 Steps</strong></a> to be executed precisely, in the right sequence</p>
+</li>
+</ul>
+<p>TODO</p>
+<p><em>Was it worth the effort? Would you do it again in Zig?</em></p>
+<p>Yes and yes!</p>
 <p>Concise executable specification</p>
 <p>Comptime Asserts</p>
 <p>Less ambuiguity</p>
@@ -771,7 +786,7 @@ Set Instructions
 <p>Easy to convert to C</p>
 <p>Was it worth the effort?</p>
 <p><em>Once again… Why are we doing all this?</em></p>
-<p>PinePhone is becoming popular as the Edgy, Alternative Smartphone for folks who love to tinker with their gadgets.</p>
+<p>PinePhone is becoming popular as the Edgy, Alternative Smartphone for folks who love to tinker with their gadgets. (And it’s still in stock!)</p>
 <p>The best way to understand what’s really inside PinePhone: Creating our own PinePhone Display Driver.</p>
 <p>That’s why we’re doing all this PinePhone Reverse Engineering to Zig and then to C!</p>
 <p><em>What about other cool open-source Allwinner A64 gadgets like Teres 1?</em></p>
