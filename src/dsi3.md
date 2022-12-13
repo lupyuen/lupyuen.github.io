@@ -743,7 +743,7 @@ Today we've implemented the __MIPI Display Serial Interface__ and __MIPI Display
 
     [(Implemented as __a64_mipi_dsi_start__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L914-L993)
 
-We're now __building the NuttX Drivers__ for the other features...
+We're now __building the NuttX Drivers__ for the other features (converting from Zig to C)...
 
 1.  Turn on PinePhone's __Display Backlight__
 
