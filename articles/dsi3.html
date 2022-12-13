@@ -798,7 +798,7 @@ Set Instructions
   // Set Video_Precision_Mode_Align (Bit 2) to 1 (Fill Mode)
   // Set Video_Frame_Start (Bit 1) to 1 (Precision Mode)
   // Set DSI_Mode (Bit 0) to 1 (Video Mode)
-  // TODO: Video_Start_Delay is actually 13 bits, not 8 bits as documented in the A31 User Manual
+  // Note: Video_Start_Delay is actually 13 bits, not 8 bits as documented in the A31 User Manual
 
   const DSI_BASIC_CTL1_REG = DSI_BASE_ADDRESS + 0x14;
   comptime{ assert(DSI_BASIC_CTL1_REG == 0x1ca0014); }
@@ -816,10 +816,10 @@ Set Instructions
 <p>Which is really neat because…</p>
 <ul>
 <li>
-<p>It describes Allwinner A64’s Display Interfaces in a <strong>Concise Way</strong></p>
+<p>Our Executable Spec describes Allwinner A64’s Display Interfaces in a <strong>concise and readable</strong> way</p>
 </li>
 <li>
-<p>“<strong><code>comptime assert</code></strong>” will verify our Adresses and Values at <strong>Compile-Time</strong></p>
+<p>“<strong><code>comptime</code> <code>assert</code></strong>” will verify our Register Adresses and Values at <strong>Compile-Time</strong></p>
 </li>
 <li>
 <p><strong>Less Ambiguity</strong>: Zig Integers won’t overflow, Zig Arrays are bounded</p>
