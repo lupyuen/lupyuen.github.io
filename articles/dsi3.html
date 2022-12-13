@@ -246,7 +246,7 @@ static int write_dcs(FAR const uint8_t *buf, size_t len) {
 // Assumes that the MIPI DSI Block has been enabled on the SoC.
 // Returns the number of bytes transmitted.
 ssize_t a64_mipi_dsi_write(
-  uint8_t channel,  // Virtual Channel (0)
+  uint8_t channel,      // Virtual Channel (0)
   enum mipi_dsi_e cmd,  // DCS Command (Data Type)
   FAR const uint8_t *txbuf,  // Payload data for the packet
   size_t txlen)  // Length of payload data (Max 65541 bytes)
@@ -626,7 +626,7 @@ nsh&gt; hello 0</code></pre></div>
 <p><em>Can we test the MIPI DSI Driver on our Local Computer? Without running on PinePhone?</em></p>
 <p>Most certainly! In fact we test the MIPI DSI Driver on our <strong>Local Computer first</strong> before testing on PinePhone. Here’s how…</p>
 <p>Remember that our MIPI DSI Driver simply writes values to a bunch of <strong>A64 Hardware Registers</strong>. So we only need to ensure that the Hardware Register Addresses and the Written Values are correct.</p>
-<p>We created a <strong>Test Scaffold</strong> that simulates the NuttX Build Environment: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test.c#L7-L51">test.c</a></p>
+<p>We created a <strong>Test Scaffold</strong> that simulates the NuttX Build Environment: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test.c#L7-L53">test.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Simulate NuttX Build Environment
 #include &lt;nuttx/arch.h&gt;
 #include &quot;arm64_arch.h&quot;
@@ -675,7 +675,7 @@ diff \
   expected.log \
   test.log</code></pre></div>
 <p>Note that we capture the <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test.log"><strong>Actual Test Log</strong></a> and we <code>diff</code> it with the <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/expected.log"><strong>Expected Test Log</strong></a>.</p>
-<p>That’s how we detect discrepancies in the Register Addresses and the Written Values: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test.log#L4-L20">test.log</a></p>
+<p>That’s how we detect discrepancies in the Register Addresses and the Written Values…</p>
 <div class="example-wrap"><pre class="language-text"><code>Enable MIPI DSI Bus
   *0x1c20060: clear 0x2, set 0x2
   *0x1c202c0: clear 0x2, set 0x2
@@ -693,6 +693,7 @@ Set Instructions
   *0x1ca0034 = 0x40000010
   *0x1ca0038 = 0xf
   *0x1ca003c = 0x5000001f</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test.log#L4-L20">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Inside our Complete Display Driver for PinePhone" /></p>
 <h1 id="upcoming-nuttx-drivers"><a href="#upcoming-nuttx-drivers">7 Upcoming NuttX Drivers</a></h1>
 <p><em>What about the rest of our NuttX Display Driver?</em></p>
@@ -727,22 +728,18 @@ Set Instructions
 <p>We’re now <strong>building the NuttX Drivers</strong> for the remaining features (upper part of pic above), converting our Zig code to C…</p>
 <ol>
 <li>
-<p><strong>Timing Controller (TCON0)</strong>: To render PinePhone’s LCD Display, the MIPI DSI Controller on Allwinner A64 needs to receive a <strong>continuous stream of pixels</strong> from A64’s Timing Controller (TCON0).</p>
+<p><strong>Timing Controller (TCON0)</strong>: To render PinePhone’s LCD Display, the MIPI DSI Controller on Allwinner A64 needs to receive a <strong>continuous stream of pixels</strong>…</p>
+<p>Which will be provided by Allwinner A64’s <strong>Timing Controller (TCON0)</strong>.</p>
 <p>Our NuttX Driver will program TCON0 to send the stream of pixels to the MIPI DSI Controller.</p>
 <p>(TCON0 will receive the pixel stream from A64’s Display Engine)</p>
 <p>This will be implemented in our new <strong>Timing Controller (TCON0) Driver</strong> for NuttX.</p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#timing-controller-tcon0">(Details in the Appendix)</a></p>
 </li>
 <li>
-<p><strong>Display Engine (DE)</strong>:</p>
-<p>TODO</p>
-<p>Initialise Allwinner A64’s <strong>Display Engine (DE)</strong></p>
-<p>(Start pumping pixels from DE to Timing Controller TCON0)</p>
-<p>Will be implemented in our new <strong>Display Engine Driver</strong> for NuttX.</p>
-<p><a href="https://lupyuen.github.io/articles/dsi3#display-engine">(Details in the Appendix)</a></p>
-<p>Render Graphics with Allwinner A64’s <strong>Display Engine (DE)</strong></p>
-<p>(Start pumping pixels from RAM Framebuffers to DE via Direct Memory Access)</p>
-<p>Will be implemented in our new <strong>Display Engine Driver</strong> for NuttX.</p>
+<p><strong>Display Engine (DE)</strong>: Allwinner A64’s Display Engine (DE) reads the <strong>Graphics Framebuffers</strong> in RAM (up to 3 Framebuffers)…</p>
+<p>And <strong>streams the Pixel Data</strong> to the Timing Controller (TCON0).</p>
+<p>Our NuttX Driver will configure DE to read the Framebuffers via <strong>Direct Memory Access</strong> (DMA). Updates to the Framebuffers will be instantly streamed to PinePhone’s LCD Display.</p>
+<p>This will be implemented in our new <strong>Display Engine Driver</strong> for NuttX.</p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#display-engine">(Details in the Appendix)</a></p>
 </li>
 <li>
