@@ -118,7 +118,7 @@ Let's dive inside our MIPI DSI Driver...
 
 ![Composing a MIPI DSI Short Packet](https://lupyuen.github.io/images/dsi3-code.png)
 
-[_Composing a MIPI DSI Short Packet_](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L369-L484)
+[_Composing a MIPI DSI Short Packet_](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L350-L461)
 
 # Send MIPI DSI Packet
 
@@ -184,7 +184,7 @@ static int write_dcs(FAR const uint8_t *buf, size_t len) {
 
 [(We talk to MIPI DSI Bus on Virtual Channel 0)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.h#L35-L39)
 
-__a64_mipi_dsi_write__ comes from our NuttX MIPI DSI Driver: [arch/arm64/src/a64/a64_mipi_dsi.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L332-L498)
+__a64_mipi_dsi_write__ comes from our NuttX MIPI DSI Driver: [a64_mipi_dsi.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L366-L526)
 
 ```c
 // Transmit the payload data to the MIPI DSI Bus as a MIPI DSI Short or
@@ -220,15 +220,15 @@ ssize_t a64_mipi_dsi_write(
 
 Our NuttX Driver calls...
 
--   [__mipi_dsi_short_packet__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L369-L484): Compose a MIPI DSI [__Short Packet__](https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi)
+-   [__mipi_dsi_short_packet__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L350-L461): Compose a MIPI DSI [__Short Packet__](https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi)
 
     [(More about this)](https://lupyuen.github.io/articles/dsi#appendix-short-packet-for-mipi-dsi)
 
--   [__mipi_dsi_long_packet__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L230-L368): Compose a MIPI DSI [__Long Packet__](https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi)
+-   [__mipi_dsi_long_packet__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L221-L350): Compose a MIPI DSI [__Long Packet__](https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi)
 
     [(More about this)](https://lupyuen.github.io/articles/dsi#long-packet-for-mipi-dsi)
 
-Then our NuttX Driver writes the Short or Long Packet to the __MIPI DSI Registers__ of Allwinner A64: [arch/arm64/src/a64/a64_mipi_dsi.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L332-L498)
+Then our NuttX Driver writes the Short or Long Packet to the __MIPI DSI Registers__ of Allwinner A64: [a64_mipi_dsi.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L446-L526)
 
 ```c
   // Write the packet to DSI Low Power Transmit Package Register
@@ -277,7 +277,7 @@ Before sending MIPI DSI Packets, our NuttX Driver needs to enable 2 chunks of ha
 
     [(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block)
 
-    [(Implemented as __a64_mipi_dsi_enable__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L499-L901)
+    [(Implemented as __a64_mipi_dsi_enable__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L526-L914)
 
 -   Enable Allwinner A64's __MIPI Display Physical Layer (D-PHY)__
 
@@ -285,7 +285,7 @@ Before sending MIPI DSI Packets, our NuttX Driver needs to enable 2 chunks of ha
 
     [(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-display-physical-layer-dphy)
 
-    [(Implemented as __a64_mipi_dphy_enable__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dphy.c#L85-L161)
+    [(Implemented as __a64_mipi_dphy_enable__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dphy.c#L86-L162)
 
 And after sending the MIPI DSI Packets to initialise our LCD Controller, we need to...
 
@@ -295,7 +295,7 @@ And after sending the MIPI DSI Packets to initialise our LCD Controller, we need
 
     [(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-start-mipi-dsi-hsc-and-hsd)
 
-    [(Implemented as __a64_mipi_dsi_start__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L901-L984)
+    [(Implemented as __a64_mipi_dsi_start__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L914-L993)
 
 _How did we create all this code for our NuttX Driver?_
 
@@ -390,7 +390,7 @@ fn composeShortPacket(
 }
 ```
 
-We manually converted the __Zig code to C__ like so: [mipi_dsi.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L369-L484)
+We manually converted the __Zig code to C__ like so: [mipi_dsi.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/mipi_dsi.c#L350-L461)
 
 ```c
 // Compose MIPI DSI Short Packet.
@@ -651,6 +651,58 @@ Note that we capture the [Actual Test Log](test/test.log) and we `diff` it with 
 # Upcoming NuttX Drivers
 
 TODO
+
+1.  Enable Allwinner A64's __MIPI Display Serial Interface (DSI)__
+
+    (So we can send MIPI DSI commands to the LCD Panel)
+
+    [(Implemented as __a64_mipi_dsi_enable__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L526-L914)
+
+1.  Enable Allwinner A64's __MIPI Display Physical Layer (D-PHY)__
+
+    (Which is the communications layer inside MIPI DSI)
+
+    [(Implemented as __a64_mipi_dphy_enable__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dphy.c#L86-L162)
+
+1.  Initialise PinePhone's __LCD Controller (Sitronix ST7703)__
+
+    (Send the Initialisation Commands over MIPI DSI)
+
+    [(Implemented as __a64_mipi_dsi_write__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L366-L526)
+
+    [(And soon __pinephone_panel_init__)](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c#L42-L452)
+
+1.  Start Allwinner A64's __MIPI DSI in HSC and HSD Mode__
+
+    (High Speed Clock Mode with High Speed Data Transmission)
+
+    [(Implemented as __a64_mipi_dsi_start__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L914-L993)
+
+TODO: Upcoming
+
+1.  Turn on PinePhone's __Display Backlight__
+
+    (Through Programmable I/O and Pulse-Width Modulation)
+
+1.  Initialise Allwinner A64's __Timing Controller (TCON0)__
+
+    (Which will pump pixels continuously to the LCD Display)
+
+1.  Initialise PinePhone's __Power Management Integrated Circuit (PMIC)__
+
+    (To power on PinePhone's LCD Panel)
+
+1.  Reset PinePhone's __LCD Panel__
+
+    (Prep it to receive MIPI DSI Commands)
+
+1.  Initialise Allwinner A64's __Display Engine (DE)__
+
+    (Start pumping pixels from DE to Timing Controller TCON0)
+
+1.  Render Graphics with Allwinner A64's __Display Engine (DE)__
+
+    (Start pumping pixels from RAM Framebuffers to DE via Direct Memory Access)
 
 # Why Zig
 
