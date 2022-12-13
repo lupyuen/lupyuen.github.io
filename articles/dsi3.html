@@ -75,13 +75,15 @@
 <li><a href="#test-mipi-dsi-driver">6 Test MIPI DSI Driver</a><ul>
 <li><a href="#unit-testing">6.1 Unit Testing</a><ul></ul></li>
 <li><a href="#local-testing">6.2 Local Testing</a><ul></ul></li></ul></li>
-<li><a href="#nuttx-driver-for-timing-controller-tcon0">7 NuttX Driver for Timing Controller (TCON0)</a><ul></ul></li>
-<li><a href="#nuttx-driver-for-display-engine">8 NuttX Driver for Display Engine</a><ul></ul></li>
-<li><a href="#nuttx-driver-for-backlight">9 NuttX Driver for Backlight</a><ul></ul></li>
-<li><a href="#nuttx-driver-for-lcd-panel-driver">10 NuttX Driver for LCD Panel Driver</a><ul></ul></li>
-<li><a href="#nuttx-driver-for-power-management-integrated-circuit">11 NuttX Driver for Power Management Integrated Circuit</a><ul></ul></li>
-<li><a href="#why-zig">12 Why Zig</a><ul></ul></li>
-<li><a href="#whats-next">13 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>18 Dec 2022</em></p>
+<li><a href="#upcoming-nuttx-drivers">7 Upcoming NuttX Drivers</a><ul></ul></li>
+<li><a href="#why-zig">8 Why Zig</a><ul></ul></li>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-upcoming-nuttx-drivers">10 Appendix: Upcoming NuttX Drivers</a><ul>
+<li><a href="#timing-controller-tcon0">10.1 Timing Controller (TCON0)</a><ul></ul></li>
+<li><a href="#display-engine">10.2 Display Engine</a><ul></ul></li>
+<li><a href="#backlight">10.3 Backlight</a><ul></ul></li>
+<li><a href="#lcd-panel">10.4 LCD Panel</a><ul></ul></li>
+<li><a href="#power-management-integrated-circuit">10.5 Power Management Integrated Circuit</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>18 Dec 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/dsi3-title.jpg" alt="Rendering graphics on PinePhone with Apache NuttX RTOS" /></p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> (pic above) will soon support the rendering of graphics on the LCD Display… When we boot the official release of <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a>!</p>
 <p>We’re building the <strong>NuttX Display Driver</strong> for PinePhone in small chunks, starting with the driver for <a href="https://lupyuen.github.io/articles/dsi"><strong>MIPI Display Serial Interface</strong></a>.</p>
@@ -634,105 +636,22 @@ nsh&gt; hello 0</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/cdb6bbc8e57ef02104bdbde721f8ff6787d74efc/test/run.sh#L9-L36">run.sh</a></p>
 <p>Note that we capture the <a href="test/test.log">Actual Test Log</a> and we <code>diff</code> it with the <a href="test/expected.log">Expected Test Log</a>. That’s how we detect discrepancies in the Hardware Addresses and the Written Values…</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/c04f1447933665df207a42f626c726ef7a7def65/test/test.log#L4-L20">test.log</a></p>
-<h1 id="nuttx-driver-for-timing-controller-tcon0"><a href="#nuttx-driver-for-timing-controller-tcon0">7 NuttX Driver for Timing Controller (TCON0)</a></h1>
+<h1 id="upcoming-nuttx-drivers"><a href="#upcoming-nuttx-drivers">7 Upcoming NuttX Drivers</a></h1>
 <p>TODO</p>
-<p><a href="https://lupyuen.github.io/articles/de#appendix-timing-controller-tcon0">(Explained here)</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig">(Implemented here)</a></p>
-<p>TODO: Allwinner A64 Timing Controller TCON0 Driver, convert from Zig to C</p>
-<ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig">tcon.zig</a></li>
-</ul>
-<h1 id="nuttx-driver-for-display-engine"><a href="#nuttx-driver-for-display-engine">8 NuttX Driver for Display Engine</a></h1>
-<p>TODO: Initialise <strong>Display Engine (DE)</strong></p>
-<p><a href="https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine">(Explained here)</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L710-L1011">(Implemented here)</a></p>
-<p>TODO: Render Graphics with <strong>Display Engine (DE)</strong></p>
-<p><a href="https://lupyuen.github.io/articles/de">(Explained here)</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L69-L175">(Implemented here)</a></p>
-<p>TODO: Allwinner A64 Display Engine Driver, convert from Zig to C</p>
-<ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig">render.zig</a></li>
-</ul>
-<p>Our Display Engine Driver will follow the design of STM32F7 Display Driver…</p>
-<ol>
-<li>
-<p><code>stm32_bringup</code> calls <code>fb_register</code>…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_bringup.c#L100">boards/arm/stm32f7/stm32f746g-disco/src/stm32_bringup.c</a></p>
-</li>
-<li>
-<p><code>fb_register</code> calls <code>up_fbinitialize</code>…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/drivers/video/fb.c#L664">drivers/video/fb.c</a></p>
-</li>
-<li>
-<p><code>up_fbinitialize</code> calls <code>stm32_ltdcinitialize</code>…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c#L72">boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c</a></p>
-</li>
-<li>
-<p><code>stm32_ltdcinitialize</code> creates the NuttX Framebuffer…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm/src/stm32f7/stm32_ltdc.c#L2971">arch/arm/src/stm32f7/stm32_ltdc.c</a></p>
-</li>
-<li>
-<p>NuttX Framebuffer is here…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm/src/stm32f7/stm32_ltdc.c#L864">arch/arm/src/stm32f7/stm32_ltdc.c</a></p>
-</li>
-</ol>
-<h1 id="nuttx-driver-for-backlight"><a href="#nuttx-driver-for-backlight">9 NuttX Driver for Backlight</a></h1>
-<p>TODO</p>
-<p><a href="https://lupyuen.github.io/articles/de#appendix-display-backlight">(Explained here)</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig">(Implemented here)</a></p>
-<p>TODO: PinePhone Backlight Driver, convert from Zig to C</p>
-<ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig">backlight.zig</a></li>
-</ul>
-<p>Our Backlight Driver will follow the design of the STM32 Backlight Driver: <code>stm32_backlight</code>…</p>
-<ul>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32/hymini-stm32v/src/stm32_ssd1289.c#L230">boards/arm/stm32/hymini-stm32v/src/stm32_ssd1289.c</a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32/viewtool-stm32f107/src/stm32_ssd1289.c#L298">boards/arm/stm32/viewtool-stm32f107/src/stm32_ssd1289.c</a></p>
-</li>
-</ul>
-<p>The code will go inside our Board LCD Source File, similar to this…</p>
-<ul>
-<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c">boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c</a></li>
-</ul>
-<p>TODO: PinePhone PIO and LEDs are now supported in NuttX Mainline…</p>
-<p><a href="https://github.com/apache/nuttx/pull/7796">apache/nuttx/pull/7796</a></p>
-<h1 id="nuttx-driver-for-lcd-panel-driver"><a href="#nuttx-driver-for-lcd-panel-driver">10 NuttX Driver for LCD Panel Driver</a></h1>
-<p>TODO</p>
-<p>Reset LCD Panel</p>
-<p><a href="https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel">(Explained here)</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig">(Implemented here)</a></p>
-<p>Initialise LCD Controller</p>
-<p><a href="https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller">(Explained here)</a></p>
-<p><a href="https://lupyuen.github.io/articles/dsi2#initialise-st7703-lcd-controller">(Implemented here)</a></p>
-<p>TODO: PinePhone LCD Panel Driver, convert from Zig to C</p>
-<ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig">panel.zig</a></li>
-</ul>
-<p>The code will go inside our Board LCD Source File, similar to this…</p>
-<ul>
-<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c">boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c</a></li>
-</ul>
-<h1 id="nuttx-driver-for-power-management-integrated-circuit"><a href="#nuttx-driver-for-power-management-integrated-circuit">11 NuttX Driver for Power Management Integrated Circuit</a></h1>
-<p>TODO</p>
-<p><a href="https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit">(Explained here)</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig">(Implemented here)</a></p>
-<p>TODO: PinePhone PMIC, convert from Zig to C, needs more reverse engineering</p>
-<ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig">pmic.zig</a></li>
-</ul>
-<p>The code will go inside our Board LCD Source File, similar to this…</p>
-<ul>
-<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c">boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c</a></li>
-</ul>
-<h1 id="why-zig"><a href="#why-zig">12 Why Zig</a></h1>
+<h1 id="why-zig"><a href="#why-zig">8 Why Zig</a></h1>
 <p>TODO: Prototype in zig</p>
 <p>Concise executable specification</p>
+<p>Less ambuiguity</p>
+<p>Zig Integers won’t overflow, Zig Arrays are bounded</p>
 <p>Easy to convert to C</p>
 <p>Was it worth the effort?</p>
-<h1 id="whats-next"><a href="#whats-next">13 What’s Next</a></h1>
+<p><em>Once again… Why are we doing all this?</em></p>
+<p>PinePhone is becoming popular as the Edgy, Alternative Smartphone for folks who love to tinker with their gadgets.</p>
+<p>The best way to understand what’s really inside PinePhone: Creating our own PinePhone Display Driver.</p>
+<p>That’s why we’re doing all this PinePhone Reverse Engineering to Zig and then to C!</p>
+<p><em>What about other cool open-source Allwinner A64 gadgets like Teres 1?</em></p>
+<p>Someday we might! But first let’s uncover all the secrets inside PinePhone.</p>
+<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>Check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
 <ul>
@@ -784,6 +703,101 @@ nsh&gt; hello 0</code></pre></div>
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/dsi3.md"><strong>lupyuen.github.io/src/dsi3.md</strong></a></p>
+<h1 id="appendix-upcoming-nuttx-drivers"><a href="#appendix-upcoming-nuttx-drivers">10 Appendix: Upcoming NuttX Drivers</a></h1>
+<p>TODO</p>
+<h2 id="timing-controller-tcon0"><a href="#timing-controller-tcon0">10.1 Timing Controller (TCON0)</a></h2>
+<p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-timing-controller-tcon0">(Explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig">(Implemented here)</a></p>
+<p>TODO: Allwinner A64 Timing Controller TCON0 Driver, convert from Zig to C</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig">tcon.zig</a></li>
+</ul>
+<h2 id="display-engine"><a href="#display-engine">10.2 Display Engine</a></h2>
+<p>TODO: Initialise <strong>Display Engine (DE)</strong></p>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine">(Explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L710-L1011">(Implemented here)</a></p>
+<p>TODO: Render Graphics with <strong>Display Engine (DE)</strong></p>
+<p><a href="https://lupyuen.github.io/articles/de">(Explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L69-L175">(Implemented here)</a></p>
+<p>TODO: Allwinner A64 Display Engine Driver, convert from Zig to C</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig">render.zig</a></li>
+</ul>
+<p>Our Display Engine Driver will follow the design of STM32F7 Display Driver…</p>
+<ol>
+<li>
+<p><code>stm32_bringup</code> calls <code>fb_register</code>…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_bringup.c#L100">boards/arm/stm32f7/stm32f746g-disco/src/stm32_bringup.c</a></p>
+</li>
+<li>
+<p><code>fb_register</code> calls <code>up_fbinitialize</code>…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/drivers/video/fb.c#L664">drivers/video/fb.c</a></p>
+</li>
+<li>
+<p><code>up_fbinitialize</code> calls <code>stm32_ltdcinitialize</code>…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c#L72">boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c</a></p>
+</li>
+<li>
+<p><code>stm32_ltdcinitialize</code> creates the NuttX Framebuffer…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm/src/stm32f7/stm32_ltdc.c#L2971">arch/arm/src/stm32f7/stm32_ltdc.c</a></p>
+</li>
+<li>
+<p>NuttX Framebuffer is here…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm/src/stm32f7/stm32_ltdc.c#L864">arch/arm/src/stm32f7/stm32_ltdc.c</a></p>
+</li>
+</ol>
+<h2 id="backlight"><a href="#backlight">10.3 Backlight</a></h2>
+<p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-display-backlight">(Explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig">(Implemented here)</a></p>
+<p>TODO: PinePhone Backlight Driver, convert from Zig to C</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig">backlight.zig</a></li>
+</ul>
+<p>Our Backlight Driver will follow the design of the STM32 Backlight Driver: <code>stm32_backlight</code>…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32/hymini-stm32v/src/stm32_ssd1289.c#L230">boards/arm/stm32/hymini-stm32v/src/stm32_ssd1289.c</a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32/viewtool-stm32f107/src/stm32_ssd1289.c#L298">boards/arm/stm32/viewtool-stm32f107/src/stm32_ssd1289.c</a></p>
+</li>
+</ul>
+<p>The code will go inside our Board LCD Source File, similar to this…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c">boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c</a></li>
+</ul>
+<p>TODO: PinePhone PIO and LEDs are now supported in NuttX Mainline…</p>
+<p><a href="https://github.com/apache/nuttx/pull/7796">apache/nuttx/pull/7796</a></p>
+<h2 id="lcd-panel"><a href="#lcd-panel">10.4 LCD Panel</a></h2>
+<p>TODO</p>
+<p>Reset LCD Panel</p>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel">(Explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig">(Implemented here)</a></p>
+<p>Initialise LCD Controller</p>
+<p><a href="https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/dsi2#initialise-st7703-lcd-controller">(Implemented here)</a></p>
+<p>TODO: PinePhone LCD Panel Driver, convert from Zig to C</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig">panel.zig</a></li>
+</ul>
+<p>The code will go inside our Board LCD Source File, similar to this…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c">boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c</a></li>
+</ul>
+<h2 id="power-management-integrated-circuit"><a href="#power-management-integrated-circuit">10.5 Power Management Integrated Circuit</a></h2>
+<p>TODO</p>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit">(Explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig">(Implemented here)</a></p>
+<p>TODO: PinePhone PMIC, convert from Zig to C, needs more reverse engineering</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig">pmic.zig</a></li>
+</ul>
+<p>The code will go inside our Board LCD Source File, similar to this…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c">boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c</a></li>
+</ul>
 
     
 </body>
