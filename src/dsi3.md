@@ -22,7 +22,7 @@ Let's continue the (super looong) journey from our __NuttX Porting Journal__...
 
 -   [__lupyuen/pinephone-nuttx__](https://github.com/lupyuen/pinephone-nuttx)
 
-![Steps needed to create a Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
+![Inside our Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
 
 # Complete Display Driver for PinePhone
 
@@ -707,13 +707,13 @@ Set Instructions
   *0x1ca003c = 0x5000001f
 ```
 
-![Steps needed to create a Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
+![Inside our Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
 
 # Upcoming NuttX Drivers
 
 _What about the rest of our NuttX Display Driver?_
 
-We talked earlier about the Grand Plan for our __NuttX Display Driver__ (layered like an Onion [Kueh Lapis](https://en.wikipedia.org/wiki/Kue_lapis))...
+We talked earlier about the Grand Plan for our __NuttX Display Driver__ that's layered like an Onion [Kueh Lapis](https://en.wikipedia.org/wiki/Kue_lapis)...
 
 -   [__"Complete Display Driver for PinePhone"__](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone)
 
@@ -913,6 +913,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/dsi3.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/dsi3.md)
 
+![Inside our Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
+
 # Appendix: Upcoming NuttX Drivers
 
 TODO
@@ -920,6 +922,10 @@ TODO
 ## Timing Controller (TCON0)
 
 TODO
+
+(Which will pump pixels continuously to the LCD Display)
+
+Will be implemented in our new __Timing Controller (TCON0) Driver__ for NuttX.
 
 [(Explained here)](https://lupyuen.github.io/articles/de#appendix-timing-controller-tcon0)
 
@@ -933,11 +939,19 @@ TODO: Allwinner A64 Timing Controller TCON0 Driver, convert from Zig to C
 
 TODO: Initialise __Display Engine (DE)__
 
+(Start pumping pixels from DE to Timing Controller TCON0)
+
+Will be implemented in our new __Display Engine Driver__ for NuttX.
+
 [(Explained here)](https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine)
 
 [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L710-L1011)
 
 TODO: Render Graphics with __Display Engine (DE)__
+
+(Start pumping pixels from RAM Framebuffers to DE via Direct Memory Access)
+
+Will be implemented in our new __Display Engine Driver__ for NuttX.
 
 [(Explained here)](https://lupyuen.github.io/articles/de)
 
@@ -973,6 +987,10 @@ Our Display Engine Driver will follow the design of STM32F7 Display Driver...
 
 TODO
 
+(Through Programmable I/O and Pulse-Width Modulation)
+
+Will be implemented in our new __Board LCD Driver__ for NuttX.
+
 [(Explained here)](https://lupyuen.github.io/articles/de#appendix-display-backlight)
 
 [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig)
@@ -999,6 +1017,10 @@ TODO: PinePhone PIO and LEDs are now supported in NuttX Mainline...
 
 TODO
 
+(Prep it to receive MIPI DSI Commands)
+
+Will be implemented in our new __Board LCD Driver__ for NuttX.
+
 Reset LCD Panel
 
 [(Explained here)](https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel)
@@ -1023,6 +1045,10 @@ The code will go inside our Board LCD Source File, similar to this...
 ## Power Management Integrated Circuit
 
 TODO
+
+(To power on PinePhone's LCD Panel)
+
+Will be implemented in our new __Board LCD Driver__ for NuttX.
 
 [(Explained here)](https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit)
 
