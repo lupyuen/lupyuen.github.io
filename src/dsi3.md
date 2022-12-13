@@ -192,7 +192,7 @@ __a64_mipi_dsi_write__ comes from our NuttX MIPI DSI Driver: [a64_mipi_dsi.c](ht
 // Assumes that the MIPI DSI Block has been enabled on the SoC.
 // Returns the number of bytes transmitted.
 ssize_t a64_mipi_dsi_write(
-  uint8_t channel,  // Virtual Channel (0)
+  uint8_t channel,      // Virtual Channel (0)
   enum mipi_dsi_e cmd,  // DCS Command (Data Type)
   FAR const uint8_t *txbuf,  // Payload data for the packet
   size_t txlen)  // Length of payload data (Max 65541 bytes)
@@ -627,7 +627,7 @@ Most certainly! In fact we test the MIPI DSI Driver on our __Local Computer firs
 
 Remember that our MIPI DSI Driver simply writes values to a bunch of __A64 Hardware Registers__. So we only need to ensure that the Hardware Register Addresses and the Written Values are correct.
 
-We created a __Test Scaffold__ that simulates the NuttX Build Environment: [test.c](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test.c#L7-L51)
+We created a __Test Scaffold__ that simulates the NuttX Build Environment: [test.c](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test.c#L7-L53)
 
 ```c
 // Simulate NuttX Build Environment
@@ -685,7 +685,7 @@ diff \
 
 Note that we capture the [__Actual Test Log__](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test.log) and we `diff` it with the [__Expected Test Log__](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/expected.log).
 
-That's how we detect discrepancies in the Register Addresses and the Written Values: [test.log](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test.log#L4-L20)
+That's how we detect discrepancies in the Register Addresses and the Written Values...
 
 ```text
 Enable MIPI DSI Bus
@@ -706,6 +706,8 @@ Set Instructions
   *0x1ca0038 = 0xf
   *0x1ca003c = 0x5000001f
 ```
+
+[(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test.log#L4-L20)
 
 ![Inside our Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
 
@@ -747,7 +749,9 @@ Today we've implemented the __MIPI Display Serial Interface__ and __MIPI Display
 
 We're now __building the NuttX Drivers__ for the remaining features (upper part of pic above), converting our Zig code to C...
 
-1.  __Timing Controller (TCON0)__: To render PinePhone's LCD Display, the MIPI DSI Controller on Allwinner A64 needs to receive a __continuous stream of pixels__ from A64's Timing Controller (TCON0).
+1.  __Timing Controller (TCON0)__: To render PinePhone's LCD Display, the MIPI DSI Controller on Allwinner A64 needs to receive a __continuous stream of pixels__...
+
+    Which will be provided by Allwinner A64's __Timing Controller (TCON0)__.
 
     Our NuttX Driver will program TCON0 to send the stream of pixels to the MIPI DSI Controller.
 
@@ -757,23 +761,13 @@ We're now __building the NuttX Drivers__ for the remaining features (upper part 
 
     [(Details in the Appendix)](https://lupyuen.github.io/articles/dsi3#timing-controller-tcon0)
 
-1.  __Display Engine (DE)__:
+1.  __Display Engine (DE)__: Allwinner A64's Display Engine (DE) reads the __Graphics Framebuffers__ in RAM (up to 3 Framebuffers)...
 
-    TODO
+    And __streams the Pixel Data__ to the Timing Controller (TCON0).
 
-    Initialise Allwinner A64's __Display Engine (DE)__
+    Our NuttX Driver will configure DE to read the Framebuffers via __Direct Memory Access__ (DMA). Updates to the Framebuffers will be instantly streamed to PinePhone's LCD Display.
 
-    (Start pumping pixels from DE to Timing Controller TCON0)
-
-    Will be implemented in our new __Display Engine Driver__ for NuttX.
-
-    [(Details in the Appendix)](https://lupyuen.github.io/articles/dsi3#display-engine)
-
-    Render Graphics with Allwinner A64's __Display Engine (DE)__
-
-    (Start pumping pixels from RAM Framebuffers to DE via Direct Memory Access)
-
-    Will be implemented in our new __Display Engine Driver__ for NuttX.
+    This will be implemented in our new __Display Engine Driver__ for NuttX.
 
     [(Details in the Appendix)](https://lupyuen.github.io/articles/dsi3#display-engine)
 
