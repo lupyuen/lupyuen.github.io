@@ -648,124 +648,9 @@ Note that we capture the [Actual Test Log](test/test.log) and we `diff` it with 
 
 [test.log](https://github.com/lupyuen/pinephone-nuttx/blob/c04f1447933665df207a42f626c726ef7a7def65/test/test.log#L4-L20)
 
-# NuttX Driver for Timing Controller (TCON0)
+# Upcoming NuttX Drivers
 
 TODO
-
-[(Explained here)](https://lupyuen.github.io/articles/de#appendix-timing-controller-tcon0)
-
-[(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig)
-
-TODO: Allwinner A64 Timing Controller TCON0 Driver, convert from Zig to C
-
--   [tcon.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig)
-
-# NuttX Driver for Display Engine
-
-TODO: Initialise __Display Engine (DE)__
-
-[(Explained here)](https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine)
-
-[(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L710-L1011)
-
-TODO: Render Graphics with __Display Engine (DE)__
-
-[(Explained here)](https://lupyuen.github.io/articles/de)
-
-[(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L69-L175)
-
-TODO: Allwinner A64 Display Engine Driver, convert from Zig to C
-
--   [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig)
-
-Our Display Engine Driver will follow the design of STM32F7 Display Driver...
-
-1.  `stm32_bringup` calls `fb_register`...
-
-    [boards/arm/stm32f7/stm32f746g-disco/src/stm32_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_bringup.c#L100)
-
-1.  `fb_register` calls `up_fbinitialize`...
-
-    [drivers/video/fb.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/drivers/video/fb.c#L664)
-
-1.  `up_fbinitialize` calls `stm32_ltdcinitialize`...
-
-    [boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c#L72)
-
-1.  `stm32_ltdcinitialize` creates the NuttX Framebuffer...
-
-    [arch/arm/src/stm32f7/stm32_ltdc.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm/src/stm32f7/stm32_ltdc.c#L2971)
-
-1.  NuttX Framebuffer is here...
-
-    [arch/arm/src/stm32f7/stm32_ltdc.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm/src/stm32f7/stm32_ltdc.c#L864)
-
-# NuttX Driver for Backlight
-
-TODO
-
-[(Explained here)](https://lupyuen.github.io/articles/de#appendix-display-backlight)
-
-[(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig)
-
-TODO: PinePhone Backlight Driver, convert from Zig to C
-
--   [backlight.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig)
-
-Our Backlight Driver will follow the design of the STM32 Backlight Driver: `stm32_backlight`...
-
--   [boards/arm/stm32/hymini-stm32v/src/stm32_ssd1289.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32/hymini-stm32v/src/stm32_ssd1289.c#L230)
-
--   [boards/arm/stm32/viewtool-stm32f107/src/stm32_ssd1289.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32/viewtool-stm32f107/src/stm32_ssd1289.c#L298)
-
-The code will go inside our Board LCD Source File, similar to this...
-
--   [boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c)
-
-TODO: PinePhone PIO and LEDs are now supported in NuttX Mainline...
-
-[apache/nuttx/pull/7796](https://github.com/apache/nuttx/pull/7796)
-
-# NuttX Driver for LCD Panel Driver
-
-TODO
-
-Reset LCD Panel
-
-[(Explained here)](https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel)
-
-[(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig)
-
-Initialise LCD Controller
-
-[(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller)
-
-[(Implemented here)](https://lupyuen.github.io/articles/dsi2#initialise-st7703-lcd-controller)
-
-
-TODO: PinePhone LCD Panel Driver, convert from Zig to C
-
--   [panel.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig)
-
-The code will go inside our Board LCD Source File, similar to this...
-
--   [boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c)
-
-# NuttX Driver for Power Management Integrated Circuit
-
-TODO
-
-[(Explained here)](https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit)
-
-[(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig)
-
-TODO: PinePhone PMIC, convert from Zig to C, needs more reverse engineering
-
--   [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig)
-
-The code will go inside our Board LCD Source File, similar to this...
-
--   [boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c)
 
 # Why Zig
 
@@ -773,9 +658,25 @@ TODO: Prototype in zig
 
 Concise executable specification
 
+Less ambuiguity
+
+Zig Integers won't overflow, Zig Arrays are bounded
+
 Easy to convert to C
 
 Was it worth the effort?
+
+_Once again... Why are we doing all this?_
+
+PinePhone is becoming popular as the Edgy, Alternative Smartphone for folks who love to tinker with their gadgets.
+
+The best way to understand what's really inside PinePhone: Creating our own PinePhone Display Driver.
+
+That's why we're doing all this PinePhone Reverse Engineering to Zig and then to C!
+
+_What about other cool open-source Allwinner A64 gadgets like Teres 1?_
+
+Someday we might! But first let's uncover all the secrets inside PinePhone.
 
 # What's Next
 
@@ -816,3 +717,126 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/dsi3.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/dsi3.md)
+
+# Appendix: Upcoming NuttX Drivers
+
+TODO
+
+## Timing Controller (TCON0)
+
+TODO
+
+[(Explained here)](https://lupyuen.github.io/articles/de#appendix-timing-controller-tcon0)
+
+[(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig)
+
+TODO: Allwinner A64 Timing Controller TCON0 Driver, convert from Zig to C
+
+-   [tcon.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig)
+
+## Display Engine
+
+TODO: Initialise __Display Engine (DE)__
+
+[(Explained here)](https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine)
+
+[(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L710-L1011)
+
+TODO: Render Graphics with __Display Engine (DE)__
+
+[(Explained here)](https://lupyuen.github.io/articles/de)
+
+[(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L69-L175)
+
+TODO: Allwinner A64 Display Engine Driver, convert from Zig to C
+
+-   [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig)
+
+Our Display Engine Driver will follow the design of STM32F7 Display Driver...
+
+1.  `stm32_bringup` calls `fb_register`...
+
+    [boards/arm/stm32f7/stm32f746g-disco/src/stm32_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_bringup.c#L100)
+
+1.  `fb_register` calls `up_fbinitialize`...
+
+    [drivers/video/fb.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/drivers/video/fb.c#L664)
+
+1.  `up_fbinitialize` calls `stm32_ltdcinitialize`...
+
+    [boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c#L72)
+
+1.  `stm32_ltdcinitialize` creates the NuttX Framebuffer...
+
+    [arch/arm/src/stm32f7/stm32_ltdc.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm/src/stm32f7/stm32_ltdc.c#L2971)
+
+1.  NuttX Framebuffer is here...
+
+    [arch/arm/src/stm32f7/stm32_ltdc.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm/src/stm32f7/stm32_ltdc.c#L864)
+
+## Backlight
+
+TODO
+
+[(Explained here)](https://lupyuen.github.io/articles/de#appendix-display-backlight)
+
+[(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig)
+
+TODO: PinePhone Backlight Driver, convert from Zig to C
+
+-   [backlight.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig)
+
+Our Backlight Driver will follow the design of the STM32 Backlight Driver: `stm32_backlight`...
+
+-   [boards/arm/stm32/hymini-stm32v/src/stm32_ssd1289.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32/hymini-stm32v/src/stm32_ssd1289.c#L230)
+
+-   [boards/arm/stm32/viewtool-stm32f107/src/stm32_ssd1289.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32/viewtool-stm32f107/src/stm32_ssd1289.c#L298)
+
+The code will go inside our Board LCD Source File, similar to this...
+
+-   [boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c)
+
+TODO: PinePhone PIO and LEDs are now supported in NuttX Mainline...
+
+[apache/nuttx/pull/7796](https://github.com/apache/nuttx/pull/7796)
+
+## LCD Panel
+
+TODO
+
+Reset LCD Panel
+
+[(Explained here)](https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel)
+
+[(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig)
+
+Initialise LCD Controller
+
+[(Explained here)](https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller)
+
+[(Implemented here)](https://lupyuen.github.io/articles/dsi2#initialise-st7703-lcd-controller)
+
+
+TODO: PinePhone LCD Panel Driver, convert from Zig to C
+
+-   [panel.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig)
+
+The code will go inside our Board LCD Source File, similar to this...
+
+-   [boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c)
+
+## Power Management Integrated Circuit
+
+TODO
+
+[(Explained here)](https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit)
+
+[(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig)
+
+TODO: PinePhone PMIC, convert from Zig to C, needs more reverse engineering
+
+-   [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig)
+
+The code will go inside our Board LCD Source File, similar to this...
+
+-   [boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c)
