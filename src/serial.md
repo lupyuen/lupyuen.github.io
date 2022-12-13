@@ -622,6 +622,8 @@ If we ever need to set the __UART Baud Rate__, the steps are explained here...
 
 -   [__"Initialise UART"__](https://lupyuen.github.io/articles/uboot#initialise-uart)
 
+__UPDATE:__ We could reuse the NuttX UART Driver for Allwinner A10 SoC. [(See this)](https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_serial.c#L890-L988)
+
 _What about UART Shutdown?_
 
 The UART Port is __always active__, thus we don't have to shut it down: [a64_serial.c](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L181-L204)
@@ -764,6 +766,8 @@ void arm64_serialinit(void)
 ```
 
 And we're done with our PinePhone UART Driver for NuttX!
+
+__UPDATE:__ We could reuse the NuttX UART Driver for Allwinner A10 SoC. [(See this)](https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_serial.c)
 
 # UART In Action
 
