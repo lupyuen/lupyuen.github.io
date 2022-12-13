@@ -709,21 +709,27 @@ Set Instructions
 
 # Upcoming NuttX Drivers
 
-TODO
+_What about the rest of our NuttX Display Driver?_
 
-1.  Enable Allwinner A64's __MIPI Display Serial Interface (DSI)__
+We talked earlier about the Grand Plan for our __NuttX Display Driver__...
+
+-   [__"Complete Display Driver for PinePhone"__](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone)
+
+Today we've implemented the __MIPI Display Serial Interface__ and __MIPI Display Physical Layer__ for our NuttX Display Driver...
+
+-   Enable Allwinner A64's __MIPI Display Serial Interface (DSI)__
 
     (So we can send MIPI DSI commands to the LCD Panel)
 
     [(Implemented as __a64_mipi_dsi_enable__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L526-L914)
 
-1.  Enable Allwinner A64's __MIPI Display Physical Layer (D-PHY)__
+-   Enable Allwinner A64's __MIPI Display Physical Layer (D-PHY)__
 
     (Which is the communications layer inside MIPI DSI)
 
     [(Implemented as __a64_mipi_dphy_enable__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dphy.c#L86-L162)
 
-1.  Initialise PinePhone's __LCD Controller (Sitronix ST7703)__
+-   Initialise PinePhone's __LCD Controller (Sitronix ST7703)__
 
     (Send the Initialisation Commands over MIPI DSI)
 
@@ -731,43 +737,71 @@ TODO
 
     [(And soon __pinephone_panel_init__)](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c#L42-L452)
 
-1.  Start Allwinner A64's __MIPI DSI in HSC and HSD Mode__
+-   Start Allwinner A64's __MIPI DSI in HSC and HSD Mode__
 
     (High Speed Clock Mode with High Speed Data Transmission)
 
     [(Implemented as __a64_mipi_dsi_start__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L914-L993)
 
-TODO: Upcoming
+We're now __building the NuttX Drivers__ for the other features...
 
 1.  Turn on PinePhone's __Display Backlight__
 
     (Through Programmable I/O and Pulse-Width Modulation)
 
+    Will be implemented in our new __Board LCD Driver__ for NuttX.
+
+    [(Details in the Appendix)](https://lupyuen.github.io/articles/dsi3#backlight)
+
 1.  Initialise Allwinner A64's __Timing Controller (TCON0)__
 
     (Which will pump pixels continuously to the LCD Display)
+
+    Will be implemented in our new __Timing Controller (TCON0) Driver__ for NuttX.
+
+    [(Details in the Appendix)](https://lupyuen.github.io/articles/dsi3#timing-controller-tcon0)
 
 1.  Initialise PinePhone's __Power Management Integrated Circuit (PMIC)__
 
     (To power on PinePhone's LCD Panel)
 
+    Will be implemented in our new __Board LCD Driver__ for NuttX.
+
+    [(Details in the Appendix)](https://lupyuen.github.io/articles/dsi3#power-management-integrated-circuit)
+
 1.  Reset PinePhone's __LCD Panel__
 
     (Prep it to receive MIPI DSI Commands)
+
+    Will be implemented in our new __Board LCD Driver__ for NuttX.
+
+    [(Details in the Appendix)](https://lupyuen.github.io/articles/dsi3#lcd-panel)
 
 1.  Initialise Allwinner A64's __Display Engine (DE)__
 
     (Start pumping pixels from DE to Timing Controller TCON0)
 
+    Will be implemented in our new __Display Engine Driver__ for NuttX.
+
+    [(Details in the Appendix)](https://lupyuen.github.io/articles/dsi3#display-engine)
+
 1.  Render Graphics with Allwinner A64's __Display Engine (DE)__
 
     (Start pumping pixels from RAM Framebuffers to DE via Direct Memory Access)
+
+    Will be implemented in our new __Display Engine Driver__ for NuttX.
+
+    [(Details in the Appendix)](https://lupyuen.github.io/articles/dsi3#display-engine)
+
+Very soon the official NuttX Kernel will be rendering graphics on PinePhone's LCD Display. Stay Tuned!
 
 # Why Zig
 
 TODO: Prototype in zig
 
 Concise executable specification
+
+Comptime Asserts
 
 Less ambuiguity
 
