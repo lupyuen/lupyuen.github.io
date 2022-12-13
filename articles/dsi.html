@@ -385,7 +385,7 @@
 <p>At startup, our PinePhone Display Driver shall set <strong>DSI_Mode</strong> to 1. (Pic above)</p>
 <p>That’s <strong>Bit 0</strong> of <strong>DSI_BASIC_CTL1_REG</strong> (DSI Configuration Register 1) at Offset <code>0x14</code>.</p>
 <p>Our driver shall also set <strong>Video_Precision_Mode_Align</strong> to 1, <strong>Video_Frame_Start</strong> to 1 and <strong>Video_Start_Delay</strong>. (What’s the delay value?)</p>
-<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L751-L755">(Here’s how we set <strong>DSI_BASIC_CTL1_REG</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block">(Here’s how we set <strong>DSI_BASIC_CTL1_REG</strong>)</a></p>
 <p><em>Anything else we should init at startup?</em></p>
 <p>Actually we should turn on the MIPI DSI Controller BEFORE setting the Video Mode. At startup our driver shall set these registers…</p>
 <ul>
@@ -411,7 +411,7 @@
 <p>Set to <code>0xFF</code> (Why?)</p>
 </li>
 </ul>
-<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L735-L748">(Here’s how we set the registers)</a></p>
+<p><a href="https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block">(Here’s how we set the registers)</a></p>
 <p><em>Is that all?</em></p>
 <p>There’s something else that needs to be initialised: <strong>MIPI DPHY</strong>, the Display Physical Layer for MIPI DSI.</p>
 <p>Sadly A64’s MIPI DPHY doesn’t seem to be documented, so we might need to do Reverse Engineering. See this…</p>
@@ -447,7 +447,7 @@
 <p><strong>Error Correction Code (ECC)</strong> (1 byte):</p>
 <p>Allow single-bit errors to be corrected and 2-bit errors to be detected in the Packet Header</p>
 <p><a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf">(See “12.3.6.12: Error Correction Code”, Page 208)</a></p>
-<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L850-L867">(How we compose the Packet Header)</a></p>
+<p><a href="https://lupyuen.github.io/articles/dsi2#packet-header">(How we compose the Packet Header)</a></p>
 </li>
 </ul>
 <p><strong>Packet Payload:</strong></p>
@@ -463,7 +463,7 @@
 <p><strong>Checksum (CS)</strong> (2 bytes):</p>
 <p>16-bit Cyclic Redundancy Check (CRC)</p>
 <p><a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf">(See “12.3.6.13: Packet Footer”, Page 210)</a></p>
-<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L254-L257">(How we compute the Checksum)</a></p>
+<p><a href="https://lupyuen.github.io/articles/dsi2#appendix-cyclic-redundancy-check">(How we compute the CRC)</a></p>
 </li>
 </ul>
 <p>Let’s program A64 to send this Long Packet.</p>
@@ -484,7 +484,7 @@
 <p><strong>TX_Flag</strong> (Bit 9): Clear flag for “Transmit has started”</p>
 </li>
 </ul>
-<p>All other bits must be set to 0. <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L1006-L1009">(Like this)</a></p>
+<p>All other bits must be set to 0. <a href="https://lupyuen.github.io/articles/dsi2#send-mipi-dsi-packet">(Like this)</a></p>
 <p>We compose a <strong>Long Packet</strong> (or Short Packet) containing the DCS Long Write (or DCS Short Write) command…</p>
 <ul>
 <li>
@@ -517,31 +517,28 @@
 </tbody></table>
 </div>
 <p>Thus <strong>DSI_CMD_TX_REG</strong> works like a Packet Buffer that will contain the data to be transmitted over MIPI DSI.</p>
-<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L889-L890">(How we write the Packet Header)</a></p>
-<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L882-L903">(How we write the Packet Payload and Footer)</a></p>
 <p>Then we set <strong>Packet Length - 1</strong> in Bits 0 to 7 <strong>(TX_Size)</strong> of <strong>DSI_CMD_CTL_REG</strong> (DSI Low Power Control Register) at Offset <code>0x200</code>.</p>
-<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L904">(Like this)</a></p>
 <p>Finally we set <strong>DSI_INST_JUMP_SEL_REG</strong> (Offset <code>0x48</code>, undocumented) to begin the Low Power Transmission.</p>
-<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L670-L678">(See <strong>DSI_START_LPTX</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/dsi2#send-mipi-dsi-packet">(How we write the packet to <strong>DSI_CMD_TX_REG</strong>)</a></p>
 <p>We also need to…</p>
 <ul>
 <li>
 <p>Disable DSI Processing:</p>
-<p>Set <strong>Instru_En</strong> to 0 <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L291-L295">(Like this)</a></p>
+<p>Set <strong>Instru_En</strong> to 0 <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L458-L464">(Like this)</a></p>
 </li>
 <li>
 <p>Then Enable DSI Processing: </p>
-<p>Set <strong>Instru_En</strong> to 1 <a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L297-L302">(Like this)</a></p>
+<p>Set <strong>Instru_En</strong> to 1 <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L464-L470">(Like this)</a></p>
 </li>
 </ul>
 <p><strong>Instru_En</strong> is Bit 0 of <strong>DSI_BASIC_CTL0_REG</strong> (DSI Configuration Register 0) at Offset <code>0x10</code>.</p>
 <p><em>How will we know when the transmission is complete?</em></p>
 <p>To check whether the transmission is complete, we poll on <strong>Instru_En</strong>.</p>
-<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L304-L312">(Like this)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L439-L458">(Like this)</a></p>
 <p><em>Wow this looks super complicated!</em></p>
-<p>Yeah. The complete steps to initialise the ST7703 LCD Controller will look similar to this…</p>
+<p>Yeah. The complete steps to initialise the ST7703 LCD Controller will look like this…</p>
 <ul>
-<li><a href="https://gist.github.com/lupyuen/43204d20c35ecb23dfbff12f2f570565#initialise-st7703-lcd-controller"><strong>“Initialise ST7703 LCD Controller”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/dsi2#initialise-st7703-lcd-controller"><strong>“Initialise ST7703 LCD Controller”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/pio-display.png" alt="Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><em>Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)</em></a></p>
