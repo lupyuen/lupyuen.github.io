@@ -828,7 +828,7 @@ Along the way we created an __Executable Specification__ of Allwinner A64's Disp
   // Set Video_Precision_Mode_Align (Bit 2) to 1 (Fill Mode)
   // Set Video_Frame_Start (Bit 1) to 1 (Precision Mode)
   // Set DSI_Mode (Bit 0) to 1 (Video Mode)
-  // TODO: Video_Start_Delay is actually 13 bits, not 8 bits as documented in the A31 User Manual
+  // Note: Video_Start_Delay is actually 13 bits, not 8 bits as documented in the A31 User Manual
 
   const DSI_BASIC_CTL1_REG = DSI_BASE_ADDRESS + 0x14;
   comptime{ assert(DSI_BASIC_CTL1_REG == 0x1ca0014); }
@@ -847,9 +847,9 @@ Along the way we created an __Executable Specification__ of Allwinner A64's Disp
 
 Which is really neat because...
 
--   It describes Allwinner A64's Display Interfaces in a __Concise Way__
+-   Our Executable Spec describes Allwinner A64's Display Interfaces in a __concise and readable__ way
 
--   "__`comptime assert`__" will verify our Adresses and Values at __Compile-Time__
+-   "__`comptime` `assert`__" will verify our Register Adresses and Values at __Compile-Time__
 
 -   __Less Ambiguity__: Zig Integers won't overflow, Zig Arrays are bounded
 
