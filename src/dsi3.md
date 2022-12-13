@@ -335,7 +335,7 @@ Why Reverse Engineer? Because a lot of details are missing from the official doc
 
 Let's talk about the Zig-to-C Conversion...
 
-![Converting Zig to C](https://lupyuen.github.io/images/dsi3-zig.png)
+![Converting Zig to C](https://lupyuen.github.io/images/dsi3-zig.jpg)
 
 # Convert Zig to C
 
@@ -713,11 +713,11 @@ Set Instructions
 
 _What about the rest of our NuttX Display Driver?_
 
-We talked earlier about the Grand Plan for our __NuttX Display Driver__ that's layered like an Onion [Kueh Lapis](https://en.wikipedia.org/wiki/Kue_lapis)...
+We talked earlier about the Grand Plan for our __NuttX Display Driver__ that's layered like an Onion [Kueh Lapis](https://en.wikipedia.org/wiki/Kue_lapis) (pic above)...
 
 -   [__"Complete Display Driver for PinePhone"__](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone)
 
-Today we've implemented the __MIPI Display Serial Interface__ and __MIPI Display Physical Layer__ for our NuttX Display Driver...
+Today we've implemented the __MIPI Display Serial Interface__ and __MIPI Display Physical Layer__ for our NuttX Display Driver (lower part of the pic above)...
 
 -   Enable Allwinner A64's __MIPI Display Serial Interface (DSI)__
 
@@ -745,7 +745,7 @@ Today we've implemented the __MIPI Display Serial Interface__ and __MIPI Display
 
     [(Implemented as __a64_mipi_dsi_start__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L914-L993)
 
-We're now __building the NuttX Drivers__ for the other features (converting from Zig to C)...
+We're now __building the NuttX Drivers__ for the other features, converting our Zig code to C (upper part of the pic above)...
 
 1.  Turn on PinePhone's __Display Backlight__
 
@@ -797,7 +797,7 @@ We're now __building the NuttX Drivers__ for the other features (converting from
 
 Very soon the official NuttX Kernel will be rendering graphics on PinePhone's LCD Display. Stay Tuned!
 
-![Converting Zig to C](https://lupyuen.github.io/images/dsi3-zig.png)
+![Converting Zig to C](https://lupyuen.github.io/images/dsi3-zig.jpg)
 
 # Why Zig
 
