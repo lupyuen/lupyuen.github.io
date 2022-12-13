@@ -540,6 +540,7 @@ static int a64_uart_setup(struct uart_dev_s *dev)
 <ul>
 <li><a href="https://lupyuen.github.io/articles/uboot#initialise-uart"><strong>“Initialise UART”</strong></a></li>
 </ul>
+<p><strong>UPDATE:</strong> We could reuse the NuttX UART Driver for Allwinner A10 SoC. <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_serial.c#L890-L988">(See this)</a></p>
 <p><em>What about UART Shutdown?</em></p>
 <p>The UART Port is <strong>always active</strong>, thus we don’t have to shut it down: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L181-L204">a64_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Shutdown PinePhone Allwinner A64 UART
@@ -669,6 +670,7 @@ void arm64_serialinit(void)
     }
 }</code></pre></div>
 <p>And we’re done with our PinePhone UART Driver for NuttX!</p>
+<p><strong>UPDATE:</strong> We could reuse the NuttX UART Driver for Allwinner A10 SoC. <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_serial.c">(See this)</a></p>
 <h1 id="uart-in-action"><a href="#uart-in-action">6 UART In Action</a></h1>
 <p>Let’s watch our UART Driver in action! </p>
 <p>Follow these steps to <strong>build NuttX</strong> and copy to Jumpdrive microSD…</p>
