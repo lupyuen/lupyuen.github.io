@@ -809,27 +809,57 @@ Building a NuttX Display Driver for PinePhone feels like a __risky challenge__..
 
 -   [__11 Steps__](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone) to be executed precisely, in the right sequence
 
--   We need an efficient way to __experiment, backtrack and redo things__ in our driver
+-   We need an efficient way to __Experiment, Backtrack and Redo things__ in our driver
 
 Zig seems to work really well...
 
--   Our complete Display Driver Protoype was created in ??? weeks
+-   Our complete Display Driver Protoype was created in [__9 Weeks__](https://github.com/lupyuen/pinephone-nuttx/commits/main?after=68eb24e9de468872b93abd742c3d5099b311be23+69&branch=main&qualified_name=refs%2Fheads%2Fmain)
 
--   Easy to convert to C
+-   Zig's [__Safety Checks__](https://ziglang.org/documentation/master/#Undefined-Behavior) were super helpful for catching bugs
 
-TODO
+-   [__Converting Zig to C__](https://lupyuen.github.io/articles/dsi3#convert-zig-to-c) was easy
+
+Along the way we created an __Executable Specification__ of Allwinner A64's Display Interfaces... A huge bunch of __Hardware Register Addresses__ and their Expected Values: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1013-L1033)
+
+```zig
+  // Set Video Start Delay
+  // DSI_BASIC_CTL1_REG: DSI Offset 0x14 (A31 Page 846)
+  // Set Video_Start_Delay (Bits 4 to 16) to 1468 (Line Delay)
+  // Set Video_Precision_Mode_Align (Bit 2) to 1 (Fill Mode)
+  // Set Video_Frame_Start (Bit 1) to 1 (Precision Mode)
+  // Set DSI_Mode (Bit 0) to 1 (Video Mode)
+  // TODO: Video_Start_Delay is actually 13 bits, not 8 bits as documented in the A31 User Manual
+
+  const DSI_BASIC_CTL1_REG = DSI_BASE_ADDRESS + 0x14;
+  comptime{ assert(DSI_BASIC_CTL1_REG == 0x1ca0014); }
+
+  const Video_Start_Delay:          u17 = 1468 << 4;
+  const Video_Precision_Mode_Align: u3  = 1    << 2;
+  const Video_Frame_Start:          u2  = 1    << 1;
+  const DSI_Mode:                   u1  = 1    << 0;
+  const DSI_BASIC_CTL1 = Video_Start_Delay
+    | Video_Precision_Mode_Align
+    | Video_Frame_Start
+    | DSI_Mode;
+  comptime{ assert(DSI_BASIC_CTL1 == 0x5bc7); }
+  putreg32(DSI_BASIC_CTL1, DSI_BASIC_CTL1_REG);  // TODO: DMB
+```
+
+Which is really neat because...
+
+-   It describes Allwinner A64's Display Interfaces in a __Concise Way__
+
+-   "__`comptime assert`__" will verify our Adresses and Values at __Compile-Time__
+
+-   __Less Ambiguity__: Zig Integers won't overflow, Zig Arrays are bounded
+
+-   Can be translated into C or Rust for other Operating Systems
 
 _Was it worth the effort? Would you do it again in Zig?_
 
 Yes and yes!
 
-Concise executable specification
-
-Comptime Asserts
-
-Less ambuiguity
-
-Zig Integers won't overflow, Zig Arrays are bounded
+TODO
 
 _Once again... Why are we doing all this?_
 
