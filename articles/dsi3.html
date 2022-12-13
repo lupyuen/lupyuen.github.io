@@ -728,7 +728,7 @@ Set Instructions
 <p>We’re now <strong>building the NuttX Drivers</strong> for the remaining features (upper part of pic above), converting our Zig code to C…</p>
 <ol>
 <li>
-<p><strong>Timing Controller (TCON0)</strong>: To render PinePhone’s LCD Display, the MIPI DSI Controller on Allwinner A64 needs to receive a <strong>continuous stream of pixels</strong>…</p>
+<p><a href="https://lupyuen.github.io/articles/de#display-rendering-on-pinephone"><strong>Timing Controller (TCON0)</strong></a>: To render PinePhone’s LCD Display, the MIPI DSI Controller on Allwinner A64 needs to receive a <strong>continuous stream of pixels</strong>…</p>
 <p>Which will be provided by Allwinner A64’s <strong>Timing Controller (TCON0)</strong>.</p>
 <p>Our NuttX Driver will program TCON0 to send the stream of pixels to the MIPI DSI Controller.</p>
 <p>(TCON0 will receive the pixel stream from A64’s Display Engine)</p>
@@ -736,7 +736,7 @@ Set Instructions
 <p><a href="https://lupyuen.github.io/articles/dsi3#timing-controller-tcon0">(Details in the Appendix)</a></p>
 </li>
 <li>
-<p><strong>Display Engine (DE)</strong>: Allwinner A64’s Display Engine (DE) reads the <strong>Graphics Framebuffers</strong> in RAM (up to 3 Framebuffers)…</p>
+<p><a href="https://lupyuen.github.io/articles/de"><strong>Display Engine (DE)</strong></a>: Allwinner A64’s Display Engine (DE) reads the <strong>Graphics Framebuffers</strong> in RAM (up to 3 Framebuffers)…</p>
 <p>And <strong>streams the Pixel Data</strong> to the Timing Controller (TCON0).</p>
 <p>Our NuttX Driver will configure DE to read the Framebuffers via <strong>Direct Memory Access</strong> (DMA). Updates to the Framebuffers will be instantly streamed to PinePhone’s LCD Display.</p>
 <p>This will be implemented in our new <strong>Display Engine Driver</strong> for NuttX.</p>
