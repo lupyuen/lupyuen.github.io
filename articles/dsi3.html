@@ -106,7 +106,7 @@
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>lupyuen/pinephone-nuttx</strong></a></li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Steps needed to create a Complete Display Driver for PinePhone" /></p>
+<p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Inside our Complete Display Driver for PinePhone" /></p>
 <h1 id="complete-display-driver-for-pinephone"><a href="#complete-display-driver-for-pinephone">1 Complete Display Driver for PinePhone</a></h1>
 <p><em>NuttX will render graphics on PinePhone’s LCD Display…</em></p>
 <p><em>What’s inside the Display Driver for PinePhone?</em></p>
@@ -693,10 +693,10 @@ Set Instructions
   *0x1ca0034 = 0x40000010
   *0x1ca0038 = 0xf
   *0x1ca003c = 0x5000001f</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Steps needed to create a Complete Display Driver for PinePhone" /></p>
+<p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Inside our Complete Display Driver for PinePhone" /></p>
 <h1 id="upcoming-nuttx-drivers"><a href="#upcoming-nuttx-drivers">7 Upcoming NuttX Drivers</a></h1>
 <p><em>What about the rest of our NuttX Display Driver?</em></p>
-<p>We talked earlier about the Grand Plan for our <strong>NuttX Display Driver</strong> (layered like an Onion <a href="https://en.wikipedia.org/wiki/Kue_lapis">Kueh Lapis</a>)…</p>
+<p>We talked earlier about the Grand Plan for our <strong>NuttX Display Driver</strong> that’s layered like an Onion <a href="https://en.wikipedia.org/wiki/Kue_lapis">Kueh Lapis</a>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><strong>“Complete Display Driver for PinePhone”</strong></a></li>
 </ul>
@@ -889,10 +889,13 @@ Set Instructions
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/dsi3.md"><strong>lupyuen.github.io/src/dsi3.md</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Inside our Complete Display Driver for PinePhone" /></p>
 <h1 id="appendix-upcoming-nuttx-drivers"><a href="#appendix-upcoming-nuttx-drivers">10 Appendix: Upcoming NuttX Drivers</a></h1>
 <p>TODO</p>
 <h2 id="timing-controller-tcon0"><a href="#timing-controller-tcon0">10.1 Timing Controller (TCON0)</a></h2>
 <p>TODO</p>
+<p>(Which will pump pixels continuously to the LCD Display)</p>
+<p>Will be implemented in our new <strong>Timing Controller (TCON0) Driver</strong> for NuttX.</p>
 <p><a href="https://lupyuen.github.io/articles/de#appendix-timing-controller-tcon0">(Explained here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig">(Implemented here)</a></p>
 <p>TODO: Allwinner A64 Timing Controller TCON0 Driver, convert from Zig to C</p>
@@ -901,9 +904,13 @@ Set Instructions
 </ul>
 <h2 id="display-engine"><a href="#display-engine">10.2 Display Engine</a></h2>
 <p>TODO: Initialise <strong>Display Engine (DE)</strong></p>
+<p>(Start pumping pixels from DE to Timing Controller TCON0)</p>
+<p>Will be implemented in our new <strong>Display Engine Driver</strong> for NuttX.</p>
 <p><a href="https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine">(Explained here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L710-L1011">(Implemented here)</a></p>
 <p>TODO: Render Graphics with <strong>Display Engine (DE)</strong></p>
+<p>(Start pumping pixels from RAM Framebuffers to DE via Direct Memory Access)</p>
+<p>Will be implemented in our new <strong>Display Engine Driver</strong> for NuttX.</p>
 <p><a href="https://lupyuen.github.io/articles/de">(Explained here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L69-L175">(Implemented here)</a></p>
 <p>TODO: Allwinner A64 Display Engine Driver, convert from Zig to C</p>
@@ -935,6 +942,8 @@ Set Instructions
 </ol>
 <h2 id="backlight"><a href="#backlight">10.3 Backlight</a></h2>
 <p>TODO</p>
+<p>(Through Programmable I/O and Pulse-Width Modulation)</p>
+<p>Will be implemented in our new <strong>Board LCD Driver</strong> for NuttX.</p>
 <p><a href="https://lupyuen.github.io/articles/de#appendix-display-backlight">(Explained here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig">(Implemented here)</a></p>
 <p>TODO: PinePhone Backlight Driver, convert from Zig to C</p>
@@ -958,6 +967,8 @@ Set Instructions
 <p><a href="https://github.com/apache/nuttx/pull/7796">apache/nuttx/pull/7796</a></p>
 <h2 id="lcd-panel"><a href="#lcd-panel">10.4 LCD Panel</a></h2>
 <p>TODO</p>
+<p>(Prep it to receive MIPI DSI Commands)</p>
+<p>Will be implemented in our new <strong>Board LCD Driver</strong> for NuttX.</p>
 <p>Reset LCD Panel</p>
 <p><a href="https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel">(Explained here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig">(Implemented here)</a></p>
@@ -974,6 +985,8 @@ Set Instructions
 </ul>
 <h2 id="power-management-integrated-circuit"><a href="#power-management-integrated-circuit">10.5 Power Management Integrated Circuit</a></h2>
 <p>TODO</p>
+<p>(To power on PinePhone’s LCD Panel)</p>
+<p>Will be implemented in our new <strong>Board LCD Driver</strong> for NuttX.</p>
 <p><a href="https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit">(Explained here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig">(Implemented here)</a></p>
 <p>TODO: PinePhone PMIC, convert from Zig to C, needs more reverse engineering</p>
