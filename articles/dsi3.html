@@ -388,7 +388,7 @@ ssize_t a64_mipi_dsi_write(
 </li>
 </ul>
 <p>Let’s talk about the Zig-to-C Conversion…</p>
-<p><img src="https://lupyuen.github.io/images/dsi3-zig.png" alt="Converting Zig to C" /></p>
+<p><img src="https://lupyuen.github.io/images/dsi3-zig.jpg" alt="Converting Zig to C" /></p>
 <h1 id="convert-zig-to-c"><a href="#convert-zig-to-c">5 Convert Zig to C</a></h1>
 <p><em>Our NuttX Driver MIPI Driver was converted from Zig to C…</em></p>
 <p><em>Was it difficult to convert Zig to C?</em></p>
@@ -696,11 +696,11 @@ Set Instructions
 <p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Inside our Complete Display Driver for PinePhone" /></p>
 <h1 id="upcoming-nuttx-drivers"><a href="#upcoming-nuttx-drivers">7 Upcoming NuttX Drivers</a></h1>
 <p><em>What about the rest of our NuttX Display Driver?</em></p>
-<p>We talked earlier about the Grand Plan for our <strong>NuttX Display Driver</strong> that’s layered like an Onion <a href="https://en.wikipedia.org/wiki/Kue_lapis">Kueh Lapis</a>…</p>
+<p>We talked earlier about the Grand Plan for our <strong>NuttX Display Driver</strong> that’s layered like an Onion <a href="https://en.wikipedia.org/wiki/Kue_lapis">Kueh Lapis</a> (pic above)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><strong>“Complete Display Driver for PinePhone”</strong></a></li>
 </ul>
-<p>Today we’ve implemented the <strong>MIPI Display Serial Interface</strong> and <strong>MIPI Display Physical Layer</strong> for our NuttX Display Driver…</p>
+<p>Today we’ve implemented the <strong>MIPI Display Serial Interface</strong> and <strong>MIPI Display Physical Layer</strong> for our NuttX Display Driver (lower part of the pic above)…</p>
 <ul>
 <li>
 <p>Enable Allwinner A64’s <strong>MIPI Display Serial Interface (DSI)</strong></p>
@@ -724,7 +724,7 @@ Set Instructions
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi2/arch/arm64/src/a64/a64_mipi_dsi.c#L914-L993">(Implemented as <strong>a64_mipi_dsi_start</strong>)</a></p>
 </li>
 </ul>
-<p>We’re now <strong>building the NuttX Drivers</strong> for the other features (converting from Zig to C)…</p>
+<p>We’re now <strong>building the NuttX Drivers</strong> for the other features, converting our Zig code to C (upper part of the pic above)…</p>
 <ol>
 <li>
 <p>Turn on PinePhone’s <strong>Display Backlight</strong></p>
@@ -764,7 +764,7 @@ Set Instructions
 </li>
 </ol>
 <p>Very soon the official NuttX Kernel will be rendering graphics on PinePhone’s LCD Display. Stay Tuned!</p>
-<p><img src="https://lupyuen.github.io/images/dsi3-zig.png" alt="Converting Zig to C" /></p>
+<p><img src="https://lupyuen.github.io/images/dsi3-zig.jpg" alt="Converting Zig to C" /></p>
 <h1 id="why-zig"><a href="#why-zig">8 Why Zig</a></h1>
 <p><em>Why did we start with Zig? Why not code directly in C?</em></p>
 <p>Building a NuttX Display Driver for PinePhone feels like a <strong>risky challenge</strong>…</p>
