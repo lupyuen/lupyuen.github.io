@@ -730,15 +730,16 @@ Set Instructions
 <li>
 <p><a href="https://lupyuen.github.io/articles/de#display-rendering-on-pinephone"><strong>Timing Controller (TCON0)</strong></a>: To render PinePhone’s LCD Display, the MIPI DSI Controller on Allwinner A64 needs to receive a <strong>continuous stream of pixels</strong>…</p>
 <p>Which will be provided by Allwinner A64’s <strong>Timing Controller (TCON0)</strong>.</p>
-<p>Our NuttX Driver will program TCON0 to send the stream of pixels to the MIPI DSI Controller.</p>
 <p>(TCON0 will receive the pixel stream from A64’s Display Engine)</p>
+<p>Our NuttX Driver shall program TCON0 to <strong>send the stream of pixels</strong> to the MIPI DSI Controller.</p>
 <p>This will be implemented in our new <strong>Timing Controller (TCON0) Driver</strong> for NuttX.</p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#timing-controller-tcon0">(Details in the Appendix)</a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/de"><strong>Display Engine (DE)</strong></a>: Allwinner A64’s Display Engine (DE) reads the <strong>Graphics Framebuffers</strong> in RAM (up to 3 Framebuffers)…</p>
+<p><a href="https://lupyuen.github.io/articles/de"><strong>Display Engine (DE)</strong></a>: Allwinner A64’s Display Engine (DE) reads the <strong>Graphics Framebuffers</strong> in RAM <a href="https://lupyuen.github.io/images/de2-blender.jpg">(up to 3 Framebuffers)</a>…</p>
 <p>And <strong>streams the Pixel Data</strong> to the Timing Controller (TCON0).</p>
-<p>Our NuttX Driver will configure DE to read the Framebuffers via <strong>Direct Memory Access</strong> (DMA). Updates to the Framebuffers will be instantly streamed to PinePhone’s LCD Display.</p>
+<p>Our NuttX Driver shall configure DE to read the Framebuffers via <strong>Direct Memory Access</strong> (DMA).</p>
+<p>With DMA, updates to the Framebuffers will be instantly visible on PinePhone’s LCD Display.</p>
 <p>This will be implemented in our new <strong>Display Engine Driver</strong> for NuttX.</p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#display-engine">(Details in the Appendix)</a></p>
 </li>
@@ -753,13 +754,13 @@ Set Instructions
 <p><strong>Pulse-Width Modulation (PWM)</strong>: New Implementation</p>
 </li>
 </ul>
-<p>We’ll call PIO and PWM in our new <strong>Board LCD Driver</strong> for NuttX.</p>
+<p>To turn on the Display Backlight, we’ll call PIO and PWM in our new <strong>Board LCD Driver</strong> for NuttX.</p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#backlight">(Details in the Appendix)</a></p>
 </li>
 <li>
 <p><strong>LCD Panel</strong>: Before sending <a href="https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet"><strong>Initialisation Commands</strong></a> to the ST7703 LCD Controller, we need to <strong>reset the LCD Panel.</strong></p>
 <p>We do this with Allwinner A64’s <strong>Programmable Input / Output (PIO)</strong>, implemented in <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c"><strong>a64_pio.c</strong></a>. (Works like GPIO)</p>
-<p>We’ll call PIO in our new <strong>Board LCD Driver</strong> for NuttX.</p>
+<p>To reset the LCD Panel, we’ll call PIO in our new <strong>Board LCD Driver</strong> for NuttX.</p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#lcd-panel">(Details in the Appendix)</a></p>
 </li>
 <li>
@@ -897,25 +898,34 @@ Set Instructions
 <p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Inside our Complete Display Driver for PinePhone" /></p>
 <h1 id="appendix-upcoming-nuttx-drivers"><a href="#appendix-upcoming-nuttx-drivers">10 Appendix: Upcoming NuttX Drivers</a></h1>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/de-block1a.jpg" alt="Allwinner A64 Timing Controller (TCON0)" /></p>
+<p><a href="https://lupyuen.github.io/articles/de#display-rendering-on-pinephone"><em>Allwinner A64 Timing Controller (TCON0)</em></a></p>
 <h2 id="timing-controller-tcon0"><a href="#timing-controller-tcon0">10.1 Timing Controller (TCON0)</a></h2>
 <p>TODO</p>
-<p>(Which will pump pixels continuously to the LCD Display)</p>
-<p>Will be implemented in our new <strong>Timing Controller (TCON0) Driver</strong> for NuttX.</p>
+<p>To render PinePhone’s LCD Display, the MIPI DSI Controller on Allwinner A64 needs to receive a <strong>continuous stream of pixels</strong>…</p>
+<p>Which will be provided by Allwinner A64’s <strong>Timing Controller (TCON0)</strong>.</p>
+<p>(TCON0 will receive the pixel stream from A64’s Display Engine)</p>
+<p>Our NuttX Driver shall program TCON0 to <strong>send the stream of pixels</strong> to the MIPI DSI Controller.</p>
+<p>This will be implemented in our new <strong>Timing Controller (TCON0) Driver</strong> for NuttX.</p>
 <p><a href="https://lupyuen.github.io/articles/de#appendix-timing-controller-tcon0">(Explained here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig">(Implemented here)</a></p>
 <p>TODO: Allwinner A64 Timing Controller TCON0 Driver, convert from Zig to C</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig">tcon.zig</a></li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="Allwinner A64 Display Engine" /></p>
+<p><a href="https://lupyuen.github.io/articles/de2#configure-blender"><em>Allwinner A64 Display Engine</em></a></p>
 <h2 id="display-engine"><a href="#display-engine">10.2 Display Engine</a></h2>
-<p>TODO: Initialise <strong>Display Engine (DE)</strong></p>
-<p>(Start pumping pixels from DE to Timing Controller TCON0)</p>
-<p>Will be implemented in our new <strong>Display Engine Driver</strong> for NuttX.</p>
+<p>TODO</p>
+<p>Allwinner A64’s Display Engine (DE) reads the <strong>Graphics Framebuffers</strong> in RAM <a href="https://lupyuen.github.io/images/de2-blender.jpg">(up to 3 Framebuffers)</a>…</p>
+<p>And <strong>streams the Pixel Data</strong> to the Timing Controller (TCON0).</p>
+<p>Our NuttX Driver shall configure DE to read the Framebuffers via <strong>Direct Memory Access</strong> (DMA).</p>
+<p>With DMA, updates to the Framebuffers will be instantly visible on PinePhone’s LCD Display.</p>
+<p>This will be implemented in our new <strong>Display Engine Driver</strong> for NuttX.</p>
+<p>Init</p>
 <p><a href="https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine">(Explained here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L710-L1011">(Implemented here)</a></p>
-<p>TODO: Render Graphics with <strong>Display Engine (DE)</strong></p>
-<p>(Start pumping pixels from RAM Framebuffers to DE via Direct Memory Access)</p>
-<p>Will be implemented in our new <strong>Display Engine Driver</strong> for NuttX.</p>
+<p>Render</p>
 <p><a href="https://lupyuen.github.io/articles/de">(Explained here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L69-L175">(Implemented here)</a></p>
 <p>TODO: Allwinner A64 Display Engine Driver, convert from Zig to C</p>
@@ -926,29 +936,38 @@ Set Instructions
 <ol>
 <li>
 <p><code>stm32_bringup</code> calls <code>fb_register</code>…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_bringup.c#L100">boards/arm/stm32f7/stm32f746g-disco/src/stm32_bringup.c</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_bringup.c#L100">stm32_bringup.c</a></p>
 </li>
 <li>
 <p><code>fb_register</code> calls <code>up_fbinitialize</code>…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/drivers/video/fb.c#L664">drivers/video/fb.c</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/drivers/video/fb.c#L664">fb.c</a></p>
 </li>
 <li>
 <p><code>up_fbinitialize</code> calls <code>stm32_ltdcinitialize</code>…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c#L72">boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c#L72">stm32_lcd.c</a></p>
 </li>
 <li>
 <p><code>stm32_ltdcinitialize</code> creates the NuttX Framebuffer…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm/src/stm32f7/stm32_ltdc.c#L2971">arch/arm/src/stm32f7/stm32_ltdc.c</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm/src/stm32f7/stm32_ltdc.c#L2971">stm32_ltdc.c</a></p>
 </li>
 <li>
 <p>NuttX Framebuffer is here…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm/src/stm32f7/stm32_ltdc.c#L864">arch/arm/src/stm32f7/stm32_ltdc.c</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm/src/stm32f7/stm32_ltdc.c#L864">stm32_ltdc.c</a></p>
 </li>
 </ol>
 <h2 id="backlight"><a href="#backlight">10.3 Backlight</a></h2>
 <p>TODO</p>
-<p>(Through Programmable I/O and Pulse-Width Modulation)</p>
-<p>Will be implemented in our new <strong>Board LCD Driver</strong> for NuttX.</p>
+<p>We won’t see anything on PinePhone’s LCD Display… Until we switch on the <strong>Display Backlight!</strong></p>
+<p>PinePhone’s Display Backlight is controlled by A64’s…</p>
+<ul>
+<li>
+<p><strong>Programmable Input / Output (PIO)</strong>: Works like GPIO, implemented in <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c"><strong>a64_pio.c</strong></a></p>
+</li>
+<li>
+<p><strong>Pulse-Width Modulation (PWM)</strong>: New Implementation</p>
+</li>
+</ul>
+<p>To turn on the Display Backlight, we’ll call PIO and PWM in our new <strong>Board LCD Driver</strong> for NuttX.</p>
 <p><a href="https://lupyuen.github.io/articles/de#appendix-display-backlight">(Explained here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig">(Implemented here)</a></p>
 <p>TODO: PinePhone Backlight Driver, convert from Zig to C</p>
@@ -958,23 +977,21 @@ Set Instructions
 <p>Our Backlight Driver will follow the design of the STM32 Backlight Driver: <code>stm32_backlight</code>…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32/hymini-stm32v/src/stm32_ssd1289.c#L230">boards/arm/stm32/hymini-stm32v/src/stm32_ssd1289.c</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32/hymini-stm32v/src/stm32_ssd1289.c#L230">stm32_ssd1289.c</a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32/viewtool-stm32f107/src/stm32_ssd1289.c#L298">boards/arm/stm32/viewtool-stm32f107/src/stm32_ssd1289.c</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32/viewtool-stm32f107/src/stm32_ssd1289.c#L298">stm32_ssd1289.c</a></p>
 </li>
 </ul>
 <p>The code will go inside our Board LCD Source File, similar to this…</p>
 <ul>
-<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c">boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c</a></li>
+<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c">stm32_lcd.c</a></li>
 </ul>
-<p>TODO: PinePhone PIO and LEDs are now supported in NuttX Mainline…</p>
-<p><a href="https://github.com/apache/nuttx/pull/7796">apache/nuttx/pull/7796</a></p>
 <h2 id="lcd-panel"><a href="#lcd-panel">10.4 LCD Panel</a></h2>
 <p>TODO</p>
-<p>(Prep it to receive MIPI DSI Commands)</p>
-<p>Will be implemented in our new <strong>Board LCD Driver</strong> for NuttX.</p>
-<p>Reset LCD Panel</p>
+<p>Before sending <a href="https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet"><strong>Initialisation Commands</strong></a> to the ST7703 LCD Controller, we need to <strong>reset the LCD Panel.</strong></p>
+<p>We do this with Allwinner A64’s <strong>Programmable Input / Output (PIO)</strong>, implemented in <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c"><strong>a64_pio.c</strong></a>. (Works like GPIO)</p>
+<p>To reset the LCD Panel, we’ll call PIO in our new <strong>Board LCD Driver</strong> for NuttX.</p>
 <p><a href="https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel">(Explained here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig">(Implemented here)</a></p>
 <p>Initialise LCD Controller</p>
@@ -986,12 +1003,13 @@ Set Instructions
 </ul>
 <p>The code will go inside our Board LCD Source File, similar to this…</p>
 <ul>
-<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c">boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c</a></li>
+<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c">stm32_lcd.c</a></li>
 </ul>
 <h2 id="power-management-integrated-circuit"><a href="#power-management-integrated-circuit">10.5 Power Management Integrated Circuit</a></h2>
 <p>TODO</p>
-<p>(To power on PinePhone’s LCD Panel)</p>
-<p>Will be implemented in our new <strong>Board LCD Driver</strong> for NuttX.</p>
+<p>To power on the LCD Display, we need to program PinePhone’s <strong>Power Management Integrated Circuit (PMIC)</strong>.</p>
+<p>The <strong>AXP803 PMIC</strong> is connected on Allwinner A64’s <strong>Reduced Serial Bus (RSB)</strong>. (Works like I2C)</p>
+<p>We’ll control the PMIC over RSB in our new <strong>Board LCD Driver</strong> for NuttX.</p>
 <p><a href="https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit">(Explained here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig">(Implemented here)</a></p>
 <p>TODO: PinePhone PMIC, convert from Zig to C, needs more reverse engineering</p>
@@ -1000,7 +1018,7 @@ Set Instructions
 </ul>
 <p>The code will go inside our Board LCD Source File, similar to this…</p>
 <ul>
-<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c">boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c</a></li>
+<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c">stm32_lcd.c</a></li>
 </ul>
 
     
