@@ -727,11 +727,10 @@ Set Instructions
 <p>We’re now <strong>building the NuttX Drivers</strong> for the remaining features (upper part of pic above), converting our Zig code to C…</p>
 <ol>
 <li>
-<p><strong>Timing Controller (TCON0)</strong>: To render PinePhone’s LCD Display, the MIPI DSI Controller on Allwinner A64 receives a continuous stream of pixels from the Timing Controller (TCON0).</p>
-<p>TODO</p>
-<p>Initialise Allwinner A64’s <strong>Timing Controller (TCON0)</strong></p>
-<p>(Which will pump pixels continuously to the LCD Display)</p>
-<p>Will be implemented in our new <strong>Timing Controller (TCON0) Driver</strong> for NuttX.</p>
+<p><strong>Timing Controller (TCON0)</strong>: To render PinePhone’s LCD Display, the MIPI DSI Controller on Allwinner A64 needs to receive a <strong>continuous stream of pixels</strong> from A64’s Timing Controller (TCON0).</p>
+<p>Our NuttX Driver will program TCON0 to send the stream of pixels to the MIPI DSI Controller.</p>
+<p>(TCON0 will receive the pixel stream from A64’s Display Engine)</p>
+<p>This will be implemented in our new <strong>Timing Controller (TCON0) Driver</strong> for NuttX.</p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#timing-controller-tcon0">(Details in the Appendix)</a></p>
 </li>
 <li>
