@@ -749,7 +749,7 @@ Today we've implemented the __MIPI Display Serial Interface__ and __MIPI Display
 
 We're now __building the NuttX Drivers__ for the remaining features (upper part of pic above), converting our Zig code to C...
 
-1.  __Timing Controller (TCON0)__: To render PinePhone's LCD Display, the MIPI DSI Controller on Allwinner A64 needs to receive a __continuous stream of pixels__...
+1.  [__Timing Controller (TCON0)__](https://lupyuen.github.io/articles/de#display-rendering-on-pinephone): To render PinePhone's LCD Display, the MIPI DSI Controller on Allwinner A64 needs to receive a __continuous stream of pixels__...
 
     Which will be provided by Allwinner A64's __Timing Controller (TCON0)__.
 
@@ -761,7 +761,7 @@ We're now __building the NuttX Drivers__ for the remaining features (upper part 
 
     [(Details in the Appendix)](https://lupyuen.github.io/articles/dsi3#timing-controller-tcon0)
 
-1.  __Display Engine (DE)__: Allwinner A64's Display Engine (DE) reads the __Graphics Framebuffers__ in RAM (up to 3 Framebuffers)...
+1.  [__Display Engine (DE)__](https://lupyuen.github.io/articles/de): Allwinner A64's Display Engine (DE) reads the __Graphics Framebuffers__ in RAM (up to 3 Framebuffers)...
 
     And __streams the Pixel Data__ to the Timing Controller (TCON0).
 
