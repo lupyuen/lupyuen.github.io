@@ -507,9 +507,7 @@ pub export fn hello_main(argc: c_int, argv: [*c]const [*c]u8) c_int {
 
 [(__pinephone_panel_init__ is defined here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c#L42-L452)
 
-Then we __compile our Zig Test Program__ targeting PinePhone...
-
-TODO
+Then we __compile our Zig Test Program__ (targeting PinePhone) and link it with NuttX...
 
 ```bash
   ##  Configure NuttX
@@ -525,24 +523,25 @@ TODO
   make
 
   ##  Download the Zig Test Program
+  pushd $HOME
   git clone https://github.com/lupyuen/pinephone-nuttx
-  pushd ../pinephone-nuttx
+  cd pinephone-nuttx
 
   ##  Compile the Zig App for PinePhone 
   ##  (armv8-a with cortex-a53)
-  ##  TODO: Change ".." to your NuttX Project Directory
+  ##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
   zig build-obj \
     --verbose-cimport \
     -target aarch64-freestanding-none \
     -mcpu cortex_a53 \
-    -isystem "../nuttx/include" \
-    -I "../apps/include" \
+    -isystem "$HOME/nuttx/nuttx/include" \
+    -I "$HOME/nuttx/apps/include" \
     render.zig
 
   ##  Copy the compiled app to NuttX and overwrite `hello.o`
-  ##  TODO: Change ".." to your NuttX Project Directory
+  ##  TODO: Change "$HOME/nuttx" to your NuttX Project Directory
   cp render.o \
-    ../apps/examples/hello/*hello.o  
+    $HOME/nuttx/apps/examples/hello/*hello.o  
 
   ##  Return to the NuttX Folder
   popd
@@ -551,7 +550,7 @@ TODO
   make
 ```
 
-We boot NuttX on PinePhone and run the Zig Test Program...
+We boot NuttX on PinePhone and run the Zig Test Program (pic above)...
 
 ```text
 NuttShell (NSH) NuttX-11.0.0-pinephone
@@ -564,32 +563,26 @@ nsh> hello 0
 
 [(Source)](https://gist.github.com/lupyuen/f1a02068aeb0785278c482116a4eedc7)
 
-Yep our Zig Test Program renders graphics successfully on PinePhone!
+Yep our Zig Test Program renders the __Test Pattern__ successfully on PinePhone's LCD Display! [(Like this)](https://lupyuen.github.io/images/dsi3-title.jpg)
 
-Which means the NuttX Kernel Drivers for MIPI DSI are working OK!
+Which means the NuttX Kernel Driver for MIPI DSI is working OK!
 
 Here's the Test Log for our Zig Test Program running on NuttX and PinePhone...
 
--   [Test Log for NuttX MIPI DSI on PinePhone](https://gist.github.com/lupyuen/f1a02068aeb0785278c482116a4eedc7)
+-   [__"Test Log for NuttX MIPI DSI on PinePhone"__](https://gist.github.com/lupyuen/f1a02068aeb0785278c482116a4eedc7)
 
 ## Unit Testing
-
-TODO
 
 _What about Unit Testing? Can we test the MIPI DSI / D-PHY Driver without other drivers?_
 
 Yep! Our MIPI DSI Driver simply writes values to a bunch of A64 Hardware Registers, like so: [a64_mipi_dsi.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm64/src/a64/a64_mipi_dsi.c#L633-L646)
 
 ```c
-  /* DSI Configuration Register 1 (A31 Page 846)
-   * Set Video_Start_Delay (Bits 4 to 16) to 1468 (Line Delay)
-   * Set Video_Precision_Mode_Align (Bit 2) to 1 (Fill Mode)
-   * Set Video_Frame_Start (Bit 1) to 1 (Precision Mode)
-   * Set DSI_Mode (Bit 0) to 1 (Video Mode)
-   * Note: Video_Start_Delay is actually 13 bits, not 8 bits as stated
-   * in A31 User Manual
-   */
-
+  // DSI Configuration Register 1 (A31 Page 846)
+  // Set Video_Start_Delay (Bits 4 to 16) to 1468 (Line Delay)
+  // Set Video_Precision_Mode_Align (Bit 2) to 1 (Fill Mode)
+  // Set Video_Frame_Start (Bit 1) to 1 (Precision Mode)
+  // Set DSI_Mode (Bit 0) to 1 (Video Mode)
   #define DSI_BASIC_CTL1_REG (A64_DSI_ADDR + 0x14)
   #define DSI_MODE                   (1 << 0)
   #define VIDEO_FRAME_START          (1 << 1)
@@ -602,51 +595,117 @@ Yep! Our MIPI DSI Driver simply writes values to a bunch of A64 Hardware Registe
                    DSI_MODE;
   putreg32(dsi_basic_ctl1, DSI_BASIC_CTL1_REG);
 
-  // Include Test Code
+  // Include Test Code to verify Register Addresses and Written Values
   #include "../../pinephone-nuttx/test/test_a64_mipi_dsi2.c"
 ```
 
-So we only need to ensure that the Hardware Addresses and the Written Values are correct.
+So we only need to ensure that the __Hardware Register Addresses__ and the Written Values are correct.
 
-To do that, we use Assertion Checks to verify the Addresses and Values: [test_a64_mipi_dsi2.c](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi2.c#L34-L35)
+To do that, we use __Assertion Checks__ to verify the Addresses and Values: [test_a64_mipi_dsi2.c](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi2.c#L34-L35)
 
 ```c
-  // Test Code
+  // Test Code to verify Register Addresses and Written Values
   DEBUGASSERT(DSI_BASIC_CTL1_REG == 0x1ca0014);
   DEBUGASSERT(dsi_basic_ctl1 == 0x5bc7);
 ```
 
-If the Addresses or Values are incorrect, our MIPI DSI Driver halts with an Assertion Failure.
+If the Addresses or Values are incorrect, our MIPI DSI Driver __halts with an Assertion Failure__.
 
 (We remove the Assertion Checks in the final version of our driver)
 
 _What about a smaller, self-contained Unit Test for MIPI DSI?_
 
-Here's the Unit Test that verifies MIPI DSI Packets (Long / Short  / Short with Parameter) are composed correctly...
+This is the Unit Test that verifies our NuttX Driver __correctly composes MIPI DSI Packets__ (Long / Short / Short with Parameter)...
 
-[test_mipi_dsi.c](https://github.com/lupyuen/pinephone-nuttx/blob/46f055eceae268fa7ba20d69c12d4823491a89b9/test/test_mipi_dsi.c#L1-L109)
+-   [__mipi_dsi_test__](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_mipi_dsi.c#L1-L109): Unit Test for MIPI DSI Packets
 
 ## Local Testing
 
-TODO
-
 _Can we test the MIPI DSI Driver on our Local Computer? Without running on PinePhone?_
 
-Most certainly! In fact we test the MIPI DSI Driver on our Local Computer first before testing on PinePhone. Here's how...
+Most certainly! In fact we test the MIPI DSI Driver on our __Local Computer first__ before testing on PinePhone. Here's how...
 
-Remember that our MIPI DSI Driver simply writes values to a bunch of A64 Hardware Registers. So we only need to ensure that the Hardware Addresses and the Written Values are correct.
+Remember that our MIPI DSI Driver simply writes values to a bunch of __A64 Hardware Registers__. So we only need to ensure that the Hardware Register Addresses and the Written Values are correct.
 
-We created a Test Scaffold that simulates the NuttX Build Environment...
+We created a __Test Scaffold__ that simulates the NuttX Build Environment: [test.c](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test.c#L7-L51)
 
-[test.c](https://github.com/lupyuen/pinephone-nuttx/blob/44167d81edbd054d3285ca3a6087926e6fc9ce79/test/test.c#L7-L51)
+```c
+// Simulate NuttX Build Environment
+#include <nuttx/arch.h>
+#include "arm64_arch.h"
+#include "mipi_dsi.h"
+#include "a64_mipi_dsi.h"
+#include "a64_mipi_dphy.h"
 
-Then we compile the Test Scaffold and run it on our Local Computer...
+// Test Scaffold for Local Testing
+int main() {
 
-[run.sh](https://github.com/lupyuen/pinephone-nuttx/blob/cdb6bbc8e57ef02104bdbde721f8ff6787d74efc/test/run.sh#L9-L36)
+  // Test: Enable MIPI DSI Block
+  a64_mipi_dsi_enable();
 
-Note that we capture the [Actual Test Log](test/test.log) and we `diff` it with the [Expected Test Log](test/expected.log). That's how we detect discrepancies in the Hardware Addresses and the Written Values...
+  // Test: Enable MIPI Display Physical Layer (DPHY)
+  a64_mipi_dphy_enable();
 
-[test.log](https://github.com/lupyuen/pinephone-nuttx/blob/c04f1447933665df207a42f626c726ef7a7def65/test/test.log#L4-L20)
+  // Test: Initialise LCD Controller (ST7703)
+  pinephone_panel_init();
+
+  // Test: Start MIPI DSI HSC and HSD
+  a64_mipi_dsi_start();
+
+  // Test: MIPI DSI Packets
+  mipi_dsi_test();
+}
+```
+
+Then we __compile the Test Scaffold__ and run it on our Local Computer: [run.sh](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/run.sh#L9-L36)
+
+```bash
+## Compile Test Code for Local Testing
+gcc \
+  -o test \
+  -I . \
+  -I ../../nuttx/arch/arm64/src/a64 \
+  test.c \
+  ../../nuttx/arch/arm64/src/a64/a64_mipi_dphy.c \
+  ../../nuttx/arch/arm64/src/a64/a64_mipi_dsi.c \
+  ../../nuttx/arch/arm64/src/a64/mipi_dsi.c
+
+## Run the Local Test
+./test
+
+## Capture the Actual Test Log
+./test >test.log
+
+## Diff the Actual and Expected Test Logs
+diff \
+  --ignore-all-space \
+  expected.log \
+  test.log
+```
+
+Note that we capture the [__Actual Test Log__](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test.log) and we `diff` it with the [__Expected Test Log__](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/expected.log).
+
+That's how we detect discrepancies in the Register Addresses and the Written Values: [test.log](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test.log#L4-L20)
+
+```text
+Enable MIPI DSI Bus
+  *0x1c20060: clear 0x2, set 0x2
+  *0x1c202c0: clear 0x2, set 0x2
+Enable DSI Block
+  *0x1ca0000 = 0x1
+  *0x1ca0010 = 0x30000
+  *0x1ca0060 = 0xa
+  *0x1ca0078 = 0x0
+Set Instructions
+  *0x1ca0020 = 0x1f
+  *0x1ca0024 = 0x10000001
+  *0x1ca0028 = 0x20000010
+  *0x1ca002c = 0x2000000f
+  *0x1ca0030 = 0x30100001
+  *0x1ca0034 = 0x40000010
+  *0x1ca0038 = 0xf
+  *0x1ca003c = 0x5000001f
+```
 
 # Upcoming NuttX Drivers
 
