@@ -811,7 +811,7 @@ Building a NuttX Display Driver for PinePhone feels like a __risky challenge__..
 
 -   We need an efficient way to __Experiment, Backtrack and Redo things__ in our driver
 
-Zig seems to work really well...
+__Zig seems to work__ really well because...
 
 -   Our complete Display Driver Protoype was created in [__9 Weeks__](https://github.com/lupyuen/pinephone-nuttx/commits/main?after=68eb24e9de468872b93abd742c3d5099b311be23+69&branch=main&qualified_name=refs%2Fheads%2Fmain)
 
@@ -857,9 +857,7 @@ Which is really neat because...
 
 _Was it worth the effort? Would you do it again in Zig?_
 
-Yes and yes!
-
-TODO
+Yes and yes! Zig is excellent for prototyping new Device Drivers for Operating Systems.
 
 _Once again... Why are we doing all this?_
 
