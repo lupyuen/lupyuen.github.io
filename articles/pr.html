@@ -534,6 +534,36 @@ int arm64_gic_initialize(void)
 <p>If all goes Hunky Dory, our Pull Request will be <strong>approved and merged!</strong> 🎉</p>
 </li>
 </ol>
+<p>Sometimes we need to <strong>Rebase To The Latest Master</strong> due to updates in the GitHub Actions Workflow (Continuous Integration Script). Here’s how…</p>
+<ol>
+<li>
+<p>Browse to the <strong><code>master</code></strong> branch of our <strong><code>nuttx</code></strong> repository.</p>
+<p>Click “<strong>Sync Fork → Update Branch</strong>”</p>
+<p>(Pic below)</p>
+</li>
+<li>
+<p>Launch <a href="https://desktop.github.com/"><strong>GitHub Desktop</strong></a></p>
+<p>Click “<strong>File → Add Local Repository</strong>”</p>
+<p>Select our downloaded <strong><code>nuttx</code></strong> folder.</p>
+<p>Click “<strong>Add Repository</strong>”</p>
+</li>
+<li>
+<p>Check that the <strong>Current Branch</strong> is our Working Branch for the Pull Request.</p>
+<p>(Like <strong><code>gic</code></strong> branch)</p>
+</li>
+<li>
+<p>Click “<strong>Fetch Origin</strong>”</p>
+</li>
+<li>
+<p>Click “<strong>Branch → Rebase Current Branch</strong>”</p>
+<p>Select the <strong><code>master</code></strong> branch</p>
+<p>Click “<strong>Rebase</strong>” and “<strong>Begin Rebase</strong>”</p>
+</li>
+<li>
+<p>Click “<strong>Force Push Origin</strong>” and “<strong>I’m Sure</strong>”</p>
+<p><a href="https://docs.github.com/en/desktop/contributing-and-collaborating-using-github-desktop/keeping-your-local-repository-in-sync-with-github/syncing-your-branch#rebasing-your-project-branch-onto-another-branch">(See the official docs)</a></p>
+</li>
+</ol>
 <p><img src="https://lupyuen.github.io/images/pr-update.png" alt="Pull Updates from NuttX Mainline" /></p>
 <h1 id="update-our-repositories"><a href="#update-our-repositories">8 Update Our Repositories</a></h1>
 <p>After our Pull Request has been merged into NuttX Mainline, <strong>pull the updates</strong> into our repositories…</p>
