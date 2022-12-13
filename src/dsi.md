@@ -399,7 +399,7 @@ That's __Bit 0__ of __DSI_BASIC_CTL1_REG__ (DSI Configuration Register 1) at Off
 
 Our driver shall also set __Video_Precision_Mode_Align__ to 1, __Video_Frame_Start__ to 1 and __Video_Start_Delay__. (What's the delay value?)
 
-[(Here's how we set __DSI_BASIC_CTL1_REG__)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L751-L755)
+[(Here's how we set __DSI_BASIC_CTL1_REG__)](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block)
 
 _Anything else we should init at startup?_
 
@@ -427,7 +427,7 @@ Actually we should turn on the MIPI DSI Controller BEFORE setting the Video Mode
 
     Set to `0xFF` (Why?)
 
-[(Here's how we set the registers)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L735-L748)
+[(Here's how we set the registers)](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block)
 
 _Is that all?_
 
@@ -475,8 +475,7 @@ __Packet Header__ (4 bytes):
 
     [(See "12.3.6.12: Error Correction Code", Page 208)](https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf)
 
-
-    [(How we compose the Packet Header)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L850-L867)
+    [(How we compose the Packet Header)](https://lupyuen.github.io/articles/dsi2#packet-header)
 
 __Packet Payload:__
 
@@ -492,7 +491,7 @@ __Packet Footer:__
 
     [(See "12.3.6.13: Packet Footer", Page 210)](https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf)
 
-    [(How we compute the Checksum)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L254-L257)
+    [(How we compute the CRC)](https://lupyuen.github.io/articles/dsi2#appendix-cyclic-redundancy-check)
 
 Let's program A64 to send this Long Packet.
 
@@ -514,7 +513,7 @@ We begin by setting the following bits to 1 in __DSI_CMD_CTL_REG__ (DSI Low Powe
 
 -   __TX_Flag__ (Bit 9): Clear flag for "Transmit has started"
 
-All other bits must be set to 0. [(Like this)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L1006-L1009)
+All other bits must be set to 0. [(Like this)](https://lupyuen.github.io/articles/dsi2#send-mipi-dsi-packet)
 
 We compose a __Long Packet__ (or Short Packet) containing the DCS Long Write (or DCS Short Write) command...
 
@@ -545,27 +544,21 @@ We may rewrite the table without N like so...
 
 Thus __DSI_CMD_TX_REG__ works like a Packet Buffer that will contain the data to be transmitted over MIPI DSI.
 
-[(How we write the Packet Header)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L889-L890)
-
-[(How we write the Packet Payload and Footer)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L882-L903)
-
 Then we set __Packet Length - 1__ in Bits 0 to 7 __(TX_Size)__ of __DSI_CMD_CTL_REG__ (DSI Low Power Control Register) at Offset `0x200`.
-
-[(Like this)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L904)
 
 Finally we set __DSI_INST_JUMP_SEL_REG__ (Offset `0x48`, undocumented) to begin the Low Power Transmission.
 
-[(See __DSI_START_LPTX__)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L670-L678)
+[(How we write the packet to __DSI_CMD_TX_REG__)](https://lupyuen.github.io/articles/dsi2#send-mipi-dsi-packet)
 
 We also need to...
 
 -   Disable DSI Processing:
 
-    Set __Instru_En__ to 0 [(Like this)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L291-L295)
+    Set __Instru_En__ to 0 [(Like this)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L458-L464)
 
 -   Then Enable DSI Processing: 
 
-    Set __Instru_En__ to 1 [(Like this)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L297-L302)
+    Set __Instru_En__ to 1 [(Like this)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L464-L470)
 
 __Instru_En__ is Bit 0 of __DSI_BASIC_CTL0_REG__ (DSI Configuration Register 0) at Offset `0x10`.
 
@@ -573,13 +566,13 @@ _How will we know when the transmission is complete?_
 
 To check whether the transmission is complete, we poll on __Instru_En__.
 
-[(Like this)](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L304-L312)
+[(Like this)](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L439-L458)
 
 _Wow this looks super complicated!_
 
-Yeah. The complete steps to initialise the ST7703 LCD Controller will look similar to this...
+Yeah. The complete steps to initialise the ST7703 LCD Controller will look like this...
 
--   [__"Initialise ST7703 LCD Controller"__](https://gist.github.com/lupyuen/43204d20c35ecb23dfbff12f2f570565#initialise-st7703-lcd-controller)
+-   [__"Initialise ST7703 LCD Controller"__](https://lupyuen.github.io/articles/dsi2#initialise-st7703-lcd-controller)
 
 ![Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)](https://lupyuen.github.io/images/pio-display.png)
 
