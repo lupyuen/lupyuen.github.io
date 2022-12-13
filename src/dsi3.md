@@ -863,13 +863,13 @@ TODO
 
 _Once again... Why are we doing all this?_
 
-PinePhone is becoming popular as the Edgy, Alternative Smartphone for folks who love to tinker with their gadgets. (And it's still in stock!)
+PinePhone is becoming popular as the __Edgy, Alternative Smartphone__ for folks who love to tinker with their gadgets. (And it's still in stock!)
 
-The best way to understand what's really inside PinePhone: Creating our own PinePhone Display Driver.
+The best way to understand what's really inside PinePhone: Creating our own __PinePhone Display Driver__.
 
-That's why we're doing all this PinePhone Reverse Engineering to Zig and then to C!
+That's why we're doing all this PinePhone Reverse-Engineering to Zig and then to C!
 
-_What about other cool open-source Allwinner A64 gadgets like Teres 1?_
+_What about other cool open-source Allwinner A64 gadgets like [TERES-I](https://www.olimex.com/Products/DIY-Laptop/KITS/TERES-A64-BLACK/open-source-hardware)?_
 
 Someday we might! But first let's uncover all the secrets inside PinePhone.
 
