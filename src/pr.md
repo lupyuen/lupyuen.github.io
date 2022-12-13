@@ -549,6 +549,38 @@ Finally it's time to submit our Pull Request!
 
     If all goes Hunky Dory, our Pull Request will be __approved and merged!__ 🎉
 
+Sometimes we need to __Rebase To The Latest Master__ due to updates in the GitHub Actions Workflow (Continuous Integration Script). Here's how...
+
+1.  Browse to the __`master`__ branch of our __`nuttx`__ repository.
+
+    Click "__Sync Fork → Update Branch__"
+
+    (Pic below)
+
+1.  Launch [__GitHub Desktop__](https://desktop.github.com/)
+
+    Click "__File → Add Local Repository__"
+
+    Select our downloaded __`nuttx`__ folder.
+
+    Click "__Add Repository__"
+
+1.  Check that the __Current Branch__ is our Working Branch for the Pull Request.
+
+    (Like __`gic`__ branch)
+
+1.  Click "__Fetch Origin__"
+
+1.  Click "__Branch → Rebase Current Branch__"
+
+    Select the __`master`__ branch
+
+    Click "__Rebase__" and "__Begin Rebase__"
+
+1.  Click "__Force Push Origin__" and "__I'm Sure__"
+
+    [(See the official docs)](https://docs.github.com/en/desktop/contributing-and-collaborating-using-github-desktop/keeping-your-local-repository-in-sync-with-github/syncing-your-branch#rebasing-your-project-branch-onto-another-branch)
+
 ![Pull Updates from NuttX Mainline](https://lupyuen.github.io/images/pr-update.png)
 
 # Update Our Repositories
