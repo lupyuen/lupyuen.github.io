@@ -1933,12 +1933,19 @@ TODO: Set Bit 10 of PH_DATA (0x1c2090c)</code></pre></div></li>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for backlight.zig</strong></a></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/de-pmic.png" alt="AXP803 PMIC on PinePhone Schematic (Page 3)" /></p>
+<p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>AXP803 PMIC on PinePhone Schematic (Page 3)</em></a></p>
 <h1 id="appendix-power-management-integrated-circuit"><a href="#appendix-power-management-integrated-circuit">17 Appendix: Power Management Integrated Circuit</a></h1>
 <p>Earlier we talked about the sequence of steps that our Display Driver needs to follow…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver"><strong>“Sequence of Steps for PinePhone Display Driver”</strong></a></li>
 </ul>
 <p>This section explains how we <strong>initialise PinePhone’s Power Management Integrated Circuit (PMIC)</strong>, before accessing PinePhone’s LCD Display.</p>
+<p>To power on the LCD Display, we need to program PinePhone’s <strong>Power Management Integrated Circuit (PMIC)</strong>…</p>
+<ul>
+<li><a href="https://files.pine64.org/doc/datasheet/pine64/AXP803_Datasheet_V1.0.pdf"><strong>X-Powers AXP803 PMIC Datasheet</strong></a></li>
+</ul>
+<p>The <strong>AXP803 PMIC</strong> is connected on Allwinner A64’s <strong>Reduced Serial Bus (RSB)</strong>. (Works like I2C)</p>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1947"><strong>p-boot display_board_init</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#display_board_init"><strong>Log from display_board_init</strong></a></li>
