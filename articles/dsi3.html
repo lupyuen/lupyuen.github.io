@@ -947,32 +947,33 @@ putreg32(DSI_BASIC_CTL1, DSI_BASIC_CTL1_REG);  // TODO: DMB</code></pre></div>
 <p>This will be implemented in our new <strong>Display Engine Driver</strong> for NuttX in two parts…</p>
 <ul>
 <li>
-<p><a href="https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine"><strong>Initialise the A64 Display Engine</strong></a></p>
-<p>Implemented in Zig as <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L710-L1011"><strong>de2_init</strong></a></p>
+<p><strong>Initialise the A64 Display Engine</strong> to send the pixel stream to TCON0</p>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine">(As explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L710-L1011">(Implemented in Zig as <strong>de2_init</strong>)</a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine"><strong>Configure the A64 Display Engine</strong></a></p>
-<p>(To render Framebuffers over DMA)</p>
-<p>Implemented in Zig as <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L69-L175"><strong>renderGraphics</strong></a></p>
+<p><strong>Configure the A64 Display Engine</strong> to read Framebuffers over DMA</p>
+<p><a href="https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine">(As explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L69-L175">(Implemented in Zig as <strong>renderGraphics</strong>)</a></p>
 </li>
 </ul>
 <p>We’ll convert the above Zig Drivers to C.</p>
-<p>Our Display Engine Driver will follow the design of <strong>STM32F7 Display Driver</strong> in NuttX…</p>
+<p>Our Display Engine Driver shall follow the design of the <strong>STM32F7 Display Driver</strong> in NuttX…</p>
 <ol>
 <li>
-<p><strong>stm32_bringup</strong> calls <strong>fb_register</strong></p>
+<p>At startup, <strong>stm32_bringup</strong> calls <strong>fb_register</strong></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_bringup.c#L100">(<strong>stm32_bringup.c</strong>)</a></p>
 </li>
 <li>
-<p><strong>fb_register</strong> calls <strong>up_fbinitialize</strong></p>
+<p>To initialise the Framebuffer, <strong>fb_register</strong> calls <strong>up_fbinitialize</strong></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/drivers/video/fb.c#L664">(<strong>fb.c</strong>)</a></p>
 </li>
 <li>
-<p><strong>up_fbinitialize</strong> calls <strong>stm32_ltdcinitialize</strong></p>
+<p>To initialise the Display Driver, <strong>up_fbinitialize</strong> calls <strong>stm32_ltdcinitialize</strong></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c#L72">(<strong>stm32_lcd.c</strong>)</a></p>
 </li>
 <li>
-<p><strong>stm32_ltdcinitialize</strong> creates the NuttX Framebuffer</p>
+<p>Inside the Display Driver, <strong>stm32_ltdcinitialize</strong> creates the NuttX Framebuffer</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm/src/stm32f7/stm32_ltdc.c#L2971">(<strong>stm32_ltdc.c</strong>)</a></p>
 </li>
 <li>
