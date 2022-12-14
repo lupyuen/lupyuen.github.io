@@ -1000,33 +1000,35 @@ Our NuttX Driver shall configure DE to read the Framebuffers via __Direct Memory
 
 This will be implemented in our new __Display Engine Driver__ for NuttX in two parts...
 
--   [__Initialise the A64 Display Engine__](https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine)
+-   __Initialise the A64 Display Engine__ to send the pixel stream to TCON0
 
-    Implemented in Zig as [__de2_init__](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L710-L1011)
+    [(As explained here)](https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine)
 
--   [__Configure the A64 Display Engine__](https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine)
+    [(Implemented in Zig as __de2_init__)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L710-L1011)
 
-    (To render Framebuffers over DMA)
+-   __Configure the A64 Display Engine__ to read Framebuffers over DMA
 
-    Implemented in Zig as [__renderGraphics__](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L69-L175)
+    [(As explained here)](https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine)
+
+    [(Implemented in Zig as __renderGraphics__)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L69-L175)
 
 We'll convert the above Zig Drivers to C.
 
-Our Display Engine Driver will follow the design of __STM32F7 Display Driver__ in NuttX...
+Our Display Engine Driver shall follow the design of the __STM32F7 Display Driver__ in NuttX...
 
-1.  __stm32_bringup__ calls __fb_register__
+1.  At startup, __stm32_bringup__ calls __fb_register__
 
     [(__stm32_bringup.c__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_bringup.c#L100)
 
-1.  __fb_register__ calls __up_fbinitialize__
+1.  To initialise the Framebuffer, __fb_register__ calls __up_fbinitialize__
 
     [(__fb.c__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/drivers/video/fb.c#L664)
 
-1.  __up_fbinitialize__ calls __stm32_ltdcinitialize__
+1.  To initialise the Display Driver, __up_fbinitialize__ calls __stm32_ltdcinitialize__
 
     [(__stm32_lcd.c__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c#L72)
 
-1.  __stm32_ltdcinitialize__ creates the NuttX Framebuffer
+1.  Inside the Display Driver, __stm32_ltdcinitialize__ creates the NuttX Framebuffer
 
     [(__stm32_ltdc.c__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm/src/stm32f7/stm32_ltdc.c#L2971)
 
