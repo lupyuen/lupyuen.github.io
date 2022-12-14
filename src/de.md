@@ -2238,8 +2238,7 @@ By decoding the captured addresses and values, we decipher the following steps t
 
     (DLDO1 powers the Front Camera / USB HSIC / I2C Sensors)
 
-    Register __DLDO1 Voltage Control__ (AXP803 Page 52)
-    - Register `0x15`
+    Register `0x15`: __DLDO1 Voltage Control__ (AXP803 Page 52)
     - Set __Voltage__ (Bits 0 to 4) to 26 (2.6V + 0.7V = 3.3V)
 
     ```text
@@ -2250,8 +2249,7 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Power on DLDO1
 
-    Register __Output Power On-Off Control 2__ (AXP803 Page 51)
-    - Register `0x12`
+    Register `0x12`: __Output Power On-Off Control 2__ (AXP803 Page 51)
     - Set __DLDO1 On-Off Control__ (Bit 3) to 1 (Power On)
 
     ```text
@@ -2264,8 +2262,7 @@ By decoding the captured addresses and values, we decipher the following steps t
 
     (GPIO0LDO powers the __Capacitive Touch Panel__)
 
-    Register __GPIO0LDO and GPIO0 High Level Voltage Setting__ (AXP803 Page 77)
-    - Register `0x91`
+    Register `0x91`: __GPIO0LDO and GPIO0 High Level Voltage Setting__ (AXP803 Page 77)
     - Set __GPIO0LDO and GPIO0 High Level Voltage__ (Bits 0 to 4) to 26 (2.6V + 0.7V = 3.3V)
 
     ```text
@@ -2276,8 +2273,7 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Enable LDO Mode on GPIO0
 
-    Register __GPIO0 (GPADC) Control__ (AXP803 Page 76)
-    - Register `0x90`
+    Register `0x90`: __GPIO0 (GPADC) Control__ (AXP803 Page 76)
     - Set __GPIO0 Pin Function Control__ (Bits 0 to 2) to 0b11 (Low Noise LDO on)
 
     ```text
@@ -2289,8 +2285,7 @@ By decoding the captured addresses and values, we decipher the following steps t
 
     (DLDO2 powers the __MIPI DSI Connector__)
 
-    Register __DLDO2 Voltage Control__ (AXP803 Page 52)
-    - Register `0x16`
+    Register `0x16`: __DLDO2 Voltage Control__ (AXP803 Page 52)
     - Set __Voltage__ (Bits 0 to 4) to 11 (1.1V + 0.7V = 1.8V)
 
     ```text
@@ -2301,8 +2296,7 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Power on DLDO2
 
-    Register __Output Power On-Off Control 2__ (AXP803 Page 51)
-    - Register `0x12`
+    Register `0x12`: __Output Power On-Off Control 2__ (AXP803 Page 51)
     - Set __DLDO2 On-Off Control__ (Bit 4) to 1 (Power On)
 
     ```text
