@@ -1018,15 +1018,15 @@ Our Display Engine Driver will follow the design of __STM32F7 Display Driver__ i
 
     [(__stm32_bringup.c__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_bringup.c#L100)
 
-1.  __fb_register__ calls __up_fbinitialize__...
+1.  __fb_register__ calls __up_fbinitialize__
 
     [(__fb.c__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/drivers/video/fb.c#L664)
 
-1.  __up_fbinitialize__ calls __stm32_ltdcinitialize__...
+1.  __up_fbinitialize__ calls __stm32_ltdcinitialize__
 
     [(__stm32_lcd.c__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c#L72)
 
-1.  __stm32_ltdcinitialize__ creates the NuttX Framebuffer...
+1.  __stm32_ltdcinitialize__ creates the NuttX Framebuffer
 
     [(__stm32_ltdc.c__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm/src/stm32f7/stm32_ltdc.c#L2971)
 
