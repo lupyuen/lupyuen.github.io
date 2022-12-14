@@ -81,7 +81,7 @@
 <li><a href="#appendix-upcoming-nuttx-drivers">10 Appendix: Upcoming NuttX Drivers</a><ul>
 <li><a href="#timing-controller-tcon0">10.1 Timing Controller (TCON0)</a><ul></ul></li>
 <li><a href="#display-engine">10.2 Display Engine</a><ul></ul></li>
-<li><a href="#backlight">10.3 Backlight</a><ul></ul></li>
+<li><a href="#display-backlight">10.3 Display Backlight</a><ul></ul></li>
 <li><a href="#lcd-panel">10.4 LCD Panel</a><ul></ul></li>
 <li><a href="#power-management-integrated-circuit">10.5 Power Management Integrated Circuit</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>18 Dec 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/dsi3-title.jpg" alt="Rendering graphics on PinePhone with Apache NuttX RTOS" /></p>
@@ -780,7 +780,7 @@ Set Instructions
 </li>
 </ul>
 <p>To turn on the Display Backlight, we’ll call PIO and PWM in our new <strong>Board LCD Driver</strong> for NuttX.</p>
-<p><a href="https://lupyuen.github.io/articles/dsi3#backlight">(Details in the Appendix)</a></p>
+<p><a href="https://lupyuen.github.io/articles/dsi3#display-backlight">(Details in the Appendix)</a></p>
 </li>
 <li>
 <p><strong>LCD Panel</strong>: Before sending <a href="https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet"><strong>Initialisation Commands</strong></a> to the ST7703 LCD Controller, we need to <strong>reset the LCD Panel.</strong></p>
@@ -868,6 +868,8 @@ putreg32(DSI_BASIC_CTL1, DSI_BASIC_CTL1_REG);  // TODO: DMB</code></pre></div>
 <p>That’s why we’re doing all this PinePhone Reverse-Engineering to Zig and then to C!</p>
 <p><em>What about other cool open-source Allwinner A64 gadgets like <a href="https://www.olimex.com/Products/DIY-Laptop/KITS/TERES-A64-BLACK/open-source-hardware">TERES-I</a>?</em></p>
 <p>Someday we might! But first let’s uncover all the secrets inside PinePhone.</p>
+<p><img src="https://lupyuen.github.io/images/dsi3-title.jpg" alt="Testing our PinePhone Display Driver on Apache NuttX RTOS" /></p>
+<p><a href="https://lupyuen.github.io/articles/dsi3#test-mipi-dsi-driver"><em>Testing our PinePhone Display Driver on Apache NuttX RTOS</em></a></p>
 <h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>Check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
@@ -986,7 +988,9 @@ putreg32(DSI_BASIC_CTL1, DSI_BASIC_CTL1_REG);  // TODO: DMB</code></pre></div>
 <p>NuttX Framebuffer is here: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm/src/stm32f7/stm32_ltdc.c#L864"><strong>stm32_ltdc.c</strong></a></p>
 </li>
 </ol>
-<h2 id="backlight"><a href="#backlight">10.3 Backlight</a></h2>
+<p><img src="https://lupyuen.github.io/images/pio-backlight.png" alt="PinePhone Display Backlight" /></p>
+<p><a href="https://lupyuen.github.io/articles/pio#pinephone-backlight"><em>PinePhone Display Backlight</em></a></p>
+<h2 id="display-backlight"><a href="#display-backlight">10.3 Display Backlight</a></h2>
 <p>We won’t see anything on PinePhone’s LCD Display… Until we switch on the <strong>Display Backlight!</strong></p>
 <p>PinePhone’s Display Backlight is controlled by A64’s…</p>
 <ul>
