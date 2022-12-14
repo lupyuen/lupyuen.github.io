@@ -497,7 +497,7 @@ ssize_t mipi_dsi_short_packet(
 <li>Driver for LCD Panel</li>
 <li>Driver for Display Engine</li>
 </ul>
-<p>Running an Integration Test across the C and Zig Drivers will be a little tricky. Here’s how we run the Integration Test…</p>
+<p>Running an <strong>Integration Test</strong> across the C and Zig Drivers will be a little tricky. This is how we run the test…</p>
 <p>We created this program in Zig that <strong>calls the C and Zig Drivers</strong>, in the right sequence: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L1146-L1182">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Main Function that will be called by NuttX
 /// when we run the `hello` app
@@ -582,14 +582,14 @@ NuttX 11.0.0-pinephone 2a1577a-dirty Dec  9 2022 13:57:47 arm64 pinephone
 
 nsh&gt; hello 0</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f1a02068aeb0785278c482116a4eedc7">(Source)</a></p>
-<p>Yep our Zig Test Program renders the <strong>Test Pattern</strong> successfully on PinePhone’s LCD Display! <a href="https://lupyuen.github.io/images/dsi3-title.jpg">(Like this)</a></p>
+<p>Yep our Zig Test Program <strong>renders the Test Pattern</strong> successfully on PinePhone’s LCD Display! <a href="https://lupyuen.github.io/images/dsi3-title.jpg">(Like this)</a></p>
 <p>Which means the NuttX Kernel Driver for MIPI DSI is working OK!</p>
-<p>Here’s the Test Log for our Zig Test Program running on NuttX and PinePhone…</p>
+<p>Here’s the <strong>Test Log</strong> for our Zig Test Program running on NuttX and PinePhone…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/f1a02068aeb0785278c482116a4eedc7"><strong>“Test Log for NuttX MIPI DSI on PinePhone”</strong></a></li>
 </ul>
 <h2 id="unit-testing"><a href="#unit-testing">6.1 Unit Testing</a></h2>
-<p><em>What about Unit Testing? Can we test the MIPI DSI / D-PHY Driver without other drivers?</em></p>
+<p><em>What about Unit Testing? Can we test the MIPI DSI Driver without Zig?</em></p>
 <p>Yep! Our MIPI DSI Driver simply writes values to a bunch of A64 Hardware Registers, like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm64/src/a64/a64_mipi_dsi.c#L633-L646">a64_mipi_dsi.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // DSI Configuration Register 1 (A31 Page 846)
   // Set Video_Start_Delay (Bits 4 to 16) to 1468 (Line Delay)
@@ -600,7 +600,7 @@ nsh&gt; hello 0</code></pre></div>
   #define DSI_MODE                   (1 &lt;&lt; 0)
   #define VIDEO_FRAME_START          (1 &lt;&lt; 1)
   #define VIDEO_PRECISION_MODE_ALIGN (1 &lt;&lt; 2)
-  #define VIDEO_START_DELAY(n)       (n &lt;&lt; 4)
+  #define VIDEO_START_DELAY(n)       ((n) &lt;&lt; 4)
 
   dsi_basic_ctl1 = VIDEO_START_DELAY(1468) |
                    VIDEO_PRECISION_MODE_ALIGN |
