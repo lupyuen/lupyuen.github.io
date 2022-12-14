@@ -804,7 +804,7 @@ To render graphics on PinePhone's LCD Display, our Display Driver needs to follo
 
 1.  Render Graphics with __Display Engine (DE)__
 
-    [(Explained here)](https://lupyuen.github.io/articles/de)
+    [(Explained here)](https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine)
 
     [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L69-L175)
 
