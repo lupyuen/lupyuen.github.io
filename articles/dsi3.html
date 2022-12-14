@@ -173,7 +173,7 @@
 <p>(ST7703 is inside the Xingbangda XBD599 LCD Panel)</p>
 </li>
 <li>
-<p><strong>After Startup:</strong> Allwinner A64’s <a href="https://lupyuen.github.io/articles/de"><strong>Display Engine</strong></a> and <a href="https://lupyuen.github.io/articles/de#display-rendering-on-pinephone"><strong>Timing Controller (TCON0)</strong></a> pumps pixels continuously to the LCD Panel over MIPI DSI.</p>
+<p><strong>After Startup:</strong> Allwinner A64’s <a href="https://lupyuen.github.io/articles/de"><strong>Display Engine</strong></a> and <a href="https://lupyuen.github.io/articles/de#display-rendering-on-pinephone"><strong>Timing Controller (TCON0)</strong></a> pump pixels continuously to the LCD Panel over MIPI DSI.</p>
 <p>(Bypassing our MIPI DSI Driver)</p>
 </li>
 </ul>
@@ -186,7 +186,7 @@
 <p><img src="https://lupyuen.github.io/images/dsi3-code.png" alt="Composing a MIPI DSI Short Packet" /></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi3/arch/arm64/src/a64/mipi_dsi.c#L276-L387"><em>Composing a MIPI DSI Short Packet</em></a></p>
 <h1 id="send-mipi-dsi-packet"><a href="#send-mipi-dsi-packet">3 Send MIPI DSI Packet</a></h1>
-<p><em>How do we send MIPI DSI Commands to initialise PinePhone’s LCD Controller?</em></p>
+<p><em>How do we send MIPI DSI Commands to PinePhone’s LCD Controller?</em></p>
 <p>Let’s take one MIPI DSI Command that initialises the ST7703 LCD Controller: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c#L52-L60">test_a64_mipi_dsi.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Command #1 to init ST7703
 const uint8_t cmd1[] = { 
@@ -213,7 +213,7 @@ write_dcs(cmd1, sizeof(cmd1));</code></pre></div>
 </ul>
 <p>(DCS means Display Command Set)</p>
 <div class="example-wrap"><pre class="language-c"><code>/// Write the DCS Command to MIPI DSI
-static int write_dcs(FAR const uint8_t *buf, size_t len) {
+static int write_dcs(const uint8_t *buf, size_t len) {
   // Do DCS Short Write or Long Write depending on command length.
   // A64_MIPI_DSI_VIRTUAL_CHANNEL is 0.
   switch (len) {
@@ -246,9 +246,9 @@ static int write_dcs(FAR const uint8_t *buf, size_t len) {
 // Assumes that the MIPI DSI Block has been enabled on the SoC.
 // Returns the number of bytes transmitted.
 ssize_t a64_mipi_dsi_write(
-  uint8_t channel,      // Virtual Channel (0)
-  enum mipi_dsi_e cmd,  // DCS Command (Data Type)
-  FAR const uint8_t *txbuf,  // Payload data for the packet
+  uint8_t channel,       // Virtual Channel (0)
+  enum mipi_dsi_e cmd,   // DCS Command (Data Type)
+  const uint8_t *txbuf,  // Payload data for the packet
   size_t txlen)  // Length of payload data (Max 65541 bytes)
 {
   ...
@@ -284,6 +284,7 @@ ssize_t a64_mipi_dsi_write(
 <p>Then our NuttX Driver writes the Short or Long Packet to the <strong>MIPI DSI Registers</strong> of Allwinner A64: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi3/arch/arm64/src/a64/a64_mipi_dsi.c#L446-L526">a64_mipi_dsi.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Write the packet to DSI Low Power Transmit Package Register
   // at DSI Offset 0x300 (A31 Page 856)
+  // A64_DSI_ADDR is the A64 DSI Base Address: 0x01ca0000
   addr = A64_DSI_ADDR + 0x300;
   for (i = 0; i &lt; pktlen; i += 4) {
 
@@ -311,7 +312,7 @@ ssize_t a64_mipi_dsi_write(
 </ul>
 <p>But wait… We haven’t enabled the MIPI DSI Hardware yet!</p>
 <h1 id="enable-mipi-dsi-and-d-phy"><a href="#enable-mipi-dsi-and-d-phy">4 Enable MIPI DSI and D-PHY</a></h1>
-<p><em>At startup we call the MIPI DSI Driver to send commands to the LCD Controller…</em></p>
+<p><em>At startup we call the MIPI DSI Driver to send Initialisation Commands to the LCD Controller…</em></p>
 <p><em>What about other MIPI DSI Operations?</em></p>
 <p>Before sending MIPI DSI Packets, our NuttX Driver needs to enable 2 chunks of hardware on Allwinner A64 SoC…</p>
 <ul>
@@ -375,7 +376,7 @@ putreg32(0x63f07006, DSI_INST_JUMP_SEL_REG);
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi3/arch/arm64/src/a64/a64_mipi_dphy.c"><strong>a64_mipi_dphy.c</strong></a>: MIPI Display Physical Layer (D-PHY) for Allwinner A64</p>
 </li>
 </ul>
-<p>We created the above NuttX Source Files by converting our <strong>Zig MIPI DSI Driver</strong> to C…</p>
+<p>We created the above NuttX Source Files by converting our MIPI DSI Driver <strong>from Zig to C</strong>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig"><strong>display.zig</strong></a>: Zig Driver for MIPI DSI</p>
@@ -392,12 +393,6 @@ putreg32(0x63f07006, DSI_INST_JUMP_SEL_REG);
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/dsi2"><strong>“NuttX RTOS for PinePhone: Display Driver in Zig”</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/articles/de"><strong>“Rendering PinePhone’s Display (DE and TCON0)”</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/articles/de2"><strong>“NuttX RTOS for PinePhone: Render Graphics in Zig”</strong></a></p>
 </li>
 </ul>
 <p>Why Reverse Engineer? Because a lot of details are missing from the official docs for Allwinner A64…</p>
@@ -463,12 +458,12 @@ fn composeShortPacket(
 <div class="example-wrap"><pre class="language-c"><code>// Compose MIPI DSI Short Packet.
 // Returns the Packet Length.
 ssize_t mipi_dsi_short_packet(
-  FAR uint8_t *pktbuf,  // Buffer for the returned packet
-  size_t pktlen,        // Size of the packet buffer
-  uint8_t channel,      // Virtual Channel
-  enum mipi_dsi_e cmd,  // DCS Command (Data Type)
-  FAR const uint8_t *txbuf,  // Payload data for the packet
-  size_t txlen)              // Length of payload data (1 or 2 bytes)
+  uint8_t *pktbuf,       // Buffer for the returned packet
+  size_t pktlen,         // Size of the packet buffer
+  uint8_t channel,       // Virtual Channel
+  enum mipi_dsi_e cmd,   // DCS Command (Data Type)
+  const uint8_t *txbuf,  // Payload data for the packet
+  size_t txlen)          // Length of payload data (1 or 2 bytes)
 {
   // Data Identifier (DI) (1 byte):
   // Virtual Channel Identifier (Bits 6 to 7)
@@ -511,8 +506,14 @@ ssize_t mipi_dsi_short_packet(
 <p><em>How do we test the MIPI DSI Driver in the NuttX Kernel?</em></p>
 <p>Right now we have implemented the following in the <strong>NuttX Kernel</strong>…</p>
 <ul>
-<li>Driver for MIPI Display Serial Interface (DSI)</li>
-<li>Driver for MIPI Display Physical Layer (D-PHY)</li>
+<li>
+<p>Driver for MIPI Display Serial Interface (DSI)</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi3/arch/arm64/src/a64/a64_mipi_dsi.c">(Implemented in <strong>a64_mipi_dsi.c</strong>)</a></p>
+</li>
+<li>
+<p>Driver for MIPI Display Physical Layer (D-PHY)</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi3/arch/arm64/src/a64/a64_mipi_dphy.c">(Implemented in <strong>a64_mipi_dphy.c</strong>)</a></p>
+</li>
 </ul>
 <p>But to <a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><strong>render graphics on PinePhone</strong></a> we need the following drivers, which are still in Zig (pending conversion to C)…</p>
 <ul>
@@ -527,8 +528,7 @@ ssize_t mipi_dsi_short_packet(
 <div class="example-wrap"><pre class="language-zig"><code>/// Main Function that will be called by NuttX
 /// when we run the `hello` app
 pub export fn hello_main(argc: c_int, argv: [*c]const [*c]u8) c_int {
-  // Render graphics on PinePhone in Zig and C:
-
+  // Render graphics on PinePhone in Zig and C...
   // Turn on Display Backlight (in Zig)
   // Init Timing Controller TCON0 (in Zig)
   // Init PMIC (in Zig)
@@ -599,7 +599,7 @@ popd
 
 #  Link the Compiled Zig App with NuttX
 make</code></pre></div>
-<p>We boot NuttX on PinePhone and run the Zig Test Program (pic above)…</p>
+<p>We boot NuttX on PinePhone <a href="https://github.com/apache/nuttx/blob/master/Documentation/platforms/arm/a64/boards/pinephone/index.rst">(via microSD)</a> and run the Zig Test Program (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-11.0.0-pinephone
 
 nsh&gt; uname -a
@@ -647,11 +647,12 @@ DEBUGASSERT(dsi_basic_ctl1 == 0x5bc7);</code></pre></div>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_mipi_dsi.c#L1-L109"><strong>mipi_dsi_test</strong></a>: Unit Test for MIPI DSI Packets</li>
 </ul>
+<p>We run this Unit Test locally on our computer, here’s how…</p>
 <h2 id="local-testing"><a href="#local-testing">6.2 Local Testing</a></h2>
 <p><em>Can we test the MIPI DSI Driver on our Local Computer? Without running on PinePhone?</em></p>
 <p>Most certainly! In fact we test the MIPI DSI Driver on our <strong>Local Computer first</strong> before testing on PinePhone. Here’s how…</p>
 <p>Remember that our MIPI DSI Driver simply writes values to a bunch of <strong>A64 Hardware Registers</strong>. So we only need to ensure that the Hardware Register Addresses and the Written Values are correct.</p>
-<p>We created a <strong>Test Scaffold</strong> that simulates the NuttX Build Environment: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test.c#L7-L53">test.c</a></p>
+<p>To target our Local Computer, we created a <strong>Test Scaffold</strong> that simulates the NuttX Build Environment: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test.c#L7-L53">test.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Simulate NuttX Build Environment
 #include &lt;nuttx/arch.h&gt;
 #include &quot;arm64_arch.h&quot;
@@ -717,12 +718,15 @@ Set Instructions
   *0x1ca0030 = 0x30100001
   *0x1ca0034 = 0x40000010
   *0x1ca0038 = 0xf
-  *0x1ca003c = 0x5000001f</code></pre></div>
+  *0x1ca003c = 0x5000001f
+  ...</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test.log#L4-L20">(Source)</a></p>
+<p>Let’s talk about the missing parts of our NuttX Driver…</p>
 <p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Inside our Complete Display Driver for PinePhone" /></p>
+<p><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><em>Inside our Complete Display Driver for PinePhone</em></a></p>
 <h1 id="upcoming-nuttx-drivers"><a href="#upcoming-nuttx-drivers">7 Upcoming NuttX Drivers</a></h1>
 <p><em>What about the rest of our NuttX Display Driver?</em></p>
-<p>We talked earlier about the Grand Plan for our <strong>NuttX Display Driver</strong> that’s layered like an Onion <a href="https://en.wikipedia.org/wiki/Kue_lapis">Kueh Lapis</a> (pic above)…</p>
+<p>We talked earlier about the Grand Plan for our <strong>NuttX Display Driver</strong> (pic above) that’s deeply layered like an Onion <a href="https://en.wikipedia.org/wiki/Spekkoek">Kueh Lapis</a>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><strong>“Complete Display Driver for PinePhone”</strong></a></li>
 </ul>
@@ -754,7 +758,7 @@ Set Instructions
 <ol>
 <li>
 <p><a href="https://lupyuen.github.io/articles/de#display-rendering-on-pinephone"><strong>Timing Controller (TCON0)</strong></a>: To render PinePhone’s LCD Display, the MIPI DSI Controller on Allwinner A64 needs to receive a <strong>continuous stream of pixels</strong>…</p>
-<p>Which will be provided by Allwinner A64’s <strong>Timing Controller (TCON0)</strong>.</p>
+<p>Which will be provided by Allwinner A64’s <a href="https://lupyuen.github.io/articles/de#display-rendering-on-pinephone"><strong>Timing Controller (TCON0)</strong></a>.</p>
 <p>(TCON0 will receive the pixel stream from A64’s Display Engine)</p>
 <p>Our NuttX Driver shall program TCON0 to <strong>send the stream of pixels</strong> to the MIPI DSI Controller.</p>
 <p>This will be implemented in our new <strong>Timing Controller (TCON0) Driver</strong> for NuttX.</p>
@@ -762,7 +766,7 @@ Set Instructions
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/de"><strong>Display Engine (DE)</strong></a>: Allwinner A64’s Display Engine (DE) reads the <strong>Graphics Framebuffers</strong> in RAM <a href="https://lupyuen.github.io/images/de2-blender.jpg">(up to 3 Framebuffers)</a>…</p>
-<p>And <strong>streams the Pixel Data</strong> to the Timing Controller (TCON0).</p>
+<p>And <strong>streams the pixels</strong> to the Timing Controller (TCON0).</p>
 <p>Our NuttX Driver shall configure DE to read the Framebuffers via <strong>Direct Memory Access</strong> (DMA).</p>
 <p>With DMA, updates to the Framebuffers will be instantly visible on PinePhone’s LCD Display.</p>
 <p>This will be implemented in our new <strong>Display Engine Driver</strong> for NuttX.</p>
@@ -776,7 +780,7 @@ Set Instructions
 <p><strong>Programmable Input / Output (PIO)</strong>: Works like GPIO, implemented in <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c"><strong>a64_pio.c</strong></a></p>
 </li>
 <li>
-<p><strong>Pulse-Width Modulation (PWM)</strong>: New Implementation</p>
+<p><strong>Pulse-Width Modulation (PWM)</strong>: To be implemented</p>
 </li>
 </ul>
 <p>To turn on the Display Backlight, we’ll call PIO and PWM in our new <strong>Board LCD Driver</strong> for NuttX.</p>
@@ -848,7 +852,7 @@ putreg32(DSI_BASIC_CTL1, DSI_BASIC_CTL1_REG);  // TODO: DMB</code></pre></div>
 <p>Which is really neat because…</p>
 <ul>
 <li>
-<p>Our Executable Spec describes Allwinner A64’s Display Interfaces in a <strong>concise and readable</strong> way</p>
+<p>Our Executable Spec describes Allwinner A64’s Display Interfaces in a <strong>concise and readable</strong> format</p>
 </li>
 <li>
 <p>“<strong><code>comptime</code> <code>assert</code></strong>” will verify our Register Adresses and Values at <strong>Compile-Time</strong></p>
@@ -865,7 +869,7 @@ putreg32(DSI_BASIC_CTL1, DSI_BASIC_CTL1_REG);  // TODO: DMB</code></pre></div>
 <p><em>Once again… Why are we doing all this?</em></p>
 <p>PinePhone is becoming popular as the <strong>Edgy, Alternative Smartphone</strong> for folks who love to tinker with their gadgets. (And it’s still in stock!)</p>
 <p>The best way to understand what’s really inside PinePhone: Creating our own <strong>PinePhone Display Driver</strong>.</p>
-<p>That’s why we’re doing all this PinePhone Reverse-Engineering to Zig and then to C!</p>
+<p>That’s why we’re doing all this <strong>PinePhone Reverse-Engineering</strong>… First to Zig, then to C!</p>
 <p><em>What about other cool open-source Allwinner A64 gadgets like <a href="https://www.olimex.com/Products/DIY-Laptop/KITS/TERES-A64-BLACK/open-source-hardware">TERES-I</a>?</em></p>
 <p>Someday we might! But first let’s uncover all the secrets inside PinePhone.</p>
 <p><img src="https://lupyuen.github.io/images/dsi3-title.jpg" alt="Testing our PinePhone Display Driver on Apache NuttX RTOS" /></p>
@@ -923,17 +927,18 @@ putreg32(DSI_BASIC_CTL1, DSI_BASIC_CTL1_REG);  // TODO: DMB</code></pre></div>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/dsi3.md"><strong>lupyuen.github.io/src/dsi3.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Inside our Complete Display Driver for PinePhone" /></p>
+<p><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><em>Inside our Complete Display Driver for PinePhone</em></a></p>
 <h1 id="appendix-upcoming-nuttx-drivers"><a href="#appendix-upcoming-nuttx-drivers">10 Appendix: Upcoming NuttX Drivers</a></h1>
 <p>We talked earlier about our implementation of the <strong>MIPI Display Serial Interface</strong> and <strong>MIPI Display Physical Layer</strong> for our NuttX Display Driver (lower part of pic above)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi3#upcoming-nuttx-drivers"><strong>“Upcoming NuttX Drivers”</strong></a></li>
 </ul>
-<p>This section explains how we’re <strong>building the NuttX Drivers</strong> for the remaining features (upper part of pic above), converting our Zig code to C…</p>
+<p>This section explains how we’re <strong>building the NuttX Drivers</strong> for the remaining features (upper part of pic above), by converting our Zig Drivers to C…</p>
 <p><img src="https://lupyuen.github.io/images/de-block1a.jpg" alt="Allwinner A64 Timing Controller (TCON0)" /></p>
 <p><a href="https://lupyuen.github.io/articles/de#display-rendering-on-pinephone"><em>Allwinner A64 Timing Controller (TCON0)</em></a></p>
 <h2 id="timing-controller-tcon0"><a href="#timing-controller-tcon0">10.1 Timing Controller (TCON0)</a></h2>
 <p>To render PinePhone’s LCD Display, the MIPI DSI Controller on Allwinner A64 needs to receive a <strong>continuous stream of pixels</strong>…</p>
-<p>Which will be provided by Allwinner A64’s <strong>Timing Controller (TCON0)</strong>.</p>
+<p>Which will be provided by Allwinner A64’s <a href="https://lupyuen.github.io/articles/de#display-rendering-on-pinephone"><strong>Timing Controller (TCON0)</strong></a>.</p>
 <p>(TCON0 will receive the pixel stream from A64’s Display Engine)</p>
 <p>Our NuttX Driver shall program TCON0 to <strong>send the stream of pixels</strong> to the MIPI DSI Controller.</p>
 <p>This will be implemented in our new <strong>Timing Controller (TCON0) Driver</strong> for NuttX…</p>
@@ -949,20 +954,20 @@ putreg32(DSI_BASIC_CTL1, DSI_BASIC_CTL1_REG);  // TODO: DMB</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="Allwinner A64 Display Engine" /></p>
 <p><a href="https://lupyuen.github.io/articles/de2#configure-blender"><em>Allwinner A64 Display Engine</em></a></p>
 <h2 id="display-engine"><a href="#display-engine">10.2 Display Engine</a></h2>
-<p>Allwinner A64’s Display Engine (DE) reads the <strong>Graphics Framebuffers</strong> in RAM (up to 3 Framebuffers, pic above)…</p>
-<p>And <strong>streams the Pixel Data</strong> to the ST7703 LCD Controller via the A64 Timing Controller (TCON0).</p>
+<p>Allwinner A64’s <a href="https://lupyuen.github.io/articles/de"><strong>Display Engine (DE)</strong></a> reads the Graphics Framebuffers in RAM (up to 3 Framebuffers, pic above)…</p>
+<p>And <strong>streams the pixels</strong> to the ST7703 LCD Controller for display, via the A64 Timing Controller (TCON0).</p>
 <p>Our NuttX Driver shall configure DE to read the Framebuffers via <strong>Direct Memory Access</strong> (DMA). With DMA, updates to the Framebuffers will be instantly visible on PinePhone’s LCD Display.</p>
 <p>This will be implemented in our new <strong>Display Engine Driver</strong> for NuttX in two parts…</p>
 <ul>
 <li>
 <p><strong>Initialise the A64 Display Engine</strong> to send the pixel stream to TCON0</p>
 <p><a href="https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine">(As explained here)</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L710-L1011">(Implemented in Zig as <strong>de2_init</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L758-L1025">(Implemented in Zig as <strong>de2_init</strong>)</a></p>
 </li>
 <li>
 <p><strong>Configure the A64 Display Engine</strong> to read Framebuffers over DMA</p>
 <p><a href="https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine">(As explained here)</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L69-L175">(Implemented in Zig as <strong>renderGraphics</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L72-L180">(Implemented in Zig as <strong>renderGraphics</strong>)</a></p>
 </li>
 </ul>
 <p>We’ll convert the above Zig Drivers to C.</p>
@@ -998,7 +1003,7 @@ putreg32(DSI_BASIC_CTL1, DSI_BASIC_CTL1_REG);  // TODO: DMB</code></pre></div>
 <p><strong>Programmable Input / Output (PIO)</strong>: Works like GPIO, implemented in <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c"><strong>a64_pio.c</strong></a></p>
 </li>
 <li>
-<p><strong>Pulse-Width Modulation (PWM)</strong>: New Implementation</p>
+<p><strong>Pulse-Width Modulation (PWM)</strong>: To be implemented</p>
 </li>
 </ul>
 <p>To turn on the Display Backlight, we’ll call PIO and PWM in our new <strong>Board LCD Driver</strong> for NuttX…</p>
@@ -1014,10 +1019,10 @@ putreg32(DSI_BASIC_CTL1, DSI_BASIC_CTL1_REG);  // TODO: DMB</code></pre></div>
 <p>Our Backlight Driver will follow the design of the STM32 Backlight Driver: <strong>stm32_backlight</strong>…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32/hymini-stm32v/src/stm32_ssd1289.c#L230"><strong>stm32_ssd1289.c</strong></a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32/hymini-stm32v/src/stm32_ssd1289.c#L219-L259"><strong>stm32_ssd1289.c</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32/viewtool-stm32f107/src/stm32_ssd1289.c#L298"><strong>stm32_ssd1289.c</strong></a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32/viewtool-stm32f107/src/stm32_ssd1289.c#L287-L327"><strong>stm32_ssd1289.c</strong></a></p>
 </li>
 </ul>
 <p>The driver code will go inside our new <strong>Board LCD Driver</strong> for NuttX, similar to this…</p>
