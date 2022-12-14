@@ -1050,21 +1050,21 @@ Our Display Engine Driver shall follow the design of the __STM32F7 Display Drive
 
 1.  At startup, __stm32_bringup__ calls __fb_register__
 
-    [(__stm32_bringup.c__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_bringup.c#L100)
+    [(__stm32_bringup.c__)](https://github.com/apache/nuttx/blob/master/boards/arm/stm32f7/stm32f746g-disco/src/stm32_bringup.c#L100)
 
 1.  To initialise the Framebuffer, __fb_register__ calls __up_fbinitialize__
 
-    [(__fb.c__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/drivers/video/fb.c#L664)
+    [(__fb.c__)](https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L664)
 
 1.  To initialise the Display Driver, __up_fbinitialize__ calls __stm32_ltdcinitialize__
 
-    [(__stm32_lcd.c__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c#L72)
+    [(__stm32_lcd.c__)](https://github.com/apache/nuttx/blob/master/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c#L72)
 
 1.  Inside the Display Driver, __stm32_ltdcinitialize__ creates the NuttX Framebuffer
 
-    [(__stm32_ltdc.c__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm/src/stm32f7/stm32_ltdc.c#L2971)
+    [(__stm32_ltdc.c__)](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32f7/stm32_ltdc.c#L2971)
 
-1.  NuttX Framebuffer is here: [__stm32_ltdc.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm/src/stm32f7/stm32_ltdc.c#L864)
+1.  NuttX Framebuffer is here: [__stm32_ltdc.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32f7/stm32_ltdc.c#L864)
 
 ![PinePhone Display Backlight](https://lupyuen.github.io/images/pio-backlight.png)
 
@@ -1090,13 +1090,13 @@ We'll convert the above Backlight Driver from Zig to C.
 
 Our Backlight Driver will follow the design of the STM32 Backlight Driver: __stm32_backlight__...
 
--   [__stm32_ssd1289.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32/hymini-stm32v/src/stm32_ssd1289.c#L219-L259)
+-   [__stm32_ssd1289.c__](https://github.com/apache/nuttx/blob/master/boards/arm/stm32/hymini-stm32v/src/stm32_ssd1289.c#L219-L259)
 
--   [__stm32_ssd1289.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32/viewtool-stm32f107/src/stm32_ssd1289.c#L287-L327)
+-   [__stm32_ssd1289.c__](https://github.com/apache/nuttx/blob/master/boards/arm/stm32/viewtool-stm32f107/src/stm32_ssd1289.c#L287-L327)
 
 The driver code will go inside our new __Board LCD Driver__ for NuttX, similar to this...
 
--   [__stm32_lcd.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c)
+-   [__stm32_lcd.c__](https://github.com/apache/nuttx/blob/master/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c)
 
 ## LCD Panel
 
@@ -1114,7 +1114,7 @@ We'll convert the above LCD Panel Driver from Zig to C.
 
 The code will go inside our new __Board LCD Driver__ for NuttX, similar to this...
 
--   [__stm32_lcd.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c)
+-   [__stm32_lcd.c__](https://github.com/apache/nuttx/blob/master/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c)
 
 Also in the Board LCD Driver: We'll add the code to send the __Initialisation Commands__ to the ST7703 LCD Controller (via MIPI DSI)...
 
@@ -1142,4 +1142,4 @@ We'll convert the above PMIC Driver from Zig to C.
 
 The code will go inside our new __Board LCD Driver__ for NuttX, similar to this...
 
--   [__stm32_lcd.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c)
+-   [__stm32_lcd.c__](https://github.com/apache/nuttx/blob/master/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c)
