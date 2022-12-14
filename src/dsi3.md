@@ -828,27 +828,27 @@ __Zig seems to work__ really well because...
 Along the way we created an __Executable Specification__ of Allwinner A64's Display Interfaces... A huge bunch of __Hardware Register Addresses__ and their Expected Values: [display.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1013-L1033)
 
 ```zig
-  // Set Video Start Delay
-  // DSI_BASIC_CTL1_REG: DSI Offset 0x14 (A31 Page 846)
-  // Set Video_Start_Delay (Bits 4 to 16) to 1468 (Line Delay)
-  // Set Video_Precision_Mode_Align (Bit 2) to 1 (Fill Mode)
-  // Set Video_Frame_Start (Bit 1) to 1 (Precision Mode)
-  // Set DSI_Mode (Bit 0) to 1 (Video Mode)
-  // Note: Video_Start_Delay is actually 13 bits, not 8 bits as documented in the A31 User Manual
+// Set Video Start Delay
+// DSI_BASIC_CTL1_REG: DSI Offset 0x14 (A31 Page 846)
+// Set Video_Start_Delay (Bits 4 to 16) to 1468 (Line Delay)
+// Set Video_Precision_Mode_Align (Bit 2) to 1 (Fill Mode)
+// Set Video_Frame_Start (Bit 1) to 1 (Precision Mode)
+// Set DSI_Mode (Bit 0) to 1 (Video Mode)
+// Note: Video_Start_Delay is actually 13 bits, not 8 bits as documented in the A31 User Manual
 
-  const DSI_BASIC_CTL1_REG = DSI_BASE_ADDRESS + 0x14;
-  comptime{ assert(DSI_BASIC_CTL1_REG == 0x1ca0014); }
+const DSI_BASIC_CTL1_REG = DSI_BASE_ADDRESS + 0x14;
+comptime{ assert(DSI_BASIC_CTL1_REG == 0x1ca0014); }
 
-  const Video_Start_Delay:          u17 = 1468 << 4;
-  const Video_Precision_Mode_Align: u3  = 1    << 2;
-  const Video_Frame_Start:          u2  = 1    << 1;
-  const DSI_Mode:                   u1  = 1    << 0;
-  const DSI_BASIC_CTL1 = Video_Start_Delay
-    | Video_Precision_Mode_Align
-    | Video_Frame_Start
-    | DSI_Mode;
-  comptime{ assert(DSI_BASIC_CTL1 == 0x5bc7); }
-  putreg32(DSI_BASIC_CTL1, DSI_BASIC_CTL1_REG);  // TODO: DMB
+const Video_Start_Delay:          u17 = 1468 << 4;
+const Video_Precision_Mode_Align: u3  = 1    << 2;
+const Video_Frame_Start:          u2  = 1    << 1;
+const DSI_Mode:                   u1  = 1    << 0;
+const DSI_BASIC_CTL1 = Video_Start_Delay
+  | Video_Precision_Mode_Align
+  | Video_Frame_Start
+  | DSI_Mode;
+comptime{ assert(DSI_BASIC_CTL1 == 0x5bc7); }
+putreg32(DSI_BASIC_CTL1, DSI_BASIC_CTL1_REG);  // TODO: DMB
 ```
 
 Which is really neat because...
