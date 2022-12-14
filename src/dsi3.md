@@ -463,7 +463,7 @@ But to [__render graphics on PinePhone__](https://lupyuen.github.io/articles/dsi
 -   Driver for LCD Panel
 -   Driver for Display Engine
 
-Running an Integration Test across the C and Zig Drivers will be a little tricky. Here's how we run the Integration Test...
+Running an __Integration Test__ across the C and Zig Drivers will be a little tricky. This is how we run the test...
 
 We created this program in Zig that __calls the C and Zig Drivers__, in the right sequence: [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L1146-L1182)
 
@@ -563,17 +563,17 @@ nsh> hello 0
 
 [(Source)](https://gist.github.com/lupyuen/f1a02068aeb0785278c482116a4eedc7)
 
-Yep our Zig Test Program renders the __Test Pattern__ successfully on PinePhone's LCD Display! [(Like this)](https://lupyuen.github.io/images/dsi3-title.jpg)
+Yep our Zig Test Program __renders the Test Pattern__ successfully on PinePhone's LCD Display! [(Like this)](https://lupyuen.github.io/images/dsi3-title.jpg)
 
 Which means the NuttX Kernel Driver for MIPI DSI is working OK!
 
-Here's the Test Log for our Zig Test Program running on NuttX and PinePhone...
+Here's the __Test Log__ for our Zig Test Program running on NuttX and PinePhone...
 
 -   [__"Test Log for NuttX MIPI DSI on PinePhone"__](https://gist.github.com/lupyuen/f1a02068aeb0785278c482116a4eedc7)
 
 ## Unit Testing
 
-_What about Unit Testing? Can we test the MIPI DSI / D-PHY Driver without other drivers?_
+_What about Unit Testing? Can we test the MIPI DSI Driver without Zig?_
 
 Yep! Our MIPI DSI Driver simply writes values to a bunch of A64 Hardware Registers, like so: [a64_mipi_dsi.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm64/src/a64/a64_mipi_dsi.c#L633-L646)
 
@@ -587,7 +587,7 @@ Yep! Our MIPI DSI Driver simply writes values to a bunch of A64 Hardware Registe
   #define DSI_MODE                   (1 << 0)
   #define VIDEO_FRAME_START          (1 << 1)
   #define VIDEO_PRECISION_MODE_ALIGN (1 << 2)
-  #define VIDEO_START_DELAY(n)       (n << 4)
+  #define VIDEO_START_DELAY(n)       ((n) << 4)
 
   dsi_basic_ctl1 = VIDEO_START_DELAY(1468) |
                    VIDEO_PRECISION_MODE_ALIGN |
