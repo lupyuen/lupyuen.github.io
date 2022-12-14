@@ -928,7 +928,25 @@ Someday we might! But first let's uncover all the secrets inside PinePhone.
 
 # What's Next
 
-TODO
+Very soon the official NuttX Kernel will be rendering graphics on PinePhone's LCD Display!
+
+-   We've seen the [__11 Steps__](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone) needed to create a [__Complete Display Driver__](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone) for PinePhone
+
+    (MIPI DSI, Timing Controller, Display Engine, PMIC, ...)
+
+-   We've implemented the [__NuttX Kernel Driver__](https://lupyuen.github.io/articles/dsi3#nuttx-driver-for-mipi-display-serial-interface) for [__MIPI Display Serial Interface__](https://lupyuen.github.io/articles/dsi3#nuttx-driver-for-mipi-display-serial-interface)
+
+    (Which completes 4 of the 11 Steps)
+
+-   We're now building the [__missing pieces__](https://lupyuen.github.io/articles/dsi3#upcoming-nuttx-drivers) of our PinePhone Display Driver
+
+    (Including the super-complicated [__Display Engine Driver__](https://lupyuen.github.io/articles/dsi3#display-engine))
+
+-   We chose the [__Zig Programming Language__](https://lupyuen.github.io/articles/dsi3#why-zig) for [__Reverse-Engineering__](https://lupyuen.github.io/articles/dsi3#why-zig) the PinePhone Display Driver, before converting to C
+
+    (And it's working rather well)
+
+Stay Tuned for Updates!
 
 Check out the other articles on __NuttX RTOS for PinePhone__...
 
