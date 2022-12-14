@@ -2185,6 +2185,10 @@ Based on the above steps, we have __implemented in Zig__ the Display Backlight D
 
 -   [__Output Log for backlight.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
 
+![AXP803 PMIC on PinePhone Schematic (Page 3)](https://lupyuen.github.io/images/de-pmic.png)
+
+[_AXP803 PMIC on PinePhone Schematic (Page 3)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
+
 # Appendix: Power Management Integrated Circuit
 
 Earlier we talked about the sequence of steps that our Display Driver needs to follow...
@@ -2192,6 +2196,12 @@ Earlier we talked about the sequence of steps that our Display Driver needs to f
 -   [__"Sequence of Steps for PinePhone Display Driver"__](https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver)
 
 This section explains how we __initialise PinePhone's Power Management Integrated Circuit (PMIC)__, before accessing PinePhone's LCD Display.
+
+To power on the LCD Display, we need to program PinePhone's __Power Management Integrated Circuit (PMIC)__...
+
+-   [__X-Powers AXP803 PMIC Datasheet__](https://files.pine64.org/doc/datasheet/pine64/AXP803_Datasheet_V1.0.pdf)
+
+The __AXP803 PMIC__ is connected on Allwinner A64's __Reduced Serial Bus (RSB)__. (Works like I2C)
 
 We captured the log from [__p-boot display_board_init__](https://megous.com/git/p-boot/tree/src/display.c#n1947)...
 
