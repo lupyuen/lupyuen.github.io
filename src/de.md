@@ -2201,7 +2201,7 @@ To power on the LCD Display, we need to program PinePhone's __Power Management I
 
 -   [__X-Powers AXP803 PMIC Datasheet__](https://files.pine64.org/doc/datasheet/pine64/AXP803_Datasheet_V1.0.pdf)
 
-The __AXP803 PMIC__ is connected on Allwinner A64's __Reduced Serial Bus (RSB)__. (Works like I2C)
+The __AXP803 PMIC__ (pic above) is connected on Allwinner A64's __Reduced Serial Bus (RSB)__. (Works like I2C)
 
 We captured the log from [__p-boot display_board_init__](https://megous.com/git/p-boot/tree/src/display.c#n1947)...
 
@@ -2236,10 +2236,25 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Set DLDO1 Voltage to 3.3V
 
+    (DLDO1 powers the Front Camera / USB HSIC / I2C Sensors)
+
+    Register __DLDO1 Voltage Control__ (AXP803 Page 52)
+    - Register `0x15`
+    - Set __Voltage__ (Bits 0 to 4) to 26 (2.6V + 0.7V = 3.3V)
+
     ```text
     dldo1 3.3V
     pmic_write: reg=0x15, val=0x1a
     rsb_write: rt_addr=0x2d, reg_addr=0x15, value=0x1a
+    ```
+
+1.  Power on DLDO1
+
+    Register __Output Power On-Off Control 2__ (AXP803 Page 51)
+    - Register `0x12`
+    - Set __DLDO1 On-Off Control__ (Bit 3) to 1 (Power On)
+
+    ```text
     pmic_clrsetbits: reg=0x12, clr_mask=0x0, set_mask=0x8
     rsb_read: rt_addr=0x2d, reg_addr=0x12
     rsb_write: rt_addr=0x2d, reg_addr=0x12, value=0xd9
@@ -2247,13 +2262,23 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Set LDO Voltage to 3.3V
 
+    (GPIO0LDO powers the __Capacitive Touch Panel__)
+
+    Register __GPIO0LDO and GPIO0 High Level Voltage Setting__ (AXP803 Page 77)
+    - Register `0x91`
+    - Set __GPIO0LDO and GPIO0 High Level Voltage__ (Bits 0 to 4) to 26 (2.6V + 0.7V = 3.3V)
+
     ```text
     ldo_io0 3.3V
     pmic_write: reg=0x91, val=0x1a
     rsb_write: rt_addr=0x2d, reg_addr=0x91, value=0x1a
     ```
 
-1.  Enable LDO mode on GPIO0
+1.  Enable LDO Mode on GPIO0
+
+    Register __GPIO0 (GPADC) Control__ (AXP803 Page 76)
+    - Register `0x90`
+    - Set __GPIO0 Pin Function Control__ (Bits 0 to 2) to 0b11 (Low Noise LDO on)
 
     ```text
     pmic_write: reg=0x90, val=0x3
@@ -2262,10 +2287,25 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Set DLDO2 Voltage to 1.8V
 
+    (DLDO2 powers the __MIPI DSI Connector__)
+
+    Register __DLDO2 Voltage Control__ (AXP803 Page 52)
+    - Register `0x16`
+    - Set __Voltage__ (Bits 0 to 4) to 11 (1.1V + 0.7V = 1.8V)
+
     ```text
     dldo2 1.8V
     pmic_write: reg=0x16, val=0xb
     rsb_write: rt_addr=0x2d, reg_addr=0x16, value=0xb
+    ```
+
+1.  Power on DLDO2
+
+    Register __Output Power On-Off Control 2__ (AXP803 Page 51)
+    - Register `0x12`
+    - Set __DLDO2 On-Off Control__ (Bit 4) to 1 (Power On)
+
+    ```text
     pmic_clrsetbits: reg=0x12, clr_mask=0x0, set_mask=0x10
     rsb_read: rt_addr=0x2d, reg_addr=0x12
     rsb_write: rt_addr=0x2d, reg_addr=0x12, value=0xd9
