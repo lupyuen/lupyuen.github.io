@@ -740,6 +740,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 ![Inside our Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
 
+[_Inside our Complete Display Driver for PinePhone_](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone)
+
 # Appendix: Sequence of Steps for PinePhone Display Driver
 
 _Is there a specific sequence of steps for calling the Display Serial Interface, Display Engine and Timing Controller?_
