@@ -1945,7 +1945,7 @@ TODO: Set Bit 10 of PH_DATA (0x1c2090c)</code></pre></div></li>
 <ul>
 <li><a href="https://files.pine64.org/doc/datasheet/pine64/AXP803_Datasheet_V1.0.pdf"><strong>X-Powers AXP803 PMIC Datasheet</strong></a></li>
 </ul>
-<p>The <strong>AXP803 PMIC</strong> is connected on Allwinner A64’s <strong>Reduced Serial Bus (RSB)</strong>. (Works like I2C)</p>
+<p>The <strong>AXP803 PMIC</strong> (pic above) is connected on Allwinner A64’s <strong>Reduced Serial Bus (RSB)</strong>. (Works like I2C)</p>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1947"><strong>p-boot display_board_init</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#display_board_init"><strong>Log from display_board_init</strong></a></li>
@@ -1975,27 +1975,64 @@ before: 0x1c2087c = 0x1c0000
 after: 0x1c2087c = 0x1c0000 (DMB)</code></pre></div></li>
 <li>
 <p>Set DLDO1 Voltage to 3.3V</p>
+<p>(DLDO1 powers the Front Camera / USB HSIC / I2C Sensors)</p>
+<p>Register <strong>DLDO1 Voltage Control</strong> (AXP803 Page 52)</p>
+<ul>
+<li>Register <code>0x15</code></li>
+<li>Set <strong>Voltage</strong> (Bits 0 to 4) to 26 (2.6V + 0.7V = 3.3V)</li>
+</ul>
 <div class="example-wrap"><pre class="language-text"><code>dldo1 3.3V
 pmic_write: reg=0x15, val=0x1a
-rsb_write: rt_addr=0x2d, reg_addr=0x15, value=0x1a
-pmic_clrsetbits: reg=0x12, clr_mask=0x0, set_mask=0x8
+rsb_write: rt_addr=0x2d, reg_addr=0x15, value=0x1a</code></pre></div></li>
+<li>
+<p>Power on DLDO1</p>
+<p>Register <strong>Output Power On-Off Control 2</strong> (AXP803 Page 51)</p>
+<ul>
+<li>Register <code>0x12</code></li>
+<li>Set <strong>DLDO1 On-Off Control</strong> (Bit 3) to 1 (Power On)</li>
+</ul>
+<div class="example-wrap"><pre class="language-text"><code>pmic_clrsetbits: reg=0x12, clr_mask=0x0, set_mask=0x8
 rsb_read: rt_addr=0x2d, reg_addr=0x12
 rsb_write: rt_addr=0x2d, reg_addr=0x12, value=0xd9</code></pre></div></li>
 <li>
 <p>Set LDO Voltage to 3.3V</p>
+<p>(GPIO0LDO powers the <strong>Capacitive Touch Panel</strong>)</p>
+<p>Register <strong>GPIO0LDO and GPIO0 High Level Voltage Setting</strong> (AXP803 Page 77)</p>
+<ul>
+<li>Register <code>0x91</code></li>
+<li>Set <strong>GPIO0LDO and GPIO0 High Level Voltage</strong> (Bits 0 to 4) to 26 (2.6V + 0.7V = 3.3V)</li>
+</ul>
 <div class="example-wrap"><pre class="language-text"><code>ldo_io0 3.3V
 pmic_write: reg=0x91, val=0x1a
 rsb_write: rt_addr=0x2d, reg_addr=0x91, value=0x1a</code></pre></div></li>
 <li>
-<p>Enable LDO mode on GPIO0</p>
+<p>Enable LDO Mode on GPIO0</p>
+<p>Register <strong>GPIO0 (GPADC) Control</strong> (AXP803 Page 76)</p>
+<ul>
+<li>Register <code>0x90</code></li>
+<li>Set <strong>GPIO0 Pin Function Control</strong> (Bits 0 to 2) to 0b11 (Low Noise LDO on)</li>
+</ul>
 <div class="example-wrap"><pre class="language-text"><code>pmic_write: reg=0x90, val=0x3
 rsb_write: rt_addr=0x2d, reg_addr=0x90, value=0x3</code></pre></div></li>
 <li>
 <p>Set DLDO2 Voltage to 1.8V</p>
+<p>(DLDO2 powers the <strong>MIPI DSI Connector</strong>)</p>
+<p>Register <strong>DLDO2 Voltage Control</strong> (AXP803 Page 52)</p>
+<ul>
+<li>Register <code>0x16</code></li>
+<li>Set <strong>Voltage</strong> (Bits 0 to 4) to 11 (1.1V + 0.7V = 1.8V)</li>
+</ul>
 <div class="example-wrap"><pre class="language-text"><code>dldo2 1.8V
 pmic_write: reg=0x16, val=0xb
-rsb_write: rt_addr=0x2d, reg_addr=0x16, value=0xb
-pmic_clrsetbits: reg=0x12, clr_mask=0x0, set_mask=0x10
+rsb_write: rt_addr=0x2d, reg_addr=0x16, value=0xb</code></pre></div></li>
+<li>
+<p>Power on DLDO2</p>
+<p>Register <strong>Output Power On-Off Control 2</strong> (AXP803 Page 51)</p>
+<ul>
+<li>Register <code>0x12</code></li>
+<li>Set <strong>DLDO2 On-Off Control</strong> (Bit 4) to 1 (Power On)</li>
+</ul>
+<div class="example-wrap"><pre class="language-text"><code>pmic_clrsetbits: reg=0x12, clr_mask=0x0, set_mask=0x10
 rsb_read: rt_addr=0x2d, reg_addr=0x12
 rsb_write: rt_addr=0x2d, reg_addr=0x12, value=0xd9</code></pre></div></li>
 <li>
