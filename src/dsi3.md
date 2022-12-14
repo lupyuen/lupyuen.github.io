@@ -820,7 +820,7 @@ We're now __building the NuttX Drivers__ for the remaining features (upper part 
 
     To turn on the Display Backlight, we'll call PIO and PWM in our new __Board LCD Driver__ for NuttX.
 
-    [(Details in the Appendix)](https://lupyuen.github.io/articles/dsi3#backlight)
+    [(Details in the Appendix)](https://lupyuen.github.io/articles/dsi3#display-backlight)
 
 1.  __LCD Panel__: Before sending [__Initialisation Commands__](https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet) to the ST7703 LCD Controller, we need to __reset the LCD Panel.__
 
@@ -913,6 +913,10 @@ That's why we're doing all this PinePhone Reverse-Engineering to Zig and then to
 _What about other cool open-source Allwinner A64 gadgets like [TERES-I](https://www.olimex.com/Products/DIY-Laptop/KITS/TERES-A64-BLACK/open-source-hardware)?_
 
 Someday we might! But first let's uncover all the secrets inside PinePhone.
+
+![Testing our PinePhone Display Driver on Apache NuttX RTOS](https://lupyuen.github.io/images/dsi3-title.jpg)
+
+[_Testing our PinePhone Display Driver on Apache NuttX RTOS_](https://lupyuen.github.io/articles/dsi3#test-mipi-dsi-driver)
 
 # What's Next
 
@@ -1034,7 +1038,11 @@ Our Display Engine Driver shall follow the design of the __STM32F7 Display Drive
 
 1.  NuttX Framebuffer is here: [__stm32_ltdc.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/dsi/arch/arm/src/stm32f7/stm32_ltdc.c#L864)
 
-## Backlight
+![PinePhone Display Backlight](https://lupyuen.github.io/images/pio-backlight.png)
+
+[_PinePhone Display Backlight_](https://lupyuen.github.io/articles/pio#pinephone-backlight)
+
+## Display Backlight
 
 We won't see anything on PinePhone's LCD Display... Until we switch on the __Display Backlight!__
 

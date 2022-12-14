@@ -1827,6 +1827,10 @@ Based on the above steps, we have __implemented in Zig__ the A64 Display Engine 
 
 -   [__Output Log for render.zig__](https://gist.github.com/lupyuen/2df0f8c016dae54f4e4210866a7cd118)
 
+![Allwinner A64 Timing Controller (TCON0)](https://lupyuen.github.io/images/de-block1a.jpg)
+
+[_Allwinner A64 Timing Controller (TCON0)_](https://lupyuen.github.io/articles/de#display-rendering-on-pinephone)
+
 # Appendix: Timing Controller (TCON0)
 
 Earlier we talked about the sequence of steps that our Display Driver needs to follow...
@@ -2068,6 +2072,10 @@ Based on the above steps, we have __implemented in Zig__ the PinePhone Driver fo
 -   [__pinephone-nuttx/tcon.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig)
 
 -   [__Output Log for tcon.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
+
+![PinePhone Display Backlight](https://lupyuen.github.io/images/pio-backlight.png)
+
+[_PinePhone Display Backlight_](https://lupyuen.github.io/articles/pio#pinephone-backlight)
 
 # Appendix: Display Backlight
 

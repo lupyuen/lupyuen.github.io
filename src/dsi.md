@@ -738,6 +738,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [(See this)](https://www.reddit.com/r/PINE64official/comments/xsteb3/comment/iqostm5/?utm_source=share&utm_medium=web2x&context=3)
 
+![Inside our Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
+
 # Appendix: Sequence of Steps for PinePhone Display Driver
 
 _Is there a specific sequence of steps for calling the Display Serial Interface, Display Engine and Timing Controller?_
