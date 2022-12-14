@@ -875,7 +875,26 @@ putreg32(DSI_BASIC_CTL1, DSI_BASIC_CTL1_REG);  // TODO: DMB</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/dsi3-title.jpg" alt="Testing our PinePhone Display Driver on Apache NuttX RTOS" /></p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#test-mipi-dsi-driver"><em>Testing our PinePhone Display Driver on Apache NuttX RTOS</em></a></p>
 <h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
-<p>TODO</p>
+<p>Very soon the official NuttX Kernel will be rendering graphics on PinePhone’s LCD Display!</p>
+<ul>
+<li>
+<p>We’ve seen the <a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><strong>11 Steps</strong></a> needed to create a <a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><strong>Complete Display Driver</strong></a> for PinePhone</p>
+<p>(MIPI DSI, Timing Controller, Display Engine, PMIC, …)</p>
+</li>
+<li>
+<p>We’ve implemented the <a href="https://lupyuen.github.io/articles/dsi3#nuttx-driver-for-mipi-display-serial-interface"><strong>NuttX Kernel Driver</strong></a> for <a href="https://lupyuen.github.io/articles/dsi3#nuttx-driver-for-mipi-display-serial-interface"><strong>MIPI Display Serial Interface</strong></a></p>
+<p>(Which completes 4 of the 11 Steps)</p>
+</li>
+<li>
+<p>We’re now building the <a href="https://lupyuen.github.io/articles/dsi3#upcoming-nuttx-drivers"><strong>missing pieces</strong></a> of our PinePhone Display Driver</p>
+<p>(Including the super-complicated <a href="https://lupyuen.github.io/articles/dsi3#display-engine"><strong>Display Engine Driver</strong></a>)</p>
+</li>
+<li>
+<p>We chose the <a href="https://lupyuen.github.io/articles/dsi3#why-zig"><strong>Zig Programming Language</strong></a> for <a href="https://lupyuen.github.io/articles/dsi3#why-zig"><strong>Reverse-Engineering</strong></a> the PinePhone Display Driver, before converting to C</p>
+<p>(And it’s working rather well)</p>
+</li>
+</ul>
+<p>Stay Tuned for Updates!</p>
 <p>Check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
 <ul>
 <li>
