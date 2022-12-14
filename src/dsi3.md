@@ -1,6 +1,6 @@
 # NuttX RTOS for PinePhone: MIPI Display Serial Interface
 
-📝 _18 Dec 2022_
+📝 _15 Dec 2022_
 
 ![Rendering graphics on PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/dsi3-title.jpg)
 

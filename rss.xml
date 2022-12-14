@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>NuttX RTOS for PinePhone: MIPI Display Serial Interface</title>
+            <link>https://lupyuen.github.io/articles/dsi3</link>
+            <description><![CDATA[Apache NuttX Kernel has a driver for MIPI Display Serial Interface... Here's how it will be called for rendering PinePhone's LCD Display]]></description>
+            <guid>https://lupyuen.github.io/articles/dsi3</guid>
+            <pubDate>Thu, 15 Dec 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Preparing a Pull Request for Apache NuttX RTOS</title>
             <link>https://lupyuen.github.io/articles/pr</link>
             <description><![CDATA[Here are the steps to prepare a Pull Request for Apache NuttX RTOS]]></description>
