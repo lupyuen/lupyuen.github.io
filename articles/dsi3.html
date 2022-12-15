@@ -178,10 +178,10 @@
 </li>
 </ul>
 <p>Thus our MIPI DSI Driver is called <strong>only at startup</strong> to initialise the LCD Controller (ST7703).</p>
-<p><em>Sounds super complicated…</em></p>
-<p>Yep but this rendering design is <strong>super efficient</strong>!</p>
+<p><em>Why so complicated?</em></p>
+<p>Yeah but this Rendering Pipeline is <strong>super efficient</strong>!</p>
 <p>PinePhone doesn’t need to handle Interrupts while rendering the display… Everything is <strong>done in Hardware!</strong> (Allwinner A64 SoC)</p>
-<p>The pixel data is pumped from RAM Framebuffers via Direct Memory Access (DMA). Which is also done in Hardware.</p>
+<p>The pixel data is pumped from RAM Framebuffers via <strong>Direct Memory Access (DMA)</strong>. Which is also done in Hardware.</p>
 <p>Let’s dive inside our MIPI DSI Driver…</p>
 <p><img src="https://lupyuen.github.io/images/dsi3-code.png" alt="Composing a MIPI DSI Short Packet" /></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/mipi_dsi.c#L276-L387"><em>Composing a MIPI DSI Short Packet</em></a></p>
