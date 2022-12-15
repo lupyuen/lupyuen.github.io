@@ -106,13 +106,13 @@ It gets complicated...
 
 Thus our MIPI DSI Driver is called __only at startup__ to initialise the LCD Controller (ST7703).
 
-_Sounds super complicated..._
+_Why so complicated?_
 
-Yep but this rendering design is __super efficient__!
+Yeah but this Rendering Pipeline is __super efficient__!
 
 PinePhone doesn't need to handle Interrupts while rendering the display... Everything is __done in Hardware!__ (Allwinner A64 SoC)
 
-The pixel data is pumped from RAM Framebuffers via Direct Memory Access (DMA). Which is also done in Hardware.
+The pixel data is pumped from RAM Framebuffers via __Direct Memory Access (DMA)__. Which is also done in Hardware.
 
 Let's dive inside our MIPI DSI Driver...
 
