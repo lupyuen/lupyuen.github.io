@@ -628,9 +628,9 @@ Yep! Our MIPI DSI Driver simply writes values to a bunch of A64 Hardware Registe
 #define VIDEO_START_DELAY(n)       ((n) << 4)
 
 dsi_basic_ctl1 = VIDEO_START_DELAY(1468) |
-                  VIDEO_PRECISION_MODE_ALIGN |
-                  VIDEO_FRAME_START |
-                  DSI_MODE;
+                 VIDEO_PRECISION_MODE_ALIGN |
+                 VIDEO_FRAME_START |
+                 DSI_MODE;
 putreg32(dsi_basic_ctl1, DSI_BASIC_CTL1_REG);
 
 // Include Test Code to verify Register Addresses and Written Values
