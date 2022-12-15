@@ -2075,6 +2075,10 @@ Based on the above steps, we have __implemented in Zig__ the PinePhone Driver fo
 
 -   [__Output Log for tcon.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
 
+We'll convert the above TCON0 Driver from Zig to C. Work in progress...
+
+-   [__lupyuen2/wip-pinephone-nuttx (tcon branch)__](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/tcon/arch/arm64/src/a64)
+
 ![PinePhone Display Backlight](https://lupyuen.github.io/images/pio-backlight.png)
 
 [_PinePhone Display Backlight_](https://lupyuen.github.io/articles/pio#pinephone-backlight)

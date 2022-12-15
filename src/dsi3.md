@@ -1020,7 +1020,9 @@ This will be implemented in our new __Timing Controller (TCON0) Driver__ for Nut
 
 -   [__Zig Implementation of TCON0 Driver: tcon.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig)
 
-We'll convert the above TCON0 Driver from Zig to C.
+We'll convert the above TCON0 Driver from Zig to C. Work in progress...
+
+-   [__lupyuen2/wip-pinephone-nuttx (tcon branch)__](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/tcon/arch/arm64/src/a64)
 
 ![Allwinner A64 Display Engine](https://lupyuen.github.io/images/de2-blender.jpg)
 
