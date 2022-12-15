@@ -493,6 +493,10 @@ __Packet Footer:__
 
     [(How we compute the CRC)](https://lupyuen.github.io/articles/dsi2#appendix-cyclic-redundancy-check)
 
+We have implemented MIPI DSI Long Packets in __Apache NuttX Kernel__...
+
+-   [__"Send MIPI DSI Packet"__](https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet)
+
 Let's program A64 to send this Long Packet.
 
 (Page 32 of the [__ST7703 Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf) also defines a __Short Packet__ format, which is explained in the Appendix)
@@ -574,6 +578,10 @@ Yeah. The complete steps to initialise the ST7703 LCD Controller will look like 
 
 -   [__"Initialise ST7703 LCD Controller"__](https://lupyuen.github.io/articles/dsi2#initialise-st7703-lcd-controller)
 
+We have implemented the sending of MIPI DSI Packets in __Apache NuttX Kernel__...
+
+-   [__"Send MIPI DSI Packet"__](https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet)
+
 ![Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)](https://lupyuen.github.io/images/pio-display.png)
 
 [_Display Engine (DE) and Timing Controller (TCON0) from A64 User Manual (Page 498)_](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
@@ -634,31 +642,25 @@ That's why we're probing the internals of PinePhone to create a __NuttX Display 
 
 _How shall we build the NuttX Driver for PinePhone's Display?_
 
-We shall create a __NuttX Driver for Sitronix ST7703__ based on the code from ST7789...
+Our __NuttX Display Driver__ for PinePhone shall implement these functions (pic below)...
 
--   [__nuttx/drivers/lcd/st7789.c__](https://github.com/lupyuen/nuttx/blob/master/drivers/lcd/st7789.c)
+-   [__"Complete Display Driver for PinePhone"__](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone)
 
-But before that, we shall __test the driver code__ by directly accessing the A64 Hardware Registers, similar to this...
-
--   [__"Configure GPIO"__](https://lupyuen.github.io/articles/pio#configure-gpio)
-
-The __Zephyr Driver__ for MIPI DSI (Apache-licensed) might be a helpful reference...
-
--   [__mipi_dsi.h__](https://github.com/zephyrproject-rtos/zephyr/blob/main/include/zephyr/drivers/mipi_dsi.h)
-
--   [__mipi_dsi.c__](https://github.com/zephyrproject-rtos/zephyr/blob/main/drivers/mipi_dsi/mipi_dsi.c)
-
--   [__Zephyr Docs for MIPI DSI__](https://docs.zephyrproject.org/latest/hardware/peripherals/mipi_dsi.html)
-
--   [__Zephyr Test for MIPI DSI__](https://github.com/zephyrproject-rtos/zephyr-testing/blob/main/tests/drivers/mipi_dsi/api/src/main.c)
-
-Our NuttX Display Driver will implement these sequence of steps...
-
--   [__"Sequence of Steps for PinePhone Display Driver"__](https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver)
-
-We have started the __Zig Implementation__ of the NuttX Driver...
+We have completed the __Zig Implementation__ of the NuttX Driver...
 
 -   [__"NuttX RTOS for PinePhone: Display Driver in Zig"__](https://lupyuen.github.io/articles/dsi2)
+
+-   [__"NuttX RTOS for PinePhone: Render Graphics in Zig"__](https://lupyuen.github.io/articles/de2)
+
+We're porting the __Zig Driver to C__ and adding to NuttX Kernel...
+
+-   [__"Upcoming NuttX Drivers"__](https://lupyuen.github.io/articles/dsi3#upcoming-nuttx-drivers)
+
+Stay Tuned for Updates!
+
+![Inside our Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
+
+[_Inside our Complete Display Driver for PinePhone_](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone)
 
 # What's Next
 
@@ -678,6 +680,8 @@ Please join me in the next article when we'll build a PinePhone Display Driver i
 
 -   [__"NuttX RTOS for PinePhone: Display Driver in Zig"__](https://lupyuen.github.io/articles/dsi2)
 
+-   [__"NuttX RTOS for PinePhone: Render Graphics in Zig"__](https://lupyuen.github.io/articles/de2)
+
 Check out the other articles on __NuttX RTOS for PinePhone__...
 
 -   [__"Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone"__](https://lupyuen.github.io/articles/arm)
@@ -690,11 +694,7 @@ Check out the other articles on __NuttX RTOS for PinePhone__...
 
 -   [__"NuttX RTOS for PinePhone: Blinking the LEDs"__](https://lupyuen.github.io/articles/pio)
 
--   [__"NuttX RTOS for PinePhone: Display Driver in Zig"__](https://lupyuen.github.io/articles/dsi2)
-
 -   [__"Rendering PinePhone's Display (DE and TCON0)"__](https://lupyuen.github.io/articles/de)
-
--   [__"NuttX RTOS for PinePhone: Render Graphics in Zig"__](https://lupyuen.github.io/articles/de2)
 
 -   [__"NuttX RTOS for PinePhone: MIPI Display Serial Interface"__](https://lupyuen.github.io/articles/dsi3)
 
@@ -1125,6 +1125,10 @@ Based on the above steps, we have __implemented in Zig__ the PinePhone Driver th
 
 -   [__Output Log for display.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
 
+We have implemented the driver in __Apache NuttX Kernel__...
+
+-   [__"Enable MIPI DSI and D-PHY"__](https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy)
+
 # Appendix: Start MIPI DSI HSC and HSD
 
 Earlier we talked about the sequence of steps that our Display Driver needs to follow...
@@ -1207,6 +1211,10 @@ Based on the above steps, we have __implemented in Zig__ the PinePhone Driver th
 -   [__pinephone-nuttx/display.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L1365-L1423)
 
 -   [__Output Log for display.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
+
+We have implemented the driver in __Apache NuttX Kernel__...
+
+-   [__"Enable MIPI DSI and D-PHY"__](https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy)
 
 ![MIPI DSI Protocol Layers (Page 183)](https://lupyuen.github.io/images/dsi-layer.png)
 
@@ -1356,6 +1364,10 @@ Based on the above steps, we have __implemented in Zig__ the PinePhone Driver th
 
 -   [__Output Log for dphy.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
 
+We have implemented the driver in __Apache NuttX Kernel__...
+
+-   [__"Enable MIPI DSI and D-PHY"__](https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy)
+
 ![MIPI DSI Short Packet (Page 201)](https://lupyuen.github.io/images/dsi-short.png)
 
 [_MIPI DSI Short Packet (Page 201)_](https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf)
@@ -1381,6 +1393,10 @@ Thus a MIPI DSI __Short Packet__ (compared with Long Packet)...
     __DCS Short Write With Parameter (`0x15`)__ for sending 2 bytes of data
 
 Everything else is the same.
+
+We have implemented MIPI DSI Short Packets in __Apache NuttX Kernel__...
+
+-   [__"Send MIPI DSI Packet"__](https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet)
 
 # Appendix: Initialise LCD Controller
 

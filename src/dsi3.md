@@ -906,6 +906,8 @@ Which is really neat because...
 
 -   Can be translated into C or Rust for other Operating Systems
 
+With the Executable Spec, maybe someday we'll __emulate PinePhone Hardware__ with QEMU or FPGA!
+
 _Was it worth the effort? Would you do it again in Zig?_
 
 Yes and yes! Zig is excellent for prototyping new Device Drivers for Operating Systems.
