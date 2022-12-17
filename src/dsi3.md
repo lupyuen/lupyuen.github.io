@@ -1022,7 +1022,7 @@ This will be implemented in our new __Timing Controller (TCON0) Driver__ for Nut
 
 We'll convert the above TCON0 Driver from Zig to C. Work in progress...
 
--   [__lupyuen2/wip-pinephone-nuttx (tcon branch)__](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/tcon/arch/arm64/src/a64)
+-   [__lupyuen2/wip-pinephone-nuttx (tcon branch)__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tcon/arch/arm64/src/a64/a64_tcon0.c)
 
 ![Allwinner A64 Display Engine](https://lupyuen.github.io/images/de2-blender.jpg)
 
@@ -1050,7 +1050,9 @@ This will be implemented in our new __Display Engine Driver__ for NuttX in two p
 
     [(Implemented in Zig as __renderGraphics__)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L72-L180)
 
-We'll convert the above Zig Drivers to C.
+We'll convert the above Zig Drivers to C. Work in progress...
+
+-   [__lupyuen2/wip-pinephone-nuttx (tcon2 branch)__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tcon2/arch/arm64/src/a64/a64_de.c)
 
 Our Display Engine Driver shall follow the design of the __STM32F7 Display Driver__ in NuttX...
 
