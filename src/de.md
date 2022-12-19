@@ -1411,7 +1411,7 @@ We have __implemented in Zig__ the above A64 Display Engine Initialisation...
 
 We'll convert the above Zig Driver to C for NuttX. Work in progress...
 
--   [__lupyuen2/wip-pinephone-nuttx (tcon2 branch)__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tcon2/arch/arm64/src/a64/a64_de.c)
+-   [__lupyuen2/wip-pinephone-nuttx (de branch)__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/de/arch/arm64/src/a64/a64_de.c)
 
 ![Running p-boot Display Code on Apache NuttX RTOS with logging](https://lupyuen.github.io/images/de-run.png)
 
@@ -1835,7 +1835,7 @@ Based on the above steps, we have __implemented in Zig__ the A64 Display Engine 
 
 We'll convert the above Zig Driver to C for NuttX. Work in progress...
 
--   [__lupyuen2/wip-pinephone-nuttx (tcon2 branch)__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tcon2/arch/arm64/src/a64/a64_de.c)
+-   [__lupyuen2/wip-pinephone-nuttx (de branch)__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/de/arch/arm64/src/a64/a64_de.c)
 
 ![Allwinner A64 Timing Controller (TCON0)](https://lupyuen.github.io/images/de-block1a.jpg)
 
@@ -2083,9 +2083,9 @@ Based on the above steps, we have __implemented in Zig__ the PinePhone Driver fo
 
 -   [__Output Log for tcon.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
 
-We'll convert the above TCON0 Driver from Zig to C. Work in progress...
+We have converted the above TCON0 Driver from Zig to C and added it to NuttX Mainline...
 
--   [__lupyuen2/wip-pinephone-nuttx (tcon branch)__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tcon/arch/arm64/src/a64/a64_tcon0.c)
+-   [__a64_tcon0.c__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_tcon0.c)
 
 ![PinePhone Display Backlight](https://lupyuen.github.io/images/pio-backlight.png)
 
