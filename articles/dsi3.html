@@ -973,9 +973,9 @@ putreg32(DSI_BASIC_CTL1, DSI_BASIC_CTL1_REG);  // TODO: DMB</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig"><strong>Zig Implementation of TCON0 Driver: tcon.zig</strong></a></p>
 </li>
 </ul>
-<p>We’ll convert the above TCON0 Driver from Zig to C. Work in progress…</p>
+<p>We have converted the above TCON0 Driver from Zig to C and added it to NuttX Mainline…</p>
 <ul>
-<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tcon/arch/arm64/src/a64/a64_tcon0.c"><strong>lupyuen2/wip-pinephone-nuttx (tcon branch)</strong></a></li>
+<li><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_tcon0.c"><strong>a64_tcon0.c</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="Allwinner A64 Display Engine" /></p>
 <p><a href="https://lupyuen.github.io/articles/de2#configure-blender"><em>Allwinner A64 Display Engine</em></a></p>
@@ -998,7 +998,7 @@ putreg32(DSI_BASIC_CTL1, DSI_BASIC_CTL1_REG);  // TODO: DMB</code></pre></div>
 </ul>
 <p>We’ll convert the above Zig Drivers to C. Work in progress…</p>
 <ul>
-<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tcon2/arch/arm64/src/a64/a64_de.c"><strong>lupyuen2/wip-pinephone-nuttx (tcon2 branch)</strong></a></li>
+<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/de/arch/arm64/src/a64/a64_de.c"><strong>lupyuen2/wip-pinephone-nuttx (de branch)</strong></a></li>
 </ul>
 <p>Our Display Engine Driver shall follow the design of the <strong>STM32F7 Display Driver</strong> in NuttX…</p>
 <ol>
