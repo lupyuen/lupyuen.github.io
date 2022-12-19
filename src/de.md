@@ -2215,7 +2215,12 @@ To power on the LCD Display, we need to program PinePhone's __Power Management I
 
 -   [__X-Powers AXP803 PMIC Datasheet__](https://files.pine64.org/doc/datasheet/pine64/AXP803_Datasheet_V1.0.pdf)
 
-The __AXP803 PMIC__ (pic above) is connected on Allwinner A64's __Reduced Serial Bus (RSB)__. (Works like I2C)
+The __AXP803 PMIC__ (pic above) is connected on Allwinner A64's __Reduced Serial Bus (RSB)__ (works like I2C) at RSB Address `0x2D`: [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L48-L66)
+
+```zig
+/// Address of AXP803 PMIC on Reduced Serial Bus
+const AXP803_RT_ADDR = 0x2d;
+```
 
 We captured the log from [__p-boot display_board_init__](https://megous.com/git/p-boot/tree/src/display.c#n1947)...
 
@@ -2387,3 +2392,126 @@ Based on the above steps, we have __implemented in Zig__ the PinePhone Driver th
 -   [__pinephone-nuttx/panel.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig)
 
 -   [__Output Log for panel.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
+
+# Appendix: Reduced Serial Bus
+
+TODO
+
+[pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L48-L66)
+
+```zig
+/// Address of AXP803 PMIC on Reduced Serial Bus
+const AXP803_RT_ADDR = 0x2d;
+
+/// Reduced Serial Bus Base Address
+const R_RSB_BASE_ADDRESS = 0x01f03400;
+
+/// Reduced Serial Bus Offsets
+const RSB_CTRL   = 0x00;
+const RSB_STAT   = 0x0c;
+const RSB_DADDR0 = 0x10;
+const RSB_DATA0  = 0x1c;
+const RSB_CMD    = 0x2c;
+const RSB_SADDR  = 0x30;
+
+/// Read a byte from Reduced Serial Bus
+const RSBCMD_RD8 = 0x8B;
+
+/// Write a byte to Reduced Serial Bus
+const RSBCMD_WR8 = 0x4E;
+```
+
+TODO
+
+[pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L202-L277)
+
+```zig
+/// Write a byte to Reduced Serial Bus
+fn rsb_read(
+    rt_addr: u8,
+    reg_addr: u8
+) i32 {
+    // Read a byte
+    debug("  rsb_read: rt_addr=0x{x}, reg_addr=0x{x}", .{ rt_addr, reg_addr });
+    const rt_addr_shift: u32 = @intCast(u32, rt_addr) << 16;
+    putreg32(RSBCMD_RD8,    R_RSB_BASE_ADDRESS + RSB_CMD);     // TODO: DMB
+    putreg32(rt_addr_shift, R_RSB_BASE_ADDRESS + RSB_SADDR);   // TODO: DMB
+    putreg32(reg_addr,      R_RSB_BASE_ADDRESS + RSB_DADDR0);  // TODO: DMB
+
+    // Start transaction
+    putreg32(0x80,          R_RSB_BASE_ADDRESS + RSB_CTRL);    // TODO: DMB
+    const ret = rsb_wait_stat("Read RSB");
+    if (ret != 0) { return ret; }
+    return getreg8(R_RSB_BASE_ADDRESS + RSB_DATA0);
+}
+```
+
+TODO
+
+```zig
+/// Read a byte from Reduced Serial Bus
+fn rsb_write(
+    rt_addr: u8, 
+    reg_addr: u8, 
+    value: u8
+) i32 {
+    // Write a byte
+    debug("  rsb_write: rt_addr=0x{x}, reg_addr=0x{x}, value=0x{x}", .{ rt_addr, reg_addr, value });
+    const rt_addr_shift: u32 = @intCast(u32, rt_addr) << 16;
+    putreg32(RSBCMD_WR8,    R_RSB_BASE_ADDRESS + RSB_CMD);     // TODO: DMB
+    putreg32(rt_addr_shift, R_RSB_BASE_ADDRESS + RSB_SADDR);   // TODO: DMB
+    putreg32(reg_addr,      R_RSB_BASE_ADDRESS + RSB_DADDR0);  // TODO: DMB
+    putreg32(value,         R_RSB_BASE_ADDRESS + RSB_DATA0);   // TODO: DMB
+
+    // Start transaction
+    putreg32(0x80,          R_RSB_BASE_ADDRESS + RSB_CTRL);    // TODO: DMB
+    return rsb_wait_stat("Write RSB");
+}
+```
+
+TODO
+
+```zig
+/// Wait for Reduced Serial Bus and read Status
+fn rsb_wait_stat(
+    desc: []const u8
+) i32 {
+    const ret = rsb_wait_bit(desc, RSB_CTRL, 1 << 7);
+    if (ret != 0) {
+        debug("rsb_wait_stat Timeout ({s})", .{ desc });
+        return ret;
+    }
+
+    const reg = getreg32(R_RSB_BASE_ADDRESS + RSB_STAT);
+    if (reg == 0x01) { return 0; }
+
+    debug("rsb_wait_stat Error ({s}): 0x{x}", .{ desc, reg });
+    return -1;
+}
+```
+
+TODO
+
+```zig
+/// Wait for Reduced Serial Bus Transaction to complete
+fn rsb_wait_bit(
+    desc: []const u8,
+    offset: u32, 
+    mask: u32
+) i32 {
+    // Wait for transaction to complete
+    var tries: u32 = 100000;
+    while (true) {
+        const reg = getreg32(R_RSB_BASE_ADDRESS + offset); 
+        if (reg & mask == 0) { break; }
+
+        // Check for transaction timeout
+        tries -= 1;
+        if (tries == 0) {
+            debug("rsb_wait_bit Timeout ({s})", .{ desc });
+            return -1;
+        }
+    }
+    return 0;
+}
+```
