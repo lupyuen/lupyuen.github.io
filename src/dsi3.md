@@ -1142,7 +1142,9 @@ The __AXP803 PMIC__ is connected on Allwinner A64's __Reduced Serial Bus (RSB)__
 
 We'll control the PMIC over RSB in our new __Board LCD Driver__ for NuttX...
 
--   [__About PinePhone's PMIC__](https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit)
+-   [__PinePhone AXP803 PMIC__](https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit)
+
+-   [__Allwinner A64 Reduced Serial Bus__](https://lupyuen.github.io/articles/de#appendix-reduced-serial-bus)
 
 -   [__Zig Implementation of PMIC Driver: pmic.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig)
 
