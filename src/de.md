@@ -2502,10 +2502,10 @@ The bus supports this __Reduced Serial Bus Command Set__ [(A80 Page 918)](https:
 Here's our implementation in Zig: [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L48-L66)
 
 ```zig
-/// Read a byte from Reduced Serial Bus
+/// Read a byte from Reduced Serial Bus (A80 Page 918)
 const RSBCMD_RD8 = 0x8B;
 
-/// Write a byte to Reduced Serial Bus
+/// Write a byte to Reduced Serial Bus (A80 Page 918)
 const RSBCMD_WR8 = 0x4E;
 ```
 
@@ -2523,7 +2523,7 @@ Let's walk through the steps to...
 
 __To read a byte__ from Reduced Serial Bus...
 
-1.  __RSB Command Register__ (RSB_CMD) (A80 Page 928)
+1.  __RSB Command Register__ (RSB_CMD) [(A80 Page 928)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf)
 
     -   At RSB Offset __`0x002C`__
     -   Set to __`0x8B`__ (RD8) to read one byte
@@ -2532,7 +2532,7 @@ __To read a byte__ from Reduced Serial Bus...
     putreg32(RSBCMD_RD8, R_RSB_BASE_ADDRESS + RSB_CMD);
     ```
 
-1.  __RSB Device Address Register__ (RSB_DAR) (A80 Page 928)
+1.  __RSB Device Address Register__ (RSB_DAR) [(A80 Page 928)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf)
 
     -   At RSB Offset __`0x0030`__
     -   Set __RTA__ (Bits 16 to 23) to the Run-Time Address (`0x2D` for AXP803 PMIC)
@@ -2542,7 +2542,7 @@ __To read a byte__ from Reduced Serial Bus...
     putreg32(rt_addr_shift, R_RSB_BASE_ADDRESS + RSB_DAR);
     ```
 
-1.  __RSB Address Register__ (RSB_AR) (A80 Page 926)
+1.  __RSB Address Register__ (RSB_AR) [(A80 Page 926)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf)
 
     -   At RSB Offset __`0x0010`__
     -   Set to the __Register Address__ that we'll read from AXP803 PMIC
@@ -2551,7 +2551,7 @@ __To read a byte__ from Reduced Serial Bus...
     putreg32(reg_addr, R_RSB_BASE_ADDRESS + RSB_AR);
     ```
 
-1.  __RSB Control Register__ (RSB_CTRL) (A80 Page 923)
+1.  __RSB Control Register__ (RSB_CTRL) [(A80 Page 923)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf)
 
     -   At RSB Offset __`0x0000`__
     -   Set __START_TRANS__ (Bit 7) to 1 (Start Transaction)
@@ -2569,7 +2569,7 @@ __To read a byte__ from Reduced Serial Bus...
     if (ret != 0) { return ret; }
     ```
 
-1.  __RSB Data Buffer Register__ (RSB_DATA) (A80 Page 926)
+1.  __RSB Data Buffer Register__ (RSB_DATA) [(A80 Page 926)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf)
 
     -   At RSB Offset __`0x001c`__
     -   Contains the __Register Value__ read from AXP803 PMIC
@@ -2581,7 +2581,8 @@ __To read a byte__ from Reduced Serial Bus...
 Here's our implementation in Zig: [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L201-L220)
 
 ```zig
-/// Read a byte from Reduced Serial Bus
+/// Read a byte from Reduced Serial Bus.
+/// Returns -1 on error.
 fn rsb_read(
   rt_addr: u8,
   reg_addr: u8
@@ -2605,7 +2606,7 @@ fn rsb_read(
 
 __To write a byte__ to Reduced Serial Bus...
 
-1.  __RSB Command Register__ (RSB_CMD) (A80 Page 928)
+1.  __RSB Command Register__ (RSB_CMD) [(A80 Page 928)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf)
 
     -   At RSB Offset __`0x002C`__
     -   Set to __`0x4E`__ (WR8) to write one byte
@@ -2614,7 +2615,7 @@ __To write a byte__ to Reduced Serial Bus...
     putreg32(RSBCMD_WR8, R_RSB_BASE_ADDRESS + RSB_CMD);
     ```
 
-1.  __RSB Device Address Register__ (RSB_DAR) (A80 Page 928)
+1.  __RSB Device Address Register__ (RSB_DAR) [(A80 Page 928)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf)
 
     -   At RSB Offset __`0x0030`__
     -   Set __RTA__ (Bits 16 to 23) to the Run-Time Address (`0x2D` for AXP803 PMIC)
@@ -2624,7 +2625,7 @@ __To write a byte__ to Reduced Serial Bus...
     putreg32(rt_addr_shift, R_RSB_BASE_ADDRESS + RSB_DAR);
     ```
 
-1.  __RSB Address Register__ (RSB_AR) (A80 Page 926)
+1.  __RSB Address Register__ (RSB_AR) [(A80 Page 926)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf)
 
     -   At RSB Offset __`0x0010`__
     -   Set to the __Register Address__ that we'll write to AXP803 PMIC
@@ -2633,7 +2634,7 @@ __To write a byte__ to Reduced Serial Bus...
     putreg32(reg_addr, R_RSB_BASE_ADDRESS + RSB_AR);
     ```
 
-1.  __RSB Data Buffer Register__ (RSB_DATA) (A80 Page 926)
+1.  __RSB Data Buffer Register__ (RSB_DATA) [(A80 Page 926)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf)
 
     -   At RSB Offset __`0x001c`__
     -   Set to the __Register Value__ that will be written to AXP803 PMIC
@@ -2642,7 +2643,7 @@ __To write a byte__ to Reduced Serial Bus...
     putreg32(value, R_RSB_BASE_ADDRESS + RSB_DATA);
     ```
 
-1.  __RSB Control Register__ (RSB_CTRL) (A80 Page 923)
+1.  __RSB Control Register__ (RSB_CTRL) [(A80 Page 923)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf)
 
     -   At RSB Offset __`0x0000`__
     -   Set __START_TRANS__ (Bit 7) to 1 (Start Transaction)
@@ -2662,7 +2663,8 @@ __To write a byte__ to Reduced Serial Bus...
 Here's our implementation in Zig: [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L220-L239)
 
 ```zig
-/// Write a byte to Reduced Serial Bus
+/// Write a byte to Reduced Serial Bus.
+/// Returns -1 on error.
 fn rsb_write(
   rt_addr: u8, 
   reg_addr: u8, 
@@ -2686,7 +2688,7 @@ fn rsb_write(
 
 __To wait for status__ of Reduced Serial Bus...
 
-1.  __RSB Control Register__ (RSB_CTRL) (A80 Page 923)
+1.  __RSB Control Register__ (RSB_CTRL) [(A80 Page 923)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf)
 
     -   At RSB Offset __`0x0000`__
     -   Wait for __START_TRANS__ (Bit 7) to be 0 (Transaction Completed or Error)
@@ -2699,7 +2701,7 @@ __To wait for status__ of Reduced Serial Bus...
     }
     ```
 
-1.  __RSB Status Register__ (RSB_STAT) (A80 Page 924)
+1.  __RSB Status Register__ (RSB_STAT) [(A80 Page 924)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf)
 
     -   At RSB Offset __`0x000c`__ 
     -   If __TRANS_OVER__ (Bit 0) is 1, then RSB Transfer has completed without error
@@ -2713,7 +2715,8 @@ __To wait for status__ of Reduced Serial Bus...
 Here's our implementation in Zig: [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L239-L256)
 
 ```zig
-/// Wait for Reduced Serial Bus and read Status
+/// Wait for Reduced Serial Bus and read Status.
+/// Returns -1 on error.
 fn rsb_wait_stat(
   desc: []const u8
 ) i32 {
@@ -2735,7 +2738,7 @@ fn rsb_wait_stat(
 
 __To wait for completion__ of Reduced Serial Bus Transaction...
 
-1.  __RSB Control Register__ (RSB_CTRL) (A80 Page 923)
+1.  __RSB Control Register__ (RSB_CTRL) [(A80 Page 923)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf)
 
     -   At RSB Offset __`0x0000`__
     -   Wait for __START_TRANS__ (Bit 7) to be 0 (Transaction Completed or Error)
@@ -2751,6 +2754,7 @@ Here's our implementation in Zig: [pmic.zig](https://github.com/lupyuen/pinephon
 
 ```zig
 /// Wait for Reduced Serial Bus Transaction to complete
+/// Returns -1 on error.
 /// `offset` is RSB_CTRL
 /// `mask`   is 1 << 7
 fn rsb_wait_bit(
