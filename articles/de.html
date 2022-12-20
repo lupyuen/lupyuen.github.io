@@ -2283,7 +2283,7 @@ if (ret != 0) { return ret; }</code></pre></div></li>
 </ul>
 <div class="example-wrap"><pre class="language-zig"><code>return getreg8(R_RSB_BASE_ADDRESS + RSB_DATA);</code></pre></div></li>
 </ol>
-<p>Here’s our implementation in Zig: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L201-L220">pmic.zig</a></p>
+<p>Here’s our implementation in Zig: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L206-L244">pmic.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Read a byte from Reduced Serial Bus.
 /// Returns -1 on error.
 fn rsb_read(
@@ -2346,7 +2346,7 @@ putreg32(rt_addr_shift, R_RSB_BASE_ADDRESS + RSB_DAR);</code></pre></div></li>
 <p><a href="https://lupyuen.github.io/articles/de#wait-for-rsb-status">(See this)</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>return rsb_wait_stat(&quot;Write RSB&quot;);</code></pre></div></li>
 </ol>
-<p>Here’s our implementation in Zig: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L220-L239">pmic.zig</a></p>
+<p>Here’s our implementation in Zig: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L244-L282">pmic.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Write a byte to Reduced Serial Bus.
 /// Returns -1 on error.
 fn rsb_write(
@@ -2389,7 +2389,7 @@ if (ret != 0) {
 if (reg == 0x01) { return 0; }
 return -1;</code></pre></div></li>
 </ol>
-<p>Here’s our implementation in Zig: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L239-L256">pmic.zig</a></p>
+<p>Here’s our implementation in Zig: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L282-L306">pmic.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Wait for Reduced Serial Bus and read Status.
 /// Returns -1 on error.
 fn rsb_wait_stat(
@@ -2420,7 +2420,7 @@ fn rsb_wait_stat(
 const reg = getreg32(R_RSB_BASE_ADDRESS + offset); 
 if (reg &amp; mask == 0) { break; }  // Return 0</code></pre></div></li>
 </ol>
-<p>Here’s our implementation in Zig: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L256-L278">pmic.zig</a></p>
+<p>Here’s our implementation in Zig: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L306-L336">pmic.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Wait for Reduced Serial Bus Transaction to complete
 /// Returns -1 on error.
 /// `offset` is RSB_CTRL
