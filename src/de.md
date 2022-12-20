@@ -2578,7 +2578,7 @@ __To read a byte__ from Reduced Serial Bus...
     return getreg8(R_RSB_BASE_ADDRESS + RSB_DATA);
     ```
 
-Here's our implementation in Zig: [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L201-L220)
+Here's our implementation in Zig: [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L206-L244)
 
 ```zig
 /// Read a byte from Reduced Serial Bus.
@@ -2660,7 +2660,7 @@ __To write a byte__ to Reduced Serial Bus...
     return rsb_wait_stat("Write RSB");
     ```
 
-Here's our implementation in Zig: [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L220-L239)
+Here's our implementation in Zig: [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L244-L282)
 
 ```zig
 /// Write a byte to Reduced Serial Bus.
@@ -2712,7 +2712,7 @@ __To wait for status__ of Reduced Serial Bus...
     return -1;
     ```
 
-Here's our implementation in Zig: [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L239-L256)
+Here's our implementation in Zig: [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L282-L306)
 
 ```zig
 /// Wait for Reduced Serial Bus and read Status.
@@ -2750,7 +2750,7 @@ __To wait for completion__ of Reduced Serial Bus Transaction...
     if (reg & mask == 0) { break; }  // Return 0
     ```
 
-Here's our implementation in Zig: [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L256-L278)
+Here's our implementation in Zig: [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L306-L336)
 
 ```zig
 /// Wait for Reduced Serial Bus Transaction to complete
