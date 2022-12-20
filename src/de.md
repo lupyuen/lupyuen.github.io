@@ -2474,33 +2474,58 @@ const RSBCMD_WR8 = 0x4E;
 
 TODO
 
+## Read from RSB
+
 __To read a byte__ from Reduced Serial Bus...
 
-```zig
-putreg32(RSBCMD_RD8,    R_RSB_BASE_ADDRESS + RSB_CMD);
-```
+1.  __RSB Command Register__ (RSB_CMD) (A80 Page 928)
 
-```zig
-const rt_addr_shift: u32 = @intCast(u32, rt_addr) << 16;
-putreg32(rt_addr_shift, R_RSB_BASE_ADDRESS + RSB_DAR);
-```
+    -   At RSB Offset `0x002C`
+    -   Set to 
 
-```zig
-putreg32(reg_addr,      R_RSB_BASE_ADDRESS + RSB_AR);
-```
+    ```zig
+    putreg32(RSBCMD_RD8, R_RSB_BASE_ADDRESS + RSB_CMD);
+    ```
 
-```zig
-putreg32(0x80,          R_RSB_BASE_ADDRESS + RSB_CTRL);
-```
+1.  __RSB Device Address Register__ (RSB_DAR) (A80 Page 928)
 
-```zig
-const ret = rsb_wait_stat("Read RSB");
-if (ret != 0) { return ret; }
-```
+    -   At RSB Offset `0x0030`
 
-```zig
-return getreg8(R_RSB_BASE_ADDRESS + RSB_DATA);
-```
+    ```zig
+    const rt_addr_shift: u32 = @intCast(u32, rt_addr) << 16;
+    putreg32(rt_addr_shift, R_RSB_BASE_ADDRESS + RSB_DAR);
+    ```
+
+1.  __RSB Address Register__ (RSB_AR) (A80 Page 926)
+
+    -   At RSB Offset `0x0010` 
+
+    ```zig
+    putreg32(reg_addr, R_RSB_BASE_ADDRESS + RSB_AR);
+    ```
+
+1.  __RSB Control Register__ (RSB_CTRL) (A80 Page 923)
+
+    -   At RSB Offset `0x0000`
+
+    ```zig
+    putreg32(0x80, R_RSB_BASE_ADDRESS + RSB_CTRL);
+    ```
+
+1.  TODO
+
+    ```zig
+    const ret = rsb_wait_stat("Read RSB");
+    if (ret != 0) { return ret; }
+    ```
+
+1.  __RSB Data Buffer Register__ (RSB_DATA) (A80 Page 926)
+
+    -   At RSB Offset `0x001c` 
+
+    ```zig
+    return getreg8(R_RSB_BASE_ADDRESS + RSB_DATA);
+    ```
 
 [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L201-L220)
 
@@ -2527,32 +2552,57 @@ fn rsb_read(
 
 TODO
 
+## Write to RSB
+
 __To write a byte__ to Reduced Serial Bus...
 
-```zig
-putreg32(RSBCMD_WR8,    R_RSB_BASE_ADDRESS + RSB_CMD);
-```
 
-```zig
-const rt_addr_shift: u32 = @intCast(u32, rt_addr) << 16;
-putreg32(rt_addr_shift, R_RSB_BASE_ADDRESS + RSB_DAR);
-```
+1.  __RSB Command Register__ (RSB_CMD) (A80 Page 928)
 
-```zig
-putreg32(reg_addr,      R_RSB_BASE_ADDRESS + RSB_AR);
-```
+    -   At RSB Offset `0x002C` 
 
-```zig
-putreg32(value,         R_RSB_BASE_ADDRESS + RSB_DATA);
-```
+    ```zig
+    putreg32(RSBCMD_WR8, R_RSB_BASE_ADDRESS + RSB_CMD);
+    ```
 
-```zig
-putreg32(0x80,          R_RSB_BASE_ADDRESS + RSB_CTRL);
-```
+1.  __RSB Device Address Register__ (RSB_DAR) (A80 Page 928)
 
-```zig
-return rsb_wait_stat("Write RSB");
-```
+    -   At RSB Offset `0x0030` 
+
+    ```zig
+    const rt_addr_shift: u32 = @intCast(u32, rt_addr) << 16;
+    putreg32(rt_addr_shift, R_RSB_BASE_ADDRESS + RSB_DAR);
+    ```
+
+1.  __RSB Address Register__ (RSB_AR) (A80 Page 926)
+
+    -   At RSB Offset `0x0010` 
+
+    ```zig
+    putreg32(reg_addr, R_RSB_BASE_ADDRESS + RSB_AR);
+    ```
+
+1.  __RSB Data Buffer Register__ (RSB_DATA) (A80 Page 926)
+
+    -   At RSB Offset `0x001c` 
+
+    ```zig
+    putreg32(value, R_RSB_BASE_ADDRESS + RSB_DATA);
+    ```
+
+1.  __RSB Control Register__ (RSB_CTRL) (A80 Page 923)
+
+    -   At RSB Offset `0x0000`
+
+    ```zig
+    putreg32(0x80, R_RSB_BASE_ADDRESS + RSB_CTRL);
+    ```
+
+1.  TODO
+
+    ```zig
+    return rsb_wait_stat("Write RSB");
+    ```
 
 [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L220-L239)
 
@@ -2579,21 +2629,32 @@ fn rsb_write(
 
 TODO
 
+## Wait for RSB Status
+
 __To wait for status__ of Reduced Serial Bus...
 
-```zig
-const ret = rsb_wait_bit(desc, RSB_CTRL, 1 << 7);
-if (ret != 0) {
-  debug("rsb_wait_stat Timeout ({s})", .{ desc });
-  return ret;
-}
-```
 
-```zig
-const reg = getreg32(R_RSB_BASE_ADDRESS + RSB_STAT);
-if (reg == 0x01) { return 0; }
-return -1;
-```
+1.  __RSB Control Register__ (RSB_CTRL) (A80 Page 923)
+
+    -   At RSB Offset `0x0000`
+
+    ```zig
+    const ret = rsb_wait_bit(desc, RSB_CTRL, 1 << 7);
+    if (ret != 0) {
+    debug("rsb_wait_stat Timeout ({s})", .{ desc });
+    return ret;
+    }
+    ```
+
+1.  __RSB Status Register__ (RSB_STAT) (A80 Page 922)
+
+    -   At RSB Offset `0x000c` 
+
+    ```zig
+    const reg = getreg32(R_RSB_BASE_ADDRESS + RSB_STAT);
+    if (reg == 0x01) { return 0; }
+    return -1;
+    ```
 
 [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L239-L256)
 
@@ -2618,12 +2679,18 @@ fn rsb_wait_stat(
 
 TODO
 
+## Wait for RSB Transaction
+
 __To wait for completion__ of Reduced Serial Bus Transaction...
 
-```zig
-const reg = getreg32(R_RSB_BASE_ADDRESS + offset); 
-if (reg & mask == 0) { break; }
-```
+1.  __RSB Control Register__ (RSB_CTRL) (A80 Page 923)
+
+    -   At RSB Offset `0x0000`
+
+    ```zig
+    const reg = getreg32(R_RSB_BASE_ADDRESS + offset); 
+    if (reg & mask == 0) { break; }
+    ```
 
 [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L256-L278)
 
