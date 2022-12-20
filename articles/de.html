@@ -2117,7 +2117,7 @@ udelay 15000</code></pre></div></li>
 <h1 id="appendix-reduced-serial-bus"><a href="#appendix-reduced-serial-bus">19 Appendix: Reduced Serial Bus</a></h1>
 <p>TODO</p>
 <ul>
-<li><a href="https://github.com/allwinner-zh/documents/blob/master/A80/A80_User_Manual_v1.3.1_20150513.pdf"><strong>“Allwinner A80 User Manual” (Page 918)</strong></a></li>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf"><strong>“Allwinner A80 User Manual” (Page 918)</strong></a></li>
 </ul>
 <blockquote>
 <p>“The RSB (reduced serial bus) Host Controller is designed to communicate with RSB Device using two push-pull wires.”</p>
@@ -2127,16 +2127,58 @@ udelay 15000</code></pre></div></li>
 performance will be improved much.”</p>
 </blockquote>
 <p><strong>Base Address of Reduced Serial Bus</strong> (R_RSB) is <strong><code>0x01F</code> <code>03400</code></strong> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 75)</a></p>
+<p>RSB Registers <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf">(A80 Page 922)</a></p>
+<ul>
+<li>
+<p><strong>RSB Control Register</strong> (RSB_CTRL)</p>
+<p>(RSB Offset <code>0x0000</code>)</p>
+</li>
+<li>
+<p><strong>RSB Clock Control Register</strong> (RSB_CCR)</p>
+<p>(RSB Offset <code>0x0004</code>) </p>
+</li>
+<li>
+<p><strong>RSB Interrupt Enable Register</strong> (RSB_INTE)</p>
+<p>(RSB Offset <code>0x0008</code>) </p>
+</li>
+<li>
+<p><strong>RSB Status Register</strong> (RSB_STAT)</p>
+<p>(RSB Offset <code>0x000c</code>) </p>
+</li>
+<li>
+<p><strong>RSB Address Register</strong> (RSB_AR)</p>
+<p>(RSB Offset <code>0x0010</code>) </p>
+</li>
+<li>
+<p><strong>RSB Data Buffer Register</strong> (RSB_DATA)</p>
+<p>(RSB Offset <code>0x001c</code>) </p>
+</li>
+<li>
+<p><strong>RSB Line Control register</strong> (RSB_LCR)</p>
+<p>(RSB Offset <code>0x0024</code>) </p>
+</li>
+<li>
+<p><strong>RSB Device Mode Control Register</strong> (RSB_DMCR)</p>
+<p>(RSB Offset <code>0x0028</code>) </p>
+</li>
+<li>
+<p><strong>RSB Command Register</strong> (RSB_CMD)</p>
+<p>(RSB Offset <code>0x002C</code>) </p>
+</li>
+<li>
+<p><strong>RSB Device Address Register</strong> (RSB_DAR)</p>
+<p>(RSB Offset <code>0x0030</code>) </p>
+</li>
+</ul>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L48-L66">pmic.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>
-/// Reduced Serial Bus Offsets
-const RSB_CTRL   = 0x00;
-const RSB_STAT   = 0x0c;
-const RSB_DADDR0 = 0x10;
-const RSB_DATA0  = 0x1c;
-const RSB_CMD    = 0x2c;
-const RSB_SADDR  = 0x30;
+<div class="example-wrap"><pre class="language-zig"><code>/// Reduced Serial Bus Offsets (A80 Page 922)
+const RSB_CTRL   = 0x00;  // RSB Control Register
+const RSB_STAT   = 0x0c;  // RSB Status Register
+const RSB_AR     = 0x10;  // RSB Address Register
+const RSB_DATA   = 0x1c;  // RSB Data Buffer Register
+const RSB_CMD    = 0x2c;  // RSB Command Register
+const RSB_DAR    = 0x30;  // RSB Device Address Register
 
 /// Read a byte from Reduced Serial Bus
 const RSBCMD_RD8 = 0x8B;
@@ -2144,8 +2186,12 @@ const RSBCMD_RD8 = 0x8B;
 /// Write a byte to Reduced Serial Bus
 const RSBCMD_WR8 = 0x4E;</code></pre></div>
 <p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L202-L277">pmic.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Write a byte to Reduced Serial Bus
+<p><strong>To read a byte</strong> from Reduced Serial Bus…</p>
+<div class="example-wrap"><pre class="language-zig"><code>putreg32(RSBCMD_RD8,    R_RSB_BASE_ADDRESS + RSB_CMD);</code></pre></div><div class="example-wrap"><pre class="language-zig"><code>const rt_addr_shift: u32 = @intCast(u32, rt_addr) &lt;&lt; 16;
+putreg32(rt_addr_shift, R_RSB_BASE_ADDRESS + RSB_DAR);</code></pre></div><div class="example-wrap"><pre class="language-zig"><code>putreg32(reg_addr,      R_RSB_BASE_ADDRESS + RSB_AR);</code></pre></div><div class="example-wrap"><pre class="language-zig"><code>putreg32(0x80,          R_RSB_BASE_ADDRESS + RSB_CTRL);</code></pre></div><div class="example-wrap"><pre class="language-zig"><code>const ret = rsb_wait_stat(&quot;Read RSB&quot;);
+if (ret != 0) { return ret; }</code></pre></div><div class="example-wrap"><pre class="language-zig"><code>return getreg8(R_RSB_BASE_ADDRESS + RSB_DATA);</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L201-L220">pmic.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Read a byte from Reduced Serial Bus
 fn rsb_read(
   rt_addr: u8,
   reg_addr: u8
@@ -2153,18 +2199,22 @@ fn rsb_read(
   // Read a byte
   debug(&quot;  rsb_read: rt_addr=0x{x}, reg_addr=0x{x}&quot;, .{ rt_addr, reg_addr });
   const rt_addr_shift: u32 = @intCast(u32, rt_addr) &lt;&lt; 16;
-  putreg32(RSBCMD_RD8,    R_RSB_BASE_ADDRESS + RSB_CMD);     // TODO: DMB
-  putreg32(rt_addr_shift, R_RSB_BASE_ADDRESS + RSB_SADDR);   // TODO: DMB
-  putreg32(reg_addr,      R_RSB_BASE_ADDRESS + RSB_DADDR0);  // TODO: DMB
+  putreg32(RSBCMD_RD8,    R_RSB_BASE_ADDRESS + RSB_CMD);   // TODO: DMB
+  putreg32(rt_addr_shift, R_RSB_BASE_ADDRESS + RSB_DAR);   // TODO: DMB
+  putreg32(reg_addr,      R_RSB_BASE_ADDRESS + RSB_AR);    // TODO: DMB
 
   // Start transaction
-  putreg32(0x80,          R_RSB_BASE_ADDRESS + RSB_CTRL);    // TODO: DMB
+  putreg32(0x80,          R_RSB_BASE_ADDRESS + RSB_CTRL);  // TODO: DMB
   const ret = rsb_wait_stat(&quot;Read RSB&quot;);
   if (ret != 0) { return ret; }
-  return getreg8(R_RSB_BASE_ADDRESS + RSB_DATA0);
+  return getreg8(R_RSB_BASE_ADDRESS + RSB_DATA);
 }</code></pre></div>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Read a byte from Reduced Serial Bus
+<p><strong>To write a byte</strong> to Reduced Serial Bus…</p>
+<div class="example-wrap"><pre class="language-zig"><code>putreg32(RSBCMD_WR8,    R_RSB_BASE_ADDRESS + RSB_CMD);</code></pre></div><div class="example-wrap"><pre class="language-zig"><code>const rt_addr_shift: u32 = @intCast(u32, rt_addr) &lt;&lt; 16;
+putreg32(rt_addr_shift, R_RSB_BASE_ADDRESS + RSB_DAR);</code></pre></div><div class="example-wrap"><pre class="language-zig"><code>putreg32(reg_addr,      R_RSB_BASE_ADDRESS + RSB_AR);</code></pre></div><div class="example-wrap"><pre class="language-zig"><code>putreg32(value,         R_RSB_BASE_ADDRESS + RSB_DATA);</code></pre></div><div class="example-wrap"><pre class="language-zig"><code>putreg32(0x80,          R_RSB_BASE_ADDRESS + RSB_CTRL);</code></pre></div><div class="example-wrap"><pre class="language-zig"><code>return rsb_wait_stat(&quot;Write RSB&quot;);</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L220-L239">pmic.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Write a byte to Reduced Serial Bus
 fn rsb_write(
   rt_addr: u8, 
   reg_addr: u8, 
@@ -2173,16 +2223,25 @@ fn rsb_write(
   // Write a byte
   debug(&quot;  rsb_write: rt_addr=0x{x}, reg_addr=0x{x}, value=0x{x}&quot;, .{ rt_addr, reg_addr, value });
   const rt_addr_shift: u32 = @intCast(u32, rt_addr) &lt;&lt; 16;
-  putreg32(RSBCMD_WR8,    R_RSB_BASE_ADDRESS + RSB_CMD);     // TODO: DMB
-  putreg32(rt_addr_shift, R_RSB_BASE_ADDRESS + RSB_SADDR);   // TODO: DMB
-  putreg32(reg_addr,      R_RSB_BASE_ADDRESS + RSB_DADDR0);  // TODO: DMB
-  putreg32(value,         R_RSB_BASE_ADDRESS + RSB_DATA0);   // TODO: DMB
+  putreg32(RSBCMD_WR8,    R_RSB_BASE_ADDRESS + RSB_CMD);   // TODO: DMB
+  putreg32(rt_addr_shift, R_RSB_BASE_ADDRESS + RSB_DAR);   // TODO: DMB
+  putreg32(reg_addr,      R_RSB_BASE_ADDRESS + RSB_AR);    // TODO: DMB
+  putreg32(value,         R_RSB_BASE_ADDRESS + RSB_DATA);  // TODO: DMB
 
   // Start transaction
-  putreg32(0x80,          R_RSB_BASE_ADDRESS + RSB_CTRL);    // TODO: DMB
+  putreg32(0x80,          R_RSB_BASE_ADDRESS + RSB_CTRL);  // TODO: DMB
   return rsb_wait_stat(&quot;Write RSB&quot;);
 }</code></pre></div>
 <p>TODO</p>
+<p><strong>To wait for status</strong> of Reduced Serial Bus…</p>
+<div class="example-wrap"><pre class="language-zig"><code>const ret = rsb_wait_bit(desc, RSB_CTRL, 1 &lt;&lt; 7);
+if (ret != 0) {
+  debug(&quot;rsb_wait_stat Timeout ({s})&quot;, .{ desc });
+  return ret;
+}</code></pre></div><div class="example-wrap"><pre class="language-zig"><code>const reg = getreg32(R_RSB_BASE_ADDRESS + RSB_STAT);
+if (reg == 0x01) { return 0; }
+return -1;</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L239-L256">pmic.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Wait for Reduced Serial Bus and read Status
 fn rsb_wait_stat(
   desc: []const u8
@@ -2200,6 +2259,10 @@ fn rsb_wait_stat(
   return -1;
 }</code></pre></div>
 <p>TODO</p>
+<p><strong>To wait for completion</strong> of Reduced Serial Bus Transaction…</p>
+<div class="example-wrap"><pre class="language-zig"><code>const reg = getreg32(R_RSB_BASE_ADDRESS + offset); 
+if (reg &amp; mask == 0) { break; }</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L256-L278">pmic.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Wait for Reduced Serial Bus Transaction to complete
 fn rsb_wait_bit(
   desc: []const u8,
@@ -2221,7 +2284,7 @@ fn rsb_wait_bit(
   }
   return 0;
 }</code></pre></div>
-<p><a href="https://forum.pine64.org/showthread.php?tid=406&amp;pid=3160">Notes on RSB</a></p>
+<p><a href="https://forum.pine64.org/showthread.php?tid=406&amp;pid=3160">Notes on PinePhone RSB</a></p>
 
     
 </body>
