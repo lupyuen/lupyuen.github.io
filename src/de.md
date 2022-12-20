@@ -2454,7 +2454,7 @@ RSB Registers [(A80 Page 922)](https://github.com/lupyuen/pinephone-nuttx/releas
 
 TODO
 
-[pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L48-L66)
+Here's our implementation in Zig: [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L48-L66)
 
 ```zig
 /// Reduced Serial Bus Offsets (A80 Page 922)
@@ -2464,7 +2464,41 @@ const RSB_AR     = 0x10;  // RSB Address Register
 const RSB_DATA   = 0x1c;  // RSB Data Buffer Register
 const RSB_CMD    = 0x2c;  // RSB Command Register
 const RSB_DAR    = 0x30;  // RSB Device Address Register
+```
 
+RSB Command Set [(A80 Page 918)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf)...
+
+-   __Set Run-Time-Address__ (SRTA)
+
+    (RBS Command `0xE8`)
+
+-   __Read one byte__ from Device (RD8)
+
+    (RBS Command `0x8B`)
+
+-   __Read two bytes__ from Device (RD16)
+
+    (RBS Command `0x9C`)
+
+-   __Read four bytes__ from Device (RD32)
+
+    (RBS Command `0xA6`)
+
+-   __Write one byte__ to Device (WR8)
+
+    (RBS Command `0x4E`)
+
+-   __Write two bytes__ to Device (WR16)
+
+    (RBS Command `0x59`)
+
+-   __Write four bytes__ to Device (WR32)
+
+    (RBS Command `0x63`)
+
+Here's our implementation in Zig: [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L48-L66)
+
+```zig
 /// Read a byte from Reduced Serial Bus
 const RSBCMD_RD8 = 0x8B;
 
@@ -2481,7 +2515,7 @@ __To read a byte__ from Reduced Serial Bus...
 1.  __RSB Command Register__ (RSB_CMD) (A80 Page 928)
 
     -   At RSB Offset `0x002C`
-    -   Set to 
+    -   Set to `0x8B` (RD8) to read one byte
 
     ```zig
     putreg32(RSBCMD_RD8, R_RSB_BASE_ADDRESS + RSB_CMD);
@@ -2490,6 +2524,7 @@ __To read a byte__ from Reduced Serial Bus...
 1.  __RSB Device Address Register__ (RSB_DAR) (A80 Page 928)
 
     -   At RSB Offset `0x0030`
+    -   Set RTA (Bits 16 to 23) to the Run-Time Address (`0x2D` for AXP803 PMIC)
 
     ```zig
     const rt_addr_shift: u32 = @intCast(u32, rt_addr) << 16;
@@ -2499,6 +2534,7 @@ __To read a byte__ from Reduced Serial Bus...
 1.  __RSB Address Register__ (RSB_AR) (A80 Page 926)
 
     -   At RSB Offset `0x0010` 
+    -   Set to the Register Address of AXP803 PMIC
 
     ```zig
     putreg32(reg_addr, R_RSB_BASE_ADDRESS + RSB_AR);
@@ -2507,12 +2543,15 @@ __To read a byte__ from Reduced Serial Bus...
 1.  __RSB Control Register__ (RSB_CTRL) (A80 Page 923)
 
     -   At RSB Offset `0x0000`
+    -   Set START_TRANS (Bit 7) to 1 (Start Transaction)
 
     ```zig
     putreg32(0x80, R_RSB_BASE_ADDRESS + RSB_CTRL);
     ```
 
-1.  TODO
+1.  Wait for RSB Status
+
+    [(See this)](https://lupyuen.github.io/articles/de#wait-for-rsb-status)
 
     ```zig
     const ret = rsb_wait_stat("Read RSB");
@@ -2521,13 +2560,14 @@ __To read a byte__ from Reduced Serial Bus...
 
 1.  __RSB Data Buffer Register__ (RSB_DATA) (A80 Page 926)
 
-    -   At RSB Offset `0x001c` 
+    -   At RSB Offset `0x001c`
+    -   Contains the value read from AXP803 PMIC
 
     ```zig
     return getreg8(R_RSB_BASE_ADDRESS + RSB_DATA);
     ```
 
-[pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L201-L220)
+Here's our implementation in Zig: [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L201-L220)
 
 ```zig
 /// Read a byte from Reduced Serial Bus
@@ -2550,8 +2590,6 @@ fn rsb_read(
 }
 ```
 
-TODO
-
 ## Write to RSB
 
 __To write a byte__ to Reduced Serial Bus...
@@ -2560,6 +2598,7 @@ __To write a byte__ to Reduced Serial Bus...
 1.  __RSB Command Register__ (RSB_CMD) (A80 Page 928)
 
     -   At RSB Offset `0x002C` 
+    -   Set to `0x4E` (WR8) to write one byte
 
     ```zig
     putreg32(RSBCMD_WR8, R_RSB_BASE_ADDRESS + RSB_CMD);
@@ -2568,6 +2607,7 @@ __To write a byte__ to Reduced Serial Bus...
 1.  __RSB Device Address Register__ (RSB_DAR) (A80 Page 928)
 
     -   At RSB Offset `0x0030` 
+    -   Set RTA (Bits 16 to 23) to the Run-Time Address (`0x2D` for AXP803 PMIC)
 
     ```zig
     const rt_addr_shift: u32 = @intCast(u32, rt_addr) << 16;
@@ -2577,6 +2617,7 @@ __To write a byte__ to Reduced Serial Bus...
 1.  __RSB Address Register__ (RSB_AR) (A80 Page 926)
 
     -   At RSB Offset `0x0010` 
+    -   Set to the Register Address of AXP803 PMIC
 
     ```zig
     putreg32(reg_addr, R_RSB_BASE_ADDRESS + RSB_AR);
@@ -2584,7 +2625,8 @@ __To write a byte__ to Reduced Serial Bus...
 
 1.  __RSB Data Buffer Register__ (RSB_DATA) (A80 Page 926)
 
-    -   At RSB Offset `0x001c` 
+    -   At RSB Offset `0x001c`
+    -   Set to the value that will be written to AXP803 PMIC
 
     ```zig
     putreg32(value, R_RSB_BASE_ADDRESS + RSB_DATA);
@@ -2593,18 +2635,21 @@ __To write a byte__ to Reduced Serial Bus...
 1.  __RSB Control Register__ (RSB_CTRL) (A80 Page 923)
 
     -   At RSB Offset `0x0000`
+    -   Set START_TRANS (Bit 7) to 1 (Start Transaction)
 
     ```zig
     putreg32(0x80, R_RSB_BASE_ADDRESS + RSB_CTRL);
     ```
 
-1.  TODO
+1.  Wait for RSB Status
+
+    [(See this)](https://lupyuen.github.io/articles/de#wait-for-rsb-status)
 
     ```zig
     return rsb_wait_stat("Write RSB");
     ```
 
-[pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L220-L239)
+Here's our implementation in Zig: [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L220-L239)
 
 ```zig
 /// Write a byte to Reduced Serial Bus
@@ -2626,8 +2671,6 @@ fn rsb_write(
   return rsb_wait_stat("Write RSB");
 }
 ```
-
-TODO
 
 ## Wait for RSB Status
 
@@ -2656,7 +2699,7 @@ __To wait for status__ of Reduced Serial Bus...
     return -1;
     ```
 
-[pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L239-L256)
+Here's our implementation in Zig: [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L239-L256)
 
 ```zig
 /// Wait for Reduced Serial Bus and read Status
@@ -2692,7 +2735,7 @@ __To wait for completion__ of Reduced Serial Bus Transaction...
     if (reg & mask == 0) { break; }
     ```
 
-[pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L256-L278)
+Here's our implementation in Zig: [pmic.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig#L256-L278)
 
 ```zig
 /// Wait for Reduced Serial Bus Transaction to complete
