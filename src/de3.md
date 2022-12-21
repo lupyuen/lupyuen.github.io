@@ -38,7 +38,7 @@ Previously we talked about the A64 Display Engine...
 
 -   [__"Rendering PinePhone's Display (DE and TCON0)"__](https://lupyuen.github.io/articles/de)
 
-Today we'll program it with the __NuttX Kernel Driver__ for the Display Engine.
+Today we'll program it with the [__NuttX Kernel Driver__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c) for the Display Engine.
 
 ![3 Framebuffers for 3 UI Channels](https://lupyuen.github.io/images/de2-overlay.jpg)
 
@@ -194,27 +194,57 @@ _What's sarea?_
 
 Remember that Framebuffer 1 is __600 pixels__ wide... But the PinePhone Screen is __720 pixels__ wide.
 
-We use __sarea__ to specify that Framebuffer 1 will be rendered __52 pixels__ from the left (X Offset), __52 pixels__ from the top (Y Offset). So it will be centered horizontally.
+We use __sarea__ to specify that Framebuffer 1 will be rendered __52 pixels__ from the left (X Offset), __52 pixels__ from the top (Y Offset). 
 
-# Render Graphics
+(So it will be centered horizontally)
 
-TODO
+# Render Framebuffers
 
-[test_a64_de.c](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L91-L157)
+We've defined the NuttX Framebuffers... Let's render them with the Display Engine!
+
+We begin by __initialising the Display Engine__...
 
 ```c
+// Init Display Engine
+int ret = a64_de_init();
+DEBUGASSERT(ret == OK);
+
+// Wait 160 milliseconds
+// TODO: Change to the NuttX Kernel equivalent
+usleep(160000);
+
+// Render Graphics with Display Engine
+ret = pinephone_render_graphics();
+DEBUGASSERT(ret == OK);
+```
+
+[(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L1146-L1196)
+
+[__a64_de_init__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c#L386-L655) comes from our NuttX Kernel Driver for Display Engine.
+
+[(How it works)](https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine)
+
+Then we call [__pinephone_render_graphics__](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L91-L157) to render our Framebuffers: [test_a64_de.c](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L91-L157)
+
+```c
+// Render graphics with A64 Display Engine
 int pinephone_render_graphics(void) {
 
-  // Init the UI Blender for PinePhone's A64 Display Engine
+  // Init the UI Blender for A64 Display Engine
   int ret = a64_de_blender_init();
   DEBUGASSERT(ret == OK);
 ```
 
-TODO
+[(__a64_de_blender_init__ comes from our Display Engine Driver)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c#L655-L711)
+
+[(How it works)](https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine)
+
+In the code above we __initialise the UI Blender__ that will blend our UI Channels into a single image.
+
+Then we __initialise UI Channel 1__ with Framebuffer 0...
 
 ```c
-  // Init the Base UI Channel
-  // https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tcon2/arch/arm64/src/a64/a64_de.c
+  // Init the Base UI Channel (Channel 1)
   ret = a64_de_ui_channel_init(
     1,  // UI Channel Number (1 for Base UI Channel)
     planeInfo.fbmem,    // Start of Frame Buffer Memory (address should be 32-bit)
@@ -227,13 +257,20 @@ TODO
   DEBUGASSERT(ret == OK);
 ```
 
-TODO
+[(__a64_de_ui_channel_init__ comes from our Display Engine Driver)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c#L711-L927)
+
+[(How it works)](https://lupyuen.github.io/articles/de2#configure-framebuffer)
+
+Next we __initialise UI Channels 2 and 3__ (with Framebuffers 1 and 2)...
 
 ```c
-  // Init the 2 Overlay UI Channels
-  // https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tcon2/arch/arm64/src/a64/a64_de.c
+  // For each of the 2 Overlay UI Channels (Channels 2 and 3)...
   for (int i = 0; i < sizeof(overlayInfo) / sizeof(overlayInfo[0]); i++) {
+
+    // Get the NuttX Framebuffer for the UI Channel
     const struct fb_overlayinfo_s *ov = &overlayInfo[i];
+
+    // Init the UI Channel
     ret = a64_de_ui_channel_init(
       i + 2,  // UI Channel Number (2 and 3 for Overlay UI Channels)
       (CHANNELS == 3) ? ov->fbmem : NULL,  // Start of Frame Buffer Memory (address should be 32-bit)
@@ -247,16 +284,27 @@ TODO
   }
 ```
 
-TODO
+[(__a64_de_ui_channel_init__ comes from our Display Engine Driver)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c#L711-L927)
+
+[(How it works)](https://lupyuen.github.io/articles/de2#configure-framebuffer)
+
+Finally we __enable the Display Engine__...
 
 ```c
-  // Set UI Blender Route, enable Blender Pipes and apply the settings
-  // https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tcon2/arch/arm64/src/a64/a64_de.c
+  // Set UI Blender Route, enable Blender Pipes
+  // and apply the settings
+  // https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c
   ret = a64_de_enable(CHANNELS);
   DEBUGASSERT(ret == OK);    
 ```
 
-TODO
+[(__a64_de_enable__ comes from our Display Engine Driver)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c#L927-L1017)
+
+[(How it works)](https://lupyuen.github.io/articles/de2#configure-blender)
+
+The Display Engine starts __pulling pixels from our Framebuffers__ over Direct Memory Access (DMA). And pushes the rendered image to PinePhone's Display.
+
+But we won't see anything until we __populate our 3 Framebuffers__ with a Test Pattern...
 
 ```c
   // Fill Framebuffer with Test Pattern.
@@ -267,26 +315,43 @@ TODO
 }
 ```
 
+Let's do a simple Test Pattern...
+
 ![3 Framebuffers for 3 UI Channels](https://lupyuen.github.io/images/de2-overlay.jpg)
 
 # Test Pattern
 
-TODO: Semi-Transparent Overlay
+We fill our 3 Framebuffers with a simple __Test Pattern__ (pic above)...
 
-[test_a64_de.c](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L159-L243)
+-   __Framebuffer 0:__ Blue, Green and Red Blocks
+
+    (720 x 1440 pixels)
+
+-   __Framebuffer 1:__ Semi-Transparent White Square
+
+    (600 x 600 pixels)
+
+-   __Framebuffer 2:__ Semi-Transparent Green Circle
+
+    (720 x 1440 pixels)
+
+Note that Framebuffers 1 and 2 are __Semi-Transparent__, to show that the UI Blender works correctly.
+
+This is how we __populate our 3 Framebuffers:__ [test_a64_de.c](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L159-L243)
 
 ```c
 // Fill the Framebuffers with a Test Pattern.
 // Must be called after Display Engine is Enabled,
 // or missing rows will appear.
 static void test_pattern(void) {
+
   // Zero the Framebuffers
   memset(fb0, 0, sizeof(fb0));
   memset(fb1, 0, sizeof(fb1));
   memset(fb2, 0, sizeof(fb2));
 ```
 
-TODO: Framebuffer 0 (Channel 1)
+__Framebuffer 0__ (UI Channel 1) will have Blue, Green and Red Blocks...
 
 ```c
   // Init Framebuffer 0:
@@ -311,7 +376,9 @@ TODO: Framebuffer 0 (Channel 1)
   }
 ```
 
-TODO: Framebuffer 1 (Channel 2)
+(We'll talk about __ARM64_DMB__ later)
+
+__Framebuffer 1__ (UI Channel 2) will be Semi-Transparent White...
 
 ```c
   // Init Framebuffer 1:
@@ -326,7 +393,7 @@ TODO: Framebuffer 1 (Channel 2)
   }
 ```
 
-TODO: Framebuffer 2 (Channel 3)
+And __Framebuffer 2__ (UI Channel 3) will have a Semi-Transparent Green Circle...
 
 ```c
   // Init Framebuffer 2:
@@ -363,7 +430,7 @@ TODO: Framebuffer 2 (Channel 3)
 }
 ```
 
-TODO
+We're done with our Test Pattern! Let's talk about __ARM64_DMB__...
 
 ![Missing Rows](https://lupyuen.github.io/images/de-rgb.jpg)
 
@@ -374,7 +441,21 @@ _Why the Arm Barriers?_
 ARM64_DMB(); ARM64_DSB(); ARM64_ISB();
 ```
 
-TODO: Doesn't happen in Zig. CPU Cache? DMA? Memory Corruption?
+These are [__Arm64 Barrier Instructions__](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb) that prevent caching and out-of-order execution. [(See this)](https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb)
+
+If we omit these Barrier Instructions, the rendered image will have __missing rows__. (Pic above)
+
+We're not sure why this happens. Maybe it's the CPU Cache? DMA? Memory Alignment? Memory Corruption?
+
+(Doesn't happen in the original Zig version)
+
+_Why do we fill the Framebuffers after enabling the Display Engine?_
+
+Since we're running on DMA (Direct Memory Access), rightfully we can fill the Framebuffers (with our Test Pattern) _before_ enabling the Display Engine...
+
+But this creates mysterious missing rows (pic above). So we fill the Framebuffers __after enabling the Display Engine__.
+
+Let's run our Test Code...
 
 ![Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
 
@@ -395,67 +476,78 @@ TODO: Glue together the Zig and C bits together for testing
 [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L1146-L1196)
 
 ```zig
-// Render 3 UI Channels in Zig and C
-
-// Turn on Display Backlight (in Zig)
-// https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig
+// Zig Test Program that renders 3 UI Channels in Zig and C...
+// Turn on PinePhone Display Backlight (in Zig)
 backlight.backlight_enable(90);
 
-// Init Timing Controller TCON0 (in C)
+// Init A64 Timing Controller TCON0 (in C)
 // PANEL_WIDTH is 720, PANEL_HEIGHT is 1440
-// https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tcon2/arch/arm64/src/a64/a64_tcon0.c#L180-L474
 _ = a64_tcon0_init(PANEL_WIDTH, PANEL_HEIGHT);
 
-// Init Power Management Integrated Circuit (in C)
-// https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_rsb.c
+// Init PinePhone Power Management Integrated Circuit (in C)
 _ = pinephone_pmic_init();            
 
 // Wait 15 milliseconds for power supply and power-on init
 _ = c.usleep(15_000);
 ```
 
+[(__backlight_enable__ is in Zig)](https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig)
+backlight.backlight_enable(90);
+
+[(__a64_tcon0_init__ comes from our NuttX Driver for Timing Controller TCON0)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_tcon0.c#L180-L474)
+
+[(__pinephone_pmic_init__ will be added to NuttX Kernel)](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_rsb.c)
+
 TODO
 
 ```zig
-// Enable MIPI DSI Block (in C)
-// https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dsi.c#L526-L914
+// Enable A64 MIPI Display Serial Interface (in C)
 _ = a64_mipi_dsi_enable();
 
-// Enable MIPI Display Physical Layer (in C)
-// https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dphy.c#L86-L162
+// Enable A64 MIPI Display Physical Layer (in C)
 _ = a64_mipi_dphy_enable();
 ```
+
+[(__a64_mipi_dsi_enable__ comes from our NuttX Driver for MIPI Display Serial Interface)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dsi.c#L526-L914)
+
+[(__a64_mipi_dphy_enable__ too)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dphy.c#L86-L162)
 
 TODO
 
 ```zig
 // Reset LCD Panel (in Zig)
-// https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig
 panel.panel_reset();
 
 // Init LCD Panel (in C)
-// https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c
 _ = pinephone_panel_init();
 ```
+
+[(__panel_reset__ is in Zig)](https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig)
+
+[(__pinephone_panel_init__ will be added to NuttX Kernel)](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c#L43-L453)
 
 TODO
 
 ```zig
-// Start MIPI DSI HSC and HSD (in C)
+// Start A64 MIPI Display Serial Interface (in C)
 // https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dsi.c#L914-L993
 _ = a64_mipi_dsi_start();
 ```
 
+[(__a64_mipi_dsi_start__ comes from our NuttX Driver for MIPI Display Serial Interface)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dsi.c#L914-L993)
+
 TODO
 
 ```zig
-// Init Display Engine (in C)
-// https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tcon2/arch/arm64/src/a64/a64_de.c
+// Init A64 Display Engine (in C)
+// https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c
 _ = a64_de_init();
 
 // Wait 160 milliseconds
 _ = c.usleep(160_000);
 ```
+
+[(We've seen __a64_de_init__ earlier)](https://lupyuen.github.io/articles/de3#render-graphics)
 
 TODO
 
@@ -465,11 +557,15 @@ TODO
 _ = pinephone_render_graphics();
 ```
 
+[(We've seen __pinephone_render_graphics__ earlier)](https://lupyuen.github.io/articles/de3#render-graphics)
+
+TODO
+
 ![Rendering graphics on PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/de3-title.jpg)
 
 # What's Next
 
-TODO
+TODO: LCD Driver
 
 Very soon the official NuttX Kernel will be rendering graphics on PinePhone's LCD Display!
 
