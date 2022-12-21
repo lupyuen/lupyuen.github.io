@@ -6,40 +6,22 @@
 
 [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) for [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) (pic above) now supports the [__Allwinner A64 Display Engine__](https://lupyuen.github.io/articles/de)!
 
-We're one step closer to building the __NuttX Display Driver__ for PinePhone.
+We're one step closer to completing our [__NuttX Display Driver__](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone) for PinePhone.
 
-This article explains how our NuttX Display Driver will call the A64 Display Engine to __render graphics on PinePhone's LCD Display__...
+Let's find out how our NuttX Display Driver will call the A64 Display Engine to __render graphics on PinePhone's LCD Display__...
 
-![Inside our Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
+![PinePhone Framebuffer](https://lupyuen.github.io/images/de2-fb.jpg)
 
-[_Inside our Complete Display Driver for PinePhone_](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone)
+# NuttX Framebuffer
 
-# TODO
+TODO
 
 [test_a64_de.c](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L5-L89)
 
 ```c
-#define CONFIG_FB_OVERLAY y
-#define CHANNELS 3
-
-// TODO: Sync with test.c
+// PinePhone LCD Panel Width and Height (pixels)
 #define PANEL_WIDTH  720
 #define PANEL_HEIGHT 1440
-
-#include <nuttx/video/fb.h>
-#include "a64_tcon0.h"
-
-static void test_pattern(void);
-
-/// NuttX Video Controller for PinePhone (3 UI Channels)
-static struct fb_videoinfo_s videoInfo =
-{
-  .fmt       = FB_FMT_RGBA32,  // Pixel format (XRGB 8888)
-  .xres      = PANEL_WIDTH,      // Horizontal resolution in pixel columns
-  .yres      = PANEL_HEIGHT,     // Vertical resolution in pixel rows
-  .nplanes   = 1,     // Number of color planes supported (Base UI Channel)
-  .noverlays = 2      // Number of overlays supported (2 Overlay UI Channels)
-};
 
 // Framebuffer 0: (Base UI Channel)
 // Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
@@ -54,6 +36,30 @@ static uint32_t fb1[FB1_WIDTH * FB1_HEIGHT];
 // Framebuffer 2: (Second Overlay UI Channel)
 // Fullscreen 720 x 1440 (4 bytes per ARGB 8888 pixel)
 static uint32_t fb2[PANEL_WIDTH * PANEL_HEIGHT];
+```
+
+NuttX expects our Display Driver to provide a [__Framebuffer Interface__](https://nuttx.apache.org/docs/latest/components/drivers/special/framebuffer.html) for rendering graphics.
+
+Let's define the __NuttX Framebuffer__: [test_a64_de.c](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L5-L89)
+
+```c
+// NuttX Framebuffer Interface
+#include <nuttx/video/fb.h>
+
+// TODO
+#define CONFIG_FB_OVERLAY y
+
+// 3 UI Channels: 1 Base Channel + 2 Overlay Channels
+#define CHANNELS 3
+
+// NuttX Video Controller for PinePhone (3 UI Channels)
+static struct fb_videoinfo_s videoInfo = {
+  .fmt       = FB_FMT_RGBA32,  // Pixel format (XRGB 8888)
+  .xres      = PANEL_WIDTH,    // Horizontal resolution in pixel columns
+  .yres      = PANEL_HEIGHT,   // Vertical resolution in pixel rows
+  .nplanes   = 1,     // Number of color planes supported (Base UI Channel)
+  .noverlays = 2      // Number of overlays supported (2 Overlay UI Channels)
+};
 
 /// NuttX Color Plane for PinePhone (Base UI Channel):
 /// Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
@@ -105,6 +111,12 @@ static struct fb_overlayinfo_s overlayInfo[2] =
   },
 };
 ```
+
+![Inside our Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
+
+[_Inside our Complete Display Driver for PinePhone_](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone)
+
+# TODO
 
 TODO
 
