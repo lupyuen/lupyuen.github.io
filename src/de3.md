@@ -10,9 +10,9 @@ We're one step closer to completing our [__NuttX Display Driver__](https://lupyu
 
 Let's find out how our NuttX Display Driver will call the A64 Display Engine to __render graphics on PinePhone's LCD Display__...
 
-![Inside our Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
+![Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
 
-[_Inside our Complete Display Driver for PinePhone_](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone)
+[_Complete Display Driver for PinePhone_](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone)
 
 # Allwinner A64 Display Engine
 
@@ -22,13 +22,13 @@ Inside PinePhone's Allwinner A64 SoC (pic above) is the __A64 Display Engine__ t
 
     (Up to 3 Framebuffers)
 
--   __Mixes the pixels__ into a single image
+-   __Blends the pixels__ into a single image
 
     (720 x 1440 for PinePhone)
 
--   Pushes the image to the __A64 Timing Controller__ (TCON0)
+-   Pushes the image to the __A64 Timing Controller TCON0__
 
-    (Connected to LCD Display via MIPI Display Serial Interface)
+    (Connected via MIPI Display Serial Interface to LCD Display)
 
 -   Does all this automatically in Hardware via __Direct Memory Access__ (DMA)
 
@@ -46,11 +46,11 @@ Today we'll program it with the __NuttX Kernel Driver__ for the Display Engine.
 
 A64 Display Engine supports up to __3 Framebuffers__ in RAM (pic above). Each pixel has __32-bit ARGB 8888__ format.
 
-The Display Engine renders each Framebuffer as a __UI Channel__, which will be blended together into the displayed image...
+The Display Engine renders the 3 Framebuffer as __3 UI Channels__, blended together into the displayed image...
 
 ![Blending the UI Channels](https://lupyuen.github.io/images/de2-blender.jpg)
 
-Let's create 3 Framebuffers for the 3 UI Channels: [test_a64_de.c](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L5-L89)
+Let's start with the __3 Framebuffers__: [test_a64_de.c](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L5-L89)
 
 -   __Framebuffer 0__ (UI Channel 1) is a 720 x 1440 Fullscreen Framebuffer (pic below)...
 
@@ -64,7 +64,7 @@ Let's create 3 Framebuffers for the 3 UI Channels: [test_a64_de.c](https://githu
     static uint32_t fb0[PANEL_WIDTH * PANEL_HEIGHT];
     ```
 
-    Later we'll fill Framebuffer 0 with __Blue, Green and Red__ blocks. (Pic above)
+    Later we'll fill Framebuffer 0 with __Blue, Green and Red__ blocks.
 
 -   __Framebuffer 1__ (UI Channel 2) is a 600 x 600 Square...
 
@@ -222,7 +222,7 @@ TODO
     planeInfo.xres_virtual,  // Horizontal resolution in pixel columns
     planeInfo.yres_virtual,  // Vertical resolution in pixel rows
     planeInfo.xoffset,  // Horizontal offset in pixel columns
-    planeInfo.yoffset  // Vertical offset in pixel rows
+    planeInfo.yoffset   // Vertical offset in pixel rows
   );
   DEBUGASSERT(ret == OK);
 ```
@@ -241,7 +241,7 @@ TODO
       ov->sarea.w,  // Horizontal resolution in pixel columns
       ov->sarea.h,  // Vertical resolution in pixel rows
       ov->sarea.x,  // Horizontal offset in pixel columns
-      ov->sarea.y  // Vertical offset in pixel rows
+      ov->sarea.y   // Vertical offset in pixel rows
     );
     DEBUGASSERT(ret == OK);
   }
@@ -260,7 +260,7 @@ TODO
 
 ```c
   // Fill Framebuffer with Test Pattern.
-  // Must be called after Display Engine is Enabled, or black rows will appear.
+  // Must be called after Display Engine is Enabled, or missing rows will appear.
   test_pattern();
   return OK;
 }
@@ -276,95 +276,120 @@ TODO: Semi-Transparent Overlay
 
 ```c
 // Fill the Framebuffers with a Test Pattern.
-// Must be called after Display Engine is Enabled, or black rows will appear.
+// Must be called after Display Engine is Enabled, or missing rows will appear.
 static void test_pattern(void)
 {
   // Zero the Framebuffers
   memset(fb0, 0, sizeof(fb0));
   memset(fb1, 0, sizeof(fb1));
   memset(fb2, 0, sizeof(fb2));
+```
 
+TODO: Framebuffer 0 (Channel 1)
+
+```c
   // Init Framebuffer 0:
   // Fill with Blue, Green and Red
-  int i;
   const int fb0_len = sizeof(fb0) / sizeof(fb0[0]);
-  for (i = 0; i < fb0_len; i++)
-    {
-      // Colours are in XRGB 8888 format
-      if (i < fb0_len / 4)
-        {
-          // Blue for top quarter
-          fb0[i] = 0x80000080;
-        }
-      else if (i < fb0_len / 2)
-        {
-          // Green for next quarter
-          fb0[i] = 0x80008000;
-        }
-      else
-        {
-          // Red for lower half
-          fb0[i] = 0x80800000;
-        }
+  for (int i = 0; i < fb0_len; i++) {
 
-      // Needed to fix black rows, not sure why
-      ARM64_DMB();
-      ARM64_DSB();
-      ARM64_ISB();
+    // Colours are in XRGB 8888 format
+    if (i < fb0_len / 4) {
+      // Blue for top quarter
+      fb0[i] = 0x80000080;
+    } else if (i < fb0_len / 2) {
+      // Green for next quarter
+      fb0[i] = 0x80008000;
+    } else {
+      // Red for lower half
+      fb0[i] = 0x80800000;
     }
 
+    // Fixes the missing rows, not sure why
+    ARM64_DMB(); ARM64_DSB(); ARM64_ISB();
+  }
+```
+
+TODO: Framebuffer 1 (Channel 2)
+
+```c
   // Init Framebuffer 1:
   // Fill with Semi-Transparent White
   const int fb1_len = sizeof(fb1) / sizeof(fb1[0]);
-  for (i = 0; i < fb1_len; i++)
-    {
-      // Colours are in ARGB 8888 format
-      fb1[i] = 0x40FFFFFF;
+  for (int i = 0; i < fb1_len; i++) {
+    // Colours are in ARGB 8888 format
+    fb1[i] = 0x40FFFFFF;
 
-      // Needed to fix black rows, not sure why
-      ARM64_DMB();
-      ARM64_DSB();
-      ARM64_ISB();
-    }
+    // Fixes the missing rows, not sure why
+    ARM64_DMB(); ARM64_DSB(); ARM64_ISB();
+  }
+```
 
+TODO: Framebuffer 2 (Channel 3)
+
+```c
   // Init Framebuffer 2:
   // Fill with Semi-Transparent Green Circle
   const int fb2_len = sizeof(fb2) / sizeof(fb2[0]);
-  int y;
-  for (y = 0; y < PANEL_HEIGHT; y++)
-    {
-      int x;
-      for (x = 0; x < PANEL_WIDTH; x++)
-        {
-          // Get pixel index
-          const int p = (y * PANEL_WIDTH) + x;
-          DEBUGASSERT(p < fb2_len);
 
-          // Shift coordinates so that centre of screen is (0,0)
-          const int half_width  = PANEL_WIDTH  / 2;
-          const int half_height = PANEL_HEIGHT / 2;
-          const int x_shift = x - half_width;
-          const int y_shift = y - half_height;
+  // For every pixel row...
+  for (int y = 0; y < PANEL_HEIGHT; y++) {
 
-          // If x^2 + y^2 < radius^2, set the pixel to Semi-Transparent Green
-          if (x_shift*x_shift + y_shift*y_shift < half_width*half_width) {
-              fb2[p] = 0x80008000;  // Semi-Transparent Green in ARGB 8888 Format
-          } else {  // Otherwise set to Transparent Black
-              fb2[p] = 0x00000000;  // Transparent Black in ARGB 8888 Format
-          }
+    // For every pixel column...
+    for (int x = 0; x < PANEL_WIDTH; x++) {
 
-          // Needed to fix black rows, not sure why
-          ARM64_DMB();
-          ARM64_DSB();
-          ARM64_ISB();
-        }
+      // Get pixel index
+      const int p = (y * PANEL_WIDTH) + x;
+      DEBUGASSERT(p < fb2_len);
+
+      // Shift coordinates so that centre of screen is (0,0)
+      const int half_width  = PANEL_WIDTH  / 2;
+      const int half_height = PANEL_HEIGHT / 2;
+      const int x_shift = x - half_width;
+      const int y_shift = y - half_height;
+
+      // If x^2 + y^2 < radius^2, set the pixel to Semi-Transparent Green
+      if (x_shift*x_shift + y_shift*y_shift < half_width*half_width) {
+        fb2[p] = 0x80008000;  // Semi-Transparent Green in ARGB 8888 Format
+      } else {  // Otherwise set to Transparent Black
+        fb2[p] = 0x00000000;  // Transparent Black in ARGB 8888 Format
+      }
+
+      // Fixes the missing rows, not sure why
+      ARM64_DMB(); ARM64_DSB(); ARM64_ISB();
     }
+  }
 }
 ```
 
+TODO
+
+![Missing Rows](https://lupyuen.github.io/images/de-rgb.jpg)
+
+_Why the Arm Barriers?_
+
+```c
+// Fixes the missing rows, not sure why
+ARM64_DMB(); ARM64_DSB(); ARM64_ISB();
+```
+
+TODO: Doesn't happen in Zig. CPU Cache? DMA? Memory Corruption?
+
+![Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
+
+[_Complete Display Driver for PinePhone_](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone)
+
 # Complete Display Driver
 
-TODO
+_Are we done yet with our Display Driver for PinePhone?_
+
+Not quite! PinePhone needs a __super complex Display Driver__ that will handle 11 steps...
+
+-   [__"Complete Display Driver for PinePhone"__](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone)
+
+We've implemented most of this in the NuttX Kernel, we're now converting the remaining bits __from Zig to C__.
+
+TODO: Glue together the Zig and C bits together for testing
 
 [render.zig](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L1146-L1196)
 
@@ -380,13 +405,17 @@ backlight.backlight_enable(90);
 // https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tcon2/arch/arm64/src/a64/a64_tcon0.c#L180-L474
 _ = a64_tcon0_init(PANEL_WIDTH, PANEL_HEIGHT);
 
-// Init PMIC (in C)
+// Init Power Management Integrated Circuit (in C)
 // https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_rsb.c
 _ = pinephone_pmic_init();            
 
 // Wait 15 milliseconds for power supply and power-on init
 _ = c.usleep(15_000);
+```
 
+TODO
+
+```zig
 // Enable MIPI DSI Block (in C)
 // https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dsi.c#L526-L914
 _ = a64_mipi_dsi_enable();
@@ -394,7 +423,11 @@ _ = a64_mipi_dsi_enable();
 // Enable MIPI Display Physical Layer (in C)
 // https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dphy.c#L86-L162
 _ = a64_mipi_dphy_enable();
+```
 
+TODO
+
+```zig
 // Reset LCD Panel (in Zig)
 // https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig
 panel.panel_reset();
@@ -402,22 +435,36 @@ panel.panel_reset();
 // Init LCD Panel (in C)
 // https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c
 _ = pinephone_panel_init();
+```
 
+TODO
+
+```zig
 // Start MIPI DSI HSC and HSD (in C)
 // https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dsi.c#L914-L993
 _ = a64_mipi_dsi_start();
+```
 
+TODO
+
+```zig
 // Init Display Engine (in C)
 // https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tcon2/arch/arm64/src/a64/a64_de.c
 _ = a64_de_init();
 
 // Wait 160 milliseconds
 _ = c.usleep(160_000);
+```
 
+TODO
+
+```zig
 // Render Graphics with Display Engine (in C)
 // https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c
 _ = pinephone_render_graphics();
 ```
+
+![Rendering graphics on PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/de3-title.jpg)
 
 # What's Next
 
