@@ -465,7 +465,7 @@ These are [__Arm64 Barrier Instructions__](https://developer.arm.com/documentati
 
 If we omit these Barrier Instructions, the rendered image will have __missing rows__. (Pic above)
 
-We're not sure why this happens. Maybe it's the CPU Cache? DMA? Memory Alignment? Memory Corruption?
+We're not sure why this happens. Maybe it's the CPU Cache? DMA? Framebuffer Alignment? Memory Corruption?
 
 (Doesn't happen in the original Zig version)
 
@@ -579,7 +579,18 @@ _ = pinephone_render_graphics();
 
 [(We've seen __pinephone_render_graphics__ earlier)](https://lupyuen.github.io/articles/de3#render-graphics)
 
+_Which bits of our NuttX Display Driver are still in Zig?_
+
 TODO
+
+-   Driver for PinePhone Display Backlight
+-   Driver for PinePhone Power Management Integrated Circuit
+-   Driver for PinePhone LCD Panel
+-   Driver for A64 Pulse-Width Modulation
+
+This has just been converted from Zig to C...
+
+-   Driver for A64 Reduced Serial Bus
 
 ![Rendering graphics on PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/de3-title.jpg)
 
