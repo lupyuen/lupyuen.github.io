@@ -374,7 +374,6 @@ TODO
 // Turn on Display Backlight (in Zig)
 // https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig
 backlight.backlight_enable(90);
-// _ = c.sleep(1);  // TODO: Remove this when Backlight is converted to C
 
 // Init Timing Controller TCON0 (in C)
 // PANEL_WIDTH is 720, PANEL_HEIGHT is 1440
@@ -386,7 +385,6 @@ _ = a64_tcon0_init(PANEL_WIDTH, PANEL_HEIGHT);
 _ = pinephone_pmic_init();            
 
 // Wait 15 milliseconds for power supply and power-on init
-debug("Wait for power supply and power-on init", .{});
 _ = c.usleep(15_000);
 
 // Enable MIPI DSI Block (in C)
@@ -400,7 +398,6 @@ _ = a64_mipi_dphy_enable();
 // Reset LCD Panel (in Zig)
 // https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig
 panel.panel_reset();
-// _ = c.sleep(1);  // TODO: Remove this when Panel is converted to C
 
 // Init LCD Panel (in C)
 // https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c
