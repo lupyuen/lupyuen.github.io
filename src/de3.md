@@ -260,7 +260,8 @@ TODO
 
 ```c
   // Fill Framebuffer with Test Pattern.
-  // Must be called after Display Engine is Enabled, or missing rows will appear.
+  // Must be called after Display Engine is Enabled,
+  // or missing rows will appear.
   test_pattern();
   return OK;
 }
@@ -276,9 +277,9 @@ TODO: Semi-Transparent Overlay
 
 ```c
 // Fill the Framebuffers with a Test Pattern.
-// Must be called after Display Engine is Enabled, or missing rows will appear.
-static void test_pattern(void)
-{
+// Must be called after Display Engine is Enabled,
+// or missing rows will appear.
+static void test_pattern(void) {
   // Zero the Framebuffers
   memset(fb0, 0, sizeof(fb0));
   memset(fb1, 0, sizeof(fb1));
