@@ -475,6 +475,21 @@ _ = c.usleep(15_000);</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig">(<strong>backlight_enable</strong> is in Zig)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_tcon0.c#L180-L474">(<strong>a64_tcon0_init</strong> comes from our NuttX Driver for Timing Controller TCON0)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_rsb.c">(<strong>pinephone_pmic_init</strong> will be added to NuttX Kernel)</a></p>
+<p>In the code above, we begin by…</p>
+<ul>
+<li>
+<p>Turning on PinePhone’s Display Backlight</p>
+</li>
+<li>
+<p>Initialising the A64 Timing Controller TCON0</p>
+</li>
+<li>
+<p>Initialising PinePhone’s Power Management Integrated Circuit (PMIC)</p>
+</li>
+<li>
+<p>Waiting 15 milliseconds</p>
+</li>
+</ul>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Enable A64 MIPI Display Serial Interface (in C)
 _ = a64_mipi_dsi_enable();
