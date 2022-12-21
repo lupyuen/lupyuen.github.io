@@ -101,8 +101,13 @@ NuttX expects our PinePhone Display Driver to provide a [__Framebuffer Interface
 Let's define the __NuttX Framebuffer__: [test_a64_de.c](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L5-L89)
 
 ```c
-// TODO: Move to `make menuconfig`
-#define CONFIG_FB_OVERLAY y
+// TODO: Run `make menuconfig`
+// Select "System Type > Allwinner A64 Peripheral Selection > DE"
+// Select "System Type > Allwinner A64 Peripheral Selection > RSB"
+// Select "Build Setup > Debug Options > Graphics Debug Features > Error + Warnings + Info"
+// Select "Build Setup > Debug Options > Battery-related Debug Features > Error + Warnings + Info"
+// Select "Device Drivers > Framebuffer Overlay Support"
+// Save config and exit menuconfig
 
 // NuttX Framebuffer Interface
 #include <nuttx/video/fb.h>
