@@ -501,17 +501,30 @@ _ = c.usleep(160_000);</code></pre></div>
 <div class="example-wrap"><pre class="language-zig"><code>// Render Graphics with Display Engine (in C)
 _ = pinephone_render_graphics();</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/de3#render-graphics">(We’ve seen <strong>pinephone_render_graphics</strong> earlier)</a></p>
+<p>TODO: And it runs!</p>
+<p>TODO: Logs</p>
+<p><em>Won’t the Debug Logging create extra latency that might affect the driver?</em></p>
+<p>TODO: Disable debug logs</p>
 <p><em>Which bits of our NuttX Display Driver are still in Zig?</em></p>
-<p>TODO</p>
+<p>These parts of our PinePhone Display Driver are still in Zig, <strong>pending conversion to C</strong>…</p>
 <ul>
-<li>Driver for PinePhone Display Backlight</li>
-<li>Driver for PinePhone Power Management Integrated Circuit</li>
-<li>Driver for PinePhone LCD Panel</li>
-<li>Driver for A64 Pulse-Width Modulation</li>
+<li>
+<p>Driver for PinePhone <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig"><strong>Display Backlight</strong></a></p>
+</li>
+<li>
+<p>Driver for PinePhone <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig"><strong>LCD Panel</strong></a></p>
+</li>
 </ul>
-<p>This has just been converted from Zig to C…</p>
+<p>These have just been <strong>converted from Zig to C</strong>, now adding to NuttX Kernel…</p>
 <ul>
-<li>Driver for A64 Reduced Serial Bus</li>
+<li>
+<p>Driver for PinePhone <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_rsb.c"><strong>Power Management Integrated Circuit (PMIC)</strong></a></p>
+<p>(Which powers the LCD Panel)</p>
+</li>
+<li>
+<p>Driver for A64 <strong>Reduced Serial Bus (RSB)</strong></p>
+<p>(Needed for PinePhone PMIC)</p>
+</li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/de3-title.jpg" alt="Rendering graphics on PinePhone with Apache NuttX RTOS" /></p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
