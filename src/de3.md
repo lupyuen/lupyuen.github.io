@@ -10,6 +10,36 @@ We're one step closer to completing our [__NuttX Display Driver__](https://lupyu
 
 Let's find out how our NuttX Display Driver will call the A64 Display Engine to __render graphics on PinePhone's LCD Display__...
 
+![Inside our Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
+
+[_Inside our Complete Display Driver for PinePhone_](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone)
+
+# Allwinner A64 Display Engine
+
+Inside PinePhone's Allwinner A64 SoC (pic above) is the __A64 Display Engine__ that...
+
+-   Pulls pixels from __Multiple Framebuffers__ in RAM
+
+    (Up to 3 Framebuffers)
+
+-   __Mixes the pixels__ into a single image
+
+    (720 x 1440 for PinePhone)
+
+-   Pushes the image to the __A64 Timing Controller__ (TCON0)
+
+    (Connected to LCD Display via MIPI Display Serial Interface)
+
+-   Does all this automatically in Hardware via __Direct Memory Access__ (DMA)
+
+    (No interrupts needed)
+
+Previously we talked about the A64 Display Engine...
+
+-   [__"Rendering PinePhone's Display (DE and TCON0)"__](https://lupyuen.github.io/articles/de)
+
+Today we'll program it with the __NuttX Kernel Driver__ for the Display Engine.
+
 ![PinePhone Framebuffer](https://lupyuen.github.io/images/de2-fb.jpg)
 
 # NuttX Framebuffer
@@ -111,10 +141,6 @@ static struct fb_overlayinfo_s overlayInfo[2] =
   },
 };
 ```
-
-![Inside our Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
-
-[_Inside our Complete Display Driver for PinePhone_](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone)
 
 # TODO
 
