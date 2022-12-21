@@ -579,18 +579,31 @@ _ = pinephone_render_graphics();
 
 [(We've seen __pinephone_render_graphics__ earlier)](https://lupyuen.github.io/articles/de3#render-graphics)
 
+TODO: And it runs!
+
+TODO: Logs
+
+_Won't the Debug Logging create extra latency that might affect the driver?_
+
+TODO: Disable debug logs
+
 _Which bits of our NuttX Display Driver are still in Zig?_
 
-TODO
+These parts of our PinePhone Display Driver are still in Zig, __pending conversion to C__...
 
--   Driver for PinePhone Display Backlight
--   Driver for PinePhone Power Management Integrated Circuit
--   Driver for PinePhone LCD Panel
--   Driver for A64 Pulse-Width Modulation
+-   Driver for PinePhone [__Display Backlight__](https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig)
 
-This has just been converted from Zig to C...
+-   Driver for PinePhone [__LCD Panel__](https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig)
 
--   Driver for A64 Reduced Serial Bus
+These have just been __converted from Zig to C__, now adding to NuttX Kernel...
+
+-   Driver for PinePhone [__Power Management Integrated Circuit (PMIC)__](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_rsb.c)
+
+    (Which powers the LCD Panel)
+
+-   Driver for A64 __Reduced Serial Bus (RSB)__
+
+    (Needed for PinePhone PMIC)
 
 ![Rendering graphics on PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/de3-title.jpg)
 
