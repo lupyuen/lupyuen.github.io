@@ -435,7 +435,7 @@ static void test_pattern(void) {
 ARM64_DMB(); ARM64_DSB(); ARM64_ISB();</code></pre></div>
 <p>These are <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>Arm64 Barrier Instructions</strong></a> that prevent caching and out-of-order execution. <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb">(See this)</a></p>
 <p>If we omit these Barrier Instructions, the rendered image will have <strong>missing rows</strong>. (Pic above)</p>
-<p>We’re not sure why this happens. Maybe it’s the CPU Cache? DMA? Memory Alignment? Memory Corruption?</p>
+<p>We’re not sure why this happens. Maybe it’s the CPU Cache? DMA? Framebuffer Alignment? Memory Corruption?</p>
 <p>(Doesn’t happen in the original Zig version)</p>
 <p><em>Why do we fill the Framebuffers after enabling the Display Engine?</em></p>
 <p>Since we’re running on DMA (Direct Memory Access), rightfully we can fill the Framebuffers (with our Test Pattern) <em>before</em> enabling the Display Engine…</p>
@@ -501,7 +501,18 @@ _ = c.usleep(160_000);</code></pre></div>
 <div class="example-wrap"><pre class="language-zig"><code>// Render Graphics with Display Engine (in C)
 _ = pinephone_render_graphics();</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/de3#render-graphics">(We’ve seen <strong>pinephone_render_graphics</strong> earlier)</a></p>
+<p><em>Which bits of our NuttX Display Driver are still in Zig?</em></p>
 <p>TODO</p>
+<ul>
+<li>Driver for PinePhone Display Backlight</li>
+<li>Driver for PinePhone Power Management Integrated Circuit</li>
+<li>Driver for PinePhone LCD Panel</li>
+<li>Driver for A64 Pulse-Width Modulation</li>
+</ul>
+<p>This has just been converted from Zig to C…</p>
+<ul>
+<li>Driver for A64 Reduced Serial Bus</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/de3-title.jpg" alt="Rendering graphics on PinePhone with Apache NuttX RTOS" /></p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO: LCD Driver</p>
