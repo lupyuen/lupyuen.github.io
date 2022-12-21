@@ -86,22 +86,22 @@ Let's create 3 Framebuffers for the 3 UI Channels: [test_a64_de.c](https://githu
 
     We'll fill it with a __Semi-Transparent Green Circle__.
 
-Let's wrap the 3 Framebuffers with the NuttX Framebuffer Interface...
+Let's wrap the 3 Framebuffers (__fb0__, __fb1__, __fb2__) with the NuttX Framebuffer Interface...
 
 ![PinePhone Framebuffer](https://lupyuen.github.io/images/de2-fb.jpg)
 
 # NuttX Framebuffer
 
-NuttX expects our Display Driver to provide a [__Framebuffer Interface__](https://nuttx.apache.org/docs/latest/components/drivers/special/framebuffer.html) for rendering graphics.
+NuttX expects our PinePhone Display Driver to provide a [__Framebuffer Interface__](https://nuttx.apache.org/docs/latest/components/drivers/special/framebuffer.html) for rendering graphics.
 
 Let's define the __NuttX Framebuffer__: [test_a64_de.c](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L5-L89)
 
 ```c
+// TODO: Move to `make menuconfig`
+#define CONFIG_FB_OVERLAY y
+
 // NuttX Framebuffer Interface
 #include <nuttx/video/fb.h>
-
-// TODO
-#define CONFIG_FB_OVERLAY y
 
 // 3 UI Channels: 1 Base Channel + 2 Overlay Channels
 #define CHANNELS 3
@@ -116,60 +116,65 @@ static struct fb_videoinfo_s videoInfo = {
 };
 ```
 
-TODO
+The __fb_videoinfo_s__ struct defines the overall PinePhone Display Interface...
+
+-   720 x 1440 resolution
+-   32-bit ARGB 8888 pixels
+-   1 Base UI Channel (Framebuffer 0)
+-   2 Overlay UI Channels (Framebuffers 1 and 2)
+
+This is how we define __Framebuffer 0 (UI Channel 1)__...
 
 ```c
-/// NuttX Color Plane for PinePhone (Base UI Channel):
-/// Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
-static struct fb_planeinfo_s planeInfo =
-{
-  .fbmem   = &fb0,     // Start of frame buffer memory
+// NuttX Color Plane for PinePhone (Base UI Channel):
+// Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
+static struct fb_planeinfo_s planeInfo = {
+  .fbmem   = &fb0,         // Start of frame buffer memory
   .fblen   = sizeof(fb0),  // Length of frame buffer memory in bytes
   .stride  = PANEL_WIDTH * 4,  // Length of a line in bytes (4 bytes per pixel)
-  .display = 0,        // Display number (Unused)
-  .bpp     = 32,       // Bits per pixel (XRGB 8888)
+  .display = 0,   // Display number (Unused)
+  .bpp     = 32,  // Bits per pixel (XRGB 8888)
   .xres_virtual = PANEL_WIDTH,   // Virtual Horizontal resolution in pixel columns
   .yres_virtual = PANEL_HEIGHT,  // Virtual Vertical resolution in pixel rows
-  .xoffset      = 0,     // Offset from virtual to visible resolution
-  .yoffset      = 0      // Offset from virtual to visible resolution
+  .xoffset      = 0,  // Offset from virtual to visible resolution
+  .yoffset      = 0   // Offset from virtual to visible resolution
 };
 ```
 
-TODO
+And __Framebuffers 1 and 2__ (UI Channels 2 and 3)...
 
 ```c
 /// NuttX Overlays for PinePhone (2 Overlay UI Channels)
-static struct fb_overlayinfo_s overlayInfo[2] =
-{
+static struct fb_overlayinfo_s overlayInfo[2] = {
   // First Overlay UI Channel:
   // Square 600 x 600 (4 bytes per ARGB 8888 pixel)
   {
-    .fbmem     = &fb1,     // Start of frame buffer memory
+    .fbmem     = &fb1,  // Start of frame buffer memory
     .fblen     = sizeof(fb1),  // Length of frame buffer memory in bytes
     .stride    = FB1_WIDTH * 4,  // Length of a line in bytes
-    .overlay   = 0,        // Overlay number (First Overlay)
-    .bpp       = 32,       // Bits per pixel (ARGB 8888)
-    .blank     = 0,        // TODO: Blank or unblank
-    .chromakey = 0,        // TODO: Chroma key argb8888 formatted
-    .color     = 0,        // TODO: Color argb8888 formatted
+    .overlay   = 0,     // Overlay number (First Overlay)
+    .bpp       = 32,    // Bits per pixel (ARGB 8888)
+    .blank     = 0,     // TODO: Blank or unblank
+    .chromakey = 0,     // TODO: Chroma key argb8888 formatted
+    .color     = 0,     // TODO: Color argb8888 formatted
     .transp    = { .transp = 0, .transp_mode = 0 },  // TODO: Transparency
     .sarea     = { .x = 52, .y = 52, .w = FB1_WIDTH, .h = FB1_HEIGHT },  // Selected area within the overlay
-    .accl      = 0         // TODO: Supported hardware acceleration
+    .accl      = 0      // TODO: Supported hardware acceleration
   },
   // Second Overlay UI Channel:
   // Fullscreen 720 x 1440 (4 bytes per ARGB 8888 pixel)
   {
-    .fbmem     = &fb2,     // Start of frame buffer memory
+    .fbmem     = &fb2,  // Start of frame buffer memory
     .fblen     = sizeof(fb2),  // Length of frame buffer memory in bytes
     .stride    = PANEL_WIDTH * 4,  // Length of a line in bytes
-    .overlay   = 1,        // Overlay number (Second Overlay)
-    .bpp       = 32,       // Bits per pixel (ARGB 8888)
-    .blank     = 0,        // TODO: Blank or unblank
-    .chromakey = 0,        // TODO: Chroma key argb8888 formatted
-    .color     = 0,        // TODO: Color argb8888 formatted
+    .overlay   = 1,     // Overlay number (Second Overlay)
+    .bpp       = 32,    // Bits per pixel (ARGB 8888)
+    .blank     = 0,     // TODO: Blank or unblank
+    .chromakey = 0,     // TODO: Chroma key argb8888 formatted
+    .color     = 0,     // TODO: Color argb8888 formatted
     .transp    = { .transp = 0, .transp_mode = 0 },  // TODO: Transparency
     .sarea     = { .x = 0, .y = 0, .w = PANEL_WIDTH, .h = PANEL_HEIGHT },  // Selected area within the overlay
-    .accl      = 0         // TODO: Supported hardware acceleration
+    .accl      = 0      // TODO: Supported hardware acceleration
   },
 };
 ```
