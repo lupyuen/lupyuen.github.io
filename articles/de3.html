@@ -270,7 +270,8 @@ static struct fb_overlayinfo_s overlayInfo[2] = {
   DEBUGASSERT(ret == OK);    </code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Fill Framebuffer with Test Pattern.
-  // Must be called after Display Engine is Enabled, or missing rows will appear.
+  // Must be called after Display Engine is Enabled,
+  // or missing rows will appear.
   test_pattern();
   return OK;
 }</code></pre></div>
@@ -279,9 +280,9 @@ static struct fb_overlayinfo_s overlayInfo[2] = {
 <p>TODO: Semi-Transparent Overlay</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L159-L243">test_a64_de.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Fill the Framebuffers with a Test Pattern.
-// Must be called after Display Engine is Enabled, or missing rows will appear.
-static void test_pattern(void)
-{
+// Must be called after Display Engine is Enabled,
+// or missing rows will appear.
+static void test_pattern(void) {
   // Zero the Framebuffers
   memset(fb0, 0, sizeof(fb0));
   memset(fb1, 0, sizeof(fb1));
