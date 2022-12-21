@@ -67,15 +67,43 @@
 
     <h1 class="title">NuttX RTOS for PinePhone: Display Engine</h1>
     <nav id="TOC"><ul>
-<li><a href="#nuttx-framebuffer">1 NuttX Framebuffer</a><ul></ul></li>
-<li><a href="#todo">2 TODO</a><ul></ul></li>
-<li><a href="#whats-next">3 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>29 Dec 2022</em></p>
+<li><a href="#allwinner-a64-display-engine">1 Allwinner A64 Display Engine</a><ul></ul></li>
+<li><a href="#nuttx-framebuffer">2 NuttX Framebuffer</a><ul></ul></li>
+<li><a href="#todo">3 TODO</a><ul></ul></li>
+<li><a href="#whats-next">4 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>29 Dec 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/de3-title.jpg" alt="Rendering graphics on PinePhone with Apache NuttX RTOS" /></p>
 <p><a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> for <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> (pic above) now supports the <a href="https://lupyuen.github.io/articles/de"><strong>Allwinner A64 Display Engine</strong></a>!</p>
 <p>We’re one step closer to completing our <a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><strong>NuttX Display Driver</strong></a> for PinePhone.</p>
 <p>Let’s find out how our NuttX Display Driver will call the A64 Display Engine to <strong>render graphics on PinePhone’s LCD Display</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Inside our Complete Display Driver for PinePhone" /></p>
+<p><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><em>Inside our Complete Display Driver for PinePhone</em></a></p>
+<h1 id="allwinner-a64-display-engine"><a href="#allwinner-a64-display-engine">1 Allwinner A64 Display Engine</a></h1>
+<p>Inside PinePhone’s Allwinner A64 SoC (pic above) is the <strong>A64 Display Engine</strong> that…</p>
+<ul>
+<li>
+<p>Pulls pixels from <strong>Multiple Framebuffers</strong> in RAM</p>
+<p>(Up to 3 Framebuffers)</p>
+</li>
+<li>
+<p><strong>Mixes the pixels</strong> into a single image</p>
+<p>(720 x 1440 for PinePhone)</p>
+</li>
+<li>
+<p>Pushes the image to the <strong>A64 Timing Controller</strong> (TCON0)</p>
+<p>(Connected to LCD Display via MIPI Display Serial Interface)</p>
+</li>
+<li>
+<p>Does all this automatically in Hardware via <strong>Direct Memory Access</strong> (DMA)</p>
+<p>(No interrupts needed)</p>
+</li>
+</ul>
+<p>Previously we talked about the A64 Display Engine…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/de"><strong>“Rendering PinePhone’s Display (DE and TCON0)”</strong></a></li>
+</ul>
+<p>Today we’ll program it with the <strong>NuttX Kernel Driver</strong> for the Display Engine.</p>
 <p><img src="https://lupyuen.github.io/images/de2-fb.jpg" alt="PinePhone Framebuffer" /></p>
-<h1 id="nuttx-framebuffer"><a href="#nuttx-framebuffer">1 NuttX Framebuffer</a></h1>
+<h1 id="nuttx-framebuffer"><a href="#nuttx-framebuffer">2 NuttX Framebuffer</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L5-L89">test_a64_de.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// PinePhone LCD Panel Width and Height (pixels)
@@ -163,10 +191,7 @@ static struct fb_overlayinfo_s overlayInfo[2] =
     .sarea     = { .x = 0, .y = 0, .w = PANEL_WIDTH, .h = PANEL_HEIGHT },  // Selected area within the overlay
     .accl      = 0         // TODO: Supported hardware acceleration
   },
-};</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Inside our Complete Display Driver for PinePhone" /></p>
-<p><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><em>Inside our Complete Display Driver for PinePhone</em></a></p>
-<h1 id="todo"><a href="#todo">2 TODO</a></h1>
+};</code></pre></div><h1 id="todo"><a href="#todo">3 TODO</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L91-L157">test_a64_de.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>int pinephone_render_graphics(void)
@@ -375,7 +400,7 @@ static void test_pattern(void)
 
             // Render Graphics with Display Engine (in C)
             // https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c
-            _ = pinephone_render_graphics();</code></pre></div><h1 id="whats-next"><a href="#whats-next">3 What’s Next</a></h1>
+            _ = pinephone_render_graphics();</code></pre></div><h1 id="whats-next"><a href="#whats-next">4 What’s Next</a></h1>
 <p>TODO</p>
 <p>Very soon the official NuttX Kernel will be rendering graphics on PinePhone’s LCD Display!</p>
 <ul>
