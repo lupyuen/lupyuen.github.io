@@ -68,9 +68,10 @@
     <h1 class="title">NuttX RTOS for PinePhone: Display Engine</h1>
     <nav id="TOC"><ul>
 <li><a href="#allwinner-a64-display-engine">1 Allwinner A64 Display Engine</a><ul></ul></li>
-<li><a href="#nuttx-framebuffer">2 NuttX Framebuffer</a><ul></ul></li>
-<li><a href="#todo">3 TODO</a><ul></ul></li>
-<li><a href="#whats-next">4 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>29 Dec 2022</em></p>
+<li><a href="#ui-channels">2 UI Channels</a><ul></ul></li>
+<li><a href="#nuttx-framebuffer">3 NuttX Framebuffer</a><ul></ul></li>
+<li><a href="#todo">4 TODO</a><ul></ul></li>
+<li><a href="#whats-next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>29 Dec 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/de3-title.jpg" alt="Rendering graphics on PinePhone with Apache NuttX RTOS" /></p>
 <p><a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> for <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> (pic above) now supports the <a href="https://lupyuen.github.io/articles/de"><strong>Allwinner A64 Display Engine</strong></a>!</p>
 <p>We’re one step closer to completing our <a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><strong>NuttX Display Driver</strong></a> for PinePhone.</p>
@@ -102,27 +103,43 @@
 <li><a href="https://lupyuen.github.io/articles/de"><strong>“Rendering PinePhone’s Display (DE and TCON0)”</strong></a></li>
 </ul>
 <p>Today we’ll program it with the <strong>NuttX Kernel Driver</strong> for the Display Engine.</p>
-<p><img src="https://lupyuen.github.io/images/de2-fb.jpg" alt="PinePhone Framebuffer" /></p>
-<h1 id="nuttx-framebuffer"><a href="#nuttx-framebuffer">2 NuttX Framebuffer</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L5-L89">test_a64_de.c</a></p>
+<p><img src="https://lupyuen.github.io/images/de2-overlay.jpg" alt="UI Channels" /></p>
+<h1 id="ui-channels"><a href="#ui-channels">2 UI Channels</a></h1>
+<p>A64 Display Engine supports up to <strong>3 Framebuffers</strong> in RAM. Each pixel has <strong>32-bit ARGB 8888</strong> format.</p>
+<p>The Display Engine renders each Framebuffer as a <strong>UI Channel</strong>, which will appear a graphical overlay. (Pic above)</p>
+<p>Let’s create 3 Framebuffers for the 3 UI Channels: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L5-L89">test_a64_de.c</a></p>
+<ul>
+<li>
+<p><strong>Framebuffer 0</strong> (UI Channel 1) is a 720 x 1440 Fullscreen Framebuffer (pic below)…</p>
 <div class="example-wrap"><pre class="language-c"><code>// PinePhone LCD Panel Width and Height (pixels)
 #define PANEL_WIDTH  720
 #define PANEL_HEIGHT 1440
 
 // Framebuffer 0: (Base UI Channel)
 // Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
-static uint32_t fb0[PANEL_WIDTH * PANEL_HEIGHT];
-
-// Framebuffer 1: (First Overlay UI Channel)
+static uint32_t fb0[PANEL_WIDTH * PANEL_HEIGHT];</code></pre></div>
+<p>Later we’ll fill Framebuffer 0 with <strong>Blue, Green and Red</strong> blocks. (Pic above)</p>
+</li>
+<li>
+<p><strong>Framebuffer 1</strong> (UI Channel 2) is a 600 x 600 Square…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Framebuffer 1: (First Overlay UI Channel)
 // Square 600 x 600 (4 bytes per ARGB 8888 pixel)
 #define FB1_WIDTH  600
 #define FB1_HEIGHT 600
-static uint32_t fb1[FB1_WIDTH * FB1_HEIGHT];
-
-// Framebuffer 2: (Second Overlay UI Channel)
+static uint32_t fb1[FB1_WIDTH * FB1_HEIGHT];</code></pre></div>
+<p>We’ll fill it with <strong>Semi-Transparent White</strong> later.</p>
+</li>
+<li>
+<p><strong>Framebuffer 2</strong> (UI Channel 3) is also a Fullscreen Framebuffer…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Framebuffer 2: (Second Overlay UI Channel)
 // Fullscreen 720 x 1440 (4 bytes per ARGB 8888 pixel)
 static uint32_t fb2[PANEL_WIDTH * PANEL_HEIGHT];</code></pre></div>
+<p>We’ll fill it with a <strong>Semi-Transparent Green Circle</strong>.</p>
+</li>
+</ul>
+<p>Let’s wrap the 3 Framebuffers with the NuttX Framebuffer Interface…</p>
+<p><img src="https://lupyuen.github.io/images/de2-fb.jpg" alt="PinePhone Framebuffer" /></p>
+<h1 id="nuttx-framebuffer"><a href="#nuttx-framebuffer">3 NuttX Framebuffer</a></h1>
 <p>NuttX expects our Display Driver to provide a <a href="https://nuttx.apache.org/docs/latest/components/drivers/special/framebuffer.html"><strong>Framebuffer Interface</strong></a> for rendering graphics.</p>
 <p>Let’s define the <strong>NuttX Framebuffer</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L5-L89">test_a64_de.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// NuttX Framebuffer Interface
@@ -141,9 +158,9 @@ static struct fb_videoinfo_s videoInfo = {
   .yres      = PANEL_HEIGHT,   // Vertical resolution in pixel rows
   .nplanes   = 1,     // Number of color planes supported (Base UI Channel)
   .noverlays = 2      // Number of overlays supported (2 Overlay UI Channels)
-};
-
-/// NuttX Color Plane for PinePhone (Base UI Channel):
+};</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>/// NuttX Color Plane for PinePhone (Base UI Channel):
 /// Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
 static struct fb_planeinfo_s planeInfo =
 {
@@ -156,9 +173,9 @@ static struct fb_planeinfo_s planeInfo =
   .yres_virtual = PANEL_HEIGHT,  // Virtual Vertical resolution in pixel rows
   .xoffset      = 0,     // Offset from virtual to visible resolution
   .yoffset      = 0      // Offset from virtual to visible resolution
-};
-
-/// NuttX Overlays for PinePhone (2 Overlay UI Channels)
+};</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>/// NuttX Overlays for PinePhone (2 Overlay UI Channels)
 static struct fb_overlayinfo_s overlayInfo[2] =
 {
   // First Overlay UI Channel:
@@ -191,7 +208,7 @@ static struct fb_overlayinfo_s overlayInfo[2] =
     .sarea     = { .x = 0, .y = 0, .w = PANEL_WIDTH, .h = PANEL_HEIGHT },  // Selected area within the overlay
     .accl      = 0         // TODO: Supported hardware acceleration
   },
-};</code></pre></div><h1 id="todo"><a href="#todo">3 TODO</a></h1>
+};</code></pre></div><h1 id="todo"><a href="#todo">4 TODO</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L91-L157">test_a64_de.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>int pinephone_render_graphics(void)
@@ -400,7 +417,7 @@ static void test_pattern(void)
 
             // Render Graphics with Display Engine (in C)
             // https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c
-            _ = pinephone_render_graphics();</code></pre></div><h1 id="whats-next"><a href="#whats-next">4 What’s Next</a></h1>
+            _ = pinephone_render_graphics();</code></pre></div><h1 id="whats-next"><a href="#whats-next">5 What’s Next</a></h1>
 <p>TODO</p>
 <p>Very soon the official NuttX Kernel will be rendering graphics on PinePhone’s LCD Display!</p>
 <ul>
