@@ -154,8 +154,13 @@ static uint32_t fb2[PANEL_WIDTH * PANEL_HEIGHT];</code></pre></div>
 <h1 id="nuttx-framebuffer"><a href="#nuttx-framebuffer">3 NuttX Framebuffer</a></h1>
 <p>NuttX expects our PinePhone Display Driver to provide a <a href="https://nuttx.apache.org/docs/latest/components/drivers/special/framebuffer.html"><strong>Framebuffer Interface</strong></a> for rendering graphics.</p>
 <p>Let’s define the <strong>NuttX Framebuffer</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L5-L89">test_a64_de.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// TODO: Move to `make menuconfig`
-#define CONFIG_FB_OVERLAY y
+<div class="example-wrap"><pre class="language-c"><code>// TODO: Run `make menuconfig`
+// Select &quot;System Type &gt; Allwinner A64 Peripheral Selection &gt; DE&quot;
+// Select &quot;System Type &gt; Allwinner A64 Peripheral Selection &gt; RSB&quot;
+// Select &quot;Build Setup &gt; Debug Options &gt; Graphics Debug Features &gt; Error + Warnings + Info&quot;
+// Select &quot;Build Setup &gt; Debug Options &gt; Battery-related Debug Features &gt; Error + Warnings + Info&quot;
+// Select &quot;Device Drivers &gt; Framebuffer Overlay Support&quot;
+// Save config and exit menuconfig
 
 // NuttX Framebuffer Interface
 #include &lt;nuttx/video/fb.h&gt;
