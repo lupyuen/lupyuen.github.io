@@ -526,6 +526,16 @@ _ = c.usleep(15_000);
 
 [(__pinephone_pmic_init__ will be added to NuttX Kernel)](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_rsb.c)
 
+In the code above, we begin by...
+
+-   Turning on PinePhone's Display Backlight
+
+-   Initialising the A64 Timing Controller TCON0
+
+-   Initialising PinePhone's Power Management Integrated Circuit (PMIC)
+
+-   Waiting 15 milliseconds
+
 TODO
 
 ```zig
