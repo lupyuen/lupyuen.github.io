@@ -70,8 +70,10 @@
 <li><a href="#allwinner-a64-display-engine">1 Allwinner A64 Display Engine</a><ul></ul></li>
 <li><a href="#ui-channels">2 UI Channels</a><ul></ul></li>
 <li><a href="#nuttx-framebuffer">3 NuttX Framebuffer</a><ul></ul></li>
-<li><a href="#todo">4 TODO</a><ul></ul></li>
-<li><a href="#whats-next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>29 Dec 2022</em></p>
+<li><a href="#render-graphics">4 Render Graphics</a><ul></ul></li>
+<li><a href="#test-pattern">5 Test Pattern</a><ul></ul></li>
+<li><a href="#complete-display-driver">6 Complete Display Driver</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>29 Dec 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/de3-title.jpg" alt="Rendering graphics on PinePhone with Apache NuttX RTOS" /></p>
 <p><a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> for <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> (pic above) now supports the <a href="https://lupyuen.github.io/articles/de"><strong>Allwinner A64 Display Engine</strong></a>!</p>
 <p>We’re one step closer to completing our <a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><strong>NuttX Display Driver</strong></a> for PinePhone.</p>
@@ -103,10 +105,11 @@
 <li><a href="https://lupyuen.github.io/articles/de"><strong>“Rendering PinePhone’s Display (DE and TCON0)”</strong></a></li>
 </ul>
 <p>Today we’ll program it with the <strong>NuttX Kernel Driver</strong> for the Display Engine.</p>
-<p><img src="https://lupyuen.github.io/images/de2-overlay.jpg" alt="UI Channels" /></p>
+<p><img src="https://lupyuen.github.io/images/de2-overlay.jpg" alt="3 Framebuffers for 3 UI Channels" /></p>
 <h1 id="ui-channels"><a href="#ui-channels">2 UI Channels</a></h1>
-<p>A64 Display Engine supports up to <strong>3 Framebuffers</strong> in RAM. Each pixel has <strong>32-bit ARGB 8888</strong> format.</p>
-<p>The Display Engine renders each Framebuffer as a <strong>UI Channel</strong>, which will appear a graphical overlay. (Pic above)</p>
+<p>A64 Display Engine supports up to <strong>3 Framebuffers</strong> in RAM (pic above). Each pixel has <strong>32-bit ARGB 8888</strong> format.</p>
+<p>The Display Engine renders each Framebuffer as a <strong>UI Channel</strong>, which will be blended together into the displayed image…</p>
+<p><img src="https://lupyuen.github.io/images/de2-blender.jpg" alt="Blending the UI Channels" /></p>
 <p>Let’s create 3 Framebuffers for the 3 UI Channels: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L5-L89">test_a64_de.c</a></p>
 <ul>
 <li>
@@ -166,7 +169,7 @@ static struct fb_videoinfo_s videoInfo = {
 <li>1 Base UI Channel (Framebuffer 0)</li>
 <li>2 Overlay UI Channels (Framebuffers 1 and 2)</li>
 </ul>
-<p>This is how we define <strong>Framebuffer 0 (UI Channel 1)</strong>…</p>
+<p>This is how we define <strong>Framebuffer 0 (UI Channel 1)</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L5-L89">test_a64_de.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// NuttX Color Plane for PinePhone (Base UI Channel):
 // Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
 static struct fb_planeinfo_s planeInfo = {
@@ -180,7 +183,7 @@ static struct fb_planeinfo_s planeInfo = {
   .xoffset      = 0,  // Offset from virtual to visible resolution
   .yoffset      = 0   // Offset from virtual to visible resolution
 };</code></pre></div>
-<p>And <strong>Framebuffers 1 and 2</strong> (UI Channels 2 and 3)…</p>
+<p>And <strong>Framebuffers 1 and 2</strong> (UI Channels 2 and 3): <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L5-L89">test_a64_de.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// NuttX Overlays for PinePhone (2 Overlay UI Channels)
 static struct fb_overlayinfo_s overlayInfo[2] = {
   // First Overlay UI Channel:
@@ -213,35 +216,26 @@ static struct fb_overlayinfo_s overlayInfo[2] = {
     .sarea     = { .x = 0, .y = 0, .w = PANEL_WIDTH, .h = PANEL_HEIGHT },  // Selected area within the overlay
     .accl      = 0      // TODO: Supported hardware acceleration
   },
-};</code></pre></div><h1 id="todo"><a href="#todo">4 TODO</a></h1>
+};</code></pre></div>
+<p><em>What’s sarea?</em></p>
+<div class="example-wrap"><pre class="language-c"><code>.sarea = {
+  .x = 52,
+  .y = 52, 
+  .w = FB1_WIDTH,  // Width is 600
+  .h = FB1_HEIGHT  // Height is 600
+}</code></pre></div>
+<p>Remember that Framebuffer 1 is <strong>600 pixels</strong> wide… But the PinePhone Screen is <strong>720 pixels</strong> wide.</p>
+<p>We use <strong>sarea</strong> to specify that Framebuffer 1 will be rendered <strong>52 pixels</strong> from the left (X Offset), <strong>52 pixels</strong> from the top (Y Offset). So it will be centered horizontally.</p>
+<h1 id="render-graphics"><a href="#render-graphics">4 Render Graphics</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L91-L157">test_a64_de.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>int pinephone_render_graphics(void)
-{
-  // Validate the Framebuffer Sizes at Compile Time
-  // ginfo(&quot;fb0=%p, fb1=%p, fb2=%p\n&quot;, fb0, fb1, fb2);
-  DEBUGASSERT(CHANNELS == 1 || CHANNELS == 3);
-  DEBUGASSERT(planeInfo.xres_virtual == videoInfo.xres);
-  DEBUGASSERT(planeInfo.yres_virtual == videoInfo.yres);
-  DEBUGASSERT(planeInfo.fblen  == planeInfo.xres_virtual * planeInfo.yres_virtual * 4);
-  DEBUGASSERT(planeInfo.stride == planeInfo.xres_virtual * 4);
-  DEBUGASSERT(overlayInfo[0].fblen  == (overlayInfo[0].sarea.w) * overlayInfo[0].sarea.h * 4);
-  DEBUGASSERT(overlayInfo[0].stride == overlayInfo[0].sarea.w * 4);
-  DEBUGASSERT(overlayInfo[1].fblen  == (overlayInfo[1].sarea.w) * overlayInfo[1].sarea.h * 4);
-  DEBUGASSERT(overlayInfo[1].stride == overlayInfo[1].sarea.w * 4);
+<div class="example-wrap"><pre class="language-c"><code>int pinephone_render_graphics(void) {
 
   // Init the UI Blender for PinePhone&#39;s A64 Display Engine
   int ret = a64_de_blender_init();
-  DEBUGASSERT(ret == OK);
-
-#ifndef __NuttX__
-  // For Local Testing: Only 32-bit addresses allowed
-  planeInfo.fbmem = (void *)0x12345678;
-  overlayInfo[0].fbmem = (void *)0x23456789;
-  overlayInfo[1].fbmem = (void *)0x34567890;
-#endif // !__NuttX__
-
-  // Init the Base UI Channel
+  DEBUGASSERT(ret == OK);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  // Init the Base UI Channel
   // https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tcon2/arch/arm64/src/a64/a64_de.c
   ret = a64_de_ui_channel_init(
     1,  // UI Channel Number (1 for Base UI Channel)
@@ -252,13 +246,11 @@ static struct fb_overlayinfo_s overlayInfo[2] = {
     planeInfo.xoffset,  // Horizontal offset in pixel columns
     planeInfo.yoffset  // Vertical offset in pixel rows
   );
-  DEBUGASSERT(ret == OK);
-
-  // Init the 2 Overlay UI Channels
+  DEBUGASSERT(ret == OK);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  // Init the 2 Overlay UI Channels
   // https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tcon2/arch/arm64/src/a64/a64_de.c
-  int i;
-  for (i = 0; i &lt; sizeof(overlayInfo) / sizeof(overlayInfo[0]); i++)
-  {
+  for (int i = 0; i &lt; sizeof(overlayInfo) / sizeof(overlayInfo[0]); i++) {
     const struct fb_overlayinfo_s *ov = &amp;overlayInfo[i];
     ret = a64_de_ui_channel_init(
       i + 2,  // UI Channel Number (2 and 3 for Overlay UI Channels)
@@ -270,20 +262,21 @@ static struct fb_overlayinfo_s overlayInfo[2] = {
       ov-&gt;sarea.y  // Vertical offset in pixel rows
     );
     DEBUGASSERT(ret == OK);
-  }
-
-  // Set UI Blender Route, enable Blender Pipes and apply the settings
+  }</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  // Set UI Blender Route, enable Blender Pipes and apply the settings
   // https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tcon2/arch/arm64/src/a64/a64_de.c
   ret = a64_de_enable(CHANNELS);
-  DEBUGASSERT(ret == OK);    
-
-  // Fill Framebuffer with Test Pattern.
+  DEBUGASSERT(ret == OK);    </code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  // Fill Framebuffer with Test Pattern.
   // Must be called after Display Engine is Enabled, or black rows will appear.
   test_pattern();
-
   return OK;
 }</code></pre></div>
-<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/de2-overlay.jpg" alt="3 Framebuffers for 3 UI Channels" /></p>
+<h1 id="test-pattern"><a href="#test-pattern">5 Test Pattern</a></h1>
+<p>TODO: Semi-Transparent Overlay</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L159-L243">test_a64_de.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Fill the Framebuffers with a Test Pattern.
 // Must be called after Display Engine is Enabled, or black rows will appear.
@@ -369,60 +362,60 @@ static void test_pattern(void)
           ARM64_ISB();
         }
     }
-}</code></pre></div>
+}</code></pre></div><h1 id="complete-display-driver"><a href="#complete-display-driver">6 Complete Display Driver</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L1146-L1196">render.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>            // Render 3 UI Channels in Zig and C
+<div class="example-wrap"><pre class="language-zig"><code>// Render 3 UI Channels in Zig and C
 
-            // Turn on Display Backlight (in Zig)
-            // https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig
-            backlight.backlight_enable(90);
-            // _ = c.sleep(1);  // TODO: Remove this when Backlight is converted to C
+// Turn on Display Backlight (in Zig)
+// https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig
+backlight.backlight_enable(90);
+// _ = c.sleep(1);  // TODO: Remove this when Backlight is converted to C
 
-            // Init Timing Controller TCON0 (in C)
-            // PANEL_WIDTH is 720, PANEL_HEIGHT is 1440
-            // https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tcon2/arch/arm64/src/a64/a64_tcon0.c#L180-L474
-            _ = a64_tcon0_init(PANEL_WIDTH, PANEL_HEIGHT);
+// Init Timing Controller TCON0 (in C)
+// PANEL_WIDTH is 720, PANEL_HEIGHT is 1440
+// https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tcon2/arch/arm64/src/a64/a64_tcon0.c#L180-L474
+_ = a64_tcon0_init(PANEL_WIDTH, PANEL_HEIGHT);
 
-            // Init PMIC (in C)
-            // https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_rsb.c
-            _ = pinephone_pmic_init();            
+// Init PMIC (in C)
+// https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_rsb.c
+_ = pinephone_pmic_init();            
 
-            // Wait 15 milliseconds for power supply and power-on init
-            debug(&quot;Wait for power supply and power-on init&quot;, .{});
-            _ = c.usleep(15_000);
+// Wait 15 milliseconds for power supply and power-on init
+debug(&quot;Wait for power supply and power-on init&quot;, .{});
+_ = c.usleep(15_000);
 
-            // Enable MIPI DSI Block (in C)
-            // https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dsi.c#L526-L914
-            _ = a64_mipi_dsi_enable();
+// Enable MIPI DSI Block (in C)
+// https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dsi.c#L526-L914
+_ = a64_mipi_dsi_enable();
 
-            // Enable MIPI Display Physical Layer (in C)
-            // https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dphy.c#L86-L162
-            _ = a64_mipi_dphy_enable();
+// Enable MIPI Display Physical Layer (in C)
+// https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dphy.c#L86-L162
+_ = a64_mipi_dphy_enable();
 
-            // Reset LCD Panel (in Zig)
-            // https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig
-            panel.panel_reset();
-            // _ = c.sleep(1);  // TODO: Remove this when Panel is converted to C
+// Reset LCD Panel (in Zig)
+// https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig
+panel.panel_reset();
+// _ = c.sleep(1);  // TODO: Remove this when Panel is converted to C
 
-            // Init LCD Panel (in C)
-            // https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c
-            _ = pinephone_panel_init();
+// Init LCD Panel (in C)
+// https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c
+_ = pinephone_panel_init();
 
-            // Start MIPI DSI HSC and HSD (in C)
-            // https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dsi.c#L914-L993
-            _ = a64_mipi_dsi_start();
+// Start MIPI DSI HSC and HSD (in C)
+// https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dsi.c#L914-L993
+_ = a64_mipi_dsi_start();
 
-            // Init Display Engine (in C)
-            // https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tcon2/arch/arm64/src/a64/a64_de.c
-            _ = a64_de_init();
+// Init Display Engine (in C)
+// https://github.com/lupyuen2/wip-pinephone-nuttx/blob/tcon2/arch/arm64/src/a64/a64_de.c
+_ = a64_de_init();
 
-            // Wait 160 milliseconds
-            _ = c.usleep(160_000);
+// Wait 160 milliseconds
+_ = c.usleep(160_000);
 
-            // Render Graphics with Display Engine (in C)
-            // https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c
-            _ = pinephone_render_graphics();</code></pre></div><h1 id="whats-next"><a href="#whats-next">5 What’s Next</a></h1>
+// Render Graphics with Display Engine (in C)
+// https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c
+_ = pinephone_render_graphics();</code></pre></div><h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>Very soon the official NuttX Kernel will be rendering graphics on PinePhone’s LCD Display!</p>
 <ul>
