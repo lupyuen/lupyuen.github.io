@@ -40,33 +40,57 @@ Previously we talked about the A64 Display Engine...
 
 Today we'll program it with the __NuttX Kernel Driver__ for the Display Engine.
 
+![UI Channels](https://lupyuen.github.io/images/de2-overlay.jpg)
+
+# UI Channels
+
+A64 Display Engine supports up to __3 Framebuffers__ in RAM. Each pixel has __32-bit ARGB 8888__ format.
+
+The Display Engine renders each Framebuffer as a __UI Channel__, which will appear a graphical overlay. (Pic above)
+
+Let's create 3 Framebuffers for the 3 UI Channels: [test_a64_de.c](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L5-L89)
+
+-   __Framebuffer 0__ (UI Channel 1) is a 720 x 1440 Fullscreen Framebuffer (pic below)...
+
+    ```c
+    // PinePhone LCD Panel Width and Height (pixels)
+    #define PANEL_WIDTH  720
+    #define PANEL_HEIGHT 1440
+
+    // Framebuffer 0: (Base UI Channel)
+    // Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
+    static uint32_t fb0[PANEL_WIDTH * PANEL_HEIGHT];
+    ```
+
+    Later we'll fill Framebuffer 0 with __Blue, Green and Red__ blocks. (Pic above)
+
+-   __Framebuffer 1__ (UI Channel 2) is a 600 x 600 Square...
+
+    ```c
+    // Framebuffer 1: (First Overlay UI Channel)
+    // Square 600 x 600 (4 bytes per ARGB 8888 pixel)
+    #define FB1_WIDTH  600
+    #define FB1_HEIGHT 600
+    static uint32_t fb1[FB1_WIDTH * FB1_HEIGHT];
+    ```
+
+    We'll fill it with __Semi-Transparent White__ later.
+
+-   __Framebuffer 2__ (UI Channel 3) is also a Fullscreen Framebuffer...
+
+    ```c
+    // Framebuffer 2: (Second Overlay UI Channel)
+    // Fullscreen 720 x 1440 (4 bytes per ARGB 8888 pixel)
+    static uint32_t fb2[PANEL_WIDTH * PANEL_HEIGHT];
+    ```
+
+    We'll fill it with a __Semi-Transparent Green Circle__.
+
+Let's wrap the 3 Framebuffers with the NuttX Framebuffer Interface...
+
 ![PinePhone Framebuffer](https://lupyuen.github.io/images/de2-fb.jpg)
 
 # NuttX Framebuffer
-
-TODO
-
-[test_a64_de.c](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L5-L89)
-
-```c
-// PinePhone LCD Panel Width and Height (pixels)
-#define PANEL_WIDTH  720
-#define PANEL_HEIGHT 1440
-
-// Framebuffer 0: (Base UI Channel)
-// Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
-static uint32_t fb0[PANEL_WIDTH * PANEL_HEIGHT];
-
-// Framebuffer 1: (First Overlay UI Channel)
-// Square 600 x 600 (4 bytes per ARGB 8888 pixel)
-#define FB1_WIDTH  600
-#define FB1_HEIGHT 600
-static uint32_t fb1[FB1_WIDTH * FB1_HEIGHT];
-
-// Framebuffer 2: (Second Overlay UI Channel)
-// Fullscreen 720 x 1440 (4 bytes per ARGB 8888 pixel)
-static uint32_t fb2[PANEL_WIDTH * PANEL_HEIGHT];
-```
 
 NuttX expects our Display Driver to provide a [__Framebuffer Interface__](https://nuttx.apache.org/docs/latest/components/drivers/special/framebuffer.html) for rendering graphics.
 
@@ -90,7 +114,11 @@ static struct fb_videoinfo_s videoInfo = {
   .nplanes   = 1,     // Number of color planes supported (Base UI Channel)
   .noverlays = 2      // Number of overlays supported (2 Overlay UI Channels)
 };
+```
 
+TODO
+
+```c
 /// NuttX Color Plane for PinePhone (Base UI Channel):
 /// Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
 static struct fb_planeinfo_s planeInfo =
@@ -105,7 +133,11 @@ static struct fb_planeinfo_s planeInfo =
   .xoffset      = 0,     // Offset from virtual to visible resolution
   .yoffset      = 0      // Offset from virtual to visible resolution
 };
+```
 
+TODO
+
+```c
 /// NuttX Overlays for PinePhone (2 Overlay UI Channels)
 static struct fb_overlayinfo_s overlayInfo[2] =
 {
