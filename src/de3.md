@@ -731,3 +731,113 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/de3.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/de3.md)
+
+# Appendix: Calibrate NuttX Delay
+
+_Can we call sleep() or usleep() in our NuttX Display Driver?_
+
+Sorry Nope! Most of our Display Driver code runs in the NuttX Kernel at startup.
+
+Calling `sleep()` or `usleep()` will __crash the kernel__...
+
+Because the kernel is still starting up!
+
+_So how do we wait a while in our NuttX Display Driver?_
+
+We call __`up_mdelay()`__ like so...
+
+```c
+// Wait 160 milliseconds
+up_mdelay(160);
+```
+
+_How does up_mdelay() work?_
+
+It's a very simple loop: [arm64_assert.c](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_assert.c#L64-L75)
+
+```c
+// Wait for the specified milliseconds
+void up_mdelay(unsigned int milliseconds) {
+  volatile unsigned int i;
+  volatile unsigned int j;
+
+  for (i = 0; i < milliseconds; i++) {
+    for (j = 0; j < CONFIG_BOARD_LOOPSPERMSEC; j++) {
+    }
+  }
+}
+```
+
+_Huh? Won't the compiler optimise the code and remove the loop?_
+
+It won't because we declared the variables as __`volatile`__.
+
+The NuttX Disassembly shows that the loop is still intact: [nuttx.S](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.2.1/nuttx.S)
+
+```text
+arm64_assert.c:69 (discriminator 2)
+  for (i = 0; i < milliseconds; i++)
+    40081830:	b9400be1 	ldr	w1, [sp, #8]
+    40081834:	11000421 	add	w1, w1, #0x1
+    40081838:	b9000be1 	str	w1, [sp, #8]
+    4008183c:	17fffff4 	b	4008180c <up_mdelay+0x10>
+arm64_assert.c:71 (discriminator 3)
+      for (j = 0; j < CONFIG_BOARD_LOOPSPERMSEC; j++)
+    40081840:	b9400fe1 	ldr	w1, [sp, #12]
+    40081844:	11000421 	add	w1, w1, #0x1
+    40081848:	b9000fe1 	str	w1, [sp, #12]
+    4008184c:	17fffff6 	b	40081824 <up_mdelay+0x28>
+```
+
+_What's CONFIG_BOARD_LOOPSPERMSEC?_
+
+That's a magic constant computed by the __NuttX Calibration Tool For udelay__.
+
+To install the calibration tool...
+
+```bash
+make menuconfig
+```
+
+Then select...
+
+```text
+Application Configuration > Examples > Calibration Tool For udelay 
+```
+
+And rebuild NuttX.
+
+Boot NuttX on PinePhone and run __`calib_udelay`__...
+
+```text
+nsh> calib_udelay
+
+Calibrating timer for main calibration...
+Performing main calibration for udelay.This will take approx. 17.280 seconds.
+Calibration slope for udelay:
+  Y = m*X + b, where
+    X is loop iterations,
+    Y is time in nanoseconds,
+    b is base overhead,
+    m is nanoseconds per loop iteration.
+
+  m = 8.58195489 nsec/iter
+  b = -347067.66917297 nsec
+
+  Correlation coefficient, R¬≤ = 1.0000
+
+Without overhead, 0.11652356 iterations per nanosecond and 116523.57 iterations per millisecond.
+
+Recommended setting for CONFIG_BOARD_LOOPSPERMSEC:
+   CONFIG_BOARD_LOOPSPERMSEC=116524
+```
+
+[(See the Complete Log)](https://gist.github.com/lupyuen/5c7de17bfe6cd192a852182cdf217c43)
+
+(PinePhone is probably the fastest NuttX Board ever!)
+
+We update the __NuttX Board Configuration__ for PinePhone with the computed value: [pinephone/configs/nsh/defconfig](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/nsh/defconfig)
+
+```text
+CONFIG_BOARD_LOOPSPERMSEC=116524
+```
