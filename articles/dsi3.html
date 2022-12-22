@@ -996,9 +996,9 @@ putreg32(DSI_BASIC_CTL1, DSI_BASIC_CTL1_REG);  // TODO: DMB</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L72-L180">(Implemented in Zig as <strong>renderGraphics</strong>)</a></p>
 </li>
 </ul>
-<p>We’ll convert the above Zig Drivers to C. Work in progress…</p>
+<p>We have converted the above Zig Driver to C and added to NuttX Kernel…</p>
 <ul>
-<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/de/arch/arm64/src/a64/a64_de.c"><strong>lupyuen2/wip-pinephone-nuttx (de branch)</strong></a></li>
+<li><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c"><strong>arch/arm64/src/a64/a64_de.c</strong></a></li>
 </ul>
 <p>Our Display Engine Driver shall follow the design of the <strong>STM32F7 Display Driver</strong> in NuttX…</p>
 <ol>
