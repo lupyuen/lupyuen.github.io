@@ -550,9 +550,9 @@ _ = a64_mipi_dsi_enable();
 _ = a64_mipi_dphy_enable();
 ```
 
-[(__a64_mipi_dsi_enable__ comes from our NuttX Driver for MIPI Display Serial Interface)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dsi.c#L526-L914)
+[(__a64_mipi_dsi_enable__ comes from our NuttX Driver for MIPI Display Serial Interface)](https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy)
 
-[(__a64_mipi_dphy_enable__ too)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dphy.c#L86-L162)
+[(__a64_mipi_dphy_enable__ too)](https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy)
 
 TODO
 
@@ -568,6 +568,8 @@ _ = pinephone_panel_init();
 
 [(__pinephone_panel_init__ will be added to NuttX Kernel)](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c#L43-L453)
 
+[(Which calls __a64_mipi_dsi_write__ from our NuttX Driver for MIPI Display Serial Interface)](https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet)
+
 TODO
 
 ```zig
@@ -575,7 +577,7 @@ TODO
 _ = a64_mipi_dsi_start();
 ```
 
-[(__a64_mipi_dsi_start__ comes from our NuttX Driver for MIPI Display Serial Interface)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dsi.c#L914-L993)
+[(__a64_mipi_dsi_start__ comes from our NuttX Driver for MIPI Display Serial Interface)](https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy)
 
 TODO
 
