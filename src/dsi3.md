@@ -1050,29 +1050,9 @@ This will be implemented in our new __Display Engine Driver__ for NuttX in two p
 
     [(Implemented in Zig as __renderGraphics__)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L72-L180)
 
-We have converted the above Zig Driver to C and added to NuttX Kernel...
+__UPDATE:__ We have implemented the Display Engine Driver in NuttX Kernel...
 
--   [__arch/arm64/src/a64/a64_de.c__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c)
-
-Our Display Engine Driver shall follow the design of the __STM32F7 Display Driver__ in NuttX...
-
-1.  At startup, __stm32_bringup__ calls __fb_register__
-
-    [(__stm32_bringup.c__)](https://github.com/apache/nuttx/blob/master/boards/arm/stm32f7/stm32f746g-disco/src/stm32_bringup.c#L100)
-
-1.  To initialise the Framebuffer, __fb_register__ calls __up_fbinitialize__
-
-    [(__fb.c__)](https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L664)
-
-1.  To initialise the Display Driver, __up_fbinitialize__ calls __stm32_ltdcinitialize__
-
-    [(__stm32_lcd.c__)](https://github.com/apache/nuttx/blob/master/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c#L72)
-
-1.  Inside the Display Driver, __stm32_ltdcinitialize__ creates the NuttX Framebuffer
-
-    [(__stm32_ltdc.c__)](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32f7/stm32_ltdc.c#L2971)
-
-1.  NuttX Framebuffer is here: [__stm32_ltdc.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32f7/stm32_ltdc.c#L864)
+-   [__"NuttX RTOS for PinePhone: Display Engine"__](https://lupyuen.github.io/articles/de3)
 
 ![PinePhone Display Backlight](https://lupyuen.github.io/images/pio-backlight.png)
 

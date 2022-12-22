@@ -640,8 +640,6 @@ Let's talk about the upcoming drivers that we're adding to NuttX Kernel...
 
 # Upcoming Drivers
 
-TODO
-
 _Which bits of our NuttX Display Driver are still in Zig?_
 
 These parts of our PinePhone Display Driver are still in Zig, __pending conversion to C__...
@@ -660,13 +658,35 @@ These have just been __converted from Zig to C__, now adding to NuttX Kernel...
 
     (Needed for PinePhone PMIC)
 
-TODO: PinePhone LCD Driver
+The drivers for Display Backlight, LCD Panel and PMIC will go into the __PinePhone Board LCD Driver__...
+
+TODO
+
+Our Display Engine Driver shall follow the design of the __STM32F7 Display Driver__ in NuttX...
+
+1.  At startup, __stm32_bringup__ calls __fb_register__
+
+    [(__stm32_bringup.c__)](https://github.com/apache/nuttx/blob/master/boards/arm/stm32f7/stm32f746g-disco/src/stm32_bringup.c#L100)
+
+1.  To initialise the Framebuffer, __fb_register__ calls __up_fbinitialize__
+
+    [(__fb.c__)](https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L664)
+
+1.  To initialise the Display Driver, __up_fbinitialize__ calls __stm32_ltdcinitialize__
+
+    [(__stm32_lcd.c__)](https://github.com/apache/nuttx/blob/master/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c#L72)
+
+1.  Inside the Display Driver, __stm32_ltdcinitialize__ creates the NuttX Framebuffer
+
+    [(__stm32_ltdc.c__)](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32f7/stm32_ltdc.c#L2971)
+
+1.  NuttX Framebuffer is here: [__stm32_ltdc.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32f7/stm32_ltdc.c#L864)
 
 ![Zig Test Program running on Apache NuttX RTOS for PinePhone](https://lupyuen.github.io/images/de3-run.png)
 
 # What's Next
 
-TODO: LCD Driver
+TODO
 
 Very soon the official NuttX Kernel will be rendering graphics on PinePhone's LCD Display!
 

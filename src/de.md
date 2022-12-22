@@ -1411,7 +1411,7 @@ We have __implemented in Zig__ the above A64 Display Engine Initialisation...
 
 We have converted the above Zig Driver to C and added to NuttX Kernel...
 
--   [__arch/arm64/src/a64/a64_de.c__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c)
+-   [__"NuttX RTOS for PinePhone: Display Engine"__](https://lupyuen.github.io/articles/de3)
 
 ![Running p-boot Display Code on Apache NuttX RTOS with logging](https://lupyuen.github.io/images/de-run.png)
 
@@ -1835,7 +1835,7 @@ Based on the above steps, we have __implemented in Zig__ the A64 Display Engine 
 
 We have converted the above Zig Driver to C and added to NuttX Kernel...
 
--   [__arch/arm64/src/a64/a64_de.c__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c)
+-   [__"NuttX RTOS for PinePhone: Display Engine"__](https://lupyuen.github.io/articles/de3)
 
 ![Allwinner A64 Timing Controller (TCON0)](https://lupyuen.github.io/images/de-block1a.jpg)
 
