@@ -662,6 +662,8 @@ These have just been __converted from Zig to C__, now adding to NuttX Kernel...
 
 TODO: PinePhone LCD Driver
 
+![Zig Test Program running on Apache NuttX RTOS for PinePhone](https://lupyuen.github.io/images/de3-run.png)
+
 # What's Next
 
 TODO: LCD Driver
