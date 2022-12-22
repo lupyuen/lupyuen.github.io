@@ -660,7 +660,7 @@ These have just been __converted from Zig to C__, now adding to NuttX Kernel...
 
 _Where will the new drivers live inside the NuttX Kernel?_
 
-The drivers for Display Backlight, LCD Panel and PMIC will go into the new __PinePhone Board LCD Driver__. 
+The drivers for Display Backlight, LCD Panel and PMIC will go into the new __PinePhone LCD Driver__. 
 
 Which will follow the design of the [__STM32F7 LCD Driver__](https://github.com/apache/nuttx/blob/master/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c) in NuttX...
 
@@ -682,9 +682,11 @@ Which will follow the design of the [__STM32F7 LCD Driver__](https://github.com/
 
 1.  NuttX Framebuffer is here: [__stm32_ltdc.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32f7/stm32_ltdc.c#L864)
 
-Our new PinePhone Board LCD Driver shall execute all 11 steps as described earlier...
+Our new PinePhone LCD Driver shall execute all 11 steps as described earlier...
 
 -   [__"Complete Display Driver"__](https://lupyuen.github.io/articles/de3#complete-display-driver)
+
+(Probably inside our new implementation of __up_fbinitialize__)
 
 ![Zig Test Program running on Apache NuttX RTOS for PinePhone](https://lupyuen.github.io/images/de3-run.png)
 
