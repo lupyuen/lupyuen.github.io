@@ -150,7 +150,7 @@ static uint32_t fb2[PANEL_WIDTH * PANEL_HEIGHT];</code></pre></div>
 <p>We’ll fill it with a <strong>Semi-Transparent Green Circle</strong>.</p>
 </li>
 </ul>
-<p>Let’s wrap the 3 Framebuffers (<strong>fb0</strong>, <strong>fb1</strong>, <strong>fb2</strong>) with the NuttX Framebuffer Interface…</p>
+<p>Let’s wrap the 3 Framebuffers (<strong>fb0</strong>, <strong>fb1</strong> and <strong>fb2</strong>) with the NuttX Framebuffer Interface…</p>
 <p><img src="https://lupyuen.github.io/images/de2-fb.jpg" alt="PinePhone Framebuffer" /></p>
 <h1 id="nuttx-framebuffer"><a href="#nuttx-framebuffer">3 NuttX Framebuffer</a></h1>
 <p>NuttX expects our PinePhone Display Driver to provide a <a href="https://nuttx.apache.org/docs/latest/components/drivers/special/framebuffer.html"><strong>Framebuffer Interface</strong></a> for rendering graphics.</p>
@@ -553,7 +553,7 @@ nsh&gt; hello 0</code></pre></div>
 <p><em>Won’t the Debug Logging create extra latency that might affect the driver?</em></p>
 <p>That’s why we also test with <strong>Debug Logging disabled</strong>…</p>
 <ul>
-<li><a href="https://gist.github.com/lupyuen/ff133730c07730cb3b588a5027e7f524"><strong>Test Log with Debug Logging Disabled</strong></a></li>
+<li><a href="https://gist.github.com/lupyuen/df50aa74b33b39069e89eefda5957423"><strong>Test Log with Debug Logging Disabled</strong></a></li>
 </ul>
 <p>Let’s talk about the upcoming drivers that we’re adding to NuttX Kernel…</p>
 <p><img src="https://lupyuen.github.io/images/de3-title.jpg" alt="Rendering graphics on PinePhone with Apache NuttX RTOS" /></p>
@@ -581,7 +581,7 @@ nsh&gt; hello 0</code></pre></div>
 </ul>
 <p><em>Where will the new drivers live inside the NuttX Kernel?</em></p>
 <p>The drivers for Display Backlight, LCD Panel and PMIC will go into the new <strong>PinePhone Board LCD Driver</strong>. </p>
-<p>Which will follow the design of the <strong>STM32F7 LCD Driver</strong> in NuttX…</p>
+<p>Which will follow the design of the <a href="https://github.com/apache/nuttx/blob/master/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c"><strong>STM32F7 LCD Driver</strong></a> in NuttX…</p>
 <ol>
 <li>
 <p>At startup, <strong>stm32_bringup</strong> calls <strong>fb_register</strong></p>
