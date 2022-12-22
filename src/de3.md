@@ -229,8 +229,6 @@ int ret = a64_de_init();
 DEBUGASSERT(ret == OK);
 
 // Wait 160 milliseconds
-// TODO: Calibrate CONFIG_BOARD_LOOPSPERMSEC, up_mdelay() is too fast right now
-// make menuconfig > Application Configuration > Examples > Calibration Tool For udelay 
 up_mdelay(160);
 
 // Render Graphics with Display Engine
@@ -243,6 +241,8 @@ DEBUGASSERT(ret == OK);
 [__a64_de_init__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c#L386-L655) comes from our NuttX Kernel Driver for Display Engine.
 
 [(How it works)](https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine)
+
+We call [__up_mdelay__](https://lupyuen.github.io/articles/de3#appendix-calibrate-nuttx-delay) to wait 160 milliseconds. [(Explained here)](https://lupyuen.github.io/articles/de3#appendix-calibrate-nuttx-delay)
 
 Then we call __pinephone_render_graphics__...
 
@@ -834,10 +834,10 @@ Recommended setting for CONFIG_BOARD_LOOPSPERMSEC:
 
 [(See the Complete Log)](https://gist.github.com/lupyuen/5c7de17bfe6cd192a852182cdf217c43)
 
-(PinePhone is probably the fastest NuttX Board ever!)
-
 We update the __NuttX Board Configuration__ for PinePhone with the computed value: [pinephone/configs/nsh/defconfig](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/nsh/defconfig)
 
 ```text
 CONFIG_BOARD_LOOPSPERMSEC=116524
 ```
+
+(PinePhone is probably the fastest NuttX Board ever!)
