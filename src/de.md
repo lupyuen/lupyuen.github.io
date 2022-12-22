@@ -1409,9 +1409,9 @@ We have __implemented in Zig__ the above A64 Display Engine Initialisation...
 
 -   [__Output Log for render.zig__](https://gist.github.com/lupyuen/2df0f8c016dae54f4e4210866a7cd118)
 
-We'll convert the above Zig Driver to C for NuttX. Work in progress...
+We have converted the above Zig Driver to C and added to NuttX Kernel...
 
--   [__lupyuen2/wip-pinephone-nuttx (de branch)__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/de/arch/arm64/src/a64/a64_de.c)
+-   [__arch/arm64/src/a64/a64_de.c__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c)
 
 ![Running p-boot Display Code on Apache NuttX RTOS with logging](https://lupyuen.github.io/images/de-run.png)
 
@@ -1833,9 +1833,9 @@ Based on the above steps, we have __implemented in Zig__ the A64 Display Engine 
 
 -   [__Output Log for render.zig__](https://gist.github.com/lupyuen/2df0f8c016dae54f4e4210866a7cd118)
 
-We'll convert the above Zig Driver to C for NuttX. Work in progress...
+We have converted the above Zig Driver to C and added to NuttX Kernel...
 
--   [__lupyuen2/wip-pinephone-nuttx (de branch)__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/de/arch/arm64/src/a64/a64_de.c)
+-   [__arch/arm64/src/a64/a64_de.c__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c)
 
 ![Allwinner A64 Timing Controller (TCON0)](https://lupyuen.github.io/images/de-block1a.jpg)
 

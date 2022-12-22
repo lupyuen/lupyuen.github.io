@@ -1050,9 +1050,9 @@ This will be implemented in our new __Display Engine Driver__ for NuttX in two p
 
     [(Implemented in Zig as __renderGraphics__)](https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L72-L180)
 
-We'll convert the above Zig Drivers to C. Work in progress...
+We have converted the above Zig Driver to C and added to NuttX Kernel...
 
--   [__lupyuen2/wip-pinephone-nuttx (de branch)__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/de/arch/arm64/src/a64/a64_de.c)
+-   [__arch/arm64/src/a64/a64_de.c__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c)
 
 Our Display Engine Driver shall follow the design of the __STM32F7 Display Driver__ in NuttX...
 

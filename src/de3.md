@@ -602,6 +602,8 @@ _ = pinephone_render_graphics();
 
 TODO: And it runs!
 
+[(Download the binaries here)](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.2.1)
+
 TODO: Logs
 
 _Won't the Debug Logging create extra latency that might affect the driver?_
