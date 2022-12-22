@@ -229,8 +229,8 @@ int ret = a64_de_init();
 DEBUGASSERT(ret == OK);
 
 // Wait 160 milliseconds
-// TODO: Calibrate CONFIG_BOARD_LOOPSPERMSEC,
-// up_mdelay() is too fast right now
+// TODO: Calibrate CONFIG_BOARD_LOOPSPERMSEC, up_mdelay() is too fast right now
+// make menuconfig > Application Configuration > Examples > Calibration Tool For udelay 
 up_mdelay(160);
 
 // Render Graphics with Display Engine
