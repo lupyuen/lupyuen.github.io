@@ -1148,7 +1148,9 @@ We'll control the PMIC over RSB in our new __Board LCD Driver__ for NuttX...
 
 -   [__Zig Implementation of PMIC Driver: pmic.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig)
 
-We'll convert the above PMIC Driver from Zig to C.
+We'll convert the above drivers from Zig to C. Work-in-progress for Reduced Serial Bus Driver...
+
+-   [__arch/arm64/src/a64/a64_rsb.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb/arch/arm64/src/a64/a64_rsb.c)
 
 The code will go inside our new __Board LCD Driver__ for NuttX, similar to this...
 

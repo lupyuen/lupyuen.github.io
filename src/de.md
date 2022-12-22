@@ -2413,6 +2413,10 @@ A64's Reduced Serial Bus is documented in the __Allwinner A80 User Manual__...
 
 Reduced Serial Bus seems to work like I2C, specifically for PMIC.
 
+We're now converting the Reduced Serial Bus Driver from Zig to C. Work-in-progress...
+
+-   [__arch/arm64/src/a64/a64_rsb.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb/arch/arm64/src/a64/a64_rsb.c)
+
 __Base Address of Reduced Serial Bus__ (R_RSB) is __`0x01F` `03400`__ [(A64 Page 75)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
 The __Reduced Serial Bus Registers__ are [(A80 Page 922)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf)...

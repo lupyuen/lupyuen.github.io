@@ -602,13 +602,21 @@ _ = pinephone_render_graphics();
 
 TODO: And it runs!
 
+-   [__"Compile Zig Test Program"__](https://github.com/lupyuen/pinephone-nuttx#test-mipi-dsi-for-nuttx-kernel)
+
 [(Download the binaries here)](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.2.1)
 
 TODO: Logs
 
+[Test Log](https://gist.github.com/lupyuen/bd943bea51c6f90debd05cd4f4a8585d)
+
 _Won't the Debug Logging create extra latency that might affect the driver?_
 
 TODO: Disable debug logs
+
+[Debug Logging Disabled](https://gist.github.com/lupyuen/ff133730c07730cb3b588a5027e7f524)
+
+![Rendering graphics on PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/de3-title.jpg)
 
 # Upcoming Drivers
 
@@ -618,23 +626,21 @@ _Which bits of our NuttX Display Driver are still in Zig?_
 
 These parts of our PinePhone Display Driver are still in Zig, __pending conversion to C__...
 
--   Driver for PinePhone [__Display Backlight__](https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig)
+-   Driver for PinePhone [__Display Backlight__](https://lupyuen.github.io/articles/de#appendix-display-backlight)
 
--   Driver for PinePhone [__LCD Panel__](https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig)
+-   Driver for PinePhone [__LCD Panel__](https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel)
 
 These have just been __converted from Zig to C__, now adding to NuttX Kernel...
 
 -   Driver for PinePhone [__Power Management Integrated Circuit (PMIC)__](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_rsb.c)
 
-    (Which powers the LCD Panel)
+    [(Which powers the LCD Panel)](https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit)
 
--   Driver for A64 __Reduced Serial Bus (RSB)__
+-   Driver for A64 [__Reduced Serial Bus (RSB)__](https://lupyuen.github.io/articles/de#appendix-reduced-serial-bus)
 
     (Needed for PinePhone PMIC)
 
 TODO: PinePhone LCD Driver
-
-![Rendering graphics on PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/de3-title.jpg)
 
 # What's Next
 
