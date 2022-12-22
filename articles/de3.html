@@ -558,7 +558,6 @@ nsh&gt; hello 0</code></pre></div>
 <p>Let’s talk about the upcoming drivers that we’re adding to NuttX Kernel…</p>
 <p><img src="https://lupyuen.github.io/images/de3-title.jpg" alt="Rendering graphics on PinePhone with Apache NuttX RTOS" /></p>
 <h1 id="upcoming-drivers"><a href="#upcoming-drivers">7 Upcoming Drivers</a></h1>
-<p>TODO</p>
 <p><em>Which bits of our NuttX Display Driver are still in Zig?</em></p>
 <p>These parts of our PinePhone Display Driver are still in Zig, <strong>pending conversion to C</strong>…</p>
 <ul>
@@ -580,10 +579,33 @@ nsh&gt; hello 0</code></pre></div>
 <p>(Needed for PinePhone PMIC)</p>
 </li>
 </ul>
-<p>TODO: PinePhone LCD Driver</p>
+<p>The drivers for Display Backlight, LCD Panel and PMIC will go into the <strong>PinePhone Board LCD Driver</strong>…</p>
+<p>TODO</p>
+<p>Our Display Engine Driver shall follow the design of the <strong>STM32F7 Display Driver</strong> in NuttX…</p>
+<ol>
+<li>
+<p>At startup, <strong>stm32_bringup</strong> calls <strong>fb_register</strong></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm/stm32f7/stm32f746g-disco/src/stm32_bringup.c#L100">(<strong>stm32_bringup.c</strong>)</a></p>
+</li>
+<li>
+<p>To initialise the Framebuffer, <strong>fb_register</strong> calls <strong>up_fbinitialize</strong></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L664">(<strong>fb.c</strong>)</a></p>
+</li>
+<li>
+<p>To initialise the Display Driver, <strong>up_fbinitialize</strong> calls <strong>stm32_ltdcinitialize</strong></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c#L72">(<strong>stm32_lcd.c</strong>)</a></p>
+</li>
+<li>
+<p>Inside the Display Driver, <strong>stm32_ltdcinitialize</strong> creates the NuttX Framebuffer</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32f7/stm32_ltdc.c#L2971">(<strong>stm32_ltdc.c</strong>)</a></p>
+</li>
+<li>
+<p>NuttX Framebuffer is here: <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32f7/stm32_ltdc.c#L864"><strong>stm32_ltdc.c</strong></a></p>
+</li>
+</ol>
 <p><img src="https://lupyuen.github.io/images/de3-run.png" alt="Zig Test Program running on Apache NuttX RTOS for PinePhone" /></p>
 <h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
-<p>TODO: LCD Driver</p>
+<p>TODO</p>
 <p>Very soon the official NuttX Kernel will be rendering graphics on PinePhone’s LCD Display!</p>
 <p>Stay Tuned for Updates!</p>
 <p>Check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>

@@ -996,32 +996,10 @@ putreg32(DSI_BASIC_CTL1, DSI_BASIC_CTL1_REG);  // TODO: DMB</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L72-L180">(Implemented in Zig as <strong>renderGraphics</strong>)</a></p>
 </li>
 </ul>
-<p>We have converted the above Zig Driver to C and added to NuttX Kernel…</p>
+<p><strong>UPDATE:</strong> We have implemented the Display Engine Driver in NuttX Kernel…</p>
 <ul>
-<li><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c"><strong>arch/arm64/src/a64/a64_de.c</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/de3"><strong>“NuttX RTOS for PinePhone: Display Engine”</strong></a></li>
 </ul>
-<p>Our Display Engine Driver shall follow the design of the <strong>STM32F7 Display Driver</strong> in NuttX…</p>
-<ol>
-<li>
-<p>At startup, <strong>stm32_bringup</strong> calls <strong>fb_register</strong></p>
-<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm/stm32f7/stm32f746g-disco/src/stm32_bringup.c#L100">(<strong>stm32_bringup.c</strong>)</a></p>
-</li>
-<li>
-<p>To initialise the Framebuffer, <strong>fb_register</strong> calls <strong>up_fbinitialize</strong></p>
-<p><a href="https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L664">(<strong>fb.c</strong>)</a></p>
-</li>
-<li>
-<p>To initialise the Display Driver, <strong>up_fbinitialize</strong> calls <strong>stm32_ltdcinitialize</strong></p>
-<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c#L72">(<strong>stm32_lcd.c</strong>)</a></p>
-</li>
-<li>
-<p>Inside the Display Driver, <strong>stm32_ltdcinitialize</strong> creates the NuttX Framebuffer</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32f7/stm32_ltdc.c#L2971">(<strong>stm32_ltdc.c</strong>)</a></p>
-</li>
-<li>
-<p>NuttX Framebuffer is here: <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32f7/stm32_ltdc.c#L864"><strong>stm32_ltdc.c</strong></a></p>
-</li>
-</ol>
 <p><img src="https://lupyuen.github.io/images/pio-backlight.png" alt="PinePhone Display Backlight" /></p>
 <p><a href="https://lupyuen.github.io/articles/pio#pinephone-backlight"><em>PinePhone Display Backlight</em></a></p>
 <h2 id="display-backlight"><a href="#display-backlight">10.3 Display Backlight</a></h2>
