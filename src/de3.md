@@ -1,6 +1,6 @@
 # NuttX RTOS for PinePhone: Display Engine
 
-📝 _29 Dec 2022_
+📝 _23 Dec 2022_
 
 ![Rendering graphics on PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/de3-title.jpg)
 
@@ -523,6 +523,7 @@ _ = a64_tcon0_init(PANEL_WIDTH, PANEL_HEIGHT);
 _ = pinephone_pmic_init();            
 
 // Wait 15 milliseconds for power supply and power-on init
+// TODO: Change to up_mdelay(15)
 _ = c.usleep(15_000);
 ```
 
@@ -586,6 +587,7 @@ We start A64's [__MIPI Display Serial Interface__](https://lupyuen.github.io/art
 _ = a64_de_init();
 
 // Wait 160 milliseconds
+// TODO: Change to up_mdelay(160)
 _ = c.usleep(160_000);
 ```
 
