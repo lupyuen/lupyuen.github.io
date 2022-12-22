@@ -90,7 +90,7 @@ Let's start with the __3 Framebuffers__: [test_a64_de.c](https://github.com/lupy
 
     We'll fill it with a __Semi-Transparent Green Circle__.
 
-Let's wrap the 3 Framebuffers (__fb0__, __fb1__, __fb2__) with the NuttX Framebuffer Interface...
+Let's wrap the 3 Framebuffers (__fb0__, __fb1__ and __fb2__) with the NuttX Framebuffer Interface...
 
 ![PinePhone Framebuffer](https://lupyuen.github.io/images/de2-fb.jpg)
 
@@ -632,7 +632,7 @@ _Won't the Debug Logging create extra latency that might affect the driver?_
 
 That's why we also test with __Debug Logging disabled__...
 
--   [__Test Log with Debug Logging Disabled__](https://gist.github.com/lupyuen/ff133730c07730cb3b588a5027e7f524)
+-   [__Test Log with Debug Logging Disabled__](https://gist.github.com/lupyuen/df50aa74b33b39069e89eefda5957423)
 
 Let's talk about the upcoming drivers that we're adding to NuttX Kernel...
 
@@ -662,7 +662,7 @@ _Where will the new drivers live inside the NuttX Kernel?_
 
 The drivers for Display Backlight, LCD Panel and PMIC will go into the new __PinePhone Board LCD Driver__. 
 
-Which will follow the design of the __STM32F7 LCD Driver__ in NuttX...
+Which will follow the design of the [__STM32F7 LCD Driver__](https://github.com/apache/nuttx/blob/master/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c) in NuttX...
 
 1.  At startup, __stm32_bringup__ calls __fb_register__
 
