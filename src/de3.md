@@ -4,11 +4,11 @@
 
 ![Rendering graphics on PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/de3-title.jpg)
 
-[__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) for [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) (pic above) now supports the [__Allwinner A64 Display Engine__](https://lupyuen.github.io/articles/de)!
+[__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) for [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) (pic above) now supports [__Allwinner A64 Display Engine__](https://lupyuen.github.io/articles/de)!
 
 We're one step closer to completing our [__NuttX Display Driver__](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone) for PinePhone.
 
-Let's find out how our NuttX Display Driver will call the A64 Display Engine to __render graphics on PinePhone's LCD Display__...
+Let's find out how our NuttX Display Driver will call A64 Display Engine to __render graphics on PinePhone's LCD Display__...
 
 ![Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
 
@@ -229,7 +229,8 @@ int ret = a64_de_init();
 DEBUGASSERT(ret == OK);
 
 // Wait 160 milliseconds
-// TODO: Change to the NuttX Kernel equivalent
+// TODO: Change usleep() to the NuttX Kernel equivalent.
+// up_mdelay() doesn't seem to work, it's too fast.
 usleep(160000);
 
 // Render Graphics with Display Engine
@@ -293,7 +294,8 @@ Then we __initialise UI Channels 2 and 3__ (with Framebuffers 1 and 2)...
     // Get the NuttX Framebuffer for the UI Channel
     const struct fb_overlayinfo_s *ov = &overlayInfo[i];
 
-    // Init the UI Channel
+    // Init the UI Channel.
+    // We pass NULL if the UI Channel should be disabled.
     ret = a64_de_ui_channel_init(
       i + 2,  // UI Channel Number (2 and 3 for Overlay UI Channels)
       (CHANNELS == 3) ? ov->fbmem : NULL,  // Start of Frame Buffer Memory (address should be 32-bit)
@@ -318,7 +320,6 @@ Finally we __enable the Display Engine__...
 ```c
   // Set UI Blender Route, enable Blender Pipes
   // and apply the settings
-  // https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c
   ret = a64_de_enable(CHANNELS);
   DEBUGASSERT(ret == OK);    
 ```
@@ -382,6 +383,8 @@ __Framebuffer 0__ (UI Channel 1) will have Blue, Green and Red Blocks...
   // Init Framebuffer 0:
   // Fill with Blue, Green and Red
   const int fb0_len = sizeof(fb0) / sizeof(fb0[0]);
+
+  // For every pixel...
   for (int i = 0; i < fb0_len; i++) {
 
     // Colours are in XRGB 8888 format
@@ -409,9 +412,12 @@ __Framebuffer 1__ (UI Channel 2) will be Semi-Transparent White...
   // Init Framebuffer 1:
   // Fill with Semi-Transparent White
   const int fb1_len = sizeof(fb1) / sizeof(fb1[0]);
+
+  // For every pixel...
   for (int i = 0; i < fb1_len; i++) {
-    // Colours are in ARGB 8888 format
-    fb1[i] = 0x40FFFFFF;
+
+    // Set the pixel to Semi-Transparent White
+    fb1[i] = 0x40FFFFFF;  // ARGB 8888 format
 
     // Fixes the missing rows, not sure why
     ARM64_DMB(); ARM64_DSB(); ARM64_ISB();
@@ -520,23 +526,21 @@ _ = pinephone_pmic_init();
 _ = c.usleep(15_000);
 ```
 
-[(__backlight_enable__ is in Zig)](https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig)
-
-[(__a64_tcon0_init__ comes from our NuttX Driver for Timing Controller TCON0)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_tcon0.c#L180-L474)
-
-[(__pinephone_pmic_init__ will be added to NuttX Kernel)](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_rsb.c)
-
 In the code above, we begin by...
 
--   Turning on PinePhone's Display Backlight
+-   Turning on PinePhone's __Display Backlight__
 
--   Initialising the A64 Timing Controller TCON0
+    [(__backlight_enable__ is in Zig)](https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig)
 
--   Initialising PinePhone's Power Management Integrated Circuit (PMIC)
+-   Initialising the A64 __Timing Controller TCON0__
+
+    [(__a64_tcon0_init__ comes from our NuttX Driver for Timing Controller TCON0)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_tcon0.c#L180-L474)
+
+-   Initialising PinePhone's __Power Management Integrated Circuit (PMIC)__
+
+    [(__pinephone_pmic_init__ will be added to NuttX Kernel)](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_rsb.c)
 
 -   Waiting 15 milliseconds
-
-TODO
 
 ```zig
 // Enable A64 MIPI Display Serial Interface (in C)
@@ -602,6 +606,10 @@ _Won't the Debug Logging create extra latency that might affect the driver?_
 
 TODO: Disable debug logs
 
+# Upcoming Drivers
+
+TODO
+
 _Which bits of our NuttX Display Driver are still in Zig?_
 
 These parts of our PinePhone Display Driver are still in Zig, __pending conversion to C__...
@@ -619,6 +627,8 @@ These have just been __converted from Zig to C__, now adding to NuttX Kernel...
 -   Driver for A64 __Reduced Serial Bus (RSB)__
 
     (Needed for PinePhone PMIC)
+
+TODO: PinePhone LCD Driver
 
 ![Rendering graphics on PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/de3-title.jpg)
 
