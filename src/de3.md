@@ -526,21 +526,21 @@ _ = pinephone_pmic_init();
 _ = c.usleep(15_000);
 ```
 
-In the code above, we begin by...
+In the code above, we do these steps...
 
--   Turning on PinePhone's __Display Backlight__
+-   Turn on PinePhone's [__Display Backlight__](https://lupyuen.github.io/articles/de#appendix-display-backlight)
 
     [(__backlight_enable__ is in Zig)](https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig)
 
--   Initialising the A64 __Timing Controller TCON0__
+-   Initialise the A64 [__Timing Controller TCON0__](https://lupyuen.github.io/articles/de#appendix-timing-controller-tcon0)
 
     [(__a64_tcon0_init__ comes from our NuttX Driver for Timing Controller TCON0)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_tcon0.c#L180-L474)
 
--   Initialising PinePhone's __Power Management Integrated Circuit (PMIC)__
+-   Initialise PinePhone's [__Power Management Integrated Circuit (PMIC)__](https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit)
 
     [(__pinephone_pmic_init__ will be added to NuttX Kernel)](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_rsb.c)
 
--   Waiting 15 milliseconds
+-   Wait 15 milliseconds
 
 ```zig
 // Enable A64 MIPI Display Serial Interface (in C)
@@ -550,11 +550,11 @@ _ = a64_mipi_dsi_enable();
 _ = a64_mipi_dphy_enable();
 ```
 
+Here we enable the A64 [__MIPI Display Serial Interface__](https://lupyuen.github.io/articles/dsi3) and [__MIPI Display Physical Layer__](https://lupyuen.github.io/articles/dsi3).
+
 [(__a64_mipi_dsi_enable__ comes from our NuttX Driver for MIPI Display Serial Interface)](https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy)
 
 [(__a64_mipi_dphy_enable__ too)](https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy)
-
-TODO
 
 ```zig
 // Reset LCD Panel (in Zig)
@@ -564,22 +564,22 @@ panel.panel_reset();
 _ = pinephone_panel_init();
 ```
 
+Next we reset the [__LCD Panel__](https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel) and send the [__Initialisation Commands__](https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet) to the LCD Controller.
+
 [(__panel_reset__ is in Zig)](https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig)
 
 [(__pinephone_panel_init__ will be added to NuttX Kernel)](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c#L43-L453)
 
 [(Which calls __a64_mipi_dsi_write__ from our NuttX Driver for MIPI Display Serial Interface)](https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet)
 
-TODO
-
 ```zig
 // Start A64 MIPI Display Serial Interface (in C)
 _ = a64_mipi_dsi_start();
 ```
 
-[(__a64_mipi_dsi_start__ comes from our NuttX Driver for MIPI Display Serial Interface)](https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy)
+We start A64's [__MIPI Display Serial Interface__](https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy).
 
-TODO
+[(__a64_mipi_dsi_start__ comes from our NuttX Driver for MIPI Display Serial Interface)](https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy)
 
 ```zig
 // Init A64 Display Engine (in C)
@@ -589,32 +589,52 @@ _ = a64_de_init();
 _ = c.usleep(160_000);
 ```
 
-[(We've seen __a64_de_init__ earlier)](https://lupyuen.github.io/articles/de3#render-graphics)
+We __initialise the Display Engine__.
 
-TODO
+[(We've seen __a64_de_init__ earlier)](https://lupyuen.github.io/articles/de3#render-graphics)
 
 ```zig
 // Render Graphics with Display Engine (in C)
 _ = pinephone_render_graphics();
 ```
 
+Finally we __render the framebuffers__ with the Display Engine.
+
 [(We've seen __pinephone_render_graphics__ earlier)](https://lupyuen.github.io/articles/de3#render-graphics)
 
-TODO: And it runs!
+This is how we compile our Zig Test Program...
 
 -   [__"Compile Zig Test Program"__](https://github.com/lupyuen/pinephone-nuttx#test-mipi-dsi-for-nuttx-kernel)
 
-[(Download the binaries here)](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.2.1)
+    [(Download the binaries here)](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.2.1)
 
-TODO: Logs
+We boot NuttX on PinePhone [(with a microSD Card)](https://github.com/apache/nuttx/blob/master/Documentation/platforms/arm/a64/boards/pinephone/index.rst) and run our Zig Test Program...
 
-[Test Log](https://gist.github.com/lupyuen/bd943bea51c6f90debd05cd4f4a8585d)
+```text
+NuttShell (NSH) NuttX-11.0.0-pinephone
+
+nsh> uname -a
+NuttX 11.0.0-pinephone 64a54d2-dirty
+Dec 21 2022 21:48:25 arm64 pinephone
+
+nsh> hello 0
+```
+
+[(Source)](https://gist.github.com/lupyuen/bd943bea51c6f90debd05cd4f4a8585d)
+
+PinePhone renders our Test Pattern on the LCD Display (pic below). Yep our (work-in-progress) PinePhone Display Driver has been tested successfully!
+
+Here's the __Debug Log__ from our Zig Test Program...
+
+-   [__Test Log for Zig Test Program__](https://gist.github.com/lupyuen/bd943bea51c6f90debd05cd4f4a8585d)
 
 _Won't the Debug Logging create extra latency that might affect the driver?_
 
-TODO: Disable debug logs
+That's why we also test with __Debug Logging disabled__...
 
-[Debug Logging Disabled](https://gist.github.com/lupyuen/ff133730c07730cb3b588a5027e7f524)
+-   [__Test Log with Debug Logging Disabled__](https://gist.github.com/lupyuen/ff133730c07730cb3b588a5027e7f524)
+
+Let's talk about the upcoming drivers that we're adding to NuttX Kernel...
 
 ![Rendering graphics on PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/de3-title.jpg)
 
