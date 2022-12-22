@@ -229,9 +229,9 @@ int ret = a64_de_init();
 DEBUGASSERT(ret == OK);
 
 // Wait 160 milliseconds
-// TODO: Change usleep() to the NuttX Kernel equivalent.
-// up_mdelay() doesn't seem to work, it's too fast.
-usleep(160000);
+// TODO: Calibrate CONFIG_BOARD_LOOPSPERMSEC,
+// up_mdelay() is too fast right now
+up_mdelay(160);
 
 // Render Graphics with Display Engine
 ret = pinephone_render_graphics();
