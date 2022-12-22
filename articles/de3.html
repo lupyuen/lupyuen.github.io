@@ -502,8 +502,8 @@ _ = a64_mipi_dsi_enable();
 
 // Enable A64 MIPI Display Physical Layer (in C)
 _ = a64_mipi_dphy_enable();</code></pre></div>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dsi.c#L526-L914">(<strong>a64_mipi_dsi_enable</strong> comes from our NuttX Driver for MIPI Display Serial Interface)</a></p>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dphy.c#L86-L162">(<strong>a64_mipi_dphy_enable</strong> too)</a></p>
+<p><a href="https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy">(<strong>a64_mipi_dsi_enable</strong> comes from our NuttX Driver for MIPI Display Serial Interface)</a></p>
+<p><a href="https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy">(<strong>a64_mipi_dphy_enable</strong> too)</a></p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Reset LCD Panel (in Zig)
 panel.panel_reset();
@@ -512,10 +512,11 @@ panel.panel_reset();
 _ = pinephone_panel_init();</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig">(<strong>panel_reset</strong> is in Zig)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c#L43-L453">(<strong>pinephone_panel_init</strong> will be added to NuttX Kernel)</a></p>
+<p><a href="https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet">(Which calls <strong>a64_mipi_dsi_write</strong> from our NuttX Driver for MIPI Display Serial Interface)</a></p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Start A64 MIPI Display Serial Interface (in C)
 _ = a64_mipi_dsi_start();</code></pre></div>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dsi.c#L914-L993">(<strong>a64_mipi_dsi_start</strong> comes from our NuttX Driver for MIPI Display Serial Interface)</a></p>
+<p><a href="https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy">(<strong>a64_mipi_dsi_start</strong> comes from our NuttX Driver for MIPI Display Serial Interface)</a></p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Init A64 Display Engine (in C)
 _ = a64_de_init();
