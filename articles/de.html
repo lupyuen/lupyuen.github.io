@@ -2134,6 +2134,10 @@ udelay 15000</code></pre></div></li>
 <p>“It supports a simplified two wire protocol (RSB) on a push-pull bus. The transfer speed can be up to 20MHz and the performance will be improved much.”</p>
 </blockquote>
 <p>Reduced Serial Bus seems to work like I2C, specifically for PMIC.</p>
+<p>We’re now converting the Reduced Serial Bus Driver from Zig to C. Work-in-progress…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb/arch/arm64/src/a64/a64_rsb.c"><strong>arch/arm64/src/a64/a64_rsb.c</strong></a></li>
+</ul>
 <p><strong>Base Address of Reduced Serial Bus</strong> (R_RSB) is <strong><code>0x01F</code> <code>03400</code></strong> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 75)</a></p>
 <p>The <strong>Reduced Serial Bus Registers</strong> are <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf">(A80 Page 922)</a>…</p>
 <ul>

@@ -1103,7 +1103,10 @@ putreg32(DSI_BASIC_CTL1, DSI_BASIC_CTL1_REG);  // TODO: DMB</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig"><strong>Zig Implementation of PMIC Driver: pmic.zig</strong></a></p>
 </li>
 </ul>
-<p>We’ll convert the above PMIC Driver from Zig to C.</p>
+<p>We’ll convert the above drivers from Zig to C. Work-in-progress for Reduced Serial Bus Driver…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb/arch/arm64/src/a64/a64_rsb.c"><strong>arch/arm64/src/a64/a64_rsb.c</strong></a></li>
+</ul>
 <p>The code will go inside our new <strong>Board LCD Driver</strong> for NuttX, similar to this…</p>
 <ul>
 <li><a href="https://github.com/apache/nuttx/blob/master/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c"><strong>stm32_lcd.c</strong></a></li>
