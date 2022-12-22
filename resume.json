@@ -44,10 +44,13 @@
   "work": [
     {
       "company": "Apache NuttX RTOS",
-      "position": "Apache NuttX PPMC (Podling Project Management Committee)",
+      "position": "Apache NuttX PMC (Project Management Committee)",
       "website": "https://nuttx.apache.org/",
       "startDate": "2022-09-22",
-      "summary": "Promoting IoT Education with Apache NuttX RTOS (Real-Time Operating System)"
+      "summary": "Promoting IoT Education with Apache NuttX RTOS (Real-Time Operating System)",
+      "highlights": [
+        "Ported Apache NuttX RTOS to PINE64 PinePhone, based on Allwinner A64 SoC (Arm Cortex-A53)"
+      ]
     },
     {
       "company": "Temasek Polytechnic",
