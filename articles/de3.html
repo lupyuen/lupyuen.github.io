@@ -267,8 +267,6 @@ int ret = a64_de_init();
 DEBUGASSERT(ret == OK);
 
 // Wait 160 milliseconds
-// TODO: Calibrate CONFIG_BOARD_LOOPSPERMSEC, up_mdelay() is too fast right now
-// make menuconfig &gt; Application Configuration &gt; Examples &gt; Calibration Tool For udelay 
 up_mdelay(160);
 
 // Render Graphics with Display Engine
@@ -277,6 +275,7 @@ DEBUGASSERT(ret == OK);</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L1146-L1196">(Source)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c#L386-L655"><strong>a64_de_init</strong></a> comes from our NuttX Kernel Driver for Display Engine.</p>
 <p><a href="https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine">(How it works)</a></p>
+<p>We call <a href="https://lupyuen.github.io/articles/de3#appendix-calibrate-nuttx-delay"><strong>up_mdelay</strong></a> to wait 160 milliseconds. <a href="https://lupyuen.github.io/articles/de3#appendix-calibrate-nuttx-delay">(Explained here)</a></p>
 <p>Then we call <strong>pinephone_render_graphics</strong>…</p>
 <h2 id="initialise-ui-blender"><a href="#initialise-ui-blender">4.2 Initialise UI Blender</a></h2>
 <p>Inside <strong>pinephone_render_graphics</strong>, we <strong>initialise the UI Blender</strong> that will blend our UI Channels into a single image: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L91-L157">test_a64_de.c</a></p>
@@ -732,9 +731,10 @@ Without overhead, 0.11652356 iterations per nanosecond and 116523.57 iterations 
 Recommended setting for CONFIG_BOARD_LOOPSPERMSEC:
    CONFIG_BOARD_LOOPSPERMSEC=116524</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/5c7de17bfe6cd192a852182cdf217c43">(See the Complete Log)</a></p>
-<p>(PinePhone is probably the fastest NuttX Board ever!)</p>
 <p>We update the <strong>NuttX Board Configuration</strong> for PinePhone with the computed value: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/nsh/defconfig">pinephone/configs/nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_BOARD_LOOPSPERMSEC=116524</code></pre></div>
+<p>(PinePhone is probably the fastest NuttX Board ever!)</p>
+
     
 </body>
 </html>
