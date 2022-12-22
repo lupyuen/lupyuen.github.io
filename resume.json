@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "NuttX RTOS for PinePhone: Display Engine",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2022-12-23",
+      "website": "https://lupyuen.github.io/articles/de3",
+      "summary": "Apache NuttX Kernel now supports Allwinner A64 Display Engine on Pine64 PinePhone! Here's how we call it to render graphics on PinePhone's LCD Display"
+    },
+    {
       "name": "NuttX RTOS for PinePhone: MIPI Display Serial Interface",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-12-15",

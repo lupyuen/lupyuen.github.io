@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>NuttX RTOS for PinePhone: Display Engine</title>
+            <link>https://lupyuen.github.io/articles/de3</link>
+            <description><![CDATA[Apache NuttX Kernel now supports Allwinner A64 Display Engine on Pine64 PinePhone! Here's how we call it to render graphics on PinePhone's LCD Display]]></description>
+            <guid>https://lupyuen.github.io/articles/de3</guid>
+            <pubDate>Fri, 23 Dec 2022 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>NuttX RTOS for PinePhone: MIPI Display Serial Interface</title>
             <link>https://lupyuen.github.io/articles/dsi3</link>
             <description><![CDATA[Apache NuttX Kernel has a driver for MIPI Display Serial Interface... Here's how it will be called for rendering PinePhone's LCD Display]]></description>
