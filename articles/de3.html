@@ -493,7 +493,7 @@ _ = c.usleep(15_000);</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_tcon0.c#L180-L474">(<strong>a64_tcon0_init</strong> comes from our NuttX Driver for Timing Controller TCON0)</a></p>
 </li>
 <li>
-<p>Initialise PinePhone’s <a href="https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit"><strong>Power Management Integrated Circuit (PMIC)</strong></a></p>
+<p>Initialise PinePhone’s <a href="https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit"><strong>Power Management Integrated Circuit (PMIC)</strong></a> to power on the LCD Panel</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_rsb.c">(<strong>pinephone_pmic_init</strong> will be added to NuttX Kernel)</a></p>
 </li>
 <li>
@@ -563,7 +563,7 @@ nsh&gt; hello 0</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/de3-title.jpg" alt="Rendering graphics on PinePhone with Apache NuttX RTOS" /></p>
 <h1 id="upcoming-drivers"><a href="#upcoming-drivers">7 Upcoming Drivers</a></h1>
 <p><em>Which bits of our NuttX Display Driver are still in Zig?</em></p>
-<p>These parts of our PinePhone Display Driver are still in Zig, <strong>pending conversion to C</strong>…</p>
+<p>These parts are still in Zig, <strong>pending conversion to C</strong>…</p>
 <ul>
 <li>
 <p>Driver for PinePhone <a href="https://lupyuen.github.io/articles/de#appendix-display-backlight"><strong>Display Backlight</strong></a></p>
