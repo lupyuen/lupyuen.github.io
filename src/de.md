@@ -2099,6 +2099,14 @@ Earlier we talked about the sequence of steps that our Display Driver needs to f
 
 This section explains how we turn on __PinePhone's Display Backlight__.
 
+Allwinner A64 is connected to the Display Backlight (pic above) on...
+
+-   __PL10__ (LCD-PWM): Configured for __Pulse-Width Modulation__
+
+-   __PH10__ (LCD-BL-EN): Configured for __PIO Output__
+
+    (Works like GPIO Output)
+
 We captured the log from [__p-boot backlight_enable__](https://megous.com/git/p-boot/tree/src/display.c#n1929)...
 
 -   [__Log from backlight_enable__](https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#backlight_enable)
@@ -2359,7 +2367,9 @@ Earlier we talked about the sequence of steps that our Display Driver needs to f
 
 This section explains how we __reset PinePhone's LCD Panel__, before sending Initialisation Commands to the ST7703 LCD Controller.
 
-Allwinner A64 is connected to __LCD Panel Reset on PD23__ (pic above). We toggle PD23 __Low and High like__ so...
+Allwinner A64 is connected to __LCD Panel Reset on PD23__ (LCD-RESET, pic above).
+
+To reset the LCD Panel, we toggle PD23 __Low and High__ like so...
 
 1.   __Set PD23 to Low__ before initialising the Power Management Integrated Circuit (PMIC)
 
