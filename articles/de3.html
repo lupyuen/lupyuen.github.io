@@ -470,7 +470,7 @@ ARM64_DMB(); ARM64_DSB(); ARM64_ISB();</code></pre></div>
 <p>Here are <strong>all 11 steps</strong> of our upcoming Display Driver, hodgepodged with Zig: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L1146-L1196">render.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Zig Test Program that renders 3 UI Channels in Zig and C...
 // Turn on PinePhone Display Backlight (in Zig)
-backlight.backlight_enable(90);
+backlight.backlight_enable(90);  // 90% brightness
 
 // Init A64 Timing Controller TCON0 (in C)
 // PANEL_WIDTH is 720, PANEL_HEIGHT is 1440
