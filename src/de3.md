@@ -674,7 +674,7 @@ Which will follow the design of the [__STM32F7 LCD Driver__](https://github.com/
 
 1.  To initialise the Framebuffer, __fb_register__ calls __up_fbinitialize__
 
-    [(__fb.c__)](https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L664)
+    [(__fb.c__)](https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L795-L805)
 
 1.  To initialise the Display Driver, __up_fbinitialize__ calls __stm32_ltdcinitialize__
 
