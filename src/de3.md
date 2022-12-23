@@ -125,7 +125,7 @@ static struct fb_videoinfo_s videoInfo = {
 };
 ```
 
-The __fb_videoinfo_s__ struct defines the overall PinePhone Display Interface...
+The [__fb_videoinfo_s__](https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L472-L487) struct defines the overall PinePhone Display Interface...
 
 -   720 x 1440 resolution
 -   32-bit ARGB 8888 pixels
@@ -149,6 +149,8 @@ static struct fb_planeinfo_s planeInfo = {
   .yoffset      = 0   // Offset from virtual to visible resolution
 };
 ```
+
+[(__fb_planeinfo_s__ is defined here)](https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L488-L504)
 
 And __Framebuffers 1 and 2__ (UI Channels 2 and 3): [test_a64_de.c](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L5-L89)
 
@@ -187,6 +189,8 @@ static struct fb_overlayinfo_s overlayInfo[2] = {
   },
 };
 ```
+
+[(__fb_overlayinfo_s__ is defined here)](https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L524-L540)
 
 _What's sarea?_
 
