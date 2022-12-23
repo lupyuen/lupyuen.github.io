@@ -510,9 +510,12 @@ _ = a64_mipi_dphy_enable();</code></pre></div>
 <div class="example-wrap"><pre class="language-zig"><code>// Reset LCD Panel (in Zig)
 panel.panel_reset();
 
+// Wait 15 milliseconds for LCD Panel
+up_mdelay(15);
+
 // Init LCD Panel (in C)
 _ = pinephone_panel_init();</code></pre></div>
-<p>Next we reset the <a href="https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel"><strong>LCD Panel</strong></a> and send the <a href="https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet"><strong>Initialisation Commands</strong></a> to the LCD Controller.</p>
+<p>Next we reset the <a href="https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel"><strong>LCD Panel</strong></a>, wait 15 milliseconds and send the <a href="https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet"><strong>Initialisation Commands</strong></a> to the LCD Controller.</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig">(<strong>panel_reset</strong> is in Zig)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c#L43-L453">(<strong>pinephone_panel_init</strong> will be added to NuttX Kernel)</a></p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet">(Which calls <strong>a64_mipi_dsi_write</strong> from our NuttX Driver for MIPI Display Serial Interface)</a></p>
@@ -523,7 +526,7 @@ _ = a64_mipi_dsi_start();</code></pre></div>
 <div class="example-wrap"><pre class="language-zig"><code>// Init A64 Display Engine (in C)
 _ = a64_de_init();
 
-// Wait 160 milliseconds
+// Wait 160 milliseconds for Display Engine
 up_mdelay(160);</code></pre></div>
 <p>We <strong>initialise the Display Engine</strong>.</p>
 <p><a href="https://lupyuen.github.io/articles/de3#render-graphics">(We’ve seen <strong>a64_de_init</strong> earlier)</a></p>

@@ -1953,6 +1953,10 @@ TODO: Set Bit 10 of PH_DATA (0x1c2090c)</code></pre></div></li>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for backlight.zig</strong></a></p>
 </li>
 </ul>
+<p>We’re now porting the above driver from Zig to C. Work-in-progress…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb2/boards/arm64/a64/pinephone/src/pinephone_lcd.c"><strong>boards/arm64/a64/pinephone/src/pinephone_lcd.c</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/de-pmic.png" alt="AXP803 PMIC on PinePhone Schematic (Page 3)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>AXP803 PMIC on PinePhone Schematic (Page 3)</em></a></p>
 <h1 id="appendix-power-management-integrated-circuit"><a href="#appendix-power-management-integrated-circuit">17 Appendix: Power Management Integrated Circuit</a></h1>
@@ -2070,12 +2074,55 @@ udelay 15000</code></pre></div></li>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for pmic.zig</strong></a></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/de-reset.jpg" alt="LCD Panel Reset (PD23) on PinePhone Schematic (Page 11)" /></p>
+<p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LCD Panel Reset (PD23) on PinePhone Schematic (Page 11)</em></a></p>
 <h1 id="appendix-reset-lcd-panel"><a href="#appendix-reset-lcd-panel">18 Appendix: Reset LCD Panel</a></h1>
 <p>Earlier we talked about the sequence of steps that our Display Driver needs to follow…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver"><strong>“Sequence of Steps for PinePhone Display Driver”</strong></a></li>
 </ul>
 <p>This section explains how we <strong>reset PinePhone’s LCD Panel</strong>, before sending Initialisation Commands to the ST7703 LCD Controller.</p>
+<p>Allwinner A64 is connected to <strong>LCD Panel Reset on PD23</strong> (pic above). We toggle PD23 <strong>Low and High like</strong> so…</p>
+<ol>
+<li>
+<p><strong>Set PD23 to Low</strong> before initialising the Power Management Integrated Circuit (PMIC)</p>
+</li>
+<li>
+<p><strong>Set PD23 to High</strong> (and wait 15 milliseconds) before initialising the ST7703 LCD Controller</p>
+</li>
+</ol>
+<p>The complete flow for our PinePhone Display Driver looks like this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb2/boards/arm64/a64/pinephone/src/pinephone_display.c">pinephone_display.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Turn on Display Backlight
+pinephone_lcd_backlight_enable(90);
+
+// Init Timing Controller TCON0
+a64_tcon0_init(PANEL_WIDTH, PANEL_HEIGHT);
+
+// Reset LCD Panel to Low (PD23)
+pinephone_lcd_panel_reset(false);
+
+// Init PMIC
+pinephone_pmic_init();
+
+// Wait 15 milliseconds for power supply and power-on init
+up_mdelay(15);
+
+// Enable MIPI DSI Block
+a64_mipi_dsi_enable();
+
+// Enable MIPI Display Physical Layer (DPHY)
+a64_mipi_dphy_enable();
+
+// Reset LCD Panel to High (PD23)
+pinephone_lcd_panel_reset(true);
+
+// Wait 15 milliseconds for LCD Panel
+up_mdelay(15);
+
+// Initialise LCD Controller (ST7703)
+pinephone_lcd_panel_init();
+
+// Omitted: Start MIPI DSI, init Display Engine and enable Display Engine</code></pre></div>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1236"><strong>p-boot dsi_init</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#panel_reset"><strong>Log from dsi_init</strong></a></li>
@@ -2094,18 +2141,18 @@ sunxi_gpio_set_cfgpin: pin=0x77, val=1
 sunxi_gpio_set_cfgbank: bank_offset=119, val=1
 clrsetbits 0x1c20874, 0xf0000000, 0x10000000</code></pre></div></li>
 <li>
-<p>Set PD23 to High</p>
+<p>Set PD23 to High or Low</p>
 <p>Register <strong>PD_DATA_REG</strong> (PD Data Register)</p>
 <ul>
 <li>At PIO Offset <code>0x7C</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 388)</a></li>
-<li>Set <strong>PD23</strong> (Bit 23) to 1 (High)</li>
+<li>Set <strong>PD23</strong> (Bit 23) to 1 (High) or 0 (Low)</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>sunxi_gpio_output: pin=0x77, val=1
 before: 0x1c2087c = 0x1c0000
 after: 0x1c2087c = 0x9c0000 (DMB)</code></pre></div></li>
 <li>
 <p>Wait for initialization</p>
-<p>(15,000 microseconds)</p>
+<p>(15 milliseconds)</p>
 <div class="example-wrap"><pre class="language-text"><code>wait for initialization
 udelay 15000</code></pre></div></li>
 </ol>
@@ -2117,6 +2164,10 @@ udelay 15000</code></pre></div></li>
 <li>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone"><strong>Output Log for panel.zig</strong></a></p>
 </li>
+</ul>
+<p>We’re now porting the above driver from Zig to C. Work-in-progress…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb2/boards/arm64/a64/pinephone/src/pinephone_lcd.c"><strong>boards/arm64/a64/pinephone/src/pinephone_lcd.c</strong></a></li>
 </ul>
 <h1 id="appendix-reduced-serial-bus"><a href="#appendix-reduced-serial-bus">19 Appendix: Reduced Serial Bus</a></h1>
 <p>PinePhone’s <strong>AXP803 Power Management Integrated Circuit</strong> (PMIC) is connected to Allwinner A64 via the <strong>Reduced Serial Bus</strong> (RSB)…</p>
