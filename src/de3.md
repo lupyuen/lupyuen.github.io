@@ -517,7 +517,7 @@ Here are __all 11 steps__ of our upcoming Display Driver, hodgepodged with Zig: 
 ```zig
 // Zig Test Program that renders 3 UI Channels in Zig and C...
 // Turn on PinePhone Display Backlight (in Zig)
-backlight.backlight_enable(90);
+backlight.backlight_enable(90);  // 90% brightness
 
 // Init A64 Timing Controller TCON0 (in C)
 // PANEL_WIDTH is 720, PANEL_HEIGHT is 1440
