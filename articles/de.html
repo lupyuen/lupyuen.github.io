@@ -1857,6 +1857,16 @@ setbits 0x1c0c000, 0x80000000 (DMB)</code></pre></div></li>
 <li><a href="https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver"><strong>“Sequence of Steps for PinePhone Display Driver”</strong></a></li>
 </ul>
 <p>This section explains how we turn on <strong>PinePhone’s Display Backlight</strong>.</p>
+<p>Allwinner A64 is connected to the Display Backlight (pic above) on…</p>
+<ul>
+<li>
+<p><strong>PL10</strong> (LCD-PWM): Configured for <strong>Pulse-Width Modulation</strong></p>
+</li>
+<li>
+<p><strong>PH10</strong> (LCD-BL-EN): Configured for <strong>PIO Output</strong></p>
+<p>(Works like GPIO Output)</p>
+</li>
+</ul>
 <p>We captured the log from <a href="https://megous.com/git/p-boot/tree/src/display.c#n1929"><strong>p-boot backlight_enable</strong></a>…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/c12f64cf03d3a81e9c69f9fef49d9b70#backlight_enable"><strong>Log from backlight_enable</strong></a></li>
@@ -2082,7 +2092,8 @@ udelay 15000</code></pre></div></li>
 <li><a href="https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver"><strong>“Sequence of Steps for PinePhone Display Driver”</strong></a></li>
 </ul>
 <p>This section explains how we <strong>reset PinePhone’s LCD Panel</strong>, before sending Initialisation Commands to the ST7703 LCD Controller.</p>
-<p>Allwinner A64 is connected to <strong>LCD Panel Reset on PD23</strong> (pic above). We toggle PD23 <strong>Low and High like</strong> so…</p>
+<p>Allwinner A64 is connected to <strong>LCD Panel Reset on PD23</strong> (LCD-RESET, pic above).</p>
+<p>To reset the LCD Panel, we toggle PD23 <strong>Low and High</strong> like so…</p>
 <ol>
 <li>
 <p><strong>Set PD23 to Low</strong> before initialising the Power Management Integrated Circuit (PMIC)</p>
