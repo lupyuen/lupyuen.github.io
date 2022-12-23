@@ -1074,17 +1074,9 @@ To turn on the Display Backlight, we'll call PIO and PWM in our new __Board LCD 
 
 -   [__Zig Implementation of Backlight Driver: backlight.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig)
 
-We'll convert the above Backlight Driver from Zig to C.
+We'll convert the above Backlight Driver from Zig to C. Work-in-progress...
 
-Our Backlight Driver will follow the design of the STM32 Backlight Driver: __stm32_backlight__...
-
--   [__stm32_ssd1289.c__](https://github.com/apache/nuttx/blob/master/boards/arm/stm32/hymini-stm32v/src/stm32_ssd1289.c#L219-L259)
-
--   [__stm32_ssd1289.c__](https://github.com/apache/nuttx/blob/master/boards/arm/stm32/viewtool-stm32f107/src/stm32_ssd1289.c#L287-L327)
-
-The driver code will go inside our new __Board LCD Driver__ for NuttX, similar to this...
-
--   [__stm32_lcd.c__](https://github.com/apache/nuttx/blob/master/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c)
+-   [__boards/arm64/a64/pinephone/src/pinephone_lcd.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb2/boards/arm64/a64/pinephone/src/pinephone_lcd.c)
 
 ## LCD Panel
 
@@ -1098,21 +1090,15 @@ To reset the LCD Panel, we'll call PIO in our new __Board LCD Driver__ for NuttX
 
 -   [__Zig Implementation of LCD Panel Driver: panel.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig)
 
-We'll convert the above LCD Panel Driver from Zig to C.
-
-The code will go inside our new __Board LCD Driver__ for NuttX, similar to this...
-
--   [__stm32_lcd.c__](https://github.com/apache/nuttx/blob/master/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c)
-
-Also in the Board LCD Driver: We'll add the code to send the __Initialisation Commands__ to the ST7703 LCD Controller (via MIPI DSI)...
+Also we'll add the code to send the __Initialisation Commands__ to the ST7703 LCD Controller (via MIPI DSI)...
 
 -   [__Initialisation Commands for ST7703 LCD Controller__](https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller)
 
 -   [__Zig Implementation__](https://lupyuen.github.io/articles/dsi2#initialise-st7703-lcd-controller)
 
--   [__C Implementation__](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c#L42-L452)
+We're converting the above from Zig to C.  Work-in-progress...
 
-We have already converted the Zig code to C.
+-   [__boards/arm64/a64/pinephone/src/pinephone_lcd.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb2/boards/arm64/a64/pinephone/src/pinephone_lcd.c)
 
 ## Power Management Integrated Circuit
 
@@ -1128,10 +1114,7 @@ We'll control the PMIC over RSB in our new __Board LCD Driver__ for NuttX...
 
 -   [__Zig Implementation of PMIC Driver: pmic.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/pmic.zig)
 
-We'll convert the above drivers from Zig to C. Work-in-progress for Reduced Serial Bus Driver...
+We'll convert the above drivers from Zig to C. Work-in-progress for Reduced Serial Bus Driver and PMIC Driver...
 
 -   [__arch/arm64/src/a64/a64_rsb.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb/arch/arm64/src/a64/a64_rsb.c)
-
-The code will go inside our new __Board LCD Driver__ for NuttX, similar to this...
-
--   [__stm32_lcd.c__](https://github.com/apache/nuttx/blob/master/boards/arm/stm32f7/stm32f746g-disco/src/stm32_lcd.c)
+-   [__boards/arm64/a64/pinephone/src/pinephone_pmic.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb2/boards/arm64/a64/pinephone/src/pinephone_pmic.c)

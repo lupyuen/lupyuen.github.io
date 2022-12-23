@@ -690,7 +690,9 @@ Our new PinePhone LCD Driver shall execute all 11 steps as described earlier...
 
 -   [__"Complete Display Driver"__](https://lupyuen.github.io/articles/de3#complete-display-driver)
 
-(Probably inside our new implementation of __up_fbinitialize__)
+Probably inside our new implementation of __up_fbinitialize__. Work-in-progress...
+
+-   [__boards/arm64/a64/pinephone/src/pinephone_display.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb2/boards/arm64/a64/pinephone/src/pinephone_display.c)
 
 ![Zig Test Program running on Apache NuttX RTOS for PinePhone](https://lupyuen.github.io/images/de3-run.png)
 
