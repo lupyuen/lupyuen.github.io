@@ -564,11 +564,14 @@ Here we enable the A64 [__MIPI Display Serial Interface__](https://lupyuen.githu
 // Reset LCD Panel (in Zig)
 panel.panel_reset();
 
+// Wait 15 milliseconds for LCD Panel
+up_mdelay(15);
+
 // Init LCD Panel (in C)
 _ = pinephone_panel_init();
 ```
 
-Next we reset the [__LCD Panel__](https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel) and send the [__Initialisation Commands__](https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet) to the LCD Controller.
+Next we reset the [__LCD Panel__](https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel), wait 15 milliseconds and send the [__Initialisation Commands__](https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet) to the LCD Controller.
 
 [(__panel_reset__ is in Zig)](https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig)
 
@@ -589,7 +592,7 @@ We start A64's [__MIPI Display Serial Interface__](https://lupyuen.github.io/art
 // Init A64 Display Engine (in C)
 _ = a64_de_init();
 
-// Wait 160 milliseconds
+// Wait 160 milliseconds for Display Engine
 up_mdelay(160);
 ```
 

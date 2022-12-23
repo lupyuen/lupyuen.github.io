@@ -762,7 +762,7 @@ To render graphics on PinePhone's LCD Display, our Display Driver needs to follo
 
     [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/tcon.zig)
 
-1.  Initialise __Power Management Integrated Circuit (PMIC)__
+1.  Initialise __Power Management Integrated Circuit (PMIC)__ and wait 15 milliseconds
 
     [(Explained here)](https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit)
 
@@ -780,7 +780,7 @@ To render graphics on PinePhone's LCD Display, our Display Driver needs to follo
 
     [(Implemented here)](https://github.com/lupyuen/pinephone-nuttx/blob/main/dphy.zig)
 
-1.  Reset __LCD Panel__
+1.  Reset __LCD Panel__ and wait 15 milliseconds
 
     [(Explained here)](https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel)
 

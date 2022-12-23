@@ -40,7 +40,7 @@ Through __Reverse Engineering__ (and plenty of experimenting), we discovered tha
 
     (Which will pump pixels continuously to the LCD Display)
 
-1.  Initialise PinePhone's __Power Management Integrated Circuit (PMIC)__
+1.  Initialise PinePhone's __Power Management Integrated Circuit (PMIC)__ and wait 15 milliseconds
 
     (To power on PinePhone's LCD Panel)
 
@@ -52,7 +52,7 @@ Through __Reverse Engineering__ (and plenty of experimenting), we discovered tha
 
     (Which is the communications layer inside MIPI DSI)
 
-1.  Reset PinePhone's __LCD Panel__
+1.  Reset PinePhone's __LCD Panel__ and wait 15 milliseconds
 
     (Prep it to receive MIPI DSI Commands)
 

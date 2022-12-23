@@ -2199,6 +2199,10 @@ Based on the above steps, we have __implemented in Zig__ the Display Backlight D
 
 -   [__Output Log for backlight.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
 
+We're now porting the above driver from Zig to C. Work-in-progress...
+
+-   [__boards/arm64/a64/pinephone/src/pinephone_lcd.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb2/boards/arm64/a64/pinephone/src/pinephone_lcd.c)
+
 ![AXP803 PMIC on PinePhone Schematic (Page 3)](https://lupyuen.github.io/images/de-pmic.png)
 
 [_AXP803 PMIC on PinePhone Schematic (Page 3)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
@@ -2343,6 +2347,10 @@ Based on the above steps, we have __implemented in Zig__ the PinePhone Driver fo
 
 -   [__Output Log for pmic.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
 
+![LCD Panel Reset (PD23) on PinePhone Schematic (Page 11)](https://lupyuen.github.io/images/de-reset.jpg)
+
+[_LCD Panel Reset (PD23) on PinePhone Schematic (Page 11)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
+
 # Appendix: Reset LCD Panel
 
 Earlier we talked about the sequence of steps that our Display Driver needs to follow...
@@ -2350,6 +2358,48 @@ Earlier we talked about the sequence of steps that our Display Driver needs to f
 -   [__"Sequence of Steps for PinePhone Display Driver"__](https://lupyuen.github.io/articles/dsi#appendix-sequence-of-steps-for-pinephone-display-driver)
 
 This section explains how we __reset PinePhone's LCD Panel__, before sending Initialisation Commands to the ST7703 LCD Controller.
+
+Allwinner A64 is connected to __LCD Panel Reset on PD23__ (pic above). We toggle PD23 __Low and High like__ so...
+
+1.   __Set PD23 to Low__ before initialising the Power Management Integrated Circuit (PMIC)
+
+1.   __Set PD23 to High__ (and wait 15 milliseconds) before initialising the ST7703 LCD Controller
+
+The complete flow for our PinePhone Display Driver looks like this: [pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb2/boards/arm64/a64/pinephone/src/pinephone_display.c)
+
+```c
+// Turn on Display Backlight
+pinephone_lcd_backlight_enable(90);
+
+// Init Timing Controller TCON0
+a64_tcon0_init(PANEL_WIDTH, PANEL_HEIGHT);
+
+// Reset LCD Panel to Low (PD23)
+pinephone_lcd_panel_reset(false);
+
+// Init PMIC
+pinephone_pmic_init();
+
+// Wait 15 milliseconds for power supply and power-on init
+up_mdelay(15);
+
+// Enable MIPI DSI Block
+a64_mipi_dsi_enable();
+
+// Enable MIPI Display Physical Layer (DPHY)
+a64_mipi_dphy_enable();
+
+// Reset LCD Panel to High (PD23)
+pinephone_lcd_panel_reset(true);
+
+// Wait 15 milliseconds for LCD Panel
+up_mdelay(15);
+
+// Initialise LCD Controller (ST7703)
+pinephone_lcd_panel_init();
+
+// Omitted: Start MIPI DSI, init Display Engine and enable Display Engine
+```
 
 We captured the log from [__p-boot dsi_init__](https://megous.com/git/p-boot/tree/src/display.c#n1236)...
 
@@ -2370,11 +2420,11 @@ By decoding the captured addresses and values, we decipher the following steps t
     clrsetbits 0x1c20874, 0xf0000000, 0x10000000
     ```
 
-1.  Set PD23 to High
+1.  Set PD23 to High or Low
 
     Register __PD_DATA_REG__ (PD Data Register)
     - At PIO Offset `0x7C` [(A64 Page 388)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
-    - Set __PD23__ (Bit 23) to 1 (High)
+    - Set __PD23__ (Bit 23) to 1 (High) or 0 (Low)
 
     ```text
     sunxi_gpio_output: pin=0x77, val=1
@@ -2384,7 +2434,7 @@ By decoding the captured addresses and values, we decipher the following steps t
 
 1.  Wait for initialization
 
-    (15,000 microseconds)
+    (15 milliseconds)
 
     ```text
     wait for initialization
@@ -2396,6 +2446,10 @@ Based on the above steps, we have __implemented in Zig__ the PinePhone Driver th
 -   [__pinephone-nuttx/panel.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig)
 
 -   [__Output Log for panel.zig__](https://github.com/lupyuen/pinephone-nuttx#testing-zig-backlight-driver-on-pinephone)
+
+We're now porting the above driver from Zig to C. Work-in-progress...
+
+-   [__boards/arm64/a64/pinephone/src/pinephone_lcd.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb2/boards/arm64/a64/pinephone/src/pinephone_lcd.c)
 
 # Appendix: Reduced Serial Bus
 
