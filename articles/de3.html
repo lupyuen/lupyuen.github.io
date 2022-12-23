@@ -178,7 +178,7 @@ static struct fb_videoinfo_s videoInfo = {
   .nplanes   = 1,     // Number of color planes supported (Base UI Channel)
   .noverlays = 2      // Number of overlays supported (2 Overlay UI Channels)
 };</code></pre></div>
-<p>The <strong>fb_videoinfo_s</strong> struct defines the overall PinePhone Display Interface…</p>
+<p>The <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L472-L487"><strong>fb_videoinfo_s</strong></a> struct defines the overall PinePhone Display Interface…</p>
 <ul>
 <li>720 x 1440 resolution</li>
 <li>32-bit ARGB 8888 pixels</li>
@@ -199,6 +199,7 @@ static struct fb_planeinfo_s planeInfo = {
   .xoffset      = 0,  // Offset from virtual to visible resolution
   .yoffset      = 0   // Offset from virtual to visible resolution
 };</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L488-L504">(<strong>fb_planeinfo_s</strong> is defined here)</a></p>
 <p>And <strong>Framebuffers 1 and 2</strong> (UI Channels 2 and 3): <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L5-L89">test_a64_de.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// NuttX Overlays for PinePhone (2 Overlay UI Channels)
 static struct fb_overlayinfo_s overlayInfo[2] = {
@@ -233,6 +234,7 @@ static struct fb_overlayinfo_s overlayInfo[2] = {
     .accl      = 0      // TODO: Supported hardware acceleration
   },
 };</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L524-L540">(<strong>fb_overlayinfo_s</strong> is defined here)</a></p>
 <p><em>What’s sarea?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>.sarea = {
   .x = 52,
