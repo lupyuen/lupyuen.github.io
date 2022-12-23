@@ -726,6 +726,8 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
 
+-   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=34100614)
+
 -   [__Discuss this article on Reddit__](https://www.reddit.com/r/PINE64official/comments/zt1181/nuttx_rtos_for_pinephone_display_engine/)
 
 -   [__My Current Project: "Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
