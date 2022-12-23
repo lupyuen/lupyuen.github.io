@@ -527,8 +527,7 @@ _ = a64_tcon0_init(PANEL_WIDTH, PANEL_HEIGHT);
 _ = pinephone_pmic_init();            
 
 // Wait 15 milliseconds for power supply and power-on init
-// TODO: Change to up_mdelay(15)
-_ = c.usleep(15_000);
+up_mdelay(15);
 ```
 
 In the code above, we do these steps...
@@ -591,8 +590,7 @@ We start A64's [__MIPI Display Serial Interface__](https://lupyuen.github.io/art
 _ = a64_de_init();
 
 // Wait 160 milliseconds
-// TODO: Change to up_mdelay(160)
-_ = c.usleep(160_000);
+up_mdelay(160);
 ```
 
 We __initialise the Display Engine__.
