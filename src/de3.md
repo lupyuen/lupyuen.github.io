@@ -541,7 +541,7 @@ In the code above, we do these steps...
 
     [(__a64_tcon0_init__ comes from our NuttX Driver for Timing Controller TCON0)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_tcon0.c#L180-L474)
 
--   Initialise PinePhone's [__Power Management Integrated Circuit (PMIC)__](https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit)
+-   Initialise PinePhone's [__Power Management Integrated Circuit (PMIC)__](https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit) to power on the LCD Panel
 
     [(__pinephone_pmic_init__ will be added to NuttX Kernel)](https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_rsb.c)
 
@@ -648,7 +648,7 @@ Let's talk about the upcoming drivers that we're adding to NuttX Kernel...
 
 _Which bits of our NuttX Display Driver are still in Zig?_
 
-These parts of our PinePhone Display Driver are still in Zig, __pending conversion to C__...
+These parts are still in Zig, __pending conversion to C__...
 
 -   Driver for PinePhone [__Display Backlight__](https://lupyuen.github.io/articles/de#appendix-display-backlight)
 
