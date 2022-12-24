@@ -1965,7 +1965,7 @@ TODO: Set Bit 10 of PH_DATA (0x1c2090c)</code></pre></div></li>
 </ul>
 <p>We’re now porting the above driver from Zig to C. Work-in-progress…</p>
 <ul>
-<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb2/boards/arm64/a64/pinephone/src/pinephone_lcd.c"><strong>boards/arm64/a64/pinephone/src/pinephone_lcd.c</strong></a></li>
+<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c"><strong>boards/arm64/a64/pinephone/src/pinephone_lcd.c</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/de-pmic.png" alt="AXP803 PMIC on PinePhone Schematic (Page 3)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>AXP803 PMIC on PinePhone Schematic (Page 3)</em></a></p>
@@ -2102,7 +2102,7 @@ udelay 15000</code></pre></div></li>
 <p><strong>Set PD23 to High</strong> (and wait 15 milliseconds) before initialising the ST7703 LCD Controller</p>
 </li>
 </ol>
-<p>The complete flow for our PinePhone Display Driver looks like this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb2/boards/arm64/a64/pinephone/src/pinephone_display.c">pinephone_display.c</a></p>
+<p>The complete flow for our PinePhone Display Driver looks like this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Turn on Display Backlight
 pinephone_lcd_backlight_enable(90);
 
@@ -2178,7 +2178,7 @@ udelay 15000</code></pre></div></li>
 </ul>
 <p>We’re now porting the above driver from Zig to C. Work-in-progress…</p>
 <ul>
-<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb2/boards/arm64/a64/pinephone/src/pinephone_lcd.c"><strong>boards/arm64/a64/pinephone/src/pinephone_lcd.c</strong></a></li>
+<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c"><strong>boards/arm64/a64/pinephone/src/pinephone_lcd.c</strong></a></li>
 </ul>
 <h1 id="appendix-reduced-serial-bus"><a href="#appendix-reduced-serial-bus">19 Appendix: Reduced Serial Bus</a></h1>
 <p>PinePhone’s <strong>AXP803 Power Management Integrated Circuit</strong> (PMIC) is connected to Allwinner A64 via the <strong>Reduced Serial Bus</strong> (RSB)…</p>
