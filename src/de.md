@@ -2209,7 +2209,7 @@ Based on the above steps, we have __implemented in Zig__ the Display Backlight D
 
 We're now porting the above driver from Zig to C. Work-in-progress...
 
--   [__boards/arm64/a64/pinephone/src/pinephone_lcd.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb2/boards/arm64/a64/pinephone/src/pinephone_lcd.c)
+-   [__boards/arm64/a64/pinephone/src/pinephone_lcd.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c)
 
 ![AXP803 PMIC on PinePhone Schematic (Page 3)](https://lupyuen.github.io/images/de-pmic.png)
 
@@ -2375,7 +2375,7 @@ To reset the LCD Panel, we toggle PD23 __Low and High__ like so...
 
 1.   __Set PD23 to High__ (and wait 15 milliseconds) before initialising the ST7703 LCD Controller
 
-The complete flow for our PinePhone Display Driver looks like this: [pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb2/boards/arm64/a64/pinephone/src/pinephone_display.c)
+The complete flow for our PinePhone Display Driver looks like this: [pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c)
 
 ```c
 // Turn on Display Backlight
@@ -2459,7 +2459,7 @@ Based on the above steps, we have __implemented in Zig__ the PinePhone Driver th
 
 We're now porting the above driver from Zig to C. Work-in-progress...
 
--   [__boards/arm64/a64/pinephone/src/pinephone_lcd.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb2/boards/arm64/a64/pinephone/src/pinephone_lcd.c)
+-   [__boards/arm64/a64/pinephone/src/pinephone_lcd.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c)
 
 # Appendix: Reduced Serial Bus
 

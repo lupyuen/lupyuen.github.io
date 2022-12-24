@@ -1076,7 +1076,7 @@ To turn on the Display Backlight, we'll call PIO and PWM in our new __Board LCD 
 
 We'll convert the above Backlight Driver from Zig to C. Work-in-progress...
 
--   [__boards/arm64/a64/pinephone/src/pinephone_lcd.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb2/boards/arm64/a64/pinephone/src/pinephone_lcd.c)
+-   [__boards/arm64/a64/pinephone/src/pinephone_lcd.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c)
 
 ## LCD Panel
 
@@ -1098,7 +1098,7 @@ Also we'll add the code to send the __Initialisation Commands__ to the ST7703 LC
 
 We're converting the above from Zig to C.  Work-in-progress...
 
--   [__boards/arm64/a64/pinephone/src/pinephone_lcd.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb2/boards/arm64/a64/pinephone/src/pinephone_lcd.c)
+-   [__boards/arm64/a64/pinephone/src/pinephone_lcd.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c)
 
 ## Power Management Integrated Circuit
 
@@ -1117,4 +1117,4 @@ We'll control the PMIC over RSB in our new __Board LCD Driver__ for NuttX...
 We'll convert the above drivers from Zig to C. Work-in-progress for Reduced Serial Bus Driver and PMIC Driver...
 
 -   [__arch/arm64/src/a64/a64_rsb.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb/arch/arm64/src/a64/a64_rsb.c)
--   [__boards/arm64/a64/pinephone/src/pinephone_pmic.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb2/boards/arm64/a64/pinephone/src/pinephone_pmic.c)
+-   [__boards/arm64/a64/pinephone/src/pinephone_pmic.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_pmic.c)

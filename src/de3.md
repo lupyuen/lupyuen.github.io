@@ -695,7 +695,7 @@ Our new PinePhone LCD Driver shall execute all 11 steps as described earlier...
 
 Probably inside our new implementation of __up_fbinitialize__. Work-in-progress...
 
--   [__boards/arm64/a64/pinephone/src/pinephone_display.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb2/boards/arm64/a64/pinephone/src/pinephone_display.c)
+-   [__boards/arm64/a64/pinephone/src/pinephone_display.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c)
 
 ![Zig Test Program running on Apache NuttX RTOS for PinePhone](https://lupyuen.github.io/images/de3-run.png)
 
