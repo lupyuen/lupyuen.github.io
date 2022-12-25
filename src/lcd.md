@@ -8,6 +8,8 @@ TODO: [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) for [__Pine
 
 TODO
 
+-   [__Watch the Demo on YouTube__](https://www.youtube.com/shorts/UzR7xLZCc0c)
+
 ![LCD Display on PinePhone Schematic (Page 2)](https://lupyuen.github.io/images/dsi-title.jpg)
 
 [_LCD Display on PinePhone Schematic (Page 2)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
