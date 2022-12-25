@@ -57,76 +57,76 @@ Let's start with something simpler without ST7703...
 
 # LCD Panel Backlight
 
-TODO
+First thing we do when booting PinePhone is to turn on the __LCD Panel Backlight__... Otherwise the LCD Display stays dark!
 
-[pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L845-L921)
+The [__PinePhone Schematic (Page 11)__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) says that the LCD Panel Backlight is connected on two pins (pic above)...
+
+-   __PL10__ for Pulse-Width Modulation (PWM)
+
+-   __PH10__ for PIO (Similar to GPIO)
+
+[(__AP3127__ is a PWM Controller)](https://www.diodes.com/assets/Datasheets/products_inactive_data/AP3127_H.pdf)
+
+This is how we __turn on the backlight__ in our NuttX LCD Driver: [pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L845-L921)
 
 ```c
-int pinephone_lcd_backlight_enable(uint32_t percent)
-{
-  int ret;
-  uint32_t period;
+// Turn on the LCD Backlight with the percentage brightness.
+// `percent` (brightness percent) is typically 90.
+int pinephone_lcd_backlight_enable(uint32_t percent) {
 
-  /* Configure PL10 for PWM */
+  // Configure PL10 for PWM
+  int ret = a64_pio_config(LCD_PWM);
+```
 
-  ginfo("Configure PL10 for PWM\n");
-  ret = a64_pio_config(LCD_PWM);
-  if (ret < 0)
-    {
-      gerr("Configure PL10 failed: %d\n", ret);
-      return ret;
-    }
+TODO
 
-  /* R_PWM Control Register (Undocumented)
-   * Assume same as PWM Control Register (A64 Page 194)
-   * Set SCLK_CH0_GATING (Bit 6) to 0 (Mask)
-   */
-
-  ginfo("Disable R_PWM\n");
+```c
+  // R_PWM Control Register (Undocumented)
+  // Assume same as PWM Control Register (A64 Page 194)
+  // Set SCLK_CH0_GATING (Bit 6) to 0 (Mask)
   modreg32(0, SCLK_CH0_GATING, R_PWM_CTRL_REG);
+```
 
-  /* R_PWM Channel 0 Period Register (Undocumented)
-   * Assume same as PWM Channel 0 Period Register (A64 Page 195)
-   * Set PWM_CH0_ENTIRE_CYS (Bits 16 to 31) to PWM Period
-   * Set PWM_CH0_ENTIRE_ACT_CYS (Bits 0 to 15) to PWM Period * Percent / 100
-   */
+TODO
 
-  ginfo("Configure R_PWM Period\n");
-  period = PWM_CH0_ENTIRE_CYS(BACKLIGHT_PWM_PERIOD) |
-           PWM_CH0_ENTIRE_ACT_CYS(BACKLIGHT_PWM_PERIOD * percent / 100);
+```c
+  // R_PWM Channel 0 Period Register (Undocumented)
+  // Assume same as PWM Channel 0 Period Register (A64 Page 195)
+  // Set PWM_CH0_ENTIRE_CYS (Bits 16 to 31) to PWM Period
+  // Set PWM_CH0_ENTIRE_ACT_CYS (Bits 0 to 15) to PWM Period * Percent / 100
+  // `percent` (brightness percent) is typically 90
+  uint32_t period = 
+    PWM_CH0_ENTIRE_CYS(BACKLIGHT_PWM_PERIOD) |
+    PWM_CH0_ENTIRE_ACT_CYS(BACKLIGHT_PWM_PERIOD * percent / 100);
   putreg32(period, R_PWM_CH0_PERIOD);
+```
 
-  /* R_PWM Control Register (Undocumented)
-   * Assume same as PWM Control Register (A64 Page 194)
-   * Set SCLK_CH0_GATING (Bit 6) to 1 (Pass)
-   * Set PWM_CH0_EN (Bit 4) to 1 (Enable)
-   * Set PWM_CH0_PRESCAL (Bits 0 to 3) to 0b1111 (Prescaler 1)
-   */
+TODO
 
-  ginfo("Enable R_PWM\n");
-  uint32_t ctrl = SCLK_CH0_GATING | PWM_CH0_EN | PWM_CH0_PRESCAL(0b1111);
+```c
+  // R_PWM Control Register (Undocumented)
+  // Assume same as PWM Control Register (A64 Page 194)
+  // Set SCLK_CH0_GATING (Bit 6) to 1 (Pass)
+  // Set PWM_CH0_EN (Bit 4) to 1 (Enable)
+  // Set PWM_CH0_PRESCAL (Bits 0 to 3) to 0b1111 (Prescaler 1)
+  uint32_t ctrl = SCLK_CH0_GATING |
+    PWM_CH0_EN |
+    PWM_CH0_PRESCAL(0b1111);
   putreg32(ctrl, R_PWM_CTRL_REG);
+```
 
-  /* Configure PH10 for Output */
+TODO
 
-  ginfo("Configure PH10 for Output\n");
+```c
+  // Configure PH10 for Output
   ret = a64_pio_config(LCD_BL_EN);
-  if (ret < 0)
-    {
-      gerr("Configure PH10 failed: %d\n", ret);
-      return ret;
-    }
 
-  /* Set PH10 to High */
-
-  ginfo("Set PH10 to High\n");
+  // Set PH10 to High
   a64_pio_write(LCD_BL_EN, true);
 
   return OK;
 }
 ```
-
-[(__AP3127__ is a PWM Controller)](https://www.diodes.com/assets/Datasheets/products_inactive_data/AP3127_H.pdf)
 
 ![LCD Panel Reset (PD23) on PinePhone Schematic (Page 11)](https://lupyuen.github.io/images/de-reset.jpg)
 
