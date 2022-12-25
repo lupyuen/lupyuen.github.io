@@ -238,9 +238,7 @@ The [__PinePhone Schematic (Page 3)__](https://files.pine64.org/doc/PinePhone/Pi
 
     (Pics above and below)
 
-TODO
-
-[pinephone_pmic.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L169-L282)
+This is how we talk to the __AXP803 PMIC__: [pinephone_pmic.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L169-L282)
 
 ```c
 // Initialise the Power Mgmt IC
@@ -265,7 +263,13 @@ int pinephone_pmic_init(void) {
   );
 ```
 
-TODO
+__DLDO1 Power Output__ on the PMIC powers the __Front Camera, USB HSIC and I2C Sensors__ on PinePhone.
+
+In the code above, we set __DLDO1 Voltage to 3.3V__ and power it on.
+
+(We'll talk about __pmic_write__ and __pmic_clrsetbits__ in a while)
+
+Next we set __LDO Voltage to 3.3V__ and power on the __Capacitive Touch Panel__...
 
 ```c
   // Set LDO Voltage to 3.3V.
@@ -288,7 +292,7 @@ TODO
   );
 ```
 
-TODO
+Next comes the LCD Panel: We set __DLDO2 Voltage to 1.8V__ and power on the __MIPI DSI Port__ of the LCD Panel...
 
 ```c
   // Set DLDO2 Voltage to 1.8V.
@@ -313,11 +317,67 @@ TODO
 }
 ```
 
+Our LCD Panel is powered up and ready to receive MIPI DSI Commands!
+
+(Right after we reset LCD Panel to High)
+
+_What are pmic_write and pmic_clrsetbits?_
+
+The AXP803 PMIC is connected to Allwinner A64 SoC on the __Reduced Serial Bus__. Which is a special bus designed for PMICs.
+
+From [__Allwinner A80 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf) (Page 918)...
+
+> "The RSB (reduced serial bus) Host Controller is designed to communicate with RSB Device using two push-pull wires."
+
+> "It supports a simplified two wire protocol (RSB) on a push-pull bus. The transfer speed can be up to 20MHz and the performance will be improved much."
+
+(Reduced Serial Bus seems to work like I2C, but specifically for PMIC)
+
+Thus to control AXP803 PMIC, __pmic_write__ will talk to the PMIC over the Reduced Serial Bus: [pinephone_pmic.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L88-L119)
+
+```c
+// Write a byte to an AXP803 PMIC Register
+static int pmic_write(
+  uint8_t reg,  // AXP803 Register ID
+  uint8_t val   // Byte to be written
+) {
+  //  Write to AXP803 PMIC on Reduced Serial Bus
+  a64_rsb_write(
+    AXP803_RT_ADDR,  // RSB Address is 0x2D
+    reg,             // AXP803 Register ID
+    val              // AXP803 Register Value
+  );
+  return OK;
+}
+```
+
+[(__a64_rsb_write__ comes from our NuttX Driver for Reduced Serial Bus)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_rsb.c#L239-L293)
+
+__pmic_clrsetbits__ works the same way, it's defined here: [pinephone_pmic.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L120-L164)
+
 ![_MIPI DSI Connector on PinePhone Schematic (Page 11)_](https://lupyuen.github.io/images/dsi-connector.png)
 
 [_MIPI DSI Connector on PinePhone Schematic (Page 11)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
 
 # Initialise LCD Controller
+
+We've done quite a bit on our LCD Panel...
+
+1.  Switch on __LCD Backlight__
+
+1.  Reset __LCD Panel__ to __Low__
+
+1.  Power on the LCD Panel's __MIPI Display Serial Interface (DSI)__
+
+1.  Reset __LCD Panel__ to __High__
+
+Now it's time to initialise the __Sitronix ST7703 LCD Controller__ inside the LCD Panel!
+
+-   [__Sitronix ST7703 Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf)
+
+We do that by sending __20 Initialisation Commands__ over MIPI DSI.
+
+_What kind of Initialisation Commands?_
 
 TODO
 
