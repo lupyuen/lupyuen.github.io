@@ -25,9 +25,27 @@ The LCD Panel inside PinePhone is [__Xingbangda XBD599__](https://pine64.com/pro
 
 (Includes a Capacitive Touch Panel, but we'll skip it today)
 
-The Xingbangda XBD599 LCD Panel is connected to PinePhone's Allwinner A64 SoC over a __MIPI Display Serial Interface (DSI)__ for...
+The Xingbangda XBD599 LCD Panel is connected to PinePhone's Allwinner A64 SoC over a [__MIPI Display Serial Interface (DSI)__](https://lupyuen.github.io/articles/dsi). (Pic above)
 
-TODO: Init, rendering
+_Why is there an ST7703 LCD Controller inside the LCD Panel?_
+
+Talking over MIPI DSI can get complicated. Later we'll see that ST7703 LCD Controller handles...
+
+-   MIPI DSI __Initialisation Commands__
+
+    (At startup)
+
+-   __Rendering of Pixels__ over MIPI DSI
+
+    (After startup)
+
+Let's start with something simpler without ST7703...
+
+-   Turning on the __LCD Panel Backlight__ (PIO and PWM)
+
+-   __Resetting__ the LCD Panel (PIO)
+
+-   __Powering on__ the LCD Panel (PMIC)
 
 ![Backlight on PinePhone Schematic (Page 11)](https://lupyuen.github.io/images/pio-backlight.png)
 
