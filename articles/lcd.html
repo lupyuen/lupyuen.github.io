@@ -111,13 +111,16 @@
 <p>Let’s start with something simpler without ST7703…</p>
 <ul>
 <li>
-<p>Turning on the <strong>LCD Panel Backlight</strong> (PIO and PWM)</p>
+<p>Turn on the <strong>LCD Panel Backlight</strong></p>
+<p>(With PIO and PWM)</p>
 </li>
 <li>
-<p><strong>Resetting</strong> the LCD Panel (PIO)</p>
+<p><strong>Reset</strong> the LCD Panel</p>
+<p>(With PIO)</p>
 </li>
 <li>
-<p><strong>Powering on</strong> the LCD Panel (PMIC)</p>
+<p><strong>Power on</strong> the LCD Panel</p>
+<p>(With PMIC)</p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/pio-backlight.png" alt="Backlight on PinePhone Schematic (Page 11)" /></p>
@@ -337,8 +340,8 @@ int pinephone_pmic_init(void) {
 <blockquote>
 <p>“It supports a simplified two wire protocol (RSB) on a push-pull bus. The transfer speed can be up to 20MHz and the performance will be improved much.”</p>
 </blockquote>
-<p>(Reduced Serial Bus seems to work like I2C, but specifically for PMIC)</p>
-<p>Thus to control AXP803 PMIC, <strong>pmic_write</strong> will talk to the PMIC over the Reduced Serial Bus: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L88-L119">pinephone_pmic.c</a></p>
+<p>(Reduced Serial Bus seems to work like I2C, but specifically for PMICs)</p>
+<p>Thus to control AXP803 PMIC, <strong>pmic_write</strong> will talk to the PMIC over the <strong>Reduced Serial Bus</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L88-L119">pinephone_pmic.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Write a byte to an AXP803 PMIC Register
 static int pmic_write(
   uint8_t reg,  // AXP803 Register ID
@@ -426,7 +429,10 @@ static const uint8_t g_pinephone_setgip1[] = {
     write_dcs(cmd, len);
   }
   return OK;
-}</code></pre></div><h1 id="render-lcd-display"><a href="#render-lcd-display">6 Render LCD Display</a></h1>
+}</code></pre></div>
+<p>TODO: write_dcs is defined here</p>
+<p>TODO: It calls our NuttX Driver for MIPI DSI</p>
+<h1 id="render-lcd-display"><a href="#render-lcd-display">6 Render LCD Display</a></h1>
 <p>TODO</p>
 <h1 id="complete-display-driver"><a href="#complete-display-driver">7 Complete Display Driver</a></h1>
 <p>TODO</p>
@@ -476,7 +482,9 @@ static const uint8_t g_pinephone_setgip1[] = {
   // Render Frame Buffers with Display Engine
   render_framebuffers();
   return OK;
-}</code></pre></div><h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
+}</code></pre></div>
+<p>TODO: Who calls up_fbinitialize</p>
+<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
 <p>Check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
 <ul>
