@@ -59,7 +59,7 @@ Let's start with something simpler without ST7703...
 
 First thing we do when booting PinePhone is to turn on the __LCD Panel Backlight__... Otherwise the LCD Display stays dark!
 
-The [__PinePhone Schematic (Page 11)__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) says that the LCD Panel Backlight is connected on two pins (pic above)...
+The [__PinePhone Schematic (Page 11)__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) says that the LCD Panel Backlight is controlled by two pins (pic above)...
 
 -   __PL10__ for Pulse-Width Modulation (PWM)
 
@@ -79,7 +79,11 @@ int pinephone_lcd_backlight_enable(
   int ret = a64_pio_config(LCD_PWM);  // LCD_PWM is PL10
 ```
 
-TODO
+We begin by configuring __PL10 for PWM__.
+
+[(__a64_pio_config__ comes from our NuttX PIO Driver)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L91-L253)
+
+Next we disable PWM through the __R_PWM Port__ on Allwinner A64...
 
 ```c
   // R_PWM Control Register (Undocumented)
@@ -88,7 +92,7 @@ TODO
   modreg32(0, SCLK_CH0_GATING, R_PWM_CTRL_REG);
 ```
 
-__R_PWM__ isn't documented in the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf).
+The __R_PWM Port__ isn't documented in the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf).
 
 But thanks to [__Reverse-Engineering__](https://lupyuen.github.io/articles/de#appendix-display-backlight), we figured out how it works: [pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L88-L103)
 
@@ -107,13 +111,14 @@ But thanks to [__Reverse-Engineering__](https://lupyuen.github.io/articles/de#ap
   #define PWM_CH0_ENTIRE_CYS(n)     ((n) << 16)
 ```
 
-TODO
+Then we set the __PWM Period and Duty Cycle__: [pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L845-L921)
 
 ```c
   // R_PWM Channel 0 Period Register (Undocumented)
   // Assume same as PWM Channel 0 Period Register (A64 Page 195)
   // Set PWM_CH0_ENTIRE_CYS (Bits 16 to 31) to PWM Period
   // Set PWM_CH0_ENTIRE_ACT_CYS (Bits 0 to 15) to PWM Period * Percent / 100
+  // `BACKLIGHT_PWM_PERIOD` is 1,199 PWM cycles
   // `percent` (brightness percent) is typically 90
   uint32_t period = 
     PWM_CH0_ENTIRE_CYS(BACKLIGHT_PWM_PERIOD) |
@@ -121,7 +126,7 @@ TODO
   putreg32(period, R_PWM_CH0_PERIOD);
 ```
 
-TODO
+Finally we __enable PWM__...
 
 ```c
   // R_PWM Control Register (Undocumented)
@@ -135,7 +140,7 @@ TODO
   putreg32(ctrl, R_PWM_CTRL_REG);
 ```
 
-TODO
+One last thing: We configure __PH10 for Output__ and set it to High...
 
 ```c
   // Configure PH10 for Output
@@ -143,10 +148,13 @@ TODO
 
   // Set PH10 to High
   a64_pio_write(LCD_BL_EN, true);
-
   return OK;
 }
 ```
+
+[(__a64_pio_write__ comes from our NuttX PIO Driver)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L254-L299)
+
+This enables the [__AP3127 PWM Controller__](https://www.diodes.com/assets/Datasheets/products_inactive_data/AP3127_H.pdf). And the LCD Backlight switches on!
 
 ![LCD Panel Reset (PD23) on PinePhone Schematic (Page 11)](https://lupyuen.github.io/images/de-reset.jpg)
 
