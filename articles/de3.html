@@ -749,6 +749,9 @@ Recommended setting for CONFIG_BOARD_LOOPSPERMSEC:
 <p>We update the <strong>NuttX Board Configuration</strong> for PinePhone with the computed value: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/nsh/defconfig">pinephone/configs/nsh/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_BOARD_LOOPSPERMSEC=116524</code></pre></div>
 <p>(PinePhone is probably the fastest NuttX Board ever!)</p>
+<p><em>What if our driver needs to wait a while AFTER the NuttX Kernel has been started?</em></p>
+<p>Call <a href="https://github.com/apache/nuttx/blob/master/sched/signal/sig_usleep.c#L38-L86"><strong><code>nxsig_usleep()</code></strong></a> instead.</p>
+<p>It suspends the current thread, instead of doing a busy-wait loop.</p>
 
     
 </body>
