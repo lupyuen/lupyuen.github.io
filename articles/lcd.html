@@ -262,8 +262,7 @@ int pinephone_lcd_panel_reset(
 <p>(Pics above and below)</p>
 </li>
 </ul>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L169-L282">pinephone_pmic.c</a></p>
+<p>This is how we talk to the <strong>AXP803 PMIC</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L169-L282">pinephone_pmic.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Initialise the Power Mgmt IC
 int pinephone_pmic_init(void) {
   // Set DLDO1 Voltage to 3.3V.
@@ -284,7 +283,10 @@ int pinephone_pmic_init(void) {
     0,                             // Clear these bits
     DLDO1_ON_OFF_CONTROL           // PMIC Register
   );</code></pre></div>
-<p>TODO</p>
+<p><strong>DLDO1 Power Output</strong> on the PMIC powers the <strong>Front Camera, USB HSIC and I2C Sensors</strong> on PinePhone.</p>
+<p>In the code above, we set <strong>DLDO1 Voltage to 3.3V</strong> and power it on.</p>
+<p>(We’ll talk about <strong>pmic_write</strong> and <strong>pmic_clrsetbits</strong> in a while)</p>
+<p>Next we set <strong>LDO Voltage to 3.3V</strong> and power on the <strong>Capacitive Touch Panel</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Set LDO Voltage to 3.3V.
   // GPIO0LDO powers the Capacitive Touch Panel.
 
@@ -303,7 +305,7 @@ int pinephone_pmic_init(void) {
     GPIO0_CONTROL,            // PMIC Register
     GPIO0_PIN_FUNCTION(0b11)  // PMIC Value
   );</code></pre></div>
-<p>TODO</p>
+<p>Next comes the LCD Panel: We set <strong>DLDO2 Voltage to 1.8V</strong> and power on the <strong>MIPI DSI Port</strong> of the LCD Panel…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Set DLDO2 Voltage to 1.8V.
   // DLDO2 powers the MIPI DSI Interface of Xingbangda XBD599 LCD Panel.
 
@@ -324,9 +326,58 @@ int pinephone_pmic_init(void) {
   );
   return OK;
 }</code></pre></div>
+<p>Our LCD Panel is powered up and ready to receive MIPI DSI Commands!</p>
+<p>(Right after we reset LCD Panel to High)</p>
+<p><em>What are pmic_write and pmic_clrsetbits?</em></p>
+<p>The AXP803 PMIC is connected to Allwinner A64 SoC on the <strong>Reduced Serial Bus</strong>. Which is a special bus designed for PMICs.</p>
+<p>From <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf"><strong>Allwinner A80 User Manual</strong></a> (Page 918)…</p>
+<blockquote>
+<p>“The RSB (reduced serial bus) Host Controller is designed to communicate with RSB Device using two push-pull wires.”</p>
+</blockquote>
+<blockquote>
+<p>“It supports a simplified two wire protocol (RSB) on a push-pull bus. The transfer speed can be up to 20MHz and the performance will be improved much.”</p>
+</blockquote>
+<p>(Reduced Serial Bus seems to work like I2C, but specifically for PMIC)</p>
+<p>Thus to control AXP803 PMIC, <strong>pmic_write</strong> will talk to the PMIC over the Reduced Serial Bus: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L88-L119">pinephone_pmic.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Write a byte to an AXP803 PMIC Register
+static int pmic_write(
+  uint8_t reg,  // AXP803 Register ID
+  uint8_t val   // Byte to be written
+) {
+  //  Write to AXP803 PMIC on Reduced Serial Bus
+  a64_rsb_write(
+    AXP803_RT_ADDR,  // RSB Address is 0x2D
+    reg,             // AXP803 Register ID
+    val              // AXP803 Register Value
+  );
+  return OK;
+}</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_rsb.c#L239-L293">(<strong>a64_rsb_write</strong> comes from our NuttX Driver for Reduced Serial Bus)</a></p>
+<p><strong>pmic_clrsetbits</strong> works the same way, it’s defined here: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L120-L164">pinephone_pmic.c</a></p>
 <p><img src="https://lupyuen.github.io/images/dsi-connector.png" alt="MIPI DSI Connector on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>MIPI DSI Connector on PinePhone Schematic (Page 11)</em></a></p>
 <h1 id="initialise-lcd-controller"><a href="#initialise-lcd-controller">5 Initialise LCD Controller</a></h1>
+<p>We’ve done quite a bit on our LCD Panel…</p>
+<ol>
+<li>
+<p>Switch on <strong>LCD Backlight</strong></p>
+</li>
+<li>
+<p>Reset <strong>LCD Panel</strong> to <strong>Low</strong></p>
+</li>
+<li>
+<p>Power on the LCD Panel’s <strong>MIPI Display Serial Interface (DSI)</strong></p>
+</li>
+<li>
+<p>Reset <strong>LCD Panel</strong> to <strong>High</strong></p>
+</li>
+</ol>
+<p>Now it’s time to initialise the <strong>Sitronix ST7703 LCD Controller</strong> inside the LCD Panel!</p>
+<ul>
+<li><a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>Sitronix ST7703 Datasheet</strong></a></li>
+</ul>
+<p>We do that by sending <strong>20 Initialisation Commands</strong> over MIPI DSI.</p>
+<p><em>What kind of Initialisation Commands?</em></p>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L121-L133">pinephone_lcd.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Initialization Commands for Sitronix ST7703 LCD Controller:
