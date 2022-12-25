@@ -135,17 +135,32 @@
 </ul>
 <p><a href="https://www.diodes.com/assets/Datasheets/products_inactive_data/AP3127_H.pdf">(<strong>AP3127</strong> is a PWM Controller)</a></p>
 <p>This is how we <strong>turn on the backlight</strong> in our NuttX LCD Driver: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L845-L921">pinephone_lcd.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Turn on the LCD Backlight with the percentage brightness.
-// `percent` (brightness percent) is typically 90.
-int pinephone_lcd_backlight_enable(uint32_t percent) {
+<div class="example-wrap"><pre class="language-c"><code>// Turn on the LCD Backlight
+int pinephone_lcd_backlight_enable(
+  uint32_t percent  // Brightness percentage, typically 90
+) {
 
   // Configure PL10 for PWM
-  int ret = a64_pio_config(LCD_PWM);</code></pre></div>
+  int ret = a64_pio_config(LCD_PWM);  // LCD_PWM is PL10</code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>  // R_PWM Control Register (Undocumented)
   // Assume same as PWM Control Register (A64 Page 194)
   // Set SCLK_CH0_GATING (Bit 6) to 0 (Mask)
   modreg32(0, SCLK_CH0_GATING, R_PWM_CTRL_REG);</code></pre></div>
+<p><strong>R_PWM</strong> isn’t documented in the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>.</p>
+<p>But thanks to <a href="https://lupyuen.github.io/articles/de#appendix-display-backlight"><strong>Reverse-Engineering</strong></a>, we figured out how it works: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L88-L103">pinephone_lcd.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>  // R_PWM Control Register (Undocumented)
+  // Assume same as PWM Control Register (A64 Page 194)
+  #define R_PWM_CTRL_REG            (A64_RPWM_ADDR + 0)
+  #define PWM_CH0_PRESCAL(n)        ((n) &lt;&lt; 0)
+  #define PWM_CH0_EN                (1 &lt;&lt; 4)
+  #define SCLK_CH0_GATING           (1 &lt;&lt; 6)
+
+  // R_PWM Channel 0 Period Register (Undocumented)
+  // Assume same as PWM Channel 0 Period Register (A64 Page 195)
+  #define R_PWM_CH0_PERIOD          (A64_RPWM_ADDR + 4)
+  #define PWM_CH0_ENTIRE_ACT_CYS(n) ((n) &lt;&lt; 0)
+  #define PWM_CH0_ENTIRE_CYS(n)     ((n) &lt;&lt; 16)</code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>  // R_PWM Channel 0 Period Register (Undocumented)
   // Assume same as PWM Channel 0 Period Register (A64 Page 195)
