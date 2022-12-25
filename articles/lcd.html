@@ -139,7 +139,6 @@
 int pinephone_lcd_backlight_enable(
   uint32_t percent  // Brightness percentage, typically 90
 ) {
-
   // Configure PL10 for PWM
   a64_pio_config(LCD_PWM);  // LCD_PWM is PL10</code></pre></div>
 <p>We begin by configuring <strong>PL10 for PWM</strong>.</p>
@@ -148,7 +147,11 @@ int pinephone_lcd_backlight_enable(
 <div class="example-wrap"><pre class="language-c"><code>  // R_PWM Control Register (Undocumented)
   // Assume same as PWM Control Register (A64 Page 194)
   // Set SCLK_CH0_GATING (Bit 6) to 0 (Mask)
-  modreg32(0, SCLK_CH0_GATING, R_PWM_CTRL_REG);</code></pre></div>
+  modreg32(  // Modify a Register...
+    0,                // Set these bits
+    SCLK_CH0_GATING,  // Mask these bits
+    R_PWM_CTRL_REG    // Register Address
+  );</code></pre></div>
 <p>The <strong>R_PWM Port</strong> isn’t documented in the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>.</p>
 <p>But thanks to <a href="https://lupyuen.github.io/articles/de#appendix-display-backlight"><strong>Reverse-Engineering</strong></a>, we figured out how it works: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L88-L103">pinephone_lcd.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // R_PWM Control Register (Undocumented)
@@ -173,7 +176,10 @@ int pinephone_lcd_backlight_enable(
   uint32_t period = 
     PWM_CH0_ENTIRE_CYS(BACKLIGHT_PWM_PERIOD) |
     PWM_CH0_ENTIRE_ACT_CYS(BACKLIGHT_PWM_PERIOD * percent / 100);
-  putreg32(period, R_PWM_CH0_PERIOD);</code></pre></div>
+  putreg32(           // Write to Register...
+    period,           // Register Value
+    R_PWM_CH0_PERIOD  // Register Address
+  );</code></pre></div>
 <p>Finally we <strong>enable PWM</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // R_PWM Control Register (Undocumented)
   // Assume same as PWM Control Register (A64 Page 194)
@@ -183,10 +189,13 @@ int pinephone_lcd_backlight_enable(
   uint32_t ctrl = SCLK_CH0_GATING |
     PWM_CH0_EN |
     PWM_CH0_PRESCAL(0b1111);
-  putreg32(ctrl, R_PWM_CTRL_REG);</code></pre></div>
+  putreg32(         // Write to Register...
+    ctrl,           // Register Value
+    R_PWM_CTRL_REG  // Register Address
+  );</code></pre></div>
 <p>One last thing: We configure <strong>PH10 for Output</strong> and set it to High…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Configure PH10 for Output
-  a64_pio_config(LCD_BL_EN);
+  a64_pio_config(LCD_BL_EN);  // LCD_BL_EN is PH10
 
   // Set PH10 to High
   a64_pio_write(LCD_BL_EN, true);
@@ -198,15 +207,40 @@ int pinephone_lcd_backlight_enable(
 <p><img src="https://lupyuen.github.io/images/de-reset.jpg" alt="LCD Panel Reset (PD23) on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LCD Panel Reset (PD23) on PinePhone Schematic (Page 11)</em></a></p>
 <h1 id="reset-lcd-panel"><a href="#reset-lcd-panel">3 Reset LCD Panel</a></h1>
-<p>TODO</p>
-<p>The <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic (Page 11)</strong></a> says that <strong>LCD Reset</strong> is controlled on <strong>PD23</strong>.</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L922-L958">pinephone_lcd.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Reset the LCD Panel to High or Low
-int pinephone_lcd_panel_reset(bool val) {
-
+<p>At startup, we need to <strong>toggle the LCD Reset</strong> from Low to High in this specific sequence…</p>
+<ol>
+<li>
+<p>Reset <strong>LCD Panel</strong> to <strong>Low</strong></p>
+</li>
+<li>
+<p>Power on the LCD Panel’s <strong>MIPI Display Serial Interface (DSI)</strong></p>
+<p>(Via the Power Management Integrated Circuit)</p>
+</li>
+<li>
+<p><strong>Wait</strong> 15 milliseconds</p>
+</li>
+<li>
+<p><strong>Enable MIPI DSI</strong> on Allwinner A64 SoC</p>
+</li>
+<li>
+<p><strong>Enable MIPI D-PHY</strong> on Allwinner A64 SoC</p>
+</li>
+<li>
+<p>Reset <strong>LCD Panel</strong> to <strong>High</strong></p>
+</li>
+</ol>
+<p>Followed by more MIPI DSI and Display Engine operations.</p>
+<p><em>How will we toggle LCD Reset?</em></p>
+<p>The <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic (Page 11)</strong></a> says that <strong>LCD Reset</strong> is controlled on <strong>PD23</strong>. (Pic above)</p>
+<p>(DLDO2 is powered by the PMIC)</p>
+<p>Let’s do it: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L922-L958">pinephone_lcd.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Reset the LCD Panel
+int pinephone_lcd_panel_reset(
+  bool val  // Set Reset to High or Low
+) {
   // Reset LCD Panel at PD23 (Active Low)
   // Configure PD23 for Output
-  a64_pio_config(LCD_RESET);
+  a64_pio_config(LCD_RESET);  // LCD_RESET is PD23
   
   // Set PD23 to High or Low
   a64_pio_write(LCD_RESET, val);
@@ -214,53 +248,80 @@ int pinephone_lcd_panel_reset(bool val) {
 }</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L91-L253">(<strong>a64_pio_config</strong> comes from our NuttX PIO Driver)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L254-L299">(<strong>a64_pio_write</strong> too)</a></p>
+<p>The code above configures PD23 for Output, and sets PD23 to High or Low.</p>
+<p>And that’s how we reset the LCD Panel! Now we power on the LCD Panel…</p>
 <p><img src="https://lupyuen.github.io/images/de-pmic.png" alt="AXP803 PMIC on PinePhone Schematic (Page 3)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>AXP803 PMIC on PinePhone Schematic (Page 3)</em></a></p>
 <h1 id="power-on-lcd-panel"><a href="#power-on-lcd-panel">4 Power On LCD Panel</a></h1>
+<p><em>How do we power on the LCD Panel?</em></p>
+<p>The LCD Panel won’t respond to our MIPI DSI Commands until <strong>we power it on</strong>.</p>
+<p>The <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic (Page 3)</strong></a> says that the MIPI DSI Port of the LCD Panel (DLDO2 / VCC-MIPI) is powered by…</p>
+<ul>
+<li>
+<p><a href="https://files.pine64.org/doc/datasheet/pine64/AXP803_Datasheet_V1.0.pdf"><strong>X-Powers AXP803 Power Management Integrated Circuit (PMIC)</strong></a></p>
+<p>(Pics above and below)</p>
+</li>
+</ul>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L169-L282">pinephone_pmic.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>int pinephone_pmic_init(void) {
-  int ret;
-
+<div class="example-wrap"><pre class="language-c"><code>// Initialise the Power Mgmt IC
+int pinephone_pmic_init(void) {
   // Set DLDO1 Voltage to 3.3V.
   // DLDO1 powers the Front Camera / USB HSIC / I2C Sensors.
 
   // DLDO1 Voltage Control (AXP803 Page 52)
   // Set Voltage (Bits 0 to 4) to 26 (2.6V + 0.7V = 3.3V)
-  pmic_write(DLDO1_VOLTAGE_CONTROL, DLDO1_VOLTAGE(26));
+  pmic_write(               // Write to PMIC Register...
+    DLDO1_VOLTAGE_CONTROL,  // PMIC Register
+    DLDO1_VOLTAGE(26)       // PMIC Value
+  );
 
   // Power on DLDO1:
   // Output Power On-Off Control 2 (AXP803 Page 51)
   // Set DLDO1 On-Off Control (Bit 3) to 1 (Power On)
-  pmic_clrsetbits(OUTPUT_POWER_ON_OFF_CONTROL2,
-    0, DLDO1_ON_OFF_CONTROL);
-
-  // Set LDO Voltage to 3.3V.
+  pmic_clrsetbits(  // Clear and set bits in PMIC Register...
+    OUTPUT_POWER_ON_OFF_CONTROL2,  // Set these bits
+    0,                             // Clear these bits
+    DLDO1_ON_OFF_CONTROL           // PMIC Register
+  );</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  // Set LDO Voltage to 3.3V.
   // GPIO0LDO powers the Capacitive Touch Panel.
 
   // GPIO0LDO and GPIO0 High Level Voltage Setting (AXP803 Page 77)
   // Set GPIO0LDO and GPIO0 High Level Voltage (Bits 0 to 4) to 26
   // (2.6V + 0.7V = 3.3V)
-  pmic_write(GPIO0LDO_HIGH_LEVEL_VOLTAGE_SETTING,
-    GPIO0LDO_HIGH_LEVEL_VOLTAGE(26));
+  pmic_write(  // Write to PMIC Register...
+    GPIO0LDO_HIGH_LEVEL_VOLTAGE_SETTING,  // PMIC Register
+    GPIO0LDO_HIGH_LEVEL_VOLTAGE(26)       // PMIC Value
+  );
 
   // Enable LDO Mode on GPIO0:
   // GPIO0 (GPADC) Control (AXP803 Page 76)
   // Set GPIO0 Pin Function Control (Bits 0 to 2) to 0b11 (Low Noise LDO on)
-  pmic_write(GPIO0_CONTROL, GPIO0_PIN_FUNCTION(0b11));
-
-  // Set DLDO2 Voltage to 1.8V.
+  pmic_write(  // Write to PMIC Register...
+    GPIO0_CONTROL,            // PMIC Register
+    GPIO0_PIN_FUNCTION(0b11)  // PMIC Value
+  );</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  // Set DLDO2 Voltage to 1.8V.
   // DLDO2 powers the MIPI DSI Interface of Xingbangda XBD599 LCD Panel.
 
   // DLDO2 Voltage Control (AXP803 Page 52)
   // Set Voltage (Bits 0 to 4) to 11 (1.1V + 0.7V = 1.8V)
-  pmic_write(DLDO2_VOLTAGE_CONTROL, DLDO2_VOLTAGE(11));
+  pmic_write(  // Write to PMIC Register...
+    DLDO2_VOLTAGE_CONTROL,  // PMIC Register
+    DLDO2_VOLTAGE(11)       // PMIC Value
+  );
 
   // Power on DLDO2:
   // Output Power On-Off Control 2 (AXP803 Page 51)
   // Set DLDO2 On-Off Control (Bit 4) to 1 (Power On)
-  pmic_clrsetbits(OUTPUT_POWER_ON_OFF_CONTROL2,
-    0, DLDO2_ON_OFF_CONTROL);
+  pmic_clrsetbits(  // Clear and set bits in PMIC Register...
+    OUTPUT_POWER_ON_OFF_CONTROL2,  // Set these bits
+    0,                             // Clear these bits
+    DLDO2_ON_OFF_CONTROL           // PMIC Register
+  );
   return OK;
 }</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/dsi-connector.png" alt="MIPI DSI Connector on PinePhone Schematic (Page 11)" /></p>
@@ -293,41 +354,26 @@ static const uint8_t g_pinephone_setgip1[] = {
   ...</code></pre></div>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L959-L1016">pinephone_lcd.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>int pinephone_lcd_panel_init(void)
-{
-  int i;
-  int ret;
+<div class="example-wrap"><pre class="language-c"><code>int pinephone_lcd_panel_init(void) {
+
+  // For every ST7703 Initialization Command...
   const int cmd_len = sizeof(g_pinephone_commands) /
                       sizeof(g_pinephone_commands[0]);
+  for (int i = 0; i &lt; cmd_len; i++) {
 
-  /* For every ST7703 Initialization Command */
+    // Get the ST7703 command and length
+    const uint8_t *cmd = g_pinephone_commands[i].cmd;
+    const uint8_t len = g_pinephone_commands[i].len;
 
-  ginfo(&quot;Init ST7703 LCD Controller\n&quot;);
-  for (i = 0; i &lt; cmd_len; i++)
-    {
-      /* Get the ST7703 command and length */
-
-      const uint8_t *cmd = g_pinephone_commands[i].cmd;
-      const uint8_t len = g_pinephone_commands[i].len;
-
-      /* If command is null, wait 120 milliseconds */
-
-      if (cmd == NULL)
-        {
-          up_mdelay(120);
-          continue;
-        }
-
-      /* Send the command to ST7703 over MIPI DSI */
-
-      write_dcs(cmd, len);
-      if (ret &lt; 0)
-        {
-          gerr(&quot;Write DCS failed: %d\n&quot;, ret);
-          return ret;
-        }
+    //  If command is null, wait 120 milliseconds
+    if (cmd == NULL) {
+      up_mdelay(120);
+      continue;
     }
 
+    // Send the command to ST7703 over MIPI DSI
+    write_dcs(cmd, len);
+  }
   return OK;
 }</code></pre></div><h1 id="render-lcd-display"><a href="#render-lcd-display">6 Render LCD Display</a></h1>
 <p>TODO</p>
