@@ -31,7 +31,9 @@ The Xingbangda XBD599 LCD Panel is connected to PinePhone's Allwinner A64 SoC ov
 
 _Why is there an ST7703 LCD Controller inside the LCD Panel?_
 
-Talking over MIPI DSI can get complicated. Later we'll see that ST7703 LCD Controller handles...
+Talking over MIPI DSI can get complicated... It runs on packets of data with CRCs and Checksums, over parallel wires.
+
+Later we'll see that ST7703 LCD Controller handles...
 
 -   MIPI DSI __Initialisation Commands__
 
