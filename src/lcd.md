@@ -2,13 +2,13 @@
 
 📝 _2 Jan 2023_
 
-![Rendering graphics on PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/lcd-title.jpg)
+![PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/lcd-title.jpg)
 
-TODO: [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) for [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) (pic above) 
-
-TODO
+[__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) now boots on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) and renders a Test Pattern! (Pic above)
 
 -   [__Watch the Demo on YouTube__](https://www.youtube.com/shorts/UzR7xLZCc0c)
+
+Let's find out how we created the NuttX Kernel Driver for __PinePhone's LCD Panel__...
 
 ![LCD Display on PinePhone Schematic (Page 2)](https://lupyuen.github.io/images/dsi-title.jpg)
 
@@ -76,7 +76,7 @@ int pinephone_lcd_backlight_enable(
 ) {
 
   // Configure PL10 for PWM
-  int ret = a64_pio_config(LCD_PWM);  // LCD_PWM is PL10
+  a64_pio_config(LCD_PWM);  // LCD_PWM is PL10
 ```
 
 We begin by configuring __PL10 for PWM__.
@@ -144,7 +144,7 @@ One last thing: We configure __PH10 for Output__ and set it to High...
 
 ```c
   // Configure PH10 for Output
-  ret = a64_pio_config(LCD_BL_EN);
+  a64_pio_config(LCD_BL_EN);
 
   // Set PH10 to High
   a64_pio_write(LCD_BL_EN, true);
@@ -154,7 +154,9 @@ One last thing: We configure __PH10 for Output__ and set it to High...
 
 [(__a64_pio_write__ comes from our NuttX PIO Driver)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L254-L299)
 
-This enables the [__AP3127 PWM Controller__](https://www.diodes.com/assets/Datasheets/products_inactive_data/AP3127_H.pdf). And the LCD Backlight switches on!
+This enables the [__AP3127 PWM Controller__](https://www.diodes.com/assets/Datasheets/products_inactive_data/AP3127_H.pdf). And switches on the LCD Backlight!
+
+Now that the Backlight is on, let's reset the LCD Panel and prepare for action...
 
 ![LCD Panel Reset (PD23) on PinePhone Schematic (Page 11)](https://lupyuen.github.io/images/de-reset.jpg)
 
@@ -164,31 +166,27 @@ This enables the [__AP3127 PWM Controller__](https://www.diodes.com/assets/Datas
 
 TODO
 
+The [__PinePhone Schematic (Page 11)__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) says that __LCD Reset__ is controlled on __PD23__.
+
 [pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L922-L958)
 
 ```c
-int pinephone_lcd_panel_reset(bool val)
-{
-  int ret;
+// Reset the LCD Panel to High or Low
+int pinephone_lcd_panel_reset(bool val) {
 
-  /* Reset LCD Panel at PD23 (Active Low), configure PD23 for Output */
-
-  ginfo("Configure PD23 for Output\n");
-  ret = a64_pio_config(LCD_RESET);
-  if (ret < 0)
-    {
-      gerr("Configure PD23 failed: %d\n", ret);
-      return ret;
-    }
-
-  /* Set PD23 to High or Low */
-
-  ginfo("Set PD23 to %d\n", val);
+  // Reset LCD Panel at PD23 (Active Low)
+  // Configure PD23 for Output
+  a64_pio_config(LCD_RESET);
+  
+  // Set PD23 to High or Low
   a64_pio_write(LCD_RESET, val);
-
   return OK;
 }
 ```
+
+[(__a64_pio_config__ comes from our NuttX PIO Driver)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L91-L253)
+
+[(__a64_pio_write__ too)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L254-L299)
 
 ![AXP803 PMIC on PinePhone Schematic (Page 3)](https://lupyuen.github.io/images/de-pmic.png)
 
@@ -201,107 +199,55 @@ TODO
 [pinephone_pmic.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L169-L282)
 
 ```c
-int pinephone_pmic_init(void)
-{
+int pinephone_pmic_init(void) {
   int ret;
 
-  /* Set DLDO1 Voltage to 3.3V. DLDO1 powers the Front Camera / USB HSIC /
-   * I2C Sensors.
-   */
+  // Set DLDO1 Voltage to 3.3V.
+  // DLDO1 powers the Front Camera / USB HSIC / I2C Sensors.
 
-  /* DLDO1 Voltage Control (AXP803 Page 52)
-   * Set Voltage (Bits 0 to 4) to 26 (2.6V + 0.7V = 3.3V)
-   */
+  // DLDO1 Voltage Control (AXP803 Page 52)
+  // Set Voltage (Bits 0 to 4) to 26 (2.6V + 0.7V = 3.3V)
+  pmic_write(DLDO1_VOLTAGE_CONTROL, DLDO1_VOLTAGE(26));
 
-  batinfo("Set DLDO1 Voltage to 3.3V\n");
-  ret = pmic_write(DLDO1_VOLTAGE_CONTROL, DLDO1_VOLTAGE(26));
-  if (ret < 0)
-    {
-      baterr("Set DLDO1 failed: %d\n", ret);
-      return ret;
-    }
+  // Power on DLDO1:
+  // Output Power On-Off Control 2 (AXP803 Page 51)
+  // Set DLDO1 On-Off Control (Bit 3) to 1 (Power On)
+  pmic_clrsetbits(OUTPUT_POWER_ON_OFF_CONTROL2,
+    0, DLDO1_ON_OFF_CONTROL);
 
-  /* Power on DLDO1 */
+  // Set LDO Voltage to 3.3V.
+  // GPIO0LDO powers the Capacitive Touch Panel.
 
-  /* Output Power On-Off Control 2 (AXP803 Page 51)
-   * Set DLDO1 On-Off Control (Bit 3) to 1 (Power On)
-   */
+  // GPIO0LDO and GPIO0 High Level Voltage Setting (AXP803 Page 77)
+  // Set GPIO0LDO and GPIO0 High Level Voltage (Bits 0 to 4) to 26
+  // (2.6V + 0.7V = 3.3V)
+  pmic_write(GPIO0LDO_HIGH_LEVEL_VOLTAGE_SETTING,
+    GPIO0LDO_HIGH_LEVEL_VOLTAGE(26));
 
-  ret = pmic_clrsetbits(OUTPUT_POWER_ON_OFF_CONTROL2, 0,
-                        DLDO1_ON_OFF_CONTROL);
-  if (ret < 0)
-    {
-      baterr("Power on DLDO1 failed: %d\n", ret);
-      return ret;
-    }
+  // Enable LDO Mode on GPIO0:
+  // GPIO0 (GPADC) Control (AXP803 Page 76)
+  // Set GPIO0 Pin Function Control (Bits 0 to 2) to 0b11 (Low Noise LDO on)
+  pmic_write(GPIO0_CONTROL, GPIO0_PIN_FUNCTION(0b11));
 
-  /* Set LDO Voltage to 3.3V. GPIO0LDO powers the Capacitive Touch Panel. */
+  // Set DLDO2 Voltage to 1.8V.
+  // DLDO2 powers the MIPI DSI Interface of Xingbangda XBD599 LCD Panel.
 
-  /* GPIO0LDO and GPIO0 High Level Voltage Setting (AXP803 Page 77)
-   * Set GPIO0LDO and GPIO0 High Level Voltage (Bits 0 to 4) to 26
-   * (2.6V + 0.7V = 3.3V)
-   */
+  // DLDO2 Voltage Control (AXP803 Page 52)
+  // Set Voltage (Bits 0 to 4) to 11 (1.1V + 0.7V = 1.8V)
+  pmic_write(DLDO2_VOLTAGE_CONTROL, DLDO2_VOLTAGE(11));
 
-  batinfo("Set LDO Voltage to 3.3V\n");
-  ret = pmic_write(GPIO0LDO_HIGH_LEVEL_VOLTAGE_SETTING,
-                   GPIO0LDO_HIGH_LEVEL_VOLTAGE(26));
-  if (ret < 0)
-    {
-      baterr("Set LDO failed: %d\n", ret);
-      return ret;
-    }
-
-  /* Enable LDO Mode on GPIO0 */
-
-  /* GPIO0 (GPADC) Control (AXP803 Page 76)
-   * Set GPIO0 Pin Function Control (Bits 0 to 2) to 0b11 (Low Noise LDO on)
-   */
-
-  batinfo("Enable LDO mode on GPIO0\n");
-  ret = pmic_write(GPIO0_CONTROL, GPIO0_PIN_FUNCTION(0b11));
-  if (ret < 0)
-    {
-      baterr("Enable LDO failed: %d\n", ret);
-      return ret;
-    }
-
-  /* Set DLDO2 Voltage to 1.8V. DLDO2 powers the MIPI DSI Interface of
-   * Xingbangda XBD599 LCD Panel.
-   */
-
-  /* DLDO2 Voltage Control (AXP803 Page 52)
-   * Set Voltage (Bits 0 to 4) to 11 (1.1V + 0.7V = 1.8V)
-   */
-
-  batinfo("Set DLDO2 Voltage to 1.8V\n");
-  ret = pmic_write(DLDO2_VOLTAGE_CONTROL, DLDO2_VOLTAGE(11));
-  if (ret < 0)
-    {
-      baterr("Set DLDO2 failed: %d\n", ret);
-      return ret;
-    }
-
-  /* Power on DLDO2 */
-
-  /* Output Power On-Off Control 2 (AXP803 Page 51)
-   * Set DLDO2 On-Off Control (Bit 4) to 1 (Power On)
-   */
-
-  ret = pmic_clrsetbits(OUTPUT_POWER_ON_OFF_CONTROL2, 0x0,
-                        DLDO2_ON_OFF_CONTROL);
-  if (ret < 0)
-    {
-      baterr("Power on DLDO2 failed: %d\n", ret);
-      return ret;
-    }
-
+  // Power on DLDO2:
+  // Output Power On-Off Control 2 (AXP803 Page 51)
+  // Set DLDO2 On-Off Control (Bit 4) to 1 (Power On)
+  pmic_clrsetbits(OUTPUT_POWER_ON_OFF_CONTROL2,
+    0, DLDO2_ON_OFF_CONTROL);
   return OK;
 }
 ```
 
-![LCD Display on PinePhone Schematic (Page 2)](https://lupyuen.github.io/images/dsi-title.jpg)
+![_MIPI DSI Connector on PinePhone Schematic (Page 11)_](https://lupyuen.github.io/images/dsi-connector.png)
 
-[_LCD Display on PinePhone Schematic (Page 2)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
+[_MIPI DSI Connector on PinePhone Schematic (Page 11)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
 
 # Initialise LCD Controller
 
@@ -310,18 +256,14 @@ TODO
 [pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L121-L133)
 
 ```c
-/* Initialization Commands for Sitronix ST7703 LCD Controller ***************/
-
-/* Command #1: SETEXTC (ST7703 Page 131)
- * Enable USER Command
- */
-
-static const uint8_t g_pinephone_setextc[] =
-{
-  0xb9,  /* SETEXTC (ST7703 Page 131): Enable USER Command */
-  0xf1,  /* Enable User command */
-  0x12,  /* (Continued) */
-  0x83   /* (Continued) */
+// Initialization Commands for Sitronix ST7703 LCD Controller:
+// Command #1: SETEXTC (ST7703 Page 131)
+// Enable USER Command
+static const uint8_t g_pinephone_setextc[] = {
+  0xb9,  // SETEXTC (ST7703 Page 131): Enable USER Command
+  0xf1,  // Enable User command
+  0x12,  // (Continued)
+  0x83   // (Continued)
 };
 ```
 
@@ -330,25 +272,17 @@ TODO
 [pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L432-L535)
 
 ```c
-/* Command #16: SETGIP1 (ST7703 Page 163)
- * Set forward GIP timing
- */
-
-static const uint8_t g_pinephone_setgip1[] =
-{
-  0xe9,  /* SETGIP1: Set forward GIP timing */
-  0x82,  /* SHR0, SHR1, CHR, CHR2 refer to Internal DE (REF_EN = 1);
-          *   (PANEL_SEL = 2) */
-  0x10,  /* Starting position of GIP STV group 0 = 4102 HSYNC
-          *   (SHR0 Bits 8-12 = 0x10) */
-  0x06,  /*   (SHR0 Bits 0-7 = 0x06) */
-  0x05,  /* Starting position of GIP STV group 1 = 1442 HSYNC
-          *   (SHR1 Bits 8-12 = 0x05) */
-  0xa2,  /* (SHR1 Bits 0-7 = 0xA2) */
-  0x0a,  /* Distance of STV rising edge and HYSNC = 10*2 Fosc
-          *   (SPON  Bits 0-7 = 0x0A) */
-  0xa5,  /* Distance of STV falling edge and HYSNC = 165*2 Fosc
-          *   (SPOFF Bits 0-7 = 0xA5) */
+// Command #16: SETGIP1 (ST7703 Page 163)
+// Set forward GIP timing
+static const uint8_t g_pinephone_setgip1[] = {
+  0xe9,  // SETGIP1: Set forward GIP timing
+  0x82,  // SHR0, SHR1, CHR, CHR2 refer to Internal DE (REF_EN = 1); (PANEL_SEL = 2)
+  0x10,  // Starting position of GIP STV group 0 = 4102 HSYNC (SHR0 Bits 8-12 = 0x10)
+  0x06,  // (SHR0 Bits 0-7 = 0x06)
+  0x05,  // Starting position of GIP STV group 1 = 1442 HSYNC (SHR1 Bits 8-12 = 0x05)
+  0xa2,  // (SHR1 Bits 0-7 = 0xA2)
+  0x0a,  // Distance of STV rising edge and HYSNC = 10*2 Fosc (SPON  Bits 0-7 = 0x0A)
+  0xa5,  // Distance of STV falling edge and HYSNC = 165*2 Fosc (SPOFF Bits 0-7 = 0xA5)
   ...
 ```
 
@@ -384,7 +318,7 @@ int pinephone_lcd_panel_init(void)
 
       /* Send the command to ST7703 over MIPI DSI */
 
-      ret = write_dcs(cmd, len);
+      write_dcs(cmd, len);
       if (ret < 0)
         {
           gerr("Write DCS failed: %d\n", ret);
@@ -395,10 +329,6 @@ int pinephone_lcd_panel_init(void)
   return OK;
 }
 ```
-
-![_MIPI DSI Connector on PinePhone Schematic (Page 11)_](https://lupyuen.github.io/images/dsi-connector.png)
-
-[_MIPI DSI Connector on PinePhone Schematic (Page 11)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
 
 # Render LCD Display
 
@@ -411,135 +341,52 @@ TODO
 [pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c)
 
 ```c
-int up_fbinitialize(int display)
-{
-  int ret;
-  static bool initialized = false;
+int up_fbinitialize(int display) {
 
-  /* Allow multiple calls */
+  // Turn on Display Backlight.
+  // BACKLIGHT_BRIGHTNESS_PERCENT is 90
+  pinephone_lcd_backlight_enable(BACKLIGHT_BRIGHTNESS_PERCENT);
 
-  DEBUGASSERT(display == 0);
-  if (initialized)
-    {
-      return OK;
-    }
+  // Init Timing Controller TCON0
+  a64_tcon0_init(PANEL_WIDTH, PANEL_HEIGHT);
 
-  initialized = true;
+  // Reset LCD Panel to Low
+  pinephone_lcd_panel_reset(false);
 
-  /* Turn on Display Backlight */
+  // Init PMIC
+  pinephone_pmic_init();
 
-  ret = pinephone_lcd_backlight_enable(BACKLIGHT_BRIGHTNESS_PERCENT);
-  if (ret < 0)
-    {
-      gerr("Enable Backlight failed: %d\n", ret);
-      return ret;
-    }
-
-  /* Init Timing Controller TCON0 */
-
-  ret = a64_tcon0_init(PANEL_WIDTH, PANEL_HEIGHT);
-  if (ret < 0)
-    {
-      gerr("Init Timing Controller TCON0 failed: %d\n", ret);
-      return ret;
-    }
-
-  /* Reset LCD Panel to Low */
-
-  ret = pinephone_lcd_panel_reset(false);
-  if (ret < 0)
-    {
-      gerr("Reset LCD Panel failed: %d\n", ret);
-      return ret;
-    }
-
-  /* Init PMIC */
-
-  ret = pinephone_pmic_init();
-  if (ret < 0)
-    {
-      gerr("Init PMIC failed: %d\n", ret);
-      return ret;
-    }
-
-  /* Wait 15 milliseconds for power supply and power-on init */
-
+  // Wait 15 milliseconds for power supply and power-on init
   up_mdelay(15);
 
-  /* Enable MIPI DSI */
+  // Enable MIPI DSI
+  a64_mipi_dsi_enable();
 
-  ret = a64_mipi_dsi_enable();
-  if (ret < 0)
-    {
-      gerr("Enable MIPI DSI failed: %d\n", ret);
-      return ret;
-    }
+  // Enable MIPI D-PHY
+  a64_mipi_dphy_enable();
 
-  /* Enable MIPI D-PHY */
+  // Reset LCD Panel to High
+  pinephone_lcd_panel_reset(true);
 
-  ret = a64_mipi_dphy_enable();
-  if (ret < 0)
-    {
-      gerr("Enable MIPI D-PHY failed: %d\n", ret);
-      return ret;
-    }
-
-  /* Reset LCD Panel to High */
-
-  ret = pinephone_lcd_panel_reset(true);
-  if (ret < 0)
-    {
-      gerr("Reset LCD Panel failed: %d\n", ret);
-      return ret;
-    }
-
-  /* Wait 15 milliseconds for LCD Panel */
-
+  // Wait 15 milliseconds for LCD Panel
   up_mdelay(15);
 
-  /* Initialise ST7703 LCD Controller */
+  // Initialise ST7703 LCD Controller
+  pinephone_lcd_panel_init();
 
-  ret = pinephone_lcd_panel_init();
-  if (ret < 0)
-    {
-      gerr("Init ST7703 LCD Controller failed: %d\n", ret);
-      return ret;
-    }
+  // Start MIPI DSI Bus in HSC and HSD modes
+  a64_mipi_dsi_start();
 
-  /* Start MIPI DSI Bus in HSC and HSD modes */
+  // Init Display Engine
+  a64_de_init();
 
-  ret = a64_mipi_dsi_start();
-  if (ret < 0)
-    {
-      gerr("Start MIPI DSI failed: %d\n", ret);
-      return ret;
-    }
-
-  /* Init Display Engine */
-
-  ret = a64_de_init();
-  if (ret < 0)
-    {
-      gerr("Init Display Engine failed: %d\n", ret);
-      return ret;
-    }
-
-  /* Wait 160 milliseconds for Display Engine */
-
+  // Wait 160 milliseconds for Display Engine
   up_mdelay(160);
 
-  /* Render Frame Buffers with Display Engine */
-
-  ret = render_framebuffers();
-  if (ret < 0)
-    {
-      gerr("Display Engine Frame Buffers failed: %d\n", ret);
-      return ret;
-    }
-
+  // Render Frame Buffers with Display Engine
+  render_framebuffers();
   return OK;
 }
-
 ```
 
 # What's Next
