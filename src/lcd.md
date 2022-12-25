@@ -8,6 +8,27 @@ TODO: [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) for [__Pine
 
 TODO
 
+![LCD Display on PinePhone Schematic (Page 2)](https://lupyuen.github.io/images/dsi-title.jpg)
+
+[_LCD Display on PinePhone Schematic (Page 2)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
+
+# Xingbangda XBD599 LCD Panel
+
+The LCD Panel inside PinePhone is [__Xingbangda XBD599__](https://pine64.com/product/pinephone-5-99-lcd-panel-with-touch-screen/) [(兴邦达)](https://web.archive.org/web/20221210083141/http://xingbangda.cn/) with...
+
+-   5.95-inch IPS Display
+-   1440 x 720 Resolution
+-   16 Million Colors
+-   Backlight with Pulse-Width Modulation (PWM)
+-   Sitronix ST7703 LCD Controller
+    [(ST7703 Datasheet)](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf)
+
+(Includes a Capacitive Touch Panel, but we'll skip it today)
+
+The Xingbangda XBD599 LCD Panel is connected to PinePhone's Allwinner A64 SoC over a __MIPI Display Serial Interface (DSI)__ for...
+
+TODO: Init, rendering
+
 ![Backlight on PinePhone Schematic (Page 11)](https://lupyuen.github.io/images/pio-backlight.png)
 
 [_Backlight on PinePhone Schematic (Page 11)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
@@ -15,6 +36,8 @@ TODO
 # LCD Panel Backlight
 
 TODO
+
+[(__AP3127__ is a PWM Controller)](https://www.diodes.com/assets/Datasheets/products_inactive_data/AP3127_H.pdf)
 
 ![LCD Panel Reset (PD23) on PinePhone Schematic (Page 11)](https://lupyuen.github.io/images/de-reset.jpg)
 
