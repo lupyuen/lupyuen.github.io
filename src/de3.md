@@ -856,3 +856,9 @@ CONFIG_BOARD_LOOPSPERMSEC=116524
 ```
 
 (PinePhone is probably the fastest NuttX Board ever!)
+
+_What if our driver needs to wait a while AFTER the NuttX Kernel has been started?_
+
+Call [__`nxsig_usleep()`__](https://github.com/apache/nuttx/blob/master/sched/signal/sig_usleep.c#L38-L86) instead.
+
+It suspends the current thread, instead of doing a busy-wait loop.
