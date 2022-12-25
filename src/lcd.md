@@ -220,11 +220,11 @@ int pinephone_lcd_panel_reset(
 }
 ```
 
+The code above configures __PD23 for Output__, and sets PD23 to High or Low.
+
 [(__a64_pio_config__ comes from our NuttX PIO Driver)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L91-L253)
 
 [(__a64_pio_write__ too)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L254-L299)
-
-The code above configures PD23 for Output, and sets PD23 to High or Low.
 
 And that's how we reset the LCD Panel! Now we power on the LCD Panel...
 
