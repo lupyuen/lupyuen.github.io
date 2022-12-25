@@ -279,6 +279,53 @@ int pinephone_pmic_init(void)
 
 TODO
 
+[pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L121-L133)
+
+```c
+/* Initialization Commands for Sitronix ST7703 LCD Controller ***************/
+
+/* Command #1: SETEXTC (ST7703 Page 131)
+ * Enable USER Command
+ */
+
+static const uint8_t g_pinephone_setextc[] =
+{
+  0xb9,  /* SETEXTC (ST7703 Page 131): Enable USER Command */
+  0xf1,  /* Enable User command */
+  0x12,  /* (Continued) */
+  0x83   /* (Continued) */
+};
+```
+
+TODO
+
+[pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L432-L535)
+
+```c
+/* Command #16: SETGIP1 (ST7703 Page 163)
+ * Set forward GIP timing
+ */
+
+static const uint8_t g_pinephone_setgip1[] =
+{
+  0xe9,  /* SETGIP1: Set forward GIP timing */
+  0x82,  /* SHR0, SHR1, CHR, CHR2 refer to Internal DE (REF_EN = 1);
+          *   (PANEL_SEL = 2) */
+  0x10,  /* Starting position of GIP STV group 0 = 4102 HSYNC
+          *   (SHR0 Bits 8-12 = 0x10) */
+  0x06,  /*   (SHR0 Bits 0-7 = 0x06) */
+  0x05,  /* Starting position of GIP STV group 1 = 1442 HSYNC
+          *   (SHR1 Bits 8-12 = 0x05) */
+  0xa2,  /* (SHR1 Bits 0-7 = 0xA2) */
+  0x0a,  /* Distance of STV rising edge and HYSNC = 10*2 Fosc
+          *   (SPON  Bits 0-7 = 0x0A) */
+  0xa5,  /* Distance of STV falling edge and HYSNC = 165*2 Fosc
+          *   (SPOFF Bits 0-7 = 0xA5) */
+  ...
+```
+
+TODO
+
 [pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L959-L1016)
 
 ```c
