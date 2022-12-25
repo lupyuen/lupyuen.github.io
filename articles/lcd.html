@@ -249,9 +249,9 @@ int pinephone_lcd_panel_reset(
   a64_pio_write(LCD_RESET, val);
   return OK;
 }</code></pre></div>
+<p>The code above configures <strong>PD23 for Output</strong>, and sets PD23 to High or Low.</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L91-L253">(<strong>a64_pio_config</strong> comes from our NuttX PIO Driver)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L254-L299">(<strong>a64_pio_write</strong> too)</a></p>
-<p>The code above configures PD23 for Output, and sets PD23 to High or Low.</p>
 <p>And that’s how we reset the LCD Panel! Now we power on the LCD Panel…</p>
 <p><img src="https://lupyuen.github.io/images/de-pmic.png" alt="AXP803 PMIC on PinePhone Schematic (Page 3)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>AXP803 PMIC on PinePhone Schematic (Page 3)</em></a></p>
