@@ -90,8 +90,31 @@
 <a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf">(ST7703 Datasheet)</a></li>
 </ul>
 <p>(Includes a Capacitive Touch Panel, but we’ll skip it today)</p>
-<p>The Xingbangda XBD599 LCD Panel is connected to PinePhone’s Allwinner A64 SoC over a <strong>MIPI Display Serial Interface (DSI)</strong> for…</p>
-<p>TODO: Init, rendering</p>
+<p>The Xingbangda XBD599 LCD Panel is connected to PinePhone’s Allwinner A64 SoC over a <a href="https://lupyuen.github.io/articles/dsi"><strong>MIPI Display Serial Interface (DSI)</strong></a>. (Pic above)</p>
+<p><em>Why is there an ST7703 LCD Controller inside the LCD Panel?</em></p>
+<p>Talking over MIPI DSI can get complicated. Later we’ll see that ST7703 LCD Controller handles…</p>
+<ul>
+<li>
+<p>MIPI DSI <strong>Initialisation Commands</strong></p>
+<p>(At startup)</p>
+</li>
+<li>
+<p><strong>Rendering of Pixels</strong> over MIPI DSI</p>
+<p>(After startup)</p>
+</li>
+</ul>
+<p>Let’s start with something simpler without ST7703…</p>
+<ul>
+<li>
+<p>Turning on the <strong>LCD Panel Backlight</strong> (PIO and PWM)</p>
+</li>
+<li>
+<p><strong>Resetting</strong> the LCD Panel (PIO)</p>
+</li>
+<li>
+<p><strong>Powering on</strong> the LCD Panel (PMIC)</p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/pio-backlight.png" alt="Backlight on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>Backlight on PinePhone Schematic (Page 11)</em></a></p>
 <h1 id="lcd-panel-backlight"><a href="#lcd-panel-backlight">2 LCD Panel Backlight</a></h1>
