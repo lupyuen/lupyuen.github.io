@@ -45,11 +45,17 @@ Later we'll see that ST7703 LCD Controller handles...
 
 Let's start with something simpler without ST7703...
 
--   Turning on the __LCD Panel Backlight__ (PIO and PWM)
+-   Turn on the __LCD Panel Backlight__
 
--   __Resetting__ the LCD Panel (PIO)
+    (With PIO and PWM)
 
--   __Powering on__ the LCD Panel (PMIC)
+-   __Reset__ the LCD Panel
+  
+    (With PIO)
+
+-   __Power on__ the LCD Panel
+
+    (With PMIC)
 
 ![Backlight on PinePhone Schematic (Page 11)](https://lupyuen.github.io/images/pio-backlight.png)
 
@@ -331,9 +337,9 @@ From [__Allwinner A80 User Manual__](https://github.com/lupyuen/pinephone-nuttx/
 
 > "It supports a simplified two wire protocol (RSB) on a push-pull bus. The transfer speed can be up to 20MHz and the performance will be improved much."
 
-(Reduced Serial Bus seems to work like I2C, but specifically for PMIC)
+(Reduced Serial Bus seems to work like I2C, but specifically for PMICs)
 
-Thus to control AXP803 PMIC, __pmic_write__ will talk to the PMIC over the Reduced Serial Bus: [pinephone_pmic.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L88-L119)
+Thus to control AXP803 PMIC, __pmic_write__ will talk to the PMIC over the __Reduced Serial Bus__: [pinephone_pmic.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L88-L119)
 
 ```c
 // Write a byte to an AXP803 PMIC Register
@@ -443,6 +449,10 @@ int pinephone_lcd_panel_init(void) {
 }
 ```
 
+TODO: write_dcs is defined here
+
+TODO: It calls our NuttX Driver for MIPI DSI
+
 # Render LCD Display
 
 TODO
@@ -501,6 +511,8 @@ int up_fbinitialize(int display) {
   return OK;
 }
 ```
+
+TODO: Who calls up_fbinitialize
 
 # What's Next
 
