@@ -96,7 +96,8 @@
 <p>(Includes a Capacitive Touch Panel, but we’ll skip it today)</p>
 <p>The Xingbangda XBD599 LCD Panel is connected to PinePhone’s Allwinner A64 SoC over a <a href="https://lupyuen.github.io/articles/dsi"><strong>MIPI Display Serial Interface (DSI)</strong></a>. (Pic above)</p>
 <p><em>Why is there an ST7703 LCD Controller inside the LCD Panel?</em></p>
-<p>Talking over MIPI DSI can get complicated. Later we’ll see that ST7703 LCD Controller handles…</p>
+<p>Talking over MIPI DSI can get complicated… It runs on packets of data with CRCs and Checksums, over parallel wires.</p>
+<p>Later we’ll see that ST7703 LCD Controller handles…</p>
 <ul>
 <li>
 <p>MIPI DSI <strong>Initialisation Commands</strong></p>
