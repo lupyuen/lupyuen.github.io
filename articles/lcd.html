@@ -73,7 +73,8 @@
 <li><a href="#power-on-lcd-panel">4 Power On LCD Panel</a><ul></ul></li>
 <li><a href="#initialise-lcd-controller">5 Initialise LCD Controller</a><ul></ul></li>
 <li><a href="#render-lcd-display">6 Render LCD Display</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>2 Jan 2023</em></p>
+<li><a href="#complete-display-driver">7 Complete Display Driver</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>2 Jan 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/lcd-title.jpg" alt="Rendering graphics on PinePhone with Apache NuttX RTOS" /></p>
 <p>TODO: <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> for <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> (pic above) </p>
 <p>TODO</p>
@@ -119,24 +120,375 @@
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>Backlight on PinePhone Schematic (Page 11)</em></a></p>
 <h1 id="lcd-panel-backlight"><a href="#lcd-panel-backlight">2 LCD Panel Backlight</a></h1>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L845-L921">pinephone_lcd.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>int pinephone_lcd_backlight_enable(uint32_t percent)
+{
+  int ret;
+  uint32_t period;
+
+  /* Configure PL10 for PWM */
+
+  ginfo(&quot;Configure PL10 for PWM\n&quot;);
+  ret = a64_pio_config(LCD_PWM);
+  if (ret &lt; 0)
+    {
+      gerr(&quot;Configure PL10 failed: %d\n&quot;, ret);
+      return ret;
+    }
+
+  /* R_PWM Control Register (Undocumented)
+   * Assume same as PWM Control Register (A64 Page 194)
+   * Set SCLK_CH0_GATING (Bit 6) to 0 (Mask)
+   */
+
+  ginfo(&quot;Disable R_PWM\n&quot;);
+  modreg32(0, SCLK_CH0_GATING, R_PWM_CTRL_REG);
+
+  /* R_PWM Channel 0 Period Register (Undocumented)
+   * Assume same as PWM Channel 0 Period Register (A64 Page 195)
+   * Set PWM_CH0_ENTIRE_CYS (Bits 16 to 31) to PWM Period
+   * Set PWM_CH0_ENTIRE_ACT_CYS (Bits 0 to 15) to PWM Period * Percent / 100
+   */
+
+  ginfo(&quot;Configure R_PWM Period\n&quot;);
+  period = PWM_CH0_ENTIRE_CYS(BACKLIGHT_PWM_PERIOD) |
+           PWM_CH0_ENTIRE_ACT_CYS(BACKLIGHT_PWM_PERIOD * percent / 100);
+  putreg32(period, R_PWM_CH0_PERIOD);
+
+  /* R_PWM Control Register (Undocumented)
+   * Assume same as PWM Control Register (A64 Page 194)
+   * Set SCLK_CH0_GATING (Bit 6) to 1 (Pass)
+   * Set PWM_CH0_EN (Bit 4) to 1 (Enable)
+   * Set PWM_CH0_PRESCAL (Bits 0 to 3) to 0b1111 (Prescaler 1)
+   */
+
+  ginfo(&quot;Enable R_PWM\n&quot;);
+  uint32_t ctrl = SCLK_CH0_GATING | PWM_CH0_EN | PWM_CH0_PRESCAL(0b1111);
+  putreg32(ctrl, R_PWM_CTRL_REG);
+
+  /* Configure PH10 for Output */
+
+  ginfo(&quot;Configure PH10 for Output\n&quot;);
+  ret = a64_pio_config(LCD_BL_EN);
+  if (ret &lt; 0)
+    {
+      gerr(&quot;Configure PH10 failed: %d\n&quot;, ret);
+      return ret;
+    }
+
+  /* Set PH10 to High */
+
+  ginfo(&quot;Set PH10 to High\n&quot;);
+  a64_pio_write(LCD_BL_EN, true);
+
+  return OK;
+}</code></pre></div>
 <p><a href="https://www.diodes.com/assets/Datasheets/products_inactive_data/AP3127_H.pdf">(<strong>AP3127</strong> is a PWM Controller)</a></p>
 <p><img src="https://lupyuen.github.io/images/de-reset.jpg" alt="LCD Panel Reset (PD23) on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LCD Panel Reset (PD23) on PinePhone Schematic (Page 11)</em></a></p>
 <h1 id="reset-lcd-panel"><a href="#reset-lcd-panel">3 Reset LCD Panel</a></h1>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L922-L958">pinephone_lcd.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>int pinephone_lcd_panel_reset(bool val)
+{
+  int ret;
+
+  /* Reset LCD Panel at PD23 (Active Low), configure PD23 for Output */
+
+  ginfo(&quot;Configure PD23 for Output\n&quot;);
+  ret = a64_pio_config(LCD_RESET);
+  if (ret &lt; 0)
+    {
+      gerr(&quot;Configure PD23 failed: %d\n&quot;, ret);
+      return ret;
+    }
+
+  /* Set PD23 to High or Low */
+
+  ginfo(&quot;Set PD23 to %d\n&quot;, val);
+  a64_pio_write(LCD_RESET, val);
+
+  return OK;
+}</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/de-pmic.png" alt="AXP803 PMIC on PinePhone Schematic (Page 3)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>AXP803 PMIC on PinePhone Schematic (Page 3)</em></a></p>
 <h1 id="power-on-lcd-panel"><a href="#power-on-lcd-panel">4 Power On LCD Panel</a></h1>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L169-L282">pinephone_pmic.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>int pinephone_pmic_init(void)
+{
+  int ret;
+
+  /* Set DLDO1 Voltage to 3.3V. DLDO1 powers the Front Camera / USB HSIC /
+   * I2C Sensors.
+   */
+
+  /* DLDO1 Voltage Control (AXP803 Page 52)
+   * Set Voltage (Bits 0 to 4) to 26 (2.6V + 0.7V = 3.3V)
+   */
+
+  batinfo(&quot;Set DLDO1 Voltage to 3.3V\n&quot;);
+  ret = pmic_write(DLDO1_VOLTAGE_CONTROL, DLDO1_VOLTAGE(26));
+  if (ret &lt; 0)
+    {
+      baterr(&quot;Set DLDO1 failed: %d\n&quot;, ret);
+      return ret;
+    }
+
+  /* Power on DLDO1 */
+
+  /* Output Power On-Off Control 2 (AXP803 Page 51)
+   * Set DLDO1 On-Off Control (Bit 3) to 1 (Power On)
+   */
+
+  ret = pmic_clrsetbits(OUTPUT_POWER_ON_OFF_CONTROL2, 0,
+                        DLDO1_ON_OFF_CONTROL);
+  if (ret &lt; 0)
+    {
+      baterr(&quot;Power on DLDO1 failed: %d\n&quot;, ret);
+      return ret;
+    }
+
+  /* Set LDO Voltage to 3.3V. GPIO0LDO powers the Capacitive Touch Panel. */
+
+  /* GPIO0LDO and GPIO0 High Level Voltage Setting (AXP803 Page 77)
+   * Set GPIO0LDO and GPIO0 High Level Voltage (Bits 0 to 4) to 26
+   * (2.6V + 0.7V = 3.3V)
+   */
+
+  batinfo(&quot;Set LDO Voltage to 3.3V\n&quot;);
+  ret = pmic_write(GPIO0LDO_HIGH_LEVEL_VOLTAGE_SETTING,
+                   GPIO0LDO_HIGH_LEVEL_VOLTAGE(26));
+  if (ret &lt; 0)
+    {
+      baterr(&quot;Set LDO failed: %d\n&quot;, ret);
+      return ret;
+    }
+
+  /* Enable LDO Mode on GPIO0 */
+
+  /* GPIO0 (GPADC) Control (AXP803 Page 76)
+   * Set GPIO0 Pin Function Control (Bits 0 to 2) to 0b11 (Low Noise LDO on)
+   */
+
+  batinfo(&quot;Enable LDO mode on GPIO0\n&quot;);
+  ret = pmic_write(GPIO0_CONTROL, GPIO0_PIN_FUNCTION(0b11));
+  if (ret &lt; 0)
+    {
+      baterr(&quot;Enable LDO failed: %d\n&quot;, ret);
+      return ret;
+    }
+
+  /* Set DLDO2 Voltage to 1.8V. DLDO2 powers the MIPI DSI Interface of
+   * Xingbangda XBD599 LCD Panel.
+   */
+
+  /* DLDO2 Voltage Control (AXP803 Page 52)
+   * Set Voltage (Bits 0 to 4) to 11 (1.1V + 0.7V = 1.8V)
+   */
+
+  batinfo(&quot;Set DLDO2 Voltage to 1.8V\n&quot;);
+  ret = pmic_write(DLDO2_VOLTAGE_CONTROL, DLDO2_VOLTAGE(11));
+  if (ret &lt; 0)
+    {
+      baterr(&quot;Set DLDO2 failed: %d\n&quot;, ret);
+      return ret;
+    }
+
+  /* Power on DLDO2 */
+
+  /* Output Power On-Off Control 2 (AXP803 Page 51)
+   * Set DLDO2 On-Off Control (Bit 4) to 1 (Power On)
+   */
+
+  ret = pmic_clrsetbits(OUTPUT_POWER_ON_OFF_CONTROL2, 0x0,
+                        DLDO2_ON_OFF_CONTROL);
+  if (ret &lt; 0)
+    {
+      baterr(&quot;Power on DLDO2 failed: %d\n&quot;, ret);
+      return ret;
+    }
+
+  return OK;
+}</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/dsi-title.jpg" alt="LCD Display on PinePhone Schematic (Page 2)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LCD Display on PinePhone Schematic (Page 2)</em></a></p>
 <h1 id="initialise-lcd-controller"><a href="#initialise-lcd-controller">5 Initialise LCD Controller</a></h1>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L959-L1016">pinephone_lcd.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>int pinephone_lcd_panel_init(void)
+{
+  int i;
+  int ret;
+  const int cmd_len = sizeof(g_pinephone_commands) /
+                      sizeof(g_pinephone_commands[0]);
+
+  /* For every ST7703 Initialization Command */
+
+  ginfo(&quot;Init ST7703 LCD Controller\n&quot;);
+  for (i = 0; i &lt; cmd_len; i++)
+    {
+      /* Get the ST7703 command and length */
+
+      const uint8_t *cmd = g_pinephone_commands[i].cmd;
+      const uint8_t len = g_pinephone_commands[i].len;
+
+      /* If command is null, wait 120 milliseconds */
+
+      if (cmd == NULL)
+        {
+          up_mdelay(120);
+          continue;
+        }
+
+      /* Send the command to ST7703 over MIPI DSI */
+
+      ret = write_dcs(cmd, len);
+      if (ret &lt; 0)
+        {
+          gerr(&quot;Write DCS failed: %d\n&quot;, ret);
+          return ret;
+        }
+    }
+
+  return OK;
+}</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/dsi-connector.png" alt="MIPI DSI Connector on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>MIPI DSI Connector on PinePhone Schematic (Page 11)</em></a></p>
 <h1 id="render-lcd-display"><a href="#render-lcd-display">6 Render LCD Display</a></h1>
 <p>TODO</p>
-<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
+<h1 id="complete-display-driver"><a href="#complete-display-driver">7 Complete Display Driver</a></h1>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c">pinephone_display.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>int up_fbinitialize(int display)
+{
+  int ret;
+  static bool initialized = false;
+
+  /* Allow multiple calls */
+
+  DEBUGASSERT(display == 0);
+  if (initialized)
+    {
+      return OK;
+    }
+
+  initialized = true;
+
+  /* Turn on Display Backlight */
+
+  ret = pinephone_lcd_backlight_enable(BACKLIGHT_BRIGHTNESS_PERCENT);
+  if (ret &lt; 0)
+    {
+      gerr(&quot;Enable Backlight failed: %d\n&quot;, ret);
+      return ret;
+    }
+
+  /* Init Timing Controller TCON0 */
+
+  ret = a64_tcon0_init(PANEL_WIDTH, PANEL_HEIGHT);
+  if (ret &lt; 0)
+    {
+      gerr(&quot;Init Timing Controller TCON0 failed: %d\n&quot;, ret);
+      return ret;
+    }
+
+  /* Reset LCD Panel to Low */
+
+  ret = pinephone_lcd_panel_reset(false);
+  if (ret &lt; 0)
+    {
+      gerr(&quot;Reset LCD Panel failed: %d\n&quot;, ret);
+      return ret;
+    }
+
+  /* Init PMIC */
+
+  ret = pinephone_pmic_init();
+  if (ret &lt; 0)
+    {
+      gerr(&quot;Init PMIC failed: %d\n&quot;, ret);
+      return ret;
+    }
+
+  /* Wait 15 milliseconds for power supply and power-on init */
+
+  up_mdelay(15);
+
+  /* Enable MIPI DSI */
+
+  ret = a64_mipi_dsi_enable();
+  if (ret &lt; 0)
+    {
+      gerr(&quot;Enable MIPI DSI failed: %d\n&quot;, ret);
+      return ret;
+    }
+
+  /* Enable MIPI D-PHY */
+
+  ret = a64_mipi_dphy_enable();
+  if (ret &lt; 0)
+    {
+      gerr(&quot;Enable MIPI D-PHY failed: %d\n&quot;, ret);
+      return ret;
+    }
+
+  /* Reset LCD Panel to High */
+
+  ret = pinephone_lcd_panel_reset(true);
+  if (ret &lt; 0)
+    {
+      gerr(&quot;Reset LCD Panel failed: %d\n&quot;, ret);
+      return ret;
+    }
+
+  /* Wait 15 milliseconds for LCD Panel */
+
+  up_mdelay(15);
+
+  /* Initialise ST7703 LCD Controller */
+
+  ret = pinephone_lcd_panel_init();
+  if (ret &lt; 0)
+    {
+      gerr(&quot;Init ST7703 LCD Controller failed: %d\n&quot;, ret);
+      return ret;
+    }
+
+  /* Start MIPI DSI Bus in HSC and HSD modes */
+
+  ret = a64_mipi_dsi_start();
+  if (ret &lt; 0)
+    {
+      gerr(&quot;Start MIPI DSI failed: %d\n&quot;, ret);
+      return ret;
+    }
+
+  /* Init Display Engine */
+
+  ret = a64_de_init();
+  if (ret &lt; 0)
+    {
+      gerr(&quot;Init Display Engine failed: %d\n&quot;, ret);
+      return ret;
+    }
+
+  /* Wait 160 milliseconds for Display Engine */
+
+  up_mdelay(160);
+
+  /* Render Frame Buffers with Display Engine */
+
+  ret = render_framebuffers();
+  if (ret &lt; 0)
+    {
+      gerr(&quot;Display Engine Frame Buffers failed: %d\n&quot;, ret);
+      return ret;
+    }
+
+  return OK;
+}
+</code></pre></div><h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
 <p>Check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
 <ul>
