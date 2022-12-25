@@ -8,7 +8,7 @@
 
 -   [__Watch the Demo on YouTube__](https://www.youtube.com/shorts/UzR7xLZCc0c)
 
-Let's find out how we created the NuttX Kernel Driver for __PinePhone's LCD Panel__...
+Let's find out what's inside our NuttX Kernel Driver for __PinePhone's LCD Panel__...
 
 ![LCD Display on PinePhone Schematic (Page 2)](https://lupyuen.github.io/images/dsi-title.jpg)
 
