@@ -70,12 +70,13 @@ The [__PinePhone Schematic (Page 11)__](https://files.pine64.org/doc/PinePhone/P
 This is how we __turn on the backlight__ in our NuttX LCD Driver: [pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L845-L921)
 
 ```c
-// Turn on the LCD Backlight with the percentage brightness.
-// `percent` (brightness percent) is typically 90.
-int pinephone_lcd_backlight_enable(uint32_t percent) {
+// Turn on the LCD Backlight
+int pinephone_lcd_backlight_enable(
+  uint32_t percent  // Brightness percentage, typically 90
+) {
 
   // Configure PL10 for PWM
-  int ret = a64_pio_config(LCD_PWM);
+  int ret = a64_pio_config(LCD_PWM);  // LCD_PWM is PL10
 ```
 
 TODO
@@ -85,6 +86,25 @@ TODO
   // Assume same as PWM Control Register (A64 Page 194)
   // Set SCLK_CH0_GATING (Bit 6) to 0 (Mask)
   modreg32(0, SCLK_CH0_GATING, R_PWM_CTRL_REG);
+```
+
+__R_PWM__ isn't documented in the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf).
+
+But thanks to [__Reverse-Engineering__](https://lupyuen.github.io/articles/de#appendix-display-backlight), we figured out how it works: [pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L88-L103)
+
+```c
+  // R_PWM Control Register (Undocumented)
+  // Assume same as PWM Control Register (A64 Page 194)
+  #define R_PWM_CTRL_REG            (A64_RPWM_ADDR + 0)
+  #define PWM_CH0_PRESCAL(n)        ((n) << 0)
+  #define PWM_CH0_EN                (1 << 4)
+  #define SCLK_CH0_GATING           (1 << 6)
+
+  // R_PWM Channel 0 Period Register (Undocumented)
+  // Assume same as PWM Channel 0 Period Register (A64 Page 195)
+  #define R_PWM_CH0_PERIOD          (A64_RPWM_ADDR + 4)
+  #define PWM_CH0_ENTIRE_ACT_CYS(n) ((n) << 0)
+  #define PWM_CH0_ENTIRE_CYS(n)     ((n) << 16)
 ```
 
 TODO
