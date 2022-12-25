@@ -67,36 +67,53 @@
 
     <h1 class="title">NuttX RTOS for PinePhone: LCD Panel</h1>
     <nav id="TOC"><ul>
-<li><a href="#lcd-panel-backlight">1 LCD Panel Backlight</a><ul></ul></li>
-<li><a href="#reset-lcd-panel">2 Reset LCD Panel</a><ul></ul></li>
-<li><a href="#power-on-lcd-panel">3 Power On LCD Panel</a><ul></ul></li>
-<li><a href="#initialise-lcd-controller">4 Initialise LCD Controller</a><ul></ul></li>
-<li><a href="#render-lcd-display">5 Render LCD Display</a><ul></ul></li>
-<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>2 Jan 2023</em></p>
+<li><a href="#xingbangda-xbd599-lcd-panel">1 Xingbangda XBD599 LCD Panel</a><ul></ul></li>
+<li><a href="#lcd-panel-backlight">2 LCD Panel Backlight</a><ul></ul></li>
+<li><a href="#reset-lcd-panel">3 Reset LCD Panel</a><ul></ul></li>
+<li><a href="#power-on-lcd-panel">4 Power On LCD Panel</a><ul></ul></li>
+<li><a href="#initialise-lcd-controller">5 Initialise LCD Controller</a><ul></ul></li>
+<li><a href="#render-lcd-display">6 Render LCD Display</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>2 Jan 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/lcd-title.jpg" alt="Rendering graphics on PinePhone with Apache NuttX RTOS" /></p>
 <p>TODO: <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> for <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> (pic above) </p>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/dsi-title.jpg" alt="LCD Display on PinePhone Schematic (Page 2)" /></p>
+<p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LCD Display on PinePhone Schematic (Page 2)</em></a></p>
+<h1 id="xingbangda-xbd599-lcd-panel"><a href="#xingbangda-xbd599-lcd-panel">1 Xingbangda XBD599 LCD Panel</a></h1>
+<p>The LCD Panel inside PinePhone is <a href="https://pine64.com/product/pinephone-5-99-lcd-panel-with-touch-screen/"><strong>Xingbangda XBD599</strong></a> <a href="https://web.archive.org/web/20221210083141/http://xingbangda.cn/">(兴邦达)</a> with…</p>
+<ul>
+<li>5.95-inch IPS Display</li>
+<li>1440 x 720 Resolution</li>
+<li>16 Million Colors</li>
+<li>Backlight with Pulse-Width Modulation (PWM)</li>
+<li>Sitronix ST7703 LCD Controller
+<a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf">(ST7703 Datasheet)</a></li>
+</ul>
+<p>(Includes a Capacitive Touch Panel, but we’ll skip it today)</p>
+<p>The Xingbangda XBD599 LCD Panel is connected to PinePhone’s Allwinner A64 SoC over a <strong>MIPI Display Serial Interface (DSI)</strong> for…</p>
+<p>TODO: Init, rendering</p>
 <p><img src="https://lupyuen.github.io/images/pio-backlight.png" alt="Backlight on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>Backlight on PinePhone Schematic (Page 11)</em></a></p>
-<h1 id="lcd-panel-backlight"><a href="#lcd-panel-backlight">1 LCD Panel Backlight</a></h1>
+<h1 id="lcd-panel-backlight"><a href="#lcd-panel-backlight">2 LCD Panel Backlight</a></h1>
 <p>TODO</p>
+<p><a href="https://www.diodes.com/assets/Datasheets/products_inactive_data/AP3127_H.pdf">(<strong>AP3127</strong> is a PWM Controller)</a></p>
 <p><img src="https://lupyuen.github.io/images/de-reset.jpg" alt="LCD Panel Reset (PD23) on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LCD Panel Reset (PD23) on PinePhone Schematic (Page 11)</em></a></p>
-<h1 id="reset-lcd-panel"><a href="#reset-lcd-panel">2 Reset LCD Panel</a></h1>
+<h1 id="reset-lcd-panel"><a href="#reset-lcd-panel">3 Reset LCD Panel</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/de-pmic.png" alt="AXP803 PMIC on PinePhone Schematic (Page 3)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>AXP803 PMIC on PinePhone Schematic (Page 3)</em></a></p>
-<h1 id="power-on-lcd-panel"><a href="#power-on-lcd-panel">3 Power On LCD Panel</a></h1>
+<h1 id="power-on-lcd-panel"><a href="#power-on-lcd-panel">4 Power On LCD Panel</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/dsi-title.jpg" alt="LCD Display on PinePhone Schematic (Page 2)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LCD Display on PinePhone Schematic (Page 2)</em></a></p>
-<h1 id="initialise-lcd-controller"><a href="#initialise-lcd-controller">4 Initialise LCD Controller</a></h1>
+<h1 id="initialise-lcd-controller"><a href="#initialise-lcd-controller">5 Initialise LCD Controller</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/dsi-connector.png" alt="MIPI DSI Connector on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>MIPI DSI Connector on PinePhone Schematic (Page 11)</em></a></p>
-<h1 id="render-lcd-display"><a href="#render-lcd-display">5 Render LCD Display</a></h1>
+<h1 id="render-lcd-display"><a href="#render-lcd-display">6 Render LCD Display</a></h1>
 <p>TODO</p>
-<h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>Check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
 <ul>
