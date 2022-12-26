@@ -499,6 +499,10 @@ The pixel data is pumped from RAM Framebuffers via __Direct Memory Access (DMA)_
 
 TODO
 
+![Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
+
+[_Complete Display Driver for PinePhone_](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone)
+
 # Complete Display Driver
 
 TODO
