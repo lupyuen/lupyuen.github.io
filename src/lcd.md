@@ -511,6 +511,12 @@ Let's find out how the drivers are called at startup.
 
 # Complete Display Driver
 
+PinePhone needs a __super complex Display Driver__ that will handle 11 steps (pic above)...
+
+-   [__"Complete Display Driver for PinePhone"__](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone)
+
+We've implemented most of this in the NuttX Kernel.
+
 TODO
 
 [pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c)
@@ -564,7 +570,7 @@ int up_fbinitialize(int display) {
 }
 ```
 
-TODO: Who calls up_fbinitialize
+TODO: Call up_fbinitialize in pinephone_bringup
 
 # Upcoming Drivers
 
