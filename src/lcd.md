@@ -385,9 +385,7 @@ We do that by sending __20 Initialisation Commands__ over MIPI DSI.
 
 _What kind of Initialisation Commands?_
 
-TODO
-
-[pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L121-L133)
+Here's a __simple Initialisation Command__ with 4 bytes: [pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L121-L133)
 
 ```c
 // Initialization Commands for Sitronix ST7703 LCD Controller:
@@ -401,9 +399,7 @@ static const uint8_t g_pinephone_setextc[] = {
 };
 ```
 
-TODO
-
-[pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L432-L535)
+And here's a long Initialisation Command with __64 bytes__: [pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L432-L535)
 
 ```c
 // Command #16: SETGIP1 (ST7703 Page 163)
@@ -420,21 +416,26 @@ static const uint8_t g_pinephone_setgip1[] = {
   ...
 ```
 
-TODO
+We need to send all 20 Initialisation Commands as documented here...
 
-[pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L959-L1016)
+-   [__"Initialise LCD Controller"__](https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller)
+
+_How will we send the Initialisation Commands?_
+
+This is how we __send the 20 Initialisation Commands__ to ST7703 LCD Controller over the MIPI DSI Bus: [pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L959-L1016)
 
 ```c
+// Send 20 Initialisation Commands to ST7703 LCD Controller
 int pinephone_lcd_panel_init(void) {
 
-  // For every ST7703 Initialization Command...
+  // For every ST7703 Initialisation Command...
   const int cmd_len = sizeof(g_pinephone_commands) /
                       sizeof(g_pinephone_commands[0]);
   for (int i = 0; i < cmd_len; i++) {
 
     // Get the ST7703 command and length
     const uint8_t *cmd = g_pinephone_commands[i].cmd;
-    const uint8_t len = g_pinephone_commands[i].len;
+    const uint8_t len  = g_pinephone_commands[i].len;
 
     //  If command is null, wait 120 milliseconds
     if (cmd == NULL) {
@@ -449,11 +450,48 @@ int pinephone_lcd_panel_init(void) {
 }
 ```
 
-TODO: write_dcs is defined here
+[(__write_dcs__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L780-L840)
 
-TODO: It calls our NuttX Driver for MIPI DSI
+[(How it works)](https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet)
+
+_What's g_pinephone_commands?__
+
+That's our __Consolidated List__ of 20 Initialisation Commands: [pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L684-L775)
+
+```c
+// 20 Initialization Commands to be sent to ST7703 LCD Controller
+static const struct pinephone_cmd_s g_pinephone_commands[] = {
+  { g_pinephone_setextc,      sizeof(g_pinephone_setextc) },
+  { g_pinephone_setmipi,      sizeof(g_pinephone_setmipi) },
+  { g_pinephone_setpower_ext, sizeof(g_pinephone_setpower_ext) },
+  ...
+```
+
+We're done with the initialisation of the ST7703 LCD Controller inside our LCD Panel! Let's render something...
 
 # Render LCD Display
+
+_So our driver will send MIPI DSI Commands to render graphics on PinePhone's LCD Display?_
+
+It gets complicated...
+
+-   __At Startup:__ Our LCD Driver sends MIPI DSI Commands to initialise the __ST7703 LCD Controller__.
+
+    [(As explained earlier)](https://lupyuen.github.io/articles/lcd#initialise-lcd-controller)
+
+-   __After Startup:__ Allwinner A64's __Display Engine__ and __Timing Controller (TCON0)__ pump pixels continuously to the LCD Panel over MIPI DSI.
+
+    (Bypassing our LCD Driver)
+
+Thus our LCD Driver is called __only at startup__ to initialise the LCD Controller (ST7703).
+
+_Why so complicated?_
+
+Yeah but this Rendering Pipeline is __super efficient__!
+
+PinePhone doesn't need to handle Interrupts while rendering the display... Everything is __done in Hardware!__ (Allwinner A64 SoC)
+
+The pixel data is pumped from RAM Framebuffers via __Direct Memory Access (DMA)__. Which is also done in Hardware.
 
 TODO
 
