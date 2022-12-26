@@ -598,7 +598,7 @@ up_mdelay(160);
 
 We __initialise the Display Engine__.
 
-[(We've seen __a64_de_init__ earlier)](https://lupyuen.github.io/articles/de3#render-graphics)
+[(We've seen __a64_de_init__ earlier)](https://lupyuen.github.io/articles/de3#initialise-display-engine)
 
 ```zig
 // Render Graphics with Display Engine (in C)
@@ -607,7 +607,7 @@ _ = pinephone_render_graphics();
 
 Finally we __render the framebuffers__ with the Display Engine.
 
-[(We've seen __pinephone_render_graphics__ earlier)](https://lupyuen.github.io/articles/de3#render-graphics)
+[(We've seen __pinephone_render_graphics__ earlier)](https://lupyuen.github.io/articles/de3#initialise-ui-blender)
 
 This is how we compile our Zig Test Program...
 

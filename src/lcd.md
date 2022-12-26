@@ -519,7 +519,7 @@ PinePhone needs a __super complex Display Driver__ that will handle 11 steps at 
 
 We've just implemented all 11 steps in the __NuttX Kernel__... Including the LCD Driver that we saw today.
 
-Here's what happens when NuttX boots on PinePhone: [pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c)
+Here's how our LCD Driver is called when __NuttX boots on PinePhone__: [pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c)
 
 ```c
 // Called by NuttX Kernel at startup
@@ -543,7 +543,27 @@ int up_fbinitialize(int display) {
   up_mdelay(15);
 ```
 
-TODO
+In the code above, we begin with these steps...
+
+-   Switch on the __Display Backlight__
+
+    [(As explained earlier)](https://lupyuen.github.io/articles/lcd#lcd-panel-backlight)
+
+-   Initialise the __Timing Controller TCON0__
+
+    [(__a64_tcon0_init__ is in our NuttX TCON0 Driver)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_tcon0.c#L180-L474)
+
+    [(How it works)](https://lupyuen.github.io/articles/de#appendix-timing-controller-tcon0)
+
+-   __Reset the LCD Panel__ to __Low__
+
+    [(As explained earlier)](https://lupyuen.github.io/articles/lcd#reset-lcd-panel)
+
+-   __Power on the LCD Panel__ through the Power Management Integrated Circuit (PMIC)
+
+    [(As explained earlier)](https://lupyuen.github.io/articles/lcd#power-on-lcd-panel)
+
+The LCD Panel is powered up, ready to receive MIPI DSI Commands.
 
 ```c
   // Enable MIPI DSI
@@ -562,7 +582,25 @@ TODO
   pinephone_lcd_panel_init();
 ```
 
-TODO
+Next we...
+
+-   Enable __MIPI Display Serial Interface__ (DSI) on Allwinner A64 SoC
+
+    [(__a64_mipi_dsi_enable__ is in our NuttX MIPI DSI Driver)](https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy)
+
+-   Enable __MIPI Display Physical Layer__ (D-PHY) on Allwinner A64 SoC
+
+    [(__a64_mipi_dphy_enable__ is in our NuttX MIPI D-PHY Driver)](https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy)
+
+-   __Reset the LCD Panel__ to __High__
+
+    [(As explained earlier)](https://lupyuen.github.io/articles/lcd#reset-lcd-panel)
+
+-   __Send Initialisation Commands__ to ST7703 LCD Controller over MIPI DSI
+
+    [(As explained earlier)](https://lupyuen.github.io/articles/lcd#initialise-lcd-controller)
+
+Our LCD Controller is all ready to render graphics!
 
 ```c
   // Start MIPI DSI Bus in HSC and HSD modes
@@ -574,13 +612,33 @@ TODO
   // Wait 160 milliseconds for Display Engine
   up_mdelay(160);
 
-  // Render Frame Buffers with Display Engine
+  // Render Framebuffers with Display Engine
   render_framebuffers();
   return OK;
 }
 ```
 
+To render graphics we...
+
+-   Start the __MIPI DSI Bus__ on Allwinner A64
+
+    [(__a64_mipi_dsi_start__ is in our NuttX MIPI DSI Driver)](https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy)
+
+-   __Initialise the Display Engine__ on Allwinner A64 SoC
+
+    [(__a64_de_init__ is in our NuttX Driver for Display Engine)](https://lupyuen.github.io/articles/de3#initialise-display-engine)
+
+-   __Render the Framebuffers__ in RAM to the LCD Display
+
+    [(__render_framebuffers__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c#L321-L430)
+
+    [(How it works)](https://lupyuen.github.io/articles/de3#initialise-ui-blender)
+
+And we see the Test Pattern below when NuttX boots on PinePhone!
+
 TODO: Call up_fbinitialize in pinephone_bringup
+
+![Apache NuttX RTOS boots on PinePhone and renders a Test Pattern](https://lupyuen.github.io/images/de3-title.jpg)
 
 # Upcoming Drivers
 
