@@ -634,7 +634,9 @@ To render graphics we...
 
     [(How it works)](https://lupyuen.github.io/articles/de3#initialise-ui-blender)
 
-And we see the Test Pattern below when NuttX boots on PinePhone!
+And the Test Pattern appears when NuttX boots on PinePhone! (Pic below)
+
+_Who calls the code above?_
 
 TODO: Call up_fbinitialize in pinephone_bringup
 
