@@ -497,7 +497,13 @@ PinePhone doesn't need to handle Interrupts while rendering the display... Every
 
 The pixel data is pumped from RAM Framebuffers via __Direct Memory Access (DMA)__. Which is also done in Hardware. (Pic above)
 
-TODO
+_How do we render graphics with Display Engine and Timing Controller TCON0?_
+
+Our NuttX Kernel Drivers for __Display Engine__ and __Timing Controller TCON0__ are explained here...
+
+-   [__"NuttX RTOS for PinePhone: Display Engine"__](https://lupyuen.github.io/articles/de3)
+
+Let's find out how the drivers are called at startup.
 
 ![Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
 
