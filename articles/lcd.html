@@ -205,7 +205,7 @@ int pinephone_lcd_backlight_enable(
   return OK;
 }</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L254-L299">(<strong>a64_pio_write</strong> comes from our NuttX PIO Driver)</a></p>
-<p>This enables the <a href="https://www.diodes.com/assets/Datasheets/products_inactive_data/AP3127_H.pdf"><strong>AP3127 PWM Controller</strong></a>. And switches on the LCD Backlight!</p>
+<p>This enables the <a href="https://www.diodes.com/assets/Datasheets/products_inactive_data/AP3127_H.pdf"><strong>AP3127 PWM Controller</strong></a>. And switches on the LCD Backlight! (Pic above)</p>
 <p>Now that the Backlight is on, let’s reset the LCD Panel and prepare for action…</p>
 <p><img src="https://lupyuen.github.io/images/de-reset.jpg" alt="LCD Panel Reset (PD23) on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LCD Panel Reset (PD23) on PinePhone Schematic (Page 11)</em></a></p>
@@ -444,9 +444,11 @@ static const struct pinephone_cmd_s g_pinephone_commands[] = {
   { g_pinephone_setpower_ext, sizeof(g_pinephone_setpower_ext) },
   ...</code></pre></div>
 <p>We’re done with the initialisation of the ST7703 LCD Controller inside our LCD Panel! Let’s render something…</p>
+<p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Complete Display Driver for PinePhone" /></p>
+<p><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><em>Complete Display Driver for PinePhone</em></a></p>
 <h1 id="render-lcd-display"><a href="#render-lcd-display">6 Render LCD Display</a></h1>
-<p><em>So our driver will send MIPI DSI Commands to render graphics on PinePhone’s LCD Display?</em></p>
-<p>It gets complicated…</p>
+<p><em>So our LCD Driver will send MIPI DSI Commands to render graphics on PinePhone’s LCD Display?</em></p>
+<p>It gets complicated (pic above)…</p>
 <ul>
 <li>
 <p><strong>At Startup:</strong> Our LCD Driver sends MIPI DSI Commands to initialise the <strong>ST7703 LCD Controller</strong>.</p>
@@ -461,7 +463,7 @@ static const struct pinephone_cmd_s g_pinephone_commands[] = {
 <p><em>Why so complicated?</em></p>
 <p>Yeah but this Rendering Pipeline is <strong>super efficient</strong>!</p>
 <p>PinePhone doesn’t need to handle Interrupts while rendering the display… Everything is <strong>done in Hardware!</strong> (Allwinner A64 SoC)</p>
-<p>The pixel data is pumped from RAM Framebuffers via <strong>Direct Memory Access (DMA)</strong>. Which is also done in Hardware.</p>
+<p>The pixel data is pumped from RAM Framebuffers via <strong>Direct Memory Access (DMA)</strong>. Which is also done in Hardware. (Pic above)</p>
 <p>TODO</p>
 <h1 id="complete-display-driver"><a href="#complete-display-driver">7 Complete Display Driver</a></h1>
 <p>TODO</p>
