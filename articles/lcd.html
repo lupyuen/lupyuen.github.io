@@ -474,14 +474,16 @@ static const struct pinephone_cmd_s g_pinephone_commands[] = {
 <p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Complete Display Driver for PinePhone" /></p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><em>Complete Display Driver for PinePhone</em></a></p>
 <h1 id="complete-display-driver"><a href="#complete-display-driver">7 Complete Display Driver</a></h1>
-<p>PinePhone needs a <strong>super complex Display Driver</strong> that will handle 11 steps (pic above)…</p>
+<p><em>How is our LCD Driver called at NuttX Startup?</em></p>
+<p>PinePhone needs a <strong>super complex Display Driver</strong> that will handle 11 steps at startup (pic above)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><strong>“Complete Display Driver for PinePhone”</strong></a></li>
 </ul>
-<p>We’ve implemented most of this in the NuttX Kernel.</p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c">pinephone_display.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>int up_fbinitialize(int display) {
+<p>We’ve just implemented all 11 steps in the <strong>NuttX Kernel</strong>… Including the LCD Driver that we saw today.</p>
+<p>Here’s what happens when NuttX boots on PinePhone: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c">pinephone_display.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Called by NuttX Kernel at startup
+// to start the Display Driver
+int up_fbinitialize(int display) {
 
   // Turn on Display Backlight.
   // BACKLIGHT_BRIGHTNESS_PERCENT is 90
@@ -497,9 +499,9 @@ static const struct pinephone_cmd_s g_pinephone_commands[] = {
   pinephone_pmic_init();
 
   // Wait 15 milliseconds for power supply and power-on init
-  up_mdelay(15);
-
-  // Enable MIPI DSI
+  up_mdelay(15);</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  // Enable MIPI DSI
   a64_mipi_dsi_enable();
 
   // Enable MIPI D-PHY
@@ -512,9 +514,9 @@ static const struct pinephone_cmd_s g_pinephone_commands[] = {
   up_mdelay(15);
 
   // Initialise ST7703 LCD Controller
-  pinephone_lcd_panel_init();
-
-  // Start MIPI DSI Bus in HSC and HSD modes
+  pinephone_lcd_panel_init();</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  // Start MIPI DSI Bus in HSC and HSD modes
   a64_mipi_dsi_start();
 
   // Init Display Engine
