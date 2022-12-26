@@ -511,17 +511,19 @@ Let's find out how the drivers are called at startup.
 
 # Complete Display Driver
 
-PinePhone needs a __super complex Display Driver__ that will handle 11 steps (pic above)...
+_How is our LCD Driver called at NuttX Startup?_
+
+PinePhone needs a __super complex Display Driver__ that will handle 11 steps at startup (pic above)...
 
 -   [__"Complete Display Driver for PinePhone"__](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone)
 
-We've implemented most of this in the NuttX Kernel.
+We've just implemented all 11 steps in the __NuttX Kernel__... Including the LCD Driver that we saw today.
 
-TODO
-
-[pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c)
+Here's what happens when NuttX boots on PinePhone: [pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c)
 
 ```c
+// Called by NuttX Kernel at startup
+// to start the Display Driver
 int up_fbinitialize(int display) {
 
   // Turn on Display Backlight.
@@ -539,7 +541,11 @@ int up_fbinitialize(int display) {
 
   // Wait 15 milliseconds for power supply and power-on init
   up_mdelay(15);
+```
 
+TODO
+
+```c
   // Enable MIPI DSI
   a64_mipi_dsi_enable();
 
@@ -554,7 +560,11 @@ int up_fbinitialize(int display) {
 
   // Initialise ST7703 LCD Controller
   pinephone_lcd_panel_init();
+```
 
+TODO
+
+```c
   // Start MIPI DSI Bus in HSC and HSD modes
   a64_mipi_dsi_start();
 
