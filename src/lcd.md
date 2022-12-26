@@ -169,7 +169,7 @@ One last thing: We configure __PH10 for Output__ and set it to High...
 
 [(__a64_pio_write__ comes from our NuttX PIO Driver)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L254-L299)
 
-This enables the [__AP3127 PWM Controller__](https://www.diodes.com/assets/Datasheets/products_inactive_data/AP3127_H.pdf). And switches on the LCD Backlight!
+This enables the [__AP3127 PWM Controller__](https://www.diodes.com/assets/Datasheets/products_inactive_data/AP3127_H.pdf). And switches on the LCD Backlight! (Pic above)
 
 Now that the Backlight is on, let's reset the LCD Panel and prepare for action...
 
@@ -469,11 +469,15 @@ static const struct pinephone_cmd_s g_pinephone_commands[] = {
 
 We're done with the initialisation of the ST7703 LCD Controller inside our LCD Panel! Let's render something...
 
+![Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
+
+[_Complete Display Driver for PinePhone_](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone)
+
 # Render LCD Display
 
-_So our driver will send MIPI DSI Commands to render graphics on PinePhone's LCD Display?_
+_So our LCD Driver will send MIPI DSI Commands to render graphics on PinePhone's LCD Display?_
 
-It gets complicated...
+It gets complicated (pic above)...
 
 -   __At Startup:__ Our LCD Driver sends MIPI DSI Commands to initialise the __ST7703 LCD Controller__.
 
@@ -491,7 +495,7 @@ Yeah but this Rendering Pipeline is __super efficient__!
 
 PinePhone doesn't need to handle Interrupts while rendering the display... Everything is __done in Hardware!__ (Allwinner A64 SoC)
 
-The pixel data is pumped from RAM Framebuffers via __Direct Memory Access (DMA)__. Which is also done in Hardware.
+The pixel data is pumped from RAM Framebuffers via __Direct Memory Access (DMA)__. Which is also done in Hardware. (Pic above)
 
 TODO
 
