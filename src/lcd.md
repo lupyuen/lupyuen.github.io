@@ -570,6 +570,12 @@ TODO: Who calls up_fbinitialize
 
 TODO: Framebuffer
 
+Application Configuration > Examples
+
+Framebuffer driver example
+
+Framebuffer overlay test tool 
+
 # What's Next
 
 TODO
