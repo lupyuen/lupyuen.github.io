@@ -2,7 +2,7 @@
 
 📝 _2 Jan 2023_
 
-![PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/lcd-title.jpg)
+![Our PinePhone LCD Driver renders a Test Pattern on Apache NuttX RTOS](https://lupyuen.github.io/images/lcd-title.jpg)
 
 [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) now boots on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) and renders a Test Pattern! (Pic above)
 
@@ -719,3 +719,7 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/lcd.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lcd.md)
+
+![Testing our PinePhone LCD Driver with a Framebuffer App on Apache NuttX RTOS](https://lupyuen.github.io/images/lcd-run.png)
+
+[_Testing our PinePhone LCD Driver with a Framebuffer App on Apache NuttX RTOS_](https://gist.github.com/lupyuen/7d85fbe55417538b70816aa21dfa7e32)
