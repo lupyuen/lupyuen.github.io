@@ -519,7 +519,7 @@ PinePhone needs a __super complex Display Driver__ that will handle 11 steps at 
 
 We've just implemented all 11 steps in the __NuttX Kernel__... Including the LCD Driver that we saw today.
 
-Here's how our LCD Driver is called when __NuttX boots on PinePhone__: [pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c)
+Here's how our LCD Driver is called when __NuttX boots on PinePhone__: [pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c#L434-L583)
 
 ```c
 // Called by NuttX Kernel at startup
@@ -618,7 +618,7 @@ Our LCD Controller is all ready to render graphics!
 }
 ```
 
-To render graphics we...
+Finally to render graphics we...
 
 -   __Start the MIPI DSI Bus__ for High Speed Clock Mode with High Speed Data Transmission
 
@@ -642,29 +642,35 @@ Here's the log from our LCD Driver...
 
 _Who calls the code above?_
 
-TODO: Call up_fbinitialize in pinephone_bringup
+In the code above, our function [__up_fbinitialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c#L434-L583) executes the 11 steps needed for our PinePhone Display Driver.
+
+At startup, [__up_fbinitialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c#L434-L583) is called by [__fb_register__](https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L795-L805) (from the NuttX Framebuffer Driver)...
+
+And [__fb_register__](https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L795-L805) is called by [__pinephone_bringup__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L78-L88), our Startup Function for PinePhone.
+
+Let's talk about the Framebuffer Driver...
 
 ![Apache NuttX RTOS boots on PinePhone and renders a Test Pattern](https://lupyuen.github.io/images/de3-title.jpg)
 
 # Framebuffer Driver
 
-_NuttX Kernel calls our LCD Driver to render graphics at startup..._
+_NuttX Kernel calls our LCD Driver to render graphics..._
 
 _What about NuttX Apps?_
 
-TODO: Framebuffer
+NuttX provides a __Framebuffer Interface__ that will be called by NuttX Apps to render graphics...
 
-Application Configuration > Examples
+-   [__"NuttX Framebuffer Drivers"__](https://nuttx.apache.org/docs/latest/components/drivers/special/framebuffer.html)
 
-Framebuffer driver example
+We'll talk about the __Framebuffer Driver__ for PinePhone in the next article. (Pic below)
 
-Framebuffer overlay test tool 
+Stay tuned!
 
 ![Framebuffer Driver for Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/fb-test2.jpg)
 
 # What's Next
 
-TODO
+TODO: NuttX Apps, Missing pixels
 
 Check out the other articles on __NuttX RTOS for PinePhone__...
 
