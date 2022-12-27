@@ -92,12 +92,12 @@
 <li>16 Million Colors</li>
 <li>Backlight with Pulse-Width Modulation (PWM)</li>
 <li>Sitronix ST7703 LCD Controller
-<a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf">(ST7703 Datasheet)</a></li>
+<a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf">(See the Datasheet)</a></li>
 </ul>
-<p>(Includes a Capacitive Touch Panel, but we’ll skip it today)</p>
+<p>(Includes a Capacitive Touch Panel, but we won’t touch it today heh)</p>
 <p>The Xingbangda XBD599 LCD Panel is connected to PinePhone’s Allwinner A64 SoC over a <a href="https://lupyuen.github.io/articles/dsi"><strong>MIPI Display Serial Interface (DSI)</strong></a>. (Pic above)</p>
 <p><em>Why is there an ST7703 LCD Controller inside the LCD Panel?</em></p>
-<p>Talking over MIPI DSI can get complicated… It runs on packets of data with CRCs and Checksums, over parallel wires.</p>
+<p>Talking over MIPI DSI can get complicated… It runs on packets of data with CRCs and Checksums, over multiple data lanes.</p>
 <p>Later we’ll see that ST7703 LCD Controller handles…</p>
 <ul>
 <li>
