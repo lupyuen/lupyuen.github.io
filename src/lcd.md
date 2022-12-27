@@ -620,7 +620,7 @@ Our LCD Controller is all ready to render graphics!
 
 To render graphics we...
 
--   Start the __MIPI DSI Bus__ on Allwinner A64
+-   __Start the MIPI DSI Bus__ for High Speed Clock Mode with High Speed Data Transmission
 
     [(__a64_mipi_dsi_start__ is in our NuttX MIPI DSI Driver)](https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy)
 
@@ -636,13 +636,21 @@ To render graphics we...
 
 And the Test Pattern appears when NuttX boots on PinePhone! (Pic below)
 
+Here's the log from our LCD Driver...
+
+-   [__Boot Log for LCD Driver__](https://gist.github.com/lupyuen/34b4dbf9ad7b720b673ec0aaaa11e90d)
+
 _Who calls the code above?_
 
 TODO: Call up_fbinitialize in pinephone_bringup
 
 ![Apache NuttX RTOS boots on PinePhone and renders a Test Pattern](https://lupyuen.github.io/images/de3-title.jpg)
 
-# Upcoming Drivers
+# Framebuffer Driver
+
+_NuttX Kernel renders graphics at startup..._
+
+_What about NuttX Apps?_
 
 TODO: Framebuffer
 
