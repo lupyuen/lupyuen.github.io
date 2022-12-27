@@ -23,15 +23,15 @@ The LCD Panel inside PinePhone is [__Xingbangda XBD599__](https://pine64.com/pro
 -   16 Million Colors
 -   Backlight with Pulse-Width Modulation (PWM)
 -   Sitronix ST7703 LCD Controller
-    [(ST7703 Datasheet)](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf)
+    [(See the Datasheet)](https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf)
 
-(Includes a Capacitive Touch Panel, but we'll skip it today)
+(Includes a Capacitive Touch Panel, but we won't touch it today heh)
 
 The Xingbangda XBD599 LCD Panel is connected to PinePhone's Allwinner A64 SoC over a [__MIPI Display Serial Interface (DSI)__](https://lupyuen.github.io/articles/dsi). (Pic above)
 
 _Why is there an ST7703 LCD Controller inside the LCD Panel?_
 
-Talking over MIPI DSI can get complicated... It runs on packets of data with CRCs and Checksums, over parallel wires.
+Talking over MIPI DSI can get complicated... It runs on packets of data with CRCs and Checksums, over multiple data lanes.
 
 Later we'll see that ST7703 LCD Controller handles...
 
