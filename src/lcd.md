@@ -632,7 +632,7 @@ Finally to render graphics we...
 
     [(__a64_de_init__ is in our NuttX Driver for Display Engine)](https://lupyuen.github.io/articles/de3#initialise-display-engine)
 
--   __Render the Framebuffers__ in RAM to the LCD Display
+-   __Render the Framebuffers__ in RAM to the LCD Display over Direct Memory Access (DMA)
 
     [(__render_framebuffers__ is defined here)](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L321-L430)
 
