@@ -648,7 +648,7 @@ TODO: Call up_fbinitialize in pinephone_bringup
 
 # Framebuffer Driver
 
-_NuttX Kernel renders graphics at startup..._
+_NuttX Kernel calls our LCD Driver to render graphics at startup..._
 
 _What about NuttX Apps?_
 
@@ -659,6 +659,8 @@ Application Configuration > Examples
 Framebuffer driver example
 
 Framebuffer overlay test tool 
+
+![Framebuffer Driver for Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/fb-test2.jpg)
 
 # What's Next
 
