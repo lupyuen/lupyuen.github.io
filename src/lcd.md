@@ -71,7 +71,7 @@ The [__PinePhone Schematic (Page 11)__](https://files.pine64.org/doc/PinePhone/P
 
 -   __PH10__ for PIO (Similar to GPIO)
 
-[(__AP3127__ is a PWM Controller)](https://www.diodes.com/assets/Datasheets/products_inactive_data/AP3127_H.pdf)
+The two pins are connected to [__Diodes AP3127__](https://www.diodes.com/assets/Datasheets/products_inactive_data/AP3127_H.pdf), which is a PWM Controller. (Pic above)
 
 This is how we __turn on the backlight__ in our NuttX LCD Driver: [pinephone_lcd.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L845-L921)
 
@@ -275,7 +275,7 @@ In the code above, we set __DLDO1 Voltage to 3.3V__ and power it on.
 
 (We'll talk about __pmic_write__ and __pmic_clrsetbits__ in a while)
 
-Next we set __LDO Voltage to 3.3V__ and power on the __Capacitive Touch Panel__...
+Then we set __LDO Voltage to 3.3V__ and power on the __Capacitive Touch Panel__...
 
 ```c
   // Set LDO Voltage to 3.3V.
@@ -337,7 +337,7 @@ From [__Allwinner A80 User Manual__](https://github.com/lupyuen/pinephone-nuttx/
 
 > "It supports a simplified two wire protocol (RSB) on a push-pull bus. The transfer speed can be up to 20MHz and the performance will be improved much."
 
-(Reduced Serial Bus seems to work like I2C, but specifically for PMICs)
+(Reduced Serial Bus works like I2C, but specific to PMICs)
 
 Thus to control AXP803 PMIC, __pmic_write__ will talk to the PMIC over the __Reduced Serial Bus__: [pinephone_pmic.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L88-L119)
 
@@ -360,6 +360,8 @@ static int pmic_write(
 [(__a64_rsb_write__ comes from our NuttX Driver for Reduced Serial Bus)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_rsb.c#L239-L293)
 
 __pmic_clrsetbits__ works the same way, it's defined here: [pinephone_pmic.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L120-L164)
+
+Let's move on to the ST7703 LCD Controller...
 
 ![_MIPI DSI Connector on PinePhone Schematic (Page 11)_](https://lupyuen.github.io/images/dsi-connector.png)
 
@@ -420,6 +422,8 @@ We need to send all 20 Initialisation Commands as documented here...
 
 -   [__"Initialise LCD Controller"__](https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller)
 
+These commands will configure the ST7703 LCD Controller specifically for our Xingbangda XBD599 LCD Panel.
+
 _How will we send the Initialisation Commands?_
 
 This is how we __send the 20 Initialisation Commands__ to ST7703 LCD Controller over the MIPI DSI Bus: [pinephone_lcd.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L959-L1016)
@@ -454,7 +458,7 @@ int pinephone_lcd_panel_init(void) {
 
 [(How it works)](https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet)
 
-_What's g_pinephone_commands?__
+_What's g_pinephone_commands?_
 
 That's our __Consolidated List__ of 20 Initialisation Commands: [pinephone_lcd.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L684-L775)
 
@@ -483,7 +487,7 @@ It gets complicated (pic above)...
 
     [(As explained earlier)](https://lupyuen.github.io/articles/lcd#initialise-lcd-controller)
 
--   __After Startup:__ Allwinner A64's __Display Engine__ and __Timing Controller (TCON0)__ pump pixels continuously to the LCD Panel over MIPI DSI.
+-   __After Startup:__ Allwinner A64's __Display Engine__ and __Timing Controller (TCON0)__ will pump pixels continuously to the LCD Panel over MIPI DSI.
 
     (Bypassing our LCD Driver)
 
@@ -634,7 +638,7 @@ Finally to render graphics we...
 
     [(How it works)](https://lupyuen.github.io/articles/de3#initialise-ui-blender)
 
-When we boot NuttX on PinePhone [(via microSD)](https://github.com/apache/nuttx/blob/master/Documentation/platforms/arm/a64/boards/pinephone/index.rst), the Test Pattern appears! (Pic below)
+When we boot NuttX on PinePhone [(via microSD)](https://github.com/apache/nuttx/blob/master/Documentation/platforms/arm/a64/boards/pinephone/index.rst), the Test Pattern appears on PinePhone's LCD Display! (Pic below)
 
 Here's the log from our LCD Driver...
 
