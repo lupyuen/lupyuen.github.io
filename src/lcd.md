@@ -634,11 +634,13 @@ Finally to render graphics we...
 
     [(How it works)](https://lupyuen.github.io/articles/de3#initialise-ui-blender)
 
-And the Test Pattern appears when NuttX boots on PinePhone! (Pic below)
+When we boot NuttX on PinePhone [(via microSD)](https://github.com/apache/nuttx/blob/master/Documentation/platforms/arm/a64/boards/pinephone/index.rst), the Test Pattern appears! (Pic below)
 
 Here's the log from our LCD Driver...
 
 -   [__Boot Log for LCD Driver__](https://gist.github.com/lupyuen/34b4dbf9ad7b720b673ec0aaaa11e90d)
+
+    [(Download the binaries here)](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.2.3)
 
 _Who calls the code above?_
 
