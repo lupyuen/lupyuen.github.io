@@ -74,7 +74,7 @@
 <li><a href="#initialise-lcd-controller">5 Initialise LCD Controller</a><ul></ul></li>
 <li><a href="#render-lcd-display">6 Render LCD Display</a><ul></ul></li>
 <li><a href="#complete-display-driver">7 Complete Display Driver</a><ul></ul></li>
-<li><a href="#upcoming-drivers">8 Upcoming Drivers</a><ul></ul></li>
+<li><a href="#framebuffer-driver">8 Framebuffer Driver</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>2 Jan 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/lcd-title.jpg" alt="PinePhone with Apache NuttX RTOS" /></p>
 <p><a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> now boots on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> and renders a Test Pattern! (Pic above)</p>
@@ -571,7 +571,7 @@ int up_fbinitialize(int display) {
 <p>To render graphics we…</p>
 <ul>
 <li>
-<p>Start the <strong>MIPI DSI Bus</strong> on Allwinner A64</p>
+<p><strong>Start the MIPI DSI Bus</strong> for High Speed Clock Mode with High Speed Data Transmission</p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy">(<strong>a64_mipi_dsi_start</strong> is in our NuttX MIPI DSI Driver)</a></p>
 </li>
 <li>
@@ -585,10 +585,16 @@ int up_fbinitialize(int display) {
 </li>
 </ul>
 <p>And the Test Pattern appears when NuttX boots on PinePhone! (Pic below)</p>
+<p>Here’s the log from our LCD Driver…</p>
+<ul>
+<li><a href="https://gist.github.com/lupyuen/34b4dbf9ad7b720b673ec0aaaa11e90d"><strong>Boot Log for LCD Driver</strong></a></li>
+</ul>
 <p><em>Who calls the code above?</em></p>
 <p>TODO: Call up_fbinitialize in pinephone_bringup</p>
 <p><img src="https://lupyuen.github.io/images/de3-title.jpg" alt="Apache NuttX RTOS boots on PinePhone and renders a Test Pattern" /></p>
-<h1 id="upcoming-drivers"><a href="#upcoming-drivers">8 Upcoming Drivers</a></h1>
+<h1 id="framebuffer-driver"><a href="#framebuffer-driver">8 Framebuffer Driver</a></h1>
+<p><em>NuttX Kernel renders graphics at startup…</em></p>
+<p><em>What about NuttX Apps?</em></p>
 <p>TODO: Framebuffer</p>
 <p>Application Configuration &gt; Examples</p>
 <p>Framebuffer driver example</p>
