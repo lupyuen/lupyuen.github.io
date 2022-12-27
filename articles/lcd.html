@@ -584,10 +584,13 @@ int up_fbinitialize(int display) {
 <p><a href="https://lupyuen.github.io/articles/de3#initialise-ui-blender">(How it works)</a></p>
 </li>
 </ul>
-<p>And the Test Pattern appears when NuttX boots on PinePhone! (Pic below)</p>
+<p>When we boot NuttX on PinePhone <a href="https://github.com/apache/nuttx/blob/master/Documentation/platforms/arm/a64/boards/pinephone/index.rst">(via microSD)</a>, the Test Pattern appears! (Pic below)</p>
 <p>Here’s the log from our LCD Driver…</p>
 <ul>
-<li><a href="https://gist.github.com/lupyuen/34b4dbf9ad7b720b673ec0aaaa11e90d"><strong>Boot Log for LCD Driver</strong></a></li>
+<li>
+<p><a href="https://gist.github.com/lupyuen/34b4dbf9ad7b720b673ec0aaaa11e90d"><strong>Boot Log for LCD Driver</strong></a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.2.3">(Download the binaries here)</a></p>
+</li>
 </ul>
 <p><em>Who calls the code above?</em></p>
 <p>In the code above, our function <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L434-L583"><strong>up_fbinitialize</strong></a> executes the 11 steps needed for our PinePhone Display Driver.</p>
