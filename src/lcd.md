@@ -670,9 +670,11 @@ Stay tuned!
 
 # What's Next
 
-TODO: NuttX Apps, Missing pixels
+Thanks to our new __PinePhone LCD Driver__, Apache NuttX RTOS now boots with a Test Pattern!
 
-Check out the other articles on __NuttX RTOS for PinePhone__...
+But we're not done yet! In the next article we'll talk about the __Framebuffer Driver__ that will allow NuttX Apps to render graphics. And we'll investigate the mystery of the __disappearing pixels__. (Pic above)
+
+Meanwhile please check out the other articles on __NuttX RTOS for PinePhone__...
 
 -   [__"Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone"__](https://lupyuen.github.io/articles/arm)
 
