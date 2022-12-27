@@ -1,6 +1,6 @@
 # NuttX RTOS for PinePhone: LCD Panel
 
-📝 _2 Jan 2023_
+📝 _28 Dec 2022_
 
 ![Our PinePhone LCD Driver renders a Test Pattern on Apache NuttX RTOS](https://lupyuen.github.io/images/lcd-title.jpg)
 
