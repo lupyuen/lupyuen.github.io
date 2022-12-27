@@ -480,7 +480,7 @@ static const struct pinephone_cmd_s g_pinephone_commands[] = {
 <li><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><strong>“Complete Display Driver for PinePhone”</strong></a></li>
 </ul>
 <p>We’ve just implemented all 11 steps in the <strong>NuttX Kernel</strong>… Including the LCD Driver that we saw today.</p>
-<p>Here’s how our LCD Driver is called when <strong>NuttX boots on PinePhone</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c">pinephone_display.c</a></p>
+<p>Here’s how our LCD Driver is called when <strong>NuttX boots on PinePhone</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c#L434-L583">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Called by NuttX Kernel at startup
 // to start the Display Driver
 int up_fbinitialize(int display) {
@@ -568,7 +568,7 @@ int up_fbinitialize(int display) {
   render_framebuffers();
   return OK;
 }</code></pre></div>
-<p>To render graphics we…</p>
+<p>Finally to render graphics we…</p>
 <ul>
 <li>
 <p><strong>Start the MIPI DSI Bus</strong> for High Speed Clock Mode with High Speed Data Transmission</p>
@@ -590,18 +590,23 @@ int up_fbinitialize(int display) {
 <li><a href="https://gist.github.com/lupyuen/34b4dbf9ad7b720b673ec0aaaa11e90d"><strong>Boot Log for LCD Driver</strong></a></li>
 </ul>
 <p><em>Who calls the code above?</em></p>
-<p>TODO: Call up_fbinitialize in pinephone_bringup</p>
+<p>In the code above, our function <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c#L434-L583"><strong>up_fbinitialize</strong></a> executes the 11 steps needed for our PinePhone Display Driver.</p>
+<p>At startup, <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c#L434-L583"><strong>up_fbinitialize</strong></a> is called by <a href="https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L795-L805"><strong>fb_register</strong></a> (from the NuttX Framebuffer Driver)…</p>
+<p>And <a href="https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L795-L805"><strong>fb_register</strong></a> is called by <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L78-L88"><strong>pinephone_bringup</strong></a>, our Startup Function for PinePhone.</p>
+<p>Let’s talk about the Framebuffer Driver…</p>
 <p><img src="https://lupyuen.github.io/images/de3-title.jpg" alt="Apache NuttX RTOS boots on PinePhone and renders a Test Pattern" /></p>
 <h1 id="framebuffer-driver"><a href="#framebuffer-driver">8 Framebuffer Driver</a></h1>
-<p><em>NuttX Kernel calls our LCD Driver to render graphics at startup…</em></p>
+<p><em>NuttX Kernel calls our LCD Driver to render graphics…</em></p>
 <p><em>What about NuttX Apps?</em></p>
-<p>TODO: Framebuffer</p>
-<p>Application Configuration &gt; Examples</p>
-<p>Framebuffer driver example</p>
-<p>Framebuffer overlay test tool </p>
+<p>NuttX provides a <strong>Framebuffer Interface</strong> that will be called by NuttX Apps to render graphics…</p>
+<ul>
+<li><a href="https://nuttx.apache.org/docs/latest/components/drivers/special/framebuffer.html"><strong>“NuttX Framebuffer Drivers”</strong></a></li>
+</ul>
+<p>We’ll talk about the <strong>Framebuffer Driver</strong> for PinePhone in the next article. (Pic below)</p>
+<p>Stay tuned!</p>
 <p><img src="https://lupyuen.github.io/images/fb-test2.jpg" alt="Framebuffer Driver for Apache NuttX RTOS on PinePhone" /></p>
 <h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
-<p>TODO</p>
+<p>TODO: NuttX Apps, Missing pixels</p>
 <p>Check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
 <ul>
 <li>
