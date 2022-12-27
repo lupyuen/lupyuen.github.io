@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "NuttX RTOS for PinePhone: LCD Panel",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2022-12-28",
+      "website": "https://lupyuen.github.io/articles/lcd",
+      "summary": "Apache NuttX RTOS now boots with a Test Pattern on Pine64 PinePhone! Let's find out what's inside our new NuttX Driver for PinePhone's LCD Panel."
+    },
+    {
       "name": "NuttX RTOS for PinePhone: Display Engine",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-12-23",
