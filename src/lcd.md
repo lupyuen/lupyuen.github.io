@@ -73,7 +73,7 @@ The [__PinePhone Schematic (Page 11)__](https://files.pine64.org/doc/PinePhone/P
 
 [(__AP3127__ is a PWM Controller)](https://www.diodes.com/assets/Datasheets/products_inactive_data/AP3127_H.pdf)
 
-This is how we __turn on the backlight__ in our NuttX LCD Driver: [pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L845-L921)
+This is how we __turn on the backlight__ in our NuttX LCD Driver: [pinephone_lcd.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L845-L921)
 
 ```c
 // Turn on the LCD Backlight
@@ -103,7 +103,7 @@ Next we disable PWM through the __R_PWM Port__ on Allwinner A64...
 
 The __R_PWM Port__ isn't documented in the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf).
 
-But thanks to [__Reverse-Engineering__](https://lupyuen.github.io/articles/de#appendix-display-backlight), we figured out how it works: [pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L88-L103)
+But thanks to [__Reverse-Engineering__](https://lupyuen.github.io/articles/de#appendix-display-backlight), we figured out how it works: [pinephone_lcd.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L88-L103)
 
 ```c
   // R_PWM Control Register (Undocumented)
@@ -120,7 +120,7 @@ But thanks to [__Reverse-Engineering__](https://lupyuen.github.io/articles/de#ap
   #define PWM_CH0_ENTIRE_CYS(n)     ((n) << 16)
 ```
 
-Then we set the __PWM Period and Duty Cycle__: [pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L845-L921)
+Then we set the __PWM Period and Duty Cycle__: [pinephone_lcd.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L845-L921)
 
 ```c
   // R_PWM Channel 0 Period Register (Undocumented)
@@ -203,7 +203,7 @@ The [__PinePhone Schematic (Page 11)__](https://files.pine64.org/doc/PinePhone/P
 
 (DLDO2 is powered by the PMIC)
 
-Let's do it: [pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L922-L958)
+Let's do it: [pinephone_lcd.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L922-L958)
 
 ```c
 // Reset the LCD Panel
@@ -244,7 +244,7 @@ The [__PinePhone Schematic (Page 3)__](https://files.pine64.org/doc/PinePhone/Pi
 
     (Pics above and below)
 
-This is how we talk to the __AXP803 PMIC__: [pinephone_pmic.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L169-L282)
+This is how we talk to the __AXP803 PMIC__: [pinephone_pmic.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L169-L282)
 
 ```c
 // Initialise the Power Mgmt IC
@@ -339,7 +339,7 @@ From [__Allwinner A80 User Manual__](https://github.com/lupyuen/pinephone-nuttx/
 
 (Reduced Serial Bus seems to work like I2C, but specifically for PMICs)
 
-Thus to control AXP803 PMIC, __pmic_write__ will talk to the PMIC over the __Reduced Serial Bus__: [pinephone_pmic.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L88-L119)
+Thus to control AXP803 PMIC, __pmic_write__ will talk to the PMIC over the __Reduced Serial Bus__: [pinephone_pmic.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L88-L119)
 
 ```c
 // Write a byte to an AXP803 PMIC Register
@@ -359,7 +359,7 @@ static int pmic_write(
 
 [(__a64_rsb_write__ comes from our NuttX Driver for Reduced Serial Bus)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_rsb.c#L239-L293)
 
-__pmic_clrsetbits__ works the same way, it's defined here: [pinephone_pmic.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L120-L164)
+__pmic_clrsetbits__ works the same way, it's defined here: [pinephone_pmic.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L120-L164)
 
 ![_MIPI DSI Connector on PinePhone Schematic (Page 11)_](https://lupyuen.github.io/images/dsi-connector.png)
 
@@ -385,7 +385,7 @@ We do that by sending __20 Initialisation Commands__ over MIPI DSI.
 
 _What kind of Initialisation Commands?_
 
-Here's a __simple Initialisation Command__ with 4 bytes: [pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L121-L133)
+Here's a __simple Initialisation Command__ with 4 bytes: [pinephone_lcd.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L121-L133)
 
 ```c
 // Initialization Commands for Sitronix ST7703 LCD Controller:
@@ -399,7 +399,7 @@ static const uint8_t g_pinephone_setextc[] = {
 };
 ```
 
-And here's a long Initialisation Command with __64 bytes__: [pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L432-L535)
+And here's a long Initialisation Command with __64 bytes__: [pinephone_lcd.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L432-L535)
 
 ```c
 // Command #16: SETGIP1 (ST7703 Page 163)
@@ -422,7 +422,7 @@ We need to send all 20 Initialisation Commands as documented here...
 
 _How will we send the Initialisation Commands?_
 
-This is how we __send the 20 Initialisation Commands__ to ST7703 LCD Controller over the MIPI DSI Bus: [pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L959-L1016)
+This is how we __send the 20 Initialisation Commands__ to ST7703 LCD Controller over the MIPI DSI Bus: [pinephone_lcd.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L959-L1016)
 
 ```c
 // Send 20 Initialisation Commands to ST7703 LCD Controller
@@ -450,13 +450,13 @@ int pinephone_lcd_panel_init(void) {
 }
 ```
 
-[(__write_dcs__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L780-L840)
+[(__write_dcs__ is defined here)](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L780-L840)
 
 [(How it works)](https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet)
 
 _What's g_pinephone_commands?__
 
-That's our __Consolidated List__ of 20 Initialisation Commands: [pinephone_lcd.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L684-L775)
+That's our __Consolidated List__ of 20 Initialisation Commands: [pinephone_lcd.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L684-L775)
 
 ```c
 // 20 Initialization Commands to be sent to ST7703 LCD Controller
@@ -519,7 +519,7 @@ PinePhone needs a __super complex Display Driver__ that will handle 11 steps at 
 
 We've just implemented all 11 steps in the __NuttX Kernel__... Including the LCD Driver that we saw today.
 
-Here's how our LCD Driver is called when __NuttX boots on PinePhone__: [pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c#L434-L583)
+Here's how our LCD Driver is called when __NuttX boots on PinePhone__: [pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L434-L583)
 
 ```c
 // Called by NuttX Kernel at startup
@@ -630,7 +630,7 @@ Finally to render graphics we...
 
 -   __Render the Framebuffers__ in RAM to the LCD Display
 
-    [(__render_framebuffers__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c#L321-L430)
+    [(__render_framebuffers__ is defined here)](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L321-L430)
 
     [(How it works)](https://lupyuen.github.io/articles/de3#initialise-ui-blender)
 
@@ -642,11 +642,11 @@ Here's the log from our LCD Driver...
 
 _Who calls the code above?_
 
-In the code above, our function [__up_fbinitialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c#L434-L583) executes the 11 steps needed for our PinePhone Display Driver.
+In the code above, our function [__up_fbinitialize__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L434-L583) executes the 11 steps needed for our PinePhone Display Driver.
 
-At startup, [__up_fbinitialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_display.c#L434-L583) is called by [__fb_register__](https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L795-L805) (from the NuttX Framebuffer Driver)...
+At startup, [__up_fbinitialize__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L434-L583) is called by [__fb_register__](https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L795-L805) (from the NuttX Framebuffer Driver)...
 
-And [__fb_register__](https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L795-L805) is called by [__pinephone_bringup__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/lcd/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L78-L88), our Startup Function for PinePhone.
+And [__fb_register__](https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L795-L805) is called by [__pinephone_bringup__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L78-L88), our Startup Function for PinePhone.
 
 Let's talk about the Framebuffer Driver...
 
