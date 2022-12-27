@@ -137,7 +137,7 @@
 <p><strong>PH10</strong> for PIO (Similar to GPIO)</p>
 </li>
 </ul>
-<p><a href="https://www.diodes.com/assets/Datasheets/products_inactive_data/AP3127_H.pdf">(<strong>AP3127</strong> is a PWM Controller)</a></p>
+<p>The two pins are connected to <a href="https://www.diodes.com/assets/Datasheets/products_inactive_data/AP3127_H.pdf"><strong>Diodes AP3127</strong></a>, which is a PWM Controller. (Pic above)</p>
 <p>This is how we <strong>turn on the backlight</strong> in our NuttX LCD Driver: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L845-L921">pinephone_lcd.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Turn on the LCD Backlight
 int pinephone_lcd_backlight_enable(
@@ -290,7 +290,7 @@ int pinephone_pmic_init(void) {
 <p><strong>DLDO1 Power Output</strong> on the PMIC powers the <strong>Front Camera, USB HSIC and I2C Sensors</strong> on PinePhone.</p>
 <p>In the code above, we set <strong>DLDO1 Voltage to 3.3V</strong> and power it on.</p>
 <p>(We’ll talk about <strong>pmic_write</strong> and <strong>pmic_clrsetbits</strong> in a while)</p>
-<p>Next we set <strong>LDO Voltage to 3.3V</strong> and power on the <strong>Capacitive Touch Panel</strong>…</p>
+<p>Then we set <strong>LDO Voltage to 3.3V</strong> and power on the <strong>Capacitive Touch Panel</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Set LDO Voltage to 3.3V.
   // GPIO0LDO powers the Capacitive Touch Panel.
 
@@ -341,7 +341,7 @@ int pinephone_pmic_init(void) {
 <blockquote>
 <p>“It supports a simplified two wire protocol (RSB) on a push-pull bus. The transfer speed can be up to 20MHz and the performance will be improved much.”</p>
 </blockquote>
-<p>(Reduced Serial Bus seems to work like I2C, but specifically for PMICs)</p>
+<p>(Reduced Serial Bus works like I2C, but specific to PMICs)</p>
 <p>Thus to control AXP803 PMIC, <strong>pmic_write</strong> will talk to the PMIC over the <strong>Reduced Serial Bus</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L88-L119">pinephone_pmic.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Write a byte to an AXP803 PMIC Register
 static int pmic_write(
@@ -358,6 +358,7 @@ static int pmic_write(
 }</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_rsb.c#L239-L293">(<strong>a64_rsb_write</strong> comes from our NuttX Driver for Reduced Serial Bus)</a></p>
 <p><strong>pmic_clrsetbits</strong> works the same way, it’s defined here: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L120-L164">pinephone_pmic.c</a></p>
+<p>Let’s move on to the ST7703 LCD Controller…</p>
 <p><img src="https://lupyuen.github.io/images/dsi-connector.png" alt="MIPI DSI Connector on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>MIPI DSI Connector on PinePhone Schematic (Page 11)</em></a></p>
 <h1 id="initialise-lcd-controller"><a href="#initialise-lcd-controller">5 Initialise LCD Controller</a></h1>
@@ -409,6 +410,7 @@ static const uint8_t g_pinephone_setgip1[] = {
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller"><strong>“Initialise LCD Controller”</strong></a></li>
 </ul>
+<p>These commands will configure the ST7703 LCD Controller specifically for our Xingbangda XBD599 LCD Panel.</p>
 <p><em>How will we send the Initialisation Commands?</em></p>
 <p>This is how we <strong>send the 20 Initialisation Commands</strong> to ST7703 LCD Controller over the MIPI DSI Bus: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L959-L1016">pinephone_lcd.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Send 20 Initialisation Commands to ST7703 LCD Controller
@@ -436,7 +438,7 @@ int pinephone_lcd_panel_init(void) {
 }</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L780-L840">(<strong>write_dcs</strong> is defined here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet">(How it works)</a></p>
-<p><em>What’s g_pinephone_commands?</em>_</p>
+<p><em>What’s g_pinephone_commands?</em></p>
 <p>That’s our <strong>Consolidated List</strong> of 20 Initialisation Commands: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L684-L775">pinephone_lcd.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// 20 Initialization Commands to be sent to ST7703 LCD Controller
 static const struct pinephone_cmd_s g_pinephone_commands[] = {
@@ -456,7 +458,7 @@ static const struct pinephone_cmd_s g_pinephone_commands[] = {
 <p><a href="https://lupyuen.github.io/articles/lcd#initialise-lcd-controller">(As explained earlier)</a></p>
 </li>
 <li>
-<p><strong>After Startup:</strong> Allwinner A64’s <strong>Display Engine</strong> and <strong>Timing Controller (TCON0)</strong> pump pixels continuously to the LCD Panel over MIPI DSI.</p>
+<p><strong>After Startup:</strong> Allwinner A64’s <strong>Display Engine</strong> and <strong>Timing Controller (TCON0)</strong> will pump pixels continuously to the LCD Panel over MIPI DSI.</p>
 <p>(Bypassing our LCD Driver)</p>
 </li>
 </ul>
@@ -584,7 +586,7 @@ int up_fbinitialize(int display) {
 <p><a href="https://lupyuen.github.io/articles/de3#initialise-ui-blender">(How it works)</a></p>
 </li>
 </ul>
-<p>When we boot NuttX on PinePhone <a href="https://github.com/apache/nuttx/blob/master/Documentation/platforms/arm/a64/boards/pinephone/index.rst">(via microSD)</a>, the Test Pattern appears! (Pic below)</p>
+<p>When we boot NuttX on PinePhone <a href="https://github.com/apache/nuttx/blob/master/Documentation/platforms/arm/a64/boards/pinephone/index.rst">(via microSD)</a>, the Test Pattern appears on PinePhone’s LCD Display! (Pic below)</p>
 <p>Here’s the log from our LCD Driver…</p>
 <ul>
 <li>
