@@ -6,7 +6,7 @@
 
 Suppose we're running [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)...
 
-How do we create __Graphical Apps__ for NuttX? (Pic above)
+How will we create __Graphical Apps__ for NuttX? (Pic above)
 
 Today we'll learn about the...
 
@@ -22,9 +22,7 @@ Today we'll learn about the...
 
 [_NuttX Framebuffer App running on PinePhone_](https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b)
 
-# Framebuffer Interface
-
-We begin with the __Framebuffer Interface__ that NuttX provides to our apps for rendering graphics.
+# Framebuffer Demo
 
 Our __Demo Code__ for today comes (mostly) from this Example App...
 
@@ -44,7 +42,9 @@ And select...
 Application Configuration > Examples > Framebuffer Driver Example
 ```
 
-Before building NuttX with `make`, look for this line: [apps/examples/fb/fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L343-L346)
+Save the configuration and exit `menuconfig`.
+
+Look for this line: [apps/examples/fb/fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L343-L346)
 
 ```c
 #ifdef CONFIG_FB_OVERLAY
@@ -58,9 +58,21 @@ And change it to...
 
 Because our PinePhone Framebuffer Driver doesn't support overlays yet.
 
+Then build NuttX with...
+
+```bash
+make
+```
+
+Let's look at the Demo Code...
+
+# Framebuffer Interface
+
 _What's inside the app?_
 
-To call the __Framebuffer Interface__, our app opens the Framebuffer Driver at __"/dev/fb0"__: [fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L314-L337)
+We begin with the __Framebuffer Interface__ that NuttX provides to our apps for rendering graphics.
+
+To call the __Framebuffer Interface__, our app opens the Framebuffer Driver at __/dev/fb0__: [fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L314-L337)
 
 ```c
 #include <nuttx/video/fb.h>
@@ -69,11 +81,11 @@ To call the __Framebuffer Interface__, our app opens the Framebuffer Driver at _
 // Open the Framebuffer Driver
 int fd = open("/dev/fb0", O_RDWR);
 
-// Quit if we failed to open "/dev/fb0"
+// Quit if we failed to open
 if (fd < 0) { return; }
 ```
 
-Next we fetch the __Framebuffer Characteristics__, which will tell us the Screen Size...
+Next we fetch the __Framebuffer Characteristics__, which will tell us the Screen Size (720 x 144) and Pixel Format (ARGB 8888)...
 
 ```c
 // Get the Characteristics of the Framebuffer
@@ -88,41 +100,41 @@ int ret = ioctl(          // Do I/O Control...
 if (ret < 0) { return; }
 ```
 
-TODO
-
-[fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L391-L400)
+Then we fetch the __Plane Info__, which describes the RAM Framebuffer that we'll use for drawing: [fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L391-L400)
 
 ```c
 // Get the Plane Info
 struct fb_planeinfo_s pinfo;
-ret = ioctl(
-  fd,
-  FBIOGET_PLANEINFO,
-  (unsigned long) &pinfo
+ret = ioctl(              // Do I/O Control...
+  fd,                     // File Descriptor of Framebuffer Driver
+  FBIOGET_PLANEINFO,      // Get Plane Info
+  (unsigned long) &pinfo  // Returned Plane Info
 );
 
 // Quit if FBIOGET_PLANEINFO failed
 if (ret < 0) { return; }
 ```
 
-TODO
-
-[fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L420-L440)
+To access the RAM Framebuffer, we __map it to a valid address__: [fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L420-L440)
 
 ```c
 // Map the Framebuffer Address
-void *fbmem = mmap(
-  NULL, 
-  pinfo.fblen, 
-  PROT_READ | PROT_WRITE,
-  MAP_SHARED | MAP_FILE,
-  fd,
-  0
+void *fbmem = mmap(  // Map the address of...
+  NULL,         // Hint (ignored)
+  pinfo.fblen,  // Framebuffer Size
+  PROT_READ | PROT_WRITE,  // Read and Write Access
+  MAP_SHARED | MAP_FILE,   // Map as Shared Memory
+  fd,  // File Descriptor of Framebuffer Driver               
+  0    // Offset for Memory Mapping
 );
 
 // Quit if we failed to map the Framebuffer Address
 if (fbmem == MAP_FAILED) { return; }
 ```
+
+This returns __fbmem__, a pointer to the RAM Framebuffer.
+
+Let's blast some pixels to the RAM Framebuffer...
 
 ![Render Grey Screen](https://lupyuen.github.io/images/fb-demo2.jpg)
 
@@ -170,6 +182,12 @@ munmap(
 // Close the Framebuffer Driver
 close(fd);
 ```
+
+TODO
+
+![PinePhone Framebuffer](https://lupyuen.github.io/images/de2-fb.jpg)
+
+TODO: Why grey?
 
 ![Render Blocks](https://lupyuen.github.io/images/fb-demo3.jpg)
 
@@ -430,7 +448,7 @@ static int pinephone_getplaneinfo(struct fb_vtable_s *vtable, int planeno,
 }
 ```
 
-# Missing Pixels in PinePhone Image
+# Mystery of the Missing Pixels
 
 TODO
 
