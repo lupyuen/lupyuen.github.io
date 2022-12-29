@@ -95,6 +95,9 @@
 <li>
 <p>Mystery of the <strong>Missing Framebuffer Pixels</strong> and how we solved it</p>
 </li>
+<li>
+<p>Creating NuttX Apps with the <strong>LVGL Graphics Library</strong></p>
+</li>
 </ul>
 <h1 id="framebuffer-interface"><a href="#framebuffer-interface">1 Framebuffer Interface</a></h1>
 <p>TODO</p>
@@ -102,7 +105,7 @@
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_FB_OVERLAY</code></pre></div>
 <p>And change it to…</p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef NOTUSED</code></pre></div>
-<p>Because the PinePhone Framebuffer Driver doesn’t work with overlays yet.</p>
+<p>Because our PinePhone Framebuffer Driver doesn’t support overlays yet.</p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L314-L337">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#include &lt;nuttx/video/fb.h&gt;
 #include &lt;nuttx/video/rgbcolors.h&gt;
@@ -118,7 +121,7 @@ struct fb_videoinfo_s vinfo;
 int ret = ioctl(
   fd,
   FBIOGET_VIDEOINFO,
-  (unsigned long) ((uintptr_t) &amp;vinfo)
+  (unsigned long) &amp;vinfo
 );
 
 // Quit if FBIOGET_VIDEOINFO failed
@@ -129,7 +132,7 @@ struct fb_planeinfo_s pinfo;
 ret = ioctl(
   fd,
   FBIOGET_PLANEINFO,
-  (unsigned long) ((uintptr_t) &amp;pinfo)
+  (unsigned long) &amp;pinfo
 );
 
 // Quit if FBIOGET_PLANEINFO failed
@@ -171,12 +174,15 @@ struct fb_area_s area = {
 ioctl(
   fd,
   FBIO_UPDATE,
-  (unsigned long) ((uintptr_t) &amp;area)
+  (unsigned long) &amp;area
 );</code></pre></div>
 <p>TODO: #ifdef CONFIG_FB_UPDATE</p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L469-L474">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Unmap the Framebuffer Address
-munmap(fbmem, pinfo.fblen);
+munmap(
+  fbmem,
+  pinfo.fblen
+);
 
 // Close the Framebuffer Driver
 close(fd);</code></pre></div>
@@ -226,7 +232,6 @@ for (int y = 0; y &lt; height; y++) {
 
     // Get pixel index
     const int p = (y * width) + x;
-    DEBUGASSERT(p &lt; fblen);
 
     // Shift coordinates so that centre of screen is (0,0)
     const int half_width  = width  / 2;
@@ -259,12 +264,10 @@ draw_rect(&amp;state, &amp;area, color);</code></pre></div><h1 id="pinephone-fra
 <p>TODO</p>
 <h2 id="ram-framebuffer"><a href="#ram-framebuffer">6.1 RAM Framebuffer</a></h2>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>/* Frame Buffers for Display Engine *****************************************/
-
-/* Frame Buffer 0: (Base UI Channel)
- * Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
- */
-
+<div class="example-wrap"><pre class="language-c"><code>// Frame Buffer for Display Engine 
+// Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
+// PANEL_WIDTH is 720
+// PANEL_HEIGHT is 1440
 static uint32_t g_pinephone_fb0[PANEL_WIDTH * PANEL_HEIGHT];
 
 static struct fb_videoinfo_s g_pinephone_video =
