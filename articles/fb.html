@@ -118,8 +118,7 @@
 <div class="example-wrap"><pre class="language-c"><code>#ifdef NOTUSED</code></pre></div>
 <p>Because our PinePhone Framebuffer Driver doesn’t support overlays yet.</p>
 <p><em>What’s inside the app?</em></p>
-<p>TODO</p>
-<p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L314-L337">fb_main.c</a></p>
+<p>To call the <strong>Framebuffer Interface</strong>, our app opens the Framebuffer Driver at <strong>“/dev/fb0”</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L314-L337">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#include &lt;nuttx/video/fb.h&gt;
 #include &lt;nuttx/video/rgbcolors.h&gt;
 
@@ -139,6 +138,7 @@ int ret = ioctl(
 
 // Quit if FBIOGET_VIDEOINFO failed
 if (ret &lt; 0) { return; }</code></pre></div>
+<p>TODO</p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L391-L400">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Get the Plane Info
 struct fb_planeinfo_s pinfo;
