@@ -60,9 +60,7 @@ Because our PinePhone Framebuffer Driver doesn't support overlays yet.
 
 _What's inside the app?_
 
-TODO
-
-[fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L314-L337)
+To call the __Framebuffer Interface__, our app opens the Framebuffer Driver at __"/dev/fb0"__: [fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L314-L337)
 
 ```c
 #include <nuttx/video/fb.h>
@@ -85,6 +83,8 @@ int ret = ioctl(
 // Quit if FBIOGET_VIDEOINFO failed
 if (ret < 0) { return; }
 ```
+
+TODO
 
 [fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L391-L400)
 
