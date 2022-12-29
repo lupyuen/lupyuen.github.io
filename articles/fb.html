@@ -126,14 +126,14 @@
 int fd = open(&quot;/dev/fb0&quot;, O_RDWR);
 
 // Quit if we failed to open &quot;/dev/fb0&quot;
-if (fd &lt; 0) { return; }
-
-// Get the Characteristics of the Framebuffer
+if (fd &lt; 0) { return; }</code></pre></div>
+<p>Next we fetch the <strong>Framebuffer Characteristics</strong>, which will tell us the Screen Size…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Get the Characteristics of the Framebuffer
 struct fb_videoinfo_s vinfo;
-int ret = ioctl(
-  fd,
-  FBIOGET_VIDEOINFO,
-  (unsigned long) &amp;vinfo
+int ret = ioctl(          // Do I/O Control...
+  fd,                     // File Descriptor of Framebuffer Driver
+  FBIOGET_VIDEOINFO,      // Get Characteristics
+  (unsigned long) &amp;vinfo  // Framebuffer Characteristics
 );
 
 // Quit if FBIOGET_VIDEOINFO failed
