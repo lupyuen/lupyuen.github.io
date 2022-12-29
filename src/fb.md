@@ -6,9 +6,69 @@
 
 TODO: How NuttX Apps call the NuttX Framebuffer Interface to render graphics... And what's inside the Framebuffer Driver for Pine64 PinePhone
 
+TODO: Missing pixels
+
 [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) now boots on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)
 
-# TODO
+# Framebuffer Interface
+
+TODO
+
+[fb_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L332-L353)
+
+```c
+  /* Open the framebuffer driver */
+
+  state.fd = open(fbdev, O_RDWR);
+  if (state.fd < 0)
+    {
+      int errcode = errno;
+      fprintf(stderr, "ERROR: Failed to open %s: %d\n", fbdev, errcode);
+      return EXIT_FAILURE;
+    }
+
+  /* Get the characteristics of the framebuffer */
+
+  ret = ioctl(state.fd, FBIOGET_VIDEOINFO,
+              (unsigned long)((uintptr_t)&state.vinfo));
+  if (ret < 0)
+    {
+      int errcode = errno;
+      fprintf(stderr, "ERROR: ioctl(FBIOGET_VIDEOINFO) failed: %d\n",
+              errcode);
+      close(state.fd);
+      return EXIT_FAILURE;
+    }
+```
+
+TODO
+
+[fb_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L438-L456)
+
+```c
+  /* mmap() the framebuffer.
+   *
+   * NOTE: In the FLAT build the frame buffer address returned by the
+   * FBIOGET_PLANEINFO IOCTL command will be the same as the framebuffer
+   * address.  mmap(), however, is the preferred way to get the framebuffer
+   * address because in the KERNEL build, it will perform the necessary
+   * address mapping to make the memory accessible to the application.
+   */
+
+  state.fbmem = mmap(NULL, state.pinfo.fblen, PROT_READ | PROT_WRITE,
+                     MAP_SHARED | MAP_FILE, state.fd, 0);
+  if (state.fbmem == MAP_FAILED)
+    {
+      int errcode = errno;
+      fprintf(stderr, "ERROR: ioctl(FBIOGET_PLANEINFO) failed: %d\n",
+              errcode);
+      close(state.fd);
+      return EXIT_FAILURE;
+    }
+
+```
+
+# Render Grey Screen
 
 TODO
 
@@ -38,6 +98,17 @@ static void render_grey(struct fb_state_s *state) {
 #endif
 }
 ```
+
+TODO
+
+[fb_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L508-L509)
+
+```c
+  munmap(state.fbmem, state.pinfo.fblen);
+  close(state.fd);
+```
+
+# Render Blocks
 
 TODO
 
@@ -83,6 +154,8 @@ static void render_blocks(struct fb_state_s *state) {
 #endif
 }
 ```
+
+# Render Circle
 
 TODO
 
@@ -138,6 +211,20 @@ static void render_circle(struct fb_state_s *state) {
   DEBUGASSERT(ret == OK);
 #endif
 }
+```
+
+# Render Rectangle
+
+TODO
+
+[fb_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L472-L480)
+
+```c
+area.x = x;
+area.y = y;
+area.w = width;
+area.h = height;
+draw_rect(&state, &area, color);
 ```
 
 # Missing Pixels in PinePhone Image
