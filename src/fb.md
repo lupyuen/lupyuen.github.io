@@ -140,6 +140,144 @@ static void render_circle(struct fb_state_s *state) {
 }
 ```
 
+# Missing Pixels in PinePhone Image
+
+TODO
+
+We've just implemented the NuttX Kernel Drivers for MIPI Display Serial Interface, Timing Controller TCON0, Display Engine, Reduced Serial Bus, Power Management Integrated Circuit and LCD Panel...
+
+-   ["NuttX RTOS for PinePhone: MIPI Display Serial Interface"](https://lupyuen.github.io/articles/dsi3)
+
+-   ["NuttX RTOS for PinePhone: Display Engine"](https://lupyuen.github.io/articles/de3)
+
+-   ["NuttX RTOS for PinePhone: LCD Panel"](https://lupyuen.github.io/articles/lcd)
+
+And we're adding the Framebuffer Driver to NuttX Kernel...
+
+https://github.com/apache/nuttx/pull/7988
+
+When we run the `fb` NuttX Example App, we see missing pixels in the rendered image...
+
+-   Inside the Yellow Box is supposed to be an Orange Box
+
+-   Inside the Orange Box is supposed to be a Red Box
+
+![Missing Pixels in PinePhone Image](https://lupyuen.github.io/images/fb-test2.jpg)
+
+The missing pixels magically appear later in a curious pattern...
+
+-   [Watch the Demo on YouTube](https://www.youtube.com/shorts/WD5AJj7Rz5U)
+
+There seems to be a problem with Framebuffer DMA / Display Engine / Timing Controller TCON0?
+
+According to the video, the pixels are actually written to correctly to the RAM Framebuffer. But the pixels at the lower half don't get pushed to the display until the next screen refresh.
+
+There seems to be a lag between the writing of pixels to framebuffer, and the pushing of pixels to the display over DMA / Display Engine / Timing Controller TCON0.
+
+Here's the fix for this lag...
+
+# Fix Missing Pixels in PinePhone Image
+
+TODO
+
+In the previous section we saw that there was a lag pushing pixels from the RAM Framebuffer to the PinePhone Display (over DMA / Display Engine / Timing Controller TCON0).
+
+Can we overcome this lag by copying the RAM Framebuffer to itself, forcing the display to refresh? This sounds very strange, but yes it works! 
+
+From [pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/pixel/boards/arm64/a64/pinephone/src/pinephone_display.c#L472-L513):
+
+```c
+// Update the display when there is a change to the framebuffer.
+// (ioctl Entrypoint: FBIO_UPDATE)
+static int pinephone_updatearea(
+  struct fb_vtable_s *vtable,   // Framebuffer driver object
+  const struct fb_area_s *area  // Updated area of framebuffer
+) {
+  uint8_t *fb = (uint8_t *)g_pinephone_fb0;
+  const size_t fbsize = sizeof(g_pinephone_fb0);
+
+  // Copy the entire framebuffer to itself,
+  // to fix the missing pixels.
+  // Not sure why this works.
+  for (int i = 0; i < fbsize; i++) {
+
+    // Declare as volatile to prevent compiler optimization
+    volatile uint8_t v = fb[i];
+    fb[i] = v;
+  }
+  return OK;
+}
+```
+
+With the code above, the Red, Orange and Yellow Boxes are now rendered correctly in our NuttX Framebuffer Driver for PinePhone. (Pic below)
+
+_Who calls pinephone_updatearea?_
+
+After writing the pixels to the RAM Framebuffer, NuttX Apps will call `ioctl(FBIO_UPDATE)` to update the display.
+
+This triggers `pinephone_updatearea` in our NuttX Framebuffer Driver: [fb_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/pixel/examples/fb/fb_main.c#L265-L274)
+
+```c
+// Omitted: NuttX App writes pixels to RAM Framebuffer
+
+// Update the Framebuffer
+#ifdef CONFIG_FB_UPDATE
+  ret = ioctl(    // I/O Command
+    state->fd,    // Framebuffer File Descriptor
+    FBIO_UPDATE,  // Update the Framebuffer
+    (unsigned long)((uintptr_t)area)  // Updated area
+  );
+#endif
+```
+
+![Fixed Missing Pixels in PinePhone Image](https://lupyuen.github.io/images/fb-test3.jpg)
+
+_How do other PinePhone operating systems handle this?_
+
+We might need to handle TCON0 Vertical Blanking (`TCON0_Vb_Int_En` / `TCON0_Vb_Int_Flag`) and TCON0 CPU Trigger Mode Finish (`TCON0_Tri_Finish_Int_En` / `TCON0_Tri_Finish_Int_Flag`) like this...
+
+-   [sun4i_tcon_enable_vblank](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun4i_tcon.c#L225-L242)
+
+-   [sun4i_tcon_handler](https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun4i_tcon.c#L746-L777)
+
+    [(More about sun4i_tcon_handler)](https://gist.github.com/lupyuen/214788deabdb37659e806a463f8acc50)
+
+p-boot Bootloader seems to handle every TCON0 CPU Trigger Mode Finish (`TCON0_Tri_Finish_Int_En` / `TCON0_Tri_Finish_Int_Flag`) by updating the Display Engine Registers. Which sounds odd...
+
+1.  Render Loop waits forever for `EV_VBLANK`: [dtest.c](https://megous.com/git/p-boot/tree/src/dtest.c#n327)
+
+1.  `EV_VBLANK` is triggered by `display_frame_done`: [gui.c](https://megous.com/git/p-boot/tree/src/gui.c#n64)
+
+1.  `display_frame_done` is triggered by TCON0 CPU Trigger Mode Finish: [display.c](https://megous.com/git/p-boot/tree/src/display.c#n2005)
+
+1.  Render Loop handles `EV_VBLANK` by redrawing and calling `display_commit`:  [dtest.c](https://megous.com/git/p-boot/tree/src/dtest.c#n338)
+
+1.  `display_commit` updates the Display Engine Registers, including the Framebuffer Addresses: [display.c](https://megous.com/git/p-boot/tree/src/display.c#n2017)
+
+Can we handle TCON0 CPU Trigger Mode Finish without refreshing the Display Engine Registers?
+
+# LVGL on NuttX on PinePhone
+
+TODO
+
+LVGL on NuttX renders correctly on PinePhone! (Pic below)
+
+Here are the settings in `make menuconfig`...
+
+- Enable "Application Configuration > Examples > LVGL Demo"
+
+- Enable "Application Configuration > Graphics Support > Light and Versatile Graphic Library (LVGL)"
+
+- Under "LVGL > Graphics settings"...
+  - Set "Horizontal resolution" to 720
+  - Set "Vertical resolution" to 1440
+  - Set "DPI (px/inch)" to 200
+
+- Under "LVGL > Color settings"...
+  - Set "Color depth (8/16/32)" to 32
+
+![LVGL on NuttX on PinePhone](https://lupyuen.github.io/images/fb-lvgl.jpg)
+
 # What's Next
 
 TODO
