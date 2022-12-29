@@ -2,13 +2,19 @@
 
 📝 _7 Jan 2023_
 
-![TODO](https://lupyuen.github.io/images/fb-title.jpg)
+![Apache NuttX Framebuffer Test App on Pine64 PinePhone](https://lupyuen.github.io/images/fb-title.jpg)
 
-TODO: How NuttX Apps call the NuttX Framebuffer Interface to render graphics... And what's inside the Framebuffer Driver for Pine64 PinePhone
+Suppose we're running [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)...
 
-TODO: Missing pixels
+How do we create __Graphical Apps__ for NuttX? (Pic above)
 
-[__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) now boots on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)
+Today we'll learn about the...
+
+-   __Framebuffer Interface__ that NuttX provides to our apps for rendering graphics
+
+-   What's inside the __Framebuffer Driver__ for PinePhone
+
+-   Mystery of the __Missing Framebuffer Pixels__ and how we solved it
 
 # Framebuffer Interface
 
