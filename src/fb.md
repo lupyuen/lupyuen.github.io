@@ -120,8 +120,8 @@ To access the RAM Framebuffer, we __map it to a valid address__: [fb_main.c](htt
 ```c
 // Map the Framebuffer Address
 void *fbmem = mmap(  // Map the address of...
-  NULL,         // Hint (ignored)
-  pinfo.fblen,  // Framebuffer Size
+  NULL,              // Hint (ignored)
+  pinfo.fblen,       // Framebuffer Size
   PROT_READ | PROT_WRITE,  // Read and Write Access
   MAP_SHARED | MAP_FILE,   // Map as Shared Memory
   fd,  // File Descriptor of Framebuffer Driver               
@@ -140,54 +140,64 @@ Let's blast some pixels to the RAM Framebuffer...
 
 # Render Grey Screen
 
-TODO
+_What's the simplest thing we can do with our Framebuffer?_
 
-[fb_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L541-L562)
+Let's fill the __entire Framebuffer with Grey__: [fb_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L541-L562)
 
 ```c
 // Fill entire framebuffer with grey
-memset(
-  fbmem,
-  0x80,
-  pinfo.fblen
-);
-
-// Area to be refreshed
-struct fb_area_s area = {
-  .x = 0,
-  .y = 0,
-  .w = pinfo.xres_virtual,
-  .h = pinfo.yres_virtual
-};
-
-// Refresh the display
-ioctl(
-  fd,
-  FBIO_UPDATE,
-  (unsigned long) &area
+memset(        // Fill the buffer...
+  fbmem,       // Framebuffer Address
+  0x80,        // Value
+  pinfo.fblen  // Framebuffer Size
 );
 ```
 
-TODO: #ifdef CONFIG_FB_UPDATE
+(We'll explain in a while why this turns grey)
 
-[fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L469-L474)
+After filling the Framebuffer, we __refresh the display__: [fb_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L548-L562)
+
+```c
+// Area to be refreshed
+struct fb_area_s area = {
+  .x = 0,  // X Offset
+  .y = 0,  // Y Offset
+  .w = pinfo.xres_virtual,  // Width
+  .h = pinfo.yres_virtual   // Height
+};
+
+// Refresh the display
+ioctl(  // Do I/O Control...
+  fd,   // File Descriptor of Framebuffer Driver
+  FBIO_UPDATE,           // Refresh the Display
+  (unsigned long) &area  // Area to be refreshed
+);
+```
+
+If we skip this step, we will see __missing pixels__ in our display. (More about this below)
+
+Remember to __close the Framebuffer__ when we're done: [fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L469-L474)
 
 ```c
 // Unmap the Framebuffer Address
-munmap(
-  fbmem,
-  pinfo.fblen
+munmap(        // Unmap the address of...
+  fbmem,       // Framebuffer Address
+  pinfo.fblen  // Framebuffer Size
 );
 
 // Close the Framebuffer Driver
 close(fd);
 ```
 
-TODO
+When we run this, PinePhone turns grey! (Pic above)
+
+To understand why, let's look inside the Framebuffer...
 
 ![PinePhone Framebuffer](https://lupyuen.github.io/images/de2-fb.jpg)
 
-TODO: Why grey?
+_Why did PinePhone turn grey when we filled it with `0x80`?_
+
+TODO
 
 ![Render Blocks](https://lupyuen.github.io/images/fb-demo3.jpg)
 
