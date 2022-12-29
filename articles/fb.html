@@ -67,11 +67,127 @@
 
     <h1 class="title">NuttX RTOS for PinePhone: Framebuffer</h1>
     <nav id="TOC"><ul>
-<li><a href="#whats-next">1 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2023</em></p>
+<li><a href="#todo">1 TODO</a><ul></ul></li>
+<li><a href="#whats-next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/fb-title.jpg" alt="TODO" /></p>
 <p>TODO: How NuttX Apps call the NuttX Framebuffer Interface to render graphics… And what’s inside the Framebuffer Driver for Pine64 PinePhone</p>
 <p><a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> now boots on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a></p>
-<h1 id="whats-next"><a href="#whats-next">1 What’s Next</a></h1>
+<h1 id="todo"><a href="#todo">1 TODO</a></h1>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L541-L562">fb_main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static void render_grey(struct fb_state_s *state) {
+  // Fill entire framebuffer with grey
+  memset(
+    state-&gt;pinfo.fbmem,
+    0x80,
+    state-&gt;pinfo.fblen
+  );
+
+#ifdef CONFIG_FB_UPDATE
+  // Update the framebuffer
+  struct fb_area_s area =
+  {
+    .x = 0,
+    .y = 0,
+    .w = state-&gt;pinfo.xres_virtual,
+    .h = state-&gt;pinfo.yres_virtual
+  };
+  int ret = ioctl(state-&gt;fd, FBIO_UPDATE,
+                  (unsigned long)((uintptr_t)&amp;area));
+  DEBUGASSERT(ret == OK);
+#endif
+}</code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L564-L601">fb_main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static void render_blocks(struct fb_state_s *state) {
+  // Fill framebuffer with Blue, Green and Red Blocks
+  uint32_t *fbmem = state-&gt;pinfo.fbmem;
+  const size_t fblen = state-&gt;pinfo.fblen / 4;  // 4 bytes per pixel
+
+  // For every pixel...
+  for (int i = 0; i &lt; fblen; i++) {
+
+    // Colors are in XRGB 8888 format
+    if (i &lt; fblen / 4) {
+      // Blue for top quarter.
+      // RGB24_BLUE is 0x0000 00FF
+      fbmem[i] = RGB24_BLUE;
+    } else if (i &lt; fblen / 2) {
+      // Green for next quarter.
+      // RGB24_GREEN is 0x0000 FF00
+      fbmem[i] = RGB24_GREEN;
+    } else {
+      // Red for lower half.
+      // RGB24_RED is 0x00FF 0000
+      fbmem[i] = RGB24_RED;
+    }
+  }
+
+#ifdef CONFIG_FB_UPDATE
+  // Update the framebuffer
+  struct fb_area_s area =
+  {
+    .x = 0,
+    .y = 0,
+    .w = state-&gt;pinfo.xres_virtual,
+    .h = state-&gt;pinfo.yres_virtual
+  };
+  int ret = ioctl(state-&gt;fd, FBIO_UPDATE,
+                  (unsigned long)((uintptr_t)&amp;area));
+  DEBUGASSERT(ret == OK);
+#endif
+}</code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L603-L651">fb_main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static void render_circle(struct fb_state_s *state) {
+  // Fill framebuffer with Green Circle
+  uint32_t *fbmem = state-&gt;pinfo.fbmem;
+  const size_t fblen = state-&gt;pinfo.fblen / 4;  // 4 bytes per pixel
+  const uint32_t width = state-&gt;pinfo.xres_virtual;
+  const uint32_t height = state-&gt;pinfo.yres_virtual;
+
+  // For every pixel row...
+  for (int y = 0; y &lt; height; y++) {
+
+    // For every pixel column...
+    for (int x = 0; x &lt; width; x++) {
+
+      // Get pixel index
+      const int p = (y * width) + x;
+      DEBUGASSERT(p &lt; fblen);
+
+      // Shift coordinates so that centre of screen is (0,0)
+      const int half_width  = width  / 2;
+      const int half_height = height / 2;
+      const int x_shift = x - half_width;
+      const int y_shift = y - half_height;
+
+      // If x^2 + y^2 &lt; radius^2, set the pixel to Green.
+      // Colors are in XRGB 8888 format.
+      if (x_shift*x_shift + y_shift*y_shift &lt; half_width*half_width) {
+        // RGB24_GREEN is 0x0000 FF00
+        fbmem[p] = RGB24_GREEN;
+      } else {  // Otherwise set to Transparent Black
+        // RGB24_BLACK is 0x0000 0000
+        fbmem[p] = RGB24_BLACK;
+      }
+    }
+  }
+
+#ifdef CONFIG_FB_UPDATE
+  // Update the framebuffer
+  struct fb_area_s area =
+  {
+    .x = 0,
+    .y = 0,
+    .w = state-&gt;pinfo.xres_virtual,
+    .h = state-&gt;pinfo.yres_virtual
+  };
+  int ret = ioctl(state-&gt;fd, FBIO_UPDATE,
+                  (unsigned long)((uintptr_t)&amp;area));
+  DEBUGASSERT(ret == OK);
+#endif
+}</code></pre></div><h1 id="whats-next"><a href="#whats-next">2 What’s Next</a></h1>
 <p>TODO</p>
 <p>Check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
 <ul>
