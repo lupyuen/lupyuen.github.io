@@ -16,6 +16,8 @@ Today we'll learn about the...
 
 -   Mystery of the __Missing Framebuffer Pixels__ and how we solved it
 
+-   Creating NuttX Apps with the __LVGL Graphics Library__
+
 # Framebuffer Interface
 
 TODO
@@ -32,7 +34,7 @@ And change it to...
 #ifdef NOTUSED
 ```
 
-Because the PinePhone Framebuffer Driver doesn't work with overlays yet.
+Because our PinePhone Framebuffer Driver doesn't support overlays yet.
 
 [fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L314-L337)
 
@@ -51,7 +53,7 @@ struct fb_videoinfo_s vinfo;
 int ret = ioctl(
   fd,
   FBIOGET_VIDEOINFO,
-  (unsigned long) ((uintptr_t) &vinfo)
+  (unsigned long) &vinfo
 );
 
 // Quit if FBIOGET_VIDEOINFO failed
@@ -66,7 +68,7 @@ struct fb_planeinfo_s pinfo;
 ret = ioctl(
   fd,
   FBIOGET_PLANEINFO,
-  (unsigned long) ((uintptr_t) &pinfo)
+  (unsigned long) &pinfo
 );
 
 // Quit if FBIOGET_PLANEINFO failed
@@ -120,7 +122,7 @@ struct fb_area_s area = {
 ioctl(
   fd,
   FBIO_UPDATE,
-  (unsigned long) ((uintptr_t) &area)
+  (unsigned long) &area
 );
 ```
 
@@ -130,7 +132,10 @@ TODO: #ifdef CONFIG_FB_UPDATE
 
 ```c
 // Unmap the Framebuffer Address
-munmap(fbmem, pinfo.fblen);
+munmap(
+  fbmem,
+  pinfo.fblen
+);
 
 // Close the Framebuffer Driver
 close(fd);
@@ -194,7 +199,6 @@ for (int y = 0; y < height; y++) {
 
     // Get pixel index
     const int p = (y * width) + x;
-    DEBUGASSERT(p < fblen);
 
     // Shift coordinates so that centre of screen is (0,0)
     const int half_width  = width  / 2;
@@ -242,12 +246,10 @@ TODO
 TODO
 
 ```c
-/* Frame Buffers for Display Engine *****************************************/
-
-/* Frame Buffer 0: (Base UI Channel)
- * Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
- */
-
+// Frame Buffer for Display Engine 
+// Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
+// PANEL_WIDTH is 720
+// PANEL_HEIGHT is 1440
 static uint32_t g_pinephone_fb0[PANEL_WIDTH * PANEL_HEIGHT];
 
 static struct fb_videoinfo_s g_pinephone_video =
