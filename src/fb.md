@@ -2,7 +2,7 @@
 
 📝 _7 Jan 2023_
 
-![Apache NuttX Framebuffer Test App on Pine64 PinePhone](https://lupyuen.github.io/images/fb-title.jpg)
+![Apache NuttX Framebuffer App on Pine64 PinePhone](https://lupyuen.github.io/images/fb-title.jpg)
 
 Suppose we're running [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)...
 
@@ -18,11 +18,33 @@ Today we'll learn about the...
 
 -   Creating NuttX Apps with the __LVGL Graphics Library__
 
+![NuttX Framebuffer App running on PinePhone](https://lupyuen.github.io/images/fb-run.png)
+
+[_NuttX Framebuffer App running on PinePhone_](https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b)
+
 # Framebuffer Interface
 
-TODO
+We begin with the __Framebuffer Interface__ that NuttX provides to our apps for rendering graphics.
 
-Look for this line: [fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L343-L346)
+Our __Demo Code__ for today comes (mostly) from this Example App...
+
+-   [__NuttX Framebuffer Driver Example__](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c)
+
+_How do we build the app?_
+
+To enable the app in our NuttX Project...
+
+```bash
+make menuconfig
+```
+
+And select...
+
+```text
+Application Configuration > Examples > Framebuffer Driver Example
+```
+
+Before building NuttX with `make`, look for this line: [apps/examples/fb/fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L343-L346)
 
 ```c
 #ifdef CONFIG_FB_OVERLAY
@@ -35,6 +57,10 @@ And change it to...
 ```
 
 Because our PinePhone Framebuffer Driver doesn't support overlays yet.
+
+_What's inside the app?_
+
+TODO
 
 [fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L314-L337)
 
