@@ -81,7 +81,7 @@
 <li><a href="#fix-missing-pixels-in-pinephone-image">8 Fix Missing Pixels in PinePhone Image</a><ul></ul></li>
 <li><a href="#lvgl-on-nuttx-on-pinephone">9 LVGL on NuttX on PinePhone</a><ul></ul></li>
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2023</em></p>
-<p><img src="https://lupyuen.github.io/images/fb-title.jpg" alt="Apache NuttX Framebuffer Test App on Pine64 PinePhone" /></p>
+<p><img src="https://lupyuen.github.io/images/fb-title.jpg" alt="Apache NuttX Framebuffer App on Pine64 PinePhone" /></p>
 <p>Suppose we’re running <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>…</p>
 <p>How do we create <strong>Graphical Apps</strong> for NuttX? (Pic above)</p>
 <p>Today we’ll learn about the…</p>
@@ -99,13 +99,26 @@
 <p>Creating NuttX Apps with the <strong>LVGL Graphics Library</strong></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/fb-run.png" alt="NuttX Framebuffer App running on PinePhone" /></p>
+<p><a href="https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b"><em>NuttX Framebuffer App running on PinePhone</em></a></p>
 <h1 id="framebuffer-interface"><a href="#framebuffer-interface">1 Framebuffer Interface</a></h1>
-<p>TODO</p>
-<p>Look for this line: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L343-L346">fb_main.c</a></p>
+<p>We begin with the <strong>Framebuffer Interface</strong> that NuttX provides to our apps for rendering graphics.</p>
+<p>Our <strong>Demo Code</strong> for today comes (mostly) from this Example App…</p>
+<ul>
+<li><a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c"><strong>NuttX Framebuffer Driver Example</strong></a></li>
+</ul>
+<p><em>How do we build the app?</em></p>
+<p>To enable the app in our NuttX Project…</p>
+<div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div>
+<p>And select…</p>
+<div class="example-wrap"><pre class="language-text"><code>Application Configuration &gt; Examples &gt; Framebuffer Driver Example</code></pre></div>
+<p>Before building NuttX with <code>make</code>, look for this line: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L343-L346">apps/examples/fb/fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_FB_OVERLAY</code></pre></div>
 <p>And change it to…</p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef NOTUSED</code></pre></div>
 <p>Because our PinePhone Framebuffer Driver doesn’t support overlays yet.</p>
+<p><em>What’s inside the app?</em></p>
+<p>TODO</p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L314-L337">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#include &lt;nuttx/video/fb.h&gt;
 #include &lt;nuttx/video/rgbcolors.h&gt;
