@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>NuttX RTOS for PinePhone: Framebuffer</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="NuttX RTOS for PinePhone: Framebuffer" 
+    data-rh="true">
+<meta property="og:description" 
+    content="How NuttX Apps call the NuttX Framebuffer Interface to render graphics... And what's inside the Framebuffer Driver for Pine64 PinePhone"
+    data-rh="true">
+<meta name="description" 
+    content="How NuttX Apps call the NuttX Framebuffer Interface to render graphics... And what's inside the Framebuffer Driver for Pine64 PinePhone">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/fb-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">NuttX RTOS for PinePhone: Framebuffer</h1>
+    <nav id="TOC"><ul>
+<li><a href="#whats-next">1 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2023</em></p>
+<p><img src="https://lupyuen.github.io/images/fb-title.jpg" alt="TODO" /></p>
+<p>TODO: How NuttX Apps call the NuttX Framebuffer Interface to render graphics… And what’s inside the Framebuffer Driver for Pine64 PinePhone</p>
+<p><a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> now boots on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a></p>
+<h1 id="whats-next"><a href="#whats-next">1 What’s Next</a></h1>
+<p>TODO</p>
+<p>Check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/arm"><strong>“Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/uboot"><strong>“PinePhone boots Apache NuttX RTOS”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/interrupt"><strong>“NuttX RTOS for PinePhone: Fixing the Interrupts”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/serial"><strong>“NuttX RTOS for PinePhone: UART Driver”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/pio"><strong>“NuttX RTOS for PinePhone: Blinking the LEDs”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/dsi"><strong>“Understanding PinePhone’s Display (MIPI DSI)”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/dsi2"><strong>“NuttX RTOS for PinePhone: Display Driver in Zig”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/de"><strong>“Rendering PinePhone’s Display (DE and TCON0)”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/de2"><strong>“NuttX RTOS for PinePhone: Render Graphics in Zig”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/dsi3"><strong>“NuttX RTOS for PinePhone: MIPI Display Serial Interface”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/de3"><strong>“NuttX RTOS for PinePhone: Display Engine”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lcd"><strong>“NuttX RTOS for PinePhone: LCD Panel”</strong></a></p>
+</li>
+</ul>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>My Current Project: “Apache NuttX RTOS for PinePhone”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/book"><strong>My Other Project: “The RISC-V BL602 Book”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/fb.md"><strong>lupyuen.github.io/src/fb.md</strong></a></p>
+
+    
+</body>
+</html>
