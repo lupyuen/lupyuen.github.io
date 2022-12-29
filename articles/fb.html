@@ -97,182 +97,158 @@
 </li>
 </ul>
 <h1 id="framebuffer-interface"><a href="#framebuffer-interface">1 Framebuffer Interface</a></h1>
-<p>TODO: #ifdef CONFIG_FB_OVERLAY</p>
+<p>TODO</p>
+<p>Look for this line: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L343-L346">fb_main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_FB_OVERLAY</code></pre></div>
+<p>And change it to…</p>
+<div class="example-wrap"><pre class="language-c"><code>#ifdef NOTUSED</code></pre></div>
+<p>Because the PinePhone Framebuffer Driver doesn’t work with overlays yet.</p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L314-L337">fb_main.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>  /* Open the framebuffer driver */
+<div class="example-wrap"><pre class="language-c"><code>#include &lt;nuttx/video/fb.h&gt;
+#include &lt;nuttx/video/rgbcolors.h&gt;
 
-  state.fd = open(fbdev, O_RDWR);
-  if (state.fd &lt; 0)
-    {
-      int errcode = errno;
-      fprintf(stderr, &quot;ERROR: Failed to open %s: %d\n&quot;, fbdev, errcode);
-      return EXIT_FAILURE;
-    }
+// Open the Framebuffer Driver
+int fd = open(&quot;/dev/fb0&quot;, O_RDWR);
 
-  /* Get the characteristics of the framebuffer */
+// Quit if we failed to open &quot;/dev/fb0&quot;
+if (fd &lt; 0) { return; }
 
-  ret = ioctl(state.fd, FBIOGET_VIDEOINFO,
-              (unsigned long)((uintptr_t)&amp;state.vinfo));
-  if (ret &lt; 0)
-    {
-      int errcode = errno;
-      fprintf(stderr, &quot;ERROR: ioctl(FBIOGET_VIDEOINFO) failed: %d\n&quot;,
-              errcode);
-      close(state.fd);
-      return EXIT_FAILURE;
-    }</code></pre></div>
+// Get the Characteristics of the Framebuffer
+struct fb_videoinfo_s vinfo;
+int ret = ioctl(
+  fd,
+  FBIOGET_VIDEOINFO,
+  (unsigned long) ((uintptr_t) &amp;vinfo)
+);
+
+// Quit if FBIOGET_VIDEOINFO failed
+if (ret &lt; 0) { return; }</code></pre></div>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L391-L400">fb_main.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>  ret = ioctl(state.fd, FBIOGET_PLANEINFO,
-              (unsigned long)((uintptr_t)&amp;state.pinfo));
-  if (ret &lt; 0)
-    {
-      int errcode = errno;
-      fprintf(stderr, &quot;ERROR: ioctl(FBIOGET_PLANEINFO) failed: %d\n&quot;,
-              errcode);
-      close(state.fd);
-      return EXIT_FAILURE;
-    }</code></pre></div>
+<div class="example-wrap"><pre class="language-c"><code>// Get the Plane Info
+struct fb_planeinfo_s pinfo;
+ret = ioctl(
+  fd,
+  FBIOGET_PLANEINFO,
+  (unsigned long) ((uintptr_t) &amp;pinfo)
+);
+
+// Quit if FBIOGET_PLANEINFO failed
+if (ret &lt; 0) { return; }</code></pre></div>
 <p>TODO</p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L420-L440">fb_main.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>  /* mmap() the framebuffer.
-   *
-   * NOTE: In the FLAT build the frame buffer address returned by the
-   * FBIOGET_PLANEINFO IOCTL command will be the same as the framebuffer
-   * address.  mmap(), however, is the preferred way to get the framebuffer
-   * address because in the KERNEL build, it will perform the necessary
-   * address mapping to make the memory accessible to the application.
-   */
+<div class="example-wrap"><pre class="language-c"><code>// Map the Framebuffer Address
+void *fbmem = mmap(
+  NULL, 
+  pinfo.fblen, 
+  PROT_READ | PROT_WRITE,
+  MAP_SHARED | MAP_FILE,
+  fd,
+  0
+);
 
-  state.fbmem = mmap(NULL, state.pinfo.fblen, PROT_READ | PROT_WRITE,
-                     MAP_SHARED | MAP_FILE, state.fd, 0);
-  if (state.fbmem == MAP_FAILED)
-    {
-      int errcode = errno;
-      fprintf(stderr, &quot;ERROR: ioctl(FBIOGET_PLANEINFO) failed: %d\n&quot;,
-              errcode);
-      close(state.fd);
-      return EXIT_FAILURE;
-    }
-</code></pre></div><h1 id="render-grey-screen"><a href="#render-grey-screen">2 Render Grey Screen</a></h1>
+// Quit if we failed to map the Framebuffer Address
+if (fbmem == MAP_FAILED) { return; }</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/fb-demo2.jpg" alt="Render Grey Screen" /></p>
+<h1 id="render-grey-screen"><a href="#render-grey-screen">2 Render Grey Screen</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L541-L562">fb_main.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static void render_grey(struct fb_state_s *state) {
-  // Fill entire framebuffer with grey
-  memset(
-    state-&gt;pinfo.fbmem,
-    0x80,
-    state-&gt;pinfo.fblen
-  );
+<div class="example-wrap"><pre class="language-c"><code>// Fill entire framebuffer with grey
+memset(
+  fbmem,
+  0x80,
+  pinfo.fblen
+);
 
-#ifdef CONFIG_FB_UPDATE
-  // Update the framebuffer
-  struct fb_area_s area =
-  {
-    .x = 0,
-    .y = 0,
-    .w = state-&gt;pinfo.xres_virtual,
-    .h = state-&gt;pinfo.yres_virtual
-  };
-  int ret = ioctl(state-&gt;fd, FBIO_UPDATE,
-                  (unsigned long)((uintptr_t)&amp;area));
-  DEBUGASSERT(ret == OK);
-#endif
-}</code></pre></div>
-<p>TODO</p>
+// Area to be refreshed
+struct fb_area_s area = {
+  .x = 0,
+  .y = 0,
+  .w = pinfo.xres_virtual,
+  .h = pinfo.yres_virtual
+};
+
+// Refresh the display
+ioctl(
+  fd,
+  FBIO_UPDATE,
+  (unsigned long) ((uintptr_t) &amp;area)
+);</code></pre></div>
+<p>TODO: #ifdef CONFIG_FB_UPDATE</p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L469-L474">fb_main.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>  munmap(state.fbmem, state.pinfo.fblen);
-  close(state.fd);</code></pre></div><h1 id="render-blocks"><a href="#render-blocks">3 Render Blocks</a></h1>
+<div class="example-wrap"><pre class="language-c"><code>// Unmap the Framebuffer Address
+munmap(fbmem, pinfo.fblen);
+
+// Close the Framebuffer Driver
+close(fd);</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/fb-demo3.jpg" alt="Render Blocks" /></p>
+<h1 id="render-blocks"><a href="#render-blocks">3 Render Blocks</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L564-L601">fb_main.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static void render_blocks(struct fb_state_s *state) {
-  // Fill framebuffer with Blue, Green and Red Blocks
-  uint32_t *fbmem = state-&gt;pinfo.fbmem;
-  const size_t fblen = state-&gt;pinfo.fblen / 4;  // 4 bytes per pixel
+<div class="example-wrap"><pre class="language-c"><code>// Fill framebuffer with Blue, Green and Red Blocks
+uint32_t *fb = fbmem;
+const size_t fblen = pinfo.fblen / 4;  // 4 bytes per pixel
 
-  // For every pixel...
-  for (int i = 0; i &lt; fblen; i++) {
+// For every pixel...
+for (int i = 0; i &lt; fblen; i++) {
 
-    // Colors are in XRGB 8888 format
-    if (i &lt; fblen / 4) {
-      // Blue for top quarter.
-      // RGB24_BLUE is 0x0000 00FF
-      fbmem[i] = RGB24_BLUE;
-    } else if (i &lt; fblen / 2) {
-      // Green for next quarter.
-      // RGB24_GREEN is 0x0000 FF00
-      fbmem[i] = RGB24_GREEN;
-    } else {
-      // Red for lower half.
-      // RGB24_RED is 0x00FF 0000
-      fbmem[i] = RGB24_RED;
-    }
+  // Colors are in XRGB 8888 format
+  if (i &lt; fblen / 4) {
+    // Blue for top quarter.
+    // RGB24_BLUE is 0x0000 00FF
+    fb[i] = RGB24_BLUE;
+  } else if (i &lt; fblen / 2) {
+    // Green for next quarter.
+    // RGB24_GREEN is 0x0000 FF00
+    fb[i] = RGB24_GREEN;
+  } else {
+    // Red for lower half.
+    // RGB24_RED is 0x00FF 0000
+    fb[i] = RGB24_RED;
   }
+}
 
-#ifdef CONFIG_FB_UPDATE
-  // Update the framebuffer
-  struct fb_area_s area =
-  {
-    .x = 0,
-    .y = 0,
-    .w = state-&gt;pinfo.xres_virtual,
-    .h = state-&gt;pinfo.yres_virtual
-  };
-  int ret = ioctl(state-&gt;fd, FBIO_UPDATE,
-                  (unsigned long)((uintptr_t)&amp;area));
-  DEBUGASSERT(ret == OK);
-#endif
-}</code></pre></div><h1 id="render-circle"><a href="#render-circle">4 Render Circle</a></h1>
+// Omitted: Refresh the display with ioctl(FBIO_UPDATE)</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/fb-demo4.jpg" alt="Render Circle" /></p>
+<h1 id="render-circle"><a href="#render-circle">4 Render Circle</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L603-L651">fb_main.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static void render_circle(struct fb_state_s *state) {
-  // Fill framebuffer with Green Circle
-  uint32_t *fbmem = state-&gt;pinfo.fbmem;
-  const size_t fblen = state-&gt;pinfo.fblen / 4;  // 4 bytes per pixel
-  const uint32_t width = state-&gt;pinfo.xres_virtual;
-  const uint32_t height = state-&gt;pinfo.yres_virtual;
+<div class="example-wrap"><pre class="language-c"><code>// Fill framebuffer with Green Circle
+uint32_t *fb = fbmem;
+const size_t fblen = pinfo.fblen / 4;  // 4 bytes per pixel
+const uint32_t width = pinfo.xres_virtual;
+const uint32_t height = pinfo.yres_virtual;
 
-  // For every pixel row...
-  for (int y = 0; y &lt; height; y++) {
+// For every pixel row...
+for (int y = 0; y &lt; height; y++) {
 
-    // For every pixel column...
-    for (int x = 0; x &lt; width; x++) {
+  // For every pixel column...
+  for (int x = 0; x &lt; width; x++) {
 
-      // Get pixel index
-      const int p = (y * width) + x;
-      DEBUGASSERT(p &lt; fblen);
+    // Get pixel index
+    const int p = (y * width) + x;
+    DEBUGASSERT(p &lt; fblen);
 
-      // Shift coordinates so that centre of screen is (0,0)
-      const int half_width  = width  / 2;
-      const int half_height = height / 2;
-      const int x_shift = x - half_width;
-      const int y_shift = y - half_height;
+    // Shift coordinates so that centre of screen is (0,0)
+    const int half_width  = width  / 2;
+    const int half_height = height / 2;
+    const int x_shift = x - half_width;
+    const int y_shift = y - half_height;
 
-      // If x^2 + y^2 &lt; radius^2, set the pixel to Green.
-      // Colors are in XRGB 8888 format.
-      if (x_shift*x_shift + y_shift*y_shift &lt; half_width*half_width) {
-        // RGB24_GREEN is 0x0000 FF00
-        fbmem[p] = RGB24_GREEN;
-      } else {  // Otherwise set to Transparent Black
-        // RGB24_BLACK is 0x0000 0000
-        fbmem[p] = RGB24_BLACK;
-      }
+    // If x^2 + y^2 &lt; radius^2, set the pixel to Green.
+    // Colors are in XRGB 8888 format.
+    if (x_shift*x_shift + y_shift*y_shift &lt; half_width*half_width) {
+      // RGB24_GREEN is 0x0000 FF00
+      fb[p] = RGB24_GREEN;
+    } else {  // Otherwise set to Transparent Black
+      // RGB24_BLACK is 0x0000 0000
+      fb[p] = RGB24_BLACK;
     }
   }
+}
 
-#ifdef CONFIG_FB_UPDATE
-  // Update the framebuffer
-  struct fb_area_s area =
-  {
-    .x = 0,
-    .y = 0,
-    .w = state-&gt;pinfo.xres_virtual,
-    .h = state-&gt;pinfo.yres_virtual
-  };
-  int ret = ioctl(state-&gt;fd, FBIO_UPDATE,
-                  (unsigned long)((uintptr_t)&amp;area));
-  DEBUGASSERT(ret == OK);
-#endif
-}</code></pre></div><h1 id="render-rectangle"><a href="#render-rectangle">5 Render Rectangle</a></h1>
+// Omitted: Refresh the display with ioctl(FBIO_UPDATE)</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/fb-demo1.jpg" alt="Render Rectangles" /></p>
+<h1 id="render-rectangle"><a href="#render-rectangle">5 Render Rectangle</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L472-L480">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>area.x = x;
