@@ -67,23 +67,24 @@
 
     <h1 class="title">NuttX RTOS for PinePhone: Framebuffer</h1>
     <nav id="TOC"><ul>
-<li><a href="#framebuffer-interface">1 Framebuffer Interface</a><ul></ul></li>
-<li><a href="#render-grey-screen">2 Render Grey Screen</a><ul></ul></li>
-<li><a href="#render-blocks">3 Render Blocks</a><ul></ul></li>
-<li><a href="#render-circle">4 Render Circle</a><ul></ul></li>
-<li><a href="#render-rectangle">5 Render Rectangle</a><ul></ul></li>
-<li><a href="#pinephone-framebuffer-driver">6 PinePhone Framebuffer Driver</a><ul>
-<li><a href="#ram-framebuffer">6.1 RAM Framebuffer</a><ul></ul></li>
-<li><a href="#framebuffer-operations">6.2 Framebuffer Operations</a><ul></ul></li>
-<li><a href="#get-video-info">6.3 Get Video Info</a><ul></ul></li>
-<li><a href="#get-plane-info">6.4 Get Plane Info</a><ul></ul></li></ul></li>
-<li><a href="#missing-pixels-in-pinephone-image">7 Missing Pixels in PinePhone Image</a><ul></ul></li>
-<li><a href="#fix-missing-pixels-in-pinephone-image">8 Fix Missing Pixels in PinePhone Image</a><ul></ul></li>
-<li><a href="#lvgl-on-nuttx-on-pinephone">9 LVGL on NuttX on PinePhone</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2023</em></p>
+<li><a href="#framebuffer-demo">1 Framebuffer Demo</a><ul></ul></li>
+<li><a href="#framebuffer-interface">2 Framebuffer Interface</a><ul></ul></li>
+<li><a href="#render-grey-screen">3 Render Grey Screen</a><ul></ul></li>
+<li><a href="#render-blocks">4 Render Blocks</a><ul></ul></li>
+<li><a href="#render-circle">5 Render Circle</a><ul></ul></li>
+<li><a href="#render-rectangle">6 Render Rectangle</a><ul></ul></li>
+<li><a href="#pinephone-framebuffer-driver">7 PinePhone Framebuffer Driver</a><ul>
+<li><a href="#ram-framebuffer">7.1 RAM Framebuffer</a><ul></ul></li>
+<li><a href="#framebuffer-operations">7.2 Framebuffer Operations</a><ul></ul></li>
+<li><a href="#get-video-info">7.3 Get Video Info</a><ul></ul></li>
+<li><a href="#get-plane-info">7.4 Get Plane Info</a><ul></ul></li></ul></li>
+<li><a href="#mystery-of-the-missing-pixels">8 Mystery of the Missing Pixels</a><ul></ul></li>
+<li><a href="#fix-missing-pixels-in-pinephone-image">9 Fix Missing Pixels in PinePhone Image</a><ul></ul></li>
+<li><a href="#lvgl-on-nuttx-on-pinephone">10 LVGL on NuttX on PinePhone</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/fb-title.jpg" alt="Apache NuttX Framebuffer App on Pine64 PinePhone" /></p>
 <p>Suppose we’re running <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>…</p>
-<p>How do we create <strong>Graphical Apps</strong> for NuttX? (Pic above)</p>
+<p>How will we create <strong>Graphical Apps</strong> for NuttX? (Pic above)</p>
 <p>Today we’ll learn about the…</p>
 <ul>
 <li>
@@ -101,8 +102,7 @@
 </ul>
 <p><img src="https://lupyuen.github.io/images/fb-run.png" alt="NuttX Framebuffer App running on PinePhone" /></p>
 <p><a href="https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b"><em>NuttX Framebuffer App running on PinePhone</em></a></p>
-<h1 id="framebuffer-interface"><a href="#framebuffer-interface">1 Framebuffer Interface</a></h1>
-<p>We begin with the <strong>Framebuffer Interface</strong> that NuttX provides to our apps for rendering graphics.</p>
+<h1 id="framebuffer-demo"><a href="#framebuffer-demo">1 Framebuffer Demo</a></h1>
 <p>Our <strong>Demo Code</strong> for today comes (mostly) from this Example App…</p>
 <ul>
 <li><a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c"><strong>NuttX Framebuffer Driver Example</strong></a></li>
@@ -112,22 +112,28 @@
 <div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div>
 <p>And select…</p>
 <div class="example-wrap"><pre class="language-text"><code>Application Configuration &gt; Examples &gt; Framebuffer Driver Example</code></pre></div>
-<p>Before building NuttX with <code>make</code>, look for this line: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L343-L346">apps/examples/fb/fb_main.c</a></p>
+<p>Save the configuration and exit <code>menuconfig</code>.</p>
+<p>Look for this line: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L343-L346">apps/examples/fb/fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_FB_OVERLAY</code></pre></div>
 <p>And change it to…</p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef NOTUSED</code></pre></div>
 <p>Because our PinePhone Framebuffer Driver doesn’t support overlays yet.</p>
+<p>Then build NuttX with…</p>
+<div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div>
+<p>Let’s look at the Demo Code…</p>
+<h1 id="framebuffer-interface"><a href="#framebuffer-interface">2 Framebuffer Interface</a></h1>
 <p><em>What’s inside the app?</em></p>
-<p>To call the <strong>Framebuffer Interface</strong>, our app opens the Framebuffer Driver at <strong>“/dev/fb0”</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L314-L337">fb_main.c</a></p>
+<p>We begin with the <strong>Framebuffer Interface</strong> that NuttX provides to our apps for rendering graphics.</p>
+<p>To call the <strong>Framebuffer Interface</strong>, our app opens the Framebuffer Driver at <strong>/dev/fb0</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L314-L337">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#include &lt;nuttx/video/fb.h&gt;
 #include &lt;nuttx/video/rgbcolors.h&gt;
 
 // Open the Framebuffer Driver
 int fd = open(&quot;/dev/fb0&quot;, O_RDWR);
 
-// Quit if we failed to open &quot;/dev/fb0&quot;
+// Quit if we failed to open
 if (fd &lt; 0) { return; }</code></pre></div>
-<p>Next we fetch the <strong>Framebuffer Characteristics</strong>, which will tell us the Screen Size…</p>
+<p>Next we fetch the <strong>Framebuffer Characteristics</strong>, which will tell us the Screen Size (720 x 144) and Pixel Format (ARGB 8888)…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Get the Characteristics of the Framebuffer
 struct fb_videoinfo_s vinfo;
 int ret = ioctl(          // Do I/O Control...
@@ -138,34 +144,34 @@ int ret = ioctl(          // Do I/O Control...
 
 // Quit if FBIOGET_VIDEOINFO failed
 if (ret &lt; 0) { return; }</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L391-L400">fb_main.c</a></p>
+<p>Then we fetch the <strong>Plane Info</strong>, which describes the RAM Framebuffer that we’ll use for drawing: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L391-L400">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Get the Plane Info
 struct fb_planeinfo_s pinfo;
-ret = ioctl(
-  fd,
-  FBIOGET_PLANEINFO,
-  (unsigned long) &amp;pinfo
+ret = ioctl(              // Do I/O Control...
+  fd,                     // File Descriptor of Framebuffer Driver
+  FBIOGET_PLANEINFO,      // Get Plane Info
+  (unsigned long) &amp;pinfo  // Returned Plane Info
 );
 
 // Quit if FBIOGET_PLANEINFO failed
 if (ret &lt; 0) { return; }</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L420-L440">fb_main.c</a></p>
+<p>To access the RAM Framebuffer, we <strong>map it to a valid address</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L420-L440">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Map the Framebuffer Address
-void *fbmem = mmap(
-  NULL, 
-  pinfo.fblen, 
-  PROT_READ | PROT_WRITE,
-  MAP_SHARED | MAP_FILE,
-  fd,
-  0
+void *fbmem = mmap(  // Map the address of...
+  NULL,         // Hint (ignored)
+  pinfo.fblen,  // Framebuffer Size
+  PROT_READ | PROT_WRITE,  // Read and Write Access
+  MAP_SHARED | MAP_FILE,   // Map as Shared Memory
+  fd,  // File Descriptor of Framebuffer Driver               
+  0    // Offset for Memory Mapping
 );
 
 // Quit if we failed to map the Framebuffer Address
 if (fbmem == MAP_FAILED) { return; }</code></pre></div>
+<p>This returns <strong>fbmem</strong>, a pointer to the RAM Framebuffer.</p>
+<p>Let’s blast some pixels to the RAM Framebuffer…</p>
 <p><img src="https://lupyuen.github.io/images/fb-demo2.jpg" alt="Render Grey Screen" /></p>
-<h1 id="render-grey-screen"><a href="#render-grey-screen">2 Render Grey Screen</a></h1>
+<h1 id="render-grey-screen"><a href="#render-grey-screen">3 Render Grey Screen</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L541-L562">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Fill entire framebuffer with grey
@@ -199,8 +205,11 @@ munmap(
 
 // Close the Framebuffer Driver
 close(fd);</code></pre></div>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/de2-fb.jpg" alt="PinePhone Framebuffer" /></p>
+<p>TODO: Why grey?</p>
 <p><img src="https://lupyuen.github.io/images/fb-demo3.jpg" alt="Render Blocks" /></p>
-<h1 id="render-blocks"><a href="#render-blocks">3 Render Blocks</a></h1>
+<h1 id="render-blocks"><a href="#render-blocks">4 Render Blocks</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L564-L601">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Fill framebuffer with Blue, Green and Red Blocks
@@ -228,7 +237,7 @@ for (int i = 0; i &lt; fblen; i++) {
 
 // Omitted: Refresh the display with ioctl(FBIO_UPDATE)</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/fb-demo4.jpg" alt="Render Circle" /></p>
-<h1 id="render-circle"><a href="#render-circle">4 Render Circle</a></h1>
+<h1 id="render-circle"><a href="#render-circle">5 Render Circle</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L603-L651">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Fill framebuffer with Green Circle
@@ -266,16 +275,16 @@ for (int y = 0; y &lt; height; y++) {
 
 // Omitted: Refresh the display with ioctl(FBIO_UPDATE)</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/fb-demo1.jpg" alt="Render Rectangles" /></p>
-<h1 id="render-rectangle"><a href="#render-rectangle">5 Render Rectangle</a></h1>
+<h1 id="render-rectangle"><a href="#render-rectangle">6 Render Rectangle</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L472-L480">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>area.x = x;
 area.y = y;
 area.w = width;
 area.h = height;
-draw_rect(&amp;state, &amp;area, color);</code></pre></div><h1 id="pinephone-framebuffer-driver"><a href="#pinephone-framebuffer-driver">6 PinePhone Framebuffer Driver</a></h1>
+draw_rect(&amp;state, &amp;area, color);</code></pre></div><h1 id="pinephone-framebuffer-driver"><a href="#pinephone-framebuffer-driver">7 PinePhone Framebuffer Driver</a></h1>
 <p>TODO</p>
-<h2 id="ram-framebuffer"><a href="#ram-framebuffer">6.1 RAM Framebuffer</a></h2>
+<h2 id="ram-framebuffer"><a href="#ram-framebuffer">7.1 RAM Framebuffer</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>// Frame Buffer for Display Engine 
 // Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
@@ -307,7 +316,7 @@ static struct fb_planeinfo_s g_pinephone_plane =
   .yres_virtual = PANEL_HEIGHT,     /* Virtual Vertical resolution */
   .xoffset      = 0,                /* Offset from virtual to visible */
   .yoffset      = 0                 /* Offset from virtual to visible */
-};</code></pre></div><h2 id="framebuffer-operations"><a href="#framebuffer-operations">6.2 Framebuffer Operations</a></h2>
+};</code></pre></div><h2 id="framebuffer-operations"><a href="#framebuffer-operations">7.2 Framebuffer Operations</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/fb2/boards/arm64/a64/pinephone/src/pinephone_display.c#L117-L241">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Vtable for Frame Buffer Operations */
@@ -323,7 +332,7 @@ static struct fb_vtable_s g_pinephone_vtable =
   .setcolor        = pinephone_setcolor,
   .setblank        = pinephone_setblank,
   .setarea         = pinephone_setarea
-};</code></pre></div><h2 id="get-video-info"><a href="#get-video-info">6.3 Get Video Info</a></h2>
+};</code></pre></div><h2 id="get-video-info"><a href="#get-video-info">7.3 Get Video Info</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/fb2/boards/arm64/a64/pinephone/src/pinephone_display.c#L349-L395">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
@@ -372,7 +381,7 @@ static int pinephone_getvideoinfo(struct fb_vtable_s *vtable,
     }
 
   return OK;
-}</code></pre></div><h2 id="get-plane-info"><a href="#get-plane-info">6.4 Get Plane Info</a></h2>
+}</code></pre></div><h2 id="get-plane-info"><a href="#get-plane-info">7.4 Get Plane Info</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/fb2/boards/arm64/a64/pinephone/src/pinephone_display.c#L397-L429">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
@@ -407,7 +416,7 @@ static int pinephone_getplaneinfo(struct fb_vtable_s *vtable, int planeno,
 
   gerr(&quot;ERROR: Returning EINVAL\n&quot;);
   return -EINVAL;
-}</code></pre></div><h1 id="missing-pixels-in-pinephone-image"><a href="#missing-pixels-in-pinephone-image">7 Missing Pixels in PinePhone Image</a></h1>
+}</code></pre></div><h1 id="mystery-of-the-missing-pixels"><a href="#mystery-of-the-missing-pixels">8 Mystery of the Missing Pixels</a></h1>
 <p>TODO</p>
 <p>We’ve just implemented the NuttX Kernel Drivers for MIPI Display Serial Interface, Timing Controller TCON0, Display Engine, Reduced Serial Bus, Power Management Integrated Circuit and LCD Panel…</p>
 <ul>
@@ -441,7 +450,7 @@ static int pinephone_getplaneinfo(struct fb_vtable_s *vtable, int planeno,
 <p>According to the video, the pixels are actually written to correctly to the RAM Framebuffer. But the pixels at the lower half don’t get pushed to the display until the next screen refresh.</p>
 <p>There seems to be a lag between the writing of pixels to framebuffer, and the pushing of pixels to the display over DMA / Display Engine / Timing Controller TCON0.</p>
 <p>Here’s the fix for this lag…</p>
-<h1 id="fix-missing-pixels-in-pinephone-image"><a href="#fix-missing-pixels-in-pinephone-image">8 Fix Missing Pixels in PinePhone Image</a></h1>
+<h1 id="fix-missing-pixels-in-pinephone-image"><a href="#fix-missing-pixels-in-pinephone-image">9 Fix Missing Pixels in PinePhone Image</a></h1>
 <p>TODO</p>
 <p>In the previous section we saw that there was a lag pushing pixels from the RAM Framebuffer to the PinePhone Display (over DMA / Display Engine / Timing Controller TCON0).</p>
 <p>Can we overcome this lag by copying the RAM Framebuffer to itself, forcing the display to refresh? This sounds very strange, but yes it works! </p>
@@ -511,7 +520,7 @@ static int pinephone_updatearea(
 </li>
 </ol>
 <p>Can we handle TCON0 CPU Trigger Mode Finish without refreshing the Display Engine Registers?</p>
-<h1 id="lvgl-on-nuttx-on-pinephone"><a href="#lvgl-on-nuttx-on-pinephone">9 LVGL on NuttX on PinePhone</a></h1>
+<h1 id="lvgl-on-nuttx-on-pinephone"><a href="#lvgl-on-nuttx-on-pinephone">10 LVGL on NuttX on PinePhone</a></h1>
 <p>TODO</p>
 <p>LVGL on NuttX renders correctly on PinePhone! (Pic below)</p>
 <p>Here are the settings in <code>make menuconfig</code>…</p>
@@ -538,7 +547,7 @@ static int pinephone_updatearea(
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/fb-lvgl.jpg" alt="LVGL on NuttX on PinePhone" /></p>
-<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>Check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
 <ul>
