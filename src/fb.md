@@ -227,6 +227,301 @@ area.h = height;
 draw_rect(&state, &area, color);
 ```
 
+# PinePhone Framebuffer Driver
+
+TODO
+
+[pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/fb2/boards/arm64/a64/pinephone/src/pinephone_display.c#L117-L241)
+
+```c
+/* Vtable for Frame Buffer Operations */
+
+static struct fb_vtable_s g_pinephone_vtable =
+{
+  .getvideoinfo    = pinephone_getvideoinfo,
+  .getplaneinfo    = pinephone_getplaneinfo,
+  .updatearea      = pinephone_updatearea,
+  .getoverlayinfo  = pinephone_getoverlayinfo,
+  .settransp       = pinephone_settransp,
+  .setchromakey    = pinephone_setchromakey,
+  .setcolor        = pinephone_setcolor,
+  .setblank        = pinephone_setblank,
+  .setarea         = pinephone_setarea
+};
+
+/* Frame Buffers for Display Engine *****************************************/
+
+/* Frame Buffer 0: (Base UI Channel)
+ * Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
+ */
+
+static uint32_t g_pinephone_fb0[PANEL_WIDTH * PANEL_HEIGHT];
+
+/* Frame Buffer 1: (First Overlay UI Channel)
+ * Square 600 x 600 (4 bytes per ARGB 8888 pixel)
+ */
+
+static uint32_t g_pinephone_fb1[FB1_WIDTH * FB1_HEIGHT];
+
+/* Frame Buffer 2: (Second Overlay UI Channel)
+ * Fullscreen 720 x 1440 (4 bytes per ARGB 8888 pixel)
+ */
+
+static uint32_t g_pinephone_fb2[PANEL_WIDTH * PANEL_HEIGHT];
+
+/* Video Controller for 3 UI Channels:
+ * Fullscreen 720 x 1440 (4 bytes per ARGB 8888 pixel)
+ */
+
+static struct fb_videoinfo_s g_pinephone_video =
+{
+  .fmt       = FB_FMT_RGBA32,  /* Pixel format (XRGB 8888) */
+  .xres      = PANEL_WIDTH,    /* Horizontal resolution in pixel columns */
+  .yres      = PANEL_HEIGHT,   /* Vertical resolution in pixel rows */
+  .nplanes   = 1,              /* Color planes: Base UI Channel */
+  .noverlays = 2               /* Overlays: 2 Overlay UI Channels) */
+};
+
+/* Color Plane for Base UI Channel:
+ * Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
+ */
+
+static struct fb_planeinfo_s g_pinephone_plane =
+{
+  .fbmem        = &g_pinephone_fb0,
+  .fblen        = sizeof(g_pinephone_fb0),
+  .stride       = PANEL_WIDTH * 4,  /* Length of a line (4-byte pixel) */
+  .display      = 0,                /* Display number (Unused) */
+  .bpp          = 32,               /* Bits per pixel (XRGB 8888) */
+  .xres_virtual = PANEL_WIDTH,      /* Virtual Horizontal resolution */
+  .yres_virtual = PANEL_HEIGHT,     /* Virtual Vertical resolution */
+  .xoffset      = 0,                /* Offset from virtual to visible */
+  .yoffset      = 0                 /* Offset from virtual to visible */
+};
+
+/* Overlays for 2 Overlay UI Channels */
+
+static struct fb_overlayinfo_s g_pinephone_overlays[2] =
+{
+  /* First Overlay UI Channel:
+   * Square 600 x 600 (4 bytes per ARGB 8888 pixel)
+   */
+
+  {
+    .fbmem     = &g_pinephone_fb1,
+    .fblen     = sizeof(g_pinephone_fb1),
+    .stride    = FB1_WIDTH * 4,    /* Length of a line (4-byte pixel) */
+    .overlay   = 0,                /* Overlay number (First Overlay) */
+    .bpp       = 32,               /* Bits per pixel (ARGB 8888) */
+    .blank     = 0,                /* TODO: Blank or unblank */
+    .chromakey = 0,                /* TODO: Chroma key argb8888 formatted */
+    .color     = 0,                /* TODO: Color argb8888 formatted */
+    .transp    =                   /* TODO: Transparency */
+    {
+      .transp      = 0,
+      .transp_mode = 0
+    },
+    .sarea     =                   /* Selected area within the overlay */
+    {
+      .x = 52,
+      .y = 52,
+      .w = FB1_WIDTH,
+      .h = FB1_HEIGHT
+    },
+    .accl      = 0                 /* TODO: Supported hardware acceleration */
+  },
+
+  /* Second Overlay UI Channel:
+   * Fullscreen 720 x 1440 (4 bytes per ARGB 8888 pixel)
+   */
+
+  {
+    .fbmem     = &g_pinephone_fb2,
+    .fblen     = sizeof(g_pinephone_fb2),
+    .stride    = PANEL_WIDTH * 4,  /* Length of a line (4-byte pixel) */
+    .overlay   = 1,                /* Overlay number (First Overlay) */
+    .bpp       = 32,               /* Bits per pixel (ARGB 8888) */
+    .blank     = 0,                /* TODO: Blank or unblank */
+    .chromakey = 0,                /* TODO: Chroma key argb8888 formatted */
+    .color     = 0,                /* TODO: Color argb8888 formatted */
+    .transp    =                   /* TODO: Transparency */
+    {
+      .transp      = 0,
+      .transp_mode = 0
+    },
+    .sarea     =                   /* Selected area within the overlay */
+    {
+      .x = 0,
+      .y = 0,
+      .w = PANEL_WIDTH,
+      .h = PANEL_HEIGHT
+    },
+    .accl      = 0                 /* TODO: Supported hardware acceleration */
+  }
+};
+```
+
+TODO
+
+[pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/fb2/boards/arm64/a64/pinephone/src/pinephone_display.c#L349-L395)
+
+```c
+/****************************************************************************
+ * Name: pinephone_getvideoinfo
+ *
+ * Description:
+ *   Get the videoinfo for the framebuffer. (ioctl Entrypoint:
+ *   FBIOGET_VIDEOINFO)
+ *
+ * Input Parameters:
+ *   vtable - Framebuffer driver object
+ *   vinfo  - Returned videoinfo object
+ *
+ * Returned Value:
+ *   Zero (OK) on success; a negated errno value is returned on any failure.
+ *
+ ****************************************************************************/
+
+static int pinephone_getvideoinfo(struct fb_vtable_s *vtable,
+                                  struct fb_videoinfo_s *vinfo)
+{
+  static int stage = 0;
+
+  ginfo("vtable=%p vinfo=%p\n", vtable, vinfo);
+  DEBUGASSERT(vtable != NULL && vtable == &g_pinephone_vtable &&
+              vinfo != NULL);
+
+  /* Copy and return the videoinfo object */
+
+  memcpy(vinfo, &g_pinephone_video, sizeof(struct fb_videoinfo_s));
+
+  /* Keep track of the stages during startup:
+   * Stage 0: Initialize driver at startup
+   * Stage 1: First call by apps
+   * Stage 2: Subsequent calls by apps
+   * We erase the framebuffers at stages 0 and 1. This allows the
+   * Test Pattern to be displayed for as long as possible before erasure.
+   */
+
+  if (stage < 2)
+    {
+      stage++;
+      memset(g_pinephone_fb0, 0, sizeof(g_pinephone_fb0));
+      memset(g_pinephone_fb1, 0, sizeof(g_pinephone_fb1));
+      memset(g_pinephone_fb2, 0, sizeof(g_pinephone_fb2));
+    }
+
+  return OK;
+}
+```
+
+TODO
+
+[pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/fb2/boards/arm64/a64/pinephone/src/pinephone_display.c#L397-L429)
+
+```c
+/****************************************************************************
+ * Name: pinephone_getplaneinfo
+ *
+ * Description:
+ *   Get the planeinfo for the framebuffer. (ioctl Entrypoint:
+ *   FBIOGET_PLANEINFO)
+ *
+ * Input Parameters:
+ *   vtable - Framebuffer driver object
+ *   pinfo  - Returned planeinfo object
+ *
+ * Returned Value:
+ *   Zero (OK) on success; a negated errno value is returned on any failure.
+ *
+ ****************************************************************************/
+
+static int pinephone_getplaneinfo(struct fb_vtable_s *vtable, int planeno,
+                                  struct fb_planeinfo_s *pinfo)
+{
+  DEBUGASSERT(vtable != NULL && vtable == &g_pinephone_vtable);
+  ginfo("vtable=%p planeno=%d pinfo=%p\n", vtable, planeno, pinfo);
+
+  /* Copy and return the planeinfo object */
+
+  if (planeno == 0)
+    {
+      memcpy(pinfo, &g_pinephone_plane, sizeof(struct fb_planeinfo_s));
+      return OK;
+    }
+
+  gerr("ERROR: Returning EINVAL\n");
+  return -EINVAL;
+}
+```
+
+TODO
+
+[pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/fb2/boards/arm64/a64/pinephone/src/pinephone_display.c#L431-L470)
+
+```c
+/****************************************************************************
+ * Name: pinephone_getoverlayinfo
+ *
+ * Description:
+ *   Get the overlayinfo for the framebuffer. (ioctl Entrypoint:
+ *   FBIOGET_OVERLAYINFO)
+ *
+ * Input Parameters:
+ *   vtable    - Framebuffer driver object
+ *   overlayno - Overlay number
+ *   oinfo     - Returned overlayinfo object
+ *
+ * Returned Value:
+ *   Zero (OK) on success; a negated errno value is returned on any failure.
+ *
+ ****************************************************************************/
+
+static int pinephone_getoverlayinfo(struct fb_vtable_s *vtable,
+                                    int overlayno,
+                                    struct fb_overlayinfo_s *oinfo)
+{
+  const int overlay_len = sizeof(g_pinephone_overlays) /
+                          sizeof(g_pinephone_overlays[0]);
+
+  ginfo("vtable=%p overlay=%d oinfo=%p\n", vtable, overlayno, oinfo);
+  DEBUGASSERT(vtable != NULL && vtable == &g_pinephone_vtable);
+
+  /* Copy and return the overlayinfo object */
+
+  if (overlayno >= 0 && overlayno < overlay_len)
+    {
+      struct fb_overlayinfo_s *overlay = &g_pinephone_overlays[overlayno];
+
+      memcpy(oinfo, overlay, sizeof(struct fb_overlayinfo_s));
+      return OK;
+    }
+
+  gerr("ERROR: Returning EINVAL\n");
+  return -EINVAL;
+}
+```
+
+TODO: pinephone_settransp
+
+[pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/fb2/boards/arm64/a64/pinephone/src/pinephone_display.c#L515-L539)
+
+TODO: pinephone_setchromakey
+
+[pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/fb2/boards/arm64/a64/pinephone/src/pinephone_display.c#L541-L566)
+
+TODO: pinephone_setcolor
+
+[pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/fb2/boards/arm64/a64/pinephone/src/pinephone_display.c#L568-L593)
+
+TODO: pinephone_setblank
+
+[pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/fb2/boards/arm64/a64/pinephone/src/pinephone_display.c#L595-L619)
+
+TODO: pinephone_setarea
+
+[pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/fb2/boards/arm64/a64/pinephone/src/pinephone_display.c#L621-L647)
+
 # Missing Pixels in PinePhone Image
 
 TODO
