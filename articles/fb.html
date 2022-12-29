@@ -81,10 +81,21 @@
 <li><a href="#fix-missing-pixels-in-pinephone-image">8 Fix Missing Pixels in PinePhone Image</a><ul></ul></li>
 <li><a href="#lvgl-on-nuttx-on-pinephone">9 LVGL on NuttX on PinePhone</a><ul></ul></li>
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2023</em></p>
-<p><img src="https://lupyuen.github.io/images/fb-title.jpg" alt="TODO" /></p>
-<p>TODO: How NuttX Apps call the NuttX Framebuffer Interface to render graphics… And what’s inside the Framebuffer Driver for Pine64 PinePhone</p>
-<p>TODO: Missing pixels</p>
-<p><a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> now boots on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/fb-title.jpg" alt="Apache NuttX Framebuffer Test App on Pine64 PinePhone" /></p>
+<p>Suppose we’re running <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>…</p>
+<p>How do we create <strong>Graphical Apps</strong> for NuttX? (Pic above)</p>
+<p>Today we’ll learn about the…</p>
+<ul>
+<li>
+<p><strong>Framebuffer Interface</strong> that NuttX provides to our apps for rendering graphics</p>
+</li>
+<li>
+<p>What’s inside the <strong>Framebuffer Driver</strong> for PinePhone</p>
+</li>
+<li>
+<p>Mystery of the <strong>Missing Framebuffer Pixels</strong> and how we solved it</p>
+</li>
+</ul>
 <h1 id="framebuffer-interface"><a href="#framebuffer-interface">1 Framebuffer Interface</a></h1>
 <p>TODO: #ifdef CONFIG_FB_OVERLAY</p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L314-L337">fb_main.c</a></p>
