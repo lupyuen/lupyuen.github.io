@@ -328,15 +328,61 @@ draw_rect(&state, &area, color);
 // Omitted: Refresh the display with ioctl(FBIO_UPDATE)
 ```
 
-The pic below shows the output of the Framebuffer App __`fb`__ when we run it on PinePhone.
-
-[(See the Complete Log)](https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b)
-
-TODO
+The pic below shows the output of the Framebuffer App __`fb`__ when we run it on PinePhone...
 
 ![NuttX Framebuffer App running on PinePhone](https://lupyuen.github.io/images/fb-run.png)
 
-[_NuttX Framebuffer App running on PinePhone_](https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b)
+[(See the Complete Log)](https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b)
+
+And we're all done with Circles and Rectangles on PinePhone! Let's talk about Graphical User Interfaces...
+
+![LVGL on NuttX on PinePhone](https://lupyuen.github.io/images/fb-lvgl.jpg)
+
+# LVGL Graphics Library
+
+_Rendering graphics pixel by pixel sounds tedious..._
+
+_Is there a simpler way to render Graphical User Interfaces?_
+
+Yep just call the [__LVGL Graphics Library__](https://docs.lvgl.io/master/intro/index.html)! (Pic above)
+
+To build the __LVGL Demo App__ on NuttX...
+
+```bash
+make menuconfig
+```
+
+Select the following options...
+
+- Enable __"Application Configuration > Examples > LVGL Demo"__
+
+- Enable __"Application Configuration > Graphics Support > Light and Versatile Graphics Library (LVGL)"__
+
+- Under __"LVGL > Graphics Settings"__...
+  - Set __Horizontal Resolution__ to __720__
+  - Set __Vertical Resolution__ to __1440__
+  - Set __DPI__ to __200__ (or higher)
+
+- Under __"LVGL > Color settings"__...
+  - Set __Color Depth__ to __32__
+
+Save the configuration and exit `menuconfig`. Rebuild NuttX...
+
+```bash
+make
+```
+
+Boot NuttX on PinePhone. At the NSH Command Prompt, enter...
+
+```bash
+lvgldemo
+```
+
+We'll see the Graphical User Interface as shown in the pic above!
+
+TODO: Touch input
+
+TODO: How does it work?
 
 # PinePhone Framebuffer Driver
 
@@ -616,28 +662,6 @@ p-boot Bootloader seems to handle every TCON0 CPU Trigger Mode Finish (`TCON0_Tr
 1.  `display_commit` updates the Display Engine Registers, including the Framebuffer Addresses: [display.c](https://megous.com/git/p-boot/tree/src/display.c#n2017)
 
 Can we handle TCON0 CPU Trigger Mode Finish without refreshing the Display Engine Registers?
-
-# LVGL on NuttX on PinePhone
-
-TODO
-
-LVGL on NuttX renders correctly on PinePhone! (Pic below)
-
-Here are the settings in `make menuconfig`...
-
-- Enable "Application Configuration > Examples > LVGL Demo"
-
-- Enable "Application Configuration > Graphics Support > Light and Versatile Graphic Library (LVGL)"
-
-- Under "LVGL > Graphics settings"...
-  - Set "Horizontal resolution" to 720
-  - Set "Vertical resolution" to 1440
-  - Set "DPI (px/inch)" to 200
-
-- Under "LVGL > Color settings"...
-  - Set "Color depth (8/16/32)" to 32
-
-![LVGL on NuttX on PinePhone](https://lupyuen.github.io/images/fb-lvgl.jpg)
 
 # What's Next
 
