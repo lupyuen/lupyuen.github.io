@@ -456,8 +456,15 @@ static struct fb_vtable_s g_pinephone_vtable = {
 </ul>
 <p>But before that we need to initialise the Framebuffer and return the Video Plane…</p>
 <h2 id="initialise-framebuffer"><a href="#initialise-framebuffer">8.3 Initialise Framebuffer</a></h2>
-<p>TODO: up_fbinitialize</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L652-L801">pinephone_display.c</a></p>
+<p>At Startup, NuttX Kernel calls <strong>up_fbinitialize</strong> to initialize the Framebuffer…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lcd#complete-display-driver"><strong>“Complete Display Driver”</strong></a></li>
+</ul>
+<p><strong>up_fbinitialize</strong> comes from our Framebuffer Driver (LCD Driver)…</p>
+<ul>
+<li><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L652-L801"><strong>up_fbinitialize (Initialise Framebuffer)</strong></a></li>
+</ul>
+<p>Then NuttX Kernel interrogates our Framebuffer Driver to discover the Video Plane…</p>
 <h2 id="get-video-plane"><a href="#get-video-plane">8.4 Get Video Plane</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L801-L833">pinephone_display.c</a></p>
