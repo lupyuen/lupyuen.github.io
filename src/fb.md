@@ -261,16 +261,15 @@ Everything is hunky dory for chunks of pixels! Let's set individual pixels by ro
 
 # Render Circle
 
-TODO
-
-[fb_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L603-L651)
+This is how we render the Green Circle in the pic above: [fb_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L603-L651)
 
 ```c
 // Fill framebuffer with Green Circle
 uint32_t *fb = fbmem;  // Access framebuffer as 32-bit pixels
 const size_t fblen = pinfo.fblen / 4;  // 4 bytes per pixel
-const uint32_t width  = pinfo.xres_virtual;  // Framebuffer Width
-const uint32_t height = pinfo.yres_virtual;  // Framebuffer Height
+
+const int width  = pinfo.xres_virtual;  // Framebuffer Width
+const int height = pinfo.yres_virtual;  // Framebuffer Height
 
 // For every pixel row...
 for (int y = 0; y < height; y++) {
@@ -289,10 +288,12 @@ for (int y = 0; y < height; y++) {
 
     // If x^2 + y^2 < radius^2, set the pixel to Green.
     // Colors are in ARGB 8888 format.
-    if (x_shift*x_shift + y_shift*y_shift < half_width*half_width) {
+    if (x_shift*x_shift + y_shift*y_shift <
+        half_width*half_width) {
       // RGB24_GREEN is 0x0000 FF00
       fb[p] = RGB24_GREEN;
-    } else {  // Otherwise set to Transparent Black
+
+    } else {  // Otherwise set to Black
       // RGB24_BLACK is 0x0000 0000
       fb[p] = RGB24_BLACK;
     }
@@ -301,6 +302,8 @@ for (int y = 0; y < height; y++) {
 
 // Omitted: Refresh the display with ioctl(FBIO_UPDATE)
 ```
+
+TODO
 
 ![Render Rectangles](https://lupyuen.github.io/images/fb-demo1.jpg)
 
