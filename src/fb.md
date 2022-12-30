@@ -303,23 +303,40 @@ for (int y = 0; y < height; y++) {
 // Omitted: Refresh the display with ioctl(FBIO_UPDATE)
 ```
 
-TODO
+Yep we have full control over every single pixel! Let's wrap up our demo with some mesmerising rectangles...
 
 ![Render Rectangles](https://lupyuen.github.io/images/fb-demo1.jpg)
 
 # Render Rectangle
 
-TODO
+When we run the [__NuttX Framebuffer App__](https://lupyuen.github.io/articles/fb#framebuffer-demo), we'll see a bunch of Color Rectangles. (Pic above)
 
-[fb_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L472-L480)
+We __render each Rectangle__ like so: [fb_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L472-L480)
 
 ```c
-area.x = x;
-area.y = y;
-area.w = width;
-area.h = height;
+// Rectangle to be rendered
+struct fb_area_s area = {
+  .x = 0,  // X Offset
+  .y = 0,  // Y Offset
+  .w = pinfo.xres_virtual,  // Width
+  .h = pinfo.yres_virtual   // Height
+}
+
+// Render the rectangle
 draw_rect(&state, &area, color);
+
+// Omitted: Refresh the display with ioctl(FBIO_UPDATE)
 ```
+
+The pic below shows the output of the Framebuffer App __`fb`__ when we run it on PinePhone.
+
+[(See the Complete Log)](https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b)
+
+TODO
+
+![NuttX Framebuffer App running on PinePhone](https://lupyuen.github.io/images/fb-run.png)
+
+[_NuttX Framebuffer App running on PinePhone_](https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b)
 
 # PinePhone Framebuffer Driver
 
