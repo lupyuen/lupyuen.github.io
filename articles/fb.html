@@ -225,7 +225,7 @@ close(fd);</code></pre></div>
 <h1 id="render-blocks"><a href="#render-blocks">4 Render Blocks</a></h1>
 <p>This is how we render the <strong>Blue, Green and Red Blocks</strong> in the pic above: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L564-L601">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Fill framebuffer with Blue, Green and Red Blocks
-uint32_t *fb = fbmem;
+uint32_t *fb = fbmem;  // Access framebuffer as 32-bit pixels
 const size_t fblen = pinfo.fblen / 4;  // 4 bytes per pixel
 
 // For every pixel...
@@ -250,16 +250,16 @@ for (int i = 0; i &lt; fblen; i++) {
 }
 
 // Omitted: Refresh the display with ioctl(FBIO_UPDATE)</code></pre></div>
-<p>TODO</p>
+<p>Everything is hunky dory for blocks of pixels! Let’s set individual pixels by row and column…</p>
 <p><img src="https://lupyuen.github.io/images/fb-demo4.jpg" alt="Render Circle" /></p>
 <h1 id="render-circle"><a href="#render-circle">5 Render Circle</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L603-L651">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Fill framebuffer with Green Circle
-uint32_t *fb = fbmem;
+uint32_t *fb = fbmem;  // Access framebuffer as 32-bit pixels
 const size_t fblen = pinfo.fblen / 4;  // 4 bytes per pixel
-const uint32_t width = pinfo.xres_virtual;
-const uint32_t height = pinfo.yres_virtual;
+const uint32_t width  = pinfo.xres_virtual;  // Framebuffer Width
+const uint32_t height = pinfo.yres_virtual;  // Framebuffer Height
 
 // For every pixel row...
 for (int y = 0; y &lt; height; y++) {
