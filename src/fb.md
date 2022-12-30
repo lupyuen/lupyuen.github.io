@@ -380,7 +380,11 @@ lvgldemo
 
 We'll see the Graphical User Interface as shown in the pic above!
 
-TODO: Touch input
+_But it won't respond to our touch right?_
+
+Yeah we haven't started on the __Touch Input Driver__ for PinePhone.
+
+Maybe someday LVGL Touchscreen Apps will run OK on PinePhone!
 
 TODO: How does it work?
 
