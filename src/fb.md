@@ -448,7 +448,7 @@ static struct fb_planeinfo_s g_pinephone_plane =
 
 TODO
 
-[pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/fb2/boards/arm64/a64/pinephone/src/pinephone_display.c#L117-L241)
+[pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L117-L241)
 
 ```c
 /* Vtable for Frame Buffer Operations */
@@ -458,6 +458,8 @@ static struct fb_vtable_s g_pinephone_vtable =
   .getvideoinfo    = pinephone_getvideoinfo,
   .getplaneinfo    = pinephone_getplaneinfo,
   .updatearea      = pinephone_updatearea,
+
+  // For Overlay Support
   .getoverlayinfo  = pinephone_getoverlayinfo,
   .settransp       = pinephone_settransp,
   .setchromakey    = pinephone_setchromakey,
@@ -471,7 +473,7 @@ static struct fb_vtable_s g_pinephone_vtable =
 
 TODO
 
-[pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/fb2/boards/arm64/a64/pinephone/src/pinephone_display.c#L349-L395)
+[pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L349-L395)
 
 ```c
 /****************************************************************************
@@ -527,7 +529,7 @@ static int pinephone_getvideoinfo(struct fb_vtable_s *vtable,
 
 TODO
 
-[pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/fb2/boards/arm64/a64/pinephone/src/pinephone_display.c#L397-L429)
+[pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L397-L429)
 
 ```c
 /****************************************************************************
@@ -609,7 +611,7 @@ In the previous section we saw that there was a lag pushing pixels from the RAM 
 
 Can we overcome this lag by copying the RAM Framebuffer to itself, forcing the display to refresh? This sounds very strange, but yes it works! 
 
-From [pinephone_display.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/pixel/boards/arm64/a64/pinephone/src/pinephone_display.c#L472-L513):
+From [pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L472-L513):
 
 ```c
 // Update the display when there is a change to the framebuffer.
