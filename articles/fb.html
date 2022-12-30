@@ -481,6 +481,7 @@ struct fb_vtable_s *up_fbgetvplane(
 }</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/fb#framebuffer-operations">(We’ve seen <strong>g_pinephone_vtable</strong> earlier)</a></p>
 <p>Now it gets interesting: NuttX Kernel calls the operations exposed by our Framebuffer Driver…</p>
+<p><img src="https://lupyuen.github.io/images/lcd-title.jpg" alt="Test Pattern on NuttX for PinePhone" /></p>
 <h2 id="get-video-info"><a href="#get-video-info">8.5 Get Video Info</a></h2>
 <p>The first operation exposed by our Framebuffer Driver is to return the <strong>Video Info</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L349-L395">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Get the Video Info for our Framebuffer
@@ -507,7 +508,10 @@ static int pinephone_getvideoinfo(
   return OK;
 }</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/fb#ram-framebuffer">(We’ve seen <strong>g_pinephone_video</strong> earlier)</a></p>
-<p>TODO</p>
+<p>This code looks interesting: We’re trying to show the <strong>Startup Test Pattern</strong> for as long as possible. (Pic above)</p>
+<p>Normally NuttX Kernel will erase our Framebuffer at startup. But with the logic above, our Test Pattern will be visible until the <strong>first app call</strong> to our Framebuffer Driver.</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L855-L978">(Test Pattern is rendered by <strong>pinephone_display_test_pattern</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L79-L93">(Which is called by <strong>pinephone_bringup</strong>)</a></p>
 <h2 id="get-plane-info"><a href="#get-plane-info">8.6 Get Plane Info</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L397-L429">pinephone_display.c</a></p>
