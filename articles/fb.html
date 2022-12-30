@@ -83,7 +83,7 @@
 <li><a href="#get-plane-info">8.6 Get Plane Info</a><ul></ul></li>
 <li><a href="#update-area">8.7 Update Area</a><ul></ul></li></ul></li>
 <li><a href="#mystery-of-the-missing-pixels">9 Mystery of the Missing Pixels</a><ul></ul></li>
-<li><a href="#fix-missing-pixels-in-pinephone-image">10 Fix Missing Pixels in PinePhone Image</a><ul></ul></li>
+<li><a href="#fix-missing-pixels">10 Fix Missing Pixels</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/fb-title.jpg" alt="Apache NuttX Framebuffer App on Pine64 PinePhone" /></p>
 <p>Suppose we’re running <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>…</p>
@@ -395,7 +395,7 @@ static uint32_t g_pinephone_fb0[  // 32 bits per pixel
   PANEL_WIDTH * PANEL_HEIGHT      // 720 x 1440 pixels
 ];</code></pre></div>
 <p>(Memory Protection is not turned on yet, so <a href="https://lupyuen.github.io/articles/fb"><strong>mmap</strong></a> returns the actual address of <strong>g_pinephone_fb0</strong> to NuttX Apps for rendering)</p>
-<p>We describe <strong>PinePhone’s LCD Display</strong> like so…</p>
+<p>We describe <strong>PinePhone’s LCD Display</strong> like so (pic below)…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Video Info for PinePhone
 // (Framebuffer Characteristics)
 // PANEL_WIDTH is 720
@@ -424,6 +424,7 @@ static struct fb_planeinfo_s g_pinephone_plane = {
   .yoffset      = 0   // Y Offset from virtual to visible
 };</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L488-L505">(<strong>fb_planeinfo_s</strong> is defined here)</a></p>
+<p><img src="https://lupyuen.github.io/images/de2-fb.jpg" alt="PinePhone Framebuffer" /></p>
 <h2 id="framebuffer-operations"><a href="#framebuffer-operations">8.2 Framebuffer Operations</a></h2>
 <p>Our Framebuffer Driver supports these <strong>Framebuffer Operations</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L116-L131">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Vtable for Frame Buffer Operations
@@ -487,7 +488,7 @@ struct fb_vtable_s *up_fbgetvplane(
 <ul>
 <li><a href="https://lupyuen.github.io/articles/fb#framebuffer-interface"><strong>“Framebuffer Interface”</strong></a></li>
 </ul>
-<p>The first operation exposed by our Framebuffer Driver returns the <strong>Video Info</strong> (Framebuffer Characteristics): <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L349-L395">pinephone_display.c</a></p>
+<p>The first operation exposed by our Framebuffer Driver returns the <strong>Video Info</strong> that contains our Framebuffer Characteristics: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L349-L395">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Get the Video Info for our Framebuffer
 // (ioctl Entrypoint: FBIOGET_VIDEOINFO)
 static int pinephone_getvideoinfo(
@@ -584,21 +585,22 @@ static int pinephone_updatearea(
 <p>According to the video, the pixels are actually written to correctly to the RAM Framebuffer. But the pixels at the lower half don’t get pushed to the display until the next screen refresh.</p>
 <p>There seems to be a lag between the writing of pixels to framebuffer, and the pushing of pixels to the display over DMA / Display Engine / Timing Controller TCON0.</p>
 <p>Here’s the fix for this lag…</p>
-<h1 id="fix-missing-pixels-in-pinephone-image"><a href="#fix-missing-pixels-in-pinephone-image">10 Fix Missing Pixels in PinePhone Image</a></h1>
+<h1 id="fix-missing-pixels"><a href="#fix-missing-pixels">10 Fix Missing Pixels</a></h1>
 <p>TODO</p>
 <p>In the previous section we saw that there was a lag pushing pixels from the RAM Framebuffer to the PinePhone Display (over DMA / Display Engine / Timing Controller TCON0).</p>
 <p>Can we overcome this lag by copying the RAM Framebuffer to itself, forcing the display to refresh? This sounds very strange, but yes it works! </p>
 <p>From <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L472-L513">pinephone_display.c</a>:</p>
-<div class="example-wrap"><pre class="language-c"><code>// Update the display when there is a change to the framebuffer.
+<div class="example-wrap"><pre class="language-c"><code>// Update the Display when there is a change to the Framebuffer
 // (ioctl Entrypoint: FBIO_UPDATE)
 static int pinephone_updatearea(
-  struct fb_vtable_s *vtable,   // Framebuffer driver object
+  struct fb_vtable_s *vtable,   // Framebuffer Driver
   const struct fb_area_s *area  // Updated area of framebuffer
 ) {
+  // Access Framebuffer as bytes
   uint8_t *fb = (uint8_t *)g_pinephone_fb0;
   const size_t fbsize = sizeof(g_pinephone_fb0);
 
-  // Copy the entire framebuffer to itself,
+  // Copy the Entire Framebuffer to itself,
   // to fix the missing pixels.
   // Not sure why this works.
   for (int i = 0; i &lt; fbsize; i++) {
@@ -623,7 +625,7 @@ static int pinephone_updatearea(
     (unsigned long)((uintptr_t)area)  // Updated area
   );
 #endif</code></pre></div>
-<p><img src="https://lupyuen.github.io/images/fb-test3.jpg" alt="Fixed Missing Pixels in PinePhone Image" /></p>
+<p><img src="https://lupyuen.github.io/images/fb-title.jpg" alt="Fixed Missing Pixels in PinePhone Image" /></p>
 <p>TODO: Can we copy the pixels for the partial screen area? Probably, needs more rigourous testing</p>
 <p>We might need to check the CPU Writeback Cache, and verify that our Framebuffer has been mapped with the right attributes.</p>
 <p>(Thanks to <a href="https://twitter.com/suarezvictor/status/1608643410906472448?s=20&amp;t=gFese-aeWGonGShw9vtNyg"><strong>suarezvictor</strong></a> and <a href="https://twitter.com/crzwdjk/status/1608661469591384064?s=20&amp;t=gFese-aeWGonGShw9vtNyg"><strong>crzwdjk</strong></a> for the tips!)</p>
