@@ -527,99 +527,58 @@ Then NuttX Kernel interrogates our Framebuffer Driver to discover the Video Plan
 
 ## Get Video Plane
 
-TODO
+NuttX Kernel calls our Framebuffer Driver to discover the __Framebuffer Operations__ supported by our driver.
 
-[pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L801-L833)
+This is how we return the Framebuffer Operations: [pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L801-L833)
 
 ```c
-/****************************************************************************
- * Name: up_fbgetvplane
- *
- * Description:
- *   Return a reference to the framebuffer object for the specified video
- *   plane of the specified plane.  Many OSDs support multiple planes of
- *   video.
- *
- * Input Parameters:
- *   display - In the case of hardware with multiple displays, this
- *             specifies the display.  Normally this is zero.
- *   vplane  - Identifies the plane being queried.
- *
- * Returned Value:
- *   A non-NULL pointer to the frame buffer access structure is returned on
- *   success; NULL is returned on any failure.
- *
- ****************************************************************************/
-
-struct fb_vtable_s *up_fbgetvplane(int display, int vplane)
-{
-  ginfo("vplane: %d\n", vplane);
-
-  DEBUGASSERT(display == 0);
-  if (vplane == 0)
-    {
-      return &g_pinephone_vtable;
-    }
-
-  return NULL;
+// Get the Framebuffer Object for the supported operations
+struct fb_vtable_s *up_fbgetvplane(
+  int display,  // Display Number should be 0
+  int vplane    // Video Plane should be 0
+) {
+  // Return the supported Framebuffer Operations
+  return &g_pinephone_vtable;
 }
 ```
+
+[(We've seen __g_pinephone_vtable__ earlier)](https://lupyuen.github.io/articles/fb#framebuffer-operations)
+
+Now it gets interesting: NuttX Kernel calls the operations exposed by our Framebuffer Driver...
 
 ## Get Video Info
 
-TODO
-
-[pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L349-L395)
+The first operation exposed by our Framebuffer Driver is to return the __Video Info__: [pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L349-L395)
 
 ```c
-/****************************************************************************
- * Name: pinephone_getvideoinfo
- *
- * Description:
- *   Get the videoinfo for the framebuffer. (ioctl Entrypoint:
- *   FBIOGET_VIDEOINFO)
- *
- * Input Parameters:
- *   vtable - Framebuffer driver object
- *   vinfo  - Returned videoinfo object
- *
- * Returned Value:
- *   Zero (OK) on success; a negated errno value is returned on any failure.
- *
- ****************************************************************************/
-
-static int pinephone_getvideoinfo(struct fb_vtable_s *vtable,
-                                  struct fb_videoinfo_s *vinfo)
-{
-  static int stage = 0;
-
-  ginfo("vtable=%p vinfo=%p\n", vtable, vinfo);
-  DEBUGASSERT(vtable != NULL && vtable == &g_pinephone_vtable &&
-              vinfo != NULL);
-
-  /* Copy and return the videoinfo object */
-
+// Get the Video Info for our Framebuffer
+static int pinephone_getvideoinfo(
+  struct fb_vtable_s *vtable,   // Framebuffer Driver
+  struct fb_videoinfo_s *vinfo  // Returned Video Info
+) {
+  // Copy and return the Video Info
   memcpy(vinfo, &g_pinephone_video, sizeof(struct fb_videoinfo_s));
 
-  /* Keep track of the stages during startup:
-   * Stage 0: Initialize driver at startup
-   * Stage 1: First call by apps
-   * Stage 2: Subsequent calls by apps
-   * We erase the framebuffers at stages 0 and 1. This allows the
-   * Test Pattern to be displayed for as long as possible before erasure.
-   */
-
-  if (stage < 2)
-    {
-      stage++;
-      memset(g_pinephone_fb0, 0, sizeof(g_pinephone_fb0));
-      memset(g_pinephone_fb1, 0, sizeof(g_pinephone_fb1));
-      memset(g_pinephone_fb2, 0, sizeof(g_pinephone_fb2));
-    }
-
+  // Keep track of the stages during startup:
+  // Stage 0: Initialize driver at startup
+  // Stage 1: First call by apps
+  // Stage 2: Subsequent calls by apps
+  // We erase the framebuffers at stages 0 and 1. This allows the
+  // Test Pattern to be displayed for as long as possible before erasure.
+  static int stage = 0;
+  if (stage < 2) {
+    stage++;
+    memset(g_pinephone_fb0, 0, sizeof(g_pinephone_fb0));
+    memset(g_pinephone_fb1, 0, sizeof(g_pinephone_fb1));
+    memset(g_pinephone_fb2, 0, sizeof(g_pinephone_fb2));
+  }
   return OK;
 }
 ```
+
+[(We've seen __g_pinephone_video__ earlier)](https://lupyuen.github.io/articles/fb#ram-framebuffer)
+
+TODO
 
 ## Get Plane Info
 
