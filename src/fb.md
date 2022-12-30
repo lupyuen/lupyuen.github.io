@@ -247,7 +247,7 @@ for (int i = 0; i < fblen; i++) {
 // Omitted: Refresh the display with ioctl(FBIO_UPDATE)
 ```
 
-Everything is hunky dory for blocks of pixels! Let's set individual pixels by row and column...
+Everything is hunky dory for chunks of pixels! Let's set individual pixels by row and column...
 
 ![Render Circle](https://lupyuen.github.io/images/fb-demo4.jpg)
 
