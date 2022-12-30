@@ -643,39 +643,35 @@ The code inside looks totally baffling, but first let's talk about a mysterious 
 
 # Mystery of the Missing Pixels
 
-TODO
+When we tested our Framebuffer Driver for the very first time, we discovered __missing pixels__ in the rendered image (pic above)...
 
-We've just implemented the NuttX Kernel Drivers for MIPI Display Serial Interface, Timing Controller TCON0, Display Engine, Reduced Serial Bus, Power Management Integrated Circuit and LCD Panel...
+-   Inside the Yellow Box is supposed to be an __Orange Box__
 
--   ["NuttX RTOS for PinePhone: MIPI Display Serial Interface"](https://lupyuen.github.io/articles/dsi3)
+-   Inside the Orange Box is supposed to be a __Red Box__
 
--   ["NuttX RTOS for PinePhone: Display Engine"](https://lupyuen.github.io/articles/de3)
+-   We see bits of __Orange and Red Pixels__
 
--   ["NuttX RTOS for PinePhone: LCD Panel"](https://lupyuen.github.io/articles/lcd)
+    [(Compare with the pic below)](https://lupyuen.github.io/images/fb-title.jpg)
 
-And we're adding the Framebuffer Driver to NuttX Kernel...
+_Maybe we didn't render the pixels correctly?_
 
-https://github.com/apache/nuttx/pull/7988
+_Or maybe the RAM Framebuffer got corrupted?_
 
-When we run the `fb` NuttX Example App, we see missing pixels in the rendered image...
+When we slowed down the rendering, we see the __missing pixels magically appear__ later in a curious pattern...
 
--   Inside the Yellow Box is supposed to be an Orange Box
+-   [__Watch the Demo on YouTube__](https://www.youtube.com/shorts/WD5AJj7Rz5U)
 
--   Inside the Orange Box is supposed to be a Red Box
+According to the video, the pixels are actually __written correctly__ to the RAM Framebuffer.
 
-(Pic above)
+But the pixels at the lower half don't get pushed to the display until the __next screen update.__
 
-The missing pixels magically appear later in a curious pattern...
+_Maybe it's a problem with Framebuffer DMA / Display Engine / Timing Controller TCON0?_
 
--   [Watch the Demo on YouTube](https://www.youtube.com/shorts/WD5AJj7Rz5U)
+Yeah there seems to be a lag between the writing of pixels to RAM Framebuffer, and the pushing of pixels to the display over DMA / Display Engine / Timing Controller TCON0.
 
-There seems to be a problem with Framebuffer DMA / Display Engine / Timing Controller TCON0?
+We found a workaround for the lag in rendering pixels...
 
-According to the video, the pixels are actually written to correctly to the RAM Framebuffer. But the pixels at the lower half don't get pushed to the display until the next screen refresh.
-
-There seems to be a lag between the writing of pixels to framebuffer, and the pushing of pixels to the display over DMA / Display Engine / Timing Controller TCON0.
-
-Here's the fix for this lag...
+![Fixed Missing Pixels in PinePhone Image](https://lupyuen.github.io/images/fb-title.jpg)
 
 # Fix Missing Pixels
 
@@ -711,7 +707,7 @@ static int pinephone_updatearea(
 }
 ```
 
-With the code above, the Red, Orange and Yellow Boxes are now rendered correctly in our NuttX Framebuffer Driver for PinePhone. (Pic below)
+With the code above, the Red, Orange and Yellow Boxes are now rendered correctly in our NuttX Framebuffer Driver for PinePhone. (Pic above)
 
 _Who calls pinephone_updatearea?_
 
@@ -731,8 +727,6 @@ This triggers `pinephone_updatearea` in our NuttX Framebuffer Driver: [fb_main.c
   );
 #endif
 ```
-
-![Fixed Missing Pixels in PinePhone Image](https://lupyuen.github.io/images/fb-title.jpg)
 
 TODO: Can we copy the pixels for the partial screen area? Probably, needs more rigourous testing
 
