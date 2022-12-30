@@ -352,9 +352,25 @@ draw_rect(&amp;state, &amp;area, color);
 <div class="example-wrap"><pre class="language-bash"><code>lvgldemo</code></pre></div>
 <p>We’ll see the Graphical User Interface as shown in the pic above!</p>
 <p><em>But it won’t respond to our touch right?</em></p>
-<p>Yeah we haven’t started on the <strong>Touch Input Driver</strong> for PinePhone.</p>
+<p>Yeah we haven’t started on the <a href="https://lupyuen.github.io/articles/pio#touch-panel"><strong>Touch Input Driver</strong></a> for PinePhone.</p>
 <p>Maybe someday LVGL Touchscreen Apps will run OK on PinePhone!</p>
-<p>TODO: How does it work?</p>
+<p><em>What’s inside the LVGL App?</em></p>
+<p>Here’s how it works…</p>
+<ul>
+<li>
+<p><strong>Main Function</strong> (Event Loop) of the LVGL App is here: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L109-L238">lvgldemo.c</a></p>
+</li>
+<li>
+<p>Main Function calls the <strong>NuttX Framebuffer Interface</strong> here: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/fbdev.c">fbdev.c</a></p>
+</li>
+<li>
+<p><strong>LVGL Widgets</strong> are created here: <a href="https://github.com/lvgl/lv_demos/blob/v7.3.0/src/lv_demo_widgets/lv_demo_widgets.c#L108-L203">lv_demo_widgets.c</a></p>
+<p><a href="https://docs.lvgl.io/master/widgets/index.html">(See the docs for <strong>LVGL Widgets</strong>)</a></p>
+</li>
+<li>
+<p><strong>LVGL Version</strong> supported by NuttX is <strong>7.3.0</strong>. <a href="https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/Kconfig#L13-L17">(See this)</a></p>
+</li>
+</ul>
 <h1 id="pinephone-framebuffer-driver"><a href="#pinephone-framebuffer-driver">8 PinePhone Framebuffer Driver</a></h1>
 <p>TODO</p>
 <h2 id="ram-framebuffer"><a href="#ram-framebuffer">8.1 RAM Framebuffer</a></h2>
