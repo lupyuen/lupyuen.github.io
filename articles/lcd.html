@@ -597,7 +597,7 @@ int up_fbinitialize(int display) {
 <p><em>Who calls the code above?</em></p>
 <p>In the code above, our function <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L652-L801"><strong>up_fbinitialize</strong></a> executes the 11 steps needed for our PinePhone Display Driver.</p>
 <p>At startup, <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L652-L801"><strong>up_fbinitialize</strong></a> is called by <a href="https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L795-L805"><strong>fb_register</strong></a> (from the NuttX Framebuffer Driver)…</p>
-<p>And <a href="https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L795-L805"><strong>fb_register</strong></a> is called by <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L78-L88"><strong>pinephone_bringup</strong></a>, our Startup Function for PinePhone.</p>
+<p>And <a href="https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L795-L805"><strong>fb_register</strong></a> is called by <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L79-L93"><strong>pinephone_bringup</strong></a>, our Startup Function for PinePhone.</p>
 <p>Let’s talk about the Framebuffer Driver…</p>
 <p><img src="https://lupyuen.github.io/images/de3-title.jpg" alt="Apache NuttX RTOS boots on PinePhone and renders a Test Pattern" /></p>
 <h1 id="framebuffer-driver"><a href="#framebuffer-driver">8 Framebuffer Driver</a></h1>
