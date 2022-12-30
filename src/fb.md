@@ -438,7 +438,7 @@ static uint32_t g_pinephone_fb0[  // 32 bits per pixel
 
 (Memory Protection is not turned on yet, so [__mmap__](https://lupyuen.github.io/articles/fb) returns the actual address of __g_pinephone_fb0__ to NuttX Apps for rendering)
 
-We describe __PinePhone's LCD Display__ like so...
+We describe __PinePhone's LCD Display__ like so (pic below)...
 
 ```c
 // Video Info for PinePhone
@@ -477,6 +477,8 @@ static struct fb_planeinfo_s g_pinephone_plane = {
 ```
 
 [(__fb_planeinfo_s__ is defined here)](https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L488-L505)
+
+![PinePhone Framebuffer](https://lupyuen.github.io/images/de2-fb.jpg)
 
 ## Framebuffer Operations
 
@@ -554,7 +556,7 @@ Remember __FBIOGET_VIDEOINFO__ for fetching the Framebuffer Characteristics?
 
 -   [__"Framebuffer Interface"__](https://lupyuen.github.io/articles/fb#framebuffer-interface)
 
-The first operation exposed by our Framebuffer Driver returns the __Video Info__ (Framebuffer Characteristics): [pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L349-L395)
+The first operation exposed by our Framebuffer Driver returns the __Video Info__ that contains our Framebuffer Characteristics: [pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L349-L395)
 
 ```c
 // Get the Video Info for our Framebuffer
@@ -675,7 +677,7 @@ There seems to be a lag between the writing of pixels to framebuffer, and the pu
 
 Here's the fix for this lag...
 
-# Fix Missing Pixels in PinePhone Image
+# Fix Missing Pixels
 
 TODO
 
@@ -686,16 +688,17 @@ Can we overcome this lag by copying the RAM Framebuffer to itself, forcing the d
 From [pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L472-L513):
 
 ```c
-// Update the display when there is a change to the framebuffer.
+// Update the Display when there is a change to the Framebuffer
 // (ioctl Entrypoint: FBIO_UPDATE)
 static int pinephone_updatearea(
-  struct fb_vtable_s *vtable,   // Framebuffer driver object
+  struct fb_vtable_s *vtable,   // Framebuffer Driver
   const struct fb_area_s *area  // Updated area of framebuffer
 ) {
+  // Access Framebuffer as bytes
   uint8_t *fb = (uint8_t *)g_pinephone_fb0;
   const size_t fbsize = sizeof(g_pinephone_fb0);
 
-  // Copy the entire framebuffer to itself,
+  // Copy the Entire Framebuffer to itself,
   // to fix the missing pixels.
   // Not sure why this works.
   for (int i = 0; i < fbsize; i++) {
@@ -729,7 +732,7 @@ This triggers `pinephone_updatearea` in our NuttX Framebuffer Driver: [fb_main.c
 #endif
 ```
 
-![Fixed Missing Pixels in PinePhone Image](https://lupyuen.github.io/images/fb-test3.jpg)
+![Fixed Missing Pixels in PinePhone Image](https://lupyuen.github.io/images/fb-title.jpg)
 
 TODO: Can we copy the pixels for the partial screen area? Probably, needs more rigourous testing
 
