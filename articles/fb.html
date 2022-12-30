@@ -408,7 +408,7 @@ static struct fb_planeinfo_s g_pinephone_plane =
   .yoffset      = 0                 /* Offset from virtual to visible */
 };</code></pre></div><h2 id="framebuffer-operations"><a href="#framebuffer-operations">8.2 Framebuffer Operations</a></h2>
 <p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/fb2/boards/arm64/a64/pinephone/src/pinephone_display.c#L117-L241">pinephone_display.c</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L117-L241">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Vtable for Frame Buffer Operations */
 
 static struct fb_vtable_s g_pinephone_vtable =
@@ -416,6 +416,8 @@ static struct fb_vtable_s g_pinephone_vtable =
   .getvideoinfo    = pinephone_getvideoinfo,
   .getplaneinfo    = pinephone_getplaneinfo,
   .updatearea      = pinephone_updatearea,
+
+  // For Overlay Support
   .getoverlayinfo  = pinephone_getoverlayinfo,
   .settransp       = pinephone_settransp,
   .setchromakey    = pinephone_setchromakey,
@@ -424,7 +426,7 @@ static struct fb_vtable_s g_pinephone_vtable =
   .setarea         = pinephone_setarea
 };</code></pre></div><h2 id="get-video-info"><a href="#get-video-info">8.3 Get Video Info</a></h2>
 <p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/fb2/boards/arm64/a64/pinephone/src/pinephone_display.c#L349-L395">pinephone_display.c</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L349-L395">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
  * Name: pinephone_getvideoinfo
  *
@@ -473,7 +475,7 @@ static int pinephone_getvideoinfo(struct fb_vtable_s *vtable,
   return OK;
 }</code></pre></div><h2 id="get-plane-info"><a href="#get-plane-info">8.4 Get Plane Info</a></h2>
 <p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/fb2/boards/arm64/a64/pinephone/src/pinephone_display.c#L397-L429">pinephone_display.c</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L397-L429">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
  * Name: pinephone_getplaneinfo
  *
@@ -544,7 +546,7 @@ static int pinephone_getplaneinfo(struct fb_vtable_s *vtable, int planeno,
 <p>TODO</p>
 <p>In the previous section we saw that there was a lag pushing pixels from the RAM Framebuffer to the PinePhone Display (over DMA / Display Engine / Timing Controller TCON0).</p>
 <p>Can we overcome this lag by copying the RAM Framebuffer to itself, forcing the display to refresh? This sounds very strange, but yes it works! </p>
-<p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/pixel/boards/arm64/a64/pinephone/src/pinephone_display.c#L472-L513">pinephone_display.c</a>:</p>
+<p>From <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L472-L513">pinephone_display.c</a>:</p>
 <div class="example-wrap"><pre class="language-c"><code>// Update the display when there is a change to the framebuffer.
 // (ioctl Entrypoint: FBIO_UPDATE)
 static int pinephone_updatearea(
