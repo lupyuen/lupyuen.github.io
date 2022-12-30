@@ -220,7 +220,7 @@ This is how we render the __Blue, Green and Red Blocks__ in the pic above: [fb_m
 
 ```c
 // Fill framebuffer with Blue, Green and Red Blocks
-uint32_t *fb = fbmem;
+uint32_t *fb = fbmem;  // Access framebuffer as 32-bit pixels
 const size_t fblen = pinfo.fblen / 4;  // 4 bytes per pixel
 
 // For every pixel...
@@ -247,7 +247,7 @@ for (int i = 0; i < fblen; i++) {
 // Omitted: Refresh the display with ioctl(FBIO_UPDATE)
 ```
 
-TODO
+Everything is hunky dory for blocks of pixels! Let's set individual pixels by row and column...
 
 ![Render Circle](https://lupyuen.github.io/images/fb-demo4.jpg)
 
@@ -259,10 +259,10 @@ TODO
 
 ```c
 // Fill framebuffer with Green Circle
-uint32_t *fb = fbmem;
+uint32_t *fb = fbmem;  // Access framebuffer as 32-bit pixels
 const size_t fblen = pinfo.fblen / 4;  // 4 bytes per pixel
-const uint32_t width = pinfo.xres_virtual;
-const uint32_t height = pinfo.yres_virtual;
+const uint32_t width  = pinfo.xres_virtual;  // Framebuffer Width
+const uint32_t height = pinfo.yres_virtual;  // Framebuffer Height
 
 // For every pixel row...
 for (int y = 0; y < height; y++) {
