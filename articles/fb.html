@@ -323,7 +323,7 @@ draw_rect(&amp;state, &amp;area, color);
 <p>Yep just call the <a href="https://docs.lvgl.io/master/intro/index.html"><strong>LVGL Graphics Library</strong></a>! (Pic above)</p>
 <p>To build the <strong>LVGL Demo App</strong> on NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div>
-<p>Select the following options…</p>
+<p>Select these options…</p>
 <ul>
 <li>
 <p>Enable <strong>“Application Configuration &gt; Examples &gt; LVGL Demo”</strong></p>
@@ -371,6 +371,7 @@ draw_rect(&amp;state, &amp;area, color);
 <p><strong>LVGL Version</strong> supported by NuttX is <strong>7.3.0</strong>. <a href="https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/Kconfig#L13-L17">(See this)</a></p>
 </li>
 </ul>
+<p>Now we talk about the internals of our Framebuffer Driver…</p>
 <h1 id="pinephone-framebuffer-driver"><a href="#pinephone-framebuffer-driver">8 PinePhone Framebuffer Driver</a></h1>
 <p>TODO</p>
 <h2 id="ram-framebuffer"><a href="#ram-framebuffer">8.1 RAM Framebuffer</a></h2>
