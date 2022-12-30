@@ -382,11 +382,23 @@ We'll see the Graphical User Interface as shown in the pic above!
 
 _But it won't respond to our touch right?_
 
-Yeah we haven't started on the __Touch Input Driver__ for PinePhone.
+Yeah we haven't started on the [__Touch Input Driver__](https://lupyuen.github.io/articles/pio#touch-panel) for PinePhone.
 
 Maybe someday LVGL Touchscreen Apps will run OK on PinePhone!
 
-TODO: How does it work?
+_What's inside the LVGL App?_
+
+Here's how it works...
+
+-   __Main Function__ (Event Loop) of the LVGL App is here: [lvgldemo.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L109-L238)
+
+-   Main Function calls the __NuttX Framebuffer Interface__ here: [fbdev.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/fbdev.c)
+
+-   __LVGL Widgets__ are created here: [lv_demo_widgets.c](https://github.com/lvgl/lv_demos/blob/v7.3.0/src/lv_demo_widgets/lv_demo_widgets.c#L108-L203)
+
+    [(See the docs for __LVGL Widgets__)](https://docs.lvgl.io/master/widgets/index.html)
+
+-   __LVGL Version__ supported by NuttX is __7.3.0__. [(See this)](https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/Kconfig#L13-L17)
 
 # PinePhone Framebuffer Driver
 
