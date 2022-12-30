@@ -472,7 +472,7 @@ static struct fb_planeinfo_s g_pinephone_plane = {
   .xres_virtual = PANEL_WIDTH,   // Virtual Horizontal resolution
   .yres_virtual = PANEL_HEIGHT,  // Virtual Vertical resolution
   .xoffset      = 0,  // X Offset from virtual to visible
-  .yoffset      = 0   // Y Offset from virtual to visible */
+  .yoffset      = 0   // Y Offset from virtual to visible
 };
 ```
 
@@ -480,9 +480,7 @@ static struct fb_planeinfo_s g_pinephone_plane = {
 
 ## Framebuffer Operations
 
-TODO
-
-[pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L116-L131)
+Our Framebuffer Driver supports these __Framebuffer Operations__: [pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L116-L131)
 
 ```c
 // Vtable for Frame Buffer Operations
@@ -502,6 +500,16 @@ static struct fb_vtable_s g_pinephone_vtable = {
   .setarea         = pinephone_setarea
 };
 ```
+
+We haven't implemented the Overlays, so let's talk about the __first 3 operations__...
+
+-   Get Video Info
+
+-   Get Plane Info
+
+-   Update Area
+
+But before that we need to initialise the Framebuffer and return the Video Plane...
 
 ## Initialise Framebuffer
 
