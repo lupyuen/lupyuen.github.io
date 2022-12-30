@@ -581,6 +581,8 @@ static int pinephone_updatearea(
 #endif</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/fb-test3.jpg" alt="Fixed Missing Pixels in PinePhone Image" /></p>
 <p>TODO: Can we copy the pixels for the partial screen area? Probably, needs more rigourous testing</p>
+<p>We might need to check the CPU Writeback Cache, and verify that our Framebuffer has been mapped with the right attributes.</p>
+<p>(Thanks to <a href="https://twitter.com/suarezvictor/status/1608643410906472448?s=20&amp;t=gFese-aeWGonGShw9vtNyg"><strong>suarezvictor</strong></a> and <a href="https://twitter.com/crzwdjk/status/1608661469591384064?s=20&amp;t=gFese-aeWGonGShw9vtNyg"><strong>crzwdjk</strong></a> for the tips!)</p>
 <p><em>How do other PinePhone operating systems handle this?</em></p>
 <p>We might need to handle TCON0 Vertical Blanking (<code>TCON0_Vb_Int_En</code> / <code>TCON0_Vb_Int_Flag</code>) and TCON0 CPU Trigger Mode Finish (<code>TCON0_Tri_Finish_Int_En</code> / <code>TCON0_Tri_Finish_Int_Flag</code>) like this…</p>
 <ul>
