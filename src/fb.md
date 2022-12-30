@@ -14,7 +14,7 @@ Today we'll learn about the...
 
 -   What's inside the __Framebuffer Driver__ for PinePhone
 
--   Mystery of the __Missing Framebuffer Pixels__ and how we solved it
+-   Mystery of the __Missing Framebuffer Pixels__ and how we solved it (unsatisfactorily)
 
 -   Creating NuttX Apps with the __LVGL Graphics Library__
 
@@ -309,9 +309,9 @@ Yep we have full control over every single pixel! Let's wrap up our demo with so
 
 # Render Rectangle
 
-When we run the [__NuttX Framebuffer App__](https://lupyuen.github.io/articles/fb#framebuffer-demo), we'll see a bunch of Color Rectangles. (Pic above)
+When we run the [__NuttX Framebuffer App__](https://lupyuen.github.io/articles/fb#framebuffer-demo), we'll see a stack of Color Rectangles. (Pic above)
 
-We __render each Rectangle__ like so: [fb_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L472-L480)
+We __render each Rectangle__ like so: [fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L450-L469)
 
 ```c
 // Rectangle to be rendered
@@ -327,6 +327,8 @@ draw_rect(&state, &area, color);
 
 // Omitted: Refresh the display with ioctl(FBIO_UPDATE)
 ```
+
+[(__draw_rect__ is defined here)](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L89-L114)
 
 The pic below shows the output of the Framebuffer App __`fb`__ when we run it on PinePhone...
 
@@ -430,7 +432,11 @@ static struct fb_videoinfo_s g_pinephone_video = {
   .nplanes   = 1,  // Color planes: Base UI Channel
   .noverlays = 2   // Overlays: 2 Overlay UI Channels
 };
+```
 
+TODO: No memory protection yet, so mmap returns the actual address of g_pinephone_fb0
+
+```c
 // Color Plane for Base UI Channel:
 // Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
 static struct fb_planeinfo_s g_pinephone_plane = {
