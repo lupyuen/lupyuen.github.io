@@ -513,9 +513,15 @@ But before that we need to initialise the Framebuffer and return the Video Plane
 
 ## Initialise Framebuffer
 
-TODO: up_fbinitialize
+At Startup, NuttX Kernel calls __up_fbinitialize__ to initialize the Framebuffer...
 
-[pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L652-L801)
+-   [__"Complete Display Driver"__](https://lupyuen.github.io/articles/lcd#complete-display-driver)
+
+__up_fbinitialize__ comes from our Framebuffer Driver (LCD Driver)...
+
+-   [__up_fbinitialize (Initialise Framebuffer)__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L652-L801)
+
+Then NuttX Kernel interrogates our Framebuffer Driver to discover the Video Plane...
 
 ## Get Video Plane
 

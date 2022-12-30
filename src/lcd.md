@@ -523,7 +523,7 @@ PinePhone needs a __super complex Display Driver__ that will handle 11 steps at 
 
 We've just implemented all 11 steps in the __NuttX Kernel__... Including the LCD Driver that we saw today.
 
-Here's how our LCD Driver is called when __NuttX boots on PinePhone__: [pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L434-L583)
+Here's how our LCD Driver is called when __NuttX boots on PinePhone__: [pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L652-L801)
 
 ```c
 // Called by NuttX Kernel at startup
@@ -648,9 +648,9 @@ Here's the log from our LCD Driver...
 
 _Who calls the code above?_
 
-In the code above, our function [__up_fbinitialize__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L434-L583) executes the 11 steps needed for our PinePhone Display Driver.
+In the code above, our function [__up_fbinitialize__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L652-L801) executes the 11 steps needed for our PinePhone Display Driver.
 
-At startup, [__up_fbinitialize__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L434-L583) is called by [__fb_register__](https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L795-L805) (from the NuttX Framebuffer Driver)...
+At startup, [__up_fbinitialize__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L652-L801) is called by [__fb_register__](https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L795-L805) (from the NuttX Framebuffer Driver)...
 
 And [__fb_register__](https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L795-L805) is called by [__pinephone_bringup__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L78-L88), our Startup Function for PinePhone.
 
