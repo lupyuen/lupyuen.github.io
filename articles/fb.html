@@ -469,88 +469,46 @@ static struct fb_vtable_s g_pinephone_vtable = {
 </ul>
 <p>Then NuttX Kernel interrogates our Framebuffer Driver to discover the Video Plane…</p>
 <h2 id="get-video-plane"><a href="#get-video-plane">8.4 Get Video Plane</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L801-L833">pinephone_display.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
- * Name: up_fbgetvplane
- *
- * Description:
- *   Return a reference to the framebuffer object for the specified video
- *   plane of the specified plane.  Many OSDs support multiple planes of
- *   video.
- *
- * Input Parameters:
- *   display - In the case of hardware with multiple displays, this
- *             specifies the display.  Normally this is zero.
- *   vplane  - Identifies the plane being queried.
- *
- * Returned Value:
- *   A non-NULL pointer to the frame buffer access structure is returned on
- *   success; NULL is returned on any failure.
- *
- ****************************************************************************/
-
-struct fb_vtable_s *up_fbgetvplane(int display, int vplane)
-{
-  ginfo(&quot;vplane: %d\n&quot;, vplane);
-
-  DEBUGASSERT(display == 0);
-  if (vplane == 0)
-    {
-      return &amp;g_pinephone_vtable;
-    }
-
-  return NULL;
-}</code></pre></div><h2 id="get-video-info"><a href="#get-video-info">8.5 Get Video Info</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L349-L395">pinephone_display.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
- * Name: pinephone_getvideoinfo
- *
- * Description:
- *   Get the videoinfo for the framebuffer. (ioctl Entrypoint:
- *   FBIOGET_VIDEOINFO)
- *
- * Input Parameters:
- *   vtable - Framebuffer driver object
- *   vinfo  - Returned videoinfo object
- *
- * Returned Value:
- *   Zero (OK) on success; a negated errno value is returned on any failure.
- *
- ****************************************************************************/
-
-static int pinephone_getvideoinfo(struct fb_vtable_s *vtable,
-                                  struct fb_videoinfo_s *vinfo)
-{
-  static int stage = 0;
-
-  ginfo(&quot;vtable=%p vinfo=%p\n&quot;, vtable, vinfo);
-  DEBUGASSERT(vtable != NULL &amp;&amp; vtable == &amp;g_pinephone_vtable &amp;&amp;
-              vinfo != NULL);
-
-  /* Copy and return the videoinfo object */
-
+<p>NuttX Kernel calls our Framebuffer Driver to discover the <strong>Framebuffer Operations</strong> supported by our driver.</p>
+<p>This is how we return the Framebuffer Operations: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L801-L833">pinephone_display.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Get the Framebuffer Object for the supported operations
+struct fb_vtable_s *up_fbgetvplane(
+  int display,  // Display Number should be 0
+  int vplane    // Video Plane should be 0
+) {
+  // Return the supported Framebuffer Operations
+  return &amp;g_pinephone_vtable;
+}</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/fb#framebuffer-operations">(We’ve seen <strong>g_pinephone_vtable</strong> earlier)</a></p>
+<p>Now it gets interesting: NuttX Kernel calls the operations exposed by our Framebuffer Driver…</p>
+<h2 id="get-video-info"><a href="#get-video-info">8.5 Get Video Info</a></h2>
+<p>The first operation exposed by our Framebuffer Driver is to return the <strong>Video Info</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L349-L395">pinephone_display.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Get the Video Info for our Framebuffer
+static int pinephone_getvideoinfo(
+  struct fb_vtable_s *vtable,   // Framebuffer Driver
+  struct fb_videoinfo_s *vinfo  // Returned Video Info
+) {
+  // Copy and return the Video Info
   memcpy(vinfo, &amp;g_pinephone_video, sizeof(struct fb_videoinfo_s));
 
-  /* Keep track of the stages during startup:
-   * Stage 0: Initialize driver at startup
-   * Stage 1: First call by apps
-   * Stage 2: Subsequent calls by apps
-   * We erase the framebuffers at stages 0 and 1. This allows the
-   * Test Pattern to be displayed for as long as possible before erasure.
-   */
-
-  if (stage &lt; 2)
-    {
-      stage++;
-      memset(g_pinephone_fb0, 0, sizeof(g_pinephone_fb0));
-      memset(g_pinephone_fb1, 0, sizeof(g_pinephone_fb1));
-      memset(g_pinephone_fb2, 0, sizeof(g_pinephone_fb2));
-    }
-
+  // Keep track of the stages during startup:
+  // Stage 0: Initialize driver at startup
+  // Stage 1: First call by apps
+  // Stage 2: Subsequent calls by apps
+  // We erase the framebuffers at stages 0 and 1. This allows the
+  // Test Pattern to be displayed for as long as possible before erasure.
+  static int stage = 0;
+  if (stage &lt; 2) {
+    stage++;
+    memset(g_pinephone_fb0, 0, sizeof(g_pinephone_fb0));
+    memset(g_pinephone_fb1, 0, sizeof(g_pinephone_fb1));
+    memset(g_pinephone_fb2, 0, sizeof(g_pinephone_fb2));
+  }
   return OK;
-}</code></pre></div><h2 id="get-plane-info"><a href="#get-plane-info">8.6 Get Plane Info</a></h2>
+}</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/fb#ram-framebuffer">(We’ve seen <strong>g_pinephone_video</strong> earlier)</a></p>
+<p>TODO</p>
+<h2 id="get-plane-info"><a href="#get-plane-info">8.6 Get Plane Info</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L397-L429">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
