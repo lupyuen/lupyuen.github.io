@@ -652,7 +652,7 @@ In the code above, our function [__up_fbinitialize__](https://github.com/apache/
 
 At startup, [__up_fbinitialize__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L652-L801) is called by [__fb_register__](https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L795-L805) (from the NuttX Framebuffer Driver)...
 
-And [__fb_register__](https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L795-L805) is called by [__pinephone_bringup__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L78-L88), our Startup Function for PinePhone.
+And [__fb_register__](https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L795-L805) is called by [__pinephone_bringup__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L79-L93), our Startup Function for PinePhone.
 
 Let's talk about the Framebuffer Driver...
 

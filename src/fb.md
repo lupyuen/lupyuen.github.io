@@ -521,6 +521,8 @@ __up_fbinitialize__ comes from our Framebuffer Driver (LCD Driver)...
 
 -   [__up_fbinitialize (Initialise Framebuffer)__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L652-L801)
 
+    (Called by [__fb_register__](https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L795-L805) and [__pinephone_bringup__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L79-L93))
+
 Then NuttX Kernel interrogates our Framebuffer Driver to discover the Video Plane...
 
 ## Get Video Plane
