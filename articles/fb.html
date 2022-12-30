@@ -421,12 +421,11 @@ static struct fb_planeinfo_s g_pinephone_plane = {
   .xres_virtual = PANEL_WIDTH,   // Virtual Horizontal resolution
   .yres_virtual = PANEL_HEIGHT,  // Virtual Vertical resolution
   .xoffset      = 0,  // X Offset from virtual to visible
-  .yoffset      = 0   // Y Offset from virtual to visible */
+  .yoffset      = 0   // Y Offset from virtual to visible
 };</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L488-L505">(<strong>fb_planeinfo_s</strong> is defined here)</a></p>
 <h2 id="framebuffer-operations"><a href="#framebuffer-operations">8.2 Framebuffer Operations</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L116-L131">pinephone_display.c</a></p>
+<p>Our Framebuffer Driver supports these <strong>Framebuffer Operations</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L116-L131">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Vtable for Frame Buffer Operations
 static struct fb_vtable_s g_pinephone_vtable = {
 
@@ -442,7 +441,21 @@ static struct fb_vtable_s g_pinephone_vtable = {
   .setcolor        = pinephone_setcolor,
   .setblank        = pinephone_setblank,
   .setarea         = pinephone_setarea
-};</code></pre></div><h2 id="initialise-framebuffer"><a href="#initialise-framebuffer">8.3 Initialise Framebuffer</a></h2>
+};</code></pre></div>
+<p>We haven’t implemented the Overlays, so let’s talk about the <strong>first 3 operations</strong>…</p>
+<ul>
+<li>
+<p>Get Video Info</p>
+</li>
+<li>
+<p>Get Plane Info</p>
+</li>
+<li>
+<p>Update Area</p>
+</li>
+</ul>
+<p>But before that we need to initialise the Framebuffer and return the Video Plane…</p>
+<h2 id="initialise-framebuffer"><a href="#initialise-framebuffer">8.3 Initialise Framebuffer</a></h2>
 <p>TODO: up_fbinitialize</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L652-L801">pinephone_display.c</a></p>
 <h2 id="get-video-plane"><a href="#get-video-plane">8.4 Get Video Plane</a></h2>
