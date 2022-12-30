@@ -659,6 +659,10 @@ This triggers `pinephone_updatearea` in our NuttX Framebuffer Driver: [fb_main.c
 
 TODO: Can we copy the pixels for the partial screen area? Probably, needs more rigourous testing
 
+We might need to check the CPU Writeback Cache, and verify that our Framebuffer has been mapped with the right attributes.
+
+(Thanks to [__suarezvictor__](https://twitter.com/suarezvictor/status/1608643410906472448?s=20&t=gFese-aeWGonGShw9vtNyg) and [__crzwdjk__](https://twitter.com/crzwdjk/status/1608661469591384064?s=20&t=gFese-aeWGonGShw9vtNyg) for the tips!)
+
 _How do other PinePhone operating systems handle this?_
 
 We might need to handle TCON0 Vertical Blanking (`TCON0_Vb_Int_En` / `TCON0_Vb_Int_Flag`) and TCON0 CPU Trigger Mode Finish (`TCON0_Tri_Finish_Int_En` / `TCON0_Tri_Finish_Int_Flag`) like this...
