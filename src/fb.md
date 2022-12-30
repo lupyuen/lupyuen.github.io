@@ -412,19 +412,39 @@ _What's inside the Framebuffer Driver for PinePhone?_
 
 TODO
 
+![Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
+
+[_Complete Display Driver for PinePhone_](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone)
+
 ## RAM Framebuffer
 
-TODO
+Inside PinePhone's Allwinner A64 SoC are the __Display Engine__ and __Timing Controller TCON0__. (Pic above)
 
-[pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L131-L242)
+Display Engine and TCON0 will blast pixels from the __RAM Framebuffer__ to the LCD Display, over Direct Memory Access (DMA).
+
+[(More about Display Engine and TCON0)](https://lupyuen.github.io/articles/de3)
+
+Here's our __RAM Framebuffer__: [pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L131-L242)
 
 ```c
 // Frame Buffer for Display Engine 
 // Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
 // PANEL_WIDTH is 720
 // PANEL_HEIGHT is 1440
-static uint32_t g_pinephone_fb0[PANEL_WIDTH * PANEL_HEIGHT];
+static uint32_t g_pinephone_fb0[  // 32 bits per pixel
+  PANEL_WIDTH * PANEL_HEIGHT      // 720 x 1440 pixels
+];
+```
 
+(Memory Protection is not turned on yet, so [__mmap__](https://lupyuen.github.io/articles/fb) returns the actual address of __g_pinephone_fb0__ to NuttX Apps for rendering)
+
+We describe __PinePhone's LCD Display__ like so...
+
+```c
+// Video Info for PinePhone
+// (Framebuffer Characteristics)
+// PANEL_WIDTH is 720
+// PANEL_HEIGHT is 1440
 static struct fb_videoinfo_s g_pinephone_video = {
   .fmt       = FB_FMT_RGBA32,  // Pixel format (XRGB 8888)
   .xres      = PANEL_WIDTH,    // Horizontal resolution in pixel columns
@@ -434,7 +454,11 @@ static struct fb_videoinfo_s g_pinephone_video = {
 };
 ```
 
-TODO: No memory protection yet, so mmap returns the actual address of g_pinephone_fb0
+[(__fb_videoinfo_s__ is defined here)](https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L472-L488)
+
+(We're still working on the Overlays)
+
+We tell NuttX about our RAM Framebuffer with this __Plane Info__...
 
 ```c
 // Color Plane for Base UI Channel:
@@ -451,6 +475,8 @@ static struct fb_planeinfo_s g_pinephone_plane = {
   .yoffset      = 0   // Y Offset from virtual to visible */
 };
 ```
+
+[(__fb_planeinfo_s__ is defined here)](https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L488-L505)
 
 ## Framebuffer Operations
 
@@ -477,7 +503,7 @@ static struct fb_vtable_s g_pinephone_vtable = {
 };
 ```
 
-## Initialize Framebuffer
+## Initialise Framebuffer
 
 TODO: up_fbinitialize
 
