@@ -73,14 +73,14 @@
 <li><a href="#render-blocks">4 Render Blocks</a><ul></ul></li>
 <li><a href="#render-circle">5 Render Circle</a><ul></ul></li>
 <li><a href="#render-rectangle">6 Render Rectangle</a><ul></ul></li>
-<li><a href="#pinephone-framebuffer-driver">7 PinePhone Framebuffer Driver</a><ul>
-<li><a href="#ram-framebuffer">7.1 RAM Framebuffer</a><ul></ul></li>
-<li><a href="#framebuffer-operations">7.2 Framebuffer Operations</a><ul></ul></li>
-<li><a href="#get-video-info">7.3 Get Video Info</a><ul></ul></li>
-<li><a href="#get-plane-info">7.4 Get Plane Info</a><ul></ul></li></ul></li>
-<li><a href="#mystery-of-the-missing-pixels">8 Mystery of the Missing Pixels</a><ul></ul></li>
-<li><a href="#fix-missing-pixels-in-pinephone-image">9 Fix Missing Pixels in PinePhone Image</a><ul></ul></li>
-<li><a href="#lvgl-on-nuttx-on-pinephone">10 LVGL on NuttX on PinePhone</a><ul></ul></li>
+<li><a href="#lvgl-graphics-library">7 LVGL Graphics Library</a><ul></ul></li>
+<li><a href="#pinephone-framebuffer-driver">8 PinePhone Framebuffer Driver</a><ul>
+<li><a href="#ram-framebuffer">8.1 RAM Framebuffer</a><ul></ul></li>
+<li><a href="#framebuffer-operations">8.2 Framebuffer Operations</a><ul></ul></li>
+<li><a href="#get-video-info">8.3 Get Video Info</a><ul></ul></li>
+<li><a href="#get-plane-info">8.4 Get Plane Info</a><ul></ul></li></ul></li>
+<li><a href="#mystery-of-the-missing-pixels">9 Mystery of the Missing Pixels</a><ul></ul></li>
+<li><a href="#fix-missing-pixels-in-pinephone-image">10 Fix Missing Pixels in PinePhone Image</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/fb-title.jpg" alt="Apache NuttX Framebuffer App on Pine64 PinePhone" /></p>
 <p>Suppose we’re running <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>…</p>
@@ -312,14 +312,50 @@ struct fb_area_s area = {
 draw_rect(&amp;state, &amp;area, color);
 
 // Omitted: Refresh the display with ioctl(FBIO_UPDATE)</code></pre></div>
-<p>The pic below shows the output of the Framebuffer App <strong><code>fb</code></strong> when we run it on PinePhone.</p>
-<p><a href="https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b">(See the Complete Log)</a></p>
-<p>TODO</p>
+<p>The pic below shows the output of the Framebuffer App <strong><code>fb</code></strong> when we run it on PinePhone…</p>
 <p><img src="https://lupyuen.github.io/images/fb-run.png" alt="NuttX Framebuffer App running on PinePhone" /></p>
-<p><a href="https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b"><em>NuttX Framebuffer App running on PinePhone</em></a></p>
-<h1 id="pinephone-framebuffer-driver"><a href="#pinephone-framebuffer-driver">7 PinePhone Framebuffer Driver</a></h1>
+<p><a href="https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b">(See the Complete Log)</a></p>
+<p>And we’re all done with Circles and Rectangles on PinePhone! Let’s talk about Graphical User Interfaces…</p>
+<p><img src="https://lupyuen.github.io/images/fb-lvgl.jpg" alt="LVGL on NuttX on PinePhone" /></p>
+<h1 id="lvgl-graphics-library"><a href="#lvgl-graphics-library">7 LVGL Graphics Library</a></h1>
+<p><em>Rendering graphics pixel by pixel sounds tedious…</em></p>
+<p><em>Is there a simpler way to render Graphical User Interfaces?</em></p>
+<p>Yep just call the <a href="https://docs.lvgl.io/master/intro/index.html"><strong>LVGL Graphics Library</strong></a>! (Pic above)</p>
+<p>To build the <strong>LVGL Demo App</strong> on NuttX…</p>
+<div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div>
+<p>Select the following options…</p>
+<ul>
+<li>
+<p>Enable <strong>“Application Configuration &gt; Examples &gt; LVGL Demo”</strong></p>
+</li>
+<li>
+<p>Enable <strong>“Application Configuration &gt; Graphics Support &gt; Light and Versatile Graphics Library (LVGL)”</strong></p>
+</li>
+<li>
+<p>Under <strong>“LVGL &gt; Graphics Settings”</strong>…</p>
+<ul>
+<li>Set <strong>Horizontal Resolution</strong> to <strong>720</strong></li>
+<li>Set <strong>Vertical Resolution</strong> to <strong>1440</strong></li>
+<li>Set <strong>DPI</strong> to <strong>200</strong> (or higher)</li>
+</ul>
+</li>
+<li>
+<p>Under <strong>“LVGL &gt; Color settings”</strong>…</p>
+<ul>
+<li>Set <strong>Color Depth</strong> to <strong>32</strong></li>
+</ul>
+</li>
+</ul>
+<p>Save the configuration and exit <code>menuconfig</code>. Rebuild NuttX…</p>
+<div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div>
+<p>Boot NuttX on PinePhone. At the NSH Command Prompt, enter…</p>
+<div class="example-wrap"><pre class="language-bash"><code>lvgldemo</code></pre></div>
+<p>We’ll see the Graphical User Interface as shown in the pic above!</p>
+<p>TODO: Touch input</p>
+<p>TODO: How does it work?</p>
+<h1 id="pinephone-framebuffer-driver"><a href="#pinephone-framebuffer-driver">8 PinePhone Framebuffer Driver</a></h1>
 <p>TODO</p>
-<h2 id="ram-framebuffer"><a href="#ram-framebuffer">7.1 RAM Framebuffer</a></h2>
+<h2 id="ram-framebuffer"><a href="#ram-framebuffer">8.1 RAM Framebuffer</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>// Frame Buffer for Display Engine 
 // Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
@@ -351,7 +387,7 @@ static struct fb_planeinfo_s g_pinephone_plane =
   .yres_virtual = PANEL_HEIGHT,     /* Virtual Vertical resolution */
   .xoffset      = 0,                /* Offset from virtual to visible */
   .yoffset      = 0                 /* Offset from virtual to visible */
-};</code></pre></div><h2 id="framebuffer-operations"><a href="#framebuffer-operations">7.2 Framebuffer Operations</a></h2>
+};</code></pre></div><h2 id="framebuffer-operations"><a href="#framebuffer-operations">8.2 Framebuffer Operations</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/fb2/boards/arm64/a64/pinephone/src/pinephone_display.c#L117-L241">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Vtable for Frame Buffer Operations */
@@ -367,7 +403,7 @@ static struct fb_vtable_s g_pinephone_vtable =
   .setcolor        = pinephone_setcolor,
   .setblank        = pinephone_setblank,
   .setarea         = pinephone_setarea
-};</code></pre></div><h2 id="get-video-info"><a href="#get-video-info">7.3 Get Video Info</a></h2>
+};</code></pre></div><h2 id="get-video-info"><a href="#get-video-info">8.3 Get Video Info</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/fb2/boards/arm64/a64/pinephone/src/pinephone_display.c#L349-L395">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
@@ -416,7 +452,7 @@ static int pinephone_getvideoinfo(struct fb_vtable_s *vtable,
     }
 
   return OK;
-}</code></pre></div><h2 id="get-plane-info"><a href="#get-plane-info">7.4 Get Plane Info</a></h2>
+}</code></pre></div><h2 id="get-plane-info"><a href="#get-plane-info">8.4 Get Plane Info</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/fb2/boards/arm64/a64/pinephone/src/pinephone_display.c#L397-L429">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
@@ -451,7 +487,7 @@ static int pinephone_getplaneinfo(struct fb_vtable_s *vtable, int planeno,
 
   gerr(&quot;ERROR: Returning EINVAL\n&quot;);
   return -EINVAL;
-}</code></pre></div><h1 id="mystery-of-the-missing-pixels"><a href="#mystery-of-the-missing-pixels">8 Mystery of the Missing Pixels</a></h1>
+}</code></pre></div><h1 id="mystery-of-the-missing-pixels"><a href="#mystery-of-the-missing-pixels">9 Mystery of the Missing Pixels</a></h1>
 <p>TODO</p>
 <p>We’ve just implemented the NuttX Kernel Drivers for MIPI Display Serial Interface, Timing Controller TCON0, Display Engine, Reduced Serial Bus, Power Management Integrated Circuit and LCD Panel…</p>
 <ul>
@@ -485,7 +521,7 @@ static int pinephone_getplaneinfo(struct fb_vtable_s *vtable, int planeno,
 <p>According to the video, the pixels are actually written to correctly to the RAM Framebuffer. But the pixels at the lower half don’t get pushed to the display until the next screen refresh.</p>
 <p>There seems to be a lag between the writing of pixels to framebuffer, and the pushing of pixels to the display over DMA / Display Engine / Timing Controller TCON0.</p>
 <p>Here’s the fix for this lag…</p>
-<h1 id="fix-missing-pixels-in-pinephone-image"><a href="#fix-missing-pixels-in-pinephone-image">9 Fix Missing Pixels in PinePhone Image</a></h1>
+<h1 id="fix-missing-pixels-in-pinephone-image"><a href="#fix-missing-pixels-in-pinephone-image">10 Fix Missing Pixels in PinePhone Image</a></h1>
 <p>TODO</p>
 <p>In the previous section we saw that there was a lag pushing pixels from the RAM Framebuffer to the PinePhone Display (over DMA / Display Engine / Timing Controller TCON0).</p>
 <p>Can we overcome this lag by copying the RAM Framebuffer to itself, forcing the display to refresh? This sounds very strange, but yes it works! </p>
@@ -555,33 +591,6 @@ static int pinephone_updatearea(
 </li>
 </ol>
 <p>Can we handle TCON0 CPU Trigger Mode Finish without refreshing the Display Engine Registers?</p>
-<h1 id="lvgl-on-nuttx-on-pinephone"><a href="#lvgl-on-nuttx-on-pinephone">10 LVGL on NuttX on PinePhone</a></h1>
-<p>TODO</p>
-<p>LVGL on NuttX renders correctly on PinePhone! (Pic below)</p>
-<p>Here are the settings in <code>make menuconfig</code>…</p>
-<ul>
-<li>
-<p>Enable “Application Configuration &gt; Examples &gt; LVGL Demo”</p>
-</li>
-<li>
-<p>Enable “Application Configuration &gt; Graphics Support &gt; Light and Versatile Graphic Library (LVGL)”</p>
-</li>
-<li>
-<p>Under “LVGL &gt; Graphics settings”…</p>
-<ul>
-<li>Set “Horizontal resolution” to 720</li>
-<li>Set “Vertical resolution” to 1440</li>
-<li>Set “DPI (px/inch)” to 200</li>
-</ul>
-</li>
-<li>
-<p>Under “LVGL &gt; Color settings”…</p>
-<ul>
-<li>Set “Color depth (8/16/32)” to 32</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://lupyuen.github.io/images/fb-lvgl.jpg" alt="LVGL on NuttX on PinePhone" /></p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>Check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
