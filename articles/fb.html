@@ -480,11 +480,16 @@ struct fb_vtable_s *up_fbgetvplane(
   return &amp;g_pinephone_vtable;
 }</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/fb#framebuffer-operations">(We’ve seen <strong>g_pinephone_vtable</strong> earlier)</a></p>
-<p>Now it gets interesting: NuttX Kernel calls the operations exposed by our Framebuffer Driver…</p>
+<p>Now it gets interesting: NuttX Kernel and NuttX Apps will call the operations exposed by our Framebuffer Driver…</p>
 <p><img src="https://lupyuen.github.io/images/lcd-title.jpg" alt="Test Pattern on NuttX for PinePhone" /></p>
 <h2 id="get-video-info"><a href="#get-video-info">8.5 Get Video Info</a></h2>
-<p>The first operation exposed by our Framebuffer Driver is to return the <strong>Video Info</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L349-L395">pinephone_display.c</a></p>
+<p>Remember <strong>FBIOGET_VIDEOINFO</strong> for fetching the Framebuffer Characteristics?</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/fb#framebuffer-interface"><strong>“Framebuffer Interface”</strong></a></li>
+</ul>
+<p>The first operation exposed by our Framebuffer Driver returns the <strong>Video Info</strong> (Framebuffer Characteristics): <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L349-L395">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Get the Video Info for our Framebuffer
+// (ioctl Entrypoint: FBIOGET_VIDEOINFO)
 static int pinephone_getvideoinfo(
   struct fb_vtable_s *vtable,   // Framebuffer Driver
   struct fb_videoinfo_s *vinfo  // Returned Video Info
@@ -513,43 +518,38 @@ static int pinephone_getvideoinfo(
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L855-L978">(Test Pattern is rendered by <strong>pinephone_display_test_pattern</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L79-L93">(Which is called by <strong>pinephone_bringup</strong>)</a></p>
 <h2 id="get-plane-info"><a href="#get-plane-info">8.6 Get Plane Info</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L397-L429">pinephone_display.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
- * Name: pinephone_getplaneinfo
- *
- * Description:
- *   Get the planeinfo for the framebuffer. (ioctl Entrypoint:
- *   FBIOGET_PLANEINFO)
- *
- * Input Parameters:
- *   vtable - Framebuffer driver object
- *   pinfo  - Returned planeinfo object
- *
- * Returned Value:
- *   Zero (OK) on success; a negated errno value is returned on any failure.
- *
- ****************************************************************************/
-
-static int pinephone_getplaneinfo(struct fb_vtable_s *vtable, int planeno,
-                                  struct fb_planeinfo_s *pinfo)
-{
-  DEBUGASSERT(vtable != NULL &amp;&amp; vtable == &amp;g_pinephone_vtable);
-  ginfo(&quot;vtable=%p planeno=%d pinfo=%p\n&quot;, vtable, planeno, pinfo);
-
-  /* Copy and return the planeinfo object */
-
-  if (planeno == 0)
-    {
-      memcpy(pinfo, &amp;g_pinephone_plane, sizeof(struct fb_planeinfo_s));
-      return OK;
-    }
-
-  gerr(&quot;ERROR: Returning EINVAL\n&quot;);
-  return -EINVAL;
-}</code></pre></div><h2 id="update-area"><a href="#update-area">8.7 Update Area</a></h2>
-<p>TODO: pinephone_updatearea</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L472-L513">pinephone_display.c</a></p>
+<p>Earlier we’ve seen <strong>FBIOGET_PLANEINFO</strong> that fetches the RAM Framebuffer…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/fb#framebuffer-interface"><strong>“Framebuffer Interface”</strong></a></li>
+</ul>
+<p>This is how we return the <strong>Plane Info</strong> that describes the RAM Framebuffer: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L397-L429">pinephone_display.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Get the Plane Info for our Framebuffer
+// (ioctl Entrypoint: FBIOGET_PLANEINFO)
+static int pinephone_getplaneinfo(
+  struct fb_vtable_s *vtable,   // Framebuffer Driver
+  int planeno,  // Plane Number should be 0
+  struct fb_planeinfo_s *pinfo  // Returned Plane Info
+) {
+  // Copy and return the Plane Info
+  memcpy(pinfo, &amp;g_pinephone_plane, sizeof(struct fb_planeinfo_s));
+  return OK;
+}</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/fb#ram-framebuffer">(We’ve seen <strong>g_pinephone_plane</strong> earlier)</a></p>
+<h2 id="update-area"><a href="#update-area">8.7 Update Area</a></h2>
+<p>The final operation <strong>updates the display</strong> when there’s a change to the Framebuffer: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L472-L513">pinephone_display.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Update the Display when there is a change to the Framebuffer
+// (ioctl Entrypoint: FBIO_UPDATE)
+static int pinephone_updatearea(
+  struct fb_vtable_s *vtable,   // Framebuffer Driver
+  const struct fb_area_s *area  // Updated area of Framebuffer
+) {
+  // Mystery Code...</code></pre></div>
+<p>This operation is invoked when NuttX Apps call <strong>FBIO_UPDATE</strong>, as we’ve seen earlier…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/fb#render-grey-screen"><strong>“Render Grey Screen”</strong></a></li>
+</ul>
+<p>The code inside looks totally baffling, but first let’s talk about a mysterious rendering problem…</p>
+<p><img src="https://lupyuen.github.io/images/fb-test2.jpg" alt="Missing Pixels in PinePhone Image" /></p>
 <h1 id="mystery-of-the-missing-pixels"><a href="#mystery-of-the-missing-pixels">9 Mystery of the Missing Pixels</a></h1>
 <p>TODO</p>
 <p>We’ve just implemented the NuttX Kernel Drivers for MIPI Display Serial Interface, Timing Controller TCON0, Display Engine, Reduced Serial Bus, Power Management Integrated Circuit and LCD Panel…</p>
@@ -575,7 +575,7 @@ static int pinephone_getplaneinfo(struct fb_vtable_s *vtable, int planeno,
 <p>Inside the Orange Box is supposed to be a Red Box</p>
 </li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/fb-test2.jpg" alt="Missing Pixels in PinePhone Image" /></p>
+<p>(Pic above)</p>
 <p>The missing pixels magically appear later in a curious pattern…</p>
 <ul>
 <li><a href="https://www.youtube.com/shorts/WD5AJj7Rz5U">Watch the Demo on YouTube</a></li>
