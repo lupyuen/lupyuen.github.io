@@ -77,8 +77,11 @@
 <li><a href="#pinephone-framebuffer-driver">8 PinePhone Framebuffer Driver</a><ul>
 <li><a href="#ram-framebuffer">8.1 RAM Framebuffer</a><ul></ul></li>
 <li><a href="#framebuffer-operations">8.2 Framebuffer Operations</a><ul></ul></li>
-<li><a href="#get-video-info">8.3 Get Video Info</a><ul></ul></li>
-<li><a href="#get-plane-info">8.4 Get Plane Info</a><ul></ul></li></ul></li>
+<li><a href="#initialize-framebuffer">8.3 Initialize Framebuffer</a><ul></ul></li>
+<li><a href="#get-video-plane">8.4 Get Video Plane</a><ul></ul></li>
+<li><a href="#get-video-info">8.5 Get Video Info</a><ul></ul></li>
+<li><a href="#get-plane-info">8.6 Get Plane Info</a><ul></ul></li>
+<li><a href="#update-area">8.7 Update Area</a><ul></ul></li></ul></li>
 <li><a href="#mystery-of-the-missing-pixels">9 Mystery of the Missing Pixels</a><ul></ul></li>
 <li><a href="#fix-missing-pixels-in-pinephone-image">10 Fix Missing Pixels in PinePhone Image</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Jan 2023</em></p>
@@ -373,58 +376,93 @@ draw_rect(&amp;state, &amp;area, color);
 </ul>
 <p>Now we talk about the internals of our Framebuffer Driver…</p>
 <h1 id="pinephone-framebuffer-driver"><a href="#pinephone-framebuffer-driver">8 PinePhone Framebuffer Driver</a></h1>
+<p><em>We’ve seen the Framebuffer Interface for NuttX Apps…</em></p>
+<p><em>What’s inside the Framebuffer Driver for PinePhone?</em></p>
 <p>TODO</p>
 <h2 id="ram-framebuffer"><a href="#ram-framebuffer">8.1 RAM Framebuffer</a></h2>
 <p>TODO</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L131-L242">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Frame Buffer for Display Engine 
 // Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
 // PANEL_WIDTH is 720
 // PANEL_HEIGHT is 1440
 static uint32_t g_pinephone_fb0[PANEL_WIDTH * PANEL_HEIGHT];
 
-static struct fb_videoinfo_s g_pinephone_video =
-{
-  .fmt       = FB_FMT_RGBA32,  /* Pixel format (XRGB 8888) */
-  .xres      = PANEL_WIDTH,    /* Horizontal resolution in pixel columns */
-  .yres      = PANEL_HEIGHT,   /* Vertical resolution in pixel rows */
-  .nplanes   = 1,              /* Color planes: Base UI Channel */
-  .noverlays = 2               /* Overlays: 2 Overlay UI Channels) */
+static struct fb_videoinfo_s g_pinephone_video = {
+  .fmt       = FB_FMT_RGBA32,  // Pixel format (XRGB 8888)
+  .xres      = PANEL_WIDTH,    // Horizontal resolution in pixel columns
+  .yres      = PANEL_HEIGHT,   // Vertical resolution in pixel rows
+  .nplanes   = 1,  // Color planes: Base UI Channel
+  .noverlays = 2   // Overlays: 2 Overlay UI Channels
 };
 
-/* Color Plane for Base UI Channel:
- * Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
- */
-
-static struct fb_planeinfo_s g_pinephone_plane =
-{
-  .fbmem        = &amp;g_pinephone_fb0,
-  .fblen        = sizeof(g_pinephone_fb0),
-  .stride       = PANEL_WIDTH * 4,  /* Length of a line (4-byte pixel) */
-  .display      = 0,                /* Display number (Unused) */
-  .bpp          = 32,               /* Bits per pixel (XRGB 8888) */
-  .xres_virtual = PANEL_WIDTH,      /* Virtual Horizontal resolution */
-  .yres_virtual = PANEL_HEIGHT,     /* Virtual Vertical resolution */
-  .xoffset      = 0,                /* Offset from virtual to visible */
-  .yoffset      = 0                 /* Offset from virtual to visible */
+// Color Plane for Base UI Channel:
+// Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
+static struct fb_planeinfo_s g_pinephone_plane = {
+  .fbmem        = &amp;g_pinephone_fb0,         // Framebuffer Address
+  .fblen        = sizeof(g_pinephone_fb0),  // Framebuffer Size
+  .stride       = PANEL_WIDTH * 4,  // Length of a line (4-byte pixel)
+  .display      = 0,   // Display number (Unused)
+  .bpp          = 32,  // Bits per pixel (XRGB 8888)
+  .xres_virtual = PANEL_WIDTH,   // Virtual Horizontal resolution
+  .yres_virtual = PANEL_HEIGHT,  // Virtual Vertical resolution
+  .xoffset      = 0,  // X Offset from virtual to visible
+  .yoffset      = 0   // Y Offset from virtual to visible */
 };</code></pre></div><h2 id="framebuffer-operations"><a href="#framebuffer-operations">8.2 Framebuffer Operations</a></h2>
 <p>TODO</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L117-L241">pinephone_display.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>/* Vtable for Frame Buffer Operations */
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L116-L131">pinephone_display.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Vtable for Frame Buffer Operations
+static struct fb_vtable_s g_pinephone_vtable = {
 
-static struct fb_vtable_s g_pinephone_vtable =
-{
+  // Basic Framebuffer Operations
   .getvideoinfo    = pinephone_getvideoinfo,
   .getplaneinfo    = pinephone_getplaneinfo,
   .updatearea      = pinephone_updatearea,
 
-  // For Overlay Support
+  // TODO: Framebuffer Overlay Operations
   .getoverlayinfo  = pinephone_getoverlayinfo,
   .settransp       = pinephone_settransp,
   .setchromakey    = pinephone_setchromakey,
   .setcolor        = pinephone_setcolor,
   .setblank        = pinephone_setblank,
   .setarea         = pinephone_setarea
-};</code></pre></div><h2 id="get-video-info"><a href="#get-video-info">8.3 Get Video Info</a></h2>
+};</code></pre></div><h2 id="initialize-framebuffer"><a href="#initialize-framebuffer">8.3 Initialize Framebuffer</a></h2>
+<p>TODO: up_fbinitialize</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L652-L801">pinephone_display.c</a></p>
+<h2 id="get-video-plane"><a href="#get-video-plane">8.4 Get Video Plane</a></h2>
+<p>TODO</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L801-L833">pinephone_display.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
+ * Name: up_fbgetvplane
+ *
+ * Description:
+ *   Return a reference to the framebuffer object for the specified video
+ *   plane of the specified plane.  Many OSDs support multiple planes of
+ *   video.
+ *
+ * Input Parameters:
+ *   display - In the case of hardware with multiple displays, this
+ *             specifies the display.  Normally this is zero.
+ *   vplane  - Identifies the plane being queried.
+ *
+ * Returned Value:
+ *   A non-NULL pointer to the frame buffer access structure is returned on
+ *   success; NULL is returned on any failure.
+ *
+ ****************************************************************************/
+
+struct fb_vtable_s *up_fbgetvplane(int display, int vplane)
+{
+  ginfo(&quot;vplane: %d\n&quot;, vplane);
+
+  DEBUGASSERT(display == 0);
+  if (vplane == 0)
+    {
+      return &amp;g_pinephone_vtable;
+    }
+
+  return NULL;
+}</code></pre></div><h2 id="get-video-info"><a href="#get-video-info">8.5 Get Video Info</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L349-L395">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
@@ -473,7 +511,7 @@ static int pinephone_getvideoinfo(struct fb_vtable_s *vtable,
     }
 
   return OK;
-}</code></pre></div><h2 id="get-plane-info"><a href="#get-plane-info">8.4 Get Plane Info</a></h2>
+}</code></pre></div><h2 id="get-plane-info"><a href="#get-plane-info">8.6 Get Plane Info</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L397-L429">pinephone_display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
@@ -508,7 +546,10 @@ static int pinephone_getplaneinfo(struct fb_vtable_s *vtable, int planeno,
 
   gerr(&quot;ERROR: Returning EINVAL\n&quot;);
   return -EINVAL;
-}</code></pre></div><h1 id="mystery-of-the-missing-pixels"><a href="#mystery-of-the-missing-pixels">9 Mystery of the Missing Pixels</a></h1>
+}</code></pre></div><h2 id="update-area"><a href="#update-area">8.7 Update Area</a></h2>
+<p>TODO: pinephone_updatearea</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L472-L513">pinephone_display.c</a></p>
+<h1 id="mystery-of-the-missing-pixels"><a href="#mystery-of-the-missing-pixels">9 Mystery of the Missing Pixels</a></h1>
 <p>TODO</p>
 <p>We’ve just implemented the NuttX Kernel Drivers for MIPI Display Serial Interface, Timing Controller TCON0, Display Engine, Reduced Serial Bus, Power Management Integrated Circuit and LCD Panel…</p>
 <ul>
