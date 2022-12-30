@@ -72,7 +72,7 @@ _What's inside the app?_
 
 We begin with the __Framebuffer Interface__ that NuttX provides to our apps for rendering graphics.
 
-To call the __Framebuffer Interface__, our app opens the Framebuffer Driver at __/dev/fb0__: [fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L314-L337)
+To call the Framebuffer Interface, our app opens the Framebuffer Driver at __/dev/fb0__: [fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L314-L337)
 
 ```c
 #include <nuttx/video/fb.h>
@@ -100,6 +100,8 @@ int ret = ioctl(          // Do I/O Control...
 if (ret < 0) { return; }
 ```
 
+[(__fb_videoinfo_s__ is defined here)](https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L472-L488)
+
 Then we fetch the __Plane Info__, which describes the RAM Framebuffer that we'll use for drawing: [fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L391-L400)
 
 ```c
@@ -114,6 +116,8 @@ ret = ioctl(              // Do I/O Control...
 // Quit if FBIOGET_PLANEINFO failed
 if (ret < 0) { return; }
 ```
+
+[(__fb_planeinfo_s__ is defined here)](https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L488-L505)
 
 To access the RAM Framebuffer, we __map it to a valid address__: [fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L420-L440)
 
@@ -174,7 +178,11 @@ ioctl(  // Do I/O Control...
 );
 ```
 
-If we skip this step, we will see __missing pixels__ in our display. (More about this below)
+[(__fb_area_s__ is defined here)](https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L505-L515)
+
+If we skip this step, we'll see __missing pixels__ in our display.
+
+(More about this below)
 
 Remember to __close the Framebuffer__ when we're done: [fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L469-L474)
 
