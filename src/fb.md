@@ -197,15 +197,26 @@ To understand why, let's look inside the Framebuffer...
 
 _Why did PinePhone turn grey when we filled it with `0x80`?_
 
-TODO
+Our Framebuffer has __720 x 1440 pixels__. Each pixel has __32-bit ARGB 8888__ format (pic above)...
+
+-   __Alpha__ (8 bits)
+-   __Red__ (8 bits)
+-   __Green__ (8 bits)
+-   __Blue__ (8 bits)
+
+(Alpha has no effect, since this is the Base Layer and there's nothing underneath)
+
+When we fill the Framebuffer with `0x80`, we're setting Alpha (unused), __Red, Green and Blue to `0x80`__.
+
+Which produces the grey screen.
+
+Let's do some colours...
 
 ![Render Blocks](https://lupyuen.github.io/images/fb-demo3.jpg)
 
 # Render Blocks
 
-TODO
-
-[fb_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L564-L601)
+This is how we render the __Blue, Green and Red Blocks__ in the pic above: [fb_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L564-L601)
 
 ```c
 // Fill framebuffer with Blue, Green and Red Blocks
@@ -215,15 +226,17 @@ const size_t fblen = pinfo.fblen / 4;  // 4 bytes per pixel
 // For every pixel...
 for (int i = 0; i < fblen; i++) {
 
-  // Colors are in XRGB 8888 format
+  // Colors are in ARGB 8888 format
   if (i < fblen / 4) {
     // Blue for top quarter.
     // RGB24_BLUE is 0x0000 00FF
     fb[i] = RGB24_BLUE;
+
   } else if (i < fblen / 2) {
     // Green for next quarter.
     // RGB24_GREEN is 0x0000 FF00
     fb[i] = RGB24_GREEN;
+
   } else {
     // Red for lower half.
     // RGB24_RED is 0x00FF 0000
@@ -233,6 +246,8 @@ for (int i = 0; i < fblen; i++) {
 
 // Omitted: Refresh the display with ioctl(FBIO_UPDATE)
 ```
+
+TODO
 
 ![Render Circle](https://lupyuen.github.io/images/fb-demo4.jpg)
 
@@ -265,7 +280,7 @@ for (int y = 0; y < height; y++) {
     const int y_shift = y - half_height;
 
     // If x^2 + y^2 < radius^2, set the pixel to Green.
-    // Colors are in XRGB 8888 format.
+    // Colors are in ARGB 8888 format.
     if (x_shift*x_shift + y_shift*y_shift < half_width*half_width) {
       // RGB24_GREEN is 0x0000 FF00
       fb[p] = RGB24_GREEN;
