@@ -295,16 +295,29 @@ for (int y = 0; y &lt; height; y++) {
 }
 
 // Omitted: Refresh the display with ioctl(FBIO_UPDATE)</code></pre></div>
-<p>TODO</p>
+<p>Yep we have full control over every single pixel! Let’s wrap up our demo with some mesmerising rectangles…</p>
 <p><img src="https://lupyuen.github.io/images/fb-demo1.jpg" alt="Render Rectangles" /></p>
 <h1 id="render-rectangle"><a href="#render-rectangle">6 Render Rectangle</a></h1>
+<p>When we run the <a href="https://lupyuen.github.io/articles/fb#framebuffer-demo"><strong>NuttX Framebuffer App</strong></a>, we’ll see a bunch of Color Rectangles. (Pic above)</p>
+<p>We <strong>render each Rectangle</strong> like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L472-L480">fb_main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Rectangle to be rendered
+struct fb_area_s area = {
+  .x = 0,  // X Offset
+  .y = 0,  // Y Offset
+  .w = pinfo.xres_virtual,  // Width
+  .h = pinfo.yres_virtual   // Height
+}
+
+// Render the rectangle
+draw_rect(&amp;state, &amp;area, color);
+
+// Omitted: Refresh the display with ioctl(FBIO_UPDATE)</code></pre></div>
+<p>The pic below shows the output of the Framebuffer App <strong><code>fb</code></strong> when we run it on PinePhone.</p>
+<p><a href="https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b">(See the Complete Log)</a></p>
 <p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L472-L480">fb_main.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>area.x = x;
-area.y = y;
-area.w = width;
-area.h = height;
-draw_rect(&amp;state, &amp;area, color);</code></pre></div><h1 id="pinephone-framebuffer-driver"><a href="#pinephone-framebuffer-driver">7 PinePhone Framebuffer Driver</a></h1>
+<p><img src="https://lupyuen.github.io/images/fb-run.png" alt="NuttX Framebuffer App running on PinePhone" /></p>
+<p><a href="https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b"><em>NuttX Framebuffer App running on PinePhone</em></a></p>
+<h1 id="pinephone-framebuffer-driver"><a href="#pinephone-framebuffer-driver">7 PinePhone Framebuffer Driver</a></h1>
 <p>TODO</p>
 <h2 id="ram-framebuffer"><a href="#ram-framebuffer">7.1 RAM Framebuffer</a></h2>
 <p>TODO</p>
