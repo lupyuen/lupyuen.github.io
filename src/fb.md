@@ -356,16 +356,16 @@ make menuconfig
 
 Select these options...
 
-- Enable __"Application Configuration > Examples > LVGL Demo"__
+- Enable "__Application Configuration__ > __Examples__ > __LVGL Demo__"
 
-- Enable __"Application Configuration > Graphics Support > Light and Versatile Graphics Library (LVGL)"__
+- Enable "__Application Configuration__ > __Graphics Support__ > __Light and Versatile Graphics Library (LVGL)__"
 
-- Under __"LVGL > Graphics Settings"__...
+- Under "__LVGL__ > __Graphics Settings__"
   - Set __Horizontal Resolution__ to __720__
   - Set __Vertical Resolution__ to __1440__
   - Set __DPI__ to __200__ (or higher)
 
-- Under __"LVGL > Color settings"__...
+- Under "__LVGL__ > __Color settings__"
   - Set __Color Depth__ to __32__
 
 Save the configuration and exit `menuconfig`. Rebuild NuttX...
@@ -384,7 +384,7 @@ We'll see the Graphical User Interface as shown in the pic above!
 
 _But it won't respond to our touch right?_
 
-Yeah we haven't started on the [__Touch Input Driver__](https://lupyuen.github.io/articles/pio#touch-panel) for PinePhone.
+Yeah we haven't started on the [__I2C Touch Input Driver__](https://lupyuen.github.io/articles/pio#touch-panel) for PinePhone.
 
 Maybe someday LVGL Touchscreen Apps will run OK on PinePhone!
 
