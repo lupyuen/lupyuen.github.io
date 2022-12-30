@@ -546,6 +546,8 @@ struct fb_vtable_s *up_fbgetvplane(
 
 Now it gets interesting: NuttX Kernel calls the operations exposed by our Framebuffer Driver...
 
+![Test Pattern on NuttX for PinePhone](https://lupyuen.github.io/images/lcd-title.jpg)
+
 ## Get Video Info
 
 The first operation exposed by our Framebuffer Driver is to return the __Video Info__: [pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L349-L395)
@@ -578,7 +580,13 @@ static int pinephone_getvideoinfo(
 
 [(We've seen __g_pinephone_video__ earlier)](https://lupyuen.github.io/articles/fb#ram-framebuffer)
 
-TODO
+This code looks interesting: We're trying to show the __Startup Test Pattern__ for as long as possible. (Pic above)
+
+Normally NuttX Kernel will erase our Framebuffer at startup. But with the logic above, our Test Pattern will be visible until the __first app call__ to our Framebuffer Driver.
+
+[(Test Pattern is rendered by __pinephone_display_test_pattern__)](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L855-L978)
+
+[(Which is called by __pinephone_bringup__)](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L79-L93)
 
 ## Get Plane Info
 
