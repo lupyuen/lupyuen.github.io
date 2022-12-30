@@ -544,16 +544,21 @@ struct fb_vtable_s *up_fbgetvplane(
 
 [(We've seen __g_pinephone_vtable__ earlier)](https://lupyuen.github.io/articles/fb#framebuffer-operations)
 
-Now it gets interesting: NuttX Kernel calls the operations exposed by our Framebuffer Driver...
+Now it gets interesting: NuttX Kernel and NuttX Apps will call the operations exposed by our Framebuffer Driver...
 
 ![Test Pattern on NuttX for PinePhone](https://lupyuen.github.io/images/lcd-title.jpg)
 
 ## Get Video Info
 
-The first operation exposed by our Framebuffer Driver is to return the __Video Info__: [pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L349-L395)
+Remember __FBIOGET_VIDEOINFO__ for fetching the Framebuffer Characteristics?
+
+-   [__"Framebuffer Interface"__](https://lupyuen.github.io/articles/fb#framebuffer-interface)
+
+The first operation exposed by our Framebuffer Driver returns the __Video Info__ (Framebuffer Characteristics): [pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L349-L395)
 
 ```c
 // Get the Video Info for our Framebuffer
+// (ioctl Entrypoint: FBIOGET_VIDEOINFO)
 static int pinephone_getvideoinfo(
   struct fb_vtable_s *vtable,   // Framebuffer Driver
   struct fb_videoinfo_s *vinfo  // Returned Video Info
@@ -590,51 +595,49 @@ Normally NuttX Kernel will erase our Framebuffer at startup. But with the logic 
 
 ## Get Plane Info
 
-TODO
+Earlier we've seen __FBIOGET_PLANEINFO__ that fetches the RAM Framebuffer...
 
-[pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L397-L429)
+-   [__"Framebuffer Interface"__](https://lupyuen.github.io/articles/fb#framebuffer-interface)
+
+This is how we return the __Plane Info__ that describes the RAM Framebuffer: [pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L397-L429)
 
 ```c
-/****************************************************************************
- * Name: pinephone_getplaneinfo
- *
- * Description:
- *   Get the planeinfo for the framebuffer. (ioctl Entrypoint:
- *   FBIOGET_PLANEINFO)
- *
- * Input Parameters:
- *   vtable - Framebuffer driver object
- *   pinfo  - Returned planeinfo object
- *
- * Returned Value:
- *   Zero (OK) on success; a negated errno value is returned on any failure.
- *
- ****************************************************************************/
-
-static int pinephone_getplaneinfo(struct fb_vtable_s *vtable, int planeno,
-                                  struct fb_planeinfo_s *pinfo)
-{
-  DEBUGASSERT(vtable != NULL && vtable == &g_pinephone_vtable);
-  ginfo("vtable=%p planeno=%d pinfo=%p\n", vtable, planeno, pinfo);
-
-  /* Copy and return the planeinfo object */
-
-  if (planeno == 0)
-    {
-      memcpy(pinfo, &g_pinephone_plane, sizeof(struct fb_planeinfo_s));
-      return OK;
-    }
-
-  gerr("ERROR: Returning EINVAL\n");
-  return -EINVAL;
+// Get the Plane Info for our Framebuffer
+// (ioctl Entrypoint: FBIOGET_PLANEINFO)
+static int pinephone_getplaneinfo(
+  struct fb_vtable_s *vtable,   // Framebuffer Driver
+  int planeno,  // Plane Number should be 0
+  struct fb_planeinfo_s *pinfo  // Returned Plane Info
+) {
+  // Copy and return the Plane Info
+  memcpy(pinfo, &g_pinephone_plane, sizeof(struct fb_planeinfo_s));
+  return OK;
 }
 ```
 
+[(We've seen __g_pinephone_plane__ earlier)](https://lupyuen.github.io/articles/fb#ram-framebuffer)
+
 ## Update Area
 
-TODO: pinephone_updatearea
+The final operation __updates the display__ when there's a change to the Framebuffer: [pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L472-L513)
 
-[pinephone_display.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L472-L513)
+```c
+// Update the Display when there is a change to the Framebuffer
+// (ioctl Entrypoint: FBIO_UPDATE)
+static int pinephone_updatearea(
+  struct fb_vtable_s *vtable,   // Framebuffer Driver
+  const struct fb_area_s *area  // Updated area of Framebuffer
+) {
+  // Mystery Code...
+```
+
+This operation is invoked when NuttX Apps call __FBIO_UPDATE__, as we've seen earlier...
+
+-   [__"Render Grey Screen"__](https://lupyuen.github.io/articles/fb#render-grey-screen)
+
+The code inside looks totally baffling, but first let's talk about a mysterious rendering problem...
+
+![Missing Pixels in PinePhone Image](https://lupyuen.github.io/images/fb-test2.jpg)
 
 # Mystery of the Missing Pixels
 
@@ -658,7 +661,7 @@ When we run the `fb` NuttX Example App, we see missing pixels in the rendered im
 
 -   Inside the Orange Box is supposed to be a Red Box
 
-![Missing Pixels in PinePhone Image](https://lupyuen.github.io/images/fb-test2.jpg)
+(Pic above)
 
 The missing pixels magically appear later in a curious pattern...
 
