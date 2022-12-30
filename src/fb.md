@@ -352,7 +352,7 @@ To build the __LVGL Demo App__ on NuttX...
 make menuconfig
 ```
 
-Select the following options...
+Select these options...
 
 - Enable __"Application Configuration > Examples > LVGL Demo"__
 
@@ -399,6 +399,8 @@ Here's how it works...
     [(See the docs for __LVGL Widgets__)](https://docs.lvgl.io/master/widgets/index.html)
 
 -   __LVGL Version__ supported by NuttX is __7.3.0__. [(See this)](https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/Kconfig#L13-L17)
+
+Now we talk about the internals of our Framebuffer Driver...
 
 # PinePhone Framebuffer Driver
 
