@@ -98,6 +98,10 @@ I'm not paid by Apache Software Foundation. But I'm extremely grateful to my [__
 
 If we're keen to build and boot NuttX on our PinePhone, please read on...
 
+![USB Serial Debug Cable for PinePhone](https://lupyuen.github.io/images/arm-uart2.jpg)
+
+[_USB Serial Debug Cable for PinePhone_](https://wiki.pine64.org/index.php/PinePhone#Serial_console)
+
 # Build NuttX
 
 TODO
@@ -109,6 +113,12 @@ Requirements
 -   microSD Card
 
 Select LVGL App
+
+![PinePhone Jumpdrive on microSD](https://lupyuen.github.io/images/arm-jumpdrive.png)
+
+[_PinePhone Jumpdrive on microSD_](https://github.com/dreemurrs-embedded/Jumpdrive)
+
+TODO
 
 ![Booting Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/fb-run.png)
 
