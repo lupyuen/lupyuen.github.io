@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "NuttX RTOS for PinePhone: Framebuffer",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-01-01",
+      "website": "https://lupyuen.github.io/articles/fb",
+      "summary": "How NuttX Apps call the NuttX Framebuffer Interface to render graphics... And what's inside the Framebuffer Driver for Pine64 PinePhone"
+    },
+    {
       "name": "NuttX RTOS for PinePhone: LCD Panel",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2022-12-28",
