@@ -10,6 +10,10 @@ Over the past few months we've ported a different kind of operating system to [_
 
 Let's talk about __NuttX for PinePhone__: What is it? Why are we doing this? How will we use it?
 
+![NuttX App running on PinePhone](https://lupyuen.github.io/images/fb-run.png)
+
+[_NuttX App running on PinePhone_](https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b)
+
 TODO
 
 _What's Apache NuttX RTOS?_
