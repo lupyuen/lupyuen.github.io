@@ -123,11 +123,11 @@
 <p>Because our PinePhone Framebuffer Driver doesn’t support overlays yet.</p>
 <p>Then build NuttX with…</p>
 <div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div>
-<p>Let’s look at the Demo Code…</p>
+<p>Before we run the demo, let’s look at the code…</p>
 <h1 id="framebuffer-interface"><a href="#framebuffer-interface">2 Framebuffer Interface</a></h1>
 <p><em>What’s inside the app?</em></p>
 <p>We begin with the <strong>Framebuffer Interface</strong> that NuttX provides to our apps for rendering graphics.</p>
-<p>To call the Framebuffer Interface, our app opens the Framebuffer Driver at <strong>/dev/fb0</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L314-L337">fb_main.c</a></p>
+<p>To call the Framebuffer Interface, our app <strong>opens the Framebuffer Driver</strong> at <strong>/dev/fb0</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L314-L337">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#include &lt;nuttx/video/fb.h&gt;
 #include &lt;nuttx/video/rgbcolors.h&gt;
 
@@ -136,7 +136,7 @@ int fd = open(&quot;/dev/fb0&quot;, O_RDWR);
 
 // Quit if we failed to open
 if (fd &lt; 0) { return; }</code></pre></div>
-<p>Next we fetch the <strong>Framebuffer Characteristics</strong>, which will tell us the Screen Size (720 x 144) and Pixel Format (ARGB 8888)…</p>
+<p>Next we fetch the <strong>Framebuffer Characteristics</strong>, which will tell us the Screen Size (720 x 1440) and Pixel Format (ARGB 8888)…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Get the Characteristics of the Framebuffer
 struct fb_videoinfo_s vinfo;
 int ret = ioctl(          // Do I/O Control...
@@ -148,7 +148,7 @@ int ret = ioctl(          // Do I/O Control...
 // Quit if FBIOGET_VIDEOINFO failed
 if (ret &lt; 0) { return; }</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L472-L488">(<strong>fb_videoinfo_s</strong> is defined here)</a></p>
-<p>Then we fetch the <strong>Plane Info</strong>, which describes the RAM Framebuffer that we’ll use for drawing: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L391-L400">fb_main.c</a></p>
+<p>Then we fetch the <strong>Plane Info</strong>, which describes the <strong>RAM Framebuffer</strong> that we’ll use for drawing: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L391-L400">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Get the Plane Info
 struct fb_planeinfo_s pinfo;
 ret = ioctl(              // Do I/O Control...
@@ -366,7 +366,7 @@ draw_rect(&amp;state, &amp;area, color);
 <p><strong>Main Function</strong> (Event Loop) of the LVGL App is here: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L109-L238">lvgldemo.c</a></p>
 </li>
 <li>
-<p>Main Function calls the <strong>NuttX Framebuffer Interface</strong> here: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/fbdev.c">fbdev.c</a></p>
+<p>Main Function calls the <strong>NuttX Framebuffer Interface</strong> here: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/fbdev.c#L351-L469">fbdev.c</a></p>
 </li>
 <li>
 <p><strong>LVGL Widgets</strong> are created here: <a href="https://github.com/lvgl/lv_demos/blob/v7.3.0/src/lv_demo_widgets/lv_demo_widgets.c#L108-L203">lv_demo_widgets.c</a></p>
@@ -480,7 +480,7 @@ static struct fb_vtable_s g_pinephone_vtable = {
 <p>(Called by <a href="https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L795-L805"><strong>fb_register</strong></a> and <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L79-L93"><strong>pinephone_bringup</strong></a>)</p>
 </li>
 </ul>
-<p>Then NuttX Kernel interrogates our Framebuffer Driver to discover the Video Plane…</p>
+<p>Then NuttX Kernel interrogates our Framebuffer Driver…</p>
 <h2 id="get-video-plane"><a href="#get-video-plane">8.4 Get Video Plane</a></h2>
 <p>NuttX Kernel calls our Framebuffer Driver to discover the <strong>Framebuffer Operations</strong> supported by our driver.</p>
 <p>This is how we return the Framebuffer Operations: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L801-L833">pinephone_display.c</a></p>
@@ -529,7 +529,7 @@ static int pinephone_getvideoinfo(
 <p>This code looks interesting: We’re trying to show the <strong>Startup Test Pattern</strong> for as long as possible. (Pic above)</p>
 <p>Normally NuttX Kernel will erase our Framebuffer at startup. But with the logic above, our Test Pattern will be visible until the <strong>first app call</strong> to our Framebuffer Driver.</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L855-L978">(Test Pattern is rendered by <strong>pinephone_display_test_pattern</strong>)</a></p>
-<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L79-L93">(Which is called by <strong>pinephone_bringup</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L79-L93">(Which is called by <strong>pinephone_bringup</strong> at startup)</a></p>
 <h2 id="get-plane-info"><a href="#get-plane-info">8.6 Get Plane Info</a></h2>
 <p>Earlier we’ve seen <strong>FBIOGET_PLANEINFO</strong> that fetches the RAM Framebuffer…</p>
 <ul>
@@ -587,7 +587,7 @@ static int pinephone_updatearea(
 <p>But the pixels at the lower half don’t get pushed to the display until the <strong>next screen update.</strong></p>
 <p><em>Maybe it’s a problem with Framebuffer DMA / Display Engine / Timing Controller TCON0?</em></p>
 <p>Yeah there seems to be a lag between the writing of pixels to RAM Framebuffer, and the pushing of pixels to the display over DMA / Display Engine / Timing Controller TCON0.</p>
-<p>We found a workaround for the lag in rendering pixels…</p>
+<p>We found an unsatisfactory workaround for the lag in rendering pixels…</p>
 <p><img src="https://lupyuen.github.io/images/fb-title.jpg" alt="Fixed Missing Pixels in PinePhone Image" /></p>
 <h1 id="fix-missing-pixels"><a href="#fix-missing-pixels">10 Fix Missing Pixels</a></h1>
 <p>In the previous section we saw that there was a <strong>lag pushing pixels from the RAM Framebuffer</strong> to the PinePhone Display.</p>
@@ -630,7 +630,7 @@ static int pinephone_updatearea(
     (unsigned long)((uintptr_t)area)  // Updated area
   );
 #endif</code></pre></div>
-<p><em>Instead of copying the entire RAM Framebuffer, can we copy only the pixels for the updated screen area?</em></p>
+<p><em>Instead of copying the entire RAM Framebuffer, can we copy only the updated screen area?</em></p>
 <p>Probably, we need more rigourous testing.</p>
 <p><em>But how do we really fix this?</em></p>
 <p>We need to <a href="https://developer.arm.com/documentation/den0013/d/Caches/Invalidating-and-cleaning-cache-memory"><strong>flush the CPU Cache</strong></a>, and verify that our Framebuffer has been mapped with the right attributes.</p>
