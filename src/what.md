@@ -22,7 +22,7 @@ _What's Apache NuttX RTOS?_
 
 Think Linux, Ubuntu, Manjaro, Arch, ... But a lot __smaller and simpler__.
 
-NuttX boots on a __micro SD Card__ and it provides a Command-Line Interface. (Pic above)
+NuttX is a __tiny operating system__ that boots on a __micro SD Card__ and provides a Command-Line Interface. (Pic above)
 
 TODO: (Compiles in XXX seconds on a 10-year-old MacBook Pro)
 
@@ -40,7 +40,7 @@ Not yet, NuttX won't make phone calls and send text messages. It might become a 
 
 It's probably more suitable for __Education__ right now: For learning what happens when a Smartphone boots, how it renders graphics on the LCD Display.
 
-And for folks who are keen to tinker __Bare Metal__ on PinePhone.
+And for folks who wish to tinker __Bare Metal__ on PinePhone.
 
 (Turning NuttX into Daily Driver might be an interesting project for students!)
 
@@ -84,9 +84,9 @@ But please __drop us a note__ to tell us if you're using the code in your projec
 
 _Where did the code come from?_
 
-We created the code based on the official docs for the __Allwinner A64 SoC__. But Allwinner A64 is poorly documented for some topics like Display Drivers.
+We created the code based on the official docs for the __Allwinner A64 SoC__. But some parts of Allwinner A64 are poorly documented. (Like the Display Engine)
 
-A sizeable chunk of our code was __Reverse Engineered__ from the p-boot Bootloader, by observing which Hardware Registers it uses.
+A sizeable chunk of our code was [__Reverse Engineered__](https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine) from the p-boot Bootloader, by observing which Hardware Registers it uses.
 
 The __NuttX Community__ is now adding new drivers for Allwinner A64 SoC, like for I2C.
 
