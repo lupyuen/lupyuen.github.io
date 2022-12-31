@@ -4,17 +4,17 @@
 
 ![Apache NuttX RTOS on Pine64 PinePhone with LVGL... Sorry no touch input yet!](https://lupyuen.github.io/images/what-title.jpg)
 
-_Apache NuttX RTOS on Pine64 PinePhone with LVGL... Sorry no touch input yet!_
+[_Apache NuttX RTOS on Pine64 PinePhone with LVGL... Sorry no touch input yet!_](https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b)
 
-Over the past few months we've ported a different kind of operating system to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)... [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/)
+Over the past 5 months, we ported a different kind of Operating System to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)... [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/)
 
 (RTOS for Real-Time Operating System)
 
 Let's talk about __NuttX for PinePhone__: What is it? Why are we doing this? How will we use it?
 
-![NuttX App running on PinePhone](https://lupyuen.github.io/images/fb-run.png)
+![Booting Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/fb-run.png)
 
-[_NuttX App running on PinePhone_](https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b)
+[_Booting Apache NuttX RTOS on PinePhone_](https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b)
 
 # Smaller and Simpler
 
@@ -32,7 +32,7 @@ TODO
 
 _Why "Real-Time"?_
 
-It's a Real-Time Operating System (RTOS) because NuttX was created for __tiny microcontrollers__: STM32, nRF52, BL602, ESP32...
+It's a __Real-Time Operating System__ (RTOS) because NuttX was created for __tiny microcontrollers__: STM32, nRF52, BL602, ESP32, ...
 
 Which won't run a General Purpose Operating System. (Like Linux)
 
@@ -40,7 +40,7 @@ So now we have "upsized" NuttX for __Arm64 Smartphones__.
 
 TODO
 
-_Daily driver?_
+_Is NuttX a Daily Driver for PinePhone?_
 
 No phone calls and text messaging yet
 
@@ -48,19 +48,7 @@ Might become a Daily Driver someday... If we put a lot of work into it
 
 Probably more suitable for Education right now... For learning what happens when a Smartphone boots, how it renders graphics to the LCD Display.
 
-(Daily Driver is an interesting project for students!)
-
-TODO
-
-_Suitable for Education / Teaching?_
-
-Check out the 13 articles on everything inside-out about NuttX on PinePhone...
-
-And esoteric topics too...
-
-(Great for Bedtime Reading!)
-
-(For Retro Fans: NuttX for PinePhone is probably more [__MINIX__](https://www.minix3.org/) than Linux)
+(Turning NuttX into Daily Driver might be an interesting project for students!)
 
 TODO
 
@@ -72,29 +60,53 @@ TODO
 
 _Will it run Linux apps?_
 
-Sadly nope. But NuttX is based on POSIX, so some apps might compile on NuttX.
+Sadly nope. But NuttX is based on POSIX, so some apps might compile for NuttX.
+
+Let's talk about NuttX for Learners...
+
+![NuttX Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
+
+[_NuttX Display Driver for PinePhone_](https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone)
+
+# Smartphone Education
+
+TODO
+
+_Is NuttX good for learning the internals of Smartphones?_
+
+Check out the [__13 articles__](https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone) covering everything inside-out about NuttX on PinePhone: GPIO, UART, Framebuffer, LCD Panel, ...
+
+And esoteric topics too: Display Engine, MIPI Display Serial Interface, Power Management Integrated Circuit, Reduced Serial Bus, Generic Interrupt Controller, ...
+
+(Great for Bedtime Reading!)
 
 TODO
 
 _So you envision a classroom of students, cracking open their PinePhones to experiment with NuttX?_
 
-Yeah possibly? I taught Operating Systems in school... I wished we could use our phones as a Teaching Tool.
+Yeah possibly? I taught Operating Systems in school... I wished we could use our phones as a __Teaching Tool__.
+
+(For Retro Fans: NuttX for PinePhone is probably more [__MINIX__](https://www.minix3.org/) than Linux)
 
 TODO
 
 _Can we take the NuttX source code and build a super duper Custom PinePhone? (Maybe sell it?)_
 
-Yep feel free to take the code and do everything with it! The source code is Apache Licensed.
+Yep feel free to take the code and do everything with it! The source code is __Apache Licensed__.
 
-But please drop us a note to tell us if you're using the code in your project...  We're curious to know if anyone finds our work useful!
+But please __drop us a note__ to tell us if you're using the code in your project...  We're curious to know if anyone finds our work useful!
 
 TODO
 
 _Where did the code come from?_
 
-Allwinner A64 SoC is poorly documented. A huge chunk of our code was Reverse Engineered from the p-boot Bootloader, by observing which Hardware Registers it uses.
+We created the code based on the official docs for the __Allwinner A64 SoC__. But Allwinner A64 is poorly documented for some topics like Display Drivers.
 
-The NuttX Community is now adding drivers for Allwinner A64 SoC.
+A sizeable chunk of our code was __Reverse Engineered__ from the p-boot Bootloader, by observing which Hardware Registers it uses.
+
+The NuttX Community is now adding new drivers for Allwinner A64 SoC, like for I2C.
+
+[(We welcome your contribution to NuttX!)](https://lupyuen.github.io/articles/pr)
 
 TODO
 
@@ -104,7 +116,9 @@ I'm proud to volunteer as a member of the Apache NuttX __Project Management Comm
 
 I'm not paid by Apache Software Foundation. But I'm extremely grateful to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work on PinePhone!
 
-# Build NuttX on PinePhone 
+If we're keen to build and boot NuttX on our PinePhone, please read on...
+
+# Build NuttX for PinePhone
 
 TODO
 
@@ -116,7 +130,11 @@ Requirements
 
 Select LVGL App
 
-# Boot NuttX on PinePhone
+![Booting Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/fb-run.png)
+
+[_Booting Apache NuttX RTOS on PinePhone_](https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b)
+
+# Boot NuttX for PinePhone
 
 TODO
 
@@ -124,19 +142,15 @@ TODO
 lvgldemo
 ```
 
-# What's Next
+TODO
+
+```bash
+help
+```
 
 TODO
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
-
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
-
--   [__Apache NuttX RTOS for PinePhone__](https://github.com/lupyuen/pinephone-nuttx)
-
--   [__Check out my articles__](https://lupyuen.github.io)
-
--   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
