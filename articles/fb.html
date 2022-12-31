@@ -578,9 +578,10 @@ static int pinephone_updatearea(
 <p>We found a workaround for the lag in rendering pixels…</p>
 <p><img src="https://lupyuen.github.io/images/fb-title.jpg" alt="Fixed Missing Pixels in PinePhone Image" /></p>
 <h1 id="fix-missing-pixels"><a href="#fix-missing-pixels">10 Fix Missing Pixels</a></h1>
-<p>TODO</p>
-<p>In the previous section we saw that there was a lag pushing pixels from the RAM Framebuffer to the PinePhone Display (over DMA / Display Engine / Timing Controller TCON0).</p>
-<p>Can we overcome this lag by copying the RAM Framebuffer to itself, forcing the display to refresh? This sounds very strange, but yes it works! </p>
+<p>In the previous section we saw that there was a <strong>lag pushing pixels from the RAM Framebuffer</strong> to the PinePhone Display.</p>
+<p>(Over DMA / Display Engine / Timing Controller TCON0)</p>
+<p>Can we overcome this lag by <strong>copying the RAM Framebuffer to itself</strong>, forcing the display to refresh?</p>
+<p>This sounds very strange, but yes it works!</p>
 <p>From <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L472-L513">pinephone_display.c</a>:</p>
 <div class="example-wrap"><pre class="language-c"><code>// Update the Display when there is a change to the Framebuffer
 // (ioctl Entrypoint: FBIO_UPDATE)
@@ -605,51 +606,29 @@ static int pinephone_updatearea(
 }</code></pre></div>
 <p>With the code above, the Red, Orange and Yellow Boxes are now rendered correctly in our NuttX Framebuffer Driver for PinePhone. (Pic above)</p>
 <p><em>Who calls pinephone_updatearea?</em></p>
-<p>After writing the pixels to the RAM Framebuffer, NuttX Apps will call <code>ioctl(FBIO_UPDATE)</code> to update the display.</p>
-<p>This triggers <code>pinephone_updatearea</code> in our NuttX Framebuffer Driver: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/pixel/examples/fb/fb_main.c#L265-L274">fb_main.c</a></p>
+<p>After writing the pixels to the RAM Framebuffer, NuttX Apps will call <strong>ioctl(FBIO_UPDATE)</strong> to update the display.</p>
+<p>This triggers <strong>pinephone_updatearea</strong> in our NuttX Framebuffer Driver: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/pixel/examples/fb/fb_main.c#L265-L274">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Omitted: NuttX App writes pixels to RAM Framebuffer
 
 // Update the Framebuffer
 #ifdef CONFIG_FB_UPDATE
-  ret = ioctl(    // I/O Command
-    state-&gt;fd,    // Framebuffer File Descriptor
+  ret = ioctl(    // I/O Control
+    state-&gt;fd,    // File Descriptor for Framebuffer Driver
     FBIO_UPDATE,  // Update the Framebuffer
     (unsigned long)((uintptr_t)area)  // Updated area
   );
 #endif</code></pre></div>
-<p>TODO: Can we copy the pixels for the partial screen area? Probably, needs more rigourous testing</p>
-<p>We might need to check the CPU Writeback Cache, and verify that our Framebuffer has been mapped with the right attributes.</p>
-<p>(Thanks to <a href="https://twitter.com/suarezvictor/status/1608643410906472448?s=20&amp;t=gFese-aeWGonGShw9vtNyg"><strong>suarezvictor</strong></a> and <a href="https://twitter.com/crzwdjk/status/1608661469591384064?s=20&amp;t=gFese-aeWGonGShw9vtNyg"><strong>crzwdjk</strong></a> for the tips!)</p>
+<p><em>Instead of copying the entire RAM Framebuffer, can we copy only the pixels for the updated screen area?</em></p>
+<p>Probably, we need more rigourous testing.</p>
+<p><em>But how do we really fix this?</em></p>
+<p>We need to check the <a href="https://developer.arm.com/documentation/den0013/d/Caches/Invalidating-and-cleaning-cache-memory"><strong>CPU Cache</strong></a>, and verify that our Framebuffer has been mapped with the right attributes.</p>
+<p>(Thanks to <a href="https://twitter.com/BarryNolte/status/1609003505699766272"><strong>Barry Nolte</strong></a>, <a href="https://twitter.com/suarezvictor/status/1608643410906472448?s=20&amp;t=gFese-aeWGonGShw9vtNyg"><strong>Victor Suarez Rovere</strong></a> and <a href="https://twitter.com/crzwdjk/status/1608661469591384064?s=20&amp;t=gFese-aeWGonGShw9vtNyg"><strong>crzwdjk</strong></a> for the tips!)</p>
+<p><a href="https://news.ycombinator.com/item?id=34186806">(Commenters on Hacker News also think it’s a CPU Cache issue)</a></p>
 <p><em>How do other PinePhone operating systems handle this?</em></p>
-<p>We might need to handle TCON0 Vertical Blanking (<code>TCON0_Vb_Int_En</code> / <code>TCON0_Vb_Int_Flag</code>) and TCON0 CPU Trigger Mode Finish (<code>TCON0_Tri_Finish_Int_En</code> / <code>TCON0_Tri_Finish_Int_Flag</code>) like this…</p>
+<p>See this…</p>
 <ul>
-<li>
-<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun4i_tcon.c#L225-L242">sun4i_tcon_enable_vblank</a></p>
-</li>
-<li>
-<p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun4i_tcon.c#L746-L777">sun4i_tcon_handler</a></p>
-<p><a href="https://gist.github.com/lupyuen/214788deabdb37659e806a463f8acc50">(More about sun4i_tcon_handler)</a></p>
-</li>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx#fix-missing-pixels-in-pinephone-image"><strong>“Fix Missing Pixels in PinePhone Image”</strong></a></li>
 </ul>
-<p>p-boot Bootloader seems to handle every TCON0 CPU Trigger Mode Finish (<code>TCON0_Tri_Finish_Int_En</code> / <code>TCON0_Tri_Finish_Int_Flag</code>) by updating the Display Engine Registers. Which sounds odd…</p>
-<ol>
-<li>
-<p>Render Loop waits forever for <code>EV_VBLANK</code>: <a href="https://megous.com/git/p-boot/tree/src/dtest.c#n327">dtest.c</a></p>
-</li>
-<li>
-<p><code>EV_VBLANK</code> is triggered by <code>display_frame_done</code>: <a href="https://megous.com/git/p-boot/tree/src/gui.c#n64">gui.c</a></p>
-</li>
-<li>
-<p><code>display_frame_done</code> is triggered by TCON0 CPU Trigger Mode Finish: <a href="https://megous.com/git/p-boot/tree/src/display.c#n2005">display.c</a></p>
-</li>
-<li>
-<p>Render Loop handles <code>EV_VBLANK</code> by redrawing and calling <code>display_commit</code>:  <a href="https://megous.com/git/p-boot/tree/src/dtest.c#n338">dtest.c</a></p>
-</li>
-<li>
-<p><code>display_commit</code> updates the Display Engine Registers, including the Framebuffer Addresses: <a href="https://megous.com/git/p-boot/tree/src/display.c#n2017">display.c</a></p>
-</li>
-</ol>
-<p>Can we handle TCON0 CPU Trigger Mode Finish without refreshing the Display Engine Registers?</p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>Check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
@@ -695,6 +674,9 @@ static int pinephone_updatearea(
 <ul>
 <li>
 <p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="https://news.ycombinator.com/item?id=34186806"><strong>Discuss this article on Hacker News</strong></a></p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>My Current Project: “Apache NuttX RTOS for PinePhone”</strong></a></p>
