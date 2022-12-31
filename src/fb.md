@@ -744,7 +744,7 @@ Probably, we need more rigourous testing.
 
 _But how do we really fix this?_
 
-We need to check the [__CPU Cache__](https://developer.arm.com/documentation/den0013/d/Caches/Invalidating-and-cleaning-cache-memory), and verify that our Framebuffer has been mapped with the right attributes.
+We need to [__flush the CPU Cache__](https://developer.arm.com/documentation/den0013/d/Caches/Invalidating-and-cleaning-cache-memory), and verify that our Framebuffer has been mapped with the right attributes.
 
 (Thanks to [__Barry Nolte__](https://twitter.com/BarryNolte/status/1609003505699766272), [__Victor Suarez Rovere__](https://twitter.com/suarezvictor/status/1608643410906472448?s=20&t=gFese-aeWGonGShw9vtNyg) and [__crzwdjk__](https://twitter.com/crzwdjk/status/1608661469591384064?s=20&t=gFese-aeWGonGShw9vtNyg) for the tips!)
 
