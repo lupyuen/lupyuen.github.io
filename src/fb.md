@@ -1,6 +1,6 @@
 # NuttX RTOS for PinePhone: Framebuffer
 
-📝 _7 Jan 2023_
+📝 _1 Jan 2023_
 
 ![Apache NuttX Framebuffer App on Pine64 PinePhone](https://lupyuen.github.io/images/fb-title.jpg)
 
@@ -756,11 +756,15 @@ See this...
 
 -   [__"Fix Missing Pixels in PinePhone Image"__](https://github.com/lupyuen/pinephone-nuttx#fix-missing-pixels-in-pinephone-image)
 
+![LVGL on NuttX on PinePhone](https://lupyuen.github.io/images/fb-lvgl2.jpg)
+
 # What's Next
 
-TODO
+Now that we can render Graphical User Interfaces with [__LVGL Graphics Library__](https://docs.lvgl.io/master/intro/index.html)... It's time to build the [__NuttX Touch Input Driver__](https://lupyuen.github.io/articles/pio#touch-panel) for PinePhone!
 
-Check out the other articles on __NuttX RTOS for PinePhone__...
+The NuttX Community is now adding support for [__I2C on Allwinner A64 SoC__](https://github.com/apache/nuttx/pull/8009), which will be super helpful for our I2C Touch Input Driver. Stay Tuned!
+
+Meanwhile please check out the other articles on __NuttX RTOS for PinePhone__...
 
 -   [__"Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone"__](https://lupyuen.github.io/articles/arm)
 
