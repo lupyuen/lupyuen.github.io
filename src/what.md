@@ -40,6 +40,8 @@ Not yet, NuttX won't make phone calls and send text messages. It might become a 
 
 It's probably more suitable for __Education__ right now: For learning what happens when a Smartphone boots, how it renders graphics on the LCD Display.
 
+And for folks who are keen to tinker __Bare Metal__ on PinePhone.
+
 (Turning NuttX into Daily Driver might be an interesting project for students!)
 
 _Does NuttX support X11? Wayland?_
