@@ -64,7 +64,7 @@ Then build NuttX with...
 make
 ```
 
-Let's look at the Demo Code...
+Before we run the demo, let's look at the code...
 
 # Framebuffer Interface
 
@@ -72,7 +72,7 @@ _What's inside the app?_
 
 We begin with the __Framebuffer Interface__ that NuttX provides to our apps for rendering graphics.
 
-To call the Framebuffer Interface, our app opens the Framebuffer Driver at __/dev/fb0__: [fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L314-L337)
+To call the Framebuffer Interface, our app __opens the Framebuffer Driver__ at __/dev/fb0__: [fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L314-L337)
 
 ```c
 #include <nuttx/video/fb.h>
@@ -85,7 +85,7 @@ int fd = open("/dev/fb0", O_RDWR);
 if (fd < 0) { return; }
 ```
 
-Next we fetch the __Framebuffer Characteristics__, which will tell us the Screen Size (720 x 144) and Pixel Format (ARGB 8888)...
+Next we fetch the __Framebuffer Characteristics__, which will tell us the Screen Size (720 x 1440) and Pixel Format (ARGB 8888)...
 
 ```c
 // Get the Characteristics of the Framebuffer
@@ -102,7 +102,7 @@ if (ret < 0) { return; }
 
 [(__fb_videoinfo_s__ is defined here)](https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L472-L488)
 
-Then we fetch the __Plane Info__, which describes the RAM Framebuffer that we'll use for drawing: [fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L391-L400)
+Then we fetch the __Plane Info__, which describes the __RAM Framebuffer__ that we'll use for drawing: [fb_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L391-L400)
 
 ```c
 // Get the Plane Info
@@ -396,7 +396,7 @@ Here's how it works...
 
 -   __Main Function__ (Event Loop) of the LVGL App is here: [lvgldemo.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L109-L238)
 
--   Main Function calls the __NuttX Framebuffer Interface__ here: [fbdev.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/fbdev.c)
+-   Main Function calls the __NuttX Framebuffer Interface__ here: [fbdev.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/fbdev.c#L351-L469)
 
 -   __LVGL Widgets__ are created here: [lv_demo_widgets.c](https://github.com/lvgl/lv_demos/blob/v7.3.0/src/lv_demo_widgets/lv_demo_widgets.c#L108-L203)
 
@@ -533,7 +533,7 @@ __up_fbinitialize__ comes from our Framebuffer Driver (LCD Driver)...
 
     (Called by [__fb_register__](https://github.com/apache/nuttx/blob/master/drivers/video/fb.c#L795-L805) and [__pinephone_bringup__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L79-L93))
 
-Then NuttX Kernel interrogates our Framebuffer Driver to discover the Video Plane...
+Then NuttX Kernel interrogates our Framebuffer Driver...
 
 ## Get Video Plane
 
@@ -601,7 +601,7 @@ Normally NuttX Kernel will erase our Framebuffer at startup. But with the logic 
 
 [(Test Pattern is rendered by __pinephone_display_test_pattern__)](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L855-L978)
 
-[(Which is called by __pinephone_bringup__)](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L79-L93)
+[(Which is called by __pinephone_bringup__ at startup)](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L79-L93)
 
 ## Get Plane Info
 
@@ -677,7 +677,7 @@ _Maybe it's a problem with Framebuffer DMA / Display Engine / Timing Controller 
 
 Yeah there seems to be a lag between the writing of pixels to RAM Framebuffer, and the pushing of pixels to the display over DMA / Display Engine / Timing Controller TCON0.
 
-We found a workaround for the lag in rendering pixels...
+We found an unsatisfactory workaround for the lag in rendering pixels...
 
 ![Fixed Missing Pixels in PinePhone Image](https://lupyuen.github.io/images/fb-title.jpg)
 
@@ -738,7 +738,7 @@ This triggers __pinephone_updatearea__ in our NuttX Framebuffer Driver: [fb_main
 #endif
 ```
 
-_Instead of copying the entire RAM Framebuffer, can we copy only the pixels for the updated screen area?_
+_Instead of copying the entire RAM Framebuffer, can we copy only the updated screen area?_
 
 Probably, we need more rigourous testing.
 
