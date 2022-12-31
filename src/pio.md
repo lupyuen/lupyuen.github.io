@@ -1127,6 +1127,24 @@ Searching online for `"goodix,gt917s"` gives us this __Linux Driver for Goodix G
 
 -   [goodix.c](https://github.com/torvalds/linux/blob/master/drivers/input/touchscreen/goodix.c)
 
+Which seems to be derived from this (recently updated) __Android Driver__...
+
+-   [gt9xx.c](https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c)
+
+The __Porting Notes__ for Android are here...
+
+-   [__Android Porting Guide__](https://github.com/goodix/gt9xx_driver_android/blob/master/documents/Potring_Guide.md)
+
+The datasheet doesn't say much about programming the Touch Panel...
+
+-   [__GT917S Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/GT917S-Datasheet.pdf)
+
+So we'll create the __NuttX Touch Panel Driver__ by replicating the I2C Read / Write Operations from the Android Driver [__gt9xx.c__](https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c).
+
+We'll reuse the code from the NuttX Touch Panel Driver for __PineDio Stack BL604__...
+
+-   [__"NuttX Touch Panel Driver for PineDio Stack BL604"__](https://lupyuen.github.io/articles/touch)
+
 ## Video Codec
 
 PinePhone's Linux Device Tree includes a __Video Codec__ for A64's Video Engine: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L539-L547)
