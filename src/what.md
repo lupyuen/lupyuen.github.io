@@ -46,7 +46,7 @@ And for folks who wish to tinker __Bare Metal__ on PinePhone.
 
 _Does NuttX support X11? Wayland?_
 
-Nope, only [__LVGL__](https://lupyuen.github.io/articles/fb#lvgl-graphics-library). (Pic above)
+Nope, only [__LVGL__](https://lupyuen.github.io/articles/fb#lvgl-graphics-library) is supported. (Pic above)
 
 And we're still working on the Touch Input.
 
