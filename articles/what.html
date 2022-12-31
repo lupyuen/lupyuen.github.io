@@ -123,80 +123,118 @@
 <p><img src="https://lupyuen.github.io/images/arm-uart2.jpg" alt="USB Serial Debug Cable for PinePhone" /></p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><em>USB Serial Debug Cable for PinePhone</em></a></p>
 <h1 id="build-nuttx"><a href="#build-nuttx">3 Build NuttX</a></h1>
-<p>Here’s what we need for running NuttX on PinePhone…</p>
+<p>Here’s what we need to run NuttX on PinePhone…</p>
 <ul>
 <li>
 <p><strong>Pine64 PinePhone</strong></p>
-<p>(sorry not PinePhone Pro)</p>
+<p>(Sorry PinePhone Pro is not supported yet)</p>
 </li>
 <li>
-<p>USB Serial Debug Cable</p>
+<p><a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><strong>USB Serial Debug Cable for PinePhone</strong></a></p>
+<p>(Pic above)</p>
 </li>
 <li>
-<p>microSD Card</p>
+<p><strong>microSD Card</strong></p>
 </li>
 </ul>
-<p>TODO</p>
-<p>Serial Console</p>
-<p>A <a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console">PinePhone Serial Debug Cable</a>
-is required to run NuttX on PinePhone.</p>
-<p>On PinePhone, set the <a href="https://wiki.pine64.org/index.php/PinePhone#Privacy_switch_configuration">Privacy Switch 6 (Headphone)</a>
-to <strong>Off</strong>.</p>
-<p>Connect PinePhone to our computer with the Serial Debug Cable.
-On our computer, start a Serial Terminal and connect to the USB Serial Port
-at <strong>115.2 kbps</strong>.</p>
-<p>NuttX will appear in the Serial Console when it boots on PinePhone.</p>
-<p>TODO: Download <code>Image.gz</code> here</p>
-<p>ARM64 Toolchain</p>
-<p>Before building NuttX for PinePhone, download the ARM64 Toolchain for
-<strong>AArch64 Bare-Metal Target</strong> <code>aarch64-none-elf</code> from
-<a href="https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads">Arm GNU Toolchain Downloads</a>.</p>
+<p>Download <strong><code>Image.gz</code></strong> from the NuttX Binaries…</p>
+<ul>
+<li>TODO</li>
+</ul>
+<p>Or if we prefer to build NuttX ourselves…</p>
+<ol>
+<li>
+<p>Install the Build Prerequisites, skip the RISC-V Toolchain…</p>
+<p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites">“<strong>Install Prerequisites</strong>”</a></p>
+</li>
+<li>
+<p>Download the ARM64 Toolchain for
+<strong>AArch64 Bare-Metal Target <code>aarch64-none-elf</code></strong></p>
+<p><a href="https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads"><strong>Arm GNU Toolchain Downloads</strong></a></p>
 <p>(Skip the section for Beta Releases)</p>
-<p>Add the downloaded toolchain <code>gcc-arm-...-aarch64-none-elf/bin</code>
-to the <code>PATH</code> Environment Variable.</p>
-<p>Check the ARM64 Toolchain:</p>
-<div class="example-wrap"><pre class="language-bash"><code>aarch64-none-elf-gcc -v</code></pre></div>
-<p>To build NuttX for PinePhone…</p>
-<p>TODO: install the prerequisites</p>
-<p>TODO: clone the git repositories <code>nuttx</code> and <code>apps</code></p>
-<p>Configure the NuttX Project…</p>
-<div class="example-wrap"><pre class="language-bash"><code>cd nuttx
+</li>
+<li>
+<p>Add the downloaded toolchain to the <strong><code>PATH</code></strong> Environment Variable…</p>
+<div class="example-wrap"><pre class="language-text"><code>gcc-arm-...-aarch64-none-elf/bin</code></pre></div>
+<p>Check the ARM64 Toolchain…</p>
+<div class="example-wrap"><pre class="language-bash"><code>aarch64-none-elf-gcc -v</code></pre></div></li>
+<li>
+<p>Download and configure NuttX…</p>
+<div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
+cd nuttx
+git clone https://github.com/apache/nuttx.git nuttx
+git clone https://github.com/apache/nuttx-apps apps
+
+cd nuttx
 tools/configure.sh pinephone:lcd
-make menuconfig</code></pre></div>
-<p>TODO: Select LVGL App</p>
-<p>Build the NuttX Project…</p>
+make menuconfig</code></pre></div></li>
+<li>
+<p>Select these options to enable the LVGL Demo App…</p>
+<p>Enable “<strong>Application Configuration</strong> &gt; <strong>Examples</strong> &gt; <strong>LVGL Demo</strong>”</p>
+<p>Enable “<strong>Application Configuration</strong> &gt; <strong>Graphics Support</strong> &gt; <strong>Light and Versatile Graphics Library (LVGL)</strong>”</p>
+<p>Under “<strong>LVGL</strong> &gt; <strong>Graphics Settings</strong>”</p>
+<ul>
+<li>Set <strong>Horizontal Resolution</strong> to <strong>720</strong></li>
+<li>Set <strong>Vertical Resolution</strong> to <strong>1440</strong></li>
+<li>Set <strong>DPI</strong> to <strong>200</strong></li>
+</ul>
+<p>Under “<strong>LVGL</strong> &gt; <strong>Color settings</strong>”</p>
+<ul>
+<li>Set <strong>Color Depth</strong> to <strong>32</strong></li>
+</ul>
+<p>Save the configuration and exit <strong><code>menuconfig</code></strong></p>
+</li>
+<li>
+<p>Build the NuttX Project and compress the NuttX Image…</p>
 <div class="example-wrap"><pre class="language-bash"><code>make
 cp nuttx.bin Image
 rm -f Image.gz
 gzip Image</code></pre></div>
-<p>This produces the file <code>Image.gz</code>, which will be copied to PinePhone in the next step.</p>
-<p>If the build fails with the error <code>token &quot;@&quot; is not valid in preprocessor</code>,
-<a href="https://github.com/apache/nuttx/pull/7284/commits/518b0eb31cb66f25b590ae9a79ab16c319b96b94#diff-12291efd8a0ded1bc38bad733d99e4840ae5112b465c04287f91ba5169612c73">apply this patch</a>
-to <code>gcc-arm-none-eabi/arm-none-eabi/include/_newlib_version.h</code>
-in the ARM64 Toolchain.</p>
-<p>TODO</p>
+<p>This produces the file <strong><code>Image.gz</code></strong>, which will be copied to PinePhone in the next step.</p>
+</li>
+<li>
+<p>If the build fails with…</p>
+<div class="example-wrap"><pre class="language-text"><code>token &quot;@&quot; is not valid in preprocessor</code></pre></div>
+<p>Then look for this file in the in the ARM64 Toolchain…</p>
+<div class="example-wrap"><pre class="language-text"><code>gcc-arm-none-eabi/arm-none-eabi/include/_newlib_version.h</code></pre></div>
+<p>And <a href="https://github.com/apache/nuttx/pull/7284/commits/518b0eb31cb66f25b590ae9a79ab16c319b96b94#diff-12291efd8a0ded1bc38bad733d99e4840ae5112b465c04287f91ba5169612c73"><strong>apply this patch</strong></a>.</p>
+</li>
+</ol>
+<p>Let’s copy <strong><code>Image.gz</code></strong> to PinePhone and boot NuttX…</p>
 <p><img src="https://lupyuen.github.io/images/arm-jumpdrive.png" alt="PinePhone Jumpdrive on microSD" /></p>
 <p><a href="https://github.com/dreemurrs-embedded/Jumpdrive"><em>PinePhone Jumpdrive on microSD</em></a></p>
 <h1 id="boot-nuttx"><a href="#boot-nuttx">4 Boot NuttX</a></h1>
 <p>TODO</p>
-<p>Booting</p>
-<p>NuttX boots on PinePhone via a microSD Card. To prepare the microSD Card, download the
-<strong>PinePhone Jumpdrive Image</strong> <code>pine64-pinephone.img.xz</code> from
-<a href="https://github.com/dreemurrs-embedded/Jumpdrive/releases">dreemurrs-embedded/Jumpdrive</a></p>
+<ol>
+<li>
+<p>Download the <strong>PinePhone Jumpdrive Image <code>pine64-pinephone.img.xz</code></strong> from…</p>
+<p><a href="https://github.com/dreemurrs-embedded/Jumpdrive/releases"><strong>dreemurrs-embedded/Jumpdrive</strong></a></p>
 <p>Write the downloaded image to a microSD Card with
-<a href="https://www.balena.io/etcher/">Balena Etcher</a></p>
-<p>Copy the file <code>Image.gz</code> from the previous section
-and overwrite the file on the microSD Card. (Pic above)</p>
-<p>Check that PinePhone is connected to our computer via a
-<a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console">Serial Debug Cable</a> at 115.2 kbps.</p>
-<p><a href="https://wiki.pine64.org/index.php/PinePhone#Privacy_switch_configuration">Privacy Switch 6 (Headphone)</a>
-should be set to <strong>Off</strong>.</p>
+<a href="https://www.balena.io/etcher/"><strong>Balena Etcher</strong></a></p>
+</li>
+<li>
+<p>Copy the file <strong><code>Image.gz</code></strong> from the previous section.</p>
+<p>Overwrite the file on the microSD Card.</p>
+<p>(Pic above)</p>
+</li>
+<li>
+<p>On PinePhone, set <a href="https://wiki.pine64.org/index.php/PinePhone#Privacy_switch_configuration"><strong>Privacy Switch 6 (Headphone)</strong></a>
+to <strong>Off</strong>.</p>
+<p>Connect PinePhone to our computer with the <a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><strong>Serial Debug Cable</strong></a>.</p>
+<p>On our computer, start a <strong>Serial Terminal</strong> and connect to the USB Serial Port at <strong>115.2 kbps</strong>.</p>
+</li>
+<li>
 <p>Insert the microSD Card into PinePhone and power up PinePhone.</p>
 <p>NuttX boots on PinePhone and NuttShell (nsh) appears in the Serial Console.</p>
+<p>(Pic below)</p>
+</li>
+<li>
 <p>To see the available commands in NuttShell…</p>
-<div class="example-wrap"><pre class="language-bash"><code>help</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>help</code></pre></div></li>
+<li>
 <p>To run the LVGL Demo App…</p>
-<div class="example-wrap"><pre class="language-bash"><code>lvgldemo</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>lvgldemo</code></pre></div></li>
+</ol>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/fb-run.png" alt="Booting Apache NuttX RTOS on PinePhone" /></p>
 <p><a href="https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b"><em>Booting Apache NuttX RTOS on PinePhone</em></a></p>
