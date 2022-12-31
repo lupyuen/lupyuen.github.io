@@ -719,6 +719,18 @@ static int pinephone_updatearea(
 
 With the code above, the Red, Orange and Yellow Boxes are now rendered correctly in our NuttX Framebuffer Driver for PinePhone. (Pic above)
 
+_Instead of copying the entire RAM Framebuffer, can we copy only the updated screen area?_
+
+Yep probably, we need more rigourous testing.
+
+_But how do we really fix this?_
+
+We need to [__flush the CPU Cache__](https://developer.arm.com/documentation/den0013/d/Caches/Invalidating-and-cleaning-cache-memory), and verify that our Framebuffer has been mapped with the right attributes.
+
+(Thanks to [__Barry Nolte__](https://twitter.com/BarryNolte/status/1609003505699766272), [__Victor Suarez Rovere__](https://twitter.com/suarezvictor/status/1608643410906472448?s=20&t=gFese-aeWGonGShw9vtNyg) and [__crzwdjk__](https://twitter.com/crzwdjk/status/1608661469591384064?s=20&t=gFese-aeWGonGShw9vtNyg) for the tips!)
+
+[(Commenters on Hacker News also think it's a CPU Cache issue)](https://news.ycombinator.com/item?id=34186806)
+
 _Who calls pinephone_updatearea?_
 
 After writing the pixels to the RAM Framebuffer, NuttX Apps will call __ioctl(FBIO_UPDATE)__ to update the display.
@@ -737,18 +749,6 @@ This triggers __pinephone_updatearea__ in our NuttX Framebuffer Driver: [fb_main
   );
 #endif
 ```
-
-_Instead of copying the entire RAM Framebuffer, can we copy only the updated screen area?_
-
-Probably, we need more rigourous testing.
-
-_But how do we really fix this?_
-
-We need to [__flush the CPU Cache__](https://developer.arm.com/documentation/den0013/d/Caches/Invalidating-and-cleaning-cache-memory), and verify that our Framebuffer has been mapped with the right attributes.
-
-(Thanks to [__Barry Nolte__](https://twitter.com/BarryNolte/status/1609003505699766272), [__Victor Suarez Rovere__](https://twitter.com/suarezvictor/status/1608643410906472448?s=20&t=gFese-aeWGonGShw9vtNyg) and [__crzwdjk__](https://twitter.com/crzwdjk/status/1608661469591384064?s=20&t=gFese-aeWGonGShw9vtNyg) for the tips!)
-
-[(Commenters on Hacker News also think it's a CPU Cache issue)](https://news.ycombinator.com/item?id=34186806)
 
 _How do other PinePhone operating systems handle this?_
 
