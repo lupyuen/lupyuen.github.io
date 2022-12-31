@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>NuttX RTOS for PinePhone: What is it?</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="NuttX RTOS for PinePhone: What is it?" 
+    data-rh="true">
+<meta property="og:description" 
+    content="Let's talk about Apache NuttX RTOS for Pine64 PinePhone: What is it? Why are we doing this? How will we use it?"
+    data-rh="true">
+<meta name="description" 
+    content="Let's talk about Apache NuttX RTOS for Pine64 PinePhone: What is it? Why are we doing this? How will we use it?">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/what-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">NuttX RTOS for PinePhone: What is it?</h1>
+    <nav id="TOC"><ul>
+<li><a href="#build-nuttx-on-pinephone">1 Build NuttX on PinePhone</a><ul></ul></li>
+<li><a href="#boot-nuttx-on-pinephone">2 Boot NuttX on PinePhone</a><ul></ul></li>
+<li><a href="#whats-next">3 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>8 Jan 2023</em></p>
+<p><img src="https://lupyuen.github.io/images/what-title.jpg" alt="Apache NuttX RTOS on Pine64 PinePhone with LVGL… Sorry no touch input yet!" /></p>
+<p><em>Apache NuttX RTOS on Pine64 PinePhone with LVGL… Sorry no touch input yet!</em></p>
+<p>Over the past few months we’ve ported a different kind of operating system to <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>… <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System)</p>
+<p>Let’s talk about <strong>NuttX for PinePhone</strong>: What is it? Why are we doing this? How will we use it?</p>
+<p>TODO</p>
+<p><em>What’s Apache NuttX RTOS?</em></p>
+<p>Think Linux, Ubuntu, Manjaro, Arch, … But a lot <strong>smaller and simpler</strong>.</p>
+<p>(Compiles in XXX seconds on a 10-year-old MacBook Pro)</p>
+<p>TODO</p>
+<p><em>Why “Real-Time”?</em></p>
+<p>It’s a Real-Time Operating System (RTOS) because NuttX was created for <strong>tiny microcontrollers</strong>: STM32, nRF52, BL602, ESP32…</p>
+<p>Which won’t run a General Purpose Operating System. (Like Linux)</p>
+<p>So now we have “upsized” NuttX for <strong>Arm64 Smartphones</strong>.</p>
+<p>TODO</p>
+<p><em>Daily driver?</em></p>
+<p>No phone calls and text messaging yet</p>
+<p>Might become a Daily Driver someday… If we put a lot of work into it</p>
+<p>Probably more suitable for Education right now… For learning what happens when a Smartphone boots, how it renders graphics to the LCD Display.</p>
+<p>(Daily Driver is an interesting project for students!)</p>
+<p>TODO</p>
+<p><em>Suitable for Education / Teaching?</em></p>
+<p>Check out the 13 articles on everything inside-out about NuttX on PinePhone…</p>
+<p>And esoteric topics too…</p>
+<p>(Great for Bedtime Reading!)</p>
+<p>(For Retro Fans: NuttX for PinePhone is probably more <a href="https://www.minix3.org/"><strong>MINIX</strong></a> than Linux)</p>
+<p>TODO</p>
+<p><em>X11? Wayland?</em></p>
+<p>Nope, only LVGL, pic above. And we’re still working on the Touch Input</p>
+<p>TODO</p>
+<p><em>Will it run Linux apps?</em></p>
+<p>Sadly nope. But NuttX is based on POSIX, so some apps might compile on NuttX.</p>
+<p>TODO</p>
+<p><em>So you envision a classroom of students, cracking open their PinePhones to experiment with NuttX?</em></p>
+<p>Yeah possibly? I taught Operating Systems in school… I wished we could use our phones as a Teaching Tool.</p>
+<p>TODO</p>
+<p><em>Can we take the NuttX source code and build a super duper Custom PinePhone? (Maybe sell it?)</em></p>
+<p>Yep feel free to take the code and do everything with it! The source code is Apache Licensed.</p>
+<p>But please drop us a note to tell us if you’re using the code in your project…  We’re curious to know if anyone finds our work useful!</p>
+<p>TODO</p>
+<p><em>Where did the code come from?</em></p>
+<p>Allwinner A64 SoC is poorly documented. A huge chunk of our code was Reverse Engineered from the p-boot Bootloader, by observing which Hardware Registers it uses.</p>
+<p>The NuttX Community is now adding drivers for Allwinner A64 SoC.</p>
+<p>TODO</p>
+<p><em>Is Apache paying you to do this?</em></p>
+<p>I’m proud to volunteer as a member of the Apache NuttX <strong>Project Management Committee</strong>.</p>
+<p>I’m not paid by Apache Software Foundation. But I’m extremely grateful to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work on PinePhone!</p>
+<h1 id="build-nuttx-on-pinephone"><a href="#build-nuttx-on-pinephone">1 Build NuttX on PinePhone</a></h1>
+<p>TODO</p>
+<p>Requirements</p>
+<ul>
+<li>PinePhone (sorry not PinePhone Pro)</li>
+<li>USB Serial Debug Cable</li>
+<li>microSD Card</li>
+</ul>
+<p>Select LVGL App</p>
+<h1 id="boot-nuttx-on-pinephone"><a href="#boot-nuttx-on-pinephone">2 Boot NuttX on PinePhone</a></h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>lvgldemo</code></pre></div><h1 id="whats-next"><a href="#whats-next">3 What’s Next</a></h1>
+<p>TODO</p>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>Apache NuttX RTOS for PinePhone</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/what.md"><strong>lupyuen.github.io/src/what.md</strong></a></p>
+
+    
+</body>
+</html>
