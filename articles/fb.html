@@ -633,7 +633,7 @@ static int pinephone_updatearea(
 <p><em>Instead of copying the entire RAM Framebuffer, can we copy only the pixels for the updated screen area?</em></p>
 <p>Probably, we need more rigourous testing.</p>
 <p><em>But how do we really fix this?</em></p>
-<p>We need to check the <a href="https://developer.arm.com/documentation/den0013/d/Caches/Invalidating-and-cleaning-cache-memory"><strong>CPU Cache</strong></a>, and verify that our Framebuffer has been mapped with the right attributes.</p>
+<p>We need to <a href="https://developer.arm.com/documentation/den0013/d/Caches/Invalidating-and-cleaning-cache-memory"><strong>flush the CPU Cache</strong></a>, and verify that our Framebuffer has been mapped with the right attributes.</p>
 <p>(Thanks to <a href="https://twitter.com/BarryNolte/status/1609003505699766272"><strong>Barry Nolte</strong></a>, <a href="https://twitter.com/suarezvictor/status/1608643410906472448?s=20&amp;t=gFese-aeWGonGShw9vtNyg"><strong>Victor Suarez Rovere</strong></a> and <a href="https://twitter.com/crzwdjk/status/1608661469591384064?s=20&amp;t=gFese-aeWGonGShw9vtNyg"><strong>crzwdjk</strong></a> for the tips!)</p>
 <p><a href="https://news.ycombinator.com/item?id=34186806">(Commenters on Hacker News also think it’s a CPU Cache issue)</a></p>
 <p><em>How do other PinePhone operating systems handle this?</em></p>
