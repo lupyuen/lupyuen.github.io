@@ -228,6 +228,7 @@ close(fd);</code></pre></div>
 <p>When we fill the Framebuffer with <code>0x80</code>, we’re setting Alpha (unused), <strong>Red, Green and Blue to <code>0x80</code></strong>.</p>
 <p>Which produces the grey screen.</p>
 <p>Let’s do some colours…</p>
+<p>(Alpha Channel looks redundant, but it will be used when we support Overlays)</p>
 <p><img src="https://lupyuen.github.io/images/fb-demo3.jpg" alt="Render Blocks" /></p>
 <h1 id="render-blocks"><a href="#render-blocks">4 Render Blocks</a></h1>
 <p>This is how we render the <strong>Blue, Green and Red Blocks</strong> in the pic above: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L564-L601">fb_main.c</a></p>
@@ -379,7 +380,18 @@ draw_rect(&amp;state, &amp;area, color);
 <h1 id="pinephone-framebuffer-driver"><a href="#pinephone-framebuffer-driver">8 PinePhone Framebuffer Driver</a></h1>
 <p><em>We’ve seen the Framebuffer Interface for NuttX Apps…</em></p>
 <p><em>What’s inside the Framebuffer Driver for PinePhone?</em></p>
-<p>TODO</p>
+<p>Let’s talk about the <strong>internals of our Framebuffer Driver</strong> for PinePhone…</p>
+<ul>
+<li>
+<p><strong>RAM Framebuffer</strong> that’s mapped to the LCD Display over Direct Memory Access (DMA)</p>
+</li>
+<li>
+<p>How our Framebuffer Driver is <strong>started by NuttX Kernel</strong></p>
+</li>
+<li>
+<p><strong>Framebuffer Operations</strong> exposed by our driver</p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Complete Display Driver for PinePhone" /></p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><em>Complete Display Driver for PinePhone</em></a></p>
 <h2 id="ram-framebuffer"><a href="#ram-framebuffer">8.1 RAM Framebuffer</a></h2>
