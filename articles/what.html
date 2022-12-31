@@ -69,8 +69,8 @@
     <nav id="TOC"><ul>
 <li><a href="#smaller-and-simpler">1 Smaller and Simpler</a><ul></ul></li>
 <li><a href="#smartphone-education">2 Smartphone Education</a><ul></ul></li>
-<li><a href="#build-nuttx-for-pinephone">3 Build NuttX for PinePhone</a><ul></ul></li>
-<li><a href="#boot-nuttx-for-pinephone">4 Boot NuttX for PinePhone</a><ul></ul></li></ul></nav><p>📝 <em>8 Jan 2023</em></p>
+<li><a href="#build-nuttx">3 Build NuttX</a><ul></ul></li>
+<li><a href="#boot-nuttx">4 Boot NuttX</a><ul></ul></li></ul></nav><p>📝 <em>8 Jan 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/what-title.jpg" alt="Apache NuttX RTOS on Pine64 PinePhone with LVGL… Sorry no touch input yet!" /></p>
 <p><a href="https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b"><em>Apache NuttX RTOS on Pine64 PinePhone with LVGL… Sorry no touch input yet!</em></a></p>
 <p>Over the past 5 months, we ported a different kind of Operating System to <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>… <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a></p>
@@ -79,57 +79,47 @@
 <p><img src="https://lupyuen.github.io/images/fb-run.png" alt="Booting Apache NuttX RTOS on PinePhone" /></p>
 <p><a href="https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b"><em>Booting Apache NuttX RTOS on PinePhone</em></a></p>
 <h1 id="smaller-and-simpler"><a href="#smaller-and-simpler">1 Smaller and Simpler</a></h1>
-<p>TODO</p>
 <p><em>What’s Apache NuttX RTOS?</em></p>
 <p>Think Linux, Ubuntu, Manjaro, Arch, … But a lot <strong>smaller and simpler</strong>.</p>
 <p>NuttX boots on a <strong>micro SD Card</strong> and it provides a Command-Line Interface. (Pic above)</p>
-<p>(Compiles in XXX seconds on a 10-year-old MacBook Pro)</p>
-<p>TODO</p>
+<p>TODO: (Compiles in XXX seconds on a 10-year-old MacBook Pro)</p>
 <p><em>Why “Real-Time”?</em></p>
 <p>It’s a <strong>Real-Time Operating System</strong> (RTOS) because NuttX was created for <strong>tiny microcontrollers</strong>: STM32, nRF52, BL602, ESP32, …</p>
 <p>Which won’t run a General Purpose Operating System. (Like Linux)</p>
 <p>So now we have “upsized” NuttX for <strong>Arm64 Smartphones</strong>.</p>
-<p>TODO</p>
 <p><em>Is NuttX a Daily Driver for PinePhone?</em></p>
-<p>No phone calls and text messaging yet</p>
-<p>Might become a Daily Driver someday… If we put a lot of work into it</p>
-<p>Probably more suitable for Education right now… For learning what happens when a Smartphone boots, how it renders graphics to the LCD Display.</p>
+<p>Not yet, NuttX won’t make phone calls and send text messages. It might become a <strong>Daily Driver someday</strong>… If we put a lot of work into it.</p>
+<p>It’s probably more suitable for <strong>Education</strong> right now: For learning what happens when a Smartphone boots, how it renders graphics on the LCD Display.</p>
 <p>(Turning NuttX into Daily Driver might be an interesting project for students!)</p>
-<p>TODO</p>
-<p><em>X11? Wayland?</em></p>
-<p>Nope, only LVGL, pic above. And we’re still working on the Touch Input</p>
-<p>TODO</p>
+<p><em>Does NuttX support X11? Wayland?</em></p>
+<p>Nope, only <a href="https://lupyuen.github.io/articles/fb#lvgl-graphics-library"><strong>LVGL</strong></a>. (Pic above)</p>
+<p>And we’re still working on the Touch Input.</p>
 <p><em>Will it run Linux apps?</em></p>
-<p>Sadly nope. But NuttX is based on POSIX, so some apps might compile for NuttX.</p>
+<p>Sadly nope. But NuttX is based on <a href="https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance"><strong>POSIX</strong></a>, so some apps might compile for NuttX.</p>
 <p>Let’s talk about NuttX for Learners…</p>
 <p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="NuttX Display Driver for PinePhone" /></p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><em>NuttX Display Driver for PinePhone</em></a></p>
 <h1 id="smartphone-education"><a href="#smartphone-education">2 Smartphone Education</a></h1>
-<p>TODO</p>
 <p><em>Is NuttX good for learning the internals of Smartphones?</em></p>
-<p>Check out the <a href="https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone"><strong>13 articles</strong></a> covering everything inside-out about NuttX on PinePhone: GPIO, UART, Framebuffer, LCD Panel, …</p>
-<p>And esoteric topics too: Display Engine, MIPI Display Serial Interface, Power Management Integrated Circuit, Reduced Serial Bus, Generic Interrupt Controller, …</p>
+<p>TODO: Check out the <a href="https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone"><strong>13 articles</strong></a> covering everything inside-out about NuttX on PinePhone: GPIO, UART, Framebuffer, LCD Panel, …</p>
+<p>TODO: And esoteric topics too: Display Engine, MIPI Display Serial Interface, Power Management Integrated Circuit, Reduced Serial Bus, Generic Interrupt Controller, …</p>
 <p>(Great for Bedtime Reading!)</p>
-<p>TODO</p>
 <p><em>So you envision a classroom of students, cracking open their PinePhones to experiment with NuttX?</em></p>
 <p>Yeah possibly? I taught Operating Systems in school… I wished we could use our phones as a <strong>Teaching Tool</strong>.</p>
-<p>(For Retro Fans: NuttX for PinePhone is probably more <a href="https://www.minix3.org/"><strong>MINIX</strong></a> than Linux)</p>
-<p>TODO</p>
+<p>(For Retro Fans: NuttX is probably more <a href="https://www.minix3.org/"><strong>MINIX</strong></a> than Linux)</p>
 <p><em>Can we take the NuttX source code and build a super duper Custom PinePhone? (Maybe sell it?)</em></p>
-<p>Yep feel free to take the code and do everything with it! The source code is <strong>Apache Licensed</strong>.</p>
+<p>Yep feel free to take the code and do everything with it! The source code is <a href="https://github.com/apache/nuttx/blob/master/LICENSE"><strong>Apache Licensed</strong></a>.</p>
 <p>But please <strong>drop us a note</strong> to tell us if you’re using the code in your project…  We’re curious to know if anyone finds our work useful!</p>
-<p>TODO</p>
 <p><em>Where did the code come from?</em></p>
 <p>We created the code based on the official docs for the <strong>Allwinner A64 SoC</strong>. But Allwinner A64 is poorly documented for some topics like Display Drivers.</p>
 <p>A sizeable chunk of our code was <strong>Reverse Engineered</strong> from the p-boot Bootloader, by observing which Hardware Registers it uses.</p>
-<p>The NuttX Community is now adding new drivers for Allwinner A64 SoC, like for I2C.</p>
+<p>The <strong>NuttX Community</strong> is now adding new drivers for Allwinner A64 SoC, like for I2C.</p>
 <p><a href="https://lupyuen.github.io/articles/pr">(We welcome your contribution to NuttX!)</a></p>
-<p>TODO</p>
 <p><em>Is Apache paying you to do this?</em></p>
 <p>I’m proud to volunteer as a member of the Apache NuttX <strong>Project Management Committee</strong>.</p>
 <p>I’m not paid by Apache Software Foundation. But I’m extremely grateful to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work on PinePhone!</p>
 <p>If we’re keen to build and boot NuttX on our PinePhone, please read on…</p>
-<h1 id="build-nuttx-for-pinephone"><a href="#build-nuttx-for-pinephone">3 Build NuttX for PinePhone</a></h1>
+<h1 id="build-nuttx"><a href="#build-nuttx">3 Build NuttX</a></h1>
 <p>TODO</p>
 <p>Requirements</p>
 <ul>
@@ -140,7 +130,7 @@
 <p>Select LVGL App</p>
 <p><img src="https://lupyuen.github.io/images/fb-run.png" alt="Booting Apache NuttX RTOS on PinePhone" /></p>
 <p><a href="https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b"><em>Booting Apache NuttX RTOS on PinePhone</em></a></p>
-<h1 id="boot-nuttx-for-pinephone"><a href="#boot-nuttx-for-pinephone">4 Boot NuttX for PinePhone</a></h1>
+<h1 id="boot-nuttx"><a href="#boot-nuttx">4 Boot NuttX</a></h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>lvgldemo</code></pre></div>
 <p>TODO</p>
