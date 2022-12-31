@@ -94,7 +94,7 @@ _Is Apache paying you to do this?_
 
 I'm proud to volunteer as a member of the Apache NuttX __Project Management Committee__.
 
-I'm not paid by Apache Software Foundation. But I'm extremely grateful to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work on PinePhone!
+I'm not paid by Apache Software Foundation. But I'm extremely grateful to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work on PinePhone Education!
 
 If we're keen to build and boot NuttX on our PinePhone, please read on...
 
