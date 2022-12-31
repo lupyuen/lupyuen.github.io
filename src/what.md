@@ -6,13 +6,17 @@
 
 _Apache NuttX RTOS on Pine64 PinePhone with LVGL... Sorry no touch input yet!_
 
-Over the past few months we've ported a different kind of operating system to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)... [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) (Real-Time Operating System)
+Over the past few months we've ported a different kind of operating system to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)... [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/)
+
+(RTOS for Real-Time Operating System)
 
 Let's talk about __NuttX for PinePhone__: What is it? Why are we doing this? How will we use it?
 
 ![NuttX App running on PinePhone](https://lupyuen.github.io/images/fb-run.png)
 
 [_NuttX App running on PinePhone_](https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b)
+
+# Smaller and Simpler
 
 TODO
 
