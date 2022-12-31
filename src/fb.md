@@ -220,6 +220,8 @@ Which produces the grey screen.
 
 Let's do some colours...
 
+(Alpha Channel looks redundant, but it will be used when we support Overlays)
+
 ![Render Blocks](https://lupyuen.github.io/images/fb-demo3.jpg)
 
 # Render Blocks
@@ -410,7 +412,13 @@ _We've seen the Framebuffer Interface for NuttX Apps..._
 
 _What's inside the Framebuffer Driver for PinePhone?_
 
-TODO
+Let's talk about the __internals of our Framebuffer Driver__ for PinePhone...
+
+-   __RAM Framebuffer__ that's mapped to the LCD Display over Direct Memory Access (DMA)
+
+-   How our Framebuffer Driver is __started by NuttX Kernel__
+
+-   __Framebuffer Operations__ exposed by our driver
 
 ![Complete Display Driver for PinePhone](https://lupyuen.github.io/images/dsi3-steps.jpg)
 
