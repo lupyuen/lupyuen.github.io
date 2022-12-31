@@ -46,7 +46,7 @@ And for folks who wish to tinker __Bare Metal__ on PinePhone.
 
 _Does NuttX support X11? Wayland?_
 
-Nope, only [__LVGL__](https://lupyuen.github.io/articles/fb#lvgl-graphics-library) is supported. (Pic above)
+Nope, only [__LVGL__](https://lupyuen.github.io/articles/fb#lvgl-graphics-library) is supported. (Pic at the top)
 
 And we're still working on the Touch Input.
 
@@ -106,29 +106,121 @@ If we're keen to build and boot NuttX on our PinePhone, please read on...
 
 # Build NuttX
 
-TODO
+Here's what we need for running NuttX on PinePhone...
 
-Requirements
+-   __Pine64 PinePhone__
 
--   PinePhone (sorry not PinePhone Pro)
+    (sorry not PinePhone Pro)
+
 -   USB Serial Debug Cable
 -   microSD Card
 
-Select LVGL App
+TODO
+
+Serial Console
+
+A [PinePhone Serial Debug Cable](https://wiki.pine64.org/index.php/PinePhone#Serial_console)
+is required to run NuttX on PinePhone.
+
+On PinePhone, set the [Privacy Switch 6 (Headphone)](https://wiki.pine64.org/index.php/PinePhone#Privacy_switch_configuration)
+to __Off__.
+
+Connect PinePhone to our computer with the Serial Debug Cable.
+On our computer, start a Serial Terminal and connect to the USB Serial Port
+at __115.2 kbps__.
+
+NuttX will appear in the Serial Console when it boots on PinePhone.
+
+TODO: Download `Image.gz` here
+
+ARM64 Toolchain
+
+Before building NuttX for PinePhone, download the ARM64 Toolchain for
+__AArch64 Bare-Metal Target__ `aarch64-none-elf` from
+[Arm GNU Toolchain Downloads](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads).
+
+(Skip the section for Beta Releases)
+
+Add the downloaded toolchain `gcc-arm-...-aarch64-none-elf/bin`
+to the `PATH` Environment Variable.
+
+Check the ARM64 Toolchain:
+
+```bash
+aarch64-none-elf-gcc -v
+```
+
+To build NuttX for PinePhone...
+
+TODO: install the prerequisites
+
+TODO: clone the git repositories `nuttx` and `apps`
+
+Configure the NuttX Project...
+
+```bash
+cd nuttx
+tools/configure.sh pinephone:lcd
+make menuconfig
+```
+
+TODO: Select LVGL App
+
+Build the NuttX Project...
+
+```bash
+make
+cp nuttx.bin Image
+rm -f Image.gz
+gzip Image
+```
+
+This produces the file `Image.gz`, which will be copied to PinePhone in the next step.
+
+If the build fails with the error `token "@" is not valid in preprocessor`,
+[apply this patch](https://github.com/apache/nuttx/pull/7284/commits/518b0eb31cb66f25b590ae9a79ab16c319b96b94#diff-12291efd8a0ded1bc38bad733d99e4840ae5112b465c04287f91ba5169612c73)
+to `gcc-arm-none-eabi/arm-none-eabi/include/_newlib_version.h`
+in the ARM64 Toolchain.
+
+TODO
 
 ![PinePhone Jumpdrive on microSD](https://lupyuen.github.io/images/arm-jumpdrive.png)
 
 [_PinePhone Jumpdrive on microSD_](https://github.com/dreemurrs-embedded/Jumpdrive)
 
-TODO
-
-![Booting Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/fb-run.png)
-
-[_Booting Apache NuttX RTOS on PinePhone_](https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b)
-
 # Boot NuttX
 
 TODO
+
+Booting
+
+NuttX boots on PinePhone via a microSD Card. To prepare the microSD Card, download the
+__PinePhone Jumpdrive Image__ `pine64-pinephone.img.xz` from
+[dreemurrs-embedded/Jumpdrive](https://github.com/dreemurrs-embedded/Jumpdrive/releases)
+
+Write the downloaded image to a microSD Card with
+[Balena Etcher](https://www.balena.io/etcher/)
+
+Copy the file `Image.gz` from the previous section
+and overwrite the file on the microSD Card. (Pic above)
+
+Check that PinePhone is connected to our computer via a
+[Serial Debug Cable](https://wiki.pine64.org/index.php/PinePhone#Serial_console) at 115.2 kbps.
+
+[Privacy Switch 6 (Headphone)](https://wiki.pine64.org/index.php/PinePhone#Privacy_switch_configuration)
+should be set to __Off__.
+
+Insert the microSD Card into PinePhone and power up PinePhone.
+
+NuttX boots on PinePhone and NuttShell (nsh) appears in the Serial Console.
+
+To see the available commands in NuttShell...
+
+```bash
+help
+```
+
+To run the LVGL Demo App...
 
 ```bash
 lvgldemo
@@ -136,11 +228,9 @@ lvgldemo
 
 TODO
 
-```bash
-help
-```
+![Booting Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/fb-run.png)
 
-TODO
+[_Booting Apache NuttX RTOS on PinePhone_](https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
