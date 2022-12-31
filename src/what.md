@@ -2,9 +2,9 @@
 
 📝 _8 Jan 2023_
 
-![Apache NuttX RTOS on Pine64 PinePhone with LVGL... Sorry no touch input yet!](https://lupyuen.github.io/images/what-title.jpg)
+![Apache NuttX RTOS on PinePhone with LVGL... Sorry no touch input yet!](https://lupyuen.github.io/images/what-title.jpg)
 
-[_Apache NuttX RTOS on Pine64 PinePhone with LVGL... Sorry no touch input yet!_](https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b)
+[_Apache NuttX RTOS on PinePhone with LVGL... Sorry no touch input yet!_](https://lupyuen.github.io/articles/fb#lvgl-graphics-library)
 
 Over the past 5 months, we ported a different kind of Operating System to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)... [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/)
 
@@ -20,7 +20,7 @@ Let's talk about __NuttX for PinePhone__: What is it? Why are we doing this? How
 
 _What's Apache NuttX RTOS?_
 
-Think Linux, Ubuntu, Manjaro, Arch, ... But a lot __smaller and simpler__.
+Think Linux, Ubuntu, Manjaro, Arch, ... But a lot __smaller and simpler__!
 
 NuttX is a __tiny operating system__ (10 MB) that boots on a __micro SD Card__ and provides a Command-Line Interface. (Pic above)
 
