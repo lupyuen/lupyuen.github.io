@@ -394,7 +394,7 @@ Boot NuttX on PinePhone. At the NSH Command Prompt, enter...
 lvgldemo widgets
 ```
 
-We'll see the Graphical User Interface as shown in the pic above!
+And we'll see the LVGL Graphical User Interface on PinePhone! [(Like this)](https://lupyuen.github.io/images/fb-lvgl3.jpg)
 
 _But it won't respond to our touch right?_
 

@@ -269,7 +269,7 @@ to __Off__.
     lvgldemo widgets
     ```
 
-    [(We should see this)](https://lupyuen.github.io/images/what-title.jpg)
+    [(We should see this)](https://lupyuen.github.io/images/fb-lvgl3.jpg)
 
 And that's how we build and boot NuttX for PinePhone!
 
