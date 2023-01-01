@@ -48,7 +48,7 @@ _Does NuttX support X11? Wayland?_
 
 Nope, only [__LVGL__](https://lupyuen.github.io/articles/fb#lvgl-graphics-library) is supported. (Pic at the top)
 
-And we're still working on the Touch Input.
+And we're still working on the [__Touch Input__](https://lupyuen.github.io/articles/pio#touch-panel).
 
 _Will it run Linux apps?_
 
@@ -84,7 +84,7 @@ But please __drop us a note__ to tell us if you're using the code in your projec
 
 _Where did the code come from?_
 
-We created the code based on the official docs for the __Allwinner A64 SoC__. But some parts of Allwinner A64 are poorly documented. (Like the Display Engine)
+We created the code based on the official docs for the [__Allwinner A64 SoC__](https://linux-sunxi.org/A64). But some parts of Allwinner A64 are poorly documented. (Like the Display Engine)
 
 A sizeable chunk of our code was [__Reverse Engineered__](https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine) from the p-boot Bootloader, by observing which Hardware Registers it uses.
 
