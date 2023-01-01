@@ -358,17 +358,29 @@ make menuconfig
 
 Select these options...
 
-- Enable "__Application Configuration__ > __Graphics Support__ > __Light and Versatile Graphics Library (LVGL)__"
+Enable "__Application Configuration__ > __Graphics Support__ > __Light and Versatile Graphics Library (LVGL)__"
 
-- Under "__LVGL__ > __Graphics Settings__"
-  - Set __Horizontal Resolution__ to __720__
-  - Set __Vertical Resolution__ to __1440__
-  - Set __DPI__ to __200__ (or higher)
+Enable "__LVGL__ > __Enable Framebuffer Port__"
 
-- Under "__LVGL__ > __Color settings__"
-  - Set __Color Depth__ to __32__
+Browse into "__LVGL__ > __LVGL Configuration__"
 
-- Enable "__Application Configuration__ > __Examples__ > __LVGL Demo__"
+-   In "__Color Settings__"
+
+    Set __Color Depth__ to "__32: ARGB8888__"
+
+-   In "__Memory settings__"
+    
+    Set __Size of Memory__ to __64__
+
+-   In "__HAL Settings__"
+
+    Set __Default Dots Per Inch__ to __250__
+
+-   In "__Demos__"
+
+    Enable "__Show Some Widgets__"
+
+Enable "__Application Configuration__ > __Examples__ > __LVGL Demo__"
 
 Save the configuration and exit `menuconfig`. Rebuild NuttX...
 
@@ -379,7 +391,7 @@ make
 Boot NuttX on PinePhone. At the NSH Command Prompt, enter...
 
 ```bash
-lvgldemo
+lvgldemo widgets
 ```
 
 We'll see the Graphical User Interface as shown in the pic above!

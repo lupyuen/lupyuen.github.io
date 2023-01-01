@@ -168,13 +168,25 @@ Or if we prefer to __build NuttX__ ourselves...
 
     Enable "__Application Configuration__ > __Graphics Support__ > __Light and Versatile Graphics Library (LVGL)__"
 
-    Under "__LVGL__ > __Graphics Settings__"
-    - Set __Horizontal Resolution__ to __720__
-    - Set __Vertical Resolution__ to __1440__
-    - Set __DPI__ to __200__
+    Enable "__LVGL__ > __Enable Framebuffer Port__"
 
-    Under "__LVGL__ > __Color settings__"
-    - Set __Color Depth__ to __32__
+    Browse into "__LVGL__ > __LVGL Configuration__"
+    
+    -   In "__Color Settings__"
+
+        Set __Color Depth__ to "__32: ARGB8888__"
+
+    -   In "__Memory settings__"
+        
+        Set __Size of Memory__ to __64__
+
+    -   In "__HAL Settings__"
+
+        Set __Default Dots Per Inch__ to __250__
+
+    -   In "__Demos__"
+    
+        Enable "__Show Some Widgets__"
 
     Enable "__Application Configuration__ > __Examples__ > __LVGL Demo__"
 
@@ -254,7 +266,7 @@ to __Off__.
     To run the [__LVGL Demo App__](https://lupyuen.github.io/articles/fb#lvgl-graphics-library)...
 
     ```bash
-    lvgldemo
+    lvgldemo widgets
     ```
 
     [(We should see this)](https://lupyuen.github.io/images/what-title.jpg)
