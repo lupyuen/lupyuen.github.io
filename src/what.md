@@ -6,11 +6,11 @@
 
 [_Apache NuttX RTOS on PinePhone with LVGL... Sorry no touch input yet!_](https://lupyuen.github.io/articles/fb#lvgl-graphics-library)
 
-Over the past 5 months, we ported a different kind of Operating System to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)... [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/)
+Over the past 5 months, we ported to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) a different kind of Operating System... [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/)
 
 (RTOS for Real-Time Operating System)
 
-Let's talk about __NuttX for PinePhone__: What is it? Why are we doing this? How will we use it?
+Let's talk about [__NuttX for PinePhone__](https://nuttx.apache.org/docs/latest/platforms/arm/a64/boards/pinephone/index.html): What is it? Why are we doing this? How will we use it?
 
 ![Booting Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/fb-run.png)
 
