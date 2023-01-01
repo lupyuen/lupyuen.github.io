@@ -1151,6 +1151,14 @@ We'll reuse the code from the NuttX Touch Panel Driver for __PineDio Stack BL604
 
 -   [__"NuttX Touch Panel Driver for PineDio Stack BL604"__](https://lupyuen.github.io/articles/touch)
 
+According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (Pages 9 and 11)...
+
+-   __Touch Panel Interrupt__ (CTP-INT) is at __PH4__
+
+-   __Touch Panel Reset__ (CTP-RST) is at __PH11__
+
+-   __Touch Panel I2C SCK and SDA__ are at __TWI0 SCK / SDA__ (PH0 / PH1)
+
 ## Video Codec
 
 PinePhone's Linux Device Tree includes a __Video Codec__ for A64's Video Engine: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L539-L547)
