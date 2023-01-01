@@ -70,7 +70,7 @@
 <li><a href="#smaller-and-simpler">1 Smaller and Simpler</a><ul></ul></li>
 <li><a href="#smartphone-education">2 Smartphone Education</a><ul></ul></li>
 <li><a href="#build-nuttx">3 Build NuttX</a><ul></ul></li>
-<li><a href="#boot-nuttx">4 Boot NuttX</a><ul></ul></li></ul></nav><p>📝 <em>8 Jan 2023</em></p>
+<li><a href="#boot-nuttx">4 Boot NuttX</a><ul></ul></li></ul></nav><p>📝 <em>3 Jan 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/what-title.jpg" alt="Apache NuttX RTOS on PinePhone with LVGL… Sorry no touch input yet!" /></p>
 <p><a href="https://lupyuen.github.io/articles/fb#lvgl-graphics-library"><em>Apache NuttX RTOS on PinePhone with LVGL… Sorry no touch input yet!</em></a></p>
 <p>Over the past 5 months, we ported to <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> a different kind of Operating System… <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a></p>
@@ -102,9 +102,9 @@
 <p><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><em>NuttX Display Driver for PinePhone</em></a></p>
 <h1 id="smartphone-education"><a href="#smartphone-education">2 Smartphone Education</a></h1>
 <p><em>Is NuttX good for learning the internals of Smartphones?</em></p>
-<p>TODO: Check out the <a href="https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone"><strong>14 articles</strong></a> covering everything inside-out about NuttX on PinePhone: GPIO, UART, Framebuffer, LCD Panel, …</p>
-<p>TODO: And esoteric topics too: Display Engine, MIPI Display Serial Interface, Power Management Integrated Circuit, Reduced Serial Bus, Generic Interrupt Controller, …</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone">(Great for Bedtime Reading!)</a></p>
+<p>Check out the <a href="https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone"><strong>14 articles</strong></a> covering everything inside-out about NuttX on PinePhone: <a href="https://lupyuen.github.io/articles/pio"><strong>GPIO</strong></a>, <a href="https://lupyuen.github.io/articles/serial"><strong>UART</strong></a>, <a href="https://lupyuen.github.io/articles/fb"><strong>Framebuffer</strong></a>, <a href="https://lupyuen.github.io/articles/lcd"><strong>LCD Panel</strong></a>, …</p>
+<p>And esoteric topics too: <a href="https://lupyuen.github.io/articles/de3"><strong>Display Engine</strong></a>, <a href="https://lupyuen.github.io/articles/dsi3"><strong>MIPI Display Serial Interface</strong></a>, <a href="https://lupyuen.github.io/articles/lcd#power-on-lcd-panel"><strong>Power Management Integrated Circuit</strong></a>, <a href="https://lupyuen.github.io/articles/lcd#power-on-lcd-panel"><strong>Reduced Serial Bus</strong></a>, <a href="https://lupyuen.github.io/articles/interrupt"><strong>Generic Interrupt Controller</strong></a>, …</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone">(Perfect for Bedtime Reading!)</a></p>
 <p><em>So you envision a classroom of students, cracking open their PinePhones to experiment with NuttX?</em></p>
 <p>Yeah possibly? I taught Operating Systems in school… I wished we could use our phones as a <strong>Teaching Tool</strong>.</p>
 <p>(For Retro Fans: NuttX is probably more <a href="https://www.minix3.org/"><strong>MINIX</strong></a> than Linux)</p>
@@ -124,7 +124,7 @@
 <p><a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><em>USB Serial Debug Cable for PinePhone</em></a></p>
 <h1 id="build-nuttx"><a href="#build-nuttx">3 Build NuttX</a></h1>
 <p>Here’s what we need to <strong>run NuttX on PinePhone</strong>…</p>
-<ul>
+<ol>
 <li>
 <p><strong>Pine64 PinePhone</strong></p>
 <p>(Sorry PinePhone Pro is not supported yet)</p>
@@ -135,10 +135,10 @@
 <p><a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console">(Or make one)</a></p>
 </li>
 <li>
-<p><strong>microSD Card</strong></p>
+<p><strong>microSD Card</strong> for booting NuttX</p>
 <p>(NuttX won’t touch the eMMC)</p>
 </li>
-</ul>
+</ol>
 <p>Download <strong><code>Image.gz</code></strong> from the NuttX Binaries…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx/releases/tag/v11.0.0"><strong>pinephone-nuttx/releases</strong></a></li>
@@ -207,7 +207,7 @@ gzip Image</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/arm-jumpdrive.png" alt="PinePhone Jumpdrive on microSD" /></p>
 <p><a href="https://github.com/dreemurrs-embedded/Jumpdrive"><em>PinePhone Jumpdrive on microSD</em></a></p>
 <h1 id="boot-nuttx"><a href="#boot-nuttx">4 Boot NuttX</a></h1>
-<p>TODO</p>
+<p>We’re ready to boot NuttX on our PinePhone!</p>
 <ol>
 <li>
 <p>Download the <strong>PinePhone Jumpdrive Image <code>pine64-pinephone.img.xz</code></strong> from…</p>
@@ -229,20 +229,21 @@ to <strong>Off</strong>.</p>
 <li>
 <p>Insert the microSD Card into PinePhone and power up PinePhone.</p>
 <p>NuttX boots on PinePhone and shows a <a href="https://lupyuen.github.io/images/de3-title.jpg"><strong>Test Pattern</strong></a>.</p>
-<p>NuttShell (nsh) appears in the Serial Console. (Pic below)</p>
-<p><a href="https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd">(See the Complete Log)</a></p>
+<p><strong>NuttShell <code>nsh</code></strong> appears in the Serial Console. (Pic below)</p>
+<p><a href="https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd">(See the Boot Log)</a></p>
 </li>
 <li>
 <p>To see the available commands in NuttShell…</p>
-<div class="example-wrap"><pre class="language-bash"><code>help</code></pre></div></li>
-<li>
-<p>To run the LVGL Demo App…</p>
-<div class="example-wrap"><pre class="language-bash"><code>lvgldemo</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>help</code></pre></div>
+<p>To run the <a href="https://lupyuen.github.io/articles/fb#lvgl-graphics-library"><strong>LVGL Demo App</strong></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>lvgldemo</code></pre></div>
+<p><a href="https://lupyuen.github.io/images/what-title.jpg">(We should see this)</a></p>
+</li>
 </ol>
-<p>TODO</p>
+<p>And that’s how we build and boot NuttX for PinePhone!</p>
 <p><img src="https://lupyuen.github.io/images/fb-run2.png" alt="Booting Apache NuttX RTOS on PinePhone" /></p>
-<p><a href="https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd">(See the Complete Log)</a></p>
-<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! NuttX on PinePhone wouldn’t have been possible without your support.</p>
+<p><a href="https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd">(See the Boot Log)</a></p>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! NuttX for PinePhone wouldn’t have been possible without your support.</p>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/what.md"><strong>lupyuen.github.io/src/what.md</strong></a></p>
 
