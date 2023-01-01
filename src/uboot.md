@@ -6,7 +6,7 @@
 
 [_Apache NuttX RTOS booting on Pine64 PinePhone_](https://github.com/lupyuen/pinephone-nuttx#nuttx-boot-log)
 
-__UPDATE:__ PinePhone is now officially supported by Apache NuttX RTOS [(See this)](https://lupyuen.github.io/articles/uboot#appendix-pinephone-is-now-supported-by-apache-nuttx-rtos)
+__UPDATE:__ PinePhone is now officially supported by Apache NuttX RTOS [(See this)](https://lupyuen.github.io/articles/what)
 
 Suppose we're creating our own __Operating System__ (non-Linux) for [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)...
 
@@ -1007,7 +1007,7 @@ __Porting Notes__ for NuttX on PinePhone...
 
 # Appendix: Build NuttX for PinePhone
 
-__UPDATE:__ PinePhone is now officially supported by Apache NuttX RTOS [(See this)](https://lupyuen.github.io/articles/uboot#appendix-pinephone-is-now-supported-by-apache-nuttx-rtos)
+__UPDATE:__ PinePhone is now officially supported by Apache NuttX RTOS [(See this)](https://lupyuen.github.io/articles/what)
 
 Follow these steps to build __Apache NuttX RTOS__ for PinePhone...
 

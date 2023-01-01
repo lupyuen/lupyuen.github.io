@@ -6,7 +6,7 @@
 
 _Blinking the PinePhone LEDs with BASIC... On Apache NuttX RTOS_
 
-__UPDATE:__ PinePhone is now officially supported by Apache NuttX RTOS [(See this)](https://lupyuen.github.io/articles/uboot#appendix-pinephone-is-now-supported-by-apache-nuttx-rtos)
+__UPDATE:__ PinePhone is now officially supported by Apache NuttX RTOS [(See this)](https://lupyuen.github.io/articles/what)
 
 Programming the __GPIO Hardware__ on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) looks complicated... But it's not that different from microcontrollers!
 

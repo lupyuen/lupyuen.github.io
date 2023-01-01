@@ -4,7 +4,7 @@
 
 ![Our Zig Driver rendering Colour Blocks on Pine64 PinePhone](https://lupyuen.github.io/images/de2-title.jpg)
 
-__UPDATE:__ PinePhone is now officially supported by Apache NuttX RTOS [(See this)](https://lupyuen.github.io/articles/uboot#appendix-pinephone-is-now-supported-by-apache-nuttx-rtos)
+__UPDATE:__ PinePhone is now officially supported by Apache NuttX RTOS [(See this)](https://lupyuen.github.io/articles/what)
 
 _What happens when we render graphics on PinePhone's LCD Display?_
 
