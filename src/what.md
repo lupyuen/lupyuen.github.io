@@ -22,7 +22,7 @@ _What's Apache NuttX RTOS?_
 
 Think Linux, Ubuntu, Manjaro, Arch, ... But a lot __smaller and simpler__!
 
-NuttX is a __tiny operating system__ (10 MB) that boots on a __micro SD Card__ and provides a Command-Line Interface. (Pic above)
+NuttX is a __tiny operating system__ (10 MB) that boots on a __microSD Card__ and provides a Command-Line Interface. (Pic above)
 
 [(Full build in 2.5 minutes on a 10-year-old MacBook Pro)](https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc)
 
