@@ -363,17 +363,17 @@ draw_rect(&amp;state, &amp;area, color);
 <p>Here’s how it works…</p>
 <ul>
 <li>
-<p><strong>Main Function</strong> (Event Loop) of the LVGL App is here: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L109-L238">lvgldemo.c</a></p>
+<p><strong>Main Function</strong> (Event Loop) of the LVGL App is here: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L157-L227">lvgldemo.c</a></p>
 </li>
 <li>
-<p>Main Function calls the <strong>NuttX Framebuffer Interface</strong> here: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/fbdev.c#L351-L469">fbdev.c</a></p>
+<p>Main Function calls the <strong>NuttX Framebuffer Interface</strong> defined here: <a href="https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_fbdev.c#L557-L673">fbdev.c</a></p>
 </li>
 <li>
-<p><strong>LVGL Widgets</strong> are created here: <a href="https://github.com/lvgl/lv_demos/blob/v7.3.0/src/lv_demo_widgets/lv_demo_widgets.c#L108-L203">lv_demo_widgets.c</a></p>
+<p><strong>LVGL Widgets</strong> are created here: <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L202-L528">lv_demo_widgets.c</a></p>
 <p><a href="https://docs.lvgl.io/master/widgets/index.html">(See the docs for <strong>LVGL Widgets</strong>)</a></p>
 </li>
 <li>
-<p><strong>LVGL Version</strong> supported by NuttX is <strong>7.3.0</strong>. <a href="https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/Kconfig#L13-L17">(See this)</a></p>
+<p><strong>LVGL Version</strong> supported by NuttX is <strong>8.3.3</strong> <a href="https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/Kconfig#L13-L17">(See this)</a></p>
 </li>
 </ul>
 <p>Now we talk about the internals of our Framebuffer Driver…</p>
