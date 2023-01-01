@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>NuttX RTOS for PinePhone: What is it?</title>
+            <link>https://lupyuen.github.io/articles/what</link>
+            <description><![CDATA[Let's talk about Apache NuttX RTOS for Pine64 PinePhone: What is it? Why are we doing this? How will we use it?]]></description>
+            <guid>https://lupyuen.github.io/articles/what</guid>
+            <pubDate>Tue, 03 Jan 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>NuttX RTOS for PinePhone: Framebuffer</title>
             <link>https://lupyuen.github.io/articles/fb</link>
             <description><![CDATA[How NuttX Apps call the NuttX Framebuffer Interface to render graphics... And what's inside the Framebuffer Driver for Pine64 PinePhone]]></description>

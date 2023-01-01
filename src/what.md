@@ -1,6 +1,6 @@
 # NuttX RTOS for PinePhone: What is it?
 
-📝 _8 Jan 2023_
+📝 _3 Jan 2023_
 
 ![Apache NuttX RTOS on PinePhone with LVGL... Sorry no touch input yet!](https://lupyuen.github.io/images/what-title.jpg)
 
@@ -64,11 +64,11 @@ Let's talk about NuttX for Learners...
 
 _Is NuttX good for learning the internals of Smartphones?_
 
-TODO: Check out the [__14 articles__](https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone) covering everything inside-out about NuttX on PinePhone: GPIO, UART, Framebuffer, LCD Panel, ...
+Check out the [__14 articles__](https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone) covering everything inside-out about NuttX on PinePhone: [__GPIO__](https://lupyuen.github.io/articles/pio), [__UART__](https://lupyuen.github.io/articles/serial), [__Framebuffer__](https://lupyuen.github.io/articles/fb), [__LCD Panel__](https://lupyuen.github.io/articles/lcd), ...
 
-TODO: And esoteric topics too: Display Engine, MIPI Display Serial Interface, Power Management Integrated Circuit, Reduced Serial Bus, Generic Interrupt Controller, ...
+And esoteric topics too: [__Display Engine__](https://lupyuen.github.io/articles/de3), [__MIPI Display Serial Interface__](https://lupyuen.github.io/articles/dsi3), [__Power Management Integrated Circuit__](https://lupyuen.github.io/articles/lcd#power-on-lcd-panel), [__Reduced Serial Bus__](https://lupyuen.github.io/articles/lcd#power-on-lcd-panel), [__Generic Interrupt Controller__](https://lupyuen.github.io/articles/interrupt), ...
 
-[(Great for Bedtime Reading!)](https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone)
+[(Perfect for Bedtime Reading!)](https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone)
 
 _So you envision a classroom of students, cracking open their PinePhones to experiment with NuttX?_
 
@@ -108,17 +108,17 @@ If we're keen to build and boot NuttX on our PinePhone, please read on...
 
 Here's what we need to __run NuttX on PinePhone__...
 
--   __Pine64 PinePhone__
+1.  __Pine64 PinePhone__
 
     (Sorry PinePhone Pro is not supported yet)
 
--   [__USB Serial Debug Cable for PinePhone__](https://wiki.pine64.org/index.php/PinePhone#Serial_console) (Pic above)
+1.  [__USB Serial Debug Cable for PinePhone__](https://wiki.pine64.org/index.php/PinePhone#Serial_console) (Pic above)
 
     [(Available at Pine64 Store)](https://pine64.com/product/pinebook-pinephone-pinetab-serial-console/)
 
     [(Or make one)](https://wiki.pine64.org/index.php/PinePhone#Serial_console)
 
--   __microSD Card__
+1.  __microSD Card__ for booting NuttX
 
     (NuttX won't touch the eMMC)
 
@@ -215,7 +215,7 @@ Let's copy __`Image.gz`__ to PinePhone and boot NuttX...
 
 # Boot NuttX
 
-TODO
+We're ready to boot NuttX on our PinePhone!
 
 1.  Download the __PinePhone Jumpdrive Image `pine64-pinephone.img.xz`__ from...
 
@@ -241,9 +241,9 @@ to __Off__.
 
     NuttX boots on PinePhone and shows a [__Test Pattern__](https://lupyuen.github.io/images/de3-title.jpg).
     
-    NuttShell (nsh) appears in the Serial Console. (Pic below)
+    __NuttShell `nsh`__ appears in the Serial Console. (Pic below)
 
-    [(See the Complete Log)](https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd)
+    [(See the Boot Log)](https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd)
 
 1.  To see the available commands in NuttShell...
 
@@ -251,19 +251,21 @@ to __Off__.
     help
     ```
 
-1.  To run the LVGL Demo App...
+    To run the [__LVGL Demo App__](https://lupyuen.github.io/articles/fb#lvgl-graphics-library)...
 
     ```bash
     lvgldemo
     ```
 
-TODO
+    [(We should see this)](https://lupyuen.github.io/images/what-title.jpg)
+
+And that's how we build and boot NuttX for PinePhone!
 
 ![Booting Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/fb-run2.png)
 
-[(See the Complete Log)](https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd)
+[(See the Boot Log)](https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd)
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! NuttX on PinePhone wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! NuttX for PinePhone wouldn't have been possible without your support.
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 

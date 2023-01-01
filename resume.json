@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "NuttX RTOS for PinePhone: What is it?",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-01-03",
+      "website": "https://lupyuen.github.io/articles/what",
+      "summary": "Let's talk about Apache NuttX RTOS for Pine64 PinePhone: What is it? Why are we doing this? How will we use it?"
+    },
+    {
       "name": "NuttX RTOS for PinePhone: Framebuffer",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-01-01",
