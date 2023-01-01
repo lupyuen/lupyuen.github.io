@@ -24,11 +24,11 @@ Think Linux, Ubuntu, Manjaro, Arch, ... But a lot __smaller and simpler__!
 
 NuttX is a __tiny operating system__ (10 MB) that boots on a __micro SD Card__ and provides a Command-Line Interface. (Pic above)
 
-TODO: (Compiles in XXX seconds on a 10-year-old MacBook Pro)
+[(Full compile in 2.5 minutes on a 10-year-old MacBook Pro)](https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc)
 
 _Why "Real-Time"?_
 
-It's a __Real-Time Operating System__ (RTOS) because NuttX was created for __tiny microcontrollers__: STM32, nRF52, BL602, ESP32, ...
+It's a __Real-Time Operating System__ (RTOS) because NuttX was created for [__tiny microcontrollers__](https://nuttx.apache.org/docs/latest/platforms/index.html): STM32, nRF52, BL602, ESP32, ...
 
 Which won't run a General Purpose Operating System. (Like Linux)
 
@@ -64,11 +64,11 @@ Let's talk about NuttX for Learners...
 
 _Is NuttX good for learning the internals of Smartphones?_
 
-TODO: Check out the [__13 articles__](https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone) covering everything inside-out about NuttX on PinePhone: GPIO, UART, Framebuffer, LCD Panel, ...
+TODO: Check out the [__14 articles__](https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone) covering everything inside-out about NuttX on PinePhone: GPIO, UART, Framebuffer, LCD Panel, ...
 
 TODO: And esoteric topics too: Display Engine, MIPI Display Serial Interface, Power Management Integrated Circuit, Reduced Serial Bus, Generic Interrupt Controller, ...
 
-(Great for Bedtime Reading!)
+[(Great for Bedtime Reading!)](https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone)
 
 _So you envision a classroom of students, cracking open their PinePhones to experiment with NuttX?_
 
@@ -106,23 +106,27 @@ If we're keen to build and boot NuttX on our PinePhone, please read on...
 
 # Build NuttX
 
-Here's what we need to run NuttX on PinePhone...
+Here's what we need to __run NuttX on PinePhone__...
 
 -   __Pine64 PinePhone__
 
     (Sorry PinePhone Pro is not supported yet)
 
--   [__USB Serial Debug Cable for PinePhone__](https://wiki.pine64.org/index.php/PinePhone#Serial_console)
+-   [__USB Serial Debug Cable for PinePhone__](https://wiki.pine64.org/index.php/PinePhone#Serial_console) (Pic above)
 
-    (Pic above)
+    [(Available at Pine64 Store)](https://pine64.com/product/pinebook-pinephone-pinetab-serial-console/)
+
+    [(Or make one)](https://wiki.pine64.org/index.php/PinePhone#Serial_console)
 
 -   __microSD Card__
+
+    (NuttX won't touch the eMMC)
 
 Download __`Image.gz`__ from the NuttX Binaries...
 
 -   TODO
 
-Or if we prefer to build NuttX ourselves...
+Or if we prefer to __build NuttX__ ourselves...
 
 1.  Install the Build Prerequisites, skip the RISC-V Toolchain...
 
@@ -152,7 +156,7 @@ Or if we prefer to build NuttX ourselves...
     ```bash
     mkdir nuttx
     cd nuttx
-    git clone https://github.com/apache/nuttx.git nuttx
+    git clone https://github.com/apache/nuttx nuttx
     git clone https://github.com/apache/nuttx-apps apps
 
     cd nuttx
@@ -160,9 +164,7 @@ Or if we prefer to build NuttX ourselves...
     make menuconfig
     ```
 
-1.  Select these options to enable the LVGL Demo App...
-
-    Enable "__Application Configuration__ > __Examples__ > __LVGL Demo__"
+1.  Select these options to enable the [__LVGL Demo App__](https://lupyuen.github.io/articles/fb#lvgl-graphics-library)...
 
     Enable "__Application Configuration__ > __Graphics Support__ > __Light and Versatile Graphics Library (LVGL)__"
 
@@ -174,6 +176,8 @@ Or if we prefer to build NuttX ourselves...
     Under "__LVGL__ > __Color settings__"
     - Set __Color Depth__ to __32__
 
+    Enable "__Application Configuration__ > __Examples__ > __LVGL Demo__"
+
     Save the configuration and exit __`menuconfig`__
 
 1.  Build the NuttX Project and compress the NuttX Image...
@@ -184,6 +188,8 @@ Or if we prefer to build NuttX ourselves...
     rm -f Image.gz
     gzip Image
     ```
+
+    [(See the Build Log)](https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc)
 
     This produces the file __`Image.gz`__, which will be copied to PinePhone in the next step.
 
@@ -255,7 +261,7 @@ TODO
 
 [_Booting Apache NuttX RTOS on PinePhone_](https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b)
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! NuttX on PinePhone wouldn't have been possible without your support.
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 

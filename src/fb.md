@@ -358,8 +358,6 @@ make menuconfig
 
 Select these options...
 
-- Enable "__Application Configuration__ > __Examples__ > __LVGL Demo__"
-
 - Enable "__Application Configuration__ > __Graphics Support__ > __Light and Versatile Graphics Library (LVGL)__"
 
 - Under "__LVGL__ > __Graphics Settings__"
@@ -369,6 +367,8 @@ Select these options...
 
 - Under "__LVGL__ > __Color settings__"
   - Set __Color Depth__ to __32__
+
+- Enable "__Application Configuration__ > __Examples__ > __LVGL Demo__"
 
 Save the configuration and exit `menuconfig`. Rebuild NuttX...
 
