@@ -198,7 +198,7 @@ gzip Image</code></pre></div>
 <li>
 <p>If the build fails with…</p>
 <div class="example-wrap"><pre class="language-text"><code>token &quot;@&quot; is not valid in preprocessor</code></pre></div>
-<p>Then look for this file in the in the ARM64 Toolchain…</p>
+<p>Then look for this file in the ARM64 Toolchain…</p>
 <div class="example-wrap"><pre class="language-text"><code>gcc-arm-none-eabi/arm-none-eabi/include/_newlib_version.h</code></pre></div>
 <p>And <a href="https://github.com/apache/nuttx/pull/7284/commits/518b0eb31cb66f25b590ae9a79ab16c319b96b94#diff-12291efd8a0ded1bc38bad733d99e4840ae5112b465c04287f91ba5169612c73"><strong>apply this patch</strong></a>.</p>
 </li>
