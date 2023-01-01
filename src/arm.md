@@ -955,6 +955,8 @@ Stay tuned for updates!
 
 Check out the other articles on __NuttX RTOS for PinePhone__...
 
+-   [__"NuttX RTOS for PinePhone: What is it?"__](https://lupyuen.github.io/articles/what)
+
 -   [__"PinePhone boots Apache NuttX RTOS"__](https://lupyuen.github.io/articles/uboot)
 
 -   [__"NuttX RTOS for PinePhone: Fixing the Interrupts"__](https://lupyuen.github.io/articles/interrupt)
@@ -974,6 +976,10 @@ Check out the other articles on __NuttX RTOS for PinePhone__...
 -   [__"NuttX RTOS for PinePhone: MIPI Display Serial Interface"__](https://lupyuen.github.io/articles/dsi3)
 
 -   [__"NuttX RTOS for PinePhone: Display Engine"__](https://lupyuen.github.io/articles/de3)
+
+-   [__"NuttX RTOS for PinePhone: LCD Panel"__](https://lupyuen.github.io/articles/lcd)
+
+-   [__"NuttX RTOS for PinePhone: Framebuffer"__](https://lupyuen.github.io/articles/fb)
 
 __NuttX on PinePhone__ might take a while to become a __Daily Driver__...
 

@@ -1152,6 +1152,8 @@ But now it's time to __merge our code__ into NuttX Mainline! I'll explain the pr
 
 Check out the other articles on __NuttX RTOS for PinePhone__...
 
+-   [__"NuttX RTOS for PinePhone: What is it?"__](https://lupyuen.github.io/articles/what)
+
 -   [__"Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone"__](https://lupyuen.github.io/articles/arm)
 
 -   [__"PinePhone boots Apache NuttX RTOS"__](https://lupyuen.github.io/articles/uboot)
@@ -1169,6 +1171,10 @@ Check out the other articles on __NuttX RTOS for PinePhone__...
 -   [__"NuttX RTOS for PinePhone: MIPI Display Serial Interface"__](https://lupyuen.github.io/articles/dsi3)
 
 -   [__"NuttX RTOS for PinePhone: Display Engine"__](https://lupyuen.github.io/articles/de3)
+
+-   [__"NuttX RTOS for PinePhone: LCD Panel"__](https://lupyuen.github.io/articles/lcd)
+
+-   [__"NuttX RTOS for PinePhone: Framebuffer"__](https://lupyuen.github.io/articles/fb)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 

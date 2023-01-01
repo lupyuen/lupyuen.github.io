@@ -766,6 +766,8 @@ The NuttX Community is now adding support for [__I2C on Allwinner A64 SoC__](htt
 
 Meanwhile please check out the other articles on __NuttX RTOS for PinePhone__...
 
+-   [__"NuttX RTOS for PinePhone: What is it?"__](https://lupyuen.github.io/articles/what)
+
 -   [__"Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone"__](https://lupyuen.github.io/articles/arm)
 
 -   [__"PinePhone boots Apache NuttX RTOS"__](https://lupyuen.github.io/articles/uboot)
