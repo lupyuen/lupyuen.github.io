@@ -76,9 +76,9 @@ Yeah possibly? I taught Operating Systems in school... I wished we could use our
 
 (For Retro Fans: NuttX is probably more [__MINIX__](https://www.minix3.org/) than Linux)
 
-_Can we take the NuttX source code and build a super duper Custom PinePhone? (Maybe sell it?)_
+_Can we take the NuttX source code and build our own super duper Custom PinePhone? (Maybe sell it?)_
 
-Yep feel free to take the code and do everything with it! The source code is [__Apache Licensed__](https://github.com/apache/nuttx/blob/master/LICENSE).
+Yep please feel free to take the source code and do everything with it! The source code is [__Apache Licensed__](https://github.com/apache/nuttx/blob/master/LICENSE).
 
 But please __drop us a note__ to tell us if you're using the code in your project...  We're curious to know if anyone finds our work useful!
 
