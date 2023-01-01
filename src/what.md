@@ -14,7 +14,7 @@ Let's talk about __NuttX for PinePhone__: What is it? Why are we doing this? How
 
 ![Booting Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/fb-run.png)
 
-[_Booting Apache NuttX RTOS on PinePhone_](https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b)
+[_Booting Apache NuttX RTOS on PinePhone_](https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd)
 
 # Smaller and Simpler
 
@@ -124,7 +124,7 @@ Here's what we need to __run NuttX on PinePhone__...
 
 Download __`Image.gz`__ from the NuttX Binaries...
 
--   TODO
+-   [__pinephone-nuttx/releases__](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v11.0.0)
 
 Or if we prefer to __build NuttX__ ourselves...
 
@@ -239,9 +239,11 @@ to __Off__.
 
 1.  Insert the microSD Card into PinePhone and power up PinePhone.
 
-    NuttX boots on PinePhone and NuttShell (nsh) appears in the Serial Console.
+    NuttX boots on PinePhone and shows a [__Test Pattern__](https://lupyuen.github.io/images/de3-title.jpg).
     
-    (Pic below)
+    NuttShell (nsh) appears in the Serial Console. (Pic below)
+
+    [(See the Complete Log)](https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd)
 
 1.  To see the available commands in NuttShell...
 
@@ -257,9 +259,9 @@ to __Off__.
 
 TODO
 
-![Booting Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/fb-run.png)
+![Booting Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/fb-run2.png)
 
-[_Booting Apache NuttX RTOS on PinePhone_](https://gist.github.com/lupyuen/474b0546f213c25947105b6a0daa7c5b)
+[(See the Complete Log)](https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! NuttX on PinePhone wouldn't have been possible without your support.
 
