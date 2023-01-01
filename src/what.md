@@ -24,13 +24,13 @@ Think Linux, Ubuntu, Manjaro, Arch, ... But a lot __smaller and simpler__!
 
 NuttX is a __tiny operating system__ (10 MB) that boots on a __micro SD Card__ and provides a Command-Line Interface. (Pic above)
 
-[(Full compile in 2.5 minutes on a 10-year-old MacBook Pro)](https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc)
+[(Full build in 2.5 minutes on a 10-year-old MacBook Pro)](https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc)
 
 _Why "Real-Time"?_
 
 It's a __Real-Time Operating System__ (RTOS) because NuttX was created for [__tiny microcontrollers__](https://nuttx.apache.org/docs/latest/platforms/index.html): STM32, nRF52, BL602, ESP32, ...
 
-Which won't run a General Purpose Operating System. (Like Linux)
+That won't run a General Purpose Operating System. (Like Linux)
 
 So now we have "upsized" NuttX for __Arm64 Smartphones__.
 
@@ -38,11 +38,11 @@ _Is NuttX a Daily Driver for PinePhone?_
 
 Not yet, NuttX won't make phone calls and send text messages. It might become a __Daily Driver someday__... If we put a lot of work into it.
 
-It's probably more suitable for __Education__ right now: For learning what happens when a Smartphone boots, how it renders graphics on the LCD Display.
+Right now it's probably more suitable for __Education__: Learning what happens when a Smartphone boots, how it renders graphics on the LCD Display.
 
 And for folks who wish to tinker __Bare Metal__ on PinePhone.
 
-(Turning NuttX into Daily Driver might be an interesting project for students!)
+(Turning NuttX into Daily Driver might be an interesting student project!)
 
 _Does NuttX support X11? Wayland?_
 
