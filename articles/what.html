@@ -173,15 +173,25 @@ make menuconfig</code></pre></div></li>
 <li>
 <p>Select these options to enable the <a href="https://lupyuen.github.io/articles/fb#lvgl-graphics-library"><strong>LVGL Demo App</strong></a>…</p>
 <p>Enable “<strong>Application Configuration</strong> &gt; <strong>Graphics Support</strong> &gt; <strong>Light and Versatile Graphics Library (LVGL)</strong>”</p>
-<p>Under “<strong>LVGL</strong> &gt; <strong>Graphics Settings</strong>”</p>
+<p>Enable “<strong>LVGL</strong> &gt; <strong>Enable Framebuffer Port</strong>”</p>
+<p>Browse into “<strong>LVGL</strong> &gt; <strong>LVGL Configuration</strong>”</p>
 <ul>
-<li>Set <strong>Horizontal Resolution</strong> to <strong>720</strong></li>
-<li>Set <strong>Vertical Resolution</strong> to <strong>1440</strong></li>
-<li>Set <strong>DPI</strong> to <strong>200</strong></li>
-</ul>
-<p>Under “<strong>LVGL</strong> &gt; <strong>Color settings</strong>”</p>
-<ul>
-<li>Set <strong>Color Depth</strong> to <strong>32</strong></li>
+<li>
+<p>In “<strong>Color Settings</strong>”</p>
+<p>Set <strong>Color Depth</strong> to “<strong>32: ARGB8888</strong>”</p>
+</li>
+<li>
+<p>In “<strong>Memory settings</strong>”</p>
+<p>Set <strong>Size of Memory</strong> to <strong>64</strong></p>
+</li>
+<li>
+<p>In “<strong>HAL Settings</strong>”</p>
+<p>Set <strong>Default Dots Per Inch</strong> to <strong>250</strong></p>
+</li>
+<li>
+<p>In “<strong>Demos</strong>”</p>
+<p>Enable “<strong>Show Some Widgets</strong>”</p>
+</li>
 </ul>
 <p>Enable “<strong>Application Configuration</strong> &gt; <strong>Examples</strong> &gt; <strong>LVGL Demo</strong>”</p>
 <p>Save the configuration and exit <strong><code>menuconfig</code></strong></p>
@@ -236,7 +246,7 @@ to <strong>Off</strong>.</p>
 <p>To see the available commands in NuttShell…</p>
 <div class="example-wrap"><pre class="language-bash"><code>help</code></pre></div>
 <p>To run the <a href="https://lupyuen.github.io/articles/fb#lvgl-graphics-library"><strong>LVGL Demo App</strong></a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>lvgldemo</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>lvgldemo widgets</code></pre></div>
 <p><a href="https://lupyuen.github.io/images/what-title.jpg">(We should see this)</a></p>
 </li>
 </ol>
