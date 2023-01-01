@@ -1155,6 +1155,8 @@ According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhon
 
 -   __Touch Panel Interrupt__ (CTP-INT) is at __PH4__
 
+    (IRQ 53, PH_EINT Interrupt)
+
 -   __Touch Panel Reset__ (CTP-RST) is at __PH11__
 
 -   __Touch Panel I2C SCK and SDA__ are at __TWI0 SCK / SDA__ (PH0 / PH1)
