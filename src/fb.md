@@ -406,15 +406,15 @@ _What's inside the LVGL App?_
 
 Here's how it works...
 
--   __Main Function__ (Event Loop) of the LVGL App is here: [lvgldemo.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L109-L238)
+-   __Main Function__ (Event Loop) of the LVGL App is here: [lvgldemo.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L157-L227)
 
--   Main Function calls the __NuttX Framebuffer Interface__ here: [fbdev.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/fbdev.c#L351-L469)
+-   Main Function calls the __NuttX Framebuffer Interface__ defined here: [fbdev.c](https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_fbdev.c#L557-L673)
 
--   __LVGL Widgets__ are created here: [lv_demo_widgets.c](https://github.com/lvgl/lv_demos/blob/v7.3.0/src/lv_demo_widgets/lv_demo_widgets.c#L108-L203)
+-   __LVGL Widgets__ are created here: [lv_demo_widgets.c](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L202-L528)
 
     [(See the docs for __LVGL Widgets__)](https://docs.lvgl.io/master/widgets/index.html)
 
--   __LVGL Version__ supported by NuttX is __7.3.0__. [(See this)](https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/Kconfig#L13-L17)
+-   __LVGL Version__ supported by NuttX is __8.3.3__ [(See this)](https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/Kconfig#L13-L17)
 
 Now we talk about the internals of our Framebuffer Driver...
 
