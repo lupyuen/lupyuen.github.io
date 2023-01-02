@@ -588,7 +588,7 @@ popd
 make
 ```
 
-We boot NuttX on PinePhone [(via microSD)](https://github.com/apache/nuttx/blob/master/Documentation/platforms/arm/a64/boards/pinephone/index.rst) and run the Zig Test Program (pic above)...
+We boot NuttX on PinePhone [(via microSD)](https://nuttx.apache.org/docs/latest/platforms/arm/a64/boards/pinephone/index.html) and run the Zig Test Program (pic above)...
 
 ```text
 NuttShell (NSH) NuttX-11.0.0-pinephone

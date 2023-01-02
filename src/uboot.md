@@ -610,7 +610,7 @@ Let's do it!
 
     Or __download `nuttx.bin`__ from here (includes BASIC Interpreter)...
 
-    [__NuttX Binary Image for PinePhone: `nuttx.bin`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/nuttx.bin)
+    [__NuttX Binary Image for PinePhone: `nuttx.bin`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v11.0.0/nuttx.bin)
 
 1.  Compress the __NuttX Binary Image__...
 
@@ -623,7 +623,7 @@ Let's do it!
 
     Or __download `Image.gz`__ from here (includes BASIC Interpreter)...
 
-    [__Compressed NuttX Binary Image: `Image.gz`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/Image.gz)
+    [__Compressed NuttX Binary Image: `Image.gz`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v11.0.0/Image.gz)
 
 1.  Overwrite __`Image.gz`__ on __Jumpdrive microSD__...
 
@@ -892,19 +892,17 @@ PinePhone is now officially supported by [__Apache NuttX Mainline!__](https://gi
 
 Follow these steps to build and boot the [__`master` branch of NuttX__](https://github.com/apache/nuttx)...
 
--   [__"Apache NuttX RTOS for PINE64 PinePhone"__](https://github.com/apache/nuttx/blob/master/Documentation/platforms/arm/a64/boards/pinephone/index.rst)
+-   [__"Apache NuttX RTOS for PINE64 PinePhone"__](https://nuttx.apache.org/docs/latest/platforms/arm/a64/boards/pinephone/index.html)
 
-    [(Install the Prerequisites)](https://nuttx.apache.org/docs/latest/quickstart/install.html#prerequisites)
-
-    [(Clone the git Repositories)](https://nuttx.apache.org/docs/latest/quickstart/install.html#download-nuttx)
+    [(See the Build Log)](https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc)
 
 Or download the __Build Outputs__ from...
 
--   [__"Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-11.0.0-pinephone)
+-   [__"Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v11.0.0)
 
 We'll see this on the __Serial Console__...
 
--   [__"Log of Apache NuttX RTOS on PinePhone"__](https://gist.github.com/lupyuen/e49a22a9e39b7c024b984bea40377712)
+-   [__"Log of Apache NuttX RTOS on PinePhone"__](https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd)
 
 We have updated these articles to point to the PinePhone code in NuttX Mainline...
 
@@ -922,45 +920,13 @@ We have updated these articles to point to the PinePhone code in NuttX Mainline.
 
 __Upcoming Features__ for NuttX on PinePhone...
 
-1.  __PIO, PWM and LED Drivers__ for Allwinner A64
+-   [__Touch Input Driver__](https://lupyuen.github.io/articles/pio#touch-panel) for PinePhone's Touch Panel
 
-    (Needed for PinePhone's Display Backlight)
-
-    [__"Display Backlight"__](https://lupyuen.github.io/articles/de#appendix-display-backlight)
-
-    PIO Driver will be based on Allwinner A10 [__a1x_pio.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_pio.c), [__a1x_pio.h__](https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_pio.h) and [__hardware/a1x_pio.h__](https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/hardware/a1x_pio.h)
-
-1.  __MIPI Display Serial Interface Driver__ for Allwinner A64, based on...
-
-    [__"NuttX RTOS for PinePhone: Display Driver in Zig"__](https://lupyuen.github.io/articles/dsi2)
-
-    [__"Enable MIPI DSI Block"__](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block)
-
-    [__"Start MIPI DSI HSC and HSD"__](https://lupyuen.github.io/articles/dsi#appendix-start-mipi-dsi-hsc-and-hsd)
-
-1.  __Display Engine Driver__ for Allwinner A64, based on...
-
-    [__"NuttX RTOS for PinePhone: Render Graphics in Zig"__](https://lupyuen.github.io/articles/de2)
-
-1.  __PMIC, TCON0, DPHY and LCD Panel Drivers__ for PinePhone and Allwinner A64, based on...
-
-    [__"Power Management Integrated Circuit"__](https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit)
-
-    [__"Timing Controller (TCON0)"__](https://lupyuen.github.io/articles/de#appendix-timing-controller-tcon0)
-
-    [__"Enable MIPI Display Physical Layer (DPHY)"__](https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-display-physical-layer-dphy)
-
-    [__"Reset LCD Panel"__](https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel)
-
-And we'll be able to render graphics on PinePhone's LCD Display. Stay Tuned!
+And we'll be able to run __LVGL Touchscreen Apps__ on PinePhone. Stay Tuned!
 
 ## Upcoming Fixes
 
 These are the __Upcoming Fixes__ for NuttX on PinePhone...
-
-1.  Fix the garbled __Startup Messages__
-
-    [(More about this)](https://github.com/apache/nuttx/pull/7692)
 
 1.  __RAM Size__ will be increased to 2 GB: [chip.h](https://github.com/apache/nuttx/blob/master/arch/arm64/include/a64/chip.h#L45-L48)
 
@@ -1086,9 +1052,11 @@ gcc version 11.3.1 20220712 (Arm GNU Toolchain 11.3.Rel1)
 Finally we __configure and build__ NuttX...
 
 ```bash
-## Configure NuttX for Arm Cortex-A53 Single Core
-## For PinePhone: Change "qemu-armv8a:nsh" to "pinephone:nsh"
-./tools/configure.sh -l qemu-armv8a:nsh
+## For QEMU: Configure NuttX for Arm Cortex-A53 Single Core
+tools/configure.sh qemu-armv8a:nsh
+
+## For PinePhone: Configure NuttX for PinePhone
+tools/configure.sh pinephone:lcd
 
 ## Build NuttX
 make
@@ -1131,19 +1099,19 @@ And [__apply this patch__](https://github.com/apache/nuttx/pull/7284/commits/518
 
 The NuttX Output Files may be found here...
 
--   [__Apache NuttX RTOS for PinePhone__](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.12)
+-   [__Apache NuttX RTOS for PinePhone__](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v11.0.0)
 
-The [__NuttX Binary Image `nuttx.bin`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/nuttx.bin) will be gzipped and copied to Jumpdrive microSD as __`Image.gz`__...
+The [__NuttX Binary Image `nuttx.bin`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v11.0.0/nuttx.bin) will be gzipped and copied to Jumpdrive microSD as __`Image.gz`__...
 
 -   [__"PinePhone Boots NuttX"__](https://lupyuen.github.io/articles/uboot#pinephone-boots-nuttx)
 
 For Troubleshooting: Refer to these files...
 
--   [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/nuttx)
+-   [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v11.0.0/nuttx)
 
--   [__NuttX Arm Disassembly `nuttx.S`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/nuttx.S)
+-   [__NuttX Arm Disassembly `nuttx.S`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v11.0.0/nuttx.S)
 
-This article explains how we may load the [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/nuttx) into Ghidra for inspection...
+This article explains how we may load the [__NuttX ELF Image `nuttx`__](https://github.com/lupyuen/pinephone-nuttx/releases/download/v11.0.0/nuttx) into Ghidra for inspection...
 
 -   [__"Analyse NuttX Image with Ghidra"__](https://lupyuen.github.io/articles/arm#appendix-analyse-nuttx-image-with-ghidra)
 
