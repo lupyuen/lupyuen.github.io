@@ -564,7 +564,7 @@ SECTION_FUNC(text, up_earlyserialinit)
 <p>Follow these steps to <strong>build Apache NuttX RTOS</strong>…</p>
 <p><a href="https://lupyuen.github.io/articles/uboot#appendix-build-nuttx-for-pinephone"><strong>“Build NuttX for PinePhone”</strong></a></p>
 <p>Or <strong>download <code>nuttx.bin</code></strong> from here (includes BASIC Interpreter)…</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/nuttx.bin"><strong>NuttX Binary Image for PinePhone: <code>nuttx.bin</code></strong></a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v11.0.0/nuttx.bin"><strong>NuttX Binary Image for PinePhone: <code>nuttx.bin</code></strong></a></p>
 </li>
 <li>
 <p>Compress the <strong>NuttX Binary Image</strong>…</p>
@@ -573,7 +573,7 @@ cp nuttx.bin Image
 rm -f Image.gz
 gzip Image</code></pre></div>
 <p>Or <strong>download <code>Image.gz</code></strong> from here (includes BASIC Interpreter)…</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/Image.gz"><strong>Compressed NuttX Binary Image: <code>Image.gz</code></strong></a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v11.0.0/Image.gz"><strong>Compressed NuttX Binary Image: <code>Image.gz</code></strong></a></p>
 </li>
 <li>
 <p>Overwrite <strong><code>Image.gz</code></strong> on <strong>Jumpdrive microSD</strong>…</p>
@@ -837,18 +837,17 @@ nsh&gt; ls /dev
 <p>Follow these steps to build and boot the <a href="https://github.com/apache/nuttx"><strong><code>master</code> branch of NuttX</strong></a>…</p>
 <ul>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/Documentation/platforms/arm/a64/boards/pinephone/index.rst"><strong>“Apache NuttX RTOS for PINE64 PinePhone”</strong></a></p>
-<p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html#prerequisites">(Install the Prerequisites)</a></p>
-<p><a href="https://nuttx.apache.org/docs/latest/quickstart/install.html#download-nuttx">(Clone the git Repositories)</a></p>
+<p><a href="https://nuttx.apache.org/docs/latest/platforms/arm/a64/boards/pinephone/index.html"><strong>“Apache NuttX RTOS for PINE64 PinePhone”</strong></a></p>
+<p><a href="https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc">(See the Build Log)</a></p>
 </li>
 </ul>
 <p>Or download the <strong>Build Outputs</strong> from…</p>
 <ul>
-<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-11.0.0-pinephone"><strong>“Apache NuttX RTOS for PinePhone”</strong></a></li>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx/releases/tag/v11.0.0"><strong>“Apache NuttX RTOS for PinePhone”</strong></a></li>
 </ul>
 <p>We’ll see this on the <strong>Serial Console</strong>…</p>
 <ul>
-<li><a href="https://gist.github.com/lupyuen/e49a22a9e39b7c024b984bea40377712"><strong>“Log of Apache NuttX RTOS on PinePhone”</strong></a></li>
+<li><a href="https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd"><strong>“Log of Apache NuttX RTOS on PinePhone”</strong></a></li>
 </ul>
 <p>We have updated these articles to point to the PinePhone code in NuttX Mainline…</p>
 <ul>
@@ -870,39 +869,13 @@ nsh&gt; ls /dev
 </ul>
 <h2 id="upcoming-features"><a href="#upcoming-features">17.1 Upcoming Features</a></h2>
 <p><strong>Upcoming Features</strong> for NuttX on PinePhone…</p>
-<ol>
-<li>
-<p><strong>PIO, PWM and LED Drivers</strong> for Allwinner A64</p>
-<p>(Needed for PinePhone’s Display Backlight)</p>
-<p><a href="https://lupyuen.github.io/articles/de#appendix-display-backlight"><strong>“Display Backlight”</strong></a></p>
-<p>PIO Driver will be based on Allwinner A10 <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_pio.c"><strong>a1x_pio.c</strong></a>, <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_pio.h"><strong>a1x_pio.h</strong></a> and <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/hardware/a1x_pio.h"><strong>hardware/a1x_pio.h</strong></a></p>
-</li>
-<li>
-<p><strong>MIPI Display Serial Interface Driver</strong> for Allwinner A64, based on…</p>
-<p><a href="https://lupyuen.github.io/articles/dsi2"><strong>“NuttX RTOS for PinePhone: Display Driver in Zig”</strong></a></p>
-<p><a href="https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-dsi-block"><strong>“Enable MIPI DSI Block”</strong></a></p>
-<p><a href="https://lupyuen.github.io/articles/dsi#appendix-start-mipi-dsi-hsc-and-hsd"><strong>“Start MIPI DSI HSC and HSD”</strong></a></p>
-</li>
-<li>
-<p><strong>Display Engine Driver</strong> for Allwinner A64, based on…</p>
-<p><a href="https://lupyuen.github.io/articles/de2"><strong>“NuttX RTOS for PinePhone: Render Graphics in Zig”</strong></a></p>
-</li>
-<li>
-<p><strong>PMIC, TCON0, DPHY and LCD Panel Drivers</strong> for PinePhone and Allwinner A64, based on…</p>
-<p><a href="https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit"><strong>“Power Management Integrated Circuit”</strong></a></p>
-<p><a href="https://lupyuen.github.io/articles/de#appendix-timing-controller-tcon0"><strong>“Timing Controller (TCON0)”</strong></a></p>
-<p><a href="https://lupyuen.github.io/articles/dsi#appendix-enable-mipi-display-physical-layer-dphy"><strong>“Enable MIPI Display Physical Layer (DPHY)”</strong></a></p>
-<p><a href="https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel"><strong>“Reset LCD Panel”</strong></a></p>
-</li>
-</ol>
-<p>And we’ll be able to render graphics on PinePhone’s LCD Display. Stay Tuned!</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/pio#touch-panel"><strong>Touch Input Driver</strong></a> for PinePhone’s Touch Panel</li>
+</ul>
+<p>And we’ll be able to run <strong>LVGL Touchscreen Apps</strong> on PinePhone. Stay Tuned!</p>
 <h2 id="upcoming-fixes-1"><a href="#upcoming-fixes-1">17.2 Upcoming Fixes</a></h2>
 <p>These are the <strong>Upcoming Fixes</strong> for NuttX on PinePhone…</p>
 <ol>
-<li>
-<p>Fix the garbled <strong>Startup Messages</strong></p>
-<p><a href="https://github.com/apache/nuttx/pull/7692">(More about this)</a></p>
-</li>
 <li>
 <p><strong>RAM Size</strong> will be increased to 2 GB: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/include/a64/chip.h#L45-L48">chip.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Allwinner A64 Memory Map
@@ -993,9 +966,11 @@ export PATH=&quot;$PATH:/Applications/ArmGNUToolchain/11.3.rel1/aarch64-none-elf
 <div class="example-wrap"><pre class="language-bash"><code>$ aarch64-none-elf-gcc -v
 gcc version 11.3.1 20220712 (Arm GNU Toolchain 11.3.Rel1)</code></pre></div><h2 id="build-nuttx"><a href="#build-nuttx">18.4 Build NuttX</a></h2>
 <p>Finally we <strong>configure and build</strong> NuttX…</p>
-<div class="example-wrap"><pre class="language-bash"><code># Configure NuttX for Arm Cortex-A53 Single Core
-# For PinePhone: Change &quot;qemu-armv8a:nsh&quot; to &quot;pinephone:nsh&quot;
-./tools/configure.sh -l qemu-armv8a:nsh
+<div class="example-wrap"><pre class="language-bash"><code># For QEMU: Configure NuttX for Arm Cortex-A53 Single Core
+tools/configure.sh qemu-armv8a:nsh
+
+# For PinePhone: Configure NuttX for PinePhone
+tools/configure.sh pinephone:lcd
 
 # Build NuttX
 make
@@ -1022,22 +997,22 @@ aarch64-none-elf-objdump \
 <h2 id="output-files"><a href="#output-files">18.5 Output Files</a></h2>
 <p>The NuttX Output Files may be found here…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx/releases/tag/v1.0.12"><strong>Apache NuttX RTOS for PinePhone</strong></a></li>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx/releases/tag/v11.0.0"><strong>Apache NuttX RTOS for PinePhone</strong></a></li>
 </ul>
-<p>The <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/nuttx.bin"><strong>NuttX Binary Image <code>nuttx.bin</code></strong></a> will be gzipped and copied to Jumpdrive microSD as <strong><code>Image.gz</code></strong>…</p>
+<p>The <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v11.0.0/nuttx.bin"><strong>NuttX Binary Image <code>nuttx.bin</code></strong></a> will be gzipped and copied to Jumpdrive microSD as <strong><code>Image.gz</code></strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/uboot#pinephone-boots-nuttx"><strong>“PinePhone Boots NuttX”</strong></a></li>
 </ul>
 <p>For Troubleshooting: Refer to these files…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/nuttx"><strong>NuttX ELF Image <code>nuttx</code></strong></a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v11.0.0/nuttx"><strong>NuttX ELF Image <code>nuttx</code></strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/nuttx.S"><strong>NuttX Arm Disassembly <code>nuttx.S</code></strong></a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v11.0.0/nuttx.S"><strong>NuttX Arm Disassembly <code>nuttx.S</code></strong></a></p>
 </li>
 </ul>
-<p>This article explains how we may load the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.0.12/nuttx"><strong>NuttX ELF Image <code>nuttx</code></strong></a> into Ghidra for inspection…</p>
+<p>This article explains how we may load the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v11.0.0/nuttx"><strong>NuttX ELF Image <code>nuttx</code></strong></a> into Ghidra for inspection…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/arm#appendix-analyse-nuttx-image-with-ghidra"><strong>“Analyse NuttX Image with Ghidra”</strong></a></li>
 </ul>
