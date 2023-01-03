@@ -1161,6 +1161,26 @@ According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhon
 
 -   __Touch Panel I2C SCK and SDA__ are at __TWI0 SCK / SDA__ (PH0 / PH1)
 
+According to our [__Test Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c4991b1503387d57821d94a549425bcd8f268841/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L316-L355)...
+
+-   __I2C Address__ is __0x5D__
+
+-   __I2C Frequency__ is __400 kHz__ or higher
+
+-   __I2C Register Addresses__ are 16-bit
+
+    (Send MSB before LSB, so we need to swap the bytes)
+
+-   Reading I2C Register __0x8140__ (Product ID) will return the bytes...
+
+    ```text
+    39 31 37 53
+    ```
+    
+    Which is ASCII for "__`917S`__"
+
+    (Goodix GT917S Touch Panel)
+
 ## Video Codec
 
 PinePhone's Linux Device Tree includes a __Video Codec__ for A64's Video Engine: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L539-L547)
