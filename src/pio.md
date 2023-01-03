@@ -1165,11 +1165,13 @@ According to our [__Test Code__](https://github.com/lupyuen2/wip-pinephone-nuttx
 
 -   __I2C Address__ is __0x5D__
 
--   __I2C Frequency__ is __400 kHz__ or higher
+-   __I2C Frequency__ is __400 kHz__
+
+    (What's the max?)
 
 -   __I2C Register Addresses__ are 16-bit
 
-    (Send MSB before LSB, so we need to swap the bytes)
+    (Send MSB before LSB, so we should swap the bytes)
 
 -   Reading I2C Register __0x8140__ (Product ID) will return the bytes...
 
