@@ -1141,11 +1141,17 @@ The __Porting Notes__ for Android are here...
 
 -   [__Android Porting Guide__](https://github.com/goodix/gt9xx_driver_android/blob/master/documents/Potring_Guide.md)
 
+This is a __simpler driver__ for the Goodix Touch Panel (which is easier to read and understand)...
+
+-   [__DiveInEmbedded/GT911-Touch-driver__](https://github.com/DiveInEmbedded/GT911-Touch-driver/blob/main/Core/Src/GT911.c)
+
 The datasheet doesn't say much about programming the Touch Panel...
 
 -   [__GT917S Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/GT917S-Datasheet.pdf)
 
 So we'll create the __NuttX Touch Panel Driver__ by replicating the I2C Read / Write Operations from the Android Driver [__gt9xx.c__](https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c).
+
+(Or the simpler driver [__GT911.c__](https://github.com/DiveInEmbedded/GT911-Touch-driver/blob/main/Core/Src/GT911.c))
 
 We'll reuse the code from the NuttX Touch Panel Driver for __PineDio Stack BL604__...
 
@@ -1161,7 +1167,7 @@ According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhon
 
 -   __Touch Panel I2C SCK and SDA__ are at __TWI0 SCK / SDA__ (PH0 / PH1)
 
-According to our [__Test Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c4991b1503387d57821d94a549425bcd8f268841/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L316-L355)...
+We have validated the following based on our [__Test Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c4991b1503387d57821d94a549425bcd8f268841/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L316-L355)...
 
 -   __I2C Address__ is __0x5D__
 
@@ -1182,6 +1188,10 @@ According to our [__Test Code__](https://github.com/lupyuen2/wip-pinephone-nuttx
     Which is ASCII for "__`917S`__"
 
     (Goodix GT917S Touch Panel)
+
+We're now building the __NuttX Touch Panel Driver__ for PinePhone...
+
+-   [__"PinePhone Touch Panel"__](https://github.com/lupyuen/pinephone-nuttx#pinephone-touch-panel)
 
 ## Video Codec
 
