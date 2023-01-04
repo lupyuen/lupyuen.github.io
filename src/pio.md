@@ -1108,6 +1108,10 @@ framebuffer-lcd {
 
 We might build a similar Framebuffer Device in NuttX for rendering graphics with the LVGL GUI Library.
 
+![Capacitive Touch Panel in PinePhone Schematic (Pages 9 and 11)](https://lupyuen.github.io/images/touch2-schematic1.jpg)
+
+[_Capacitive Touch Panel in PinePhone Schematic (Pages 9 and 11)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
+
 ## Touch Panel
 
 PinePhone has a __Goodix GT917S Touch Panel__ that talks on I2C.
@@ -1157,15 +1161,15 @@ We'll reuse the code from the NuttX Touch Panel Driver for __PineDio Stack BL604
 
 -   [__"NuttX Touch Panel Driver for PineDio Stack BL604"__](https://lupyuen.github.io/articles/touch)
 
-According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (Pages 9 and 11)...
+According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) Pages 9 and 11 (pic above)...
 
 -   __Touch Panel Interrupt__ (CTP-INT) is at __PH4__
 
-    (IRQ 53, PH_EINT Interrupt)
+    (PH_EINT Interrupt at IRQ 53)
 
 -   __Touch Panel Reset__ (CTP-RST) is at __PH11__
 
--   __Touch Panel I2C SCK and SDA__ are at __TWI0 SCK / SDA__ (PH0 / PH1)
+-   __Touch Panel I2C SCK / SDA__ are at __TWI0 SCK / SDA__
 
 We have validated the following based on our [__Test Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c4991b1503387d57821d94a549425bcd8f268841/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L316-L355)...
 
