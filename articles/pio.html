@@ -988,6 +988,8 @@ dtc \
   status = &quot;disabled&quot;;
 };</code></pre></div>
 <p>We might build a similar Framebuffer Device in NuttX for rendering graphics with the LVGL GUI Library.</p>
+<p><img src="https://lupyuen.github.io/images/touch2-schematic1.jpg" alt="Capacitive Touch Panel in PinePhone Schematic (Pages 9 and 11)" /></p>
+<p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>Capacitive Touch Panel in PinePhone Schematic (Pages 9 and 11)</em></a></p>
 <h2 id="touch-panel"><a href="#touch-panel">13.6 Touch Panel</a></h2>
 <p>PinePhone has a <strong>Goodix GT917S Touch Panel</strong> that talks on I2C.</p>
 <p>Here’s the definition in PinePhone’s Linux Device Tree: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1125-L1136">sun50i-a64-pinephone-1.2.dts</a></p>
@@ -1029,17 +1031,17 @@ dtc \
 <ul>
 <li><a href="https://lupyuen.github.io/articles/touch"><strong>“NuttX Touch Panel Driver for PineDio Stack BL604”</strong></a></li>
 </ul>
-<p>According to the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> (Pages 9 and 11)…</p>
+<p>According to the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> Pages 9 and 11 (pic above)…</p>
 <ul>
 <li>
 <p><strong>Touch Panel Interrupt</strong> (CTP-INT) is at <strong>PH4</strong></p>
-<p>(IRQ 53, PH_EINT Interrupt)</p>
+<p>(PH_EINT Interrupt at IRQ 53)</p>
 </li>
 <li>
 <p><strong>Touch Panel Reset</strong> (CTP-RST) is at <strong>PH11</strong></p>
 </li>
 <li>
-<p><strong>Touch Panel I2C SCK and SDA</strong> are at <strong>TWI0 SCK / SDA</strong> (PH0 / PH1)</p>
+<p><strong>Touch Panel I2C SCK / SDA</strong> are at <strong>TWI0 SCK / SDA</strong></p>
 </li>
 </ul>
 <p>We have validated the following based on our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c4991b1503387d57821d94a549425bcd8f268841/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L316-L355"><strong>Test Code</strong></a>…</p>
