@@ -1015,11 +1015,16 @@ dtc \
 <ul>
 <li><a href="https://github.com/goodix/gt9xx_driver_android/blob/master/documents/Potring_Guide.md"><strong>Android Porting Guide</strong></a></li>
 </ul>
+<p>This is a <strong>simpler driver</strong> for the Goodix Touch Panel (which is easier to read and understand)…</p>
+<ul>
+<li><a href="https://github.com/DiveInEmbedded/GT911-Touch-driver/blob/main/Core/Src/GT911.c"><strong>DiveInEmbedded/GT911-Touch-driver</strong></a></li>
+</ul>
 <p>The datasheet doesn’t say much about programming the Touch Panel…</p>
 <ul>
 <li><a href="https://files.pine64.org/doc/datasheet/pinephone/GT917S-Datasheet.pdf"><strong>GT917S Datasheet</strong></a></li>
 </ul>
 <p>So we’ll create the <strong>NuttX Touch Panel Driver</strong> by replicating the I2C Read / Write Operations from the Android Driver <a href="https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c"><strong>gt9xx.c</strong></a>.</p>
+<p>(Or the simpler driver <a href="https://github.com/DiveInEmbedded/GT911-Touch-driver/blob/main/Core/Src/GT911.c"><strong>GT911.c</strong></a>)</p>
 <p>We’ll reuse the code from the NuttX Touch Panel Driver for <strong>PineDio Stack BL604</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/touch"><strong>“NuttX Touch Panel Driver for PineDio Stack BL604”</strong></a></li>
@@ -1037,7 +1042,7 @@ dtc \
 <p><strong>Touch Panel I2C SCK and SDA</strong> are at <strong>TWI0 SCK / SDA</strong> (PH0 / PH1)</p>
 </li>
 </ul>
-<p>According to our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c4991b1503387d57821d94a549425bcd8f268841/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L316-L355"><strong>Test Code</strong></a>…</p>
+<p>We have validated the following based on our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c4991b1503387d57821d94a549425bcd8f268841/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L316-L355"><strong>Test Code</strong></a>…</p>
 <ul>
 <li>
 <p><strong>I2C Address</strong> is <strong>0x5D</strong></p>
@@ -1056,6 +1061,10 @@ dtc \
 <p>Which is ASCII for “<strong><code>917S</code></strong>”</p>
 <p>(Goodix GT917S Touch Panel)</p>
 </li>
+</ul>
+<p>We’re now building the <strong>NuttX Touch Panel Driver</strong> for PinePhone…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx#pinephone-touch-panel"><strong>“PinePhone Touch Panel”</strong></a></li>
 </ul>
 <h2 id="video-codec"><a href="#video-codec">13.7 Video Codec</a></h2>
 <p>PinePhone’s Linux Device Tree includes a <strong>Video Codec</strong> for A64’s Video Engine: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L539-L547">sun50i-a64-pinephone-1.2.dts</a></p>
