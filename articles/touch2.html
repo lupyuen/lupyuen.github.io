@@ -69,7 +69,7 @@
     <nav id="TOC"><ul>
 <li><a href="#goodix-gt917s-touch-panel">1 Goodix GT917S Touch Panel</a><ul></ul></li>
 <li><a href="#read-product-id">2 Read Product ID</a><ul></ul></li>
-<li><a href="#poll-touch-panel">3 Poll Touch Panel</a><ul></ul></li>
+<li><a href="#poll-the-touch-panel">3 Poll the Touch Panel</a><ul></ul></li>
 <li><a href="#read-touch-coordinates">4 Read Touch Coordinates</a><ul></ul></li>
 <li><a href="#handle-interrupts-from-touch-panel">5 Handle Interrupts from Touch Panel</a><ul></ul></li>
 <li><a href="#nuttx-touch-panel-driver">6 NuttX Touch Panel Driver</a><ul></ul></li>
@@ -161,7 +161,7 @@
 <p>Based on the above settings, we wrote this <strong>Test Code</strong> that runs in the NuttX Kernel: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c4991b1503387d57821d94a549425bcd8f268841/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L316-L355">pinephone_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Read Product ID from Touch Panel over I2C
 static void touch_panel_read(
-  struct i2c_master_s *i2c  // NuttX I2C Bus (TWI0)
+  struct i2c_master_s *i2c  // NuttX I2C Bus (Port TWI0)
 ) {
   uint32_t freq = 400000;  // I2C Frequency: 400 kHz
   uint16_t addr = 0x5d;    // Default I2C Address for Goodix GT917S
@@ -209,25 +209,28 @@ static void touch_panel_read(
 <p><img src="https://lupyuen.github.io/images/touch2-code3a.png" alt="Read Product ID from Touch Panel" /></p>
 <p>Yep the I2C Response is correct…</p>
 <div class="example-wrap"><pre class="language-text"><code>39 31 37 53</code></pre></div>
-<p>Which is ASCII for “<strong><code>917S</code></strong>”! (Goodix GT917S Touch Panel)</p>
+<p>Which is ASCII for “<strong><code>917S</code></strong>”!</p>
+<p>(Goodix GT917S Touch Panel)</p>
 <p><em>How’s the code above called by NuttX Kernel?</em></p>
-<p>Read on to find out…</p>
-<p><img src="https://lupyuen.github.io/images/touch2-code1a.png" alt="TODO" /></p>
-<h1 id="poll-touch-panel"><a href="#poll-touch-panel">3 Poll Touch Panel</a></h1>
-<p>TODO</p>
-<p>To detect Touch Events, we’ll need to handle the Interrupts triggered by Touch Panel.</p>
-<p>Based on our research, PinePhone’s Touch Panel Interrupt (CTP-INT) is connected at PH4. </p>
-<p>Right now we poll PH4 (instead of handling interrupts) because it’s easier: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L283-L317">pinephone_bringup.c</a></p>
+<p>Read on to find out how we poll the Touch Panel…</p>
+<p><img src="https://lupyuen.github.io/images/touch2-code1a.png" alt="Polling the Touch Panel" /></p>
+<h1 id="poll-the-touch-panel"><a href="#poll-the-touch-panel">3 Poll the Touch Panel</a></h1>
+<p><em>We need to handle interrupts triggered by the Touch Panel right?</em></p>
+<p>To detect Touch Events, we’ll need to <strong>handle the interrupts</strong> triggered by Touch Panel.</p>
+<p>Based on our research, PinePhone’s <strong>Touch Panel Interrupt</strong> (CTP-INT) is connected at <strong>PH4</strong>.</p>
+<p>But to simplify our first experiment, <strong>let’s poll PH4</strong>. (Instead of handling interrupts)</p>
+<p><em>How do we poll PH4?</em></p>
+<p>We read PH4 as a <strong>GPIO Input</strong>. When we touch the Touch Panel, PH4 goes from <strong>Low to High</strong>.</p>
+<p>This is how we poll PH4: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L283-L317">pinephone_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Test Touch Panel Interrupt by Polling as GPIO Input.
 // Touch Panel Interrupt (CTP-INT) is at PH4.
-// Configure for GPIO Input
+// We configure it for GPIO Input.
 #define CTP_INT (PIO_INPUT | PIO_PORT_PIOH | PIO_PIN4)
 
-static void touch_panel_read(struct i2c_master_s *i2c);
-
 // Poll for Touch Panel Interrupt (PH4) by reading as GPIO Input
-void touch_panel_initialize(struct i2c_master_s *i2c)
-{
+void touch_panel_initialize(
+  struct i2c_master_s *i2c  // NuttX I2C Bus (Port TWI0)
+) {
 
   // Configure the Touch Panel Interrupt for GPIO Input
   int ret = a64_pio_config(CTP_INT);
@@ -260,6 +263,7 @@ void touch_panel_initialize(struct i2c_master_s *i2c)
     up_mdelay(10);
   }
 }</code></pre></div>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/touch2-code4a.png" alt="TODO" /></p>
 <h1 id="read-touch-coordinates"><a href="#read-touch-coordinates">4 Read Touch Coordinates</a></h1>
 <p>TODO</p>
