@@ -30,7 +30,7 @@ We begin with the internals of the Touch Panel...
 
 # Goodix GT917S Touch Panel
 
-PinePhone has a __Goodix GT917S Touch Panel__ that talks on I2C.
+Inside PinePhone is the __Goodix GT917S Capacitive Touch Panel__ (CTP) that talks over I2C.
 
 According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) Pages 9 and 11 (pic above)...
 
