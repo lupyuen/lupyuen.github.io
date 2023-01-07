@@ -72,21 +72,56 @@
 <li><a href="#poll-touch-panel">3 Poll Touch Panel</a><ul></ul></li>
 <li><a href="#read-touch-coordinates">4 Read Touch Coordinates</a><ul></ul></li>
 <li><a href="#handle-interrupts-from-touch-panel">5 Handle Interrupts from Touch Panel</a><ul></ul></li>
-<li><a href="#nuttx-touch-panel-driver-for-pinephone">6 NuttX Touch Panel Driver for PinePhone</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>14 Jan 2023</em></p>
-<p><img src="https://lupyuen.github.io/images/touch2-title.png" alt="TODO" /></p>
-<p>Suppose we’re running <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a> on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>…</p>
-<p>TODO: All about the Capacitive Touch Panel of Pine64 PinePhone… And how we created the PinePhone Touch Panel Driver for Apache NuttX RTOS</p>
+<li><a href="#nuttx-touch-panel-driver">6 NuttX Touch Panel Driver</a><ul></ul></li>
+<li><a href="#lvgl-calls-our-driver">7 LVGL Calls Our Driver</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>14 Jan 2023</em></p>
+<p><img src="https://lupyuen.github.io/images/touch2-title.png" alt="Apache NuttX RTOS reads the PinePhone Touch Panel" /></p>
+<p>We’re porting <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) to <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/what"><strong>“NuttX RTOS for PinePhone: What is it?”</strong></a></li>
+</ul>
+<p>Now we can render <a href="https://lupyuen.github.io/articles/fb#lvgl-graphics-library"><strong>LVGL Graphical User Interfaces</strong></a>… But it won’t work with <strong>Touch Input</strong> yet!</p>
+<p>Let’s talk about the <strong>Capacitive Touch Panel</strong> inside PinePhone…</p>
+<ul>
+<li>
+<p>How it’s <strong>connected to PinePhone</strong></p>
+</li>
+<li>
+<p>How we read <strong>Touch Points</strong></p>
+<p>(Polling vs Interrupts)</p>
+</li>
+<li>
+<p>How we created the <strong>Touch Panel Driver</strong> for NuttX</p>
+</li>
+<li>
+<p>And how we call the driver from <strong>LVGL Apps</strong></p>
+</li>
+</ul>
+<p>We begin with the internals of the Touch Panel…</p>
 <p><img src="https://lupyuen.github.io/images/touch2-schematic1.jpg" alt="Capacitive Touch Panel in PinePhone Schematic (Pages 9 and 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>Capacitive Touch Panel in PinePhone Schematic (Pages 9 and 11)</em></a></p>
 <h1 id="goodix-gt917s-touch-panel"><a href="#goodix-gt917s-touch-panel">1 Goodix GT917S Touch Panel</a></h1>
 <p>TODO</p>
-<p>Now that we can render LVGL Graphical User Interfaces, let’s handle Touch Input!</p>
-<p>Here’s everything we know about PinePhone’s Touch Panel…</p>
+<p>PinePhone has a <strong>Goodix GT917S Touch Panel</strong> that talks on I2C.</p>
+<p>The datasheet doesn’t say much about programming the Touch Panel…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/pio#touch-panel"><strong>“Touch Panel”</strong></a></li>
+<li><a href="https://files.pine64.org/doc/datasheet/pinephone/GT917S-Datasheet.pdf"><strong>GT917S Datasheet</strong></a></li>
 </ul>
-<p>TODO4</p>
+<p>So we’ll create the <strong>NuttX Touch Panel Driver</strong> by replicating the I2C Read / Write Operations from the Android Driver <a href="https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c"><strong>gt9xx.c</strong></a>.</p>
+<p>(Or the simpler driver <a href="https://github.com/DiveInEmbedded/GT911-Touch-driver/blob/main/Core/Src/GT911.c"><strong>GT911.c</strong></a>)</p>
+<p>According to the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> Pages 9 and 11 (pic above)…</p>
+<ul>
+<li>
+<p><strong>Touch Panel Interrupt</strong> (CTP-INT) is at <strong>PH4</strong></p>
+<p>(PH_EINT Interrupt at IRQ 53)</p>
+</li>
+<li>
+<p><strong>Touch Panel Reset</strong> (CTP-RST) is at <strong>PH11</strong></p>
+</li>
+<li>
+<p><strong>Touch Panel I2C SCK / SDA</strong> are at <strong>TWI0 SCK / SDA</strong></p>
+</li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/touch2-code2a.png" alt="TODO" /></p>
 <h1 id="read-product-id"><a href="#read-product-id">2 Read Product ID</a></h1>
 <p>TODO</p>
@@ -436,7 +471,7 @@ touch_panel_read: touch x=15, y=1394</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/touch2-run2a.png" alt="TODO" /></p>
 <p>TODO14</p>
 <p><img src="https://lupyuen.github.io/images/touch2-run3a.png" alt="TODO" /></p>
-<h1 id="nuttx-touch-panel-driver-for-pinephone"><a href="#nuttx-touch-panel-driver-for-pinephone">6 NuttX Touch Panel Driver for PinePhone</a></h1>
+<h1 id="nuttx-touch-panel-driver"><a href="#nuttx-touch-panel-driver">6 NuttX Touch Panel Driver</a></h1>
 <p>TODO</p>
 <p>We moved the code above into the NuttX Touch Panel Driver for PinePhone…</p>
 <ul>
@@ -449,7 +484,9 @@ ret = gt9xx_register(&quot;/dev/input0&quot;, i2c, CTP_I2C_ADDR, &amp;g_pinephon
 <ul>
 <li><a href="https://www.youtube.com/shorts/xE9U5IQPmlg">Watch the Demo on YouTube</a></li>
 </ul>
-<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
+<h1 id="lvgl-calls-our-driver"><a href="#lvgl-calls-our-driver">7 LVGL Calls Our Driver</a></h1>
+<p>TODO</p>
+<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
 <p>Meanwhile please check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
 <ul>
