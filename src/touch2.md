@@ -2,11 +2,27 @@
 
 📝 _14 Jan 2023_
 
-![TODO](https://lupyuen.github.io/images/touch2-title.png)
+![Apache NuttX RTOS reads the PinePhone Touch Panel](https://lupyuen.github.io/images/touch2-title.png)
 
-Suppose we're running [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/) on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)...
+We're porting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System) to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)...
 
-TODO: All about the Capacitive Touch Panel of Pine64 PinePhone... And how we created the PinePhone Touch Panel Driver for Apache NuttX RTOS
+-   [__"NuttX RTOS for PinePhone: What is it?"__](https://lupyuen.github.io/articles/what)
+
+Now we can render [__LVGL Graphical User Interfaces__](https://lupyuen.github.io/articles/fb#lvgl-graphics-library)... But it won't work with __Touch Input__ yet!
+
+Let's talk about the __Capacitive Touch Panel__ inside PinePhone...
+
+-   How it's __connected to PinePhone__
+
+-   How we read __Touch Points__
+
+    (Polling vs Interrupts)
+
+-   How we created the __Touch Panel Driver__ for NuttX
+
+-   And how we call the driver from __LVGL Apps__
+
+We begin with the internals of the Touch Panel...
 
 ![Capacitive Touch Panel in PinePhone Schematic (Pages 9 and 11)](https://lupyuen.github.io/images/touch2-schematic1.jpg)
 
@@ -16,13 +32,25 @@ TODO: All about the Capacitive Touch Panel of Pine64 PinePhone... And how we cre
 
 TODO
 
-Now that we can render LVGL Graphical User Interfaces, let's handle Touch Input!
+PinePhone has a __Goodix GT917S Touch Panel__ that talks on I2C.
 
-Here's everything we know about PinePhone's Touch Panel...
+The datasheet doesn't say much about programming the Touch Panel...
 
--   [__"Touch Panel"__](https://lupyuen.github.io/articles/pio#touch-panel)
+-   [__GT917S Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/GT917S-Datasheet.pdf)
 
-TODO4
+So we'll create the __NuttX Touch Panel Driver__ by replicating the I2C Read / Write Operations from the Android Driver [__gt9xx.c__](https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c).
+
+(Or the simpler driver [__GT911.c__](https://github.com/DiveInEmbedded/GT911-Touch-driver/blob/main/Core/Src/GT911.c))
+
+According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) Pages 9 and 11 (pic above)...
+
+-   __Touch Panel Interrupt__ (CTP-INT) is at __PH4__
+
+    (PH_EINT Interrupt at IRQ 53)
+
+-   __Touch Panel Reset__ (CTP-RST) is at __PH11__
+
+-   __Touch Panel I2C SCK / SDA__ are at __TWI0 SCK / SDA__
 
 ![TODO](https://lupyuen.github.io/images/touch2-code2a.png)
 
@@ -450,7 +478,7 @@ TODO14
 
 ![TODO](https://lupyuen.github.io/images/touch2-run3a.png)
 
-# NuttX Touch Panel Driver for PinePhone
+# NuttX Touch Panel Driver
 
 TODO
 
@@ -468,6 +496,10 @@ ret = gt9xx_register("/dev/input0", i2c, CTP_I2C_ADDR, &g_pinephone_gt9xx);
 And it works with the LVGL Demo App! Now we need to optimise the rendering...
 
 -   [Watch the Demo on YouTube](https://www.youtube.com/shorts/xE9U5IQPmlg)
+
+# LVGL Calls Our Driver
+
+TODO
 
 # What's Next
 
