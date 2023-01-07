@@ -111,7 +111,7 @@ Based on the above settings, we wrote this __Test Code__ that runs in the NuttX 
 ```c
 // Read Product ID from Touch Panel over I2C
 static void touch_panel_read(
-  struct i2c_master_s *i2c  // NuttX I2C Bus (TWI0)
+  struct i2c_master_s *i2c  // NuttX I2C Bus (Port TWI0)
 ) {
   uint32_t freq = 400000;  // I2C Frequency: 400 kHz
   uint16_t addr = 0x5d;    // Default I2C Address for Goodix GT917S
@@ -167,35 +167,42 @@ Yep the I2C Response is correct...
 39 31 37 53
 ```
 
-Which is ASCII for "__`917S`__"! (Goodix GT917S Touch Panel)
+Which is ASCII for "__`917S`__"!
+
+(Goodix GT917S Touch Panel)
 
 _How's the code above called by NuttX Kernel?_
 
-Read on to find out...
+Read on to find out how we poll the Touch Panel...
 
-![TODO](https://lupyuen.github.io/images/touch2-code1a.png)
+![Polling the Touch Panel](https://lupyuen.github.io/images/touch2-code1a.png)
 
-# Poll Touch Panel
+# Poll the Touch Panel
 
-TODO
+_We need to handle interrupts triggered by the Touch Panel right?_
 
-To detect Touch Events, we'll need to handle the Interrupts triggered by Touch Panel.
+To detect Touch Events, we'll need to __handle the interrupts__ triggered by Touch Panel.
 
-Based on our research, PinePhone's Touch Panel Interrupt (CTP-INT) is connected at PH4. 
+Based on our research, PinePhone's __Touch Panel Interrupt__ (CTP-INT) is connected at __PH4__.
 
-Right now we poll PH4 (instead of handling interrupts) because it's easier: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L283-L317)
+But to simplify our first experiment, __let's poll PH4__. (Instead of handling interrupts)
+
+_How do we poll PH4?_
+
+We read PH4 as a __GPIO Input__. When we touch the Touch Panel, PH4 goes from __Low to High__.
+
+This is how we poll PH4: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L283-L317)
 
 ```c
 // Test Touch Panel Interrupt by Polling as GPIO Input.
 // Touch Panel Interrupt (CTP-INT) is at PH4.
-// Configure for GPIO Input
+// We configure it for GPIO Input.
 #define CTP_INT (PIO_INPUT | PIO_PORT_PIOH | PIO_PIN4)
 
-static void touch_panel_read(struct i2c_master_s *i2c);
-
 // Poll for Touch Panel Interrupt (PH4) by reading as GPIO Input
-void touch_panel_initialize(struct i2c_master_s *i2c)
-{
+void touch_panel_initialize(
+  struct i2c_master_s *i2c  // NuttX I2C Bus (Port TWI0)
+) {
 
   // Configure the Touch Panel Interrupt for GPIO Input
   int ret = a64_pio_config(CTP_INT);
@@ -229,6 +236,8 @@ void touch_panel_initialize(struct i2c_master_s *i2c)
   }
 }
 ```
+
+TODO
 
 ![TODO](https://lupyuen.github.io/images/touch2-code4a.png)
 
