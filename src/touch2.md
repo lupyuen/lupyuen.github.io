@@ -8,7 +8,7 @@ We're porting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (
 
 -   [__"NuttX RTOS for PinePhone: What is it?"__](https://lupyuen.github.io/articles/what)
 
-Now we can render [__LVGL Graphical User Interfaces__](https://lupyuen.github.io/articles/fb#lvgl-graphics-library)... But it won't work with __Touch Input__ yet!
+Now we can render [__LVGL Graphical User Interfaces__](https://lupyuen.github.io/articles/fb#lvgl-graphics-library)... But it won't work yet with __Touch Input__!
 
 Let's talk about the __Capacitive Touch Panel__ inside PinePhone...
 
@@ -30,27 +30,47 @@ We begin with the internals of the Touch Panel...
 
 # Goodix GT917S Touch Panel
 
-TODO
-
 PinePhone has a __Goodix GT917S Touch Panel__ that talks on I2C.
 
 According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) Pages 9 and 11 (pic above)...
 
 -   __Touch Panel Interrupt__ (CTP-INT) is at __PH4__
 
-    (PH_EINT Interrupt at IRQ 53)
+    (Touch Panel fires an interrupt at PH4 when it's touched)
 
 -   __Touch Panel Reset__ (CTP-RST) is at __PH11__
 
--   __Touch Panel I2C SCK / SDA__ are at __TWI0 SCK / SDA__
+    (We toggle PH11 to reset the Touch Panel)
+
+-   __Touch Panel I2C__ (SCK / SDA) is at __TWI0__
+
+    (That's the port for Two Wire Interface, compatible with I2C)
+
+_What are PH4 and PH11?_
+
+Just think of them as GPIOs on the Allwinner A64 SoC.
+
+(Allwinner calls them PIOs)
+
+_How do we program the Touch Panel?_
 
 The datasheet doesn't say much about programming the Touch Panel...
 
 -   [__GT917S Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/GT917S-Datasheet.pdf)
 
-So we'll create the __NuttX Touch Panel Driver__ by replicating the I2C Read / Write Operations from the Android Driver [__gt9xx.c__](https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c).
+So we'll create the driver by replicating the __I2C Read / Write Operations__ from the official Android Driver [__gt9xx.c__](https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c).
 
-(Or the simpler driver [__GT911.c__](https://github.com/DiveInEmbedded/GT911-Touch-driver/blob/main/Core/Src/GT911.c))
+(Or the unofficial simpler driver [__GT911.c__](https://github.com/DiveInEmbedded/GT911-Touch-driver/blob/main/Core/Src/GT911.c))
+
+_So PinePhone's Touch Panel is actually undocumented?_
+
+Yeah it's strangely common for Touch Panels to be undocumented.
+
+(Just like PineTime's [__CST816S Touch Panel__](https://lupyuen.github.io/articles/touch#cst816s-touch-panel))
+
+Let's experiment with PinePhone's Touch Panel to understand how it works...
+
+[(I think Touch Panels are poorly documented because of Apple's patent on Multitouch)](https://patents.google.com/patent/US7663607B2/en)
 
 ![TODO](https://lupyuen.github.io/images/touch2-code2a.png)
 
