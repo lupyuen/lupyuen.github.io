@@ -12,7 +12,7 @@ TODO: All about the Capacitive Touch Panel of Pine64 PinePhone... And how we cre
 
 [_Capacitive Touch Panel in PinePhone Schematic (Pages 9 and 11)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
 
-# PinePhone Touch Panel
+# Goodix GT917S Touch Panel
 
 TODO
 
@@ -21,6 +21,14 @@ Now that we can render LVGL Graphical User Interfaces, let's handle Touch Input!
 Here's everything we know about PinePhone's Touch Panel...
 
 -   [__"Touch Panel"__](https://lupyuen.github.io/articles/pio#touch-panel)
+
+TODO4
+
+![TODO](https://lupyuen.github.io/images/touch2-code2a.png)
+
+# Read Product ID
+
+TODO
 
 According to our [__Test Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c4991b1503387d57821d94a549425bcd8f268841/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L316-L355)...
 
@@ -92,6 +100,18 @@ static void touch_panel_read(struct i2c_master_s *i2c)
 }
 ```
 
+TODO5
+
+![TODO](https://lupyuen.github.io/images/touch2-code3a.png)
+
+TODO
+
+![TODO](https://lupyuen.github.io/images/touch2-code1a.png)
+
+# Poll Touch Panel
+
+TODO
+
 To detect Touch Events, we'll need to handle the Interrupts triggered by Touch Panel.
 
 Based on our research, PinePhone's Touch Panel Interrupt (CTP-INT) is connected at PH4. 
@@ -142,6 +162,12 @@ void touch_panel_initialize(struct i2c_master_s *i2c)
   }
 }
 ```
+
+![TODO](https://lupyuen.github.io/images/touch2-code4a.png)
+
+# Read Touch Coordinates
+
+TODO
 
 To read the Touch Coordinates, we do this: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L338-L370)
 
@@ -222,6 +248,8 @@ touch_panel_read: touch x=658, y=1369
 Yep we can read the Touch Coordinates correctly, with polling! (But not so efficient)
 
 Let's handle Interrupts from the Touch Panel...
+
+![TODO](https://lupyuen.github.io/images/touch2-run1a.png)
 
 # Handle Interrupts from Touch Panel
 
@@ -405,6 +433,22 @@ touch_panel_read: touch x=15, y=1394
 [(Source)](https://gist.github.com/lupyuen/91a37a4b54f75f7386374a30821dc1b2)
 
 Let's move this code into the NuttX Touch Panel Driver for PinePhone...
+
+TODO8
+
+![TODO](https://lupyuen.github.io/images/touch2-code5a.png)
+
+TODO9
+
+![TODO](https://lupyuen.github.io/images/touch2-code6a.png)
+
+TODO13
+
+![TODO](https://lupyuen.github.io/images/touch2-run2a.png)
+
+TODO14
+
+![TODO](https://lupyuen.github.io/images/touch2-run3a.png)
 
 # NuttX Touch Panel Driver for PinePhone
 
