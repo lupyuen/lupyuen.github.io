@@ -499,7 +499,7 @@ And it works with the LVGL Demo App! Now we need to optimise the rendering...
 
 # LVGL Calls Our Driver
 
-TODO
+TODO: Optimise
 
 # What's Next
 
