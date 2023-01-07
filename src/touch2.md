@@ -34,14 +34,6 @@ TODO
 
 PinePhone has a __Goodix GT917S Touch Panel__ that talks on I2C.
 
-The datasheet doesn't say much about programming the Touch Panel...
-
--   [__GT917S Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/GT917S-Datasheet.pdf)
-
-So we'll create the __NuttX Touch Panel Driver__ by replicating the I2C Read / Write Operations from the Android Driver [__gt9xx.c__](https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c).
-
-(Or the simpler driver [__GT911.c__](https://github.com/DiveInEmbedded/GT911-Touch-driver/blob/main/Core/Src/GT911.c))
-
 According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) Pages 9 and 11 (pic above)...
 
 -   __Touch Panel Interrupt__ (CTP-INT) is at __PH4__
@@ -51,6 +43,14 @@ According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhon
 -   __Touch Panel Reset__ (CTP-RST) is at __PH11__
 
 -   __Touch Panel I2C SCK / SDA__ are at __TWI0 SCK / SDA__
+
+The datasheet doesn't say much about programming the Touch Panel...
+
+-   [__GT917S Datasheet__](https://files.pine64.org/doc/datasheet/pinephone/GT917S-Datasheet.pdf)
+
+So we'll create the __NuttX Touch Panel Driver__ by replicating the I2C Read / Write Operations from the Android Driver [__gt9xx.c__](https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c).
+
+(Or the simpler driver [__GT911.c__](https://github.com/DiveInEmbedded/GT911-Touch-driver/blob/main/Core/Src/GT911.c))
 
 ![TODO](https://lupyuen.github.io/images/touch2-code2a.png)
 
