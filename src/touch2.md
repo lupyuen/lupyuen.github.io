@@ -80,11 +80,13 @@ Let's experiment with PinePhone's Touch Panel to understand how it works...
 
 # Read Product ID
 
-TODO
+_What's the simplest thing we can do with PinePhone's Touch Panel?_
 
-According to our [__Test Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c4991b1503387d57821d94a549425bcd8f268841/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L316-L355)...
+Let's read the __Product ID__ from the Touch Panel.
 
--   __I2C Address__ is __0x5D__
+We experimented with the Touch Panel (Bare Metal with NuttX) and discovered these __I2C Settings__...
+
+-   __I2C Address__ is __`0x5D`__
 
 -   __I2C Frequency__ is __400 kHz__
 
@@ -94,7 +96,7 @@ According to our [__Test Code__](https://github.com/lupyuen2/wip-pinephone-nuttx
 
     (Send MSB before LSB, so we should swap the bytes)
 
--   Reading I2C Register __0x8140__ (Product ID) will return the bytes...
+-   Reading I2C Register __`0x8140`__ (Product ID) will return the bytes...
 
     ```text
     39 31 37 53
@@ -104,28 +106,30 @@ According to our [__Test Code__](https://github.com/lupyuen2/wip-pinephone-nuttx
 
     (Goodix GT917S Touch Panel)
 
-This is how we read the Product ID from the Touch Panel: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c4991b1503387d57821d94a549425bcd8f268841/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L316-L355)
+Based on the above settings, we wrote this __Test Code__ that runs in the NuttX Kernel: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c4991b1503387d57821d94a549425bcd8f268841/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L316-L355)
 
 ```c
-// Product ID (LSB 4 bytes)
-#define GOODIX_REG_ID 0x8140
+// Read Product ID from Touch Panel over I2C
+static void touch_panel_read(
+  struct i2c_master_s *i2c  // NuttX I2C Bus (TWI0)
+) {
+  uint32_t freq = 400000;  // I2C Frequency: 400 kHz
+  uint16_t addr = 0x5d;    // Default I2C Address for Goodix GT917S
+  uint16_t reg  = 0x8140;  // Register Address: Read Product ID
 
-// Read Touch Panel over I2C
-static void touch_panel_read(struct i2c_master_s *i2c)
-{
-  uint32_t freq = 400000;  // 400 kHz
-  uint16_t addr = 0x5d;  // Default I2C Address for Goodix GT917S
-  uint16_t reg = GOODIX_REG_ID;  // Read Product ID
-  uint8_t regbuf[2] = { reg >> 8, reg & 0xff };  // Flip the bytes
+  // Swap the Register Address, MSB first
+  uint8_t regbuf[2] = {
+    reg >> 8,   // First Byte: MSB
+    reg & 0xff  // Second Byte: LSB
+  };
 
-  // Erase the receive buffer
+  // Erase the Receive Buffer (4 bytes)
   uint8_t buf[4];
-  ssize_t buflen = sizeof(buf);
   memset(buf, 0xff, sizeof(buf));
 
   // Compose the I2C Messages
-  struct i2c_msg_s msgv[2] =
-  {
+  struct i2c_msg_s msgv[2] = {
+    // Send the 16-bit Register Address (MSB first)
     {
       .frequency = freq,
       .addr      = addr,
@@ -133,30 +137,41 @@ static void touch_panel_read(struct i2c_master_s *i2c)
       .buffer    = regbuf,
       .length    = sizeof(regbuf)
     },
+    // Receive the Register Data (4 bytes)
     {
       .frequency = freq,
       .addr      = addr,
       .flags     = I2C_M_READ,
       .buffer    = buf,
-      .length    = buflen
+      .length    = sizeof(buf)
     }
   };
 
   // Execute the I2C Transfer
   int ret = I2C_TRANSFER(i2c, msgv, 2);
-  if (ret < 0) { _err("I2C Error: %d\n", ret); return; }
+  DEBUGASSERT(ret == OK);
 
-  // Dump the receive buffer
+  // Dump the Receive Buffer
   infodumpbuffer("buf", buf, buflen);
   // Shows "39 31 37 53" or "917S"
 }
 ```
 
-TODO5
+This is what we see...
 
-![TODO](https://lupyuen.github.io/images/touch2-code3a.png)
+![Read Product ID from Touch Panel](https://lupyuen.github.io/images/touch2-code3a.png)
 
-TODO
+Yep the I2C Response is correct...
+
+```text
+39 31 37 53
+```
+
+Which is ASCII for "__`917S`__"! (Goodix GT917S Touch Panel)
+
+_How's the code above called by NuttX Kernel?_
+
+Read on to find out...
 
 ![TODO](https://lupyuen.github.io/images/touch2-code1a.png)
 
