@@ -14,11 +14,15 @@ Let's talk about the __Capacitive Touch Panel__ inside PinePhone...
 
 -   How it's __connected to PinePhone__
 
+    (Over I2C)
+
 -   How we read __Touch Points__
 
     (Polling vs Interrupts)
 
 -   How we created the __Touch Panel Driver__ for NuttX
+
+    (Despite the missing docs)
 
 -   And how we call the driver from __LVGL Apps__
 
