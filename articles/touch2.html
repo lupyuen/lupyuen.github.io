@@ -68,10 +68,10 @@
     <h1 class="title">NuttX RTOS for PinePhone: Touch Panel</h1>
     <nav id="TOC"><ul>
 <li><a href="#goodix-gt917s-touch-panel">1 Goodix GT917S Touch Panel</a><ul></ul></li>
-<li><a href="#read-product-id">2 Read Product ID</a><ul></ul></li>
+<li><a href="#read-the-product-id">2 Read the Product ID</a><ul></ul></li>
 <li><a href="#poll-the-touch-panel">3 Poll the Touch Panel</a><ul></ul></li>
 <li><a href="#read-a-touch-point">4 Read a Touch Point</a><ul></ul></li>
-<li><a href="#attach-an-interrupt-handler">5 Attach an Interrupt Handler</a><ul></ul></li>
+<li><a href="#attach-our-interrupt-handler">5 Attach our Interrupt Handler</a><ul></ul></li>
 <li><a href="#handle-interrupts-from-touch-panel">6 Handle Interrupts from Touch Panel</a><ul></ul></li>
 <li><a href="#nuttx-touch-panel-driver">7 NuttX Touch Panel Driver</a><ul></ul></li>
 <li><a href="#lvgl-calls-our-driver">8 LVGL Calls Our Driver</a><ul></ul></li>
@@ -143,7 +143,7 @@
 <p>Let’s experiment with PinePhone’s Touch Panel to understand how it works…</p>
 <p><a href="https://patents.google.com/patent/US7663607B2/en">(I think Touch Panels are poorly documented because of Apple’s patent on Multitouch)</a></p>
 <p><img src="https://lupyuen.github.io/images/touch2-code2a.png" alt="Reading the Product ID from Touch Panel" /></p>
-<h1 id="read-product-id"><a href="#read-product-id">2 Read Product ID</a></h1>
+<h1 id="read-the-product-id"><a href="#read-the-product-id">2 Read the Product ID</a></h1>
 <p><em>What’s the simplest thing we can do with PinePhone’s Touch Panel?</em></p>
 <p>Let’s read the <strong>Product ID</strong> from the Touch Panel.</p>
 <p>We experimented with the Touch Panel (Bare Metal with NuttX) and discovered these <strong>I2C Settings</strong>…</p>
@@ -396,8 +396,8 @@ touch_panel_read: touch x=658, y=1369</code></pre></div>
 <p>Which is quite close to the Lower Right Corner. (Screen size is 720 x 1440)</p>
 <p>Yep we can read the Touch Coordinates correctly, through polling! (But not so efficiently)</p>
 <p>Let’s handle interrupts from the Touch Panel…</p>
-<p><img src="https://lupyuen.github.io/images/touch2-code5a.png" alt="Attaching an Interrupt Handler" /></p>
-<h1 id="attach-an-interrupt-handler"><a href="#attach-an-interrupt-handler">5 Attach an Interrupt Handler</a></h1>
+<p><img src="https://lupyuen.github.io/images/touch2-code5a.png" alt="Attaching our Interrupt Handler" /></p>
+<h1 id="attach-our-interrupt-handler"><a href="#attach-our-interrupt-handler">5 Attach our Interrupt Handler</a></h1>
 <p>TODO</p>
 <p>In the previous section we’ve read the Touch Panel by Polling. Which is easier but inefficient.</p>
 <p>Eventually we’ll use an Interrupt Handler to monitor Touch Panel Interrupts. This is how we monitor PH4 for interrupts: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c3eccc67d879806a015ae592205e641dcffa7d09/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L255-L328">pinephone_bringup.c</a></p>
