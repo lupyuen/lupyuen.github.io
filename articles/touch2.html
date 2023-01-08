@@ -474,6 +474,27 @@ static int touch_panel_interrupt(int irq, void *context, void *arg) {
 <p><img src="https://lupyuen.github.io/images/touch2-code6a.png" alt="Handling Interrupts from Touch Panel" /></p>
 <h1 id="handle-interrupts-from-touch-panel"><a href="#handle-interrupts-from-touch-panel">6 Handle Interrupts from Touch Panel</a></h1>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L550-L574">gt9xx.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Interrupt Handler for Touch Panel
+static int gt9xx_isr_handler(int irq, FAR void *context, FAR void *arg) {
+
+  // Print &quot;.&quot; when Interrupt Handler is triggered
+  up_putc(&#39;.&#39;);
+
+  // Throttle the PIO Interrupt
+  if (priv-&gt;int_pending) { 
+    priv-&gt;board-&gt;irq_enable(priv-&gt;board, false); 
+  }
+
+  // Set the Interrupt Pending Flag
+  irqstate_t flags = enter_critical_section();
+  priv-&gt;int_pending = true;
+  leave_critical_section(flags);
+
+  // Notify the Poll Waiters
+  poll_notify(priv-&gt;fds, CONFIG_INPUT_GT9XX_NPOLLWAITERS, POLLIN);
+  return 0;
+}</code></pre></div>
 <p><em>Is our Interrupt Handler code correct?</em></p>
 <p>Yep our Interrupt Handler code is correct! But through our experiments we discovered one thing…</p>
 <p>To stop the repeated Touch Input Interrupts, we need to set the <strong>Touch Panel Status to 0</strong>! Like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c3eccc67d879806a015ae592205e641dcffa7d09/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L470-L500">pinephone_bringup.c</a></p>
@@ -605,6 +626,7 @@ ret = gt9xx_register(&quot;/dev/input0&quot;, i2c, CTP_I2C_ADDR, &amp;g_pinephon
 <h1 id="lvgl-calls-our-driver"><a href="#lvgl-calls-our-driver">8 LVGL Calls Our Driver</a></h1>
 <p>TODO: Optimise rendering</p>
 <p>TODO: Limitations: Multitouch, swipe, LVGL support</p>
+<p>TODO: Throttle interrupts</p>
 <h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>Meanwhile please check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
