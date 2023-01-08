@@ -411,7 +411,9 @@ Yep we can read the Touch Coordinates correctly, through polling! (But not so ef
 
 Let's handle interrupts from the Touch Panel...
 
-# Handle Interrupts from Touch Panel
+![Attaching an Interrupt Handler](https://lupyuen.github.io/images/touch2-code5a.png)
+
+# Attach an Interrupt Handler
 
 TODO
 
@@ -456,6 +458,11 @@ static int touch_panel_interrupt(int irq, void *context, void *arg) {
 When we run this code, it generates a non-stop stream of "." characters.
 
 Which means that the Touch Input Interrupt is generated continuously. Without touching the screen!
+
+# Handle Interrupts from Touch Panel
+
+TODO
+
 
 _Is our Interrupt Handler code correct?_
 
@@ -593,10 +600,6 @@ touch_panel_read: touch x=15, y=1394
 [(Source)](https://gist.github.com/lupyuen/91a37a4b54f75f7386374a30821dc1b2)
 
 Let's move this code into the NuttX Touch Panel Driver for PinePhone...
-
-TODO8
-
-![TODO](https://lupyuen.github.io/images/touch2-code5a.png)
 
 TODO9
 
