@@ -50,6 +50,8 @@ Nope, only [__LVGL__](https://lupyuen.github.io/articles/fb#lvgl-graphics-librar
 
 And [__Touch Input__](https://lupyuen.github.io/articles/touch2) will be available soon.
 
+[(Watch the Demo on YouTube)](https://www.youtube.com/shorts/xE9U5IQPmlg)
+
 _Will it run Linux apps?_
 
 Sadly nope. But NuttX is based on [__POSIX__](https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance), so some apps might compile for NuttX.
