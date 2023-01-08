@@ -500,9 +500,11 @@ _It's OK to call up_putc in an Interrupt Handler?_
 
 Yep it's perfectly OK, because [__up_putc__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L619-L649) simply writes to the UART Register. (It won't trigger another interrupt)
 
+Let's test our simple Interrupt Handler...
+
 ![Touch Panel triggers our Interrupt Handler Non-Stop](https://lupyuen.github.io/images/touch2-run2a.png)
 
-_What happens when we run this?_
+_What happens when we run our code?_
 
 When we run the code, it generates a __never-ending stream__ of "__`.`__" characters...
 
