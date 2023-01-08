@@ -276,6 +276,10 @@ struct i2c_master_s *i2c =
 touch_panel_initialize(i2c);
 ```
 
+We insert this code at the end of the [__PinePhone Bringup Function__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L57-L175), so that NuttX Kernel will run it at the end of startup.
+
+(Yes it sounds hacky, but it's a simple way to do Kernel Experiments)
+
 Now that we have simulated an Interrupt Handler, let's read a Touch Point!
 
 ![Reading a Touch Point](https://lupyuen.github.io/images/touch2-code4a.png)
@@ -415,37 +419,72 @@ Let's handle interrupts from the Touch Panel...
 
 # Attach our Interrupt Handler
 
-TODO
+_We've done polling with the Touch Panel..._
 
-In the previous section we've read the Touch Panel by Polling. Which is easier but inefficient.
+_How do we handle interrupts from the Touch Panel?_
 
-Eventually we'll use an Interrupt Handler to monitor Touch Panel Interrupts. This is how we monitor PH4 for interrupts: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c3eccc67d879806a015ae592205e641dcffa7d09/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L255-L328)
+In the previous section we've read the Touch Panel by polling... Which is easier but inefficient.
+
+Now we do a proper __Interrupt Handler__ for the Touch Panel. This is how we attach our Interrupt Handler to PH4 in NuttX: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c3eccc67d879806a015ae592205e641dcffa7d09/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L255-L328)
 
 ```c
 // Touch Panel Interrupt (CTP-INT) is at PH4
-#define CTP_INT (PIO_EINT | PIO_PORT_PIOH | PIO_PIN4)
+#define CTP_INT ( \
+  PIO_EINT      | \  /* PIO External Interrupt */
+  PIO_PORT_PIOH | \  /* PIO Port H */
+  PIO_PIN4        \  /* PIO Pin 4 */
+)
 
 // Register the Interrupt Handler for Touch Panel
 void touch_panel_initialize(void) {
 
   // Attach the PIO Interrupt Handler for Port PH
-  if (irq_attach(A64_IRQ_PH_EINT, touch_panel_interrupt, NULL) < 0) {
-    _err("irq_attach failed\n");
-    return ERROR;
-  }
+  int ret = irq_attach(     // Attach a NuttX Interrupt Handler...
+    A64_IRQ_PH_EINT,        // Interrupt Number for Port PH: 53
+    touch_panel_interrupt,  // Interrupt Handler
+    NULL                    // Argument for Interrupt Handler
+  );
+  DEBUGASSERT(ret == OK);
 
-  // Enable the PIO Interrupt for Port PH
+  // Enable the PIO Interrupt for Port PH.
+  // A64_IRQ_PH_EINT is 53.
   up_enable_irq(A64_IRQ_PH_EINT);
 
-  // Configure the Touch Panel Interrupt
-  int ret = a64_pio_config(CTP_INT);
+  // Configure the Touch Panel Interrupt for Pin PH4
+  ret = a64_pio_config(CTP_INT);
   DEBUGASSERT(ret == 0);
 
-  // Enable the Touch Panel Interrupt
+  // Enable the Touch Panel Interrupt for Pin PH4
   ret = a64_pio_irqenable(CTP_INT);
   DEBUGASSERT(ret == 0);
 }
+```
 
+[(__a64_pio_config__ configures PH4 as an Interrupt Pin)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L174-L344)
+
+[(__a64_pio_irqenable__ enables interrupts on Pin PH4)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L420-L440)
+
+_Why call both up_enable_irq and a64_pio_irqenable?_
+
+Allwinner A64 does Two-Tier Interrupts, by Port and Pin...
+
+-   First we enable interrupts for __Port PH__
+
+    (By calling __up_enable_irq__)
+
+-   Then we enable interrupts for __Pin PH4__
+
+    [(By calling __a64_pio_irqenable__)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L420-L440)
+
+Which means that our Interrupt Handler will be shared by __all Pins on Port PH__.
+
+(When we enable them in future)
+
+_What's touch_panel_interrupt?_
+
+__touch_panel_interrupt__ is our Interrupt Handler. Let's do a simple one...
+
+```c
 // Interrupt Handler for Touch Panel
 static int touch_panel_interrupt(int irq, void *context, void *arg) {
 
@@ -455,9 +494,29 @@ static int touch_panel_interrupt(int irq, void *context, void *arg) {
 }
 ```
 
-When we run this code, it generates a non-stop stream of "." characters.
+This Interrupt Handler simply prints "__`.`__" whenever the Touch Panel triggers an interrupt.
 
-Which means that the Touch Input Interrupt is generated continuously. Without touching the screen!
+_It's OK to call up_putc in an Interrupt Handler?_
+
+Yep it's perfectly OK, because [__up_putc__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L619-L649) simply writes to the UART Register. (It won't trigger another interrupt)
+
+![Touch Panel triggers our Interrupt Handler Non-Stop](https://lupyuen.github.io/images/touch2-run2a.png)
+
+_What happens when we run this?_
+
+When we run the code, it generates a __never-ending stream__ of "__`.`__" characters...
+
+__Without us touching__ the screen! (Pic above)
+
+_Is this a bad thing?_
+
+Yes it's terrible! This means that the Touch Panel fires Touch Input Interrupts continuously...
+
+__NuttX will be overwhelmed__ handling Touch Input Interrupts 100% of the time. No time for other tasks!
+
+We'll fix this by __throttling the interrupts__ from the Touch Panel. Here's how...
+
+![Handling Interrupts from Touch Panel](https://lupyuen.github.io/images/touch2-code6a.png)
 
 # Handle Interrupts from Touch Panel
 
@@ -600,14 +659,6 @@ touch_panel_read: touch x=15, y=1394
 [(Source)](https://gist.github.com/lupyuen/91a37a4b54f75f7386374a30821dc1b2)
 
 Let's move this code into the NuttX Touch Panel Driver for PinePhone...
-
-TODO9
-
-![TODO](https://lupyuen.github.io/images/touch2-code6a.png)
-
-TODO13
-
-![TODO](https://lupyuen.github.io/images/touch2-run2a.png)
 
 TODO14
 
