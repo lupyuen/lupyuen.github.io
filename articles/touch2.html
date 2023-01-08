@@ -71,10 +71,11 @@
 <li><a href="#read-product-id">2 Read Product ID</a><ul></ul></li>
 <li><a href="#poll-the-touch-panel">3 Poll the Touch Panel</a><ul></ul></li>
 <li><a href="#read-a-touch-point">4 Read a Touch Point</a><ul></ul></li>
-<li><a href="#handle-interrupts-from-touch-panel">5 Handle Interrupts from Touch Panel</a><ul></ul></li>
-<li><a href="#nuttx-touch-panel-driver">6 NuttX Touch Panel Driver</a><ul></ul></li>
-<li><a href="#lvgl-calls-our-driver">7 LVGL Calls Our Driver</a><ul></ul></li>
-<li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>14 Jan 2023</em></p>
+<li><a href="#attach-an-interrupt-handler">5 Attach an Interrupt Handler</a><ul></ul></li>
+<li><a href="#handle-interrupts-from-touch-panel">6 Handle Interrupts from Touch Panel</a><ul></ul></li>
+<li><a href="#nuttx-touch-panel-driver">7 NuttX Touch Panel Driver</a><ul></ul></li>
+<li><a href="#lvgl-calls-our-driver">8 LVGL Calls Our Driver</a><ul></ul></li>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>14 Jan 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/touch2-title.png" alt="Apache NuttX RTOS reads the PinePhone Touch Panel" /></p>
 <p>We’re porting <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) to <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>…</p>
 <ul>
@@ -395,7 +396,8 @@ touch_panel_read: touch x=658, y=1369</code></pre></div>
 <p>Which is quite close to the Lower Right Corner. (Screen size is 720 x 1440)</p>
 <p>Yep we can read the Touch Coordinates correctly, through polling! (But not so efficiently)</p>
 <p>Let’s handle interrupts from the Touch Panel…</p>
-<h1 id="handle-interrupts-from-touch-panel"><a href="#handle-interrupts-from-touch-panel">5 Handle Interrupts from Touch Panel</a></h1>
+<p><img src="https://lupyuen.github.io/images/touch2-code5a.png" alt="Attaching an Interrupt Handler" /></p>
+<h1 id="attach-an-interrupt-handler"><a href="#attach-an-interrupt-handler">5 Attach an Interrupt Handler</a></h1>
 <p>TODO</p>
 <p>In the previous section we’ve read the Touch Panel by Polling. Which is easier but inefficient.</p>
 <p>Eventually we’ll use an Interrupt Handler to monitor Touch Panel Interrupts. This is how we monitor PH4 for interrupts: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c3eccc67d879806a015ae592205e641dcffa7d09/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L255-L328">pinephone_bringup.c</a></p>
@@ -432,6 +434,8 @@ static int touch_panel_interrupt(int irq, void *context, void *arg) {
 }</code></pre></div>
 <p>When we run this code, it generates a non-stop stream of “.” characters.</p>
 <p>Which means that the Touch Input Interrupt is generated continuously. Without touching the screen!</p>
+<h1 id="handle-interrupts-from-touch-panel"><a href="#handle-interrupts-from-touch-panel">6 Handle Interrupts from Touch Panel</a></h1>
+<p>TODO</p>
 <p><em>Is our Interrupt Handler code correct?</em></p>
 <p>Yep our Interrupt Handler code is correct! But through our experiments we discovered one thing…</p>
 <p>To stop the repeated Touch Input Interrupts, we need to set the <strong>Touch Panel Status to 0</strong>! Like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c3eccc67d879806a015ae592205e641dcffa7d09/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L470-L500">pinephone_bringup.c</a></p>
@@ -545,15 +549,13 @@ buf (0x40a8fd28):
 touch_panel_read: touch x=15, y=1394</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/91a37a4b54f75f7386374a30821dc1b2">(Source)</a></p>
 <p>Let’s move this code into the NuttX Touch Panel Driver for PinePhone…</p>
-<p>TODO8</p>
-<p><img src="https://lupyuen.github.io/images/touch2-code5a.png" alt="TODO" /></p>
 <p>TODO9</p>
 <p><img src="https://lupyuen.github.io/images/touch2-code6a.png" alt="TODO" /></p>
 <p>TODO13</p>
 <p><img src="https://lupyuen.github.io/images/touch2-run2a.png" alt="TODO" /></p>
 <p>TODO14</p>
 <p><img src="https://lupyuen.github.io/images/touch2-run3a.png" alt="TODO" /></p>
-<h1 id="nuttx-touch-panel-driver"><a href="#nuttx-touch-panel-driver">6 NuttX Touch Panel Driver</a></h1>
+<h1 id="nuttx-touch-panel-driver"><a href="#nuttx-touch-panel-driver">7 NuttX Touch Panel Driver</a></h1>
 <p>TODO</p>
 <p>We moved the code above into the NuttX Touch Panel Driver for PinePhone…</p>
 <ul>
@@ -566,10 +568,10 @@ ret = gt9xx_register(&quot;/dev/input0&quot;, i2c, CTP_I2C_ADDR, &amp;g_pinephon
 <ul>
 <li><a href="https://www.youtube.com/shorts/xE9U5IQPmlg">Watch the Demo on YouTube</a></li>
 </ul>
-<h1 id="lvgl-calls-our-driver"><a href="#lvgl-calls-our-driver">7 LVGL Calls Our Driver</a></h1>
+<h1 id="lvgl-calls-our-driver"><a href="#lvgl-calls-our-driver">8 LVGL Calls Our Driver</a></h1>
 <p>TODO: Optimise rendering</p>
 <p>TODO: Limitations: Multitouch, swipe, LVGL support</p>
-<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>Meanwhile please check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
 <ul>
