@@ -2,9 +2,9 @@
 
 📝 _3 Jan 2023_
 
-![Apache NuttX RTOS on PinePhone with LVGL... Sorry no touch input yet!](https://lupyuen.github.io/images/what-title.jpg)
+![Apache NuttX RTOS on PinePhone with LVGL... Touch input coming soon!](https://lupyuen.github.io/images/what-title.jpg)
 
-[_Apache NuttX RTOS on PinePhone with LVGL... Sorry no touch input yet!_](https://lupyuen.github.io/articles/fb#lvgl-graphics-library)
+[_Apache NuttX RTOS on PinePhone with LVGL... Touch input coming soon!_](https://lupyuen.github.io/articles/fb#lvgl-graphics-library)
 
 Over the past 5 months, we ported to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) a different kind of Operating System... [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/)
 
@@ -48,7 +48,7 @@ _Does NuttX support X11? Wayland?_
 
 Nope, only [__LVGL__](https://lupyuen.github.io/articles/fb#lvgl-graphics-library) is supported. (Pic at the top)
 
-And we're still working on the [__Touch Input__](https://lupyuen.github.io/articles/pio#touch-panel).
+And [__Touch Input__](https://lupyuen.github.io/articles/touch2) will be available soon.
 
 _Will it run Linux apps?_
 
