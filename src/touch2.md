@@ -167,7 +167,7 @@ static void touch_panel_read(
 }
 ```
 
-This is what we see...
+This is what we see (with TWI0 Logging Enabled)...
 
 ![Read Product ID from Touch Panel](https://lupyuen.github.io/images/touch2-code3a.png)
 
@@ -314,12 +314,19 @@ Here is our code: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephon
 #define GOODIX_POINT1_X_ADDR   0x8150  // First Touch Point
 
 // Read Touch Panel over I2C
-static void touch_panel_read(struct i2c_master_s *i2c) {
+static void touch_panel_read(
+  struct i2c_master_s *i2c  // NuttX I2C Bus (Port TWI0)
+) {
 
   // Read the Touch Panel Status
   uint8_t status[1];
-  touch_panel_i2c_read(i2c, GOODIX_READ_COORD_ADDR, status, sizeof(status));
-  // Shows "81"
+  touch_panel_i2c_read(      // Read from I2C Touch Panel...
+    i2c,                     // NuttX I2C Bus (Port TWI0)
+    GOODIX_READ_COORD_ADDR,  // I2C Register: 0x814E
+    status,                  // Receive Buffer
+    sizeof(status)           // Buffer Size
+  );
+  // Receives "81"
 
   // Decode the Status Code and the Touched Points
   const uint8_t status_code    = status[0] & 0x80;  // Set to 0x80
@@ -330,8 +337,13 @@ static void touch_panel_read(struct i2c_master_s *i2c) {
 
     // Read the First Touch Coordinates
     uint8_t touch[6];
-    touch_panel_i2c_read(i2c, GOODIX_POINT1_X_ADDR, touch, sizeof(touch));
-    // Shows "92 02 59 05 1b 00"
+    touch_panel_i2c_read(    // Read from I2C Touch Panel...
+      i2c,                   // NuttX I2C Bus (Port TWI0)
+      GOODIX_POINT1_X_ADDR,  // I2C Register: 0x8150
+      touch,                 // Receive Buffer
+      sizeof(touch)          // Buffer Size
+    );
+    // Receives "92 02 59 05 1b 00"
 
     // Decode the Touch Coordinates
     const uint16_t x = touch[0] + (touch[1] << 8);
@@ -345,9 +357,17 @@ static void touch_panel_read(struct i2c_master_s *i2c) {
 }
 ```
 
-TODO
+[(__touch_panel_i2c_read__ reads from the I2C Touch Panel)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L372-L415)
 
-When we touch PinePhone near the Lower Right Corner, we see the Touch Coordinates x=658, y=1369 (which is quite close to the 720 x 1440 screen size)...
+[(__touch_panel_set_status__ sets the I2C Touch Panel Status)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L417-L447)
+
+Let's run the code...
+
+![Reading Touch Points with Polling](https://lupyuen.github.io/images/touch2-run1a.png)
+
+When we tap the screen, we see "__`-+`__" which means that PH4 has shifted from Low to High.
+
+Followed by the reading of the __Touch Panel Status__...
 
 ```text
 -+
@@ -362,6 +382,10 @@ buf (0x40a8fd08):
 
 [(Source)](https://gist.github.com/lupyuen/b1ed009961c4202133879b760cb22833)
 
+Touch Panel Status is __`0x81`__.  Which means the status is OK and there's __One Touch Point__ detected.
+
+Our code reads the __Touch Coordinates__...
+
 ```text
 twi_transfer: TWI0 count: 2
 twi_wait: TWI0 Waiting...
@@ -375,11 +399,17 @@ touch_panel_read: touch x=658, y=1369
 
 [(Source)](https://gist.github.com/lupyuen/b1ed009961c4202133879b760cb22833)
 
-Yep we can read the Touch Coordinates correctly, with polling! (But not so efficient)
+This says that the Touch Point is at...
 
-Let's handle Interrupts from the Touch Panel...
+```text
+x=658, y=1369
+```
 
-![TODO](https://lupyuen.github.io/images/touch2-run1a.png)
+Which is quite close to the Lower Right Corner. (Screen size is 720 x 1440)
+
+Yep we can read the Touch Coordinates correctly, through polling! (But not so efficiently)
+
+Let's handle interrupts from the Touch Panel...
 
 # Handle Interrupts from Touch Panel
 
