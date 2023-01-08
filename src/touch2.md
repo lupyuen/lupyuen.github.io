@@ -522,24 +522,35 @@ We'll fix this by __throttling the interrupts__ from the Touch Panel. Here's how
 
 # Handle Interrupts from Touch Panel
 
-TODO
+_Touch Panel fires too many interrupts..._
 
-[gt9xx.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L550-L574)
+_How do we stop it?_
+
+Let's __disable the Touch Panel Interrupt__ if we're still waiting for it to be processed: [gt9xx.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L550-L574)
 
 ```c
 // Interrupt Handler for Touch Panel, with Throttling and Forwarding
-static int touch_panel_interrupt(int irq, FAR void *context, FAR void *arg) {
+static int gt9xx_isr_handler(int irq, FAR void *context, FAR void *arg) {
 
   // Print "." when Interrupt Handler is triggered
   up_putc('.');
 
-  // Throttle the PIO Interrupt
+  // Get the Touch Panel Device
+  FAR struct gt9xx_dev_s *priv = (FAR struct gt9xx_dev_s *)arg;
+
+  // If the Touch Panel Interrupt has not been processed...
   if (priv->int_pending) { 
+
+    // Disable the Touch Panel Interrupt
     priv->board->irq_enable(priv->board, false); 
   }
 ```
 
-TODO
+[(__irq_enable__ calls __pinephone_gt9xx_irq_enable__ to disable the interrupt)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L560-L584)
+
+Our Interrupt Handler won't actually read the Touch Coordinates. (Because Interrupt Handlers can't make I2C calls)
+
+Instead our Interrupt Handler __notifies the Background Thread__ that there's a Touch Event waiting to be processed...
 
 ```c
   // Set the Interrupt Pending Flag
@@ -548,16 +559,26 @@ TODO
   leave_critical_section(flags);
 
   // Notify the Poll Waiters
-  poll_notify(priv->fds, CONFIG_INPUT_GT9XX_NPOLLWAITERS, POLLIN);
+  poll_notify(  // Notify these File Descriptors...
+    priv->fds,  // File Descriptors to notify
+    1,          // Max 1 File Descriptor supported
+    POLLIN      // Poll Event to be notified
+  );
   return 0;
 }
 ```
 
+The Background Thread calls __`poll()`__, suspends itself and __waits for the notification__ before processing the Touch Event over I2C.
+
+[(Thanks to __gt9xx_poll__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L461-L550)
+
+Let's test our new and improved Interrupt Handler...
+
+![Testing our Interrupt Handler](https://lupyuen.github.io/images/touch2-run3a.png)
+
+# Test our Interrupt Handler
+
 TODO
-
-This notifies the File Descriptors `fds` that are waiting for Touch Input Interrupts to be triggered.
-
-When the File Descriptor is notified, the Background Thread will become unblocked, and can call I2C to read the Touch Input.
 
 Right now we don't have a Background Thread, so we poll and wait for the Touch Input Interrupt to be triggered: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c3eccc67d879806a015ae592205e641dcffa7d09/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L293-L309)
 
@@ -618,10 +639,6 @@ touch_panel_read: touch x=15, y=1394
 [(Source)](https://gist.github.com/lupyuen/91a37a4b54f75f7386374a30821dc1b2)
 
 Let's move this code into the NuttX Touch Panel Driver for PinePhone...
-
-TODO14
-
-![TODO](https://lupyuen.github.io/images/touch2-run3a.png)
 
 # NuttX Touch Panel Driver
 
