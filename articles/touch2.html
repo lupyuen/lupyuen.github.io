@@ -462,8 +462,9 @@ static int touch_panel_interrupt(int irq, void *context, void *arg) {
 <p>This Interrupt Handler simply prints “<strong><code>.</code></strong>” whenever the Touch Panel triggers an interrupt.</p>
 <p><em>It’s OK to call up_putc in an Interrupt Handler?</em></p>
 <p>Yep it’s perfectly OK, because <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L619-L649"><strong>up_putc</strong></a> simply writes to the UART Register. (It won’t trigger another interrupt)</p>
+<p>Let’s test our simple Interrupt Handler…</p>
 <p><img src="https://lupyuen.github.io/images/touch2-run2a.png" alt="Touch Panel triggers our Interrupt Handler Non-Stop" /></p>
-<p><em>What happens when we run this?</em></p>
+<p><em>What happens when we run our code?</em></p>
 <p>When we run the code, it generates a <strong>never-ending stream</strong> of “<strong><code>.</code></strong>” characters…</p>
 <p><strong>Without us touching</strong> the screen! (Pic above)</p>
 <p><em>Is this a bad thing?</em></p>
