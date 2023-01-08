@@ -282,32 +282,50 @@ Now that we have simulated an Interrupt Handler, let's read a Touch Point!
 
 # Read a Touch Point
 
-TODO
+_When the Touch Panel is touched, how do we read the Touch Coordinates?_
 
-To read the Touch Coordinates, we do this: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L338-L370)
+Based on the [__Reference Code__](https://github.com/DiveInEmbedded/GT911-Touch-driver/blob/main/Core/Src/GT911.c), here are the steps to __read a Touch Point__...
+
+1.  Read the __Touch Panel Status__ (1 byte) at I2C Register __`0x814E`__
+
+    __Status Code__ is __Bit 7__ of Touch Panel Status
+
+    __Touched Points__ is __Bits 0 to 3__ of Touch Panel Status
+
+1.  If __Status Code__ is non-zero and __Touched Points__ is 1 or more...
+
+    Read the __Touch Coordinates__ (6 bytes) at I2C Register __`0x8150`__
+
+    __First 2 Bytes__ (LSB First) are the __X Coordinate__ (0 to 720)
+
+    __Next 2 Bytes__ (LSB First) are the __Y Coordinate__ (0 to 1440)
+
+1.  To stop the Touch Interrupt, set the __Touch Panel Status__ to 0...
+
+    Write 0 to I2C Register __`0x814E`__
+
+(This won't support Multitouch, more about this later)
+
+Here is our code: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L338-L370)
 
 ```c
-#define GOODIX_REG_ID 0x8140
-#define GOODIX_READ_COORD_ADDR 0x814E
-#define GOODIX_POINT1_X_ADDR 0x8150
+// I2C Registers for Touch Panel
+#define GOODIX_READ_COORD_ADDR 0x814E  // Touch Panel Status
+#define GOODIX_POINT1_X_ADDR   0x8150  // First Touch Point
 
 // Read Touch Panel over I2C
-static void touch_panel_read(struct i2c_master_s *i2c)
-{
-  // Read the Product ID
-  uint8_t id[4];
-  touch_panel_i2c_read(i2c, GOODIX_REG_ID, id, sizeof(id));
-  // Shows "39 31 37 53" or "917S"
+static void touch_panel_read(struct i2c_master_s *i2c) {
 
   // Read the Touch Panel Status
   uint8_t status[1];
   touch_panel_i2c_read(i2c, GOODIX_READ_COORD_ADDR, status, sizeof(status));
   // Shows "81"
 
+  // Decode the Status Code and the Touched Points
   const uint8_t status_code    = status[0] & 0x80;  // Set to 0x80
   const uint8_t touched_points = status[0] & 0x0f;  // Set to 0x01
 
-  if (status_code != 0 &&  // If Touch Panel Status is OK and...
+  if (status_code != 0 &&     // If Status Code is OK and...
       touched_points >= 1) {  // Touched Points is 1 or more
 
     // Read the First Touch Coordinates
@@ -327,6 +345,8 @@ static void touch_panel_read(struct i2c_master_s *i2c)
 }
 ```
 
+TODO
+
 When we touch PinePhone near the Lower Right Corner, we see the Touch Coordinates x=658, y=1369 (which is quite close to the 720 x 1440 screen size)...
 
 ```text
@@ -338,6 +358,11 @@ twi_put_addr: TWI address 7bits+r/w = 0xbb
 twi_wait: TWI0 Awakened with result: 0
 buf (0x40a8fd08):
 0000  81                                               .               
+```
+
+[(Source)](https://gist.github.com/lupyuen/b1ed009961c4202133879b760cb22833)
+
+```text
 twi_transfer: TWI0 count: 2
 twi_wait: TWI0 Waiting...
 twi_put_addr: TWI address 7bits+r/w = 0xba
@@ -576,7 +601,9 @@ And it works with the LVGL Demo App! Now we need to optimise the rendering...
 
 # LVGL Calls Our Driver
 
-TODO: Optimise
+TODO: Optimise rendering
+
+TODO: Limitations: Multitouch, swipe, LVGL support
 
 # What's Next
 
