@@ -524,6 +524,30 @@ We'll fix this by __throttling the interrupts__ from the Touch Panel. Here's how
 
 TODO
 
+[gt9xx.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L550-L574)
+
+```c
+// Interrupt Handler for Touch Panel
+static int gt9xx_isr_handler(int irq, FAR void *context, FAR void *arg) {
+
+  // Print "." when Interrupt Handler is triggered
+  up_putc('.');
+
+  // Throttle the PIO Interrupt
+  if (priv->int_pending) { 
+    priv->board->irq_enable(priv->board, false); 
+  }
+
+  // Set the Interrupt Pending Flag
+  irqstate_t flags = enter_critical_section();
+  priv->int_pending = true;
+  leave_critical_section(flags);
+
+  // Notify the Poll Waiters
+  poll_notify(priv->fds, CONFIG_INPUT_GT9XX_NPOLLWAITERS, POLLIN);
+  return 0;
+}
+```
 
 _Is our Interrupt Handler code correct?_
 
@@ -690,6 +714,8 @@ And it works with the LVGL Demo App! Now we need to optimise the rendering...
 TODO: Optimise rendering
 
 TODO: Limitations: Multitouch, swipe, LVGL support
+
+TODO: Throttle interrupts
 
 # What's Next
 
