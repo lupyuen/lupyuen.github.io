@@ -380,7 +380,6 @@ twi_wait: TWI0 Waiting...
 twi_put_addr: TWI address 7bits+r/w = 0xba
 twi_put_addr: TWI address 7bits+r/w = 0xbb
 twi_wait: TWI0 Awakened with result: 0
-buf (0x40a8fd08):
 0000  81                                               .               
 ```
 
@@ -396,7 +395,6 @@ twi_wait: TWI0 Waiting...
 twi_put_addr: TWI address 7bits+r/w = 0xba
 twi_put_addr: TWI address 7bits+r/w = 0xbb
 twi_wait: TWI0 Awakened with result: 0
-buf (0x40a8fd20):
 0000  92 02 59 05 1b 00                                ..Y...          
 touch_panel_read: touch x=658, y=1369
 ```
@@ -546,6 +544,8 @@ static int gt9xx_isr_handler(int irq, FAR void *context, FAR void *arg) {
   }
 ```
 
+[(__gt9xx_dev_s__ is the Touch Panel Device)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L63-L82)
+
 [(__irq_enable__ calls __pinephone_gt9xx_irq_enable__ to disable the interrupt)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L560-L584)
 
 Our Interrupt Handler won't actually read the Touch Coordinates. (Because Interrupt Handlers can't make I2C calls)
@@ -578,69 +578,87 @@ Let's test our new and improved Interrupt Handler...
 
 # Test our Interrupt Handler
 
-TODO
+_How do we test our Interrupt Handler?_
 
-Right now we don't have a Background Thread, so we poll and wait for the Touch Input Interrupt to be triggered: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c3eccc67d879806a015ae592205e641dcffa7d09/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L293-L309)
+We could start a Background Thread that will be notified when the screen is touched...
+
+Or we can run a simple loop that checks whether the __Interrupt Pending Flag is set__ by our Interrupt Handler.
+
+Let's test the simple way: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c3eccc67d879806a015ae592205e641dcffa7d09/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L293-L309)
 
 ```c
-  // Poll for Touch Panel Interrupt
-  // TODO: Move this
-  for (int i = 0; i < 6000; i++) {  // Poll for 60 seconds
+// Poll for Touch Panel Interrupt
+for (int i = 0; i < 6000; i++) {  // Poll for 60 seconds
 
-    // If Touch Panel Interrupt has been triggered...
-    if (priv->int_pending) {
+  // If Touch Panel Interrupt has been triggered...
+  if (priv->int_pending) {
 
-      // Read the Touch Panel over I2C
-      touch_panel_read(i2c_dev);
+    // Read the Touch Panel over I2C
+    touch_panel_read(i2c_dev);
 
-      // Reset the Interrupt Pending Flag
-      priv->int_pending = false;
-    }
-
-    // Wait a while
-    up_mdelay(10);  // 10 milliseconds
+    // Reset the Interrupt Pending Flag
+    priv->int_pending = false;
   }
+
+  // Wait a while
+  up_mdelay(10);  // 10 milliseconds
+}
 ```
 
-And it works!
+Note that we call [__touch_panel_read__](https://lupyuen.github.io/articles/touch2#read-a-touch-point) to read the Touch Coordinates. (After the Touch Interrupt has been triggered)
+
+And it works! (Pic above)
 
 ```text
-- Ready to Boot CPU
-- Boot from EL2
-- Boot from EL1
-- Boot to C runtime for OS Initialize
-a64_pio_config: cfgaddr=0x1c208fc, intaddr=0x1c20a40, value=0x0, shift=16
-touch_panel_initialize: v=0x10, m=0x10, a=0x1c20a50      
-buf (0x40a8fd20):
-0000  39 31 37 53                                      917S            
-buf (0x40a8fd10):
 0000  81                                               .               
-buf (0x40a8fd28):
 0000  19 01 e6 02 2a 00                                ....*.          
 touch_panel_read: touch x=281, y=742
-...     
-buf (0x40a8fd20):
-0000  39 31 37 53                                      917S            
-buf (0x40a8fd10):
+
 0000  81                                               .               
-buf (0x40a8fd28):
 0000  81 02 33 00 25 00                                ..3.%.          
 touch_panel_read: touch x=641, y=51
-...
-buf (0x40a8fd20):
-0000  39 31 37 53                                      917S            
-buf (0x40a8fd10):
+
 0000  81                                               .               
-buf (0x40a8fd28):
 0000  0f 00 72 05 14 00                                ..r...          
 touch_panel_read: touch x=15, y=1394
 ```
 
 [(Source)](https://gist.github.com/lupyuen/91a37a4b54f75f7386374a30821dc1b2)
 
-Let's move this code into the NuttX Touch Panel Driver for PinePhone...
+The log shows that we have read the Touch Panel Status __`0x81`__, followed by the Touch Coordinates. Yep we have tested our Interrupt Handler successfully!
+
+Now we move this code into the NuttX Touch Panel Driver for PinePhone...
 
 # NuttX Touch Panel Driver
+
+_What's inside our NuttX Touch Panel Driver for PinePhone?_
+
+Our NuttX Driver is accessible at __/dev/input0__ and exposes the following __File Operations__: [gt9xx.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L97-L113)
+
+```c
+// File Operations supported by the Touch Panel
+static const struct file_operations g_gt9xx_fileops = {
+  gt9xx_open,   // Open the Touch Panel
+  gt9xx_close,  // Close the Touch Panel
+  gt9xx_read,   // Read the Touch Coordinates (Doesn't wait for interrupt)
+  gt9xx_poll    // Poll for Touch Coordinates (Waits for interrupt)
+```
+
+Let's talk about the Touch Panel operations...
+
+## Open the Touch Panel
+
+TODO
+
+## Close the Touch Panel
+
+TODO
+
+## Read the Touch Coordinates
+
+TODO
+
+## Poll for Touch Coordinates
 
 TODO
 
