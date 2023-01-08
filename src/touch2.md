@@ -56,6 +56,14 @@ Just think of them as GPIOs on the Allwinner A64 SoC.
 
 (Allwinner calls them PIOs)
 
+_Does it need special power?_
+
+Please remember to __power up LDO (3.3V)__ through the Power Management Integrated Circuit...
+
+-   [__"Power On LCD Panel"__](https://lupyuen.github.io/articles/lcd#power-on-lcd-panel)
+
+PinePhone's Touch Panel doesn't seem to be the Power-Saving type like [__PineTime's CST816S__](https://lupyuen.github.io/articles/touch#cst816s-touch-panel).
+
 _How do we program the Touch Panel?_
 
 The datasheet doesn't say much about programming the Touch Panel...
@@ -76,7 +84,7 @@ Let's experiment with PinePhone's Touch Panel to understand how it works...
 
 [(I think Touch Panels are poorly documented because of Apple's patent on Multitouch)](https://patents.google.com/patent/US7663607B2/en)
 
-![TODO](https://lupyuen.github.io/images/touch2-code2a.png)
+![Reading the Product ID from Touch Panel](https://lupyuen.github.io/images/touch2-code2a.png)
 
 # Read Product ID
 
