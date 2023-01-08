@@ -88,7 +88,7 @@ Let's experiment with PinePhone's Touch Panel to understand how it works...
 
 ![Reading the Product ID from Touch Panel](https://lupyuen.github.io/images/touch2-code2a.png)
 
-# Read Product ID
+# Read the Product ID
 
 _What's the simplest thing we can do with PinePhone's Touch Panel?_
 
@@ -411,9 +411,9 @@ Yep we can read the Touch Coordinates correctly, through polling! (But not so ef
 
 Let's handle interrupts from the Touch Panel...
 
-![Attaching an Interrupt Handler](https://lupyuen.github.io/images/touch2-code5a.png)
+![Attaching our Interrupt Handler](https://lupyuen.github.io/images/touch2-code5a.png)
 
-# Attach an Interrupt Handler
+# Attach our Interrupt Handler
 
 TODO
 
