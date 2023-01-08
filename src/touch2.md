@@ -26,6 +26,8 @@ Let's talk about the __Capacitive Touch Panel__ inside PinePhone...
 
 -   And how we call the driver from __LVGL Apps__
 
+    [(Watch the Demo on YouTube)](https://www.youtube.com/shorts/xE9U5IQPmlg)
+
 We begin with the internals of the Touch Panel...
 
 ![Capacitive Touch Panel in PinePhone Schematic (Pages 9 and 11)](https://lupyuen.github.io/images/touch2-schematic1.jpg)
@@ -226,12 +228,12 @@ void touch_panel_initialize(
     // If value has changed...
     if (val != prev_val) {
 
-      // Print the value
-      if (val) { up_putc('+'); }
-      else     { up_putc('-'); }
+      // Print the transition
+      if (val) { up_putc('+'); }  // PH4 goes Low to High
+      else     { up_putc('-'); }  // PH4 goes High to Low
       prev_val = val;
 
-      // If we have just transitioned from Low to High...
+      // If PH4 has just transitioned from Low to High...
       if (val) {
 
         // Read the Touch Panel over I2C
@@ -245,11 +247,40 @@ void touch_panel_initialize(
 }
 ```
 
-TODO
+[(__a64_pio_config__ configures PH4 as an Input Pin)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L174-L344)
 
-![TODO](https://lupyuen.github.io/images/touch2-code4a.png)
+[(__a64_pio_read__ reads PH4 as an Input Pin)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L390-L420)
 
-# Read Touch Coordinates
+The loop above watches for PH4 shifting from __Low to High__...
+
+-   When PH4 shifts from __Low to High__, we print "__`+`__"
+
+-   When PH4 shifts from __High to Low__, we print "__`-`__"
+
+-   After shifting from __Low to High__, we call [__touch_panel_read__](https://lupyuen.github.io/articles/touch2#read-product-id) to read the Touch Panel
+
+    [(Which we've seen earlier)](https://lupyuen.github.io/articles/touch2#read-product-id)
+
+Thus our simple loop simulates an __Interrupt Handler__!
+
+_How do we open the I2C Port?_
+
+This is how we __open the I2C Port__ on NuttX, and pass it to the above loop: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L158-L170)
+
+```c
+// Open Allwinner A64 Port TWI0 for I2C
+struct i2c_master_s *i2c =
+  a64_i2cbus_initialize(0);  // 0 for TWI0
+
+// Pass the I2C Port to the above loop
+touch_panel_initialize(i2c);
+```
+
+Now that we have simulated an Interrupt Handler, let's read a Touch Point!
+
+![Reading a Touch Point](https://lupyuen.github.io/images/touch2-code4a.png)
+
+# Read a Touch Point
 
 TODO
 
@@ -299,17 +330,7 @@ static void touch_panel_read(struct i2c_master_s *i2c)
 When we touch PinePhone near the Lower Right Corner, we see the Touch Coordinates x=658, y=1369 (which is quite close to the 720 x 1440 screen size)...
 
 ```text
-twi_transfer: TWI0 count: 1
-twi_wait: TWI0 Waiting...
-twi_put_addr: TWI address 7bits+r/w = 0xba
-twi_wait: TWI0 Awakened with result: 0
--+twi_transfer: TWI0 count: 2
-twi_wait: TWI0 Waiting...
-twi_put_addr: TWI address 7bits+r/w = 0xba
-twi_put_addr: TWI address 7bits+r/w = 0xbb
-twi_wait: TWI0 Awakened with result: 0
-buf (0x40a8fd18):
-0000  39 31 37 53                                      917S            
+-+
 twi_transfer: TWI0 count: 2
 twi_wait: TWI0 Waiting...
 twi_put_addr: TWI address 7bits+r/w = 0xba
