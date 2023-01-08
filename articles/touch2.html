@@ -122,6 +122,12 @@
 <p><em>What are PH4 and PH11?</em></p>
 <p>Just think of them as GPIOs on the Allwinner A64 SoC.</p>
 <p>(Allwinner calls them PIOs)</p>
+<p><em>Does it need special power?</em></p>
+<p>Please remember to <strong>power up LDO (3.3V)</strong> through the Power Management Integrated Circuit…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lcd#power-on-lcd-panel"><strong>“Power On LCD Panel”</strong></a></li>
+</ul>
+<p>PinePhone’s Touch Panel doesn’t seem to be the Power-Saving type like <a href="https://lupyuen.github.io/articles/touch#cst816s-touch-panel"><strong>PineTime’s CST816S</strong></a>.</p>
 <p><em>How do we program the Touch Panel?</em></p>
 <p>The datasheet doesn’t say much about programming the Touch Panel…</p>
 <ul>
@@ -134,7 +140,7 @@
 <p>(Just like PineTime’s <a href="https://lupyuen.github.io/articles/touch#cst816s-touch-panel"><strong>CST816S Touch Panel</strong></a>)</p>
 <p>Let’s experiment with PinePhone’s Touch Panel to understand how it works…</p>
 <p><a href="https://patents.google.com/patent/US7663607B2/en">(I think Touch Panels are poorly documented because of Apple’s patent on Multitouch)</a></p>
-<p><img src="https://lupyuen.github.io/images/touch2-code2a.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/touch2-code2a.png" alt="Reading the Product ID from Touch Panel" /></p>
 <h1 id="read-product-id"><a href="#read-product-id">2 Read Product ID</a></h1>
 <p><em>What’s the simplest thing we can do with PinePhone’s Touch Panel?</em></p>
 <p>Let’s read the <strong>Product ID</strong> from the Touch Panel.</p>
