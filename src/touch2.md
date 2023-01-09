@@ -633,6 +633,8 @@ Now we move this code into the NuttX Touch Panel Driver for PinePhone...
 
 _What's inside our NuttX Touch Panel Driver for PinePhone?_
 
+TODO: Code above
+
 Our NuttX Driver is accessible at __/dev/input0__ and exposes the following __File Operations__: [gt9xx.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L97-L113)
 
 ```c
@@ -643,6 +645,8 @@ static const struct file_operations g_gt9xx_fileops = {
   gt9xx_read,   // Read the Touch Coordinates (Doesn't wait for interrupt)
   gt9xx_poll    // Poll for Touch Coordinates (Waits for interrupt)
 ```
+
+TODO: Looks familiar
 
 Let's talk about the Touch Panel operations...
 
