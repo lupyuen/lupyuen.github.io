@@ -216,7 +216,7 @@ void touch_panel_initialize(
 
   // Configure the Touch Panel Interrupt for GPIO Input
   int ret = a64_pio_config(CTP_INT);
-  DEBUGASSERT(ret == 0);
+  DEBUGASSERT(ret == OK);
 
   // Poll the Touch Panel Interrupt as GPIO Input
   bool prev_val = false;
@@ -450,11 +450,11 @@ void touch_panel_initialize(void) {
 
   // Configure the Touch Panel Interrupt for Pin PH4
   ret = a64_pio_config(CTP_INT);
-  DEBUGASSERT(ret == 0);
+  DEBUGASSERT(ret == OK);
 
   // Enable the Touch Panel Interrupt for Pin PH4
   ret = a64_pio_irqenable(CTP_INT);
-  DEBUGASSERT(ret == 0);
+  DEBUGASSERT(ret == OK);
 }
 ```
 
@@ -648,7 +648,29 @@ static const struct file_operations g_gt9xx_fileops = {
   gt9xx_poll    // Setup Poll for Touch Sample
 ```
 
-_The code looks familiar?_
+_How do we start the Touch Panel Driver?_
+
+This is how we __start the Touch Panel Driver__ when NuttX boots: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L197-L204)
+
+```c
+// Default I2C Address for Goodix GT917S
+#define CTP_I2C_ADDR 0x5d
+
+// Register the Touch Panel Driver
+ret = gt9xx_register(
+  "/dev/input0",      // Device Path
+  i2c,                // I2C Bus
+  CTP_I2C_ADDR,       // I2C Address of Touch Panel
+  &g_pinephone_gt9xx  // Callbacks for PinePhone Operations
+);
+DEBUGASSERT(ret == OK);
+```
+
+[(__gt9xx_register__ comes from our Touch Panel Driver)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L878-L947)
+
+[(__g_pinephone_gt9xx__ defines the Interrupt Callbacks)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L64-L74)
+
+_The driver code looks familiar?_
 
 We borrowed the logic from the NuttX Driver for [__Cypress MBR3108__](https://github.com/apache/nuttx/blob/master/drivers/input/cypress_mbr3108.c).
 
@@ -672,18 +694,11 @@ TODO
 
 TODO
 
-This is how we start the driver when NuttX boots: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L197-L204)
+# LVGL Calls Our Driver
 
-```c
-#define CTP_I2C_ADDR 0x5d  // Default I2C Address for Goodix GT917S
-ret = gt9xx_register("/dev/input0", i2c, CTP_I2C_ADDR, &g_pinephone_gt9xx);
-```
-
-And it works with the LVGL Demo App! Now we need to optimise the rendering...
+TODO: It works with the LVGL Demo App! Now we need to optimise the rendering...
 
 -   [Watch the Demo on YouTube](https://www.youtube.com/shorts/xE9U5IQPmlg)
-
-# LVGL Calls Our Driver
 
 TODO: Optimise rendering
 
