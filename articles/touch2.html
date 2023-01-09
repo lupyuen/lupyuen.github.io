@@ -554,6 +554,7 @@ touch_panel_read: touch x=15, y=1394</code></pre></div>
 <p>Now we move this code into the NuttX Touch Panel Driver for PinePhone…</p>
 <h1 id="nuttx-touch-panel-driver"><a href="#nuttx-touch-panel-driver">8 NuttX Touch Panel Driver</a></h1>
 <p><em>What’s inside our NuttX Touch Panel Driver for PinePhone?</em></p>
+<p>TODO: Code above</p>
 <p>Our NuttX Driver is accessible at <strong>/dev/input0</strong> and exposes the following <strong>File Operations</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L97-L113">gt9xx.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// File Operations supported by the Touch Panel
 static const struct file_operations g_gt9xx_fileops = {
@@ -561,6 +562,7 @@ static const struct file_operations g_gt9xx_fileops = {
   gt9xx_close,  // Close the Touch Panel
   gt9xx_read,   // Read the Touch Coordinates (Doesn&#39;t wait for interrupt)
   gt9xx_poll    // Poll for Touch Coordinates (Waits for interrupt)</code></pre></div>
+<p>TODO: Looks familiar</p>
 <p>Let’s talk about the Touch Panel operations…</p>
 <h2 id="open-the-touch-panel"><a href="#open-the-touch-panel">8.1 Open the Touch Panel</a></h2>
 <p>TODO</p>
