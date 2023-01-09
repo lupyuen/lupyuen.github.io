@@ -314,8 +314,8 @@ Here is our code: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephon
 
 ```c
 // I2C Registers for Touch Panel
-#define GOODIX_READ_COORD_ADDR 0x814E  // Touch Panel Status
-#define GOODIX_POINT1_X_ADDR   0x8150  // First Touch Point
+#define GTP_READ_COORD_ADDR 0x814E  // Touch Panel Status
+#define GTP_POINT1          0x8150  // First Touch Point
 
 // Read Touch Panel over I2C
 static void touch_panel_read(
@@ -324,11 +324,11 @@ static void touch_panel_read(
 
   // Read the Touch Panel Status
   uint8_t status[1];
-  touch_panel_i2c_read(      // Read from I2C Touch Panel...
-    i2c,                     // NuttX I2C Bus (Port TWI0)
-    GOODIX_READ_COORD_ADDR,  // I2C Register: 0x814E
-    status,                  // Receive Buffer
-    sizeof(status)           // Buffer Size
+  touch_panel_i2c_read(   // Read from I2C Touch Panel...
+    i2c,                  // NuttX I2C Bus (Port TWI0)
+    GTP_READ_COORD_ADDR,  // I2C Register: 0x814E
+    status,               // Receive Buffer
+    sizeof(status)        // Buffer Size
   );
   // Receives "81"
 
@@ -341,11 +341,11 @@ static void touch_panel_read(
 
     // Read the First Touch Coordinates
     uint8_t touch[6];
-    touch_panel_i2c_read(    // Read from I2C Touch Panel...
-      i2c,                   // NuttX I2C Bus (Port TWI0)
-      GOODIX_POINT1_X_ADDR,  // I2C Register: 0x8150
-      touch,                 // Receive Buffer
-      sizeof(touch)          // Buffer Size
+    touch_panel_i2c_read(  // Read from I2C Touch Panel...
+      i2c,                 // NuttX I2C Bus (Port TWI0)
+      GTP_POINT1,          // I2C Register: 0x8150
+      touch,               // Receive Buffer
+      sizeof(touch)        // Buffer Size
     );
     // Receives "92 02 59 05 1b 00"
 
@@ -524,7 +524,7 @@ _Touch Panel fires too many interrupts..._
 
 _How do we stop it?_
 
-Let's __disable the Touch Panel Interrupt__ if we're still waiting for it to be processed: [gt9xx.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L550-L574)
+In our Interrupt Handler, let's __disable the Touch Panel Interrupt__ if we're still waiting for it to be processed: [gt9xx.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L826-L874)
 
 ```c
 // Interrupt Handler for Touch Panel, with Throttling and Forwarding
@@ -544,7 +544,7 @@ static int gt9xx_isr_handler(int irq, FAR void *context, FAR void *arg) {
   }
 ```
 
-[(__gt9xx_dev_s__ is the Touch Panel Device)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L63-L82)
+[(__gt9xx_dev_s__ is the Touch Panel Device)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L72-L99)
 
 [(__irq_enable__ calls __pinephone_gt9xx_irq_enable__ to disable the interrupt)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L560-L584)
 
@@ -570,7 +570,7 @@ Instead our Interrupt Handler __notifies the Background Thread__ that there's a 
 
 The Background Thread calls __`poll()`__, suspends itself and __waits for the notification__ before processing the Touch Event over I2C.
 
-[(Thanks to __gt9xx_poll__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L461-L550)
+[(Thanks to __gt9xx_poll__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L714-L826)
 
 Let's test our new and improved Interrupt Handler...
 
@@ -633,20 +633,26 @@ Now we move this code into the NuttX Touch Panel Driver for PinePhone...
 
 _What's inside our NuttX Touch Panel Driver for PinePhone?_
 
-TODO: Code above
+We took the code from this article and wrapped it inside our __NuttX Touch Panel Driver__ for PinePhone...
 
-Our NuttX Driver is accessible at __/dev/input0__ and exposes the following __File Operations__: [gt9xx.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L97-L113)
+-   [__nuttx/drivers/input/gt9xx.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c)
+
+Our NuttX Driver is accessible at __/dev/input0__ and exposes the following __File Operations__: [gt9xx.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L114-L132)
 
 ```c
 // File Operations supported by the Touch Panel
 static const struct file_operations g_gt9xx_fileops = {
   gt9xx_open,   // Open the Touch Panel
   gt9xx_close,  // Close the Touch Panel
-  gt9xx_read,   // Read the Touch Coordinates (Doesn't wait for interrupt)
-  gt9xx_poll    // Poll for Touch Coordinates (Waits for interrupt)
+  gt9xx_read,   // Read a Touch Sample
+  gt9xx_poll    // Setup Poll for Touch Sample
 ```
 
-TODO: Looks familiar
+_The code looks familiar?_
+
+We borrowed the logic from the NuttX Driver for [__Cypress MBR3108__](https://github.com/apache/nuttx/blob/master/drivers/input/cypress_mbr3108.c).
+
+(Which is also an I2C Input Device)
 
 Let's talk about the Touch Panel operations...
 
@@ -658,17 +664,13 @@ TODO
 
 TODO
 
-## Read the Touch Coordinates
+## Read a Touch Sample
 
 TODO
 
-## Poll for Touch Coordinates
+## Setup Poll for Touch Sample
 
 TODO
-
-We moved the code above into the NuttX Touch Panel Driver for PinePhone...
-
--   [drivers/input/gt9xx.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c)
 
 This is how we start the driver when NuttX boots: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L197-L204)
 
