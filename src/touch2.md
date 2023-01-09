@@ -706,6 +706,8 @@ TODO: Limitations: Multitouch, swipe, LVGL support
 
 TODO: Have we throttled the touch panel interrupts
 
+TODO: Note to future self: `poll()` won't work correctly for reading Touch Points! Need to decipher the Android Driver
+
 # What's Next
 
 TODO
