@@ -247,7 +247,7 @@ void touch_panel_initialize(
 
   // Configure the Touch Panel Interrupt for GPIO Input
   int ret = a64_pio_config(CTP_INT);
-  DEBUGASSERT(ret == 0);
+  DEBUGASSERT(ret == OK);
 
   // Poll the Touch Panel Interrupt as GPIO Input
   bool prev_val = false;
@@ -431,11 +431,11 @@ void touch_panel_initialize(void) {
 
   // Configure the Touch Panel Interrupt for Pin PH4
   ret = a64_pio_config(CTP_INT);
-  DEBUGASSERT(ret == 0);
+  DEBUGASSERT(ret == OK);
 
   // Enable the Touch Panel Interrupt for Pin PH4
   ret = a64_pio_irqenable(CTP_INT);
-  DEBUGASSERT(ret == 0);
+  DEBUGASSERT(ret == OK);
 }</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L174-L344">(<strong>a64_pio_config</strong> configures PH4 as an Interrupt Pin)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L420-L440">(<strong>a64_pio_irqenable</strong> enables interrupts on Pin PH4)</a></p>
@@ -565,7 +565,22 @@ static const struct file_operations g_gt9xx_fileops = {
   gt9xx_close,  // Close the Touch Panel
   gt9xx_read,   // Read a Touch Sample
   gt9xx_poll    // Setup Poll for Touch Sample</code></pre></div>
-<p><em>The code looks familiar?</em></p>
+<p><em>How do we start the Touch Panel Driver?</em></p>
+<p>This is how we <strong>start the Touch Panel Driver</strong> when NuttX boots: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L197-L204">pinephone_bringup.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Default I2C Address for Goodix GT917S
+#define CTP_I2C_ADDR 0x5d
+
+// Register the Touch Panel Driver
+ret = gt9xx_register(
+  &quot;/dev/input0&quot;,      // Device Path
+  i2c,                // I2C Bus
+  CTP_I2C_ADDR,       // I2C Address of Touch Panel
+  &amp;g_pinephone_gt9xx  // Callbacks for PinePhone Operations
+);
+DEBUGASSERT(ret == OK);</code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L878-L947">(<strong>gt9xx_register</strong> comes from our Touch Panel Driver)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L64-L74">(<strong>g_pinephone_gt9xx</strong> defines the Interrupt Callbacks)</a></p>
+<p><em>The driver code looks familiar?</em></p>
 <p>We borrowed the logic from the NuttX Driver for <a href="https://github.com/apache/nuttx/blob/master/drivers/input/cypress_mbr3108.c"><strong>Cypress MBR3108</strong></a>.</p>
 <p>(Which is also an I2C Input Device)</p>
 <p>Let’s talk about the Touch Panel operations…</p>
@@ -577,14 +592,11 @@ static const struct file_operations g_gt9xx_fileops = {
 <p>TODO</p>
 <h2 id="setup-poll-for-touch-sample"><a href="#setup-poll-for-touch-sample">8.4 Setup Poll for Touch Sample</a></h2>
 <p>TODO</p>
-<p>This is how we start the driver when NuttX boots: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L197-L204">pinephone_bringup.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define CTP_I2C_ADDR 0x5d  // Default I2C Address for Goodix GT917S
-ret = gt9xx_register(&quot;/dev/input0&quot;, i2c, CTP_I2C_ADDR, &amp;g_pinephone_gt9xx);</code></pre></div>
-<p>And it works with the LVGL Demo App! Now we need to optimise the rendering…</p>
+<h1 id="lvgl-calls-our-driver"><a href="#lvgl-calls-our-driver">9 LVGL Calls Our Driver</a></h1>
+<p>TODO: It works with the LVGL Demo App! Now we need to optimise the rendering…</p>
 <ul>
 <li><a href="https://www.youtube.com/shorts/xE9U5IQPmlg">Watch the Demo on YouTube</a></li>
 </ul>
-<h1 id="lvgl-calls-our-driver"><a href="#lvgl-calls-our-driver">9 LVGL Calls Our Driver</a></h1>
 <p>TODO: Optimise rendering</p>
 <p>TODO: Limitations: Multitouch, swipe, LVGL support</p>
 <p>TODO: Throttle interrupts</p>
