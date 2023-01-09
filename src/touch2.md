@@ -698,13 +698,13 @@ TODO
 
 TODO: It works with the LVGL Demo App! Now we need to optimise the rendering...
 
--   [Watch the Demo on YouTube](https://www.youtube.com/shorts/xE9U5IQPmlg)
+-   [__Watch the Demo on YouTube__](https://www.youtube.com/shorts/xE9U5IQPmlg)
 
 TODO: Optimise rendering
 
 TODO: Limitations: Multitouch, swipe, LVGL support
 
-TODO: Throttle interrupts
+TODO: Have we throttled the touch panel interrupts
 
 # What's Next
 
