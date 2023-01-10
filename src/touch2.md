@@ -189,7 +189,7 @@ Read on to find out how we poll the Touch Panel and read the Product ID...
 
 # Poll the Touch Panel
 
-_We need to handle interrupts triggered by the Touch Panel right?_
+_PinePhone's Touch Panel will trigger interrupts right?_
 
 To detect Touch Events, we'll need to __handle the interrupts__ triggered by Touch Panel.
 
@@ -265,7 +265,7 @@ Thus our simple loop simulates an __Interrupt Handler__!
 
 _How do we open the I2C Port?_
 
-This is how we __open the I2C Port__ on NuttX, and pass it to the above loop: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L158-L170)
+On NuttX, this is how we __open the I2C Port__ and pass it to the above loop: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L158-L170)
 
 ```c
 // Open Allwinner A64 Port TWI0 for I2C
@@ -280,7 +280,7 @@ We insert this code at the end of the [__PinePhone Bringup Function__](https://g
 
 (Yes it sounds hacky, but it's a simple way to do Kernel Experiments)
 
-Now that we have simulated an Interrupt Handler, let's read a Touch Point!
+Now that we've simulated an Interrupt Handler, let's read a Touch Point!
 
 ![Reading a Touch Point](https://lupyuen.github.io/images/touch2-code4a.png)
 
@@ -625,7 +625,7 @@ touch_panel_read: touch x=15, y=1394
 
 [(Source)](https://gist.github.com/lupyuen/91a37a4b54f75f7386374a30821dc1b2)
 
-The log shows that we have read the Touch Panel Status __`0x81`__, followed by the Touch Coordinates. Yep we have tested our Interrupt Handler successfully!
+The log shows that we've read the Touch Panel Status __`0x81`__, followed by the Touch Coordinates. Yep we've tested our Interrupt Handler successfully!
 
 Now we move this code into the NuttX Touch Panel Driver for PinePhone...
 
@@ -633,7 +633,7 @@ Now we move this code into the NuttX Touch Panel Driver for PinePhone...
 
 _What's inside our NuttX Touch Panel Driver for PinePhone?_
 
-We took the code from this article and wrapped it inside our __NuttX Touch Panel Driver__ for PinePhone...
+We took the code from above and wrapped it inside our __NuttX Touch Panel Driver__ for PinePhone...
 
 -   [__nuttx/drivers/input/gt9xx.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c)
 
@@ -835,7 +835,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 _What's inside our NuttX Touch Panel Driver for PinePhone?_
 
-We took the code from this article and wrapped it inside our __NuttX Touch Panel Driver__ for PinePhone...
+We took the code from above and wrapped it inside our __NuttX Touch Panel Driver__ for PinePhone...
 
 -   [__nuttx/drivers/input/gt9xx.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c)
 
