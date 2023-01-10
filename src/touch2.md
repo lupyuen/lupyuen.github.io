@@ -26,7 +26,7 @@ Let's talk about the __Capacitive Touch Panel__ inside PinePhone...
 
 -   And how we call the driver from __LVGL Apps__
 
-    [(Watch the Demo on YouTube)](https://www.youtube.com/shorts/xE9U5IQPmlg)
+    [(Watch the Demo on YouTube)](https://www.youtube.com/shorts/APge9bTt-ho)
 
 We begin with the internals of the Touch Panel...
 
@@ -754,27 +754,60 @@ TODO
 
 # LVGL Calls Our Driver
 
-TODO: It works with the LVGL Demo App! Now we need to optimise the rendering...
+Our NuttX Touch Panel Driver works with the LVGL Demo App!
 
--   [__Watch the Demo on YouTube__](https://www.youtube.com/shorts/xE9U5IQPmlg)
+-   [__Watch the Demo on YouTube__](https://www.youtube.com/shorts/APge9bTt-ho)
 
-TODO: Optimise rendering
+Here are the LVGL Settings for NuttX...
+
+1.  Enable "__Application Configuration__ > __Graphics Support__ > __Light and Versatile Graphics Library (LVGL)__"
+
+1.  Enable "__LVGL__ > __Enable Framebuffer Port__"
+
+1.  Enable "__LVGL__ > __Enable Touchpad Port__"
+
+1.  Browse into "__LVGL__ > __LVGL Configuration__"
+    
+    -   In "__Color Settings__"
+
+        Set __Color Depth__ to "__32: ARGB8888__"
+
+    -   In "__Memory settings__"
+        
+        Set __Size of Memory__ to __64__
+
+    -   In "__HAL Settings__"
+
+        Set __Default Dots Per Inch__ to __250__
+
+    -   In "__Demos__"
+    
+        Enable "__Show Some Widgets__"
+
+1.  Enable "__Application Configuration__ > __Examples__ > __LVGL Demo__"
+
+Also we need to set...
+
+```text
+CONFIG_LV_TICK_CUSTOM=y
+CONFIG_LV_TICK_CUSTOM_INCLUDE="port/lv_port_tick.h"
+```
+
+Which is advised by [__FASTSHIFT__](https://github.com/apache/nuttx-apps/pull/1341#issuecomment-1375742962)...
+
+> The tick of LVGL should not be placed in the same thread as the rendering, because the execution time of `lv_timer_handler` is not deterministic, which will cause a large error in LVGL tick.
+
+> We should let LVGL use the system timestamp provided by `lv_port_tick`, just need to set two options (above)
+
+[(Thank you so much __FASTSHIFT__!)](https://github.com/FASTSHIFT)
+
+TODO: Flush A64 CPU Cache for Display Engine
 
 TODO: Limitations: Multitouch, swipe, LVGL support
 
 TODO: Have we throttled the touch panel interrupts
 
 TODO: Note to future self: `poll()` won't work correctly for reading Touch Points! Need to decipher the Android Driver
-
-[Issue on lv_tick_inc](https://github.com/apache/nuttx-apps/pull/1341#issuecomment-1374987956)
-
-> The tick of LVGL should not be placed in the same thread as the rendering, because the execution time of lv_timer_handler is not deterministic, which will cause a large error in LVGL tick.
-We should let LVGL use the system timestamp provided by lv_port_tick, just need to set two options:
-
-```text
-CONFIG_LV_TICK_CUSTOM=y
-CONFIG_LV_TICK_CUSTOM_INCLUDE="port/lv_port_tick.h"
-```
 
 # What's Next
 
