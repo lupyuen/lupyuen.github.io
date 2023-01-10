@@ -698,7 +698,7 @@ Which will...
 
 1.  __Attach the Interrupt Handler__ with NuttX
 
-    [(Implemented in __pinephone_gt9xx_irq_attach__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L541-L560)
+    [(Implemented as __pinephone_gt9xx_irq_attach__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L541-L560)
 
     [(Which we've seen earlier)](https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler)
 
