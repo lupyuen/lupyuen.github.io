@@ -801,13 +801,15 @@ Which is advised by [__FASTSHIFT__](https://github.com/apache/nuttx-apps/pull/13
 
 [(Thank you so much __FASTSHIFT__!)](https://github.com/FASTSHIFT)
 
-TODO: Flush A64 CPU Cache for Display Engine
+TODO: How to create our own LVGL Touchscreen App?
 
 TODO: Limitations: Multitouch, swipe, LVGL support
 
 TODO: Have we throttled the touch panel interrupts
 
 TODO: Note to future self: `poll()` won't work correctly for reading Touch Points! Need to decipher the Android Driver
+
+TODO: Flush A64 CPU Cache for Display Engine
 
 # What's Next
 
