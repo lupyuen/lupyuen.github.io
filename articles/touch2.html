@@ -583,7 +583,7 @@ ret = gt9xx_register(
   &amp;g_pinephone_gt9xx  // Callbacks for PinePhone Operations
 );
 DEBUGASSERT(ret == OK);</code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L878-L947">(<strong>gt9xx_register</strong> comes from our Touch Panel Driver)</a></p>
+<p><a href="https://lupyuen.github.io/articles/touch2#register-touch-panel-driver">(<strong>gt9xx_register</strong> comes from our Touch Panel Driver)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L64-L74">(<strong>g_pinephone_gt9xx</strong> defines the Interrupt Callbacks)</a></p>
 <p><em>The driver code looks familiar?</em></p>
 <p>We borrowed the logic from the NuttX Driver for <a href="https://github.com/apache/nuttx/blob/master/drivers/input/cypress_mbr3108.c"><strong>Cypress MBR3108</strong></a>.</p>
