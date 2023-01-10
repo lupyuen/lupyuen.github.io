@@ -667,6 +667,36 @@ CONFIG_LV_TICK_CUSTOM_INCLUDE=&quot;port/lv_port_tick.h&quot;</code></pre></div>
 <p>TODO: How does LVGL call our Touch Panel Driver?</p>
 <p>TODO: How to create our own LVGL Touchscreen App?</p>
 <p>TODO: Improve rendering speed: Flush CPU Cache for A64 Display Engine</p>
+<p>TODO</p>
+<p><a href="https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L134-L178">lv_port_touchpad.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// From lv_port_touchpad_init()
+int fd = open(device_path, O_RDONLY | O_NONBLOCK);</code></pre></div>
+<p><a href="https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L56-L99">lv_port_touchpad.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// From touchpad_read()
+// Struct for Touch Sample
+struct touch_sample_s sample;
+
+// Read a Touch Sample from Touch Panel
+read(
+  fd,       // File Descriptor from `open(&quot;/dev/input0&quot;)`
+  &amp;sample,  // Touch Sample
+  sizeof(struct touch_sample_s)  // Size of Touch Sample
+);</code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L56-L99">lv_port_touchpad.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// From touchpad_read()
+if (touch_flags &amp; TOUCH_DOWN || touch_flags &amp; TOUCH_MOVE) {
+  const FAR lv_disp_drv_t *disp_drv = drv-&gt;disp-&gt;driver;
+  lv_coord_t ver_max = disp_drv-&gt;ver_res - 1;
+  lv_coord_t hor_max = disp_drv-&gt;hor_res - 1;
+
+  touchpad_obj-&gt;last_x = LV_CLAMP(0, sample.point[0].x, hor_max);
+  touchpad_obj-&gt;last_y = LV_CLAMP(0, sample.point[0].y, ver_max);
+  touchpad_obj-&gt;last_state = LV_INDEV_STATE_PR;
+} else if (touch_flags &amp; TOUCH_UP) {
+  touchpad_obj-&gt;last_state = LV_INDEV_STATE_REL;
+}</code></pre></div>
+<p>TODO</p>
 <h1 id="driver-limitations"><a href="#driver-limitations">10 Driver Limitations</a></h1>
 <p><em>Are there any limitations in our NuttX Touch Panel Driver for PinePhone?</em></p>
 <p>Yep our <strong>driver has limitations</strong>, since the Touch Panel Hardware is poorly documented…</p>
