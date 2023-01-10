@@ -747,25 +747,27 @@ Which is advised by [__FASTSHIFT__](https://github.com/apache/nuttx-apps/pull/13
 
 [(Thank you so much __FASTSHIFT__!)](https://github.com/FASTSHIFT)
 
-TODO: How does LVGL call our Touch Panel Driver?
-
-TODO: How to create our own LVGL Touchscreen App?
-
-TODO: Improve rendering speed: Flush CPU Cache for A64 Display Engine
+_How does LVGL call our Touch Panel Driver?_
 
 TODO
 
 [lv_port_touchpad.c](https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L134-L178)
 
 ```c
-// From lv_port_touchpad_init()
-int fd = open(device_path, O_RDONLY | O_NONBLOCK);
+// From lv_port_touchpad_init()...
+// Open the Touch Panel Device
+int fd = open(
+  "/dev/input0",         // Path of Touch Panel Device
+  O_RDONLY | O_NONBLOCK  // Read-Only Access
+);
 ```
+
+TODO
 
 [lv_port_touchpad.c](https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L56-L99)
 
 ```c
-// From touchpad_read()
+// From touchpad_read()...
 // Struct for Touch Sample
 struct touch_sample_s sample;
 
@@ -782,21 +784,42 @@ TODO
 [lv_port_touchpad.c](https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L56-L99)
 
 ```c
-// From touchpad_read()
-if (touch_flags & TOUCH_DOWN || touch_flags & TOUCH_MOVE) {
-  const FAR lv_disp_drv_t *disp_drv = drv->disp->driver;
-  lv_coord_t ver_max = disp_drv->ver_res - 1;
-  lv_coord_t hor_max = disp_drv->hor_res - 1;
+// From touchpad_read()...
+// Get the First Touch Event from the Touch Sample
+uint8_t touch_flags = sample.point[0].flags;
 
-  touchpad_obj->last_x = LV_CLAMP(0, sample.point[0].x, hor_max);
-  touchpad_obj->last_y = LV_CLAMP(0, sample.point[0].y, ver_max);
+// If the Touch Event is Touch Down or Touch Move...
+if (touch_flags & TOUCH_DOWN || touch_flags & TOUCH_MOVE) {
+  // Report it as LVGL Press
+  touchpad_obj->last_x = sample.point[0].x;
+  touchpad_obj->last_y = sample.point[0].y;
   touchpad_obj->last_state = LV_INDEV_STATE_PR;
+  ...
 } else if (touch_flags & TOUCH_UP) {
+  // If the Touch Event is Touch Up,
+  // report it as LVGL Release
   touchpad_obj->last_state = LV_INDEV_STATE_REL;
 }
 ```
 
+_How to create our own LVGL Touchscreen App?_
+
 TODO
+
+[apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L202-L528)
+
+```c
+// Create a Button, set the Width and Height
+void lv_demo_widgets(void) {
+  lv_obj_t *btn = lv_btn_create(lv_scr_act());
+  lv_obj_set_height(btn, LV_SIZE_CONTENT);
+  lv_obj_set_width(btn, 120);
+}
+```
+
+[Widget Docs](https://docs.lvgl.io/master/widgets/index.html)
+
+TODO: Improve rendering speed: Flush CPU Cache for A64 Display Engine
 
 # Driver Limitations
 
