@@ -183,7 +183,7 @@ Which is ASCII for "__`917S`__"!
 
 _How's the code above called by NuttX Kernel?_
 
-Read on to find out how we poll the Touch Panel...
+Read on to find out how we poll the Touch Panel and read the Product ID...
 
 ![Polling the Touch Panel](https://lupyuen.github.io/images/touch2-code1a.png)
 
