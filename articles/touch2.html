@@ -668,9 +668,32 @@ CONFIG_LV_TICK_CUSTOM_INCLUDE=&quot;port/lv_port_tick.h&quot;</code></pre></div>
 <p>TODO: How to create our own LVGL Touchscreen App?</p>
 <p>TODO: Improve rendering speed: Flush CPU Cache for A64 Display Engine</p>
 <h1 id="driver-limitations"><a href="#driver-limitations">10 Driver Limitations</a></h1>
-<p>TODO: Limitations: Multitouch, swipe, LVGL support</p>
-<p>TODO: Have we throttled the touch panel interrupts</p>
-<p>TODO: Note to future self: <code>poll()</code> won’t work correctly for reading Touch Points! Need to decipher the Android Driver</p>
+<p><em>Are there any limitations in our NuttX Touch Panel Driver for PinePhone?</em></p>
+<p>Yep our <strong>driver has limitations</strong>, since the Touch Panel Hardware is poorly documented…</p>
+<ul>
+<li>
+<p>Our driver doesn’t support <strong>Multitouch and Swiping</strong>.</p>
+<p>Someday we might fix this when we decipher the (undocumented) <a href="https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c"><strong>Official Android Driver</strong></a>.</p>
+<p>(2,000 lines of code!)</p>
+</li>
+<li>
+<p>But the <strong>LVGL Demo</strong> doesn’t support Multitouch and Swiping either.</p>
+<p>(So we might put on hold for now)</p>
+</li>
+<li>
+<p>PinePhone’s Touch Panel triggers <a href="https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler"><strong>Excessive Interrupts</strong></a>.</p>
+<p>Again we’ll have to decipher the (still undocumented) <a href="https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c"><strong>Official Android Driver</strong></a> to fix this.</p>
+</li>
+<li>
+<p>Note to Future Self: <strong><code>poll()</code></strong> won’t work correctly for awaiting Touch Points!</p>
+<p>That’s because we throttle the <a href="https://lupyuen.github.io/articles/touch2#handle-interrupts-from-touch-panel"><strong>Touch Panel Interrupts</strong></a>. When we block on a <strong><code>poll()</code></strong> for Touch Points, the interrupts might get dropped and the unblock might never happen.</p>
+<p><a href="https://lupyuen.github.io/articles/touch2#setup-poll-for-touch-sample">(More about polling)</a></p>
+</li>
+<li>
+<p>The <strong>LVGL Demo</strong> doesn’t call <strong><code>poll()</code></strong>, it only calls the non-blocking <strong><code>read()</code></strong>.</p>
+<p>So we’re good for now.</p>
+</li>
+</ul>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>Meanwhile please check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
@@ -917,13 +940,15 @@ struct touch_point_s {
 <p><strong>For Poll Setup:</strong></p>
 <ul>
 <li>
-<p>TODO: We find an available slot for the Poll Waiter</p>
+<p>We find an Available Slot for the <strong>Poll Waiter</strong></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L72-L99">(Poll Waiter Slots are defined in <strong>gt9xx_dev_s</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/Kconfig#L501-L522">(<strong>INPUT_GT9XX_NPOLLWAITERS</strong> is the max number of slots, set to 1)</a></p>
 </li>
 <li>
-<p>TODO: We bind the Poll Structure and this slot</p>
+<p>We <strong>bind the Poll Struct</strong> and this Slot</p>
 </li>
 <li>
-<p>TODO: If Interrupt Pending is set, we notify the Poll Waiters</p>
+<p>If <strong>Interrupt Pending</strong> is set, we notify the Poll Waiters</p>
 </li>
 </ul>
 </li>
@@ -932,10 +957,23 @@ struct touch_point_s {
 </li>
 </ol>
 <h2 id="close-the-touch-panel"><a href="#close-the-touch-panel">12.6 Close the Touch Panel</a></h2>
-<p>TODO</p>
+<p>When a NuttX App calls <strong><code>close()</code></strong> on <strong>/dev/input0</strong>, NuttX invokes this operation on our driver…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L647-L714"><strong>gt9xx_close: Close the Touch Panel</strong></a></li>
 </ul>
+<p>Inside the <strong>Close Operation</strong> we…</p>
+<ol>
+<li>
+<p><strong>Disable Interrupts</strong> from the Touch Panel</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L560-L584">(Implemented as <strong>pinephone_gt9xx_irq_enable</strong>)</a></p>
+</li>
+<li>
+<p><strong>Power Off</strong> the Touch Panel</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L584-L590">(Implemented as <strong>pinephone_gt9xx_set_power</strong>)</a></p>
+</li>
+</ol>
+<p>We do this only if the <strong>Reference Count</strong> decrements to 0.</p>
+<p>(Which indicates the final <strong><code>close()</code></strong> for our driver)</p>
 
     
 </body>
