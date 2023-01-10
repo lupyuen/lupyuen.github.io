@@ -862,9 +862,9 @@ Let's talk about the Touch Panel operations...
 
 ## Register Touch Panel Driver
 
-At startup, our Touch Panel Driver gets __registered with NuttX__ when [__pinephone_bringup__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L197-L204) calls this function...
+At startup, [__pinephone_bringup__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L197-L204) registers our Touch Panel Driver at __/dev/input0__ by calling...
 
--   [__gt9xx_register__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L878-L947)
+-   [__gt9xx_register: Register Touch Panel Driver__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L878-L947)
 
 Which will...
 
@@ -890,7 +890,7 @@ Now watch what happens when NuttX Apps open the Touch Panel...
 
 When NuttX Apps call __`open()`__ on __/dev/input0__, NuttX invokes this operation on our driver...
 
--   [__gt9xx_open__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L560-L647)
+-   [__gt9xx_open: Open the Touch Panel__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L560-L647)
 
 Inside the __Open Operation__ we...
 
@@ -960,7 +960,7 @@ struct touch_point_s {
 
 TODO
 
-[gt9xx_read](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L436-L560)
+-   [__gt9xx_read: Read a Touch Sample__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L436-L560)
 
 [gt9xx_read_touch_data](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L347-L436)
 
@@ -972,16 +972,16 @@ TODO
 
 TODO
 
-[gt9xx_isr_handler](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L826-L874)
+-   [__gt9xx_isr_handler: Interrupt Handler__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L826-L874)
 
 ## Setup Poll for Touch Sample
 
 TODO
 
-[gt9xx_poll](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L714-L826)
+-   [__gt9xx_poll: Setup Poll for Touch Sample__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L714-L826)
 
 ## Close the Touch Panel
 
 TODO
 
-[gt9xx_close](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L647-L714)
+-   [__gt9xx_close: Close the Touch Panel__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L647-L714)
