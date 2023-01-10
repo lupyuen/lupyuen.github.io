@@ -710,21 +710,52 @@ Now watch what happens when NuttX Apps open the Touch Panel...
 
 ## Open the Touch Panel
 
-TODO
+When NuttX Apps call __`open()`__ on __/dev/input0__, NuttX invokes this operation on our driver...
 
-[gt9xx_open](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L560-L647)
+-   [__gt9xx_open__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L560-L647)
 
-[gt9xx_probe_device](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L276-L313)
+Inside the __Open Operation__ we...
 
-[gt9xx_i2c_read](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L136-L213)
+1.  __Power On__ the Touch Panel
 
-[pinephone_gt9xx_irq_enable](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L560-L584)
+    [(Implemented as __pinephone_gt9xx_set_power__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L584-L590)
 
-[pinephone_gt9xx_set_power](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L584-L590)
+1.  __Probe the Touch Panel__ on the I2C Bus, to verify that it exists
+
+    [(Implemented as __gt9xx_probe_device__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L276-L313)
+
+    [(Which reads the __Product ID__)](https://lupyuen.github.io/articles/touch2#read-the-product-id)
+
+    [(By calling __gt9xx_i2c_read__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L136-L213)
+
+1.  __Enable Interrupts__ from the Touch Panel
+
+    [(Implemented as __pinephone_gt9xx_irq_enable__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L560-L584)
+
+    [(Which we've seen earlier)](https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler)
+
+The [__Actual Flow__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L560-L647) looks more complicated because we do __Reference Counting__.
+
+(We do the above steps only on the first call to __`open()`__)
+
+Let's read some touch data...
 
 ## Read a Touch Sample
 
+_What's a Touch Sample?_
+
 TODO
+
+```c
+struct touch_sample_s sample;
+read(
+  fd,
+  &sample,
+  sizeof(struct touch_sample_s)
+);
+```
+
+[(Source)](https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L60-L70)
 
 [gt9xx_read](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L436-L560)
 
