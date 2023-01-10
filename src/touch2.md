@@ -700,11 +700,13 @@ Let's test our Touch Panel Driver with a NuttX App...
 
 # LVGL Calls Our Driver
 
-Our NuttX Touch Panel Driver works great with the LVGL Demo App! (Pic above)
+_Have we tested our driver with NuttX Apps?_
+
+Our NuttX Touch Panel Driver works great with the [__LVGL Demo App__](https://github.com/lvgl/lvgl/tree/v8.3.3/demos/widgets)! (Pic above)
 
 -   [__Watch the Demo on YouTube__](https://www.youtube.com/shorts/APge9bTt-ho)
 
-Here are the LVGL Settings for NuttX...
+Here are the __LVGL Settings__ for NuttX...
 
 1.  Enable "__Application Configuration__ > __Graphics Support__ > __Light and Versatile Graphics Library (LVGL)__"
 
@@ -791,9 +793,9 @@ uint8_t touch_flags = sample.point[0].flags;
 // If the Touch Event is Touch Down or Touch Move...
 if (touch_flags & TOUCH_DOWN || touch_flags & TOUCH_MOVE) {
   // Report it as LVGL Press
+  touchpad_obj->last_state = LV_INDEV_STATE_PR;
   touchpad_obj->last_x = sample.point[0].x;
   touchpad_obj->last_y = sample.point[0].y;
-  touchpad_obj->last_state = LV_INDEV_STATE_PR;
   ...
 } else if (touch_flags & TOUCH_UP) {
   // If the Touch Event is Touch Up,
