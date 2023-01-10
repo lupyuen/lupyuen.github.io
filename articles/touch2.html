@@ -613,11 +613,12 @@ DEBUGASSERT(ret == OK);</code></pre></div>
 <p>Let’s test our Touch Panel Driver with a NuttX App…</p>
 <p><img src="https://lupyuen.github.io/images/fb-lvgl3.jpg" alt="LVGL Demo App on PinePhone" /></p>
 <h1 id="lvgl-calls-our-driver"><a href="#lvgl-calls-our-driver">9 LVGL Calls Our Driver</a></h1>
-<p>Our NuttX Touch Panel Driver works great with the LVGL Demo App! (Pic above)</p>
+<p><em>Have we tested our driver with NuttX Apps?</em></p>
+<p>Our NuttX Touch Panel Driver works great with the <a href="https://github.com/lvgl/lvgl/tree/v8.3.3/demos/widgets"><strong>LVGL Demo App</strong></a>! (Pic above)</p>
 <ul>
 <li><a href="https://www.youtube.com/shorts/APge9bTt-ho"><strong>Watch the Demo on YouTube</strong></a></li>
 </ul>
-<p>Here are the LVGL Settings for NuttX…</p>
+<p>Here are the <strong>LVGL Settings</strong> for NuttX…</p>
 <ol>
 <li>
 <p>Enable “<strong>Application Configuration</strong> &gt; <strong>Graphics Support</strong> &gt; <strong>Light and Versatile Graphics Library (LVGL)</strong>”</p>
@@ -694,9 +695,9 @@ uint8_t touch_flags = sample.point[0].flags;
 // If the Touch Event is Touch Down or Touch Move...
 if (touch_flags &amp; TOUCH_DOWN || touch_flags &amp; TOUCH_MOVE) {
   // Report it as LVGL Press
+  touchpad_obj-&gt;last_state = LV_INDEV_STATE_PR;
   touchpad_obj-&gt;last_x = sample.point[0].x;
   touchpad_obj-&gt;last_y = sample.point[0].y;
-  touchpad_obj-&gt;last_state = LV_INDEV_STATE_PR;
   ...
 } else if (touch_flags &amp; TOUCH_UP) {
   // If the Touch Event is Touch Up,
