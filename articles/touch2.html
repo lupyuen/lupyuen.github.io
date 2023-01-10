@@ -772,7 +772,6 @@ struct file_operations g_gt9xx_fileops = {
   gt9xx_read,   // Read a Touch Sample
   gt9xx_poll    // Setup Poll for Touch Sample</code></pre></div>
 <p>NuttX Apps will call these Touch Panel Operations through the POSIX Standard Functions <strong><code>open()</code></strong>, <strong><code>close()</code></strong>, <strong><code>read()</code></strong> and <strong><code>poll()</code></strong>.</p>
-<p>(Later we’ll see how LVGL Apps do this)</p>
 <p><em>How do we start the Touch Panel Driver?</em></p>
 <p>This is how we <strong>start the Touch Panel Driver</strong> when NuttX boots: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L197-L204">pinephone_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Default I2C Address for Goodix GT917S
@@ -885,6 +884,7 @@ struct touch_point_s {
 <li>
 <p>If the <strong>Last Result</strong> was <strong>Touch Down</strong>…</p>
 <p>We return the Last Touch Point, now changed to <strong>Touch Up</strong>.</p>
+<p><a href="https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver">(We simulate the Touch Up because our LVGL Demo expects it)</a></p>
 </li>
 <li>
 <p>If the <strong>Last Result</strong> was <strong>NOT Touch Down</strong>…</p>
@@ -896,7 +896,7 @@ struct touch_point_s {
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L213-L276">(Which calls <strong>gt9xx_i2c_write</strong> to write over I2C)</a></p>
 </li>
 </ol>
-<p>Because our driver doesn’t support Multitouch, the Read Operation will return <strong>either 0 or 1 Touch Points</strong>.</p>
+<p>Since our driver doesn’t support Multitouch, the Read Operation will return <strong>either 0 or 1 Touch Points</strong>.</p>
 <p>PinePhone’s Touch Panel fires spurious interrupts, so it’s possible that <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L347-L436"><strong>gt9xx_read_touch_data</strong></a> will return No Touch Points.</p>
 <p>Let’s talk about the Interrupt Pending Flag…</p>
 <h2 id="interrupt-handler"><a href="#interrupt-handler">12.4 Interrupt Handler</a></h2>
