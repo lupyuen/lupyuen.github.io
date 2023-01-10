@@ -852,8 +852,6 @@ struct file_operations g_gt9xx_fileops = {
 
 NuttX Apps will call these Touch Panel Operations through the POSIX Standard Functions __`open()`__, __`close()`__, __`read()`__ and __`poll()`__.
 
-(Later we'll see how LVGL Apps do this)
-
 _How do we start the Touch Panel Driver?_
 
 This is how we __start the Touch Panel Driver__ when NuttX boots: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L197-L204)
@@ -1002,6 +1000,8 @@ Which works like so...
 
     We return the Last Touch Point, now changed to __Touch Up__.
 
+    [(We simulate the Touch Up because our LVGL Demo expects it)](https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver)
+
 1.  If the __Last Result__ was __NOT Touch Down__...
 
     And the __Interrupt Pending Flag__ has been set...
@@ -1016,7 +1016,7 @@ Which works like so...
 
     [(Which calls __gt9xx_i2c_write__ to write over I2C)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L213-L276)
 
-Because our driver doesn't support Multitouch, the Read Operation will return __either 0 or 1 Touch Points__.
+Since our driver doesn't support Multitouch, the Read Operation will return __either 0 or 1 Touch Points__.
 
 PinePhone's Touch Panel fires spurious interrupts, so it's possible that [__gt9xx_read_touch_data__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L347-L436) will return No Touch Points.
 
