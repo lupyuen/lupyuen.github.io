@@ -786,16 +786,17 @@ DEBUGASSERT(ret == OK);</code></pre></div>
 <li>
 <p><strong>Attach the Interrupt Handler</strong> with NuttX</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L541-L560">(Implemented as <strong>pinephone_gt9xx_irq_attach</strong>)</a></p>
-<p><a href="https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler">(Which we’ve seen earlier)</a></p>
+<p><a href="https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler">(As explained earlier)</a></p>
+<p><a href="https://lupyuen.github.io/articles/touch2#interrupt-handler">(Interrupt Handler is <strong>gt9xx_isr_handler</strong>)</a></p>
 </li>
 <li>
 <p><strong>Disable Interrupts</strong> from the Touch Panel</p>
-<p>(We’ll enable interrupts when the Touch Panel is opened)</p>
+<p>(We’ll enable interrupts when we open the Touch Panel)</p>
 </li>
 </ol>
-<p>Now watch what happens when NuttX Apps open the Touch Panel…</p>
+<p>Now watch what happens when a NuttX App opens the Touch Panel…</p>
 <h2 id="open-the-touch-panel"><a href="#open-the-touch-panel">12.2 Open the Touch Panel</a></h2>
-<p>When NuttX Apps call <strong><code>open()</code></strong> on <strong>/dev/input0</strong>, NuttX invokes this operation on our driver…</p>
+<p>When a NuttX App calls <strong><code>open()</code></strong> on <strong>/dev/input0</strong>, NuttX invokes this operation on our driver…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L560-L647"><strong>gt9xx_open: Open the Touch Panel</strong></a></li>
 </ul>
@@ -814,7 +815,7 @@ DEBUGASSERT(ret == OK);</code></pre></div>
 <li>
 <p><strong>Enable Interrupts</strong> from the Touch Panel</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L560-L584">(Implemented as <strong>pinephone_gt9xx_irq_enable</strong>)</a></p>
-<p><a href="https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler">(Which we’ve seen earlier)</a></p>
+<p><a href="https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler">(As explained earlier)</a></p>
 </li>
 </ol>
 <p>The <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L560-L647"><strong>Actual Flow</strong></a> looks more complicated because we do <strong>Reference Counting</strong>.</p>
@@ -839,7 +840,7 @@ struct touch_sample_s {
   int npoints;  // Number of Touch Points in point[]
   struct touch_point_s point[1];  // Touch Points of length npoints
 };</code></pre></div>
-<p>A <strong>Touch Point</strong> contains the X and Y Coordinates, also whether it’s Touch Up or Touch Down: <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/input/touchscreen.h#L112-L129">touchscreen.h</a></p>
+<p>A <strong>Touch Point</strong> contains the X and Y Coordinates, also indicates whether it’s Touch Up or Touch Down: <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/input/touchscreen.h#L112-L129">touchscreen.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Touch Point Struct
 struct touch_point_s {
   uint8_t  id;     // Identifies the finger touched (Multitouch)
@@ -847,23 +848,89 @@ struct touch_point_s {
   int16_t  x;      // X Coordinate of the Touch Point
   int16_t  y;      // Y Coordinate of the Touch Point
   ...</code></pre></div>
-<p>TODO</p>
+<p>When the app calls <strong><code>read()</code></strong>, NuttX Kernel calls our driver at…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L436-L560"><strong>gt9xx_read: Read a Touch Sample</strong></a></li>
 </ul>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L347-L436">gt9xx_read_touch_data</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L313-L347">gt9xx_set_status</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L213-L276">gt9xx_i2c_write</a></p>
+<p>Which works like so…</p>
+<ol>
+<li>
+<p><strong>Enable Interrupts</strong> from the Touch Panel</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L560-L584">(Implemented as <strong>pinephone_gt9xx_irq_enable</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler">(As explained earlier)</a></p>
+</li>
+<li>
+<p>If the <strong>Last Result</strong> was <strong>Touch Down</strong>…</p>
+<p>We return the Last Touch Point, now changed to <strong>Touch Up</strong>.</p>
+</li>
+<li>
+<p>If the <strong>Last Result</strong> was <strong>NOT Touch Down</strong>…</p>
+<p>And the <strong>Interrupt Pending Flag</strong> has been set…</p>
+<p>We clear the flag, <strong>read the Touch Point</strong> from the Touch Panel and return it.</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L347-L436">(Implemented as <strong>gt9xx_read_touch_data</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/touch2#read-a-touch-point">(As explained earlier)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L313-L347">(Which calls <strong>gt9xx_set_status</strong> to set the status)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L213-L276">(Which calls <strong>gt9xx_i2c_write</strong> to write over I2C)</a></p>
+</li>
+</ol>
+<p>Because our driver doesn’t support Multitouch, the Read Operation will return <strong>either 0 or 1 Touch Points</strong>.</p>
+<p>PinePhone’s Touch Panel fires spurious interrupts, so it’s possible that <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L347-L436"><strong>gt9xx_read_touch_data</strong></a> will return No Touch Points.</p>
+<p>Let’s talk about the Interrupt Pending Flag…</p>
 <h2 id="interrupt-handler"><a href="#interrupt-handler">12.4 Interrupt Handler</a></h2>
-<p>TODO</p>
+<p>This is our <strong>Interrupt Handler</strong> for Touch Panel Interrupts…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L826-L874"><strong>gt9xx_isr_handler: Interrupt Handler</strong></a></li>
 </ul>
+<p>Inside the Interrupt Handler we…</p>
+<ol>
+<li>
+<p><strong>Throttle the Excessive Interrupts</strong>…</p>
+<p>If the <strong>Interrupt Pending Flag</strong> has been set, we <strong>Disable Interrupts</strong>.</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L560-L584">(Implemented as <strong>pinephone_gt9xx_irq_enable</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/touch2#handle-interrupts-from-touch-panel">(As explained earlier)</a></p>
+</li>
+<li>
+<p>Set the <strong>Interrupt Pending Flag</strong></p>
+<p>(Which is protected by a NuttX Critical Section)</p>
+</li>
+<li>
+<p>Notify the <strong>Poll Waiters</strong> (Background Threads)</p>
+<p><a href="https://lupyuen.github.io/articles/touch2#handle-interrupts-from-touch-panel">(As explained earlier)</a></p>
+</li>
+</ol>
+<p>Now we talk about the Poll Waiters…</p>
 <h2 id="setup-poll-for-touch-sample"><a href="#setup-poll-for-touch-sample">12.5 Setup Poll for Touch Sample</a></h2>
-<p>TODO</p>
+<p>A NuttX App calls <strong><code>poll()</code></strong> to set up (or tear down) a <strong>Poll for Touch Sample</strong>.</p>
+<p>This enables the app to suspend itself and <strong>block until a Touch Panel Interrupt</strong> has been triggered. (And there’s a Touch Point available)</p>
+<p>When an app calls <strong><code>poll()</code></strong>, the NuttX Kernel calls our driver at…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L714-L826"><strong>gt9xx_poll: Setup Poll for Touch Sample</strong></a></li>
 </ul>
+<p>Inside the function we…</p>
+<ol>
+<li>
+<p><strong>Enable Interrupts</strong> from the Touch Panel</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L560-L584">(Implemented as <strong>pinephone_gt9xx_irq_enable</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler">(As explained earlier)</a></p>
+</li>
+<li>
+<p><strong>For Poll Setup:</strong></p>
+<ul>
+<li>
+<p>TODO: We find an available slot for the Poll Waiter</p>
+</li>
+<li>
+<p>TODO: We bind the Poll Structure and this slot</p>
+</li>
+<li>
+<p>TODO: If Interrupt Pending is set, we notify the Poll Waiters</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>For Poll Teardown</strong>: We unbind the Poll Setup</p>
+</li>
+</ol>
 <h2 id="close-the-touch-panel"><a href="#close-the-touch-panel">12.6 Close the Touch Panel</a></h2>
 <p>TODO</p>
 <ul>
