@@ -664,7 +664,7 @@ DEBUGASSERT(ret == OK);</code></pre></div>
 </li>
 <li>
 <p>In “<strong>HAL Settings</strong>”</p>
-<p>Set <strong>Default Dots Per Inch</strong> to <strong>250</strong></p>
+<p>Set <strong>Default Dots Per Inch</strong> to <strong>300</strong></p>
 </li>
 <li>
 <p>In “<strong>Demos</strong>”</p>
@@ -676,15 +676,15 @@ DEBUGASSERT(ret == OK);</code></pre></div>
 <p>Enable “<strong>Application Configuration</strong> &gt; <strong>Examples</strong> &gt; <strong>LVGL Demo</strong>”</p>
 </li>
 </ol>
-<p>Also we need to set…</p>
+<p>Also we need to set in <strong><code>.config</code></strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_LV_TICK_CUSTOM=y
 CONFIG_LV_TICK_CUSTOM_INCLUDE=&quot;port/lv_port_tick.h&quot;</code></pre></div>
 <p>Which is advised by <a href="https://github.com/apache/nuttx-apps/pull/1341#issuecomment-1375742962"><strong>FASTSHIFT</strong></a>…</p>
 <blockquote>
-<p>The tick of LVGL should not be placed in the same thread as the rendering, because the execution time of <code>lv_timer_handler</code> is not deterministic, which will cause a large error in LVGL tick.</p>
+<p>“The tick of LVGL should not be placed in the same thread as the rendering, because the execution time of <code>lv_timer_handler</code> is not deterministic, which will cause a large error in LVGL tick.”</p>
 </blockquote>
 <blockquote>
-<p>We should let LVGL use the system timestamp provided by <code>lv_port_tick</code>, just need to set two options (above)</p>
+<p>“We should let LVGL use the system timestamp provided by <code>lv_port_tick</code>, just need to set two options (above)”</p>
 </blockquote>
 <p><a href="https://github.com/FASTSHIFT">(Thank you so much <strong>FASTSHIFT</strong>!)</a></p>
 <p>TODO: Flush A64 CPU Cache for Display Engine</p>
