@@ -696,9 +696,11 @@ We borrowed the logic from the NuttX Driver for [__Cypress MBR3108__](https://gi
 
 Let's test our Touch Panel Driver with a NuttX App...
 
+![LVGL Demo App on PinePhone](https://lupyuen.github.io/images/fb-lvgl3.jpg)
+
 # LVGL Calls Our Driver
 
-Our NuttX Touch Panel Driver works with the LVGL Demo App!
+Our NuttX Touch Panel Driver works great with the LVGL Demo App!
 
 -   [__Watch the Demo on YouTube__](https://www.youtube.com/shorts/APge9bTt-ho)
 
