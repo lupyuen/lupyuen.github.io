@@ -801,15 +801,19 @@ Which is advised by [__FASTSHIFT__](https://github.com/apache/nuttx-apps/pull/13
 
 [(Thank you so much __FASTSHIFT__!)](https://github.com/FASTSHIFT)
 
+TODO: How does LVGL call our Touch Panel Driver?
+
 TODO: How to create our own LVGL Touchscreen App?
+
+TODO: Improve rendering speed: Flush CPU Cache for A64 Display Engine
+
+# Driver Limitations
 
 TODO: Limitations: Multitouch, swipe, LVGL support
 
 TODO: Have we throttled the touch panel interrupts
 
 TODO: Note to future self: `poll()` won't work correctly for reading Touch Points! Need to decipher the Android Driver
-
-TODO: Flush A64 CPU Cache for Display Engine
 
 # What's Next
 
