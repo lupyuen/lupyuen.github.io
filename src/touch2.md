@@ -670,7 +670,7 @@ ret = gt9xx_register(
 DEBUGASSERT(ret == OK);
 ```
 
-[(__gt9xx_register__ comes from our Touch Panel Driver)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L878-L947)
+[(__gt9xx_register__ comes from our Touch Panel Driver)](https://lupyuen.github.io/articles/touch2#register-touch-panel-driver)
 
 [(__g_pinephone_gt9xx__ defines the Interrupt Callbacks)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L64-L74)
 
