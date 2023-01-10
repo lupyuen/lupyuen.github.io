@@ -642,14 +642,30 @@ DEBUGASSERT(ret == OK);</code></pre></div>
 <p>Let’s read some touch data…</p>
 <h2 id="read-a-touch-sample"><a href="#read-a-touch-sample">8.3 Read a Touch Sample</a></h2>
 <p><em>What’s a Touch Sample?</em></p>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>struct touch_sample_s sample;
+<p>When a NuttX App reads data from our Touch Panel, it passes a <strong>Touch Sample Struct</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Struct for Touch Sample
+struct touch_sample_s sample;
+
+// Read a Touch Sample from Touch Panel
 read(
-  fd,
-  &amp;sample,
-  sizeof(struct touch_sample_s)
+  fd,       // File Descriptor from `open(&quot;/dev/input0&quot;)`
+  &amp;sample,  // Touch Sample
+  sizeof(struct touch_sample_s)  // Size of Touch Sample
 );</code></pre></div>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L60-L70">(Source)</a></p>
+<p>A Touch Sample contains <strong>One Touch Point</strong> (by default): <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/input/touchscreen.h#L129-L149">touchscreen.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>struct touch_sample_s {
+  int npoints;  // Number of touch points in point[]
+  struct touch_point_s point[1];  // Actual dimension is npoints
+};</code></pre></div>
+<p>A <strong>Touch Point</strong> contains the X and Y Coordinates, also whether it’s Touch Up or Touch Down: <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/input/touchscreen.h#L112-L129">touchscreen.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>struct touch_point_s {
+  uint8_t  id;     // Identifies the finger touched (Multitouch)
+  uint8_t  flags;  // Touch Up or Touch Down
+  int16_t  x;      // X Coordinate of the Touch Point
+  int16_t  y;      // Y Coordinate of the Touch Point
+  ...</code></pre></div>
+<p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L436-L560">gt9xx_read</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L347-L436">gt9xx_read_touch_data</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L313-L347">gt9xx_set_status</a></p>
