@@ -700,7 +700,7 @@ Let's test our Touch Panel Driver with a NuttX App...
 
 # LVGL Calls Our Driver
 
-Our NuttX Touch Panel Driver works great with the LVGL Demo App!
+Our NuttX Touch Panel Driver works great with the LVGL Demo App! (Pic above)
 
 -   [__Watch the Demo on YouTube__](https://www.youtube.com/shorts/APge9bTt-ho)
 
@@ -943,15 +943,17 @@ read(
 A Touch Sample contains __One Touch Point__ (by default): [touchscreen.h](https://github.com/apache/nuttx/blob/master/include/nuttx/input/touchscreen.h#L129-L149)
 
 ```c
+// Touch Sample Struct
 struct touch_sample_s {
-  int npoints;  // Number of touch points in point[]
-  struct touch_point_s point[1];  // Actual dimension is npoints
+  int npoints;  // Number of Touch Points in point[]
+  struct touch_point_s point[1];  // Touch Points of length npoints
 };
 ```
 
 A __Touch Point__ contains the X and Y Coordinates, also whether it's Touch Up or Touch Down: [touchscreen.h](https://github.com/apache/nuttx/blob/master/include/nuttx/input/touchscreen.h#L112-L129)
 
 ```c
+// Touch Point Struct
 struct touch_point_s {
   uint8_t  id;     // Identifies the finger touched (Multitouch)
   uint8_t  flags;  // Touch Up or Touch Down
