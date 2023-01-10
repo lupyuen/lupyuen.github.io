@@ -704,9 +704,9 @@ Which will...
 
 1.  __Disable Interrupts__ from the Touch Panel
 
-    (We'll enable Touch Panel Interrupts when the Touch Panel is opened later)
+    (We'll enable interrupts when the Touch Panel is opened)
 
-Now watch when happens NuttX Apps open the Touch Panel...
+Now watch what happens when NuttX Apps open the Touch Panel...
 
 ## Open the Touch Panel
 
