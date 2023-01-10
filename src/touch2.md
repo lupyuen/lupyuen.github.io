@@ -753,6 +753,51 @@ TODO: How to create our own LVGL Touchscreen App?
 
 TODO: Improve rendering speed: Flush CPU Cache for A64 Display Engine
 
+TODO
+
+[lv_port_touchpad.c](https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L134-L178)
+
+```c
+// From lv_port_touchpad_init()
+int fd = open(device_path, O_RDONLY | O_NONBLOCK);
+```
+
+[lv_port_touchpad.c](https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L56-L99)
+
+```c
+// From touchpad_read()
+// Struct for Touch Sample
+struct touch_sample_s sample;
+
+// Read a Touch Sample from Touch Panel
+read(
+  fd,       // File Descriptor from `open("/dev/input0")`
+  &sample,  // Touch Sample
+  sizeof(struct touch_sample_s)  // Size of Touch Sample
+);
+```
+
+TODO
+
+[lv_port_touchpad.c](https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L56-L99)
+
+```c
+// From touchpad_read()
+if (touch_flags & TOUCH_DOWN || touch_flags & TOUCH_MOVE) {
+  const FAR lv_disp_drv_t *disp_drv = drv->disp->driver;
+  lv_coord_t ver_max = disp_drv->ver_res - 1;
+  lv_coord_t hor_max = disp_drv->hor_res - 1;
+
+  touchpad_obj->last_x = LV_CLAMP(0, sample.point[0].x, hor_max);
+  touchpad_obj->last_y = LV_CLAMP(0, sample.point[0].y, ver_max);
+  touchpad_obj->last_state = LV_INDEV_STATE_PR;
+} else if (touch_flags & TOUCH_UP) {
+  touchpad_obj->last_state = LV_INDEV_STATE_REL;
+}
+```
+
+TODO
+
 # Driver Limitations
 
 _Are there any limitations in our NuttX Touch Panel Driver for PinePhone?_
