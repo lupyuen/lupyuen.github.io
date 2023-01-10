@@ -105,7 +105,7 @@
 </li>
 <li>
 <p>And how we call the driver from <strong>LVGL Apps</strong></p>
-<p><a href="https://www.youtube.com/shorts/xE9U5IQPmlg">(Watch the Demo on YouTube)</a></p>
+<p><a href="https://www.youtube.com/shorts/APge9bTt-ho">(Watch the Demo on YouTube)</a></p>
 </li>
 </ul>
 <p>We begin with the internals of the Touch Panel…</p>
@@ -636,21 +636,62 @@ DEBUGASSERT(ret == OK);</code></pre></div>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L647-L714">gt9xx_close</a></p>
 <h1 id="lvgl-calls-our-driver"><a href="#lvgl-calls-our-driver">9 LVGL Calls Our Driver</a></h1>
-<p>TODO: It works with the LVGL Demo App! Now we need to optimise the rendering…</p>
+<p>Our NuttX Touch Panel Driver works with the LVGL Demo App!</p>
 <ul>
-<li><a href="https://www.youtube.com/shorts/xE9U5IQPmlg"><strong>Watch the Demo on YouTube</strong></a></li>
+<li><a href="https://www.youtube.com/shorts/APge9bTt-ho"><strong>Watch the Demo on YouTube</strong></a></li>
 </ul>
-<p>TODO: Optimise rendering</p>
+<p>Here are the LVGL Settings for NuttX…</p>
+<ol>
+<li>
+<p>Enable “<strong>Application Configuration</strong> &gt; <strong>Graphics Support</strong> &gt; <strong>Light and Versatile Graphics Library (LVGL)</strong>”</p>
+</li>
+<li>
+<p>Enable “<strong>LVGL</strong> &gt; <strong>Enable Framebuffer Port</strong>”</p>
+</li>
+<li>
+<p>Enable “<strong>LVGL</strong> &gt; <strong>Enable Touchpad Port</strong>”</p>
+</li>
+<li>
+<p>Browse into “<strong>LVGL</strong> &gt; <strong>LVGL Configuration</strong>”</p>
+<ul>
+<li>
+<p>In “<strong>Color Settings</strong>”</p>
+<p>Set <strong>Color Depth</strong> to “<strong>32: ARGB8888</strong>”</p>
+</li>
+<li>
+<p>In “<strong>Memory settings</strong>”</p>
+<p>Set <strong>Size of Memory</strong> to <strong>64</strong></p>
+</li>
+<li>
+<p>In “<strong>HAL Settings</strong>”</p>
+<p>Set <strong>Default Dots Per Inch</strong> to <strong>250</strong></p>
+</li>
+<li>
+<p>In “<strong>Demos</strong>”</p>
+<p>Enable “<strong>Show Some Widgets</strong>”</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Enable “<strong>Application Configuration</strong> &gt; <strong>Examples</strong> &gt; <strong>LVGL Demo</strong>”</p>
+</li>
+</ol>
+<p>Also we need to set…</p>
+<div class="example-wrap"><pre class="language-text"><code>CONFIG_LV_TICK_CUSTOM=y
+CONFIG_LV_TICK_CUSTOM_INCLUDE=&quot;port/lv_port_tick.h&quot;</code></pre></div>
+<p>Which is advised by <a href="https://github.com/apache/nuttx-apps/pull/1341#issuecomment-1375742962"><strong>FASTSHIFT</strong></a>…</p>
+<blockquote>
+<p>The tick of LVGL should not be placed in the same thread as the rendering, because the execution time of <code>lv_timer_handler</code> is not deterministic, which will cause a large error in LVGL tick.</p>
+</blockquote>
+<blockquote>
+<p>We should let LVGL use the system timestamp provided by <code>lv_port_tick</code>, just need to set two options (above)</p>
+</blockquote>
+<p><a href="https://github.com/FASTSHIFT">(Thank you so much <strong>FASTSHIFT</strong>!)</a></p>
+<p>TODO: Flush A64 CPU Cache for Display Engine</p>
 <p>TODO: Limitations: Multitouch, swipe, LVGL support</p>
 <p>TODO: Have we throttled the touch panel interrupts</p>
 <p>TODO: Note to future self: <code>poll()</code> won’t work correctly for reading Touch Points! Need to decipher the Android Driver</p>
-<p><a href="https://github.com/apache/nuttx-apps/pull/1341#issuecomment-1374987956">Issue on lv_tick_inc</a></p>
-<blockquote>
-<p>The tick of LVGL should not be placed in the same thread as the rendering, because the execution time of lv_timer_handler is not deterministic, which will cause a large error in LVGL tick.
-We should let LVGL use the system timestamp provided by lv_port_tick, just need to set two options:</p>
-</blockquote>
-<div class="example-wrap"><pre class="language-text"><code>CONFIG_LV_TICK_CUSTOM=y
-CONFIG_LV_TICK_CUSTOM_INCLUDE=&quot;port/lv_port_tick.h&quot;</code></pre></div><h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>Meanwhile please check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
 <ul>
