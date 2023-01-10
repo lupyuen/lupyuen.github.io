@@ -613,7 +613,7 @@ DEBUGASSERT(ret == OK);</code></pre></div>
 <p>Let’s test our Touch Panel Driver with a NuttX App…</p>
 <p><img src="https://lupyuen.github.io/images/fb-lvgl3.jpg" alt="LVGL Demo App on PinePhone" /></p>
 <h1 id="lvgl-calls-our-driver"><a href="#lvgl-calls-our-driver">9 LVGL Calls Our Driver</a></h1>
-<p>Our NuttX Touch Panel Driver works great with the LVGL Demo App!</p>
+<p>Our NuttX Touch Panel Driver works great with the LVGL Demo App! (Pic above)</p>
 <ul>
 <li><a href="https://www.youtube.com/shorts/APge9bTt-ho"><strong>Watch the Demo on YouTube</strong></a></li>
 </ul>
@@ -834,12 +834,14 @@ read(
 );</code></pre></div>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L60-L70">(Source)</a></p>
 <p>A Touch Sample contains <strong>One Touch Point</strong> (by default): <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/input/touchscreen.h#L129-L149">touchscreen.h</a></p>
-<div class="example-wrap"><pre class="language-c"><code>struct touch_sample_s {
-  int npoints;  // Number of touch points in point[]
-  struct touch_point_s point[1];  // Actual dimension is npoints
+<div class="example-wrap"><pre class="language-c"><code>// Touch Sample Struct
+struct touch_sample_s {
+  int npoints;  // Number of Touch Points in point[]
+  struct touch_point_s point[1];  // Touch Points of length npoints
 };</code></pre></div>
 <p>A <strong>Touch Point</strong> contains the X and Y Coordinates, also whether it’s Touch Up or Touch Down: <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/input/touchscreen.h#L112-L129">touchscreen.h</a></p>
-<div class="example-wrap"><pre class="language-c"><code>struct touch_point_s {
+<div class="example-wrap"><pre class="language-c"><code>// Touch Point Struct
+struct touch_point_s {
   uint8_t  id;     // Identifies the finger touched (Multitouch)
   uint8_t  flags;  // Touch Up or Touch Down
   int16_t  x;      // X Coordinate of the Touch Point
