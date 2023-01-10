@@ -765,7 +765,7 @@ Yep our __driver has limitations__, since the Touch Panel Hardware is poorly doc
 
     (2,000 lines of code!)
 
--   But the __LVGL Demo__ doesn't support Multitouch and Swiping either.
+-   But the [__LVGL Demo__](https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver) doesn't support Multitouch and Swiping either.
 
     (So we might put on hold for now)
 
@@ -779,7 +779,7 @@ Yep our __driver has limitations__, since the Touch Panel Hardware is poorly doc
 
     [(More about polling)](https://lupyuen.github.io/articles/touch2#setup-poll-for-touch-sample)
 
--   The __LVGL Demo__ doesn't call __`poll()`__, it only calls the non-blocking __`read()`__.
+-   The [__LVGL Demo__](https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver) doesn't call __`poll()`__, it only calls non-blocking __`read()`__.
 
     So we're good for now.
 
