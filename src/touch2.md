@@ -637,16 +637,20 @@ We took the code from this article and wrapped it inside our __NuttX Touch Panel
 
 -   [__nuttx/drivers/input/gt9xx.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c)
 
-Our NuttX Driver is accessible at __/dev/input0__ and exposes the following __File Operations__: [gt9xx.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L114-L132)
+NuttX Apps will access our driver at __/dev/input0__, which exposes the following __File Operations__: [gt9xx.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L114-L132)
 
 ```c
 // File Operations supported by the Touch Panel
-static const struct file_operations g_gt9xx_fileops = {
+struct file_operations g_gt9xx_fileops = {
   gt9xx_open,   // Open the Touch Panel
   gt9xx_close,  // Close the Touch Panel
   gt9xx_read,   // Read a Touch Sample
   gt9xx_poll    // Setup Poll for Touch Sample
 ```
+
+NuttX Apps will call these Touch Panel Operations through the POSIX Standard Functions __`open()`__, __`close()`__, __`read()`__ and __`poll()`__.
+
+(Later we'll see how LVGL Apps do this)
 
 _How do we start the Touch Panel Driver?_
 
@@ -678,21 +682,75 @@ We borrowed the logic from the NuttX Driver for [__Cypress MBR3108__](https://gi
 
 Let's talk about the Touch Panel operations...
 
+## Register Touch Panel Driver
+
+At startup, our Touch Panel Driver gets __registered with NuttX__ when [__pinephone_bringup__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L197-L204) calls this function...
+
+-   [__gt9xx_register__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L878-L947)
+
+Which will...
+
+1.  __Initialise the Struct__ for Touch Panel 
+
+1.  __Register the Touch Panel Driver__ with NuttX
+
+    (At __/dev/input0__)
+
+1.  __Attach the Interrupt Handler__ with NuttX
+
+    [(Implemented in __pinephone_gt9xx_irq_attach__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L541-L560)
+
+    [(Which we've seen earlier)](https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler)
+
+1.  __Disable Interrupts__ from the Touch Panel
+
+    (We'll enable Touch Panel Interrupts when the Touch Panel is opened later)
+
+Now watch when happens NuttX Apps open the Touch Panel...
+
 ## Open the Touch Panel
 
 TODO
 
-## Close the Touch Panel
+[gt9xx_open](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L560-L647)
 
-TODO
+[gt9xx_probe_device](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L276-L313)
+
+[gt9xx_i2c_read](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L136-L213)
+
+[pinephone_gt9xx_irq_enable](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L560-L584)
+
+[pinephone_gt9xx_set_power](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L584-L590)
 
 ## Read a Touch Sample
 
 TODO
 
+[gt9xx_read](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L436-L560)
+
+[gt9xx_read_touch_data](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L347-L436)
+
+[gt9xx_set_status](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L313-L347)
+
+[gt9xx_i2c_write](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L213-L276)
+
+## Interrupt Handler
+
+TODO
+
+[gt9xx_isr_handler](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L826-L874)
+
 ## Setup Poll for Touch Sample
 
 TODO
+
+[gt9xx_poll](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L714-L826)
+
+## Close the Touch Panel
+
+TODO
+
+[gt9xx_close](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L647-L714)
 
 # LVGL Calls Our Driver
 
@@ -707,6 +765,16 @@ TODO: Limitations: Multitouch, swipe, LVGL support
 TODO: Have we throttled the touch panel interrupts
 
 TODO: Note to future self: `poll()` won't work correctly for reading Touch Points! Need to decipher the Android Driver
+
+[Issue on lv_tick_inc](https://github.com/apache/nuttx-apps/pull/1341#issuecomment-1374987956)
+
+> The tick of LVGL should not be placed in the same thread as the rendering, because the execution time of lv_timer_handler is not deterministic, which will cause a large error in LVGL tick.
+We should let LVGL use the system timestamp provided by lv_port_tick, just need to set two options:
+
+```text
+CONFIG_LV_TICK_CUSTOM=y
+CONFIG_LV_TICK_CUSTOM_INCLUDE="port/lv_port_tick.h"
+```
 
 # What's Next
 
