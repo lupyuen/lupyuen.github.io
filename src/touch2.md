@@ -778,7 +778,7 @@ Here are the LVGL Settings for NuttX...
 
     -   In "__HAL Settings__"
 
-        Set __Default Dots Per Inch__ to __250__
+        Set __Default Dots Per Inch__ to __300__
 
     -   In "__Demos__"
     
@@ -786,7 +786,7 @@ Here are the LVGL Settings for NuttX...
 
 1.  Enable "__Application Configuration__ > __Examples__ > __LVGL Demo__"
 
-Also we need to set...
+Also we need to set in __`.config`__...
 
 ```text
 CONFIG_LV_TICK_CUSTOM=y
@@ -795,9 +795,9 @@ CONFIG_LV_TICK_CUSTOM_INCLUDE="port/lv_port_tick.h"
 
 Which is advised by [__FASTSHIFT__](https://github.com/apache/nuttx-apps/pull/1341#issuecomment-1375742962)...
 
-> The tick of LVGL should not be placed in the same thread as the rendering, because the execution time of `lv_timer_handler` is not deterministic, which will cause a large error in LVGL tick.
+> "The tick of LVGL should not be placed in the same thread as the rendering, because the execution time of `lv_timer_handler` is not deterministic, which will cause a large error in LVGL tick."
 
-> We should let LVGL use the system timestamp provided by `lv_port_tick`, just need to set two options (above)
+> "We should let LVGL use the system timestamp provided by `lv_port_tick`, just need to set two options (above)"
 
 [(Thank you so much __FASTSHIFT__!)](https://github.com/FASTSHIFT)
 
