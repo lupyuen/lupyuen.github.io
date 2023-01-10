@@ -755,11 +755,33 @@ TODO: Improve rendering speed: Flush CPU Cache for A64 Display Engine
 
 # Driver Limitations
 
-TODO: Limitations: Multitouch, swipe, LVGL support
+_Are there any limitations in our NuttX Touch Panel Driver for PinePhone?_
 
-TODO: Have we throttled the touch panel interrupts
+Yep our __driver has limitations__, since the Touch Panel Hardware is poorly documented...
 
-TODO: Note to future self: `poll()` won't work correctly for reading Touch Points! Need to decipher the Android Driver
+-   Our driver doesn't support __Multitouch and Swiping__.
+
+    Someday we might fix this when we decipher the (undocumented) [__Official Android Driver__](https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c).
+
+    (2,000 lines of code!)
+
+-   But the __LVGL Demo__ doesn't support Multitouch and Swiping either.
+
+    (So we might put on hold for now)
+
+-   PinePhone's Touch Panel triggers [__Excessive Interrupts__](https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler).
+
+    Again we'll have to decipher the (still undocumented) [__Official Android Driver__](https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c) to fix this.
+
+-   Note to Future Self: __`poll()`__ won't work correctly for awaiting Touch Points!
+
+    That's because we throttle the [__Touch Panel Interrupts__](https://lupyuen.github.io/articles/touch2#handle-interrupts-from-touch-panel). When we block on a __`poll()`__ for Touch Points, the interrupts might get dropped and the unblock might never happen.
+
+    [(More about polling)](https://lupyuen.github.io/articles/touch2#setup-poll-for-touch-sample)
+
+-   The __LVGL Demo__ doesn't call __`poll()`__, it only calls the non-blocking __`read()`__.
+
+    So we're good for now.
 
 # What's Next
 
@@ -1046,16 +1068,34 @@ Inside the function we...
 
 1.  __For Poll Setup:__
 
-    -   TODO: We find an available slot for the Poll Waiter
+    -   We find an Available Slot for the __Poll Waiter__
 
-    -   TODO: We bind the Poll Structure and this slot
+        [(Poll Waiter Slots are defined in __gt9xx_dev_s__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L72-L99)
 
-    -   TODO: If Interrupt Pending is set, we notify the Poll Waiters
+        [(__INPUT_GT9XX_NPOLLWAITERS__ is the max number of slots, set to 1)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/Kconfig#L501-L522)
+
+    -   We __bind the Poll Struct__ and this Slot
+
+    -   If __Interrupt Pending__ is set, we notify the Poll Waiters
 
 1.  __For Poll Teardown__: We unbind the Poll Setup
 
 ## Close the Touch Panel
 
-TODO
+When a NuttX App calls __`close()`__ on __/dev/input0__, NuttX invokes this operation on our driver...
 
 -   [__gt9xx_close: Close the Touch Panel__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L647-L714)
+
+Inside the __Close Operation__ we...
+
+1.  __Disable Interrupts__ from the Touch Panel
+
+    [(Implemented as __pinephone_gt9xx_irq_enable__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L560-L584)
+
+1.  __Power Off__ the Touch Panel
+
+    [(Implemented as __pinephone_gt9xx_set_power__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L584-L590)
+
+We do this only if the __Reference Count__ decrements to 0.
+
+(Which indicates the final __`close()`__ for our driver)
