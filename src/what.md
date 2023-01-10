@@ -50,7 +50,7 @@ Nope, only [__LVGL__](https://lupyuen.github.io/articles/fb#lvgl-graphics-librar
 
 And [__Touch Input__](https://lupyuen.github.io/articles/touch2) will be available soon.
 
-[(Watch the Demo on YouTube)](https://www.youtube.com/shorts/xE9U5IQPmlg)
+[(Watch the Demo on YouTube)](https://www.youtube.com/shorts/APge9bTt-ho)
 
 _Will it run Linux apps?_
 
