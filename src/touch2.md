@@ -744,18 +744,43 @@ Let's read some touch data...
 
 _What's a Touch Sample?_
 
-TODO
+When a NuttX App reads data from our Touch Panel, it passes a __Touch Sample Struct__...
 
 ```c
+// Struct for Touch Sample
 struct touch_sample_s sample;
+
+// Read a Touch Sample from Touch Panel
 read(
-  fd,
-  &sample,
-  sizeof(struct touch_sample_s)
+  fd,       // File Descriptor from `open("/dev/input0")`
+  &sample,  // Touch Sample
+  sizeof(struct touch_sample_s)  // Size of Touch Sample
 );
 ```
 
 [(Source)](https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L60-L70)
+
+A Touch Sample contains __One Touch Point__ (by default): [touchscreen.h](https://github.com/apache/nuttx/blob/master/include/nuttx/input/touchscreen.h#L129-L149)
+
+```c
+struct touch_sample_s {
+  int npoints;  // Number of touch points in point[]
+  struct touch_point_s point[1];  // Actual dimension is npoints
+};
+```
+
+A __Touch Point__ contains the X and Y Coordinates, also whether it's Touch Up or Touch Down: [touchscreen.h](https://github.com/apache/nuttx/blob/master/include/nuttx/input/touchscreen.h#L112-L129)
+
+```c
+struct touch_point_s {
+  uint8_t  id;     // Identifies the finger touched (Multitouch)
+  uint8_t  flags;  // Touch Up or Touch Down
+  int16_t  x;      // X Coordinate of the Touch Point
+  int16_t  y;      // Y Coordinate of the Touch Point
+  ...
+```
+
+TODO
 
 [gt9xx_read](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L436-L560)
 
