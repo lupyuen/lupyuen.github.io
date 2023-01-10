@@ -674,6 +674,184 @@ DEBUGASSERT(ret == OK);
 
 [(__g_pinephone_gt9xx__ defines the Interrupt Callbacks)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L64-L74)
 
+The Touch Panel operations are explained in the Appendix...
+
+-   [__"Register Touch Panel Driver"__](https://lupyuen.github.io/articles/touch2#register-touch-panel-driver)
+
+-   [__"Open the Touch Panel"__](https://lupyuen.github.io/articles/touch2#open-the-touch-panel)
+
+-   [__"Read a Touch Sample"__](https://lupyuen.github.io/articles/touch2#read-a-touch-sample)
+
+-   [__"Interrupt Handler"__](https://lupyuen.github.io/articles/touch2#interrupt-handler)
+
+-   [__"Setup Poll for Touch Sample"__](https://lupyuen.github.io/articles/touch2#setup-poll-for-touch-sample)
+
+-   [__"Close the Touch Panel"__](https://lupyuen.github.io/articles/touch2#close-the-touch-panel)
+
+_The driver code looks familiar?_
+
+We borrowed the logic from the NuttX Driver for [__Cypress MBR3108__](https://github.com/apache/nuttx/blob/master/drivers/input/cypress_mbr3108.c).
+
+(Which is also an I2C Input Device)
+
+Let's test our Touch Panel Driver with a NuttX App...
+
+# LVGL Calls Our Driver
+
+Our NuttX Touch Panel Driver works with the LVGL Demo App!
+
+-   [__Watch the Demo on YouTube__](https://www.youtube.com/shorts/APge9bTt-ho)
+
+Here are the LVGL Settings for NuttX...
+
+1.  Enable "__Application Configuration__ > __Graphics Support__ > __Light and Versatile Graphics Library (LVGL)__"
+
+1.  Enable "__LVGL__ > __Enable Framebuffer Port__"
+
+1.  Enable "__LVGL__ > __Enable Touchpad Port__"
+
+1.  Browse into "__LVGL__ > __LVGL Configuration__"
+    
+    -   In "__Color Settings__"
+
+        Set __Color Depth__ to "__32: ARGB8888__"
+
+    -   In "__Memory settings__"
+        
+        Set __Size of Memory__ to __64__
+
+    -   In "__HAL Settings__"
+
+        Set __Default Dots Per Inch__ to __300__
+
+    -   In "__Demos__"
+    
+        Enable "__Show Some Widgets__"
+
+1.  Enable "__Application Configuration__ > __Examples__ > __LVGL Demo__"
+
+Also we need to set in __`.config`__...
+
+```text
+CONFIG_LV_TICK_CUSTOM=y
+CONFIG_LV_TICK_CUSTOM_INCLUDE="port/lv_port_tick.h"
+```
+
+Which is advised by [__FASTSHIFT__](https://github.com/apache/nuttx-apps/pull/1341#issuecomment-1375742962)...
+
+> "The tick of LVGL should not be placed in the same thread as the rendering, because the execution time of `lv_timer_handler` is not deterministic, which will cause a large error in LVGL tick."
+
+> "We should let LVGL use the system timestamp provided by `lv_port_tick`, just need to set two options (above)"
+
+[(Thank you so much __FASTSHIFT__!)](https://github.com/FASTSHIFT)
+
+TODO: How does LVGL call our Touch Panel Driver?
+
+TODO: How to create our own LVGL Touchscreen App?
+
+TODO: Improve rendering speed: Flush CPU Cache for A64 Display Engine
+
+# Driver Limitations
+
+TODO: Limitations: Multitouch, swipe, LVGL support
+
+TODO: Have we throttled the touch panel interrupts
+
+TODO: Note to future self: `poll()` won't work correctly for reading Touch Points! Need to decipher the Android Driver
+
+# What's Next
+
+TODO
+
+Meanwhile please check out the other articles on __NuttX RTOS for PinePhone__...
+
+-   [__"NuttX RTOS for PinePhone: What is it?"__](https://lupyuen.github.io/articles/what)
+
+-   [__"Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone"__](https://lupyuen.github.io/articles/arm)
+
+-   [__"PinePhone boots Apache NuttX RTOS"__](https://lupyuen.github.io/articles/uboot)
+
+-   [__"NuttX RTOS for PinePhone: Fixing the Interrupts"__](https://lupyuen.github.io/articles/interrupt)
+
+-   [__"NuttX RTOS for PinePhone: UART Driver"__](https://lupyuen.github.io/articles/serial)
+
+-   [__"NuttX RTOS for PinePhone: Blinking the LEDs"__](https://lupyuen.github.io/articles/pio)
+
+-   [__"Understanding PinePhone's Display (MIPI DSI)"__](https://lupyuen.github.io/articles/dsi)
+
+-   [__"NuttX RTOS for PinePhone: Display Driver in Zig"__](https://lupyuen.github.io/articles/dsi2)
+
+-   [__"Rendering PinePhone's Display (DE and TCON0)"__](https://lupyuen.github.io/articles/de)
+
+-   [__"NuttX RTOS for PinePhone: Render Graphics in Zig"__](https://lupyuen.github.io/articles/de2)
+
+-   [__"NuttX RTOS for PinePhone: MIPI Display Serial Interface"__](https://lupyuen.github.io/articles/dsi3)
+
+-   [__"NuttX RTOS for PinePhone: Display Engine"__](https://lupyuen.github.io/articles/de3)
+
+-   [__"NuttX RTOS for PinePhone: LCD Panel"__](https://lupyuen.github.io/articles/lcd)
+
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+
+-   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__My Current Project: "Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
+
+-   [__My Other Project: "The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book)
+
+-   [__Check out my articles__](https://lupyuen.github.io)
+
+-   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[__lupyuen.github.io/src/touch2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/touch2.md)
+
+# Appendix: NuttX Touch Panel Driver for PinePhone
+
+_What's inside our NuttX Touch Panel Driver for PinePhone?_
+
+We took the code from this article and wrapped it inside our __NuttX Touch Panel Driver__ for PinePhone...
+
+-   [__nuttx/drivers/input/gt9xx.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c)
+
+NuttX Apps will access our driver at __/dev/input0__, which exposes the following __File Operations__: [gt9xx.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L114-L132)
+
+```c
+// File Operations supported by the Touch Panel
+struct file_operations g_gt9xx_fileops = {
+  gt9xx_open,   // Open the Touch Panel
+  gt9xx_close,  // Close the Touch Panel
+  gt9xx_read,   // Read a Touch Sample
+  gt9xx_poll    // Setup Poll for Touch Sample
+```
+
+NuttX Apps will call these Touch Panel Operations through the POSIX Standard Functions __`open()`__, __`close()`__, __`read()`__ and __`poll()`__.
+
+(Later we'll see how LVGL Apps do this)
+
+_How do we start the Touch Panel Driver?_
+
+This is how we __start the Touch Panel Driver__ when NuttX boots: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L197-L204)
+
+```c
+// Default I2C Address for Goodix GT917S
+#define CTP_I2C_ADDR 0x5d
+
+// Register the Touch Panel Driver
+ret = gt9xx_register(
+  "/dev/input0",      // Device Path
+  i2c,                // I2C Bus
+  CTP_I2C_ADDR,       // I2C Address of Touch Panel
+  &g_pinephone_gt9xx  // Callbacks for PinePhone Operations
+);
+DEBUGASSERT(ret == OK);
+```
+
+[(__gt9xx_register__ comes from our Touch Panel Driver)](https://lupyuen.github.io/articles/touch2#register-touch-panel-driver)
+
+[(__g_pinephone_gt9xx__ defines the Interrupt Callbacks)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L64-L74)
+
 _The driver code looks familiar?_
 
 We borrowed the logic from the NuttX Driver for [__Cypress MBR3108__](https://github.com/apache/nuttx/blob/master/drivers/input/cypress_mbr3108.c).
@@ -807,114 +985,3 @@ TODO
 TODO
 
 [gt9xx_close](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L647-L714)
-
-# LVGL Calls Our Driver
-
-Our NuttX Touch Panel Driver works with the LVGL Demo App!
-
--   [__Watch the Demo on YouTube__](https://www.youtube.com/shorts/APge9bTt-ho)
-
-Here are the LVGL Settings for NuttX...
-
-1.  Enable "__Application Configuration__ > __Graphics Support__ > __Light and Versatile Graphics Library (LVGL)__"
-
-1.  Enable "__LVGL__ > __Enable Framebuffer Port__"
-
-1.  Enable "__LVGL__ > __Enable Touchpad Port__"
-
-1.  Browse into "__LVGL__ > __LVGL Configuration__"
-    
-    -   In "__Color Settings__"
-
-        Set __Color Depth__ to "__32: ARGB8888__"
-
-    -   In "__Memory settings__"
-        
-        Set __Size of Memory__ to __64__
-
-    -   In "__HAL Settings__"
-
-        Set __Default Dots Per Inch__ to __300__
-
-    -   In "__Demos__"
-    
-        Enable "__Show Some Widgets__"
-
-1.  Enable "__Application Configuration__ > __Examples__ > __LVGL Demo__"
-
-Also we need to set in __`.config`__...
-
-```text
-CONFIG_LV_TICK_CUSTOM=y
-CONFIG_LV_TICK_CUSTOM_INCLUDE="port/lv_port_tick.h"
-```
-
-Which is advised by [__FASTSHIFT__](https://github.com/apache/nuttx-apps/pull/1341#issuecomment-1375742962)...
-
-> "The tick of LVGL should not be placed in the same thread as the rendering, because the execution time of `lv_timer_handler` is not deterministic, which will cause a large error in LVGL tick."
-
-> "We should let LVGL use the system timestamp provided by `lv_port_tick`, just need to set two options (above)"
-
-[(Thank you so much __FASTSHIFT__!)](https://github.com/FASTSHIFT)
-
-TODO: How does LVGL call our Touch Panel Driver?
-
-TODO: How to create our own LVGL Touchscreen App?
-
-TODO: Improve rendering speed: Flush CPU Cache for A64 Display Engine
-
-# Driver Limitations
-
-TODO: Limitations: Multitouch, swipe, LVGL support
-
-TODO: Have we throttled the touch panel interrupts
-
-TODO: Note to future self: `poll()` won't work correctly for reading Touch Points! Need to decipher the Android Driver
-
-# What's Next
-
-TODO
-
-Meanwhile please check out the other articles on __NuttX RTOS for PinePhone__...
-
--   [__"NuttX RTOS for PinePhone: What is it?"__](https://lupyuen.github.io/articles/what)
-
--   [__"Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone"__](https://lupyuen.github.io/articles/arm)
-
--   [__"PinePhone boots Apache NuttX RTOS"__](https://lupyuen.github.io/articles/uboot)
-
--   [__"NuttX RTOS for PinePhone: Fixing the Interrupts"__](https://lupyuen.github.io/articles/interrupt)
-
--   [__"NuttX RTOS for PinePhone: UART Driver"__](https://lupyuen.github.io/articles/serial)
-
--   [__"NuttX RTOS for PinePhone: Blinking the LEDs"__](https://lupyuen.github.io/articles/pio)
-
--   [__"Understanding PinePhone's Display (MIPI DSI)"__](https://lupyuen.github.io/articles/dsi)
-
--   [__"NuttX RTOS for PinePhone: Display Driver in Zig"__](https://lupyuen.github.io/articles/dsi2)
-
--   [__"Rendering PinePhone's Display (DE and TCON0)"__](https://lupyuen.github.io/articles/de)
-
--   [__"NuttX RTOS for PinePhone: Render Graphics in Zig"__](https://lupyuen.github.io/articles/de2)
-
--   [__"NuttX RTOS for PinePhone: MIPI Display Serial Interface"__](https://lupyuen.github.io/articles/dsi3)
-
--   [__"NuttX RTOS for PinePhone: Display Engine"__](https://lupyuen.github.io/articles/de3)
-
--   [__"NuttX RTOS for PinePhone: LCD Panel"__](https://lupyuen.github.io/articles/lcd)
-
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
-
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
-
--   [__My Current Project: "Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
-
--   [__My Other Project: "The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book)
-
--   [__Check out my articles__](https://lupyuen.github.io)
-
--   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[__lupyuen.github.io/src/touch2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/touch2.md)
