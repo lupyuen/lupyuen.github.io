@@ -808,13 +808,13 @@ if (touch_flags & TOUCH_DOWN || touch_flags & TOUCH_MOVE) {
 
 And that's how LVGL polls our driver to handle Touch Events!
 
-(Not so efficient, but it works!)
+(The polling is not so efficient, but it works!)
 
 _How to create our own LVGL Touchscreen App?_
 
 Inside our NuttX Project, look for the __LVGL Demo Source Code__...
 
--   [apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L202-L528)
+-   [apps/graphics/lvgl/lvgl/ demos/widgets/lv_demo_widgets.c](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L202-L528)
 
 Modify the function [__lv_demo_widgets__](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L202-L528) to create our own __LVGL Widgets__...
 
