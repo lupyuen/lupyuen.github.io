@@ -897,6 +897,8 @@ PinePhone on NuttX will soon support LVGL Touchscreen Apps!
 
 Now we need to tidy up the [__LVGL Demo App__](https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver) so that it's more __Touch-Friendly__ for a Phone Form Factor. We'll talk more about this.
 
+(Pardon me while I learn to shoot a decent video of a Touchscreen App with a Mirrorless Camera)
+
 Meanwhile please check out the other articles on __NuttX RTOS for PinePhone__...
 
 -   [__"NuttX RTOS for PinePhone: What is it?"__](https://lupyuen.github.io/articles/what)
