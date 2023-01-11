@@ -781,7 +781,7 @@ read(
 );
 ```
 
-A Touch Sample contains __0 or 1 Touch Points__. [(See this)](https://lupyuen.github.io/articles/touch2#read-a-touch-sample)
+We'll receive a Touch Sample that contains __0 or 1 Touch Points__. [(More about Touch Samples)](https://lupyuen.github.io/articles/touch2#read-a-touch-sample)
 
 (The Read Operation above is __Non-Blocking__. It returns 0 Touch Points if the screen hasn't been touched)
 
@@ -794,21 +794,23 @@ uint8_t touch_flags = sample.point[0].flags;
 
 // If the Touch Event is Touch Down or Touch Move...
 if (touch_flags & TOUCH_DOWN || touch_flags & TOUCH_MOVE) {
-  // Report it as LVGL Press with the Touch Coordinates
+  // Report it as LVGL Press
+  // with the Touch Coordinates
   touchpad_obj->last_state = LV_INDEV_STATE_PR;
   touchpad_obj->last_x = sample.point[0].x;
   touchpad_obj->last_y = sample.point[0].y;
   ...
 } else if (touch_flags & TOUCH_UP) {
   // If the Touch Event is Touch Up,
-  // report it as LVGL Release
+  // report it as LVGL Release with
+  // the previous Touch Coordinates
   touchpad_obj->last_state = LV_INDEV_STATE_REL;
 }
 ```
 
 And that's how LVGL polls our driver to handle Touch Events!
 
-(The polling is not so efficient, but it works!)
+(LVGL polling our driver is not so efficient, but it works!)
 
 _How to create our own LVGL Touchscreen App?_
 
@@ -827,7 +829,7 @@ void lv_demo_widgets(void) {
 }
 ```
 
-For details, check out the [__LVGL Widget Docs__](https://docs.lvgl.io/master/widgets/index.html)
+For details, check out the [__LVGL Widget Docs__](https://docs.lvgl.io/master/widgets/index.html).
 
 _Can we improve the rendering speed?_
 
@@ -839,7 +841,7 @@ This ought to improve the rendering speed and make LVGL more responsive.
 
 # Driver Limitations
 
-_Are there any limitations in our NuttX Touch Panel Driver for PinePhone?_
+_Is there anything missing in our NuttX Touch Panel Driver for PinePhone?_
 
 Yep our __driver has limitations__, since the Touch Panel Hardware is poorly documented...
 
@@ -871,7 +873,7 @@ _Maybe we didn't set the Touch Panel Status correctly? Causing the Excessive Int
 
 We checked that the __Touch Panel Status__ was correctly set to 0 after every interrupt. [(See this)](https://gist.github.com/lupyuen/726110f8d24416584fe232330ffb1683)
 
-[(But why does Status `0x81` change to `0x80` instead of 0?)](https://gist.github.com/lupyuen/726110f8d24416584fe232330ffb1683)
+[(But why does Status `0x81` change to `0x80`, instead of 0?)](https://gist.github.com/lupyuen/726110f8d24416584fe232330ffb1683)
 
 # What's Next
 
