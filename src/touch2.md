@@ -859,6 +859,8 @@ Yep our __driver has limitations__, since the Touch Panel Hardware is poorly doc
 
     Again we'll have to decipher the (still undocumented) [__Official Android Driver__](https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c) to fix this.
 
+    (Or maybe we should call [__arm64_gic_irq_set_priority__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L227-L252) in the Generic Interrupt Controller?)
+
 1.  Between calls to __`read()`__, our driver might __fail to detect__ some Touch Input Events.
 
     This happens because we throttle the [__Touch Panel Interrupts__](https://lupyuen.github.io/articles/touch2#handle-interrupts-from-touch-panel), and we re-enable them only when __`read()`__ is called.
