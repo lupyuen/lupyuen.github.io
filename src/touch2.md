@@ -524,7 +524,7 @@ _Touch Panel fires too many interrupts..._
 
 _How do we stop it?_
 
-In our Interrupt Handler, let's __disable the Touch Panel Interrupt__ if we're still waiting for it to be processed: [gt9xx.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L826-L874)
+In our Interrupt Handler, let's __disable the Touch Panel Interrupt__ if we're still waiting for it to be processed: [gt9xx.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L840-L888)
 
 ```c
 // Interrupt Handler for Touch Panel, with Throttling and Forwarding
@@ -570,7 +570,7 @@ Instead our Interrupt Handler __notifies the Background Thread__ that there's a 
 
 The Background Thread calls __`poll()`__, suspends itself and __waits for the notification__ before processing the Touch Event over I2C.
 
-[(Thanks to __gt9xx_poll__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L714-L826)
+[(Thanks to __gt9xx_poll__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L728-L840)
 
 Let's test our new and improved Interrupt Handler...
 
@@ -871,6 +871,8 @@ _Maybe we didn't set the Touch Panel Status correctly? Causing the Excessive Int
 
 We checked that the __Touch Panel Status__ was correctly set to 0 after every interrupt. [(See this)](https://gist.github.com/lupyuen/726110f8d24416584fe232330ffb1683)
 
+[(Why does Status `0x81` change to `0x80`?)](https://gist.github.com/lupyuen/726110f8d24416584fe232330ffb1683)
+
 # What's Next
 
 TODO
@@ -974,7 +976,7 @@ Let's talk about the Touch Panel operations...
 
 At startup, [__pinephone_bringup__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L197-L204) registers our Touch Panel Driver at __/dev/input0__ by calling...
 
--   [__gt9xx_register: Register Touch Panel Driver__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L878-L947)
+-   [__gt9xx_register: Register Touch Panel Driver__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L892-L961)
 
 Which will...
 
@@ -1002,7 +1004,7 @@ Now watch what happens when a NuttX App opens the Touch Panel...
 
 When a NuttX App calls __`open()`__ on __/dev/input0__, NuttX invokes this operation on our driver...
 
--   [__gt9xx_open: Open the Touch Panel__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L560-L647)
+-   [__gt9xx_open: Open the Touch Panel__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L575-L662)
 
 Inside the __Open Operation__ we...
 
@@ -1012,7 +1014,7 @@ Inside the __Open Operation__ we...
 
 1.  __Probe the Touch Panel__ on the I2C Bus, to verify that it exists
 
-    [(Implemented as __gt9xx_probe_device__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L276-L313)
+    [(Implemented as __gt9xx_probe_device__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L291-L328)
 
     [(Which reads the __Product ID__)](https://lupyuen.github.io/articles/touch2#read-the-product-id)
 
@@ -1024,7 +1026,7 @@ Inside the __Open Operation__ we...
 
     [(As explained earlier)](https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler)
 
-The [__Actual Flow__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L560-L647) looks more complicated because we do __Reference Counting__.
+The [__Actual Flow__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L575-L662) looks more complicated because we do __Reference Counting__.
 
 (We do the above steps only on the first call to __`open()`__)
 
@@ -1074,7 +1076,7 @@ struct touch_point_s {
 
 When the app calls __`read()`__, NuttX Kernel calls our driver at...
 
--   [__gt9xx_read: Read a Touch Sample__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L436-L560)
+-   [__gt9xx_read: Read a Touch Sample__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L451-L575)
 
 Which works like so...
 
@@ -1096,17 +1098,17 @@ Which works like so...
 
     We clear the flag, __read the Touch Point__ from the Touch Panel and return it.
 
-    [(Implemented as __gt9xx_read_touch_data__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L347-L436)
+    [(Implemented as __gt9xx_read_touch_data__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L362-L451)
 
     [(As explained earlier)](https://lupyuen.github.io/articles/touch2#read-a-touch-point)
 
-    [(Which calls __gt9xx_set_status__ to set the status)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L313-L347)
+    [(Which calls __gt9xx_set_status__ to set the status)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L328-L362)
 
-    [(Which calls __gt9xx_i2c_write__ to write over I2C)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L213-L276)
+    [(Which calls __gt9xx_i2c_write__ to write over I2C)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L213-L291)
 
 Since our driver doesn't support Multitouch, the Read Operation will return __either 0 or 1 Touch Points__.
 
-PinePhone's Touch Panel fires spurious interrupts, so it's possible that [__gt9xx_read_touch_data__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L347-L436) will return No Touch Points.
+PinePhone's Touch Panel fires spurious interrupts, so it's possible that [__gt9xx_read_touch_data__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L362-L451) will return No Touch Points.
 
 Let's talk about the Interrupt Pending Flag...
 
@@ -1114,7 +1116,7 @@ Let's talk about the Interrupt Pending Flag...
 
 This is our __Interrupt Handler__ for Touch Panel Interrupts...
 
--   [__gt9xx_isr_handler: Interrupt Handler__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L826-L874)
+-   [__gt9xx_isr_handler: Interrupt Handler__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L840-L888)
 
 Inside the Interrupt Handler we...
 
@@ -1144,7 +1146,7 @@ This enables the app to suspend itself and __block until a Touch Panel Interrupt
 
 When an app calls __`poll()`__, the NuttX Kernel calls our driver at...
 
--   [__gt9xx_poll: Setup Poll for Touch Sample__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L714-L826)
+-   [__gt9xx_poll: Setup Poll for Touch Sample__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L728-L840)
 
 Inside the function we...
 
@@ -1172,7 +1174,7 @@ Inside the function we...
 
 When a NuttX App calls __`close()`__ on __/dev/input0__, NuttX invokes this operation on our driver...
 
--   [__gt9xx_close: Close the Touch Panel__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L647-L714)
+-   [__gt9xx_close: Close the Touch Panel__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/gt9xx.c#L662-L728)
 
 Inside the __Close Operation__ we...
 
