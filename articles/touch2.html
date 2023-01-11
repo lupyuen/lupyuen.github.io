@@ -880,7 +880,7 @@ DEBUGASSERT(ret == OK);</code></pre></div>
 </ol>
 <p>Now watch what happens when a NuttX App opens the Touch Panel…</p>
 <h2 id="open-the-touch-panel"><a href="#open-the-touch-panel">12.2 Open the Touch Panel</a></h2>
-<p>When a NuttX App calls <strong><code>open()</code></strong> on <strong>/dev/input0</strong>, NuttX invokes this operation on our driver…</p>
+<p>When a NuttX App calls <strong><code>open()</code></strong> on <strong>/dev/input0</strong>, NuttX Kernel invokes this operation on our driver…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch4/drivers/input/gt9xx.c#L575-L662"><strong>gt9xx_open: Open the Touch Panel</strong></a></li>
 </ul>
@@ -907,7 +907,7 @@ DEBUGASSERT(ret == OK);</code></pre></div>
 <p>Let’s read some touch data…</p>
 <h2 id="read-a-touch-sample"><a href="#read-a-touch-sample">12.3 Read a Touch Sample</a></h2>
 <p><em>What’s a Touch Sample?</em></p>
-<p>When a NuttX App reads data from our Touch Panel, it passes a <strong>Touch Sample Struct</strong>…</p>
+<p>When a NuttX App reads data from our Touch Panel, the app passes a <strong>Touch Sample Struct</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Struct for Touch Sample
 struct touch_sample_s sample;
 
@@ -1019,7 +1019,7 @@ struct touch_point_s {
 </li>
 </ol>
 <h2 id="close-the-touch-panel"><a href="#close-the-touch-panel">12.6 Close the Touch Panel</a></h2>
-<p>When a NuttX App calls <strong><code>close()</code></strong> on <strong>/dev/input0</strong>, NuttX invokes this operation on our driver…</p>
+<p>When a NuttX App calls <strong><code>close()</code></strong> on <strong>/dev/input0</strong>, NuttX Kernel invokes this operation on our driver…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch4/drivers/input/gt9xx.c#L662-L728"><strong>gt9xx_close: Close the Touch Panel</strong></a></li>
 </ul>
