@@ -688,7 +688,7 @@ read(
   &amp;sample,  // Touch Sample
   sizeof(struct touch_sample_s)  // Size of Touch Sample
 );</code></pre></div>
-<p>A Touch Sample contains <strong>0 or 1 Touch Points</strong>. <a href="https://lupyuen.github.io/articles/touch2#read-a-touch-sample">(See this)</a></p>
+<p>We’ll receive a Touch Sample that contains <strong>0 or 1 Touch Points</strong>. <a href="https://lupyuen.github.io/articles/touch2#read-a-touch-sample">(More about Touch Samples)</a></p>
 <p>(The Read Operation above is <strong>Non-Blocking</strong>. It returns 0 Touch Points if the screen hasn’t been touched)</p>
 <p>We extract the <strong>First Touch Point</strong> (inside the Touch Sample) and return it to LVGL: <a href="https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L56-L99">lv_port_touchpad.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// From touchpad_read()...
@@ -697,18 +697,20 @@ uint8_t touch_flags = sample.point[0].flags;
 
 // If the Touch Event is Touch Down or Touch Move...
 if (touch_flags &amp; TOUCH_DOWN || touch_flags &amp; TOUCH_MOVE) {
-  // Report it as LVGL Press with the Touch Coordinates
+  // Report it as LVGL Press
+  // with the Touch Coordinates
   touchpad_obj-&gt;last_state = LV_INDEV_STATE_PR;
   touchpad_obj-&gt;last_x = sample.point[0].x;
   touchpad_obj-&gt;last_y = sample.point[0].y;
   ...
 } else if (touch_flags &amp; TOUCH_UP) {
   // If the Touch Event is Touch Up,
-  // report it as LVGL Release
+  // report it as LVGL Release with
+  // the previous Touch Coordinates
   touchpad_obj-&gt;last_state = LV_INDEV_STATE_REL;
 }</code></pre></div>
 <p>And that’s how LVGL polls our driver to handle Touch Events!</p>
-<p>(The polling is not so efficient, but it works!)</p>
+<p>(LVGL polling our driver is not so efficient, but it works!)</p>
 <p><em>How to create our own LVGL Touchscreen App?</em></p>
 <p>Inside our NuttX Project, look for the <strong>LVGL Demo Source Code</strong>…</p>
 <ul>
@@ -721,13 +723,13 @@ void lv_demo_widgets(void) {
   lv_obj_set_height(btn, LV_SIZE_CONTENT);
   lv_obj_set_width(btn, 120);
 }</code></pre></div>
-<p>For details, check out the <a href="https://docs.lvgl.io/master/widgets/index.html"><strong>LVGL Widget Docs</strong></a></p>
+<p>For details, check out the <a href="https://docs.lvgl.io/master/widgets/index.html"><strong>LVGL Widget Docs</strong></a>.</p>
 <p><em>Can we improve the rendering speed?</em></p>
 <p>Yep we need to <a href="https://lupyuen.github.io/articles/fb#fix-missing-pixels"><strong>flush the CPU Cache</strong></a> to fix a rendering issue with the Allwinner A64 Display Engine.</p>
 <p>This ought to improve the rendering speed and make LVGL more responsive.</p>
 <p><a href="https://lupyuen.github.io/articles/fb#fix-missing-pixels">(More about this)</a></p>
 <h1 id="driver-limitations"><a href="#driver-limitations">10 Driver Limitations</a></h1>
-<p><em>Are there any limitations in our NuttX Touch Panel Driver for PinePhone?</em></p>
+<p><em>Is there anything missing in our NuttX Touch Panel Driver for PinePhone?</em></p>
 <p>Yep our <strong>driver has limitations</strong>, since the Touch Panel Hardware is poorly documented…</p>
 <ul>
 <li>
@@ -755,7 +757,7 @@ void lv_demo_widgets(void) {
 </ul>
 <p><em>Maybe we didn’t set the Touch Panel Status correctly? Causing the Excessive Interrupts?</em></p>
 <p>We checked that the <strong>Touch Panel Status</strong> was correctly set to 0 after every interrupt. <a href="https://gist.github.com/lupyuen/726110f8d24416584fe232330ffb1683">(See this)</a></p>
-<p><a href="https://gist.github.com/lupyuen/726110f8d24416584fe232330ffb1683">(But why does Status <code>0x81</code> change to <code>0x80</code> instead of 0?)</a></p>
+<p><a href="https://gist.github.com/lupyuen/726110f8d24416584fe232330ffb1683">(But why does Status <code>0x81</code> change to <code>0x80</code>, instead of 0?)</a></p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>Meanwhile please check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
