@@ -670,16 +670,14 @@ CONFIG_LV_TICK_CUSTOM_INCLUDE=&quot;port/lv_port_tick.h&quot;</code></pre></div>
 </blockquote>
 <p><a href="https://github.com/FASTSHIFT">(Thank you so much <strong>FASTSHIFT</strong>!)</a></p>
 <p><em>How does LVGL call our Touch Panel Driver?</em></p>
-<p>TODO</p>
-<p><a href="https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L134-L178">lv_port_touchpad.c</a></p>
+<p>The LVGL App begins by <strong>opening our Touch Panel Driver</strong> at <strong>/dev/input0</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L134-L178">lv_port_touchpad.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// From lv_port_touchpad_init()...
 // Open the Touch Panel Device
 int fd = open(
   &quot;/dev/input0&quot;,         // Path of Touch Panel Device
   O_RDONLY | O_NONBLOCK  // Read-Only Access
 );</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L56-L99">lv_port_touchpad.c</a></p>
+<p>The app runs an <strong>Event Loop</strong> that periodically reads a <strong>Touch Sample</strong> from our driver: <a href="https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L56-L99">lv_port_touchpad.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// From touchpad_read()...
 // Struct for Touch Sample
 struct touch_sample_s sample;
@@ -690,15 +688,16 @@ read(
   &amp;sample,  // Touch Sample
   sizeof(struct touch_sample_s)  // Size of Touch Sample
 );</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L56-L99">lv_port_touchpad.c</a></p>
+<p>A Touch Sample contains <strong>0 or 1 Touch Points</strong>. <a href="https://lupyuen.github.io/articles/touch2#read-a-touch-sample">(See this)</a></p>
+<p>(The Read Operation above is <strong>Non-Blocking</strong>. It returns 0 Touch Points if the screen hasn’t been touched)</p>
+<p>We extract the <strong>First Touch Point</strong> (inside the Touch Sample) and return it to LVGL: <a href="https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L56-L99">lv_port_touchpad.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// From touchpad_read()...
 // Get the First Touch Event from the Touch Sample
 uint8_t touch_flags = sample.point[0].flags;
 
 // If the Touch Event is Touch Down or Touch Move...
 if (touch_flags &amp; TOUCH_DOWN || touch_flags &amp; TOUCH_MOVE) {
-  // Report it as LVGL Press
+  // Report it as LVGL Press with the Touch Coordinates
   touchpad_obj-&gt;last_state = LV_INDEV_STATE_PR;
   touchpad_obj-&gt;last_x = sample.point[0].x;
   touchpad_obj-&gt;last_y = sample.point[0].y;
@@ -708,17 +707,25 @@ if (touch_flags &amp; TOUCH_DOWN || touch_flags &amp; TOUCH_MOVE) {
   // report it as LVGL Release
   touchpad_obj-&gt;last_state = LV_INDEV_STATE_REL;
 }</code></pre></div>
+<p>And that’s how LVGL polls our driver to handle Touch Events!</p>
+<p>(Not so efficient, but it works!)</p>
 <p><em>How to create our own LVGL Touchscreen App?</em></p>
-<p>TODO</p>
-<p><a href="https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L202-L528">apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c</a></p>
+<p>Inside our NuttX Project, look for the <strong>LVGL Demo Source Code</strong>…</p>
+<ul>
+<li><a href="https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L202-L528">apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c</a></li>
+</ul>
+<p>Modify the function <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L202-L528"><strong>lv_demo_widgets</strong></a> to create our own <strong>LVGL Widgets</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Create a Button, set the Width and Height
 void lv_demo_widgets(void) {
   lv_obj_t *btn = lv_btn_create(lv_scr_act());
   lv_obj_set_height(btn, LV_SIZE_CONTENT);
   lv_obj_set_width(btn, 120);
 }</code></pre></div>
-<p><a href="https://docs.lvgl.io/master/widgets/index.html">Widget Docs</a></p>
-<p>TODO: Improve rendering speed: Flush CPU Cache for A64 Display Engine</p>
+<p>For details, check out the <a href="https://docs.lvgl.io/master/widgets/index.html"><strong>LVGL Widget Docs</strong></a></p>
+<p><em>Can we improve the rendering speed?</em></p>
+<p>Yep we need to <a href="https://lupyuen.github.io/articles/fb#fix-missing-pixels"><strong>flush the CPU Cache</strong></a> to fix a rendering issue with the Allwinner A64 Display Engine.</p>
+<p>This ought to improve the rendering speed and make LVGL more responsive.</p>
+<p><a href="https://lupyuen.github.io/articles/fb#fix-missing-pixels">(More about this)</a></p>
 <h1 id="driver-limitations"><a href="#driver-limitations">10 Driver Limitations</a></h1>
 <p><em>Are there any limitations in our NuttX Touch Panel Driver for PinePhone?</em></p>
 <p>Yep our <strong>driver has limitations</strong>, since the Touch Panel Hardware is poorly documented…</p>
@@ -729,7 +736,7 @@ void lv_demo_widgets(void) {
 <p>(2,000 lines of code!)</p>
 </li>
 <li>
-<p>But the <a href="https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver"><strong>LVGL Demo</strong></a> doesn’t support Multitouch and Swiping either.</p>
+<p>But the <a href="https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver"><strong>LVGL Demo</strong></a> doesn’t support Multitouch either.</p>
 <p>(So we might put on hold for now)</p>
 </li>
 <li>
