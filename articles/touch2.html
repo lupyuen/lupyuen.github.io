@@ -744,6 +744,7 @@ void lv_demo_widgets(void) {
 <li>
 <p>PinePhone’s Touch Panel triggers <a href="https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler"><strong>Excessive Interrupts</strong></a>. (That we throttle for now)</p>
 <p>Again we’ll have to decipher the (still undocumented) <a href="https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c"><strong>Official Android Driver</strong></a> to fix this.</p>
+<p>(Or maybe we should call <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L227-L252"><strong>arm64_gic_irq_set_priority</strong></a> in the Generic Interrupt Controller?)</p>
 </li>
 <li>
 <p>Between calls to <strong><code>read()</code></strong>, our driver might <strong>fail to detect</strong> some Touch Input Events.</p>
