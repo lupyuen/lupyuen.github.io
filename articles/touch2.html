@@ -731,7 +731,7 @@ void lv_demo_widgets(void) {
 <h1 id="driver-limitations"><a href="#driver-limitations">10 Driver Limitations</a></h1>
 <p><em>Is there anything missing in our NuttX Touch Panel Driver for PinePhone?</em></p>
 <p>Yep our <strong>driver has limitations</strong>, since the Touch Panel Hardware is poorly documented…</p>
-<ul>
+<ol>
 <li>
 <p>Our driver doesn’t support <strong>Multitouch and Swiping</strong>.</p>
 <p>Someday we might fix this when we decipher the (undocumented) <a href="https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c"><strong>Official Android Driver</strong></a>.</p>
@@ -742,8 +742,14 @@ void lv_demo_widgets(void) {
 <p>(So we might put on hold for now)</p>
 </li>
 <li>
-<p>PinePhone’s Touch Panel triggers <a href="https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler"><strong>Excessive Interrupts</strong></a>.</p>
+<p>PinePhone’s Touch Panel triggers <a href="https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler"><strong>Excessive Interrupts</strong></a>. (That we throttle for now)</p>
 <p>Again we’ll have to decipher the (still undocumented) <a href="https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c"><strong>Official Android Driver</strong></a> to fix this.</p>
+</li>
+<li>
+<p>Between calls to <strong><code>read()</code></strong>, our driver might <strong>fail to detect</strong> some Touch Input Events.</p>
+<p>This happens because we throttle the <a href="https://lupyuen.github.io/articles/touch2#handle-interrupts-from-touch-panel"><strong>Touch Panel Interrupts</strong></a>, and we re-enable them only when <strong><code>read()</code></strong> is called.</p>
+<p>Interrupts that fire before <strong><code>read()</code></strong> will likely get ignored.</p>
+<p><a href="https://lupyuen.github.io/articles/touch2#read-a-touch-sample">(More about read)</a></p>
 </li>
 <li>
 <p>Note to Future Self: <strong><code>poll()</code></strong> won’t work correctly for awaiting Touch Points!</p>
@@ -754,7 +760,12 @@ void lv_demo_widgets(void) {
 <p>The <a href="https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver"><strong>LVGL Demo</strong></a> doesn’t call <strong><code>poll()</code></strong>, it only calls non-blocking <strong><code>read()</code></strong>.</p>
 <p>So we’re good for now.</p>
 </li>
-</ul>
+<li>
+<p>We have <strong>Duplicate Touch Down / Touch Up Events</strong>. <a href="https://gist.github.com/lupyuen/52bd626001f94e279c736979e074aac9">(See the log)</a></p>
+<p>The Touch Panel seems to be producing Touch Up Events. We might need to remove the <a href="https://lupyuen.github.io/articles/touch2#read-a-touch-sample"><strong>Simulated Touch Up Event</strong></a>.</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/touch2/graphics/lvgl/port/lv_port_touchpad.c#L83-L99">(We added the logs here)</a></p>
+</li>
+</ol>
 <p><em>Maybe we didn’t set the Touch Panel Status correctly? Causing the Excessive Interrupts?</em></p>
 <p>We checked that the <strong>Touch Panel Status</strong> was correctly set to 0 after every interrupt. Yet we’re still receiving Excessive Interrupts. <a href="https://gist.github.com/lupyuen/726110f8d24416584fe232330ffb1683">(See this)</a></p>
 <p><a href="https://gist.github.com/lupyuen/726110f8d24416584fe232330ffb1683">(But why does Status <code>0x81</code> change to <code>0x80</code>, instead of 0?)</a></p>
