@@ -706,6 +706,10 @@ Our NuttX Touch Panel Driver works great with the [__LVGL Demo App__](https://gi
 
 -   [__Watch the Demo on YouTube__](https://www.youtube.com/shorts/APge9bTt-ho)
 
+    [(See the Debug Log)](https://gist.github.com/lupyuen/fc88153b915894dbdaefcb5a916232fe)
+
+    [(Download the Binaries)](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v11.0.1)
+
 Here are the __LVGL Settings__ for NuttX...
 
 1.  Enable "__Application Configuration__ > __Graphics Support__ > __Light and Versatile Graphics Library (LVGL)__"
