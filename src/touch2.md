@@ -871,7 +871,7 @@ Yep our __driver has limitations__, since the Touch Panel Hardware is poorly doc
 
 _Maybe we didn't set the Touch Panel Status correctly? Causing the Excessive Interrupts?_
 
-We checked that the __Touch Panel Status__ was correctly set to 0 after every interrupt. [(See this)](https://gist.github.com/lupyuen/726110f8d24416584fe232330ffb1683)
+We checked that the __Touch Panel Status__ was correctly set to 0 after every interrupt. Yet we're still receiving Excessive Interrupts. [(See this)](https://gist.github.com/lupyuen/726110f8d24416584fe232330ffb1683)
 
 [(But why does Status `0x81` change to `0x80`, instead of 0?)](https://gist.github.com/lupyuen/726110f8d24416584fe232330ffb1683)
 
