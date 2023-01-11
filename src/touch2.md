@@ -845,29 +845,43 @@ _Is there anything missing in our NuttX Touch Panel Driver for PinePhone?_
 
 Yep our __driver has limitations__, since the Touch Panel Hardware is poorly documented...
 
--   Our driver doesn't support __Multitouch and Swiping__.
+1.  Our driver doesn't support __Multitouch and Swiping__.
 
     Someday we might fix this when we decipher the (undocumented) [__Official Android Driver__](https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c).
 
     (2,000 lines of code!)
 
--   But the [__LVGL Demo__](https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver) doesn't support Multitouch either.
+1.  But the [__LVGL Demo__](https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver) doesn't support Multitouch either.
 
     (So we might put on hold for now)
 
--   PinePhone's Touch Panel triggers [__Excessive Interrupts__](https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler).
+1.  PinePhone's Touch Panel triggers [__Excessive Interrupts__](https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler). (That we throttle for now)
 
     Again we'll have to decipher the (still undocumented) [__Official Android Driver__](https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c) to fix this.
 
--   Note to Future Self: __`poll()`__ won't work correctly for awaiting Touch Points!
+1.  Between calls to __`read()`__, our driver might __fail to detect__ some Touch Input Events.
+
+    This happens because we throttle the [__Touch Panel Interrupts__](https://lupyuen.github.io/articles/touch2#handle-interrupts-from-touch-panel), and we re-enable them only when __`read()`__ is called.
+    
+    Interrupts that fire before __`read()`__ will likely get ignored.
+
+    [(More about read)](https://lupyuen.github.io/articles/touch2#read-a-touch-sample)
+
+1.  Note to Future Self: __`poll()`__ won't work correctly for awaiting Touch Points!
 
     That's because we throttle the [__Touch Panel Interrupts__](https://lupyuen.github.io/articles/touch2#handle-interrupts-from-touch-panel). When we block on a __`poll()`__ for Touch Points, the interrupts might get dropped and the unblock might never happen.
 
     [(More about polling)](https://lupyuen.github.io/articles/touch2#setup-poll-for-touch-sample)
 
--   The [__LVGL Demo__](https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver) doesn't call __`poll()`__, it only calls non-blocking __`read()`__.
+1.  The [__LVGL Demo__](https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver) doesn't call __`poll()`__, it only calls non-blocking __`read()`__.
 
     So we're good for now.
+
+1.  We have __Duplicate Touch Down / Touch Up Events__. [(See the log)](https://gist.github.com/lupyuen/52bd626001f94e279c736979e074aac9)
+
+    The Touch Panel seems to be producing Touch Up Events. We might need to remove the [__Simulated Touch Up Event__](https://lupyuen.github.io/articles/touch2#read-a-touch-sample).
+
+    [(We added the logs here)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/touch2/graphics/lvgl/port/lv_port_touchpad.c#L83-L99)
 
 _Maybe we didn't set the Touch Panel Status correctly? Causing the Excessive Interrupts?_
 
