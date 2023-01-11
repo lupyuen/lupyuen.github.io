@@ -755,9 +755,7 @@ Which is advised by [__FASTSHIFT__](https://github.com/apache/nuttx-apps/pull/13
 
 _How does LVGL call our Touch Panel Driver?_
 
-TODO
-
-[lv_port_touchpad.c](https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L134-L178)
+The LVGL App begins by __opening our Touch Panel Driver__ at __/dev/input0__: [lv_port_touchpad.c](https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L134-L178)
 
 ```c
 // From lv_port_touchpad_init()...
@@ -768,9 +766,7 @@ int fd = open(
 );
 ```
 
-TODO
-
-[lv_port_touchpad.c](https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L56-L99)
+The app runs an __Event Loop__ that periodically reads a __Touch Sample__ from our driver: [lv_port_touchpad.c](https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L56-L99)
 
 ```c
 // From touchpad_read()...
@@ -785,9 +781,11 @@ read(
 );
 ```
 
-TODO
+A Touch Sample contains __0 or 1 Touch Points__. [(See this)](https://lupyuen.github.io/articles/touch2#read-a-touch-sample)
 
-[lv_port_touchpad.c](https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L56-L99)
+(The Read Operation above is __Non-Blocking__. It returns 0 Touch Points if the screen hasn't been touched)
+
+We extract the __First Touch Point__ (inside the Touch Sample) and return it to LVGL: [lv_port_touchpad.c](https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L56-L99)
 
 ```c
 // From touchpad_read()...
@@ -796,7 +794,7 @@ uint8_t touch_flags = sample.point[0].flags;
 
 // If the Touch Event is Touch Down or Touch Move...
 if (touch_flags & TOUCH_DOWN || touch_flags & TOUCH_MOVE) {
-  // Report it as LVGL Press
+  // Report it as LVGL Press with the Touch Coordinates
   touchpad_obj->last_state = LV_INDEV_STATE_PR;
   touchpad_obj->last_x = sample.point[0].x;
   touchpad_obj->last_y = sample.point[0].y;
@@ -808,11 +806,17 @@ if (touch_flags & TOUCH_DOWN || touch_flags & TOUCH_MOVE) {
 }
 ```
 
+And that's how LVGL polls our driver to handle Touch Events!
+
+(Not so efficient, but it works!)
+
 _How to create our own LVGL Touchscreen App?_
 
-TODO
+Inside our NuttX Project, look for the __LVGL Demo Source Code__...
 
-[apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L202-L528)
+-   [apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L202-L528)
+
+Modify the function [__lv_demo_widgets__](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L202-L528) to create our own __LVGL Widgets__...
 
 ```c
 // Create a Button, set the Width and Height
@@ -823,9 +827,15 @@ void lv_demo_widgets(void) {
 }
 ```
 
-[Widget Docs](https://docs.lvgl.io/master/widgets/index.html)
+For details, check out the [__LVGL Widget Docs__](https://docs.lvgl.io/master/widgets/index.html)
 
-TODO: Improve rendering speed: Flush CPU Cache for A64 Display Engine
+_Can we improve the rendering speed?_
+
+Yep we need to [__flush the CPU Cache__](https://lupyuen.github.io/articles/fb#fix-missing-pixels) to fix a rendering issue with the Allwinner A64 Display Engine.
+
+This ought to improve the rendering speed and make LVGL more responsive.
+
+[(More about this)](https://lupyuen.github.io/articles/fb#fix-missing-pixels)
 
 # Driver Limitations
 
@@ -839,7 +849,7 @@ Yep our __driver has limitations__, since the Touch Panel Hardware is poorly doc
 
     (2,000 lines of code!)
 
--   But the [__LVGL Demo__](https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver) doesn't support Multitouch and Swiping either.
+-   But the [__LVGL Demo__](https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver) doesn't support Multitouch either.
 
     (So we might put on hold for now)
 
