@@ -116,19 +116,16 @@ pub export fn hello_zig_main(
   _ = _argv;
   _ = printf(&quot;Hello, Zig!\n&quot;);
   return 0;
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-bl602-nuttx#zig-app-for-nuttx">(We tweaked the code slightly)</a></p>
 <p>The code above prints to the NuttX Console…</p>
-<div class="example-wrap"><pre class="language-text"><code>Hello, Zig!
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>Hello, Zig!</code></pre></div>
 <p>Let’s dive into the Zig code.</p>
 <p><img src="https://lupyuen.github.io/images/book-zig.jpg" alt="Zig on BL602" /></p>
 <h2 id="import-standard-library"><a href="#import-standard-library">1.1 Import Standard Library</a></h2>
 <p>We begin by importing the <a href="https://ziglang.org/documentation/master/#Zig-Standard-Library"><strong>Zig Standard Library</strong></a>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>//  Import the Zig Standard Library
-const std = @import(&quot;std&quot;);
-</code></pre></div>
+const std = @import(&quot;std&quot;);</code></pre></div>
 <p>Which has all kinds of <strong>Algos, Data Structures and Definitions</strong>.</p>
 <p><a href="https://ziglang.org/documentation/master/std/">(More about the Zig Standard Library)</a></p>
 <h2 id="import-printf"><a href="#import-printf">1.2 Import printf</a></h2>
@@ -136,8 +133,7 @@ const std = @import(&quot;std&quot;);
 <div class="example-wrap"><pre class="language-zig"><code>//  Import printf() from C
 pub extern fn printf(
   _format: [*:0]const u8
-) c_int;
-</code></pre></div>
+) c_int;</code></pre></div>
 <p>Here we import the <strong><code>printf()</code></strong> function from the C Standard Library.</p>
 <p>(Which is supported by NuttX because it’s <a href="https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance"><strong>POSIX-Compliant</strong></a>)</p>
 <p><em>What’s <code>[*:0]const u8</code>?</em></p>
@@ -159,8 +155,7 @@ pub extern fn printf(
 pub export fn hello_zig_main(
   _argc: c_int, 
   _argv: [*]const [*]const u8
-) c_int {
-</code></pre></div>
+) c_int {</code></pre></div>
 <p><strong><code>argc</code></strong> and <strong><code>argv</code></strong> should look familiar, though <strong><code>argv</code></strong> looks complicated…</p>
 <ul>
 <li>
@@ -177,8 +172,7 @@ pub export fn hello_zig_main(
 <div class="example-wrap"><pre class="language-zig"><code>  _ = _argc;
   _ = _argv;
   _ = printf(&quot;Hello, Zig!\n&quot;);
-  return 0;
-</code></pre></div>
+  return 0;</code></pre></div>
 <p><em>Why the “<code>_ = something</code>”?</em></p>
 <p>This tells the Zig Compiler that we’re <strong>not using the value</strong> of “<code>something</code>”.</p>
 <p>The Zig Compiler helpfully stops us if we forget to use a Variable (like <code>_argc</code>) or the Returned Value for a Function (like for <code>printf</code>).</p>
@@ -204,21 +198,18 @@ pub export fn hello_zig_main(
 </li>
 </ul>
 <p>To <strong>enable the Zig App</strong> in NuttX, we do this…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make menuconfig
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div>
 <p>And select <strong>“Application Configuration”</strong> → <strong>“Examples”</strong> → <strong>“Hello Zig Example”</strong>. (See pic above)</p>
 <p>Save the configuration and exit menuconfig.</p>
 <p>Something interesting happens when we build NuttX…</p>
 <p><img src="https://lupyuen.github.io/images/zig-build1a.png" alt="Build fails on NuttX" /></p>
 <h1 id="build-fails-on-nuttx"><a href="#build-fails-on-nuttx">3 Build Fails on NuttX</a></h1>
 <p>When we <strong>build NuttX</strong> with the Zig App…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div>
 <p>We’ll see this error (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>LD: nuttx
 riscv64-unknown-elf-ld: nuttx/staging/libapps.a(builtin_list.c.home.user.nuttx.apps.builtin.o):(.rodata.g_builtins+0xbc): 
-undefined reference to `hello_zig_main&#39;
-</code></pre></div>
+undefined reference to `hello_zig_main&#39;</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/497c90b862aef48b57ff3124f2ea94d8">(Source)</a></p>
 <p>Which is probably due to some <strong>incomplete Build Rules</strong> in the NuttX Makefiles. <a href="https://github.com/apache/nuttx/issues/6219">(See this)</a></p>
 <p>But no worries! Let’s compile the Zig App ourselves and link it into the NuttX Firmware.</p>
@@ -228,26 +219,25 @@ undefined reference to `hello_zig_main&#39;
 <li><a href="https://ziglang.org/learn/getting-started/"><strong>“Zig: Getting Started”</strong></a></li>
 </ul>
 <p>This is how we <strong>compile our Zig App</strong> for BL602 and link it with NuttX…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  Download our modified Zig App for NuttX
+<div class="example-wrap"><pre class="language-bash"><code>#  Download our modified Zig App for NuttX
 git clone --recursive https://github.com/lupyuen/zig-bl602-nuttx
 cd zig-bl602-nuttx
 
-##  Compile the Zig App for BL602 
-##  (RV32IMACF with Hardware Floating-Point)
+#  Compile the Zig App for BL602 
+#  (RV32IMACF with Hardware Floating-Point)
 zig build-obj \
   -target riscv32-freestanding-none \
   -mcpu sifive_e76 \
   hello_zig_main.zig
 
-##  Copy the compiled app to NuttX and overwrite `hello_zig.o`
-##  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+#  Copy the compiled app to NuttX and overwrite `hello_zig.o`
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 cp hello_zig_main.o $HOME/nuttx/apps/examples/hello_zig/*hello_zig.o
 
-##  Build NuttX to link the Zig Object from `hello.o`
-##  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+#  Build NuttX to link the Zig Object from `hello.o`
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 cd $HOME/nuttx/nuttx
-make
-</code></pre></div>
+make</code></pre></div>
 <p>Note that we specify <strong>“<code>build-obj</code>”</strong> when compiling our Zig App.</p>
 <p>This generates a <strong>RISC-V Object File</strong> <code>hello_zig_main.o</code> that will be linked into our NuttX Firmware.</p>
 <p>Let’s talk about the Zig Target, which looks especially interesting for RISC-V…</p>
@@ -281,18 +271,16 @@ make
 <p>Among all Zig Targets, only <strong><code>sifive_e76</code></strong> has the same designation…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ zig targets
 ...
-&quot;sifive_e76&quot;: [ &quot;a&quot;, &quot;c&quot;, &quot;f&quot;, &quot;m&quot; ],
-</code></pre></div>
+&quot;sifive_e76&quot;: [ &quot;a&quot;, &quot;c&quot;, &quot;f&quot;, &quot;m&quot; ],</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/09d64c79e12b30e5eebc7d0a9c3b20a4">(Source)</a></p>
 <p>Thus we use <strong><code>sifive_e76</code></strong> as our Target CPU.</p>
 <p>Or we may use <strong><code>baseline_rv32-d</code></strong> as our Target CPU…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  Compile the Zig App for BL602
-##  (RV32IMACF with Hardware Floating-Point)
+<div class="example-wrap"><pre class="language-bash"><code>#  Compile the Zig App for BL602
+#  (RV32IMACF with Hardware Floating-Point)
 zig build-obj \
   -target riscv32-freestanding-none \
   -mcpu=baseline_rv32-d \
-  hello_zig_main.zig
-</code></pre></div>
+  hello_zig_main.zig</code></pre></div>
 <p>That’s because…</p>
 <ul>
 <li>
@@ -310,39 +298,36 @@ zig build-obj \
 <h1 id="floating-point-abi"><a href="#floating-point-abi">6 Floating-Point ABI</a></h1>
 <p><em>(Note: We observed this issue with Zig Compiler version 0.10.0, it might have been fixed in later versions of the compiler)</em></p>
 <p>When we <strong>link the Compiled Zig App</strong> with NuttX, we see this error (pic above)…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  Build NuttX to link the Zig Object from `hello.o`
-##  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+<div class="example-wrap"><pre class="language-bash"><code>#  Build NuttX to link the Zig Object from `hello.o`
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 $ cd $HOME/nuttx/nuttx
 $ make
 ...
 riscv64-unknown-elf-ld: nuttx/staging/libapps.a(hello_main.c.home.user.nuttx.apps.examples.hello.o): 
-can&#39;t link soft-float modules with single-float modules
-</code></pre></div>
+can&#39;t link soft-float modules with single-float modules</code></pre></div>
 <p><em>What is the meaning of this Soft-Float vs Single-Float? (Milk Shake?)</em></p>
 <p>Let’s sniff the <strong>NuttX Object Files</strong> produced by the NuttX Build…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  Dump the ABI for the compiled NuttX code.
-##  Do this BEFORE overwriting hello.o by hello_zig_main.o.
-##  &quot;*hello_zig.o&quot; expands to something like &quot;hello_main.c.home.user.nuttx.apps.examples.hello_zig.o&quot;
+<div class="example-wrap"><pre class="language-bash"><code>#  Dump the ABI for the compiled NuttX code.
+#  Do this BEFORE overwriting hello.o by hello_zig_main.o.
+#  &quot;*hello_zig.o&quot; expands to something like &quot;hello_main.c.home.user.nuttx.apps.examples.hello_zig.o&quot;
 $ riscv64-unknown-elf-readelf -h -A $HOME/nuttx/apps/examples/hello_zig/*hello_zig.o
 ELF Header:
   Flags: 0x3, RVC, single-float ABI
   ...
 File Attributes
-  Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_c2p0&quot;
-</code></pre></div>
+  Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_c2p0&quot;</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/5c090dead49eb50751578f28c15cecd5">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/zig-abi1a.png" alt="NuttX was compiled for (Single-Precision) Hardware Floating-Point ABI" /></p>
 <p>The <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#File_header"><strong>ELF Header</strong></a> says that the NuttX Object Files were compiled for the (Single-Precision) <strong>Hardware Floating-Point</strong> ABI (Application Binary Interface).</p>
 <p><a href="https://gist.github.com/lupyuen/288c980fdef75c334d32e669a921e623">(NuttX compiles with the GCC Flags “<code>-march=rv32imafc -mabi=ilp32f</code>”)</a></p>
 <p>Whereas our <strong>Zig Compiler</strong> produces an Object File with <strong>Software Floating-Point</strong> ABI…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  Dump the ABI for the compiled Zig app
+<div class="example-wrap"><pre class="language-bash"><code>#  Dump the ABI for the compiled Zig app
 $ riscv64-unknown-elf-readelf -h -A hello_zig_main.o
 ELF Header:
   Flags: 0x1, RVC, soft-float ABI
   ...
 File Attributes
-  Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_c2p0&quot;
-</code></pre></div>
+  Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_c2p0&quot;</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f04386a0b94ed1fb42a94d671edb1ba7">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/zig-abi2a.png" alt="Zig Compiler produces an Object File with Software Floating-Point ABI" /></p>
 <p>GCC won’t let us link Object Files with <strong>different ABIs</strong>: Software Floating-Point vs Hardware Floating-Point!</p>
@@ -350,12 +335,11 @@ File Attributes
 <p>(Why did the Zig Compiler produce an Object File with Software Floating-Point ABI, when <code>sifive_e76</code> supports Hardware Floating-Point? <a href="https://www.reddit.com/r/Zig/comments/v2zgvh/comment/iavw5xp/?utm_source=share&amp;utm_medium=web2x&amp;context=3">See this</a>)</p>
 <h1 id="patch-elf-header"><a href="#patch-elf-header">7 Patch ELF Header</a></h1>
 <p>Earlier we discovered that the Zig Compiler generates an Object File with <strong>Software Floating-Point</strong> ABI (Application Binary Interface)…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  Dump the ABI for the compiled Zig app
+<div class="example-wrap"><pre class="language-bash"><code>#  Dump the ABI for the compiled Zig app
 $ riscv64-unknown-elf-readelf -h -A hello_zig_main.o
 ...
 Flags: 0x1, RVC, soft-float ABI
-Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_c2p0&quot;
-</code></pre></div>
+Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_c2p0&quot;</code></pre></div>
 <p>But this won’t link with NuttX because NuttX was compiled with <strong>Hardware Floating-Point</strong> ABI.</p>
 <p>We fix this by modifying the <strong>ELF Header</strong>…</p>
 <ul>
@@ -370,54 +354,49 @@ Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_c2p0&quot;
 </ul>
 <p><img src="https://lupyuen.github.io/images/zig-hex2a.png" alt="Patch the ELF Header" /></p>
 <p>We verify that the Object File has been changed to <strong>Hardware Floating-Point</strong> ABI…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  Dump the ABI for the modified object file
+<div class="example-wrap"><pre class="language-bash"><code>#  Dump the ABI for the modified object file
 $ riscv64-unknown-elf-readelf -h -A hello_zig_main.o
 ...
 Flags: 0x3, RVC, single-float ABI
-Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_c2p0&quot;
-</code></pre></div>
+Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_c2p0&quot;</code></pre></div>
 <p>This is now <strong>Hardware Floating-Point</strong> ABI and will link with NuttX.</p>
 <p><em>Is it really OK to change the ABI like this?</em></p>
 <p>Well technically the <strong>ABI is correctly generated</strong> by the Zig Compiler…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  Dump the ABI for the compiled Zig app
+<div class="example-wrap"><pre class="language-bash"><code>#  Dump the ABI for the compiled Zig app
 $ riscv64-unknown-elf-readelf -h -A hello_zig_main.o
 ...
 Flags: 0x1, RVC, soft-float ABI
-Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_c2p0&quot;
-</code></pre></div>
+Tag_RISCV_arch: &quot;rv32i2p0_m2p0_a2p0_f2p0_c2p0&quot;</code></pre></div>
 <p>The last line translates to <strong>RV32IMACF</strong>, which means that the RISC-V Instruction Set is indeed targeted for <strong>Hardware Floating-Point</strong>. </p>
 <p>We’re only editing the <strong>ELF Header</strong>, because it didn’t seem to reflect the correct ABI for the Object File.</p>
 <p><em>Is there a proper fix for this?</em></p>
 <p>In future the Zig Compiler might allow us to specify the <strong>Floating-Point ABI</strong> as the target…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  Compile the Zig App for BL602
-##  (&quot;ilp32f&quot; means Hardware Floating-Point ABI)
+<div class="example-wrap"><pre class="language-bash"><code>#  Compile the Zig App for BL602
+#  (&quot;ilp32f&quot; means Hardware Floating-Point ABI)
 zig build-obj \
   -target riscv32-freestanding-ilp32f \
-  ...
-</code></pre></div>
+  ...</code></pre></div>
 <p><a href="https://github.com/ziglang/zig/issues/9760#issuecomment-991738757">(See this)</a></p>
 <p><em>Can we patch the Object File via Command Line instead?</em></p>
 <p>Yep enter this at the Command Line to <strong>patch the ELF Header</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>xxd -c 1 hello_zig_main.o \
   | sed &#39;s/00000024: 01/00000024: 03/&#39; \
   | xxd -r -c 1 - hello_zig_main2.o
-cp hello_zig_main2.o hello_zig_main.o
-</code></pre></div>
+cp hello_zig_main2.o hello_zig_main.o</code></pre></div>
 <p>This generates the Patched Object File at <code>hello_zig_main2.o</code></p>
 <p><a href="https://www.tutorialspoint.com/unix_commands/xxd.htm">(More about <code>xxd</code>)</a></p>
 <p><img src="https://lupyuen.github.io/images/pinecone-jumperl.jpg" alt="Pine64 PineCone BL602 RISC-V Board" /></p>
 <p><a href="https://lupyuen.github.io/articles/pinecone"><em>Pine64 PineCone BL602 RISC-V Board</em></a></p>
 <h1 id="zig-runs-ok"><a href="#zig-runs-ok">8 Zig Runs OK!</a></h1>
 <p>We’re ready to link the <strong>Patched Object File</strong> with NuttX…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  Copy the modified object file to NuttX and overwrite `hello_zig.o`
-##  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+<div class="example-wrap"><pre class="language-bash"><code>#  Copy the modified object file to NuttX and overwrite `hello_zig.o`
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 cp hello_zig_main.o $HOME/nuttx/apps/examples/hello_zig/*hello_zig.o
 
-##  Build NuttX to link the Zig Object from `hello.o`
-##  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+#  Build NuttX to link the Zig Object from `hello.o`
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 cd $HOME/nuttx/nuttx
-make
-</code></pre></div>
+make</code></pre></div>
 <p>Finally our NuttX Build succeeds!</p>
 <p>Follow these steps to <strong>flash and boot NuttX</strong> on BL602…</p>
 <ul>
@@ -432,8 +411,7 @@ make
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.3.0-RC2
 
 nsh&gt; hello_zig
-Hello, Zig!
-</code></pre></div>
+Hello, Zig!</code></pre></div>
 <p>Yep Zig runs OK on BL602 with NuttX! 🎉</p>
 <p><img src="https://lupyuen.github.io/images/zig-title.jpg" alt="Zig runs on BL602 with Apache NuttX RTOS" /></p>
 <p>And that’s it for our (barebones) Zig Experiment today!</p>
@@ -482,8 +460,7 @@ fn busyloop() void {
   while (i &lt; limit) : (i += 1) {
     @import(&quot;std&quot;).mem.doNotOptimizeAway(i);
   }
-}
-</code></pre></div>
+}</code></pre></div>
 <p>(Adapted from <a href="https://github.com/ZigEmbeddedGroup/microzig/blob/master/tests/blinky.zig">blinky.zig</a>)</p>
 <p><em>But our existing firmware is all in C. Do we rewrite everything in Zig?</em></p>
 <p>Aha! Here comes the really interesting thing about Zig, read on to find out…</p>
