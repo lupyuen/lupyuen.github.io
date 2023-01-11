@@ -1,6 +1,6 @@
 # NuttX RTOS for PinePhone: Touch Panel
 
-📝 _14 Jan 2023_
+📝 _12 Jan 2023_
 
 ![Apache NuttX RTOS reads the PinePhone Touch Panel](https://lupyuen.github.io/images/touch2-title.png)
 
@@ -893,7 +893,9 @@ We checked that the __Touch Panel Status__ was correctly set to 0 after every in
 
 # What's Next
 
-TODO
+PinePhone on NuttX will soon support LVGL Touchscreen Apps!
+
+Now we need to tidy up the [__LVGL Demo App__](https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver) so that it's more __Touch-Friendly__ for a Phone Form Factor. We'll talk more about this.
 
 Meanwhile please check out the other articles on __NuttX RTOS for PinePhone__...
 

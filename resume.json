@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "NuttX RTOS for PinePhone: Touch Panel",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-01-12",
+      "website": "https://lupyuen.github.io/articles/touch2",
+      "summary": "All about the Capacitive Touch Panel inside Pine64 PinePhone... And how we created the PinePhone Touch Panel Driver for Apache NuttX RTOS"
+    },
+    {
       "name": "NuttX RTOS for PinePhone: What is it?",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-01-03",
