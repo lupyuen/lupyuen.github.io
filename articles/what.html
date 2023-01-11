@@ -158,9 +158,11 @@
 </li>
 <li>
 <p>Add the downloaded toolchain to the <strong><code>PATH</code></strong> Environment Variable…</p>
-<div class="example-wrap"><pre class="language-text"><code>gcc-arm-...-aarch64-none-elf/bin</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>gcc-arm-...-aarch64-none-elf/bin
+</code></pre></div>
 <p>Check the ARM64 Toolchain…</p>
-<div class="example-wrap"><pre class="language-bash"><code>aarch64-none-elf-gcc -v</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>aarch64-none-elf-gcc -v
+</code></pre></div></li>
 <li>
 <p>Download and configure NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
@@ -170,7 +172,8 @@ git clone https://github.com/apache/nuttx-apps apps
 
 cd nuttx
 tools/configure.sh pinephone:lcd
-make menuconfig</code></pre></div></li>
+make menuconfig
+</code></pre></div></li>
 <li>
 <p>Select these options to enable the <a href="https://lupyuen.github.io/articles/fb#lvgl-graphics-library"><strong>LVGL Demo App</strong></a>…</p>
 <p>Enable “<strong>Application Configuration</strong> &gt; <strong>Graphics Support</strong> &gt; <strong>Light and Versatile Graphics Library (LVGL)</strong>”</p>
@@ -202,15 +205,18 @@ make menuconfig</code></pre></div></li>
 <div class="example-wrap"><pre class="language-bash"><code>make
 cp nuttx.bin Image
 rm -f Image.gz
-gzip Image</code></pre></div>
+gzip Image
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc">(See the Build Log)</a></p>
 <p>This produces the file <strong><code>Image.gz</code></strong>, which will be copied to PinePhone in the next step.</p>
 </li>
 <li>
 <p>If the build fails with…</p>
-<div class="example-wrap"><pre class="language-text"><code>token &quot;@&quot; is not valid in preprocessor</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>token &quot;@&quot; is not valid in preprocessor
+</code></pre></div>
 <p>Then look for this file in the ARM64 Toolchain…</p>
-<div class="example-wrap"><pre class="language-text"><code>gcc-arm-none-eabi/arm-none-eabi/include/_newlib_version.h</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>gcc-arm-none-eabi/arm-none-eabi/include/_newlib_version.h
+</code></pre></div>
 <p>And <a href="https://github.com/apache/nuttx/pull/7284/commits/518b0eb31cb66f25b590ae9a79ab16c319b96b94#diff-12291efd8a0ded1bc38bad733d99e4840ae5112b465c04287f91ba5169612c73"><strong>apply this patch</strong></a>.</p>
 </li>
 </ol>
@@ -245,9 +251,11 @@ to <strong>Off</strong>.</p>
 </li>
 <li>
 <p>To see the available commands in NuttShell…</p>
-<div class="example-wrap"><pre class="language-bash"><code>help</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>help
+</code></pre></div>
 <p>To run the <a href="https://lupyuen.github.io/articles/fb#lvgl-graphics-library"><strong>LVGL Demo App</strong></a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>lvgldemo widgets</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>lvgldemo widgets
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/images/fb-lvgl3.jpg">(We should see this)</a></p>
 </li>
 </ol>

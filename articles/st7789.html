@@ -136,7 +136,8 @@
 
 #define BOARD_LCD_RST (GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO | GPIO_PIN4)
 #define BOARD_LCD_BL  (GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO | GPIO_PIN5)
-#endif  /* CONFIG_LCD_ST7789 */</code></pre></div>
+#endif  /* CONFIG_LCD_ST7789 */
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/expander#pin-functions">(Which pins can be used? See this)</a></p>
 <p><em>What if we’re connecting to ESP32-C3?</em></p>
 <p><strong>For ESP32-C3:</strong> The SPI Pins are defined in <a href="https://github.com/lupyuen/nuttx/blob/st7789/arch/risc-v/src/esp32c3/Kconfig#L467-L485">Kconfig</a> and menuconfig…</p>
@@ -150,7 +151,8 @@ config ESP32C3_SPI2_MOSIPIN
 	default 7
 
 config ESP32C3_SPI2_MISOPIN
-	default 2</code></pre></div>
+	default 2
+</code></pre></div>
 <p>The Reset and Backlight Pins are also defined in <a href="https://github.com/lupyuen/nuttx/blob/st7789/boards/risc-v/esp32c3/esp32c3-devkit/Kconfig#L119-L129">Kconfig</a> and menuconfig…</p>
 <div class="example-wrap"><pre class="language-text"><code>config ESP32C3_LCD_RSTPIN
 	int &quot;LCD reset pin&quot;
@@ -158,14 +160,16 @@ config ESP32C3_SPI2_MISOPIN
 
 config ESP32C3_LCD_BLPIN
 	int &quot;LCD backlight pin&quot;
-	default 18</code></pre></div>
+	default 18
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/st7789/boards/risc-v/esp32c3/esp32c3-devkit/src/esp32c3_st7789.c#L45-L48">(ESP32-C3 pins are referenced here)</a></p>
 <h1 id="download-source-code"><a href="#download-source-code">2 Download Source Code</a></h1>
 <p>To run ST7789 Display and LVGL Library on NuttX, download the modified source code for <strong>NuttX OS and NuttX Apps</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
 git clone --recursive --branch st7789 https://github.com/lupyuen/nuttx nuttx
-git clone --recursive --branch st7789 https://github.com/lupyuen/nuttx-apps apps</code></pre></div>
+git clone --recursive --branch st7789 https://github.com/lupyuen/nuttx-apps apps
+</code></pre></div>
 <p>(We’ll cover the modifications in the following sections)</p>
 <p>Or if we have an <strong>existing NuttX Project,</strong> apply the following patches for ST7789 Display…</p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features">(<strong>For PineDio Stack BL604:</strong> The patches are already preinstalled)</a></p>
@@ -246,7 +250,8 @@ static uint32_t bl602_spi_poll_send(struct bl602_spi_priv_s *priv, uint32_t wd) 
   putreg32(wd, BL602_SPI_FIFO_WDATA);
 
   //  Wait for Receive FIFO and receive data
-  while (0 == tmp_val) { ... }</code></pre></div>
+  while (0 == tmp_val) { ... }
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/st7789/arch/risc-v/src/bl602/bl602_spi.c#L806-L839">(Source)</a></p>
 <p>After fixing, we verify with a <a href="https://lupyuen.github.io/images/st7789-probe.jpg"><strong>Logic Analyser</strong></a> that SPI Poll Send transmits data correctly to ST7789…</p>
 <p><img src="https://lupyuen.github.io/images/st7789-logic3.png" alt="SPI Poll Send transmits SPI Data correctly" /></p>
@@ -267,7 +272,8 @@ static uint32_t bl602_spi_poll_send(struct bl602_spi_priv_s *priv, uint32_t wd) 
   #ifndef CONFIG_LCD_ST7789_SPIMODE
   #define CONFIG_LCD_ST7789_SPIMODE SPIDEV_MODE0
   #endif  //  CONFIG_LCD_ST7789_SPIMODE
-#endif    //  CONFIG_BL602_SPI0</code></pre></div>
+#endif    //  CONFIG_BL602_SPI0
+</code></pre></div>
 <p>We’ve seen this behaviour with ST7789 and BL602 IoT SDK, so it’s probably a <strong>quirk in BL602’s SPI Port</strong>, not in the ST7789 Driver.</p>
 <p><strong>UPDATE:</strong> BL602 talks to ST7789 in SPI Mode 1 or Mode 3, depending on whether the MISO / MOSI Pins are swapped. <a href="https://lupyuen.github.io/articles/pinedio2#st7789-spi-mode">(See this)</a></p>
 <p><img src="https://lupyuen.github.io/images/st7789-code4.png" alt="BL602 talks to ST7789 only in SPI Mode 3" /></p>
@@ -313,7 +319,8 @@ int bl602_bringup(void) {
   }
 #endif  //  CONFIG_LCD_DEV
   return ret;
-}</code></pre></div>
+}
+</code></pre></div>
 <p><strong>bl602_bringup</strong> is called by NuttX during startup to load NuttX Drivers…</p>
 <ul>
 <li>
@@ -363,7 +370,8 @@ int board_lcd_initialize(void) {
   bl602_configgpio(BOARD_LCD_BL);       //  Configure Backlight as GPIO Pin
   bl602_gpiowrite(BOARD_LCD_BL, true);  //  Set to High
   return OK;
-}</code></pre></div>
+}
+</code></pre></div>
 <p>Inside this function we…</p>
 <ul>
 <li>
@@ -396,7 +404,8 @@ FAR struct lcd_dev_s *board_lcd_getdev(int devno) {
   }
   return NULL;
 }
-#endif  //  CONFIG_LCD_ST7789</code></pre></div>
+#endif  //  CONFIG_LCD_ST7789
+</code></pre></div>
 <p>(We’ll see <strong>st7789_lcdinitialize</strong> later)</p>
 <p>We <strong>initialise the ST7789 Driver</strong> and return it to <a href="https://github.com/lupyuen/nuttx/blob/st7789/drivers/lcd/lcd_dev.c#L305-L353"><strong>lcddev_register</strong></a>…</p>
 <p>Which will <strong>wrap the ST7789 Driver</strong> inside our LCD Driver “<strong>/dev/lcd0</strong>”.</p>
@@ -438,7 +447,8 @@ FAR struct lcd_dev_s *st7789_lcdinitialize(FAR struct spi_dev_s *spi) {
   st7789_fill(priv, 0xAAAA);
 
   //  Previously: Fill the screen with white
-  //  st7789_fill(priv, 0xFFFF);</code></pre></div>
+  //  st7789_fill(priv, 0xFFFF);
+</code></pre></div>
 <p>Recalls that <strong>st7789_lcdinitialize</strong> is called by <a href="https://lupyuen.github.io/articles/st7789#st7789-driver"><strong>board_lcd_getdev</strong></a> during NuttX startup.</p>
 <p>This function initialises the ST7789 Display. We changed the last line so that it <strong>fills the screen with pink</strong>. (Colour value AAAA)</p>
 <p>Let’s talk about AAAA…</p>
@@ -479,12 +489,14 @@ FAR struct lcd_dev_s *st7789_lcdinitialize(FAR struct spi_dev_s *spi) {
 </li>
 <li>
 <p>At the NuttX Shell, enter this command to list the <strong>NuttX Devices</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>ls /dev
+</code></pre></div></li>
 <li>
 <p>We should see our <strong>LCD Device “/dev/lcd0”</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>/dev:
  lcd0
- ...</code></pre></div>
+ ...
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/st7789-nuttx#boot-nuttx">(See the complete log)</a></p>
 </li>
 <li>
@@ -527,7 +539,8 @@ int main(int argc, FAR char *argv[]) {
   lv_disp_buf_init(&amp;disp_buf, buffer1, buffer2, DISPLAY_BUFFER_SIZE);
   lv_disp_drv_init(&amp;disp_drv);
   disp_drv.buffer     = &amp;disp_buf;
-  disp_drv.monitor_cb = monitor_cb;</code></pre></div>
+  disp_drv.monitor_cb = monitor_cb;
+</code></pre></div>
 <p>The app begins by <a href="https://docs.lvgl.io/7.11/get-started/quick-overview.html#add-lvgl-into-your-project"><strong>initialising the LVGL Library</strong></a>.</p>
 <p>NuttX supports 2 ways to access the display…</p>
 <ul>
@@ -548,18 +561,21 @@ int main(int argc, FAR char *argv[]) {
   }
 
   //  Register the display driver
-  lv_disp_drv_register(&amp;disp_drv);</code></pre></div>
+  lv_disp_drv_register(&amp;disp_drv);
+</code></pre></div>
 <p>For ST7789 we’ll use the <strong>LCD Driver</strong>.</p>
 <p>Then we render some <a href="https://docs.lvgl.io/7.11/get-started/quick-overview.html#widgets"><strong>LVGL Widgets</strong></a> (UI controls)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Render the widgets
-  lv_demo_widgets();</code></pre></div>
+  lv_demo_widgets();
+</code></pre></div>
 <p>(We’ll see <strong>lv_demo_widgets</strong> later)</p>
 <p>And we loop forever handling <a href="https://docs.lvgl.io/7.11/get-started/quick-overview.html#events"><strong>LVGL Events</strong></a> (like for display updates)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Loop forever handling LVGL tasks
   while (1) {
     lv_task_handler();  //  Handle LVGL tasks
     usleep(10000);      //  Sleep 10 milliseconds
-  }</code></pre></div>
+  }
+</code></pre></div>
 <p>Let’s run this!</p>
 <p><img src="https://lupyuen.github.io/images/st7789-code5a.png" alt="LVGL Demo App" /></p>
 <h1 id="run-lvgl-demo"><a href="#run-lvgl-demo">10 Run LVGL Demo</a></h1>
@@ -571,7 +587,8 @@ int main(int argc, FAR char *argv[]) {
 </li>
 <li>
 <p>At the NuttX Shell, enter this command to run the <strong>LVGL Demo App</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>lvgldemo</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>lvgldemo
+</code></pre></div></li>
 <li>
 <p>We see that the app <strong>initialises the ST7789 Display</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>fbdev_init: Failed to open /dev/fb0: 2
@@ -582,7 +599,8 @@ lcddev_init: VideoInfo:
   yres: 240
   nplanes: 1
 lcddev_init: PlaneInfo (plane 0):
-  bpp: 16</code></pre></div>
+  bpp: 16
+</code></pre></div>
 <p>The app says it can’t open the Frame Buffer Driver “/dev/fb0”. But that’s OK because it uses the LCD Driver “/dev/lcd0”.</p>
 </li>
 <li>
@@ -591,7 +609,8 @@ lcddev_init: PlaneInfo (plane 0):
 st7789_putarea: row_start: 20 row_end: 39 col_start: 0 col_end: 239
 ...
 st7789_putarea: row_start: 220 row_end: 239 col_start: 0 col_end: 239
-monitor_cb: 57600 px refreshed in 1100 ms</code></pre></div>
+monitor_cb: 57600 px refreshed in 1100 ms
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/st7789-nuttx#run-lvgl-demo">(See the complete log)</a></p>
 <p><a href="https://github.com/apache/nuttx/pull/6657#issuecomment-1200094716">(<strong>UPDATE:</strong> We now call <strong>putrun</strong> instead of <strong>putarea</strong>)</a></p>
 </li>
@@ -616,7 +635,8 @@ void lv_demo_widgets(void) {
   controls_create(t1);
   visuals_create(t2);
   selectors_create(t3);
-}</code></pre></div>
+}
+</code></pre></div>
 <p>The Demo Screen looks overcrowded for a tiny display, but we can make out 3 tabs: <strong>“Controls”, “Visuals” and “Selectors”</strong>.</p>
 <p>The app renders the 3 tabs by creating a <a href="https://docs.lvgl.io/7.11/widgets/tabview.html"><strong>Tab View Widget</strong></a>.</p>
 <p><strong>controls_create</strong> populates the Controls Tab with a <a href="https://docs.lvgl.io/7.11/widgets/msgbox.html"><strong>Message Box Widget</strong></a> (and other widgets) like so: <a href="https://github.com/lvgl/lv_demos/blob/v7.3.0/src/lv_demo_widgets/lv_demo_widgets.c#L108-L203">lv_demo_widgets.c</a></p>
@@ -630,7 +650,8 @@ static void controls_create(lv_obj_t * parent) {
   static const char * btns[] = {&quot;Cancel&quot;, &quot;Ok&quot;, &quot;&quot;};
 
   //  Add the buttons to the Message Box
-  lv_msgbox_add_btns(m, btns);</code></pre></div>
+  lv_msgbox_add_btns(m, btns);
+</code></pre></div>
 <p>Check out the <strong>LVGL Docs</strong> to get started on writing our own LVGL App…</p>
 <ul>
 <li><a href="https://docs.lvgl.io/7.11/get-started/quick-overview.html"><strong>“LVGL Quick Overview”</strong></a></li>
@@ -642,37 +663,38 @@ static void controls_create(lv_obj_t * parent) {
 <li>Application Configuration → Graphics Support → Light and Versatile Graphic Library (LVGL) → LVGL Version</li>
 </ul>
 <p>After setting the LVGL Version, be sure to <strong>delete all downloaded versions</strong> of LVGL before building NuttX…</p>
-<div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the path of our &quot;nuttx&quot; folder
+<div class="example-wrap"><pre class="language-bash"><code>## TODO: Change this to the path of our &quot;nuttx&quot; folder
 cd nuttx/nuttx
 
-# Preserve the Build Config
+## Preserve the Build Config
 cp .config ../config
 
-# Erase the build files
+## Erase the build files
 make clean
 
-# Erase the Build Config and Kconfig files
+## Erase the Build Config and Kconfig files
 make distclean
 
-# For BL602: Configure the build for BL602
+## For BL602: Configure the build for BL602
 ./tools/configure.sh bl602evb:nsh
 
-# For PineDio Stack BL604: Configure the build for BL604
+## For PineDio Stack BL604: Configure the build for BL604
 ./tools/configure.sh bl602evb:pinedio
 
-# For ESP32: Configure the build for ESP32.
-# TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
+## For ESP32: Configure the build for ESP32.
+## TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
 ./tools/configure.sh esp32-devkitc:nsh
 
-# Restore the Build Config
+## Restore the Build Config
 cp ../config .config
 
-# Erase all downloaded versions of LVGL
+## Erase all downloaded versions of LVGL
 rm ../apps/graphics/lvgl/v7*.zip
 rm ../apps/graphics/lvgl/v8*.zip
 
-# Build NuttX
-make</code></pre></div>
+## Build NuttX
+make
+</code></pre></div>
 <p>NuttX is currently bundled with <strong>LVGL Version 7.3.0</strong>.</p>
 <p>But the latest version of LVGL is <strong>8.2.0</strong>.</p>
 <p>And LVGL 8 is <strong>not backward compatible</strong> with LVGL 7. These are the breaking changes…</p>
@@ -690,7 +712,8 @@ Archive:  v8.2.0.zip
   latter case the central directory and zipfile comment will be found on
   the last disk(s) of this archive.
 unzip:  cannot find zipfile directory in one of v8.2.0.zip or
-        v8.2.0.zip.zip, and cannot find v8.2.0.zip.ZIP, period.</code></pre></div>
+        v8.2.0.zip.zip, and cannot find v8.2.0.zip.ZIP, period.
+</code></pre></div>
 <p>It seems the NuttX Build needs to be fixed to support LVGL 8. </p>
 <p><em>LVGL 7.11.0 is the last version of LVGL 7. What happens if we switch to LVGL 7.11.0?</em></p>
 <p>NuttX Build fails when we switch to <strong>LVGL 7.11.0</strong>…</p>
@@ -698,7 +721,8 @@ unzip:  cannot find zipfile directory in one of v8.2.0.zip or
  #define LV_COLOR_TRANSP    ((lv_color_t){.full = (CONFIG_LV_COLOR_TRANSP)})
                                                   ^
 nuttx/apps/graphics/lvgl/lvgl/src/lv_core/../lv_draw/lv_img_buf.h:351:25: note: in expansion of macro &#39;LV_COLOR_TRANSP&#39;
-         lv_color_t ct = LV_COLOR_TRANSP;</code></pre></div>
+         lv_color_t ct = LV_COLOR_TRANSP;
+</code></pre></div>
 <p>We might need to identify the latest version of LVGL 7 that works with NuttX.</p>
 <p><img src="https://lupyuen.github.io/images/pinedio-spi2.jpg" alt="Shared SPI Bus on PineDio Stack BL604" /></p>
 <p><a href="https://lupyuen.github.io/articles/pinedio#bl604-spi">(Source)</a></p>
@@ -712,7 +736,8 @@ nuttx/apps/graphics/lvgl/lvgl/src/lv_core/../lv_draw/lv_img_buf.h:351:25: note: 
 //  Chip Select Pin from High to Low
 static void bl602_spi_select(struct spi_dev_s *dev, uint32_t devid, bool selected) {
   //  Nothing here, we use BL602&#39;s 
-  //  Hardware Chip Select</code></pre></div>
+  //  Hardware Chip Select
+</code></pre></div>
 <p>We might change this to flip the Chip Select Pin ourselves.</p>
 <p>(<strong>devid</strong> will identify the SPI Device)</p>
 <p><strong>UPDATE:</strong> We have implemented the Shared SPI Bus for PineDio Stack. <a href="https://lupyuen.github.io/articles/pinedio2#appendix-shared-spi-bus">(See this)</a></p>
@@ -726,7 +751,8 @@ static int bl602_spi_lock(struct spi_dev_s *dev, bool lock) {
     ret = nxsem_wait_uninterruptible(&amp;priv-&gt;exclsem);
   } else {
     ret = nxsem_post(&amp;priv-&gt;exclsem); 
-  }</code></pre></div>
+  }
+</code></pre></div>
 <p>…Before calling <strong>bl602_spi_select</strong> to select the SPI Device.</p>
 <p>So we need to flip the Chip Select Pin inside <strong>bl602_spi_select</strong>.</p>
 <p><em>ST7789 receives plenty of data on the SPI Bus (for screen updates). Will there be contention?</em></p>
@@ -801,7 +827,8 @@ int esp32c3_spi2_cmddata(FAR struct spi_dev_s *dev, uint32_t devid, bool cmd)
   return -ENODEV;
 }
 
-#endif</code></pre></div>
+#endif
+</code></pre></div>
 <p>To implement this on BL602, we reconfigure MISO from SPI Pin to GPIO Pin on the fly: <a href="https://github.com/lupyuen/nuttx/blob/st7789/arch/risc-v/src/bl602/bl602_spi.c#L679-L748">bl602_spi.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_SPI_CMDDATA
 static int bl602_spi_cmddata(struct spi_dev_s *dev,
@@ -843,7 +870,8 @@ static int bl602_spi_cmddata(struct spi_dev_s *dev,
 
   return -ENODEV;
 }
-#endif</code></pre></div>
+#endif
+</code></pre></div>
 <p>Note that <code>BOARD_SPI_MISO &amp; GPIO_PIN_MASK</code> preserves the MISO GPIO Number when reconfiguring from SPI Pin to GPIO Pin.</p>
 <p>When the SPI Port is deselected (after the SPI operation), we revert MISO back from GPIO Pin to SPI Pin: <a href="https://github.com/lupyuen/nuttx/blob/st7789/arch/risc-v/src/bl602/bl602_spi.c#L415-L453">bl602_spi.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static void bl602_spi_select(struct spi_dev_s *dev, uint32_t devid, bool selected) {
@@ -856,7 +884,8 @@ static int bl602_spi_cmddata(struct spi_dev_s *dev,
       bl602_configgpio(BOARD_SPI_MISO);
     }
 #endif
-}</code></pre></div>
+}
+</code></pre></div>
 <p>We must revert because the SPI Bus may be shared by other SPI Drivers. (Like the Semtech SX1262 Driver on PineDio Stack BL604)</p>
 <p>We tested this implementation of SPI Cmd/Data with NuttX ST7789 Driver and a <a href="https://lupyuen.github.io/images/st7789-probe.jpg"><strong>Logic Analyser</strong></a> on PineCone BL602. Logic Analyser shows that MISO goes Low when transmitting ST7789 Commands…</p>
 <p><img src="https://lupyuen.github.io/images/st7789-logic1.png" alt="MISO goes Low when transmitting ST7789 Commands" /></p>
@@ -894,7 +923,8 @@ static int bl602_spi_cmddata(struct spi_dev_s *dev,
       tmp_val = getreg32(BL602_SPI_FIFO_CFG_1);
       tmp_val = (tmp_val &amp; SPI_FIFO_CFG_1_RX_CNT_MASK)
                 &gt;&gt; SPI_FIFO_CFG_1_RX_CNT_SHIFT;
-    }</code></pre></div>
+    }
+</code></pre></div>
 <p>This problem affects the NuttX ST7789 Driver because the ST7789 Driver calls SPI Poll Send via <code>SPI_SEND()</code> and <code>bl602_spi_send()</code>.</p>
 <p>We fix this problem by moving the code that enables SPI Master and clears the FIFO, from SPI Poll Exchange <code>bl602_spi_poll_exchange()</code> to SPI Poll Send. (Note that SPI Poll Exchange calls SPI Poll Send)</p>
 <p>Before fixing, SPI Poll Send looks like this: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L779-L803">bl602_spi.c</a></p>
@@ -910,7 +940,8 @@ static int bl602_spi_cmddata(struct spi_dev_s *dev,
   while (0 == tmp_val)
     {
       /* get data from rx fifo */
-      ...</code></pre></div>
+      ...
+</code></pre></div>
 <p>After fixing, SPI Poll Send enables SPI Master and clears SPI FIFO: <a href="https://github.com/lupyuen/nuttx/blob/st7789/arch/risc-v/src/bl602/bl602_spi.c#L806-L839">bl602_spi.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static uint32_t bl602_spi_poll_send(struct bl602_spi_priv_s *priv, uint32_t wd)
 {
@@ -933,7 +964,8 @@ static int bl602_spi_cmddata(struct spi_dev_s *dev,
   while (0 == tmp_val)
     {
       /* get data from rx fifo */
-      ...</code></pre></div>
+      ...
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/images/st7789-probe.jpg"><strong>Logic Analyser</strong></a> shows that SPI Poll Send now transmits SPI Data correctly:</p>
 <p><img src="https://lupyuen.github.io/images/st7789-logic3.png" alt="SPI Poll Send transmits SPI Data correctly" /></p>
 <p>Note that the MOSI Pin shows the correct data. Before fixing, the data was missing.</p>
@@ -960,18 +992,19 @@ static int bl602_spi_cmddata(struct spi_dev_s *dev,
 <p>Configure the build…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx
 
-# For BL602: Configure the build for BL602
+## For BL602: Configure the build for BL602
 ./tools/configure.sh bl602evb:nsh
 
-# For PineDio Stack BL604: Configure the build for BL604
+## For PineDio Stack BL604: Configure the build for BL604
 ./tools/configure.sh bl602evb:pinedio
 
-# For ESP32: Configure the build for ESP32.
-# TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
+## For ESP32: Configure the build for ESP32.
+## TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
 ./tools/configure.sh esp32-devkitc:nsh
 
-# Edit the Build Config
-make menuconfig </code></pre></div></li>
+## Edit the Build Config
+make menuconfig 
+</code></pre></div></li>
 <li>
 <p>Enable <strong>SPI Port</strong>…</p>
 <p>In <strong>menuconfig</strong>, select <strong>“System Type”</strong></p>
@@ -985,7 +1018,8 @@ make menuconfig </code></pre></div></li>
 <p>Check the boxes for the following…</p>
 <div class="example-wrap"><pre class="language-text"><code>SPI Exchange
 SPI CMD/DATA
-SPI Character Driver</code></pre></div>
+SPI Character Driver
+</code></pre></div>
 <p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
 <p><img src="https://lupyuen.github.io/images/st7789-config1.png" alt="Enable SPI Cmd/Data" /></p>
 </li>
@@ -1060,7 +1094,8 @@ Graphics Informational Output
 Low-level LCD Debug Features
 LCD Driver Error Output
 LCD Driver Warnings Output
-LCD Driver Informational Output</code></pre></div>
+LCD Driver Informational Output
+</code></pre></div>
 <p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
 </li>
 <li>
@@ -1073,19 +1108,22 @@ LCD Driver Informational Output</code></pre></div>
 <ol>
 <li>
 <p>To build NuttX, enter this command…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>make
+</code></pre></div></li>
 <li>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>LD: nuttx
 CP: nuttx.hex
-CP: nuttx.bin</code></pre></div>
+CP: nuttx.bin
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/8f725c278c25e209c1654469a2855746">(See the complete log for BL602 / BL604)</a></p>
 </li>
 <li>
 <p><strong>For WSL:</strong> Copy the <strong>NuttX Firmware</strong> to the <strong>c:\blflash</strong> directory in the Windows File System…</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  /mnt/c/blflash refers to c:\blflash in Windows
+<div class="example-wrap"><pre class="language-bash"><code>##  /mnt/c/blflash refers to c:\blflash in Windows
 mkdir /mnt/c/blflash
-cp nuttx.bin /mnt/c/blflash</code></pre></div>
+cp nuttx.bin /mnt/c/blflash
+</code></pre></div>
 <p>For WSL we need to run <strong>blflash</strong> under plain old Windows CMD (not WSL) because it needs to access the COM port.</p>
 </li>
 <li>
@@ -1158,18 +1196,19 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 </li>
 </ol>
 <p>Enter these commands to flash <strong>nuttx.bin</strong> to BL602 / BL604 over UART…</p>
-<div class="example-wrap"><pre class="language-bash"><code># For Linux: Change &quot;/dev/ttyUSB0&quot; to the BL602 / BL604 Serial Port
+<div class="example-wrap"><pre class="language-bash"><code>## For Linux: Change &quot;/dev/ttyUSB0&quot; to the BL602 / BL604 Serial Port
 blflash flash nuttx.bin \
   --port /dev/ttyUSB0 
 
-# For macOS: Change &quot;/dev/tty.usbserial-1410&quot; to the BL602 / BL604 Serial Port
+## For macOS: Change &quot;/dev/tty.usbserial-1410&quot; to the BL602 / BL604 Serial Port
 blflash flash nuttx.bin \
   --port /dev/tty.usbserial-1410 \
   --initial-baud-rate 230400 \
   --baud-rate 230400
 
-# For Windows: Change &quot;COM5&quot; to the BL602 / BL604 Serial Port
-blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
+## For Windows: Change &quot;COM5&quot; to the BL602 / BL604 Serial Port
+blflash flash c:\blflash\nuttx.bin --port COM5
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
 <p>For WSL: Do this under plain old Windows CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
 <p><a href="https://github.com/apache/nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
@@ -1177,7 +1216,8 @@ blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
 <h2 id="run-nuttx"><a href="#run-nuttx">18.4 Run NuttX</a></h2>
 <p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
-<div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0
+</code></pre></div>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>
 <p><strong>For BL602 / BL604:</strong> Set BL602 / BL604 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
 <p><strong>For PineDio Stack BL604:</strong></p>
@@ -1217,13 +1257,15 @@ blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 </ol>
 <p>After restarting, connect to BL602 / BL604’s UART Port at 2 Mbps like so…</p>
 <p><strong>For Linux:</strong></p>
-<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000
+</code></pre></div>
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p>Press Enter to reveal the <strong>NuttX Shell</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
-nsh&gt;</code></pre></div>
+nsh&gt;
+</code></pre></div>
 <p>Congratulations NuttX is now running on BL602 / BL604!</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(More details on connecting to BL602 / BL604)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>

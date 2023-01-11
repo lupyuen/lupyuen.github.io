@@ -144,7 +144,8 @@ int pinephone_lcd_backlight_enable(
   uint32_t percent  // Brightness percentage, typically 90
 ) {
   // Configure PL10 for PWM
-  a64_pio_config(LCD_PWM);  // LCD_PWM is PL10</code></pre></div>
+  a64_pio_config(LCD_PWM);  // LCD_PWM is PL10
+</code></pre></div>
 <p>We begin by configuring <strong>PL10 for PWM</strong>.</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L91-L253">(<strong>a64_pio_config</strong> comes from our NuttX PIO Driver)</a></p>
 <p>Next we disable PWM through the <strong>R_PWM Port</strong> on Allwinner A64…</p>
@@ -155,7 +156,8 @@ int pinephone_lcd_backlight_enable(
     0,                // Set these bits
     SCLK_CH0_GATING,  // Mask these bits
     R_PWM_CTRL_REG    // Register Address
-  );</code></pre></div>
+  );
+</code></pre></div>
 <p>The <strong>R_PWM Port</strong> isn’t documented in the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>.</p>
 <p>But thanks to <a href="https://lupyuen.github.io/articles/de#appendix-display-backlight"><strong>Reverse-Engineering</strong></a>, we figured out how it works: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L88-L103">pinephone_lcd.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // R_PWM Control Register (Undocumented)
@@ -169,7 +171,8 @@ int pinephone_lcd_backlight_enable(
   // Assume same as PWM Channel 0 Period Register (A64 Page 195)
   #define R_PWM_CH0_PERIOD          (A64_RPWM_ADDR + 4)
   #define PWM_CH0_ENTIRE_ACT_CYS(n) ((n) &lt;&lt; 0)
-  #define PWM_CH0_ENTIRE_CYS(n)     ((n) &lt;&lt; 16)</code></pre></div>
+  #define PWM_CH0_ENTIRE_CYS(n)     ((n) &lt;&lt; 16)
+</code></pre></div>
 <p>Then we set the <strong>PWM Period and Duty Cycle</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L845-L921">pinephone_lcd.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // R_PWM Channel 0 Period Register (Undocumented)
   // Assume same as PWM Channel 0 Period Register (A64 Page 195)
@@ -183,7 +186,8 @@ int pinephone_lcd_backlight_enable(
   putreg32(           // Write to Register...
     period,           // Register Value
     R_PWM_CH0_PERIOD  // Register Address
-  );</code></pre></div>
+  );
+</code></pre></div>
 <p>Finally we <strong>enable PWM</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // R_PWM Control Register (Undocumented)
   // Assume same as PWM Control Register (A64 Page 194)
@@ -196,7 +200,8 @@ int pinephone_lcd_backlight_enable(
   putreg32(         // Write to Register...
     ctrl,           // Register Value
     R_PWM_CTRL_REG  // Register Address
-  );</code></pre></div>
+  );
+</code></pre></div>
 <p>One last thing: We configure <strong>PH10 for Output</strong> and set it to High…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Configure PH10 for Output
   a64_pio_config(LCD_BL_EN);  // LCD_BL_EN is PH10
@@ -204,7 +209,8 @@ int pinephone_lcd_backlight_enable(
   // Set PH10 to High
   a64_pio_write(LCD_BL_EN, true);
   return OK;
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L254-L299">(<strong>a64_pio_write</strong> comes from our NuttX PIO Driver)</a></p>
 <p>This enables the <a href="https://www.diodes.com/assets/Datasheets/products_inactive_data/AP3127_H.pdf"><strong>AP3127 PWM Controller</strong></a>. And switches on the LCD Backlight! (Pic above)</p>
 <p>Now that the Backlight is on, let’s reset the LCD Panel and prepare for action…</p>
@@ -249,7 +255,8 @@ int pinephone_lcd_panel_reset(
   // Set PD23 to High or Low
   a64_pio_write(LCD_RESET, val);
   return OK;
-}</code></pre></div>
+}
+</code></pre></div>
 <p>The code above configures <strong>PD23 for Output</strong>, and sets PD23 to High or Low.</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L91-L253">(<strong>a64_pio_config</strong> comes from our NuttX PIO Driver)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L254-L299">(<strong>a64_pio_write</strong> too)</a></p>
@@ -286,7 +293,8 @@ int pinephone_pmic_init(void) {
     OUTPUT_POWER_ON_OFF_CONTROL2,  // Set these bits
     0,                             // Clear these bits
     DLDO1_ON_OFF_CONTROL           // PMIC Register
-  );</code></pre></div>
+  );
+</code></pre></div>
 <p><strong>DLDO1 Power Output</strong> on the PMIC powers the <strong>Front Camera, USB HSIC and I2C Sensors</strong> on PinePhone.</p>
 <p>In the code above, we set <strong>DLDO1 Voltage to 3.3V</strong> and power it on.</p>
 <p>(We’ll talk about <strong>pmic_write</strong> and <strong>pmic_clrsetbits</strong> in a while)</p>
@@ -308,7 +316,8 @@ int pinephone_pmic_init(void) {
   pmic_write(  // Write to PMIC Register...
     GPIO0_CONTROL,            // PMIC Register
     GPIO0_PIN_FUNCTION(0b11)  // PMIC Value
-  );</code></pre></div>
+  );
+</code></pre></div>
 <p>Next comes the LCD Panel: We set <strong>DLDO2 Voltage to 1.8V</strong> and power on the <strong>MIPI DSI Port</strong> of the LCD Panel…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Set DLDO2 Voltage to 1.8V.
   // DLDO2 powers the MIPI DSI Interface of Xingbangda XBD599 LCD Panel.
@@ -329,7 +338,8 @@ int pinephone_pmic_init(void) {
     DLDO2_ON_OFF_CONTROL           // PMIC Register
   );
   return OK;
-}</code></pre></div>
+}
+</code></pre></div>
 <p>Our LCD Panel is powered up and ready to receive MIPI DSI Commands!</p>
 <p>(Right after we reset LCD Panel to High)</p>
 <p><em>What are pmic_write and pmic_clrsetbits?</em></p>
@@ -355,7 +365,8 @@ static int pmic_write(
     val              // AXP803 Register Value
   );
   return OK;
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_rsb.c#L239-L293">(<strong>a64_rsb_write</strong> comes from our NuttX Driver for Reduced Serial Bus)</a></p>
 <p><strong>pmic_clrsetbits</strong> works the same way, it’s defined here: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L120-L164">pinephone_pmic.c</a></p>
 <p>Let’s move on to the ST7703 LCD Controller…</p>
@@ -392,7 +403,8 @@ static const uint8_t g_pinephone_setextc[] = {
   0xf1,  // Enable User command
   0x12,  // (Continued)
   0x83   // (Continued)
-};</code></pre></div>
+};
+</code></pre></div>
 <p>And here’s a long Initialisation Command with <strong>64 bytes</strong>: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L432-L535">pinephone_lcd.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Command #16: SETGIP1 (ST7703 Page 163)
 // Set forward GIP timing
@@ -405,7 +417,8 @@ static const uint8_t g_pinephone_setgip1[] = {
   0xa2,  // (SHR1 Bits 0-7 = 0xA2)
   0x0a,  // Distance of STV rising edge and HYSNC = 10*2 Fosc (SPON  Bits 0-7 = 0x0A)
   0xa5,  // Distance of STV falling edge and HYSNC = 165*2 Fosc (SPOFF Bits 0-7 = 0xA5)
-  ...</code></pre></div>
+  ...
+</code></pre></div>
 <p>We need to send all 20 Initialisation Commands as documented here…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller"><strong>“Initialise LCD Controller”</strong></a></li>
@@ -435,7 +448,8 @@ int pinephone_lcd_panel_init(void) {
     write_dcs(cmd, len);
   }
   return OK;
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L780-L840">(<strong>write_dcs</strong> is defined here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet">(How it works)</a></p>
 <p><em>What’s g_pinephone_commands?</em></p>
@@ -445,7 +459,8 @@ static const struct pinephone_cmd_s g_pinephone_commands[] = {
   { g_pinephone_setextc,      sizeof(g_pinephone_setextc) },
   { g_pinephone_setmipi,      sizeof(g_pinephone_setmipi) },
   { g_pinephone_setpower_ext, sizeof(g_pinephone_setpower_ext) },
-  ...</code></pre></div>
+  ...
+</code></pre></div>
 <p>We’re done with the initialisation of the ST7703 LCD Controller inside our LCD Panel! Let’s render something…</p>
 <p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Complete Display Driver for PinePhone" /></p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><em>Complete Display Driver for PinePhone</em></a></p>
@@ -501,7 +516,8 @@ int up_fbinitialize(int display) {
   pinephone_pmic_init();
 
   // Wait 15 milliseconds for power supply and power-on init
-  up_mdelay(15);</code></pre></div>
+  up_mdelay(15);
+</code></pre></div>
 <p>In the code above, we begin with these steps…</p>
 <ul>
 <li>
@@ -536,7 +552,8 @@ int up_fbinitialize(int display) {
   up_mdelay(15);
 
   // Initialise ST7703 LCD Controller
-  pinephone_lcd_panel_init();</code></pre></div>
+  pinephone_lcd_panel_init();
+</code></pre></div>
 <p>Next we…</p>
 <ul>
 <li>
@@ -569,7 +586,8 @@ int up_fbinitialize(int display) {
   // Render Framebuffers with Display Engine
   render_framebuffers();
   return OK;
-}</code></pre></div>
+}
+</code></pre></div>
 <p>Finally to render graphics we…</p>
 <ul>
 <li>
