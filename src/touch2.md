@@ -665,31 +665,25 @@ Yep our __driver has limitations__, since the Touch Panel Hardware is poorly doc
 
     (So we might put on hold for now)
 
-1.  PinePhone's Touch Panel seems to trigger __too few interrupts__. [(See this)](https://lupyuen.github.io/articles/touch2#appendix-interrupt-handler-for-touch-panel)
+1.  PinePhone's Touch Panel seems to trigger __too few interrupts__. [(See this)](https://lupyuen.github.io/articles/touch2#too-few-interrupts)
 
     Again we'll have to decipher the (still undocumented) [__Official Android Driver__](https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c) to fix this.
 
+1.  Every __`read()`__ forces an __I2C Read AND Write__.
+
+    This feels expensive. We should fix this with our Interrupt Handler.
+
+    [(After fixing our Interrupt Handler)](https://lupyuen.github.io/articles/touch2#too-few-interrupts)
+
 1.  Note to Future Self: __`poll()`__ won't work correctly for awaiting Touch Points!
 
-    That's because we throttle the [__Touch Panel Interrupts__](https://lupyuen.github.io/articles/touch2#handle-interrupts-from-touch-panel). When we block on a __`poll()`__ for Touch Points, the interrupts might get dropped and the unblock might never happen.
+    That's because the Touch Panel won't generate interrupts for every Touch Point. [(See this)](https://lupyuen.github.io/articles/touch2#too-few-interrupts)
 
-    [(More about polling)](https://lupyuen.github.io/articles/touch2#setup-poll-for-touch-sample)
+    [(More about the Poll Setup)](https://lupyuen.github.io/articles/touch2#setup-poll-for-touch-sample)
 
 1.  The [__LVGL Demo__](https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver) doesn't call __`poll()`__, it only calls non-blocking __`read()`__.
 
     So we're good for now.
-
-1.  We have __Duplicate Touch Down / Touch Up Events__. [(See the log)](https://gist.github.com/lupyuen/52bd626001f94e279c736979e074aac9)
-
-    The Touch Panel seems to be producing Touch Up Events. We might need to remove the [__Simulated Touch Up Event__](https://lupyuen.github.io/articles/touch2#read-a-touch-sample).
-
-    [(We added the logs here)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/touch2/graphics/lvgl/port/lv_port_touchpad.c#L83-L99)
-
-_Maybe we didn't set the Touch Panel Status correctly? Causing the Excessive Interrupts?_
-
-We checked that the __Touch Panel Status__ was correctly set to 0 after every interrupt. Yet we're still receiving Excessive Interrupts. [(See this)](https://gist.github.com/lupyuen/726110f8d24416584fe232330ffb1683)
-
-[(But why does Status `0x81` change to `0x80`, instead of 0?)](https://gist.github.com/lupyuen/726110f8d24416584fe232330ffb1683)
 
 # What's Next
 
