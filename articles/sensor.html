@@ -163,8 +163,7 @@ fn test_sensor() !void {
   const fd = c.open(
     &quot;/dev/uorb/sensor_baro0&quot;,  // Path of Sensor Device
     c.O_RDONLY | c.O_NONBLOCK    // Open for read-only
-  );
-</code></pre></div>
+  );</code></pre></div>
 <p><strong><code>open()</code></strong> should look familiar… On Linux we open Devices the same way.</p>
 <p><em>What’s “<code>!void</code>”?</em></p>
 <p>That’s the <strong>Return Type</strong> of our function…</p>
@@ -189,15 +188,13 @@ fn test_sensor() !void {
       .{ c.strerror(errno()) }
     );
     return error.OpenError;
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p>If the Sensor Device doesn’t exist, we print a Formatted Message to the <strong>Error Log</strong> and return an Error.</p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L152-L163">(<strong>OpenError</strong> is defined here)</a></p>
 <p><em>What’s “<code>{s}</code>”?</em></p>
 <p>That’s for printing a <strong>Formatted String</strong> in Zig.</p>
 <p>It’s equivalent to “<code>%s</code>” in C…</p>
-<div class="example-wrap"><pre class="language-c"><code>printf(&quot;Failed to open device:%s&quot;, strerror(errno()));
-</code></pre></div>
+<div class="example-wrap"><pre class="language-c"><code>printf(&quot;Failed to open device:%s&quot;, strerror(errno()));</code></pre></div>
 <p><em>What’s “<code>.{ ... }</code>”?</em></p>
 <p>That’s how we pass a <strong>list of Arguments</strong> when printing a Formatted Message.</p>
 <p>If we have no Arguments, we write “<code>.{}</code>”</p>
@@ -210,8 +207,7 @@ fn test_sensor() !void {
   // this function returns
   defer {
     _ = c.close(fd);
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p>When we write <strong>“<code>defer</code>”</strong>, this chunk of code will be executed <strong>when our function returns</strong>.</p>
 <p>This brilliantly solves our headache of <strong>closing the Sensor Device</strong> when we hit Errors later.</p>
 <p><em>Why the “<code>_ =</code> something”?</em></p>
@@ -231,16 +227,14 @@ fn test_sensor() !void {
     fd,                  // Sensor Device
     SNIOC_SET_INTERVAL,  // ioctl Command
     interval             // Standby Interval
-  );
-</code></pre></div>
+  );</code></pre></div>
 <p>(<strong>c_uint</strong> is equivalent to “unsigned int” in C)</p>
 <p>In case of error, we quit…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Check for error
   if (ret &lt; 0 and errno() != c.ENOTSUP) {
     std.log.err(&quot;Failed to set interval:{s}&quot;, .{ c.strerror(errno()) });
     return error.IntervalError;
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L152-L163">(<strong>IntervalError</strong> is defined here)</a></p>
 <p>Which also closes the Sensor Device. (Due to our earlier “<code>defer</code>”)</p>
 <h2 id="set-batch-latency"><a href="#set-batch-latency">2.4 Set Batch Latency</a></h2>
@@ -251,15 +245,13 @@ fn test_sensor() !void {
     fd,             // Sensor Device
     c.SNIOC_BATCH,  // ioctl Command
     latency         // Batch Latency
-  );
-</code></pre></div>
+  );</code></pre></div>
 <p>And we check for error…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Check for error
   if (ret &lt; 0 and errno() != c.ENOTSUP) {
     std.log.err(&quot;Failed to batch:{s}&quot;, .{ c.strerror(errno()) });
     return error.BatchError;
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L152-L163">(<strong>BatchError</strong> is defined here)</a></p>
 <h2 id="poll-sensor"><a href="#poll-sensor">2.5 Poll Sensor</a></h2>
 <p>After the enabling the sensor, we <strong>poll the sensor</strong> to check if Sensor Data is available…</p>
@@ -268,8 +260,7 @@ fn test_sensor() !void {
     c.struct_pollfd
   );
   fds.fd = fd;
-  fds.events = c.POLLIN;
-</code></pre></div>
+  fds.events = c.POLLIN;</code></pre></div>
 <p><strong>std.mem.zeroes</strong> creates a <strong>pollfd</strong> Struct that’s initialised with nulls.</p>
 <p>(The struct lives on the stack)</p>
 <p>After populating the struct, we poll it…</p>
@@ -280,8 +271,7 @@ fn test_sensor() !void {
   if (ret &lt;= 0) {
     std.log.err(&quot;Sensor data not available&quot;, .{});
     return error.DataError;
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p>We’re finally ready to read the Sensor Data!</p>
 <h2 id="read-sensor-data"><a href="#read-sensor-data">2.6 Read Sensor Data</a></h2>
 <p>We <strong>allocate a buffer</strong> (on the stack) to receive the Sensor Data…</p>
@@ -292,8 +282,7 @@ fn test_sensor() !void {
   // Size of the Sensor Data
   const len = @sizeOf(
     @TypeOf(sensor_data)
-  );
-</code></pre></div>
+  );</code></pre></div>
 <p><strong>std.mem.zeroes</strong> returns a <strong>sensor_baro</strong> Struct, initialised with nulls.</p>
 <p>We <strong>read the Sensor Data</strong> into the struct…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Read the Sensor Data
@@ -303,8 +292,7 @@ fn test_sensor() !void {
   if (read_len &lt; len) {
     std.log.err(&quot;Sensor data incorrect size&quot;, .{});
     return error.SizeError;
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p>And convert the Pressure and Temperature from Floating-Point to <strong>Fixed-Point Numbers</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Convert the Sensor Data 
   // to Fixed-Point Numbers
@@ -313,8 +301,7 @@ fn test_sensor() !void {
   );
   const temperature = floatToFixed(
     sensor_data.temperature
-  );
-</code></pre></div>
+  );</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data">(<strong>floatToFixed</strong> is explained here)</a></p>
 <p>Our Fixed-Point Numbers are similar to Floating-Point Numbers, but truncated to <strong>2 Decimal Places</strong>.</p>
 <p><a href="https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data">(Why we use Fixed-Point Numbers)</a></p>
@@ -332,8 +319,7 @@ fn test_sensor() !void {
 
   // Will be printed as...
   // pressure:1007.66
-  // temperature:27.70
-</code></pre></div>
+  // temperature:27.70</code></pre></div>
 <p><em>What are “int” and “frac”?</em></p>
 <p>Our Fixed-Point Number has two Integer components…</p>
 <ul>
@@ -370,8 +356,7 @@ fn test_sensor() !void {
   // this function returns
   defer {
     _ = c.close(fd);
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p>This closes the sensor automagically when we return from the function. Super handy!</p>
 <p><img src="https://lupyuen.github.io/images/sensor-code3a.png" alt="Read Barometer Sensor" /></p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L53-L145">(Source)</a></p>
@@ -386,15 +371,13 @@ fn test_sensor2() !void {
   const fd = c.open(
     &quot;/dev/uorb/sensor_humi0&quot;,  // Path of Sensor Device
     c.O_RDONLY | c.O_NONBLOCK    // Open for read-only
-  );
-</code></pre></div>
+  );</code></pre></div>
 <p>In the code above we changed the <strong>path of the Sensor Device</strong>.</p>
 <p>The Sensor Data Struct becomes <strong>sensor_humi</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Define the Sensor Data Type
   var sensor_data = std.mem.zeroes(
     c.struct_sensor_humi
-  );
-</code></pre></div>
+  );</code></pre></div>
 <p>Which contains a single value for the <strong>Humidity Sensor Data</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Read the Sensor Data
   const read_len = c.read(fd, &amp;sensor_data, len);
@@ -415,8 +398,7 @@ fn test_sensor2() !void {
   });
 
   // Will be printed as...
-  // humidity:78.81
-</code></pre></div>
+  // humidity:78.81</code></pre></div>
 <p>And we’re done!</p>
 <p><em>Where’s the list of Sensor Data Structs?</em></p>
 <p>The <strong>NuttX Sensor Data Structs</strong> are defined at…</p>
@@ -446,16 +428,14 @@ pub const c = @cImport({
   // This is equivalent to...
   // #define __NuttX__
   // #define NDEBUG
-  // #define ARCH_RISCV
-</code></pre></div>
+  // #define ARCH_RISCV</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#Import-from-C-Header-File">(<strong>@cImport</strong> is documented here)</a></p>
 <p>At the top we set the <strong>#define Macros</strong> that will be referenced by the NuttX Header Files coming up.</p>
 <p>The settings above are specific to NuttX for BL602. <a href="https://github.com/lupyuen/visual-zig-nuttx#sensor-test-app-in-c">(Because of the GCC Options)</a></p>
 <p>Next comes a workaround for a <strong>C Macro Error</strong> that appears on Zig with NuttX…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Workaround for &quot;Unable to translate macro: undefined identifier `LL`&quot;
   @cDefine(&quot;LL&quot;, &quot;&quot;);
-  @cDefine(&quot;__int_c_join(a, b)&quot;, &quot;a&quot;);  //  Bypass zig/lib/include/stdint.h
-</code></pre></div>
+  @cDefine(&quot;__int_c_join(a, b)&quot;, &quot;a&quot;);  //  Bypass zig/lib/include/stdint.h</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/iot#appendix-macro-error">(More about this)</a></p>
 <p>Then we import the <strong>C Header Files</strong> for NuttX…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // NuttX Header Files. This is equivalent to...
@@ -471,8 +451,7 @@ pub const c = @cImport({
   @cInclude(&quot;stdio.h&quot;);
   @cInclude(&quot;fcntl.h&quot;);
   @cInclude(&quot;poll.h&quot;);
-});
-</code></pre></div>
+});</code></pre></div>
 <p>“types.h” and “limits.h” are needed for NuttX compatibility. <a href="https://lupyuen.github.io/articles/iot#appendix-zig-compiler-as-drop-in-replacement-for-gcc">(See this)</a></p>
 <p>The other includes were copied from the <strong>NuttX Sensor Test App</strong> in C: <a href="https://github.com/lupyuen/nuttx-apps/blob/master/testing/sensortest/sensortest.c#L34-L42">sensortest.c</a></p>
 <p><em>What about NuttX Structs like sensor_baro and sensor_humi?</em></p>
@@ -481,8 +460,7 @@ pub const c = @cImport({
 <p><em>Why do we write “<code>c.</code>something” when we call NuttX functions? Like “c.open()”?</em></p>
 <p>Remember that we import all NuttX Functions, Types and Macros into the <strong>“<code>c</code>” Namespace</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Import Functions, Types and Macros into &quot;c&quot; Namespace
-pub const c = @cImport({ ... });
-</code></pre></div>
+pub const c = @cImport({ ... });</code></pre></div>
 <p>That’s why we write “<code>c.</code><em>something</em>” when we refer to NuttX Functions, Types and Macros.</p>
 <p><img src="https://lupyuen.github.io/images/sensor-code4a.png" alt="Main Function" /></p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L3-L51">(Source)</a></p>
@@ -499,8 +477,7 @@ const sen = @import(&quot;./sensor.zig&quot;);
 const c = sen.c;
 
 /// Import the Multi-Sensor Module
-const multi = @import(&quot;./multisensor.zig&quot;);
-</code></pre></div>
+const multi = @import(&quot;./multisensor.zig&quot;);</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig">(<strong>sensor.zig</strong> is located here)</a></p>
 <p><strong>sen.c</strong> refers to the <a href="https://lupyuen.github.io/articles/sensor#import-nuttx-functions"><strong>C Namespace</strong></a> that contains the Functions, Types and Macros imported from NuttX.</p>
 <p>(We’ll talk about the Multi-Sensor Module in a while)</p>
@@ -513,8 +490,7 @@ pub export fn sensortest_main(
 ) c_int {
 
   // Quit if no args specified
-  if (argc &lt;= 1) { usage(); return -1; }
-</code></pre></div>
+  if (argc &lt;= 1) { usage(); return -1; }</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L236-L253">(<strong>usage</strong> is defined here)</a></p>
 <p><em>Why is argv declared as “[*c]const [*c]u8”?</em></p>
 <p>That’s because…</p>
@@ -535,8 +511,7 @@ pub export fn sensortest_main(
   if (argc == 2) {
 
     // Convert the command to a Slice
-    const cmd = std.mem.span(argv[1]);
-</code></pre></div>
+    const cmd = std.mem.span(argv[1]);</code></pre></div>
 <p>Assume that “<strong>argv[1]</strong>” points to “test”, the command-line arg for our program.</p>
 <p><a href="https://ziglang.org/documentation/0.9.1/std/#root;mem.span"><strong>std.mem.span</strong></a> converts “test” to a <strong>Zig Slice</strong>.</p>
 <p>Let’s pretend a Slice works like a “String”, we’ll explain in the next section.</p>
@@ -548,8 +523,7 @@ pub export fn sensortest_main(
       test_sensor()
         catch { return -1; };
       return 0;
-    }
-</code></pre></div>
+    }</code></pre></div>
 <p>So if the command-line arg is “test”, we call <strong>test_sensor</strong> to read the Barometer Sensor. <a href="https://lupyuen.github.io/articles/sensor#read-barometer-sensor">(As seen earlier)</a></p>
 <p>If <strong>test_sensor</strong> returns an Error, the <strong>catch</strong> clause says that we quit.</p>
 <p>And if the command-line arg is “test2”…</p>
@@ -561,8 +535,7 @@ pub export fn sensortest_main(
         catch { return -1; };
       return 0;
     }
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p>We call <strong>test_sensor2</strong> to read the Humidity Sensor. <a href="https://lupyuen.github.io/articles/sensor#read-humidity-sensor">(As seen earlier)</a></p>
 <p>For other command-line args we run a <strong>Multi-Sensor Test</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Read the Sensor specified by the Command-Line Options
@@ -575,8 +548,7 @@ pub export fn sensortest_main(
     };
 
   return 0;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>(We’ll talk about Multi-Sensor Test in a while)</p>
 <p>That’s all for our Main Function!</p>
 <p><em>What’s “|err|”?</em></p>
@@ -584,8 +556,7 @@ pub export fn sensortest_main(
 <div class="example-wrap"><pre class="language-zig"><code>  multi.test_multisensor(argc, argv)
     catch |err| {
       // Do something with err
-    }
-</code></pre></div>
+    }</code></pre></div>
 <p>Then <strong>err</strong> will be set to the Error returned by <strong>test_multisensor</strong>.</p>
 <h1 id="slice-vs-string"><a href="#slice-vs-string">6 Slice vs String</a></h1>
 <p><em>Why do we need Slices? The usual Strings are perfectly splendid right?</em></p>
@@ -609,14 +580,12 @@ pub export fn sensortest_main(
 <p>(If we access the bytes beyond the bounds of the Slice, our program halts with a <a href="https://ziglang.org/documentation/master/#Index-out-of-Bounds"><strong>Runtime Panic</strong></a>)</p>
 <p>To convert a Null-Terminated String to a Slice, we call <a href="https://ziglang.org/documentation/0.9.1/std/#root;mem.span"><strong>std.mem.span</strong></a>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Convert the command-line arg to a Slice
-const slice = std.mem.span(argv[1]);
-</code></pre></div>
+const slice = std.mem.span(argv[1]);</code></pre></div>
 <p>And to compare two Slices, we call <strong>std.mem.eql</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// If the Slice is &quot;test&quot;...
 if (std.mem.eql(u8, slice, &quot;test&quot;)) {
   ...
-}
-</code></pre></div>
+}</code></pre></div>
 <p><strong>u8</strong> (unsigned byte) refers to the type of data in the Slice.</p>
 <p>To convert a Slice back to a C Pointer, we write <strong>&amp;slice[0]</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Pass the Slice as a C Pointer
@@ -625,8 +594,7 @@ const fd = c.open(
   c.O_RDONLY | c.O_NONBLOCK
 );
 // Slice must be null-terminated.
-// Triggers a runtime panic if the Slice is empty.
-</code></pre></div>
+// Triggers a runtime panic if the Slice is empty.</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#Slices">(More about Slices)</a></p>
 <p><img src="https://lupyuen.github.io/images/sensor-connect.jpg" alt="Pine64 PineCone BL602 RISC-V Board connected to Bosch BME280 Sensor" /></p>
 <h1 id="connect-bme280-sensor"><a href="#connect-bme280-sensor">7 Connect BME280 Sensor</a></h1>
@@ -645,8 +613,7 @@ const fd = c.open(
   GPIO_PIN2)
 #define BOARD_I2C_SDA \
   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
-  GPIO_PIN1)
-</code></pre></div>
+  GPIO_PIN1)</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/expander#pin-functions">(Which pins can be used? See this)</a></p>
 <h1 id="compile-zig-app"><a href="#compile-zig-app">8 Compile Zig App</a></h1>
 <p>Below are the steps to <strong>compile our Zig Sensor App</strong> for Apache NuttX RTOS and BL602 RISC-V SoC.</p>
@@ -685,21 +652,20 @@ const fd = c.open(
 <p>Remember to set <a href="https://lupyuen.github.io/articles/bme280#configure-nuttx"><strong>“Sensor Driver Test Stack Size”</strong></a> to <strong>4096</strong>.</p>
 <p>(Because our Zig App needs additional Stack Space)</p>
 <p>After building NuttX, we download and compile our <strong>Zig Sensor App</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  Download our Zig Sensor App for NuttX
+<div class="example-wrap"><pre class="language-bash"><code>#  Download our Zig Sensor App for NuttX
 git clone --recursive https://github.com/lupyuen/visual-zig-nuttx
 cd visual-zig-nuttx
 
-##  Compile the Zig App for BL602
-##  (RV32IMACF with Hardware Floating-Point)
-##  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+#  Compile the Zig App for BL602
+#  (RV32IMACF with Hardware Floating-Point)
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 zig build-obj \
   --verbose-cimport \
   -target riscv32-freestanding-none \
   -mcpu=baseline_rv32-d \
   -isystem &quot;$HOME/nuttx/nuttx/include&quot; \
   -I &quot;$HOME/nuttx/apps/include&quot; \
-  sensortest.zig
-</code></pre></div>
+  sensortest.zig</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/8d7a2a360bc4d14264c77f82da58b3dc">(See the Compile Log)</a></p>
 <p>Note that <strong>target</strong> and <strong>mcpu</strong> are specific to BL602…</p>
 <ul>
@@ -711,28 +677,26 @@ zig build-obj \
 <p>Hence the <strong>Zig Compiler Options must be the same</strong> as the GCC Options used to compile NuttX.</p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx#sensor-test-app-in-c">(See the GCC Options for NuttX)</a></p>
 <p>Next comes a quirk specific to BL602: We must <strong>patch the ELF Header</strong> from Software Floating-Point ABI to Hardware Floating-Point ABI…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  Patch the ELF Header of `sensortest.o` from 
-##  Soft-Float ABI to Hard-Float ABI
+<div class="example-wrap"><pre class="language-bash"><code>#  Patch the ELF Header of `sensortest.o` from 
+#  Soft-Float ABI to Hard-Float ABI
 xxd -c 1 sensortest.o \
   | sed &#39;s/00000024: 01/00000024: 03/&#39; \
   | xxd -r -c 1 - sensortest2.o
-cp sensortest2.o sensortest.o
-</code></pre></div>
+cp sensortest2.o sensortest.o</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/zig#patch-elf-header">(More about this)</a></p>
 <p>Finally we inject our <strong>Compiled Zig App</strong> into the NuttX Project Directory and link it into the <strong>NuttX Firmware</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  Copy the compiled app to NuttX and overwrite `sensortest.o`
-##  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+<div class="example-wrap"><pre class="language-bash"><code>#  Copy the compiled app to NuttX and overwrite `sensortest.o`
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 cp sensortest.o $HOME/nuttx/apps/testing/sensortest/sensortest*.o
 
-##  Build NuttX to link the Zig Object from `sensortest.o`
-##  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+#  Build NuttX to link the Zig Object from `sensortest.o`
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 cd $HOME/nuttx/nuttx
 make
 
-##  For WSL: Copy the NuttX Firmware to c:\blflash for flashing
+#  For WSL: Copy the NuttX Firmware to c:\blflash for flashing
 mkdir /mnt/c/blflash
-cp nuttx.bin /mnt/c/blflash
-</code></pre></div>
+cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p>We’re ready to run our Zig App!</p>
 <p><img src="https://lupyuen.github.io/images/sensor-run1a.png" alt="Zig Sensor App" /></p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx#read-barometer-sensor">(Source)</a></p>
@@ -747,25 +711,21 @@ cp nuttx.bin /mnt/c/blflash
 </li>
 </ul>
 <p>In the NuttX Shell, enter this command to start our Zig App…</p>
-<div class="example-wrap"><pre class="language-bash"><code>sensortest test
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>sensortest test</code></pre></div>
 <p>Which reads the <strong>Air Pressure and Temperature</strong> from the BME280 Barometer Sensor…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; sensortest test
 Zig Sensor Test
 test_sensor
 pressure:1007.66
-temperature:27.70
-</code></pre></div>
+temperature:27.70</code></pre></div>
 <p>This says that the Air Pressure is <strong>1,007.66 millibars</strong> and the Temperature is <strong>27.70 °C</strong>.</p>
 <p>Then enter this…</p>
-<div class="example-wrap"><pre class="language-bash"><code>sensortest test2
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>sensortest test2</code></pre></div>
 <p>Which reads the <strong>Humidity</strong> from the BME280 Humidity Sensor…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; sensortest test2
 Zig Sensor Test
 test_sensor2
-humidity:78.81
-</code></pre></div>
+humidity:78.81</code></pre></div>
 <p>This says that the Relative Humidity is <strong>78.81 %</strong>.</p>
 <p>Yep our Zig Sensor App reads the Air Pressure, Temperature and Humidity correctly from BME280 Sensor yay!</p>
 <p><img src="https://lupyuen.github.io/images/sensor-run2a.png" alt="Multiple Sensors" /></p>
@@ -780,8 +740,7 @@ test_multisensor
 SensorTest: Test /dev/uorb/sensor_baro0  with interval(1000000), latency(0)
 value1:1007.65
 value2:27.68
-SensorTest: Received message: baro0, number:1/1
-</code></pre></div>
+SensorTest: Received message: baro0, number:1/1</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx#clean-up">(Source)</a></p>
 <p>Just specify the name of the Sensor Device (“baro0”) as the Command-Line Argument.</p>
 <p>(“-n 1” means read the Sensor Data once)</p>
@@ -791,8 +750,7 @@ Zig Sensor Test
 test_multisensor
 SensorTest: Test /dev/uorb/sensor_humi0  with interval(1000000), latency(0)
 value:78.91
-SensorTest: Received message: humi0, number:1/1
-</code></pre></div>
+SensorTest: Received message: humi0, number:1/1</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx#clean-up">(Source)</a></p>
 <p>From the above output we see that Air Pressure is <strong>1,007.65 millibars</strong>, Temperature is <strong>27.68 °C</strong> and Relative Humidity is <strong>78.91 %</strong>.</p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L236-L253">(See the Command-Line Arguments)</a></p>
@@ -958,8 +916,7 @@ const pressure = floatToFixed(
 debug(&quot;pressure:{}.{:0&gt;2}&quot;, .{
   pressure.int, 
   pressure.frac 
-});
-</code></pre></div>
+});</code></pre></div>
 <p>(More about <strong>floatToFixed</strong> in a while)</p>
 <p>(Someday we might simplify the printing with <a href="https://ziglearn.org/chapter-2/#formatting"><strong>Custom Formatting</strong></a>)</p>
 <p><strong>UPDATE:</strong> We no longer need to call <strong>floatToFixed</strong> when printing only one Floating-Point Number. The Debug Logger auto-converts it to Fixed-Point for us. <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensortest.zig#L266-L294">(See this)</a></p>
@@ -1018,8 +975,7 @@ pub fn floatToFixed(f: f32) struct { int: i32, frac: u8 } {
     .int  = @divTrunc(scaled, 100),
     .frac = @intCast(u8, rem_abs),
   };
-}
-</code></pre></div>
+}</code></pre></div>
 <p>(See the docs: <a href="https://ziglang.org/documentation/master/#floatToInt"><strong>@floatToInt</strong></a>, <a href="https://ziglang.org/documentation/master/#rem"><strong>@rem</strong></a>, <a href="https://ziglang.org/documentation/master/#divTrunc"><strong>@divTrunc</strong></a>, <a href="https://ziglang.org/documentation/master/#intCast"><strong>@intCast</strong></a>)</p>
 <p>This code has been tested for positive and negative numbers.</p>
 <h1 id="appendix-updates-to-nuttx-sensor-api"><a href="#appendix-updates-to-nuttx-sensor-api">15 Appendix: Updates to NuttX Sensor API</a></h1>

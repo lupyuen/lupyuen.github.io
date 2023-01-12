@@ -201,8 +201,7 @@
   c.struct_sensor_baro,       // Sensor Data Struct
   &quot;temperature&quot;,              // Sensor Data Field
   &quot;/dev/uorb/sensor_baro0&quot;    // Path of Sensor Device
-);
-</code></pre></div>
+);</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
 <p>This calls our Zig Function <a href="https://lupyuen.github.io/articles/visual#appendix-read-sensor-data"><strong>readSensor</strong></a> to read a NuttX Sensor at the specified path.</p>
 <p><a href="https://lupyuen.github.io/articles/visual#appendix-read-sensor-data">(<strong>readSensor</strong> is defined in the Sensor Module <strong>sen</strong>)</a></p>
@@ -231,8 +230,7 @@
   &quot;t&quot;, temperature,
   &quot;p&quot;, pressure,
   &quot;h&quot;, humidity,
-});
-</code></pre></div>
+});</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
 <p>Which calls our Zig Function <a href="https://lupyuen.github.io/articles/visual#appendix-encode-sensor-data"><strong>composeCbor</strong></a> to create the CBOR Message.</p>
 <p><em>What’s <code>.{ ... }</code>?</em></p>
@@ -245,8 +243,7 @@
 <h2 id="transmit-message-block"><a href="#transmit-message-block">2.3 Transmit Message Block</a></h2>
 <p>The <strong>Transmit Message Block</strong> (above) transmits a CBOR Message to <a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/"><strong>LoRaWAN</strong></a> (the low-power, long-range, low-bandwidth IoT Network)…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Transmit message to LoRaWAN
-try transmitLorawan(msg);
-</code></pre></div>
+try transmitLorawan(msg);</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
 <p>And probably other <strong>IoT Networks</strong> in future: NB-IoT, LTE-M, Matter, Bluetooth, WiFi, MQTT, …</p>
 <p><a href="https://lupyuen.github.io/articles/visual#appendix-transmit-sensor-data">(<strong>transmitLorawan</strong> is explained here)</a></p>
@@ -260,8 +257,7 @@ while (true) {
 
   // Wait 10 seconds
   _ = c.sleep(10);
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
 <p><em>What’s “<code>_ = </code>something”?</em></p>
 <p>Zig Compiler helpfully stops us if we forget to use the <strong>Return Value</strong> of a function.</p>
@@ -292,9 +288,8 @@ while (true) {
 </li>
 </ul>
 <p>First we download our <strong>Zig Sensor App</strong> (that imports the NuttX Sensor API into Zig)…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  Download our Zig Sensor App for NuttX
-git clone --recursive https://github.com/lupyuen/visual-zig-nuttx
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>#  Download our Zig Sensor App for NuttX
+git clone --recursive https://github.com/lupyuen/visual-zig-nuttx</code></pre></div>
 <p>(We’ll paste our generated Zig Program inside here)</p>
 <p>Now head over to our <strong>Custom Blockly Website</strong>…</p>
 <ul>
@@ -347,8 +342,7 @@ pub fn main() !void {
     // Wait 10 seconds
     _ = c.sleep(10);
   }
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
 <p>Copy the code inside the <strong>Main Function</strong>. (Yep copy the <strong>while</strong> loop)</p>
 <p>Paste the code inside the <strong>Zig Sensor App</strong> that we have downloaded earlier…</p>
@@ -379,8 +373,7 @@ pub fn main() !void {
   GPIO_PIN2)
 #define BOARD_I2C_SDA \
   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
-  GPIO_PIN1)
-</code></pre></div>
+  GPIO_PIN1)</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/expander#pin-functions">(Which pins can be used? See this)</a></p>
 <h1 id="compile-zig-app"><a href="#compile-zig-app">5 Compile Zig App</a></h1>
 <p>Below are the steps to <strong>compile our IoT Sensor App</strong> for NuttX.</p>
@@ -419,21 +412,20 @@ pub fn main() !void {
 <p>Remember to set <a href="https://lupyuen.github.io/articles/bme280#configure-nuttx"><strong>“Sensor Driver Test Stack Size”</strong></a> to <strong>4096</strong>.</p>
 <p>(Because our Zig App needs additional Stack Space)</p>
 <p>After building NuttX, compile our <strong>IoT Sensor App</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  Zig Sensor App that we have downloaded earlier.
-##  TODO: Paste our visual program into visual-zig-nuttx/visual.zig
+<div class="example-wrap"><pre class="language-bash"><code>#  Zig Sensor App that we have downloaded earlier.
+#  TODO: Paste our visual program into visual-zig-nuttx/visual.zig
 cd visual-zig-nuttx
 
-##  Compile the Zig App for BL602
-##  (RV32IMACF with Hardware Floating-Point)
-##  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+#  Compile the Zig App for BL602
+#  (RV32IMACF with Hardware Floating-Point)
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 zig build-obj \
   --verbose-cimport \
   -target riscv32-freestanding-none \
   -mcpu=baseline_rv32-d \
   -isystem &quot;$HOME/nuttx/nuttx/include&quot; \
   -I &quot;$HOME/nuttx/apps/include&quot; \
-  sensortest.zig
-</code></pre></div>
+  sensortest.zig</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/eddfb4a11ed306d478f47adece9d6e1a">(See the Compile Log)</a></p>
 <p>Note that <strong>target</strong> and <strong>mcpu</strong> are specific to BL602…</p>
 <ul>
@@ -445,28 +437,26 @@ zig build-obj \
 <p>Hence the <strong>Zig Compiler Options must be the same</strong> as the GCC Options used to compile NuttX.</p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx#sensor-test-app-in-c">(See the GCC Options for NuttX)</a></p>
 <p>Next comes a quirk specific to BL602: We must <strong>patch the ELF Header</strong> from Software Floating-Point ABI to Hardware Floating-Point ABI…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  Patch the ELF Header of `sensortest.o` from 
-##  Soft-Float ABI to Hard-Float ABI
+<div class="example-wrap"><pre class="language-bash"><code>#  Patch the ELF Header of `sensortest.o` from 
+#  Soft-Float ABI to Hard-Float ABI
 xxd -c 1 sensortest.o \
   | sed &#39;s/00000024: 01/00000024: 03/&#39; \
   | xxd -r -c 1 - sensortest2.o
-cp sensortest2.o sensortest.o
-</code></pre></div>
+cp sensortest2.o sensortest.o</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/zig#patch-elf-header">(More about this)</a></p>
 <p>Finally we inject our <strong>Compiled Zig App</strong> into the NuttX Project Directory and link it into the <strong>NuttX Firmware</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  Copy the compiled app to NuttX and overwrite `sensortest.o`
-##  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+<div class="example-wrap"><pre class="language-bash"><code>#  Copy the compiled app to NuttX and overwrite `sensortest.o`
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 cp sensortest.o $HOME/nuttx/apps/testing/sensortest/sensortest*.o
 
-##  Build NuttX to link the Zig Object from `sensortest.o`
-##  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+#  Build NuttX to link the Zig Object from `sensortest.o`
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 cd $HOME/nuttx/nuttx
 make
 
-##  For WSL: Copy the NuttX Firmware to c:\blflash for flashing
+#  For WSL: Copy the NuttX Firmware to c:\blflash for flashing
 mkdir /mnt/c/blflash
-cp nuttx.bin /mnt/c/blflash
-</code></pre></div>
+cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p>We’re ready to run our IoT Sensor App!</p>
 <p><img src="https://lupyuen.github.io/images/visual-run1.png" alt="IoT Sensor App running on PineCone BL602" /></p>
 <p><em>IoT Sensor App running on PineCone BL602</em></p>
@@ -481,8 +471,7 @@ cp nuttx.bin /mnt/c/blflash
 </li>
 </ul>
 <p>In the NuttX Shell, enter this command to start our <strong>IoT Sensor App</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>sensortest visual
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>sensortest visual</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/sensor#main-function">(<strong>sensortest</strong> is explained here)</a></p>
 <p>Our IoT Sensor App should correctly read the <strong>Temperature, Pressure and Humidity</strong> from BME280 Sensor, and transmit the values to LoRaWAN (simulated)…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.3.0
@@ -510,8 +499,7 @@ composeCbor
   h: 70.86
   msg=t:31.15,p:1007.40,h:70.86,
 transmitLorawan
-  msg=t:31.15,p:1007.40,h:70.86,
-</code></pre></div>
+  msg=t:31.15,p:1007.40,h:70.86,</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx#test-visual-zig-sensor-app">(See the Complete Log)</a></p>
 <p>Yep we have successfully created an IoT Sensor App with Blockly, Zig and NuttX! 🎉</p>
 <p><em>Can we test without NuttX?</em></p>
@@ -540,15 +528,13 @@ transmitLorawan
 const temperature: f32 = try sen.readSensor(...);
 
 // This is a Struct (CborMessage)
-const msg: CborMessage = try composeCbor(...);
-</code></pre></div>
+const msg: CborMessage = try composeCbor(...);</code></pre></div>
 <p>But thanks to <strong>Type Inference</strong>, we may omit the Types in Zig…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Zig Compiler infers that this is a Float
 const temperature = try sen.readSensor(...);
 
 // Zig Compiler infers that this is a Struct
-const msg = try composeCbor(...);
-</code></pre></div>
+const msg = try composeCbor(...);</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
 <p>This simplifies the <strong>Code Generation</strong> in Blockly, since we don’t track the Types.</p>
 <h2 id="compile-time-expressions"><a href="#compile-time-expressions">7.2 Compile-Time Expressions</a></h2>
@@ -558,8 +544,7 @@ temperature = try sen.readSensor(
   c.struct_sensor_baro,       // Sensor Data Struct
   &quot;temperature&quot;,              // Sensor Data Field
   &quot;/dev/uorb/sensor_baro0&quot;    // Path of Sensor Device
-);
-</code></pre></div>
+);</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
 <p>Looks concise and tidy, but <strong>readSensor</strong> has 2 surprises…</p>
 <ul>
@@ -586,8 +571,7 @@ const msg = try composeCbor(.{
   &quot;t&quot;, temperature,
   &quot;p&quot;, pressure,
   &quot;h&quot;, humidity,
-});
-</code></pre></div>
+});</code></pre></div>
 <p><strong>composeCbor</strong> accepts a <strong>Variable Number of Arguments</strong> and it uses <strong>Compile-Time Validation</strong> to verify that the parameters are OK.</p>
 <p>If we omit a Key or a Value (or if they have the wrong Types), the Zig Compiler will stop us during compilation.</p>
 <p><a href="https://lupyuen.github.io/articles/visual#appendix-encode-sensor-data">(<strong>composeCbor</strong> is explained here)</a></p>
@@ -636,8 +620,7 @@ while (true) {
   _ = c.sleep(60);
 }
 
-// Oops! Transmit Loop will never run!
-</code></pre></div>
+// Oops! Transmit Loop will never run!</code></pre></div>
 <p>We loop forever (calling <strong>sleep</strong>) in the First Loop, thus we’ll never reach the Second Loop.</p>
 <p><em>So we should do this with Timers instead?</em></p>
 <p>Yep our Loops shall be implemented with proper <strong>Multithreaded Timers</strong>.</p>
@@ -781,8 +764,7 @@ const temperature = try sen.readSensor(
 );
 
 // Print the Temperature
-debug(&quot;temperature={}&quot;, .{ temperature });
-</code></pre></div>
+debug(&quot;temperature={}&quot;, .{ temperature });</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
 <p>Looks concise and tidy, but <strong>readSensor</strong> has 2 surprises…</p>
 <ul>
@@ -803,8 +785,7 @@ pub fn readSensor(
   comptime SensorType: type,        // Sensor Data Struct to be read, like c.struct_sensor_baro
   comptime field_name: []const u8,  // Sensor Data Field to be returned, like &quot;temperature&quot;
   device_path: []const u8           // Path of Sensor Device, like &quot;/dev/uorb/sensor_baro0&quot;
-) !f32 { ...
-</code></pre></div>
+) !f32 { ...</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L34-L108">(Source)</a></p>
 <p>Which means that Zig Compiler will <strong>substitute the values</strong> at Compile-Time (like a C Macro)…</p>
 <ul>
@@ -820,8 +801,7 @@ pub fn readSensor(
   // Zig Compiler replaces `SensorType` by `c.struct_sensor_baro`
   var sensor_data = std.mem.zeroes(
     SensorType
-  );
-</code></pre></div>
+  );</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L89-L92">(Source)</a></p>
 <p>And <strong>readSensor</strong> will use <strong>field_name</strong> to refer to the <strong>“temperature”</strong> field…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Return the Sensor Data Field.
@@ -829,8 +809,7 @@ pub fn readSensor(
   return @field(
     sensor_data,  // Sensor Data Type from above
     field_name    // Field Name is &quot;temperature&quot;
-  );
-</code></pre></div>
+  );</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L106-L107">(Source)</a></p>
 <p>Check out this doc for details on <strong><code>comptime</code></strong> and Zig Metaprogramming…</p>
 <ul>
@@ -851,8 +830,7 @@ pub fn readSensor(
   const fd = c.open(
     &amp;device_path[0],           // Path of Sensor Device
     c.O_RDONLY | c.O_NONBLOCK  // Open for read-only
-  );
-</code></pre></div>
+  );</code></pre></div>
 <p><strong><code>open()</code></strong> should look familiar… On Linux we open Devices the same way.</p>
 <p><em>What’s “<code>[]const u8</code>”?</em></p>
 <p>That’s a <strong>Slice of Bytes</strong>, roughly equivalent to a String in C.</p>
@@ -880,15 +858,13 @@ pub fn readSensor(
       .{ c.strerror(errno()) }
     );
     return error.OpenError;
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p>If the Sensor Device doesn’t exist, we print a Formatted Message to the <strong>Error Log</strong> and return an Error.</p>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L152-L163">(<strong>OpenError</strong> is defined here)</a></p>
 <p><em>What’s “<code>{s}</code>”?</em></p>
 <p>That’s for printing a <strong>Formatted String</strong> in Zig.</p>
 <p>It’s equivalent to “<code>%s</code>” in C…</p>
-<div class="example-wrap"><pre class="language-c"><code>printf(&quot;Failed to open device:%s&quot;, strerror(errno()));
-</code></pre></div>
+<div class="example-wrap"><pre class="language-c"><code>printf(&quot;Failed to open device:%s&quot;, strerror(errno()));</code></pre></div>
 <p><em>What’s “<code>.{ ... }</code>”?</em></p>
 <p>That’s how we pass a <strong>list of Arguments</strong> when printing a Formatted Message.</p>
 <p>If we have no Arguments, we write “<code>.{}</code>”</p>
@@ -900,8 +876,7 @@ pub fn readSensor(
 <div class="example-wrap"><pre class="language-zig"><code>  // Close the Sensor Device when this function returns
   defer {
     _ = c.close(fd);
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p>When we write <strong>“<code>defer</code>”</strong>, this chunk of code will be executed <strong>when our function returns</strong>.</p>
 <p>This brilliantly solves our headache of <strong>closing the Sensor Device</strong> when we hit Errors later.</p>
 <p><em>Why the “<code>_ =</code> something”?</em></p>
@@ -916,16 +891,14 @@ pub fn readSensor(
     fd,                  // Sensor Device
     SNIOC_SET_INTERVAL,  // ioctl Command
     interval             // Standby Interval
-  );
-</code></pre></div>
+  );</code></pre></div>
 <p>(<strong>c_uint</strong> is equivalent to “unsigned int” in C)</p>
 <p>In case of error, we quit…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Check for error
   if (ret &lt; 0 and errno() != c.ENOTSUP) {
     std.log.err(&quot;Failed to set interval:{s}&quot;, .{ c.strerror(errno()) });
     return error.IntervalError;
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L152-L163">(<strong>IntervalError</strong> is defined here)</a></p>
 <p>Which also closes the Sensor Device. (Due to our earlier “<code>defer</code>”)</p>
 <h2 id="set-batch-latency"><a href="#set-batch-latency">13.4 Set Batch Latency</a></h2>
@@ -936,15 +909,13 @@ pub fn readSensor(
     fd,             // Sensor Device
     c.SNIOC_BATCH,  // ioctl Command
     latency         // Batch Latency
-  );
-</code></pre></div>
+  );</code></pre></div>
 <p>And we check for error…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Check for error
   if (ret &lt; 0 and errno() != c.ENOTSUP) {
     std.log.err(&quot;Failed to batch:{s}&quot;, .{ c.strerror(errno()) });
     return error.BatchError;
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/sensor.zig#L152-L163">(<strong>BatchError</strong> is defined here)</a></p>
 <h2 id="poll-sensor"><a href="#poll-sensor">13.5 Poll Sensor</a></h2>
 <p>After the enabling the sensor, we <strong>poll the sensor</strong> to check if Sensor Data is available…</p>
@@ -958,8 +929,7 @@ pub fn readSensor(
   if (ret &lt;= 0) {
     std.log.err(&quot;Sensor data not available&quot;, .{});
     return error.DataError;
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p><strong>std.mem.zeroes</strong> creates a <strong>pollfd</strong> Struct that’s initialised with nulls.</p>
 <p>(The struct lives on the stack)</p>
 <h2 id="read-sensor-data"><a href="#read-sensor-data">13.6 Read Sensor Data</a></h2>
@@ -970,8 +940,7 @@ pub fn readSensor(
   );
   const len = @sizeOf(
     @TypeOf(sensor_data)
-  );
-</code></pre></div>
+  );</code></pre></div>
 <p>Remember that <strong>SensorType</strong> is a <strong><code>comptime</code></strong> Compile-Time Type.</p>
 <p>Zig Compiler will change <strong>SensorType</strong> to a Struct Type like <strong>c.struct_sensor_baro</strong></p>
 <p><strong>std.mem.zeroes</strong> returns a Sensor Data Struct, initialised with nulls.</p>
@@ -983,16 +952,14 @@ pub fn readSensor(
   if (read_len &lt; len) {
     std.log.err(&quot;Sensor data incorrect size&quot;, .{});
     return error.SizeError;
-  }
-</code></pre></div><h2 id="return-sensor-data"><a href="#return-sensor-data">13.7 Return Sensor Data</a></h2>
+  }</code></pre></div><h2 id="return-sensor-data"><a href="#return-sensor-data">13.7 Return Sensor Data</a></h2>
 <p>Finally we return the <strong>Sensor Data Field</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Return the Sensor Data Field
   return @field(
     sensor_data,  // Sensor Data Type from above
     field_name    // Field Name like &quot;temperature&quot;
   );
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Remember that <strong>field_name</strong> is a <strong><code>comptime</code></strong> Compile-Time String.</p>
 <p>Zig Compiler will change <strong>field_name</strong> to a Field Name like <strong>“temperature”</strong></p>
 <p>And that’s how <strong>readSensor</strong> reads the Sensor Data from a NuttX Sensor!</p>
@@ -1007,16 +974,14 @@ pub fn readSensor(
   &quot;t&quot;, temperature,
   &quot;p&quot;, pressure,
   &quot;h&quot;, humidity,
-});
-</code></pre></div>
+});</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
 <p>Which will show this output…</p>
 <div class="example-wrap"><pre class="language-text"><code>composeCbor
   t: 31.05
   p: 1007.44
   h: 71.49
-  msg=t:31.05,p:1007.44,h:71.49,
-</code></pre></div>
+  msg=t:31.05,p:1007.44,h:71.49,</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx#test-visual-zig-sensor-app">(Source)</a></p>
 <p><em>composeCbor accepts a variable number of arguments? Strings as well as numbers?</em></p>
 <p>Yep, here’s the implementation of <strong>composeCbor</strong>: <a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig#L59-L102">visual.zig</a></p>
@@ -1056,8 +1021,7 @@ fn composeCbor(args: anytype) !CborMessage {
   }
   debug(&quot;  msg={s}&quot;, .{ msg.buf[0..msg.len] });
   return msg;
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data">(<strong>floatToFixed</strong> is explained here)</a></p>
 <p><strong>CborMessage</strong> is a Struct that contains the CBOR Buffer…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// TODO: CBOR Message
@@ -1065,11 +1029,9 @@ fn composeCbor(args: anytype) !CborMessage {
 const CborMessage = struct {
   buf: [256]u8 = undefined,  // Limit to 256 bytes
   len: usize = 0,            // Length of buffer
-};
-</code></pre></div>
+};</code></pre></div>
 <p>Note that <strong>composeCbor</strong>’s parameter is declared as <strong><code>anytype</code></strong>…</p>
-<div class="example-wrap"><pre class="language-zig"><code>fn composeCbor(args: anytype) { ...
-</code></pre></div>
+<div class="example-wrap"><pre class="language-zig"><code>fn composeCbor(args: anytype) { ...</code></pre></div>
 <p>That’s why <strong>composeCbor</strong> accepts a variable number of arguments with different types.</p>
 <p>To handle each argument, the Zig Compiler will unroll (expand) this <strong><code>inline</code></strong> <strong><code>comptime</code></strong> loop during compilation…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Zig Compiler will unroll (expand) this Loop.
@@ -1087,8 +1049,7 @@ const CborMessage = struct {
       floatToFixed(value)
     });
     ...
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p>(Think of it as a C Macro, expanding our code during compilation)</p>
 <p>Thus if we have 3 pairs of Key-Values, Zig Compiler will emit the above code 3 times.</p>
 <p><a href="https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data">(<strong>floatToFixed</strong> is explained here)</a></p>
@@ -1098,8 +1059,7 @@ const CborMessage = struct {
 // if we&#39;re missing a Key or a Value
 comptime {
   assert(args.len % 2 == 0);
-}
-</code></pre></div>
+}</code></pre></div>
 <p><em>What happens if we pass incorrect Types for the Key or Value?</em></p>
 <p><strong>composeCbor</strong> expects the following Types…</p>
 <ul>
@@ -1115,16 +1075,14 @@ comptime {
     debug(&quot;  {s}: {}&quot;, .{
       @as([]const u8, key),
       floatToFixed(value)
-    });
-</code></pre></div>
+    });</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/sensor#appendix-fixed-point-sensor-data">(<strong>floatToFixed</strong> is explained here)</a></p>
 <p>Hence <strong>composeCbor</strong> might look fragile with its Variable Arguments and Types…</p>
 <div class="example-wrap"><pre class="language-zig"><code>const msg = try composeCbor(.{  // Compose CBOR Message
   &quot;t&quot;, temperature,
   &quot;p&quot;, pressure,
   &quot;h&quot;, humidity,
-});
-</code></pre></div>
+});</code></pre></div>
 <p>But Zig Compiler will actually stop us during compilation if we pass invalid arguments.</p>
 <p><em>The implementation of CBOR Encoding is missing?</em></p>
 <p>Yep we shall import the <strong>TinyCBOR Library</strong> from C to implement the CBOR Encoding in <strong>composeCbor</strong>…</p>
@@ -1136,21 +1094,18 @@ comptime {
 <h1 id="appendix-transmit-sensor-data"><a href="#appendix-transmit-sensor-data">15 Appendix: Transmit Sensor Data</a></h1>
 <p>The <strong>Transmit Message Block</strong> (above) transmits a CBOR Message to <a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/"><strong>LoRaWAN</strong></a> (the low-power, long-range, low-bandwidth IoT Network)…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Transmit message to LoRaWAN
-try transmitLorawan(msg);
-</code></pre></div>
+try transmitLorawan(msg);</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig">(Source)</a></p>
 <p>Which will show this output…</p>
 <div class="example-wrap"><pre class="language-text"><code>transmitLorawan
-  msg=t:31.05,p:1007.44,h:71.49,
-</code></pre></div>
+  msg=t:31.05,p:1007.44,h:71.49,</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx#test-visual-zig-sensor-app">(Source)</a></p>
 <p>The implementation of <strong>transmitLorawan</strong> is currently a stub…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// TODO: Transmit message to LoRaWAN
 fn transmitLorawan(msg: CborMessage) !void { 
   debug(&quot;transmitLorawan&quot;, .{});
   debug(&quot;  msg={s}&quot;, .{ msg.buf[0..msg.len] });
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/main/visual.zig#L107-L111">(Source)</a></p>
 <p>We shall implement LoRaWAN Messaging by calling the <strong>LoRaWAN Library</strong> that’s imported from C…</p>
 <ul>

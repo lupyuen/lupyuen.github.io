@@ -192,8 +192,7 @@
 <p>Which we define like so…</p>
 <div class="example-wrap"><pre class="language-c"><code>// PIO Base Address for PinePhone 
 // Allwinner A64 Port Controller (GPIO)
-#define PIO_BASE_ADDRESS 0x01C20800
-</code></pre></div>
+#define PIO_BASE_ADDRESS 0x01C20800</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L83-L122">(Source)</a></p>
 <p>Then comes a bunch of registers that will configure the GPIOs and set their values…</p>
 <ul>
@@ -256,8 +255,7 @@ static void test_led(void)
   // 110: Reserved 111: IO Disable
   *pd_cfg2_reg = 
     (*pd_cfg2_reg &amp; ~(0b111 &lt;&lt; 8))  // Clear the bits
-    | (0b001 &lt;&lt; 8);                 // Set the bits for Output
-</code></pre></div>
+    | (0b001 &lt;&lt; 8);                 // Set the bits for Output</code></pre></div>
 <p>Then we configure <strong>PD19 and 20 for GPIO Output</strong>: <a href="https://github.com/lupyuen/nuttx-apps/blob/pinephone/examples/hello/hello_main.c#L124-L179">hello_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Bits 14 to 12: PD19_SELECT (Default 0x7)
   // 000: Input    001: Output
@@ -276,8 +274,7 @@ static void test_led(void)
   *pd_cfg2_reg = 
     (*pd_cfg2_reg &amp; ~(0b111 &lt;&lt; 16))  // Clear the bits
     | (0b001 &lt;&lt; 16);                 // Set the bits for Output
-  printf(&quot;pd_cfg2_reg=0x%x\n&quot;, *pd_cfg2_reg);
-</code></pre></div>
+  printf(&quot;pd_cfg2_reg=0x%x\n&quot;, *pd_cfg2_reg);</code></pre></div>
 <p>PD18, 19 and 20 have been configured for GPIO Output!</p>
 <p>Now we set the GPIO Output…</p>
 <p><img src="https://lupyuen.github.io/images/pio-register4.png" alt="Allwinner A64 User Manual (Page 388)" /></p>
@@ -315,8 +312,7 @@ static void test_led(void)
   *pd_data_reg |= (1 &lt;&lt; 19);  // Set Bit 19 for PD19
   *pd_data_reg |= (1 &lt;&lt; 20);  // Set Bit 20 for PD20
   printf(&quot;pd_data_reg=0x%x\n&quot;, *pd_data_reg);
-}
-</code></pre></div>
+}</code></pre></div>
 <p>And we’re done lighting up the LEDs on PinePhone!</p>
 <p>Let’s test it on PinePhone…</p>
 <p><img src="https://lupyuen.github.io/images/pio-run1.png" alt="Booting NuttX on PinePhone" /></p>
@@ -332,8 +328,7 @@ static void test_led(void)
 <ul>
 <li>
 <p>Copy the code from <a href="https://github.com/lupyuen/nuttx-apps/blob/pinephone/examples/hello/hello_main.c"><strong>hello_main.c</strong></a> to…</p>
-<div class="example-wrap"><pre class="language-text"><code>apps/examples/hello/hello_main.c
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>apps/examples/hello/hello_main.c</code></pre></div></li>
 <li>
 <p>Check that the <strong>BASIC Interpreter</strong> has been enabled in the NuttX Build…</p>
 <p><a href="https://lupyuen.github.io/articles/nuttx#enable-basic"><strong>“Enable BASIC”</strong></a></p>
@@ -357,17 +352,14 @@ HELLO NUTTX ON PINEPHONE!
 - Boot to C runtime for OS Initialize
 ...
 Shell (NSH) NuttX-10.3.0-RC2
-nsh&gt; 
-</code></pre></div>
+nsh&gt; </code></pre></div>
 <p>Enter this command to run our <a href="https://github.com/lupyuen/nuttx-apps/blob/pinephone/examples/hello/hello_main.c">hello_main.c</a> Test Program…</p>
-<div class="example-wrap"><pre class="language-bash"><code>hello
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>hello</code></pre></div>
 <p>We see the values of the Registers PD_CFG2 and PD_DATA (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello
 ...
 pd_cfg2_reg=0x77711177
-pd_data_reg=0x1c0000
-</code></pre></div>
+pd_data_reg=0x1c0000</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#backlight-and-leds">(See the Complete Log)</a></p>
 <p><a href="https://youtu.be/MJDxCcKAv0g">(Watch the Demo on YouTube)</a></p>
 <p>PinePhone’s Red, Green and Blue LEDs turn on and appear as white.</p>
@@ -427,14 +419,12 @@ static void test_backlight(void)
   // be read.
   *ph_data_reg |= (1 &lt;&lt; 10);  // Set Bit 10 for PH10
   printf(&quot;ph_data_reg=0x%x\n&quot;, *ph_data_reg);
-}
-</code></pre></div>
+}</code></pre></div>
 <p>When we run the Test Program, we see the values of the Registers PH_CFG1 and PH_DATA…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; hello
 ...
 ph_cfg1_reg=0x7177
-ph_data_reg=0x400
-</code></pre></div>
+ph_data_reg=0x400</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#backlight-and-leds">(See the Complete Log)</a></p>
 <p><a href="https://youtu.be/MJDxCcKAv0g">(Watch the Demo on YouTube)</a></p>
 <p>And PinePhone’s Backlight lights up!</p>
@@ -447,12 +437,10 @@ ph_data_reg=0x400
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; bas
 bas 2.4
 Copyright 1999-2014 Michael Haardt.
-&gt; 
-</code></pre></div>
+&gt; </code></pre></div>
 <p>Earlier we saw these values for the Registers <strong>PD_CFG2</strong> (configure GPIO Output) and <strong>PD_DATA</strong> (write GPIO Output) when lit up the PinePhone LEDs…</p>
 <div class="example-wrap"><pre class="language-text"><code>pd_cfg2_reg=0x77711177
-pd_data_reg=0x1c0000
-</code></pre></div>
+pd_data_reg=0x1c0000</code></pre></div>
 <p>When we merge the above with the Register Addresses, we get…</p>
 <ul>
 <li>
@@ -468,15 +456,12 @@ pd_data_reg=0x1c0000
 </ul>
 <p>OK we’re ready to do this in BASIC! We’ll call <a href="https://en.wikipedia.org/wiki/PEEK_and_POKE"><strong><code>poke</code></strong></a> with the above Addresses and Values.</p>
 <p>At the BASIC Prompt, enter this to configure <strong>PD18, 19 and 20 for GPIO Output</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>poke &amp;h1C20874, &amp;h77711177
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>poke &amp;h1C20874, &amp;h77711177</code></pre></div>
 <p>Then enter this to set <strong>PD18, 19 and 20 to High</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>poke &amp;h1C2087C, &amp;h1C0000
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>poke &amp;h1C2087C, &amp;h1C0000</code></pre></div>
 <p>Yep PinePhone’s Red, Green and Blue LEDs turn on and appear as white!</p>
 <p>Finally enter this to set <strong>PD18, 19 and 20 to Low</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>poke &amp;h1C2087C, &amp;h0
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>poke &amp;h1C2087C, &amp;h0</code></pre></div>
 <p>And watch PinePhone’s LEDs switch off!</p>
 <p><a href="https://youtu.be/OTIHMIRd1s4">(Watch the Demo on YouTube)</a></p>
 <p><em>So the <code>poke</code> command will write a value to any address?</em></p>
@@ -505,8 +490,7 @@ pd_data_reg=0x1c0000
 &gt; poke &amp;h1C2087C, &amp;h1C0000
 
 &gt; print peek(&amp;h1C2087C)
- 1835008  
-</code></pre></div>
+ 1835008  </code></pre></div>
 <p>BASIC works great for quick, interactive experiments with PinePhone GPIOs and LEDs!</p>
 <p><img src="https://lupyuen.github.io/images/pio-title.webp" alt="Blinking the PinePhone LEDs with BASIC… On Apache NuttX RTOS" /></p>
 <h1 id="basic-blinks-the-leds"><a href="#basic-blinks-the-leds">9 BASIC Blinks The LEDs</a></h1>
@@ -521,11 +505,9 @@ pd_data_reg=0x1c0000
 60 &#39;Turn on GPIOs PD18, PD19 and PD20
 70 poke &amp;h1C2087C, &amp;h1C0000
 80 sleep 5
-90 goto 40
-</code></pre></div>
+90 goto 40</code></pre></div>
 <p>And run the BASIC Program by entering…</p>
-<div class="example-wrap"><pre class="language-bash"><code>run
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>run</code></pre></div>
 <p>PinePhone’s LEDs will blink on and off every 5 seconds, exactly like the animated pic above.</p>
 <p>Thus we have a simple, scripted way to manipulate PinePhone’s Hardware Registers on the fly!</p>
 <p><em>Is it really OK to <code>poke</code> around PinePhone?</em></p>
@@ -551,8 +533,7 @@ pd_data_reg=0x1c0000
     color = &lt;0x03&gt;;
     gpios = &lt;0x2b 0x03 0x14 0x00&gt;;
     retain-state-suspended;
-  };
-</code></pre></div>
+  };</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pio#led">(Source)</a></p>
 <p>We interpret <strong><code>gpios</code></strong> as…</p>
 <ul>
@@ -583,8 +564,7 @@ pd_data_reg=0x1c0000
     color = &lt;0x01&gt;;
     gpios = &lt;0x2b 0x03 0x13 0x00&gt;;
     retain-state-suspended;
-  };
-</code></pre></div>
+  };</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pio#led">(Source)</a></p>
 <p><strong>PinePhone’s Backlight</strong> looks more complicated, since it combines GPIO and <a href="https://en.wikipedia.org/wiki/Pulse-width_modulation"><strong>Pulse-Width Modulation (PWM)</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>backlight {
@@ -596,8 +576,7 @@ pd_data_reg=0x1c0000
   num-interpolated-steps = &lt;0x32&gt;;
   default-brightness-level = &lt;0x1f4&gt;;
   phandle = &lt;0x56&gt;;
-};
-</code></pre></div>
+};</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pio#backlight-pwm">(Source)</a></p>
 <p>This says that Backlight PWM is PL10 and Backlight GPIO is PH10. (With multiple levels of Backlight Brightness)</p>
 <p><em>Is the Linux Device Tree helpful?</em></p>
@@ -717,8 +696,7 @@ pd_data_reg=0x1c0000
 &gt; poke &amp;h1C20874, &amp;h77711177
 
 &gt; print peek(&amp;h1C20874)
- 2003898743 
-</code></pre></div>
+ 2003898743 </code></pre></div>
 <p>For safety, the BASIC Interpreter won’t allow us to <strong><code>peek</code></strong> and <strong><code>poke</code></strong> Memory Addresses.</p>
 <p>This is how we patched the BASIC Interpreter to support <strong><code>peek</code></strong> and <strong><code>poke</code></strong>: <a href="https://github.com/lupyuen/nuttx-apps/blob/pinephone/interpreters/bas/bas_fs.c#L1862-L1889">interpreters/bas/bas_fs.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>int FS_memInput(int address)
@@ -742,8 +720,7 @@ int FS_memOutput(int address, int value)
   //  Previously:
   //  FS_errmsg = _(&quot;Direct memory access not available&quot;);
   //  return -1;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Note that Memory Addresses are passed as 32-bit <strong><code>int</code></strong>, so some 64-bit addresses will not be accessible via <strong><code>peek</code></strong> and <strong><code>poke</code></strong>.</p>
 <p><img src="https://lupyuen.github.io/images/pio-devicetree.png" alt="PinePhone’s Linux Device Tree" /></p>
 <h1 id="appendix-pinephone-device-tree"><a href="#appendix-pinephone-device-tree">13 Appendix: PinePhone Device Tree</a></h1>
@@ -840,8 +817,7 @@ dtc \
     // TCON1: HDMI
     port@1 { ... };
   };
-};
-</code></pre></div>
+};</code></pre></div>
 <p>Searching online for <code>&quot;sun8i-a83t-tcon-lcd&quot;</code> gives us the <strong>Linux Driver for Allwinner A64 TCON</strong>…</p>
 <ul>
 <li><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun4i_tcon.c"><strong>sun4i_tcon.c</strong></a></li>
@@ -914,8 +890,7 @@ dtc \
     vcc-supply = &lt;0x48&gt;;
     backlight = &lt;0x56&gt;;
   };
-};
-</code></pre></div>
+};</code></pre></div>
 <p>From above we see that PinePhone is connected to <a href="https://patchwork.kernel.org/project/dri-devel/patch/20200311163329.221840-4-icenowy@aosc.io/"><strong>Xingbangda XBD599</strong></a> 5.99-inch 720x1440 MIPI-DSI IPS LCD Panel, which is based on <strong>Sitronix ST7703 LCD Controller</strong>…</p>
 <ul>
 <li><a href="https://files.pine64.org/doc/datasheet/pinephone/ST7703_DS_v01_20160128.pdf"><strong>Sitronix ST7703 LCD Controller Datasheet</strong></a></li>
@@ -969,8 +944,7 @@ dtc \
   status = &quot;okay&quot;;
   #phy-cells = &lt;0x00&gt;;
   phandle = &lt;0x53&gt;;
-};
-</code></pre></div>
+};</code></pre></div>
 <p>Searching online for <code>&quot;sun6i-a31-mipi-dphy&quot;</code> uncovers the <strong>Linux Driver for A64 MIPI D-PHY</strong>…</p>
 <ul>
 <li><a href="https://github.com/torvalds/linux/blob/master/drivers/phy/allwinner/phy-sun6i-mipi-dphy.c"><strong>phy-sun6i-mipi-dphy.c</strong></a></li>
@@ -996,8 +970,7 @@ dtc \
   compatible = &quot;allwinner,sun50i-a64-display-engine&quot;;
   allwinner,pipelines = &lt;0x07 0x08&gt;;
   status = &quot;okay&quot;;
-};
-</code></pre></div>
+};</code></pre></div>
 <p>Searching online for <code>&quot;sun50i-a64-display-engine&quot;</code> gives us this <strong>Linux Driver for A64 Display Engine</strong>…</p>
 <ul>
 <li><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun4i_drv.c"><strong>sun4i_drv.c</strong></a></li>
@@ -1013,8 +986,7 @@ dtc \
   allwinner,pipeline = &quot;mixer0-lcd0&quot;;
   clocks = &lt;0x02 0x64 0x03 0x06&gt;;
   status = &quot;disabled&quot;;
-};
-</code></pre></div>
+};</code></pre></div>
 <p>We might build a similar Framebuffer Device in NuttX for rendering graphics with the LVGL GUI Library.</p>
 <p><img src="https://lupyuen.github.io/images/touch2-schematic1.jpg" alt="Capacitive Touch Panel in PinePhone Schematic (Pages 9 and 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>Capacitive Touch Panel in PinePhone Schematic (Pages 9 and 11)</em></a></p>
@@ -1032,8 +1004,7 @@ dtc \
   VDDIO-supply = &lt;0x48&gt;;
   touchscreen-size-x = &lt;0x2d0&gt;;
   touchscreen-size-y = &lt;0x5a0&gt;;
-};
-</code></pre></div>
+};</code></pre></div>
 <p>Searching online for <code>&quot;goodix,gt917s&quot;</code> gives us this <strong>Linux Driver for Goodix GT917S Touch Panel</strong>…</p>
 <ul>
 <li><a href="https://github.com/torvalds/linux/blob/master/drivers/input/touchscreen/goodix.c">goodix.c</a></li>
@@ -1088,8 +1059,7 @@ dtc \
 </li>
 <li>
 <p>Reading I2C Register <strong>0x8140</strong> (Product ID) will return the bytes…</p>
-<div class="example-wrap"><pre class="language-text"><code>39 31 37 53
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>39 31 37 53</code></pre></div>
 <p>Which is ASCII for “<strong><code>917S</code></strong>”</p>
 <p>(Goodix GT917S Touch Panel)</p>
 </li>
@@ -1108,8 +1078,7 @@ dtc \
   resets = &lt;0x02 0x17&gt;;
   interrupts = &lt;0x00 0x3a 0x04&gt;;
   allwinner,sram = &lt;0x28 0x01&gt;;
-};
-</code></pre></div><h2 id="gpu"><a href="#gpu">13.8 GPU</a></h2>
+};</code></pre></div><h2 id="gpu"><a href="#gpu">13.8 GPU</a></h2>
 <p>PinePhone’s Linux Device Tree talks about the <strong>GPU</strong> too: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1246-L1256">sun50i-a64-pinephone-1.2.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>gpu@1c40000 {
   compatible = &quot;allwinner,sun50i-a64-mali\0arm,mali-400&quot;;
@@ -1121,8 +1090,7 @@ dtc \
   resets = &lt;0x02 0x1f&gt;;
   assigned-clocks = &lt;0x02 0x72&gt;;
   assigned-clock-rates = &lt;0x1dcd6500&gt;;
-};
-</code></pre></div><h2 id="deinterlace"><a href="#deinterlace">13.9 Deinterlace</a></h2>
+};</code></pre></div><h2 id="deinterlace"><a href="#deinterlace">13.9 Deinterlace</a></h2>
 <p>And this is probably for <strong>Deinterlacing Videos</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L1369-L1378">sun50i-a64-pinephone-1.2.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>deinterlace@1e00000 {
   compatible = &quot;allwinner,sun50i-a64-deinterlace\0allwinner,sun8i-h3-deinterlace&quot;;
@@ -1133,8 +1101,7 @@ dtc \
   interrupts = &lt;0x00 0x5d 0x04&gt;;
   interconnects = &lt;0x57 0x09&gt;;
   interconnect-names = &quot;dma-mem&quot;;
-};
-</code></pre></div>
+};</code></pre></div>
 <p>Which might not be necessary if we’re building a simple Display Driver.</p>
 <p><img src="https://lupyuen.github.io/images/pio-schematic.png" alt="LEDs on PinePhone Schematic (Page 11)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>LEDs on PinePhone Schematic (Page 11)</em></a></p>
@@ -1163,8 +1130,7 @@ dtc \
     gpios = &lt;0x2b 0x03 0x13 0x00&gt;;
     retain-state-suspended;
   };
-};
-</code></pre></div>
+};</code></pre></div>
 <p>For the Blue LED, we interpret <strong><code>gpios</code></strong> as…</p>
 <ul>
 <li>
@@ -1210,8 +1176,7 @@ dtc \
   num-interpolated-steps = &lt;0x32&gt;;
   default-brightness-level = &lt;0x1f4&gt;;
   phandle = &lt;0x56&gt;;
-};
-</code></pre></div>
+};</code></pre></div>
 <p>We interpret <strong><code>enable-gpios</code></strong> as…</p>
 <ul>
 <li>

@@ -238,8 +238,7 @@ a + b </code></pre></div>
   </span><span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, result);
 }</code></pre></div>
 <p>This code <strong>initialises the Rhai engine</strong> and evaluates a Rhai Script that returns an integer result…</p>
-<div class="example-wrap"><pre class="language-text"><code>42
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>42</code></pre></div>
 <p><a href="https://rhai.rs/book/engine/hello-world.html">(More about Rhai Scripting Engine)</a></p>
 <h2 id="register-function"><a href="#register-function">3.1 Register Function</a></h2>
 <p>To <strong>register a Rust Function</strong> that will be called by the Rhai Script, we do this: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L21-L98"><code>bl602-script/lib.rs</code></a></p>
@@ -558,8 +557,7 @@ FnCall(
 <div class="example-wrap"><pre class="language-text"><code>( let* 
   (( LED_GPIO 11 ))
   ...
-)
-</code></pre></div>
+)</code></pre></div>
 <p>Watch how we transcode the <strong><code>let</code></strong> Statement: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L61-L89"><code>transcode.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Transcode a Rhai Statement to uLisp
@@ -584,8 +582,7 @@ FnCall(
 <div class="example-wrap"><pre class="language-text"><code>( let* 
   (( LED_GPIO 11 ))
   ...
-)
-</code></pre></div>
+)</code></pre></div>
 <p>Where <strong>“<code>...</code>”</strong> refers to the <strong>uLisp Scope</strong> of the statements that will be transcoded after the <strong><code>let</code></strong> statement.</p>
 <p>(More about uLisp Scopes in a while)</p>
 <p>Next: <strong><code>for</code></strong> Statements like this…</p>
@@ -594,8 +591,7 @@ FnCall(
 <p>Shall be transcoded to uLisp like so…</p>
 <div class="example-wrap"><pre class="language-text"><code>( dotimes (i 10)
   ...
-)
-</code></pre></div>
+)</code></pre></div>
 <p>This is how we transcode the <strong><code>for</code></strong> Statement: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L91-L142"><code>transcode.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="kw">match </span>stmt {
@@ -703,8 +699,7 @@ FnCall(
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>gpio::enable_output(LED_GPIO, <span class="number">0</span>, <span class="number">0</span>)</code></pre></div>
 <p>To…</p>
-<div class="example-wrap"><pre class="language-text"><code>( bl_gpio_enable_output LED_GPIO 0 0 )
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>( bl_gpio_enable_output LED_GPIO 0 0 )</code></pre></div>
 <p>Here’s how: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/transcode.rs#L271-L322"><code>transcode.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Transcode a Rhai Function Call to uLisp:
@@ -791,8 +786,7 @@ FnCall(
       )
     )
   )
-)
-</code></pre></div>
+)</code></pre></div>
 <p>Yep it looks like proper uLisp!</p>
 <p>Just that we need to <strong>define these BL602 Functions</strong> in uLisp…</p>
 <ul>
@@ -948,8 +942,7 @@ FnCall(
 <li>
 <p>There’s a minor quirk when building Rhai with <strong>AST support on WebAssembly</strong> (since we’re running our Rhai Transcoder on WebAssembly)…</p>
 <div class="example-wrap"><pre class="language-text"><code>unresolved import `ast::FloatWrapper`
---&gt; rhai-1.0.2/src/lib.rs:230:44
-</code></pre></div>
+--&gt; rhai-1.0.2/src/lib.rs:230:44</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602-simulator/tree/transcode#build-bl602--bl604-rust-firmware-for-webassembly">Here is the workaround</a></p>
 </li>
 </ol>
@@ -997,8 +990,7 @@ object *fn_bl_gpio_enable_output(object *args, object *env) {
   //  Return the result to uLisp
   //  TODO: Throw an exception if the result is non-zero
   return number(result);
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Next we extend the <strong>Function Enum</strong>: <a href="https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L196-L200"><code>ulisp.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>enum function {
   ...
@@ -1006,14 +998,12 @@ object *fn_bl_gpio_enable_output(object *args, object *env) {
   BL_GPIO_ENABLE_OUTPUT,
   BL_GPIO_OUTPUT_SET,
   TIME_DELAY,
-  //  End User Functions
-</code></pre></div>
+  //  End User Functions</code></pre></div>
 <p>Then we define the <strong>uLisp Function Name</strong>: <a href="https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4434-L4438"><code>ulisp.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Insert your own function names here
 const char str_bl_gpio_enable_output[] PROGMEM = &quot;bl_gpio_enable_output&quot;;
 const char str_bl_gpio_output_set[]    PROGMEM = &quot;bl_gpio_output_set&quot;;
-const char str_time_delay[]            PROGMEM = &quot;time_delay&quot;;
-</code></pre></div>
+const char str_time_delay[]            PROGMEM = &quot;time_delay&quot;;</code></pre></div>
 <p>Finally we add the uLisp Shim Function to the <strong>Symbol Lookup Table</strong>: <a href="https://github.com/lupyuen/ulisp-bl602/blob/sdk/src/ulisp.c#L4667-L4671"><code>ulisp.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Built-in symbol lookup table
 const tbl_entry_t lookup_table[] PROGMEM = {
@@ -1021,8 +1011,7 @@ const tbl_entry_t lookup_table[] PROGMEM = {
   // Insert your own table entries here
   { str_bl_gpio_enable_output, fn_bl_gpio_enable_output, 0x33 },
   { str_bl_gpio_output_set,    fn_bl_gpio_output_set,    0x22 },
-  { str_time_delay,            fn_time_delay,            0x11 },
-</code></pre></div>
+  { str_time_delay,            fn_time_delay,            0x11 },</code></pre></div>
 <p><em>What is <code>0x33</code>?</em></p>
 <p><strong><code>0x33</code></strong> means that our uLisp Function accepts</p>
 <ul>
@@ -1147,14 +1136,12 @@ Blockly.Rhai[&#39;forever&#39;] = function(block) {
     code + `}`,
   ].join(&#39;\n&#39;);
   return code;
-};
-</code></pre></div>
+};</code></pre></div>
 <p>This JavaScript function emits a <strong>Rhai loop</strong> that wraps the code inside the <strong><code>forever</code></strong> block like so…</p>
 <div class="example-wrap"><pre class="language-text"><code>//  Loop forever
 loop {
     ...Code inside the loop block...
-}
-</code></pre></div>
+}</code></pre></div>
 <p>And below is the <strong><code>digital write</code> Code Generator</strong>: <a href="https://github.com/lupyuen2/blockly-bl602/blob/master/generators/rhai/rhai_functions.js#L81-L94"><code>rhai_functions.js</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Emit Rhai code for the &quot;digtial write&quot; block. 
 Blockly.Rhai[&#39;digital_write_pin&#39;] = function(block) {
@@ -1170,15 +1157,13 @@ Blockly.Rhai[&#39;digital_write_pin&#39;] = function(block) {
     ``
   ].join(&#39;\n&#39;);  
   return code;
-};
-</code></pre></div>
+};</code></pre></div>
 <p>This JavaScript function emits Rhai code that <strong>sets the GPIO Pin mode and output value</strong> like so…</p>
 <div class="example-wrap"><pre class="language-text"><code>//  Configure GPIO 11 for Output
 gpio::enable_output(11, 0, 0);
 
 //  Set GPIO 11 to High
-gpio::output_set(11, 1);
-</code></pre></div>
+gpio::output_set(11, 1);</code></pre></div>
 <p><em>What about the missing Rhai Code Generators?</em></p>
 <p>If the <strong>Community could help</strong> to fill in the <strong>missing Rhai Code Generators</strong>… That would be incredibly awesome! 🙏 👍 😀</p>
 

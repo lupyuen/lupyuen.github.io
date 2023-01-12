@@ -112,22 +112,17 @@
 </ul>
 <p><em>How do we build the app?</em></p>
 <p>To enable the app in our NuttX Project…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make menuconfig
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div>
 <p>And select…</p>
-<div class="example-wrap"><pre class="language-text"><code>Application Configuration &gt; Examples &gt; Framebuffer Driver Example
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>Application Configuration &gt; Examples &gt; Framebuffer Driver Example</code></pre></div>
 <p>Save the configuration and exit <code>menuconfig</code>.</p>
 <p>Look for this line: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L343-L346">apps/examples/fb/fb_main.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_FB_OVERLAY
-</code></pre></div>
+<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_FB_OVERLAY</code></pre></div>
 <p>And change it to…</p>
-<div class="example-wrap"><pre class="language-c"><code>#ifdef NOTUSED
-</code></pre></div>
+<div class="example-wrap"><pre class="language-c"><code>#ifdef NOTUSED</code></pre></div>
 <p>Because our PinePhone Framebuffer Driver doesn’t support overlays yet.</p>
 <p>Then build NuttX with…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div>
 <p>Before we run the demo, let’s look at the code…</p>
 <h1 id="framebuffer-interface"><a href="#framebuffer-interface">2 Framebuffer Interface</a></h1>
 <p><em>What’s inside the app?</em></p>
@@ -140,8 +135,7 @@
 int fd = open(&quot;/dev/fb0&quot;, O_RDWR);
 
 // Quit if we failed to open
-if (fd &lt; 0) { return; }
-</code></pre></div>
+if (fd &lt; 0) { return; }</code></pre></div>
 <p>Next we fetch the <strong>Framebuffer Characteristics</strong>, which will tell us the Screen Size (720 x 1440) and Pixel Format (ARGB 8888)…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Get the Characteristics of the Framebuffer
 struct fb_videoinfo_s vinfo;
@@ -152,8 +146,7 @@ int ret = ioctl(          // Do I/O Control...
 );
 
 // Quit if FBIOGET_VIDEOINFO failed
-if (ret &lt; 0) { return; }
-</code></pre></div>
+if (ret &lt; 0) { return; }</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L472-L488">(<strong>fb_videoinfo_s</strong> is defined here)</a></p>
 <p>Then we fetch the <strong>Plane Info</strong>, which describes the <strong>RAM Framebuffer</strong> that we’ll use for drawing: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L391-L400">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Get the Plane Info
@@ -165,8 +158,7 @@ ret = ioctl(              // Do I/O Control...
 );
 
 // Quit if FBIOGET_PLANEINFO failed
-if (ret &lt; 0) { return; }
-</code></pre></div>
+if (ret &lt; 0) { return; }</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L488-L505">(<strong>fb_planeinfo_s</strong> is defined here)</a></p>
 <p>To access the RAM Framebuffer, we <strong>map it to a valid address</strong>: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L420-L440">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Map the Framebuffer Address
@@ -180,8 +172,7 @@ void *fbmem = mmap(  // Map the address of...
 );
 
 // Quit if we failed to map the Framebuffer Address
-if (fbmem == MAP_FAILED) { return; }
-</code></pre></div>
+if (fbmem == MAP_FAILED) { return; }</code></pre></div>
 <p>This returns <strong>fbmem</strong>, a pointer to the RAM Framebuffer.</p>
 <p>Let’s blast some pixels to the RAM Framebuffer…</p>
 <p><img src="https://lupyuen.github.io/images/fb-demo2.jpg" alt="Render Grey Screen" /></p>
@@ -193,8 +184,7 @@ memset(        // Fill the buffer...
   fbmem,       // Framebuffer Address
   0x80,        // Value
   pinfo.fblen  // Framebuffer Size
-);
-</code></pre></div>
+);</code></pre></div>
 <p>(We’ll explain in a while why this turns grey)</p>
 <p>After filling the Framebuffer, we <strong>refresh the display</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/fb/examples/fb/fb_main.c#L548-L562">fb_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Area to be refreshed
@@ -210,8 +200,7 @@ ioctl(  // Do I/O Control...
   fd,   // File Descriptor of Framebuffer Driver
   FBIO_UPDATE,           // Refresh the Display
   (unsigned long) &amp;area  // Area to be refreshed
-);
-</code></pre></div>
+);</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L505-L515">(<strong>fb_area_s</strong> is defined here)</a></p>
 <p>If we skip this step, we’ll see <strong>missing pixels</strong> in our display.</p>
 <p>(More about this below)</p>
@@ -223,8 +212,7 @@ munmap(        // Unmap the address of...
 );
 
 // Close the Framebuffer Driver
-close(fd);
-</code></pre></div>
+close(fd);</code></pre></div>
 <p>When we run this, PinePhone turns grey! (Pic above)</p>
 <p>To understand why, let’s look inside the Framebuffer…</p>
 <p><img src="https://lupyuen.github.io/images/de2-fb.jpg" alt="PinePhone Framebuffer" /></p>
@@ -269,8 +257,7 @@ for (int i = 0; i &lt; fblen; i++) {
   }
 }
 
-// Omitted: Refresh the display with ioctl(FBIO_UPDATE)
-</code></pre></div>
+// Omitted: Refresh the display with ioctl(FBIO_UPDATE)</code></pre></div>
 <p>Everything is hunky dory for chunks of pixels! Let’s set individual pixels by row and column…</p>
 <p><img src="https://lupyuen.github.io/images/fb-demo4.jpg" alt="Render Circle" /></p>
 <h1 id="render-circle"><a href="#render-circle">5 Render Circle</a></h1>
@@ -311,8 +298,7 @@ for (int y = 0; y &lt; height; y++) {
   }
 }
 
-// Omitted: Refresh the display with ioctl(FBIO_UPDATE)
-</code></pre></div>
+// Omitted: Refresh the display with ioctl(FBIO_UPDATE)</code></pre></div>
 <p>Yep we have full control over every single pixel! Let’s wrap up our demo with some mesmerising rectangles…</p>
 <p><img src="https://lupyuen.github.io/images/fb-demo1.jpg" alt="Render Rectangles" /></p>
 <h1 id="render-rectangle"><a href="#render-rectangle">6 Render Rectangle</a></h1>
@@ -329,8 +315,7 @@ struct fb_area_s area = {
 // Render the rectangle
 draw_rect(&amp;state, &amp;area, color);
 
-// Omitted: Refresh the display with ioctl(FBIO_UPDATE)
-</code></pre></div>
+// Omitted: Refresh the display with ioctl(FBIO_UPDATE)</code></pre></div>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/fb/fb_main.c#L89-L114">(<strong>draw_rect</strong> is defined here)</a></p>
 <p>The pic below shows the output of the Framebuffer App <strong><code>fb</code></strong> when we run it on PinePhone…</p>
 <p><img src="https://lupyuen.github.io/images/fb-run.png" alt="NuttX Framebuffer App running on PinePhone" /></p>
@@ -342,8 +327,7 @@ draw_rect(&amp;state, &amp;area, color);
 <p><em>Is there a simpler way to render Graphical User Interfaces?</em></p>
 <p>Yep just call the <a href="https://docs.lvgl.io/master/intro/index.html"><strong>LVGL Graphics Library</strong></a>! (Pic above)</p>
 <p>To build the <strong>LVGL Demo App</strong> on NuttX…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make menuconfig
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div>
 <p>Select these options…</p>
 <p>Enable “<strong>Application Configuration</strong> &gt; <strong>Graphics Support</strong> &gt; <strong>Light and Versatile Graphics Library (LVGL)</strong>”</p>
 <p>Enable “<strong>LVGL</strong> &gt; <strong>Enable Framebuffer Port</strong>”</p>
@@ -368,11 +352,9 @@ draw_rect(&amp;state, &amp;area, color);
 </ul>
 <p>Enable “<strong>Application Configuration</strong> &gt; <strong>Examples</strong> &gt; <strong>LVGL Demo</strong>”</p>
 <p>Save the configuration and exit <code>menuconfig</code>. Rebuild NuttX…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div>
 <p>Boot NuttX on PinePhone. At the NSH Command Prompt, enter…</p>
-<div class="example-wrap"><pre class="language-bash"><code>lvgldemo widgets
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>lvgldemo widgets</code></pre></div>
 <p>And we’ll see the LVGL Graphical User Interface on PinePhone! <a href="https://lupyuen.github.io/images/fb-lvgl3.jpg">(Like this)</a></p>
 <p><em>But it won’t respond to our touch right?</em></p>
 <p>Yeah we haven’t started on the <a href="https://lupyuen.github.io/articles/pio#touch-panel"><strong>I2C Touch Input Driver</strong></a> for PinePhone.</p>
@@ -423,8 +405,7 @@ draw_rect(&amp;state, &amp;area, color);
 // PANEL_HEIGHT is 1440
 static uint32_t g_pinephone_fb0[  // 32 bits per pixel
   PANEL_WIDTH * PANEL_HEIGHT      // 720 x 1440 pixels
-];
-</code></pre></div>
+];</code></pre></div>
 <p>(Memory Protection is not turned on yet, so <a href="https://lupyuen.github.io/articles/fb"><strong>mmap</strong></a> returns the actual address of <strong>g_pinephone_fb0</strong> to NuttX Apps for rendering)</p>
 <p>We describe <strong>PinePhone’s LCD Display</strong> like so (pic below)…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Video Info for PinePhone
@@ -437,8 +418,7 @@ static struct fb_videoinfo_s g_pinephone_video = {
   .yres      = PANEL_HEIGHT,   // Vertical resolution in pixel rows
   .nplanes   = 1,  // Color planes: Base UI Channel
   .noverlays = 2   // Overlays: 2 Overlay UI Channels
-};
-</code></pre></div>
+};</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L472-L488">(<strong>fb_videoinfo_s</strong> is defined here)</a></p>
 <p>(We’re still working on the Overlays)</p>
 <p>We tell NuttX about our RAM Framebuffer with this <strong>Plane Info</strong>…</p>
@@ -454,8 +434,7 @@ static struct fb_planeinfo_s g_pinephone_plane = {
   .yres_virtual = PANEL_HEIGHT,  // Virtual Vertical resolution
   .xoffset      = 0,  // X Offset from virtual to visible
   .yoffset      = 0   // Y Offset from virtual to visible
-};
-</code></pre></div>
+};</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L488-L505">(<strong>fb_planeinfo_s</strong> is defined here)</a></p>
 <p><img src="https://lupyuen.github.io/images/de2-fb.jpg" alt="PinePhone Framebuffer" /></p>
 <h2 id="framebuffer-operations"><a href="#framebuffer-operations">8.2 Framebuffer Operations</a></h2>
@@ -475,8 +454,7 @@ static struct fb_vtable_s g_pinephone_vtable = {
   .setcolor        = pinephone_setcolor,
   .setblank        = pinephone_setblank,
   .setarea         = pinephone_setarea
-};
-</code></pre></div>
+};</code></pre></div>
 <p>We haven’t implemented the Overlays, so let’s talk about the <strong>first 3 operations</strong>…</p>
 <ul>
 <li>
@@ -513,8 +491,7 @@ struct fb_vtable_s *up_fbgetvplane(
 ) {
   // Return the supported Framebuffer Operations
   return &amp;g_pinephone_vtable;
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/fb#framebuffer-operations">(We’ve seen <strong>g_pinephone_vtable</strong> earlier)</a></p>
 <p>Now it gets interesting: NuttX Kernel and NuttX Apps will call the operations exposed by our Framebuffer Driver…</p>
 <p><img src="https://lupyuen.github.io/images/lcd-title.jpg" alt="Test Pattern on NuttX for PinePhone" /></p>
@@ -547,8 +524,7 @@ static int pinephone_getvideoinfo(
     memset(g_pinephone_fb2, 0, sizeof(g_pinephone_fb2));
   }
   return OK;
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/fb#ram-framebuffer">(We’ve seen <strong>g_pinephone_video</strong> earlier)</a></p>
 <p>This code looks interesting: We’re trying to show the <strong>Startup Test Pattern</strong> for as long as possible. (Pic above)</p>
 <p>Normally NuttX Kernel will erase our Framebuffer at startup. But with the logic above, our Test Pattern will be visible until the <strong>first app call</strong> to our Framebuffer Driver.</p>
@@ -570,8 +546,7 @@ static int pinephone_getplaneinfo(
   // Copy and return the Plane Info
   memcpy(pinfo, &amp;g_pinephone_plane, sizeof(struct fb_planeinfo_s));
   return OK;
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/fb#ram-framebuffer">(We’ve seen <strong>g_pinephone_plane</strong> earlier)</a></p>
 <h2 id="update-area"><a href="#update-area">8.7 Update Area</a></h2>
 <p>The final operation <strong>updates the display</strong> when there’s a change to the Framebuffer: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_display.c#L472-L513">pinephone_display.c</a></p>
@@ -581,8 +556,7 @@ static int pinephone_updatearea(
   struct fb_vtable_s *vtable,   // Framebuffer Driver
   const struct fb_area_s *area  // Updated area of Framebuffer
 ) {
-  // Mystery Code...
-</code></pre></div>
+  // Mystery Code...</code></pre></div>
 <p>This operation is invoked when NuttX Apps call <strong>FBIO_UPDATE</strong>, as we’ve seen earlier…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/fb#render-grey-screen"><strong>“Render Grey Screen”</strong></a></li>
@@ -641,8 +615,7 @@ static int pinephone_updatearea(
     fb[i] = v;
   }
   return OK;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>With the code above, the Red, Orange and Yellow Boxes are now rendered correctly in our NuttX Framebuffer Driver for PinePhone. (Pic above)</p>
 <p><em>Instead of copying the entire RAM Framebuffer, can we copy only the updated screen area?</em></p>
 <p>Yep probably, we need more rigourous testing.</p>
@@ -662,8 +635,7 @@ static int pinephone_updatearea(
     FBIO_UPDATE,  // Update the Framebuffer
     (unsigned long)((uintptr_t)area)  // Updated area
   );
-#endif
-</code></pre></div>
+#endif</code></pre></div>
 <p><em>How do other PinePhone operating systems handle this?</em></p>
 <p>See this…</p>
 <ul>
