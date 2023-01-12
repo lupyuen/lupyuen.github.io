@@ -810,9 +810,9 @@ Which will...
 
 1.  __Attach the Interrupt Handler__ with NuttX
 
-    [(Implemented as __pinephone_gt9xx_irq_attach__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L541-L560)
+    [(Implemented as __pinephone_gt9xx_irq_attach__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L545-L568)
 
-    [(As explained earlier)](https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler)
+    [(As explained here)](https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler)
 
     [(Interrupt Handler is __gt9xx_isr_handler__)](https://lupyuen.github.io/articles/touch2#interrupt-handler)
 
@@ -832,7 +832,7 @@ Inside the __Open Operation__ we...
 
 1.  __Power On__ the Touch Panel
 
-    [(Implemented as __pinephone_gt9xx_set_power__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L584-L590)
+    [(Implemented as __pinephone_gt9xx_set_power__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L593-L599)
 
 1.  __Probe the Touch Panel__ on the I2C Bus, to verify that it exists
 
@@ -844,9 +844,9 @@ Inside the __Open Operation__ we...
 
 1.  __Enable Interrupts__ from the Touch Panel
 
-    [(Implemented as __pinephone_gt9xx_irq_enable__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L560-L584)
+    [(Implemented as __pinephone_gt9xx_irq_enable__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L568-L593)
 
-    [(As explained earlier)](https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler)
+    [(As explained here)](https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler)
 
 The [__Actual Flow__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch4/drivers/input/gt9xx.c#L582-L669) looks more complicated because we do __Reference Counting__.
 
@@ -914,7 +914,7 @@ Which does this...
 
     [(Implemented as __gt9xx_read_touch_data__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch4/drivers/input/gt9xx.c#L362-L451)
 
-    [(As explained earlier)](https://lupyuen.github.io/articles/touch2#read-a-touch-point)
+    [(As explained here)](https://lupyuen.github.io/articles/touch2#read-a-touch-point)
 
     [(Which calls __gt9xx_set_status__ to set the status)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch4/drivers/input/gt9xx.c#L328-L362)
 
@@ -925,6 +925,16 @@ Which does this...
     [(Otherwise we'll see duplicates like this)](https://gist.github.com/lupyuen/52bd626001f94e279c736979e074aac9)
 
 Since our driver doesn't support Multitouch, the Read Operation will return __either 0 or 1 Touch Points__.
+
+_Why the Duplicate Touch Points?_
+
+Right now we ignore __Duplicate Touch Points__, because we saw the Touch Panel generating duplicate points. [(See this)](https://gist.github.com/lupyuen/52bd626001f94e279c736979e074aac9)
+
+[(We added the logs here)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/touch2/graphics/lvgl/port/lv_port_touchpad.c#L83-L99)
+
+The Touch Panel seems to be producing __Touch Up Events__... Even though the 6-byte Touch Data looks identical for the Touch Down and Touch Up Events. [(See this)](https://gist.github.com/lupyuen/fc88153b915894dbdaefcb5a916232fe)
+
+Eventually we'll have to decode the Touch Up Events. And then remove our [__Simulated Touch Up Event__](https://lupyuen.github.io/articles/touch2#read-a-touch-sample).
 
 Let's talk about the Interrupt Pending Flag...
 
@@ -942,7 +952,7 @@ Inside the Interrupt Handler we...
 
 1.  Notify the __Poll Waiters__ (Background Threads)
 
-    [(As explained earlier)](https://lupyuen.github.io/articles/touch2#handle-interrupts-from-touch-panel)
+    [(As explained here)](https://lupyuen.github.io/articles/touch2#handle-interrupts-from-touch-panel)
 
 Now we talk about the Poll Waiters...
 
