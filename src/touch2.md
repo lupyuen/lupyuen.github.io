@@ -918,6 +918,8 @@ Which does this...
 
     [(Otherwise we'll see duplicates like this)](https://gist.github.com/lupyuen/52bd626001f94e279c736979e074aac9)
 
+    [(Also fixes the duplicate keypresses at the end of this video)](https://www.youtube.com/shorts/APge9bTt-ho)
+
 Since our driver doesn't support Multitouch, the Read Operation will return __either 0 or 1 Touch Points__.
 
 _Why the Duplicate Touch Points?_
@@ -1250,6 +1252,8 @@ gt9xx_i2c_read (0x40b1bab0):
 
 [(See the Debug Log)](https://gist.github.com/lupyuen/3b406c58ea275a3dfadc4c4dff50f1a7)
 
+We might need to study the [__Generic Interrupt Controller__](https://lupyuen.github.io/articles/interrupt#generic-interrupt-controller) to learn how it handles such interrupts.
+
 _Is this a showstopper for our Touch Panel Driver?_
 
 Not really, polling will work fine for now.
@@ -1345,7 +1349,9 @@ We checked that the __Touch Panel Status__ was correctly set to 0 after every in
 
 [(Why does Status `0x81` change to `0x80`, instead of 0?)](https://gist.github.com/lupyuen/726110f8d24416584fe232330ffb1683)
 
-So we need to stick with __IRQ_TYPE_EDGE__ and figure out how to trigger interrupts correctly on Touch Input.
+Thus we need to stick with __IRQ_TYPE_EDGE__ and figure out how to trigger interrupts correctly on Touch Input.
+
+[(Perhaps by studying the __Generic Interrupt Controller__)](https://lupyuen.github.io/articles/interrupt#generic-interrupt-controller)
 
 ## Interrupt Priority
 
@@ -1362,4 +1368,43 @@ arm64_gic_irq_set_priority(
 
 [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L289-L329)
 
-TODO
+We set the Interrupt Priority to 2 for __Legacy Reasons__...
+
+The code below comes from the Early Days of NuttX Arm64: [arch/arm64/src/qemu/qemu_serial.c](https://github.com/apache/nuttx/blob/master/arch/arm64/src/qemu/qemu_serial.c#L585-L630)
+
+```c
+// Attach Interrupt Handler for Arm64 QEMU UART
+static int qemu_pl011_attach(struct uart_dev_s *dev) {
+  ...
+  // Set Interrupt Priority for Arm64 QEMU UART
+  arm64_gic_irq_set_priority(
+    sport->irq_num,  // Interrupt Number for UART
+    IRQ_TYPE_LEVEL,  // Interrupt Priority is 2 ???
+    0                // Interrupt Trigger by Level ???
+  );
+```
+
+There seems to be a __mix-up in the arguments__: Interrupt Priority vs Interrupt Trigger.
+
+__IRQ_TYPE_LEVEL__ is 2, so the code above sets the __Interrupt Priority to 2__, with the Default Interrupt Trigger (by Level).
+
+That's why we configured our Touch Panel Interrupt for __Priority 2__, to be consistent with the existing calls.
+
+Someday we should fix all existing calls to __arm64_gic_irq_set_priority__...
+
+-   [__qemu_pl011_attach__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/qemu/qemu_serial.c#L585-L630)
+
+-   [__a64_uart_attach__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L204-L253)
+
+-   [__twi_hw_initialize__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_twi.c#L1808-L1859)
+
+To this...
+
+```c
+  // Set Interrupt Priority with Correct Arguments
+  arm64_gic_irq_set_priority(
+    irq_num,        // Interrupt Number
+    0,              // Interrupt Priority
+    IRQ_TYPE_LEVEL  // Interrupt Trigger by Level
+  );
+```
