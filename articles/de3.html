@@ -131,8 +131,7 @@
 
 // Framebuffer 0: (Base UI Channel)
 // Fullscreen 720 x 1440 (4 bytes per XRGB 8888 pixel)
-static uint32_t fb0[PANEL_WIDTH * PANEL_HEIGHT];
-</code></pre></div>
+static uint32_t fb0[PANEL_WIDTH * PANEL_HEIGHT];</code></pre></div>
 <p>Later we’ll fill Framebuffer 0 with <strong>Blue, Green and Red</strong> blocks.</p>
 </li>
 <li>
@@ -141,16 +140,14 @@ static uint32_t fb0[PANEL_WIDTH * PANEL_HEIGHT];
 // Square 600 x 600 (4 bytes per ARGB 8888 pixel)
 #define FB1_WIDTH  600
 #define FB1_HEIGHT 600
-static uint32_t fb1[FB1_WIDTH * FB1_HEIGHT];
-</code></pre></div>
+static uint32_t fb1[FB1_WIDTH * FB1_HEIGHT];</code></pre></div>
 <p>We’ll fill it with <strong>Semi-Transparent White</strong> later.</p>
 </li>
 <li>
 <p><strong>Framebuffer 2</strong> (UI Channel 3) is also a Fullscreen Framebuffer…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Framebuffer 2: (Second Overlay UI Channel)
 // Fullscreen 720 x 1440 (4 bytes per ARGB 8888 pixel)
-static uint32_t fb2[PANEL_WIDTH * PANEL_HEIGHT];
-</code></pre></div>
+static uint32_t fb2[PANEL_WIDTH * PANEL_HEIGHT];</code></pre></div>
 <p>We’ll fill it with a <strong>Semi-Transparent Green Circle</strong>.</p>
 </li>
 </ul>
@@ -180,8 +177,7 @@ static struct fb_videoinfo_s videoInfo = {
   .yres      = PANEL_HEIGHT,   // Vertical resolution in pixel rows
   .nplanes   = 1,     // Number of color planes supported (Base UI Channel)
   .noverlays = 2      // Number of overlays supported (2 Overlay UI Channels)
-};
-</code></pre></div>
+};</code></pre></div>
 <p>The <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L472-L487"><strong>fb_videoinfo_s</strong></a> struct defines the overall PinePhone Display Interface…</p>
 <ul>
 <li>720 x 1440 resolution</li>
@@ -202,8 +198,7 @@ static struct fb_planeinfo_s planeInfo = {
   .yres_virtual = PANEL_HEIGHT,  // Virtual Vertical resolution in pixel rows
   .xoffset      = 0,  // Offset from virtual to visible resolution
   .yoffset      = 0   // Offset from virtual to visible resolution
-};
-</code></pre></div>
+};</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L488-L504">(<strong>fb_planeinfo_s</strong> is defined here)</a></p>
 <p>And <strong>Framebuffers 1 and 2</strong> (UI Channels 2 and 3): <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_de.c#L5-L89">test_a64_de.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/// NuttX Overlays for PinePhone (2 Overlay UI Channels)
@@ -238,8 +233,7 @@ static struct fb_overlayinfo_s overlayInfo[2] = {
     .sarea     = { .x = 0, .y = 0, .w = PANEL_WIDTH, .h = PANEL_HEIGHT },  // Selected area within the overlay
     .accl      = 0      // TODO: Supported hardware acceleration
   },
-};
-</code></pre></div>
+};</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/video/fb.h#L524-L540">(<strong>fb_overlayinfo_s</strong> is defined here)</a></p>
 <p><em>What’s sarea?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>.sarea = {
@@ -247,8 +241,7 @@ static struct fb_overlayinfo_s overlayInfo[2] = {
   .y = 52, 
   .w = FB1_WIDTH,  // Width is 600
   .h = FB1_HEIGHT  // Height is 600
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Remember that Framebuffer 1 is <strong>600 pixels</strong> wide… But the PinePhone Screen is <strong>720 pixels</strong> wide.</p>
 <p>We use <strong>sarea</strong> to specify that Framebuffer 1 will be rendered <strong>52 pixels</strong> from the left (X Offset), <strong>52 pixels</strong> from the top (Y Offset). </p>
 <p>(So it will be centered horizontally)</p>
@@ -280,8 +273,7 @@ up_mdelay(160);
 
 // Render Graphics with Display Engine
 ret = pinephone_render_graphics();
-DEBUGASSERT(ret == OK);
-</code></pre></div>
+DEBUGASSERT(ret == OK);</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/render.zig#L1146-L1196">(Source)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c#L386-L655"><strong>a64_de_init</strong></a> comes from our NuttX Kernel Driver for Display Engine.</p>
 <p><a href="https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine">(How it works)</a></p>
@@ -294,8 +286,7 @@ int pinephone_render_graphics(void) {
 
   // Init the UI Blender for A64 Display Engine
   int ret = a64_de_blender_init();
-  DEBUGASSERT(ret == OK);
-</code></pre></div>
+  DEBUGASSERT(ret == OK);</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c#L655-L711">(<strong>a64_de_blender_init</strong> comes from our Display Engine Driver)</a></p>
 <p><a href="https://lupyuen.github.io/articles/de#appendix-programming-the-allwinner-a64-display-engine">(How it works)</a></p>
 <h2 id="initialise-ui-channels"><a href="#initialise-ui-channels">4.3 Initialise UI Channels</a></h2>
@@ -310,8 +301,7 @@ int pinephone_render_graphics(void) {
     planeInfo.xoffset,  // Horizontal offset in pixel columns
     planeInfo.yoffset   // Vertical offset in pixel rows
   );
-  DEBUGASSERT(ret == OK);
-</code></pre></div>
+  DEBUGASSERT(ret == OK);</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c#L711-L927">(<strong>a64_de_ui_channel_init</strong> comes from our Display Engine Driver)</a></p>
 <p><a href="https://lupyuen.github.io/articles/de2#configure-framebuffer">(How it works)</a></p>
 <p>Then we <strong>initialise UI Channels 2 and 3</strong> (with Framebuffers 1 and 2)…</p>
@@ -333,8 +323,7 @@ int pinephone_render_graphics(void) {
       ov-&gt;sarea.y   // Vertical offset in pixel rows
     );
     DEBUGASSERT(ret == OK);
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c#L711-L927">(<strong>a64_de_ui_channel_init</strong> comes from our Display Engine Driver)</a></p>
 <p><a href="https://lupyuen.github.io/articles/de2#configure-framebuffer">(How it works)</a></p>
 <h2 id="enable-display-engine"><a href="#enable-display-engine">4.4 Enable Display Engine</a></h2>
@@ -342,8 +331,7 @@ int pinephone_render_graphics(void) {
 <div class="example-wrap"><pre class="language-c"><code>  // Set UI Blender Route, enable Blender Pipes
   // and apply the settings
   ret = a64_de_enable(CHANNELS);
-  DEBUGASSERT(ret == OK);    
-</code></pre></div>
+  DEBUGASSERT(ret == OK);    </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_de.c#L927-L1017">(<strong>a64_de_enable</strong> comes from our Display Engine Driver)</a></p>
 <p><a href="https://lupyuen.github.io/articles/de2#configure-blender">(How it works)</a></p>
 <p>The Display Engine starts <strong>pulling pixels from our Framebuffers</strong> over Direct Memory Access (DMA). And pushes the rendered image to PinePhone’s LCD Display.</p>
@@ -353,8 +341,7 @@ int pinephone_render_graphics(void) {
   // or missing rows will appear.
   test_pattern();
   return OK;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Let’s do a simple Test Pattern…</p>
 <p><img src="https://lupyuen.github.io/images/de2-overlay.jpg" alt="3 Framebuffers for 3 UI Channels" /></p>
 <h1 id="test-pattern"><a href="#test-pattern">5 Test Pattern</a></h1>
@@ -383,8 +370,7 @@ static void test_pattern(void) {
   // Zero the Framebuffers
   memset(fb0, 0, sizeof(fb0));
   memset(fb1, 0, sizeof(fb1));
-  memset(fb2, 0, sizeof(fb2));
-</code></pre></div>
+  memset(fb2, 0, sizeof(fb2));</code></pre></div>
 <p><strong>Framebuffer 0</strong> (UI Channel 1) will have Blue, Green and Red Blocks…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Init Framebuffer 0:
   // Fill with Blue, Green and Red
@@ -407,8 +393,7 @@ static void test_pattern(void) {
 
     // Fixes the missing rows, not sure why
     ARM64_DMB(); ARM64_DSB(); ARM64_ISB();
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p>(We’ll talk about <strong>ARM64_DMB</strong> later)</p>
 <p><strong>Framebuffer 1</strong> (UI Channel 2) will be Semi-Transparent White…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Init Framebuffer 1:
@@ -423,8 +408,7 @@ static void test_pattern(void) {
 
     // Fixes the missing rows, not sure why
     ARM64_DMB(); ARM64_DSB(); ARM64_ISB();
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p>And <strong>Framebuffer 2</strong> (UI Channel 3) will have a Semi-Transparent Green Circle…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Init Framebuffer 2:
   // Fill with Semi-Transparent Green Circle
@@ -457,14 +441,12 @@ static void test_pattern(void) {
       ARM64_DMB(); ARM64_DSB(); ARM64_ISB();
     }
   }
-}
-</code></pre></div>
+}</code></pre></div>
 <p>We’re done with our Test Pattern! Let’s talk about <strong>ARM64_DMB</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/de-rgb.jpg" alt="Missing Rows" /></p>
 <p><em>Why the Arm Barriers?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>// Fixes the missing rows, not sure why
-ARM64_DMB(); ARM64_DSB(); ARM64_ISB();
-</code></pre></div>
+ARM64_DMB(); ARM64_DSB(); ARM64_ISB();</code></pre></div>
 <p>These are <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb"><strong>Arm64 Barrier Instructions</strong></a> that prevent caching and out-of-order execution. <a href="https://developer.arm.com/documentation/dui0489/c/arm-and-thumb-instructions/miscellaneous-instructions/dmb--dsb--and-isb">(See this)</a></p>
 <p>If we omit these Barrier Instructions, the rendered image will have <strong>missing rows</strong>. (Pic above)</p>
 <p>We’re not sure why this happens. Maybe it’s the CPU Cache? DMA? Framebuffer Alignment? Memory Corruption?</p>
@@ -498,8 +480,7 @@ _ = a64_tcon0_init(PANEL_WIDTH, PANEL_HEIGHT);
 _ = pinephone_pmic_init();            
 
 // Wait 15 milliseconds for power supply and power-on init
-up_mdelay(15);
-</code></pre></div>
+up_mdelay(15);</code></pre></div>
 <p>In the code above, we do these steps…</p>
 <ul>
 <li>
@@ -522,8 +503,7 @@ up_mdelay(15);
 _ = a64_mipi_dsi_enable();
 
 // Enable A64 MIPI Display Physical Layer (in C)
-_ = a64_mipi_dphy_enable();
-</code></pre></div>
+_ = a64_mipi_dphy_enable();</code></pre></div>
 <p>Here we enable the A64 <a href="https://lupyuen.github.io/articles/dsi3"><strong>MIPI Display Serial Interface</strong></a> and <a href="https://lupyuen.github.io/articles/dsi3"><strong>MIPI Display Physical Layer</strong></a>.</p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy">(<strong>a64_mipi_dsi_enable</strong> comes from our NuttX Driver for MIPI Display Serial Interface)</a></p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy">(<strong>a64_mipi_dphy_enable</strong> too)</a></p>
@@ -534,28 +514,24 @@ panel.panel_reset();
 up_mdelay(15);
 
 // Init LCD Panel (in C)
-_ = pinephone_panel_init();
-</code></pre></div>
+_ = pinephone_panel_init();</code></pre></div>
 <p>Next we reset the <a href="https://lupyuen.github.io/articles/de#appendix-reset-lcd-panel"><strong>LCD Panel</strong></a>, wait 15 milliseconds and send the <a href="https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet"><strong>Initialisation Commands</strong></a> to the LCD Controller.</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/panel.zig">(<strong>panel_reset</strong> is in Zig)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c#L43-L453">(<strong>pinephone_panel_init</strong> will be added to NuttX Kernel)</a></p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#send-mipi-dsi-packet">(Which calls <strong>a64_mipi_dsi_write</strong> from our NuttX Driver for MIPI Display Serial Interface)</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Start A64 MIPI Display Serial Interface (in C)
-_ = a64_mipi_dsi_start();
-</code></pre></div>
+_ = a64_mipi_dsi_start();</code></pre></div>
 <p>We start A64’s <a href="https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy"><strong>MIPI Display Serial Interface</strong></a>.</p>
 <p><a href="https://lupyuen.github.io/articles/dsi3#enable-mipi-dsi-and-d-phy">(<strong>a64_mipi_dsi_start</strong> comes from our NuttX Driver for MIPI Display Serial Interface)</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Init A64 Display Engine (in C)
 _ = a64_de_init();
 
 // Wait 160 milliseconds for Display Engine
-up_mdelay(160);
-</code></pre></div>
+up_mdelay(160);</code></pre></div>
 <p>We <strong>initialise the Display Engine</strong>.</p>
 <p><a href="https://lupyuen.github.io/articles/de3#initialise-display-engine">(We’ve seen <strong>a64_de_init</strong> earlier)</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Render Graphics with Display Engine (in C)
-_ = pinephone_render_graphics();
-</code></pre></div>
+_ = pinephone_render_graphics();</code></pre></div>
 <p>Finally we <strong>render the framebuffers</strong> with the Display Engine.</p>
 <p><a href="https://lupyuen.github.io/articles/de3#initialise-ui-blender">(We’ve seen <strong>pinephone_render_graphics</strong> earlier)</a></p>
 <p>This is how we compile our Zig Test Program…</p>
@@ -572,8 +548,7 @@ nsh&gt; uname -a
 NuttX 11.0.0-pinephone 64a54d2-dirty
 Dec 21 2022 21:48:25 arm64 pinephone
 
-nsh&gt; hello 0
-</code></pre></div>
+nsh&gt; hello 0</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/bd943bea51c6f90debd05cd4f4a8585d">(Source)</a></p>
 <p>PinePhone renders our Test Pattern on the LCD Display (pic below). Yep our (work-in-progress) PinePhone Display Driver has been tested successfully!</p>
 <p>Here’s the <strong>Debug Log</strong> from our Zig Test Program…</p>
@@ -723,8 +698,7 @@ nsh&gt; hello 0
 <p><em>So how do we wait a while in our NuttX Display Driver?</em></p>
 <p>We call <strong><code>up_mdelay()</code></strong> like so…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Wait 160 milliseconds
-up_mdelay(160);
-</code></pre></div>
+up_mdelay(160);</code></pre></div>
 <p><em>How does up_mdelay() work?</em></p>
 <p>It’s a very simple loop: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_assert.c#L64-L75">arm64_assert.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Wait for the specified milliseconds
@@ -736,8 +710,7 @@ void up_mdelay(unsigned int milliseconds) {
     for (j = 0; j &lt; CONFIG_BOARD_LOOPSPERMSEC; j++) {
     }
   }
-}
-</code></pre></div>
+}</code></pre></div>
 <p><em>Huh? Won’t the compiler optimise the code and remove the loop?</em></p>
 <p>It won’t because we declared the variables as <strong><code>volatile</code></strong>.</p>
 <p>The NuttX Disassembly shows that the loop is still intact: <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/v1.2.1/nuttx.S">nuttx.S</a></p>
@@ -752,16 +725,13 @@ arm64_assert.c:71 (discriminator 3)
     40081840:	b9400fe1 	ldr	w1, [sp, #12]
     40081844:	11000421 	add	w1, w1, #0x1
     40081848:	b9000fe1 	str	w1, [sp, #12]
-    4008184c:	17fffff6 	b	40081824 &lt;up_mdelay+0x28&gt;
-</code></pre></div>
+    4008184c:	17fffff6 	b	40081824 &lt;up_mdelay+0x28&gt;</code></pre></div>
 <p><em>What’s CONFIG_BOARD_LOOPSPERMSEC?</em></p>
 <p>That’s a magic constant computed by the <strong>NuttX Calibration Tool For udelay</strong>.</p>
 <p>To install the calibration tool…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make menuconfig
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div>
 <p>Then select…</p>
-<div class="example-wrap"><pre class="language-text"><code>Application Configuration &gt; Examples &gt; Calibration Tool For udelay 
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>Application Configuration &gt; Examples &gt; Calibration Tool For udelay </code></pre></div>
 <p>And rebuild NuttX.</p>
 <p>Boot NuttX on PinePhone and run <strong><code>calib_udelay</code></strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; calib_udelay
@@ -783,12 +753,10 @@ Calibration slope for udelay:
 Without overhead, 0.11652356 iterations per nanosecond and 116523.57 iterations per millisecond.
 
 Recommended setting for CONFIG_BOARD_LOOPSPERMSEC:
-   CONFIG_BOARD_LOOPSPERMSEC=116524
-</code></pre></div>
+   CONFIG_BOARD_LOOPSPERMSEC=116524</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/5c7de17bfe6cd192a852182cdf217c43">(See the Complete Log)</a></p>
 <p>We update the <strong>NuttX Board Configuration</strong> for PinePhone with the computed value: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/nsh/defconfig">pinephone/configs/nsh/defconfig</a></p>
-<div class="example-wrap"><pre class="language-text"><code>CONFIG_BOARD_LOOPSPERMSEC=116524
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>CONFIG_BOARD_LOOPSPERMSEC=116524</code></pre></div>
 <p>(PinePhone is probably the fastest NuttX Board ever!)</p>
 <p><em>What if our driver needs to wait a while AFTER the NuttX Kernel has been started?</em></p>
 <p>Call <a href="https://github.com/apache/nuttx/blob/master/sched/signal/sig_usleep.c#L38-L86"><strong><code>nxsig_usleep()</code></strong></a> instead.</p>

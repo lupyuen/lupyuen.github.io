@@ -174,8 +174,7 @@
 </li>
 <li>
 <p>Reading I2C Register <strong><code>0x8140</code></strong> (Product ID) will return the bytes…</p>
-<div class="example-wrap"><pre class="language-text"><code>39 31 37 53
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>39 31 37 53</code></pre></div>
 <p>Which is ASCII for “<strong><code>917S</code></strong>”</p>
 <p>(Goodix GT917S Touch Panel)</p>
 </li>
@@ -226,13 +225,11 @@ static void touch_panel_read(
   // Dump the Receive Buffer
   infodumpbuffer(&quot;buf&quot;, buf, buflen);
   // Shows &quot;39 31 37 53&quot; or &quot;917S&quot;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>This is what we see (with TWI0 Logging Enabled)…</p>
 <p><img src="https://lupyuen.github.io/images/touch2-code3a.png" alt="Read Product ID from Touch Panel" /></p>
 <p>Yep the I2C Response is correct…</p>
-<div class="example-wrap"><pre class="language-text"><code>39 31 37 53
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>39 31 37 53</code></pre></div>
 <p>Which is ASCII for “<strong><code>917S</code></strong>”!</p>
 <p>(Goodix GT917S Touch Panel)</p>
 <p><em>How’s the code above called by NuttX Kernel?</em></p>
@@ -286,8 +283,7 @@ void touch_panel_initialize(
     // Wait a while
     up_mdelay(10);
   }
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L174-L344">(<strong>a64_pio_config</strong> configures PH4 as an Input Pin)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L390-L420">(<strong>a64_pio_read</strong> reads PH4 as an Input Pin)</a></p>
 <p>The loop above watches for PH4 shifting from <strong>Low to High</strong>…</p>
@@ -311,8 +307,7 @@ struct i2c_master_s *i2c =
   a64_i2cbus_initialize(0);  // 0 for TWI0
 
 // Pass the I2C Port to the above loop
-touch_panel_initialize(i2c);
-</code></pre></div>
+touch_panel_initialize(i2c);</code></pre></div>
 <p>We insert this code at the end of the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L57-L175"><strong>PinePhone Bringup Function</strong></a>, so that NuttX Kernel will run it at the end of startup.</p>
 <p>(Yes it sounds hacky, but it’s a simple way to do Kernel Experiments)</p>
 <p>Now that we’ve simulated an Interrupt Handler, let’s read a Touch Point!</p>
@@ -384,8 +379,7 @@ static void touch_panel_read(
 
   // Set the Touch Panel Status to 0
   touch_panel_set_status(i2c, 0);
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L372-L415">(<strong>touch_panel_i2c_read</strong> reads from the I2C Touch Panel)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/e249049370d21a988912f2fb95a21514863dfe8a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L417-L447">(<strong>touch_panel_set_status</strong> sets the I2C Touch Panel Status)</a></p>
 <p>Let’s run the code…</p>
@@ -398,8 +392,7 @@ twi_wait: TWI0 Waiting...
 twi_put_addr: TWI address 7bits+r/w = 0xba
 twi_put_addr: TWI address 7bits+r/w = 0xbb
 twi_wait: TWI0 Awakened with result: 0
-0000  81                                               .               
-</code></pre></div>
+0000  81                                               .               </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/b1ed009961c4202133879b760cb22833">(Source)</a></p>
 <p>Touch Panel Status is <strong><code>0x81</code></strong>.  Which means the status is OK and there’s <strong>One Touch Point</strong> detected.</p>
 <p>Our code reads the <strong>Touch Coordinates</strong>…</p>
@@ -409,21 +402,24 @@ twi_put_addr: TWI address 7bits+r/w = 0xba
 twi_put_addr: TWI address 7bits+r/w = 0xbb
 twi_wait: TWI0 Awakened with result: 0
 0000  92 02 59 05 1b 00                                ..Y...          
-touch_panel_read: touch x=658, y=1369
-</code></pre></div>
+touch_panel_read: touch x=658, y=1369</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/b1ed009961c4202133879b760cb22833">(Source)</a></p>
 <p>This says that the Touch Point is at…</p>
-<div class="example-wrap"><pre class="language-text"><code>x=658, y=1369
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>x=658, y=1369</code></pre></div>
 <p>Which is quite close to the Lower Right Corner. (Screen size is 720 x 1440)</p>
 <p>Yep we can read the Touch Coordinates correctly, through polling! (But not so efficiently)</p>
 <p>Let’s handle interrupts from the Touch Panel…</p>
 <p><img src="https://lupyuen.github.io/images/touch2-code5a.png" alt="Attaching our Interrupt Handler" /></p>
 <h1 id="interrupt-handler-for-touch-panel"><a href="#interrupt-handler-for-touch-panel">5 Interrupt Handler for Touch Panel</a></h1>
-<p>TODO: See the Appendix</p>
+<p><em>We’ve done polling with the Touch Panel…</em></p>
+<p><em>How do we handle interrupts from the Touch Panel?</em></p>
+<p>Earlier we’ve read the Touch Panel by polling… Which is easier but inefficient.</p>
+<p>So we tried reading the Touch Panel with an <strong>Interrupt Handler</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/touch2#appendix-interrupt-handler-for-touch-panel"><strong>“Interrupt Handler for Touch Panel”</strong></a></li>
 </ul>
+<p>But there’s a problem: The Touch Panel only <strong>fires an interrupt once</strong>. If won’t trigger interrupts correctly when we touch the screen.</p>
+<p><em>Is this a showstopper for our Touch Panel Driver?</em></p>
 <p>TODO: LVGL Demo App doesn’t require interrupts, it uses polling</p>
 <h1 id="nuttx-touch-panel-driver"><a href="#nuttx-touch-panel-driver">6 NuttX Touch Panel Driver</a></h1>
 <p><em>What’s inside our NuttX Touch Panel Driver for PinePhone?</em></p>
@@ -437,8 +433,7 @@ struct file_operations g_gt9xx_fileops = {
   gt9xx_open,   // Open the Touch Panel
   gt9xx_close,  // Close the Touch Panel
   gt9xx_read,   // Read a Touch Sample
-  gt9xx_poll    // Setup Poll for Touch Sample
-</code></pre></div>
+  gt9xx_poll    // Setup Poll for Touch Sample</code></pre></div>
 <p>NuttX Apps will call these Touch Panel Operations through the POSIX Standard Functions <strong><code>open()</code></strong>, <strong><code>close()</code></strong>, <strong><code>read()</code></strong> and <strong><code>poll()</code></strong>.</p>
 <p>(Later we’ll see how LVGL Apps do this)</p>
 <p><em>How do we start the Touch Panel Driver?</em></p>
@@ -453,8 +448,7 @@ ret = gt9xx_register(
   CTP_I2C_ADDR,       // I2C Address of Touch Panel
   &amp;g_pinephone_gt9xx  // Callbacks for PinePhone Operations
 );
-DEBUGASSERT(ret == OK);
-</code></pre></div>
+DEBUGASSERT(ret == OK);</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/touch2#register-touch-panel-driver">(<strong>gt9xx_register</strong> comes from our Touch Panel Driver)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L64-L74">(<strong>g_pinephone_gt9xx</strong> defines the Interrupt Callbacks)</a></p>
 <p>The Touch Panel operations are explained in the Appendix…</p>
@@ -531,8 +525,7 @@ DEBUGASSERT(ret == OK);
 </ol>
 <p>Also we need to set in <strong><code>.config</code></strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_LV_TICK_CUSTOM=y
-CONFIG_LV_TICK_CUSTOM_INCLUDE=&quot;port/lv_port_tick.h&quot;
-</code></pre></div>
+CONFIG_LV_TICK_CUSTOM_INCLUDE=&quot;port/lv_port_tick.h&quot;</code></pre></div>
 <p>Which is advised by <a href="https://github.com/apache/nuttx-apps/pull/1341#issuecomment-1375742962"><strong>FASTSHIFT</strong></a>…</p>
 <blockquote>
 <p>“The tick of LVGL should not be placed in the same thread as the rendering, because the execution time of <code>lv_timer_handler</code> is not deterministic, which will cause a large error in LVGL tick.”</p>
@@ -548,8 +541,7 @@ CONFIG_LV_TICK_CUSTOM_INCLUDE=&quot;port/lv_port_tick.h&quot;
 int fd = open(
   &quot;/dev/input0&quot;,         // Path of Touch Panel Device
   O_RDONLY | O_NONBLOCK  // Read-Only Access
-);
-</code></pre></div>
+);</code></pre></div>
 <p>The app runs an <strong>Event Loop</strong> that periodically reads a <strong>Touch Sample</strong> from our driver: <a href="https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L56-L99">lv_port_touchpad.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// From touchpad_read()...
 // Struct for Touch Sample
@@ -560,8 +552,7 @@ read(
   fd,       // File Descriptor from `open(&quot;/dev/input0&quot;)`
   &amp;sample,  // Touch Sample
   sizeof(struct touch_sample_s)  // Size of Touch Sample
-);
-</code></pre></div>
+);</code></pre></div>
 <p>We’ll receive a Touch Sample that contains <strong>0 or 1 Touch Points</strong>. <a href="https://lupyuen.github.io/articles/touch2#read-a-touch-sample">(More about Touch Samples)</a></p>
 <p>(The Read Operation above is <strong>Non-Blocking</strong>. It returns 0 Touch Points if the screen hasn’t been touched)</p>
 <p>We extract the <strong>First Touch Point</strong> (inside the Touch Sample) and return it to LVGL: <a href="https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L56-L99">lv_port_touchpad.c</a></p>
@@ -582,8 +573,7 @@ if (touch_flags &amp; TOUCH_DOWN || touch_flags &amp; TOUCH_MOVE) {
   // report it as LVGL Release with
   // the previous Touch Coordinates
   touchpad_obj-&gt;last_state = LV_INDEV_STATE_REL;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>And that’s how LVGL polls our driver to handle Touch Events!</p>
 <p>(LVGL polling our driver is not so efficient, but it works!)</p>
 <p><em>How to create our own LVGL Touchscreen App?</em></p>
@@ -597,8 +587,7 @@ void lv_demo_widgets(void) {
   lv_obj_t *btn = lv_btn_create(lv_scr_act());
   lv_obj_set_height(btn, LV_SIZE_CONTENT);
   lv_obj_set_width(btn, 120);
-}
-</code></pre></div>
+}</code></pre></div>
 <p>For details, check out the <a href="https://docs.lvgl.io/master/widgets/index.html"><strong>LVGL Widget Docs</strong></a>.</p>
 <p><em>Can we improve the rendering speed?</em></p>
 <p>Yep we need to <a href="https://lupyuen.github.io/articles/fb#fix-missing-pixels"><strong>flush the CPU Cache</strong></a> to fix a rendering issue with the Allwinner A64 Display Engine.</p>
@@ -718,8 +707,7 @@ struct file_operations g_gt9xx_fileops = {
   gt9xx_open,   // Open the Touch Panel
   gt9xx_close,  // Close the Touch Panel
   gt9xx_read,   // Read a Touch Sample
-  gt9xx_poll    // Setup Poll for Touch Sample
-</code></pre></div>
+  gt9xx_poll    // Setup Poll for Touch Sample</code></pre></div>
 <p>NuttX Apps will call these Touch Panel Operations through the POSIX Standard Functions <strong><code>open()</code></strong>, <strong><code>close()</code></strong>, <strong><code>read()</code></strong> and <strong><code>poll()</code></strong>.</p>
 <p><em>How do we start the Touch Panel Driver?</em></p>
 <p>This is how we <strong>start the Touch Panel Driver</strong> when NuttX boots: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L197-L204">pinephone_bringup.c</a></p>
@@ -733,8 +721,7 @@ ret = gt9xx_register(
   CTP_I2C_ADDR,       // I2C Address of Touch Panel
   &amp;g_pinephone_gt9xx  // Callbacks for PinePhone Operations
 );
-DEBUGASSERT(ret == OK);
-</code></pre></div>
+DEBUGASSERT(ret == OK);</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/touch2#register-touch-panel-driver">(<strong>gt9xx_register</strong> comes from our Touch Panel Driver)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L64-L74">(<strong>g_pinephone_gt9xx</strong> defines the Interrupt Callbacks)</a></p>
 <p><em>The driver code looks familiar?</em></p>
@@ -804,16 +791,14 @@ read(
   fd,       // File Descriptor from `open(&quot;/dev/input0&quot;)`
   &amp;sample,  // Touch Sample
   sizeof(struct touch_sample_s)  // Size of Touch Sample
-);
-</code></pre></div>
+);</code></pre></div>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L60-L70">(Source)</a></p>
 <p>A Touch Sample contains <strong>One Touch Point</strong> (by default): <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/input/touchscreen.h#L129-L149">touchscreen.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Touch Sample Struct
 struct touch_sample_s {
   int npoints;  // Number of Touch Points in point[]
   struct touch_point_s point[1];  // Touch Points of length npoints
-};
-</code></pre></div>
+};</code></pre></div>
 <p>A <strong>Touch Point</strong> contains the X and Y Coordinates, also indicates whether it’s Touch Up or Touch Down: <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/input/touchscreen.h#L112-L129">touchscreen.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Touch Point Struct
 struct touch_point_s {
@@ -821,8 +806,7 @@ struct touch_point_s {
   uint8_t  flags;  // Touch Up or Touch Down
   int16_t  x;      // X Coordinate of the Touch Point
   int16_t  y;      // Y Coordinate of the Touch Point
-  ...
-</code></pre></div>
+  ...</code></pre></div>
 <p>When the app calls <strong><code>read()</code></strong>, NuttX Kernel calls our driver at…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch4/drivers/input/gt9xx.c#L451-L582"><strong>gt9xx_read: Read a Touch Sample</strong></a></li>
@@ -948,8 +932,7 @@ void touch_panel_initialize(void) {
   // Enable the Touch Panel Interrupt for Pin PH4
   ret = a64_pio_irqenable(CTP_INT);
   DEBUGASSERT(ret == OK);
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L174-L344">(<strong>a64_pio_config</strong> configures PH4 as an Interrupt Pin)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L420-L440">(<strong>a64_pio_irqenable</strong> enables interrupts on Pin PH4)</a></p>
 <p><em>Why call both up_enable_irq and a64_pio_irqenable?</em></p>
@@ -974,8 +957,7 @@ static int touch_panel_interrupt(int irq, void *context, void *arg) {
   // Print something when interrupt is triggered
   up_putc(&#39;.&#39;);
   return OK;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>This Interrupt Handler simply prints “<strong><code>.</code></strong>” whenever the Touch Panel triggers an interrupt.</p>
 <p><em>It’s OK to call up_putc in an Interrupt Handler?</em></p>
 <p>Yep it’s perfectly OK, because <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L619-L649"><strong>up_putc</strong></a> simply writes to the UART Register. (It won’t trigger another interrupt)</p>
@@ -1004,8 +986,7 @@ static int gt9xx_isr_handler(int irq, FAR void *context, FAR void *arg) {
     POLLIN      // Poll Event to be notified
   );
   return 0;
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch4/drivers/input/gt9xx.c#L72-L99">(<strong>gt9xx_dev_s</strong> is the Touch Panel Device)</a></p>
 <p>Our Interrupt Handler won’t actually read the Touch Coordinates. (Because Interrupt Handlers can’t make I2C calls)</p>
 <p>Instead our Interrupt Handler <strong>notifies the Background Thread</strong> (via Poll Waiters) that there’s a Touch Event waiting to be processed.</p>
@@ -1033,8 +1014,7 @@ for (int i = 0; i &lt; 6000; i++) {  // Poll for 60 seconds
 
   // Wait a while
   up_mdelay(10);  // 10 milliseconds
-}
-</code></pre></div>
+}</code></pre></div>
 <p>(This loop works only when Interrupt Trigger is set to <strong>IRQ_TYPE_LEVEL</strong>. See the next section)</p>
 <p>Note that we call <a href="https://lupyuen.github.io/articles/touch2#read-a-touch-point"><strong>touch_panel_read</strong></a> to read the Touch Coordinates. (After the Touch Interrupt has been triggered)</p>
 <p>And it works! (Pic above)</p>
@@ -1048,8 +1028,7 @@ touch_panel_read: touch x=641, y=51
 
 0000  81                                               .               
 0000  0f 00 72 05 14 00                                ..r...          
-touch_panel_read: touch x=15, y=1394
-</code></pre></div>
+touch_panel_read: touch x=15, y=1394</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/91a37a4b54f75f7386374a30821dc1b2">(Source)</a></p>
 <p>The log shows that we’ve read the Touch Panel Status <strong><code>0x81</code></strong>, followed by the Touch Coordinates. Yep we’ve tested our Interrupt Handler successfully!</p>
 <p><img src="https://lupyuen.github.io/images/touch2-run2a.png" alt="Touch Panel triggers our Interrupt Handler Non-Stop" /></p>
@@ -1060,8 +1039,7 @@ arm64_gic_irq_set_priority(
   A64_IRQ_PH_EINT,  // Interrupt Number for Port PH: 53
   2,                // Interrupt Priority
   IRQ_TYPE_EDGE     // Trigger on Low-High Transition
-);
-</code></pre></div>
+);</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L289-L329">(Source)</a></p>
 <p><strong>IRQ_TYPE_EDGE</strong> means that the interrupt is triggered on Low-High Transitions.</p>
 <p>This triggers an interrupt <strong>only once</strong>. (We’re not sure why it doesn’t trigger further interrupts)</p>
@@ -1071,8 +1049,7 @@ arm64_gic_irq_set_priority(
   A64_IRQ_PH_EINT,  // Interrupt Number for Port PH: 53
   2,                // Interrupt Priority
   IRQ_TYPE_LEVEL    // Trigger by Level
-);
-</code></pre></div>
+);</code></pre></div>
 <p><em>What happens when we run our code?</em></p>
 <p>When we run the code, it generates a <strong>never-ending stream</strong> of “<strong><code>.</code></strong>” characters…</p>
 <p><strong>Without us touching</strong> the screen! (Pic above)</p>
@@ -1095,8 +1072,7 @@ static int gt9xx_isr_handler(int irq, FAR void *context, FAR void *arg) {
 
     // Disable the Touch Panel Interrupt
     priv-&gt;board-&gt;irq_enable(priv-&gt;board, false); 
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p>It seems to work… But it doesn’t look right to throttle interrupts in an Interrupt Handler.</p>
 <p><em>Is it OK to throttle interrupts?</em></p>
 <p>Between calls to <strong><code>read()</code></strong>, our driver might <strong>fail to detect</strong> some Touch Input Events.</p>
@@ -1113,8 +1089,7 @@ arm64_gic_irq_set_priority(
   A64_IRQ_PH_EINT,  // Interrupt Number for Port PH: 53
   2,                // Interrupt Priority
   IRQ_TYPE_EDGE     // Trigger on Low-High Transition
-);
-</code></pre></div>
+);</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L289-L329">(Source)</a></p>
 <p>TODO</p>
 

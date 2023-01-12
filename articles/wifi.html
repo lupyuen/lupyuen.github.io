@@ -153,8 +153,7 @@ static void aos_loop_proc(void *pvParameters) {
 
   //  Run event loop
   aos_loop_run();
-}
-</code></pre></div>
+}</code></pre></div>
 <p>(We’ll see <code>event_cb_wifi_event</code> in a while)</p>
 <p>This startup code calls <strong><code>cmd_stack_wifi</code></strong> to start the WiFi Networking Stack.</p>
 <p>Let’s look inside…</p>
@@ -175,8 +174,7 @@ static void cmd_stack_wifi(char *buf, int len, int argc, char **argv) {
     EV_WIFI,                 //  Event Type
     CODE_WIFI_ON_INIT_DONE,  //  Event Code
     0);                      //  Event Argument
-}
-</code></pre></div>
+}</code></pre></div>
 <p>(We’ll cover <code>hal_wifi_start_firmware_task</code> later in this article)</p>
 <p>After starting the task, we post the WiFi Event <code>CODE_WIFI_ON_INIT_DONE</code> to <strong>start the WiFi Manager Task</strong>.</p>
 <p>Let’s look inside the WiFi Event Handler…</p>
@@ -195,15 +193,13 @@ static void event_cb_wifi_event(input_event_t *event, void *private_data) {
       wifi_mgmr_start_background(&amp;conf);
       break;
 
-    //  Omitted: Handle other WiFi Events
-</code></pre></div>
+    //  Omitted: Handle other WiFi Events</code></pre></div>
 <p>When we receive the WiFi Event <code>CODE_WIFI_ON_INIT_DONE</code>, we start the <strong>WiFi Manager Task</strong> (in FreeRTOS) by calling <code>wifi_mgmr_start_background</code>.</p>
 <p><code>wifi_mgmr_start_background</code> comes from the BL602 WiFi Driver. <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L1406-L1415">(See the source code)</a></p>
 <h2 id="connect-to-wifi-network"><a href="#connect-to-wifi-network">1.4 Connect to WiFi Network</a></h2>
 <p>Now that we have started both WiFi Background Tasks (WiFi Firmware Task and WiFi Manager Task), let’s connect to a WiFi Network!</p>
 <p>The demo firmware lets us enter this command to <strong>connect to a WiFi Access Point</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>wifi_sta_connect YOUR_WIFI_SSID YOUR_WIFI_PASSWORD
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>wifi_sta_connect YOUR_WIFI_SSID YOUR_WIFI_PASSWORD</code></pre></div>
 <p>Here’s how the <strong><code>wifi_sta_connect</code></strong> command is implemented: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L366-L372"><code>main.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Connect to WiFi Access Point
 static void wifi_sta_connect(char *ssid, char *password) {
@@ -221,16 +217,14 @@ static void wifi_sta_connect(char *ssid, char *password) {
     NULL,            //  MAC Address
     0,               //  Band
     0);              //  Frequency
-}
-</code></pre></div>
+}</code></pre></div>
 <p>We call <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr_ext.c#L202-L217"><strong><code>wifi_mgmr_sta_enable</code></strong></a> from the BL602 WiFi Driver to <strong>enable the WiFi Client</strong>.</p>
 <p>(“STA” refers to “WiFi Station”, which means WiFi Client)</p>
 <p>Then we call <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr_ext.c#L302-L307"><strong><code>wifi_mgmr_sta_connect</code></strong></a> (also from the BL602 WiFi Driver) to <strong>connect to the WiFi Access Point</strong>.</p>
 <p>(We’ll study the internals of <code>wifi_mgmr_sta_connect</code> in the next chapter)</p>
 <h2 id="send-http-request"><a href="#send-http-request">1.5 Send HTTP Request</a></h2>
 <p>Now we enter this command to <strong>send a HTTP Request</strong> over WiFi…</p>
-<div class="example-wrap"><pre class="language-text"><code>httpc
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>httpc</code></pre></div>
 <p>Here’s the implementation of the <strong><code>httpc</code></strong> command: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/bl602_demo_wifi/bl602_demo_wifi/main.c#L704-L727"><code>main.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Send a HTTP GET Request with LWIP
 static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
@@ -254,8 +248,7 @@ static void cmd_httpc_test(char *buf, int len, int argc, char **argv) {
     cb_altcp_recv_fn,       //  Callback Function
     &amp;req,                   //  Callback Argument
     &amp;req);                  //  Request
-}
-</code></pre></div>
+}</code></pre></div>
 <p>On BL602 we use <a href="https://www.nongnu.org/lwip/2_1_x/index.html"><strong>LWIP, the Lightweight IP Stack</strong></a> to do IP, UDP, TCP and HTTP Networking.</p>
 <p><a href="https://www.nongnu.org/lwip/2_1_x/group__httpc.html#gabd4ef2259885a93090733235cc0fa8d6"><code>httpc_get_file_dns</code> is documented here</a></p>
 <p>For more details on the BL602 WiFi Demo Firmware, check out the docs…</p>
@@ -293,8 +286,7 @@ int wifi_mgmr_sta_connect(wifi_interface_t *wifi_interface, char *ssid, char *ps
 
   //  Connect to WiFi Access Point
   return wifi_mgmr_api_connect(ssid, psk, pmk, mac, band, freq);
-}
-</code></pre></div>
+}</code></pre></div>
 <p>We set the WiFi SSID and PSK. Then we call <code>wifi_mgmr_api_connect</code> to connect to the access point.</p>
 <p><strong><code>wifi_mgmr_api_connect</code></strong> does this: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr_api.c#L40-L84"><code>wifi_mgmr_api.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Connect to WiFi Access Point
@@ -304,8 +296,7 @@ int wifi_mgmr_api_connect(char *ssid, char *psk, char *pmk, uint8_t *mac, uint8_
   //  Send Connect Request to WiFi Manager Task
   wifi_mgmr_event_notify(msg);
   return 0;
-}
-</code></pre></div>
+}</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/wifi-connect2.png" alt="wifi_mgmr_api_connect" /></p>
 <p>Here we call <code>wifi_mgmr_event_notify</code> to <strong>send the Connect Request</strong> to the WiFi Manager Task.</p>
 <p><strong><code>wifi_mgmr_event_notify</code></strong> is defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/wifi_mgmr.c#L1332-L1343"><code>wifi_mgmr.c</code></a> …</p>
@@ -322,13 +313,11 @@ int wifi_mgmr_event_notify(wifi_mgmr_msg_t *msg) {
     return -1;
   }
   return 0;
-}
-</code></pre></div>
+}</code></pre></div>
 <p><em>How does <code>os_mq_send</code> send the request to the WiFi Manager Task?</em></p>
 <p><strong><code>os_mq_send</code></strong> calls FreeRTOS to deliver the Request Message to <strong>WiFi Manager’s Message Queue</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/os_hal.h#L174"><code>os_hal.h</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define os_mq_send(mq, msg, len) \
-    (xMessageBufferSend(mq, msg, len, portMAX_DELAY) &gt; 0 ? 0 : 1)
-</code></pre></div>
+    (xMessageBufferSend(mq, msg, len, portMAX_DELAY) &gt; 0 ? 0 : 1)</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/wifi-connect3.png" alt="wifi_mgmr_event_notify" /></p>
 <h2 id="wifi-manager-state-machine"><a href="#wifi-manager-state-machine">2.2 WiFi Manager State Machine</a></h2>
 <p>The WiFi Manager runs a <strong>State Machine</strong> in its Background Task (FreeRTOS) to manage the state of each WiFi Connection.</p>
@@ -351,8 +340,7 @@ static void stateIdleAction_connect( void *oldStateData, struct event *event, vo
     (const uint8_t *) profile_msg-&gt;psk, profile_msg-&gt;psk_len,
     (const uint8_t *) profile_msg-&gt;pmk, profile_msg-&gt;pmk_len,
     (const uint8_t *) profile_msg-&gt;mac, (const uint8_t) profile_msg-&gt;band, (const uint16_t) profile_msg-&gt;freq);
-}
-</code></pre></div>
+}</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/wifi-connect4.png" alt="stateIdleAction_connect" /></p>
 <p>Here we set the <strong>WiFi Profile</strong> and call <code>bl_main_connect</code> to connect to the profile.</p>
 <p>In <strong><code>bl_main_connect</code></strong> we set the <strong>Connection Parameters for the 802.11 WiFi Protocol</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_main.c#L189-L216"><code>bl_main.c</code></a></p>
@@ -367,8 +355,7 @@ int bl_main_connect(const uint8_t* ssid, int ssid_len, const uint8_t *psk, int p
   //  Connect to WiFi Network with the 802.11 Connection Parameters
   bl_cfg80211_connect(&amp;wifi_hw, &amp;sme);
   return 0;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>The Connection Parameters are passed to <strong><code>bl_cfg80211_connect</code></strong>, defined in <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_main.c#L539-L571"><code>bl_main.c</code></a> …</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Connect to WiFi Network with the 802.11 Connection Parameters
 int bl_cfg80211_connect(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme) {
@@ -379,8 +366,7 @@ int bl_cfg80211_connect(struct bl_hw *bl_hw, struct cfg80211_connect_params *sme
   //  Forward the Connection Parameters to the LMAC
   int error = bl_send_sm_connect_req(bl_hw, sme, &amp;sm_connect_cfm);
 
-  //  Omitted: Check connection result
-</code></pre></div>
+  //  Omitted: Check connection result</code></pre></div>
 <p>Which calls <strong><code>bl_send_sm_connect_req</code></strong> to send the Connection Parameters to the <strong>WiFi Hardware (LMAC)</strong>.</p>
 <p>Let’s dig in and find out how…</p>
 <p><img src="https://lupyuen.github.io/images/wifi-connect5.png" alt="bl_send_sm_connect_req" /></p>
@@ -399,8 +385,7 @@ int bl_send_sm_connect_req(struct bl_hw *bl_hw, struct cfg80211_connect_params *
   ...
   //  Send the SM_CONNECT_REQ message to LMAC Firmware
   return bl_send_msg(bl_hw, req, 1, SM_CONNECT_CFM, cfm);
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Here we compose an <strong><code>SM_CONNECT_REQ</code></strong> message that contains the Connection Parameters.</p>
 <p>(“<code>SM</code>” refers to the LMAC State Machine by RivieraWaves)</p>
 <p>Then we call <strong><code>bl_send_msg</code></strong> to <strong>send the message to LMAC</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/bl_msg_tx.c#L315-L371"><code>bl_msg_tx.c</code></a></p>
@@ -411,8 +396,7 @@ static int bl_send_msg(struct bl_hw *bl_hw, const void *msg_params, int reqcfm, 
   //  Omitted: Copy the message to the buffer
   ...
   //  Add the message to the LMAC Message Queue
-  int ret = bl_hw-&gt;cmd_mgr.queue(&amp;bl_hw-&gt;cmd_mgr, cmd);
-</code></pre></div>
+  int ret = bl_hw-&gt;cmd_mgr.queue(&amp;bl_hw-&gt;cmd_mgr, cmd);</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/wifi-connect6.png" alt="bl_send_msg" /></p>
 <p>The code above calls <strong><code>ipc_host_msg_push</code></strong> to <strong>add the message to the LMAC Message Queue</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/ipc_host.c#L139-L171"><code>ipc_host.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Add the message to the LMAC Message Queue.
@@ -428,8 +412,7 @@ int ipc_host_msg_push(struct ipc_host_env_tag *env, void *msg_buf, uint16_t len)
 
     //  Trigger an LMAC Interrupt to send the message to EMB
     //  IPC_IRQ_A2E_MSG is 2
-    ipc_app2emb_trigger_set(IPC_IRQ_A2E_MSG);
-</code></pre></div>
+    ipc_app2emb_trigger_set(IPC_IRQ_A2E_MSG);</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/wifi-connect9.png" alt="ipc_host_msg_push" /></p>
 <p>After copying the message to the LMAC Message Queue (in Shared RAM), we call <code>ipc_app2emb_trigger_set</code> to <strong>trigger an LMAC Interrupt</strong>.</p>
 <p>LMAC (and the BL602 Radio Hardware) will then transmit the proper WiFi Packets to <strong>establish a network connection</strong> with the WiFi Access Point.</p>
@@ -439,8 +422,7 @@ int ipc_host_msg_push(struct ipc_host_env_tag *env, void *msg_buf, uint16_t len)
 <p><em>But how do we trigger an LMAC Interrupt?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Trigger an LMAC Interrupt to send the message to EMB
 //  IPC_IRQ_A2E_MSG is 2
-ipc_app2emb_trigger_set(IPC_IRQ_A2E_MSG);
-</code></pre></div>
+ipc_app2emb_trigger_set(IPC_IRQ_A2E_MSG);</code></pre></div>
 <p>Let’s look inside <strong><code>ipc_app2emb_trigger_set</code></strong> and learn how it triggers an <strong>LMAC Interrupt</strong>: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/reg_ipc_app.h#L41-L69"><code>reg_ipc_app.h</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  WiFi Hardware Register Base Address
 #define REG_WIFI_REG_BASE          0x44000000
@@ -469,11 +451,9 @@ static inline void ipc_app2emb_trigger_set(u32 value) {
     REG_WIFI_REG_BASE, 
     IPC_APP2EMB_TRIGGER_INDEX, 
     value);
-}
-</code></pre></div>
+}</code></pre></div>
 <p>This code triggers an LMAC Interrupt by writing to the <strong>WiFi Hardware Register</strong> (for Interprocess Communication) at…</p>
-<div class="example-wrap"><pre class="language-text"><code>REG_WIFI_REG_BASE + IPC_REG_BASE_ADDR + 4 * IPC_APP2EMB_TRIGGER_INDEX
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>REG_WIFI_REG_BASE + IPC_REG_BASE_ADDR + 4 * IPC_APP2EMB_TRIGGER_INDEX</code></pre></div>
 <p>Which gives us address <strong><code>0x4480 0000</code></strong></p>
 <p><em>Wait… Is address <code>0x4480 0000</code> documented anywhere?</em></p>
 <p>Nope it’s not documented in the <a href="https://github.com/bouffalolab/bl_docs/blob/main/BL602_RM/en/BL602_BL604_RM_1.2_en.pdf"><strong>BL602 Reference Manual</strong></a>…</p>
@@ -500,8 +480,7 @@ static inline void ipc_app2emb_trigger_set(u32 value) {
 <ol>
 <li>
 <p>Download the repo of Decompiled C Files…</p>
-<div class="example-wrap"><pre class="language-bash"><code>git clone --recursive https://github.com/lupyuen/bl602nutcracker1
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>git clone --recursive https://github.com/lupyuen/bl602nutcracker1</code></pre></div></li>
 <li>
 <p>When we see a link like this…</p>
 <blockquote>
@@ -513,12 +492,10 @@ static inline void ipc_app2emb_trigger_set(u32 value) {
 <li>
 <p><strong>Paste the address</strong> into a text editor.</p>
 <p>We will see this…</p>
-<div class="example-wrap"><pre class="language-text"><code>https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L38512-L38609
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L38512-L38609</code></pre></div></li>
 <li>
 <p>Note that the address ends with…</p>
-<div class="example-wrap"><pre class="language-text"><code>bl602_demo_wifi.c#L38512-L38609
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>bl602_demo_wifi.c#L38512-L38609</code></pre></div></li>
 <li>
 <p>This means that we should…</p>
 <p>Open the downloaded source file <strong><code>bl602_demo_wifi.c</code></strong> in our code editor (like VSCode)</p>
@@ -574,8 +551,7 @@ int hal_wifi_start_firmware_task(void) {
     wifi_fw_stack,     //  Task Stack
     &amp;wifi_fw_task);    //  Task Handle
   return 0;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>This creates a <strong>FreeRTOS Background Task</strong> that runs the function <strong><code>wifi_main</code></strong> forever.</p>
 <p><em>What’s inside <code>wifi_main</code>?</em></p>
 <p>We don’t have the source code for <code>wifi_main</code>. But thanks to <a href="https://github.com/BraveHeartFLOSSDev"><code>BraveHeartFLOSSDev</code></a> we have the C code decompiled from the BL602 WiFi Firmware!</p>
@@ -606,8 +582,7 @@ void wifi_main(void *param) {
     //  (Whaaat?)
     coex_wifi_pta_forece_enable((uint) (iVar1 == 0));
   } while( true );
-}
-</code></pre></div>
+}</code></pre></div>
 <p>The actual Decompiled C Code for <code>wifi_main</code> looks a lot noisier…</p>
 <p><img src="https://lupyuen.github.io/images/wifi-task2.png" alt="wifi_main" /></p>
 <p>So we picked the highlights for our Reverse Engineering.</p>
@@ -632,8 +607,7 @@ void ke_evt_schedule(void) {
   //  This line is probably incorrectly decompiled
   gp = (code *)((int)SFlash_Cache_Hit_Count_Get + 6);
   return;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>This decompiled code does… something something something.</p>
 <p>Thankfully <a href="https://en.wikipedia.org/wiki/One_weird_trick_advertisements">This One Weird Trick</a> will help us understand this cryptic decompiled code… <strong>GitHub Search!</strong></p>
 <p><img src="https://lupyuen.github.io/images/wifi-schedule2.png" alt="Searching for ke_evt_schedule" /></p>
@@ -668,12 +642,10 @@ void ke_evt_schedule(void) {
     // Update the volatile value
     field = ke_env.evt_field;
   }
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Compare this with our <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L28721-L28737"><strong>decompiled version of <code>ke_evt_schedule</code></strong></a>… It’s a <strong>perfect match</strong>!</p>
 <p>Right down to the <strong>Assertion Check</strong>!</p>
-<div class="example-wrap"><pre class="language-text"><code>(event &lt; KE_EVT_MAX) &amp;&amp; ke_evt_hdlr[event].func
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>(event &lt; KE_EVT_MAX) &amp;&amp; ke_evt_hdlr[event].func</code></pre></div>
 <p>Since the two versions of <code>ke_evt_schedule</code> are functionally identical, let’s read the <strong>AliOS / RivieraWaves version of <code>ke_evt_schedule</code></strong>.</p>
 <p><img src="https://lupyuen.github.io/images/wifi-task3.png" alt="ke_evt_schedule from AliOS / RivieraWaves" /></p>
 <p>We see that <strong><code>ke_evt_schedule</code></strong> handles WiFi Kernel Events by calling the <strong>Event Handlers in <code>ke_evt_hdlr</code></strong>.</p>
@@ -691,8 +663,7 @@ static const struct ke_evt_tag ke_evt_hdlr[32] = {
 
   {&amp;ke_task_schedule,   0},      // [KE_EVT_KE_MESSAGE]
   {&amp;mm_hw_idle_evt,     0},      // [KE_EVT_HW_IDLE]
-  ...
-</code></pre></div>
+  ...</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/wifi-task4.png" alt="txl_payload_handle Event Handler" /></p>
 <p><strong><code>txl_payload_handle</code></strong> is the Event Handler that handles the <strong>transmission of WiFi Payloads</strong>.</p>
 <p>Let’s look inside and learn how it transmits WiFi Packets.</p>
@@ -705,8 +676,7 @@ static const struct ke_evt_tag ke_evt_hdlr[32] = {
 //  called by the interrupt controller ISR. It 
 //  performs LLC translation and MIC computing if required.
 //  LLC = Logical Link Control, MIC = Message Integrity Code
-void txl_payload_handle(int access_category);
-</code></pre></div>
+void txl_payload_handle(int access_category);</code></pre></div>
 <p>This suggests that <code>txl_payload_handle</code> is called to <strong>transmit WiFi Packets</strong>… After the packet payload has been copied from BL602 to the Radio Hardware. (Via the <strong>Shared RAM Buffer</strong>)</p>
 <p>Searching our decompiled code for <strong><code>txl_payload_handle</code></strong> shows this: <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c#L20205-L20216"><code>bl602_demo_wifi.c</code></a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Handle transmit payload
@@ -717,8 +687,7 @@ void txl_payload_handle(void) {
     //  Write to WiFi Register at 0x44A0 0020
     _DAT_44a00020 = 1 &lt;&lt; (0x1fU - iVar1 &amp; 0x1f);
   }
-}
-</code></pre></div>
+}</code></pre></div>
 <p>It doesn’t seem to do much payload processing.  But it writes to the undocumented <strong>WiFi Register at <code>0x44A0 0020</code></strong>.</p>
 <p>Which will trigger the <strong>LMAC Firmware to transmit</strong> the WiFi Packet perhaps?</p>
 <p>But hold up! We have something that might explain what’s inside <code>txl_payload_handle</code>…</p>
@@ -738,8 +707,7 @@ LAB_230059f6:
     uVar3 = uVar3 + 1;
     ptVar10 = (txl_buffer_env_tag *)&amp;ptVar10-&gt;buf_idx[0].free_size;
     ptVar11 = (txl_cntrl_env_tag *)(ptVar11-&gt;txlist + 1);
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p><strong><code>txl_payload_handle_backup</code></strong> starts by iterating through a list of packet buffers to be transmitted. (Probably)</p>
 <p>Then it calls some <strong>RXU, TXL and TXU functions from RivieraWaves</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Loop (until when?)
@@ -749,8 +717,7 @@ LAB_230059f6:
     ...
     txl_machdr_format((uint32_t)(ptVar4 + 1));
     ...
-    txu_cntrl_tkip_mic_append(txdesc,(uint8_t)uVar2);
-</code></pre></div>
+    txu_cntrl_tkip_mic_append(txdesc,(uint8_t)uVar2);</code></pre></div>
 <p>(More about RivieraWaves in the next chapter)</p>
 <p>Next we write to some undocumented <strong>WiFi Registers: <code>0x44B0 8180</code>, <code>0x44B0 8198</code>, <code>0x44B0 81A4</code> and <code>0x44B0 81A8</code></strong> …</p>
 <div class="example-wrap"><pre class="language-c"><code>    //  Write to WiFi Registers
@@ -761,8 +728,7 @@ LAB_230059f6:
     _DAT_44b081a8 = ptVar9;
     ...
     _DAT_44b08180 = 0x100;
-    _DAT_44b08198 = ptVar9;
-</code></pre></div>
+    _DAT_44b08198 = ptVar9;</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_wifidrv/bl60x_wifi_driver/reg_access.h">(They don’t appear in this list either)</a></p>
 <p>The function performs some <strong>Assertion Checks</strong>. </p>
 <p>The Assertion Failure Messages may be helpful for deciphering the decompiled code…</p>
@@ -782,16 +748,14 @@ LAB_230059f6:
     line = 0x248;
     condition = &quot;blmac_tx_ac_0_state_getf() != 2&quot;;
     ...
-    assert_rec(condition, &quot;module&quot;, line);
-</code></pre></div>
+    assert_rec(condition, &quot;module&quot;, line);</code></pre></div>
 <p>The function ends by <strong>setting a timer</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>    //  Set a timer
     blmac_abs_timer_set(uVar6, (uint32_t)(puVar8 + _DAT_44b00120));
 
     //  Continue looping
   } while( true );
-}
-</code></pre></div>
+}</code></pre></div>
 <p><em>Is the original source code for <code>txl_payload_handle_backup</code> really so long?</em></p>
 <p>Likely not. The C Compiler optimises the firmware code by inlining some functions.</p>
 <p>When we decompile the firmware, the inlined code appears embedded inside the calling functions. </p>
@@ -807,8 +771,7 @@ LAB_230059f6:
 <p>This appears to be the source code for the <strong>AliOS Things embedded OS</strong>.</p>
 <p><a href="http://www.bekencorp.com/en/goods/detail/cid/13.html">(Ported to the Beken BK7231U WiFi SoC)</a></p>
 <p>But at the top of the <a href="https://github.com/lupyuen/AliOS-Things/blob/master/platform/mcu/bk7231u/beken/ip/ke/ke_event.c">source file</a> we see…</p>
-<div class="example-wrap"><pre class="language-text"><code>Copyright (C) RivieraWaves 2011-2016
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>Copyright (C) RivieraWaves 2011-2016</code></pre></div>
 <p>This means that the WiFi source code originates from <strong>CEVA RivieraWaves, not AliOS</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/wifi-lmac3.jpg" alt="CEVA RivieraWaves" /></p>
 <p><a href="https://www.ceva-dsp.com/product/rivierawaves-wi-fi-platforms/">(Source)</a></p>
@@ -921,8 +884,7 @@ void phy_init(phy_cfg_tag *config) {
 
   phy_tcal_reset();
   phy_tcal_start();
-}
-</code></pre></div>
+}</code></pre></div>
 <p>When we <a href="https://github.com/search?q=phy_init+phy_hw_set_channel&amp;type=code"><strong>search GitHub for <code>phy_init</code> and <code>phy_hw_set_channel</code></strong></a> (another BL602 function), we get one meaningful result…</p>
 <ul>
 <li><a href="https://github.com/jixinintelligence/bl602-604"><strong>jixinintelligence/bl602-604</strong></a></li>
@@ -945,8 +907,7 @@ void phy_init(const struct phy_cfg_tag *config) {
 
   // Init phy adaptive features
   pa_init();
-}
-</code></pre></div>
+}</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/wifi-phy.png" alt="BL602 Physical Layer" /></p>
 <p>Comparing the BL602 decompiled code with the GitHub Search Result… The <strong>BL602 code seems to be doing a lot more</strong>?</p>
 <p>(Where are the calls to <code>mdm_reset</code>, <code>phy_tcal_reset</code> and <code>phy_tcal_start</code>?)</p>
@@ -982,16 +943,11 @@ void phy_init(const struct phy_cfg_tag *config) {
 <li><a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.c"><strong>Decompiled WiFi Demo Firmware <code>bl602_demo_wifi.c</code></strong></a></li>
 </ul>
 <p>We run this command to <strong>extract the Function Names</strong> and their Line Numbers (for counting the Lines of Code)…</p>
-<div class="example-wrap"><pre class="language-bash"><code># Extract the function names (and line numbers)
-# from the decompiled firmware. The line must
-# begin with an underscore or a letter,
-# without indentation.
-grep --line-number \
+<div class="example-wrap"><pre class="language-bash"><code>grep --line-number \
     &quot;^[_a-zA-Z]&quot; \
     bl602_demo_wifi.c \
     | grep -v LAB_ \
-    &gt;bl602_demo_wifi.txt
-</code></pre></div>
+    &gt;bl602_demo_wifi.txt</code></pre></div>
 <p>This produces <a href="https://github.com/lupyuen/bl602nutcracker1/blob/main/bl602_demo_wifi.txt"><strong><code>bl602_demo_wifi.txt</code></strong></a>, a long list of Decompiled Function Names and their Line Numbers. <a href="https://lupyuen.github.io/images/wifi-quantify.png">(Here’s a snippet)</a></p>
 <p>(Plus Function Parameters and Type Definitions… We’ll scrub them away soon)</p>
 <p><em>But this list includes EVERYTHING… Including the non-WiFi functions no?</em></p>
