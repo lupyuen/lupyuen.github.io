@@ -280,7 +280,7 @@ We insert this code at the end of the [__PinePhone Bringup Function__](https://g
 
 (Yes it sounds hacky, but it's a simple way to do Kernel Experiments)
 
-Now that we've simulated an Interrupt Handler, let's read a Touch Point!
+Now that we can poll our Touch Panel, let's read a Touch Point!
 
 ![Reading a Touch Point](https://lupyuen.github.io/images/touch2-code4a.png)
 
@@ -990,11 +990,11 @@ Inside the __Close Operation__ we...
 
 1.  __Disable Interrupts__ from the Touch Panel
 
-    [(Implemented as __pinephone_gt9xx_irq_enable__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L560-L584)
+    [(Implemented as __pinephone_gt9xx_irq_enable__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L568-L593)
 
 1.  __Power Off__ the Touch Panel
 
-    [(Implemented as __pinephone_gt9xx_set_power__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L584-L590)
+    [(Implemented as __pinephone_gt9xx_set_power__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L593-L599)
 
 We do this only if the __Reference Count__ decrements to 0.
 
@@ -1006,7 +1006,11 @@ We do this only if the __Reference Count__ decrements to 0.
 
 Earlier we've read the Touch Panel by polling... Which is easier but inefficient.
 
-So we tried reading the Touch Panel with an __Interrupt Handler__... But there's a problem: The Touch Panel only __fires an interrupt once__.
+-   [__"Poll the Touch Panel"__](https://lupyuen.github.io/articles/touch2#poll-the-touch-panel)
+
+-   [__"Read a Touch Point"__](https://lupyuen.github.io/articles/touch2#read-a-touch-point)
+
+So we tried reading the Touch Panel with an __Interrupt Handler__... But there's a problem: The Touch Panel only __fires an interrupt once__!
 
 It won't trigger interrupts correctly when we touch the screen.
 
@@ -1019,6 +1023,10 @@ Earlier we saw that the [__LVGL Demo App__](https://lupyuen.github.io/articles/t
 This section talks about our experiments with Touch Panel Interrupts...
 
 ## Attach our Interrupt Handler
+
+Earlier we said that PinePhone's Touch Panel fires an __interrupt at PH4__ when it's touched...
+
+-   [__"Goodix GT917S Touch Panel"__](https://lupyuen.github.io/articles/touch2#goodix-gt917s-touch-panel)
 
 This is how we attach our __Interrupt Handler__ to PH4 in NuttX: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L289-L329)
 
@@ -1061,6 +1069,8 @@ void touch_panel_initialize(void) {
   DEBUGASSERT(ret == OK);
 }
 ```
+
+[(__arm64_gic_irq_set_priority__ configures the Generic Interrupt Controller)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_gicv2.c#L1275-L1325)
 
 [(__a64_pio_config__ configures PH4 as an Interrupt Pin)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L174-L344)
 
@@ -1271,11 +1281,13 @@ arm64_gic_irq_set_priority(
 
 [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L289-L329)
 
-__IRQ_TYPE_EDGE__ means that the interrupt is triggered on Low-High Transitions.
+__IRQ_TYPE_EDGE__ means that the interrupt is triggered on __Low-High Transitions__.
 
-This triggers an interrupt __only once__. (We're not sure why it doesn't trigger further interrupts)
+When we tested this, the Touch Panel triggers an interrupt __only once__.
 
-Let's try out __IRQ_TYPE_LEVEL__, which triggers an interrupt by Low-High Level...
+(We're not sure why it doesn't trigger further interrupts)
+
+Let's try out __IRQ_TYPE_LEVEL__, which triggers an interrupt by __Low-High Level__...
 
 ```c
 // Set Interrupt Priority in Generic Interrupt Controller v2
@@ -1286,7 +1298,7 @@ arm64_gic_irq_set_priority(
 );
 ```
 
-_What happens when we run our code?_
+_What happens when we run it?_
 
 When we run the code, it generates a __never-ending stream__ of "__`.`__" characters...
 
