@@ -417,9 +417,19 @@ Let's handle interrupts from the Touch Panel...
 
 # Interrupt Handler for Touch Panel
 
-TODO: See the Appendix
+_We've done polling with the Touch Panel..._
+
+_How do we handle interrupts from the Touch Panel?_
+
+Earlier we've read the Touch Panel by polling... Which is easier but inefficient.
+
+So we tried reading the Touch Panel with an __Interrupt Handler__...
 
 -   [__"Interrupt Handler for Touch Panel"__](https://lupyuen.github.io/articles/touch2#appendix-interrupt-handler-for-touch-panel)
+
+But there's a problem: The Touch Panel only __fires an interrupt once__. If won't trigger interrupts correctly when we touch the screen.
+
+_Is this a showstopper for our Touch Panel Driver?_
 
 TODO: LVGL Demo App doesn't require interrupts, it uses polling
 
