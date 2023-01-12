@@ -1,6 +1,6 @@
 # NuttX RTOS for PinePhone: Touch Panel
 
-📝 _12 Jan 2023_
+📝 _19 Jan 2023_
 
 ![Apache NuttX RTOS reads the PinePhone Touch Panel](https://lupyuen.github.io/images/touch2-title.png)
 
