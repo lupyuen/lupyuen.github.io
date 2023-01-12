@@ -123,14 +123,12 @@ function decodeUplink(input) {
     data:     data,
     warnings: warnings
   };
-}
-</code></pre></div>
+}</code></pre></div>
 <p>In the above example we return the <strong>Decoded Data</strong> as…</p>
 <div class="example-wrap"><pre class="language-json"><code>{
   &quot;t&quot;: 4669,
   &quot;l&quot;: 4000
-}
-</code></pre></div>
+}</code></pre></div>
 <p>(Let’s pretend that’s the Sensor Data for our Temperature Sensor and Light Sensor)</p>
 <p><em>Can we run any kind of JavaScript in a Payload Formatter?</em></p>
 <p>Nope, here are the Rules for Squid Game <em>(oops)</em> <strong>Payload Formatter</strong>…</p>
@@ -163,8 +161,7 @@ function decodeUplink(input) {
 (function(global, undefined) { 
   function decode(...) { ... }
   ...
-})(this);
-</code></pre></div>
+})(this);</code></pre></div>
 <p>The script begins by including the entire contents of this <strong>JavaScript Decoder for CBOR</strong>…</p>
 <ul>
 <li><a href="https://github.com/paroga/cbor-js/blob/master/cbor.js"><strong>paroga/cbor-js</strong></a></li>
@@ -179,12 +176,10 @@ function decodeUplink(input) {
 function decodeUplink(input) {
   //  Data and warnings to be returned to The Things Network
   var data     = {};  
-  var warnings = [];
-</code></pre></div>
+  var warnings = [];</code></pre></div>
 <p>Soon we shall compose the <strong>Decoded Data and Decoder Warnings</strong> that will be returned to The Things Network.</p>
 <p><strong>input.bytes</strong> contains a byte array of CBOR-Encoded Sensor Data…</p>
-<div class="example-wrap"><pre class="language-javascript"><code>[ 0xa2, 0x61, 0x74, 0x19, 0x12, 0x3d, 0x61, 0x6c, 0x19, 0x0f, 0xa0 ]
-</code></pre></div>
+<div class="example-wrap"><pre class="language-javascript"><code>[ 0xa2, 0x61, 0x74, 0x19, 0x12, 0x3d, 0x61, 0x6c, 0x19, 0x0f, 0xa0 ]</code></pre></div>
 <p>We convert it to an <strong>ArrayBuffer</strong>…</p>
 <div class="example-wrap"><pre class="language-javascript"><code>  //  Catch any exceptions and return them as warnings.
   try {
@@ -192,36 +187,31 @@ function decodeUplink(input) {
     //  `input.bytes` contains CBOR bytes like...
     //  [ 0xa2, 0x61, 0x74, 0x19, 0x12, 0x3d, 0x61, 0x6c, 0x19, 0x0f, 0xa0 ]
     var array = new Uint8Array(input.bytes);
-    var buf   = array.buffer;
-</code></pre></div>
+    var buf   = array.buffer;</code></pre></div>
 <p>And we call our <strong>CBOR Decoder</strong> to decode the ArrayBuffer…</p>
 <div class="example-wrap"><pre class="language-javascript"><code>    //  Decode the ArrayBuffer
     data = CBOR.decode(buf);
 
     //  `data` contains Key-Value Pairs like...
-    //  { &quot;l&quot;: 4000, &quot;t&quot;: 4669 }
-</code></pre></div>
+    //  { &quot;l&quot;: 4000, &quot;t&quot;: 4669 }</code></pre></div>
 <p>In case of errors, we catch them and <strong>return as warnings</strong>…</p>
 <div class="example-wrap"><pre class="language-javascript"><code>  } catch (error) {
     //  Catch any exceptions and return them as warnings.
     //  The Things Network will drop the message if we return errors.
     warnings.push(error);
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p>Finally we return the <strong>Decoded Data and Decoder Warnings</strong> to The Things Network…</p>
 <div class="example-wrap"><pre class="language-javascript"><code>  //  Return the decoded data and decoder warnings
   return {
     data:     data,
     warnings: warnings
   };
-}
-</code></pre></div>
+}</code></pre></div>
 <p>The <strong>Decoded Data</strong> will look like this…</p>
 <div class="example-wrap"><pre class="language-json"><code>{
   &quot;t&quot;: 4669,
   &quot;l&quot;: 4000
-}
-</code></pre></div>
+}</code></pre></div>
 <p>And that’s how we decode CBOR Sensor Data in our Payload Formatter!</p>
 <p><img src="https://lupyuen.github.io/images/payload-code4.png" alt="decodeUplink Function" /></p>
 <h1 id="configure-payload-formatter"><a href="#configure-payload-formatter">3 Configure Payload Formatter</a></h1>
@@ -267,8 +257,7 @@ into the <strong>Formatter Parameter</strong> box</p>
 </li>
 <li>
 <p>Our <strong>Decoded Sensor Data</strong> should appear in the Live Data Table…</p>
-<div class="example-wrap"><pre class="language-json"><code>{ &quot;l&quot;: 4000, &quot;t&quot;: 4669 }
-</code></pre></div>
+<div class="example-wrap"><pre class="language-json"><code>{ &quot;l&quot;: 4000, &quot;t&quot;: 4669 }</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/payload-ttn3.png" alt="Decoded Sensor Data in the Live Data Table" /></p>
 </li>
 <li>
@@ -277,8 +266,7 @@ into the <strong>Formatter Parameter</strong> box</p>
 <div class="example-wrap"><pre class="language-json"><code>&quot;decoded_payload&quot;: {
   &quot;l&quot;: 4000,
   &quot;t&quot;: 4656
-}
-</code></pre></div>
+}</code></pre></div>
 <p>(Our decoder warnings will also appear here)</p>
 </li>
 <li>
@@ -361,8 +349,7 @@ function decodeUplink(input) {
     data:     data,
     warnings: warnings
   };
-}
-</code></pre></div>
+}</code></pre></div>
 <p>The Decoder Warnings (and our Debug Messages) will be shown when we click on a message in <strong>Applications → (Your Application) → Live Data</strong>.</p>
 </li>
 </ol>

@@ -135,37 +135,31 @@ void read_tsen(char *buf, int len, int argc, char **argv) {
 
   //  Show the temperature
   printf(&quot;Returned Temperature = %d Celsius\r\n&quot;, temp);
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Let’s build, flash and run the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_tsen"><strong>pinedio_tsen</strong></a> demo firmware…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tsen?1#appendix-build-and-run-internal-temperature-sensor-firmware"><strong>“Build and Run Internal Temperature Sensor Firmware”</strong></a></li>
 </ul>
 <p>At the BL602 / BL604 Command Prompt, enter this command…</p>
-<div class="example-wrap"><pre class="language-bash"><code>read_tsen
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>read_tsen</code></pre></div>
 <p>The first result will look odd…</p>
 <div class="example-wrap"><pre class="language-text"><code>temperature = -90.932541 Celsius
-Returned Temperature = -90 Celsius
-</code></pre></div>
+Returned Temperature = -90 Celsius</code></pre></div>
 <p>Running <strong>read_tsen</strong> again will produce the right result…</p>
 <div class="example-wrap"><pre class="language-text"><code>temperature = 43.467045 Celsius
-Returned Temperature = 43 Celsius
-</code></pre></div><h2 id="quick-but-inaccurate"><a href="#quick-but-inaccurate">2.1 Quick But Inaccurate</a></h2>
+Returned Temperature = 43 Celsius</code></pre></div><h2 id="quick-but-inaccurate"><a href="#quick-but-inaccurate">2.1 Quick But Inaccurate</a></h2>
 <p>We discover <strong>two issues with the Quick Way</strong> of reading the Internal Temperature Sensor…</p>
 <ol>
 <li>
 <p>First Result is <strong>way too low</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>temperature = -90.932541 Celsius
-Returned Temperature = -90 Celsius
-</code></pre></div>
+Returned Temperature = -90 Celsius</code></pre></div>
 <p>(Workaround: Discard the first result returned by <strong>bl_tsen_adc_get</strong>)</p>
 </li>
 <li>
 <p>According to the internal log, the temperature is a <strong>Floating-Point Number</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>temperature = 43.467045 Celsius
-Returned Temperature = 43 Celsius
-</code></pre></div>
+Returned Temperature = 43 Celsius</code></pre></div>
 <p>But the returned value is a <strong>Truncated Integer!</strong></p>
 <p>(Sorry, no workaround for this)</p>
 </li>
@@ -254,22 +248,19 @@ static int get_tsen_adc(
   //  Return the temperature
   *temp = val;
   return 0;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Note that <strong>get_tsen_adc</strong> now returns the temperature as <strong>Float</strong> (instead of Integer)…</p>
 <div class="example-wrap"><pre class="language-c"><code>static int get_tsen_adc(
   float *temp,      //  Pointer to float to store the temperature
   uint8_t log_flag  //  0 to disable logging, 1 to enable logging
-);
-</code></pre></div>
+);</code></pre></div>
 <p>And we added a <strong>100-millisecond delay</strong> when initialising the ADC for the first time…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  If the offset has not been fetched...
 if (0xFFFF == tsen_offset) {
   ...
   //  Must wait 100 milliseconds or 
   //  returned temperature will be negative
-  vTaskDelay(100 / portTICK_PERIOD_MS);
-</code></pre></div>
+  vTaskDelay(100 / portTICK_PERIOD_MS);</code></pre></div>
 <p>Let’s call <strong>get_tsen_adc</strong> now.</p>
 <p><img src="https://lupyuen.github.io/images/tsen-code5.png" alt="Reading the Internal Temperature Sensor the Accurate Way" /></p>
 <h2 id="read-temperature-as-float"><a href="#read-temperature-as-float">3.1 Read Temperature as Float</a></h2>
@@ -300,15 +291,13 @@ void read_tsen2(char *buf, int len, int argc, char **argv) {
 
   //  Show the temperature
   printf(&quot;Returned Temperature = %f Celsius\r\n&quot;, temp);
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Let’s build, flash and run the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_tsen"><strong>pinedio_tsen</strong></a> demo firmware…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/tsen?1#appendix-build-and-run-internal-temperature-sensor-firmware"><strong>“Build and Run Internal Temperature Sensor Firmware”</strong></a></li>
 </ul>
 <p>At the BL602 / BL604 Command Prompt, enter this command a few times…</p>
-<div class="example-wrap"><pre class="language-bash"><code>read_tsen2
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>read_tsen2</code></pre></div>
 <p>The results look consistent…</p>
 <div class="example-wrap"><pre class="language-text"><code>offset = 2175
 temperature = 44.369923 Celsius
@@ -320,8 +309,7 @@ Returned Temperature = 43.596027 Celsius
 
 offset = 2175
 temperature = 43.596027 Celsius
-Returned Temperature = 43.596027 Celsius
-</code></pre></div>
+Returned Temperature = 43.596027 Celsius</code></pre></div>
 <p>(No more Sub-Zero Temperatures!)</p>
 <p>And the temperature is returned as Float.</p>
 <p>(No more Integers!)</p>
@@ -329,8 +317,7 @@ Returned Temperature = 43.596027 Celsius
 <h1 id="lorawan-and-the-things-network"><a href="#lorawan-and-the-things-network">4 LoRaWAN and The Things Network</a></h1>
 <p>Since we have an <strong>Onboard Temperature Sensor</strong> (though it runs a little hot), let’s turn BL602 and BL604 into an <strong>IoT Sensor Device</strong> for LoRaWAN and The Things Network!</p>
 <p>We’ll create this LoRaWAN Command for BL602 and BL604…</p>
-<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_tsen 2 0 4000 10 60
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_tsen 2 0 4000 10 60</code></pre></div>
 <p>Which means…</p>
 <ul>
 <li>
@@ -376,8 +363,7 @@ void las_cmd_app_tx_tsen(char *buf0, int len0, int argc, char **argv) {
   uint16_t count = parse_ull_bounds(argv[4], 0, 65535, &amp;rc);
 
   //  Get interval
-  uint16_t interval = parse_ull_bounds(argv[5], 0, 65535, &amp;rc);
-</code></pre></div>
+  uint16_t interval = parse_ull_bounds(argv[5], 0, 65535, &amp;rc);</code></pre></div>
 <p>We begin by fetching the <strong>command-line arguments</strong>.</p>
 <p>For each message that we shall transmit…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Repeat count times
@@ -392,14 +378,12 @@ void las_cmd_app_tx_tsen(char *buf0, int len0, int argc, char **argv) {
       &amp;temp,  //  Temperature in Celsius
       1       //  0 to disable logging, 1 to enable logging
     );
-    assert(rc == 0);
-</code></pre></div>
+    assert(rc == 0);</code></pre></div>
 <p>We <strong>read the Internal Temperature Sensor</strong> as a Float.</p>
 <p>Next we <strong>scale up the temperature 100 times</strong> and truncate as Integer…</p>
 <div class="example-wrap"><pre class="language-c"><code>    //  Scale the temperature up 100 times and truncate as integer:
     //  12.34 ºC becomes 1234
-    int16_t t = temp * 100;
-</code></pre></div>
+    int16_t t = temp * 100;</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/cbor#floating-point-numbers">(Because encoding the temperature as <code>1234</code> requires fewer bytes than <code>12.34</code>)</a></p>
 <p>We encode the temperature (and light level) with CBOR and <strong>transmit as a LoRaWAN message</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>    //  Omitted: Encode into CBOR for { &quot;t&quot;: ????, &quot;l&quot;: ???? }
@@ -413,8 +397,7 @@ void las_cmd_app_tx_tsen(char *buf0, int len0, int argc, char **argv) {
     rc = pbuf_copyinto(om, 0, output, output_len);
 
     //  Send the pbuf
-    rc = lora_app_port_send(port, mcps_type, om);
-</code></pre></div>
+    rc = lora_app_port_send(port, mcps_type, om);</code></pre></div>
 <p>Which goes all the way to <strong>The Things Network</strong>! Assuming that we have configured our LoRaWAN settings for The Things Network.</p>
 <p><a href="https://lupyuen.github.io/articles/cbor#encode-sensor-data-with-tinycbor">(CBOR Encoding is explained here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/cbor#send-lorawan-packet">(Sending a LoRaWAN Packet is explained here)</a></p>
@@ -424,8 +407,7 @@ void las_cmd_app_tx_tsen(char *buf0, int len0, int argc, char **argv) {
 <li><a href="https://lupyuen.github.io/articles/tsen?1#appendix-build-and-run-lorawan-firmware"><strong>“Build and Run LoRaWAN Firmware”</strong></a></li>
 </ul>
 <p>At the BL602 / BL604 Command Prompt, enter this command…</p>
-<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_tsen 2 0 4000 10 60
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_tsen 2 0 4000 10 60</code></pre></div>
 <p>Which means…</p>
 <ul>
 <li>
@@ -456,8 +438,7 @@ temperature = 47.207531 Celsius
 Encode CBOR: { t: 4720, l: 4000 }
 CBOR Output: 11 bytes
   0xa2 0x61 0x74 0x19 0x12 0x70 0x61 0x6c 0x19 0x0f 0xa0
-  ...
-</code></pre></div>
+  ...</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan#output-log">(See the complete log)</a></p>
 <p>Let’s check the transmitted Sensor Data with Grafana and Roblox.</p>
 <p><img src="https://lupyuen.github.io/images/grafana-flow.jpg" alt="Visualising The Things Network Sensor Data with Grafana" /></p>
@@ -529,21 +510,19 @@ CBOR Output: 11 bytes
 </ul>
 <h2 id="build-internal-temperature-sensor-firmware"><a href="#build-internal-temperature-sensor-firmware">8.1 Build Internal Temperature Sensor Firmware</a></h2>
 <p>Download the firmware…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Download the master branch of lupyuen&#39;s bl_iot_sdk
-git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code># Download the master branch of lupyuen&#39;s bl_iot_sdk
+git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk</code></pre></div>
 <p>Build the Firmware Binary File <code>pinedio_tsen.bin</code>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## TODO: Change this to the full path of bl_iot_sdk
+<div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 
 cd bl_iot_sdk/customer_app/pinedio_tsen
 make
 
-## For WSL: Copy the firmware to /mnt/c/blflash, which refers to c:\blflash in Windows
+# For WSL: Copy the firmware to /mnt/c/blflash, which refers to c:\blflash in Windows
 mkdir /mnt/c/blflash
-cp build_out/pinedio_tsen.bin /mnt/c/blflash
-</code></pre></div>
+cp build_out/pinedio_tsen.bin /mnt/c/blflash</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
 <h2 id="flash-internal-temperature-sensor-firmware"><a href="#flash-internal-temperature-sensor-firmware">8.2 Flash Internal Temperature Sensor Firmware</a></h2>
 <p>Follow these steps to install <code>blflash</code>…</p>
@@ -604,19 +583,18 @@ cp build_out/pinedio_tsen.bin /mnt/c/blflash
 </li>
 </ol>
 <p>Enter these commands to flash <code>pinedio_tsen.bin</code> to BL602 / BL604 over UART…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## For Linux:
+<div class="example-wrap"><pre class="language-bash"><code># For Linux:
 blflash flash build_out/pinedio_tsen.bin \
     --port /dev/ttyUSB0
 
-## For macOS:
+# For macOS:
 blflash flash build_out/pinedio_tsen.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
-## For Windows: Change COM5 to the BL602 / BL604 Serial Port
-blflash flash c:\blflash\pinedio_tsen.bin --port COM5
-</code></pre></div>
+# For Windows: Change COM5 to the BL602 / BL604 Serial Port
+blflash flash c:\blflash\pinedio_tsen.bin --port COM5</code></pre></div>
 <p>(For WSL: Do this under plain old Windows CMD, not WSL, because blflash needs to access the COM port)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h2 id="run-internal-temperature-sensor-firmware"><a href="#run-internal-temperature-sensor-firmware">8.3 Run Internal Temperature Sensor Firmware</a></h2>
@@ -658,8 +636,7 @@ blflash flash c:\blflash\pinedio_tsen.bin --port COM5
 </ol>
 <p>After restarting, connect to BL602 / BL604’s UART Port at 2 Mbps like so…</p>
 <p><strong>For Linux:</strong></p>
-<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000</code></pre></div>
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
@@ -671,12 +648,10 @@ blflash flash c:\blflash\pinedio_tsen.bin --port COM5
 </ul>
 <h2 id="build-lorawan-firmware"><a href="#build-lorawan-firmware">9.1 Build LoRaWAN Firmware</a></h2>
 <p>Download the <a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan"><strong>LoRaWAN firmware and driver source code</strong></a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Download the master branch of lupyuen&#39;s bl_iot_sdk
-git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code># Download the master branch of lupyuen&#39;s bl_iot_sdk
+git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk</code></pre></div>
 <p>In the <code>customer_app/pinedio_lorawan</code> folder, edit <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/Makefile"><code>Makefile</code></a> and find this setting…</p>
-<div class="example-wrap"><pre class="language-text"><code>CFLAGS += -DCONFIG_LORA_NODE_REGION=1
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>CFLAGS += -DCONFIG_LORA_NODE_REGION=1</code></pre></div>
 <p>Change “<code>1</code>” to your LoRa Region…</p>
 <div><table><thead><tr><th style="text-align: left">Value</th><th style="text-align: left">Region</th></tr></thead><tbody>
 <tr><td style="text-align: left">0</td><td style="text-align: left">No region</td></tr>
@@ -693,21 +668,19 @@ git clone --recursive --branch master https://github.com/lupyuen/bl_iot_sdk
 </tbody></table>
 </div>
 <p>The <strong>GPIO Pin Numbers</strong> for LoRa SX1262 are defined in…</p>
-<div class="example-wrap"><pre class="language-text"><code>components/3rdparty/lora-sx1262/include/sx126x-board.h
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>components/3rdparty/lora-sx1262/include/sx126x-board.h</code></pre></div>
 <p>They have been configured for PineDio Stack. (So no changes needed)</p>
 <p>Build the Firmware Binary File <code>pinedio_lorawan.bin</code>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## TODO: Change this to the full path of bl_iot_sdk
+<div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=$HOME/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
 
 cd bl_iot_sdk/customer_app/pinedio_lorawan
 make
 
-## For WSL: Copy the firmware to /mnt/c/blflash, which refers to c:\blflash in Windows
+# For WSL: Copy the firmware to /mnt/c/blflash, which refers to c:\blflash in Windows
 mkdir /mnt/c/blflash
-cp build_out/pinedio_lorawan.bin /mnt/c/blflash
-</code></pre></div>
+cp build_out/pinedio_lorawan.bin /mnt/c/blflash</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinecone#building-firmware">More details on building bl_iot_sdk</a></p>
 <h2 id="flash-lorawan-firmware"><a href="#flash-lorawan-firmware">9.2 Flash LoRaWAN Firmware</a></h2>
 <p>Follow these steps to install <code>blflash</code>…</p>
@@ -768,19 +741,18 @@ cp build_out/pinedio_lorawan.bin /mnt/c/blflash
 </li>
 </ol>
 <p>Enter these commands to flash <code>pinedio_lorawan.bin</code> to BL602 / BL604 over UART…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## For Linux:
+<div class="example-wrap"><pre class="language-bash"><code># For Linux:
 blflash flash build_out/pinedio_lorawan.bin \
     --port /dev/ttyUSB0
 
-## For macOS:
+# For macOS:
 blflash flash build_out/pinedio_lorawan.bin \
     --port /dev/tty.usbserial-1420 \
     --initial-baud-rate 230400 \
     --baud-rate 230400
 
-## For Windows: Change COM5 to the BL602 / BL604 Serial Port
-blflash flash c:\blflash\pinedio_lorawan.bin --port COM5
-</code></pre></div>
+# For Windows: Change COM5 to the BL602 / BL604 Serial Port
+blflash flash c:\blflash\pinedio_lorawan.bin --port COM5</code></pre></div>
 <p>(For WSL: Do this under plain old Windows CMD, not WSL, because blflash needs to access the COM port)</p>
 <p><a href="https://lupyuen.github.io/articles/flash#flash-the-firmware">More details on flashing firmware</a></p>
 <h2 id="run-lorawan-firmware"><a href="#run-lorawan-firmware">9.3 Run LoRaWAN Firmware</a></h2>
@@ -822,8 +794,7 @@ blflash flash c:\blflash\pinedio_lorawan.bin --port COM5
 </ol>
 <p>After restarting, connect to BL602 / BL604’s UART Port at 2 Mbps like so…</p>
 <p><strong>For Linux:</strong></p>
-<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000</code></pre></div>
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
@@ -844,48 +815,41 @@ blflash flash c:\blflash\pinedio_lorawan.bin --port COM5
 <li>
 <p>First we start the <strong>Background Task</strong> that will handle LoRa packets…</p>
 <p>Enter this command…</p>
-<div class="example-wrap"><pre class="language-text"><code>create_task
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>create_task</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lora2#event-queue">(<code>create_task</code> is explained here)</a></p>
 </li>
 <li>
 <p>Next we initialise the <strong>LoRa SX1262 and LoRaWAN Drivers</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>init_lorawan
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>init_lorawan</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/pinedio_lorawan/pinedio_lorawan/lorawan.c#L175-L181">(<code>init_lorawan</code> is defined here)</a></p>
 </li>
 <li>
 <p>Set the <strong>DevEUI</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>las_wr_dev_eui 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_wr_dev_eui 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA</code></pre></div>
 <p>Change “<code>0xAB:0xBA:...</code>” to your <strong>DevEUI</strong></p>
 <p>(Remember to change the <strong>“<code>,</code>”</strong> delimiter to <strong>“<code>:</code>”</strong>)</p>
 </li>
 <li>
 <p>Set the <strong>JoinEUI</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_wr_app_eui 0x00:0x00:0x00:0x00:0x00:0x00:0x00:0x00</code></pre></div>
 <p>Change “<code>0x00:0x00:...</code>” to your <strong>JoinEUI</strong></p>
 <p>(Yep change the <strong>“<code>,</code>”</strong> delimiter to <strong>“<code>:</code>”</strong>)</p>
 </li>
 <li>
 <p>Set the <strong>AppKey</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>las_wr_app_key 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_wr_app_key 0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA0xAB:0xBA:0xDA:0xBA:0xAB:0xBA:0xDA:0xBA</code></pre></div>
 <p>Change “<code>0xAB:0xBA:...</code>” to your <strong>AppKey</strong></p>
 <p>(Again change <strong>“<code>,</code>”</strong> to <strong>“<code>:</code>”</strong>)</p>
 </li>
 <li>
 <p>We send a request to <strong>join The Things Network</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>las_join 1
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_join 1</code></pre></div>
 <p>“<code>1</code>” means try only once.</p>
 <p><a href="https://lupyuen.github.io/articles/lorawan#join-network-request">(<code>las_join</code> is explained here)</a></p>
 </li>
 <li>
 <p>Finally we open an <strong>Application Port</strong> that will connect to The Things Network…</p>
-<div class="example-wrap"><pre class="language-bash"><code>las_app_port open 2
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_port open 2</code></pre></div>
 <p>“<code>2</code>” is the Application Port Number</p>
 <p><a href="https://lupyuen.github.io/articles/lorawan#open-lorawan-port">(<code>las_app_port</code> is explained here)</a></p>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/tree/master/customer_app/pinedio_lorawan#output-log">(See the complete log)</a></p>

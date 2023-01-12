@@ -146,8 +146,7 @@
 </li>
 <li>
 <p>Our <strong>Decoded Sensor Data</strong> should appear in the Live Data Table like so…</p>
-<div class="example-wrap"><pre class="language-json"><code>Payload: { l: 4000, t: 4669 }
-</code></pre></div>
+<div class="example-wrap"><pre class="language-json"><code>Payload: { l: 4000, t: 4669 }</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/payload-ttn3.png" alt="Decoded Sensor Data in the Live Data Table" /></p>
 </li>
 <li>
@@ -160,8 +159,7 @@
     &quot;decoded_payload&quot;: {
       &quot;l&quot;: 4000,
       &quot;t&quot;: 4656
-    }    
-</code></pre></div>
+    }    </code></pre></div>
 <p>These are the <strong>Light Sensor</strong> (“<code>l</code>”) and <strong>Temperature Sensor</strong> (“<code>t</code>”) values transmitted by our LoRaWAN Device (PineDio Stack).</p>
 <p><a href="https://lupyuen.github.io/articles/cbor#floating-point-numbers">(Our Temperature Values are scaled up 100 times… <code>4656</code> means <code>46.56</code> ºC)</a></p>
 </li>
@@ -182,12 +180,12 @@
 </li>
 <li>
 <p>Enter this at the command line…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Change au1.cloud.thethings.network to our 
-## MQTT Public Address (without the port number)
-## Change YOUR_USERNAME to our MQTT Username
-## Change YOUR_PASSWORD to our MQTT Password
+<div class="example-wrap"><pre class="language-bash"><code># Change au1.cloud.thethings.network to our 
+# MQTT Public Address (without the port number)
+# Change YOUR_USERNAME to our MQTT Username
+# Change YOUR_PASSWORD to our MQTT Password
 
-## For Linux and macOS:
+# For Linux and macOS:
 mosquitto_sub \
   -h au1.cloud.thethings.network \
   -t &quot;#&quot; \
@@ -195,14 +193,13 @@ mosquitto_sub \
   -P &quot;YOUR_PASSWORD&quot; \
   -d
 
-## For Windows:
+# For Windows:
 &quot;c:\Program Files\Mosquitto\mosquitto_sub&quot; ^
   -h au1.cloud.thethings.network ^
   -t &quot;#&quot; ^
   -u &quot;YOUR_USERNAME&quot; ^
   -P &quot;YOUR_PASSWORD&quot; ^
-  -d
-</code></pre></div></li>
+  -d</code></pre></div></li>
 <li>
 <p>We should see the <strong>Uplink Messages transmitted</strong> by our LoRaWAN Device…</p>
 <div class="example-wrap"><pre class="language-json"><code>{
@@ -212,8 +209,7 @@ mosquitto_sub \
     &quot;decoded_payload&quot;: {
       &quot;l&quot;: 4000,
       &quot;t&quot;: 4656
-    }    
-</code></pre></div>
+    }    </code></pre></div>
 <p>Including <strong>decoded_payload</strong> and the Decoded Sensor Data.</p>
 <p><a href="https://github.com/lupyuen/cbor-the-things-network#mqtt-log">(See the complete message)</a></p>
 </li>
@@ -243,27 +239,24 @@ mosquitto_sub \
 </li>
 <li>
 <p>Edit the file. Fill in the <strong>MQTT Public Address, Username and Password</strong> for The Things Network <a href="https://lupyuen.github.io/articles/prometheus#appendix-configure-the-things-network-mqtt">(from here)</a>…</p>
-<div class="example-wrap"><pre class="language-yaml"><code>## Change au1.cloud.thethings.network to our MQTT Public Address
+<div class="example-wrap"><pre class="language-yaml"><code># Change au1.cloud.thethings.network to our MQTT Public Address
 server: tcp://au1.cloud.thethings.network:1883
 
-## Change luppy-application@ttn to our MQTT Username
+# Change luppy-application@ttn to our MQTT Username
 user: luppy-application@ttn
 
-## Change YOUR_API_KEY to our MQTT Password
-password: YOUR_API_KEY
-</code></pre></div></li>
+# Change YOUR_API_KEY to our MQTT Password
+password: YOUR_API_KEY</code></pre></div></li>
 <li>
 <p>Note that we’re subscribing to <strong>all MQTT Topics</strong>…</p>
-<div class="example-wrap"><pre class="language-yaml"><code>## Topic path to subscribe to. &quot;#&quot; means All Topics.
-topic_path: &quot;#&quot;
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-yaml"><code># Topic path to subscribe to. &quot;#&quot; means All Topics.
+topic_path: &quot;#&quot;</code></pre></div></li>
 <li>
 <p>Our MQTT Gateway shall extract the <strong>Device ID</strong> from the MQTT Topic Path…</p>
-<div class="example-wrap"><pre class="language-yaml"><code>## Extract the device ID (eui-YOUR_DEVICE_EUI) 
-## from the topic path, which looks like...
-## v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up
-device_id_regex: &quot;(.*/)?devices/(?P&lt;deviceid&gt;.*)/.*&quot;
-</code></pre></div>
+<div class="example-wrap"><pre class="language-yaml"><code># Extract the device ID (eui-YOUR_DEVICE_EUI) 
+# from the topic path, which looks like...
+# v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up
+device_id_regex: &quot;(.*/)?devices/(?P&lt;deviceid&gt;.*)/.*&quot;</code></pre></div>
 <p>(Which will be helpful for filtering our Sensor Data by Device ID in Grafana)</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-config4.png" alt="MQTT Configuration File" /></p>
 </li>
@@ -282,29 +275,27 @@ device_id_regex: &quot;(.*/)?devices/(?P&lt;deviceid&gt;.*)/.*&quot;
 </li>
 <li>
 <p>We define the <strong>Metric for Temperature</strong> like so…</p>
-<div class="example-wrap"><pre class="language-yaml"><code>## Temperature Metric
-## Name of the metric in prometheus
+<div class="example-wrap"><pre class="language-yaml"><code># Temperature Metric
+# Name of the metric in prometheus
 - prom_name: t
 
-  ## JSON Path of the metric in our MQTT JSON message
+  # JSON Path of the metric in our MQTT JSON message
   mqtt_name: &quot;uplink_message.decoded_payload.t&quot;
 
-  ## Prometheus help text for this metric
+  # Prometheus help text for this metric
   help: &quot;Temperature&quot;
 
-  ## Prometheus type for this metric.
-  ## Valid values are: &quot;gauge&quot; and &quot;counter&quot;
+  # Prometheus type for this metric.
+  # Valid values are: &quot;gauge&quot; and &quot;counter&quot;
   type: gauge
 
-  ## Map of string to string for constant labels.
-  ## The labels will be attached to every Prometheus metric.
+  # Map of string to string for constant labels.
+  # The labels will be attached to every Prometheus metric.
   const_labels:
-    sensor_type: t    
-</code></pre></div></li>
+    sensor_type: t    </code></pre></div></li>
 <li>
 <p>This tells MQTT Gateway: Our LoRaWAN Device (PineDio Stack) transmits a <strong>Temperature Value</strong> (named “t”) at this JSON Path…</p>
-<div class="example-wrap"><pre class="language-javascript"><code>uplink_message.decoded_payload.t
-</code></pre></div>
+<div class="example-wrap"><pre class="language-javascript"><code>uplink_message.decoded_payload.t</code></pre></div>
 <p>Which matches our <strong>JSON Message Format</strong> from Checkpoint Alpha…</p>
 <div class="example-wrap"><pre class="language-json"><code>{
   ...
@@ -313,32 +304,30 @@ device_id_regex: &quot;(.*/)?devices/(?P&lt;deviceid&gt;.*)/.*&quot;
     &quot;decoded_payload&quot;: {
       &quot;l&quot;: 4000,
       &quot;t&quot;: 4656
-    }    
-</code></pre></div>
+    }    </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/cbor#floating-point-numbers">(Our Temperature Values are scaled up 100 times… <code>4656</code> means <code>46.56</code> ºC)</a></p>
 <p><img src="https://lupyuen.github.io/images/prometheus-config7.jpg" alt="Prometheus Metrics for MQTT Gateway" /></p>
 </li>
 <li>
 <p>We define other Metrics the same way, like this <strong>Light Level Metric</strong> that’s transmitted by PineDio Stack…</p>
-<div class="example-wrap"><pre class="language-yaml"><code>## Light Level Metric
-## Name of the metric in prometheus
+<div class="example-wrap"><pre class="language-yaml"><code># Light Level Metric
+# Name of the metric in prometheus
 - prom_name: l
 
-  ## JSON Path of the metric in our MQTT JSON message
+  # JSON Path of the metric in our MQTT JSON message
   mqtt_name: &quot;uplink_message.decoded_payload.l&quot;
 
-  ## Prometheus help text for this metric
+  # Prometheus help text for this metric
   help: &quot;Light Level&quot;
 
-  ## Prometheus type for this metric.
-  ## Valid values are: &quot;gauge&quot; and &quot;counter&quot;
+  # Prometheus type for this metric.
+  # Valid values are: &quot;gauge&quot; and &quot;counter&quot;
   type: gauge
 
-  ## Map of string to string for constant labels.
-  ## The labels will be attached to every Prometheus metric.
+  # Map of string to string for constant labels.
+  # The labels will be attached to every Prometheus metric.
   const_labels:
-    sensor_type: l
-</code></pre></div></li>
+    sensor_type: l</code></pre></div></li>
 </ol>
 <h2 id="start-mqtt-gateway"><a href="#start-mqtt-gateway">2.2 Start MQTT Gateway</a></h2>
 <p>We’re ready to <strong>start our MQTT Gateway</strong>!</p>
@@ -350,23 +339,22 @@ device_id_regex: &quot;(.*/)?devices/(?P&lt;deviceid&gt;.*)/.*&quot;
 </li>
 <li>
 <p>Enter this at the command line…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Download mqtt2prometheus
+<div class="example-wrap"><pre class="language-bash"><code># Download mqtt2prometheus
 go get github.com/hikhvar/mqtt2prometheus
 
-## For Linux and macOS:
+# For Linux and macOS:
 cd $GOPATH/src/github.com/hikhvar/mqtt2prometheus
 
-## For Windows:
+# For Windows:
 cd %GOPATH%\src\github.com\hikhvar\mqtt2prometheus
 
-## Build mqtt2prometheus
+# Build mqtt2prometheus
 go build ./cmd
 
-## Run mqtt2prometheus.
-## Change &quot;ttn-mqtt.yaml&quot; to the full path of our
-## MQTT Gateway Configuration File.
-go run ./cmd -log-level debug -config ttn-mqtt.yaml
-</code></pre></div></li>
+# Run mqtt2prometheus.
+# Change &quot;ttn-mqtt.yaml&quot; to the full path of our
+# MQTT Gateway Configuration File.
+go run ./cmd -log-level debug -config ttn-mqtt.yaml</code></pre></div></li>
 <li>
 <p>For Windows: Click <strong>“Private Network: Allow Access”</strong> when prompted</p>
 <p>(That’s because our MQTT Gateway starts a HTTP Server at port 9641)</p>
@@ -391,8 +379,7 @@ Got message
     &quot;decoded_payload&quot;: {
       &quot;l&quot;: 4000,
       &quot;t&quot;: 5017
-    }
-</code></pre></div></li>
+    }</code></pre></div></li>
 <li>
 <p>MQTT Gateway is now listening for <strong>HTTP Requests at port 9641</strong>!</p>
 </li>
@@ -406,35 +393,32 @@ Got message
 </li>
 <li>
 <p>Enter this at the command-line…</p>
-<div class="example-wrap"><pre class="language-bash"><code>curl -v http://localhost:9641/metrics
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>curl -v http://localhost:9641/metrics</code></pre></div></li>
 <li>
 <p>We should see our Sensor Data (Temperature and Light Level) ingested as <strong>Prometheus Metrics</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>## HELP l Light Level
-## TYPE l gauge
+<div class="example-wrap"><pre class="language-text"><code># HELP l Light Level
+# TYPE l gauge
 l{sensor=&quot;eui-YOUR_DEVICE_EUI&quot;,
 sensor_type=&quot;l&quot;,
 topic=&quot;v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up&quot;
 } 4000 1634364863274
 ...    
 
-## HELP t Temperature
-## TYPE t gauge
+# HELP t Temperature
+# TYPE t gauge
 t{sensor=&quot;eui-YOUR_DEVICE_EUI&quot;,
 sensor_type=&quot;t&quot;,
 topic=&quot;v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up&quot;
-} 5056 1634364863274
-</code></pre></div>
+} 5056 1634364863274</code></pre></div>
 <p>This says that the Light Level is <code>4000</code> and the Temperature is <code>50.56</code> ºC, recorded at the Timestamp of <code>1634364863274</code>.</p>
 </li>
 <li>
 <p>Also watch for <strong>received_messages</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>## HELP received_messages received messages per topic and status
-## TYPE received_messages counter
+<div class="example-wrap"><pre class="language-text"><code># HELP received_messages received messages per topic and status
+# TYPE received_messages counter
 received_messages{status=&quot;success&quot;,
 topic=&quot;v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up&quot;
-} 3
-</code></pre></div>
+} 3</code></pre></div>
 <p>This says that our MQTT Gateway has successfully processed 3 messages from The Things Network.</p>
 <p>Let’s move on to Prometheus…</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-flow3.jpg" alt="Prometheus Time Series Database" /></p>
@@ -459,37 +443,34 @@ topic=&quot;v3/luppy-application@ttn/devices/eui-YOUR_DEVICE_EUI/up&quot;
 </li>
 <li>
 <p>Under the <strong><code>scrape_configs</code></strong> section, add the following…</p>
-<div class="example-wrap"><pre class="language-yaml"><code>## Scrape configuration containing the endpoints to scrape
+<div class="example-wrap"><pre class="language-yaml"><code># Scrape configuration containing the endpoints to scrape
 scrape_configs:
 ...
 
-  ## Scrape The Things Network Metrics from MQTT2Prometheus
+  # Scrape The Things Network Metrics from MQTT2Prometheus
   - job_name: &quot;ttn&quot;
 
-    ## Metrics will be scraped from MQTT2Prometheus
-    ## at http://localhost:9641/metrics
+    # Metrics will be scraped from MQTT2Prometheus
+    # at http://localhost:9641/metrics
     static_configs:
-      - targets: [&quot;localhost:9641&quot;]
-</code></pre></div></li>
+      - targets: [&quot;localhost:9641&quot;]</code></pre></div></li>
 <li>
 <p>Note that Prometheus will scrape the Metrics from MQTT Gateway <strong>every 15 seconds</strong>…</p>
-<div class="example-wrap"><pre class="language-yaml"><code>## Global Configuration
+<div class="example-wrap"><pre class="language-yaml"><code># Global Configuration
 global:
 
-  ## Set the scrape interval to every 15 seconds
-  scrape_interval: 15s
-</code></pre></div></li>
+  # Set the scrape interval to every 15 seconds
+  scrape_interval: 15s</code></pre></div></li>
 <li>
 <p>Start the <strong>Prometheus Server</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Change this to the unzipped path of Prometheus
+<div class="example-wrap"><pre class="language-bash"><code># Change this to the unzipped path of Prometheus
 cd prometheus
 
-## For Linux and macOS:
+# For Linux and macOS:
 ./prometheus
 
-## For Windows:
-prometheus.exe
-</code></pre></div></li>
+# For Windows:
+prometheus.exe</code></pre></div></li>
 <li>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>main.go:400
@@ -505,8 +486,7 @@ main.go:852
 &quot;TSDB started&quot;    
 
 main.go:794
-&quot;Server is ready to receive web requests.&quot;
-</code></pre></div></li>
+&quot;Server is ready to receive web requests.&quot;</code></pre></div></li>
 <li>
 <p>Prometheus is now listening for <strong>HTTP Requests at port 9090</strong>!</p>
 </li>
@@ -520,12 +500,10 @@ main.go:794
 </li>
 <li>
 <p>Browse to our <strong>Prometheus Server</strong>…</p>
-<div class="example-wrap"><pre class="language-uri"><code>http://localhost:9090
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-uri"><code>http://localhost:9090</code></pre></div></li>
 <li>
 <p>Enter the <strong>name of our Metric</strong> (like for Temperature)…</p>
-<div class="example-wrap"><pre class="language-text"><code>t
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>t</code></pre></div>
 <p>Like this…</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-metric2.png" alt="Checking the Metrics scraped by Prometheus from MQTT Gateway" /></p>
 </li>
@@ -562,8 +540,7 @@ main.go:794
 </li>
 <li>
 <p>Set the <strong>HTTP URL</strong> to…</p>
-<div class="example-wrap"><pre class="language-uri"><code>http://localhost:9090
-</code></pre></div>
+<div class="example-wrap"><pre class="language-uri"><code>http://localhost:9090</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/prometheus-grafana5.png" alt="Grafana Data Source for Prometheus" /></p>
 </li>
 <li>
@@ -585,8 +562,7 @@ main.go:794
 <li>
 <p>Set the <strong>Data Source</strong> to <strong>“Prometheus”</strong></p>
 <p>Under <strong>Metric Browser</strong>: Enter the name of our Metric (like for Temperature)…</p>
-<div class="example-wrap"><pre class="language-text"><code>t
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>t</code></pre></div>
 <p>Like this…</p>
 <p><img src="https://lupyuen.github.io/images/prometheus-grafana6.png" alt="Grafana Panel for Prometheus" /></p>
 </li>
@@ -643,8 +619,7 @@ main.go:794
 </li>
 <li>
 <p>The above filter matches the <strong>Device ID</strong> with the Regular Expression…</p>
-<div class="example-wrap"><pre class="language-text"><code>eui-70b3.*
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>eui-70b3.*</code></pre></div>
 <p>Which means that only Device IDs starting with <strong>“eui-70b3”</strong> will be rendered.</p>
 </li>
 <li>
@@ -806,13 +781,12 @@ main.go:794
 </li>
 <li>
 <p>For Linux and macOS: Start the Grafana Server</p>
-<div class="example-wrap"><pre class="language-bash"><code>## For Ubuntu and WSL
+<div class="example-wrap"><pre class="language-bash"><code># For Ubuntu and WSL
 sudo service grafana-server restart
 sudo service grafana-server status
 
-## For macOS
-brew services start grafana
-</code></pre></div></li>
+# For macOS
+brew services start grafana</code></pre></div></li>
 <li>
 <p>To test Grafana, browse to </p>
 <p><strong><code>http://localhost:3000</code></strong></p>

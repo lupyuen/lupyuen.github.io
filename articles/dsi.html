@@ -341,8 +341,7 @@
 <p>A64’s MIPI DSI Hardware is identical to A31 because both SoCs use the <strong>same MIPI DSI Driver</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>static const struct of_device_id sun6i_dsi_of_table[] = {
   { .compatible = &quot;allwinner,sun6i-a31-mipi-dsi&quot; },
-  { .compatible = &quot;allwinner,sun50i-a64-mipi-dsi&quot; },
-</code></pre></div>
+  { .compatible = &quot;allwinner,sun50i-a64-mipi-dsi&quot; },</code></pre></div>
 <p><a href="https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c#L1215-L1219">(Source)</a></p>
 <p>The <strong>Base Address</strong> of A64’s MIPI DSI Controller is <strong><code>0x01CA</code> <code>0000</code></strong>. (Pic above)</p>
 <p>Also in the pic above is list of <strong>MIPI DSI Registers</strong> for A64 SoC.</p>
@@ -812,8 +811,7 @@
 <p><strong>CCU Base Address</strong>: <code>0x01C2</code> <code>0000</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 82)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>mipi dsi bus enable
 setbits 0x1c20060, 0x2 (DMB)
-setbits 0x1c202c0, 0x2 (DMB)
-</code></pre></div></li>
+setbits 0x1c202c0, 0x2 (DMB)</code></pre></div></li>
 <li>
 <p>Enable DSI Block</p>
 <p><strong>DSI_CTL_REG</strong>: DSI Offset <code>0x0</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 843)</a></p>
@@ -838,8 +836,7 @@ setbits 0x1c202c0, 0x2 (DMB)
 0x1ca0000 = 0x1 (DMB)
 0x1ca0010 = 0x30000 (DMB)
 0x1ca0060 = 0xa (DMB)
-0x1ca0078 = 0x0 (DMB)
-</code></pre></div></li>
+0x1ca0078 = 0x0 (DMB)</code></pre></div></li>
 <li>
 <p>Set Instructions (Undocumented)</p>
 <p><strong>DSI_INST_FUNC_REG(0)</strong>: DSI Offset <code>0x20</code></p>
@@ -891,8 +888,7 @@ setbits 0x1c202c0, 0x2 (DMB)
 0x1ca0030 = 0x30100001 (DMB)
 0x1ca0034 = 0x40000010 (DMB)
 0x1ca0038 = 0xf (DMB)
-0x1ca003c = 0x5000001f (DMB)
-</code></pre></div></li>
+0x1ca003c = 0x5000001f (DMB)</code></pre></div></li>
 <li>
 <p>Configure Jump Instructions (Undocumented)</p>
 <p><strong>DSI_INST_JUMP_CFG_REG(0)</strong>: DSI Offset <code>0x4c</code></p>
@@ -906,8 +902,7 @@ setbits 0x1c202c0, 0x2 (DMB)
 <li>Set to <code>0xff</code></li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>0x1ca004c = 0x560001 (DMB)
-0x1ca02f8 = 0xff (DMB)
-</code></pre></div></li>
+0x1ca02f8 = 0xff (DMB)</code></pre></div></li>
 <li>
 <p>Set Video Start Delay</p>
 <p><strong>DSI_BASIC_CTL1_REG</strong>: DSI Offset <code>0x14</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 846)</a></p>
@@ -919,8 +914,7 @@ setbits 0x1c202c0, 0x2 (DMB)
 </ul>
 <p>Note: Video_Start_Delay is actually 13 bits, not 8 bits as stated in the A31 User Manual</p>
 <div class="example-wrap"><pre class="language-text"><code>get_video_start_delay
-0x1ca0014 = 0x5bc7 (DMB)
-</code></pre></div></li>
+0x1ca0014 = 0x5bc7 (DMB)</code></pre></div></li>
 <li>
 <p>Set Burst (Undocumented)</p>
 <p><strong>DSI_TCON_DRQ_REG</strong>: DSI Offset 0x7c</p>
@@ -928,8 +922,7 @@ setbits 0x1c202c0, 0x2 (DMB)
 <li>Set to <code>0x1000</code> <code>0007</code></li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>setup_burst
-0x1ca007c = 0x10000007 (DMB)
-</code></pre></div></li>
+0x1ca007c = 0x10000007 (DMB)</code></pre></div></li>
 <li>
 <p>Set Instruction Loop (Undocumented)</p>
 <p><strong>DSI_INST_LOOP_SEL_REG</strong>: DSI Offset <code>0x40</code></p>
@@ -948,8 +941,7 @@ setbits 0x1c202c0, 0x2 (DMB)
 <div class="example-wrap"><pre class="language-text"><code>setup_inst_loop
 0x1ca0040 = 0x30000002 (DMB)
 0x1ca0044 = 0x310031 (DMB)
-0x1ca0054 = 0x310031 (DMB)
-</code></pre></div></li>
+0x1ca0054 = 0x310031 (DMB)</code></pre></div></li>
 <li>
 <p>Set Pixel Format</p>
 <p><strong>DSI_PIXEL_PH_REG</strong>: DSI Offset <code>0x90</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 848)</a></p>
@@ -978,8 +970,7 @@ setbits 0x1c202c0, 0x2 (DMB)
 0x1ca0090 = 0x1308703e (DMB)
 0x1ca0098 = 0xffff (DMB)
 0x1ca009c = 0xffffffff (DMB)
-0x1ca0080 = 0x10008 (DMB)
-</code></pre></div></li>
+0x1ca0080 = 0x10008 (DMB)</code></pre></div></li>
 <li>
 <p>Set Sync Timings</p>
 <p><strong>DSI_BASIC_CTL_REG</strong>: DSI Offset <code>0x0c</code> (Undocumented)</p>
@@ -1023,8 +1014,7 @@ setbits 0x1c202c0, 0x2 (DMB)
 0x1ca00b0 = 0x12000021 (DMB)
 0x1ca00b4 = 0x1000031 (DMB)
 0x1ca00b8 = 0x7000001 (DMB)
-0x1ca00bc = 0x14000011 (DMB)
-</code></pre></div></li>
+0x1ca00bc = 0x14000011 (DMB)</code></pre></div></li>
 <li>
 <p>Set Basic Size (Undocumented)</p>
 <p><strong>DSI_BASIC_SIZE0_REG</strong>: DSI Offset <code>0x18</code></p>
@@ -1038,8 +1028,7 @@ setbits 0x1c202c0, 0x2 (DMB)
 <li>Set <strong>Video_VACT</strong> (Bits 0 to 11) to 1440</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>0x1ca0018 = 0x11000a (DMB)
-0x1ca001c = 0x5cd05a0 (DMB)
-</code></pre></div></li>
+0x1ca001c = 0x5cd05a0 (DMB)</code></pre></div></li>
 <li>
 <p>Set Horizontal Blanking</p>
 <p><strong>DSI_BLK_HSA0_REG</strong>: DSI Offset <code>0xc0</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 852)</a></p>
@@ -1085,8 +1074,7 @@ setbits 0x1c202c0, 0x2 (DMB)
 0x1ca00d0 = 0x9004a19 (DMB)
 0x1ca00d4 = 0x50b40000 (DMB)
 0x1ca00e0 = 0xc091a19 (DMB)
-0x1ca00e4 = 0x72bd0000 (DMB)
-</code></pre></div></li>
+0x1ca00e4 = 0x72bd0000 (DMB)</code></pre></div></li>
 <li>
 <p>Set Vertical Blanking</p>
 <p><strong>DSI_BLK_VBLK0_REG</strong>: DSI Offset <code>0xe8</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 854)</a></p>
@@ -1099,8 +1087,7 @@ setbits 0x1c202c0, 0x2 (DMB)
 <li>Set <strong>VBLK_PD</strong> (Bits 0 to 7) to 0</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>0x1ca00e8 = 0x1a000019 (DMB)
-0x1ca00ec = 0xffff0000 (DMB)
-</code></pre></div></li>
+0x1ca00ec = 0xffff0000 (DMB)</code></pre></div></li>
 </ol>
 <p>Based on the above steps, we have <strong>implemented in Zig</strong> the PinePhone Driver that enables the Allwinner A64 MIPI DSI Block…</p>
 <ul>
@@ -1136,8 +1123,7 @@ setbits 0x1c202c0, 0x2 (DMB)
 </ul>
 <p><strong>DSI Base Address</strong>: <code>0x01CA</code> <code>0000</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 842)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>dsi_start DSI_START_HSC
-0x1ca0048 = 0xf02 (DMB)
-</code></pre></div></li>
+0x1ca0048 = 0xf02 (DMB)</code></pre></div></li>
 <li>
 <p>Commit</p>
 <p><strong>DSI_BASIC_CTL0_REG</strong>: DSI Offset <code>0x10</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 845)</a></p>
@@ -1145,8 +1131,7 @@ setbits 0x1c202c0, 0x2 (DMB)
 <li>Set <strong>Instru_En</strong> (Bit 0) to 1 (Enable DSI Processing from Instruction 0)</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>dsi_update_bits: 0x01ca0010 : 00030000 -&gt; (00000001) 00000001 (DMB)
-addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
-</code></pre></div></li>
+addr=0x1ca0010, mask=0x1, val=0x1 (DMB)</code></pre></div></li>
 <li>
 <p>Instruction Function Lane (Undocumented)</p>
 <p><strong>DSI_INST_FUNC_REG(0)</strong>: DSI Offset <code>0x20</code></p>
@@ -1156,12 +1141,10 @@ addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
 </ul>
 <p>(DSI_INST_FUNC_REG(n) is <code>(0x020 + (n) * 0x04)</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>dsi_update_bits: 0x01ca0020 : 0000001f -&gt; (00000010) 00000000 (DMB)
-addr=0x1ca0020, mask=0x10, val=0x0 (DMB)
-</code></pre></div></li>
+addr=0x1ca0020, mask=0x10, val=0x0 (DMB)</code></pre></div></li>
 <li>
 <p>Wait 1,000 microseconds</p>
-<div class="example-wrap"><pre class="language-text"><code>udelay 1000
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>udelay 1000</code></pre></div></li>
 <li>
 <p>Start HSD (Undocumented)</p>
 <p><strong>DSI_INST_JUMP_SEL_REG</strong>: DSI Offset <code>0x48</code></p>
@@ -1169,8 +1152,7 @@ addr=0x1ca0020, mask=0x10, val=0x0 (DMB)
 <li>Set to <code>0x63f0</code> <code>7006</code></li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>dsi_start DSI_START_HSD
-0x1ca0048 = 0x63f07006 (DMB)
-</code></pre></div></li>
+0x1ca0048 = 0x63f07006 (DMB)</code></pre></div></li>
 <li>
 <p>Commit</p>
 <p><strong>DSI_BASIC_CTL0_REG</strong>: DSI Offset <code>0x10</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A31_User_Manual_v1.3_20150510.pdf">(A31 Page 845)</a></p>
@@ -1178,8 +1160,7 @@ addr=0x1ca0020, mask=0x10, val=0x0 (DMB)
 <li>Set <strong>Instru_En</strong> (Bit 0) to 1 (Enable DSI Processing from Instruction 0)</li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>dsi_update_bits: 0x01ca0010 : 00030000 -&gt; (00000001) 00000001 (DMB)
-addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
-</code></pre></div></li>
+addr=0x1ca0010, mask=0x1, val=0x1 (DMB)</code></pre></div></li>
 </ol>
 <p>Based on the above steps, we have <strong>implemented in Zig</strong> the PinePhone Driver that starts Allwinner A64 MIPI DSI (in HSC and HSD Modes)…</p>
 <ul>
@@ -1225,8 +1206,7 @@ addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
 </ul>
 <p><strong>CCU Base Address</strong>: <code>0x01C2</code> <code>0000</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 82)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>150MHz (600 / 4)
-0x1c20168 = 0x8203 (DMB)
-</code></pre></div></li>
+0x1c20168 = 0x8203 (DMB)</code></pre></div></li>
 <li>
 <p>Power on DPHY Tx (Undocumented)</p>
 <p><strong>DPHY_TX_CTL_REG</strong>: DPHY Offset <code>0x04</code></p>
@@ -1259,8 +1239,7 @@ addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
 0x1ca1014 = 0xa033207 (DMB)
 0x1ca1018 = 0x1e (DMB)
 0x1ca101c = 0x0 (DMB)
-0x1ca1020 = 0x303 (DMB)
-</code></pre></div></li>
+0x1ca1020 = 0x303 (DMB)</code></pre></div></li>
 <li>
 <p>Enable DPHY (Undocumented)</p>
 <p><strong>DPHY_GCTL_REG</strong>: DPHY Offset <code>0x00</code> (Enable DPHY)</p>
@@ -1289,8 +1268,7 @@ addr=0x1ca0010, mask=0x1, val=0x1 (DMB)
 0x1ca1050 = 0x17000000 (DMB)
 0x1ca105c = 0x1f01555 (DMB)
 0x1ca1054 = 0x2 (DMB)
-udelay 5
-</code></pre></div></li>
+udelay 5</code></pre></div></li>
 <li>
 <p>Enable LDOR, LDOC, LDOD (Undocumented)</p>
 <p><strong>DPHY_ANA3_REG</strong>: DPHY Offset <code>0x58</code> (Enable LDOR, LDOC, LDOD)</p>
@@ -1330,8 +1308,7 @@ udelay 1
 update_bits addr=0x1ca1054, mask=0x10, val=0x10 (DMB)
 udelay 1
 update_bits addr=0x1ca1050, mask=0x80000000, val=0x80000000 (DMB)
-update_bits addr=0x1ca1054, mask=0xf000000, val=0xf000000 (DMB)
-</code></pre></div></li>
+update_bits addr=0x1ca1054, mask=0xf000000, val=0xf000000 (DMB)</code></pre></div></li>
 </ol>
 <p>Based on the above steps, we have <strong>implemented in Zig</strong> the PinePhone Driver that enables the Allwinner A64 MIPI Display Physical Layer (DPHY)…</p>
 <ul>

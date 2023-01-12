@@ -158,8 +158,7 @@
   GPIO_PIN2)
 #define BOARD_I2C_SDA \
   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
-  GPIO_PIN1)
-</code></pre></div>
+  GPIO_PIN1)</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/expander#pin-functions">(Which pins can be used? See this)</a></p>
 <p><em>What if we’re connecting to ESP32?</em></p>
 <p><strong>For ESP32:</strong> The GPIO Pin Numbers for the I2C Port (I2C0) are defined in <a href="https://github.com/lupyuen/nuttx/blob/master/arch/xtensa/src/esp32/Kconfig#L797-L805">Kconfig</a> and menuconfig…</p>
@@ -171,8 +170,7 @@
 config ESP32_I2C0_SDAPIN
   int &quot;I2C0 SDA Pin&quot;
   default 23
-  range 0 39
-</code></pre></div>
+  range 0 39</code></pre></div>
 <p><em>Do we need Pull-Up Resistors?</em></p>
 <p>We’re using the <a href="https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide/all"><strong>SparkFun BME280 Breakout Board</strong></a>, which has <strong>Pull-Up Resistors</strong>. (So we don’t need to add our own)</p>
 <p><em>What happens now?</em></p>
@@ -215,8 +213,7 @@ config ESP32_I2C0_SDAPIN
 //  #define DEVID           0x58
 
 //  Testing: Device ID of BME280
-#define DEVID               0x60
-</code></pre></div>
+#define DEVID               0x60</code></pre></div>
 <p><a href="https://github.com/zephyrproject-rtos/zephyr/issues/1709">(FYI: Zephyr uses the same driver for BMP280 and BME280)</a></p>
 <p><img src="https://lupyuen.github.io/images/bme280-code1.png" alt="Change I2C Address and Device ID" /></p>
 <p><a href="https://github.com/lupyuen/nuttx/blob/bmp280/drivers/sensors/bmp280.c#L45-L57">(Source)</a></p>
@@ -241,8 +238,7 @@ int bl602_bringup(void) {
   if (ret &lt; 0) {
     _err(&quot;ERROR: Failed to register BMP280\n&quot;);
   }
-#endif  //  CONFIG_SENSORS_BMP280
-</code></pre></div>
+#endif  //  CONFIG_SENSORS_BMP280</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/bmp280/drivers/sensors/bmp280.c#L691-L760">(<strong>bmp280_register</strong> is defined here)</a></p>
 <p><strong>For ESP32:</strong> Edit the function <a href="https://github.com/lupyuen/nuttx/blob/bmp280/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L134-L497">esp32_bringup</a> in <a href="https://github.com/lupyuen/nuttx/blob/bmp280/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L134-L497">esp32_bringup.c</a> so that it calls <a href="https://github.com/lupyuen/nuttx/blob/bmp280/drivers/sensors/bmp280.c#L691-L760">bmp280_register</a></p>
 <p><img src="https://lupyuen.github.io/images/bme280-code2a.png" alt="Register BMP280 Driver" /></p>
@@ -265,8 +261,7 @@ int bl602_bringup(void) {
 bmp280_checkid:  devid: 0x00
 bmp280_checkid:  Wrong Device ID! 00
 bmp280_register: Failed to register driver: -19
-bl602_bringup:   ERROR: Failed to register BMP280
-</code></pre></div>
+bl602_bringup:   ERROR: Failed to register BMP280</code></pre></div>
 <p><a href="https://github.com/lupyuen/bme280-nuttx#invalid-device-id">(See the complete log)</a></p>
 <p>This says that the BMP280 Driver was expecting <strong>Device ID <code>0x60</code></strong>… But it got <strong><code>0x00</code></strong> instead!</p>
 <p>Let’s find out why 🤔</p>
@@ -281,8 +276,7 @@ bl602_bringup:   ERROR: Failed to register BMP280
 <div class="example-wrap"><pre class="language-text"><code>Write  [0xEE]
 0x00 + ACK (Register ID is 0x00, which is incorrect!)
 Read   [0xEF]
-0x00 + NAK (Invalid result, because Register ID is incorrect!)
-</code></pre></div>
+0x00 + NAK (Invalid result, because Register ID is incorrect!)</code></pre></div>
 <p>To read the Device ID, the Register ID should be <strong><code>0xD0</code></strong>, not <strong><code>0x00</code></strong>!</p>
 <p>Let’s fix this 🤔</p>
 <p><a href="https://lupyuen.github.io/articles/i2c#appendix-test-bme280-with-bus-pirate">(Here’s why Register ID should be <code>0xD0</code>)</a></p>
@@ -304,8 +298,7 @@ Read   [0xEF]
       priv-&gt;subaddr += msgs[i].buffer[j] &lt;&lt; (j * 8);
     }
     priv-&gt;sublen = msgs[i].length;
-    i++;
-</code></pre></div>
+    i++;</code></pre></div>
 <p>But it needs the flag <strong>I2C_M_NOSTOP</strong> to be set!</p>
 <p>Let’s patch the NuttX BMP280 Driver to send the <strong>Register ID as I2C Sub Address</strong> (instead of I2C Data) when we’re reading a BMP280 Register: <a href="https://github.com/lupyuen/nuttx/blob/bmp280/drivers/sensors/bmp280.c#L209-L219">bmp280.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Read a single BME280 Register
@@ -323,8 +316,7 @@ static uint8_t bmp280_getreg8(FAR struct bmp280_dev_s *priv, uint8_t regaddr) {
 #endif  //  CONFIG_BL602_I2C0
 
   msg[0].buffer    = &amp;regaddr;
-  msg[0].length    = 1;
-</code></pre></div>
+  msg[0].length    = 1;</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/bmp280/drivers/sensors/bmp280.c#L238-L327">(We patch <strong>bmp280_getregs</strong> and <strong>bmp280_putreg8</strong> too)</a></p>
 <p><em>What about writing to BMP280 Registers? Do we need to set the I2C Sub Address?</em></p>
 <p>Yes we need to send the <strong>Register ID and Register Value</strong> as I2C Sub Address, followed by an <strong>I2C Read</strong>.</p>
@@ -334,16 +326,14 @@ static uint8_t bmp280_getreg8(FAR struct bmp280_dev_s *priv, uint8_t regaddr) {
 <p>We’ve patched the BMP280 Driver to send the Register ID as I2C Sub Address. Let’s run it!</p>
 <div class="example-wrap"><pre class="language-text"><code>sensor_custom_register: Registering /dev/uorb/sensor_baro0
 bmp280_register: BMP280 driver loaded successfully!
-NuttShell (NSH) NuttX-10.2.0-RC0
-</code></pre></div>
+NuttShell (NSH) NuttX-10.2.0-RC0</code></pre></div>
 <p><a href="https://github.com/lupyuen/bme280-nuttx#bmp280-driver-loads-ok">(See the complete log)</a></p>
 <p>Yep our patched BMP280 Driver <strong>loads successfully</strong>!</p>
 <p>(Because it receives the correct Device ID from BMP280)</p>
 <p>BMP280 appears on NuttX as <strong>/dev/uorb/sensor_baro0</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>nsh&gt; ls /dev/uorb
 /dev/uorb:
- sensor_baro0
-</code></pre></div>
+ sensor_baro0</code></pre></div>
 <p>Let’s read the <strong>baro0</strong> device.</p>
 <p><a href="https://lupyuen.github.io/articles/bme280#appendix-log-i2c-transfers">(How we enable logging for BL602 I2C Driver)</a></p>
 <p><img src="https://lupyuen.github.io/images/bme280-run2a.jpg" alt="Our patched BMP280 Driver loads successfully" /></p>
@@ -372,8 +362,7 @@ baro0: timestamp:30690000 value1:674.93 value2:22.18
 baro0: timestamp:30690000 value1:674.93 value2:22.18
 baro0: timestamp:30690000 value1:1006.21 value2:30.78
 baro0: timestamp:30690000 value1:1006.21 value2:30.78
-SensorTest: Received message: baro0, number:10/10
-</code></pre></div>
+SensorTest: Received message: baro0, number:10/10</code></pre></div>
 <p><a href="https://github.com/lupyuen/bme280-nuttx#run-sensor-test-app">(See the complete log)</a></p>
 <p>We see the Air Pressure and Temperature: <strong>1,006.21 millibars</strong> at <strong>30.78 °C</strong>.</p>
 <p>(Air Pressure at Sea Level is 1,013.25 millibars)</p>
@@ -468,8 +457,7 @@ static int bme280_fetch(
   if (!priv-&gt;activated) {
     snerr(&quot;Device must be active before fetch\n&quot;);
     return -EIO;
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p>We begin by verifying that the sensor is in <strong>Normal Power Mode</strong>.</p>
 <p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L397-L431">(<strong>activated</strong> is set by <strong>bme280_activate</strong>)</a></p>
 <p>Next we call the Zephyr Driver to <strong>fetch a sample</strong> from BME280…</p>
@@ -478,8 +466,7 @@ static int bme280_fetch(
     priv,            //  NuttX Device Struct
     SENSOR_CHAN_ALL  //  Fetch Temperature, Humidity and Pressure
   );
-  if (ret &lt; 0) { return ret; }
-</code></pre></div>
+  if (ret &lt; 0) { return ret; }</code></pre></div>
 <p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bme280.c#L194-L245">(<strong>bme280_sample_fetch</strong> is defined here)</a></p>
 <p>The fetched sample contains <strong>Temperature, Humidity and Pressure</strong>.</p>
 <p>To get the Pressure we call the Zephyr Driver…</p>
@@ -490,14 +477,12 @@ static int bme280_fetch(
     SENSOR_CHAN_PRESS,  //  Get Pressure from fetched sample
     &amp;val                //  Pressure in Fixed Point format
   );
-  if (ret &lt; 0) { return ret; }
-</code></pre></div>
+  if (ret &lt; 0) { return ret; }</code></pre></div>
 <p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bme280.c#L247-L286">(<strong>bme280_channel_get</strong> is defined here)</a></p>
 <p>This returns a Zephyr <a href="https://docs.zephyrproject.org/latest/reference/peripherals/sensor.html#c.sensor_value"><strong>sensor_value</strong></a> struct that stores the Pressure as a <a href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic"><strong>Fixed-Point Number</strong></a>.</p>
 <p>We convert the <a href="https://docs.zephyrproject.org/latest/reference/peripherals/sensor.html#c.sensor_channel.SENSOR_CHAN_PRESS"><strong>Pressure</strong> (kilopascal)</a> from <strong>Fixed Point to Float</strong> (in millibars)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Convert pressure to float, scale up by 10 to convert kilopascal to millibars
-  float pressure = get_sensor_value(&amp;val) * 10;
-</code></pre></div>
+  float pressure = get_sensor_value(&amp;val) * 10;</code></pre></div>
 <p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L93-L107">(<strong>get_sensor_value</strong> is defined here)</a></p>
 <p>We do the same to get the <a href="https://docs.zephyrproject.org/latest/reference/peripherals/sensor.html#c.sensor_channel.SENSOR_CHAN_AMBIENT_TEMP"><strong>Temperature</strong> (°C)</a> from the fetched sample…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Get the temperature (from Zephyr BME280 Driver)
@@ -507,8 +492,7 @@ static int bme280_fetch(
     &amp;val                       //  Temperature in Fixed Point format
   );
   if (ret &lt; 0) { return ret; }
-  float temperature = get_sensor_value(&amp;val);
-</code></pre></div>
+  float temperature = get_sensor_value(&amp;val);</code></pre></div>
 <p>And the <a href="https://docs.zephyrproject.org/latest/reference/peripherals/sensor.html#c.sensor_channel.SENSOR_CHAN_HUMIDITY"><strong>Humidity</strong> (relative %)</a>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Get the humidity (from Zephyr BME280 Driver)
   ret = bme280_channel_get(
@@ -517,22 +501,19 @@ static int bme280_fetch(
     &amp;val                   //  Humidity in Fixed Point format
   );
   if (ret &lt; 0) { return ret; }
-  float humidity = get_sensor_value(&amp;val);
-</code></pre></div>
+  float humidity = get_sensor_value(&amp;val);</code></pre></div>
 <p>Sensor Values in NuttX are <strong>timestamped</strong>. We get the timestamp like so…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Get the timestamp  
   struct timespec ts;
   clock_systime_timespec(&amp;ts);
-  uint64_t timestamp = 1000000ull * ts.tv_sec + ts.tv_nsec / 1000;
-</code></pre></div>
+  uint64_t timestamp = 1000000ull * ts.tv_sec + ts.tv_nsec / 1000;</code></pre></div>
 <p>Finally we return the <strong>Pressure and Temperature</strong> data…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Return the pressure and temperature data
   if (baro_data != NULL) {
     baro_data-&gt;pressure    = pressure;
     baro_data-&gt;temperature = temperature;
     baro_data-&gt;timestamp   = timestamp;
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p>And the <strong>Humidity</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Return the humidity data
   if (humi_data != NULL) {
@@ -540,8 +521,7 @@ static int bme280_fetch(
     humi_data-&gt;timestamp   = timestamp;
   }
   return 0;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>That’s how we call the Zephyr Driver to fetch the BME280 Sensor Data!</p>
 <p><em>Why did we return the Sensor Data as two structs: baro_data and humi_data?</em></p>
 <p>That’s because our NuttX BME280 Driver is implemented as a <strong>Composite Sensor</strong>: Barometer Sensor + Humidity Sensor.</p>
@@ -571,8 +551,7 @@ static int bme280_activate(
   //  Remember the power mode
   if (ret &gt;= 0) { priv-&gt;activated = enable; }
   return ret;
-}
-</code></pre></div>
+}</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/bme280-standby.png" alt="BME280 Standby Interval" /></p>
 <p><a href="https://cdn.sparkfun.com/assets/learn_tutorials/4/1/9/BST-BME280_DS001-10.pdf">(From BME280 Datasheet)</a></p>
 <h2 id="standby-interval"><a href="#standby-interval">3.4 Standby Interval</a></h2>
@@ -606,8 +585,7 @@ static int bme280_set_interval(
     ret = bme280_set_standby(priv, regval);
   }
   return ret;
-}
-</code></pre></div>
+}</code></pre></div>
 <p><strong>bme280_set_standby</strong> is defined below: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L237-L285">driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Set Standby Duration. Zephyr assumes that Standby Duration is static, so we set it in NuttX.
 static int bme280_set_standby(
@@ -622,8 +600,7 @@ static int bme280_set_standby(
   //  Check the standby duration value by reading from BME280 Register
   ret = bme280_reg_read(priv, BME280_REG_CONFIG, &amp;v_data_u8, 1);
   uint8_t v_sb_u8 = (v_data_u8 &gt;&gt; 5) &amp; 0x07;
-  //  Omitted: Return error if v_sb_u8 != value
-</code></pre></div>
+  //  Omitted: Return error if v_sb_u8 != value</code></pre></div>
 <p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L147-L235">(<strong>bme280_reg_read</strong> and <strong>bme280_reg_write</strong> are defined here)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx/blob/master/drivers/sensors/bmp280.c#L330-L565">(<strong>bme280_set_interval</strong> and <strong>bme280_set_standby</strong> were cloned from the NuttX BMP280 Driver)</a></p>
 <p>We’ll cover <strong>bme280_register</strong> in the next chapter.</p>
@@ -658,8 +635,7 @@ struct device {
   bool    activated;             //  True if device is not in sleep mode
   char    *name;                 //  Name of the device (BME280)
   struct  bme280_data *data;     //  Compensation parameters (bme280.c)
-};
-</code></pre></div>
+};</code></pre></div>
 <p>Let’s dive into the implementation of the two NuttX Sensors.</p>
 <h2 id="sensor-operations"><a href="#sensor-operations">4.1 Sensor Operations</a></h2>
 <p>Earlier we talked about the functions exposed by our NuttX Sensor Driver…</p>
@@ -677,8 +653,7 @@ static const struct sensor_ops_s g_humi_ops = {
   .activate      = bme280_activate_humi,
   .fetch         = bme280_fetch_humi,
   .set_interval  = bme280_set_interval_humi,
-};
-</code></pre></div>
+};</code></pre></div>
 <p><em>Barometer Sensor vs Humidity Sensor… How different are the Sensor Operations?</em></p>
 <p>The Sensor Operations look highly similar. This is how we fetch the <strong>Barometer Sensor Data</strong>: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L574-L617">driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Called by NuttX to fetch pressure and temperature from sensor
@@ -706,8 +681,7 @@ static int bme280_fetch_baro(
   //  Return the sensor data
   memcpy(buffer, &amp;baro_data, sizeof(baro_data));
   return buflen;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>And this is how we fetch the <strong>Humidity Sensor Data</strong>: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L619-L662">driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Called by NuttX to fetch humidity from sensor
 static int bme280_fetch_humi(
@@ -734,8 +708,7 @@ static int bme280_fetch_humi(
   //  Return the sensor data
   memcpy(buffer, &amp;humi_data, sizeof(humi_data));
   return buflen;
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/bme280#read-sensor-data-from-zephyr-driver">(We’ve seen <strong>bme280_fetch</strong> earlier)</a></p>
 <p>The other Sensor Operations look similar too…</p>
 <ul>
@@ -781,8 +754,7 @@ int bme280_register(
   ret = sensor_register(&amp;priv-&gt;sensor_baro, devno);
   ...
   //  Register the Humidity Sensor
-  ret = sensor_register(&amp;priv-&gt;sensor_humi, devno);
-</code></pre></div>
+  ret = sensor_register(&amp;priv-&gt;sensor_humi, devno);</code></pre></div>
 <p>The function above is called at startup by <strong>bl602_bringup</strong>: <a href="https://github.com/lupyuen/nuttx/blob/master/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L623-L640">bl602_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_SENSORS_BME280
 #include &lt;nuttx/sensors/bme280.h&gt;
@@ -798,8 +770,7 @@ int bl602_bringup(void) {
   //  Register the BME280 driver
   ret = bme280_register(0, bme280_i2c_bus);
   if (ret &lt; 0) { _err(&quot;ERROR: Failed to register BME280\n&quot;); }
-#endif  //  CONFIG_SENSORS_BME280
-</code></pre></div>
+#endif  //  CONFIG_SENSORS_BME280</code></pre></div>
 <p><strong>For ESP32:</strong> Edit the function <a href="https://github.com/lupyuen/nuttx/blob/master/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L134-L497">esp32_bringup</a> in <a href="https://github.com/lupyuen/nuttx/blob/master/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L134-L497">esp32_bringup.c</a> so that it calls <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L668-L773">bme280_register</a></p>
 <p>One last thing before running the BME280 Driver: We need to bundle together the NuttX and Zephyr Drivers.</p>
 <p><img src="https://lupyuen.github.io/images/bme280-port4.jpg" alt="Zephyr BME280 Driver mapped to NuttX Driver" /></p>
@@ -811,34 +782,32 @@ int bl602_bringup(void) {
 <li><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c"><strong>bme280-nuttx/bundle.c</strong></a></li>
 </ul>
 <p>And we create a <strong>Symbolic Link</strong> at <a href="https://github.com/lupyuen/nuttx/blob/master/drivers/sensors/bme280.c"><strong>drivers/sensors/bme280.c</strong></a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Go to the NuttX Sensors Source directory
+<div class="example-wrap"><pre class="language-bash"><code># Go to the NuttX Sensors Source directory
 pushd nuttx/nuttx/drivers/sensors
 
-## Add the BME280 Driver as a submodule
+# Add the BME280 Driver as a submodule
 git submodule add \
   https://github.com/lupyuen/bme280-nuttx \
   bme280
 
-## Create the Symbolic Link to the bundled source file
+# Create the Symbolic Link to the bundled source file
 ln -s \
   bme280/bundle.c \
   bme280.c
 
-## Return to the top directory
-popd
-</code></pre></div>
+# Return to the top directory
+popd</code></pre></div>
 <p>We do the same for the bundled include file <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.h"><strong>bme280-nuttx/bundle.h</strong></a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Go to the NuttX Sensors Include directory
+<div class="example-wrap"><pre class="language-bash"><code># Go to the NuttX Sensors Include directory
 pushd nuttx/nuttx/include/nuttx/sensors
 
-## Create the Symbolic Link to the bundled include file
+# Create the Symbolic Link to the bundled include file
 ln -s \
   ../../../drivers/sensors/bme280/bundle.h \
   bme280.h
 
-## Return to the top directory
-popd
-</code></pre></div>
+# Return to the top directory
+popd</code></pre></div>
 <p>Which is Sym-Linked at <a href="https://github.com/lupyuen/nuttx/blob/master/include/nuttx/sensors/bme280.h"><strong>include/nuttx/sensors/bme280.h</strong></a></p>
 <p><em>This bundling looks complicated. Why not merge the Zephyr and NuttX Drivers into a single source file?</em></p>
 <p>We wanted to reuse the Zephyr Driver with <strong>minimal changes</strong> so that…</p>
@@ -874,8 +843,7 @@ popd
 #define LOG_DBG         sninfo       //  Log info message
 #define K_MSEC(ms)      (ms * 1000)  //  Convert milliseconds to microseconds
 #define k_sleep(us)     usleep(us)   //  Sleep for microseconds
-#define sys_le16_to_cpu(x) (x)       //  Convert from little endian to host endian. TODO: Handle big endian
-</code></pre></div>
+#define sys_le16_to_cpu(x) (x)       //  Convert from little endian to host endian. TODO: Handle big endian</code></pre></div>
 <p>Followed by the <strong>Zephyr Types</strong>: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c#L31-L55">bundle.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Zephyr Sensor Channel to be fetched from the sensor
 enum sensor_channel {
@@ -901,15 +869,13 @@ enum pm_device_state {
 struct sensor_value {
   int32_t val1;  //  Integer part of the value
   int32_t val2;  //  Fractional part of the value (in one-millionth parts)
-};
-</code></pre></div>
+};</code></pre></div>
 <p>And finally we <strong>embed the source code</strong> of the Zephyr and NuttX Drivers: <a href="https://github.com/lupyuen/bme280-nuttx/blob/main/bundle.c#L74-L78">bundle.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Embed Zephyr BME280 Driver
 #include &quot;bme280/bme280.c&quot;
 
 //  Embed NuttX Driver Wrapper
-#include &quot;bme280/driver.c&quot;
-</code></pre></div>
+#include &quot;bme280/driver.c&quot;</code></pre></div>
 <p>Yes this looks peculiar…</p>
 <h2 id="zephyr-driver-modified-for-nuttx"><a href="#zephyr-driver-modified-for-nuttx">5.2 Zephyr Driver Modified For NuttX</a></h2>
 <p><em>Sacrilege! We’re #include-ing C source files?!</em></p>
@@ -935,18 +901,15 @@ struct sensor_value {
 </li>
 <li>
 <p>At the NuttX Shell, enter this command to list the <strong>NuttX Sensors</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>ls /dev/uorb
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>ls /dev/uorb</code></pre></div></li>
 <li>
 <p>We should see our BME280 <strong>Barometer and Humidity Sensors</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>/dev/uorb:
  baro0
- humi0
-</code></pre></div></li>
+ humi0</code></pre></div></li>
 <li>
 <p>To read the BME280 <strong>Barometer Sensor</strong> once, enter this command…</p>
-<div class="example-wrap"><pre class="language-bash"><code>sensortest -n 1 baro0
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>sensortest -n 1 baro0</code></pre></div></li>
 <li>
 <p>We should see the <strong>Air Pressure</strong> and <strong>Temperature</strong> readings…</p>
 <div class="example-wrap"><pre class="language-text"><code>SensorTest: Test /dev/uorb/sensor_baro0 with interval(1000000us), latency(0us)
@@ -954,22 +917,19 @@ baro0:
   timestamp: 43760000 
   value1:     1011.29 
   value2:       29.09
-SensorTest: Received message: baro0, number:1/1
-</code></pre></div>
+SensorTest: Received message: baro0, number:1/1</code></pre></div>
 <p>This says that the Air Pressure is <strong>1,011.29 millibars</strong> and the Temperature is <strong>29.09 °C</strong>.</p>
 </li>
 <li>
 <p>Now enter this command to read the BME280 <strong>Humidity Sensor</strong> once…</p>
-<div class="example-wrap"><pre class="language-bash"><code>sensortest -n 1 humi0
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>sensortest -n 1 humi0</code></pre></div></li>
 <li>
 <p>We should see the <strong>Relative Humidity</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>SensorTest: Test /dev/uorb/sensor_humi0 with interval(1000000us), latency(0us)
 humi0: 
   timestamp: 60120000 
   value:     90.58
-SensorTest: Received message: humi0, number:1/1
-</code></pre></div>
+SensorTest: Received message: humi0, number:1/1</code></pre></div>
 <p>This says that the Relative Humidity is <strong>90.58 %</strong>.</p>
 <p><a href="https://github.com/lupyuen/bme280-nuttx#combined-barometer-and-humidity-sensor">(See the complete log)</a></p>
 </li>
@@ -987,8 +947,7 @@ baro0:
 nsh&gt; sensortest -n 1 humi0
 humi0: 
   timestamp: 60120000 
-  value:     90.58
-</code></pre></div>
+  value:     90.58</code></pre></div>
 <p>(That’s 1,011.29 millibars, 29.09 °C, 90.58 % Humidity)</p>
 <p>Let’s take a quick look inside the Sensor Test App, so that we can code our own Sensor Apps: <a href="https://github.com/lupyuen/nuttx-apps/blob/master/testing/sensortest/sensortest.c#L233-L401">sensortest.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Sensor Test App
@@ -996,15 +955,13 @@ int main(int argc, FAR char *argv[]) {
   ...
   //  Allocate buffer for Sensor Data.
   //  len is Sensor Data size: sizeof(struct sensor_baro)
-  FAR char *buffer = calloc(1, len);
-</code></pre></div>
+  FAR char *buffer = calloc(1, len);</code></pre></div>
 <p>The app begins by allocating a buffer for the Sensor Data Struct: <strong>sensor_baro</strong> (Barometer) or <strong>sensor_humi</strong> (Humidity).</p>
 <p>Next we open the Sensor Device: <strong>/dev/uorb/sensor_baro0</strong> (Barometer) or <strong>/dev/uorb/sensor_humi0</strong> (Humidity)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Open the Sensor Device.
   //  devname looks like &quot;/dev/uorb/sensor_baro0&quot;
   int fd = open(devname, O_RDONLY | O_NONBLOCK);
-  if (fd &lt; 0) { /* Handle error */ ... }
-</code></pre></div>
+  if (fd &lt; 0) { /* Handle error */ ... }</code></pre></div>
 <p>We set the <a href="https://lupyuen.github.io/articles/bme280#standby-interval"><strong>Standby Interval</strong></a> and <strong>Batch Latency</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Set Standby Interval
   int ret = ioctl(fd, SNIOC_SET_INTERVAL, interval);
@@ -1012,14 +969,12 @@ int main(int argc, FAR char *argv[]) {
 
   //  Set Batch Latency
   ret = ioctl(fd, SNIOC_BATCH, latency);
-  if (ret &lt; 0) { /* Handle error */ ... }
-</code></pre></div>
+  if (ret &lt; 0) { /* Handle error */ ... }</code></pre></div>
 <p>We prepare to <strong>poll our sensor</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Prepare to poll the Sensor
   struct pollfd fds;
   fds.fd     = fd;
-  fds.events = POLLIN;
-</code></pre></div>
+  fds.events = POLLIN;</code></pre></div>
 <p>Then we <strong>poll, read and print the Sensor Data</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Repeat until all samples have been read
   while ((!count || received &lt; count) &amp;&amp; !g_should_exit) {
@@ -1036,21 +991,18 @@ int main(int argc, FAR char *argv[]) {
           .print(buffer, name);
       }
     }
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p>(We’ll see <strong>g_sensor_info</strong> and <strong>print</strong> in a while)</p>
 <p>Finally we <strong>close the sensor</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Close the Sensor Device and free the buffer
   close(fd);
-  free(buffer);
-</code></pre></div>
+  free(buffer);</code></pre></div>
 <p>Let’s talk about the printing of Sensor Data.</p>
 <h2 id="print-sensor-data"><a href="#print-sensor-data">7.1 Print Sensor Data</a></h2>
 <p>Earlier we saw this code for <strong>printing Sensor Data</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Print the Sensor Data
 g_sensor_info[idx]
-  .print(buffer, name);
-</code></pre></div>
+  .print(buffer, name);</code></pre></div>
 <p><em>What’s g_sensor_info?</em></p>
 <p><a href="https://github.com/lupyuen/nuttx-apps/blob/master/testing/sensortest/sensortest.c#L77-L110"><strong>g_sensor_info</strong></a> is a Lookup Table that defines the <strong>Print Function</strong> for every Sensor Type.</p>
 <p>(Remember that the Sensor Test App needs to handle all Sensor Types)</p>
@@ -1070,8 +1022,7 @@ static void print_valf2(const char *buffer, const char *name) {
     event-&gt;pressure, 
     event-&gt;temperature
   );
-}
-</code></pre></div>
+}</code></pre></div>
 <p>And here’s the Print Function for our <strong>Humidity Sensor</strong>: <a href="https://github.com/lupyuen/nuttx-apps/blob/master/testing/sensortest/sensortest.c#L139-L144">sensortest.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Print Humidity or Proximity Sensor Data
 static void print_valf(const char *buffer, const char *name) {
@@ -1088,14 +1039,12 @@ static void print_valf(const char *buffer, const char *name) {
     event-&gt;timestamp, 
     event-&gt;proximity
   );
-}
-</code></pre></div>
+}</code></pre></div>
 <p><em>But we’re printing Humidity, not Proximity… Why cast to sensor_prox?</em></p>
 <p>Yep we should cast to <strong>sensor_humi</strong> instead…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Cast buffer as Humidity Sensor Data
 struct sensor_humi *event = 
-  (struct sensor_humi *) buffer;
-</code></pre></div>
+  (struct sensor_humi *) buffer;</code></pre></div>
 <p>The Sensor Test App reuses the same function <strong>print_valf</strong> for printing both Humidity and Proximity Sensor Data. Which is OK because both structs contain the same field types.</p>
 <p><em>How is the Print Function defined for each Sensor Type?</em></p>
 <p>The Print Functions are defined in the Lookup Table <strong>g_sensor_info</strong>: <a href="https://github.com/lupyuen/nuttx-apps/blob/master/testing/sensortest/sensortest.c#L77-L110">sensortest.c</a></p>
@@ -1110,8 +1059,7 @@ static const struct sensor_info g_sensor_info[] = {
   //  Print Humidity Sensor Data with print_valf
   { print_valf,  
     sizeof(struct sensor_humi), 
-    &quot;humi&quot; },
-</code></pre></div>
+    &quot;humi&quot; },</code></pre></div>
 <p>For our own Sensor App we probably won’t need this Lookup Table, since we know which Sensor Type we’re using.</p>
 <p>(And we don’t need to cast our Sensor Data Structs too)</p>
 <p><img src="https://lupyuen.github.io/images/bme280-pot.jpg" alt="Connect BME280 to #RISCV PineCone #BL602 @PINE64 … Preferably not on a cooking pot 😂" /></p>
@@ -1208,8 +1156,7 @@ static int bme280_reg_read(const struct device *priv,
   msg[1].length    = size;
 
   //  Execute I2C transfers
-  ret = I2C_TRANSFER(priv-&gt;i2c, msg, 2);
-</code></pre></div>
+  ret = I2C_TRANSFER(priv-&gt;i2c, msg, 2);</code></pre></div>
 <p>This transmits the Register ID as I2C Sub Address, then receives the Register Value.</p>
 <h2 id="write-i2c-register"><a href="#write-i2c-register">10.2 Write I2C Register</a></h2>
 <p>When <strong>writing an I2C Register</strong>, we need two steps…</p>
@@ -1256,8 +1203,7 @@ static int bme280_reg_write(const struct device *priv, uint8_t reg,
   msg[1].length    = sizeof(rxbuffer);
 
   //  Execute I2C transfers
-  ret = I2C_TRANSFER(priv-&gt;i2c, msg, 2);
-</code></pre></div><h2 id="must-read-after-write"><a href="#must-read-after-write">10.3 Must Read After Write</a></h2>
+  ret = I2C_TRANSFER(priv-&gt;i2c, msg, 2);</code></pre></div><h2 id="must-read-after-write"><a href="#must-read-after-write">10.3 Must Read After Write</a></h2>
 <p><em>Why must we do I2C Read after sending the Register ID and value?</em></p>
 <p>We’re not sure why this happens with the BL602 I2C Driver. But it works correctly when we checked with a Logic Analyser.</p>
 <p>Here’s what happens when we run the code above to write <code>0xA0</code> to Register ID <code>0xF5</code> at I2C Address <code>0x77</code>…</p>
@@ -1265,14 +1211,12 @@ static int bme280_reg_write(const struct device *priv, uint8_t reg,
 0xF5 + ACK
 0xA0 + ACK
 Setup Read to [0xEF] + ACK
-0xA0 + NAK
-</code></pre></div>
+0xA0 + NAK</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/rusti2c-logic3a.png" alt="Write 0xA0 to Register 0xF4" /></p>
 <p>Which looks correct. There’s an extra I2C Read at the end, but it’s harmless.</p>
 <p><em>What if we write to the I2C Register without reading?</em></p>
 <p>The I2C Address is sent incorrectly (<code>0x02</code>) and the I2C Write gets truncated…</p>
-<div class="example-wrap"><pre class="language-text"><code>Setup Write to [0x02] + NAK
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>Setup Write to [0x02] + NAK</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/rusti2c-noread.png" alt="Write to I2C Register without reading" /></p>
 <p><em>What if we send the Register ID and Register Value as I2C Data (flags = 0) instead of I2C Sub Address?</em></p>
 <p>The Register ID and value are sent incorrectly as <code>0x00 0x00</code>…</p>
@@ -1281,8 +1225,7 @@ Setup Read to [0xEF] + ACK
 0x00 + ACK
 (...600 microseconds later...)
 Setup Read to [0xEF] + ACK
-0x00 + NAK
-</code></pre></div>
+0x00 + NAK</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/rusti2c-nosubaddr.png" alt="Send the Register ID and Register Value as I2C Data instead of I2C Sub Address" /></p>
 <p>Let’s try to make sense of this mysterious behaviour…</p>
 <h2 id="i2c-sub-address"><a href="#i2c-sub-address">10.4 I2C Sub Address</a></h2>
@@ -1325,8 +1268,7 @@ static void test_i2c_start_read(char *buf, int len, int argc, char **argv) {
 
   //  Start the I2C transfer and enable I2C interrupts
   gpstmsg = &amp;read_msg;
-  i2c_transfer_start(&amp;read_msg);
-</code></pre></div>
+  i2c_transfer_start(&amp;read_msg);</code></pre></div>
 <p>Note that this code executes <strong>only one I2C Transfer</strong>.</p>
 <p>(BL602 NuttX requires <strong>two I2C Transfers</strong>: One for Register ID, another for Register Value)</p>
 <p>From BL602 IoT SDK we see that each I2C Transfer is allowed to specify an <strong>I2C Sub Address on top of each I2C Read / Write Transfer</strong>.</p>
@@ -1372,8 +1314,7 @@ static int bl602_i2c_transfer(struct i2c_master_s *dev, struct i2c_msg_s *msgs, 
         }
 
       priv-&gt;msgid = i;
-      bl602_i2c_start_transfer(priv);
-</code></pre></div>
+      bl602_i2c_start_transfer(priv);</code></pre></div>
 <p>This driver code shows that each I2C Transfer is either…</p>
 <ol>
 <li>
@@ -1437,8 +1378,7 @@ static void bl602_i2c_config_para(struct bl602_i2c_priv_s *priv) {
       //  Set the I2C Sub Address
       putreg32(priv-&gt;subaddr, BL602_I2C_SUB_ADDR);
     }
-}
-</code></pre></div><h1 id="appendix-log-i2c-transfers"><a href="#appendix-log-i2c-transfers">11 Appendix: Log I2C Transfers</a></h1>
+}</code></pre></div><h1 id="appendix-log-i2c-transfers"><a href="#appendix-log-i2c-transfers">11 Appendix: Log I2C Transfers</a></h1>
 <p>Here’s how we modded the BL602 I2C Driver on NuttX to <strong>log the I2C transfers</strong>…</p>
 <p>For sending I2C data: <a href="https://github.com/lupyuen/nuttx/blob/master/arch/risc-v/src/bl602/bl602_i2c.c#L194-L197">bl602_i2c.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static void bl602_i2c_send_data(struct bl602_i2c_priv_s *priv)
@@ -1448,8 +1388,7 @@ static void bl602_i2c_config_para(struct bl602_i2c_priv_s *priv) {
   priv-&gt;bytes += count;
   //  Insert this
   i2cinfo(&quot;count=%d, temp=0x%x\n&quot;, count, temp);
-}
-</code></pre></div>
+}</code></pre></div>
 <p>For receiving I2C data: <a href="https://github.com/lupyuen/nuttx/blob/master/arch/risc-v/src/bl602/bl602_i2c.c#L207-L216">bl602_i2c.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static void bl602_i2c_recvdata(struct bl602_i2c_priv_s *priv)
 {
@@ -1457,8 +1396,7 @@ static void bl602_i2c_config_para(struct bl602_i2c_priv_s *priv) {
   count = msg-&gt;length - priv-&gt;bytes;
   temp  = getreg32(BL602_I2C_FIFO_RDATA);
   //  Insert this
-  i2cinfo(&quot;count=%d, temp=0x%x\n&quot;, count, temp);
-</code></pre></div>
+  i2cinfo(&quot;count=%d, temp=0x%x\n&quot;, count, temp);</code></pre></div>
 <p>For I2C transfers: <a href="https://github.com/lupyuen/nuttx/blob/master/arch/risc-v/src/bl602/bl602_i2c.c#L740-L742">bl602_i2c.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static int bl602_i2c_transfer(struct i2c_master_s *dev,
                               struct i2c_msg_s *   msgs,
@@ -1470,8 +1408,7 @@ static void bl602_i2c_config_para(struct bl602_i2c_priv_s *priv) {
       ...
       priv-&gt;msgid = i;
       //  Insert this before bl602_i2c_start_transfer
-      i2cinfo(&quot;subflag=%d, subaddr=0x%x, sublen=%d\n&quot;, priv-&gt;subflag, priv-&gt;subaddr, priv-&gt;sublen);
-</code></pre></div><h1 id="appendix-build-flash-and-run-nuttx"><a href="#appendix-build-flash-and-run-nuttx">12 Appendix: Build, Flash and Run NuttX</a></h1>
+      i2cinfo(&quot;subflag=%d, subaddr=0x%x, sublen=%d\n&quot;, priv-&gt;subflag, priv-&gt;subaddr, priv-&gt;sublen);</code></pre></div><h1 id="appendix-build-flash-and-run-nuttx"><a href="#appendix-build-flash-and-run-nuttx">12 Appendix: Build, Flash and Run NuttX</a></h1>
 <p><em>(For BL602, BL604 and ESP32)</em></p>
 <p>Below are the steps to build, flash and run NuttX on BL602, BL604 and ESP32.</p>
 <p>The instructions below will work on <strong>Linux (Ubuntu)</strong>, <strong>WSL (Ubuntu)</strong> and <strong>macOS</strong>.</p>
@@ -1482,8 +1419,7 @@ static void bl602_i2c_config_para(struct bl602_i2c_priv_s *priv) {
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
 git clone --recursive https://github.com/lupyuen/nuttx nuttx
-git clone --recursive https://github.com/lupyuen/nuttx-apps apps
-</code></pre></div>
+git clone --recursive https://github.com/lupyuen/nuttx-apps apps</code></pre></div>
 <p>Or if we prefer to <strong>add the BME280 Driver</strong> to our NuttX Project, follow these instructions…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/bme280-nuttx#install-driver"><strong>“Install BME280 Driver”</strong></a></li>
@@ -1500,19 +1436,18 @@ git clone --recursive https://github.com/lupyuen/nuttx-apps apps
 <p>Configure the build…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx
 
-## For BL602: Configure the build for BL602
+# For BL602: Configure the build for BL602
 ./tools/configure.sh bl602evb:nsh
 
-## For PineDio Stack BL604: Configure the build for BL604
+# For PineDio Stack BL604: Configure the build for BL604
 ./tools/configure.sh bl602evb:pinedio
 
-## For ESP32: Configure the build for ESP32.
-## TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
+# For ESP32: Configure the build for ESP32.
+# TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
 ./tools/configure.sh esp32-devkitc:nsh
 
-## Edit the Build Config
-make menuconfig 
-</code></pre></div></li>
+# Edit the Build Config
+make menuconfig </code></pre></div></li>
 <li>
 <p>Enable <strong>I2C0 Port</strong>…</p>
 <p><strong>For BL602 / BL604:</strong> Check the box for <strong>“System Type”</strong> → <strong>“BL602 Peripheral Support”</strong> → <strong>“I2C0”</strong></p>
@@ -1562,8 +1497,7 @@ I2C Informational Output
 Sensor Debug Features
 Sensor Error Output
 Sensor Warnings Output  
-Sensor Informational Output 
-</code></pre></div>
+Sensor Informational Output </code></pre></div>
 <p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
 </li>
 <li>
@@ -1576,22 +1510,19 @@ Sensor Informational Output
 <ol>
 <li>
 <p>To build NuttX, enter this command…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div></li>
 <li>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>LD: nuttx
 CP: nuttx.hex
-CP: nuttx.bin
-</code></pre></div>
+CP: nuttx.bin</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/8f725c278c25e209c1654469a2855746">(See the complete log for BL602 / BL604)</a></p>
 </li>
 <li>
 <p><strong>For WSL:</strong> Copy the <strong>NuttX Firmware</strong> to the <strong>c:\blflash</strong> directory in the Windows File System…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  /mnt/c/blflash refers to c:\blflash in Windows
+<div class="example-wrap"><pre class="language-bash"><code>#  /mnt/c/blflash refers to c:\blflash in Windows
 mkdir /mnt/c/blflash
-cp nuttx.bin /mnt/c/blflash
-</code></pre></div>
+cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p>For WSL we need to run <strong>blflash</strong> under plain old Windows CMD (not WSL) because it needs to access the COM port.</p>
 </li>
 <li>
@@ -1664,19 +1595,18 @@ cp nuttx.bin /mnt/c/blflash
 </li>
 </ol>
 <p>Enter these commands to flash <strong>nuttx.bin</strong> to BL602 / BL604 over UART…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## For Linux: Change &quot;/dev/ttyUSB0&quot; to the BL602 / BL604 Serial Port
+<div class="example-wrap"><pre class="language-bash"><code># For Linux: Change &quot;/dev/ttyUSB0&quot; to the BL602 / BL604 Serial Port
 blflash flash nuttx.bin \
   --port /dev/ttyUSB0 
 
-## For macOS: Change &quot;/dev/tty.usbserial-1410&quot; to the BL602 / BL604 Serial Port
+# For macOS: Change &quot;/dev/tty.usbserial-1410&quot; to the BL602 / BL604 Serial Port
 blflash flash nuttx.bin \
   --port /dev/tty.usbserial-1410 \
   --initial-baud-rate 230400 \
   --baud-rate 230400
 
-## For Windows: Change &quot;COM5&quot; to the BL602 / BL604 Serial Port
-blflash flash c:\blflash\nuttx.bin --port COM5
-</code></pre></div>
+# For Windows: Change &quot;COM5&quot; to the BL602 / BL604 Serial Port
+blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
 <p>For WSL: Do this under plain old Windows CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
 <p><a href="https://github.com/apache/nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
@@ -1684,8 +1614,7 @@ blflash flash c:\blflash\nuttx.bin --port COM5
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
 <h2 id="run-nuttx"><a href="#run-nuttx">12.5 Run NuttX</a></h2>
 <p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
-<div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>
 <p><strong>For BL602 / BL604:</strong> Set BL602 / BL604 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
 <p><strong>For PineDio Stack BL604:</strong></p>
@@ -1725,15 +1654,13 @@ blflash flash c:\blflash\nuttx.bin --port COM5
 </ol>
 <p>After restarting, connect to BL602 / BL604’s UART Port at 2 Mbps like so…</p>
 <p><strong>For Linux:</strong></p>
-<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000</code></pre></div>
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p>Press Enter to reveal the <strong>NuttX Shell</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
-nsh&gt;
-</code></pre></div>
+nsh&gt;</code></pre></div>
 <p>Congratulations NuttX is now running on BL602 / BL604!</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(More details on connecting to BL602 / BL604)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
