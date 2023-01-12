@@ -127,8 +127,8 @@
 </li>
 <li>
 <p>Download the new branches of our <strong><code>nuttx</code></strong> and <strong><code>apps</code></strong> repositories…</p>
-<div class="example-wrap"><pre class="language-bash"><code># Download the &quot;gic&quot; branch of &quot;lupyuen2/wip-pinephone-nuttx&quot;
-# TODO: Change the branch name and repo URLs
+<div class="example-wrap"><pre class="language-bash"><code>## Download the &quot;gic&quot; branch of &quot;lupyuen2/wip-pinephone-nuttx&quot;
+## TODO: Change the branch name and repo URLs
 mkdir nuttx
 cd nuttx
 git clone \
@@ -138,7 +138,8 @@ git clone \
 git clone \
   --branch gic \
   https://github.com/lupyuen2/wip-pinephone-nuttx-apps \
-  apps</code></pre></div></li>
+  apps
+</code></pre></div></li>
 </ol>
 <h1 id="build-and-test"><a href="#build-and-test">2 Build and Test</a></h1>
 <p>We’re ready to code!</p>
@@ -170,7 +171,8 @@ git clone \
 <p>Sometimes the <strong>GitHub Actions Workflow</strong> will fail with a strange error (like below). Just re-run the failed jobs. <a href="https://lupyuen.github.io/images/pr-rerun.png">(Like this)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>Error response from daemon:
 login attempt to https://ghcr.io/v2/
-failed with status: 503 Service Unavailable&quot;</code></pre></div></li>
+failed with status: 503 Service Unavailable&quot;
+</code></pre></div></li>
 </ol>
 <h2 id="regression-test"><a href="#regression-test">2.1 Regression Test</a></h2>
 <p><em>Will our modified code break other parts of NuttX?</em></p>
@@ -180,10 +182,12 @@ failed with status: 503 Service Unavailable&quot;</code></pre></div></li>
 <li><a href="https://github.com/apache/nuttx/pull/7630"><strong>“arch/arm64: Add support for Generic Interrupt Controller Version 2”</strong></a></li>
 </ul>
 <p>We tested with <a href="https://www.qemu.org/docs/master/system/target-arm.html"><strong>QEMU Emulator</strong></a> our <strong>new implementation</strong> of Generic Interrupt Controller v2…</p>
-<div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh qemu-armv8a:nsh_gicv2 ; make ; qemu-system-aarch64 ...</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh qemu-armv8a:nsh_gicv2 ; make ; qemu-system-aarch64 ...
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/7537da777d728a22ab379b1ef234a2d1">(See the NuttX QEMU Log)</a></p>
 <p>And for Regression Testing we tested the <strong>existing implementation</strong> of Generic Interrupt Controller v3…</p>
-<div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh qemu-armv8a:nsh ; make ; qemu-system-aarch64 ...</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh qemu-armv8a:nsh ; make ; qemu-system-aarch64 ...
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/dec66bc348092a998772b32993e5ed65">(See the NuttX QEMU Log)</a></p>
 <p>Remember to capture the <strong>Output Log</strong>, we’ll add it to our Pull Request.</p>
 <p>(Yeah it will be hard to run a Regression Test if it requires hardware that we don’t have)</p>
@@ -210,16 +214,17 @@ failed with status: 503 Service Unavailable&quot;</code></pre></div></li>
 <li><a href="https://nuttx.apache.org/docs/latest/contributing/coding_style.html"><strong>“NuttX C Coding Standard”</strong></a></li>
 </ul>
 <p>NuttX provides a tool <strong><code>nxstyle</code></strong> that will check the Coding Style of our source files…</p>
-<div class="example-wrap"><pre class="language-bash"><code># Compile nxstyle
-# TODO: Change &quot;$HOME/nuttx&quot; to our NuttX Project Folder
+<div class="example-wrap"><pre class="language-bash"><code>## Compile nxstyle
+## TODO: Change &quot;$HOME/nuttx&quot; to our NuttX Project Folder
 gcc -o $HOME/nxstyle $HOME/nuttx/nuttx/tools/nxstyle.c
 
-# Check coding style for our modified source files
-# TODO: Change the file paths
+## Check coding style for our modified source files
+## TODO: Change the file paths
 $HOME/nxstyle $HOME/nuttx/nuttx/arch/arm64/Kconfig
 $HOME/nxstyle $HOME/nuttx/nuttx/arch/arm64/src/common/Make.defs
 $HOME/nxstyle $HOME/nuttx/nuttx/arch/arm64/src/common/arm64_gic.h
-$HOME/nxstyle $HOME/nuttx/nuttx/arch/arm64/src/common/arm64_gicv2.c</code></pre></div>
+$HOME/nxstyle $HOME/nuttx/nuttx/arch/arm64/src/common/arm64_gicv2.c
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/tools/nxstyle.c">(<code>nxstyle.c</code> is here)</a></p>
 <p><a href="https://gist.github.com/lupyuen/5e2fba642a33bf64d3378df3795042d7">(How I run <code>nxstyle</code> in my <strong>Build Script</strong>)</a></p>
 <p><em>Will <code>nxstyle</code> check Kconfig and Makefiles?</em></p>
@@ -231,7 +236,8 @@ $HOME/nxstyle $HOME/nuttx/nuttx/arch/arm64/src/common/arm64_gicv2.c</code></pre>
 - Mixed case identifier found
 - Operator/assignment must be followed/preceded with whitespace
 - Upper case hex constant found
-- #include outside of &#39;Included Files&#39; section</code></pre></div>
+- #include outside of &#39;Included Files&#39; section
+</code></pre></div>
 <p>We modify our code so that this…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Initialize GIC. Called by CPU0 only.
 int arm64_gic_initialize(void) {
@@ -245,7 +251,8 @@ int arm64_gic_initialize(void) {
   // CPU-generic initialization for GIC
   arm_gic_initialize();
   return 0;
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c#L717-L743">(Source)</a></p>
 <p>Becomes this…</p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
@@ -284,15 +291,18 @@ int arm64_gic_initialize(void)
   arm_gic_initialize();
 
   return 0;
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_gicv2.c#L1325-L1363">(Source)</a></p>
 <p>If we see this…</p>
-<div class="example-wrap"><pre class="language-text"><code>/* */ not balanced</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>/* */ not balanced
+</code></pre></div>
 <p>Check that our stars “<strong><code>*</code></strong>” are aligned (heh)…</p>
 <div class="example-wrap"><pre class="language-text"><code>/******************************
  * Name: missing_asterisk_below
  *
- *****************************/</code></pre></div>
+ *****************************/
+</code></pre></div>
 <p>After fixing, <strong>test our code</strong> one last time.</p>
 <h1 id="write-the-pull-request"><a href="#write-the-pull-request">4 Write the Pull Request</a></h1>
 <p>Our Pull Request will have…</p>
@@ -425,10 +435,12 @@ int arm64_gic_initialize(void)
 - Fixing Build
 - Build OK!
 - Oops fixing bug
-- Tested OK yay!</code></pre></div>
+- Tested OK yay!
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/commits/pinephone/arch/arm64/src/qemu/qemu_serial.c">(Source)</a></p>
 <p>So we always <strong>Squash the Commits</strong> into One Single Commit (to help future maintainers)…</p>
-<div class="example-wrap"><pre class="language-text"><code>- arch/arm64: Add support for Generic Interrupt Controller Version 2</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>- arch/arm64: Add support for Generic Interrupt Controller Version 2
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/pull/7630/commits">(Source)</a></p>
 <p><em>How do we squash the commits?</em></p>
 <p>We’ll use <a href="https://desktop.github.com/"><strong>GitHub Desktop</strong></a> (because I’m terrible with the Git Command Line)…</p>
@@ -453,10 +465,12 @@ int arm64_gic_initialize(void)
 </li>
 <li>
 <p>Copy the <strong>Title</strong> of our Pull Request and paste into the <strong>Title Box</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>arch/arm64: Add support for Generic Interrupt Controller Version 2</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>arch/arm64: Add support for Generic Interrupt Controller Version 2
+</code></pre></div>
 <p>Copy the <strong>Summary</strong> of our Pull Request and paste into the <strong>Description Box</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>This PR adds support for GIC Version 2.
-- `boards/arm64/qemu/qemu-armv8a/configs/nsh_gicv2/defconfig`: Added the Board Configuration</code></pre></div>
+- `boards/arm64/qemu/qemu-armv8a/configs/nsh_gicv2/defconfig`: Added the Board Configuration
+</code></pre></div>
 <p>Click “<strong>Squash Commits</strong>”</p>
 <p><img src="https://lupyuen.github.io/images/pr-squash2.png" alt="Squash Commits with GitHub Desktop" /></p>
 </li>

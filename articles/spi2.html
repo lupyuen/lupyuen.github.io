@@ -243,7 +243,8 @@ register_driver(
   devpath, 
   &amp;g_spi_test_driver_fops, 
   0666, 
-  priv);</code></pre></div>
+  priv);
+</code></pre></div>
 <p><strong>spi_test_driver_register()</strong> and <strong>register_driver()</strong> are called during NuttX Startup, as explained here…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/spi2#register-device-driver"><strong>“Register Device Driver”</strong></a></li>
@@ -266,7 +267,8 @@ register_driver(
 <p>The <strong>Receive Buffer</strong> is defined like so: <a href="https://github.com/lupyuen/nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L99-L101">spi_test_driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static char recv_buffer[256];  /* Buffer for SPI response */
 
-static int recv_buffer_len = 0;  /* Length of SPI response */</code></pre></div>
+static int recv_buffer_len = 0;  /* Length of SPI response */
+</code></pre></div>
 <p>Let’s dive into the write() and read() operations.</p>
 <h2 id="write-operation"><a href="#write-operation">2.2 Write Operation</a></h2>
 <p>In the write() operation for our SPI Test Driver, we…</p>
@@ -304,25 +306,29 @@ static ssize_t spi_test_driver_write(
   FAR struct inode *inode = filep-&gt;f_inode;
   DEBUGASSERT(inode != NULL);
   FAR struct spi_test_driver_dev_s *priv = inode-&gt;i_private;
-  DEBUGASSERT(priv != NULL);</code></pre></div>
+  DEBUGASSERT(priv != NULL);
+</code></pre></div>
 <p>We begin by fetching the <a href="https://lupyuen.github.io/articles/spi2#appendix-nuttx-spi-interface"><strong>SPI Interface</strong></a> from the File Struct.</p>
 <p>Next we <strong>lock the SPI Bus</strong> and <strong>configure the SPI Interface</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Lock the SPI bus and configure the SPI interface */
 
   DEBUGASSERT(priv-&gt;spi != NULL);
   SPI_LOCK(priv-&gt;spi, true);
-  spi_test_driver_configspi(priv-&gt;spi);</code></pre></div>
+  spi_test_driver_configspi(priv-&gt;spi);
+</code></pre></div>
 <p>(We’ll see <strong>spi_test_driver_configspi</strong> in a while)</p>
 <p>We <strong>select the SPI Device</strong> by pulling SPI Chip Select to Low…</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Select the SPI device (unused for BL602) */
 
-  SPI_SELECT(priv-&gt;spi, priv-&gt;spidev, true);</code></pre></div>
+  SPI_SELECT(priv-&gt;spi, priv-&gt;spidev, true);
+</code></pre></div>
 <p>(This has no effect on BL602. The SPI Hardware automatically sets Chip Select to Low during SPI transfer)</p>
 <p>Then we <strong>transfer the data</strong> over SPI (transmit and receive)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Transmit buffer to SPI device and receive the response */
 
   SPI_EXCHANGE(priv-&gt;spi, buffer, recv_buffer, buflen);
-  recv_buffer_len = buflen;</code></pre></div>
+  recv_buffer_len = buflen;
+</code></pre></div>
 <p>Note that the received data goes into our <strong>Receive Buffer</strong>.</p>
 <p>(Which will be returned in the read() operation)</p>
 <p>Finally we <strong>deselect the device</strong> and <strong>unlock the bus</strong>…</p>
@@ -335,7 +341,8 @@ static ssize_t spi_test_driver_write(
   SPI_LOCK(priv-&gt;spi, false);
 
   return buflen;
-}</code></pre></div>
+}
+</code></pre></div>
 <p>The return value is the number of bytes transferred.</p>
 <p>(Deselect has no effect on BL602. The SPI Hardware automatically sets Chip Select to High after SPI transfer)</p>
 <p><em>What are SPI_LOCK, SPI_SELECT and SPI_EXCHANGE?</em></p>
@@ -365,7 +372,8 @@ static ssize_t spi_test_driver_read(
   /* Return the number of bytes read */
 
   return recv_buffer_len;
-}</code></pre></div><h2 id="configure-spi"><a href="#configure-spi">2.4 Configure SPI</a></h2>
+}
+</code></pre></div><h2 id="configure-spi"><a href="#configure-spi">2.4 Configure SPI</a></h2>
 <p>Earlier we called <strong>spi_test_driver_configspi</strong> to configure the SPI Interface.</p>
 <p>Below is the implementation: <a href="https://github.com/lupyuen/nuttx/blob/spi_test/drivers/rf/spi_test_driver.c#L107-L129">spi_test_driver.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static inline void spi_test_driver_configspi(FAR struct spi_dev_s *spi)
@@ -381,7 +389,8 @@ static ssize_t spi_test_driver_read(
 
   SPI_HWFEATURES(spi, 0);
   SPI_SETFREQUENCY(spi, CONFIG_SPI_TEST_DRIVER_SPI_FREQUENCY);
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/spi2#appendix-nuttx-spi-interface">(SPI_SETMODE, SPI_SETBITS, SPI_HWFEATURES and SPI_SETFREQUENCY are defined in the NuttX SPI Interface)</a></p>
 <p>The code above configures the SPI Interface as follows…</p>
 <ul>
@@ -412,7 +421,8 @@ static ssize_t spi_test_driver_read(
 #define SPI_TEST_DRIVER_SPI_MODE (SPIDEV_MODE1) /* SPI Mode 1: Workaround for BL602 */
 #else
 #define SPI_TEST_DRIVER_SPI_MODE (SPIDEV_MODE0) /* SPI Mode 0: CPOL=0,CPHA=0 */
-#endif /* CONFIG_BL602_SPI0 */</code></pre></div>
+#endif /* CONFIG_BL602_SPI0 */
+</code></pre></div>
 <p>BL602 uses <strong>SPI Mode 1</strong> (instead of Mode 0) because of an <strong>SPI Mode Quirk</strong> in BL602. </p>
 <p><a href="https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk">(More about the SPI Mode Quirk)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-newdriver4.png" alt="Register SPI Test Driver at startup" /></p>
@@ -442,7 +452,8 @@ static ssize_t spi_test_driver_read(
       _err(&quot;ERROR: Failed to register SPI Test Driver\n&quot;);
     }
 
-#endif /* CONFIG_RF_SPI_TEST_DRIVER */</code></pre></div>
+#endif /* CONFIG_RF_SPI_TEST_DRIVER */
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L367-L620"><strong>bl602_bringup</strong></a> is the NuttX Startup Function for BL602.</p>
 <p>(<a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426"><strong>esp32_bringup</strong></a> for ESP32)</p>
 <p>We modified the Startup Function to <strong>register our SPI Test Driver</strong>, which loads the driver into NuttX at startup.</p>
@@ -457,25 +468,27 @@ static ssize_t spi_test_driver_read(
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
 git clone --branch spi_test https://github.com/lupyuen/nuttx nuttx
-git clone --branch spi_test https://github.com/lupyuen/nuttx-apps apps</code></pre></div>
+git clone --branch spi_test https://github.com/lupyuen/nuttx-apps apps
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features">(<strong>For PineDio Stack BL604:</strong> The SPI Test Driver is already preinstalled)</a></p>
 </li>
 <li>
 <p>Configure the build…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx
 
-# For BL602: Configure the build for BL602
+## For BL602: Configure the build for BL602
 ./tools/configure.sh bl602evb:nsh
 
-# For PineDio Stack BL604: Configure the build for BL604
+## For PineDio Stack BL604: Configure the build for BL604
 ./tools/configure.sh bl602evb:pinedio
 
-# For ESP32: Configure the build for ESP32.
-# TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
+## For ESP32: Configure the build for ESP32.
+## TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
 ./tools/configure.sh esp32-devkitc:nsh
 
-# Edit the Build Config
-make menuconfig </code></pre></div></li>
+## Edit the Build Config
+make menuconfig 
+</code></pre></div></li>
 <li>
 <p>Enable the SPI Peripheral and SPI Character Driver in menuconfig…</p>
 <p><a href="https://lupyuen.github.io/articles/spi2#enable-spi"><strong>“Enable SPI”</strong></a></p>
@@ -504,7 +517,8 @@ make menuconfig </code></pre></div></li>
 </li>
 <li>
 <p>In the NuttX Shell, enter…</p>
-<div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>ls /dev
+</code></pre></div>
 <p>Our SPI Test Driver appears as <strong>“/dev/spitest0”</strong></p>
 <p><img src="https://lupyuen.github.io/images/spi2-newdriver10.png" alt="Our SPI Test Driver appears as “/dev/spitest0”" /></p>
 <p>Congratulations NuttX has loaded our Device Driver!</p>
@@ -545,7 +559,8 @@ make menuconfig </code></pre></div></li>
   /* Open SPI Test Driver */
 
   int fd = open(&quot;/dev/spitest0&quot;, O_RDWR);
-  assert(fd &gt;= 0);  /* TODO: Handle error */</code></pre></div>
+  assert(fd &gt;= 0);  /* TODO: Handle error */
+</code></pre></div>
 <p>(Yep this looks very Linux-like!)</p>
 <p><strong>open()</strong> returns a <strong>File Descriptor</strong> that we’ll use to transmit and receive data over SPI.</p>
 <h2 id="transmit-spi-data"><a href="#transmit-spi-data">4.2 Transmit SPI Data</a></h2>
@@ -555,7 +570,8 @@ make menuconfig </code></pre></div></li>
 
   static char data[] = &quot;Hello World&quot;;
   int bytes_written = write(fd, data, sizeof(data));
-  assert(bytes_written == sizeof(data));</code></pre></div>
+  assert(bytes_written == sizeof(data));
+</code></pre></div>
 <p>This transmits the string <strong>“Hello World”</strong> to our SPI Device.</p>
 <p>(Including the terminating null character)</p>
 <h2 id="receive-spi-data"><a href="#receive-spi-data">4.3 Receive SPI Data</a></h2>
@@ -565,7 +581,8 @@ make menuconfig </code></pre></div></li>
 
   static char rx_data[256];  /* Buffer for SPI response */
   int bytes_read = read(fd, rx_data, sizeof(rx_data));
-  assert(bytes_read == sizeof(get_status));</code></pre></div>
+  assert(bytes_read == sizeof(get_status));
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L65-L69">(Source)</a></p>
 <p>This code isn’t in our SPI Test App, we’ll see this later when we test with Semtech SX1262.</p>
 <h2 id="close-spi-test-driver"><a href="#close-spi-test-driver">4.4 Close SPI Test Driver</a></h2>
@@ -574,7 +591,8 @@ make menuconfig </code></pre></div></li>
 
   close(fd);
   return 0;
-}</code></pre></div>
+}
+</code></pre></div>
 <p>Let’s run our SPI Test App!</p>
 <p><img src="https://lupyuen.github.io/images/spi2-app4.png" alt="SPI Test App" /></p>
 <p><a href="https://github.com/lupyuen/nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c">(Source)</a></p>
@@ -588,7 +606,8 @@ make menuconfig </code></pre></div></li>
 </li>
 <li>
 <p>Edit the build configuration…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>make menuconfig
+</code></pre></div></li>
 <li>
 <p>Enable our SPI Test App in menuconfig…</p>
 <p><a href="https://lupyuen.github.io/articles/spi2#enable-app"><strong>“Enable App”</strong></a></p>
@@ -604,7 +623,8 @@ make menuconfig </code></pre></div></li>
 </li>
 <li>
 <p>In the NuttX Shell, enter…</p>
-<div class="example-wrap"><pre class="language-bash"><code>spi_test</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>spi_test
+</code></pre></div></li>
 <li>
 <p>We should see every byte transmitted and received over SPI.</p>
 <p>(Thanks to SPI Logging!)</p>
@@ -631,7 +651,8 @@ make menuconfig </code></pre></div></li>
 <div class="example-wrap"><pre class="language-c"><code>#define BOARD_SPI_CS   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN2)
 #define BOARD_SPI_MOSI (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN1)
 #define BOARD_SPI_MISO (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN0)
-#define BOARD_SPI_CLK  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN3)</code></pre></div>
+#define BOARD_SPI_CLK  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN3)
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/expander#pin-functions">(Which pins can be used? See this)</a></p>
 <p><strong>For ESP32:</strong> SPI Pins are defined in <a href="https://github.com/lupyuen/nuttx/blob/spi_test/arch/xtensa/src/esp32/Kconfig#L799-L817">Kconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>config ESP32_SPI2_CSPIN
@@ -652,7 +673,8 @@ config ESP32_SPI2_MOSIPIN
 config ESP32_SPI2_MISOPIN
 	int &quot;SPI2 MISO Pin&quot;
 	default 12
-	range 0 39</code></pre></div>
+	range 0 39
+</code></pre></div>
 <p>When we run <strong>“spi_test”</strong>, we see this in our Logic Analyser…</p>
 <p><img src="https://lupyuen.github.io/images/spi2-logic2.png" alt="Running spi_test and observing the Logic Analyser" /></p>
 <p>This looks OK! Though MISO is idle because it’s not connected to an SPI Device.</p>
@@ -680,19 +702,22 @@ config ESP32_SPI2_MISOPIN
 <div class="example-wrap"><pre class="language-c"><code>/* Open GPIO Output for SPI Chip Select */
 
 int cs = open(&quot;/dev/gpout1&quot;, O_RDWR);
-assert(cs &gt;= 0);  /* TODO: Handle error */</code></pre></div>
+assert(cs &gt;= 0);  /* TODO: Handle error */
+</code></pre></div>
 <p>(Renamed to <strong>/dev/gpio1</strong> as of Dec 2021)</p>
 <p>This is new: We open the GPIO Output device <strong>“/dev/gpout1”</strong> for the SPI Chip Select Pin.</p>
 <p>Next we <strong>open our SPI Test Driver</strong> as before…</p>
 <div class="example-wrap"><pre class="language-c"><code>/* Open SPI Test Driver */
 
 int fd = open(&quot;/dev/spitest0&quot;, O_RDWR);
-assert(fd &gt;= 0);</code></pre></div>
+assert(fd &gt;= 0);
+</code></pre></div>
 <p>Then we set our <strong>GPIO Output / Chip Select</strong> to Low by calling <strong>ioctl()</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>/* Set SPI Chip Select to Low */
 
 int ret = ioctl(cs, GPIOC_WRITE, 0);
-assert(ret &gt;= 0);</code></pre></div>
+assert(ret &gt;= 0);
+</code></pre></div>
 <p>Now that the SPI Device is active, we can <strong>transmit and receive</strong> our SPI data…</p>
 <div class="example-wrap"><pre class="language-c"><code>/* Transmit command to SX1262: Get Status */
 
@@ -704,7 +729,8 @@ assert(bytes_written == sizeof(get_status));
 
 static char rx_data[256];  /* Buffer for SPI response */
 int bytes_read = read(fd, rx_data, sizeof(rx_data));
-assert(bytes_read == sizeof(get_status));</code></pre></div>
+assert(bytes_read == sizeof(get_status));
+</code></pre></div>
 <p>(We’ll explain <strong>get_status</strong> in the next section)</p>
 <p>Finally we set our <strong>GPIO Output / Chip Select</strong> to High… </p>
 <div class="example-wrap"><pre class="language-c"><code>/* Set SPI Chip Select to High */
@@ -715,7 +741,8 @@ assert(ret &gt;= 0);
 /* Close SPI Test Driver and GPIO Output */
 
 close(fd);
-close(cs);</code></pre></div>
+close(cs);
+</code></pre></div>
 <p>And close the SPI Test Driver and GPIO Output.</p>
 <p>Let’s watch SPI Test App #2 in action with Semtech SX1262.</p>
 <p><a href="https://lupyuen.github.io/articles/nuttx#gpio-demo">(More about GPIO Output)</a></p>
@@ -729,16 +756,20 @@ close(cs);</code></pre></div>
 <ul>
 <li>
 <p><strong>Get Status:</strong> We transmit this sequence of bytes to SX1262…</p>
-<div class="example-wrap"><pre class="language-text"><code>C0 00</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>C0 00
+</code></pre></div>
 <p>We expect the SPI Response to look like this…</p>
-<div class="example-wrap"><pre class="language-text"><code>A2 22</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>A2 22
+</code></pre></div>
 <p>(The response might get muddled, we’ll learn why in a while)</p>
 </li>
 <li>
 <p><strong>Read Register 0x08:</strong>  We transmit this sequence of bytes to SX1262…</p>
-<div class="example-wrap"><pre class="language-text"><code>1D 00 08 00 00</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>1D 00 08 00 00
+</code></pre></div>
 <p>We expect the SPI Response to end with <strong><code>0x80</code></strong> like this…</p>
-<div class="example-wrap"><pre class="language-text"><code>A2 A2 A2 A2 80</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>A2 A2 A2 A2 80
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lorawan#troubleshoot-lorawan">(Register <code>0x08</code> is expected to have value <code>0x80</code> at startup)</a></p>
 </li>
 </ul>
@@ -757,7 +788,8 @@ assert(bytes_read == sizeof(get_status));
 
 /* Show the received status */
 
-printf(&quot;\nSX1262 Status is %d\n&quot;, (rx_data[1] &gt;&gt; 4) &amp; 0b111);  /* Bits 6:4 */</code></pre></div>
+printf(&quot;\nSX1262 Status is %d\n&quot;, (rx_data[1] &gt;&gt; 4) &amp; 0b111);  /* Bits 6:4 */
+</code></pre></div>
 <p>And the <strong>“Read Register 0x08”</strong> command with this code: <a href="https://github.com/lupyuen/nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L94-L117">spi_test2_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Transmit command to SX1262: Read Register 8 */
 
@@ -772,7 +804,8 @@ assert(bytes_read == sizeof(read_reg));
 
 /* Show the received register value */
 
-printf(&quot;\nSX1262 Register 8 is 0x%02x\n&quot;, rx_data[4]);</code></pre></div>
+printf(&quot;\nSX1262 Register 8 is 0x%02x\n&quot;, rx_data[4]);
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c">(See the complete program)</a></p>
 <p><img src="https://lupyuen.github.io/images/spi2-sx6.png" alt="Transmit command to SX1262: Read Register 0x08" /></p>
 <h2 id="connect-sx1262"><a href="#connect-sx1262">8.1 Connect SX1262</a></h2>
@@ -796,7 +829,8 @@ printf(&quot;\nSX1262 Register 8 is 0x%02x\n&quot;, rx_data[4]);</code></pre></d
 <p><strong>For BL602:</strong> GPIO Output Pin is defined as <strong>GPIO 11</strong> in <a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L48-L49">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define BOARD_GPIO_OUT1 \
   (GPIO_OUTPUT | GPIO_FLOAT | \
-  GPIO_FUNC_SWGPIO | GPIO_PIN11)</code></pre></div>
+  GPIO_FUNC_SWGPIO | GPIO_PIN11)
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/nuttx#configure-pins">(More about this)</a></p>
 <p><strong>For ESP32:</strong> GPIO Output Pin depends on our ESP32 Board (and may be customised)…</p>
 <p>ESP32-DevKitC defines <strong>GPIO 15</strong> as the default GPIO Output Pin: <a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c#L43-L67">esp32_gpio.c</a></p>
@@ -811,15 +845,18 @@ printf(&quot;\nSX1262 Register 8 is 0x%02x\n&quot;, rx_data[4]);</code></pre></d
 /* Interrupt pins.  GPIO22 is used as an example, any other inputs could be
  * used.
  */
-#define GPIO_IRQPIN1  22</code></pre></div>
+#define GPIO_IRQPIN1  22
+</code></pre></div>
 <p>ESP32-WROVER-KIT uses <strong>GPIO 16</strong> for GPIO Output: <a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/xtensa/esp32/esp32-wrover-kit/src/esp32_gpio.c#L43-L67">esp32_gpio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define GPIO_OUT1    16
 #define GPIO_IN1     17
-#define GPIO_IRQPIN1 22</code></pre></div>
+#define GPIO_IRQPIN1 22
+</code></pre></div>
 <p>TTGO-LoRa-ESP32 uses <strong>GPIO 15</strong> for GPIO Output: <a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/xtensa/esp32/ttgo_lora_esp32/src/esp32_gpio.c#L43-L67">esp32_gpio.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define GPIO_OUT1    15
 #define GPIO_IN1     18
-#define GPIO_IRQPIN1 22</code></pre></div><h2 id="test-sx1262"><a href="#test-sx1262">8.2 Test SX1262</a></h2>
+#define GPIO_IRQPIN1 22
+</code></pre></div><h2 id="test-sx1262"><a href="#test-sx1262">8.2 Test SX1262</a></h2>
 <p>Follow these steps to run our SPI Test App #2 on BL602 or ESP32…</p>
 <ol>
 <li>
@@ -828,7 +865,8 @@ printf(&quot;\nSX1262 Register 8 is 0x%02x\n&quot;, rx_data[4]);</code></pre></d
 </li>
 <li>
 <p>Edit the build configuration…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>make menuconfig
+</code></pre></div></li>
 <li>
 <p>Enable the GPIO Driver…</p>
 <p><a href="https://lupyuen.github.io/articles/nuttx#enable-gpio-driver"><strong>“Enable GPIO Driver”</strong></a></p>
@@ -853,21 +891,24 @@ printf(&quot;\nSX1262 Register 8 is 0x%02x\n&quot;, rx_data[4]);</code></pre></d
 </li>
 <li>
 <p>In the NuttX Shell, enter…</p>
-<div class="example-wrap"><pre class="language-text"><code>spi_test2</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>spi_test2
+</code></pre></div>
 <p>(Pic below)</p>
 </li>
 <li>
 <p>We should see the output from the <strong>“Get Status”</strong> command…</p>
 <div class="example-wrap"><pre class="language-text"><code>Get Status: received
   8a 8a
-SX1262 Status is 0</code></pre></div>
+SX1262 Status is 0
+</code></pre></div>
 <p>(This output is not quite correct, we’ll explain why in the next section)</p>
 </li>
 <li>
 <p>And the output from the <strong>“Read Register 0x08”</strong> command…</p>
 <div class="example-wrap"><pre class="language-text"><code>Read Register 8: received
   a8 a8 a8 a8 80
-SX1262 Register 8 is 0x80</code></pre></div>
+SX1262 Register 8 is 0x80
+</code></pre></div>
 <p>The value of Register 0x08 is correct: <strong><code>0x80</code></strong></p>
 <p>Yep our NuttX App is working OK with SX1262!</p>
 </li>
@@ -920,7 +961,8 @@ SX1262 Register 8 is 0x80</code></pre></div>
 #define BOARD_SPI_CS   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN8)  /* Unused */
 #define BOARD_SPI_MOSI (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN13)
 #define BOARD_SPI_MISO (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN0)
-#define BOARD_SPI_CLK  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN11)</code></pre></div>
+#define BOARD_SPI_CLK  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN11)
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/expander#pin-functions">(Which pins can be used? See this)</a></p>
 <p>(Remember that GPIO Output <strong>BOARD_GPIO_OUT1</strong> becomes our Chip Select)</p>
 <p>Today we won’t use <strong>BOARD_GPIO_IN1</strong> (Busy Pin) and <strong>BOARD_GPIO_INT1</strong> (DIO1).</p>
@@ -943,21 +985,24 @@ SX1262 Register 8 is 0x80</code></pre></div>
 </li>
 <li>
 <p>In the NuttX Shell, enter…</p>
-<div class="example-wrap"><pre class="language-text"><code>spi_test2</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>spi_test2
+</code></pre></div>
 <p>(Pic below)</p>
 </li>
 <li>
 <p>We should see the output from the <strong>“Get Status”</strong> command…</p>
 <div class="example-wrap"><pre class="language-text"><code>Get Status: received
   a2 22
-SX1262 Status is 2</code></pre></div>
+SX1262 Status is 2
+</code></pre></div>
 <p>(This looks different from the BL602 output, we’ll explain why in a while)</p>
 </li>
 <li>
 <p>And the output from the <strong>“Read Register 0x08”</strong> command…</p>
 <div class="example-wrap"><pre class="language-text"><code>Read Register 8: received
   a2 a2 a2 a2 80
-SX1262 Register 8 is 0x80</code></pre></div>
+SX1262 Register 8 is 0x80
+</code></pre></div>
 <p>The value of Register 0x08 is correct: <strong><code>0x80</code></strong></p>
 <p>Our SPI Test App #2 runs OK on PineDio Stack BL604 with onboard SX1262! 🎉</p>
 <p><a href="https://github.com/lupyuen/lora-sx1262#read-registers">(The results are consistent with SX1262 tested on Linux with SPI Mode 0)</a></p>
@@ -969,12 +1014,14 @@ SX1262 Register 8 is 0x80</code></pre></div>
 <p>On PineCone BL602 we configure <strong>GPIO Output (Chip Select)</strong> like this…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define BOARD_GPIO_OUT1 \
   (GPIO_OUTPUT | GPIO_FLOAT | \
-  GPIO_FUNC_SWGPIO | GPIO_PIN11)</code></pre></div>
+  GPIO_FUNC_SWGPIO | GPIO_PIN11)
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/risc-v/bl602/bl602evb/include/board.h#L48-L49">(Source)</a></p>
 <p>On PineDio Stack BL604 we do this…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define BOARD_GPIO_OUT1 \
   (GPIO_OUTPUT | GPIO_PULLUP | \
-  GPIO_FUNC_SWGPIO | GPIO_PIN15)</code></pre></div>
+  GPIO_FUNC_SWGPIO | GPIO_PIN15)
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L47-L50">(Source)</a></p>
 <p>See the difference? PineCone BL602 configures the GPIO Output (Chip Select) as <strong>GPIO_FLOAT</strong>, whereas BL604 configures it as <strong>GPIO_PULLUP</strong>.</p>
 <p>With <strong>GPIO_FLOAT</strong>, Chip Select defaults to the <strong>Low State</strong> at startup.</p>
@@ -1049,7 +1096,8 @@ SX1262 Register 8 is 0x80</code></pre></div>
 <ol>
 <li>
 <p>Enter this command to configure the NuttX Build…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make menuconfig</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>make menuconfig
+</code></pre></div></li>
 <li>
 <p>Select <strong>“System Type”</strong> → <strong>“BL602 Peripheral Support”</strong> </p>
 </li>
@@ -1064,7 +1112,8 @@ SX1262 Register 8 is 0x80</code></pre></div>
 </li>
 <li>
 <p>Rebuild NuttX…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>make
+</code></pre></div></li>
 </ol>
 <p>Many thanks to <a href="https://github.com/apache/nuttx/pull/7229"><strong>Brennan Ashton</strong></a> for the implementation of DMA on BL602!</p>
 <h1 id="appendix-create-a-nuttx-device-driver"><a href="#appendix-create-a-nuttx-device-driver">13 Appendix: Create a NuttX Device Driver</a></h1>
@@ -1113,7 +1162,8 @@ SX1262 Register 8 is 0x80</code></pre></div>
   CSRCS += spi_test_driver.c
   RFDEPPATH = --dep-path rf
   RFVPATH = :rf
-endif</code></pre></div>
+endif
+</code></pre></div>
 <p>As shown below…</p>
 <p><img src="https://lupyuen.github.io/images/spi2-newdriver9.png" alt="Update “Make.defs”" /></p>
 <p><a href="https://github.com/lupyuen/nuttx/blob/newdriver/drivers/rf/Make.defs#L33-L37">(Source)</a></p>
@@ -1126,37 +1176,39 @@ endif</code></pre></div>
     default n
     select SPI
     ---help---
-        Enable SPI Test Driver.</code></pre></div>
+        Enable SPI Test Driver.
+</code></pre></div>
 <p>As shown below…</p>
 <p><img src="https://lupyuen.github.io/images/spi2-newdriver5.png" alt="Update “Kconfig”" /></p>
 <p><a href="https://github.com/lupyuen/nuttx/blob/newdriver/drivers/rf/Kconfig#L22-L27">(Source)</a></p>
 </li>
 <li>
 <p>Enter the following…</p>
-<div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the path of our &quot;nuttx&quot; folder
+<div class="example-wrap"><pre class="language-bash"><code>## TODO: Change this to the path of our &quot;nuttx&quot; folder
 cd nuttx/nuttx
 
-# Preserve the Build Config
+## Preserve the Build Config
 cp .config ../config
 
-# Erase the Build Config
+## Erase the Build Config
 make distclean
 
-# For BL602: Configure the build for BL602
+## For BL602: Configure the build for BL602
 ./tools/configure.sh bl602evb:nsh
 
-# For PineDio Stack BL604: Configure the build for BL604
+## For PineDio Stack BL604: Configure the build for BL604
 ./tools/configure.sh bl602evb:pinedio
 
-# For ESP32: Configure the build for ESP32.
-# TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
+## For ESP32: Configure the build for ESP32.
+## TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
 ./tools/configure.sh esp32-devkitc:nsh
 
-# Restore the Build Config
+## Restore the Build Config
 cp ../config .config
 
-# Edit the Build Config
-make menuconfig </code></pre></div></li>
+## Edit the Build Config
+make menuconfig 
+</code></pre></div></li>
 </ol>
 <h2 id="enable-spi"><a href="#enable-spi">13.2 Enable SPI</a></h2>
 <p>We enable SPI and our Device Driver as follows…</p>
@@ -1203,11 +1255,13 @@ GPIO Informational Output
 SPI Debug Features
 SPI Error Output
 SPI Warnings Output
-SPI Informational Output</code></pre></div>
+SPI Informational Output
+</code></pre></div>
 <p><strong>For LoRaWAN:</strong> Uncheck the following…</p>
 <div class="example-wrap"><pre class="language-text"><code>Enable Informational Debug Output
 GPIO Informational Output
-SPI Informational Output</code></pre></div></li>
+SPI Informational Output
+</code></pre></div></li>
 <li>
 <p>Hit <strong>“Save”</strong> then <strong>“OK”</strong> to save the NuttX Configuration to <strong>“.config”</strong></p>
 <p><a href="https://gist.github.com/lupyuen/93b553fdfcfa0221ccd6276706e72caf">(Here’s the .config for BL602)</a></p>
@@ -1272,7 +1326,8 @@ int bl602_bringup(void)
   /* End of inserted code */
 
   return ret;
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/newdriver/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L599-L617">(Source)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx/commit/4cae36747314bacb49ff0bba3632fbb8136f3f66#diff-387529ed7b85b38e4e96d58de6cab8a83e706c26c97e9fc71db5ea5ff20be297">(See the changes)</a></p>
 <p><strong>For ESP32:</strong> Edit the function <a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c#L118-L426"><strong>esp32_bringup()</strong></a> and insert the code above. Change <strong>“bl602_spibus_initialize(0)”</strong> to <strong>“esp32_spibus_initialize(2)”</strong>. <a href="https://github.com/lupyuen/nuttx/blob/spi_test/boards/xtensa/esp32/common/src/esp32_board_spidev.c#L47-L72">(Like this)</a></p>
@@ -1288,7 +1343,8 @@ int bl602_bringup(void)
 </li>
 <li>
 <p>In the NuttX Shell, enter…</p>
-<div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>ls /dev
+</code></pre></div>
 <p>Our Device Driver appears as <strong>“/dev/spitest0”</strong>.</p>
 <p>Congratulations our Device Driver is now running on NuttX!</p>
 <p><img src="https://lupyuen.github.io/images/spi2-newdriver10.png" alt="Our Device Driver appears as “/dev/spitest0”" /></p>
@@ -1345,30 +1401,31 @@ int bl602_bringup(void)
 </li>
 <li>
 <p>Enter the following…</p>
-<div class="example-wrap"><pre class="language-bash"><code># TODO: Change this to the path of our &quot;nuttx&quot; folder
+<div class="example-wrap"><pre class="language-bash"><code>## TODO: Change this to the path of our &quot;nuttx&quot; folder
 cd nuttx/nuttx
 
-# Preserve the Build Config
+## Preserve the Build Config
 cp .config ../config
 
-# Erase the Build Config
+## Erase the Build Config
 make distclean
 
-# For BL602: Configure the build for BL602
+## For BL602: Configure the build for BL602
 ./tools/configure.sh bl602evb:nsh
 
-# For PineDio Stack BL604: Configure the build for BL604
+## For PineDio Stack BL604: Configure the build for BL604
 ./tools/configure.sh bl602evb:pinedio
 
-# For ESP32: Configure the build for ESP32.
-# TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
+## For ESP32: Configure the build for ESP32.
+## TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
 ./tools/configure.sh esp32-devkitc:nsh
 
-# Restore the Build Config
+## Restore the Build Config
 cp ../config .config
 
-# Edit the Build Config
-make menuconfig </code></pre></div>
+## Edit the Build Config
+make menuconfig 
+</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/spi2-newapp4.jpg" alt="Select “spi_test” in menuconfig" /></p>
 </li>
 </ol>
@@ -1397,7 +1454,8 @@ make menuconfig </code></pre></div>
 </li>
 <li>
 <p>In the NuttX Shell, enter…</p>
-<div class="example-wrap"><pre class="language-bash"><code>spi_test</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>spi_test
+</code></pre></div></li>
 <li>
 <p>We should see the output below.</p>
 <p>Congratulations we have created the <strong>“spi_test”</strong> app!</p>
@@ -1423,19 +1481,22 @@ make menuconfig </code></pre></div>
 </li>
 <li>
 <p>Build NuttX…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>make
+</code></pre></div></li>
 <li>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>LD: nuttx
 CP: nuttx.hex
-CP: nuttx.bin</code></pre></div>
+CP: nuttx.bin
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/8f725c278c25e209c1654469a2855746">(See the complete log for BL602)</a></p>
 </li>
 <li>
 <p><strong>For WSL:</strong> Copy the <strong>NuttX Firmware</strong> to the <strong>c:\blflash</strong> directory in the Windows File System…</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  /mnt/c/blflash refers to c:\blflash in Windows
+<div class="example-wrap"><pre class="language-bash"><code>##  /mnt/c/blflash refers to c:\blflash in Windows
 mkdir /mnt/c/blflash
-cp nuttx.bin /mnt/c/blflash</code></pre></div>
+cp nuttx.bin /mnt/c/blflash
+</code></pre></div>
 <p>For WSL we need to run <strong>blflash</strong> under plain old Windows CMD (not WSL) because it needs to access the COM port.</p>
 </li>
 <li>
@@ -1508,18 +1569,19 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 </li>
 </ol>
 <p>Enter these commands to flash <strong>nuttx.bin</strong> to BL602 / BL604 over UART…</p>
-<div class="example-wrap"><pre class="language-bash"><code># For Linux: Change &quot;/dev/ttyUSB0&quot; to the BL602 / BL604 Serial Port
+<div class="example-wrap"><pre class="language-bash"><code>## For Linux: Change &quot;/dev/ttyUSB0&quot; to the BL602 / BL604 Serial Port
 blflash flash nuttx.bin \
   --port /dev/ttyUSB0 
 
-# For macOS: Change &quot;/dev/tty.usbserial-1410&quot; to the BL602 / BL604 Serial Port
+## For macOS: Change &quot;/dev/tty.usbserial-1410&quot; to the BL602 / BL604 Serial Port
 blflash flash nuttx.bin \
   --port /dev/tty.usbserial-1410 \
   --initial-baud-rate 230400 \
   --baud-rate 230400
 
-# For Windows: Change &quot;COM5&quot; to the BL602 / BL604 Serial Port
-blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
+## For Windows: Change &quot;COM5&quot; to the BL602 / BL604 Serial Port
+blflash flash c:\blflash\nuttx.bin --port COM5
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
 <p>For WSL: Do this under plain old Windows CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
 <p><a href="https://github.com/apache/nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
@@ -1527,7 +1589,8 @@ blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
 <h2 id="run-nuttx"><a href="#run-nuttx">15.3 Run NuttX</a></h2>
 <p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
-<div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0
+</code></pre></div>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>
 <p><strong>For BL602:</strong> Set BL602 / BL604 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
 <p><strong>For PineDio Stack BL604:</strong></p>
@@ -1567,13 +1630,15 @@ blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 </ol>
 <p>After restarting, connect to BL602 / BL604’s UART Port at 2 Mbps like so…</p>
 <p><strong>For Linux:</strong></p>
-<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000
+</code></pre></div>
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p>Press Enter to reveal the <strong>NuttX Shell</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
-nsh&gt;</code></pre></div>
+nsh&gt;
+</code></pre></div>
 <p>Congratulations NuttX is now running on BL602 / BL604!</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(More details on connecting to BL602 / BL604)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
@@ -1652,10 +1717,12 @@ static ssize_t spi_test_driver_write(
 
   /* Transfer data to SPI interface */
 
-  SPI_EXCHANGE(priv-&gt;spi, buffer, recv_buffer, buflen);</code></pre></div>
+  SPI_EXCHANGE(priv-&gt;spi, buffer, recv_buffer, buflen);
+</code></pre></div>
 <p><strong>SPI_EXCHANGE</strong> is defined in the SPI Interface as…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define SPI_EXCHANGE(d,t,r,l) \
-  ((d)-&gt;ops-&gt;exchange(d,t,r,l))</code></pre></div>
+  ((d)-&gt;ops-&gt;exchange(d,t,r,l))
+</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/spi/spi.h#L372-L395">(Source)</a></p>
 <p>Which maps to <a href="https://github.com/lupyuen/nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L932-L967"><strong>bl602_spi_exchange</strong></a> for BL602…</p>
 <div class="example-wrap"><pre class="language-c"><code>static void bl602_spi_exchange(
@@ -1663,7 +1730,8 @@ static ssize_t spi_test_driver_write(
   const void *txbuffer, 
   void *rxbuffer,
   size_t nwords) {
-  ...</code></pre></div>
+  ...
+</code></pre></div>
 <p>(Or <a href="https://github.com/lupyuen/nuttx/blob/spi_test/arch/xtensa/src/esp32/esp32_spi.c#L1132-L1174"><strong>esp32_spi_exchange</strong></a> for ESP32)</p>
 <p>Note that the SPI Interface requires an <strong>SPI Device</strong> (spi_dev_s) to be passed in.</p>
 <p>Which is available to NuttX Device Drivers.</p>
@@ -1675,7 +1743,8 @@ static ssize_t spi_test_driver_write(
 <p><a href="https://github.com/lupyuen/nuttx/blob/master/arch/risc-v/src/bl602/bl602_spi.c#L932-L967">(Source)</a></p>
 <h2 id="file-descriptor"><a href="#file-descriptor">16.2 File Descriptor</a></h2>
 <p>In a NuttX App we may open the SPI Port <strong>“/dev/spi0”</strong> to get a <strong>File Descriptor</strong>…</p>
-<div class="example-wrap"><pre class="language-c"><code>int fd = open(&quot;/dev/spi0&quot;, O_RDWR);</code></pre></div>
+<div class="example-wrap"><pre class="language-c"><code>int fd = open(&quot;/dev/spi0&quot;, O_RDWR);
+</code></pre></div>
 <p><em>How is the File Descriptor linked to the SPI Device (spi_dev_s)?</em></p>
 <p>Well we use the File Descriptor to execute <strong>File Operations</strong>: read(), write(), ioctl(), …</p>
 <p>Tracing through the NuttX <strong>Virtual File System</strong>, we see that ioctl() maps the File Descriptor to a <strong>File Struct</strong>…</p>
@@ -1726,7 +1795,8 @@ static ssize_t spi_test_driver_write(
 #define BOARD_SPI_CS   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN2)
 #define BOARD_SPI_MOSI (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN1)
 #define BOARD_SPI_MISO (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN0)
-#define BOARD_SPI_CLK  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN3)</code></pre></div>
+#define BOARD_SPI_CLK  (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI | GPIO_PIN3)
+</code></pre></div>
 <p>This says that <strong>MISO</strong> is GPIO 0, <strong>MOSI</strong> is GPIO 1.</p>
 <p>This is consistent with the <strong>Pin Description Table</strong> from <a href="https://github.com/bouffalolab/bl_docs/tree/main/BL602_RM/en"><strong>BL602 Reference Manual</strong></a> (Version 1.2, 17 Dec 2020, page 26)</p>
 <p><img src="https://lupyuen.github.io/images/spi2-driver6.png" alt="Pin Description from BL602 Reference Manual" /></p>
@@ -1742,7 +1812,8 @@ static ssize_t spi_test_driver_write(
   /* Transmit buffer to SPI device and receive the response */
 
   SPI_EXCHANGE(priv-&gt;spi, buffer, recv_buffer, buflen);
-  recv_buffer_len = buflen;</code></pre></div>
+  recv_buffer_len = buflen;
+</code></pre></div>
 <p>Which is called by an <strong>SPI Test App</strong>: <a href="https://github.com/lupyuen/nuttx-apps/blob/spi_test/examples/spi_test/spi_test_main.c">spi_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>int main(int argc, FAR char *argv[])
 {
@@ -1755,7 +1826,8 @@ static ssize_t spi_test_driver_write(
 
   static char data[] = &quot;Hello World&quot;;
   int bytes_written = write(fd, data, sizeof(data));
-  assert(bytes_written == sizeof(data));</code></pre></div>
+  assert(bytes_written == sizeof(data));
+</code></pre></div>
 <p>We connect a <strong>Logic Analyser</strong> to PineCone BL602 and verify the SPI output…</p>
 <div><table><thead><tr><th style="text-align: center">Logic Analyser</th><th style="text-align: center">BL602 Pin</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong>MOSI</strong></td><td style="text-align: center">GPIO 1</td></tr>
@@ -1792,7 +1864,8 @@ BL_Err_Type GLB_Swap_SPI_0_MOSI_With_MISO(BL_Fun_Type newState)
     BL_WR_REG(GLB_BASE,GLB_PARM,tmpVal);
 
     return SUCCESS;
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/components/bl602/bl602_std/bl602_std/StdDriver/Src/bl602_glb.c#L1281-L1298">(Source)</a></p>
 <p>This function swaps MISO and MOSI by setting the GLB Hardware Register <strong>GLB_PARM</strong> at bit <strong>GLB_REG_SPI_0_SWAP</strong>.</p>
 <p>For NuttX we propose to port this function as <a href="https://github.com/lupyuen/nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104"><strong>bl602_swap_spi_0_mosi_with_miso()</strong></a> in <a href="https://github.com/lupyuen/nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104">arch/risc-v/src/bl602/bl602_spi.c</a></p>
@@ -1820,7 +1893,8 @@ static void bl602_swap_spi_0_mosi_with_miso(uint8_t swap)
     {
       modifyreg32(BL602_GLB_GLB_PARM, GLB_PARM_REG_SPI_0_SWAP, 0);
     }
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1080-L1104">(Source)</a></p>
 <p>The function above will be called by <a href="https://github.com/lupyuen/nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1106-L1141"><strong>bl602_spi_init()</strong></a> in <a href="https://github.com/lupyuen/nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1106-L1141">arch/risc-v/src/bl602/bl602_spi.c</a> to swap MISO and MOSI during startup…</p>
 <div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
@@ -1857,7 +1931,8 @@ static void bl602_spi_init(struct spi_dev_s *dev)
 
   /* swap MOSI with MISO to be consistent with BL602 Reference Manual */
 
-  bl602_swap_spi_0_mosi_with_miso(1);</code></pre></div>
+  bl602_swap_spi_0_mosi_with_miso(1);
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/spi_test/arch/risc-v/src/bl602/bl602_spi.c#L1106-L1141">(Source)</a></p>
 <h2 id="test-the-fix"><a href="#test-the-fix">17.3 Test the fix</a></h2>
 <p>After applying the fix, we see that the <strong>MOSI output is now correct</strong>…</p>
@@ -1890,9 +1965,11 @@ static void bl602_spi_init(struct spi_dev_s *dev)
 #define SPI_TEST_DRIVER_SPI_MODE (SPIDEV_MODE1) /* SPI Mode 1: Workaround for BL602 */
 #else
 #define SPI_TEST_DRIVER_SPI_MODE (SPIDEV_MODE0) /* SPI Mode 0: CPOL=0,CPHA=0 */
-#endif /* CONFIG_BL602_SPI0 */</code></pre></div>
+#endif /* CONFIG_BL602_SPI0 */
+</code></pre></div>
 <p>Let’s watch what happens if we use <strong>SPI Mode 0</strong> (instead of Mode 1) when BL602 talks to Semtech SX1262…</p>
-<div class="example-wrap"><pre class="language-c"><code>#define SPI_TEST_DRIVER_SPI_MODE (SPIDEV_MODE0) /* SPI Mode 0: CPOL=0,CPHA=0 */</code></pre></div>
+<div class="example-wrap"><pre class="language-c"><code>#define SPI_TEST_DRIVER_SPI_MODE (SPIDEV_MODE0) /* SPI Mode 0: CPOL=0,CPHA=0 */
+</code></pre></div>
 <p>We run <a href="https://github.com/lupyuen/nuttx-apps/blob/spi_test/examples/spi_test2/spi_test2_main.c#L94-L117">spi_test2_main.c</a> to <strong>Read Register <code>0x08</code></strong> from SX1262 over SPI…</p>
 <div class="example-wrap"><pre class="language-c"><code>/* Transmit command to SX1262: Read Register 8 */
 
@@ -1907,17 +1984,20 @@ assert(bytes_read == sizeof(read_reg));
 
 /* Show the received register value */
 
-printf(&quot;\nSX1262 Register 8 is 0x%02x\n&quot;, rx_data[4]);</code></pre></div>
+printf(&quot;\nSX1262 Register 8 is 0x%02x\n&quot;, rx_data[4]);
+</code></pre></div>
 <p>We expect the value of Register <code>0x08</code> to be <strong>0x80</strong>.</p>
 <p>With SPI Mode 0, the register value received over SPI is <strong>incorrect</strong> (<code>0x5A</code>)…</p>
 <div class="example-wrap"><pre class="language-text"><code>Read Register 8: received
   a8 a8 00 43 5a
-SX1262 Register 8 is 0x5a</code></pre></div>
+SX1262 Register 8 is 0x5a
+</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/spi2-sx2.png" alt="SPI Mode 0: Register 8 is incorrect" /></p>
 <p>When we switch to SPI Mode 1, we get the correct value: <strong>0x80</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Read Register 8: received
   a8 a8 a8 a8 80
-SX1262 Register 8 is 0x80</code></pre></div>
+SX1262 Register 8 is 0x80
+</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/spi2-sx.png" alt="SPI Mode 1: Register 8 is correct" /></p>
 <p>This SPI Mode Quirk has been observed on <strong>BL602 IoT SDK</strong> when tested with…</p>
 <ul>

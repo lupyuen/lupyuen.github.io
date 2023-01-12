@@ -160,7 +160,8 @@ Entered eflash_loader
 Erase flash addr: 10000 size: 346432
 Program flash... 
 Program done 4s 82KiB/s
-Success</code></pre></div>
+Success
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/releases/tag/release-2022-01-25">(Source)</a></p>
 <p>We see that blflash sends the <strong>EFlash Loader</strong> to BL602, followed by the <strong>Flashing Image</strong>.</p>
 <p>(Which gets written to BL602’s Embedded Flash by EFlash Loader)</p>
@@ -201,11 +202,12 @@ Success</code></pre></div>
 </li>
 <li>
 <p>Launch Ghidra…</p>
-<div class="example-wrap"><pre class="language-bash"><code># For Linux and macOS
+<div class="example-wrap"><pre class="language-bash"><code>## For Linux and macOS
 ./ghidraRun
 
-# For Windows
-ghidraRun.bat</code></pre></div></li>
+## For Windows
+ghidraRun.bat
+</code></pre></div></li>
 <li>
 <p>The <strong>Ghidra Help Window</strong> appears, with plenty of useful info that’s not available elsewhere.</p>
 <p>Minimise the Ghidra Help Window for now.</p>
@@ -312,7 +314,8 @@ void entry(void) {
   start_load();
 
   //  Run the EFlash Loader
-  main();</code></pre></div>
+  main();
+</code></pre></div>
 <p>Aha we found the Main function! Double-click on <strong>“main”</strong>.</p>
 <p>The Decompile Pane jumps to the <strong>Main Function</strong>: <a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L2803-L2863">eflash_loader.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Main Function for EFlash Loader
@@ -331,7 +334,8 @@ int main(void) {
   SFlash_Qspi_Enable(...);
   ...
   //  Run the EFlash Loader
-  bflb_eflash_loader_main();</code></pre></div>
+  bflb_eflash_loader_main();
+</code></pre></div>
 <p>The Decompiled Main Function is surprisingly readable (pic below). Kudos to the Ghidra Team!</p>
 <p>This code suggests that all the exciting action happens inside <strong>bflb_eflash_loader_main</strong>. Which we’ll examine in a while.</p>
 <p><img src="https://lupyuen.github.io/images/loader-code.png" alt="Main Function" /></p>
@@ -386,7 +390,8 @@ NextCommand:
 
     } while (...);
   }
-}</code></pre></div>
+}
+</code></pre></div>
 <p>The code above calls <strong>bflb_eflash_loader_cmd_process</strong> to execute the Flashing Command received over UART (from the Firmware Flasher).</p>
 <p>Let’s find out how it executes Flashing Commands.</p>
 <p><img src="https://lupyuen.github.io/images/loader-code2.png" alt="Main Loop" /></p>
@@ -406,7 +411,8 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
     //  Execute the Flashing Command
     ret = (*eflash_loader_cmds[i].cmd_process)();
     return ret;
-  }</code></pre></div>
+  }
+</code></pre></div>
 <p>Interesting! We see that EFlash Loader has a list of Flashing Commands: <strong>eflash_loader_cmds</strong>.</p>
 <p>The code above looks up <strong>eflash_loader_cmds</strong> for the Flashing Command (by Command ID).  And executes the command by calling <strong>cmd_process</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/loader-code3.png" alt="Execute Flashing Command" /></p>
@@ -546,7 +552,8 @@ int32_t bflb_eflash_loader_cmd_process(uint8_t cmdid, uint8_t *data, uint16_t le
 <p><a href="https://github.com/lupyuen/bl602-eflash-loader">(Source)</a></p>
 <h1 id="flash-program"><a href="#flash-program">8 Flash Program</a></h1>
 <p>In the <strong>Symbol Tree Pane</strong> (left centre), enter this into the <strong>Filter Box</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>bflb_eflash_loader_cmd_write_flash</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>bflb_eflash_loader_cmd_write_flash
+</code></pre></div>
 <p>Double-click on the function <strong>bflb_eflash_loader_cmd_write_flash</strong>.</p>
 <p>This is the decompiled Flashing Command that <strong>writes the Flashing Image</strong> (received via UART) to Embedded Flash: <a href="https://github.com/lupyuen/bl602-eflash-loader/blob/main/eflash_loader.c#L3258-L3300">eflash_loader.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Flashing Command that writes Flashing Image to Embedded Flash
@@ -556,7 +563,8 @@ int32_t bflb_eflash_loader_cmd_write_flash(uint16_t cmd,uint8_t *data,uint16_t l
   bflb_spi_flash_program(...);
 
   //  Return result to Firmware Flasher
-  bflb_eflash_loader_cmd_ack(...);</code></pre></div>
+  bflb_eflash_loader_cmd_ack(...);
+</code></pre></div>
 <p>The code above calls <strong>bflb_spi_flash_program</strong> to write the Flashing Image to the Embedded Flash.</p>
 <p>Let’s look inside the function…</p>
 <p><img src="https://lupyuen.github.io/images/loader-code4.png" alt="Flashing Command that writes Flashing Image to Embedded Flash" /></p>
@@ -567,7 +575,8 @@ int32_t bflb_eflash_loader_cmd_write_flash(uint16_t cmd,uint8_t *data,uint16_t l
 int32_t bflb_spi_flash_program(uint32_t addr,uint8_t *data,uint32_t len) {
   
   //  Call BL602 ROM to write to Embedded Flash
-  SFlash_Program(...);</code></pre></div>
+  SFlash_Program(...);
+</code></pre></div>
 <p>This function calls <strong>SFlash_Program</strong> to write to Embedded Flash.</p>
 <p><strong>SFlash_Program</strong> is defined in the <strong>BL602 ROM</strong>…</p>
 <ul>

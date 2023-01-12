@@ -189,10 +189,12 @@ if sensorData then
   print(sensorData.t)
 else
   print(&quot;Failed to get sensor data&quot;)
-end</code></pre></div>
+end
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L328-L335">(Source)</a></p>
 <p>We should see the <strong>Temperature Sensor Data</strong> fetched from The Things Network…</p>
-<div class="example-wrap"><pre class="language-text"><code>Temperature: 1236</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>Temperature: 1236
+</code></pre></div>
 <p>(This means <code>12.36</code> ºC, our values have been scaled up by 100 times)</p>
 <p>Let’s study the code inside our <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L22-L77"><strong>getSensorData</strong></a> function.</p>
 <h2 id="define-constants"><a href="#define-constants">2.1 Define Constants</a></h2>
@@ -208,31 +210,36 @@ local TTN_APPLICATION_ID = &quot;YOUR_APPLICATION_ID&quot;
 local TTN_API_KEY = &quot;YOUR_API_KEY&quot;
 
 -- TODO: Change this to your region-specific URL for The Things Network
-local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications/&quot; .. TTN_APPLICATION_ID .. &quot;/packages/storage/uplink_message?limit=1&amp;order=-received_at&quot;</code></pre></div>
+local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications/&quot; .. TTN_APPLICATION_ID .. &quot;/packages/storage/uplink_message?limit=1&amp;order=-received_at&quot;
+</code></pre></div>
 <p>(“<code>..</code>” in Lua means concatenate the strings)</p>
 <p>Our URL for The Things Network (<strong>TTN_URL</strong>) looks like…</p>
 <div class="example-wrap"><pre class="language-uri"><code>https://au1.cloud.thethings.network/api/v3/as/
   applications/YOUR_APPLICATION_ID/
   packages/storage/uplink_message
-  ?limit=1&amp;order=-received_at</code></pre></div>
+  ?limit=1&amp;order=-received_at
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/roblox#appendix-the-things-network-settings">(More about these settings in the Appendix)</a></p>
 <p>Note that we enable <strong>Type Checking</strong> at the top…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Enable type checking
---!strict</code></pre></div>
+--!strict
+</code></pre></div>
 <p>This is super helpful for catching incorrect parameters passed to function calls.</p>
 <p>Click <strong>View → Script Analysis</strong> to see the warnings.</p>
 <p><a href="https://lupyuen.github.io/articles/roblox#notes">(Ignore the two warnings for “Argument count mismatch”)</a></p>
 <h2 id="import-modules"><a href="#import-modules">2.2 Import Modules</a></h2>
 <p>Next we get the <strong>HttpService</strong> from Roblox…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Get the HttpService for making HTTP Requests
-local HttpService = game:GetService(&quot;HttpService&quot;)</code></pre></div>
+local HttpService = game:GetService(&quot;HttpService&quot;)
+</code></pre></div>
 <p><strong>HTTP Requests must be enabled</strong> in Roblox…</p>
 <p>Click <strong>Home → Game Settings → Security → Allow HTTP Requests</strong></p>
 <p>We import the <strong>ModuleScripts</strong> that will be called to decode our Sensor Data…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Load the Base64 and CBOR ModuleScripts from ServerStorage
 local ServerStorage = game:GetService(&quot;ServerStorage&quot;)
 local base64 = require(ServerStorage.Base64)
-local cbor   = require(ServerStorage.Cbor)</code></pre></div>
+local cbor   = require(ServerStorage.Cbor)
+</code></pre></div>
 <p>We’ll talk about Base64 and CBOR in a while.</p>
 <p><a href="https://education.roblox.com/en-us/resources/intro-to-module-scripts">(More about Roblox ModuleScripts)</a></p>
 <h2 id="send-http-request"><a href="#send-http-request">2.3 Send HTTP Request</a></h2>
@@ -248,7 +255,8 @@ local function getSensorData()
   -- Message Payload after Base64 Decoding
   local payload = nil
   -- Lua Table of Sensor Data after CBOR Decoding
-  local sensorData = nil</code></pre></div>
+  local sensorData = nil
+</code></pre></div>
 <ul>
 <li>
 <p><strong>response</strong>: Contains the HTTP Response (JSON format) returned by The Things Network</p>
@@ -270,14 +278,16 @@ local function getSensorData()
 <div class="example-wrap"><pre class="language-lua"><code>  -- Set the API Key in the HTTP Request Header	
   local headers = {
     [&quot;Authorization&quot;] = &quot;Bearer &quot; .. TTN_API_KEY,
-  }</code></pre></div>
+  }
+</code></pre></div>
 <p>(“<code>..</code>” in Lua means concatenate the strings)</p>
 <p>Then we <strong>fetch the URL</strong> (via HTTP GET), passing the API Key in the headers…</p>
 <div class="example-wrap"><pre class="language-lua"><code>  -- Wrap with pcall in case something goes wrong
   pcall(function ()
 
     -- Fetch the data from The Things Network, no caching
-    response = HttpService:GetAsync(TTN_URL, false, headers)</code></pre></div>
+    response = HttpService:GetAsync(TTN_URL, false, headers)
+</code></pre></div>
 <p><a href="https://developer.roblox.com/en-us/api-reference/function/HttpService/GetAsync">(GetAsync is documented here)</a></p>
 <p><em>What is “pcall”?</em></p>
 <p>We wrap our code with <strong>“pcall”</strong> to catch any errors returned by the HTTP Fetching. </p>
@@ -290,13 +300,15 @@ local function getSensorData()
 <p>Now we <strong>decode the HTTP Response</strong> (JSON format) from The Things Network.</p>
 <p>First we <strong>parse the JSON</strong> returned by The Things Network…</p>
 <div class="example-wrap"><pre class="language-lua"><code>    -- Decode the JSON response into a Lua Table
-    data = HttpService:JSONDecode(response)</code></pre></div>
+    data = HttpService:JSONDecode(response)
+</code></pre></div>
 <p><a href="https://developer.roblox.com/en-us/api-reference/function/HttpService/JSONDecode">(JSONDecode is documented here)</a></p>
 <p>This returns a <strong>Lua Table</strong> that contains the JSON Fields.</p>
 <p>(See the pic above)</p>
 <p>As shown in the pic, we need to <strong>extract the Encoded Sensor Data</strong> from the field: <strong>result → uplink_message → frm_payload</strong></p>
 <div class="example-wrap"><pre class="language-lua"><code>    -- Get the Message Payload. If missing, pcall will catch the error.
-    frmPayload = data.result.uplink_message.frm_payload</code></pre></div>
+    frmPayload = data.result.uplink_message.frm_payload
+</code></pre></div>
 <p><strong>frmPayload</strong> contains the Sensor Data encoded with Base64 and CBOR.</p>
 <p>(Looks like gibberish: “<code>omF0GQTUYWwZCSs=</code>”)</p>
 <p>We call the Base64 and CBOR ModuleScripts to <strong>decode the Sensor Data</strong>…</p>
@@ -307,13 +319,15 @@ local function getSensorData()
     sensorData = cbor.decode(payload)
 
   -- End of pcall block
-  end)</code></pre></div>
+  end)
+</code></pre></div>
 <p>(More about Base64 and CBOR in a while)</p>
 <p><strong>sensorData</strong> now contains meaningful Sensor Data in a Lua Table…</p>
 <div class="example-wrap"><pre class="language-lua"><code>{
   [&quot;l&quot;] = 2347,
   [&quot;t&quot;] = 1236
-}</code></pre></div>
+}
+</code></pre></div>
 <p>Above are the values recorded by our <strong>Light Sensor</strong> and <strong>Temperature Sensor</strong>, scaled up by 100 times.</p>
 <p>Note that our <strong>“pcall” block</strong> ends here. So we check the errors next.</p>
 <h2 id="check-errors"><a href="#check-errors">2.5 Check Errors</a></h2>
@@ -330,14 +344,16 @@ local function getSensorData()
     print(&quot;Base64 decoding failed&quot;)
   elseif sensorData == nil then
     print(&quot;CBOR decoding failed&quot;)
-  end</code></pre></div>
+  end
+</code></pre></div>
 <p>This code checks for HTTP Request Errors and Decoding Errors.</p>
 <h2 id="return-sensor-data"><a href="#return-sensor-data">2.6 Return Sensor Data</a></h2>
 <p>Finally we <strong>return the Sensor Data</strong> (as a Lua Table) to the caller…</p>
 <div class="example-wrap"><pre class="language-lua"><code>  -- sensorData will be nil if our request failed or JSON failed to parse
   -- or Message Payload missing or Base64 / CBOR decoding failed
   return sensorData
-end</code></pre></div>
+end
+</code></pre></div>
 <p>Our Sensor Data is returned as <strong>nil</strong> in case of error.</p>
 <p>And that’s how our Roblox Script fetches Sensor Data from The Things Network!</p>
 <p><img src="https://lupyuen.github.io/images/roblox-script3.png" alt="Roblox Fetches Sensor Data" /></p>
@@ -390,7 +406,8 @@ local TTN_APPLICATION_ID = &quot;YOUR_APPLICATION_ID&quot;
 local TTN_API_KEY = &quot;YOUR_API_KEY&quot;
 
 -- TODO: Change this to your region-specific URL for The Things Network
-local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications/&quot; .. TTN_APPLICATION_ID .. &quot;/packages/storage/uplink_message?limit=1&amp;order=-received_at&quot;</code></pre></div>
+local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications/&quot; .. TTN_APPLICATION_ID .. &quot;/packages/storage/uplink_message?limit=1&amp;order=-received_at&quot;
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/roblox#appendix-the-things-network-settings">(More about this in the Appendix)</a></p>
 </li>
 <li>
@@ -434,14 +451,16 @@ local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications
 <div class="example-wrap"><pre class="language-json"><code>{ 
   &quot;t&quot;: 1236, 
   &quot;l&quot;: 2347 
-}</code></pre></div>
+}
+</code></pre></div>
 <p>That’s <strong>19 bytes of JSON</strong> for Temperature Sensor and Light Sensor Data.</p>
 <p>But this won’t fit into the <strong>Maximum Message Size</strong> for The Things Network: <strong>12 bytes</strong>.</p>
 <p><a href="https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network">(Assuming 10 messages per hour)</a></p>
 <p>Instead we compress the Sensor Data into <a href="https://en.wikipedia.org/wiki/CBOR"><strong>Concise Binary Object Representation (CBOR)</strong></a> Format.</p>
 <p>(CBOR works like a compact, binary form of JSON)</p>
 <p>And we need only <strong>11 bytes of CBOR!</strong></p>
-<div class="example-wrap"><pre class="language-text"><code>a2 61 74 19 04 d4 61 6c 19 09 2b</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>a2 61 74 19 04 d4 61 6c 19 09 2b
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/cbor">(More about CBOR)</a></p>
 <p><img src="https://lupyuen.github.io/images/cbor-title.jpg" alt="Encoding Sensor Data with CBOR on BL602" /></p>
 <p><a href="https://lupyuen.github.io/articles/cbor">(Source)</a></p>
@@ -450,9 +469,11 @@ local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications
 <p>But our Roblox script fetches the Sensor Data in <strong>JSON Format</strong>, which can’t embed Binary Data.</p>
 <p>Hence our Binary Data is converted to Text Format with <a href="https://en.wikipedia.org/wiki/Base64"><strong>Base64 Encoding</strong></a>, when fetched by Roblox.</p>
 <p>Our Sensor Data <strong>encoded with CBOR</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>a2 61 74 19 04 d4 61 6c 19 09 2b</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>a2 61 74 19 04 d4 61 6c 19 09 2b
+</code></pre></div>
 <p>Becomes this Text String when <strong>encoded with Base64</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>omF0GQTUYWwZCSs=</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>omF0GQTUYWwZCSs=
+</code></pre></div>
 <p>This explains why we need two stages of decoding: <strong>Base64 followed by CBOR</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/roblox-studio3.png" alt="Create Base64 ModuleScript in Roblox Studio" /></p>
 <h2 id="base64-and-cbor-modulescripts"><a href="#base64-and-cbor-modulescripts">4.1 Base64 and CBOR ModuleScripts</a></h2>
@@ -480,7 +501,8 @@ print(payload)
 -- Decode the CBOR Map
 sensorData = cbor.decode(payload)
 print(&quot;sensorData:&quot;)
-print(sensorData)</code></pre></div>
+print(sensorData)
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L337-L345">(Source)</a></p>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>payload:
@@ -490,7 +512,8 @@ sensorData:
 {
   [&quot;l&quot;] = 2347,
   [&quot;t&quot;] = 1236
-}</code></pre></div>
+}
+</code></pre></div>
 <p><em>Did we create the ModuleScripts from scratch?</em></p>
 <p>Nope, they were copied from <strong>existing Lua Libraries</strong>…</p>
 <ul>
@@ -503,9 +526,11 @@ sensorData:
 </ul>
 <p><em>Was it difficult to port the Lua Libraries into Roblox?</em></p>
 <p>Not at all! We changed only one line of code in <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/Base64.lua#L28-L29"><strong>Base64.lua</strong></a> from…</p>
-<div class="example-wrap"><pre class="language-lua"><code>local extract = _G.bit32 and _G.bit32.extract</code></pre></div>
+<div class="example-wrap"><pre class="language-lua"><code>local extract = _G.bit32 and _G.bit32.extract
+</code></pre></div>
 <p>To…</p>
-<div class="example-wrap"><pre class="language-lua"><code>local extract = bit32 and bit32.extract</code></pre></div>
+<div class="example-wrap"><pre class="language-lua"><code>local extract = bit32 and bit32.extract
+</code></pre></div>
 <p>And the ModuleScripts worked perfectly!</p>
 <p><img src="https://lupyuen.github.io/images/roblox-script5.png" alt="Porting Lua Libraries into Roblox" /></p>
 <h1 id="render-temperature-with-roblox-particle-emitter"><a href="#render-temperature-with-roblox-particle-emitter">5 Render Temperature With Roblox Particle Emitter</a></h1>
@@ -514,7 +539,8 @@ sensorData:
 <p>We rendered the Temperature with a <a href="https://developer.roblox.com/en-us/articles/Particle-Emitters"><strong>Roblox Particle Emitter</strong></a>.</p>
 <p>This is how we render a Particle Emitter in our Roblox Script…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Create a Particle Emitter for Normal Temperature
-local emitter = createParticleEmitter()</code></pre></div>
+local emitter = createParticleEmitter()
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L287-L288">(Source)</a></p>
 <p>The code above renders our Roblox Gadget with <strong>Normal Temperature</strong>.</p>
 <p>(Yep Shrek and his green fireflies)</p>
@@ -525,18 +551,21 @@ local function createParticleEmitter()
 
   -- Create an instance of Particle Emitter and enable it
   local emitter = Instance.new(&quot;ParticleEmitter&quot;)
-  emitter.Enabled = true </code></pre></div>
+  emitter.Enabled = true 
+</code></pre></div>
 <p>We begin by <strong>creating an Instance</strong> of Particle Emitter.</p>
 <p>Next we set the <strong>rate of particles emitted</strong> and their lifetime…</p>
 <div class="example-wrap"><pre class="language-lua"><code>  -- Number of particles = Rate * Lifetime
   emitter.Rate = 20 -- Particles per second
-  emitter.Lifetime = NumberRange.new(5, 10) -- How long the particles should be alive (min, max)</code></pre></div>
+  emitter.Lifetime = NumberRange.new(5, 10) -- How long the particles should be alive (min, max)
+</code></pre></div>
 <p>(Why these Magic Numbers? We’ll learn later)</p>
 <p>We set the <strong>texture of the particles</strong> to a Star Sparkle image…</p>
 <div class="example-wrap"><pre class="language-lua"><code>  -- Visual properties
   -- Texture for the particles: &quot;star sparkle particle&quot; by @Vupatu
   -- https://www.roblox.com/library/6490035152/star-sparkle-particle
-  emitter.Texture = &quot;rbxassetid://6490035152&quot;</code></pre></div>
+  emitter.Texture = &quot;rbxassetid://6490035152&quot;
+</code></pre></div>
 <p>(Somehow I couldn’t set the texture to “rbxasset:textures/particles/sparkles_main.dds”. Only “rbxassetid” works)</p>
 <p>Our particles can <strong>change color</strong>, but we’ll stick to green <em>(R=0.3, G=0.6, B=0.0)</em>…</p>
 <div class="example-wrap"><pre class="language-lua"><code>  -- For Color, build a ColorSequence using ColorSequenceKeypoint
@@ -545,7 +574,8 @@ local function createParticleEmitter()
     ColorSequenceKeypoint.new( 0.0, Color3.new(0.3, 0.6, 0.0)),  -- At time=0: Green
     ColorSequenceKeypoint.new( 1.0, Color3.new(0.3, 0.6, 0.0))   -- At time=1: Green
   }
-  emitter.Color = ColorSequence.new(colorKeypoints)</code></pre></div>
+  emitter.Color = ColorSequence.new(colorKeypoints)
+</code></pre></div>
 <p>This <strong>Color Sequence</strong> says that from start <em>(time=0)</em> to end <em>(time=1)</em>, the particles stay green.</p>
 <p>We won’t vary the <strong>particle transparency</strong> either…</p>
 <div class="example-wrap"><pre class="language-lua"><code>  -- For Transparency, build a NumberSequence using NumberSequenceKeypoint
@@ -554,12 +584,14 @@ local function createParticleEmitter()
     NumberSequenceKeypoint.new( 0.0, 0.0);    -- At time=0, fully opaque
     NumberSequenceKeypoint.new( 1.0, 0.0);    -- At time=1, fully opaque
   }
-  emitter.Transparency = NumberSequence.new(numberKeypoints)</code></pre></div>
+  emitter.Transparency = NumberSequence.new(numberKeypoints)
+</code></pre></div>
 <p>From start to end, our particles are fully opaque.</p>
 <p>We set the <strong>Light Emission and Influence</strong>…</p>
 <div class="example-wrap"><pre class="language-lua"><code>  -- Light Emission and Influence
   emitter.LightEmission = 0 -- If 1: When particles overlap, multiply their color to be brighter
-  emitter.LightInfluence = 1 -- If 0: Don&#39;t be affected by world lighting</code></pre></div>
+  emitter.LightInfluence = 1 -- If 0: Don&#39;t be affected by world lighting
+</code></pre></div>
 <p>We define the <strong>speed and spread</strong> of our particles…</p>
 <div class="example-wrap"><pre class="language-lua"><code>  -- Speed properties
   emitter.EmissionDirection = Enum.NormalId.Top -- Emit towards top
@@ -568,7 +600,8 @@ local function createParticleEmitter()
   emitter.VelocityInheritance = 0 -- Don&#39;t inherit parent velocity
   emitter.Acceleration = Vector3.new(0.0, 0.0, 0.0)
   emitter.LockedToPart = false -- Don&#39;t lock the particles to the parent 
-  emitter.SpreadAngle = Vector2.new(50.0, 50.0) -- Spread angle on X and Y</code></pre></div>
+  emitter.SpreadAngle = Vector2.new(50.0, 50.0) -- Spread angle on X and Y
+</code></pre></div>
 <p>We set the <strong>size and rotation</strong> of our particles…</p>
 <div class="example-wrap"><pre class="language-lua"><code>  -- Simulation properties
   local numberKeypoints2 = {
@@ -578,12 +611,14 @@ local function createParticleEmitter()
   emitter.Size = NumberSequence.new(numberKeypoints2)
   emitter.ZOffset = 0.0 -- Render in front or behind the actual position
   emitter.Rotation = NumberRange.new(0.0, 0.0) -- Rotation
-  emitter.RotSpeed = NumberRange.new(0.0) -- Do not rotate during simulation</code></pre></div>
+  emitter.RotSpeed = NumberRange.new(0.0) -- Do not rotate during simulation
+</code></pre></div>
 <p>Finally we <strong>add the emitter</strong> to our Roblox Part…</p>
 <div class="example-wrap"><pre class="language-lua"><code>  -- Add the emitter to our Part
   emitter.Parent = script.Parent
   return emitter
-end</code></pre></div>
+end
+</code></pre></div>
 <p>And our Roblox Gadget starts emitting green particles to represent Normal Temperature!</p>
 <p>(Centre one in the pic below)</p>
 <p><img src="https://lupyuen.github.io/images/roblox-title2.jpg" alt="Cold / Normal / Hot IoT Objects rendered in Roblox" /></p>
@@ -600,7 +635,8 @@ print(&quot;NORMAL Particle Emitter (t=5000)&quot;)
 dumpParticleEmitter(script.Parent.Normal)
 
 print(&quot;HOT Particle Emitter (t=10000)&quot;)
-dumpParticleEmitter(script.Parent.Hot)</code></pre></div>
+dumpParticleEmitter(script.Parent.Hot)
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L347-L353">(Source)</a></p>
 <p>(<strong>dumpParticleEmitter</strong> is defined in <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L243-L264">DigitalTwin.lua</a>)</p>
 <p>The <strong>Particle Emitter settings</strong> look like…</p>
@@ -610,7 +646,8 @@ dumpParticleEmitter(script.Parent.Hot)</code></pre></div>
     0 0.3 0.6 0 0 
     1 0.3 0.6 0 0 
   Drag: 10
-  ...</code></pre></div>
+  ...
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/roblox#appendix-particle-emitter-settings">(See the complete settings)</a></p>
 <p>These are the Magic Numbers that we plugged into our <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L79-L135"><strong>createParticleEmitter</strong></a> function.</p>
 <p><em>Why did we create the Particle Emitter in Roblox Script?</em></p>
@@ -643,7 +680,8 @@ HOT Particle Emitter (t=10000)
   Color: (time, red, green, blue)
     0 1.0 0.3 0.0 
     1 1.0 0.3 0.0 
-    ...</code></pre></div>
+    ...
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/roblox#appendix-particle-emitter-settings">(See the complete settings)</a></p>
 <p>The three emitters represent the <strong>Min / Mid / Max Temperatures</strong>…</p>
 <ul>
@@ -673,7 +711,8 @@ Color: (time, red, green, blue)
   HOT:
     0 1.0 0.3 0.0 
     1 1.0 0.3 0.0 
-    ...</code></pre></div>
+    ...
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/roblox#appendix-particle-emitter-settings">(See the complete interpolation)</a></p>
 <p>Let’s plug the derived values into our Roblox Script.</p>
 <p><img src="https://lupyuen.github.io/images/roblox-interpolate.png" alt="Interpolating the Particle Emitter" /></p>
@@ -694,7 +733,8 @@ local function updateParticleEmitter(emitter, t)
   -- NORMAL: 5 5
   -- HOT:    1 1
   local speed = lin(t, 0.0, 5.0, 1.0)
-  emitter.Speed = NumberRange.new(speed, speed) -- Speed</code></pre></div>
+  emitter.Speed = NumberRange.new(speed, speed) -- Speed
+</code></pre></div>
 <p><strong>lin</strong> is our helper function that computes <a href="https://en.wikipedia.org/wiki/Linear_interpolation"><strong>Linear Interpolation</strong></a>.</p>
 <p>(More about this in the next section)</p>
 <p>In the code above we <strong>interpolate the Drag and Speed</strong> of our Particle Emitter, based on the Temperature (t).</p>
@@ -707,21 +747,24 @@ local function updateParticleEmitter(emitter, t)
     lin(t, 0.3, 0.3, 1.0),  -- Red
     lin(t, 1.0, 0.6, 0.3),  -- Green
     lin(t, 1.0, 0.0, 0.0)   -- Blue
-  )</code></pre></div>
+  )
+</code></pre></div>
 <p>Then we update the <strong>Color Sequence</strong> based on the interpolated color…</p>
 <div class="example-wrap"><pre class="language-lua"><code>  local colorKeypoints = {
     -- API: ColorSequenceKeypoint.new(time, color)
     ColorSequenceKeypoint.new(0.0, color),  -- At time=0
     ColorSequenceKeypoint.new(1.0, color)   -- At time=1
   }
-  emitter.Color = ColorSequence.new(colorKeypoints)</code></pre></div>
+  emitter.Color = ColorSequence.new(colorKeypoints)
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L166-L241">(See the rest of the function here)</a></p>
 <p>And we’re done! To render the Live Temperature, we call <strong>updateParticleEmitter</strong> like so…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Create a Particle Emitter for Normal Temperature
 local emitter = createParticleEmitter()
 
 -- Update the emitter to render Temperature=1234
-updateParticleEmitter(emitter, 1234)</code></pre></div>
+updateParticleEmitter(emitter, 1234)
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L284-L323">(Source)</a></p>
 <p>Here’s how our Interpolating Particle Emitter looks…</p>
 <ul>
@@ -735,16 +778,19 @@ updateParticleEmitter(emitter, 1234)</code></pre></div>
 -- COLD:   5
 -- NORMAL: 10
 -- HOT:    0
-emitter.Drag = lin(t, 5.0, 10.0, 0.0)</code></pre></div>
+emitter.Drag = lin(t, 5.0, 10.0, 0.0)
+</code></pre></div>
 <p>This code <strong>interpolates the Drag</strong> of our Particle Emitter based on the Temperature (t).</p>
 <p>The values passed to <strong>lin</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>5.0, 10.0, 0.0</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>5.0, 10.0, 0.0
+</code></pre></div>
 <p>Correspond to the Drag values for <strong>Min / Mid / Max Temperatures</strong>.</p>
 <p>The Min / Mid / Max Temperatures are defined here: <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L137-L164">DigitalTwin.lua</a></p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Minimum, Maximum and Mid values for Temperature (t) that will be interpolated
 local T_MIN = 0
 local T_MAX = 10000
-local T_MID = (T_MIN + T_MAX) / 2</code></pre></div>
+local T_MID = (T_MIN + T_MAX) / 2
+</code></pre></div>
 <p>We compute the <a href="https://en.wikipedia.org/wiki/Linear_interpolation"><strong>Linear Interpolation</strong></a> by drawing lines between the Min, Mid and Max values…</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/roblox-interpolate2.jpg" alt="Computing the Linear Interpolation" /></p>
@@ -776,7 +822,8 @@ local function lin(x: number, yMin: number, yMid: number, yMax: number) : number
     y = math.max(yMin, yMid, yMax)
   end
   return y
-end</code></pre></div>
+end
+</code></pre></div>
 <p><a href="https://developer.roblox.com/en-us/api-reference/class/TweenService">UPDATE: There’s another way to do Linear Interpolation in Roblox: <strong>TweenService</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/ttn-title.jpg" alt="PineDio Stack BL604 RISC-V Board (foreground) talking to The Things Network via RAKWireless RAK7248 LoRaWAN Gateway (background)" /></p>
 <h1 id="digital-twin-demo"><a href="#digital-twin-demo">6 Digital Twin Demo</a></h1>
@@ -812,20 +859,24 @@ end</code></pre></div>
 </li>
 </ul>
 <p>The temperature is now <strong>55.55 ⁰C</strong>. Let’s set the PineDio Stack temperature to <strong>99.99 ⁰C</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 9999 0</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 9999 0
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/cbor#lorawan-with-cbor">(<strong>las_app_tx_cbor</strong> is explained here)</a></p>
 <p>Our Roblox Gadget <strong>receives the high temperature</strong> and bursts into flames!</p>
 <p><img src="https://lupyuen.github.io/images/roblox-demo2.jpg" alt="Digital Twin at 99.99 ⁰C" /></p>
 <p>Let’s turn down PineDio Stack to <strong>77.77 ⁰C</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 7777 0</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 7777 0
+</code></pre></div>
 <p>Our Roblox Gadget <strong>receives the updated temperature</strong> over The Things Network. And cools down a little.</p>
 <p><img src="https://lupyuen.github.io/images/roblox-demo3.jpg" alt="Digital Twin at 77.77 ⁰C" /></p>
 <p>We cool PineDio Stack down to <strong>33.33 ⁰C</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 3333 0</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 3333 0
+</code></pre></div>
 <p>Our Roblox Gadget <strong>turns blue</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/roblox-demo4.jpg" alt="Digital Twin at 33.33 ⁰C" /></p>
 <p>We start to freeze PineDio Stack at <strong>11.11 ⁰C</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 1111 0</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_cbor 2 0 1111 0
+</code></pre></div>
 <p>Our Roblox Gadget <strong>turns into ice</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/roblox-demo5.jpg" alt="Digital Twin at 11.11 ⁰C" /></p>
 <h2 id="demo-code"><a href="#demo-code">6.1 Demo Code</a></h2>
@@ -872,7 +923,8 @@ local function main()
 end
 
 -- Start the Main Function
-main()</code></pre></div>
+main()
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/roblox#appendix-particle-emitter-settings">(<strong>demoMode</strong> is explained here)</a></p>
 <p>That’s all for our demo today. Would be so fun if someday Roblox could overlay Real-World Objects through <strong>Augmented Reality</strong>… And show us Sensor Data in real time!</p>
 <p><img src="https://lupyuen.github.io/images/roblox-ar.jpg" alt="Digital Twin with Augmented Reality" /></p>
@@ -920,10 +972,12 @@ main()</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>-- Base64 Decode the Message Payload
 payload = base64.decode(frmPayload)
 
-W000: (53,27) Argument count mismatch. Function expects 3 arguments, but only 1 is specified</code></pre></div><div class="example-wrap"><pre class="language-text"><code>-- Decode the CBOR Map to get Sensor Data
+W000: (53,27) Argument count mismatch. Function expects 3 arguments, but only 1 is specified
+</code></pre></div><div class="example-wrap"><pre class="language-text"><code>-- Decode the CBOR Map to get Sensor Data
 sensorData = cbor.decode(payload)
 
-W000: (56,28) Argument count mismatch. Function expects 2 arguments, but only 1 is specified</code></pre></div>
+W000: (56,28) Argument count mismatch. Function expects 2 arguments, but only 1 is specified
+</code></pre></div>
 <p>That’s because the imported ModuleScripts (<strong>Base64</strong> and <strong>Cbor</strong>) don’t support Type Checking.</p>
 </li>
 <li>
@@ -1001,7 +1055,8 @@ Texture: rbxasset:textures/particles/sparkles_main.dds
 TimeScale: 1
 Transparency: 0 0 0 1 0 0 
 VelocityInheritance: 0
-ZOffset: 0</code></pre></div></li>
+ZOffset: 0
+</code></pre></div></li>
 <li>
 <p><strong>Normal Particle Emitter</strong> (t=5000)</p>
 <div class="example-wrap"><pre class="language-yaml"><code>Acceleration: 0, 0, 0
@@ -1022,7 +1077,8 @@ Texture: rbxasset:textures/particles/sparkles_main.dds
 TimeScale: 1
 Transparency: 0 0 0 1 0 0 
 VelocityInheritance: 0
-ZOffset: 0</code></pre></div></li>
+ZOffset: 0
+</code></pre></div></li>
 <li>
 <p><strong>Hot Particle Emitter</strong> (t=10000)</p>
 <div class="example-wrap"><pre class="language-yaml"><code>Acceleration: 0, 0, 0
@@ -1043,7 +1099,8 @@ Texture: rbxasset:textures/particles/sparkles_main.dds
 TimeScale: 1
 Transparency: 0 0 0 1 0 0 
 VelocityInheritance: 0
-ZOffset: 0</code></pre></div></li>
+ZOffset: 0
+</code></pre></div></li>
 </ol>
 <p>(The settings were dumped with the <strong>dumpParticleEmitter</strong> function in <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L243-L264">DigitalTwin.lua</a>)</p>
 <p>To render the Temperature in 10,000 levels (from t=0 to t=10000), we performed <strong>Linear Interpolation</strong> on the three Particle Emitters.</p>
@@ -1097,11 +1154,13 @@ Speed:
 SpreadAngle: 
   COLD:   10, 10
   NORMAL: 50, 50
-  HOT:    50, 50</code></pre></div>
+  HOT:    50, 50
+</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/roblox-interpolate.png" alt="Interpolating the Particle Emitter" /></p>
 <p>To create a Particle Emitter for Normal Temperature, we call <strong>createParticleEmitter</strong> in <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L79-L135">DigitalTwin.lua</a></p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Create a Particle Emitter for Normal Temperature
-local emitter = createParticleEmitter()</code></pre></div>
+local emitter = createParticleEmitter()
+</code></pre></div>
 <p>Then to interpolate the Particle Emitter for High / Mid / Low Temperatures, we call <strong>updateParticleEmitter</strong> in <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L166-L241">DigitalTwin.lua</a></p>
 <p>(We’ve seen <strong>createParticleEmitter</strong> and <strong>updateParticleEmitter</strong> earlier)</p>
 <p>Here’s how our <strong>demoMode</strong> function calls <strong>updateParticleEmitter</strong> to render the Temperature in Demo Mode. (High to low, then back to high)</p>
@@ -1123,18 +1182,21 @@ local function demoMode(emitter)
     updateParticleEmitter(emitter, t)
     wait(4)
   end
-end</code></pre></div>
+end
+</code></pre></div>
 <p>Our <strong>Interpolating Particle Emitter</strong> in Demo Mode looks like this…</p>
 <ul>
 <li><a href="https://www.youtube.com/watch?v=3CP7ELTAFLg"><strong>Watch the Demo Video on YouTube</strong></a></li>
 </ul>
 <p>Note that <strong>rbxasset</strong> won’t work for setting the Texture…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- This doesn&#39;t work
-emitter.Texture = &quot;rbxasset:textures/particles/sparkles_main.dds&quot;</code></pre></div>
+emitter.Texture = &quot;rbxasset:textures/particles/sparkles_main.dds&quot;
+</code></pre></div>
 <p>But <strong>rbxassetid</strong> works OK…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- Texture for the particles: &quot;star sparkle particle&quot; by @Vupatu
 -- https://www.roblox.com/library/6490035152/star-sparkle-particle
-emitter.Texture = &quot;rbxassetid://6490035152&quot;</code></pre></div><h1 id="appendix-the-things-network-settings"><a href="#appendix-the-things-network-settings">11 Appendix: The Things Network Settings</a></h1>
+emitter.Texture = &quot;rbxassetid://6490035152&quot;
+</code></pre></div><h1 id="appendix-the-things-network-settings"><a href="#appendix-the-things-network-settings">11 Appendix: The Things Network Settings</a></h1>
 <p>Earlier we saw these settings for The Things Network in <a href="https://github.com/lupyuen/roblox-the-things-network/blob/main/DigitalTwin.lua#L1-L12">DigitalTwin.lua</a>…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- TODO: Change this to your Application ID for The Things Network
 -- (Must have permission to Read Application Traffic)
@@ -1144,7 +1206,8 @@ local TTN_APPLICATION_ID = &quot;YOUR_APPLICATION_ID&quot;
 local TTN_API_KEY = &quot;YOUR_API_KEY&quot;
 
 -- TODO: Change this to your region-specific URL for The Things Network
-local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications/&quot; .. TTN_APPLICATION_ID .. &quot;/packages/storage/uplink_message?limit=1&amp;order=-received_at&quot;</code></pre></div>
+local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications/&quot; .. TTN_APPLICATION_ID .. &quot;/packages/storage/uplink_message?limit=1&amp;order=-received_at&quot;
+</code></pre></div>
 <p>This chapter explains the steps for getting the settings from The Things Network.</p>
 <p>We assume that we have created an <strong>Application and Device</strong> in The Things Network…</p>
 <ul>
@@ -1167,7 +1230,8 @@ local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications
 <p>Paste it here…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- TODO: Change this to your Application ID for The Things Network
 -- (Must have permission to Read Application Traffic)
-local TTN_APPLICATION_ID = &quot;YOUR_APPLICATION_ID&quot;</code></pre></div></li>
+local TTN_APPLICATION_ID = &quot;YOUR_APPLICATION_ID&quot;
+</code></pre></div></li>
 </ol>
 <h2 id="storage-integration"><a href="#storage-integration">11.1 Storage Integration</a></h2>
 <p>For Roblox to fetch Sensor Data from The Things Network, we shall enable <strong>Storage Integration</strong>…</p>
@@ -1182,21 +1246,26 @@ local TTN_APPLICATION_ID = &quot;YOUR_APPLICATION_ID&quot;</code></pre></div></l
 <p>We’ll see the <strong>Region-Specific URL</strong> for retrieving data…</p>
 <div class="example-wrap"><pre class="language-uri"><code>https://au1.cloud.thethings.network/api/v3/as/
   applications/YOUR_APPLICATION_ID/
-  packages/storage/uplink_message</code></pre></div>
+  packages/storage/uplink_message
+</code></pre></div>
 <p>The first part of the URL…</p>
-<div class="example-wrap"><pre class="language-text"><code>au1.cloud.thethings.network</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>au1.cloud.thethings.network
+</code></pre></div>
 <p>Depends on the region we’re using: <strong>Europe, North America or Australia</strong>.</p>
 <p>Copy the first part of the URL and paste into the first part of <strong>TTN_URL</strong>…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- TODO: Change this to your region-specific URL for The Things Network
-local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications/&quot; .. TTN_APPLICATION_ID .. &quot;/packages/storage/uplink_message?limit=1&amp;order=-received_at&quot;</code></pre></div>
+local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications/&quot; .. TTN_APPLICATION_ID .. &quot;/packages/storage/uplink_message?limit=1&amp;order=-received_at&quot;
+</code></pre></div>
 <p>(“<code>..</code>” in Lua means concatenate the strings)</p>
 <p>Our full URL for The Things Network (<strong>TTN_URL</strong>) looks like…</p>
 <div class="example-wrap"><pre class="language-uri"><code>https://au1.cloud.thethings.network/api/v3/as/
   applications/YOUR_APPLICATION_ID/
   packages/storage/uplink_message
-  ?limit=1&amp;order=-received_at</code></pre></div>
+  ?limit=1&amp;order=-received_at
+</code></pre></div>
 <p>Note that we’re fetching the <strong>Latest Uplink Message</strong> from The Things Network…</p>
-<div class="example-wrap"><pre class="language-text"><code>?limit=1&amp;order=-received_at</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>?limit=1&amp;order=-received_at
+</code></pre></div>
 <p>More about this in the next chapter.</p>
 <h2 id="api-key"><a href="#api-key">11.2 API Key</a></h2>
 <p>Roblox needs an <strong>API Key</strong> to access the stored Uplink Messages from The Things Network.</p>
@@ -1208,7 +1277,8 @@ local TTN_URL = &quot;https://au1.cloud.thethings.network/api/v3/as/applications
 <p>Click <strong>“Create API Key”</strong></p>
 <p>Copy the API Key and paste here…</p>
 <div class="example-wrap"><pre class="language-lua"><code>-- TODO: Change this to your API Key for The Things Network
-local TTN_API_KEY = &quot;YOUR_API_KEY&quot;</code></pre></div><h2 id="security"><a href="#security">11.3 Security</a></h2>
+local TTN_API_KEY = &quot;YOUR_API_KEY&quot;
+</code></pre></div><h2 id="security"><a href="#security">11.3 Security</a></h2>
 <p>If we publish our game for the public to join, players may see these (potentially sensitive) details in <strong>Roblox’s Server-Side Network Log</strong>…</p>
 <ul>
 <li>Application ID</li>
@@ -1231,7 +1301,8 @@ local TTN_API_KEY = &quot;YOUR_API_KEY&quot;</code></pre></div><h2 id="security"
   -H &quot;Authorization: Bearer $YOUR_API_KEY&quot; \
   -H &quot;Accept: text/event-stream&quot; \
   -d &quot;limit=1&quot; \
-  -d &quot;order=-received_at&quot;</code></pre></div>
+  -d &quot;order=-received_at&quot;
+</code></pre></div>
 <p>(See the previous chapter for <strong>$YOUR_APPLICATION_ID</strong> and <strong>$YOUR_API_KEY</strong>. The first part of the URL is specific to our region: “au1.cloud.thethings.network”)</p>
 <p>Which returns…</p>
 <div class="example-wrap"><pre class="language-json"><code>{
@@ -1291,9 +1362,11 @@ local TTN_API_KEY = &quot;YOUR_API_KEY&quot;</code></pre></div><h2 id="security"
       }
     }
   }
-}</code></pre></div>
+}
+</code></pre></div>
 <p><strong>result.uplink_message.frm_payload</strong> contains the Sensor Data that we need, encoded with Base64 and CBOR…</p>
-<div class="example-wrap"><pre class="language-json"><code>&quot;frm_payload&quot;: &quot;omF0GQTUYWwZCSs=&quot;</code></pre></div>
+<div class="example-wrap"><pre class="language-json"><code>&quot;frm_payload&quot;: &quot;omF0GQTUYWwZCSs=&quot;
+</code></pre></div>
 <p>Our Sensor Data is encoded with <a href="https://en.wikipedia.org/wiki/CBOR"><strong>Concise Binary Object Representation (CBOR)</strong></a> to keep the LoRa Packets small (max 12 bytes), due to the Fair Use Policy of The Things Network…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/ttn#fair-use-of-the-things-network"><strong>“Fair Use of The Things Network”</strong></a></li>
