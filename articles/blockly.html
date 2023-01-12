@@ -140,7 +140,8 @@ pub fn main() !void {
 
 /// Aliases for Standard Library
 const assert = std.debug.assert;
-const debug  = std.log.debug;</code></pre></div>
+const debug  = std.log.debug;
+</code></pre></div>
 <p>When we copy-n-paste the program and run it with Zig…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ zig run a.zig
 debug: a=1.23449996e+02
@@ -152,7 +153,8 @@ debug: a=1.23449996e+02
 debug: a=1.23449996e+02
 debug: a=1.23449996e+02
 debug: a=1.23449996e+02
-debug: a=1.23449996e+02</code></pre></div>
+debug: a=1.23449996e+02
+</code></pre></div>
 <p>Indeed it produces the right result!</p>
 <p>(Not the tidiest output, but we’ll come back to this)</p>
 <p><em>Will this work with all Blocks?</em></p>
@@ -195,14 +197,16 @@ debug: a=1.23449996e+02</code></pre></div>
 <p>Blockly will let us assign Values to Variables. (Pic above)</p>
 <p>To keep things simple, we’ll handle Variables as <strong>Constants</strong>. And they shall be <strong>Floating-Point Numbers</strong>. (We’ll explain why)</p>
 <p>Thus the Block above will generate this Zig code…</p>
-<div class="example-wrap"><pre class="language-zig"><code>const a: f32 = 123.45;</code></pre></div>
+<div class="example-wrap"><pre class="language-zig"><code>const a: f32 = 123.45;
+</code></pre></div>
 <p><strong>UPDATE:</strong> We have removed <code>f32</code> from all <code>const</code> declarations, replying on <strong>Type Inference</strong> instead. This works better for supporting CBOR Messages. <a href="https://twitter.com/MisterTechBlog/status/1557857587667775489">(Like so)</a></p>
 <p>This is how we generate the code with a template (through <strong>String Interpolation</strong>): <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/variables.js#L25-L32">generators/zig/variables.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>Zig[&#39;variables_set&#39;] = function(block) {
   // Variable setter.
   ...
   return `const ${varName}: f32 = ${argument0};\n`;
-};</code></pre></div>
+};
+</code></pre></div>
 <p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals">(More about String Interpolation)</a></p>
 <p><em>Isn’t this (gasp) JavaScript?</em></p>
 <p>Blockly is coded in <strong>plain old JavaScript</strong>. Hence we’ll write our Zig Code Generator in JavaScript too.</p>
@@ -210,13 +214,15 @@ debug: a=1.23449996e+02</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/blockly-run6.png" alt="Print Expression" /></p>
 <h2 id="print-expression"><a href="#print-expression">2.2 Print Expression</a></h2>
 <p>To <strong>print the value</strong> of an expression (pic above), we generate this Zig code…</p>
-<div class="example-wrap"><pre class="language-zig"><code>debug(&quot;a={}&quot;, .{ a });</code></pre></div>
+<div class="example-wrap"><pre class="language-zig"><code>debug(&quot;a={}&quot;, .{ a });
+</code></pre></div>
 <p>Here’s the implementation in our Zig Code Generator: <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/text.js#L268-L272">generators/zig/text.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>Zig[&#39;text_print&#39;] = function(block) {
   // Print statement.
   ...
   return `debug(&quot;${msg}={}&quot;, .{ ${msg} });\n`;
-};</code></pre></div>
+};
+</code></pre></div>
 <p>(It won’t work with strings, we’ll handle that later)</p>
 <p><img src="https://lupyuen.github.io/images/blockly-run4.png" alt="Repeat Loop" /></p>
 <h2 id="repeat-loop"><a href="#repeat-loop">2.3 Repeat Loop</a></h2>
@@ -224,7 +230,8 @@ debug: a=1.23449996e+02</code></pre></div>
 <div class="example-wrap"><pre class="language-zig"><code>var count: usize = 0;
 while (count &lt; 10) : (count += 1) {
   ...
-}</code></pre></div>
+}
+</code></pre></div>
 <p>With this template in our Zig Code Generator: <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/loops.js#L19-L45">generators/zig/loops.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>Zig[&#39;controls_repeat_ext&#39;] = function(block) {
   // Repeat n times.
@@ -236,13 +243,15 @@ while (count &lt; 10) : (count += 1) {
     &#39;}\n&#39;
   ].join(&#39;&#39;);
   return code;
-};</code></pre></div>
+};
+</code></pre></div>
 <p><em>What if we have two Repeat Loops? Won’t “<code>count</code>” clash?</em></p>
 <p>Blockly will helpfully <strong>generate another counter</strong> like “<code>count2</code>”…</p>
 <div class="example-wrap"><pre class="language-zig"><code>var count2: usize = 0;
 while (count2 &lt; 10) : (count2 += 1) {
   ...
-}</code></pre></div>
+}
+</code></pre></div>
 <p>(Try it out!)</p>
 <h2 id="main-function"><a href="#main-function">2.4 Main Function</a></h2>
 <p>To become a valid Zig program, our generated Zig code needs to be wrapped into a <strong>Main Function</strong> like this…</p>
@@ -257,7 +266,8 @@ pub fn main() !void {
 
 /// Aliases for Standard Library
 const assert = std.debug.assert;
-const debug  = std.log.debug;</code></pre></div>
+const debug  = std.log.debug;
+</code></pre></div>
 <p>We do this with another template in our Zig Code Generator: <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig.js#L132-L193">generators/zig.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>Zig.finish = function(code) {
   ...
@@ -267,7 +277,8 @@ const debug  = std.log.debug;</code></pre></div>
     &#39;pub fn main() !void {\n&#39;,
     code,
     &#39;}&#39;,
-  ].join(&#39;&#39;);</code></pre></div>
+  ].join(&#39;&#39;);
+</code></pre></div>
 <p>The code above composes the <strong>Main Function</strong>.</p>
 <p>Next we define the <strong>Header and Trailer</strong>…</p>
 <div class="example-wrap"><pre class="language-javascript"><code>  // Compose Zig Header
@@ -281,7 +292,8 @@ const debug  = std.log.debug;</code></pre></div>
     &#39;/// Aliases for Standard Library\n&#39;,
     &#39;const assert = std.debug.assert;\n&#39;,
     &#39;const debug  = std.log.debug;\n&#39;,
-  ].join(&#39;&#39;);</code></pre></div>
+  ].join(&#39;&#39;);
+</code></pre></div>
 <p>Finally we combine them and return the result…</p>
 <div class="example-wrap"><pre class="language-javascript"><code>  // Combine Header, Code, 
   // Function Definitions and Trailer
@@ -293,7 +305,8 @@ const debug  = std.log.debug;</code></pre></div>
     allDefs.replace(/\n\n+/g, &#39;\n\n&#39;).replace(/\n*$/, &#39;\n\n&#39;),
     trailer,
   ].join(&#39;&#39;);
-};</code></pre></div>
+};
+</code></pre></div>
 <p>Let’s talk about Function Definitions…</p>
 <h1 id="define-functions"><a href="#define-functions">3 Define Functions</a></h1>
 <p><em>Can we define Zig Functions in Blockly?</em></p>
@@ -306,13 +319,15 @@ const debug  = std.log.debug;</code></pre></div>
   const a: f32 = 123.45;
   debug(&quot;a={}&quot;, .{ a });
   return x + y;
-}</code></pre></div>
+}
+</code></pre></div>
 <p>And calling the above function…</p>
 <p><img src="https://lupyuen.github.io/images/blockly-run7b.jpg" alt="Call Blockly Function" /></p>
 <p>Works OK with Zig too…</p>
 <div class="example-wrap"><pre class="language-zig"><code>const a: f32 = 123.45;
 const b: f32 = try do_something(a, a);
-debug(&quot;b={}&quot;, .{ b });</code></pre></div>
+debug(&quot;b={}&quot;, .{ b });
+</code></pre></div>
 <p>Thus indeed it’s possible to create <a href="https://lupyuen.github.io/images/blockly-run10.jpg"><strong>Complex Blockly Apps</strong></a> with Zig. <a href="https://lupyuen.github.io/images/blockly-run10.jpg">(Like this)</a></p>
 <p>The above templates are defined in our Code Generator at <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig/procedures.js#L18-L92">generators/zig/procedures.js</a></p>
 <h1 id="blockly-is-typeless"><a href="#blockly-is-typeless">4 Blockly is Typeless</a></h1>
@@ -325,12 +340,14 @@ debug(&quot;b={}&quot;, .{ b });</code></pre></div>
 <div class="example-wrap"><pre class="language-javascript"><code>// Dynamic Type in JavaScript
 var a;
 a = 123.45;
-a = &#39;abc&#39;;</code></pre></div>
+a = &#39;abc&#39;;
+</code></pre></div>
 <p>But not for <a href="https://developer.mozilla.org/en-US/docs/Glossary/Static_typing"><strong>Statically-Typed Languages</strong></a> like Zig!</p>
 <p>That’s why we constrain all Types as <code>f32</code>, until we figure out how to handle strings and other types…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Static Type in Zig
 const a: f32 = 123.45;
-// Nope we won&#39;t accept &quot;abc&quot;</code></pre></div>
+// Nope we won&#39;t accept &quot;abc&quot;
+</code></pre></div>
 <p><em>Won’t that severely limit our Zig Programs?</em></p>
 <p><code>f32</code> is probably sufficient for simple <strong>IoT Sensor Apps</strong>.</p>
 <p>Such apps work only with numeric <strong>Sensor Data</strong> (like temperature, humidity). And they don’t need to manipulate strings.</p>
@@ -344,13 +361,15 @@ const a: f32 = 123.45;
 const a: f32 = 123.45;
 
 // Oops! `a` is redeclared...
-const a: f32 = 234.56;</code></pre></div>
+const a: f32 = 234.56;
+</code></pre></div>
 <p>Our Code Generator will have to stop this somehow.</p>
 <p><em>Why not declare as a Variable? (Instead of a Constant)</em></p>
 <div class="example-wrap"><pre class="language-zig"><code>// This is OK
 var a: f32 = undefined;
 a = 123.45;
-a = 234.56;</code></pre></div>
+a = 234.56;
+</code></pre></div>
 <p>Call me stupendously stubborn, but I think Constants look neater than Variables?</p>
 <p>Also we might have a problem with <a href="https://ziglang.org/documentation/master/#Shadowing"><strong>Shadowed Identifiers</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/blockly-run15.jpg" alt="Shadowing in Blockly" /></p>
@@ -365,7 +384,8 @@ while (count &lt; 10) : (count += 1) {
   // Oops! `a` is shadowed...
   const a: f32 = 234.56;
   debug(&quot;a={}&quot;, .{ a });
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#Shadowing">(More about Shadowing)</a></p>
 <p>So yeah, supporting Zig on Blockly can get really challenging.</p>
 <p>(Though supporting C on Blockly without Type Inference would be a total nightmare!)</p>
@@ -457,7 +477,8 @@ const temperature: f32 = blk: {
 // Print the Temperature
 debug(&quot;temperature={}&quot;, .{
   floatToFixed(temperature)
-});</code></pre></div>
+});
+</code></pre></div>
 <p>When we run this on <strong>Apache NuttX RTOS</strong>, it will actually fetch the Temperature from the Bosch BME280 Sensor!</p>
 <p><a href="https://lupyuen.github.io/articles/sensor#read-barometer-sensor">(As explained here)</a></p>
 <p><em>What a huge chunk of Zig!</em></p>
@@ -478,7 +499,8 @@ if (c.read(fd, &amp;sensor_data, len) &gt;= len) {
 
   // Remember the Sensor Value
   // Note: `temperature` depends on the sensor
-  sensor_value = sensor_data.temperature;</code></pre></div>
+  sensor_value = sensor_data.temperature;
+</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#Compile-Time-Parameters">(<strong><code>comptime</code> Generics</strong> might help)</a></p>
 <p><em>What’s floatToFixed?</em></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Read the Temperature as a Float
@@ -488,9 +510,11 @@ const temperature: f32 = ...
 // Fixed-Point Number (2 decimal places)
 debug(&quot;temperature={}&quot;, .{
   floatToFixed(temperature)
-});</code></pre></div>
+});
+</code></pre></div>
 <p>That’s our tidy way of printing <a href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic"><strong>Fixed-Point Numbers</strong></a> (with 2 decimal places)…</p>
-<div class="example-wrap"><pre class="language-text"><code>temperature=23.45</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>temperature=23.45
+</code></pre></div>
 <p>Instead of the awful <code>2.34500007e+01</code> we saw earlier.</p>
 <p><a href="https://lupyuen.github.io/articles/blockly#appendix-fixed-point-numbers">(More about this in the Appendix)</a></p>
 <p><em>What’s <code>blk</code>?</em></p>
@@ -503,7 +527,8 @@ const temperature: f32 = blk: {
 
   // Return the Sensor Value
   break :blk 23.45;
-};</code></pre></div>
+};
+</code></pre></div>
 <p>This sets <code>temperature</code> to <code>23.45</code>.</p>
 <p>Block Expressions are a great way to <strong>prevent leakage</strong> of our Local Variables (like <code>fd</code>) into the Outer Scope and <a href="https://lupyuen.github.io/articles/blockly#constants-vs-variables"><strong>avoid Shadowing</strong></a>.</p>
 <p><a href="https://ziglang.org/documentation/master/#blocks">(More about Block Expressions)</a></p>
@@ -529,7 +554,8 @@ const temperature: f32 = blk: {
 <div class="example-wrap"><pre class="language-json"><code>{
   &quot;t&quot;: 2345,
   &quot;h&quot;: 6789
-}</code></pre></div>
+}
+</code></pre></div>
 <p>(Numbers have been scaled up by 100)</p>
 <p>Then compress it with <a href="https://lupyuen.github.io/articles/cbor2"><strong>Concise Binary Object Representation (CBOR)</strong></a>.</p>
 <p><em>Why CBOR? Why not JSON?</em></p>
@@ -608,9 +634,11 @@ const temperature: f32 = 23.45;
 // Fixed-Point Number (2 decimal places)
 debug(&quot;temperature={}&quot;, .{
   floatToFixed(temperature)
-});</code></pre></div>
+});
+</code></pre></div>
 <p>This prints the Temperature correctly as…</p>
-<div class="example-wrap"><pre class="language-text"><code>temperature=23.45</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>temperature=23.45
+</code></pre></div>
 <p>Instead of the awful <code>2.34500007e+01</code> that we see typically with printed Floating-Point Numbers.</p>
 <p><em>What’s floatToFixed?</em></p>
 <p>We call <strong>floatToFixed</strong> to convert a Floating-Point Number to a <a href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic"><strong>Fixed-Point Number</strong></a> (2 decimal places) for printing.</p>
@@ -648,7 +676,8 @@ pub const FixedPoint = struct {
 
   /// Format the output for Fixed Point Number (like 123.45)
   pub fn format(...) !void { ... }
-};</code></pre></div>
+};
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/visual/sensor.zig#L54-L75">(Source)</a></p>
 <p>(We’ll explain <strong>format</strong> in a while)</p>
 <p><em>How do we convert Floating-Point to Fixed-Point?</em></p>
@@ -663,7 +692,8 @@ pub fn floatToFixed(f: f32) FixedPoint {
     .int  = @divTrunc(scaled, 100),
     .frac = @intCast(u8, rem_abs),
   };
-}</code></pre></div>
+}
+</code></pre></div>
 <p>(See the docs: <a href="https://ziglang.org/documentation/master/#floatToInt"><strong>@floatToInt</strong></a>, <a href="https://ziglang.org/documentation/master/#rem"><strong>@rem</strong></a>, <a href="https://ziglang.org/documentation/master/#divTrunc"><strong>@divTrunc</strong></a>, <a href="https://ziglang.org/documentation/master/#intCast"><strong>@intCast</strong></a>)</p>
 <p>This code has been tested for positive and negative numbers.</p>
 <p><em>Why handle Sensor Data as Fixed-Point Numbers? Why not Floating-Point?</em></p>
@@ -695,7 +725,8 @@ pub fn floatToFixed(f: f32) FixedPoint {
 // Fixed-Point Number (2 decimal places)
 debug(&quot;temperature={}&quot;, .{
   floatToFixed(temperature)
-});</code></pre></div>
+});
+</code></pre></div>
 <p>Because our Fixed-Point Struct includes a <a href="https://ziglearn.org/chapter-2/#formatting"><strong>Custom Formatter</strong></a>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Fixed Point Number (2 decimal places)
 pub const FixedPoint = struct {
@@ -720,7 +751,8 @@ pub const FixedPoint = struct {
       self.frac 
     });
   }
-};</code></pre></div>
+};
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/visual-zig-nuttx/blob/visual/sensor.zig#L54-L75">(Source)</a></p>
 <p><em>Why print the numbers as “<code>{}.{:0&gt;2}</code>”?</em></p>
 <p>Our Format String “<code>{}.{:0&gt;2}</code>” says…</p>
@@ -750,7 +782,8 @@ pub const FixedPoint = struct {
 ...
 &lt;div id=&quot;content_blocks&quot; class=&quot;content&quot;&gt;&lt;/div&gt;
 &lt;!-- Inserted this line: --&gt;
-&lt;pre id=&quot;content_zig&quot; class=&quot;content prettyprint lang-zig&quot;&gt;&lt;/pre&gt;</code></pre></div>
+&lt;pre id=&quot;content_zig&quot; class=&quot;content prettyprint lang-zig&quot;&gt;&lt;/pre&gt;
+</code></pre></div>
 <p><a href="https://github.com/lupyuen3/blockly-zig-nuttx/pull/1/files#diff-dcf2ffe98d7d8b4a0dd7b9f769557dbe8c9e0e726236ef229def25c956a43d8f">(See the changes)</a></p>
 <p>We’ll see the Zig Tab like this…</p>
 <p><a href="https://lupyuen3.github.io/blockly-zig-nuttx/demos/code/">lupyuen3.github.io/blockly-zig-nuttx/demos/code</a></p>
@@ -770,7 +803,8 @@ math.js
 procedures.js
 text.js
 variables.js  
-variables_dynamic.js</code></pre></div>
+variables_dynamic.js
+</code></pre></div>
 <p><a href="https://github.com/lupyuen3/blockly-zig-nuttx/commit/ba968942c6ee55937ca554e1d290d8d563fa0b78">(See the copied files)</a></p>
 <p>Edit <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/dart.js">generators/zig.js</a> and all files in <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/generators/zig">generators/zig</a>.</p>
 <p>Change all “<code>Dart</code>” to “<code>Zig</code>”, remember to <strong>preserve case</strong>.</p>
@@ -780,7 +814,8 @@ variables_dynamic.js</code></pre></div>
 <p>Let’s <strong>load our Zig Code Generator</strong> in Blockly…</p>
 <p>Add the Zig Code Generator to <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/demos/code/index.html">demos/code/index.html</a>…</p>
 <div class="example-wrap"><pre class="language-html"><code>&lt;!--  Load Zig Code Generator  --&gt;
-&lt;script src=&quot;../../zig_compressed.js&quot;&gt;&lt;/script&gt;</code></pre></div>
+&lt;script src=&quot;../../zig_compressed.js&quot;&gt;&lt;/script&gt;
+</code></pre></div>
 <p><a href="https://github.com/lupyuen3/blockly-zig-nuttx/pull/1/files#diff-dcf2ffe98d7d8b4a0dd7b9f769557dbe8c9e0e726236ef229def25c956a43d8f">(See the changes)</a></p>
 <p>Enable the Zig Code Generator in <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/demos/code/code.js">demos/code/code.js</a>…</p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Inserted `zig`...
@@ -802,7 +837,8 @@ Code.renderContent = function() {
     jsonTextarea.focus();
   // Inserted this...
   } else if (content.id == &#39;content_zig&#39;) {
-    Code.attemptCodeGeneration(Blockly.Zig);</code></pre></div>
+    Code.attemptCodeGeneration(Blockly.Zig);
+</code></pre></div>
 <p><a href="https://github.com/lupyuen3/blockly-zig-nuttx/pull/1/files#diff-d72873b861dee958e5d443c919726dd856de594bd56b1e73d8948a7719163553">(See the changes)</a></p>
 <p>Add our Code Generator to the Build Task: <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/scripts/gulpfiles/build_tasks.js#L98-L139">scripts/gulpfiles/build_tasks.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code> const chunks = [
@@ -812,33 +848,35 @@ Code.renderContent = function() {
       entry: &#39;generators/zig/all.js&#39;,
       reexport: &#39;Blockly.Zig&#39;,
    }
- ];</code></pre></div>
+ ];
+</code></pre></div>
 <p><a href="https://github.com/lupyuen3/blockly-zig-nuttx/pull/1/files#diff-a9a5784f43ce15ca76bb3e99eb6625c3ea15381e20eac6f7527ecbcb2945ac14">(See the changes)</a></p>
 <p>Now we compile our Zig Code Generator…</p>
 <h1 id="appendix-build-blockly"><a href="#appendix-build-blockly">16 Appendix: Build Blockly</a></h1>
 <p>Blockly builds fine with Linux, macOS and WSL. (But not plain old Windows CMD)</p>
 <p>To build Blockly with the Zig Code Generator…</p>
-<div class="example-wrap"><pre class="language-bash"><code># Download Blockly and install the dependencies
+<div class="example-wrap"><pre class="language-bash"><code>## Download Blockly and install the dependencies
 git clone --recursive https://github.com/lupyuen3/blockly-zig-nuttx
 cd blockly-zig-nuttx
 npm install
 
-# Build Blockly and the Code Generators.
-# Run these steps when we change the Zig Code Generator.
+## Build Blockly and the Code Generators.
+## Run these steps when we change the Zig Code Generator.
 npm run build
 npm run publish
 
-# When prompted &quot;Is this the correct branch?&quot;,
-# press N
+## When prompted &quot;Is this the correct branch?&quot;,
+## press N
 
-# Instead of &quot;npm run publish&quot; (which can be slow), we may do this...
-# cp build/*compressed* .
+## Instead of &quot;npm run publish&quot; (which can be slow), we may do this...
+## cp build/*compressed* .
 
-# For WSL: We can copy the generated files to c:\blockly-zig-nuttx for testing on Windows
-# cp *compressed*      /mnt/c/blockly-zig-nuttx
-# cp demos/code/*.*    /mnt/c/blockly-zig-nuttx/demos/code
-# cp generators/zig.js /mnt/c/blockly-zig-nuttx/generators
-# cp generators/zig/*  /mnt/c/blockly-zig-nuttx/generators/zig</code></pre></div>
+## For WSL: We can copy the generated files to c:\blockly-zig-nuttx for testing on Windows
+## cp *compressed*      /mnt/c/blockly-zig-nuttx
+## cp demos/code/*.*    /mnt/c/blockly-zig-nuttx/demos/code
+## cp generators/zig.js /mnt/c/blockly-zig-nuttx/generators
+## cp generators/zig/*  /mnt/c/blockly-zig-nuttx/generators/zig
+</code></pre></div>
 <p>This compiles and updates the Zig Code Generator in <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/zig_compressed.js">zig_compressed.js</a> and <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/zig_compressed.js.map">zig_compressed.js.map</a></p>
 <p>If we’re using VSCode, here’s the Build Task: <a href="https://github.com/lupyuen3/blockly-zig-nuttx/blob/master/.vscode/tasks.json">.vscode/tasks.json</a></p>
 <p>Finally we test our compiled Code Generator…</p>
