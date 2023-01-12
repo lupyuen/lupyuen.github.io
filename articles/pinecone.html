@@ -269,8 +269,7 @@
 </li>
 <li>
 <p>Download the <strong>BL602 IoT SDK</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>git clone --recursive https://github.com/bouffalolab/bl_iot_sdk
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>git clone --recursive https://github.com/bouffalolab/bl_iot_sdk</code></pre></div></li>
 <li>
 <p>Launch Dev Cube for Windows, located at <code>bl_iot_sdk/tools/flash_tool/BLDevCube.exe</code></p>
 </li>
@@ -304,16 +303,13 @@
 </li>
 <li>
 <p>✅ <strong>Partition Table</strong>: Click <code>Browse</code> and select from the PineCone SDK…</p>
-<div class="example-wrap"><pre class="language-text"><code>bl_iot_sdk/tools/flash_tool/bl602/partition/partition_cfg_2M.toml
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>bl_iot_sdk/tools/flash_tool/bl602/partition/partition_cfg_2M.toml</code></pre></div></li>
 <li>
 <p>✅ <strong>Boot2 Bin</strong>: Click <code>Browse</code> and select from the PineCone SDK…</p>
-<div class="example-wrap"><pre class="language-text"><code>bl_iot_sdk/image_conf/bl602/blsp_boot2_release.bin
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>bl_iot_sdk/image_conf/bl602/blsp_boot2_release.bin</code></pre></div></li>
 <li>
 <p>✅ <strong>Firmware Bin</strong>: Click <code>Browse</code> and select from the PineCone Sample Firmware <code>sdk_app_helloworld.bin</code>…</p>
-<div class="example-wrap"><pre class="language-text"><code>customer_app.zip/sdk_app_helloworld/build_out/sdk_app_helloworld.bin
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>customer_app.zip/sdk_app_helloworld/build_out/sdk_app_helloworld.bin</code></pre></div>
 <p>This is the <a href="https://github.com/pine64/bl_iot_sdk/blob/master/customer_app/sdk_app_helloworld"><strong>“Hello World”</strong></a> sample firmware that we’ll be flashing.</p>
 <p>The three files selected should NOT have any spaces in their pathnames.</p>
 <p><a href="https://lupyuen.github.io/images/pinecone-flash.png">See the screenshot above</a></p>
@@ -324,8 +320,7 @@
 <p>Click <code>Create &amp; Program</code></p>
 <p>This flashes the firmware to PineCone. We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>Verify success
-Program Finished
-</code></pre></div>
+Program Finished</code></pre></div>
 <p><a href="https://lupyuen.github.io/images/pinecone-flash.png">See the screenshot</a></p>
 </li>
 <li>
@@ -339,8 +334,7 @@ Program Finished
 <p>Our firmware starts to run. We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>[helloworld]   start
 [helloworld]   helloworld
-[helloworld]   end
-</code></pre></div>
+[helloworld]   end</code></pre></div>
 <p><a href="https://lupyuen.github.io/images/pinecone-helloworld.png">See the screenshot</a></p>
 </li>
 </ol>
@@ -383,15 +377,13 @@ Program Finished
 <li>
 <p>Download the <strong>BL602 IoT SDK</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>git clone --recursive https://github.com/pine64/bl_iot_sdk
-cd bl_iot_sdk
-</code></pre></div></li>
+cd bl_iot_sdk</code></pre></div></li>
 <li>
 <p>Follow the <a href="https://github.com/pine64/bl_iot_sdk/blob/master/README.rst"><strong>build instructions for Linux, Windows and macOS</strong></a> like so…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  TODO: Change this to the full path of bl_iot_sdk
+<div class="example-wrap"><pre class="language-bash"><code>#  TODO: Change this to the full path of bl_iot_sdk
 export BL60X_SDK_PATH=~/bl_iot_sdk
 export CONFIG_CHIP_NAME=BL602
-make
-</code></pre></div>
+make</code></pre></div>
 <p><a href="https://lupyuen.github.io/images/pinecone-build.png">(Here’s the output)</a></p>
 </li>
 <li>

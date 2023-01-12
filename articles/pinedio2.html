@@ -172,35 +172,32 @@
 </li>
 <li>
 <p>Enter these commands to <strong>download, configure and build</strong> NuttX…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  Download NuttX for PineDio Stack
+<div class="example-wrap"><pre class="language-bash"><code>#  Download NuttX for PineDio Stack
 mkdir nuttx
 cd nuttx
 git clone --recursive --branch pinedio https://github.com/lupyuen/nuttx nuttx
 git clone --recursive --branch pinedio https://github.com/lupyuen/nuttx-apps apps
 
-##  Configure NuttX for PineDio Stack
+#  Configure NuttX for PineDio Stack
 cd nuttx
 ./tools/configure.sh bl602evb:pinedio
 
-##  Build NuttX for PineDio Stack
-make
-</code></pre></div></li>
+#  Build NuttX for PineDio Stack
+make</code></pre></div></li>
 <li>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>LD: nuttx
 CP: nuttx.hex
-CP: nuttx.bin
-</code></pre></div>
+CP: nuttx.bin</code></pre></div>
 <p>We have successfully built the NuttX Firmware for PineDio Stack!</p>
 <p><a href="https://gist.github.com/lupyuen/3ff5b3a5b6c160c76d56e33c35745ef7">(See the WSL Build Log)</a></p>
 <p><a href="https://gist.github.com/lupyuen/5a043443b58447e7a2ec6e8832ee1310">(See the macOS Build Log)</a></p>
 </li>
 <li>
 <p><strong>For WSL:</strong> Copy the NuttX Firmware to the <strong>c:\blflash</strong> directory in the Windows File System…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  /mnt/c/blflash refers to c:\blflash in Windows
+<div class="example-wrap"><pre class="language-bash"><code>#  /mnt/c/blflash refers to c:\blflash in Windows
 mkdir /mnt/c/blflash
-cp nuttx.bin /mnt/c/blflash
-</code></pre></div>
+cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p>We’ll flash PineDio Stack with Windows Command Prompt (CMD) because we need the COM port.</p>
 </li>
 </ol>
@@ -293,26 +290,24 @@ cp nuttx.bin /mnt/c/blflash
 </ol>
 <p>Enter these commands to flash <strong>nuttx.bin</strong> to PineDio Stack…</p>
 <p>(<strong>For WSL:</strong> Do this in Windows Command Prompt CMD instead of WSL. blflash needs to access the COM port)</p>
-<div class="example-wrap"><pre class="language-bash"><code>## For Linux: Change &quot;/dev/ttyUSB0&quot; to the PineDio Stack Serial Port
+<div class="example-wrap"><pre class="language-bash"><code># For Linux: Change &quot;/dev/ttyUSB0&quot; to the PineDio Stack Serial Port
 blflash flash nuttx.bin \
   --port /dev/ttyUSB0 
 
-## For macOS: Change &quot;/dev/tty.usbserial-1410&quot; to the PineDio Stack Serial Port
+# For macOS: Change &quot;/dev/tty.usbserial-1410&quot; to the PineDio Stack Serial Port
 blflash flash nuttx.bin \
   --port /dev/tty.usbserial-1410 \
   --initial-baud-rate 230400 \
   --baud-rate 230400
 
-## For Windows: Change &quot;COM5&quot; to the PineDio Serial Port
-blflash flash c:\blflash\nuttx.bin --port COM5
-</code></pre></div>
+# For Windows: Change &quot;COM5&quot; to the PineDio Serial Port
+blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>Sending eflash_loader...
 Erase flash addr: 10000 size: 565200
 Program flash...
 Program done 27.434715128s 20.12KiB/s
-Success
-</code></pre></div>
+Success</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Flash Log)</a></p>
 <p>NuttX has been flashed to PineDio Stack!</p>
 <p><em>Will PineDio Stack get bricked if we flash bad firmware?</em></p>
@@ -334,22 +329,19 @@ Success
 </ol>
 <p>After restarting, connect a <strong>Serial Terminal</strong> to PineDio Stack at <strong>2 Mbps</strong>…</p>
 <p><strong>For Linux:</strong> Use <strong>screen</strong></p>
-<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000</code></pre></div>
 <p><strong>For macOS:</strong> Use CoolTerm <a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(See this)</a></p>
 <p><strong>For Windows:</strong> Use putty <a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(See this)</a></p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal <a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(See this)</a></p>
 <p>Press Enter to reveal the <strong>NuttX Shell</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
-nsh&gt;
-</code></pre></div>
+nsh&gt;</code></pre></div>
 <p>Congratulations NuttX is now running on PineDio Stack!</p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-boot4.jpg" alt="PineDio Stack boots with Pink Screen" /></p>
 <h1 id="run-nuttx"><a href="#run-nuttx">6 Run NuttX</a></h1>
 <p>NuttX boots with a <a href="https://lupyuen.github.io/articles/st7789#render-pink-screen"><strong>Pink Screen</strong></a>. (Pic above)</p>
 <p>In the NuttX Shell, enter this command…</p>
-<div class="example-wrap"><pre class="language-bash"><code>ls /dev
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div>
 <p>We see a list of <strong>Device Drivers</strong> that were loaded by NuttX. (Pic below)</p>
 <p>Now that NuttX is up, let’s run some NuttX Apps!</p>
 <blockquote>
@@ -363,8 +355,7 @@ nsh&gt;
 </blockquote>
 <h1 id="nuttx-apps"><a href="#nuttx-apps">7 NuttX Apps</a></h1>
 <p>In the NuttX Shell, enter this command…</p>
-<div class="example-wrap"><pre class="language-bash"><code>help
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>help</code></pre></div>
 <p>(“<strong><code>?</code></strong>” works too)</p>
 <p>We see a list of <strong>NuttX Apps</strong> that have been installed…</p>
 <div class="example-wrap"><pre class="language-text"><code>Builtin Apps:
@@ -374,11 +365,9 @@ nsh&gt;
   gpio            sensortest    tinycbor_test
   hello           spi
   i2c             spi_test
-  ikea_air_quality_sensor
-</code></pre></div>
+  ikea_air_quality_sensor</code></pre></div>
 <p>Enter this to run the <strong>LVGL Test App</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>lvgltest
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>lvgltest</code></pre></div>
 <p>Follow the prompts to tap the screen and calibrate the Touch Panel.</p>
 <p>After calibrating, this appears on the screen: <em>“Hello PineDio Stack!”</em> with a funky blue-green box…</p>
 <p><img src="https://lupyuen.github.io/images/pinedio2-title.jpg" alt="LVGL Test App on PineDio Stack" /></p>
@@ -415,12 +404,10 @@ static void create_widgets(void) {
   //  Align the label to the center of the screen, shift 30 pixels up
   lv_obj_align(label, NULL, LV_ALIGN_CENTER, 0, -30);
 
-  //  Omitted: Render a rounded rectangle with LVGL Canvas
-</code></pre></div>
+  //  Omitted: Render a rounded rectangle with LVGL Canvas</code></pre></div>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/lvgltest.c#L110-L198">(Source)</a></p>
 <p>To render our own text and graphics, edit this source file and change the code above…</p>
-<div class="example-wrap"><pre class="language-text"><code>apps/examples/lvgltest/lvgltest.c
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>apps/examples/lvgltest/lvgltest.c</code></pre></div>
 <p>Then rebuild (“<code>make</code>”) and reflash (“<code>blflash</code>”) NuttX to PineDio Stack.</p>
 <p><a href="https://docs.lvgl.io/7.11/get-started/quick-overview.html#learn-the-basics">(More about LVGL)</a></p>
 <p><em>So touchscreen apps are supported on PineDio Stack?</em></p>
@@ -643,8 +630,7 @@ includes a <strong>Secure Chip ATECC608A</strong>. We talk about it here…</p>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L43-L127">boards/risc-v/bl602/bl602evb/include/board.h</a></p>
 <h1 id="appendix-bundled-features"><a href="#appendix-bundled-features">13 Appendix: Bundled Features</a></h1>
 <p>Earlier we ran this command to <strong>configure the NuttX Build</strong> for PineDio Stack BL604…</p>
-<div class="example-wrap"><pre class="language-bash"><code>./tools/configure.sh bl602evb:pinedio
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>./tools/configure.sh bl602evb:pinedio</code></pre></div>
 <p>The above command bundles the following <strong>NuttX Drivers, Libraries and Apps</strong> into NuttX for PineDio Stack…</p>
 <ul>
 <li>
@@ -962,8 +948,7 @@ includes a <strong>Secure Chip ATECC608A</strong>. We talk about it here…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; gpio -t 8 -w 1 /dev/gpio12
 Driver: /dev/gpio12
   Interrupt pin: Value=1
-  Verify:        Value=1
-</code></pre></div>
+  Verify:        Value=1</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander#test-push-button">(Source)</a></p>
 </li>
 </ul>
@@ -994,20 +979,18 @@ Driver: /dev/gpio12
 </li>
 </ul>
 <p>We control the options through the <strong>NuttX Build Configuration</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Configure build for PineDio Stack BL604
+<div class="example-wrap"><pre class="language-bash"><code># Configure build for PineDio Stack BL604
 ./tools/configure.sh bl602evb:pinedio
 
-## Configure build for PineCone BL602
-./tools/configure.sh bl602evb:pinecone
-</code></pre></div>
+# Configure build for PineCone BL602
+./tools/configure.sh bl602evb:pinecone</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig">(See the PineDio Stack config)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx/blob/master/boards/risc-v/bl602/bl602evb/configs/pinecone/defconfig">(See the PineCone config)</a></p>
 <p>This check for PineDio Stack should probably be improved: <a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L147-L151">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* Identify as PineDio Stack if both ST7789 and CST816S are present */
 #if defined(CONFIG_LCD_ST7789) &amp;&amp; defined(CONFIG_INPUT_CST816S)
 #define PINEDIO_STACK_BL604
-#endif /* CONFIG_LCD_ST7789 &amp;&amp; CONFIG_INPUT_CST816S */
-</code></pre></div>
+#endif /* CONFIG_LCD_ST7789 &amp;&amp; CONFIG_INPUT_CST816S */</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c">(<strong>PINEDIO_STACK_BL604</strong> enables the SPI Device Table in the SPI Driver)</a></p>
 <p><img src="https://lupyuen.github.io/images/auto-merge.jpg" alt="Merge Updates From NuttX" /></p>
 <p><a href="https://lupyuen.github.io/articles/auto#merge-updates-from-nuttx">(Source)</a></p>
@@ -1075,8 +1058,7 @@ Driver: /dev/gpio12
 <li><a href="https://lupyuen.github.io/articles/sx1262"><strong>“LoRa SX1262 on Apache NuttX OS”</strong></a></li>
 </ul>
 <p>To test LoRa on PineDio Stack, edit <a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L30-L72"><strong>sx1262_test_main.c</strong></a> at…</p>
-<div class="example-wrap"><pre class="language-text"><code>apps/examples/sx1262_test/sx1262_test_main.c
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>apps/examples/sx1262_test/sx1262_test_main.c</code></pre></div>
 <p>And update the <strong>LoRa Parameters</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>/// TODO: We are using LoRa Frequency 923 MHz 
 /// for Singapore. Change this for your region.
@@ -1102,8 +1084,7 @@ Driver: /dev/gpio12
 
 #define LORAPING_TX_TIMEOUT_MS              3000    /* ms */
 #define LORAPING_RX_TIMEOUT_MS              10000    /* ms */
-#define LORAPING_BUFFER_SIZE                64      /* LoRa message size */
-</code></pre></div>
+#define LORAPING_BUFFER_SIZE                64      /* LoRa message size */</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L30-L72">(Source)</a></p>
 <p>The parameters are explained here…</p>
 <ul>
@@ -1116,13 +1097,11 @@ Driver: /dev/gpio12
 #define SEND_MESSAGE
 ...
 //  Uncomment to receive a LoRa message
-#define RECEIVE_MESSAGE
-</code></pre></div>
+#define RECEIVE_MESSAGE</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-apps/blob/sx1262/examples/sx1262_test/sx1262_test_main.c#L94-L143">(Source)</a></p>
 <p>Rebuild (“<code>make</code>”) and reflash (“<code>blflash</code>”) NuttX to PineDio Stack.</p>
 <p>In the NuttX Shell, enter this to run the <strong>LoRa Test App</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>sx1262_test
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>sx1262_test</code></pre></div>
 <p>If we’re sending a LoRa Message on PineDio Stack, we’ll see the message received by the <strong>LoRa Receiver Device</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/sx1262#run-the-firmware-1"><strong>“Run the Firmware”</strong></a></li>
@@ -1139,8 +1118,7 @@ Driver: /dev/gpio12
 <li><a href="https://lupyuen.github.io/articles/lorawan3"><strong>“LoRaWAN on Apache NuttX OS”</strong></a></li>
 </ul>
 <p>To test LoRaWAN on PineDio Stack, we edit <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L65-L115"><strong>se-identity.h</strong></a> at…</p>
-<div class="example-wrap"><pre class="language-text"><code>nuttx/libs/liblorawan/src/peripherals/soft-se/se-identity.h
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>nuttx/libs/liblorawan/src/peripherals/soft-se/se-identity.h</code></pre></div>
 <p>And update the <strong>LoRaWAN Parameters</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  End-device IEEE EUI (big endian)
 #define LORAWAN_DEVICE_EUI { 0x4b, 0xc1, 0x5e, 0xe7, 0x37, 0x7b, 0xb1, 0x5b }
@@ -1165,22 +1143,19 @@ Driver: /dev/gpio12
        */ \
       .KeyID    = NWK_KEY, \
       .KeyValue = { 0xaa, 0xff, 0xad, 0x5c, 0x7e, 0x87, 0xf6, 0x4d, 0xe3, 0xf0, 0x87, 0x32, 0xfc, 0x1d, 0xd2, 0x5d }, \
-    }, \
-</code></pre></div>
+    }, \</code></pre></div>
 <p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L65-L115">(Source)</a></p>
 <p>The parameters are explained here…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lorawan3#device-eui-join-eui-and-app-key"><strong>“Device EUI, Join EUI and App Key”</strong></a></li>
 </ul>
 <p>Then edit <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L39-L45"><strong>lorawan_test_main.c</strong></a> at…</p>
-<div class="example-wrap"><pre class="language-text"><code>apps/examples/lorawan_test/lorawan_test_main.c
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>apps/examples/lorawan_test/lorawan_test_main.c</code></pre></div>
 <p>And set the <strong>LoRaWAN Frequency</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>#ifndef ACTIVE_REGION
   #warning &quot;No active region defined, LORAMAC_REGION_AS923 will be used as default.&quot;
   #define ACTIVE_REGION LORAMAC_REGION_AS923
-#endif
-</code></pre></div>
+#endif</code></pre></div>
 <p><a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L39-L45">(Source)</a></p>
 <p>Which is explained here…</p>
 <ul>
@@ -1189,26 +1164,22 @@ Driver: /dev/gpio12
 <p>Remember to <strong>disable all Info Logging</strong> because it affects the LoRaWAN Timers.</p>
 <p>Rebuild (“<code>make</code>”) and reflash (“<code>blflash</code>”) NuttX to PineDio Stack.</p>
 <p>In the NuttX Shell, enter this to run the <strong>LoRaWAN Test App</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>lorawan_test
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>lorawan_test</code></pre></div>
 <p>We should see this…</p>
 <div class="example-wrap"><pre class="language-text"><code>init_entropy_pool
-temperature = 31.600670 Celsius
-</code></pre></div>
+temperature = 31.600670 Celsius</code></pre></div>
 <p>The app begins by reading BL604’s <strong>Internal Temperature Sensor</strong> to seed the Entropy Pool for the Random Number Generator. <a href="https://lupyuen.github.io/articles/lorawan3#lorawan-nonce">(Here’s why)</a></p>
 <p>Next it sends a <strong>Join Network Request</strong> to the LoRaWAN Gateway (like ChirpStack)…</p>
 <div class="example-wrap"><pre class="language-text"><code>=========== MLME-Request ============
               MLME_JOIN              
 =====================================
-STATUS      : OK
-</code></pre></div>
+STATUS      : OK</code></pre></div>
 <p>Then the app receives the <strong>Join Accept Response</strong> from the LoRaWAN Gateway…</p>
 <div class="example-wrap"><pre class="language-text"><code>=========== MLME-Confirm ============
 STATUS      : OK
 ===========   JOINED     ============
 DevAddr     :  01097710
-DATA RATE   : DR_2
-</code></pre></div>
+DATA RATE   : DR_2</code></pre></div>
 <p>After joining the network, the app sends a <strong>Data Packet</strong> <em>(“Hi NuttX”)</em> to the LoRaWAN Gateway…</p>
 <div class="example-wrap"><pre class="language-text"><code>=========== MCPS-Confirm ============
 STATUS      : OK
@@ -1220,8 +1191,7 @@ TX DATA     : UNCONFIRMED
 DATA RATE   : DR_3
 U/L FREQ    : 923200000
 TX POWER    : 0
-CHANNEL MASK: 0003
-</code></pre></div>
+CHANNEL MASK: 0003</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinedio-stack-nuttx#test-lorawan">(See the complete log)</a></p>
 <p>We should see <strong>“Hi NuttX”</strong> at the LoRaWAN Gateway (like ChirpStack)…</p>
 <ul>
@@ -1257,16 +1227,14 @@ CHANNEL MASK: 0003
 <div class="example-wrap"><pre class="language-json"><code>{ 
   &quot;t&quot;: 1234, 
   &quot;l&quot;: 2345 
-}
-</code></pre></div>
+}</code></pre></div>
 <p>(Located in a Greenhouse perhaps)</p>
 <p>We could transmit <strong>19 bytes of JSON</strong>. But there’s a more compact way to do it….</p>
 <p><a href="https://en.wikipedia.org/wiki/CBOR"><strong>Concise Binary Object Representation (CBOR)</strong></a>, which works like a binary, compressed form of JSON.</p>
 <p>And we need only <strong>11 bytes of CBOR</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/cbor2-title.jpg" alt="Encoding Sensor Data with CBOR" /></p>
 <p>To watch CBOR in action, enter this in the NuttX Shell…</p>
-<div class="example-wrap"><pre class="language-bash"><code>tinycbor_test
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>tinycbor_test</code></pre></div>
 <p>We’ll see the <strong>encoded CBOR data</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>test_cbor2: Encoding { &quot;t&quot;: 1234, &quot;l&quot;: 2345 }
 CBOR Output: 11 bytes
@@ -1280,8 +1248,7 @@ CBOR Output: 11 bytes
   0x6c
   0x19
   0x09
-  0x29
-</code></pre></div>
+  0x29</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/deb752ac79c7b0ad51c6da6889660c27">(See the complete log)</a></p>
 <p>To <strong>encode CBOR data</strong> in our own apps, check out this article…</p>
 <ul>
@@ -1420,8 +1387,7 @@ static const int32_t bl602_spi_device_table[] =
 
   -1, 1, BOARD_SPI_CS,  /* Swap MISO/MOSI */
 };
-#endif  /* CONFIG_BL602_SPI0 */
-</code></pre></div>
+#endif  /* CONFIG_BL602_SPI0 */</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L112-L133">(Source)</a></p>
 <p>We’ll see the <code>BOARD_*</code> constants in the next section.</p>
 <p>The columns of the SPI Device Table are defined like so…</p>
@@ -1430,8 +1396,7 @@ static const int32_t bl602_spi_device_table[] =
 #define DEVID_COL 0  /* SPI Device ID */
 #define SWAP_COL  1  /* 1 if MISO/MOSI should be swapped, else 0 */
 #define CS_COL    2  /* SPI Chip Select Pin */
-#define NUM_COLS  3  /* Number of columns in SPI Device Table */
-</code></pre></div>
+#define NUM_COLS  3  /* Number of columns in SPI Device Table */</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L36-L41">(Source)</a></p>
 <p>We created these functions for <strong>accessing the SPI Device Table</strong>…</p>
 <ul>
@@ -1480,8 +1445,7 @@ static const int32_t bl602_spi_device_table[] =
 
 #define BOARD_FLASH_DEVID 2  /* SPI Device ID */
 #define BOARD_FLASH_SWAP  1  /* Swap MISO/MOSI */
-#define BOARD_FLASH_CS (GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO | GPIO_PIN14)
-</code></pre></div>
+#define BOARD_FLASH_CS (GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO | GPIO_PIN14)</code></pre></div>
 <p>(GPIO, UART and I2C Pins are also defined in the file)</p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2#appendix-gpio-assignment">(See the GPIO Assignment)</a></p>
 <p>Now that we have defined the SPI Device Table in NuttX, let’s use it.</p>
@@ -1536,8 +1500,7 @@ static void bl602_spi_select(struct spi_dev_s *dev, uint32_t devid,
       bl602_configgpio(BOARD_SPI_MOSI);
     }
 #endif
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L439-L471">(Source)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216">(<strong>bl602_gpiowrite</strong> is defined in the BL602 GPIO Driver)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140">(<strong>bl602_configgpio</strong> also comes from the BL602 GPIO Driver)</a></p>
@@ -1596,8 +1559,7 @@ static int bl602_spi_cmddata(struct spi_dev_s *dev,
 
   return -ENODEV;
 }
-#endif
-</code></pre></div>
+#endif</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L726-L774">(Source)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140">(<strong>bl602_configgpio</strong> is defined in the BL602 GPIO Driver)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216">(<strong>bl602_gpiowrite</strong> also comes from the BL602 GPIO Driver)</a></p>
@@ -1618,8 +1580,7 @@ static void bl602_spi_init(struct spi_dev_s *dev)
   /* deselect all spi devices */
 
   bl602_spi_deselect_devices();
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_spi.c#L1191-L1240">(Source)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L178-L208">(<strong>bl602_spi_deselect_devices</strong> is defined here)</a></p>
 <h2 id="test-shared-spi-bus"><a href="#test-shared-spi-bus">16.8 Test Shared SPI Bus</a></h2>
@@ -1630,8 +1591,7 @@ static void bl602_spi_init(struct spi_dev_s *dev)
 <p>We boot PineDio Stack, which calls the ST7789 Driver to render a Pink Screen…</p>
 <p><em>(Our SPI Driver unswaps MISO / MOSI, flips ST7789 Chip Select)</em></p>
 <div class="example-wrap"><pre class="language-text"><code>board_lcd_getdev: SPI port 0 bound to LCD 0
-st7789_getplaneinfo: planeno: 0 bpp: 16
-</code></pre></div>
+st7789_getplaneinfo: planeno: 0 bpp: 16</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinedio-stack-nuttx#test-shared-spi-bus">(See the complete log)</a></p>
 </li>
 <li>
@@ -1641,8 +1601,7 @@ st7789_getplaneinfo: planeno: 0 bpp: 16
 ...
 Read Register 8: received
 a2 a2 a2 a2 80
-SX1262 Register 8 is 0x80
-</code></pre></div>
+SX1262 Register 8 is 0x80</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinedio-stack-nuttx#test-shared-spi-bus">(See the complete log)</a></p>
 <p>SX1262 returns Register Value <code>0x80</code>, which is correct!</p>
 </li>
@@ -1657,8 +1616,7 @@ lcddev_init: VideoInfo:
   yres: 240
   nplanes: 1
 ...
-monitor_cb: 57600 px refreshed in 1110 ms
-</code></pre></div>
+monitor_cb: 57600 px refreshed in 1110 ms</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinedio-stack-nuttx#test-shared-spi-bus">(See the complete log)</a></p>
 <p>Which renders the LVGL Demo Screen correctly!</p>
 </li>
@@ -1709,14 +1667,12 @@ monitor_cb: 57600 px refreshed in 1110 ms
   #define CONFIG_LCD_ST7789_SPIMODE SPIDEV_MODE0
   #endif   /* CONFIG_LCD_ST7789_SPIMODE */
 
-#endif   /* CONFIG_BL602_SPI0 */
-</code></pre></div>
+#endif   /* CONFIG_BL602_SPI0 */</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/drivers/lcd/st7789.c#L42-L66">(Source)</a></p>
 <p>Note that we have configured PineDio Stack to talk to SX1262 at <strong>SPI Mode 1</strong> via the SPI Test Driver “<strong>/dev/spitest0</strong>”. <a href="https://lupyuen.github.io/articles/spi2#appendix-spi-mode-quirk">(See this)</a></p>
 <h2 id="st7789-spi-frequency"><a href="#st7789-spi-frequency">16.10 ST7789 SPI Frequency</a></h2>
 <p>We have configured the <strong>SPI Frequency</strong> of the ST7789 Display to <strong>40 MHz</strong>, the maximum supported by BL604…</p>
-<div class="example-wrap"><pre class="language-text"><code>CONFIG_LCD_ST7789_FREQUENCY=4000000
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>CONFIG_LCD_ST7789_FREQUENCY=4000000</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/configs/pinedio/defconfig#L580">(Source)</a></p>
 <p>We configured the SPI Frequency in menuconfig at…</p>
 <ul>

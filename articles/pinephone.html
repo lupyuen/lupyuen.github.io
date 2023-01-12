@@ -128,15 +128,13 @@
 <p>We begin by importing the <a href="https://github.com/zenith391/zgt"><strong>zgt GUI Library</strong></a> and <a href="https://ziglang.org/documentation/master/#Zig-Standard-Library"><strong>Zig Standard Library</strong></a> into our app: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L1-L4">main.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Import the zgt library and Zig Standard Library
 const zgt = @import(&quot;zgt&quot;);
-const std = @import(&quot;std&quot;);
-</code></pre></div>
+const std = @import(&quot;std&quot;);</code></pre></div>
 <p>The Zig Standard Library has all kinds of <strong>Algos, Data Structures and Definitions</strong>.</p>
 <p><a href="https://ziglang.org/documentation/master/std/">(More about the Zig Standard Library)</a></p>
 <h2 id="main-function"><a href="#main-function">1.2 Main Function</a></h2>
 <p>Next we define the <strong>Main Function</strong> for our app: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L4-L13">main.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Main Function for our app
-pub fn main() !void {
-</code></pre></div>
+pub fn main() !void {</code></pre></div>
 <p>“<strong><code>!void</code></strong>” is the Return Type for our Main Function…</p>
 <ul>
 <li>
@@ -153,8 +151,7 @@ pub fn main() !void {
   try zgt.backend.init();
 
   // Fetch the Window
-  var window = try zgt.Window.init();
-</code></pre></div>
+  var window = try zgt.Window.init();</code></pre></div>
 <p><em>Why the “<code>try</code>”?</em></p>
 <p>Remember that our Main Function can <strong>return an Error</strong>.</p>
 <p>When <a href="https://ziglang.org/documentation/master/#try">“<strong><code>try</code></strong>”</a> detects an Error in the Called Function (like “zgt.backend.init”), it stops the Main Function and returns the Error to the caller.</p>
@@ -184,8 +181,7 @@ pub fn main() !void {
           .label   = &quot;Run&quot;,  
           .onclick = buttonClicked 
         }),
-      }),  // End of Row
-</code></pre></div>
+      }),  // End of Row</code></pre></div>
 <p>This code creates a Row of Widgets: <strong>Save Button</strong> and <strong>Run Button</strong>.</p>
 <p>(We’ll talk about <strong>buttonClicked</strong> in a while)</p>
 <p>Next we add an <strong>Editable Text Area</strong> that will fill up the rest of the Column…</p>
@@ -200,8 +196,7 @@ pub fn main() !void {
 
       )  // End of Expanded
     })   // End of Column
-  );     // End of Window
-</code></pre></div>
+  );     // End of Window</code></pre></div>
 <p><em>What’s <code>.{ ... }</code>?</em></p>
 <p><code>.{ ... }</code> creates a Struct that matches the Struct Type expected by the Called Function (like “zgt.Button”).</p>
 <p>Thus this code…</p>
@@ -209,15 +204,13 @@ pub fn main() !void {
 zgt.Button(.{ 
   .label   = &quot;Save&quot;, 
   .onclick = buttonClicked 
-}),
-</code></pre></div>
+}),</code></pre></div>
 <p>Is actually the short form of…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Button with &quot;zgt.Button_Impl.Config&quot;
 zgt.Button(zgt.Button_Impl.Config { 
   .label   = &quot;Save&quot;, 
   .onclick = buttonClicked 
-}),
-</code></pre></div>
+}),</code></pre></div>
 <p>Because the function <strong>zgt.Button</strong> expects a Struct of type <strong>zgt.Button_Impl.Config</strong>.</p>
 <p><a href="https://ziglearn.org/chapter-1/#anonymous-structs">(<strong>Anonymous Struct</strong> is the proper name for <code>.{ ... }</code>)</a></p>
 <h2 id="show-the-window"><a href="#show-the-window">1.4 Show the Window</a></h2>
@@ -226,14 +219,12 @@ zgt.Button(zgt.Button_Impl.Config {
   window.resize(800, 600);
 
   // Show the Window
-  window.show();
-</code></pre></div>
+  window.show();</code></pre></div>
 <p>Finally we start the <strong>Event Loop</strong> that will handle Touch Events…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Run the Event Loop to handle Touch Events
   zgt.runEventLoop();
 
-}  // End of Main Function
-</code></pre></div>
+}  // End of Main Function</code></pre></div>
 <p>We’re done with our Main Function!</p>
 <p>Let’s talk about the Event Handling for our Buttons…</p>
 <p><img src="https://lupyuen.github.io/images/pinephone-code2a.png" alt="Handle the Buttons" /></p>
@@ -248,8 +239,7 @@ fn buttonClicked(button: *zgt.Button_Impl) !void {
     &quot;You clicked button with text {s}&quot;,
     .{ button.getLabel() }
   );
-}
-</code></pre></div>
+}</code></pre></div>
 <p>(<strong><code>*zgt.Button_Impl</code></strong> means “pointer to a Button_Impl Struct”)</p>
 <p><em>What’s std.log.info?</em></p>
 <p>That’s the Zig equivalent of <strong>printf</strong> for Formatted Printing.</p>
@@ -268,8 +258,7 @@ zgt.Button(.{
 zgt.Button(.{ 
   .label   = &quot;Run&quot;,  
   .onclick = buttonClicked 
-}),
-</code></pre></div>
+}),</code></pre></div>
 <p>This tells the zgt Library to call <strong>buttonClicked</strong> when the Save and Run Buttons are clicked.</p>
 <p>And that’s the complete code for our PinePhone App!</p>
 <p><a href="https://www.gtk.org/docs/getting-started/hello-world">(For comparison, here’s a GTK app coded in C)</a></p>
@@ -277,18 +266,17 @@ zgt.Button(.{
 <h1 id="install-zig-compiler"><a href="#install-zig-compiler">2 Install Zig Compiler</a></h1>
 <p>Let’s get ready to build our PinePhone App.</p>
 <p>On PinePhone, download the latest Zig Compiler <strong>zig-linux-aarch64</strong> from the <a href="https://ziglang.org/download"><strong>Zig Compiler Downloads</strong></a>, like so…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Download the Zig Compiler
+<div class="example-wrap"><pre class="language-bash"><code># Download the Zig Compiler
 curl -O -L https://ziglang.org/builds/zig-linux-aarch64-0.10.0-dev.2674+d980c6a38.tar.xz
 
-## Extract the Zig Compiler
+# Extract the Zig Compiler
 tar xf zig-linux-aarch64-0.10.0-dev.2674+d980c6a38.tar.xz
 
-## Add to PATH. TODO: Also add this line to ~/.bashrc
+# Add to PATH. TODO: Also add this line to ~/.bashrc
 export PATH=&quot;$HOME/zig-linux-aarch64-0.10.0-dev.2674+d980c6a38:$PATH&quot;
 
-## Test the Zig Compiler, should show &quot;0.10.0-dev.2674+d980c6a38&quot;
-zig version
-</code></pre></div>
+# Test the Zig Compiler, should show &quot;0.10.0-dev.2674+d980c6a38&quot;
+zig version</code></pre></div>
 <p>It’s OK to use SSH to run the above commands remotely on PinePhone.</p>
 <p>Or we may use <strong>VSCode Remote</strong> to run commands and edit source files on PinePhone. <a href="https://lupyuen.github.io/articles/pinephone#appendix-vscode-remote">(See this)</a></p>
 <p><img src="https://lupyuen.github.io/images/pinephone-compiler.jpg" alt="Zig Compiler on PinePhone" /></p>
@@ -298,45 +286,41 @@ zig version
 <p><a href="https://twitter.com/techneo/status/1539510460726509568">(Zig Compiler works with Mobian on PinePhone too)</a></p>
 <h1 id="install-zigmod"><a href="#install-zigmod">3 Install Zigmod</a></h1>
 <p>Download the latest Zigmod Package Manager <strong>zigmod-aarch64-linux</strong> from the <a href="https://github.com/nektro/zigmod/releases"><strong>Zigmod Releases</strong></a>, like so…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Download Zigmod Package Manager
+<div class="example-wrap"><pre class="language-bash"><code># Download Zigmod Package Manager
 curl -O -L https://github.com/nektro/zigmod/releases/download/r80/zigmod-aarch64-linux
 
-## Make it executable
+# Make it executable
 chmod +x zigmod-aarch64-linux 
 
-## Move it to the Zig Compiler directory, rename as zigmod
+# Move it to the Zig Compiler directory, rename as zigmod
 mv zigmod-aarch64-linux zig-linux-aarch64-0.10.0-dev.2674+d980c6a38/zigmod
 
-## Test Zigmod, should show &quot;zigmod r80 linux aarch64 musl&quot;
-zigmod
-</code></pre></div>
+# Test Zigmod, should show &quot;zigmod r80 linux aarch64 musl&quot;
+zigmod</code></pre></div>
 <p>We’ll run Zigmod in the next step to install the dependencies for zgt Library.</p>
 <h1 id="build-the-app"><a href="#build-the-app">4 Build The App</a></h1>
 <p>To build our Zig App on PinePhone…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Download the Source Code
+<div class="example-wrap"><pre class="language-bash"><code># Download the Source Code
 git clone --recursive https://github.com/lupyuen/zig-pinephone-gui
 cd zig-pinephone-gui
 
-## Install the dependencies for zgt library
+# Install the dependencies for zgt library
 pushd libs/zgt
 zigmod fetch
 popd
 
-## Build the app
-zig build
-</code></pre></div>
+# Build the app
+zig build</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/a44bc3faaf6d674d2b227aeb992ccfb8">(See the Build Log)</a></p>
 <p>If the build fails, check that the “<strong>gtk+-3.0</strong>” library is installed on PinePhone. <a href="https://github.com/zenith391/zgt/blob/master/build.zig#L9-L13">(Here’s why)</a></p>
 <p><a href="https://twitter.com/techneo/status/1539828828213616640">(Our app builds OK on Mobian after installing “gtk+-3.0”)</a></p>
 <h1 id="run-the-app"><a href="#run-the-app">5 Run The App</a></h1>
 <p>To run our Zig App on PinePhone, enter this…</p>
-<div class="example-wrap"><pre class="language-bash"><code>zig-out/bin/zig-pinephone-gui
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>zig-out/bin/zig-pinephone-gui</code></pre></div>
 <p>We should see the screen below.</p>
 <p>When we tap the <strong>Run</strong> and <strong>Save</strong> Buttons, we should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>info: You clicked button with text Run
-info: You clicked button with text Save
-</code></pre></div>
+info: You clicked button with text Save</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinephone#handle-the-buttons">(Because of this)</a></p>
 <p>Yep we have successfully built a Zig App for PinePhone with zgt! 🎉</p>
 <p><img src="https://lupyuen.github.io/images/pinephone-title.jpg" alt="PinePhone App with Zig and zgt" /></p>
@@ -366,8 +350,7 @@ info: You clicked button with text Save
 try zgt.backend.init();
 
 // Fetch the Window
-var window = try zgt.Window.init();
-</code></pre></div>
+var window = try zgt.Window.init();</code></pre></div>
 <p><a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/src/main.zig#L7-L13">(Source)</a></p>
 <p>Zig Compiler stops us if we forget to handle the errors with “<code>try</code>”.</p>
 <p><em>What happens when our Zig App hits a Runtime Error?</em></p>
@@ -380,13 +363,11 @@ zig-pinephone-gui/libs/zgt/src/backends/gtk/backend.zig:25:13: 0x21726e in .zgt.
             ^
 zig-pinephone-gui/src/main.zig:9:5: 0x216b37 in main (zig-pinephone-gui)
     try zgt.backend.init();
-    ^
-</code></pre></div>
+    ^</code></pre></div>
 <p>Compare that with a <strong>GTK App coded in C</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ ./a.out
 Unable to init server: Could not connect: Connection refused
-(a.out:19579): Gtk-WARNING **: 19:17:31.039: cannot open display: 
-</code></pre></div>
+(a.out:19579): Gtk-WARNING **: 19:17:31.039: cannot open display: </code></pre></div>
 <p><em>What about bad pointers?</em></p>
 <p>Zig doesn’t validate pointers (like with a Borrow Checker), but it tries to be helpful when it encounters bad pointers…</p>
 <ul>
@@ -536,13 +517,11 @@ fn buttonClicked(button: *zgt.Button_Impl) !void {
     &quot;You clicked button with text {s}&quot;,
     .{ button.getLabel() }
   );
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/pinephone#handle-the-buttons">(Source)</a></p>
 <p>The above code is potentially unsafe because it <strong>dereferences a pointer</strong> to a Button…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// `button` is a pointer to a Button Struct
-button.getLabel()
-</code></pre></div>
+button.getLabel()</code></pre></div>
 <p>Let’s hack it by passing a <strong>Null Pointer</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Create a Null Pointer
 const bad_ptr = @intToPtr(
@@ -550,15 +529,13 @@ const bad_ptr = @intToPtr(
   0                  // Address
 );
 // Pass the Null Pointer to the function
-try buttonClicked(bad_ptr);
-</code></pre></div>
+try buttonClicked(bad_ptr);</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#intToPtr">(<strong>@intToPtr</strong> is explained here)</a></p>
 <p>Note that <strong>@intToPtr</strong> is an Unsafe Builtin Function, we shouldn’t call it in normal programs.</p>
 <p>When we compile the code above, Zig Compiler helpfully <strong>stops us from creating a Null Pointer</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ zig build
 ./src/main.zig:8:21: error: pointer type &#39;*.zgt.button.Button_Impl&#39; does not allow address zero
-    const bad_ptr = @intToPtr(*zgt.Button_Impl, 0);
-</code></pre></div>
+    const bad_ptr = @intToPtr(*zgt.Button_Impl, 0);</code></pre></div>
 <p>Nice! Let’s circumvent the best intentions of Zig Compiler and create another Bad Pointer…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Create a Bad Pointer
 const bad_ptr = @intToPtr(
@@ -566,8 +543,7 @@ const bad_ptr = @intToPtr(
   0xdeadbee0         // Address
 );
 // Pass the Bad Pointer to the function
-try buttonClicked(bad_ptr);
-</code></pre></div>
+try buttonClicked(bad_ptr);</code></pre></div>
 <p>Zig Compiler no longer stops us. (Remember: <strong>@intToPtr</strong> is supposed to be unsafe anyway)</p>
 <p>When we run it, we get a helpful <strong>Stack Trace</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ zig-out/bin/zig-pinephone-gui 
@@ -591,8 +567,7 @@ zig/lib/std/start.zig:480:12: 0x217832 in std.start.main (zig-pinephone-gui)
     return @call(.{ .modifier = .always_inline }, callMainWithArgs, .{ @intCast(usize, c_argc), c_argv, envp });
            ^
 ???:?:?: 0x7f6c902640b2 in ??? (???)
-Aborted
-</code></pre></div>
+Aborted</code></pre></div>
 <p>Which will be super handy for troubleshooting our Zig App.</p>
 <h1 id="appendix-zig-build-system"><a href="#appendix-zig-build-system">13 Appendix: Zig Build System</a></h1>
 <p><em>How does “<code>zig build</code>” build our Zig App?</em></p>
@@ -601,8 +576,7 @@ Aborted
 <li><a href="https://ziglang.org/documentation/master/#Zig-Build-System"><strong>Zig Build System</strong></a></li>
 </ul>
 <p>When we created our Zig App with…</p>
-<div class="example-wrap"><pre class="language-bash"><code>zig init-exe
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>zig init-exe</code></pre></div>
 <p>It generates this <strong>Zig Build Program</strong> that will build our Zig App: <a href="https://github.com/lupyuen/zig-pinephone-gui/blob/main/build.zig">build.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Zig Build Script. Originally generated by `zig init-exe`
 const std = @import(&quot;std&quot;);
@@ -643,14 +617,12 @@ pub fn build(b: *std.build.Builder) void {
     @import(&quot;libs/zgt/build.zig&quot;)
         .install(exe, &quot;./libs/zgt&quot;)
         catch {};
-}
-</code></pre></div>
+}</code></pre></div>
 <p>We inserted the last part into the auto-generated code…</p>
 <div class="example-wrap"><pre class="language-zig"><code>    // Add zgt library to build
     @import(&quot;libs/zgt/build.zig&quot;)
         .install(exe, &quot;./libs/zgt&quot;)
-        catch {};
-</code></pre></div>
+        catch {};</code></pre></div>
 <p>To add the zgt GUI Library to our build.</p>
 <h1 id="appendix-gtk-backend-for-zgt"><a href="#appendix-gtk-backend-for-zgt">14 Appendix: GTK Backend for zgt</a></h1>
 <p><em>zgt GUI Library works with GTK, Windows AND WebAssembly. How on earth does it achieve this incredible feat?</em></p>
@@ -671,8 +643,7 @@ pub fn build(b: *std.build.Builder) void {
 <p>zgt imports the <strong>C Header Files for GTK</strong> like so: <a href="https://github.com/zenith391/zgt/blob/master/src/backends/gtk/backend.zig">libs/zgt/src/backends/gtk/backend.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>pub const c = @cImport({
     @cInclude(&quot;gtk/gtk.h&quot;);
-});
-</code></pre></div>
+});</code></pre></div>
 <p><a href="https://ziglang.org/documentation/master/#Import-from-C-Header-File">(<strong>@cImport</strong> is explained here)</a></p>
 <p>Then zgt calls the <strong>imported GTK Functions</strong> like this: <a href="https://github.com/zenith391/zgt/blob/master/src/backends/gtk/backend.zig#L322-L352">backend.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>pub const Button = struct {
@@ -715,8 +686,7 @@ pub fn build(b: *std.build.Builder) void {
         const label = c.gtk_button_get_label(@ptrCast(*c.GtkButton, self.peer));
         return std.mem.span(label);
     }
-};
-</code></pre></div>
+};</code></pre></div>
 <p>Super Brilliant! 👏</p>
 <p><em>How does zgt link our Zig App with the GTK Library?</em></p>
 <p>zgt uses a <strong>Zig Build Program</strong> to link the required GUI Libraries with the executable: GTK, Win32, WebAssembly…</p>

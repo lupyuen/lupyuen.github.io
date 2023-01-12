@@ -219,8 +219,7 @@
 
 #define BOARD_UART_1_TX_PIN \
   (GPIO_INPUT     | GPIO_PULLUP | \
-   GPIO_FUNC_UART | GPIO_PIN4)
-</code></pre></div>
+   GPIO_FUNC_UART | GPIO_PIN4)</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/expander#pin-functions">(Which pins can be used? See this)</a></p>
 <p><strong>For ESP32:</strong> The GPIO Pin Numbers for the UART Port (UART1) are defined in <a href="https://github.com/lupyuen/nuttx/blob/ikea/arch/xtensa/src/esp32/Kconfig#L661-L669">Kconfig</a> and menuconfig…</p>
 <div class="example-wrap"><pre class="language-text"><code>config ESP32_UART1_TXPIN
@@ -231,8 +230,7 @@
 config ESP32_UART1_RXPIN
   int &quot;UART1 Rx Pin&quot;
   default 9
-  range 0 39
-</code></pre></div>
+  range 0 39</code></pre></div>
 <p>Connect the <strong>USB Ports</strong> of IKEA Sensor and PineDio Stack to our computer.</p>
 <p>(Remember: <strong>Only One Power Source</strong> for both gadgets!)</p>
 <p>It looks messy with 2 USB Cables hanging off our computer, but we’ll live with it for now.</p>
@@ -250,13 +248,11 @@ config ESP32_UART1_RXPIN
 <div class="example-wrap"><pre class="language-text"><code>16  11  0B  00  00  00  17  00  00  02  FF  00  00  00  21  02  00  00  0B  88
 16  11  0B  00  00  00  17  00  00  02  FF  00  00  00  21  02  00  00  0B  88
 16  11  0B  00  00  00  18  00  00  03  04  00  00  00  22  02  00  00  0B  80
-16  11  0B  00  00  00  18  00  00  03  04  00  00  00  22  02  00  00  0B  80
-</code></pre></div>
+16  11  0B  00  00  00  18  00  00  03  04  00  00  00  22  02  00  00  0B  80</code></pre></div>
 <p><a href="https://youtu.be/TyG-dJCx8OQ">(Watch the demo on YouTube)</a></p>
 <p>See the pattern? The data comes in chunks of <strong>20 bytes</strong>. Let’s call it a <strong>Sensor Data Frame</strong>.</p>
 <p>Each Sensor Data Frame <strong>starts with this header</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>16  11  0B
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>16  11  0B</code></pre></div>
 <p>If we look back at the <a href="https://github.com/arendst/Tasmota/files/7083662/PM1006_LED_PARTICLE_SENSOR_MODULE_SPECIFICATIONS.pdf"><strong>PM1006 Datasheet</strong></a> (pic above), we realise that the 20-byte Sensor Data Frame (“Response”) may be decoded like so…</p>
 <div><table><thead><tr><th style="text-align: left">Field</th><th style="text-align: left">Value</th></tr></thead><tbody>
 <tr><td style="text-align: left">Header</td><td style="text-align: left"><code>16 11 0B</code></td></tr>
@@ -301,8 +297,7 @@ int main(int argc, FAR char *argv[]) {
 
   //  Open the UART port
   int fd = open(&quot;/dev/ttyS1&quot;, O_RDONLY);
-  if (fd &lt; 0) { printf(&quot;Unable to open /dev/ttyS1\n&quot;); return 1; }
-</code></pre></div>
+  if (fd &lt; 0) { printf(&quot;Unable to open /dev/ttyS1\n&quot;); return 1; }</code></pre></div>
 <p>We begin by <strong>opening the UART Port</strong> at <strong>/dev/ttyS1</strong>.</p>
 <p>Next we loop forever, <strong>reading bytes from the UART Port</strong> and handling them…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Forever process bytes from the UART port
@@ -310,8 +305,7 @@ int main(int argc, FAR char *argv[]) {
     //  Read a byte from the UART port
     char ch;
     read(fd, &amp;ch, 1);
-    printf(&quot;%02x  &quot;, ch);
-</code></pre></div>
+    printf(&quot;%02x  &quot;, ch);</code></pre></div>
 <p>After reading a byte, we shift it into the <strong>Sensor Data Frame</strong> (20 bytes)…</p>
 <div class="example-wrap"><pre class="language-c"><code>    //  Append to Sensor Data Frame after shifting the bytes.
     //  We always append bytes to the frame (instead of replacing bytes)
@@ -319,15 +313,13 @@ int main(int argc, FAR char *argv[]) {
     for (int i = 0; i &lt; sizeof(frame) - 1; i++) {
       frame[i] = frame[i + 1];
     }
-    frame[sizeof(frame) - 1] = ch;
-</code></pre></div>
+    frame[sizeof(frame) - 1] = ch;</code></pre></div>
 <p>We check if the Sensor Data Frame contains a valid <strong>Header and Checksum</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>    //  If frame is complete and valid...
     if (frame_is_valid()) {
       //  Process the frame
       process_frame();
-    }   
-</code></pre></div>
+    }   </code></pre></div>
 <p>If the Sensor Data Frame is valid, we process the data in the frame.</p>
 <p>Let’s jump into <strong>frame_is_valid</strong> and <strong>process_frame</strong>.</p>
 <p><img src="https://lupyuen.github.io/images/ikea-code2.png" alt="Main Loop" /></p>
@@ -344,16 +336,14 @@ static bool frame_is_valid(void) {
   if (memcmp(frame, PM1006_RESPONSE_HEADER, sizeof(PM1006_RESPONSE_HEADER)) != 0) {
     //  Header not found
     return false;
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p>We verify that the Sensor Data Frame contains the <strong>Header: <code>16 11 0B</code></strong></p>
 <p>Next we <strong>sum up all the bytes</strong> in the Sensor Data Frame…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Compute sum of all bytes in the frame
   uint8_t sum = 0;
   for (int i = 0; i &lt; sizeof(frame); i++) {
     sum += frame[i];
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p>(Including the Checksum at the last byte)</p>
 <p>And we verify that the <strong>sum is 0</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  All bytes must add to 0 (because of checksum at the last byte)
@@ -361,13 +351,11 @@ static bool frame_is_valid(void) {
     //  Invalid checksum
     printf(&quot;\nPM1006 checksum is wrong: %02x, expected zero\n&quot;, sum);
     return false;
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p>Now that the Sensor Data Frame is <strong>complete and valid</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  We have received a complete and valid response frame
   return true;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>We proceed to process the PM 2.5 data inside the frame.</p>
 <p><img src="https://lupyuen.github.io/images/ikea-code3.png" alt="Validate Sensor Data" /></p>
 <h2 id="process-sensor-data"><a href="#process-sensor-data">4.4 Process Sensor Data</a></h2>
@@ -382,13 +370,11 @@ static void process_frame(void) {
 
   const int pm_2_5_concentration = 
     frame[5] * 256 + 
-    frame[6];
-</code></pre></div>
+    frame[6];</code></pre></div>
 <p>Right now we’re not really using the PM 2.5 data…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  TODO: Transmit the sensor data
   printf(&quot;\nGot PM2.5 Concentration: %d µg/m³\n&quot;, pm_2_5_concentration);
-}
-</code></pre></div>
+}</code></pre></div>
 <p>But in the next article we’ll transmit the data wirelessly over <a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/"><strong>LoRaWAN</strong></a> to <a href="https://makezine.com/2021/05/24/go-long-with-lora-radio/"><strong>The Things Network</strong></a>.</p>
 <p>(Thanks to the onboard LoRa Transceiver on PineDio Stack)</p>
 <p>The code in our NuttX App was inspired by the <a href="https://github.com/Hypfer/esp8266-vindriktning-particle-sensor/blob/master/src/SerialCom.h#L26-L63"><strong>Arduino</strong></a> and <a href="https://github.com/esphome/esphome/blob/dev/esphome/components/pm1006/pm1006.cpp#L57-L96"><strong>ESPHome</strong></a> modules for the IKEA Sensor.</p>
@@ -405,35 +391,30 @@ static void process_frame(void) {
 </li>
 <li>
 <p>At the NuttX Shell, enter this command…</p>
-<div class="example-wrap"><pre class="language-bash"><code>ls /dev
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div>
 <p>We should see our UART Port configured at <strong>/dev/ttyS1</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>/dev:
 console
 null
 timer0
 ttyS1
-zero
-</code></pre></div>
+zero</code></pre></div>
 <p>Which is connected to our IKEA Sensor.</p>
 </li>
 <li>
 <p>Enter this command to <strong>dump the output</strong> from our IKEA Sensor…</p>
-<div class="example-wrap"><pre class="language-bash"><code>cat /dev/ttyS1
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>cat /dev/ttyS1</code></pre></div>
 <p>We should see some meaningless ASCII data…</p>
 <div class="example-wrap"><pre class="language-text"><code>3(1&gt;
 2&#39;0A
 2%0C
-1$/F
-</code></pre></div>
+1$/F</code></pre></div>
 <p><a href="https://youtu.be/iFf8_f7ExUI">(Watch the demo on YouTube)</a></p>
 <p>But that’s OK, it means that our IKEA Sensor is alive.</p>
 </li>
 <li>
 <p>Finally enter this command to <strong>run our NuttX App</strong> for the IKEA Sensor…</p>
-<div class="example-wrap"><pre class="language-bash"><code>ikea_air_quality_sensor
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>ikea_air_quality_sensor</code></pre></div>
 <p>We should see the 20-byte <strong>Sensor Data Frames</strong> and the decoded <strong>PM 2.5 values</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>16  11  0b  00  00  00  17  00  00  02  ff  00  00  00  21  02  00  00  0b  88
 Got PM2.5 Concentration: 23 µg/m³
@@ -442,8 +423,7 @@ Got PM2.5 Concentration: 23 µg/m³
 Got PM2.5 Concentration: 24 µg/m³
 
 16  11  0b  00  00  00  17  00  00  03  01  00  00  00  21  02  00  00  0b  85
-Got PM2.5 Concentration: 23 µg/m³
-</code></pre></div>
+Got PM2.5 Concentration: 23 µg/m³</code></pre></div>
 <p><a href="https://youtu.be/dUHlG67pB3M">(Watch the demo on YouTube)</a></p>
 </li>
 </ol>
@@ -632,8 +612,7 @@ Ready
 
 UART&gt; W
 POWER SUPPLIES ON
-Clutch engaged!!!
-</code></pre></div>
+Clutch engaged!!!</code></pre></div>
 <p><a href="https://youtu.be/QOJF6hAhFv4">(Watch the demo on YouTube)</a></p>
 <p><a href="http://dangerousprototypes.com/docs/UART">(More about Bus Pirate interfacing with UART)</a></p>
 <p>To see the ASCII Output from the IKEA Sensor, enter this Bus Pirate command…</p>
@@ -646,14 +625,12 @@ Any key to exit
 [9C:;8
 [12C9:7 
 [16C997!
-[20C987&quot;
-</code></pre></div>
+[20C987&quot;</code></pre></div>
 <p><a href="https://youtu.be/QOJF6hAhFv4">(Watch the demo on YouTube)</a></p>
 <p><a href="https://gist.github.com/lupyuen/f40454dda8e3d7f279fb6ef721add465">(See the complete log)</a></p>
 <p>To see the Binary Output from the IKEA Sensor, enter this…</p>
 <div class="example-wrap"><pre class="language-text"><code>UART&gt; {
-UART LIVE DISPLAY, } TO STOP
-</code></pre></div>
+UART LIVE DISPLAY, } TO STOP</code></pre></div>
 <p>We should see the 20-byte Sensor Data Frames with PM 2.5 encoded inside…</p>
 <p><img src="https://lupyuen.github.io/images/ikea-buspirate2.jpg" alt="Bus Pirate shows the output from IKEA VINDRIKTNING Air Quality Sensor" /></p>
 <p><a href="https://gist.github.com/lupyuen/db0c97b12bd1070e17cd2e570a5aa810">(See the complete log)</a></p>
@@ -669,8 +646,7 @@ UART LIVE DISPLAY, } TO STOP
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
 git clone --recursive --branch ikea https://github.com/lupyuen/nuttx nuttx
-git clone --recursive --branch ikea https://github.com/lupyuen/nuttx-apps apps
-</code></pre></div>
+git clone --recursive --branch ikea https://github.com/lupyuen/nuttx-apps apps</code></pre></div>
 <p>Or if we prefer to <strong>add the IKEA Air Quality Sensor App</strong> to our NuttX Project, follow these instructions…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/ikea_air_quality_sensor#install-app"><strong>“Install IKEA Air Quality Sensor App”</strong></a></li>
@@ -687,19 +663,18 @@ git clone --recursive --branch ikea https://github.com/lupyuen/nuttx-apps apps
 <p>Configure the build…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx
 
-## For BL602: Configure the build for BL602
+# For BL602: Configure the build for BL602
 ./tools/configure.sh bl602evb:nsh
 
-## For PineDio Stack BL604: Configure the build for BL604
+# For PineDio Stack BL604: Configure the build for BL604
 ./tools/configure.sh bl602evb:pinedio
 
-## For ESP32: Configure the build for ESP32.
-## TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
+# For ESP32: Configure the build for ESP32.
+# TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
 ./tools/configure.sh esp32-devkitc:nsh
 
-## Edit the Build Config
-make menuconfig 
-</code></pre></div></li>
+# Edit the Build Config
+make menuconfig </code></pre></div></li>
 <li>
 <p>Enable UART1…</p>
 <p><strong>For BL602 / BL604:</strong> Check the box for <strong>“System Type”</strong> → <strong>“BL602 Peripheral Support”</strong> → <strong>“UART1”</strong></p>
@@ -727,8 +702,7 @@ make menuconfig
 <div class="example-wrap"><pre class="language-text"><code>Enable Debug Features
 Enable Error Output
 Enable Warnings Output
-Enable Debug Assertions
-</code></pre></div>
+Enable Debug Assertions</code></pre></div>
 <p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
 </li>
 <li>
@@ -742,22 +716,19 @@ Enable Debug Assertions
 <ol>
 <li>
 <p>To build NuttX, enter this command…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div></li>
 <li>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>LD: nuttx
 CP: nuttx.hex
-CP: nuttx.bin
-</code></pre></div>
+CP: nuttx.bin</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/8f725c278c25e209c1654469a2855746">(See the complete log for BL602 / BL604)</a></p>
 </li>
 <li>
 <p><strong>For WSL:</strong> Copy the <strong>NuttX Firmware</strong> to the <strong>c:\blflash</strong> directory in the Windows File System…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  /mnt/c/blflash refers to c:\blflash in Windows
+<div class="example-wrap"><pre class="language-bash"><code>#  /mnt/c/blflash refers to c:\blflash in Windows
 mkdir /mnt/c/blflash
-cp nuttx.bin /mnt/c/blflash
-</code></pre></div>
+cp nuttx.bin /mnt/c/blflash</code></pre></div>
 <p>For WSL we need to run <strong>blflash</strong> under plain old Windows CMD (not WSL) because it needs to access the COM port.</p>
 </li>
 <li>
@@ -830,19 +801,18 @@ cp nuttx.bin /mnt/c/blflash
 </li>
 </ol>
 <p>Enter these commands to flash <strong>nuttx.bin</strong> to BL602 / BL604 over UART…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## For Linux: Change &quot;/dev/ttyUSB0&quot; to the BL602 / BL604 Serial Port
+<div class="example-wrap"><pre class="language-bash"><code># For Linux: Change &quot;/dev/ttyUSB0&quot; to the BL602 / BL604 Serial Port
 blflash flash nuttx.bin \
   --port /dev/ttyUSB0 
 
-## For macOS: Change &quot;/dev/tty.usbserial-1410&quot; to the BL602 / BL604 Serial Port
+# For macOS: Change &quot;/dev/tty.usbserial-1410&quot; to the BL602 / BL604 Serial Port
 blflash flash nuttx.bin \
   --port /dev/tty.usbserial-1410 \
   --initial-baud-rate 230400 \
   --baud-rate 230400
 
-## For Windows: Change &quot;COM5&quot; to the BL602 / BL604 Serial Port
-blflash flash c:\blflash\nuttx.bin --port COM5
-</code></pre></div>
+# For Windows: Change &quot;COM5&quot; to the BL602 / BL604 Serial Port
+blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
 <p>For WSL: Do this under plain old Windows CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
 <p><a href="https://github.com/apache/nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
@@ -850,8 +820,7 @@ blflash flash c:\blflash\nuttx.bin --port COM5
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
 <h2 id="run-nuttx"><a href="#run-nuttx">10.5 Run NuttX</a></h2>
 <p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
-<div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>
 <p><strong>For BL602 / BL604:</strong> Set BL602 / BL604 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
 <p><strong>For PineDio Stack BL604:</strong></p>
@@ -891,15 +860,13 @@ blflash flash c:\blflash\nuttx.bin --port COM5
 </ol>
 <p>After restarting, connect to BL602 / BL604’s UART Port at 2 Mbps like so…</p>
 <p><strong>For Linux:</strong></p>
-<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000</code></pre></div>
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p>Press Enter to reveal the <strong>NuttX Shell</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
-nsh&gt;
-</code></pre></div>
+nsh&gt;</code></pre></div>
 <p>Congratulations NuttX is now running on BL602 / BL604!</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(More details on connecting to BL602 / BL604)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>

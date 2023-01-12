@@ -197,8 +197,7 @@ const uint8_t cmd1[] = {
 };
 
 // Send the command to ST7703 over MIPI DSI
-write_dcs(cmd1, sizeof(cmd1));
-</code></pre></div>
+write_dcs(cmd1, sizeof(cmd1));</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller">(ST7703 needs 20 Initialisation Commands)</a></p>
 <p><strong>write_dcs</strong> sends our command to the MIPI DSI Bus in 3 <strong>DCS Formats</strong>…</p>
 <ul>
@@ -238,8 +237,7 @@ static int write_dcs(const uint8_t *buf, size_t len) {
         MIPI_DSI_DCS_LONG_WRITE, 
         buf, len);
       break;
-  };
-</code></pre></div>
+  };</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c#L5-L41">(Source)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dsi.h#L35-L39">(We talk to MIPI DSI Bus on Virtual Channel 0)</a></p>
 <p><strong>a64_mipi_dsi_write</strong> comes from our NuttX MIPI DSI Driver: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_mipi_dsi.c#L366-L526">a64_mipi_dsi.c</a></p>
@@ -271,8 +269,7 @@ ssize_t a64_mipi_dsi_write(
     case MIPI_DSI_DCS_SHORT_WRITE_PARAM:
       pktlen = mipi_dsi_short_packet(pkt, sizeof(pkt), channel, cmd, txbuf, txlen);
       break;
-  };
-</code></pre></div>
+  };</code></pre></div>
 <p>Our NuttX Driver calls…</p>
 <ul>
 <li>
@@ -307,8 +304,7 @@ ssize_t a64_mipi_dsi_write(
     addr += 4;
   }
 
-  // Omitted: Wait for DSI Transmission to complete
-</code></pre></div>
+  // Omitted: Wait for DSI Transmission to complete</code></pre></div>
 <p>And that’s how our MIPI DSI Packet gets transmitted to the ST7703 LCD Controller, over the MIPI DSI Bus!</p>
 <p>We do this 20 times, to send 20 <strong>Initialisation Commands</strong> to the ST7703 LCD Controller…</p>
 <ul>
@@ -335,8 +331,7 @@ putreg32(0x1f,       DSI_INST_FUNC_REG(DSI_INST_ID_LP11));
 putreg32(0x10000001, DSI_INST_FUNC_REG(DSI_INST_ID_TBA));
 putreg32(0x20000010, DSI_INST_FUNC_REG(DSI_INST_ID_HSC));
 putreg32(0x2000000f, DSI_INST_FUNC_REG(DSI_INST_ID_HSD));    
-...
-</code></pre></div></li>
+...</code></pre></div></li>
 <li>
 <p>Enable Allwinner A64’s <strong>MIPI Display Physical Layer (D-PHY)</strong></p>
 <p>Which is the communications layer inside MIPI DSI.</p>
@@ -349,8 +344,7 @@ putreg32(0xa033207,  DPHY_TX_TIME1_REG);
 putreg32(0x1e,       DPHY_TX_TIME2_REG);
 putreg32(0x0,        DPHY_TX_TIME3_REG);
 putreg32(0x303,      DPHY_TX_TIME4_REG);
-...
-</code></pre></div></li>
+...</code></pre></div></li>
 </ul>
 <p>And after sending the MIPI DSI Packets to initialise our LCD Controller, we need to…</p>
 <ul>
@@ -367,8 +361,7 @@ modreg32(0x0, DSI_INST_FUNC_LANE_CEN,
 // DSI Instruction Jump Select Register (Undocumented)
 // Set to 0x63f0 7006
 putreg32(0x63f07006, DSI_INST_JUMP_SEL_REG);
-...
-</code></pre></div></li>
+...</code></pre></div></li>
 </ul>
 <p><em>How did we create all this code for our NuttX Driver?</em></p>
 <p>Our <strong>NuttX Driver for MIPI DSI</strong> (and MIPI D-PHY) lives in the NuttX Kernel as…</p>
@@ -460,8 +453,7 @@ fn composeShortPacket(
   // Return the packet
   const result = pkt[0..pktlen];
   return result;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>We manually converted the <strong>Zig code to C</strong> like so: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/mipi_dsi.c#L276-L387">mipi_dsi.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Compose MIPI DSI Short Packet.
 // Returns the Packet Length.
@@ -505,8 +497,7 @@ ssize_t mipi_dsi_short_packet(
 
   // Return the Packet Length
   return len;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>The C Code looks highly similar to the original Zig Code! Thus manually converting Zig to C (line by line) is a piece of cake.</p>
 <p>(According to <a href="https://www.linkedin.com/feed/update/urn:li:activity:7007500633717035008?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7007500633717035008%2C7007787482456993792%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287007787482456993792%2Curn%3Ali%3Aactivity%3A7007500633717035008%29"><strong>Matheus Catarino França</strong></a>, the Zig-to-C Auto-Translation might work too)</p>
 <p><img src="https://lupyuen.github.io/images/dsi3-test.png" alt="Testing MIPI DSI Driver" /></p>
@@ -567,30 +558,29 @@ pub export fn hello_main(argc: c_int, argv: [*c]const [*c]u8) c_int {
 
   de2_init();
   _ = c.usleep(160000);
-  renderGraphics(3);  // Render 3 UI Channels
-</code></pre></div>
+  renderGraphics(3);  // Render 3 UI Channels</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi.c#L42-L452">(<strong>pinephone_panel_init</strong> is defined here)</a></p>
 <p>Then we <strong>compile our Zig Test Program</strong> (targeting PinePhone) and link it with NuttX…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  Configure NuttX
+<div class="example-wrap"><pre class="language-bash"><code>#  Configure NuttX
 cd nuttx
 ./tools/configure.sh pinephone:nsh
 make menuconfig
 
-##  Select &quot;System Type &gt; Allwinner A64 Peripheral Selection &gt; MIPI DSI&quot;
-##  Select &quot;Build Setup &gt; Debug Options &gt; Graphics Debug Features &gt; Graphics Errors / Warnings / Informational Output&quot;
-##  Save and exit menuconfig
+#  Select &quot;System Type &gt; Allwinner A64 Peripheral Selection &gt; MIPI DSI&quot;
+#  Select &quot;Build Setup &gt; Debug Options &gt; Graphics Debug Features &gt; Graphics Errors / Warnings / Informational Output&quot;
+#  Save and exit menuconfig
 
-##  Build NuttX
+#  Build NuttX
 make
 
-##  Download the Zig Test Program
+#  Download the Zig Test Program
 pushd $HOME
 git clone https://github.com/lupyuen/pinephone-nuttx
 cd pinephone-nuttx
 
-##  Compile the Zig App for PinePhone 
-##  (armv8-a with cortex-a53)
-##  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+#  Compile the Zig App for PinePhone 
+#  (armv8-a with cortex-a53)
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 zig build-obj \
   --verbose-cimport \
   -target aarch64-freestanding-none \
@@ -599,25 +589,23 @@ zig build-obj \
   -I &quot;$HOME/nuttx/apps/include&quot; \
   render.zig
 
-##  Copy the compiled app to NuttX and overwrite `hello.o`
-##  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+#  Copy the compiled app to NuttX and overwrite `hello.o`
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 cp render.o \
   $HOME/nuttx/apps/examples/hello/*hello.o  
 
-##  Return to the NuttX Folder
+#  Return to the NuttX Folder
 popd
 
-##  Link the Compiled Zig App with NuttX
-make
-</code></pre></div>
+#  Link the Compiled Zig App with NuttX
+make</code></pre></div>
 <p>We boot NuttX on PinePhone <a href="https://nuttx.apache.org/docs/latest/platforms/arm/a64/boards/pinephone/index.html">(via microSD)</a> and run the Zig Test Program (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-11.0.0-pinephone
 
 nsh&gt; uname -a
 NuttX 11.0.0-pinephone 2a1577a-dirty Dec  9 2022 13:57:47 arm64 pinephone
 
-nsh&gt; hello 0
-</code></pre></div>
+nsh&gt; hello 0</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f1a02068aeb0785278c482116a4eedc7">(Source)</a></p>
 <p>Yep our Zig Test Program <strong>renders the Test Pattern</strong> successfully on PinePhone’s LCD Display! <a href="https://lupyuen.github.io/images/dsi3-title.jpg">(Like this)</a></p>
 <p>Which means the NuttX Kernel Driver for MIPI DSI is working OK!</p>
@@ -646,14 +634,12 @@ dsi_basic_ctl1 = VIDEO_START_DELAY(1468) |
 putreg32(dsi_basic_ctl1, DSI_BASIC_CTL1_REG);
 
 // Include Test Code to verify Register Addresses and Written Values
-#include &quot;../../pinephone-nuttx/test/test_a64_mipi_dsi2.c&quot;
-</code></pre></div>
+#include &quot;../../pinephone-nuttx/test/test_a64_mipi_dsi2.c&quot;</code></pre></div>
 <p>So we only need to ensure that the <strong>Hardware Register Addresses</strong> and the Written Values are correct.</p>
 <p>To do that, we use <strong>Assertion Checks</strong> to verify the Addresses and Values: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test_a64_mipi_dsi2.c#L34-L35">test_a64_mipi_dsi2.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Test Code to verify Register Addresses and Written Values
 DEBUGASSERT(DSI_BASIC_CTL1_REG == 0x1ca0014);
-DEBUGASSERT(dsi_basic_ctl1 == 0x5bc7);
-</code></pre></div>
+DEBUGASSERT(dsi_basic_ctl1 == 0x5bc7);</code></pre></div>
 <p>If the Addresses or Values are incorrect, our MIPI DSI Driver <strong>halts with an Assertion Failure</strong>.</p>
 <p>(We remove the Assertion Checks in the final version of our driver)</p>
 <p><em>What about a smaller, self-contained Unit Test for MIPI DSI?</em></p>
@@ -691,10 +677,9 @@ int main() {
 
   // Test: MIPI DSI Packets
   mipi_dsi_test();
-}
-</code></pre></div>
+}</code></pre></div>
 <p>Then we <strong>compile the Test Scaffold</strong> and run it on our Local Computer: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/run.sh#L9-L36">run.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Compile Test Code for Local Testing
+<div class="example-wrap"><pre class="language-bash"><code># Compile Test Code for Local Testing
 gcc \
   -o test \
   -I . \
@@ -704,18 +689,17 @@ gcc \
   ../../nuttx/arch/arm64/src/a64/a64_mipi_dsi.c \
   ../../nuttx/arch/arm64/src/a64/mipi_dsi.c
 
-## Run the Local Test
+# Run the Local Test
 ./test
 
-## Capture the Actual Test Log
+# Capture the Actual Test Log
 ./test &gt;test.log
 
-## Diff the Actual and Expected Test Logs
+# Diff the Actual and Expected Test Logs
 diff \
   --ignore-all-space \
   expected.log \
-  test.log
-</code></pre></div>
+  test.log</code></pre></div>
 <p>Note that we capture the <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test.log"><strong>Actual Test Log</strong></a> and we <code>diff</code> it with the <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/expected.log"><strong>Expected Test Log</strong></a>.</p>
 <p>That’s how we detect discrepancies in the Register Addresses and the Written Values…</p>
 <div class="example-wrap"><pre class="language-text"><code>Enable MIPI DSI Bus
@@ -735,8 +719,7 @@ Set Instructions
   *0x1ca0034 = 0x40000010
   *0x1ca0038 = 0xf
   *0x1ca003c = 0x5000001f
-  ...
-</code></pre></div>
+  ...</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/test/test.log#L4-L20">(Source)</a></p>
 <p>Let’s talk about the missing parts of our NuttX Driver…</p>
 <p><img src="https://lupyuen.github.io/images/dsi3-steps.jpg" alt="Inside our Complete Display Driver for PinePhone" /></p>
@@ -865,8 +848,7 @@ const DSI_BASIC_CTL1 = Video_Start_Delay
   | Video_Frame_Start
   | DSI_Mode;
 comptime{ assert(DSI_BASIC_CTL1 == 0x5bc7); }
-putreg32(DSI_BASIC_CTL1, DSI_BASIC_CTL1_REG);  // TODO: DMB
-</code></pre></div>
+putreg32(DSI_BASIC_CTL1, DSI_BASIC_CTL1_REG);  // TODO: DMB</code></pre></div>
 <p>Which is really neat because…</p>
 <ul>
 <li>

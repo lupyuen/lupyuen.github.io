@@ -107,8 +107,7 @@
 - Boot from EL2
 - Boot from EL1
 - Boot to C runtime for OS Initialize
-arm64_gic_initialize: no distributor detected, giving up
-</code></pre></div>
+arm64_gic_initialize: no distributor detected, giving up</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/interrupt-peripheral.jpg" alt="Partial list of Shared Peripheral Interrupts for Allwinner A64’s GIC" /></p>
 <p><em>Partial list of Shared Peripheral Interrupts for Allwinner A64’s GIC</em></p>
 <h1 id="generic-interrupt-controller"><a href="#generic-interrupt-controller">1 Generic Interrupt Controller</a></h1>
@@ -145,8 +144,7 @@ arm64_gic_initialize: no distributor detected, giving up
 - Boot from EL2
 - Boot from EL1
 - Boot to C runtime for OS Initialize
-arm64_gic_initialize: no distributor detected, giving up
-</code></pre></div>
+arm64_gic_initialize: no distributor detected, giving up</code></pre></div>
 <p>When we boot NuttX RTOS, it expects PinePhone to provide a modern <strong>Generic Interrupt Controller (GIC), Version 3</strong>.</p>
 <p>But the <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> (page 210, “GIC”) says that PinePhone runs on…</p>
 <ul>
@@ -175,15 +173,13 @@ int arm64_gic_initialize(void) {
   const uint8_t *ICPIDR2 = (const uint8_t *) (CONFIG_GICD_BASE + 0xFE8);
   uint8_t version = (*ICPIDR2 &gt;&gt; 4) &amp; 0b1111;
   sinfo(&quot;GIC Version is %d\n&quot;, version);
-  DEBUGASSERT(version == 2);
-</code></pre></div>
+  DEBUGASSERT(version == 2);</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_gicv2.c#L669-L706">(Update)</a></p>
 <p>Here’s the output…</p>
 <div class="example-wrap"><pre class="language-text"><code>TODO: Init GIC for PinePhone
 CONFIG_GICD_BASE=0x1c81000
 CONFIG_GICR_BASE=0x1c82000
-GIC Version is 2
-</code></pre></div>
+GIC Version is 2</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#pinephone-u-boot-log">(Source)</a></p>
 <p>Yep PinePhone runs on <strong>GIC Version 2</strong>. Bummer.</p>
 <p><em>What are GICD and GICR?</em></p>
@@ -199,8 +195,7 @@ GIC Version is 2
 // GIC_DIST:  0x01C80000 + 0x1000
 // GIC_CPUIF: 0x01C80000 + 0x2000
 #define CONFIG_GICD_BASE 0x01C81000  
-#define CONFIG_GICR_BASE 0x01C82000  
-</code></pre></div>
+#define CONFIG_GICR_BASE 0x01C82000  </code></pre></div>
 <p>Back to our headache of GIC Version 2…</p>
 <h1 id="gic-version-2"><a href="#gic-version-2">3 GIC Version 2</a></h1>
 <p><em>Does NuttX support GIC Version 2 for PinePhone?</em></p>
@@ -235,8 +230,7 @@ GIC Version is 2
 #define MPCORE_ICC_VBASE CONFIG_GICR_BASE  // 0x01C82000  
 
 // Inject Arm32 GIC v2 Implementation
-#include &quot;../arch/arm/src/armv7-a/arm_gicv2.c&quot;
-</code></pre></div>
+#include &quot;../arch/arm/src/armv7-a/arm_gicv2.c&quot;</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinephone/arch/arm64/src/common/arm64_gicv3.c">(We commented out the <strong>GIC Version 3</strong> code as <strong><code>NOTUSED</code></strong>)</a></p>
 <p><em>What! Did we just <code>#include</code> the GIC Version 2 Source Code from Arm32 into Arm64?</em></p>
 <p>Yep it’s an awful trick but it seems to work!</p>
@@ -260,8 +254,7 @@ uint64_t * arm64_decodeirq(uint64_t * regs) {
   /* Omitted: Get the interrupt ID */
   ...
   /* Dispatch the Arm64 interrupt */
-  regs = arm64_doirq(irq, regs);
-</code></pre></div>
+  regs = arm64_doirq(irq, regs);</code></pre></div>
 <p>Everything else stays the same! Well except for…</p>
 <ul>
 <li>
@@ -287,7 +280,7 @@ uint64_t * arm64_decodeirq(uint64_t * regs) {
 <li><a href="https://github.com/lupyuen/pinephone-nuttx#test-pinephone-gic-with-qemu"><strong>“Test PinePhone GIC with QEMU”</strong></a></li>
 </ul>
 <p>Enter this to <strong>start QEMU with NuttX</strong> and GIC Version 2…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Run GIC Version 2 with QEMU
+<div class="example-wrap"><pre class="language-bash"><code># Run GIC Version 2 with QEMU
 qemu-system-aarch64 \
   -smp 4 \
   -cpu cortex-a53 \
@@ -297,8 +290,7 @@ qemu-system-aarch64 \
   -chardev stdio,id=con,mux=on \
   -serial chardev:con \
   -mon chardev=con,mode=readline \
-  -kernel ./nuttx
-</code></pre></div>
+  -kernel ./nuttx</code></pre></div>
 <p>Note that “<strong><code>gic-version=2</code></strong>” instead of the usual GIC Version 3 for Arm64.</p>
 <p>Also we simulated 4 Cores of Arm Cortex-A53 (similar to PinePhone): “<strong><code>-smp 4</code></strong>”</p>
 <p>We see this in QEMU…</p>
@@ -326,8 +318,7 @@ nsh: mkfatfs: command not found
 
 NuttShell (NSH) NuttX-10.3.0-RC2
 nsh&gt;
-nx_start: CPU0: Beginning Idle Loop
-</code></pre></div>
+nx_start: CPU0: Beginning Idle Loop</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/3331de1b84fd7579edfe726abb71b18beeac29e6/nuttx.log">(See the Complete Log)</a></p>
 <p>NuttX with GIC Version 2 boots OK on QEMU, and will probably run on PinePhone!</p>
 <p><em>We tested Interrupts with GIC Version 2?</em></p>
@@ -335,10 +326,9 @@ nx_start: CPU0: Beginning Idle Loop
 <p>(We added Debug Logging to <a href="https://github.com/lupyuen/nuttx/blob/gicv2/arch/arm64/src/common/arm64_vectors.S#L337-L350">arm64_vectors.S</a> and <a href="https://github.com/lupyuen/nuttx/blob/gicv2/arch/arm64/src/common/arm64_vector_table.S#L47-L75">arm64_vector_table.S</a>)</p>
 <p><em>How did we get the GIC Base Addresses for QEMU?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_GICD_BASE=0x8000000
-CONFIG_GICR_BASE=0x8010000
-</code></pre></div>
+CONFIG_GICR_BASE=0x8010000</code></pre></div>
 <p>We got the Base Addresses for GIC Distributor (<strong><code>CONFIG_GICD_BASE</code></strong>) and GIC CPU Interface (<strong><code>CONFIG_GICR_BASE</code></strong>) by dumping the Device Tree from QEMU…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Dump Device Tree for GIC Version 2
+<div class="example-wrap"><pre class="language-bash"><code># Dump Device Tree for GIC Version 2
 qemu-system-aarch64 \
   -smp 4 \
   -cpu cortex-a53 \
@@ -350,13 +340,12 @@ qemu-system-aarch64 \
   -mon chardev=con,mode=readline \
   -kernel ./nuttx
 
-## Convert Device Tree to text format
+# Convert Device Tree to text format
 dtc \
   -o gicv2.dts \
   -O dts \
   -I dtb \
-  gicv2.dtb
-</code></pre></div>
+  gicv2.dtb</code></pre></div>
 <p>The Base Addresses are revealed in the <strong>GIC Version 2 Device Tree</strong>: <a href="https://github.com/lupyuen/nuttx/blob/gicv2/gicv2.dts#L324">gicv2.dts</a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>intc@8000000 {
 reg = &lt;
@@ -365,8 +354,7 @@ reg = &lt;
     0x00 0x8030000 0x00 0x10000  //  VGIC Virtual Interface Control: 0x8030000
     0x00 0x8040000 0x00 0x10000  //  VGIC Virtual CPU Interface:     0x8040000
 &gt;;
-compatible = &quot;arm,cortex-a15-gic&quot;;
-</code></pre></div>
+compatible = &quot;arm,cortex-a15-gic&quot;;</code></pre></div>
 <p><a href="https://www.kernel.org/doc/Documentation/devicetree/bindings/interrupt-controller/arm%2Cgic.txt">(More about this)</a></p>
 <p>Which we defined in NuttX at…</p>
 <ul>
@@ -385,8 +373,7 @@ arm64_gic_initialize: CONFIG_GICD_BASE=0x1c81000
 arm64_gic_initialize: CONFIG_GICR_BASE=0x1c82000
 arm64_gic_initialize: GIC Version is 2
 up_timer_initialize: up_timer_initialize: cp15 timer(s) running at 24.00MHz, cycle 24000
-uart_regi
-</code></pre></div>
+uart_regi</code></pre></div>
 <p>NuttX got stuck <strong>while printing a line!</strong></p>
 <p>And it happened a short while after we started the <strong>System Timer</strong>: <strong><code>up_timer_initialize</code></strong></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#system-timer">(More about System Timer)</a></p>
@@ -439,8 +426,7 @@ SECTION_SUBSEC_FUNC(exc_vector_table,_vector_table_section,_vector_table)
   /* Current EL with SPx / IRQ */
   .align 7
   arm64_enter_exception x0, x1
-  b    arm64_irq_handler
-</code></pre></div>
+  b    arm64_irq_handler</code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_vector_table.S#L41-L87">(<strong><code>arm64_enter_exception</code></strong> saves the Arm64 Registers)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#handling-interrupts">(<strong><code>arm64_irq_handler</code></strong> is the NuttX IRQ Handler)</a></p>
 <p><em>So Vector Base Address Register (EL1) should point to <code>_vector_table</code>?</em></p>
@@ -450,12 +436,10 @@ SECTION_SUBSEC_FUNC(exc_vector_table,_vector_table_section,_vector_table)
   // Read Vector Base Address Register EL1
   extern void *_vector_table[];
   sinfo(&quot;_vector_table=%p\n&quot;, _vector_table);
-  sinfo(&quot;Before writing: vbar_el1=%p\n&quot;, read_sysreg(vbar_el1));
-</code></pre></div>
+  sinfo(&quot;Before writing: vbar_el1=%p\n&quot;, read_sysreg(vbar_el1));</code></pre></div>
 <p>Here’s the output on PinePhone…</p>
 <div class="example-wrap"><pre class="language-text"><code>_vector_table=0x400a7000
-Before writing: vbar_el1=0x40227000
-</code></pre></div>
+Before writing: vbar_el1=0x40227000</code></pre></div>
 <p>Aha! <strong><code>_vector_table</code></strong> is at <strong><code>0x400a</code> <code>7000</code></strong>… But Vector Base Address Register (EL1) says <strong><code>0x4022</code> <code>7000</code>!</strong></p>
 <p>Our Arm64 CPU is pointing to the <strong>wrong Arm64 Vector Table</strong>… Hence our Interrupt Handler is never called!</p>
 <p>Let’s fix it: <a href="https://github.com/lupyuen/nuttx/blob/pinephone/arch/arm64/src/common/arm64_arch_timer.c#L212-L235">arch/arm64/src/common/arm64_arch_timer.c</a></p>
@@ -464,13 +448,11 @@ Before writing: vbar_el1=0x40227000
   ARM64_ISB();
 
   // Read Vector Base Address Register EL1
-  sinfo(&quot;After writing: vbar_el1=%p\n&quot;, read_sysreg(vbar_el1));
-</code></pre></div>
+  sinfo(&quot;After writing: vbar_el1=%p\n&quot;, read_sysreg(vbar_el1));</code></pre></div>
 <p>This writes the correct value of <strong><code>_vector_table</code></strong> back into Vector Base Address Register EL1. Here’s the output on PinePhone…</p>
 <div class="example-wrap"><pre class="language-text"><code>_vector_table=0x400a7000
 Before writing: vbar_el1=0x40227000
-After writing:  vbar_el1=0x400a7000
-</code></pre></div>
+After writing:  vbar_el1=0x400a7000</code></pre></div>
 <p>Yep Vector Base Address Register (EL1) is now correct.</p>
 <p>Our Interrupt Handlers are now working fine… And PinePhone boots successfully yay! 🎉</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
@@ -503,8 +485,7 @@ lib_cxx_initialize: _sinit: 0x400a7000 _einit: 0x400a7000 _stext: 0x40080000 _et
 nsh: sysinit: fopen failed: 2
 
 nshn:x _msktfaarttf:s :C PcUo0m:m aBnedg innonti nfgo uInddle  L oNouptt
- Shell (NSH) NuttX-10.3.0-RC2
-</code></pre></div>
+ Shell (NSH) NuttX-10.3.0-RC2</code></pre></div>
 <p>(Yeah the output is slightly garbled, the UART Driver needs fixing)</p>
 <p>Now that we have UART Interrupts, <strong>NuttX Shell</strong> works perfectly OK on PinePhone…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; uname -a
@@ -535,8 +516,7 @@ nsh&gt; ls /dev
  ram0
  ram2
  ttyS0
- zero
-</code></pre></div>
+ zero</code></pre></div>
 <p><a href="https://youtube.com/shorts/WmRzfCiWV6o?feature=share"><strong>Watch the Demo on YouTube</strong></a></p>
 <p><a href="https://youtu.be/MJDxCcKAv0g"><strong>Another Demo Video</strong></a></p>
 <p>Let’s talk about EL1…</p>
@@ -573,8 +553,7 @@ nsh&gt; ls /dev
 - Ready to Boot CPU
 - Boot from EL2
 - Boot from EL1
-- Boot to C runtime for OS Initialize
-</code></pre></div>
+- Boot to C runtime for OS Initialize</code></pre></div>
 <p>(Remember that EL1 is less privileged than EL2, which supports Processor Virtualization. Host OS will run at EL2, Guest OS at EL1)</p>
 <p>That’s why we talked about the EL1 Vector Base Address Register in the previous section.</p>
 <p><em>So there’s a Vector Base Address Register for EL1, EL2 and EL3?</em></p>
@@ -585,8 +564,7 @@ nsh&gt; ls /dev
 <div class="example-wrap"><pre class="language-c"><code>void arm64_boot_el1_init(void) {
   /* Setup vector table */
   write_sysreg((uint64_t)_vector_table, vbar_el1);
-  ARM64_ISB();
-</code></pre></div>
+  ARM64_ISB();</code></pre></div>
 <p><strong><code>arm64_boot_el1_init</code></strong> is called by our Startup Code: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L210-L227">arch/arm64/src/common/arm64_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>    PRINT(switch_el1, &quot;- Boot from EL1\r\n&quot;)
 
@@ -600,8 +578,7 @@ nsh&gt; ls /dev
 
 jump_to_c_entry:
     PRINT(jump_to_c_entry, &quot;- Boot to C runtime for OS Initialize\r\n&quot;)
-    ret x25
-</code></pre></div>
+    ret x25</code></pre></div>
 <p>The <strong>Boot Sequence</strong> for NuttX RTOS is explained here…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx#boot-sequence"><strong>“Boot Sequence”</strong></a></li>

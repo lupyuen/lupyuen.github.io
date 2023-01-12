@@ -135,11 +135,9 @@
 <li><a href="https://lupyuen.github.io/articles/dsi#appendix-initialise-lcd-controller"><strong>“Initialise LCD Controller”</strong></a></li>
 </ul>
 <p>ST7703 Commands can be a single byte, like for <strong>“Display On”</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>29
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>29</code></pre></div>
 <p>Or a few bytes, like for <strong>“Enable User Command”</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>B9 F1 12 83
-</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>B9 F1 12 83</code></pre></div>
 <p>And up to <strong>64 bytes</strong> (for “Set Forward GIP Timing”)…</p>
 <div class="example-wrap"><pre class="language-text"><code>E9 82 10 06 05 A2 0A A5 
 12 31 23 37 83 04 BC 27 
@@ -148,8 +146,7 @@
 88 88 88 88 88 88 13 88 
 64 64 20 88 88 88 88 88 
 88 02 88 00 00 00 00 00 
-00 00 00 00 00 00 00 00 
-</code></pre></div>
+00 00 00 00 00 00 00 00 </code></pre></div>
 <p>We’ll send these 20 commands to ST7703 in a specific packet format…</p>
 <p><img src="https://lupyuen.github.io/images/dsi-packet.png" alt="MIPI DSI Long Packet (Page 203)" /></p>
 <p><a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf"><em>MIPI DSI Long Packet (Page 203)</em></a></p>
@@ -199,8 +196,7 @@ fn composeLongPacket(
   buf:     [*c]const u8,  // Transmit Buffer
   len:     usize          // Buffer Length
 ) []const u8 {  // Returns the Long Packet
-  ...
-</code></pre></div>
+  ...</code></pre></div>
 <p>(<strong><code>u8</code></strong> in Zig is the same as <strong><code>uint8_t</code></strong> in C)</p>
 <p>Our Zig Function <strong><code>composeLongPacket</code></strong> accepts the following parameters…</p>
 <ul>
@@ -238,8 +234,7 @@ ssize_t mipi_dsi_dcs_write(
   uint8_t     cmd,      // DCS Command
   const void *buf,      // Transmit Buffer
   size_t      len       // Buffer Length
-);
-</code></pre></div>
+);</code></pre></div>
 <p>This C Interface is identical to the implementation of <strong>MIPI DSI in Zephyr OS</strong>. <a href="https://github.com/zephyrproject-rtos/zephyr/blob/main/include/zephyr/drivers/mipi_dsi.h#L325-L337">(See this)</a></p>
 <p>Let’s compose the Packet Header…</p>
 <h2 id="packet-header"><a href="#packet-header">3.1 Packet Header</a></h2>
@@ -268,16 +263,14 @@ ssize_t mipi_dsi_dcs_write(
   assert(cmd &lt; (1 &lt;&lt; 6));
   const vc: u8 = channel;
   const dt: u8 = cmd;
-  const di: u8 = (vc &lt;&lt; 6) | dt;
-</code></pre></div>
+  const di: u8 = (vc &lt;&lt; 6) | dt;</code></pre></div>
 <p>First we populate the <strong>Data Indentifier (DI)</strong> with the Virtual Channel and DCS Command.</p>
 <p>Then we convert the 16-bit <strong>Word Count (WC)</strong> to bytes…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Word Count (WC) (2 bytes)：
   // Number of bytes in the Packet Payload
   const wc: u16 = @intCast(u16, len);
   const wcl: u8 = @intCast(u8, wc &amp; 0xff);
-  const wch: u8 = @intCast(u8, wc &gt;&gt; 8);
-</code></pre></div>
+  const wch: u8 = @intCast(u8, wc &gt;&gt; 8);</code></pre></div>
 <p>(<a href="https://ziglang.org/documentation/master/#intCast"><strong><code>@intCast</code></strong></a> will halt with a Runtime Panic if <strong><code>len</code></strong> is too big to be converted into a 16-bit unsigned integer <strong><code>u16</code></strong>)</p>
 <p>Next comes the <strong>Error Correction Code (ECC)</strong>. Which we compute based on the Data Identifier and Word Count…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Data Identifier + Word Count (3 bytes): 
@@ -286,8 +279,7 @@ ssize_t mipi_dsi_dcs_write(
 
   // Compute Error Correction Code (ECC) for
   // Data Identifier + Word Count
-  const ecc: u8 = computeEcc(di_wc);
-</code></pre></div>
+  const ecc: u8 = computeEcc(di_wc);</code></pre></div>
 <p>(“<strong><code>[3]u8</code></strong>” allocates a 3-byte array from the stack)</p>
 <p>We’ll cover <strong><code>computeEcc</code></strong> in a while.</p>
 <p>Finally we pack everything into our 4-byte <strong>Packet Header</strong>…</p>
@@ -298,8 +290,7 @@ ssize_t mipi_dsi_dcs_write(
     di_wc[1],  // Word Count (Low Byte)
     di_wc[2],  // Word Count (High Byte)
     ecc        // Error Correction Code
-  };
-</code></pre></div>
+  };</code></pre></div>
 <p>Moving on to the Packet Payload…</p>
 <h2 id="packet-payload"><a href="#packet-payload">3.2 Packet Payload</a></h2>
 <p>Remember that our <strong>Packet Payload</strong> is passed in as C-style <strong><code>buf</code></strong> (Buffer Pointer) and <strong><code>len</code></strong> (Buffer Length)?</p>
@@ -310,8 +301,7 @@ ssize_t mipi_dsi_dcs_write(
   assert(len &lt;= 65_541);
 
   // Convert to Byte Slice
-  const payload = buf[0..len];
-</code></pre></div>
+  const payload = buf[0..len];</code></pre></div>
 <p>We’ll concatenate the Packet Payload with the Header and Footer in a while.</p>
 <p>(Packet Header and Footer are also Byte Slices)</p>
 <p>From this code it’s clear that a <a href="https://ziglang.org/documentation/master/#Slices"><strong>Zig Slice</strong></a> is nothing more than a <strong>Pointer</strong> and a <strong>Length</strong>… It’s the tidier and safer way to pass buffers in Zig!</p>
@@ -321,8 +311,7 @@ ssize_t mipi_dsi_dcs_write(
 <div class="example-wrap"><pre class="language-zig"><code>  // Checksum (CS) (2 bytes):
   // 16-bit Cyclic Redundancy Check (CRC) of the Payload
   // (not the entire packet)
-  const cs: u16 = computeCrc(payload);
-</code></pre></div>
+  const cs: u16 = computeCrc(payload);</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/dsi2#appendix-cyclic-redundancy-check">(<strong><code>computeCrc</code></strong> is explained in the Appendix)</a></p>
 <p>The CRC goes into the 2-byte <strong>Packet Footer</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Convert CRC to 2 bytes
@@ -331,8 +320,7 @@ ssize_t mipi_dsi_dcs_write(
 
   // Packet Footer (2 bytes):
   // Checksum (CS)
-  const footer = [2]u8 { csl, csh };
-</code></pre></div>
+  const footer = [2]u8 { csl, csh };</code></pre></div>
 <p>Finally we’re ready to put the Header, Payload and Footer together!</p>
 <h2 id="combine-header-payload-and-footer"><a href="#combine-header-payload-and-footer">3.4 Combine Header, Payload and Footer</a></h2>
 <p>Our Long Packet will contain…</p>
@@ -373,15 +361,13 @@ ssize_t mipi_dsi_dcs_write(
     u8,                  // Type
     pkt[(header.len + len)..],  // Destination
     &amp;footer              // Source (2 bytes)
-  );
-</code></pre></div>
+  );</code></pre></div>
 <p>(<a href="https://ziglang.org/documentation/master/std/#root;mem.copy"><strong><code>std.mem.copy</code></strong></a> copies one Slice to another. It works like <strong><code>memcpy</code></strong> in C)</p>
 <p>And we return the Byte Slice that contains our Long Packet, sized accordingly…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Return the packet
   const result = pkt[0..pktlen];
   return result;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>That’s how we compose a MIPI DSI Long Packet in Zig!</p>
 <p><img src="https://lupyuen.github.io/images/dsi2-ecc.png" alt="MIPI DSI Error Correction Code (Page 209)" /></p>
 <p><a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf"><em>MIPI DSI Error Correction Code (Page 209)</em></a></p>
@@ -398,8 +384,7 @@ ECC[4] = D4^D5^D6^D7^D8^D9^D16^D17^D18^D19^D20^D22^D23
 ECC[3] = D1^D2^D3^D7^D8^D9^D13^D14^D15^D19^D20^D21^D23
 ECC[2] = D0^D2^D3^D5^D6^D9^D11^D12^D15^D18^D20^D21^D22
 ECC[1] = D0^D1^D3^D4^D6^D8^D10^D12^D14^D17^D20^D21^D22^D23
-ECC[0] = D0^D1^D2^D4^D5^D7^D10^D11^D13^D16^D20^D21^D22^D23
-</code></pre></div>
+ECC[0] = D0^D1^D2^D4^D5^D7^D10^D11^D13^D16^D20^D21^D22^D23</code></pre></div>
 <p>(“<strong><code>^</code></strong>” means Exclusive OR)</p>
 <p>(<strong><code>D0</code></strong> to <strong><code>D23</code></strong> refer to the pic above)</p>
 <p>This is how we compute the ECC: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L170-L211">display.zig</a></p>
@@ -410,8 +395,7 @@ ECC[0] = D0^D1^D2^D4^D5^D7^D10^D11^D13^D16^D20^D21^D22^D23
 fn computeEcc(
   di_wc: [3]u8  // Data Identifier + Word Count (3 bytes)
 ) u8 {
-  ...
-</code></pre></div>
+  ...</code></pre></div>
 <p>Our Zig Function <strong><code>computeEcc</code></strong> accepts a 3-byte array, containing the first 3 bytes of the Packet Header.</p>
 <p>(“<strong><code>[3]u8</code></strong>” is equivalent to “<strong><code>uint8_t[3]</code></strong>” in C)</p>
 <p>We combine the 3 bytes into a <strong>24-bit word</strong>…</p>
@@ -419,8 +403,7 @@ fn computeEcc(
   var di_wc_word: u32 = 
     di_wc[0] 
     | (@intCast(u32, di_wc[1]) &lt;&lt; 8)
-    | (@intCast(u32, di_wc[2]) &lt;&lt; 16);
-</code></pre></div>
+    | (@intCast(u32, di_wc[2]) &lt;&lt; 16);</code></pre></div>
 <p>Then we extract the 24 bits into <strong><code>d[0]</code></strong> to <strong><code>d[23]</code></strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Allocate an array of 24 bits from the stack,
   // initialised to zeros
@@ -431,8 +414,7 @@ fn computeEcc(
   while (i &lt; 24) : (i += 1) {
     d[i] = @intCast(u1, di_wc_word &amp; 1);
     di_wc_word &gt;&gt;= 1;
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p>(<a href="https://ziglang.org/documentation/master/std/#root;mem.zeroes"><strong><code>std.mem.zeroes</code></strong></a> allocates an array from the stack, initialised to zeroes)</p>
 <p>Note that we’re working with <strong>Bit Values</strong>…</p>
 <ul>
@@ -456,8 +438,7 @@ fn computeEcc(
   ecc[3] = d[1]  ^ d[2]  ^ d[3]  ^ d[7]  ^ d[8]  ^ d[9]  ^ d[13] ^ d[14] ^ d[15] ^ d[19] ^ d[20] ^ d[21] ^ d[23];
   ecc[2] = d[0]  ^ d[2]  ^ d[3]  ^ d[5]  ^ d[6]  ^ d[9]  ^ d[11] ^ d[12] ^ d[15] ^ d[18] ^ d[20] ^ d[21] ^ d[22];
   ecc[1] = d[0]  ^ d[1]  ^ d[3]  ^ d[4]  ^ d[6]  ^ d[8]  ^ d[10] ^ d[12] ^ d[14] ^ d[17] ^ d[20] ^ d[21] ^ d[22] ^ d[23];
-  ecc[0] = d[0]  ^ d[1]  ^ d[2]  ^ d[4]  ^ d[5]  ^ d[7]  ^ d[10] ^ d[11] ^ d[13] ^ d[16] ^ d[20] ^ d[21] ^ d[22] ^ d[23];
-</code></pre></div>
+  ecc[0] = d[0]  ^ d[1]  ^ d[2]  ^ d[4]  ^ d[5]  ^ d[7]  ^ d[10] ^ d[11] ^ d[13] ^ d[16] ^ d[20] ^ d[21] ^ d[22] ^ d[23];</code></pre></div>
 <p>Finally we <strong>merge the ECC Bits</strong> into a single byte and return it…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Merge the ECC bits
   return @intCast(u8, ecc[0])
@@ -468,8 +449,7 @@ fn computeEcc(
     | (@intCast(u8, ecc[5]) &lt;&lt; 5)
     | (@intCast(u8, ecc[6]) &lt;&lt; 6)
     | (@intCast(u8, ecc[7]) &lt;&lt; 7);
-}
-</code></pre></div>
+}</code></pre></div>
 <p>And we’re done with the Error Correction Code!</p>
 <p><img src="https://lupyuen.github.io/images/dsi-short.png" alt="MIPI DSI Short Packet (Page 201)" /></p>
 <p><a href="https://files.pine64.org/doc/datasheet/ox64/BL808_RM_en_1.0(open).pdf"><em>MIPI DSI Short Packet (Page 201)</em></a></p>
@@ -508,8 +488,7 @@ fn composeShortPacket(
 ) []const u8 {  // Returns the Short Packet
   
   // Short Packet can only have 1 or 2 data bytes
-  assert(len == 1 or len == 2);
-</code></pre></div>
+  assert(len == 1 or len == 2);</code></pre></div>
 <p><strong><code>composeShortPacket</code></strong> accepts the same parameters as <strong><code>composeLongPacket</code></strong>.</p>
 <p>We populate <strong>Data Indentifier (DI)</strong> the same way, with Virtual Channel and DCS Command…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Data Identifier (DI) (1 byte):
@@ -519,16 +498,14 @@ fn composeShortPacket(
   assert(cmd &lt; (1 &lt;&lt; 6));
   const vc: u8 = channel;
   const dt: u8 = cmd;
-  const di: u8 = (vc &lt;&lt; 6) | dt;
-</code></pre></div>
+  const di: u8 = (vc &lt;&lt; 6) | dt;</code></pre></div>
 <p>Our <strong>Packet Header</strong> will include two bytes of data…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Data (2 bytes), fill with 0 
   // if Second Byte is missing
   const data = [2]u8 {
     buf[0],                       // First Data Byte
     if (len == 2) buf[1] else 0,  // Second Data Byte
-  };
-</code></pre></div>
+  };</code></pre></div>
 <p>We compute the <strong>Error Correction Code (ECC)</strong> based on the Data Identifier and the two Data Bytes…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Data Identifier + Data (3 bytes): 
   // For computing Error Correction Code (ECC)
@@ -540,8 +517,7 @@ fn composeShortPacket(
 
   // Compute Error Correction Code (ECC) 
   // for Data Identifier + Word Count
-  const ecc: u8 = computeEcc(di_data);
-</code></pre></div>
+  const ecc: u8 = computeEcc(di_data);</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/dsi2#error-correction-code">(<strong><code>computeEcc</code></strong> is explained here)</a></p>
 <p>We pack everything into our 4-byte <strong>Packet Header</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Packet Header (4 bytes):
@@ -551,8 +527,7 @@ fn composeShortPacket(
     di_data[1],  // First Data Byte
     di_data[2],  // Second Data Byte
     ecc          // Error Correction Code
-  };
-</code></pre></div>
+  };</code></pre></div>
 <p>We <strong>copy the Packet Header</strong> into our Packet Buffer…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Verify the Packet Buffer Length
   const pktlen = header.len;
@@ -563,14 +538,12 @@ fn composeShortPacket(
     u8,                  // Type
     pkt[0..header.len],  // Destination
     &amp;header              // Source (4 bytes)
-  );
-</code></pre></div>
+  );</code></pre></div>
 <p>And we return the Byte Slice that contains our Short Packet, sized accordingly…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Return the packet
   const result = pkt[0..pktlen];
   return result;
-}
-</code></pre></div>
+}</code></pre></div>
 <p>We’re done with Long and Short Packets for MIPI DSI, let’s test them…</p>
 <p><img src="https://lupyuen.github.io/images/dsi2-test.png" alt="Test Case for MIPI DSI Driver" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L997-L1036">(Source)</a></p>
@@ -580,14 +553,12 @@ fn composeShortPacket(
 <div class="example-wrap"><pre class="language-zig"><code>// Test Compose Short Packet (With Parameter)
 const short_pkt_param = [_]u8 {
   0xbc, 0x4e,
-};
-</code></pre></div>
+};</code></pre></div>
 <p>We’ll compose a Short Packet that will pack the 2 bytes above.</p>
 <p>(We write “<strong><code>[_]u8</code></strong>” to declare a Byte Array in Zig)</p>
 <p>First we allocate a <strong>Packet Buffer</strong> from the Stack, initialised to zeroes…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Allocate Packet Buffer of 128 bytes
-var pkt_buf = std.mem.zeroes([128]u8);
-</code></pre></div>
+var pkt_buf = std.mem.zeroes([128]u8);</code></pre></div>
 <p>(“<strong><code>[128]u8</code></strong>” is equivalent to “<strong><code>uint8_t[128]</code></strong>” in C)</p>
 <p>Then we call <strong><code>composeShortPacket</code></strong> to construct the Short Packet…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Compose a Short Packet (With Parameter)
@@ -597,16 +568,14 @@ const short_pkt_param_result = composeShortPacket(
   MIPI_DSI_DCS_SHORT_WRITE_PARAM, // DCS Command: 0x15
   &amp;short_pkt_param,    // Transmit Buffer
   short_pkt_param.len  // Buffer Length
-);
-</code></pre></div>
+);</code></pre></div>
 <p>We <strong>dump the contents</strong> of the returned packet…</p>
 <div class="example-wrap"><pre class="language-zig"><code>// Dump the Returned Packet
 debug(&quot;Result:&quot;, .{});
 dump_buffer(
   &amp;short_pkt_param_result[0],  // Pointer to Packet
   short_pkt_param_result.len   // Length of Packet
-);
-</code></pre></div>
+);</code></pre></div>
 <p>(We’ll talk about <strong><code>dump_buffer</code></strong> in a while)</p>
 <p>Finally we verify that the result is “<strong><code>15</code> <code>BC</code> <code>4E</code> <code>35</code></strong>”…</p>
 <div class="example-wrap"><pre class="language-zig"><code>//  Verify the Returned Packet
@@ -618,16 +587,14 @@ assert(
       0x15, 0xbc, 0x4e, 0x35  // Expected Data
     }
   )
-);
-</code></pre></div>
+);</code></pre></div>
 <p>(<a href="https://ziglang.org/documentation/master/std/#root;mem.eql"><strong><code>std.mem.eql</code></strong></a> returns True if the two Slices are identical)</p>
 <p>The above Test Case shows this output…</p>
 <div class="example-wrap"><pre class="language-text"><code>Testing Compose Short Packet (With Parameter)...
 composeShortPacket:
   channel=0, cmd=0x15, len=2
 Result:
-  15 bc 4e 35 
-</code></pre></div>
+  15 bc 4e 35 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-nuttx-zig-driver-for-mipi-dsi-on-qemu">(Source)</a></p>
 <p>In the next chapter we’ll learn to run the Test Case on the QEMU Emulator for Arm64.</p>
 <p><em>What’s <code>dump_buffer</code>?</em></p>
@@ -636,8 +603,7 @@ Result:
 extern fn dump_buffer(
   data: [*c]const u8,  // C Pointer to Packet
   len: usize           // Length of Packet
-) void;                // No Return Value
-</code></pre></div>
+) void;                // No Return Value</code></pre></div>
 <p><strong><code>dump_buffer</code></strong> is defined here: <a href="https://github.com/lupyuen/nuttx-apps/blob/de/examples/hello/hello_main.c#L197-L205">hello_main.c</a></p>
 <p><em>What about testing Long Packets?</em></p>
 <p>We have <strong>3 Test Cases</strong> for testing the creation of Long and Short Packets…</p>
@@ -665,13 +631,13 @@ extern fn dump_buffer(
 <li><a href="https://github.com/lupyuen/pinephone-nuttx#test-pinephone-mipi-dsi-driver-with-qemu"><strong>“Test PinePhone MIPI DSI Driver with QEMU”</strong></a></li>
 </ul>
 <p>Then we compile our <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig"><strong>Zig App (display.zig)</strong></a> and link it with NuttX…</p>
-<div class="example-wrap"><pre class="language-bash"><code>##  Download the Zig App
+<div class="example-wrap"><pre class="language-bash"><code>#  Download the Zig App
 git clone --recursive https://github.com/lupyuen/pinephone-nuttx
 cd pinephone-nuttx
 
-##  Compile the Zig App for PinePhone 
-##  (armv8-a with cortex-a53)
-##  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+#  Compile the Zig App for PinePhone 
+#  (armv8-a with cortex-a53)
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 zig build-obj \
   --verbose-cimport \
   -target aarch64-freestanding-none \
@@ -680,19 +646,18 @@ zig build-obj \
   -I &quot;$HOME/nuttx/apps/include&quot; \
   display.zig
 
-##  Copy the compiled app to NuttX and overwrite `null.o`
-##  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+#  Copy the compiled app to NuttX and overwrite `null.o`
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 cp display.o \
   $HOME/nuttx/apps/examples/null/*null.o
 
-##  Build NuttX to link the Zig Object from `null.o`
-##  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
+#  Build NuttX to link the Zig Object from `null.o`
+#  TODO: Change &quot;$HOME/nuttx&quot; to your NuttX Project Directory
 cd $HOME/nuttx/nuttx
-make
-</code></pre></div>
+make</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#zig-on-pinephone">(We copied the Zig Compiler Options from GCC)</a></p>
 <p>We <strong>start QEMU</strong> to boot NuttX…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Run GIC v2 with QEMU
+<div class="example-wrap"><pre class="language-bash"><code># Run GIC v2 with QEMU
 qemu-system-aarch64 \
   -smp 4 \
   -cpu cortex-a53 \
@@ -702,12 +667,10 @@ qemu-system-aarch64 \
   -chardev stdio,id=con,mux=on \
   -serial chardev:con \
   -mon chardev=con,mode=readline \
-  -kernel ./nuttx
-</code></pre></div>
+  -kernel ./nuttx</code></pre></div>
 <p>(We chose <a href="https://lupyuen.github.io/articles/interrupt#allwinner-a64-gic"><strong>GIC Version 2</strong></a> to be consistent with PinePhone)</p>
 <p>At the NuttX Shell, enter this command to run our <strong>Zig Test Cases</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>null
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>null</code></pre></div>
 <p>Our <a href="https://lupyuen.github.io/articles/dsi2#test-mipi-dsi-driver"><strong>Test Cases for Long and Short Packets</strong></a> should complete without Assertion Failures…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-11.0.0-RC2
 nsh&gt; null
@@ -732,8 +695,7 @@ Result:
 88 88 88 88 88 02 88 00 
 00 00 00 00 00 00 00 00 
 00 00 00 00 65 03 
-nsh&gt; 
-</code></pre></div>
+nsh&gt; </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-nuttx-zig-driver-for-mipi-dsi-on-qemu">(See the Complete Log)</a></p>
 <p>Yep we have successfully tested our MIPI DSI Code on NuttX RTOS and QEMU Arm64!</p>
 <p><img src="https://lupyuen.github.io/images/dsi2-code2.png" alt="Initialising ST7703 LCD Controller" /></p>
@@ -772,8 +734,7 @@ pub export fn nuttx_panel_init() void {
   writeDcs(&amp;[_]u8 {
     0x29  // Display On (Page 97): Recover from DISPLAY OFF mode (MIPI_DCS_SET_DISPLAY_ON)
   });    
-}
-</code></pre></div>
+}</code></pre></div>
 <p>To send a command to ST7703 Controller, <strong><code>writeDcs</code></strong> executes a <strong>DCS Short Write</strong> or <strong>DCS Long Write</strong> over MIPI DSI, depending on the length of the command: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L296-L321">display.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Write the DCS Command to MIPI DSI
 fn writeDcs(buf: []const u8) void {
@@ -801,8 +762,7 @@ fn writeDcs(buf: []const u8) void {
       &amp;buf[0], buf.len),
   };
   assert(res == buf.len);
-}
-</code></pre></div>
+}</code></pre></div>
 <p>(We write “<strong><code>&amp;buf[0]</code></strong>” to convert a Slice into a Pointer)</p>
 <p>Let’s study our Zig Function that sends Long Packets and Short Packets over MIPI DSI: <strong>nuttx_mipi_dsi_dcs_write</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/dsi2-code3.png" alt="Writing a DCS Command to MIPI DSI" /></p>
@@ -813,12 +773,10 @@ fn writeDcs(buf: []const u8) void {
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L479-L483"><strong><code>getreg32</code></strong></a>: Read the Value of the Hardware Register at the specified Address</p>
-<div class="example-wrap"><pre class="language-zig"><code>fn getreg32(addr: u64) u32
-</code></pre></div></li>
+<div class="example-wrap"><pre class="language-zig"><code>fn getreg32(addr: u64) u32</code></pre></div></li>
 <li>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L485-L489"><strong><code>putreg32</code></strong></a>: Set the Value of the Hardware Register at the specified Address</p>
-<div class="example-wrap"><pre class="language-zig"><code>fn putreg32(val: u32, addr: u64)
-</code></pre></div>
+<div class="example-wrap"><pre class="language-zig"><code>fn putreg32(val: u32, addr: u64)</code></pre></div>
 <p>(Note that the Value comes <strong>before</strong> the Address)</p>
 </li>
 <li>
@@ -827,8 +785,7 @@ fn writeDcs(buf: []const u8) void {
   addr: u64,       // Address to modify
   clearbits: u32,  // Bits to clear, like (1 &lt;&lt; bit)
   setbits: u32     // Bit to set, like (1 &lt;&lt; bit)
-)
-</code></pre></div></li>
+)</code></pre></div></li>
 </ul>
 <p>This is how we <strong>send MIPI DSI Packets</strong> to PinePhone’s Display: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L323-L430">display.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Write Packet to MIPI DSI. See https://lupyuen.github.io/articles/dsi#transmit-packet-over-mipi-dsi
@@ -839,8 +796,7 @@ pub export fn nuttx_mipi_dsi_dcs_write(
   buf:     [*c]const u8,  // Transmit Buffer
   len:     usize          // Buffer Length
 ) isize {  // On Success: Return number of written bytes. On Error: Return negative error code
-  ...
-</code></pre></div>
+  ...</code></pre></div>
 <p>Our function accepts a <strong>DCS Long Write</strong> or <strong>DCS Short Write</strong> command. (Depending on the packet size)</p>
 <p>Based on the DCS Command received, we compose a <strong>Long Packet or Short Packet</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Allocate Packet Buffer
@@ -861,8 +817,7 @@ pub export fn nuttx_mipi_dsi_dcs_write(
 
     // DCS Command not supported
     else =&gt; unreachable,
-  };
-</code></pre></div>
+  };</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/dsi2#compose-long-packet">(<strong>composeLongPacket</strong> is explained here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/dsi2#compose-short-packet">(<strong>composeShortPacket</strong> is explained here)</a></p>
 <p>To prepare for Packet Transmission, we initialise the A64 Hardware Register <strong>DSI_CMD_CTL_REG</strong> (DSI Low Power Control Register)…</p>
@@ -878,8 +833,7 @@ pub export fn nuttx_mipi_dsi_dcs_write(
   putreg32(
     RX_Overflow | RX_Flag | TX_Flag,
     DSI_CMD_CTL_REG
-  );
-</code></pre></div>
+  );</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/dsi#transmit-packet-over-mipi-dsi">(<strong>DSI_CMD_CTL_REG</strong> is explained here)</a></p>
 <p>Next we write the Long or Short Packet to <strong>DSI_CMD_TX_REG</strong> (DSI Low Power Transmit Package Register) in 4-byte chunks…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Write the Long Packet to DSI_CMD_TX_REG 
@@ -907,14 +861,12 @@ pub export fn nuttx_mipi_dsi_dcs_write(
     assert(addr &lt;= DSI_BASE_ADDRESS + 0x3FC);
     modifyreg32(addr, 0xFFFF_FFFF, v);
     addr += 4;
-  }
-</code></pre></div>
+  }</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/dsi#transmit-packet-over-mipi-dsi">(<strong>DSI_CMD_TX_REG</strong> is explained here)</a></p>
 <p>We set the Packet Length in <strong>DSI_CMD_CTL_REG</strong> (DSI Low Power Control Register)…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Set Packet Length - 1 in Bits 0 to 7 (TX_Size) of
   // DSI_CMD_CTL_REG (DSI Low Power Control Register) at Offset 0x200
-  modifyreg32(DSI_CMD_CTL_REG, 0xFF, @intCast(u32, pkt.len) - 1);
-</code></pre></div>
+  modifyreg32(DSI_CMD_CTL_REG, 0xFF, @intCast(u32, pkt.len) - 1);</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/dsi#transmit-packet-over-mipi-dsi">(<strong>DSI_CMD_CTL_REG</strong> is explained here)</a></p>
 <p>We begin MIPI DSI Low Power Transmission by writing to <strong>DSI_INST_JUMP_SEL_REG</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Set DSI_INST_JUMP_SEL_REG (Offset 0x48, undocumented) 
@@ -927,14 +879,12 @@ pub export fn nuttx_mipi_dsi_dcs_write(
     DSI_INST_ID_LPDT &lt;&lt; (4 * DSI_INST_ID_LP11) |
     DSI_INST_ID_END  &lt;&lt; (4 * DSI_INST_ID_LPDT),
     DSI_INST_JUMP_SEL_REG
-  );
-</code></pre></div>
+  );</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/dsi#transmit-packet-over-mipi-dsi">(<strong>DSI_INST_JUMP_SEL_REG</strong> is explained here)</a></p>
 <p>Our MIPI DSI Packet gets transmitted when we toggle the <strong>DSI Processing State</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Disable DSI Processing then Enable DSI Processing
   disableDsiProcessing();
-  enableDsiProcessing();
-</code></pre></div>
+  enableDsiProcessing();</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L451-L455">(<strong>disableDsiProcessing</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L457-L461">(<strong>enableDsiProcessing</strong> is defined here)</a></p>
 <p>We must <strong>wait for the Packet Transmission</strong> to complete…</p>
@@ -947,8 +897,7 @@ pub export fn nuttx_mipi_dsi_dcs_write(
 
   // Return number of written bytes
   return @intCast(isize, len);
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/display.zig#L432-L449">(<strong>waitForTransmit</strong> is defined here)</a></p>
 <p>And we’re done transmitting a MIPI DSI Packet to PinePhone’s Display!</p>
 <p><img src="https://lupyuen.github.io/images/dsi2-title.jpg" alt="Apache NuttX RTOS on PinePhone" /></p>
@@ -977,8 +926,7 @@ pub export fn nuttx_mipi_dsi_dcs_write(
 static void panel_init(void) {
   // We call Zig Driver to init ST7703
   nuttx_panel_init();
-}
-</code></pre></div>
+}</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/dsi2#initialise-st7703-lcd-controller">(<strong><code>nuttx_panel_init</code></strong> is explained here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/tag/pboot4">(<strong>p-boot Display Code</strong> modified for Zig)</a></p>
 <p>Follow these steps to <strong>download NuttX RTOS</strong> (with our Zig Driver inside) to a microSD Card…</p>
@@ -989,8 +937,7 @@ static void panel_init(void) {
 <p>Boot PinePhone with NuttX RTOS in the microSD Card.</p>
 <p>(NuttX won’t disturb the eMMC Flash Memory)</p>
 <p>At the NuttX Shell, enter this command to <strong>test our Zig Display Driver</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>hello
-</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>hello</code></pre></div>
 <p>We should see our Zig Driver composing the <strong>MIPI DSI Packets</strong> and setting the <strong>Hardware Registers</strong> of the Allwinner A64 SoC…</p>
 <div class="example-wrap"><pre class="language-text"><code>HELLO NUTTX ON PINEPHONE!
 ...
@@ -1010,8 +957,7 @@ modifyreg32: addr=0x308, val=0x00005d84
 modifyreg32: addr=0x200, val=0x00000009
 modifyreg32: addr=0x010, val=0x00000000
 modifyreg32: addr=0x010, val=0x00000001
-...
-</code></pre></div>
+...</code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#testing-nuttx-zig-driver-for-mipi-dsi-on-pinephone">(See the Complete Log)</a></p>
 <p>Our Zig Display Driver powers on the PinePhone Display and <strong>renders the Test Pattern</strong>… Exactly like the earlier code in C! 🎉</p>
 <p><em>Are we really sure that our Zig Driver works OK?</em></p>
@@ -1178,8 +1124,7 @@ fn crc16ccitt(src: []const u8, crc16val: u16) u16 {
       ^ crc16ccitt_tab[(v ^ src[i]) &amp; 0xff];
   }
   return v;
-}
-</code></pre></div>
+}</code></pre></div>
 <p><strong><code>crc16ccitt_tab</code></strong> is the standard table for computing CRC-16-CCITT based on the polynomial “<code>x^16 + x^12 + x^5 + 1</code>”…</p>
 <div class="example-wrap"><pre class="language-zig"><code>/// From CRC-16-CCITT (x^16 + x^12 + x^5 + 1)
 const crc16ccitt_tab = [256]u16 {
@@ -1215,8 +1160,7 @@ const crc16ccitt_tab = [256]u16 {
   0x6b46, 0x7acf, 0x4854, 0x59dd, 0x2d62, 0x3ceb, 0x0e70, 0x1ff9,
   0xf78f, 0xe606, 0xd49d, 0xc514, 0xb1ab, 0xa022, 0x92b9, 0x8330,
   0x7bc7, 0x6a4e, 0x58d5, 0x495c, 0x3de3, 0x2c6a, 0x1ef1, 0x0f78,
-};
-</code></pre></div>
+};</code></pre></div>
     
 </body>
 </html>
