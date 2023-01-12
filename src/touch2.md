@@ -1107,9 +1107,13 @@ static int gt9xx_isr_handler(int irq, FAR void *context, FAR void *arg) {
   // Get the Touch Panel Device
   FAR struct gt9xx_dev_s *priv = (FAR struct gt9xx_dev_s *)arg;
 
+  // Begin Critical Section
+  flags = enter_critical_section();
+
   // Set the Interrupt Pending Flag
-  irqstate_t flags = enter_critical_section();
   priv->int_pending = true;
+
+  // End Critical Section
   leave_critical_section(flags);
 
   // Notify the Poll Waiters
