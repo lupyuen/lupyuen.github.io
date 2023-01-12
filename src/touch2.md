@@ -419,7 +419,7 @@ Let's handle interrupts from the Touch Panel...
 
 _We've done polling with the Touch Panel..._
 
-_How do we handle interrupts from the Touch Panel?_
+_Can we handle interrupts from the Touch Panel?_
 
 Earlier we've read the Touch Panel by polling... Which is easier but inefficient.
 
@@ -427,11 +427,17 @@ So we tried reading the Touch Panel with an __Interrupt Handler__...
 
 -   [__"Interrupt Handler for Touch Panel"__](https://lupyuen.github.io/articles/touch2#appendix-interrupt-handler-for-touch-panel)
 
-But there's a problem: The Touch Panel only __fires an interrupt once__. If won't trigger interrupts correctly when we touch the screen.
+But there's a problem: The Touch Panel only __fires an interrupt once__.
+
+It won't trigger interrupts correctly when we touch the screen.
 
 _Is this a showstopper for our Touch Panel Driver?_
 
-TODO: LVGL Demo App doesn't require interrupts, it uses polling
+Not really, polling will work fine for now.
+
+In a while we'll run the __LVGL Demo App__, which uses polling. (Instead of interrupts)
+
+Now we dive inside our NuttX Touch Panel Driver that will be called by NuttX Apps..
 
 # NuttX Touch Panel Driver
 
@@ -659,11 +665,9 @@ Yep our __driver has limitations__, since the Touch Panel Hardware is poorly doc
 
     (So we might put on hold for now)
 
-1.  PinePhone's Touch Panel triggers [__Excessive Interrupts__](https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler). (That we throttle for now)
+1.  PinePhone's Touch Panel seems to trigger __too few interrupts__. [(See this)](https://lupyuen.github.io/articles/touch2#appendix-interrupt-handler-for-touch-panel)
 
     Again we'll have to decipher the (still undocumented) [__Official Android Driver__](https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c) to fix this.
-
-    (Or maybe we should call [__arm64_gic_irq_set_priority__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L227-L252) in the Generic Interrupt Controller?)
 
 1.  Note to Future Self: __`poll()`__ won't work correctly for awaiting Touch Points!
 
@@ -990,17 +994,23 @@ We do this only if the __Reference Count__ decrements to 0.
 
 # Appendix: Interrupt Handler for Touch Panel
 
-TODO
+Earlier we've read the Touch Panel by polling... Which is easier but inefficient.
+
+So we tried reading the Touch Panel with an __Interrupt Handler__... But there's a problem: The Touch Panel only __fires an interrupt once__.
+
+It won't trigger interrupts correctly when we touch the screen.
+
+_Is this a showstopper for our Touch Panel Driver?_
+
+Not really, polling will work fine for now.
+
+Earlier we saw that the [__LVGL Demo App__](https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver) runs OK because it uses polling. (Instead of interrupts)
+
+This section talks about our experiments with Touch Panel Interrupts...
 
 ## Attach our Interrupt Handler
 
-_We've done polling with the Touch Panel..._
-
-_How do we handle interrupts from the Touch Panel?_
-
-Earlier we've read the Touch Panel by polling... Which is easier but inefficient.
-
-Now we do a proper __Interrupt Handler__ for the Touch Panel. This is how we attach our Interrupt Handler to PH4 in NuttX: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L289-L329)
+This is how we attach our __Interrupt Handler__ to PH4 in NuttX: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L289-L329)
 
 ```c
 // Touch Panel Interrupt (CTP-INT) is at PH4
@@ -1078,9 +1088,17 @@ static int touch_panel_interrupt(int irq, void *context, void *arg) {
 
 This Interrupt Handler simply prints "__`.`__" whenever the Touch Panel triggers an interrupt.
 
+But our Interrupt Handler won't actually read the Touch Coordinates.
+
+(Because Interrupt Handlers can't make I2C calls)
+
+We'll fix this in the next section.
+
 _It's OK to call up_putc in an Interrupt Handler?_
 
-Yep it's perfectly OK, because [__up_putc__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L619-L649) simply writes to the UART Register. (It won't trigger another interrupt)
+Yep it's perfectly OK, because [__up_putc__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L619-L649) simply writes to the UART Output Register.
+
+(It won't trigger another interrupt)
 
 ![Handling Interrupts from Touch Panel](https://lupyuen.github.io/images/touch2-code6a.png)
 
@@ -1091,6 +1109,9 @@ Here's the actual Interrupt Handler in our Touch Panel Driver: [gt9xx.c](https:/
 ```c
 // Interrupt Handler for Touch Panel
 static int gt9xx_isr_handler(int irq, FAR void *context, FAR void *arg) {
+
+  // For Testing: Print something when interrupt is triggered
+  up_putc('.');
 
   // Get the Touch Panel Device
   FAR struct gt9xx_dev_s *priv = (FAR struct gt9xx_dev_s *)arg;
@@ -1118,7 +1139,7 @@ static int gt9xx_isr_handler(int irq, FAR void *context, FAR void *arg) {
 
 Our Interrupt Handler won't actually read the Touch Coordinates. (Because Interrupt Handlers can't make I2C calls)
 
-Instead our Interrupt Handler __notifies the Background Thread__ (via Poll Waiters) that there's a Touch Event waiting to be processed.
+Instead our Interrupt Handler sets the __Interrupt Pending Flag__ and __notifies the Background Thread__ (via Poll Waiters) that there's a Touch Event waiting to be processed.
 
 The Background Thread calls __`poll()`__, suspends itself and __waits for the notification__ before processing the Touch Event over I2C.
 
@@ -1181,11 +1202,53 @@ touch_panel_read: touch x=15, y=1394
 
 The log shows that we've read the Touch Panel Status __`0x81`__, followed by the Touch Coordinates. Yep we've tested our Interrupt Handler successfully!
 
+But there's a problem...
+
+## Too Few Interrupts
+
+_So Touch Panel Interrupts are working OK?_
+
+There's a problem: The Touch Panel only __fires an interrupt once__!
+
+It won't trigger interrupts correctly when we touch the screen.
+
+_How do we know this?_
+
+The Debug Log shows that "__`.`__" is printed only once... Which means our Interrupt Handler is only triggered once!
+
+```text
+gt9xx_probe_device (0x40b1ba18):
+0000  39 31 37 53                                      917S            
+pinephone_gt9xx_irq_enable: enable=1
+gt9xx_set_status: status=0
+gt9xx_i2c_write: reg=0x814e, val=0
+touchpad /dev/input0 open success
+touchpad_init
+.
+Before: disp_size=2
+After: disp_size=1
+gt9xx_read: buflen=32
+gt9xx_read_touch_data: 
+gt9xx_i2c_read: reg=0x814e, buflen=1
+gt9xx_i2c_read (0x40b1bab0):
+0000  80
+```
+
+[(See the Debug Log)](https://gist.github.com/lupyuen/3b406c58ea275a3dfadc4c4dff50f1a7)
+
+_Is this a showstopper for our Touch Panel Driver?_
+
+Not really, polling will work fine for now.
+
+Earlier we saw that the [__LVGL Demo App__](https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver) runs OK because it uses polling. (Instead of interrupts)
+
+But let's consider an alternative interrupt setup...
+
 ![Touch Panel triggers our Interrupt Handler Non-Stop](https://lupyuen.github.io/images/touch2-run2a.png)
 
 ## Trigger Interrupts By Level
 
-_Why did we set Interrupt Trigger to to IRQ_TYPE_EDGE?_
+_Why did we set the Interrupt Trigger to IRQ_TYPE_EDGE?_
 
 ```c
 // Set Interrupt Priority in Generic Interrupt Controller v2
@@ -1245,6 +1308,9 @@ static int gt9xx_isr_handler(int irq, FAR void *context, FAR void *arg) {
     // Disable the Touch Panel Interrupt
     priv->board->irq_enable(priv->board, false); 
   }
+
+  // Omitted: Set the Interrupt Pending Flag
+  // and notify the Poll Waiters
 ```
 
 It seems to work... But it doesn't look right to throttle interrupts in an Interrupt Handler.
