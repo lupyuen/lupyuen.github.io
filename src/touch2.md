@@ -1,6 +1,6 @@
 # NuttX RTOS for PinePhone: Touch Panel
 
-📝 _19 Jan 2023_
+📝 _12 Jan 2023_
 
 ![Apache NuttX RTOS reads the PinePhone Touch Panel](https://lupyuen.github.io/images/touch2-title.png)
 
@@ -1262,11 +1262,11 @@ Not really, polling will work fine for now.
 
 Earlier we saw that the [__LVGL Demo App__](https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver) runs OK because it uses polling. (Instead of interrupts)
 
-But let's consider an alternative interrupt setup...
+But let's consider an alternative setup (with too many interrupts)...
 
 ![Touch Panel triggers our Interrupt Handler Non-Stop](https://lupyuen.github.io/images/touch2-run2a.png)
 
-## Trigger Interrupts By Level
+## Too Many Interrupts
 
 _Why did we set the Interrupt Trigger to IRQ_TYPE_EDGE?_
 
