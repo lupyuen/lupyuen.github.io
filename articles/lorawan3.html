@@ -146,7 +146,8 @@
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx/nuttx/libs
 rm -r liblorawan
 git rm -r liblorawan
-git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code></pre></div>
+git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lorawan3#download-source-code">(To add the LoRaWAN Library to your NuttX Project, see this)</a></p>
 <h2 id="dependencies"><a href="#dependencies">1.2 Dependencies</a></h2>
 <p>Our LoRaWAN Library should work on <strong>any NuttX platform</strong> (like ESP32), assuming that the following dependencies are installed…</p>
@@ -226,7 +227,8 @@ git submodule add https://github.com/lupyuen/LoRaMac-node-nuttx liblorawan</code
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
 git clone --recursive --branch lorawan https://github.com/lupyuen/nuttx nuttx
-git clone --recursive --branch lorawan https://github.com/lupyuen/nuttx-apps apps</code></pre></div>
+git clone --recursive --branch lorawan https://github.com/lupyuen/nuttx-apps apps
+</code></pre></div>
 <p>Or if we prefer to <strong>add the LoRaWAN Library</strong> to our NuttX Project, follow these instructions…</p>
 <p><a href="https://lupyuen.github.io/articles/pinedio2#appendix-bundled-features">(<strong>For PineDio Stack BL604:</strong> The features below are already preinstalled)</a></p>
 <ol>
@@ -260,7 +262,8 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/nuttx-apps app
 </ul>
 <p><em>How do we set the Device EUI, Join EUI and App Key in our code?</em></p>
 <p>Edit the file…</p>
-<div class="example-wrap"><pre class="language-text"><code>nuttx/libs/liblorawan/src/peripherals/soft-se/se-identity.h</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>nuttx/libs/liblorawan/src/peripherals/soft-se/se-identity.h
+</code></pre></div>
 <p>Look for these lines in <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/peripherals/soft-se/se-identity.h#L65-L79"><strong>se-identity.h</strong></a></p>
 <div class="example-wrap"><pre class="language-c"><code>/*!
  * When set to 1 DevEui is LORAWAN_DEVICE_EUI
@@ -276,7 +279,8 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/nuttx-apps app
 /*!
  * App/Join server IEEE EUI (big endian)
  */
-#define LORAWAN_JOIN_EUI { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }</code></pre></div>
+#define LORAWAN_JOIN_EUI { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }
+</code></pre></div>
 <ul>
 <li>
 <p><strong>STATIC_DEVICE_EUI:</strong> Must be <code>1</code></p>
@@ -309,7 +313,8 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/nuttx-apps app
        */ \
       .KeyID    = NWK_KEY, \
       .KeyValue = { 0xaa, 0xff, 0xad, 0x5c, 0x7e, 0x87, 0xf6, 0x4d, 0xe3, 0xf0, 0x87, 0x32, 0xfc, 0x1d, 0xd2, 0x5d }, \
-    }, \</code></pre></div>
+    }, \
+</code></pre></div>
 <ul>
 <li>
 <p><strong>APP_KEY:</strong> Change this to our <strong>LoRaWAN App Key</strong> (MSB First)</p>
@@ -338,20 +343,23 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/nuttx-apps app
 </li>
 <li>
 <p>Edit our <strong>LoRaWAN Test App</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>apps/examples/lorawan_test/lorawan_test_main.c</code></pre></div></li>
+<div class="example-wrap"><pre class="language-text"><code>apps/examples/lorawan_test/lorawan_test_main.c
+</code></pre></div></li>
 <li>
 <p>Find this in <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L34-L40"><strong>lorawan_test_main.c</strong></a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifndef ACTIVE_REGION
 #warning &quot;No active region defined, LORAMAC_REGION_AS923 will be used as default.&quot;
 #define ACTIVE_REGION LORAMAC_REGION_AS923
-#endif</code></pre></div></li>
+#endif
+</code></pre></div></li>
 <li>
 <p>Change <strong>AS923</strong> (both occurrences) to our LoRaWAN Frequency…</p>
 <p><strong>US915</strong>, <strong>CN779</strong>, <strong>EU433</strong>, <strong>AU915</strong>, <strong>AS923</strong>, <strong>CN470</strong>, <strong>KR920</strong>, <strong>IN865</strong> or <strong>RU864</strong></p>
 </li>
 <li>
 <p>Do the same for the LoRaMAC Handler: <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/apps/LoRaMac/common/LmHandler/LmHandler.c#L41-L47"><strong>LmHandler.c</strong></a></p>
-<div class="example-wrap"><pre class="language-text"><code>nuttx/libs/liblorawan/src/apps/LoRaMac/common/LmHandler/LmHandler.c</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>nuttx/libs/liblorawan/src/apps/LoRaMac/common/LmHandler/LmHandler.c
+</code></pre></div>
 <p>(We ought to define this parameter in Kconfig instead)</p>
 </li>
 </ol>
@@ -370,11 +378,12 @@ git clone --recursive --branch lorawan https://github.com/lupyuen/nuttx-apps app
 </li>
 <li>
 <p>Edit the <strong>Pin Definitions</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code># For BL602 and BL604:
+<div class="example-wrap"><pre class="language-text"><code>## For BL602 and BL604:
 nuttx/boards/risc-v/bl602/bl602evb/include/board.h
 
-# For ESP32: Change &quot;esp32-devkitc&quot; to our ESP32 board 
-nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c</code></pre></div>
+## For ESP32: Change &quot;esp32-devkitc&quot; to our ESP32 board 
+nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c
+</code></pre></div>
 <p>Check that the <strong>Semtech SX1262 Pins</strong> are configured correctly in <a href="https://github.com/lupyuen/nuttx/blob/lorawan/boards/risc-v/bl602/bl602evb/include/board.h#L36-L95"><strong>board.h</strong></a> or <a href="https://github.com/lupyuen/nuttx/blob/lorawan/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c#L43-L67"><strong>esp32_gpio.c</strong></a>…</p>
 <p><a href="https://lupyuen.github.io/articles/expander#pin-functions">(Which pins can be used? See this)</a></p>
 <p><a href="https://lupyuen.github.io/articles/sx1262#connect-sx1262-transceiver"><strong>“Connect SX1262 Transceiver”</strong></a></p>
@@ -383,18 +392,19 @@ nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_gpio.c</code></pre></div>
 <p>Configure the build…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx
 
-# For BL602: Configure the build for BL602
+## For BL602: Configure the build for BL602
 ./tools/configure.sh bl602evb:nsh
 
-# For PineDio Stack BL604: Configure the build for BL604
+## For PineDio Stack BL604: Configure the build for BL604
 ./tools/configure.sh bl602evb:pinedio
 
-# For ESP32: Configure the build for ESP32.
-# TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
+## For ESP32: Configure the build for ESP32.
+## TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
 ./tools/configure.sh esp32-devkitc:nsh
 
-# Edit the Build Config
-make menuconfig </code></pre></div></li>
+## Edit the Build Config
+make menuconfig 
+</code></pre></div></li>
 <li>
 <p>Enable the <strong>GPIO Driver</strong> in menuconfig…</p>
 <p><a href="https://lupyuen.github.io/articles/nuttx#enable-gpio-driver"><strong>“Enable GPIO Driver”</strong></a></p>
@@ -437,8 +447,9 @@ make menuconfig </code></pre></div></li>
 </li>
 <li>
 <p><strong>For ESP32:</strong> Edit the function <strong>esp32_bringup</strong> in this file…</p>
-<div class="example-wrap"><pre class="language-text"><code># Change &quot;esp32-devkitc&quot; to our ESP32 board 
-nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>## Change &quot;esp32-devkitc&quot; to our ESP32 board 
+nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c
+</code></pre></div>
 <p>And call <strong>spi_test_driver_register</strong> to register our SPI Test Driver.</p>
 <p><a href="https://lupyuen.github.io/articles/spi2#register-device-driver">(See this)</a></p>
 </li>
@@ -454,7 +465,8 @@ nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c</code></pre></div>
 <ol>
 <li>
 <p>In the NuttX Shell, list the <strong>NuttX Devices</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>ls /dev
+</code></pre></div></li>
 <li>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>/dev:
@@ -464,40 +476,45 @@ nuttx/boards/xtensa/esp32/esp32-devkitc/src/esp32_bringup.c</code></pre></div>
   spi0
   spitest0
   urandom
-  ...</code></pre></div>
+  ...
+</code></pre></div>
 <p>Our SPI Test Driver appears as <strong>“/dev/spitest0”</strong></p>
 <p>The SX1262 Pins for Busy, Chip Select and DIO1 should appear as <strong>“/dev/gpio0”</strong> (GPIO Input), <strong>“gpio1”</strong> (GPIO Output) and <strong>“gpio2”</strong> (GPIO Interrupt) respectively.</p>
 <p>The Random Number Generator (with Entropy Pool) appears as <strong>“/dev/urandom”</strong></p>
 </li>
 <li>
 <p>In the NuttX Shell, run our <strong>LoRaWAN Test App</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>lorawan_test</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>lorawan_test
+</code></pre></div>
 <p>Our app sends a <strong>Join Network Request</strong> to the LoRaWAN Gateway…</p>
 <div class="example-wrap"><pre class="language-text"><code>RadioSetPublicNetwork: public syncword=3444
 DevEui      : 4B-C1-5E-E7-37-7B-B1-5B
 JoinEui     : 00-00-00-00-00-00-00-00
 Pin         : 00-00-00-00
-## =========== MLME-Request ============ ##
-##               MLME_JOIN               ##
-## ===================================== ##
-STATUS : OK</code></pre></div>
+### =========== MLME-Request ============ ##
+###               MLME_JOIN               ##
+### ===================================== ##
+STATUS : OK
+</code></pre></div>
 <p>(Which contains the Device EUI and Join EUI that we have configured earlier)</p>
 </li>
 <li>
 <p>A few seconds later we should see the <strong>Join Network Response</strong> from the LoRaWAN Gateway…</p>
-<div class="example-wrap"><pre class="language-text"><code>## =========== MLME-Confirm ============ ##
+<div class="example-wrap"><pre class="language-text"><code>### =========== MLME-Confirm ============ ##
 STATUS    : OK
-## ===========   JOINED     ============ ##
+### ===========   JOINED     ============ ##
 OTAA
 DevAddr   : 01DA9790
-DATA RATE : DR_2</code></pre></div>
+DATA RATE : DR_2
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d">(See the Output Log)</a></p>
 <p>Congratulations our NuttX Device has successfully joined the LoRaWAN Network!</p>
 </li>
 <li>
 <p>If we see this instead…</p>
-<div class="example-wrap"><pre class="language-text"><code>## =========== MLME-Confirm ============ ##
-STATUS : Rx 1 timeout</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>### =========== MLME-Confirm ============ ##
+STATUS : Rx 1 timeout
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/007788b9ea3974b127f6260bf57f5d8b">(See the Output Log)</a></p>
 <p>Our Join Network Request has failed.</p>
 <p>Check the next section for troubleshooting tips.</p>
@@ -506,11 +523,12 @@ STATUS : Rx 1 timeout</code></pre></div>
 <p>Our LoRaWAN Test App continues to <strong>transmit Data Packets</strong>. But we’ll cover this later…</p>
 <div class="example-wrap"><pre class="language-text"><code>PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
 PrepareTxFrame: status=0, maxSize=11, currentSize=11
-## =========== MCPS-Request ============ ##
-##           MCPS_UNCONFIRMED            ##
-## ===================================== ##
+### =========== MCPS-Request ============ ##
+###           MCPS_UNCONFIRMED            ##
+### ===================================== ##
 STATUS      : OK
-PrepareTxFrame: Transmit OK</code></pre></div>
+PrepareTxFrame: Transmit OK
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d">(See the Output Log)</a></p>
 <p>Let’s find out how our LoRaWAN Test App joins the LoRaWAN Network.</p>
 </li>
@@ -522,7 +540,8 @@ PrepareTxFrame: Transmit OK</code></pre></div>
 <div class="example-wrap"><pre class="language-c"><code>int main(int argc, FAR char *argv[]) {
 
   //  Compute the interval between transmissions based on Duty Cycle
-  TxPeriodicity = APP_TX_DUTYCYCLE + randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );</code></pre></div>
+  TxPeriodicity = APP_TX_DUTYCYCLE + randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );
+</code></pre></div>
 <p>Our app begins by computing the <strong>Time Interval Between Transmissions</strong> of our Data Packets.</p>
 <p>(More about this later)</p>
 <p>Next it calls <strong>LmHandlerInit</strong> to initialise the LoRaWAN Library…</p>
@@ -533,7 +552,8 @@ PrepareTxFrame: Transmit OK</code></pre></div>
       ) != LORAMAC_HANDLER_SUCCESS ) {
     printf( &quot;LoRaMac wasn&#39;t properly initialized\n&quot; );
     while ( 1 ) {} //  Fatal error, endless loop.
-  }</code></pre></div>
+  }
+</code></pre></div>
 <p>(Functions named <strong>“Lm…”</strong> come from our LoRaWAN Library)</p>
 <p>We set load the <strong>LoRa Alliance Compliance Protocol Packages</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Set system maximum tolerated rx error in milliseconds
@@ -543,19 +563,23 @@ PrepareTxFrame: Transmit OK</code></pre></div>
   LmHandlerPackageRegister( PACKAGE_ID_COMPLIANCE, &amp;LmhpComplianceParams );
   LmHandlerPackageRegister( PACKAGE_ID_CLOCK_SYNC, NULL );
   LmHandlerPackageRegister( PACKAGE_ID_REMOTE_MCAST_SETUP, NULL );
-  LmHandlerPackageRegister( PACKAGE_ID_FRAGMENTATION, &amp;FragmentationParams );</code></pre></div>
+  LmHandlerPackageRegister( PACKAGE_ID_FRAGMENTATION, &amp;FragmentationParams );
+</code></pre></div>
 <p>Below is the code that sends the <strong>Join Network Request</strong> to the LoRaWAN Gateway: <strong>LmHandlerJoin</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Join the LoRaWAN Network
-  LmHandlerJoin( );</code></pre></div>
+  LmHandlerJoin( );
+</code></pre></div>
 <p>We start the <strong>Transmit Timer</strong> that will schedule the transmission of Data Packets (right after we have joined the LoRaWAN Network)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Set the Transmit Timer
-  StartTxProcess( LORAMAC_HANDLER_TX_ON_TIMER );</code></pre></div>
+  StartTxProcess( LORAMAC_HANDLER_TX_ON_TIMER );
+</code></pre></div>
 <p>At this point we haven’t actually joined the LoRaWAN Network yet.</p>
 <p>This happens in the <strong>LoRaWAN Event Loop</strong> that will handle the <strong>Join Network Response</strong> received from the LoRaWAN Gateway…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Handle LoRaWAN Events
   handle_event_queue( NULL );  //  Never returns
   return 0;
-}</code></pre></div>
+}
+</code></pre></div>
 <p>(We’ll talk about the LoRaWAN Event Loop later)</p>
 <p>Let’s check the logs on our LoRaWAN Gateway. (RAKwireless WisGate, the black box below)</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-title.jpg" alt="PineDio Stack BL604 RISC-V Board (left) talking LoRaWAN to RAKwireless WisGate LoRaWAN Gateway (right)" /></p>
@@ -584,12 +608,14 @@ PrepareTxFrame: Transmit OK</code></pre></div>
 static void PrepareTxFrame( void ) {
 
   //  If we haven&#39;t joined the LoRaWAN Network, try again later
-  if (LmHandlerIsBusy()) { puts(&quot;PrepareTxFrame: Busy&quot;); return; }</code></pre></div>
+  if (LmHandlerIsBusy()) { puts(&quot;PrepareTxFrame: Busy&quot;); return; }
+</code></pre></div>
 <p>If we haven’t joined a LoRaWAN Network yet, this function will return. (And we’ll try again later)</p>
 <p>Assuming all is hunky dory, we proceed to transmit a <strong>9-byte message</strong> (including terminating null)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Send a message to LoRaWAN
   const char msg[] = &quot;Hi NuttX&quot;;
-  printf(&quot;PrepareTxFrame: Transmit to LoRaWAN: %s (%d bytes)\n&quot;, msg, sizeof(msg));</code></pre></div>
+  printf(&quot;PrepareTxFrame: Transmit to LoRaWAN: %s (%d bytes)\n&quot;, msg, sizeof(msg));
+</code></pre></div>
 <p>We copy the message to the <strong>Transmit Buffer</strong> (max 242 bytes) and create a <strong>Transmit Request</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Compose the transmit request
   assert(sizeof(msg) &lt;= sizeof(AppDataBuffer));
@@ -598,7 +624,8 @@ static void PrepareTxFrame( void ) {
     .Buffer = AppDataBuffer,      //  Transmit Buffer
     .BufferSize = sizeof(msg),    //  Size of Transmit Buffer
     .Port = 1,                    //  Port Number: 1 to 223
-  };</code></pre></div>
+  };
+</code></pre></div>
 <p>Next we <strong>validate the Message Size</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Validate the message size and check if it can be transmitted
   LoRaMacTxInfo_t txInfo;
@@ -607,7 +634,8 @@ static void PrepareTxFrame( void ) {
     &amp;txInfo              //  Returns max message size
   );
   printf(&quot;PrepareTxFrame: status=%d, maxSize=%d, currentSize=%d\n&quot;, status, txInfo.MaxPossibleApplicationDataSize, txInfo.CurrentPossiblePayloadSize);
-  assert(status == LORAMAC_STATUS_OK);</code></pre></div>
+  assert(status == LORAMAC_STATUS_OK);
+</code></pre></div>
 <p>(What’s the Maximum Message Size? We’ll discuss in a while)</p>
 <p>Finally we <strong>transmit the message</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Transmit the message
@@ -617,7 +645,8 @@ static void PrepareTxFrame( void ) {
   );
   assert(sendStatus == LORAMAC_HANDLER_SUCCESS);
   puts(&quot;PrepareTxFrame: Transmit OK&quot;);
-}</code></pre></div>
+}
+</code></pre></div>
 <p><em>Why is our Data Packet marked Unconfirmed?</em></p>
 <p>Our Data Packet is marked Unconfirmed because we <strong>don’t expect an acknowledgement</strong> from the LoRaWAN Gateway.</p>
 <p>This is the typical mode for <strong>IoT Sensor Devices</strong>, which don’t handle acknowledgements to conserve battery power. </p>
@@ -641,7 +670,8 @@ static void PrepareTxFrame( void ) {
 
 //  Default Data Rate
 //  Please note that LORAWAN_DEFAULT_DATARATE is used only when ADR is disabled 
-#define LORAWAN_DEFAULT_DATARATE DR_3</code></pre></div>
+#define LORAWAN_DEFAULT_DATARATE DR_3
+</code></pre></div>
 <p>But there’s a catch: The <strong>First Message Transmitted</strong> (after joining LoRaWAN) will have <strong>Data Rate 2</strong> (instead of Data Rate 3)!</p>
 <p>(We’ll see this in the upcoming demo)</p>
 <p>For Data Rates 2 and 3, the <strong>Maximum Message (Payload) Sizes</strong> are…</p>
@@ -673,11 +703,13 @@ static void PrepareTxFrame( void ) {
 
 //  Defines a random delay for application data transmission duty cycle. 
 //  5s, value in [ms].
-#define APP_TX_DUTYCYCLE_RND 5000</code></pre></div>
+#define APP_TX_DUTYCYCLE_RND 5000
+</code></pre></div>
 <p><strong>APP_TX_DUTYCYCLE</strong> is used to compute the Timeout Interval of our <strong>Transmit Timer</strong>: <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L260-L303">lorawan_test_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Compute the interval between transmissions based on Duty Cycle
 TxPeriodicity = APP_TX_DUTYCYCLE + 
-  randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );</code></pre></div>
+  randr( -APP_TX_DUTYCYCLE_RND, APP_TX_DUTYCYCLE_RND );
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/boards/mcu/utilities.c#L48-L51">(<strong>randr</strong> is defined here)</a></p>
 <p>Thus our LoRaWAN Test App transmits a message every <strong>40 seconds</strong>. </p>
 <p>(±5 seconds of random delay)</p>
@@ -686,33 +718,36 @@ TxPeriodicity = APP_TX_DUTYCYCLE +
 <ol>
 <li>
 <p>In the NuttX Shell, run our <strong>LoRaWAN Test App</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>lorawan_test</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>lorawan_test
+</code></pre></div></li>
 <li>
 <p>As seen earlier, our app transmits a <strong>Join Network Request</strong> and receives a <strong>Join Accept Response</strong> from the LoRaWAN Gateway…</p>
-<div class="example-wrap"><pre class="language-text"><code>## =========== MLME-Confirm ============ ##
+<div class="example-wrap"><pre class="language-text"><code>### =========== MLME-Confirm ============ ##
 STATUS    : OK
-## ===========   JOINED     ============ ##
+### ===========   JOINED     ============ ##
 OTAA
 DevAddr   : 01DA9790
-DATA RATE : DR_2</code></pre></div>
+DATA RATE : DR_2
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d">(See the Output Log)</a></p>
 </li>
 <li>
 <p>Upon joining the LoRaWAN Network, our app <strong>transmits a Data Packet</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
 PrepareTxFrame: status=0, maxSize=11, currentSize=11
-## =========== MCPS-Request ============ ##
-##           MCPS_UNCONFIRMED            ##
-## ===================================== ##
+### =========== MCPS-Request ============ ##
+###           MCPS_UNCONFIRMED            ##
+### ===================================== ##
 STATUS      : OK
-PrepareTxFrame: Transmit OK</code></pre></div>
+PrepareTxFrame: Transmit OK
+</code></pre></div>
 <p>Note that the <strong>First Data Packet</strong> is assumed to have <strong>Data Rate 2</strong>, which allows Maximum Message Size <strong>11 bytes</strong> (for AS923).</p>
 </li>
 <li>
 <p>After transmitting the First Data Packet, our LoRaWAN Library automagically upgrades the <strong>Data Rate to 3</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>## =========== MCPS-Confirm ============ ##
+<div class="example-wrap"><pre class="language-text"><code>### =========== MCPS-Confirm ============ ##
 STATUS      : OK
-## =====   UPLINK FRAME        1   ===== ##
+### =====   UPLINK FRAME        1   ===== ##
 CLASS       : A
 TX PORT     : 1
 TX DATA     : UNCONFIRMED
@@ -720,21 +755,22 @@ TX DATA     : UNCONFIRMED
 DATA RATE   : DR_3
 U/L FREQ    : 923400000
 TX POWER    : 0
-CHANNEL MASK: 0003</code></pre></div></li>
+CHANNEL MASK: 0003
+</code></pre></div></li>
 <li>
 <p>While transmitting the Second (and subsequent) Data Packet, the Maximum Message Size is extended to <strong>53 bytes</strong> (because of the increased Data Rate)…</p>
 <div class="example-wrap"><pre class="language-text"><code>PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
 PrepareTxFrame: status=0, maxSize=53, currentSize=53
-## =========== MCPS-Request ============ ##
-##           MCPS_UNCONFIRMED            ##
-## ===================================== ##
+### =========== MCPS-Request ============ ##
+###           MCPS_UNCONFIRMED            ##
+### ===================================== ##
 STATUS      : OK
 PrepareTxFrame: Transmit OK
 ...
 
-## =========== MCPS-Confirm ============ ##
+### =========== MCPS-Confirm ============ ##
 STATUS      : OK
-## =====   UPLINK FRAME        1   ===== ##
+### =====   UPLINK FRAME        1   ===== ##
 CLASS       : A
 TX PORT     : 1
 TX DATA     : UNCONFIRMED
@@ -742,7 +778,8 @@ TX DATA     : UNCONFIRMED
 DATA RATE   : DR_3
 U/L FREQ    : 923400000
 TX POWER    : 0
-CHANNEL MASK: 0003</code></pre></div></li>
+CHANNEL MASK: 0003
+</code></pre></div></li>
 <li>
 <p>This repeats roughly every <strong>40 seconds</strong>.</p>
 <p>Let’s check the logs in our LoRaWAN Gateway.</p>
@@ -806,7 +843,8 @@ SecureElementStatus_t SecureElementRandomNumber( uint32_t* randomNum ) {
 
   printf(&quot;SecureElementRandomNumber: 0x%08lx\n&quot;, *randomNum);
   return SECURE_ELEMENT_SUCCESS;
-}</code></pre></div>
+}
+</code></pre></div>
 <p>The above code is called by our LoRaWAN Library when preparing a <strong>Join Network Request</strong>: <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMacCrypto.c#L980-L996">LoRaMacCrypto.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Prepare a Join Network Request
 LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest_t* macMsg ) {
@@ -819,7 +857,8 @@ LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest
 #else
   //  Init Nonce to 1
   CryptoNvm-&gt;DevNonce++;
-#endif</code></pre></div>
+#endif
+</code></pre></div>
 <p>To enable Random Nonces, we define <strong>USE_RANDOM_DEV_NONCE</strong> as 1 in <a href="https://github.com/lupyuen/LoRaMac-node-nuttx/blob/master/src/mac/LoRaMacCrypto.h#L58-L65">LoRaMacCrypto.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Indicates if a random devnonce must be used or not
 #ifdef __NuttX__
@@ -827,7 +866,8 @@ LoRaMacCryptoStatus_t LoRaMacCryptoPrepareJoinRequest( LoRaMacMessageJoinRequest
 #define USE_RANDOM_DEV_NONCE 1
 #else
 #define USE_RANDOM_DEV_NONCE 0
-#endif  //  __NuttX__</code></pre></div>
+#endif  //  __NuttX__
+</code></pre></div>
 <p>And that’s how we generate Random Nonces whenever we restart our device! (Pic below)</p>
 <p><em>What happens if we don’t select Entropy Pool for our Random Number Generator?</em></p>
 <p>Our Random Number Generator becomes “Weak”… It <strong>repeats the same Random Numbers</strong> upon restarting.</p>
@@ -867,7 +907,8 @@ static void handle_event_queue(void *arg) {
     struct ble_npl_event *ev = ble_npl_eventq_get(
       &amp;event_queue,         //  Event Queue
       BLE_NPL_TIME_FOREVER  //  No Timeout (Wait forever for event)
-    );</code></pre></div>
+    );
+</code></pre></div>
 <p>This code runs in the <strong>Foreground Thread</strong> of our NuttX App.</p>
 <p>Here we loop forever, <strong>waiting for Events</strong> from the Event Queue.</p>
 <p>When we receive an Event, we <strong>remove the Event</strong> from the Event Queue…</p>
@@ -876,10 +917,12 @@ static void handle_event_queue(void *arg) {
     if (ev == NULL) { printf(&quot;.&quot;); continue; }
 
     //  Remove the Event from the Event Queue
-    ble_npl_eventq_remove(&amp;event_queue, ev);</code></pre></div>
+    ble_npl_eventq_remove(&amp;event_queue, ev);
+</code></pre></div>
 <p>We call the <strong>Event Handler Function</strong> that was registered with the Event…</p>
 <div class="example-wrap"><pre class="language-c"><code>    //  Trigger the Event Handler Function
-    ble_npl_event_run(ev);</code></pre></div>
+    ble_npl_event_run(ev);
+</code></pre></div>
 <ul>
 <li>
 <p>For SX1262 Interrupts: We call <a href="https://lupyuen.github.io/articles/sx1262#radioondioirq"><strong>RadioOnDioIrq</strong></a> to handle the packet transmitted / received notification</p>
@@ -890,13 +933,15 @@ static void handle_event_queue(void *arg) {
 </ul>
 <p>The rest of the Event Loop handles <strong>LoRaWAN Events</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>    //  For LoRaWAN: Process the LoRaMAC events
-    LmHandlerProcess( );</code></pre></div>
+    LmHandlerProcess( );
+</code></pre></div>
 <p><strong>LmHandlerProcess</strong> handles <strong>Join Network Events</strong> in the LoRaMAC Layer of our LoRaWAN Library.</p>
 <p>If we have joined the LoRaWAN Network, we <strong>transmit data</strong> to the network…</p>
 <div class="example-wrap"><pre class="language-c"><code>    //  For LoRaWAN: If we have joined the network, do the uplink
     if (!LmHandlerIsBusy( )) {
       UplinkProcess( );
-    }</code></pre></div>
+    }
+</code></pre></div>
 <p>(<a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L361-L373"><strong>UplinkProcess</strong></a> calls <a href="https://github.com/lupyuen/lorawan_test/blob/main/lorawan_test_main.c#L305-L337"><strong>PrepareTxFrame</strong></a>, which we have seen earlier)</p>
 <p>The last part of the Event Loop will handle Low Power Mode in future…</p>
 <div class="example-wrap"><pre class="language-c"><code>    //  For LoRaWAN: Handle Low Power Mode
@@ -910,7 +955,8 @@ static void handle_event_queue(void *arg) {
     }
     CRITICAL_SECTION_END( );
   }
-}</code></pre></div>
+}
+</code></pre></div>
 <p>And we loop back perpetually, waiting for Events and handling them.</p>
 <p>That’s how we handle LoRa and LoRaWAN Events with NimBLE Porting Layer!</p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-npl1.png" alt="Handling LoRaWAN Events with NimBLE Porting Layer" /></p>
@@ -923,7 +969,8 @@ static void handle_event_queue(void *arg) {
 <div class="example-wrap"><pre class="language-text"><code>RadioSetPublicNetwork: public syncword=3444
 DevEui      : 4B-C1-5E-E7-37-7B-B1-5B
 JoinEui     : 00-00-00-00-00-00-00-00
-RadioSetChannel: freq=923400000</code></pre></div>
+RadioSetChannel: freq=923400000
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/83be5da091273bb39bad6e77cc91b68d">(See the Output Log)</a></p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-run2a.png" alt="LoRa Frequency, Sync Word, Device EUI and Join EUI" /></p>
 </li>
@@ -939,7 +986,8 @@ chirpstack-application-server[568]:
   level=error 
   msg=&quot;invalid MIC&quot; 
   dev_eui=4bc15ee7377bb15b 
-  type=DATA_UP_MIC</code></pre></div>
+  type=DATA_UP_MIC
+</code></pre></div>
 <p>This is usually caused by incorrect Device EUI, Join EUI or App Key.</p>
 <p><a href="https://lupyuen.github.io/articles/wisgate#message-integrity-code">(More about Message Integrity Code)</a></p>
 </li>
@@ -958,7 +1006,8 @@ chirpstack-network-server[5749]:
   level=error 
   msg=&quot;uplink: processing uplink frame error&quot; 
   ctx_id=bb756ec1-9ee3-4903-a13d-656356d98fd5 
-  error=&quot;validate dev-nonce error: object already exists&quot;</code></pre></div>
+  error=&quot;validate dev-nonce error: object already exists&quot;
+</code></pre></div>
 <p>This means that a <strong>Duplicate Nonce</strong> has been detected.</p>
 <p>Check that we’re using a Strong Random Number Generator with Entropy Pool…</p>
 <p><a href="https://lupyuen.github.io/articles/lorawan3#appendix-random-number-generator-with-entropy-pool"><strong>“Random Number Generator with Entropy Pool”</strong></a></p>
@@ -1038,7 +1087,8 @@ chirpstack-network-server[5749]:
 <p><a href="https://gist.github.com/lupyuen/0d301216bbf937147778bb57ab0ccf89">(Output Log)</a></p>
 <p>In the output for our LoRaWAN Test App, look for <strong>“maxSize”</strong> to verify the <strong>Maximum Message Size</strong> for our Data Rate and LoRaWAN Region… </p>
 <div class="example-wrap"><pre class="language-text"><code>PrepareTxFrame: Transmit to LoRaWAN: Hi NuttX (9 bytes)
-PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
+PrepareTxFrame: status=0, maxSize=11, currentSize=11
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lorawan3#message-size">(More about Message Size)</a></p>
 <p><img src="https://lupyuen.github.io/images/lorawan3-tx4a.png" alt="Checking message size" /></p>
 <p><a href="https://gist.github.com/lupyuen/5fc07695a6c4bb48b5e4d10eb05ca9bf">(Source)</a></p>
@@ -1265,19 +1315,22 @@ PrepareTxFrame: status=0, maxSize=11, currentSize=11</code></pre></div>
 </li>
 <li>
 <p>To build NuttX, enter this command…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>make
+</code></pre></div></li>
 <li>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>LD: nuttx
 CP: nuttx.hex
-CP: nuttx.bin</code></pre></div>
+CP: nuttx.bin
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/8f725c278c25e209c1654469a2855746">(See the complete log for BL602)</a></p>
 </li>
 <li>
 <p><strong>For WSL:</strong> Copy the <strong>NuttX Firmware</strong> to the <strong>c:\blflash</strong> directory in the Windows File System…</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  /mnt/c/blflash refers to c:\blflash in Windows
+<div class="example-wrap"><pre class="language-bash"><code>##  /mnt/c/blflash refers to c:\blflash in Windows
 mkdir /mnt/c/blflash
-cp nuttx.bin /mnt/c/blflash</code></pre></div>
+cp nuttx.bin /mnt/c/blflash
+</code></pre></div>
 <p>For WSL we need to run <strong>blflash</strong> under plain old Windows CMD (not WSL) because it needs to access the COM port.</p>
 </li>
 <li>
@@ -1350,18 +1403,19 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 </li>
 </ol>
 <p>Enter these commands to flash <strong>nuttx.bin</strong> to BL602 / BL604 over UART…</p>
-<div class="example-wrap"><pre class="language-bash"><code># For Linux: Change &quot;/dev/ttyUSB0&quot; to the BL602 / BL604 Serial Port
+<div class="example-wrap"><pre class="language-bash"><code>## For Linux: Change &quot;/dev/ttyUSB0&quot; to the BL602 / BL604 Serial Port
 blflash flash nuttx.bin \
   --port /dev/ttyUSB0 
 
-# For macOS: Change &quot;/dev/tty.usbserial-1410&quot; to the BL602 / BL604 Serial Port
+## For macOS: Change &quot;/dev/tty.usbserial-1410&quot; to the BL602 / BL604 Serial Port
 blflash flash nuttx.bin \
   --port /dev/tty.usbserial-1410 \
   --initial-baud-rate 230400 \
   --baud-rate 230400
 
-# For Windows: Change &quot;COM5&quot; to the BL602 / BL604 Serial Port
-blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
+## For Windows: Change &quot;COM5&quot; to the BL602 / BL604 Serial Port
+blflash flash c:\blflash\nuttx.bin --port COM5
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
 <p>For WSL: Do this under plain old Windows CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
 <p><a href="https://github.com/apache/nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
@@ -1369,7 +1423,8 @@ blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
 <h2 id="run-nuttx"><a href="#run-nuttx">19.3 Run NuttX</a></h2>
 <p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
-<div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0
+</code></pre></div>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>
 <p><strong>For BL602:</strong> Set BL602 / BL604 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
 <p><strong>For PineDio Stack BL604:</strong></p>
@@ -1409,13 +1464,15 @@ blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 </ol>
 <p>After restarting, connect to BL602 / BL604’s UART Port at 2 Mbps like so…</p>
 <p><strong>For Linux:</strong></p>
-<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000
+</code></pre></div>
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p>Press Enter to reveal the <strong>NuttX Shell</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
-nsh&gt;</code></pre></div>
+nsh&gt;
+</code></pre></div>
 <p>Congratulations NuttX is now running on BL602 / BL604!</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(More details on connecting to BL602 / BL604)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
