@@ -415,219 +415,9 @@ Let's handle interrupts from the Touch Panel...
 
 ![Attaching our Interrupt Handler](https://lupyuen.github.io/images/touch2-code5a.png)
 
-# Attach our Interrupt Handler
+# Interrupt Handler for Touch Panel
 
-_We've done polling with the Touch Panel..._
-
-_How do we handle interrupts from the Touch Panel?_
-
-In the previous section we've read the Touch Panel by polling... Which is easier but inefficient.
-
-Now we do a proper __Interrupt Handler__ for the Touch Panel. This is how we attach our Interrupt Handler to PH4 in NuttX: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c3eccc67d879806a015ae592205e641dcffa7d09/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L255-L328)
-
-```c
-// Touch Panel Interrupt (CTP-INT) is at PH4
-#define CTP_INT ( \
-  PIO_EINT      | \  /* PIO External Interrupt */
-  PIO_PORT_PIOH | \  /* PIO Port H */
-  PIO_PIN4        \  /* PIO Pin 4 */
-)
-
-// Register the Interrupt Handler for Touch Panel
-void touch_panel_initialize(void) {
-
-  // Attach the PIO Interrupt Handler for Port PH
-  int ret = irq_attach(     // Attach a NuttX Interrupt Handler...
-    A64_IRQ_PH_EINT,        // Interrupt Number for Port PH: 53
-    touch_panel_interrupt,  // Interrupt Handler
-    NULL                    // Argument for Interrupt Handler
-  );
-  DEBUGASSERT(ret == OK);
-
-  // Enable the PIO Interrupt for Port PH.
-  // A64_IRQ_PH_EINT is 53.
-  up_enable_irq(A64_IRQ_PH_EINT);
-
-  // Configure the Touch Panel Interrupt for Pin PH4
-  ret = a64_pio_config(CTP_INT);
-  DEBUGASSERT(ret == OK);
-
-  // Enable the Touch Panel Interrupt for Pin PH4
-  ret = a64_pio_irqenable(CTP_INT);
-  DEBUGASSERT(ret == OK);
-}
-```
-
-[(__a64_pio_config__ configures PH4 as an Interrupt Pin)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L174-L344)
-
-[(__a64_pio_irqenable__ enables interrupts on Pin PH4)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L420-L440)
-
-_Why call both up_enable_irq and a64_pio_irqenable?_
-
-Allwinner A64 does Two-Tier Interrupts, by Port and Pin...
-
--   First we enable interrupts for __Port PH__
-
-    (By calling __up_enable_irq__)
-
--   Then we enable interrupts for __Pin PH4__
-
-    [(By calling __a64_pio_irqenable__)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L420-L440)
-
-Which means that our Interrupt Handler will be shared by __all Pins on Port PH__.
-
-(When we enable them in future)
-
-_What's touch_panel_interrupt?_
-
-__touch_panel_interrupt__ is our Interrupt Handler. Let's do a simple one...
-
-```c
-// Interrupt Handler for Touch Panel
-static int touch_panel_interrupt(int irq, void *context, void *arg) {
-
-  // Print something when interrupt is triggered
-  up_putc('.');
-  return OK;
-}
-```
-
-This Interrupt Handler simply prints "__`.`__" whenever the Touch Panel triggers an interrupt.
-
-_It's OK to call up_putc in an Interrupt Handler?_
-
-Yep it's perfectly OK, because [__up_putc__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L619-L649) simply writes to the UART Register. (It won't trigger another interrupt)
-
-Let's test our simple Interrupt Handler...
-
-![Touch Panel triggers our Interrupt Handler Non-Stop](https://lupyuen.github.io/images/touch2-run2a.png)
-
-_What happens when we run our code?_
-
-When we run the code, it generates a __never-ending stream__ of "__`.`__" characters...
-
-__Without us touching__ the screen! (Pic above)
-
-_Is this a bad thing?_
-
-Yes it's terrible! This means that the Touch Panel fires Touch Input Interrupts continuously...
-
-__NuttX will be overwhelmed__ handling Touch Input Interrupts 100% of the time. No time for other tasks!
-
-We'll fix this by __throttling the interrupts__ from the Touch Panel. Here's how...
-
-![Handling Interrupts from Touch Panel](https://lupyuen.github.io/images/touch2-code6a.png)
-
-# Handle Interrupts from Touch Panel
-
-_Touch Panel fires too many interrupts..._
-
-_How do we stop it?_
-
-In our Interrupt Handler, let's __disable the Touch Panel Interrupt__ if we're still waiting for it to be processed: [gt9xx.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch4/drivers/input/gt9xx.c#L840-L888)
-
-```c
-// Interrupt Handler for Touch Panel, with Throttling and Forwarding
-static int gt9xx_isr_handler(int irq, FAR void *context, FAR void *arg) {
-
-  // Print "." when Interrupt Handler is triggered
-  up_putc('.');
-
-  // Get the Touch Panel Device
-  FAR struct gt9xx_dev_s *priv = (FAR struct gt9xx_dev_s *)arg;
-
-  // If the Touch Panel Interrupt has not been processed...
-  if (priv->int_pending) { 
-
-    // Disable the Touch Panel Interrupt
-    priv->board->irq_enable(priv->board, false); 
-  }
-```
-
-[(__gt9xx_dev_s__ is the Touch Panel Device)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch4/drivers/input/gt9xx.c#L72-L99)
-
-[(__irq_enable__ calls __pinephone_gt9xx_irq_enable__ to disable the interrupt)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L560-L584)
-
-Our Interrupt Handler won't actually read the Touch Coordinates. (Because Interrupt Handlers can't make I2C calls)
-
-Instead our Interrupt Handler __notifies the Background Thread__ that there's a Touch Event waiting to be processed...
-
-```c
-  // Set the Interrupt Pending Flag
-  irqstate_t flags = enter_critical_section();
-  priv->int_pending = true;
-  leave_critical_section(flags);
-
-  // Notify the Poll Waiters
-  poll_notify(  // Notify these File Descriptors...
-    priv->fds,  // File Descriptors to notify
-    1,          // Max 1 File Descriptor supported
-    POLLIN      // Poll Event to be notified
-  );
-  return 0;
-}
-```
-
-The Background Thread calls __`poll()`__, suspends itself and __waits for the notification__ before processing the Touch Event over I2C.
-
-[(Thanks to __gt9xx_poll__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch4/drivers/input/gt9xx.c#L728-L840)
-
-Let's test our new and improved Interrupt Handler...
-
-![Testing our Interrupt Handler](https://lupyuen.github.io/images/touch2-run3a.png)
-
-# Test our Interrupt Handler
-
-_How do we test our Interrupt Handler?_
-
-We could start a Background Thread that will be notified when the screen is touched...
-
-Or we can run a simple loop that checks whether the __Interrupt Pending Flag is set__ by our Interrupt Handler.
-
-Let's test the simple way: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c3eccc67d879806a015ae592205e641dcffa7d09/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L293-L309)
-
-```c
-// Poll for Touch Panel Interrupt
-for (int i = 0; i < 6000; i++) {  // Poll for 60 seconds
-
-  // If Touch Panel Interrupt has been triggered...
-  if (priv->int_pending) {
-
-    // Read the Touch Panel over I2C
-    touch_panel_read(i2c_dev);
-
-    // Reset the Interrupt Pending Flag
-    priv->int_pending = false;
-  }
-
-  // Wait a while
-  up_mdelay(10);  // 10 milliseconds
-}
-```
-
-Note that we call [__touch_panel_read__](https://lupyuen.github.io/articles/touch2#read-a-touch-point) to read the Touch Coordinates. (After the Touch Interrupt has been triggered)
-
-And it works! (Pic above)
-
-```text
-0000  81                                               .               
-0000  19 01 e6 02 2a 00                                ....*.          
-touch_panel_read: touch x=281, y=742
-
-0000  81                                               .               
-0000  81 02 33 00 25 00                                ..3.%.          
-touch_panel_read: touch x=641, y=51
-
-0000  81                                               .               
-0000  0f 00 72 05 14 00                                ..r...          
-touch_panel_read: touch x=15, y=1394
-```
-
-[(Source)](https://gist.github.com/lupyuen/91a37a4b54f75f7386374a30821dc1b2)
-
-The log shows that we've read the Touch Panel Status __`0x81`__, followed by the Touch Coordinates. Yep we've tested our Interrupt Handler successfully!
-
-Now we move this code into the NuttX Touch Panel Driver for PinePhone...
+TODO: See the Appendix
 
 # NuttX Touch Panel Driver
 
@@ -1211,3 +1001,243 @@ Inside the __Close Operation__ we...
 We do this only if the __Reference Count__ decrements to 0.
 
 (Which indicates the final __`close()`__ for our driver)
+
+![Attaching our Interrupt Handler](https://lupyuen.github.io/images/touch2-code5a.png)
+
+# Appendix: Interrupt Handler for Touch Panel
+
+TODO
+
+# Attach our Interrupt Handler
+
+_We've done polling with the Touch Panel..._
+
+_How do we handle interrupts from the Touch Panel?_
+
+Earlier we've read the Touch Panel by polling... Which is easier but inefficient.
+
+Now we do a proper __Interrupt Handler__ for the Touch Panel. This is how we attach our Interrupt Handler to PH4 in NuttX: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L289-L329)
+
+```c
+// Touch Panel Interrupt (CTP-INT) is at PH4
+#define CTP_INT ( \
+  PIO_EINT      | \  /* PIO External Interrupt */
+  PIO_PORT_PIOH | \  /* PIO Port H */
+  PIO_PIN4        \  /* PIO Pin 4 */
+)
+
+// Register the Interrupt Handler for Touch Panel
+void touch_panel_initialize(void) {
+
+  // Attach the PIO Interrupt Handler for Port PH
+  int ret = irq_attach(     // Attach a NuttX Interrupt Handler...
+    A64_IRQ_PH_EINT,        // Interrupt Number for Port PH: 53
+    touch_panel_interrupt,  // Interrupt Handler
+    NULL                    // Argument for Interrupt Handler
+  );
+  DEBUGASSERT(ret == OK);
+
+  // Set Interrupt Priority in Generic Interrupt Controller v2
+  arm64_gic_irq_set_priority(
+    A64_IRQ_PH_EINT,  // Interrupt Number for Port PH: 53
+    2,                // Interrupt Priority
+    IRQ_TYPE_EDGE     // Trigger on Low-High Transition
+  );
+
+  // Enable the PIO Interrupt for Port PH.
+  // A64_IRQ_PH_EINT is 53.
+  up_enable_irq(A64_IRQ_PH_EINT);
+
+  // Configure the Touch Panel Interrupt for Pin PH4
+  ret = a64_pio_config(CTP_INT);
+  DEBUGASSERT(ret == OK);
+
+  // Enable the Touch Panel Interrupt for Pin PH4
+  ret = a64_pio_irqenable(CTP_INT);
+  DEBUGASSERT(ret == OK);
+}
+```
+
+[(__a64_pio_config__ configures PH4 as an Interrupt Pin)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L174-L344)
+
+[(__a64_pio_irqenable__ enables interrupts on Pin PH4)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L420-L440)
+
+_Why call both up_enable_irq and a64_pio_irqenable?_
+
+Allwinner A64 does Two-Tier Interrupts, by Port and Pin...
+
+-   First we enable interrupts for __Port PH__
+
+    (By calling __up_enable_irq__)
+
+-   Then we enable interrupts for __Pin PH4__
+
+    [(By calling __a64_pio_irqenable__)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L420-L440)
+
+Which means that our Interrupt Handler will be shared by __all Pins on Port PH__.
+
+(When we enable them in future)
+
+_What's touch_panel_interrupt?_
+
+__touch_panel_interrupt__ is our Interrupt Handler. Let's do a simple one...
+
+```c
+// Interrupt Handler for Touch Panel
+static int touch_panel_interrupt(int irq, void *context, void *arg) {
+
+  // Print something when interrupt is triggered
+  up_putc('.');
+  return OK;
+}
+```
+
+This Interrupt Handler simply prints "__`.`__" whenever the Touch Panel triggers an interrupt.
+
+_It's OK to call up_putc in an Interrupt Handler?_
+
+Yep it's perfectly OK, because [__up_putc__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L619-L649) simply writes to the UART Register. (It won't trigger another interrupt)
+
+Let's test our simple Interrupt Handler...
+
+![Touch Panel triggers our Interrupt Handler Non-Stop](https://lupyuen.github.io/images/touch2-run2a.png)
+
+_What happens when we run our code?_
+
+When we run the code, it generates a __never-ending stream__ of "__`.`__" characters...
+
+__Without us touching__ the screen! (Pic above)
+
+_Is this a bad thing?_
+
+Yes it's terrible! This means that the Touch Panel fires Touch Input Interrupts continuously...
+
+__NuttX will be overwhelmed__ handling Touch Input Interrupts 100% of the time. No time for other tasks!
+
+TODO: __throttling the interrupts__ from the Touch Panel
+
+_Why did we set Interrupt Priority to 2?_
+
+```c
+  // Set Interrupt Priority in Generic Interrupt Controller v2
+  arm64_gic_irq_set_priority(
+    A64_IRQ_PH_EINT,  // Interrupt Number for Port PH: 53
+    2,                // Interrupt Priority
+    IRQ_TYPE_EDGE     // Trigger on Low-High Transition
+  );
+```
+
+[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L289-L329)
+
+TODO
+
+![Handling Interrupts from Touch Panel](https://lupyuen.github.io/images/touch2-code6a.png)
+
+# Handle Interrupts from Touch Panel
+
+TODO
+
+In our Interrupt Handler, let's __disable the Touch Panel Interrupt__ if we're still waiting for it to be processed: [gt9xx.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch4/drivers/input/gt9xx.c#L840-L888)
+
+```c
+// Interrupt Handler for Touch Panel, with Throttling and Forwarding
+static int gt9xx_isr_handler(int irq, FAR void *context, FAR void *arg) {
+
+  // Print "." when Interrupt Handler is triggered
+  up_putc('.');
+
+  // Get the Touch Panel Device
+  FAR struct gt9xx_dev_s *priv = (FAR struct gt9xx_dev_s *)arg;
+
+  // If the Touch Panel Interrupt has not been processed...
+  if (priv->int_pending) { 
+
+    // Disable the Touch Panel Interrupt
+    priv->board->irq_enable(priv->board, false); 
+  }
+```
+
+[(__gt9xx_dev_s__ is the Touch Panel Device)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch4/drivers/input/gt9xx.c#L72-L99)
+
+[(__irq_enable__ calls __pinephone_gt9xx_irq_enable__ to disable the interrupt)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L560-L584)
+
+Our Interrupt Handler won't actually read the Touch Coordinates. (Because Interrupt Handlers can't make I2C calls)
+
+Instead our Interrupt Handler __notifies the Background Thread__ that there's a Touch Event waiting to be processed...
+
+```c
+  // Set the Interrupt Pending Flag
+  irqstate_t flags = enter_critical_section();
+  priv->int_pending = true;
+  leave_critical_section(flags);
+
+  // Notify the Poll Waiters
+  poll_notify(  // Notify these File Descriptors...
+    priv->fds,  // File Descriptors to notify
+    1,          // Max 1 File Descriptor supported
+    POLLIN      // Poll Event to be notified
+  );
+  return 0;
+}
+```
+
+The Background Thread calls __`poll()`__, suspends itself and __waits for the notification__ before processing the Touch Event over I2C.
+
+[(Thanks to __gt9xx_poll__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch4/drivers/input/gt9xx.c#L728-L840)
+
+Let's test our new and improved Interrupt Handler...
+
+![Testing our Interrupt Handler](https://lupyuen.github.io/images/touch2-run3a.png)
+
+# Test our Interrupt Handler
+
+_How do we test our Interrupt Handler?_
+
+We could start a Background Thread that will be notified when the screen is touched...
+
+Or we can run a simple loop that checks whether the __Interrupt Pending Flag is set__ by our Interrupt Handler.
+
+Let's test the simple way: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/c3eccc67d879806a015ae592205e641dcffa7d09/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L293-L309)
+
+```c
+// Poll for Touch Panel Interrupt
+for (int i = 0; i < 6000; i++) {  // Poll for 60 seconds
+
+  // If Touch Panel Interrupt has been triggered...
+  if (priv->int_pending) {
+
+    // Read the Touch Panel over I2C
+    touch_panel_read(i2c_dev);
+
+    // Reset the Interrupt Pending Flag
+    priv->int_pending = false;
+  }
+
+  // Wait a while
+  up_mdelay(10);  // 10 milliseconds
+}
+```
+
+Note that we call [__touch_panel_read__](https://lupyuen.github.io/articles/touch2#read-a-touch-point) to read the Touch Coordinates. (After the Touch Interrupt has been triggered)
+
+And it works! (Pic above)
+
+```text
+0000  81                                               .               
+0000  19 01 e6 02 2a 00                                ....*.          
+touch_panel_read: touch x=281, y=742
+
+0000  81                                               .               
+0000  81 02 33 00 25 00                                ..3.%.          
+touch_panel_read: touch x=641, y=51
+
+0000  81                                               .               
+0000  0f 00 72 05 14 00                                ..r...          
+touch_panel_read: touch x=15, y=1394
+```
+
+[(Source)](https://gist.github.com/lupyuen/91a37a4b54f75f7386374a30821dc1b2)
+
+The log shows that we've read the Touch Panel Status __`0x81`__, followed by the Touch Coordinates. Yep we've tested our Interrupt Handler successfully!
+
+Now we move this code into the NuttX Touch Panel Driver for PinePhone...
