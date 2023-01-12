@@ -627,27 +627,24 @@ void lv_demo_widgets(void) {
 <p>(So we might put on hold for now)</p>
 </li>
 <li>
-<p>PinePhone’s Touch Panel seems to trigger <strong>too few interrupts</strong>. <a href="https://lupyuen.github.io/articles/touch2#appendix-interrupt-handler-for-touch-panel">(See this)</a></p>
+<p>PinePhone’s Touch Panel seems to trigger <strong>too few interrupts</strong>. <a href="https://lupyuen.github.io/articles/touch2#too-few-interrupts">(See this)</a></p>
 <p>Again we’ll have to decipher the (still undocumented) <a href="https://github.com/goodix/gt9xx_driver_android/blob/master/gt9xx.c"><strong>Official Android Driver</strong></a> to fix this.</p>
 </li>
 <li>
+<p>Every <strong><code>read()</code></strong> forces an <strong>I2C Read AND Write</strong>.</p>
+<p>This feels expensive. We should fix this with our Interrupt Handler.</p>
+<p><a href="https://lupyuen.github.io/articles/touch2#too-few-interrupts">(After fixing our Interrupt Handler)</a></p>
+</li>
+<li>
 <p>Note to Future Self: <strong><code>poll()</code></strong> won’t work correctly for awaiting Touch Points!</p>
-<p>That’s because we throttle the <a href="https://lupyuen.github.io/articles/touch2#handle-interrupts-from-touch-panel"><strong>Touch Panel Interrupts</strong></a>. When we block on a <strong><code>poll()</code></strong> for Touch Points, the interrupts might get dropped and the unblock might never happen.</p>
-<p><a href="https://lupyuen.github.io/articles/touch2#setup-poll-for-touch-sample">(More about polling)</a></p>
+<p>That’s because the Touch Panel won’t generate interrupts for every Touch Point. <a href="https://lupyuen.github.io/articles/touch2#too-few-interrupts">(See this)</a></p>
+<p><a href="https://lupyuen.github.io/articles/touch2#setup-poll-for-touch-sample">(More about the Poll Setup)</a></p>
 </li>
 <li>
 <p>The <a href="https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver"><strong>LVGL Demo</strong></a> doesn’t call <strong><code>poll()</code></strong>, it only calls non-blocking <strong><code>read()</code></strong>.</p>
 <p>So we’re good for now.</p>
 </li>
-<li>
-<p>We have <strong>Duplicate Touch Down / Touch Up Events</strong>. <a href="https://gist.github.com/lupyuen/52bd626001f94e279c736979e074aac9">(See the log)</a></p>
-<p>The Touch Panel seems to be producing Touch Up Events. We might need to remove the <a href="https://lupyuen.github.io/articles/touch2#read-a-touch-sample"><strong>Simulated Touch Up Event</strong></a>.</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/touch2/graphics/lvgl/port/lv_port_touchpad.c#L83-L99">(We added the logs here)</a></p>
-</li>
 </ol>
-<p><em>Maybe we didn’t set the Touch Panel Status correctly? Causing the Excessive Interrupts?</em></p>
-<p>We checked that the <strong>Touch Panel Status</strong> was correctly set to 0 after every interrupt. Yet we’re still receiving Excessive Interrupts. <a href="https://gist.github.com/lupyuen/726110f8d24416584fe232330ffb1683">(See this)</a></p>
-<p><a href="https://gist.github.com/lupyuen/726110f8d24416584fe232330ffb1683">(But why does Status <code>0x81</code> change to <code>0x80</code>, instead of 0?)</a></p>
 <h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>PinePhone on NuttX will soon support LVGL Touchscreen Apps!</p>
 <p>Now we need to tidy up the <a href="https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver"><strong>LVGL Demo App</strong></a> so that it’s more <strong>Touch-Friendly</strong> for a Phone Form Factor. We’ll talk more about this.</p>
