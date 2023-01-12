@@ -215,14 +215,17 @@
 <ol>
 <li>
 <p>On our computer, enter this…</p>
-<div class="example-wrap"><pre class="language-bash"><code>ssh pinedio@rak-gateway</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>ssh pinedio@rak-gateway
+</code></pre></div>
 <p>Password is…</p>
-<div class="example-wrap"><pre class="language-text"><code>SoPinePass!!!</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>SoPinePass!!!
+</code></pre></div>
 <p><a href="https://www.buymeacoffee.com/politictech/pinedio-image-new-download">(Source)</a></p>
 </li>
 <li>
 <p>Check the <strong>Packet Forwarder Log</strong> for The Things Network…</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo tail /var/log/daemon.log</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>sudo tail /var/log/daemon.log
+</code></pre></div>
 <p>PineDio Gateway should have started the <strong>LoRa Concentrator</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Note: chip version is 0x10 (v1.0)
 INFO: using legacy timestamp
@@ -232,17 +235,20 @@ INFO: found temperature sensor on port 0x39
 INFO: [main] concentrator started, packet can now be received
 INFO: concentrator EUI: ...
 WARNING: [gps] GPS out of sync, keeping previous time reference
-INFO: [modify_os_time] local_time=1636244956, gps_time=1636244955</code></pre></div>
+INFO: [modify_os_time] local_time=1636244956, gps_time=1636244955
+</code></pre></div>
 <p>(See pic above)</p>
 </li>
 <li>
 <p>To change the <strong>password</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>passwd</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>passwd
+</code></pre></div></li>
 <li>
 <p>To change the <strong>hostname</strong> (“rak-gateway”)…</p>
 <div class="example-wrap"><pre class="language-bash"><code>sudo nano /etc/hostname
 sudo nano /etc/hosts
-sudo reboot</code></pre></div>
+sudo reboot
+</code></pre></div>
 <p>Rename “rak-gateway” to our desired hostname.</p>
 </li>
 </ol>
@@ -251,7 +257,8 @@ sudo reboot</code></pre></div>
 <ol>
 <li>
 <p>On PineDio Gateway, run this…</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo gateway-config</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>sudo gateway-config
+</code></pre></div>
 <p>We should see…</p>
 <p><img src="https://lupyuen.github.io/images/gateway-config4.png" alt="Gateway Config" /></p>
 </li>
@@ -276,11 +283,13 @@ sudo reboot</code></pre></div>
 <h2 id="get-gateway-id"><a href="#get-gateway-id">2.3 Get Gateway ID</a></h2>
 <p>Finally we fetch the unique factory-installed <strong>Gateway ID</strong> from PineDio Gateway.</p>
 <p>On PineDio Gateway, run this…</p>
-<div class="example-wrap"><pre class="language-bash"><code>gateway-version</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>gateway-version
+</code></pre></div>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>SoPine with baseboard, OS &quot;11 (bullseye)&quot;, 5.10.60-sunxi64.
 RAKWireless gateway RAK7248 no LTE version 4.2.7R install from source code.
-Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
+Gateway ID: YOUR_GATEWAY_ID
+</code></pre></div>
 <p>Copy the <strong>Gateway ID</strong>. We’ll use it in the next section.</p>
 <p><img src="https://lupyuen.github.io/images/gateway-id.png" alt="Getting Gateway ID" /></p>
 <h1 id="connect-to-the-things-network"><a href="#connect-to-the-things-network">3 Connect to The Things Network</a></h1>
@@ -325,7 +334,8 @@ Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
 </li>
 <li>
 <p>On our PineDio Gateway, run this…</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo gateway-config</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>sudo gateway-config
+</code></pre></div></li>
 <li>
 <p>Select <strong>“Edit Packet Forwarder Config”</strong></p>
 </li>
@@ -339,7 +349,8 @@ Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
   &quot;gateway_ID&quot;:     ...,
   &quot;server_address&quot;: ...,
   &quot;serv_port_up&quot;:   ...,
-  &quot;serv_port_down&quot;: ...,</code></pre></div></li>
+  &quot;serv_port_down&quot;: ...,
+</code></pre></div></li>
 <li>
 <p>Scroll down and look for the end of the <strong>gateway_conf</strong> section (just after <strong>beacon_power</strong>)…</p>
 <p><img src="https://lupyuen.github.io/images/ttn-gateway3.png" alt="Edit Packet Forwarder Config" /></p>
@@ -351,7 +362,8 @@ Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
   &quot;server_address&quot;: ...,
   &quot;serv_port_up&quot;:   ...,
   &quot;serv_port_down&quot;: ...,
-} ]</code></pre></div>
+} ]
+</code></pre></div>
 <p>(Check the trailing commas, especially after <strong>beacon_power</strong>!)</p>
 </li>
 <li>
@@ -375,7 +387,8 @@ Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
 <p>These are LoRa Messages from <strong>nearby devices</strong> that our Gateway has helpfully relayed to The Things Network.</p>
 <p>Yep we’re <strong>officially a contributor</strong> to the globally-connected The Things Network!</p>
 <p>In case of problems, check the <strong>Packet Forwarder Log</strong> on our Gateway…</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo tail /var/log/daemon.log</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>sudo tail /var/log/daemon.log
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/gateway#appendix-packet-forwarder-log">(Check the Appendix for the sample log)</a></p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-title.jpg" alt="PineDio Stack BL604 RISC-V Board" /></p>
 <p><a href="https://lupyuen.github.io/articles/lorawan2">(Source)</a></p>
@@ -409,7 +422,8 @@ Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
 </li>
 <li>
 <p>At the <strong>PineDio Stack Command Prompt</strong>, enter this command…</p>
-<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_tsen 2 0 4000 10 60</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>las_app_tx_tsen 2 0 4000 10 60
+</code></pre></div>
 <p>This transmits <strong>PineDio Stack’s Internal Temperature</strong> every 60 seconds. (For the next 10 minutes)</p>
 </li>
 <li>
@@ -418,7 +432,8 @@ Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
 </li>
 <li>
 <p>Our <strong>Decoded Sensor Data</strong> should appear in the Live Data Table like so…</p>
-<div class="example-wrap"><pre class="language-json"><code>Payload: { l: 4000, t: 4836 }</code></pre></div>
+<div class="example-wrap"><pre class="language-json"><code>Payload: { l: 4000, t: 4836 }
+</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/gateway-stack.png" alt="Decoded Sensor Data in the Live Data Table" /></p>
 </li>
 <li>
@@ -431,7 +446,8 @@ Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
     &quot;decoded_payload&quot;: {
       &quot;l&quot;: 4000,
       &quot;t&quot;: 4836
-    }    </code></pre></div>
+    }    
+</code></pre></div>
 <p>These are the <strong>Light Sensor</strong> (“<code>l</code>”) and <strong>Temperature Sensor</strong> (“<code>t</code>”) values transmitted by PineDio Stack to The Things Network via PineDio Gateway.</p>
 <p>Yep PineDio Gateway works great with PineDio Stack!</p>
 <p><a href="https://lupyuen.github.io/articles/cbor#floating-point-numbers">(Our Temperature Values are scaled up 100 times… <code>4836</code> means <code>48.36</code> ºC)</a></p>
@@ -587,7 +603,8 @@ Gateway ID: YOUR_GATEWAY_ID</code></pre></div>
 <p><strong>Packet Forwarder</strong> is the Background Service on PineDio Gateway that relays received LoRa Packets to The Things Network.</p>
 <p>(Yep it’s super critical to keep this service running on PineDio Gateway!)</p>
 <p>To check if the <strong>Packet Forwarder Service is running</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>systemctl status ttn-gateway</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>systemctl status ttn-gateway
+</code></pre></div>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>ttn-gateway.service - The Things Network Gateway
 Loaded: loaded (/lib/systemd/system/ttn-gateway.service; enabled; vendor preset: enabled)
@@ -609,19 +626,24 @@ INFO: [main] concentrator started, packet can now be received
 INFO: concentrator EUI: ...
 WARNING: [gps] GPS out of sync, keeping previous time reference
 WARNING: [gps] GPS out of sync, keeping previous time reference
-INFO: [modify_os_time] local_time=1636244956, gps_time=1636244955</code></pre></div>
+INFO: [modify_os_time] local_time=1636244956, gps_time=1636244955
+</code></pre></div>
 <p>To <strong>stop the Packet Forwarder Service</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>systemctl stop ttn-gateway</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>systemctl stop ttn-gateway
+</code></pre></div>
 <p>To <strong>disable the Packet Forwarder Service</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>systemctl disable ttn-gateway</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>systemctl disable ttn-gateway
+</code></pre></div>
 <p>To <strong>configure the Packet Forwarder Service</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>sudo gateway-config</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>sudo gateway-config
+</code></pre></div>
 <p>The above command also configures the <strong>LoRa Concentrator</strong> to forward LoRa Packets to the Packet Forwarder Service or to ChirpStack. <a href="https://forum.pine64.org/showthread.php?tid=13682&amp;pid=98431#pid98431">(See this)</a></p>
 <p>Check the next section for the Packet Forwarder Log.</p>
 <p><a href="https://forum.pine64.org/showthread.php?tid=13682&amp;pid=97358#pid97358">(Source)</a></p>
 <h1 id="appendix-packet-forwarder-log"><a href="#appendix-packet-forwarder-log">9 Appendix: Packet Forwarder Log</a></h1>
 <p>Here’s a sample <strong>Packet Forwarder Log</strong> for PineDio Gateway located at…</p>
-<div class="example-wrap"><pre class="language-text"><code>/var/log/daemon.log</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>/var/log/daemon.log
+</code></pre></div>
 <p><a href="https://ralimtek.com/posts/2021/pinedio/">(Log messages below are explained in this article)</a></p>
 <h2 id="startup"><a href="#startup">9.1 Startup</a></h2><div class="example-wrap"><pre class="language-text"><code>*** Packet Forwarder ***
 Version: 2.0.1
@@ -691,7 +713,8 @@ found temperature sensor on port 0x39
 [main] concentrator started, packet can now be received
 concentrator EUI: ...
 WARNING: [gps] GPS out of sync, keeping previous time reference
-[modify_os_time] local_time=1636450022, gps_time=1636450020</code></pre></div><h2 id="receive-packet"><a href="#receive-packet">9.2 Receive Packet</a></h2><div class="example-wrap"><pre class="language-text"><code>[modify_os_time] The difference between the system time(1636450022) and the GPS time(1636450020) is less than 10 seconds. Use the system time.
+[modify_os_time] local_time=1636450022, gps_time=1636450020
+</code></pre></div><h2 id="receive-packet"><a href="#receive-packet">9.2 Receive Packet</a></h2><div class="example-wrap"><pre class="language-text"><code>[modify_os_time] The difference between the system time(1636450022) and the GPS time(1636450020) is less than 10 seconds. Use the system time.
 [down] PULL_ACK received in 93 ms
 [down] PULL_ACK received in 92 ms
 Received pkt from mote: 01E4BBF0 (fcnt=9969)
@@ -722,35 +745,36 @@ JSON up:
 }
 [up] PUSH_ACK received in 94 ms
 WARNING: [gps] GPS out of sync, keeping previous time reference
-[down] PULL_ACK received in 92 ms</code></pre></div><h2 id="packet-received"><a href="#packet-received">9.3 Packet Received</a></h2><div class="example-wrap"><pre class="language-text"><code>### [UPSTREAM] ###
+[down] PULL_ACK received in 92 ms
+</code></pre></div><h2 id="packet-received"><a href="#packet-received">9.3 Packet Received</a></h2><div class="example-wrap"><pre class="language-text"><code>#### [UPSTREAM] ###
 RF packets received by concentrator: 1
 CRC_OK: 100.00%, CRC_FAIL: 0.00%, NO_CRC: 0.00%
 RF packets forwarded: 1 (32 bytes)
 PUSH_DATA datagrams sent: 1 (319 bytes)
 PUSH_DATA acknowledged: 100.00%
 
-### [DOWNSTREAM] ###
+#### [DOWNSTREAM] ###
 PULL_DATA sent: 3 (100.00% acknowledged)
 PULL_RESP(onse) datagrams received: 0 (0 bytes)
 RF packets sent to concentrator: 0 (0 bytes)
 TX errors: 0
 
-### SX1302 Status ###
+#### SX1302 Status ###
 SX1302 counter (INST): 30753811
 SX1302 counter (PPS):  26145712
 BEACON queued: 0
 BEACON sent so far: 0
 BEACON rejected: 0
 
-### [JIT] ###
+#### [JIT] ###
 src/jitqueue.c:440:jit_print_queue(): [jit] queue is empty
 --------
 src/jitqueue.c:440:jit_print_queue(): [jit] queue is empty
 
-### [GPS] ###
+#### [GPS] ###
 Valid time reference (age: 0 sec)
 GPS coordinates: latitude 1.2..., longitude 103.8..., altitude 17 m
-#### END #####
+##### END #####
 
 JSON up:
 {
@@ -772,7 +796,8 @@ JSON up:
 [up] PUSH_ACK received in 92 ms
 [down] PULL_ACK received in 92 ms
 [down] PULL_ACK received in 92 ms
-[down] PULL_ACK received in 92 ms</code></pre></div>
+[down] PULL_ACK received in 92 ms
+</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/gateway-ttn2.jpg" alt="PineDio Gateway and WisGate Gateway on The Things Network" /></p>
 <p><em>PineDio Gateway and WisGate Gateway on The Things Network</em></p>
 

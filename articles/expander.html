@@ -208,7 +208,8 @@
 #define BOARD_GPIO_OUT1 (GPIO_PIN15 | GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO)
 
 //  GPIO Interrupt: GPIO 19
-#define BOARD_GPIO_INT1 (GPIO_PIN19 | GPIO_INPUT | GPIO_FLOAT | GPIO_FUNC_SWGPIO)</code></pre></div>
+#define BOARD_GPIO_INT1 (GPIO_PIN19 | GPIO_INPUT | GPIO_FLOAT | GPIO_FUNC_SWGPIO)
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L61-L145">(See the UART / I2C / SPI / PWM Pins)</a></p>
 <p>A couple of issues…</p>
 <ul>
@@ -236,7 +237,8 @@
 #define BOARD_GPIO_IN1  (GPIO_PIN10 | GPIO_INPUT | GPIO_FLOAT | GPIO_FUNC_SWGPIO)
 
 //  GPIO Output: Also GPIO 10 (Oops!)
-#define BOARD_GPIO_OUT1 (GPIO_PIN10 | GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO)</code></pre></div></li>
+#define BOARD_GPIO_OUT1 (GPIO_PIN10 | GPIO_OUTPUT | GPIO_PULLUP | GPIO_FUNC_SWGPIO)
+</code></pre></div></li>
 </ul>
 <p>Thus we see that <strong>BL602 EVB is somewhat limited</strong>…</p>
 <p>BL602 EVB works great for 3 GPIOs, but <strong>doesn’t scale well</strong> beyond that.</p>
@@ -326,7 +328,8 @@ static const struct ioexpander_ops_s g_bl602_expander_ops = {
   ...
   bl602_expander_attach,     //  Attach GPIO Interrupt Callback
   bl602_expander_detach      //  Detach GPIO Interrupt Callback
-};</code></pre></div>
+};
+</code></pre></div>
 <p>The <strong>implementation of the GPIO Operations</strong> is explained in the Appendix…</p>
 <ul>
 <li>
@@ -409,7 +412,8 @@ static const struct ioexpander_ops_s g_bl602_expander_ops = {
 ...
 //  Get the Push Button Pinset and GPIO Pin Number
 gpio_pinset_t pinset = BOARD_BUTTON_INT;
-uint8_t gpio_pin = (pinset &amp; GPIO_PIN_MASK) &gt;&gt; GPIO_PIN_SHIFT;</code></pre></div>
+uint8_t gpio_pin = (pinset &amp; GPIO_PIN_MASK) &gt;&gt; GPIO_PIN_SHIFT;
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L143-L145">(<strong>BOARD_BUTTON_INT</strong> is defined in board.h)</a></p>
 <p>First we get the <strong>GPIO Pin Number</strong> for the Push Button.</p>
 <p>Then we configure our GPIO Expander to trigger the GPIO Interrupt on the <strong>Falling Edge</strong> (High to Low)…</p>
@@ -420,7 +424,8 @@ IOEXP_SETOPTION(
   gpio_pin,        //  GPIO Pin
   IOEXPANDER_OPTION_INTCFG,            //  Configure interrupt trigger
   (FAR void *) IOEXPANDER_VAL_FALLING  //  Trigger on falling edge
-);</code></pre></div>
+);
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/include/nuttx/ioexpander/ioexpander.h#L91-L110">(<strong>IOEXP_SETOPTION</strong> comes from the I/O Expander)</a></p>
 <p>Finally we call GPIO Expander to <strong>attach our Interrupt Callback</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Attach our GPIO interrupt callback
@@ -430,14 +435,16 @@ void *handle = IOEP_ATTACH(
   button_isr_handler,            //  GPIO Interrupt Callback
   NULL                           //  TODO: Set the callback argument
 );
-DEBUGASSERT(handle != NULL);</code></pre></div>
+DEBUGASSERT(handle != NULL);
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/include/nuttx/ioexpander/ioexpander.h#L235-L257">(<strong>IOEP_ATTACH</strong> comes from the I/O Expander)</a></p>
 <p>The <strong>Interrupt Callback</strong> is defined as…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Our GPIO Interrupt Callback
 static int button_isr_handler(FAR struct ioexpander_dev_s *dev, ioe_pinset_t pinset, FAR void *arg) {
   gpioinfo(&quot;Button Pressed\n&quot;);
   return 0;
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/2982b3a99057c5935ca9150b9f0f1da3565c6061/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L1038-L1044">(Source)</a></p>
 <p>Note that the Interrupt Callback runs in the <strong>BL602 Interrupt Context</strong>.</p>
 <p>Be careful!</p>
@@ -445,7 +452,8 @@ static int button_isr_handler(FAR struct ioexpander_dev_s *dev, ioe_pinset_t pin
 <p>Another way to test the Push Button Interrupt is to use the <strong>GPIO Command</strong>. </p>
 <p>(This only works if we don’t call <strong>IOEP_ATTACH</strong> to attach the Interrupt Callback)</p>
 <p>Enter this in the NuttX Shell…</p>
-<div class="example-wrap"><pre class="language-bash"><code>gpio -t 8 -w 1 /dev/gpio12</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>gpio -t 8 -w 1 /dev/gpio12
+</code></pre></div>
 <p>Which says…</p>
 <ul>
 <li>
@@ -457,11 +465,13 @@ static int button_isr_handler(FAR struct ioexpander_dev_s *dev, ioe_pinset_t pin
 </ul>
 <p>Quickly press the <strong>Push Button</strong> on PineDio Stack. We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>Interrupt pin: Value=1
-Verify:        Value=1</code></pre></div>
+Verify:        Value=1
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander#test-push-button">(See the Complete Log)</a></p>
 <p>If we don’t press the button <strong>within 5 seconds</strong>, the GPIO Command reports an Interrupt Timeout…</p>
 <div class="example-wrap"><pre class="language-text"><code>Interrupt pin: Value=1
-[Five second timeout with no signal]</code></pre></div><h2 id="other-callers"><a href="#other-callers">4.4 Other Callers</a></h2>
+[Five second timeout with no signal]
+</code></pre></div><h2 id="other-callers"><a href="#other-callers">4.4 Other Callers</a></h2>
 <p><em>Who else is calling GPIO Expander to handle interrupts?</em></p>
 <p>The <strong>CST816S Driver</strong> for PineDio Stack’s Touch Panel calls GPIO Expander to attach an Interrupt Callback (that’s called when the screen is touched)…</p>
 <ul>
@@ -506,13 +516,15 @@ int bl602_bringup(void) {
     syslog(LOG_ERR, &quot;Failed to initialize GPIO Expander\n&quot;);
     return -ENOMEM;
   }
-#endif  //  CONFIG_IOEXPANDER_BL602_EXPANDER</code></pre></div>
+#endif  //  CONFIG_IOEXPANDER_BL602_EXPANDER
+</code></pre></div>
 <p>(We’ll talk about <strong>bl602_gpio_*</strong> in the next chapter)</p>
 <p>We must load the GPIO Expander <strong>before other drivers</strong> (like CST816S Touch Panel), because GPIO Expander provides GPIO functions for the drivers.</p>
 <p>We need to <strong>disable the BL602 EVB GPIO Driver</strong>, because GPIO Expander needs the <a href="https://github.com/lupyuen/nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c"><strong>GPIO Lower Half Driver</strong></a> (which can’t coexist with BL602 EVB GPIO)…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Added CONFIG_GPIO_LOWER_HALF below
 #if defined(CONFIG_DEV_GPIO) &amp;&amp; !defined(CONFIG_GPIO_LOWER_HALF)
-  ret = bl602_gpio_initialize();</code></pre></div>
+  ret = bl602_gpio_initialize();
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L646-L653">(Source)</a></p>
 <p>Check the following in menuconfig…</p>
 <ul>
@@ -543,10 +555,12 @@ int bl602_bringup(void) {
 #define BOARD_SPI_CLK    (GPIO_PIN11 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)
 ...
 //  Push Button Interrupt: Also GPIO 11 (Oops!) 
-#define BOARD_BUTTON_INT (GPIO_PIN11 | GPIO_INPUT | GPIO_FLOAT | GPIO_FUNC_SWGPIO)</code></pre></div>
+#define BOARD_BUTTON_INT (GPIO_PIN11 | GPIO_INPUT | GPIO_FLOAT | GPIO_FUNC_SWGPIO)
+</code></pre></div>
 <p>Then GPIO Expander will <strong>halt with an error</strong> at startup…</p>
 <div class="example-wrap"><pre class="language-text"><code>bl602_expander_initialize: ERROR:
-GPIO pin 11 is already in use</code></pre></div>
+GPIO pin 11 is already in use
+</code></pre></div>
 <p><em>Awesome! How do we enable this GPIO Validation?</em></p>
 <p>To enable GPIO Validation, we <strong>add all GPIOs</strong> to the arrays <strong>bl602_gpio_inputs</strong>, <strong>bl602_gpio_outputs</strong>, <strong>bl602_gpio_interrupts</strong> and <strong>bl602_other_pins</strong>: <a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/src/bl602_bringup.c#L126-L222">bl602_bringup.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_IOEXPANDER_BL602_EXPANDER
@@ -589,7 +603,8 @@ static const gpio_pinset_t bl602_other_pins[] =
 //  Omitted: Other UART, I2C, SPI and PWM Pins
 ...
 };
-#endif  //  CONFIG_IOEXPANDER_BL602_EXPANDER</code></pre></div>
+#endif  //  CONFIG_IOEXPANDER_BL602_EXPANDER
+</code></pre></div>
 <p>At startup, we <strong>pass the pins to GPIO Expander</strong> during initialisation…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Initialise GPIO Expander at startup
 bl602_expander = bl602_expander_initialize(
@@ -604,7 +619,8 @@ bl602_expander = bl602_expander_initialize(
   sizeof(bl602_gpio_interrupts) / sizeof(bl602_gpio_interrupts[0]),
   //  BL602 Pinsets for Other Pins (UART, I2C, SPI, PWM) and number of pins
   bl602_other_pins,      
-  sizeof(bl602_other_pins) / sizeof(bl602_other_pins[0]));</code></pre></div>
+  sizeof(bl602_other_pins) / sizeof(bl602_other_pins[0]));
+</code></pre></div>
 <p>GPIO Expander verifies that the <strong>GPIOs are not reused</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>FAR struct ioexpander_dev_s *bl602_expander_initialize(
   //  BL602 Pinsets for GPIO Inputs and number of pins
@@ -634,7 +650,8 @@ bl602_expander = bl602_expander_initialize(
     gpio_is_used[gpio_pin] = true;
   }
 
-  //  Omitted: Validate the GPIO Outputs, GPIO Interrupts and Other Pins</code></pre></div>
+  //  Omitted: Validate the GPIO Outputs, GPIO Interrupts and Other Pins
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L958-L1123">(Source)</a></p>
 <p>Let’s talk about something else we might validate at startup: Pin Functions.</p>
 <p><a href="https://lupyuen.github.io/articles/expander#appendix-initialise-gpio-expander">(More about GPIO Expander initialisation)</a></p>
@@ -657,11 +674,13 @@ bl602_expander = bl602_expander_initialize(
 <p><a href="https://lupyuen.github.io/articles/spi2#appendix-miso-and-mosi-are-swapped">(<strong>Beware:</strong> MISO and MOSI are swapped)</a></p>
 <p>So this <strong>MISO Pin Definition</strong> is OK…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  GPIO 0 for MISO is OK
-#define BOARD_SPI_MISO (GPIO_PIN0 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)</code></pre></div>
+#define BOARD_SPI_MISO (GPIO_PIN0 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L104">(Source)</a></p>
 <p>But this MISO Pin Definition is no-no…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  GPIO 3 for MISO is NOT OK (Oops!)
-#define BOARD_SPI_MISO (GPIO_PIN3 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)</code></pre></div>
+#define BOARD_SPI_MISO (GPIO_PIN3 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)
+</code></pre></div>
 <p><em>8 possible pins for MISO? Wow that’s a lot of choices!</em></p>
 <p>BL602 / BL604 gives us incredible flexibility in selecting the pins…</p>
 <p>But we might <strong>pick the wrong pin</strong> by mistake!</p>
@@ -702,7 +721,8 @@ bl602_expander = bl602_expander_initialize(
 </li>
 </ul>
 <p>In the NuttX Shell, enter this command to <strong>list the NuttX Devices</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>ls /dev
+</code></pre></div>
 <p>We should see <strong>more than 3 GPIOs</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>/dev:
  gpio10
@@ -713,7 +733,8 @@ bl602_expander = bl602_expander_initialize(
  gpio20
  gpio21
  gpio3
- gpio9</code></pre></div>
+ gpio9
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander#test-touch-panel">(See the Complete Log)</a></p>
 <p>Which means that our <strong>GPIO Expander is active</strong>.</p>
 <p>We’re ready to test GPIO Expander!</p>
@@ -724,12 +745,14 @@ bl602_expander = bl602_expander_initialize(
 <div class="example-wrap"><pre class="language-text"><code>gpio_pin_register: Registering /dev/gpio9
 bl602_expander_option: Falling edge: pin=9
 bl602_expander_attach: Attach callback for gpio=9
-cst816s_register: Driver registered</code></pre></div>
+cst816s_register: Driver registered
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander#test-touch-panel">(See the Complete Log)</a></p>
 <p>Which says that our NuttX Driver for <a href="https://lupyuen.github.io/articles/touch"><strong>CST816S Touch Panel</strong></a> has called GPIO Expander to configure GPIO 9 for <strong>Falling Edge Trigger</strong>. (High to Low)</p>
 <p>And the driver has called GPIO Expander to attach an <strong>Interrupt Callback</strong> for GPIO 9.</p>
 <p>In the NuttX Shell, enter this command to start the <a href="https://github.com/lupyuen/lvgltest-nuttx"><strong>LVGL Test App</strong></a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>lvgltest</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>lvgltest
+</code></pre></div>
 <p>When prompted to calibrate the screen, <strong>tap the 4 corners</strong> of the screen. (Pic above)</p>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>bl602_expander_interrupt: Interrupt!
@@ -738,7 +761,8 @@ cst816s_get_touch_data: DOWN: id=0, touch=0, x=190, y=18
 cst816s_get_touch_data:   id:      0
 cst816s_get_touch_data:   flags:   19
 cst816s_get_touch_data:   x:       190
-cst816s_get_touch_data:   y:       18</code></pre></div>
+cst816s_get_touch_data:   y:       18
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander#test-touch-panel">(See the Complete Log)</a></p>
 <p>Which says that our <strong>Interrupt Callback</strong> for GPIO 9 has been triggered.</p>
 <p>GPIO Expander handles the interrupt and <strong>calls the Touch Panel Driver</strong>. (Which fetches the Touch Data later)</p>
@@ -756,17 +780,20 @@ cst816s_get_touch_data:   y:       18</code></pre></div>
 bl602_expander_option: Rising edge: pin=12
 bl602_expander_readpin: pin=12, value=1
 Interrupt pin: Value=1
-bl602_expander_attach: Attach callback for gpio=12</code></pre></div>
+bl602_expander_attach: Attach callback for gpio=12
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander#test-push-button">(See the Complete Log)</a></p>
 <p>Then it calls GPIO Expander to <strong>read GPIO 12</strong>. And attach an <strong>Interrupt Callback</strong> for GPIO 12.</p>
 <p>When we press the Push Button, GPIO Expander <strong>handles the interrupt</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>bl602_expander_interrupt: Interrupt!
-bl602_expander_interrupt: Call gpio=12</code></pre></div>
+bl602_expander_interrupt: Call gpio=12
+</code></pre></div>
 <p>And <strong>calls the Interrupt Callback</strong> for GPIO 12.</p>
 <p>Finally the GPIO Command calls GPIO Expander to <strong>detach the Interrupt Callback</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>bl602_expander_detach: Detach callback for gpio=12
 bl602_expander_readpin: pin=12, value=1
-Verify: Value=1</code></pre></div>
+Verify: Value=1
+</code></pre></div>
 <p>And read the GPIO Input one last time.</p>
 <h2 id="test-lorawan"><a href="#test-lorawan">7.3 Test LoRaWAN</a></h2>
 <p><strong>LoRaWAN</strong> is the Ultimate Test for GPIO Expander. It depends on <strong>3 GPIOs</strong> connected to the Semtech SX1262 LoRa Transceiver…</p>
@@ -788,12 +815,14 @@ Verify: Value=1</code></pre></div>
 </li>
 </ul>
 <p>In the NuttX Shell, enter this command to start the <a href="https://github.com/lupyuen/lorawan_test"><strong>LoRaWAN Test App</strong></a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>lorawan_test</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>lorawan_test
+</code></pre></div>
 <p>Our LoRaWAN App calls GPIO Expander to attach an <strong>Interrupt Callback</strong> for GPIO 19…</p>
 <div class="example-wrap"><pre class="language-text"><code>init_gpio: change DIO1 to Trigger GPIO Interrupt on Rising Edge
-##### =========== MLME-Request ============ ######
-#####               MLME_JOIN               ######
-##### ===================================== ######</code></pre></div>
+###### =========== MLME-Request ============ ######
+######               MLME_JOIN               ######
+###### ===================================== ######
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander#test-lorawan">(See the Complete Log)</a></p>
 <p>And sends a <strong>Join LoRaWAN Network</strong> request to our LoRaWAN Gateway (ChipStack).</p>
 <p>(Which calls GPIO Expander on <strong>GPIO 10</strong> to check if the LoRa Transceiver is busy, and <strong>GPIO 15</strong> to activate the SPI Bus)</p>
@@ -801,19 +830,21 @@ Verify: Value=1</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>DIO1 add event
 RadioOnDioIrq
 RadioIrqProcess
-IRQ_TX_DONE</code></pre></div>
+IRQ_TX_DONE
+</code></pre></div>
 <p>Which is handled by GPIO Expander and our LoRaWAN App.</p>
 <p>Eventually our app receives the <strong>Join Network Response</strong> from our LoRaWAN Gateway…</p>
-<div class="example-wrap"><pre class="language-text"><code>##### =========== MLME-Confirm ============ ######
+<div class="example-wrap"><pre class="language-text"><code>###### =========== MLME-Confirm ============ ######
 STATUS      : OK
-##### ===========   JOINED     ============ ######
+###### ===========   JOINED     ============ ######
 OTAA
 DevAddr     : 014C9548
-DATA RATE   : DR_2</code></pre></div>
+DATA RATE   : DR_2
+</code></pre></div>
 <p>And sends a <strong>LoRaWAN Data Packet</strong> <em>(“Hi NuttX”)</em> to the gateway…</p>
-<div class="example-wrap"><pre class="language-text"><code>##### =========== MCPS-Confirm ============ ######
+<div class="example-wrap"><pre class="language-text"><code>###### =========== MCPS-Confirm ============ ######
 STATUS      : OK
-##### =====   UPLINK FRAME        1   ===== ######
+###### =====   UPLINK FRAME        1   ===== ######
 CLASS       : A
 TX PORT     : 1
 TX DATA     : UNCONFIRMED
@@ -821,7 +852,8 @@ TX DATA     : UNCONFIRMED
 DATA RATE   : DR_3
 U/L FREQ    : 923400000
 TX POWER    : 0
-CHANNEL MASK: 0003</code></pre></div>
+CHANNEL MASK: 0003
+</code></pre></div>
 <p>The data packet appears on our LoRaWAN Gateway.</p>
 <p>Congratulations we have successfully tested GPIO Input, Output and Interrupt with GPIO Expander!</p>
 <p><a href="https://lupyuen.github.io/articles/lorawan3">(More about the LoRaWAN Test App)</a></p>
@@ -867,11 +899,13 @@ CHANNEL MASK: 0003</code></pre></div>
 <p>But we might <strong>pick the wrong pin</strong> by mistake!</p>
 <p>For example, this <strong>MISO Pin Definition</strong> is OK…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  GPIO 0 for MISO is OK
-#define BOARD_SPI_MISO (GPIO_PIN0 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)</code></pre></div>
+#define BOARD_SPI_MISO (GPIO_PIN0 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/boards/risc-v/bl602/bl602evb/include/board.h#L104">(Source)</a></p>
 <p>But this MISO Pin Definition is no-no…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  GPIO 3 for MISO is NOT OK (Oops!)
-#define BOARD_SPI_MISO (GPIO_PIN3 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)</code></pre></div>
+#define BOARD_SPI_MISO (GPIO_PIN3 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)
+</code></pre></div>
 <p><em>Is there a way to prevent such mistakes?</em></p>
 <p>We have some ideas for <strong>validating the Pin Functions</strong> at compile-time or at startup…</p>
 <h2 id="validate-at-compile-time"><a href="#validate-at-compile-time">10.1 Validate at Compile-Time</a></h2>
@@ -883,14 +917,17 @@ CHANNEL MASK: 0003</code></pre></div>
 #define SPI_MISO_PIN8  (GPIO_PIN8  | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)
 #define SPI_MISO_PIN12 (GPIO_PIN12 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)
 #define SPI_MISO_PIN16 (GPIO_PIN16 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)
-#define SPI_MISO_PIN20 (GPIO_PIN20 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)</code></pre></div>
+#define SPI_MISO_PIN20 (GPIO_PIN20 | GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_SPI)
+</code></pre></div>
 <p>And we select the desired combination for each pin…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Select GPIO 0 as MISO
-#define BOARD_SPI_MISO SPI_MISO_PIN0</code></pre></div>
+#define BOARD_SPI_MISO SPI_MISO_PIN0
+</code></pre></div>
 <p><em>What happens if we pick the wrong pin?</em></p>
 <p>This is disallowed…</p>
 <div class="example-wrap"><pre class="language-c"><code>//  Select GPIO 3 as MISO... Not possible!
-#define BOARD_SPI_MISO SPI_MISO_PIN3</code></pre></div>
+#define BOARD_SPI_MISO SPI_MISO_PIN3
+</code></pre></div>
 <p>Because <strong>SPI_MISO_PIN3</strong> doesn’t exist!</p>
 <p>But to check whether the <strong>Pin Numbers are unique</strong>, we would still need GPIO Expander to do this at runtime.</p>
 <p><em>Shouldn’t the pins be defined in Kconfig / menuconfig?</em></p>
@@ -952,12 +989,14 @@ static const gpio_pinset_t bl602_other_pins[] =
     BOARD_SPI_CLK
   ),
 #endif  /* BOARD_SPI_CS */
-};</code></pre></div>
+};
+</code></pre></div>
 <p>The macros are simple passthroughs…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define CH(ch)            ch
 #define RX_TX(rx, tx)     rx,  tx
 #define SCL_SDA(scl, sda) scl, sda
-#define CS_MOSI_MISO_CLK(cs, mosi, miso, clk) cs, mosi, miso, clk</code></pre></div>
+#define CS_MOSI_MISO_CLK(cs, mosi, miso, clk) cs, mosi, miso, clk
+</code></pre></div>
 <p>At startup, GPIO Expander iterates through the pins and discovers that <strong>BOARD_SPI_MISO</strong> is the third pin (MISO) of the SPI Function Group. So it verifies that it’s either GPIO 0, 4, 8, 12, 16 or 20.</p>
 <p>Which is your preferred way to validate the Pin Functions? Lemme know! 🙏</p>
 <h1 id="appendix-initialise-gpio-expander"><a href="#appendix-initialise-gpio-expander">11 Appendix: Initialise GPIO Expander</a></h1>
@@ -1000,7 +1039,8 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
 
   /* Initialize the device state structure */
   priv-&gt;dev.ops = &amp;g_bl602_expander_ops;
-  nxsem_init(&amp;priv-&gt;exclsem, 0, 1);</code></pre></div>
+  nxsem_init(&amp;priv-&gt;exclsem, 0, 1);
+</code></pre></div>
 <p>The function begins by populating the <strong>Device State</strong> for GPIO Expander.</p>
 <p>(Including the <strong>Semaphore</strong> that will lock the GPIO Expander)</p>
 <p>Next it disables the Specific GPIO Interrupts for all GPIOs, and attaches the <strong>GPIO Expander Interrupt Handler</strong> to the GPIO IRQ…</p>
@@ -1018,7 +1058,8 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
   irq_attach(BL602_IRQ_GPIO_INT0, bl602_expander_interrupt, priv);
 
   ret = bl602_expander_irq_enable(true);
-  if (ret &lt; 0) { return NULL; }</code></pre></div>
+  if (ret &lt; 0) { return NULL; }
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/expander#appendix-handle-gpio-interrupt">(<strong>bl602_expander_interrupt</strong> is explained here)</a></p>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L164-L197">(<strong>bl602_expander_intmask</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L301-L325">(<strong>bl602_expander_irq_enable</strong> is defined here)</a></p>
@@ -1027,7 +1068,8 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
 <p>To prevent reuse of GPIOs, we prepare the array that will <strong>mark the used GPIOs</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Mark the GPIOs in use. CONFIG_IOEXPANDER_NPINS is 23 */
   bool gpio_is_used[CONFIG_IOEXPANDER_NPINS];
-  memset(gpio_is_used, 0, sizeof(gpio_is_used));</code></pre></div>
+  memset(gpio_is_used, 0, sizeof(gpio_is_used));
+</code></pre></div>
 <p>Now we handle the <strong>GPIO Inputs</strong>.</p>
 <p>Given the BL602 Pinset (from the Pin Definition), we call 
 <a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><strong>bl602_configgpio</strong></a> to <strong>configure each GPIO Input</strong>…</p>
@@ -1048,7 +1090,8 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
       ret = bl602_configgpio(pinset);
       DEBUGASSERT(ret == OK);
       gpio_lower_half(&amp;priv-&gt;dev, gpio_pin, GPIO_INPUT_PIN, gpio_pin);
-    }</code></pre></div>
+    }
+</code></pre></div>
 <p>And we call <a href="https://github.com/lupyuen/nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c#L370-L443"><strong>gpio_lower_half</strong></a> to register the GPIO Input as “<strong>/dev/gpioN</strong>”.</p>
 <p>(<strong>N</strong> is the GPIO Pin Number)</p>
 <p>We quit if the GPIO is <strong>already in use</strong>.</p>
@@ -1070,7 +1113,8 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
       ret = bl602_configgpio(pinset);
       DEBUGASSERT(ret == OK);
       gpio_lower_half(&amp;priv-&gt;dev, gpio_pin, GPIO_OUTPUT_PIN, gpio_pin);
-    }</code></pre></div>
+    }
+</code></pre></div>
 <p>And for <strong>GPIO Interrupts</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Configure and register the GPIO Interrupts */
   for (i = 0; i &lt; gpio_interrupt_count; i++)
@@ -1089,7 +1133,8 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
       ret = bl602_configgpio(pinset);
       DEBUGASSERT(ret == OK);
       gpio_lower_half(&amp;priv-&gt;dev, gpio_pin, GPIO_INTERRUPT_PIN, gpio_pin);
-    }</code></pre></div>
+    }
+</code></pre></div>
 <p>For <strong>other GPIOs</strong> (UART, I2C, SPI, PWM) we check for reused GPIOs…</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Validate the other pins (I2C, SPI, etc) */
   for (i = 0; i &lt; other_pin_count; i++)
@@ -1108,7 +1153,8 @@ FAR struct ioexpander_dev_s *bl602_expander_initialize(
 
   /* TODO: Validate the Pin Functions (e.g. MISO vs MOSI) */
   return &amp;priv-&gt;dev;
-}</code></pre></div>
+}
+</code></pre></div>
 <p>But we don’t call <a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L58-L140"><strong>bl602_configgpio</strong></a> because that’s done by the <strong>UART / I2C / SPI / PWM Driver.</strong></p>
 <p>And we don’t call <a href="https://github.com/lupyuen/nuttx/blob/pinedio/drivers/ioexpander/gpio_lower_half.c#L370-L443"><strong>gpio_lower_half</strong></a> because the reserved GPIOs shouldn’t appear as “<strong>/dev/gpioN</strong>”.</p>
 <p>That’s how we initialise our GPIO Expander at startup!</p>
@@ -1130,7 +1176,8 @@ static int bl602_expander_direction(
   gpioinfo(&quot;WARNING: Unimplemented direction: pin=%u, direction=%s\n&quot;,
            pin, (direction == IOEXPANDER_DIRECTION_IN) ? &quot;IN&quot; : &quot;OUT&quot;);
   ...
-}</code></pre></div><h1 id="appendix-set-gpio-option"><a href="#appendix-set-gpio-option">13 Appendix: Set GPIO Option</a></h1>
+}
+</code></pre></div><h1 id="appendix-set-gpio-option"><a href="#appendix-set-gpio-option">13 Appendix: Set GPIO Option</a></h1>
 <p>For setting the <strong>GPIO Option</strong>, our GPIO Expander only supports 1 option: <strong>Interrupt Trigger</strong>.</p>
 <p>The supported values for the option are…</p>
 <ul>
@@ -1211,7 +1258,8 @@ static int bl602_expander_option(
   /* Unlock the I/O Expander */
   bl602_expander_unlock(priv);
   return ret;
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L198-L246">(<strong>bl602_expander_set_intmod</strong> is defined here)</a></p>
 <p>Note that we copied <strong>bl602_expander_set_intmod</strong> from <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/bl602/bl602evb/src/bl602_gpio.c#L171-L212"><strong>BL602 EVB GPIO Driver</strong></a> and fixed this bug…</p>
 <ul>
@@ -1242,7 +1290,8 @@ static int bl602_expander_writepin(
   /* Unlock the I/O Expander */
   bl602_expander_unlock(priv);
   return ret;
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L197-L216">(<strong>bl602_gpiowrite</strong> comes from the BL602 GPIO Driver)</a></p>
 <p><img src="https://lupyuen.github.io/images/expander-code9a.png" alt="Write GPIO" /></p>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L550-L594">(Source)</a></p>
@@ -1270,7 +1319,8 @@ static int bl602_expander_readpin(
   bl602_expander_unlock(priv);
   gpioinfo(&quot;pin=%u, value=%u\n&quot;, pin, *value);
   return ret;
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/arch/risc-v/src/bl602/bl602_gpio.c#L218-L230">(<strong>bl602_gpioread</strong> comes from the BL602 GPIO Driver)</a></p>
 <p><img src="https://lupyuen.github.io/images/expander-code8a.png" alt="Read GPIO" /></p>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L596-L642">(Source)</a></p>
@@ -1289,7 +1339,8 @@ static FAR void *bl602_expander_attach(
 
   /* Get exclusive access to the I/O Expander */
   int ret = bl602_expander_lock(priv);
-  if (ret &lt; 0) { return NULL; }</code></pre></div>
+  if (ret &lt; 0) { return NULL; }
+</code></pre></div>
 <p>We begin by <strong>locking the GPIO Expander</strong>. (Via a Semaphore)</p>
 <p>The function accepts a <strong>“Special Pinset”</strong>, in which <strong>Bit <code>N</code> is 1</strong> to specify <strong>GPIO Pin <code>N</code></strong>.</p>
 <p>(Not to be confused with BL602 Pinset, which numbers pins sequentially)</p>
@@ -1300,7 +1351,8 @@ static FAR void *bl602_expander_attach(
       /* If GPIO Pin is set in the pinset... */
       if (pinset &amp; ((ioe_pinset_t)1 &lt;&lt; gpio_pin))
         {
-          cb = &amp;priv-&gt;cb[gpio_pin];</code></pre></div>
+          cb = &amp;priv-&gt;cb[gpio_pin];
+</code></pre></div>
 <p>If the provided callback is null, we disable the Specific GPIO Interrupt and <strong>detach the Interrupt Callback</strong> for the GPIO…</p>
 <div class="example-wrap"><pre class="language-c"><code>          if (callback == NULL) /* Detach Callback */
             {
@@ -1310,7 +1362,8 @@ static FAR void *bl602_expander_attach(
               cb-&gt;cbfunc = NULL;
               cb-&gt;cbarg  = NULL;
               ret = 0;
-            }</code></pre></div>
+            }
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L164-L197">(<strong>bl602_expander_intmask</strong> is defined here)</a></p>
 <p>If the provided callback is non-null and there’s no Interrupt Callback for the GPIO…</p>
 <p>We <strong>attach the Interrupt Callback</strong> for the GPIO and enable the Specific GPIO Interrupt…</p>
@@ -1322,24 +1375,28 @@ static FAR void *bl602_expander_attach(
               cb-&gt;cbarg  = arg;
               bl602_expander_intmask(gpio_pin, 0);
               ret = 0;
-            }</code></pre></div>
+            }
+</code></pre></div>
 <p>If there’s an existing Interrupt Callback for the GPIO, we quit because we <strong>don’t support multiple Interrupt Callbacks</strong> for the same GPIO…</p>
 <div class="example-wrap"><pre class="language-c"><code>          else /* Callback already attached */
             {
               gpioerr(&quot;ERROR: GPIO %d already attached\n&quot;, gpio_pin);
               ret = -EBUSY;
-            }</code></pre></div>
+            }
+</code></pre></div>
 <p>This function only <strong>supports one GPIO</strong> (so technically we don’t support Pinsets)…</p>
 <div class="example-wrap"><pre class="language-c"><code>          /* Only 1 GPIO Pin allowed */
           DEBUGASSERT(pinset == ((ioe_pinset_t)1 &lt;&lt; gpio_pin));
           break;
         }
-    }</code></pre></div>
+    }
+</code></pre></div>
 <p>Finally we <strong>unlock the GPIO Expander</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Unlock the I/O Expander and return the handle */
   bl602_expander_unlock(priv);
   return (ret == 0) ? cb : NULL;
-}</code></pre></div>
+}
+</code></pre></div>
 <p>And return the <strong>Callback Handle</strong>, which will be passed later to detach the Interrupt Callback.</p>
 <p><img src="https://lupyuen.github.io/images/expander-code10a.png" alt="Attach GPIO Interrupt" /></p>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L814-L906">(Source)</a></p>
@@ -1356,19 +1413,22 @@ static int bl602_expander_detach(
   DEBUGASSERT(priv != NULL &amp;&amp; cb != NULL);
   DEBUGASSERT((uintptr_t)cb &gt;= (uintptr_t)&amp;priv-&gt;cb[0] &amp;&amp;
               (uintptr_t)cb &lt;=
-              (uintptr_t)&amp;priv-&gt;cb[CONFIG_IOEXPANDER_NPINS - 1]);</code></pre></div>
+              (uintptr_t)&amp;priv-&gt;cb[CONFIG_IOEXPANDER_NPINS - 1]);
+</code></pre></div>
 <p>The function accepts a <strong>Callback Handle</strong> that’s returned when we attach an Interrupt Callback. <a href="https://lupyuen.github.io/articles/expander#appendix-attach-gpio-interrupt">(See this)</a></p>
 <p>We disable the <strong>Specific GPIO Interrupt</strong> for the GPIO…</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Disable the GPIO Interrupt */
   DEBUGASSERT(cb-&gt;pinset &lt; CONFIG_IOEXPANDER_NPINS);
-  bl602_expander_intmask(cb-&gt;pinset, 1);</code></pre></div>
+  bl602_expander_intmask(cb-&gt;pinset, 1);
+</code></pre></div>
 <p>And we clear the <strong>Interrupt Callback</strong> for the GPIO…</p>
 <div class="example-wrap"><pre class="language-c"><code>  /* Clear the Interrupt Callback */
   cb-&gt;pinset = 0;
   cb-&gt;cbfunc = NULL;
   cb-&gt;cbarg  = NULL;
   return OK;
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L164-L197">(<strong>bl602_expander_intmask</strong> is defined here)</a></p>
 <p><img src="https://lupyuen.github.io/images/expander-code11a.png" alt="Detach GPIO Interrupt" /></p>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L908-L950">(Source)</a></p>
@@ -1398,11 +1458,13 @@ static int bl602_expander_interrupt(
         {
           FAR struct bl602_expander_callback_s *cb = &amp;priv-&gt;cb[gpio_pin];
           ioe_callback_t cbfunc = cb-&gt;cbfunc;
-          FAR void* cbarg = cb-&gt;cbarg;</code></pre></div>
+          FAR void* cbarg = cb-&gt;cbarg;
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L247-L274">(<strong>bl602_expander_get_intstatus</strong> is defined here)</a></p>
 <p>When we find the GPIO that triggered the interrupt, we attempt to <strong>clear the Interrupt Status</strong> for the Specific GPIO…</p>
 <div class="example-wrap"><pre class="language-c"><code>          /* Attempt to clear the Interrupt Status */
-          bl602_expander_intclear(gpio_pin, 1);</code></pre></div>
+          bl602_expander_intclear(gpio_pin, 1);
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L275-L300">(<strong>bl602_expander_intclear</strong> is defined here)</a></p>
 <p>Then we <strong>wait for the Interrupt Status</strong> to be cleared…</p>
 <div class="example-wrap"><pre class="language-c"><code>          /* Check Interrupt Status with timeout */
@@ -1411,10 +1473,12 @@ static int bl602_expander_interrupt(
           while ((1 == bl602_expander_get_intstatus(gpio_pin)) &amp;&amp; time_out);
 
           /* Timeout for clearing the Interrupt Status */
-          if (!time_out) { gpiowarn(&quot;WARNING: Clear GPIO interrupt status fail.\n&quot;); }</code></pre></div>
+          if (!time_out) { gpiowarn(&quot;WARNING: Clear GPIO interrupt status fail.\n&quot;); }
+</code></pre></div>
 <p>We clear the Interrupt Status again, this time <strong>setting to 0</strong> instead of 1…</p>
 <div class="example-wrap"><pre class="language-c"><code>          /* If time_out==0, Interrupt Status not cleared */
-          bl602_expander_intclear(gpio_pin, 0);</code></pre></div>
+          bl602_expander_intclear(gpio_pin, 0);
+</code></pre></div>
 <p>(Why?)</p>
 <p>Finally we call the <strong>Callback Function</strong> that was attached to the GPIO…</p>
 <div class="example-wrap"><pre class="language-c"><code>          /* NOTE: Callback will run in the context of Interrupt Handler */
@@ -1430,7 +1494,8 @@ static int bl602_expander_interrupt(
         }
     }
   return OK;
-}</code></pre></div>
+}
+</code></pre></div>
 <p>And we’re done handling the GPIO IRQ Interrupt!</p>
 <p><img src="https://lupyuen.github.io/images/expander-code12a.png" alt="Handle GPIO Interrupt" /></p>
 <p><a href="https://github.com/lupyuen/bl602_expander/blob/main/bl602_expander.c#L327-L393">(Source)</a></p>

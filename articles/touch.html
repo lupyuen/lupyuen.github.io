@@ -144,7 +144,8 @@
 /* I2C Address of CST816S Touch Controller */
 #define CST816S_DEVICE_ADDRESS 0x15
 #include &lt;nuttx/input/cst816s.h&gt;
-#endif /* CONFIG_INPUT_CST816S */</code></pre></div>
+#endif /* CONFIG_INPUT_CST816S */
+</code></pre></div>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/pinedio2-touch.png" alt="PineDio Stack Touch Panel" /></p>
 </blockquote>
@@ -170,7 +171,8 @@
 #ifdef CONFIG_INPUT_CST816S
 /* CST816S Touch Controller for PineDio Stack: GPIO Interrupt */
 #define BOARD_TOUCH_INT (GPIO_INPUT | GPIO_FLOAT | GPIO_FUNC_SWGPIO | GPIO_PIN9)
-#endif  /* CONFIG_INPUT_CST816S */</code></pre></div>
+#endif  /* CONFIG_INPUT_CST816S */
+</code></pre></div>
 <p><em>What’s the Interrupt Pin?</em></p>
 <p>When we touch the screen, CST816S triggers a <strong>GPIO Interrupt</strong> and activates the I2C Interface (for a short while).</p>
 <p>Note that CST816S <strong>doesn’t trigger an interrupt</strong> when the screen is <strong>no longer touched</strong>.</p>
@@ -232,7 +234,8 @@ struct touch_sample_s
 {
   int npoints;                   /* The number of touch points in point[] */
   struct touch_point_s point[1]; /* Actual dimension is npoints */
-};</code></pre></div>
+};
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L130-L148">(Source)</a></p>
 <p>For our driver, we’ll return only <strong>one Touch Point</strong>.</p>
 <p>Here’s the NuttX Definition of a <strong>Touch Point</strong>…</p>
@@ -250,7 +253,8 @@ struct touch_point_s
   uint16_t gesture;   /* Gesture of touchscreen contact */
   uint16_t pressure;  /* Touch pressure */
   uint64_t timestamp; /* Touch event time stamp, in microseconds */
-};</code></pre></div>
+};
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/pinedio/include/nuttx/input/touchscreen.h#L109-L128">(Source)</a></p>
 <p>Our driver returns the first 4 fields…</p>
 <ul>
@@ -282,7 +286,8 @@ int fd = open(&quot;/dev/input0&quot;, O_RDONLY | O_NONBLOCK);
 
 //  Read one sample
 struct touch_sample_s sample;
-int nbytes = read(fd, &amp;sample, sizeof(struct touch_sample_s));</code></pre></div>
+int nbytes = read(fd, &amp;sample, sizeof(struct touch_sample_s));
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/lvgltest-nuttx/blob/main/tp.c#L62-L132">(Source)</a></p>
 <p>This populates a <strong>touch_sample_s</strong> struct, which we’ve seen earlier.</p>
 <p>The code above comes from the <a href="https://github.com/lupyuen/lvgltest-nuttx"><strong>LVGL Test App</strong></a>, which we’ll run later to test our driver.</p>
@@ -313,7 +318,8 @@ int bl602_bringup(void) {
   if (ret &lt; 0) {
     _err(&quot;ERROR: Failed to register CST816S\n&quot;);
   }
-#endif  //  CONFIG_INPUT_CST816S</code></pre></div>
+#endif  //  CONFIG_INPUT_CST816S
+</code></pre></div>
 <p>This initialises our CST816S Driver and registers it at “<strong>/dev/input0</strong>”.</p>
 <p><strong>cst816s_register</strong> comes from our CST816S Driver, let’s dive in…</p>
 <h1 id="initialise-driver"><a href="#initialise-driver">4 Initialise Driver</a></h1>
@@ -328,7 +334,8 @@ int cst816s_register(FAR const char *devpath, FAR struct i2c_master_s *i2c_dev, 
   if (!priv) {
     ierr(&quot;Memory allocation failed\n&quot;);
     return -ENOMEM;
-  }</code></pre></div>
+  }
+</code></pre></div>
 <p>We begin by allocating the <strong>Device Struct</strong> that will remember the state of our driver.</p>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L73-L90">(Device Struct <strong>cst816s_dev_s</strong> is defined here)</a></p>
 <p>We populate the Device Struct and initialise the <strong>Poll Semaphore</strong>…</p>
@@ -337,7 +344,8 @@ int cst816s_register(FAR const char *devpath, FAR struct i2c_master_s *i2c_dev, 
   priv-&gt;i2c  = i2c_dev;      //  I2C Bus
 
   //  Init the Poll Semaphore
-  nxsem_init(&amp;priv-&gt;devsem, 0, 1);</code></pre></div>
+  nxsem_init(&amp;priv-&gt;devsem, 0, 1);
+</code></pre></div>
 <p>(Which will be used for blocking callers to <strong><code>poll()</code></strong>)</p>
 <p>Next we <strong>register the driver</strong> with NuttX at “<strong>/dev/input0</strong>”…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Register the driver at &quot;/dev/input0&quot;
@@ -351,7 +359,8 @@ int cst816s_register(FAR const char *devpath, FAR struct i2c_master_s *i2c_dev, 
     kmm_free(priv);
     ierr(&quot;Driver registration failed\n&quot;);
     return ret;
-  }</code></pre></div>
+  }
+</code></pre></div>
 <p>(We’ll see <strong>g_cst816s_fileops</strong> later)</p>
 <p>Remember that CST816S will trigger <strong>GPIO Interrupts</strong> when we touch the screen.</p>
 <p>We attach our <strong>Interrupt Handler</strong> that will handle the GPIO Interrupts…</p>
@@ -375,7 +384,8 @@ int cst816s_register(FAR const char *devpath, FAR struct i2c_master_s *i2c_dev, 
     kmm_free(priv);
     ierr(&quot;Attach interrupt failed\n&quot;);
     return -EIO;
-  }</code></pre></div>
+  }
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/expander#attach-interrupt-handler">(<strong>IOEXP_SETOPTION</strong> and <strong>IOEP_ATTACH</strong> are from the GPIO Expander)</a></p>
 <p>And that’s how we initialise our CST816S Driver at startup!</p>
 <p><em>What’s g_cst816s_fileops?</em></p>
@@ -392,7 +402,8 @@ static const struct file_operations g_cst816s_fileops = {
 #ifndef CONFIG_DISABLE_PSEUDOFS_OPERATIONS
   , NULL          //  unlink
 #endif
-};</code></pre></div>
+};
+</code></pre></div>
 <p>We’ll see the File Operations in a while.</p>
 <p><img src="https://lupyuen.github.io/images/touch-code2a.png" alt="Initialise the CST816S Driver at startup" /></p>
 <h1 id="gpio-interrupt"><a href="#gpio-interrupt">5 GPIO Interrupt</a></h1>
@@ -426,7 +437,8 @@ static int cst816s_isr_handler(FAR struct ioexpander_dev_s *dev, ioe_pinset_t pi
   //  Notify all poll() callers that data is ready
   cst816s_poll_notify(priv);
   return 0;
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L493-L519">(<strong>cst816s_poll_notify</strong> is defined here)</a></p>
 <p>We use a <strong>Critical Section</strong> to protect the Pending Flag from being modified by multiple threads.</p>
 <h2 id="test-gpio-interrupt"><a href="#test-gpio-interrupt">5.1 Test GPIO Interrupt</a></h2>
@@ -447,7 +459,8 @@ static int cst816s_isr_handler(FAR struct ioexpander_dev_s *dev, ioe_pinset_t pi
 </li>
 </ul>
 <p>In the NuttX Shell, enter this command to <strong>list all devices</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>ls /dev
+</code></pre></div>
 <p>We should see our CST816S Driver loaded at “<strong>/dev/input0</strong>”…</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/touch-device.png" alt="NuttX Touchscreen Device" /></p>
@@ -455,7 +468,8 @@ static int cst816s_isr_handler(FAR struct ioexpander_dev_s *dev, ioe_pinset_t pi
 <p>Tap the screen on PineDio Stack. We should see the <strong>GPIO Interrupt</strong> handled by our driver…</p>
 <div class="example-wrap"><pre class="language-text"><code>bl602_expander_interrupt: Interrupt!
 bl602_expander_interrupt: Call callback
-cst816s_poll_notify:</code></pre></div>
+cst816s_poll_notify:
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx#test-gpio-interrupt">(See the Complete Log)</a></p>
 <p>Yep our CST816S Driver correctly handles the GPIO Interrupt!</p>
 <p><img src="https://lupyuen.github.io/images/touch-run1a.png" alt="GPIO Interrupt" /></p>
@@ -521,7 +535,8 @@ static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) 
   if (ret &lt; 0) {
     iinfo(&quot;Read touch data failed\n&quot;);
     return ret;
-  }</code></pre></div>
+  }
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L136-L220">(<strong>cst816s_i2c_read</strong> is defined here)</a></p>
 <p>The function begins by reading <strong>I2C Registers <code>0x00</code> to <code>0x06</code></strong>.</p>
 <p>Then it <strong>decodes the Touch Data</strong> (as described in the last section)…</p>
@@ -534,7 +549,8 @@ static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) 
   uint8_t ylow  = readbuf[6];
   uint8_t event = readbuf[3] &gt;&gt; 6;  //  0 = Touch Down, 1 = Touch Up, 2 = Contact */
   uint16_t x  = (xhigh &lt;&lt; 8) | xlow;
-  uint16_t y  = (yhigh &lt;&lt; 8) | ylow;</code></pre></div>
+  uint16_t y  = (yhigh &lt;&lt; 8) | ylow;
+</code></pre></div>
 <p>For <strong>Touch Up Events</strong>: The Touch Coordinates are invalid, so we substitute the data from the <strong>last Touch Down Event</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  If touch coordinates are invalid,
   //  return the last valid coordinates
@@ -548,13 +564,15 @@ static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) 
     id = last_id;
     x  = last_x;
     y  = last_y;
-  }</code></pre></div>
+  }
+</code></pre></div>
 <p>We remember the <strong>Touch Event</strong> and the Touch Data…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Remember the last valid touch data
   last_event = event;
   last_id    = id;
   last_x     = x;
-  last_y     = y;</code></pre></div>
+  last_y     = y;
+</code></pre></div>
 <p>NuttX expects the Touch Data to be returned as a <strong>touch_sample_s</strong> struct. <a href="https://lupyuen.github.io/articles/touch#touch-data">(See this)</a></p>
 <p>We <strong>assign the Touch Data</strong> to the struct…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Set the Touch Data fields
@@ -563,7 +581,8 @@ static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) 
   data.npoints     = 1;   //  Number of Touch Points
   data.point[0].id = id;  //  Touch ID
   data.point[0].x  = x;   //  X Coordinate
-  data.point[0].y  = y;   //  Y Coordinate</code></pre></div>
+  data.point[0].y  = y;   //  Y Coordinate
+</code></pre></div>
 <p>Now we tell NuttX whether it’s a <strong>Touch Down Event</strong> (with valid or invalid coordinates)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Set the Touch Flags for...
   //  Touch Down Event
@@ -574,7 +593,8 @@ static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) 
     } else {
       //  Touch coordinates were invalid
       data.point[0].flags  = TOUCH_DOWN | TOUCH_ID_VALID;
-    }</code></pre></div>
+    }
+</code></pre></div>
 <p>Or a <strong>Touch Up Event</strong> (with valid or invalid coordinates)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Touch Up Event
   } else if (event == 1) {
@@ -584,17 +604,20 @@ static int cst816s_get_touch_data(FAR struct cst816s_dev_s *dev, FAR void *buf) 
     } else {
       //  Touch coordinates were invalid
       data.point[0].flags  = TOUCH_UP | TOUCH_ID_VALID;
-    }</code></pre></div>
+    }
+</code></pre></div>
 <p>We ignore all <strong>Contact Events</strong> (because we’ve never seen one)…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Reject Contact Event
   } else {
     return -EINVAL;
-  }</code></pre></div>
+  }
+</code></pre></div>
 <p>Finally we <strong>return the struct</strong> to the caller…</p>
 <div class="example-wrap"><pre class="language-c"><code>  //  Return the touch data
   memcpy(buf, &amp;data, sizeof(data));
   return sizeof(data);
-}</code></pre></div>
+}
+</code></pre></div>
 <p>That’s how we read and decode the Touch Data from CST816S over I2C!</p>
 <p><img src="https://lupyuen.github.io/images/touch-code5a.jpg" alt="Returning I2C Touch Data" /></p>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L213-L302">(Source)</a></p>
@@ -622,7 +645,8 @@ static ssize_t cst816s_read(FAR struct file *filep, FAR char *buffer, size_t buf
   leave_critical_section(flags);
 
   //  Release semaphore and allow next read
-  nxsem_post(&amp;priv-&gt;devsem);</code></pre></div>
+  nxsem_post(&amp;priv-&gt;devsem);
+</code></pre></div>
 <p>(Which means that this code will run when a NuttX App reads <em>“/dev/input0”</em>)</p>
 <p>Note that we <strong>fetch the Touch Data</strong> over I2C only if…</p>
 <ul>
@@ -662,7 +686,8 @@ static ssize_t cst816s_read(FAR struct file *filep, FAR char *buffer, size_t buf
 </li>
 </ul>
 <p>In the NuttX Shell, enter this command to run the <a href="https://github.com/lupyuen/lvgltest-nuttx"><strong>LVGL Test App</strong></a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>lvgltest</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>lvgltest
+</code></pre></div>
 <p>We should see the <strong>Touch Calibration</strong> screen…</p>
 <p><img src="https://lupyuen.github.io/images/touch-title.jpg" alt="Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board" /></p>
 <p>When prompted, <strong>tap the 4 corners</strong> of the screen…</p>
@@ -712,7 +737,8 @@ static ssize_t cst816s_read(FAR struct file *filep, FAR char *buffer, size_t buf
 <p>During the calibration process, we touch the screen. This triggers a <strong>GPIO Interrupt</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>bl602_expander_interrupt: Interrupt!
 bl602_expander_interrupt: Call callback
-cst816s_poll_notify:</code></pre></div>
+cst816s_poll_notify:
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx#trigger-gpio-interrupt">(See the Complete Log)</a></p>
 <p>The <strong>Interrupt Handler</strong> in our driver sets the <strong>Pending Flag</strong> to true. <a href="https://lupyuen.github.io/articles/touch#gpio-interrupt">(See this)</a></p>
 <p>Then it calls <a href="https://github.com/lupyuen/cst816s-nuttx/blob/main/cst816s.c#L493-L519"><strong>cst816s_poll_notify</strong></a> to notify all callers to <strong><code>poll()</code></strong> that Touch Data is now available.</p>
@@ -727,15 +753,18 @@ bl602_i2c_transfer: i2c transfer success
 bl602_i2c_transfer: subflag=0, subaddr=0x0, sublen=0
 bl602_i2c_transfer: i2c transfer success
 bl602_i2c_recvdata: count=7, temp=0x500
-bl602_i2c_recvdata: count=3, temp=0x1700de</code></pre></div>
+bl602_i2c_recvdata: count=3, temp=0x1700de
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx#touch-down-event">(See the Complete Log)</a></p>
 <p>Our driver has <strong>fetched the Touch Data</strong> over I2C…</p>
-<div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data: DOWN: id=0,touch=0, x=222, y=23</code></pre></div>
+<div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data: DOWN: id=0,touch=0, x=222, y=23
+</code></pre></div>
 <p>Which gets returned directly to the app as a <strong>Touch Down Event</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data:   id:      0
 cst816s_get_touch_data:   flags:   19
 cst816s_get_touch_data:   x:       222
-cst816s_get_touch_data:   y:       23</code></pre></div>
+cst816s_get_touch_data:   y:       23
+</code></pre></div>
 <p>Our driver clears the <strong>Pending Flag</strong> and remembers that we’re expecting a <strong>Touch Up Event</strong>. <a href="https://lupyuen.github.io/articles/touch#get-i2c-touch-data">(See this)</a></p>
 <p><img src="https://lupyuen.github.io/images/touch-run2a.jpg" alt="Our driver returns a Touch Down Event" /></p>
 <h2 id="touch-down-event-again"><a href="#touch-down-event-again">7.4 Touch Down Event Again</a></h2>
@@ -755,7 +784,8 @@ cst816s_get_touch_data: DOWN: id=0, touch=0, x=222, y=23
 cst816s_get_touch_data:   id:      0
 cst816s_get_touch_data:   flags:   19
 cst816s_get_touch_data:   x:       222
-cst816s_get_touch_data:   y:       23</code></pre></div>
+cst816s_get_touch_data:   y:       23
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx#touch-down-event-again">(See the Complete Log)</a></p>
 <p>Our driver <strong>returns the same data twice</strong> to the app. (Until it sees the Touch Up Event)</p>
 <p>(<strong>TODO:</strong> Perhaps we should ignore duplicate Touch Down Events? Might reduce the screen lag)</p>
@@ -763,7 +793,8 @@ cst816s_get_touch_data:   y:       23</code></pre></div>
 <p>When we’re no longer longer touching the screen, <a href="https://lupyuen.github.io/articles/touch#get-i2c-touch-data"><strong>cst816s_get_touch_data</strong></a> receives a <strong>Touch Up Event</strong> over I2C…</p>
 <div class="example-wrap"><pre class="language-text"><code>cst816s_get_touch_data:
 cst816s_i2c_read:
-cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688</code></pre></div>
+cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx#touch-up-event">(See the Complete Log)</a></p>
 <p><em>This doesn’t look right: x=639, y=1688. Our screen is only 240 x 240 pixels!</em></p>
 <p>We said earlier that Touch Up Events have <strong>invalid Touch Coordinates</strong>. <a href="https://lupyuen.github.io/articles/touch#fetch-touch-data">(Right here)</a></p>
@@ -772,7 +803,8 @@ cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688</code><
 cst816s_get_touch_data:   id:      0
 cst816s_get_touch_data:   flags:   0c
 cst816s_get_touch_data:   x:       222
-cst816s_get_touch_data:   y:       23</code></pre></div>
+cst816s_get_touch_data:   y:       23
+</code></pre></div>
 <p>And we return the valid coordinates to the app.</p>
 <p>The <strong>Pending Flag</strong> is now clear, and we’re no longer expecting a <strong>Touch Up Event</strong>.</p>
 <p>All calls to <strong><code>read()</code></strong> will no longer fetch the Touch Data over I2C. (Until we touch the screen again)</p>
@@ -782,7 +814,8 @@ cst816s_get_touch_data:   y:       23</code></pre></div>
 <div class="example-wrap"><pre class="language-text"><code>tp_cal result
 offset x:23, y:24
 range x:194, y:198
-invert x/y:1, x:0, y:1</code></pre></div>
+invert x/y:1, x:0, y:1
+</code></pre></div>
 <p>Which will be used to tweak the Touch Coordinates later in the app.</p>
 <p>And we’re done with the app!</p>
 <p><img src="https://lupyuen.github.io/images/touch-title.jpg" alt="Touch Panel Calibration for Pine64 PineDio Stack BL604 RISC-V Board" /></p>
@@ -855,7 +888,8 @@ static int cst816s_i2c_read(FAR struct cst816s_dev_s *dev, uint8_t reg,uint8_t *
     .flags     = I2C_M_READ,
     .buffer    = buf,
     .length    = buflen
-  } };</code></pre></div>
+  } };
+</code></pre></div>
 <p>We do this by specifying the <strong>I2C_M_NOSTART</strong> flag (shown above).</p>
 <p>This article explains why…</p>
 <ul>
@@ -877,7 +911,8 @@ static int cst816s_i2c_read(FAR struct cst816s_dev_s *dev, uint8_t reg,uint8_t *
 #ifdef CONFIG_INPUT_CST816S
     //  I2C Workaround #2 of 2 for CST816S: https://github.com/lupyuen/cst816s-nuttx#i2c-logging
     i2cwarn(&quot;i2c transfer success\n&quot;);
-#endif  //  CONFIG_INPUT_CST816S</code></pre></div>
+#endif  //  CONFIG_INPUT_CST816S
+</code></pre></div>
 <p>That’s why we must always <strong>enable I2C Warnings</strong> in our NuttX Build…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/nuttx#appendix-nuttx-logging"><strong>“NuttX Logging”</strong></a></li>
@@ -896,7 +931,8 @@ cst816s_poll_notify:
 cst816s_get_touch_data:
 cst816s_i2c_read:
 cst816s_get_touch_data: Invalid touch data: id=9, touch=2, x=639, y=1688
-cst816s_get_touch_data: Can&#39;t return touch data: id=9, touch=2, x=639, y=1688</code></pre></div>
+cst816s_get_touch_data: Can&#39;t return touch data: id=9, touch=2, x=639, y=1688
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/cst816s-nuttx#i2c-logging">(See the Complete Log)</a></p>
 <p>We’ll only get the <strong>Touch Up Event</strong> (with invalid Touch Coordinates).</p>
 <p><em>Why would I2C Logging affect the fetching of Touch Data over I2C?</em></p>

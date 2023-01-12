@@ -171,7 +171,8 @@
   GPIO_PIN4)
 #define BOARD_I2C_SDA \
   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_I2C | \
-  GPIO_PIN3)</code></pre></div>
+  GPIO_PIN3)
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/expander#pin-functions">(Which pins can be used? See this)</a></p>
 <p>We disabled the <strong>UART1 Port</strong> because it uses the same pins as I2C: <a href="https://github.com/lupyuen/nuttx/blob/rusti2c/boards/risc-v/bl602/bl602evb/include/board.h#L63-L68">board.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef TODO  /* Remember to check for duplicate pins! */
@@ -181,7 +182,8 @@
 #define BOARD_UART_1_TX_PIN \
   (GPIO_INPUT | GPIO_PULLUP | GPIO_FUNC_UART | \
   GPIO_PIN4)
-#endif  /* TODO */</code></pre></div>
+#endif  /* TODO */
+</code></pre></div>
 <p>(UART0 is used by the Serial Console)</p>
 <p><em>What if we’re connecting to ESP32?</em></p>
 <p><strong>For ESP32:</strong> The GPIO Pin Numbers for the I2C Port (I2C0) are defined in <a href="https://github.com/lupyuen/nuttx/blob/rusti2c/arch/xtensa/src/esp32/Kconfig#L797-L805">Kconfig</a> and menuconfig…</p>
@@ -193,7 +195,8 @@
 config ESP32_I2C0_SDAPIN
   int &quot;I2C0 SDA Pin&quot;
   default 23
-  range 0 39</code></pre></div>
+  range 0 39
+</code></pre></div>
 <p><em>Do we need Pull-Up Resistors?</em></p>
 <p>We’re using the <a href="https://learn.sparkfun.com/tutorials/sparkfun-bme280-breakout-hookup-guide/all"><strong>SparkFun BME280 Breakout Board</strong></a>, which has <strong>Pull-Up Resistors</strong>. (So we don’t need to add our own)</p>
 <blockquote>
@@ -208,22 +211,26 @@ config ESP32_I2C0_SDAPIN
 </li>
 <li>
 <p>At the NuttX Shell, enter this command to list the <strong>NuttX Devices</strong>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>ls /dev</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>ls /dev
+</code></pre></div></li>
 <li>
 <p>We should see our <strong>I2C Port</strong> that’s connected to BME280…</p>
 <div class="example-wrap"><pre class="language-text"><code>/dev:
  i2c0
- ...</code></pre></div></li>
+ ...
+</code></pre></div></li>
 <li>
 <p>To <strong>read the BME280 Sensor</strong>, enter this command…</p>
-<div class="example-wrap"><pre class="language-bash"><code>rust_i2c</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>rust_i2c
+</code></pre></div></li>
 <li>
 <p>We should see the <strong>Relative Humidity, Temperature and Air Pressure</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>read_bme280
 Relative Humidity = 89.284164%
 Temperature = 29.942907 deg C
 Pressure = 100483.04 pascals
-Done!</code></pre></div>
+Done!
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/rust-i2c-nuttx#test-rust-driver-for-bme280">(See the complete log)</a></p>
 </li>
 </ol>
@@ -243,17 +250,18 @@ Done!</code></pre></div>
 <li><a href="https://crates.io/crates/bme280"><strong>crates.io/bme280</strong></a></li>
 </ul>
 <p>That we have added to our <a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/rust/Cargo.toml"><strong>Cargo.toml</strong></a>…</p>
-<div class="example-wrap"><pre class="language-text"><code># External Rust libraries used by this module.  See crates.io.
+<div class="example-wrap"><pre class="language-text"><code>## External Rust libraries used by this module.  See crates.io.
 [dependencies]
 
-# BME280 Driver: https://crates.io/crates/bme280
+## BME280 Driver: https://crates.io/crates/bme280
 bme280 = &quot;0.2.1&quot;
 
-# NuttX Embedded HAL: https://crates.io/crates/nuttx-embedded-hal
+## NuttX Embedded HAL: https://crates.io/crates/nuttx-embedded-hal
 nuttx-embedded-hal = &quot;1.0.10&quot;  
 
-# Rust Embedded HAL: https://crates.io/crates/embedded-hal
-embedded-hal = &quot;0.2.7&quot;  </code></pre></div>
+## Rust Embedded HAL: https://crates.io/crates/embedded-hal
+embedded-hal = &quot;0.2.7&quot;  
+</code></pre></div>
 <p>The Rust Driver for BME280 works on NuttX because of <strong>NuttX Embedded HAL</strong>. Let’s look inside.</p>
 <p><a href="https://crates.io/crates/nuttx-embedded-hal">(BTW: Always use the latest version of NuttX Embedded HAL)</a></p>
 <p><img src="https://lupyuen.github.io/images/rusti2c-arch2.jpg" alt="NuttX Embedded HAL" /></p>
@@ -360,7 +368,8 @@ embedded-hal = &quot;0.2.7&quot;  </code></pre></div>
 0xF5 + ACK
 0xA0 + ACK
 Setup Read to [0xEF] + ACK
-0xA0 + NAK</code></pre></div>
+0xA0 + NAK
+</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/rusti2c-logic3a.png" alt="Write 0xA0 to Register 0xF4" /></p>
 <p>There’s an <strong>extra I2C Read</strong> at the end, right after writing the Register ID <code>0xF5</code> and Register Value <code>0xA0</code>.</p>
 <p>But it’s harmless. NuttX Embedded HAL does this to work around the I2C quirks on BL602…</p>
@@ -692,7 +701,8 @@ Setup Read to [0xEF] + ACK
 0xF5 + ACK
 0xA0 + ACK
 Setup Read to [0xEF] + ACK
-0xA0 + NAK</code></pre></div>
+0xA0 + NAK
+</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/rusti2c-logic3a.png" alt="BL602 writes correctly to the I2C Register! With a harmless I2C Read at the end" /></p>
 <p><a href="https://github.com/lupyuen/rust-i2c-nuttx#fix-i2c-write">(See the Output Log)</a></p>
 <p><img src="https://lupyuen.github.io/images/rusti2c-code1.png" alt="Read I2C Register in C" /></p>
@@ -727,7 +737,8 @@ Setup Read to [0xEF] + ACK
   msg[1].buffer    = buf;
   msg[1].length    = size;
 
-  ret = I2C_TRANSFER(priv-&gt;i2c, msg, 2);</code></pre></div>
+  ret = I2C_TRANSFER(priv-&gt;i2c, msg, 2);
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/bme280-nuttx/blob/main/driver.c#L155-L183">(Source)</a></p>
 <p>How do we call <strong>I2C_TRANSFER</strong> from a NuttX App? Thanks to the I2C Demo App we have the answer…</p>
 <div class="example-wrap"><pre class="language-c"><code>int i2ctool_get(FAR struct i2ctool_s *i2ctool, int fd, uint8_t regaddr,
@@ -735,7 +746,8 @@ Setup Read to [0xEF] + ACK
 {
   struct i2c_msg_s msg[2];
   ...
-  int ret = i2cdev_transfer(fd, msg, 2);</code></pre></div>
+  int ret = i2cdev_transfer(fd, msg, 2);
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-apps/blob/rusti2c/system/i2c/i2c_get.c#L158-L206">(Source)</a></p>
 <p><strong>i2cdev_transfer</strong> is defined as…</p>
 <div class="example-wrap"><pre class="language-c"><code>int i2cdev_transfer(int fd, FAR struct i2c_msg_s *msgv, int msgc)
@@ -750,7 +762,8 @@ Setup Read to [0xEF] + ACK
   /* Perform the IOCTL */
 
   return ioctl(fd, I2CIOC_TRANSFER, (unsigned long)((uintptr_t)&amp;xfer));
-}</code></pre></div>
+}
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-apps/blob/rusti2c/system/i2c/i2c_devif.c#L117-L129">(Source)</a></p>
 <p>We ported the code above to NuttX Embedded HAL. <a href="https://lupyuen.github.io/articles/rusti2c#into-embedded-hal">(See this)</a></p>
 <h2 id="c-types-and-constants"><a href="#c-types-and-constants">12.1 C Types and Constants</a></h2>
@@ -762,24 +775,30 @@ Setup Read to [0xEF] + ACK
   uint16_t flags;             /* See I2C_M_* definitions */
   FAR uint8_t *buffer;        /* Buffer to be transferred */
   ssize_t length;             /* Length of the buffer in bytes */
-};</code></pre></div>
+};
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L208-L215">(Source)</a></p>
 <div class="example-wrap"><pre class="language-c"><code>struct i2c_transfer_s
 {
   FAR struct i2c_msg_s *msgv; /* Array of I2C messages for the transfer */
   size_t msgc;                /* Number of messages in the array. */
-};</code></pre></div>
+};
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L231-L235">(Source)</a></p>
 <p><strong>I2CIOC_TRANSFER</strong> is defined as…</p>
-<div class="example-wrap"><pre class="language-c"><code>#define I2CIOC_TRANSFER      _I2CIOC(0x0001)</code></pre></div>
+<div class="example-wrap"><pre class="language-c"><code>#define I2CIOC_TRANSFER      _I2CIOC(0x0001)
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L105-L129">(Source)</a></p>
 <p>_<strong>I2CIOC</strong> is defined as…</p>
-<div class="example-wrap"><pre class="language-c"><code>#define _I2CIOC(nr)       _IOC(_I2CBASE,nr)</code></pre></div>
+<div class="example-wrap"><pre class="language-c"><code>#define _I2CIOC(nr)       _IOC(_I2CBASE,nr)
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/rusti2c/include/nuttx/fs/ioctl.h#L467-L468">(Source)</a></p>
 <p>_<strong>IOC</strong> and _<strong>I2CBASE</strong> are defined as…</p>
-<div class="example-wrap"><pre class="language-c"><code>#define _IOC(type,nr)   ((type)|(nr))</code></pre></div>
+<div class="example-wrap"><pre class="language-c"><code>#define _IOC(type,nr)   ((type)|(nr))
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/rusti2c/include/nuttx/fs/ioctl.h#L107">(Source)</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define _I2CBASE        (0x2100) /* I2C driver commands */</code></pre></div>
+<div class="example-wrap"><pre class="language-c"><code>#define _I2CBASE        (0x2100) /* I2C driver commands */
+</code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx/blob/rusti2c/include/nuttx/fs/ioctl.h#L73">(Source)</a></p>
 <p>We ported these C Types and Constants to NuttX Embedded HAL. <a href="https://lupyuen.github.io/articles/rusti2c#nuttx-types-and-constants">(See this)</a></p>
 <h1 id="appendix-build-flash-and-run-nuttx"><a href="#appendix-build-flash-and-run-nuttx">13 Appendix: Build, Flash and Run NuttX</a></h1>
@@ -793,7 +812,8 @@ Setup Read to [0xEF] + ACK
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
 git clone --recursive --branch rusti2c https://github.com/lupyuen/nuttx nuttx
-git clone --recursive --branch rusti2c https://github.com/lupyuen/nuttx-apps apps</code></pre></div>
+git clone --recursive --branch rusti2c https://github.com/lupyuen/nuttx-apps apps
+</code></pre></div>
 <p>Or if we prefer to <strong>add the Rust Library and App</strong> to our NuttX Project, follow these instructions…</p>
 <ol>
 <li>
@@ -818,18 +838,19 @@ git clone --recursive --branch rusti2c https://github.com/lupyuen/nuttx-apps app
 <p>Configure the build…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx
 
-# For BL602: Configure the build for BL602
+## For BL602: Configure the build for BL602
 ./tools/configure.sh bl602evb:nsh
 
-# For PineDio Stack BL604: Configure the build for BL604
+## For PineDio Stack BL604: Configure the build for BL604
 ./tools/configure.sh bl602evb:pinedio
 
-# For ESP32: Configure the build for ESP32.
-# TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
+## For ESP32: Configure the build for ESP32.
+## TODO: Change &quot;esp32-devkitc&quot; to our ESP32 board.
 ./tools/configure.sh esp32-devkitc:nsh
 
-# Edit the Build Config
-make menuconfig </code></pre></div></li>
+## Edit the Build Config
+make menuconfig 
+</code></pre></div></li>
 <li>
 <p>Enable our <strong>Rust Library</strong>…</p>
 <p>Check the box for <strong>“Library Routines”</strong> → <strong>“Rust Library”</strong></p>
@@ -870,7 +891,8 @@ Enable Debug Assertions
 I2C Debug Features
 I2C Error Output
 I2C Warnings Output
-I2C Informational Output  </code></pre></div>
+I2C Informational Output  
+</code></pre></div>
 <p>Hit <strong>“Exit”</strong> until the Top Menu appears. (“NuttX/x64_64 Configuration”)</p>
 </li>
 <li>
@@ -884,7 +906,8 @@ I2C Informational Output  </code></pre></div>
 <ol>
 <li>
 <p>Run this command to install the Rust Target…</p>
-<div class="example-wrap"><pre class="language-bash"><code>rustup target add riscv32imc-unknown-none-elf</code></pre></div></li>
+<div class="example-wrap"><pre class="language-bash"><code>rustup target add riscv32imc-unknown-none-elf
+</code></pre></div></li>
 <li>
 <p>Edit <a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/run.sh"><strong>apps/examples/rust_i2c/run.sh</strong></a></p>
 </li>
@@ -921,14 +944,16 @@ I2C Informational Output  </code></pre></div>
 <p>To build NuttX with Rust, run the Rust Build Script <a href="https://github.com/lupyuen/rust-i2c-nuttx/blob/main/run.sh"><strong>run.sh</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>pushd apps/examples/rust_i2c
 ./run.sh
-popd</code></pre></div>
+popd
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/rust2#appendix-rust-build-script-for-nuttx">(<strong>run.sh</strong> is explained here)</a></p>
 </li>
 <li>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>LD: nuttx
 CP: nuttx.hex
-CP: nuttx.bin</code></pre></div>
+CP: nuttx.bin
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9bfd71f7029bb66e327f89c8a58f450d">(See the complete log for BL602 / BL604)</a></p>
 </li>
 <li>
@@ -936,9 +961,10 @@ CP: nuttx.bin</code></pre></div>
 </li>
 <li>
 <p><strong>For WSL:</strong> Copy the <strong>NuttX Firmware</strong> to the <strong>c:\blflash</strong> directory in the Windows File System…</p>
-<div class="example-wrap"><pre class="language-bash"><code>#  /mnt/c/blflash refers to c:\blflash in Windows
+<div class="example-wrap"><pre class="language-bash"><code>##  /mnt/c/blflash refers to c:\blflash in Windows
 mkdir /mnt/c/blflash
-cp nuttx.bin /mnt/c/blflash</code></pre></div>
+cp nuttx.bin /mnt/c/blflash
+</code></pre></div>
 <p>For WSL we need to run <strong>blflash</strong> under plain old Windows CMD (not WSL) because it needs to access the COM port.</p>
 </li>
 <li>
@@ -1011,18 +1037,19 @@ cp nuttx.bin /mnt/c/blflash</code></pre></div>
 </li>
 </ol>
 <p>Enter these commands to flash <strong>nuttx.bin</strong> to BL602 / BL604 over UART…</p>
-<div class="example-wrap"><pre class="language-bash"><code># For Linux: Change &quot;/dev/ttyUSB0&quot; to the BL602 / BL604 Serial Port
+<div class="example-wrap"><pre class="language-bash"><code>## For Linux: Change &quot;/dev/ttyUSB0&quot; to the BL602 / BL604 Serial Port
 blflash flash nuttx.bin \
   --port /dev/ttyUSB0 
 
-# For macOS: Change &quot;/dev/tty.usbserial-1410&quot; to the BL602 / BL604 Serial Port
+## For macOS: Change &quot;/dev/tty.usbserial-1410&quot; to the BL602 / BL604 Serial Port
 blflash flash nuttx.bin \
   --port /dev/tty.usbserial-1410 \
   --initial-baud-rate 230400 \
   --baud-rate 230400
 
-# For Windows: Change &quot;COM5&quot; to the BL602 / BL604 Serial Port
-blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
+## For Windows: Change &quot;COM5&quot; to the BL602 / BL604 Serial Port
+blflash flash c:\blflash\nuttx.bin --port COM5
+</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9c0dbd75bb6b8e810939a36ffb5c399f">(See the Output Log)</a></p>
 <p>For WSL: Do this under plain old Windows CMD (not WSL) because <strong>blflash</strong> needs to access the COM port.</p>
 <p><a href="https://github.com/apache/nuttx/issues/4336">(Flashing WiFi apps to BL602 / BL604? Remember to use <strong>bl_rfbin</strong>)</a></p>
@@ -1030,7 +1057,8 @@ blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/nuttx-flash2.png" alt="Flashing NuttX" /></p>
 <h2 id="run-nuttx"><a href="#run-nuttx">13.6 Run NuttX</a></h2>
 <p><strong>For ESP32:</strong> Use Picocom to connect to ESP32 over UART…</p>
-<div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>picocom -b 115200 /dev/ttyUSB0
+</code></pre></div>
 <p><a href="https://popolon.org/gblog3/?p=1977&amp;lang=en">(More about this)</a></p>
 <p><strong>For BL602 / BL604:</strong> Set BL602 / BL604 to <strong>Normal Mode</strong> (Non-Flashing) and restart the board…</p>
 <p><strong>For PineDio Stack BL604:</strong></p>
@@ -1070,13 +1098,15 @@ blflash flash c:\blflash\nuttx.bin --port COM5</code></pre></div>
 </ol>
 <p>After restarting, connect to BL602 / BL604’s UART Port at 2 Mbps like so…</p>
 <p><strong>For Linux:</strong></p>
-<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000</code></pre></div>
+<div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 2000000
+</code></pre></div>
 <p><strong>For macOS:</strong> Use CoolTerm (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>For Windows:</strong> Use <code>putty</code> (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p><strong>Alternatively:</strong> Use the Web Serial Terminal (<a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">See this</a>)</p>
 <p>Press Enter to reveal the <strong>NuttX Shell</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-10.2.0-RC0
-nsh&gt;</code></pre></div>
+nsh&gt;
+</code></pre></div>
 <p>Congratulations NuttX is now running on BL602 / BL604!</p>
 <p><a href="https://lupyuen.github.io/articles/flash#watch-the-firmware-run">(More details on connecting to BL602 / BL604)</a></p>
 <p><img src="https://lupyuen.github.io/images/nuttx-boot2.png" alt="Running NuttX" /></p>
