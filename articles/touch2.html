@@ -320,7 +320,7 @@ touch_panel_initialize(i2c);
 <p><img src="https://lupyuen.github.io/images/touch2-code4a.png" alt="Reading a Touch Point" /></p>
 <h1 id="read-a-touch-point"><a href="#read-a-touch-point">4 Read a Touch Point</a></h1>
 <p><em>When the Touch Panel is touched, how do we read the Touch Coordinates?</em></p>
-<p>Based on the <a href="https://github.com/DiveInEmbedded/GT911-Touch-driver/blob/main/Core/Src/GT911.c"><strong>Reference Code</strong></a>, here are the steps to <strong>read a Touch Point</strong>…</p>
+<p>Based on the <a href="https://github.com/DiveInEmbedded/GT911-Touch-driver/blob/main/Core/Src/GT911.c"><strong>GT911 Reference Code</strong></a>, here are the steps to <strong>read a Touch Point</strong>…</p>
 <ol>
 <li>
 <p>Read the <strong>Touch Panel Status</strong> (1 byte) at I2C Register <strong><code>0x814E</code></strong></p>
@@ -332,9 +332,10 @@ touch_panel_initialize(i2c);
 <p>Read the <strong>Touch Coordinates</strong> (6 bytes) at I2C Register <strong><code>0x8150</code></strong></p>
 <p><strong>First 2 Bytes</strong> (LSB First) are the <strong>X Coordinate</strong> (0 to 720)</p>
 <p><strong>Next 2 Bytes</strong> (LSB First) are the <strong>Y Coordinate</strong> (0 to 1440)</p>
+<p>(What’s in the 2 remaining bytes? Doesn’t seem to indicate Touch Up / Touch Down)</p>
 </li>
 <li>
-<p>To stop the Touch Interrupt, set the <strong>Touch Panel Status</strong> to 0…</p>
+<p>To acknowledge the Touch Point, set the <strong>Touch Panel Status</strong> to 0…</p>
 <p>Write 0 to I2C Register <strong><code>0x814E</code></strong></p>
 </li>
 </ol>
