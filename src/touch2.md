@@ -288,7 +288,7 @@ Now that we can poll our Touch Panel, let's read a Touch Point!
 
 _When the Touch Panel is touched, how do we read the Touch Coordinates?_
 
-Based on the [__Reference Code__](https://github.com/DiveInEmbedded/GT911-Touch-driver/blob/main/Core/Src/GT911.c), here are the steps to __read a Touch Point__...
+Based on the [__GT911 Reference Code__](https://github.com/DiveInEmbedded/GT911-Touch-driver/blob/main/Core/Src/GT911.c), here are the steps to __read a Touch Point__...
 
 1.  Read the __Touch Panel Status__ (1 byte) at I2C Register __`0x814E`__
 
@@ -304,7 +304,9 @@ Based on the [__Reference Code__](https://github.com/DiveInEmbedded/GT911-Touch-
 
     __Next 2 Bytes__ (LSB First) are the __Y Coordinate__ (0 to 1440)
 
-1.  To stop the Touch Interrupt, set the __Touch Panel Status__ to 0...
+    (What's in the 2 remaining bytes? Doesn't seem to indicate Touch Up / Touch Down)
+
+1.  To acknowledge the Touch Point, set the __Touch Panel Status__ to 0...
 
     Write 0 to I2C Register __`0x814E`__
 
