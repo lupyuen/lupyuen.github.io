@@ -466,7 +466,7 @@ NuttX Apps will call these Touch Panel Operations through the POSIX Standard Fun
 
 _How do we start the Touch Panel Driver?_
 
-This is how we __start the Touch Panel Driver__ when NuttX boots: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L197-L204)
+This is how we __start the Touch Panel Driver__ when NuttX boots: [pinephone_touch.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_touch.c#L212-L245)
 
 ```c
 // Default I2C Address for Goodix GT917S
@@ -484,7 +484,7 @@ DEBUGASSERT(ret == OK);
 
 [(__gt9xx_register__ comes from our Touch Panel Driver)](https://lupyuen.github.io/articles/touch2#register-touch-panel-driver)
 
-[(__g_pinephone_gt9xx__ defines the Interrupt Callbacks)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L64-L74)
+[(__g_pinephone_gt9xx__ defines the Interrupt Callbacks)](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_touch.c#L70-L79)
 
 The Touch Panel operations are explained in the Appendix...
 
@@ -768,7 +768,7 @@ NuttX Apps will call these Touch Panel Operations through the POSIX Standard Fun
 
 _How do we start the Touch Panel Driver?_
 
-This is how we __start the Touch Panel Driver__ when NuttX boots: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L197-L204)
+This is how we __start the Touch Panel Driver__ when NuttX boots: [pinephone_bringup.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_touch.c#L212-L245)
 
 ```c
 // Default I2C Address for Goodix GT917S
@@ -786,7 +786,7 @@ DEBUGASSERT(ret == OK);
 
 [(__gt9xx_register__ comes from our Touch Panel Driver)](https://lupyuen.github.io/articles/touch2#register-touch-panel-driver)
 
-[(__g_pinephone_gt9xx__ defines the Interrupt Callbacks)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L64-L74)
+[(__g_pinephone_gt9xx__ defines the Interrupt Callbacks)](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_touch.c#L70-L79)
 
 _The driver code looks familiar?_
 
@@ -800,7 +800,9 @@ Let's talk about the Touch Panel operations...
 
 ## Register Touch Panel Driver
 
-At startup, [__pinephone_bringup__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L197-L204) registers our Touch Panel Driver at __/dev/input0__ by calling...
+At startup, [__pinephone_bringup__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L155-L172) registers our Touch Panel Driver at __/dev/input0__ by calling...
+
+-   [__pinephone_touch_panel_register__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_touch.c#L212-L245), which calls...
 
 -   [__gt9xx_register: Register Touch Panel Driver__](https://github.com/apache/nuttx/blob/master/drivers/input/gt9xx.c#L887-L956)
 
@@ -814,7 +816,7 @@ Which will...
 
 1.  __Attach the Interrupt Handler__ with NuttX
 
-    [(Implemented as __pinephone_gt9xx_irq_attach__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L545-L568)
+    [(Implemented as __pinephone_gt9xx_irq_attach__)](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_touch.c#L83-L128)
 
     [(As explained here)](https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler)
 
@@ -836,7 +838,7 @@ Inside the __Open Operation__ we...
 
 1.  __Power On__ the Touch Panel
 
-    [(Implemented as __pinephone_gt9xx_set_power__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L593-L599)
+    [(Implemented as __pinephone_gt9xx_set_power__)](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_touch.c#L184-L208)
 
 1.  __Probe the Touch Panel__ on the I2C Bus, to verify that it exists
 
@@ -848,7 +850,7 @@ Inside the __Open Operation__ we...
 
 1.  __Enable Interrupts__ from the Touch Panel
 
-    [(Implemented as __pinephone_gt9xx_irq_enable__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L568-L593)
+    [(Implemented as __pinephone_gt9xx_irq_enable__)](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_touch.c#L128-L184)
 
     [(As explained here)](https://lupyuen.github.io/articles/touch2#attach-our-interrupt-handler)
 
@@ -978,7 +980,7 @@ __For Poll Setup:__
 
     [(Poll Waiter Slots are defined in __gt9xx_dev_s__)](https://github.com/apache/nuttx/blob/master/drivers/input/gt9xx.c#L72-L99)
 
-    [(__INPUT_GT9XX_NPOLLWAITERS__ is the max number of slots, set to 1)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/drivers/input/Kconfig#L501-L522)
+    [(__INPUT_GT9XX_NPOLLWAITERS__ is the max number of slots, set to 1)](https://github.com/apache/nuttx/blob/master/drivers/input/Kconfig#L501-L522)
 
 1.  We __bind the Poll Struct__ and this Slot
 
@@ -996,11 +998,11 @@ Inside the __Close Operation__ we...
 
 1.  __Disable Interrupts__ from the Touch Panel
 
-    [(Implemented as __pinephone_gt9xx_irq_enable__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L568-L593)
+    [(Implemented as __pinephone_gt9xx_irq_enable__)](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_touch.c#L128-L184)
 
 1.  __Power Off__ the Touch Panel
 
-    [(Implemented as __pinephone_gt9xx_set_power__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L593-L599)
+    [(Implemented as __pinephone_gt9xx_set_power__)](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_touch.c#L184-L208)
 
 We do this only if the __Reference Count__ decrements to 0.
 
@@ -1282,12 +1284,12 @@ _Why did we set the Interrupt Trigger to IRQ_TYPE_EDGE?_
 // Set Interrupt Priority in Generic Interrupt Controller v2
 arm64_gic_irq_set_priority(
   A64_IRQ_PH_EINT,  // Interrupt Number for Port PH: 53
-  2,                // Interrupt Priority
+  0,                // Interrupt Priority
   IRQ_TYPE_EDGE     // Trigger on Low-High Transition
 );
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L289-L329)
+[(Source)](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_touch.c#L83-L128)
 
 __IRQ_TYPE_EDGE__ means that the interrupt is triggered on __Low-High Transitions__.
 
@@ -1376,7 +1378,7 @@ arm64_gic_irq_set_priority(
 );
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/touch2/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L289-L329)
+[(Source)](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_touch.c#L83-L128)
 
 We set the Interrupt Priority to 2 for __Legacy Reasons__...
 
@@ -1418,3 +1420,5 @@ To this...
     IRQ_TYPE_LEVEL  // Interrupt Trigger by Level
   );
 ```
+
+[(__UPDATE__: Interrupt Priority is now 0 for the Touch Panel)](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_touch.c#L83-L128)
