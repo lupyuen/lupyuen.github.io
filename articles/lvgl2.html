@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>NuttX RTOS for PinePhone: Boot to LVGL</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="NuttX RTOS for PinePhone: Boot to LVGL" 
+    data-rh="true">
+<meta property="og:description" 
+    content="How we configure Apache NuttX RTOS to boot an LVGL Touchscreen App on Pine64 PinePhone"
+    data-rh="true">
+<meta name="description" 
+    content="How we configure Apache NuttX RTOS to boot an LVGL Touchscreen App on Pine64 PinePhone">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/lvgl2-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">NuttX RTOS for PinePhone: Boot to LVGL</h1>
+    <nav id="TOC"><ul>
+<li><a href="#boot-nuttx-on-pinephone">1 Boot NuttX on PinePhone</a><ul></ul></li>
+<li><a href="#lvgl-settings-for-pinephone">2 LVGL Settings for PinePhone</a><ul></ul></li>
+<li><a href="#lvgl-demos-on-pinephone">3 LVGL Demos on PinePhone</a><ul></ul></li>
+<li><a href="#boot-to-lvgl-on-pinephone">4 Boot to LVGL on PinePhone</a><ul></ul></li>
+<li><a href="#whats-next">5 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-build-apache-nuttx-rtos-for-pinephone">6 Appendix: Build Apache NuttX RTOS for PinePhone</a><ul></ul></li></ul></nav><p>📝 <em>24 Jan 2023</em></p>
+<p><img src="https://lupyuen.github.io/images/lvgl2-title.jpg" alt="TODO" /></p>
+<p>We’re porting <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) to <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/what"><strong>“NuttX RTOS for PinePhone: What is it?”</strong></a></li>
+</ul>
+<p>TODO: How we configure Apache NuttX RTOS to boot an LVGL Touchscreen App on Pine64 PinePhone</p>
+<p>TODO: How we make LVGL Apps more Touch-Friendly on PinePhone</p>
+<h1 id="boot-nuttx-on-pinephone"><a href="#boot-nuttx-on-pinephone">1 Boot NuttX on PinePhone</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/fb-lvgl3.jpg" alt="Before changing LVGL Settings for PinePhone" /></p>
+<h1 id="lvgl-settings-for-pinephone"><a href="#lvgl-settings-for-pinephone">2 LVGL Settings for PinePhone</a></h1>
+<p>TODO</p>
+<p>When we run the LVGL Demo App on PinePhone with Apache NuttX RTOS, it renders a dense screen that’s not so Touch-Friendly. (Pic above)</p>
+<p>Let’s tweak the LVGL Settings to make our LVGL App more accessible. Modify this LVGL Source File…</p>
+<p><a href="https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L96-L145">apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Insert this
+#include &lt;stdio.h&gt;
+
+// Modify this function
+void lv_demo_widgets(void)
+{
+    // Note: PinePhone has width 720 pixels.
+    // LVGL will set Display Size to Large, which looks really tiny.
+    // Shouldn&#39;t this code depend on DPI? (267 DPI for PinePhone)
+    if(LV_HOR_RES &lt;= 320) disp_size = DISP_SMALL;
+    else if(LV_HOR_RES &lt; 720) disp_size = DISP_MEDIUM;
+    else disp_size = DISP_LARGE;
+
+    // Insert this: Print warning if font is missing
+    #undef LV_LOG_WARN
+    #define LV_LOG_WARN(s) puts(s)
+
+    // Insert this: Change Display Size from Large to Medium, to make Widgets easier to tap
+    printf(&quot;Before: disp_size=%d\n&quot;, disp_size);
+    disp_size = DISP_MEDIUM;
+    printf(&quot;After: disp_size=%d\n&quot;, disp_size);
+
+    // Existing Code
+    font_large = LV_FONT_DEFAULT;
+    font_normal = LV_FONT_DEFAULT;
+
+    lv_coord_t tab_h;
+    if(disp_size == DISP_LARGE) {
+        ...
+    }
+    // For Medium Display Size...
+    else if(disp_size == DISP_MEDIUM) {
+        // Change this: Increase Tab Height from 45 to 70, to make Tabs easier to tap
+        tab_h = 70;
+        // Previously: tab_h = 45;
+
+#if LV_FONT_MONTSERRAT_20
+        font_large     = &amp;lv_font_montserrat_20;
+#else
+        LV_LOG_WARN(&quot;LV_FONT_MONTSERRAT_20 is not enabled for the widgets demo. Using LV_FONT_DEFAULT instead.&quot;);
+#endif
+#if LV_FONT_MONTSERRAT_14
+        font_normal    = &amp;lv_font_montserrat_14;
+#else
+        LV_LOG_WARN(&quot;LV_FONT_MONTSERRAT_14 is not enabled for the widgets demo. Using LV_FONT_DEFAULT instead.&quot;);
+#endif
+    }
+</code></pre></div>
+<p>(Maybe we should modify the code above to include DPI? PinePhone’s Display has 267 DPI)</p>
+<p>Configure LVGL with these settings…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver">“LVGL Calls Our Driver”</a></li>
+</ul>
+<p>And add the fonts…</p>
+<ul>
+<li>
+<p>Browse into “<strong>LVGL</strong> &gt; <strong>LVGL Configuration</strong>”</p>
+<ul>
+<li>
+<p>In “<strong>Font usage</strong> &gt; <strong>Enable built-in fonts</strong>”</p>
+<p>Enable “<strong>Montserrat 20</strong>”</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>The LVGL Demo App is now less dense and easier to use…</p>
+<ul>
+<li>
+<p><a href="https://www.youtube.com/shorts/De5ZehlIka8">Watch the Demo on YouTube</a></p>
+<p>(Shot at ISO 800, F/5.6, Manual Focus on Sony NEX-7. Post-processed for Brightness, Constrast and White Point)</p>
+</li>
+</ul>
+<p><em>What if we increase the Default Font Size? From Montserrat 14 to Montserrat 20?</em></p>
+<p>Let’s increase the Default Font Size from 14 to 20…</p>
+<ul>
+<li>
+<p>Browse into “<strong>LVGL</strong> &gt; <strong>LVGL Configuration</strong>”</p>
+<ul>
+<li>
+<p>In “<strong>Font usage</strong> &gt; <strong>Select theme default title font</strong>”</p>
+<p>Select “<strong>Montserrat 20</strong>”</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>We run the LVGL Demo App as is, leaving Display Size <code>disp_size</code> as default <code>DISP_LARGE</code>.</p>
+<p>Now the text is legible, but some controls are squished…</p>
+<ul>
+<li>
+<p><a href="https://www.youtube.com/watch?v=N-Yc2jj3TtQ">Watch the Demo on YouTube</a></p>
+<p>(Shot at ISO 400, F/5.0, Manual Focus, Exposure 0.3 on Sony NEX-7. No post-processing)</p>
+</li>
+</ul>
+<p>TODO: We need to increase the Default Font Size from 14 to 20, AND set Display Size <code>disp_size</code> to <code>DISP_MEDIUM</code>. And we will get this…</p>
+<p><img src="https://lupyuen.github.io/images/lvgl2-title.jpg" alt="After changing LVGL Settings for PinePhone" /></p>
+<h1 id="lvgl-demos-on-pinephone"><a href="#lvgl-demos-on-pinephone">3 LVGL Demos on PinePhone</a></h1>
+<p>TODO</p>
+<p><em>We’ve seen the LVGL Widgets Demo on NuttX for PinePhone. What about other demos?</em></p>
+<p>Yep there are 5 LVGL Demos available in <code>make menuconfig</code>…</p>
+<ul>
+<li>
+<p>Browse into “<strong>LVGL</strong> &gt; <strong>LVGL Configuration</strong>”</p>
+<ul>
+<li>
+<p>In “<strong>Demos</strong>”, select one or more of the these demos…</p>
+<p>“<strong>Show Some Widgets</strong>”</p>
+<p>“<strong>Demonstrate the usage of encoder and keyboard</strong>”</p>
+<p>“<strong>Benchmark your system</strong>”</p>
+<p>“<strong>Stress test for LVGL</strong>”</p>
+<p>“<strong>Music player demo</strong>”</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>For Music Player Demo, we need these fonts…</p>
+<ul>
+<li>
+<p>Browse into “<strong>LVGL</strong> &gt; <strong>LVGL Configuration</strong>”</p>
+<ul>
+<li>
+<p>In “<strong>Font usage</strong>”, select…</p>
+<p>“<strong>Montserrat 16</strong>”</p>
+<p>“<strong>Montserrat 20</strong>”</p>
+<p>“<strong>Montserrat 22</strong>”</p>
+<p>“<strong>Montserrat 32</strong>”</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>To run the demos on PinePhone…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; lvgldemo
+Usage: lvgldemo demo_name
+demo_name:
+  widgets
+  keypad_encoder
+  benchmark
+  stress
+  music
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/b96ed96db295334db1cfabf461efad83">(Source)</a></p>
+<p>We’ve seen the LVGL Widgets Demo…</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=N-Yc2jj3TtQ">LVGL Widgets Demo on YouTube</a></li>
+</ul>
+<p>Here’s the LVGL Music Player Demo…</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=_cxCnKNibtA">LVGL Music Player Demo on YouTube</a></li>
+</ul>
+<p>And the LVGL Benchmark Demo…</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=deBzb-VbHck">LVGL Benchmark Demo on YouTube</a></li>
+</ul>
+<p>From the video we see the LVGL Benchmark Numbers…</p>
+<ul>
+<li>Weighted Frames Per Second: 20</li>
+<li>Opa Speed: 100%</li>
+</ul>
+<div><table><thead><tr><th>Slow but common cases</th><th>Frames Per Sec</th></tr></thead><tbody>
+<tr><td>Image RGB</td><td>19</td></tr>
+<tr><td>Image RGB + Opa</td><td>17</td></tr>
+<tr><td>Image ARGB</td><td>18</td></tr>
+<tr><td>Image ARGB + Opa</td><td>17</td></tr>
+<tr><td>Image ARGB Recolor</td><td>17</td></tr>
+<tr><td>Image ARGB Recolor + Opa</td><td>16</td></tr>
+<tr><td>Substr Image</td><td>19</td></tr>
+</tbody></table>
+</div><div><table><thead><tr><th>All Cases</th><th>Frames Per Sec</th></tr></thead><tbody>
+<tr><td>Rectangle</td><td>24</td></tr>
+<tr><td>Rectangle + Opa</td><td>23</td></tr>
+<tr><td>Rectangle Rounded</td><td>23</td></tr>
+<tr><td>Rectangle Rounded + Opa</td><td>21</td></tr>
+<tr><td>Circle</td><td>23</td></tr>
+<tr><td>Circle + Opa</td><td>20</td></tr>
+<tr><td>Border</td><td>24</td></tr>
+<tr><td>Border + Opa</td><td>24</td></tr>
+<tr><td>Border Rounded</td><td>24</td></tr>
+<tr><td>(Many many more)</td><td></td></tr>
+</tbody></table>
+</div>
+<p>Note that the LVGL Demos start automatically when NuttX boots on PinePhone. Let’s talk about this…</p>
+<h1 id="boot-to-lvgl-on-pinephone"><a href="#boot-to-lvgl-on-pinephone">4 Boot to LVGL on PinePhone</a></h1>
+<p>TODO</p>
+<p><em>Can we boot NuttX on PinePhone, directly to LVGL? Without a Serial Cable?</em></p>
+<p>Sure can! In the previous section we talked about selecting the LVGL Demos.</p>
+<p>To boot directly to an LVGL Demo, make sure only 1 LVGL Demo is selected.</p>
+<p><a href="https://github.com/apache/nuttx-apps/pull/1494">(Because of this)</a></p>
+<p>Then in <code>make menuconfig</code>…</p>
+<ol>
+<li>
+<p>RTOS Features &gt; Tasks and Scheduling</p>
+<ul>
+<li>
+<p>Set “Application entry point” to <code>lvgldemo_main</code></p>
+<p>(INIT_ENTRYPOINT)</p>
+</li>
+<li>
+<p>Set “Application entry name” to <code>lvgldemo_main</code></p>
+<p>(INIT_ENTRYNAME)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Application Configuration &gt; NSH Library</p>
+<ul>
+<li>
+<p>Disable “Have architecture-specific initialization”</p>
+<p>(NSH_ARCHINIT)</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>NuttX on PinePhone now boots to the LVGL Touchscreen Demo, without a Serial Cable! (Pic below)</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=_cxCnKNibtA">LVGL Music Player Demo on YouTube</a></li>
+</ul>
+<p><em>Why disable “NSH Architecture-Specific Initialization”?</em></p>
+<p>Normally the NSH NuttX Shell initialises the Display Driver and Touch Panel on PinePhone.</p>
+<p>But since we’re not running NSH Shell, we’ll have to initialise the Display Driver and Touch Panel in our LVGL Demo App.</p>
+<p>This is explained here…</p>
+<ul>
+<li><a href="https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L42-L59">lvgldemo.c</a></li>
+</ul>
+<p><em>Now that we can boot NuttX to an LVGL Touchscreen App, what next?</em></p>
+<p>Maybe we can create an LVGL Terminal App? That will let us interact with the NSH NuttX Shell?</p>
+<p>LVGL already provides an Onscreen Keyboard that works on PinePhone NuttX.</p>
+<p>But I have no idea how to start the NSH Process and redirect the Console Input / Output to LVGL 🤔</p>
+<p><img src="https://lupyuen.github.io/images/lvgl2-title.jpg" alt="NuttX on PinePhone now boots to the LVGL Touchscreen Demo, without a Serial Cable" /></p>
+<h1 id="whats-next"><a href="#whats-next">5 What’s Next</a></h1>
+<p>TODO</p>
+<p>Meanwhile please check out the other articles on <strong>NuttX RTOS for PinePhone</strong>…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/what"><strong>“NuttX RTOS for PinePhone: What is it?”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/arm"><strong>“Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/uboot"><strong>“PinePhone boots Apache NuttX RTOS”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/interrupt"><strong>“NuttX RTOS for PinePhone: Fixing the Interrupts”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/serial"><strong>“NuttX RTOS for PinePhone: UART Driver”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/pio"><strong>“NuttX RTOS for PinePhone: Blinking the LEDs”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/dsi"><strong>“Understanding PinePhone’s Display (MIPI DSI)”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/dsi2"><strong>“NuttX RTOS for PinePhone: Display Driver in Zig”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/de"><strong>“Rendering PinePhone’s Display (DE and TCON0)”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/de2"><strong>“NuttX RTOS for PinePhone: Render Graphics in Zig”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/dsi3"><strong>“NuttX RTOS for PinePhone: MIPI Display Serial Interface”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/de3"><strong>“NuttX RTOS for PinePhone: Display Engine”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lcd"><strong>“NuttX RTOS for PinePhone: LCD Panel”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/touch2"><strong>“NuttX RTOS for PinePhone: Touch Panel”</strong></a></p>
+</li>
+</ul>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>My Current Project: “Apache NuttX RTOS for PinePhone”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/book"><strong>My Other Project: “The RISC-V BL602 Book”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl2.md"><strong>lupyuen.github.io/src/lvgl2.md</strong></a></p>
+<h1 id="appendix-build-apache-nuttx-rtos-for-pinephone"><a href="#appendix-build-apache-nuttx-rtos-for-pinephone">6 Appendix: Build Apache NuttX RTOS for PinePhone</a></h1>
+<p>TODO</p>
+
+    
+</body>
+</html>
