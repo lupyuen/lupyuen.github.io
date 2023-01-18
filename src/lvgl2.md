@@ -89,7 +89,9 @@ Someday we might fix these issues in our driver...
 
 Let's find out how we made Nuttx boot to LVGL...
 
-![PinePhone Serial Debug Cable](https://lupyuen.github.io/images/dsi3-title.jpg)
+![PinePhone with USB Serial Debug Cable](https://lupyuen.github.io/images/dsi3-title.jpg)
+
+[_PinePhone with USB Serial Debug Cable_](https://wiki.pine64.org/index.php/PinePhone#Serial_console)
 
 # Boot to LVGL
 
@@ -137,21 +139,27 @@ Usually the NSH Shell initialises the drivers for __LCD Display and Touch Panel_
 
 But since we're not running NSH Shell, we configured NuttX to initialise the drivers in our LVGL Demo App.
 
-[(Here's the explanation)](https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L42-L59)
+[(More about this)](https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L42-L59)
 
-TODO
+The Default LVGL Demo is a little hard to use, let's talk about it...
 
-![Before changing LVGL Settings for PinePhone](https://lupyuen.github.io/images/fb-lvgl3.jpg)
+![LVGL Demo App is not quite so Touch-Friendly](https://lupyuen.github.io/images/fb-lvgl3.jpg)
+
+_LVGL Demo App is not quite so Touch-Friendly_
 
 # Touch-Friendly LVGL
 
-TODO
+_Is there a problem with the LVGL Demo App?_
 
-When we run the LVGL Demo App on PinePhone with Apache NuttX RTOS, it renders a dense screen that's not so Touch-Friendly. (Pic above)
+The pic above shows the LVGL Demo App with the Default Settings. The __dense screen__ is a little hard to use with my thick shaky fingers...
 
-Let's tweak the LVGL Settings to make our LVGL App more accessible. Modify this LVGL Source File...
+-   [__Watch the demo on YouTube__](https://youtu.be/N-Yc2jj3TtQ)
 
-[apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L96-L145)
+Let's tweak the LVGL Demo Code to make our app more accessible.
+
+We modified this LVGL Source File...
+
+[apps/graphics/lvgl/lvgl/demos/ widgets/lv_demo_widgets.c](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L96-L145)
 
 ```c
 // Insert this
