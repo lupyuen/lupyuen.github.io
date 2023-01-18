@@ -444,6 +444,66 @@ demo_name:
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl2.md"><strong>lupyuen.github.io/src/lvgl2.md</strong></a></p>
 <h1 id="appendix-build-apache-nuttx-rtos-for-pinephone"><a href="#appendix-build-apache-nuttx-rtos-for-pinephone">7 Appendix: Build Apache NuttX RTOS for PinePhone</a></h1>
 <p>TODO: Build then overwrite apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c, then build again</p>
+<ol>
+<li>
+<p>Install the Build Prerequisites, skip the RISC-V Toolchain…</p>
+<p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites">“<strong>Install Prerequisites</strong>”</a></p>
+</li>
+<li>
+<p>Download the ARM64 Toolchain for
+<strong>AArch64 Bare-Metal Target <code>aarch64-none-elf</code></strong></p>
+<p><a href="https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads"><strong>Arm GNU Toolchain Downloads</strong></a></p>
+<p>(Skip the section for Beta Releases)</p>
+</li>
+<li>
+<p>Add the downloaded toolchain to the <strong><code>PATH</code></strong> Environment Variable…</p>
+<div class="example-wrap"><pre class="language-text"><code>gcc-arm-...-aarch64-none-elf/bin
+</code></pre></div>
+<p>Check the ARM64 Toolchain…</p>
+<div class="example-wrap"><pre class="language-bash"><code>aarch64-none-elf-gcc -v
+</code></pre></div></li>
+<li>
+<p>Download and configure NuttX…</p>
+<div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
+cd nuttx
+git clone https://github.com/apache/nuttx nuttx
+git clone https://github.com/apache/nuttx-apps apps
+
+cd nuttx
+tools/configure.sh pinephone:lvgl
+make menuconfig
+</code></pre></div></li>
+<li>
+<p>TODO</p>
+<p>Browse into “<strong>???</strong> &gt; <strong>???</strong>”</p>
+<ul>
+<li>
+<p>In “<strong>???</strong>”</p>
+<p>Enable “<strong>???</strong>”</p>
+</li>
+</ul>
+<p>Save the configuration and exit <strong><code>menuconfig</code></strong></p>
+</li>
+<li>
+<p>Build the NuttX Project and compress the NuttX Image…</p>
+<div class="example-wrap"><pre class="language-bash"><code>make
+cp nuttx.bin Image
+rm -f Image.gz
+gzip Image
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc">(TODO: See the Build Log)</a></p>
+<p>This produces the file <strong><code>Image.gz</code></strong>, which will be copied to PinePhone in the next step.</p>
+</li>
+<li>
+<p>If the build fails with…</p>
+<div class="example-wrap"><pre class="language-text"><code>token &quot;@&quot; is not valid in preprocessor
+</code></pre></div>
+<p>Then look for this file in the ARM64 Toolchain…</p>
+<div class="example-wrap"><pre class="language-text"><code>gcc-arm-none-eabi/arm-none-eabi/include/_newlib_version.h
+</code></pre></div>
+<p>And <a href="https://github.com/apache/nuttx/pull/7284/commits/518b0eb31cb66f25b590ae9a79ab16c319b96b94#diff-12291efd8a0ded1bc38bad733d99e4840ae5112b465c04287f91ba5169612c73"><strong>apply this patch</strong></a>.</p>
+</li>
+</ol>
 
     
 </body>
