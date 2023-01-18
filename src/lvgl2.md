@@ -10,7 +10,9 @@ _Does it need a special Serial Cable for PinePhone?_
 
 Not any more... NuttX will auto-boot into an __LVGL Touchscreen App__, without a Serial Cable!
 
-All we need is a __microSD Card__ for booting NuttX on PinePhone. NuttX won't touch the eMMC Storage in PinePhone, so it's perfect for exploring the internals of PinePhone.
+All we need is a __microSD Card__ for booting NuttX on PinePhone. NuttX won't touch the eMMC Storage in PinePhone.
+
+(Perfect for exploring the internals of PinePhone)
 
 _What's LVGL?_
 
@@ -22,7 +24,7 @@ _Does it mean we can create our own Touchscreen App for PinePhone?_
 
 Yep! With LVGL, NuttX on PinePhone runs _almost_ like a regular Smartphone.
 
-(Though much much simpler: It won't make phone calls or browse the web)
+(Though much _much_ simpler: It won't make phone calls or browse the web)
 
 In this article we shall...
 
@@ -48,7 +50,7 @@ We begin by making a Bootable microSD...
 
 # Boot NuttX on PinePhone
 
-Let's make a __Bootable NuttX microSD__ that will start an LVGL Touchscreen App on PinePhone...
+Let's make a __Bootable NuttX microSD__ that will start an LVGL Touchscreen App on our PinePhone...
 
 1.  Download the __PinePhone Jumpdrive Image `pine64-pinephone.img.xz`__ from...
 
@@ -71,7 +73,7 @@ Let's make a __Bootable NuttX microSD__ that will start an LVGL Touchscreen App 
 
     NuttX boots on PinePhone and shows (very briefly) a [__Test Pattern__](https://lupyuen.github.io/images/de3-title.jpg).
 
-1.  The __LVGL Touchscreen Demo__ appears on PinePhone!
+1.  The [__LVGL Touchscreen Demo__](https://lupyuen.github.io/images/lvgl2-title.jpg) appears on PinePhone!
 
     Tap around and play with the LVGL Widgets (UI Controls).
 
