@@ -2,15 +2,33 @@
 
 📝 _24 Jan 2023_
 
-![TODO](https://lupyuen.github.io/images/lvgl2-title.jpg)
+![NuttX on PinePhone now boots to the LVGL Touchscreen Demo, without a Serial Cable](https://lupyuen.github.io/images/lvgl2-title.jpg)
 
-We're porting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System) to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)...
+[__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System) now boots on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) and runs __Touchscreen Apps__! (Pic above)
+
+_Does it need a special Serial Cable for PinePhone?_
+
+Not any more... NuttX will auto-boot into an __LVGL Touchscreen App__, without a Serial Cable!
+
+All we need is a __microSD Card__ for booting NuttX on PinePhone. NuttX won't touch the eMMC Storage in PinePhone, so it's perfect for exploring the internals of PinePhone.
+
+_What's LVGL?_
+
+__LVGL__ is a popular library for creating Graphical User Interfaces on Microcontrollers.
+
+Now we have "upsized" __LVGL for a Smartphone__. And it works great!
+
+Today we shall...
+
+-   Configure NuttX to __boot an LVGL App__
+
+-   Make LVGL Apps more __Touch-Friendly__ on PinePhone
+
+_What's NuttX? Why run it on PinePhone?_
+
+If we're new to NuttX, here's a gentle intro...
 
 -   [__"NuttX RTOS for PinePhone: What is it?"__](https://lupyuen.github.io/articles/what)
-
-TODO: How we configure Apache NuttX RTOS to boot an LVGL Touchscreen App on Pine64 PinePhone
-
-TODO: How we make LVGL Apps more Touch-Friendly on PinePhone
 
 # Boot NuttX on PinePhone
 
