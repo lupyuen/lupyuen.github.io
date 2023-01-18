@@ -38,6 +38,10 @@ If we're new to NuttX, here's a gentle intro...
 
 TODO
 
+[NuttX Release](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.0.0)
+
+[Image.gz](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/nuttx-12.0.0/Image.gz)
+
 ![Before changing LVGL Settings for PinePhone](https://lupyuen.github.io/images/fb-lvgl3.jpg)
 
 # LVGL Settings for PinePhone
@@ -139,6 +143,8 @@ Now the text is legible, but some controls are squished...
     (Shot at ISO 400, F/5.0, Manual Focus, Exposure 0.3 on Sony NEX-7. No post-processing)
 
 TODO: We need to increase the Default Font Size from 14 to 20, AND set Display Size `disp_size` to `DISP_MEDIUM`. And we will get this...
+
+TODO: [lv_demo_widgets.c](https://github.com/lupyuen2/wip-pinephone-lvgl/blob/pinephone/demos/widgets/lv_demo_widgets.c#L96-L150)
 
 ![After changing LVGL Settings for PinePhone](https://lupyuen.github.io/images/lvgl2-title.jpg)
 
@@ -343,4 +349,4 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build Apache NuttX RTOS for PinePhone
 
-TODO: Build then overwrite apps/examples/lvgldemo/lvgldemo.c, then build again
+TODO: Build then overwrite apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c, then build again
