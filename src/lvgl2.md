@@ -38,7 +38,7 @@ If we're new to NuttX, here's a gentle intro...
 
 # Boot NuttX on PinePhone
 
-Let's begin by making a __Bootable NuttX microSD__ that will start our LVGL App on PinePhone.
+Let's make a __Bootable NuttX microSD__ that will start our LVGL App on PinePhone.
 
 TODO
 
