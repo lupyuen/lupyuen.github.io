@@ -18,6 +18,12 @@ _What's LVGL?_
 
 Now we have "upsized" __LVGL for a Smartphone__. And it works great!
 
+_Does it mean we can create our own Touchscreen App for PinePhone?_
+
+Yep! With LVGL, NuttX on PinePhone runs _almost_ like a regular Smartphone.
+
+(Though much much simpler: It won't make phone calls or browse the web)
+
 In this article we shall...
 
 -   Make a __Bootable microSD__ with NuttX inside
@@ -36,13 +42,13 @@ If we're new to NuttX, here's a gentle intro...
 
 -   [__"NuttX RTOS for PinePhone: What is it?"__](https://lupyuen.github.io/articles/what)
 
+We begin by making a Bootable microSD...
+
 ![PinePhone Jumpdrive on microSD](https://lupyuen.github.io/images/arm-jumpdrive.png)
 
 # Boot NuttX on PinePhone
 
-Let's make a __Bootable NuttX microSD__ that will start our LVGL App on PinePhone.
-
-TODO
+Let's make a __Bootable NuttX microSD__ that will start an LVGL Touchscreen App on PinePhone...
 
 1.  Download the __PinePhone Jumpdrive Image `pine64-pinephone.img.xz`__ from...
 
@@ -51,17 +57,13 @@ TODO
     Write the downloaded image to a microSD Card with
 [__Balena Etcher__](https://www.balena.io/etcher/)
 
-1.  TODO: We download Image.gz from the NuttX Binaries...
+1.  Download __`Image.gz`__ from the [__NuttX Release__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.0.0)...
 
-    [NuttX Release](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.0.0)
-
-    [Image.gz](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/nuttx-12.0.0/Image.gz)
+    [__Image.gz: NuttX Image for PinePhone__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/nuttx-12.0.0/Image.gz)
 
     TODO: If we prefer to __build NuttX__ ourselves
 
-1.  Copy the file __`Image.gz`__.
-
-    Overwrite the file on the microSD Card.
+1.  Copy the downloaded __`Image.gz`__ and overwrite the file on the microSD Card.
 
     (Pic above)
 
@@ -69,7 +71,13 @@ TODO
 
     NuttX boots on PinePhone and shows (very briefly) a [__Test Pattern__](https://lupyuen.github.io/images/de3-title.jpg).
 
-TODO: Widgets demo
+1.  The __LVGL Touchscreen Demo__ appears on PinePhone!
+
+    Tap around and play with the LVGL Widgets (UI Controls).
+
+    [(Watch the demo on YouTube)](https://www.youtube.com/watch?v=N-Yc2jj3TtQ)
+
+TODO: Limitations, scrolling, swiping
 
 ![Before changing LVGL Settings for PinePhone](https://lupyuen.github.io/images/fb-lvgl3.jpg)
 
