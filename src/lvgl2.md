@@ -103,7 +103,7 @@ But for today's demo we configured NuttX to boot instead with the __LVGL Demo Ap
 make menuconfig
 ```
 
-And set these options...
+And we set these options...
 
 1.  In "__RTOS Features__ > __Tasks and Scheduling__"...
 
@@ -121,27 +121,23 @@ And set these options...
 
     _(Which disables CONFIG_NSH_ARCHINIT)_
 
-TODO
+1.  Save the configuration and exit __`menuconfig`__
 
-NuttX on PinePhone now boots to the LVGL Touchscreen Demo, without a Serial Cable! (Pic below)
+Which will start the __`lvgldemo`__ app (instead of __`nsh`__) when NuttX boots.
 
-TODO: Doesn't `lvgldemo` require a command-line argument?
+_Doesn't `lvgldemo` require a Command-Line Argument?_
 
-To boot directly to an LVGL Demo, make sure only 1 LVGL Demo is selected.
+__`lvgldemo`__ doesn't require a Command-Line Argument if we make sure that __only one LVGL Demo__ is selected. [(Because of this)](https://github.com/apache/nuttx-apps/pull/1494)
 
-[(Because of this)](https://github.com/apache/nuttx-apps/pull/1494)
+We'll talk about the available LVGL Demos in a while.
 
 _Why disable "NSH Architecture-Specific Initialization"?_
 
-Normally the NSH NuttX Shell initialises the Display Driver and Touch Panel on PinePhone.
+Usually the NSH Shell initialises the drivers for __LCD Display and Touch Panel__ on PinePhone.
 
-But since we're not running NSH Shell, we'll have to initialise the Display Driver and Touch Panel in our LVGL Demo App.
+But since we're not running NSH Shell, we configured NuttX to initialise the drivers in our LVGL Demo App.
 
-This is explained here...
-
--   [lvgldemo.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L42-L59)
-
-![NuttX on PinePhone now boots to the LVGL Touchscreen Demo, without a Serial Cable](https://lupyuen.github.io/images/lvgl2-title.jpg)
+[(Here's the explanation)](https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L42-L59)
 
 TODO
 
