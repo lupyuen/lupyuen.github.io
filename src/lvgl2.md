@@ -34,7 +34,11 @@ If we're new to NuttX, here's a gentle intro...
 
 -   [__"NuttX RTOS for PinePhone: What is it?"__](https://lupyuen.github.io/articles/what)
 
+![PinePhone Jumpdrive on microSD](https://lupyuen.github.io/images/arm-jumpdrive.png)
+
 # Boot NuttX on PinePhone
+
+Let's begin by making a __Bootable NuttX microSD__ that will start our LVGL App on PinePhone.
 
 TODO
 
