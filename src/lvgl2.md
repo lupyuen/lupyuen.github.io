@@ -392,7 +392,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build Apache NuttX RTOS for PinePhone
 
-TODO: Build then overwrite apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c, then build again
+TODO
 
 1.  Install the Build Prerequisites, skip the RISC-V Toolchain...
 
@@ -440,10 +440,21 @@ TODO: Build then overwrite apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets
 
     Save the configuration and exit __`menuconfig`__
 
-1.  Build the NuttX Project and compress the NuttX Image...
+1.  Build the NuttX Project...
 
     ```bash
     make
+    ```
+
+    [(TODO: See the Build Log)](https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc)
+
+1.  TODO: Build then overwrite apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c, then build again
+
+    [lv_demo_widgets.c](https://github.com/lupyuen2/wip-pinephone-lvgl/blob/pinephone/demos/widgets/lv_demo_widgets.c#L96-L150)
+
+1.  Compress the NuttX Image...
+
+    ```bash
     cp nuttx.bin Image
     rm -f Image.gz
     gzip Image
@@ -451,7 +462,7 @@ TODO: Build then overwrite apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets
 
     [(TODO: See the Build Log)](https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc)
 
-    This produces the file __`Image.gz`__, which will be copied to PinePhone in the next step.
+    This produces the file __`Image.gz`__, which will be copied to PinePhone.
 
 1.  If the build fails with...
 
@@ -466,3 +477,5 @@ TODO: Build then overwrite apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets
     ```
 
     And [__apply this patch__](https://github.com/apache/nuttx/pull/7284/commits/518b0eb31cb66f25b590ae9a79ab16c319b96b94#diff-12291efd8a0ded1bc38bad733d99e4840ae5112b465c04287f91ba5169612c73).
+
+TODO: Boot NuttX on PinePhone
