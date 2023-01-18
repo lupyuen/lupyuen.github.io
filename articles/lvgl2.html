@@ -443,7 +443,7 @@ demo_name:
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl2.md"><strong>lupyuen.github.io/src/lvgl2.md</strong></a></p>
 <h1 id="appendix-build-apache-nuttx-rtos-for-pinephone"><a href="#appendix-build-apache-nuttx-rtos-for-pinephone">7 Appendix: Build Apache NuttX RTOS for PinePhone</a></h1>
-<p>TODO: Build then overwrite apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c, then build again</p>
+<p>TODO</p>
 <ol>
 <li>
 <p>Install the Build Prerequisites, skip the RISC-V Toolchain…</p>
@@ -485,14 +485,23 @@ make menuconfig
 <p>Save the configuration and exit <strong><code>menuconfig</code></strong></p>
 </li>
 <li>
-<p>Build the NuttX Project and compress the NuttX Image…</p>
+<p>Build the NuttX Project…</p>
 <div class="example-wrap"><pre class="language-bash"><code>make
-cp nuttx.bin Image
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc">(TODO: See the Build Log)</a></p>
+</li>
+<li>
+<p>TODO: Build then overwrite apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c, then build again</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-lvgl/blob/pinephone/demos/widgets/lv_demo_widgets.c#L96-L150">lv_demo_widgets.c</a></p>
+</li>
+<li>
+<p>Compress the NuttX Image…</p>
+<div class="example-wrap"><pre class="language-bash"><code>cp nuttx.bin Image
 rm -f Image.gz
 gzip Image
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc">(TODO: See the Build Log)</a></p>
-<p>This produces the file <strong><code>Image.gz</code></strong>, which will be copied to PinePhone in the next step.</p>
+<p>This produces the file <strong><code>Image.gz</code></strong>, which will be copied to PinePhone.</p>
 </li>
 <li>
 <p>If the build fails with…</p>
@@ -504,6 +513,7 @@ gzip Image
 <p>And <a href="https://github.com/apache/nuttx/pull/7284/commits/518b0eb31cb66f25b590ae9a79ab16c319b96b94#diff-12291efd8a0ded1bc38bad733d99e4840ae5112b465c04287f91ba5169612c73"><strong>apply this patch</strong></a>.</p>
 </li>
 </ol>
+<p>TODO: Boot NuttX on PinePhone</p>
 
     
 </body>
