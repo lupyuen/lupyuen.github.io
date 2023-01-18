@@ -287,6 +287,8 @@ LVGL already provides an Onscreen Keyboard that works on PinePhone NuttX.
 
 But I have no idea how to start the NSH Process and redirect the Console Input / Output to LVGL 🤔
 
+TODO: LED turns white if `lvgldemo` fails to start
+
 ![NuttX on PinePhone now boots to the LVGL Touchscreen Demo, without a Serial Cable](https://lupyuen.github.io/images/lvgl2-title.jpg)
 
 # What's Next
