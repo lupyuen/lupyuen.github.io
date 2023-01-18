@@ -20,6 +20,8 @@ Now we have "upsized" __LVGL for a Smartphone__. And it works great!
 
 In this article we shall...
 
+-   Make a __Bootable microSD__ with NuttX inside
+
 -   Configure NuttX to __boot an LVGL App__
 
 -   Make LVGL Apps more __Touch-Friendly__ on PinePhone
