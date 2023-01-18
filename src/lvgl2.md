@@ -14,15 +14,17 @@ All we need is a __microSD Card__ for booting NuttX on PinePhone. NuttX won't to
 
 _What's LVGL?_
 
-__LVGL__ is a popular library for creating Graphical User Interfaces on Microcontrollers.
+[__LVGL__](https://docs.lvgl.io/master/index.html) is a popular library for rendering __Graphical User Interfaces__ on Microcontrollers.
 
 Now we have "upsized" __LVGL for a Smartphone__. And it works great!
 
-Today we shall...
+In this article we shall...
 
 -   Configure NuttX to __boot an LVGL App__
 
 -   Make LVGL Apps more __Touch-Friendly__ on PinePhone
+
+-   Take a peek at the __LVGL Demo Apps__ available for PinePhone
 
 _What's NuttX? Why run it on PinePhone?_
 
