@@ -63,7 +63,7 @@ Let's make a __Bootable NuttX microSD__ that will start an LVGL Touchscreen App 
 
     [__Image.gz: NuttX Image for PinePhone__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/nuttx-12.0.0/Image.gz)
 
-    TODO: If we prefer to __build NuttX__ ourselves
+    (If we prefer to __build NuttX__ ourselves: [__Follow these steps__](https://lupyuen.github.io/articles/lvgl2#appendix-build-apache-nuttx-rtos-for-pinephone))
 
 1.  Copy the downloaded __`Image.gz`__ and overwrite the file on the microSD Card.
 
