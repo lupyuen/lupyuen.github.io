@@ -180,8 +180,8 @@
 <p>But since we’re not running NSH Shell, we configured NuttX to initialise the drivers in our LVGL Demo App.</p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L42-L59">(More about this)</a></p>
 <p>The Default LVGL Demo is a little hard to use, let’s talk about it…</p>
-<p><img src="https://lupyuen.github.io/images/fb-lvgl3.jpg" alt="LVGL Demo App is not quite so Touch-Friendly" /></p>
-<p><em>LVGL Demo App is not quite so Touch-Friendly</em></p>
+<p><img src="https://lupyuen.github.io/images/fb-lvgl3.jpg" alt="Default LVGL Demo App is not quite so Touch-Friendly" /></p>
+<p><em>Default LVGL Demo App is not quite so Touch-Friendly</em></p>
 <h1 id="touch-friendly-lvgl"><a href="#touch-friendly-lvgl">3 Touch-Friendly LVGL</a></h1>
 <p><em>Is there a problem with the LVGL Demo App?</em></p>
 <p>The pic above shows the LVGL Demo App with the Default Settings. The <strong>dense screen</strong> is a little hard to use with my thick shaky fingers…</p>
@@ -189,14 +189,12 @@
 <li><a href="https://youtu.be/N-Yc2jj3TtQ"><strong>Watch the demo on YouTube</strong></a></li>
 </ul>
 <p>Let’s tweak the LVGL Demo Code to make our app more accessible.</p>
-<p>We modified this LVGL Source File…</p>
-<p><a href="https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L96-L145">apps/graphics/lvgl/lvgl/ demos/widgets/lv_demo_widgets.c</a></p>
+<p>We modified this LVGL Source File: <a href="https://github.com/lupyuen2/wip-pinephone-lvgl/blob/pinephone/demos/widgets/lv_demo_widgets.c#L96-L150">apps/graphics/lvgl/lvgl/ demos/widgets/lv_demo_widgets.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Insert this
 #include &lt;stdio.h&gt;
 
 // Modify this function
-void lv_demo_widgets(void)
-{
+void lv_demo_widgets(void) {
     // Note: PinePhone has width 720 pixels.
     // LVGL will set Display Size to Large, which looks really tiny.
     // Shouldn&#39;t this code depend on DPI? (267 DPI for PinePhone)
@@ -204,20 +202,21 @@ void lv_demo_widgets(void)
     else if(LV_HOR_RES &lt; 720) disp_size = DISP_MEDIUM;
     else disp_size = DISP_LARGE;
 
+    // Insert this: Change Display Size from Large to Medium,
+    // to make Widgets easier to tap
+    disp_size = DISP_MEDIUM;
+
     // Insert this: Print warning if font is missing
     #undef LV_LOG_WARN
     #define LV_LOG_WARN(s) puts(s)
-
-    // Insert this: Change Display Size from Large to Medium, to make Widgets easier to tap
-    printf(&quot;Before: disp_size=%d\n&quot;, disp_size);
-    disp_size = DISP_MEDIUM;
-    printf(&quot;After: disp_size=%d\n&quot;, disp_size);
-
-    // Existing Code
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>    // Existing Code
     font_large = LV_FONT_DEFAULT;
     font_normal = LV_FONT_DEFAULT;
-
     lv_coord_t tab_h;
+
+    // For Large Display Size (unused)...
     if(disp_size == DISP_LARGE) {
         ...
     }
@@ -233,7 +232,8 @@ void lv_demo_widgets(void)
         LV_LOG_WARN(&quot;LV_FONT_MONTSERRAT_20 is not enabled for the widgets demo. Using LV_FONT_DEFAULT instead.&quot;);
 #endif
 #if LV_FONT_MONTSERRAT_14
-        font_normal    = &amp;lv_font_montserrat_14;
+        // Use the default font: Montserrat 20 instead of Montserrat 14
+        // Previously: font_normal    = &amp;lv_font_montserrat_14;
 #else
         LV_LOG_WARN(&quot;LV_FONT_MONTSERRAT_14 is not enabled for the widgets demo. Using LV_FONT_DEFAULT instead.&quot;);
 #endif
