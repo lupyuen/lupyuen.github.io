@@ -145,7 +145,8 @@
 <li><a href="https://lupyuen.github.io/articles/touch2#driver-limitations"><strong>“Touch Panel Driver Limitations”</strong></a></li>
 </ul>
 <p>Let’s find out how we made Nuttx boot to LVGL…</p>
-<p><img src="https://lupyuen.github.io/images/dsi3-title.jpg" alt="PinePhone Serial Debug Cable" /></p>
+<p><img src="https://lupyuen.github.io/images/dsi3-title.jpg" alt="PinePhone with USB Serial Debug Cable" /></p>
+<p><a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><em>PinePhone with USB Serial Debug Cable</em></a></p>
 <h1 id="boot-to-lvgl"><a href="#boot-to-lvgl">2 Boot to LVGL</a></h1>
 <p><em>How did we configure NuttX to boot with an LVGL App?</em></p>
 <p>Normally NuttX boots to the <strong>NSH Shell</strong>. Which lets us execute Console Commands through a <a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><strong>USB Serial Debug Cable</strong></a>. (Pic above)</p>
@@ -177,14 +178,19 @@
 <p><em>Why disable “NSH Architecture-Specific Initialization”?</em></p>
 <p>Usually the NSH Shell initialises the drivers for <strong>LCD Display and Touch Panel</strong> on PinePhone.</p>
 <p>But since we’re not running NSH Shell, we configured NuttX to initialise the drivers in our LVGL Demo App.</p>
-<p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L42-L59">(Here’s the explanation)</a></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/fb-lvgl3.jpg" alt="Before changing LVGL Settings for PinePhone" /></p>
+<p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L42-L59">(More about this)</a></p>
+<p>The Default LVGL Demo is a little hard to use, let’s talk about it…</p>
+<p><img src="https://lupyuen.github.io/images/fb-lvgl3.jpg" alt="LVGL Demo App is not quite so Touch-Friendly" /></p>
+<p><em>LVGL Demo App is not quite so Touch-Friendly</em></p>
 <h1 id="touch-friendly-lvgl"><a href="#touch-friendly-lvgl">3 Touch-Friendly LVGL</a></h1>
-<p>TODO</p>
-<p>When we run the LVGL Demo App on PinePhone with Apache NuttX RTOS, it renders a dense screen that’s not so Touch-Friendly. (Pic above)</p>
-<p>Let’s tweak the LVGL Settings to make our LVGL App more accessible. Modify this LVGL Source File…</p>
-<p><a href="https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L96-L145">apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c</a></p>
+<p><em>Is there a problem with the LVGL Demo App?</em></p>
+<p>The pic above shows the LVGL Demo App with the Default Settings. The <strong>dense screen</strong> is a little hard to use with my thick shaky fingers…</p>
+<ul>
+<li><a href="https://youtu.be/N-Yc2jj3TtQ"><strong>Watch the demo on YouTube</strong></a></li>
+</ul>
+<p>Let’s tweak the LVGL Demo Code to make our app more accessible.</p>
+<p>We modified this LVGL Source File…</p>
+<p><a href="https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L96-L145">apps/graphics/lvgl/lvgl/demos/ widgets/lv_demo_widgets.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Insert this
 #include &lt;stdio.h&gt;
 
