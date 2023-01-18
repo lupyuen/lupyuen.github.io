@@ -393,3 +393,76 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Appendix: Build Apache NuttX RTOS for PinePhone
 
 TODO: Build then overwrite apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c, then build again
+
+1.  Install the Build Prerequisites, skip the RISC-V Toolchain...
+
+    ["__Install Prerequisites__"](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
+
+1.  Download the ARM64 Toolchain for
+    __AArch64 Bare-Metal Target `aarch64-none-elf`__
+    
+    [__Arm GNU Toolchain Downloads__](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
+
+    (Skip the section for Beta Releases)
+
+1.  Add the downloaded toolchain to the __`PATH`__ Environment Variable...
+
+    ```text
+    gcc-arm-...-aarch64-none-elf/bin
+    ```
+
+    Check the ARM64 Toolchain...
+
+    ```bash
+    aarch64-none-elf-gcc -v
+    ```
+
+1.  Download and configure NuttX...
+
+    ```bash
+    mkdir nuttx
+    cd nuttx
+    git clone https://github.com/apache/nuttx nuttx
+    git clone https://github.com/apache/nuttx-apps apps
+
+    cd nuttx
+    tools/configure.sh pinephone:lvgl
+    make menuconfig
+    ```
+
+1.  TODO
+
+    Browse into "__???__ > __???__"
+    
+    -   In "__???__"
+    
+        Enable "__???__"
+
+    Save the configuration and exit __`menuconfig`__
+
+1.  Build the NuttX Project and compress the NuttX Image...
+
+    ```bash
+    make
+    cp nuttx.bin Image
+    rm -f Image.gz
+    gzip Image
+    ```
+
+    [(TODO: See the Build Log)](https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc)
+
+    This produces the file __`Image.gz`__, which will be copied to PinePhone in the next step.
+
+1.  If the build fails with...
+
+    ```text
+    token "@" is not valid in preprocessor
+    ```
+    
+    Then look for this file in the ARM64 Toolchain...
+
+    ```text
+    gcc-arm-none-eabi/arm-none-eabi/include/_newlib_version.h
+    ```
+
+    And [__apply this patch__](https://github.com/apache/nuttx/pull/7284/commits/518b0eb31cb66f25b590ae9a79ab16c319b96b94#diff-12291efd8a0ded1bc38bad733d99e4840ae5112b465c04287f91ba5169612c73).
