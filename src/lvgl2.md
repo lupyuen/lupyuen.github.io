@@ -143,9 +143,9 @@ But since we're not running NSH Shell, we configured NuttX to initialise the dri
 
 The Default LVGL Demo is a little hard to use, let's talk about it...
 
-![LVGL Demo App is not quite so Touch-Friendly](https://lupyuen.github.io/images/fb-lvgl3.jpg)
+![Default LVGL Demo App is not quite so Touch-Friendly](https://lupyuen.github.io/images/fb-lvgl3.jpg)
 
-_LVGL Demo App is not quite so Touch-Friendly_
+_Default LVGL Demo App is not quite so Touch-Friendly_
 
 # Touch-Friendly LVGL
 
@@ -157,17 +157,14 @@ The pic above shows the LVGL Demo App with the Default Settings. The __dense scr
 
 Let's tweak the LVGL Demo Code to make our app more accessible.
 
-We modified this LVGL Source File...
-
-[apps/graphics/lvgl/lvgl/ demos/widgets/lv_demo_widgets.c](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L96-L145)
+We modified this LVGL Source File: [apps/graphics/lvgl/lvgl/ demos/widgets/lv_demo_widgets.c](https://github.com/lupyuen2/wip-pinephone-lvgl/blob/pinephone/demos/widgets/lv_demo_widgets.c#L96-L150)
 
 ```c
 // Insert this
 #include <stdio.h>
 
 // Modify this function
-void lv_demo_widgets(void)
-{
+void lv_demo_widgets(void) {
     // Note: PinePhone has width 720 pixels.
     // LVGL will set Display Size to Large, which looks really tiny.
     // Shouldn't this code depend on DPI? (267 DPI for PinePhone)
@@ -175,20 +172,24 @@ void lv_demo_widgets(void)
     else if(LV_HOR_RES < 720) disp_size = DISP_MEDIUM;
     else disp_size = DISP_LARGE;
 
+    // Insert this: Change Display Size from Large to Medium,
+    // to make Widgets easier to tap
+    disp_size = DISP_MEDIUM;
+
     // Insert this: Print warning if font is missing
     #undef LV_LOG_WARN
     #define LV_LOG_WARN(s) puts(s)
+```
 
-    // Insert this: Change Display Size from Large to Medium, to make Widgets easier to tap
-    printf("Before: disp_size=%d\n", disp_size);
-    disp_size = DISP_MEDIUM;
-    printf("After: disp_size=%d\n", disp_size);
+TODO
 
+```c
     // Existing Code
     font_large = LV_FONT_DEFAULT;
     font_normal = LV_FONT_DEFAULT;
-
     lv_coord_t tab_h;
+
+    // For Large Display Size (unused)...
     if(disp_size == DISP_LARGE) {
         ...
     }
@@ -204,7 +205,8 @@ void lv_demo_widgets(void)
         LV_LOG_WARN("LV_FONT_MONTSERRAT_20 is not enabled for the widgets demo. Using LV_FONT_DEFAULT instead.");
 #endif
 #if LV_FONT_MONTSERRAT_14
-        font_normal    = &lv_font_montserrat_14;
+        // Use the default font: Montserrat 20 instead of Montserrat 14
+        // Previously: font_normal    = &lv_font_montserrat_14;
 #else
         LV_LOG_WARN("LV_FONT_MONTSERRAT_14 is not enabled for the widgets demo. Using LV_FONT_DEFAULT instead.");
 #endif
