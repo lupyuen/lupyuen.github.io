@@ -44,9 +44,32 @@ Let's make a __Bootable NuttX microSD__ that will start our LVGL App on PinePhon
 
 TODO
 
-[NuttX Release](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.0.0)
+1.  Download the __PinePhone Jumpdrive Image `pine64-pinephone.img.xz`__ from...
 
-[Image.gz](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/nuttx-12.0.0/Image.gz)
+    [__dreemurrs-embedded/Jumpdrive__](https://github.com/dreemurrs-embedded/Jumpdrive/releases)
+
+    Write the downloaded image to a microSD Card with
+[__Balena Etcher__](https://www.balena.io/etcher/)
+
+1.  TODO: We download Image.gz from the NuttX Binaries...
+
+    [NuttX Release](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.0.0)
+
+    [Image.gz](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/nuttx-12.0.0/Image.gz)
+
+    TODO: If we prefer to __build NuttX__ ourselves
+
+1.  Copy the file __`Image.gz`__.
+
+    Overwrite the file on the microSD Card.
+
+    (Pic above)
+
+1.  Insert the microSD Card into PinePhone and power up PinePhone.
+
+    NuttX boots on PinePhone and shows (very briefly) a [__Test Pattern__](https://lupyuen.github.io/images/de3-title.jpg).
+
+TODO: Widgets demo
 
 ![Before changing LVGL Settings for PinePhone](https://lupyuen.github.io/images/fb-lvgl3.jpg)
 
