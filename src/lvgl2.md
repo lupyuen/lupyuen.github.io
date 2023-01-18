@@ -91,43 +91,45 @@ Let's find out how we made Nuttx boot to LVGL...
 
 ![PinePhone Serial Debug Cable](https://lupyuen.github.io/images/dsi3-title.jpg)
 
-# Boot to LVGL on PinePhone
+# Boot to LVGL
 
 _How did we configure NuttX to boot with an LVGL App?_
 
-Normally NuttX boots to the __NSH Shell__. Which lets us execute simple Console Commands through a __Serial Debug Cable__. (Pic above)
+Normally NuttX boots to the __NSH Shell__. Which lets us execute Console Commands through a [__USB Serial Debug Cable__](https://wiki.pine64.org/index.php/PinePhone#Serial_console). (Pic above)
+
+But for today's demo we configured NuttX to boot instead with the __LVGL Demo App__. In the NuttX Project Folder, we ran...
+
+```bash
+make menuconfig
+```
+
+And set these options...
+
+1.  In "__RTOS Features__ > __Tasks and Scheduling__"...
+
+    Set __"Application Entry Point"__ to __`lvgldemo_main`__
+
+    _(Which sets CONFIG_INIT_ENTRYPOINT)_
+
+    Set __"Application Entry Name"__ to __`lvgldemo_main`__
+
+    _(Which sets CONFIG_INIT_ENTRYNAME)_
+
+1.  In "__Application Configuration__ > __NSH Library__"...
+
+    Disable __"Have Architecture-Specific Initialization"__
+
+    _(Which disables CONFIG_NSH_ARCHINIT)_
 
 TODO
 
-_Can we boot NuttX on PinePhone, directly to LVGL? Without a Serial Cable?_
+NuttX on PinePhone now boots to the LVGL Touchscreen Demo, without a Serial Cable! (Pic below)
 
-Sure can! In the previous section we talked about selecting the LVGL Demos.
+TODO: Doesn't `lvgldemo` require a command-line argument?
 
 To boot directly to an LVGL Demo, make sure only 1 LVGL Demo is selected.
 
 [(Because of this)](https://github.com/apache/nuttx-apps/pull/1494)
-
-Then in `make menuconfig`...
-
-1. RTOS Features > Tasks and Scheduling
-
-   -  Set "Application entry point" to `lvgldemo_main`
-
-      (INIT_ENTRYPOINT)
-
-   -  Set "Application entry name" to `lvgldemo_main`
-
-      (INIT_ENTRYNAME)
-
-2. Application Configuration > NSH Library
-
-    - Disable "Have architecture-specific initialization"
-
-      (NSH_ARCHINIT)
-
-NuttX on PinePhone now boots to the LVGL Touchscreen Demo, without a Serial Cable! (Pic below)
-
--   [LVGL Music Player Demo on YouTube](https://www.youtube.com/watch?v=_cxCnKNibtA)
 
 _Why disable "NSH Architecture-Specific Initialization"?_
 
@@ -145,7 +147,7 @@ TODO
 
 ![Before changing LVGL Settings for PinePhone](https://lupyuen.github.io/images/fb-lvgl3.jpg)
 
-# LVGL Settings for PinePhone
+# Touch-Friendly LVGL
 
 TODO
 
@@ -249,7 +251,7 @@ TODO: [lv_demo_widgets.c](https://github.com/lupyuen2/wip-pinephone-lvgl/blob/pi
 
 ![After changing LVGL Settings for PinePhone](https://lupyuen.github.io/images/lvgl2-title.jpg)
 
-# LVGL Demos on PinePhone
+# LVGL Demos
 
 TODO
 
@@ -345,6 +347,25 @@ Note that the LVGL Demos start automatically when NuttX boots on PinePhone. Let'
 # Create a Touchscreen App
 
 TODO: Zig?
+
+_How to create our own LVGL Touchscreen App?_
+
+Inside our NuttX Project, look for the __LVGL Demo Source Code__...
+
+-   [apps/graphics/lvgl/lvgl/ demos/widgets/lv_demo_widgets.c](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L202-L528)
+
+Modify the function [__lv_demo_widgets__](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L202-L528) to create our own __LVGL Widgets__...
+
+```c
+// Create a Button, set the Width and Height
+void lv_demo_widgets(void) {
+  lv_obj_t *btn = lv_btn_create(lv_scr_act());
+  lv_obj_set_height(btn, LV_SIZE_CONTENT);
+  lv_obj_set_width(btn, 120);
+}
+```
+
+For details, check out the [__LVGL Widget Docs__](https://docs.lvgl.io/master/widgets/index.html).
 
 _Now that we can boot NuttX to an LVGL Touchscreen App, what next?_
 
@@ -495,3 +516,57 @@ TODO
     And [__apply this patch__](https://github.com/apache/nuttx/pull/7284/commits/518b0eb31cb66f25b590ae9a79ab16c319b96b94#diff-12291efd8a0ded1bc38bad733d99e4840ae5112b465c04287f91ba5169612c73).
 
 TODO: Boot NuttX on PinePhone
+
+# Appendix: Booting Apache NuttX RTOS on PinePhone
+
+TODO
+
+We're ready to boot NuttX on our PinePhone!
+
+1.  Download the __PinePhone Jumpdrive Image `pine64-pinephone.img.xz`__ from...
+
+    [__dreemurrs-embedded/Jumpdrive__](https://github.com/dreemurrs-embedded/Jumpdrive/releases)
+
+    Write the downloaded image to a microSD Card with
+[__Balena Etcher__](https://www.balena.io/etcher/)
+
+1.  Copy the file __`Image.gz`__ from the previous section.
+
+    Overwrite the file on the microSD Card.
+
+    (Pic above)
+
+1.  On PinePhone, set [__Privacy Switch 6 (Headphone)__](https://wiki.pine64.org/index.php/PinePhone#Privacy_switch_configuration)
+to __Off__.
+
+    Connect PinePhone to our computer with the [__Serial Debug Cable__](https://wiki.pine64.org/index.php/PinePhone#Serial_console).
+
+    On our computer, start a __Serial Terminal__ and connect to the USB Serial Port at __115.2 kbps__.
+
+1.  Insert the microSD Card into PinePhone and power up PinePhone.
+
+    NuttX boots on PinePhone and shows a [__Test Pattern__](https://lupyuen.github.io/images/de3-title.jpg).
+    
+    __NuttShell `nsh`__ appears in the Serial Console. (Pic below)
+
+    [(See the Boot Log)](https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd)
+
+1.  To see the available commands in NuttShell...
+
+    ```bash
+    help
+    ```
+
+    To run the [__LVGL Demo App__](https://lupyuen.github.io/articles/fb#lvgl-graphics-library)...
+
+    ```bash
+    lvgldemo widgets
+    ```
+
+    [(We should see this)](https://lupyuen.github.io/images/fb-lvgl3.jpg)
+
+And that's how we build and boot NuttX for PinePhone!
+
+![Booting Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/fb-run2.png)
+
+[(See the Boot Log)](https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd)
