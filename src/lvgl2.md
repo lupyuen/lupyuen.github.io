@@ -28,6 +28,8 @@ In this article we shall...
 
 -   Take a peek at the __LVGL Demo Apps__ available for PinePhone
 
+And explore how we might create __our own Touchscreen App__ for PinePhone.
+
 _What's NuttX? Why run it on PinePhone?_
 
 If we're new to NuttX, here's a gentle intro...
@@ -300,6 +302,10 @@ But I have no idea how to start the NSH Process and redirect the Console Input /
 TODO: LED turns white if `lvgldemo` fails to start
 
 ![NuttX on PinePhone now boots to the LVGL Touchscreen Demo, without a Serial Cable](https://lupyuen.github.io/images/lvgl2-title.jpg)
+
+# Create a Touchscreen App
+
+TODO: Zig?
 
 # What's Next
 
