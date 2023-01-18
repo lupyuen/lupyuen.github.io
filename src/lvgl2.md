@@ -20,9 +20,9 @@ _What's LVGL?_
 
 Now we have "upsized" __LVGL for a Smartphone__. And it works great!
 
-_Does it mean we can create our own Touchscreen App for PinePhone?_
+_So we can create our own Touchscreen App for PinePhone?_
 
-Yep! With LVGL, NuttX on PinePhone runs _almost_ like a regular Smartphone.
+Yep! With LVGL, NuttX on PinePhone runs Touchscreen Apps _almost_ like a regular Smartphone.
 
 (Though much _much_ simpler: It won't make phone calls or browse the web)
 
