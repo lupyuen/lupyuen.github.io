@@ -159,7 +159,7 @@ Let's tweak the LVGL Demo Code to make our app more accessible.
 
 We modified this LVGL Source File...
 
-[apps/graphics/lvgl/lvgl/demos/ widgets/lv_demo_widgets.c](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L96-L145)
+[apps/graphics/lvgl/lvgl/ demos/widgets/lv_demo_widgets.c](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L96-L145)
 
 ```c
 // Insert this
@@ -489,7 +489,7 @@ TODO
 
     [(TODO: See the Build Log)](https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc)
 
-1.  TODO: Build then overwrite apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c, then build again
+1.  TODO: Build then overwrite apps/graphics/lvgl/lvgl/ demos/widgets/lv_demo_widgets.c, then build again
 
     [lv_demo_widgets.c](https://github.com/lupyuen2/wip-pinephone-lvgl/blob/pinephone/demos/widgets/lv_demo_widgets.c#L96-L150)
 
