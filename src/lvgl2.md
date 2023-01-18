@@ -73,13 +73,75 @@ Let's make a __Bootable NuttX microSD__ that will start an LVGL Touchscreen App 
 
     NuttX boots on PinePhone and shows (very briefly) a [__Test Pattern__](https://lupyuen.github.io/images/de3-title.jpg).
 
-1.  The [__LVGL Touchscreen Demo__](https://lupyuen.github.io/images/lvgl2-title.jpg) appears on PinePhone!
+1.  The [__LVGL Touchscreen Demo__](https://lupyuen.github.io/images/lvgl2-title.jpg) appears on PinePhone! [(Like this)](https://lupyuen.github.io/images/lvgl2-title.jpg)
 
     Tap around and play with the LVGL Widgets (UI Controls).
 
     [(Watch the demo on YouTube)](https://www.youtube.com/watch?v=N-Yc2jj3TtQ)
 
-TODO: Limitations, scrolling, swiping
+_Something doesn't work right..._
+
+Yeah there are some __limitations in our Touch Panel Driver__: Scrolling and swiping won't work right now.
+
+Someday we might fix these issues in our driver...
+
+-   [__"Touch Panel Driver Limitations"__](https://lupyuen.github.io/articles/touch2#driver-limitations)
+
+Let's find out how we made Nuttx boot to LVGL...
+
+![PinePhone Serial Debug Cable](https://lupyuen.github.io/images/dsi3-title.jpg)
+
+# Boot to LVGL on PinePhone
+
+_How did we configure NuttX to boot with an LVGL App?_
+
+Normally NuttX boots to the __NSH Shell__. Which lets us execute simple Console Commands through a __Serial Debug Cable__. (Pic above)
+
+TODO
+
+_Can we boot NuttX on PinePhone, directly to LVGL? Without a Serial Cable?_
+
+Sure can! In the previous section we talked about selecting the LVGL Demos.
+
+To boot directly to an LVGL Demo, make sure only 1 LVGL Demo is selected.
+
+[(Because of this)](https://github.com/apache/nuttx-apps/pull/1494)
+
+Then in `make menuconfig`...
+
+1. RTOS Features > Tasks and Scheduling
+
+   -  Set "Application entry point" to `lvgldemo_main`
+
+      (INIT_ENTRYPOINT)
+
+   -  Set "Application entry name" to `lvgldemo_main`
+
+      (INIT_ENTRYNAME)
+
+2. Application Configuration > NSH Library
+
+    - Disable "Have architecture-specific initialization"
+
+      (NSH_ARCHINIT)
+
+NuttX on PinePhone now boots to the LVGL Touchscreen Demo, without a Serial Cable! (Pic below)
+
+-   [LVGL Music Player Demo on YouTube](https://www.youtube.com/watch?v=_cxCnKNibtA)
+
+_Why disable "NSH Architecture-Specific Initialization"?_
+
+Normally the NSH NuttX Shell initialises the Display Driver and Touch Panel on PinePhone.
+
+But since we're not running NSH Shell, we'll have to initialise the Display Driver and Touch Panel in our LVGL Demo App.
+
+This is explained here...
+
+-   [lvgldemo.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L42-L59)
+
+![NuttX on PinePhone now boots to the LVGL Touchscreen Demo, without a Serial Cable](https://lupyuen.github.io/images/lvgl2-title.jpg)
+
+TODO
 
 ![Before changing LVGL Settings for PinePhone](https://lupyuen.github.io/images/fb-lvgl3.jpg)
 
@@ -280,49 +342,9 @@ From the video we see the LVGL Benchmark Numbers...
 
 Note that the LVGL Demos start automatically when NuttX boots on PinePhone. Let's talk about this...
 
-# Boot to LVGL on PinePhone
+# Create a Touchscreen App
 
-TODO
-
-_Can we boot NuttX on PinePhone, directly to LVGL? Without a Serial Cable?_
-
-Sure can! In the previous section we talked about selecting the LVGL Demos.
-
-To boot directly to an LVGL Demo, make sure only 1 LVGL Demo is selected.
-
-[(Because of this)](https://github.com/apache/nuttx-apps/pull/1494)
-
-Then in `make menuconfig`...
-
-1. RTOS Features > Tasks and Scheduling
-
-   -  Set "Application entry point" to `lvgldemo_main`
-
-      (INIT_ENTRYPOINT)
-
-   -  Set "Application entry name" to `lvgldemo_main`
-
-      (INIT_ENTRYNAME)
-
-2. Application Configuration > NSH Library
-
-    - Disable "Have architecture-specific initialization"
-
-      (NSH_ARCHINIT)
-
-NuttX on PinePhone now boots to the LVGL Touchscreen Demo, without a Serial Cable! (Pic below)
-
--   [LVGL Music Player Demo on YouTube](https://www.youtube.com/watch?v=_cxCnKNibtA)
-
-_Why disable "NSH Architecture-Specific Initialization"?_
-
-Normally the NSH NuttX Shell initialises the Display Driver and Touch Panel on PinePhone.
-
-But since we're not running NSH Shell, we'll have to initialise the Display Driver and Touch Panel in our LVGL Demo App.
-
-This is explained here...
-
--   [lvgldemo.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L42-L59)
+TODO: Zig?
 
 _Now that we can boot NuttX to an LVGL Touchscreen App, what next?_
 
@@ -333,12 +355,6 @@ LVGL already provides an Onscreen Keyboard that works on PinePhone NuttX.
 But I have no idea how to start the NSH Process and redirect the Console Input / Output to LVGL 🤔
 
 TODO: LED turns white if `lvgldemo` fails to start
-
-![NuttX on PinePhone now boots to the LVGL Touchscreen Demo, without a Serial Cable](https://lupyuen.github.io/images/lvgl2-title.jpg)
-
-# Create a Touchscreen App
-
-TODO: Zig?
 
 # What's Next
 
@@ -430,7 +446,7 @@ TODO
     make menuconfig
     ```
 
-1.  TODO
+1.  TODO: Boot to NuttX App
 
     Browse into "__???__ > __???__"
     
