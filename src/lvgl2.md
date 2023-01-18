@@ -343,4 +343,4 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build Apache NuttX RTOS for PinePhone
 
-TODO
+TODO: Build then overwrite apps/examples/lvgldemo/lvgldemo.c, then build again
