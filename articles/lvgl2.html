@@ -78,13 +78,14 @@
 <p><a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) now boots on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> and runs <strong>Touchscreen Apps</strong>! (Pic above)</p>
 <p><em>Does it need a special Serial Cable for PinePhone?</em></p>
 <p>Not any more… NuttX will auto-boot into an <strong>LVGL Touchscreen App</strong>, without a Serial Cable!</p>
-<p>All we need is a <strong>microSD Card</strong> for booting NuttX on PinePhone. NuttX won’t touch the eMMC Storage in PinePhone, so it’s perfect for exploring the internals of PinePhone.</p>
+<p>All we need is a <strong>microSD Card</strong> for booting NuttX on PinePhone. NuttX won’t touch the eMMC Storage in PinePhone.</p>
+<p>(Perfect for exploring the internals of PinePhone)</p>
 <p><em>What’s LVGL?</em></p>
 <p><a href="https://docs.lvgl.io/master/index.html"><strong>LVGL</strong></a> is a popular library for rendering <strong>Graphical User Interfaces</strong> on Microcontrollers.</p>
 <p>Now we have “upsized” <strong>LVGL for a Smartphone</strong>. And it works great!</p>
 <p><em>Does it mean we can create our own Touchscreen App for PinePhone?</em></p>
 <p>Yep! With LVGL, NuttX on PinePhone runs <em>almost</em> like a regular Smartphone.</p>
-<p>(Though much much simpler: It won’t make phone calls or browse the web)</p>
+<p>(Though much <em>much</em> simpler: It won’t make phone calls or browse the web)</p>
 <p>In this article we shall…</p>
 <ul>
 <li>
@@ -109,7 +110,7 @@
 <p>We begin by making a Bootable microSD…</p>
 <p><img src="https://lupyuen.github.io/images/arm-jumpdrive.png" alt="PinePhone Jumpdrive on microSD" /></p>
 <h1 id="boot-nuttx-on-pinephone"><a href="#boot-nuttx-on-pinephone">1 Boot NuttX on PinePhone</a></h1>
-<p>Let’s make a <strong>Bootable NuttX microSD</strong> that will start an LVGL Touchscreen App on PinePhone…</p>
+<p>Let’s make a <strong>Bootable NuttX microSD</strong> that will start an LVGL Touchscreen App on our PinePhone…</p>
 <ol>
 <li>
 <p>Download the <strong>PinePhone Jumpdrive Image <code>pine64-pinephone.img.xz</code></strong> from…</p>
@@ -131,7 +132,7 @@
 <p>NuttX boots on PinePhone and shows (very briefly) a <a href="https://lupyuen.github.io/images/de3-title.jpg"><strong>Test Pattern</strong></a>.</p>
 </li>
 <li>
-<p>The <strong>LVGL Touchscreen Demo</strong> appears on PinePhone!</p>
+<p>The <a href="https://lupyuen.github.io/images/lvgl2-title.jpg"><strong>LVGL Touchscreen Demo</strong></a> appears on PinePhone!</p>
 <p>Tap around and play with the LVGL Widgets (UI Controls).</p>
 <p><a href="https://www.youtube.com/watch?v=N-Yc2jj3TtQ">(Watch the demo on YouTube)</a></p>
 </li>
