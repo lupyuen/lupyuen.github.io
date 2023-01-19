@@ -180,8 +180,8 @@
 <p>But since we’re not running NSH Shell, we configured NuttX to initialise the drivers in our LVGL Demo App.</p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L42-L59">(More about this)</a></p>
 <p>The Default LVGL Demo is a little hard to use, let’s talk about it…</p>
-<p><img src="https://lupyuen.github.io/images/fb-lvgl3.jpg" alt="Default LVGL Demo App is not quite so Touch-Friendly" /></p>
-<p><em>Default LVGL Demo App is not quite so Touch-Friendly</em></p>
+<p><img src="https://lupyuen.github.io/images/fb-lvgl3.jpg" alt="Default LVGL Widget Demo is not quite so Touch-Friendly" /></p>
+<p><em>Default LVGL Widget Demo is not quite so Touch-Friendly</em></p>
 <h1 id="touch-friendly-lvgl"><a href="#touch-friendly-lvgl">3 Touch-Friendly LVGL</a></h1>
 <p><em>Is there a problem with the LVGL Demo App?</em></p>
 <p>The pic above shows the LVGL Demo App with the Default Settings. The <strong>dense screen</strong> is a little hard to use with my thick shaky fingers…</p>
@@ -268,43 +268,35 @@ CONFIG_LV_FONT_DEFAULT_MONTSERRAT_20=y
 </li>
 </ul>
 <p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lvgl2-title.jpg" alt="LVGL Demo App is Touch-Friendly now" /></p>
-<p><em>LVGL Demo App is Touch-Friendly now</em></p>
+<p><img src="https://lupyuen.github.io/images/lvgl2-title.jpg" alt="LVGL Widget Demo is Touch-Friendly now" /></p>
+<p><em>LVGL Widget Demo is Touch-Friendly now</em></p>
 <h1 id="lvgl-demos"><a href="#lvgl-demos">4 LVGL Demos</a></h1>
 <p>TODO</p>
-<p><em>We’ve seen the LVGL Widgets Demo on NuttX for PinePhone. What about other demos?</em></p>
-<p>Yep there are 5 LVGL Demos available in <code>make menuconfig</code>…</p>
-<ul>
+<p><em>We’ve seen the LVGL Widget Demo on NuttX for PinePhone. What about other demos?</em></p>
+<p>Yep there are 5 LVGL Demos available in <strong><code>make</code> <code>menuconfig</code></strong>…</p>
+<ol>
 <li>
-<p>Browse into “<strong>LVGL</strong> &gt; <strong>LVGL Configuration</strong>”</p>
-<ul>
-<li>
-<p>In “<strong>Demos</strong>”, select one or more of the these demos…</p>
-<p>“<strong>Show Some Widgets</strong>”</p>
-<p>“<strong>Demonstrate the usage of encoder and keyboard</strong>”</p>
-<p>“<strong>Benchmark your system</strong>”</p>
-<p>“<strong>Stress test for LVGL</strong>”</p>
-<p>“<strong>Music player demo</strong>”</p>
+<p>Browse into “<strong>Application Configuration</strong> &gt; <strong>Graphics Support</strong> &gt; <strong>Light and Versatile Graphics Library (LVGL)</strong> &gt; <strong>LVGL Configuration</strong>”</p>
 </li>
-</ul>
+<li>
+<p>In “<strong>Demos</strong>”, select one of the these demos…</p>
+<p>“<strong>Show Some Widgets</strong>” (We’ve seen this)</p>
+<p>“<strong>Demonstrate Usage of Encoder and Keyboard</strong>”</p>
+<p>“<strong>Benchmark Your System</strong>”</p>
+<p>“<strong>Stress Test for LVGL</strong>”</p>
+<p>“<strong>Music Player Demo</strong>”</p>
 </li>
-</ul>
-<p>For Music Player Demo, we need these fonts…</p>
-<ul>
 <li>
+<p><strong>For Music Player Demo:</strong> We need these fonts…</p>
 <p>Browse into “<strong>LVGL</strong> &gt; <strong>LVGL Configuration</strong>”</p>
-<ul>
-<li>
 <p>In “<strong>Font usage</strong>”, select…</p>
 <p>“<strong>Montserrat 16</strong>”</p>
 <p>“<strong>Montserrat 20</strong>”</p>
 <p>“<strong>Montserrat 22</strong>”</p>
 <p>“<strong>Montserrat 32</strong>”</p>
 </li>
-</ul>
-</li>
-</ul>
-<p>To run the demos on PinePhone…</p>
+</ol>
+<p>TODO: To run the demos on PinePhone…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; lvgldemo
 Usage: lvgldemo demo_name
 demo_name:
