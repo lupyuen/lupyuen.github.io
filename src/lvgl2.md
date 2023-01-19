@@ -248,7 +248,7 @@ The LVGL Demo App is now less dense and easier to touch (pic below)...
 
 (Too bad the scrolling isn't working yet)
 
-TODO
+Let's take a peek at the other LVGL Demos...
 
 ![LVGL Widget Demo is Touch-Friendly now](https://lupyuen.github.io/images/lvgl2-title.jpg)
 
@@ -341,6 +341,8 @@ So LVGL Performance on PinePhone looks OK.
 After all, LVGL is simply blasting pixels into a __RAM Framebuffer__ and the rest is done by PinePhone's Display Hardware...
 
 -   [__"NuttX RTOS for PinePhone: Framebuffer"__](https://lupyuen.github.io/articles/fb)
+
+Now we create our own LVGL Touchscreen App...
 
 # Create a Touchscreen App
 
