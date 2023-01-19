@@ -274,7 +274,9 @@ There are 5 LVGL Demos available in __`make` `menuconfig`__...
 
     "__Music Player Demo__"
 
-1.  __For Music Player Demo:__ We need these fonts...
+    [(LVGL won't boot if we select 2 or more demos)](https://github.com/apache/nuttx-apps/pull/1494)
+
+1.  __For Music Player:__ We need extra fonts...
 
     Browse into "__LVGL__ > __LVGL Configuration__"
     
