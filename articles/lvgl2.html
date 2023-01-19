@@ -217,10 +217,12 @@ void lv_demo_widgets(void) {
 <p>In the next part of the code, we tell LVGL to…</p>
 <ul>
 <li>
-<p>Increase the <strong>Tab Height</strong> (for earlier tapping)</p>
+<p>Increase the <strong>Tab Height</strong></p>
+<p>(For earlier tapping)</p>
 </li>
 <li>
-<p>Use <strong>Font Size 20</strong> (instead of Font Size 14)</p>
+<p>Use <strong>Font Size 20</strong></p>
+<p>(Instead of Font Size 14)</p>
 </li>
 </ul>
 <div class="example-wrap"><pre class="language-c"><code>  // Existing Code
@@ -262,25 +264,22 @@ CONFIG_LV_FONT_DEFAULT_MONTSERRAT_20=y
 <p>Which will make (most) LVGL Apps more legible on PinePhone.</p>
 <p>The LVGL Demo App is now less dense and easier to touch (pic below)…</p>
 <ul>
-<li>
-<p><a href="https://www.youtube.com/watch?v=JQTh3VTTTkc"><strong>Watch the Demo on YouTube</strong></a></p>
-<p>(Too bad the scrolling isn’t working yet)</p>
-</li>
+<li><a href="https://www.youtube.com/watch?v=JQTh3VTTTkc"><strong>Watch the Demo on YouTube</strong></a></li>
 </ul>
+<p>(Too bad the scrolling isn’t working yet)</p>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lvgl2-title.jpg" alt="LVGL Widget Demo is Touch-Friendly now" /></p>
 <p><em>LVGL Widget Demo is Touch-Friendly now</em></p>
 <h1 id="lvgl-demos"><a href="#lvgl-demos">4 LVGL Demos</a></h1>
-<p>TODO</p>
-<p><em>We’ve seen the LVGL Widget Demo on NuttX for PinePhone. What about other demos?</em></p>
-<p>Yep there are 5 LVGL Demos available in <strong><code>make</code> <code>menuconfig</code></strong>…</p>
+<p><em>We’ve seen the LVGL Widget Demo on PinePhone. What about other demos?</em></p>
+<p>There are 5 LVGL Demos available in <strong><code>make</code> <code>menuconfig</code></strong>…</p>
 <ol>
 <li>
 <p>Browse into “<strong>Application Configuration</strong> &gt; <strong>Graphics Support</strong> &gt; <strong>Light and Versatile Graphics Library (LVGL)</strong> &gt; <strong>LVGL Configuration</strong>”</p>
 </li>
 <li>
-<p>In “<strong>Demos</strong>”: Select one of the these demos…</p>
-<p>“<strong>Show Some Widgets</strong>” (We’ve seen this)</p>
+<p>In “<strong>Demos</strong>”: Select ONE of the these demos…</p>
+<p>“<strong>Show Some Widgets</strong>”</p>
 <p>“<strong>Demonstrate Usage of Encoder and Keyboard</strong>”</p>
 <p>“<strong>Benchmark Your System</strong>”</p>
 <p>“<strong>Stress Test for LVGL</strong>”</p>
@@ -296,28 +295,17 @@ CONFIG_LV_FONT_DEFAULT_MONTSERRAT_20=y
 <p>“<strong>Montserrat 32</strong>”</p>
 </li>
 </ol>
-<p>TODO: To run the demos on PinePhone…</p>
-<div class="example-wrap"><pre class="language-text"><code>nsh&gt; lvgldemo
-Usage: lvgldemo demo_name
-demo_name:
-  widgets
-  keypad_encoder
-  benchmark
-  stress
-  music
-</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/b96ed96db295334db1cfabf461efad83">(Source)</a></p>
-<p>We’ve seen the LVGL Widgets Demo…</p>
+<p>We’ve seen the LVGL Widget Demo…</p>
 <ul>
-<li><a href="https://www.youtube.com/watch?v=N-Yc2jj3TtQ">LVGL Widgets Demo on YouTube</a></li>
+<li><a href="https://www.youtube.com/watch?v=JQTh3VTTTkc"><strong>LVGL Widget Demo on YouTube</strong></a></li>
 </ul>
 <p>Here’s the LVGL Music Player Demo…</p>
 <ul>
-<li><a href="https://www.youtube.com/watch?v=_cxCnKNibtA">LVGL Music Player Demo on YouTube</a></li>
+<li><a href="https://www.youtube.com/watch?v=_cxCnKNibtA"><strong>LVGL Music Player Demo on YouTube</strong></a></li>
 </ul>
 <p>And the LVGL Benchmark Demo…</p>
 <ul>
-<li><a href="https://www.youtube.com/watch?v=deBzb-VbHck">LVGL Benchmark Demo on YouTube</a></li>
+<li><a href="https://www.youtube.com/watch?v=deBzb-VbHck"><strong>LVGL Benchmark Demo on YouTube</strong></a></li>
 </ul>
 <p>From the video we see the LVGL Benchmark Numbers…</p>
 <ul>
@@ -346,7 +334,17 @@ demo_name:
 <tr><td>(Many many more)</td><td></td></tr>
 </tbody></table>
 </div>
-<p>Note that the LVGL Demos start automatically when NuttX boots on PinePhone. Let’s talk about this…</p>
+<p>TODO: To run the demos on PinePhone…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; lvgldemo
+Usage: lvgldemo demo_name
+demo_name:
+  widgets
+  keypad_encoder
+  benchmark
+  stress
+  music
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/b96ed96db295334db1cfabf461efad83">(Source)</a></p>
 <h1 id="create-a-touchscreen-app"><a href="#create-a-touchscreen-app">5 Create a Touchscreen App</a></h1>
 <p>TODO: Zig?</p>
 <p><em>How to create our own LVGL Touchscreen App?</em></p>
