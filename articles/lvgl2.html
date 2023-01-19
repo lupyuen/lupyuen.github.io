@@ -255,7 +255,9 @@ void lv_demo_widgets(void) {
   }
 </code></pre></div>
 <p>We set the Default Font to <strong>Montserrat 20</strong> (previously Montserrat 14) in the LVGL Configuration for NuttX: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/lvgl/defconfig#L52">configs/lvgl/defconfig</a></p>
-<div class="example-wrap"><pre class="language-text"><code>CONFIG_LV_FONT_DEFAULT_MONTSERRAT_20=y
+<div class="example-wrap"><pre class="language-text"><code>## Set the LVGL Default Font to Montserrat 20
+## (Previously Montserrat 14)
+CONFIG_LV_FONT_DEFAULT_MONTSERRAT_20=y
 </code></pre></div>
 <p>Which will make (most) LVGL Apps more legible on PinePhone.</p>
 <p>The LVGL Demo App is now less dense and easier to use…</p>
