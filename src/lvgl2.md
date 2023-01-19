@@ -342,7 +342,7 @@ After all, LVGL is simply blasting pixels into a __RAM Framebuffer__ and the res
 
 -   [__"NuttX RTOS for PinePhone: Framebuffer"__](https://lupyuen.github.io/articles/fb)
 
-Now we create our own LVGL Touchscreen App...
+We're finally ready to create our own LVGL App for PinePhone!
 
 # Create a Touchscreen App
 
@@ -350,7 +350,7 @@ TODO
 
 _We've seen the LVGL Demo Apps for PinePhone..._
 
-_So we can create our own Touchscreen App for PinePhone?_
+_Can we create our own Touchscreen App for PinePhone?_
 
 Yep! With LVGL, NuttX on PinePhone runs Touchscreen Apps _almost_ like a regular Smartphone.
 
@@ -386,6 +386,10 @@ TODO: LED turns white if `lvgldemo` fails to start
 TODO: Zig?
 
 -   [__"Build an LVGL Touchscreen App with Zig"__](https://lupyuen.github.io/articles/lvgl)
+
+TODO: [Lisp?](https://github.com/vygr/ChrysaLisp)
+
+TODO: [Smalltalk?](https://syndicate-lang.org/journal/2022/06/03/phone-progress)
 
 # What's Next
 
