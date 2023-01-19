@@ -71,7 +71,9 @@ Let's make a __Bootable NuttX microSD__ that will start an LVGL Touchscreen App 
 
 1.  Insert the microSD Card into PinePhone and power up PinePhone.
 
-    NuttX boots on PinePhone and shows (very briefly) a [__Test Pattern__](https://lupyuen.github.io/images/dsi3-title.jpg).
+    NuttX boots on PinePhone and shows a [__Test Pattern__](https://lupyuen.github.io/images/dsi3-title.jpg).
+
+    (Very briefly)
 
 1.  The [__LVGL Touchscreen Demo__](https://lupyuen.github.io/images/lvgl2-title.jpg) appears on PinePhone! [(Like this)](https://lupyuen.github.io/images/lvgl2-title.jpg)
 
@@ -87,7 +89,7 @@ Someday we might fix these issues in our driver...
 
 -   [__"Touch Panel Driver Limitations"__](https://lupyuen.github.io/articles/touch2#driver-limitations)
 
-Let's find out how we made Nuttx boot to LVGL...
+Let's find out how we made NuttX boot to LVGL...
 
 ![PinePhone with USB Serial Debug Cable](https://lupyuen.github.io/images/dsi3-title.jpg)
 
