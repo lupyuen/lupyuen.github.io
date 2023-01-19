@@ -336,7 +336,9 @@ From the last video we see the [__LVGL Benchmark Numbers__](https://www.youtube.
 | Border Rounded | 24
 | (Many many more) |
 
-Which look OK. After all, LVGL is simply blasting pixels into a __RAM Framebuffer__...
+LVGL Performance on PinePhone looks OK.
+
+After all, LVGL is simply blasting pixels into a __RAM Framebuffer__...
 
 -   [__"NuttX RTOS for PinePhone: Framebuffer"__](https://lupyuen.github.io/articles/fb)
 
