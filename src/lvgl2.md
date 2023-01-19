@@ -346,7 +346,7 @@ We're finally ready to create our own LVGL App for PinePhone!
 
 # Create a Touchscreen App
 
-_We've seen the LVGL Demo Apps for PinePhone..._
+_We've seen the LVGL Demo Apps..._
 
 _Can we create our own Touchscreen App for PinePhone?_
 
