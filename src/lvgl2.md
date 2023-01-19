@@ -344,7 +344,13 @@ After all, LVGL is simply blasting pixels into a __RAM Framebuffer__ and the res
 
 # Create a Touchscreen App
 
-TODO: Zig?
+TODO
+
+_We've seen the LVGL Demo Apps for PinePhone..._
+
+_So we can create our own Touchscreen App for PinePhone?_
+
+Yep! With LVGL, NuttX on PinePhone runs Touchscreen Apps _almost_ like a regular Smartphone.
 
 _How to create our own LVGL Touchscreen App?_
 
@@ -374,6 +380,10 @@ LVGL already provides an Onscreen Keyboard that works on PinePhone NuttX.
 But I have no idea how to start the NSH Process and redirect the Console Input / Output to LVGL 🤔
 
 TODO: LED turns white if `lvgldemo` fails to start
+
+TODO: Zig?
+
+-   [__"Build an LVGL Touchscreen App with Zig"__](https://lupyuen.github.io/articles/lvgl)
 
 # What's Next
 
