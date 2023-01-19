@@ -95,7 +95,7 @@ Let's find out how we made Nuttx boot to LVGL...
 
 # Boot to LVGL
 
-_How did we configure NuttX to boot with an LVGL App?_
+_How did we configure NuttX to boot an LVGL App?_
 
 Normally NuttX boots to the __NSH Shell__. Which lets us execute Console Commands through a [__USB Serial Debug Cable__](https://wiki.pine64.org/index.php/PinePhone#Serial_console). (Pic above)
 
@@ -441,6 +441,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/lvgl2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl2.md)
 
+![PinePhone with USB Serial Debug Cable](https://lupyuen.github.io/images/dsi3-title.jpg)
+
+[_PinePhone with USB Serial Debug Cable_](https://wiki.pine64.org/index.php/PinePhone#Serial_console)
+
 # Appendix: Build Apache NuttX RTOS for PinePhone
 
 The easiest way to run Apache NuttX RTOS on PinePhone is to download the __NuttX Image__ and boot it on PinePhone...
@@ -509,6 +513,10 @@ But if we're keen to __build NuttX ourselves__, here are the steps...
     ```
 
     And replace by the contents of this file: [__lv_demo_widgets.c__](https://raw.githubusercontent.com/lupyuen2/wip-pinephone-lvgl/pinephone/demos/widgets/lv_demo_widgets.c)
+
+1.  If we wish to boot a __different LVGL Demo__ (instead of the Widget Demo), follow the steps here...
+
+    [__"LVGL Demos"__](https://lupyuen.github.io/articles/lvgl2#lvgl-demos)
 
 1.  Rebuild NuttX and compress the NuttX Image...
 
