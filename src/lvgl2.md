@@ -383,7 +383,7 @@ But I have no idea how to start the NSH Process and redirect the Console Input /
 
 _Maybe we can port a Graphical IDE to PinePhone and NuttX?_
 
-Yeah maybe [__Lisp__](https://github.com/vygr/ChrysaLisp)? Or [__Smalltalk__](https://syndicate-lang.org/journal/2022/06/03/phone-progress)?
+Yeah perhaps [__Lisp__](https://github.com/vygr/ChrysaLisp)? Or [__Smalltalk__](https://syndicate-lang.org/journal/2022/06/03/phone-progress)?
 
 TODO: Maybe build in Zig?
 
