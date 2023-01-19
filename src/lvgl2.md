@@ -77,7 +77,7 @@ Let's make a __Bootable NuttX microSD__ that will start an LVGL Touchscreen App 
 
     Tap around and play with the LVGL Widgets (UI Controls).
 
-    [(Watch the demo on YouTube)](https://www.youtube.com/watch?v=N-Yc2jj3TtQ)
+    [(Watch the demo on YouTube)](https://www.youtube.com/watch?v=JQTh3VTTTkc)
 
 _Something doesn't work right..._
 
@@ -240,7 +240,7 @@ Which will make (most) LVGL Apps more legible on PinePhone.
 
 The LVGL Demo App is now less dense and easier to touch (pic below)...
 
--   [__TODO: Watch the Demo on YouTube__](https://www.youtube.com/shorts/De5ZehlIka8)
+-   [__Watch the Demo on YouTube__](https://www.youtube.com/watch?v=JQTh3VTTTkc)
 
     (Too bad the scrolling isn't working yet)
 
