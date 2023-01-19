@@ -512,9 +512,10 @@ gzip Image
 </li>
 </ol>
 <p>Follow the steps in the next section to boot the NuttX Image…</p>
+<p><img src="https://lupyuen.github.io/images/arm-jumpdrive.png" alt="PinePhone Jumpdrive on microSD" /></p>
 <h1 id="appendix-boot-apache-nuttx-rtos-on-pinephone"><a href="#appendix-boot-apache-nuttx-rtos-on-pinephone">9 Appendix: Boot Apache NuttX RTOS on PinePhone</a></h1>
-<p>TODO</p>
-<p>We’re ready to boot NuttX on our PinePhone!</p>
+<p>In the previous section we’ve built the NuttX Image <strong><code>Image.gz</code></strong>.</p>
+<p>Let’s <strong>boot the NuttX Image</strong> on PinePhone, assuming we have a <a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><strong>USB Serial Debug Cable</strong></a>…</p>
 <ol>
 <li>
 <p>Download the <strong>PinePhone Jumpdrive Image <code>pine64-pinephone.img.xz</code></strong> from…</p>
@@ -543,26 +544,16 @@ to <strong>Off</strong>.</p>
 <p>To see the available commands in NuttShell…</p>
 <div class="example-wrap"><pre class="language-bash"><code>help
 </code></pre></div>
-<p>To run the <a href="https://lupyuen.github.io/articles/fb#lvgl-graphics-library"><strong>LVGL Demo App</strong></a>…</p>
+<p>To run the <a href="https://lupyuen.github.io/articles/fb#lvgl-graphics-library"><strong>LVGL Widget Demo</strong></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>lvgldemo widgets
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/images/fb-lvgl3.jpg">(We should see this)</a></p>
+<p><a href="https://gist.github.com/lupyuen/b96ed96db295334db1cfabf461efad83">(Other LVGL Demos)</a></p>
 </li>
 </ol>
 <p>And that’s how we build and boot NuttX for PinePhone!</p>
 <p><img src="https://lupyuen.github.io/images/fb-run2.png" alt="Booting Apache NuttX RTOS on PinePhone" /></p>
 <p><a href="https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd">(See the Boot Log)</a></p>
-<p>TODO: To run the demos on PinePhone…</p>
-<div class="example-wrap"><pre class="language-text"><code>nsh&gt; lvgldemo
-Usage: lvgldemo demo_name
-demo_name:
-  widgets
-  keypad_encoder
-  benchmark
-  stress
-  music
-</code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/b96ed96db295334db1cfabf461efad83">(Source)</a></p>
 
     
 </body>
