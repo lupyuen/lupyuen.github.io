@@ -300,13 +300,15 @@ And the LVGL Benchmark Demo...
 
 -   [__LVGL Benchmark Demo on YouTube__](https://www.youtube.com/watch?v=deBzb-VbHck)
 
-From the video we see the LVGL Benchmark Numbers...
+_How well does LVGL perform on PinePhone?_
 
-- Weighted Frames Per Second: 20
-- Opa Speed: 100%
+From the last video we see the [__LVGL Benchmark Numbers__](https://www.youtube.com/watch?v=deBzb-VbHck)...
+
+- Weighted Frames Per Second: __20__
+- Opa Speed: __100%__
 
 | Slow but common cases | Frames Per Sec |
-|-----------------------|-------------------|
+|-----------------------|:--------------:|
 | Image RGB | 19
 | Image RGB + Opa | 17
 | Image ARGB | 18
@@ -316,7 +318,7 @@ From the video we see the LVGL Benchmark Numbers...
 | Substr Image | 19
 
 | All Cases | Frames Per Sec |
-|-----------|-------------------|
+|-----------|:--------------:|
 | Rectangle | 24
 | Rectangle + Opa | 23
 | Rectangle Rounded | 23
