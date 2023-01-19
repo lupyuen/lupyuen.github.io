@@ -302,6 +302,10 @@ And the LVGL Benchmark Demo...
 
 -   [__LVGL Benchmark Demo on YouTube__](https://www.youtube.com/watch?v=deBzb-VbHck)
 
+Which gives us some useful numbers...
+
+# LVGL Performance
+
 _How well does LVGL perform on PinePhone?_
 
 From the last video we see the [__LVGL Benchmark Numbers__](https://www.youtube.com/watch?v=deBzb-VbHck)...
@@ -332,20 +336,9 @@ From the last video we see the [__LVGL Benchmark Numbers__](https://www.youtube.
 | Border Rounded | 24
 | (Many many more) |
 
-TODO: To run the demos on PinePhone...
+Which look OK. After all, LVGL is simply blasting pixels into a __RAM Framebuffer__...
 
-```text
-nsh> lvgldemo
-Usage: lvgldemo demo_name
-demo_name:
-  widgets
-  keypad_encoder
-  benchmark
-  stress
-  music
-```
-
-[(Source)](https://gist.github.com/lupyuen/b96ed96db295334db1cfabf461efad83)
+-   [__"NuttX RTOS for PinePhone: Framebuffer"__](https://lupyuen.github.io/articles/fb)
 
 # Create a Touchscreen App
 
@@ -573,3 +566,18 @@ And that's how we build and boot NuttX for PinePhone!
 ![Booting Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/fb-run2.png)
 
 [(See the Boot Log)](https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd)
+
+TODO: To run the demos on PinePhone...
+
+```text
+nsh> lvgldemo
+Usage: lvgldemo demo_name
+demo_name:
+  widgets
+  keypad_encoder
+  benchmark
+  stress
+  music
+```
+
+[(Source)](https://gist.github.com/lupyuen/b96ed96db295334db1cfabf461efad83)
