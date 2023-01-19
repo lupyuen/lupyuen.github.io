@@ -437,7 +437,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build Apache NuttX RTOS for PinePhone
 
-TODO
+The easiest way to run Apache NuttX RTOS on PinePhone is to download the __NuttX Image__ and boot it on PinePhone...
+
+-   [__"Boot NuttX on PinePhone"__](https://lupyuen.github.io/articles/lvgl2#boot-nuttx-on-pinephone)
+
+But if we're keen to __build NuttX ourselves__, here are the steps...
 
 1.  Install the Build Prerequisites, skip the RISC-V Toolchain...
 
@@ -472,18 +476,15 @@ TODO
 
     cd nuttx
     tools/configure.sh pinephone:lvgl
-    make menuconfig
     ```
 
-1.  TODO: Boot to NuttX App
+1.  By default, NuttX boots into the __NSH Shell__.
 
-    Browse into "__???__ > __???__"
-    
-    -   In "__???__"
-    
-        Enable "__???__"
+    [(Which requires a __USB Serial Debug Cable__ for PinePhone)](https://wiki.pine64.org/index.php/PinePhone#Serial_console)
 
-    Save the configuration and exit __`menuconfig`__
+    If we wish to boot an __LVGL App__, follow the instructions here...
+
+    [__"Boot to LVGL"__](https://lupyuen.github.io/articles/lvgl2#boot-to-lvgl)
 
 1.  Build the NuttX Project...
 
@@ -491,21 +492,26 @@ TODO
     make
     ```
 
-    [(TODO: See the Build Log)](https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc)
+    [(See the Build Log)](https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc)
 
-1.  TODO: Build then overwrite apps/graphics/lvgl/lvgl/ demos/widgets/lv_demo_widgets.c, then build again
+1.  With the default settings, the __LVGL Widget Demo__ isn't quite so Touch-Friendly. [(See this)](https://lupyuen.github.io/articles/lvgl2#touch-friendly-lvgl)
 
-    [lv_demo_widgets.c](https://github.com/lupyuen2/wip-pinephone-lvgl/blob/pinephone/demos/widgets/lv_demo_widgets.c#L96-L150)
+    To fix this, look for this LVGL Source File...
 
-1.  Compress the NuttX Image...
+    ```text
+    apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c
+    ```
+
+    And replace by the contents of this file: [__lv_demo_widgets.c__](https://raw.githubusercontent.com/lupyuen2/wip-pinephone-lvgl/pinephone/demos/widgets/lv_demo_widgets.c)
+
+1.  Rebuild NuttX and compress the NuttX Image...
 
     ```bash
+    make
     cp nuttx.bin Image
     rm -f Image.gz
     gzip Image
     ```
-
-    [(TODO: See the Build Log)](https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc)
 
     This produces the file __`Image.gz`__, which will be copied to PinePhone.
 
@@ -523,7 +529,7 @@ TODO
 
     And [__apply this patch__](https://github.com/apache/nuttx/pull/7284/commits/518b0eb31cb66f25b590ae9a79ab16c319b96b94#diff-12291efd8a0ded1bc38bad733d99e4840ae5112b465c04287f91ba5169612c73).
 
-TODO: Boot NuttX on PinePhone
+Follow the steps in the next section to boot the NuttX Image...
 
 # Appendix: Boot Apache NuttX RTOS on PinePhone
 
