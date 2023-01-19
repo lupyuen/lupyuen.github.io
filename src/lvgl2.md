@@ -346,19 +346,19 @@ We're finally ready to create our own LVGL App for PinePhone!
 
 # Create a Touchscreen App
 
-TODO
-
 _We've seen the LVGL Demo Apps for PinePhone..._
 
 _Can we create our own Touchscreen App for PinePhone?_
 
 Yep! With LVGL, NuttX on PinePhone runs Touchscreen Apps _almost_ like a regular Smartphone.
 
-_How to create our own LVGL Touchscreen App?_
+Simplest way to create our own app: We take the __LVGL Widget Demo__ and modify it.
 
-Inside our NuttX Project, look for the __LVGL Demo Source Code__...
+Inside our NuttX Project, look for the __Widget Demo Source Code__...
 
--   [apps/graphics/lvgl/lvgl/ demos/widgets/lv_demo_widgets.c](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L202-L528)
+```text
+apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c
+```
 
 Modify the function [__lv_demo_widgets__](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L202-L528) to create our own __LVGL Widgets__...
 
@@ -373,23 +373,23 @@ void lv_demo_widgets(void) {
 
 For details, check out the [__LVGL Widget Docs__](https://docs.lvgl.io/master/widgets/index.html).
 
-_Now that we can boot NuttX to an LVGL Touchscreen App, what next?_
+_What apps will we create for PinePhone and NuttX?_
 
-Maybe we can create an LVGL Terminal App? That will let us interact with the NSH NuttX Shell?
+Maybe we can build an __LVGL Terminal App__? That will let us interact with the NSH NuttX Shell, without a Serial Debug Cable?
 
-LVGL already provides an Onscreen Keyboard that works on PinePhone NuttX.
+LVGL already provides an __Onscreen Keyboard__ that works on PinePhone.
 
 But I have no idea how to start the NSH Process and redirect the Console Input / Output to LVGL 🤔
 
-TODO: LED turns white if `lvgldemo` fails to start
+_Maybe we can port a Graphical IDE to PinePhone and NuttX?_
 
-TODO: Zig?
+Yeah maybe [__Lisp__](https://github.com/vygr/ChrysaLisp)? Or [__Smalltalk__](https://syndicate-lang.org/journal/2022/06/03/phone-progress)?
+
+TODO: Maybe build in Zig?
 
 -   [__"Build an LVGL Touchscreen App with Zig"__](https://lupyuen.github.io/articles/lvgl)
 
-TODO: [Lisp?](https://github.com/vygr/ChrysaLisp)
-
-TODO: [Smalltalk?](https://syndicate-lang.org/journal/2022/06/03/phone-progress)
+TODO: LED turns white if `lvgldemo` fails to start
 
 # What's Next
 

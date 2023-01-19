@@ -102,7 +102,7 @@ I'm not paid by Apache Software Foundation. But I'm extremely grateful to my [__
 
 If we're keen to build and boot NuttX on our PinePhone, please read on...
 
-![USB Serial Debug Cable for PinePhone](https://lupyuen.github.io/images/arm-uart2.jpg)
+![USB Serial Debug Cable for PinePhone](https://lupyuen.github.io/images/dsi3-title.jpg)
 
 [_USB Serial Debug Cable for PinePhone_](https://wiki.pine64.org/index.php/PinePhone#Serial_console)
 
