@@ -189,7 +189,7 @@
 <li><a href="https://youtu.be/N-Yc2jj3TtQ"><strong>Watch the demo on YouTube</strong></a></li>
 </ul>
 <p>Let’s tweak the LVGL Demo Code to make our app more accessible.</p>
-<p>We modified this LVGL Source File: <a href="https://github.com/lupyuen2/wip-pinephone-lvgl/blob/pinephone/demos/widgets/lv_demo_widgets.c#L96-L150">apps/graphics/lvgl/lvgl/ demos/widgets/lv_demo_widgets.c</a></p>
+<p>We modify this LVGL Source File: <a href="https://github.com/lupyuen2/wip-pinephone-lvgl/blob/pinephone/demos/widgets/lv_demo_widgets.c#L96-L150">apps/graphics/lvgl/lvgl/ demos/widgets/lv_demo_widgets.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Insert this
 #include &lt;stdio.h&gt;
 
@@ -210,6 +210,10 @@ void lv_demo_widgets(void) {
     #undef LV_LOG_WARN
     #define LV_LOG_WARN(s) puts(s)
 </code></pre></div>
+<p>The first part of the code above comes from LVGL. Since PinePhone has 720 Horizontal Pixels, the code sets <strong>Display Size to Large</strong>. Which squishes everything on PinePhone.</p>
+<p>That’s why in the code above we override and set <strong>Display Size to Medium</strong>. Which makes the screen less dense.</p>
+<p><em>Shouldn’t the Display Size be computed based on Screen DPI?</em></p>
+<p>Yeah probably. PinePhone’s Display has <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/lvgl/defconfig#L51"><strong>267 DPI</strong></a>, we should use it in the code above to compute the Display Size.</p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>    // Existing Code
     font_large = LV_FONT_DEFAULT;
@@ -239,7 +243,8 @@ void lv_demo_widgets(void) {
 #endif
     }
 </code></pre></div>
-<p>(Maybe we should modify the code above to include DPI? PinePhone’s Display has 267 DPI)</p>
+<p>TODO</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/lvgl/defconfig#L52">Default Font</a></p>
 <p>Configure LVGL with these settings…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver">“LVGL Calls Our Driver”</a></li>
