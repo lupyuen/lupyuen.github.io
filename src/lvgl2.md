@@ -189,7 +189,11 @@ _Shouldn't the Display Size be computed based on Screen DPI?_
 
 Yeah probably. PinePhone's Display has [__267 DPI__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/lvgl/defconfig#L51), we should use it in the code above to compute the Display Size.
 
-TODO
+In the next part of the code, we tell LVGL to...
+
+-   Increase the __Tab Height__ (for earlier tapping)
+
+-   Use __Font Size 20__ (instead of Font Size 14)
 
 ```c
     // Existing Code
@@ -221,49 +225,19 @@ TODO
     }
 ```
 
-TODO
+We set the Default Font to __Montserrat 20__ (previously Montserrat 14) in the LVGL Configuration for NuttX: [configs/lvgl/defconfig](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/lvgl/defconfig#L52)
 
-[Default Font](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/lvgl/defconfig#L52)
+```text
+CONFIG_LV_FONT_DEFAULT_MONTSERRAT_20=y
+```
 
-Configure LVGL with these settings...
-
--   ["LVGL Calls Our Driver"](https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver)
-
-And add the fonts...
-
--   Browse into "__LVGL__ > __LVGL Configuration__"
-    
-    -   In "__Font usage__ > __Enable built-in fonts__"
-
-        Enable "__Montserrat 20__"
+Which will make (most) LVGL Apps more legible on PinePhone.
 
 The LVGL Demo App is now less dense and easier to use...
 
--   [Watch the Demo on YouTube](https://www.youtube.com/shorts/De5ZehlIka8)
+-   [TODO: Watch the Demo on YouTube](https://www.youtube.com/shorts/De5ZehlIka8)
 
-    (Shot at ISO 800, F/5.6, Manual Focus on Sony NEX-7. Post-processed for Brightness, Constrast and White Point)
-
-_What if we increase the Default Font Size? From Montserrat 14 to Montserrat 20?_
-
-Let's increase the Default Font Size from 14 to 20...
-
--   Browse into "__LVGL__ > __LVGL Configuration__"
-    
-    -   In "__Font usage__ > __Select theme default title font__"
-
-        Select "__Montserrat 20__"
-
-We run the LVGL Demo App as is, leaving Display Size `disp_size` as default `DISP_LARGE`.
-
-Now the text is legible, but some controls are squished...
-
--   [Watch the Demo on YouTube](https://www.youtube.com/watch?v=N-Yc2jj3TtQ)
-
-    (Shot at ISO 400, F/5.0, Manual Focus, Exposure 0.3 on Sony NEX-7. No post-processing)
-
-TODO: We need to increase the Default Font Size from 14 to 20, AND set Display Size `disp_size` to `DISP_MEDIUM`. And we will get this...
-
-TODO: [lv_demo_widgets.c](https://github.com/lupyuen2/wip-pinephone-lvgl/blob/pinephone/demos/widgets/lv_demo_widgets.c#L96-L150)
+TODO
 
 ![After changing LVGL Settings for PinePhone](https://lupyuen.github.io/images/lvgl2-title.jpg)
 
