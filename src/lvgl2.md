@@ -165,20 +165,20 @@ We modify this LVGL Source File: [apps/graphics/lvgl/lvgl/ demos/widgets/lv_demo
 
 // Modify this function
 void lv_demo_widgets(void) {
-    // Note: PinePhone has width 720 pixels.
-    // LVGL will set Display Size to Large, which looks really tiny.
-    // Shouldn't this code depend on DPI? (267 DPI for PinePhone)
-    if(LV_HOR_RES <= 320) disp_size = DISP_SMALL;
-    else if(LV_HOR_RES < 720) disp_size = DISP_MEDIUM;
-    else disp_size = DISP_LARGE;
+  // Note: PinePhone has width 720 pixels.
+  // LVGL will set Display Size to Large, which looks really tiny.
+  // Shouldn't this code depend on DPI? (267 DPI for PinePhone)
+  if(LV_HOR_RES <= 320) disp_size = DISP_SMALL;
+  else if(LV_HOR_RES < 720) disp_size = DISP_MEDIUM;
+  else disp_size = DISP_LARGE;
 
-    // Insert this: Change Display Size from Large to Medium,
-    // to make Widgets easier to tap
-    disp_size = DISP_MEDIUM;
+  // Insert this: Change Display Size from Large to Medium,
+  // to make Widgets easier to tap
+  disp_size = DISP_MEDIUM;
 
-    // Insert this: Print warning if font is missing
-    #undef LV_LOG_WARN
-    #define LV_LOG_WARN(s) puts(s)
+  // Insert this: Print warning if font is missing
+  #undef LV_LOG_WARN
+  #define LV_LOG_WARN(s) puts(s)
 ```
 
 The first part of the code above comes from LVGL. Since PinePhone has 720 Horizontal Pixels, the code sets __Display Size to Large__. Which squishes everything on PinePhone.
@@ -196,33 +196,36 @@ In the next part of the code, we tell LVGL to...
 -   Use __Font Size 20__ (instead of Font Size 14)
 
 ```c
-    // Existing Code
-    font_large = LV_FONT_DEFAULT;
-    font_normal = LV_FONT_DEFAULT;
-    lv_coord_t tab_h;
+  // Existing Code
+  font_large = LV_FONT_DEFAULT;
+  font_normal = LV_FONT_DEFAULT;
+  lv_coord_t tab_h;
 
-    // For Large Display Size (unused)...
-    if(disp_size == DISP_LARGE) {
-        ...
-    }
-    // For Medium Display Size...
-    else if(disp_size == DISP_MEDIUM) {
-        // Change this: Increase Tab Height from 45 to 70, to make Tabs easier to tap
-        tab_h = 70;
-        // Previously: tab_h = 45;
+  // For Large Display Size (unused)...
+  if(disp_size == DISP_LARGE) {
+    ...
+  }
+  // For Medium Display Size...
+  else if(disp_size == DISP_MEDIUM) {
+    // Change this: Increase Tab Height from 
+    // 45 to 70, to make Tabs easier to tap
+    tab_h = 70;
+    // Previously: tab_h = 45;
 
 #if LV_FONT_MONTSERRAT_20
-        font_large     = &lv_font_montserrat_20;
+    font_large = &lv_font_montserrat_20;
 #else
-        LV_LOG_WARN("LV_FONT_MONTSERRAT_20 is not enabled for the widgets demo. Using LV_FONT_DEFAULT instead.");
+    LV_LOG_WARN("LV_FONT_MONTSERRAT_20 is not enabled for the widgets demo. Using LV_FONT_DEFAULT instead.");
 #endif
+
 #if LV_FONT_MONTSERRAT_14
-        // Use the default font: Montserrat 20 instead of Montserrat 14
-        // Previously: font_normal    = &lv_font_montserrat_14;
+    // Change this: Use the default font Montserrat 20 
+    // (instead of Montserrat 14)
+    // Previously: font_normal = &lv_font_montserrat_14;
 #else
-        LV_LOG_WARN("LV_FONT_MONTSERRAT_14 is not enabled for the widgets demo. Using LV_FONT_DEFAULT instead.");
+    LV_LOG_WARN("LV_FONT_MONTSERRAT_14 is not enabled for the widgets demo. Using LV_FONT_DEFAULT instead.");
 #endif
-    }
+  }
 ```
 
 We set the Default Font to __Montserrat 20__ (previously Montserrat 14) in the LVGL Configuration for NuttX: [configs/lvgl/defconfig](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/lvgl/defconfig#L52)
