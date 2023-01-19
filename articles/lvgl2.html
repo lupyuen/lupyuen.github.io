@@ -195,20 +195,20 @@
 
 // Modify this function
 void lv_demo_widgets(void) {
-    // Note: PinePhone has width 720 pixels.
-    // LVGL will set Display Size to Large, which looks really tiny.
-    // Shouldn&#39;t this code depend on DPI? (267 DPI for PinePhone)
-    if(LV_HOR_RES &lt;= 320) disp_size = DISP_SMALL;
-    else if(LV_HOR_RES &lt; 720) disp_size = DISP_MEDIUM;
-    else disp_size = DISP_LARGE;
+  // Note: PinePhone has width 720 pixels.
+  // LVGL will set Display Size to Large, which looks really tiny.
+  // Shouldn&#39;t this code depend on DPI? (267 DPI for PinePhone)
+  if(LV_HOR_RES &lt;= 320) disp_size = DISP_SMALL;
+  else if(LV_HOR_RES &lt; 720) disp_size = DISP_MEDIUM;
+  else disp_size = DISP_LARGE;
 
-    // Insert this: Change Display Size from Large to Medium,
-    // to make Widgets easier to tap
-    disp_size = DISP_MEDIUM;
+  // Insert this: Change Display Size from Large to Medium,
+  // to make Widgets easier to tap
+  disp_size = DISP_MEDIUM;
 
-    // Insert this: Print warning if font is missing
-    #undef LV_LOG_WARN
-    #define LV_LOG_WARN(s) puts(s)
+  // Insert this: Print warning if font is missing
+  #undef LV_LOG_WARN
+  #define LV_LOG_WARN(s) puts(s)
 </code></pre></div>
 <p>The first part of the code above comes from LVGL. Since PinePhone has 720 Horizontal Pixels, the code sets <strong>Display Size to Large</strong>. Which squishes everything on PinePhone.</p>
 <p>That’s why in the code above we override and set <strong>Display Size to Medium</strong>. Which makes the screen less dense.</p>
@@ -223,33 +223,36 @@ void lv_demo_widgets(void) {
 <p>Use <strong>Font Size 20</strong> (instead of Font Size 14)</p>
 </li>
 </ul>
-<div class="example-wrap"><pre class="language-c"><code>    // Existing Code
-    font_large = LV_FONT_DEFAULT;
-    font_normal = LV_FONT_DEFAULT;
-    lv_coord_t tab_h;
+<div class="example-wrap"><pre class="language-c"><code>  // Existing Code
+  font_large = LV_FONT_DEFAULT;
+  font_normal = LV_FONT_DEFAULT;
+  lv_coord_t tab_h;
 
-    // For Large Display Size (unused)...
-    if(disp_size == DISP_LARGE) {
-        ...
-    }
-    // For Medium Display Size...
-    else if(disp_size == DISP_MEDIUM) {
-        // Change this: Increase Tab Height from 45 to 70, to make Tabs easier to tap
-        tab_h = 70;
-        // Previously: tab_h = 45;
+  // For Large Display Size (unused)...
+  if(disp_size == DISP_LARGE) {
+    ...
+  }
+  // For Medium Display Size...
+  else if(disp_size == DISP_MEDIUM) {
+    // Change this: Increase Tab Height from 
+    // 45 to 70, to make Tabs easier to tap
+    tab_h = 70;
+    // Previously: tab_h = 45;
 
 #if LV_FONT_MONTSERRAT_20
-        font_large     = &amp;lv_font_montserrat_20;
+    font_large = &amp;lv_font_montserrat_20;
 #else
-        LV_LOG_WARN(&quot;LV_FONT_MONTSERRAT_20 is not enabled for the widgets demo. Using LV_FONT_DEFAULT instead.&quot;);
+    LV_LOG_WARN(&quot;LV_FONT_MONTSERRAT_20 is not enabled for the widgets demo. Using LV_FONT_DEFAULT instead.&quot;);
 #endif
+
 #if LV_FONT_MONTSERRAT_14
-        // Use the default font: Montserrat 20 instead of Montserrat 14
-        // Previously: font_normal    = &amp;lv_font_montserrat_14;
+    // Change this: Use the default font Montserrat 20 
+    // (instead of Montserrat 14)
+    // Previously: font_normal = &amp;lv_font_montserrat_14;
 #else
-        LV_LOG_WARN(&quot;LV_FONT_MONTSERRAT_14 is not enabled for the widgets demo. Using LV_FONT_DEFAULT instead.&quot;);
+    LV_LOG_WARN(&quot;LV_FONT_MONTSERRAT_14 is not enabled for the widgets demo. Using LV_FONT_DEFAULT instead.&quot;);
 #endif
-    }
+  }
 </code></pre></div>
 <p>We set the Default Font to <strong>Montserrat 20</strong> (previously Montserrat 14) in the LVGL Configuration for NuttX: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/lvgl/defconfig#L52">configs/lvgl/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_LV_FONT_DEFAULT_MONTSERRAT_20=y
