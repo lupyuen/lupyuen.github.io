@@ -515,7 +515,7 @@ TODO
 
 TODO: Boot NuttX on PinePhone
 
-# Appendix: Booting Apache NuttX RTOS on PinePhone
+# Appendix: Boot Apache NuttX RTOS on PinePhone
 
 TODO
 
