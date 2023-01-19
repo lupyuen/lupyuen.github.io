@@ -191,9 +191,13 @@ Yeah probably. PinePhone's Display has [__267 DPI__](https://github.com/apache/n
 
 In the next part of the code, we tell LVGL to...
 
--   Increase the __Tab Height__ (for earlier tapping)
+-   Increase the __Tab Height__
 
--   Use __Font Size 20__ (instead of Font Size 14)
+    (For earlier tapping)
+
+-   Use __Font Size 20__
+
+    (Instead of Font Size 14)
 
 ```c
   // Existing Code
@@ -242,7 +246,7 @@ The LVGL Demo App is now less dense and easier to touch (pic below)...
 
 -   [__Watch the Demo on YouTube__](https://www.youtube.com/watch?v=JQTh3VTTTkc)
 
-    (Too bad the scrolling isn't working yet)
+(Too bad the scrolling isn't working yet)
 
 TODO
 
@@ -252,17 +256,15 @@ _LVGL Widget Demo is Touch-Friendly now_
 
 # LVGL Demos
 
-TODO
+_We've seen the LVGL Widget Demo on PinePhone. What about other demos?_
 
-_We've seen the LVGL Widget Demo on NuttX for PinePhone. What about other demos?_
-
-Yep there are 5 LVGL Demos available in __`make` `menuconfig`__...
+There are 5 LVGL Demos available in __`make` `menuconfig`__...
 
 1.  Browse into "__Application Configuration__ > __Graphics Support__ > __Light and Versatile Graphics Library (LVGL)__ > __LVGL Configuration__"
     
-1.  In "__Demos__": Select one of the these demos...
+1.  In "__Demos__": Select ONE of the these demos...
     
-    "__Show Some Widgets__" (We've seen this)
+    "__Show Some Widgets__"
 
     "__Demonstrate Usage of Encoder and Keyboard__"
 
@@ -286,32 +288,17 @@ Yep there are 5 LVGL Demos available in __`make` `menuconfig`__...
     
     "__Montserrat 32__"
 
-TODO: To run the demos on PinePhone...
+We've seen the LVGL Widget Demo...
 
-```text
-nsh> lvgldemo
-Usage: lvgldemo demo_name
-demo_name:
-  widgets
-  keypad_encoder
-  benchmark
-  stress
-  music
-```
-
-[(Source)](https://gist.github.com/lupyuen/b96ed96db295334db1cfabf461efad83)
-
-We've seen the LVGL Widgets Demo...
-
--   [LVGL Widgets Demo on YouTube](https://www.youtube.com/watch?v=N-Yc2jj3TtQ)
+-   [__LVGL Widget Demo on YouTube__](https://www.youtube.com/watch?v=JQTh3VTTTkc)
 
 Here's the LVGL Music Player Demo...
 
--   [LVGL Music Player Demo on YouTube](https://www.youtube.com/watch?v=_cxCnKNibtA)
+-   [__LVGL Music Player Demo on YouTube__](https://www.youtube.com/watch?v=_cxCnKNibtA)
 
 And the LVGL Benchmark Demo...
 
--   [LVGL Benchmark Demo on YouTube](https://www.youtube.com/watch?v=deBzb-VbHck)
+-   [__LVGL Benchmark Demo on YouTube__](https://www.youtube.com/watch?v=deBzb-VbHck)
 
 From the video we see the LVGL Benchmark Numbers...
 
@@ -341,7 +328,20 @@ From the video we see the LVGL Benchmark Numbers...
 | Border Rounded | 24
 | (Many many more) |
 
-Note that the LVGL Demos start automatically when NuttX boots on PinePhone. Let's talk about this...
+TODO: To run the demos on PinePhone...
+
+```text
+nsh> lvgldemo
+Usage: lvgldemo demo_name
+demo_name:
+  widgets
+  keypad_encoder
+  benchmark
+  stress
+  music
+```
+
+[(Source)](https://gist.github.com/lupyuen/b96ed96db295334db1cfabf461efad83)
 
 # Create a Touchscreen App
 
