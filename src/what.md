@@ -253,7 +253,7 @@ to __Off__.
 
 1.  Insert the microSD Card into PinePhone and power up PinePhone.
 
-    NuttX boots on PinePhone and shows a [__Test Pattern__](https://lupyuen.github.io/images/de3-title.jpg).
+    NuttX boots on PinePhone and shows a [__Test Pattern__](https://lupyuen.github.io/images/dsi3-title.jpg).
     
     __NuttShell `nsh`__ appears in the Serial Console. (Pic below)
 

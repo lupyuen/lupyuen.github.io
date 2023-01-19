@@ -71,7 +71,7 @@ Let's make a __Bootable NuttX microSD__ that will start an LVGL Touchscreen App 
 
 1.  Insert the microSD Card into PinePhone and power up PinePhone.
 
-    NuttX boots on PinePhone and shows (very briefly) a [__Test Pattern__](https://lupyuen.github.io/images/de3-title.jpg).
+    NuttX boots on PinePhone and shows (very briefly) a [__Test Pattern__](https://lupyuen.github.io/images/dsi3-title.jpg).
 
 1.  The [__LVGL Touchscreen Demo__](https://lupyuen.github.io/images/lvgl2-title.jpg) appears on PinePhone! [(Like this)](https://lupyuen.github.io/images/lvgl2-title.jpg)
 
@@ -256,7 +256,7 @@ _LVGL Widget Demo is Touch-Friendly now_
 
 # LVGL Demos
 
-_We've seen the LVGL Widget Demo on PinePhone. What about other demos?_
+_We've seen the LVGL Widget Demo. What about other demos?_
 
 There are 5 LVGL Demos available in __`make` `menuconfig`__...
 
@@ -575,7 +575,7 @@ to __Off__.
 
 1.  Insert the microSD Card into PinePhone and power up PinePhone.
 
-    NuttX boots on PinePhone and shows a [__Test Pattern__](https://lupyuen.github.io/images/de3-title.jpg).
+    NuttX boots on PinePhone and shows a [__Test Pattern__](https://lupyuen.github.io/images/dsi3-title.jpg).
     
     __NuttShell `nsh`__ appears in the Serial Console. (Pic below)
 
