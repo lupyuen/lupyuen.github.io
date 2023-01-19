@@ -346,13 +346,11 @@ We're finally ready to create our own LVGL App for PinePhone!
 
 # Create a Touchscreen App
 
-_We've seen the LVGL Demo Apps..._
+_We've seen the LVGL Demo Apps for PinePhone..._
 
-_Can we create our own Touchscreen App for PinePhone?_
+_Can we create our own Touchscreen App?_
 
-Yep! With LVGL, NuttX on PinePhone runs Touchscreen Apps _almost_ like a regular Smartphone.
-
-Simplest way to create our own app: We take the __LVGL Widget Demo__ and modify it.
+Yep! Simplest way to create our own app: We take the __LVGL Widget Demo__ and modify it.
 
 Inside our NuttX Project, look for the __Widget Demo Source Code__...
 
