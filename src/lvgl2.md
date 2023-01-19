@@ -531,11 +531,13 @@ But if we're keen to __build NuttX ourselves__, here are the steps...
 
 Follow the steps in the next section to boot the NuttX Image...
 
+![PinePhone Jumpdrive on microSD](https://lupyuen.github.io/images/arm-jumpdrive.png)
+
 # Appendix: Boot Apache NuttX RTOS on PinePhone
 
-TODO
+In the previous section we've built the NuttX Image __`Image.gz`__.
 
-We're ready to boot NuttX on our PinePhone!
+Let's __boot the NuttX Image__ on PinePhone, assuming we have a [__USB Serial Debug Cable__](https://wiki.pine64.org/index.php/PinePhone#Serial_console)...
 
 1.  Download the __PinePhone Jumpdrive Image `pine64-pinephone.img.xz`__ from...
 
@@ -571,7 +573,7 @@ to __Off__.
     help
     ```
 
-    To run the [__LVGL Demo App__](https://lupyuen.github.io/articles/fb#lvgl-graphics-library)...
+    To run the [__LVGL Widget Demo__](https://lupyuen.github.io/articles/fb#lvgl-graphics-library)...
 
     ```bash
     lvgldemo widgets
@@ -579,23 +581,10 @@ to __Off__.
 
     [(We should see this)](https://lupyuen.github.io/images/fb-lvgl3.jpg)
 
+    [(Other LVGL Demos)](https://gist.github.com/lupyuen/b96ed96db295334db1cfabf461efad83)
+
 And that's how we build and boot NuttX for PinePhone!
 
 ![Booting Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/fb-run2.png)
 
 [(See the Boot Log)](https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd)
-
-TODO: To run the demos on PinePhone...
-
-```text
-nsh> lvgldemo
-Usage: lvgldemo demo_name
-demo_name:
-  widgets
-  keypad_encoder
-  benchmark
-  stress
-  music
-```
-
-[(Source)](https://gist.github.com/lupyuen/b96ed96db295334db1cfabf461efad83)
