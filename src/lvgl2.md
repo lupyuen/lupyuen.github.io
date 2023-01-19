@@ -143,9 +143,9 @@ But since we're not running NSH Shell, we configured NuttX to initialise the dri
 
 The Default LVGL Demo is a little hard to use, let's talk about it...
 
-![Default LVGL Demo App is not quite so Touch-Friendly](https://lupyuen.github.io/images/fb-lvgl3.jpg)
+![Default LVGL Widget Demo is not quite so Touch-Friendly](https://lupyuen.github.io/images/fb-lvgl3.jpg)
 
-_Default LVGL Demo App is not quite so Touch-Friendly_
+_Default LVGL Widget Demo is not quite so Touch-Friendly_
 
 # Touch-Friendly LVGL
 
@@ -246,47 +246,47 @@ The LVGL Demo App is now less dense and easier to touch (pic below)...
 
 TODO
 
-![LVGL Demo App is Touch-Friendly now](https://lupyuen.github.io/images/lvgl2-title.jpg)
+![LVGL Widget Demo is Touch-Friendly now](https://lupyuen.github.io/images/lvgl2-title.jpg)
 
-_LVGL Demo App is Touch-Friendly now_
+_LVGL Widget Demo is Touch-Friendly now_
 
 # LVGL Demos
 
 TODO
 
-_We've seen the LVGL Widgets Demo on NuttX for PinePhone. What about other demos?_
+_We've seen the LVGL Widget Demo on NuttX for PinePhone. What about other demos?_
 
-Yep there are 5 LVGL Demos available in `make menuconfig`...
+Yep there are 5 LVGL Demos available in __`make` `menuconfig`__...
 
--   Browse into "__LVGL__ > __LVGL Configuration__"
+1.  Browse into "__Application Configuration__ > __Graphics Support__ > __Light and Versatile Graphics Library (LVGL)__ > __LVGL Configuration__"
     
-    -   In "__Demos__", select one or more of the these demos...
-        
-        "__Show Some Widgets__"
-
-        "__Demonstrate the usage of encoder and keyboard__"
-
-        "__Benchmark your system__"
-
-        "__Stress test for LVGL__"
-
-        "__Music player demo__"
-
-For Music Player Demo, we need these fonts...
-
--   Browse into "__LVGL__ > __LVGL Configuration__"
+1.  In "__Demos__", select one of the these demos...
     
-    -   In "__Font usage__", select...
+    "__Show Some Widgets__" (We've seen this)
 
-        "__Montserrat 16__"
+    "__Demonstrate Usage of Encoder and Keyboard__"
 
-        "__Montserrat 20__"
+    "__Benchmark Your System__"
 
-        "__Montserrat 22__"
-        
-        "__Montserrat 32__"
+    "__Stress Test for LVGL__"
 
-To run the demos on PinePhone...
+    "__Music Player Demo__"
+
+1.  __For Music Player Demo:__ We need these fonts...
+
+    Browse into "__LVGL__ > __LVGL Configuration__"
+    
+    In "__Font usage__", select...
+
+    "__Montserrat 16__"
+
+    "__Montserrat 20__"
+
+    "__Montserrat 22__"
+    
+    "__Montserrat 32__"
+
+TODO: To run the demos on PinePhone...
 
 ```text
 nsh> lvgldemo
