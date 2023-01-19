@@ -238,13 +238,17 @@ CONFIG_LV_FONT_DEFAULT_MONTSERRAT_20=y
 
 Which will make (most) LVGL Apps more legible on PinePhone.
 
-The LVGL Demo App is now less dense and easier to use...
+The LVGL Demo App is now less dense and easier to touch (pic below)...
 
--   [TODO: Watch the Demo on YouTube](https://www.youtube.com/shorts/De5ZehlIka8)
+-   [__TODO: Watch the Demo on YouTube__](https://www.youtube.com/shorts/De5ZehlIka8)
+
+    (Too bad the scrolling isn't working yet)
 
 TODO
 
-![After changing LVGL Settings for PinePhone](https://lupyuen.github.io/images/lvgl2-title.jpg)
+![LVGL Demo App is Touch-Friendly now](https://lupyuen.github.io/images/lvgl2-title.jpg)
+
+_LVGL Demo App is Touch-Friendly now_
 
 # LVGL Demos
 
