@@ -157,7 +157,7 @@ The pic above shows the LVGL Demo App with the Default Settings. The __dense scr
 
 Let's tweak the LVGL Demo Code to make our app more accessible.
 
-We modified this LVGL Source File: [apps/graphics/lvgl/lvgl/ demos/widgets/lv_demo_widgets.c](https://github.com/lupyuen2/wip-pinephone-lvgl/blob/pinephone/demos/widgets/lv_demo_widgets.c#L96-L150)
+We modify this LVGL Source File: [apps/graphics/lvgl/lvgl/ demos/widgets/lv_demo_widgets.c](https://github.com/lupyuen2/wip-pinephone-lvgl/blob/pinephone/demos/widgets/lv_demo_widgets.c#L96-L150)
 
 ```c
 // Insert this
@@ -180,6 +180,14 @@ void lv_demo_widgets(void) {
     #undef LV_LOG_WARN
     #define LV_LOG_WARN(s) puts(s)
 ```
+
+The first part of the code above comes from LVGL. Since PinePhone has 720 Horizontal Pixels, the code sets __Display Size to Large__. Which squishes everything on PinePhone.
+
+That's why in the code above we override and set __Display Size to Medium__. Which makes the screen less dense.
+
+_Shouldn't the Display Size be computed based on Screen DPI?_
+
+Yeah probably. PinePhone's Display has [__267 DPI__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/lvgl/defconfig#L51), we should use it in the code above to compute the Display Size.
 
 TODO
 
@@ -213,7 +221,9 @@ TODO
     }
 ```
 
-(Maybe we should modify the code above to include DPI? PinePhone's Display has 267 DPI)
+TODO
+
+[Default Font](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/lvgl/defconfig#L52)
 
 Configure LVGL with these settings...
 
