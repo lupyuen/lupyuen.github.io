@@ -231,6 +231,8 @@ In the next part of the code, we tell LVGL to...
 We set the Default Font to __Montserrat 20__ (previously Montserrat 14) in the LVGL Configuration for NuttX: [configs/lvgl/defconfig](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/lvgl/defconfig#L52)
 
 ```text
+## Set the LVGL Default Font to Montserrat 20
+## (Previously Montserrat 14)
 CONFIG_LV_FONT_DEFAULT_MONTSERRAT_20=y
 ```
 
