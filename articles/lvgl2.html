@@ -214,7 +214,15 @@ void lv_demo_widgets(void) {
 <p>That’s why in the code above we override and set <strong>Display Size to Medium</strong>. Which makes the screen less dense.</p>
 <p><em>Shouldn’t the Display Size be computed based on Screen DPI?</em></p>
 <p>Yeah probably. PinePhone’s Display has <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/lvgl/defconfig#L51"><strong>267 DPI</strong></a>, we should use it in the code above to compute the Display Size.</p>
-<p>TODO</p>
+<p>In the next part of the code, we tell LVGL to…</p>
+<ul>
+<li>
+<p>Increase the <strong>Tab Height</strong> (for earlier tapping)</p>
+</li>
+<li>
+<p>Use <strong>Font Size 20</strong> (instead of Font Size 14)</p>
+</li>
+</ul>
 <div class="example-wrap"><pre class="language-c"><code>    // Existing Code
     font_large = LV_FONT_DEFAULT;
     font_normal = LV_FONT_DEFAULT;
@@ -243,54 +251,15 @@ void lv_demo_widgets(void) {
 #endif
     }
 </code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/lvgl/defconfig#L52">Default Font</a></p>
-<p>Configure LVGL with these settings…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/touch2#lvgl-calls-our-driver">“LVGL Calls Our Driver”</a></li>
-</ul>
-<p>And add the fonts…</p>
-<ul>
-<li>
-<p>Browse into “<strong>LVGL</strong> &gt; <strong>LVGL Configuration</strong>”</p>
-<ul>
-<li>
-<p>In “<strong>Font usage</strong> &gt; <strong>Enable built-in fonts</strong>”</p>
-<p>Enable “<strong>Montserrat 20</strong>”</p>
-</li>
-</ul>
-</li>
-</ul>
+<p>We set the Default Font to <strong>Montserrat 20</strong> (previously Montserrat 14) in the LVGL Configuration for NuttX: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/lvgl/defconfig#L52">configs/lvgl/defconfig</a></p>
+<div class="example-wrap"><pre class="language-text"><code>CONFIG_LV_FONT_DEFAULT_MONTSERRAT_20=y
+</code></pre></div>
+<p>Which will make (most) LVGL Apps more legible on PinePhone.</p>
 <p>The LVGL Demo App is now less dense and easier to use…</p>
 <ul>
-<li>
-<p><a href="https://www.youtube.com/shorts/De5ZehlIka8">Watch the Demo on YouTube</a></p>
-<p>(Shot at ISO 800, F/5.6, Manual Focus on Sony NEX-7. Post-processed for Brightness, Constrast and White Point)</p>
-</li>
+<li><a href="https://www.youtube.com/shorts/De5ZehlIka8">TODO: Watch the Demo on YouTube</a></li>
 </ul>
-<p><em>What if we increase the Default Font Size? From Montserrat 14 to Montserrat 20?</em></p>
-<p>Let’s increase the Default Font Size from 14 to 20…</p>
-<ul>
-<li>
-<p>Browse into “<strong>LVGL</strong> &gt; <strong>LVGL Configuration</strong>”</p>
-<ul>
-<li>
-<p>In “<strong>Font usage</strong> &gt; <strong>Select theme default title font</strong>”</p>
-<p>Select “<strong>Montserrat 20</strong>”</p>
-</li>
-</ul>
-</li>
-</ul>
-<p>We run the LVGL Demo App as is, leaving Display Size <code>disp_size</code> as default <code>DISP_LARGE</code>.</p>
-<p>Now the text is legible, but some controls are squished…</p>
-<ul>
-<li>
-<p><a href="https://www.youtube.com/watch?v=N-Yc2jj3TtQ">Watch the Demo on YouTube</a></p>
-<p>(Shot at ISO 400, F/5.0, Manual Focus, Exposure 0.3 on Sony NEX-7. No post-processing)</p>
-</li>
-</ul>
-<p>TODO: We need to increase the Default Font Size from 14 to 20, AND set Display Size <code>disp_size</code> to <code>DISP_MEDIUM</code>. And we will get this…</p>
-<p>TODO: <a href="https://github.com/lupyuen2/wip-pinephone-lvgl/blob/pinephone/demos/widgets/lv_demo_widgets.c#L96-L150">lv_demo_widgets.c</a></p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lvgl2-title.jpg" alt="After changing LVGL Settings for PinePhone" /></p>
 <h1 id="lvgl-demos"><a href="#lvgl-demos">4 LVGL Demos</a></h1>
 <p>TODO</p>
