@@ -149,7 +149,7 @@
 <p><img src="https://lupyuen.github.io/images/dsi3-title.jpg" alt="PinePhone with USB Serial Debug Cable" /></p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><em>PinePhone with USB Serial Debug Cable</em></a></p>
 <h1 id="boot-to-lvgl"><a href="#boot-to-lvgl">2 Boot to LVGL</a></h1>
-<p><em>How did we configure NuttX to boot with an LVGL App?</em></p>
+<p><em>How did we configure NuttX to boot an LVGL App?</em></p>
 <p>Normally NuttX boots to the <strong>NSH Shell</strong>. Which lets us execute Console Commands through a <a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><strong>USB Serial Debug Cable</strong></a>. (Pic above)</p>
 <p>But for today’s demo we configured NuttX to boot instead with the <strong>LVGL Demo App</strong>. In the NuttX Project Folder, we ran…</p>
 <div class="example-wrap"><pre class="language-bash"><code>make menuconfig
@@ -442,6 +442,8 @@ void lv_demo_widgets(void) {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl2.md"><strong>lupyuen.github.io/src/lvgl2.md</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/dsi3-title.jpg" alt="PinePhone with USB Serial Debug Cable" /></p>
+<p><a href="https://wiki.pine64.org/index.php/PinePhone#Serial_console"><em>PinePhone with USB Serial Debug Cable</em></a></p>
 <h1 id="appendix-build-apache-nuttx-rtos-for-pinephone"><a href="#appendix-build-apache-nuttx-rtos-for-pinephone">8 Appendix: Build Apache NuttX RTOS for PinePhone</a></h1>
 <p>The easiest way to run Apache NuttX RTOS on PinePhone is to download the <strong>NuttX Image</strong> and boot it on PinePhone…</p>
 <ul>
@@ -494,6 +496,10 @@ tools/configure.sh pinephone:lvgl
 <div class="example-wrap"><pre class="language-text"><code>apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.c
 </code></pre></div>
 <p>And replace by the contents of this file: <a href="https://raw.githubusercontent.com/lupyuen2/wip-pinephone-lvgl/pinephone/demos/widgets/lv_demo_widgets.c"><strong>lv_demo_widgets.c</strong></a></p>
+</li>
+<li>
+<p>If we wish to boot a <strong>different LVGL Demo</strong> (instead of the Widget Demo), follow the steps here…</p>
+<p><a href="https://lupyuen.github.io/articles/lvgl2#lvgl-demos"><strong>“LVGL Demos”</strong></a></p>
 </li>
 <li>
 <p>Rebuild NuttX and compress the NuttX Image…</p>
