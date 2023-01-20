@@ -376,9 +376,10 @@ void lv_demo_widgets(void) {
 <p>And Zig has helpful <a href="https://lupyuen.github.io/articles/lvgl#zig-outcomes"><strong>Runtime Safety Checks</strong></a> too.</p>
 <p><em>What apps will we create for PinePhone and NuttX?</em></p>
 <p>Maybe we can build an <strong>LVGL Terminal App</strong>? That will let us interact with the NSH NuttX Shell, without a Serial Debug Cable?</p>
-<p>LVGL already provides an <strong>Onscreen Keyboard</strong> that works on PinePhone.</p>
-<p>But I have no idea how to start the NSH Process and redirect the Console Input / Output to LVGL 🤔</p>
-<p><em>Maybe we can port a Graphical IDE to PinePhone and NuttX?</em></p>
+<p>LVGL already provides an <a href="https://lupyuen.github.io/images/lvgl2-widget.jpg"><strong>Onscreen Keyboard</strong></a> that works on PinePhone.</p>
+<p>We might build the app in Zig. And we’ll <strong>redirect the NSH Console</strong> Input / Output to LVGL like so: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/nxterm/nxterm_main.c#L356-L385">nxterm_main.c</a></p>
+<p><a href="https://cwiki.apache.org/confluence/plugins/servlet/mobile?contentId=158877904#content/view/158877904">(Our LVGL Terminal App will work like NxTerm)</a></p>
+<p><em>What about porting a Graphical IDE to PinePhone and NuttX?</em></p>
 <p>Yeah perhaps <a href="https://github.com/vygr/ChrysaLisp"><strong>Lisp</strong></a>? Or <a href="https://syndicate-lang.org/journal/2022/06/03/phone-progress"><strong>Smalltalk</strong></a>?</p>
 <p><em>Our LVGL App doesn’t appear and PinePhone’s LED turns white. What happened?</em></p>
 <p>This happens if our LVGL App <strong><code>lvgldemo</code></strong> fails to start.</p>
