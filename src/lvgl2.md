@@ -254,7 +254,7 @@ Let's take a peek at the other LVGL Demos...
 
 ![LVGL Widget Demo is Touch-Friendly now](https://lupyuen.github.io/images/lvgl2-widget.jpg)
 
-[LVGL Widget Demo is Touch-Friendly now](https://www.youtube.com/watch?v=JQTh3VTTTkc)
+[_LVGL Widget Demo is Touch-Friendly now_](https://www.youtube.com/watch?v=JQTh3VTTTkc)
 
 # LVGL Demos
 
