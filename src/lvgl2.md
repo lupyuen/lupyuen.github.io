@@ -191,7 +191,7 @@ _Shouldn't the Display Size be computed based on Screen DPI?_
 
 Yeah probably. PinePhone's Display has [__267 DPI__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/lvgl/defconfig#L51), we should use it in the code above to compute the Display Size.
 
-In the next part of the code, we tell LVGL to...
+In the next part of the code, we ask LVGL to...
 
 -   Increase the __Tab Height__
 
