@@ -254,7 +254,7 @@ Let's take a peek at the other LVGL Demos...
 
 ![LVGL Widget Demo is Touch-Friendly now](https://lupyuen.github.io/images/lvgl2-widget.jpg)
 
-_LVGL Widget Demo is Touch-Friendly now_
+[LVGL Widget Demo is Touch-Friendly now](https://www.youtube.com/watch?v=JQTh3VTTTkc)
 
 # LVGL Demos
 
@@ -292,7 +292,9 @@ There are 5 LVGL Demos available in __`make` `menuconfig`__...
     
     "__Montserrat 32__"
 
-![LVGL Music Demo](https://lupyuen.github.io/images/lvgl2-music.jpg)
+![LVGL Music Player Demo](https://lupyuen.github.io/images/lvgl2-music.jpg)
+
+[_LVGL Music Player Demo_](https://www.youtube.com/watch?v=_cxCnKNibtA)
 
 We've seen the LVGL Widget Demo...
 
