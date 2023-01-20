@@ -216,7 +216,7 @@ void lv_demo_widgets(void) {
 <p>That’s why in the code above we override and set <strong>Display Size to Medium</strong>. Which makes the screen less dense.</p>
 <p><em>Shouldn’t the Display Size be computed based on Screen DPI?</em></p>
 <p>Yeah probably. PinePhone’s Display has <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/configs/lvgl/defconfig#L51"><strong>267 DPI</strong></a>, we should use it in the code above to compute the Display Size.</p>
-<p>In the next part of the code, we tell LVGL to…</p>
+<p>In the next part of the code, we ask LVGL to…</p>
 <ul>
 <li>
 <p>Increase the <strong>Tab Height</strong></p>
