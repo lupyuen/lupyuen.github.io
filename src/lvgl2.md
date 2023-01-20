@@ -391,6 +391,8 @@ TODO: Maybe build in Zig?
 
 TODO: LED turns white if `lvgldemo` fails to start
 
+![NuttX on PinePhone in the wild](https://lupyuen.github.io/images/lvgl2-gallery.jpg)
+
 # What's Next
 
 TODO
