@@ -354,6 +354,10 @@ After all, LVGL is simply blasting pixels into a __RAM Framebuffer__ and the res
 
 We're finally ready to create our own LVGL App for PinePhone!
 
+![LVGL Programming in Zig](https://lupyuen.github.io/images/lvgl-code4a.jpg)
+
+[_LVGL Programming in Zig_](https://lupyuen.github.io/articles/lvgl)
+
 # Create a Touchscreen App
 
 _We've seen the LVGL Demo Apps for PinePhone..._
@@ -381,6 +385,14 @@ void lv_demo_widgets(void) {
 
 For details, check out the [__LVGL Widget Docs__](https://docs.lvgl.io/master/widgets/index.html).
 
+_But coding LVGL Apps in C looks cumbersome..._
+
+We could consider __coding in Zig__ to simplify our LVGL Apps (pic above)...
+
+-   [__"Build an LVGL Touchscreen App with Zig"__](https://lupyuen.github.io/articles/lvgl)
+
+And Zig has helpful [__Runtime Safety Checks__](https://lupyuen.github.io/articles/lvgl#zig-outcomes) too.
+
 _What apps will we create for PinePhone and NuttX?_
 
 Maybe we can build an __LVGL Terminal App__? That will let us interact with the NSH NuttX Shell, without a Serial Debug Cable?
@@ -393,11 +405,11 @@ _Maybe we can port a Graphical IDE to PinePhone and NuttX?_
 
 Yeah perhaps [__Lisp__](https://github.com/vygr/ChrysaLisp)? Or [__Smalltalk__](https://syndicate-lang.org/journal/2022/06/03/phone-progress)?
 
-TODO: Maybe build in Zig?
+_Our LVGL App doesn't appear and PinePhone's LED turns white. What happened?_
 
--   [__"Build an LVGL Touchscreen App with Zig"__](https://lupyuen.github.io/articles/lvgl)
+This happens if our LVGL App __`lvgldemo`__ fails to start.
 
-TODO: LED turns white if `lvgldemo` fails to start
+Check for Error Messages with a [__USB Serial Debug Cable__](https://lupyuen.github.io/articles/lvgl2#appendix-boot-apache-nuttx-rtos-on-pinephone).
 
 ![NuttX on PinePhone in the wild](https://lupyuen.github.io/images/lvgl2-gallery.jpg)
 
