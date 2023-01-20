@@ -377,7 +377,7 @@ void lv_demo_widgets(void) {
 <p><em>What apps will we create for PinePhone and NuttX?</em></p>
 <p>Maybe we can build an <strong>LVGL Terminal App</strong>? That will let us interact with the NSH NuttX Shell, without a Serial Debug Cable?</p>
 <p>LVGL already provides an <a href="https://lupyuen.github.io/images/lvgl2-widget.jpg"><strong>Onscreen Keyboard</strong></a> that works on PinePhone.</p>
-<p>We might build the app in Zig. And we’ll <strong>redirect the NSH Console</strong> Input / Output to LVGL like so: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/nxterm/nxterm_main.c#L356-L385">nxterm_main.c</a> and <a href="https://github.com/apache/nuttx-apps/blob/master/examples/pipe/redirect_test.c#L245-L315">redirect_test.c</a></p>
+<p>We might build the app in Zig. And we’ll <strong>redirect the NSH Console</strong> Input / Output to LVGL like so: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/nxterm/nxterm_main.c#L356-L385">nxterm_main.c</a> and <a href="https://github.com/apache/nuttx-apps/blob/master/examples/pipe/redirect_test.c#L245-L315">redirect_test.c</a> also maybe <a href="https://github.com/apache/nuttx-apps/blob/master/examples/pty_test/pty_test.c#L351-L410">pty_test.c</a></p>
 <p><a href="https://cwiki.apache.org/confluence/plugins/servlet/mobile?contentId=158877904#content/view/158877904">(Our LVGL Terminal will probably work like NxTerm)</a></p>
 <p><em>What about porting a Graphical IDE to PinePhone and NuttX?</em></p>
 <p>Yeah perhaps <a href="https://github.com/vygr/ChrysaLisp"><strong>Lisp</strong></a>? Or <a href="https://syndicate-lang.org/journal/2022/06/03/phone-progress"><strong>Smalltalk</strong></a>?</p>
