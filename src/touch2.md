@@ -628,9 +628,9 @@ _How to create our own LVGL Touchscreen App?_
 
 Inside our NuttX Project, look for the __LVGL Demo Source Code__...
 
--   [apps/graphics/lvgl/lvgl/ demos/widgets/lv_demo_widgets.c](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L202-L528)
+-   [apps/graphics/lvgl/lvgl/ demos/widgets/lv_demo_widgets.c](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L97-L197)
 
-Modify the function [__lv_demo_widgets__](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L202-L528) to create our own __LVGL Widgets__...
+Modify the function [__lv_demo_widgets__](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L97-L197) to create our own __LVGL Widgets__...
 
 ```c
 // Create a Button, set the Width and Height
