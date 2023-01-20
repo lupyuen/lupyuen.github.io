@@ -252,7 +252,7 @@ The LVGL Demo App is now less dense and easier to touch (pic below)...
 
 Let's take a peek at the other LVGL Demos...
 
-![LVGL Widget Demo is Touch-Friendly now](https://lupyuen.github.io/images/lvgl2-title.jpg)
+![LVGL Widget Demo is Touch-Friendly now](https://lupyuen.github.io/images/lvgl2-widget.jpg)
 
 _LVGL Widget Demo is Touch-Friendly now_
 
@@ -292,25 +292,31 @@ There are 5 LVGL Demos available in __`make` `menuconfig`__...
     
     "__Montserrat 32__"
 
+![LVGL Music Demo](https://lupyuen.github.io/images/lvgl2-music.jpg)
+
 We've seen the LVGL Widget Demo...
 
 -   [__LVGL Widget Demo on YouTube__](https://www.youtube.com/watch?v=JQTh3VTTTkc)
 
-Here's the LVGL Music Player Demo...
+Here's the LVGL Music Player Demo (pic above)...
 
 -   [__LVGL Music Player Demo on YouTube__](https://www.youtube.com/watch?v=_cxCnKNibtA)
 
-And the LVGL Benchmark Demo...
+And the LVGL Benchmark Demo (pic below)...
 
 -   [__LVGL Benchmark Demo on YouTube__](https://www.youtube.com/watch?v=deBzb-VbHck)
 
 Which gives us some useful numbers...
 
+![LVGL Benchmark Demo](https://lupyuen.github.io/images/lvgl2-benchmark.jpg)
+
+[_LVGL Benchmark Demo_](https://www.youtube.com/watch?v=deBzb-VbHck)
+
 # LVGL Performance
 
 _How well does LVGL perform on PinePhone?_
 
-From the last video we see the [__LVGL Benchmark Numbers__](https://www.youtube.com/watch?v=deBzb-VbHck)...
+From the last video (pic above) we see the [__LVGL Benchmark Numbers__](https://www.youtube.com/watch?v=deBzb-VbHck)...
 
 - Weighted Frames Per Second: __20__
 - Opa Speed: __100%__
