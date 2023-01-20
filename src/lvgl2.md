@@ -399,7 +399,7 @@ Maybe we can build an __LVGL Terminal App__? That will let us interact with the 
 
 LVGL already provides an [__Onscreen Keyboard__](https://lupyuen.github.io/images/lvgl2-widget.jpg) that works on PinePhone.
 
-We might build the app in Zig. And we'll __redirect the NSH Console__ Input / Output to LVGL like so: [nxterm_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/nxterm/nxterm_main.c#L356-L385) and [redirect_test.c](https://github.com/apache/nuttx-apps/blob/master/examples/pipe/redirect_test.c#L245-L315)
+We might build the app in Zig. And we'll __redirect the NSH Console__ Input / Output to LVGL like so: [nxterm_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/nxterm/nxterm_main.c#L356-L385) and [redirect_test.c](https://github.com/apache/nuttx-apps/blob/master/examples/pipe/redirect_test.c#L245-L315) also maybe [pty_test.c](https://github.com/apache/nuttx-apps/blob/master/examples/pty_test/pty_test.c#L351-L410)
 
 [(Our LVGL Terminal will probably work like NxTerm)](https://cwiki.apache.org/confluence/plugins/servlet/mobile?contentId=158877904#content/view/158877904)
 
