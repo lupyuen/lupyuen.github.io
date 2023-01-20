@@ -397,11 +397,13 @@ _What apps will we create for PinePhone and NuttX?_
 
 Maybe we can build an __LVGL Terminal App__? That will let us interact with the NSH NuttX Shell, without a Serial Debug Cable?
 
-LVGL already provides an __Onscreen Keyboard__ that works on PinePhone.
+LVGL already provides an [__Onscreen Keyboard__](https://lupyuen.github.io/images/lvgl2-widget.jpg) that works on PinePhone.
 
-But I have no idea how to start the NSH Process and redirect the Console Input / Output to LVGL 🤔
+We might build the app in Zig. And we'll __redirect the NSH Console__ Input / Output to LVGL like so: [nxterm_main.c](https://github.com/apache/nuttx-apps/blob/master/examples/nxterm/nxterm_main.c#L356-L385)
 
-_Maybe we can port a Graphical IDE to PinePhone and NuttX?_
+[(Our LVGL Terminal App will work like NxTerm)](https://cwiki.apache.org/confluence/plugins/servlet/mobile?contentId=158877904#content/view/158877904)
+
+_What about porting a Graphical IDE to PinePhone and NuttX?_
 
 Yeah perhaps [__Lisp__](https://github.com/vygr/ChrysaLisp)? Or [__Smalltalk__](https://syndicate-lang.org/journal/2022/06/03/phone-progress)?
 
