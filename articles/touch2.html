@@ -599,9 +599,9 @@ if (touch_flags &amp; TOUCH_DOWN || touch_flags &amp; TOUCH_MOVE) {
 <p><em>How to create our own LVGL Touchscreen App?</em></p>
 <p>Inside our NuttX Project, look for the <strong>LVGL Demo Source Code</strong>…</p>
 <ul>
-<li><a href="https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L202-L528">apps/graphics/lvgl/lvgl/ demos/widgets/lv_demo_widgets.c</a></li>
+<li><a href="https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L97-L197">apps/graphics/lvgl/lvgl/ demos/widgets/lv_demo_widgets.c</a></li>
 </ul>
-<p>Modify the function <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L202-L528"><strong>lv_demo_widgets</strong></a> to create our own <strong>LVGL Widgets</strong>…</p>
+<p>Modify the function <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L97-L197"><strong>lv_demo_widgets</strong></a> to create our own <strong>LVGL Widgets</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Create a Button, set the Width and Height
 void lv_demo_widgets(void) {
   lv_obj_t *btn = lv_btn_create(lv_scr_act());
