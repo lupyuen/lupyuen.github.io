@@ -350,6 +350,8 @@ CONFIG_LV_FONT_DEFAULT_MONTSERRAT_20=y
 <li><a href="https://lupyuen.github.io/articles/fb"><strong>“NuttX RTOS for PinePhone: Framebuffer”</strong></a></li>
 </ul>
 <p>We’re finally ready to create our own LVGL App for PinePhone!</p>
+<p><img src="https://lupyuen.github.io/images/lvgl-code4a.jpg" alt="LVGL Programming in Zig" /></p>
+<p><a href="https://lupyuen.github.io/articles/lvgl"><em>LVGL Programming in Zig</em></a></p>
 <h1 id="create-a-touchscreen-app"><a href="#create-a-touchscreen-app">6 Create a Touchscreen App</a></h1>
 <p><em>We’ve seen the LVGL Demo Apps for PinePhone…</em></p>
 <p><em>Can we create our own Touchscreen App?</em></p>
@@ -366,17 +368,21 @@ void lv_demo_widgets(void) {
 }
 </code></pre></div>
 <p>For details, check out the <a href="https://docs.lvgl.io/master/widgets/index.html"><strong>LVGL Widget Docs</strong></a>.</p>
+<p><em>But coding LVGL Apps in C looks cumbersome…</em></p>
+<p>We could consider <strong>coding in Zig</strong> to simplify our LVGL Apps (pic above)…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lvgl"><strong>“Build an LVGL Touchscreen App with Zig”</strong></a></li>
+</ul>
+<p>And Zig has helpful <a href="https://lupyuen.github.io/articles/lvgl#zig-outcomes"><strong>Runtime Safety Checks</strong></a> too.</p>
 <p><em>What apps will we create for PinePhone and NuttX?</em></p>
 <p>Maybe we can build an <strong>LVGL Terminal App</strong>? That will let us interact with the NSH NuttX Shell, without a Serial Debug Cable?</p>
 <p>LVGL already provides an <strong>Onscreen Keyboard</strong> that works on PinePhone.</p>
 <p>But I have no idea how to start the NSH Process and redirect the Console Input / Output to LVGL 🤔</p>
 <p><em>Maybe we can port a Graphical IDE to PinePhone and NuttX?</em></p>
 <p>Yeah perhaps <a href="https://github.com/vygr/ChrysaLisp"><strong>Lisp</strong></a>? Or <a href="https://syndicate-lang.org/journal/2022/06/03/phone-progress"><strong>Smalltalk</strong></a>?</p>
-<p>TODO: Maybe build in Zig?</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/lvgl"><strong>“Build an LVGL Touchscreen App with Zig”</strong></a></li>
-</ul>
-<p>TODO: LED turns white if <code>lvgldemo</code> fails to start</p>
+<p><em>Our LVGL App doesn’t appear and PinePhone’s LED turns white. What happened?</em></p>
+<p>This happens if our LVGL App <strong><code>lvgldemo</code></strong> fails to start.</p>
+<p>Check for Error Messages with a <a href="https://lupyuen.github.io/articles/lvgl2#appendix-boot-apache-nuttx-rtos-on-pinephone"><strong>USB Serial Debug Cable</strong></a>.</p>
 <p><img src="https://lupyuen.github.io/images/lvgl2-gallery.jpg" alt="NuttX on PinePhone in the wild" /></p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
