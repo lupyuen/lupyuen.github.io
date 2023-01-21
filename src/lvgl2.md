@@ -393,6 +393,8 @@ We could consider __coding in Zig__ to simplify our LVGL Apps (pic above)...
 
 And Zig has helpful [__Runtime Safety Checks__](https://lupyuen.github.io/articles/lvgl#zig-outcomes) too.
 
+[(More details here)](https://github.com/lupyuen/pinephone-lvgl-zig)
+
 _What apps will we create for PinePhone and NuttX?_
 
 Maybe we can build an __LVGL Terminal App__? That will let us interact with the NSH NuttX Shell, without a Serial Debug Cable?
