@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "NuttX RTOS for PinePhone: Boot to LVGL",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-01-22",
+      "website": "https://lupyuen.github.io/articles/lvgl2",
+      "summary": "How we configure Apache NuttX RTOS to boot an LVGL Touchscreen App on Pine64 PinePhone"
+    },
+    {
       "name": "NuttX RTOS for PinePhone: Touch Panel",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-01-12",

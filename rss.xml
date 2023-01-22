@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>NuttX RTOS for PinePhone: Boot to LVGL</title>
+            <link>https://lupyuen.github.io/articles/lvgl2</link>
+            <description><![CDATA[How we configure Apache NuttX RTOS to boot an LVGL Touchscreen App on Pine64 PinePhone]]></description>
+            <guid>https://lupyuen.github.io/articles/lvgl2</guid>
+            <pubDate>Sun, 22 Jan 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>NuttX RTOS for PinePhone: Touch Panel</title>
             <link>https://lupyuen.github.io/articles/touch2</link>
             <description><![CDATA[All about the Capacitive Touch Panel inside Pine64 PinePhone... And how we created the PinePhone Touch Panel Driver for Apache NuttX RTOS]]></description>

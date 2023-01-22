@@ -1,6 +1,6 @@
 # NuttX RTOS for PinePhone: Boot to LVGL
 
-📝 _24 Jan 2023_
+📝 _22 Jan 2023_
 
 ![NuttX on PinePhone now boots to the LVGL Touchscreen Demo, without a Serial Cable](https://lupyuen.github.io/images/lvgl2-title.jpg)
 
@@ -419,7 +419,9 @@ Check for Error Messages with a [__USB Serial Debug Cable__](https://lupyuen.git
 
 # What's Next
 
-TODO
+Now we can finally build and test NuttX Apps on PinePhone... All we need is a microSD Card!
+
+What will you create? Lemme know!
 
 Meanwhile please check out the other articles on __NuttX RTOS for PinePhone__...
 
