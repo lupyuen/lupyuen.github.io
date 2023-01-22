@@ -12,9 +12,9 @@ Over the past 5 months, we ported to [__Pine64 PinePhone__](https://wiki.pine64.
 
 Let's talk about [__NuttX for PinePhone__](https://nuttx.apache.org/docs/latest/platforms/arm/a64/boards/pinephone/index.html): What is it? Why are we doing this? How will we use it?
 
-![Booting Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/fb-run.png)
+![NuttX Command-Line Interface for Developers](https://lupyuen.github.io/images/fb-run.png)
 
-[_Booting Apache NuttX RTOS on PinePhone_](https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd)
+[_NuttX Command-Line Interface for Developers_](https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd)
 
 # Smaller and Simpler
 
@@ -46,7 +46,7 @@ And for folks who wish to tinker __Bare Metal__ on PinePhone.
 
 _Does NuttX support X11? Wayland?_
 
-Nope, only [__LVGL__](https://lupyuen.github.io/articles/fb#lvgl-graphics-library) is supported. (Pic at the top)
+Nope, only [__LVGL__](https://lupyuen.github.io/articles/lvgl2) is supported. (Pic at the top)
 
 [__Touch Input__](https://lupyuen.github.io/articles/touch2) works fine with LVGL Apps on PinePhone.
 
