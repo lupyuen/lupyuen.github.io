@@ -2,9 +2,9 @@
 
 📝 _3 Jan 2023_
 
-![Apache NuttX RTOS on PinePhone with LVGL](https://lupyuen.github.io/images/what-title.jpg)
+![Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/what-title.jpg)
 
-[_Apache NuttX RTOS on PinePhone with LVGL_](https://lupyuen.github.io/articles/lvgl2)
+[_Apache NuttX RTOS on PinePhone_](https://www.youtube.com/watch?v=JQTh3VTTTkc)
 
 Over the past 5 months, we ported to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) a different kind of Operating System... [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/)
 
