@@ -383,6 +383,8 @@ void lv_demo_widgets(void) {
 }
 ```
 
+[(__lv_demo_widgets__ is called by LVGL Demo App __lvgldemo_main__)](https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L221-L225)
+
 For details, check out the [__LVGL Widget Docs__](https://docs.lvgl.io/master/widgets/index.html).
 
 _But coding LVGL Apps in C looks cumbersome..._
