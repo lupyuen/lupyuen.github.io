@@ -2,9 +2,9 @@
 
 📝 _3 Jan 2023_
 
-![Apache NuttX RTOS on PinePhone with LVGL... Touch input coming soon!](https://lupyuen.github.io/images/what-title.jpg)
+![Apache NuttX RTOS on PinePhone with LVGL](https://lupyuen.github.io/images/what-title.jpg)
 
-[_Apache NuttX RTOS on PinePhone with LVGL... Touch input coming soon!_](https://lupyuen.github.io/articles/fb#lvgl-graphics-library)
+[_Apache NuttX RTOS on PinePhone with LVGL_](https://lupyuen.github.io/articles/lvgl2)
 
 Over the past 5 months, we ported to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) a different kind of Operating System... [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/)
 
@@ -22,7 +22,7 @@ _What's Apache NuttX RTOS?_
 
 Think Linux, Ubuntu, Manjaro, Arch, ... But a lot __smaller and simpler__!
 
-NuttX is a __tiny operating system__ (10 MB) that boots on a __microSD Card__ and provides a Command-Line Interface. (Pic above)
+NuttX is a __tiny operating system__ (10 MB) that boots on a __microSD Card__ and provides a Command-Line Interface for developers. (Pic above)
 
 [(Full build in 2.5 minutes on a 10-year-old MacBook Pro)](https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc)
 
@@ -48,9 +48,9 @@ _Does NuttX support X11? Wayland?_
 
 Nope, only [__LVGL__](https://lupyuen.github.io/articles/fb#lvgl-graphics-library) is supported. (Pic at the top)
 
-And [__Touch Input__](https://lupyuen.github.io/articles/touch2) will be available soon.
+[__Touch Input__](https://lupyuen.github.io/articles/touch2) works fine with LVGL Apps on PinePhone.
 
-[(Watch the Demo on YouTube)](https://www.youtube.com/shorts/APge9bTt-ho)
+[(Watch the Demo on YouTube)](https://www.youtube.com/watch?v=JQTh3VTTTkc)
 
 _Will it run Linux apps?_
 
@@ -66,7 +66,7 @@ Let's talk about NuttX for Learners...
 
 _Is NuttX good for learning the internals of Smartphones?_
 
-Check out the [__15 articles__](https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone) covering everything inside-out about NuttX on PinePhone: [__GPIO__](https://lupyuen.github.io/articles/pio), [__UART__](https://lupyuen.github.io/articles/serial), [__Framebuffer__](https://lupyuen.github.io/articles/fb), [__LCD Panel__](https://lupyuen.github.io/articles/lcd), [__Touch Panel__](https://lupyuen.github.io/articles/touch2), ...
+Check out the [__15 articles__](https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone) covering everything inside-out about NuttX on PinePhone: [__GPIO__](https://lupyuen.github.io/articles/pio), [__UART__](https://lupyuen.github.io/articles/serial), [__Framebuffer__](https://lupyuen.github.io/articles/fb), [__LCD Panel__](https://lupyuen.github.io/articles/lcd), [__Touch Panel__](https://lupyuen.github.io/articles/touch2), [__LVGL__](https://lupyuen.github.io/articles/lvgl2)...
 
 And esoteric topics too: [__Display Engine__](https://lupyuen.github.io/articles/de3), [__MIPI Display Serial Interface__](https://lupyuen.github.io/articles/dsi3), [__Power Management Integrated Circuit__](https://lupyuen.github.io/articles/lcd#power-on-lcd-panel), [__Reduced Serial Bus__](https://lupyuen.github.io/articles/lcd#power-on-lcd-panel), [__Generic Interrupt Controller__](https://lupyuen.github.io/articles/interrupt), ...
 
@@ -100,136 +100,15 @@ I'm proud to volunteer as a member of the Apache NuttX __Project Management Comm
 
 I'm not paid by Apache Software Foundation. But I'm extremely grateful to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work on PinePhone Education!
 
-If we're keen to build and boot NuttX on our PinePhone, please read on...
+If we're keen to boot NuttX on our PinePhone, please read on...
 
-![USB Serial Debug Cable for PinePhone](https://lupyuen.github.io/images/dsi3-title.jpg)
+![Bootable microSD for PinePhone](https://lupyuen.github.io/images/arm-jumpdrive.png)
 
-[_USB Serial Debug Cable for PinePhone_](https://wiki.pine64.org/index.php/PinePhone#Serial_console)
-
-# Build NuttX
-
-Here's what we need to __run NuttX on PinePhone__...
-
-1.  __Pine64 PinePhone__
-
-    (Sorry PinePhone Pro is not supported yet)
-
-1.  [__USB Serial Debug Cable for PinePhone__](https://wiki.pine64.org/index.php/PinePhone#Serial_console) (Pic above)
-
-    [(Available at Pine64 Store)](https://pine64.com/product/pinebook-pinephone-pinetab-serial-console/)
-
-    [(Or make one)](https://wiki.pine64.org/index.php/PinePhone#Serial_console)
-
-1.  __microSD Card__ for booting NuttX
-
-    (NuttX won't touch the eMMC)
-
-We download __`Image.gz`__ from the NuttX Binaries...
-
--   [__pinephone-nuttx/releases__](https://github.com/lupyuen/pinephone-nuttx/releases/tag/v11.0.0)
-
-Or if we prefer to __build NuttX__ ourselves...
-
-1.  Install the Build Prerequisites, skip the RISC-V Toolchain...
-
-    ["__Install Prerequisites__"](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
-
-1.  Download the ARM64 Toolchain for
-    __AArch64 Bare-Metal Target `aarch64-none-elf`__
-    
-    [__Arm GNU Toolchain Downloads__](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
-
-    (Skip the section for Beta Releases)
-
-1.  Add the downloaded toolchain to the __`PATH`__ Environment Variable...
-
-    ```text
-    gcc-arm-...-aarch64-none-elf/bin
-    ```
-
-    Check the ARM64 Toolchain...
-
-    ```bash
-    aarch64-none-elf-gcc -v
-    ```
-
-1.  Download and configure NuttX...
-
-    ```bash
-    mkdir nuttx
-    cd nuttx
-    git clone https://github.com/apache/nuttx nuttx
-    git clone https://github.com/apache/nuttx-apps apps
-
-    cd nuttx
-    tools/configure.sh pinephone:lcd
-    make menuconfig
-    ```
-
-1.  Select these options to enable the [__LVGL Demo App__](https://lupyuen.github.io/articles/fb#lvgl-graphics-library)...
-
-    Enable "__Application Configuration__ > __Graphics Support__ > __Light and Versatile Graphics Library (LVGL)__"
-
-    Enable "__LVGL__ > __Enable Framebuffer Port__"
-
-    Browse into "__LVGL__ > __LVGL Configuration__"
-    
-    -   In "__Color Settings__"
-
-        Set __Color Depth__ to "__32: ARGB8888__"
-
-    -   In "__Memory settings__"
-        
-        Set __Size of Memory__ to __64__
-
-    -   In "__HAL Settings__"
-
-        Set __Default Dots Per Inch__ to __250__
-
-    -   In "__Demos__"
-    
-        Enable "__Show Some Widgets__"
-
-    Enable "__Application Configuration__ > __Examples__ > __LVGL Demo__"
-
-    Save the configuration and exit __`menuconfig`__
-
-1.  Build the NuttX Project and compress the NuttX Image...
-
-    ```bash
-    make
-    cp nuttx.bin Image
-    rm -f Image.gz
-    gzip Image
-    ```
-
-    [(See the Build Log)](https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc)
-
-    This produces the file __`Image.gz`__, which will be copied to PinePhone in the next step.
-
-1.  If the build fails with...
-
-    ```text
-    token "@" is not valid in preprocessor
-    ```
-    
-    Then look for this file in the ARM64 Toolchain...
-
-    ```text
-    gcc-arm-none-eabi/arm-none-eabi/include/_newlib_version.h
-    ```
-
-    And [__apply this patch__](https://github.com/apache/nuttx/pull/7284/commits/518b0eb31cb66f25b590ae9a79ab16c319b96b94#diff-12291efd8a0ded1bc38bad733d99e4840ae5112b465c04287f91ba5169612c73).
-
-Let's copy __`Image.gz`__ to PinePhone and boot NuttX...
-
-![PinePhone Jumpdrive on microSD](https://lupyuen.github.io/images/arm-jumpdrive.png)
-
-[_PinePhone Jumpdrive on microSD_](https://github.com/dreemurrs-embedded/Jumpdrive)
+[_Bootable microSD for PinePhone_](https://github.com/dreemurrs-embedded/Jumpdrive)
 
 # Boot NuttX
 
-We're ready to boot NuttX on our PinePhone!
+Let's make a __Bootable microSD__ that will start NuttX on our PinePhone...
 
 1.  Download the __PinePhone Jumpdrive Image `pine64-pinephone.img.xz`__ from...
 
@@ -238,49 +117,46 @@ We're ready to boot NuttX on our PinePhone!
     Write the downloaded image to a microSD Card with
 [__Balena Etcher__](https://www.balena.io/etcher/)
 
-1.  Copy the file __`Image.gz`__ from the previous section.
+1.  Download __`Image.gz`__ from the [__NuttX Release__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.0.0)...
 
-    Overwrite the file on the microSD Card.
+    [__Image.gz: NuttX Image for PinePhone__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/nuttx-12.0.0/Image.gz)
+
+    (If we prefer to __build NuttX__ ourselves: [__Follow these steps__](https://lupyuen.github.io/articles/lvgl2#appendix-build-apache-nuttx-rtos-for-pinephone))
+
+1.  Copy the downloaded __`Image.gz`__ and overwrite the file on the microSD Card.
 
     (Pic above)
-
-1.  On PinePhone, set [__Privacy Switch 6 (Headphone)__](https://wiki.pine64.org/index.php/PinePhone#Privacy_switch_configuration)
-to __Off__.
-
-    Connect PinePhone to our computer with the [__Serial Debug Cable__](https://wiki.pine64.org/index.php/PinePhone#Serial_console).
-
-    On our computer, start a __Serial Terminal__ and connect to the USB Serial Port at __115.2 kbps__.
 
 1.  Insert the microSD Card into PinePhone and power up PinePhone.
 
     NuttX boots on PinePhone and shows a [__Test Pattern__](https://lupyuen.github.io/images/dsi3-title.jpg).
-    
-    __NuttShell `nsh`__ appears in the Serial Console. (Pic below)
 
-    [(See the Boot Log)](https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd)
+    (Very briefly)
 
-1.  To see the available commands in NuttShell...
+1.  The [__LVGL Touchscreen Demo__](https://lupyuen.github.io/images/lvgl2-title.jpg) appears on PinePhone! [(Like this)](https://lupyuen.github.io/images/lvgl2-title.jpg)
 
-    ```bash
-    help
-    ```
+    Tap around and play with the LVGL Widgets (UI Controls).
 
-    To run the [__LVGL Demo App__](https://lupyuen.github.io/articles/fb#lvgl-graphics-library)...
+    [(Watch the demo on YouTube)](https://www.youtube.com/watch?v=JQTh3VTTTkc)
 
-    ```bash
-    lvgldemo widgets
-    ```
+1.  Our Touch Panel Driver has some limitations...
 
-    [(We should see this)](https://lupyuen.github.io/images/fb-lvgl3.jpg)
+    __Scrolling and swiping__ won't work right now.
 
-And that's how we build and boot NuttX for PinePhone!
+    [(More about this)](https://lupyuen.github.io/articles/touch2#driver-limitations)
 
-![Booting Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/fb-run2.png)
+For developers who prefer to run NuttX Commands over a __Command-Line Interface__, please check out the instructions here...
 
-[(See the Boot Log)](https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd)
+-   [__"Build Apache NuttX RTOS for PinePhone"__](https://lupyuen.github.io/articles/lvgl2#appendix-build-apache-nuttx-rtos-for-pinephone)
+
+-   [__"Boot Apache NuttX RTOS on PinePhone"__](https://lupyuen.github.io/articles/lvgl2#appendix-boot-apache-nuttx-rtos-on-pinephone)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! NuttX for PinePhone wouldn't have been possible without your support.
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/what.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/what.md)
+
+![NuttX on PinePhone boots with a Touchscreen App](https://lupyuen.github.io/images/lvgl2-title.jpg)
+
+[_NuttX on PinePhone boots with a Touchscreen App_](https://lupyuen.github.io/articles/lvgl2)
