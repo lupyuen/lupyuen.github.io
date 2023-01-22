@@ -104,7 +104,7 @@ If we're keen to boot NuttX on our PinePhone, please read on...
 
 ![Bootable microSD for PinePhone](https://lupyuen.github.io/images/arm-jumpdrive.png)
 
-[_Bootable microSD for PinePhone_](https://github.com/dreemurrs-embedded/Jumpdrive)
+[_Bootable microSD for PinePhone_](https://lupyuen.github.io/articles/lvgl2#appendix-boot-apache-nuttx-rtos-on-pinephone)
 
 # Boot NuttX
 
