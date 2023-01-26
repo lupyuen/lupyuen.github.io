@@ -54,6 +54,8 @@ Let's create a Terminal App in LVGL, that will let us interact with the NuttX NS
 
 We begin by starting the NSH Task and piping a command to NSH Shell...
 
+![Flow of LVGL Terminal for PinePhone on Apache NuttX RTOS](https://lupyuen.github.io/images/terminal-flow2.jpg)
+
 # Pipe a Command to NSH Shell
 
 TODO
@@ -448,6 +450,8 @@ nsh>
 
 Now that our background processing is ready, let's render the LVGL Widgets for our terminal...
 
+![Flow of LVGL Terminal for PinePhone on Apache NuttX RTOS](https://lupyuen.github.io/images/terminal-flow3.jpg)
+
 # Render Terminal with LVGL Widgets
 
 TODO: Adopt Flex so it works with other devices
@@ -559,6 +563,8 @@ Now we see the LVGL Keyboard without missing symbols (pic below)...
 Let's look at our Callback Function for the LVGL Keyboard...
 
 ![Set Terminal Font to Monospace](https://lupyuen.github.io/images/lvgl2-terminal3.jpg)
+
+![Flow of LVGL Terminal for PinePhone on Apache NuttX RTOS](https://lupyuen.github.io/images/terminal-flow4.jpg)
 
 # Handle Input from LVGL Keyboard
 
