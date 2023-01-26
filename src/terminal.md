@@ -657,6 +657,10 @@ TODO: Change polling to blocking, multithreading
 
 TODO: Text Area probably not optimal for scrolling. Label might work better
 
+# LVGL Programming in Zig
+
+TODO
+
 # What's Next
 
 TODO
