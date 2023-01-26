@@ -4,9 +4,27 @@
 
 ![LVGL Terminal App on PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/terminal-title.jpg)
 
+[__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System) now boots on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) and runs __Touchscreen Apps__!
+
+Today we'll look inside a Touchscreen App that's will be useful for NuttX Developers... Our __Terminal App for NSH Shell__. (Pic above)
+
+_What's NSH Shell?_
+
+__Nutt Shell (NSH)__ is the Command-Line Interface for NuttX. (It works like a Linux Shell)
+
+Previously we needed a special __Serial Cable__ to access the NSH Shell on PinePhone. With the Terminal App, now we can run NSH Commands __via the Touchscreen__!
+
 TODO
 
-[__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System) now boots on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) and runs __Touchscreen Apps__! (Pic above)
+-   Pipe a Command to NSH Shell
+
+-   Poll for NSH Output
+
+-   Render the Terminal with LVGL Widgets
+
+-   Handle Input from LVGL Keyboard
+
+-   Handle Output from NSH Shell
 
 _What's NuttX? Why run it on PinePhone?_
 
@@ -428,7 +446,7 @@ Now that our background processing is ready, let's render the LVGL Widgets for o
 
 # Render Terminal with LVGL Widgets
 
-TODO: Flex
+TODO: Adopt Flex so it works with other devices
 
 Our LVGL Terminal will have 3 LVGL Widgets...
 
