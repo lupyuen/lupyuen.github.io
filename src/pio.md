@@ -703,33 +703,9 @@ And eventually we shall build NuttX Drivers for PinePhone's [__LCD Display__](ht
 
 There's plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏
 
-Check out the other articles on __NuttX RTOS for PinePhone__...
+Please check out the other articles on NuttX for PinePhone...
 
--   [__"NuttX RTOS for PinePhone: What is it?"__](https://lupyuen.github.io/articles/what)
-
--   [__"Apache NuttX RTOS on Arm Cortex-A53: How it might run on PinePhone"__](https://lupyuen.github.io/articles/arm)
-
--   [__"PinePhone boots Apache NuttX RTOS"__](https://lupyuen.github.io/articles/uboot)
-
--   [__"NuttX RTOS for PinePhone: Fixing the Interrupts"__](https://lupyuen.github.io/articles/interrupt)
-
--   [__"NuttX RTOS for PinePhone: UART Driver"__](https://lupyuen.github.io/articles/serial)
-
--   [__"Understanding PinePhone's Display (MIPI DSI)"__](https://lupyuen.github.io/articles/dsi)
-
--   [__"NuttX RTOS for PinePhone: Display Driver in Zig"__](https://lupyuen.github.io/articles/dsi2)
-
--   [__"Rendering PinePhone's Display (DE and TCON0)"__](https://lupyuen.github.io/articles/de)
-
--   [__"NuttX RTOS for PinePhone: Render Graphics in Zig"__](https://lupyuen.github.io/articles/de2)
-
--   [__"NuttX RTOS for PinePhone: MIPI Display Serial Interface"__](https://lupyuen.github.io/articles/dsi3)
-
--   [__"NuttX RTOS for PinePhone: Display Engine"__](https://lupyuen.github.io/articles/de3)
-
--   [__"NuttX RTOS for PinePhone: LCD Panel"__](https://lupyuen.github.io/articles/lcd)
-
--   [__"NuttX RTOS for PinePhone: Framebuffer"__](https://lupyuen.github.io/articles/fb)
+-   [__"Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -1095,6 +1071,10 @@ The __u-boot Project__ has another driver for A64 Display Engine...
 
 ## Framebuffer
 
+Check out the article...
+
+-   [__"NuttX RTOS for PinePhone: Framebuffer"__](https://lupyuen.github.io/articles/fb)
+
 PinePhone's Linux Device Tree defines a high-level __Framebuffer__ for apps to render graphics: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L16-L21)
 
 ```text
@@ -1113,6 +1093,10 @@ We might build a similar Framebuffer Device in NuttX for rendering graphics with
 [_Capacitive Touch Panel in PinePhone Schematic (Pages 9 and 11)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
 
 ## Touch Panel
+
+Check out the article...
+
+-   [__"NuttX RTOS for PinePhone: Touch Panel"__](https://lupyuen.github.io/articles/touch2)
 
 PinePhone has a __Goodix GT917S Touch Panel__ that talks on I2C.
 
