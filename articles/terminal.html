@@ -81,40 +81,42 @@
 <li><a href="#whats-next">12 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>3 Feb 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/terminal-title.jpg" alt="LVGL Terminal App on PinePhone with Apache NuttX RTOS" /></p>
 <p><a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) now boots on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> and runs <strong>Touchscreen Apps</strong>!</p>
-<p>Today we’ll look inside a Touchscreen App that’s will be useful for NuttX Developers… Our <strong>Terminal App for NSH Shell</strong>. (Pic above)</p>
+<p>Today we’ll look inside a Touchscreen App that will be useful for NuttX Developers… Our <strong>Terminal App for NSH Shell</strong>. (Pic above)</p>
+<p><a href="https://www.youtube.com/watch?v=WdiXaMK8cNw">(Watch the Demo on YouTube)</a></p>
 <p><em>What’s NSH Shell?</em></p>
-<p><strong>Nutt Shell (NSH)</strong> is the Command-Line Interface for NuttX. (It works like a Linux Shell)</p>
-<p>Previously we needed a special <strong>Serial Cable</strong> to access the NSH Shell on PinePhone. With the Terminal App, now we can run NSH Commands <strong>via the Touchscreen</strong>!</p>
-<p>TODO</p>
+<p><strong>Nutt Shell (NSH)</strong> is the Command-Line Interface for NuttX. (Works like a Linux Shell)</p>
+<p>Previously we needed a special <a href="https://lupyuen.github.io/articles/lvgl2#appendix-boot-apache-nuttx-rtos-on-pinephone"><strong>Serial Cable</strong></a> to access the NSH Shell on PinePhone…</p>
+<p>Now we can run NSH Commands <strong>through the Touchscreen</strong>! (Pic above)</p>
+<p>(Super helpful for testing new NuttX Features on PinePhone!)</p>
+<p>Read on to find out how we…</p>
 <ul>
 <li>
-<p>Pipe a Command to NSH Shell</p>
+<p><strong>Pipe a Command</strong> to NSH Shell</p>
 </li>
 <li>
-<p>Poll for NSH Output</p>
+<p>Poll for <strong>NSH Output</strong></p>
 </li>
 <li>
-<p>Render the Terminal with LVGL Widgets</p>
+<p><strong>Render the Terminal</strong> with LVGL Widgets</p>
 </li>
 <li>
-<p>Handle Input from LVGL Keyboard</p>
+<p><strong>Handle Input</strong> from LVGL Keyboard</p>
 </li>
 <li>
-<p>Handle Output from NSH Shell</p>
+<p><strong>Handle Output</strong> from NSH Shell</p>
 </li>
 </ul>
+<p>And how we might simplify the LVGL coding with the <strong>Zig Programming Language</strong>.</p>
 <p><em>What’s NuttX? Why run it on PinePhone?</em></p>
 <p>If we’re new to NuttX, here’s a gentle intro…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/what"><strong>“NuttX RTOS for PinePhone: What is it?”</strong></a></li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/terminal-flow.jpg" alt="Flow of LVGL Terminal for PinePhone on Apache NuttX RTOS" /></p>
 <h1 id="lvgl-terminal-for-nuttx"><a href="#lvgl-terminal-for-nuttx">1 LVGL Terminal for NuttX</a></h1>
 <p>TODO</p>
 <p>Let’s create a Terminal App in LVGL, that will let us interact with the NuttX NSH Shell…</p>
 <ul>
-<li>
-<p><a href="https://www.youtube.com/watch?v=WdiXaMK8cNw">Watch the Demo on YouTube</a></p>
-</li>
 <li>
 <p><a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c">Source Code: lvglterm.c</a></p>
 </li>
@@ -122,9 +124,7 @@
 <p><a href="https://github.com/lupyuen/lvglterm">How to compile LVGL Terminal</a></p>
 </li>
 </ul>
-<p><img src="https://lupyuen.github.io/images/lvgl2-terminal2.jpg" alt="LVGL Terminal for NuttX" /></p>
 <p>We begin by starting the NSH Task and piping a command to NSH Shell…</p>
-<p><img src="https://lupyuen.github.io/images/terminal-flow.jpg" alt="Flow of LVGL Terminal for PinePhone on Apache NuttX RTOS" /></p>
 <h1 id="pipe-a-command-to-nsh-shell"><a href="#pipe-a-command-to-nsh-shell">2 Pipe a Command to NSH Shell</a></h1>
 <p>TODO</p>
 <p>Our LVGL Terminal App needs to…</p>
@@ -643,8 +643,10 @@ static void timer_callback(lv_timer_t *timer) {
 <h1 id="performance"><a href="#performance">10 Performance</a></h1>
 <p>TODO: Change polling to blocking, multithreading</p>
 <p>TODO: Text Area probably not optimal for scrolling. Label might work better</p>
+<p><img src="https://lupyuen.github.io/images/terminal-zig1.jpg" alt="LVGL Programming in Zig" /></p>
 <h1 id="lvgl-programming-in-zig"><a href="#lvgl-programming-in-zig">11 LVGL Programming in Zig</a></h1>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/terminal-zig2.jpg" alt="Compiling an LVGL Program in Zig" /></p>
 <h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
 <p>TODO</p>
 <p>Please check out the other articles on NuttX for PinePhone…</p>
