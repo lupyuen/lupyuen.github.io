@@ -14,7 +14,7 @@ _What's NSH Shell?_
 
 __Nutt Shell (NSH)__ is the Command-Line Interface for NuttX. (Works like a Linux Shell)
 
-Previously we needed a special [__Serial Cable__](https://lupyuen.github.io/articles/lvgl2#appendix-boot-apache-nuttx-rtos-on-pinephone) to access the NSH Shell on PinePhone...
+Previously we needed a special [__Serial Cable__](https://lupyuen.github.io/articles/lvgl2#appendix-boot-apache-nuttx-rtos-on-pinephone) to access NSH Shell on PinePhone...
 
 Now we can run NSH Commands __through the Touchscreen__! (Pic above)
 
