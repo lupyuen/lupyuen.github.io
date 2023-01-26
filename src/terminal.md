@@ -651,6 +651,12 @@ That's why we see 3 spaces between the `nsh>` prompt and the NSH Command...
 
 ![3 spaces between the `nsh>` prompt and the NSH Command](https://lupyuen.github.io/images/lvgl2-terminal3.jpg)
 
+# Performance
+
+TODO: Change polling to blocking, multithreading
+
+TODO: Text Area probably not optimal for scrolling. Label might work better
+
 # What's Next
 
 TODO
