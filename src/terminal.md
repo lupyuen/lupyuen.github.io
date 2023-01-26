@@ -6,25 +6,33 @@
 
 [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System) now boots on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) and runs __Touchscreen Apps__!
 
-Today we'll look inside a Touchscreen App that's will be useful for NuttX Developers... Our __Terminal App for NSH Shell__. (Pic above)
+Today we'll look inside a Touchscreen App that will be useful for NuttX Developers... Our __Terminal App for NSH Shell__. (Pic above)
+
+[(Watch the Demo on YouTube)](https://www.youtube.com/watch?v=WdiXaMK8cNw)
 
 _What's NSH Shell?_
 
-__Nutt Shell (NSH)__ is the Command-Line Interface for NuttX. (It works like a Linux Shell)
+__Nutt Shell (NSH)__ is the Command-Line Interface for NuttX. (Works like a Linux Shell)
 
-Previously we needed a special __Serial Cable__ to access the NSH Shell on PinePhone. With the Terminal App, now we can run NSH Commands __via the Touchscreen__!
+Previously we needed a special [__Serial Cable__](https://lupyuen.github.io/articles/lvgl2#appendix-boot-apache-nuttx-rtos-on-pinephone) to access the NSH Shell on PinePhone...
 
-TODO
+Now we can run NSH Commands __through the Touchscreen__! (Pic above)
 
--   Pipe a Command to NSH Shell
+(Super helpful for testing new NuttX Features on PinePhone!)
 
--   Poll for NSH Output
+Read on to find out how we...
 
--   Render the Terminal with LVGL Widgets
+-   __Pipe a Command__ to NSH Shell
 
--   Handle Input from LVGL Keyboard
+-   Poll for __NSH Output__
 
--   Handle Output from NSH Shell
+-   __Render the Terminal__ with LVGL Widgets
+
+-   __Handle Input__ from LVGL Keyboard
+
+-   __Handle Output__ from NSH Shell
+
+And how we might simplify the LVGL coding with the __Zig Programming Language__.
 
 _What's NuttX? Why run it on PinePhone?_
 
@@ -32,23 +40,19 @@ If we're new to NuttX, here's a gentle intro...
 
 -   [__"NuttX RTOS for PinePhone: What is it?"__](https://lupyuen.github.io/articles/what)
 
+![Flow of LVGL Terminal for PinePhone on Apache NuttX RTOS](https://lupyuen.github.io/images/terminal-flow.jpg)
+
 # LVGL Terminal for NuttX
 
 TODO
 
 Let's create a Terminal App in LVGL, that will let us interact with the NuttX NSH Shell...
 
--   [Watch the Demo on YouTube](https://www.youtube.com/watch?v=WdiXaMK8cNw)
-
 -   [Source Code: lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c)
 
 -   [How to compile LVGL Terminal](https://github.com/lupyuen/lvglterm)
 
-![LVGL Terminal for NuttX](https://lupyuen.github.io/images/lvgl2-terminal2.jpg)
-
 We begin by starting the NSH Task and piping a command to NSH Shell...
-
-![Flow of LVGL Terminal for PinePhone on Apache NuttX RTOS](https://lupyuen.github.io/images/terminal-flow.jpg)
 
 # Pipe a Command to NSH Shell
 
@@ -657,9 +661,13 @@ TODO: Change polling to blocking, multithreading
 
 TODO: Text Area probably not optimal for scrolling. Label might work better
 
+![LVGL Programming in Zig](https://lupyuen.github.io/images/terminal-zig1.jpg)
+
 # LVGL Programming in Zig
 
 TODO
+
+![Compiling an LVGL Program in Zig](https://lupyuen.github.io/images/terminal-zig2.jpg)
 
 # What's Next
 
