@@ -421,25 +421,26 @@ static bool has_input(int fd) {
 <p>This polling for NSH Output needs to be done in an LVGL Timer, here’s why…</p>
 <p><img src="https://lupyuen.github.io/images/terminal-flow6.jpg" alt="Timer for LVGL Terminal" /></p>
 <h1 id="timer-for-lvgl-terminal"><a href="#timer-for-lvgl-terminal">4 Timer for LVGL Terminal</a></h1>
+<p><em>How will we poll for NSH Output and display it?</em></p>
+<p>We’ve started an NSH Shell that will execute NSH Commands that we pipe to it.</p>
+<p>Now we need to periodically <strong>poll for NSH Output</strong>, and write the output to the LVGL display…</p>
+<ul>
+<li>
+<p>Every couple of milliseconds we…</p>
+<ul>
+<li>
+<p><strong>Poll the NSH Shell</strong> to check if it has output data</p>
+</li>
+<li>
+<p><strong>Read the output</strong> from NSH Shell</p>
+</li>
+<li>
+<p><strong>Display the output</strong> in an LVGL Widget</p>
+</li>
+</ul>
+</li>
+</ul>
 <p>TODO</p>
-<p>In the previous sections we started an NSH Shell that will execute NSH Commands that we pipe to it.</p>
-<p>Our LVGL Terminal for NSH Shell shall periodically check for output from the NSH Shell, and write the output to the LVGL Display…</p>
-<ul>
-<li>
-<p>Every couple of milliseconds…</p>
-<ul>
-<li>
-<p>We call <code>poll()</code> to check if NSH Shell has output data</p>
-</li>
-<li>
-<p>We read the output from NSH Shell</p>
-</li>
-<li>
-<p>We display the NSH Output in an LVGL Label Widget</p>
-</li>
-</ul>
-</li>
-</ul>
 <p>We’ll do this with an <a href="https://docs.lvgl.io/master/overview/timer.html">LVGL Timer</a> like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/2f591f4e2589298caf6613ba409d667be61a9881/examples/lvgldemo/lvgldemo.c#L257-L269">lvgldemo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Create an LVGL Terminal that will let us interact with NuttX NSH Shell
 void test_terminal(void) {
