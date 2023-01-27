@@ -219,40 +219,46 @@ pid_t pid = task_create(
 
 // Check for error
 if (pid < 0) { _err("task_create failed: %d\n", errno); return; }
+
+// For Debugging: Wait a while for NSH Shell to start
+sleep(1);
 ```
 
-TODO
+NSH Shell inherits our Standard I/O streams, which we've redirected to our NuttX Pipes.
+
+We're ready to test this!
 
 ## Test the Pipes
 
-TODO
-
-_Will this work?_
-
-[lvgldemo.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/a9d67c135c458088946ed35c1b24be1b4aee3553/examples/lvgldemo/lvgldemo.c#L292-L338)
+Finally we add some __Test Code__ to verify that everything works: [lvgldemo.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/a9d67c135c458088946ed35c1b24be1b4aee3553/examples/lvgldemo/lvgldemo.c#L292-L338)
 
 ```c
-// Wait a while for NSH Shell to start
-sleep(1);
-
 // Send a command to NSH stdin
 const char cmd[] = "ls\r";
-ret = write(
-  nsh_stdin[WRITE_PIPE],
-  cmd,
-  sizeof(cmd)
+ret = write(   // Write to the stream...
+  nsh_stdin[WRITE_PIPE],  // NSH stdin (WRITE_PIPE is 1)
+  cmd,         // Data to be written
+  sizeof(cmd)  // Number of bytes
 );
 
 // Wait a while for NSH Shell to execute our command
 sleep(1);
+```
 
+The code above sends the __`ls`__ command to NSH Shell, by writing to our NuttX Pipe for __NSH Standard Input__.
+
+NSH Shell __runs the command__ and generates the command output.
+
+We __read the output__ from NSH Shell...
+
+```c
 // Read the output from NSH stdout.
 // TODO: This will block if there's nothing to read.
 static char buf[64];
-ret = read(
-  nsh_stdout[READ_PIPE],
-  buf,
-  sizeof(buf) - 1
+ret = read(        // Read from the stream...
+  nsh_stdout[READ_PIPE],  // NSH stdout (READ_PIPE is 0)
+  buf,             // Buffer to be read
+  sizeof(buf) - 1  // Buffer size (needs terminating null)
 );
 
 // Print the output
@@ -262,22 +268,7 @@ if (ret > 0) {
 }
 ```
 
-TODO
-
-```c
-#ifdef NOTUSED
-    // Read the output from NSH stderr.
-    // TODO: This will block if there's nothing to read.
-    ret = read(    
-      nsh_stderr[READ_PIPE],
-      buf,
-      sizeof(buf) - 1
-    );
-    if (ret > 0) { buf[ret] = 0; _info("%s\n", buf); }
-#endif
-```
-
-And it works! Here's the NSH Task auto-running the `ls` Command received via our Pipe...
+And it works! Here's the NSH Shell auto-running the __`ls`__ command received via our NuttX Pipe...
 
 ```text
 NuttShell (NSH) NuttX-12.0.0
@@ -285,25 +276,38 @@ nsh> ls
 /:
  dev/
  var/
-nsh> est_terminal: write nsh_stdin: 9
-test_terminal: read nsh_stdout: 63
-test_terminal: K
-...
-nsh> ls
-/:
- dev/
- var/
-test_terminal: write nsh_stdin: 9
-test_terminal: read nsh_stdout: 63
-test_terminal: 
-...
+nsh> 
 ```
 
 [(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/a9d67c135c458088946ed35c1b24be1b4aee3553/examples/lvgldemo/lvgldemo.c#L340-L390)
 
-There's a problem with the code above... Calling `read()` on `nsh_stdout` will block if there's no NSH Output to be read.
+_What about NSH Error Output?_
 
-Let's call `poll()` on `nsh_stdout` to check if there's NSH Output to be read...
+Normally we'll do this to read the __NSH Error Output__...
+
+```c
+// Warning: This will block!
+#ifdef NOTUSED
+  // Read the output from NSH stderr.
+  // TODO: This will block if there's nothing to read.
+  ret = read(        // Read from the stream...
+    nsh_stderr[READ_PIPE],  // NSH stderr (READ_PIPE is 0)
+    buf,             // Buffer to be read
+    sizeof(buf) - 1  // Buffer size (needs terminating null)
+  );
+
+  // Print the output
+  if (ret > 0) { buf[ret] = 0; _info("%s\n", buf); }
+#endif
+```
+
+But there's a problem...
+
+Calling __`read()`__ on __`nsh_stderr`__ will block the execution if there's no NSH Output ready to be read!
+
+(Same for __`nsh_stdout`__) 
+
+Instead let's check if there's NSH Output ready to be read, by calling __`poll()`__...
 
 # Poll for NSH Output
 
