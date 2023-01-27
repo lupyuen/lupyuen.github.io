@@ -114,6 +114,37 @@
 </ul>
 <p><img src="https://lupyuen.github.io/images/terminal-flow.jpg" alt="Flow of LVGL Terminal for PinePhone on Apache NuttX RTOS" /></p>
 <h1 id="lvgl-terminal-for-nuttx"><a href="#lvgl-terminal-for-nuttx">1 LVGL Terminal for NuttX</a></h1>
+<p>Before we dive in, let’s walk through the internals of our <strong>LVGL Terminal App for NuttX</strong> (pic above)…</p>
+<ol>
+<li>
+<p>We start the <strong>NSH Shell</strong> as a NuttX Task</p>
+<p>(Which will execute NSH Commands)</p>
+</li>
+<li>
+<p>An NSH Command is entered through the <strong>LVGL Keyboard</strong></p>
+<p>(Which goes to the <strong>Input Text Area</strong> Widget)</p>
+</li>
+<li>
+<p>When the Enter Key is pressed, we send the NSH Command to the <strong>NSH Input Pipe</strong></p>
+</li>
+<li>
+<p>Which delivers the NSH Command to the <strong>NSH Shell</strong></p>
+</li>
+<li>
+<p>NSH Shell <strong>executes our NSH Command</strong></p>
+</li>
+<li>
+<p>The output emitted by NSH Shell is pushed to the <strong>NSH Output Pipe</strong></p>
+</li>
+<li>
+<p>We run an <strong>LVGL Timer</strong> that periodically polls the NSH Output Pipe for output data</p>
+</li>
+<li>
+<p>When it detects the output data, the LVGL Timer reads the data…</p>
+<p>And renders the output in the <strong>Output Text Area</strong> Widget.</p>
+</li>
+</ol>
+<p><em>Whoa that looks complicated!</em></p>
 <p>TODO</p>
 <p>Let’s create a Terminal App in LVGL, that will let us interact with the NuttX NSH Shell…</p>
 <ul>
