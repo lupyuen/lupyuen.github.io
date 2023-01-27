@@ -441,18 +441,19 @@ static bool has_input(int fd) {
 </li>
 </ul>
 <p>TODO</p>
-<p>We’ll do this with an <a href="https://docs.lvgl.io/master/overview/timer.html">LVGL Timer</a> like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/2f591f4e2589298caf6613ba409d667be61a9881/examples/lvgldemo/lvgldemo.c#L257-L269">lvgldemo.c</a></p>
+<p>We’ll do this with an <a href="https://docs.lvgl.io/master/overview/timer.html">LVGL Timer</a> like so: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L178-L188">lvglterm.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Create an LVGL Terminal that will let us interact with NuttX NSH Shell
-void test_terminal(void) {
+static void create_terminal(void) {
 
   // Create an LVGL Timer to poll for output from NSH Shell
-  static uint32_t user_data = 10;
+  static uint32_t user_data = 0;
   lv_timer_t *timer = lv_timer_create(
-    my_timer,   // Callback
-    5000,       // Timer Period (Milliseconds)
-    &amp;user_data  // Callback Data
+    timer_callback,  // Callback Function
+    100,             // Timer Period (Milliseconds)
+    &amp;user_data       // Callback Data
   );
 </code></pre></div>
+<p>(<strong><code>user_data</code></strong> is unused for now)</p>
 <p><code>my_timer</code> is our Timer Callback Function: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/2f591f4e2589298caf6613ba409d667be61a9881/examples/lvgldemo/lvgldemo.c#L350-L363">lvgldemo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Callback for LVGL Timer
 void my_timer(lv_timer_t *timer) {
