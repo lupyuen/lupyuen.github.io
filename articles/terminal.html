@@ -70,7 +70,7 @@
 <li><a href="#lvgl-terminal-for-nuttx">1 LVGL Terminal for NuttX</a><ul></ul></li>
 <li><a href="#pipe-a-command-to-nsh-shell">2 Pipe a Command to NSH Shell</a><ul>
 <li><a href="#create-the-pipes">2.1 Create the Pipes</a><ul></ul></li>
-<li><a href="#duplicate-the-pipes">2.2 Duplicate the Pipes</a><ul></ul></li>
+<li><a href="#connect-the-pipes">2.2 Connect the Pipes</a><ul></ul></li>
 <li><a href="#create-the-task">2.3 Create the Task</a><ul></ul></li>
 <li><a href="#test-the-pipes">2.4 Test the Pipes</a><ul></ul></li></ul></li>
 <li><a href="#poll-for-nsh-output">3 Poll for NSH Output</a><ul></ul></li>
@@ -230,34 +230,47 @@ ret = pipe(nsh_stderr);
 if (ret &lt; 0) { _err(&quot;stderr pipe failed: %d\n&quot;, errno); return; }
 </code></pre></div>
 <p>There’s a reason why we call <strong><code>_err</code></strong> instead of <strong><code>printf</code></strong>, we’ll find out next…</p>
-<h2 id="duplicate-the-pipes"><a href="#duplicate-the-pipes">2.2 Duplicate the Pipes</a></h2>
+<h2 id="connect-the-pipes"><a href="#connect-the-pipes">2.2 Connect the Pipes</a></h2>
 <p><em>How will we connect the pipes to NSH Shell?</em></p>
-<p>In a while we’ll start the NuttX Task for NSH Shell. But first we need some plumbing to <strong>connect the NuttX Pipes</strong>: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L146-L178">lvglterm.c</a></p>
+<p>In a while we’ll start the NuttX Task for NSH Shell. But before that, we need some plumbing to <strong>connect the NuttX Pipes</strong>.</p>
+<p>First we close the streams for <strong>Standard Input, Output and Error</strong>: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L146-L178">lvglterm.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Close stdin, stdout and stderr
 close(0);
 close(1);
 close(2);
 </code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>// READ_PIPE is 0, WRITE_PIPE is 1
-dup2(nsh_stdin[READ_PIPE], 0);
-dup2(nsh_stdout[WRITE_PIPE], 1);
-dup2(nsh_stderr[WRITE_PIPE], 2);
+<p>That’s because NSH Shell will <strong>inherit our Standard I/O</strong> streams later.</p>
+<p>Next we <strong>redirect the Standard I/O</strong> streams to the NuttX Pipes that we’ve created earlier…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Redirect stdin, stdout and stderr to our NuttX Pipes.
+// READ_PIPE is 0, WRITE_PIPE is 1
+dup2(nsh_stdin[READ_PIPE],   0);  // Redirect stdin
+dup2(nsh_stdout[WRITE_PIPE], 1);  // Redirect stdout
+dup2(nsh_stderr[WRITE_PIPE], 2);  // Redirect stderr
 </code></pre></div>
-<p>TODO: Why _err?</p>
+<p>When we do this, <strong>Standard I/O will no longer work</strong> with the NuttX Console.</p>
+<p>Instead, we’ll have to read and write our NuttX Pipes.</p>
+<p><em>So printf will no longer print to the NuttX Console?</em></p>
+<p>Exactly! That’s why we call <strong><code>_err</code></strong> and <strong><code>_info</code></strong> in this article.</p>
+<p>These functions are <strong>hardwired to the NuttX Console</strong>. They will continue to work after we have redirected the Standard I/O streams.</p>
 <h2 id="create-the-task"><a href="#create-the-task">2.3 Create the Task</a></h2>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>// Create a new NSH Task using the pipes
+<p>Our plumbing is done, let’s <strong>create the NuttX Task</strong> for NSH Shell: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L146-L178">lvglterm.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Arguments for the NuttX Task
 char *argv[] = { NULL };
+
+// Create a NuttX Task for NSH Shell
 pid_t pid = task_create(
-  &quot;NSH Console&quot;,
-  100,  // Priority
-  CONFIG_DEFAULT_TASK_STACKSIZE,
-  nsh_consolemain,
-  argv
+  &quot;NSH Console&quot;,  // Task Name
+  100,            // Task Priority
+  CONFIG_DEFAULT_TASK_STACKSIZE,  // Task Stack Size
+  nsh_consolemain,  // Task Function
+  argv              // Task Arguments
 );
+
+// Check for error
 if (pid &lt; 0) { _err(&quot;task_create failed: %d\n&quot;, errno); return; }
-</code></pre></div><h2 id="test-the-pipes"><a href="#test-the-pipes">2.4 Test the Pipes</a></h2>
+</code></pre></div>
+<p>TODO</p>
+<h2 id="test-the-pipes"><a href="#test-the-pipes">2.4 Test the Pipes</a></h2>
 <p>TODO</p>
 <p><em>Will this work?</em></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/a9d67c135c458088946ed35c1b24be1b4aee3553/examples/lvgldemo/lvgldemo.c#L292-L338">lvgldemo.c</a></p>
