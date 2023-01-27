@@ -451,20 +451,22 @@ Now we need to periodically __poll for NSH Output__, and write the output to the
 
 TODO
 
-We'll do this with an [LVGL Timer](https://docs.lvgl.io/master/overview/timer.html) like so: [lvgldemo.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/2f591f4e2589298caf6613ba409d667be61a9881/examples/lvgldemo/lvgldemo.c#L257-L269)
+We'll do this with an [LVGL Timer](https://docs.lvgl.io/master/overview/timer.html) like so: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L178-L188)
 
 ```c
 // Create an LVGL Terminal that will let us interact with NuttX NSH Shell
-void test_terminal(void) {
+static void create_terminal(void) {
 
   // Create an LVGL Timer to poll for output from NSH Shell
-  static uint32_t user_data = 10;
+  static uint32_t user_data = 0;
   lv_timer_t *timer = lv_timer_create(
-    my_timer,   // Callback
-    5000,       // Timer Period (Milliseconds)
-    &user_data  // Callback Data
+    timer_callback,  // Callback Function
+    100,             // Timer Period (Milliseconds)
+    &user_data       // Callback Data
   );
 ```
+
+(__`user_data`__ is unused for now)
 
 `my_timer` is our Timer Callback Function: [lvgldemo.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/2f591f4e2589298caf6613ba409d667be61a9881/examples/lvgldemo/lvgldemo.c#L350-L363)
 
