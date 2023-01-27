@@ -98,11 +98,11 @@ Our Terminal App needs to...
 
 -   Redirect the __NSH Shell Input__
 
-    (To receive the NSH Commands that we tapped)
+    (To receive the NSH Commands that we typed)
 
 -   Redirect the __NSH Shell Output__
 
-    (To render the NSH Command output)
+    (To render the output of NSH Commands)
 
 We'll redirect the NSH Input and Output with __NuttX Pipes__.
 
