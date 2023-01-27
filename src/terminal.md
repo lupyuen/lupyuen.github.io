@@ -114,9 +114,7 @@ Let's find out how...
 
 _How will we create the NuttX Pipes?_
 
-TODO
-
-[lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L146-L178)
+This is how we __create a NuttX Pipe__ for NSH Input: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L146-L178)
 
 ```c
 // Create the NuttX Pipe for NSH Input
@@ -129,7 +127,27 @@ if (ret < 0) {
 }
 ```
 
-TODO
+NSH Shell will receive NSH Commands through this Pipe.
+
+_Why two elements in nsh_stdin?_
+
+That's because a NuttX Pipe has __Two Endpoints__ (in and out)...
+
+-   __`nsh_stdin[0]`__ reads from the Pipe
+
+-   __`nsh_stdin[1]`__ writes to the Pipe
+
+NuttX Pipes are __Unidirectional__... Don't mix up the endpoints!
+
+To remind ourselves, we define the __Read and Write Endpoints__ like so...
+
+```c
+// pipe[0] for reading, pipe[1] for writing
+#define READ_PIPE  0
+#define WRITE_PIPE 1
+```
+
+We do the same to create the NuttX Pipes for __NSH Output__ and __NSH Error__...
 
 ```c
 // Create the NuttX Pipe for NSH Output
@@ -143,11 +161,13 @@ ret = pipe(nsh_stderr);
 if (ret < 0) { _err("stderr pipe failed: %d\n", errno); return; }
 ```
 
-TODO: Why _err?
+There's a reason why we call __`_err`__ instead of __`printf`__, we'll find out next...
 
 ## Duplicate the Pipes
 
-TODO
+_How will we connect the pipes to NSH Shell?_
+
+In a while we'll start the NuttX Task for NSH Shell. But first we need some plumbing to __connect the NuttX Pipes__: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L146-L178)
 
 ```c
 // Close stdin, stdout and stderr
@@ -159,13 +179,13 @@ close(2);
 TODO
 
 ```c
-// Use the pipes as stdin, stdout and stderr
-#define READ_PIPE  0  // Read Pipes: stdin, stdout, stderr
-#define WRITE_PIPE 1  // Write Pipes: stdin, stdout, stderr
+// READ_PIPE is 0, WRITE_PIPE is 1
 dup2(nsh_stdin[READ_PIPE], 0);
 dup2(nsh_stdout[WRITE_PIPE], 1);
 dup2(nsh_stderr[WRITE_PIPE], 2);
 ```
+
+TODO: Why _err?
 
 ## Create the Task
 
