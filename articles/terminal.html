@@ -167,16 +167,24 @@
 <p>We begin by starting the NSH Task and piping a command to NSH Shell…</p>
 <p><img src="https://lupyuen.github.io/images/terminal-flow2.jpg" alt="Flow of LVGL Terminal for PinePhone on Apache NuttX RTOS" /></p>
 <h1 id="pipe-a-command-to-nsh-shell"><a href="#pipe-a-command-to-nsh-shell">2 Pipe a Command to NSH Shell</a></h1>
+<p>Our Terminal App needs to…</p>
+<ul>
+<li>
+<p>Start the <strong>NuttX Task</strong> for NSH Shell</p>
+<p>(Which will execute our NSH Commands)</p>
+</li>
+<li>
+<p>Redirect the <strong>NSH Shell Input</strong></p>
+<p>(To receive the NSH Commands that we tapped)</p>
+</li>
+<li>
+<p>Redirect the <strong>NSH Shell Output</strong></p>
+<p>(To render the NSH Command output)</p>
+</li>
+</ul>
+<p>We’ll redirect the NSH Input and Output with <strong>NuttX Pipes</strong>.</p>
+<p>(Which will work like Linux Pipes)</p>
 <p>TODO</p>
-<p>Our LVGL Terminal App needs to…</p>
-<ol>
-<li>
-<p>Start the NuttX Task for NSH Shell</p>
-</li>
-<li>
-<p>Redirect the NSH Console Input / Output to LVGL</p>
-</li>
-</ol>
 <p>Here’s a simple test that starts the NSH Task and sends a command to NSH Console via a POSIX Pipe: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/a9d67c135c458088946ed35c1b24be1b4aee3553/examples/lvgldemo/lvgldemo.c#L246-L390">lvgldemo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void test_terminal(void) {
 
