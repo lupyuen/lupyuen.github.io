@@ -54,19 +54,45 @@ Before we dive in, let's walk through the internals of our __LVGL Terminal App f
 
     (Which goes to the __Input Text Area Widget__)
 
-1.  When the Enter Key is pressed, we send the NSH Command to the __NSH Input Pipe__
+    Let's say we type this NSH Command...
+
+    ```text
+    ls
+    ```
+
+1.  When the Enter Key is pressed, we send the NSH Command __`ls`__ to the __NSH Input Pipe__
 
 1.  Which delivers the NSH Command to the __NSH Shell__
 
-1.  NSH Shell __executes our NSH Command__
+1.  NSH Shell __executes our NSH Command__...
+
+    ```text
+    nsh> ls
+    ```
 
 1.  NSH Shell produces some Text Output, which is pushed to the __NSH Output Pipe__
+
+    ```text
+    nsh> ls
+    dev/
+    var/
+    ```
 
 1.  We run an __LVGL Timer__ that periodically polls the NSH Output Pipe for Text Output
 
 1.  When it detects the Text Output, the LVGL Timer reads the data...
 
     And renders the output in the __Output Text Area Widget__.
+
+    ```text
+    nsh> ls
+    dev/
+    var/
+    ```
+
+It looks like this...
+
+![LVGL Terminal for PinePhone on Apache NuttX RTOS](https://lupyuen.github.io/images/terminal-demo.jpg)
 
 _Whoa that looks complicated!_
 
