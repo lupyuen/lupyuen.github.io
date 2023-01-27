@@ -48,11 +48,11 @@ Before we dive in, let's walk through the internals of our __LVGL Terminal App f
 
 1.  We start the __NSH Shell__ as a NuttX Task
 
-    (Which will execute NSH Commands)
+    (Which will execute our NSH Commands)
 
-1.  An NSH Command is entered through the __LVGL Keyboard__
+1.  An NSH Command is entered through the __LVGL Keyboard Widget__
 
-    (Which goes to the __Input Text Area__ Widget)
+    (Which goes to the __Input Text Area Widget__)
 
 1.  When the Enter Key is pressed, we send the NSH Command to the __NSH Input Pipe__
 
@@ -60,25 +60,29 @@ Before we dive in, let's walk through the internals of our __LVGL Terminal App f
 
 1.  NSH Shell __executes our NSH Command__
 
-1.  The output emitted by NSH Shell is pushed to the __NSH Output Pipe__
+1.  NSH Shell produces some Text Output, which is pushed to the __NSH Output Pipe__
 
-1.  We run an __LVGL Timer__ that periodically polls the NSH Output Pipe for output data
+1.  We run an __LVGL Timer__ that periodically polls the NSH Output Pipe for Text Output
 
-1.  When it detects the output data, the LVGL Timer reads the data...
+1.  When it detects the Text Output, the LVGL Timer reads the data...
 
-    And renders the output in the __Output Text Area__ Widget.
+    And renders the output in the __Output Text Area Widget__.
 
 _Whoa that looks complicated!_
 
 Yeah. But we'll explain everything in this article...
 
-TODO
+-   How we start a __NuttX Task__
 
-Let's create a Terminal App in LVGL, that will let us interact with the NuttX NSH Shell...
+-   What are __NuttX Pipes__ and how we use them
 
--   [Source Code: lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c)
+-   How we render __LVGL Widgets__ and handle events
 
--   [How to compile LVGL Terminal](https://github.com/lupyuen/lvglterm)
+And eventually we'll understand the Source Code...
+
+-   [__github.com/lupyuen/lvglterm__](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c)
+
+    [(How to compile LVGL Terminal)](https://github.com/lupyuen/lvglterm)
 
 We begin by starting the NSH Task and piping a command to NSH Shell...
 
