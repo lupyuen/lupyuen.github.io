@@ -385,7 +385,9 @@ static bool has_input(int fd) {
 }
 ```
 
-When we run this, __`has_input`__ returns True if there's NSH Output waiting to be read...
+_What happens when we run this?_
+
+__`has_input`__ returns True if there's NSH Output waiting to be read...
 
 ```text
 has_input: has input: fd=8
