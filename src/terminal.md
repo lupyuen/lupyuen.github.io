@@ -110,75 +110,104 @@ We'll redirect the NSH Input and Output with __NuttX Pipes__.
 
 TODO
 
-Here's a simple test that starts the NSH Task and sends a command to NSH Console via a POSIX Pipe: [lvgldemo.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/a9d67c135c458088946ed35c1b24be1b4aee3553/examples/lvgldemo/lvgldemo.c#L246-L390)
+## Create the Pipes
+
+TODO
+
+Here's a simple test that starts the NSH Task and sends a command to NSH Console via a POSIX Pipe: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L146-L178)
 
 ```c
-void test_terminal(void) {
+// Create the pipes
+int nsh_stdin[2];
+int nsh_stdout[2];
+int nsh_stderr[2];
+int ret;
+ret = pipe(nsh_stdin);  if (ret < 0) { _err("stdin pipe failed: %d\n", errno);  return; }
+ret = pipe(nsh_stdout); if (ret < 0) { _err("stdout pipe failed: %d\n", errno); return; }
+ret = pipe(nsh_stderr); if (ret < 0) { _err("stderr pipe failed: %d\n", errno); return; }
+```
 
-  // Create the pipes
-  int nsh_stdin[2];
-  int nsh_stdout[2];
-  int nsh_stderr[2];
-  int ret;
-  ret = pipe(nsh_stdin);  if (ret < 0) { _err("stdin pipe failed: %d\n", errno);  return; }
-  ret = pipe(nsh_stdout); if (ret < 0) { _err("stdout pipe failed: %d\n", errno); return; }
-  ret = pipe(nsh_stderr); if (ret < 0) { _err("stderr pipe failed: %d\n", errno); return; }
+TODO
 
-  // Close default stdin, stdout and stderr
-  close(0);
-  close(1);
-  close(2);
+```c
+// Close default stdin, stdout and stderr
+close(0);
+close(1);
+close(2);
+```
 
-  // Use the pipes as stdin, stdout and stderr
-  #define READ_PIPE  0  // Read Pipes: stdin, stdout, stderr
-  #define WRITE_PIPE 1  // Write Pipes: stdin, stdout, stderr
-  dup2(nsh_stdin[READ_PIPE], 0);
-  dup2(nsh_stdout[WRITE_PIPE], 1);
-  dup2(nsh_stderr[WRITE_PIPE], 2);
+## Duplicate the Pipes
 
-  // Create a new NSH Task using the pipes
-  char *argv[] = { NULL };
-  pid_t pid = task_create(
-    "NSH Console",
-    100,  // Priority
-    CONFIG_DEFAULT_TASK_STACKSIZE,
-    nsh_consolemain,
-    argv
-  );
-  if (pid < 0) { _err("task_create failed: %d\n", errno); return; }
-  _info("pid=%d\n", pid);
+TODO
 
-  // Wait a while
-  sleep(1);
+```c
+// Use the pipes as stdin, stdout and stderr
+#define READ_PIPE  0  // Read Pipes: stdin, stdout, stderr
+#define WRITE_PIPE 1  // Write Pipes: stdin, stdout, stderr
+dup2(nsh_stdin[READ_PIPE], 0);
+dup2(nsh_stdout[WRITE_PIPE], 1);
+dup2(nsh_stderr[WRITE_PIPE], 2);
+```
 
-  // Send a few commands to NSH
-  for (int i = 0; i < 5; i++) {
+## Create the Task
 
-    // Send a command to NSH stdin
-    const char cmd[] = "ls\r";
-    ret = write(
-      nsh_stdin[WRITE_PIPE],
-      cmd,
-      sizeof(cmd)
-    );
-    _info("write nsh_stdin: %d\n", ret);
+TODO
 
-    // Wait a while
-    sleep(1);
+```c
+// Create a new NSH Task using the pipes
+char *argv[] = { NULL };
+pid_t pid = task_create(
+  "NSH Console",
+  100,  // Priority
+  CONFIG_DEFAULT_TASK_STACKSIZE,
+  nsh_consolemain,
+  argv
+);
+if (pid < 0) { _err("task_create failed: %d\n", errno); return; }
+```
 
-    // Read the output from NSH stdout.
-    // TODO: This will block if there's nothing to read.
-    static char buf[64];
-    ret = read(
-      nsh_stdout[READ_PIPE],
-      buf,
-      sizeof(buf) - 1
-    );
-    if (ret > 0) { buf[ret] = 0; _info("%s\n", buf); }
+## Test the Pipes
 
-    // Wait a while
-    sleep(1);
+TODO
 
+_Will this work?_
+
+[lvgldemo.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/a9d67c135c458088946ed35c1b24be1b4aee3553/examples/lvgldemo/lvgldemo.c#L292-L338)
+
+```c
+// Wait a while for NSH Shell to start
+sleep(1);
+
+// Send a command to NSH stdin
+const char cmd[] = "ls\r";
+ret = write(
+  nsh_stdin[WRITE_PIPE],
+  cmd,
+  sizeof(cmd)
+);
+
+// Wait a while for NSH Shell to execute our command
+sleep(1);
+
+// Read the output from NSH stdout.
+// TODO: This will block if there's nothing to read.
+static char buf[64];
+ret = read(
+  nsh_stdout[READ_PIPE],
+  buf,
+  sizeof(buf) - 1
+);
+
+// Print the output
+if (ret > 0) {
+  buf[ret] = 0;
+  _info("%s\n", buf);
+}
+```
+
+TODO
+
+```c
 #ifdef NOTUSED
     // Read the output from NSH stderr.
     // TODO: This will block if there's nothing to read.
@@ -189,9 +218,6 @@ void test_terminal(void) {
     );
     if (ret > 0) { buf[ret] = 0; _info("%s\n", buf); }
 #endif
-
-  }
-}
 ```
 
 And it works! Here's the NSH Task auto-running the `ls` Command received via our Pipe...
