@@ -307,13 +307,13 @@ Calling __`read()`__ on __`nsh_stderr`__ will block the execution if there's no 
 
 (Same for __`nsh_stdout`__) 
 
-Instead let's check if there's NSH Output ready to be read, by calling __`poll()`__...
+Instead let's check if there's NSH Output ready to be read. We do this by calling __`poll()`__...
 
 # Poll for NSH Output
 
 TODO
 
-In the previous sections we started an NSH Shell that will execute NSH Commands that we pipe to it.
+In the previous section we started an NSH Shell that will execute NSH Commands that we pipe to it.
 
 But there's a problem: Calling `read()` on `nsh_stdout` will block if there's no NSH Output to be read. And we can't block our LVGL App, since it needs to handle UI Events periodically.
 
@@ -581,7 +581,7 @@ nsh>
 
 Now that our background processing is ready, let's render the LVGL Widgets for our terminal...
 
-![Flow of LVGL Terminal for PinePhone on Apache NuttX RTOS](https://lupyuen.github.io/images/terminal-flow3.jpg)
+![Render Terminal with LVGL Widgets](https://lupyuen.github.io/images/terminal-flow3.jpg)
 
 # Render Terminal with LVGL Widgets
 
@@ -654,6 +654,8 @@ static void create_widgets(void) {
 
 Note that we're using the LVGL Default Font for all 3 LVGL Widgets. Which has a problem...
 
+![Render Terminal with LVGL Widgets](https://lupyuen.github.io/images/terminal-widget.jpg)
+
 # Set Terminal Font to Monospace
 
 TODO
@@ -694,6 +696,8 @@ Now we see the LVGL Keyboard without missing symbols (pic below)...
 Let's look at our Callback Function for the LVGL Keyboard...
 
 ![Set Terminal Font to Monospace](https://lupyuen.github.io/images/lvgl2-terminal3.jpg)
+
+TODO
 
 ![Flow of LVGL Terminal for PinePhone on Apache NuttX RTOS](https://lupyuen.github.io/images/terminal-flow4.jpg)
 
@@ -805,6 +809,12 @@ TODO: Text Area probably not optimal for scrolling. Label might work better
 TODO
 
 ![Compiling an LVGL Program in Zig](https://lupyuen.github.io/images/terminal-zig2.jpg)
+
+TODO
+
+![Sorry ChatGPT... Please try harder](https://lupyuen.github.io/images/terminal-chatgpt.jpg)
+
+_Sorry ChatGPT... Please try harder_
 
 # What's Next
 
