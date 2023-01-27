@@ -70,6 +70,8 @@ Before we dive in, let's walk through the internals of our __LVGL Terminal App f
 
 _Whoa that looks complicated!_
 
+Yeah. But we'll explain everything in this article...
+
 TODO
 
 Let's create a Terminal App in LVGL, that will let us interact with the NuttX NSH Shell...
