@@ -435,19 +435,21 @@ This polling for NSH Output needs to be done in an LVGL Timer, here's why...
 
 # Timer for LVGL Terminal
 
+_How will we poll for NSH Output and display it?_
+
+We've started an NSH Shell that will execute NSH Commands that we pipe to it.
+
+Now we need to periodically __poll for NSH Output__, and write the output to the LVGL display...
+
+-   Every couple of milliseconds we...
+
+    -   __Poll the NSH Shell__ to check if it has output data
+
+    -   __Read the output__ from NSH Shell
+
+    -   __Display the output__ in an LVGL Widget
+
 TODO
-
-In the previous sections we started an NSH Shell that will execute NSH Commands that we pipe to it.
-
-Our LVGL Terminal for NSH Shell shall periodically check for output from the NSH Shell, and write the output to the LVGL Display...
-
--   Every couple of milliseconds...
-
-    -   We call `poll()` to check if NSH Shell has output data
-
-    -   We read the output from NSH Shell
-
-    -   We display the NSH Output in an LVGL Label Widget
 
 We'll do this with an [LVGL Timer](https://docs.lvgl.io/master/overview/timer.html) like so: [lvgldemo.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/2f591f4e2589298caf6613ba409d667be61a9881/examples/lvgldemo/lvgldemo.c#L257-L269)
 
