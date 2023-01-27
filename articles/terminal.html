@@ -398,7 +398,8 @@ static bool has_input(int fd) {
   return false;
 }
 </code></pre></div>
-<p>When we run this, <strong><code>has_input</code></strong> returns True if there’s NSH Output waiting to be read…</p>
+<p><em>What happens when we run this?</em></p>
+<p><strong><code>has_input</code></strong> returns True if there’s NSH Output waiting to be read…</p>
 <div class="example-wrap"><pre class="language-text"><code>has_input: has input: fd=8
 </code></pre></div>
 <p>And <strong><code>has_input</code></strong> returns False (due to timeout) if there’s nothing waiting to be read…</p>
