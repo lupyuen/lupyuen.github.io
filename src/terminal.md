@@ -44,6 +44,32 @@ If we're new to NuttX, here's a gentle intro...
 
 # LVGL Terminal for NuttX
 
+Before we dive in, let's walk through the internals of our __LVGL Terminal App for NuttX__ (pic above)...
+
+1.  We start the __NSH Shell__ as a NuttX Task
+
+    (Which will execute NSH Commands)
+
+1.  An NSH Command is entered through the __LVGL Keyboard__
+
+    (Which goes to the __Input Text Area__ Widget)
+
+1.  When the Enter Key is pressed, we send the NSH Command to the __NSH Input Pipe__
+
+1.  Which delivers the NSH Command to the __NSH Shell__
+
+1.  NSH Shell __executes our NSH Command__
+
+1.  The output emitted by NSH Shell is pushed to the __NSH Output Pipe__
+
+1.  We run an __LVGL Timer__ that periodically polls the NSH Output Pipe for output data
+
+1.  When it detects the output data, the LVGL Timer reads the data...
+
+    And renders the output in the __Output Text Area__ Widget.
+
+_Whoa that looks complicated!_
+
 TODO
 
 Let's create a Terminal App in LVGL, that will let us interact with the NuttX NSH Shell...
