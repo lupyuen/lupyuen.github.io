@@ -90,13 +90,25 @@ We begin by starting the NSH Task and piping a command to NSH Shell...
 
 # Pipe a Command to NSH Shell
 
+Our Terminal App needs to...
+
+-   Start the __NuttX Task__ for NSH Shell
+
+    (Which will execute our NSH Commands)
+
+-   Redirect the __NSH Shell Input__
+
+    (To receive the NSH Commands that we tapped)
+
+-   Redirect the __NSH Shell Output__
+
+    (To render the NSH Command output)
+
+We'll redirect the NSH Input and Output with __NuttX Pipes__.
+
+(Which will work like Linux Pipes)
+
 TODO
-
-Our LVGL Terminal App needs to...
-
-1.  Start the NuttX Task for NSH Shell
-
-1.  Redirect the NSH Console Input / Output to LVGL
 
 Here's a simple test that starts the NSH Task and sends a command to NSH Console via a POSIX Pipe: [lvgldemo.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/a9d67c135c458088946ed35c1b24be1b4aee3553/examples/lvgldemo/lvgldemo.c#L246-L390)
 
