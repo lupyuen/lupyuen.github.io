@@ -169,7 +169,7 @@
 </li>
 </ul>
 <p>We begin by starting the NSH Task and piping a command to NSH Shell…</p>
-<p><img src="https://lupyuen.github.io/images/terminal-flow2.jpg" alt="Flow of LVGL Terminal for PinePhone on Apache NuttX RTOS" /></p>
+<p><img src="https://lupyuen.github.io/images/terminal-flow2.jpg" alt="Pipe a Command to NSH Shell" /></p>
 <h1 id="pipe-a-command-to-nsh-shell"><a href="#pipe-a-command-to-nsh-shell">2 Pipe a Command to NSH Shell</a></h1>
 <p>Our Terminal App needs to…</p>
 <ul>
@@ -334,33 +334,29 @@ nsh&gt;
 <p>Calling <strong><code>read()</code></strong> on <strong><code>nsh_stderr</code></strong> will block the execution if there’s no NSH Output ready to be read!</p>
 <p>(Same for <strong><code>nsh_stdout</code></strong>) </p>
 <p>Instead let’s check if there’s NSH Output ready to be read. We do this by calling <strong><code>poll()</code></strong>…</p>
+<p><img src="https://lupyuen.github.io/images/terminal-flow5.jpg" alt="Poll for NSH Output" /></p>
 <h1 id="poll-for-nsh-output"><a href="#poll-for-nsh-output">3 Poll for NSH Output</a></h1>
-<p>TODO</p>
-<p>In the previous section we started an NSH Shell that will execute NSH Commands that we pipe to it.</p>
-<p>But there’s a problem: Calling <code>read()</code> on <code>nsh_stdout</code> will block if there’s no NSH Output to be read. And we can’t block our LVGL App, since it needs to handle UI Events periodically.</p>
-<p>Solution: We call <code>has_input</code> to check if there’s NSH Output ready to be read, before reading the output: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/c30e1968d5106794f435882af69dfb7b1858d694/examples/lvgldemo/lvgldemo.c#L330-L353">lvgldemo.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>  // Read the output from NSH stdout
-  static char buf[64];
-  if (has_input(nsh_stdout[READ_PIPE])) {
-    ret = read(
-      nsh_stdout[READ_PIPE],
-      buf,
-      sizeof(buf) - 1
-    );
-    if (ret &gt; 0) { buf[ret] = 0; _info(&quot;%s\n&quot;, buf); }
-  }
+<p>In the previous section we started an NSH Shell that will execute NSH Commands that we pipe to it…</p>
+<p>But there’s a problem: Calling <strong><code>read()</code></strong> on <strong><code>nsh_stdout</code></strong> will block if there’s no NSH Output to be read.</p>
+<p>(We can’t block our LVGL App, since it needs to handle User Interface Events periodically)</p>
+<p><strong>Solution:</strong> We call <strong><code>has_input</code></strong> to check if there’s NSH Output ready to be read, before reading the output: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L192-L245">lvglterm.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Poll NSH stdout to check if there&#39;s output to be read
+static char buf[64];
+if (has_input(nsh_stdout[READ_PIPE])) {
 
-  // Read the output from NSH stderr
-  if (has_input(nsh_stderr[READ_PIPE])) {
-    ret = read(    
-      nsh_stderr[READ_PIPE],
-      buf,
-      sizeof(buf) - 1
-    );
-    if (ret &gt; 0) { buf[ret] = 0; _info(&quot;%s\n&quot;, buf); }
-  }
+  // Read the output from NSH stdout
+  ret = read(
+    nsh_stdout[READ_PIPE],
+    buf,
+    sizeof(buf) - 1
+  );
+
+  // Print the output
+  if (ret &gt; 0) { buf[ret] = 0; _info(&quot;%s\n&quot;, buf); }
+}
 </code></pre></div>
-<p><code>has_input</code> calls <code>poll()</code> on <code>nsh_stdout</code> to check if there’s NSH Output ready to be read: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/c30e1968d5106794f435882af69dfb7b1858d694/examples/lvgldemo/lvgldemo.c#L358-L397">lvgldemo.c</a></p>
+<p><a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L192-L245">(We do the same for <strong><code>nsh_stderr</code></strong>)</a></p>
+<p><strong><code>has_input</code></strong> calls <strong><code>poll()</code></strong> on <strong><code>nsh_stdout</code></strong> to check if there’s NSH Output ready to be read: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L350-L391">lvglterm.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Return true if the File Descriptor has data to be read
 static bool has_input(int fd) {
 
@@ -402,10 +398,10 @@ static bool has_input(int fd) {
   return false;
 }
 </code></pre></div>
-<p><code>has_input</code> returns True if there’s NSH Output waiting to be read…</p>
+<p>When we run this, <strong><code>has_input</code></strong> returns True if there’s NSH Output waiting to be read…</p>
 <div class="example-wrap"><pre class="language-text"><code>has_input: has input: fd=8
 </code></pre></div>
-<p>And <code>has_input</code> returns False (due to timeout) if there’s nothing waiting to be read…</p>
+<p>And <strong><code>has_input</code></strong> returns False (due to timeout) if there’s nothing waiting to be read…</p>
 <div class="example-wrap"><pre class="language-text"><code>has_input: timeout: fd=8
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/c30e1968d5106794f435882af69dfb7b1858d694/examples/lvgldemo/lvgldemo.c#L403-L556">(See the Complete Log)</a></p>
