@@ -188,25 +188,39 @@
 </ul>
 <p>We’ll redirect the NSH Input and Output with <strong>NuttX Pipes</strong>.</p>
 <p>(Which will work like Linux Pipes)</p>
-<p>TODO</p>
+<p>Let’s find out how…</p>
 <h2 id="create-the-pipes"><a href="#create-the-pipes">2.1 Create the Pipes</a></h2>
+<p><em>How will we create the NuttX Pipes?</em></p>
 <p>TODO</p>
-<p>Here’s a simple test that starts the NSH Task and sends a command to NSH Console via a POSIX Pipe: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L146-L178">lvglterm.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Create the pipes
+<p><a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L146-L178">lvglterm.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Create the NuttX Pipe for NSH Input
 int nsh_stdin[2];
-int nsh_stdout[2];
-int nsh_stderr[2];
-int ret;
-ret = pipe(nsh_stdin);  if (ret &lt; 0) { _err(&quot;stdin pipe failed: %d\n&quot;, errno);  return; }
-ret = pipe(nsh_stdout); if (ret &lt; 0) { _err(&quot;stdout pipe failed: %d\n&quot;, errno); return; }
-ret = pipe(nsh_stderr); if (ret &lt; 0) { _err(&quot;stderr pipe failed: %d\n&quot;, errno); return; }
+int ret = pipe(nsh_stdin);
+
+// Check for error
+if (ret &lt; 0) {
+  _err(&quot;stdin pipe failed: %d\n&quot;, errno); return;
+}
 </code></pre></div>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>// Close default stdin, stdout and stderr
+<div class="example-wrap"><pre class="language-c"><code>// Create the NuttX Pipe for NSH Output
+int nsh_stdout[2];
+ret = pipe(nsh_stdout);
+if (ret &lt; 0) { _err(&quot;stdout pipe failed: %d\n&quot;, errno); return; }
+
+// Create the NuttX Pipe for NSH Error
+int nsh_stderr[2];
+ret = pipe(nsh_stderr);
+if (ret &lt; 0) { _err(&quot;stderr pipe failed: %d\n&quot;, errno); return; }
+</code></pre></div>
+<p>TODO: Why _err?</p>
+<h2 id="duplicate-the-pipes"><a href="#duplicate-the-pipes">2.2 Duplicate the Pipes</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>// Close stdin, stdout and stderr
 close(0);
 close(1);
 close(2);
-</code></pre></div><h2 id="duplicate-the-pipes"><a href="#duplicate-the-pipes">2.2 Duplicate the Pipes</a></h2>
+</code></pre></div>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>// Use the pipes as stdin, stdout and stderr
 #define READ_PIPE  0  // Read Pipes: stdin, stdout, stderr
