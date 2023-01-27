@@ -86,7 +86,7 @@ And eventually we'll understand the Source Code...
 
 We begin by starting the NSH Task and piping a command to NSH Shell...
 
-![Flow of LVGL Terminal for PinePhone on Apache NuttX RTOS](https://lupyuen.github.io/images/terminal-flow2.jpg)
+![Pipe a Command to NSH Shell](https://lupyuen.github.io/images/terminal-flow2.jpg)
 
 # Pipe a Command to NSH Shell
 
@@ -309,40 +309,38 @@ Calling __`read()`__ on __`nsh_stderr`__ will block the execution if there's no 
 
 Instead let's check if there's NSH Output ready to be read. We do this by calling __`poll()`__...
 
+![Poll for NSH Output](https://lupyuen.github.io/images/terminal-flow5.jpg)
+
 # Poll for NSH Output
 
-TODO
+In the previous section we started an NSH Shell that will execute NSH Commands that we pipe to it...
 
-In the previous section we started an NSH Shell that will execute NSH Commands that we pipe to it.
+But there's a problem: Calling __`read()`__ on __`nsh_stdout`__ will block if there's no NSH Output to be read.
 
-But there's a problem: Calling `read()` on `nsh_stdout` will block if there's no NSH Output to be read. And we can't block our LVGL App, since it needs to handle UI Events periodically.
+(We can't block our LVGL App, since it needs to handle User Interface Events periodically)
 
-Solution: We call `has_input` to check if there's NSH Output ready to be read, before reading the output: [lvgldemo.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/c30e1968d5106794f435882af69dfb7b1858d694/examples/lvgldemo/lvgldemo.c#L330-L353)
+__Solution:__ We call __`has_input`__ to check if there's NSH Output ready to be read, before reading the output: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L192-L245)
 
 ```c
-  // Read the output from NSH stdout
-  static char buf[64];
-  if (has_input(nsh_stdout[READ_PIPE])) {
-    ret = read(
-      nsh_stdout[READ_PIPE],
-      buf,
-      sizeof(buf) - 1
-    );
-    if (ret > 0) { buf[ret] = 0; _info("%s\n", buf); }
-  }
+// Poll NSH stdout to check if there's output to be read
+static char buf[64];
+if (has_input(nsh_stdout[READ_PIPE])) {
 
-  // Read the output from NSH stderr
-  if (has_input(nsh_stderr[READ_PIPE])) {
-    ret = read(    
-      nsh_stderr[READ_PIPE],
-      buf,
-      sizeof(buf) - 1
-    );
-    if (ret > 0) { buf[ret] = 0; _info("%s\n", buf); }
-  }
+  // Read the output from NSH stdout
+  ret = read(
+    nsh_stdout[READ_PIPE],
+    buf,
+    sizeof(buf) - 1
+  );
+
+  // Print the output
+  if (ret > 0) { buf[ret] = 0; _info("%s\n", buf); }
+}
 ```
 
-`has_input` calls `poll()` on `nsh_stdout` to check if there's NSH Output ready to be read: [lvgldemo.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/c30e1968d5106794f435882af69dfb7b1858d694/examples/lvgldemo/lvgldemo.c#L358-L397)
+[(We do the same for __`nsh_stderr`__)](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L192-L245)
+
+__`has_input`__ calls __`poll()`__ on __`nsh_stdout`__ to check if there's NSH Output ready to be read: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L350-L391)
 
 ```c
 // Return true if the File Descriptor has data to be read
@@ -387,13 +385,13 @@ static bool has_input(int fd) {
 }
 ```
 
-`has_input` returns True if there's NSH Output waiting to be read...
+When we run this, __`has_input`__ returns True if there's NSH Output waiting to be read...
 
 ```text
 has_input: has input: fd=8
 ```
 
-And `has_input` returns False (due to timeout) if there's nothing waiting to be read...
+And __`has_input`__ returns False (due to timeout) if there's nothing waiting to be read...
 
 ```text
 has_input: timeout: fd=8
