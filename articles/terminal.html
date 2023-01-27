@@ -333,10 +333,10 @@ nsh&gt;
 <p>But there’s a problem…</p>
 <p>Calling <strong><code>read()</code></strong> on <strong><code>nsh_stderr</code></strong> will block the execution if there’s no NSH Output ready to be read!</p>
 <p>(Same for <strong><code>nsh_stdout</code></strong>) </p>
-<p>Instead let’s check if there’s NSH Output ready to be read, by calling <strong><code>poll()</code></strong>…</p>
+<p>Instead let’s check if there’s NSH Output ready to be read. We do this by calling <strong><code>poll()</code></strong>…</p>
 <h1 id="poll-for-nsh-output"><a href="#poll-for-nsh-output">3 Poll for NSH Output</a></h1>
 <p>TODO</p>
-<p>In the previous sections we started an NSH Shell that will execute NSH Commands that we pipe to it.</p>
+<p>In the previous section we started an NSH Shell that will execute NSH Commands that we pipe to it.</p>
 <p>But there’s a problem: Calling <code>read()</code> on <code>nsh_stdout</code> will block if there’s no NSH Output to be read. And we can’t block our LVGL App, since it needs to handle UI Events periodically.</p>
 <p>Solution: We call <code>has_input</code> to check if there’s NSH Output ready to be read, before reading the output: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/c30e1968d5106794f435882af69dfb7b1858d694/examples/lvgldemo/lvgldemo.c#L330-L353">lvgldemo.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // Read the output from NSH stdout
@@ -563,7 +563,7 @@ nsh&gt;
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/c30e1968d5106794f435882af69dfb7b1858d694/examples/lvgldemo/lvgldemo.c#L403-L556">(See the Complete Log)</a></p>
 <p>Now that our background processing is ready, let’s render the LVGL Widgets for our terminal…</p>
-<p><img src="https://lupyuen.github.io/images/terminal-flow3.jpg" alt="Flow of LVGL Terminal for PinePhone on Apache NuttX RTOS" /></p>
+<p><img src="https://lupyuen.github.io/images/terminal-flow3.jpg" alt="Render Terminal with LVGL Widgets" /></p>
 <h1 id="render-terminal-with-lvgl-widgets"><a href="#render-terminal-with-lvgl-widgets">6 Render Terminal with LVGL Widgets</a></h1>
 <p>TODO: Adopt Flex so it works with other devices</p>
 <p>Our LVGL Terminal will have 3 LVGL Widgets…</p>
@@ -628,6 +628,7 @@ static void create_widgets(void) {
 </code></pre></div>
 <p><code>input_callback</code> is the Callback Function for our LVGL Keyboard. Which we’ll cover in a while.</p>
 <p>Note that we’re using the LVGL Default Font for all 3 LVGL Widgets. Which has a problem…</p>
+<p><img src="https://lupyuen.github.io/images/terminal-widget.jpg" alt="Render Terminal with LVGL Widgets" /></p>
 <h1 id="set-terminal-font-to-monospace"><a href="#set-terminal-font-to-monospace">7 Set Terminal Font to Monospace</a></h1>
 <p>TODO</p>
 <p>Our LVGL Terminal looks nicer with a Monospace Font.</p>
@@ -657,6 +658,7 @@ static void create_widgets(void) {
 </ul>
 <p>Let’s look at our Callback Function for the LVGL Keyboard…</p>
 <p><img src="https://lupyuen.github.io/images/lvgl2-terminal3.jpg" alt="Set Terminal Font to Monospace" /></p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/terminal-flow4.jpg" alt="Flow of LVGL Terminal for PinePhone on Apache NuttX RTOS" /></p>
 <h1 id="handle-input-from-lvgl-keyboard"><a href="#handle-input-from-lvgl-keyboard">8 Handle Input from LVGL Keyboard</a></h1>
 <p>TODO</p>
@@ -744,6 +746,9 @@ static void timer_callback(lv_timer_t *timer) {
 <h1 id="lvgl-programming-in-zig"><a href="#lvgl-programming-in-zig">11 LVGL Programming in Zig</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/terminal-zig2.jpg" alt="Compiling an LVGL Program in Zig" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/terminal-chatgpt.jpg" alt="Sorry ChatGPT… Please try harder" /></p>
+<p><em>Sorry ChatGPT… Please try harder</em></p>
 <h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
 <p>TODO</p>
 <p>Please check out the other articles on NuttX for PinePhone…</p>
