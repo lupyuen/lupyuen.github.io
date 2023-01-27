@@ -108,35 +108,53 @@ We'll redirect the NSH Input and Output with __NuttX Pipes__.
 
 (Which will work like Linux Pipes)
 
-TODO
+Let's find out how...
 
 ## Create the Pipes
 
+_How will we create the NuttX Pipes?_
+
 TODO
 
-Here's a simple test that starts the NSH Task and sends a command to NSH Console via a POSIX Pipe: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L146-L178)
+[lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L146-L178)
 
 ```c
-// Create the pipes
+// Create the NuttX Pipe for NSH Input
 int nsh_stdin[2];
-int nsh_stdout[2];
-int nsh_stderr[2];
-int ret;
-ret = pipe(nsh_stdin);  if (ret < 0) { _err("stdin pipe failed: %d\n", errno);  return; }
-ret = pipe(nsh_stdout); if (ret < 0) { _err("stdout pipe failed: %d\n", errno); return; }
-ret = pipe(nsh_stderr); if (ret < 0) { _err("stderr pipe failed: %d\n", errno); return; }
+int ret = pipe(nsh_stdin);
+
+// Check for error
+if (ret < 0) {
+  _err("stdin pipe failed: %d\n", errno); return;
+}
 ```
 
 TODO
 
 ```c
-// Close default stdin, stdout and stderr
+// Create the NuttX Pipe for NSH Output
+int nsh_stdout[2];
+ret = pipe(nsh_stdout);
+if (ret < 0) { _err("stdout pipe failed: %d\n", errno); return; }
+
+// Create the NuttX Pipe for NSH Error
+int nsh_stderr[2];
+ret = pipe(nsh_stderr);
+if (ret < 0) { _err("stderr pipe failed: %d\n", errno); return; }
+```
+
+TODO: Why _err?
+
+## Duplicate the Pipes
+
+TODO
+
+```c
+// Close stdin, stdout and stderr
 close(0);
 close(1);
 close(2);
 ```
-
-## Duplicate the Pipes
 
 TODO
 
