@@ -163,11 +163,13 @@ if (ret < 0) { _err("stderr pipe failed: %d\n", errno); return; }
 
 There's a reason why we call __`_err`__ instead of __`printf`__, we'll find out next...
 
-## Duplicate the Pipes
+## Connect the Pipes
 
 _How will we connect the pipes to NSH Shell?_
 
-In a while we'll start the NuttX Task for NSH Shell. But first we need some plumbing to __connect the NuttX Pipes__: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L146-L178)
+In a while we'll start the NuttX Task for NSH Shell. But before that, we need some plumbing to __connect the NuttX Pipes__.
+
+First we close the streams for __Standard Input, Output and Error__: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L146-L178)
 
 ```c
 // Close stdin, stdout and stderr
@@ -176,33 +178,50 @@ close(1);
 close(2);
 ```
 
-TODO
+That's because NSH Shell will __inherit our Standard I/O__ streams later.
+
+Next we __redirect the Standard I/O__ streams to the NuttX Pipes that we've created earlier...
 
 ```c
+// Redirect stdin, stdout and stderr to our NuttX Pipes.
 // READ_PIPE is 0, WRITE_PIPE is 1
-dup2(nsh_stdin[READ_PIPE], 0);
-dup2(nsh_stdout[WRITE_PIPE], 1);
-dup2(nsh_stderr[WRITE_PIPE], 2);
+dup2(nsh_stdin[READ_PIPE],   0);  // Redirect stdin
+dup2(nsh_stdout[WRITE_PIPE], 1);  // Redirect stdout
+dup2(nsh_stderr[WRITE_PIPE], 2);  // Redirect stderr
 ```
 
-TODO: Why _err?
+When we do this, __Standard I/O will no longer work__ with the NuttX Console.
+
+Instead, we'll have to read and write our NuttX Pipes.
+
+_So printf will no longer print to the NuttX Console?_
+
+Exactly! That's why we call __`_err`__ and __`_info`__ in this article.
+
+These functions are __hardwired to the NuttX Console__. They will continue to work after we have redirected the Standard I/O streams.
 
 ## Create the Task
 
-TODO
+Our plumbing is done, let's __create the NuttX Task__ for NSH Shell: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L146-L178)
 
 ```c
-// Create a new NSH Task using the pipes
+// Arguments for the NuttX Task
 char *argv[] = { NULL };
+
+// Create a NuttX Task for NSH Shell
 pid_t pid = task_create(
-  "NSH Console",
-  100,  // Priority
-  CONFIG_DEFAULT_TASK_STACKSIZE,
-  nsh_consolemain,
-  argv
+  "NSH Console",  // Task Name
+  100,            // Task Priority
+  CONFIG_DEFAULT_TASK_STACKSIZE,  // Task Stack Size
+  nsh_consolemain,  // Task Function
+  argv              // Task Arguments
 );
+
+// Check for error
 if (pid < 0) { _err("task_create failed: %d\n", errno); return; }
 ```
+
+TODO
 
 ## Test the Pipes
 
