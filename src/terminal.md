@@ -399,7 +399,11 @@ has_input: timeout: fd=8
 
 [(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/c30e1968d5106794f435882af69dfb7b1858d694/examples/lvgldemo/lvgldemo.c#L403-L556)
 
-This polling needs to be done in an LVGL Timer, here's why...
+We've solved our problem of Blocking Reads from NSH Output, by polling for NSH Output!
+
+This polling for NSH Output needs to be done in an LVGL Timer, here's why...
+
+![Timer for LVGL Terminal](https://lupyuen.github.io/images/terminal-flow6.jpg)
 
 # Timer for LVGL Terminal
 
