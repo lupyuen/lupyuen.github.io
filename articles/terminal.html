@@ -405,7 +405,9 @@ static bool has_input(int fd) {
 <div class="example-wrap"><pre class="language-text"><code>has_input: timeout: fd=8
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/c30e1968d5106794f435882af69dfb7b1858d694/examples/lvgldemo/lvgldemo.c#L403-L556">(See the Complete Log)</a></p>
-<p>This polling needs to be done in an LVGL Timer, here’s why…</p>
+<p>We’ve solved our problem of Blocking Reads from NSH Output, by polling for NSH Output!</p>
+<p>This polling for NSH Output needs to be done in an LVGL Timer, here’s why…</p>
+<p><img src="https://lupyuen.github.io/images/terminal-flow6.jpg" alt="Timer for LVGL Terminal" /></p>
 <h1 id="timer-for-lvgl-terminal"><a href="#timer-for-lvgl-terminal">4 Timer for LVGL Terminal</a></h1>
 <p>TODO</p>
 <p>In the previous sections we started an NSH Shell that will execute NSH Commands that we pipe to it.</p>
