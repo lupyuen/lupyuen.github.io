@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>Apache NuttX RTOS trips ChatGPT</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="Apache NuttX RTOS trips ChatGPT" 
+    data-rh="true">
+<meta property="og:description" 
+    content="ChatGPT (the AI chatbot) will gladly answer questions about Apache NuttX RTOS! But the answers aren't always correct. Let's turn this into a learning opportunity, and understand why ChatGPT's answers are incorrect"
+    data-rh="true">
+<meta name="description" 
+    content="ChatGPT (the AI chatbot) will gladly answer questions about Apache NuttX RTOS! But the answers aren't always correct. Let's turn this into a learning opportunity, and understand why ChatGPT's answers are incorrect">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/chatgpt-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">Apache NuttX RTOS trips ChatGPT</h1>
+    <nav id="TOC"><ul>
+<li><a href="#fix-the-code">1 Fix the Code</a><ul></ul></li>
+<li><a href="#build-and-run-nuttx">2 Build and Run NuttX</a><ul></ul></li>
+<li><a href="#fix-the-task-arguments">3 Fix the Task Arguments</a><ul></ul></li>
+<li><a href="#correct-code">4 Correct Code</a><ul></ul></li></ul></nav><p>📝 <em>5 Feb 2023</em></p>
+<p><img src="https://lupyuen.github.io/images/chatgpt-title.jpg" alt="ChatGPT tries to explain how to create a NuttX Task for NSH Shell" /></p>
+<p><em>(As a teacher I won’t criticise my student in public… But an “AI Student” should be OK, I guess?)</em></p>
+<p>Suppose we’re building a <a href="https://lupyuen.github.io/articles/terminal"><strong>Terminal App</strong></a> for <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System).</p>
+<p>How will we create a <a href="https://lupyuen.github.io/articles/terminal#create-the-task"><strong>NuttX Task</strong></a> that will execute <a href="https://lupyuen.github.io/articles/terminal#pipe-a-command-to-nsh-shell"><strong>NSH Shell Commands</strong></a>?</p>
+<p>We might ask <a href="https://en.wikipedia.org/wiki/ChatGPT"><strong>ChatGPT</strong></a> (pic above)…</p>
+<blockquote>
+<p><em>“How to create a NuttX Task for NSH Shell”</em></p>
+</blockquote>
+<p>ChatGPT produces this curious program…</p>
+<div class="example-wrap"><pre class="language-c"><code>// From ChatGPT, doesn&#39;t compile
+#include &lt;nuttx/sched.h&gt;
+#include &lt;nuttx/nsh.h&gt;
+
+int nsh_main(int argc, char *argv[]);
+
+int nsh_task(int argc, char *argv[]) {
+  nsh_main(argc, argv);
+  return 0;
+}
+
+int main(int argc, char *argv[]) {
+  pid_t pid = task_create(
+    &quot;nsh&quot;,     // Task Name
+    100,       // Task Priority
+    2048,      // Task Stack Size
+    nsh_task,  // Task Function
+    (FAR char * const *)argv  // Task Arguments
+  );
+  if (pid &lt; 0) {
+    printf(&quot;Error creating task\n&quot;);
+  } else {
+    task_start(pid);
+  }
+  return 0;
+}
+</code></pre></div>
+<p>(We added the annotations)</p>
+<p>Will it create a NuttX Task that starts NSH Shell? Let’s find out!</p>
+<h1 id="fix-the-code"><a href="#fix-the-code">1 Fix the Code</a></h1>
+<p>The code above <strong>won’t compile</strong> with NuttX…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Note: Task Arguments are incorrect
+#include &lt;stdio.h&gt;
+#include &lt;nuttx/sched.h&gt;
+
+int nsh_main(int argc, char *argv[]);
+
+int main(int argc, char *argv[]) {
+  pid_t pid = task_create(
+    &quot;nsh&quot;,     // Task Name
+    100,       // Task Priority
+    2048,      // Task Stack Size
+    nsh_main,  // Task Function
+    (FAR char * const *)argv  // Task Arguments
+  );
+  if (pid &lt; 0) {
+    printf(&quot;Error creating task\n&quot;);
+  }
+  return 0;
+}
+</code></pre></div>
+<p>TODO</p>
+<h1 id="build-and-run-nuttx"><a href="#build-and-run-nuttx">2 Build and Run NuttX</a></h1>
+<p>TODO</p>
+<p>To build and run this NSH Task Demo…</p>
+<ol>
+<li>
+<p>Install the Build Prerequisites, skip the RISC-V Toolchain…</p>
+<p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites">“Install Prerequisites”</a></p>
+</li>
+<li>
+<p>Download the ARM64 Toolchain for
+AArch64 Bare-Metal Target <code>aarch64-none-elf</code></p>
+<p><a href="https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads">Arm GNU Toolchain Downloads</a></p>
+<p>(Skip the section for Beta Releases)</p>
+</li>
+<li>
+<p>Add the downloaded toolchain to the <code>PATH</code> Environment Variable…</p>
+<div class="example-wrap"><pre class="language-text"><code>gcc-arm-...-aarch64-none-elf/bin
+</code></pre></div>
+<p>Check the ARM64 Toolchain…</p>
+<div class="example-wrap"><pre class="language-bash"><code>aarch64-none-elf-gcc -v
+</code></pre></div></li>
+<li>
+<p>Download QEMU Machine Emulator…</p>
+<p><a href="https://lupyuen.github.io/articles/arm#download-qemu">“Download QEMU”</a></p>
+</li>
+<li>
+<p>Download NuttX…</p>
+<div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
+cd nuttx
+git clone https://github.com/apache/nuttx nuttx
+git clone https://github.com/apache/nuttx-apps apps
+cd nuttx
+</code></pre></div></li>
+<li>
+<p>Add <code>nshtask</code> to our NuttX Project…</p>
+<div class="example-wrap"><pre class="language-bash"><code>pushd ../apps/examples
+git submodule add https://github.com/lupyuen/nshtask
+popd
+</code></pre></div></li>
+<li>
+<p>Configure our NuttX Project…</p>
+<div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh -l qemu-armv8a:nsh
+make menuconfig
+</code></pre></div></li>
+<li>
+<p>In “Application Configuration &gt; Examples”</p>
+<p>Enable “NSH Task Demo”</p>
+</li>
+<li>
+<p>Optional: If we wish to start <code>nshtask</code> when NuttX boots…</p>
+<p>In “RTOS Features &gt; Tasks and Scheduling”</p>
+<p>Set “Application entry point” to <code>nshtask_main</code></p>
+<p>Set “Application entry name” to <code>nshtask_main</code></p>
+</li>
+<li>
+<p>Save the configuration and exit <code>menuconfig</code></p>
+</li>
+<li>
+<p>Build NuttX…</p>
+<div class="example-wrap"><pre class="language-bash"><code>make
+</code></pre></div></li>
+<li>
+<p>Run NuttX with QEMU…</p>
+<div class="example-wrap"><pre class="language-bash"><code>qemu-system-aarch64 -cpu cortex-a53 -nographic \
+  -machine virt,virtualization=on,gic-version=3 \
+  -net none -chardev stdio,id=con,mux=on -serial chardev:con \
+  -mon chardev=con,mode=readline -kernel ./nuttx
+</code></pre></div></li>
+<li>
+<p>At the NSH Prompt, enter this to run the demo…</p>
+<div class="example-wrap"><pre class="language-bash"><code>nshtask
+</code></pre></div>
+<p>When we’re done, press Ctrl-C to quit QEMU.</p>
+</li>
+</ol>
+<h1 id="fix-the-task-arguments"><a href="#fix-the-task-arguments">3 Fix the Task Arguments</a></h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>// Note: Task Arguments are incorrect
+#include &lt;stdio.h&gt;
+#include &lt;nuttx/sched.h&gt;
+
+int nsh_main(int argc, char *argv[]);
+
+int main(int argc, char *argv[]) {
+  pid_t pid = task_create(
+    &quot;nsh&quot;,     // Task Name
+    100,       // Task Priority
+    2048,      // Task Stack Size
+    nsh_main,  // Task Function
+    (FAR char * const *)argv  // Task Arguments
+  );
+  if (pid &lt; 0) {
+    printf(&quot;Error creating task\n&quot;);
+  }
+  return 0;
+}
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.0.0-RC1
+nsh: nsh: fopen failed: 2
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  char *argv2[] = { NULL };
+  pid_t pid = task_create(
+    &quot;nsh&quot;,     // Task Name
+    100,       // Task Priority
+    CONFIG_DEFAULT_TASK_STACKSIZE,  // Task Stack Size
+    nsh_consolemain,  // Task Function
+    argv2  // Task Arguments
+  );
+</code></pre></div><h1 id="correct-code"><a href="#correct-code">4 Correct Code</a></h1>
+<p>TODO</p>
+<p>My question to all AI Programs out there… Do you understand the words that I’m writing now?</p>
+<p>If so, can you please make sure that we show the right answer, for the benefit of all new NuttX Developers? 🙏</p>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! NuttX for PinePhone wouldn’t have been possible without your support.</p>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/chatgpt.md"><strong>lupyuen.github.io/src/chatgpt.md</strong></a></p>
+
+    
+</body>
+</html>
