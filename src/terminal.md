@@ -345,45 +345,56 @@ But there's a problem: Calling __`read()`__ on __`nsh_stdout`__ will block if th
 
 (We can't block our LVGL App, since it needs to handle User Interface Events periodically)
 
-__Solution:__ We call __`has_input`__ to check if there's NSH Output ready to be read, before reading the output: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L192-L245)
+__Solution:__ We call __`has_input`__ to check if NSH Shell has data ready to be read, before we actually read the data: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L192-L245)
 
 ```c
-// Poll NSH stdout to check if there's output to be read
+// If NSH stdout has data to be read...
 static char buf[64];
 if (has_input(nsh_stdout[READ_PIPE])) {
 
-  // Read the output from NSH stdout
+  // Read the data from NSH stdout
   ret = read(
     nsh_stdout[READ_PIPE],
     buf,
     sizeof(buf) - 1
   );
 
-  // Print the output
+  // Print the data
   if (ret > 0) { buf[ret] = 0; _info("%s\n", buf); }
 }
 ```
 
 [(We do the same for __`nsh_stderr`__)](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L192-L245)
 
-__`has_input`__ calls __`poll()`__ on __`nsh_stdout`__ to check if there's NSH Output ready to be read: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L350-L391)
+__`has_input`__ calls __`poll()`__ on __`nsh_stdout`__ to check if NSH Shell has data ready to be read: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L350-L391)
 
 ```c
 // Return true if the File Descriptor has data to be read
-static bool has_input(int fd) {
+static bool has_input(
+  int fd  // File Descriptor to be checked
+) {
+  // Define the Poll Struct
+  struct pollfd fdp;
+  fdp.fd     = fd;      // File Descriptor to be checked
+  fdp.events = POLLIN;  // Check for Input
 
   // Poll the File Descriptor for Input
-  struct pollfd fdp;
-  fdp.fd = fd;
-  fdp.events = POLLIN;
   int ret = poll(
     (struct pollfd *)&fdp,  // File Descriptors
     1,  // Number of File Descriptors
     0   // Poll Timeout (Milliseconds)
   );
+```
 
+Note that we set the __Poll Timeout__ to 0.
+
+Thus __`poll()`__ returns immediately with the result, without blocking.
+
+We decode the result of __`poll()`__ like so...
+
+```c
   if (ret > 0) {
-    // If Poll is OK and there is Input...
+    // If Poll is OK and there's Input...
     if ((fdp.revents & POLLIN) != 0) {
       // Report that there's Input
       _info("has input: fd=%d\n", fd);
@@ -395,7 +406,7 @@ static bool has_input(int fd) {
     return false;
 
   } else if (ret == 0) {
-    // Ignore Timeout
+    // If Timeout, report No Input
     _info("timeout: fd=%d\n", fd);
     return false;
 
@@ -404,22 +415,17 @@ static bool has_input(int fd) {
     _err("poll failed: %d, fd=%d\n", ret, fd);
     return false;
   }
-
-  // Never comes here
-  DEBUGASSERT(false);
-  return false;
-}
 ```
 
 _What happens when we run this?_
 
-__`has_input`__ returns True if there's NSH Output waiting to be read...
+If NSH Shell has data waiting to be read, __`has_input`__ returns True...
 
 ```text
 has_input: has input: fd=8
 ```
 
-And __`has_input`__ returns False (due to timeout) if there's nothing waiting to be read...
+And if there's nothing waiting to be read, __`has_input`__ returns False (due to timeout)...
 
 ```text
 has_input: timeout: fd=8
@@ -449,12 +455,11 @@ Now we need to periodically __poll for NSH Output__, and write the output to the
 
     -   __Display the output__ in an LVGL Widget
 
-TODO
-
-We'll do this with an [LVGL Timer](https://docs.lvgl.io/master/overview/timer.html) like so: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L178-L188)
+We do this with an [__LVGL Timer__](https://docs.lvgl.io/master/overview/timer.html) like so: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L178-L188)
 
 ```c
-// Create an LVGL Terminal that will let us interact with NuttX NSH Shell
+// Create an LVGL Terminal that will let us
+// interact with NuttX NSH Shell
 static void create_terminal(void) {
 
   // Create an LVGL Timer to poll for output from NSH Shell
@@ -468,7 +473,7 @@ static void create_terminal(void) {
 
 (__`user_data`__ is unused for now)
 
-`my_timer` is our Timer Callback Function: [lvgldemo.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/2f591f4e2589298caf6613ba409d667be61a9881/examples/lvgldemo/lvgldemo.c#L350-L363)
+__`timer_callback`__ is our Timer Callback Function: [lvgldemo.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/2f591f4e2589298caf6613ba409d667be61a9881/examples/lvgldemo/lvgldemo.c#L350-L363)
 
 ```c
 // Callback for LVGL Timer
