@@ -455,7 +455,7 @@ Now we need to periodically __poll for NSH Output__, and write the output to the
 
     -   __Display the output__ in an LVGL Widget
 
-We do this with an [__LVGL Timer__](https://docs.lvgl.io/master/overview/timer.html) like so: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L178-L188)
+We do this with an [__LVGL Timer__](https://docs.lvgl.io/master/overview/timer.html) that's triggered every 100 milliseconds: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L178-L188)
 
 ```c
 // Create an LVGL Terminal that will let us
@@ -471,178 +471,177 @@ static void create_terminal(void) {
   );
 ```
 
-(__`user_data`__ is unused for now)
+(__user_data__ is unused for now)
 
-__`timer_callback`__ is our Timer Callback Function: [lvgldemo.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/2f591f4e2589298caf6613ba409d667be61a9881/examples/lvgldemo/lvgldemo.c#L350-L363)
+_What's timer_callback?_
 
-```c
-// Callback for LVGL Timer
-void my_timer(lv_timer_t *timer) {
+__timer_callback__ is our Callback Function for the LVGL Timer.
 
-  // Get the Callback Data
-  uint32_t *user_data = timer->user_data;
-  _info("my_timer called with callback data: %d\n", *user_data);
-  *user_data += 1;
-
-  // TODO: Call poll() to check if NSH Stdout has output to be read
-
-  // TODO: Read the NSH Stdout
-
-  // TODO: Write the NSH Output to LVGL Label Widget
-}
-```
-
-When we run this, LVGL calls our Timer Callback Function every 5 seconds...
-
-```text
-my_timer: my_timer called with callback data: 10
-my_timer: my_timer called with callback data: 11
-my_timer: my_timer called with callback data: 12
-```
-
-[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/2f591f4e2589298caf6613ba409d667be61a9881/examples/lvgldemo/lvgldemo.c#L369-L436)
-
-_Why poll for NSH Output? Why not run a Background Thread that will block on NSH Output?_
-
-If we ran a Background Thread that will block until NSH Output is available, we still need to write the NSH Output to an LVGL Widget for display.
-
-But LVGL is NOT Thread-Safe. Thus we need a Mutex to lock the LVGL Widgets, which gets messy.
-
-For now, it's simpler to run an LVGL Timer to poll for NSH Output.
-
-Let's add the polling to the LVGL Timer Callback...
-
-# Poll for NSH Output in LVGL Timer
-
-TODO
-
-In the previous section we've created an LVGL Timer that's triggered periodically.
-
-Inside the LVGL Timer Callback, let's poll the NSH Output and check if there's any output to be read: [lvgldemo.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/c30e1968d5106794f435882af69dfb7b1858d694/examples/lvgldemo/lvgldemo.c#L309-L356)
+Inside the callback, we poll for NSH Output, read the output and display it: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L192-L245)
 
 ```c
-// Callback for LVGL Timer
-static void my_timer(lv_timer_t *timer) {
-  ...
-  // Read the output from NSH stdout
-  static char buf[64];
-  DEBUGASSERT(nsh_stdout[READ_PIPE] != 0);
+// Callback Function for LVGL Timer
+static void timer_callback(lv_timer_t *timer) {
+
+  // If NSH stdout has data to be read...
   if (has_input(nsh_stdout[READ_PIPE])) {
-    ret = read(
+
+    // Read the output from NSH stdout
+    static char buf[64];
+    int ret = read(
       nsh_stdout[READ_PIPE],
       buf,
       sizeof(buf) - 1
     );
-    _info("read nsh_stdout: %d\n", ret);
-    if (ret > 0) { buf[ret] = 0; _info("%s\n", buf); }
-  }
 
-  // Read the output from NSH stderr
-  DEBUGASSERT(nsh_stderr[READ_PIPE] != 0);
-  if (has_input(nsh_stderr[READ_PIPE])) {
-    ret = read(    
-      nsh_stderr[READ_PIPE],
-      buf,
-      sizeof(buf) - 1
-    );
-    _info("read nsh_stderr: %d\n", ret);
-    if (ret > 0) { buf[ret] = 0; _info("%s\n", buf); }
+    // Add to NSH Output Text Area
+    if (ret > 0) {
+      buf[ret] = 0;
+      remove_escape_codes(buf, ret);
+      lv_textarea_add_text(output, buf);
+    }
   }
-
-  // TODO: Write the NSH Output to LVGL Label Widget
 ```
 
-NSH won't emit any output until we run some NSH Commands. So let's trigger some NSH Commands inside the LVGL Timer Callback: [lvgldemo.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/c30e1968d5106794f435882af69dfb7b1858d694/examples/lvgldemo/lvgldemo.c#L309-L356)
+[(We've seen __has_input__ earlier)](https://lupyuen.github.io/articles/terminal#poll-for-nsh-output)
 
-```c
-// Callback for LVGL Timer
-static void my_timer(lv_timer_t *timer) {
+We'll talk about __remove_escape_codes__ and __lv_textarea_add_text__ in a while.
 
-  // Get the Callback Data
-  uint32_t *user_data = timer->user_data;
-  _info("my_timer called with callback data: %d\n", *user_data);
-  *user_data += 1;
+_How do we test this Timer Callback?_
 
-  // Send a command to NSH stdin
-  if (*user_data % 5 == 0) {
-    const char cmd[] = "ls\r";
-    DEBUGASSERT(nsh_stdin[WRITE_PIPE] != 0);
-    ret = write(
-      nsh_stdin[WRITE_PIPE],
-      cmd,
-      sizeof(cmd)
-    );
-    _info("write nsh_stdin: %d\n", ret);
-  }
-  
-  // Read the output from NSH stdout
-  ...
-```
+Without LVGL Widgets, testing the LVGL Timer Callback will be tricky. Here's how we tested by manipulating the LVGL Timer...
 
-When we run this, we see the LVGL Timer Callback sending NSH Commands and printing the NSH Output...
+-   [__"Poll for NSH Output in LVGL Timer"__](https://github.com/lupyuen/pinephone-nuttx#poll-for-nsh-output-in-lvgl-timer)
 
-```text
-my_timer: my_timer called with callback data: 10
-has_input: has input: fd=8
-my_timer: read nsh_stdout: 63
-my_timer: createWidgetsWrapped: start
-createWidgetsWrapped: end
-NuttShel
-has_input: timeout: fd=10
-my_timer: my_timer called with callback data: 11
-has_input: has input: fd=8
-my_timer: read nsh_stdout: 29
-my_timer: l (NSH) NuttX-12.0.0
-nsh> 
-has_input: timeout: fd=10
-my_timer: my_timer called with callback data: 12
-has_input: timeout: fd=8
-has_input: timeout: fd=10
-my_timer: my_timer called with callback data: 13
-has_input: timeout: fd=8
-has_input: timeout: fd=10
-my_timer: my_timer called with callback data: 14
-my_timer: write nsh_stdin: 4
-has_input: timeout: fd=8
-has_input: timeout: fd=10
-my_timer: my_timer called with callback data: 15
-has_input: has input: fd=8
-my_timer: read nsh_stdout: 33
-my_timer: ls
-/:
- dev/
- proc/
- var/
-nsh> 
-```
+_Why poll for NSH Output? Why not run a Background Thread that will block on NSH Output?_
 
-[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/c30e1968d5106794f435882af69dfb7b1858d694/examples/lvgldemo/lvgldemo.c#L403-L556)
+Even if we ran a Background Thread that will block until NSH Output is available, we still need to write the NSH Output to an __LVGL Widget for display__.
 
-Now that our background processing is ready, let's render the LVGL Widgets for our terminal...
+But LVGL is [__NOT Thread-Safe__](https://docs.lvgl.io/master/porting/os.html#tasks-and-threads). Thus we need a Mutex to lock the LVGL Widget, which gets messy.
+
+For now, it's simpler to run an LVGL Timer to poll for NSH Output.
+
+Now that our Background Processing is ready, let's render the LVGL Widgets for our terminal...
 
 ![Render Terminal with LVGL Widgets](https://lupyuen.github.io/images/terminal-flow3.jpg)
 
 # Render Terminal with LVGL Widgets
 
-TODO: Adopt Flex so it works with other devices
+_How will we render the Terminal with LVGL?_
 
-Our LVGL Terminal will have 3 LVGL Widgets...
+Our Terminal will have 3 LVGL Widgets...
 
--   [LVGL Text Area Widget](https://docs.lvgl.io/master/widgets/textarea.html) that shows the NSH Output
+-   [__LVGL Text Area Widget__](https://docs.lvgl.io/master/widgets/textarea.html) that shows the __NSH Output__
 
     (At the top)
 
--   [LVGL Text Area Widget](https://docs.lvgl.io/master/widgets/textarea.html) for NSH Input, to enter commands
+-   [__LVGL Text Area Widget__](https://docs.lvgl.io/master/widgets/textarea.html) for __NSH Input__, to enter commands
 
     (At the middle)
 
--   [LVGL Keyboard Widget](https://docs.lvgl.io/master/widgets/keyboard.html) for typing commands into NSH Input
+-   [__LVGL Keyboard Widget__](https://docs.lvgl.io/master/widgets/keyboard.html) for typing commands into __NSH Input__
 
     (At the bottom)
 
-![Set Default Font to Monospace](https://lupyuen.github.io/images/lvgl2-terminal2.jpg)
+Like this...
 
-This is how we render the 3 LVGL Widgets: [lvgldemo.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/a37872d85c865557bee740cecd6adc35ae3197d2/examples/lvgldemo/lvgldemo.c#L374-L415)
+![LVGL Terminal App](https://lupyuen.github.io/images/lvgl2-terminal2.jpg)
+
+This is how we create the 3 LVGL Widgets: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L269-L299)
+
+```c
+// LVGL Text Area Widgets for NSH Input and Output
+static lv_obj_t *input;
+static lv_obj_t *output;
+
+// Create the LVGL Widgets for the LVGL Terminal
+static void create_widgets(void) {
+
+  // Create an LVGL Keyboard Widget
+  lv_obj_t *kb = lv_keyboard_create(
+    lv_scr_act()  // Parent is Active Screen
+  );
+```
+
+TODO
+
+```c
+  // Create an LVGL Text Area Widget for NSH Output
+  output = lv_textarea_create(
+    lv_scr_act()  // Parent is Active Screen
+  );
+
+  // Align the Widget
+  lv_obj_align(
+    output,  // LVGL Text Area Widget for NSH Output
+    LV_ALIGN_TOP_LEFT,  // From Top Left
+    TERMINAL_MARGIN,    // Shift 10 pixels left
+    TERMINAL_MARGIN     // Shift 10 pixels down
+  );
+
+  // Set the Default Text
+  lv_textarea_set_placeholder_text(output, "Hello");
+
+  // Set the Widget Size
+  lv_obj_set_size(
+    output,  // LVGL Text Area Widget for NSH Output
+    TERMINAL_WIDTH,  // Width
+    OUTPUT_HEIGHT    // Height
+  );
+```
+
+TODO
+
+```c
+  // Create an LVGL Text Area Widget for NSH Input
+  input = lv_textarea_create(
+    lv_scr_act()  // Parent is Active Screen
+  );
+
+  // Align the Widget
+  lv_obj_align(
+    input,  // LVGL Text Area Widget for NSH Input
+    LV_ALIGN_TOP_LEFT,  // From Top Left
+    TERMINAL_MARGIN,    // Shift 10 pixels left
+    OUTPUT_HEIGHT + 2 * TERMINAL_MARGIN  // Shift 10 pixels below NSH Output
+  );
+
+  // Set the Widget Size
+  lv_obj_set_size(
+    input,  // LVGL Text Area Widget for NSH Input
+    TERMINAL_WIDTH,  // Width
+    INPUT_HEIGHT     // Height
+  );
+```
+
+TODO
+
+```c
+  // Set the Callback Function for NSH Input
+  lv_obj_add_event_cb(
+    input,  // LVGL Text Area Widget for NSH Input
+    input_callback,  // Callback Function
+    LV_EVENT_ALL,    // Callback for All Events
+    kb               // Callback Argument (Keyboard)
+  );
+```
+
+TODO
+
+```c
+  // Set the Keyboard to populate the NSH Input Text Area
+  lv_keyboard_set_textarea(
+    kb,    // LVGL Keyboard Widget
+    input  // LVGL Text Area Widget for NSH Input
+  );
+}
+```
+
+__input_callback__ is the Callback Function for our LVGL Keyboard. Which we'll cover in a while.
+
+TODO
+
+[lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L249-L269)
 
 ```c
 // PinePhone LCD Panel Width and Height (pixels)
@@ -664,32 +663,9 @@ This is how we render the 3 LVGL Widgets: [lvgldemo.c](https://github.com/lupyue
 
 // Height of Output Text Area is Terminal Height minus Input Height minus Middle Margin
 #define OUTPUT_HEIGHT (TERMINAL_HEIGHT - INPUT_HEIGHT - TERMINAL_MARGIN)
-
-// Create the LVGL Widgets for the LVGL Terminal.
-// Based on https://docs.lvgl.io/master/widgets/keyboard.html#keyboard-with-text-area
-static void create_widgets(void) {
-
-  // Create an LVGL Keyboard Widget
-  lv_obj_t *kb = lv_keyboard_create(lv_scr_act());
-
-  // Create an LVGL Text Area Widget for NSH Output
-  output = lv_textarea_create(lv_scr_act());
-  lv_obj_align(output, LV_ALIGN_TOP_LEFT, TERMINAL_MARGIN, TERMINAL_MARGIN);
-  lv_textarea_set_placeholder_text(output, "Hello");
-  lv_obj_set_size(output, TERMINAL_WIDTH, OUTPUT_HEIGHT);
-
-  // Create an LVGL Text Area Widget for NSH Input
-  input = lv_textarea_create(lv_scr_act());
-  lv_obj_align(input, LV_ALIGN_TOP_LEFT, TERMINAL_MARGIN, OUTPUT_HEIGHT + 2 * TERMINAL_MARGIN);
-  lv_obj_add_event_cb(input, input_callback, LV_EVENT_ALL, kb);
-  lv_obj_set_size(input, TERMINAL_WIDTH, INPUT_HEIGHT);
-
-  // Set the Keyboard to populate the NSH Input Text Area
-  lv_keyboard_set_textarea(kb, input);
-}
 ```
 
-`input_callback` is the Callback Function for our LVGL Keyboard. Which we'll cover in a while.
+TODO: Adopt Flex so it works with other devices
 
 Note that we're using the LVGL Default Font for all 3 LVGL Widgets. Which has a problem...
 
