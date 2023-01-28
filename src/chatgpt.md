@@ -10,11 +10,11 @@ Suppose we're building a [__Terminal App__](https://lupyuen.github.io/articles/t
 
 How will we create a [__NuttX Task__](https://lupyuen.github.io/articles/terminal#create-the-task) that will execute [__NSH Shell Commands__](https://lupyuen.github.io/articles/terminal#pipe-a-command-to-nsh-shell)?
 
-We might ask [__ChatGPT__](https://en.wikipedia.org/wiki/ChatGPT) (pic above)...
+We might ask [__ChatGPT__](https://en.wikipedia.org/wiki/ChatGPT)...
 
 > _"How to create a NuttX Task for NSH Shell"_
 
-ChatGPT produces this curious program...
+ChatGPT produces this curious program (pic above): [nshtask.c](https://github.com/lupyuen/nshtask/blob/c9d4f0b6fa60eb7cb5d0795e6670e012deefab61/nshtask.c)
 
 ```c
 // From ChatGPT, doesn't compile
@@ -53,6 +53,24 @@ Will it create a NuttX Task that starts NSH Shell? Let's find out!
 
 The code above __won't compile__ with NuttX...
 
+-   __`<nuttx/nsh.h>`__ doesn't exist in NuttX
+
+    (Where did this come from?)
+
+-   __`task_start()`__ doesn't exist in NuttX
+
+    (Huh?)
+
+-   __`printf()`__ needs __`<stdio.h>`__
+
+    (Which is missing)
+
+-   __`nsh_task()`__ looks redundant
+
+    (Since we can call __`nsh_main()`__ directly)
+
+Let's fix it...
+
 ```c
 // Note: Task Arguments are incorrect
 #include <stdio.h>
@@ -75,27 +93,24 @@ int main(int argc, char *argv[]) {
 }
 ```
 
-TODO
-
+Let's test this with the QEMU Emulator...
 
 # Build and Run NuttX
 
-TODO
-
-To build and run this NSH Task Demo...
+To __build the NuttX Demo__ and run it with QEMU...
 
 1.  Install the Build Prerequisites, skip the RISC-V Toolchain...
 
-    ["Install Prerequisites"](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
+    [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
 
 1.  Download the ARM64 Toolchain for
-    AArch64 Bare-Metal Target `aarch64-none-elf`
+    __AArch64 Bare-Metal Target `aarch64-none-elf`__
     
-    [Arm GNU Toolchain Downloads](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
+    [__Arm GNU Toolchain Downloads__](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
 
     (Skip the section for Beta Releases)
 
-1.  Add the downloaded toolchain to the `PATH` Environment Variable...
+1.  Add the downloaded toolchain to the __`PATH`__ Environment Variable...
 
     ```text
     gcc-arm-...-aarch64-none-elf/bin
@@ -107,9 +122,9 @@ To build and run this NSH Task Demo...
     aarch64-none-elf-gcc -v
     ```
 
-1.  Download QEMU Machine Emulator...
+1.  Download the QEMU Machine Emulator...
 
-    ["Download QEMU"](https://lupyuen.github.io/articles/arm#download-qemu)
+    [__"Download QEMU"__](https://lupyuen.github.io/articles/arm#download-qemu)
 
 1.  Download NuttX...
 
@@ -121,13 +136,21 @@ To build and run this NSH Task Demo...
     cd nuttx
     ```
 
-1.  Add `nshtask` to our NuttX Project...
+1.  Add __`nshtask`__ to our NuttX Project...
 
     ```bash
     pushd ../apps/examples
     git submodule add https://github.com/lupyuen/nshtask
     popd
     ```
+
+1.  Look for this source file...
+
+    ```text
+    nuttx/apps/examples/nshtask/nshtask.c
+    ```
+
+    And paste the fixed code from the previous section.
 
 1.  Configure our NuttX Project...
 
@@ -140,15 +163,7 @@ To build and run this NSH Task Demo...
 
     Enable "NSH Task Demo"
 
-1.  Optional: If we wish to start `nshtask` when NuttX boots...
-
-    In "RTOS Features > Tasks and Scheduling"
-
-    Set "Application entry point" to `nshtask_main`
-
-    Set "Application entry name" to `nshtask_main`
-
-1.  Save the configuration and exit `menuconfig`
+1.  Save the configuration and exit __`menuconfig`__
 
 1.  Build NuttX...
 
@@ -173,18 +188,35 @@ To build and run this NSH Task Demo...
 
     When we're done, press Ctrl-C to quit QEMU.
 
+# NSH Fails To Start
+
+_What happens when we run `nshtask`?_
+
+Our program tries to start a NuttX Task for NSH Shell. But it fails with an __`fopen`__ error...
+
+```text
+nsh> nshtask
+NuttShell (NSH) NuttX-12.0.0-RC1
+nsh: nsh: fopen failed: 2
+```
+
+[(See the Complete Log)](https://gist.github.com/lupyuen/832a1bae98720ce0841791176812dbd9)
+
+_Huh? That's a weird error..._
+
+That's the __same problem that stumped me__ the first time I created a NuttX Task!
+
+Here's the solution...
+
 # Fix the Task Arguments
 
-TODO
+Remember we passed __`argv`__ from __`main()`__ to __`task_create()`__...
 
 ```c
-// Note: Task Arguments are incorrect
-#include <stdio.h>
-#include <nuttx/sched.h>
-
-int nsh_main(int argc, char *argv[]);
-
+// argv comes from main()...
 int main(int argc, char *argv[]) {
+
+  // But nope we can't pass argv to task_create()
   pid_t pid = task_create(
     "nsh",     // Task Name
     100,       // Task Priority
@@ -192,6 +224,103 @@ int main(int argc, char *argv[]) {
     nsh_main,  // Task Function
     (FAR char * const *)argv  // Task Arguments
   );
+```
+
+_What's inside `argv`?_
+
+As with any typical C program...
+
+-   __`argv[0]`__ is "__`nshtask`__"
+
+    (Name of our app)
+
+-   __`argv[1]`__ is null
+
+    (No arguments for our app)
+
+When we pass __`argv`__ to __`task_create()`__...
+
+We're actually passing "__`nshtask`__" as the __First Argument__ of NSH Shell...
+
+Which causes NSH to fail!
+
+_So `task_create()` works a little differently from `main()`?_
+
+Yep! This is how we __pass no arguments__ to NSH Shell...
+
+```c
+  // No arguments for our NuttX Task
+  char *argv2[] = { NULL };
+
+  // Start the NuttX Task with no arguments
+  pid_t pid = task_create(
+    "nsh",     // Task Name
+    100,       // Task Priority
+    2048,      // Task Stack Size
+    nsh_main,  // Task Function
+    argv2      // Task Arguments (None)
+  );
+```
+
+Or we can pass __`NULL`__ like so...
+
+```c
+  // Passing NULL works too
+  pid_t pid = task_create(
+    "nsh",     // Task Name
+    100,       // Task Priority
+    2048,      // Task Stack Size
+    nsh_main,  // Task Function
+    NULL       // Task Arguments (None)
+  );
+```
+
+Thus it seems ChatGPT is hitting the __same newbie mistake__ as other NuttX Developers!
+
+(Which gets really frustrating if folks blindly copy the code recommended by ChatGPT)
+
+# NSH Main Function
+
+TODO: nsh_consolemain
+
+```c
+  // Start a NuttX Task for NSH Shell
+  pid_t pid = task_create(
+    "nsh",     // Task Name
+    100,       // Task Priority
+    2048,      // Task Stack Size
+    nsh_main,  // Task Function
+    NULL       // Task Arguments (None)
+  );
+```
+
+[nsh_main](https://github.com/search?q=%22int+nsh_main%28int+argc%2C+char+*argv%5B%5D%29%3B%22&type=code&l=C)
+
+# Correct Code
+
+TODO
+
+[nshtask.c](https://github.com/lupyuen/nshtask/blob/main/nshtask.c)
+
+```c
+// Create a NuttX Task for NSH Shell
+#include <stdio.h>
+#include <nuttx/sched.h>
+#include "nshlib/nshlib.h"
+
+// Main Function for nshtask Demo
+int main(int argc, char *argv[]) {
+
+  // Start a NuttX Task for NSH Shell
+  pid_t pid = task_create(
+    "nsh",  // Task Name
+    100,    // Task Priority
+    CONFIG_DEFAULT_TASK_STACKSIZE,  // Task Stack Size
+    nsh_consolemain,  // Task Function
+    NULL    // Task Arguments
+  );
+
+  // Check for error
   if (pid < 0) {
     printf("Error creating task\n");
   }
@@ -199,27 +328,19 @@ int main(int argc, char *argv[]) {
 }
 ```
 
-TODO
-
-```text
-NuttShell (NSH) NuttX-12.0.0-RC1
-nsh: nsh: fopen failed: 2
-```
+# Other Attempts
 
 TODO
 
-```c
-  char *argv2[] = { NULL };
-  pid_t pid = task_create(
-    "nsh",     // Task Name
-    100,       // Task Priority
-    CONFIG_DEFAULT_TASK_STACKSIZE,  // Task Stack Size
-    nsh_consolemain,  // Task Function
-    argv2  // Task Arguments
-  );
-```
+![First Try: ChatGPT tries to explain how to create a NuttX Task for NSH Shell](https://lupyuen.github.io/images/chatgpt-response1.jpg)
 
-# Correct Code
+TODO
+
+![Second Try: ChatGPT tries to explain how to create a NuttX Task for NSH Shell](https://lupyuen.github.io/images/chatgpt-response2.jpg)
+
+TODO
+
+![Third Try: ChatGPT tries to explain how to create a NuttX Task for NSH Shell](https://lupyuen.github.io/images/chatgpt-response3.jpg)
 
 TODO
 
