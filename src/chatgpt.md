@@ -328,6 +328,26 @@ int main(int argc, char *argv[]) {
 }
 ```
 
+TODO
+
+```text
+nsh> nshtask
+NuttShell (NSH) NuttX-12.0.0-RC1
+nsh> nsh>
+nsh>
+nsh> ls
+nsh: l: command not found
+nsh>
+nsh: s: command not found
+nsh> ls
+nsh: l: command not found
+nsh>
+nsh: s: command not found
+nsh> 
+```
+
+[(See the Complete Log)](https://gist.github.com/lupyuen/d64f9fbec18ba30d832e6c7b6f54b63d)
+
 # Other Attempts
 
 TODO
