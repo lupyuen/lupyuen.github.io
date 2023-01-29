@@ -295,17 +295,37 @@ int main(int argc, char *argv[]) {
 <p>Thus it seems ChatGPT is hitting the <strong>same newbie mistake</strong> as other NuttX Developers!</p>
 <p>(Which gets really frustrating if folks blindly copy the code recommended by ChatGPT)</p>
 <h1 id="nsh-main-function"><a href="#nsh-main-function">5 NSH Main Function</a></h1>
-<p>TODO: nsh_consolemain</p>
-<div class="example-wrap"><pre class="language-c"><code>  // Start a NuttX Task for NSH Shell
-  pid_t pid = task_create(
-    &quot;nsh&quot;,     // Task Name
-    100,       // Task Priority
-    2048,      // Task Stack Size
-    nsh_main,  // Task Function
-    NULL       // Task Arguments (None)
-  );
+<p>There’s something odd about <strong><code>nsh_main</code></strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>// nsh_main doesn&#39;t look right
+pid_t pid = task_create(
+  &quot;nsh&quot;,     // Task Name
+  100,       // Task Priority
+  2048,      // Task Stack Size
+  nsh_main,  // Task Function
+  NULL       // Task Arguments
+);
 </code></pre></div>
-<p><a href="https://github.com/search?q=%22int+nsh_main%28int+argc%2C+char+*argv%5B%5D%29%3B%22&amp;type=code&amp;l=C">nsh_main</a></p>
+<p>Normally we start <strong><code>nsh_consolemain</code></strong> when we create an NSH Shell. (Instead of <strong><code>nsh_main</code></strong>)</p>
+<p>Hence we change the code to this…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Needed for nsh_consolemain
+#include &quot;nshlib/nshlib.h&quot;
+
+// Changed to nsh_consolemain
+pid_t pid = task_create(
+  &quot;nsh&quot;,  // Task Name
+  100,    // Task Priority
+  2048,   // Task Stack Size
+  nsh_consolemain,  // Task Function
+  NULL    // Task Arguments
+);
+</code></pre></div>
+<p><em>Is there a difference?</em></p>
+<p><strong><code>nsh_main</code></strong> crashes if we configure NuttX to boot directly into our <strong><code>nshtask</code></strong> app.</p>
+<p><strong><code>nsh_consolemain</code></strong> works fine.</p>
+<p><a href="https://github.com/lupyuen/nshtask/blob/main/README.md">(How we boot NuttX into <strong><code>nshtask</code></strong>)</a></p>
+<p><em>Why did ChatGPT suggest <code>nsh_main</code>?</em></p>
+<p>Maybe ChatGPT got “inspired” by past references to <strong><code>nsh_main</code></strong>?</p>
+<p><a href="https://github.com/search?q=%22int+nsh_main%28int+argc%2C+char+*argv%5B%5D%29%3B%22&amp;type=code&amp;l=C">(Like these)</a></p>
 <h1 id="correct-code"><a href="#correct-code">6 Correct Code</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/nshtask/blob/main/nshtask.c">nshtask.c</a></p>
