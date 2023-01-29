@@ -71,9 +71,9 @@
 <li><a href="#build-and-run-nuttx">2 Build and Run NuttX</a><ul></ul></li>
 <li><a href="#nsh-fails-to-start">3 NSH Fails To Start</a><ul></ul></li>
 <li><a href="#fix-the-task-arguments">4 Fix the Task Arguments</a><ul></ul></li>
-<li><a href="#nsh-main-function">5 NSH Main Function</a><ul></ul></li>
+<li><a href="#nsh-function">5 NSH Function</a><ul></ul></li>
 <li><a href="#correct-code">6 Correct Code</a><ul></ul></li>
-<li><a href="#other-attempts">7 Other Attempts</a><ul></ul></li></ul></nav><p>📝 <em>5 Feb 2023</em></p>
+<li><a href="#other-attempts">7 Other Attempts</a><ul></ul></li></ul></nav><p>📝 <em>29 Jan 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/chatgpt-title.jpg" alt="ChatGPT tries to explain how to create a NuttX Task for NSH Shell" /></p>
 <p><em>(As a teacher I won’t criticise my student in public… But an “AI Student” should be OK, I guess?)</em></p>
 <p>Suppose we’re building a <a href="https://lupyuen.github.io/articles/terminal"><strong>Terminal App</strong></a> for <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System).</p>
@@ -153,9 +153,9 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 </code></pre></div>
-<p>Now we test this with the QEMU Emulator…</p>
+<p>Now we test this with QEMU…</p>
 <h1 id="build-and-run-nuttx"><a href="#build-and-run-nuttx">2 Build and Run NuttX</a></h1>
-<p>Here are the steps to <strong>build NuttX RTOS</strong> and run it with QEMU…</p>
+<p>Here are the steps to <strong>build NuttX RTOS</strong> and run it with the QEMU Emulator…</p>
 <ol>
 <li>
 <p>Install the Build Prerequisites, skip the RISC-V Toolchain…</p>
@@ -222,7 +222,7 @@ make menuconfig
   -mon chardev=con,mode=readline -kernel ./nuttx
 </code></pre></div></li>
 <li>
-<p>At the NSH Prompt, enter this to run the demo…</p>
+<p>At the NSH Prompt, enter this to run our program…</p>
 <div class="example-wrap"><pre class="language-bash"><code>nshtask
 </code></pre></div>
 <p>When we’re done, press Ctrl-C to quit QEMU.</p>
@@ -282,7 +282,7 @@ int main(int argc, char *argv[]) {
     argv2      // Task Arguments (None)
   );
 </code></pre></div>
-<p>Or we can pass <strong><code>NULL</code></strong> like so…</p>
+<p>Or we may pass <strong><code>NULL</code></strong> like so…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Passing NULL works too
   pid_t pid = task_create(
     &quot;nsh&quot;,     // Task Name
@@ -293,8 +293,8 @@ int main(int argc, char *argv[]) {
   );
 </code></pre></div>
 <p>Thus it seems ChatGPT is hitting the <strong>same newbie mistake</strong> as other NuttX Developers!</p>
-<p>(Which gets really frustrating if folks blindly copy the code recommended by ChatGPT)</p>
-<h1 id="nsh-main-function"><a href="#nsh-main-function">5 NSH Main Function</a></h1>
+<p>(Which gets really frustrating if folks blindly copy the code suggested by ChatGPT)</p>
+<h1 id="nsh-function"><a href="#nsh-function">5 NSH Function</a></h1>
 <p>There’s something odd about <strong><code>nsh_main</code></strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// nsh_main doesn&#39;t look right
 pid_t pid = task_create(
@@ -306,7 +306,7 @@ pid_t pid = task_create(
 );
 </code></pre></div>
 <p>Normally we start <strong><code>nsh_consolemain</code></strong> when we create an NSH Shell. (Instead of <strong><code>nsh_main</code></strong>)</p>
-<p>Hence we change the code to this…</p>
+<p>Hence we change the code to…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Needed for nsh_consolemain
 #include &quot;nshlib/nshlib.h&quot;
 
@@ -327,8 +327,7 @@ pid_t pid = task_create(
 <p>Maybe ChatGPT got “inspired” by past references to <strong><code>nsh_main</code></strong>?</p>
 <p><a href="https://github.com/search?q=%22int+nsh_main%28int+argc%2C+char+*argv%5B%5D%29%3B%22&amp;type=code&amp;l=C">(Like these)</a></p>
 <h1 id="correct-code"><a href="#correct-code">6 Correct Code</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/nshtask/blob/main/nshtask.c">nshtask.c</a></p>
+<p>This is the final corrected version that works: <a href="https://github.com/lupyuen/nshtask/blob/main/nshtask.c">nshtask.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Create a NuttX Task for NSH Shell
 #include &lt;stdio.h&gt;
 #include &lt;nuttx/sched.h&gt;
@@ -353,30 +352,32 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 </code></pre></div>
-<p>TODO</p>
+<p>(We changed the <strong>Task Stack Size</strong> to be consistent with other NuttX Apps)</p>
+<p>Our <strong><code>nshtask</code></strong> command now starts NSH Shell correctly…</p>
 <div class="example-wrap"><pre class="language-text"><code>nsh&gt; nshtask
 NuttShell (NSH) NuttX-12.0.0-RC1
 nsh&gt; nsh&gt;
-nsh&gt;
-nsh&gt; ls
-nsh: l: command not found
-nsh&gt;
-nsh: s: command not found
-nsh&gt; ls
-nsh: l: command not found
-nsh&gt;
-nsh: s: command not found
-nsh&gt; 
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/d64f9fbec18ba30d832e6c7b6f54b63d">(See the Complete Log)</a></p>
+<p>But if we enter a command like <strong><code>ls</code></strong>, things get wonky…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; ls
+nsh: l: command not found
+nsh&gt;
+nsh: s: command not found
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/d64f9fbec18ba30d832e6c7b6f54b63d">(See the Complete Log)</a></p>
+<p>That’s because we now have <strong>TWO NSH Shells</strong> reading commands from the same Console Input!</p>
+<p>To fix this, we need to redirect the Console Input and Output streams.</p>
+<p><a href="https://lupyuen.github.io/articles/terminal#pipe-a-command-to-nsh-shell">(As explained here)</a></p>
 <h1 id="other-attempts"><a href="#other-attempts">7 Other Attempts</a></h1>
-<p>TODO</p>
+<p><em>Can ChatGPT produce alternative answers to our question?</em></p>
+<p>Yep every time we ask ChatGPT the same question, it generates a different response.</p>
+<p>The first time we asked ChatGPT, it returned this strange program (that creates a NuttX Task literally)…</p>
 <p><img src="https://lupyuen.github.io/images/chatgpt-response1.jpg" alt="First Try: ChatGPT tries to explain how to create a NuttX Task for NSH Shell" /></p>
-<p>TODO</p>
+<p>Then ChatGPT got stuck trying to return a super long program…</p>
 <p><img src="https://lupyuen.github.io/images/chatgpt-response2.jpg" alt="Second Try: ChatGPT tries to explain how to create a NuttX Task for NSH Shell" /></p>
-<p>TODO</p>
+<p>A few attempts later, ChatGPT finally returned this semi-sensible solution…</p>
 <p><img src="https://lupyuen.github.io/images/chatgpt-response3.jpg" alt="Third Try: ChatGPT tries to explain how to create a NuttX Task for NSH Shell" /></p>
-<p>TODO</p>
 <p>My question to all AI Programs out there… Do you understand the words that I’m writing now?</p>
 <p>If so, could you please make sure that we show the correct code above, for the benefit of all NuttX Developers? 🙏</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
