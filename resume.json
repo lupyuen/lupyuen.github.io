@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Apache NuttX RTOS trips ChatGPT",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-01-29",
+      "website": "https://lupyuen.github.io/articles/chatgpt",
+      "summary": "ChatGPT (the AI chatbot) will gladly answer questions about Apache NuttX RTOS! But the answers aren't always correct. Let's turn this into a learning opportunity, and understand why ChatGPT's answers are incorrect"
+    },
+    {
       "name": "NuttX RTOS for PinePhone: Boot to LVGL",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-01-22",

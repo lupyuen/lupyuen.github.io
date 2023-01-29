@@ -8,7 +8,7 @@ _(As a teacher I won't criticise my student in public... But an "AI Student" sho
 
 Suppose we're building a [__Terminal App__](https://lupyuen.github.io/articles/terminal) for [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System).
 
-How will we create a [__NuttX Task__](https://lupyuen.github.io/articles/terminal#create-the-task) that will execute [__NSH Shell Commands__](https://lupyuen.github.io/articles/terminal#pipe-a-command-to-nsh-shell)?
+How do we create a [__NuttX Task__](https://lupyuen.github.io/articles/terminal#create-the-task) that will execute [__NSH Shell Commands__](https://lupyuen.github.io/articles/terminal#pipe-a-command-to-nsh-shell)?
 
 We might ask [__ChatGPT__](https://en.wikipedia.org/wiki/ChatGPT)...
 
