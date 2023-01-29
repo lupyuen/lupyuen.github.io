@@ -1,6 +1,6 @@
 # Apache NuttX RTOS trips ChatGPT
 
-📝 _5 Feb 2023_
+📝 _29 Jan 2023_
 
 ![ChatGPT tries to explain how to create a NuttX Task for NSH Shell](https://lupyuen.github.io/images/chatgpt-title.jpg)
 
@@ -93,11 +93,11 @@ int main(int argc, char *argv[]) {
 }
 ```
 
-Now we test this with the QEMU Emulator...
+Now we test this with QEMU...
 
 # Build and Run NuttX
 
-Here are the steps to __build NuttX RTOS__ and run it with QEMU...
+Here are the steps to __build NuttX RTOS__ and run it with the QEMU Emulator...
 
 1.  Install the Build Prerequisites, skip the RISC-V Toolchain...
 
@@ -180,7 +180,7 @@ Here are the steps to __build NuttX RTOS__ and run it with QEMU...
       -mon chardev=con,mode=readline -kernel ./nuttx
     ```
 
-1.  At the NSH Prompt, enter this to run the demo...
+1.  At the NSH Prompt, enter this to run our program...
 
     ```bash
     nshtask
@@ -262,7 +262,7 @@ Yep! This is how we __pass no arguments__ to NSH Shell...
   );
 ```
 
-Or we can pass __`NULL`__ like so...
+Or we may pass __`NULL`__ like so...
 
 ```c
   // Passing NULL works too
@@ -277,9 +277,9 @@ Or we can pass __`NULL`__ like so...
 
 Thus it seems ChatGPT is hitting the __same newbie mistake__ as other NuttX Developers!
 
-(Which gets really frustrating if folks blindly copy the code recommended by ChatGPT)
+(Which gets really frustrating if folks blindly copy the code suggested by ChatGPT)
 
-# NSH Main Function
+# NSH Function
 
 There's something odd about __`nsh_main`__...
 
@@ -296,7 +296,7 @@ pid_t pid = task_create(
 
 Normally we start __`nsh_consolemain`__ when we create an NSH Shell. (Instead of __`nsh_main`__)
 
-Hence we change the code to this...
+Hence we change the code to...
 
 ```c
 // Needed for nsh_consolemain
@@ -328,9 +328,7 @@ Maybe ChatGPT got "inspired" by past references to __`nsh_main`__?
 
 # Correct Code
 
-TODO
-
-[nshtask.c](https://github.com/lupyuen/nshtask/blob/main/nshtask.c)
+This is the final corrected version that works: [nshtask.c](https://github.com/lupyuen/nshtask/blob/main/nshtask.c)
 
 ```c
 // Create a NuttX Task for NSH Shell
@@ -358,41 +356,52 @@ int main(int argc, char *argv[]) {
 }
 ```
 
-TODO
+(We changed the __Task Stack Size__ to be consistent with other NuttX Apps)
+
+Our __`nshtask`__ command now starts NSH Shell correctly...
 
 ```text
 nsh> nshtask
 NuttShell (NSH) NuttX-12.0.0-RC1
 nsh> nsh>
-nsh>
-nsh> ls
-nsh: l: command not found
-nsh>
-nsh: s: command not found
-nsh> ls
-nsh: l: command not found
-nsh>
-nsh: s: command not found
-nsh> 
 ```
 
 [(See the Complete Log)](https://gist.github.com/lupyuen/d64f9fbec18ba30d832e6c7b6f54b63d)
 
+But if we enter a command like __`ls`__, things get wonky...
+
+```text
+nsh> ls
+nsh: l: command not found
+nsh>
+nsh: s: command not found
+```
+
+[(See the Complete Log)](https://gist.github.com/lupyuen/d64f9fbec18ba30d832e6c7b6f54b63d)
+
+That's because we now have __TWO NSH Shells__ reading commands from the same Console Input!
+
+To fix this, we need to redirect the Console Input and Output streams.
+
+[(As explained here)](https://lupyuen.github.io/articles/terminal#pipe-a-command-to-nsh-shell)
+
 # Other Attempts
 
-TODO
+_Can ChatGPT produce alternative answers to our question?_
+
+Yep every time we ask ChatGPT the same question, it generates a different response.
+
+The first time we asked ChatGPT, it returned this strange program (that creates a NuttX Task literally)...
 
 ![First Try: ChatGPT tries to explain how to create a NuttX Task for NSH Shell](https://lupyuen.github.io/images/chatgpt-response1.jpg)
 
-TODO
+Then ChatGPT got stuck trying to return a super long program...
 
 ![Second Try: ChatGPT tries to explain how to create a NuttX Task for NSH Shell](https://lupyuen.github.io/images/chatgpt-response2.jpg)
 
-TODO
+A few attempts later, ChatGPT finally returned this semi-sensible solution...
 
 ![Third Try: ChatGPT tries to explain how to create a NuttX Task for NSH Shell](https://lupyuen.github.io/images/chatgpt-response3.jpg)
-
-TODO
 
 My question to all AI Programs out there... Do you understand the words that I'm writing now?
 
