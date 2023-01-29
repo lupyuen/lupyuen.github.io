@@ -281,20 +281,50 @@ Thus it seems ChatGPT is hitting the __same newbie mistake__ as other NuttX Deve
 
 # NSH Main Function
 
-TODO: nsh_consolemain
+There's something odd about __`nsh_main`__...
 
 ```c
-  // Start a NuttX Task for NSH Shell
-  pid_t pid = task_create(
-    "nsh",     // Task Name
-    100,       // Task Priority
-    2048,      // Task Stack Size
-    nsh_main,  // Task Function
-    NULL       // Task Arguments (None)
-  );
+// nsh_main doesn't look right
+pid_t pid = task_create(
+  "nsh",     // Task Name
+  100,       // Task Priority
+  2048,      // Task Stack Size
+  nsh_main,  // Task Function
+  NULL       // Task Arguments
+);
 ```
 
-[nsh_main](https://github.com/search?q=%22int+nsh_main%28int+argc%2C+char+*argv%5B%5D%29%3B%22&type=code&l=C)
+Normally we start __`nsh_consolemain`__ when we create an NSH Shell. (Instead of __`nsh_main`__)
+
+Hence we change the code to this...
+
+```c
+// Needed for nsh_consolemain
+#include "nshlib/nshlib.h"
+
+// Changed to nsh_consolemain
+pid_t pid = task_create(
+  "nsh",  // Task Name
+  100,    // Task Priority
+  2048,   // Task Stack Size
+  nsh_consolemain,  // Task Function
+  NULL    // Task Arguments
+);
+```
+
+_Is there a difference?_
+
+__`nsh_main`__ crashes if we configure NuttX to boot directly into our __`nshtask`__ app.
+
+__`nsh_consolemain`__ works fine.
+
+[(How we boot NuttX into __`nshtask`__)](https://github.com/lupyuen/nshtask/blob/main/README.md)
+
+_Why did ChatGPT suggest `nsh_main`?_
+
+Maybe ChatGPT got "inspired" by past references to __`nsh_main`__?
+
+[(Like these)](https://github.com/search?q=%22int+nsh_main%28int+argc%2C+char+*argv%5B%5D%29%3B%22&type=code&l=C)
 
 # Correct Code
 
