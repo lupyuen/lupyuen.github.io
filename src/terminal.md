@@ -565,7 +565,9 @@ static void create_widgets(void) {
   );
 ```
 
-TODO
+In the code above, we begin by creating the [__LVGL Keyboard Widget__](https://docs.lvgl.io/master/widgets/keyboard.html).
+
+Next we create the [__LVGL Text Area Widget__](https://docs.lvgl.io/master/widgets/textarea.html) to display the __NSH Output__...
 
 ```c
   // Create an LVGL Text Area Widget for NSH Output
@@ -592,7 +594,9 @@ TODO
   );
 ```
 
-TODO
+(We'll explain __TERMINAL_MARGIN__ and other constants in a while)
+
+Then we create another [__LVGL Text Area Widget__](https://docs.lvgl.io/master/widgets/textarea.html) to for the __NSH Input__...
 
 ```c
   // Create an LVGL Text Area Widget for NSH Input
