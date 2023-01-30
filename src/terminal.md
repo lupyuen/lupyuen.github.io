@@ -250,6 +250,8 @@ if (pid < 0) { _err("task_create failed: %d\n", errno); return; }
 sleep(1);
 ```
 
+[(More about __argv__)](https://lupyuen.github.io/articles/chatgpt#fix-the-task-arguments)
+
 NSH Shell inherits our Standard I/O streams, which we've redirected to our NuttX Pipes.
 
 We're ready to test this!
