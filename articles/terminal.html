@@ -525,7 +525,8 @@ static void create_widgets(void) {
     lv_scr_act()  // Parent is Active Screen
   );
 </code></pre></div>
-<p>TODO</p>
+<p>In the code above, we begin by creating the <a href="https://docs.lvgl.io/master/widgets/keyboard.html"><strong>LVGL Keyboard Widget</strong></a>.</p>
+<p>Next we create the <a href="https://docs.lvgl.io/master/widgets/textarea.html"><strong>LVGL Text Area Widget</strong></a> to display the <strong>NSH Output</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Create an LVGL Text Area Widget for NSH Output
   output = lv_textarea_create(
     lv_scr_act()  // Parent is Active Screen
@@ -549,7 +550,8 @@ static void create_widgets(void) {
     OUTPUT_HEIGHT    // Height
   );
 </code></pre></div>
-<p>TODO</p>
+<p>(We’ll explain <strong>TERMINAL_MARGIN</strong> and other constants in a while)</p>
+<p>Then we create another <a href="https://docs.lvgl.io/master/widgets/textarea.html"><strong>LVGL Text Area Widget</strong></a> to for the <strong>NSH Input</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Create an LVGL Text Area Widget for NSH Input
   input = lv_textarea_create(
     lv_scr_act()  // Parent is Active Screen
