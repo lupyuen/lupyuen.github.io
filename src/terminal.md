@@ -724,7 +724,7 @@ lv_obj_add_style(input, &terminal_style, 0);
 
 Now we see the LVGL Keyboard without missing symbols (when rendered with Montserrat 20)...
 
-![Set Terminal Font to Monospace](https://lupyuen.github.io/images/lvgl2-terminal3.jpg)
+![Set Terminal Font to Monospace](https://lupyuen.github.io/images/terminal-title.jpg)
 
 Let's look at our Callback Function for NSH Input...
 
@@ -854,7 +854,7 @@ Which is the ANSI Command for [__"Erase In Line"__](https://en.wikipedia.org/wik
 
 That's why we see 3 spaces between the __`nsh>`__ prompt and the NSH Command.
 
-[(Like this)](https://lupyuen.github.io/images/lvgl2-terminal3.jpg)
+[(Like this)](https://lupyuen.github.io/images/terminal-title.jpg)
 
 _But the NSH Output looks laggy?_
 
