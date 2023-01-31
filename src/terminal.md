@@ -738,7 +738,7 @@ TODO
 
 Here's the Callback Function that handles input from the LVGL Keyboard.
 
-It waits for the Enter key to be pressed, then it sends the typed command to NSH Shell via a POSIX Pipe: [lvgldemo.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/a37872d85c865557bee740cecd6adc35ae3197d2/examples/lvgldemo/lvgldemo.c#L417-L466)
+It waits for the Enter key to be pressed, then it sends the typed command to NSH Shell via a POSIX Pipe: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L299-L350)
 
 ```c
 // Callback Function for NSH Input Text Area
@@ -753,17 +753,17 @@ static void input_callback(lv_event_t *e) {
     // Get the Keyboard Widget from the LVGL Event
     const lv_obj_t *kb = lv_event_get_user_data(e);
 
-    // Get the Button Index of the Keyboard Button Pressed
+    // Get the Button Index of the Key Pressed
     const uint16_t id = lv_keyboard_get_selected_btn(kb);
 
-    // Get the Text of the Keyboard Button
+    // Get the Text of the Key Pressed
     const char *key = lv_keyboard_get_btn_text(kb, id);
 ```
 
 TODO
 
 ```c
-    // If Enter is pressed...
+    // If Key Pressed is Enter...
     if (key[0] == 0xef && key[1] == 0xa2 && key[2] == 0xa2) {
 
       // Read the NSH Input
@@ -793,11 +793,10 @@ TODO
 Our LVGL Timer Callback Function checks periodically whether there's any NSH Output waiting to be processed.
 
 If there's NSH Output, the Callback Function writes the output to the NSH Output Text Area:
-[lvgldemo.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/a37872d85c865557bee740cecd6adc35ae3197d2/examples/lvgldemo/lvgldemo.c#L320-L372)
+[lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L192-L245)
 
 ```c
-// Callback Function for LVGL Timer.
-// Based on https://docs.lvgl.io/master/overview/timer.html#create-a-timer
+// Callback Function for LVGL Timer
 static void timer_callback(lv_timer_t *timer) {
 
   // Read the output from NSH stdout
