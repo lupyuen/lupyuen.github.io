@@ -551,7 +551,7 @@ static void create_widgets(void) {
     OUTPUT_HEIGHT    // Height
   );
 </code></pre></div>
-<p>(We’ll explain <strong>TERMINAL_MARGIN</strong> and other constants in a while)</p>
+<p>(We’ll come back to <strong>TERMINAL_MARGIN</strong> and other constants)</p>
 <p>Then we create another <a href="https://docs.lvgl.io/master/widgets/textarea.html"><strong>LVGL Text Area Widget</strong></a> to show the <strong>NSH Input</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Create an LVGL Text Area Widget for NSH Input
   input = lv_textarea_create(
@@ -573,8 +573,8 @@ static void create_widgets(void) {
     INPUT_HEIGHT     // Height
   );
 </code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>  // Set the Callback Function for NSH Input
+<p>We <strong>register a Callback Function</strong> for NSH Input, to detect the pressing of the Enter Key…</p>
+<div class="example-wrap"><pre class="language-c"><code>  // Register the Callback Function for NSH Input
   lv_obj_add_event_cb(
     input,  // LVGL Text Area Widget for NSH Input
     input_callback,  // Callback Function
@@ -582,7 +582,8 @@ static void create_widgets(void) {
     kb               // Callback Argument (Keyboard)
   );
 </code></pre></div>
-<p>TODO</p>
+<p><strong>input_callback</strong> is the Callback Function for NSH Input. Which we’ll cover in a while.</p>
+<p>Finally we set the <strong>Keyboard Widget to populate</strong> the NSH Input Text Area…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Set the Keyboard to populate the NSH Input Text Area
   lv_keyboard_set_textarea(
     kb,    // LVGL Keyboard Widget
@@ -590,9 +591,9 @@ static void create_widgets(void) {
   );
 }
 </code></pre></div>
-<p><strong>input_callback</strong> is the Callback Function for our LVGL Keyboard. Which we’ll cover in a while.</p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L249-L269">lvglterm.c</a></p>
+<p>That’s how we create the 3 LVGL Widgets for our Terminal App!</p>
+<p><em>What’s TERMINAL_MARGIN? And the other constants?</em></p>
+<p>We define <strong>TERMINAL_MARGIN</strong> (and the other constants) based on the <strong>Screen Layout</strong> of our Terminal App: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L249-L269">lvglterm.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// PinePhone LCD Panel Width and Height (pixels)
 #define PINEPHONE_LCD_PANEL_WIDTH  720
 #define PINEPHONE_LCD_PANEL_HEIGHT 1440
@@ -613,7 +614,10 @@ static void create_widgets(void) {
 // Height of Output Text Area is Terminal Height minus Input Height minus Middle Margin
 #define OUTPUT_HEIGHT (TERMINAL_HEIGHT - INPUT_HEIGHT - TERMINAL_MARGIN)
 </code></pre></div>
-<p>TODO: Adopt Flex so it works with other devices</p>
+<p><em>But the Screen Width and Height are hardcoded for PinePhone?</em></p>
+<p>Yeah this code won’t work for devices other than PinePhone.</p>
+<p>The solution is to switch to <a href="https://docs.lvgl.io/master/layouts/flex.html"><strong>LVGL Flex Layout</strong></a>, so that the LVGL Widgets will be auto-positioned. </p>
+<p>(Based on the Screen Size of the device)</p>
 <p>Note that we’re using the LVGL Default Font for all 3 LVGL Widgets. Which has a problem…</p>
 <p><img src="https://lupyuen.github.io/images/terminal-widget.jpg" alt="Render Terminal with LVGL Widgets" /></p>
 <h1 id="set-terminal-font-to-monospace"><a href="#set-terminal-font-to-monospace">6 Set Terminal Font to Monospace</a></h1>
