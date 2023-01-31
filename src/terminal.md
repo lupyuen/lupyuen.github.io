@@ -878,7 +878,7 @@ TODO
 
 ![Sorry ChatGPT... Please try harder](https://lupyuen.github.io/images/terminal-chatgpt.jpg)
 
-_Sorry ChatGPT... Please try harder_
+[_Sorry ChatGPT... Please try harder_](https://lupyuen.github.io/articles/chatgpt)
 
 # What's Next
 
