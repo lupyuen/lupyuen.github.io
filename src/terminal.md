@@ -689,9 +689,11 @@ Note that we're using the LVGL Default Font for all 3 LVGL Widgets. Which has a 
 
 # Set Terminal Font to Monospace
 
-TODO
+Like any Terminal App, our LVGL Terminal looks nicer with a [__Monospaced Font__](https://en.wikipedia.org/wiki/Monospaced_font). (Instead of a Proportional Font)
 
-Our LVGL Terminal looks nicer with a Monospace Font.
+_So we change the Default LVGL Font to a Monospace Font?_
+
+TODO
 
 But watch what happens if we change the LVGL Default Font from Montserrat 20 (proportional) to UNSCII 16 (monospace)...
 
