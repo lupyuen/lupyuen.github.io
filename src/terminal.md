@@ -732,13 +732,23 @@ Let's look at our Callback Function for NSH Input...
 
 # Handle Input from LVGL Keyboard
 
-_How do we check if the Enter Key has been pressed?_
+_How will we check if the Enter Key has been pressed?_
 
-TODO
+Remember earlier we __registered a Callback Function__ for NSH Input Text Area, to detect the pressing of the Enter Key: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L269-L299)
 
-Here's the Callback Function that handles input from the LVGL Keyboard.
+```c
+  // Register the Callback Function for NSH Input
+  lv_obj_add_event_cb(
+    input,  // LVGL Text Area Widget for NSH Input
+    input_callback,  // Callback Function
+    LV_EVENT_ALL,    // Callback for All Events
+    kb               // Callback Argument (Keyboard)
+  );
+```
 
-It waits for the Enter key to be pressed, then it sends the typed command to NSH Shell via a POSIX Pipe: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L299-L350)
+__input_callback__ is the Callback Function for NSH Input.
+
+It waits for the Enter key to be pressed, then it sends the typed command to __NSH Shell via the NuttX Pipe__: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L299-L350)
 
 ```c
 // Callback Function for NSH Input Text Area
@@ -760,7 +770,9 @@ static void input_callback(lv_event_t *e) {
     const char *key = lv_keyboard_get_btn_text(kb, id);
 ```
 
-TODO
+The __Enter Key__ has a Text Label of [__`EF` `A2` `A2`__](https://github.com/lupyuen/lvglterm/blob/f3e9e7f4d53e49303e8dbeaa2b8a8497699404a0/lvglterm.c#L515-L517).
+
+We match the Key Pressed with that label...
 
 ```c
     // If Key Pressed is Enter...
@@ -783,6 +795,10 @@ TODO
   }
 }
 ```
+
+And we send the NSH Input Text to the NSH Shell for execution.
+
+(The NSH Input Text is already terminated by a [__Newline Character `0x0A`__](https://github.com/lupyuen/lvglterm/blob/f3e9e7f4d53e49303e8dbeaa2b8a8497699404a0/lvglterm.c#L518-L519), which works fine with NSH Shell)
 
 The command runs in NSH Shell and produces NSH Output. Which is handled by the LVGL Timer Callback Function...
 
