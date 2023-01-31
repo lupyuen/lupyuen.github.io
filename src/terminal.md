@@ -596,7 +596,7 @@ Next we create the [__LVGL Text Area Widget__](https://docs.lvgl.io/master/widge
   );
 ```
 
-(We'll explain __TERMINAL_MARGIN__ and other constants in a while)
+(We'll come back to __TERMINAL_MARGIN__ and other constants)
 
 Then we create another [__LVGL Text Area Widget__](https://docs.lvgl.io/master/widgets/textarea.html) to show the __NSH Input__...
 
@@ -622,10 +622,10 @@ Then we create another [__LVGL Text Area Widget__](https://docs.lvgl.io/master/w
   );
 ```
 
-TODO
+We __register a Callback Function__ for NSH Input, to detect the pressing of the Enter Key...
 
 ```c
-  // Set the Callback Function for NSH Input
+  // Register the Callback Function for NSH Input
   lv_obj_add_event_cb(
     input,  // LVGL Text Area Widget for NSH Input
     input_callback,  // Callback Function
@@ -634,7 +634,9 @@ TODO
   );
 ```
 
-TODO
+__input_callback__ is the Callback Function for NSH Input. Which we'll cover in a while.
+
+Finally we set the __Keyboard Widget to populate__ the NSH Input Text Area...
 
 ```c
   // Set the Keyboard to populate the NSH Input Text Area
@@ -645,11 +647,11 @@ TODO
 }
 ```
 
-__input_callback__ is the Callback Function for our LVGL Keyboard. Which we'll cover in a while.
+That's how we create the 3 LVGL Widgets for our Terminal App!
 
-TODO
+_What's TERMINAL_MARGIN? And the other constants?_
 
-[lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L249-L269)
+We define __TERMINAL_MARGIN__ (and the other constants) based on the __Screen Layout__ of our Terminal App: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L249-L269)
 
 ```c
 // PinePhone LCD Panel Width and Height (pixels)
@@ -673,7 +675,13 @@ TODO
 #define OUTPUT_HEIGHT (TERMINAL_HEIGHT - INPUT_HEIGHT - TERMINAL_MARGIN)
 ```
 
-TODO: Adopt Flex so it works with other devices
+_But the Screen Width and Height are hardcoded for PinePhone?_
+
+Yeah this code won't work for devices other than PinePhone.
+
+The solution is to switch to [__LVGL Flex Layout__](https://docs.lvgl.io/master/layouts/flex.html), so that the LVGL Widgets will be auto-positioned. 
+
+(Based on the Screen Size of the device)
 
 Note that we're using the LVGL Default Font for all 3 LVGL Widgets. Which has a problem...
 
