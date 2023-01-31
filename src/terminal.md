@@ -732,6 +732,8 @@ Let's look at our Callback Function for NSH Input...
 
 # Handle Input from LVGL Keyboard
 
+_How do we check if the Enter Key has been pressed?_
+
 TODO
 
 Here's the Callback Function that handles input from the LVGL Keyboard.
@@ -739,39 +741,37 @@ Here's the Callback Function that handles input from the LVGL Keyboard.
 It waits for the Enter key to be pressed, then it sends the typed command to NSH Shell via a POSIX Pipe: [lvgldemo.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/a37872d85c865557bee740cecd6adc35ae3197d2/examples/lvgldemo/lvgldemo.c#L417-L466)
 
 ```c
-// Callback Function for NSH Input Text Area.
-// Based on https://docs.lvgl.io/master/widgets/keyboard.html#keyboard-with-text-area
+// Callback Function for NSH Input Text Area
 static void input_callback(lv_event_t *e) {
-  int ret;
 
   // Decode the LVGL Event
   const lv_event_code_t code = lv_event_get_code(e);
 
-  // If Enter has been pressed, send the Command to NSH Input
+  // If NSH Input Text Area has been updated...
   if (code == LV_EVENT_VALUE_CHANGED) {
 
     // Get the Keyboard Widget from the LVGL Event
     const lv_obj_t *kb = lv_event_get_user_data(e);
-    DEBUGASSERT(kb != NULL);
 
     // Get the Button Index of the Keyboard Button Pressed
     const uint16_t id = lv_keyboard_get_selected_btn(kb);
 
     // Get the Text of the Keyboard Button
     const char *key = lv_keyboard_get_btn_text(kb, id);
-    if (key == NULL) { return; }
+```
 
+TODO
+
+```c
     // If Enter is pressed...
     if (key[0] == 0xef && key[1] == 0xa2 && key[2] == 0xa2) {
 
       // Read the NSH Input
-      DEBUGASSERT(input != NULL);
       const char *cmd = lv_textarea_get_text(input);
       if (cmd == NULL || cmd[0] == 0) { return; }
 
       // Send the Command to NSH stdin
-      DEBUGASSERT(nsh_stdin[WRITE_PIPE] != 0);
-      ret = write(
+      int ret = write(
         nsh_stdin[WRITE_PIPE],
         cmd,
         strlen(cmd)
