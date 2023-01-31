@@ -645,7 +645,7 @@ lv_obj_add_style(input, &amp;terminal_style, 0);
 ...
 </code></pre></div>
 <p>Now we see the LVGL Keyboard without missing symbols (when rendered with Montserrat 20)…</p>
-<p><img src="https://lupyuen.github.io/images/lvgl2-terminal3.jpg" alt="Set Terminal Font to Monospace" /></p>
+<p><img src="https://lupyuen.github.io/images/terminal-title.jpg" alt="Set Terminal Font to Monospace" /></p>
 <p>Let’s look at our Callback Function for NSH Input…</p>
 <p><img src="https://lupyuen.github.io/images/terminal-flow4.jpg" alt="Handle Input from LVGL Keyboard" /></p>
 <h1 id="handle-input-from-lvgl-keyboard"><a href="#handle-input-from-lvgl-keyboard">7 Handle Input from LVGL Keyboard</a></h1>
@@ -742,7 +742,7 @@ static void timer_callback(lv_timer_t *timer) {
 <p>Which is the ANSI Command for <a href="https://en.wikipedia.org/wiki/ANSI_escape_code#CSIsection"><strong>“Erase In Line”</strong></a>. (Clear to the end of line)</p>
 <p><a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L391-L404"><strong>remove_escape_codes</strong></a> searches for Escape Codes in the NSH Output and replaces them by spaces.</p>
 <p>That’s why we see 3 spaces between the <strong><code>nsh&gt;</code></strong> prompt and the NSH Command.</p>
-<p><a href="https://lupyuen.github.io/images/lvgl2-terminal3.jpg">(Like this)</a></p>
+<p><a href="https://lupyuen.github.io/images/terminal-title.jpg">(Like this)</a></p>
 <p><em>But the NSH Output looks laggy?</em></p>
 <p>Yeah we used an <strong>LVGL Text Area</strong> for rendering the NSH Output. Which is probably not optimal for scrollable, static text.</p>
 <p>An <strong>LVGL Label Widget</strong> might work better.</p>
