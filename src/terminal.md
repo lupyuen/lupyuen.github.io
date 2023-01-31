@@ -870,6 +870,14 @@ Which means we need Mutexes to lock the LVGL Widgets.
 
 # LVGL Programming in Zig
 
+_As we add more features to our LVGL Terminal..._
+
+_Will it become too complex to extend and maintain?_
+
+It might! That's why we should consider coding our LVGL Terminal App in the [__Zig Programming Language__](https://ziglang.org/).
+
+_LVGL works with Zig?_
+
 TODO
 
 ![Compiling an LVGL Program in Zig](https://lupyuen.github.io/images/terminal-zig2.jpg)
