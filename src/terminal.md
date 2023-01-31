@@ -704,22 +704,22 @@ Thus we set the LVGL Default Font back to Montserrat 20.
 And instead we set the __Font Style for NSH Input and Output__ to UNSCII 16: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L269-L299)
 
 ```c
-  // Set the Font Style for NSH Input and Output to a Monospaced Font
-  static lv_style_t terminal_style;
-  lv_style_init(&terminal_style);
-  lv_style_set_text_font(&terminal_style, &lv_font_unscii_16);
+// Set the Font Style for NSH Input and Output to a Monospaced Font
+static lv_style_t terminal_style;
+lv_style_init(&terminal_style);
+lv_style_set_text_font(&terminal_style, &lv_font_unscii_16);
 
-  // Create an LVGL Text Area Widget for NSH Output
-  output = lv_textarea_create(lv_scr_act());
-  // Set the Font Style for NSH Output
-  lv_obj_add_style(output, &terminal_style, 0);
-  ...
+// Create an LVGL Text Area Widget for NSH Output
+output = lv_textarea_create(lv_scr_act());
+// Set the Font Style for NSH Output
+lv_obj_add_style(output, &terminal_style, 0);
+...
 
-  // Create an LVGL Text Area Widget for NSH Input
-  input = lv_textarea_create(lv_scr_act());
-  // Set the Font Style for NSH Input
-  lv_obj_add_style(input, &terminal_style, 0);
-  ...
+// Create an LVGL Text Area Widget for NSH Input
+input = lv_textarea_create(lv_scr_act());
+// Set the Font Style for NSH Input
+lv_obj_add_style(input, &terminal_style, 0);
+...
 ```
 
 Now we see the LVGL Keyboard without missing symbols (when rendered with Montserrat 20)...
@@ -737,13 +737,13 @@ _How will we check if the Enter Key has been pressed?_
 Remember earlier we __registered a Callback Function__ for NSH Input Text Area, to detect the pressing of the Enter Key: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L269-L299)
 
 ```c
-  // Register the Callback Function for NSH Input
-  lv_obj_add_event_cb(
-    input,  // LVGL Text Area Widget for NSH Input
-    input_callback,  // Callback Function
-    LV_EVENT_ALL,    // Callback for All Events
-    kb               // Callback Argument (Keyboard)
-  );
+// Register the Callback Function for NSH Input
+lv_obj_add_event_cb(
+  input,  // LVGL Text Area Widget for NSH Input
+  input_callback,  // Callback Function
+  LV_EVENT_ALL,    // Callback for All Events
+  kb               // Callback Argument (Keyboard)
+);
 ```
 
 __input_callback__ is the Callback Function for NSH Input.
@@ -848,7 +848,7 @@ nsh> <ESC>[K
 
 [(Source)](https://github.com/lupyuen/lvglterm/blob/f3e9e7f4d53e49303e8dbeaa2b8a8497699404a0/lvglterm.c#L453-L455)
 
-Which is the ANSI Command for [__"Erase In Line"__](https://en.wikipedia.org/wiki/ANSI_escape_code#CSIsection). (Clear to end of line)
+Which is the ANSI Command for [__"Erase In Line"__](https://en.wikipedia.org/wiki/ANSI_escape_code#CSIsection). (Clear to the end of line)
 
 [__remove_escape_codes__](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L391-L404) searches for Escape Codes in the NSH Output and replaces them by spaces.
 
@@ -856,11 +856,15 @@ That's why we see 3 spaces between the __`nsh>`__ prompt and the NSH Command.
 
 [(Like this)](https://lupyuen.github.io/images/lvgl2-terminal3.jpg)
 
-TODO: Text Area probably not optimal for scrolling. Label might work better
+_But the NSH Output looks laggy?_
 
-TODO: Performance
+Yeah we used an __LVGL Text Area__ for rendering the NSH Output. Which is probably not optimal for scrollable, static text.
 
-TODO: Change polling to blocking, multithreading
+An __LVGL Label Widget__ might work better.
+
+Also we might have to change polling to __Multithreaded Blocking__.
+
+Which means we need Mutexes to lock the LVGL Widgets.
 
 ![LVGL Programming in Zig](https://lupyuen.github.io/images/terminal-zig1.jpg)
 
