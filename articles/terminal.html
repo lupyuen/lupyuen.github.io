@@ -742,6 +742,7 @@ static void timer_callback(lv_timer_t *timer) {
 <p><em>But the NSH Output looks laggy…</em></p>
 <p>Yeah we used an <a href="https://docs.lvgl.io/latest/en/html/widgets/textarea.html"><strong>LVGL Text Area</strong></a> to render the NSH Output. Which is probably not optimal for scrollable, static text.</p>
 <p>An <a href="https://docs.lvgl.io/latest/en/html/widgets/label.html"><strong>LVGL Label Widget</strong></a> might work better.</p>
+<p><a href="https://docs.lvgl.io/latest/en/html/widgets/label.html#very-long-texts">(Remember to set <strong>LV_LABEL_LONG_TXT_HINT</strong>)</a></p>
 <p>Also we might have to change polling to <strong>Multithreaded Blocking</strong>.</p>
 <p>Which means we need Mutexes to lock the LVGL Widgets.</p>
 <p><img src="https://lupyuen.github.io/images/terminal-zig1.jpg" alt="LVGL Programming in Zig" /></p>
