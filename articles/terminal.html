@@ -754,9 +754,15 @@ static void timer_callback(lv_timer_t *timer) {
 <p><em>Will it become too complex to extend and maintain?</em></p>
 <p>It might! That’s why we should consider coding our LVGL Terminal App in the <a href="https://ziglang.org/"><strong>Zig Programming Language</strong></a>.</p>
 <p><em>LVGL works with Zig?</em></p>
-<p>TODO</p>
+<p>Yep! The pic above shows an <strong>LVGL Program in Zig</strong> that runs OK with PinePhone and NuttX.</p>
+<p>To simpify the code, we created a simple <strong>LVGL Wrapper in Zig</strong> that makes LVGL feel more “object-oriented”.</p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig">(More about this)</a></p>
 <p><img src="https://lupyuen.github.io/images/terminal-zig2.jpg" alt="Compiling an LVGL Program in Zig" /></p>
-<p>TODO</p>
+<p><em>How will we compile our LVGL Program in Zig?</em></p>
+<p><em>Do we need to manually import every single LVGL Function from C?</em></p>
+<p>Zig Compiler automatically <strong>imports all LVGL Functions</strong> from C into Zig!</p>
+<p>The pic above shows how we compile our LVGL Program in Zig. Which will auto-import all LVGL Functions from the C Header Files.</p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig#build-lvgl-zig-app">(More about this)</a></p>
 <p><img src="https://lupyuen.github.io/images/terminal-chatgpt.jpg" alt="Sorry ChatGPT… Please try harder" /></p>
 <p><a href="https://lupyuen.github.io/articles/chatgpt"><em>Sorry ChatGPT… Please try harder</em></a></p>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
