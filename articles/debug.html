@@ -505,7 +505,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 <h1 id="rusty-mastery-and-mystery"><a href="#rusty-mastery-and-mystery">5 Rusty Mastery and Mystery</a></h1>
 <p>Before we talk about VSCode Debugging, let’s study the Source Code for our Rust Firmware: <a href="https://github.com/lupyuen/pinecone-rust/blob/main/src/main.rs">src/main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[riscv_rt::entry]
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attribute">#[riscv_rt::entry]
 </span><span class="kw">fn </span>main() -&gt; ! {
     <span class="kw">let </span>dp = pac::Peripherals::take().unwrap();
     <span class="kw">let </span><span class="kw-2">mut </span>parts = dp.GLB.split();
@@ -517,7 +517,7 @@ target = &quot;riscv32imac-unknown-none-elf&quot;
 <h2 id="declare-the-main-function"><a href="#declare-the-main-function">5.1 Declare the Main Function</a></h2>
 <p>At the top we have a Rust Attribute that declares the Entry Function for our RISC-V firmware…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[riscv_rt::entry]</span></code></pre></div>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attribute">#[riscv_rt::entry]</span></code></pre></div>
 <p>Followed by the declaration of our Entry Function <code>main</code>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn </span>main() -&gt; ! {</code></pre></div>

@@ -130,9 +130,9 @@
 <h1 id="rust-meets-nuttx"><a href="#rust-meets-nuttx">1 Rust Meets NuttX</a></h1>
 <p>This is the <strong>simplest Rust program</strong> that will run on NuttX and print <em>“Hello World!”</em>: <a href="https://github.com/lupyuen/rust_test/blob/main/rust/src/lib.rs#L22-L56">lib.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#![no_std]  </span><span class="comment">//  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attribute">#![no_std]  </span><span class="comment">//  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems
 
-</span><span class="attr">#[no_mangle]  </span><span class="comment">//  Don&#39;t mangle the function name
+</span><span class="attribute">#[no_mangle]  </span><span class="comment">//  Don&#39;t mangle the function name
 </span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>rust_main() {  <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by NuttX
 
   </span><span class="kw">extern </span><span class="string">&quot;C&quot; </span>{  <span class="comment">//  Import C Function
@@ -152,12 +152,12 @@
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Use the Rust Core Library instead of the Rust Standard Library,
 //  which is not compatible with embedded systems
-</span><span class="attr">#![no_std]</span></code></pre></div>
+</span><span class="attribute">#![no_std]</span></code></pre></div>
 <p>We select the <strong>Rust Core Library</strong> (for embedded platforms), which is a subset of the Rust Standard Library (for desktops and servers).</p>
 <p>Next we declare the <strong>Rust Function</strong> that will be called by NuttX…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">//  Don&#39;t mangle the function name
-</span><span class="attr">#[no_mangle]
+</span><span class="attribute">#[no_mangle]
 </span><span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by NuttX
 </span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>rust_main() {</code></pre></div>
 <p>(Why is it named <strong>“rust_main”</strong>? We’ll find out in a while)</p>
@@ -1181,26 +1181,26 @@ Done!
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Read Priority Mask Register. Missing function called by sx126x crate (Arm only, not RISC-V).
 /// See https://github.com/rust-embedded/cortex-m/blob/master/src/register/primask.rs#L29
-</span><span class="attr">#[cfg(not(target_arch = <span class="string">&quot;arm&quot;</span>))]  </span><span class="comment">//  If architecture is not Arm...
-</span><span class="attr">#[no_mangle]
+</span><span class="attribute">#[cfg(not(target_arch = <span class="string">&quot;arm&quot;</span>))]  </span><span class="comment">//  If architecture is not Arm...
+</span><span class="attribute">#[no_mangle]
 </span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>__primask_r() -&gt; u32 { <span class="number">0 </span>}
 
 <span class="doccomment">/// Disables all interrupts. Missing function called by sx126x crate (Arm only, not RISC-V).
 /// See https://github.com/rust-embedded/cortex-m/blob/master/src/interrupt.rs#L29
-</span><span class="attr">#[cfg(not(target_arch = <span class="string">&quot;arm&quot;</span>))]  </span><span class="comment">//  If architecture is not Arm...
-</span><span class="attr">#[no_mangle]
+</span><span class="attribute">#[cfg(not(target_arch = <span class="string">&quot;arm&quot;</span>))]  </span><span class="comment">//  If architecture is not Arm...
+</span><span class="attribute">#[no_mangle]
 </span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>__cpsid() {}
 
 <span class="doccomment">/// Enables all interrupts. Missing function called by sx126x crate (Arm only, not RISC-V).
 /// See https://github.com/rust-embedded/cortex-m/blob/master/src/interrupt.rs#L39
-</span><span class="attr">#[cfg(not(target_arch = <span class="string">&quot;arm&quot;</span>))]  </span><span class="comment">//  If architecture is not Arm...
-</span><span class="attr">#[no_mangle]
+</span><span class="attribute">#[cfg(not(target_arch = <span class="string">&quot;arm&quot;</span>))]  </span><span class="comment">//  If architecture is not Arm...
+</span><span class="attribute">#[no_mangle]
 </span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>__cpsie() {}
 
 <span class="doccomment">/// No operation. Missing function called by sx126x crate (Arm only, not RISC-V).
 /// See https://github.com/rust-embedded/cortex-m/blob/master/src/asm.rs#L35
-</span><span class="attr">#[cfg(not(target_arch = <span class="string">&quot;arm&quot;</span>))]  </span><span class="comment">//  If architecture is not Arm...
-</span><span class="attr">#[no_mangle]
+</span><span class="attribute">#[cfg(not(target_arch = <span class="string">&quot;arm&quot;</span>))]  </span><span class="comment">//  If architecture is not Arm...
+</span><span class="attribute">#[no_mangle]
 </span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>__nop() {}</code></pre></div>
 <p>We haven’t tested the driver for receiving LoRa Messages, we might need more fixes for NuttX on RISC-V.</p>
 <p>(But then again we might not need to receive LoRa Messages if we’re building a simple IoT Sensor)</p>
