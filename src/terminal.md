@@ -863,6 +863,8 @@ Yeah we used an [__LVGL Text Area__](https://docs.lvgl.io/latest/en/html/widgets
 
 An [__LVGL Label Widget__](https://docs.lvgl.io/latest/en/html/widgets/label.html) might work better.
 
+[(Remember to set __LV_LABEL_LONG_TXT_HINT__)](https://docs.lvgl.io/latest/en/html/widgets/label.html#very-long-texts)
+
 Also we might have to change polling to __Multithreaded Blocking__.
 
 Which means we need Mutexes to lock the LVGL Widgets.
