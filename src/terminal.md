@@ -220,7 +220,7 @@ dup2(nsh_stderr[WRITE_PIPE], 2);  // Redirect stderr
 
 When we do this, __Standard I/O will no longer work__ with the NuttX Console.
 
-Instead, we'll have to read and write our NuttX Pipes.
+Instead, all Standard I/O will go to our NuttX Pipes.
 
 _So printf will no longer print to the NuttX Console?_
 
@@ -313,7 +313,7 @@ nsh>
 
 _What about NSH Error Output?_
 
-Normally we'll do this to read the __NSH Error Output__...
+Normally we do this to read the __NSH Error Output__...
 
 ```c
 // Warning: This will block!
@@ -333,7 +333,7 @@ Normally we'll do this to read the __NSH Error Output__...
 
 But there's a problem...
 
-Calling __`read()`__ on __`nsh_stderr`__ will block the execution if there's no NSH Output ready to be read!
+Calling __`read()`__ on __`nsh_stderr`__ will block the execution if there's __no NSH Error Output__ ready to be read!
 
 (Same for __`nsh_stdout`__) 
 
@@ -347,16 +347,16 @@ In the previous section we started an NSH Shell that will execute NSH Commands t
 
 But there's a problem: Calling __`read()`__ on __`nsh_stdout`__ will block if there's no NSH Output to be read.
 
-(We can't block our LVGL App, since it needs to handle User Interface Events periodically)
+(We can't block our LVGL App, since LVGL needs to handle User Interface Events periodically)
 
 __Solution:__ We call __`has_input`__ to check if NSH Shell has data ready to be read, before we actually read the data: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L192-L245)
 
 ```c
 // If NSH stdout has data to be read...
-static char buf[64];
 if (has_input(nsh_stdout[READ_PIPE])) {
 
   // Read the data from NSH stdout
+  static char buf[64];
   ret = read(
     nsh_stdout[READ_PIPE],
     buf,
@@ -384,9 +384,9 @@ static bool has_input(
 
   // Poll the File Descriptor for Input
   int ret = poll(
-    (struct pollfd *)&fdp,  // File Descriptors
-    1,  // Number of File Descriptors
-    0   // Poll Timeout (Milliseconds)
+    &fdp,  // File Descriptors
+    1,     // Number of File Descriptors
+    0      // Poll Timeout (Milliseconds)
   );
 ```
 
@@ -447,17 +447,17 @@ This polling for NSH Output needs to be done in an LVGL Timer, here's why...
 
 _How will we poll for NSH Output and display it?_
 
-We've started an NSH Shell that will execute NSH Commands that we pipe to it.
+We started an NSH Shell that will execute NSH Commands that we pipe to it.
 
-Now we need to periodically __poll for NSH Output__, and write the output to the LVGL display...
+Now we need to periodically __poll for NSH Output__, and write the output to the LVGL display.
 
--   Every couple of milliseconds we...
+Every couple of milliseconds we...
 
-    -   __Poll the NSH Shell__ to check if it has output data
+  -   __Poll the NSH Shell__ to check if it has output data
 
-    -   __Read the output__ from NSH Shell
+  -   __Read the output__ from NSH Shell
 
-    -   __Display the output__ in an LVGL Widget
+  -   __Display the output__ in an LVGL Widget
 
 We do this with an [__LVGL Timer__](https://docs.lvgl.io/master/overview/timer.html) that's triggered every 100 milliseconds: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L178-L188)
 
@@ -467,7 +467,6 @@ We do this with an [__LVGL Timer__](https://docs.lvgl.io/master/overview/timer.h
 static void create_terminal(void) {
 
   // Create an LVGL Timer to poll for output from NSH Shell
-  static uint32_t user_data = 0;
   lv_timer_t *timer = lv_timer_create(
     timer_callback,  // Callback Function
     100,             // Timer Period (Milliseconds)
@@ -476,8 +475,6 @@ static void create_terminal(void) {
 ```
 
 (__user_data__ is unused for now)
-
-_What's timer_callback?_
 
 __timer_callback__ is our Callback Function for the LVGL Timer.
 
@@ -509,7 +506,9 @@ static void timer_callback(lv_timer_t *timer) {
 
 [(We've seen __has_input__ earlier)](https://lupyuen.github.io/articles/terminal#poll-for-nsh-output)
 
-We'll talk about __remove_escape_codes__ and __lv_textarea_add_text__ in a while.
+[(__lv_textarea_add_text__ comes from LVGL)](https://docs.lvgl.io/master/widgets/textarea.html#_CPPv420lv_textarea_add_textP8lv_obj_tPKc)
+
+We'll talk about __remove_escape_codes__ in a while.
 
 _How do we test this Timer Callback?_
 
@@ -691,9 +690,9 @@ Note that we're using the LVGL Default Font for all 3 LVGL Widgets. Which has a 
 
 Like any Terminal App, our LVGL Terminal looks nicer with a [__Monospaced Font__](https://en.wikipedia.org/wiki/Monospaced_font). (Instead of a Proportional Font)
 
-_So we change the Default LVGL Font to a Monospace Font?_
+_So we change the Default LVGL Font to a Monospaced Font?_
 
-But watch what happens if we change the LVGL Default Font from Montserrat 20 (Proportional) to __UNSCII 16 (Monospace)__...
+But watch what happens if we change the LVGL Default Font from Montserrat 20 (Proportional) to __UNSCII 16 (Monospaced)__...
 
 The LVGL Keyboard has __missing symbols!__ Enter, Backspace, ...
 
@@ -838,6 +837,8 @@ static void timer_callback(lv_timer_t *timer) {
 
 [(We've seen __has_input__ earlier)](https://lupyuen.github.io/articles/terminal#poll-for-nsh-output)
 
+[(__lv_textarea_add_text__ comes from LVGL)](https://docs.lvgl.io/master/widgets/textarea.html#_CPPv420lv_textarea_add_textP8lv_obj_tPKc)
+
 _What's remove_escape_codes?_
 
 NSH is configured to work with VT100 and ANSI Terminals. So the NSH Output will contain [__ANSI Escape Codes__](https://en.wikipedia.org/wiki/ANSI_escape_code) like...
@@ -856,9 +857,9 @@ That's why we see 3 spaces between the __`nsh>`__ prompt and the NSH Command.
 
 [(Like this)](https://lupyuen.github.io/images/terminal-title.jpg)
 
-_But the NSH Output looks laggy?_
+_But the NSH Output looks laggy..._
 
-Yeah we used an __LVGL Text Area__ for rendering the NSH Output. Which is probably not optimal for scrollable, static text.
+Yeah we used an __LVGL Text Area__ to render the NSH Output. Which is probably not optimal for scrollable, static text.
 
 An __LVGL Label Widget__ might work better.
 
