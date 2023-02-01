@@ -878,11 +878,23 @@ It might! That's why we should consider coding our LVGL Terminal App in the [__Z
 
 _LVGL works with Zig?_
 
-TODO
+Yep! The pic above shows an __LVGL Program in Zig__ that runs OK with PinePhone and NuttX.
+
+To simpify the code, we created a simple __LVGL Wrapper in Zig__ that makes LVGL feel more "object-oriented".
+
+[(More about this)](https://github.com/lupyuen/pinephone-lvgl-zig)
 
 ![Compiling an LVGL Program in Zig](https://lupyuen.github.io/images/terminal-zig2.jpg)
 
-TODO
+_How will we compile our LVGL Program in Zig?_
+
+_Do we need to manually import every single LVGL Function from C?_
+
+Zig Compiler automatically __imports all LVGL Functions__ from C into Zig!
+
+The pic above shows how we compile our LVGL Program in Zig. Which will auto-import all LVGL Functions from the C Header Files.
+
+[(More about this)](https://github.com/lupyuen/pinephone-lvgl-zig#build-lvgl-zig-app)
 
 ![Sorry ChatGPT... Please try harder](https://lupyuen.github.io/images/terminal-chatgpt.jpg)
 
