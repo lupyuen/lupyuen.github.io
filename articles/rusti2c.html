@@ -464,11 +464,11 @@ Setup Read to [0xEF] + ACK
       </span>length:    start.len() <span class="kw">as </span>ssize_t,  <span class="comment">//  Length of the buffer in bytes
 
       //  For BL602: Register ID must be passed as I2C Sub Address
-      </span><span class="attribute">#[cfg(target_arch = <span class="string">&quot;riscv32&quot;</span>)]  </span><span class="comment">//  If architecture is RISC-V 32-bit...
+      </span><span class="attr">#[cfg(target_arch = <span class="string">&quot;riscv32&quot;</span>)]  </span><span class="comment">//  If architecture is RISC-V 32-bit...
       </span>flags:     I2C_M_NOSTOP,  <span class="comment">//  I2C Flags: Send I2C Sub Address
         
       //  Otherwise pass Register ID as I2C Data
-      </span><span class="attribute">#[cfg(not(target_arch = <span class="string">&quot;riscv32&quot;</span>))]  </span><span class="comment">//  If architecture is not RISC-V 32-bit...
+      </span><span class="attr">#[cfg(not(target_arch = <span class="string">&quot;riscv32&quot;</span>))]  </span><span class="comment">//  If architecture is not RISC-V 32-bit...
       </span>flags:     <span class="number">0</span>,  <span class="comment">//  I2C Flags: None
 
       //  TODO: Check for BL602 specifically, not just RISC-V 32-bit
@@ -527,7 +527,7 @@ Setup Read to [0xEF] + ACK
 /// be transferred together to form an arbitrary sequence of write/read
 /// transfer to an I2C device.
 /// Ported from C: https://github.com/lupyuen/nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L208-L215
-</span><span class="attribute">#[repr(C)]
+</span><span class="attr">#[repr(C)]
 </span><span class="kw">pub struct </span>i2c_msg_s {
     <span class="doccomment">/// I2C Frequency
     </span><span class="kw">pub </span>frequency: u32,
@@ -545,7 +545,7 @@ Setup Read to [0xEF] + ACK
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// I2C Transfer Struct: This structure is used to communicate with the I2C character driver in
 /// order to perform IOCTL transfers.
 /// Ported from C: https://github.com/lupyuen/nuttx/blob/rusti2c/include/nuttx/i2c/i2c_master.h#L231-L235
-</span><span class="attribute">#[repr(C)]
+</span><span class="attr">#[repr(C)]
 </span><span class="kw">pub struct </span>i2c_transfer_s {
     <span class="doccomment">/// Array of I2C messages for the transfer
     </span><span class="kw">pub </span>msgv: <span class="kw-2">*const </span>i2c_msg_s,
@@ -659,11 +659,11 @@ Setup Read to [0xEF] + ACK
                 </span>length:    buf.len() <span class="kw">as </span>ssize_t,  <span class="comment">//  Number of bytes to send
 
                 //  For BL602: Register ID must be passed as I2C Sub Address
-                </span><span class="attribute">#[cfg(target_arch = <span class="string">&quot;riscv32&quot;</span>)]  </span><span class="comment">//  If architecture is RISC-V 32-bit...
+                </span><span class="attr">#[cfg(target_arch = <span class="string">&quot;riscv32&quot;</span>)]  </span><span class="comment">//  If architecture is RISC-V 32-bit...
                 </span>flags:     <span class="kw">crate</span>::I2C_M_NOSTOP,  <span class="comment">//  I2C Flags: Send I2C Sub Address
                 
                 //  Otherwise pass Register ID as I2C Data
-                </span><span class="attribute">#[cfg(not(target_arch = <span class="string">&quot;riscv32&quot;</span>))]  </span><span class="comment">//  If architecture is not RISC-V 32-bit...
+                </span><span class="attr">#[cfg(not(target_arch = <span class="string">&quot;riscv32&quot;</span>))]  </span><span class="comment">//  If architecture is not RISC-V 32-bit...
                 </span>flags:     <span class="number">0</span>,  <span class="comment">//  I2C Flags: None
 
                 //  TODO: Check for BL602 specifically (by target_abi?), not just RISC-V 32-bit
