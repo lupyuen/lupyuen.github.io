@@ -740,8 +740,8 @@ static void timer_callback(lv_timer_t *timer) {
 <p>That’s why we see 3 spaces between the <strong><code>nsh&gt;</code></strong> prompt and the NSH Command.</p>
 <p><a href="https://lupyuen.github.io/images/terminal-title.jpg">(Like this)</a></p>
 <p><em>But the NSH Output looks laggy…</em></p>
-<p>Yeah we used an <strong>LVGL Text Area</strong> to render the NSH Output. Which is probably not optimal for scrollable, static text.</p>
-<p>An <strong>LVGL Label Widget</strong> might work better.</p>
+<p>Yeah we used an <a href="https://docs.lvgl.io/latest/en/html/widgets/textarea.html"><strong>LVGL Text Area</strong></a> to render the NSH Output. Which is probably not optimal for scrollable, static text.</p>
+<p>An <a href="https://docs.lvgl.io/latest/en/html/widgets/label.html"><strong>LVGL Label Widget</strong></a> might work better.</p>
 <p>Also we might have to change polling to <strong>Multithreaded Blocking</strong>.</p>
 <p>Which means we need Mutexes to lock the LVGL Widgets.</p>
 <p><img src="https://lupyuen.github.io/images/terminal-zig1.jpg" alt="LVGL Programming in Zig" /></p>
