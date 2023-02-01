@@ -859,9 +859,9 @@ That's why we see 3 spaces between the __`nsh>`__ prompt and the NSH Command.
 
 _But the NSH Output looks laggy..._
 
-Yeah we used an __LVGL Text Area__ to render the NSH Output. Which is probably not optimal for scrollable, static text.
+Yeah we used an [__LVGL Text Area__](https://docs.lvgl.io/latest/en/html/widgets/textarea.html) to render the NSH Output. Which is probably not optimal for scrollable, static text.
 
-An __LVGL Label Widget__ might work better.
+An [__LVGL Label Widget__](https://docs.lvgl.io/latest/en/html/widgets/label.html) might work better.
 
 Also we might have to change polling to __Multithreaded Blocking__.
 
