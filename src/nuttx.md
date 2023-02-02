@@ -1,4 +1,4 @@
-# Apache NuttX OS on RISC-V BL602 and BL604
+# Apache NuttX RTOS on RISC-V BL602 and BL604
 
 📝 _24 Nov 2021_
 
@@ -30,7 +30,7 @@ Today we shall __build, flash and run__ NuttX on the [__PineCone BL602__](https:
 
 We'll briefly explore the __internals of NuttX__ to understand how it works...
 
--   [__NuttX OS: nuttx__](https://github.com/apache/nuttx)
+-   [__NuttX RTOS: nuttx__](https://github.com/apache/nuttx)
 
 -   [__NuttX Apps: nuttx-apps__](https://github.com/apache/nuttx-apps)
 
@@ -796,7 +796,7 @@ And the Rust Embedded HAL for NuttX might be __portable across all NuttX platfor
 
 Here's how we ported Rust Embedded HAL to NuttX...
 
--   [__"Rust on Apache NuttX OS"__](https://lupyuen.github.io/articles/rust2)
+-   [__"Rust on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/rust2)
 
 -   [__"Rust talks I2C on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/rusti2c)
 
@@ -816,13 +816,13 @@ Here are some topics that I'll explore in future articles...
 
 -   __SPI Driver__: PineDio Stack BL604 has an onboard LoRa SX1262 Transceiver wired via SPI. Great way to test the NuttX SPI Driver for BL602 / BL604!
 
-    [__"SPI on Apache NuttX OS"__](https://lupyuen.github.io/articles/spi2)
+    [__"SPI on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/spi2)
 
 -   __LoRaWAN Driver__: Once we get SX1262 talking OK on SPI, we can port the LoRa and LoRaWAN Drivers to NuttX!
 
-    [__"LoRa SX1262 on Apache NuttX OS"__](https://lupyuen.github.io/articles/sx1262)
+    [__"LoRa SX1262 on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/sx1262)
 
-    [__"LoRaWAN on Apache NuttX OS"__](https://lupyuen.github.io/articles/lorawan3)
+    [__"LoRaWAN on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/lorawan3)
 
 -   __I2C__: We'll explore I2C on NuttX because it's super useful for IoT Sensors and Touch Panels...
 
@@ -836,7 +836,7 @@ Here are some topics that I'll explore in future articles...
 
 -   __Rust__: I'm excited about porting the [__Rust Embedded HAL__](https://lupyuen.github.io/articles/nuttx#rust-on-nuttx) to NuttX. Here's how we integrated NuttX GPIO, SPI and I2C with Rust...
 
-    [__"Rust on Apache NuttX OS"__](https://lupyuen.github.io/articles/rust2)
+    [__"Rust on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/rust2)
 
     [__"Rust talks I2C on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/rusti2c)
 
@@ -846,9 +846,9 @@ Here are some topics that I'll explore in future articles...
 
 -   __IoT Sensors__: NuttX is great for IoT devices! Here's how we connect an Air Quality Sensor and encode Sensor Data efficiently with CBOR...
 
-    [__"Connect IKEA Air Quality Sensor to Apache NuttX OS"__](https://lupyuen.github.io/articles/ikea)
+    [__"Connect IKEA Air Quality Sensor to Apache NuttX RTOS"__](https://lupyuen.github.io/articles/ikea)
 
-    [__"Encode Sensor Data with CBOR on Apache NuttX OS"__](https://lupyuen.github.io/articles/cbor2)
+    [__"Encode Sensor Data with CBOR on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/cbor2)
 
 -   __Automated Testing__: This is how we do daily automated testing of NuttX on BL602 and BL604...
 
