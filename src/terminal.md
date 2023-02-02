@@ -905,9 +905,11 @@ The pic above shows how we compile our LVGL Program in Zig. Which will auto-impo
 
 # What's Next
 
-TODO
+Now we can run NuttX Console Apps on PinePhone, without a Serial Cable!
 
-Please check out the other articles on NuttX for PinePhone...
+I hope this will make it a little easier to experiment with NuttX on PinePhone. Lemme know what you're building!
+
+Meanwhile please check out the other articles on NuttX for PinePhone...
 
 -   [__"Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
 
