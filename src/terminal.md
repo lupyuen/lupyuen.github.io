@@ -678,9 +678,9 @@ _But the Screen Width and Height are hardcoded for PinePhone?_
 
 Yeah this code won't render correctly on devices other than PinePhone.
 
-Someday we should switch to [__LVGL Flex Layout__](https://docs.lvgl.io/master/layouts/flex.html), so that the LVGL Widgets will be __Auto-Positioned__. 
+Soon we'll switch to [__LVGL Flex Layout__](https://docs.lvgl.io/master/layouts/flex.html) so that the LVGL Widgets will be __Auto-Positioned__, based on the Screen Size of our device.
 
-(Based on the __Screen Size__ of the device)
+[(Preview of LVGL Flex Layout)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L215-L276)
 
 Note that we're using the LVGL Default Font for all 3 LVGL Widgets. Which has a problem...
 
