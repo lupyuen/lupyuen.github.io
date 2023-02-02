@@ -833,14 +833,13 @@ make
 ##  Install &quot;kconfig-frontends&quot;
 make install
 popd
-</code></pre></div></li>
-<li>
-<p>Download the <strong>RISC-V GCC Toolchain</strong> from BL602 IoT SDK…</p>
-<div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/lupyuen/bl_iot_sdk
 </code></pre></div>
-<p><a href="https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html">(For ESP32: Instructions here)</a></p>
+<p><a href="https://gist.github.com/lupyuen/abca4d656ba0c93787e7705eec8707c8">(Instructions for Arm64 Development Machines)</a></p>
 </li>
 <li>
+<p><strong>For BL602:</strong> Download the <strong>RISC-V GCC Toolchain</strong> from BL602 IoT SDK…</p>
+<div class="example-wrap"><pre class="language-bash"><code>git clone https://github.com/lupyuen/bl_iot_sdk
+</code></pre></div>
 <p>Edit <strong>~/.bashrc</strong> (or equivalent) and add the BL602 toolchain to the PATH…</p>
 <div class="example-wrap"><pre class="language-text"><code>##  TODO: Change $HOME/bl_iot_sdk to the full path of bl_iot_sdk
 
@@ -849,11 +848,12 @@ PATH=&quot;$HOME/bl_iot_sdk/toolchain/riscv/Linux/bin:$PATH&quot;
 
 ##  For macOS:
 PATH=&quot;$HOME/bl_iot_sdk/toolchain/riscv/Darwin/bin:$PATH&quot;
-</code></pre></div></li>
-<li>
+</code></pre></div>
 <p>Update the <strong>PATH</strong> to enable the toolchain…</p>
 <div class="example-wrap"><pre class="language-bash"><code>. ~/.bashrc
-</code></pre></div></li>
+</code></pre></div>
+<p><a href="https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html">(For ESP32: Instructions here)</a></p>
+</li>
 </ol>
 <h2 id="build-nuttx"><a href="#build-nuttx">14.2 Build NuttX</a></h2>
 <p>Next we download and build NuttX…</p>

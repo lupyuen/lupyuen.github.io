@@ -163,7 +163,7 @@ void blinky(char *buf, int len, int argc, char **argv) {
 <p>Here’s our BL602 Blinky Firmware, coded in Rust: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/src/lib.rs#L1-L8"><code>rust/src/lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">//!  Main Rust Application for BL602 Firmware
-</span><span class="attribute">#![no_std]  </span><span class="comment">//  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems
+</span><span class="attr">#![no_std]  </span><span class="comment">//  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems
 
 //  Import the Rust Core Library
 </span><span class="kw">use </span>core::{
@@ -176,7 +176,7 @@ void blinky(char *buf, int len, int argc, char **argv) {
 <p>Our Rust Blinky Function looks similar to the C version: <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/src/lib.rs#L10-L44"><code>lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// `rust_main` will be called by the BL602 command-line interface
-</span><span class="attribute">#[no_mangle]              </span><span class="comment">//  Don&#39;t mangle the name `rust_main`
+</span><span class="attr">#[no_mangle]              </span><span class="comment">//  Don&#39;t mangle the name `rust_main`
 </span><span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>rust_main(  <span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by BL602 firmware
     </span>_buf:  <span class="kw-2">*const </span>u8,        <span class="comment">//  Command line (char *)
     </span>_len:  i32,              <span class="comment">//  Length of command line (int)
@@ -227,7 +227,7 @@ void blinky(char *buf, int len, int argc, char **argv) {
 <p>For Embedded Rust we need to include a <strong>Panic Handler</strong> that will handle errors (like Expect / Assertion Failures): <a href="https://github.com/lupyuen/bl_iot_sdk/blob/master/customer_app/sdk_app_rust/rust/src/lib.rs#L46-L57"><code>lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// This function is called on panic, like an assertion failure
-</span><span class="attribute">#[panic_handler]
+</span><span class="attr">#[panic_handler]
 </span><span class="kw">fn </span>panic(_info: <span class="kw-2">&amp;</span>PanicInfo) -&gt; ! {  <span class="comment">//  `!` means that panic handler will never return
     //  TODO: Implement the complete panic handler like this:
     //  https://github.com/lupyuen/pinetime-rust-mynewt/blob/master/rust/app/src/lib.rs#L115-L146

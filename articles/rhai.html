@@ -215,7 +215,7 @@ a + b </code></pre></div>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// This function will be called by 
 /// WebAssembly to run a script
-</span><span class="attribute">#[no_mangle]  </span><span class="comment">//  Don&#39;t mangle the function name
+</span><span class="attr">#[no_mangle]  </span><span class="comment">//  Don&#39;t mangle the function name
 </span><span class="kw">extern </span><span class="string">&quot;C&quot;    </span><span class="comment">//  Declare `extern &quot;C&quot;` because it will be called by Emscripten
 </span><span class="kw">fn </span>rust_script( ... ) {
 
@@ -328,7 +328,7 @@ a + b </code></pre></div>
 <p>Below is the definition of the <strong><code>gpio</code></strong> module: <a href="https://github.com/lupyuen/bl602-simulator/blob/transcode/bl602-script/src/lib.rs#L100-L144"><code>bl602-script/lib.rs</code></a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// GPIO Module will be exported to Rhai as a Static Module
-</span><span class="attribute">#[export_module]
+</span><span class="attr">#[export_module]
 </span><span class="kw">mod </span>gpio {
   <span class="doccomment">/// Rhai Shim for Enable GPIO Output
   /// TODO: Modified parameters from u8 to i32
