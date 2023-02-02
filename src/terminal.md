@@ -110,7 +110,7 @@ And eventually we'll understand the Source Code...
 
     [(How to compile LVGL Terminal)](https://github.com/lupyuen/lvglterm)
 
-    [(Download the NuttX Image for PinePhone)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.0.1)
+    [(Download the NuttX Image for PinePhone)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.0.2)
 
 We begin by starting the NSH Task and piping a command to NSH Shell...
 
