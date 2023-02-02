@@ -950,15 +950,15 @@ First we install the build prerequisites...
     popd
     ```
 
-1.  Download the __RISC-V GCC Toolchain__ from BL602 IoT SDK...
+    [(Instructions for Arm64 Development Machines)](https://gist.github.com/lupyuen/abca4d656ba0c93787e7705eec8707c8)
+
+1.  __For BL602:__ Download the __RISC-V GCC Toolchain__ from BL602 IoT SDK...
 
     ```bash
     git clone https://github.com/lupyuen/bl_iot_sdk
     ```
 
-    [(For ESP32: Instructions here)](https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html)
-
-1.  Edit __~/.bashrc__ (or equivalent) and add the BL602 toolchain to the PATH...
+    Edit __~/.bashrc__ (or equivalent) and add the BL602 toolchain to the PATH...
 
     ```text
     ##  TODO: Change $HOME/bl_iot_sdk to the full path of bl_iot_sdk
@@ -970,11 +970,13 @@ First we install the build prerequisites...
     PATH="$HOME/bl_iot_sdk/toolchain/riscv/Darwin/bin:$PATH"
     ```
 
-1.  Update the __PATH__ to enable the toolchain...
+    Update the __PATH__ to enable the toolchain...
 
     ```bash
     . ~/.bashrc
     ```
+
+    [(For ESP32: Instructions here)](https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html)
 
 ## Build NuttX
 
