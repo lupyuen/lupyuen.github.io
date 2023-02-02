@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>NuttX RTOS for PinePhone: LVGL Terminal for NSH Shell</title>
+            <link>https://lupyuen.github.io/articles/terminal</link>
+            <description><![CDATA[Let's build a Terminal App for PinePhone... With LVGL and Apache NuttX RTOS]]></description>
+            <guid>https://lupyuen.github.io/articles/terminal</guid>
+            <pubDate>Fri, 03 Feb 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Apache NuttX RTOS trips ChatGPT</title>
             <link>https://lupyuen.github.io/articles/chatgpt</link>
             <description><![CDATA[ChatGPT (the AI chatbot) will gladly answer questions about Apache NuttX RTOS! But the answers aren't always correct. Let's turn this into a learning opportunity, and understand why ChatGPT's answers are incorrect]]></description>
