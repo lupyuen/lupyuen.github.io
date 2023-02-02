@@ -610,8 +610,8 @@ static void create_widgets(void) {
 </code></pre></div>
 <p><em>But the Screen Width and Height are hardcoded for PinePhone?</em></p>
 <p>Yeah this code won’t render correctly on devices other than PinePhone.</p>
-<p>Someday we should switch to <a href="https://docs.lvgl.io/master/layouts/flex.html"><strong>LVGL Flex Layout</strong></a>, so that the LVGL Widgets will be <strong>Auto-Positioned</strong>. </p>
-<p>(Based on the <strong>Screen Size</strong> of the device)</p>
+<p>Soon we’ll switch to <a href="https://docs.lvgl.io/master/layouts/flex.html"><strong>LVGL Flex Layout</strong></a> so that the LVGL Widgets will be <strong>Auto-Positioned</strong>, based on the Screen Size of our device.</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L215-L276">(Preview of LVGL Flex Layout)</a></p>
 <p>Note that we’re using the LVGL Default Font for all 3 LVGL Widgets. Which has a problem…</p>
 <p><img src="https://lupyuen.github.io/images/lvgl2-terminal2.jpg" alt="Set Default Font to Monospace" /></p>
 <h1 id="set-terminal-font-to-monospace"><a href="#set-terminal-font-to-monospace">6 Set Terminal Font to Monospace</a></h1>
