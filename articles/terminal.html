@@ -201,7 +201,7 @@ var/
 <p>Let’s find out how…</p>
 <h2 id="create-the-pipes"><a href="#create-the-pipes">2.1 Create the Pipes</a></h2>
 <p><em>How will we create the NuttX Pipes?</em></p>
-<p>This is how we <strong>create a NuttX Pipe</strong> for NSH Input: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L146-L178">lvglterm.c</a></p>
+<p>This is how we <strong>create a NuttX Pipe</strong> for NSH Input: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L166-L189">lvglterm.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Create the NuttX Pipe for NSH Input
 int nsh_stdin[2];
 int ret = pipe(nsh_stdin);
@@ -243,7 +243,7 @@ if (ret &lt; 0) { _err(&quot;stderr pipe failed: %d\n&quot;, errno); return; }
 <h2 id="connect-the-pipes"><a href="#connect-the-pipes">2.2 Connect the Pipes</a></h2>
 <p><em>How will we connect the pipes to NSH Shell?</em></p>
 <p>In a while we’ll start the NuttX Task for NSH Shell. But before that, we need some plumbing to <strong>connect the NuttX Pipes</strong>.</p>
-<p>First we close the streams for <strong>Standard Input, Output and Error</strong>: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L146-L178">lvglterm.c</a></p>
+<p>First we close the streams for <strong>Standard Input, Output and Error</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L189-L201">lvglterm.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Close stdin, stdout and stderr
 close(0);
 close(1);
@@ -263,26 +263,30 @@ dup2(nsh_stderr[WRITE_PIPE], 2);  // Redirect stderr
 <p>Exactly! That’s why we call <strong><code>_err</code></strong> and <strong><code>_info</code></strong> in this article.</p>
 <p>These functions are <strong>hardwired to the NuttX Console</strong>. They will continue to work after we have redirected the Standard I/O streams.</p>
 <h2 id="create-the-task"><a href="#create-the-task">2.3 Create the Task</a></h2>
-<p>Our plumbing is done, let’s <strong>create the NuttX Task</strong> for NSH Shell: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L146-L178">lvglterm.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Arguments for the NuttX Task
-char *argv[] = { NULL };
+<p>Our plumbing is done, let’s <strong>start the NuttX Task</strong> for NSH Shell: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L146-L178">lvglterm.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Task ID will be returned here
+pid_t pid;
 
-// Create a NuttX Task for NSH Shell
-pid_t pid = task_create(
-  &quot;NSH Console&quot;,  // Task Name
-  100,            // Task Priority
-  CONFIG_DEFAULT_TASK_STACKSIZE,  // Task Stack Size
-  nsh_consolemain,  // Task Function
-  argv              // Task Arguments
+// No arguments for the NuttX Task.
+// argv[0] is always the Task Path.
+static char * const argv[] = { &quot;nsh&quot;, NULL };
+
+// Start a NuttX Task for NSH Shell
+int ret = posix_spawn(
+  &amp;pid,   // Returned Task ID
+  &quot;nsh&quot;,  // NSH Path
+  NULL,   // Inherit stdin, stdout and stderr
+  NULL,   // Default spawn attributes
+  argv,   // Arguments
+  NULL    // No environment
 );
 
 // Check for error
-if (pid &lt; 0) { _err(&quot;task_create failed: %d\n&quot;, errno); return; }
+if (pid &lt; 0) { _err(&quot;posix_spawn failed: %d\n&quot;, errno); return; }
 
 // For Debugging: Wait a while for NSH Shell to start
 sleep(1);
 </code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/chatgpt#fix-the-task-arguments">(More about <strong>argv</strong>)</a></p>
 <p>NSH Shell inherits our Standard I/O streams, which we’ve redirected to our NuttX Pipes.</p>
 <p>We’re ready to test this!</p>
 <h2 id="test-the-pipes"><a href="#test-the-pipes">2.4 Test the Pipes</a></h2>
@@ -322,7 +326,7 @@ nsh&gt; ls
 /:
  dev/
  var/
-nsh&gt; 
+nsh&gt;
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/a9d67c135c458088946ed35c1b24be1b4aee3553/examples/lvgldemo/lvgldemo.c#L340-L390">(See the Complete Log)</a></p>
 <p><em>What about NSH Error Output?</em></p>
@@ -343,14 +347,14 @@ nsh&gt;
 </code></pre></div>
 <p>But there’s a problem…</p>
 <p>Calling <strong><code>read()</code></strong> on <strong><code>nsh_stderr</code></strong> will block the execution if there’s <strong>no NSH Error Output</strong> ready to be read!</p>
-<p>(Same for <strong><code>nsh_stdout</code></strong>) </p>
+<p>(Same for <strong><code>nsh_stdout</code></strong>)</p>
 <p>Instead let’s check if there’s NSH Output ready to be read. We do this by calling <strong><code>poll()</code></strong>…</p>
 <p><img src="https://lupyuen.github.io/images/terminal-flow5.jpg" alt="Poll for NSH Output" /></p>
 <h1 id="poll-for-nsh-output"><a href="#poll-for-nsh-output">3 Poll for NSH Output</a></h1>
 <p>In the previous section we started an NSH Shell that will execute NSH Commands that we pipe to it…</p>
 <p>But there’s a problem: Calling <strong><code>read()</code></strong> on <strong><code>nsh_stdout</code></strong> will block if there’s no NSH Output to be read.</p>
 <p>(We can’t block our LVGL App, since LVGL needs to handle User Interface Events periodically)</p>
-<p><strong>Solution:</strong> We call <strong><code>has_input</code></strong> to check if NSH Shell has data ready to be read, before we actually read the data: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L192-L245">lvglterm.c</a></p>
+<p><strong>Solution:</strong> We call <strong><code>has_input</code></strong> to check if NSH Shell has data ready to be read, before we actually read the data: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L318-L337">lvglterm.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// If NSH stdout has data to be read...
 if (has_input(nsh_stdout[READ_PIPE])) {
 
@@ -366,8 +370,8 @@ if (has_input(nsh_stdout[READ_PIPE])) {
   if (ret &gt; 0) { buf[ret] = 0; _info(&quot;%s\n&quot;, buf); }
 }
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L192-L245">(We do the same for <strong><code>nsh_stderr</code></strong>)</a></p>
-<p><strong><code>has_input</code></strong> calls <strong><code>poll()</code></strong> on <strong><code>nsh_stdout</code></strong> to check if NSH Shell has data ready to be read: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L350-L391">lvglterm.c</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L337-L357">(We do the same for <strong><code>nsh_stderr</code></strong>)</a></p>
+<p><strong><code>has_input</code></strong> calls <strong><code>poll()</code></strong> on <strong><code>nsh_stdout</code></strong> to check if NSH Shell has data ready to be read: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L423-L485">lvglterm.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Return true if the File Descriptor has data to be read
 static bool has_input(
   int fd  // File Descriptor to be checked
@@ -437,7 +441,7 @@ static bool has_input(
 <p><strong>Display the output</strong> in an LVGL Widget</p>
 </li>
 </ul>
-<p>We do this with an <a href="https://docs.lvgl.io/master/overview/timer.html"><strong>LVGL Timer</strong></a> that’s triggered every 100 milliseconds: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L178-L188">lvglterm.c</a></p>
+<p>We do this with an <a href="https://docs.lvgl.io/master/overview/timer.html"><strong>LVGL Timer</strong></a> that’s triggered every 100 milliseconds: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L216-L223">lvglterm.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Create an LVGL Terminal that will let us
 // interact with NuttX NSH Shell
 static void create_terminal(void) {
@@ -451,7 +455,7 @@ static void create_terminal(void) {
 </code></pre></div>
 <p>(<strong>user_data</strong> is unused for now)</p>
 <p><strong>timer_callback</strong> is our Callback Function for the LVGL Timer.</p>
-<p>Inside the callback, we poll for NSH Output, read the output and display it: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L192-L245">lvglterm.c</a></p>
+<p>Inside the callback, we poll for NSH Output, read the output and display it: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L295-L357">lvglterm.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Callback Function for LVGL Timer
 static void timer_callback(lv_timer_t *timer) {
 
@@ -507,65 +511,35 @@ static void timer_callback(lv_timer_t *timer) {
 </ul>
 <p>Like this…</p>
 <p><img src="https://lupyuen.github.io/images/lvgl2-terminal2.jpg" alt="LVGL Terminal App" /></p>
-<p>This is how we create the 3 LVGL Widgets: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L269-L299">lvglterm.c</a></p>
+<p>This is how we create the 3 LVGL Widgets: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L234-L295">lvglterm.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// LVGL Text Area Widgets for NSH Input and Output
 static lv_obj_t *input;
 static lv_obj_t *output;
 
 // Create the LVGL Widgets for the LVGL Terminal
 static void create_widgets(void) {
-
-  // Create an LVGL Keyboard Widget
-  lv_obj_t *kb = lv_keyboard_create(
-    lv_scr_act()  // Parent is Active Screen
-  );
-</code></pre></div>
-<p>In the code above, we begin by creating the <a href="https://docs.lvgl.io/master/widgets/keyboard.html"><strong>LVGL Keyboard Widget</strong></a>.</p>
-<p>Next we create the <a href="https://docs.lvgl.io/master/widgets/textarea.html"><strong>LVGL Text Area Widget</strong></a> to display the <strong>NSH Output</strong>…</p>
-<div class="example-wrap"><pre class="language-c"><code>  // Create an LVGL Text Area Widget for NSH Output
+  ...
+  // Create an LVGL Text Area Widget for NSH Output
   output = lv_textarea_create(
-    lv_scr_act()  // Parent is Active Screen
-  );
-
-  // Align the Widget
-  lv_obj_align(
-    output,  // LVGL Text Area Widget for NSH Output
-    LV_ALIGN_TOP_LEFT,  // From Top Left
-    TERMINAL_MARGIN,    // Shift 10 pixels left
-    TERMINAL_MARGIN     // Shift 10 pixels down
-  );
-
-  // Set the Default Text
-  lv_textarea_set_placeholder_text(output, &quot;Hello&quot;);
-
-  // Set the Widget Size
-  lv_obj_set_size(
-    output,  // LVGL Text Area Widget for NSH Output
-    TERMINAL_WIDTH,  // Width
-    OUTPUT_HEIGHT    // Height
+    col  // Parent is LVGL Column Container
   );
 </code></pre></div>
-<p>(We’ll come back to <strong>TERMINAL_MARGIN</strong> and other constants)</p>
-<p>Then we create another <a href="https://docs.lvgl.io/master/widgets/textarea.html"><strong>LVGL Text Area Widget</strong></a> to show the <strong>NSH Input</strong>…</p>
+<p>(We’ll explain <strong>col</strong>)</p>
+<p>In the code above, we begin by creating the <a href="https://docs.lvgl.io/master/widgets/textarea.html"><strong>LVGL Text Area Widget</strong></a> to display the <strong>NSH Output</strong>.</p>
+<p>Next we create another <a href="https://docs.lvgl.io/master/widgets/textarea.html"><strong>LVGL Text Area Widget</strong></a> to show the <strong>NSH Input</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Create an LVGL Text Area Widget for NSH Input
   input = lv_textarea_create(
-    lv_scr_act()  // Parent is Active Screen
+    col  // Parent is LVGL Column Container
+  );
+</code></pre></div>
+<p>Then we create the <a href="https://docs.lvgl.io/master/widgets/keyboard.html"><strong>LVGL Keyboard Widget</strong></a> to allow touchscreen entry of NSH Commands…</p>
+<div class="example-wrap"><pre class="language-c"><code>  // Create an LVGL Keyboard Widget
+  lv_obj_t *kb = lv_keyboard_create(
+    col  // Parent is LVGL Column Container
   );
 
-  // Align the Widget
-  lv_obj_align(
-    input,  // LVGL Text Area Widget for NSH Input
-    LV_ALIGN_TOP_LEFT,  // From Top Left
-    TERMINAL_MARGIN,    // Shift 10 pixels left
-    OUTPUT_HEIGHT + 2 * TERMINAL_MARGIN  // Shift 10 pixels below NSH Output
-  );
-
-  // Set the Widget Size
-  lv_obj_set_size(
-    input,  // LVGL Text Area Widget for NSH Input
-    TERMINAL_WIDTH,  // Width
-    INPUT_HEIGHT     // Height
-  );
+  // No padding around the Keyboard Widget
+  lv_obj_set_style_pad_all(kb, 0, 0);
 </code></pre></div>
 <p>We <strong>register a Callback Function</strong> for NSH Input, to detect the pressing of the Enter Key…</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Register the Callback Function for NSH Input
@@ -573,7 +547,7 @@ static void create_widgets(void) {
     input,  // LVGL Text Area Widget for NSH Input
     input_callback,  // Callback Function
     LV_EVENT_ALL,    // Callback for All Events
-    kb               // Callback Argument (Keyboard)
+    NULL             // Callback Argument
   );
 </code></pre></div>
 <p><strong>input_callback</strong> is the Callback Function for NSH Input. Which we’ll cover in a while.</p>
@@ -586,32 +560,47 @@ static void create_widgets(void) {
 }
 </code></pre></div>
 <p>That’s how we create the 3 LVGL Widgets for our Terminal App!</p>
-<p><em>What’s TERMINAL_MARGIN? And the other constants?</em></p>
-<p>We define <strong>TERMINAL_MARGIN</strong> (and the other constants) based on the <strong>Screen Layout</strong> of our Terminal App: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L249-L269">lvglterm.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// PinePhone LCD Panel Width and Height (pixels)
-#define PINEPHONE_LCD_PANEL_WIDTH  720
-#define PINEPHONE_LCD_PANEL_HEIGHT 1440
+<p><em>What’s col?</em></p>
+<p><strong>col</strong> is an <strong>LVGL Column Container</strong> that contains our 3 LVGL Widgets: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L234-L295">lvglterm.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>  // Create an LVGL Container with Column Flex Direction
+  col = lv_obj_create(lv_scr_act());
 
-// Margin of 10 pixels all around
-#define TERMINAL_MARGIN 10
+  // Column is 100% of Screen Width, 100% of Screen Height
+  // (720 x 1440 pixels)
+  lv_obj_set_size(col, LV_PCT(100), LV_PCT(100));
 
-// Terminal Width is LCD Width minus Left and Right Margins
-#define TERMINAL_WIDTH  (PINEPHONE_LCD_PANEL_WIDTH - 2 * TERMINAL_MARGIN)
+  // Widgets in the column will have Flex Layout
+  lv_obj_set_flex_flow(col, LV_FLEX_FLOW_COLUMN);
 
-// Keyboard is Lower Half of LCD.
-// Terminal Height is Upper Half of LCD minus Top and Bottom Margins.
-#define TERMINAL_HEIGHT ((PINEPHONE_LCD_PANEL_HEIGHT / 2) - 2 * TERMINAL_MARGIN)
-
-// Height of Input Text Area
-#define INPUT_HEIGHT 100
-
-// Height of Output Text Area is Terminal Height minus Input Height minus Middle Margin
-#define OUTPUT_HEIGHT (TERMINAL_HEIGHT - INPUT_HEIGHT - TERMINAL_MARGIN)
+  // No padding around the column
+  lv_obj_set_style_pad_all(col, 0, 0);
 </code></pre></div>
-<p><em>But the Screen Width and Height are hardcoded for PinePhone?</em></p>
-<p>Yeah this code won’t render correctly on devices other than PinePhone.</p>
-<p>Soon we’ll switch to <a href="https://docs.lvgl.io/master/layouts/flex.html"><strong>LVGL Flex Layout</strong></a> so that the LVGL Widgets will be <strong>Auto-Positioned</strong>, based on the Screen Size of our device.</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L215-L276">(Preview of LVGL Flex Layout)</a></p>
+<p>We’re using <a href="https://docs.lvgl.io/master/layouts/flex.html"><strong>LVGL Flex Layout</strong></a> so that the LVGL Widgets will be <strong>Auto-Positioned</strong>, based on the Screen Size of our device.</p>
+<p>(Hence the code will render correctly on devices other than PinePhone)</p>
+<p>Remember we have 3 LVGL Widgets: NSH Output, NSH Input and Keyboard. NSH Input and Keyboard have <strong>Fixed Height</strong>.</p>
+<p>But NSH Output has <strong>Flexible Height</strong> and will <strong>fill the vertical space</strong> in the column…</p>
+<div class="example-wrap"><pre class="language-c"><code>  // Create an LVGL Text Area Widget for NSH Output
+  output = lv_textarea_create(col);
+
+  // Width of NSH Output is 100% of Column Width
+  lv_obj_set_width(output, LV_PCT(100));
+
+  // Height of NSH Output will fill the Column Height
+  lv_obj_set_flex_grow(output, 1);
+</code></pre></div>
+<p>NSH Input and Keyboard have <strong>Fixed Height</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>  // Create an LVGL Text Area Widget for NSH Input
+  input = lv_textarea_create(col);
+
+  // Width of NSH Input is 100% of Column Width.
+  // Height is fixed. (One line of text)
+  lv_obj_set_size(input, LV_PCT(100), LV_SIZE_CONTENT);
+
+  // Create an LVGL Keyboard Widget.
+  // Use Fixed Width and Height.
+  kb = lv_keyboard_create(col);
+</code></pre></div>
+<p>Thus we have arranged our LVGL Widgets neatly, to fit any Screen Size!</p>
 <p>Note that we’re using the LVGL Default Font for all 3 LVGL Widgets. Which has a problem…</p>
 <p><img src="https://lupyuen.github.io/images/lvgl2-terminal2.jpg" alt="Set Default Font to Monospace" /></p>
 <h1 id="set-terminal-font-to-monospace"><a href="#set-terminal-font-to-monospace">6 Set Terminal Font to Monospace</a></h1>
@@ -621,8 +610,9 @@ static void create_widgets(void) {
 <p>The LVGL Keyboard has <strong>missing symbols!</strong> Enter, Backspace, …</p>
 <p>The <strong>symbols are undefined</strong> in the UNSCII 16 Font. (Pic above)</p>
 <p>Thus we set the LVGL Default Font back to Montserrat 20.</p>
-<p>And instead we set the <strong>Font Style for NSH Input and Output</strong> to UNSCII 16: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L269-L299">lvglterm.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Set the Font Style for NSH Input and Output to a Monospaced Font
+<p>And instead we set the <strong>Font Style for NSH Input and Output</strong> to UNSCII 16: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L234-L295">lvglterm.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Set the Font Style for NSH Input and Output
+// to a Monospaced Font: UNSCII 16
 static lv_style_t terminal_style;
 lv_style_init(&amp;terminal_style);
 lv_style_set_text_font(&amp;terminal_style, &amp;lv_font_unscii_16);
@@ -645,7 +635,7 @@ lv_obj_add_style(input, &amp;terminal_style, 0);
 <p><img src="https://lupyuen.github.io/images/terminal-flow4.jpg" alt="Handle Input from LVGL Keyboard" /></p>
 <h1 id="handle-input-from-lvgl-keyboard"><a href="#handle-input-from-lvgl-keyboard">7 Handle Input from LVGL Keyboard</a></h1>
 <p><em>How will we check if the Enter Key has been pressed?</em></p>
-<p>Remember earlier we <strong>registered a Callback Function</strong> for NSH Input Text Area, to detect the pressing of the Enter Key: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L269-L299">lvglterm.c</a></p>
+<p>Remember earlier we <strong>registered a Callback Function</strong> for NSH Input Text Area, to detect the pressing of the Enter Key: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L284-L288">lvglterm.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Register the Callback Function for NSH Input
 lv_obj_add_event_cb(
   input,  // LVGL Text Area Widget for NSH Input
@@ -655,7 +645,7 @@ lv_obj_add_event_cb(
 );
 </code></pre></div>
 <p><strong>input_callback</strong> is the Callback Function for NSH Input.</p>
-<p>It waits for the Enter Key to be pressed, then it sends the typed command to <strong>NSH Shell via the NuttX Pipe</strong>: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L299-L350">lvglterm.c</a></p>
+<p>It waits for the Enter Key to be pressed, then it sends the typed command to <strong>NSH Shell via the NuttX Pipe</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L357-L423">lvglterm.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Callback Function for NSH Input Text Area
 static void input_callback(lv_event_t *e) {
 
@@ -705,7 +695,7 @@ static void input_callback(lv_event_t *e) {
 <ul>
 <li><a href="https://lupyuen.github.io/articles/terminal#timer-for-lvgl-terminal"><strong>“Timer for LVGL Terminal”</strong></a></li>
 </ul>
-<p>If it detects NSH Output, the LVGL Timer Callback Function writes the output to the <strong>NSH Output Text Area</strong>: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L192-L245">lvglterm.c</a></p>
+<p>If it detects NSH Output, the LVGL Timer Callback Function writes the output to the <strong>NSH Output Text Area</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L295-L357">lvglterm.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Callback Function for LVGL Timer
 static void timer_callback(lv_timer_t *timer) {
 
@@ -736,9 +726,7 @@ static void timer_callback(lv_timer_t *timer) {
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/lvglterm/blob/f3e9e7f4d53e49303e8dbeaa2b8a8497699404a0/lvglterm.c#L453-L455">(Source)</a></p>
 <p>Which is the ANSI Command for <a href="https://en.wikipedia.org/wiki/ANSI_escape_code#CSIsection"><strong>“Erase In Line”</strong></a>. (Clear to the end of line)</p>
-<p><a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L391-L404"><strong>remove_escape_codes</strong></a> searches for Escape Codes in the NSH Output and replaces them by spaces.</p>
-<p>That’s why we see 3 spaces between the <strong><code>nsh&gt;</code></strong> prompt and the NSH Command.</p>
-<p><a href="https://lupyuen.github.io/images/terminal-title.jpg">(Like this)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L485-L521"><strong>remove_escape_codes</strong></a> searches for Escape Codes in the NSH Output and removes them.</p>
 <p><em>But the NSH Output looks laggy…</em></p>
 <p>Yeah we used an <a href="https://docs.lvgl.io/latest/en/html/widgets/textarea.html"><strong>LVGL Text Area</strong></a> to render the NSH Output. Which is probably not optimal for scrollable, static text.</p>
 <p>An <a href="https://docs.lvgl.io/latest/en/html/widgets/label.html"><strong>LVGL Label Widget</strong></a> might work better.</p>
