@@ -69,14 +69,14 @@
     <nav id="TOC"><ul>
 <li><a href="#smaller-and-simpler">1 Smaller and Simpler</a><ul></ul></li>
 <li><a href="#smartphone-education">2 Smartphone Education</a><ul></ul></li>
-<li><a href="#boot-nuttx">3 Boot NuttX</a><ul></ul></li></ul></nav><p>📝 <em>3 Jan 2023</em></p>
+<li><a href="#boot-nuttx">3 Boot NuttX</a><ul></ul></li></ul></nav><p>📝 <em>4 Feb 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/what-title.jpg" alt="Apache NuttX RTOS on PinePhone" /></p>
-<p><a href="https://www.youtube.com/watch?v=JQTh3VTTTkc"><em>Apache NuttX RTOS on PinePhone</em></a></p>
+<p><a href="https://www.youtube.com/watch?v=WdiXaMK8cNw"><em>Apache NuttX RTOS on PinePhone</em></a></p>
 <p>Over the past 5 months, we ported to <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> a different kind of Operating System… <a href="https://nuttx.apache.org/docs/latest/"><strong>Apache NuttX RTOS</strong></a></p>
 <p>(RTOS for Real-Time Operating System)</p>
 <p>Let’s talk about <a href="https://nuttx.apache.org/docs/latest/platforms/arm/a64/boards/pinephone/index.html"><strong>NuttX for PinePhone</strong></a>: What is it? Why are we doing this? How will we use it?</p>
-<p><img src="https://lupyuen.github.io/images/fb-run.png" alt="NuttX Command-Line Interface for Developers" /></p>
-<p><a href="https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd"><em>NuttX Command-Line Interface for Developers</em></a></p>
+<p><img src="https://lupyuen.github.io/images/terminal-demo.jpg" alt="NuttX Terminal for PinePhone" /></p>
+<p><a href="https://www.youtube.com/watch?v=WdiXaMK8cNw"><em>NuttX Terminal for PinePhone</em></a></p>
 <h1 id="smaller-and-simpler"><a href="#smaller-and-simpler">1 Smaller and Simpler</a></h1>
 <p><em>What’s Apache NuttX RTOS?</em></p>
 <p>Think Linux, Ubuntu, Manjaro, Arch, … But a lot <strong>smaller and simpler</strong>!</p>
@@ -94,7 +94,7 @@
 <p><em>Does NuttX support X11? Wayland?</em></p>
 <p>Nope, only <a href="https://lupyuen.github.io/articles/lvgl2"><strong>LVGL</strong></a> is supported. (Pic at the top)</p>
 <p><a href="https://lupyuen.github.io/articles/touch2"><strong>Touch Input</strong></a> works fine with LVGL Apps on PinePhone.</p>
-<p><a href="https://www.youtube.com/watch?v=JQTh3VTTTkc">(Watch the Demo on YouTube)</a></p>
+<p><a href="https://www.youtube.com/watch?v=WdiXaMK8cNw">(Watch the Demo on YouTube)</a></p>
 <p><em>Will it run Linux apps?</em></p>
 <p>Sadly nope. But NuttX is based on <a href="https://nuttx.apache.org/docs/latest/introduction/inviolables.html#strict-posix-compliance"><strong>POSIX</strong></a>, so some apps might compile for NuttX.</p>
 <p>Let’s talk about NuttX for Learners…</p>
@@ -102,19 +102,20 @@
 <p><a href="https://lupyuen.github.io/articles/dsi3#complete-display-driver-for-pinephone"><em>NuttX Display Driver for PinePhone</em></a></p>
 <h1 id="smartphone-education"><a href="#smartphone-education">2 Smartphone Education</a></h1>
 <p><em>Is NuttX good for learning the internals of Smartphones?</em></p>
-<p>Check out the <a href="https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone"><strong>17 articles</strong></a> covering everything inside-out about NuttX on PinePhone: <a href="https://lupyuen.github.io/articles/pio"><strong>GPIO</strong></a>, <a href="https://lupyuen.github.io/articles/serial"><strong>UART</strong></a>, <a href="https://lupyuen.github.io/articles/fb"><strong>Framebuffer</strong></a>, <a href="https://lupyuen.github.io/articles/lcd"><strong>LCD Panel</strong></a>, <a href="https://lupyuen.github.io/articles/touch2"><strong>Touch Panel</strong></a>, <a href="https://lupyuen.github.io/articles/lvgl2"><strong>LVGL</strong></a>, <a href="https://lupyuen.github.io/articles/terminal"><strong>Terminal App</strong></a>…</p>
+<p>Check out the <a href="https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone"><strong>17 articles</strong></a> covering everything inside-out about NuttX on PinePhone: <a href="https://lupyuen.github.io/articles/pio"><strong>GPIO</strong></a>, <a href="https://lupyuen.github.io/articles/serial"><strong>UART</strong></a>, <a href="https://lupyuen.github.io/articles/fb"><strong>Framebuffer</strong></a>, <a href="https://lupyuen.github.io/articles/lcd"><strong>LCD Panel</strong></a>, <a href="https://lupyuen.github.io/articles/touch2"><strong>Touch Panel</strong></a>, <a href="https://lupyuen.github.io/articles/lvgl2"><strong>LVGL</strong></a>, <a href="https://lupyuen.github.io/articles/terminal"><strong>Terminal App</strong></a> (pic below)…</p>
 <p>And esoteric topics too: <a href="https://lupyuen.github.io/articles/de3"><strong>Display Engine</strong></a>, <a href="https://lupyuen.github.io/articles/dsi3"><strong>MIPI Display Serial Interface</strong></a>, <a href="https://lupyuen.github.io/articles/lcd#power-on-lcd-panel"><strong>Power Management Integrated Circuit</strong></a>, <a href="https://lupyuen.github.io/articles/lcd#power-on-lcd-panel"><strong>Reduced Serial Bus</strong></a>, <a href="https://lupyuen.github.io/articles/interrupt"><strong>Generic Interrupt Controller</strong></a>, …</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone">(Perfect for Bedtime Reading!)</a></p>
 <p><em>So you envision a classroom of students, cracking open their PinePhones to experiment with NuttX?</em></p>
 <p>Yeah possibly? I taught Operating Systems in school… I wished we could use our phones as a <strong>Teaching Tool</strong>.</p>
 <p>(For Retro Fans: NuttX is probably more <a href="https://www.minix3.org/"><strong>MINIX</strong></a> than Linux)</p>
+<p><img src="https://lupyuen.github.io/images/terminal-flow.jpg" alt="Flow of LVGL Terminal for PinePhone on Apache NuttX RTOS" /></p>
 <p><em>Can we take the NuttX source code and build our own super duper Custom PinePhone? (Maybe sell it?)</em></p>
 <p>Yep please feel free to take the source code and do everything with it! The source code is <a href="https://github.com/apache/nuttx/blob/master/LICENSE"><strong>Apache Licensed</strong></a>.</p>
 <p>But please <strong>drop us a note</strong> to tell us if you’re using the code in your project…  We’re curious to know if anyone finds our work useful!</p>
 <p><em>Where did the code come from?</em></p>
 <p>We created the code based on the official docs for the <a href="https://linux-sunxi.org/A64"><strong>Allwinner A64 SoC</strong></a>. But some parts of Allwinner A64 are poorly documented. (Like the Display Engine)</p>
 <p>A sizeable chunk of our code was <a href="https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine"><strong>Reverse Engineered</strong></a> from the p-boot Bootloader, by observing which Hardware Registers it uses.</p>
-<p>The <strong>NuttX Community</strong> is now adding new drivers for Allwinner A64 SoC, like for I2C.</p>
+<p>The <strong>NuttX Community</strong> has added new drivers for Allwinner A64 SoC, like for I2C.</p>
 <p><a href="https://lupyuen.github.io/articles/pr">(We welcome your contribution to NuttX!)</a></p>
 <p><em>Is Apache paying you to do this?</em></p>
 <p>I’m proud to volunteer as a member of the Apache NuttX <strong>Project Management Committee</strong>.</p>
@@ -129,11 +130,11 @@
 <p>Download the <strong>PinePhone Jumpdrive Image <code>pine64-pinephone.img.xz</code></strong> from…</p>
 <p><a href="https://github.com/dreemurrs-embedded/Jumpdrive/releases"><strong>dreemurrs-embedded/Jumpdrive</strong></a></p>
 <p>Write the downloaded image to a microSD Card with
-<a href="https://www.balena.io/etcher/"><strong>Balena Etcher</strong></a></p>
+<a href="https://www.balena.io/etcher/"><strong>Balena Etcher</strong></a> or <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a>.</p>
 </li>
 <li>
-<p>Download <strong><code>Image.gz</code></strong> from the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.0.0"><strong>NuttX Release</strong></a>…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/nuttx-12.0.0/Image.gz"><strong>Image.gz: NuttX Image for PinePhone</strong></a></p>
+<p>Download <strong><code>Image.gz</code></strong> from the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.0.2"><strong>NuttX Release</strong></a>…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/nuttx-12.0.2/Image.gz"><strong>Image.gz: NuttX Image for PinePhone</strong></a></p>
 <p>(If we prefer to <strong>build NuttX</strong> ourselves: <a href="https://lupyuen.github.io/articles/lvgl2#appendix-build-apache-nuttx-rtos-for-pinephone"><strong>Follow these steps</strong></a>)</p>
 </li>
 <li>
@@ -146,17 +147,16 @@
 <p>(Very briefly)</p>
 </li>
 <li>
-<p>The <a href="https://lupyuen.github.io/images/lvgl2-title.jpg"><strong>LVGL Touchscreen Demo</strong></a> appears on PinePhone! <a href="https://lupyuen.github.io/images/lvgl2-title.jpg">(Like this)</a></p>
-<p>Tap around and play with the LVGL Widgets (UI Controls).</p>
-<p><a href="https://www.youtube.com/watch?v=JQTh3VTTTkc">(Watch the demo on YouTube)</a></p>
+<p>The <a href="https://lupyuen.github.io/articles/terminal"><strong>LVGL Terminal App</strong></a> appears on PinePhone! <a href="https://lupyuen.github.io/images/terminal-title.jpg">(Like this)</a></p>
+<p>Enter <strong><code>help</code></strong> to see the available commands.</p>
+<p><a href="https://www.youtube.com/watch?v=WdiXaMK8cNw">(Watch the demo on YouTube)</a></p>
 </li>
 <li>
-<p>Our Touch Panel Driver has some limitations…</p>
-<p><strong>Scrolling and swiping</strong> won’t work right now.</p>
+<p><strong>Scrolling and swiping</strong> won’t work right now, we’re fixing this.</p>
 <p><a href="https://lupyuen.github.io/articles/touch2#driver-limitations">(More about this)</a></p>
 </li>
 </ol>
-<p>For developers who prefer to run NuttX Commands over a <strong>Command-Line Interface</strong>, please check out the instructions here…</p>
+<p>For developers who prefer to run NuttX Commands over a <strong>Command-Line Interface</strong> (with a Serial Debug Cable), please check out the instructions here…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/lvgl2#appendix-build-apache-nuttx-rtos-for-pinephone"><strong>“Build Apache NuttX RTOS for PinePhone”</strong></a></p>
@@ -165,11 +165,13 @@
 <p><a href="https://lupyuen.github.io/articles/lvgl2#appendix-boot-apache-nuttx-rtos-on-pinephone"><strong>“Boot Apache NuttX RTOS on PinePhone”</strong></a></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/fb-run.png" alt="NuttX Command-Line Interface for Developers" /></p>
+<p><a href="https://gist.github.com/lupyuen/5029b5d1195c4ee6a7c74f24897ceecd"><em>NuttX Command-Line Interface for Developers</em></a></p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! NuttX for PinePhone wouldn’t have been possible without your support.</p>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/what.md"><strong>lupyuen.github.io/src/what.md</strong></a></p>
-<p><img src="https://lupyuen.github.io/images/lvgl2-title.jpg" alt="NuttX on PinePhone boots with a Touchscreen App" /></p>
-<p><a href="https://lupyuen.github.io/articles/lvgl2"><em>NuttX on PinePhone boots with a Touchscreen App</em></a></p>
+<p><img src="https://lupyuen.github.io/images/lvgl2-title.jpg" alt="NuttX on PinePhone with a Touchscreen App" /></p>
+<p><a href="https://lupyuen.github.io/articles/lvgl2"><em>NuttX on PinePhone with a Touchscreen App</em></a></p>
 
     
 </body>
