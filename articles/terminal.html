@@ -80,7 +80,8 @@
 <li><a href="#handle-input-from-lvgl-keyboard">7 Handle Input from LVGL Keyboard</a><ul></ul></li>
 <li><a href="#handle-output-from-nsh-shell">8 Handle Output from NSH Shell</a><ul></ul></li>
 <li><a href="#lvgl-programming-in-zig">9 LVGL Programming in Zig</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>3 Feb 2023</em></p>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
+<li><a href="#notes">11 Notes</a><ul></ul></li></ul></nav><p>📝 <em>3 Feb 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/terminal-title.jpg" alt="LVGL Terminal App on PinePhone with Apache NuttX RTOS" /></p>
 <p><a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) now boots on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> and runs <strong>Touchscreen Apps</strong>!</p>
 <p>Today we’ll look inside a Touchscreen App that will be useful for NuttX Developers… Our <strong>Terminal App for NSH Shell</strong>. (Pic above)</p>
@@ -263,7 +264,7 @@ dup2(nsh_stderr[WRITE_PIPE], 2);  // Redirect stderr
 <p>Exactly! That’s why we call <strong><code>_err</code></strong> and <strong><code>_info</code></strong> in this article.</p>
 <p>These functions are <strong>hardwired to the NuttX Console</strong>. They will continue to work after we have redirected the Standard I/O streams.</p>
 <h2 id="create-the-task"><a href="#create-the-task">2.3 Create the Task</a></h2>
-<p>Our plumbing is done, let’s <strong>start the NuttX Task</strong> for NSH Shell: <a href="https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L146-L178">lvglterm.c</a></p>
+<p>Our plumbing is done, let’s <strong>start the NuttX Task</strong> for NSH Shell: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L201-L216">lvglterm.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Task ID will be returned here
 pid_t pid;
 
@@ -282,7 +283,7 @@ int ret = posix_spawn(
 );
 
 // Check for error
-if (pid &lt; 0) { _err(&quot;posix_spawn failed: %d\n&quot;, errno); return; }
+if (ret &lt; 0) { _err(&quot;posix_spawn failed: %d\n&quot;, errno); return; }
 
 // For Debugging: Wait a while for NSH Shell to start
 sleep(1);
@@ -783,6 +784,24 @@ static void timer_callback(lv_timer_t *timer) {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/terminal.md"><strong>lupyuen.github.io/src/terminal.md</strong></a></p>
+<h1 id="notes"><a href="#notes">11 Notes</a></h1>
+<ol>
+<li>
+<p>NSH Architecture-Specific Initialization <strong>CONFIG_NSH_ARCHINIT</strong> should be disabled…</p>
+<div class="example-wrap"><pre class="language-text"><code>Application Configuration
+  &gt; NSH Library 
+    &gt; Have architecture-specific initialization
+</code></pre></div>
+<p>That’s because LVGL Terminal starts a new task for NSH, which will redo the Architecture-Specific Initialization if <strong>CONFIG_NSH_ARCHINIT</strong> is enabled.</p>
+<p>LVGL Terminal will handle the initialization when <strong>CONFIG_NSH_ARCHINIT</strong> is disabled.</p>
+</li>
+<li>
+<p>On Arm64 Platforms: This (harmless) warning appears when starting the NSH Task…</p>
+<div class="example-wrap"><pre class="language-text"><code>mkfatfs: command not found
+</code></pre></div>
+<p>This will be fixed in a future patch.</p>
+</li>
+</ol>
 
     
 </body>
