@@ -288,6 +288,7 @@ if (ret &lt; 0) { _err(&quot;posix_spawn failed: %d\n&quot;, errno); return; }
 // For Debugging: Wait a while for NSH Shell to start
 sleep(1);
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/lvglterm/blob/main/README.md">(<strong>posix_spawn</strong> should be enabled in menuconfig)</a></p>
 <p>NSH Shell inherits our Standard I/O streams, which we’ve redirected to our NuttX Pipes.</p>
 <p>We’re ready to test this!</p>
 <h2 id="test-the-pipes"><a href="#test-the-pipes">2.4 Test the Pipes</a></h2>
