@@ -415,6 +415,8 @@ More details here...
 
 -   [__"Create the NuttX Task"__](https://lupyuen.github.io/articles/terminal#create-the-task)
 
+    [(__posix_spawn__ should be enabled in menuconfig)](https://github.com/lupyuen/lvglterm/blob/main/README.md)
+
 # Other Attempts
 
 _Can ChatGPT produce alternative answers to our question?_

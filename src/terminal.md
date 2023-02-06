@@ -257,6 +257,8 @@ if (ret < 0) { _err("posix_spawn failed: %d\n", errno); return; }
 sleep(1);
 ```
 
+[(__posix_spawn__ should be enabled in menuconfig)](https://github.com/lupyuen/lvglterm/blob/main/README.md)
+
 NSH Shell inherits our Standard I/O streams, which we've redirected to our NuttX Pipes.
 
 We're ready to test this!
