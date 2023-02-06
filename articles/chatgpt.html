@@ -369,6 +369,32 @@ nsh: s: command not found
 <p>That’s because we now have <strong>TWO NSH Shells</strong> reading commands from the same Console Input!</p>
 <p>To fix this, we need to redirect the Console Input and Output streams.</p>
 <p><a href="https://lupyuen.github.io/articles/terminal#pipe-a-command-to-nsh-shell">(As explained here)</a></p>
+<p><em>Is there a better way to start a NuttX Task?</em></p>
+<p>Yep! ChatGPT totally forgot that NuttX is based on <strong>POSIX</strong>. And POSIX has a standard way to start a task: <strong><code>posix_spawn()</code></strong></p>
+<div class="example-wrap"><pre class="language-c"><code>// Task ID will be returned here
+pid_t pid;
+
+// No arguments for the NuttX Task.
+// argv[0] is always the Task Path.
+static char * const argv[] = { &quot;nsh&quot;, NULL };
+
+// Start a NuttX Task for NSH Shell
+int ret = posix_spawn(
+  &amp;pid,   // Returned Task ID
+  &quot;nsh&quot;,  // NSH Path
+  NULL,   // Inherit stdin, stdout and stderr
+  NULL,   // Default spawn attributes
+  argv,   // Arguments
+  NULL    // No environment
+);
+
+// Check for error
+if (ret &lt; 0) { _err(&quot;posix_spawn failed: %d\n&quot;, errno); return; }
+</code></pre></div>
+<p>More details here…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/terminal#create-the-task"><strong>“Create the NuttX Task”</strong></a></li>
+</ul>
 <h1 id="other-attempts"><a href="#other-attempts">7 Other Attempts</a></h1>
 <p><em>Can ChatGPT produce alternative answers to our question?</em></p>
 <p>Yep every time we ask ChatGPT the same question, it generates a different response.</p>
