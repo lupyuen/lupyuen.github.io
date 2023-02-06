@@ -385,6 +385,36 @@ To fix this, we need to redirect the Console Input and Output streams.
 
 [(As explained here)](https://lupyuen.github.io/articles/terminal#pipe-a-command-to-nsh-shell)
 
+_Is there a better way to start a NuttX Task?_
+
+Yep! ChatGPT totally forgot that NuttX is based on __POSIX__. And POSIX has a standard way to start a task: __`posix_spawn()`__
+
+```c
+// Task ID will be returned here
+pid_t pid;
+
+// No arguments for the NuttX Task.
+// argv[0] is always the Task Path.
+static char * const argv[] = { "nsh", NULL };
+
+// Start a NuttX Task for NSH Shell
+int ret = posix_spawn(
+  &pid,   // Returned Task ID
+  "nsh",  // NSH Path
+  NULL,   // Inherit stdin, stdout and stderr
+  NULL,   // Default spawn attributes
+  argv,   // Arguments
+  NULL    // No environment
+);
+
+// Check for error
+if (ret < 0) { _err("posix_spawn failed: %d\n", errno); return; }
+```
+
+More details here...
+
+-   [__"Create the NuttX Task"__](https://lupyuen.github.io/articles/terminal#create-the-task)
+
 # Other Attempts
 
 _Can ChatGPT produce alternative answers to our question?_
