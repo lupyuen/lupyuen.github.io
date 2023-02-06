@@ -106,7 +106,7 @@ Yeah. But we'll explain everything in this article...
 
 And eventually we'll understand the Source Code...
 
--   [__github.com/lupyuen/lvglterm__](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c)
+-   [__nuttx-apps/examples/lvglterm__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c)
 
     [(How to compile LVGL Terminal)](https://github.com/lupyuen/lvglterm)
 
