@@ -230,7 +230,7 @@ These functions are __hardwired to the NuttX Console__. They will continue to wo
 
 ## Create the Task
 
-Our plumbing is done, let's __start the NuttX Task__ for NSH Shell: [lvglterm.c](https://github.com/lupyuen/lvglterm/blob/main/lvglterm.c#L146-L178)
+Our plumbing is done, let's __start the NuttX Task__ for NSH Shell: [lvglterm.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L201-L216)
 
 ```c
 // Task ID will be returned here
@@ -251,7 +251,7 @@ int ret = posix_spawn(
 );
 
 // Check for error
-if (pid < 0) { _err("posix_spawn failed: %d\n", errno); return; }
+if (ret < 0) { _err("posix_spawn failed: %d\n", errno); return; }
 
 // For Debugging: Wait a while for NSH Shell to start
 sleep(1);
@@ -923,3 +923,25 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/terminal.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/terminal.md)
+
+# Notes
+
+1.  NSH Architecture-Specific Initialization __CONFIG_NSH_ARCHINIT__ should be disabled...
+
+    ```text
+    Application Configuration
+      > NSH Library 
+        > Have architecture-specific initialization
+    ```
+
+    That's because LVGL Terminal starts a new task for NSH, which will redo the Architecture-Specific Initialization if __CONFIG_NSH_ARCHINIT__ is enabled.
+
+    LVGL Terminal will handle the initialization when __CONFIG_NSH_ARCHINIT__ is disabled.
+
+1.  On Arm64 Platforms: This (harmless) warning appears when starting the NSH Task...
+
+    ```text
+    mkfatfs: command not found
+    ```
+    
+    This will be fixed in a future patch.
