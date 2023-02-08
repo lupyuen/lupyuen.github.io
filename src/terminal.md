@@ -106,7 +106,7 @@ Yeah. But we'll explain everything in this article...
 
 And eventually we'll understand the Source Code...
 
--   [__nuttx-apps/examples/lvglterm__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c)
+-   [__nuttx-apps/examples/lvglterm__](https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c)
 
     [(How to compile LVGL Terminal)](https://github.com/lupyuen/lvglterm)
 
@@ -142,7 +142,7 @@ Let's find out how...
 
 _How will we create the NuttX Pipes?_
 
-This is how we __create a NuttX Pipe__ for NSH Input: [lvglterm.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L166-L189)
+This is how we __create a NuttX Pipe__ for NSH Input: [lvglterm.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L166-L189)
 
 ```c
 // Create the NuttX Pipe for NSH Input
@@ -197,7 +197,7 @@ _How will we connect the pipes to NSH Shell?_
 
 In a while we'll start the NuttX Task for NSH Shell. But before that, we need some plumbing to __connect the NuttX Pipes__.
 
-First we close the streams for __Standard Input, Output and Error__: [lvglterm.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L189-L201)
+First we close the streams for __Standard Input, Output and Error__: [lvglterm.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L189-L201)
 
 ```c
 // Close stdin, stdout and stderr
@@ -230,7 +230,7 @@ These functions are __hardwired to the NuttX Console__. They will continue to wo
 
 ## Create the Task
 
-Our plumbing is done, let's __start the NuttX Task__ for NSH Shell: [lvglterm.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L201-L216)
+Our plumbing is done, let's __start the NuttX Task__ for NSH Shell: [lvglterm.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L201-L216)
 
 ```c
 // Task ID will be returned here
@@ -354,7 +354,7 @@ But there's a problem: Calling __`read()`__ on __`nsh_stdout`__ will block if th
 
 (We can't block our LVGL App, since LVGL needs to handle User Interface Events periodically)
 
-__Solution:__ We call __`has_input`__ to check if NSH Shell has data ready to be read, before we actually read the data: [lvglterm.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L318-L337)
+__Solution:__ We call __`has_input`__ to check if NSH Shell has data ready to be read, before we actually read the data: [lvglterm.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L318-L337)
 
 ```c
 // If NSH stdout has data to be read...
@@ -373,9 +373,9 @@ if (has_input(nsh_stdout[READ_PIPE])) {
 }
 ```
 
-[(We do the same for __`nsh_stderr`__)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L337-L357)
+[(We do the same for __`nsh_stderr`__)](https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L337-L357)
 
-__`has_input`__ calls __`poll()`__ on __`nsh_stdout`__ to check if NSH Shell has data ready to be read: [lvglterm.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L423-L485)
+__`has_input`__ calls __`poll()`__ on __`nsh_stdout`__ to check if NSH Shell has data ready to be read: [lvglterm.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L423-L485)
 
 ```c
 // Return true if the File Descriptor has data to be read
@@ -464,7 +464,7 @@ Every couple of milliseconds we...
 
   -   __Display the output__ in an LVGL Widget
 
-We do this with an [__LVGL Timer__](https://docs.lvgl.io/master/overview/timer.html) that's triggered every 100 milliseconds: [lvglterm.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L216-L223)
+We do this with an [__LVGL Timer__](https://docs.lvgl.io/master/overview/timer.html) that's triggered every 100 milliseconds: [lvglterm.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L216-L223)
 
 ```c
 // Create an LVGL Terminal that will let us
@@ -483,7 +483,7 @@ static void create_terminal(void) {
 
 __timer_callback__ is our Callback Function for the LVGL Timer.
 
-Inside the callback, we poll for NSH Output, read the output and display it: [lvglterm.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L295-L357)
+Inside the callback, we poll for NSH Output, read the output and display it: [lvglterm.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L295-L357)
 
 ```c
 // Callback Function for LVGL Timer
@@ -555,7 +555,7 @@ Like this...
 
 ![LVGL Terminal App](https://lupyuen.github.io/images/lvgl2-terminal2.jpg)
 
-This is how we create the 3 LVGL Widgets: [lvglterm.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L234-L295)
+This is how we create the 3 LVGL Widgets: [lvglterm.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L234-L295)
 
 ```c
 // LVGL Text Area Widgets for NSH Input and Output
@@ -625,7 +625,7 @@ That's how we create the 3 LVGL Widgets for our Terminal App!
 
 _What's col?_
 
-__col__ is an __LVGL Column Container__ that contains our 3 LVGL Widgets: [lvglterm.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L234-L295)
+__col__ is an __LVGL Column Container__ that contains our 3 LVGL Widgets: [lvglterm.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L234-L295)
 
 ```c
   // Create an LVGL Container with Column Flex Direction
@@ -696,7 +696,7 @@ The __symbols are undefined__ in the UNSCII 16 Font. (Pic above)
 
 Thus we set the LVGL Default Font back to Montserrat 20.
 
-And instead we set the __Font Style for NSH Input and Output__ to UNSCII 16: [lvglterm.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L234-L295)
+And instead we set the __Font Style for NSH Input and Output__ to UNSCII 16: [lvglterm.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L234-L295)
 
 ```c
 // Set the Font Style for NSH Input and Output
@@ -730,7 +730,7 @@ Let's look at our Callback Function for NSH Input...
 
 _How will we check if the Enter Key has been pressed?_
 
-Remember earlier we __registered a Callback Function__ for NSH Input Text Area, to detect the pressing of the Enter Key: [lvglterm.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L284-L288)
+Remember earlier we __registered a Callback Function__ for NSH Input Text Area, to detect the pressing of the Enter Key: [lvglterm.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L284-L288)
 
 ```c
 // Register the Callback Function for NSH Input
@@ -744,7 +744,7 @@ lv_obj_add_event_cb(
 
 __input_callback__ is the Callback Function for NSH Input.
 
-It waits for the Enter Key to be pressed, then it sends the typed command to __NSH Shell via the NuttX Pipe__: [lvglterm.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L357-L423)
+It waits for the Enter Key to be pressed, then it sends the typed command to __NSH Shell via the NuttX Pipe__: [lvglterm.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L357-L423)
 
 ```c
 // Callback Function for NSH Input Text Area
@@ -806,7 +806,7 @@ Earlier we've created an LVGL Timer that __polls periodically for output__ gener
 
 -   [__"Timer for LVGL Terminal"__](https://lupyuen.github.io/articles/terminal#timer-for-lvgl-terminal)
 
-If it detects NSH Output, the LVGL Timer Callback Function writes the output to the __NSH Output Text Area__: [lvglterm.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L295-L357)
+If it detects NSH Output, the LVGL Timer Callback Function writes the output to the __NSH Output Text Area__: [lvglterm.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L295-L357)
 
 ```c
 // Callback Function for LVGL Timer
@@ -848,7 +848,7 @@ nsh> <ESC>[K
 
 Which is the ANSI Command for [__"Erase In Line"__](https://en.wikipedia.org/wiki/ANSI_escape_code#CSIsection). (Clear to the end of line)
 
-[__remove_escape_codes__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/examples/lvglterm/lvglterm.c#L485-L521) searches for Escape Codes in the NSH Output and removes them.
+[__remove_escape_codes__](https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L485-L521) searches for Escape Codes in the NSH Output and removes them.
 
 _But the NSH Output looks laggy..._
 
