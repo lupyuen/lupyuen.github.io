@@ -524,6 +524,10 @@ But if we're keen to __build NuttX ourselves__, here are the steps...
 
     [__"LVGL Demos"__](https://lupyuen.github.io/articles/lvgl2#lvgl-demos)
 
+1.  To boot the [__LVGL Terminal App__](https://lupyuen.github.io/articles/terminal)...
+
+    [__"LVGL Terminal"__](https://github.com/lupyuen/lvglterm/blob/main/README.md)
+
 1.  Rebuild NuttX and compress the NuttX Image...
 
     ```bash
@@ -554,6 +558,8 @@ Follow the steps in the next section to boot the NuttX Image...
 ![PinePhone Jumpdrive on microSD](https://lupyuen.github.io/images/arm-jumpdrive.png)
 
 # Appendix: Boot Apache NuttX RTOS on PinePhone
+
+[(Watch the Demo on YouTube)](https://youtu.be/kGI_0yK1vws)
 
 In the previous section we've built the NuttX Image __`Image.gz`__.
 

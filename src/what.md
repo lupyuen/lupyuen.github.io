@@ -4,7 +4,9 @@
 
 ![Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/what-title.jpg)
 
-[_Apache NuttX RTOS on PinePhone_](https://www.youtube.com/watch?v=WdiXaMK8cNw)
+[_Apache NuttX RTOS on PinePhone_](https://youtu.be/kGI_0yK1vws)
+
+[(Watch the Demo on YouTube)](https://youtu.be/kGI_0yK1vws)
 
 Over the past 5 months, we ported to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) a different kind of Operating System... [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/)
 
@@ -14,7 +16,7 @@ Let's talk about [__NuttX for PinePhone__](https://nuttx.apache.org/docs/latest/
 
 ![NuttX Terminal for PinePhone](https://lupyuen.github.io/images/terminal-demo.jpg)
 
-[_NuttX Terminal for PinePhone_](https://www.youtube.com/watch?v=WdiXaMK8cNw)
+[_NuttX Terminal for PinePhone_](https://youtu.be/kGI_0yK1vws)
 
 # Smaller and Simpler
 
@@ -50,7 +52,7 @@ Nope, only [__LVGL__](https://lupyuen.github.io/articles/lvgl2) is supported. (P
 
 [__Touch Input__](https://lupyuen.github.io/articles/touch2) works fine with LVGL Apps on PinePhone.
 
-[(Watch the Demo on YouTube)](https://www.youtube.com/watch?v=WdiXaMK8cNw)
+[(Watch the Demo on YouTube)](https://youtu.be/kGI_0yK1vws)
 
 _Will it run Linux apps?_
 
@@ -110,6 +112,8 @@ If we're keen to boot NuttX on our PinePhone, please read on...
 
 # Boot NuttX
 
+[(Watch the Demo on YouTube)](https://youtu.be/kGI_0yK1vws)
+
 Let's make a __Bootable microSD__ that will start NuttX on our PinePhone...
 
 1.  Download the __PinePhone Jumpdrive Image `pine64-pinephone.img.xz`__ from...
@@ -139,7 +143,7 @@ Let's make a __Bootable microSD__ that will start NuttX on our PinePhone...
 
     Enter __`help`__ to see the available commands.
 
-    [(Watch the demo on YouTube)](https://www.youtube.com/watch?v=WdiXaMK8cNw)
+    [(Watch the demo on YouTube)](https://youtu.be/kGI_0yK1vws)
 
 1.  __Scrolling and swiping__ won't work right now, we're fixing this.
 
