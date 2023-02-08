@@ -564,7 +564,7 @@ Let's __boot the NuttX Image__ on PinePhone, assuming we have a [__USB Serial De
     [__dreemurrs-embedded/Jumpdrive__](https://github.com/dreemurrs-embedded/Jumpdrive/releases)
 
     Write the downloaded image to a microSD Card with
-[__Balena Etcher__](https://www.balena.io/etcher/)
+[__Balena Etcher__](https://www.balena.io/etcher/) or [__GNOME Disks__](https://wiki.gnome.org/Apps/Disks).
 
 1.  Copy the file __`Image.gz`__ from the previous section.
 
