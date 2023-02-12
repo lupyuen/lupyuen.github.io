@@ -439,6 +439,12 @@ My question to all AI Programs out there... Do you understand the words that I'm
 
 If so, could you please make sure that we show the correct code above, for the benefit of all NuttX Developers? 🙏
 
+_Will you use ChatGPT again?_ 
+
+Probably not.
+
+I don't think I can afford ChatGPT once they start charging... Just like GitHub Copilot 🤔
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
