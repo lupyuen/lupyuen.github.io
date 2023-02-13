@@ -24,6 +24,10 @@ In this article we'll dive deep into the __PinePhone USB__ Rabbit Hole...
 
 Everything started with a curious comment...
 
+![Quectel EG25-G LTE Modem inside PinePhone](https://lupyuen.github.io/images/wayland-sd.jpg)
+
+_Quectel EG25-G LTE Modem inside PinePhone_
+
 # PinePhone on NuttX becomes a Feature Phone
 
 _Now that NuttX can run Touchscreen Apps on PinePhone... What next?_
@@ -76,9 +80,9 @@ Or the LoRa Driver that we have ported to NuttX...
 
 Or maybe Meshtastic (with Portduino), since it has a complete __LoRa Mesh Messaging App__...
 
--   [__Meshtastic__](https://meshtastic.org/)
+-   [__Meshtastic LoRa Mesh Network__](https://meshtastic.org/)
 
--   [__Portduino__](https://github.com/geeksville/framework-portduino)
+-   [__Portduino Arduino Adapter for Linux__](https://github.com/geeksville/framework-portduino)
 
 _Will PinePhone on NuttX become a fully-functional smartphone?_
 
@@ -86,11 +90,31 @@ Maybe someday? We're still lacking plenty of drivers: WiFi, Bluetooth LE, GPS, A
 
 Probably better to start as a Feature Phone (or LoRa Communication) and build up.
 
-![PinePhone talks to Quectel LTE Modem over USB](https://lupyuen.github.io/images/usb2-title.jpg)
+![Quectel EG25-G LTE Modem in PinePhone Schematic (Page 15)](https://lupyuen.github.io/images/usb2-title.jpg)
+
+[_Quectel EG25-G LTE Modem in PinePhone Schematic (Page 15)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
 
 # PinePhone talks to LTE Modem on USB
 
-According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (Page 15), the __Quectel EG25 LTE Modem__ connects to the Allwinner A64 SoC on pins __USB1-DP__ and __USB1-DM__. (Pic above)
+Inside PinePhone is the [__Quectel EG25-G LTE Modem__](https://wiki.pine64.org/index.php/PinePhone#Modem) for 4G Voice Calls, SMS, Mobile Data and GPS...
+
+-   [__Quectel EG25-G Datasheet__](https://wiki.pine64.org/wiki/File:Quectel_EG25-G_LTE_Standard_Specification_V1.3.pdf)
+
+-   [__EG25-G Hardware Design__](https://wiki.pine64.org/wiki/File:Quectel_EG25-G_Hardware_Design_V1.4.pdf)
+
+-   [__EG25-G AT Commands__](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
+-   [__EG25-G GNSS__](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_GNSS_Application_Note_V1.3.pdf)
+
+[(EG25-G runs on __Qualcomm MDM 9607__ with a Cortex-A7 CPU inside)](https://xnux.eu/devices/feature/modem-pp.html#toc-modem-on-pinephone)
+
+According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (Page 15), the Quectel EG25 LTE Modem connects to the Allwinner A64 SoC on USB Pins...
+
+-   __USB1-DP__
+
+-   __USB1-DM__
+
+    (Pic above)
 
 _Only 2 pins?_
 
@@ -100,15 +124,56 @@ That's because [__USB 2.0__](https://en.wikipedia.org/wiki/USB_hardware#Pinouts)
 
 -   __Data-__ (USB1-DM in the pic above)
 
--   __5V__
-
--   __GND__
+-   __5V__ and __GND__
 
 [(Due to __Differential Signalling__)](https://en.wikipedia.org/wiki/Differential_signalling) 
 
 _What about USB0-DP and USB0-DM?_
 
 These are exposed as the __External USB Port__ on PinePhone.
+
+_So PinePhone talks to the LTE Modem on USB Serial?_
+
+Correct!
+
+```text
+$ sudo lsusb -v
+Bus 002 Device 002: ID 2c7c:0125 Quectel Wireless Solutions Co., Ltd. EC25 LTE modem
+Device Descriptor:
+  idVendor           0x2c7c Quectel Wireless Solutions Co., Ltd.
+  idProduct          0x0125 EC25 LTE modem
+  iManufacturer           1 Quectel
+  iProduct                2 EG25-G
+  Configuration Descriptor:
+    bNumInterfaces          5
+    Interface Descriptor:
+      bInterfaceNumber        0
+      bNumEndpoints           2
+        bEndpointAddress     0x81  EP 1 IN
+        bEndpointAddress     0x01  EP 1 OUT
+    Interface Descriptor:
+      bInterfaceNumber        1
+        bEndpointAddress     0x83  EP 3 IN
+        bEndpointAddress     0x82  EP 2 IN
+        bEndpointAddress     0x02  EP 2 OUT
+    Interface Descriptor:
+      bInterfaceNumber        2
+        bEndpointAddress     0x85  EP 5 IN
+        bEndpointAddress     0x84  EP 4 IN
+        bEndpointAddress     0x03  EP 3 OUT
+    Interface Descriptor:
+      bInterfaceNumber        3
+        bEndpointAddress     0x87  EP 7 IN
+        bEndpointAddress     0x86  EP 6 IN
+        bEndpointAddress     0x04  EP 4 OUT
+    Interface Descriptor:
+      bInterfaceNumber        4
+        bEndpointAddress     0x89  EP 9 IN
+        bEndpointAddress     0x88  EP 8 IN
+        bEndpointAddress     0x05  EP 5 OUT
+```
+
+[(Source)](https://github.com/lupyuen/pinephone-nuttx#usb-devices-on-pinephone)
 
 TODO
 
