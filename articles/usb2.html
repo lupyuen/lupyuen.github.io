@@ -117,9 +117,10 @@
 <p>So we can pop a microSD Card (and SIM) into any PinePhone…</p>
 <p>And turn it instantly into an <strong>Emergency Phone</strong>?</p>
 <p><em>But we need USB to run PinePhone as a Feature Phone?</em></p>
-<p>Sadly we can’t control PinePhone’s LTE Modem by sending simple AT Commands over the UART Port.</p>
+<p>Sadly we can’t control PinePhone’s LTE Modem by sending AT Commands over the UART Port.</p>
 <p><a href="https://lupyuen.github.io/articles/get-started-with-nb-iot-and-quectel-modules">(Unlike other LTE Modems)</a></p>
-<p>Instead, PinePhone talks to the <strong>LTE Modem over USB</strong>. Which we’ll explain in the next chapter.</p>
+<p>Instead, PinePhone talks to the <strong>LTE Modem over USB</strong>.</p>
+<p>(We’ll explain in the next chapter)</p>
 <p><em>What if there’s no LTE Network Coverage? Like in a Natural Disaster?</em></p>
 <p>The Long-Range, Low-Power <strong>LoRa Network</strong> might be good for search and rescue communications.</p>
 <p>(Short Text Messages only plus GPS Geolocation, non-guaranteed message delivery)</p>
@@ -196,35 +197,41 @@
 <p><em>What about USB0-DP and USB0-DM?</em></p>
 <p>These are exposed as the <strong>External USB Port</strong> on PinePhone.</p>
 <p><em>So PinePhone talks to the LTE Modem on USB Serial?</em></p>
-<p>TODO: Correct!</p>
+<p>Correct! Here are the <strong>USB Endpoints</strong> exposed by the LTE Modem (which we’ll decipher later)…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ sudo lsusb -v
+
 Bus 002 Device 002: ID 2c7c:0125 Quectel Wireless Solutions Co., Ltd. EC25 LTE modem
 Device Descriptor:
   idVendor           0x2c7c Quectel Wireless Solutions Co., Ltd.
   idProduct          0x0125 EC25 LTE modem
   iManufacturer           1 Quectel
   iProduct                2 EG25-G
+
   Configuration Descriptor:
     bNumInterfaces          5
     Interface Descriptor:
       bInterfaceNumber        0
         bEndpointAddress     0x81  EP 1 IN
         bEndpointAddress     0x01  EP 1 OUT
+
     Interface Descriptor:
       bInterfaceNumber        1
         bEndpointAddress     0x83  EP 3 IN
         bEndpointAddress     0x82  EP 2 IN
         bEndpointAddress     0x02  EP 2 OUT
+
     Interface Descriptor:
       bInterfaceNumber        2
         bEndpointAddress     0x85  EP 5 IN
         bEndpointAddress     0x84  EP 4 IN
         bEndpointAddress     0x03  EP 3 OUT
+
     Interface Descriptor:
       bInterfaceNumber        3
         bEndpointAddress     0x87  EP 7 IN
         bEndpointAddress     0x86  EP 6 IN
         bEndpointAddress     0x04  EP 4 OUT
+
     Interface Descriptor:
       bInterfaceNumber        4
         bEndpointAddress     0x89  EP 9 IN
@@ -232,7 +239,7 @@ Device Descriptor:
         bEndpointAddress     0x05  EP 5 OUT
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx#usb-devices-on-pinephone">(Source)</a></p>
-<p>TODO</p>
+<p>But first we need to build the PinePhone USB Driver for NuttX…</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/usb2-meme.jpg" alt="Sorry Elmo… Allwinner A64’s USB Controller isn’t documented" /></p>
 </blockquote>
@@ -272,6 +279,7 @@ Device Descriptor:
 </li>
 </ul>
 <p><em>Any sample code for Allwinner A64 USB?</em></p>
+<p>TODO</p>
 <p>Refer to the Allwinner A64 USB Drivers in FreeBSD and NetBSD…</p>
 <ul>
 <li>
@@ -284,8 +292,8 @@ Device Descriptor:
 <p><a href="https://github.com/NetBSD/src/blob/trunk/sys/arch/arm/sunxi/sunxi_usbphy.c#L95">NetBSD/sys/arch/arm/sunxi/ sunxi_usbphy.c</a></p>
 </li>
 </ul>
-<p>TODO</p>
 <p><em>How do USB Drivers work in NuttX?</em></p>
+<p>TODO</p>
 <p>Check out this NuttX Doc on USB Drivers…</p>
 <ul>
 <li><a href="https://nuttx.apache.org/docs/latest/components/drivers/special/usbhost.html">“USB Host-Side Drivers”</a></li>
@@ -308,6 +316,7 @@ Device Descriptor:
 <p>(USB OTG FS: Able to act as a device/host/OTG peripheral, at full speed 12Mbps)</p>
 <p>(USB OTG HS: Able to act as a device/host/OTG peripheral, at full speed 12Mbps or high speed 480Mbps)</p>
 <p><em>How did we get the FreeBSD and NetBSD USB Drivers for Allwinner A64?</em></p>
+<p>TODO</p>
 <p>PinePhone’s Device Tree says that the USB Drivers are…</p>
 <div class="example-wrap"><pre class="language-text"><code>usb@1c19000 {
   compatible = &quot;allwinner,sun8i-a33-musb&quot;;
