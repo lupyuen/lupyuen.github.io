@@ -100,6 +100,8 @@ Probably better to start as a Feature Phone (or LoRa Communication) and build up
 
 # PinePhone talks to LTE Modem on USB
 
+_How is the LTE Modem connected to PinePhone?_
+
 Inside PinePhone is the [__Quectel EG25-G LTE Modem__](https://wiki.pine64.org/index.php/PinePhone#Modem) for 4G Voice Calls, SMS, Mobile Data and GPS...
 
 -   [__Quectel EG25-G Datasheet__](https://wiki.pine64.org/wiki/File:Quectel_EG25-G_LTE_Standard_Specification_V1.3.pdf)
@@ -112,7 +114,7 @@ Inside PinePhone is the [__Quectel EG25-G LTE Modem__](https://wiki.pine64.org/i
 
 [(EG25-G runs on __Qualcomm MDM 9607__ with a Cortex-A7 CPU inside)](https://xnux.eu/devices/feature/modem-pp.html#toc-modem-on-pinephone)
 
-According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (Page 15), the Quectel EG25 LTE Modem connects to the Allwinner A64 SoC on USB Pins...
+According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (Page 15), the Quectel EG25 LTE Modem connects to the Allwinner A64 SoC on the USB Pins...
 
 -   __USB1-DP__
 
@@ -124,9 +126,9 @@ _Only 2 pins?_
 
 That's because [__USB 2.0__](https://en.wikipedia.org/wiki/USB_hardware#Pinouts) runs on 2 data wires and 2 power wires...
 
--   __Data+__ (USB1-DP in the pic above)
+-   __Data+__ (USB1-DP)
 
--   __Data-__ (USB1-DM in the pic above)
+-   __Data-__ (USB1-DM)
 
 -   __5V__ and __GND__
 
