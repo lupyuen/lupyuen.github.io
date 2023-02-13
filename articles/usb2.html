@@ -71,15 +71,33 @@
 <li><a href="#usb-driver-and-lte-modem-driver-for-pinephone">2 USB Driver and LTE Modem Driver for PinePhone</a><ul></ul></li>
 <li><a href="#whats-next">3 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/usb2-title.jpg" alt="TODO" /></p>
-<p><a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) now boots on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> and runs <strong>Touchscreen Apps</strong>!</p>
+<p><a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) now boots on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a></p>
 <p>TODO</p>
-<p>Mentor Graphics</p>
-<p>FreeBSD Driver</p>
-<p>NuttX Driver</p>
-<p>STM32 Driver</p>
-<p>Feature Phone</p>
+<p>In this article we’ll dive deep into the <strong>PinePhone USB</strong> Rabbit Hole…</p>
+<ul>
+<li>
+<p>What’s inside PinePhone’s Allwinner A64 <strong>USB Controller</strong></p>
+</li>
+<li>
+<p>Which is actually a <strong>Mentor Graphics Inventra</strong> USB Controller</p>
+</li>
+<li>
+<p>We’ll study the <strong>FreeBSD Driver</strong> for the USB Controller</p>
+</li>
+<li>
+<p>How we might port the USB Driver to <strong>NuttX RTOS</strong></p>
+</li>
+<li>
+<p>By comparing with the <strong>STM32 USB Driver</strong> for NuttX</p>
+</li>
+<li>
+<p>And how it might turn PinePhone on NuttX into a <strong>Feature Phone</strong></p>
+</li>
+</ul>
+<p>Everything started with a curious comment…</p>
 <h1 id="pinephone-on-nuttx-becomes-a-feature-phone"><a href="#pinephone-on-nuttx-becomes-a-feature-phone">1 PinePhone on NuttX becomes a Feature Phone</a></h1>
-<p>Everything started with a <strong>comment on YouTube</strong>…</p>
+<p><em>Now that NuttX can run Touchscreen Apps on PinePhone… What next?</em></p>
+<p>We might turn PinePhone on NuttX into a <strong>Feature Phone</strong>, thanks to an inspiring comment on YouTube…</p>
 <blockquote>
 <p><em>“I’d like to use or build a ‘feature-phone’-style UI for the PinePhone someday.”</em></p>
 </blockquote>
@@ -87,48 +105,47 @@
 <p><em>“Is there USB support (In NuttX, and your port)? I think that would be the first step in getting the modem to work.”</em></p>
 </blockquote>
 <p><a href="https://youtu.be/WdiXaMK8cNw">(Source)</a></p>
-<p>TODO</p>
-<p><em>Now that NuttX can run Touchscreen Apps on PinePhone… What next?</em></p>
-<p>Maybe we can turn NuttX on PinePhone into a <strong>Feature Phone</strong>?</p>
+<p>Excellent idea! We can turn NuttX on PinePhone into a <strong>Feature Phone</strong>…</p>
 <p>Just <strong>Voice Calls and SMS</strong>, using PinePhone’s LTE Modem.</p>
 <p><em>This is useful because…?</em></p>
 <p>So we can pop a microSD Card (and SIM) into any PinePhone…</p>
 <p>And turn it instantly into an <strong>Emergency Phone</strong>?</p>
-<p><em>What NuttX Drivers would we need?</em></p>
-<p>We need a NuttX Driver for the PinePhone’s <strong>Quectel LTE Modem</strong>.</p>
-<p>Which talks over USB Serial. Thus we also need a NuttX Driver for PinePhone’s <strong>Allwinner A64 USB Controller</strong>.</p>
-<p>More about this in the next section.</p>
-<p><em>And if there’s no LTE Network Coverage? Like in a Natural Disaster?</em></p>
+<p><em>But we need USB to run PinePhone as a Feature Phone?</em></p>
+<p>Apparently we can’t control PinePhone’s LTE Modem by sending simple AT Commands over the Allwinner A64 UART Port.</p>
+<p><a href="https://lupyuen.github.io/articles/get-started-with-nb-iot-and-quectel-modules">(Unlike other LTE Modems)</a></p>
+<p>Instead, PinePhone’s LTE Modem <strong>talks over USB</strong>. Which we’ll explain in the next chapter.</p>
+<p><em>What if there’s no LTE Network Coverage? Like in a Natural Disaster?</em></p>
 <p>The Long-Range, Low-Power <strong>LoRa Network</strong> might be good for search and rescue communications.</p>
 <p>(Short Text Messages only plus GPS Geolocation, non-guaranteed message delivery)</p>
 <p>Just attach the LoRa Case to PinePhone…</p>
 <ul>
 <li>
-<p><a href="https://pine64.com/product/pinephone-pinephone-pro-pindio-lora-add-on-case/">PineDio LoRa Add-On Case</a></p>
+<p><a href="https://pine64.com/product/pinephone-pinephone-pro-pindio-lora-add-on-case/"><strong>PineDio LoRa Add-On Case</strong></a></p>
 <p>(Still in stock!)</p>
 </li>
 </ul>
 <p>We might use JF’s Driver…</p>
 <ul>
-<li><a href="https://codeberg.org/JF002/pinedio-lora-driver">JF002/pinedio-lora-driver</a></li>
+<li><a href="https://codeberg.org/JF002/pinedio-lora-driver"><strong>JF002/pinedio-lora-driver</strong></a></li>
 </ul>
 <p>Or the LoRa Driver that we have ported to NuttX…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/sx1262">“LoRa SX1262 on Apache NuttX RTOS”</a></li>
+<li><a href="https://lupyuen.github.io/articles/sx1262"><strong>“LoRa SX1262 on Apache NuttX RTOS”</strong></a></li>
 </ul>
-<p>Or maybe Meshtastic (with Portduino), since it has a complete LoRa Messaging App…</p>
+<p>Or maybe Meshtastic (with Portduino), since it has a complete LoRa Mesh Messaging App…</p>
 <ul>
 <li>
-<p><a href="https://meshtastic.org/">Meshtastic</a></p>
+<p><a href="https://meshtastic.org/"><strong>Meshtastic</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/geeksville/framework-portduino">Portduino</a></p>
+<p><a href="https://github.com/geeksville/framework-portduino"><strong>Portduino</strong></a></p>
 </li>
 </ul>
 <p><em>Will PinePhone on NuttX become a fully-functional smartphone?</em></p>
 <p>Maybe someday? We’re still lacking plenty of drivers: WiFi, Bluetooth LE, GPS, Audio, …</p>
 <p>Probably better to start as a Feature Phone (or LoRa Communication) and build up.</p>
 <h1 id="usb-driver-and-lte-modem-driver-for-pinephone"><a href="#usb-driver-and-lte-modem-driver-for-pinephone">2 USB Driver and LTE Modem Driver for PinePhone</a></h1>
+<p>TODO</p>
 <p><em>What NuttX Drivers would we need to turn PinePhone into a Feature Phone? (Voice Calls and SMS only)</em></p>
 <p>We need a NuttX Driver for the PinePhone’s <strong>Quectel LTE Modem</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/usb2-title.jpg" alt="Quectel LTE Modem in PinePhone" /></p>
