@@ -154,6 +154,7 @@
 <p><img src="https://lupyuen.github.io/images/usb2-title.jpg" alt="Quectel EG25-G LTE Modem in PinePhone Schematic (Page 15)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>Quectel EG25-G LTE Modem in PinePhone Schematic (Page 15)</em></a></p>
 <h1 id="pinephone-talks-to-lte-modem-on-usb"><a href="#pinephone-talks-to-lte-modem-on-usb">2 PinePhone talks to LTE Modem on USB</a></h1>
+<p><em>How is the LTE Modem connected to PinePhone?</em></p>
 <p>Inside PinePhone is the <a href="https://wiki.pine64.org/index.php/PinePhone#Modem"><strong>Quectel EG25-G LTE Modem</strong></a> for 4G Voice Calls, SMS, Mobile Data and GPS…</p>
 <ul>
 <li>
@@ -170,7 +171,7 @@
 </li>
 </ul>
 <p><a href="https://xnux.eu/devices/feature/modem-pp.html#toc-modem-on-pinephone">(EG25-G runs on <strong>Qualcomm MDM 9607</strong> with a Cortex-A7 CPU inside)</a></p>
-<p>According to the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> (Page 15), the Quectel EG25 LTE Modem connects to the Allwinner A64 SoC on USB Pins…</p>
+<p>According to the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> (Page 15), the Quectel EG25 LTE Modem connects to the Allwinner A64 SoC on the USB Pins…</p>
 <ul>
 <li>
 <p><strong>USB1-DP</strong></p>
@@ -184,10 +185,10 @@
 <p>That’s because <a href="https://en.wikipedia.org/wiki/USB_hardware#Pinouts"><strong>USB 2.0</strong></a> runs on 2 data wires and 2 power wires…</p>
 <ul>
 <li>
-<p><strong>Data+</strong> (USB1-DP in the pic above)</p>
+<p><strong>Data+</strong> (USB1-DP)</p>
 </li>
 <li>
-<p><strong>Data-</strong> (USB1-DM in the pic above)</p>
+<p><strong>Data-</strong> (USB1-DM)</p>
 </li>
 <li>
 <p><strong>5V</strong> and <strong>GND</strong></p>
