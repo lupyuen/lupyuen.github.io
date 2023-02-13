@@ -445,6 +445,24 @@ Probably not.
 
 I don't think I can afford ChatGPT once they start charging... Just like GitHub Copilot 🤔
 
+_Will ChatGPT make your teaching skills obsolete?_
+
+Actually ChatGPT has taught me the value of Authenticity and __Real-Life Experiences__. Thus I shall...
+
+-   Focus on creating __Real Things__ in the Physical World
+
+    [(Like a Terminal App for PinePhone)](https://lupyuen.github.io/articles/terminal)
+
+    Because ChatGPT doesn't have hands or feet... Yet!
+
+-   Do more __Creative Things__: [__quirky diagrams__](https://lupyuen.github.io/articles/terminal), [__moody photos__](https://lupyuen.github.io/articles/lvgl2) and [__oddly-festive videos__](https://youtu.be/kGI_0yK1vws)
+
+    Because ChatGPT can't produce proper pics... Yet!
+
+-   Stop copying and pasting __Other People's Stuff__
+
+    Because ChatGPT will become the perfect Copypasta Teacher!
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
