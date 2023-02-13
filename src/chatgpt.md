@@ -449,7 +449,7 @@ _Will ChatGPT make your teaching skills obsolete?_
 
 Actually ChatGPT has taught me the value of Authenticity and __Real-Life Experiences__. Thus I shall...
 
--   Focus on creating __Real Things__ in the Physical World
+-   Focus on making __Real Things__ in the Physical World
 
     [(Like a Terminal App for PinePhone)](https://lupyuen.github.io/articles/terminal)
 
