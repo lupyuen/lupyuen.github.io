@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>NuttX RTOS for PinePhone: Exploring USB</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="NuttX RTOS for PinePhone: Exploring USB" 
+    data-rh="true">
+<meta property="og:description" 
+    content="What's inside the USB Controller of Pine64 PinePhone... And how we'll create a USB Driver for Apache NuttX RTOS"
+    data-rh="true">
+<meta name="description" 
+    content="What's inside the USB Controller of Pine64 PinePhone... And how we'll create a USB Driver for Apache NuttX RTOS">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/usb2-title.jpg">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">NuttX RTOS for PinePhone: Exploring USB</h1>
+    <nav id="TOC"><ul>
+<li><a href="#pinephone-on-nuttx-becomes-a-feature-phone">1 PinePhone on NuttX becomes a Feature Phone</a><ul></ul></li>
+<li><a href="#usb-driver-and-lte-modem-driver-for-pinephone">2 USB Driver and LTE Modem Driver for PinePhone</a><ul></ul></li>
+<li><a href="#whats-next">3 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2023</em></p>
+<p><img src="https://lupyuen.github.io/images/usb2-title.jpg" alt="TODO" /></p>
+<p><a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) now boots on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> and runs <strong>Touchscreen Apps</strong>!</p>
+<p>TODO</p>
+<h1 id="pinephone-on-nuttx-becomes-a-feature-phone"><a href="#pinephone-on-nuttx-becomes-a-feature-phone">1 PinePhone on NuttX becomes a Feature Phone</a></h1>
+<p>Everything started with a <strong>comment on YouTube</strong>…</p>
+<blockquote>
+<p><em>“I’d like to use or build a ‘feature-phone’-style UI for the PinePhone someday.”</em></p>
+</blockquote>
+<blockquote>
+<p><em>“Is there USB support (In NuttX, and your port)? I think that would be the first step in getting the modem to work.”</em></p>
+</blockquote>
+<p><a href="https://youtu.be/WdiXaMK8cNw">(Source)</a></p>
+<p>TODO</p>
+<p><em>Now that NuttX can run Touchscreen Apps on PinePhone… What next?</em></p>
+<p>Maybe we can turn NuttX on PinePhone into a <strong>Feature Phone</strong>?</p>
+<p>Just <strong>Voice Calls and SMS</strong>, using PinePhone’s LTE Modem.</p>
+<p><em>This is useful because…?</em></p>
+<p>So we can pop a microSD Card (and SIM) into any PinePhone…</p>
+<p>And turn it instantly into an <strong>Emergency Phone</strong>?</p>
+<p><em>What NuttX Drivers would we need?</em></p>
+<p>We need a NuttX Driver for the PinePhone’s <strong>Quectel LTE Modem</strong>.</p>
+<p>Which talks over USB Serial. Thus we also need a NuttX Driver for PinePhone’s <strong>Allwinner A64 USB Controller</strong>.</p>
+<p>More about this in the next section.</p>
+<p><em>And if there’s no LTE Network Coverage? Like in a Natural Disaster?</em></p>
+<p>The Long-Range, Low-Power <strong>LoRa Network</strong> might be good for search and rescue communications.</p>
+<p>(Short Text Messages only plus GPS Geolocation, non-guaranteed message delivery)</p>
+<p>Just attach the LoRa Case to PinePhone…</p>
+<ul>
+<li>
+<p><a href="https://pine64.com/product/pinephone-pinephone-pro-pindio-lora-add-on-case/">PineDio LoRa Add-On Case</a></p>
+<p>(Still in stock!)</p>
+</li>
+</ul>
+<p>We might use JF’s Driver…</p>
+<ul>
+<li><a href="https://codeberg.org/JF002/pinedio-lora-driver">JF002/pinedio-lora-driver</a></li>
+</ul>
+<p>Or the LoRa Driver that we have ported to NuttX…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/sx1262">“LoRa SX1262 on Apache NuttX RTOS”</a></li>
+</ul>
+<p>Or maybe Meshtastic (with Portduino), since it has a complete LoRa Messaging App…</p>
+<ul>
+<li>
+<p><a href="https://meshtastic.org/">Meshtastic</a></p>
+</li>
+<li>
+<p><a href="https://github.com/geeksville/framework-portduino">Portduino</a></p>
+</li>
+</ul>
+<p><em>Will PinePhone on NuttX become a fully-functional smartphone?</em></p>
+<p>Maybe someday? We’re still lacking plenty of drivers: WiFi, Bluetooth LE, GPS, Audio, …</p>
+<p>Probably better to start as a Feature Phone (or LoRa Communication) and build up.</p>
+<h1 id="usb-driver-and-lte-modem-driver-for-pinephone"><a href="#usb-driver-and-lte-modem-driver-for-pinephone">2 USB Driver and LTE Modem Driver for PinePhone</a></h1>
+<p><em>What NuttX Drivers would we need to turn PinePhone into a Feature Phone? (Voice Calls and SMS only)</em></p>
+<p>We need a NuttX Driver for the PinePhone’s <strong>Quectel LTE Modem</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/usb2-title.jpg" alt="Quectel LTE Modem in PinePhone" /></p>
+<p>Which talks over USB Serial. Thus we also need a NuttX Driver for PinePhone’s <strong>Allwinner A64 USB Controller</strong>.</p>
+<p>Here are the docs for Allwinner A64 USB Controller…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf">Allwinner A64 User Manual</a>, Section 7.5 “USB” (Page 583)</p>
+</li>
+<li>
+<p><a href="https://github.com/allwinner-zh/documents/raw/master/A20/A20_User_Manual_v1.4_20150510.pdf">Allwinner A20 User Manual</a>, Section 6.7 “USB DRD” (Page 682), Section 6.8 “USB Host” (Page 683)</p>
+</li>
+<li>
+<p><a href="https://linux-sunxi.org/USB_OTG_Controller_Register_Guide">Allwinner USB OTG Controller Register Guide</a></p>
+</li>
+<li>
+<p><a href="https://linux-sunxi.org/images/7/73/Musbmhdrc.pdf">Mentor Graphics MUSBMHDRC USB 2.0 Multi-Point Dual-Role Controller: Product Specification and Programming Guide</a></p>
+</li>
+</ul>
+<p><em>Any sample code for Allwinner A64 USB?</em></p>
+<p>Refer to the Allwinner A64 USB Drivers in FreeBSD and NetBSD…</p>
+<ul>
+<li>
+<p><a href="https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg_allwinner.c#L95">freebsd/sys/dev/usb/controller/musb_otg_allwinner.c</a></p>
+<p><a href="https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c">freebsd/sys/dev/usb/controller/musb_otg.c</a></p>
+<p><a href="https://github.com/freebsd/freebsd-src/blob/main/sys/arm/allwinner/aw_usbphy.c#L135">freebsd/sys/arm/allwinner/aw_usbphy.c</a></p>
+</li>
+<li>
+<p><a href="https://github.com/NetBSD/src/blob/trunk/sys/arch/arm/sunxi/sunxi_musb.c#L67">NetBSD/sys/arch/arm/sunxi/sunxi_musb.c</a></p>
+<p><a href="https://github.com/NetBSD/src/blob/trunk/sys/arch/arm/sunxi/sunxi_usbphy.c#L95">NetBSD/sys/arch/arm/sunxi/sunxi_usbphy.c</a></p>
+</li>
+</ul>
+<p><em>But Allwinner A64’s Official Docs are horrigibly lacking…</em></p>
+<p>Maybe we refer to the <a href="https://www.nxp.com/webapp/Download?colCode=IMX8MDQLQRM">NXP i.MX 8 USB Docs</a>, and we compare with the FreeBSD / NetBSD USB Drivers for i.MX 8?</p>
+<p>(Since NXP i.MX 8 is so much better documented than Allwinner A64)</p>
+<p><em>How do USB Drivers work in NuttX?</em></p>
+<p>Check out this NuttX Doc on USB Drivers…</p>
+<ul>
+<li><a href="https://nuttx.apache.org/docs/latest/components/drivers/special/usbhost.html">“USB Host-Side Drivers”</a></li>
+</ul>
+<p>And the NuttX USB Driver for STM32…</p>
+<ul>
+<li>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c">stm32_otgfshost.c</a></p>
+</li>
+<li>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfsdev.c">stm32_otgfsdev.c</a></p>
+</li>
+<li>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_usbfs.c">stm32_usbfs.c</a></p>
+</li>
+<li>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_usbhost.c">stm32_usbhost.c</a></p>
+</li>
+</ul>
+<p>(USB OTG FS: Able to act as a device/host/OTG peripheral, at full speed 12Mbps)</p>
+<p>(USB OTG HS: Able to act as a device/host/OTG peripheral, at full speed 12Mbps or high speed 480Mbps)</p>
+<p><em>How did we get the FreeBSD and NetBSD USB Drivers for Allwinner A64?</em></p>
+<p>PinePhone’s Device Tree says that the USB Drivers are…</p>
+<div class="example-wrap"><pre class="language-text"><code>usb@1c19000 {
+  compatible = &quot;allwinner,sun8i-a33-musb&quot;;
+  ...
+phy@1c19400 {
+  compatible = &quot;allwinner,sun50i-a64-usb-phy&quot;;
+</code></pre></div>
+<p>So we searched for <code>allwinner,sun8i-a33-musb</code> and <code>allwinner,sun50i-a64-usb-phy</code>.</p>
+<p>Here’s the PinePhone USB Device Tree: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L647-L721">sun50i-a64-pinephone-1.2.dts</a></p>
+<div class="example-wrap"><pre class="language-text"><code>usb@1c19000 {
+  compatible = &quot;allwinner,sun8i-a33-musb&quot;;
+  reg = &lt;0x1c19000 0x400&gt;;
+  clocks = &lt;0x02 0x29&gt;;
+  resets = &lt;0x02 0x12&gt;;
+  interrupts = &lt;0x00 0x47 0x04&gt;;
+  interrupt-names = &quot;mc&quot;;
+  phys = &lt;0x31 0x00&gt;;
+  phy-names = &quot;usb&quot;;
+  extcon = &lt;0x31 0x00&gt;;
+  dr_mode = &quot;otg&quot;;
+  status = &quot;okay&quot;;
+};
+
+phy@1c19400 {
+  compatible = &quot;allwinner,sun50i-a64-usb-phy&quot;;
+  reg = &lt;0x1c19400 0x14 0x1c1a800 0x04 0x1c1b800 0x04&gt;;
+  reg-names = &quot;phy_ctrl\0pmu0\0pmu1&quot;;
+  clocks = &lt;0x02 0x56 0x02 0x57&gt;;
+  clock-names = &quot;usb0_phy\0usb1_phy&quot;;
+  resets = &lt;0x02 0x00 0x02 0x01&gt;;
+  reset-names = &quot;usb0_reset\0usb1_reset&quot;;
+  status = &quot;okay&quot;;
+  #phy-cells = &lt;0x01&gt;;
+  usb-role-switch;
+  phandle = &lt;0x31&gt;;
+
+  port {
+
+    endpoint {
+      remote-endpoint = &lt;0x32&gt;;
+      phandle = &lt;0x47&gt;;
+    };
+  };
+};
+
+usb@1c1a000 {
+  compatible = &quot;allwinner,sun50i-a64-ehci\0generic-ehci&quot;;
+  reg = &lt;0x1c1a000 0x100&gt;;
+  interrupts = &lt;0x00 0x48 0x04&gt;;
+  clocks = &lt;0x02 0x2c 0x02 0x2a 0x02 0x5b&gt;;
+  resets = &lt;0x02 0x15 0x02 0x13&gt;;
+  status = &quot;okay&quot;;
+};
+
+usb@1c1a400 {
+  compatible = &quot;allwinner,sun50i-a64-ohci\0generic-ohci&quot;;
+  reg = &lt;0x1c1a400 0x100&gt;;
+  interrupts = &lt;0x00 0x49 0x04&gt;;
+  clocks = &lt;0x02 0x2c 0x02 0x5b&gt;;
+  resets = &lt;0x02 0x15&gt;;
+  status = &quot;okay&quot;;
+};
+
+usb@1c1b000 {
+  compatible = &quot;allwinner,sun50i-a64-ehci\0generic-ehci&quot;;
+  reg = &lt;0x1c1b000 0x100&gt;;
+  interrupts = &lt;0x00 0x4a 0x04&gt;;
+  clocks = &lt;0x02 0x2d 0x02 0x2b 0x02 0x5d&gt;;
+  resets = &lt;0x02 0x16 0x02 0x14&gt;;
+  phys = &lt;0x31 0x01&gt;;
+  phy-names = &quot;usb&quot;;
+  status = &quot;okay&quot;;
+};
+
+usb@1c1b400 {
+  compatible = &quot;allwinner,sun50i-a64-ohci\0generic-ohci&quot;;
+  reg = &lt;0x1c1b400 0x100&gt;;
+  interrupts = &lt;0x00 0x4b 0x04&gt;;
+  clocks = &lt;0x02 0x2d 0x02 0x5d&gt;;
+  resets = &lt;0x02 0x16&gt;;
+  phys = &lt;0x31 0x01&gt;;
+  phy-names = &quot;usb&quot;;
+  status = &quot;okay&quot;;
+};
+</code></pre></div><h1 id="whats-next"><a href="#whats-next">3 What’s Next</a></h1>
+<p>TODO</p>
+<p>Meanwhile please check out the other articles on NuttX for PinePhone…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>“Apache NuttX RTOS for PinePhone”</strong></a></li>
+</ul>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>My Current Project: “Apache NuttX RTOS for PinePhone”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/book"><strong>My Other Project: “The RISC-V BL602 Book”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/usb2.md"><strong>lupyuen.github.io/src/usb2.md</strong></a></p>
+
+    
+</body>
+</html>
