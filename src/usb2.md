@@ -2,13 +2,17 @@
 
 📝 _20 Feb 2023_
 
-![PinePhone talks to Quectel LTE Modem over USB](https://lupyuen.github.io/images/usb2-title.jpg)
+![PinePhone talks to LTE Modem over USB](https://lupyuen.github.io/images/usb2-title.jpg)
 
-[__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System) now boots on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)
+_PinePhone talks to LTE Modem over USB_
 
-TODO
+Over the past [__17 articles__](https://github.com/lupyuen/pinephone-nuttx) we talked about porting to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) a Real-Time Operating System: [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what).
 
-In this article we'll dive deep into the __PinePhone USB__ Rabbit Hole...
+Today NuttX can run [__Touchscreen Apps__](https://lupyuen.github.io/articles/terminal) on PinePhone... But it ain't done yet till we can make __Phone Calls__ and send __Text Messages__!
+
+In this article we'll dive into PinePhone's __USB Controller__...
+
+-   Why PinePhone needs USB for __Voice Calls and SMS__
 
 -   What's inside PinePhone's Allwinner A64 __USB Controller__
 
@@ -16,13 +20,11 @@ In this article we'll dive deep into the __PinePhone USB__ Rabbit Hole...
 
 -   We'll study the __FreeBSD Driver__ for the USB Controller
 
--   How we might port the USB Driver to __NuttX RTOS__
+-   And how we might port the USB Driver to __NuttX RTOS__
 
 -   By comparing with the __STM32 USB Driver__ for NuttX
 
--   And how it might turn PinePhone on NuttX into a __Feature Phone__
-
-Everything started with a curious comment...
+Our journey down the PinePhone USB Rabbit Hole starts with a curious comment...
 
 ![Quectel EG25-G LTE Modem inside PinePhone](https://lupyuen.github.io/images/wayland-sd.jpg)
 
