@@ -54,11 +54,13 @@ And turn it instantly into an __Emergency Phone__?
 
 _But we need USB to run PinePhone as a Feature Phone?_
 
-Sadly we can't control PinePhone's LTE Modem by sending simple AT Commands over the UART Port.
+Sadly we can't control PinePhone's LTE Modem by sending AT Commands over the UART Port.
 
 [(Unlike other LTE Modems)](https://lupyuen.github.io/articles/get-started-with-nb-iot-and-quectel-modules)
 
-Instead, PinePhone talks to the __LTE Modem over USB__. Which we'll explain in the next chapter.
+Instead, PinePhone talks to the __LTE Modem over USB__.
+
+(We'll explain in the next chapter)
 
 _What if there's no LTE Network Coverage? Like in a Natural Disaster?_
 
@@ -136,37 +138,43 @@ These are exposed as the __External USB Port__ on PinePhone.
 
 _So PinePhone talks to the LTE Modem on USB Serial?_
 
-TODO: Correct!
+Correct! Here are the __USB Endpoints__ exposed by the LTE Modem (which we'll decipher later)...
 
 ```text
 $ sudo lsusb -v
+
 Bus 002 Device 002: ID 2c7c:0125 Quectel Wireless Solutions Co., Ltd. EC25 LTE modem
 Device Descriptor:
   idVendor           0x2c7c Quectel Wireless Solutions Co., Ltd.
   idProduct          0x0125 EC25 LTE modem
   iManufacturer           1 Quectel
   iProduct                2 EG25-G
+
   Configuration Descriptor:
     bNumInterfaces          5
     Interface Descriptor:
       bInterfaceNumber        0
         bEndpointAddress     0x81  EP 1 IN
         bEndpointAddress     0x01  EP 1 OUT
+
     Interface Descriptor:
       bInterfaceNumber        1
         bEndpointAddress     0x83  EP 3 IN
         bEndpointAddress     0x82  EP 2 IN
         bEndpointAddress     0x02  EP 2 OUT
+
     Interface Descriptor:
       bInterfaceNumber        2
         bEndpointAddress     0x85  EP 5 IN
         bEndpointAddress     0x84  EP 4 IN
         bEndpointAddress     0x03  EP 3 OUT
+
     Interface Descriptor:
       bInterfaceNumber        3
         bEndpointAddress     0x87  EP 7 IN
         bEndpointAddress     0x86  EP 6 IN
         bEndpointAddress     0x04  EP 4 OUT
+
     Interface Descriptor:
       bInterfaceNumber        4
         bEndpointAddress     0x89  EP 9 IN
@@ -176,7 +184,7 @@ Device Descriptor:
 
 [(Source)](https://github.com/lupyuen/pinephone-nuttx#usb-devices-on-pinephone)
 
-TODO
+But first we need to build the PinePhone USB Driver for NuttX...
 
 > ![Sorry Elmo... Allwinner A64's USB Controller isn't documented](https://lupyuen.github.io/images/usb2-meme.jpg)
 
@@ -216,6 +224,8 @@ TODO
 
 _Any sample code for Allwinner A64 USB?_
 
+TODO
+
 Refer to the Allwinner A64 USB Drivers in FreeBSD and NetBSD...
 
 -   [freebsd/sys/dev/usb/controller/ musb_otg_allwinner.c](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg_allwinner.c#L95)
@@ -228,9 +238,9 @@ Refer to the Allwinner A64 USB Drivers in FreeBSD and NetBSD...
 
     [NetBSD/sys/arch/arm/sunxi/ sunxi_usbphy.c](https://github.com/NetBSD/src/blob/trunk/sys/arch/arm/sunxi/sunxi_usbphy.c#L95)
 
-TODO
-
 _How do USB Drivers work in NuttX?_
+
+TODO
 
 Check out this NuttX Doc on USB Drivers...
 
@@ -251,6 +261,8 @@ And the NuttX USB Driver for STM32...
 (USB OTG HS: Able to act as a device/host/OTG peripheral, at full speed 12Mbps or high speed 480Mbps)
 
 _How did we get the FreeBSD and NetBSD USB Drivers for Allwinner A64?_
+
+TODO
 
 PinePhone's Device Tree says that the USB Drivers are...
 
