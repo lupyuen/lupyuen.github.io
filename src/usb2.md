@@ -36,13 +36,13 @@ _Now that NuttX can run Touchscreen Apps on PinePhone... What next?_
 
 We might turn PinePhone on NuttX into a __Feature Phone__, thanks to an inspiring comment on YouTube...
 
->   _"I'd like to use or build a 'feature-phone'-style UI for the PinePhone someday."_
+> _"I'd like to use or build a 'feature-phone'-style UI for the PinePhone someday"_
 
->   _"Is there USB support (In NuttX, and your port)? I think that would be the first step in getting the modem to work."_
+> _"Is there USB support (In NuttX, and your port)? I think that would be the first step in getting the modem to work"_
 
-[(Source)](https://youtu.be/WdiXaMK8cNw)
+> [(Source)](https://youtu.be/WdiXaMK8cNw)
 
-Excellent idea! We can turn NuttX on PinePhone into a __Feature Phone__...
+Excellent Idea! We'll turn NuttX on PinePhone into a __Feature Phone__...
 
 Just __Voice Calls and SMS__, using PinePhone's LTE Modem.
 
@@ -136,7 +136,7 @@ These are exposed as the __External USB Port__ on PinePhone.
 
 _So PinePhone talks to the LTE Modem on USB Serial?_
 
-Correct!
+TODO: Correct!
 
 ```text
 $ sudo lsusb -v
@@ -178,7 +178,11 @@ Device Descriptor:
 
 TODO
 
-# USB Driver and LTE Modem Driver for PinePhone
+> ![Sorry Elmo... Allwinner A64's USB Controller isn't documented](https://lupyuen.github.io/images/usb2-meme.jpg)
+
+> _Sorry Elmo... Allwinner A64's USB Controller isn't documented_
+
+# Documenting the Allwinner A64 USB Controller
 
 TODO
 
@@ -186,15 +190,25 @@ _What NuttX Drivers would we need to turn PinePhone into a Feature Phone? (Voice
 
 We need a NuttX Driver for the PinePhone's __Quectel LTE Modem__...
 
-![PinePhone talks to Quectel LTE Modem over USB](https://lupyuen.github.io/images/usb2-title.jpg)
-
 Which talks over USB Serial. Thus we also need a NuttX Driver for PinePhone's __Allwinner A64 USB Controller__.
 
-Here are the docs for Allwinner A64 USB Controller...
+Here are the Official Docs for Allwinner A64 USB Controller...
 
--   [Allwinner A64 User Manual](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf), Section 7.5 "USB" (Page 583)
+-   [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
--   [Allwinner A20 User Manual](https://github.com/allwinner-zh/documents/raw/master/A20/A20_User_Manual_v1.4_20150510.pdf), Section 6.7 "USB DRD" (Page 682), Section 6.8 "USB Host" (Page 683)
+    Section 7.5: USB (Page 583)
+
+_But Allwinner A64's Official Docs are horrigibly lacking..._
+
+Thanks to the [__Sunxi Community__](https://linux-sunxi.org/USB_OTG_Controller_Register_Guide) we have more info on the USB Controller...
+
+> _"All Allwinner A-series SoCs come with one USB OTG controller. The controller has been identified as a __Mentor Graphics Inventra HDRC__ (High-speed Dual Role Controller), which is supported by the musb driver"_
+
+> _"However, the register addresses are scrambled"_
+
+> [(Source)](https://linux-sunxi.org/USB_OTG_Controller_Register_Guide)
+
+TODO
 
 -   [Allwinner USB OTG Controller Register Guide](https://linux-sunxi.org/USB_OTG_Controller_Register_Guide)
 
@@ -204,21 +218,17 @@ _Any sample code for Allwinner A64 USB?_
 
 Refer to the Allwinner A64 USB Drivers in FreeBSD and NetBSD...
 
--   [freebsd/sys/dev/usb/controller/musb_otg_allwinner.c](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg_allwinner.c#L95)
+-   [freebsd/sys/dev/usb/controller/ musb_otg_allwinner.c](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg_allwinner.c#L95)
 
-    [freebsd/sys/dev/usb/controller/musb_otg.c](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c)
+    [freebsd/sys/dev/usb/controller/ musb_otg.c](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c)
 
-    [freebsd/sys/arm/allwinner/aw_usbphy.c](https://github.com/freebsd/freebsd-src/blob/main/sys/arm/allwinner/aw_usbphy.c#L135)
+    [freebsd/sys/arm/allwinner/ aw_usbphy.c](https://github.com/freebsd/freebsd-src/blob/main/sys/arm/allwinner/aw_usbphy.c#L135)
 
--   [NetBSD/sys/arch/arm/sunxi/sunxi_musb.c](https://github.com/NetBSD/src/blob/trunk/sys/arch/arm/sunxi/sunxi_musb.c#L67)
+-   [NetBSD/sys/arch/arm/sunxi/ sunxi_musb.c](https://github.com/NetBSD/src/blob/trunk/sys/arch/arm/sunxi/sunxi_musb.c#L67)
 
-    [NetBSD/sys/arch/arm/sunxi/sunxi_usbphy.c](https://github.com/NetBSD/src/blob/trunk/sys/arch/arm/sunxi/sunxi_usbphy.c#L95)
+    [NetBSD/sys/arch/arm/sunxi/ sunxi_usbphy.c](https://github.com/NetBSD/src/blob/trunk/sys/arch/arm/sunxi/sunxi_usbphy.c#L95)
 
-_But Allwinner A64's Official Docs are horrigibly lacking..._
-
-Maybe we refer to the [NXP i.MX 8 USB Docs](https://www.nxp.com/webapp/Download?colCode=IMX8MDQLQRM), and we compare with the FreeBSD / NetBSD USB Drivers for i.MX 8?
-
-(Since NXP i.MX 8 is so much better documented than Allwinner A64)
+TODO
 
 _How do USB Drivers work in NuttX?_
 
