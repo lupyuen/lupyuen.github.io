@@ -113,6 +113,7 @@
 </blockquote>
 <p>Excellent Idea! We’ll turn NuttX on PinePhone into a <strong>Feature Phone</strong>…</p>
 <p>Just <strong>Voice Calls and SMS</strong>, using PinePhone’s LTE Modem.</p>
+<p>(<strong>LTE Modem</strong> is the hardware inside PinePhone that handles 4G Voice Calls, SMS and Mobile Data)</p>
 <p><em>This is useful because…?</em></p>
 <p>So we can pop a microSD Card (and SIM) into any PinePhone…</p>
 <p>And turn it instantly into an <strong>Emergency Phone</strong>?</p>
@@ -120,7 +121,7 @@
 <p>Sadly we can’t control PinePhone’s LTE Modem by sending AT Commands over the UART Port.</p>
 <p><a href="https://lupyuen.github.io/articles/get-started-with-nb-iot-and-quectel-modules">(Unlike other LTE Modems)</a></p>
 <p>Instead, PinePhone talks to the <strong>LTE Modem over USB</strong>.</p>
-<p>(We’ll explain in the next chapter)</p>
+<p>(Explained in the next chapter)</p>
 <p><em>What if there’s no LTE Network Coverage? Like in a Natural Disaster?</em></p>
 <p>The Long-Range, Low-Power <strong>LoRa Network</strong> might be good for search and rescue communications.</p>
 <p>(Short Text Messages only plus GPS Geolocation, non-guaranteed message delivery)</p>
@@ -154,7 +155,7 @@
 <p><img src="https://lupyuen.github.io/images/usb2-title.jpg" alt="Quectel EG25-G LTE Modem in PinePhone Schematic (Page 15)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>Quectel EG25-G LTE Modem in PinePhone Schematic (Page 15)</em></a></p>
 <h1 id="lte-modem-on-usb"><a href="#lte-modem-on-usb">2 LTE Modem on USB</a></h1>
-<p><em>How is the LTE Modem connected to PinePhone?</em></p>
+<p><em>What’s this LTE Modem?</em></p>
 <p>Inside PinePhone is the <a href="https://wiki.pine64.org/index.php/PinePhone#Modem"><strong>Quectel EG25-G LTE Modem</strong></a> for 4G Voice Calls, SMS, Mobile Data and GPS…</p>
 <ul>
 <li>
@@ -162,7 +163,11 @@
 </li>
 <li>
 <p><a href="https://wiki.pine64.org/wiki/File:Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a></p>
+<p><a href="https://xnux.eu/devices/feature/modem-pp.html#toc-modem-on-pinephone">(EG25-G runs on <strong>Qualcomm MDM 9607</strong> with a Cortex-A7 CPU inside)</a></p>
 </li>
+</ul>
+<p>To control the LTE Modem, we send <strong>AT Commands</strong>…</p>
+<ul>
 <li>
 <p><a href="https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf"><strong>EG25-G AT Commands</strong></a></p>
 </li>
@@ -170,7 +175,10 @@
 <p><a href="https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_GNSS_Application_Note_V1.3.pdf"><strong>EG25-G GNSS</strong></a></p>
 </li>
 </ul>
-<p><a href="https://xnux.eu/devices/feature/modem-pp.html#toc-modem-on-pinephone">(EG25-G runs on <strong>Qualcomm MDM 9607</strong> with a Cortex-A7 CPU inside)</a></p>
+<p>So to dial the number <strong><code>1711</code></strong>, we would send this AT Command…</p>
+<div class="example-wrap"><pre class="language-text"><code>ATD1711;
+</code></pre></div>
+<p><em>How is the LTE Modem connected to PinePhone?</em></p>
 <p>According to the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> (Page 15), the Quectel EG25 LTE Modem connects to the Allwinner A64 SoC on the USB Pins…</p>
 <ul>
 <li>
