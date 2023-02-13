@@ -68,9 +68,10 @@
     <h1 class="title">NuttX RTOS for PinePhone: Exploring USB</h1>
     <nav id="TOC"><ul>
 <li><a href="#pinephone-on-nuttx-becomes-a-feature-phone">1 PinePhone on NuttX becomes a Feature Phone</a><ul></ul></li>
-<li><a href="#usb-driver-and-lte-modem-driver-for-pinephone">2 USB Driver and LTE Modem Driver for PinePhone</a><ul></ul></li>
-<li><a href="#whats-next">3 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2023</em></p>
-<p><img src="https://lupyuen.github.io/images/usb2-title.jpg" alt="TODO" /></p>
+<li><a href="#pinephone-talks-to-lte-modem-on-usb">2 PinePhone talks to LTE Modem on USB</a><ul></ul></li>
+<li><a href="#usb-driver-and-lte-modem-driver-for-pinephone">3 USB Driver and LTE Modem Driver for PinePhone</a><ul></ul></li>
+<li><a href="#whats-next">4 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2023</em></p>
+<p><img src="https://lupyuen.github.io/images/usb2-title.jpg" alt="PinePhone talks to Quectel LTE Modem over USB" /></p>
 <p><a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) now boots on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a></p>
 <p>TODO</p>
 <p>In this article we’ll dive deep into the <strong>PinePhone USB</strong> Rabbit Hole…</p>
@@ -111,9 +112,9 @@
 <p>So we can pop a microSD Card (and SIM) into any PinePhone…</p>
 <p>And turn it instantly into an <strong>Emergency Phone</strong>?</p>
 <p><em>But we need USB to run PinePhone as a Feature Phone?</em></p>
-<p>Apparently we can’t control PinePhone’s LTE Modem by sending simple AT Commands over the Allwinner A64 UART Port.</p>
+<p>Sadly we can’t control PinePhone’s LTE Modem by sending simple AT Commands over the UART Port.</p>
 <p><a href="https://lupyuen.github.io/articles/get-started-with-nb-iot-and-quectel-modules">(Unlike other LTE Modems)</a></p>
-<p>Instead, PinePhone’s LTE Modem <strong>talks over USB</strong>. Which we’ll explain in the next chapter.</p>
+<p>Instead, PinePhone talks to the <strong>LTE Modem over USB</strong>. Which we’ll explain in the next chapter.</p>
 <p><em>What if there’s no LTE Network Coverage? Like in a Natural Disaster?</em></p>
 <p>The Long-Range, Low-Power <strong>LoRa Network</strong> might be good for search and rescue communications.</p>
 <p>(Short Text Messages only plus GPS Geolocation, non-guaranteed message delivery)</p>
@@ -132,7 +133,7 @@
 <ul>
 <li><a href="https://lupyuen.github.io/articles/sx1262"><strong>“LoRa SX1262 on Apache NuttX RTOS”</strong></a></li>
 </ul>
-<p>Or maybe Meshtastic (with Portduino), since it has a complete LoRa Mesh Messaging App…</p>
+<p>Or maybe Meshtastic (with Portduino), since it has a complete <strong>LoRa Mesh Messaging App</strong>…</p>
 <ul>
 <li>
 <p><a href="https://meshtastic.org/"><strong>Meshtastic</strong></a></p>
@@ -144,11 +145,34 @@
 <p><em>Will PinePhone on NuttX become a fully-functional smartphone?</em></p>
 <p>Maybe someday? We’re still lacking plenty of drivers: WiFi, Bluetooth LE, GPS, Audio, …</p>
 <p>Probably better to start as a Feature Phone (or LoRa Communication) and build up.</p>
-<h1 id="usb-driver-and-lte-modem-driver-for-pinephone"><a href="#usb-driver-and-lte-modem-driver-for-pinephone">2 USB Driver and LTE Modem Driver for PinePhone</a></h1>
+<p><img src="https://lupyuen.github.io/images/usb2-title.jpg" alt="PinePhone talks to Quectel LTE Modem over USB" /></p>
+<h1 id="pinephone-talks-to-lte-modem-on-usb"><a href="#pinephone-talks-to-lte-modem-on-usb">2 PinePhone talks to LTE Modem on USB</a></h1>
+<p>According to the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> (Page 15), the <strong>Quectel EG25 LTE Modem</strong> connects to the Allwinner A64 SoC on pins <strong>USB1-DP</strong> and <strong>USB1-DM</strong>. (Pic above)</p>
+<p><em>Only 2 pins?</em></p>
+<p>That’s because <a href="https://en.wikipedia.org/wiki/USB_hardware#Pinouts"><strong>USB 2.0</strong></a> runs on 2 data wires and 2 power wires…</p>
+<ul>
+<li>
+<p><strong>Data+</strong> (USB1-DP in the pic above)</p>
+</li>
+<li>
+<p><strong>Data-</strong> (USB1-DM in the pic above)</p>
+</li>
+<li>
+<p><strong>5V</strong></p>
+</li>
+<li>
+<p><strong>GND</strong></p>
+</li>
+</ul>
+<p><a href="https://en.wikipedia.org/wiki/Differential_signalling">(Due to <strong>Differential Signalling</strong>)</a> </p>
+<p><em>What about USB0-DP and USB0-DM?</em></p>
+<p>These are exposed as the <strong>External USB Port</strong> on PinePhone.</p>
+<p>TODO</p>
+<h1 id="usb-driver-and-lte-modem-driver-for-pinephone"><a href="#usb-driver-and-lte-modem-driver-for-pinephone">3 USB Driver and LTE Modem Driver for PinePhone</a></h1>
 <p>TODO</p>
 <p><em>What NuttX Drivers would we need to turn PinePhone into a Feature Phone? (Voice Calls and SMS only)</em></p>
 <p>We need a NuttX Driver for the PinePhone’s <strong>Quectel LTE Modem</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/usb2-title.jpg" alt="Quectel LTE Modem in PinePhone" /></p>
+<p><img src="https://lupyuen.github.io/images/usb2-title.jpg" alt="PinePhone talks to Quectel LTE Modem over USB" /></p>
 <p>Which talks over USB Serial. Thus we also need a NuttX Driver for PinePhone’s <strong>Allwinner A64 USB Controller</strong>.</p>
 <p>Here are the docs for Allwinner A64 USB Controller…</p>
 <ul>
@@ -288,7 +312,7 @@ usb@1c1b400 {
   phy-names = &quot;usb&quot;;
   status = &quot;okay&quot;;
 };
-</code></pre></div><h1 id="whats-next"><a href="#whats-next">3 What’s Next</a></h1>
+</code></pre></div><h1 id="whats-next"><a href="#whats-next">4 What’s Next</a></h1>
 <p>TODO</p>
 <p>Meanwhile please check out the other articles on NuttX for PinePhone…</p>
 <ul>
