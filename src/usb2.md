@@ -30,7 +30,7 @@ Our journey down the PinePhone USB Rabbit Hole begins with a curious comment...
 
 _Quectel EG25-G LTE Modem inside PinePhone_
 
-# PinePhone on NuttX becomes a Feature Phone
+# PinePhone + NuttX = Feature Phone
 
 _Now that NuttX can run Touchscreen Apps on PinePhone... What next?_
 
@@ -98,7 +98,7 @@ Probably better to start as a Feature Phone (or LoRa Communication) and build up
 
 [_Quectel EG25-G LTE Modem in PinePhone Schematic (Page 15)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
 
-# PinePhone talks to LTE Modem on USB
+# LTE Modem on USB
 
 _How is the LTE Modem connected to PinePhone?_
 
@@ -192,7 +192,7 @@ But first we need to build the PinePhone USB Driver for NuttX...
 
 > _Sorry Elmo... Allwinner A64's USB Controller isn't documented_
 
-# Documenting the Allwinner A64 USB Controller
+# Document the USB Controller
 
 TODO
 
@@ -210,9 +210,11 @@ Here are the Official Docs for Allwinner A64 USB Controller...
 
 _But Allwinner A64's Official Docs are horrigibly lacking..._
 
-Thanks to the [__Sunxi Community__](https://linux-sunxi.org/USB_OTG_Controller_Register_Guide) we have more info on the USB Controller...
+Thanks to the [__Sunxi Community__](https://linux-sunxi.org/USB_OTG_Controller_Register_Guide) we have a valuable tip on the USB Controller...
 
-> _"All Allwinner A-series SoCs come with one USB OTG controller. The controller has been identified as a __Mentor Graphics Inventra HDRC__ (High-speed Dual Role Controller), which is supported by the musb driver"_
+> _"All Allwinner A-series SoCs come with one USB OTG controller"_
+
+> _"The controller has been identified as a __Mentor Graphics Inventra HDRC__ (High-speed Dual Role Controller), which is supported by the musb driver"_
 
 > _"However, the register addresses are scrambled"_
 
