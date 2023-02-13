@@ -8,6 +8,16 @@
 
 TODO
 
+Mentor Graphics
+
+FreeBSD Driver
+
+NuttX Driver
+
+STM32 Driver
+
+Feature Phone
+
 # PinePhone on NuttX becomes a Feature Phone
 
 Everything started with a __comment on YouTube__...
