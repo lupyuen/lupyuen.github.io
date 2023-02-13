@@ -46,6 +46,8 @@ Excellent Idea! We'll turn NuttX on PinePhone into a __Feature Phone__...
 
 Just __Voice Calls and SMS__, using PinePhone's LTE Modem.
 
+(__LTE Modem__ is the hardware inside PinePhone that handles 4G Voice Calls, SMS and Mobile Data)
+
 _This is useful because...?_
 
 So we can pop a microSD Card (and SIM) into any PinePhone...
@@ -60,7 +62,7 @@ Sadly we can't control PinePhone's LTE Modem by sending AT Commands over the UAR
 
 Instead, PinePhone talks to the __LTE Modem over USB__.
 
-(We'll explain in the next chapter)
+(Explained in the next chapter)
 
 _What if there's no LTE Network Coverage? Like in a Natural Disaster?_
 
@@ -100,7 +102,7 @@ Probably better to start as a Feature Phone (or LoRa Communication) and build up
 
 # LTE Modem on USB
 
-_How is the LTE Modem connected to PinePhone?_
+_What's this LTE Modem?_
 
 Inside PinePhone is the [__Quectel EG25-G LTE Modem__](https://wiki.pine64.org/index.php/PinePhone#Modem) for 4G Voice Calls, SMS, Mobile Data and GPS...
 
@@ -108,11 +110,21 @@ Inside PinePhone is the [__Quectel EG25-G LTE Modem__](https://wiki.pine64.org/i
 
 -   [__EG25-G Hardware Design__](https://wiki.pine64.org/wiki/File:Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
+    [(EG25-G runs on __Qualcomm MDM 9607__ with a Cortex-A7 CPU inside)](https://xnux.eu/devices/feature/modem-pp.html#toc-modem-on-pinephone)
+
+To control the LTE Modem, we send __AT Commands__...
+
 -   [__EG25-G AT Commands__](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
 -   [__EG25-G GNSS__](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_GNSS_Application_Note_V1.3.pdf)
 
-[(EG25-G runs on __Qualcomm MDM 9607__ with a Cortex-A7 CPU inside)](https://xnux.eu/devices/feature/modem-pp.html#toc-modem-on-pinephone)
+So to dial the number __`1711`__, we would send this AT Command...
+
+```text
+ATD1711;
+```
+
+_How is the LTE Modem connected to PinePhone?_
 
 According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (Page 15), the Quectel EG25 LTE Modem connects to the Allwinner A64 SoC on the USB Pins...
 
