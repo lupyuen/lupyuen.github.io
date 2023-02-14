@@ -234,15 +234,15 @@ The Sunxi Community has helpfully documented the __Scrambled USB Registers__...
 
 Let's find a Reference Driver for the Mentor Graphics USB Controller...
 
-> ![USB Controller in PinePhone Device Tree](https://lupyuen.github.io/images/usb2-devicetree.png)
+![USB Controller in PinePhone Device Tree](https://lupyuen.github.io/images/usb2-devicetree.png)
 
-> [_USB Controller in PinePhone Device Tree_](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L647-L721)
+[_USB Controller in PinePhone Device Tree_](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L647-L721)
 
 # Search for USB Driver
 
 TODO
 
-_How do we find a driver for Allwinner A64's USB Controller?_
+_How to find a driver for Allwinner A64's USB Controller?_
 
 PinePhone's Device Tree says that the USB Drivers are...
 
