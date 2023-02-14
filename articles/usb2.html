@@ -278,15 +278,11 @@ Device Descriptor:
 <li><a href="https://linux-sunxi.org/USB_OTG_Controller_Register_Guide"><strong>Allwinner USB OTG Controller Register Guide</strong></a></li>
 </ul>
 <p>Let’s find a Reference Driver for the Mentor Graphics USB Controller…</p>
-<blockquote>
 <p><img src="https://lupyuen.github.io/images/usb2-devicetree.png" alt="USB Controller in PinePhone Device Tree" /></p>
-</blockquote>
-<blockquote>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L647-L721"><em>USB Controller in PinePhone Device Tree</em></a></p>
-</blockquote>
 <h1 id="search-for-usb-driver"><a href="#search-for-usb-driver">5 Search for USB Driver</a></h1>
 <p>TODO</p>
-<p><em>How do we find a driver for Allwinner A64’s USB Controller?</em></p>
+<p><em>How to find a driver for Allwinner A64’s USB Controller?</em></p>
 <p>PinePhone’s Device Tree says that the USB Drivers are…</p>
 <div class="example-wrap"><pre class="language-text"><code>usb@1c19000 {
   compatible = &quot;allwinner,sun8i-a33-musb&quot;;
