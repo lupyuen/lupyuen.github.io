@@ -114,13 +114,13 @@ Instead, we talk to the LTE Modem over USB...
 
 _How is the LTE Modem connected to PinePhone?_
 
-According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (Page 15), the Quectel EG25 LTE Modem connects to the Allwinner A64 SoC on the USB Pins...
+According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (Page 15), the Quectel EG25 LTE Modem connects to the __Allwinner A64 SoC__ on the USB Pins...
 
 -   __USB1-DP__
 
 -   __USB1-DM__
 
-    (Pic above)
+Which is __Port USB1__ of the Allwinner A64 SoC. (Pic above)
 
 _Only 2 pins?_
 
@@ -136,7 +136,7 @@ That's because [__USB 2.0__](https://en.wikipedia.org/wiki/USB_hardware#Pinouts)
 
 _What about USB0-DP and USB0-DM?_
 
-These are exposed as the __External USB Port__ on PinePhone.
+__Port USB0__ of the Allwinner A64 SoC is exposed as the __External USB Port__ on PinePhone.
 
 _So PinePhone talks to the LTE Modem on USB Serial?_
 
@@ -194,23 +194,27 @@ But first we need to build the PinePhone USB Driver for NuttX...
 
 # Document the USB Controller
 
-TODO
+_To turn PinePhone into a Feature Phone (Voice Calls and SMS only)..._
 
-_What NuttX Drivers would we need to turn PinePhone into a Feature Phone? (Voice Calls and SMS only)_
+_What NuttX Drivers would we need?_
 
-We need a NuttX Driver for the PinePhone's __Quectel LTE Modem__...
+We need a NuttX Driver for the PinePhone's [__Quectel LTE Modem__](https://lupyuen.github.io/articles/usb2#quectel-eg25-g-lte-modem)... Which talks over [__USB Serial__](https://lupyuen.github.io/articles/usb2#lte-modem-talks-usb).
 
-Which talks over USB Serial. Thus we also need a NuttX Driver for PinePhone's __Allwinner A64 USB Controller__.
+Thus we also need a NuttX Driver for PinePhone's __Allwinner A64 USB Controller__.
 
-Here are the Official Docs for Allwinner A64 USB Controller...
+_So we check the USB Controller docs?_
+
+Allwinner A64's USB Controller is officially documented in...
 
 -   [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
-    Section 7.5 "USB" (Page 583)
+    See __Section 7.5 "USB"__ (Page 583)
 
-_But Allwinner A64's Official Docs are horrigibly lacking..._
+Which doesn't say much about the USB Controller!
 
-Thanks to the [__Sunxi Community__](https://linux-sunxi.org/USB_OTG_Controller_Register_Guide) we have a valuable tip on the USB Controller...
+_Allwinner A64's Official Docs are horrigibly lacking..._
+
+But thanks to the [__Sunxi Community__](https://linux-sunxi.org/USB_OTG_Controller_Register_Guide) we have a valuable tip on the USB Controller...
 
 > _"All Allwinner A-series SoCs come with one USB OTG controller"_
 
@@ -220,13 +224,15 @@ Thanks to the [__Sunxi Community__](https://linux-sunxi.org/USB_OTG_Controller_R
 
 > [(Source)](https://linux-sunxi.org/USB_OTG_Controller_Register_Guide)
 
-TODO
+Aha! Allwinner A64's USB Controller is actually a __Mentor Graphics USB Controller__!
+
+-   [__Mentor Graphics MUSBMHDRC USB 2.0 Multi-Point Dual-Role Controller__](https://linux-sunxi.org/images/7/73/Musbmhdrc.pdf)
+
+The Sunxi Community has helpfully documented the __Scrambled USB Registers__...
 
 -   [__Allwinner USB OTG Controller Register Guide__](https://linux-sunxi.org/USB_OTG_Controller_Register_Guide)
 
--   [__Mentor Graphics MUSBMHDRC USB 2.0 Multi-Point Dual-Role Controller: Product Specification and Programming Guide__](https://linux-sunxi.org/images/7/73/Musbmhdrc.pdf)
-
-TODO
+Let's find a Reference Driver for the Mentor Graphics USB Controller...
 
 > ![USB Controller in PinePhone Device Tree](https://lupyuen.github.io/images/usb2-devicetree.png)
 
@@ -236,7 +242,7 @@ TODO
 
 TODO
 
-_How did we get the FreeBSD and NetBSD USB Drivers for Allwinner A64?_
+_How do we find a driver for Allwinner A64's USB Controller?_
 
 PinePhone's Device Tree says that the USB Drivers are...
 
