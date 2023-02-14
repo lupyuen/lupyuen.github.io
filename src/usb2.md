@@ -354,6 +354,10 @@ Refer to the Allwinner A64 USB Drivers in FreeBSD and NetBSD...
 
     [NetBSD/sys/arch/arm/sunxi/ sunxi_usbphy.c](https://github.com/NetBSD/src/blob/trunk/sys/arch/arm/sunxi/sunxi_usbphy.c#L95)
 
+[(And Linux too)](https://github.com/torvalds/linux/blob/master/drivers/usb/musb/sunxi.c)
+
+Today we'll study the FreeBSD Driver because it seems easiest to understand.
+
 # USB Drivers in NuttX
 
 TODO
@@ -362,7 +366,7 @@ _How do USB Drivers work in NuttX?_
 
 Check out this NuttX Doc on USB Drivers...
 
--   ["USB Host-Side Drivers"](https://nuttx.apache.org/docs/latest/components/drivers/special/usbhost.html)
+-   [__"USB Host-Side Drivers"__](https://nuttx.apache.org/docs/latest/components/drivers/special/usbhost.html)
 
 # STM32 USB Driver for NuttX
 
