@@ -401,3 +401,35 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/usb2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/usb2.md)
+
+# Appendix: LoRa Communicator for PinePhone on NuttX
+
+Earlier we talked about turning PinePhone on NuttX into a Feature Phone for __Emergency Use__...
+
+-   [__"PinePhone + NuttX = Feature Phone"__](https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone)
+
+_What if there's no LTE Network Coverage? Like in a Natural Disaster?_
+
+The Long-Range, Low-Power __LoRa Network__ might be good for search and rescue communications.
+
+(Short Text Messages only plus GPS Geolocation, non-guaranteed message delivery)
+
+Just attach the LoRa Case to PinePhone...
+
+-   [__PineDio LoRa Add-On Case__](https://pine64.com/product/pinephone-pinephone-pro-pindio-lora-add-on-case/)
+
+    (Still in stock!)
+
+We might use JF's Driver...
+
+-   [__JF002/pinedio-lora-driver__](https://codeberg.org/JF002/pinedio-lora-driver)
+
+Or the LoRa Driver that we have ported to NuttX...
+
+-   [__"LoRa SX1262 on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/sx1262)
+
+Or maybe Meshtastic (with Portduino), since it has a complete __LoRa Mesh Messaging App__...
+
+-   [__Meshtastic LoRa Mesh Network__](https://meshtastic.org/)
+
+-   [__Portduino Arduino Adapter for Linux__](https://github.com/geeksville/framework-portduino)
