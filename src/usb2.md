@@ -56,29 +56,11 @@ And turn it instantly into an __Emergency Phone__ with NuttX?
 
 _What if there's no LTE Network Coverage? Like in a Natural Disaster?_
 
-The Long-Range, Low-Power __LoRa Network__ might be good for search and rescue communications.
+The Long-Range, Low-Power [__LoRa Network__](https://makezine.com/article/technology/go-long-with-lora-radio/) might be good for search and rescue communications.
 
-(Short Text Messages only plus GPS Geolocation, non-guaranteed message delivery)
+We could attach the [__PineDio LoRa Add-On Case__](https://lupyuen.github.io/articles/usb2#appendix-lora-communicator-for-pinephone-on-nuttx) to turn PinePhone into a __LoRa Communicator__.
 
-Just attach the LoRa Case to PinePhone...
-
--   [__PineDio LoRa Add-On Case__](https://pine64.com/product/pinephone-pinephone-pro-pindio-lora-add-on-case/)
-
-    (Still in stock!)
-
-We might use JF's Driver...
-
--   [__JF002/pinedio-lora-driver__](https://codeberg.org/JF002/pinedio-lora-driver)
-
-Or the LoRa Driver that we have ported to NuttX...
-
--   [__"LoRa SX1262 on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/sx1262)
-
-Or maybe Meshtastic (with Portduino), since it has a complete __LoRa Mesh Messaging App__...
-
--   [__Meshtastic LoRa Mesh Network__](https://meshtastic.org/)
-
--   [__Portduino Arduino Adapter for Linux__](https://github.com/geeksville/framework-portduino)
+[(More about this)](https://lupyuen.github.io/articles/usb2#appendix-lora-communicator-for-pinephone-on-nuttx)
 
 _Will PinePhone on NuttX become a fully-functional smartphone?_
 
@@ -108,7 +90,7 @@ To control the LTE Modem, we send __AT Commands__...
 
 -   [__EG25-G GNSS__](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_GNSS_Application_Note_V1.3.pdf)
 
-So to dial the number __`1711`__, we would send this AT Command...
+So to dial the number __`1711`__, we send this AT Command...
 
 ```text
 ATD1711;
@@ -116,19 +98,19 @@ ATD1711;
 
 [(EG25-G runs on __Qualcomm MDM 9607__ with a Cortex-A7 CPU inside)](https://xnux.eu/devices/feature/modem-pp.html#toc-modem-on-pinephone)
 
-_We send AT Commands to the LTE Modem over UART?_
+_We send the AT Commands over UART?_
 
 Sadly we can't send AT Commands to PinePhone's LTE Modem over the UART Port.
 
 [(Unlike other LTE Modems)](https://lupyuen.github.io/articles/get-started-with-nb-iot-and-quectel-modules)
 
-Instead, PinePhone talks to the LTE Modem over USB...
+Instead, we talk to the LTE Modem over USB...
 
 ![Quectel EG25-G LTE Modem in PinePhone Schematic (Page 15)](https://lupyuen.github.io/images/usb2-title.jpg)
 
 [_Quectel EG25-G LTE Modem in PinePhone Schematic (Page 15)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
 
-# LTE Modem talks on USB
+# LTE Modem talks USB
 
 _How is the LTE Modem connected to PinePhone?_
 
@@ -244,47 +226,11 @@ TODO
 
 -   [Mentor Graphics MUSBMHDRC USB 2.0 Multi-Point Dual-Role Controller: Product Specification and Programming Guide](https://linux-sunxi.org/images/7/73/Musbmhdrc.pdf)
 
-_Any sample code for Allwinner A64 USB?_
+# Search for USB Driver
 
 TODO
-
-Refer to the Allwinner A64 USB Drivers in FreeBSD and NetBSD...
-
--   [freebsd/sys/dev/usb/controller/ musb_otg_allwinner.c](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg_allwinner.c#L95)
-
-    [freebsd/sys/dev/usb/controller/ musb_otg.c](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c)
-
-    [freebsd/sys/arm/allwinner/ aw_usbphy.c](https://github.com/freebsd/freebsd-src/blob/main/sys/arm/allwinner/aw_usbphy.c#L135)
-
--   [NetBSD/sys/arch/arm/sunxi/ sunxi_musb.c](https://github.com/NetBSD/src/blob/trunk/sys/arch/arm/sunxi/sunxi_musb.c#L67)
-
-    [NetBSD/sys/arch/arm/sunxi/ sunxi_usbphy.c](https://github.com/NetBSD/src/blob/trunk/sys/arch/arm/sunxi/sunxi_usbphy.c#L95)
-
-_How do USB Drivers work in NuttX?_
-
-TODO
-
-Check out this NuttX Doc on USB Drivers...
-
--   ["USB Host-Side Drivers"](https://nuttx.apache.org/docs/latest/components/drivers/special/usbhost.html)
-
-And the NuttX USB Driver for STM32...
-
--   [stm32_otgfshost.c](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c)
-
--   [stm32_otgfsdev.c](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfsdev.c)
-
--   [stm32_usbfs.c](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_usbfs.c)
-
--   [stm32_usbhost.c](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_usbhost.c)
-
-(USB OTG FS: Able to act as a device/host/OTG peripheral, at full speed 12Mbps)
-
-(USB OTG HS: Able to act as a device/host/OTG peripheral, at full speed 12Mbps or high speed 480Mbps)
 
 _How did we get the FreeBSD and NetBSD USB Drivers for Allwinner A64?_
-
-TODO
 
 PinePhone's Device Tree says that the USB Drivers are...
 
@@ -378,6 +324,52 @@ usb@1c1b400 {
 };
 ```
 
+# FreeBSD USB Driver
+
+TODO
+
+_Any sample code for Allwinner A64 USB?_
+
+Refer to the Allwinner A64 USB Drivers in FreeBSD and NetBSD...
+
+-   [freebsd/sys/dev/usb/controller/ musb_otg_allwinner.c](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg_allwinner.c#L95)
+
+    [freebsd/sys/dev/usb/controller/ musb_otg.c](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c)
+
+    [freebsd/sys/arm/allwinner/ aw_usbphy.c](https://github.com/freebsd/freebsd-src/blob/main/sys/arm/allwinner/aw_usbphy.c#L135)
+
+-   [NetBSD/sys/arch/arm/sunxi/ sunxi_musb.c](https://github.com/NetBSD/src/blob/trunk/sys/arch/arm/sunxi/sunxi_musb.c#L67)
+
+    [NetBSD/sys/arch/arm/sunxi/ sunxi_usbphy.c](https://github.com/NetBSD/src/blob/trunk/sys/arch/arm/sunxi/sunxi_usbphy.c#L95)
+
+# USB Drivers in NuttX
+
+TODO
+
+_How do USB Drivers work in NuttX?_
+
+Check out this NuttX Doc on USB Drivers...
+
+-   ["USB Host-Side Drivers"](https://nuttx.apache.org/docs/latest/components/drivers/special/usbhost.html)
+
+# STM32 USB Driver for NuttX
+
+TODO
+
+NuttX USB Driver for STM32...
+
+-   [stm32_otgfshost.c](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c)
+
+-   [stm32_otgfsdev.c](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfsdev.c)
+
+-   [stm32_usbfs.c](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_usbfs.c)
+
+-   [stm32_usbhost.c](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_usbhost.c)
+
+(USB OTG FS: Able to act as a device/host/OTG peripheral, at full speed 12Mbps)
+
+(USB OTG HS: Able to act as a device/host/OTG peripheral, at full speed 12Mbps or high speed 480Mbps)
+
 # What's Next
 
 TODO
@@ -402,6 +394,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/usb2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/usb2.md)
 
+![Pine64 PineDio LoRa Gateway (left) with PineDio LoRa Add-On Case (right)](https://lupyuen.github.io/images/lorawan2-pine64.jpg)
+
+[_Pine64 PineDio LoRa Gateway (left) with PineDio LoRa Add-On Case (right)_](https://pine64.com/product/pinephone-pinephone-pro-pindio-lora-add-on-case/)
+
 # Appendix: LoRa Communicator for PinePhone on NuttX
 
 Earlier we talked about turning PinePhone on NuttX into a Feature Phone for __Emergency Use__...
@@ -410,13 +406,13 @@ Earlier we talked about turning PinePhone on NuttX into a Feature Phone for __Em
 
 _What if there's no LTE Network Coverage? Like in a Natural Disaster?_
 
-The Long-Range, Low-Power __LoRa Network__ might be good for search and rescue communications.
+The Long-Range, Low-Power [__LoRa Network__](https://makezine.com/article/technology/go-long-with-lora-radio/) might be good for search and rescue communications.
 
 (Short Text Messages only plus GPS Geolocation, non-guaranteed message delivery)
 
-Just attach the LoRa Case to PinePhone...
+To turn PinePhone into a __LoRa Communicator__, just attach the LoRa Add-On Case to PinePhone (pic above)...
 
--   [__PineDio LoRa Add-On Case__](https://pine64.com/product/pinephone-pinephone-pro-pindio-lora-add-on-case/)
+-   [__Pine64 PineDio LoRa Add-On Case__](https://pine64.com/product/pinephone-pinephone-pro-pindio-lora-add-on-case/)
 
     (Still in stock!)
 
@@ -428,8 +424,10 @@ Or the LoRa Driver that we have ported to NuttX...
 
 -   [__"LoRa SX1262 on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/sx1262)
 
-Or maybe Meshtastic (with Portduino), since it has a complete __LoRa Mesh Messaging App__...
+Or maybe __Meshtastic__, since it has a complete __LoRa Mesh Messaging App__...
 
 -   [__Meshtastic LoRa Mesh Network__](https://meshtastic.org/)
+
+Meshtastic was built with Arduino (C++). To compile it on NuttX we could use the __Portduino Library__...
 
 -   [__Portduino Arduino Adapter for Linux__](https://github.com/geeksville/framework-portduino)
