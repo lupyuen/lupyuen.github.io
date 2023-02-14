@@ -71,7 +71,8 @@
 <li><a href="#quectel-eg25-g-lte-modem">2 Quectel EG25-G LTE Modem</a><ul></ul></li>
 <li><a href="#lte-modem-talks-on-usb">3 LTE Modem talks on USB</a><ul></ul></li>
 <li><a href="#document-the-usb-controller">4 Document the USB Controller</a><ul></ul></li>
-<li><a href="#whats-next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2023</em></p>
+<li><a href="#whats-next">5 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-lora-communicator-for-pinephone-on-nuttx">6 Appendix: LoRa Communicator for PinePhone on NuttX</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/usb2-title.jpg" alt="PinePhone talks to LTE Modem over USB" /></p>
 <p><em>PinePhone talks to LTE Modem over USB</em></p>
 <p>Over the past <a href="https://github.com/lupyuen/pinephone-nuttx"><strong>17 articles</strong></a> we talked about porting to <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> a Real-Time Operating System: <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a>.</p>
@@ -443,6 +444,38 @@ usb@1c1b400 {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/usb2.md"><strong>lupyuen.github.io/src/usb2.md</strong></a></p>
+<h1 id="appendix-lora-communicator-for-pinephone-on-nuttx"><a href="#appendix-lora-communicator-for-pinephone-on-nuttx">6 Appendix: LoRa Communicator for PinePhone on NuttX</a></h1>
+<p>Earlier we talked about turning PinePhone on NuttX into a Feature Phone for <strong>Emergency Use</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone"><strong>“PinePhone + NuttX = Feature Phone”</strong></a></li>
+</ul>
+<p><em>What if there’s no LTE Network Coverage? Like in a Natural Disaster?</em></p>
+<p>The Long-Range, Low-Power <strong>LoRa Network</strong> might be good for search and rescue communications.</p>
+<p>(Short Text Messages only plus GPS Geolocation, non-guaranteed message delivery)</p>
+<p>Just attach the LoRa Case to PinePhone…</p>
+<ul>
+<li>
+<p><a href="https://pine64.com/product/pinephone-pinephone-pro-pindio-lora-add-on-case/"><strong>PineDio LoRa Add-On Case</strong></a></p>
+<p>(Still in stock!)</p>
+</li>
+</ul>
+<p>We might use JF’s Driver…</p>
+<ul>
+<li><a href="https://codeberg.org/JF002/pinedio-lora-driver"><strong>JF002/pinedio-lora-driver</strong></a></li>
+</ul>
+<p>Or the LoRa Driver that we have ported to NuttX…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/sx1262"><strong>“LoRa SX1262 on Apache NuttX RTOS”</strong></a></li>
+</ul>
+<p>Or maybe Meshtastic (with Portduino), since it has a complete <strong>LoRa Mesh Messaging App</strong>…</p>
+<ul>
+<li>
+<p><a href="https://meshtastic.org/"><strong>Meshtastic LoRa Mesh Network</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/geeksville/framework-portduino"><strong>Portduino Arduino Adapter for Linux</strong></a></p>
+</li>
+</ul>
 
     
 </body>
