@@ -206,7 +206,7 @@ Here are the Official Docs for Allwinner A64 USB Controller...
 
 -   [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
-    Section 7.5: USB (Page 583)
+    Section 7.5 "USB" (Page 583)
 
 _But Allwinner A64's Official Docs are horrigibly lacking..._
 
@@ -222,9 +222,15 @@ Thanks to the [__Sunxi Community__](https://linux-sunxi.org/USB_OTG_Controller_R
 
 TODO
 
--   [Allwinner USB OTG Controller Register Guide](https://linux-sunxi.org/USB_OTG_Controller_Register_Guide)
+-   [__Allwinner USB OTG Controller Register Guide__](https://linux-sunxi.org/USB_OTG_Controller_Register_Guide)
 
--   [Mentor Graphics MUSBMHDRC USB 2.0 Multi-Point Dual-Role Controller: Product Specification and Programming Guide](https://linux-sunxi.org/images/7/73/Musbmhdrc.pdf)
+-   [__Mentor Graphics MUSBMHDRC USB 2.0 Multi-Point Dual-Role Controller: Product Specification and Programming Guide__](https://linux-sunxi.org/images/7/73/Musbmhdrc.pdf)
+
+TODO
+
+> ![USB Controller in PinePhone Device Tree](https://lupyuen.github.io/images/usb2-devicetree.png)
+
+> [_USB Controller in PinePhone Device Tree_](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L647-L721)
 
 # Search for USB Driver
 
