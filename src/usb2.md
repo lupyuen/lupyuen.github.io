@@ -362,7 +362,7 @@ Today we'll study the FreeBSD Driver because it seems easiest to understand.
 
 [_Transmit Control Data as Host in Mentor Graphics USB Controller (Page 126)_](https://linux-sunxi.org/images/7/73/Musbmhdrc.pdf)
 
-# Understand FreeBSD Driver
+# Understand the FreeBSD Driver
 
 TODO
 
