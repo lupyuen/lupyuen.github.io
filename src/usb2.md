@@ -358,6 +358,30 @@ Refer to the Allwinner A64 USB Drivers in FreeBSD and NetBSD...
 
 Today we'll study the FreeBSD Driver because it seems easiest to understand.
 
+![Transmit Control Data as Host in Mentor Graphics USB Controller (Page 126)](https://lupyuen.github.io/images/usb2-mentor.png)
+
+[_Transmit Control Data as Host in Mentor Graphics USB Controller (Page 126)_](https://linux-sunxi.org/images/7/73/Musbmhdrc.pdf)
+
+# Understand FreeBSD Driver
+
+TODO
+
+_Do we copy the FreeBSD Driver into NuttX?_
+
+Sorry that sounds mighty irresponsible... Without understanding the code! (Just like ChatGPT)
+
+Remember that the Allwinner A64 USB Controller is based on the __design by Mentor Graphics__...
+
+-   [__"Document the USB Controller"__](https://lupyuen.github.io/articles/usb2#document-the-usb-controller)
+
+Hence to understand how the driver works, we shall __match the FreeBSD Driver Code__ with the __Mentor Graphics Doc__.
+
+[(Kinda like __Rosetta Stone__)](https://en.wikipedia.org/wiki/Rosetta_Stone#Reading_the_Rosetta_Stone)
+
+_Where do we start?_
+
+TODO: Transmit Control Messages
+
 # USB Drivers in NuttX
 
 TODO
