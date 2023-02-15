@@ -467,11 +467,11 @@ To turn PinePhone into a __LoRa Communicator__, just attach the LoRa Add-On Case
 
     (Still in stock!)
 
-We might use JF's Driver...
+We might use JF's LoRa Driver (which handles the __I2C-to-SPI Bridge__)...
 
 -   [__JF002/pinedio-lora-driver__](https://codeberg.org/JF002/pinedio-lora-driver)
 
-Or the LoRa Driver that we have ported to NuttX...
+Or the LoRa Driver that we've ported to NuttX...
 
 -   [__"LoRa SX1262 on Apache NuttX RTOS"__](https://lupyuen.github.io/articles/sx1262)
 
