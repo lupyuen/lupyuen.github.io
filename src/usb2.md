@@ -364,7 +364,6 @@ Today we'll study the FreeBSD Driver because it seems easiest to understand.
 
 # Understand the FreeBSD Driver
 
-TODO
 
 _Do we copy the FreeBSD Driver into NuttX?_
 
