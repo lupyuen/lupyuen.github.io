@@ -398,7 +398,16 @@ usb@1c1b400 {
 <p>Hence to understand the driver internals, we shall <strong>match the FreeBSD Driver Code</strong> with the <strong>Mentor Graphics Doc</strong>.</p>
 <p><a href="https://en.wikipedia.org/wiki/Rosetta_Stone#Reading_the_Rosetta_Stone">(Kinda like <strong>Rosetta Stone</strong>)</a></p>
 <p><em>Where do we start?</em></p>
-<p>TODO: Transmit Control Messages</p>
+<p>The Mentor Graphics Doc talks about <strong>Transmitting Control Data</strong> (as a Host)…</p>
+<ul>
+<li>
+<p><a href="https://linux-sunxi.org/images/7/73/Musbmhdrc.pdf"><strong>Mentor Graphics MUSBMHDRC</strong></a></p>
+<p><strong>Section 21.2.3:</strong> “Control Transactions as a Host - Out Data Phase as a Host”</p>
+<p>(Page 126)</p>
+</li>
+</ul>
+<p>TODO: Transmit Control Data</p>
+<p><img src="https://lupyuen.github.io/images/usb2-freebsd.png" alt="TODO" /></p>
 <h1 id="usb-drivers-in-nuttx"><a href="#usb-drivers-in-nuttx">8 USB Drivers in NuttX</a></h1>
 <p>TODO</p>
 <p><em>How do USB Drivers work in NuttX?</em></p>
