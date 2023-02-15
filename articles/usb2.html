@@ -278,6 +278,7 @@ Device Descriptor:
 <ul>
 <li><a href="https://linux-sunxi.org/USB_OTG_Controller_Register_Guide"><strong>Allwinner USB OTG Controller Register Guide</strong></a></li>
 </ul>
+<p><strong>OTG</strong> refers to <a href="https://en.wikipedia.org/wiki/USB_On-The-Go"><strong>USB On-The-Go</strong></a>, which supports both USB Host Mode and USB Device Mode.</p>
 <p>Let’s find a Reference Driver for the Mentor Graphics USB Controller…</p>
 <p><img src="https://lupyuen.github.io/images/usb2-devicetree.png" alt="USB Controller in PinePhone Device Tree" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L647-L721"><em>USB Controller in PinePhone Device Tree</em></a></p>
@@ -291,100 +292,42 @@ Device Descriptor:
 phy@1c19400 {
   compatible = &quot;allwinner,sun50i-a64-usb-phy&quot;;
 </code></pre></div>
-<p>So we searched for <code>allwinner,sun8i-a33-musb</code> and <code>allwinner,sun50i-a64-usb-phy</code>.</p>
+<p>(<strong>MUSB</strong> refers to the <a href="https://lupyuen.github.io/articles/usb2#document-the-usb-controller"><strong>Mentor Graphics</strong></a> USB Controller)</p>
+<p>So we searched for “<strong>allwinner,sun8i-a33-musb</strong>” and “<strong>allwinner,sun50i-a64-usb-phy</strong>”.</p>
 <p>Here’s the PinePhone USB Device Tree: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L647-L721">sun50i-a64-pinephone-1.2.dts</a></p>
-<div class="example-wrap"><pre class="language-text"><code>usb@1c19000 {
-  compatible = &quot;allwinner,sun8i-a33-musb&quot;;
-  reg = &lt;0x1c19000 0x400&gt;;
-  clocks = &lt;0x02 0x29&gt;;
-  resets = &lt;0x02 0x12&gt;;
-  interrupts = &lt;0x00 0x47 0x04&gt;;
-  interrupt-names = &quot;mc&quot;;
-  phys = &lt;0x31 0x00&gt;;
-  phy-names = &quot;usb&quot;;
-  extcon = &lt;0x31 0x00&gt;;
-  dr_mode = &quot;otg&quot;;
-  status = &quot;okay&quot;;
-};
-
-phy@1c19400 {
-  compatible = &quot;allwinner,sun50i-a64-usb-phy&quot;;
-  reg = &lt;0x1c19400 0x14 0x1c1a800 0x04 0x1c1b800 0x04&gt;;
-  reg-names = &quot;phy_ctrl\0pmu0\0pmu1&quot;;
-  clocks = &lt;0x02 0x56 0x02 0x57&gt;;
-  clock-names = &quot;usb0_phy\0usb1_phy&quot;;
-  resets = &lt;0x02 0x00 0x02 0x01&gt;;
-  reset-names = &quot;usb0_reset\0usb1_reset&quot;;
-  status = &quot;okay&quot;;
-  #phy-cells = &lt;0x01&gt;;
-  usb-role-switch;
-  phandle = &lt;0x31&gt;;
-
-  port {
-
-    endpoint {
-      remote-endpoint = &lt;0x32&gt;;
-      phandle = &lt;0x47&gt;;
-    };
-  };
-};
-
-usb@1c1a000 {
-  compatible = &quot;allwinner,sun50i-a64-ehci\0generic-ehci&quot;;
-  reg = &lt;0x1c1a000 0x100&gt;;
-  interrupts = &lt;0x00 0x48 0x04&gt;;
-  clocks = &lt;0x02 0x2c 0x02 0x2a 0x02 0x5b&gt;;
-  resets = &lt;0x02 0x15 0x02 0x13&gt;;
-  status = &quot;okay&quot;;
-};
-
-usb@1c1a400 {
-  compatible = &quot;allwinner,sun50i-a64-ohci\0generic-ohci&quot;;
-  reg = &lt;0x1c1a400 0x100&gt;;
-  interrupts = &lt;0x00 0x49 0x04&gt;;
-  clocks = &lt;0x02 0x2c 0x02 0x5b&gt;;
-  resets = &lt;0x02 0x15&gt;;
-  status = &quot;okay&quot;;
-};
-
-usb@1c1b000 {
-  compatible = &quot;allwinner,sun50i-a64-ehci\0generic-ehci&quot;;
-  reg = &lt;0x1c1b000 0x100&gt;;
-  interrupts = &lt;0x00 0x4a 0x04&gt;;
-  clocks = &lt;0x02 0x2d 0x02 0x2b 0x02 0x5d&gt;;
-  resets = &lt;0x02 0x16 0x02 0x14&gt;;
-  phys = &lt;0x31 0x01&gt;;
-  phy-names = &quot;usb&quot;;
-  status = &quot;okay&quot;;
-};
-
-usb@1c1b400 {
-  compatible = &quot;allwinner,sun50i-a64-ohci\0generic-ohci&quot;;
-  reg = &lt;0x1c1b400 0x100&gt;;
-  interrupts = &lt;0x00 0x4b 0x04&gt;;
-  clocks = &lt;0x02 0x2d 0x02 0x5d&gt;;
-  resets = &lt;0x02 0x16&gt;;
-  phys = &lt;0x31 0x01&gt;;
-  phy-names = &quot;usb&quot;;
-  status = &quot;okay&quot;;
-};
-</code></pre></div><h1 id="freebsd-usb-driver"><a href="#freebsd-usb-driver">6 FreeBSD USB Driver</a></h1>
-<p>TODO</p>
-<p><em>Any sample code for Allwinner A64 USB?</em></p>
-<p>Refer to the Allwinner A64 USB Drivers in FreeBSD and NetBSD…</p>
+<p>Searching for “<strong>allwinner,sun8i-a33-musb</strong>” on <a href="https://github.com/search?q=%22allwinner%2Csun8i-a33-musb%22+language%3AC&amp;type=code&amp;l=C"><strong>GitHub Code Search</strong></a> uncovers the Allwinner A64 USB Driver that we seek: FreeBSD, NetBSD and Linux…</p>
+<h1 id="freebsd-usb-driver"><a href="#freebsd-usb-driver">6 FreeBSD USB Driver</a></h1>
+<p><a href="https://github.com/search?q=%22allwinner%2Csun8i-a33-musb%22+language%3AC&amp;type=code&amp;l=C"><strong>GitHub Code Search</strong></a> says that the Allwinner A64 USB Driver for FreeBSD is…</p>
+<ul>
+<li><a href="https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg_allwinner.c#L95"><strong>usb/controller/musb_otg_allwinner.c</strong></a></li>
+</ul>
+<p><strong>MUSB</strong> refers to the <a href="https://lupyuen.github.io/articles/usb2#document-the-usb-controller"><strong>Mentor Graphics</strong></a> USB Controller.</p>
+<p><strong>OTG</strong> refers to <a href="https://en.wikipedia.org/wiki/USB_On-The-Go"><strong>USB On-The-Go</strong></a>, which supports both USB Host Mode and USB Device Mode.</p>
+<p>(We’ll stick to <strong>USB Host Mode</strong> for today)</p>
+<p><em>But where’s the actual code for the USB Driver?</em></p>
+<p>The <strong>Mentor Graphics USB Driver</strong> is mostly implemented here…</p>
+<ul>
+<li><a href="https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c"><strong>usb/controller/musb_otg.c</strong></a></li>
+</ul>
+<p>Remember that the Allwinner A64 USB Controller is identical to the Mentor Graphics one… Except that the <a href="https://lupyuen.github.io/articles/usb2#document-the-usb-controller"><strong>USB Registers are scrambled</strong></a>?</p>
+<p>That’s why we need <a href="https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg_allwinner.c#L140-L214"><strong>musb_otg_allwinner.c</strong></a> to unscramble the USB Registers, specifically for Allwinner A64.</p>
+<p><a href="https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg_allwinner.c#L140-L214">(Like this)</a></p>
+<p>The <strong>USB Physical Layer</strong> for Allwinner A64 is implemented here, but we won’t touch it today…</p>
+<ul>
+<li><a href="https://github.com/freebsd/freebsd-src/blob/main/sys/arm/allwinner/aw_usbphy.c#L135"><strong>arm/allwinner/aw_usbphy.c</strong></a></li>
+</ul>
+<p><em>OK we’ve seen the FreeBSD Drivers… What about other operating systems?</em></p>
+<p><a href="https://github.com/search?q=%22allwinner%2Csun8i-a33-musb%22+language%3AC&amp;type=code&amp;l=C"><strong>GitHub Code Search</strong></a> also uncovers the <strong>NetBSD Drivers</strong> for Allwinner A64 USB…</p>
 <ul>
 <li>
-<p><a href="https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg_allwinner.c#L95">freebsd/sys/dev/usb/controller/ musb_otg_allwinner.c</a></p>
-<p><a href="https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c">freebsd/sys/dev/usb/controller/ musb_otg.c</a></p>
-<p><a href="https://github.com/freebsd/freebsd-src/blob/main/sys/arm/allwinner/aw_usbphy.c#L135">freebsd/sys/arm/allwinner/ aw_usbphy.c</a></p>
+<p><a href="https://github.com/NetBSD/src/blob/trunk/sys/arch/arm/sunxi/sunxi_musb.c#L67"><strong>USB Controller Driver: sunxi_musb.c</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/NetBSD/src/blob/trunk/sys/arch/arm/sunxi/sunxi_musb.c#L67">NetBSD/sys/arch/arm/sunxi/ sunxi_musb.c</a></p>
-<p><a href="https://github.com/NetBSD/src/blob/trunk/sys/arch/arm/sunxi/sunxi_usbphy.c#L95">NetBSD/sys/arch/arm/sunxi/ sunxi_usbphy.c</a></p>
+<p><a href="https://github.com/NetBSD/src/blob/trunk/sys/arch/arm/sunxi/sunxi_usbphy.c#L95"><strong>USB Physical Layer Driver: sunxi_usbphy.c</strong></a></p>
+<p><a href="https://github.com/torvalds/linux/blob/master/drivers/usb/musb/sunxi.c">(And Linux too)</a></p>
 </li>
 </ul>
-<p><a href="https://github.com/torvalds/linux/blob/master/drivers/usb/musb/sunxi.c">(And Linux too)</a></p>
-<p>Today we’ll study the FreeBSD Driver because it seems easiest to understand.</p>
+<p>But today we’ll study the FreeBSD Driver because it’s easier to read.</p>
 <p><img src="https://lupyuen.github.io/images/usb2-mentor.png" alt="Transmit Control Data as Host in Mentor Graphics USB Controller (Page 126)" /></p>
 <p><a href="https://linux-sunxi.org/images/7/73/Musbmhdrc.pdf"><em>Transmit Control Data as Host in Mentor Graphics USB Controller (Page 126)</em></a></p>
 <h1 id="understand-the-freebsd-driver"><a href="#understand-the-freebsd-driver">7 Understand the FreeBSD Driver</a></h1>
