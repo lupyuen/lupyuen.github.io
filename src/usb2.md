@@ -380,7 +380,18 @@ Hence to understand the driver internals, we shall __match the FreeBSD Driver Co
 
 _Where do we start?_
 
-TODO: Transmit Control Messages
+The Mentor Graphics Doc talks about __Transmitting Control Data__ (as a Host)...
+
+-   [__Mentor Graphics MUSBMHDRC__](https://linux-sunxi.org/images/7/73/Musbmhdrc.pdf)
+
+    __Section 21.2.3:__ "Control Transactions as a Host - Out Data Phase as a Host"
+    
+    (Page 126)
+
+
+TODO: Transmit Control Data
+
+![TODO](https://lupyuen.github.io/images/usb2-freebsd.png)
 
 # USB Drivers in NuttX
 
