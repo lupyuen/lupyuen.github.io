@@ -368,13 +368,13 @@ TODO
 
 _Do we copy the FreeBSD Driver into NuttX?_
 
-Sorry that sounds mighty irresponsible... Without understanding the code! (Just like ChatGPT)
+Sorry that sounds mighty irresponsible... If we don't understand the code! (Just like ChatGPT)
 
 Remember that the Allwinner A64 USB Controller is based on the __design by Mentor Graphics__...
 
 -   [__"Document the USB Controller"__](https://lupyuen.github.io/articles/usb2#document-the-usb-controller)
 
-Hence to understand how the driver works, we shall __match the FreeBSD Driver Code__ with the __Mentor Graphics Doc__.
+Hence to understand the driver internals, we shall __match the FreeBSD Driver Code__ with the __Mentor Graphics Doc__.
 
 [(Kinda like __Rosetta Stone__)](https://en.wikipedia.org/wiki/Rosetta_Stone#Reading_the_Rosetta_Stone)
 
