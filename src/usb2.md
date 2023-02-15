@@ -380,18 +380,25 @@ Hence to understand the driver internals, we shall __match the FreeBSD Driver Co
 
 _Where do we start?_
 
-The Mentor Graphics Doc talks about __Transmitting Control Data__ (as a Host)...
+The Mentor Graphics Doc describes __Transmitting Control Data__ (as a Host)...
 
 -   [__Mentor Graphics MUSBMHDRC__](https://linux-sunxi.org/images/7/73/Musbmhdrc.pdf)
 
-    __Section 21.2.3:__ "Control Transactions as a Host - Out Data Phase as a Host"
-    
-    (Page 126)
+See __Section 21.2.3__ "Control Transactions as a Host - Out Data Phase as a Host". (Page 126, pic above)
 
+This seems to match the FreeBSD Driver Code for [__musbotg_host_ctrl_data_tx__](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c#L1067-L1239) in [__musb_otg.c__](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c#L1067-L1239)...
 
-TODO: Transmit Control Data
+![musbotg_host_ctrl_data_tx in musb_otg.c](https://lupyuen.github.io/images/usb2-freebsd.png)
 
-![TODO](https://lupyuen.github.io/images/usb2-freebsd.png)
+[(Source)](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c#L1067-L1239)
+
+So we compare the two side-by-side to figure out how it works...
+
+![Matching the Mentor Graphics Doc with the FreeBSD Driver Code](https://lupyuen.github.io/images/usb2-freebsd2.png)
+
+Matching the Mentor Graphics Doc with the FreeBSD Driver Code will be an interesting exercise.
+
+Which we'll cover in the next article!
 
 # USB Drivers in NuttX
 
