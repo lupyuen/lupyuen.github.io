@@ -232,6 +232,8 @@ The Sunxi Community has helpfully documented the __Scrambled USB Registers__...
 
 -   [__Allwinner USB OTG Controller Register Guide__](https://linux-sunxi.org/USB_OTG_Controller_Register_Guide)
 
+__OTG__ refers to [__USB On-The-Go__](https://en.wikipedia.org/wiki/USB_On-The-Go), which supports both USB Host Mode and USB Device Mode.
+
 Let's find a Reference Driver for the Mentor Graphics USB Controller...
 
 ![USB Controller in PinePhone Device Tree](https://lupyuen.github.io/images/usb2-devicetree.png)
@@ -254,109 +256,53 @@ phy@1c19400 {
   compatible = "allwinner,sun50i-a64-usb-phy";
 ```
 
-So we searched for `allwinner,sun8i-a33-musb` and `allwinner,sun50i-a64-usb-phy`.
+(__MUSB__ refers to the [__Mentor Graphics__](https://lupyuen.github.io/articles/usb2#document-the-usb-controller) USB Controller)
+
+So we searched for "__allwinner,sun8i-a33-musb__" and "__allwinner,sun50i-a64-usb-phy__".
 
 Here's the PinePhone USB Device Tree: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L647-L721)
 
-```text
-usb@1c19000 {
-  compatible = "allwinner,sun8i-a33-musb";
-  reg = <0x1c19000 0x400>;
-  clocks = <0x02 0x29>;
-  resets = <0x02 0x12>;
-  interrupts = <0x00 0x47 0x04>;
-  interrupt-names = "mc";
-  phys = <0x31 0x00>;
-  phy-names = "usb";
-  extcon = <0x31 0x00>;
-  dr_mode = "otg";
-  status = "okay";
-};
-
-phy@1c19400 {
-  compatible = "allwinner,sun50i-a64-usb-phy";
-  reg = <0x1c19400 0x14 0x1c1a800 0x04 0x1c1b800 0x04>;
-  reg-names = "phy_ctrl\0pmu0\0pmu1";
-  clocks = <0x02 0x56 0x02 0x57>;
-  clock-names = "usb0_phy\0usb1_phy";
-  resets = <0x02 0x00 0x02 0x01>;
-  reset-names = "usb0_reset\0usb1_reset";
-  status = "okay";
-  #phy-cells = <0x01>;
-  usb-role-switch;
-  phandle = <0x31>;
-
-  port {
-
-    endpoint {
-      remote-endpoint = <0x32>;
-      phandle = <0x47>;
-    };
-  };
-};
-
-usb@1c1a000 {
-  compatible = "allwinner,sun50i-a64-ehci\0generic-ehci";
-  reg = <0x1c1a000 0x100>;
-  interrupts = <0x00 0x48 0x04>;
-  clocks = <0x02 0x2c 0x02 0x2a 0x02 0x5b>;
-  resets = <0x02 0x15 0x02 0x13>;
-  status = "okay";
-};
-
-usb@1c1a400 {
-  compatible = "allwinner,sun50i-a64-ohci\0generic-ohci";
-  reg = <0x1c1a400 0x100>;
-  interrupts = <0x00 0x49 0x04>;
-  clocks = <0x02 0x2c 0x02 0x5b>;
-  resets = <0x02 0x15>;
-  status = "okay";
-};
-
-usb@1c1b000 {
-  compatible = "allwinner,sun50i-a64-ehci\0generic-ehci";
-  reg = <0x1c1b000 0x100>;
-  interrupts = <0x00 0x4a 0x04>;
-  clocks = <0x02 0x2d 0x02 0x2b 0x02 0x5d>;
-  resets = <0x02 0x16 0x02 0x14>;
-  phys = <0x31 0x01>;
-  phy-names = "usb";
-  status = "okay";
-};
-
-usb@1c1b400 {
-  compatible = "allwinner,sun50i-a64-ohci\0generic-ohci";
-  reg = <0x1c1b400 0x100>;
-  interrupts = <0x00 0x4b 0x04>;
-  clocks = <0x02 0x2d 0x02 0x5d>;
-  resets = <0x02 0x16>;
-  phys = <0x31 0x01>;
-  phy-names = "usb";
-  status = "okay";
-};
-```
+Searching for "__allwinner,sun8i-a33-musb__" on [__GitHub Code Search__](https://github.com/search?q=%22allwinner%2Csun8i-a33-musb%22+language%3AC&type=code&l=C) uncovers the Allwinner A64 USB Driver that we seek: FreeBSD, NetBSD and Linux...
 
 # FreeBSD USB Driver
 
-TODO
+[__GitHub Code Search__](https://github.com/search?q=%22allwinner%2Csun8i-a33-musb%22+language%3AC&type=code&l=C) says that the Allwinner A64 USB Driver for FreeBSD is...
 
-_Any sample code for Allwinner A64 USB?_
+-   [__usb/controller/musb_otg_allwinner.c__](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg_allwinner.c#L95)
 
-Refer to the Allwinner A64 USB Drivers in FreeBSD and NetBSD...
+__MUSB__ refers to the [__Mentor Graphics__](https://lupyuen.github.io/articles/usb2#document-the-usb-controller) USB Controller.
 
--   [freebsd/sys/dev/usb/controller/ musb_otg_allwinner.c](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg_allwinner.c#L95)
+__OTG__ refers to [__USB On-The-Go__](https://en.wikipedia.org/wiki/USB_On-The-Go), which supports both USB Host Mode and USB Device Mode.
 
-    [freebsd/sys/dev/usb/controller/ musb_otg.c](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c)
+(We'll stick to __USB Host Mode__ for today)
 
-    [freebsd/sys/arm/allwinner/ aw_usbphy.c](https://github.com/freebsd/freebsd-src/blob/main/sys/arm/allwinner/aw_usbphy.c#L135)
+_But where's the actual code for the USB Driver?_
 
--   [NetBSD/sys/arch/arm/sunxi/ sunxi_musb.c](https://github.com/NetBSD/src/blob/trunk/sys/arch/arm/sunxi/sunxi_musb.c#L67)
+The __Mentor Graphics USB Driver__ is mostly implemented here...
 
-    [NetBSD/sys/arch/arm/sunxi/ sunxi_usbphy.c](https://github.com/NetBSD/src/blob/trunk/sys/arch/arm/sunxi/sunxi_usbphy.c#L95)
+-   [__usb/controller/musb_otg.c__](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c)
 
-[(And Linux too)](https://github.com/torvalds/linux/blob/master/drivers/usb/musb/sunxi.c)
+Remember that the Allwinner A64 USB Controller is identical to the Mentor Graphics one... Except that the [__USB Registers are scrambled__](https://lupyuen.github.io/articles/usb2#document-the-usb-controller)?
 
-Today we'll study the FreeBSD Driver because it seems easiest to understand.
+That's why we need [__musb_otg_allwinner.c__](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg_allwinner.c#L140-L214) to unscramble the USB Registers, specifically for Allwinner A64.
+
+[(Like this)](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg_allwinner.c#L140-L214)
+
+The __USB Physical Layer__ for Allwinner A64 is implemented here, but we won't touch it today...
+
+-   [__arm/allwinner/aw_usbphy.c__](https://github.com/freebsd/freebsd-src/blob/main/sys/arm/allwinner/aw_usbphy.c#L135)
+
+_OK we've seen the FreeBSD Drivers... What about other operating systems?_
+
+[__GitHub Code Search__](https://github.com/search?q=%22allwinner%2Csun8i-a33-musb%22+language%3AC&type=code&l=C) also uncovers the __NetBSD Drivers__ for Allwinner A64 USB...
+
+-   [__USB Controller Driver: sunxi_musb.c__](https://github.com/NetBSD/src/blob/trunk/sys/arch/arm/sunxi/sunxi_musb.c#L67)
+
+-   [__USB Physical Layer Driver: sunxi_usbphy.c__](https://github.com/NetBSD/src/blob/trunk/sys/arch/arm/sunxi/sunxi_usbphy.c#L95)
+
+    [(And Linux too)](https://github.com/torvalds/linux/blob/master/drivers/usb/musb/sunxi.c)
+
+But today we'll study the FreeBSD Driver because it's easier to read.
 
 ![Transmit Control Data as Host in Mentor Graphics USB Controller (Page 126)](https://lupyuen.github.io/images/usb2-mentor.png)
 
