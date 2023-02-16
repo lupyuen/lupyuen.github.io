@@ -1,6 +1,6 @@
 # NuttX RTOS for PinePhone: What is it?
 
-📝 _4 Feb 2023_
+📝 _17 Feb 2023_
 
 ![Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/what-title.jpg)
 
@@ -68,9 +68,9 @@ Let's talk about NuttX for Learners...
 
 _Is NuttX good for learning the internals of Smartphones?_
 
-Check out the [__18 articles__](https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone) covering everything inside-out about NuttX on PinePhone: [__GPIO__](https://lupyuen.github.io/articles/pio), [__UART__](https://lupyuen.github.io/articles/serial), [__USB__](https://lupyuen.github.io/articles/usb2),[__Framebuffer__](https://lupyuen.github.io/articles/fb), [__LCD Panel__](https://lupyuen.github.io/articles/lcd), [__Touch Panel__](https://lupyuen.github.io/articles/touch2), [__LVGL__](https://lupyuen.github.io/articles/lvgl2), [__Terminal__](https://lupyuen.github.io/articles/terminal) (pic below)...
+Check out the [__18 articles__](https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone) covering everything inside-out about NuttX on PinePhone: [__GPIO__](https://lupyuen.github.io/articles/pio), [__UART__](https://lupyuen.github.io/articles/serial), [__USB__](https://lupyuen.github.io/articles/usb2),[__Framebuffer__](https://lupyuen.github.io/articles/fb), [__LCD Panel__](https://lupyuen.github.io/articles/lcd), [__Touch Panel__](https://lupyuen.github.io/articles/touch2), [__LVGL__](https://lupyuen.github.io/articles/lvgl2), [__Terminal App__](https://lupyuen.github.io/articles/terminal) (pic below)...
 
-And esoteric topics too: [__Display Engine__](https://lupyuen.github.io/articles/de3), [__MIPI Display Serial Interface__](https://lupyuen.github.io/articles/dsi3), [__Power Management Integrated Circuit__](https://lupyuen.github.io/articles/lcd#power-on-lcd-panel), [__Reduced Serial Bus__](https://lupyuen.github.io/articles/lcd#power-on-lcd-panel), [__Generic Interrupt Controller__](https://lupyuen.github.io/articles/interrupt), ...
+And esoteric (but essential) topics too: [__Display Engine__](https://lupyuen.github.io/articles/de3), [__MIPI Display Serial Interface__](https://lupyuen.github.io/articles/dsi3), [__Power Management Integrated Circuit__](https://lupyuen.github.io/articles/lcd#power-on-lcd-panel), [__Reduced Serial Bus__](https://lupyuen.github.io/articles/lcd#power-on-lcd-panel), [__Generic Interrupt Controller__](https://lupyuen.github.io/articles/interrupt), ...
 
 [(Perfect for Bedtime Reading!)](https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone)
 
