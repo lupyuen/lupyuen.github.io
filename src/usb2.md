@@ -385,6 +385,28 @@ First we understand how __USB Drivers work in NuttX__...
 
 -   [__"NuttX USB Host-Side Drivers"__](https://nuttx.apache.org/docs/latest/components/drivers/special/usbhost.html)
 
+The NuttX doc explains the __Detection and Enumeration of USB Devices__...
+
+> _Each USB Host Device Controller supports two methods that are used to detect and enumeration newly connected devices..._
+
+> _`wait`: Wait for a device to be connected or disconnected_
+
+> _`enumerate`: Enumerate the device connected to a root hub port_
+
+Then it explains the __Enumeration Process__...
+
+> _As part of this enumeration process, the driver will_
+
+> _(1) Get the Device’s Configuration Descriptor_
+
+> _(2) Extract the class ID info from the Configuration Descriptor_
+
+> _..._
+
+TODO
+
+-   [__"STM32 Blue Pill USB Bootloader — How I fixed the USB Storage, Serial, DFU and WebUSB interfaces"__](https://lupyuen.github.io/articles/stm32-blue-pill-usb-bootloader-how-i-fixed-the-usb-storage-serial-dfu-and-webusb-interfaces)
+
 TODO
 
 # STM32 USB Driver for NuttX
