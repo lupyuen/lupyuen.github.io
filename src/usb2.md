@@ -363,7 +363,7 @@ _We found the FreeBSD Driver for Allwinner A64 USB..._
 
 _How will we adapt it for NuttX RTOS?_
 
-First we need to understand how __USB Drivers work in NuttX__...
+First we understand how __USB Drivers work in NuttX__...
 
 -   [__"NuttX USB Host-Side Drivers"__](https://nuttx.apache.org/docs/latest/components/drivers/special/usbhost.html)
 
