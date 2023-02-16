@@ -234,9 +234,13 @@ This means that Allwinner A64's USB Registers are located in __different address
 
 The Sunxi Community has helpfully documented the __Scrambled USB Registers__...
 
--   [__Allwinner USB OTG Controller Register Guide__](https://linux-sunxi.org/USB_OTG_Controller_Register_Guide)
+-   [__Allwinner USB OTG Controller Register Guide__](https://linux-sunxi.org/USB_OTG_Controller_Register_Guide#Common_Registers)
+
+    [(Implemented like this)](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg_allwinner.c#L140-L214)
 
 __OTG__ refers to [__USB On-The-Go__](https://en.wikipedia.org/wiki/USB_On-The-Go), which supports both USB Host Mode and USB Device Mode.
+
+(Also known as __"Dual-Role"__)
 
 Let's find a Reference Driver for the Mentor Graphics USB Controller...
 
@@ -281,7 +285,9 @@ Which uncovers the Allwinner A64 USB Driver that we seek (for FreeBSD, NetBSD an
 
 # FreeBSD USB Driver
 
-Earlier we discovered the name of the Allwinner A64 USB Driver: __"allwinner,sun8i-a33-musb"__
+_We found a Reference Driver for Allwinner A64 USB Controller?_
+
+Yep! Earlier we discovered the name of the Allwinner A64 USB Driver: __"allwinner,sun8i-a33-musb"__
 
 [__GitHub Code Search__](https://github.com/search?q=%22allwinner%2Csun8i-a33-musb%22+language%3AC&type=code&l=C) says that the Allwinner A64 USB Driver for FreeBSD is...
 
@@ -295,9 +301,11 @@ __OTG__ refers to [__USB On-The-Go__](https://en.wikipedia.org/wiki/USB_On-The-G
 
 _But where's the actual code for the USB Driver?_
 
-The __Mentor Graphics USB Driver__ is mostly implemented here...
+The __Mentor Graphics USB Driver__ is implemented here...
 
 -   [__usb/controller/musb_otg.c__](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c)
+
+_Why two files: musb_otg.c and musb_otg_allwinner.c?_
 
 Remember that the Allwinner A64 USB Controller is identical to the Mentor Graphics one... Except that the [__USB Registers are scrambled__](https://lupyuen.github.io/articles/usb2#document-the-usb-controller)?
 
@@ -305,9 +313,15 @@ That's why we need [__musb_otg_allwinner.c__](https://github.com/freebsd/freebsd
 
 [(Like this)](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg_allwinner.c#L140-L214)
 
-The __USB Physical Layer__ for Allwinner A64 is implemented here, but we won't touch it today...
+_What about the USB Physical Layer for FreeBSD?_
+
+The __USB Physical Layer__ for Allwinner A64 is implemented here...
 
 -   [__arm/allwinner/aw_usbphy.c__](https://github.com/freebsd/freebsd-src/blob/main/sys/arm/allwinner/aw_usbphy.c#L135)
+
+This driver controls the __Physical Layer__ (physical wires) that carries the USB signals.
+
+(But we won't touch it today)
 
 _OK we've seen the FreeBSD Drivers... What about other operating systems?_
 
