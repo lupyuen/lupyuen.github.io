@@ -228,9 +228,9 @@ Aha! Allwinner A64's USB Controller is actually a __Mentor Graphics USB Controll
 
 -   [__Mentor Graphics MUSBMHDRC USB 2.0 Multi-Point Dual-Role Controller__](https://linux-sunxi.org/images/7/73/Musbmhdrc.pdf)
 
-_USB Registers are scrambled?_
+_USB Registers are scrambled? Like eggs?_
 
-This means that Allwinner A64's USB Registers are located in __different addresses__ from the Mentor Graphics ones.
+Actually it means that Allwinner A64's USB Registers are located in __different addresses__ from the Mentor Graphics ones.
 
 The Sunxi Community has helpfully documented the __Scrambled USB Registers__...
 
@@ -385,7 +385,7 @@ First we understand how __USB Drivers work in NuttX__...
 
 -   [__"NuttX USB Host-Side Drivers"__](https://nuttx.apache.org/docs/latest/components/drivers/special/usbhost.html)
 
-The NuttX doc explains the __Detection and Enumeration of USB Devices__...
+The NuttX doc describes the __Detection and Enumeration of USB Devices__...
 
 > _Each USB Host Device Controller supports two methods that are used to detect and enumeration newly connected devices..._
 
@@ -393,7 +393,7 @@ The NuttX doc explains the __Detection and Enumeration of USB Devices__...
 
 > _`enumerate`: Enumerate the device connected to a root hub port_
 
-Then it explains the __Enumeration Process__...
+Then it explains the __USB Enumeration Process__...
 
 > _As part of this enumeration process, the driver will_
 
