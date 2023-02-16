@@ -411,6 +411,18 @@ allwinner,sun50i-a64-usb-phy
 <p>Calls <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L4520-L4612"><strong>stm32_ctrlout</strong></a></p>
 </li>
 </ul>
+<p>TODO</p>
+<p><em><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L4520-L4612">stm32_ctrlout</a> in NuttX looks similar to <a href="https://lupyuen.github.io/articles/usb2#inside-the-freebsd-driver">musbotg_host_ctrl_data_tx</a> in FreeBSD that we saw earlier…</em></p>
+<p>Aha! We found the <a href="https://en.wikipedia.org/wiki/Rosetta_Stone#Reading_the_Rosetta_Stone"><strong>Rosetta Stone</strong></a> that matches…</p>
+<ul>
+<li>
+<p><strong>Allwinner A64 USB Driver</strong> in FreeBSD, with the…</p>
+</li>
+<li>
+<p><strong>STM32 USB Driver</strong> in NuttX RTOS!</p>
+</li>
+</ul>
+<p>This will be super helpful as we port the Allwinner A64 USB Driver to NuttX.</p>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>Meanwhile please check out the other articles on NuttX for PinePhone…</p>
