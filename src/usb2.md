@@ -401,6 +401,18 @@ NuttX USB Driver for STM32...
 
 -   Calls [__stm32_ctrlout__](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L4520-L4612)
 
+TODO
+
+_[stm32_ctrlout](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L4520-L4612) in NuttX looks similar to [musbotg_host_ctrl_data_tx](https://lupyuen.github.io/articles/usb2#inside-the-freebsd-driver) in FreeBSD that we saw earlier..._
+
+Aha! We found the [__Rosetta Stone__](https://en.wikipedia.org/wiki/Rosetta_Stone#Reading_the_Rosetta_Stone) that matches...
+
+-   __Allwinner A64 USB Driver__ in FreeBSD, with the...
+
+-   __STM32 USB Driver__ in NuttX RTOS!
+
+This will be super helpful as we port the Allwinner A64 USB Driver to NuttX.
+
 # What's Next
 
 TODO
