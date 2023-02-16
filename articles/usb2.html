@@ -385,6 +385,33 @@ allwinner,sun50i-a64-usb-phy
 <ul>
 <li><a href="https://nuttx.apache.org/docs/latest/components/drivers/special/usbhost.html"><strong>“NuttX USB Host-Side Drivers”</strong></a></li>
 </ul>
+<p>The NuttX doc explains the <strong>Detection and Enumeration of USB Devices</strong>…</p>
+<blockquote>
+<p><em>Each USB Host Device Controller supports two methods that are used to detect and enumeration newly connected devices…</em></p>
+</blockquote>
+<blockquote>
+<p><em><code>wait</code>: Wait for a device to be connected or disconnected</em></p>
+</blockquote>
+<blockquote>
+<p><em><code>enumerate</code>: Enumerate the device connected to a root hub port</em></p>
+</blockquote>
+<p>Then it explains the <strong>Enumeration Process</strong>…</p>
+<blockquote>
+<p><em>As part of this enumeration process, the driver will</em></p>
+</blockquote>
+<blockquote>
+<p><em>(1) Get the Device’s Configuration Descriptor</em></p>
+</blockquote>
+<blockquote>
+<p><em>(2) Extract the class ID info from the Configuration Descriptor</em></p>
+</blockquote>
+<blockquote>
+<p><em>…</em></p>
+</blockquote>
+<p>TODO</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/stm32-blue-pill-usb-bootloader-how-i-fixed-the-usb-storage-serial-dfu-and-webusb-interfaces"><strong>“STM32 Blue Pill USB Bootloader — How I fixed the USB Storage, Serial, DFU and WebUSB interfaces”</strong></a></li>
+</ul>
 <p>TODO</p>
 <h1 id="stm32-usb-driver-for-nuttx"><a href="#stm32-usb-driver-for-nuttx">9 STM32 USB Driver for NuttX</a></h1>
 <p>TODO</p>
