@@ -114,7 +114,7 @@ Instead, we talk to the LTE Modem over USB...
 
 _How is the LTE Modem connected to PinePhone?_
 
-According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (Page 15), the Quectel EG25 LTE Modem connects to the __Allwinner A64 SoC__ on the USB Pins...
+According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (Page 15), the Quectel EG25-G LTE Modem connects to the __Allwinner A64 SoC__ on the USB Pins...
 
 -   __USB1-DP__
 
@@ -242,13 +242,13 @@ Let's find a Reference Driver for the Mentor Graphics USB Controller...
 
 # Search for USB Driver
 
-TODO
-
 _How to find a driver for Allwinner A64's USB Controller?_
 
-PinePhone's [__Device Tree__](https://lupyuen.github.io/articles/pio#appendix-pinephone-device-tree) describes the Hardware Configuration of PinePhone.
+PinePhone's [__Device Tree__](https://lupyuen.github.io/articles/pio#appendix-pinephone-device-tree) describes the Hardware Configuration of PinePhone...
 
-PinePhone's Device Tree says that the USB Drivers are...
+-   [__"PinePhone Device Tree"__](https://lupyuen.github.io/articles/pio#appendix-pinephone-device-tree)
+
+According to the Device Tree, PinePhone's __USB Drivers__ are listed as (pic above)...
 
 ```text
 usb@1c19000 {
@@ -258,15 +258,26 @@ phy@1c19400 {
   compatible = "allwinner,sun50i-a64-usb-phy";
 ```
 
-(__MUSB__ refers to the [__Mentor Graphics__](https://lupyuen.github.io/articles/usb2#document-the-usb-controller) USB Controller)
+[(Source)](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L647-L721)
 
-So we searched for "__allwinner,sun8i-a33-musb__" and "__allwinner,sun50i-a64-usb-phy__".
+_What are MUSB and USB PHY?_
 
-Here's the PinePhone USB Device Tree: [sun50i-a64-pinephone-1.2.dts](https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L647-L721)
+-   __MUSB__ refers to the [__Mentor Graphics__](https://lupyuen.github.io/articles/usb2#document-the-usb-controller) USB Controller
 
-Searching for "__allwinner,sun8i-a33-musb__" on [__GitHub Code Search__](https://github.com/search?q=%22allwinner%2Csun8i-a33-musb%22+language%3AC&type=code&l=C) uncovers the Allwinner A64 USB Driver that we seek: FreeBSD, NetBSD and Linux...
+-   __USB PHY__ refers to the __Physical Layer__ (physical wires) that carries the USB signals
+
+Thus we search for these __USB Driver Names__ on [__GitHub Code Search__](https://github.com/search?q=%22allwinner%2Csun8i-a33-musb%22+language%3AC&type=code&l=C)...
+
+```text
+allwinner,sun8i-a33-musb
+allwinner,sun50i-a64-usb-phy
+```
+
+Which uncovers the Allwinner A64 USB Driver that we seek (for FreeBSD, NetBSD and Linux)...
 
 # FreeBSD USB Driver
+
+Earlier we discovered the name of the Allwinner A64 USB Driver: __"allwinner,sun8i-a33-musb"__
 
 [__GitHub Code Search__](https://github.com/search?q=%22allwinner%2Csun8i-a33-musb%22+language%3AC&type=code&l=C) says that the Allwinner A64 USB Driver for FreeBSD is...
 
@@ -310,7 +321,7 @@ But today we'll study the FreeBSD Driver because it's easier to read.
 
 [_Transmit Control Data as Host in Mentor Graphics USB Controller (Page 126)_](https://linux-sunxi.org/images/7/73/Musbmhdrc.pdf)
 
-# Understand the FreeBSD Driver
+# Inside the FreeBSD Driver
 
 _Do we copy the FreeBSD Driver into NuttX?_
 
@@ -348,19 +359,15 @@ Which we'll cover in the next article!
 
 # USB Drivers in NuttX
 
-TODO
-
 _We found the FreeBSD Driver for Allwinner A64 USB..._
 
 _How will we adapt it for NuttX RTOS?_
 
+First we need to understand how __USB Drivers work in NuttX__...
+
+-   [__"NuttX USB Host-Side Drivers"__](https://nuttx.apache.org/docs/latest/components/drivers/special/usbhost.html)
+
 TODO
-
-_How do USB Drivers work in NuttX?_
-
-Check out this NuttX Doc on USB Drivers...
-
--   [__"USB Host-Side Drivers"__](https://nuttx.apache.org/docs/latest/components/drivers/special/usbhost.html)
 
 # STM32 USB Driver for NuttX
 
