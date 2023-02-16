@@ -278,9 +278,13 @@ Device Descriptor:
 <p>This means that Allwinner A64’s USB Registers are located in <strong>different addresses</strong> from the Mentor Graphics ones.</p>
 <p>The Sunxi Community has helpfully documented the <strong>Scrambled USB Registers</strong>…</p>
 <ul>
-<li><a href="https://linux-sunxi.org/USB_OTG_Controller_Register_Guide"><strong>Allwinner USB OTG Controller Register Guide</strong></a></li>
+<li>
+<p><a href="https://linux-sunxi.org/USB_OTG_Controller_Register_Guide#Common_Registers"><strong>Allwinner USB OTG Controller Register Guide</strong></a></p>
+<p><a href="https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg_allwinner.c#L140-L214">(Implemented like this)</a></p>
+</li>
 </ul>
 <p><strong>OTG</strong> refers to <a href="https://en.wikipedia.org/wiki/USB_On-The-Go"><strong>USB On-The-Go</strong></a>, which supports both USB Host Mode and USB Device Mode.</p>
+<p>(Also known as <strong>“Dual-Role”</strong>)</p>
 <p>Let’s find a Reference Driver for the Mentor Graphics USB Controller…</p>
 <p><img src="https://lupyuen.github.io/images/usb2-devicetree.png" alt="USB Controller in PinePhone Device Tree" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L647-L721"><em>USB Controller in PinePhone Device Tree</em></a></p>
@@ -313,7 +317,8 @@ allwinner,sun50i-a64-usb-phy
 </code></pre></div>
 <p>Which uncovers the Allwinner A64 USB Driver that we seek (for FreeBSD, NetBSD and Linux)…</p>
 <h1 id="freebsd-usb-driver"><a href="#freebsd-usb-driver">6 FreeBSD USB Driver</a></h1>
-<p>Earlier we discovered the name of the Allwinner A64 USB Driver: <strong>“allwinner,sun8i-a33-musb”</strong></p>
+<p><em>We found a Reference Driver for Allwinner A64 USB Controller?</em></p>
+<p>Yep! Earlier we discovered the name of the Allwinner A64 USB Driver: <strong>“allwinner,sun8i-a33-musb”</strong></p>
 <p><a href="https://github.com/search?q=%22allwinner%2Csun8i-a33-musb%22+language%3AC&amp;type=code&amp;l=C"><strong>GitHub Code Search</strong></a> says that the Allwinner A64 USB Driver for FreeBSD is…</p>
 <ul>
 <li><a href="https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg_allwinner.c#L95"><strong>usb/controller/musb_otg_allwinner.c</strong></a></li>
@@ -322,17 +327,21 @@ allwinner,sun50i-a64-usb-phy
 <p><strong>OTG</strong> refers to <a href="https://en.wikipedia.org/wiki/USB_On-The-Go"><strong>USB On-The-Go</strong></a>, which supports both USB Host Mode and USB Device Mode.</p>
 <p>(We’ll stick to <strong>USB Host Mode</strong> for today)</p>
 <p><em>But where’s the actual code for the USB Driver?</em></p>
-<p>The <strong>Mentor Graphics USB Driver</strong> is mostly implemented here…</p>
+<p>The <strong>Mentor Graphics USB Driver</strong> is implemented here…</p>
 <ul>
 <li><a href="https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c"><strong>usb/controller/musb_otg.c</strong></a></li>
 </ul>
+<p><em>Why two files: musb_otg.c and musb_otg_allwinner.c?</em></p>
 <p>Remember that the Allwinner A64 USB Controller is identical to the Mentor Graphics one… Except that the <a href="https://lupyuen.github.io/articles/usb2#document-the-usb-controller"><strong>USB Registers are scrambled</strong></a>?</p>
 <p>That’s why we need <a href="https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg_allwinner.c#L140-L214"><strong>musb_otg_allwinner.c</strong></a> to unscramble the USB Registers, specifically for Allwinner A64.</p>
 <p><a href="https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg_allwinner.c#L140-L214">(Like this)</a></p>
-<p>The <strong>USB Physical Layer</strong> for Allwinner A64 is implemented here, but we won’t touch it today…</p>
+<p><em>What about the USB Physical Layer for FreeBSD?</em></p>
+<p>The <strong>USB Physical Layer</strong> for Allwinner A64 is implemented here…</p>
 <ul>
 <li><a href="https://github.com/freebsd/freebsd-src/blob/main/sys/arm/allwinner/aw_usbphy.c#L135"><strong>arm/allwinner/aw_usbphy.c</strong></a></li>
 </ul>
+<p>This driver controls the <strong>Physical Layer</strong> (physical wires) that carries the USB signals.</p>
+<p>(But we won’t touch it today)</p>
 <p><em>OK we’ve seen the FreeBSD Drivers… What about other operating systems?</em></p>
 <p><a href="https://github.com/search?q=%22allwinner%2Csun8i-a33-musb%22+language%3AC&amp;type=code&amp;l=C"><strong>GitHub Code Search</strong></a> also uncovers the <strong>NetBSD Drivers</strong> for Allwinner A64 USB…</p>
 <ul>
