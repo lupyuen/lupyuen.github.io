@@ -246,6 +246,8 @@ TODO
 
 _How to find a driver for Allwinner A64's USB Controller?_
 
+The __Device Tree__ for PinePhone describes the Hardware Configuration of PinePhone.
+
 PinePhone's Device Tree says that the USB Drivers are...
 
 ```text
@@ -346,6 +348,12 @@ Matching the Mentor Graphics Doc with the FreeBSD Driver Code will be an interes
 Which we'll cover in the next article!
 
 # USB Drivers in NuttX
+
+TODO
+
+_We found the FreeBSD Driver for Allwinner A64 USB..._
+
+_How will we adapt it for NuttX RTOS?_
 
 TODO
 
