@@ -246,7 +246,7 @@ TODO
 
 _How to find a driver for Allwinner A64's USB Controller?_
 
-The __Device Tree__ for PinePhone describes the Hardware Configuration of PinePhone.
+PinePhone's [__Device Tree__](https://lupyuen.github.io/articles/pio#appendix-pinephone-device-tree) describes the Hardware Configuration of PinePhone.
 
 PinePhone's Device Tree says that the USB Drivers are...
 
@@ -311,7 +311,6 @@ But today we'll study the FreeBSD Driver because it's easier to read.
 [_Transmit Control Data as Host in Mentor Graphics USB Controller (Page 126)_](https://linux-sunxi.org/images/7/73/Musbmhdrc.pdf)
 
 # Understand the FreeBSD Driver
-
 
 _Do we copy the FreeBSD Driver into NuttX?_
 
@@ -380,6 +379,16 @@ NuttX USB Driver for STM32...
 (USB OTG FS: Able to act as a device/host/OTG peripheral, at full speed 12Mbps)
 
 (USB OTG HS: Able to act as a device/host/OTG peripheral, at full speed 12Mbps or high speed 480Mbps)
+
+[__stm32_enumerate__](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L3986-L4032)
+
+-   Calls [__stm32_rh_enumerate__](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L3901-L3986)
+
+-   Calls [__usbhost_enumerate__](https://github.com/apache/nuttx/blob/master/drivers/usbhost/usbhost_enumerate.c#L249-L581)
+
+-   Calls [__DRVR_CTRLOUT__](https://github.com/apache/nuttx/blob/master/include/nuttx/usb/usbhost.h#L436-L475)
+
+-   Calls [__stm32_ctrlout__](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L4520-L4612)
 
 # What's Next
 
