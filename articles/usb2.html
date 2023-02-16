@@ -285,7 +285,7 @@ Device Descriptor:
 <h1 id="search-for-usb-driver"><a href="#search-for-usb-driver">5 Search for USB Driver</a></h1>
 <p>TODO</p>
 <p><em>How to find a driver for Allwinner A64’s USB Controller?</em></p>
-<p>The <strong>Device Tree</strong> for PinePhone describes the Hardware Configuration of PinePhone.</p>
+<p>PinePhone’s <a href="https://lupyuen.github.io/articles/pio#appendix-pinephone-device-tree"><strong>Device Tree</strong></a> describes the Hardware Configuration of PinePhone.</p>
 <p>PinePhone’s Device Tree says that the USB Drivers are…</p>
 <div class="example-wrap"><pre class="language-text"><code>usb@1c19000 {
   compatible = &quot;allwinner,sun8i-a33-musb&quot;;
@@ -382,6 +382,21 @@ phy@1c19400 {
 </ul>
 <p>(USB OTG FS: Able to act as a device/host/OTG peripheral, at full speed 12Mbps)</p>
 <p>(USB OTG HS: Able to act as a device/host/OTG peripheral, at full speed 12Mbps or high speed 480Mbps)</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L3986-L4032"><strong>stm32_enumerate</strong></a></p>
+<ul>
+<li>
+<p>Calls <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L3901-L3986"><strong>stm32_rh_enumerate</strong></a></p>
+</li>
+<li>
+<p>Calls <a href="https://github.com/apache/nuttx/blob/master/drivers/usbhost/usbhost_enumerate.c#L249-L581"><strong>usbhost_enumerate</strong></a></p>
+</li>
+<li>
+<p>Calls <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/usb/usbhost.h#L436-L475"><strong>DRVR_CTRLOUT</strong></a></p>
+</li>
+<li>
+<p>Calls <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L4520-L4612"><strong>stm32_ctrlout</strong></a></p>
+</li>
+</ul>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>Meanwhile please check out the other articles on NuttX for PinePhone…</p>
