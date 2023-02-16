@@ -228,6 +228,10 @@ Aha! Allwinner A64's USB Controller is actually a __Mentor Graphics USB Controll
 
 -   [__Mentor Graphics MUSBMHDRC USB 2.0 Multi-Point Dual-Role Controller__](https://linux-sunxi.org/images/7/73/Musbmhdrc.pdf)
 
+_USB Registers are scrambled?_
+
+This means that Allwinner A64's USB Registers are located in __different addresses__ from the Mentor Graphics ones.
+
 The Sunxi Community has helpfully documented the __Scrambled USB Registers__...
 
 -   [__Allwinner USB OTG Controller Register Guide__](https://linux-sunxi.org/USB_OTG_Controller_Register_Guide)
