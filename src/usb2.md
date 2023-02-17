@@ -411,6 +411,12 @@ Yep! To prepare for our upcoming implementation of the PinePhone USB Driver, let
 
 # STM32 USB Driver for NuttX
 
+_We're about to implement our NuttX Driver for PinePhone USB..._
+
+_Can we learn something from the NuttX Driver for STM32 USB?_
+
+Let's find out!
+
 TODO
 
 NuttX USB Driver for STM32...
