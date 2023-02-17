@@ -393,21 +393,21 @@ The NuttX doc describes the __Detection and Enumeration of USB Devices__...
 
 > _`enumerate`: Enumerate the device connected to a root hub port_
 
-Then it explains the __USB Enumeration Process__...
+Then the NuttX doc explains the __USB Enumeration Process__...
 
 > _As part of this enumeration process, the driver will_
 
 > _(1) Get the Device’s Configuration Descriptor_
 
-> _(2) Extract the class ID info from the Configuration Descriptor_
+> _(2) Extract the Class ID info from the Configuration Descriptor_
 
 > _..._
 
-TODO
+> [(__USB Descriptors__ look like this)](https://lupyuen.github.io/articles/stm32-blue-pill-usb-bootloader-how-i-fixed-the-usb-storage-serial-dfu-and-webusb-interfaces)
 
--   [__"STM32 Blue Pill USB Bootloader — How I fixed the USB Storage, Serial, DFU and WebUSB interfaces"__](https://lupyuen.github.io/articles/stm32-blue-pill-usb-bootloader-how-i-fixed-the-usb-storage-serial-dfu-and-webusb-interfaces)
+_So our PinePhone USB Driver needs to implement this USB Enumeration?_
 
-TODO
+Yep! To prepare for our upcoming implementation of the PinePhone USB Driver, let's look at the NuttX Driver for STM32 USB Controller...
 
 # STM32 USB Driver for NuttX
 

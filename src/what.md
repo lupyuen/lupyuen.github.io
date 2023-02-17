@@ -106,7 +106,7 @@ I'm not paid by Apache Software Foundation. But I'm extremely grateful to my [__
 
 If we're keen to boot NuttX on our PinePhone, please read on...
 
-![Bootable microSD for PinePhone](https://lupyuen.github.io/images/arm-jumpdrive.png)
+![Bootable microSD for PinePhone](https://lupyuen.github.io/images/what-image.jpg)
 
 [_Bootable microSD for PinePhone_](https://lupyuen.github.io/articles/lvgl2#appendix-boot-apache-nuttx-rtos-on-pinephone)
 
