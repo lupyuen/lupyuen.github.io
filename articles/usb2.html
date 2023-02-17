@@ -371,10 +371,11 @@ allwinner,sun50i-a64-usb-phy
 <li><a href="https://linux-sunxi.org/images/7/73/Musbmhdrc.pdf"><strong>Mentor Graphics MUSBMHDRC</strong></a></li>
 </ul>
 <p>See <strong>Section 21.2.3</strong> “Control Transactions as a Host - Out Data Phase as a Host”. (Page 126, pic above)</p>
+<p><a href="https://en.wikipedia.org/wiki/USB_(Communications)#OUT_transaction">(<strong>USB Out Transaction</strong> is explained here)</a></p>
 <p>This seems to match the FreeBSD Driver Code for <a href="https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c#L1067-L1239"><strong>musbotg_host_ctrl_data_tx</strong></a> in <a href="https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c#L1067-L1239"><strong>musb_otg.c</strong></a>…</p>
 <p><img src="https://lupyuen.github.io/images/usb2-freebsd.png" alt="musbotg_host_ctrl_data_tx in musb_otg.c" /></p>
 <p><a href="https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c#L1067-L1239">(Source)</a></p>
-<p>So we compare the two side-by-side to figure out how it works…</p>
+<p>To figure out how it works, we compare the code with the doc side-by-side…</p>
 <p><img src="https://lupyuen.github.io/images/usb2-freebsd2.png" alt="Matching the Mentor Graphics Doc with the FreeBSD Driver Code" /></p>
 <p>Matching the Mentor Graphics Doc with the FreeBSD Driver Code will be an interesting exercise.</p>
 <p>Which we’ll cover in the next article!</p>
@@ -416,25 +417,34 @@ allwinner,sun50i-a64-usb-phy
 <h1 id="stm32-usb-driver-for-nuttx"><a href="#stm32-usb-driver-for-nuttx">9 STM32 USB Driver for NuttX</a></h1>
 <p><em>We’re about to implement our NuttX Driver for PinePhone USB…</em></p>
 <p><em>Can we learn something from the NuttX Driver for STM32 USB?</em></p>
-<p>Let’s find out!</p>
-<p>TODO</p>
-<p>NuttX USB Driver for STM32…</p>
+<p>Let’s find out! The <strong>NuttX USB Driver for STM32</strong> is implemented at…</p>
 <ul>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c">stm32_otgfshost.c</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c"><strong>stm32_otgfshost.c</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfsdev.c">stm32_otgfsdev.c</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfsdev.c"><strong>stm32_otgfsdev.c</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_usbfs.c">stm32_usbfs.c</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_usbfs.c"><strong>stm32_usbfs.c</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_usbhost.c">stm32_usbhost.c</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_usbhost.c"><strong>stm32_usbhost.c</strong></a></p>
 </li>
 </ul>
-<p>(USB OTG FS: Able to act as a device/host/OTG peripheral, at full speed 12Mbps)</p>
-<p>(USB OTG HS: Able to act as a device/host/OTG peripheral, at full speed 12Mbps or high speed 480Mbps)</p>
+<p>We see these in the NuttX Filenames…</p>
+<ul>
+<li>
+<p><strong>OTG</strong> refers to <a href="https://en.wikipedia.org/wiki/USB_On-The-Go"><strong>USB On-The-Go</strong></a>, which supports both USB Host Mode and USB Device Mode</p>
+</li>
+<li>
+<p><strong>FS</strong> refers to <a href="https://en.wikipedia.org/wiki/USB_(Communications)"><strong>USB Full Speed Mode</strong></a> at 12 Mbps</p>
+</li>
+<li>
+<p><strong>HS</strong> refers to <a href="https://en.wikipedia.org/wiki/USB_(Communications)"><strong>USB High Speed Mode</strong></a> at 480 Mbps</p>
+</li>
+</ul>
+<p>TODO</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L3986-L4032"><strong>stm32_enumerate</strong></a></p>
 <ul>
 <li>
