@@ -444,23 +444,26 @@ allwinner,sun50i-a64-usb-phy
 <p><strong>HS</strong> refers to <a href="https://en.wikipedia.org/wiki/USB_(Communications)"><strong>USB High Speed Mode</strong></a> at 480 Mbps</p>
 </li>
 </ul>
-<p>TODO</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L3986-L4032"><strong>stm32_enumerate</strong></a></p>
+<p><em>How does the STM32 Driver enumerate USB Devices?</em></p>
+<p>That’s done in <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L3986-L4032"><strong>stm32_enumerate</strong></a>…</p>
 <ul>
 <li>
-<p>Calls <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L3901-L3986"><strong>stm32_rh_enumerate</strong></a></p>
+<p>Which calls <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L3901-L3986"><strong>stm32_rh_enumerate</strong></a></p>
+<p>TODO</p>
 </li>
 <li>
-<p>Calls <a href="https://github.com/apache/nuttx/blob/master/drivers/usbhost/usbhost_enumerate.c#L249-L581"><strong>usbhost_enumerate</strong></a></p>
+<p>Which calls <a href="https://github.com/apache/nuttx/blob/master/drivers/usbhost/usbhost_enumerate.c#L249-L581"><strong>usbhost_enumerate</strong></a></p>
+<p>TODO</p>
 </li>
 <li>
-<p>Calls <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/usb/usbhost.h#L436-L475"><strong>DRVR_CTRLOUT</strong></a></p>
+<p>Which calls <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/usb/usbhost.h#L436-L475"><strong>DRVR_CTRLOUT</strong></a></p>
+<p>TODO</p>
 </li>
 <li>
-<p>Calls <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L4520-L4612"><strong>stm32_ctrlout</strong></a></p>
+<p>Which calls <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L4520-L4612"><strong>stm32_ctrlout</strong></a></p>
+<p>TODO</p>
 </li>
 </ul>
-<p>TODO</p>
 <p><em><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L4520-L4612">stm32_ctrlout</a> in NuttX looks similar to <a href="https://lupyuen.github.io/articles/usb2#inside-the-freebsd-driver">musbotg_host_ctrl_data_tx</a> in FreeBSD that we saw earlier…</em></p>
 <p>Aha! We found the <a href="https://en.wikipedia.org/wiki/Rosetta_Stone#Reading_the_Rosetta_Stone"><strong>Rosetta Stone</strong></a> that matches…</p>
 <ul>
