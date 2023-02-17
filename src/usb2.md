@@ -467,7 +467,7 @@ Aha! We found the [__Rosetta Stone__](https://en.wikipedia.org/wiki/Rosetta_Ston
 
 This will be super helpful as we port the Allwinner A64 USB Driver to NuttX.
 
-![stm32_ctrlout in NuttX looks similar to musbotg_host_ctrl_data_tx in FreeBSD](https://lupyuen.github.io/images/usb2-stm.png)
+![stm32_ctrlout in NuttX looks similar to musbotg_host_ctrl_data_tx in FreeBSD](https://lupyuen.github.io/images/usb2-stm.jpg)
 
 # What's Next
 
