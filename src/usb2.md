@@ -435,19 +435,25 @@ We see these in the NuttX Filenames...
 
 -   __HS__ refers to [__USB High Speed Mode__](https://en.wikipedia.org/wiki/USB_(Communications)) at 480 Mbps
 
-TODO
+_How does the STM32 Driver enumerate USB Devices?_
 
-[__stm32_enumerate__](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L3986-L4032)
+That's done in [__stm32_enumerate__](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L3986-L4032)...
 
--   Calls [__stm32_rh_enumerate__](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L3901-L3986)
+-   Which calls [__stm32_rh_enumerate__](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L3901-L3986)
 
--   Calls [__usbhost_enumerate__](https://github.com/apache/nuttx/blob/master/drivers/usbhost/usbhost_enumerate.c#L249-L581)
+    TODO
 
--   Calls [__DRVR_CTRLOUT__](https://github.com/apache/nuttx/blob/master/include/nuttx/usb/usbhost.h#L436-L475)
+-   Which calls [__usbhost_enumerate__](https://github.com/apache/nuttx/blob/master/drivers/usbhost/usbhost_enumerate.c#L249-L581)
 
--   Calls [__stm32_ctrlout__](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L4520-L4612)
+    TODO
 
-TODO
+-   Which calls [__DRVR_CTRLOUT__](https://github.com/apache/nuttx/blob/master/include/nuttx/usb/usbhost.h#L436-L475)
+
+    TODO
+
+-   Which calls [__stm32_ctrlout__](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L4520-L4612)
+
+    TODO
 
 _[stm32_ctrlout](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L4520-L4612) in NuttX looks similar to [musbotg_host_ctrl_data_tx](https://lupyuen.github.io/articles/usb2#inside-the-freebsd-driver) in FreeBSD that we saw earlier..._
 
