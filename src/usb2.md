@@ -361,13 +361,15 @@ The Mentor Graphics Doc describes __Transmitting Control Data__ (as a Host)...
 
 See __Section 21.2.3__ "Control Transactions as a Host - Out Data Phase as a Host". (Page 126, pic above)
 
+[(__USB Out Transaction__ is explained here)](https://en.wikipedia.org/wiki/USB_(Communications)#OUT_transaction)
+
 This seems to match the FreeBSD Driver Code for [__musbotg_host_ctrl_data_tx__](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c#L1067-L1239) in [__musb_otg.c__](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c#L1067-L1239)...
 
 ![musbotg_host_ctrl_data_tx in musb_otg.c](https://lupyuen.github.io/images/usb2-freebsd.png)
 
 [(Source)](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c#L1067-L1239)
 
-So we compare the two side-by-side to figure out how it works...
+To figure out how it works, we compare the code with the doc side-by-side...
 
 ![Matching the Mentor Graphics Doc with the FreeBSD Driver Code](https://lupyuen.github.io/images/usb2-freebsd2.png)
 
@@ -415,23 +417,25 @@ _We're about to implement our NuttX Driver for PinePhone USB..._
 
 _Can we learn something from the NuttX Driver for STM32 USB?_
 
-Let's find out!
+Let's find out! The __NuttX USB Driver for STM32__ is implemented at...
+
+-   [__stm32_otgfshost.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c)
+
+-   [__stm32_otgfsdev.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfsdev.c)
+
+-   [__stm32_usbfs.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_usbfs.c)
+
+-   [__stm32_usbhost.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_usbhost.c)
+
+We see these in the NuttX Filenames...
+
+-   __OTG__ refers to [__USB On-The-Go__](https://en.wikipedia.org/wiki/USB_On-The-Go), which supports both USB Host Mode and USB Device Mode
+
+-   __FS__ refers to [__USB Full Speed Mode__](https://en.wikipedia.org/wiki/USB_(Communications)) at 12 Mbps
+
+-   __HS__ refers to [__USB High Speed Mode__](https://en.wikipedia.org/wiki/USB_(Communications)) at 480 Mbps
 
 TODO
-
-NuttX USB Driver for STM32...
-
--   [stm32_otgfshost.c](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c)
-
--   [stm32_otgfsdev.c](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfsdev.c)
-
--   [stm32_usbfs.c](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_usbfs.c)
-
--   [stm32_usbhost.c](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_usbhost.c)
-
-(USB OTG FS: Able to act as a device/host/OTG peripheral, at full speed 12Mbps)
-
-(USB OTG HS: Able to act as a device/host/OTG peripheral, at full speed 12Mbps or high speed 480Mbps)
 
 [__stm32_enumerate__](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L3986-L4032)
 
