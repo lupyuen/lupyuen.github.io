@@ -395,7 +395,7 @@ allwinner,sun50i-a64-usb-phy
 <blockquote>
 <p><em><code>enumerate</code>: Enumerate the device connected to a root hub port</em></p>
 </blockquote>
-<p>Then it explains the <strong>USB Enumeration Process</strong>…</p>
+<p>Then the NuttX doc explains the <strong>USB Enumeration Process</strong>…</p>
 <blockquote>
 <p><em>As part of this enumeration process, the driver will</em></p>
 </blockquote>
@@ -403,16 +403,16 @@ allwinner,sun50i-a64-usb-phy
 <p><em>(1) Get the Device’s Configuration Descriptor</em></p>
 </blockquote>
 <blockquote>
-<p><em>(2) Extract the class ID info from the Configuration Descriptor</em></p>
+<p><em>(2) Extract the Class ID info from the Configuration Descriptor</em></p>
 </blockquote>
 <blockquote>
 <p><em>…</em></p>
 </blockquote>
-<p>TODO</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/stm32-blue-pill-usb-bootloader-how-i-fixed-the-usb-storage-serial-dfu-and-webusb-interfaces"><strong>“STM32 Blue Pill USB Bootloader — How I fixed the USB Storage, Serial, DFU and WebUSB interfaces”</strong></a></li>
-</ul>
-<p>TODO</p>
+<blockquote>
+<p><a href="https://lupyuen.github.io/articles/stm32-blue-pill-usb-bootloader-how-i-fixed-the-usb-storage-serial-dfu-and-webusb-interfaces">(<strong>USB Descriptors</strong> look like this)</a></p>
+</blockquote>
+<p><em>So our PinePhone USB Driver needs to implement this USB Enumeration?</em></p>
+<p>Yep! To prepare for our upcoming implementation of the PinePhone USB Driver, let’s look at the NuttX Driver for STM32 USB Controller…</p>
 <h1 id="stm32-usb-driver-for-nuttx"><a href="#stm32-usb-driver-for-nuttx">9 STM32 USB Driver for NuttX</a></h1>
 <p>TODO</p>
 <p>NuttX USB Driver for STM32…</p>
