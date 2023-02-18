@@ -4,7 +4,7 @@
 
 ![PinePhone talks to LTE Modem over USB](https://lupyuen.github.io/images/usb2-title.jpg)
 
-_PinePhone talks to LTE Modem over USB_
+[_PinePhone talks to LTE Modem over USB_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
 
 Over the past [__17 articles__](https://github.com/lupyuen/pinephone-nuttx) we talked about porting to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) a Real-Time Operating System: [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what).
 
@@ -28,7 +28,7 @@ Our journey down the PinePhone USB Rabbit Hole begins with a curious comment...
 
 ![Quectel EG25-G LTE Modem inside PinePhone](https://lupyuen.github.io/images/wayland-sd.jpg)
 
-_Quectel EG25-G LTE Modem inside PinePhone_
+[_Quectel EG25-G LTE Modem inside PinePhone_](https://wiki.pine64.org/index.php/PinePhone#Modem)
 
 # PinePhone + NuttX = Feature Phone
 
@@ -66,7 +66,7 @@ _Will PinePhone on NuttX become a fully-functional smartphone?_
 
 Maybe someday? We're still lacking plenty of drivers: WiFi, Bluetooth LE, GPS, Audio, ...
 
-Probably better to start as a Feature Phone (or LoRa Communication) and build up.
+Probably better to start as a Feature Phone (or LoRa Communicator) and build up.
 
 Let's talk about PinePhone's LTE Modem...
 
@@ -232,11 +232,15 @@ _USB Registers are scrambled? Like eggs?_
 
 Actually it means that Allwinner A64's USB Registers are located in __different addresses__ from the Mentor Graphics ones.
 
+(Everything else works exactly the same way)
+
 The Sunxi Community has helpfully documented the __Scrambled USB Registers__...
 
 -   [__Allwinner USB OTG Controller Register Guide__](https://linux-sunxi.org/USB_OTG_Controller_Register_Guide#Common_Registers)
 
     [(Implemented like this)](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg_allwinner.c#L140-L214)
+
+_What's a USB OTG Controller?_
 
 __OTG__ refers to [__USB On-The-Go__](https://en.wikipedia.org/wiki/USB_On-The-Go), which supports both USB Host Mode and USB Device Mode.
 
