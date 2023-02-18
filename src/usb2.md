@@ -377,9 +377,9 @@ This seems to match the FreeBSD Driver Code for [__musbotg_host_ctrl_data_tx__](
 
 To figure out how it works, we compare the code with the doc side-by-side...
 
-![Matching the Mentor Graphics Doc with the FreeBSD Driver Code](https://lupyuen.github.io/images/usb2-freebsd2.png)
+![Matching the FreeBSD Driver Code with the Mentor Graphics Doc](https://lupyuen.github.io/images/usb2-freebsd2.png)
 
-Matching the Mentor Graphics Doc with the FreeBSD Driver Code will be an interesting exercise.
+Matching the FreeBSD Driver Code with the Mentor Graphics Doc will be an interesting educational exercise...
 
 Which we'll cover in the next article!
 
