@@ -79,7 +79,7 @@
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-lora-communicator-for-pinephone-on-nuttx">11 Appendix: LoRa Communicator for PinePhone on NuttX</a><ul></ul></li></ul></nav><p>📝 <em>19 Feb 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/usb2-title.jpg" alt="PinePhone talks to LTE Modem over USB" /></p>
-<p><em>PinePhone talks to LTE Modem over USB</em></p>
+<p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>PinePhone talks to LTE Modem over USB</em></a></p>
 <p>Over the past <a href="https://github.com/lupyuen/pinephone-nuttx"><strong>17 articles</strong></a> we talked about porting to <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> a Real-Time Operating System: <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a>.</p>
 <p>Today NuttX can run <a href="https://lupyuen.github.io/articles/terminal"><strong>Touchscreen Apps</strong></a> on PinePhone… But it ain’t done yet till we can make <strong>Phone Calls</strong> and send <strong>Text Messages</strong>!</p>
 <p>In this article we’ll dive into PinePhone’s <strong>USB Controller</strong>…</p>
@@ -105,7 +105,7 @@
 </ul>
 <p>Our journey down the PinePhone USB Rabbit Hole begins with a curious comment…</p>
 <p><img src="https://lupyuen.github.io/images/wayland-sd.jpg" alt="Quectel EG25-G LTE Modem inside PinePhone" /></p>
-<p><em>Quectel EG25-G LTE Modem inside PinePhone</em></p>
+<p><a href="https://wiki.pine64.org/index.php/PinePhone#Modem"><em>Quectel EG25-G LTE Modem inside PinePhone</em></a></p>
 <h1 id="pinephone--nuttx--feature-phone"><a href="#pinephone--nuttx--feature-phone">1 PinePhone + NuttX = Feature Phone</a></h1>
 <p><em>Now that NuttX can run Touchscreen Apps on PinePhone… What next?</em></p>
 <p>We might turn PinePhone on NuttX into a <strong>Feature Phone</strong>, thanks to an inspiring comment on YouTube…</p>
@@ -130,7 +130,7 @@
 <p><a href="https://lupyuen.github.io/articles/usb2#appendix-lora-communicator-for-pinephone-on-nuttx">(More about this)</a></p>
 <p><em>Will PinePhone on NuttX become a fully-functional smartphone?</em></p>
 <p>Maybe someday? We’re still lacking plenty of drivers: WiFi, Bluetooth LE, GPS, Audio, …</p>
-<p>Probably better to start as a Feature Phone (or LoRa Communication) and build up.</p>
+<p>Probably better to start as a Feature Phone (or LoRa Communicator) and build up.</p>
 <p>Let’s talk about PinePhone’s LTE Modem…</p>
 <p><img src="https://lupyuen.github.io/images/usb2-modem.jpg" alt="Quectel EG25-G LTE Modem" /></p>
 <p><a href="https://wiki.pine64.org/wiki/File:Quectel_EG25-G_LTE_Standard_Specification_V1.3.pdf"><em>Quectel EG25-G LTE Modem</em></a></p>
@@ -276,6 +276,7 @@ Device Descriptor:
 </ul>
 <p><em>USB Registers are scrambled? Like eggs?</em></p>
 <p>Actually it means that Allwinner A64’s USB Registers are located in <strong>different addresses</strong> from the Mentor Graphics ones.</p>
+<p>(Everything else works exactly the same way)</p>
 <p>The Sunxi Community has helpfully documented the <strong>Scrambled USB Registers</strong>…</p>
 <ul>
 <li>
@@ -283,6 +284,7 @@ Device Descriptor:
 <p><a href="https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg_allwinner.c#L140-L214">(Implemented like this)</a></p>
 </li>
 </ul>
+<p><em>What’s a USB OTG Controller?</em></p>
 <p><strong>OTG</strong> refers to <a href="https://en.wikipedia.org/wiki/USB_On-The-Go"><strong>USB On-The-Go</strong></a>, which supports both USB Host Mode and USB Device Mode.</p>
 <p>(Also known as <strong>“Dual-Role”</strong>)</p>
 <p>Let’s find a Reference Driver for the Mentor Graphics USB Controller…</p>
