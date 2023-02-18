@@ -1,6 +1,6 @@
 # NuttX RTOS for PinePhone: Exploring USB
 
-📝 _20 Feb 2023_
+📝 _19 Feb 2023_
 
 ![PinePhone talks to LTE Modem over USB](https://lupyuen.github.io/images/usb2-title.jpg)
 
@@ -333,6 +333,8 @@ _OK we've seen the FreeBSD Drivers... What about other operating systems?_
 
     [(And Linux too)](https://github.com/torvalds/linux/blob/master/drivers/usb/musb/sunxi.c)
 
+    [(Also U-Boot Bootloader)](https://github.com/u-boot/u-boot/blob/master/drivers/usb/musb-new/sunxi.c)
+
 But today we'll study the FreeBSD Driver because it's easier to read.
 
 ![Transmit Control Data as Host in Mentor Graphics USB Controller (Page 126)](https://lupyuen.github.io/images/usb2-mentor.png)
@@ -441,19 +443,19 @@ That's done in [__stm32_enumerate__](https://github.com/apache/nuttx/blob/master
 
 -   Which calls [__stm32_rh_enumerate__](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L3901-L3986)
 
-    TODO
+    (To enumerate the USB Root Hub)
 
 -   Which calls [__usbhost_enumerate__](https://github.com/apache/nuttx/blob/master/drivers/usbhost/usbhost_enumerate.c#L249-L581)
 
-    TODO
+    (Platform-independent USB Enumeration for NuttX)
 
 -   Which calls [__DRVR_CTRLOUT__](https://github.com/apache/nuttx/blob/master/include/nuttx/usb/usbhost.h#L436-L475)
 
-    TODO
+    (To send a USB Control Out Request)
 
 -   Which calls [__stm32_ctrlout__](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L4520-L4612)
 
-    TODO
+    (To send a USB Control Out Request on STM32)
 
 _[stm32_ctrlout](https://github.com/apache/nuttx/blob/master/arch/arm/src/stm32/stm32_otgfshost.c#L4520-L4612) in NuttX looks similar to [musbotg_host_ctrl_data_tx](https://lupyuen.github.io/articles/usb2#inside-the-freebsd-driver) in FreeBSD that we saw earlier..._
 
@@ -469,11 +471,13 @@ This will be super helpful as we port the Allwinner A64 USB Driver to NuttX.
 
 ![stm32_ctrlout in NuttX looks similar to musbotg_host_ctrl_data_tx in FreeBSD](https://lupyuen.github.io/images/usb2-stm.jpg)
 
+_stm32_ctrlout in NuttX looks similar to musbotg_host_ctrl_data_tx in FreeBSD_
+
 # What's Next
 
-TODO
+Porting the PinePhone USB Driver to NuttX will be a super long journey... The FreeBSD driver has [__4,000 lines of code__](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c) 😲
 
-Meanwhile please check out the other articles on NuttX for PinePhone...
+But stay tuned for updates! Meanwhile please check out the other articles on NuttX for PinePhone...
 
 -   [__"Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
 
