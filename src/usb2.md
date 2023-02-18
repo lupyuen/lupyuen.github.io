@@ -1,6 +1,6 @@
 # NuttX RTOS for PinePhone: Exploring USB
 
-📝 _19 Feb 2023_
+📝 _20 Feb 2023_
 
 ![PinePhone talks to LTE Modem over USB](https://lupyuen.github.io/images/usb2-title.jpg)
 

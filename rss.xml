@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>NuttX RTOS for PinePhone: Exploring USB</title>
+            <link>https://lupyuen.github.io/articles/usb2</link>
+            <description><![CDATA[What's inside the USB Controller of Pine64 PinePhone... And how we'll create a USB Driver for Apache NuttX RTOS]]></description>
+            <guid>https://lupyuen.github.io/articles/usb2</guid>
+            <pubDate>Mon, 20 Feb 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>NuttX RTOS for PinePhone: LVGL Terminal for NSH Shell</title>
             <link>https://lupyuen.github.io/articles/terminal</link>
             <description><![CDATA[Let's build a Terminal App for PinePhone... With LVGL and Apache NuttX RTOS]]></description>

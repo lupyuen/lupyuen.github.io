@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "NuttX RTOS for PinePhone: Exploring USB",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-02-20",
+      "website": "https://lupyuen.github.io/articles/usb2",
+      "summary": "What's inside the USB Controller of Pine64 PinePhone... And how we'll create a USB Driver for Apache NuttX RTOS"
+    },
+    {
       "name": "NuttX RTOS for PinePhone: LVGL Terminal for NSH Shell",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-02-03",
