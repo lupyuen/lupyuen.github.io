@@ -4,9 +4,17 @@
 
 ![TODO](https://lupyuen.github.io/images/unicorn-title.jpg)
 
-TODO
+We're porting a new operating system ([__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what)) to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone). And I wondered...
 
-we talked about porting to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) a Real-Time Operating System: [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what).
+_To make PinePhone testing easier..._
+
+_Can we emulate Arm64 PinePhone with [Unicorn Emulator](https://www.unicorn-engine.org/)?_
+
+Let's find out! We'll call the [__Unicorn Emulator__](https://www.unicorn-engine.org/) in Rust (instead of C).
+
+(Because I'm too old to write meticulous C... But I'm OK to get nagged by Rust Compiler if I miss something!)
+
+We begin by emulating simple Arm64 Machine Code...
 
 # What's Next
 
