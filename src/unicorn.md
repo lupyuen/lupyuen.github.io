@@ -750,11 +750,13 @@ Unicorn Emulator triggers the exception when NuttX writes to SCTLR_EL1...
 
 _Why the MMU Fault?_
 
-The above code sets these flags in SCTLR_EL1 (System Control Register EL1)...
+The above code sets these flags in __System Control Register EL1__ (SCTLR_EL1)...
 
-- SCTLR_M_BIT (Bit 0): Enable Address Translation for EL0 and EL1 Stage 1
+- __SCTLR_M_BIT__ (Bit 0): Enable Address Translation for EL0 and EL1 Stage 1
 
-- SCTLR_C_BIT (Bit 2): Enable Caching for EL0 and EL1 Stage 1
+- __SCTLR_C_BIT__ (Bit 2): Enable Caching for EL0 and EL1 Stage 1
+
+[(What's EL1?)](https://lupyuen.github.io/articles/interrupt#exception-levels)
 
 [(More about SCTLR_EL1)](https://developer.arm.com/documentation/ddi0595/2021-06/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-)
 
