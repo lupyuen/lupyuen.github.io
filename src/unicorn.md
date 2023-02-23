@@ -4,6 +4,8 @@
 
 ![Emulating Arm64 Machine Code in Unicorn Emulator](https://lupyuen.github.io/images/unicorn-title.jpg)
 
+[_Emulating Arm64 Machine Code in Unicorn Emulator_](https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/src/main.rs#L1-L55)
+
 [__Unicorn__](https://www.unicorn-engine.org/) is a lightweight __CPU Emulator Framework__ based on [__QEMU__](http://www.qemu.org/).
 
 (Programmable with C, Rust, Python and [__many other languages__](https://github.com/unicorn-engine/unicorn/tree/master/bindings))
@@ -33,8 +35,6 @@ We begin by emulating simple Arm64 Machine Code...
 # Emulate Arm64 Machine Code
 
 TODO
-
-![Emulate Arm64 Machine Code](https://lupyuen.github.io/images/unicorn-code.png)
 
 Suppose we wish to emulate some Arm64 Machine Code...
 
@@ -133,11 +133,13 @@ Our Rust Program works OK for emulating Arm64 Memory and Arm64 Registers.
 
 Let's talk about Arm64 Memory-Mapped Input / Output...
 
-# Memory Access Hook for Arm64 Emulation
+# Memory Access Hook
 
 TODO
 
 ![Memory Access Hook for Arm64 Emulation](https://lupyuen.github.io/images/unicorn-code2.png)
+
+[_Memory Access Hook for Arm64 Emulation_](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L59-L95)
 
 _How will we emulate Arm64 Memory-Mapped Input / Output?_
 
@@ -212,11 +214,13 @@ This Memory Access Hook Function will be helpful when we emulate Memory-Mapped I
 
 Unicorn Emulator allows Code Execution Hooks too...
 
-# Code Execution Hook for Arm64 Emulation
+# Code Execution Hook
 
 TODO
 
 ![Code Execution Hook for Arm64 Emulation](https://lupyuen.github.io/images/unicorn-code3.png)
+
+[_Code Execution Hook for Arm64 Emulation_](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L108-L117)
 
 _Can we intercept every Arm64 Instruction that will be emulated?_
 
@@ -268,7 +272,7 @@ We might use this to emulate special Arm64 Instructions.
 
 If we don't need to intercept every single instruction, try the Block Execution Hook...
 
-# Block Execution Hooks for Arm64 Emulation
+# Block Execution Hook
 
 TODO
 
@@ -319,7 +323,7 @@ This Block Execution Hook will be super helpful for monitoring the Execution Flo
 
 Let's talk about the Block...
 
-# What is a Block of Arm64 Instructions?
+# What is a Block?
 
 TODO
 
@@ -377,7 +381,7 @@ From this we deduce that Unicorn Emulator treats a sequence of Arm64 Instruction
 
 TODO: Would be great in the Block Hook to map the address against the ELF Symbol Table, so we know what function we're running
 
-# Unmapped Memory in Unicorn Emulator
+# Unmapped Memory
 
 TODO
 
@@ -417,11 +421,13 @@ _Can we map Memory Regions during emulation?_
 
 Yep we may use a Memory Access Hook to map memory regions on the fly. [(See this)](https://github.com/unicorn-engine/unicorn/blob/dev/docs/FAQ.md#i-cant-recover-from-unmapped-readwrite-even-i-return-true-in-the-hook-why)
 
-# Run Apache NuttX RTOS in Unicorn Emulator
+# Apache NuttX RTOS in Unicorn
 
 TODO
 
-![Run Apache NuttX RTOS in Unicorn Emulator](https://lupyuen.github.io/images/unicorn-code4.png)
+![Running Apache NuttX RTOS in Unicorn Emulator](https://lupyuen.github.io/images/unicorn-code4.png)
+
+[_Running Apache NuttX RTOS in Unicorn Emulator_](https://github.com/lupyuen/pinephone-emulator/blob/aa24d1c61256f38f92cf627d52c3e9a0c189bfc6/src/main.rs#L6-L78)
 
 Let's run Apache NuttX RTOS in Unicorn Emulator!
 
@@ -479,11 +485,13 @@ This is based on the [NuttX Memory Map](https://github.com/apache/nuttx/blob/mas
 
 When we run this, Unicorn Emulator loops forever. Let's find out why...
 
-# Unicorn Emulator Waits Forever for UART Controller Ready
+# Wait for UART Controller
 
 TODO
 
 ![Emulating the Allwinner A64 UART Controller](https://lupyuen.github.io/images/unicorn-code5.png)
+
+[_Emulating the Allwinner A64 UART Controller_](https://github.com/lupyuen/pinephone-emulator/blob/4d78876ad6f40126bf68cb2da4a43f56d9ef6e76/src/main.rs#L27-L76)
 
 Here's the output when we run NuttX RTOS in Unicorn Emulator...
 
@@ -595,11 +603,13 @@ hook_memory: address=0x400b6a54, size=1, mem_type=WRITE, value=0x0
 
 But we don't see any UART Output. Let's print the UART Output...
 
-# Emulate UART Output in Unicorn Emulator
+# Emulate UART Output
 
 TODO
 
 ![Emulating UART Output in Unicorn Emulator](https://lupyuen.github.io/images/unicorn-code6.png)
+
+[_Emulating UART Output in Unicorn Emulator_](https://github.com/lupyuen/pinephone-emulator/blob/aa6dd986857231a935617e8346978d7750aa51e7/src/main.rs#L89-L111)
 
 _How do we print the UART Output?_
 
@@ -668,7 +678,7 @@ Which reads as...
 
 Yep NuttX RTOS is booting on Unicorn Emulator! But Unicorn Emulator halts while booting NuttX...
 
-# Unicorn Emulator Halts in NuttX MMU
+# Emulator Halts with MMU Fault
 
 TODO: Unicorn Emulator halts...
 
@@ -892,7 +902,7 @@ TODO: Why did the Address Translation (or Caching) fail?
 
 TODO: Should we skip the MMU Update to SCTLR_EL1? Since we don't use MMU?
 
-# Debug the Unicorn Emulator
+# Debug the Emulator
 
 TODO
 
