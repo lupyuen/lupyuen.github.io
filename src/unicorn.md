@@ -30,7 +30,7 @@ We'll do all this in __basic Rust__, instead of classic C.
 
 (That's because I'm too old to write meticulous C... But I'm OK to get nagged by Rust Compiler if I miss something!)
 
-We begin by emulating simple Arm64 Machine Code...
+We begin by emulating some machine code...
 
 # Emulate Arm64 Machine Code
 
@@ -212,60 +212,49 @@ Let's talk about Memory-Mapped Input / Output...
 
 # Memory Access Hook
 
-TODO
+To emulate our gadget (like PinePhone), we need to handle [__Memory-Mapped Input / Output__](https://en.wikipedia.org/wiki/Memory-mapped_I/O_and_port-mapped_I/O).
 
-_How will we emulate Arm64 Memory-Mapped Input / Output?_
+(Like for printing to the Serial or UART Port)
 
-Unicorn Emulator lets us attach hooks to Emulate Memory Access.
+We do this in Unicorn Emulator with a __Memory Access Hook__ that will be called to __intercept every Memory Access__.
 
-Here's a Hook Function for Memory Access...
+Here's a sample __Hook Function__ that will be called to intercept every Arm64 Read / Write Access: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L83-L95)
 
 ```rust
 // Hook Function for Memory Access.
 // Called once for every Arm64 Memory Access.
 fn hook_memory(
-    _: &mut Unicorn<()>,  // Emulator
-    mem_type: MemType,    // Read or Write Access
-    address: u64,  // Accessed Address
-    size: usize,   // Number of bytes accessed
-    value: i64     // Read / Write Value
-) -> bool {
-    // TODO: Simulate Memory-Mapped Input/Output (UART Controller)
-    println!("hook_memory: mem_type={:?}, address={:#x}, size={:?}, value={:#x}", mem_type, address, size, value);
-    true
+  _: &mut Unicorn<()>,  // Emulator
+  mem_type: MemType,    // Read or Write Access
+  address:  u64,    // Accessed Address
+  size:     usize,  // Number of bytes accessed
+  value:    i64     // Write Value
+) -> bool {         // Always return true
+
+  // TODO: Emulate Memory-Mapped Input/Output (UART Controller)
+  println!("hook_memory: mem_type={:?}, address={:#x}, size={:?}, value={:#x}", mem_type, address, size, value);
+
+  // Always return true, value is unused by caller
+  // https://github.com/unicorn-engine/unicorn/blob/dev/docs/FAQ.md#i-cant-recover-from-unmapped-readwrite-even-i-return-true-in-the-hook-why
+  true
 }
 ```
 
-[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L83-L95)
+Our Hook Function prints __every Read / Write Access__ to the Emulated Arm64 Memory.
 
-Our Hook Function prints all Read / Write Access to Emulated Arm64 Memory.
-
-[(Return value is unused)](https://github.com/unicorn-engine/unicorn/blob/dev/docs/FAQ.md#i-cant-recover-from-unmapped-readwrite-even-i-return-true-in-the-hook-why)
-
-This is how we attach the Hook Function to the Unicorn Emulator...
+This is how we __attach the Hook Function__ to Unicorn Emulator: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L59-L74)
 
 ```rust
-    // Add Hook for Arm64 Memory Access
-    let _ = emu.add_mem_hook(
-        HookType::MEM_ALL, 
-        0,
-        u64::MAX,
-        hook_memory
-    ).expect("failed to add memory hook");
-
-    // Emulate machine code in infinite time (last param = 0),
-    // or when all code has completed
-    let _ = emu.emu_start(
-        ADDRESS,
-        ADDRESS + arm64_code.len() as u64,
-        0, // Previously: 10 * SECOND_SCALE,
-        0  // Previously: 1000
-    );
+  // Add Hook for Arm64 Memory Access
+  let _ = emu.add_mem_hook(
+    HookType::MEM_ALL,  // Intercept Read and Write Access
+    0,           // Begin Address
+    u64::MAX,    // End Address
+    hook_memory  // Hook Function
+  ).expect("failed to add memory hook");
 ```
 
-[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L59-L74)
-
-When we run our Rust Program, we see the Read and Write Memory Accesses made by our [Emulated Arm64 Code](https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/src/main.rs#L7-L8)...
+When we run this, we see the Read and Write Memory Accesses made by our [__Emulated Arm64 Code__](https://lupyuen.github.io/articles/unicorn#emulate-arm64-machine-code)...
 
 ```text
 hook_memory: 
@@ -281,11 +270,9 @@ hook_memory:
   value=0x0
 ```
 
-This Memory Access Hook Function will be helpful when we emulate Memory-Mapped Input/Output on PinePhone.
+(Value is not relevant for Memory Reads)
 
-(Like for the Allwinner A64 UART Controller)
-
-Unicorn Emulator allows Code Execution Hooks too...
+Later we'll implement UART Output with a Memory Access Hook. But first we intercept some code...
 
 # Code Execution Hook
 
@@ -702,7 +689,7 @@ fn hook_memory(
     mem_type: MemType,    // Read or Write Access
     address: u64,  // Accessed Address
     size: usize,   // Number of bytes accessed
-    value: i64     // Read / Write Value
+    value: i64     // Write Value
 ) -> bool {
     // Ignore RAM access, we only intercept Memory-Mapped Input / Output
     if address >= 0x4000_0000 { return true; }
