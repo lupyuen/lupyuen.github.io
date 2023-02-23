@@ -2,15 +2,29 @@
 
 📝 _1 Mar 2023_
 
-![TODO](https://lupyuen.github.io/images/unicorn-title.jpg)
+![Emulating Arm64 Machine Code in Unicorn Emulator](https://lupyuen.github.io/images/unicorn-title.jpg)
 
-We're porting a new operating system ([__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what)) to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone). And I wondered...
+[__Unicorn__](https://www.unicorn-engine.org/) is a lightweight __CPU Emulator Framework__ based on [__QEMU__](http://www.qemu.org/).
 
-_To make PinePhone testing easier..._
+(Programmable with C, Rust, Python and [__many other languages__](https://github.com/unicorn-engine/unicorn/tree/master/bindings))
 
-_Can we emulate Arm64 PinePhone with [Unicorn Emulator](https://www.unicorn-engine.org/)?_
+We're porting a new operating system [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone). And I wondered...
 
-Let's find out! We'll call the [__Unicorn Emulator__](https://www.unicorn-engine.org/) in Rust (instead of C).
+_To make PinePhone testing easier... Can we emulate Arm64 PinePhone with Unicorn Emulator?_
+
+Let's find out! In this article we'll call __Unicorn Emulator__ to...
+
+-   __Emulate Arm64__ Machine Code
+
+-   __Attach Hooks__ to intercept Memory Access and Code Execution
+
+-   __Boot Apache NuttX RTOS__ in the emulator
+
+-   __Simulate the UART Controller__ for PinePhone
+
+-   __Track an Exception__ in the Arm64 Memory Management Unit 
+
+We'll do all this in __basic Rust__ (instead of classic C).
 
 (Because I'm too old to write meticulous C... But I'm OK to get nagged by Rust Compiler if I miss something!)
 
