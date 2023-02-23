@@ -583,9 +583,9 @@ Which comes from this __NuttX Source Code__: [a64_lowputc.S](https://github.com/
  */
 .macro early_uart_ready xb, wt
 1:
-  ldrh  \wt, [\xb, #0x14]      /* UART_LSR (Line Status Register) */
-  tst   \wt, #0x20             /* Check THRE (TX Holding Register Empty) */
-  b.eq  1b                     /* Wait for the UART to be ready (THRE=1) */
+  ldrh  \wt, [\xb, #0x14] /* UART_LSR (Line Status Register) */
+  tst   \wt, #0x20        /* Check THRE (TX Holding Register Empty) */
+  b.eq  1b                /* Wait for the UART to be ready (THRE=1) */
 .endm
 ```
 
