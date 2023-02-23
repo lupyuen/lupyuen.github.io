@@ -967,7 +967,7 @@ To inspect the Emulator Settings, set a breakpoint at `cpu_aarch64_init()` in...
 $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/unicorn-engine-2.0.1/qemu/target/arm/cpu64.c
 ```
 
-# Other Emulators
+# Emulation Concerns
 
 TODO
 
@@ -981,7 +981,7 @@ _How about other hardware platforms: STM32 Blue Pill and ESP32?_
 
 Check out QEMU...
 
--   ["STM32 Blue Pill — Unit Testing with Qemu Blue Pill Emulator"](https://lupyuen.github.io/articles/stm32-blue-pill-unit-testing-with-qemu-blue-pill-emulator)
+-   ["Unit Testing with QEMU Blue Pill Emulator"](https://lupyuen.github.io/articles/stm32-blue-pill-unit-testing-with-qemu-blue-pill-emulator)
 
 -   ["NuttX on an emulated ESP32 using QEMU"](https://medium.com/@lucassvaz/nuttx-on-an-emulated-esp32-using-qemu-8d8d93d24c63)
 
