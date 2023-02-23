@@ -651,10 +651,12 @@ write_sysreg(  // Write to System Register...
 <p><a href="https://github.com/lupyuen/pinephone-emulator#debug-the-unicorn-emulator"><strong>“Debug the Unicorn Emulator”</strong></a></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/lvgl2-title.jpg" alt="Apache NuttX RTOS on PinePhone" /></p>
+<p><a href="https://lupyuen.github.io/articles/what"><em>Apache NuttX RTOS on PinePhone</em></a></p>
 <h1 id="emulation-concerns"><a href="#emulation-concerns">10 Emulation Concerns</a></h1>
 <p><em>So are we happy with Unicorn Emulator?</em></p>
 <p>Yep! Unicorn Emulator is sufficient for <strong>Automated Daily Build and Test</strong> for NuttX on PinePhone. (Via GitHub Actions)</p>
-<p>Which will be similar to this BL602 setup, but we’ll boot the Daily Build on Unicorn Emulator (instead of Real Hardware)…</p>
+<p>Which will be similar to this BL602 setup, except that we’ll boot the Daily Build on Unicorn Emulator (instead of Real Hardware)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/auto"><strong>“Auto Flash and Test NuttX on RISC-V BL602”</strong></a></li>
 </ul>
@@ -662,6 +664,12 @@ write_sysreg(  // Write to System Register...
 <p>Yeah we’ll do that later. We have a long wishlist of features to build: Interrupts, Memory Protection, Multiple CPUs, Cortex A53, GIC v2, …</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-emulator#todo"><strong>“Wishlist for PinePhone Emulator”</strong></a></li>
+</ul>
+<p><em>NuttX runs graphical apps on PinePhone right?</em></p>
+<p>Yep someday we’ll render the <strong>NuttX Graphics Framebuffers</strong> in Unicorn.</p>
+<p>(Maybe with a Rust GUI Library. Or <a href="https://alexaltea.github.io/unicorn.js/"><strong>Unicorn.js</strong></a> and WebAssembly)</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/fb"><strong>“NuttX RTOS for PinePhone: Framebuffer”</strong></a></li>
 </ul>
 <p><em>What about emulating other operating systems: Linux / macOS / Windows / Android?</em></p>
 <p>Check out the <strong>Qiling Binary Emulation Framework</strong>…</p>
