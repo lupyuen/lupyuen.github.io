@@ -499,7 +499,7 @@ let err = emu.emu_start(
 );
 ```
 
-Unicorn happily __boots Nuttx RTOS__...
+Unicorn happily __boots Nuttx RTOS__ (yay!)...
 
 ```text
 → cargo run 
@@ -520,9 +520,7 @@ But our legendary creature gets stuck in mud. Let's find out why...
 
 # Wait for UART Controller
 
-TODO
-
-Here's the output when we run NuttX RTOS in Unicorn Emulator...
+Unicorn gets __stuck in a curious loop__ while booting NuttX RTOS...
 
 ```text
 hook_memory: address=0x01c28014, size=2, mem_type=READ, value=0x0
@@ -547,9 +545,13 @@ hook_code:   address=0x400801f4, size=4
 
 [(Source)](https://github.com/lupyuen/pinephone-emulator/blob/045fa5da84d9e07ead5a820a075c1445661328b6/README.md#unicorn-emulator-waits-forever-for-uart-controller-ready)
 
-The above log shows that Unicorn Emulator loops forever at address `0x4008` `01f4`, while reading the data from address `0x01c2` `8014`.
+See the pattern? Unicorn Emulator loops forever at address __`4008` `01F4`__...
 
-Let's check the NuttX Arm64 Code at address `0x4008` `01f4`...
+While reading the data from address __`01C2` `8014`__.
+
+_What's at 4008 01F4?_
+
+Let's check the NuttX Arm64 Disassembly at address __`4008` `01F4`__: [nuttx.S](https://github.com/lupyuen/pinephone-emulator/blob/a1fb82d829856d86d6845c477709c2be24373aca/nuttx/nuttx.S#L3398-L3411)
 
 ```text
 SECTION_FUNC(text, up_lowputc)
@@ -568,9 +570,7 @@ nuttx/arch/arm64/src/chip/a64_lowputc.S:91
   40080204:	d65f03c0 	ret
 ```
 
-[(Arm64 Disassembly)](https://github.com/lupyuen/pinephone-emulator/blob/a1fb82d829856d86d6845c477709c2be24373aca/nuttx/nuttx.S#L3398-L3411)
-
-Which comes from this NuttX Source Code...
+Which comes from this __NuttX Source Code__: [a64_lowputc.S](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_lowputc.S#L61-L71)
 
 ```text
 /* Wait for A64 UART to be ready to transmit
@@ -585,19 +585,19 @@ Which comes from this NuttX Source Code...
 .endm
 ```
 
-[(Source Code)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_lowputc.S#L61-L71)
+TODO
 
-This code waits for the UART Controller to be ready (before printing UART Output), by checking the value at `0x01c2` `8014`. The code is explained here...
+This code waits for the UART Controller to be ready (before printing UART Output), by checking the value at `01c2` `8014`. The code is explained here...
 
 -   ["Wait for UART Ready"](https://lupyuen.github.io/articles/uboot#wait-for-uart-ready)
 
-_What is `0x01c2` `8014`?_
+_What's at 01C2 8014?_
 
 According to the Allwinner A64 Doc...
 
 -   ["Wait To Transmit"](https://lupyuen.github.io/articles/serial#wait-to-transmit)
 
-`0x01c2` `8014` is the UART Line Status Register (UART_LSR) at Offset 0x14.
+`01c2` `8014` is the UART Line Status Register (UART_LSR) at Offset 0x14.
 
 Bit 5 needs to be set to 1 to indicate that the UART Transmit FIFO is ready.
 
