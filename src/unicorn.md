@@ -245,13 +245,13 @@ Our Hook Function prints __every Read / Write Access__ to the Emulated Arm64 Mem
 This is how we __attach the Memory Hook Function__ to Unicorn Emulator: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L59-L74)
 
 ```rust
-  // Add Hook for Arm64 Memory Access
-  let _ = emu.add_mem_hook(
-    HookType::MEM_ALL,  // Intercept Read and Write Access
-    0,           // Begin Address
-    u64::MAX,    // End Address
-    hook_memory  // Hook Function
-  ).expect("failed to add memory hook");
+// Add Hook for Arm64 Memory Access
+let _ = emu.add_mem_hook(
+  HookType::MEM_ALL,  // Intercept Read and Write Access
+  0,           // Begin Address
+  u64::MAX,    // End Address
+  hook_memory  // Hook Function
+).expect("failed to add memory hook");
 ```
 
 When we run this, we see the Read and Write Memory Accesses made by our [__Emulated Arm64 Code__](https://lupyuen.github.io/articles/unicorn#emulate-arm64-machine-code)...
@@ -302,15 +302,15 @@ fn hook_code(
 And this is how we call Unicorn Emulator to __attach the Code Hook Function__: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L52-L57)
 
 ```rust
-  // Add Hook for emulating each Arm64 Instruction
-  let _ = emu.add_code_hook(
-    ADDRESS,  // Begin Address
-    ADDRESS + arm64_code.len() as u64,  // End Address
-    hook_code  // Hook Function for Code Emulation
-  ).expect("failed to add code hook");
+// Add Hook for emulating each Arm64 Instruction
+let _ = emu.add_code_hook(
+  ADDRESS,  // Begin Address
+  ADDRESS + arm64_code.len() as u64,  // End Address
+  hook_code  // Hook Function for Code Emulation
+).expect("failed to add code hook");
 ```
 
-When we run this, we see the Address of __every Arm64 Instruction emulated__ (and its size)...
+When we run this with our [__Arm64 Machine Code__](https://lupyuen.github.io/articles/unicorn#emulate-arm64-machine-code), we see the Address of __every Arm64 Instruction emulated__ (and its size)...
 
 ```text
 hook_code:
@@ -322,128 +322,66 @@ hook_code:
   size=4
 ```
 
-TODO
-
-We might use this to emulate special Arm64 Instructions.
+We might use this to emulate [__Special Arm64 Instructions__](https://developer.arm.com/documentation/102374/0101/Registers-in-AArch64---system-registers).
 
 If we don't need to intercept every single instruction, try the Block Execution Hook...
 
 # Block Execution Hook
 
-TODO
-
 _Is there something that works like a Code Execution Hook..._
 
 _But doesn't stop at every single Arm64 Instruction?_
 
-Yep Unicorn Emulator supports Block Execution Hooks.
+Yep Unicorn Emulator supports __Block Execution Hooks__.
 
-This Hook Function will be called once when executing a Block of Arm64 Instructions...
+This Hook Function will be called once when executing a __Block of Arm64 Instructions__: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L97-L106)
 
 ```rust
 // Hook Function for Block Emulation.
 // Called once for each Basic Block of Arm64 Instructions.
 fn hook_block(
-    _: &mut Unicorn<()>,  // Emulator
-    address: u64,  // Block Address
-    size: u32      // Block Size
+  _: &mut Unicorn<()>,  // Emulator
+  address: u64,  // Block Address
+  size: u32      // Block Size
 ) {
-    // TODO: Trace the flow of emulated code
-    println!("hook_block: address={:#x}, size={:?}", address, size);
+  // TODO: Trace the flow of emulated code
+  println!("hook_block: address={:#x}, size={:?}", address, size);
 }
 ```
 
-[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L97-L106)
-
-This is how we add the Block Execution Hook...
+This is how we __attach the Block Execution Hook__: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L48-L50)
 
 ```rust
-    // Add Hook for emulating each Basic Block of Arm64 Instructions
-    let _ = emu.add_block_hook(hook_block)
-        .expect("failed to add block hook");
+// Add Hook for emulating each Basic Block of Arm64 Instructions
+let _ = emu.add_block_hook(hook_block)
+  .expect("failed to add block hook");
 ```
 
-[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L48-L50)
-
-When we run the Rust Program, we see that that the Block Size is 8...
+Block Execution Hooks are __less granular__ (called less often) than Code Execution Hooks...
 
 ```text
-hook_block:
-  address=0x10000,
-  size=8
+hook_block: address=0x10000, size=8
+hook_code:  address=0x10000, size=4
+hook_code:  address=0x10004, size=4
 ```
 
-Which means that Unicorn Emulator calls our Hook Function only once for the entire Block of 2 Arm64 Instructions.
+Which means that Unicorn Emulator calls our Hook Function only once for the [__entire Block of two Arm64 Instructions__](https://lupyuen.github.io/articles/unicorn#emulate-arm64-machine-code).
 
-This Block Execution Hook will be super helpful for monitoring the Execution Flow of our emulated code.
+[(What's a Block of Arm64 Instructions?)](https://github.com/lupyuen/pinephone-emulator#what-is-a-block-of-arm64-instructions)
 
-Let's talk about the Block...
+_How is this useful?_
 
-# What's a Block?
+This Block Execution Hook will be super helpful for monitoring the __Execution Flow__ of our emulated code.
 
-TODO
+Someday we might read the ELF Symbol Table (from the NuttX Image), match with the Block Execution Addresses...
 
-_What exactly is a Block of Arm64 Instructions?_
-
-When we this code from Apache NuttX RTOS (that handles UART Output)...
-
-```text
-SECTION_FUNC(text, up_lowputc)
-  ldr   x15, =UART0_BASE_ADDRESS
-  400801f0:	580000cf 	ldr	x15, 40080208 <up_lowputc+0x18>
-nuttx/arch/arm64/src/chip/a64_lowputc.S:89
-  early_uart_ready x15, w2
-  400801f4:	794029e2 	ldrh	w2, [x15, #20]
-  400801f8:	721b005f 	tst	w2, #0x20
-  400801fc:	54ffffc0 	b.eq	400801f4 <up_lowputc+0x4>  // b.none
-nuttx/arch/arm64/src/chip/a64_lowputc.S:90
-  early_uart_transmit x15, w0
-  40080200:	390001e0 	strb	w0, [x15]
-nuttx/arch/arm64/src/chip/a64_lowputc.S:91
-  ret
-  40080204:	d65f03c0 	ret
-```
-
-[(Arm64 Disassembly)](https://github.com/lupyuen/pinephone-emulator/blob/a1fb82d829856d86d6845c477709c2be24373aca/nuttx/nuttx.S#L3398-L3411)
-
-[(Source Code)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_lowputc.S#L61-L71)
-
-We observe that Unicorm Emulator treats `400801f0` to `400801fc` as a Block of Arm64 Instructins...
-
-```text
-hook_block:  address=0x400801f0, size=16
-hook_code:   address=0x400801f0, size=4
-hook_code:   address=0x400801f4, size=4
-hook_code:   address=0x400801f4, size=4
-hook_code:   address=0x400801f8, size=4
-hook_code:   address=0x400801fc, size=4
-
-hook_block:  address=0x400801f4, size=12
-hook_code:   address=0x400801f4, size=4
-hook_code:   address=0x400801f8, size=4
-hook_code:   address=0x400801fc, size=4
-
-hook_block:  address=0x400801f4, size=12
-hook_code:   address=0x400801f4, size=4
-hook_code:   address=0x400801f8, size=4
-hook_code:   address=0x400801fc, size=4
-```
-
-[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/cd030954c2ace4cf0207872f275abc3ffb7343c6/README.md#block-execution-hooks-for-arm64-emulation)
-
-The Block ends at `400801fc` because there's an Arm64 Branch Instruction `b.eq`.
-
-From this we deduce that Unicorn Emulator treats a sequence of Arm64 Instructions as a Block, until it sees a Branch Instruction. (Including function calls)
-
-TODO: Would be great in the Block Hook to map the address against the ELF Symbol Table, so we know what function we're running
+And print the __name of the function__ that's being emulated!
 
 # Unmapped Memory
 
-TODO
-
 _What happens when Unicorn Emulator tries to access memory that isn't mapped?_
 
-Unicorn Emulator will call our Memory Access Hook with `mem_type` set to `READ_UNMAPPED`...
+Unicorn Emulator will call our Memory Access Hook with __mem_type__ set to __READ_UNMAPPED__...
 
 ```text
 hook_memory:
@@ -455,37 +393,37 @@ hook_memory:
 
 [(Source)](https://github.com/lupyuen/pinephone-emulator/blob/b842358ba457b67ffa9f4c1a362b0386cfd97c4a/README.md#block-execution-hooks-for-arm64-emulation)
 
-The log above says that address `0x01c2` `8014` is unmapped.
+The log above says that address `01C2` `8014` is unmapped.
 
-This is how we map the memory...
+This is how we map the memory: [rust.rs](https://github.com/lupyuen/pinephone-emulator/blob/cd030954c2ace4cf0207872f275abc3ffb7343c6/src/main.rs#L26-L32)
 
 ```rust
-    // Map 16 MB at 0x0100 0000 for Memory-Mapped I/O by Allwinner A64 Peripherals
-    // https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/hardware/a64_memorymap.h#L33-L51
-    emu.mem_map(
-        0x0100_0000,       // Address
-        16 * 1024 * 1024,  // Size
-        Permission::READ | Permission::WRITE  // Read and Write Access
-    ).expect("failed to map memory mapped I/O");
+// Map 16 MB at 0x0100 0000 for Memory-Mapped I/O by Allwinner A64 Peripherals
+// https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/hardware/a64_memorymap.h#L33-L51
+emu.mem_map(
+  0x0100_0000,       // Address
+  16 * 1024 * 1024,  // Size
+  Permission::READ | Permission::WRITE  // Read and Write Access
+).expect("failed to map memory mapped I/O");
 ```
 
-[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/cd030954c2ace4cf0207872f275abc3ffb7343c6/src/main.rs#L26-L32)
-
-[(See the NuttX Memory Map)](https://github.com/apache/nuttx/blob/master/arch/arm64/include/a64/chip.h#L44-L52)
+We'll see this later when we handle Memory-Mapped Input / Output.
 
 _Can we map Memory Regions during emulation?_
 
-Yep we may use a Memory Access Hook to map memory regions on the fly. [(See this)](https://github.com/unicorn-engine/unicorn/blob/dev/docs/FAQ.md#i-cant-recover-from-unmapped-readwrite-even-i-return-true-in-the-hook-why)
+Yep we may use a Memory Access Hook to __map memory regions on the fly__.
 
-# Apache NuttX RTOS in Unicorn
-
-TODO
+[(Like this)](https://github.com/unicorn-engine/unicorn/blob/dev/docs/FAQ.md#i-cant-recover-from-unmapped-readwrite-even-i-return-true-in-the-hook-why)
 
 ![Running Apache NuttX RTOS in Unicorn Emulator](https://lupyuen.github.io/images/unicorn-code4.png)
 
 [_Running Apache NuttX RTOS in Unicorn Emulator_](https://github.com/lupyuen/pinephone-emulator/blob/aa24d1c61256f38f92cf627d52c3e9a0c189bfc6/src/main.rs#L6-L78)
 
-Let's run Apache NuttX RTOS in Unicorn Emulator!
+# Apache NuttX RTOS in Unicorn
+
+TODO
+
+We're ready to run Apache NuttX RTOS in Unicorn Emulator!
 
 We have compiled [Apache NuttX RTOS for PinePhone](nuttx) into an Arm64 Binary Image `nuttx.bin`.
 
