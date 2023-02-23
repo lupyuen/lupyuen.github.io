@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "(Possibly) Emulate PinePhone with Unicorn Emulator",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-02-24",
+      "website": "https://lupyuen.github.io/articles/unicorn",
+      "summary": "To make PinePhone testing easier... Can we emulate Arm64 PinePhone with Unicorn Emulator? Let's find out! We'll call the Unicorn Emulator in Rust"
+    },
+    {
       "name": "NuttX RTOS for PinePhone: Exploring USB",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-02-20",

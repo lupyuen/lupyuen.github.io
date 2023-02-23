@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>(Possibly) Emulate PinePhone with Unicorn Emulator</title>
+            <link>https://lupyuen.github.io/articles/unicorn</link>
+            <description><![CDATA[To make PinePhone testing easier... Can we emulate Arm64 PinePhone with Unicorn Emulator? Let's find out! We'll call the Unicorn Emulator in Rust]]></description>
+            <guid>https://lupyuen.github.io/articles/unicorn</guid>
+            <pubDate>Fri, 24 Feb 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>NuttX RTOS for PinePhone: Exploring USB</title>
             <link>https://lupyuen.github.io/articles/usb2</link>
             <description><![CDATA[What's inside the USB Controller of Pine64 PinePhone... And how we'll create a USB Driver for Apache NuttX RTOS]]></description>
