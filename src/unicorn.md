@@ -36,10 +36,16 @@ We begin by emulating simple Arm64 Machine Code...
 
 Suppose we wish to emulate this __Arm64 Machine Code__...
 
-```text
+```rust
 // Start Address: 0x10000
-AB 05 00 B8  // str  w11, [x13], #0
-AF 05 40 38  // ldrb w15, [x13], #0
+
+// str  w11, [x13], #0
+AB 05 00 B8
+
+// ldrb w15, [x13], #0
+AF 05 40 38
+
+// End Address: 0x10008
 ```
 
 With these __Arm64 Register Values__...
@@ -52,21 +58,21 @@ With these __Arm64 Register Values__...
 
 Which means...
 
-1.  __Store `X11`__ (value `0x12345678`)...
+1.  __Store `X11`__ (value __`0x12345678`__)
 
     Into the address referenced by __`X13`__
 
-    (Address `0x10008`)
+    (Address __`0x10008`__)
 
-1.  __Load `X15`__ as a Single Byte
+1.  __Load `X15`__ as a __Single Byte__
 
     From the address referenced by __`X13`__
 
-    (Address `0x10008`)
+    (Address __`0x10008`__)
 
 1.  Which sets __`X15`__ to __`0x78`__
 
-    (Because `0x10008` contains byte `0x78`)
+    (Because __`0x10008`__ contains byte __`0x78`__)
 
     [(__`X`__ Registers are __64-bit__, __`W`__ Registers are __32-bit__)](https://developer.arm.com/documentation/102374/0100/Registers-in-AArch64---general-purpose-registers)
 
@@ -158,27 +164,25 @@ We __start the emulator__...
   println!("err={:?}", err);
 ```
 
-Finally we __read the X15 Register__ and verify the result...
+Finally we __read Register X15__ and verify the result...
 
 ```rust
   // Read the X15 Register
   assert_eq!(
-    emu.reg_read(RegisterARM64::X15), 
-    Ok(0x78)
+    emu.reg_read(RegisterARM64::X15),  // Register X15
+    Ok(0x78)  // Expected Result
   );
 }
 ```
 
 And we're done!
 
-Remember to add [__unicorn-engine__](https://crates.io/crates/unicorn-engine) to the dependencies: [Cargo.toml](https://github.com/lupyuen/pinephone-emulator/blob/main/Cargo.toml#L8-L9)...
+Remember to add [__unicorn-engine__](https://crates.io/crates/unicorn-engine) to the dependencies: [Cargo.toml](https://github.com/lupyuen/pinephone-emulator/blob/main/Cargo.toml#L8-L9)
 
 ```text
 [dependencies]
 unicorn-engine = "2.0.0"
 ```
-
-[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/Cargo.toml#L8-L9)
 
 When we run our [__Rust Program__](https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/src/main.rs)...
 
