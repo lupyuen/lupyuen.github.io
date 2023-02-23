@@ -515,9 +515,9 @@ nuttx/arch/arm64/src/chip/a64_lowputc.S:91
  */
 .macro early_uart_ready xb, wt
 1:
-  ldrh  \wt, [\xb, #0x14]      /* UART_LSR (Line Status Register) */
-  tst   \wt, #0x20             /* Check THRE (TX Holding Register Empty) */
-  b.eq  1b                     /* Wait for the UART to be ready (THRE=1) */
+  ldrh  \wt, [\xb, #0x14] /* UART_LSR (Line Status Register) */
+  tst   \wt, #0x20        /* Check THRE (TX Holding Register Empty) */
+  b.eq  1b                /* Wait for the UART to be ready (THRE=1) */
 .endm
 </code></pre></div>
 <p>TODO</p>
