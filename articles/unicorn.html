@@ -452,7 +452,7 @@ hook_code:  address=0x10004, size=4
   </span><span class="number">0</span>,  <span class="comment">// No Timeout
   </span><span class="number">0   </span><span class="comment">// Unlimited number of instructions
 </span>);</code></pre></div>
-<p>Unicorn happily <strong>boots Nuttx RTOS</strong>…</p>
+<p>Unicorn happily <strong>boots Nuttx RTOS</strong> (yay!)…</p>
 <div class="example-wrap"><pre class="language-text"><code>→ cargo run 
 hook_block:  address=0x40080000, size=8
 hook_block:  address=0x40080040, size=4
@@ -465,8 +465,7 @@ hook_block:  address=0x40080118, size=16
 <p><img src="https://lupyuen.github.io/images/unicorn-code5.png" alt="Emulating the Allwinner A64 UART Controller" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-emulator/blob/4d78876ad6f40126bf68cb2da4a43f56d9ef6e76/src/main.rs#L27-L76"><em>Emulating the Allwinner A64 UART Controller</em></a></p>
 <h1 id="wait-for-uart-controller"><a href="#wait-for-uart-controller">7 Wait for UART Controller</a></h1>
-<p>TODO</p>
-<p>Here’s the output when we run NuttX RTOS in Unicorn Emulator…</p>
+<p>Unicorn gets <strong>stuck in a curious loop</strong> while booting NuttX RTOS…</p>
 <div class="example-wrap"><pre class="language-text"><code>hook_memory: address=0x01c28014, size=2, mem_type=READ, value=0x0
 hook_code:   address=0x400801f8, size=4
 hook_code:   address=0x400801fc, size=4
@@ -487,8 +486,10 @@ hook_code:   address=0x400801f4, size=4
 ...
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-emulator/blob/045fa5da84d9e07ead5a820a075c1445661328b6/README.md#unicorn-emulator-waits-forever-for-uart-controller-ready">(Source)</a></p>
-<p>The above log shows that Unicorn Emulator loops forever at address <code>0x4008</code> <code>01f4</code>, while reading the data from address <code>0x01c2</code> <code>8014</code>.</p>
-<p>Let’s check the NuttX Arm64 Code at address <code>0x4008</code> <code>01f4</code>…</p>
+<p>See the pattern? Unicorn Emulator loops forever at address <strong><code>4008</code> <code>01F4</code></strong>…</p>
+<p>While reading the data from address <strong><code>01C2</code> <code>8014</code></strong>.</p>
+<p><em>What’s at 4008 01F4?</em></p>
+<p>Let’s check the NuttX Arm64 Disassembly at address <strong><code>4008</code> <code>01F4</code></strong>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/a1fb82d829856d86d6845c477709c2be24373aca/nuttx/nuttx.S#L3398-L3411">nuttx.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>SECTION_FUNC(text, up_lowputc)
   ldr   x15, =UART0_BASE_ADDRESS
   400801f0:	580000cf 	ldr	x15, 40080208 &lt;up_lowputc+0x18&gt;
@@ -504,8 +505,7 @@ nuttx/arch/arm64/src/chip/a64_lowputc.S:91
   ret
   40080204:	d65f03c0 	ret
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/a1fb82d829856d86d6845c477709c2be24373aca/nuttx/nuttx.S#L3398-L3411">(Arm64 Disassembly)</a></p>
-<p>Which comes from this NuttX Source Code…</p>
+<p>Which comes from this <strong>NuttX Source Code</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_lowputc.S#L61-L71">a64_lowputc.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* Wait for A64 UART to be ready to transmit
  * xb: Register that contains the UART Base Address
  * wt: Scratch register number
@@ -517,17 +517,17 @@ nuttx/arch/arm64/src/chip/a64_lowputc.S:91
   b.eq  1b                     /* Wait for the UART to be ready (THRE=1) */
 .endm
 </code></pre></div>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_lowputc.S#L61-L71">(Source Code)</a></p>
-<p>This code waits for the UART Controller to be ready (before printing UART Output), by checking the value at <code>0x01c2</code> <code>8014</code>. The code is explained here…</p>
+<p>TODO</p>
+<p>This code waits for the UART Controller to be ready (before printing UART Output), by checking the value at <code>01c2</code> <code>8014</code>. The code is explained here…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/uboot#wait-for-uart-ready">“Wait for UART Ready”</a></li>
 </ul>
-<p><em>What is <code>0x01c2</code> <code>8014</code>?</em></p>
+<p><em>What’s at 01C2 8014?</em></p>
 <p>According to the Allwinner A64 Doc…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/serial#wait-to-transmit">“Wait To Transmit”</a></li>
 </ul>
-<p><code>0x01c2</code> <code>8014</code> is the UART Line Status Register (UART_LSR) at Offset 0x14.</p>
+<p><code>01c2</code> <code>8014</code> is the UART Line Status Register (UART_LSR) at Offset 0x14.</p>
 <p>Bit 5 needs to be set to 1 to indicate that the UART Transmit FIFO is ready.</p>
 <p>We emulate the UART Ready Bit like so…</p>
 
