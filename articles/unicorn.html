@@ -623,15 +623,16 @@ err=Err(EXCEPTION)
 </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L541-L544">(Source)</a></p>
 <p><em>Why the MMU Fault?</em></p>
-<p>The above code sets these flags in SCTLR_EL1 (System Control Register EL1)…</p>
+<p>The above code sets these flags in <strong>System Control Register EL1</strong> (SCTLR_EL1)…</p>
 <ul>
 <li>
-<p>SCTLR_M_BIT (Bit 0): Enable Address Translation for EL0 and EL1 Stage 1</p>
+<p><strong>SCTLR_M_BIT</strong> (Bit 0): Enable Address Translation for EL0 and EL1 Stage 1</p>
 </li>
 <li>
-<p>SCTLR_C_BIT (Bit 2): Enable Caching for EL0 and EL1 Stage 1</p>
+<p><strong>SCTLR_C_BIT</strong> (Bit 2): Enable Caching for EL0 and EL1 Stage 1</p>
 </li>
 </ul>
+<p><a href="https://lupyuen.github.io/articles/interrupt#exception-levels">(What’s EL1?)</a></p>
 <p><a href="https://developer.arm.com/documentation/ddi0595/2021-06/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-">(More about SCTLR_EL1)</a></p>
 <p>TODO: Why did the Address Translation (or Caching) fail?</p>
 <p>TODO: Should we skip the MMU Update to SCTLR_EL1? Since we don’t use MMU?</p>
