@@ -71,7 +71,7 @@
 <li><a href="#memory-access-hook">2 Memory Access Hook</a><ul></ul></li>
 <li><a href="#code-execution-hook">3 Code Execution Hook</a><ul></ul></li>
 <li><a href="#block-execution-hook">4 Block Execution Hook</a><ul></ul></li>
-<li><a href="#what-is-a-block">5 What is a Block?</a><ul></ul></li>
+<li><a href="#whats-a-block">5 What’s a Block?</a><ul></ul></li>
 <li><a href="#unmapped-memory">6 Unmapped Memory</a><ul></ul></li>
 <li><a href="#apache-nuttx-rtos-in-unicorn">7 Apache NuttX RTOS in Unicorn</a><ul></ul></li>
 <li><a href="#wait-for-uart-controller">8 Wait for UART Controller</a><ul></ul></li>
@@ -111,92 +111,139 @@
 <p>(That’s because I’m too old to write meticulous C… But I’m OK to get nagged by Rust Compiler if I miss something!)</p>
 <p>We begin by emulating simple Arm64 Machine Code…</p>
 <h1 id="emulate-arm64-machine-code"><a href="#emulate-arm64-machine-code">1 Emulate Arm64 Machine Code</a></h1>
-<p>TODO</p>
-<p>Suppose we wish to emulate some Arm64 Machine Code…</p>
-<div class="example-wrap"><pre class="language-text"><code>0xab, 0x05, 0x00, 0xb8,  // str  w11, [x13], #0
-0xaf, 0x05, 0x40, 0x38,  // ldrb w15, [x13], #0
+<p>Suppose we wish to emulate this <strong>Arm64 Machine Code</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>// Start Address: 0x10000
+AB 05 00 B8  // str  w11, [x13], #0
+AF 05 40 38  // ldrb w15, [x13], #0
 </code></pre></div>
-<p>Here’s our Rust Program that calls Unicorn Emulator to emulate the Arm64 Machine Code…</p>
+<p>With these <strong>Arm64 Register Values</strong>…</p>
+<div><table><thead><tr><th style="text-align: center">Register</th><th style="text-align: left">Value</th></tr></thead><tbody>
+<tr><td style="text-align: center"><code>X11</code></td><td style="text-align: left"><code>0x12345678</code></td></tr>
+<tr><td style="text-align: center"><code>X13</code></td><td style="text-align: left"><code>0x10008</code></td></tr>
+<tr><td style="text-align: center"><code>X15</code></td><td style="text-align: left"><code>0x33</code></td></tr>
+</tbody></table>
+</div>
+<p>Which means…</p>
+<ol>
+<li>
+<p><strong>Store <code>X11</code></strong> (value <code>0x12345678</code>)…</p>
+<p>Into the address referenced by <strong><code>X13</code></strong></p>
+<p>(Address <code>0x10008</code>)</p>
+</li>
+<li>
+<p><strong>Load <code>X15</code></strong> as a Single Byte</p>
+<p>From the address referenced by <strong><code>X13</code></strong></p>
+<p>(Address <code>0x10008</code>)</p>
+</li>
+<li>
+<p>Which sets <strong><code>X15</code></strong> to <strong><code>0x78</code></strong></p>
+<p>(Because <code>0x10008</code> contains byte <code>0x78</code>)</p>
+<p><a href="https://developer.arm.com/documentation/102374/0100/Registers-in-AArch64---general-purpose-registers">(<strong><code>X</code></strong> Registers are <strong>64-bit</strong>, <strong><code>W</code></strong> Registers are <strong>32-bit</strong>)</a></p>
+</li>
+</ol>
+<p>This is how we <strong>call Unicorn Emulator</strong> to emulate the Arm64 Machine Code: <a href="https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/src/main.rs#L1-L55">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>unicorn_engine::{Unicorn, RegisterARM64};
 <span class="kw">use </span>unicorn_engine::unicorn_const::{Arch, Mode, Permission};
 
 <span class="kw">fn </span>main() {
-    <span class="comment">// Arm64 Code
-    </span><span class="kw">let </span>arm64_code: Vec&lt;u8&gt; = <span class="macro">vec!</span>[
-        <span class="number">0xab</span>, <span class="number">0x05</span>, <span class="number">0x00</span>, <span class="number">0xb8</span>,  <span class="comment">// str w11, [x13], #0
-        </span><span class="number">0xaf</span>, <span class="number">0x05</span>, <span class="number">0x40</span>, <span class="number">0x38</span>,  <span class="comment">// ldrb w15, [x13], #0
-    </span>];
+  <span class="comment">// Arm64 Memory Address where emulation starts
+  </span><span class="kw">const </span>ADDRESS: u64 = <span class="number">0x10000</span>;
 
-    <span class="comment">// Initialize emulator in ARM64 mode
-    </span><span class="kw">let </span><span class="kw-2">mut </span>unicorn = Unicorn::new(
-        Arch::ARM64,
-        Mode::LITTLE_ENDIAN
-    ).expect(<span class="string">&quot;failed to initialize Unicorn instance&quot;</span>);
-    <span class="kw">let </span>emu = <span class="kw-2">&amp;mut </span>unicorn;
+  <span class="comment">// Arm64 Machine Code for the above address
+  </span><span class="kw">let </span>arm64_code: Vec&lt;u8&gt; = <span class="macro">vec!</span>[
+    <span class="number">0xab</span>, <span class="number">0x05</span>, <span class="number">0x00</span>, <span class="number">0xb8</span>,  <span class="comment">// str w11,  [x13], #0
+    </span><span class="number">0xaf</span>, <span class="number">0x05</span>, <span class="number">0x40</span>, <span class="number">0x38</span>,  <span class="comment">// ldrb w15, [x13], #0
+  </span>];</code></pre></div>
+<p>We begin by defining the <strong>Arm64 Machine Code</strong>.</p>
+<p>Then we <strong>initialise the emulator</strong>…</p>
 
-    <span class="comment">// memory address where emulation starts
-    </span><span class="kw">const </span>ADDRESS: u64 = <span class="number">0x10000</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Init Emulator in Arm64 mode
+  </span><span class="kw">let </span><span class="kw-2">mut </span>unicorn = Unicorn::new(
+    Arch::ARM64,
+    Mode::LITTLE_ENDIAN
+  ).expect(<span class="string">&quot;failed to init Unicorn&quot;</span>);
 
-    <span class="comment">// map 2MB memory for this emulation
-    </span>emu.mem_map(
-        ADDRESS,
-        <span class="number">2 </span>* <span class="number">1024 </span>* <span class="number">1024</span>,
-        Permission::ALL
-    ).expect(<span class="string">&quot;failed to map code page&quot;</span>);
+  <span class="comment">// Get the Unicorn handle
+  </span><span class="kw">let </span>emu = <span class="kw-2">&amp;mut </span>unicorn;</code></pre></div>
+<p>Unicorn needs some <strong>Emulated Memory</strong> to run our code.</p>
+<p>We map <strong>2MB of Executable Memory</strong>…</p>
 
-    <span class="comment">// write machine code to be emulated to memory
-    </span>emu.mem_write(
-        ADDRESS, 
-        <span class="kw-2">&amp;</span>arm64_code
-    ).expect(<span class="string">&quot;failed to write instructions&quot;</span>);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Map 2MB of Executable Memory at 0x10000
+  // for Arm64 Machine Code
+  </span>emu.mem_map(
+    ADDRESS,          <span class="comment">// Address is 0x10000
+    </span><span class="number">2 </span>* <span class="number">1024 </span>* <span class="number">1024</span>,  <span class="comment">// Size is 2MB
+    </span>Permission::ALL   <span class="comment">// Read, Write and Execute Access
+  </span>).expect(<span class="string">&quot;failed to map code page&quot;</span>);</code></pre></div>
+<p>And we <strong>populate the Executable Memory</strong> with our Arm64 Machine Code…</p>
 
-    <span class="comment">// Register Values
-    </span><span class="kw">const </span>X11: u64 = <span class="number">0x12345678</span>;    <span class="comment">// X11 register
-    </span><span class="kw">const </span>X13: u64 = <span class="number">0x10000 </span>+ <span class="number">0x8</span>; <span class="comment">// X13 register
-    </span><span class="kw">const </span>X15: u64 = <span class="number">0x33</span>;          <span class="comment">// X15 register
-    
-    // initialize machine registers
-    </span>emu.reg_write(RegisterARM64::X11, X11)
-        .expect(<span class="string">&quot;failed to set X11&quot;</span>);
-    emu.reg_write(RegisterARM64::X13, X13)
-        .expect(<span class="string">&quot;failed to set X13&quot;</span>);
-    emu.reg_write(RegisterARM64::X15, X15)
-        .expect(<span class="string">&quot;failed to set X15&quot;</span>);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Write Arm64 Machine Code to emulated Executable Memory
+  </span>emu.mem_write(
+    ADDRESS,     <span class="comment">// Address is 0x10000
+    </span><span class="kw-2">&amp;</span>arm64_code  <span class="comment">// Arm64 Machine Code
+  </span>).expect(<span class="string">&quot;failed to write instructions&quot;</span>);</code></pre></div>
+<p>We <strong>set the Arm64 Registers</strong>: X11, X13 and X15…</p>
 
-    <span class="kw">let _ </span>= emu.emu_start(
-        ADDRESS,
-        ADDRESS + arm64_code.len() <span class="kw">as </span>u64,
-        <span class="number">0</span>, <span class="comment">// Previously: 10 * SECOND_SCALE,
-        </span><span class="number">0  </span><span class="comment">// Previously: 1000
-    </span>);
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Register Values
+  </span><span class="kw">const </span>X11: u64 = <span class="number">0x12345678</span>;    <span class="comment">// X11 value
+  </span><span class="kw">const </span>X13: u64 = ADDRESS + <span class="number">0x8</span>; <span class="comment">// X13 value
+  </span><span class="kw">const </span>X15: u64 = <span class="number">0x33</span>;          <span class="comment">// X15 value
+  
+  // Set the Arm64 Registers
+  </span>emu.reg_write(RegisterARM64::X11, X11)
+    .expect(<span class="string">&quot;failed to set X11&quot;</span>);
+  emu.reg_write(RegisterARM64::X13, X13)
+    .expect(<span class="string">&quot;failed to set X13&quot;</span>);
+  emu.reg_write(RegisterARM64::X15, X15)
+    .expect(<span class="string">&quot;failed to set X15&quot;</span>);</code></pre></div>
+<p>We <strong>start the emulator</strong>…</p>
 
-    <span class="macro">assert_eq!</span>(emu.reg_read(RegisterARM64::X15), <span class="prelude-val">Ok</span>(<span class="number">0x78</span>));
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Emulate Arm64 Machine Code
+  </span><span class="kw">let </span>err = emu.emu_start(
+    ADDRESS,  <span class="comment">// Begin Address is 0x10000
+    </span>ADDRESS + arm64_code.len() <span class="kw">as </span>u64,  <span class="comment">// End Address is 0x10008
+    </span><span class="number">0</span>,  <span class="comment">// No Timeout
+    </span><span class="number">0   </span><span class="comment">// Unlimited number of instructions
+  </span>);
+
+  <span class="comment">// Print the Emulator Error
+  </span><span class="macro">println!</span>(<span class="string">&quot;err={:?}&quot;</span>, err);</code></pre></div>
+<p>Finally we <strong>read the X15 Register</strong> and verify the result…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Read the X15 Register
+  </span><span class="macro">assert_eq!</span>(
+    emu.reg_read(RegisterARM64::X15), 
+    <span class="prelude-val">Ok</span>(<span class="number">0x78</span>)
+  );
 }</code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/src/main.rs#L1-L55">(Source)</a></p>
-<p>We add <code>unicorn-engine</code> to <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/Cargo.toml#L8-L9">Cargo.toml</a>…</p>
+<p>And we’re done!</p>
+<p>Remember to add <a href="https://crates.io/crates/unicorn-engine"><strong>unicorn-engine</strong></a> to the dependencies: <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/Cargo.toml#L8-L9">Cargo.toml</a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>[dependencies]
 unicorn-engine = &quot;2.0.0&quot;
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/Cargo.toml#L8-L9">(Source)</a></p>
-<p>And we run our Rust Program…</p>
+<p>When we run our <a href="https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/src/main.rs"><strong>Rust Program</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>→ cargo run --verbose
-  Fresh cc v1.0.79
-  Fresh cmake v0.1.49
-  Fresh pkg-config v0.3.26
-  Fresh bitflags v1.3.2
-  Fresh libc v0.2.139
-  Fresh unicorn-engine v2.0.1
-  Fresh pinephone-emulator v0.1.0
+
+Fresh cc v1.0.79
+Fresh cmake v0.1.49
+Fresh pkg-config v0.3.26
+Fresh bitflags v1.3.2
+Fresh libc v0.2.139
+Fresh unicorn-engine v2.0.1
+Fresh pinephone-emulator v0.1.0
 Finished dev [unoptimized + debuginfo] target(s) in 0.08s
-  Running `target/debug/pinephone-emulator`
+Running `target/debug/pinephone-emulator`
+
+err=Ok(())
 </code></pre></div>
-<p>Our Rust Program works OK for emulating Arm64 Memory and Arm64 Registers.</p>
-<p>Let’s talk about Arm64 Memory-Mapped Input / Output…</p>
-<h1 id="memory-access-hook"><a href="#memory-access-hook">2 Memory Access Hook</a></h1>
-<p>TODO</p>
+<p>Unicorn is hunky dory!</p>
+<p>Let’s talk about Memory-Mapped Input / Output…</p>
 <p><img src="https://lupyuen.github.io/images/unicorn-code2.png" alt="Memory Access Hook for Arm64 Emulation" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L59-L95"><em>Memory Access Hook for Arm64 Emulation</em></a></p>
+<h1 id="memory-access-hook"><a href="#memory-access-hook">2 Memory Access Hook</a></h1>
+<p>TODO</p>
 <p><em>How will we emulate Arm64 Memory-Mapped Input / Output?</em></p>
 <p>Unicorn Emulator lets us attach hooks to Emulate Memory Access.</p>
 <p>Here’s a Hook Function for Memory Access…</p>
@@ -323,7 +370,7 @@ hook_code:
 <p>Which means that Unicorn Emulator calls our Hook Function only once for the entire Block of 2 Arm64 Instructions.</p>
 <p>This Block Execution Hook will be super helpful for monitoring the Execution Flow of our emulated code.</p>
 <p>Let’s talk about the Block…</p>
-<h1 id="what-is-a-block"><a href="#what-is-a-block">5 What is a Block?</a></h1>
+<h1 id="whats-a-block"><a href="#whats-a-block">5 What’s a Block?</a></h1>
 <p>TODO</p>
 <p><em>What exactly is a Block of Arm64 Instructions?</em></p>
 <p>When we this code from Apache NuttX RTOS (that handles UART Output)…</p>
