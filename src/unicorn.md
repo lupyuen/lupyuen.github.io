@@ -771,13 +771,17 @@ We won't chase the Unicorn into the Rabbit Hole, but the details are covered her
 
 -   [__"Debug the Unicorn Emulator"__](https://github.com/lupyuen/pinephone-emulator#debug-the-unicorn-emulator)
 
+![Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/lvgl2-title.jpg)
+
+[_Apache NuttX RTOS on PinePhone_](https://lupyuen.github.io/articles/what)
+
 # Emulation Concerns
 
 _So are we happy with Unicorn Emulator?_
 
 Yep! Unicorn Emulator is sufficient for __Automated Daily Build and Test__ for NuttX on PinePhone. (Via GitHub Actions)
 
-Which will be similar to this BL602 setup, but we'll boot the Daily Build on Unicorn Emulator (instead of Real Hardware)...
+Which will be similar to this BL602 setup, except that we'll boot the Daily Build on Unicorn Emulator (instead of Real Hardware)...
 
 -   [__"Auto Flash and Test NuttX on RISC-V BL602"__](https://lupyuen.github.io/articles/auto)
 
@@ -786,6 +790,14 @@ _But our PinePhone Emulator doesn't handle Console Input..._
 Yeah we'll do that later. We have a long wishlist of features to build: Interrupts, Memory Protection, Multiple CPUs, Cortex A53, GIC v2, ...
 
 -   [__"Wishlist for PinePhone Emulator"__](https://github.com/lupyuen/pinephone-emulator#todo)
+
+_NuttX runs graphical apps on PinePhone right?_
+
+Yep someday we'll render the __NuttX Graphics Framebuffers__ in Unicorn.
+
+(Maybe with a Rust GUI Library. Or [__Unicorn.js__](https://alexaltea.github.io/unicorn.js/) and WebAssembly)
+
+-   [__"NuttX RTOS for PinePhone: Framebuffer"__](https://lupyuen.github.io/articles/fb)
 
 _What about emulating other operating systems: Linux / macOS / Windows / Android?_
 
