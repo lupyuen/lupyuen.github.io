@@ -499,15 +499,28 @@ let err = emu.emu_start(
 );
 ```
 
-TODO: When we run this, Unicorn Emulator loops forever. Let's find out why...
+Unicorn happily __boots Nuttx RTOS__...
 
-# Wait for UART Controller
+```text
+→ cargo run 
+hook_block:  address=0x40080000, size=8
+hook_block:  address=0x40080040, size=4
+hook_block:  address=0x40080044, size=12
+hook_block:  address=0x40080118, size=16
+...
+```
 
-TODO
+[(See the Arm64 Disassembly)](https://github.com/lupyuen/pinephone-emulator/blob/a1fb82d829856d86d6845c477709c2be24373aca/nuttx/nuttx.S)
+
+But our legendary creature gets stuck in mud. Let's find out why...
 
 ![Emulating the Allwinner A64 UART Controller](https://lupyuen.github.io/images/unicorn-code5.png)
 
 [_Emulating the Allwinner A64 UART Controller_](https://github.com/lupyuen/pinephone-emulator/blob/4d78876ad6f40126bf68cb2da4a43f56d9ef6e76/src/main.rs#L27-L76)
+
+# Wait for UART Controller
+
+TODO
 
 Here's the output when we run NuttX RTOS in Unicorn Emulator...
 
