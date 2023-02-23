@@ -1,6 +1,6 @@
 # (Possibly) Emulate PinePhone with Unicorn Emulator
 
-📝 _1 Mar 2023_
+📝 _24 Feb 2023_
 
 ![Emulating Arm64 Machine Code in Unicorn](https://lupyuen.github.io/images/unicorn-title.jpg)
 
@@ -814,7 +814,7 @@ Check out __QEMU Emulator__...
 
 # What's Next
 
-TODO
+This has been a fun educational exercise. Now we have a way to run __Automated Daily Tests__ for Apache NuttX RTOS on PinePhone... Kudos to the __Maintainers of Unicorn Emulator__!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
