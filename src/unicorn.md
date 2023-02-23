@@ -703,13 +703,13 @@ Which reads as...
 
 Yep NuttX RTOS is booting on Unicorn Emulator! But we have a problem...
 
-![Debugging an Arm64 Exception](https://lupyuen.github.io/images/unicorn-debug.png)
+![Debugging an Arm64 Exception](https://lupyuen.github.io/images/unicorn-debug.jpg)
 
 [_Debugging an Arm64 Exception_](https://github.com/lupyuen/pinephone-emulator#dump-the-arm64-exception)
 
 # Emulator Halts with MMU Fault
 
-_So NuttX RTOS boots OK on Unicorn Emulator?_
+_NuttX RTOS boots OK on Unicorn Emulator?_
 
 Not quite. Unicorn Emulator halts with an __Arm64 Exception__ at address __`4008` `0EF8`__...
 
@@ -739,19 +739,22 @@ nuttx/arch/arm64/src/common/arm64_mmu.c:544
 Which comes from this __NuttX Source Code__: [arm64_mmu.c](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L541-L544)
 
 ```c
-// Enable the MMU and data cache
+// Enable the MMU and data cache:
+// Read from System Control Register EL1
 value = read_sysreg(sctlr_el1);
+
+// Write to System Control Register EL1
 write_sysreg(  // Write to System Register...
-  value | SCTLR_M_BIT | SCTLR_C_BIT,  // Register Value
+  value | SCTLR_M_BIT | SCTLR_C_BIT,  // Enable Address Translation and Caching
   sctlr_el1    // System Control Register EL1
 );
 ```
 
-The above code sets these flags in [__System Control Register EL1__](https://developer.arm.com/documentation/ddi0595/2021-06/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-) (SCTLR_EL1)...
+The code above sets these flags in Arm64 [__System Control Register EL1__](https://developer.arm.com/documentation/ddi0595/2021-06/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-) (SCTLR_EL1)...
 
-- __SCTLR_M_BIT__ (Bit 0): Enable Address Translation for EL0 and EL1 Stage 1
+- __SCTLR_M_BIT__ (Bit 0): Enable __Address Translation__ for EL0 and EL1 Stage 1
 
-- __SCTLR_C_BIT__ (Bit 2): Enable Caching for EL0 and EL1 Stage 1
+- __SCTLR_C_BIT__ (Bit 2): Enable __Caching__ for EL0 and EL1 Stage 1
 
 Thus the __Address Translation__ (or Caching) has failed in our Emulated Arm64 Memory Management Unit.
 
