@@ -595,10 +595,10 @@ uart output: &#39;y&#39;
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/uboot#pinephone-boots-nuttx">(Similar to this)</a></p>
 <p>Yep NuttX RTOS is booting on Unicorn Emulator! But we have a problem…</p>
-<p><img src="https://lupyuen.github.io/images/unicorn-debug.png" alt="Debugging an Arm64 Exception" /></p>
+<p><img src="https://lupyuen.github.io/images/unicorn-debug.jpg" alt="Debugging an Arm64 Exception" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-emulator#dump-the-arm64-exception"><em>Debugging an Arm64 Exception</em></a></p>
 <h1 id="emulator-halts-with-mmu-fault"><a href="#emulator-halts-with-mmu-fault">9 Emulator Halts with MMU Fault</a></h1>
-<p><em>So NuttX RTOS boots OK on Unicorn Emulator?</em></p>
+<p><em>NuttX RTOS boots OK on Unicorn Emulator?</em></p>
 <p>Not quite. Unicorn Emulator halts with an <strong>Arm64 Exception</strong> at address <strong><code>4008</code> <code>0EF8</code></strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>hook_block:  address=0x40080eec, size=16
 hook_code:   address=0x40080eec, size=4
@@ -617,20 +617,23 @@ err=Err(EXCEPTION)
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-emulator/blob/a1fb82d829856d86d6845c477709c2be24373aca/nuttx/nuttx.S">(See the Arm64 Disassembly)</a></p>
 <p>Which comes from this <strong>NuttX Source Code</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L541-L544">arm64_mmu.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Enable the MMU and data cache
+<div class="example-wrap"><pre class="language-c"><code>// Enable the MMU and data cache:
+// Read from System Control Register EL1
 value = read_sysreg(sctlr_el1);
+
+// Write to System Control Register EL1
 write_sysreg(  // Write to System Register...
-  value | SCTLR_M_BIT | SCTLR_C_BIT,  // Register Value
+  value | SCTLR_M_BIT | SCTLR_C_BIT,  // Enable Address Translation and Caching
   sctlr_el1    // System Control Register EL1
 );
 </code></pre></div>
-<p>The above code sets these flags in <a href="https://developer.arm.com/documentation/ddi0595/2021-06/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-"><strong>System Control Register EL1</strong></a> (SCTLR_EL1)…</p>
+<p>The code above sets these flags in Arm64 <a href="https://developer.arm.com/documentation/ddi0595/2021-06/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-"><strong>System Control Register EL1</strong></a> (SCTLR_EL1)…</p>
 <ul>
 <li>
-<p><strong>SCTLR_M_BIT</strong> (Bit 0): Enable Address Translation for EL0 and EL1 Stage 1</p>
+<p><strong>SCTLR_M_BIT</strong> (Bit 0): Enable <strong>Address Translation</strong> for EL0 and EL1 Stage 1</p>
 </li>
 <li>
-<p><strong>SCTLR_C_BIT</strong> (Bit 2): Enable Caching for EL0 and EL1 Stage 1</p>
+<p><strong>SCTLR_C_BIT</strong> (Bit 2): Enable <strong>Caching</strong> for EL0 and EL1 Stage 1</p>
 </li>
 </ul>
 <p>Thus the <strong>Address Translation</strong> (or Caching) has failed in our Emulated Arm64 Memory Management Unit.</p>
