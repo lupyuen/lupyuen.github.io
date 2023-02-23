@@ -34,78 +34,144 @@ We begin by emulating simple Arm64 Machine Code...
 
 # Emulate Arm64 Machine Code
 
-TODO
-
-Suppose we wish to emulate some Arm64 Machine Code...
+Suppose we wish to emulate this __Arm64 Machine Code__...
 
 ```text
-0xab, 0x05, 0x00, 0xb8,  // str  w11, [x13], #0
-0xaf, 0x05, 0x40, 0x38,  // ldrb w15, [x13], #0
+// Start Address: 0x10000
+AB 05 00 B8  // str  w11, [x13], #0
+AF 05 40 38  // ldrb w15, [x13], #0
 ```
 
-Here's our Rust Program that calls Unicorn Emulator to emulate the Arm64 Machine Code...
+With these __Arm64 Register Values__...
+
+| Register | Value |
+|:--------:|:------|
+| `X11` | `0x12345678`
+| `X13` | `0x10008`
+| `X15` | `0x33`
+
+Which means...
+
+1.  __Store `X11`__ (value `0x12345678`)...
+
+    Into the address referenced by __`X13`__
+
+    (Address `0x10008`)
+
+1.  __Load `X15`__ as a Single Byte
+
+    From the address referenced by __`X13`__
+
+    (Address `0x10008`)
+
+1.  Which sets __`X15`__ to __`0x78`__
+
+    (Because `0x10008` contains byte `0x78`)
+
+    [(__`X`__ Registers are __64-bit__, __`W`__ Registers are __32-bit__)](https://developer.arm.com/documentation/102374/0100/Registers-in-AArch64---general-purpose-registers)
+
+This is how we __call Unicorn Emulator__ to emulate the Arm64 Machine Code: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/src/main.rs#L1-L55)
 
 ```rust
 use unicorn_engine::{Unicorn, RegisterARM64};
 use unicorn_engine::unicorn_const::{Arch, Mode, Permission};
 
 fn main() {
-    // Arm64 Code
-    let arm64_code: Vec<u8> = vec![
-        0xab, 0x05, 0x00, 0xb8,  // str w11, [x13], #0
-        0xaf, 0x05, 0x40, 0x38,  // ldrb w15, [x13], #0
-    ];
+  // Arm64 Memory Address where emulation starts
+  const ADDRESS: u64 = 0x10000;
 
-    // Initialize emulator in ARM64 mode
-    let mut unicorn = Unicorn::new(
-        Arch::ARM64,
-        Mode::LITTLE_ENDIAN
-    ).expect("failed to initialize Unicorn instance");
-    let emu = &mut unicorn;
+  // Arm64 Machine Code for the above address
+  let arm64_code: Vec<u8> = vec![
+    0xab, 0x05, 0x00, 0xb8,  // str w11,  [x13], #0
+    0xaf, 0x05, 0x40, 0x38,  // ldrb w15, [x13], #0
+  ];
+```
 
-    // memory address where emulation starts
-    const ADDRESS: u64 = 0x10000;
+We begin by defining the __Arm64 Machine Code__.
 
-    // map 2MB memory for this emulation
-    emu.mem_map(
-        ADDRESS,
-        2 * 1024 * 1024,
-        Permission::ALL
-    ).expect("failed to map code page");
+Then we __initialise the emulator__...
 
-    // write machine code to be emulated to memory
-    emu.mem_write(
-        ADDRESS, 
-        &arm64_code
-    ).expect("failed to write instructions");
+```rust
+  // Init Emulator in Arm64 mode
+  let mut unicorn = Unicorn::new(
+    Arch::ARM64,
+    Mode::LITTLE_ENDIAN
+  ).expect("failed to init Unicorn");
 
-    // Register Values
-    const X11: u64 = 0x12345678;    // X11 register
-    const X13: u64 = 0x10000 + 0x8; // X13 register
-    const X15: u64 = 0x33;          // X15 register
-    
-    // initialize machine registers
-    emu.reg_write(RegisterARM64::X11, X11)
-        .expect("failed to set X11");
-    emu.reg_write(RegisterARM64::X13, X13)
-        .expect("failed to set X13");
-    emu.reg_write(RegisterARM64::X15, X15)
-        .expect("failed to set X15");
+  // Get the Unicorn handle
+  let emu = &mut unicorn;
+```
 
-    let _ = emu.emu_start(
-        ADDRESS,
-        ADDRESS + arm64_code.len() as u64,
-        0, // Previously: 10 * SECOND_SCALE,
-        0  // Previously: 1000
-    );
+Unicorn needs some __Emulated Memory__ to run our code.
 
-    assert_eq!(emu.reg_read(RegisterARM64::X15), Ok(0x78));
+We map __2MB of Executable Memory__...
+
+```rust
+  // Map 2MB of Executable Memory at 0x10000
+  // for Arm64 Machine Code
+  emu.mem_map(
+    ADDRESS,          // Address is 0x10000
+    2 * 1024 * 1024,  // Size is 2MB
+    Permission::ALL   // Read, Write and Execute Access
+  ).expect("failed to map code page");
+```
+
+And we __populate the Executable Memory__ with our Arm64 Machine Code...
+
+```rust
+  // Write Arm64 Machine Code to emulated Executable Memory
+  emu.mem_write(
+    ADDRESS,     // Address is 0x10000
+    &arm64_code  // Arm64 Machine Code
+  ).expect("failed to write instructions");
+```
+
+We __set the Arm64 Registers__: X11, X13 and X15...
+
+```rust
+  // Register Values
+  const X11: u64 = 0x12345678;    // X11 value
+  const X13: u64 = ADDRESS + 0x8; // X13 value
+  const X15: u64 = 0x33;          // X15 value
+  
+  // Set the Arm64 Registers
+  emu.reg_write(RegisterARM64::X11, X11)
+    .expect("failed to set X11");
+  emu.reg_write(RegisterARM64::X13, X13)
+    .expect("failed to set X13");
+  emu.reg_write(RegisterARM64::X15, X15)
+    .expect("failed to set X15");
+```
+
+We __start the emulator__...
+
+```rust
+  // Emulate Arm64 Machine Code
+  let err = emu.emu_start(
+    ADDRESS,  // Begin Address is 0x10000
+    ADDRESS + arm64_code.len() as u64,  // End Address is 0x10008
+    0,  // No Timeout
+    0   // Unlimited number of instructions
+  );
+
+  // Print the Emulator Error
+  println!("err={:?}", err);
+```
+
+Finally we __read the X15 Register__ and verify the result...
+
+```rust
+  // Read the X15 Register
+  assert_eq!(
+    emu.reg_read(RegisterARM64::X15), 
+    Ok(0x78)
+  );
 }
 ```
 
-[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/src/main.rs#L1-L55)
+And we're done!
 
-We add `unicorn-engine` to [Cargo.toml](https://github.com/lupyuen/pinephone-emulator/blob/main/Cargo.toml#L8-L9)...
+Remember to add [__unicorn-engine__](https://crates.io/crates/unicorn-engine) to the dependencies: [Cargo.toml](https://github.com/lupyuen/pinephone-emulator/blob/main/Cargo.toml#L8-L9)...
 
 ```text
 [dependencies]
@@ -114,32 +180,35 @@ unicorn-engine = "2.0.0"
 
 [(Source)](https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/Cargo.toml#L8-L9)
 
-And we run our Rust Program...
+When we run our [__Rust Program__](https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/src/main.rs)...
 
 ```text
 → cargo run --verbose
-  Fresh cc v1.0.79
-  Fresh cmake v0.1.49
-  Fresh pkg-config v0.3.26
-  Fresh bitflags v1.3.2
-  Fresh libc v0.2.139
-  Fresh unicorn-engine v2.0.1
-  Fresh pinephone-emulator v0.1.0
+
+Fresh cc v1.0.79
+Fresh cmake v0.1.49
+Fresh pkg-config v0.3.26
+Fresh bitflags v1.3.2
+Fresh libc v0.2.139
+Fresh unicorn-engine v2.0.1
+Fresh pinephone-emulator v0.1.0
 Finished dev [unoptimized + debuginfo] target(s) in 0.08s
-  Running `target/debug/pinephone-emulator`
+Running `target/debug/pinephone-emulator`
+
+err=Ok(())
 ```
 
-Our Rust Program works OK for emulating Arm64 Memory and Arm64 Registers.
+Unicorn is hunky dory!
 
-Let's talk about Arm64 Memory-Mapped Input / Output...
-
-# Memory Access Hook
-
-TODO
+Let's talk about Memory-Mapped Input / Output...
 
 ![Memory Access Hook for Arm64 Emulation](https://lupyuen.github.io/images/unicorn-code2.png)
 
 [_Memory Access Hook for Arm64 Emulation_](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L59-L95)
+
+# Memory Access Hook
+
+TODO
 
 _How will we emulate Arm64 Memory-Mapped Input / Output?_
 
@@ -323,7 +392,7 @@ This Block Execution Hook will be super helpful for monitoring the Execution Flo
 
 Let's talk about the Block...
 
-# What is a Block?
+# What's a Block?
 
 TODO
 
