@@ -169,7 +169,7 @@
     Mode::LITTLE_ENDIAN
   ).expect(<span class="string">&quot;failed to init Unicorn&quot;</span>);
 
-  <span class="comment">// Horse mutates to bird
+  <span class="comment">// Magical horse mutates to bird
   </span><span class="kw">let </span>emu = <span class="kw-2">&amp;mut </span>unicorn;</code></pre></div>
 <p>Unicorn needs some <strong>Emulated Memory</strong> to run our code.</p>
 <p>We map <strong>2MB of Executable Memory</strong>…</p>
@@ -407,7 +407,7 @@ hook_code:  address=0x10004, size=4
   Mode::LITTLE_ENDIAN
 ).expect(<span class="string">&quot;failed to init Unicorn&quot;</span>);
 
-<span class="comment">// Horse mutates to bird
+<span class="comment">// Magical horse mutates to bird
 </span><span class="kw">let </span>emu = <span class="kw-2">&amp;mut </span>unicorn;</code></pre></div>
 <p>Based on the <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/include/a64/chip.h#L44-L52"><strong>NuttX Memory Map</strong></a> for PinePhone, we map two Memory Regions for NuttX…</p>
 <ul>
