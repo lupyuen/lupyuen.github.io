@@ -393,7 +393,7 @@ hook_memory:
 
 [(Source)](https://github.com/lupyuen/pinephone-emulator/blob/b842358ba457b67ffa9f4c1a362b0386cfd97c4a/README.md#block-execution-hooks-for-arm64-emulation)
 
-The log above says that address `01C2` `8014` is unmapped.
+The log says that our Arm64 Machine Code attempted to read address `01C2` `8014`, which is unmapped.
 
 This is how we map the memory: [rust.rs](https://github.com/lupyuen/pinephone-emulator/blob/cd030954c2ace4cf0207872f275abc3ffb7343c6/src/main.rs#L26-L32)
 
@@ -644,7 +644,7 @@ NuttX RTOS will write the UART Output to Allwinner A64's __UART Transmit Holding
 
 -   [__"Transmit UART"__](https://lupyuen.github.io/articles/serial#transmit-uart)
 
-To emulate the UART Output, we'll use Unicorn's __Memory Access Hook__...
+To emulate the UART Output, we use Unicorn's __Memory Access Hook__...
 
 -   [__"Memory Access Hook"__](https://lupyuen.github.io/articles/unicorn#memory-access-hook)
 
@@ -733,8 +733,6 @@ nuttx/arch/arm64/src/common/arm64_mmu.c:544
     40080ef4:	aa010000 	orr	x0, x0, x1
     40080ef8:	d5181000 	msr	sctlr_el1, x0
 ```
-
-[(See the Arm64 Disassembly)](https://github.com/lupyuen/pinephone-emulator/blob/a1fb82d829856d86d6845c477709c2be24373aca/nuttx/nuttx.S)
 
 Which comes from this __NuttX Source Code__: [arm64_mmu.c](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L541-L544)
 
