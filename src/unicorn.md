@@ -104,7 +104,7 @@ Then we __initialise the emulator__...
     Mode::LITTLE_ENDIAN
   ).expect("failed to init Unicorn");
 
-  // Get the Unicorn handle
+  // Horse mutates to bird
   let emu = &mut unicorn;
 ```
 
@@ -435,14 +435,18 @@ const ADDRESS: u64 = 0x4008_0000;
 let arm64_code = include_bytes!("../nuttx/nuttx.bin");
 ```
 
+[_(Rustle... Whoosh!)_](https://doc.rust-lang.org/std/macro.include_bytes.html)
+
 We __initialise the emulator__ the same way...
 
 ```rust
-// Init emulator in Arm64 mode
+// Init Emulator in Arm64 mode
 let mut unicorn = Unicorn::new(
   Arch::ARM64,
   Mode::LITTLE_ENDIAN
 ).expect("failed to init Unicorn");
+
+// Horse mutates to bird
 let emu = &mut unicorn;
 ```
 
