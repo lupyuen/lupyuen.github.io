@@ -22,11 +22,11 @@ Let's find out! In this article we'll call __Unicorn Emulator__ to...
 
 -   __Simulate the UART Controller__ for PinePhone
 
--   __Track an Exception__ in the Arm64 Memory Management Unit 
+-   __Track an Exception__ in Arm64 Memory Management
 
-We'll do all this in __basic Rust__ (instead of classic C).
+We'll do all this in __basic Rust__, instead of classic C.
 
-(Because I'm too old to write meticulous C... But I'm OK to get nagged by Rust Compiler if I miss something!)
+(That's because I'm too old to write meticulous C... But I'm OK to get nagged by Rust Compiler if I miss something!)
 
 We begin by emulating simple Arm64 Machine Code...
 
@@ -38,15 +38,81 @@ TODO
 
 Suppose we wish to emulate some Arm64 Machine Code...
 
-https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/src/main.rs#L7-L8
+```text
+0xab, 0x05, 0x00, 0xb8,  // str  w11, [x13], #0
+0xaf, 0x05, 0x40, 0x38,  // ldrb w15, [x13], #0
+```
 
 Here's our Rust Program that calls Unicorn Emulator to emulate the Arm64 Machine Code...
 
-https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/src/main.rs#L1-L55
+```rust
+use unicorn_engine::{Unicorn, RegisterARM64};
+use unicorn_engine::unicorn_const::{Arch, Mode, Permission};
 
-We add `unicorn-engine` to [Cargo.toml](Cargo.toml)...
+fn main() {
+    // Arm64 Code
+    let arm64_code: Vec<u8> = vec![
+        0xab, 0x05, 0x00, 0xb8,  // str w11, [x13], #0
+        0xaf, 0x05, 0x40, 0x38,  // ldrb w15, [x13], #0
+    ];
 
-https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/Cargo.toml#L8-L9
+    // Initialize emulator in ARM64 mode
+    let mut unicorn = Unicorn::new(
+        Arch::ARM64,
+        Mode::LITTLE_ENDIAN
+    ).expect("failed to initialize Unicorn instance");
+    let emu = &mut unicorn;
+
+    // memory address where emulation starts
+    const ADDRESS: u64 = 0x10000;
+
+    // map 2MB memory for this emulation
+    emu.mem_map(
+        ADDRESS,
+        2 * 1024 * 1024,
+        Permission::ALL
+    ).expect("failed to map code page");
+
+    // write machine code to be emulated to memory
+    emu.mem_write(
+        ADDRESS, 
+        &arm64_code
+    ).expect("failed to write instructions");
+
+    // Register Values
+    const X11: u64 = 0x12345678;    // X11 register
+    const X13: u64 = 0x10000 + 0x8; // X13 register
+    const X15: u64 = 0x33;          // X15 register
+    
+    // initialize machine registers
+    emu.reg_write(RegisterARM64::X11, X11)
+        .expect("failed to set X11");
+    emu.reg_write(RegisterARM64::X13, X13)
+        .expect("failed to set X13");
+    emu.reg_write(RegisterARM64::X15, X15)
+        .expect("failed to set X15");
+
+    let _ = emu.emu_start(
+        ADDRESS,
+        ADDRESS + arm64_code.len() as u64,
+        0, // Previously: 10 * SECOND_SCALE,
+        0  // Previously: 1000
+    );
+
+    assert_eq!(emu.reg_read(RegisterARM64::X15), Ok(0x78));
+}
+```
+
+[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/src/main.rs#L1-L55)
+
+We add `unicorn-engine` to [Cargo.toml](https://github.com/lupyuen/pinephone-emulator/blob/main/Cargo.toml#L8-L9)...
+
+```text
+[dependencies]
+unicorn-engine = "2.0.0"
+```
+
+[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/Cargo.toml#L8-L9)
 
 And we run our Rust Program...
 
@@ -79,7 +145,23 @@ Unicorn Emulator lets us attach hooks to Emulate Memory Access.
 
 Here's a Hook Function for Memory Access...
 
-https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L83-L95
+```rust
+// Hook Function for Memory Access.
+// Called once for every Arm64 Memory Access.
+fn hook_memory(
+    _: &mut Unicorn<()>,  // Emulator
+    mem_type: MemType,    // Read or Write Access
+    address: u64,  // Accessed Address
+    size: usize,   // Number of bytes accessed
+    value: i64     // Read / Write Value
+) -> bool {
+    // TODO: Simulate Memory-Mapped Input/Output (UART Controller)
+    println!("hook_memory: mem_type={:?}, address={:#x}, size={:?}, value={:#x}", mem_type, address, size, value);
+    true
+}
+```
+
+[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L83-L95)
 
 Our Hook Function prints all Read / Write Access to Emulated Arm64 Memory.
 
@@ -87,7 +169,26 @@ Our Hook Function prints all Read / Write Access to Emulated Arm64 Memory.
 
 This is how we attach the Hook Function to the Unicorn Emulator...
 
-https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L59-L74
+```rust
+    // Add Hook for Arm64 Memory Access
+    let _ = emu.add_mem_hook(
+        HookType::MEM_ALL, 
+        0,
+        u64::MAX,
+        hook_memory
+    ).expect("failed to add memory hook");
+
+    // Emulate machine code in infinite time (last param = 0),
+    // or when all code has completed
+    let _ = emu.emu_start(
+        ADDRESS,
+        ADDRESS + arm64_code.len() as u64,
+        0, // Previously: 10 * SECOND_SCALE,
+        0  // Previously: 1000
+    );
+```
+
+[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L59-L74)
 
 When we run our Rust Program, we see the Read and Write Memory Accesses made by our [Emulated Arm64 Code](https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/src/main.rs#L7-L8)...
 
@@ -123,11 +224,33 @@ Yep we can call Unicorn Emulator to add a Code Execution Hook.
 
 Here's a sample Hook Function that will be called for every Arm64 Instruction...
 
-https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L108-L117
+```rust
+// Hook Function for Code Emulation.
+// Called once for each Arm64 Instruction.
+fn hook_code(
+    _: &mut Unicorn<()>,  // Emulator
+    address: u64,  // Instruction Address
+    size: u32      // Instruction Size
+) {
+    // TODO: Handle special Arm64 Instructions
+    println!("hook_code: address={:#x}, size={:?}", address, size);
+}
+```
+
+[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L108-L117)
 
 And this is how we call Unicorn Emulator to add the above Hook Function...
 
-https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L52-L57
+```rust
+    // Add Hook for emulating each Arm64 Instruction
+    let _ = emu.add_code_hook(
+        ADDRESS,  // Begin Address
+        ADDRESS + arm64_code.len() as u64,  // End Address
+        hook_code  // Hook Function for Code Emulation
+    ).expect("failed to add code hook");
+```
+
+[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L52-L57)
 
 When we run our Rust Program, we see the Address of every Arm64 Instruction emulated (and its size)...
 
@@ -157,11 +280,30 @@ Yep Unicorn Emulator supports Block Execution Hooks.
 
 This Hook Function will be called once when executing a Block of Arm64 Instructions...
 
-https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L97-L106
+```rust
+// Hook Function for Block Emulation.
+// Called once for each Basic Block of Arm64 Instructions.
+fn hook_block(
+    _: &mut Unicorn<()>,  // Emulator
+    address: u64,  // Block Address
+    size: u32      // Block Size
+) {
+    // TODO: Trace the flow of emulated code
+    println!("hook_block: address={:#x}, size={:?}", address, size);
+}
+```
+
+[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L97-L106)
 
 This is how we add the Block Execution Hook...
 
-https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L48-L50
+```rust
+    // Add Hook for emulating each Basic Block of Arm64 Instructions
+    let _ = emu.add_block_hook(hook_block)
+        .expect("failed to add block hook");
+```
+
+[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L48-L50)
 
 When we run the Rust Program, we see that that the Block Size is 8...
 
@@ -233,6 +375,8 @@ The Block ends at `400801fc` because there's an Arm64 Branch Instruction `b.eq`.
 
 From this we deduce that Unicorn Emulator treats a sequence of Arm64 Instructions as a Block, until it sees a Branch Instruction. (Including function calls)
 
+TODO: Would be great in the Block Hook to map the address against the ELF Symbol Table, so we know what function we're running
+
 # Unmapped Memory in Unicorn Emulator
 
 TODO
@@ -255,7 +399,17 @@ The log above says that address `0x01c2` `8014` is unmapped.
 
 This is how we map the memory...
 
-https://github.com/lupyuen/pinephone-emulator/blob/cd030954c2ace4cf0207872f275abc3ffb7343c6/src/main.rs#L26-L32
+```rust
+    // Map 16 MB at 0x0100 0000 for Memory-Mapped I/O by Allwinner A64 Peripherals
+    // https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/hardware/a64_memorymap.h#L33-L51
+    emu.mem_map(
+        0x0100_0000,       // Address
+        16 * 1024 * 1024,  // Size
+        Permission::READ | Permission::WRITE  // Read and Write Access
+    ).expect("failed to map memory mapped I/O");
+```
+
+[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/cd030954c2ace4cf0207872f275abc3ffb7343c6/src/main.rs#L26-L32)
 
 [(See the NuttX Memory Map)](https://github.com/apache/nuttx/blob/master/arch/arm64/include/a64/chip.h#L44-L52)
 
@@ -275,7 +429,45 @@ We have compiled [Apache NuttX RTOS for PinePhone](nuttx) into an Arm64 Binary I
 
 This is how we load the NuttX Binary Image into Unicorn...
 
-https://github.com/lupyuen/pinephone-emulator/blob/aa24d1c61256f38f92cf627d52c3e9a0c189bfc6/src/main.rs#L6-L40
+```rust
+    // Arm64 Memory Address where emulation starts
+    const ADDRESS: u64 = 0x4008_0000;
+
+    // Arm64 Machine Code for the above address
+    let arm64_code = include_bytes!("../nuttx/nuttx.bin");
+
+    // Initialize emulator in Arm64 mode
+    let mut unicorn = Unicorn::new(
+        Arch::ARM64,
+        Mode::LITTLE_ENDIAN
+    ).expect("failed to initialize Unicorn instance");
+    let emu = &mut unicorn;
+
+    // Map 128 MB Executable Memory at 0x4000 0000 for Arm64 Machine Code
+    // https://github.com/apache/nuttx/blob/master/arch/arm64/include/a64/chip.h#L44-L52
+    emu.mem_map(
+        0x4000_0000,        // Address
+        128 * 1024 * 1024,  // Size
+        Permission::ALL     // Read, Write and Execute Access
+    ).expect("failed to map code page");
+
+    // Map 512 MB Read/Write Memory at 0x0000 0000 for
+    // Memory-Mapped I/O by Allwinner A64 Peripherals
+    // https://github.com/apache/nuttx/blob/master/arch/arm64/include/a64/chip.h#L44-L52
+    emu.mem_map(
+        0x0000_0000,        // Address
+        512 * 1024 * 1024,  // Size
+        Permission::READ | Permission::WRITE  // Read and Write Access
+    ).expect("failed to map memory mapped I/O");
+
+    // Write Arm64 Machine Code to emulated Executable Memory
+    emu.mem_write(
+        ADDRESS, 
+        arm64_code
+    ).expect("failed to write instructions");
+```
+
+[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/aa24d1c61256f38f92cf627d52c3e9a0c189bfc6/src/main.rs#L6-L40)
 
 In our Rust Program above, we mapped 2 Memory Regions for NuttX...
 
@@ -374,7 +566,18 @@ Bit 5 needs to be set to 1 to indicate that the UART Transmit FIFO is ready.
 
 We emulate the UART Ready Bit like so...
 
-https://github.com/lupyuen/pinephone-emulator/blob/4d78876ad6f40126bf68cb2da4a43f56d9ef6e76/src/main.rs#L42-L49
+```rust
+    // Allwinner A64 UART Line Status Register (UART_LSR) at Offset 0x14.
+    // To indicate that the UART Transmit FIFO is ready:
+    // Set Bit 5 to 1.
+    // https://lupyuen.github.io/articles/serial#wait-to-transmit
+    emu.mem_write(
+        0x01c2_8014,  // UART Register Address
+        &[0b10_0000]  // UART Register Value
+    ).expect("failed to set UART_LSR");
+```
+
+[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/4d78876ad6f40126bf68cb2da4a43f56d9ef6e76/src/main.rs#L42-L49)
 
 And Unicorn Emulator stops looping! It continues execution to `memset()` (to init the BSS Section to 0)...
 
@@ -408,7 +611,33 @@ NuttX RTOS will write the UART Output to the UART Transmit Holding Register (THR
 
 In our Memory Access Hook, let's intercept all writes to `0x01c2` `8000` and dump the characters written to UART Output...
 
-https://github.com/lupyuen/pinephone-emulator/blob/aa6dd986857231a935617e8346978d7750aa51e7/src/main.rs#L89-L111
+```rust
+// Hook Function for Memory Access.
+// Called once for every Arm64 Memory Access.
+fn hook_memory(
+    _: &mut Unicorn<()>,  // Emulator
+    mem_type: MemType,    // Read or Write Access
+    address: u64,  // Accessed Address
+    size: usize,   // Number of bytes accessed
+    value: i64     // Read / Write Value
+) -> bool {
+    // Ignore RAM access, we only intercept Memory-Mapped Input / Output
+    if address >= 0x4000_0000 { return true; }
+    println!("hook_memory: address={:#010x}, size={:?}, mem_type={:?}, value={:#x}", address, size, mem_type, value);
+
+    // If writing to UART Transmit Holding Register (THR):
+    // Print the output
+    // https://lupyuen.github.io/articles/serial#transmit-uart
+    if address == 0x01c2_8000 {
+        println!("uart output: {:?}", value as u8 as char);
+    }
+
+    // Always return true, value is unused by caller
+    true
+}
+```
+
+[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/aa6dd986857231a935617e8346978d7750aa51e7/src/main.rs#L89-L111)
 
 When we run this, we see a long chain of UART Output...
 
@@ -543,7 +772,16 @@ TODO: Dump the Exception Registers ESR, FAR, ELR for EL1 [(Because of this)](htt
 
 This won't work...
 
-https://github.com/lupyuen/pinephone-emulator/blob/1cbfa48de10ef4735ebaf91ab85631cb48e37591/src/main.rs#L86-L91
+```rust
+    println!("err={:?}", err);
+    println!("CP_REG={:?}", emu.reg_read(RegisterARM64::CP_REG));
+    println!("ESR_EL0={:?}", emu.reg_read(RegisterARM64::ESR_EL0));
+    println!("ESR_EL1={:?}", emu.reg_read(RegisterARM64::ESR_EL1));
+    println!("ESR_EL2={:?}", emu.reg_read(RegisterARM64::ESR_EL2));
+    println!("ESR_EL3={:?}", emu.reg_read(RegisterARM64::ESR_EL3));
+```
+
+[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/1cbfa48de10ef4735ebaf91ab85631cb48e37591/src/main.rs#L86-L91)
 
 Because `ESR_EL` is no longer supported and `CP_REG` can't be read in Rust...
 
