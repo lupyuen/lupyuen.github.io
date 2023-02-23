@@ -389,58 +389,70 @@ hook_code:  address=0x10004, size=4
 <p><img src="https://lupyuen.github.io/images/unicorn-code4.png" alt="Running Apache NuttX RTOS in Unicorn Emulator" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-emulator/blob/aa24d1c61256f38f92cf627d52c3e9a0c189bfc6/src/main.rs#L6-L78"><em>Running Apache NuttX RTOS in Unicorn Emulator</em></a></p>
 <h1 id="apache-nuttx-rtos-in-unicorn"><a href="#apache-nuttx-rtos-in-unicorn">6 Apache NuttX RTOS in Unicorn</a></h1>
-<p>TODO</p>
 <p>We’re ready to run Apache NuttX RTOS in Unicorn Emulator!</p>
-<p>We have compiled <a href="nuttx">Apache NuttX RTOS for PinePhone</a> into an Arm64 Binary Image <code>nuttx.bin</code>.</p>
-<p>This is how we load the NuttX Binary Image into Unicorn…</p>
+<p>We’ve compiled <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx"><strong>Apache NuttX RTOS for PinePhone</strong></a> into an Arm64 Binary Image: <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx.bin"><strong>nuttx.bin</strong></a></p>
+<p>This is how we <strong>load the NuttX Binary Image</strong> into Unicorn: <a href="https://github.com/lupyuen/pinephone-emulator/blob/aa24d1c61256f38f92cf627d52c3e9a0c189bfc6/src/main.rs#L6-L40">main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// Arm64 Memory Address where emulation starts
-    </span><span class="kw">const </span>ADDRESS: u64 = <span class="number">0x4008_0000</span>;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Arm64 Memory Address where emulation starts
+</span><span class="kw">const </span>ADDRESS: u64 = <span class="number">0x4008_0000</span>;
 
-    <span class="comment">// Arm64 Machine Code for the above address
-    </span><span class="kw">let </span>arm64_code = <span class="macro">include_bytes!</span>(<span class="string">&quot;../nuttx/nuttx.bin&quot;</span>);
+<span class="comment">// Arm64 Machine Code for the above address
+</span><span class="kw">let </span>arm64_code = <span class="macro">include_bytes!</span>(<span class="string">&quot;../nuttx/nuttx.bin&quot;</span>);</code></pre></div>
+<p>We <strong>initialise the emulator</strong> the same way…</p>
 
-    <span class="comment">// Initialize emulator in Arm64 mode
-    </span><span class="kw">let </span><span class="kw-2">mut </span>unicorn = Unicorn::new(
-        Arch::ARM64,
-        Mode::LITTLE_ENDIAN
-    ).expect(<span class="string">&quot;failed to initialize Unicorn instance&quot;</span>);
-    <span class="kw">let </span>emu = <span class="kw-2">&amp;mut </span>unicorn;
-
-    <span class="comment">// Map 128 MB Executable Memory at 0x4000 0000 for Arm64 Machine Code
-    // https://github.com/apache/nuttx/blob/master/arch/arm64/include/a64/chip.h#L44-L52
-    </span>emu.mem_map(
-        <span class="number">0x4000_0000</span>,        <span class="comment">// Address
-        </span><span class="number">128 </span>* <span class="number">1024 </span>* <span class="number">1024</span>,  <span class="comment">// Size
-        </span>Permission::ALL     <span class="comment">// Read, Write and Execute Access
-    </span>).expect(<span class="string">&quot;failed to map code page&quot;</span>);
-
-    <span class="comment">// Map 512 MB Read/Write Memory at 0x0000 0000 for
-    // Memory-Mapped I/O by Allwinner A64 Peripherals
-    // https://github.com/apache/nuttx/blob/master/arch/arm64/include/a64/chip.h#L44-L52
-    </span>emu.mem_map(
-        <span class="number">0x0000_0000</span>,        <span class="comment">// Address
-        </span><span class="number">512 </span>* <span class="number">1024 </span>* <span class="number">1024</span>,  <span class="comment">// Size
-        </span>Permission::READ | Permission::WRITE  <span class="comment">// Read and Write Access
-    </span>).expect(<span class="string">&quot;failed to map memory mapped I/O&quot;</span>);
-
-    <span class="comment">// Write Arm64 Machine Code to emulated Executable Memory
-    </span>emu.mem_write(
-        ADDRESS, 
-        arm64_code
-    ).expect(<span class="string">&quot;failed to write instructions&quot;</span>);</code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/aa24d1c61256f38f92cf627d52c3e9a0c189bfc6/src/main.rs#L6-L40">(Source)</a></p>
-<p>In our Rust Program above, we mapped 2 Memory Regions for NuttX…</p>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Init emulator in Arm64 mode
+</span><span class="kw">let </span><span class="kw-2">mut </span>unicorn = Unicorn::new(
+  Arch::ARM64,
+  Mode::LITTLE_ENDIAN
+).expect(<span class="string">&quot;failed to init Unicorn&quot;</span>);
+<span class="kw">let </span>emu = <span class="kw-2">&amp;mut </span>unicorn;</code></pre></div>
+<p>Based on the <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/include/a64/chip.h#L44-L52"><strong>NuttX Memory Map</strong></a> for PinePhone, we map two Memory Regions for NuttX…</p>
 <ul>
 <li>
-<p>Map 128 MB Executable Memory at <code>0x4000</code> <code>0000</code> for Arm64 Machine Code</p>
+<p><strong>Executable Memory</strong> (128 MB) at <strong><code>4000</code> <code>0000</code></strong></p>
+<p>(For Arm64 Machine Code, Data and BSS)</p>
 </li>
 <li>
-<p>Map 512 MB Read/Write Memory at <code>0x0000</code> <code>0000</code> for Memory-Mapped I/O by Allwinner A64 Peripherals</p>
+<p><strong>Read / Write Memory</strong> (512 MB) at <strong><code>0000</code> <code>0000</code></strong></p>
+<p>(For Memory-Mapped I/O by Allwinner A64 Peripherals)</p>
 </li>
 </ul>
-<p>This is based on the <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/include/a64/chip.h#L44-L52">NuttX Memory Map</a> for PinePhone.</p>
-<p>When we run this, Unicorn Emulator loops forever. Let’s find out why…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Map 128 MB Executable Memory at 0x4000 0000 for Arm64 Machine Code
+// https://github.com/apache/nuttx/blob/master/arch/arm64/include/a64/chip.h#L44-L52
+</span>emu.mem_map(
+  <span class="number">0x4000_0000</span>,        <span class="comment">// Address
+  </span><span class="number">128 </span>* <span class="number">1024 </span>* <span class="number">1024</span>,  <span class="comment">// Size
+  </span>Permission::ALL     <span class="comment">// Read, Write and Execute Access
+</span>).expect(<span class="string">&quot;failed to map code page&quot;</span>);
+
+<span class="comment">// Map 512 MB Read/Write Memory at 0x0000 0000 for
+// Memory-Mapped I/O by Allwinner A64 Peripherals
+// https://github.com/apache/nuttx/blob/master/arch/arm64/include/a64/chip.h#L44-L52
+</span>emu.mem_map(
+  <span class="number">0x0000_0000</span>,        <span class="comment">// Address
+  </span><span class="number">512 </span>* <span class="number">1024 </span>* <span class="number">1024</span>,  <span class="comment">// Size
+  </span>Permission::READ | Permission::WRITE  <span class="comment">// Read and Write Access
+</span>).expect(<span class="string">&quot;failed to map memory mapped I/O&quot;</span>);</code></pre></div>
+<p>We <strong>load the NuttX Machine Code</strong> into Emulated Memory…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Write Arm64 Machine Code to emulated Executable Memory
+</span>emu.mem_write(
+  ADDRESS,    <span class="comment">// Address is 4008 0000
+  </span>arm64_code  <span class="comment">// NuttX Binary Image
+</span>).expect(<span class="string">&quot;failed to write instructions&quot;</span>);</code></pre></div>
+<p>And we <strong>run NuttX RTOS</strong>!</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Omitted: Attach Code, Block and Memory Hooks
+</span>...
+<span class="comment">// Emulate Arm64 Machine Code
+</span><span class="kw">let </span>err = emu.emu_start(
+  ADDRESS,  <span class="comment">// Begin Address
+  </span>ADDRESS + arm64_code.len() <span class="kw">as </span>u64,  <span class="comment">// End Address
+  </span><span class="number">0</span>,  <span class="comment">// No Timeout
+  </span><span class="number">0   </span><span class="comment">// Unlimited number of instructions
+</span>);</code></pre></div>
+<p>TODO: When we run this, Unicorn Emulator loops forever. Let’s find out why…</p>
 <h1 id="wait-for-uart-controller"><a href="#wait-for-uart-controller">7 Wait for UART Controller</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/unicorn-code5.png" alt="Emulating the Allwinner A64 UART Controller" /></p>
