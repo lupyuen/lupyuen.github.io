@@ -724,6 +724,10 @@ TODO: Read the Symbol Table in ELF File to get the addresses
 
 TODO: Select Cortex-A53 as CPU
 
+TODO: Good enough for daily build and test for NuttX on PinePhone, similar to this, but booting the daily build on Unicorn Emulator instead of Real Hardware
+
+[__"Auto Flash and Test NuttX on RISC-V BL602"__](https://lupyuen.github.io/articles/auto)
+
 # What's Next
 
 TODO
