@@ -109,7 +109,7 @@
 </ul>
 <p>We’ll do all this in <strong>basic Rust</strong>, instead of classic C.</p>
 <p>(That’s because I’m too old to write meticulous C… But I’m OK to get nagged by Rust Compiler if I miss something!)</p>
-<p>We begin by emulating simple Arm64 Machine Code…</p>
+<p>We begin by emulating some machine code…</p>
 <h1 id="emulate-arm64-machine-code"><a href="#emulate-arm64-machine-code">1 Emulate Arm64 Machine Code</a></h1>
 <p>Suppose we wish to emulate this <strong>Arm64 Machine Code</strong>…</p>
 
@@ -248,47 +248,39 @@ err=Ok(())
 <p><img src="https://lupyuen.github.io/images/unicorn-code2.png" alt="Memory Access Hook for Arm64 Emulation" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L59-L95"><em>Memory Access Hook for Arm64 Emulation</em></a></p>
 <h1 id="memory-access-hook"><a href="#memory-access-hook">2 Memory Access Hook</a></h1>
-<p>TODO</p>
-<p><em>How will we emulate Arm64 Memory-Mapped Input / Output?</em></p>
-<p>Unicorn Emulator lets us attach hooks to Emulate Memory Access.</p>
-<p>Here’s a Hook Function for Memory Access…</p>
+<p>To emulate our gadget (like PinePhone), we need to handle <a href="https://en.wikipedia.org/wiki/Memory-mapped_I/O_and_port-mapped_I/O"><strong>Memory-Mapped Input / Output</strong></a>.</p>
+<p>(Like for printing to the Serial or UART Port)</p>
+<p>We do this in Unicorn Emulator with a <strong>Memory Access Hook</strong> that will be called to <strong>intercept every Memory Access</strong>.</p>
+<p>Here’s a sample <strong>Hook Function</strong> that will be called to intercept every Arm64 Read / Write Access: <a href="https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L83-L95">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Hook Function for Memory Access.
 // Called once for every Arm64 Memory Access.
 </span><span class="kw">fn </span>hook_memory(
-    <span class="kw">_</span>: <span class="kw-2">&amp;mut </span>Unicorn&lt;()&gt;,  <span class="comment">// Emulator
-    </span>mem_type: MemType,    <span class="comment">// Read or Write Access
-    </span>address: u64,  <span class="comment">// Accessed Address
-    </span>size: usize,   <span class="comment">// Number of bytes accessed
-    </span>value: i64     <span class="comment">// Read / Write Value
-</span>) -&gt; bool {
-    <span class="comment">// TODO: Simulate Memory-Mapped Input/Output (UART Controller)
-    </span><span class="macro">println!</span>(<span class="string">&quot;hook_memory: mem_type={:?}, address={:#x}, size={:?}, value={:#x}&quot;</span>, mem_type, address, size, value);
-    <span class="bool-val">true
+  <span class="kw">_</span>: <span class="kw-2">&amp;mut </span>Unicorn&lt;()&gt;,  <span class="comment">// Emulator
+  </span>mem_type: MemType,    <span class="comment">// Read or Write Access
+  </span>address:  u64,    <span class="comment">// Accessed Address
+  </span>size:     usize,  <span class="comment">// Number of bytes accessed
+  </span>value:    i64     <span class="comment">// Write Value
+</span>) -&gt; bool {         <span class="comment">// Always return true
+
+  // TODO: Emulate Memory-Mapped Input/Output (UART Controller)
+  </span><span class="macro">println!</span>(<span class="string">&quot;hook_memory: mem_type={:?}, address={:#x}, size={:?}, value={:#x}&quot;</span>, mem_type, address, size, value);
+
+  <span class="comment">// Always return true, value is unused by caller
+  // https://github.com/unicorn-engine/unicorn/blob/dev/docs/FAQ.md#i-cant-recover-from-unmapped-readwrite-even-i-return-true-in-the-hook-why
+  </span><span class="bool-val">true
 </span>}</code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L83-L95">(Source)</a></p>
-<p>Our Hook Function prints all Read / Write Access to Emulated Arm64 Memory.</p>
-<p><a href="https://github.com/unicorn-engine/unicorn/blob/dev/docs/FAQ.md#i-cant-recover-from-unmapped-readwrite-even-i-return-true-in-the-hook-why">(Return value is unused)</a></p>
-<p>This is how we attach the Hook Function to the Unicorn Emulator…</p>
+<p>Our Hook Function prints <strong>every Read / Write Access</strong> to the Emulated Arm64 Memory.</p>
+<p>This is how we <strong>attach the Hook Function</strong> to Unicorn Emulator: <a href="https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L59-L74">main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>    <span class="comment">// Add Hook for Arm64 Memory Access
-    </span><span class="kw">let _ </span>= emu.add_mem_hook(
-        HookType::MEM_ALL, 
-        <span class="number">0</span>,
-        u64::MAX,
-        hook_memory
-    ).expect(<span class="string">&quot;failed to add memory hook&quot;</span>);
-
-    <span class="comment">// Emulate machine code in infinite time (last param = 0),
-    // or when all code has completed
-    </span><span class="kw">let _ </span>= emu.emu_start(
-        ADDRESS,
-        ADDRESS + arm64_code.len() <span class="kw">as </span>u64,
-        <span class="number">0</span>, <span class="comment">// Previously: 10 * SECOND_SCALE,
-        </span><span class="number">0  </span><span class="comment">// Previously: 1000
-    </span>);</code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L59-L74">(Source)</a></p>
-<p>When we run our Rust Program, we see the Read and Write Memory Accesses made by our <a href="https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/src/main.rs#L7-L8">Emulated Arm64 Code</a>…</p>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Add Hook for Arm64 Memory Access
+  </span><span class="kw">let _ </span>= emu.add_mem_hook(
+    HookType::MEM_ALL,  <span class="comment">// Intercept Read and Write Access
+    </span><span class="number">0</span>,           <span class="comment">// Begin Address
+    </span>u64::MAX,    <span class="comment">// End Address
+    </span>hook_memory  <span class="comment">// Hook Function
+  </span>).expect(<span class="string">&quot;failed to add memory hook&quot;</span>);</code></pre></div>
+<p>When we run this, we see the Read and Write Memory Accesses made by our <a href="https://lupyuen.github.io/articles/unicorn#emulate-arm64-machine-code"><strong>Emulated Arm64 Code</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>hook_memory: 
   mem_type=WRITE, 
   address=0x10008, 
@@ -301,9 +293,8 @@ hook_memory:
   size=1, 
   value=0x0
 </code></pre></div>
-<p>This Memory Access Hook Function will be helpful when we emulate Memory-Mapped Input/Output on PinePhone.</p>
-<p>(Like for the Allwinner A64 UART Controller)</p>
-<p>Unicorn Emulator allows Code Execution Hooks too…</p>
+<p>(Value is not relevant for Memory Reads)</p>
+<p>Later we’ll implement UART Output with a Memory Access Hook. But first we intercept some code…</p>
 <h1 id="code-execution-hook"><a href="#code-execution-hook">3 Code Execution Hook</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/unicorn-code3.png" alt="Code Execution Hook for Arm64 Emulation" /></p>
@@ -606,7 +597,7 @@ hook_memory: address=0x400b6a54, size=1, mem_type=WRITE, value=0x0
     </span>mem_type: MemType,    <span class="comment">// Read or Write Access
     </span>address: u64,  <span class="comment">// Accessed Address
     </span>size: usize,   <span class="comment">// Number of bytes accessed
-    </span>value: i64     <span class="comment">// Read / Write Value
+    </span>value: i64     <span class="comment">// Write Value
 </span>) -&gt; bool {
     <span class="comment">// Ignore RAM access, we only intercept Memory-Mapped Input / Output
     </span><span class="kw">if </span>address &gt;= <span class="number">0x4000_0000 </span>{ <span class="kw">return </span><span class="bool-val">true</span>; }
