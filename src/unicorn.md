@@ -636,47 +636,43 @@ But we don't see any NuttX Boot Messages. Let's print the UART Output...
 
 # Emulate UART Output
 
-TODO
-
-_We expect to see the Boot Messages from NuttX..._
+_We expect to see Boot Messages from NuttX..._
 
 _How do we print the UART Output?_
 
-According to the Allwinner A64 Doc...
+NuttX RTOS will write the UART Output to Allwinner A64's __UART Transmit Holding Register__ (THR) at __`01C2` `8000`__...
 
--   ["Transmit UART"](https://lupyuen.github.io/articles/serial#transmit-uart)
+-   [__"Transmit UART"__](https://lupyuen.github.io/articles/serial#transmit-uart)
 
-NuttX RTOS will write the UART Output to the UART Transmit Holding Register (THR) at `0x01c2` `8000`.
+To emulate the UART Output, we'll use Unicorn's __Memory Access Hook__...
 
-In our Memory Access Hook, let's intercept all writes to `0x01c2` `8000` and dump the characters written to UART Output...
+-   [__"Memory Access Hook"__](https://lupyuen.github.io/articles/unicorn#memory-access-hook)
+
+In our Memory Access Hook, we intercept all writes to __`01C2` `8000`__ and dump the bytes written: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/aa6dd986857231a935617e8346978d7750aa51e7/src/main.rs#L89-L111)
 
 ```rust
 // Hook Function for Memory Access.
 // Called once for every Arm64 Memory Access.
 fn hook_memory(
-    _: &mut Unicorn<()>,  // Emulator
-    mem_type: MemType,    // Read or Write Access
-    address: u64,  // Accessed Address
-    size: usize,   // Number of bytes accessed
-    value: i64     // Write Value
-) -> bool {
-    // Ignore RAM access, we only intercept Memory-Mapped Input / Output
-    if address >= 0x4000_0000 { return true; }
-    println!("hook_memory: address={:#010x}, size={:?}, mem_type={:?}, value={:#x}", address, size, mem_type, value);
+  _: &mut Unicorn<()>,  // Emulator
+  mem_type: MemType,    // Read or Write Access
+  address: u64,  // Accessed Address
+  size: usize,   // Number of bytes accessed
+  value: i64     // Write Value
+) -> bool {      // Always return true
 
-    // If writing to UART Transmit Holding Register (THR):
-    // Print the output
-    // https://lupyuen.github.io/articles/serial#transmit-uart
-    if address == 0x01c2_8000 {
-        println!("uart output: {:?}", value as u8 as char);
-    }
+  // If writing to UART Transmit Holding Register (THR):
+  // Print the output
+  // https://lupyuen.github.io/articles/serial#transmit-uart
+  if address == 0x01c2_8000 {
+    println!("uart output: {:?}", value as u8 as char);
+  }
 
-    // Always return true, value is unused by caller
-    true
+  // Always return true, value is unused by caller
+  // https://github.com/unicorn-engine/unicorn/blob/dev/docs/FAQ.md#i-cant-recover-from-unmapped-readwrite-even-i-return-true-in-the-hook-why
+  true
 }
 ```
-
-[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/aa6dd986857231a935617e8346978d7750aa51e7/src/main.rs#L89-L111)
 
 When we run this, we see a long chain of UART Output...
 
@@ -705,7 +701,7 @@ Which reads as...
 
 [(Similar to this)](https://lupyuen.github.io/articles/uboot#pinephone-boots-nuttx)
 
-Yep NuttX RTOS is booting on Unicorn Emulator! But Unicorn Emulator halts while booting NuttX...
+Yep NuttX RTOS is booting on Unicorn Emulator! But we have a problem...
 
 ![Debugging an Arm64 Exception](https://lupyuen.github.io/images/unicorn-debug.png)
 
@@ -713,9 +709,9 @@ Yep NuttX RTOS is booting on Unicorn Emulator! But Unicorn Emulator halts while 
 
 # Emulator Halts with MMU Fault
 
-TODO
+_So NuttX RTOS boots OK on Unicorn Emulator?_
 
-Unicorn Emulator halts at address __`4008` `0EF8`__...
+Not quite. Unicorn Emulator halts with an __Arm64 Exception__ at address __`4008` `0EF8`__...
 
 ```text
 hook_block:  address=0x40080eec, size=16
