@@ -368,7 +368,7 @@ hook_code:  address=0x10004, size=4
   value=0x0
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-emulator/blob/b842358ba457b67ffa9f4c1a362b0386cfd97c4a/README.md#block-execution-hooks-for-arm64-emulation">(Source)</a></p>
-<p>The log above says that address <code>01C2</code> <code>8014</code> is unmapped.</p>
+<p>The log says that our Arm64 Machine Code attempted to read address <code>01C2</code> <code>8014</code>, which is unmapped.</p>
 <p>This is how we map the memory: <a href="https://github.com/lupyuen/pinephone-emulator/blob/cd030954c2ace4cf0207872f275abc3ffb7343c6/src/main.rs#L26-L32">rust.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Map 16 MB at 0x0100 0000 for Memory-Mapped I/O by Allwinner A64 Peripherals
@@ -548,7 +548,7 @@ hook_memory: address=0x400b6a53, size=1, mem_type=WRITE, value=0x0
 <ul>
 <li><a href="https://lupyuen.github.io/articles/serial#transmit-uart"><strong>“Transmit UART”</strong></a></li>
 </ul>
-<p>To emulate the UART Output, we’ll use Unicorn’s <strong>Memory Access Hook</strong>…</p>
+<p>To emulate the UART Output, we use Unicorn’s <strong>Memory Access Hook</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/unicorn#memory-access-hook"><strong>“Memory Access Hook”</strong></a></li>
 </ul>
@@ -615,7 +615,6 @@ err=Err(EXCEPTION)
     40080ef4:	aa010000 	orr	x0, x0, x1
     40080ef8:	d5181000 	msr	sctlr_el1, x0
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/a1fb82d829856d86d6845c477709c2be24373aca/nuttx/nuttx.S">(See the Arm64 Disassembly)</a></p>
 <p>Which comes from this <strong>NuttX Source Code</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L541-L544">arm64_mmu.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable the MMU and data cache:
 // Read from System Control Register EL1
