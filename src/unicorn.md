@@ -2,9 +2,9 @@
 
 📝 _1 Mar 2023_
 
-![Emulating Arm64 Machine Code in Unicorn Emulator](https://lupyuen.github.io/images/unicorn-title.jpg)
+![Emulating Arm64 Machine Code in Unicorn](https://lupyuen.github.io/images/unicorn-title.jpg)
 
-[_Emulating Arm64 Machine Code in Unicorn Emulator_](https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/src/main.rs#L1-L55)
+[_Emulating Arm64 Machine Code in Unicorn_](https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/src/main.rs#L1-L55)
 
 [__Unicorn__](https://www.unicorn-engine.org/) is a lightweight __CPU Emulator Framework__ based on [__QEMU__](http://www.qemu.org/).
 
@@ -415,9 +415,9 @@ Yep we may use a Memory Access Hook to __map memory regions on the fly__.
 
 [(Like this)](https://github.com/unicorn-engine/unicorn/blob/dev/docs/FAQ.md#i-cant-recover-from-unmapped-readwrite-even-i-return-true-in-the-hook-why)
 
-![Running Apache NuttX RTOS in Unicorn Emulator](https://lupyuen.github.io/images/unicorn-code4.png)
+![Running Apache NuttX RTOS in Unicorn](https://lupyuen.github.io/images/unicorn-code4.png)
 
-[_Running Apache NuttX RTOS in Unicorn Emulator_](https://github.com/lupyuen/pinephone-emulator/blob/aa24d1c61256f38f92cf627d52c3e9a0c189bfc6/src/main.rs#L6-L78)
+[_Running Apache NuttX RTOS in Unicorn_](https://github.com/lupyuen/pinephone-emulator/blob/aa24d1c61256f38f92cf627d52c3e9a0c189bfc6/src/main.rs#L6-L78)
 
 # Apache NuttX RTOS in Unicorn
 
@@ -518,9 +518,9 @@ hook_block:  address=0x40080118, size=16
 
 But our legendary creature gets stuck in mud. Let's find out why...
 
-![Emulating the Allwinner A64 UART Controller](https://lupyuen.github.io/images/unicorn-code5.png)
+![Emulating the UART Controller](https://lupyuen.github.io/images/unicorn-code5.png)
 
-[_Emulating the Allwinner A64 UART Controller_](https://github.com/lupyuen/pinephone-emulator/blob/4d78876ad6f40126bf68cb2da4a43f56d9ef6e76/src/main.rs#L27-L76)
+[_Emulating the UART Controller_](https://github.com/lupyuen/pinephone-emulator/blob/4d78876ad6f40126bf68cb2da4a43f56d9ef6e76/src/main.rs#L27-L76)
 
 # Wait for UART Controller
 
@@ -640,9 +640,9 @@ But we don't see any UART Output. Let's print the UART Output...
 
 TODO
 
-![Emulating UART Output in Unicorn Emulator](https://lupyuen.github.io/images/unicorn-code6.png)
+![Emulating UART Output in Unicorn](https://lupyuen.github.io/images/unicorn-code6.png)
 
-[_Emulating UART Output in Unicorn Emulator_](https://github.com/lupyuen/pinephone-emulator/blob/aa6dd986857231a935617e8346978d7750aa51e7/src/main.rs#L89-L111)
+[_Emulating UART Output in Unicorn_](https://github.com/lupyuen/pinephone-emulator/blob/aa6dd986857231a935617e8346978d7750aa51e7/src/main.rs#L89-L111)
 
 _How do we print the UART Output?_
 
@@ -807,183 +807,33 @@ nuttx/arch/arm64/src/common/barriers.h:58
 
 [(NuttX MMU Source Code)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L526-L552)
 
-Let's dump the Arm64 Exception...
-
-# Dump the Arm64 Exception
-
-TODO: Dump the Exception Registers ESR, FAR, ELR for EL1 [(Because of this)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_fatal.c#L381-L390)
-
-This won't work...
-
-```rust
-    println!("err={:?}", err);
-    println!("CP_REG={:?}", emu.reg_read(RegisterARM64::CP_REG));
-    println!("ESR_EL0={:?}", emu.reg_read(RegisterARM64::ESR_EL0));
-    println!("ESR_EL1={:?}", emu.reg_read(RegisterARM64::ESR_EL1));
-    println!("ESR_EL2={:?}", emu.reg_read(RegisterARM64::ESR_EL2));
-    println!("ESR_EL3={:?}", emu.reg_read(RegisterARM64::ESR_EL3));
-```
-
-[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/1cbfa48de10ef4735ebaf91ab85631cb48e37591/src/main.rs#L86-L91)
-
-Because `ESR_EL` is no longer supported and `CP_REG` can't be read in Rust...
-
-```text
-err=Err(EXCEPTION)
-CP_REG=Err(ARG)
-ESR_EL0=Ok(0)
-ESR_EL1=Ok(0)
-ESR_EL2=Ok(0)
-ESR_EL3=Ok(0)
-```
-
-[(See the Complete Log)](https://gist.github.com/lupyuen/778f15875edf632ccb5a093a656084cb)
-
-`CP_REG` can't be read in Rust because it needs a pointer to `uc_arm64_cp_reg` [(like this)](https://github.com/unicorn-engine/unicorn/blob/master/bindings/python/sample_arm64.py#L76-L82)...
-
-```c
-static uc_err reg_read(CPUARMState *env, unsigned int regid, void *value) {
-  ...
-  case UC_ARM64_REG_CP_REG:
-      ret = read_cp_reg(env, (uc_arm64_cp_reg *)value);
-      break;
-```
-
-[(Source)](https://github.com/unicorn-engine/unicorn/blob/master/qemu/target/arm/unicorn_aarch64.c#L225-L227)
-
-Which isn't supported by the Rust Bindings.
-
-So instead we set a breakpoint at `arm64_reg_read()` (pic below) in...
-
-```text
-.cargo/registry/src/github.com-1ecc6299db9ec823/unicorn-engine-2.0.1/qemu/target/arm/unicorn_aarch64.c
-```
-
-(`arm64_reg_read()` calls `reg_read()` in unicorn_aarch64.c)
-
-Which shows the Exception as...
-
-```text
-env.exception = {
-  syndrome: 0x8600 003f, 
-  fsr: 5, 
-  vaddress: 0x400c 3fff,
-  target_el: 1
-}
-```
-
-Let's study the Arm64 Exception...
-
-![Debug the Arm64 Exception](https://lupyuen.github.io/images/unicorn-debug.png)
-
-# Arm64 MMU Exception
-
-TODO
-
-Earlier we saw this Arm64 Exception in Unicorn Emulator...
-
-```text
-env.exception = {
-  syndrome: 0x8600 003f, 
-  fsr: 5, 
-  vaddress: 0x400c 3fff,
-  target_el: 1
-}
-```
-
-TODO: What is address `0x400c` `3fff`?
-
-_What is Syndrome 0x8600 003f?_
-
-Bits 26-31 of Syndrome = 0b100001, which means...
-
-> 0b100001: Instruction Abort taken without a change in Exception level.
-
-> Used for MMU faults generated by instruction accesses and synchronous External aborts, including synchronous parity or ECC errors. Not used for debug-related exceptions.
-
-[(Source)](https://developer.arm.com/documentation/ddi0601/2022-03/AArch64-Registers/ESR-EL1--Exception-Syndrome-Register--EL1-)
-
-_What is FSR 5?_
-
-FSR 5 means...
-
-> 0b00101: Translation Fault (in) Section
-
-[(Source)](https://developer.arm.com/documentation/ddi0500/d/system-control/aarch64-register-descriptions/instruction-fault-status-register--el2)
-
-_Why the MMU Fault?_
-
-Unicorn Emulator triggers the exception when NuttX writes to SCTLR_EL1...
-
-```c
-  /* Enable the MMU and data cache */
-  value = read_sysreg(sctlr_el1);
-  write_sysreg((value | SCTLR_M_BIT | SCTLR_C_BIT), sctlr_el1);
-```
-
-[(Source)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L541-L544)
-
-The above code sets these flags in SCTLR_EL1 (System Control Register EL1)...
-
-- SCTLR_M_BIT (Bit 0): Enable Address Translation for EL0 and EL1 Stage 1
-
-- SCTLR_C_BIT (Bit 2): Enable Caching for EL0 and EL1 Stage 1
-
-[(More about SCTLR_EL1)](https://developer.arm.com/documentation/ddi0595/2021-06/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-)
-
-TODO: Why did the Address Translation (or Caching) fail?
-
-TODO: Should we skip the MMU Update to SCTLR_EL1? Since we don't use MMU?
-
-# Debug the Emulator
-
-TODO
-
-_To troubleshoot the Arm64 MMU Exception..._
-
-_Can we use a debugger to step through Unicorn Emulator?_
-
-Yes but it gets messy.
-
-TODO: Trace the exception in the debugger. Look for...
-
-```text
-$HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/unicorn-engine-2.0.1/qemu/target/arm/translate-a64.c
-```
-
-Set a breakpoint in `aarch64_tr_translate_insn()`
-
--   Which calls `disas_b_exc_sys()`
-
--   Which calls `disas_system()`
-
--   Which calls `handle_sys()` to handle system instructions
-
-TODO: Emulate the special Arm64 Instructions 
-
-To inspect the Emulator Settings, set a breakpoint at `cpu_aarch64_init()` in...
-
-```text
-$HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/unicorn-engine-2.0.1/qemu/target/arm/cpu64.c
-```
+TODO: Let's dump the Arm64 Exception
 
 # Emulation Concerns
 
 TODO
 
-_What about emulating popular operating systems: Linux / macOS / Windows / Android?_
+_So are we happy with Unicorn Emulator?_
+
+Yep! Unicorn Emulator is sufficient for __Automated Daily Build and Test__ for NuttX on PinePhone. (Via GitHub Actions)
+
+Which will be similar to this BL602 setup, but we'll boot the Daily Build on Unicorn Emulator (instead of Real Hardware)...
+
+-   [__"Auto Flash and Test NuttX on RISC-V BL602"__](https://lupyuen.github.io/articles/auto)
+
+_What about emulating other operating systems: Linux / macOS / Windows / Android?_
 
 Check out the Qiling Binary Emulation Framework...
 
--   [qilingframework/qiling](https://github.com/qilingframework/qiling)
+-   [__qilingframework/qiling__](https://github.com/qilingframework/qiling)
 
 _How about other hardware platforms: STM32 Blue Pill and ESP32?_
 
 Check out QEMU...
 
--   ["Unit Testing with QEMU Blue Pill Emulator"](https://lupyuen.github.io/articles/stm32-blue-pill-unit-testing-with-qemu-blue-pill-emulator)
+-   [__"Unit Testing with QEMU Blue Pill Emulator"__](https://lupyuen.github.io/articles/stm32-blue-pill-unit-testing-with-qemu-blue-pill-emulator)
 
--   ["NuttX on an emulated ESP32 using QEMU"](https://medium.com/@lucassvaz/nuttx-on-an-emulated-esp32-using-qemu-8d8d93d24c63)
+-   [__"NuttX on an emulated ESP32 using QEMU"__](https://medium.com/@lucassvaz/nuttx-on-an-emulated-esp32-using-qemu-8d8d93d24c63)
 
 # TODO
 
@@ -1004,10 +854,6 @@ TODO: Emulate GIC v2
 TODO: Read the Symbol Table in ELF File to get the addresses
 
 TODO: Select Cortex-A53 as CPU
-
-TODO: Good enough for daily build and test for NuttX on PinePhone, similar to this, but booting the daily build on Unicorn Emulator instead of Real Hardware
-
-[__"Auto Flash and Test NuttX on RISC-V BL602"__](https://lupyuen.github.io/articles/auto)
 
 # What's Next
 
