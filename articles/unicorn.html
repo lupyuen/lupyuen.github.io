@@ -542,40 +542,39 @@ hook_memory: address=0x400b6a53, size=1, mem_type=WRITE, value=0x0
 <p><img src="https://lupyuen.github.io/images/unicorn-code6.png" alt="Emulating UART Output in Unicorn" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-emulator/blob/aa6dd986857231a935617e8346978d7750aa51e7/src/main.rs#L89-L111"><em>Emulating UART Output in Unicorn</em></a></p>
 <h1 id="emulate-uart-output"><a href="#emulate-uart-output">8 Emulate UART Output</a></h1>
-<p>TODO</p>
-<p><em>We expect to see the Boot Messages from NuttX…</em></p>
+<p><em>We expect to see Boot Messages from NuttX…</em></p>
 <p><em>How do we print the UART Output?</em></p>
-<p>According to the Allwinner A64 Doc…</p>
+<p>NuttX RTOS will write the UART Output to Allwinner A64’s <strong>UART Transmit Holding Register</strong> (THR) at <strong><code>01C2</code> <code>8000</code></strong>…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/serial#transmit-uart">“Transmit UART”</a></li>
+<li><a href="https://lupyuen.github.io/articles/serial#transmit-uart"><strong>“Transmit UART”</strong></a></li>
 </ul>
-<p>NuttX RTOS will write the UART Output to the UART Transmit Holding Register (THR) at <code>0x01c2</code> <code>8000</code>.</p>
-<p>In our Memory Access Hook, let’s intercept all writes to <code>0x01c2</code> <code>8000</code> and dump the characters written to UART Output…</p>
+<p>To emulate the UART Output, we’ll use Unicorn’s <strong>Memory Access Hook</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/unicorn#memory-access-hook"><strong>“Memory Access Hook”</strong></a></li>
+</ul>
+<p>In our Memory Access Hook, we intercept all writes to <strong><code>01C2</code> <code>8000</code></strong> and dump the bytes written: <a href="https://github.com/lupyuen/pinephone-emulator/blob/aa6dd986857231a935617e8346978d7750aa51e7/src/main.rs#L89-L111">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Hook Function for Memory Access.
 // Called once for every Arm64 Memory Access.
 </span><span class="kw">fn </span>hook_memory(
-    <span class="kw">_</span>: <span class="kw-2">&amp;mut </span>Unicorn&lt;()&gt;,  <span class="comment">// Emulator
-    </span>mem_type: MemType,    <span class="comment">// Read or Write Access
-    </span>address: u64,  <span class="comment">// Accessed Address
-    </span>size: usize,   <span class="comment">// Number of bytes accessed
-    </span>value: i64     <span class="comment">// Write Value
-</span>) -&gt; bool {
-    <span class="comment">// Ignore RAM access, we only intercept Memory-Mapped Input / Output
-    </span><span class="kw">if </span>address &gt;= <span class="number">0x4000_0000 </span>{ <span class="kw">return </span><span class="bool-val">true</span>; }
-    <span class="macro">println!</span>(<span class="string">&quot;hook_memory: address={:#010x}, size={:?}, mem_type={:?}, value={:#x}&quot;</span>, address, size, mem_type, value);
+  <span class="kw">_</span>: <span class="kw-2">&amp;mut </span>Unicorn&lt;()&gt;,  <span class="comment">// Emulator
+  </span>mem_type: MemType,    <span class="comment">// Read or Write Access
+  </span>address: u64,  <span class="comment">// Accessed Address
+  </span>size: usize,   <span class="comment">// Number of bytes accessed
+  </span>value: i64     <span class="comment">// Write Value
+</span>) -&gt; bool {      <span class="comment">// Always return true
 
-    <span class="comment">// If writing to UART Transmit Holding Register (THR):
-    // Print the output
-    // https://lupyuen.github.io/articles/serial#transmit-uart
-    </span><span class="kw">if </span>address == <span class="number">0x01c2_8000 </span>{
-        <span class="macro">println!</span>(<span class="string">&quot;uart output: {:?}&quot;</span>, value <span class="kw">as </span>u8 <span class="kw">as </span>char);
-    }
+  // If writing to UART Transmit Holding Register (THR):
+  // Print the output
+  // https://lupyuen.github.io/articles/serial#transmit-uart
+  </span><span class="kw">if </span>address == <span class="number">0x01c2_8000 </span>{
+    <span class="macro">println!</span>(<span class="string">&quot;uart output: {:?}&quot;</span>, value <span class="kw">as </span>u8 <span class="kw">as </span>char);
+  }
 
-    <span class="comment">// Always return true, value is unused by caller
-    </span><span class="bool-val">true
+  <span class="comment">// Always return true, value is unused by caller
+  // https://github.com/unicorn-engine/unicorn/blob/dev/docs/FAQ.md#i-cant-recover-from-unmapped-readwrite-even-i-return-true-in-the-hook-why
+  </span><span class="bool-val">true
 </span>}</code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/aa6dd986857231a935617e8346978d7750aa51e7/src/main.rs#L89-L111">(Source)</a></p>
 <p>When we run this, we see a long chain of UART Output…</p>
 <div class="example-wrap"><pre class="language-text"><code>→ cargo run | grep uart
 uart output: &#39;-&#39;
@@ -595,12 +594,12 @@ uart output: &#39;y&#39;
 - Boot to C runtime for OS Initialize
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/uboot#pinephone-boots-nuttx">(Similar to this)</a></p>
-<p>Yep NuttX RTOS is booting on Unicorn Emulator! But Unicorn Emulator halts while booting NuttX…</p>
+<p>Yep NuttX RTOS is booting on Unicorn Emulator! But we have a problem…</p>
 <p><img src="https://lupyuen.github.io/images/unicorn-debug.png" alt="Debugging an Arm64 Exception" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-emulator#dump-the-arm64-exception"><em>Debugging an Arm64 Exception</em></a></p>
 <h1 id="emulator-halts-with-mmu-fault"><a href="#emulator-halts-with-mmu-fault">9 Emulator Halts with MMU Fault</a></h1>
-<p>TODO</p>
-<p>Unicorn Emulator halts at address <strong><code>4008</code> <code>0EF8</code></strong>…</p>
+<p><em>So NuttX RTOS boots OK on Unicorn Emulator?</em></p>
+<p>Not quite. Unicorn Emulator halts with an <strong>Arm64 Exception</strong> at address <strong><code>4008</code> <code>0EF8</code></strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>hook_block:  address=0x40080eec, size=16
 hook_code:   address=0x40080eec, size=4
 hook_code:   address=0x40080ef0, size=4
