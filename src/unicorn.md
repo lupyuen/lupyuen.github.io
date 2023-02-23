@@ -713,7 +713,9 @@ Yep NuttX RTOS is booting on Unicorn Emulator! But Unicorn Emulator halts while 
 
 # Emulator Halts with MMU Fault
 
-TODO: Unicorn Emulator halts...
+TODO
+
+Unicorn Emulator halts at address __`4008` `0EF8`__...
 
 ```text
 hook_block:  address=0x40080eec, size=16
@@ -726,7 +728,7 @@ err=Err(EXCEPTION)
 
 [(See the Complete Log)](https://gist.github.com/lupyuen/778f15875edf632ccb5a093a656084cb)
 
-Unicorn Emulator halts at the NuttX MMU (EL1) code at `0x4008` `0ef8`...
+Here's the __NuttX Arm64 Disassembly__ at address __`4008` `0EF8`__: [nuttx.S](https://github.com/lupyuen/pinephone-emulator/blob/a1fb82d829856d86d6845c477709c2be24373aca/nuttx/nuttx.S)
 
 ```text
 nuttx/arch/arm64/src/common/arm64_mmu.c:544
@@ -738,31 +740,28 @@ nuttx/arch/arm64/src/common/arm64_mmu.c:544
 
 [(See the Arm64 Disassembly)](https://github.com/lupyuen/pinephone-emulator/blob/a1fb82d829856d86d6845c477709c2be24373aca/nuttx/nuttx.S)
 
-Unicorn Emulator triggers the exception when NuttX writes to SCTLR_EL1...
+Which comes from this __NuttX Source Code__: [arm64_mmu.c](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L541-L544)
 
 ```c
-  /* Enable the MMU and data cache */
-  value = read_sysreg(sctlr_el1);
-  write_sysreg((value | SCTLR_M_BIT | SCTLR_C_BIT), sctlr_el1);
+// Enable the MMU and data cache
+value = read_sysreg(sctlr_el1);
+write_sysreg(  // Write to System Register...
+  value | SCTLR_M_BIT | SCTLR_C_BIT,  // Register Value
+  sctlr_el1    // System Control Register EL1
+);
 ```
 
-[(Source)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L541-L544)
-
-_Why the MMU Fault?_
-
-The above code sets these flags in __System Control Register EL1__ (SCTLR_EL1)...
+The above code sets these flags in [__System Control Register EL1__](https://developer.arm.com/documentation/ddi0595/2021-06/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-) (SCTLR_EL1)...
 
 - __SCTLR_M_BIT__ (Bit 0): Enable Address Translation for EL0 and EL1 Stage 1
 
 - __SCTLR_C_BIT__ (Bit 2): Enable Caching for EL0 and EL1 Stage 1
 
+Thus the __Address Translation__ (or Caching) has failed in our Emulated Arm64 Memory Management Unit.
+
 [(What's EL1?)](https://lupyuen.github.io/articles/interrupt#exception-levels)
 
-[(More about SCTLR_EL1)](https://developer.arm.com/documentation/ddi0595/2021-06/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-)
-
-TODO: Why did the Address Translation (or Caching) fail?
-
-TODO: Should we skip the MMU Update to SCTLR_EL1? Since we don't use MMU?
+We won't chase the Unicorn into the Rabbit Hole, but the details are covered here...
 
 -   [__"Unicorn Emulator Halts in NuttX MMU"__](https://github.com/lupyuen/pinephone-emulator#unicorn-emulator-halts-in-nuttx-mmu)
 
