@@ -527,23 +527,17 @@ But our legendary creature gets stuck in mud. Let's find out why...
 Unicorn gets __stuck in a curious loop__ while booting NuttX RTOS...
 
 ```text
-hook_memory: address=0x01c28014, size=2, mem_type=READ, value=0x0
 hook_code:   address=0x400801f8, size=4
 hook_code:   address=0x400801fc, size=4
 hook_block:  address=0x400801f4, size=12
 hook_code:   address=0x400801f4, size=4
+hook_memory: address=0x01c28014, size=2, mem_type=READ, value=0x0
 
-hook_memory: address=0x01c28014, size=2, mem_type=READ, value=0x0
 hook_code:   address=0x400801f8, size=4
 hook_code:   address=0x400801fc, size=4
 hook_block:  address=0x400801f4, size=12
 hook_code:   address=0x400801f4, size=4
-
 hook_memory: address=0x01c28014, size=2, mem_type=READ, value=0x0
-hook_code:   address=0x400801f8, size=4
-hook_code:   address=0x400801fc, size=4
-hook_block:  address=0x400801f4, size=12
-hook_code:   address=0x400801f4, size=4
 ...
 ```
 
@@ -555,7 +549,7 @@ While reading the data from address __`01C2` `8014`__.
 
 _What's at 4008 01F4?_
 
-Let's check the NuttX Arm64 Disassembly at address __`4008` `01F4`__: [nuttx.S](https://github.com/lupyuen/pinephone-emulator/blob/a1fb82d829856d86d6845c477709c2be24373aca/nuttx/nuttx.S#L3398-L3411)
+Here's the __NuttX Arm64 Disassembly__ at address __`4008` `01F4`__: [nuttx.S](https://github.com/lupyuen/pinephone-emulator/blob/a1fb82d829856d86d6845c477709c2be24373aca/nuttx/nuttx.S#L3398-L3411)
 
 ```text
 SECTION_FUNC(text, up_lowputc)
@@ -588,6 +582,8 @@ Which comes from this __NuttX Source Code__: [a64_lowputc.S](https://github.com/
   b.eq  1b                /* Wait for the UART to be ready (THRE=1) */
 .endm
 ```
+
+_What's NuttX doing here?_
 
 TODO
 
@@ -711,41 +707,15 @@ Which reads as...
 
 Yep NuttX RTOS is booting on Unicorn Emulator! But Unicorn Emulator halts while booting NuttX...
 
+![Debugging an Arm64 Exception](https://lupyuen.github.io/images/unicorn-debug.png)
+
+[_Debugging an Arm64 Exception_](https://github.com/lupyuen/pinephone-emulator#dump-the-arm64-exception)
+
 # Emulator Halts with MMU Fault
 
 TODO: Unicorn Emulator halts...
 
 ```text
-hook_block:  address=0x40080cec, size=16
-hook_code:   address=0x40080cec, size=4
-hook_memory: address=0x400c3f90, size=8, mem_type=READ, value=0x0
-hook_memory: address=0x400c3f98, size=8, mem_type=READ, value=0x0
-hook_code:   address=0x40080cf0, size=4
-hook_memory: address=0x400c3fa0, size=8, mem_type=READ, value=0x0
-hook_code:   address=0x40080cf4, size=4
-hook_memory: address=0x400c3f80, size=8, mem_type=READ, value=0x0
-hook_memory: address=0x400c3f88, size=8, mem_type=READ, value=0x0
-hook_code:   address=0x40080cf8, size=4
-hook_block:  address=0x40080eb0, size=12
-hook_code:   address=0x40080eb0, size=4
-hook_code:   address=0x40080eb4, size=4
-hook_code:   address=0x40080eb8, size=4
-hook_block:  address=0x40080ebc, size=16
-hook_code:   address=0x40080ebc, size=4
-hook_code:   address=0x40080ec0, size=4
-hook_code:   address=0x40080ec4, size=4
-hook_code:   address=0x40080ec8, size=4
-hook_block:  address=0x40080ecc, size=16
-hook_code:   address=0x40080ecc, size=4
-hook_code:   address=0x40080ed0, size=4
-hook_code:   address=0x40080ed4, size=4
-hook_code:   address=0x40080ed8, size=4
-hook_block:  address=0x40080edc, size=12
-hook_code:   address=0x40080edc, size=4
-hook_code:   address=0x40080ee0, size=4
-hook_code:   address=0x40080ee4, size=4
-hook_block:  address=0x40080ee8, size=4
-hook_code:   address=0x40080ee8, size=4
 hook_block:  address=0x40080eec, size=16
 hook_code:   address=0x40080eec, size=4
 hook_code:   address=0x40080ef0, size=4
@@ -753,6 +723,8 @@ hook_code:   address=0x40080ef4, size=4
 hook_code:   address=0x40080ef8, size=4
 err=Err(EXCEPTION)
 ```
+
+[(See the Complete Log)](https://gist.github.com/lupyuen/778f15875edf632ccb5a093a656084cb)
 
 Unicorn Emulator halts at the NuttX MMU (EL1) code at `0x4008` `0ef8`...
 
@@ -764,50 +736,39 @@ nuttx/arch/arm64/src/common/arm64_mmu.c:544
     40080ef8:	d5181000 	msr	sctlr_el1, x0
 ```
 
-TODO: Why did MSR fail with an Exception?
+[(See the Arm64 Disassembly)](https://github.com/lupyuen/pinephone-emulator/blob/a1fb82d829856d86d6845c477709c2be24373aca/nuttx/nuttx.S)
 
-Here's the context...
+Unicorn Emulator triggers the exception when NuttX writes to SCTLR_EL1...
 
-```text
-enable_mmu_el1():
-nuttx/arch/arm64/src/common/arm64_mmu.c:533
-  write_sysreg(MEMORY_ATTRIBUTES, mair_el1);
-    40080ebc:	d2808000 	mov	x0, #0x400                 	// #1024
-    40080ec0:	f2a88180 	movk	x0, #0x440c, lsl #16
-    40080ec4:	f2c01fe0 	movk	x0, #0xff, lsl #32
-    40080ec8:	d518a200 	msr	mair_el1, x0
-nuttx/arch/arm64/src/common/arm64_mmu.c:534
-  write_sysreg(get_tcr(1), tcr_el1);
-    40080ecc:	d286a380 	mov	x0, #0x351c                	// #13596
-    40080ed0:	f2a01000 	movk	x0, #0x80, lsl #16
-    40080ed4:	f2c00020 	movk	x0, #0x1, lsl #32
-    40080ed8:	d5182040 	msr	tcr_el1, x0
-nuttx/arch/arm64/src/common/arm64_mmu.c:535
-  write_sysreg(((uint64_t)base_xlat_table), ttbr0_el1);
-    40080edc:	d00001a0 	adrp	x0, 400b6000 <g_uart1port>
-    40080ee0:	91200000 	add	x0, x0, #0x800
-    40080ee4:	d5182000 	msr	ttbr0_el1, x0
-arm64_isb():
-nuttx/arch/arm64/src/common/barriers.h:58
-  __asm__ volatile ("isb" : : : "memory");
-    40080ee8:	d5033fdf 	isb
-enable_mmu_el1():
-nuttx/arch/arm64/src/common/arm64_mmu.c:543
+```c
+  /* Enable the MMU and data cache */
   value = read_sysreg(sctlr_el1);
-    40080eec:	d5381000 	mrs	x0, sctlr_el1
-nuttx/arch/arm64/src/common/arm64_mmu.c:544
   write_sysreg((value | SCTLR_M_BIT | SCTLR_C_BIT), sctlr_el1);
-    40080ef0:	d28000a1 	mov	x1, #0x5                   	// #5
-    40080ef4:	aa010000 	orr	x0, x0, x1
-    40080ef8:	d5181000 	msr	sctlr_el1, x0
-arm64_isb():
-nuttx/arch/arm64/src/common/barriers.h:58
-    40080efc:	d5033fdf 	isb
 ```
 
-[(NuttX MMU Source Code)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L526-L552)
+[(Source)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L541-L544)
 
-TODO: Let's dump the Arm64 Exception
+_Why the MMU Fault?_
+
+The above code sets these flags in SCTLR_EL1 (System Control Register EL1)...
+
+- SCTLR_M_BIT (Bit 0): Enable Address Translation for EL0 and EL1 Stage 1
+
+- SCTLR_C_BIT (Bit 2): Enable Caching for EL0 and EL1 Stage 1
+
+[(More about SCTLR_EL1)](https://developer.arm.com/documentation/ddi0595/2021-06/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-)
+
+TODO: Why did the Address Translation (or Caching) fail?
+
+TODO: Should we skip the MMU Update to SCTLR_EL1? Since we don't use MMU?
+
+-   [__"Unicorn Emulator Halts in NuttX MMU"__](https://github.com/lupyuen/pinephone-emulator#unicorn-emulator-halts-in-nuttx-mmu)
+
+-   [__"Dump the Arm64 Exception"__](https://github.com/lupyuen/pinephone-emulator#dump-the-arm64-exception)
+
+-   [__"Arm64 MMU Exception"__](https://github.com/lupyuen/pinephone-emulator#arm64-mmu-exception)
+
+-   [__"Debug the Unicorn Emulator"__](https://github.com/lupyuen/pinephone-emulator#debug-the-unicorn-emulator)
 
 # Emulation Concerns
 
@@ -827,13 +788,13 @@ Yeah we'll do that later. We have a long wishlist of features to build: Interrup
 
 _What about emulating other operating systems: Linux / macOS / Windows / Android?_
 
-Check out the Qiling Binary Emulation Framework...
+Check out the __Qiling Binary Emulation Framework__...
 
 -   [__qilingframework/qiling__](https://github.com/qilingframework/qiling)
 
 _How about other hardware platforms: STM32 Blue Pill and ESP32?_
 
-Check out QEMU...
+Check out __QEMU Emulator__...
 
 -   [__"Unit Testing with QEMU Blue Pill Emulator"__](https://lupyuen.github.io/articles/stm32-blue-pill-unit-testing-with-qemu-blue-pill-emulator)
 
