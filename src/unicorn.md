@@ -811,8 +811,6 @@ TODO: Let's dump the Arm64 Exception
 
 # Emulation Concerns
 
-TODO
-
 _So are we happy with Unicorn Emulator?_
 
 Yep! Unicorn Emulator is sufficient for __Automated Daily Build and Test__ for NuttX on PinePhone. (Via GitHub Actions)
@@ -820,6 +818,12 @@ Yep! Unicorn Emulator is sufficient for __Automated Daily Build and Test__ for N
 Which will be similar to this BL602 setup, but we'll boot the Daily Build on Unicorn Emulator (instead of Real Hardware)...
 
 -   [__"Auto Flash and Test NuttX on RISC-V BL602"__](https://lupyuen.github.io/articles/auto)
+
+_But our PinePhone Emulator doesn't handle Console Input..._
+
+Yeah we'll do that later. We have a long wishlist of features to build: Interrupts, Memory Protection, Multiple CPUs, Cortex A53, GIC v2, ...
+
+-   [__"Wishlist for PinePhone Emulator"__](https://github.com/lupyuen/pinephone-emulator#todo)
 
 _What about emulating other operating systems: Linux / macOS / Windows / Android?_
 
@@ -834,26 +838,6 @@ Check out QEMU...
 -   [__"Unit Testing with QEMU Blue Pill Emulator"__](https://lupyuen.github.io/articles/stm32-blue-pill-unit-testing-with-qemu-blue-pill-emulator)
 
 -   [__"NuttX on an emulated ESP32 using QEMU"__](https://medium.com/@lucassvaz/nuttx-on-an-emulated-esp32-using-qemu-8d8d93d24c63)
-
-# TODO
-
-TODO: Use Unicorn Emulation Hooks to emulate PinePhone's Allwinner A64 UART Controller
-
-TODO: Emulate Apache NuttX NSH Shell on UART Controller
-
-TODO: Emulate PinePhone's Allwinner A64 Display Engine. How to render the emulated graphics: Use Web Browser + WebAssembly + Unicorn.js? Will framebuffer emulation be slow?
-
-TODO: Emulate Interrupts
-
-TODO: Emulate Multiple CPUs
-
-TODO: Emulate Memory Protection
-
-TODO: Emulate GIC v2
-
-TODO: Read the Symbol Table in ELF File to get the addresses
-
-TODO: Select Cortex-A53 as CPU
 
 # What's Next
 
