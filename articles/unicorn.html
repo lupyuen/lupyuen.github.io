@@ -68,11 +68,30 @@
     <h1 class="title">(Possibly) Emulate PinePhone with Unicorn Emulator</h1>
     <nav id="TOC"><ul>
 <li><a href="#whats-next">1 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>1 Mar 2023</em></p>
-<p><img src="https://lupyuen.github.io/images/unicorn-title.jpg" alt="TODO" /></p>
-<p>We’re porting a new operating system (<a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a>) to <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>. And I wondered…</p>
-<p><em>To make PinePhone testing easier…</em></p>
-<p><em>Can we emulate Arm64 PinePhone with <a href="https://www.unicorn-engine.org/">Unicorn Emulator</a>?</em></p>
-<p>Let’s find out! We’ll call the <a href="https://www.unicorn-engine.org/"><strong>Unicorn Emulator</strong></a> in Rust (instead of C).</p>
+<p><img src="https://lupyuen.github.io/images/unicorn-title.jpg" alt="Emulating Arm64 Machine Code in Unicorn Emulator" /></p>
+<p><a href="https://www.unicorn-engine.org/"><strong>Unicorn</strong></a> is a lightweight <strong>CPU Emulator Framework</strong> based on <a href="http://www.qemu.org/"><strong>QEMU</strong></a>.</p>
+<p>(Programmable with C, Rust, Python and <a href="https://github.com/unicorn-engine/unicorn/tree/master/bindings"><strong>many other languages</strong></a>)</p>
+<p>We’re porting a new operating system <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> to <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>. And I wondered…</p>
+<p><em>To make PinePhone testing easier… Can we emulate Arm64 PinePhone with Unicorn Emulator?</em></p>
+<p>Let’s find out! In this article we’ll call <strong>Unicorn Emulator</strong> to…</p>
+<ul>
+<li>
+<p><strong>Emulate Arm64</strong> Machine Code</p>
+</li>
+<li>
+<p><strong>Attach Hooks</strong> to intercept Memory Access and Code Execution</p>
+</li>
+<li>
+<p><strong>Boot Apache NuttX RTOS</strong> in the emulator</p>
+</li>
+<li>
+<p><strong>Simulate the UART Controller</strong> for PinePhone</p>
+</li>
+<li>
+<p><strong>Track an Exception</strong> in the Arm64 Memory Management Unit </p>
+</li>
+</ul>
+<p>We’ll do all this in <strong>basic Rust</strong> (instead of classic C).</p>
 <p>(Because I’m too old to write meticulous C… But I’m OK to get nagged by Rust Compiler if I miss something!)</p>
 <p>We begin by emulating simple Arm64 Machine Code…</p>
 <h1 id="whats-next"><a href="#whats-next">1 What’s Next</a></h1>
