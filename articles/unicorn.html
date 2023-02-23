@@ -112,10 +112,16 @@
 <p>We begin by emulating simple Arm64 Machine Code…</p>
 <h1 id="emulate-arm64-machine-code"><a href="#emulate-arm64-machine-code">1 Emulate Arm64 Machine Code</a></h1>
 <p>Suppose we wish to emulate this <strong>Arm64 Machine Code</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>// Start Address: 0x10000
-AB 05 00 B8  // str  w11, [x13], #0
-AF 05 40 38  // ldrb w15, [x13], #0
-</code></pre></div>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Start Address: 0x10000
+
+// str  w11, [x13], #0
+</span>AB <span class="number">05 00 </span>B8
+
+<span class="comment">// ldrb w15, [x13], #0
+</span>AF <span class="number">05 40 38
+
+</span><span class="comment">// End Address: 0x10008</span></code></pre></div>
 <p>With these <strong>Arm64 Register Values</strong>…</p>
 <div><table><thead><tr><th style="text-align: center">Register</th><th style="text-align: left">Value</th></tr></thead><tbody>
 <tr><td style="text-align: center"><code>X11</code></td><td style="text-align: left"><code>0x12345678</code></td></tr>
@@ -126,18 +132,18 @@ AF 05 40 38  // ldrb w15, [x13], #0
 <p>Which means…</p>
 <ol>
 <li>
-<p><strong>Store <code>X11</code></strong> (value <code>0x12345678</code>)…</p>
+<p><strong>Store <code>X11</code></strong> (value <strong><code>0x12345678</code></strong>)</p>
 <p>Into the address referenced by <strong><code>X13</code></strong></p>
-<p>(Address <code>0x10008</code>)</p>
+<p>(Address <strong><code>0x10008</code></strong>)</p>
 </li>
 <li>
-<p><strong>Load <code>X15</code></strong> as a Single Byte</p>
+<p><strong>Load <code>X15</code></strong> as a <strong>Single Byte</strong></p>
 <p>From the address referenced by <strong><code>X13</code></strong></p>
-<p>(Address <code>0x10008</code>)</p>
+<p>(Address <strong><code>0x10008</code></strong>)</p>
 </li>
 <li>
 <p>Which sets <strong><code>X15</code></strong> to <strong><code>0x78</code></strong></p>
-<p>(Because <code>0x10008</code> contains byte <code>0x78</code>)</p>
+<p>(Because <strong><code>0x10008</code></strong> contains byte <strong><code>0x78</code></strong>)</p>
 <p><a href="https://developer.arm.com/documentation/102374/0100/Registers-in-AArch64---general-purpose-registers">(<strong><code>X</code></strong> Registers are <strong>64-bit</strong>, <strong><code>W</code></strong> Registers are <strong>32-bit</strong>)</a></p>
 </li>
 </ol>
@@ -209,20 +215,19 @@ AF 05 40 38  // ldrb w15, [x13], #0
 
   <span class="comment">// Print the Emulator Error
   </span><span class="macro">println!</span>(<span class="string">&quot;err={:?}&quot;</span>, err);</code></pre></div>
-<p>Finally we <strong>read the X15 Register</strong> and verify the result…</p>
+<p>Finally we <strong>read Register X15</strong> and verify the result…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// Read the X15 Register
   </span><span class="macro">assert_eq!</span>(
-    emu.reg_read(RegisterARM64::X15), 
-    <span class="prelude-val">Ok</span>(<span class="number">0x78</span>)
-  );
+    emu.reg_read(RegisterARM64::X15),  <span class="comment">// Register X15
+    </span><span class="prelude-val">Ok</span>(<span class="number">0x78</span>)  <span class="comment">// Expected Result
+  </span>);
 }</code></pre></div>
 <p>And we’re done!</p>
-<p>Remember to add <a href="https://crates.io/crates/unicorn-engine"><strong>unicorn-engine</strong></a> to the dependencies: <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/Cargo.toml#L8-L9">Cargo.toml</a>…</p>
+<p>Remember to add <a href="https://crates.io/crates/unicorn-engine"><strong>unicorn-engine</strong></a> to the dependencies: <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/Cargo.toml#L8-L9">Cargo.toml</a></p>
 <div class="example-wrap"><pre class="language-text"><code>[dependencies]
 unicorn-engine = &quot;2.0.0&quot;
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/Cargo.toml#L8-L9">(Source)</a></p>
 <p>When we run our <a href="https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/src/main.rs"><strong>Rust Program</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>→ cargo run --verbose
 
