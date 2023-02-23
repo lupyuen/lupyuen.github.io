@@ -104,7 +104,7 @@ Then we __initialise the emulator__...
     Mode::LITTLE_ENDIAN
   ).expect("failed to init Unicorn");
 
-  // Horse mutates to bird
+  // Magical horse mutates to bird
   let emu = &mut unicorn;
 ```
 
@@ -446,7 +446,7 @@ let mut unicorn = Unicorn::new(
   Mode::LITTLE_ENDIAN
 ).expect("failed to init Unicorn");
 
-// Horse mutates to bird
+// Magical horse mutates to bird
 let emu = &mut unicorn;
 ```
 
