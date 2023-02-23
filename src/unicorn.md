@@ -242,7 +242,7 @@ fn hook_memory(
 
 Our Hook Function prints __every Read / Write Access__ to the Emulated Arm64 Memory.
 
-This is how we __attach the Hook Function__ to Unicorn Emulator: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L59-L74)
+This is how we __attach the Memory Hook Function__ to Unicorn Emulator: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L59-L74)
 
 ```rust
   // Add Hook for Arm64 Memory Access
@@ -274,49 +274,43 @@ hook_memory:
 
 Later we'll implement UART Output with a Memory Access Hook. But first we intercept some code...
 
-# Code Execution Hook
-
-TODO
-
 ![Code Execution Hook for Arm64 Emulation](https://lupyuen.github.io/images/unicorn-code3.png)
 
 [_Code Execution Hook for Arm64 Emulation_](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L108-L117)
 
+# Code Execution Hook
+
 _Can we intercept every Arm64 Instruction that will be emulated?_
 
-Yep we can call Unicorn Emulator to add a Code Execution Hook.
+Yep we can attach a __Code Execution Hook__ to Unicorn Emulator.
 
-Here's a sample Hook Function that will be called for every Arm64 Instruction...
+Here's a sample Hook Function that will be called for __every Arm64 Instruction emulated__: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L108-L117)
 
 ```rust
 // Hook Function for Code Emulation.
 // Called once for each Arm64 Instruction.
 fn hook_code(
-    _: &mut Unicorn<()>,  // Emulator
-    address: u64,  // Instruction Address
-    size: u32      // Instruction Size
+  _: &mut Unicorn<()>,  // Emulator
+  address: u64,  // Instruction Address
+  size: u32      // Instruction Size
 ) {
-    // TODO: Handle special Arm64 Instructions
-    println!("hook_code: address={:#x}, size={:?}", address, size);
+  // TODO: Handle special Arm64 Instructions
+  println!("hook_code: address={:#x}, size={:?}", address, size);
 }
 ```
 
-[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L108-L117)
-
-And this is how we call Unicorn Emulator to add the above Hook Function...
+And this is how we call Unicorn Emulator to __attach the Code Hook Function__: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L52-L57)
 
 ```rust
-    // Add Hook for emulating each Arm64 Instruction
-    let _ = emu.add_code_hook(
-        ADDRESS,  // Begin Address
-        ADDRESS + arm64_code.len() as u64,  // End Address
-        hook_code  // Hook Function for Code Emulation
-    ).expect("failed to add code hook");
+  // Add Hook for emulating each Arm64 Instruction
+  let _ = emu.add_code_hook(
+    ADDRESS,  // Begin Address
+    ADDRESS + arm64_code.len() as u64,  // End Address
+    hook_code  // Hook Function for Code Emulation
+  ).expect("failed to add code hook");
 ```
 
-[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/3655ac2875664376f42ad3a3ced5cbf067790782/src/main.rs#L52-L57)
-
-When we run our Rust Program, we see the Address of every Arm64 Instruction emulated (and its size)...
+When we run this, we see the Address of __every Arm64 Instruction emulated__ (and its size)...
 
 ```text
 hook_code:
@@ -327,6 +321,8 @@ hook_code:
   address=0x10004,
   size=4
 ```
+
+TODO
 
 We might use this to emulate special Arm64 Instructions.
 
