@@ -583,62 +583,62 @@ Which comes from this __NuttX Source Code__: [a64_lowputc.S](https://github.com/
 .endm
 ```
 
-_What's NuttX doing here?_
+_NuttX is printing something to the UART Port?_
 
-TODO
+Yep! NuttX prints __Debug Messages__ to the (Serial) UART Port when it boots...
 
-This code waits for the UART Controller to be ready (before printing UART Output), by checking the value at `01c2` `8014`. The code is explained here...
+And it's waiting for the __UART Controller to be ready__, before printing!
 
--   ["Wait for UART Ready"](https://lupyuen.github.io/articles/uboot#wait-for-uart-ready)
+[(As explained here)](https://lupyuen.github.io/articles/uboot#wait-for-uart-ready)
 
 _What's at 01C2 8014?_
 
-According to the Allwinner A64 Doc...
+__`01C2` `8014`__ is the __UART Line Status Register__ (UART_LSR) for the Allwinner A64 UART Controller inside PinePhone.
 
--   ["Wait To Transmit"](https://lupyuen.github.io/articles/serial#wait-to-transmit)
+__Bit 5__ needs to be set to 1 to indicate that the __UART Transmit FIFO__ is ready. Or NuttX will wait forever!
 
-`01c2` `8014` is the UART Line Status Register (UART_LSR) at Offset 0x14.
+[(As explained here)](https://lupyuen.github.io/articles/serial#wait-to-transmit)
 
-Bit 5 needs to be set to 1 to indicate that the UART Transmit FIFO is ready.
+_How to fix the UART Ready Bit at 01C2 8014?_
 
-We emulate the UART Ready Bit like so...
+This is how we __emulate the UART Ready Bit__ with our Input / Output Memory: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/4d78876ad6f40126bf68cb2da4a43f56d9ef6e76/src/main.rs#L42-L49)
 
 ```rust
-    // Allwinner A64 UART Line Status Register (UART_LSR) at Offset 0x14.
-    // To indicate that the UART Transmit FIFO is ready:
-    // Set Bit 5 to 1.
-    // https://lupyuen.github.io/articles/serial#wait-to-transmit
-    emu.mem_write(
-        0x01c2_8014,  // UART Register Address
-        &[0b10_0000]  // UART Register Value
-    ).expect("failed to set UART_LSR");
+// Allwinner A64 UART Line Status Register (UART_LSR) at Offset 0x14.
+// To indicate that the UART Transmit FIFO is ready:
+// Set Bit 5 to 1.
+// https://lupyuen.github.io/articles/serial#wait-to-transmit
+emu.mem_write(
+  0x01c2_8014,  // UART Register Address
+  &[0b10_0000]  // UART Register Value
+).expect("failed to set UART_LSR");
 ```
 
-[(Source)](https://github.com/lupyuen/pinephone-emulator/blob/4d78876ad6f40126bf68cb2da4a43f56d9ef6e76/src/main.rs#L42-L49)
+And Unicorn Emulator stops looping!
 
-And Unicorn Emulator stops looping! It continues execution to `memset()` (to init the BSS Section to 0)...
+Unicorn continues booting NuttX, which fills the [__BSS Section__](https://en.wikipedia.org/wiki/.bss) with 0...
 
 ```text
 hook_block:  address=0x40089328, size=8
 hook_memory: address=0x400b6a52, size=1, mem_type=WRITE, value=0x0
 hook_block:  address=0x40089328, size=8
 hook_memory: address=0x400b6a53, size=1, mem_type=WRITE, value=0x0
-hook_block:  address=0x40089328, size=8
-hook_memory: address=0x400b6a54, size=1, mem_type=WRITE, value=0x0
 ...
 ```
 
 [(Source)](https://github.com/lupyuen/pinephone-emulator/blob/045fa5da84d9e07ead5a820a075c1445661328b6/README.md#unicorn-emulator-waits-forever-for-uart-controller-ready)
 
-But we don't see any UART Output. Let's print the UART Output...
+But we don't see any NuttX Boot Messages. Let's print the UART Output...
+
+![Emulating UART Output in Unicorn](https://lupyuen.github.io/images/unicorn-code6.png)
+
+[_Emulating UART Output in Unicorn_](https://github.com/lupyuen/pinephone-emulator/blob/aa6dd986857231a935617e8346978d7750aa51e7/src/main.rs#L89-L111)
 
 # Emulate UART Output
 
 TODO
 
-![Emulating UART Output in Unicorn](https://lupyuen.github.io/images/unicorn-code6.png)
-
-[_Emulating UART Output in Unicorn_](https://github.com/lupyuen/pinephone-emulator/blob/aa6dd986857231a935617e8346978d7750aa51e7/src/main.rs#L89-L111)
+_We expect to see the Boot Messages from NuttX..._
 
 _How do we print the UART Output?_
 
