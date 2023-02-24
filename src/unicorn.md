@@ -833,3 +833,135 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/unicorn.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/unicorn.md)
+
+# Appendix: Map Address to Function with ELF File
+
+TODO
+
+```text
+hook_block:  
+  address=0x40080eb0, 
+  size=12, 
+  setup_page_tables, 
+  arch/arm64/src/common/arm64_mmu.c:516:25
+
+hook_block:  
+  address=0x40080eec, 
+  size=16, 
+  enable_mmu_el1, 
+  arch/arm64/src/common/arm64_mmu.c:543:11
+
+err=Err(EXCEPTION)
+```
+
+[(Source)](https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a)
+
+TODO
+
+[main.rs](https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/src/main.rs)
+
+```rust
+/// Hook Function for Block Emulation.
+/// Called once for each Basic Block of Arm64 Instructions.
+fn hook_block(
+  _: &mut Unicorn<()>,  // Emulator
+  address: u64,  // Block Address
+  size: u32      // Block Size
+) {
+  print!("hook_block:  address={:#010x}, size={:02}", address, size);
+
+  // Print Function Name
+  let context = ELF_CONTEXT.context.borrow();
+  let mut frames = context.find_frames(address)
+    .expect("failed to find frames");
+  if let Some(frame) = frames.next().unwrap() {
+    if let Some(func) = frame.function {
+      if let Ok(name) = func.raw_name() {
+        print!(", {}", name);
+      }
+    }    
+  }
+
+  // Print Filename
+  let loc = context.find_location(address)
+    .expect("failed to find location");
+  if let Some(loc) = loc {
+    let file = loc.file
+      .unwrap_or("")
+      .replace("/private/tmp/nuttx/nuttx/", "");
+    let line = loc.line
+      .unwrap_or(0);
+    let col = loc.column
+      .unwrap_or(0);
+    print!(", {}:{}:{}", file, line, col);
+  }
+  println!();
+}
+```
+
+TODO
+
+[Cargo.toml](https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/Cargo.toml)
+
+```text
+[dependencies]
+addr2line = "0.19.0"
+gimli = "0.27.2"
+lazy_static = "1.4.0"
+unicorn-engine = "2.0.0"
+```
+
+TODO
+
+[main.rs](https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/src/main.rs#L177-L210)
+
+```rust
+#[macro_use]
+extern crate lazy_static;
+
+use unicorn_engine::{Unicorn, RegisterARM64};
+use unicorn_engine::unicorn_const::{Arch, HookType, MemType, Mode, Permission};
+use std::rc::Rc;
+use std::cell::RefCell;
+
+/// ELF File for mapping Addresses to Function Names and Filenames
+const ELF_FILENAME: &str = "nuttx/nuttx";
+
+lazy_static! {
+  /// ELF Context for mapping Addresses to Function Names and Filenames
+  static ref ELF_CONTEXT: ElfContext = {
+    // Open the ELF File
+    let path = std::path::PathBuf::from(ELF_FILENAME);
+    let file_data = std::fs::read(path)
+      .expect("failed to read ELF");
+    let slice = file_data.as_slice();
+
+    // Parse the ELF File
+    let obj = addr2line::object::read::File::parse(slice)
+      .expect("failed to parse ELF");
+    let context = addr2line::Context::new(&obj)
+      .expect("failed to parse debug info");
+
+    // Set the ELF Context
+    ElfContext {
+      context: RefCell::new(context),
+    }
+  };
+}
+
+/// Wrapper for ELF Context. Needed for `lazy_static`
+struct ElfContext {
+  context: RefCell<
+    addr2line::Context<
+      gimli::EndianReader<
+        gimli::RunTimeEndian, 
+        Rc<[u8]>  // Doesn't implement Send / Sync
+      >
+    >
+  >
+}
+
+/// Send and Sync for ELF Context. Needed for `lazy_static`
+unsafe impl Send for ElfContext {}
+unsafe impl Sync for ElfContext {}
+```
