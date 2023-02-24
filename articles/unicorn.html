@@ -77,7 +77,8 @@
 <li><a href="#emulate-uart-output">8 Emulate UART Output</a><ul></ul></li>
 <li><a href="#emulator-halts-with-mmu-fault">9 Emulator Halts with MMU Fault</a><ul></ul></li>
 <li><a href="#emulation-concerns">10 Emulation Concerns</a><ul></ul></li>
-<li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>24 Feb 2023</em></p>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-map-address-to-function-with-elf-file">12 Appendix: Map Address to Function with ELF File</a><ul></ul></li></ul></nav><p>📝 <em>24 Feb 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/unicorn-title.jpg" alt="Emulating Arm64 Machine Code in Unicorn" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/src/main.rs#L1-L55"><em>Emulating Arm64 Machine Code in Unicorn</em></a></p>
 <p><a href="https://www.unicorn-engine.org/"><strong>Unicorn</strong></a> is a lightweight <strong>CPU Emulator Framework</strong> based on <a href="http://www.qemu.org/"><strong>QEMU</strong></a>.</p>
@@ -715,6 +716,121 @@ write_sysreg(  // Write to System Register...
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/unicorn.md"><strong>lupyuen.github.io/src/unicorn.md</strong></a></p>
+<h1 id="appendix-map-address-to-function-with-elf-file"><a href="#appendix-map-address-to-function-with-elf-file">12 Appendix: Map Address to Function with ELF File</a></h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>hook_block:  
+  address=0x40080eb0, 
+  size=12, 
+  setup_page_tables, 
+  arch/arm64/src/common/arm64_mmu.c:516:25
+
+hook_block:  
+  address=0x40080eec, 
+  size=16, 
+  enable_mmu_el1, 
+  arch/arm64/src/common/arm64_mmu.c:543:11
+
+err=Err(EXCEPTION)
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a">(Source)</a></p>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/src/main.rs">main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function for Block Emulation.
+/// Called once for each Basic Block of Arm64 Instructions.
+</span><span class="kw">fn </span>hook_block(
+  <span class="kw">_</span>: <span class="kw-2">&amp;mut </span>Unicorn&lt;()&gt;,  <span class="comment">// Emulator
+  </span>address: u64,  <span class="comment">// Block Address
+  </span>size: u32      <span class="comment">// Block Size
+</span>) {
+  <span class="macro">print!</span>(<span class="string">&quot;hook_block:  address={:#010x}, size={:02}&quot;</span>, address, size);
+
+  <span class="comment">// Print Function Name
+  </span><span class="kw">let </span>context = ELF_CONTEXT.context.borrow();
+  <span class="kw">let </span><span class="kw-2">mut </span>frames = context.find_frames(address)
+    .expect(<span class="string">&quot;failed to find frames&quot;</span>);
+  <span class="kw">if let </span><span class="prelude-val">Some</span>(frame) = frames.next().unwrap() {
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(func) = frame.function {
+      <span class="kw">if let </span><span class="prelude-val">Ok</span>(name) = func.raw_name() {
+        <span class="macro">print!</span>(<span class="string">&quot;, {}&quot;</span>, name);
+      }
+    }    
+  }
+
+  <span class="comment">// Print Filename
+  </span><span class="kw">let </span>loc = context.find_location(address)
+    .expect(<span class="string">&quot;failed to find location&quot;</span>);
+  <span class="kw">if let </span><span class="prelude-val">Some</span>(loc) = loc {
+    <span class="kw">let </span>file = loc.file
+      .unwrap_or(<span class="string">&quot;&quot;</span>)
+      .replace(<span class="string">&quot;/private/tmp/nuttx/nuttx/&quot;</span>, <span class="string">&quot;&quot;</span>);
+    <span class="kw">let </span>line = loc.line
+      .unwrap_or(<span class="number">0</span>);
+    <span class="kw">let </span>col = loc.column
+      .unwrap_or(<span class="number">0</span>);
+    <span class="macro">print!</span>(<span class="string">&quot;, {}:{}:{}&quot;</span>, file, line, col);
+  }
+  <span class="macro">println!</span>();
+}</code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/Cargo.toml">Cargo.toml</a></p>
+<div class="example-wrap"><pre class="language-text"><code>[dependencies]
+addr2line = &quot;0.19.0&quot;
+gimli = &quot;0.27.2&quot;
+lazy_static = &quot;1.4.0&quot;
+unicorn-engine = &quot;2.0.0&quot;
+</code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/src/main.rs#L177-L210">main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[macro_use]
+</span><span class="kw">extern crate </span>lazy_static;
+
+<span class="kw">use </span>unicorn_engine::{Unicorn, RegisterARM64};
+<span class="kw">use </span>unicorn_engine::unicorn_const::{Arch, HookType, MemType, Mode, Permission};
+<span class="kw">use </span>std::rc::Rc;
+<span class="kw">use </span>std::cell::RefCell;
+
+<span class="doccomment">/// ELF File for mapping Addresses to Function Names and Filenames
+</span><span class="kw">const </span>ELF_FILENAME: <span class="kw-2">&amp;</span>str = <span class="string">&quot;nuttx/nuttx&quot;</span>;
+
+<span class="macro">lazy_static! </span>{
+  <span class="doccomment">/// ELF Context for mapping Addresses to Function Names and Filenames
+  </span><span class="kw">static </span><span class="kw-2">ref </span>ELF_CONTEXT: ElfContext = {
+    <span class="comment">// Open the ELF File
+    </span><span class="kw">let </span>path = std::path::PathBuf::from(ELF_FILENAME);
+    <span class="kw">let </span>file_data = std::fs::read(path)
+      .expect(<span class="string">&quot;failed to read ELF&quot;</span>);
+    <span class="kw">let </span>slice = file_data.as_slice();
+
+    <span class="comment">// Parse the ELF File
+    </span><span class="kw">let </span>obj = addr2line::object::read::File::parse(slice)
+      .expect(<span class="string">&quot;failed to parse ELF&quot;</span>);
+    <span class="kw">let </span>context = addr2line::Context::new(<span class="kw-2">&amp;</span>obj)
+      .expect(<span class="string">&quot;failed to parse debug info&quot;</span>);
+
+    <span class="comment">// Set the ELF Context
+    </span>ElfContext {
+      context: RefCell::new(context),
+    }
+  };
+}
+
+<span class="doccomment">/// Wrapper for ELF Context. Needed for `lazy_static`
+</span><span class="kw">struct </span>ElfContext {
+  context: RefCell&lt;
+    addr2line::Context&lt;
+      gimli::EndianReader&lt;
+        gimli::RunTimeEndian, 
+        Rc&lt;[u8]&gt;  <span class="comment">// Doesn&#39;t implement Send / Sync
+      </span>&gt;
+    &gt;
+  &gt;
+}
+
+<span class="doccomment">/// Send and Sync for ELF Context. Needed for `lazy_static`
+</span><span class="kw">unsafe impl </span>Send <span class="kw">for </span>ElfContext {}
+<span class="kw">unsafe impl </span>Sync <span class="kw">for </span>ElfContext {}</code></pre></div>
 
     
 </body>
