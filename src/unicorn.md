@@ -371,11 +371,17 @@ Which means that Unicorn Emulator calls our Hook Function only once for the [__e
 
 _How is this useful?_
 
-This Block Execution Hook will be super helpful for monitoring the __Execution Flow__ of our emulated code.
+The Block Execution Hook is super helpful for monitoring the __Execution Flow__ of our emulated code. We can...
 
-Someday we might read the ELF Symbol Table (from the NuttX Image), match with the Block Execution Addresses...
+-   Read the __ELF Debug Symbols__ (from the NuttX Image)
 
-And print the __name of the function__ that's being emulated!
+-   Match with the __Block Execution Addresses__
+
+-   And print the __Name of the Function__ that's being emulated
+
+This is how we do it...
+
+-   [__"Map Address to Function with ELF File"__](https://lupyuen.github.io/articles/unicorn#appendix-map-address-to-function-with-elf-file)
 
 # Unmapped Memory
 
@@ -836,7 +842,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Map Address to Function with ELF File
 
-TODO
+Our __Block Execution Hook__ now prints the __Function Name__ and the __Filename__...
 
 ```text
 hook_block:  
@@ -856,9 +862,7 @@ err=Err(EXCEPTION)
 
 [(Source)](https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a)
 
-TODO
-
-[main.rs](https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/src/main.rs)
+Our Hook Function looks up the Address in the [__DWARF Debug Symbols__](https://crates.io/crates/gimli) of the [__NuttX ELF File__](https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx), like so: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/src/main.rs)
 
 ```rust
 /// Hook Function for Block Emulation.
@@ -899,9 +903,7 @@ fn hook_block(
 }
 ```
 
-TODO
-
-[Cargo.toml](https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/Cargo.toml)
+To run this, we need the [__addr2line__](https://crates.io/crates/addr2line), [__gimli__](https://crates.io/crates/gimli) and [__lazy_static__](https://crates.io/crates/lazy_static) crates: [Cargo.toml](https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/Cargo.toml)
 
 ```text
 [dependencies]
@@ -911,16 +913,11 @@ lazy_static = "1.4.0"
 unicorn-engine = "2.0.0"
 ```
 
-TODO
-
-[main.rs](https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/src/main.rs#L177-L210)
+At startup, we load the [__NuttX ELF File__](https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx) into __ELF_CONTEXT__ as a [__lazy_static__](https://crates.io/crates/lazy_static): [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/src/main.rs#L177-L210)
 
 ```rust
 #[macro_use]
 extern crate lazy_static;
-
-use unicorn_engine::{Unicorn, RegisterARM64};
-use unicorn_engine::unicorn_const::{Arch, HookType, MemType, Mode, Permission};
 use std::rc::Rc;
 use std::cell::RefCell;
 
