@@ -356,9 +356,22 @@ hook_code:  address=0x10004, size=4
 <p>Which means that Unicorn Emulator calls our Hook Function only once for the <a href="https://lupyuen.github.io/articles/unicorn#emulate-arm64-machine-code"><strong>entire Block of two Arm64 Instructions</strong></a>.</p>
 <p><a href="https://github.com/lupyuen/pinephone-emulator#what-is-a-block-of-arm64-instructions">(What’s a Block of Arm64 Instructions?)</a></p>
 <p><em>How is this useful?</em></p>
-<p>This Block Execution Hook will be super helpful for monitoring the <strong>Execution Flow</strong> of our emulated code.</p>
-<p>Someday we might read the ELF Symbol Table (from the NuttX Image), match with the Block Execution Addresses…</p>
-<p>And print the <strong>name of the function</strong> that’s being emulated!</p>
+<p>The Block Execution Hook is super helpful for monitoring the <strong>Execution Flow</strong> of our emulated code. We can…</p>
+<ul>
+<li>
+<p>Read the <strong>ELF Debug Symbols</strong> (from the NuttX Image)</p>
+</li>
+<li>
+<p>Match with the <strong>Block Execution Addresses</strong></p>
+</li>
+<li>
+<p>And print the <strong>Name of the Function</strong> that’s being emulated</p>
+</li>
+</ul>
+<p>This is how we do it…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/unicorn#appendix-map-address-to-function-with-elf-file"><strong>“Map Address to Function with ELF File”</strong></a></li>
+</ul>
 <h1 id="unmapped-memory"><a href="#unmapped-memory">5 Unmapped Memory</a></h1>
 <p><em>What happens when Unicorn Emulator tries to access memory that isn’t mapped?</em></p>
 <p>Unicorn Emulator will call our Memory Access Hook with <strong>mem_type</strong> set to <strong>READ_UNMAPPED</strong>…</p>
@@ -717,7 +730,7 @@ write_sysreg(  // Write to System Register...
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/unicorn.md"><strong>lupyuen.github.io/src/unicorn.md</strong></a></p>
 <h1 id="appendix-map-address-to-function-with-elf-file"><a href="#appendix-map-address-to-function-with-elf-file">12 Appendix: Map Address to Function with ELF File</a></h1>
-<p>TODO</p>
+<p>Our <strong>Block Execution Hook</strong> now prints the <strong>Function Name</strong> and the <strong>Filename</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>hook_block:  
   address=0x40080eb0, 
   size=12, 
@@ -733,8 +746,7 @@ hook_block:
 err=Err(EXCEPTION)
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a">(Source)</a></p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/src/main.rs">main.rs</a></p>
+<p>Our Hook Function looks up the Address in the <a href="https://crates.io/crates/gimli"><strong>DWARF Debug Symbols</strong></a> of the <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx"><strong>NuttX ELF File</strong></a>, like so: <a href="https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/src/main.rs">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function for Block Emulation.
 /// Called once for each Basic Block of Arm64 Instructions.
@@ -772,22 +784,17 @@ err=Err(EXCEPTION)
   }
   <span class="macro">println!</span>();
 }</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/Cargo.toml">Cargo.toml</a></p>
+<p>To run this, we need the <a href="https://crates.io/crates/addr2line"><strong>addr2line</strong></a>, <a href="https://crates.io/crates/gimli"><strong>gimli</strong></a> and <a href="https://crates.io/crates/lazy_static"><strong>lazy_static</strong></a> crates: <a href="https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/Cargo.toml">Cargo.toml</a></p>
 <div class="example-wrap"><pre class="language-text"><code>[dependencies]
 addr2line = &quot;0.19.0&quot;
 gimli = &quot;0.27.2&quot;
 lazy_static = &quot;1.4.0&quot;
 unicorn-engine = &quot;2.0.0&quot;
 </code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/src/main.rs#L177-L210">main.rs</a></p>
+<p>At startup, we load the <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx"><strong>NuttX ELF File</strong></a> into <strong>ELF_CONTEXT</strong> as a <a href="https://crates.io/crates/lazy_static"><strong>lazy_static</strong></a>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/src/main.rs#L177-L210">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[macro_use]
 </span><span class="kw">extern crate </span>lazy_static;
-
-<span class="kw">use </span>unicorn_engine::{Unicorn, RegisterARM64};
-<span class="kw">use </span>unicorn_engine::unicorn_const::{Arch, HookType, MemType, Mode, Permission};
 <span class="kw">use </span>std::rc::Rc;
 <span class="kw">use </span>std::cell::RefCell;
 
