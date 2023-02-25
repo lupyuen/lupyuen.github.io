@@ -874,7 +874,7 @@ err=Err(EXCEPTION)
 
 [(Source)](https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a)
 
-Our Hook Function looks up the Address in the [__DWARF Debug Symbols__](https://crates.io/crates/gimli) of the [__NuttX ELF File__](https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx), like so: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/src/main.rs)
+Our Hook Function looks up the Address in the [__DWARF Debug Symbols__](https://crates.io/crates/gimli) of the [__NuttX ELF File__](https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx), like so: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/src/main.rs#L127-L156)
 
 ```rust
 /// Hook Function for Block Emulation.
@@ -886,81 +886,118 @@ fn hook_block(
 ) {
   print!("hook_block:  address={:#010x}, size={:02}", address, size);
 
-  // Print Function Name
-  let context = ELF_CONTEXT.context.borrow();
-  let mut frames = context.find_frames(address)
-    .expect("failed to find frames");
-  if let Some(frame) = frames.next().unwrap() {
-    if let Some(func) = frame.function {
-      if let Ok(name) = func.raw_name() {
-        print!(", {}", name);
-      }
-    }    
+  // Print the Function Name
+  let function = map_address_to_function(address);
+  if let Some(ref name) = function {
+    print!(", {}", name);
   }
 
-  // Print Filename
-  let loc = context.find_location(address)
-    .expect("failed to find location");
-  if let Some(loc) = loc {
-    let file = loc.file
-      .unwrap_or("")
-      .replace("/private/tmp/nuttx/nuttx/", "");
-    let line = loc.line
-      .unwrap_or(0);
-    let col = loc.column
-      .unwrap_or(0);
+  // Print the Source Filename
+  let loc = map_address_to_location(address);
+  if let Some((ref file, line, col)) = loc {
+    let file = file.clone().unwrap_or("".to_string());
+    let line = line.unwrap_or(0);
+    let col = col.unwrap_or(0);
     print!(", {}:{}:{}", file, line, col);
   }
   println!();
 }
 ```
 
-To run this, we need the [__addr2line__](https://crates.io/crates/addr2line), [__gimli__](https://crates.io/crates/gimli) and [__lazy_static__](https://crates.io/crates/lazy_static) crates: [Cargo.toml](https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/Cargo.toml)
+We map the Block Address to Function Name and Source File in __map_address_to_function__ and __map_address_to_location__:  [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/src/main.rs#L172-L219)
+
+```rust
+/// Map the Arm64 Code Address to the Function Name by looking up the ELF Context
+fn map_address_to_function(
+  address: u64         // Code Address
+) -> Option<String> {  // Function Name
+  // Lookup the Arm64 Code Address in the ELF Context
+  let context = ELF_CONTEXT.context.borrow();
+  let mut frames = context.find_frames(address)
+    .expect("failed to find frames");
+
+  // Return the Function Name
+  if let Some(frame) = frames.next().unwrap() {
+    if let Some(func) = frame.function {
+      if let Ok(name) = func.raw_name() {
+        let s = String::from(name);
+        return Some(s);
+      }
+    }    
+  }
+  None
+}
+
+/// Map the Arm64 Code Address to the Source Filename, Line and Column
+fn map_address_to_location(
+  address: u64     // Code Address
+) -> Option<(      // Returns...
+  Option<String>,  // Filename
+  Option<u32>,     // Line
+  Option<u32>      // Column
+)> {
+  // Lookup the Arm64 Code Address in the ELF Context
+  let context = ELF_CONTEXT.context.borrow();
+  let loc = context.find_location(address)
+    .expect("failed to find location");
+
+  // Return the Filename, Line and Column
+  if let Some(loc) = loc {
+    if let Some(file) = loc.file {
+      let s = String::from(file)
+        .replace("/private/tmp/nuttx/nuttx/", "")
+        .replace("arch/arm64/src/chip", "arch/arm64/src/a64");  // TODO: Handle other chips
+      Some((Some(s), loc.line, loc.column))
+    } else {
+      Some((None, loc.line, loc.column))
+    }
+  } else {
+    None
+  }
+}
+```
+
+To run this, we need the [__addr2line__](https://crates.io/crates/addr2line), [__gimli__](https://crates.io/crates/gimli) and [__once_cell__](https://crates.io/crates/once_cell) crates: [Cargo.toml](https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/Cargo.toml#L8-L12)
 
 ```text
 [dependencies]
 addr2line = "0.19.0"
 gimli = "0.27.2"
-lazy_static = "1.4.0"
+once_cell = "1.17.1"
 unicorn-engine = "2.0.0"
 ```
 
-At startup, we load the [__NuttX ELF File__](https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx) into __ELF_CONTEXT__ as a [__lazy_static__](https://crates.io/crates/lazy_static): [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/src/main.rs#L177-L210)
-
-(Should probably simplify this with [__once_cell__](https://docs.rs/once_cell/latest/once_cell/))
+At startup, we load the [__NuttX ELF File__](https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx) into __ELF_CONTEXT__ as a [__Lazy Static__](https://docs.rs/once_cell/latest/once_cell/): [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/src/main.rs#L288-L322)
 
 ```rust
-#[macro_use]
-extern crate lazy_static;
 use std::rc::Rc;
 use std::cell::RefCell;
+use once_cell::sync::Lazy;
 
 /// ELF File for mapping Addresses to Function Names and Filenames
 const ELF_FILENAME: &str = "nuttx/nuttx";
 
-lazy_static! {
-  /// ELF Context for mapping Addresses to Function Names and Filenames
-  static ref ELF_CONTEXT: ElfContext = {
-    // Open the ELF File
-    let path = std::path::PathBuf::from(ELF_FILENAME);
-    let file_data = std::fs::read(path)
-      .expect("failed to read ELF");
-    let slice = file_data.as_slice();
+/// ELF Context for mapping Addresses to Function Names and Filenames
+static ELF_CONTEXT: Lazy<ElfContext> = Lazy::new(|| {
+  // Open the ELF File
+  let path = std::path::PathBuf::from(ELF_FILENAME);
+  let file_data = std::fs::read(path)
+    .expect("failed to read ELF");
+  let slice = file_data.as_slice();
 
-    // Parse the ELF File
-    let obj = addr2line::object::read::File::parse(slice)
-      .expect("failed to parse ELF");
-    let context = addr2line::Context::new(&obj)
-      .expect("failed to parse debug info");
+  // Parse the ELF File
+  let obj = addr2line::object::read::File::parse(slice)
+    .expect("failed to parse ELF");
+  let context = addr2line::Context::new(&obj)
+    .expect("failed to parse debug info");
 
-    // Set the ELF Context
-    ElfContext {
-      context: RefCell::new(context),
-    }
-  };
-}
+  // Set the ELF Context
+  ElfContext {
+    context: RefCell::new(context),
+  }
+});
 
-/// Wrapper for ELF Context. Needed for `lazy_static`
+/// Wrapper for ELF Context. Needed for `Lazy`
 struct ElfContext {
   context: RefCell<
     addr2line::Context<
@@ -972,7 +1009,7 @@ struct ElfContext {
   >
 }
 
-/// Send and Sync for ELF Context. Needed for `lazy_static`
+/// Send and Sync for ELF Context. Needed for `Lazy`
 unsafe impl Send for ElfContext {}
 unsafe impl Sync for ElfContext {}
 ```
