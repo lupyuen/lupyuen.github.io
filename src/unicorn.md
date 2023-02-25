@@ -927,6 +927,8 @@ unicorn-engine = "2.0.0"
 
 At startup, we load the [__NuttX ELF File__](https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx) into __ELF_CONTEXT__ as a [__lazy_static__](https://crates.io/crates/lazy_static): [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/src/main.rs#L177-L210)
 
+(Should probably simplify this with [__once_cell__](https://docs.rs/once_cell/latest/once_cell/))
+
 ```rust
 #[macro_use]
 extern crate lazy_static;
