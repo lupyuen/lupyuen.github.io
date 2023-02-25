@@ -177,7 +177,7 @@ Finally we __read Register X15__ and verify the result...
 
 And we're done!
 
-Remember to add [__unicorn-engine__](https://crates.io/crates/unicorn-engine) to the dependencies: [Cargo.toml](https://github.com/lupyuen/pinephone-emulator/blob/main/Cargo.toml#L8-L9)
+Remember to add [__unicorn-engine__](https://crates.io/crates/unicorn-engine) to the dependencies: [Cargo.toml](https://github.com/lupyuen/pinephone-emulator/blob/bc5643dea66c70f57a150955a12884f695acf1a4/Cargo.toml#L8-L9)
 
 ```text
 [dependencies]
