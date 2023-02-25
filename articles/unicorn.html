@@ -647,10 +647,12 @@ write_sysreg(  // Write to System Register...
 </li>
 <li>
 <p><strong>SCTLR_C_BIT</strong> (Bit 2): Enable <strong>Caching</strong> for EL0 and EL1 Stage 1</p>
+<p><a href="https://lupyuen.github.io/articles/interrupt#exception-levels">(What’s EL1?)</a></p>
 </li>
 </ul>
-<p>Thus the <strong>Address Translation</strong> (or Caching) has failed in our Emulated Arm64 Memory Management Unit.</p>
-<p><a href="https://lupyuen.github.io/articles/interrupt#exception-levels">(What’s EL1?)</a></p>
+<p>Thus the <strong>Address Translation</strong> (or Caching) has failed in our Emulated Arm64 Memory Management Unit, inside <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L541-L544"><strong>enable_mmu_el1</strong></a>…</p>
+<p><img src="https://lupyuen.github.io/images/unicorn-callgraph.jpg" alt="Call Graph for Apache NuttX RTOS" /></p>
+<p><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos">(Source)</a></p>
 <p>We won’t chase the Unicorn into the Rabbit Hole, but the details are covered here…</p>
 <ul>
 <li>
@@ -665,6 +667,12 @@ write_sysreg(  // Write to System Register...
 <li>
 <p><a href="https://github.com/lupyuen/pinephone-emulator#debug-the-unicorn-emulator"><strong>“Debug the Unicorn Emulator”</strong></a></p>
 </li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-emulator#map-address-to-function-with-elf-file"><strong>“Map Address to Function with ELF File”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>“Call Graph for Apache NuttX RTOS”</strong></a></p>
+</li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/lvgl2-title.jpg" alt="Apache NuttX RTOS on PinePhone" /></p>
 <p><a href="https://lupyuen.github.io/articles/what"><em>Apache NuttX RTOS on PinePhone</em></a></p>
@@ -674,6 +682,10 @@ write_sysreg(  // Write to System Register...
 <p>Which will be similar to this BL602 setup, except that we’ll boot the Daily Build on Unicorn Emulator (instead of Real Hardware)…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/auto"><strong>“Auto Flash and Test NuttX on RISC-V BL602”</strong></a></li>
+</ul>
+<p>Also Unicorn Emulator has produced a <strong>Call Graph</strong> for NuttX on PinePhone, which is extremely valuable for troubleshooting…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>“Call Graph for Apache NuttX RTOS”</strong></a></li>
 </ul>
 <p><em>But our PinePhone Emulator doesn’t handle Console Input…</em></p>
 <p>Yeah we’ll do that later. We have a long wishlist of features to build: Interrupts, Memory Protection, Multiple CPUs, Cortex A53, GIC v2, …</p>
