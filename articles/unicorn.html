@@ -758,7 +758,7 @@ hook_block:
 err=Err(EXCEPTION)
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a">(Source)</a></p>
-<p>Our Hook Function looks up the Address in the <a href="https://crates.io/crates/gimli"><strong>DWARF Debug Symbols</strong></a> of the <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx"><strong>NuttX ELF File</strong></a>, like so: <a href="https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/src/main.rs">main.rs</a></p>
+<p>Our Hook Function looks up the Address in the <a href="https://crates.io/crates/gimli"><strong>DWARF Debug Symbols</strong></a> of the <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx"><strong>NuttX ELF File</strong></a>, like so: <a href="https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/src/main.rs#L127-L156">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function for Block Emulation.
 /// Called once for each Basic Block of Arm64 Instructions.
@@ -769,74 +769,109 @@ err=Err(EXCEPTION)
 </span>) {
   <span class="macro">print!</span>(<span class="string">&quot;hook_block:  address={:#010x}, size={:02}&quot;</span>, address, size);
 
-  <span class="comment">// Print Function Name
-  </span><span class="kw">let </span>context = ELF_CONTEXT.context.borrow();
-  <span class="kw">let </span><span class="kw-2">mut </span>frames = context.find_frames(address)
-    .expect(<span class="string">&quot;failed to find frames&quot;</span>);
-  <span class="kw">if let </span><span class="prelude-val">Some</span>(frame) = frames.next().unwrap() {
-    <span class="kw">if let </span><span class="prelude-val">Some</span>(func) = frame.function {
-      <span class="kw">if let </span><span class="prelude-val">Ok</span>(name) = func.raw_name() {
-        <span class="macro">print!</span>(<span class="string">&quot;, {}&quot;</span>, name);
-      }
-    }    
+  <span class="comment">// Print the Function Name
+  </span><span class="kw">let </span>function = map_address_to_function(address);
+  <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>name) = function {
+    <span class="macro">print!</span>(<span class="string">&quot;, {}&quot;</span>, name);
   }
 
-  <span class="comment">// Print Filename
-  </span><span class="kw">let </span>loc = context.find_location(address)
-    .expect(<span class="string">&quot;failed to find location&quot;</span>);
-  <span class="kw">if let </span><span class="prelude-val">Some</span>(loc) = loc {
-    <span class="kw">let </span>file = loc.file
-      .unwrap_or(<span class="string">&quot;&quot;</span>)
-      .replace(<span class="string">&quot;/private/tmp/nuttx/nuttx/&quot;</span>, <span class="string">&quot;&quot;</span>);
-    <span class="kw">let </span>line = loc.line
-      .unwrap_or(<span class="number">0</span>);
-    <span class="kw">let </span>col = loc.column
-      .unwrap_or(<span class="number">0</span>);
+  <span class="comment">// Print the Source Filename
+  </span><span class="kw">let </span>loc = map_address_to_location(address);
+  <span class="kw">if let </span><span class="prelude-val">Some</span>((<span class="kw-2">ref </span>file, line, col)) = loc {
+    <span class="kw">let </span>file = file.clone().unwrap_or(<span class="string">&quot;&quot;</span>.to_string());
+    <span class="kw">let </span>line = line.unwrap_or(<span class="number">0</span>);
+    <span class="kw">let </span>col = col.unwrap_or(<span class="number">0</span>);
     <span class="macro">print!</span>(<span class="string">&quot;, {}:{}:{}&quot;</span>, file, line, col);
   }
   <span class="macro">println!</span>();
 }</code></pre></div>
-<p>To run this, we need the <a href="https://crates.io/crates/addr2line"><strong>addr2line</strong></a>, <a href="https://crates.io/crates/gimli"><strong>gimli</strong></a> and <a href="https://crates.io/crates/lazy_static"><strong>lazy_static</strong></a> crates: <a href="https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/Cargo.toml">Cargo.toml</a></p>
+<p>We map the Block Address to Function Name and Source File in <strong>map_address_to_function</strong> and <strong>map_address_to_location</strong>:  <a href="https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/src/main.rs#L172-L219">main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Map the Arm64 Code Address to the Function Name by looking up the ELF Context
+</span><span class="kw">fn </span>map_address_to_function(
+  address: u64         <span class="comment">// Code Address
+</span>) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {  <span class="comment">// Function Name
+  // Lookup the Arm64 Code Address in the ELF Context
+  </span><span class="kw">let </span>context = ELF_CONTEXT.context.borrow();
+  <span class="kw">let </span><span class="kw-2">mut </span>frames = context.find_frames(address)
+    .expect(<span class="string">&quot;failed to find frames&quot;</span>);
+
+  <span class="comment">// Return the Function Name
+  </span><span class="kw">if let </span><span class="prelude-val">Some</span>(frame) = frames.next().unwrap() {
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(func) = frame.function {
+      <span class="kw">if let </span><span class="prelude-val">Ok</span>(name) = func.raw_name() {
+        <span class="kw">let </span>s = String::from(name);
+        <span class="kw">return </span><span class="prelude-val">Some</span>(s);
+      }
+    }    
+  }
+  <span class="prelude-val">None
+</span>}
+
+<span class="doccomment">/// Map the Arm64 Code Address to the Source Filename, Line and Column
+</span><span class="kw">fn </span>map_address_to_location(
+  address: u64     <span class="comment">// Code Address
+</span>) -&gt; <span class="prelude-ty">Option</span>&lt;(      <span class="comment">// Returns...
+  </span><span class="prelude-ty">Option</span>&lt;String&gt;,  <span class="comment">// Filename
+  </span><span class="prelude-ty">Option</span>&lt;u32&gt;,     <span class="comment">// Line
+  </span><span class="prelude-ty">Option</span>&lt;u32&gt;      <span class="comment">// Column
+</span>)&gt; {
+  <span class="comment">// Lookup the Arm64 Code Address in the ELF Context
+  </span><span class="kw">let </span>context = ELF_CONTEXT.context.borrow();
+  <span class="kw">let </span>loc = context.find_location(address)
+    .expect(<span class="string">&quot;failed to find location&quot;</span>);
+
+  <span class="comment">// Return the Filename, Line and Column
+  </span><span class="kw">if let </span><span class="prelude-val">Some</span>(loc) = loc {
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(file) = loc.file {
+      <span class="kw">let </span>s = String::from(file)
+        .replace(<span class="string">&quot;/private/tmp/nuttx/nuttx/&quot;</span>, <span class="string">&quot;&quot;</span>)
+        .replace(<span class="string">&quot;arch/arm64/src/chip&quot;</span>, <span class="string">&quot;arch/arm64/src/a64&quot;</span>);  <span class="comment">// TODO: Handle other chips
+      </span><span class="prelude-val">Some</span>((<span class="prelude-val">Some</span>(s), loc.line, loc.column))
+    } <span class="kw">else </span>{
+      <span class="prelude-val">Some</span>((<span class="prelude-val">None</span>, loc.line, loc.column))
+    }
+  } <span class="kw">else </span>{
+    <span class="prelude-val">None
+  </span>}
+}</code></pre></div>
+<p>To run this, we need the <a href="https://crates.io/crates/addr2line"><strong>addr2line</strong></a>, <a href="https://crates.io/crates/gimli"><strong>gimli</strong></a> and <a href="https://crates.io/crates/once_cell"><strong>once_cell</strong></a> crates: <a href="https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/Cargo.toml#L8-L12">Cargo.toml</a></p>
 <div class="example-wrap"><pre class="language-text"><code>[dependencies]
 addr2line = &quot;0.19.0&quot;
 gimli = &quot;0.27.2&quot;
-lazy_static = &quot;1.4.0&quot;
+once_cell = &quot;1.17.1&quot;
 unicorn-engine = &quot;2.0.0&quot;
 </code></pre></div>
-<p>At startup, we load the <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx"><strong>NuttX ELF File</strong></a> into <strong>ELF_CONTEXT</strong> as a <a href="https://crates.io/crates/lazy_static"><strong>lazy_static</strong></a>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/src/main.rs#L177-L210">main.rs</a></p>
-<p>(Should probably simplify this with <a href="https://docs.rs/once_cell/latest/once_cell/"><strong>once_cell</strong></a>)</p>
+<p>At startup, we load the <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx"><strong>NuttX ELF File</strong></a> into <strong>ELF_CONTEXT</strong> as a <a href="https://docs.rs/once_cell/latest/once_cell/"><strong>Lazy Static</strong></a>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/src/main.rs#L288-L322">main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[macro_use]
-</span><span class="kw">extern crate </span>lazy_static;
-<span class="kw">use </span>std::rc::Rc;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>std::rc::Rc;
 <span class="kw">use </span>std::cell::RefCell;
+<span class="kw">use </span>once_cell::sync::Lazy;
 
 <span class="doccomment">/// ELF File for mapping Addresses to Function Names and Filenames
 </span><span class="kw">const </span>ELF_FILENAME: <span class="kw-2">&amp;</span>str = <span class="string">&quot;nuttx/nuttx&quot;</span>;
 
-<span class="macro">lazy_static! </span>{
-  <span class="doccomment">/// ELF Context for mapping Addresses to Function Names and Filenames
-  </span><span class="kw">static </span><span class="kw-2">ref </span>ELF_CONTEXT: ElfContext = {
-    <span class="comment">// Open the ELF File
-    </span><span class="kw">let </span>path = std::path::PathBuf::from(ELF_FILENAME);
-    <span class="kw">let </span>file_data = std::fs::read(path)
-      .expect(<span class="string">&quot;failed to read ELF&quot;</span>);
-    <span class="kw">let </span>slice = file_data.as_slice();
+<span class="doccomment">/// ELF Context for mapping Addresses to Function Names and Filenames
+</span><span class="kw">static </span>ELF_CONTEXT: Lazy&lt;ElfContext&gt; = Lazy::new(|| {
+  <span class="comment">// Open the ELF File
+  </span><span class="kw">let </span>path = std::path::PathBuf::from(ELF_FILENAME);
+  <span class="kw">let </span>file_data = std::fs::read(path)
+    .expect(<span class="string">&quot;failed to read ELF&quot;</span>);
+  <span class="kw">let </span>slice = file_data.as_slice();
 
-    <span class="comment">// Parse the ELF File
-    </span><span class="kw">let </span>obj = addr2line::object::read::File::parse(slice)
-      .expect(<span class="string">&quot;failed to parse ELF&quot;</span>);
-    <span class="kw">let </span>context = addr2line::Context::new(<span class="kw-2">&amp;</span>obj)
-      .expect(<span class="string">&quot;failed to parse debug info&quot;</span>);
+  <span class="comment">// Parse the ELF File
+  </span><span class="kw">let </span>obj = addr2line::object::read::File::parse(slice)
+    .expect(<span class="string">&quot;failed to parse ELF&quot;</span>);
+  <span class="kw">let </span>context = addr2line::Context::new(<span class="kw-2">&amp;</span>obj)
+    .expect(<span class="string">&quot;failed to parse debug info&quot;</span>);
 
-    <span class="comment">// Set the ELF Context
-    </span>ElfContext {
-      context: RefCell::new(context),
-    }
-  };
-}
+  <span class="comment">// Set the ELF Context
+  </span>ElfContext {
+    context: RefCell::new(context),
+  }
+});
 
-<span class="doccomment">/// Wrapper for ELF Context. Needed for `lazy_static`
+<span class="doccomment">/// Wrapper for ELF Context. Needed for `Lazy`
 </span><span class="kw">struct </span>ElfContext {
   context: RefCell&lt;
     addr2line::Context&lt;
@@ -848,7 +883,7 @@ unicorn-engine = &quot;2.0.0&quot;
   &gt;
 }
 
-<span class="doccomment">/// Send and Sync for ELF Context. Needed for `lazy_static`
+<span class="doccomment">/// Send and Sync for ELF Context. Needed for `Lazy`
 </span><span class="kw">unsafe impl </span>Send <span class="kw">for </span>ElfContext {}
 <span class="kw">unsafe impl </span>Sync <span class="kw">for </span>ElfContext {}</code></pre></div>
 
