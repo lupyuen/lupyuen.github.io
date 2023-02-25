@@ -804,6 +804,7 @@ lazy_static = &quot;1.4.0&quot;
 unicorn-engine = &quot;2.0.0&quot;
 </code></pre></div>
 <p>At startup, we load the <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx"><strong>NuttX ELF File</strong></a> into <strong>ELF_CONTEXT</strong> as a <a href="https://crates.io/crates/lazy_static"><strong>lazy_static</strong></a>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/c9b61c2feb3371d128052d6eaf98787613f81909/src/main.rs#L177-L210">main.rs</a></p>
+<p>(Should probably simplify this with <a href="https://docs.rs/once_cell/latest/once_cell/"><strong>once_cell</strong></a>)</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[macro_use]
 </span><span class="kw">extern crate </span>lazy_static;
