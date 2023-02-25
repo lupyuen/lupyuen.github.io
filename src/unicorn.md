@@ -760,9 +760,13 @@ The code above sets these flags in Arm64 [__System Control Register EL1__](https
 
 - __SCTLR_C_BIT__ (Bit 2): Enable __Caching__ for EL0 and EL1 Stage 1
 
-Thus the __Address Translation__ (or Caching) has failed in our Emulated Arm64 Memory Management Unit.
+  [(What's EL1?)](https://lupyuen.github.io/articles/interrupt#exception-levels)
 
-[(What's EL1?)](https://lupyuen.github.io/articles/interrupt#exception-levels)
+Thus the __Address Translation__ (or Caching) has failed in our Emulated Arm64 Memory Management Unit, inside [__enable_mmu_el1__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L541-L544)...
+
+![Call Graph for Apache NuttX RTOS](https://lupyuen.github.io/images/unicorn-callgraph.jpg)
+
+[(Source)](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)
 
 We won't chase the Unicorn into the Rabbit Hole, but the details are covered here...
 
@@ -773,6 +777,10 @@ We won't chase the Unicorn into the Rabbit Hole, but the details are covered her
 -   [__"Arm64 MMU Exception"__](https://github.com/lupyuen/pinephone-emulator#arm64-mmu-exception)
 
 -   [__"Debug the Unicorn Emulator"__](https://github.com/lupyuen/pinephone-emulator#debug-the-unicorn-emulator)
+
+-   [__"Map Address to Function with ELF File"__](https://github.com/lupyuen/pinephone-emulator#map-address-to-function-with-elf-file)
+
+-   [__"Call Graph for Apache NuttX RTOS"__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)
 
 ![Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/lvgl2-title.jpg)
 
@@ -787,6 +795,10 @@ Yep! Unicorn Emulator is sufficient for __Automated Daily Build and Test__ for N
 Which will be similar to this BL602 setup, except that we'll boot the Daily Build on Unicorn Emulator (instead of Real Hardware)...
 
 -   [__"Auto Flash and Test NuttX on RISC-V BL602"__](https://lupyuen.github.io/articles/auto)
+
+Also Unicorn Emulator has produced a __Call Graph__ for NuttX on PinePhone, which is extremely valuable for troubleshooting...
+
+-   [__"Call Graph for Apache NuttX RTOS"__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)
 
 _But our PinePhone Emulator doesn't handle Console Input..._
 
