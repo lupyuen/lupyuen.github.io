@@ -14,9 +14,11 @@ And we hit an __Arm64 Exception__ in the (Emulated) __Memory Management Unit__.
 
 TODO
 
--   Call Graph
+-   Block Execution Hook
 
 -   Lookup Addresses
+
+-   Call Graph
 
 -   Boot Trail
 
