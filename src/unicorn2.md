@@ -12,6 +12,16 @@ Last week we ran [__Apache NuttX Real-Time Operating System__](https://lupyuen.g
 
 And we hit an __Arm64 Exception__ in the (Emulated) __Memory Management Unit__.
 
+TODO
+
+-   Call Graph
+
+-   Lookup Addresses
+
+-   Boot Trail
+
+-   Automated Build and Test
+
 # Map Address to Function with ELF File
 
 TODO
