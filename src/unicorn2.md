@@ -10,7 +10,7 @@ Last week we ran [__Apache NuttX Real-Time Operating System__](https://lupyuen.g
 
 -   [__"(Possibly) Emulate PinePhone with Unicorn Emulator"__](https://lupyuen.github.io/articles/unicorn)
 
-And we hit an __Arm64 Exception__ in the (Emulated) __Memory Management Unit__.
+And we hit a baffling __Arm64 Exception__ in the (Emulated) __Memory Management Unit__.
 
 TODO
 
@@ -239,6 +239,12 @@ fn map_address_to_location(
 `ELF_CONTEXT` is explained here...
 
 -   ["Map Address to Function with ELF File"](https://lupyuen.github.io/articles/unicorn#appendix-map-address-to-function-with-elf-file)
+
+# Boot Trail
+
+TODO
+
+
 
 # What's Next
 
