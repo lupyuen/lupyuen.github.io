@@ -246,7 +246,11 @@ TODO
 
 -   [__"Call Graph for Apache NuttX RTOS"__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)
 
-TODO: Who calls arm64_boot_el1_init?
+[arm64_head](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L78-L227)
+
+-   Calls [arm64_boot_el1_init](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L132-L162)
+
+-   And [arm64_boot_primary_c_routine](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L181)
 
 [arm64_boot_el1_init](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L132-L162)
 
@@ -258,11 +262,11 @@ TODO: Who calls arm64_boot_el1_init?
 
 -   Sets [cntv_cval_el0](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L153-L155)
 
-TODO: Who calls arm64_boot_primary_c_routine?
+TODO
 
--   Calls [arm64_boot_primary_c_routine](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L179-L184)
+[arm64_boot_primary_c_routine](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L179-L184)
 
--   Which calls [boot_early_memset](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L164-L177)
+-   Calls [boot_early_memset](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L164-L177)
 
     And [arm64_chip_boot](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_boot.c#L73-L105)
 
@@ -277,6 +281,8 @@ TODO
 -   Which calls [enable_mmu_el1](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L526-L552)
 
 -   Which fails with MMU Fault
+
+# After MMU Fault
 
 TODO: After fault
 
