@@ -70,7 +70,8 @@
 <li><a href="#map-address-to-function-with-elf-file">1 Map Address to Function with ELF File</a><ul></ul></li>
 <li><a href="#call-graph-for-apache-nuttx-rtos">2 Call Graph for Apache NuttX RTOS</a><ul></ul></li>
 <li><a href="#boot-trail">3 Boot Trail</a><ul></ul></li>
-<li><a href="#whats-next">4 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>10 Mar 2023</em></p>
+<li><a href="#after-mmu-fault">4 After MMU Fault</a><ul></ul></li>
+<li><a href="#whats-next">5 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>10 Mar 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/unicorn2-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <p>Last week we ran <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX Real-Time Operating System</strong></a> (RTOS) on <a href="https://www.unicorn-engine.org/"><strong>Unicorn Emulator</strong></a>…</p>
@@ -287,7 +288,15 @@ err=Err(EXCEPTION)
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>“Call Graph for Apache NuttX RTOS”</strong></a></li>
 </ul>
-<p>TODO: Who calls arm64_boot_el1_init?</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L78-L227">arm64_head</a></p>
+<ul>
+<li>
+<p>Calls <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L132-L162">arm64_boot_el1_init</a></p>
+</li>
+<li>
+<p>And <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L181">arm64_boot_primary_c_routine</a></p>
+</li>
+</ul>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L132-L162">arm64_boot_el1_init</a></p>
 <ul>
 <li>
@@ -303,13 +312,11 @@ err=Err(EXCEPTION)
 <p>Sets <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L153-L155">cntv_cval_el0</a></p>
 </li>
 </ul>
-<p>TODO: Who calls arm64_boot_primary_c_routine?</p>
+<p>TODO</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L179-L184">arm64_boot_primary_c_routine</a></p>
 <ul>
 <li>
-<p>Calls <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L179-L184">arm64_boot_primary_c_routine</a></p>
-</li>
-<li>
-<p>Which calls <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L164-L177">boot_early_memset</a></p>
+<p>Calls <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L164-L177">boot_early_memset</a></p>
 <p>And <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_boot.c#L73-L105">arm64_chip_boot</a></p>
 </li>
 </ul>
@@ -329,6 +336,7 @@ err=Err(EXCEPTION)
 <p>Which fails with MMU Fault</p>
 </li>
 </ul>
+<h1 id="after-mmu-fault"><a href="#after-mmu-fault">4 After MMU Fault</a></h1>
 <p>TODO: After fault</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_boot.c#L73-L105">arm64_chip_boot</a></p>
 <ul>
@@ -343,7 +351,7 @@ err=Err(EXCEPTION)
 <ul>
 <li>Calls nx_start</li>
 </ul>
-<h1 id="whats-next"><a href="#whats-next">4 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">5 What’s Next</a></h1>
 <p>TODO</p>
 <p>This has been a fun educational exercise. Now we have a way to run <strong>Automated Daily Tests</strong> for Apache NuttX RTOS on PinePhone… Kudos to the <strong>Maintainers of Unicorn Emulator</strong>!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
