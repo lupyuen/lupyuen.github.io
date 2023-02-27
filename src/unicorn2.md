@@ -246,11 +246,19 @@ TODO
 
 -   [__"Call Graph for Apache NuttX RTOS"__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)
 
+## Arm64 Header
+
+TODO
+
 [arm64_head](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L78-L227)
 
 -   Calls [arm64_boot_el1_init](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L132-L162)
 
 -   And [arm64_boot_primary_c_routine](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L181)
+
+## Init EL1
+
+TODO
 
 [arm64_boot_el1_init](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L132-L162)
 
@@ -262,6 +270,8 @@ TODO
 
 -   Sets [cntv_cval_el0](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L153-L155)
 
+## Primary Routine
+
 TODO
 
 [arm64_boot_primary_c_routine](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L179-L184)
@@ -269,6 +279,8 @@ TODO
 -   Calls [boot_early_memset](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L164-L177)
 
     And [arm64_chip_boot](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_boot.c#L73-L105)
+
+## Boot Chip
 
 TODO
 
@@ -286,15 +298,23 @@ TODO
 
 TODO: After fault
 
+## After Boot Chip
+
 [arm64_chip_boot](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_boot.c#L73-L105)
 
 -   Calls [a64_board_initialize](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_boardinit.c#L59-L85)
 
 -   And [a64_earlyserialinit](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L590-L619)
 
+## After Primary Routine
+
 [arm64_boot_primary_c_routine](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L179-L184)
 
 -   Calls nx_start
+
+# Daily Automated Build and Test
+
+TODO
 
 # What's Next
 
