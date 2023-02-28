@@ -81,7 +81,7 @@
 <li><a href="#daily-automated-build-and-test">6 Daily Automated Build and Test</a><ul></ul></li>
 <li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>10 Mar 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/unicorn2-title.jpg" alt="Call Graph for Apache NuttX Real-Time Operating System" /></p>
-<p><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><em>(Clickable Call Graph for Apache NuttX RTOS)</em></a></p>
+<p><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><em>Clickable Call Graph for Apache NuttX RTOS</em></a></p>
 <p>Last week we ran <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX Real-Time Operating System</strong></a> (RTOS) on <a href="https://www.unicorn-engine.org/"><strong>Unicorn Emulator</strong></a>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/unicorn"><strong>“(Possibly) Emulate PinePhone with Unicorn Emulator”</strong></a></li>
@@ -90,13 +90,13 @@
 <p>In this article we’ll create some tools  to <strong>troubleshoot the Arm64 Exception</strong> in NuttX…</p>
 <ul>
 <li>
-<p>Render the <a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>Call Graph</strong></a> for Apache NuttX RTOS (pic above)</p>
+<p>Render the <a href="https://en.wikipedia.org/wiki/Call_graph"><strong>Dynamic Call Graph</strong></a> for Apache NuttX RTOS, to understand how it boots (pic above)</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>Make it clickable</strong></a>, so we can browse the <strong>NuttX Source Code</strong></p>
+<p><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>Make it Clickable</strong></a>, so we can browse the <strong>NuttX Source Code</strong> as we explore the Call Graph</p>
 </li>
 <li>
-<p>We’ll use a <strong>Block Execution Hook</strong> in Unicorn Emulator to generate the Call Graph in Rust</p>
+<p>We’ll use a <strong>Block Execution Hook</strong> in Unicorn Emulator to generate the Call Graph with Rust</p>
 </li>
 <li>
 <p>We’ll call the Rust Libraries <a href="https://crates.io/crates/addr2line"><strong>addr2line</strong></a> and <a href="https://crates.io/crates/gimli"><strong>gimli</strong></a> to map the Code Addresses to NuttX Kernel Functions</p>
