@@ -157,7 +157,8 @@ fn hook_block(
     print!(", {name}");
   }
 
-  // Print the Source Filename, Line and Column for the Arm64 Address
+  // Print the Source Filename, Line Number
+  // and Column Number for the Arm64 Address
   let loc = map_address_to_location(address);
   let (ref file, line, col) = loc;
   let file = file.clone().unwrap_or("".to_string());  // Default filename is ""
@@ -177,18 +178,22 @@ But first we look inside __map_address_to_function__ and __map_address_to_locati
 
 # DWARF Debug Symbols
 
-TODO
+_How will we load the Debug Symbols from our ELF File?_
 
-We map the Block Address to Function Name and Source File in __map_address_to_function__ and __map_address_to_location__:  [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L174-L193)
+Our ELF File contains the Debug Symbols in [__DWARF Format__](https://en.wikipedia.org/wiki/DWARF).
+
+The Rust Crates [__addr2line__](https://crates.io/crates/addr2line) and [__gimli__](https://crates.io/crates/gimli) will parse the DWARF Debug Symbols in our ELF File.
+
+This is how we call the crates to map an __Arm64 Address to Function Name__:  [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L174-L193)
 
 ```rust
 /// Map the Arm64 Code Address to the Function Name 
-/// by looking up the ELF Context
+/// by looking up the DWARF Debug Symbols
 fn map_address_to_function(
-  address: u64         // Code Address
+  address: u64         // Arm64 Code Address
 ) -> Option<String> {  // Return the Function Name
 
-  // Lookup the Arm64 Code Address in the ELF Context
+  // Lookup the DWARF Frame for the Arm64 Code Address
   let context = ELF_CONTEXT.context.borrow();
   let mut frames = context.find_frames(address)
     .expect("failed to find frames");
@@ -202,46 +207,54 @@ fn map_address_to_function(
       }
     }    
   }
+
+  // Function Name not found.
+  // Probably an Arm64 Assembly Routine.
   None
 }
 ```
 
-TODO
+(__ELF_CONTEXT__ contains the parsed Debug Symbols, we'll explain later)
 
+And this is how we map an __Arm64 Address to Source Filename__: 
 [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L195-L221)
 
 ```rust
 /// Map the Arm64 Code Address to the Source Filename,
 /// Line Number and Column Number
 fn map_address_to_location(
-  address: u64     // Code Address
+  address: u64     // Arm64 Code Address
 ) -> (             // Return the...
   Option<String>,  // Filename
   Option<u32>,     // Line Number
   Option<u32>      // Column Number
 ) {
-  // Lookup the Arm64 Code Address in the ELF Context
+  // Lookup the Source Location for the Arm64 Code Address
   let context = ELF_CONTEXT.context.borrow();
   let loc = context.find_location(address)
     .expect("failed to find location");
 
-  // Return the Filename, Line and Column
+  // Return the Source Filename, Line and Column
   if let Some(loc) = loc {
     if let Some(file) = loc.file {
+
+      // Shorten the path
       let s = String::from(file)
         .replace("/private/tmp/nuttx/nuttx/", "")
         .replace("arch/arm64/src/chip", "arch/arm64/src/a64");  // TODO: Handle other chips
       (Some(s), loc.line, loc.column)
     } else {
-      // If Filename missing, return the Line and Column
+      // If Filename is missing, return the Line and Column
       (None, loc.line, loc.column)
     }
   } else {
-    // Filename, Line and Column missing
+    // Filename, Line and Column are missing
     (None, None, None)
   }
 }
 ```
+
+TODO
 
 To run this, we need the [__addr2line__](https://crates.io/crates/addr2line), [__gimli__](https://crates.io/crates/gimli) and [__once_cell__](https://crates.io/crates/once_cell) crates: [Cargo.toml](https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/Cargo.toml#L8-L12)
 
