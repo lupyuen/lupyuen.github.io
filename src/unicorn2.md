@@ -2,27 +2,25 @@
 
 📝 _10 Mar 2023_
 
-![TODO](https://lupyuen.github.io/images/unicorn2-title.jpg)
+![Call Graph for Apache NuttX Real-Time Operating System](https://lupyuen.github.io/images/unicorn2-title.jpg)
 
-TODO
+[_(Clickable Call Graph for Apache NuttX RTOS)_](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)
 
 Last week we ran [__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/what) (RTOS) on [__Unicorn Emulator__](https://www.unicorn-engine.org/)...
 
 -   [__"(Possibly) Emulate PinePhone with Unicorn Emulator"__](https://lupyuen.github.io/articles/unicorn)
 
-And we hit a baffling __Arm64 Exception__ in the (Emulated) __Memory Management Unit__.
+And we hit a baffling [__Arm64 Exception__](https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault) in the (Emulated) __Memory Management Unit__.
+
+To understand the Arm64 Exception, let's render (with Rust) the __Call Graph__ for Apache NuttX RTOS (pic above).
+
+And we'll [__make it clickable__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos), so we can browse the __NuttX Source Code__ as we explore the Call Graph.
+
+Thanks to the (Clickable) Call Graph, we'll explain the complete __Boot Process__ of NuttX RTOS on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone).
+
+# Intercept Code Execution in Unicorn Emulator
 
 TODO
-
--   Block Execution Hook
-
--   Lookup Addresses
-
--   Call Graph
-
--   Boot Trail
-
--   Automated Build and Test
 
 # Map Address to Function with ELF File
 
