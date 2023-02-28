@@ -87,9 +87,24 @@
 <li><a href="https://lupyuen.github.io/articles/unicorn"><strong>“(Possibly) Emulate PinePhone with Unicorn Emulator”</strong></a></li>
 </ul>
 <p>And we hit a baffling <a href="https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault"><strong>Arm64 Exception</strong></a> in the (Emulated) <strong>Memory Management Unit</strong>.</p>
-<p>To understand the Arm64 Exception, let’s render (with Rust) the <strong>Call Graph</strong> for Apache NuttX RTOS (pic above).</p>
-<p>And we’ll <a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>make it clickable</strong></a>, so we can browse the <strong>NuttX Source Code</strong> as we explore the Call Graph.</p>
-<p>Thanks to the (Clickable) Call Graph, we’ll explain the complete <strong>Boot Process</strong> of NuttX RTOS on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>.</p>
+<p>In this article we’ll create some tools  to <strong>troubleshoot the Arm64 Exception</strong> in NuttX…</p>
+<ul>
+<li>
+<p>Render the <a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>Call Graph</strong></a> for Apache NuttX RTOS (pic above)</p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>Make it clickable</strong></a>, so we can browse the <strong>NuttX Source Code</strong></p>
+</li>
+<li>
+<p>We’ll use a <strong>Block Execution Hook</strong> in Unicorn Emulator to generate the Call Graph in Rust</p>
+</li>
+<li>
+<p>We’ll call the Rust Libraries <a href="https://crates.io/crates/addr2line"><strong>addr2line</strong></a> and <a href="https://crates.io/crates/gimli"><strong>gimli</strong></a> to map the Code Addresses to NuttX Kernel Functions</p>
+</li>
+<li>
+<p>And thanks to the (Clickable) Call Graph, we’ll describe the complete <strong>Boot Process</strong> of NuttX RTOS on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a></p>
+</li>
+</ul>
 <h1 id="intercept-code-execution-in-unicorn-emulator"><a href="#intercept-code-execution-in-unicorn-emulator">1 Intercept Code Execution in Unicorn Emulator</a></h1>
 <p>TODO</p>
 <h1 id="map-address-to-function-with-elf-file"><a href="#map-address-to-function-with-elf-file">2 Map Address to Function with ELF File</a></h1>
