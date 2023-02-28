@@ -139,7 +139,7 @@ Let's pretend we're a Debugger (like GDB). The best way to map an Arm64 Address 
 
 The [__DWARF Debug Symbols__](https://en.wikipedia.org/wiki/DWARF) in the [__ELF File__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format)!
 
-Assuming we can __parse the Debug Symbols__ (from our ELF File), our Hook Function will translate the Arm64 Address to Function Name like so: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/222673dfba03dbe2055e823c44f13231d7c67cca/src/main.rs#L127-L156)
+Assuming we can __parse the Debug Symbols__ (from our ELF File), our Hook Function will translate the Arm64 Address to Function Name like so: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L130-L158)
 
 ```rust
 // Hook Function for Block Emulation.
@@ -159,13 +159,11 @@ fn hook_block(
 
   // Print the Source Filename, Line and Column for the Arm64 Address
   let loc = map_address_to_location(address);
-  if let Some((ref file, line, col)) = loc {  // If we find the Source Location...
-    let file = file.clone().unwrap_or("".to_string());  // Default filename is ""
-    let line = line.unwrap_or(0);  // Default line is 0
-    let col  = col.unwrap_or(0);   // Default column is 0
-    print!(", {file}:{line}:{col}");
-  }
-  println!();
+  let (ref file, line, col) = loc;
+  let file = file.clone().unwrap_or("".to_string());  // Default filename is ""
+  let line = line.unwrap_or(0);  // Default line is 0
+  let col  = col.unwrap_or(0);   // Default column is 0
+  println!(", {file}:{line}:{col}");
 }
 ```
 
@@ -181,13 +179,15 @@ But first we look inside __map_address_to_function__ and __map_address_to_locati
 
 TODO
 
-We map the Block Address to Function Name and Source File in __map_address_to_function__ and __map_address_to_location__:  [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/src/main.rs#L172-L219)
+We map the Block Address to Function Name and Source File in __map_address_to_function__ and __map_address_to_location__:  [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L174-L193)
 
 ```rust
-/// Map the Arm64 Code Address to the Function Name by looking up the ELF Context
+/// Map the Arm64 Code Address to the Function Name 
+/// by looking up the ELF Context
 fn map_address_to_function(
   address: u64         // Code Address
-) -> Option<String> {  // Function Name
+) -> Option<String> {  // Return the Function Name
+
   // Lookup the Arm64 Code Address in the ELF Context
   let context = ELF_CONTEXT.context.borrow();
   let mut frames = context.find_frames(address)
@@ -204,15 +204,22 @@ fn map_address_to_function(
   }
   None
 }
+```
 
-/// Map the Arm64 Code Address to the Source Filename, Line and Column
+TODO
+
+[main.rs](https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L195-L221)
+
+```rust
+/// Map the Arm64 Code Address to the Source Filename,
+/// Line Number and Column Number
 fn map_address_to_location(
   address: u64     // Code Address
-) -> Option<(      // Returns...
+) -> (             // Return the...
   Option<String>,  // Filename
-  Option<u32>,     // Line
-  Option<u32>      // Column
-)> {
+  Option<u32>,     // Line Number
+  Option<u32>      // Column Number
+) {
   // Lookup the Arm64 Code Address in the ELF Context
   let context = ELF_CONTEXT.context.borrow();
   let loc = context.find_location(address)
@@ -224,12 +231,14 @@ fn map_address_to_location(
       let s = String::from(file)
         .replace("/private/tmp/nuttx/nuttx/", "")
         .replace("arch/arm64/src/chip", "arch/arm64/src/a64");  // TODO: Handle other chips
-      Some((Some(s), loc.line, loc.column))
+      (Some(s), loc.line, loc.column)
     } else {
-      Some((None, loc.line, loc.column))
+      // If Filename missing, return the Line and Column
+      (None, loc.line, loc.column)
     }
   } else {
-    None
+    // Filename, Line and Column missing
+    (None, None, None)
   }
 }
 ```
@@ -244,7 +253,7 @@ once_cell = "1.17.1"
 unicorn-engine = "2.0.0"
 ```
 
-At startup, we load the [__NuttX ELF File__](https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx) into __ELF_CONTEXT__ as a [__Lazy Static__](https://docs.rs/once_cell/latest/once_cell/): [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/src/main.rs#L288-L322)
+At startup, we load the [__NuttX ELF File__](https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx) into __ELF_CONTEXT__ as a [__Lazy Static__](https://docs.rs/once_cell/latest/once_cell/): [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L288-L322)
 
 ```rust
 use std::rc::Rc;
@@ -350,7 +359,7 @@ Which produces this [Mermaid Flowchart](https://mermaid.js.org/syntax/flowchart.
 
 The Call Graph is generated by our Block Execution Hook like so...
 
-[main.rs](https://github.com/lupyuen/pinephone-emulator/blob/b23c1d251a7fb244f2e396419d12ab532deb3e6b/src/main.rs#L130-L159)
+[main.rs](https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L130-L159)
 
 ```rust
 /// Hook Function for Block Emulation.
@@ -387,7 +396,7 @@ fn hook_block(
 
 `call_graph` prints the Call Graph by looking up the Block Address in the ELF Context...
 
-[main.rs](https://github.com/lupyuen/pinephone-emulator/blob/b23c1d251a7fb244f2e396419d12ab532deb3e6b/src/main.rs#L224-L265)
+[main.rs](https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L224-L265)
 
 ```rust
 /// Print the Mermaid Call Graph for this Function Call:
@@ -436,7 +445,7 @@ fn call_graph(
 
 We map the Block Address to Function Name and Source File in `map_address_to_function` and `map_address_to_location`...
 
-[main.rs](https://github.com/lupyuen/pinephone-emulator/blob/b23c1d251a7fb244f2e396419d12ab532deb3e6b/src/main.rs#L175-L222)
+[main.rs](https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L175-L222)
 
 ```rust
 /// Map the Arm64 Code Address to the Function Name by looking up the ELF Context
