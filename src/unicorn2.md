@@ -30,6 +30,10 @@ CPU Emulators (like Unicorn) can be super helpful for understanding the internal
 
 Let's dive in and learn how...
 
+![Running Apache NuttX RTOS in Unicorn](https://lupyuen.github.io/images/unicorn-code4.png)
+
+[_Running Apache NuttX RTOS in Unicorn_](https://lupyuen.github.io/articles/unicorn#apache-nuttx-rtos-in-unicorn)
+
 # Intercept Code Execution in Unicorn
 
 _What's Unicorn? How does it work with Apache NuttX RTOS?_
@@ -69,7 +73,7 @@ And NuttX starts booting in the Unicorn Emulator!
 
 _So Unicorn works like QEMU?_
 
-Yes but with a fun new twist! Unicorn lets us __intercept the Execution__ of Emulated Code...
+Yes but with a fun new twist: Unicorn lets us __intercept the Execution__ of Emulated Code by attaching a __Hook Function__...
 
 ```rust
 // Add Unicorn Hook that will intercept
