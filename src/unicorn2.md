@@ -24,9 +24,42 @@ In this article we'll create some tools  to __troubleshoot the Arm64 Exception__
 
 -   Thanks to the (Clickable) Call Graph, we'll describe the complete __Boot Process__ of NuttX RTOS on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)
 
--   And how we might do __Automated Daily Build and Test__ for NuttX on PinePhone
+-   And explain how we might do __Automated Daily Build and Test__ for NuttX on PinePhone
 
-# Intercept Code Execution in Unicorn Emulator
+CPU Emulators (like Unicorn) can be super helpful for understanding the internals of __complex embedded programs__... Like Apache NuttX RTOS!
+
+Let's dive in and learn how...
+
+# Intercept Code Execution in Unicorn
+
+In the last article we called [__Unicorn Emulator__](https://lupyuen.github.io/articles/unicorn) (in Rust) to run the Arm64 Machine Code for Apache NuttX RTOS...
+
+```rust
+// Arm64 Machine Code for Apache NuttX RTOS
+let arm64_code = include_bytes!("../nuttx/nuttx.bin");
+
+// Init Unicorn Emulator in Arm64 mode
+let mut unicorn = Unicorn::new(
+  Arch::ARM64,
+  Mode::LITTLE_ENDIAN
+).expect("failed to init Unicorn");
+
+// Magical horse mutates to bird
+let emu = &mut unicorn;
+
+// Omitted: Map Executable Memory and I/O Memory
+...
+
+// Boot NuttX RTOS in Unicorn Emulator
+let err = emu.emu_start(
+  ADDRESS,  // Begin Address
+  ADDRESS + arm64_code.len() as u64,  // End Address
+  0,  // No Timeout
+  0   // Unlimited number of instructions
+);
+```
+
+[(Source)](https://lupyuen.github.io/articles/unicorn#apache-nuttx-rtos-in-unicorn)
 
 TODO
 
