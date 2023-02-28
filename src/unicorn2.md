@@ -4,7 +4,7 @@
 
 ![Call Graph for Apache NuttX Real-Time Operating System](https://lupyuen.github.io/images/unicorn2-title.jpg)
 
-[_(Clickable Call Graph for Apache NuttX RTOS)_](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)
+[_Clickable Call Graph for Apache NuttX RTOS_](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)
 
 Last week we ran [__Apache NuttX Real-Time Operating System__](https://lupyuen.github.io/articles/what) (RTOS) on [__Unicorn Emulator__](https://www.unicorn-engine.org/)...
 
@@ -14,11 +14,11 @@ And we hit a baffling [__Arm64 Exception__](https://lupyuen.github.io/articles/u
 
 In this article we'll create some tools  to __troubleshoot the Arm64 Exception__ in NuttX...
 
--   Render the [__Call Graph__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos) for Apache NuttX RTOS (pic above)
+-   Render the [__Dynamic Call Graph__](https://en.wikipedia.org/wiki/Call_graph) for Apache NuttX RTOS, to understand how it boots (pic above)
 
--   [__Make it clickable__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos), so we can browse the __NuttX Source Code__
+-   [__Make it Clickable__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos), so we can browse the __NuttX Source Code__ as we explore the Call Graph
 
--   We'll use a __Block Execution Hook__ in Unicorn Emulator to generate the Call Graph in Rust
+-   We'll use a __Block Execution Hook__ in Unicorn Emulator to generate the Call Graph with Rust
 
 -   We'll call the Rust Libraries [__addr2line__](https://crates.io/crates/addr2line) and [__gimli__](https://crates.io/crates/gimli) to map the Code Addresses to NuttX Kernel Functions
 
