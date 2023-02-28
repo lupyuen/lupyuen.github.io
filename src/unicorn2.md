@@ -20,9 +20,11 @@ In this article we'll create some tools  to __troubleshoot the Arm64 Exception__
 
 -   We'll use a __Block Execution Hook__ in Unicorn Emulator to generate the Call Graph with Rust
 
--   We'll call the Rust Libraries [__addr2line__](https://crates.io/crates/addr2line) and [__gimli__](https://crates.io/crates/gimli) to map the Code Addresses to NuttX Kernel Functions
+-   And call the Rust Libraries [__addr2line__](https://crates.io/crates/addr2line) and [__gimli__](https://crates.io/crates/gimli) to map the Code Addresses to NuttX Kernel Functions
 
--   And thanks to the (Clickable) Call Graph, we'll describe the complete __Boot Process__ of NuttX RTOS on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)
+-   Thanks to the (Clickable) Call Graph, we'll describe the complete __Boot Process__ of NuttX RTOS on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)
+
+-   And how we might do __Automated Daily Build and Test__ for NuttX on PinePhone
 
 # Intercept Code Execution in Unicorn Emulator
 
@@ -244,7 +246,7 @@ fn map_address_to_location(
 
 -   ["Map Address to Function with ELF File"](https://lupyuen.github.io/articles/unicorn#appendix-map-address-to-function-with-elf-file)
 
-# Boot Trail
+# How NuttX Boots on PinePhone
 
 TODO
 
@@ -316,7 +318,7 @@ TODO: After fault
 
 -   Calls nx_start
 
-# Daily Automated Build and Test
+# Automated Daily Build and Test
 
 TODO
 
