@@ -111,7 +111,9 @@
 <p>CPU Emulators (like Unicorn) can be super helpful for understanding the internals of <strong>complex embedded programs</strong>… Like Apache NuttX RTOS!</p>
 <p>Let’s dive in and learn how…</p>
 <h1 id="intercept-code-execution-in-unicorn"><a href="#intercept-code-execution-in-unicorn">1 Intercept Code Execution in Unicorn</a></h1>
-<p>In the last article we called <a href="https://lupyuen.github.io/articles/unicorn"><strong>Unicorn Emulator</strong></a> (in Rust) to run the Arm64 Machine Code for Apache NuttX RTOS…</p>
+<p><em>What’s Unicorn? How does it work with Apache NuttX RTOS?</em></p>
+<p><a href="https://www.unicorn-engine.org/"><strong>Unicorn</strong></a> is a lightweight <strong>CPU Emulator Framework</strong> based on <a href="http://www.qemu.org/"><strong>QEMU</strong></a>.</p>
+<p>In the <a href="https://lupyuen.github.io/articles/unicorn"><strong>last article</strong></a> we called Unicorn (in Rust) to run the <strong>Arm64 Machine Code</strong> for Apache NuttX RTOS…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Arm64 Machine Code for Apache NuttX RTOS
 </span><span class="kw">let </span>arm64_code = <span class="macro">include_bytes!</span>(<span class="string">&quot;../nuttx/nuttx.bin&quot;</span>);
@@ -125,17 +127,39 @@
 <span class="comment">// Magical horse mutates to bird
 </span><span class="kw">let </span>emu = <span class="kw-2">&amp;mut </span>unicorn;
 
-<span class="comment">// Omitted: Map Executable Memory and I/O Memory
+<span class="comment">// Omitted: Map Executable Memory and I/O Memory in Unicorn
 </span>...
 
 <span class="comment">// Boot NuttX RTOS in Unicorn Emulator
 </span><span class="kw">let </span>err = emu.emu_start(
-  ADDRESS,  <span class="comment">// Begin Address
-  </span>ADDRESS + arm64_code.len() <span class="kw">as </span>u64,  <span class="comment">// End Address
+  <span class="number">0x4008_0000</span>,  <span class="comment">// Begin Address
+  </span><span class="number">0x4008_0000 </span>+ arm64_code.len() <span class="kw">as </span>u64,  <span class="comment">// End Address
   </span><span class="number">0</span>,  <span class="comment">// No Timeout
   </span><span class="number">0   </span><span class="comment">// Unlimited number of instructions
 </span>);</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/unicorn#apache-nuttx-rtos-in-unicorn">(Source)</a></p>
+<p>And NuttX starts booting in the Unicorn Emulator!</p>
+<p><em>So Unicorn works like QEMU?</em></p>
+<p>Yes but with a fun new twist! Unicorn lets us <strong>intercept the Execution</strong> of Emulated Code…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Add Unicorn Hook that will intercept
+// every Block of Arm64 Instructions
+</span><span class="kw">let _ </span>= emu.add_block_hook(hook_block)
+  .expect(<span class="string">&quot;failed to add block hook&quot;</span>);</code></pre></div>
+<p>So we can <strong>trace the flow</strong> of the Emulated Code.</p>
+<p>Here’s the <strong>Hook Function</strong> that will be called whenever Unicorn emulates a Block of Arm64 Instructions…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Hook Function for Block Emulation.
+// Called once for each Block of Arm64 Instructions.
+</span><span class="kw">fn </span>hook_block(
+  <span class="kw">_</span>: <span class="kw-2">&amp;mut </span>Unicorn&lt;()&gt;,  <span class="comment">// Emulator
+  </span>address: u64,  <span class="comment">// Block Address
+  </span>size: u32      <span class="comment">// Block Size
+</span>) {
+  <span class="comment">// TODO: Trace the flow of emulated code
+  </span><span class="macro">println!</span>(<span class="string">&quot;hook_block: address={:#x}, size={:?}&quot;</span>, address, size);
+}</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/unicorn#block-execution-hook">(Source)</a></p>
 <p>TODO</p>
 <h1 id="map-address-to-function-with-elf-file"><a href="#map-address-to-function-with-elf-file">2 Map Address to Function with ELF File</a></h1>
 <p>TODO</p>
