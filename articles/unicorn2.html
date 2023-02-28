@@ -191,7 +191,7 @@ hook_block:
 <p><em>How will we map the Arm64 Address to the Function Name?</em></p>
 <p>Let’s pretend we’re a Debugger (like GDB). The best way to map an Arm64 Address to the Function Name would be…</p>
 <p>The <a href="https://en.wikipedia.org/wiki/DWARF"><strong>DWARF Debug Symbols</strong></a> in the <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format"><strong>ELF File</strong></a>!</p>
-<p>Assuming we can <strong>parse the Debug Symbols</strong> (from our ELF File), our Hook Function will translate the Arm64 Address to Function Name like so: <a href="https://github.com/lupyuen/pinephone-emulator/blob/222673dfba03dbe2055e823c44f13231d7c67cca/src/main.rs#L127-L156">main.rs</a></p>
+<p>Assuming we can <strong>parse the Debug Symbols</strong> (from our ELF File), our Hook Function will translate the Arm64 Address to Function Name like so: <a href="https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L130-L158">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Hook Function for Block Emulation.
 // Called by Unicorn for every Block of Arm64 Instructions.
@@ -210,13 +210,11 @@ hook_block:
 
   <span class="comment">// Print the Source Filename, Line and Column for the Arm64 Address
   </span><span class="kw">let </span>loc = map_address_to_location(address);
-  <span class="kw">if let </span><span class="prelude-val">Some</span>((<span class="kw-2">ref </span>file, line, col)) = loc {  <span class="comment">// If we find the Source Location...
-    </span><span class="kw">let </span>file = file.clone().unwrap_or(<span class="string">&quot;&quot;</span>.to_string());  <span class="comment">// Default filename is &quot;&quot;
-    </span><span class="kw">let </span>line = line.unwrap_or(<span class="number">0</span>);  <span class="comment">// Default line is 0
-    </span><span class="kw">let </span>col  = col.unwrap_or(<span class="number">0</span>);   <span class="comment">// Default column is 0
-    </span><span class="macro">print!</span>(<span class="string">&quot;, {file}:{line}:{col}&quot;</span>);
-  }
-  <span class="macro">println!</span>();
+  <span class="kw">let </span>(<span class="kw-2">ref </span>file, line, col) = loc;
+  <span class="kw">let </span>file = file.clone().unwrap_or(<span class="string">&quot;&quot;</span>.to_string());  <span class="comment">// Default filename is &quot;&quot;
+  </span><span class="kw">let </span>line = line.unwrap_or(<span class="number">0</span>);  <span class="comment">// Default line is 0
+  </span><span class="kw">let </span>col  = col.unwrap_or(<span class="number">0</span>);   <span class="comment">// Default column is 0
+  </span><span class="macro">println!</span>(<span class="string">&quot;, {file}:{line}:{col}&quot;</span>);
 }</code></pre></div>
 <p><em>The Debug Symbols will tell us the Source Filename?</em></p>
 <p>Yep the <strong>Source Filename, Line Number and Column Number</strong> are in the DWARF Debug Symbols too!</p>
@@ -224,12 +222,14 @@ hook_block:
 <p>But first we look inside <strong>map_address_to_function</strong> and <strong>map_address_to_location</strong>…</p>
 <h1 id="dwarf-debug-symbols"><a href="#dwarf-debug-symbols">3 DWARF Debug Symbols</a></h1>
 <p>TODO</p>
-<p>We map the Block Address to Function Name and Source File in <strong>map_address_to_function</strong> and <strong>map_address_to_location</strong>:  <a href="https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/src/main.rs#L172-L219">main.rs</a></p>
+<p>We map the Block Address to Function Name and Source File in <strong>map_address_to_function</strong> and <strong>map_address_to_location</strong>:  <a href="https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L174-L193">main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Map the Arm64 Code Address to the Function Name by looking up the ELF Context
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Map the Arm64 Code Address to the Function Name 
+/// by looking up the ELF Context
 </span><span class="kw">fn </span>map_address_to_function(
   address: u64         <span class="comment">// Code Address
-</span>) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {  <span class="comment">// Function Name
+</span>) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {  <span class="comment">// Return the Function Name
+
   // Lookup the Arm64 Code Address in the ELF Context
   </span><span class="kw">let </span>context = ELF_CONTEXT.context.borrow();
   <span class="kw">let </span><span class="kw-2">mut </span>frames = context.find_frames(address)
@@ -245,16 +245,19 @@ hook_block:
     }    
   }
   <span class="prelude-val">None
-</span>}
+</span>}</code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L195-L221">main.rs</a></p>
 
-<span class="doccomment">/// Map the Arm64 Code Address to the Source Filename, Line and Column
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Map the Arm64 Code Address to the Source Filename,
+/// Line Number and Column Number
 </span><span class="kw">fn </span>map_address_to_location(
   address: u64     <span class="comment">// Code Address
-</span>) -&gt; <span class="prelude-ty">Option</span>&lt;(      <span class="comment">// Returns...
+</span>) -&gt; (             <span class="comment">// Return the...
   </span><span class="prelude-ty">Option</span>&lt;String&gt;,  <span class="comment">// Filename
-  </span><span class="prelude-ty">Option</span>&lt;u32&gt;,     <span class="comment">// Line
-  </span><span class="prelude-ty">Option</span>&lt;u32&gt;      <span class="comment">// Column
-</span>)&gt; {
+  </span><span class="prelude-ty">Option</span>&lt;u32&gt;,     <span class="comment">// Line Number
+  </span><span class="prelude-ty">Option</span>&lt;u32&gt;      <span class="comment">// Column Number
+</span>) {
   <span class="comment">// Lookup the Arm64 Code Address in the ELF Context
   </span><span class="kw">let </span>context = ELF_CONTEXT.context.borrow();
   <span class="kw">let </span>loc = context.find_location(address)
@@ -266,13 +269,15 @@ hook_block:
       <span class="kw">let </span>s = String::from(file)
         .replace(<span class="string">&quot;/private/tmp/nuttx/nuttx/&quot;</span>, <span class="string">&quot;&quot;</span>)
         .replace(<span class="string">&quot;arch/arm64/src/chip&quot;</span>, <span class="string">&quot;arch/arm64/src/a64&quot;</span>);  <span class="comment">// TODO: Handle other chips
-      </span><span class="prelude-val">Some</span>((<span class="prelude-val">Some</span>(s), loc.line, loc.column))
+      </span>(<span class="prelude-val">Some</span>(s), loc.line, loc.column)
     } <span class="kw">else </span>{
-      <span class="prelude-val">Some</span>((<span class="prelude-val">None</span>, loc.line, loc.column))
+      <span class="comment">// If Filename missing, return the Line and Column
+      </span>(<span class="prelude-val">None</span>, loc.line, loc.column)
     }
   } <span class="kw">else </span>{
-    <span class="prelude-val">None
-  </span>}
+    <span class="comment">// Filename, Line and Column missing
+    </span>(<span class="prelude-val">None</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>)
+  }
 }</code></pre></div>
 <p>To run this, we need the <a href="https://crates.io/crates/addr2line"><strong>addr2line</strong></a>, <a href="https://crates.io/crates/gimli"><strong>gimli</strong></a> and <a href="https://crates.io/crates/once_cell"><strong>once_cell</strong></a> crates: <a href="https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/Cargo.toml#L8-L12">Cargo.toml</a></p>
 <div class="example-wrap"><pre class="language-text"><code>[dependencies]
@@ -281,7 +286,7 @@ gimli = &quot;0.27.2&quot;
 once_cell = &quot;1.17.1&quot;
 unicorn-engine = &quot;2.0.0&quot;
 </code></pre></div>
-<p>At startup, we load the <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx"><strong>NuttX ELF File</strong></a> into <strong>ELF_CONTEXT</strong> as a <a href="https://docs.rs/once_cell/latest/once_cell/"><strong>Lazy Static</strong></a>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/src/main.rs#L288-L322">main.rs</a></p>
+<p>At startup, we load the <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx"><strong>NuttX ELF File</strong></a> into <strong>ELF_CONTEXT</strong> as a <a href="https://docs.rs/once_cell/latest/once_cell/"><strong>Lazy Static</strong></a>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L288-L322">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>std::rc::Rc;
 <span class="kw">use </span>std::cell::RefCell;
@@ -368,7 +373,7 @@ hook_block:
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/b0e4019801aaf9860bcb234c8a9c8584">(Source)</a></p>
 <p>The Call Graph is generated by our Block Execution Hook like so…</p>
-<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/b23c1d251a7fb244f2e396419d12ab532deb3e6b/src/main.rs#L130-L159">main.rs</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L130-L159">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function for Block Emulation.
 /// Called once for each Basic Block of Arm64 Instructions.
@@ -401,7 +406,7 @@ hook_block:
     </span>call_graph(address, size, function, loc);
 }</code></pre></div>
 <p><code>call_graph</code> prints the Call Graph by looking up the Block Address in the ELF Context…</p>
-<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/b23c1d251a7fb244f2e396419d12ab532deb3e6b/src/main.rs#L224-L265">main.rs</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L224-L265">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Print the Mermaid Call Graph for this Function Call:
 /// cargo run | grep call_graph | cut -c 12-
@@ -446,7 +451,7 @@ hook_block:
     }
 }</code></pre></div>
 <p>We map the Block Address to Function Name and Source File in <code>map_address_to_function</code> and <code>map_address_to_location</code>…</p>
-<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/b23c1d251a7fb244f2e396419d12ab532deb3e6b/src/main.rs#L175-L222">main.rs</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L175-L222">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Map the Arm64 Code Address to the Function Name by looking up the ELF Context
 </span><span class="kw">fn </span>map_address_to_function(
