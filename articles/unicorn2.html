@@ -67,7 +67,7 @@
 
     <h1 class="title">(Clickable) Call Graph for Apache NuttX Real-Time Operating System</h1>
     <nav id="TOC"><ul>
-<li><a href="#intercept-code-execution-in-unicorn-emulator">1 Intercept Code Execution in Unicorn Emulator</a><ul></ul></li>
+<li><a href="#intercept-code-execution-in-unicorn">1 Intercept Code Execution in Unicorn</a><ul></ul></li>
 <li><a href="#map-address-to-function-with-elf-file">2 Map Address to Function with ELF File</a><ul></ul></li>
 <li><a href="#call-graph-for-apache-nuttx-rtos">3 Call Graph for Apache NuttX RTOS</a><ul></ul></li>
 <li><a href="#how-nuttx-boots-on-pinephone">4 How NuttX Boots on PinePhone</a><ul>
@@ -105,10 +105,37 @@
 <p>Thanks to the (Clickable) Call Graph, we’ll describe the complete <strong>Boot Process</strong> of NuttX RTOS on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a></p>
 </li>
 <li>
-<p>And how we might do <strong>Automated Daily Build and Test</strong> for NuttX on PinePhone</p>
+<p>And explain how we might do <strong>Automated Daily Build and Test</strong> for NuttX on PinePhone</p>
 </li>
 </ul>
-<h1 id="intercept-code-execution-in-unicorn-emulator"><a href="#intercept-code-execution-in-unicorn-emulator">1 Intercept Code Execution in Unicorn Emulator</a></h1>
+<p>CPU Emulators (like Unicorn) can be super helpful for understanding the internals of <strong>complex embedded programs</strong>… Like Apache NuttX RTOS!</p>
+<p>Let’s dive in and learn how…</p>
+<h1 id="intercept-code-execution-in-unicorn"><a href="#intercept-code-execution-in-unicorn">1 Intercept Code Execution in Unicorn</a></h1>
+<p>In the last article we called <a href="https://lupyuen.github.io/articles/unicorn"><strong>Unicorn Emulator</strong></a> (in Rust) to run the Arm64 Machine Code for Apache NuttX RTOS…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Arm64 Machine Code for Apache NuttX RTOS
+</span><span class="kw">let </span>arm64_code = <span class="macro">include_bytes!</span>(<span class="string">&quot;../nuttx/nuttx.bin&quot;</span>);
+
+<span class="comment">// Init Unicorn Emulator in Arm64 mode
+</span><span class="kw">let </span><span class="kw-2">mut </span>unicorn = Unicorn::new(
+  Arch::ARM64,
+  Mode::LITTLE_ENDIAN
+).expect(<span class="string">&quot;failed to init Unicorn&quot;</span>);
+
+<span class="comment">// Magical horse mutates to bird
+</span><span class="kw">let </span>emu = <span class="kw-2">&amp;mut </span>unicorn;
+
+<span class="comment">// Omitted: Map Executable Memory and I/O Memory
+</span>...
+
+<span class="comment">// Boot NuttX RTOS in Unicorn Emulator
+</span><span class="kw">let </span>err = emu.emu_start(
+  ADDRESS,  <span class="comment">// Begin Address
+  </span>ADDRESS + arm64_code.len() <span class="kw">as </span>u64,  <span class="comment">// End Address
+  </span><span class="number">0</span>,  <span class="comment">// No Timeout
+  </span><span class="number">0   </span><span class="comment">// Unlimited number of instructions
+</span>);</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/unicorn#apache-nuttx-rtos-in-unicorn">(Source)</a></p>
 <p>TODO</p>
 <h1 id="map-address-to-function-with-elf-file"><a href="#map-address-to-function-with-elf-file">2 Map Address to Function with ELF File</a></h1>
 <p>TODO</p>
