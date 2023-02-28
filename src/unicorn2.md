@@ -547,7 +547,7 @@ TODO
 
 -   Which fails with MMU Fault
 
-# After MMU Fault
+# NuttX Continues Booting on PinePhone
 
 TODO: After fault
 
