@@ -95,7 +95,7 @@ fn hook_block(
   size: u32      // Block Size
 ) {
   // TODO: Trace the flow of emulated code
-  println!("hook_block: address={:#x}, size={:?}", address, size);
+  println!("hook_block:  address={address:#010x}, size={size:02}");
 }
 ```
 
@@ -135,9 +135,11 @@ hook_block:
 
 _How will we map the Arm64 Address to the Function Name?_
 
-TODO
+Let's pretend we're a Debugger (like GDB). The best way to map an Arm64 Address to the Function Name would be...
 
-Our Hook Function looks up the Address in the [__DWARF Debug Symbols__](https://crates.io/crates/gimli) of the [__NuttX ELF File__](https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx), like so: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/src/main.rs#L127-L156)
+The [__DWARF Debug Symbols__](https://en.wikipedia.org/wiki/DWARF) in the [__ELF File__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format)!
+
+Assuming we can __parse the Debug Symbols__ (from our ELF File), our Hook Function will translate the Arm64 Address to Function Name like so: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/222673dfba03dbe2055e823c44f13231d7c67cca/src/main.rs#L127-L156)
 
 ```rust
 // Hook Function for Block Emulation.
@@ -147,25 +149,37 @@ fn hook_block(
   address: u64,  // Block Address
   size: u32      // Block Size
 ) {
-  print!("hook_block:  address={:#010x}, size={:02}", address, size);
+  print!("hook_block:  address={address:#010x}, size={size:02}");
 
-  // Print the Function Name
+  // Print the Function Name for the Arm64 Address
   let function = map_address_to_function(address);
-  if let Some(ref name) = function {
-    print!(", {}", name);
+  if let Some(ref name) = function {  // If we find the Function Name...
+    print!(", {name}");
   }
 
-  // Print the Source Filename
+  // Print the Source Filename, Line and Column for the Arm64 Address
   let loc = map_address_to_location(address);
-  if let Some((ref file, line, col)) = loc {
-    let file = file.clone().unwrap_or("".to_string());
-    let line = line.unwrap_or(0);
-    let col = col.unwrap_or(0);
-    print!(", {}:{}:{}", file, line, col);
+  if let Some((ref file, line, col)) = loc {  // If we find the Source Location...
+    let file = file.clone().unwrap_or("".to_string());  // Default filename is ""
+    let line = line.unwrap_or(0);  // Default line is 0
+    let col  = col.unwrap_or(0);   // Default column is 0
+    print!(", {file}:{line}:{col}");
   }
   println!();
 }
 ```
+
+_The Debug Symbols will tell us the Source Filename?_
+
+Yep the __Source Filename, Line Number and Column Number__ are in the DWARF Debug Symbols too!
+
+Later we'll print them to make the Call Graph clickable.
+
+But first we look inside __map_address_to_function__ and __map_address_to_location__...
+
+# DWARF Debug Symbols
+
+TODO
 
 We map the Block Address to Function Name and Source File in __map_address_to_function__ and __map_address_to_location__:  [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/src/main.rs#L172-L219)
 
