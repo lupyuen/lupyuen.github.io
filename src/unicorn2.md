@@ -88,7 +88,7 @@ Here's the __Hook Function__ that will be called whenever Unicorn emulates a Blo
 
 ```rust
 // Hook Function for Block Emulation.
-// Called once for each Block of Arm64 Instructions.
+// Called by Unicorn for every Block of Arm64 Instructions.
 fn hook_block(
   _: &mut Unicorn<()>,  // Emulator
   address: u64,  // Block Address
@@ -101,37 +101,197 @@ fn hook_block(
 
 [(Source)](https://lupyuen.github.io/articles/unicorn#block-execution-hook)
 
-Let's modify the Hook Function to tell us which function it's emulating...
+Unicorn Emulator calls our Hook Function, passing the...
 
-# Map Address to Function with ELF File
+-   __Address__ of the Arm64 Code Block being emulated
 
-TODO
+-   __Size__ of the Arm64 Code Block being emulated
 
-Our __Block Execution Hook__ now prints the __Function Name__ and the __Filename__...
+Let's modify the Hook Function to tell us what code it's emulating...
+
+[(What's an Arm64 Code Block?)](https://github.com/lupyuen/pinephone-emulator#what-is-a-block-of-arm64-instructions)
+
+# Map Address to Function
+
+_How do we use a Hook Function..._
+
+_To tell us what code Unicorn is emulating?_
+
+Earlier we saw that Unicorn calls our Hook Function with the __Address of the Arm64 Code__ that's being emulated.
+
+Let's lookup the Arm64 Code Address to find the __Name of the Function__ that's running right now...
 
 ```text
 hook_block:  
-  address=0x40080eb0, 
-  size=12, 
-  setup_page_tables, 
-  arch/arm64/src/common/arm64_mmu.c:516:25
+  address=0x40080920
+  arm64_chip_boot
 
 hook_block:  
-  address=0x40080eec, 
-  size=16, 
-  enable_mmu_el1, 
-  arch/arm64/src/common/arm64_mmu.c:543:11
-
-err=Err(EXCEPTION)
+  address=0x40080e50
+  arm64_mmu_init
 ```
 
 [(Source)](https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a)
 
-Our Hook Function looks up the Address in the [__DWARF Debug Symbols__](https://crates.io/crates/gimli) of the [__NuttX ELF File__](https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx).
+_How will we map the Arm64 Address to the Function Name?_
 
-This is explained here...
+TODO
 
--   ["Map Address to Function with ELF File"](https://lupyuen.github.io/articles/unicorn#appendix-map-address-to-function-with-elf-file)
+Our Hook Function looks up the Address in the [__DWARF Debug Symbols__](https://crates.io/crates/gimli) of the [__NuttX ELF File__](https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx), like so: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/src/main.rs#L127-L156)
+
+```rust
+// Hook Function for Block Emulation.
+// Called by Unicorn for every Block of Arm64 Instructions.
+fn hook_block(
+  _: &mut Unicorn<()>,  // Emulator
+  address: u64,  // Block Address
+  size: u32      // Block Size
+) {
+  print!("hook_block:  address={:#010x}, size={:02}", address, size);
+
+  // Print the Function Name
+  let function = map_address_to_function(address);
+  if let Some(ref name) = function {
+    print!(", {}", name);
+  }
+
+  // Print the Source Filename
+  let loc = map_address_to_location(address);
+  if let Some((ref file, line, col)) = loc {
+    let file = file.clone().unwrap_or("".to_string());
+    let line = line.unwrap_or(0);
+    let col = col.unwrap_or(0);
+    print!(", {}:{}:{}", file, line, col);
+  }
+  println!();
+}
+```
+
+We map the Block Address to Function Name and Source File in __map_address_to_function__ and __map_address_to_location__:  [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/src/main.rs#L172-L219)
+
+```rust
+/// Map the Arm64 Code Address to the Function Name by looking up the ELF Context
+fn map_address_to_function(
+  address: u64         // Code Address
+) -> Option<String> {  // Function Name
+  // Lookup the Arm64 Code Address in the ELF Context
+  let context = ELF_CONTEXT.context.borrow();
+  let mut frames = context.find_frames(address)
+    .expect("failed to find frames");
+
+  // Return the Function Name
+  if let Some(frame) = frames.next().unwrap() {
+    if let Some(func) = frame.function {
+      if let Ok(name) = func.raw_name() {
+        let s = String::from(name);
+        return Some(s);
+      }
+    }    
+  }
+  None
+}
+
+/// Map the Arm64 Code Address to the Source Filename, Line and Column
+fn map_address_to_location(
+  address: u64     // Code Address
+) -> Option<(      // Returns...
+  Option<String>,  // Filename
+  Option<u32>,     // Line
+  Option<u32>      // Column
+)> {
+  // Lookup the Arm64 Code Address in the ELF Context
+  let context = ELF_CONTEXT.context.borrow();
+  let loc = context.find_location(address)
+    .expect("failed to find location");
+
+  // Return the Filename, Line and Column
+  if let Some(loc) = loc {
+    if let Some(file) = loc.file {
+      let s = String::from(file)
+        .replace("/private/tmp/nuttx/nuttx/", "")
+        .replace("arch/arm64/src/chip", "arch/arm64/src/a64");  // TODO: Handle other chips
+      Some((Some(s), loc.line, loc.column))
+    } else {
+      Some((None, loc.line, loc.column))
+    }
+  } else {
+    None
+  }
+}
+```
+
+To run this, we need the [__addr2line__](https://crates.io/crates/addr2line), [__gimli__](https://crates.io/crates/gimli) and [__once_cell__](https://crates.io/crates/once_cell) crates: [Cargo.toml](https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/Cargo.toml#L8-L12)
+
+```text
+[dependencies]
+addr2line = "0.19.0"
+gimli = "0.27.2"
+once_cell = "1.17.1"
+unicorn-engine = "2.0.0"
+```
+
+At startup, we load the [__NuttX ELF File__](https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx) into __ELF_CONTEXT__ as a [__Lazy Static__](https://docs.rs/once_cell/latest/once_cell/): [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/src/main.rs#L288-L322)
+
+```rust
+use std::rc::Rc;
+use std::cell::RefCell;
+use once_cell::sync::Lazy;
+
+/// ELF File for mapping Addresses to Function Names and Filenames
+const ELF_FILENAME: &str = "nuttx/nuttx";
+
+/// ELF Context for mapping Addresses to Function Names and Filenames
+static ELF_CONTEXT: Lazy<ElfContext> = Lazy::new(|| {
+  // Open the ELF File
+  let path = std::path::PathBuf::from(ELF_FILENAME);
+  let file_data = std::fs::read(path)
+    .expect("failed to read ELF");
+  let slice = file_data.as_slice();
+
+  // Parse the ELF File
+  let obj = addr2line::object::read::File::parse(slice)
+    .expect("failed to parse ELF");
+  let context = addr2line::Context::new(&obj)
+    .expect("failed to parse debug info");
+
+  // Set the ELF Context
+  ElfContext {
+    context: RefCell::new(context),
+  }
+});
+
+/// Wrapper for ELF Context. Needed for `Lazy`
+struct ElfContext {
+  context: RefCell<
+    addr2line::Context<
+      gimli::EndianReader<
+        gimli::RunTimeEndian, 
+        Rc<[u8]>  // Doesn't implement Send / Sync
+      >
+    >
+  >
+}
+
+/// Send and Sync for ELF Context. Needed for `Lazy`
+unsafe impl Send for ElfContext {}
+unsafe impl Sync for ElfContext {}
+```
+
+TODO
+
+```text
+hook_block:
+  address=0x40080920
+  size=12
+  arm64_chip_boot
+  arch/arm64/src/chip/a64_boot.c:82:1
+
+hook_block:  
+  address=0x40080e50
+  size=28
+  arm64_mmu_init
+  arch/arm64/src/common/arm64_mmu.c:584:1
+```
 
 # Call Graph for Apache NuttX RTOS
 
