@@ -208,7 +208,8 @@ hook_block:
     </span><span class="macro">print!</span>(<span class="string">&quot;, {name}&quot;</span>);
   }
 
-  <span class="comment">// Print the Source Filename, Line and Column for the Arm64 Address
+  <span class="comment">// Print the Source Filename, Line Number
+  // and Column Number for the Arm64 Address
   </span><span class="kw">let </span>loc = map_address_to_location(address);
   <span class="kw">let </span>(<span class="kw-2">ref </span>file, line, col) = loc;
   <span class="kw">let </span>file = file.clone().unwrap_or(<span class="string">&quot;&quot;</span>.to_string());  <span class="comment">// Default filename is &quot;&quot;
@@ -221,16 +222,18 @@ hook_block:
 <p>Later we’ll print them to make the Call Graph clickable.</p>
 <p>But first we look inside <strong>map_address_to_function</strong> and <strong>map_address_to_location</strong>…</p>
 <h1 id="dwarf-debug-symbols"><a href="#dwarf-debug-symbols">3 DWARF Debug Symbols</a></h1>
-<p>TODO</p>
-<p>We map the Block Address to Function Name and Source File in <strong>map_address_to_function</strong> and <strong>map_address_to_location</strong>:  <a href="https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L174-L193">main.rs</a></p>
+<p><em>How will we load the Debug Symbols from our ELF File?</em></p>
+<p>Our ELF File contains the Debug Symbols in <a href="https://en.wikipedia.org/wiki/DWARF"><strong>DWARF Format</strong></a>.</p>
+<p>The Rust Crates <a href="https://crates.io/crates/addr2line"><strong>addr2line</strong></a> and <a href="https://crates.io/crates/gimli"><strong>gimli</strong></a> will parse the DWARF Debug Symbols in our ELF File.</p>
+<p>This is how we call the crates to map an <strong>Arm64 Address to Function Name</strong>:  <a href="https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L174-L193">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Map the Arm64 Code Address to the Function Name 
-/// by looking up the ELF Context
+/// by looking up the DWARF Debug Symbols
 </span><span class="kw">fn </span>map_address_to_function(
-  address: u64         <span class="comment">// Code Address
+  address: u64         <span class="comment">// Arm64 Code Address
 </span>) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {  <span class="comment">// Return the Function Name
 
-  // Lookup the Arm64 Code Address in the ELF Context
+  // Lookup the DWARF Frame for the Arm64 Code Address
   </span><span class="kw">let </span>context = ELF_CONTEXT.context.borrow();
   <span class="kw">let </span><span class="kw-2">mut </span>frames = context.find_frames(address)
     .expect(<span class="string">&quot;failed to find frames&quot;</span>);
@@ -244,41 +247,48 @@ hook_block:
       }
     }    
   }
-  <span class="prelude-val">None
+
+  <span class="comment">// Function Name not found.
+  // Probably an Arm64 Assembly Routine.
+  </span><span class="prelude-val">None
 </span>}</code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L195-L221">main.rs</a></p>
+<p>(<strong>ELF_CONTEXT</strong> contains the parsed Debug Symbols, we’ll explain later)</p>
+<p>And this is how we map an <strong>Arm64 Address to Source Filename</strong>: 
+<a href="https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L195-L221">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Map the Arm64 Code Address to the Source Filename,
 /// Line Number and Column Number
 </span><span class="kw">fn </span>map_address_to_location(
-  address: u64     <span class="comment">// Code Address
+  address: u64     <span class="comment">// Arm64 Code Address
 </span>) -&gt; (             <span class="comment">// Return the...
   </span><span class="prelude-ty">Option</span>&lt;String&gt;,  <span class="comment">// Filename
   </span><span class="prelude-ty">Option</span>&lt;u32&gt;,     <span class="comment">// Line Number
   </span><span class="prelude-ty">Option</span>&lt;u32&gt;      <span class="comment">// Column Number
 </span>) {
-  <span class="comment">// Lookup the Arm64 Code Address in the ELF Context
+  <span class="comment">// Lookup the Source Location for the Arm64 Code Address
   </span><span class="kw">let </span>context = ELF_CONTEXT.context.borrow();
   <span class="kw">let </span>loc = context.find_location(address)
     .expect(<span class="string">&quot;failed to find location&quot;</span>);
 
-  <span class="comment">// Return the Filename, Line and Column
+  <span class="comment">// Return the Source Filename, Line and Column
   </span><span class="kw">if let </span><span class="prelude-val">Some</span>(loc) = loc {
     <span class="kw">if let </span><span class="prelude-val">Some</span>(file) = loc.file {
-      <span class="kw">let </span>s = String::from(file)
+
+      <span class="comment">// Shorten the path
+      </span><span class="kw">let </span>s = String::from(file)
         .replace(<span class="string">&quot;/private/tmp/nuttx/nuttx/&quot;</span>, <span class="string">&quot;&quot;</span>)
         .replace(<span class="string">&quot;arch/arm64/src/chip&quot;</span>, <span class="string">&quot;arch/arm64/src/a64&quot;</span>);  <span class="comment">// TODO: Handle other chips
       </span>(<span class="prelude-val">Some</span>(s), loc.line, loc.column)
     } <span class="kw">else </span>{
-      <span class="comment">// If Filename missing, return the Line and Column
+      <span class="comment">// If Filename is missing, return the Line and Column
       </span>(<span class="prelude-val">None</span>, loc.line, loc.column)
     }
   } <span class="kw">else </span>{
-    <span class="comment">// Filename, Line and Column missing
+    <span class="comment">// Filename, Line and Column are missing
     </span>(<span class="prelude-val">None</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>)
   }
 }</code></pre></div>
+<p>TODO</p>
 <p>To run this, we need the <a href="https://crates.io/crates/addr2line"><strong>addr2line</strong></a>, <a href="https://crates.io/crates/gimli"><strong>gimli</strong></a> and <a href="https://crates.io/crates/once_cell"><strong>once_cell</strong></a> crates: <a href="https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/Cargo.toml#L8-L12">Cargo.toml</a></p>
 <div class="example-wrap"><pre class="language-text"><code>[dependencies]
 addr2line = &quot;0.19.0&quot;
