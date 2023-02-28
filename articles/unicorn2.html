@@ -70,7 +70,7 @@
 <li><a href="#intercept-code-execution-in-unicorn-emulator">1 Intercept Code Execution in Unicorn Emulator</a><ul></ul></li>
 <li><a href="#map-address-to-function-with-elf-file">2 Map Address to Function with ELF File</a><ul></ul></li>
 <li><a href="#call-graph-for-apache-nuttx-rtos">3 Call Graph for Apache NuttX RTOS</a><ul></ul></li>
-<li><a href="#boot-trail">4 Boot Trail</a><ul>
+<li><a href="#how-nuttx-boots-on-pinephone">4 How NuttX Boots on PinePhone</a><ul>
 <li><a href="#arm64-header">4.1 Arm64 Header</a><ul></ul></li>
 <li><a href="#init-el1">4.2 Init EL1</a><ul></ul></li>
 <li><a href="#primary-routine">4.3 Primary Routine</a><ul></ul></li>
@@ -78,7 +78,7 @@
 <li><a href="#after-mmu-fault">5 After MMU Fault</a><ul>
 <li><a href="#after-boot-chip">5.1 After Boot Chip</a><ul></ul></li>
 <li><a href="#after-primary-routine">5.2 After Primary Routine</a><ul></ul></li></ul></li>
-<li><a href="#daily-automated-build-and-test">6 Daily Automated Build and Test</a><ul></ul></li>
+<li><a href="#automated-daily-build-and-test">6 Automated Daily Build and Test</a><ul></ul></li>
 <li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>10 Mar 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/unicorn2-title.jpg" alt="Call Graph for Apache NuttX Real-Time Operating System" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><em>Clickable Call Graph for Apache NuttX RTOS</em></a></p>
@@ -99,10 +99,13 @@
 <p>We’ll use a <strong>Block Execution Hook</strong> in Unicorn Emulator to generate the Call Graph with Rust</p>
 </li>
 <li>
-<p>We’ll call the Rust Libraries <a href="https://crates.io/crates/addr2line"><strong>addr2line</strong></a> and <a href="https://crates.io/crates/gimli"><strong>gimli</strong></a> to map the Code Addresses to NuttX Kernel Functions</p>
+<p>And call the Rust Libraries <a href="https://crates.io/crates/addr2line"><strong>addr2line</strong></a> and <a href="https://crates.io/crates/gimli"><strong>gimli</strong></a> to map the Code Addresses to NuttX Kernel Functions</p>
 </li>
 <li>
-<p>And thanks to the (Clickable) Call Graph, we’ll describe the complete <strong>Boot Process</strong> of NuttX RTOS on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a></p>
+<p>Thanks to the (Clickable) Call Graph, we’ll describe the complete <strong>Boot Process</strong> of NuttX RTOS on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a></p>
+</li>
+<li>
+<p>And how we might do <strong>Automated Daily Build and Test</strong> for NuttX on PinePhone</p>
 </li>
 </ul>
 <h1 id="intercept-code-execution-in-unicorn-emulator"><a href="#intercept-code-execution-in-unicorn-emulator">1 Intercept Code Execution in Unicorn Emulator</a></h1>
@@ -293,7 +296,7 @@ err=Err(EXCEPTION)
 <ul>
 <li><a href="https://lupyuen.github.io/articles/unicorn#appendix-map-address-to-function-with-elf-file">“Map Address to Function with ELF File”</a></li>
 </ul>
-<h1 id="boot-trail"><a href="#boot-trail">4 Boot Trail</a></h1>
+<h1 id="how-nuttx-boots-on-pinephone"><a href="#how-nuttx-boots-on-pinephone">4 How NuttX Boots on PinePhone</a></h1>
 <p>TODO</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>“Call Graph for Apache NuttX RTOS”</strong></a></li>
@@ -369,7 +372,7 @@ err=Err(EXCEPTION)
 <ul>
 <li>Calls nx_start</li>
 </ul>
-<h1 id="daily-automated-build-and-test"><a href="#daily-automated-build-and-test">6 Daily Automated Build and Test</a></h1>
+<h1 id="automated-daily-build-and-test"><a href="#automated-daily-build-and-test">6 Automated Daily Build and Test</a></h1>
 <p>TODO</p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
