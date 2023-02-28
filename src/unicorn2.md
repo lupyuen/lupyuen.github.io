@@ -32,7 +32,11 @@ Let's dive in and learn how...
 
 # Intercept Code Execution in Unicorn
 
-In the last article we called [__Unicorn Emulator__](https://lupyuen.github.io/articles/unicorn) (in Rust) to run the Arm64 Machine Code for Apache NuttX RTOS...
+_What's Unicorn? How does it work with Apache NuttX RTOS?_
+
+[__Unicorn__](https://www.unicorn-engine.org/) is a lightweight __CPU Emulator Framework__ based on [__QEMU__](http://www.qemu.org/).
+
+In the [__last article__](https://lupyuen.github.io/articles/unicorn) we called Unicorn (in Rust) to run the __Arm64 Machine Code__ for Apache NuttX RTOS...
 
 ```rust
 // Arm64 Machine Code for Apache NuttX RTOS
@@ -47,19 +51,51 @@ let mut unicorn = Unicorn::new(
 // Magical horse mutates to bird
 let emu = &mut unicorn;
 
-// Omitted: Map Executable Memory and I/O Memory
+// Omitted: Map Executable Memory and I/O Memory in Unicorn
 ...
 
 // Boot NuttX RTOS in Unicorn Emulator
 let err = emu.emu_start(
-  ADDRESS,  // Begin Address
-  ADDRESS + arm64_code.len() as u64,  // End Address
+  0x4008_0000,  // Begin Address
+  0x4008_0000 + arm64_code.len() as u64,  // End Address
   0,  // No Timeout
   0   // Unlimited number of instructions
 );
 ```
 
 [(Source)](https://lupyuen.github.io/articles/unicorn#apache-nuttx-rtos-in-unicorn)
+
+And NuttX starts booting in the Unicorn Emulator!
+
+_So Unicorn works like QEMU?_
+
+Yes but with a fun new twist! Unicorn lets us __intercept the Execution__ of Emulated Code...
+
+```rust
+// Add Unicorn Hook that will intercept
+// every Block of Arm64 Instructions
+let _ = emu.add_block_hook(hook_block)
+  .expect("failed to add block hook");
+```
+
+So we can __trace the flow__ of the Emulated Code.
+
+Here's the __Hook Function__ that will be called whenever Unicorn emulates a Block of Arm64 Instructions...
+
+```rust
+// Hook Function for Block Emulation.
+// Called once for each Block of Arm64 Instructions.
+fn hook_block(
+  _: &mut Unicorn<()>,  // Emulator
+  address: u64,  // Block Address
+  size: u32      // Block Size
+) {
+  // TODO: Trace the flow of emulated code
+  println!("hook_block: address={:#x}, size={:?}", address, size);
+}
+```
+
+[(Source)](https://lupyuen.github.io/articles/unicorn#block-execution-hook)
 
 TODO
 
