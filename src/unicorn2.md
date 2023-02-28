@@ -101,7 +101,7 @@ fn hook_block(
 
 [(Source)](https://lupyuen.github.io/articles/unicorn#block-execution-hook)
 
-TODO
+Let's modify the Hook Function to tell us which function it's emulating...
 
 # Map Address to Function with ELF File
 
