@@ -110,6 +110,8 @@
 </ul>
 <p>CPU Emulators (like Unicorn) can be super helpful for understanding the internals of <strong>complex embedded programs</strong>… Like Apache NuttX RTOS!</p>
 <p>Let’s dive in and learn how…</p>
+<p><img src="https://lupyuen.github.io/images/unicorn-code4.png" alt="Running Apache NuttX RTOS in Unicorn" /></p>
+<p><a href="https://lupyuen.github.io/articles/unicorn#apache-nuttx-rtos-in-unicorn"><em>Running Apache NuttX RTOS in Unicorn</em></a></p>
 <h1 id="intercept-code-execution-in-unicorn"><a href="#intercept-code-execution-in-unicorn">1 Intercept Code Execution in Unicorn</a></h1>
 <p><em>What’s Unicorn? How does it work with Apache NuttX RTOS?</em></p>
 <p><a href="https://www.unicorn-engine.org/"><strong>Unicorn</strong></a> is a lightweight <strong>CPU Emulator Framework</strong> based on <a href="http://www.qemu.org/"><strong>QEMU</strong></a>.</p>
@@ -140,7 +142,7 @@
 <p><a href="https://lupyuen.github.io/articles/unicorn#apache-nuttx-rtos-in-unicorn">(Source)</a></p>
 <p>And NuttX starts booting in the Unicorn Emulator!</p>
 <p><em>So Unicorn works like QEMU?</em></p>
-<p>Yes but with a fun new twist! Unicorn lets us <strong>intercept the Execution</strong> of Emulated Code…</p>
+<p>Yes but with a fun new twist: Unicorn lets us <strong>intercept the Execution</strong> of Emulated Code by attaching a <strong>Hook Function</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Add Unicorn Hook that will intercept
 // every Block of Arm64 Instructions
