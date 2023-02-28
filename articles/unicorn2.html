@@ -69,17 +69,18 @@
     <nav id="TOC"><ul>
 <li><a href="#intercept-code-execution-in-unicorn">1 Intercept Code Execution in Unicorn</a><ul></ul></li>
 <li><a href="#map-address-to-function">2 Map Address to Function</a><ul></ul></li>
-<li><a href="#call-graph-for-apache-nuttx-rtos">3 Call Graph for Apache NuttX RTOS</a><ul></ul></li>
-<li><a href="#how-nuttx-boots-on-pinephone">4 How NuttX Boots on PinePhone</a><ul>
-<li><a href="#arm64-header">4.1 Arm64 Header</a><ul></ul></li>
-<li><a href="#init-el1">4.2 Init EL1</a><ul></ul></li>
-<li><a href="#primary-routine">4.3 Primary Routine</a><ul></ul></li>
-<li><a href="#boot-chip">4.4 Boot Chip</a><ul></ul></li></ul></li>
-<li><a href="#after-mmu-fault">5 After MMU Fault</a><ul>
-<li><a href="#after-boot-chip">5.1 After Boot Chip</a><ul></ul></li>
-<li><a href="#after-primary-routine">5.2 After Primary Routine</a><ul></ul></li></ul></li>
-<li><a href="#automated-daily-build-and-test">6 Automated Daily Build and Test</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>10 Mar 2023</em></p>
+<li><a href="#dwarf-debug-symbols">3 DWARF Debug Symbols</a><ul></ul></li>
+<li><a href="#call-graph-for-apache-nuttx-rtos">4 Call Graph for Apache NuttX RTOS</a><ul></ul></li>
+<li><a href="#how-nuttx-boots-on-pinephone">5 How NuttX Boots on PinePhone</a><ul>
+<li><a href="#arm64-header">5.1 Arm64 Header</a><ul></ul></li>
+<li><a href="#init-el1">5.2 Init EL1</a><ul></ul></li>
+<li><a href="#primary-routine">5.3 Primary Routine</a><ul></ul></li>
+<li><a href="#boot-chip">5.4 Boot Chip</a><ul></ul></li></ul></li>
+<li><a href="#after-mmu-fault">6 After MMU Fault</a><ul>
+<li><a href="#after-boot-chip">6.1 After Boot Chip</a><ul></ul></li>
+<li><a href="#after-primary-routine">6.2 After Primary Routine</a><ul></ul></li></ul></li>
+<li><a href="#automated-daily-build-and-test">7 Automated Daily Build and Test</a><ul></ul></li>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>10 Mar 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/unicorn2-title.jpg" alt="Call Graph for Apache NuttX Real-Time Operating System" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><em>Clickable Call Graph for Apache NuttX RTOS</em></a></p>
 <p>Last week we ran <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX Real-Time Operating System</strong></a> (RTOS) on <a href="https://www.unicorn-engine.org/"><strong>Unicorn Emulator</strong></a>…</p>
@@ -159,7 +160,7 @@
   </span>size: u32      <span class="comment">// Block Size
 </span>) {
   <span class="comment">// TODO: Trace the flow of emulated code
-  </span><span class="macro">println!</span>(<span class="string">&quot;hook_block: address={:#x}, size={:?}&quot;</span>, address, size);
+  </span><span class="macro">println!</span>(<span class="string">&quot;hook_block:  address={address:#010x}, size={size:02}&quot;</span>);
 }</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/unicorn#block-execution-hook">(Source)</a></p>
 <p>Unicorn Emulator calls our Hook Function, passing the…</p>
@@ -188,8 +189,9 @@ hook_block:
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a">(Source)</a></p>
 <p><em>How will we map the Arm64 Address to the Function Name?</em></p>
-<p>TODO</p>
-<p>Our Hook Function looks up the Address in the <a href="https://crates.io/crates/gimli"><strong>DWARF Debug Symbols</strong></a> of the <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx"><strong>NuttX ELF File</strong></a>, like so: <a href="https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/src/main.rs#L127-L156">main.rs</a></p>
+<p>Let’s pretend we’re a Debugger (like GDB). The best way to map an Arm64 Address to the Function Name would be…</p>
+<p>The <a href="https://en.wikipedia.org/wiki/DWARF"><strong>DWARF Debug Symbols</strong></a> in the <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format"><strong>ELF File</strong></a>!</p>
+<p>Assuming we can <strong>parse the Debug Symbols</strong> (from our ELF File), our Hook Function will translate the Arm64 Address to Function Name like so: <a href="https://github.com/lupyuen/pinephone-emulator/blob/222673dfba03dbe2055e823c44f13231d7c67cca/src/main.rs#L127-L156">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Hook Function for Block Emulation.
 // Called by Unicorn for every Block of Arm64 Instructions.
@@ -198,24 +200,30 @@ hook_block:
   </span>address: u64,  <span class="comment">// Block Address
   </span>size: u32      <span class="comment">// Block Size
 </span>) {
-  <span class="macro">print!</span>(<span class="string">&quot;hook_block:  address={:#010x}, size={:02}&quot;</span>, address, size);
+  <span class="macro">print!</span>(<span class="string">&quot;hook_block:  address={address:#010x}, size={size:02}&quot;</span>);
 
-  <span class="comment">// Print the Function Name
+  <span class="comment">// Print the Function Name for the Arm64 Address
   </span><span class="kw">let </span>function = map_address_to_function(address);
-  <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>name) = function {
-    <span class="macro">print!</span>(<span class="string">&quot;, {}&quot;</span>, name);
+  <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>name) = function {  <span class="comment">// If we find the Function Name...
+    </span><span class="macro">print!</span>(<span class="string">&quot;, {name}&quot;</span>);
   }
 
-  <span class="comment">// Print the Source Filename
+  <span class="comment">// Print the Source Filename, Line and Column for the Arm64 Address
   </span><span class="kw">let </span>loc = map_address_to_location(address);
-  <span class="kw">if let </span><span class="prelude-val">Some</span>((<span class="kw-2">ref </span>file, line, col)) = loc {
-    <span class="kw">let </span>file = file.clone().unwrap_or(<span class="string">&quot;&quot;</span>.to_string());
-    <span class="kw">let </span>line = line.unwrap_or(<span class="number">0</span>);
-    <span class="kw">let </span>col = col.unwrap_or(<span class="number">0</span>);
-    <span class="macro">print!</span>(<span class="string">&quot;, {}:{}:{}&quot;</span>, file, line, col);
+  <span class="kw">if let </span><span class="prelude-val">Some</span>((<span class="kw-2">ref </span>file, line, col)) = loc {  <span class="comment">// If we find the Source Location...
+    </span><span class="kw">let </span>file = file.clone().unwrap_or(<span class="string">&quot;&quot;</span>.to_string());  <span class="comment">// Default filename is &quot;&quot;
+    </span><span class="kw">let </span>line = line.unwrap_or(<span class="number">0</span>);  <span class="comment">// Default line is 0
+    </span><span class="kw">let </span>col  = col.unwrap_or(<span class="number">0</span>);   <span class="comment">// Default column is 0
+    </span><span class="macro">print!</span>(<span class="string">&quot;, {file}:{line}:{col}&quot;</span>);
   }
   <span class="macro">println!</span>();
 }</code></pre></div>
+<p><em>The Debug Symbols will tell us the Source Filename?</em></p>
+<p>Yep the <strong>Source Filename, Line Number and Column Number</strong> are in the DWARF Debug Symbols too!</p>
+<p>Later we’ll print them to make the Call Graph clickable.</p>
+<p>But first we look inside <strong>map_address_to_function</strong> and <strong>map_address_to_location</strong>…</p>
+<h1 id="dwarf-debug-symbols"><a href="#dwarf-debug-symbols">3 DWARF Debug Symbols</a></h1>
+<p>TODO</p>
 <p>We map the Block Address to Function Name and Source File in <strong>map_address_to_function</strong> and <strong>map_address_to_location</strong>:  <a href="https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/src/main.rs#L172-L219">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Map the Arm64 Code Address to the Function Name by looking up the ELF Context
@@ -329,7 +337,7 @@ hook_block:
   size=28
   arm64_mmu_init
   arch/arm64/src/common/arm64_mmu.c:584:1
-</code></pre></div><h1 id="call-graph-for-apache-nuttx-rtos"><a href="#call-graph-for-apache-nuttx-rtos">3 Call Graph for Apache NuttX RTOS</a></h1>
+</code></pre></div><h1 id="call-graph-for-apache-nuttx-rtos"><a href="#call-graph-for-apache-nuttx-rtos">4 Call Graph for Apache NuttX RTOS</a></h1>
 <p>TODO</p>
 <p>To troubleshoot the Apache NuttX MMU Fault on Unicorn Emulator, we auto-generated this Call Graph…</p>
 <p>(To see the NuttX Source Code: Right-click the Node and select “Open Link”)</p>
@@ -492,12 +500,12 @@ hook_block:
 <ul>
 <li><a href="https://lupyuen.github.io/articles/unicorn#appendix-map-address-to-function-with-elf-file">“Map Address to Function with ELF File”</a></li>
 </ul>
-<h1 id="how-nuttx-boots-on-pinephone"><a href="#how-nuttx-boots-on-pinephone">4 How NuttX Boots on PinePhone</a></h1>
+<h1 id="how-nuttx-boots-on-pinephone"><a href="#how-nuttx-boots-on-pinephone">5 How NuttX Boots on PinePhone</a></h1>
 <p>TODO</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>“Call Graph for Apache NuttX RTOS”</strong></a></li>
 </ul>
-<h2 id="arm64-header"><a href="#arm64-header">4.1 Arm64 Header</a></h2>
+<h2 id="arm64-header"><a href="#arm64-header">5.1 Arm64 Header</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L78-L227">arm64_head</a></p>
 <ul>
@@ -508,7 +516,7 @@ hook_block:
 <p>And <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L181">arm64_boot_primary_c_routine</a></p>
 </li>
 </ul>
-<h2 id="init-el1"><a href="#init-el1">4.2 Init EL1</a></h2>
+<h2 id="init-el1"><a href="#init-el1">5.2 Init EL1</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L132-L162">arm64_boot_el1_init</a></p>
 <ul>
@@ -525,7 +533,7 @@ hook_block:
 <p>Sets <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L153-L155">cntv_cval_el0</a></p>
 </li>
 </ul>
-<h2 id="primary-routine"><a href="#primary-routine">4.3 Primary Routine</a></h2>
+<h2 id="primary-routine"><a href="#primary-routine">5.3 Primary Routine</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L179-L184">arm64_boot_primary_c_routine</a></p>
 <ul>
@@ -534,7 +542,7 @@ hook_block:
 <p>And <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_boot.c#L73-L105">arm64_chip_boot</a></p>
 </li>
 </ul>
-<h2 id="boot-chip"><a href="#boot-chip">4.4 Boot Chip</a></h2>
+<h2 id="boot-chip"><a href="#boot-chip">5.4 Boot Chip</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_boot.c#L73-L105">arm64_chip_boot</a></p>
 <ul>
@@ -551,9 +559,9 @@ hook_block:
 <p>Which fails with MMU Fault</p>
 </li>
 </ul>
-<h1 id="after-mmu-fault"><a href="#after-mmu-fault">5 After MMU Fault</a></h1>
+<h1 id="after-mmu-fault"><a href="#after-mmu-fault">6 After MMU Fault</a></h1>
 <p>TODO: After fault</p>
-<h2 id="after-boot-chip"><a href="#after-boot-chip">5.1 After Boot Chip</a></h2>
+<h2 id="after-boot-chip"><a href="#after-boot-chip">6.1 After Boot Chip</a></h2>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_boot.c#L73-L105">arm64_chip_boot</a></p>
 <ul>
 <li>
@@ -563,14 +571,14 @@ hook_block:
 <p>And <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L590-L619">a64_earlyserialinit</a></p>
 </li>
 </ul>
-<h2 id="after-primary-routine"><a href="#after-primary-routine">5.2 After Primary Routine</a></h2>
+<h2 id="after-primary-routine"><a href="#after-primary-routine">6.2 After Primary Routine</a></h2>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L179-L184">arm64_boot_primary_c_routine</a></p>
 <ul>
 <li>Calls nx_start</li>
 </ul>
-<h1 id="automated-daily-build-and-test"><a href="#automated-daily-build-and-test">6 Automated Daily Build and Test</a></h1>
+<h1 id="automated-daily-build-and-test"><a href="#automated-daily-build-and-test">7 Automated Daily Build and Test</a></h1>
 <p>TODO</p>
-<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
 <p>This has been a fun educational exercise. Now we have a way to run <strong>Automated Daily Tests</strong> for Apache NuttX RTOS on PinePhone… Kudos to the <strong>Maintainers of Unicorn Emulator</strong>!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
