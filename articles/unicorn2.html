@@ -70,7 +70,7 @@
 <li><a href="#intercept-code-execution-in-unicorn">1 Intercept Code Execution in Unicorn</a><ul></ul></li>
 <li><a href="#map-address-to-function">2 Map Address to Function</a><ul></ul></li>
 <li><a href="#dwarf-debug-symbols">3 DWARF Debug Symbols</a><ul></ul></li>
-<li><a href="#mermaid-flowchart">4 Mermaid Flowchart</a><ul></ul></li>
+<li><a href="#clickable-mermaid-flowchart">4 Clickable Mermaid Flowchart</a><ul></ul></li>
 <li><a href="#generate-call-graph">5 Generate Call Graph</a><ul></ul></li>
 <li><a href="#pinephone-boots-nuttx">6 PinePhone Boots NuttX</a><ul>
 <li><a href="#arm64-header">6.1 Arm64 Header</a><ul></ul></li>
@@ -333,45 +333,32 @@ hook_block:
 </ul>
 <p><img src="https://lupyuen.github.io/images/unicorn2-title.jpg" alt="Call Graph for Apache NuttX Real-Time Operating System" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><em>Clickable Call Graph for Apache NuttX RTOS</em></a></p>
-<h1 id="mermaid-flowchart"><a href="#mermaid-flowchart">4 Mermaid Flowchart</a></h1>
-<p><em>Unicorn Emulator prints a long list of Function Names as it runs…</em></p>
+<h1 id="clickable-mermaid-flowchart"><a href="#clickable-mermaid-flowchart">4 Clickable Mermaid Flowchart</a></h1>
+<p><em>As Unicorn Emulator runs, it prints a <a href="https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a">long list of Function Names</a>…</em></p>
 <p><em>How can we make sense of the Function Names?</em></p>
 <p>Let’s transform the long list of Function Names… Into a <a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>Clickable Call Graph</strong></a>!</p>
 <p><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos">(Like this)</a></p>
 <p><em>Whoa! We need a special diagramming tool?</em></p>
-<p>TODO: Actually we only need to </p>
+<p>Actually we can render a <a href="https://mermaid.js.org/syntax/flowchart.html"><strong>Mermaid Flowchart</strong></a> (in Markdown Format) by simply printing this…</p>
 <div class="example-wrap"><pre class="language-text"><code>```mermaid
 flowchart TD
 START --&gt; arm64_head
 arm64_head --&gt; a64_lowputc
-a64_lowputc --&gt; arm64_head
+arm64_head --&gt; arm64_boot_primary_c_routine
 ...
 </code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L104&quot; &quot;arch/arm64/src/common/arm64_head.S&quot;
-</code></pre></div>
-<p><a href="https://mermaid.js.org/syntax/flowchart.html"><strong>Mermaid Flowchart</strong></a></p>
-<p><a href="https://mermaid.live/edit#pako:eNrtmstuozAUhl8FeXZVGsKdsBipUhez6Gqa1SgSMo4bULnJGDWZqu8-xmlKCCQpbWgh40UrIL_d7z_Hx3aKnwFKFhg4QJIewuQJ-ZBQaXY7jyXpfnbzeyZdX_-UIIlM3fUxXBTPy7vNh-yGtUxziopPURigx12NT_CDNAc-pWnmyPIyoH7ujVESyTCFyMdynFO6kr0w8eQIZhQTGRLky7wLOSNIZtooieWyz_H9jztlos8B6_e0lok4dsnZYOoVe0fzeW7Wm7zTY0Ft2E3QNeEWuR-RtqwBRtq2hhdpdWqLSItIi0iLSItIi0iLSH8g0nvY_NZLEuriUHGDOKADwK_w7vgIMm-fvio9s42i8zFiO0Dt9A5wo63YYLjvTUIhPRu8BwkJMMnGPttwHyMvhf0Ov278T-FvKt6UBBEkaxe5JMlpEOOhVHENnDuLcJRh2jiY6g26GlX2pN2o2kC3yMxrgw_wh4GXFb-QnFESxMvi2t10x9HNTUKOyt6bi40A-UHKVd-dFOUjpf5Gv-MoivLGWi-159tlbPGb6auqCvgWknOztOWpm8Ildin0Qpzto7-pzxx91m9Bb9jayeBz6auFGi93UQC6qxDSmom6vhsf-nTSysc-MbeBYIhy9gy7KfsJ4gVelU5qLToyolitjDQwn0hJU4tuvKi6-fmkFJALnCGXrlP89enQ26WjQsv5Y_zE5lIMwzBBG9bSRFXdURI0vZWDOu-J8dTQoBsnmmVfSI1r56nxA6XR3wKvV8fRdPSxPPo931qfLxC2YnNQ9rfRIw9_7yfdOvLpXcl-g44yMtUuZMoyTLEtuaRtyeFE9HHW7W9dWKpYysVSLpbyM01UF7MAXsCiISbdQexELqXKh1UcYkwNYUwJH8KH8HHUx6HXTz3dVw3_H-wXkohGG8dy0dPN4YH3HVkaBodrvLfvPJqwKzMWh91z09ioo-xMFFEswsb32mg-xIBjXhrFgQscKl9_hMFQjFYuqryHzuztqTpC19rNudXDeocC36tzeg3Rvrq6cn_d3M1cdvHVAdfbBByMQIRJBIMFcMBzgToH1McRngOHXS4geSxkL0wHc5rcr2MEHEpyPAJ5umBfWm8DuCQwAs4DDDP2NIXxnySJtiJ2C5xnsAKObowVbTpRpgYbEvrEHoE1cBR1bKi6PVUN1TJt1TS0lxH4y9sr44liqIqtT01NVU1NsV_-AeJmZMs"><strong>Mermaid Live Editor</strong></a></p>
-<p>TODO</p>
-<p>Which produces this <a href="https://mermaid.js.org/syntax/flowchart.html">Mermaid Flowchart</a>…</p>
-<div class="example-wrap"><pre class="language-text"><code>→ cargo run | grep call_graph | cut -c 12- 
-
-  flowchart TD
-
-  arm64_boot_el1_init --&gt; arm64_isb
-  click arm64_boot_el1_init href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L137&quot; &quot;arch/arm64/src/common/arm64_boot.c &quot;
-
-  arm64_isb --&gt; arm64_boot_el1_init
-  click arm64_isb href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/barriers.h#L57&quot; &quot;arch/arm64/src/common/barriers.h &quot;
-  ...
-
-  setup_page_tables --&gt; enable_mmu_el1
-  click setup_page_tables href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L515&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot;
-
-  enable_mmu_el1 --&gt; ***_HALT_***
-  click enable_mmu_el1 href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L542&quot; &quot;arch/arm64/src/common/arm64_mmu.c &quot;
-</code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/b0e4019801aaf9860bcb234c8a9c8584">(Source)</a></p>
+<p>(<strong>TD</strong> means Top-Down Flowchart)</p>
+<p>To make a <a href="https://mermaid.js.org/syntax/flowchart.html#interaction"><strong>Clickable Mermaid Flowchart</strong></a>, we print the URLs like so…</p>
+<div class="example-wrap"><pre class="language-text"><code>click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L104&quot; &quot;arch/arm64/src/common/arm64_head.S&quot; _blank
+</code></pre></div>
+<p>This jumps to the <strong>NuttX Source Code</strong> when we click the Function Name.</p>
+<p>(Second part of <strong>href</strong> is the Mouseover Tooltip)</p>
+<p>To <strong>preview the flowchart</strong> and check the hyperlinks, we use this handy web tool…</p>
+<ul>
+<li><a href="https://mermaid.live/edit#pako:eNrtmstuozAUhl8FeXZVGsKdsBipUhez6Gqa1SgSMo4bULnJGDWZqu8-xmlKCCQpbWgh40UrIL_d7z_Hx3aKnwFKFhg4QJIewuQJ-ZBQaXY7jyXpfnbzeyZdX_-UIIlM3fUxXBTPy7vNh-yGtUxziopPURigx12NT_CDNAc-pWnmyPIyoH7ujVESyTCFyMdynFO6kr0w8eQIZhQTGRLky7wLOSNIZtooieWyz_H9jztlos8B6_e0lok4dsnZYOoVe0fzeW7Wm7zTY0Ft2E3QNeEWuR-RtqwBRtq2hhdpdWqLSItIi0iLSItIi0iLSH8g0nvY_NZLEuriUHGDOKADwK_w7vgIMm-fvio9s42i8zFiO0Dt9A5wo63YYLjvTUIhPRu8BwkJMMnGPttwHyMvhf0Ov278T-FvKt6UBBEkaxe5JMlpEOOhVHENnDuLcJRh2jiY6g26GlX2pN2o2kC3yMxrgw_wh4GXFb-QnFESxMvi2t10x9HNTUKOyt6bi40A-UHKVd-dFOUjpf5Gv-MoivLGWi-159tlbPGb6auqCvgWknOztOWpm8Ildin0Qpzto7-pzxx91m9Bb9jayeBz6auFGi93UQC6qxDSmom6vhsf-nTSysc-MbeBYIhy9gy7KfsJ4gVelU5qLToyolitjDQwn0hJU4tuvKi6-fmkFJALnCGXrlP89enQ26WjQsv5Y_zE5lIMwzBBG9bSRFXdURI0vZWDOu-J8dTQoBsnmmVfSI1r56nxA6XR3wKvV8fRdPSxPPo931qfLxC2YnNQ9rfRIw9_7yfdOvLpXcl-g44yMtUuZMoyTLEtuaRtyeFE9HHW7W9dWKpYysVSLpbyM01UF7MAXsCiISbdQexELqXKh1UcYkwNYUwJH8KH8HHUx6HXTz3dVw3_H-wXkohGG8dy0dPN4YH3HVkaBodrvLfvPJqwKzMWh91z09ioo-xMFFEswsb32mg-xIBjXhrFgQscKl9_hMFQjFYuqryHzuztqTpC19rNudXDeocC36tzeg3Rvrq6cn_d3M1cdvHVAdfbBByMQIRJBIMFcMBzgToH1McRngOHXS4geSxkL0wHc5rcr2MEHEpyPAJ5umBfWm8DuCQwAs4DDDP2NIXxnySJtiJ2C5xnsAKObowVbTpRpgYbEvrEHoE1cBR1bKi6PVUN1TJt1TS0lxH4y9sr44liqIqtT01NVU1NsV_-AeJmZMs"><strong>Mermaid Live Editor</strong></a></li>
+</ul>
+<p>TODO</p>
 <p>The Call Graph is generated by our Block Execution Hook like so…</p>
 <p><a href="https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L130-L159">main.rs</a></p>
 
