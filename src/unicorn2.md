@@ -302,9 +302,9 @@ Here's how we call the [__addr2line__](https://crates.io/crates/addr2line) and [
 
 [_Clickable Call Graph for Apache NuttX RTOS_](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)
 
-# Mermaid Flowchart
+# Clickable Mermaid Flowchart
 
-_Unicorn Emulator prints a long list of Function Names as it runs..._
+_As Unicorn Emulator runs, it prints a [long list of Function Names](https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a)..._
 
 _How can we make sense of the Function Names?_
 
@@ -314,51 +314,36 @@ Let's transform the long list of Function Names... Into a [__Clickable Call Grap
 
 _Whoa! We need a special diagramming tool?_
 
-TODO: Actually we only need to 
+Actually we can render a [__Mermaid Flowchart__](https://mermaid.js.org/syntax/flowchart.html) (in Markdown Format) by simply printing this...
 
 ```text
 ```mermaid
 flowchart TD
 START --> arm64_head
 arm64_head --> a64_lowputc
-a64_lowputc --> arm64_head
+arm64_head --> arm64_boot_primary_c_routine
 ...
 ```
 
-TODO
-
-```text
-click arm64_head href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L104" "arch/arm64/src/common/arm64_head.S"
-```
-
-[__Mermaid Flowchart__](https://mermaid.js.org/syntax/flowchart.html)
-
-[__Mermaid Live Editor__](https://mermaid.live/edit#pako:eNrtmstuozAUhl8FeXZVGsKdsBipUhez6Gqa1SgSMo4bULnJGDWZqu8-xmlKCCQpbWgh40UrIL_d7z_Hx3aKnwFKFhg4QJIewuQJ-ZBQaXY7jyXpfnbzeyZdX_-UIIlM3fUxXBTPy7vNh-yGtUxziopPURigx12NT_CDNAc-pWnmyPIyoH7ujVESyTCFyMdynFO6kr0w8eQIZhQTGRLky7wLOSNIZtooieWyz_H9jztlos8B6_e0lok4dsnZYOoVe0fzeW7Wm7zTY0Ft2E3QNeEWuR-RtqwBRtq2hhdpdWqLSItIi0iLSItIi0iLSH8g0nvY_NZLEuriUHGDOKADwK_w7vgIMm-fvio9s42i8zFiO0Dt9A5wo63YYLjvTUIhPRu8BwkJMMnGPttwHyMvhf0Ov278T-FvKt6UBBEkaxe5JMlpEOOhVHENnDuLcJRh2jiY6g26GlX2pN2o2kC3yMxrgw_wh4GXFb-QnFESxMvi2t10x9HNTUKOyt6bi40A-UHKVd-dFOUjpf5Gv-MoivLGWi-159tlbPGb6auqCvgWknOztOWpm8Ildin0Qpzto7-pzxx91m9Bb9jayeBz6auFGi93UQC6qxDSmom6vhsf-nTSysc-MbeBYIhy9gy7KfsJ4gVelU5qLToyolitjDQwn0hJU4tuvKi6-fmkFJALnCGXrlP89enQ26WjQsv5Y_zE5lIMwzBBG9bSRFXdURI0vZWDOu-J8dTQoBsnmmVfSI1r56nxA6XR3wKvV8fRdPSxPPo931qfLxC2YnNQ9rfRIw9_7yfdOvLpXcl-g44yMtUuZMoyTLEtuaRtyeFE9HHW7W9dWKpYysVSLpbyM01UF7MAXsCiISbdQexELqXKh1UcYkwNYUwJH8KH8HHUx6HXTz3dVw3_H-wXkohGG8dy0dPN4YH3HVkaBodrvLfvPJqwKzMWh91z09ioo-xMFFEswsb32mg-xIBjXhrFgQscKl9_hMFQjFYuqryHzuztqTpC19rNudXDeocC36tzeg3Rvrq6cn_d3M1cdvHVAdfbBByMQIRJBIMFcMBzgToH1McRngOHXS4geSxkL0wHc5rcr2MEHEpyPAJ5umBfWm8DuCQwAs4DDDP2NIXxnySJtiJ2C5xnsAKObowVbTpRpgYbEvrEHoE1cBR1bKi6PVUN1TJt1TS0lxH4y9sr44liqIqtT01NVU1NsV_-AeJmZMs)
-
-TODO
-
-Which produces this [Mermaid Flowchart](https://mermaid.js.org/syntax/flowchart.html)...
-
-```text
-→ cargo run | grep call_graph | cut -c 12- 
-
-  flowchart TD
-
-  arm64_boot_el1_init --> arm64_isb
-  click arm64_boot_el1_init href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L137" "arch/arm64/src/common/arm64_boot.c "
-
-  arm64_isb --> arm64_boot_el1_init
-  click arm64_isb href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/barriers.h#L57" "arch/arm64/src/common/barriers.h "
-  ...
-
-  setup_page_tables --> enable_mmu_el1
-  click setup_page_tables href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L515" "arch/arm64/src/common/arm64_mmu.c "
-
-  enable_mmu_el1 --> ***_HALT_***
-  click enable_mmu_el1 href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L542" "arch/arm64/src/common/arm64_mmu.c "
-```
-
 [(Source)](https://gist.github.com/lupyuen/b0e4019801aaf9860bcb234c8a9c8584)
+
+(__TD__ means Top-Down Flowchart)
+
+To make a [__Clickable Mermaid Flowchart__](https://mermaid.js.org/syntax/flowchart.html#interaction), we print the URLs like so...
+
+```text
+click arm64_head href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L104" "arch/arm64/src/common/arm64_head.S" _blank
+```
+
+This jumps to the __NuttX Source Code__ when we click the Function Name.
+
+(Second part of __href__ is the Mouseover Tooltip)
+
+To __preview the flowchart__ and check the hyperlinks, we use this handy web tool...
+
+-   [__Mermaid Live Editor__](https://mermaid.live/edit#pako:eNrtmstuozAUhl8FeXZVGsKdsBipUhez6Gqa1SgSMo4bULnJGDWZqu8-xmlKCCQpbWgh40UrIL_d7z_Hx3aKnwFKFhg4QJIewuQJ-ZBQaXY7jyXpfnbzeyZdX_-UIIlM3fUxXBTPy7vNh-yGtUxziopPURigx12NT_CDNAc-pWnmyPIyoH7ujVESyTCFyMdynFO6kr0w8eQIZhQTGRLky7wLOSNIZtooieWyz_H9jztlos8B6_e0lok4dsnZYOoVe0fzeW7Wm7zTY0Ft2E3QNeEWuR-RtqwBRtq2hhdpdWqLSItIi0iLSItIi0iLSH8g0nvY_NZLEuriUHGDOKADwK_w7vgIMm-fvio9s42i8zFiO0Dt9A5wo63YYLjvTUIhPRu8BwkJMMnGPttwHyMvhf0Ov278T-FvKt6UBBEkaxe5JMlpEOOhVHENnDuLcJRh2jiY6g26GlX2pN2o2kC3yMxrgw_wh4GXFb-QnFESxMvi2t10x9HNTUKOyt6bi40A-UHKVd-dFOUjpf5Gv-MoivLGWi-159tlbPGb6auqCvgWknOztOWpm8Ildin0Qpzto7-pzxx91m9Bb9jayeBz6auFGi93UQC6qxDSmom6vhsf-nTSysc-MbeBYIhy9gy7KfsJ4gVelU5qLToyolitjDQwn0hJU4tuvKi6-fmkFJALnCGXrlP89enQ26WjQsv5Y_zE5lIMwzBBG9bSRFXdURI0vZWDOu-J8dTQoBsnmmVfSI1r56nxA6XR3wKvV8fRdPSxPPo931qfLxC2YnNQ9rfRIw9_7yfdOvLpXcl-g44yMtUuZMoyTLEtuaRtyeFE9HHW7W9dWKpYysVSLpbyM01UF7MAXsCiISbdQexELqXKh1UcYkwNYUwJH8KH8HHUx6HXTz3dVw3_H-wXkohGG8dy0dPN4YH3HVkaBodrvLfvPJqwKzMWh91z09ioo-xMFFEswsb32mg-xIBjXhrFgQscKl9_hMFQjFYuqryHzuztqTpC19rNudXDeocC36tzeg3Rvrq6cn_d3M1cdvHVAdfbBByMQIRJBIMFcMBzgToH1McRngOHXS4geSxkL0wHc5rcr2MEHEpyPAJ5umBfWm8DuCQwAs4DDDP2NIXxnySJtiJ2C5xnsAKObowVbTpRpgYbEvrEHoE1cBR1bKi6PVUN1TJt1TS0lxH4y9sr44liqIqtT01NVU1NsV_-AeJmZMs)
+
+TODO
 
 The Call Graph is generated by our Block Execution Hook like so...
 
