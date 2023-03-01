@@ -38,7 +38,7 @@ Let's dive in and learn how...
 
 _What's Unicorn? How does it work with Apache NuttX RTOS?_
 
-[__Unicorn__](https://www.unicorn-engine.org/) is a lightweight __CPU Emulator Framework__ based on [__QEMU__](http://www.qemu.org/).
+[__Unicorn__](https://www.unicorn-engine.org/) is a lightweight __CPU Emulator Framework__ based on [__QEMU Emulator__](http://www.qemu.org/).
 
 In the [__last article__](https://lupyuen.github.io/articles/unicorn) we called Unicorn (in Rust) to run the __Arm64 Machine Code__ for Apache NuttX RTOS...
 
@@ -71,7 +71,7 @@ let err = emu.emu_start(
 
 And NuttX starts booting in the Unicorn Emulator!
 
-_So Unicorn works like QEMU?_
+_So Unicorn works like QEMU Emulator?_
 
 Yes but with a fun new twist: Unicorn lets us __intercept the Execution__ of Emulated Code by attaching a __Hook Function__...
 
@@ -176,6 +176,10 @@ Later we'll print them to make the Call Graph clickable.
 
 But first we look inside __map_address_to_function__ and __map_address_to_location__...
 
+![DWARF Debugging Format](https://lupyuen.github.io/images/unicorn2-dwarf.png)
+
+[_DWARF Debugging Format_](https://dwarfstd.org/doc/Debugging%20using%20DWARF-2012.pdf)
+
 # DWARF Debug Symbols
 
 _How will we load the Debug Symbols from our ELF File?_
@@ -260,6 +264,14 @@ fn map_address_to_location(
 }
 ```
 
+In the code above, we...
+
+-   Lookup the Parsed Debug Symbols to find the __DWARF Location__ that matches the Arm64 Code Address
+
+-   Extract the __Source Filename, Line and Column__ from the DWARF Location
+
+Now that we have extracted the __Function Name and Source Filename__ from our ELF File, our [__Hook Function__](https://lupyuen.github.io/articles/unicorn2#map-address-to-function) will print
+
 TODO
 
 
@@ -276,6 +288,8 @@ hook_block:
   arm64_mmu_init
   arch/arm64/src/common/arm64_mmu.c:584:1
 ```
+
+[(Source)](https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a)
 
 _What's ELF_CONTEXT?_
 
