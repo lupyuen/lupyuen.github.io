@@ -116,7 +116,7 @@
 <p><a href="https://lupyuen.github.io/articles/unicorn#apache-nuttx-rtos-in-unicorn"><em>Running Apache NuttX RTOS in Unicorn</em></a></p>
 <h1 id="intercept-code-execution-in-unicorn"><a href="#intercept-code-execution-in-unicorn">1 Intercept Code Execution in Unicorn</a></h1>
 <p><em>What’s Unicorn? How does it work with Apache NuttX RTOS?</em></p>
-<p><a href="https://www.unicorn-engine.org/"><strong>Unicorn</strong></a> is a lightweight <strong>CPU Emulator Framework</strong> based on <a href="http://www.qemu.org/"><strong>QEMU</strong></a>.</p>
+<p><a href="https://www.unicorn-engine.org/"><strong>Unicorn</strong></a> is a lightweight <strong>CPU Emulator Framework</strong> based on <a href="http://www.qemu.org/"><strong>QEMU Emulator</strong></a>.</p>
 <p>In the <a href="https://lupyuen.github.io/articles/unicorn"><strong>last article</strong></a> we called Unicorn (in Rust) to run the <strong>Arm64 Machine Code</strong> for Apache NuttX RTOS…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Arm64 Machine Code for Apache NuttX RTOS
@@ -143,7 +143,7 @@
 </span>);</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/unicorn#apache-nuttx-rtos-in-unicorn">(Source)</a></p>
 <p>And NuttX starts booting in the Unicorn Emulator!</p>
-<p><em>So Unicorn works like QEMU?</em></p>
+<p><em>So Unicorn works like QEMU Emulator?</em></p>
 <p>Yes but with a fun new twist: Unicorn lets us <strong>intercept the Execution</strong> of Emulated Code by attaching a <strong>Hook Function</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Add Unicorn Hook that will intercept
@@ -222,6 +222,8 @@ hook_block:
 <p>Yep the <strong>Source Filename, Line Number and Column Number</strong> are in the DWARF Debug Symbols too!</p>
 <p>Later we’ll print them to make the Call Graph clickable.</p>
 <p>But first we look inside <strong>map_address_to_function</strong> and <strong>map_address_to_location</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/unicorn2-dwarf.png" alt="DWARF Debugging Format" /></p>
+<p><a href="https://dwarfstd.org/doc/Debugging%20using%20DWARF-2012.pdf"><em>DWARF Debugging Format</em></a></p>
 <h1 id="dwarf-debug-symbols"><a href="#dwarf-debug-symbols">3 DWARF Debug Symbols</a></h1>
 <p><em>How will we load the Debug Symbols from our ELF File?</em></p>
 <p>Our ELF File contains the Debug Symbols in <a href="https://en.wikipedia.org/wiki/DWARF"><strong>DWARF Format</strong></a>.</p>
@@ -298,6 +300,16 @@ hook_block:
     </span>(<span class="prelude-val">None</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>)
   }
 }</code></pre></div>
+<p>In the code above, we…</p>
+<ul>
+<li>
+<p>Lookup the Parsed Debug Symbols to find the <strong>DWARF Location</strong> that matches the Arm64 Code Address</p>
+</li>
+<li>
+<p>Extract the <strong>Source Filename, Line and Column</strong> from the DWARF Location</p>
+</li>
+</ul>
+<p>Now that we have extracted the <strong>Function Name and Source Filename</strong> from our ELF File, our <a href="https://lupyuen.github.io/articles/unicorn2#map-address-to-function"><strong>Hook Function</strong></a> will print</p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>hook_block:
   address=0x40080920
@@ -311,6 +323,7 @@ hook_block:
   arm64_mmu_init
   arch/arm64/src/common/arm64_mmu.c:584:1
 </code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a">(Source)</a></p>
 <p><em>What’s ELF_CONTEXT?</em></p>
 <p>TODO: <strong>ELF_CONTEXT</strong></p>
 <h1 id="generate-call-graph"><a href="#generate-call-graph">4 Generate Call Graph</a></h1>
