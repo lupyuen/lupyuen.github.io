@@ -288,6 +288,8 @@ hook_block:
 
 [(Source)](https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a)
 
+Which are super helpful for figuring out what's happening inside the Unicorn Emulator!
+
 _What's ELF_CONTEXT?_
 
 TODO: __ELF_CONTEXT__ contains the __Parsed Debug Symbols__ from our ELF File
