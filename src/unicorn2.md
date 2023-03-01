@@ -302,23 +302,9 @@ Here's how we call the [__addr2line__](https://crates.io/crates/addr2line) and [
 
 [_Clickable Call Graph for Apache NuttX RTOS_](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)
 
-# Generate Call Graph
+# Mermaid Flowchart
 
 TODO
-
-To troubleshoot the Apache NuttX MMU Fault on Unicorn Emulator, we auto-generated this Call Graph...
-
-(To see the NuttX Source Code: Right-click the Node and select "Open Link")
-
--   [__"Call Graph for Apache NuttX RTOS"__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)
-
-We generated the Call Graph with this command...
-
-```bash
-cargo run | grep call_graph | cut -c 12-
-```
-
-(`cut` command removes columns 1 to 11)
 
 Which produces this [Mermaid Flowchart](https://mermaid.js.org/syntax/flowchart.html)...
 
@@ -367,6 +353,12 @@ _: &mut Unicorn<()>,  // Emulator
   call_graph(address, size, function, loc);
 }
 ```
+
+# Generate Call Graph
+
+TODO
+
+-   [__"Call Graph for Apache NuttX RTOS"__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)
 
 `call_graph` prints the Call Graph by looking up the Block Address in the ELF Context...
 
@@ -427,6 +419,14 @@ TODO
   *last_loc = loc;
 }
 ```
+
+We generated the Call Graph with this command...
+
+```bash
+cargo run | grep call_graph | cut -c 12-
+```
+
+(`cut` command removes columns 1 to 11)
 
 # PinePhone Boots NuttX
 
