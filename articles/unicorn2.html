@@ -309,8 +309,7 @@ hook_block:
 <p>Extract the <strong>Source Filename, Line and Column</strong> from the DWARF Location</p>
 </li>
 </ul>
-<p>Now that we have extracted the <strong>Function Name and Source Filename</strong> from our ELF File, our <a href="https://lupyuen.github.io/articles/unicorn2#map-address-to-function"><strong>Hook Function</strong></a> will print</p>
-<p>TODO</p>
+<p>Now that we’ve extracted the <strong>Function Name and Source Filename</strong> from our ELF File, our <a href="https://lupyuen.github.io/articles/unicorn2#map-address-to-function"><strong>Hook Function</strong></a> will print meaningful traces of our Emulated Program…</p>
 <div class="example-wrap"><pre class="language-text"><code>hook_block:
   address=0x40080920
   size=12
@@ -325,7 +324,12 @@ hook_block:
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a">(Source)</a></p>
 <p><em>What’s ELF_CONTEXT?</em></p>
-<p>TODO: <strong>ELF_CONTEXT</strong></p>
+<p>TODO: <strong>ELF_CONTEXT</strong> contains the <strong>Parsed Debug Symbols</strong> from our ELF File</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/unicorn2#appendix-parse-dwarf-debug-symbols"><strong>“Parse DWARF Debug Symbols”</strong></a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/unicorn2-title.jpg" alt="Call Graph for Apache NuttX Real-Time Operating System" /></p>
+<p><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><em>Clickable Call Graph for Apache NuttX RTOS</em></a></p>
 <h1 id="generate-call-graph"><a href="#generate-call-graph">4 Generate Call Graph</a></h1>
 <p>TODO</p>
 <p>To troubleshoot the Apache NuttX MMU Fault on Unicorn Emulator, we auto-generated this Call Graph…</p>
