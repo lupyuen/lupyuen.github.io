@@ -318,13 +318,17 @@ TODO: Actually we only need to
 
 ```text
 ```mermaid
-  flowchart TD
-  START --> arm64_head
-  arm64_head --> a64_lowputc
-  click arm64_head href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L104" "arch/arm64/src/common/arm64_head.S "
-  a64_lowputc --> arm64_head
-  click a64_lowputc href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_lowputc.S#L58" "arch/arm64/src/a64/a64_lowputc.S "
-  ...
+flowchart TD
+START --> arm64_head
+arm64_head --> a64_lowputc
+a64_lowputc --> arm64_head
+...
+```
+
+TODO
+
+```text
+click arm64_head href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L104" "arch/arm64/src/common/arm64_head.S"
 ```
 
 [__Mermaid Flowchart__](https://mermaid.js.org/syntax/flowchart.html)
