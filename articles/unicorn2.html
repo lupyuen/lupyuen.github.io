@@ -70,17 +70,18 @@
 <li><a href="#intercept-code-execution-in-unicorn">1 Intercept Code Execution in Unicorn</a><ul></ul></li>
 <li><a href="#map-address-to-function">2 Map Address to Function</a><ul></ul></li>
 <li><a href="#dwarf-debug-symbols">3 DWARF Debug Symbols</a><ul></ul></li>
-<li><a href="#call-graph-for-apache-nuttx-rtos">4 Call Graph for Apache NuttX RTOS</a><ul></ul></li>
-<li><a href="#how-nuttx-boots-on-pinephone">5 How NuttX Boots on PinePhone</a><ul>
+<li><a href="#generate-call-graph">4 Generate Call Graph</a><ul></ul></li>
+<li><a href="#pinephone-boots-nuttx">5 PinePhone Boots NuttX</a><ul>
 <li><a href="#arm64-header">5.1 Arm64 Header</a><ul></ul></li>
 <li><a href="#init-el1">5.2 Init EL1</a><ul></ul></li>
 <li><a href="#primary-routine">5.3 Primary Routine</a><ul></ul></li>
 <li><a href="#boot-chip">5.4 Boot Chip</a><ul></ul></li></ul></li>
-<li><a href="#nuttx-continues-booting-on-pinephone">6 NuttX Continues Booting on PinePhone</a><ul>
+<li><a href="#pinephone-continues-booting-nuttx">6 PinePhone Continues Booting NuttX</a><ul>
 <li><a href="#after-boot-chip">6.1 After Boot Chip</a><ul></ul></li>
 <li><a href="#after-primary-routine">6.2 After Primary Routine</a><ul></ul></li></ul></li>
 <li><a href="#automated-daily-build-and-test">7 Automated Daily Build and Test</a><ul></ul></li>
-<li><a href="#whats-next">8 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>10 Mar 2023</em></p>
+<li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-parse-dwarf-debug-symbols">9 Appendix: Parse DWARF Debug Symbols</a><ul></ul></li></ul></nav><p>📝 <em>10 Mar 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/unicorn2-title.jpg" alt="Call Graph for Apache NuttX Real-Time Operating System" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><em>Clickable Call Graph for Apache NuttX RTOS</em></a></p>
 <p>Last week we ran <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX Real-Time Operating System</strong></a> (RTOS) on <a href="https://www.unicorn-engine.org/"><strong>Unicorn Emulator</strong></a>…</p>
@@ -252,8 +253,17 @@ hook_block:
   // Probably an Arm64 Assembly Routine.
   </span><span class="prelude-val">None
 </span>}</code></pre></div>
-<p>(<strong>ELF_CONTEXT</strong> contains the parsed Debug Symbols, we’ll explain later)</p>
-<p>And this is how we map an <strong>Arm64 Address to Source Filename</strong>: 
+<p><strong>ELF_CONTEXT</strong> contains the <strong>Parsed Debug Symbols</strong>. In the code above, we…</p>
+<ul>
+<li>
+<p>Lookup the Parsed Debug Symbols to find the <strong>DWARF Frame</strong> that matches the Arm64 Code Address</p>
+</li>
+<li>
+<p>Extract the <strong>Function Name</strong> from the DWARF Frame</p>
+</li>
+</ul>
+<p>(We’ll come back to <strong>ELF_CONTEXT</strong>)</p>
+<p>This is how we map an <strong>Arm64 Address to Source Filename</strong>: 
 <a href="https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L195-L221">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Map the Arm64 Code Address to the Source Filename,
@@ -289,58 +299,6 @@ hook_block:
   }
 }</code></pre></div>
 <p>TODO</p>
-<p>To run this, we need the <a href="https://crates.io/crates/addr2line"><strong>addr2line</strong></a>, <a href="https://crates.io/crates/gimli"><strong>gimli</strong></a> and <a href="https://crates.io/crates/once_cell"><strong>once_cell</strong></a> crates: <a href="https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/Cargo.toml#L8-L12">Cargo.toml</a></p>
-<div class="example-wrap"><pre class="language-text"><code>[dependencies]
-addr2line = &quot;0.19.0&quot;
-gimli = &quot;0.27.2&quot;
-once_cell = &quot;1.17.1&quot;
-unicorn-engine = &quot;2.0.0&quot;
-</code></pre></div>
-<p>At startup, we load the <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx"><strong>NuttX ELF File</strong></a> into <strong>ELF_CONTEXT</strong> as a <a href="https://docs.rs/once_cell/latest/once_cell/"><strong>Lazy Static</strong></a>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L288-L322">main.rs</a></p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>std::rc::Rc;
-<span class="kw">use </span>std::cell::RefCell;
-<span class="kw">use </span>once_cell::sync::Lazy;
-
-<span class="doccomment">/// ELF File for mapping Addresses to Function Names and Filenames
-</span><span class="kw">const </span>ELF_FILENAME: <span class="kw-2">&amp;</span>str = <span class="string">&quot;nuttx/nuttx&quot;</span>;
-
-<span class="doccomment">/// ELF Context for mapping Addresses to Function Names and Filenames
-</span><span class="kw">static </span>ELF_CONTEXT: Lazy&lt;ElfContext&gt; = Lazy::new(|| {
-  <span class="comment">// Open the ELF File
-  </span><span class="kw">let </span>path = std::path::PathBuf::from(ELF_FILENAME);
-  <span class="kw">let </span>file_data = std::fs::read(path)
-    .expect(<span class="string">&quot;failed to read ELF&quot;</span>);
-  <span class="kw">let </span>slice = file_data.as_slice();
-
-  <span class="comment">// Parse the ELF File
-  </span><span class="kw">let </span>obj = addr2line::object::read::File::parse(slice)
-    .expect(<span class="string">&quot;failed to parse ELF&quot;</span>);
-  <span class="kw">let </span>context = addr2line::Context::new(<span class="kw-2">&amp;</span>obj)
-    .expect(<span class="string">&quot;failed to parse debug info&quot;</span>);
-
-  <span class="comment">// Set the ELF Context
-  </span>ElfContext {
-    context: RefCell::new(context),
-  }
-});
-
-<span class="doccomment">/// Wrapper for ELF Context. Needed for `Lazy`
-</span><span class="kw">struct </span>ElfContext {
-  context: RefCell&lt;
-    addr2line::Context&lt;
-      gimli::EndianReader&lt;
-        gimli::RunTimeEndian, 
-        Rc&lt;[u8]&gt;  <span class="comment">// Doesn&#39;t implement Send / Sync
-      </span>&gt;
-    &gt;
-  &gt;
-}
-
-<span class="doccomment">/// Send and Sync for ELF Context. Needed for `Lazy`
-</span><span class="kw">unsafe impl </span>Send <span class="kw">for </span>ElfContext {}
-<span class="kw">unsafe impl </span>Sync <span class="kw">for </span>ElfContext {}</code></pre></div>
-<p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>hook_block:
   address=0x40080920
   size=12
@@ -352,7 +310,10 @@ hook_block:
   size=28
   arm64_mmu_init
   arch/arm64/src/common/arm64_mmu.c:584:1
-</code></pre></div><h1 id="call-graph-for-apache-nuttx-rtos"><a href="#call-graph-for-apache-nuttx-rtos">4 Call Graph for Apache NuttX RTOS</a></h1>
+</code></pre></div>
+<p><em>What’s ELF_CONTEXT?</em></p>
+<p>TODO: <strong>ELF_CONTEXT</strong></p>
+<h1 id="generate-call-graph"><a href="#generate-call-graph">4 Generate Call Graph</a></h1>
 <p>TODO</p>
 <p>To troubleshoot the Apache NuttX MMU Fault on Unicorn Emulator, we auto-generated this Call Graph…</p>
 <p>(To see the NuttX Source Code: Right-click the Node and select “Open Link”)</p>
@@ -460,62 +421,7 @@ hook_block:
         LAST_LOC = loc;
     }
 }</code></pre></div>
-<p>We map the Block Address to Function Name and Source File in <code>map_address_to_function</code> and <code>map_address_to_location</code>…</p>
-<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L175-L222">main.rs</a></p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Map the Arm64 Code Address to the Function Name by looking up the ELF Context
-</span><span class="kw">fn </span>map_address_to_function(
-    address: u64       <span class="comment">// Code Address
-</span>) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {  <span class="comment">// Function Name
-    // Lookup the Arm64 Code Address in the ELF Context
-    </span><span class="kw">let </span>context = ELF_CONTEXT.context.borrow();
-    <span class="kw">let </span><span class="kw-2">mut </span>frames = context.find_frames(address)
-        .expect(<span class="string">&quot;failed to find frames&quot;</span>);
-
-    <span class="comment">// Return the Function Name
-    </span><span class="kw">if let </span><span class="prelude-val">Some</span>(frame) = frames.next().unwrap() {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(func) = frame.function {
-            <span class="kw">if let </span><span class="prelude-val">Ok</span>(name) = func.raw_name() {
-                <span class="kw">let </span>s = String::from(name);
-                <span class="kw">return </span><span class="prelude-val">Some</span>(s);
-            }
-        }    
-    }
-    <span class="prelude-val">None
-</span>}
-
-<span class="doccomment">/// Map the Arm64 Code Address to the Source Filename, Line and Column
-</span><span class="kw">fn </span>map_address_to_location(
-    address: u64     <span class="comment">// Code Address
-</span>) -&gt; <span class="prelude-ty">Option</span>&lt;(        <span class="comment">// Returns...
-    </span><span class="prelude-ty">Option</span>&lt;String&gt;,  <span class="comment">// Filename
-    </span><span class="prelude-ty">Option</span>&lt;u32&gt;,     <span class="comment">// Line
-    </span><span class="prelude-ty">Option</span>&lt;u32&gt;      <span class="comment">// Column
-</span>)&gt; {
-    <span class="comment">// Lookup the Arm64 Code Address in the ELF Context
-    </span><span class="kw">let </span>context = ELF_CONTEXT.context.borrow();
-    <span class="kw">let </span>loc = context.find_location(address)
-        .expect(<span class="string">&quot;failed to find location&quot;</span>);
-
-    <span class="comment">// Return the Filename, Line and Column
-    </span><span class="kw">if let </span><span class="prelude-val">Some</span>(loc) = loc {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(file) = loc.file {
-            <span class="kw">let </span>s = String::from(file)
-                .replace(<span class="string">&quot;/private/tmp/nuttx/nuttx/&quot;</span>, <span class="string">&quot;&quot;</span>)
-                .replace(<span class="string">&quot;arch/arm64/src/chip&quot;</span>, <span class="string">&quot;arch/arm64/src/a64&quot;</span>);  <span class="comment">// TODO: Handle other chips
-            </span><span class="prelude-val">Some</span>((<span class="prelude-val">Some</span>(s), loc.line, loc.column))
-        } <span class="kw">else </span>{
-            <span class="prelude-val">Some</span>((<span class="prelude-val">None</span>, loc.line, loc.column))
-        }
-    } <span class="kw">else </span>{
-        <span class="prelude-val">None
-    </span>}
-}</code></pre></div>
-<p><code>ELF_CONTEXT</code> is explained here…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/unicorn#appendix-map-address-to-function-with-elf-file">“Map Address to Function with ELF File”</a></li>
-</ul>
-<h1 id="how-nuttx-boots-on-pinephone"><a href="#how-nuttx-boots-on-pinephone">5 How NuttX Boots on PinePhone</a></h1>
+<h1 id="pinephone-boots-nuttx"><a href="#pinephone-boots-nuttx">5 PinePhone Boots NuttX</a></h1>
 <p>TODO</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>“Call Graph for Apache NuttX RTOS”</strong></a></li>
@@ -574,7 +480,7 @@ hook_block:
 <p>Which fails with MMU Fault</p>
 </li>
 </ul>
-<h1 id="nuttx-continues-booting-on-pinephone"><a href="#nuttx-continues-booting-on-pinephone">6 NuttX Continues Booting on PinePhone</a></h1>
+<h1 id="pinephone-continues-booting-nuttx"><a href="#pinephone-continues-booting-nuttx">6 PinePhone Continues Booting NuttX</a></h1>
 <p>TODO: After fault</p>
 <h2 id="after-boot-chip"><a href="#after-boot-chip">6.1 After Boot Chip</a></h2>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_boot.c#L73-L105">arm64_chip_boot</a></p>
@@ -616,6 +522,59 @@ hook_block:
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/unicorn2.md"><strong>lupyuen.github.io/src/unicorn2.md</strong></a></p>
+<h1 id="appendix-parse-dwarf-debug-symbols"><a href="#appendix-parse-dwarf-debug-symbols">9 Appendix: Parse DWARF Debug Symbols</a></h1>
+<p>TODO</p>
+<p>To run this, we need the <a href="https://crates.io/crates/addr2line"><strong>addr2line</strong></a>, <a href="https://crates.io/crates/gimli"><strong>gimli</strong></a> and <a href="https://crates.io/crates/once_cell"><strong>once_cell</strong></a> crates: <a href="https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/Cargo.toml#L8-L12">Cargo.toml</a></p>
+<div class="example-wrap"><pre class="language-text"><code>[dependencies]
+addr2line = &quot;0.19.0&quot;
+gimli = &quot;0.27.2&quot;
+once_cell = &quot;1.17.1&quot;
+unicorn-engine = &quot;2.0.0&quot;
+</code></pre></div>
+<p>At startup, we load the <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx"><strong>NuttX ELF File</strong></a> into <strong>ELF_CONTEXT</strong> as a <a href="https://docs.rs/once_cell/latest/once_cell/"><strong>Lazy Static</strong></a>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L288-L322">main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>std::rc::Rc;
+<span class="kw">use </span>std::cell::RefCell;
+<span class="kw">use </span>once_cell::sync::Lazy;
+
+<span class="doccomment">/// ELF File for mapping Addresses to Function Names and Filenames
+</span><span class="kw">const </span>ELF_FILENAME: <span class="kw-2">&amp;</span>str = <span class="string">&quot;nuttx/nuttx&quot;</span>;
+
+<span class="doccomment">/// ELF Context for mapping Addresses to Function Names and Filenames
+</span><span class="kw">static </span>ELF_CONTEXT: Lazy&lt;ElfContext&gt; = Lazy::new(|| {
+  <span class="comment">// Open the ELF File
+  </span><span class="kw">let </span>path = std::path::PathBuf::from(ELF_FILENAME);
+  <span class="kw">let </span>file_data = std::fs::read(path)
+    .expect(<span class="string">&quot;failed to read ELF&quot;</span>);
+  <span class="kw">let </span>slice = file_data.as_slice();
+
+  <span class="comment">// Parse the ELF File
+  </span><span class="kw">let </span>obj = addr2line::object::read::File::parse(slice)
+    .expect(<span class="string">&quot;failed to parse ELF&quot;</span>);
+  <span class="kw">let </span>context = addr2line::Context::new(<span class="kw-2">&amp;</span>obj)
+    .expect(<span class="string">&quot;failed to parse debug info&quot;</span>);
+
+  <span class="comment">// Set the ELF Context
+  </span>ElfContext {
+    context: RefCell::new(context),
+  }
+});
+
+<span class="doccomment">/// Wrapper for ELF Context. Needed for `Lazy`
+</span><span class="kw">struct </span>ElfContext {
+  context: RefCell&lt;
+    addr2line::Context&lt;
+      gimli::EndianReader&lt;
+        gimli::RunTimeEndian, 
+        Rc&lt;[u8]&gt;  <span class="comment">// Doesn&#39;t implement Send / Sync
+      </span>&gt;
+    &gt;
+  &gt;
+}
+
+<span class="doccomment">/// Send and Sync for ELF Context. Needed for `Lazy`
+</span><span class="kw">unsafe impl </span>Send <span class="kw">for </span>ElfContext {}
+<span class="kw">unsafe impl </span>Sync <span class="kw">for </span>ElfContext {}</code></pre></div>
 
     
 </body>
