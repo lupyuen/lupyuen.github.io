@@ -304,6 +304,14 @@ Here's how we call the [__addr2line__](https://crates.io/crates/addr2line) and [
 
 # Mermaid Flowchart
 
+_Unicorn Emulator now prints a long list of Function Names as it runs..._
+
+_How can we make sense of the Function Names?_
+
+Let's transform the long list of Function Names... Into a __Call Graph__! (Pic above)
+
+[__Mermaid Flowchart__](https://mermaid.js.org/syntax/flowchart.html)!
+
 TODO
 
 Which produces this [Mermaid Flowchart](https://mermaid.js.org/syntax/flowchart.html)...
