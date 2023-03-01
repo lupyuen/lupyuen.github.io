@@ -334,11 +334,21 @@ hook_block:
 <p><img src="https://lupyuen.github.io/images/unicorn2-title.jpg" alt="Call Graph for Apache NuttX Real-Time Operating System" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><em>Clickable Call Graph for Apache NuttX RTOS</em></a></p>
 <h1 id="mermaid-flowchart"><a href="#mermaid-flowchart">4 Mermaid Flowchart</a></h1>
-<p><em>Unicorn Emulator now prints a long list of Function Names as it runs…</em></p>
+<p><em>Unicorn Emulator prints a long list of Function Names as it runs…</em></p>
 <p><em>How can we make sense of the Function Names?</em></p>
 <p>Let’s transform the long list of Function Names… Into a <a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>Clickable Call Graph</strong></a>!</p>
+<p><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos">(Like this)</a></p>
 <p><em>Whoa! We need a special diagramming tool?</em></p>
-<p>TODO: Actually all we need is</p>
+<p>TODO: Actually we only need to </p>
+<div class="example-wrap"><pre class="language-text"><code>```mermaid
+  flowchart TD
+  START --&gt; arm64_head
+  arm64_head --&gt; a64_lowputc
+  click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L104&quot; &quot;arch/arm64/src/common/arm64_head.S &quot;
+  a64_lowputc --&gt; arm64_head
+  click a64_lowputc href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_lowputc.S#L58&quot; &quot;arch/arm64/src/a64/a64_lowputc.S &quot;
+  ...
+</code></pre></div>
 <p><a href="https://mermaid.js.org/syntax/flowchart.html"><strong>Mermaid Flowchart</strong></a></p>
 <p><a href="https://mermaid.live/edit#pako:eNrtmstuozAUhl8FeXZVGsKdsBipUhez6Gqa1SgSMo4bULnJGDWZqu8-xmlKCCQpbWgh40UrIL_d7z_Hx3aKnwFKFhg4QJIewuQJ-ZBQaXY7jyXpfnbzeyZdX_-UIIlM3fUxXBTPy7vNh-yGtUxziopPURigx12NT_CDNAc-pWnmyPIyoH7ujVESyTCFyMdynFO6kr0w8eQIZhQTGRLky7wLOSNIZtooieWyz_H9jztlos8B6_e0lok4dsnZYOoVe0fzeW7Wm7zTY0Ft2E3QNeEWuR-RtqwBRtq2hhdpdWqLSItIi0iLSItIi0iLSH8g0nvY_NZLEuriUHGDOKADwK_w7vgIMm-fvio9s42i8zFiO0Dt9A5wo63YYLjvTUIhPRu8BwkJMMnGPttwHyMvhf0Ov278T-FvKt6UBBEkaxe5JMlpEOOhVHENnDuLcJRh2jiY6g26GlX2pN2o2kC3yMxrgw_wh4GXFb-QnFESxMvi2t10x9HNTUKOyt6bi40A-UHKVd-dFOUjpf5Gv-MoivLGWi-159tlbPGb6auqCvgWknOztOWpm8Ildin0Qpzto7-pzxx91m9Bb9jayeBz6auFGi93UQC6qxDSmom6vhsf-nTSysc-MbeBYIhy9gy7KfsJ4gVelU5qLToyolitjDQwn0hJU4tuvKi6-fmkFJALnCGXrlP89enQ26WjQsv5Y_zE5lIMwzBBG9bSRFXdURI0vZWDOu-J8dTQoBsnmmVfSI1r56nxA6XR3wKvV8fRdPSxPPo931qfLxC2YnNQ9rfRIw9_7yfdOvLpXcl-g44yMtUuZMoyTLEtuaRtyeFE9HHW7W9dWKpYysVSLpbyM01UF7MAXsCiISbdQexELqXKh1UcYkwNYUwJH8KH8HHUx6HXTz3dVw3_H-wXkohGG8dy0dPN4YH3HVkaBodrvLfvPJqwKzMWh91z09ioo-xMFFEswsb32mg-xIBjXhrFgQscKl9_hMFQjFYuqryHzuztqTpC19rNudXDeocC36tzeg3Rvrq6cn_d3M1cdvHVAdfbBByMQIRJBIMFcMBzgToH1McRngOHXS4geSxkL0wHc5rcr2MEHEpyPAJ5umBfWm8DuCQwAs4DDDP2NIXxnySJtiJ2C5xnsAKObowVbTpRpgYbEvrEHoE1cBR1bKi6PVUN1TJt1TS0lxH4y9sr44liqIqtT01NVU1NsV_-AeJmZMs"><strong>Mermaid Live Editor</strong></a></p>
 <p>TODO</p>
