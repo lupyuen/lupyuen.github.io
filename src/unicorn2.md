@@ -270,10 +270,7 @@ In the code above, we...
 
 -   Extract the __Source Filename, Line and Column__ from the DWARF Location
 
-Now that we have extracted the __Function Name and Source Filename__ from our ELF File, our [__Hook Function__](https://lupyuen.github.io/articles/unicorn2#map-address-to-function) will print
-
-TODO
-
+Now that we've extracted the __Function Name and Source Filename__ from our ELF File, our [__Hook Function__](https://lupyuen.github.io/articles/unicorn2#map-address-to-function) will print meaningful traces of our Emulated Program...
 
 ```text
 hook_block:
@@ -293,7 +290,13 @@ hook_block:
 
 _What's ELF_CONTEXT?_
 
-TODO: __ELF_CONTEXT__
+TODO: __ELF_CONTEXT__ contains the __Parsed Debug Symbols__ from our ELF File
+
+-   [__"Parse DWARF Debug Symbols"__](https://lupyuen.github.io/articles/unicorn2#appendix-parse-dwarf-debug-symbols)
+
+![Call Graph for Apache NuttX Real-Time Operating System](https://lupyuen.github.io/images/unicorn2-title.jpg)
+
+[_Clickable Call Graph for Apache NuttX RTOS_](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)
 
 # Generate Call Graph
 
