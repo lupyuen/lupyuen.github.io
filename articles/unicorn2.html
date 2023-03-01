@@ -157,8 +157,8 @@
 // Called by Unicorn for every Block of Arm64 Instructions.
 </span><span class="kw">fn </span>hook_block(
   <span class="kw">_</span>: <span class="kw-2">&amp;mut </span>Unicorn&lt;()&gt;,  <span class="comment">// Emulator
-  </span>address: u64,  <span class="comment">// Block Address
-  </span>size: u32      <span class="comment">// Block Size
+  </span>address: u64,  <span class="comment">// Address of Arm64 Code Block
+  </span>size: u32      <span class="comment">// Size of Arm64 Code Block
 </span>) {
   <span class="comment">// TODO: Trace the flow of emulated code
   </span><span class="macro">println!</span>(<span class="string">&quot;hook_block:  address={address:#010x}, size={size:02}&quot;</span>);
@@ -198,8 +198,8 @@ hook_block:
 // Called by Unicorn for every Block of Arm64 Instructions.
 </span><span class="kw">fn </span>hook_block(
   <span class="kw">_</span>: <span class="kw-2">&amp;mut </span>Unicorn&lt;()&gt;,  <span class="comment">// Emulator
-  </span>address: u64,  <span class="comment">// Block Address
-  </span>size: u32      <span class="comment">// Block Size
+  </span>address: u64,  <span class="comment">// Address of Arm64 Code Block
+  </span>size: u32      <span class="comment">// Size of Arm64 Code Block
 </span>) {
   <span class="macro">print!</span>(<span class="string">&quot;hook_block:  address={address:#010x}, size={size:02}&quot;</span>);
 
@@ -323,9 +323,10 @@ hook_block:
   arch/arm64/src/common/arm64_mmu.c:584:1
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a">(Source)</a></p>
-<p>Which are super helpful for figuring out what’s happening inside the Unicorn Emulator!</p>
+<p>Which are super helpful for figuring out what’s happening inside Unicorn Emulator!</p>
 <p><em>What’s ELF_CONTEXT?</em></p>
-<p>TODO: <strong>ELF_CONTEXT</strong> contains the <strong>Parsed Debug Symbols</strong> from our ELF File</p>
+<p><strong>ELF_CONTEXT</strong> contains the <strong>Parsed Debug Symbols</strong> from our ELF File.</p>
+<p>Here’s how we call the <a href="https://crates.io/crates/addr2line"><strong>addr2line</strong></a> and <a href="https://crates.io/crates/gimli"><strong>gimli</strong></a> libraries to parse the Debug Symbols…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/unicorn2#appendix-parse-dwarf-debug-symbols"><strong>“Parse DWARF Debug Symbols”</strong></a></li>
 </ul>
@@ -367,77 +368,68 @@ hook_block:
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function for Block Emulation.
 /// Called once for each Basic Block of Arm64 Instructions.
 </span><span class="kw">fn </span>hook_block(
-    <span class="kw">_</span>: <span class="kw-2">&amp;mut </span>Unicorn&lt;()&gt;,  <span class="comment">// Emulator
-    </span>address: u64,  <span class="comment">// Block Address
-    </span>size: u32      <span class="comment">// Block Size
+<span class="kw">_</span>: <span class="kw-2">&amp;mut </span>Unicorn&lt;()&gt;,  <span class="comment">// Emulator
+  </span>address: u64,  <span class="comment">// Address of Arm64 Code Block
+  </span>size: u32      <span class="comment">// Size of Arm64 Code Block
 </span>) {
-    <span class="comment">// Ignore the memset() loop. TODO: Read the ELF Symbol Table to get address of memset().
-    </span><span class="kw">if </span>address &gt;= <span class="number">0x4008_9328 </span>&amp;&amp; address &lt;= <span class="number">0x4008_933c </span>{ <span class="kw">return</span>; }
-    <span class="macro">print!</span>(<span class="string">&quot;hook_block:  address={:#010x}, size={:02}&quot;</span>, address, size);
+  <span class="comment">// Get the Function Name for the Arm64 Address
+  </span><span class="kw">let </span>function = map_address_to_function(address);
+  ...
 
-    <span class="comment">// Print the Function Name
-    </span><span class="kw">let </span>function = map_address_to_function(address);
-    <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>name) = function {
-        <span class="macro">print!</span>(<span class="string">&quot;, {}&quot;</span>, name);
-    }
+  <span class="comment">// Get the Source Filename for the Arm64 Address
+  </span><span class="kw">let </span>loc = map_address_to_location(address);
+  ...
 
-    <span class="comment">// Print the Source Filename
-    </span><span class="kw">let </span>loc = map_address_to_location(address);
-    <span class="kw">if let </span><span class="prelude-val">Some</span>((<span class="kw-2">ref </span>file, line, col)) = loc {
-        <span class="kw">let </span>file = file.clone().unwrap_or(<span class="string">&quot;&quot;</span>.to_string());
-        <span class="kw">let </span>line = line.unwrap_or(<span class="number">0</span>);
-        <span class="kw">let </span>col = col.unwrap_or(<span class="number">0</span>);
-        <span class="macro">print!</span>(<span class="string">&quot;, {}:{}:{}&quot;</span>, file, line, col);
-    }
-    <span class="macro">println!</span>();
-
-    <span class="comment">// Print the Call Graph
-    </span>call_graph(address, size, function, loc);
+  <span class="comment">// Print the Call Graph
+  </span>call_graph(address, size, function, loc);
 }</code></pre></div>
 <p><code>call_graph</code> prints the Call Graph by looking up the Block Address in the ELF Context…</p>
-<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L224-L265">main.rs</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L223-L267">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Print the Mermaid Call Graph for this Function Call:
 /// cargo run | grep call_graph | cut -c 12-
 </span><span class="kw">fn </span>call_graph(
-    _address: u64,  <span class="comment">// Code Address
-    </span>_size: u32,     <span class="comment">// Size of Code Block
-    </span>function: <span class="prelude-ty">Option</span>&lt;String&gt;,  <span class="comment">// Function Name
-    </span>loc: <span class="prelude-ty">Option</span>&lt;(        <span class="comment">// Source Location
-        </span><span class="prelude-ty">Option</span>&lt;String&gt;,  <span class="comment">// Filename
-        </span><span class="prelude-ty">Option</span>&lt;u32&gt;,     <span class="comment">// Line
-        </span><span class="prelude-ty">Option</span>&lt;u32&gt;      <span class="comment">// Column
-    </span>)&gt;
+  _address: u64,  <span class="comment">// Code Address
+  </span>_size: u32,     <span class="comment">// Size of Code Block
+  </span>function: <span class="prelude-ty">Option</span>&lt;String&gt;,  <span class="comment">// Function Name
+  </span>loc: (               <span class="comment">// Source Location
+    </span><span class="prelude-ty">Option</span>&lt;String&gt;,  <span class="comment">// Filename
+    </span><span class="prelude-ty">Option</span>&lt;u32&gt;,     <span class="comment">// Line
+    </span><span class="prelude-ty">Option</span>&lt;u32&gt;      <span class="comment">// Column
+  </span>)
 ) {
-    <span class="comment">// Get the Function Name
-    </span><span class="kw">let </span><span class="prelude-val">Some</span>(fname) = function
-        <span class="kw">else </span>{ <span class="kw">return</span>; };
+  <span class="comment">// Get the Function Name
+  </span><span class="kw">let </span>fname = <span class="kw">match </span>function {
+    <span class="prelude-val">Some</span>(fname) =&gt; fname,
+    <span class="prelude-val">None </span>=&gt; map_location_to_function(<span class="kw-2">&amp;</span>loc)
+  };
 
-    <span class="comment">// Unsafe because `LAST_FNAME` is a Static Mutable
-    </span><span class="kw">unsafe </span>{
-        <span class="comment">// Skip if we are still in the same Function
-        </span><span class="kw">static </span><span class="kw-2">mut </span>LAST_FNAME: String = String::new();
-        <span class="kw">static </span><span class="kw-2">mut </span>LAST_LOC: <span class="prelude-ty">Option</span>&lt;(<span class="prelude-ty">Option</span>&lt;String&gt;, <span class="prelude-ty">Option</span>&lt;u32&gt;, <span class="prelude-ty">Option</span>&lt;u32&gt;)&gt; = <span class="prelude-val">None</span>;
-        <span class="kw">if </span>fname.eq(<span class="kw-2">&amp;</span>LAST_FNAME) { <span class="kw">return</span>; }
+  <span class="comment">// Unsafe because `LAST_FNAME` is a Static Mutable
+  </span><span class="kw">unsafe </span>{
+    <span class="comment">// Skip if we are still in the same Function
+    </span><span class="kw">static </span><span class="kw-2">mut </span>LAST_FNAME: String = String::new();
+    <span class="kw">static </span><span class="kw-2">mut </span>LAST_LOC: (<span class="prelude-ty">Option</span>&lt;String&gt;, <span class="prelude-ty">Option</span>&lt;u32&gt;, <span class="prelude-ty">Option</span>&lt;u32&gt;) = (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>);
+    <span class="kw">if </span>fname.eq(<span class="kw-2">&amp;</span>LAST_FNAME) { <span class="kw">return</span>; }
 
-        <span class="comment">// If this function has not been shown too often...
-        </span><span class="kw">if </span>can_show_function(<span class="kw-2">&amp;</span>fname) {
-            <span class="comment">// Print the Call Flow
-            </span><span class="kw">if </span>LAST_FNAME.is_empty() {            
-                <span class="macro">println!</span>(<span class="string">&quot;call_graph:  flowchart TD&quot;</span>);  <span class="comment">// Top-Down Flowchart
-            </span>} <span class="kw">else </span>{
-                <span class="comment">// URL looks like https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L541
-                </span><span class="kw">let </span>(file, line, <span class="kw">_</span>) = LAST_LOC.clone().unwrap_or((<span class="prelude-val">Some</span>(<span class="string">&quot;&quot;</span>.to_string()), <span class="prelude-val">None</span>, <span class="prelude-val">None</span>));
-                <span class="kw">let </span>file = file.unwrap_or(<span class="string">&quot;&quot;</span>.to_string());
-                <span class="kw">let </span>line = line.unwrap_or(<span class="number">1</span>) - <span class="number">1</span>;
-                <span class="kw">let </span>url = <span class="macro">format!</span>(<span class="string">&quot;https://github.com/apache/nuttx/blob/master/{file}#L{line}&quot;</span>);
-                <span class="macro">println!</span>(<span class="string">&quot;call_graph:  {LAST_FNAME} --&gt; {fname}&quot;</span>);
-                <span class="macro">println!</span>(<span class="string">&quot;call_graph:  click {LAST_FNAME} href \&quot;{url}\&quot; \&quot;{file} \&quot;&quot;</span>);
-            }
-        }
-        LAST_FNAME = fname;
-        LAST_LOC = loc;
+    <span class="comment">// If this function has not been shown too often...
+    </span><span class="kw">if </span>can_show_function(<span class="kw-2">&amp;</span>fname) {
+      <span class="comment">// Print the Call Flow
+      </span><span class="kw">if </span>LAST_FNAME.is_empty() {            
+        <span class="macro">println!</span>(<span class="string">&quot;call_graph:  flowchart TD&quot;</span>);  <span class="comment">// Top-Down Flowchart
+        </span><span class="macro">println!</span>(<span class="string">&quot;call_graph:  START --&gt; {fname}&quot;</span>);
+      } <span class="kw">else </span>{
+        <span class="comment">// URL looks like https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L541
+        </span><span class="kw">let </span>(file, line, <span class="kw">_</span>) = LAST_LOC.clone();
+        <span class="kw">let </span>file = file.unwrap_or(<span class="string">&quot;&quot;</span>.to_string());
+        <span class="kw">let </span>line = line.unwrap_or(<span class="number">1</span>) - <span class="number">1</span>;
+        <span class="kw">let </span>url = <span class="macro">format!</span>(<span class="string">&quot;https://github.com/apache/nuttx/blob/master/{file}#L{line}&quot;</span>);
+        <span class="macro">println!</span>(<span class="string">&quot;call_graph:  {LAST_FNAME} --&gt; {fname}&quot;</span>);
+        <span class="macro">println!</span>(<span class="string">&quot;call_graph:  click {LAST_FNAME} href \&quot;{url}\&quot; \&quot;{file} \&quot;&quot;</span>);
+      }
     }
+    LAST_FNAME = fname;
+    LAST_LOC = loc;
+  }
 }</code></pre></div>
 <h1 id="pinephone-boots-nuttx"><a href="#pinephone-boots-nuttx">5 PinePhone Boots NuttX</a></h1>
 <p>TODO</p>
