@@ -214,9 +214,15 @@ fn map_address_to_function(
 }
 ```
 
-(__ELF_CONTEXT__ contains the parsed Debug Symbols, we'll explain later)
+__ELF_CONTEXT__ contains the __Parsed Debug Symbols__. In the code above, we...
 
-And this is how we map an __Arm64 Address to Source Filename__: 
+-   Lookup the Parsed Debug Symbols to find the __DWARF Frame__ that matches the Arm64 Code Address
+
+-   Extract the __Function Name__ from the DWARF Frame
+
+(We'll come back to __ELF_CONTEXT__)
+
+This is how we map an __Arm64 Address to Source Filename__: 
 [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L195-L221)
 
 ```rust
@@ -256,64 +262,6 @@ fn map_address_to_location(
 
 TODO
 
-To run this, we need the [__addr2line__](https://crates.io/crates/addr2line), [__gimli__](https://crates.io/crates/gimli) and [__once_cell__](https://crates.io/crates/once_cell) crates: [Cargo.toml](https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/Cargo.toml#L8-L12)
-
-```text
-[dependencies]
-addr2line = "0.19.0"
-gimli = "0.27.2"
-once_cell = "1.17.1"
-unicorn-engine = "2.0.0"
-```
-
-At startup, we load the [__NuttX ELF File__](https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx) into __ELF_CONTEXT__ as a [__Lazy Static__](https://docs.rs/once_cell/latest/once_cell/): [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L288-L322)
-
-```rust
-use std::rc::Rc;
-use std::cell::RefCell;
-use once_cell::sync::Lazy;
-
-/// ELF File for mapping Addresses to Function Names and Filenames
-const ELF_FILENAME: &str = "nuttx/nuttx";
-
-/// ELF Context for mapping Addresses to Function Names and Filenames
-static ELF_CONTEXT: Lazy<ElfContext> = Lazy::new(|| {
-  // Open the ELF File
-  let path = std::path::PathBuf::from(ELF_FILENAME);
-  let file_data = std::fs::read(path)
-    .expect("failed to read ELF");
-  let slice = file_data.as_slice();
-
-  // Parse the ELF File
-  let obj = addr2line::object::read::File::parse(slice)
-    .expect("failed to parse ELF");
-  let context = addr2line::Context::new(&obj)
-    .expect("failed to parse debug info");
-
-  // Set the ELF Context
-  ElfContext {
-    context: RefCell::new(context),
-  }
-});
-
-/// Wrapper for ELF Context. Needed for `Lazy`
-struct ElfContext {
-  context: RefCell<
-    addr2line::Context<
-      gimli::EndianReader<
-        gimli::RunTimeEndian, 
-        Rc<[u8]>  // Doesn't implement Send / Sync
-      >
-    >
-  >
-}
-
-/// Send and Sync for ELF Context. Needed for `Lazy`
-unsafe impl Send for ElfContext {}
-unsafe impl Sync for ElfContext {}
-```
-
-TODO
 
 ```text
 hook_block:
@@ -329,7 +277,11 @@ hook_block:
   arch/arm64/src/common/arm64_mmu.c:584:1
 ```
 
-# Call Graph for Apache NuttX RTOS
+_What's ELF_CONTEXT?_
+
+TODO: __ELF_CONTEXT__
+
+# Generate Call Graph
 
 TODO
 
@@ -456,66 +408,7 @@ fn call_graph(
 }
 ```
 
-We map the Block Address to Function Name and Source File in `map_address_to_function` and `map_address_to_location`...
-
-[main.rs](https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L175-L222)
-
-```rust
-/// Map the Arm64 Code Address to the Function Name by looking up the ELF Context
-fn map_address_to_function(
-    address: u64       // Code Address
-) -> Option<String> {  // Function Name
-    // Lookup the Arm64 Code Address in the ELF Context
-    let context = ELF_CONTEXT.context.borrow();
-    let mut frames = context.find_frames(address)
-        .expect("failed to find frames");
-
-    // Return the Function Name
-    if let Some(frame) = frames.next().unwrap() {
-        if let Some(func) = frame.function {
-            if let Ok(name) = func.raw_name() {
-                let s = String::from(name);
-                return Some(s);
-            }
-        }    
-    }
-    None
-}
-
-/// Map the Arm64 Code Address to the Source Filename, Line and Column
-fn map_address_to_location(
-    address: u64     // Code Address
-) -> Option<(        // Returns...
-    Option<String>,  // Filename
-    Option<u32>,     // Line
-    Option<u32>      // Column
-)> {
-    // Lookup the Arm64 Code Address in the ELF Context
-    let context = ELF_CONTEXT.context.borrow();
-    let loc = context.find_location(address)
-        .expect("failed to find location");
-
-    // Return the Filename, Line and Column
-    if let Some(loc) = loc {
-        if let Some(file) = loc.file {
-            let s = String::from(file)
-                .replace("/private/tmp/nuttx/nuttx/", "")
-                .replace("arch/arm64/src/chip", "arch/arm64/src/a64");  // TODO: Handle other chips
-            Some((Some(s), loc.line, loc.column))
-        } else {
-            Some((None, loc.line, loc.column))
-        }
-    } else {
-        None
-    }
-}
-```
-
-`ELF_CONTEXT` is explained here...
-
--   ["Map Address to Function with ELF File"](https://lupyuen.github.io/articles/unicorn#appendix-map-address-to-function-with-elf-file)
-
-# How NuttX Boots on PinePhone
+# PinePhone Boots NuttX
 
 TODO
 
@@ -569,7 +462,7 @@ TODO
 
 -   Which fails with MMU Fault
 
-# NuttX Continues Booting on PinePhone
+# PinePhone Continues Booting NuttX
 
 TODO: After fault
 
@@ -612,3 +505,64 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/unicorn2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/unicorn2.md)
+
+# Appendix: Parse DWARF Debug Symbols
+
+TODO
+
+To run this, we need the [__addr2line__](https://crates.io/crates/addr2line), [__gimli__](https://crates.io/crates/gimli) and [__once_cell__](https://crates.io/crates/once_cell) crates: [Cargo.toml](https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/Cargo.toml#L8-L12)
+
+```text
+[dependencies]
+addr2line = "0.19.0"
+gimli = "0.27.2"
+once_cell = "1.17.1"
+unicorn-engine = "2.0.0"
+```
+
+At startup, we load the [__NuttX ELF File__](https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx) into __ELF_CONTEXT__ as a [__Lazy Static__](https://docs.rs/once_cell/latest/once_cell/): [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/0ab50d0b031cb6368b5bb4ca45ba46433fbc268c/src/main.rs#L288-L322)
+
+```rust
+use std::rc::Rc;
+use std::cell::RefCell;
+use once_cell::sync::Lazy;
+
+/// ELF File for mapping Addresses to Function Names and Filenames
+const ELF_FILENAME: &str = "nuttx/nuttx";
+
+/// ELF Context for mapping Addresses to Function Names and Filenames
+static ELF_CONTEXT: Lazy<ElfContext> = Lazy::new(|| {
+  // Open the ELF File
+  let path = std::path::PathBuf::from(ELF_FILENAME);
+  let file_data = std::fs::read(path)
+    .expect("failed to read ELF");
+  let slice = file_data.as_slice();
+
+  // Parse the ELF File
+  let obj = addr2line::object::read::File::parse(slice)
+    .expect("failed to parse ELF");
+  let context = addr2line::Context::new(&obj)
+    .expect("failed to parse debug info");
+
+  // Set the ELF Context
+  ElfContext {
+    context: RefCell::new(context),
+  }
+});
+
+/// Wrapper for ELF Context. Needed for `Lazy`
+struct ElfContext {
+  context: RefCell<
+    addr2line::Context<
+      gimli::EndianReader<
+        gimli::RunTimeEndian, 
+        Rc<[u8]>  // Doesn't implement Send / Sync
+      >
+    >
+  >
+}
+
+/// Send and Sync for ELF Context. Needed for `Lazy`
+unsafe impl Send for ElfContext {}
+unsafe impl Sync for ElfContext {}
+```
