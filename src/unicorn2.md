@@ -304,15 +304,28 @@ Here's how we call the [__addr2line__](https://crates.io/crates/addr2line) and [
 
 # Mermaid Flowchart
 
-_Unicorn Emulator now prints a long list of Function Names as it runs..._
+_Unicorn Emulator prints a long list of Function Names as it runs..._
 
 _How can we make sense of the Function Names?_
 
 Let's transform the long list of Function Names... Into a [__Clickable Call Graph__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)!
 
+[(Like this)](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)
+
 _Whoa! We need a special diagramming tool?_
 
-TODO: Actually all we need is
+TODO: Actually we only need to 
+
+```text
+```mermaid
+  flowchart TD
+  START --> arm64_head
+  arm64_head --> a64_lowputc
+  click arm64_head href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L104" "arch/arm64/src/common/arm64_head.S "
+  a64_lowputc --> arm64_head
+  click a64_lowputc href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_lowputc.S#L58" "arch/arm64/src/a64/a64_lowputc.S "
+  ...
+```
 
 [__Mermaid Flowchart__](https://mermaid.js.org/syntax/flowchart.html)
 
