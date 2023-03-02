@@ -525,9 +525,13 @@ We click and walk through the [__Call Graph__](https://github.com/lupyuen/pineph
 
 1.  Which halts with an Arm64 [__Memory Management Fault__](https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault)
 
-To understand what's really happening, we dive into each of the above functions...
+To understand what's really happening, we dive into each of the above functions.
 
-And along the way we'll learn how exactly NuttX boots on PinePhone!
+_How is this relevant to PinePhone?_
+
+Unicorn Emulator runs the exact same Arm64 Machine Code as __NuttX for PinePhone__...
+
+Hence along the way we'll learn how exactly NuttX boots on PinePhone!
 
 ## Arm64 Header
 
@@ -535,7 +539,7 @@ And along the way we'll learn how exactly NuttX boots on PinePhone!
 
 (It looks like a [__Linux Kernel Header__](https://lupyuen.github.io/articles/uboot#linux-kernel-header), hence the name)
 
-It calls [__arm64_boot_el1_init__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L132-L162) to prepare __Arm64 Exception Level 1__...
+The assembly code calls [__arm64_boot_el1_init__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L132-L162) to prepare __Arm64 Exception Level 1__...
 
 And [__arm64_boot_primary_c_routine__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L181) to boot the __NuttX Kernel__.
 
@@ -543,17 +547,23 @@ And [__arm64_boot_primary_c_routine__](https://github.com/apache/nuttx/blob/0f20
 
 ## Initialise EL1
 
-TODO
+[__arm64_boot_el1_init__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L132-L162) prepares [__Arm64 Exception Level 1 (EL1)__](https://lupyuen.github.io/articles/interrupt#exception-levels) for booting NuttX...
 
-[arm64_boot_el1_init](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L132-L162)
+-   Set the [__EL1 Vector Table vbar_el1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L135-L140)
 
--   Sets the EL1 Vector Table [vbar_el1](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L135-L140)
+    TODO
 
--   Sets [cpacr_el1](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L140-L147)
+-   Set [__cpacr_el1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L140-L147)
 
--   Sets [sctlr_el1](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L147-L153)
+    TODO
 
--   Sets [cntv_cval_el0](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L153-L155)
+-   Set [__sctlr_el1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L147-L153)
+
+    TODO
+
+-   Set [__cntv_cval_el0__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L153-L155)
+
+    TODO
 
 ## Primary Routine
 
