@@ -467,7 +467,7 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <p><img src="https://lupyuen.github.io/images/unicorn2-title.jpg" alt="Call Graph for Apache NuttX Real-Time Operating System" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><em>Clickable Call Graph for Apache NuttX RTOS</em></a></p>
 <h1 id="pinephone-boots-nuttx"><a href="#pinephone-boots-nuttx">6 PinePhone Boots NuttX</a></h1>
-<p><em>We saw that NuttX halts with a Memory Management Fault while booting…</em></p>
+<p><em>NuttX halts with a Memory Management Fault when it boots…</em></p>
 <p><em>What can the Call Graph tell us about the fault?</em></p>
 <p>We click and walk through the <a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>Call Graph</strong></a> to find out what went wrong, from <strong>START</strong> to <strong>HALT</strong>…</p>
 <ol>
@@ -502,7 +502,8 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <p>To understand what’s really happening, we dive into each of the above functions.</p>
 <p><em>How is this relevant to PinePhone?</em></p>
 <p>Unicorn Emulator runs the exact same Arm64 Machine Code as <strong>NuttX for PinePhone</strong>…</p>
-<p>Hence along the way we’ll learn how exactly NuttX boots on PinePhone!</p>
+<p>Whatever happens in Unicorn Emulator… Will happen in PinePhone too!</p>
+<p>Hence along the way we’ll learn how exactly NuttX boots on PinePhone.</p>
 <h2 id="arm64-header"><a href="#arm64-header">6.1 Arm64 Header</a></h2>
 <p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_head.S#L78-L227"><strong>arm64_head</strong></a> is the first thing that runs when NuttX boots on Unicorn Emulator. (And PinePhone)</p>
 <p>(It looks like a <a href="https://lupyuen.github.io/articles/uboot#linux-kernel-header"><strong>Linux Kernel Header</strong></a>, hence the name)</p>
