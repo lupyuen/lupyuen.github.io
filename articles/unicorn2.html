@@ -381,22 +381,32 @@ arm64_head --&gt; arm64_boot_primary_c_routine
   <span class="comment">// Print the Call Graph
   </span>call_graph(address, size, function, loc);
 }</code></pre></div>
-<p>Let’s look inside the <strong>call_graph</strong> function…</p>
+<p>Now we look inside the <strong>call_graph</strong> function…</p>
 <h1 id="generate-call-graph"><a href="#generate-call-graph">5 Generate Call Graph</a></h1>
-<p>TODO</p>
+<p><em>Our Hook Function calls <strong>call_graph</strong> to print the Call Graph…</em></p>
+<p><em>What’s inside <strong>call_graph</strong>?</em></p>
+<p>Earlier we said that we’re generating this <strong>Clickable Call Graph</strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>“Call Graph for Apache NuttX RTOS”</strong></a></li>
 </ul>
-<p><code>call_graph</code> prints the Call Graph by looking up the Block Address in the ELF Context…</p>
-<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L222-L265">main.rs</a></p>
+<p>Which needs a <strong>Mermaid Flowchart</strong> like this…</p>
+<div class="example-wrap"><pre class="language-text"><code>```mermaid
+flowchart TD
+START --&gt; arm64_head
+arm64_head --&gt; a64_lowputc
+click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L104&quot; &quot;arch/arm64/src/common/arm64_head.S&quot; _blank
+...
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/b0e4019801aaf9860bcb234c8a9c8584">(Source)</a></p>
+<p>Our <strong>Hook Function</strong> calls <strong>call_graph</strong>, which prints the Mermaid Flowchart above like so: <a href="https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L222-L265">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Print the Mermaid Call Graph for this Function Call:
 /// cargo run | grep call_graph | cut -c 12-
 </span><span class="kw">fn </span>call_graph(
-  _address: u64,  <span class="comment">// Code Address
-  </span>_size: u32,     <span class="comment">// Size of Code Block
+  _address: u64,  <span class="comment">// Address of Arm64 Code Block
+  </span>_size: u32,     <span class="comment">// Size of Arm64 Code Block
   </span>function: <span class="prelude-ty">Option</span>&lt;String&gt;,  <span class="comment">// Function Name
-  </span>loc: (               <span class="comment">// Source Location
+  </span>loc: (             <span class="comment">// Source Location
     </span><span class="prelude-ty">Option</span>&lt;String&gt;,  <span class="comment">// Filename
     </span><span class="prelude-ty">Option</span>&lt;u32&gt;,     <span class="comment">// Line
     </span><span class="prelude-ty">Option</span>&lt;u32&gt;      <span class="comment">// Column
@@ -412,7 +422,13 @@ arm64_head --&gt; arm64_boot_primary_c_routine
   </span><span class="kw">let </span><span class="kw-2">mut </span>last_fname = LAST_FNAME.lock().unwrap();
   <span class="kw">let </span><span class="kw-2">mut </span>last_loc = LAST_LOC.lock().unwrap();
   <span class="kw">if </span>fname.eq(last_fname.as_str()) { <span class="kw">return</span>; }</code></pre></div>
-<p>TODO</p>
+<p><strong>call_graph</strong> receives the Function Name and Source Filename, which we have <a href="https://lupyuen.github.io/articles/unicorn2#map-address-to-function"><strong>loaded from the ELF File</strong></a>.</p>
+<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L267-L280">(<strong>map_location_to_function</strong> is defined here)</a></p>
+<p><em>What are last_fname and last_loc?</em></p>
+<p>We remember the Previous Function Name (<strong>last_fname</strong>) and Previous Filename (<strong>last_loc</strong>)…</p>
+<p>So we can connect the <strong>Calling Function</strong> with the <strong>Called Function</strong> in our Call Graph.</p>
+<p>(OK this doesn’t always work… But it’s good enough!)</p>
+<p>This is how we <strong>start the Call Graph</strong>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// If this function has not been shown too often...
   </span><span class="kw">if </span>can_show_function(<span class="kw-2">&amp;</span>fname) {
@@ -420,7 +436,8 @@ arm64_head --&gt; arm64_boot_primary_c_routine
     </span><span class="kw">if </span>last_fname.is_empty() {            
       <span class="macro">println!</span>(<span class="string">&quot;call_graph:  flowchart TD&quot;</span>);  <span class="comment">// Top-Down Flowchart
       </span><span class="macro">println!</span>(<span class="string">&quot;call_graph:  START --&gt; {fname}&quot;</span>);</code></pre></div>
-<p>TODO</p>
+<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L282-L295">(<strong>can_show_function</strong> is defined here)</a></p>
+<p>And this is how we <strong>connect the Calling Function</strong> with the Called Function…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>    } <span class="kw">else </span>{
       <span class="comment">// URL looks like https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L541
@@ -437,10 +454,13 @@ arm64_head --&gt; arm64_boot_primary_c_routine
   </span><span class="kw-2">*</span>last_fname = fname;
   <span class="kw-2">*</span>last_loc = loc;
 }</code></pre></div>
-<p>We generated the Call Graph with this command…</p>
-<div class="example-wrap"><pre class="language-bash"><code>cargo run | grep call_graph | cut -c 12-
+<p>To <strong>generate the Call Graph</strong>, we run this command…</p>
+<div class="example-wrap"><pre class="language-bash"><code>cargo run \
+  | grep call_graph \
+  | cut -c 12-
 </code></pre></div>
-<p>(<code>cut</code> command removes columns 1 to 11)</p>
+<p>(<strong>cut</strong> removes columns 1 to 11)</p>
+<p>TODO</p>
 <h1 id="pinephone-boots-nuttx"><a href="#pinephone-boots-nuttx">6 PinePhone Boots NuttX</a></h1>
 <p>TODO</p>
 <ul>
