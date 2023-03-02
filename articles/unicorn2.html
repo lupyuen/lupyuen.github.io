@@ -471,53 +471,53 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 </ul>
 <h2 id="arm64-header"><a href="#arm64-header">6.1 Arm64 Header</a></h2>
 <p>TODO</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L78-L227">arm64_head</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_head.S#L78-L227">arm64_head</a></p>
 <ul>
 <li>
-<p>Calls <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L132-L162">arm64_boot_el1_init</a></p>
+<p>Calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L132-L162">arm64_boot_el1_init</a></p>
 </li>
 <li>
-<p>And <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L181">arm64_boot_primary_c_routine</a></p>
+<p>And <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L181">arm64_boot_primary_c_routine</a></p>
 </li>
 </ul>
 <h2 id="init-el1"><a href="#init-el1">6.2 Init EL1</a></h2>
 <p>TODO</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L132-L162">arm64_boot_el1_init</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L132-L162">arm64_boot_el1_init</a></p>
 <ul>
 <li>
-<p>Sets the EL1 Vector Table <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L135-L140">vbar_el1</a></p>
+<p>Sets the EL1 Vector Table <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L135-L140">vbar_el1</a></p>
 </li>
 <li>
-<p>Sets <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L140-L147">cpacr_el1</a></p>
+<p>Sets <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L140-L147">cpacr_el1</a></p>
 </li>
 <li>
-<p>Sets <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L147-L153">sctlr_el1</a></p>
+<p>Sets <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L147-L153">sctlr_el1</a></p>
 </li>
 <li>
-<p>Sets <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L153-L155">cntv_cval_el0</a></p>
+<p>Sets <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L153-L155">cntv_cval_el0</a></p>
 </li>
 </ul>
 <h2 id="primary-routine"><a href="#primary-routine">6.3 Primary Routine</a></h2>
 <p>TODO</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L179-L184">arm64_boot_primary_c_routine</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184">arm64_boot_primary_c_routine</a></p>
 <ul>
 <li>
-<p>Calls <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L164-L177">boot_early_memset</a></p>
-<p>And <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_boot.c#L73-L105">arm64_chip_boot</a></p>
+<p>Calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L164-L177">boot_early_memset</a></p>
+<p>And <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105">arm64_chip_boot</a></p>
 </li>
 </ul>
 <h2 id="boot-chip"><a href="#boot-chip">6.4 Boot Chip</a></h2>
 <p>TODO</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_boot.c#L73-L105">arm64_chip_boot</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105">arm64_chip_boot</a></p>
 <ul>
 <li>
-<p>Calls <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L577-L628">arm64_mmu_init</a></p>
+<p>Calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L577-L628">arm64_mmu_init</a></p>
 </li>
 <li>
-<p>Which calls <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L485-L524">setup_page_tables</a></p>
+<p>Which calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L485-L524">setup_page_tables</a></p>
 </li>
 <li>
-<p>Which calls <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L526-L552">enable_mmu_el1</a></p>
+<p>Which calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L526-L552">enable_mmu_el1</a></p>
 </li>
 <li>
 <p>Which fails with MMU Fault</p>
@@ -526,17 +526,17 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <h1 id="pinephone-continues-booting-nuttx"><a href="#pinephone-continues-booting-nuttx">7 PinePhone Continues Booting NuttX</a></h1>
 <p>TODO: After fault</p>
 <h2 id="after-boot-chip"><a href="#after-boot-chip">7.1 After Boot Chip</a></h2>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_boot.c#L73-L105">arm64_chip_boot</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105">arm64_chip_boot</a></p>
 <ul>
 <li>
-<p>Calls <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_boardinit.c#L59-L85">a64_board_initialize</a></p>
+<p>Calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/boards/arm64/a64/pinephone/src/pinephone_boardinit.c#L59-L85">a64_board_initialize</a></p>
 </li>
 <li>
-<p>And <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L590-L619">a64_earlyserialinit</a></p>
+<p>And <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_serial.c#L590-L619">a64_earlyserialinit</a></p>
 </li>
 </ul>
 <h2 id="after-primary-routine"><a href="#after-primary-routine">7.2 After Primary Routine</a></h2>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L179-L184">arm64_boot_primary_c_routine</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184">arm64_boot_primary_c_routine</a></p>
 <ul>
 <li>Calls nx_start</li>
 </ul>
