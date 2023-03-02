@@ -603,7 +603,7 @@ And more... We'll come back to the Primary Routine.
 
     TODO
 
--   Which fails with MMU Fault
+-   Which halts with an Arm64 [__Memory Management Fault__](https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault)
 
     TODO
 
