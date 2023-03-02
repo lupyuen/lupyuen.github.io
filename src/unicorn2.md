@@ -487,7 +487,7 @@ Thus finally we get our super-informative [__Clickable Call Graph__](https://git
 
 Now we analyse the Call Graph for NuttX RTOS...
 
-![Call Graph for Apache NuttX Real-Time Operating System](https://lupyuen.github.io/images/unicorn2-title.jpg)
+![Call Graph for Apache NuttX Real-Time Operating System](https://lupyuen.github.io/images/unicorn2-callgraph2.jpg)
 
 [_Clickable Call Graph for Apache NuttX RTOS_](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)
 
@@ -497,7 +497,7 @@ _NuttX halts with a Memory Management Fault when it boots..._
 
 _What can the Call Graph tell us about the fault?_
 
-We click and walk through the [__Call Graph__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos) to find out what went wrong, from __START__ to __HALT__...
+We click and walk through the [__Call Graph__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos) to find out what went wrong, from __START__ to __HALT__ (pic above)...
 
 1.  NuttX starts at [__arm64_head__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_head.S#L78-L227)
 
@@ -535,6 +535,8 @@ Whatever happens in Unicorn Emulator... Will happen in PinePhone too!
 
 Hence along the way we'll learn how exactly NuttX boots on PinePhone.
 
+![Arm64 Header](https://lupyuen.github.io/images/unicorn2-callgraph3.jpg)
+
 ## Arm64 Header
 
 [__arm64_head__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_head.S#L78-L227) is the first thing that runs when NuttX boots on Unicorn Emulator. (And PinePhone)
@@ -548,6 +550,8 @@ The assembly code calls...
     [(What's an Arm64 Exception Level?)](https://lupyuen.github.io/articles/interrupt#exception-levels)
 
 -   [__arm64_boot_primary_c_routine__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L181) to boot the __NuttX Kernel__
+
+![Initialise EL1](https://lupyuen.github.io/images/unicorn2-callgraph4.jpg)
 
 ## Initialise EL1
 
@@ -569,6 +573,8 @@ The assembly code calls...
 
     [(More about __CNTV CVAL EL0__)](https://developer.arm.com/documentation/ddi0595/2021-12/AArch64-Registers/CNTV-CVAL-EL0--Counter-timer-Virtual-Timer-CompareValue-register)
 
+![Primary Routine](https://lupyuen.github.io/images/unicorn2-callgraph5.jpg)
+
 ## Primary Routine
 
 [__arm64_boot_primary_c_routine__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184) starts the NuttX Kernel. It calls...
@@ -577,7 +583,9 @@ The assembly code calls...
 
 -   [__arm64_chip_boot__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105) to configure the Arm64 CPU
 
-And more... We'll come back to the Primary Routine
+And more... We'll come back to the Primary Routine.
+
+![Boot Chip](https://lupyuen.github.io/images/unicorn2-callgraph6.jpg)
 
 ## Boot Chip
 
@@ -601,7 +609,7 @@ And more... We'll come back to the Primary Routine
 
 # PinePhone Continues Booting NuttX
 
-_Suppose we fix the MMU Fault..._
+_Suppose we fix the Arm64 Memory Management Fault..._
 
 _What will happen next?_
 
