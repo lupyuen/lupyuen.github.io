@@ -523,23 +523,25 @@ We click and walk through the [__Call Graph__](https://github.com/lupyuen/pineph
 
     (To enable the Arm64 Memory Management Unit)
 
-1.  Which halts with an Arm64 __Memory Management Fault__
+1.  Which halts with an Arm64 [__Memory Management Fault__](https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault)
 
 To understand what's really happening, we dive into each of the above functions...
 
-And we'll also learn how exactly NuttX boots on PinePhone!
+And along the way we'll learn how exactly NuttX boots on PinePhone!
 
 ## Arm64 Header
 
-TODO
+[__arm64_head__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_head.S#L78-L227) is the first thing that runs when NuttX boots on Unicorn Emulator. (And PinePhone)
 
-[arm64_head](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_head.S#L78-L227)
+(It looks like a [__Linux Kernel Header__](https://lupyuen.github.io/articles/uboot#linux-kernel-header), hence the name)
 
--   Calls [arm64_boot_el1_init](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L132-L162)
+It calls [__arm64_boot_el1_init__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L132-L162) to prepare __Arm64 Exception Level 1__...
 
--   And [arm64_boot_primary_c_routine](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L181)
+And [__arm64_boot_primary_c_routine__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L181) to boot the __NuttX Kernel__.
 
-## Init EL1
+[(What's an Arm64 Exception Level?)](https://lupyuen.github.io/articles/interrupt#exception-levels)
+
+## Initialise EL1
 
 TODO
 
