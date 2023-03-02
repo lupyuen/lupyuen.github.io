@@ -541,55 +541,63 @@ Hence along the way we'll learn how exactly NuttX boots on PinePhone.
 
 (It looks like a [__Linux Kernel Header__](https://lupyuen.github.io/articles/uboot#linux-kernel-header), hence the name)
 
-The assembly code calls [__arm64_boot_el1_init__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L132-L162) to prepare __Arm64 Exception Level 1__...
+The assembly code calls...
 
-And [__arm64_boot_primary_c_routine__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L181) to boot the __NuttX Kernel__.
+-   [__arm64_boot_el1_init__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L132-L162) to prepare __Arm64 Exception Level 1__
 
-[(What's an Arm64 Exception Level?)](https://lupyuen.github.io/articles/interrupt#exception-levels)
+    [(What's an Arm64 Exception Level?)](https://lupyuen.github.io/articles/interrupt#exception-levels)
+
+-   [__arm64_boot_primary_c_routine__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L181) to boot the __NuttX Kernel__
 
 ## Initialise EL1
 
 [__arm64_boot_el1_init__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L132-L162) prepares [__Arm64 Exception Level 1 (EL1)__](https://lupyuen.github.io/articles/interrupt#exception-levels) for booting NuttX...
 
--   Set the [__EL1 Vector Table vbar_el1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L135-L140)
+-   [__VBAR EL1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L135-L140): Set the __EL1 Vector Table__ in the Vector Base Address Register
 
-    TODO
+    [(More about __VBAR EL1__)](https://lupyuen.github.io/articles/interrupt#arm64-vector-table-is-wrong)
 
--   Set [__cpacr_el1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L140-L147)
+-   [__CPACR EL1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L140-L147): Set the Architectural Feature Access Control Register 
 
-    TODO
+    [(More about __CPACR EL1__)](https://developer.arm.com/documentation/ddi0595/2021-03/AArch64-Registers/CPACR-EL1--Architectural-Feature-Access-Control-Register)
 
--   Set [__sctlr_el1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L147-L153)
+-   [__SCTLR EL1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L147-L153): Set the System Control Register
 
-    TODO
+    [(More about __SCTLR EL1__)](https://developer.arm.com/documentation/ddi0595/2021-06/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-)
 
--   Set [__cntv_cval_el0__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L153-L155)
+-   [__CNTV CVAL EL0__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L153-L155): Set the Counter-Timer Virtual Timer Compare-Value Register
 
-    TODO
+    [(More about __CNTV CVAL EL0__)](https://developer.arm.com/documentation/ddi0595/2021-12/AArch64-Registers/CNTV-CVAL-EL0--Counter-timer-Virtual-Timer-CompareValue-register)
 
 ## Primary Routine
 
-TODO
+[__arm64_boot_primary_c_routine__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184) starts the NuttX Kernel. It calls...
 
-[arm64_boot_primary_c_routine](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184)
+-   [__boot_early_memset__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L164-L177) to fill the [__BSS Section__](https://en.wikipedia.org/wiki/.bss) with 0
 
--   Calls [boot_early_memset](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L164-L177)
+-   [__arm64_chip_boot__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105) to configure the Arm64 CPU
 
-    And [arm64_chip_boot](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105)
+-   And more... We'll come back to the Primary Routine
 
 ## Boot Chip
 
-TODO
+[__arm64_chip_boot__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105) configures the Arm64 CPU. It calls...
 
-[arm64_chip_boot](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105)
+-   [__arm64_mmu_init__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L577-L628)
 
--   Calls [arm64_mmu_init](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L577-L628)
+    TODO
 
--   Which calls [setup_page_tables](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L485-L524)
+-   Which calls [__setup_page_tables__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L485-L524)
 
--   Which calls [enable_mmu_el1](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L526-L552)
+    TODO
+
+-   Which calls [__enable_mmu_el1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L526-L552)
+
+    TODO
 
 -   Which fails with MMU Fault
+
+    TODO
 
 # PinePhone Continues Booting NuttX
 
