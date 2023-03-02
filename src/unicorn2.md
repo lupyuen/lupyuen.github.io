@@ -489,6 +489,10 @@ Let's analyse the Call Graph for NuttX RTOS...
 
 # PinePhone Boots NuttX
 
+_We saw that NuttX halts with a Memory Management Fault while booting..._
+
+_What can the Call Graph tell us about the fault?_
+
 TODO
 
 -   [__"Call Graph for Apache NuttX RTOS"__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)
