@@ -507,53 +507,67 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <h2 id="arm64-header"><a href="#arm64-header">6.1 Arm64 Header</a></h2>
 <p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_head.S#L78-L227"><strong>arm64_head</strong></a> is the first thing that runs when NuttX boots on Unicorn Emulator. (And PinePhone)</p>
 <p>(It looks like a <a href="https://lupyuen.github.io/articles/uboot#linux-kernel-header"><strong>Linux Kernel Header</strong></a>, hence the name)</p>
-<p>The assembly code calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L132-L162"><strong>arm64_boot_el1_init</strong></a> to prepare <strong>Arm64 Exception Level 1</strong>…</p>
-<p>And <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L181"><strong>arm64_boot_primary_c_routine</strong></a> to boot the <strong>NuttX Kernel</strong>.</p>
+<p>The assembly code calls…</p>
+<ul>
+<li>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L132-L162"><strong>arm64_boot_el1_init</strong></a> to prepare <strong>Arm64 Exception Level 1</strong></p>
 <p><a href="https://lupyuen.github.io/articles/interrupt#exception-levels">(What’s an Arm64 Exception Level?)</a></p>
+</li>
+<li>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L181"><strong>arm64_boot_primary_c_routine</strong></a> to boot the <strong>NuttX Kernel</strong></p>
+</li>
+</ul>
 <h2 id="initialise-el1"><a href="#initialise-el1">6.2 Initialise EL1</a></h2>
 <p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L132-L162"><strong>arm64_boot_el1_init</strong></a> prepares <a href="https://lupyuen.github.io/articles/interrupt#exception-levels"><strong>Arm64 Exception Level 1 (EL1)</strong></a> for booting NuttX…</p>
 <ul>
 <li>
-<p>Set the <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L135-L140"><strong>EL1 Vector Table vbar_el1</strong></a></p>
-<p>TODO</p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L135-L140"><strong>VBAR EL1</strong></a>: Set the <strong>EL1 Vector Table</strong> in the Vector Base Address Register</p>
+<p><a href="https://lupyuen.github.io/articles/interrupt#arm64-vector-table-is-wrong">(More about <strong>VBAR EL1</strong>)</a></p>
 </li>
 <li>
-<p>Set <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L140-L147"><strong>cpacr_el1</strong></a></p>
-<p>TODO</p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L140-L147"><strong>CPACR EL1</strong></a>: Set the Architectural Feature Access Control Register </p>
+<p><a href="https://developer.arm.com/documentation/ddi0595/2021-03/AArch64-Registers/CPACR-EL1--Architectural-Feature-Access-Control-Register">(More about <strong>CPACR EL1</strong>)</a></p>
 </li>
 <li>
-<p>Set <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L147-L153"><strong>sctlr_el1</strong></a></p>
-<p>TODO</p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L147-L153"><strong>SCTLR EL1</strong></a>: Set the System Control Register</p>
+<p><a href="https://developer.arm.com/documentation/ddi0595/2021-06/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-">(More about <strong>SCTLR EL1</strong>)</a></p>
 </li>
 <li>
-<p>Set <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L153-L155"><strong>cntv_cval_el0</strong></a></p>
-<p>TODO</p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L153-L155"><strong>CNTV CVAL EL0</strong></a>: Set the Counter-Timer Virtual Timer Compare-Value Register</p>
+<p><a href="https://developer.arm.com/documentation/ddi0595/2021-12/AArch64-Registers/CNTV-CVAL-EL0--Counter-timer-Virtual-Timer-CompareValue-register">(More about <strong>CNTV CVAL EL0</strong>)</a></p>
 </li>
 </ul>
 <h2 id="primary-routine"><a href="#primary-routine">6.3 Primary Routine</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184">arm64_boot_primary_c_routine</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184"><strong>arm64_boot_primary_c_routine</strong></a> starts the NuttX Kernel. It calls…</p>
 <ul>
 <li>
-<p>Calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L164-L177">boot_early_memset</a></p>
-<p>And <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105">arm64_chip_boot</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L164-L177"><strong>boot_early_memset</strong></a> to fill the <a href="https://en.wikipedia.org/wiki/.bss"><strong>BSS Section</strong></a> with 0</p>
+</li>
+<li>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105"><strong>arm64_chip_boot</strong></a> to configure the Arm64 CPU</p>
+</li>
+<li>
+<p>And more… We’ll come back to the Primary Routine</p>
 </li>
 </ul>
 <h2 id="boot-chip"><a href="#boot-chip">6.4 Boot Chip</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105">arm64_chip_boot</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105"><strong>arm64_chip_boot</strong></a> configures the Arm64 CPU. It calls…</p>
 <ul>
 <li>
-<p>Calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L577-L628">arm64_mmu_init</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L577-L628"><strong>arm64_mmu_init</strong></a></p>
+<p>TODO</p>
 </li>
 <li>
-<p>Which calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L485-L524">setup_page_tables</a></p>
+<p>Which calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L485-L524"><strong>setup_page_tables</strong></a></p>
+<p>TODO</p>
 </li>
 <li>
-<p>Which calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L526-L552">enable_mmu_el1</a></p>
+<p>Which calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L526-L552"><strong>enable_mmu_el1</strong></a></p>
+<p>TODO</p>
 </li>
 <li>
 <p>Which fails with MMU Fault</p>
+<p>TODO</p>
 </li>
 </ul>
 <h1 id="pinephone-continues-booting-nuttx"><a href="#pinephone-continues-booting-nuttx">7 PinePhone Continues Booting NuttX</a></h1>
