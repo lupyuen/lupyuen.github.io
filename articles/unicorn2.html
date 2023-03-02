@@ -454,14 +454,15 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
   </span><span class="kw-2">*</span>last_fname = fname;
   <span class="kw-2">*</span>last_loc = loc;
 }</code></pre></div>
-<p>To <strong>generate the Call Graph</strong>, we run this command…</p>
+<p>To <strong>generate the Call Graph</strong> (via the Unicorn Emulator), we run this command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cargo run \
   | grep call_graph \
   | cut -c 12-
 </code></pre></div>
 <p>(<strong>cut</strong> removes columns 1 to 11)</p>
+<p>Unicorn Emulator runs our Arm64 Machine Code, intercepts every Arm64 Instruction and generates the Call Graph.</p>
 <p><a href="https://gist.github.com/lupyuen/b0e4019801aaf9860bcb234c8a9c8584">(See the output)</a></p>
-<p>And finally we get our super-informative <a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>Clickable Call Graph</strong></a>… That tells us how every function gets called!</p>
+<p>Thus finally we get our super-informative <a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>Clickable Call Graph</strong></a>… That tells us how every function gets called!</p>
 <p>Let’s analyse the Call Graph for NuttX RTOS…</p>
 <h1 id="pinephone-boots-nuttx"><a href="#pinephone-boots-nuttx">6 PinePhone Boots NuttX</a></h1>
 <p>TODO</p>
