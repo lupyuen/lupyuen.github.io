@@ -397,7 +397,7 @@ click arm64_head href "https://github.com/apache/nuttx/blob/master/arch/arm64/sr
 
 [(Source)](https://gist.github.com/lupyuen/b0e4019801aaf9860bcb234c8a9c8584)
 
-Our __Hook Function__ calls __call_graph__, which prints the Mermaid Flowchart above like so: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L222-L265)
+Our [__Hook Function__](https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L130-L159) calls __call_graph__, which prints the Mermaid Flowchart (line by line) like so: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L222-L265)
 
 ```rust
 /// Print the Mermaid Call Graph for this Function Call:
@@ -469,7 +469,7 @@ And this is how we __connect the Calling Function__ with the Called Function...
 }
 ```
 
-To __generate the Call Graph__ (via the Unicorn Emulator), we run this command...
+To __generate the Call Graph__ (via Unicorn Emulator), we run this command...
 
 ```bash
 cargo run \
