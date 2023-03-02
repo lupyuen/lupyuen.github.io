@@ -601,6 +601,10 @@ The assembly code calls...
 
 # PinePhone Continues Booting NuttX
 
+_Suppose we fix the MMU Fault..._
+
+_What will happen next?_
+
 TODO: After fault
 
 ## After Boot Chip
