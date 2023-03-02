@@ -464,13 +464,43 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <p><a href="https://gist.github.com/lupyuen/b0e4019801aaf9860bcb234c8a9c8584">(See the output)</a></p>
 <p>Thus finally we get our super-informative <a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>Clickable Call Graph</strong></a>… That tells us how every function gets called!</p>
 <p>Let’s analyse the Call Graph for NuttX RTOS…</p>
+<p><img src="https://lupyuen.github.io/images/unicorn2-title.jpg" alt="Call Graph for Apache NuttX Real-Time Operating System" /></p>
+<p><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><em>Clickable Call Graph for Apache NuttX RTOS</em></a></p>
 <h1 id="pinephone-boots-nuttx"><a href="#pinephone-boots-nuttx">6 PinePhone Boots NuttX</a></h1>
 <p><em>We saw that NuttX halts with a Memory Management Fault while booting…</em></p>
 <p><em>What can the Call Graph tell us about the fault?</em></p>
-<p>TODO</p>
-<ul>
-<li><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>“Call Graph for Apache NuttX RTOS”</strong></a></li>
-</ul>
+<p>Let’s click and walk through the <a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>Call Graph</strong></a> to find out what went wrong, from <strong>START</strong> to <strong>HALT</strong>…</p>
+<ol>
+<li>
+<p>NuttX starts at <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_head.S#L78-L227"><strong>arm64_head</strong></a></p>
+<p>(To initialize Arm64 Exception Levels 1 and 2)</p>
+</li>
+<li>
+<p>Which calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L181"><strong>arm64_boot_primary_c_routine</strong></a></p>
+<p>(To start the NuttX Kernel)</p>
+</li>
+<li>
+<p>Which calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105"><strong>arm64_chip_boot</strong></a></p>
+<p>(To configure the Arm64 CPU)</p>
+</li>
+<li>
+<p>Which calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L577-L628"><strong>arm64_mmu_init</strong></a></p>
+<p>(To initialise the Arm64 Memory Management Unit)</p>
+</li>
+<li>
+<p>Which calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L485-L524"><strong>setup_page_tables</strong></a></p>
+<p>(To set up the Arm64 Memory Page Tables)</p>
+</li>
+<li>
+<p>Which calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L526-L552"><strong>enable_mmu_el1</strong></a></p>
+<p>(To enable the Arm64 Memory Management Unit)</p>
+</li>
+<li>
+<p>Which halts with an Arm64 <strong>Memory Management Fault</strong></p>
+</li>
+</ol>
+<p>To understand what’s really happening, we dive into each of the above functions…</p>
+<p>And we’ll also learn how exactly NuttX boots on PinePhone!</p>
 <h2 id="arm64-header"><a href="#arm64-header">6.1 Arm64 Header</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_head.S#L78-L227">arm64_head</a></p>
