@@ -798,7 +798,7 @@ Which will be similar to this BL602 setup, except that we'll boot the Daily Buil
 
 Also Unicorn Emulator has produced a __Call Graph__ for NuttX on PinePhone, which is extremely valuable for troubleshooting...
 
--   [__"Call Graph for Apache NuttX RTOS"__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)
+-   [__"(Clickable) Call Graph for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/unicorn2)
 
 _But our PinePhone Emulator doesn't handle Console Input..._
 
