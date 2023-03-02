@@ -485,7 +485,7 @@ Unicorn Emulator runs our Arm64 Machine Code, intercepts every Arm64 Instruction
 
 Thus finally we get our super-informative [__Clickable Call Graph__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)... That tells us how every function gets called!
 
-Let's analyse the Call Graph for NuttX RTOS...
+Now we analyse the Call Graph for NuttX RTOS...
 
 ![Call Graph for Apache NuttX Real-Time Operating System](https://lupyuen.github.io/images/unicorn2-title.jpg)
 
@@ -497,11 +497,11 @@ _We saw that NuttX halts with a Memory Management Fault while booting..._
 
 _What can the Call Graph tell us about the fault?_
 
-Let's click and walk through the [__Call Graph__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos) to find out what went wrong, from __START__ to __HALT__...
+We click and walk through the [__Call Graph__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos) to find out what went wrong, from __START__ to __HALT__...
 
 1.  NuttX starts at [__arm64_head__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_head.S#L78-L227)
 
-    (To initialize Arm64 Exception Levels 1 and 2)
+    (To prepare Arm64 Exception Levels 1 and 2)
 
 1.  Which calls [__arm64_boot_primary_c_routine__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L181)
 
