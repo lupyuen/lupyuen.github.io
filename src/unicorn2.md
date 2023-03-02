@@ -469,7 +469,7 @@ And this is how we __connect the Calling Function__ with the Called Function...
 }
 ```
 
-To __generate the Call Graph__, we run this command...
+To __generate the Call Graph__ (via the Unicorn Emulator), we run this command...
 
 ```bash
 cargo run \
@@ -479,9 +479,11 @@ cargo run \
 
 (__cut__ removes columns 1 to 11)
 
+Unicorn Emulator runs our Arm64 Machine Code, intercepts every Arm64 Instruction and generates the Call Graph.
+
 [(See the output)](https://gist.github.com/lupyuen/b0e4019801aaf9860bcb234c8a9c8584)
 
-And finally we get our super-informative [__Clickable Call Graph__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)... That tells us how every function gets called!
+Thus finally we get our super-informative [__Clickable Call Graph__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)... That tells us how every function gets called!
 
 Let's analyse the Call Graph for NuttX RTOS...
 
