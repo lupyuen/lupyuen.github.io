@@ -497,47 +497,47 @@ TODO
 
 TODO
 
-[arm64_head](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L78-L227)
+[arm64_head](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_head.S#L78-L227)
 
--   Calls [arm64_boot_el1_init](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L132-L162)
+-   Calls [arm64_boot_el1_init](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L132-L162)
 
--   And [arm64_boot_primary_c_routine](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L181)
+-   And [arm64_boot_primary_c_routine](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L181)
 
 ## Init EL1
 
 TODO
 
-[arm64_boot_el1_init](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L132-L162)
+[arm64_boot_el1_init](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L132-L162)
 
--   Sets the EL1 Vector Table [vbar_el1](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L135-L140)
+-   Sets the EL1 Vector Table [vbar_el1](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L135-L140)
 
--   Sets [cpacr_el1](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L140-L147)
+-   Sets [cpacr_el1](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L140-L147)
 
--   Sets [sctlr_el1](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L147-L153)
+-   Sets [sctlr_el1](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L147-L153)
 
--   Sets [cntv_cval_el0](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L153-L155)
+-   Sets [cntv_cval_el0](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L153-L155)
 
 ## Primary Routine
 
 TODO
 
-[arm64_boot_primary_c_routine](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L179-L184)
+[arm64_boot_primary_c_routine](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184)
 
--   Calls [boot_early_memset](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L164-L177)
+-   Calls [boot_early_memset](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L164-L177)
 
-    And [arm64_chip_boot](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_boot.c#L73-L105)
+    And [arm64_chip_boot](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105)
 
 ## Boot Chip
 
 TODO
 
-[arm64_chip_boot](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_boot.c#L73-L105)
+[arm64_chip_boot](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105)
 
--   Calls [arm64_mmu_init](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L577-L628)
+-   Calls [arm64_mmu_init](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L577-L628)
 
--   Which calls [setup_page_tables](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L485-L524)
+-   Which calls [setup_page_tables](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L485-L524)
 
--   Which calls [enable_mmu_el1](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_mmu.c#L526-L552)
+-   Which calls [enable_mmu_el1](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L526-L552)
 
 -   Which fails with MMU Fault
 
@@ -547,15 +547,15 @@ TODO: After fault
 
 ## After Boot Chip
 
-[arm64_chip_boot](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_boot.c#L73-L105)
+[arm64_chip_boot](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105)
 
--   Calls [a64_board_initialize](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_boardinit.c#L59-L85)
+-   Calls [a64_board_initialize](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/boards/arm64/a64/pinephone/src/pinephone_boardinit.c#L59-L85)
 
--   And [a64_earlyserialinit](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L590-L619)
+-   And [a64_earlyserialinit](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_serial.c#L590-L619)
 
 ## After Primary Routine
 
-[arm64_boot_primary_c_routine](https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_boot.c#L179-L184)
+[arm64_boot_primary_c_routine](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184)
 
 -   Calls nx_start
 
