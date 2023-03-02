@@ -830,6 +830,10 @@ Check out __QEMU Emulator__...
 
 # What's Next
 
+Check out the next article...
+
+-   [__"(Clickable) Call Graph for Apache NuttX RTOS"__](https://lupyuen.github.io/articles/unicorn2)
+
 This has been a fun educational exercise. Now we have a way to run __Automated Daily Tests__ for Apache NuttX RTOS on PinePhone... Kudos to the __Maintainers of Unicorn Emulator__!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
