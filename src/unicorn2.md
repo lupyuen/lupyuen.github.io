@@ -493,7 +493,7 @@ Now we analyse the Call Graph for NuttX RTOS...
 
 # PinePhone Boots NuttX
 
-_We saw that NuttX halts with a Memory Management Fault while booting..._
+_NuttX halts with a Memory Management Fault when it boots..._
 
 _What can the Call Graph tell us about the fault?_
 
@@ -531,7 +531,9 @@ _How is this relevant to PinePhone?_
 
 Unicorn Emulator runs the exact same Arm64 Machine Code as __NuttX for PinePhone__...
 
-Hence along the way we'll learn how exactly NuttX boots on PinePhone!
+Whatever happens in Unicorn Emulator... Will happen in PinePhone too!
+
+Hence along the way we'll learn how exactly NuttX boots on PinePhone.
 
 ## Arm64 Header
 
