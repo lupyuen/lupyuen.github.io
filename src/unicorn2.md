@@ -372,26 +372,41 @@ fn hook_block(
 }
 ```
 
-Let's look inside the __call_graph__ function...
+Now we look inside the __call_graph__ function...
 
 # Generate Call Graph
 
-TODO
+_Our Hook Function calls __call_graph__ to print the Call Graph..._
+
+_What's inside __call_graph__?_
+
+Earlier we said that we're generating this __Clickable Call Graph__...
 
 -   [__"Call Graph for Apache NuttX RTOS"__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)
 
-`call_graph` prints the Call Graph by looking up the Block Address in the ELF Context...
+Which needs a __Mermaid Flowchart__ like this...
 
-[main.rs](https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L222-L265)
+```text
+```mermaid
+flowchart TD
+START --> arm64_head
+arm64_head --> a64_lowputc
+click arm64_head href "https://github.com/apache/nuttx/blob/master/arch/arm64/src/common/arm64_head.S#L104" "arch/arm64/src/common/arm64_head.S" _blank
+...
+```
+
+[(Source)](https://gist.github.com/lupyuen/b0e4019801aaf9860bcb234c8a9c8584)
+
+Our __Hook Function__ calls __call_graph__, which prints the Mermaid Flowchart above like so: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L222-L265)
 
 ```rust
 /// Print the Mermaid Call Graph for this Function Call:
 /// cargo run | grep call_graph | cut -c 12-
 fn call_graph(
-  _address: u64,  // Code Address
-  _size: u32,     // Size of Code Block
+  _address: u64,  // Address of Arm64 Code Block
+  _size: u32,     // Size of Arm64 Code Block
   function: Option<String>,  // Function Name
-  loc: (               // Source Location
+  loc: (             // Source Location
     Option<String>,  // Filename
     Option<u32>,     // Line
     Option<u32>      // Column
@@ -409,7 +424,19 @@ fn call_graph(
   if fname.eq(last_fname.as_str()) { return; }
 ```
 
-TODO
+__call_graph__ receives the Function Name and Source Filename, which we have [__loaded from the ELF File__](https://lupyuen.github.io/articles/unicorn2#map-address-to-function).
+
+[(__map_location_to_function__ is defined here)](https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L267-L280)
+
+_What are last_fname and last_loc?_
+
+We remember the Previous Function Name (__last_fname__) and Previous Filename (__last_loc__)...
+
+So we can connect the __Calling Function__ with the __Called Function__ in our Call Graph.
+
+(OK this doesn't always work... But it's good enough!)
+
+This is how we __start the Call Graph__...
 
 ```rust
   // If this function has not been shown too often...
@@ -420,7 +447,9 @@ TODO
       println!("call_graph:  START --> {fname}");
 ```
 
-TODO
+[(__can_show_function__ is defined here)](https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L282-L295)
+
+And this is how we __connect the Calling Function__ with the Called Function...
 
 ```rust
     } else {
@@ -440,13 +469,17 @@ TODO
 }
 ```
 
-We generated the Call Graph with this command...
+To __generate the Call Graph__, we run this command...
 
 ```bash
-cargo run | grep call_graph | cut -c 12-
+cargo run \
+  | grep call_graph \
+  | cut -c 12-
 ```
 
-(`cut` command removes columns 1 to 11)
+(__cut__ removes columns 1 to 11)
+
+TODO
 
 # PinePhone Boots NuttX
 
