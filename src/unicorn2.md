@@ -479,7 +479,11 @@ cargo run \
 
 (__cut__ removes columns 1 to 11)
 
-TODO
+[(See the output)](https://gist.github.com/lupyuen/b0e4019801aaf9860bcb234c8a9c8584)
+
+And finally we get our super-informative [__Clickable Call Graph__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)... That tells us how every function gets called!
+
+Let's analyse the Call Graph for NuttX RTOS...
 
 # PinePhone Boots NuttX
 
