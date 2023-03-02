@@ -398,7 +398,7 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 ...
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/b0e4019801aaf9860bcb234c8a9c8584">(Source)</a></p>
-<p>Our <strong>Hook Function</strong> calls <strong>call_graph</strong>, which prints the Mermaid Flowchart above like so: <a href="https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L222-L265">main.rs</a></p>
+<p>Our <a href="https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L130-L159"><strong>Hook Function</strong></a> calls <strong>call_graph</strong>, which prints the Mermaid Flowchart (line by line) like so: <a href="https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L222-L265">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Print the Mermaid Call Graph for this Function Call:
 /// cargo run | grep call_graph | cut -c 12-
@@ -454,7 +454,7 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
   </span><span class="kw-2">*</span>last_fname = fname;
   <span class="kw-2">*</span>last_loc = loc;
 }</code></pre></div>
-<p>To <strong>generate the Call Graph</strong> (via the Unicorn Emulator), we run this command…</p>
+<p>To <strong>generate the Call Graph</strong> (via Unicorn Emulator), we run this command…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cargo run \
   | grep call_graph \
   | cut -c 12-
