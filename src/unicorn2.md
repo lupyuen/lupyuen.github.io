@@ -577,7 +577,7 @@ The assembly code calls...
 
 -   [__arm64_chip_boot__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105) to configure the Arm64 CPU
 
--   And more... We'll come back to the Primary Routine
+And more... We'll come back to the Primary Routine
 
 ## Boot Chip
 
