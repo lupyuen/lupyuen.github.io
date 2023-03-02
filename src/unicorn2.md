@@ -487,15 +487,47 @@ Thus finally we get our super-informative [__Clickable Call Graph__](https://git
 
 Let's analyse the Call Graph for NuttX RTOS...
 
+![Call Graph for Apache NuttX Real-Time Operating System](https://lupyuen.github.io/images/unicorn2-title.jpg)
+
+[_Clickable Call Graph for Apache NuttX RTOS_](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)
+
 # PinePhone Boots NuttX
 
 _We saw that NuttX halts with a Memory Management Fault while booting..._
 
 _What can the Call Graph tell us about the fault?_
 
-TODO
+Let's click and walk through the [__Call Graph__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos) to find out what went wrong, from __START__ to __HALT__...
 
--   [__"Call Graph for Apache NuttX RTOS"__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos)
+1.  NuttX starts at [__arm64_head__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_head.S#L78-L227)
+
+    (To initialize Arm64 Exception Levels 1 and 2)
+
+1.  Which calls [__arm64_boot_primary_c_routine__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L181)
+
+    (To start the NuttX Kernel)
+
+1.  Which calls [__arm64_chip_boot__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105)
+
+    (To configure the Arm64 CPU)
+
+1.  Which calls [__arm64_mmu_init__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L577-L628)
+
+    (To initialise the Arm64 Memory Management Unit)
+
+1.  Which calls [__setup_page_tables__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L485-L524)
+
+    (To set up the Arm64 Memory Page Tables)
+
+1.  Which calls [__enable_mmu_el1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L526-L552)
+
+    (To enable the Arm64 Memory Management Unit)
+
+1.  Which halts with an Arm64 __Memory Management Fault__
+
+To understand what's really happening, we dive into each of the above functions...
+
+And we'll also learn how exactly NuttX boots on PinePhone!
 
 ## Arm64 Header
 
