@@ -499,31 +499,31 @@ _What can the Call Graph tell us about the fault?_
 
 We click and walk through the [__Call Graph__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos) to find out what went wrong, from __START__ to __HALT__ (pic above)...
 
-1.  NuttX starts at [__arm64_head__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_head.S#L78-L227)
+1.  NuttX starts at [__arm64_head__](https://lupyuen.github.io/articles/unicorn2#arm64-header)
 
     (To prepare Arm64 Exception Levels 1 and 2)
 
-1.  Which calls [__arm64_boot_primary_c_routine__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L181)
+1.  Which calls [__arm64_boot_primary_c_routine__](https://lupyuen.github.io/articles/unicorn2#primary-routine)
 
     (To start the NuttX Kernel)
 
-1.  Which calls [__arm64_chip_boot__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105)
+1.  Which calls [__arm64_chip_boot__](https://lupyuen.github.io/articles/unicorn2#boot-chip)
 
     (To configure the Arm64 CPU)
 
-1.  Which calls [__arm64_mmu_init__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L577-L628)
+1.  Which calls [__arm64_mmu_init__](https://lupyuen.github.io/articles/unicorn2#boot-chip)
 
     (To initialise the Arm64 Memory Management Unit)
 
-1.  Which calls [__setup_page_tables__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L485-L524)
+1.  Which calls [__setup_page_tables__](https://lupyuen.github.io/articles/unicorn2#boot-chip)
 
     (To set up the Arm64 Memory Page Tables)
 
-1.  And calls [__enable_mmu_el1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L526-L552)
+1.  And calls [__enable_mmu_el1__](https://lupyuen.github.io/articles/unicorn2#boot-chip)
 
     (To enable the Arm64 Memory Management Unit)
 
-1.  Which halts with an Arm64 [__Memory Management Fault__](https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault)
+1.  Which halts with an Arm64 [__Memory Management Fault__](https://lupyuen.github.io/articles/unicorn2#boot-chip)
 
 To understand what's really happening, we dive into each of the above functions.
 
@@ -545,11 +545,11 @@ Hence along the way we'll learn how exactly NuttX boots on PinePhone.
 
 The assembly code calls...
 
--   [__arm64_boot_el1_init__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L132-L162) to prepare __Arm64 Exception Level 1__
+-   [__arm64_boot_el1_init__](https://lupyuen.github.io/articles/unicorn2#initialise-el1) to prepare __Arm64 Exception Level 1__
 
     [(What's an Arm64 Exception Level?)](https://lupyuen.github.io/articles/interrupt#exception-levels)
 
--   [__arm64_boot_primary_c_routine__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L181) to boot the __NuttX Kernel__
+-   [__arm64_boot_primary_c_routine__](https://lupyuen.github.io/articles/unicorn2#primary-routine) to boot the __NuttX Kernel__
 
 ![Initialise EL1](https://lupyuen.github.io/images/unicorn2-callgraph4.jpg)
 
@@ -581,9 +581,9 @@ The assembly code calls...
 
 -   [__boot_early_memset__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L164-L177) to fill the [__BSS Section__](https://en.wikipedia.org/wiki/.bss) with 0
 
--   [__arm64_chip_boot__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105) to configure the Arm64 CPU
+-   [__arm64_chip_boot__](https://lupyuen.github.io/articles/unicorn2#boot-chip) to configure the Arm64 CPU
 
-And more... We'll come back to the Primary Routine.
+And more... We'll come back to the Primary Routine in the next chapter.
 
 ![Boot Chip](https://lupyuen.github.io/images/unicorn2-callgraph6.jpg)
 
@@ -611,25 +611,37 @@ _Suppose we fix the Arm64 Memory Management Fault..._
 
 _What will happen next?_
 
-Right now we have an Arm64 [__Memory Management Fault__](https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault) that happens inside [__arm64_chip_boot__](https://lupyuen.github.io/articles/unicorn2#boot-chip).
+Right now we have an Arm64 [__Memory Management Fault__](https://lupyuen.github.io/articles/unicorn2#boot-chip) that gets tripped inside [__arm64_chip_boot__](https://lupyuen.github.io/articles/unicorn2#boot-chip).
 
-(The fault happens __only in Unicorn Emulator__, not on PinePhone)
+(Only in __Unicorn Emulator__, not on PinePhone)
 
-When we fix the fault, we expect NuttX to boot successfully to the Command-Line Interface. (Just like PinePhone)
+When we fix the fault, we expect NuttX to boot successfully to the __NSH Command Prompt__.
 
-TODO: After fault
+(Just like on PinePhone)
+
+_But what happens between arm64_chip_boot and NSH Command Prompt?_
+
+Let's trace the __NuttX Boot Process__ after [__arm64_chip_boot__](https://lupyuen.github.io/articles/unicorn2#boot-chip), so that we understand completely how PinePhone boots to the NSH Command Prompt...
 
 ## After Boot Chip
 
-[arm64_chip_boot](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105)
+Earlier we saw that [__arm64_chip_boot__](https://lupyuen.github.io/articles/unicorn2#boot-chip) initialises the Arm64 Memory Management Unit.
 
--   Calls [a64_board_initialize](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/boards/arm64/a64/pinephone/src/pinephone_boardinit.c#L59-L85)
+Following that, it calls...
 
--   And [a64_earlyserialinit](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_serial.c#L590-L619)
+-   [__a64_board_initialize__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/boards/arm64/a64/pinephone/src/pinephone_boardinit.c#L59-L85)
+
+    TODO
+
+-   [__a64_earlyserialinit__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_serial.c#L590-L619)
+
+    TODO
+
+And returns to [__arm64_boot_primary_c_routine__](https://lupyuen.github.io/articles/unicorn2#primary-routine)...
 
 ## After Primary Routine
 
-[arm64_boot_primary_c_routine](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184)
+[__arm64_boot_primary_c_routine__](https://lupyuen.github.io/articles/unicorn2#primary-routine)
 
 -   Calls [nx_start](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699)
 
