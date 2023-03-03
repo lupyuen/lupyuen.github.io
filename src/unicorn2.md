@@ -747,23 +747,25 @@ Our grand plan is to have __GitHub Actions__ trigger these tasks every day...
 
     (With some Graph Matching algo?)
 
-We'll talk more in the next article!
+1.  __Publish the NuttX Image__, Emulator Log and Call Graph
+
+    (As a Daily GitHub Release)
+
+Or maybe I'll switch on my SBC every day to do all these. We'll talk more in the next article!
 
 # What's Next
 
-TODO
-
 We've done so much today...
 
--   Render the [__Clicable Call Graph__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos) for Apache NuttX RTOS, to understand how it boots
+-   Render the [__Clickable Call Graph__](https://lupyuen.github.io/articles/unicorn2#generate-call-graph) for Apache NuttX RTOS, to understand how it boots
 
--   We integrated Unicorn Emulator with the Rust Libraries [__addr2line__](https://crates.io/crates/addr2line) and [__gimli__](https://crates.io/crates/gimli) to map the Code Addresses to NuttX Kernel Functions
+-   By integrating [__Unicorn Emulator__](https://lupyuen.github.io/articles/unicorn2#intercept-code-execution-in-unicorn) with the Rust Libraries [__addr2line__](https://crates.io/crates/addr2line) and [__gimli__](https://crates.io/crates/gimli) to map the Code Addresses to NuttX Kernel Functions
 
--   Thanks to the (Clickable) Call Graph, we'll describe the complete __Boot Sequence__ of NuttX RTOS on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)
+-   Thanks to the Call Graph, we walked through the complete [__Boot Sequence__](https://lupyuen.github.io/articles/unicorn2#pinephone-boots-nuttx) of NuttX for PinePhone
 
--   And explain how we might do __Automated Daily Build and Test__ for NuttX on PinePhone
+-   Unicorn might be helpful for [__Automated Daily Build and Test__](https://lupyuen.github.io/articles/unicorn2#automated-daily-build-and-test) of NuttX for PinePhone
 
-CPU Emulators (like Unicorn) can be super helpful for understanding the internals of __complex embedded programs__... Like Apache NuttX RTOS!
+I hope you'll join me in the next article as we implement the __Automated Daily Build and Test__ of NuttX for PinePhone.
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
