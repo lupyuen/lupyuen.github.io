@@ -572,13 +572,14 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <p><em>What caused the Arm64 Memory Management Fault?</em></p>
 <p>The fault happens <strong>only in Unicorn Emulator</strong>, not on PinePhone. So it might be caused by our configuration of Unicorn Emulator.</p>
 <p>We’ll come back to this in a while. First we talk about the rest of the NuttX Boot Process…</p>
+<p><img src="https://lupyuen.github.io/images/terminal-title.jpg" alt="NuttX Terminal on PinePhone" /></p>
 <h1 id="pinephone-continues-booting-nuttx"><a href="#pinephone-continues-booting-nuttx">7 PinePhone Continues Booting NuttX</a></h1>
 <p><em>Suppose we fix the Arm64 Memory Management Fault…</em></p>
 <p><em>What will happen next?</em></p>
 <p>Right now we have an Arm64 <a href="https://lupyuen.github.io/articles/unicorn2#boot-chip"><strong>Memory Management Fault</strong></a> that gets tripped inside <a href="https://lupyuen.github.io/articles/unicorn2#boot-chip"><strong>arm64_chip_boot</strong></a>.</p>
 <p>(Only in <strong>Unicorn Emulator</strong>, not on PinePhone)</p>
 <p>When we fix the fault, we expect NuttX to boot successfully to the <strong>NSH Command Prompt</strong>.</p>
-<p>(Just like on PinePhone)</p>
+<p>(Just like on PinePhone, pic above)</p>
 <p><em>But what happens between arm64_chip_boot and NSH Command Prompt?</em></p>
 <p>Let’s trace the <strong>NuttX Boot Process</strong> after <a href="https://lupyuen.github.io/articles/unicorn2#boot-chip"><strong>arm64_chip_boot</strong></a>, so that we understand completely how PinePhone boots to the NSH Command Prompt…</p>
 <p><img src="https://lupyuen.github.io/images/unicorn2-callgraph5.jpg" alt="Primary Routine" /></p>
@@ -594,7 +595,7 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 </ul>
 <p>And returns to <a href="https://lupyuen.github.io/articles/unicorn2#primary-routine"><strong>arm64_boot_primary_c_routine</strong></a>…</p>
 <h2 id="after-primary-routine"><a href="#after-primary-routine">7.2 After Primary Routine</a></h2>
-<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184"><strong>arm64_boot_primary_c_routine</strong></a> continues to boot NuttX Kernel and calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699"><strong>nx_start</strong></a>, which initialises the…</p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184"><strong>arm64_boot_primary_c_routine</strong></a> continues to boot NuttX Kernel and calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699"><strong>nx_start</strong></a>, which initialises a whole bunch of things…</p>
 <ul>
 <li>
 <p>Task Control Block (Idle Task)</p>
