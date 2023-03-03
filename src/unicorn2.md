@@ -22,7 +22,7 @@ In this article we'll create some tools  to __troubleshoot the Arm64 Exception__
 
 -   And call the Rust Libraries [__addr2line__](https://crates.io/crates/addr2line) and [__gimli__](https://crates.io/crates/gimli) to map the Code Addresses to NuttX Kernel Functions
 
--   Thanks to the (Clickable) Call Graph, we'll describe the complete __Boot Process__ of NuttX RTOS on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)
+-   Thanks to the (Clickable) Call Graph, we'll describe the complete __Boot Sequence__ of NuttX RTOS on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)
 
 -   And explain how we might do __Automated Daily Build and Test__ for NuttX on PinePhone
 
@@ -603,7 +603,7 @@ _What caused the Arm64 Memory Management Fault?_
 
 The fault happens __only in Unicorn Emulator__, not on PinePhone. So it might be caused by our configuration of Unicorn Emulator.
 
-We'll come back to this in a while. First we talk about the rest of the NuttX Boot Process...
+We'll come back to this in a while. First we talk about the rest of the NuttX Boot Sequence...
 
 ![NuttX Terminal on PinePhone](https://lupyuen.github.io/images/terminal-title.jpg)
 
@@ -623,7 +623,7 @@ When we fix the fault, we expect NuttX to boot successfully to the __NSH Command
 
 _But what happens between arm64_chip_boot and NSH Command Prompt?_
 
-Let's trace the __NuttX Boot Process__ after [__arm64_chip_boot__](https://lupyuen.github.io/articles/unicorn2#boot-chip), so that we understand completely how PinePhone boots to the NSH Command Prompt...
+Let's trace the __NuttX Boot Sequence__ after [__arm64_chip_boot__](https://lupyuen.github.io/articles/unicorn2#boot-chip), so that we understand completely how PinePhone boots to the NSH Command Prompt...
 
 ![Primary Routine](https://lupyuen.github.io/images/unicorn2-callgraph5.jpg)
 
@@ -675,7 +675,7 @@ Then [__nx_start__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d5
 
 -   Enter the Idle Loop
 
-And the __NSH Command Prompt__ appears. That's how NuttX boots on PinePhone!
+And the __NSH Command Prompt__ appears. We've just completed the entire Boot Sequence for NuttX on PinePhone!
 
 Let's head back to Unicorn Emulator and fix our Arm64 Exception...
 
@@ -684,6 +684,14 @@ Let's head back to Unicorn Emulator and fix our Arm64 Exception...
 # Arm64 Memory Management Fault
 
 TODO
+
+-   [__setup_page_tables__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L485-L524)
+
+-   [__init_xlat_tables__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L415-L483)
+
+-   [__set_pte_block_desc__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L288-L368)
+
+-   [__calculate_pte_index__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L238-L273)
 
 # Automated Daily Build and Test
 
