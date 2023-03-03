@@ -675,7 +675,9 @@ Then [__nx_start__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d5
 
 -   Enter the Idle Loop
 
-And the __NSH Command Prompt__ appears.
+And the __NSH Command Prompt__ appears. That's how NuttX boots on PinePhone!
+
+Let's head back to Unicorn Emulator and fix our Arm64 Exception...
 
 ![Arm64 Memory Management Fault](https://lupyuen.github.io/images/unicorn2-callgraph7.jpg)
 
