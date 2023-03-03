@@ -680,7 +680,7 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <p><a href="https://lupyuen.github.io/articles/auto2"><em>Without Emulation: Boxful of gadgets for auto-testing</em></a></p>
 <h1 id="automated-daily-build-and-test"><a href="#automated-daily-build-and-test">9 Automated Daily Build and Test</a></h1>
 <p><em>Why would we need Daily Build and Test?</em></p>
-<p>Well NuttX RTOS for PinePhone is still evolving, with frequent code changes.</p>
+<p>NuttX RTOS for PinePhone is still evolving, with <strong>frequent code changes</strong>.</p>
 <p>That’s why it’s good to run an <strong>Automated Build and Test every day</strong>, to be sure that NuttX boots OK on PinePhone.</p>
 <p><em>We need an actual PinePhone to run Daily Tests?</em></p>
 <p>Hopefully not! It might get awfully messy to <strong>wire up a PinePhone</strong> with Sensors and Actuators to test the Touchscreen.</p>
@@ -688,11 +688,46 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <ul>
 <li><a href="https://lupyuen.github.io/articles/auto2"><strong>“(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board”</strong></a></li>
 </ul>
-<p>But for PinePhone we’ll do Automated Daily Testing the gadgetless way… With <strong>Unicorn Emulator</strong>!</p>
-<p>TODO</p>
+<p>But for PinePhone we’ll do Automated Daily Testing the gadgetless way… With <a href="https://lupyuen.github.io/articles/unicorn"><strong>Unicorn Emulator</strong></a>!</p>
+<p><em>How will we auto-build and test NuttX for PinePhone every day?</em></p>
+<p>Our grand plan is to have <strong>GitHub Actions</strong> trigger these tasks every day…</p>
+<ol>
+<li>
+<p>Do a complete <strong>NuttX Build</strong> for PinePhone</p>
+<p><a href="https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx">(Like this)</a></p>
+</li>
+<li>
+<p>Run the built NuttX Image with <strong>Unicorn Emulator</strong></p>
+<p><a href="https://lupyuen.github.io/articles/unicorn#apache-nuttx-rtos-in-unicorn">(Like this)</a></p>
+</li>
+<li>
+<p>Generate the NuttX <strong>Call Graph</strong> in Rust</p>
+<p><a href="https://lupyuen.github.io/articles/unicorn2#generate-call-graph">(Like this)</a></p>
+</li>
+<li>
+<p><strong>Match the Call Graph</strong> (with some pattern?) in Rust</p>
+<p>(With some Graph Matching algo?)</p>
+</li>
+</ol>
+<p>We’ll talk more in the next article!</p>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
-<p>This has been a fun educational exercise. Now we have a way to run <strong>Automated Daily Tests</strong> for Apache NuttX RTOS on PinePhone… Kudos to the <strong>Maintainers of Unicorn Emulator</strong>!</p>
+<p>We’ve done so much today…</p>
+<ul>
+<li>
+<p>Render the <a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>Clicable Call Graph</strong></a> for Apache NuttX RTOS, to understand how it boots</p>
+</li>
+<li>
+<p>We integrated Unicorn Emulator with the Rust Libraries <a href="https://crates.io/crates/addr2line"><strong>addr2line</strong></a> and <a href="https://crates.io/crates/gimli"><strong>gimli</strong></a> to map the Code Addresses to NuttX Kernel Functions</p>
+</li>
+<li>
+<p>Thanks to the (Clickable) Call Graph, we’ll describe the complete <strong>Boot Sequence</strong> of NuttX RTOS on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a></p>
+</li>
+<li>
+<p>And explain how we might do <strong>Automated Daily Build and Test</strong> for NuttX on PinePhone</p>
+</li>
+</ul>
+<p>CPU Emulators (like Unicorn) can be super helpful for understanding the internals of <strong>complex embedded programs</strong>… Like Apache NuttX RTOS!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
@@ -715,6 +750,32 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/unicorn2.md"><strong>lupyuen.github.io/src/unicorn2.md</strong></a></p>
 <h1 id="appendix-parse-dwarf-debug-symbols"><a href="#appendix-parse-dwarf-debug-symbols">11 Appendix: Parse DWARF Debug Symbols</a></h1>
 <p>TODO</p>
+<ul>
+<li>
+<p>Lookup the Parsed Debug Symbols to find the <strong>DWARF Location</strong> that matches the Arm64 Code Address</p>
+</li>
+<li>
+<p>Extract the <strong>Source Filename, Line and Column</strong> from the DWARF Location</p>
+</li>
+</ul>
+<p>Now that we’ve extracted the <strong>Function Name and Source Filename</strong> from our ELF File, our <a href="https://lupyuen.github.io/articles/unicorn2#map-address-to-function"><strong>Hook Function</strong></a> will print meaningful traces of our Emulated Program…</p>
+<div class="example-wrap"><pre class="language-text"><code>hook_block:
+  address=0x40080920
+  size=12
+  arm64_chip_boot
+  arch/arm64/src/chip/a64_boot.c:82:1
+
+hook_block:  
+  address=0x40080e50
+  size=28
+  arm64_mmu_init
+  arch/arm64/src/common/arm64_mmu.c:584:1
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a">(Source)</a></p>
+<p>Which are super helpful for figuring out what’s happening inside Unicorn Emulator!</p>
+<p><em>What’s ELF_CONTEXT?</em></p>
+<p><strong>ELF_CONTEXT</strong> contains the <strong>Parsed Debug Symbols</strong> from our ELF File.</p>
+<p>Here’s how we call the <a href="https://crates.io/crates/addr2line"><strong>addr2line</strong></a> and <a href="https://crates.io/crates/gimli"><strong>gimli</strong></a> libraries to parse the Debug Symbols…</p>
 <p>To run this, we need the <a href="https://crates.io/crates/addr2line"><strong>addr2line</strong></a>, <a href="https://crates.io/crates/gimli"><strong>gimli</strong></a> and <a href="https://crates.io/crates/once_cell"><strong>once_cell</strong></a> crates: <a href="https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/Cargo.toml#L8-L12">Cargo.toml</a></p>
 <div class="example-wrap"><pre class="language-text"><code>[dependencies]
 addr2line = &quot;0.19.0&quot;
