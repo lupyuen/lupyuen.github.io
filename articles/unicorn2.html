@@ -473,31 +473,31 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <p>We click and walk through the <a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>Call Graph</strong></a> to find out what went wrong, from <strong>START</strong> to <strong>HALT</strong> (pic above)…</p>
 <ol>
 <li>
-<p>NuttX starts at <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_head.S#L78-L227"><strong>arm64_head</strong></a></p>
+<p>NuttX starts at <a href="https://lupyuen.github.io/articles/unicorn2#arm64-header"><strong>arm64_head</strong></a></p>
 <p>(To prepare Arm64 Exception Levels 1 and 2)</p>
 </li>
 <li>
-<p>Which calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L181"><strong>arm64_boot_primary_c_routine</strong></a></p>
+<p>Which calls <a href="https://lupyuen.github.io/articles/unicorn2#primary-routine"><strong>arm64_boot_primary_c_routine</strong></a></p>
 <p>(To start the NuttX Kernel)</p>
 </li>
 <li>
-<p>Which calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105"><strong>arm64_chip_boot</strong></a></p>
+<p>Which calls <a href="https://lupyuen.github.io/articles/unicorn2#boot-chip"><strong>arm64_chip_boot</strong></a></p>
 <p>(To configure the Arm64 CPU)</p>
 </li>
 <li>
-<p>Which calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L577-L628"><strong>arm64_mmu_init</strong></a></p>
+<p>Which calls <a href="https://lupyuen.github.io/articles/unicorn2#boot-chip"><strong>arm64_mmu_init</strong></a></p>
 <p>(To initialise the Arm64 Memory Management Unit)</p>
 </li>
 <li>
-<p>Which calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L485-L524"><strong>setup_page_tables</strong></a></p>
+<p>Which calls <a href="https://lupyuen.github.io/articles/unicorn2#boot-chip"><strong>setup_page_tables</strong></a></p>
 <p>(To set up the Arm64 Memory Page Tables)</p>
 </li>
 <li>
-<p>And calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L526-L552"><strong>enable_mmu_el1</strong></a></p>
+<p>And calls <a href="https://lupyuen.github.io/articles/unicorn2#boot-chip"><strong>enable_mmu_el1</strong></a></p>
 <p>(To enable the Arm64 Memory Management Unit)</p>
 </li>
 <li>
-<p>Which halts with an Arm64 <a href="https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault"><strong>Memory Management Fault</strong></a></p>
+<p>Which halts with an Arm64 <a href="https://lupyuen.github.io/articles/unicorn2#boot-chip"><strong>Memory Management Fault</strong></a></p>
 </li>
 </ol>
 <p>To understand what’s really happening, we dive into each of the above functions.</p>
@@ -512,11 +512,11 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <p>The assembly code calls…</p>
 <ul>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L132-L162"><strong>arm64_boot_el1_init</strong></a> to prepare <strong>Arm64 Exception Level 1</strong></p>
+<p><a href="https://lupyuen.github.io/articles/unicorn2#initialise-el1"><strong>arm64_boot_el1_init</strong></a> to prepare <strong>Arm64 Exception Level 1</strong></p>
 <p><a href="https://lupyuen.github.io/articles/interrupt#exception-levels">(What’s an Arm64 Exception Level?)</a></p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L181"><strong>arm64_boot_primary_c_routine</strong></a> to boot the <strong>NuttX Kernel</strong></p>
+<p><a href="https://lupyuen.github.io/articles/unicorn2#primary-routine"><strong>arm64_boot_primary_c_routine</strong></a> to boot the <strong>NuttX Kernel</strong></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/unicorn2-callgraph4.jpg" alt="Initialise EL1" /></p>
@@ -548,10 +548,10 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L164-L177"><strong>boot_early_memset</strong></a> to fill the <a href="https://en.wikipedia.org/wiki/.bss"><strong>BSS Section</strong></a> with 0</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105"><strong>arm64_chip_boot</strong></a> to configure the Arm64 CPU</p>
+<p><a href="https://lupyuen.github.io/articles/unicorn2#boot-chip"><strong>arm64_chip_boot</strong></a> to configure the Arm64 CPU</p>
 </li>
 </ul>
-<p>And more… We’ll come back to the Primary Routine.</p>
+<p>And more… We’ll come back to the Primary Routine in the next chapter.</p>
 <p><img src="https://lupyuen.github.io/images/unicorn2-callgraph6.jpg" alt="Boot Chip" /></p>
 <h2 id="boot-chip"><a href="#boot-chip">6.4 Boot Chip</a></h2>
 <p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105"><strong>arm64_chip_boot</strong></a> configures the Arm64 CPU. It calls…</p>
@@ -575,22 +575,28 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <h1 id="pinephone-continues-booting-nuttx"><a href="#pinephone-continues-booting-nuttx">7 PinePhone Continues Booting NuttX</a></h1>
 <p><em>Suppose we fix the Arm64 Memory Management Fault…</em></p>
 <p><em>What will happen next?</em></p>
-<p>Right now we have an Arm64 <a href="https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault"><strong>Memory Management Fault</strong></a> that happens inside <a href="https://lupyuen.github.io/articles/unicorn2#boot-chip"><strong>arm64_chip_boot</strong></a>.</p>
-<p>(The fault happens <strong>only in Unicorn Emulator</strong>, not on PinePhone)</p>
-<p>When we fix the fault, we expect NuttX to boot successfully to the Command-Line Interface. (Just like PinePhone)</p>
-<p>TODO: After fault</p>
+<p>Right now we have an Arm64 <a href="https://lupyuen.github.io/articles/unicorn2#boot-chip"><strong>Memory Management Fault</strong></a> that gets tripped inside <a href="https://lupyuen.github.io/articles/unicorn2#boot-chip"><strong>arm64_chip_boot</strong></a>.</p>
+<p>(Only in <strong>Unicorn Emulator</strong>, not on PinePhone)</p>
+<p>When we fix the fault, we expect NuttX to boot successfully to the <strong>NSH Command Prompt</strong>.</p>
+<p>(Just like on PinePhone)</p>
+<p><em>But what happens between arm64_chip_boot and NSH Command Prompt?</em></p>
+<p>Let’s trace the <strong>NuttX Boot Process</strong> after <a href="https://lupyuen.github.io/articles/unicorn2#boot-chip"><strong>arm64_chip_boot</strong></a>, so that we understand completely how PinePhone boots to the NSH Command Prompt…</p>
 <h2 id="after-boot-chip"><a href="#after-boot-chip">7.1 After Boot Chip</a></h2>
-<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105">arm64_chip_boot</a></p>
+<p>Earlier we saw that <a href="https://lupyuen.github.io/articles/unicorn2#boot-chip"><strong>arm64_chip_boot</strong></a> initialises the Arm64 Memory Management Unit.</p>
+<p>Following that, it calls…</p>
 <ul>
 <li>
-<p>Calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/boards/arm64/a64/pinephone/src/pinephone_boardinit.c#L59-L85">a64_board_initialize</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/boards/arm64/a64/pinephone/src/pinephone_boardinit.c#L59-L85"><strong>a64_board_initialize</strong></a></p>
+<p>TODO</p>
 </li>
 <li>
-<p>And <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_serial.c#L590-L619">a64_earlyserialinit</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_serial.c#L590-L619"><strong>a64_earlyserialinit</strong></a></p>
+<p>TODO</p>
 </li>
 </ul>
+<p>And returns to <a href="https://lupyuen.github.io/articles/unicorn2#primary-routine"><strong>arm64_boot_primary_c_routine</strong></a>…</p>
 <h2 id="after-primary-routine"><a href="#after-primary-routine">7.2 After Primary Routine</a></h2>
-<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184">arm64_boot_primary_c_routine</a></p>
+<p><a href="https://lupyuen.github.io/articles/unicorn2#primary-routine"><strong>arm64_boot_primary_c_routine</strong></a></p>
 <ul>
 <li>Calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699">nx_start</a></li>
 </ul>
