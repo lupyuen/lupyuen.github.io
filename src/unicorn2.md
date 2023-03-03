@@ -605,6 +605,8 @@ The fault happens __only in Unicorn Emulator__, not on PinePhone. So it might be
 
 We'll come back to this in a while. First we talk about the rest of the NuttX Boot Process...
 
+![NuttX Terminal on PinePhone](https://lupyuen.github.io/images/terminal-title.jpg)
+
 # PinePhone Continues Booting NuttX
 
 _Suppose we fix the Arm64 Memory Management Fault..._
@@ -617,7 +619,7 @@ Right now we have an Arm64 [__Memory Management Fault__](https://lupyuen.github.
 
 When we fix the fault, we expect NuttX to boot successfully to the __NSH Command Prompt__.
 
-(Just like on PinePhone)
+(Just like on PinePhone, pic above)
 
 _But what happens between arm64_chip_boot and NSH Command Prompt?_
 
@@ -637,7 +639,7 @@ And returns to [__arm64_boot_primary_c_routine__](https://lupyuen.github.io/arti
 
 ## After Primary Routine
 
-[__arm64_boot_primary_c_routine__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184) continues to boot NuttX Kernel and calls [__nx_start__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699), which initialises the...
+[__arm64_boot_primary_c_routine__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184) continues to boot NuttX Kernel and calls [__nx_start__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699), which initialises a whole bunch of things...
 
 -   Task Control Block (Idle Task)
 
