@@ -581,25 +581,22 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <p>(Just like on PinePhone)</p>
 <p><em>But what happens between arm64_chip_boot and NSH Command Prompt?</em></p>
 <p>Let’s trace the <strong>NuttX Boot Process</strong> after <a href="https://lupyuen.github.io/articles/unicorn2#boot-chip"><strong>arm64_chip_boot</strong></a>, so that we understand completely how PinePhone boots to the NSH Command Prompt…</p>
+<p><img src="https://lupyuen.github.io/images/unicorn2-callgraph5.jpg" alt="Primary Routine" /></p>
 <h2 id="after-boot-chip"><a href="#after-boot-chip">7.1 After Boot Chip</a></h2>
-<p>Earlier we saw that <a href="https://lupyuen.github.io/articles/unicorn2#boot-chip"><strong>arm64_chip_boot</strong></a> initialises the Arm64 Memory Management Unit.</p>
-<p>Following that, it calls…</p>
+<p>Earlier we saw that <a href="https://lupyuen.github.io/articles/unicorn2#boot-chip"><strong>arm64_chip_boot</strong></a> initialises the Arm64 Memory Management Unit. After that, it calls…</p>
 <ul>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/boards/arm64/a64/pinephone/src/pinephone_boardinit.c#L59-L85"><strong>a64_board_initialize</strong></a></p>
-<p>TODO</p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/boards/arm64/a64/pinephone/src/pinephone_boardinit.c#L59-L85"><strong>a64_board_initialize</strong></a>: To initialise the PinePhone “Board” (for LEDs)</p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_serial.c#L590-L619"><strong>a64_earlyserialinit</strong></a></p>
-<p>TODO</p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_serial.c#L590-L619"><strong>a64_earlyserialinit</strong></a>: To configure the PinePhone Allwinner A64 UART Port (for Console Input / Output)</p>
 </li>
 </ul>
 <p>And returns to <a href="https://lupyuen.github.io/articles/unicorn2#primary-routine"><strong>arm64_boot_primary_c_routine</strong></a>…</p>
 <h2 id="after-primary-routine"><a href="#after-primary-routine">7.2 After Primary Routine</a></h2>
-<p><a href="https://lupyuen.github.io/articles/unicorn2#primary-routine"><strong>arm64_boot_primary_c_routine</strong></a></p>
-<ul>
-<li>Calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699">nx_start</a></li>
-</ul>
+<p><a href="https://lupyuen.github.io/articles/unicorn2#primary-routine"><strong>arm64_boot_primary_c_routine</strong></a> continues to boot NuttX Kernel and calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699"><strong>nx_start</strong></a>.</p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699"><strong>nx_start</strong></a> executes a whole bunch of Kernel Startup Steps…</p>
+<p>TODO</p>
 <h1 id="arm64-memory-management-fault"><a href="#arm64-memory-management-fault">8 Arm64 Memory Management Fault</a></h1>
 <p>TODO</p>
 <h1 id="automated-daily-build-and-test"><a href="#automated-daily-build-and-test">9 Automated Daily Build and Test</a></h1>
