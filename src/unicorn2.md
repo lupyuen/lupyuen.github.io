@@ -641,43 +641,27 @@ And returns to [__arm64_boot_primary_c_routine__](https://lupyuen.github.io/arti
 
 [__nx_start__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699) initialises the following...
 
--   Task Control Block for Idle Task
+-   Task Control Block (Idle Task)
 
 -   Semaphore Facility
 
--   Memory Manager
-
--   Extra Heap
+-   Memory Manager / Extra Heap
 
 -   Input / Output Buffering
 
--   Unique Process IDs
-
--   Idle Group
-
--   Tasking Data Structures
+-   Unique Process IDs / Idle Group / Tasking Data Structures
 
 -   File System
 
 -   Interrupt Handling Subsystem
 
--   POSIX Timer Facility
+-   POSIX Timer Facility / Signal Facility
 
--   Signal Facility
+-   Named Message Queue Facility / System V Message Queue Facility
 
--   Named Message Queue Facility
+-   Networking System / Binary Loader System
 
--   System V Message Queue Facility
-
--   Networking System
-
--   binfmt System
-
--   Hardware Facilities
-
--   Common Drivers
-
--   Early Board Initialisation
+-   Hardware Facilities / Common Drivers / Early Board Initialisation
 
 TODO
 
