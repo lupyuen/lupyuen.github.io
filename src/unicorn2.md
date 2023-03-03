@@ -637,9 +637,67 @@ And returns to [__arm64_boot_primary_c_routine__](https://lupyuen.github.io/arti
 
 ## After Primary Routine
 
-[__arm64_boot_primary_c_routine__](https://lupyuen.github.io/articles/unicorn2#primary-routine) continues to boot NuttX Kernel and calls [__nx_start__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699).
+[__arm64_boot_primary_c_routine__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184) continues to boot NuttX Kernel and calls [__nx_start__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699).
 
-[__nx_start__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699) executes a whole bunch of Kernel Startup Steps...
+[__nx_start__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699) initialises the following...
+
+-   Task Control Block for Idle Task
+
+-   Semaphore Facility
+
+-   Memory Manager
+
+-   Extra Heap
+
+-   Input / Output Buffering
+
+-   Unique Process IDs
+
+-   Idle Group
+
+-   Tasking Data Structures
+
+-   File System
+
+-   Interrupt Handling Subsystem
+
+-   POSIX Timer Facility
+
+-   Signal Facility
+
+-   Named Message Queue Facility
+
+-   System V Message Queue Facility
+
+-   Networking System
+
+-   binfmt System
+
+-   Hardware Facilities
+
+-   Common Drivers
+
+-   Early Board Initialisation
+
+TODO
+
+-   Setup for Multi-Tasking 
+
+-   Announce that the CPU0 IDLE task has started
+
+-   Start all CPUs 
+
+-   Then start the other CPUs
+
+-   Bring Up the System 
+
+-   Create initial tasks and bring-up the system
+
+-   Enter to idleloop
+
+-   Let other threads have access to the memory manager
+
+-   The IDLE Loop
 
 TODO
 
