@@ -677,6 +677,8 @@ Then [__nx_start__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d5
 
 And the __NSH Command Prompt__ appears.
 
+![Arm64 Memory Management Fault](https://lupyuen.github.io/images/unicorn2-callgraph7.jpg)
+
 # Arm64 Memory Management Fault
 
 TODO
