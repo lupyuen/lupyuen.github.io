@@ -713,7 +713,7 @@ To fix the fault, we'll sprinkle some Debug Logs into the above functions. Stay 
 
 _Why would we need Daily Build and Test?_
 
-Well NuttX RTOS for PinePhone is still evolving, with frequent code changes.
+NuttX RTOS for PinePhone is still evolving, with __frequent code changes__.
 
 That's why it's good to run an __Automated Build and Test every day__, to be sure that NuttX boots OK on PinePhone.
 
@@ -725,15 +725,45 @@ We tried __Automated Daily Testing__ for a simpler microcontroller gadget (pic a
 
 -   [__"(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/auto2)
 
-But for PinePhone we'll do Automated Daily Testing the gadgetless way... With __Unicorn Emulator__!
+But for PinePhone we'll do Automated Daily Testing the gadgetless way... With [__Unicorn Emulator__](https://lupyuen.github.io/articles/unicorn)!
 
-TODO
+_How will we auto-build and test NuttX for PinePhone every day?_
+
+Our grand plan is to have __GitHub Actions__ trigger these tasks every day...
+
+1.  Do a complete __NuttX Build__ for PinePhone
+
+    [(Like this)](https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx)
+
+1.  Run the built NuttX Image with __Unicorn Emulator__
+
+    [(Like this)](https://lupyuen.github.io/articles/unicorn#apache-nuttx-rtos-in-unicorn)
+
+1.  Generate the NuttX __Call Graph__ in Rust
+
+    [(Like this)](https://lupyuen.github.io/articles/unicorn2#generate-call-graph)
+
+1.  __Match the Call Graph__ (with some pattern?) in Rust
+
+    (With some Graph Matching algo?)
+
+We'll talk more in the next article!
 
 # What's Next
 
 TODO
 
-This has been a fun educational exercise. Now we have a way to run __Automated Daily Tests__ for Apache NuttX RTOS on PinePhone... Kudos to the __Maintainers of Unicorn Emulator__!
+We've done so much today...
+
+-   Render the [__Clicable Call Graph__](https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos) for Apache NuttX RTOS, to understand how it boots
+
+-   We integrated Unicorn Emulator with the Rust Libraries [__addr2line__](https://crates.io/crates/addr2line) and [__gimli__](https://crates.io/crates/gimli) to map the Code Addresses to NuttX Kernel Functions
+
+-   Thanks to the (Clickable) Call Graph, we'll describe the complete __Boot Sequence__ of NuttX RTOS on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)
+
+-   And explain how we might do __Automated Daily Build and Test__ for NuttX on PinePhone
+
+CPU Emulators (like Unicorn) can be super helpful for understanding the internals of __complex embedded programs__... Like Apache NuttX RTOS!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -754,6 +784,36 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Appendix: Parse DWARF Debug Symbols
 
 TODO
+
+-   Lookup the Parsed Debug Symbols to find the __DWARF Location__ that matches the Arm64 Code Address
+
+-   Extract the __Source Filename, Line and Column__ from the DWARF Location
+
+Now that we've extracted the __Function Name and Source Filename__ from our ELF File, our [__Hook Function__](https://lupyuen.github.io/articles/unicorn2#map-address-to-function) will print meaningful traces of our Emulated Program...
+
+```text
+hook_block:
+  address=0x40080920
+  size=12
+  arm64_chip_boot
+  arch/arm64/src/chip/a64_boot.c:82:1
+
+hook_block:  
+  address=0x40080e50
+  size=28
+  arm64_mmu_init
+  arch/arm64/src/common/arm64_mmu.c:584:1
+```
+
+[(Source)](https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a)
+
+Which are super helpful for figuring out what's happening inside Unicorn Emulator!
+
+_What's ELF_CONTEXT?_
+
+__ELF_CONTEXT__ contains the __Parsed Debug Symbols__ from our ELF File.
+
+Here's how we call the [__addr2line__](https://crates.io/crates/addr2line) and [__gimli__](https://crates.io/crates/gimli) libraries to parse the Debug Symbols...
 
 To run this, we need the [__addr2line__](https://crates.io/crates/addr2line), [__gimli__](https://crates.io/crates/gimli) and [__once_cell__](https://crates.io/crates/once_cell) crates: [Cargo.toml](https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/Cargo.toml#L8-L12)
 
