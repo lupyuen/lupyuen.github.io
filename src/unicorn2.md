@@ -637,9 +637,7 @@ And returns to [__arm64_boot_primary_c_routine__](https://lupyuen.github.io/arti
 
 ## After Primary Routine
 
-[__arm64_boot_primary_c_routine__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184) continues to boot NuttX Kernel and calls [__nx_start__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699).
-
-[__nx_start__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699) initialises the following...
+[__arm64_boot_primary_c_routine__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184) continues to boot NuttX Kernel and calls [__nx_start__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699), which initialises the following...
 
 -   Task Control Block (Idle Task)
 
