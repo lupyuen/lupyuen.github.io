@@ -711,9 +711,23 @@ To fix the fault, we'll sprinkle some Debug Logs into the above functions. Stay 
 
 # Automated Daily Build and Test
 
-TODO
+_Why would we need to do Daily Build and Test?_
+
+Well NuttX RTOS for PinePhone is still evolving, with frequent code changes.
+
+That's why it's good to run an __Automated Daily Build and Test__, to be sure that NuttX boots OK on PinePhone.
+
+_We need an actual PinePhone to do this?_
+
+Hopefully not! It might get awfully messy to __wire up a PinePhone__ with Sensors and Actuators to test the Touchscreen.
+
+We tried doing this for a simpler gadget...
 
 -   [__"(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/auto2)
+
+But for PinePhone we'll do this the non-physical way... With __Unicorn Emulator__!
+
+TODO
 
 # What's Next
 
