@@ -594,7 +594,7 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 </ul>
 <p>And returns to <a href="https://lupyuen.github.io/articles/unicorn2#primary-routine"><strong>arm64_boot_primary_c_routine</strong></a>…</p>
 <h2 id="after-primary-routine"><a href="#after-primary-routine">7.2 After Primary Routine</a></h2>
-<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184"><strong>arm64_boot_primary_c_routine</strong></a> continues to boot NuttX Kernel and calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699"><strong>nx_start</strong></a>, which initialises the following…</p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184"><strong>arm64_boot_primary_c_routine</strong></a> continues to boot NuttX Kernel and calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699"><strong>nx_start</strong></a>, which initialises the…</p>
 <ul>
 <li>
 <p>Task Control Block (Idle Task)</p>
@@ -627,40 +627,25 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <p>Networking System / Binary Loader System</p>
 </li>
 <li>
-<p>Hardware Facilities / Common Drivers / Early Board Initialisation</p>
+<p>Arm64 Hardware / Common Drivers / Early Board Initialisation</p>
 </li>
 </ul>
-<p>TODO</p>
+<p>Then <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699"><strong>nx_start</strong></a> runs the NuttX Tasks…</p>
 <ul>
 <li>
-<p>Setup for Multi-Tasking </p>
+<p>Start the remaining CPUs</p>
 </li>
 <li>
-<p>Announce that the CPU0 IDLE task has started</p>
+<p>Create the Initial Tasks</p>
 </li>
 <li>
-<p>Start all CPUs </p>
+<p>Bring Up the System <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_bringup.c#L373-L458">(<strong>nx_bringup</strong>)</a></p>
 </li>
 <li>
-<p>Then start the other CPUs</p>
-</li>
-<li>
-<p>Bring Up the System </p>
-</li>
-<li>
-<p>Create initial tasks and bring-up the system</p>
-</li>
-<li>
-<p>Enter to idleloop</p>
-</li>
-<li>
-<p>Let other threads have access to the memory manager</p>
-</li>
-<li>
-<p>The IDLE Loop</p>
+<p>Enter the Idle Loop</p>
 </li>
 </ul>
-<p>TODO</p>
+<p>And the <strong>NSH Command Prompt</strong> appears.</p>
 <h1 id="arm64-memory-management-fault"><a href="#arm64-memory-management-fault">8 Arm64 Memory Management Fault</a></h1>
 <p>TODO</p>
 <h1 id="automated-daily-build-and-test"><a href="#automated-daily-build-and-test">9 Automated Daily Build and Test</a></h1>
