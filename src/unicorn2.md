@@ -637,7 +637,7 @@ And returns to [__arm64_boot_primary_c_routine__](https://lupyuen.github.io/arti
 
 ## After Primary Routine
 
-[__arm64_boot_primary_c_routine__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184) continues to boot NuttX Kernel and calls [__nx_start__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699), which initialises the following...
+[__arm64_boot_primary_c_routine__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184) continues to boot NuttX Kernel and calls [__nx_start__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699), which initialises the...
 
 -   Task Control Block (Idle Task)
 
@@ -659,29 +659,19 @@ And returns to [__arm64_boot_primary_c_routine__](https://lupyuen.github.io/arti
 
 -   Networking System / Binary Loader System
 
--   Hardware Facilities / Common Drivers / Early Board Initialisation
+-   Arm64 Hardware / Common Drivers / Early Board Initialisation
 
-TODO
+Then [__nx_start__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699) runs the NuttX Tasks...
 
--   Setup for Multi-Tasking 
+-   Start the remaining CPUs
 
--   Announce that the CPU0 IDLE task has started
+-   Create the Initial Tasks
 
--   Start all CPUs 
+-   Bring Up the System [(__nx_bringup__)](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_bringup.c#L373-L458)
 
--   Then start the other CPUs
+-   Enter the Idle Loop
 
--   Bring Up the System 
-
--   Create initial tasks and bring-up the system
-
--   Enter to idleloop
-
--   Let other threads have access to the memory manager
-
--   The IDLE Loop
-
-TODO
+And the __NSH Command Prompt__ appears.
 
 # Arm64 Memory Management Fault
 
