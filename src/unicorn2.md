@@ -623,27 +623,25 @@ _But what happens between arm64_chip_boot and NSH Command Prompt?_
 
 Let's trace the __NuttX Boot Process__ after [__arm64_chip_boot__](https://lupyuen.github.io/articles/unicorn2#boot-chip), so that we understand completely how PinePhone boots to the NSH Command Prompt...
 
+![Primary Routine](https://lupyuen.github.io/images/unicorn2-callgraph5.jpg)
+
 ## After Boot Chip
 
-Earlier we saw that [__arm64_chip_boot__](https://lupyuen.github.io/articles/unicorn2#boot-chip) initialises the Arm64 Memory Management Unit.
+Earlier we saw that [__arm64_chip_boot__](https://lupyuen.github.io/articles/unicorn2#boot-chip) initialises the Arm64 Memory Management Unit. After that, it calls...
 
-Following that, it calls...
+-   [__a64_board_initialize__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/boards/arm64/a64/pinephone/src/pinephone_boardinit.c#L59-L85): To initialise the PinePhone "Board" (for LEDs)
 
--   [__a64_board_initialize__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/boards/arm64/a64/pinephone/src/pinephone_boardinit.c#L59-L85)
-
-    TODO
-
--   [__a64_earlyserialinit__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_serial.c#L590-L619)
-
-    TODO
+-   [__a64_earlyserialinit__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_serial.c#L590-L619): To configure the PinePhone Allwinner A64 UART Port (for Console Input / Output)
 
 And returns to [__arm64_boot_primary_c_routine__](https://lupyuen.github.io/articles/unicorn2#primary-routine)...
 
 ## After Primary Routine
 
-[__arm64_boot_primary_c_routine__](https://lupyuen.github.io/articles/unicorn2#primary-routine)
+[__arm64_boot_primary_c_routine__](https://lupyuen.github.io/articles/unicorn2#primary-routine) continues to boot NuttX Kernel and calls [__nx_start__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699).
 
--   Calls [nx_start](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699)
+[__nx_start__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699) executes a whole bunch of Kernel Startup Steps...
+
+TODO
 
 # Arm64 Memory Management Fault
 
