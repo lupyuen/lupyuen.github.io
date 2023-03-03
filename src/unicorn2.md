@@ -599,13 +599,23 @@ And more... We'll come back to the Primary Routine.
 
 -   Which halts with an Arm64 [__Memory Management Fault__](https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault): Invalid Arm64 Address Translation or Caching at `0x400C` `3FFF`
 
-TODO
+_What caused the Arm64 Memory Management Fault?_
+
+The fault happens __only in Unicorn Emulator__, not on PinePhone. So it might be caused by our configuration of Unicorn Emulator.
+
+We'll come back to this in a while. First we talk about the rest of the NuttX Boot Process...
 
 # PinePhone Continues Booting NuttX
 
 _Suppose we fix the Arm64 Memory Management Fault..._
 
 _What will happen next?_
+
+Right now we have an Arm64 [__Memory Management Fault__](https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault) that happens inside [__arm64_chip_boot__](https://lupyuen.github.io/articles/unicorn2#boot-chip).
+
+(The fault happens __only in Unicorn Emulator__, not on PinePhone)
+
+When we fix the fault, we expect NuttX to boot successfully to the Command-Line Interface. (Just like PinePhone)
 
 TODO: After fault
 
@@ -621,7 +631,11 @@ TODO: After fault
 
 [arm64_boot_primary_c_routine](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184)
 
--   Calls nx_start
+-   Calls [nx_start](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699)
+
+# Arm64 Memory Management Fault
+
+TODO
 
 # Automated Daily Build and Test
 
