@@ -80,9 +80,10 @@
 <li><a href="#pinephone-continues-booting-nuttx">7 PinePhone Continues Booting NuttX</a><ul>
 <li><a href="#after-boot-chip">7.1 After Boot Chip</a><ul></ul></li>
 <li><a href="#after-primary-routine">7.2 After Primary Routine</a><ul></ul></li></ul></li>
-<li><a href="#automated-daily-build-and-test">8 Automated Daily Build and Test</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-parse-dwarf-debug-symbols">10 Appendix: Parse DWARF Debug Symbols</a><ul></ul></li></ul></nav><p>📝 <em>10 Mar 2023</em></p>
+<li><a href="#arm64-memory-management-fault">8 Arm64 Memory Management Fault</a><ul></ul></li>
+<li><a href="#automated-daily-build-and-test">9 Automated Daily Build and Test</a><ul></ul></li>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-parse-dwarf-debug-symbols">11 Appendix: Parse DWARF Debug Symbols</a><ul></ul></li></ul></nav><p>📝 <em>10 Mar 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/unicorn2-title.jpg" alt="Call Graph for Apache NuttX Real-Time Operating System" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><em>Clickable Call Graph for Apache NuttX RTOS</em></a></p>
 <p>Last week we ran <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX Real-Time Operating System</strong></a> (RTOS) on <a href="https://www.unicorn-engine.org/"><strong>Unicorn Emulator</strong></a>…</p>
@@ -568,10 +569,15 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <p>Which halts with an Arm64 <a href="https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault"><strong>Memory Management Fault</strong></a>: Invalid Arm64 Address Translation or Caching at <code>0x400C</code> <code>3FFF</code></p>
 </li>
 </ul>
-<p>TODO</p>
+<p><em>What caused the Arm64 Memory Management Fault?</em></p>
+<p>The fault happens <strong>only in Unicorn Emulator</strong>, not on PinePhone. So it might be caused by our configuration of Unicorn Emulator.</p>
+<p>We’ll come back to this in a while. First we talk about the rest of the NuttX Boot Process…</p>
 <h1 id="pinephone-continues-booting-nuttx"><a href="#pinephone-continues-booting-nuttx">7 PinePhone Continues Booting NuttX</a></h1>
 <p><em>Suppose we fix the Arm64 Memory Management Fault…</em></p>
 <p><em>What will happen next?</em></p>
+<p>Right now we have an Arm64 <a href="https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault"><strong>Memory Management Fault</strong></a> that happens inside <a href="https://lupyuen.github.io/articles/unicorn2#boot-chip"><strong>arm64_chip_boot</strong></a>.</p>
+<p>(The fault happens <strong>only in Unicorn Emulator</strong>, not on PinePhone)</p>
+<p>When we fix the fault, we expect NuttX to boot successfully to the Command-Line Interface. (Just like PinePhone)</p>
 <p>TODO: After fault</p>
 <h2 id="after-boot-chip"><a href="#after-boot-chip">7.1 After Boot Chip</a></h2>
 <p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105">arm64_chip_boot</a></p>
@@ -586,11 +592,13 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <h2 id="after-primary-routine"><a href="#after-primary-routine">7.2 After Primary Routine</a></h2>
 <p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L179-L184">arm64_boot_primary_c_routine</a></p>
 <ul>
-<li>Calls nx_start</li>
+<li>Calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_start.c#L297-L699">nx_start</a></li>
 </ul>
-<h1 id="automated-daily-build-and-test"><a href="#automated-daily-build-and-test">8 Automated Daily Build and Test</a></h1>
+<h1 id="arm64-memory-management-fault"><a href="#arm64-memory-management-fault">8 Arm64 Memory Management Fault</a></h1>
 <p>TODO</p>
-<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
+<h1 id="automated-daily-build-and-test"><a href="#automated-daily-build-and-test">9 Automated Daily Build and Test</a></h1>
+<p>TODO</p>
+<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>This has been a fun educational exercise. Now we have a way to run <strong>Automated Daily Tests</strong> for Apache NuttX RTOS on PinePhone… Kudos to the <strong>Maintainers of Unicorn Emulator</strong>!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -613,7 +621,7 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/unicorn2.md"><strong>lupyuen.github.io/src/unicorn2.md</strong></a></p>
-<h1 id="appendix-parse-dwarf-debug-symbols"><a href="#appendix-parse-dwarf-debug-symbols">10 Appendix: Parse DWARF Debug Symbols</a></h1>
+<h1 id="appendix-parse-dwarf-debug-symbols"><a href="#appendix-parse-dwarf-debug-symbols">11 Appendix: Parse DWARF Debug Symbols</a></h1>
 <p>TODO</p>
 <p>To run this, we need the <a href="https://crates.io/crates/addr2line"><strong>addr2line</strong></a>, <a href="https://crates.io/crates/gimli"><strong>gimli</strong></a> and <a href="https://crates.io/crates/once_cell"><strong>once_cell</strong></a> crates: <a href="https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/Cargo.toml#L8-L12">Cargo.toml</a></p>
 <div class="example-wrap"><pre class="language-text"><code>[dependencies]
