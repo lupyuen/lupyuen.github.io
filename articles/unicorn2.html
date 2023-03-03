@@ -492,7 +492,7 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <p>(To set up the Arm64 Memory Page Tables)</p>
 </li>
 <li>
-<p>Which calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L526-L552"><strong>enable_mmu_el1</strong></a></p>
+<p>And calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L526-L552"><strong>enable_mmu_el1</strong></a></p>
 <p>(To enable the Arm64 Memory Management Unit)</p>
 </li>
 <li>
@@ -556,22 +556,19 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105"><strong>arm64_chip_boot</strong></a> configures the Arm64 CPU. It calls…</p>
 <ul>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L577-L628"><strong>arm64_mmu_init</strong></a></p>
-<p>TODO</p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L577-L628"><strong>arm64_mmu_init</strong></a>: To initialise the Arm64 Memory Management Unit for Exception Level 1</p>
 </li>
 <li>
-<p>Which calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L485-L524"><strong>setup_page_tables</strong></a></p>
-<p>TODO</p>
+<p>Which calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L485-L524"><strong>setup_page_tables</strong></a>: To set up the Arm64 Memory Translation Tables</p>
 </li>
 <li>
-<p>Which calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L526-L552"><strong>enable_mmu_el1</strong></a></p>
-<p>TODO</p>
+<p>And calls <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L526-L552"><strong>enable_mmu_el1</strong></a>: To enable the Arm64 Memory Management Unit and Data Cache for Exception Level 1</p>
 </li>
 <li>
-<p>Which halts with an Arm64 <a href="https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault"><strong>Memory Management Fault</strong></a></p>
-<p>TODO</p>
+<p>Which halts with an Arm64 <a href="https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault"><strong>Memory Management Fault</strong></a>: Invalid Arm64 Address Translation or Caching at <code>0x400C</code> <code>3FFF</code></p>
 </li>
 </ul>
+<p>TODO</p>
 <h1 id="pinephone-continues-booting-nuttx"><a href="#pinephone-continues-booting-nuttx">7 PinePhone Continues Booting NuttX</a></h1>
 <p><em>Suppose we fix the Arm64 Memory Management Fault…</em></p>
 <p><em>What will happen next?</em></p>
