@@ -693,6 +693,8 @@ TODO: Based on our earlier investigation with Unicorn Emulator...
 
 TODO: the Address Translation (or Caching) has failed in our Emulated Arm64 Memory Management Unit
 
+These functions are probably sus...
+
 -   [__setup_page_tables__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L485-L524)
 
 -   [__init_xlat_tables__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L415-L483)
@@ -700,6 +702,8 @@ TODO: the Address Translation (or Caching) has failed in our Emulated Arm64 Memo
 -   [__set_pte_block_desc__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L288-L368)
 
 -   [__calculate_pte_index__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L238-L273)
+
+TODO: Sprinkle some Debug Logs
 
 # Automated Daily Build and Test
 
