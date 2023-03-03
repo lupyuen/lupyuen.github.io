@@ -687,23 +687,23 @@ _Now that we understand how NuttX boots on PinePhone..._
 
 _Can we fix the Arm64 Memory Management Fault on Unicorn?_
 
-TODO: Based on our earlier investigation with Unicorn Emulator...
+Based on our earlier investigation with Unicorn Emulator...
 
 -   [__"Emulator Halts with MMU Fault"__](https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault)
 
-TODO: the Address Translation (or Caching) has failed in our Emulated Arm64 Memory Management Unit
+We deduced that the __Arm64 Address Translation__ (or Caching) has failed in our Emulated Arm64 __Memory Management Unit__ for [__Exception Level 1__](https://lupyuen.github.io/articles/interrupt#exception-levels).
 
-These functions are probably sus...
+From the Call Graph above, these are the functions involved in the Arm64 __Address Translation Tables__ (and are probably sus)...
 
--   [__setup_page_tables__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L485-L524)
+-   [__setup_page_tables__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L485-L524): Setup Arm64 Page Tables
 
--   [__init_xlat_tables__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L415-L483)
+-   [__init_xlat_tables__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L415-L483): Initialise Arm64 Translation Tables
 
--   [__set_pte_block_desc__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L288-L368)
+-   [__set_pte_block_desc__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L288-L368): Set Private Block Descriptor
 
--   [__calculate_pte_index__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L238-L273)
+-   [__calculate_pte_index__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L238-L273): Calculate Private Index
 
-TODO: Sprinkle some Debug Logs
+To fix the fault, we'll sprinkle some Debug Logs into the above functions. Stay tuned for updates!
 
 # Automated Daily Build and Test
 
