@@ -683,7 +683,15 @@ Let's head back to Unicorn Emulator and fix our Arm64 Exception...
 
 # Arm64 Memory Management Fault
 
-TODO
+_Now that we understand how NuttX boots on PinePhone..._
+
+_Can we fix the Arm64 Memory Management Fault on Unicorn?_
+
+TODO: Based on our earlier investigation with Unicorn Emulator...
+
+-   [__"Emulator Halts with MMU Fault"__](https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault)
+
+TODO: the Address Translation (or Caching) has failed in our Emulated Arm64 Memory Management Unit
 
 -   [__setup_page_tables__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L485-L524)
 
