@@ -705,9 +705,15 @@ From the Call Graph above, these are the functions involved in the Arm64 __Addre
 
 To fix the fault, we'll sprinkle some Debug Logs into the above functions. Stay tuned for updates!
 
+![Without Emulation: Boxful of gadgets for auto-testing](https://lupyuen.github.io/images/auto2-box.jpg)
+
+[_Without Emulation: Boxful of gadgets for auto-testing_](https://lupyuen.github.io/articles/auto2)
+
 # Automated Daily Build and Test
 
 TODO
+
+-   [__"(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/auto2)
 
 # What's Next
 
