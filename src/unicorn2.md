@@ -519,7 +519,7 @@ We click and walk through the [__Call Graph__](https://github.com/lupyuen/pineph
 
     (To set up the Arm64 Memory Page Tables)
 
-1.  Which calls [__enable_mmu_el1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L526-L552)
+1.  And calls [__enable_mmu_el1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L526-L552)
 
     (To enable the Arm64 Memory Management Unit)
 
@@ -591,21 +591,15 @@ And more... We'll come back to the Primary Routine.
 
 [__arm64_chip_boot__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/a64/a64_boot.c#L73-L105) configures the Arm64 CPU. It calls...
 
--   [__arm64_mmu_init__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L577-L628)
+-   [__arm64_mmu_init__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L577-L628): To initialise the Arm64 Memory Management Unit for Exception Level 1
 
-    TODO
+-   Which calls [__setup_page_tables__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L485-L524): To set up the Arm64 Memory Translation Tables
 
--   Which calls [__setup_page_tables__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L485-L524)
+-   And calls [__enable_mmu_el1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L526-L552): To enable the Arm64 Memory Management Unit and Data Cache for Exception Level 1
 
-    TODO
+-   Which halts with an Arm64 [__Memory Management Fault__](https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault): Invalid Arm64 Address Translation or Caching at `0x400C` `3FFF`
 
--   Which calls [__enable_mmu_el1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L526-L552)
-
-    TODO
-
--   Which halts with an Arm64 [__Memory Management Fault__](https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault)
-
-    TODO
+TODO
 
 # PinePhone Continues Booting NuttX
 
