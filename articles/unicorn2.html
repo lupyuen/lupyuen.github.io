@@ -679,10 +679,17 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <p><img src="https://lupyuen.github.io/images/auto2-box.jpg" alt="Without Emulation: Boxful of gadgets for auto-testing" /></p>
 <p><a href="https://lupyuen.github.io/articles/auto2"><em>Without Emulation: Boxful of gadgets for auto-testing</em></a></p>
 <h1 id="automated-daily-build-and-test"><a href="#automated-daily-build-and-test">9 Automated Daily Build and Test</a></h1>
-<p>TODO</p>
+<p><em>Why would we need to do Daily Build and Test?</em></p>
+<p>Well NuttX RTOS for PinePhone is still evolving, with frequent code changes.</p>
+<p>That’s why it’s good to run an <strong>Automated Daily Build and Test</strong>, to be sure that NuttX boots OK on PinePhone.</p>
+<p><em>We need an actual PinePhone to do this?</em></p>
+<p>Hopefully not! It might get awfully messy to <strong>wire up a PinePhone</strong> with Sensors and Actuators to test the Touchscreen.</p>
+<p>We tried doing this for a simpler gadget…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/auto2"><strong>“(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board”</strong></a></li>
 </ul>
+<p>But for PinePhone we’ll do this the non-physical way… With <strong>Unicorn Emulator</strong>!</p>
+<p>TODO</p>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>This has been a fun educational exercise. Now we have a way to run <strong>Automated Daily Tests</strong> for Apache NuttX RTOS on PinePhone… Kudos to the <strong>Maintainers of Unicorn Emulator</strong>!</p>
