@@ -677,6 +677,8 @@ Then [__nx_start__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d5
 
 And the __NSH Command Prompt__ appears. We've just completed the entire Boot Sequence for NuttX on PinePhone!
 
+(Hopefully we'll generate the complete Call Graph someday!)
+
 ## PinePhone Drivers
 
 _But wait... Who starts the other PinePhone Drivers?_
@@ -701,9 +703,11 @@ boardctl(BOARDIOC_FINALINIT, 0);
 
 -   Which calls [__pinephone_bringup__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L61-L209)
 
--   Which starts the PinePhone Drivers
+-   Which starts the __PinePhone Drivers__
 
-Alternatively, the PinePhone Drivers may be started by __Auto-Started Apps__ like LVGL Terminal. [(See __lvglterm_main__)](https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L541-L556)
+Alternatively, the PinePhone Drivers may be started by __Auto-Start Apps__ like LVGL Terminal.
+
+[(See __lvglterm_main__)](https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L541-L556)
 
 Let's head back to Unicorn Emulator and fix our Arm64 Exception...
 
