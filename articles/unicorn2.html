@@ -183,7 +183,9 @@
 <p><em>To tell us what code Unicorn is emulating?</em></p>
 <p>Earlier we saw that Unicorn calls our Hook Function with the <strong>Address of the Arm64 Code</strong> that’s being emulated.</p>
 <p>Let’s lookup the Arm64 Code Address to find the <strong>Name of the Function</strong> that’s running right now…</p>
-<div class="example-wrap"><pre class="language-text"><code>hook_block:  
+<div class="example-wrap"><pre class="language-text"><code>→ cargo run
+
+hook_block:  
   address=0x40080920
   arm64_chip_boot
 
@@ -313,7 +315,9 @@ hook_block:
 </li>
 </ul>
 <p>Now that we’ve extracted the <strong>Function Name and Source Filename</strong> from our ELF File, our <a href="https://lupyuen.github.io/articles/unicorn2#map-address-to-function"><strong>Hook Function</strong></a> will print meaningful traces of our Emulated Program…</p>
-<div class="example-wrap"><pre class="language-text"><code>hook_block:
+<div class="example-wrap"><pre class="language-text"><code>→ cargo run 
+
+hook_block:
   address=0x40080920
   size=12
   arm64_chip_boot
@@ -780,18 +784,22 @@ boardctl(BOARDIOC_FINALINIT, 0);
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/unicorn2.md"><strong>lupyuen.github.io/src/unicorn2.md</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/unicorn2-dwarf.png" alt="DWARF Debugging Format" /></p>
+<p><a href="https://dwarfstd.org/doc/Debugging%20using%20DWARF-2012.pdf"><em>DWARF Debugging Format</em></a></p>
 <h1 id="appendix-parse-dwarf-debug-symbols"><a href="#appendix-parse-dwarf-debug-symbols">11 Appendix: Parse DWARF Debug Symbols</a></h1>
-<p>TODO</p>
+<p>Earlier we talked about parsing the <a href="https://en.wikipedia.org/wiki/DWARF"><strong>DWARF Debug Symbols</strong></a> in the <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format"><strong>ELF File</strong></a>…</p>
 <ul>
 <li>
-<p>Lookup the Parsed Debug Symbols to find the <strong>DWARF Location</strong> that matches the Arm64 Code Address</p>
+<p><a href="https://lupyuen.github.io/articles/unicorn2#map-address-to-function"><strong>“Address to Function”</strong></a></p>
 </li>
 <li>
-<p>Extract the <strong>Source Filename, Line and Column</strong> from the DWARF Location</p>
+<p><a href="https://lupyuen.github.io/articles/unicorn2#dwarf-debug-symbols"><strong>“DWARF Debug Symbols”</strong></a></p>
 </li>
 </ul>
-<p>Now that we’ve extracted the <strong>Function Name and Source Filename</strong> from our ELF File, our <a href="https://lupyuen.github.io/articles/unicorn2#map-address-to-function"><strong>Hook Function</strong></a> will print meaningful traces of our Emulated Program…</p>
-<div class="example-wrap"><pre class="language-text"><code>hook_block:
+<p>So that we can print the <strong>Function Names and Source Filenames</strong> for the Arm64 Code Addresses…</p>
+<div class="example-wrap"><pre class="language-text"><code>→ cargo run 
+
+hook_block:
   address=0x40080920
   size=12
   arm64_chip_boot
@@ -804,18 +812,28 @@ hook_block:
   arch/arm64/src/common/arm64_mmu.c:584:1
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a">(Source)</a></p>
-<p>Which are super helpful for figuring out what’s happening inside Unicorn Emulator!</p>
+<p>Which we implemented like this: <a href="https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L173-L220">main.rs</a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Get the ELF Context
+</span><span class="kw">let </span>context = ELF_CONTEXT.context.borrow();
+
+<span class="comment">// Lookup the DWARF Frame for the Arm64 Code Address
+</span><span class="kw">let </span><span class="kw-2">mut </span>frames = context.find_frames(address)
+  .expect(<span class="string">&quot;failed to find frames&quot;</span>);
+
+<span class="comment">// Lookup the Source Location for the Arm64 Code Address
+</span><span class="kw">let </span>loc = context.find_location(address)
+  .expect(<span class="string">&quot;failed to find location&quot;</span>);</code></pre></div>
 <p><em>What’s ELF_CONTEXT?</em></p>
 <p><strong>ELF_CONTEXT</strong> contains the <strong>Parsed Debug Symbols</strong> from our ELF File.</p>
-<p>Here’s how we call the <a href="https://crates.io/crates/addr2line"><strong>addr2line</strong></a> and <a href="https://crates.io/crates/gimli"><strong>gimli</strong></a> libraries to parse the Debug Symbols…</p>
-<p>To run this, we need the <a href="https://crates.io/crates/addr2line"><strong>addr2line</strong></a>, <a href="https://crates.io/crates/gimli"><strong>gimli</strong></a> and <a href="https://crates.io/crates/once_cell"><strong>once_cell</strong></a> crates: <a href="https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/Cargo.toml#L8-L12">Cargo.toml</a></p>
+<p>To parse the Debug Symbols, we’ll call the <a href="https://crates.io/crates/addr2line"><strong>addr2line</strong></a>, <a href="https://crates.io/crates/gimli"><strong>gimli</strong></a> and <a href="https://crates.io/crates/once_cell"><strong>once_cell</strong></a> crates: <a href="https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/Cargo.toml#L8-L12">Cargo.toml</a></p>
 <div class="example-wrap"><pre class="language-text"><code>[dependencies]
 addr2line = &quot;0.19.0&quot;
 gimli = &quot;0.27.2&quot;
 once_cell = &quot;1.17.1&quot;
 unicorn-engine = &quot;2.0.0&quot;
 </code></pre></div>
-<p>At startup, we load the <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx"><strong>NuttX ELF File</strong></a> into <strong>ELF_CONTEXT</strong> as a <a href="https://docs.rs/once_cell/latest/once_cell/"><strong>Lazy Static</strong></a>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L288-L322">main.rs</a></p>
+<p>At startup, this is how we load the Debug Symbols from our <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx"><strong>NuttX ELF File</strong></a> into <strong>ELF_CONTEXT</strong> as a <a href="https://docs.rs/once_cell/latest/once_cell/"><strong>Lazy Static</strong></a>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L288-L322">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>std::rc::Rc;
 <span class="kw">use </span>std::cell::RefCell;
