@@ -701,6 +701,7 @@ boardctl(BOARDIOC_FINALINIT, 0);
 <li><a href="https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault"><strong>“Emulator Halts with MMU Fault”</strong></a></li>
 </ul>
 <p>We deduced that the <strong>Arm64 Address Translation</strong> (or Caching) has failed in our Emulated Arm64 <strong>Memory Management Unit</strong> for <a href="https://lupyuen.github.io/articles/interrupt#exception-levels"><strong>Exception Level 1</strong></a>.</p>
+<p>(Invalid Arm64 Address Translation or Caching at <code>0x400C</code> <code>3FFF</code>)</p>
 <p>From the Call Graph above, these are the functions involved in the Arm64 <strong>Address Translation Tables</strong> (and are probably sus)…</p>
 <ul>
 <li>
