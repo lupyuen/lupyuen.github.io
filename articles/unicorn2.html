@@ -376,8 +376,8 @@ arm64_head --&gt; arm64_boot_primary_c_routine
 <p>Remember our <a href="https://lupyuen.github.io/articles/unicorn2#intercept-code-execution-in-unicorn"><strong>Hook Function</strong></a> that intercepts every Block of Arm64 Instructions emulated by Unicorn?</p>
 <p>Let’s <strong>print the Call Graph</strong> inside our Hook Function: <a href="https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L130-L159">main.rs</a></p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">/// Hook Function for Block Emulation.
-/// Called once for each Basic Block of Arm64 Instructions.
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Hook Function for Block Emulation.
+// Called by Unicorn for every Block of Arm64 Instructions.
 </span><span class="kw">fn </span>hook_block(
   <span class="kw">_</span>: <span class="kw-2">&amp;mut </span>Unicorn&lt;()&gt;,  <span class="comment">// Emulator
   </span>address: u64,  <span class="comment">// Address of Arm64 Code Block
@@ -537,19 +537,19 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L132-L162"><strong>arm64_boot_el1_init</strong></a> prepares <a href="https://lupyuen.github.io/articles/interrupt#exception-levels"><strong>Arm64 Exception Level 1 (EL1)</strong></a> for booting NuttX…</p>
 <ul>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L135-L140"><strong>VBAR EL1</strong></a>: Set the <strong>EL1 Vector Table</strong> in the Vector Base Address Register</p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L135-L140"><strong>VBAR EL1</strong></a>: Set the <strong>EL1 Vector Table</strong> in the Arm64 Vector Base Address Register</p>
 <p><a href="https://lupyuen.github.io/articles/interrupt#arm64-vector-table-is-wrong">(More about <strong>VBAR EL1</strong>)</a></p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L140-L147"><strong>CPACR EL1</strong></a>: Set the Architectural Feature Access Control Register </p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L140-L147"><strong>CPACR EL1</strong></a>: Set the Arm64 Architectural Feature Access Control Register </p>
 <p><a href="https://developer.arm.com/documentation/ddi0595/2021-03/AArch64-Registers/CPACR-EL1--Architectural-Feature-Access-Control-Register">(More about <strong>CPACR EL1</strong>)</a></p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L147-L153"><strong>SCTLR EL1</strong></a>: Set the System Control Register</p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L147-L153"><strong>SCTLR EL1</strong></a>: Set the Arm64 System Control Register</p>
 <p><a href="https://developer.arm.com/documentation/ddi0595/2021-06/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-">(More about <strong>SCTLR EL1</strong>)</a></p>
 </li>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L153-L155"><strong>CNTV CVAL EL0</strong></a>: Set the Counter-Timer Virtual Timer Compare-Value Register</p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L153-L155"><strong>CNTV CVAL EL0</strong></a>: Set the Arm64 Counter-Timer Virtual Timer Compare-Value Register</p>
 <p><a href="https://developer.arm.com/documentation/ddi0595/2021-12/AArch64-Registers/CNTV-CVAL-EL0--Counter-timer-Virtual-Timer-CompareValue-register">(More about <strong>CNTV CVAL EL0</strong>)</a></p>
 </li>
 </ul>
