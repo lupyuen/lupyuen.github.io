@@ -10,7 +10,7 @@ Last week we ran [__Apache NuttX Real-Time Operating System__](https://lupyuen.g
 
 -   [__"(Possibly) Emulate PinePhone with Unicorn Emulator"__](https://lupyuen.github.io/articles/unicorn)
 
-And we hit a baffling [__Arm64 Exception__](https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault) in the (Emulated) __Memory Management Unit__.
+And we hit a baffling [__Arm64 Exception__](https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault) in the Unicorn Emulator while booting NuttX.
 
 In this article we'll create some tools  to __troubleshoot the Arm64 Exception__ in NuttX...
 
@@ -69,7 +69,16 @@ let err = emu.emu_start(
 
 [(Source)](https://lupyuen.github.io/articles/unicorn#apache-nuttx-rtos-in-unicorn)
 
-And NuttX starts booting in the Unicorn Emulator!
+When we run this, NuttX starts booting in the Unicorn Emulator!
+
+```text
+→ cargo run 
+
+- Ready to Boot CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+```
 
 _So Unicorn works like QEMU Emulator?_
 
@@ -137,7 +146,7 @@ hook_block:
 
 _How will we map the Arm64 Address to the Function Name?_
 
-Let's pretend we're a Debugger (like GDB). The best way to map an Arm64 Address to the Function Name would be...
+Pretend we're a Debugger (like GDB). The best way to map an Arm64 Address to the Function Name would be...
 
 The [__DWARF Debug Symbols__](https://en.wikipedia.org/wiki/DWARF) in the [__ELF File__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format)!
 
@@ -320,7 +329,7 @@ Into a [__Clickable Call Graph__](https://github.com/lupyuen/pinephone-emulator#
 
 _Whoa! We need a special diagramming tool?_
 
-Actually we can render a [__Mermaid Flowchart__](https://mermaid.js.org/syntax/flowchart.html) (in Markdown Format) by simply printing this...
+Actually we can render a [__Mermaid Flowchart__](https://mermaid.js.org/syntax/flowchart.html) by simply printing this in [__Markdown Format__](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams)...
 
 ```text
 ```mermaid
@@ -443,6 +452,7 @@ So we can connect the __Calling Function__ with the __Called Function__ in our C
 This is how we __start the Call Graph__...
 
 ```rust
+  // GitHub won't render Mermaid Markdown that's too long.
   // If this function has not been shown too often...
   if can_show_function(&fname) {
     // Print the Call Flow
