@@ -1,6 +1,6 @@
 # (Clickable) Call Graph for Apache NuttX Real-Time Operating System
 
-📝 _10 Mar 2023_
+📝 _5 Mar 2023_
 
 ![Call Graph for Apache NuttX Real-Time Operating System](https://lupyuen.github.io/images/unicorn2-title.jpg)
 
@@ -711,15 +711,15 @@ boardctl(BOARDIOC_INIT, 0);
 boardctl(BOARDIOC_FINALINIT, 0);
 ```
 
--   Which calls [__boardctl__](https://github.com/apache/nuttx/blob/master/boards/boardctl.c#L281-L353)
+-   Which calls [__boardctl__](https://github.com/apache/nuttx/blob/master/boards/boardctl.c#L281-L353)...
 
--   Which calls [__board_app_initialize__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_appinit.c#L35-L72)
+-   Which calls [__board_app_initialize__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_appinit.c#L35-L72)...
 
--   Which calls [__pinephone_bringup__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L61-L209)
+-   Which calls [__pinephone_bringup__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L61-L209)...
 
 -   Which starts the __PinePhone Drivers__
 
-Alternatively, the PinePhone Drivers may be started by __Auto-Start Apps__ like LVGL Terminal.
+Alternatively, the PinePhone Drivers may be started in __Auto-Start Apps__ like LVGL Terminal.
 
 [(See __lvglterm_main__)](https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L541-L556)
 
@@ -751,6 +751,8 @@ From the Call Graph above, these are the functions involved in the Arm64 __Addre
 
 To fix the fault, we'll sprinkle some Debug Logs into the above functions. Stay tuned for updates!
 
+(I might have missed a [__Memory Mapping__](https://lupyuen.github.io/articles/unicorn#unmapped-memory) at `0x400C` `3FFF`)
+
 ![Without Emulation: Boxful of gadgets for auto-testing](https://lupyuen.github.io/images/auto2-box.jpg)
 
 [_Without Emulation: Boxful of gadgets for auto-testing_](https://lupyuen.github.io/articles/auto2)
@@ -759,7 +761,7 @@ To fix the fault, we'll sprinkle some Debug Logs into the above functions. Stay 
 
 _Why would we need Daily Build and Test?_
 
-NuttX RTOS for PinePhone is still evolving, with __frequent code changes__.
+NuttX RTOS for PinePhone is still evolving, with [__frequent code changes__](https://github.com/apache/nuttx/commits/master/arch/arm64).
 
 That's why it's good to run an __Automated Build and Test every day__, to be sure that NuttX boots OK on PinePhone.
 
@@ -771,7 +773,7 @@ We tried __Automated Daily Testing__ for a simpler microcontroller gadget (pic a
 
 -   [__"(Mostly) Automated Testing of Apache NuttX RTOS on PineDio Stack BL604 RISC-V Board"__](https://lupyuen.github.io/articles/auto2)
 
-But for PinePhone we'll do Automated Daily Testing the gadgetless way... With [__Unicorn Emulator__](https://lupyuen.github.io/articles/unicorn)!
+But for PinePhone we'll do Automated Daily Testing the gadgetless way... With [__Unicorn Emulator__](https://lupyuen.github.io/articles/unicorn#apache-nuttx-rtos-in-unicorn)!
 
 _How will we auto-build and test NuttX for PinePhone every day?_
 
@@ -789,23 +791,23 @@ Our grand plan is to have __GitHub Actions__ trigger these tasks every day...
 
     [(Like this)](https://lupyuen.github.io/articles/unicorn2#generate-call-graph)
 
-1.  __Match the Call Graph__ (with some pattern?) in Rust
+1.  __Match the Call Graph__ with some pattern
 
-    (With some Graph Matching algo?)
+    (With a Graph Matching algo?)
 
 1.  __Publish the NuttX Image__, Emulator Log and Call Graph
 
-    (As a Daily GitHub Release)
+    (As a GitHub Release)
 
-Or maybe I'll switch on my SBC every day to do all these. We'll talk more in the next article!
+Or maybe I'll switch on my SBC every day to run all these. We'll talk more in the next article!
 
 # What's Next
 
 We've done so much today...
 
--   Render the [__Clickable Call Graph__](https://lupyuen.github.io/articles/unicorn2#generate-call-graph) for Apache NuttX RTOS, to understand how it boots
+-   Render the [__Clickable Call Graph__](https://lupyuen.github.io/articles/unicorn2#generate-call-graph) for Apache NuttX RTOS, to understand how it boots...
 
--   By integrating [__Unicorn Emulator__](https://lupyuen.github.io/articles/unicorn2#intercept-code-execution-in-unicorn) with the Rust Libraries [__addr2line__](https://crates.io/crates/addr2line) and [__gimli__](https://crates.io/crates/gimli) to map the Code Addresses to NuttX Kernel Functions
+-   By integrating [__Unicorn Emulator__](https://lupyuen.github.io/articles/unicorn2#intercept-code-execution-in-unicorn) with the Rust Libraries [__addr2line__](https://crates.io/crates/addr2line) and [__gimli__](https://crates.io/crates/gimli), to map the Code Addresses to NuttX Kernel Functions
 
 -   Thanks to the Call Graph, we walked through the complete [__Boot Sequence__](https://lupyuen.github.io/articles/unicorn2#pinephone-boots-nuttx) of NuttX for PinePhone
 
@@ -880,7 +882,7 @@ _What's ELF_CONTEXT?_
 
 __ELF_CONTEXT__ contains the __Parsed Debug Symbols__ from our ELF File.
 
-To parse the Debug Symbols, we'll call the [__addr2line__](https://crates.io/crates/addr2line), [__gimli__](https://crates.io/crates/gimli) and [__once_cell__](https://crates.io/crates/once_cell) crates: [Cargo.toml](https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/Cargo.toml#L8-L12)
+To parse the Debug Symbols, we call the [__addr2line__](https://crates.io/crates/addr2line), [__gimli__](https://crates.io/crates/gimli) and [__once_cell__](https://crates.io/crates/once_cell) crates: [Cargo.toml](https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/Cargo.toml#L8-L12)
 
 ```text
 [dependencies]

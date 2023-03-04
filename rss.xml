@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>(Clickable) Call Graph for Apache NuttX Real-Time Operating System</title>
+            <link>https://lupyuen.github.io/articles/unicorn2</link>
+            <description><![CDATA[Here's how Apache NuttX RTOS boots on Pine64 PinePhone... Visualised as a Call Graph with Unicorn Emulator and Rust]]></description>
+            <guid>https://lupyuen.github.io/articles/unicorn2</guid>
+            <pubDate>Sun, 05 Mar 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>(Possibly) Emulate PinePhone with Unicorn Emulator</title>
             <link>https://lupyuen.github.io/articles/unicorn</link>
             <description><![CDATA[To make PinePhone testing easier... Can we emulate Arm64 PinePhone with Unicorn Emulator? Let's find out! We'll call the Unicorn Emulator in Rust]]></description>
