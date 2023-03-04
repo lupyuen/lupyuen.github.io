@@ -797,7 +797,7 @@ Our grand plan is to have __GitHub Actions__ trigger these tasks every day...
 
     (With a Graph Matching algo?)
 
-1.  __Publish the NuttX Image__, Emulator Log and Call Graph
+1.  __Publish the NuttX Image__, Emulator Log and Clickable Call Graph
 
     (As a GitHub Release)
 
