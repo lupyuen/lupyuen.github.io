@@ -756,6 +756,8 @@ Now we're ready to __build the Missing Drivers__ for PinePhone! Like MIPI DSI Di
 
 Below are tips for debugging the __NuttX Boot Sequence__ on PinePhone...
 
+1.  [__"PinePhone Boots NuttX"__](https://lupyuen.github.io/articles/unicorn2#pinephone-boots-nuttx)
+
 1.  [__"Boot Sequence"__](https://github.com/lupyuen/pinephone-nuttx#boot-sequence)
 
 1.  [__"Boot Debugging"__](https://github.com/lupyuen/pinephone-nuttx#boot-debugging)
