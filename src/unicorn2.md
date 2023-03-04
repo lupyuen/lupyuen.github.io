@@ -122,6 +122,8 @@ Earlier we saw that Unicorn calls our Hook Function with the __Address of the Ar
 Let's lookup the Arm64 Code Address to find the __Name of the Function__ that's running right now...
 
 ```text
+→ cargo run
+
 hook_block:  
   address=0x40080920
   arm64_chip_boot
@@ -273,6 +275,8 @@ In the code above, we...
 Now that we've extracted the __Function Name and Source Filename__ from our ELF File, our [__Hook Function__](https://lupyuen.github.io/articles/unicorn2#map-address-to-function) will print meaningful traces of our Emulated Program...
 
 ```text
+→ cargo run 
+
 hook_block:
   address=0x40080920
   size=12
@@ -815,17 +819,23 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/unicorn2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/unicorn2.md)
 
+![DWARF Debugging Format](https://lupyuen.github.io/images/unicorn2-dwarf.png)
+
+[_DWARF Debugging Format_](https://dwarfstd.org/doc/Debugging%20using%20DWARF-2012.pdf)
+
 # Appendix: Parse DWARF Debug Symbols
 
-TODO
+Earlier we talked about parsing the [__DWARF Debug Symbols__](https://en.wikipedia.org/wiki/DWARF) in the [__ELF File__](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format)...
 
--   Lookup the Parsed Debug Symbols to find the __DWARF Location__ that matches the Arm64 Code Address
+-   [__"Address to Function"__](https://lupyuen.github.io/articles/unicorn2#map-address-to-function)
 
--   Extract the __Source Filename, Line and Column__ from the DWARF Location
+-   [__"DWARF Debug Symbols"__](https://lupyuen.github.io/articles/unicorn2#dwarf-debug-symbols)
 
-Now that we've extracted the __Function Name and Source Filename__ from our ELF File, our [__Hook Function__](https://lupyuen.github.io/articles/unicorn2#map-address-to-function) will print meaningful traces of our Emulated Program...
+So that we can print the __Function Names and Source Filenames__ for the Arm64 Code Addresses...
 
 ```text
+→ cargo run 
+
 hook_block:
   address=0x40080920
   size=12
@@ -841,15 +851,26 @@ hook_block:
 
 [(Source)](https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a)
 
-Which are super helpful for figuring out what's happening inside Unicorn Emulator!
+Which we implemented like this: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L173-L220)
+
+```rust
+// Get the ELF Context
+let context = ELF_CONTEXT.context.borrow();
+
+// Lookup the DWARF Frame for the Arm64 Code Address
+let mut frames = context.find_frames(address)
+  .expect("failed to find frames");
+
+// Lookup the Source Location for the Arm64 Code Address
+let loc = context.find_location(address)
+  .expect("failed to find location");
+```
 
 _What's ELF_CONTEXT?_
 
 __ELF_CONTEXT__ contains the __Parsed Debug Symbols__ from our ELF File.
 
-Here's how we call the [__addr2line__](https://crates.io/crates/addr2line) and [__gimli__](https://crates.io/crates/gimli) libraries to parse the Debug Symbols...
-
-To run this, we need the [__addr2line__](https://crates.io/crates/addr2line), [__gimli__](https://crates.io/crates/gimli) and [__once_cell__](https://crates.io/crates/once_cell) crates: [Cargo.toml](https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/Cargo.toml#L8-L12)
+To parse the Debug Symbols, we'll call the [__addr2line__](https://crates.io/crates/addr2line), [__gimli__](https://crates.io/crates/gimli) and [__once_cell__](https://crates.io/crates/once_cell) crates: [Cargo.toml](https://github.com/lupyuen/pinephone-emulator/blob/465a68a10e3fdc23c5897c3302eb0950cc4db614/Cargo.toml#L8-L12)
 
 ```text
 [dependencies]
@@ -859,7 +880,7 @@ once_cell = "1.17.1"
 unicorn-engine = "2.0.0"
 ```
 
-At startup, we load the [__NuttX ELF File__](https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx) into __ELF_CONTEXT__ as a [__Lazy Static__](https://docs.rs/once_cell/latest/once_cell/): [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L288-L322)
+At startup, this is how we load the Debug Symbols from our [__NuttX ELF File__](https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx) into __ELF_CONTEXT__ as a [__Lazy Static__](https://docs.rs/once_cell/latest/once_cell/): [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L288-L322)
 
 ```rust
 use std::rc::Rc;
