@@ -12,10 +12,10 @@
     content="(Clickable) Call Graph for Apache NuttX Real-Time Operating System"
     data-rh="true">
 <meta property="og:description" 
-    content=""
+    content="Here's how Apache NuttX RTOS boots on Pine64 PinePhone... Visualised as a Call Graph with Unicorn Emulator and Rust"
     data-rh="true">
 <meta name="description" 
-    content="">
+    content="Here's how Apache NuttX RTOS boots on Pine64 PinePhone... Visualised as a Call Graph with Unicorn Emulator and Rust">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/unicorn2-title.jpg">
 <meta property="og:type" 
@@ -91,7 +91,7 @@
 <ul>
 <li><a href="https://lupyuen.github.io/articles/unicorn"><strong>“(Possibly) Emulate PinePhone with Unicorn Emulator”</strong></a></li>
 </ul>
-<p>And we hit a baffling <a href="https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault"><strong>Arm64 Exception</strong></a> in the (Emulated) <strong>Memory Management Unit</strong>.</p>
+<p>And we hit a baffling <a href="https://lupyuen.github.io/articles/unicorn#emulator-halts-with-mmu-fault"><strong>Arm64 Exception</strong></a> in the Unicorn Emulator while booting NuttX.</p>
 <p>In this article we’ll create some tools  to <strong>troubleshoot the Arm64 Exception</strong> in NuttX…</p>
 <ul>
 <li>
@@ -145,7 +145,14 @@
   </span><span class="number">0   </span><span class="comment">// Unlimited number of instructions
 </span>);</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/unicorn#apache-nuttx-rtos-in-unicorn">(Source)</a></p>
-<p>And NuttX starts booting in the Unicorn Emulator!</p>
+<p>When we run this, NuttX starts booting in the Unicorn Emulator!</p>
+<div class="example-wrap"><pre class="language-text"><code>→ cargo run 
+
+- Ready to Boot CPU
+- Boot from EL2
+- Boot from EL1
+- Boot to C runtime for OS Initialize
+</code></pre></div>
 <p><em>So Unicorn works like QEMU Emulator?</em></p>
 <p>Yes but with a fun new twist: Unicorn lets us <strong>intercept the Execution</strong> of Emulated Code by attaching a <strong>Hook Function</strong>…</p>
 
@@ -195,7 +202,7 @@ hook_block:
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/f2e883b2b8054d75fbac7de661f0ee5a">(Source)</a></p>
 <p><em>How will we map the Arm64 Address to the Function Name?</em></p>
-<p>Let’s pretend we’re a Debugger (like GDB). The best way to map an Arm64 Address to the Function Name would be…</p>
+<p>Pretend we’re a Debugger (like GDB). The best way to map an Arm64 Address to the Function Name would be…</p>
 <p>The <a href="https://en.wikipedia.org/wiki/DWARF"><strong>DWARF Debug Symbols</strong></a> in the <a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format"><strong>ELF File</strong></a>!</p>
 <p>Assuming we can <strong>parse the Debug Symbols</strong> (from our ELF File), our Hook Function will translate the Arm64 Address to Function Name like so: <a href="https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L130-L158">main.rs</a></p>
 
@@ -346,7 +353,7 @@ hook_block:
 <p>Into a <a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos"><strong>Clickable Call Graph</strong></a> that shows exactly how the functions are called!</p>
 <p><a href="https://github.com/lupyuen/pinephone-emulator#call-graph-for-apache-nuttx-rtos">(Like this)</a></p>
 <p><em>Whoa! We need a special diagramming tool?</em></p>
-<p>Actually we can render a <a href="https://mermaid.js.org/syntax/flowchart.html"><strong>Mermaid Flowchart</strong></a> (in Markdown Format) by simply printing this…</p>
+<p>Actually we can render a <a href="https://mermaid.js.org/syntax/flowchart.html"><strong>Mermaid Flowchart</strong></a> by simply printing this in <a href="https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams"><strong>Markdown Format</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>```mermaid
 flowchart TD
 START --&gt; arm64_head
@@ -436,7 +443,8 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 <p>(OK this doesn’t always work… But it’s good enough!)</p>
 <p>This is how we <strong>start the Call Graph</strong>…</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// If this function has not been shown too often...
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>  <span class="comment">// GitHub won&#39;t render Mermaid Markdown that&#39;s too long.
+  // If this function has not been shown too often...
   </span><span class="kw">if </span>can_show_function(<span class="kw-2">&amp;</span>fname) {
     <span class="comment">// Print the Call Flow
     </span><span class="kw">if </span>last_fname.is_empty() {            
