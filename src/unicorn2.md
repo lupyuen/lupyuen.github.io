@@ -365,8 +365,8 @@ Remember our [__Hook Function__](https://lupyuen.github.io/articles/unicorn2#int
 Let's __print the Call Graph__ inside our Hook Function: [main.rs](https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L130-L159)
 
 ```rust
-/// Hook Function for Block Emulation.
-/// Called once for each Basic Block of Arm64 Instructions.
+// Hook Function for Block Emulation.
+// Called by Unicorn for every Block of Arm64 Instructions.
 fn hook_block(
   _: &mut Unicorn<()>,  // Emulator
   address: u64,  // Address of Arm64 Code Block
@@ -571,19 +571,19 @@ The assembly code calls...
 
 [__arm64_boot_el1_init__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L132-L162) prepares [__Arm64 Exception Level 1 (EL1)__](https://lupyuen.github.io/articles/interrupt#exception-levels) for booting NuttX...
 
--   [__VBAR EL1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L135-L140): Set the __EL1 Vector Table__ in the Vector Base Address Register
+-   [__VBAR EL1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L135-L140): Set the __EL1 Vector Table__ in the Arm64 Vector Base Address Register
 
     [(More about __VBAR EL1__)](https://lupyuen.github.io/articles/interrupt#arm64-vector-table-is-wrong)
 
--   [__CPACR EL1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L140-L147): Set the Architectural Feature Access Control Register 
+-   [__CPACR EL1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L140-L147): Set the Arm64 Architectural Feature Access Control Register 
 
     [(More about __CPACR EL1__)](https://developer.arm.com/documentation/ddi0595/2021-03/AArch64-Registers/CPACR-EL1--Architectural-Feature-Access-Control-Register)
 
--   [__SCTLR EL1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L147-L153): Set the System Control Register
+-   [__SCTLR EL1__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L147-L153): Set the Arm64 System Control Register
 
     [(More about __SCTLR EL1__)](https://developer.arm.com/documentation/ddi0595/2021-06/AArch64-Registers/SCTLR-EL1--System-Control-Register--EL1-)
 
--   [__CNTV CVAL EL0__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L153-L155): Set the Counter-Timer Virtual Timer Compare-Value Register
+-   [__CNTV CVAL EL0__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_boot.c#L153-L155): Set the Arm64 Counter-Timer Virtual Timer Compare-Value Register
 
     [(More about __CNTV CVAL EL0__)](https://developer.arm.com/documentation/ddi0595/2021-12/AArch64-Registers/CNTV-CVAL-EL0--Counter-timer-Virtual-Timer-CompareValue-register)
 
