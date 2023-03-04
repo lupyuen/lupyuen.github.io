@@ -889,7 +889,7 @@ unicorn-engine = &quot;2.0.0&quot;
 <span class="kw">unsafe impl </span>Sync <span class="kw">for </span>ElfContext {}</code></pre></div>
 <p><em>Why is ELF_CONTEXT a Global Static? Can’t we load it in the Main Function and pass it to Unicorn?</em></p>
 <p>Yep that’s the cleaner way… But then we would have to pass <strong>ELF_CONTEXT</strong> to <a href="https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L130-L157"><strong>hook_block</strong></a>, which is a Callback Function. And it gets complicated.</p>
-<p>Here’s how we would pass our context to the Callback Function via a <a href="https://doc.rust-lang.org/rust-by-example/fn/closures.html"><strong>Rust Closure</strong></a>…</p>
+<p>We might pass our context to the Callback Function via a <a href="https://doc.rust-lang.org/rust-by-example/fn/closures.html"><strong>Rust Closure</strong></a> like this…</p>
 <ul>
 <li><a href="https://github.com/unicorn-engine/unicorn/blob/master/tests/rust-tests/main.rs#L175-L207"><strong>x86_code_callback</strong></a></li>
 </ul>
