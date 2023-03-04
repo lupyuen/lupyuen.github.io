@@ -945,6 +945,6 @@ _Why is ELF_CONTEXT a Global Static? Can't we load it in the Main Function and p
 
 Yep that's the cleaner way... But then we would have to pass __ELF_CONTEXT__ to [__hook_block__](https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L130-L157), which is a Callback Function. And it gets complicated.
 
-Here's how we would pass our context to the Callback Function via a [__Rust Closure__](https://doc.rust-lang.org/rust-by-example/fn/closures.html)...
+We might pass our context to the Callback Function via a [__Rust Closure__](https://doc.rust-lang.org/rust-by-example/fn/closures.html) like this...
 
 -   [__x86_code_callback__](https://github.com/unicorn-engine/unicorn/blob/master/tests/rust-tests/main.rs#L175-L207)
