@@ -719,7 +719,7 @@ boardctl(BOARDIOC_FINALINIT, 0);
 
 -   Which starts the __PinePhone Drivers__
 
-Alternatively, the PinePhone Drivers may be started in __Auto-Start Apps__ like LVGL Terminal.
+Alternatively, the PinePhone Drivers may be started in __Auto-Launch Apps__ like [__LVGL Terminal__](https://lupyuen.github.io/articles/terminal).
 
 [(See __lvglterm_main__)](https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L541-L556)
 
