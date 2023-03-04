@@ -739,6 +739,8 @@ Based on our earlier investigation with Unicorn Emulator...
 
 We deduced that the __Arm64 Address Translation__ (or Caching) has failed in our Emulated Arm64 __Memory Management Unit__ for [__Exception Level 1__](https://lupyuen.github.io/articles/interrupt#exception-levels).
 
+(Invalid Arm64 Address Translation or Caching at `0x400C` `3FFF`)
+
 From the Call Graph above, these are the functions involved in the Arm64 __Address Translation Tables__ (and are probably sus)...
 
 -   [__setup_page_tables__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/arch/arm64/src/common/arm64_mmu.c#L485-L524): Setup Arm64 Page Tables
