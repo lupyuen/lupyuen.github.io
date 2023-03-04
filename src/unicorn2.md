@@ -677,6 +677,34 @@ Then [__nx_start__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d5
 
 And the __NSH Command Prompt__ appears. We've just completed the entire Boot Sequence for NuttX on PinePhone!
 
+## PinePhone Drivers
+
+_But wait... Who starts the other PinePhone Drivers?_
+
+_Like the drivers for LCD Display, Touch Panel, Accelerometer, ..._
+
+Ah this sounds surprising, but the other PinePhone Drivers are started by __NSH Shell__!
+
+[__nsh_initialize__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/nshlib/nsh_init.c#L140-L166) does this...
+
+```c
+// Perform architecture-specific initialization (if configured)
+boardctl(BOARDIOC_INIT, 0);
+
+// Perform architecture-specific final-initialization (if configured)
+boardctl(BOARDIOC_FINALINIT, 0);
+```
+
+-   Which calls [__boardctl__](https://github.com/apache/nuttx/blob/master/boards/boardctl.c#L281-L353)
+
+-   Which calls [__board_app_initialize__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_appinit.c#L35-L72)
+
+-   Which calls [__pinephone_bringup__](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L61-L209)
+
+-   Which starts the PinePhone Drivers
+
+Alternatively, the PinePhone Drivers may be started by __Auto-Started Apps__ like LVGL Terminal. [(See __lvglterm_main__)](https://github.com/apache/nuttx-apps/blob/master/examples/lvglterm/lvglterm.c#L541-L556)
+
 Let's head back to Unicorn Emulator and fix our Arm64 Exception...
 
 ![Arm64 Memory Management Fault](https://lupyuen.github.io/images/unicorn2-callgraph7.jpg)
