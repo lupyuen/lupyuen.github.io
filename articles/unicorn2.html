@@ -843,7 +843,7 @@ gimli = &quot;0.27.2&quot;
 once_cell = &quot;1.17.1&quot;
 unicorn-engine = &quot;2.0.0&quot;
 </code></pre></div>
-<p>At startup, this is how we load the Debug Symbols from our <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx"><strong>NuttX ELF File</strong></a> into <strong>ELF_CONTEXT</strong> as a <a href="https://docs.rs/once_cell/latest/once_cell/"><strong>Lazy Static</strong></a>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L288-L322">main.rs</a></p>
+<p>At startup, this is how we load the Debug Symbols from our <a href="https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx/nuttx"><strong>NuttX ELF File</strong></a> into <strong>ELF_CONTEXT</strong> as a <a href="https://docs.rs/once_cell/latest/once_cell/"><strong>Lazy Static</strong></a>: <a href="https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L297-L346">main.rs</a></p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>std::rc::Rc;
 <span class="kw">use </span>std::cell::RefCell;
@@ -887,6 +887,12 @@ unicorn-engine = &quot;2.0.0&quot;
 <span class="doccomment">/// Send and Sync for ELF Context. Needed for `Lazy`
 </span><span class="kw">unsafe impl </span>Send <span class="kw">for </span>ElfContext {}
 <span class="kw">unsafe impl </span>Sync <span class="kw">for </span>ElfContext {}</code></pre></div>
+<p><em>Why is ELF_CONTEXT a Global Static? Can’t we load it in the Main Function and pass it to Unicorn?</em></p>
+<p>Yep that’s the cleaner way… But then we would have to pass <strong>ELF_CONTEXT</strong> to <a href="https://github.com/lupyuen/pinephone-emulator/blob/55e4366b1876ed39b1389e8673b262082bfb7074/src/main.rs#L130-L157"><strong>hook_block</strong></a>, which is a Callback Function. And it gets complicated.</p>
+<p>Here’s how we would pass our context to the Callback Function via a <a href="https://doc.rust-lang.org/rust-by-example/fn/closures.html"><strong>Rust Closure</strong></a>…</p>
+<ul>
+<li><a href="https://github.com/unicorn-engine/unicorn/blob/master/tests/rust-tests/main.rs#L175-L207"><strong>x86_code_callback</strong></a></li>
+</ul>
 
     
 </body>
