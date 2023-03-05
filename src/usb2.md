@@ -511,19 +511,23 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Enhanced Host Controller Interface for USB
 
-__Lwazi Dube__ noticed that the [__USB Enhanced Host Controller Interface__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html) (EHCI) is implemented for the Allwinner A64 USB Controller. (Pic above)
+__Lwazi Dube__ noticed that the [__USB Enhanced Host Controller Interface 1.0__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html) (EHCI) is implemented for the Allwinner A64 USB Controller. (Pic above)
 
 So we have an __easier way__ to build the NuttX USB Driver for PinePhone! Let's find out why...
 
 _What's EHCI?_
+
+According to the [__EHCI Spec__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html)...
+
+> "The Enhanced Host Controller Interface (EHCI) specification describes the register-level interface for a host controller for the Universal Serial Bus (USB) Revision 2.0"
+
+> "The specification includes a description of the hardware and software interface between system software and the host controller hardware"
 
 TODO
 
 -   [__"Enhanced Host Controller Interface Specification"__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html)
 
 -   [__"Enhanced Host Controller Interface for USB 2.0: Specification"__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification-for-usb.html)
-
--   [__"Addendum: Enhanced Host Controller Interface Specification"__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-v1-1-addendum.html)
 
 TODO
 
