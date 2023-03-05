@@ -644,7 +644,8 @@ usb@1c1b400 {
 <p>Lwazi found these <strong>EHCI Drivers in NuttX</strong>…</p>
 <ul>
 <li>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/imxrt/imxrt_ehci.c#L4970"><strong>i.MX RT USB: imxrt_ehci.c</strong></a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/imxrt/imxrt_ehci.c#L4970"><strong>NXP i.MX RT USB: imxrt_ehci.c</strong></a></p>
+<p>(This is the newest driver)</p>
 </li>
 <li>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/lpc31xx/lpc31_ehci.c#L4993"><strong>NXP LPC31 USB: lpc31_ehci.c</strong></a></p>
@@ -654,9 +655,10 @@ usb@1c1b400 {
 </li>
 <li>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/sama5/sam_ehci.c#L4736"><strong>Microchip SAMA5 USB: sam_ehci.c</strong></a></p>
+<p>(This is the oldest driver)</p>
 </li>
 </ul>
-<p>Which I’ll adapt for PinePhone and Allwinner A64.</p>
+<p>I’ll port the <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/imxrt/imxrt_ehci.c#L4970"><strong>i.MX RT EHCI Driver</strong></a> to PinePhone and Allwinner A64, since it’s the newest one.</p>
 <p>(The 4 files look similar… We might need to refactor them someday)</p>
 <p><em>What about the LTE Modem Driver for NuttX?</em></p>
 <p>This NuttX Driver for <strong>Quectel EC20 LTE Modem</strong> might be helpful…</p>
