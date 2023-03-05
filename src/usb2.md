@@ -505,6 +505,28 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/usb2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/usb2.md)
 
+![USB Controller Block Diagram in Allwinner A64 User Manual (Page 583)](https://lupyuen.github.io/images/usb2-ehci.png)
+
+[_USB Controller Block Diagram in Allwinner A64 User Manual (Page 583)_](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+
+# Appendix: Enhanced Host Controller Interface for USB
+
+TODO
+
+-   [__"Enhanced Host Controller Interface Specification"__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html)
+
+-   [__"Enhanced Host Controller Interface for USB 2.0: Specification"__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification-for-usb.html)
+
+-   [__"Addendum: Enhanced Host Controller Interface Specification"__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-v1-1-addendum.html)
+
+TODO
+
+![USB Host Register List in Allwinner A64 User Manual (Page 585)](https://lupyuen.github.io/images/usb2-ehci2.jpg)
+
+[_USB Host Register List in Allwinner A64 User Manual (Page 585)_](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+
+TODO
+
 ![Pine64 PineDio LoRa Gateway (left) with PineDio LoRa Add-On Case (right)](https://lupyuen.github.io/images/lorawan2-pine64.jpg)
 
 [_Pine64 PineDio LoRa Gateway (left) with PineDio LoRa Add-On Case (right)_](https://pine64.com/product/pinephone-pinephone-pro-pindio-lora-add-on-case/)
