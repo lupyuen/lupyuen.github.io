@@ -77,7 +77,8 @@
 <li><a href="#usb-drivers-in-nuttx">8 USB Drivers in NuttX</a><ul></ul></li>
 <li><a href="#stm32-usb-driver-for-nuttx">9 STM32 USB Driver for NuttX</a><ul></ul></li>
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-lora-communicator-for-pinephone-on-nuttx">11 Appendix: LoRa Communicator for PinePhone on NuttX</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2023</em></p>
+<li><a href="#appendix-enhanced-host-controller-interface-for-usb">11 Appendix: Enhanced Host Controller Interface for USB</a><ul></ul></li>
+<li><a href="#appendix-lora-communicator-for-pinephone-on-nuttx">12 Appendix: LoRa Communicator for PinePhone on NuttX</a><ul></ul></li></ul></nav><p>📝 <em>20 Feb 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/usb2-title.jpg" alt="PinePhone talks to LTE Modem over USB" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>PinePhone talks to LTE Modem over USB</em></a></p>
 <p>Over the past <a href="https://github.com/lupyuen/pinephone-nuttx"><strong>17 articles</strong></a> we talked about porting to <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> a Real-Time Operating System: <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a>.</p>
@@ -513,9 +514,28 @@ allwinner,sun50i-a64-usb-phy
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/usb2.md"><strong>lupyuen.github.io/src/usb2.md</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/usb2-ehci.png" alt="USB Controller Block Diagram in Allwinner A64 User Manual (Page 583)" /></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><em>USB Controller Block Diagram in Allwinner A64 User Manual (Page 583)</em></a></p>
+<h1 id="appendix-enhanced-host-controller-interface-for-usb"><a href="#appendix-enhanced-host-controller-interface-for-usb">11 Appendix: Enhanced Host Controller Interface for USB</a></h1>
+<p>TODO</p>
+<ul>
+<li>
+<p><a href="https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html"><strong>“Enhanced Host Controller Interface Specification”</strong></a></p>
+</li>
+<li>
+<p><a href="https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification-for-usb.html"><strong>“Enhanced Host Controller Interface for USB 2.0: Specification”</strong></a></p>
+</li>
+<li>
+<p><a href="https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-v1-1-addendum.html"><strong>“Addendum: Enhanced Host Controller Interface Specification”</strong></a></p>
+</li>
+</ul>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/usb2-ehci2.jpg" alt="USB Host Register List in Allwinner A64 User Manual (Page 585)" /></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><em>USB Host Register List in Allwinner A64 User Manual (Page 585)</em></a></p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lorawan2-pine64.jpg" alt="Pine64 PineDio LoRa Gateway (left) with PineDio LoRa Add-On Case (right)" /></p>
 <p><a href="https://pine64.com/product/pinephone-pinephone-pro-pindio-lora-add-on-case/"><em>Pine64 PineDio LoRa Gateway (left) with PineDio LoRa Add-On Case (right)</em></a></p>
-<h1 id="appendix-lora-communicator-for-pinephone-on-nuttx"><a href="#appendix-lora-communicator-for-pinephone-on-nuttx">11 Appendix: LoRa Communicator for PinePhone on NuttX</a></h1>
+<h1 id="appendix-lora-communicator-for-pinephone-on-nuttx"><a href="#appendix-lora-communicator-for-pinephone-on-nuttx">12 Appendix: LoRa Communicator for PinePhone on NuttX</a></h1>
 <p>Earlier we talked about turning PinePhone on NuttX into a Feature Phone for <strong>Emergency Use</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone"><strong>“PinePhone + NuttX = Feature Phone”</strong></a></li>
