@@ -511,6 +511,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Enhanced Host Controller Interface for USB
 
+__Lwazi Dube__ noticed that the [__USB Enhanced Host Controller Interface__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html) (EHCI) is implemented for the Allwinner A64 USB Controller. (Pic above)
+
+So we have an __easier way__ to build the NuttX USB Driver for PinePhone! Here's why...
+
 TODO
 
 -   [__"Enhanced Host Controller Interface Specification"__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html)
@@ -520,6 +524,37 @@ TODO
 -   [__"Addendum: Enhanced Host Controller Interface Specification"__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-v1-1-addendum.html)
 
 TODO
+
+-   [__i.MX RT USB: imxrt_ehci.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/imxrt/imxrt_ehci.c#L4970)
+
+-   [__NXP LPC31 USB: lpc31_ehci.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/lpc31xx/lpc31_ehci.c#L4993)
+
+-   [__NXP LPC43 USB: lpc43_ehci.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/lpc43xx/lpc43_ehci.c#L4817)
+
+-   [__Microchip SAMA5 USB: sam_ehci.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/sama5/sam_ehci.c#L4736)
+
+TODO
+
+-   [__"Add Quectel EC20 4G LTE Module USB CDC/ACM support"__](https://github.com/FishsemiCode/nuttx/commit/dc5d8f7c4478efee10c661034600a61d52d2c13f)
+
+TODO
+
+7.5.3.3. USB Host Register List
+Module Name Base Address
+USB_HCI1 0x01C1B000
+Page 585
+
+7.5.3.4. EHCI Register Description 
+Page 587
+
+7.5.3.5. OHCI Register Description 
+Page 601
+
+7.5.3.6. HCI Interface Control and Status Register Description 
+Page 619
+
+7.5.3.7. USB Host Clock Requirement 
+Page 620
 
 ![USB Host Register List in Allwinner A64 User Manual (Page 585)](https://lupyuen.github.io/images/usb2-ehci2.jpg)
 
