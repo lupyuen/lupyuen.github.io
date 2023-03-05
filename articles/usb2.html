@@ -177,6 +177,7 @@
 </li>
 </ul>
 <p>Which is <strong>Port USB1</strong> of the Allwinner A64 SoC. (Pic above)</p>
+<p>(LTE Modem Audio goes to Port PCM0)</p>
 <p><em>Only 2 pins?</em></p>
 <p>That’s because <a href="https://en.wikipedia.org/wiki/USB_hardware#Pinouts"><strong>USB 2.0</strong></a> runs on 2 data wires and 2 power wires…</p>
 <ul>
@@ -193,6 +194,7 @@
 <p><a href="https://en.wikipedia.org/wiki/Differential_signalling">(Due to <strong>Differential Signalling</strong>)</a> </p>
 <p><em>What about USB0-DP and USB0-DM?</em></p>
 <p><strong>Port USB0</strong> of the Allwinner A64 SoC is exposed as the <strong>External USB Port</strong> on PinePhone.</p>
+<p>(Port USB0 supports USB OTG, Port USB1 doesn’t)</p>
 <p><em>So PinePhone talks to the LTE Modem on USB Serial?</em></p>
 <p>Correct! Here are the <strong>USB Endpoints</strong> exposed by the LTE Modem (which we’ll decipher later)…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ sudo lsusb -v
@@ -640,7 +642,7 @@ usb@1c1b400 {
 };
 </code></pre></div>
 <p>Which says that PinePhone uses the <a href="https://github.com/torvalds/linux/blob/master/drivers/usb/host/ehci-platform.c#L488"><strong>Generic Platform EHCI Driver</strong></a>.</p>
-<p>(Why is there another EHCI Port at <code>0x01C1</code> <code>A000</code>?)</p>
+<p>(There’s another EHCI Port at <code>0x01C1</code> <code>A000</code>. Is this for Port USB0 or Port USB1? We need Port USB1 for the LTE Modem)</p>
 <p><em>How will we build the EHCI Driver for PinePhone?</em></p>
 <p>Lwazi found these <strong>EHCI Drivers in NuttX</strong>…</p>
 <ul>
