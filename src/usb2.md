@@ -653,6 +653,8 @@ Lwazi found these __EHCI Drivers in NuttX__...
 
 Which I'll adapt for PinePhone and Allwinner A64.
 
+(The 4 files look similar... We might need to refactor them someday)
+
 _What about the LTE Modem Driver for NuttX?_
 
 This NuttX Driver for __Quectel EC20 LTE Modem__ might be helpful...
