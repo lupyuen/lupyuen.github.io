@@ -597,6 +597,48 @@ allwinner,sun50i-a64-usb-phy
     |__ Port 1: Dev 2, If 4, Class=Vendor Specific Class, Driver=qmi_wwan, 480M
         ID 2c7c:0125 Quectel Wireless Solutions Co., Ltd. EC25 LTE modem
 </code></pre></div>
+<p>EHCI also appears in the <strong>PinePhone Device Tree</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L683-L721">sun50i-a64-pinephone-1.2.dts</a></p>
+<div class="example-wrap"><pre class="language-text"><code>usb@1c1a000 {
+  compatible = &quot;allwinner,sun50i-a64-ehci\0generic-ehci&quot;;
+  reg = &lt;0x1c1a000 0x100&gt;;
+  interrupts = &lt;0x00 0x48 0x04&gt;;
+  clocks = &lt;0x02 0x2c 0x02 0x2a 0x02 0x5b&gt;;
+  resets = &lt;0x02 0x15 0x02 0x13&gt;;
+  status = &quot;okay&quot;;
+};
+
+usb@1c1a400 {
+  compatible = &quot;allwinner,sun50i-a64-ohci\0generic-ohci&quot;;
+  reg = &lt;0x1c1a400 0x100&gt;;
+  interrupts = &lt;0x00 0x49 0x04&gt;;
+  clocks = &lt;0x02 0x2c 0x02 0x5b&gt;;
+  resets = &lt;0x02 0x15&gt;;
+  status = &quot;okay&quot;;
+};
+
+usb@1c1b000 {
+  compatible = &quot;allwinner,sun50i-a64-ehci\0generic-ehci&quot;;
+  reg = &lt;0x1c1b000 0x100&gt;;
+  interrupts = &lt;0x00 0x4a 0x04&gt;;
+  clocks = &lt;0x02 0x2d 0x02 0x2b 0x02 0x5d&gt;;
+  resets = &lt;0x02 0x16 0x02 0x14&gt;;
+  phys = &lt;0x31 0x01&gt;;
+  phy-names = &quot;usb&quot;;
+  status = &quot;okay&quot;;
+};
+
+usb@1c1b400 {
+  compatible = &quot;allwinner,sun50i-a64-ohci\0generic-ohci&quot;;
+  reg = &lt;0x1c1b400 0x100&gt;;
+  interrupts = &lt;0x00 0x4b 0x04&gt;;
+  clocks = &lt;0x02 0x2d 0x02 0x5d&gt;;
+  resets = &lt;0x02 0x16&gt;;
+  phys = &lt;0x31 0x01&gt;;
+  phy-names = &quot;usb&quot;;
+  status = &quot;okay&quot;;
+};
+</code></pre></div>
+<p>Which says that PinePhone uses the <a href="https://github.com/torvalds/linux/blob/master/drivers/usb/host/ehci-platform.c#L488"><strong>Generic Platform EHCI Driver</strong></a>.</p>
 <p><em>How will we build the EHCI Driver for PinePhone?</em></p>
 <p>Lwazi found these <strong>EHCI Drivers in NuttX</strong>…</p>
 <ul>
@@ -613,7 +655,7 @@ allwinner,sun50i-a64-usb-phy
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/sama5/sam_ehci.c#L4736"><strong>Microchip SAMA5 USB: sam_ehci.c</strong></a></p>
 </li>
 </ul>
-<p>I’ll adapt the code above for PinePhone and Allwinner A64.</p>
+<p>Which I’ll adapt for PinePhone and Allwinner A64.</p>
 <p><em>What about the LTE Modem Driver for NuttX?</em></p>
 <p>This NuttX Driver for <strong>Quectel EC20 LTE Modem</strong> might be helpful…</p>
 <ul>
