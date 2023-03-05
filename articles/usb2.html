@@ -642,7 +642,9 @@ usb@1c1b400 {
 };
 </code></pre></div>
 <p>Which says that PinePhone uses the <a href="https://github.com/torvalds/linux/blob/master/drivers/usb/host/ehci-platform.c#L488"><strong>Generic Platform EHCI Driver</strong></a>.</p>
-<p>(There’s another EHCI Port at <code>0x01C1</code> <code>A000</code>. Is this for Port USB0 or Port USB1? We need Port USB1 for the LTE Modem)</p>
+<p><em>There’s another EHCI Port at <code>0x01C1</code> <code>A000</code>?</em></p>
+<p>Yeah apparently… But is this for Port USB0 or Port USB1?</p>
+<p>We need <strong>Port USB1</strong> for the LTE Modem. We’ll verify this when we test our USB Driver and enumerate the USB Devices.</p>
 <p><em>How will we build the EHCI Driver for PinePhone?</em></p>
 <p>Lwazi found these <strong>EHCI Drivers in NuttX</strong>…</p>
 <ul>
