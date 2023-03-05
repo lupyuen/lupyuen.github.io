@@ -537,6 +537,8 @@ Thus we have an __easier way__ to build the NuttX USB Driver for PinePhone!
 
 Let's find out why...
 
+(PinePhone's LTE Modem is connected to Port USB1, which is HCI0 in the lower half of the pic)
+
 _What's EHCI?_
 
 According to the [__EHCI Spec__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html)...
@@ -650,6 +652,8 @@ _There's another EHCI Port at `0x01C1` `A000`?_
 Yeah apparently... But is this for Port USB0 or Port USB1?
 
 We need __Port USB1__ for the LTE Modem. We'll verify this when we test our USB Driver and enumerate the USB Devices.
+
+(Based on the IRQ Numbers above, `0x01C1` `A000` seems to be Port USB0)
 
 _How will we build the EHCI Driver for PinePhone?_
 
