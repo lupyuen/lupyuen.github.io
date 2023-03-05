@@ -144,7 +144,7 @@ __Port USB0__ of the Allwinner A64 SoC is exposed as the __External USB Port__ o
 
 Beware! The __USB Port Names__ look confusing in the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)...
 
-| USB Port | Alternative Name | Base Address
+| USB Port | Alternate Name | Base Address
 |:--------:|------------------|-------------
 | __Port USB0__ | USB-OTG-EHCI / OHCI | __`0x01C1` `A000`__ (USB_HCI0)
 | __Port USB1__ | USB-EHCI0 / OHCI0   | __`0x01C1` `B000`__ (USB_HCI1)
