@@ -517,9 +517,16 @@ allwinner,sun50i-a64-usb-phy
 <p><img src="https://lupyuen.github.io/images/usb2-ehci.png" alt="USB Controller Block Diagram in Allwinner A64 User Manual (Page 583)" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><em>USB Controller Block Diagram in Allwinner A64 User Manual (Page 583)</em></a></p>
 <h1 id="appendix-enhanced-host-controller-interface-for-usb"><a href="#appendix-enhanced-host-controller-interface-for-usb">11 Appendix: Enhanced Host Controller Interface for USB</a></h1>
-<p><strong>Lwazi Dube</strong> noticed that the <a href="https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html"><strong>USB Enhanced Host Controller Interface</strong></a> (EHCI) is implemented for the Allwinner A64 USB Controller. (Pic above)</p>
+<p><strong>Lwazi Dube</strong> noticed that the <a href="https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html"><strong>USB Enhanced Host Controller Interface 1.0</strong></a> (EHCI) is implemented for the Allwinner A64 USB Controller. (Pic above)</p>
 <p>So we have an <strong>easier way</strong> to build the NuttX USB Driver for PinePhone! Let’s find out why…</p>
 <p><em>What’s EHCI?</em></p>
+<p>According to the <a href="https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html"><strong>EHCI Spec</strong></a>…</p>
+<blockquote>
+<p>“The Enhanced Host Controller Interface (EHCI) specification describes the register-level interface for a host controller for the Universal Serial Bus (USB) Revision 2.0”</p>
+</blockquote>
+<blockquote>
+<p>“The specification includes a description of the hardware and software interface between system software and the host controller hardware”</p>
+</blockquote>
 <p>TODO</p>
 <ul>
 <li>
@@ -527,9 +534,6 @@ allwinner,sun50i-a64-usb-phy
 </li>
 <li>
 <p><a href="https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification-for-usb.html"><strong>“Enhanced Host Controller Interface for USB 2.0: Specification”</strong></a></p>
-</li>
-<li>
-<p><a href="https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-v1-1-addendum.html"><strong>“Addendum: Enhanced Host Controller Interface Specification”</strong></a></p>
 </li>
 </ul>
 <p>TODO</p>
