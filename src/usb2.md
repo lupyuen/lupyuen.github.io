@@ -254,6 +254,10 @@ Let's find a Reference Driver for the Mentor Graphics USB Controller...
 
 # Search for USB Driver
 
+__UPDATE:__ There's an easier way to build the PinePhone USB Driver...
+
+-   [__Enhanced Host Controller Interface for USB__](https://lupyuen.github.io/articles/usb2#appendix-enhanced-host-controller-interface-for-usb)
+
 _How to find a driver for Allwinner A64's USB Controller?_
 
 PinePhone's [__Device Tree__](https://lupyuen.github.io/articles/pio#appendix-pinephone-device-tree) describes the Hardware Configuration of PinePhone...
@@ -385,6 +389,10 @@ Which we'll cover in the next article!
 
 # USB Drivers in NuttX
 
+__UPDATE:__ There's an easier way to build the PinePhone USB Driver...
+
+-   [__Enhanced Host Controller Interface for USB__](https://lupyuen.github.io/articles/usb2#appendix-enhanced-host-controller-interface-for-usb)
+
 _We found the FreeBSD Driver for Allwinner A64 USB..._
 
 _How will we adapt it for NuttX RTOS?_
@@ -418,6 +426,10 @@ _So our PinePhone USB Driver needs to implement this USB Enumeration?_
 Yep! To prepare for our upcoming implementation of the PinePhone USB Driver, let's look at the NuttX Driver for STM32 USB Controller...
 
 # STM32 USB Driver for NuttX
+
+__UPDATE:__ There's an easier way to build the PinePhone USB Driver...
+
+-   [__Enhanced Host Controller Interface for USB__](https://lupyuen.github.io/articles/usb2#appendix-enhanced-host-controller-interface-for-usb)
 
 _We're about to implement our NuttX Driver for PinePhone USB..._
 
@@ -480,6 +492,10 @@ _stm32_ctrlout in NuttX looks similar to musbotg_host_ctrl_data_tx in FreeBSD_
 # What's Next
 
 Porting the PinePhone USB Driver to NuttX will be a super long journey... The FreeBSD driver has [__4,000 lines of code__](https://github.com/freebsd/freebsd-src/blob/main/sys/dev/usb/controller/musb_otg.c) 😲
+
+__UPDATE:__ There's an easier way to build the PinePhone USB Driver...
+
+-   [__Enhanced Host Controller Interface for USB__](https://lupyuen.github.io/articles/usb2#appendix-enhanced-host-controller-interface-for-usb)
 
 But stay tuned for updates! Meanwhile please check out the other articles on NuttX for PinePhone...
 
@@ -579,7 +595,7 @@ $ lsusb -t -v
 
 _How will we build the EHCI Driver for PinePhone?_
 
-We'll adapt the code from these __EHCI Drivers in NuttX__...
+Lwazi found these __EHCI Drivers in NuttX__...
 
 -   [__i.MX RT USB: imxrt_ehci.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/imxrt/imxrt_ehci.c#L4970)
 
@@ -588,6 +604,8 @@ We'll adapt the code from these __EHCI Drivers in NuttX__...
 -   [__NXP LPC43 USB: lpc43_ehci.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/lpc43xx/lpc43_ehci.c#L4817)
 
 -   [__Microchip SAMA5 USB: sam_ehci.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/sama5/sam_ehci.c#L4736)
+
+I'll adapt the code above for PinePhone and Allwinner A64.
 
 _What about the LTE Modem Driver for NuttX?_
 
