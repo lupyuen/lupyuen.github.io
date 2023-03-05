@@ -138,6 +138,8 @@ _What about USB0-DP and USB0-DM?_
 
 __Port USB0__ of the Allwinner A64 SoC is exposed as the __External USB Port__ on PinePhone.
 
+(Port USB0 supports USB OTG, Port USB1 doesn't)
+
 _So PinePhone talks to the LTE Modem on USB Serial?_
 
 Correct! Here are the __USB Endpoints__ exposed by the LTE Modem (which we'll decipher later)...
@@ -641,7 +643,7 @@ usb@1c1b400 {
 
 Which says that PinePhone uses the [__Generic Platform EHCI Driver__](https://github.com/torvalds/linux/blob/master/drivers/usb/host/ehci-platform.c#L488).
 
-(Why is there another EHCI Port at `0x01C1` `A000`?)
+(There's another EHCI Port at `0x01C1` `A000`. Is this for Port USB0 or Port USB1? We need Port USB1 for the LTE Modem)
 
 _How will we build the EHCI Driver for PinePhone?_
 
