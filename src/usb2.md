@@ -122,6 +122,8 @@ According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhon
 
 Which is __Port USB1__ of the Allwinner A64 SoC. (Pic above)
 
+(LTE Modem Audio goes to Port PCM0)
+
 _Only 2 pins?_
 
 That's because [__USB 2.0__](https://en.wikipedia.org/wiki/USB_hardware#Pinouts) runs on 2 data wires and 2 power wires...
