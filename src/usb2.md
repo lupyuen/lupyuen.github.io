@@ -511,25 +511,49 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Enhanced Host Controller Interface for USB
 
-__Lwazi Dube__ noticed that the [__USB Enhanced Host Controller Interface 1.0__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html) (EHCI) is implemented for the Allwinner A64 USB Controller. (Pic above)
+__Lwazi Dube__ noticed that [__USB Enhanced Host Controller Interface 1.0__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html) (EHCI) is implemented for the Allwinner A64 USB Controller. (Pic above)
 
-So we have an __easier way__ to build the NuttX USB Driver for PinePhone! Let's find out why...
+Thus we have an __easier way__ to build the NuttX USB Driver for PinePhone!
+
+Let's find out why...
 
 _What's EHCI?_
 
 According to the [__EHCI Spec__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html)...
 
-> "The Enhanced Host Controller Interface (EHCI) specification describes the register-level interface for a host controller for the Universal Serial Bus (USB) Revision 2.0"
+> "The Enhanced Host Controller Interface (EHCI) specification describes the __Register-Level Interface__ for a Host Controller for the Universal Serial Bus (USB) Revision 2.0"
 
-> "The specification includes a description of the hardware and software interface between system software and the host controller hardware"
+> "The specification includes a description of the Hardware and Software Interface between System Software and the Host Controller Hardware"
 
-TODO
+Which means we can build the NuttX USB Driver for PinePhone... By simply talking to the (Memory-Mapped) __EHCI Registers__ on Allwinner A64's USB Controller!
+
+_What are the EHCI Registers?_
+
+The Standard EHCI Registers are documented here...
 
 -   [__"Enhanced Host Controller Interface Specification"__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html)
 
 -   [__"Enhanced Host Controller Interface for USB 2.0: Specification"__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification-for-usb.html)
 
-TODO
+Allwinner A64 implements the EHCI Registers at Base Address __`0x01C1` `B000`__ (USB_HCI1, pic below)
+
+Refer to the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)...
+
+-   __Section 7.5.3.3:__ USB Host Register List (Page 585, pic below)
+
+-   __Section 7.5.3.4:__ EHCI Register Description (Page 587)
+
+-   __Section 7.5.3.5:__ OHCI Register Description (Page 601)
+
+-   __Section 7.5.3.6:__ HCI Interface Control and Status Register Description (Page 619)
+
+-   __Section 7.5.3.7:__ USB Host Clock Requirement (Page 620)
+
+![USB Host Register List in Allwinner A64 User Manual (Page 585)](https://lupyuen.github.io/images/usb2-ehci2.jpg)
+
+_PinePhone's LTE Modem is connected on EHCI?_
+
+Yep we confirmed it with __lsusb__...
 
 ```text
 $ lsusb -t -v
@@ -553,7 +577,9 @@ $ lsusb -t -v
         ID 2c7c:0125 Quectel Wireless Solutions Co., Ltd. EC25 LTE modem
 ```
 
-TODO
+_How will we build the EHCI Driver for PinePhone?_
+
+We'll adapt the code from these __EHCI Drivers in NuttX__...
 
 -   [__i.MX RT USB: imxrt_ehci.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/imxrt/imxrt_ehci.c#L4970)
 
@@ -563,34 +589,13 @@ TODO
 
 -   [__Microchip SAMA5 USB: sam_ehci.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/sama5/sam_ehci.c#L4736)
 
-TODO
+_What about the LTE Modem Driver for NuttX?_
+
+This NuttX Driver for __Quectel EC20 LTE Modem__ might be helpful...
 
 -   [__"Add Quectel EC20 4G LTE Module USB CDC/ACM support"__](https://github.com/FishsemiCode/nuttx/commit/dc5d8f7c4478efee10c661034600a61d52d2c13f)
 
-TODO
-
-7.5.3.3. USB Host Register List
-Module Name Base Address
-USB_HCI1 0x01C1B000
-Page 585
-
-7.5.3.4. EHCI Register Description 
-Page 587
-
-7.5.3.5. OHCI Register Description 
-Page 601
-
-7.5.3.6. HCI Interface Control and Status Register Description 
-Page 619
-
-7.5.3.7. USB Host Clock Requirement 
-Page 620
-
-![USB Host Register List in Allwinner A64 User Manual (Page 585)](https://lupyuen.github.io/images/usb2-ehci2.jpg)
-
-[_USB Host Register List in Allwinner A64 User Manual (Page 585)_](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
-
-TODO
+Stay tuned for updates!
 
 ![Pine64 PineDio LoRa Gateway (left) with PineDio LoRa Add-On Case (right)](https://lupyuen.github.io/images/lorawan2-pine64.jpg)
 
