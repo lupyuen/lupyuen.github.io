@@ -538,6 +538,7 @@ allwinner,sun50i-a64-usb-phy
 <p><strong>Lwazi Dube</strong> noted that <a href="https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html"><strong>USB Enhanced Host Controller Interface 1.0</strong></a> (EHCI) is implemented for the Allwinner A64 USB Controller. (Pic above)</p>
 <p>Thus we have an <strong>easier way</strong> to build the NuttX USB Driver for PinePhone!</p>
 <p>Let’s find out why…</p>
+<p>(PinePhone’s LTE Modem is connected to Port USB1, which is HCI0 in the lower half of the pic)</p>
 <p><em>What’s EHCI?</em></p>
 <p>According to the <a href="https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html"><strong>EHCI Spec</strong></a>…</p>
 <blockquote>
@@ -645,6 +646,7 @@ usb@1c1b400 {
 <p><em>There’s another EHCI Port at <code>0x01C1</code> <code>A000</code>?</em></p>
 <p>Yeah apparently… But is this for Port USB0 or Port USB1?</p>
 <p>We need <strong>Port USB1</strong> for the LTE Modem. We’ll verify this when we test our USB Driver and enumerate the USB Devices.</p>
+<p>(Based on the IRQ Numbers above, <code>0x01C1</code> <code>A000</code> seems to be Port USB0)</p>
 <p><em>How will we build the EHCI Driver for PinePhone?</em></p>
 <p>Lwazi found these <strong>EHCI Drivers in NuttX</strong>…</p>
 <ul>
