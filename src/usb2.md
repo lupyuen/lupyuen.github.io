@@ -645,7 +645,9 @@ _How will we build the EHCI Driver for PinePhone?_
 
 Lwazi found these __EHCI Drivers in NuttX__...
 
--   [__i.MX RT USB: imxrt_ehci.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/imxrt/imxrt_ehci.c#L4970)
+-   [__NXP i.MX RT USB: imxrt_ehci.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/imxrt/imxrt_ehci.c#L4970)
+
+    (This is the newest driver)
 
 -   [__NXP LPC31 USB: lpc31_ehci.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/lpc31xx/lpc31_ehci.c#L4993)
 
@@ -653,7 +655,9 @@ Lwazi found these __EHCI Drivers in NuttX__...
 
 -   [__Microchip SAMA5 USB: sam_ehci.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/sama5/sam_ehci.c#L4736)
 
-Which I'll adapt for PinePhone and Allwinner A64.
+    (This is the oldest driver)
+
+I'll port the [__i.MX RT EHCI Driver__](https://github.com/apache/nuttx/blob/master/arch/arm/src/imxrt/imxrt_ehci.c#L4970) to PinePhone and Allwinner A64, since it's the newest one.
 
 (The 4 files look similar... We might need to refactor them someday)
 
