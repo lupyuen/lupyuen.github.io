@@ -513,7 +513,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 __Lwazi Dube__ noticed that the [__USB Enhanced Host Controller Interface__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html) (EHCI) is implemented for the Allwinner A64 USB Controller. (Pic above)
 
-So we have an __easier way__ to build the NuttX USB Driver for PinePhone! Here's why...
+So we have an __easier way__ to build the NuttX USB Driver for PinePhone! Let's find out why...
+
+_What's EHCI?_
 
 TODO
 
@@ -522,6 +524,30 @@ TODO
 -   [__"Enhanced Host Controller Interface for USB 2.0: Specification"__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification-for-usb.html)
 
 -   [__"Addendum: Enhanced Host Controller Interface Specification"__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-v1-1-addendum.html)
+
+TODO
+
+```text
+$ lsusb -t -v
+/:  Bus 04.Port 1: Dev 1, Class=root_hub, Driver=ohci-platform/1p, 12M
+    ID 1d6b:0001 Linux Foundation 1.1 root hub
+/:  Bus 03.Port 1: Dev 1, Class=root_hub, Driver=ehci-platform/1p, 480M
+    ID 1d6b:0002 Linux Foundation 2.0 root hub
+/:  Bus 02.Port 1: Dev 1, Class=root_hub, Driver=ohci-platform/1p, 12M
+    ID 1d6b:0001 Linux Foundation 1.1 root hub
+/:  Bus 01.Port 1: Dev 1, Class=root_hub, Driver=ehci-platform/1p, 480M
+    ID 1d6b:0002 Linux Foundation 2.0 root hub
+    |__ Port 1: Dev 2, If 0, Class=Vendor Specific Class, Driver=option, 480M
+        ID 2c7c:0125 Quectel Wireless Solutions Co., Ltd. EC25 LTE modem
+    |__ Port 1: Dev 2, If 1, Class=Vendor Specific Class, Driver=option, 480M
+        ID 2c7c:0125 Quectel Wireless Solutions Co., Ltd. EC25 LTE modem
+    |__ Port 1: Dev 2, If 2, Class=Vendor Specific Class, Driver=option, 480M
+        ID 2c7c:0125 Quectel Wireless Solutions Co., Ltd. EC25 LTE modem
+    |__ Port 1: Dev 2, If 3, Class=Vendor Specific Class, Driver=option, 480M
+        ID 2c7c:0125 Quectel Wireless Solutions Co., Ltd. EC25 LTE modem
+    |__ Port 1: Dev 2, If 4, Class=Vendor Specific Class, Driver=qmi_wwan, 480M
+        ID 2c7c:0125 Quectel Wireless Solutions Co., Ltd. EC25 LTE modem
+```
 
 TODO
 
