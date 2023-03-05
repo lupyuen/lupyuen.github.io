@@ -551,6 +551,8 @@ The Standard EHCI Registers are documented here...
 
 -   [__"Enhanced Host Controller Interface for USB 2.0: Specification"__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification-for-usb.html)
 
+(Version 1.1 Addendum isn't relevant because Allwinner A64 only implements Version 1.0 of the spec)
+
 Allwinner A64 implements the EHCI Registers at Base Address __`0x01C1` `B000`__ (USB_HCI1, pic below)
 
 Refer to the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)...
