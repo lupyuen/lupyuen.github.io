@@ -140,7 +140,7 @@ _What about USB0-DP and USB0-DM?_
 
 __Port USB0__ of the Allwinner A64 SoC is exposed as the __External USB Port__ on PinePhone.
 
-(Port USB0 supports USB OTG, Port USB1 doesn't)
+(Port USB0 supports [__USB OTG__](https://en.wikipedia.org/wiki/USB_On-The-Go), Port USB1 doesn't)
 
 Beware! The __USB Port Names__ look confusing in the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)...
 
@@ -660,11 +660,16 @@ Which says that PinePhone uses the [__Generic Platform EHCI Driver__](https://gi
 
 _There's another EHCI Port at `0x01C1` `A000`?_
 
-Yeah apparently... But is this for Port USB0 or Port USB1?
+Yep the are two USB Ports in Allwinner A64: __USB0 and USB1__.
 
-We need __Port USB1__ for the LTE Modem. We'll verify this when we test our USB Driver and enumerate the USB Devices.
+Port USB0 Base Address isn't documented, but it appears in the __Memory Mapping__ (Page 73) of the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)...
 
-(Based on the IRQ Numbers above, `0x01C1` `A000` seems to be Port USB0)
+| USB Port | Alternate Name | Base Address
+|:--------:|------------------|-------------
+| __Port USB0__ | USB-OTG-EHCI / OHCI | __`0x01C1` `A000`__ (USB_HCI0)
+| __Port USB1__ | USB-EHCI0 / OHCI0   | __`0x01C1` `B000`__ (USB_HCI1)
+
+We'll talk only about __Port USB1__ (Non-OTG), since it's connected to the LTE Modem.
 
 _How will we build the EHCI Driver for PinePhone?_
 
