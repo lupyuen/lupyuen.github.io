@@ -194,7 +194,7 @@
 <p><a href="https://en.wikipedia.org/wiki/Differential_signalling">(Due to <strong>Differential Signalling</strong>)</a> </p>
 <p><em>What about USB0-DP and USB0-DM?</em></p>
 <p><strong>Port USB0</strong> of the Allwinner A64 SoC is exposed as the <strong>External USB Port</strong> on PinePhone.</p>
-<p>(Port USB0 supports USB OTG, Port USB1 doesn’t)</p>
+<p>(Port USB0 supports <a href="https://en.wikipedia.org/wiki/USB_On-The-Go"><strong>USB OTG</strong></a>, Port USB1 doesn’t)</p>
 <p>Beware! The <strong>USB Port Names</strong> look confusing in the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>…</p>
 <div><table><thead><tr><th style="text-align: center">USB Port</th><th>Alternate Name</th><th>Base Address</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong>Port USB0</strong></td><td>USB-OTG-EHCI / OHCI</td><td><strong><code>0x01C1</code> <code>A000</code></strong> (USB_HCI0)</td></tr>
@@ -652,9 +652,14 @@ usb@1c1b400 {
 </code></pre></div>
 <p>Which says that PinePhone uses the <a href="https://github.com/torvalds/linux/blob/master/drivers/usb/host/ehci-platform.c#L488"><strong>Generic Platform EHCI Driver</strong></a>.</p>
 <p><em>There’s another EHCI Port at <code>0x01C1</code> <code>A000</code>?</em></p>
-<p>Yeah apparently… But is this for Port USB0 or Port USB1?</p>
-<p>We need <strong>Port USB1</strong> for the LTE Modem. We’ll verify this when we test our USB Driver and enumerate the USB Devices.</p>
-<p>(Based on the IRQ Numbers above, <code>0x01C1</code> <code>A000</code> seems to be Port USB0)</p>
+<p>Yep the are two USB Ports in Allwinner A64: <strong>USB0 and USB1</strong>.</p>
+<p>Port USB0 Base Address isn’t documented, but it appears in the <strong>Memory Mapping</strong> (Page 73) of the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>…</p>
+<div><table><thead><tr><th style="text-align: center">USB Port</th><th>Alternate Name</th><th>Base Address</th></tr></thead><tbody>
+<tr><td style="text-align: center"><strong>Port USB0</strong></td><td>USB-OTG-EHCI / OHCI</td><td><strong><code>0x01C1</code> <code>A000</code></strong> (USB_HCI0)</td></tr>
+<tr><td style="text-align: center"><strong>Port USB1</strong></td><td>USB-EHCI0 / OHCI0</td><td><strong><code>0x01C1</code> <code>B000</code></strong> (USB_HCI1)</td></tr>
+</tbody></table>
+</div>
+<p>We’ll talk only about <strong>Port USB1</strong> (Non-OTG), since it’s connected to the LTE Modem.</p>
 <p><em>How will we build the EHCI Driver for PinePhone?</em></p>
 <p>Lwazi found these <strong>EHCI Drivers in NuttX</strong>…</p>
 <ul>
