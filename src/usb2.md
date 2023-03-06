@@ -687,9 +687,13 @@ Lwazi found these __EHCI Drivers in NuttX__...
 
     (This is the oldest driver)
 
+    (The 4 files look similar... We might need to refactor them someday)
+
 I'll port the [__i.MX RT EHCI Driver__](https://github.com/apache/nuttx/blob/master/arch/arm/src/imxrt/imxrt_ehci.c#L4970) to PinePhone and Allwinner A64, since it's the newest one.
 
-(The 4 files look similar... We might need to refactor them someday)
+Check the updates here...
+
+-   [__lupyuen/pinephone-nuttx-usb__](https://github.com/lupyuen/pinephone-nuttx-usb)
 
 _What about the LTE Modem Driver for NuttX?_
 
