@@ -652,7 +652,7 @@ usb@1c1b400 {
 </code></pre></div>
 <p>Which says that PinePhone uses the <a href="https://github.com/torvalds/linux/blob/master/drivers/usb/host/ehci-platform.c#L488"><strong>Generic Platform EHCI Driver</strong></a>.</p>
 <p><em>There’s another EHCI Port at <code>0x01C1</code> <code>A000</code>?</em></p>
-<p>Yep the are two USB Ports in Allwinner A64: <strong>USB0 and USB1</strong>.</p>
+<p>Yep there are two USB Ports in Allwinner A64: <strong>USB0 and USB1</strong>.</p>
 <p>Port USB0 Base Address isn’t documented, but it appears in the <strong>Memory Mapping</strong> (Page 73) of the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>…</p>
 <div><table><thead><tr><th style="text-align: center">USB Port</th><th>Alternate Name</th><th>Base Address</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong>Port USB0</strong></td><td>USB-OTG-EHCI / OHCI</td><td><strong><code>0x01C1</code> <code>A000</code></strong> (USB_HCI0)</td></tr>
