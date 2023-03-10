@@ -660,7 +660,7 @@ Which says that PinePhone uses the [__Generic Platform EHCI Driver__](https://gi
 
 _There's another EHCI Port at `0x01C1` `A000`?_
 
-Yep the are two USB Ports in Allwinner A64: __USB0 and USB1__.
+Yep there are two USB Ports in Allwinner A64: __USB0 and USB1__.
 
 Port USB0 Base Address isn't documented, but it appears in the __Memory Mapping__ (Page 73) of the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)...
 
