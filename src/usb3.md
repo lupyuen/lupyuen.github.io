@@ -10,6 +10,18 @@ TODO
 
 Over the past [__17 articles__](https://github.com/lupyuen/pinephone-nuttx) we talked about porting to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) a Real-Time Operating System: [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what).
 
+TODO
+
+-   Port NuttX USB EHCI driver to PinePhone
+
+-   EHCI vs OTG
+
+-   USB Clocks
+
+-   USB Resets
+
+-   U-Boot Bootloader
+
 # PinePhone USB Driver for Apache NuttX RTOS
 
 TODO
