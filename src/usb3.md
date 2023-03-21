@@ -2,7 +2,9 @@
 
 📝 _28 Mar 2023_
 
-![PinePhone talks to LTE Modem over USB](https://lupyuen.github.io/images/usb3-title.jpg)
+![USB Controller Block Diagram from Allwinner A64 User Manual](https://lupyuen.github.io/images/usb3-title.jpg)
+
+[_USB Controller Block Diagram from Allwinner A64 User Manual_](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
 TODO
 
