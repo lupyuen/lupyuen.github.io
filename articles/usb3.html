@@ -91,49 +91,7 @@
 <li><a href="https://lupyuen.github.io/articles/usb2#appendix-enhanced-host-controller-interface-for-usb">“Enhanced Host Controller Interface for USB”</a></li>
 </ul>
 <p>To add the PinePhone USB Driver to our NuttX Project…</p>
-<div class="example-wrap"><pre class="language-bash"><code>cd nuttx/arch/arm64/src/a64
-git submodule add https://github.com/lupyuen/pinephone-nuttx-usb
-ln -s pinephone-nuttx-usb/a64_ehci.c .
-ln -s pinephone-nuttx-usb/a64_ehci.h .
-ln -s pinephone-nuttx-usb/a64_usbhost.c .
-pushd hardware
-ln -s ../pinephone-nuttx-usb/a64_usbotg.h .
-popd
-</code></pre></div>
-<p>Add the USB Driver to Kconfig, Makefile and PinePhone Bringup…</p>
-<ul>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/26/files#diff-9121fb138b3c72a19188ce2e9e3ba478f943ce1c6a231312b8520f2e375dff1e">arch/arm64/src/a64/Kconfig</a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/26/files#diff-90722370fba9b923c4e5e0a9f6dad7ca4d9f4884867e107b4d0380a056ef9e09">arch/arm64/src/a64/Make.defs</a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/26/files#diff-112a7881b2d4b766a1ec106dfa92a4e963f7001ef7efebdadf7b6310d64c517e">boards/arm64/a64/pinephone/src/pinephone_bringup.c</a></p>
-</li>
-</ul>
-<p>Configure the NuttX Build…</p>
-<div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh pinephone:lvgl
-make menuconfig
-</code></pre></div>
-<p>Select these options in <code>menuconfig</code>…</p>
-<ul>
-<li>
-<p>Enable “Build Setup &gt; Debug Options &gt; USB Error, Warninigs and Info”</p>
-</li>
-<li>
-<p>Enable “System Type &gt; Allwinner A64 Peripheral Selection &gt; USB EHCI”</p>
-</li>
-<li>
-<p>Enable “RTOS Features &gt; Work queue support &gt; Low priority (kernel) worker thread”</p>
-</li>
-<li>
-<p>Enable “Device Drivers &gt; USB Host Driver Support”</p>
-</li>
-<li>
-<p>Enable “Device Drivers &gt; USB Host Driver Support &gt; USB Hub Support”</p>
-</li>
-</ul>
+<p>TODO</p>
 <p>Let’s boot the NuttX USB EHCI Driver on PinePhone…</p>
 <h1 id="64-bit-update-for-ehci-driver"><a href="#64-bit-update-for-ehci-driver">2 64-Bit Update for EHCI Driver</a></h1>
 <p>TODO</p>
