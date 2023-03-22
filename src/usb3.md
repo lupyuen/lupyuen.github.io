@@ -956,19 +956,15 @@ _Will the EHCI Driver start correctly on NuttX?_
 
 TODO
 
-Earlier the __NuttX EHCI Driver__ failed during PinePhone startup...
+Remember the __NuttX EHCI Driver__ failed during PinePhone startup...
 
--   ["Halt Timeout for USB Controller"](https://github.com/lupyuen/pinephone-nuttx-usb#halt-timeout-for-usb-controller)
+-   [__"TODO"__](TODO)
 
 Then we discovered how the U-Boot Bootloader enables the __USB Clocks__ and deasserts the __USB Resets__...
 
--   ["USB Controller Clocks"](https://github.com/lupyuen/pinephone-nuttx-usb#usb-controller-clocks)
+-   [__"TODO"__](TODO)
 
--   ["Enable USB Controller Clocks"](https://github.com/lupyuen/pinephone-nuttx-usb#enable-usb-controller-clocks)
-
--   ["USB Controller Reset"](https://github.com/lupyuen/pinephone-nuttx-usb#usb-controller-reset)
-
--   ["Reset USB Controller"](https://github.com/lupyuen/pinephone-nuttx-usb#reset-usb-controller)
+-   [__"TODO"__](TODO)
 
 So we did the same for __NuttX on PinePhone__: [a64_usbhost.c](https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L261-L279)
 
