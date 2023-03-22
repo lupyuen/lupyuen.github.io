@@ -283,7 +283,7 @@ task: nsh_main 0x4008b0d0
 <div class="example-wrap"><pre class="language-c"><code>DEBUGASSERT((sizeof(struct a64_qh_s) &amp; 0x1f) == 0);
 </code></pre></div>
 <p>But somehow it’s not! The actual size of the <strong>a64_qh_s</strong> struct is <strong>72 bytes</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>sizeof(struct a64_qh_s)=72
+<div class="example-wrap"><pre class="language-text"><code>sizeof(struct a64_qh_s) = 72
 </code></pre></div>
 <p>Which most certainly <strong>isn’t aligned</strong> to 32 bytes.</p>
 <p><em>Huh? What’s with the struct size?</em></p>
@@ -318,7 +318,7 @@ struct a64_qh_s {
 <p>(48 + 4 + 4 + 8)</p>
 </li>
 <li>
-<p>On <strong>64-bit</strong> platforms: <code>a64_qh_s</code> is now <strong>72 bytes</strong></p>
+<p>On <strong>64-bit</strong> platforms: <strong>a64_qh_s</strong> is now <strong>72 bytes</strong></p>
 <p>(48 + 8 + 4 + 8, round up for 4-byte alignment)</p>
 </li>
 </ul>
@@ -343,34 +343,37 @@ DEBUGASSERT(sizeof(struct ehci_qh_s)   == 48);
 DEBUGASSERT(sizeof(struct ehci_fstn_s) == SIZEOF_EHCI_FSTN_S);
 </code></pre></div>
 <p>FYI: These are the <strong>Struct Sizes</strong> in the EHCI Driver…</p>
-<div class="example-wrap"><pre class="language-text"><code>sizeof(struct a64_qh_s)=72
-sizeof(struct a64_qtd_s)=32
-sizeof(struct ehci_itd_s)=64
-sizeof(struct ehci_sitd_s)=28
-sizeof(struct ehci_qtd_s)=32
-sizeof(struct ehci_overlay_s)=32
-sizeof(struct ehci_qh_s)=48
-sizeof(struct ehci_fstn_s)=8
+<div class="example-wrap"><pre class="language-text"><code>sizeof(struct a64_qh_s)    = 72
+sizeof(struct a64_qtd_s)   = 32
+sizeof(struct ehci_itd_s)  = 64
+sizeof(struct ehci_sitd_s) = 28
+sizeof(struct ehci_qtd_s)  = 32
+sizeof(struct ehci_overlay_s) = 32
+sizeof(struct ehci_qh_s)   = 48
+sizeof(struct ehci_fstn_s) = 8
 </code></pre></div>
+<p>Let’s continue booting NuttX…</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/usb/ehci.h#L955-L974">(We need to fix this NuttX typo: <strong>SIZEOF_EHCI_OVERLAY</strong> is defined twice)</a></p>
 <h1 id="halt-timeout-for-usb-controller"><a href="#halt-timeout-for-usb-controller">6 Halt Timeout for USB Controller</a></h1>
-<p>TODO</p>
-<p>The NuttX USB EHCI Driver fails with a timeout when booting on PinePhone…</p>
-<div class="example-wrap"><pre class="language-text"><code>a64_usbhost_initialize: TODO: a64_clockall_usboh3
-a64_usbhost_initialize: TODO: switch off USB bus power
-a64_usbhost_initialize: TODO: Setup pins, with power initially off
-usbhost_registerclass: Registering class:0x40124838 nids:2
+<p><em>So NuttX boots without an Assertion Failure?</em></p>
+<p>Yeah but our USB EHCI Driver <strong>fails with a timeout</strong> when booting on PinePhone…</p>
+<div class="example-wrap"><pre class="language-text"><code>usbhost_registerclass: 
+  Registering class:0x40124838 nids:2
 EHCI Initializing EHCI Stack
-a64_ehci_initialize: TODO: a64_clockall_usboh3
-a64_ehci_initialize: TODO: Reset the controller from the OTG peripheral
-a64_ehci_initialize: TODO: Program the controller to be the USB host controller
-a64_printreg: 01c1b010&lt;-00000000
-a64_printreg: 01c1b014-&gt;00000000
-EHCI ERROR: Timed out waiting for HCHalted. USBSTS: 000000
-EHCI ERROR: a64_reset failed: 110
-a64_usbhost_initialize: ERROR: a64_ehci_initialize failed
+a64_printreg: 
+  01c1b010&lt;-00000000
+a64_printreg: 
+  01c1b014-&gt;00000000
+EHCI ERROR: 
+  Timed out waiting for HCHalted.
+  USBSTS: 000000
+EHCI ERROR:
+  a64_reset failed: 110
+a64_usbhost_initialize:
+  ERROR: a64_ehci_initialize failed
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/b921aa5259ef94ece41610ebf806ebd0fa19dee5/README.md#output-log">(Source)</a></p>
+<p>TODO</p>
 <p>The timeout happens while waiting for the USB Controller to Halt: <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/2e1f9ab090b14f88afb8c3a36ec40a0dbbb23d49/a64_ehci.c#L4831-L4917">a64_ehci.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static int a64_reset(void)
 {
@@ -420,8 +423,11 @@ a64_usbhost_initialize: ERROR: a64_ehci_initialize failed
 <p><code>01c1</code> <code>b000</code> is the Base Address of the USB EHCI Controller on Allwinner A64. <a href="https://lupyuen.github.io/articles/usb2#appendix-enhanced-host-controller-interface-for-usb">(See this)</a></p>
 <p><code>01c1</code> <code>b010</code> is the USB Command Register USBCMD. <a href="https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification-for-usb.html">(Page 18)</a></p>
 <p><code>01c1</code> <code>b014</code> is the USB Status Register USBSTS. <a href="https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification-for-usb.html">(Page 21)</a></p>
-<div class="example-wrap"><pre class="language-text"><code>a64_printreg: 01c1b010&lt;-00000000
-a64_printreg: 01c1b014-&gt;00000000
+<div class="example-wrap"><pre class="language-text"><code>a64_printreg:
+  01c1b010&lt;-00000000
+
+a64_printreg:
+  01c1b014-&gt;00000000
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/b921aa5259ef94ece41610ebf806ebd0fa19dee5/README.md#output-log">(Source)</a></p>
 <p>According the log, the driver wrote Command 0 (Stop) to USB Command Register USBCMD. Which will Halt the USB Controller.</p>
