@@ -74,7 +74,7 @@ More about this in the [__Allwinner A64 User Manual__](https://github.com/lupyue
 
 -   __Section 7.5.3.7:__ USB Host Clock Requirement (Page 620)
 
-This looks messy, but the NuttX USB EHCI Driver will probably run OK on PinePhone.
+This looks messy, but the __NuttX EHCI Driver__ will probably run OK on PinePhone.
 
 _USB EHCI sounds like a lifesaver?_
 
@@ -82,15 +82,51 @@ Yep USB Programming on PinePhone would be super complicated without EHCI!
 
 Let's take a peek at life without EHCI...
 
+![PinePhone Jumpdrive appears as a USB Drive when connected to a computer](https://lupyuen.github.io/images/arm-uart2.jpg)
+
+[_PinePhone Jumpdrive appears as a USB Drive when connected to a computer_](https://github.com/dreemurrs-embedded/Jumpdrive)
+
 # EHCI is simpler than USB On-The-Go
+
+_What's USB On-The-Go?_
+
+PinePhone supports [__USB On-The-Go (OTG)__](https://en.wikipedia.org/wiki/USB_On-The-Go), which works as 2 modes...
+
+-   __USB Host__: PinePhone controls other USB Devices
+
+-   __USB Device__: PinePhone is controlled by a USB Host
+
+This means if we connect PinePhone to a computer, it will appear as a USB Drive.
+
+(Assuming the right drivers are started)
+
+_USB OTG isn't compatible with USB EHCI?_
+
+EHCI supports __only USB Host__, not USB Device.
+
+(Hence the name "Enhanced __Host Controller__ Interface")
+
+PinePhone supports both USB OTG and USB EHCI. The USB Physical Layer can switch between OTG and EHCI modes. (As we'll soon see)
+
+_How would we program USB OTG?_
+
+To do USB OTG, we would need to create a driver for the __Mentor Graphics OTG Controller__ inside PinePhone...
+
+-   [__"Document the USB Controller (Mentor Graphics)"__](https://lupyuen.github.io/articles/usb2#document-the-usb-controller)
+
+Which gets really low-level and complex.
+
+Thankfully we won't need USB OTG and the Mentor Graphics Driver. Here's why...
+
+![USB Controller Block Diagram from Allwinner A64 User Manual](https://lupyuen.github.io/images/usb3-title.jpg)
+
+[_USB Controller Block Diagram from Allwinner A64 User Manual_](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+
+# PinePhone USB Controller
 
 TODO
 
-We won't need OTG / Mentor Graphics
-
 According to the [USB Controller Block Diagram in Allwinner A64 User Manual (Page 583)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)...
-
-![USB Controller Block Diagram in Allwinner A64 User Manual (Page 583)](https://lupyuen.github.io/images/usb3-title.jpg)
 
 There are two USB Ports in Allwinner A64: __USB0 and USB1__...
 
