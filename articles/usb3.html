@@ -139,7 +139,13 @@
 <p>(Skip the “Version 1.1 Addendum”, Allwinner A64 only implements Version 1.0 of the spec)</p>
 </li>
 </ul>
-<p>Allwinner A64 implements the EHCI Registers for <strong>Port USB1</strong> at Base Address <strong><code>0x01C1</code> <code>B000</code></strong> (USB_HCI1, pic above)</p>
+<p>Allwinner A64 implements the EHCI Registers for <strong>Port USB1</strong> at…</p>
+<ul>
+<li>
+<p><strong>USB_HCI1</strong> Base Address: <strong><code>0x01C1</code> <code>B000</code></strong></p>
+<p>(Pic above)</p>
+</li>
+</ul>
 <p>More about this in the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>…</p>
 <ul>
 <li>
@@ -241,14 +247,33 @@
 </ul>
 <p>Which we’ll <strong>port to PinePhone</strong> as…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx-usb"><strong>PinePhone USB Driver for NuttX</strong></a></li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb"><strong>PinePhone USB Driver for NuttX</strong></a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb#pinephone-usb-driver-for-apache-nuttx-rtos">(Interim Build Instructions)</a></p>
+</li>
 </ul>
-<p>TODO</p>
-<p>To add the PinePhone USB Driver to our NuttX Project…</p>
-<p>Register Addresses</p>
+<p><em>But the EHCI Register Addresses are specific to PinePhone right?</em></p>
+<p>That’s why we customised the <strong>EHCI Register Addresses</strong> specially for PinePhone and Allwinner A64: <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/2f6c49aafbaa3b15f47107af19c92eaa92eac2e1/a64_usbotg.h#L40-L55">a64_usbotg.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Address of EHCI Device / Host Capability Registers
+// For Allwinner A64: USB_HCI1 
+#define A64_USBOTG_HCCR_BASE 0x01c1b000
+
+// Address of Device / Host / OTG Operational Registers
+// For Allwinner A64: USB_HCI1 + 0x10
+#define A64_USBOTG_HCOR_BASE (A64_USBOTG_HCCR_BASE + 0x10)
+</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/usb3#usb-enhanced-host-controller-interface">(EHCI Base Address is <strong><code>0x01C1</code> <code>B000</code></strong>)</a></p>
+<p>We start the USB EHCI Driver in the <strong>PinePhone Bringup Function</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/usb/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L208-L213">pinephone_bringup.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>int pinephone_bringup(void) {
+  ...
+  // Start the USB EHCI Driver
+  ret = a64_usbhost_initialize();
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/main/a64_usbhost.c#L260-L364">(<strong>a64_usbhost_initialize</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/main/a64_ehci.c#L4953-L5373">(Which calls <strong>a64_ehci_initialize</strong> defined here)</a></p>
+<p>Let’s boot our customised EHCI Driver…</p>
 <h1 id="64-bit-update-for-ehci-driver"><a href="#64-bit-update-for-ehci-driver">5 64-Bit Update for EHCI Driver</a></h1>
-<p>TODO</p>
-<p>Let’s boot the NuttX USB EHCI Driver on PinePhone…</p>
+<p><em>What happens when we boot NuttX with our customised EHCI Driver?</em></p>
 <p>TODO</p>
 <p>When PinePhone boots the NuttX USB EHCI Driver, it halts with an Assertion Failure…</p>
 <div class="example-wrap"><pre class="language-text"><code>_assert: Current Version: NuttX  12.0.3 4d922be-dirty Mar  7 2023 15:54:47 arm64
