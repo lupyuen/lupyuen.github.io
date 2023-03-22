@@ -83,32 +83,33 @@
 <li><a href="#whats-next">14 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>28 Mar 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/usb3-title.jpg" alt="USB Controller Block Diagram from Allwinner A64 User Manual" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><em>USB Controller Block Diagram from Allwinner A64 User Manual</em></a></p>
-<p>TODO</p>
 <p>Weeks ago we talked about porting <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) to <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>. And how we might turn it into a <strong>Feature Phone</strong>…</p>
-<p>TODO</p>
-<p>But to make phone calls and send text messages, we need to talk to the LTE Modem over USB…</p>
-<p>TODO</p>
-<p>Thus today we’ll build a USB Driver for NuttX on PinePhone. We’ll find out…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone"><strong>“PinePhone + NuttX = Feature Phone”</strong></a></li>
+</ul>
+<p>But to make phone calls and send text messages, we need to control the <strong>LTE Modem over USB</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/usb2#lte-modem-talks-usb"><strong>“LTE Modem talks USB”</strong></a></li>
+</ul>
+<p>Thus today we’ll build a <strong>USB Driver</strong> for NuttX on PinePhone. As we find out…</p>
 <ul>
 <li>
-<p>What’s EHCI</p>
+<p>What’s <strong>USB Enhanced Host Controller Interface</strong> (EHCI)</p>
 </li>
 <li>
-<p>How it differs from OTG</p>
+<p>How it differs from <strong>USB On-The-Go</strong> (OTG)</p>
 </li>
 <li>
-<p>Port NuttX USB EHCI driver to PinePhone</p>
+<p>How we’re porting the <strong>NuttX USB EHCI Driver</strong> to PinePhone</p>
 </li>
 <li>
-<p>USB Clocks</p>
+<p>Handling the <strong>USB Clocks</strong> and <strong>USB Resets</strong> on PinePhone</p>
 </li>
 <li>
-<p>USB Resets</p>
-</li>
-<li>
-<p>U-Boot Bootloader</p>
+<p>Why <strong>U-Boot Bootloader</strong> is a terrific reference for PinePhone USB</p>
 </li>
 </ul>
+<p>Let’s dive into the fascinating world of USB EHCI!</p>
 <h1 id="pinephone-usb-driver-for-apache-nuttx-rtos"><a href="#pinephone-usb-driver-for-apache-nuttx-rtos">1 PinePhone USB Driver for Apache NuttX RTOS</a></h1>
 <p>TODO</p>
 <p>We’re porting the <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/imxrt/imxrt_ehci.c#L4970">NXP i.MX RT EHCI USB Driver</a> from Apache NuttX RTOS to PinePhone and Allwinner A64…</p>
