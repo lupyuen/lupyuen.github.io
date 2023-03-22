@@ -788,6 +788,8 @@ According to the [__PinePhone Device Tree__](https://lupyuen.github.io/articles/
 
 These are the __USB Clocks__ that our NuttX EHCI Driver should enable.
 
+[(More about this)](https://github.com/lupyuen/pinephone-nuttx-usb#enable-usb-controller-clocks)
+
 _What clickers are these: CLK_USB and CLK_BUS?_
 
 They refer to the __Clock Control Unit (CCU) Registers__ defined in the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf). (Page 81)
@@ -886,6 +888,8 @@ According to the [__PinePhone Device Tree__](https://lupyuen.github.io/articles/
 
 These are the __USB Resets__ that our NuttX EHCI Driver shall deassert.
 
+[(More about this)](https://github.com/lupyuen/pinephone-nuttx-usb#reset-usb-controller)
+
 _What exactly are RST_USB and RST_BUS?_
 
 They're the __Clock Control Unit (CCU) Registers__ defined in the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf). (Page 81)
@@ -954,17 +958,15 @@ _Now that we've powered up the USB Controller on PinePhone..._
 
 _Will the EHCI Driver start correctly on NuttX?_
 
-TODO
-
 Remember the __NuttX EHCI Driver__ failed during PinePhone startup...
 
--   [__"TODO"__](TODO)
+-   [__"Halt Timeout for USB Controller"__](https://lupyuen.github.io/articles/usb3#halt-timeout-for-usb-controller)
 
-Then we discovered how the U-Boot Bootloader enables the __USB Clocks__ and deasserts the __USB Resets__...
+Then we discovered how the __U-Boot Bootloader__ enables the __USB Clocks__ and deasserts the __USB Resets__...
 
--   [__"TODO"__](TODO)
+-   [__"Enable USB Controller Clocks"__](https://lupyuen.github.io/articles/usb3#enable-usb-controller-clocks)
 
--   [__"TODO"__](TODO)
+-   [__"Reset USB Controller"__](https://lupyuen.github.io/articles/usb3#reset-usb-controller)
 
 So we did the same for __NuttX on PinePhone__: [a64_usbhost.c](https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L261-L279)
 
@@ -983,7 +985,9 @@ int a64_usbhost_initialize(void) {
 
 [(__a64_usbhost_reset_deassert__ is defined here)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L206-L249)
 
-And now the NuttX EHCI Driver starts OK on PinePhone yay! 🎉
+And now the NuttX EHCI Driver __starts OK on PinePhone__ yay! 🎉
+
+TODO
 
 Here's the log...
 
