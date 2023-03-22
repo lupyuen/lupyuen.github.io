@@ -62,7 +62,11 @@ The __Standard EHCI Registers__ are documented here...
 
     (Skip the "Version 1.1 Addendum", Allwinner A64 only implements Version 1.0 of the spec)
 
-Allwinner A64 implements the EHCI Registers for __Port USB1__ at Base Address __`0x01C1` `B000`__ (USB_HCI1, pic above)
+Allwinner A64 implements the EHCI Registers for __Port USB1__ at...
+
+-   __USB_HCI1__ Base Address: __`0x01C1` `B000`__
+
+    (Pic above)
 
 More about this in the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)...
 
@@ -189,17 +193,42 @@ Which we'll __port to PinePhone__ as...
 
 -   [__PinePhone USB Driver for NuttX__](https://github.com/lupyuen/pinephone-nuttx-usb)
 
-TODO
+    [(Interim Build Instructions)](https://github.com/lupyuen/pinephone-nuttx-usb#pinephone-usb-driver-for-apache-nuttx-rtos)
 
-To add the PinePhone USB Driver to our NuttX Project...
+_But the EHCI Register Addresses are specific to PinePhone right?_
 
-Register Addresses
+That's why we customised the __EHCI Register Addresses__ specially for PinePhone and Allwinner A64: [a64_usbotg.h](https://github.com/lupyuen/pinephone-nuttx-usb/blob/2f6c49aafbaa3b15f47107af19c92eaa92eac2e1/a64_usbotg.h#L40-L55)
+
+```c
+// Address of EHCI Device / Host Capability Registers
+// For Allwinner A64: USB_HCI1 
+#define A64_USBOTG_HCCR_BASE 0x01c1b000
+
+// Address of Device / Host / OTG Operational Registers
+// For Allwinner A64: USB_HCI1 + 0x10
+#define A64_USBOTG_HCOR_BASE (A64_USBOTG_HCCR_BASE + 0x10)
+```
+
+[(EHCI Base Address is __`0x01C1` `B000`__)](https://lupyuen.github.io/articles/usb3#usb-enhanced-host-controller-interface)
+
+We start the USB EHCI Driver in the __PinePhone Bringup Function__: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/usb/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L208-L213)
+
+```c
+int pinephone_bringup(void) {
+  ...
+  // Start the USB EHCI Driver
+  ret = a64_usbhost_initialize();
+```
+
+[(__a64_usbhost_initialize__ is defined here)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/main/a64_usbhost.c#L260-L364)
+
+[(Which calls __a64_ehci_initialize__ defined here)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/main/a64_ehci.c#L4953-L5373)
+
+Let's boot our customised EHCI Driver...
 
 # 64-Bit Update for EHCI Driver
 
-TODO
-
-Let's boot the NuttX USB EHCI Driver on PinePhone...
+_What happens when we boot NuttX with our customised EHCI Driver?_
 
 TODO
 
