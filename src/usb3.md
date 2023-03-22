@@ -950,17 +950,17 @@ We've powered up the USB Controller via the USB Clocks and USB Resets. Let's tes
 
 # NuttX EHCI Driver Starts OK on PinePhone
 
-_Now that we have powered up the USB Controller on PinePhone..._
+_Now that we've powered up the USB Controller on PinePhone..._
 
-_Does the EHCI Driver start correctly on NuttX?_
+_Will the EHCI Driver start correctly on NuttX?_
 
 TODO
 
-Earlier the NuttX USB EHCI Driver fails during PinePhone startup...
+Earlier the __NuttX EHCI Driver__ failed during PinePhone startup...
 
 -   ["Halt Timeout for USB Controller"](https://github.com/lupyuen/pinephone-nuttx-usb#halt-timeout-for-usb-controller)
 
-Then we discovered how the U-Boot Bootloader enables the USB Clocks and deasserts the USB Resets...
+Then we discovered how the U-Boot Bootloader enables the __USB Clocks__ and deasserts the __USB Resets__...
 
 -   ["USB Controller Clocks"](https://github.com/lupyuen/pinephone-nuttx-usb#usb-controller-clocks)
 
@@ -970,12 +970,10 @@ Then we discovered how the U-Boot Bootloader enables the USB Clocks and deassert
 
 -   ["Reset USB Controller"](https://github.com/lupyuen/pinephone-nuttx-usb#reset-usb-controller)
 
-So we do the same for NuttX. And now the NuttX EHCI Driver starts OK on PinePhone yay! 🎉
-
-This is how we enable the USB Clocks and deassert the USB Resets on PinePhone: [a64_usbhost.c](https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L261-L279)
+So we did the same for __NuttX on PinePhone__: [a64_usbhost.c](https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L261-L279)
 
 ```c
-// Init the USB EHCI Host at startup
+// Init the USB EHCI Host at NuttX Startup
 int a64_usbhost_initialize(void) {
 
   // Enable the USB Clocks for PinePhone
@@ -984,6 +982,12 @@ int a64_usbhost_initialize(void) {
   // Deassert the USB Resets for PinePhone
   a64_usbhost_reset_deassert();
 ```
+
+[(__a64_usbhost_clk_enable__ is defined here)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L138-L193)
+
+[(__a64_usbhost_reset_deassert__ is defined here)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L206-L249)
+
+And now the NuttX EHCI Driver starts OK on PinePhone yay! 🎉
 
 Here's the log...
 
@@ -1093,57 +1097,6 @@ EHCI USB EHCI Initialized
 ```
 
 TODO: What next?
-
-# Set USB Magnitude / Rate / Threshold
-
-TODO
-
-Earlier we saw this code for setting the [USB Magnitude, Rate and Threshold](https://github.com/lupyuen/pinephone-nuttx-usb#power-on-the-usb-controller) in the USB PHY Driver: [sun4i_usb_phy_init](https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L259-L327)
-
-```c
-static int sun4i_usb_phy_init(struct phy *phy) {
-  ...
-  // Assume ID is 1 for Port USB 1
-  if (usb_phy->id == 0)
-    sun4i_usb_phy_write(phy, PHY_RES45_CAL_EN,
-      PHY_RES45_CAL_DATA,
-      PHY_RES45_CAL_LEN);
-
-  /* Adjust PHY's magnitude and rate */
-  sun4i_usb_phy_write(phy, PHY_TX_AMPLITUDE_TUNE,
-    PHY_TX_MAGNITUDE | PHY_TX_RATE,
-    PHY_TX_AMPLITUDE_LEN);
-
-  /* Disconnect threshold adjustment */
-  sun4i_usb_phy_write(phy, PHY_DISCON_TH_SEL,
-    data->cfg->disc_thresh, PHY_DISCON_TH_LEN);
-```
-
-[(`sun4i_usb_phy_write` is defined here)](https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L145-L188)
-
-[(`disc_thresh` is 3)](https://github.com/lupyuen/pinephone-nuttx-usb#usb-controller-configuration)
-
-TODO
-
-# USB Controller Configuration
-
-TODO
-
-[phy-sun4i-usb.c](https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L622-L630)
-
-```c
-static const struct sun4i_usb_phy_cfg sun50i_a64_cfg = {
-  .num_phys = 2,
-  .type = sun50i_a64_phy,
-  .disc_thresh = 3,
-  .phyctl_offset = REG_PHYCTL_A33,
-  .dedicated_clocks = true,
-  .hci_phy_ctl_clear = PHY_CTL_H3_SIDDQ,
-  .phy0_dual_route = true,
-};
-```
-
-(`PHY_CTL_H3_SIDDQ` is `1 << 1`)
 
 # What's Next
 
