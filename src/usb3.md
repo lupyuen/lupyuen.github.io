@@ -147,7 +147,7 @@ Port USB0 isn't documented, but it appears in the __Memory Mapping__ of [__Allwi
 
 _But they look so different in the pic..._
 
-That's because...
+They ain't two peas in a pod because...
 
 -   Only __Port USB0__ supports [__USB On-The-Go (OTG)__](https://lupyuen.github.io/articles/usb3#ehci-is-simpler-than-usb-on-the-go).
 
@@ -159,13 +159,11 @@ That's because...
 
     Which will work only as a USB Host. (Not USB Device)
 
-    And that's perfectly OK for the __LTE Modem__ on USB1.
+    And that's perfectly hunky dory for the __LTE Modem__ on USB1.
 
-TODO
+_We need the LTE Modem for our Feature Phone?_
 
-Today we'll talk only about __Port USB1__ (EHCI / Non-OTG), since it's connected to the LTE Modem.
-
-TODO
+Exactly! Today we'll talk only about __Port USB1__ (EHCI / Non-OTG), since it's connected to the LTE Modem.
 
 # PinePhone USB Driver for Apache NuttX RTOS
 
