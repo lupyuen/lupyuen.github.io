@@ -716,6 +716,7 @@ static int sun4i_usb_phy_init(struct phy *phy) {
 </li>
 </ul>
 <p>These are the <strong>USB Clocks</strong> that our NuttX EHCI Driver should enable.</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb#enable-usb-controller-clocks">(More about this)</a></p>
 <p><em>What clickers are these: CLK_USB and CLK_BUS?</em></p>
 <p>They refer to the <strong>Clock Control Unit (CCU) Registers</strong> defined in the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>. (Page 81)</p>
 <p>CCU Base Address is <strong><code>0x01C2</code> <code>0000</code></strong></p>
@@ -791,6 +792,7 @@ static void a64_usbhost_clk_enable(void) {
 </li>
 </ul>
 <p>These are the <strong>USB Resets</strong> that our NuttX EHCI Driver shall deassert.</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb#reset-usb-controller">(More about this)</a></p>
 <p><em>What exactly are RST_USB and RST_BUS?</em></p>
 <p>They’re the <strong>Clock Control Unit (CCU) Registers</strong> defined in the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>. (Page 81)</p>
 <p>CCU Base Address (once again) is <strong><code>0x01C2</code> <code>0000</code></strong></p>
@@ -840,18 +842,17 @@ static void a64_usbhost_reset_deassert(void) {
 <h1 id="nuttx-ehci-driver-starts-ok-on-pinephone"><a href="#nuttx-ehci-driver-starts-ok-on-pinephone">11 NuttX EHCI Driver Starts OK on PinePhone</a></h1>
 <p><em>Now that we’ve powered up the USB Controller on PinePhone…</em></p>
 <p><em>Will the EHCI Driver start correctly on NuttX?</em></p>
-<p>TODO</p>
 <p>Remember the <strong>NuttX EHCI Driver</strong> failed during PinePhone startup…</p>
 <ul>
-<li><a href="TODO"><strong>“TODO”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/usb3#halt-timeout-for-usb-controller"><strong>“Halt Timeout for USB Controller”</strong></a></li>
 </ul>
-<p>Then we discovered how the U-Boot Bootloader enables the <strong>USB Clocks</strong> and deasserts the <strong>USB Resets</strong>…</p>
+<p>Then we discovered how the <strong>U-Boot Bootloader</strong> enables the <strong>USB Clocks</strong> and deasserts the <strong>USB Resets</strong>…</p>
 <ul>
 <li>
-<p><a href="TODO"><strong>“TODO”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/usb3#enable-usb-controller-clocks"><strong>“Enable USB Controller Clocks”</strong></a></p>
 </li>
 <li>
-<p><a href="TODO"><strong>“TODO”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/usb3#reset-usb-controller"><strong>“Reset USB Controller”</strong></a></p>
 </li>
 </ul>
 <p>So we did the same for <strong>NuttX on PinePhone</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L261-L279">a64_usbhost.c</a></p>
@@ -866,7 +867,8 @@ int a64_usbhost_initialize(void) {
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L138-L193">(<strong>a64_usbhost_clk_enable</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L206-L249">(<strong>a64_usbhost_reset_deassert</strong> is defined here)</a></p>
-<p>And now the NuttX EHCI Driver starts OK on PinePhone yay! 🎉</p>
+<p>And now the NuttX EHCI Driver <strong>starts OK on PinePhone</strong> yay! 🎉</p>
+<p>TODO</p>
 <p>Here’s the log…</p>
 <div class="example-wrap"><pre class="language-text"><code>a64_usbhost_clk_enable: CLK_USB_PHY0
 set_bit: 0x1c200cc Bit 8
