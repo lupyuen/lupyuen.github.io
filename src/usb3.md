@@ -116,7 +116,7 @@ To do USB OTG, we would need to create a driver for the __Mentor Graphics OTG Co
 
 -   [__"Document the USB Controller (Mentor Graphics)"__](https://lupyuen.github.io/articles/usb2#document-the-usb-controller)
 
-Which gets really low-level and complex.
+Which gets really low-level and complex. [(Like this)](https://lupyuen.github.io/articles/usb2#stm32-usb-driver-for-nuttx)
 
 Thankfully we won't need USB OTG and the Mentor Graphics Driver. Here's why...
 
@@ -171,15 +171,19 @@ So we'll talk only about __Port USB1__ (EHCI / Non-OTG), since it's connected to
 
 # EHCI Driver from Apache NuttX
 
+_Does NuttX have a USB EHCI Driver?_
+
+Yep! Apache NuttX RTOS has a __USB EHCI Driver__...
+
+-   [__NuttX EHCI Driver (NXP i.MX RT)__](https://github.com/apache/nuttx/blob/master/arch/arm/src/imxrt/imxrt_ehci.c#L4970)
+
+    [(Other EHCI Drivers in NuttX are similar)](https://lupyuen.github.io/articles/usb2#appendix-enhanced-host-controller-interface-for-usb)
+
+Which we'll port to PinePhone.
+
 TODO
-
-We're porting the [NXP i.MX RT EHCI USB Driver](https://github.com/apache/nuttx/blob/master/arch/arm/src/imxrt/imxrt_ehci.c#L4970) from Apache NuttX RTOS to PinePhone and Allwinner A64...
-
--   ["Enhanced Host Controller Interface for USB"](https://lupyuen.github.io/articles/usb2#appendix-enhanced-host-controller-interface-for-usb)
 
 To add the PinePhone USB Driver to our NuttX Project...
-
-TODO
 
 # 64-Bit Update for EHCI Driver
 
