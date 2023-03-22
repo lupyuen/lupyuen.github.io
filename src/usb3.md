@@ -126,11 +126,17 @@ Thankfully we won't need USB OTG and the Mentor Graphics Driver. Here's why...
 
 _Phew! We're doing USB EHCI, not USB OTG?_
 
-According to the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf) (Page 583), there are two USB Ports in Allwinner A64: __USB0 and USB1__ (pic above)...
+According to the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf) (Page 583), there are two USB Ports in Allwinner A64: __USB0 and USB1__...
 
 -   __Port USB0__ is exposed as the __External USB Port__ on PinePhone
 
+    (Top part of pic above)
+
 -   __Port USB1__ is connected to the __Internal LTE Modem__
+
+    (Bottom part of pic above)
+
+The names are kinda confusing in the A64 User Manual...
 
 | USB Port | Alternate Name | Base Address
 |:--------:|------------------|-------------
@@ -139,17 +145,21 @@ According to the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pine
 
 Port USB0 isn't documented, but it appears in the __Memory Mapping__ of [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf). (Page 73)
 
-_They work differently?_
+_But they look so different in the pic..._
+
+That's because...
 
 -   Only __Port USB0__ supports [__USB On-The-Go (OTG)__](https://lupyuen.github.io/articles/usb3#ehci-is-simpler-than-usb-on-the-go).
 
     Which means if we connect PinePhone to a computer, it will appear as a USB Drive. (Assuming the right drivers are started)
 
-    (That's why Port USB0 is exposed as the External USB Port on PinePhone)
+    That's why Port USB0 is exposed as the __External USB Port__ on PinePhone.
 
 -   Both __USB0 and USB1__ support [__USB Enhanced Host Controller Interface (EHCI)__](https://lupyuen.github.io/articles/usb3#usb-enhanced-host-controller-interface).
 
-    Which will work only as a USB Host (not USB Device)
+    Which will work only as a USB Host. (Not USB Device)
+
+    And that's perfectly OK for the __LTE Modem__ on USB1.
 
 TODO
 
