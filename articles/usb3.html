@@ -448,7 +448,7 @@ a64_printreg:
 <p>That’s why the USB Driver failed: It <strong>couldn’t Halt the USB Controller</strong> at startup.</p>
 <p><em>Why?</em></p>
 <p>Probably because we <strong>haven’t powered on</strong> the USB Controller? Says our log…</p>
-<div class="example-wrap"><pre class="language-text"><code>TODO: switch off USB bus power
+<div class="example-wrap"><pre class="language-text"><code>TODO: Switch off USB bus power
 TODO: Setup pins, with power initially off
 TODO: Reset the controller from the OTG peripheral
 TODO: Program the controller to be the USB host controller
@@ -458,15 +458,19 @@ TODO: Program the controller to be the USB host controller
 <p><em>How do we power on the USB Controller?</em></p>
 <p>Let’s get inspired by consulting the U-Boot Bootloader…</p>
 <h1 id="pinephone-usb-drivers-in-u-boot-bootloader"><a href="#pinephone-usb-drivers-in-u-boot-bootloader">7 PinePhone USB Drivers in U-Boot Bootloader</a></h1>
-<p>TODO</p>
-<p>Let’s find the PinePhone USB Driver in the U-Boot Bootloader, to understand how it powers on the USB Controller.</p>
-<p>When we search for PinePhone in the Source Code of the <a href="https://github.com/u-boot/u-boot">U-Boot Bootloader</a>, we find this Build Configuration: <a href="https://github.com/u-boot/u-boot/blob/master/configs/pinephone_defconfig#L3">pinephone_defconfig</a></p>
+<p><em>We need to power on PinePhone’s USB Controller…</em></p>
+<p><em>How can U-Boot Bootloader help?</em></p>
+<p><a href="https://lupyuen.github.io/articles/uboot#u-boot-bootloader"><strong>U-Boot Bootloader</strong></a> is the very first thing that runs when we power on our PinePhone.</p>
+<p>U-Boot allows booting from a USB Drive… Thus it must have a <strong>USB Driver inside</strong>!</p>
+<p>Let’s find the PinePhone USB Driver and understand it.</p>
+<p><em>How to find the PinePhone USB Driver in U-Boot?</em></p>
+<p>When we search for PinePhone in the Source Code of <a href="https://github.com/u-boot/u-boot"><strong>U-Boot Bootloader</strong></a>, we find this Build Configuration: <a href="https://github.com/u-boot/u-boot/blob/master/configs/pinephone_defconfig#L3">pinephone_defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_DEFAULT_DEVICE_TREE=&quot;sun50i-a64-pinephone-1.2&quot;
 </code></pre></div>
-<p>Which refers to this PinePhone Device Tree: <a href="https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/sun50i-a64-pinephone-1.2.dts#L6">sun50i-a64-pinephone-1.2.dts</a></p>
+<p>Which refers to this <strong>PinePhone Device Tree</strong>: <a href="https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/sun50i-a64-pinephone-1.2.dts#L6">sun50i-a64-pinephone-1.2.dts</a></p>
 <div class="example-wrap"><pre class="language-text"><code>#include &quot;sun50i-a64-pinephone.dtsi&quot;
 </code></pre></div>
-<p>Which includes another PinePhone Device Tree: <a href="https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/sun50i-a64-pinephone.dtsi#L153-L516">sun50i-a64-pinephone.dtsi</a></p>
+<p>Which includes <strong>another Device Tree</strong>: <a href="https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/sun50i-a64-pinephone.dtsi#L153-L516">sun50i-a64-pinephone.dtsi</a></p>
 <div class="example-wrap"><pre class="language-text"><code>#include &quot;sun50i-a64.dtsi&quot;
 #include &quot;sun50i-a64-cpu-opp.dtsi&quot;
 ...
@@ -481,7 +485,7 @@ TODO: Program the controller to be the USB host controller
 &amp;usb_power_supply { status = &quot;okay&quot;; };
 &amp;usbphy { status = &quot;okay&quot;; };
 </code></pre></div>
-<p>Which includes this Allwinner A64 Device Tree: <a href="https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/sun50i-a64.dtsi#L575-L659">sun50i-a64.dtsi</a></p>
+<p>Which includes this <strong>Allwinner A64 Device Tree</strong>: <a href="https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/sun50i-a64.dtsi#L575-L659">sun50i-a64.dtsi</a></p>
 <div class="example-wrap"><pre class="language-text"><code>usb_otg: usb@1c19000 {
   compatible = &quot;allwinner,sun8i-a33-musb&quot;;
   reg = &lt;0x01c19000 0x0400&gt;;
@@ -495,8 +499,10 @@ TODO: Program the controller to be the USB host controller
   dr_mode = &quot;otg&quot;;
   status = &quot;disabled&quot;;
 };
-
-usbphy: phy@1c19400 {
+</code></pre></div>
+<p>That’s for <a href="https://lupyuen.github.io/articles/usb3#ehci-is-simpler-than-usb-on-the-go"><strong>USB OTG (On-The-Go)</strong></a>, which we’ll skip today.</p>
+<p>Next comes the <strong>USB PHY (Physical Layer)</strong>, which is the electrical wiring for Ports USB0 and USB1…</p>
+<div class="example-wrap"><pre class="language-text"><code>usbphy: phy@1c19400 {
   compatible = &quot;allwinner,sun50i-a64-usb-phy&quot;;
   reg = 
     &lt;0x01c19400 0x14&gt;,
@@ -521,8 +527,9 @@ usbphy: phy@1c19400 {
   status = &quot;disabled&quot;;
   #phy-cells = &lt;1&gt;;
 };
-
-ehci0: usb@1c1a000 {
+</code></pre></div>
+<p>Then comes the <strong>EHCI Controller</strong> for <strong>Port USB0</strong> (which we’ll skip)…</p>
+<div class="example-wrap"><pre class="language-text"><code>ehci0: usb@1c1a000 {
   compatible = &quot;allwinner,sun50i-a64-ehci&quot;, &quot;generic-ehci&quot;;
   reg = &lt;0x01c1a000 0x100&gt;;
   interrupts = &lt;GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH&gt;;
@@ -537,8 +544,9 @@ ehci0: usb@1c1a000 {
   phy-names = &quot;usb&quot;;
   status = &quot;disabled&quot;;
 };
-
-ehci1: usb@1c1b000 {
+</code></pre></div>
+<p>Finally the <strong>EHCI Controller</strong> for <strong>Port USB1</strong> (which we need)…</p>
+<div class="example-wrap"><pre class="language-text"><code>ehci1: usb@1c1b000 {
   compatible = &quot;allwinner,sun50i-a64-ehci&quot;, &quot;generic-ehci&quot;;
   reg = &lt;0x01c1b000 0x100&gt;;
   interrupts = &lt;GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH&gt;;
@@ -554,8 +562,13 @@ ehci1: usb@1c1b000 {
   status = &quot;disabled&quot;;
 };
 </code></pre></div>
-<p>Which says that the USB Drivers are…</p>
+<p><em>How helpful is all this?</em></p>
+<p>Super helpful! The above Device Tree says that the <strong>PinePhone USB Drivers</strong> we seek in U-Boot Bootloader are…</p>
 <ul>
+<li>
+<p><strong>USB PHY (Physical Layer):</strong> “allwinner,sun50i-a64-usb-phy”</p>
+<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L654">phy/allwinner/phy-sun4i-usb.c</a></p>
+</li>
 <li>
 <p><strong>EHCI0 and EHCI1 (Enhanced Host Controller Interface):</strong> “allwinner,sun50i-a64-ehci”, “generic-ehci”</p>
 <p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/usb/host/ehci-generic.c#L160">usb/host/ehci-generic.c</a></p>
@@ -563,13 +576,10 @@ ehci1: usb@1c1b000 {
 <li>
 <p><strong>USB OTG (On-The-Go):</strong> “allwinner,sun8i-a33-musb”</p>
 <p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/usb/musb-new/sunxi.c#L527">usb/musb-new/sunxi.c</a></p>
-</li>
-<li>
-<p><strong>USB PHY (Physical Layer):</strong> “allwinner,sun50i-a64-usb-phy”</p>
-<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L654">phy/allwinner/phy-sun4i-usb.c</a></p>
+<p>(We skip USB OTG)</p>
 </li>
 </ul>
-<p>Why so many USB drivers? Let’s talk about it…</p>
+<p>Let’s look inside the PinePhone USB Drivers for U-Boot…</p>
 <h1 id="power-on-the-usb-controller"><a href="#power-on-the-usb-controller">8 Power On the USB Controller</a></h1>
 <p>TODO</p>
 <p>Earlier we <a href="https://github.com/lupyuen/pinephone-nuttx-usb#pinephone-usb-drivers-in-u-boot-bootloader">searched for the USB Drivers</a> for PinePhone and found these…</p>
