@@ -18,9 +18,9 @@ Thus today we'll build a __USB Driver__ for NuttX on PinePhone. As we find out..
 
 -   What's __USB Enhanced Host Controller Interface__ (EHCI)
 
--   How it's simpler than __USB On-The-Go__ (OTG)
+-   Why it's simpler than __USB On-The-Go__ (OTG)
 
--   How we're porting the __NuttX USB EHCI Driver__ to PinePhone
+-   How we're porting the __USB EHCI Driver__ from NuttX to PinePhone
 
 -   Handling the __USB Clocks__ and __USB Resets__ on PinePhone
 
