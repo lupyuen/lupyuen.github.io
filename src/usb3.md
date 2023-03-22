@@ -161,13 +161,19 @@ They ain't two peas in a pod because...
 
     Which will work only as a USB Host. (Not USB Device)
 
-    And that's perfectly hunky dory for the __LTE Modem__ on USB1.
+    And that's perfectly hunky dory for the __LTE Modem__ on USB1. (Pic below)
 
 _We need the LTE Modem for our Feature Phone?_
 
 Exactly! Today we're making a [__Feature Phone__](https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone) with the [__LTE Modem__](https://lupyuen.github.io/articles/usb2#lte-modem-talks-usb).
 
-So we'll talk only about __Port USB1__ (EHCI / Non-OTG), since it's connected to the LTE Modem.
+So we'll talk only about __Port USB1__ (EHCI / Non-OTG), since it's connected to the LTE Modem. (Pic below)
+
+Let's build the EHCI Driver...
+
+![Quectel EG25-G LTE Modem in PinePhone Schematic (Page 15)](https://lupyuen.github.io/images/usb2-title.jpg)
+
+[_Quectel EG25-G LTE Modem in PinePhone Schematic (Page 15)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
 
 # EHCI Driver from Apache NuttX
 
