@@ -78,9 +78,7 @@
 <li><a href="#enable-usb-controller-clocks">9 Enable USB Controller Clocks</a><ul></ul></li>
 <li><a href="#reset-usb-controller">10 Reset USB Controller</a><ul></ul></li>
 <li><a href="#nuttx-ehci-driver-starts-ok-on-pinephone">11 NuttX EHCI Driver Starts OK on PinePhone</a><ul></ul></li>
-<li><a href="#set-usb-magnitude--rate--threshold">12 Set USB Magnitude / Rate / Threshold</a><ul></ul></li>
-<li><a href="#usb-controller-configuration">13 USB Controller Configuration</a><ul></ul></li>
-<li><a href="#whats-next">14 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>28 Mar 2023</em></p>
+<li><a href="#whats-next">12 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>28 Mar 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/usb3-title.jpg" alt="USB Controller Block Diagram from Allwinner A64 User Manual" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><em>USB Controller Block Diagram from Allwinner A64 User Manual</em></a></p>
 <p>Weeks ago we talked about porting <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) to <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>. And how we might turn it into a <strong>Feature Phone</strong>…</p>
@@ -840,14 +838,14 @@ static void a64_usbhost_reset_deassert(void) {
 <p>We’ve powered up the USB Controller via the USB Clocks and USB Resets. Let’s test this!</p>
 <p><img src="https://lupyuen.github.io/images/usb3-run.png" alt="NuttX EHCI Driver Starts OK on PinePhone" /></p>
 <h1 id="nuttx-ehci-driver-starts-ok-on-pinephone"><a href="#nuttx-ehci-driver-starts-ok-on-pinephone">11 NuttX EHCI Driver Starts OK on PinePhone</a></h1>
-<p><em>Now that we have powered up the USB Controller on PinePhone…</em></p>
-<p><em>Does the EHCI Driver start correctly on NuttX?</em></p>
+<p><em>Now that we’ve powered up the USB Controller on PinePhone…</em></p>
+<p><em>Will the EHCI Driver start correctly on NuttX?</em></p>
 <p>TODO</p>
-<p>Earlier the NuttX USB EHCI Driver fails during PinePhone startup…</p>
+<p>Earlier the <strong>NuttX EHCI Driver</strong> failed during PinePhone startup…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx-usb#halt-timeout-for-usb-controller">“Halt Timeout for USB Controller”</a></li>
 </ul>
-<p>Then we discovered how the U-Boot Bootloader enables the USB Clocks and deasserts the USB Resets…</p>
+<p>Then we discovered how the U-Boot Bootloader enables the <strong>USB Clocks</strong> and deasserts the <strong>USB Resets</strong>…</p>
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx-usb#usb-controller-clocks">“USB Controller Clocks”</a></p>
@@ -862,9 +860,8 @@ static void a64_usbhost_reset_deassert(void) {
 <p><a href="https://github.com/lupyuen/pinephone-nuttx-usb#reset-usb-controller">“Reset USB Controller”</a></p>
 </li>
 </ul>
-<p>So we do the same for NuttX. And now the NuttX EHCI Driver starts OK on PinePhone yay! 🎉</p>
-<p>This is how we enable the USB Clocks and deassert the USB Resets on PinePhone: <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L261-L279">a64_usbhost.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>// Init the USB EHCI Host at startup
+<p>So we did the same for <strong>NuttX on PinePhone</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L261-L279">a64_usbhost.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Init the USB EHCI Host at NuttX Startup
 int a64_usbhost_initialize(void) {
 
   // Enable the USB Clocks for PinePhone
@@ -873,6 +870,9 @@ int a64_usbhost_initialize(void) {
   // Deassert the USB Resets for PinePhone
   a64_usbhost_reset_deassert();
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L138-L193">(<strong>a64_usbhost_clk_enable</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L206-L249">(<strong>a64_usbhost_reset_deassert</strong> is defined here)</a></p>
+<p>And now the NuttX EHCI Driver starts OK on PinePhone yay! 🎉</p>
 <p>Here’s the log…</p>
 <div class="example-wrap"><pre class="language-text"><code>a64_usbhost_clk_enable: CLK_USB_PHY0
 set_bit: 0x1c200cc Bit 8
@@ -973,44 +973,7 @@ EHCI HCCPARAMS=00a026
 EHCI USB EHCI Initialized
 </code></pre></div>
 <p>TODO: What next?</p>
-<h1 id="set-usb-magnitude--rate--threshold"><a href="#set-usb-magnitude--rate--threshold">12 Set USB Magnitude / Rate / Threshold</a></h1>
-<p>TODO</p>
-<p>Earlier we saw this code for setting the <a href="https://github.com/lupyuen/pinephone-nuttx-usb#power-on-the-usb-controller">USB Magnitude, Rate and Threshold</a> in the USB PHY Driver: <a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L259-L327">sun4i_usb_phy_init</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static int sun4i_usb_phy_init(struct phy *phy) {
-  ...
-  // Assume ID is 1 for Port USB 1
-  if (usb_phy-&gt;id == 0)
-    sun4i_usb_phy_write(phy, PHY_RES45_CAL_EN,
-      PHY_RES45_CAL_DATA,
-      PHY_RES45_CAL_LEN);
-
-  /* Adjust PHY&#39;s magnitude and rate */
-  sun4i_usb_phy_write(phy, PHY_TX_AMPLITUDE_TUNE,
-    PHY_TX_MAGNITUDE | PHY_TX_RATE,
-    PHY_TX_AMPLITUDE_LEN);
-
-  /* Disconnect threshold adjustment */
-  sun4i_usb_phy_write(phy, PHY_DISCON_TH_SEL,
-    data-&gt;cfg-&gt;disc_thresh, PHY_DISCON_TH_LEN);
-</code></pre></div>
-<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L145-L188">(<code>sun4i_usb_phy_write</code> is defined here)</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb#usb-controller-configuration">(<code>disc_thresh</code> is 3)</a></p>
-<p>TODO</p>
-<h1 id="usb-controller-configuration"><a href="#usb-controller-configuration">13 USB Controller Configuration</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L622-L630">phy-sun4i-usb.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static const struct sun4i_usb_phy_cfg sun50i_a64_cfg = {
-  .num_phys = 2,
-  .type = sun50i_a64_phy,
-  .disc_thresh = 3,
-  .phyctl_offset = REG_PHYCTL_A33,
-  .dedicated_clocks = true,
-  .hci_phy_ctl_clear = PHY_CTL_H3_SIDDQ,
-  .phy0_dual_route = true,
-};
-</code></pre></div>
-<p>(<code>PHY_CTL_H3_SIDDQ</code> is <code>1 &lt;&lt; 1</code>)</p>
-<h1 id="whats-next"><a href="#whats-next">14 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
 <p>TODO</p>
 <p>(I promised to reward myself with a Bread Machine when the NuttX EHCI Driver boots OK on PinePhone… Time to go shopping! 😀)</p>
 <p>TODO</p>
