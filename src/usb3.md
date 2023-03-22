@@ -165,9 +165,11 @@ They ain't two peas in a pod because...
 
 _We need the LTE Modem for our Feature Phone?_
 
-Exactly! Today we'll talk only about __Port USB1__ (EHCI / Non-OTG), since it's connected to the LTE Modem.
+Exactly! Today we're making a [__Feature Phone__](https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone) with the [__LTE Modem__](https://lupyuen.github.io/articles/usb2#lte-modem-talks-usb).
 
-# PinePhone USB Driver for Apache NuttX RTOS
+So we'll talk only about __Port USB1__ (EHCI / Non-OTG), since it's connected to the LTE Modem.
+
+# EHCI Driver from Apache NuttX
 
 TODO
 
@@ -179,9 +181,11 @@ To add the PinePhone USB Driver to our NuttX Project...
 
 TODO
 
-Let's boot the NuttX USB EHCI Driver on PinePhone...
-
 # 64-Bit Update for EHCI Driver
+
+TODO
+
+Let's boot the NuttX USB EHCI Driver on PinePhone...
 
 TODO
 
