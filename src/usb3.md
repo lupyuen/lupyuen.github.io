@@ -224,92 +224,97 @@ int pinephone_bringup(void) {
 
 [(Which calls __a64_ehci_initialize__ defined here)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/main/a64_ehci.c#L4953-L5373)
 
-Let's boot our customised EHCI Driver...
+Let's boot our new EHCI Driver on PinePhone and watch what happens...
 
 # 64-Bit Update for EHCI Driver
 
 _What happens when we boot NuttX with our customised EHCI Driver?_
 
-TODO
-
-When PinePhone boots the NuttX USB EHCI Driver, it halts with an Assertion Failure...
+When NuttX boots our EHCI Driver for PinePhone, it halts with an __Assertion Failure__...
 
 ```text
-_assert: Current Version: NuttX  12.0.3 4d922be-dirty Mar  7 2023 15:54:47 arm64
-_assert: Assertion failed : at file: chip/a64_ehci.c:4996 task: nsh_main 0x4008b0d0
+Assertion failed:
+at file: chip/a64_ehci.c:4996
+task: nsh_main 0x4008b0d0
 ```
 
-Here's the assertion, which says that the `a64_qh_s` struct must be aligned to 32 bytes: [a64_ehci.c](https://github.com/lupyuen/pinephone-nuttx-usb/blob/b80499b3b8ec837fe2110e9476e8a6ad0f194cde/a64_ehci.c#L4996)
+Which says that the __a64_qh_s__ struct must be __aligned to 32 bytes__: [a64_ehci.c](https://github.com/lupyuen/pinephone-nuttx-usb/blob/b80499b3b8ec837fe2110e9476e8a6ad0f194cde/a64_ehci.c#L4996)
 
 ```c
-  DEBUGASSERT((sizeof(struct a64_qh_s) & 0x1f) == 0);
+DEBUGASSERT((sizeof(struct a64_qh_s) & 0x1f) == 0);
 ```
 
-Size of the `a64_qh_s` struct is 72 bytes...
+But somehow it's not! The actual size of the __a64_qh_s__ struct is __72 bytes__...
 
 ```text
 sizeof(struct a64_qh_s)=72
 ```
 
-Which isn't aligned to 32 bytes: [a64_ehci.c](https://github.com/lupyuen/pinephone-nuttx-usb/blob/b80499b3b8ec837fe2110e9476e8a6ad0f194cde/a64_ehci.c#L186-L200)
+Which most certainly __isn't aligned__ to 32 bytes.
+
+_Huh? What's with the struct size?_
+
+Take a guess! Here's the definition of __a64_qh_s__: [a64_ehci.c](https://github.com/lupyuen/pinephone-nuttx-usb/blob/b80499b3b8ec837fe2110e9476e8a6ad0f194cde/a64_ehci.c#L186-L200)
 
 ```c
-/* Internal representation of the EHCI Queue Head (QH) */
+// Internal representation of the EHCI Queue Head (QH)
+struct a64_qh_s {
 
-struct a64_epinfo_s;
-struct a64_qh_s
-{
-  /* Fields visible to hardware */
+  // Hardware representation of the queue (head)
+  struct ehci_qh_s hw;
 
-  struct ehci_qh_s hw;           /* Hardware representation of the queue head */
+  // Endpoint used for the transfer
+  struct a64_epinfo_s *epinfo;
 
-  /* Internal fields used by the EHCI driver */
+  // First qTD in the list (physical address)
+  uint32_t fqp;
 
-  struct a64_epinfo_s *epinfo; /* Endpoint used for the transfer */
-  uint32_t fqp;                  /* First qTD in the list (physical address) */
-  uint8_t pad[8];                /* Padding to assure 32-byte alignment */
+  // Padding to assure 32-byte alignment
+  uint8_t pad[8];
 };
 ```
 
-Because it contains a 64-bit pointer `epinfo`: [a64_ehci.c](https://github.com/lupyuen/pinephone-nuttx-usb/blob/b80499b3b8ec837fe2110e9476e8a6ad0f194cde/a64_ehci.c#L197)
+_The pointer looks sus..._
+
+Yep __epinfo__ is a __pointer__, normally __4 bytes__ on 32-bit platforms...
 
 ```c
-  struct a64_epinfo_s *epinfo; /* Endpoint used for the transfer */
+  // Pointer Size is Platform Dependent
+  struct a64_epinfo_s *epinfo;
 ```
 
-_How has `a64_qh_s` changed for 32-bit platforms vs 64-bit platforms?_
+But PinePhone is the very first __Arm64 port__ of NuttX!
 
-On 32-bit platforms: `a64_qh_s` was previously 64 bytes. (48 + 4 + 4 + 8)
+Thus __epinfo__ actually occupies __8 bytes__ on PinePhone and other 64-bit platforms.
 
-On 64-bit platforms: `a64_qh_s` is now 72 bytes. (48 + 8 + 4 + 8, round up for 4-byte alignment)
+_How has the struct changed for 32-bit platforms vs 64-bit platforms?_
 
-In the EHCI Driver we need to align `a64_qh_s` to 32 bytes. So we pad `a64_qh_s` from 72 bytes to 96 bytes...
+-   On __32-bit__ platforms: __a64_qh_s__ was previously __64 bytes__
+
+    (48 + 4 + 4 + 8)
+
+-   On __64-bit__ platforms: `a64_qh_s` is now __72 bytes__
+
+    (48 + 8 + 4 + 8, round up for 4-byte alignment)
+
+We fix this by padding __a64_qh_s__ from 72 bytes to 96 bytes...
 
 ```c
-uint8_t pad2[96 - 72]; // TODO: Pad from 72 to 96 bytes for 64-bit platform
-```
+struct a64_qh_s {
+  ...
+  // Original Padding: 8 bytes
+  uint8_t pad[8];
 
-Like this: [a64_ehci.c](https://github.com/lupyuen/pinephone-nuttx-usb/blob/2e1f9ab090b14f88afb8c3a36ec40a0dbbb23d49/a64_ehci.c#L190-L202)
-
-```c
-struct a64_qh_s
-{
-  /* Fields visible to hardware */
-
-  struct ehci_qh_s hw;           /* Hardware representation of the queue head */
-
-  /* Internal fields used by the EHCI driver */
-
-  struct a64_epinfo_s *epinfo; /* Endpoint used for the transfer */
-  uint32_t fqp;                  /* First qTD in the list (physical address) */
-  uint8_t pad[8];                /* Padding to assure 32-byte alignment */
-  uint8_t pad2[96 - 72]; // TODO: Pad from 72 to 96 bytes for 64-bit platform
+  // Added this: Pad from 72 to 96 bytes for 64-bit platforms
+  uint8_t pad2[96 - 72]; 
 };
 ```
 
-Which fixes the Assertion Failure.
+And this fixes the Assertion Failure!
 
-_What about other structs?_
+TODO
+
+_This 64-bit patching sounds scary... What about other structs?_
 
 To be safe, we verified that the other Struct Sizes are still valid for 64-bit platforms: [a64_ehci.c](https://github.com/lupyuen/pinephone-nuttx-usb/blob/2e1f9ab090b14f88afb8c3a36ec40a0dbbb23d49/a64_ehci.c#L4999-L5004)
 
