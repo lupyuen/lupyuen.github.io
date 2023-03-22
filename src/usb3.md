@@ -20,13 +20,15 @@ Thus today we'll build a __USB Driver__ for NuttX on PinePhone. As we find out..
 
 -   Why it's simpler than __USB On-The-Go__ (OTG)
 
--   How we're porting the __USB EHCI Driver__ from NuttX to PinePhone
+-   How we ported the __USB EHCI Driver__ from NuttX to PinePhone
 
--   Handling __USB Clocks__ and __USB Resets__ on PinePhone
+-   By handling __USB Clocks__ and __USB Resets__ on PinePhone
 
--   Why __U-Boot Bootloader__ is a terrific resource for PinePhone USB
+    (Based on tips from __U-Boot Bootloader__)
 
-Let's dive into the fascinating world of USB EHCI!
+-   And the NuttX EHCI Driver __boots OK on PinePhone!__ 🎉
+
+Let's dive into the fascinating world of USB EHCI...
 
 [(Thanks to __Lwazi Dube__ for teaching me about EHCI 🙂)](https://lupyuen.github.io/articles/usb2#appendix-enhanced-host-controller-interface-for-usb)
 
