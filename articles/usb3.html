@@ -186,7 +186,7 @@
 <ul>
 <li><a href="https://lupyuen.github.io/articles/usb2#document-the-usb-controller"><strong>“Document the USB Controller (Mentor Graphics)”</strong></a></li>
 </ul>
-<p>Which gets really low-level and complex.</p>
+<p>Which gets really low-level and complex. <a href="https://lupyuen.github.io/articles/usb2#stm32-usb-driver-for-nuttx">(Like this)</a></p>
 <p>Thankfully we won’t need USB OTG and the Mentor Graphics Driver. Here’s why…</p>
 <p><img src="https://lupyuen.github.io/images/usb3-title.jpg" alt="USB Controller Block Diagram from Allwinner A64 User Manual" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><em>USB Controller Block Diagram from Allwinner A64 User Manual</em></a></p>
@@ -228,13 +228,17 @@
 <p>Exactly! Today we’re making a <a href="https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone"><strong>Feature Phone</strong></a> with the <a href="https://lupyuen.github.io/articles/usb2#lte-modem-talks-usb"><strong>LTE Modem</strong></a>.</p>
 <p>So we’ll talk only about <strong>Port USB1</strong> (EHCI / Non-OTG), since it’s connected to the LTE Modem.</p>
 <h1 id="ehci-driver-from-apache-nuttx"><a href="#ehci-driver-from-apache-nuttx">4 EHCI Driver from Apache NuttX</a></h1>
-<p>TODO</p>
-<p>We’re porting the <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/imxrt/imxrt_ehci.c#L4970">NXP i.MX RT EHCI USB Driver</a> from Apache NuttX RTOS to PinePhone and Allwinner A64…</p>
+<p><em>Does NuttX have a USB EHCI Driver?</em></p>
+<p>Yep! Apache NuttX RTOS has a <strong>USB EHCI Driver</strong>…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/usb2#appendix-enhanced-host-controller-interface-for-usb">“Enhanced Host Controller Interface for USB”</a></li>
+<li>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/imxrt/imxrt_ehci.c#L4970"><strong>NuttX EHCI Driver (NXP i.MX RT)</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/usb2#appendix-enhanced-host-controller-interface-for-usb">(Other EHCI Drivers in NuttX are similar)</a></p>
+</li>
 </ul>
-<p>To add the PinePhone USB Driver to our NuttX Project…</p>
+<p>Which we’ll port to PinePhone.</p>
 <p>TODO</p>
+<p>To add the PinePhone USB Driver to our NuttX Project…</p>
 <h1 id="64-bit-update-for-ehci-driver"><a href="#64-bit-update-for-ehci-driver">5 64-Bit Update for EHCI Driver</a></h1>
 <p>TODO</p>
 <p>Let’s boot the NuttX USB EHCI Driver on PinePhone…</p>
