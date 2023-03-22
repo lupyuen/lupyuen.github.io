@@ -221,12 +221,15 @@
 <li>
 <p>Both <strong>USB0 and USB1</strong> support <a href="https://lupyuen.github.io/articles/usb3#usb-enhanced-host-controller-interface"><strong>USB Enhanced Host Controller Interface (EHCI)</strong></a>.</p>
 <p>Which will work only as a USB Host. (Not USB Device)</p>
-<p>And that’s perfectly hunky dory for the <strong>LTE Modem</strong> on USB1.</p>
+<p>And that’s perfectly hunky dory for the <strong>LTE Modem</strong> on USB1. (Pic below)</p>
 </li>
 </ul>
 <p><em>We need the LTE Modem for our Feature Phone?</em></p>
 <p>Exactly! Today we’re making a <a href="https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone"><strong>Feature Phone</strong></a> with the <a href="https://lupyuen.github.io/articles/usb2#lte-modem-talks-usb"><strong>LTE Modem</strong></a>.</p>
-<p>So we’ll talk only about <strong>Port USB1</strong> (EHCI / Non-OTG), since it’s connected to the LTE Modem.</p>
+<p>So we’ll talk only about <strong>Port USB1</strong> (EHCI / Non-OTG), since it’s connected to the LTE Modem. (Pic below)</p>
+<p>Let’s build the EHCI Driver…</p>
+<p><img src="https://lupyuen.github.io/images/usb2-title.jpg" alt="Quectel EG25-G LTE Modem in PinePhone Schematic (Page 15)" /></p>
+<p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>Quectel EG25-G LTE Modem in PinePhone Schematic (Page 15)</em></a></p>
 <h1 id="ehci-driver-from-apache-nuttx"><a href="#ehci-driver-from-apache-nuttx">4 EHCI Driver from Apache NuttX</a></h1>
 <p><em>Does NuttX have a USB EHCI Driver?</em></p>
 <p>Yep! Apache NuttX RTOS has a <strong>USB EHCI Driver</strong>…</p>
