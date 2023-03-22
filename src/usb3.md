@@ -310,60 +310,35 @@ struct a64_qh_s {
 };
 ```
 
-And this fixes the Assertion Failure!
-
-TODO
+And this fixes our Assertion Failure!
 
 _This 64-bit patching sounds scary... What about other structs?_
 
-To be safe, we verified that the other Struct Sizes are still valid for 64-bit platforms: [a64_ehci.c](https://github.com/lupyuen/pinephone-nuttx-usb/blob/2e1f9ab090b14f88afb8c3a36ec40a0dbbb23d49/a64_ehci.c#L4999-L5004)
+To be safe, we verified that the other Struct Sizes are still __valid for 64-bit platforms__: [a64_ehci.c](https://github.com/lupyuen/pinephone-nuttx-usb/blob/2e1f9ab090b14f88afb8c3a36ec40a0dbbb23d49/a64_ehci.c#L4999-L5004)
 
 ```c
-  DEBUGASSERT(sizeof(struct ehci_itd_s) == SIZEOF_EHCI_ITD_S);////
-  DEBUGASSERT(sizeof(struct ehci_sitd_s) == SIZEOF_EHCI_SITD_S);////
-  DEBUGASSERT(sizeof(struct ehci_qtd_s) == SIZEOF_EHCI_QTD_S);////
-  DEBUGASSERT(sizeof(struct ehci_overlay_s) == 32);////
-  DEBUGASSERT(sizeof(struct ehci_qh_s) == 48);////
-  DEBUGASSERT(sizeof(struct ehci_fstn_s) == SIZEOF_EHCI_FSTN_S);////
+DEBUGASSERT(sizeof(struct ehci_itd_s)  == SIZEOF_EHCI_ITD_S);
+DEBUGASSERT(sizeof(struct ehci_sitd_s) == SIZEOF_EHCI_SITD_S);
+DEBUGASSERT(sizeof(struct ehci_qtd_s)  == SIZEOF_EHCI_QTD_S);
+DEBUGASSERT(sizeof(struct ehci_overlay_s) == 32);
+DEBUGASSERT(sizeof(struct ehci_qh_s)   == 48);
+DEBUGASSERT(sizeof(struct ehci_fstn_s) == SIZEOF_EHCI_FSTN_S);
 ```
 
-Here are the Struct Sizes...
+FYI: These are the __Struct Sizes__ in the EHCI Driver...
 
 ```text
-a64_ehci_initialize: sizeof(struct a64_qh_s)=72
-a64_ehci_initialize: sizeof(struct a64_qtd_s)=32
-a64_ehci_initialize: sizeof(struct ehci_itd_s)=64
-a64_ehci_initialize: sizeof(struct ehci_sitd_s)=28
-a64_ehci_initialize: sizeof(struct ehci_qtd_s)=32
-a64_ehci_initialize: sizeof(struct ehci_overlay_s)=32
-a64_ehci_initialize: sizeof(struct ehci_qh_s)=48
-a64_ehci_initialize: sizeof(struct ehci_fstn_s)=8
+sizeof(struct a64_qh_s)=72
+sizeof(struct a64_qtd_s)=32
+sizeof(struct ehci_itd_s)=64
+sizeof(struct ehci_sitd_s)=28
+sizeof(struct ehci_qtd_s)=32
+sizeof(struct ehci_overlay_s)=32
+sizeof(struct ehci_qh_s)=48
+sizeof(struct ehci_fstn_s)=8
 ```
 
-We need to fix this typo in NuttX: `SIZEOF_EHCI_OVERLAY` is defined twice: [ehci.h](https://github.com/apache/nuttx/blob/master/include/nuttx/usb/ehci.h#L955-L974)
-
-```c
-struct ehci_overlay_s
-{
-  uint32_t nqp;                              /* 0x00-0x03: Next qTD Pointer (NOTE 1) */
-  uint32_t alt;                              /* 0x04-0x07: Alternate Next qTD Pointer (NOTE 2) */
-  uint32_t token;                            /* 0x08-0x0b: qTD Token (NOTE 1) */
-  uint32_t bpl[5];                           /* 0x0c-0x1c: Buffer Page Pointer List (NOTE 2) */
-};
-
-#define SIZEOF_EHCI_OVERLAY (32)             /* 8*sizeof(uint32_t) */
-
-struct ehci_qh_s
-{
-  uint32_t hlp;                              /* 0x00-0x03: Queue Head Horizontal Link Pointer */
-  uint32_t epchar;                           /* 0x04-0x07: Endpoint Characteristics */
-  uint32_t epcaps;                           /* 0x08-0x0b: Endpoint Capabilities */
-  uint32_t cqp;                              /* 0x0c-0x0f: Current qTD Pointer */
-  struct ehci_overlay_s overlay;             /* 0x10-0x2c: Transfer overlay */
-};
-
-#define SIZEOF_EHCI_OVERLAY (48)             /* 4*sizeof(uint32_t) + SIZEOF_EHCI_OVERLAY */
-```
+[(We need to fix this NuttX typo: __SIZEOF_EHCI_OVERLAY__ is defined twice)](https://github.com/apache/nuttx/blob/master/include/nuttx/usb/ehci.h#L955-L974)
 
 # Halt Timeout for USB Controller
 
