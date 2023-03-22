@@ -179,11 +179,15 @@ Yep! Apache NuttX RTOS has a __USB EHCI Driver__...
 
     [(Other EHCI Drivers in NuttX are similar)](https://lupyuen.github.io/articles/usb2#appendix-enhanced-host-controller-interface-for-usb)
 
-Which we'll port to PinePhone.
+Which we'll __port to PinePhone__ as...
+
+-   [__PinePhone USB Driver for NuttX__](https://github.com/lupyuen/pinephone-nuttx-usb)
 
 TODO
 
 To add the PinePhone USB Driver to our NuttX Project...
+
+Register Addresses
 
 # 64-Bit Update for EHCI Driver
 
