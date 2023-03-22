@@ -68,7 +68,7 @@
     <h1 class="title">NuttX RTOS for PinePhone: Simpler USB with EHCI (Enhanced Host Controller Interface)</h1>
     <nav id="TOC"><ul>
 <li><a href="#usb-enhanced-host-controller-interface">1 USB Enhanced Host Controller Interface</a><ul></ul></li>
-<li><a href="#usb-enhanced-host-controller-interface-vs-on-the-go">2 USB Enhanced Host Controller Interface vs On-The-Go</a><ul></ul></li>
+<li><a href="#ehci-is-simpler-than-usb-on-the-go">2 EHCI is simpler than USB On-The-Go</a><ul></ul></li>
 <li><a href="#pinephone-usb-driver-for-apache-nuttx-rtos">3 PinePhone USB Driver for Apache NuttX RTOS</a><ul></ul></li>
 <li><a href="#64-bit-update-for-ehci-driver">4 64-Bit Update for EHCI Driver</a><ul></ul></li>
 <li><a href="#halt-timeout-for-usb-controller">5 Halt Timeout for USB Controller</a><ul></ul></li>
@@ -156,11 +156,10 @@
 <p><strong>Section 7.5.3.7:</strong> USB Host Clock Requirement (Page 620)</p>
 </li>
 </ul>
+<p>TODO: Piece of cake?</p>
+<h1 id="ehci-is-simpler-than-usb-on-the-go"><a href="#ehci-is-simpler-than-usb-on-the-go">2 EHCI is simpler than USB On-The-Go</a></h1>
 <p>TODO</p>
-<p>OTG</p>
 <p>We won’t need OTG / Mentor Graphics</p>
-<h1 id="usb-enhanced-host-controller-interface-vs-on-the-go"><a href="#usb-enhanced-host-controller-interface-vs-on-the-go">2 USB Enhanced Host Controller Interface vs On-The-Go</a></h1>
-<p>TODO</p>
 <p>According to the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf">USB Controller Block Diagram in Allwinner A64 User Manual (Page 583)</a>…</p>
 <p><img src="https://lupyuen.github.io/images/usb3-title.jpg" alt="USB Controller Block Diagram in Allwinner A64 User Manual (Page 583)" /></p>
 <p>There are two USB Ports in Allwinner A64: <strong>USB0 and USB1</strong>…</p>
