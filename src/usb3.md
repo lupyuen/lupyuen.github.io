@@ -74,7 +74,13 @@ More about this in the [__Allwinner A64 User Manual__](https://github.com/lupyue
 
 -   __Section 7.5.3.7:__ USB Host Clock Requirement (Page 620)
 
-TODO: Piece of cake?
+This looks messy, but the NuttX USB EHCI Driver will probably run OK on PinePhone.
+
+_USB EHCI sounds like a lifesaver?_
+
+Yep USB Programming on PinePhone would be super complicated without EHCI!
+
+Let's take a peek at life without EHCI...
 
 # EHCI is simpler than USB On-The-Go
 
