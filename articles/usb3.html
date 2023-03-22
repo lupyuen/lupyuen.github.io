@@ -123,23 +123,25 @@
 <blockquote>
 <p>“The specification includes a description of the Hardware and Software Interface between System Software and the Host Controller Hardware”</p>
 </blockquote>
-<p>Which means we can build the NuttX USB Driver for PinePhone… By simply talking to the (Memory-Mapped) <strong>EHCI Registers</strong> on Allwinner A64’s USB Controller!</p>
-<p><em>What are the EHCI Registers?</em></p>
-<p>The Standard EHCI Registers are documented here…</p>
+<p><em>So EHCI is a standard, unified way to program the USB Controller on any Hardware Platform?</em></p>
+<p>Yep and USB EHCI is <strong>supported on PinePhone</strong>!</p>
+<p>Which means we can build the USB Driver for PinePhone… By simply reading and writing the (Memory-Mapped) <strong>EHCI Registers</strong> on Allwinner A64’s USB Controller! (Pic above)</p>
+<p><em>What are the USB EHCI Registers?</em></p>
+<p>The <strong>Standard EHCI Registers</strong> are documented here…</p>
 <ul>
 <li>
 <p><a href="https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html"><strong>“Enhanced Host Controller Interface Specification”</strong></a></p>
 </li>
 <li>
 <p><a href="https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification-for-usb.html"><strong>“Enhanced Host Controller Interface for USB 2.0: Specification”</strong></a></p>
+<p>(Skip the “Version 1.1 Addendum”, Allwinner A64 only implements Version 1.0 of the spec)</p>
 </li>
 </ul>
-<p>(Version 1.1 Addendum isn’t relevant because Allwinner A64 only implements Version 1.0 of the spec)</p>
-<p>Allwinner A64 implements the EHCI Registers for <strong>Port USB1</strong> at Base Address <strong><code>0x01C1</code> <code>B000</code></strong> (USB_HCI1, pic below)</p>
-<p>Refer to the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>…</p>
+<p>Allwinner A64 implements the EHCI Registers for <strong>Port USB1</strong> at Base Address <strong><code>0x01C1</code> <code>B000</code></strong> (USB_HCI1, pic above)</p>
+<p>More about this in the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>…</p>
 <ul>
 <li>
-<p><strong>Section 7.5.3.3:</strong> USB Host Register List (Page 585, pic below)</p>
+<p><strong>Section 7.5.3.3:</strong> USB Host Register List (Page 585, pic above)</p>
 </li>
 <li>
 <p><strong>Section 7.5.3.4:</strong> EHCI Register Description (Page 587)</p>
@@ -154,7 +156,7 @@
 <p><strong>Section 7.5.3.7:</strong> USB Host Clock Requirement (Page 620)</p>
 </li>
 </ul>
-<p>TODO <strong>USB Enhanced Host Controller Interface</strong> (EHCI)</p>
+<p>TODO</p>
 <p>OTG</p>
 <p>We won’t need OTG / Mentor Graphics</p>
 <h1 id="usb-enhanced-host-controller-interface-vs-on-the-go"><a href="#usb-enhanced-host-controller-interface-vs-on-the-go">2 USB Enhanced Host Controller Interface vs On-The-Go</a></h1>
