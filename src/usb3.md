@@ -955,6 +955,8 @@ This will be similar to setting DE_RST of BUS_SOFT_RST_REG1 as described here...
 
 -   ["Initialising the Allwinner A64 Display Engine"](https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine)
 
+![NuttX EHCI Driver Starts OK on PinePhone](https://lupyuen.github.io/images/usb3-run.png)
+
 # NuttX EHCI Driver Starts OK on PinePhone
 
 TODO
