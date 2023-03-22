@@ -30,7 +30,7 @@ Let's dive into the fascinating world of USB EHCI!
 
 [(Thanks to __Lwazi Dube__ for teaching me about EHCI 🙂)](https://lupyuen.github.io/articles/usb2#appendix-enhanced-host-controller-interface-for-usb)
 
-![USB EHCI Registers in Allwinner A64 User Manual (Page 585)](https://lupyuen.github.io/images/usb2-ehci2.jpg)
+![USB EHCI Registers in Allwinner A64 User Manual (Page 585)](https://lupyuen.github.io/images/usb2-ehci3.jpg)
 
 [_USB EHCI Registers in Allwinner A64 User Manual (Page 585)_](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
@@ -38,9 +38,9 @@ Let's dive into the fascinating world of USB EHCI!
 
 _What's USB EHCI?_
 
-According to the [__EHCI Spec__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html)...
+According to the [__Official Spec__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html)...
 
-> "The Enhanced Host Controller Interface (EHCI) specification describes the __Register-Level Interface__ for a Host Controller for the Universal Serial Bus (USB) Revision 2.0"
+> "The __Enhanced Host Controller Interface (EHCI)__ specification describes the __Register-Level Interface__ for a Host Controller for the Universal Serial Bus (USB) Revision 2.0"
 
 > "The specification includes a description of the Hardware and Software Interface between System Software and the Host Controller Hardware"
 
