@@ -28,6 +28,83 @@ Thus today we'll build a __USB Driver__ for NuttX on PinePhone. As we find out..
 
 Let's dive into the fascinating world of USB EHCI!
 
+[(Thanks to __Lwazi Dube__ for teaching me about EHCI 🙂)](https://lupyuen.github.io/articles/usb2#appendix-enhanced-host-controller-interface-for-usb)
+
+![USB EHCI Registers in Allwinner A64 User Manual (Page 585)](https://lupyuen.github.io/images/usb2-ehci2.jpg)
+
+[_USB EHCI Registers in Allwinner A64 User Manual (Page 585)_](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+
+# USB Enhanced Host Controller Interface
+
+_What's USB EHCI?_
+
+According to the [__EHCI Spec__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html)...
+
+> "The Enhanced Host Controller Interface (EHCI) specification describes the __Register-Level Interface__ for a Host Controller for the Universal Serial Bus (USB) Revision 2.0"
+
+> "The specification includes a description of the Hardware and Software Interface between System Software and the Host Controller Hardware"
+
+Which means we can build the NuttX USB Driver for PinePhone... By simply talking to the (Memory-Mapped) __EHCI Registers__ on Allwinner A64's USB Controller!
+
+_What are the EHCI Registers?_
+
+The Standard EHCI Registers are documented here...
+
+-   [__"Enhanced Host Controller Interface Specification"__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html)
+
+-   [__"Enhanced Host Controller Interface for USB 2.0: Specification"__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification-for-usb.html)
+
+(Version 1.1 Addendum isn't relevant because Allwinner A64 only implements Version 1.0 of the spec)
+
+Allwinner A64 implements the EHCI Registers for __Port USB1__ at Base Address __`0x01C1` `B000`__ (USB_HCI1, pic below)
+
+Refer to the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)...
+
+-   __Section 7.5.3.3:__ USB Host Register List (Page 585, pic below)
+
+-   __Section 7.5.3.4:__ EHCI Register Description (Page 587)
+
+-   __Section 7.5.3.5:__ OHCI Register Description (Page 601)
+
+-   __Section 7.5.3.6:__ HCI Interface Control and Status Register Description (Page 619)
+
+-   __Section 7.5.3.7:__ USB Host Clock Requirement (Page 620)
+
+TODO __USB Enhanced Host Controller Interface__ (EHCI)
+
+OTG
+
+We won't need OTG / Mentor Graphics
+
+# USB Enhanced Host Controller Interface vs On-The-Go
+
+TODO
+
+According to the [USB Controller Block Diagram in Allwinner A64 User Manual (Page 583)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)...
+
+![USB Controller Block Diagram in Allwinner A64 User Manual (Page 583)](https://lupyuen.github.io/images/usb3-title.jpg)
+
+There are two USB Ports in Allwinner A64: __USB0 and USB1__...
+
+-   __Port USB0__ is exposed as the External USB Port on PinePhone
+
+-   __Port USB1__ is connected to the Internal LTE Modem
+
+| USB Port | Alternate Name | Base Address
+|:--------:|------------------|-------------
+| __Port USB0__ | USB-OTG-EHCI / OHCI | __`0x01C1` `A000`__ (USB_HCI0)
+| __Port USB1__ | USB-EHCI0 / OHCI0   | __`0x01C1` `B000`__ (USB_HCI1)
+
+(Port USB0 Base Address isn't documented, but it appears in the __Memory Mapping__ (Page 73) of the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf))
+
+-   Only Port USB0 supports [USB On-The-Go (OTG)](https://en.wikipedia.org/wiki/USB_On-The-Go). Which means if we connect PinePhone to a computer, it will appear as a USB Drive. (Assuming the right drivers are started)
+
+    (That's why Port USB0 is exposed as the External USB Port on PinePhone)
+
+-   Ports USB0 and USB1 both support [Enhanced Host Controller Interface (EHCI)](https://lupyuen.github.io/articles/usb2#appendix-enhanced-host-controller-interface-for-usb). Which will work only as a USB Host (not USB Device)
+
+Today we'll talk only about __Port USB1__ (EHCI / Non-OTG), since it's connected to the LTE Modem.
+
 # PinePhone USB Driver for Apache NuttX RTOS
 
 TODO
@@ -415,35 +492,6 @@ Which says that the USB Drivers are...
     [phy/allwinner/phy-sun4i-usb.c](https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L654)
 
 Why so many USB drivers? Let's talk about it...
-
-# USB Enhanced Host Controller Interface vs On-The-Go
-
-TODO
-
-According to the [USB Controller Block Diagram in Allwinner A64 User Manual (Page 583)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)...
-
-![USB Controller Block Diagram in Allwinner A64 User Manual (Page 583)](https://lupyuen.github.io/images/usb3-title.jpg)
-
-There are two USB Ports in Allwinner A64: __USB0 and USB1__...
-
--   __Port USB0__ is exposed as the External USB Port on PinePhone
-
--   __Port USB1__ is connected to the Internal LTE Modem
-
-| USB Port | Alternate Name | Base Address
-|:--------:|------------------|-------------
-| __Port USB0__ | USB-OTG-EHCI / OHCI | __`0x01C1` `A000`__ (USB_HCI0)
-| __Port USB1__ | USB-EHCI0 / OHCI0   | __`0x01C1` `B000`__ (USB_HCI1)
-
-(Port USB0 Base Address isn't documented, but it appears in the __Memory Mapping__ (Page 73) of the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf))
-
--   Only Port USB0 supports [USB On-The-Go (OTG)](https://en.wikipedia.org/wiki/USB_On-The-Go). Which means if we connect PinePhone to a computer, it will appear as a USB Drive. (Assuming the right drivers are started)
-
-    (That's why Port USB0 is exposed as the External USB Port on PinePhone)
-
--   Ports USB0 and USB1 both support [Enhanced Host Controller Interface (EHCI)](https://lupyuen.github.io/articles/usb2#appendix-enhanced-host-controller-interface-for-usb). Which will work only as a USB Host (not USB Device)
-
-Today we'll talk only about __Port USB1__ (EHCI / Non-OTG), since it's connected to the LTE Modem.
 
 # Power On the USB Controller
 
