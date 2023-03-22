@@ -191,31 +191,36 @@
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><em>USB Controller Block Diagram from Allwinner A64 User Manual</em></a></p>
 <h1 id="pinephone-usb-controller"><a href="#pinephone-usb-controller">3 PinePhone USB Controller</a></h1>
 <p><em>Phew! We’re doing USB EHCI, not USB OTG?</em></p>
-<p>According to the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> (Page 583), there are two USB Ports in Allwinner A64: <strong>USB0 and USB1</strong> (pic above)…</p>
+<p>According to the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> (Page 583), there are two USB Ports in Allwinner A64: <strong>USB0 and USB1</strong>…</p>
 <ul>
 <li>
 <p><strong>Port USB0</strong> is exposed as the <strong>External USB Port</strong> on PinePhone</p>
+<p>(Top part of pic above)</p>
 </li>
 <li>
 <p><strong>Port USB1</strong> is connected to the <strong>Internal LTE Modem</strong></p>
+<p>(Bottom part of pic above)</p>
 </li>
 </ul>
+<p>The names are kinda confusing in the A64 User Manual…</p>
 <div><table><thead><tr><th style="text-align: center">USB Port</th><th>Alternate Name</th><th>Base Address</th></tr></thead><tbody>
 <tr><td style="text-align: center"><strong>Port USB0</strong></td><td>USB-OTG-EHCI / OHCI</td><td><strong><code>0x01C1</code> <code>A000</code></strong> (USB_HCI0)</td></tr>
 <tr><td style="text-align: center"><strong>Port USB1</strong></td><td>USB-EHCI0 / OHCI0</td><td><strong><code>0x01C1</code> <code>B000</code></strong> (USB_HCI1)</td></tr>
 </tbody></table>
 </div>
 <p>Port USB0 isn’t documented, but it appears in the <strong>Memory Mapping</strong> of <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>. (Page 73)</p>
-<p><em>They work differently?</em></p>
+<p><em>But they look so different in the pic…</em></p>
+<p>That’s because…</p>
 <ul>
 <li>
 <p>Only <strong>Port USB0</strong> supports <a href="https://lupyuen.github.io/articles/usb3#ehci-is-simpler-than-usb-on-the-go"><strong>USB On-The-Go (OTG)</strong></a>.</p>
 <p>Which means if we connect PinePhone to a computer, it will appear as a USB Drive. (Assuming the right drivers are started)</p>
-<p>(That’s why Port USB0 is exposed as the External USB Port on PinePhone)</p>
+<p>That’s why Port USB0 is exposed as the <strong>External USB Port</strong> on PinePhone.</p>
 </li>
 <li>
 <p>Both <strong>USB0 and USB1</strong> support <a href="https://lupyuen.github.io/articles/usb3#usb-enhanced-host-controller-interface"><strong>USB Enhanced Host Controller Interface (EHCI)</strong></a>.</p>
-<p>Which will work only as a USB Host (not USB Device)</p>
+<p>Which will work only as a USB Host. (Not USB Device)</p>
+<p>And that’s perfectly OK for the <strong>LTE Modem</strong> on USB1.</p>
 </li>
 </ul>
 <p>TODO</p>
