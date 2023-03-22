@@ -517,7 +517,7 @@ Which includes __another Device Tree__: [sun50i-a64-pinephone.dtsi](https://gith
 &usbphy { status = "okay"; };
 ```
 
-Which includes this __Allwinner A64 Device Tree__: [sun50i-a64.dtsi](https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/sun50i-a64.dtsi#L575-L659)
+Which includes this __Allwinner A64 Device Tree__: [sun50i-a64.dtsi](https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/sun50i-a64.dtsi#L575-L587)
 
 ```text
 usb_otg: usb@1c19000 {
@@ -537,7 +537,7 @@ usb_otg: usb@1c19000 {
 
 That's for [__USB OTG (On-The-Go)__](https://lupyuen.github.io/articles/usb3#ehci-is-simpler-than-usb-on-the-go), which we'll skip today.
 
-Next comes the __USB PHY (Physical Layer)__, which is the electrical wiring for Ports USB0 and USB1...
+Next comes the __USB PHY (Physical Layer)__, which is the electrical wiring for Ports USB0 and USB1: [sun50i-a64.dtsi](https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/sun50i-a64.dtsi#L589-L607)
 
 ```text
 usbphy: phy@1c19400 {
@@ -567,7 +567,7 @@ usbphy: phy@1c19400 {
 };
 ```
 
-Then comes the __EHCI Controller__ for __Port USB0__ (which we'll skip)...
+Then comes the __EHCI Controller__ for __Port USB0__ (which we'll skip): [sun50i-a64.dtsi](https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/sun50i-a64.dtsi#L609-L633)
 
 ```text
 ehci0: usb@1c1a000 {
@@ -587,7 +587,7 @@ ehci0: usb@1c1a000 {
 };
 ```
 
-Finally the __EHCI Controller__ for __Port USB1__ (which we need)...
+Finally the __EHCI Controller__ for __Port USB1__ (which we need): [sun50i-a64.dtsi](https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/sun50i-a64.dtsi#L635-L659)
 
 ```text
 ehci1: usb@1c1b000 {
