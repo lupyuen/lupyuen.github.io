@@ -399,11 +399,9 @@ static int a64_reset(void) {
     return -ETIMEDOUT;
   }
 </code></pre></div>
-<p>TODO</p>
-<p><em>What are 01c1 b010 and 01c1 b014?</em></p>
-<p><code>01c1</code> <code>b000</code> is the Base Address of the USB EHCI Controller on Allwinner A64. <a href="https://lupyuen.github.io/articles/usb2#appendix-enhanced-host-controller-interface-for-usb">(See this)</a></p>
-<p><code>01c1</code> <code>b010</code> is the USB Command Register USBCMD. <a href="https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification-for-usb.html">(Page 18)</a></p>
-<p><code>01c1</code> <code>b014</code> is the USB Status Register USBSTS. <a href="https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification-for-usb.html">(Page 21)</a></p>
+<p><em>What’s a64_putreg and a64_getreg?</em></p>
+<p>Our EHCI Driver calls <strong>a64_getreg</strong> and <strong>a64_putreg</strong> to read and write the <a href="https://lupyuen.github.io/articles/usb3#usb-enhanced-host-controller-interface"><strong>EHCI Registers</strong></a>.</p>
+<p>Which appears in our log like so…</p>
 <div class="example-wrap"><pre class="language-text"><code>a64_printreg:
   01c1b010&lt;-00000000
 
@@ -411,22 +409,54 @@ a64_printreg:
   01c1b014-&gt;00000000
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/b921aa5259ef94ece41610ebf806ebd0fa19dee5/README.md#output-log">(Source)</a></p>
-<p>According the log, the driver wrote Command 0 (Stop) to USB Command Register USBCMD. Which will Halt the USB Controller.</p>
-<p>Then we read USB Status Register USBSTS. This returns 0, which means that the USB Controller has NOT been halted. (HCHalted = 0)</p>
-<p>That’s why the USB Driver failed: It couldn’t Halt the USB Controller at startup.</p>
-<p><em>Why?</em></p>
-<p>Probably because we haven’t powered on the USB Controller? According to the log…</p>
-<div class="example-wrap"><pre class="language-text"><code>a64_usbhost_initialize: TODO: a64_clockall_usboh3
-a64_usbhost_initialize: TODO: switch off USB bus power
-a64_usbhost_initialize: TODO: Setup pins, with power initially off
-a64_ehci_initialize: TODO: a64_clockall_usboh3
-a64_ehci_initialize: TODO: Reset the controller from the OTG peripheral
-a64_ehci_initialize: TODO: Program the controller to be the USB host controller
+<p>Which means that our driver has written 0 to <code>01C1</code> <code>B010</code>, and read 0 from <code>01C1</code> <code>B014</code>.</p>
+<p><em>What are 01C1 B010 and 01C1 B014?</em></p>
+<ul>
+<li>
+<p><strong><code>01C1</code> <code>B000</code></strong> is the Base Address of the <strong>USB EHCI Controller</strong> on Allwinner A64</p>
+<p><a href="https://lupyuen.github.io/articles/usb3#usb-enhanced-host-controller-interface">(See this)</a></p>
+</li>
+<li>
+<p><strong><code>01C1</code> <code>B010</code></strong> is the <strong>USB Command Register USBCMD</strong> </p>
+<p><a href="https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification-for-usb.html">(EHCI Spec, Page 18)</a></p>
+</li>
+<li>
+<p><strong><code>01C1</code> <code>B014</code></strong> is the <strong>USB Status Register USBSTS</strong></p>
+<p><a href="https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification-for-usb.html">(EHCI Spec, Page 21)</a></p>
+</li>
+</ul>
+<p>When we see this…</p>
+<div class="example-wrap"><pre class="language-text"><code>a64_printreg:
+  01c1b010&lt;-00000000
+
+a64_printreg:
+  01c1b014-&gt;00000000
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/b921aa5259ef94ece41610ebf806ebd0fa19dee5/README.md#output-log">(Source)</a></p>
-<p>And maybe we need to init the USB PHY (Physical Layer)?</p>
+<p>It means…</p>
+<ol>
+<li>
+<p>Our driver wrote <strong>Command 0 (Stop)</strong> to <strong>USB Command Register USBCMD</strong>.</p>
+<p>Which should Halt the USB Controller.</p>
+</li>
+<li>
+<p>Then we read <strong>USB Status Register USBSTS</strong>.</p>
+<p>This returns 0, which means that the USB Controller <strong>has NOT been halted</strong>.</p>
+<p>(HCHalted = 0)</p>
+</li>
+</ol>
+<p>That’s why the USB Driver failed: It <strong>couldn’t Halt the USB Controller</strong> at startup.</p>
+<p><em>Why?</em></p>
+<p>Probably because we <strong>haven’t powered on</strong> the USB Controller? Says our log…</p>
+<div class="example-wrap"><pre class="language-text"><code>TODO: switch off USB bus power
+TODO: Setup pins, with power initially off
+TODO: Reset the controller from the OTG peripheral
+TODO: Program the controller to be the USB host controller
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/b921aa5259ef94ece41610ebf806ebd0fa19dee5/README.md#output-log">(Source)</a></p>
+<p>And maybe we need to initialise the <strong>USB Physical Layer</strong>?</p>
 <p><em>How do we power on the USB Controller?</em></p>
-<p>Let’s check the U-Boot source code…</p>
+<p>Let’s get inspired by consulting the U-Boot Bootloader…</p>
 <h1 id="pinephone-usb-drivers-in-u-boot-bootloader"><a href="#pinephone-usb-drivers-in-u-boot-bootloader">7 PinePhone USB Drivers in U-Boot Bootloader</a></h1>
 <p>TODO</p>
 <p>Let’s find the PinePhone USB Driver in the U-Boot Bootloader, to understand how it powers on the USB Controller.</p>
