@@ -373,52 +373,33 @@ a64_usbhost_initialize:
   ERROR: a64_ehci_initialize failed
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/b921aa5259ef94ece41610ebf806ebd0fa19dee5/README.md#output-log">(Source)</a></p>
-<p>TODO</p>
-<p>The timeout happens while waiting for the USB Controller to Halt: <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/2e1f9ab090b14f88afb8c3a36ec40a0dbbb23d49/a64_ehci.c#L4831-L4917">a64_ehci.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static int a64_reset(void)
-{
-  uint32_t regval;
-  unsigned int timeout;
+<p>The timeout happens while waiting for the <strong>USB Controller to Halt</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/2e1f9ab090b14f88afb8c3a36ec40a0dbbb23d49/a64_ehci.c#L4831-L4917">a64_ehci.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Reset the USB EHCI Controller
+static int a64_reset(void) {
 
-  /* Make sure that the EHCI is halted:  &quot;When [the Run/Stop] bit is set to
-   * 0, the Host Controller completes the current transaction on the USB and
-   * then halts. The HC Halted bit in the status register indicates when the
-   * Host Controller has finished the transaction and has entered the
-   * stopped state...&quot;
-   */
-
+  // Halt the EHCI Controller
   a64_putreg(0, &amp;HCOR-&gt;usbcmd);
 
-  /* &quot;... Software should not set [HCRESET] to a one when the HCHalted bit in
-   *  the USBSTS register is a zero. Attempting to reset an actively running
-   *  host controller will result in undefined behavior.&quot;
-   */
-
+  // Wait for EHCI Controller to halt
   timeout = 0;
-  do
-    {
-      /* Wait one microsecond and update the timeout counter */
+  do {
+    // Wait one microsecond and update the timeout counter
+    up_udelay(1);  timeout++;
 
-      up_udelay(1);
-      timeout++;
-
-      /* Get the current value of the USBSTS register.  This loop will
-       * terminate when either the timeout exceeds one millisecond or when
-       * the HCHalted bit is no longer set in the USBSTS register.
-       */
-
-      regval = a64_getreg(&amp;HCOR-&gt;usbsts);
-    }
+    // Get the current value of the USBSTS register
+    regval = a64_getreg(&amp;HCOR-&gt;usbsts);
+  }
   while (((regval &amp; EHCI_USBSTS_HALTED) == 0) &amp;&amp; (timeout &lt; 1000));
 
-  /* Is the EHCI still running?  Did we timeout? */
+  // Is the EHCI still running?  Did we timeout?
+  if ((regval &amp; EHCI_USBSTS_HALTED) == 0) {
 
-  if ((regval &amp; EHCI_USBSTS_HALTED) == 0)
-    {
-      usbhost_trace1(EHCI_TRACE1_HCHALTED_TIMEOUT, regval);
-      return -ETIMEDOUT;
-    }
+    // Here&#39;s the Halt Timeout that we hit
+    usbhost_trace1(EHCI_TRACE1_HCHALTED_TIMEOUT, regval);
+    return -ETIMEDOUT;
+  }
 </code></pre></div>
+<p>TODO</p>
 <p><em>What are 01c1 b010 and 01c1 b014?</em></p>
 <p><code>01c1</code> <code>b000</code> is the Base Address of the USB EHCI Controller on Allwinner A64. <a href="https://lupyuen.github.io/articles/usb2#appendix-enhanced-host-controller-interface-for-usb">(See this)</a></p>
 <p><code>01c1</code> <code>b010</code> is the USB Command Register USBCMD. <a href="https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification-for-usb.html">(Page 18)</a></p>
