@@ -247,7 +247,7 @@ DEBUGASSERT((sizeof(struct a64_qh_s) & 0x1f) == 0);
 But somehow it's not! The actual size of the __a64_qh_s__ struct is __72 bytes__...
 
 ```text
-sizeof(struct a64_qh_s)=72
+sizeof(struct a64_qh_s) = 72
 ```
 
 Which most certainly __isn't aligned__ to 32 bytes.
@@ -293,7 +293,7 @@ _How has the struct changed for 32-bit platforms vs 64-bit platforms?_
 
     (48 + 4 + 4 + 8)
 
--   On __64-bit__ platforms: `a64_qh_s` is now __72 bytes__
+-   On __64-bit__ platforms: __a64_qh_s__ is now __72 bytes__
 
     (48 + 8 + 4 + 8, round up for 4-byte alignment)
 
@@ -328,41 +328,46 @@ DEBUGASSERT(sizeof(struct ehci_fstn_s) == SIZEOF_EHCI_FSTN_S);
 FYI: These are the __Struct Sizes__ in the EHCI Driver...
 
 ```text
-sizeof(struct a64_qh_s)=72
-sizeof(struct a64_qtd_s)=32
-sizeof(struct ehci_itd_s)=64
-sizeof(struct ehci_sitd_s)=28
-sizeof(struct ehci_qtd_s)=32
-sizeof(struct ehci_overlay_s)=32
-sizeof(struct ehci_qh_s)=48
-sizeof(struct ehci_fstn_s)=8
+sizeof(struct a64_qh_s)    = 72
+sizeof(struct a64_qtd_s)   = 32
+sizeof(struct ehci_itd_s)  = 64
+sizeof(struct ehci_sitd_s) = 28
+sizeof(struct ehci_qtd_s)  = 32
+sizeof(struct ehci_overlay_s) = 32
+sizeof(struct ehci_qh_s)   = 48
+sizeof(struct ehci_fstn_s) = 8
 ```
+
+Let's continue booting NuttX...
 
 [(We need to fix this NuttX typo: __SIZEOF_EHCI_OVERLAY__ is defined twice)](https://github.com/apache/nuttx/blob/master/include/nuttx/usb/ehci.h#L955-L974)
 
 # Halt Timeout for USB Controller
 
-TODO
+_So NuttX boots without an Assertion Failure?_
 
-The NuttX USB EHCI Driver fails with a timeout when booting on PinePhone...
+Yeah but our USB EHCI Driver __fails with a timeout__ when booting on PinePhone...
 
 ```text
-a64_usbhost_initialize: TODO: a64_clockall_usboh3
-a64_usbhost_initialize: TODO: switch off USB bus power
-a64_usbhost_initialize: TODO: Setup pins, with power initially off
-usbhost_registerclass: Registering class:0x40124838 nids:2
+usbhost_registerclass: 
+  Registering class:0x40124838 nids:2
 EHCI Initializing EHCI Stack
-a64_ehci_initialize: TODO: a64_clockall_usboh3
-a64_ehci_initialize: TODO: Reset the controller from the OTG peripheral
-a64_ehci_initialize: TODO: Program the controller to be the USB host controller
-a64_printreg: 01c1b010<-00000000
-a64_printreg: 01c1b014->00000000
-EHCI ERROR: Timed out waiting for HCHalted. USBSTS: 000000
-EHCI ERROR: a64_reset failed: 110
-a64_usbhost_initialize: ERROR: a64_ehci_initialize failed
+a64_printreg: 
+  01c1b010<-00000000
+a64_printreg: 
+  01c1b014->00000000
+EHCI ERROR: 
+  Timed out waiting for HCHalted.
+  USBSTS: 000000
+EHCI ERROR:
+  a64_reset failed: 110
+a64_usbhost_initialize:
+  ERROR: a64_ehci_initialize failed
 ```
 
 [(Source)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/b921aa5259ef94ece41610ebf806ebd0fa19dee5/README.md#output-log)
+
+TODO
 
 The timeout happens while waiting for the USB Controller to Halt: [a64_ehci.c](https://github.com/lupyuen/pinephone-nuttx-usb/blob/2e1f9ab090b14f88afb8c3a36ec40a0dbbb23d49/a64_ehci.c#L4831-L4917)
 
@@ -421,8 +426,11 @@ _What are 01c1 b010 and 01c1 b014?_
 `01c1` `b014` is the USB Status Register USBSTS. [(Page 21)](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification-for-usb.html)
 
 ```text
-a64_printreg: 01c1b010<-00000000
-a64_printreg: 01c1b014->00000000
+a64_printreg:
+  01c1b010<-00000000
+
+a64_printreg:
+  01c1b014->00000000
 ```
 
 [(Source)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/b921aa5259ef94ece41610ebf806ebd0fa19dee5/README.md#output-log)
