@@ -459,7 +459,7 @@ _Why?_
 Probably because we __haven't powered on__ the USB Controller? Says our log...
 
 ```text
-TODO: switch off USB bus power
+TODO: Switch off USB bus power
 TODO: Setup pins, with power initially off
 TODO: Reset the controller from the OTG peripheral
 TODO: Program the controller to be the USB host controller
@@ -475,23 +475,31 @@ Let's get inspired by consulting the U-Boot Bootloader...
 
 # PinePhone USB Drivers in U-Boot Bootloader
 
-TODO
+_We need to power on PinePhone's USB Controller..._
 
-Let's find the PinePhone USB Driver in the U-Boot Bootloader, to understand how it powers on the USB Controller.
+_How can U-Boot Bootloader help?_
 
-When we search for PinePhone in the Source Code of the [U-Boot Bootloader](https://github.com/u-boot/u-boot), we find this Build Configuration: [pinephone_defconfig](https://github.com/u-boot/u-boot/blob/master/configs/pinephone_defconfig#L3)
+[__U-Boot Bootloader__](https://lupyuen.github.io/articles/uboot#u-boot-bootloader) is the very first thing that runs when we power on our PinePhone.
+
+U-Boot allows booting from a USB Drive... Thus it must have a __USB Driver inside__!
+
+Let's find the PinePhone USB Driver and understand it.
+
+_How to find the PinePhone USB Driver in U-Boot?_
+
+When we search for PinePhone in the Source Code of [__U-Boot Bootloader__](https://github.com/u-boot/u-boot), we find this Build Configuration: [pinephone_defconfig](https://github.com/u-boot/u-boot/blob/master/configs/pinephone_defconfig#L3)
 
 ```text
 CONFIG_DEFAULT_DEVICE_TREE="sun50i-a64-pinephone-1.2"
 ```
 
-Which refers to this PinePhone Device Tree: [sun50i-a64-pinephone-1.2.dts](https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/sun50i-a64-pinephone-1.2.dts#L6)
+Which refers to this __PinePhone Device Tree__: [sun50i-a64-pinephone-1.2.dts](https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/sun50i-a64-pinephone-1.2.dts#L6)
 
 ```text
 #include "sun50i-a64-pinephone.dtsi"
 ```
 
-Which includes another PinePhone Device Tree: [sun50i-a64-pinephone.dtsi](https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/sun50i-a64-pinephone.dtsi#L153-L516)
+Which includes __another Device Tree__: [sun50i-a64-pinephone.dtsi](https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/sun50i-a64-pinephone.dtsi#L153-L516)
 
 ```text
 #include "sun50i-a64.dtsi"
@@ -509,7 +517,7 @@ Which includes another PinePhone Device Tree: [sun50i-a64-pinephone.dtsi](https:
 &usbphy { status = "okay"; };
 ```
 
-Which includes this Allwinner A64 Device Tree: [sun50i-a64.dtsi](https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/sun50i-a64.dtsi#L575-L659)
+Which includes this __Allwinner A64 Device Tree__: [sun50i-a64.dtsi](https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/sun50i-a64.dtsi#L575-L659)
 
 ```text
 usb_otg: usb@1c19000 {
@@ -525,7 +533,13 @@ usb_otg: usb@1c19000 {
   dr_mode = "otg";
   status = "disabled";
 };
+```
 
+That's for [__USB OTG (On-The-Go)__](https://lupyuen.github.io/articles/usb3#ehci-is-simpler-than-usb-on-the-go), which we'll skip today.
+
+Next comes the __USB PHY (Physical Layer)__, which is the electrical wiring for Ports USB0 and USB1...
+
+```text
 usbphy: phy@1c19400 {
   compatible = "allwinner,sun50i-a64-usb-phy";
   reg = 
@@ -551,7 +565,11 @@ usbphy: phy@1c19400 {
   status = "disabled";
   #phy-cells = <1>;
 };
+```
 
+Then comes the __EHCI Controller__ for __Port USB0__ (which we'll skip)...
+
+```text
 ehci0: usb@1c1a000 {
   compatible = "allwinner,sun50i-a64-ehci", "generic-ehci";
   reg = <0x01c1a000 0x100>;
@@ -567,7 +585,11 @@ ehci0: usb@1c1a000 {
   phy-names = "usb";
   status = "disabled";
 };
+```
 
+Finally the __EHCI Controller__ for __Port USB1__ (which we need)...
+
+```text
 ehci1: usb@1c1b000 {
   compatible = "allwinner,sun50i-a64-ehci", "generic-ehci";
   reg = <0x01c1b000 0x100>;
@@ -585,7 +607,13 @@ ehci1: usb@1c1b000 {
 };
 ```
 
-Which says that the USB Drivers are...
+_How helpful is all this?_
+
+Super helpful! The above Device Tree says that the __PinePhone USB Drivers__ we seek in U-Boot Bootloader are...
+
+-   __USB PHY (Physical Layer):__ "allwinner,sun50i-a64-usb-phy"
+
+    [phy/allwinner/phy-sun4i-usb.c](https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L654)
 
 -   __EHCI0 and EHCI1 (Enhanced Host Controller Interface):__ "allwinner,sun50i-a64-ehci", "generic-ehci"
 
@@ -595,11 +623,9 @@ Which says that the USB Drivers are...
 
     [usb/musb-new/sunxi.c](https://github.com/u-boot/u-boot/blob/master/drivers/usb/musb-new/sunxi.c#L527)
 
--   __USB PHY (Physical Layer):__ "allwinner,sun50i-a64-usb-phy"
+    (We skip USB OTG)
 
-    [phy/allwinner/phy-sun4i-usb.c](https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L654)
-
-Why so many USB drivers? Let's talk about it...
+Let's look inside the PinePhone USB Drivers for U-Boot...
 
 # Power On the USB Controller
 
