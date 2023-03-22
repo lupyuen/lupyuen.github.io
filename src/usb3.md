@@ -629,6 +629,8 @@ Let's look inside the PinePhone USB Drivers for U-Boot...
 
 # Power On the USB Controller
 
+_What's inside the PinePhone USB Drivers for U-Boot Bootloader?_
+
 TODO
 
 Earlier we [searched for the USB Drivers](https://github.com/lupyuen/pinephone-nuttx-usb#pinephone-usb-drivers-in-u-boot-bootloader) for PinePhone and found these...
@@ -1088,6 +1090,10 @@ This will be similar to setting DE_RST of BUS_SOFT_RST_REG1 as described here...
 ![NuttX EHCI Driver Starts OK on PinePhone](https://lupyuen.github.io/images/usb3-run.png)
 
 # NuttX EHCI Driver Starts OK on PinePhone
+
+_When we power up the USB Controller on PinePhone..._
+
+_Does the EHCI Driver start correctly on NuttX?_
 
 TODO
 
