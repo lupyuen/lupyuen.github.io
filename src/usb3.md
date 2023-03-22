@@ -367,55 +367,36 @@ a64_usbhost_initialize:
 
 [(Source)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/b921aa5259ef94ece41610ebf806ebd0fa19dee5/README.md#output-log)
 
-TODO
-
-The timeout happens while waiting for the USB Controller to Halt: [a64_ehci.c](https://github.com/lupyuen/pinephone-nuttx-usb/blob/2e1f9ab090b14f88afb8c3a36ec40a0dbbb23d49/a64_ehci.c#L4831-L4917)
+The timeout happens while waiting for the __USB Controller to Halt__: [a64_ehci.c](https://github.com/lupyuen/pinephone-nuttx-usb/blob/2e1f9ab090b14f88afb8c3a36ec40a0dbbb23d49/a64_ehci.c#L4831-L4917)
 
 ```c
-static int a64_reset(void)
-{
-  uint32_t regval;
-  unsigned int timeout;
+// Reset the USB EHCI Controller
+static int a64_reset(void) {
 
-  /* Make sure that the EHCI is halted:  "When [the Run/Stop] bit is set to
-   * 0, the Host Controller completes the current transaction on the USB and
-   * then halts. The HC Halted bit in the status register indicates when the
-   * Host Controller has finished the transaction and has entered the
-   * stopped state..."
-   */
-
+  // Halt the EHCI Controller
   a64_putreg(0, &HCOR->usbcmd);
 
-  /* "... Software should not set [HCRESET] to a one when the HCHalted bit in
-   *  the USBSTS register is a zero. Attempting to reset an actively running
-   *  host controller will result in undefined behavior."
-   */
-
+  // Wait for EHCI Controller to halt
   timeout = 0;
-  do
-    {
-      /* Wait one microsecond and update the timeout counter */
+  do {
+    // Wait one microsecond and update the timeout counter
+    up_udelay(1);  timeout++;
 
-      up_udelay(1);
-      timeout++;
-
-      /* Get the current value of the USBSTS register.  This loop will
-       * terminate when either the timeout exceeds one millisecond or when
-       * the HCHalted bit is no longer set in the USBSTS register.
-       */
-
-      regval = a64_getreg(&HCOR->usbsts);
-    }
+    // Get the current value of the USBSTS register
+    regval = a64_getreg(&HCOR->usbsts);
+  }
   while (((regval & EHCI_USBSTS_HALTED) == 0) && (timeout < 1000));
 
-  /* Is the EHCI still running?  Did we timeout? */
+  // Is the EHCI still running?  Did we timeout?
+  if ((regval & EHCI_USBSTS_HALTED) == 0) {
 
-  if ((regval & EHCI_USBSTS_HALTED) == 0)
-    {
-      usbhost_trace1(EHCI_TRACE1_HCHALTED_TIMEOUT, regval);
-      return -ETIMEDOUT;
-    }
+    // Here's the Halt Timeout that we hit
+    usbhost_trace1(EHCI_TRACE1_HCHALTED_TIMEOUT, regval);
+    return -ETIMEDOUT;
+  }
 ```
+
+TODO
 
 _What are 01c1 b010 and 01c1 b014?_
 
