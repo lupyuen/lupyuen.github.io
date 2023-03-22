@@ -75,14 +75,12 @@
 <li><a href="#halt-timeout-for-usb-controller">6 Halt Timeout for USB Controller</a><ul></ul></li>
 <li><a href="#pinephone-usb-drivers-in-u-boot-bootloader">7 PinePhone USB Drivers in U-Boot Bootloader</a><ul></ul></li>
 <li><a href="#power-on-the-usb-controller">8 Power On the USB Controller</a><ul></ul></li>
-<li><a href="#usb-controller-clocks">9 USB Controller Clocks</a><ul></ul></li>
-<li><a href="#usb-controller-reset">10 USB Controller Reset</a><ul></ul></li>
-<li><a href="#enable-usb-controller-clocks">11 Enable USB Controller Clocks</a><ul></ul></li>
-<li><a href="#reset-usb-controller">12 Reset USB Controller</a><ul></ul></li>
-<li><a href="#nuttx-ehci-driver-starts-ok-on-pinephone">13 NuttX EHCI Driver Starts OK on PinePhone</a><ul></ul></li>
-<li><a href="#set-usb-magnitude--rate--threshold">14 Set USB Magnitude / Rate / Threshold</a><ul></ul></li>
-<li><a href="#usb-controller-configuration">15 USB Controller Configuration</a><ul></ul></li>
-<li><a href="#whats-next">16 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>28 Mar 2023</em></p>
+<li><a href="#enable-usb-controller-clocks">9 Enable USB Controller Clocks</a><ul></ul></li>
+<li><a href="#reset-usb-controller">10 Reset USB Controller</a><ul></ul></li>
+<li><a href="#nuttx-ehci-driver-starts-ok-on-pinephone">11 NuttX EHCI Driver Starts OK on PinePhone</a><ul></ul></li>
+<li><a href="#set-usb-magnitude--rate--threshold">12 Set USB Magnitude / Rate / Threshold</a><ul></ul></li>
+<li><a href="#usb-controller-configuration">13 USB Controller Configuration</a><ul></ul></li>
+<li><a href="#whats-next">14 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>28 Mar 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/usb3-title.jpg" alt="USB Controller Block Diagram from Allwinner A64 User Manual" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><em>USB Controller Block Diagram from Allwinner A64 User Manual</em></a></p>
 <p>Weeks ago we talked about porting <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) to <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>. And how we might turn it into a <strong>Feature Phone</strong>…</p>
@@ -457,6 +455,8 @@ TODO: Program the controller to be the USB host controller
 <p>And maybe we need to initialise the <strong>USB Physical Layer</strong>?</p>
 <p><em>How do we power on the USB Controller?</em></p>
 <p>Let’s get inspired by consulting the U-Boot Bootloader…</p>
+<p><img src="https://lupyuen.github.io/images/uboot-uboot.png" alt="U-Boot Bootloader on PinePhone" /></p>
+<p><a href="https://lupyuen.github.io/articles/uboot#u-boot-bootloader"><em>U-Boot Bootloader on PinePhone</em></a></p>
 <h1 id="pinephone-usb-drivers-in-u-boot-bootloader"><a href="#pinephone-usb-drivers-in-u-boot-bootloader">7 PinePhone USB Drivers in U-Boot Bootloader</a></h1>
 <p><em>We need to power on PinePhone’s USB Controller…</em></p>
 <p><em>How can U-Boot Bootloader help?</em></p>
@@ -566,138 +566,100 @@ TODO: Program the controller to be the USB host controller
 <p>Super helpful! The above Device Tree says that the <strong>PinePhone USB Drivers</strong> we seek in U-Boot Bootloader are…</p>
 <ul>
 <li>
-<p><strong>USB PHY (Physical Layer):</strong> “allwinner,sun50i-a64-usb-phy”</p>
+<p><strong>USB PHY</strong> (Physical Layer): “allwinner,sun50i-a64-usb-phy”</p>
 <p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L654">phy/allwinner/phy-sun4i-usb.c</a></p>
 </li>
 <li>
-<p><strong>EHCI0 and EHCI1 (Enhanced Host Controller Interface):</strong> “allwinner,sun50i-a64-ehci”, “generic-ehci”</p>
+<p><strong>USB EHCI</strong> (Enhanced Host Controller Interface): “allwinner,sun50i-a64-ehci”, “generic-ehci”</p>
 <p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/usb/host/ehci-generic.c#L160">usb/host/ehci-generic.c</a></p>
 </li>
 <li>
-<p><strong>USB OTG (On-The-Go):</strong> “allwinner,sun8i-a33-musb”</p>
+<p><strong>USB OTG</strong> (On-The-Go): “allwinner,sun8i-a33-musb”</p>
 <p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/usb/musb-new/sunxi.c#L527">usb/musb-new/sunxi.c</a></p>
-<p>(We skip USB OTG)</p>
+<p><a href="https://lupyuen.github.io/articles/usb3#pinephone-usb-controller">(We skip USB OTG)</a></p>
 </li>
 </ul>
 <p>Let’s look inside the PinePhone USB Drivers for U-Boot…</p>
 <h1 id="power-on-the-usb-controller"><a href="#power-on-the-usb-controller">8 Power On the USB Controller</a></h1>
 <p><em>What’s inside the PinePhone USB Drivers for U-Boot Bootloader?</em></p>
-<p>TODO</p>
-<p>Earlier we <a href="https://github.com/lupyuen/pinephone-nuttx-usb#pinephone-usb-drivers-in-u-boot-bootloader">searched for the USB Drivers</a> for PinePhone and found these…</p>
+<p>Earlier we searched for the <a href="https://lupyuen.github.io/articles/usb3#pinephone-usb-drivers-in-u-boot-bootloader"><strong>PinePhone USB Drivers</strong></a> inside U-Boot Bootloader and we found these…</p>
 <ul>
 <li>
-<p><strong>EHCI0 and EHCI1 (Enhanced Host Controller Interface):</strong> </p>
-<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/usb/host/ehci-generic.c#L160">usb/host/ehci-generic.c</a></p>
-</li>
-<li>
-<p><strong>USB PHY (Physical Layer):</strong></p>
+<p>Driver for <strong>USB PHY</strong> (Physical Layer):</p>
 <p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L654">phy/allwinner/phy-sun4i-usb.c</a></p>
 </li>
+<li>
+<p>Driver for <strong>USB EHCI</strong> (Enhanced Host Controller Interface):</p>
+<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/usb/host/ehci-generic.c#L160">usb/host/ehci-generic.c</a></p>
+</li>
 </ul>
-<p>We disregard the USB OTG Driver because we’re only interested in the <a href="https://github.com/lupyuen/pinephone-nuttx-usb#usb-enhanced-host-controller-interface-vs-on-the-go">EHCI Driver (Non-OTG)</a> for PinePhone.</p>
-<p>The USB PHY Driver handles the Physical Layer (physical wires) that connect to the USB Controller.</p>
-<p>To power on the USB Controller ourselves, let’s look inside the USB PHY Driver: <a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L259-L327">sun4i_usb_phy_init</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static int sun4i_usb_phy_init(struct phy *phy)
-{
-  struct sun4i_usb_phy_data *data = dev_get_priv(phy-&gt;dev);
-  struct sun4i_usb_phy_plat *usb_phy = &amp;data-&gt;usb_phy[phy-&gt;id];
-  u32 val;
-  int ret;
-
-  ret = clk_enable(&amp;usb_phy-&gt;clocks);
-  if (ret) {
-    dev_err(phy-&gt;dev, &quot;failed to enable usb_%ldphy clock\n&quot;,
-      phy-&gt;id);
-    return ret;
-  }
+<p>We skip the USB OTG Driver because we’re only interested in the <a href="https://lupyuen.github.io/articles/usb3#pinephone-usb-controller"><strong>EHCI Driver (Non-OTG)</strong></a> for PinePhone.</p>
+<p><em>USB PHY Driver looks interesting… It’s specific to PinePhone?</em></p>
+<p>The <strong>USB PHY Driver</strong> handles the <strong>Physical Layer</strong> (electrical wiring) that connects to the USB Controller.</p>
+<p>To power on the USB Controller ourselves, let’s look inside the <strong>USB PHY Driver</strong>: <a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L259-L327">sun4i_usb_phy_init</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Init the USB Physical Layer for PinePhone
+static int sun4i_usb_phy_init(struct phy *phy) {
+  ...
+  // Enable the USB Clocks
+  clk_enable(&amp;usb_phy-&gt;clocks);
+  ...
+  // Deassert the USB Resets
+  reset_deassert(&amp;usb_phy-&gt;resets);
 </code></pre></div>
-<p>In the code above we enable the USB Clocks. We’ll explain here…</p>
+<p>In the code above, U-Boot Bootloader will…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx-usb#usb-controller-clocks">“USB Controller Clocks”</a></li>
+<li>
+<p>Enable the <strong>USB Clocks</strong> for PinePhone</p>
+</li>
+<li>
+<p>Deassert the <strong>USB Resets</strong> for PinePhone</p>
+<p>(Deactivate the Reset Signal)</p>
+</li>
 </ul>
-<p>Then we deassert the USB Reset…</p>
-<div class="example-wrap"><pre class="language-c"><code>  ret = reset_deassert(&amp;usb_phy-&gt;resets);
-  if (ret) {
-    dev_err(phy-&gt;dev, &quot;failed to deassert usb_%ldreset reset\n&quot;,
-      phy-&gt;id);
-    return ret;
-  }
-</code></pre></div>
-<p>We’ll explain the USB Reset here…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx-usb#usb-controller-reset">“USB Controller Reset”</a></li>
-</ul>
-<p>TODO: Is PMU is needed for PinePhone Port USB1? If PMU is not needed, we skip this part…</p>
-<div class="example-wrap"><pre class="language-c"><code>  // `hci_phy_ctl_clear` is `PHY_CTL_H3_SIDDQ`, which is `1 &lt;&lt; 1`
-  // https://github.com/lupyuen/pinephone-nuttx-usb#usb-controller-configuration
-  if (usb_phy-&gt;pmu &amp;&amp; data-&gt;cfg-&gt;hci_phy_ctl_clear) {
-    val = readl(usb_phy-&gt;pmu + REG_HCI_PHY_CTL);
-    val &amp;= ~data-&gt;cfg-&gt;hci_phy_ctl_clear;
-    writel(val, usb_phy-&gt;pmu + REG_HCI_PHY_CTL);
-  }
-</code></pre></div>
-<p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf">(FYI: PinePhone Port USB0 is connected to the PMIC, according to PinePhone Schematic Page 6)</a></p>
-<p>PinePhone is <code>sun50i_a64_phy</code>, so we skip this part…</p>
-<div class="example-wrap"><pre class="language-c"><code>  // Skip this part because PinePhone is `sun50i_a64_phy`
+<p>We’ll come back to these in a while. Then U-Boot does this…</p>
+<div class="example-wrap"><pre class="language-c"><code>  // Check the Allwinner SoC
   if (data-&gt;cfg-&gt;type == sun8i_a83t_phy ||
       data-&gt;cfg-&gt;type == sun50i_h6_phy) {
-    if (phy-&gt;id == 0) {
-      val = readl(data-&gt;base + data-&gt;cfg-&gt;phyctl_offset);
-      val |= PHY_CTL_VBUSVLDEXT;
-      val &amp;= ~PHY_CTL_SIDDQ;
-      writel(val, data-&gt;base + data-&gt;cfg-&gt;phyctl_offset);
-    }
-</code></pre></div>
-<p>PinePhone is <code>sun50i_a64_phy</code>, so we run this instead…</p>
-<div class="example-wrap"><pre class="language-c"><code>  } else {
+      // Skip this part because PinePhone is `sun50i_a64_phy`
+      ...
+  } else {
+    // Set PHY_RES45_CAL for Port USB0
     if (usb_phy-&gt;id == 0)
       sun4i_usb_phy_write(phy, PHY_RES45_CAL_EN,
-              PHY_RES45_CAL_DATA,
-              PHY_RES45_CAL_LEN);
+        PHY_RES45_CAL_DATA,
+        PHY_RES45_CAL_LEN);
 
-    /* Adjust PHY&#39;s magnitude and rate */
+    // Set USB PHY Magnitude and Rate
     sun4i_usb_phy_write(phy, PHY_TX_AMPLITUDE_TUNE,
-            PHY_TX_MAGNITUDE | PHY_TX_RATE,
-            PHY_TX_AMPLITUDE_LEN);
+      PHY_TX_MAGNITUDE | PHY_TX_RATE,
+      PHY_TX_AMPLITUDE_LEN);
 
-    /* Disconnect threshold adjustment */
+    // Disconnect USB PHY Threshold Adjustment
     sun4i_usb_phy_write(phy, PHY_DISCON_TH_SEL,
-            data-&gt;cfg-&gt;disc_thresh, PHY_DISCON_TH_LEN);
+      data-&gt;cfg-&gt;disc_thresh, PHY_DISCON_TH_LEN);
   }
 </code></pre></div>
 <p>Which will…</p>
 <ul>
 <li>
-<p>Set PHY_RES45_CAL (TODO: What’s this?)</p>
+<p>Set <strong>PHY_RES45_CAL</strong> for Port USB0 (Why?)</p>
 </li>
 <li>
-<p>Set USB PHY Magnitude and Rate</p>
+<p>Set USB PHY <a href="https://github.com/lupyuen/pinephone-nuttx-usb#set-usb-magnitude--rate--threshold"><strong>Magnitude and Rate</strong></a></p>
 </li>
 <li>
-<p>Disconnect USB PHY Threshold Adjustment</p>
+<p>Disconnect USB PHY <strong>Threshold Adjustment</strong> (Why?)</p>
 </li>
 </ul>
-<p>As explained here…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx-usb#set-usb-magnitude--rate--threshold">“Set USB Magnitude / Rate / Threshold”</a></li>
-</ul>
-<p>TODO: Is <code>usb_phy-&gt;id</code> set to 1 for USB Port 1?</p>
-<p>Assume <code>CONFIG_USB_MUSB_SUNXI</code> is undefined. So we skip this part…</p>
+<p>Finally U-Boot does this…</p>
 <div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_USB_MUSB_SUNXI
   // Skip this part because `CONFIG_USB_MUSB_SUNXI` is undefined
-  /* Needed for HCI and conflicts with MUSB, keep PHY0 on MUSB */
-  if (usb_phy-&gt;id != 0)
-    sun4i_usb_phy_passby(phy, true);
-
-  /* Route PHY0 to MUSB to allow USB gadget */
-  if (data-&gt;cfg-&gt;phy0_dual_route)
-    sun4i_usb_phy0_reroute(data, true);
-</code></pre></div>
-<p><code>CONFIG_USB_MUSB_SUNXI</code> is undefined, so we run this instead…</p>
-<div class="example-wrap"><pre class="language-c"><code>#else
+  ...
+#else
+  // Enable USB PHY Bypass
   sun4i_usb_phy_passby(phy, true);
 
-  /* Route PHY0 to HCI to allow USB host */
+  // Route PHY0 to HCI to allow USB host
   if (data-&gt;cfg-&gt;phy0_dual_route)
     sun4i_usb_phy0_reroute(data, false);
 #endif
@@ -708,24 +670,17 @@ TODO: Program the controller to be the USB host controller
 <p>Which will…</p>
 <ul>
 <li>
-<p>Enable USB PHY Bypass</p>
+<p>Enable <strong>USB PHY Bypass</strong></p>
 </li>
 <li>
-<p>Route USB PHY0 to EHCI (instead of Mentor Graphics OTG MUSB)</p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb#usb-controller-configuration">(<code>phy0_dual_route</code> is true for PinePhone)</a></p>
+<p>Route <strong>USB PHY0 to EHCI</strong> (instead of Mentor Graphics OTG)</p>
 </li>
 </ul>
-<p><code>sun4i_usb_phy_passby</code> and <code>sun4i_usb_phy0_reroute</code> are defined here…</p>
-<ul>
-<li>
-<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L190-L215">sun4i_usb_phy_passby</a></p>
-</li>
-<li>
-<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L244-L257">sun4i_usb_phy0_reroute</a></p>
-</li>
-</ul>
-<p><em>What’s <code>CONFIG_USB_MUSB_SUNXI</code>?</em></p>
-<p><code>CONFIG_USB_MUSB_SUNXI</code> enables support for the Mentor Graphics OTG / DRC USB Controller…</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb#usb-controller-configuration">(<strong>phy0_dual_route</strong> is true for PinePhone)</a></p>
+<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L190-L215">(<strong>sun4i_usb_phy_passby</strong> is defined here)</a></p>
+<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L244-L257">(<strong>sun4i_usb_phy0_reroute</strong> is defined here)</a></p>
+<p><em>What’s CONFIG_USB_MUSB_SUNXI?</em></p>
+<p><strong>CONFIG_USB_MUSB_SUNXI</strong> enables support for the Mentor Graphics OTG Controller…</p>
 <div class="example-wrap"><pre class="language-text"><code>config USB_MUSB_SUNXI
   bool &quot;Enable sunxi OTG / DRC USB controller&quot;
   depends on ARCH_SUNXI
@@ -736,22 +691,18 @@ TODO: Program the controller to be the USB host controller
   used on almost all sunxi boards.
 </code></pre></div>
 <p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/usb/musb-new/Kconfig#L68-L75">(Source)</a></p>
-<p>We assume <code>CONFIG_USB_MUSB_SUNXI</code> is disabled because we won’t be using USB OTG for NuttX (yet).</p>
-<h1 id="usb-controller-clocks"><a href="#usb-controller-clocks">9 USB Controller Clocks</a></h1>
-<p>TODO</p>
-<p>Earlier we looked at the Source Code for the <a href="https://github.com/lupyuen/pinephone-nuttx-usb#power-on-the-usb-controller">USB PHY Driver for PinePhone</a>…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx-usb#power-on-the-usb-controller">“Power On the USB Controller”</a></li>
-</ul>
-<p>And we saw this code that will enable the USB Clocks: <a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L266-L271">sun4i_usb_phy_init</a></p>
-<div class="example-wrap"><pre class="language-c"><code>  ret = clk_enable(&amp;usb_phy-&gt;clocks);
+<p>We assume <strong>CONFIG_USB_MUSB_SUNXI</strong> is disabled because we won’t be using USB OTG for NuttX (yet).</p>
+<p>Now we figure out how exactly we power on the USB Controller, via the USB Clocks and USB Resets…</p>
+<h1 id="enable-usb-controller-clocks"><a href="#enable-usb-controller-clocks">9 Enable USB Controller Clocks</a></h1>
+<p><em>What are the USB Clocks for PinePhone?</em></p>
+<p>Earlier we looked at the <a href="https://lupyuen.github.io/articles/usb3#power-on-the-usb-controller"><strong>PinePhone USB PHY Driver for U-Boot</strong></a>…</p>
+<p>And we saw this code that will enable the <strong>USB Clocks</strong>: <a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L266-L271">sun4i_usb_phy_init</a></p>
+<div class="example-wrap"><pre class="language-c"><code>clk_enable(&amp;usb_phy-&gt;clocks);
 </code></pre></div>
-<p><code>clk_enable</code> is explained here…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx-usb#enable-usb-controller-clocks">“Enable USB Controller Clocks”</a></li>
-</ul>
-<p><em>What’s <code>usb_phy-&gt;clocks</code>?</em></p>
-<p>According to the <a href="https://github.com/lupyuen/pinephone-nuttx-usb#pinephone-usb-drivers-in-u-boot-bootloader">PinePhone Device Tree</a>, the USB Clocks are…</p>
+<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/clk/sunxi/clk_sunxi.c#L58-L61">(<strong>clk_enable</strong> is defined here)</a></p>
+<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/clk/sunxi/clk_sunxi.c#L30-L56">(Which calls <strong>sunxi_set_gate</strong>)</a></p>
+<p><em>What’s usb_phy→clocks?</em></p>
+<p>According to the <a href="https://lupyuen.github.io/articles/usb3#pinephone-usb-drivers-in-u-boot-bootloader"><strong>PinePhone Device Tree</strong></a>, the USB Clocks are…</p>
 <ul>
 <li>
 <p><strong>usb0_phy:</strong> CLK_USB_PHY0</p>
@@ -766,100 +717,67 @@ TODO: Program the controller to be the USB host controller
 <p><strong>EHCI1:</strong> CLK_BUS_OHCI1, CLK_BUS_EHCI1, CLK_USB_OHCI1</p>
 </li>
 </ul>
-<p><em>What are the values of the above USB Clocks?</em></p>
-<p>The USB Clocks are defined in <a href="https://github.com/u-boot/u-boot/blob/master/include/dt-bindings/clock/sun50i-a64-ccu.h">clock/sun50i-a64-ccu.h</a>…</p>
-<div class="example-wrap"><pre class="language-c"><code>#define CLK_BUS_EHCI0		42
-#define CLK_BUS_EHCI1		43
-#define CLK_BUS_OHCI0		44
-#define CLK_BUS_OHCI1		45
-#define CLK_USB_PHY0		86
-#define CLK_USB_PHY1		87
-#define CLK_USB_OHCI0		91
-#define CLK_USB_OHCI1		93
+<p>These are the <strong>USB Clocks</strong> that our NuttX EHCI Driver should enable.</p>
+<p><em>What clickers are these: CLK_USB and CLK_BUS?</em></p>
+<p>They refer to the <strong>Clock Control Unit (CCU) Registers</strong> defined in the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>. (Page 81)</p>
+<p>CCU Base Address is <strong><code>0x01C2</code> <code>0000</code></strong></p>
+<p><em>What are the addresses of these CCU Registers?</em></p>
+<p>U-Boot tells us the <strong>addresses of the CCU Registers</strong> for USB Clocks: <a href="https://github.com/u-boot/u-boot/blob/master/drivers/clk/sunxi/clk_a64.c#L16-L66">clk_a64.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// USB Clocks: CCU Offset and Bit Number
+static const struct ccu_clk_gate a64_gates[] = {
+  [CLK_BUS_EHCI0] = GATE(0x060, BIT(24)),
+  [CLK_BUS_EHCI1] = GATE(0x060, BIT(25)),
+  [CLK_BUS_OHCI0] = GATE(0x060, BIT(28)),
+  [CLK_BUS_OHCI1] = GATE(0x060, BIT(29)),
+  [CLK_USB_PHY0]  = GATE(0x0cc, BIT(8)),
+  [CLK_USB_PHY1]  = GATE(0x0cc, BIT(9)),
+  [CLK_USB_OHCI0] = GATE(0x0cc, BIT(16)),
+  [CLK_USB_OHCI1] = GATE(0x0cc, BIT(17)),
 </code></pre></div>
-<p>Which are consistent with the values in the PinePhone JumpDrive Device Tree: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L661-L721">sun50i-a64-pinephone-1.2.dts</a></p>
-<p>The Allwinner A64 Register Addresses for USB Clocks are defined here…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx-usb#enable-usb-controller-clocks">“Enable USB Controller Clocks”</a></li>
-</ul>
-<p>Here’s the definition of USB Clocks in our U-Boot Device Tree: <a href="https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/sun50i-a64.dtsi#L575-L659">sun50i-a64.dtsi</a></p>
-<div class="example-wrap"><pre class="language-text"><code>usbphy: phy@1c19400 {
-  reg = 
-    &lt;0x01c19400 0x14&gt;,
-    &lt;0x01c1a800 0x4&gt;,
-    &lt;0x01c1b800 0x4&gt;;
-  reg-names = 
-    &quot;phy_ctrl&quot;,
-    &quot;pmu0&quot;,
-    &quot;pmu1&quot;;
-  clocks = 
-    &lt;&amp;ccu CLK_USB_PHY0&gt;,
-    &lt;&amp;ccu CLK_USB_PHY1&gt;;
-  clock-names = 
-    &quot;usb0_phy&quot;,
-    &quot;usb1_phy&quot;;
-    ...
+<p>So to enable the USB Clock <strong>CLK_BUS_EHCI0</strong>, we’ll set <strong>Bit 24</strong> of the CCU Register at <strong><code>0x060</code> + <code>0x01C2</code> <code>0000</code></strong>.</p>
+<p><em>How will NuttX enable the USB Clocks?</em></p>
+<p>Our <strong>NuttX EHCI Driver</strong> will enable the USB Clocks like this: <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L138-L193">a64_usbhost.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Allwinner A64 Clock Control Unit (CCU)
+#define A64_CCU_ADDR 0x01c20000
 
-ehci0: usb@1c1a000 {
-  reg = &lt;0x01c1a000 0x100&gt;;
-  clocks = 
-    &lt;&amp;ccu CLK_BUS_OHCI0&gt;,
-    &lt;&amp;ccu CLK_BUS_EHCI0&gt;,
-    &lt;&amp;ccu CLK_USB_OHCI0&gt;;
-    ...
+// Enable the USB Clocks for PinePhone
+static void a64_usbhost_clk_enable(void) {
 
-ehci1: usb@1c1b000 {
-  reg = &lt;0x01c1b000 0x100&gt;;
-  clocks = 
-    &lt;&amp;ccu CLK_BUS_OHCI1&gt;,
-    &lt;&amp;ccu CLK_BUS_EHCI1&gt;,
-    &lt;&amp;ccu CLK_USB_OHCI1&gt;;
-  resets = 
-    &lt;&amp;ccu RST_BUS_OHCI1&gt;,
-    &lt;&amp;ccu RST_BUS_EHCI1&gt;;
+  // Enable usb0_phy: CLK_USB_PHY0
+  // 0x0cc BIT(8)
+  #define CLK_USB_PHY0 (A64_CCU_ADDR + 0x0cc)
+  #define CLK_USB_PHY0_BIT 8
+  set_bit(CLK_USB_PHY0, CLK_USB_PHY0_BIT);
+
+  // Enable EHCI0: CLK_BUS_OHCI0
+  // 0x060 BIT(28)
+  #define CLK_BUS_OHCI0 (A64_CCU_ADDR + 0x060)
+  #define CLK_BUS_OHCI0_BIT 28
+  set_bit(CLK_BUS_OHCI0, CLK_BUS_OHCI0_BIT);
+
+  // Omitted: Do the same for...
+  // CLK_USB_PHY0, CLK_USB_PHY1
+  // CLK_BUS_OHCI0, CLK_BUS_EHCI0, CLK_USB_OHCI0
+  // CLK_BUS_OHCI1, CLK_BUS_EHCI1, CLK_USB_OHCI1
+  // Yeah this looks excessive. We probably need only
+  // USB PHY1, EHCI1 and OHCI1.
 </code></pre></div>
-<p>(CCU means Clock Control Unit)</p>
-<p><em>What are the USB PHY Reg Values from above?</em></p>
-<div class="example-wrap"><pre class="language-text"><code>usbphy: phy@1c19400 {
-  reg = 
-    &lt;0x01c19400 0x14&gt;,
-    &lt;0x01c1a800 0x4&gt;,
-    &lt;0x01c1b800 0x4&gt;;
-  reg-names = 
-    &quot;phy_ctrl&quot;,
-    &quot;pmu0&quot;,
-    &quot;pmu1&quot;;
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L131-L136">(<strong>set_bit(addr, bit)</strong> sets the bit at an address)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L261-L279">(<strong>a64_usbhost_clk_enable</strong> is called by <strong>a64_usbhost_initialize</strong>)</a></p>
+<p>Now we do the same for the USB Resets…</p>
+<p>TODO: What about OHCI1_12M_SRC_SEL and OHCI0_12M_SRC_SEL? (Allwinner A64 User Manual, Page 113)</p>
+<h1 id="reset-usb-controller"><a href="#reset-usb-controller">10 Reset USB Controller</a></h1>
+<p><em>What are the USB Resets for PinePhone?</em></p>
+<p>A while ago we looked at the <a href="https://lupyuen.github.io/articles/usb3#power-on-the-usb-controller"><strong>PinePhone USB PHY Driver for U-Boot</strong></a>…</p>
+<p>And we saw this code that will deassert (deactivate) the <strong>USB Resets</strong>: <a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L273-L278">sun4i_usb_phy_init</a></p>
+<div class="example-wrap"><pre class="language-c"><code>reset_deassert(&amp;usb_phy-&gt;resets);
 </code></pre></div>
-<p>According to the Allwinner A64 User Manual (Memory Mapping, Page 73)…</p>
-<ul>
-<li>
-<p><strong>phy_ctrl:</strong> <code>0x01c1</code> <code>9400</code> (Offset <code>0x14</code>)</p>
-<p>Belongs to USB-OTG-Device (USB Port 0)</p>
-</li>
-<li>
-<p><strong>pmu0:</strong> <code>0x01c1</code> <code>a800</code> (Offset <code>0x4</code>)</p>
-<p>Belongs to USB-OTG-EHCI (USB Port 0)</p>
-</li>
-<li>
-<p><strong>pmu1:</strong> <code>0x01c1</code> <code>b800</code> (Offset <code>0x4</code>)</p>
-<p>Belongs to USB-EHCI0 (USB Port 1)</p>
-</li>
-</ul>
-<h1 id="usb-controller-reset"><a href="#usb-controller-reset">10 USB Controller Reset</a></h1>
-<p>TODO</p>
-<p>Earlier we looked at the Source Code for the <a href="https://github.com/lupyuen/pinephone-nuttx-usb#power-on-the-usb-controller">USB PHY Driver for PinePhone</a>…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx-usb#power-on-the-usb-controller">“Power On the USB Controller”</a></li>
-</ul>
-<p>And we saw this code that will deassert the USB Reset: <a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L273-L278">sun4i_usb_phy_init</a></p>
-<div class="example-wrap"><pre class="language-c"><code>  ret = reset_deassert(&amp;usb_phy-&gt;resets);
-</code></pre></div>
-<p><code>reset_deassert</code> is explained here…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx-usb#reset-usb-controller">“Reset USB Controller”</a></li>
-</ul>
-<p><em>What’s <code>usb_phy-&gt;resets</code>?</em></p>
-<p>According to the <a href="https://github.com/lupyuen/pinephone-nuttx-usb#pinephone-usb-drivers-in-u-boot-bootloader">PinePhone Device Tree</a>, the USB Resets are…</p>
+<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/reset/reset-uclass.c#L207-L214">(<strong>reset_deassert</strong> is defined here)</a></p>
+<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/reset/reset-sunxi.c#L71-L75">(Which calls <strong>rst_deassert</strong>)</a></p>
+<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/reset/reset-sunxi.c#L66-L69">(Which calls <strong>sunxi_reset_deassert</strong>)</a></p>
+<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/reset/reset-sunxi.c#L36-L59">(Which calls <strong>sunxi_set_reset</strong> phew!)</a></p>
+<p><em>What’s usb_phy→resets?</em></p>
+<p>According to the <a href="https://lupyuen.github.io/articles/usb3#pinephone-usb-drivers-in-u-boot-bootloader"><strong>PinePhone Device Tree</strong></a>, the USB Resets are…</p>
 <ul>
 <li>
 <p><strong>usb0_reset:</strong> RST_USB_PHY0</p>
@@ -874,105 +792,55 @@ ehci1: usb@1c1b000 {
 <p><strong>EHCI1:</strong> RST_BUS_OHCI1, RST_BUS_EHCI1</p>
 </li>
 </ul>
-<p><em>What are the values of the USB Resets?</em></p>
-<p>The USB Resets are defined in <a href="https://github.com/u-boot/u-boot/blob/master/include/dt-bindings/reset/sun50i-a64-ccu.h">reset/sun50i-a64-ccu.h</a>…</p>
-<div class="example-wrap"><pre class="language-c"><code>#define RST_USB_PHY0		0
-#define RST_USB_PHY1		1
-#define RST_BUS_EHCI0		19
-#define RST_BUS_EHCI1		20
-#define RST_BUS_OHCI0		21
-#define RST_BUS_OHCI1		22
+<p>These are the <strong>USB Resets</strong> that our NuttX EHCI Driver shall deassert.</p>
+<p><em>What exactly are RST_USB and RST_BUS?</em></p>
+<p>They’re the <strong>Clock Control Unit (CCU) Registers</strong> defined in the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>. (Page 81)</p>
+<p>CCU Base Address (once again) is <strong><code>0x01C2</code> <code>0000</code></strong></p>
+<p><em>What are the addresses of these CCU Registers?</em></p>
+<p>U-Boot helpfully reveals the <strong>addresses of the CCU Registers</strong> for USB Resets: <a href="https://github.com/u-boot/u-boot/blob/master/drivers/clk/sunxi/clk_a64.c#L68-L100">clk_a64.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// USB Resets: CCU Offset and Bit Number
+static const struct ccu_reset a64_resets[] = {
+  [RST_USB_PHY0]  = RESET(0x0cc, BIT(0)),
+  [RST_USB_PHY1]  = RESET(0x0cc, BIT(1)),
+  [RST_BUS_EHCI0] = RESET(0x2c0, BIT(24)),
+  [RST_BUS_EHCI1] = RESET(0x2c0, BIT(25)),
+  [RST_BUS_OHCI0] = RESET(0x2c0, BIT(28)),
+  [RST_BUS_OHCI1] = RESET(0x2c0, BIT(29)),
 </code></pre></div>
-<p>Which are consistent with the values in the PinePhone JumpDrive Device Tree: <a href="https://github.com/lupyuen/pinephone-nuttx/blob/main/sun50i-a64-pinephone-1.2.dts#L661-L721">sun50i-a64-pinephone-1.2.dts</a></p>
-<p>The Allwinner A64 Register Addresses for USB Resets are defined here…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx-usb#reset-usb-controller">“Reset USB Controller”</a></li>
-</ul>
-<p>Here’s the definition of USB Resets in our U-Boot Device Tree: <a href="https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/sun50i-a64.dtsi#L575-L659">sun50i-a64.dtsi</a></p>
-<div class="example-wrap"><pre class="language-text"><code>usbphy: phy@1c19400 {
-  resets = 
-    &lt;&amp;ccu RST_USB_PHY0&gt;,
-    &lt;&amp;ccu RST_USB_PHY1&gt;;
-  reset-names = 
-    &quot;usb0_reset&quot;,
-    &quot;usb1_reset&quot;;
-    ...
+<p>Hence to deassert the USB Reset <strong>RST_USB_PHY0</strong>, we’ll set <strong>Bit 0</strong> of the CCU Register at <strong><code>0x0CC</code> + <code>0x01C2</code> <code>0000</code></strong>.</p>
+<p><em>How will NuttX deassert the USB Resets?</em></p>
+<p>Our <strong>NuttX EHCI Driver</strong> will deassert the USB Resets like so: <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L206-L249">a64_usbhost.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Allwinner A64 Clock Control Unit (CCU)
+#define A64_CCU_ADDR 0x01c20000
 
-ehci0: usb@1c1a000 {
-  resets = 
-    &lt;&amp;ccu RST_BUS_OHCI0&gt;,
-    &lt;&amp;ccu RST_BUS_EHCI0&gt;;
-    ...
+// Deassert the USB Resets for PinePhone
+static void a64_usbhost_reset_deassert(void) {
 
-ehci1: usb@1c1b000 {
-  resets = 
-    &lt;&amp;ccu RST_BUS_OHCI1&gt;,
-    &lt;&amp;ccu RST_BUS_EHCI1&gt;;
-</code></pre></div><h1 id="enable-usb-controller-clocks"><a href="#enable-usb-controller-clocks">11 Enable USB Controller Clocks</a></h1>
-<p>TODO</p>
-<p>Earlier we saw this code that will enable the USB Clocks: <a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L266-L271">sun4i_usb_phy_init</a></p>
-<div class="example-wrap"><pre class="language-c"><code>  ret = clk_enable(&amp;usb_phy-&gt;clocks);
+  // Deassert usb0_reset: RST_USB_PHY0
+  // 0x0cc BIT(0)
+  #define RST_USB_PHY0 (A64_CCU_ADDR + 0x0cc)
+  #define RST_USB_PHY0_BIT 0
+  set_bit(RST_USB_PHY0, RST_USB_PHY0_BIT);
+
+  // Deassert EHCI0: RST_BUS_OHCI0
+  // 0x2c0 BIT(28)
+  #define RST_BUS_OHCI0 (A64_CCU_ADDR + 0x2c0)
+  #define RST_BUS_OHCI0_BIT 28
+  set_bit(RST_BUS_OHCI0, RST_BUS_OHCI0_BIT);
+
+  // Omitted: Do the same for...
+  // RST_USB_PHY0, RST_USB_PHY1
+  // RST_BUS_OHCI0, RST_BUS_EHCI0
+  // RST_BUS_OHCI1, RST_BUS_EHCI1
+  // Yeah this looks excessive. We probably need only
+  // USB PHY1, EHCI1 and OHCI1.
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb#usb-controller-clocks">(USB Clocks <code>usb_phy-&gt;clocks</code> are defined here)</a></p>
-<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/clk/sunxi/clk_sunxi.c#L58-L61"><code>clk_enable</code></a> calls <a href="https://github.com/u-boot/u-boot/blob/master/drivers/clk/sunxi/clk_sunxi.c#L30-L56"><code>sunxi_set_gate</code></a></p>
-<p><em>Which A64 Registers will our NuttX USB Driver set?</em></p>
-<p>Our NuttX USB Driver will set the CCU Registers, defined in Allwinner A64 User Manual, Page 81.</p>
-<p>(CCU Base Address is <code>0x01C2</code> <code>0000</code>)</p>
-<p>Based on the <a href="https://github.com/lupyuen/pinephone-nuttx-usb#usb-controller-clocks">USB Clocks <code>usb_phy-&gt;clocks</code></a>, our NuttX USB Driver will set the following CCU Registers: <a href="https://github.com/u-boot/u-boot/blob/master/drivers/clk/sunxi/clk_a64.c#L16-L66">clk_a64.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static const struct ccu_clk_gate a64_gates[] = {
-  [CLK_BUS_EHCI0]		= GATE(0x060, BIT(24)),
-  [CLK_BUS_EHCI1]		= GATE(0x060, BIT(25)),
-  [CLK_BUS_OHCI0]		= GATE(0x060, BIT(28)),
-  [CLK_BUS_OHCI1]		= GATE(0x060, BIT(29)),
-  [CLK_USB_PHY0]		= GATE(0x0cc, BIT(8)),
-  [CLK_USB_PHY1]		= GATE(0x0cc, BIT(9)),
-  [CLK_USB_OHCI0]		= GATE(0x0cc, BIT(16)),
-  [CLK_USB_OHCI1]		= GATE(0x0cc, BIT(17)),
-</code></pre></div>
-<p>So to enable the USB Clock CLK_BUS_EHCI0, we’ll set Bit 24 of the CCU Register at <code>0x060</code> + <code>0x01C2</code> <code>0000</code>.</p>
-<p>This will be similar to setting SCLK_GATING of DE_CLK_REG as described here…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine">“Initialising the Allwinner A64 Display Engine”</a></li>
-</ul>
-<p>TODO: What about OHCI1_12M_SRC_SEL, OHCI0_12M_SRC_SEL? (Allwinner A64 User Manual Page 113)</p>
-<h1 id="reset-usb-controller"><a href="#reset-usb-controller">12 Reset USB Controller</a></h1>
-<p>TODO</p>
-<p>Earlier we saw this code that will deassert the USB Reset: <a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L273-L278">sun4i_usb_phy_init</a></p>
-<div class="example-wrap"><pre class="language-c"><code>  ret = reset_deassert(&amp;usb_phy-&gt;resets);
-</code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb#usb-controller-reset">(USB Resets <code>usb_phy-&gt;resets</code> are defined here)</a></p>
-<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/reset/reset-uclass.c#L207-L214"><code>reset_deassert</code></a> calls…</p>
-<ul>
-<li>
-<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/reset/reset-sunxi.c#L71-L75"><code>rst_deassert</code></a>, which calls…</p>
-</li>
-<li>
-<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/reset/reset-sunxi.c#L66-L69"><code>sunxi_reset_deassert</code></a>, which calls…</p>
-</li>
-<li>
-<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/reset/reset-sunxi.c#L36-L59"><code>sunxi_set_reset</code></a></p>
-</li>
-</ul>
-<p><em>Which A64 Registers will our NuttX USB Driver set?</em></p>
-<p>Our NuttX USB Driver will set the CCU Registers, defined in Allwinner A64 User Manual, Page 81.</p>
-<p>(CCU Base Address is <code>0x01C2</code> <code>0000</code>)</p>
-<p>Based on the <a href="https://github.com/lupyuen/pinephone-nuttx-usb#usb-controller-reset">USB Resets <code>usb_phy-&gt;resets</code></a>, our NuttX USB Driver will set the following CCU Registers: <a href="https://github.com/u-boot/u-boot/blob/master/drivers/clk/sunxi/clk_a64.c#L68-L100">clk_a64.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static const struct ccu_reset a64_resets[] = {
-  [RST_USB_PHY0]          = RESET(0x0cc, BIT(0)),
-  [RST_USB_PHY1]          = RESET(0x0cc, BIT(1)),
-  [RST_BUS_EHCI0]         = RESET(0x2c0, BIT(24)),
-  [RST_BUS_EHCI1]         = RESET(0x2c0, BIT(25)),
-  [RST_BUS_OHCI0]         = RESET(0x2c0, BIT(28)),
-  [RST_BUS_OHCI1]         = RESET(0x2c0, BIT(29)),
-</code></pre></div>
-<p>So to deassert the USB Reset RST_USB_PHY0, we’ll set Bit 0 of the CCU Register at <code>0x0cc</code> + <code>0x01C2</code> <code>0000</code>.</p>
-<p>This will be similar to setting DE_RST of BUS_SOFT_RST_REG1 as described here…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/de#appendix-initialising-the-allwinner-a64-display-engine">“Initialising the Allwinner A64 Display Engine”</a></li>
-</ul>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L131-L136">(<strong>set_bit(addr, bit)</strong> sets the bit at an address)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L261-L279">(<strong>a64_usbhost_clk_enable</strong> is called by <strong>a64_usbhost_initialize</strong>)</a></p>
+<p>We’ve powered up the USB Controller via the USB Clocks and USB Resets. Let’s test this!</p>
 <p><img src="https://lupyuen.github.io/images/usb3-run.png" alt="NuttX EHCI Driver Starts OK on PinePhone" /></p>
-<h1 id="nuttx-ehci-driver-starts-ok-on-pinephone"><a href="#nuttx-ehci-driver-starts-ok-on-pinephone">13 NuttX EHCI Driver Starts OK on PinePhone</a></h1>
-<p><em>When we power up the USB Controller on PinePhone…</em></p>
+<h1 id="nuttx-ehci-driver-starts-ok-on-pinephone"><a href="#nuttx-ehci-driver-starts-ok-on-pinephone">11 NuttX EHCI Driver Starts OK on PinePhone</a></h1>
+<p><em>Now that we have powered up the USB Controller on PinePhone…</em></p>
 <p><em>Does the EHCI Driver start correctly on NuttX?</em></p>
 <p>TODO</p>
 <p>Earlier the NuttX USB EHCI Driver fails during PinePhone startup…</p>
@@ -995,167 +863,14 @@ ehci1: usb@1c1b000 {
 </li>
 </ul>
 <p>So we do the same for NuttX. And now the NuttX EHCI Driver starts OK on PinePhone yay! 🎉</p>
-<p>This is how we enable the USB Clocks and deassert the USB Resets on PinePhone: <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L118-L279">a64_usbhost.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define A64_CCU_ADDR        0x01c20000 /* CCU             0x01c2:0000-0x01c2:03ff 1K */
+<p>This is how we enable the USB Clocks and deassert the USB Resets on PinePhone: <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L261-L279">a64_usbhost.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Init the USB EHCI Host at startup
+int a64_usbhost_initialize(void) {
 
-/* Display Engine Clock Register (A64 Page 117) */
-// #define DE_CLK_REG       (A64_CCU_ADDR + 0x0104)
-// #define CLK_SRC_SEL(n)   ((n) &lt;&lt; 24)
-// #define CLK_SRC_SEL_MASK (0b111 &lt;&lt; 24)
-// #define SCLK_GATING      (1 &lt;&lt; 31)
-// #define SCLK_GATING_MASK (0b1 &lt;&lt; 31)
-
-/* Bus Software Reset Register 1 (A64 Page 140) */
-// #define BUS_SOFT_RST_REG1 (A64_CCU_ADDR + 0x02c4)
-// #define DE_RST            (1 &lt;&lt; 12)
-
-// Set the bit
-static void set_bit(unsigned long addr, uint8_t bit)
-{
-  _info(&quot;0x%lx Bit %d\n&quot;, addr, bit);
-  modreg32(1 &lt;&lt; bit, 1 &lt;&lt; bit, addr);
-}
-
-// Enable USB Clocks
-// https://github.com/lupyuen/pinephone-nuttx-usb#usb-controller-clocks
-// https://github.com/lupyuen/pinephone-nuttx-usb#enable-usb-controller-clocks
-static void a64_usbhost_clk_enable(void)
-{
-  // usb0_phy: CLK_USB_PHY0
-  // 0x0cc BIT(8)
-  _info(&quot;CLK_USB_PHY0\n&quot;);
-  #define CLK_USB_PHY0 (A64_CCU_ADDR + 0x0cc)
-  #define CLK_USB_PHY0_BIT 8
-  set_bit(CLK_USB_PHY0, CLK_USB_PHY0_BIT);
-
-  // usb1_phy: CLK_USB_PHY1
-  // 0x0cc BIT(9)
-  _info(&quot;CLK_USB_PHY1\n&quot;);
-  #define CLK_USB_PHY1 (A64_CCU_ADDR + 0x0cc)
-  #define CLK_USB_PHY1_BIT 9
-  set_bit(CLK_USB_PHY1, CLK_USB_PHY1_BIT);
-
-  // EHCI0: CLK_BUS_OHCI0, CLK_BUS_EHCI0, CLK_USB_OHCI0
-  // 0x060 BIT(28)
-  _info(&quot;CLK_BUS_OHCI0\n&quot;);
-  #define CLK_BUS_OHCI0 (A64_CCU_ADDR + 0x060)
-  #define CLK_BUS_OHCI0_BIT 28
-  set_bit(CLK_BUS_OHCI0, CLK_BUS_OHCI0_BIT);
-
-  // 0x060 BIT(24)
-  _info(&quot;CLK_BUS_EHCI0\n&quot;);
-  #define CLK_BUS_EHCI0 (A64_CCU_ADDR + 0x060)
-  #define CLK_BUS_EHCI0_BIT 24
-  set_bit(CLK_BUS_EHCI0, CLK_BUS_EHCI0_BIT);
-
-  // 0x0cc BIT(16)
-  _info(&quot;CLK_USB_OHCI0\n&quot;);
-  #define CLK_USB_OHCI0 (A64_CCU_ADDR + 0x0cc)
-  #define CLK_USB_OHCI0_BIT 16
-  set_bit(CLK_USB_OHCI0, CLK_USB_OHCI0_BIT);
-
-  // EHCI1: CLK_BUS_OHCI1, CLK_BUS_EHCI1, CLK_USB_OHCI1
-  // 0x060 BIT(29)
-  _info(&quot;CLK_BUS_OHCI1\n&quot;);
-  #define CLK_BUS_OHCI1 (A64_CCU_ADDR + 0x060)
-  #define CLK_BUS_OHCI1_BIT 29
-  set_bit(CLK_BUS_OHCI1, CLK_BUS_OHCI1_BIT);
-
-  // 0x060 BIT(25)
-  _info(&quot;CLK_BUS_EHCI1\n&quot;);
-  #define CLK_BUS_EHCI1 (A64_CCU_ADDR + 0x060)
-  #define CLK_BUS_EHCI1_BIT 25
-  set_bit(CLK_BUS_EHCI1, CLK_BUS_EHCI1_BIT);
-
-  // 0x0cc BIT(17)
-  _info(&quot;CLK_USB_OHCI1\n&quot;);
-  #define CLK_USB_OHCI1 (A64_CCU_ADDR + 0x0cc)
-  #define CLK_USB_OHCI1_BIT 17
-  set_bit(CLK_USB_OHCI1, CLK_USB_OHCI1_BIT);
-
-  /* Display Engine Clock Register (A64 Page 117)
-   * Set SCLK_GATING (Bit 31) to 1
-   *   (Enable Special Clock)
-   * Set CLK_SRC_SEL (Bits 24 to 26) to 1
-   *   (Clock Source is Display Engine PLL)
-   */
-  // clk = SCLK_GATING | CLK_SRC_SEL(1);
-  // clk_mask = SCLK_GATING_MASK | CLK_SRC_SEL_MASK;
-  // modreg32(clk, clk_mask, DE_CLK_REG);
-}
-
-// Deassert USB Resets
-// https://github.com/lupyuen/pinephone-nuttx-usb#usb-controller-reset
-// https://github.com/lupyuen/pinephone-nuttx-usb#reset-usb-controller
-static void a64_usbhost_reset_deassert(void)
-{
-  // usb0_reset: RST_USB_PHY0
-  // 0x0cc BIT(0)
-  _info(&quot;RST_USB_PHY0\n&quot;);
-  #define RST_USB_PHY0 (A64_CCU_ADDR + 0x0cc)
-  #define RST_USB_PHY0_BIT 0
-  set_bit(RST_USB_PHY0, RST_USB_PHY0_BIT);
-
-  // usb1_reset: RST_USB_PHY1
-  // 0x0cc BIT(1)
-  _info(&quot;RST_USB_PHY1\n&quot;);
-  #define RST_USB_PHY1 (A64_CCU_ADDR + 0x0cc)
-  #define RST_USB_PHY1_BIT 1
-  set_bit(RST_USB_PHY1, RST_USB_PHY1_BIT);
-
-  // EHCI0: RST_BUS_OHCI0, RST_BUS_EHCI0
-  // 0x2c0 BIT(28)
-  _info(&quot;RST_BUS_OHCI0\n&quot;);
-  #define RST_BUS_OHCI0 (A64_CCU_ADDR + 0x2c0)
-  #define RST_BUS_OHCI0_BIT 28
-  set_bit(RST_BUS_OHCI0, RST_BUS_OHCI0_BIT);
-
-  // 0x2c0 BIT(24)
-  _info(&quot;RST_BUS_EHCI0\n&quot;);
-  #define RST_BUS_EHCI0 (A64_CCU_ADDR + 0x2c0)
-  #define RST_BUS_EHCI0_BIT 24
-  set_bit(RST_BUS_EHCI0, RST_BUS_EHCI0_BIT);
-
-  // EHCI1: RST_BUS_OHCI1, RST_BUS_EHCI1
-  // 0x2c0 BIT(29)
-  _info(&quot;RST_BUS_OHCI1\n&quot;);
-  #define RST_BUS_OHCI1 (A64_CCU_ADDR + 0x2c0)
-  #define RST_BUS_OHCI1_BIT 29
-  set_bit(RST_BUS_OHCI1, RST_BUS_OHCI1_BIT);
-
-  // 0x2c0 BIT(25)
-  _info(&quot;RST_BUS_EHCI1\n&quot;);
-  #define RST_BUS_EHCI1 (A64_CCU_ADDR + 0x2c0)
-  #define RST_BUS_EHCI1_BIT 25
-  set_bit(RST_BUS_EHCI1, RST_BUS_EHCI1_BIT);
-
-  /* Bus Software Reset Register 1 (A64 Page 140)
-   * Set DE_RST (Bit 12) to 1 (De-Assert Display Engine)
-   */
-  // modreg32(DE_RST, DE_RST, BUS_SOFT_RST_REG1);
-}
-
-/****************************************************************************
- * Public Functions
- ****************************************************************************/
-
-/****************************************************************************
- * Name: a64_usbhost_initialize
- *
- * Description:
- *   Called at application startup time to initialize the USB host
- *   functionality.
- *   This function will start a thread that will monitor for device
- *   connection/disconnection events.
- *
- ****************************************************************************/
-
-int a64_usbhost_initialize(void)
-{
-  int ret;
-
+  // Enable the USB Clocks for PinePhone
   a64_usbhost_clk_enable();
 
+  // Deassert the USB Resets for PinePhone
   a64_usbhost_reset_deassert();
 </code></pre></div>
 <p>Here’s the log…</p>
@@ -1258,7 +973,7 @@ EHCI HCCPARAMS=00a026
 EHCI USB EHCI Initialized
 </code></pre></div>
 <p>TODO: What next?</p>
-<h1 id="set-usb-magnitude--rate--threshold"><a href="#set-usb-magnitude--rate--threshold">14 Set USB Magnitude / Rate / Threshold</a></h1>
+<h1 id="set-usb-magnitude--rate--threshold"><a href="#set-usb-magnitude--rate--threshold">12 Set USB Magnitude / Rate / Threshold</a></h1>
 <p>TODO</p>
 <p>Earlier we saw this code for setting the <a href="https://github.com/lupyuen/pinephone-nuttx-usb#power-on-the-usb-controller">USB Magnitude, Rate and Threshold</a> in the USB PHY Driver: <a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L259-L327">sun4i_usb_phy_init</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static int sun4i_usb_phy_init(struct phy *phy) {
@@ -1281,7 +996,7 @@ EHCI USB EHCI Initialized
 <p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L145-L188">(<code>sun4i_usb_phy_write</code> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx-usb#usb-controller-configuration">(<code>disc_thresh</code> is 3)</a></p>
 <p>TODO</p>
-<h1 id="usb-controller-configuration"><a href="#usb-controller-configuration">15 USB Controller Configuration</a></h1>
+<h1 id="usb-controller-configuration"><a href="#usb-controller-configuration">13 USB Controller Configuration</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L622-L630">phy-sun4i-usb.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>static const struct sun4i_usb_phy_cfg sun50i_a64_cfg = {
@@ -1295,7 +1010,7 @@ EHCI USB EHCI Initialized
 };
 </code></pre></div>
 <p>(<code>PHY_CTL_H3_SIDDQ</code> is <code>1 &lt;&lt; 1</code>)</p>
-<h1 id="whats-next"><a href="#whats-next">16 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">14 What’s Next</a></h1>
 <p>TODO</p>
 <p>(I promised to reward myself with a Bread Machine when the NuttX EHCI Driver boots OK on PinePhone… Time to go shopping! 😀)</p>
 <p>TODO</p>
