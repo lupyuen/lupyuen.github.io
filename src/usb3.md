@@ -6,29 +6,27 @@
 
 [_USB Controller Block Diagram from Allwinner A64 User Manual_](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
-TODO
-
 Weeks ago we talked about porting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System) to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone). And how we might turn it into a __Feature Phone__...
 
-TODO
+-   [__"PinePhone + NuttX = Feature Phone"__](https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone)
 
-But to make phone calls and send text messages, we need to talk to the LTE Modem over USB...
+But to make phone calls and send text messages, we need to control the __LTE Modem over USB__...
 
-TODO
+-   [__"LTE Modem talks USB"__](https://lupyuen.github.io/articles/usb2#lte-modem-talks-usb)
 
-Thus today we'll build a USB Driver for NuttX on PinePhone. We'll find out...
+Thus today we'll build a __USB Driver__ for NuttX on PinePhone. As we find out...
 
--   What's EHCI
+-   What's __USB Enhanced Host Controller Interface__ (EHCI)
 
--   How it differs from OTG
+-   How it differs from __USB On-The-Go__ (OTG)
 
--   Port NuttX USB EHCI driver to PinePhone
+-   How we're porting the __NuttX USB EHCI Driver__ to PinePhone
 
--   USB Clocks
+-   Handling the __USB Clocks__ and __USB Resets__ on PinePhone
 
--   USB Resets
+-   Why __U-Boot Bootloader__ is a terrific reference for PinePhone USB
 
--   U-Boot Bootloader
+Let's dive into the fascinating world of USB EHCI!
 
 # PinePhone USB Driver for Apache NuttX RTOS
 
