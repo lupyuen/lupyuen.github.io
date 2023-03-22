@@ -332,49 +332,28 @@ struct a64_qh_s {
   uint8_t pad2[96 - 72]; 
 };
 </code></pre></div>
-<p>And this fixes the Assertion Failure!</p>
-<p>TODO</p>
+<p>And this fixes our Assertion Failure!</p>
 <p><em>This 64-bit patching sounds scary… What about other structs?</em></p>
-<p>To be safe, we verified that the other Struct Sizes are still valid for 64-bit platforms: <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/2e1f9ab090b14f88afb8c3a36ec40a0dbbb23d49/a64_ehci.c#L4999-L5004">a64_ehci.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>  DEBUGASSERT(sizeof(struct ehci_itd_s) == SIZEOF_EHCI_ITD_S);////
-  DEBUGASSERT(sizeof(struct ehci_sitd_s) == SIZEOF_EHCI_SITD_S);////
-  DEBUGASSERT(sizeof(struct ehci_qtd_s) == SIZEOF_EHCI_QTD_S);////
-  DEBUGASSERT(sizeof(struct ehci_overlay_s) == 32);////
-  DEBUGASSERT(sizeof(struct ehci_qh_s) == 48);////
-  DEBUGASSERT(sizeof(struct ehci_fstn_s) == SIZEOF_EHCI_FSTN_S);////
+<p>To be safe, we verified that the other Struct Sizes are still <strong>valid for 64-bit platforms</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/2e1f9ab090b14f88afb8c3a36ec40a0dbbb23d49/a64_ehci.c#L4999-L5004">a64_ehci.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>DEBUGASSERT(sizeof(struct ehci_itd_s)  == SIZEOF_EHCI_ITD_S);
+DEBUGASSERT(sizeof(struct ehci_sitd_s) == SIZEOF_EHCI_SITD_S);
+DEBUGASSERT(sizeof(struct ehci_qtd_s)  == SIZEOF_EHCI_QTD_S);
+DEBUGASSERT(sizeof(struct ehci_overlay_s) == 32);
+DEBUGASSERT(sizeof(struct ehci_qh_s)   == 48);
+DEBUGASSERT(sizeof(struct ehci_fstn_s) == SIZEOF_EHCI_FSTN_S);
 </code></pre></div>
-<p>Here are the Struct Sizes…</p>
-<div class="example-wrap"><pre class="language-text"><code>a64_ehci_initialize: sizeof(struct a64_qh_s)=72
-a64_ehci_initialize: sizeof(struct a64_qtd_s)=32
-a64_ehci_initialize: sizeof(struct ehci_itd_s)=64
-a64_ehci_initialize: sizeof(struct ehci_sitd_s)=28
-a64_ehci_initialize: sizeof(struct ehci_qtd_s)=32
-a64_ehci_initialize: sizeof(struct ehci_overlay_s)=32
-a64_ehci_initialize: sizeof(struct ehci_qh_s)=48
-a64_ehci_initialize: sizeof(struct ehci_fstn_s)=8
+<p>FYI: These are the <strong>Struct Sizes</strong> in the EHCI Driver…</p>
+<div class="example-wrap"><pre class="language-text"><code>sizeof(struct a64_qh_s)=72
+sizeof(struct a64_qtd_s)=32
+sizeof(struct ehci_itd_s)=64
+sizeof(struct ehci_sitd_s)=28
+sizeof(struct ehci_qtd_s)=32
+sizeof(struct ehci_overlay_s)=32
+sizeof(struct ehci_qh_s)=48
+sizeof(struct ehci_fstn_s)=8
 </code></pre></div>
-<p>We need to fix this typo in NuttX: <code>SIZEOF_EHCI_OVERLAY</code> is defined twice: <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/usb/ehci.h#L955-L974">ehci.h</a></p>
-<div class="example-wrap"><pre class="language-c"><code>struct ehci_overlay_s
-{
-  uint32_t nqp;                              /* 0x00-0x03: Next qTD Pointer (NOTE 1) */
-  uint32_t alt;                              /* 0x04-0x07: Alternate Next qTD Pointer (NOTE 2) */
-  uint32_t token;                            /* 0x08-0x0b: qTD Token (NOTE 1) */
-  uint32_t bpl[5];                           /* 0x0c-0x1c: Buffer Page Pointer List (NOTE 2) */
-};
-
-#define SIZEOF_EHCI_OVERLAY (32)             /* 8*sizeof(uint32_t) */
-
-struct ehci_qh_s
-{
-  uint32_t hlp;                              /* 0x00-0x03: Queue Head Horizontal Link Pointer */
-  uint32_t epchar;                           /* 0x04-0x07: Endpoint Characteristics */
-  uint32_t epcaps;                           /* 0x08-0x0b: Endpoint Capabilities */
-  uint32_t cqp;                              /* 0x0c-0x0f: Current qTD Pointer */
-  struct ehci_overlay_s overlay;             /* 0x10-0x2c: Transfer overlay */
-};
-
-#define SIZEOF_EHCI_OVERLAY (48)             /* 4*sizeof(uint32_t) + SIZEOF_EHCI_OVERLAY */
-</code></pre></div><h1 id="halt-timeout-for-usb-controller"><a href="#halt-timeout-for-usb-controller">6 Halt Timeout for USB Controller</a></h1>
+<p><a href="https://github.com/apache/nuttx/blob/master/include/nuttx/usb/ehci.h#L955-L974">(We need to fix this NuttX typo: <strong>SIZEOF_EHCI_OVERLAY</strong> is defined twice)</a></p>
+<h1 id="halt-timeout-for-usb-controller"><a href="#halt-timeout-for-usb-controller">6 Halt Timeout for USB Controller</a></h1>
 <p>TODO</p>
 <p>The NuttX USB EHCI Driver fails with a timeout when booting on PinePhone…</p>
 <div class="example-wrap"><pre class="language-text"><code>a64_usbhost_initialize: TODO: a64_clockall_usboh3
