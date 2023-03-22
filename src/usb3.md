@@ -74,15 +74,13 @@ More about this in the [__Allwinner A64 User Manual__](https://github.com/lupyue
 
 -   __Section 7.5.3.7:__ USB Host Clock Requirement (Page 620)
 
-TODO
+TODO: Piece of cake?
 
-OTG
+# EHCI is simpler than USB On-The-Go
+
+TODO
 
 We won't need OTG / Mentor Graphics
-
-# USB Enhanced Host Controller Interface vs On-The-Go
-
-TODO
 
 According to the [USB Controller Block Diagram in Allwinner A64 User Manual (Page 583)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)...
 
