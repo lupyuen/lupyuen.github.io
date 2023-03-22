@@ -70,7 +70,7 @@
 <li><a href="#usb-enhanced-host-controller-interface">1 USB Enhanced Host Controller Interface</a><ul></ul></li>
 <li><a href="#ehci-is-simpler-than-usb-on-the-go">2 EHCI is simpler than USB On-The-Go</a><ul></ul></li>
 <li><a href="#pinephone-usb-controller">3 PinePhone USB Controller</a><ul></ul></li>
-<li><a href="#pinephone-usb-driver-for-apache-nuttx-rtos">4 PinePhone USB Driver for Apache NuttX RTOS</a><ul></ul></li>
+<li><a href="#ehci-driver-from-apache-nuttx">4 EHCI Driver from Apache NuttX</a><ul></ul></li>
 <li><a href="#64-bit-update-for-ehci-driver">5 64-Bit Update for EHCI Driver</a><ul></ul></li>
 <li><a href="#halt-timeout-for-usb-controller">6 Halt Timeout for USB Controller</a><ul></ul></li>
 <li><a href="#pinephone-usb-drivers-in-u-boot-bootloader">7 PinePhone USB Drivers in U-Boot Bootloader</a><ul></ul></li>
@@ -225,8 +225,9 @@
 </li>
 </ul>
 <p><em>We need the LTE Modem for our Feature Phone?</em></p>
-<p>Exactly! Today we’ll talk only about <strong>Port USB1</strong> (EHCI / Non-OTG), since it’s connected to the LTE Modem.</p>
-<h1 id="pinephone-usb-driver-for-apache-nuttx-rtos"><a href="#pinephone-usb-driver-for-apache-nuttx-rtos">4 PinePhone USB Driver for Apache NuttX RTOS</a></h1>
+<p>Exactly! Today we’re making a <a href="https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone"><strong>Feature Phone</strong></a> with the <a href="https://lupyuen.github.io/articles/usb2#lte-modem-talks-usb"><strong>LTE Modem</strong></a>.</p>
+<p>So we’ll talk only about <strong>Port USB1</strong> (EHCI / Non-OTG), since it’s connected to the LTE Modem.</p>
+<h1 id="ehci-driver-from-apache-nuttx"><a href="#ehci-driver-from-apache-nuttx">4 EHCI Driver from Apache NuttX</a></h1>
 <p>TODO</p>
 <p>We’re porting the <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/imxrt/imxrt_ehci.c#L4970">NXP i.MX RT EHCI USB Driver</a> from Apache NuttX RTOS to PinePhone and Allwinner A64…</p>
 <ul>
@@ -234,8 +235,9 @@
 </ul>
 <p>To add the PinePhone USB Driver to our NuttX Project…</p>
 <p>TODO</p>
-<p>Let’s boot the NuttX USB EHCI Driver on PinePhone…</p>
 <h1 id="64-bit-update-for-ehci-driver"><a href="#64-bit-update-for-ehci-driver">5 64-Bit Update for EHCI Driver</a></h1>
+<p>TODO</p>
+<p>Let’s boot the NuttX USB EHCI Driver on PinePhone…</p>
 <p>TODO</p>
 <p>When PinePhone boots the NuttX USB EHCI Driver, it halts with an Assertion Failure…</p>
 <div class="example-wrap"><pre class="language-text"><code>_assert: Current Version: NuttX  12.0.3 4d922be-dirty Mar  7 2023 15:54:47 arm64
