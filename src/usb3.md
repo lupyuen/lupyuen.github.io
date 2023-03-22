@@ -44,23 +44,27 @@ According to the [__Official Spec__](https://www.intel.sg/content/www/xa/en/prod
 
 > "The specification includes a description of the Hardware and Software Interface between System Software and the Host Controller Hardware"
 
-Which means we can build the NuttX USB Driver for PinePhone... By simply talking to the (Memory-Mapped) __EHCI Registers__ on Allwinner A64's USB Controller!
+_So EHCI is a standard, unified way to program the USB Controller on any Hardware Platform?_
 
-_What are the EHCI Registers?_
+Yep and USB EHCI is __supported on PinePhone__!
 
-The Standard EHCI Registers are documented here...
+Which means we can build the USB Driver for PinePhone... By simply reading and writing the (Memory-Mapped) __EHCI Registers__ on Allwinner A64's USB Controller! (Pic above)
+
+_What are the USB EHCI Registers?_
+
+The __Standard EHCI Registers__ are documented here...
 
 -   [__"Enhanced Host Controller Interface Specification"__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification.html)
 
 -   [__"Enhanced Host Controller Interface for USB 2.0: Specification"__](https://www.intel.sg/content/www/xa/en/products/docs/io/universal-serial-bus/ehci-specification-for-usb.html)
 
-(Version 1.1 Addendum isn't relevant because Allwinner A64 only implements Version 1.0 of the spec)
+    (Skip the "Version 1.1 Addendum", Allwinner A64 only implements Version 1.0 of the spec)
 
-Allwinner A64 implements the EHCI Registers for __Port USB1__ at Base Address __`0x01C1` `B000`__ (USB_HCI1, pic below)
+Allwinner A64 implements the EHCI Registers for __Port USB1__ at Base Address __`0x01C1` `B000`__ (USB_HCI1, pic above)
 
-Refer to the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)...
+More about this in the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)...
 
--   __Section 7.5.3.3:__ USB Host Register List (Page 585, pic below)
+-   __Section 7.5.3.3:__ USB Host Register List (Page 585, pic above)
 
 -   __Section 7.5.3.4:__ EHCI Register Description (Page 587)
 
@@ -70,7 +74,7 @@ Refer to the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephon
 
 -   __Section 7.5.3.7:__ USB Host Clock Requirement (Page 620)
 
-TODO __USB Enhanced Host Controller Interface__ (EHCI)
+TODO
 
 OTG
 
