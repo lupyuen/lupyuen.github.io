@@ -8,13 +8,21 @@
 
 TODO
 
-Over the past [__17 articles__](https://github.com/lupyuen/pinephone-nuttx) we talked about porting to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) a Real-Time Operating System: [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what).
+Weeks ago we talked about porting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System) to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone). And how we might turn it into a __Feature Phone__...
 
 TODO
 
--   Port NuttX USB EHCI driver to PinePhone
+But to make phone calls and send text messages, we need to talk to the LTE Modem over USB...
 
--   EHCI vs OTG
+TODO
+
+Thus today we'll build a USB Driver for NuttX on PinePhone. We'll find out...
+
+-   What's EHCI
+
+-   How it differs from OTG
+
+-   Port NuttX USB EHCI driver to PinePhone
 
 -   USB Clocks
 
