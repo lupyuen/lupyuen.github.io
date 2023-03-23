@@ -1039,30 +1039,26 @@ Which says that NuttX has __successfully started the EHCI Controller__. Yay!
 
 _But does the driver actually work?_
 
-TODO: What next?
+We'll find out soon as we __test the NuttX EHCI Driver__ on PinePhone! Our test plan...
 
-```text
-a64_usbhost_initialize: TODO: a64_clockall_usboh3
-a64_usbhost_initialize: TODO: switch off USB bus power
-a64_usbhost_initialize: TODO: Setup pins, with power initially off
-a64_ehci_initialize: TODO: a64_clockall_usboh3
-a64_ehci_initialize: TODO: Reset the controller from the OTG peripheral
-a64_ehci_initialize: TODO: Program the controller to be the USB host controller
-a64_ehci_initialize: TODO: Re-program the USB host controller
-EHCI HCIVERSION 1.00
-EHCI nports=1, HCSPARAMS=1101
-EHCI HCCPARAMS=00a026
-a64_ehci_initialize: TODO: irq_attach
-a64_ehci_initialize: TODO: up_enable_irq
-a64_ehci_initialize: TODO: a64_usbhost_vbusdrive
-EHCI USB EHCI Initialized
-```
+-   __Enumerate the USB Devices__ on PinePhone
 
-Enumerate USB Devices (LTE Modem)
+    [(Especially the LTE Modem)](https://lupyuen.github.io/articles/usb3#pinephone-usb-controller)
 
-Check HCSPARAMS, HCCPARAMS
+-   __Handle the USB Interrupts__ on PinePhone
 
-Handle Interrupts
+    [(See this)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/main/a64_ehci.c#L5325-L5345)
+
+-   Verify the values of __HCSPARAMS__ and __HCCPARAMS__
+
+    ```text
+    EHCI nports=1, HCSPARAMS=1101
+    EHCI HCCPARAMS=00a026
+    ```
+
+    [(Based on the log)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/5238bc5246bcae896883f056d24691ebaa050f83/README.md#output-log)
+
+Stay Tuned for updates!
 
 # What's Next
 
@@ -1072,17 +1068,17 @@ Today we made a significant breakthrough in supporting __PinePhone USB on NuttX_
 
 -   NuttX USB Driver now [__boots OK on PinePhone!__](https://lupyuen.github.io/articles/usb3#nuttx-ehci-driver-starts-ok-on-pinephone) 🎉
 
--   TODO: What's __USB Enhanced Host Controller Interface__ (EHCI)
+-   We tweaked slightly the NuttX Driver for [__USB Enhanced Host Controller Interface__](https://lupyuen.github.io/articles/usb3#ehci-driver-from-apache-nuttx) (EHCI)
 
--   TODO: Why it's simpler than __USB On-The-Go__ (OTG)
+-   Which is a lot simpler than [__USB On-The-Go__](https://lupyuen.github.io/articles/usb3#ehci-is-simpler-than-usb-on-the-go) (OTG)
 
--   TODO: How we ported the __USB EHCI Driver__ from NuttX to PinePhone
+-   Remember to enable the [__USB Clocks__](https://lupyuen.github.io/articles/usb3#enable-usb-controller-clocks)
 
--   TODO: By handling __USB Clocks__ and __USB Resets__ on PinePhone
+-   And deassert the [__USB Resets__](https://lupyuen.github.io/articles/usb3#reset-usb-controller)
 
-    (Based on tips from __U-Boot Bootloader__)
+-   [__U-Boot Bootloader__](https://lupyuen.github.io/articles/usb3#pinephone-usb-drivers-in-u-boot-bootloader) is a terrific resource for PinePhone USB
 
-We're one step closer to our dream of a __NuttX Feature Phone!__
+-   We're one step closer to our dream of a [__NuttX Feature Phone__](https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone)!
 
 Meanwhile please check out the other articles on NuttX for PinePhone...
 
@@ -1093,10 +1089,6 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 Special Thanks to [__TL Lim__](https://news.apache.org/foundation/entry/the-apache-software-foundation-announced-apache-nuttx12-0) for the inspiring and invigorating chat! 🙂
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
-
--   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=34843712)
-
--   [__Discuss this article on Reddit__](https://www.reddit.com/r/PINE64official/comments/11566h0/nuttx_rtos_for_pinephone_exploring_usb/)
 
 -   [__My Current Project: "Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
 
