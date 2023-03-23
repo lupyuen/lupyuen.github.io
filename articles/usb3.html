@@ -78,7 +78,7 @@
 <li><a href="#enable-usb-controller-clocks">9 Enable USB Controller Clocks</a><ul></ul></li>
 <li><a href="#reset-usb-controller">10 Reset USB Controller</a><ul></ul></li>
 <li><a href="#nuttx-ehci-driver-starts-ok-on-pinephone">11 NuttX EHCI Driver Starts OK on PinePhone</a><ul></ul></li>
-<li><a href="#whats-next">12 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>28 Mar 2023</em></p>
+<li><a href="#whats-next">12 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>24 Mar 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/usb3-title.jpg" alt="USB Controller Block Diagram from Allwinner A64 User Manual" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><em>USB Controller Block Diagram from Allwinner A64 User Manual</em></a></p>
 <p>Weeks ago we talked about porting <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) to <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>. And how we might turn it into a <strong>Feature Phone</strong>…</p>
@@ -184,7 +184,7 @@
 <p>(Hence the name “Enhanced <strong>Host Controller</strong> Interface”)</p>
 <p>PinePhone supports both USB OTG and USB EHCI. The USB Physical Layer can switch between OTG and EHCI modes. (As we’ll soon see)</p>
 <p><em>How would we program USB OTG?</em></p>
-<p>To do USB OTG, we would need to create a driver for the <strong>Mentor Graphics OTG Controller</strong> inside PinePhone…</p>
+<p>To do USB OTG, we would need to create a driver for the <strong>Mentor Graphics (MUSB) OTG Controller</strong> inside PinePhone…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/usb2#document-the-usb-controller"><strong>“Document the USB Controller (Mentor Graphics)”</strong></a></li>
 </ul>
@@ -679,7 +679,7 @@ static int sun4i_usb_phy_init(struct phy *phy) {
 <p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L190-L215">(<strong>sun4i_usb_phy_passby</strong> is defined here)</a></p>
 <p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L244-L257">(<strong>sun4i_usb_phy0_reroute</strong> is here)</a></p>
 <p><em>What’s CONFIG_USB_MUSB_SUNXI?</em></p>
-<p><strong>CONFIG_USB_MUSB_SUNXI</strong> enables support for the Mentor Graphics OTG Controller…</p>
+<p><strong>CONFIG_USB_MUSB_SUNXI</strong> enables support for the Mentor Graphics (MUSB) OTG Controller…</p>
 <div class="example-wrap"><pre class="language-text"><code>config USB_MUSB_SUNXI
   bool &quot;Enable sunxi OTG / DRC USB controller&quot;
   depends on ARCH_SUNXI
