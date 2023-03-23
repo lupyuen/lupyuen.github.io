@@ -1100,6 +1100,29 @@ EHCI USB EHCI Initialized
 
 TODO: What next?
 
+```text
+a64_usbhost_initialize: TODO: a64_clockall_usboh3
+a64_usbhost_initialize: TODO: switch off USB bus power
+a64_usbhost_initialize: TODO: Setup pins, with power initially off
+a64_ehci_initialize: TODO: a64_clockall_usboh3
+a64_ehci_initialize: TODO: Reset the controller from the OTG peripheral
+a64_ehci_initialize: TODO: Program the controller to be the USB host controller
+a64_ehci_initialize: TODO: Re-program the USB host controller
+EHCI HCIVERSION 1.00
+EHCI nports=1, HCSPARAMS=1101
+EHCI HCCPARAMS=00a026
+a64_ehci_initialize: TODO: irq_attach
+a64_ehci_initialize: TODO: up_enable_irq
+a64_ehci_initialize: TODO: a64_usbhost_vbusdrive
+EHCI USB EHCI Initialized
+```
+
+Enumerate USB Devices (LTE Modem)
+
+Check HCSPARAMS, HCCPARAMS
+
+Handle Interrupts
+
 # What's Next
 
 TODO
@@ -1107,6 +1130,24 @@ TODO
 (I promised to reward myself with a Bread Machine when the NuttX EHCI Driver boots OK on PinePhone... Time to go shopping! 😀)
 
 TODO
+
+Today we've made a significant breakthrough in supporting __PinePhone USB on NuttX__...
+
+-   NuttX USB Driver now __boots OK on PinePhone!__ 🎉
+
+-   What's __USB Enhanced Host Controller Interface__ (EHCI)
+
+-   Why it's simpler than __USB On-The-Go__ (OTG)
+
+-   How we ported the __USB EHCI Driver__ from NuttX to PinePhone
+
+-   By handling __USB Clocks__ and __USB Resets__ on PinePhone
+
+    (Based on tips from __U-Boot Bootloader__)
+
+TODO
+
+One step closer to our vision of a NuttX Feature Phone!
 
 But stay tuned for updates! Meanwhile please check out the other articles on NuttX for PinePhone...
 
