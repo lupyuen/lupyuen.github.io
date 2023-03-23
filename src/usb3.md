@@ -1,6 +1,6 @@
 # NuttX RTOS for PinePhone: Simpler USB with EHCI (Enhanced Host Controller Interface)
 
-📝 _28 Mar 2023_
+📝 _24 Mar 2023_
 
 ![USB Controller Block Diagram from Allwinner A64 User Manual](https://lupyuen.github.io/images/usb3-title.jpg)
 
@@ -116,7 +116,7 @@ PinePhone supports both USB OTG and USB EHCI. The USB Physical Layer can switch 
 
 _How would we program USB OTG?_
 
-To do USB OTG, we would need to create a driver for the __Mentor Graphics OTG Controller__ inside PinePhone...
+To do USB OTG, we would need to create a driver for the __Mentor Graphics (MUSB) OTG Controller__ inside PinePhone...
 
 -   [__"Document the USB Controller (Mentor Graphics)"__](https://lupyuen.github.io/articles/usb2#document-the-usb-controller)
 
@@ -741,7 +741,7 @@ Which will...
 
 _What's CONFIG_USB_MUSB_SUNXI?_
 
-__CONFIG_USB_MUSB_SUNXI__ enables support for the Mentor Graphics OTG Controller...
+__CONFIG_USB_MUSB_SUNXI__ enables support for the Mentor Graphics (MUSB) OTG Controller...
 
 ```text
 config USB_MUSB_SUNXI
