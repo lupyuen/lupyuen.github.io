@@ -736,6 +736,7 @@ static const struct ccu_clk_gate a64_gates[] = {
   [CLK_USB_OHCI1] = GATE(0x0cc, BIT(17)),
 </code></pre></div>
 <p>So to enable the USB Clock <strong>CLK_BUS_EHCI0</strong>, we’ll set <strong>Bit 24</strong> of the CCU Register at <strong><code>0x060</code> + <code>0x01C2</code> <code>0000</code></strong>.</p>
+<p>These CCU Registers are also mentioned in the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>, buried deep inside Pages 81 to 147.</p>
 <p><em>How will NuttX enable the USB Clocks?</em></p>
 <p>Our <strong>NuttX EHCI Driver</strong> will enable the USB Clocks like this: <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L138-L193">a64_usbhost.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Allwinner A64 Clock Control Unit (CCU)
@@ -810,6 +811,7 @@ static const struct ccu_reset a64_resets[] = {
   [RST_BUS_OHCI1] = RESET(0x2c0, BIT(29)),
 </code></pre></div>
 <p>Hence to deassert the USB Reset <strong>RST_USB_PHY0</strong>, we’ll set <strong>Bit 0</strong> of the CCU Register at <strong><code>0x0CC</code> + <code>0x01C2</code> <code>0000</code></strong>.</p>
+<p>These CCU Registers are also mentioned in the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>, buried deep inside Pages 81 to 147.</p>
 <p><em>How will NuttX deassert the USB Resets?</em></p>
 <p>Our <strong>NuttX EHCI Driver</strong> will deassert the USB Resets like so: <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L206-L249">a64_usbhost.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Allwinner A64 Clock Control Unit (CCU)
