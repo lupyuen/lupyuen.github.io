@@ -153,7 +153,7 @@ Port USB0 isn't documented, but it appears in the __Memory Mapping__ of [__Allwi
 
 _But they look so different in the pic..._
 
-They ain't two peas in a pod because...
+They ain't two peas in a pod of pink dolphins because...
 
 -   Only __Port USB0__ supports [__USB On-The-Go (OTG)__](https://lupyuen.github.io/articles/usb3#ehci-is-simpler-than-usb-on-the-go).
 
