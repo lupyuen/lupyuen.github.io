@@ -101,7 +101,7 @@
 <p>How we ported the <strong>USB EHCI Driver</strong> from NuttX to PinePhone</p>
 </li>
 <li>
-<p>By handling <strong>USB Clocks</strong> and <strong>USB Resets</strong> on PinePhone</p>
+<p>Handling <strong>USB Clocks</strong> and <strong>USB Resets</strong> on PinePhone</p>
 <p>(Based on tips from <strong>U-Boot Bootloader</strong>)</p>
 </li>
 <li>
@@ -123,7 +123,7 @@
 </blockquote>
 <p><em>So EHCI is a standard, unified way to program the USB Controller on any Hardware Platform?</em></p>
 <p>Yep and USB EHCI is <strong>supported on PinePhone</strong>!</p>
-<p>Which means we can build the USB Driver for PinePhone… By simply reading and writing the (Memory-Mapped) <strong>EHCI Registers</strong> on Allwinner A64’s USB Controller! (Pic above)</p>
+<p>Which means we can build the USB Driver for PinePhone… By simply reading and writing the (Memory-Mapped) <strong>EHCI Registers</strong> in Allwinner A64 USB Controller! (Pic above)</p>
 <p><em>What are the USB EHCI Registers?</em></p>
 <p>The <strong>Standard EHCI Registers</strong> are documented here…</p>
 <ul>
@@ -168,7 +168,7 @@
 <p><a href="https://github.com/dreemurrs-embedded/Jumpdrive"><em>PinePhone Jumpdrive appears as a USB Drive when connected to a computer</em></a></p>
 <h1 id="ehci-is-simpler-than-usb-on-the-go"><a href="#ehci-is-simpler-than-usb-on-the-go">2 EHCI is simpler than USB On-The-Go</a></h1>
 <p><em>What’s USB On-The-Go?</em></p>
-<p>PinePhone supports <a href="https://en.wikipedia.org/wiki/USB_On-The-Go"><strong>USB On-The-Go (OTG)</strong></a>, which works as 2 modes…</p>
+<p>PinePhone supports <a href="https://en.wikipedia.org/wiki/USB_On-The-Go"><strong>USB On-The-Go (OTG)</strong></a>, which works as two modes…</p>
 <ul>
 <li>
 <p><strong>USB Host</strong>: PinePhone controls other USB Devices</p>
@@ -179,10 +179,10 @@
 </ul>
 <p>This means if we connect PinePhone to a computer, it will appear as a USB Drive.</p>
 <p>(Assuming the right drivers are started)</p>
-<p><em>USB OTG isn’t compatible with USB EHCI?</em></p>
+<p><em>Is USB OTG compatible with USB EHCI?</em></p>
 <p>EHCI supports <strong>only USB Host</strong>, not USB Device.</p>
 <p>(Hence the name “Enhanced <strong>Host Controller</strong> Interface”)</p>
-<p>PinePhone supports both USB OTG and USB EHCI. The USB Physical Layer can switch between OTG and EHCI modes. (As we’ll soon see)</p>
+<p>PinePhone supports both USB OTG and USB EHCI. PinePhone’s USB Physical Layer can switch between OTG and EHCI modes. (As we’ll soon see)</p>
 <p><em>How would we program USB OTG?</em></p>
 <p>To do USB OTG, we would need to create a driver for the <strong>Mentor Graphics (MUSB) OTG Controller</strong> inside PinePhone…</p>
 <ul>
@@ -190,8 +190,8 @@
 </ul>
 <p>Which gets really low-level and complex. <a href="https://lupyuen.github.io/articles/usb2#stm32-usb-driver-for-nuttx">(Like this)</a></p>
 <p>Thankfully we won’t need USB OTG and the Mentor Graphics Driver. Here’s why…</p>
-<p><img src="https://lupyuen.github.io/images/usb3-title.jpg" alt="USB Controller Block Diagram from Allwinner A64 User Manual" /></p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><em>USB Controller Block Diagram from Allwinner A64 User Manual</em></a></p>
+<p><img src="https://lupyuen.github.io/images/usb3-title.jpg" alt="USB Controller Block Diagram from Allwinner A64 User Manual (Page 583)" /></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><em>USB Controller Block Diagram from Allwinner A64 User Manual (Page 583)</em></a></p>
 <h1 id="pinephone-usb-controller"><a href="#pinephone-usb-controller">3 PinePhone USB Controller</a></h1>
 <p><em>Phew! We’re doing USB EHCI, not USB OTG?</em></p>
 <p>According to the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> (Page 583), there are two USB Ports in Allwinner A64: <strong>USB0 and USB1</strong>…</p>
@@ -266,7 +266,7 @@
   ret = a64_usbhost_initialize();
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/main/a64_usbhost.c#L260-L364">(<strong>a64_usbhost_initialize</strong> is defined here)</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/main/a64_ehci.c#L4953-L5373">(Which calls <strong>a64_ehci_initialize</strong> defined here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/main/a64_ehci.c#L4953-L5373">(Which calls <strong>a64_ehci_initialize</strong>)</a></p>
 <p>Let’s boot our new EHCI Driver on PinePhone and watch what happens…</p>
 <h1 id="64-bit-update-for-ehci-driver"><a href="#64-bit-update-for-ehci-driver">5 64-Bit Update for EHCI Driver</a></h1>
 <p><em>What happens when we boot NuttX with our customised EHCI Driver?</em></p>
@@ -328,6 +328,7 @@ struct a64_qh_s {
   uint8_t pad2[96 - 72]; 
 };
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/2e1f9ab090b14f88afb8c3a36ec40a0dbbb23d49/a64_ehci.c#L190-L202">(Source)</a></p>
 <p>And this fixes our Assertion Failure!</p>
 <p><em>This 64-bit patching sounds scary… What about other structs?</em></p>
 <p>To be safe, we verified that the other Struct Sizes are still <strong>valid for 64-bit platforms</strong>: <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/2e1f9ab090b14f88afb8c3a36ec40a0dbbb23d49/a64_ehci.c#L4999-L5004">a64_ehci.c</a></p>
@@ -396,8 +397,8 @@ static int a64_reset(void) {
   }
 </code></pre></div>
 <p><em>What’s a64_putreg and a64_getreg?</em></p>
-<p>Our EHCI Driver calls <strong>a64_getreg</strong> and <strong>a64_putreg</strong> to read and write the <a href="https://lupyuen.github.io/articles/usb3#usb-enhanced-host-controller-interface"><strong>EHCI Registers</strong></a>.</p>
-<p>Which appears in our log like so…</p>
+<p>Our EHCI Driver calls <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/2e1f9ab090b14f88afb8c3a36ec40a0dbbb23d49/a64_ehci.c#L964-L989"><strong>a64_getreg</strong></a> and <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/2e1f9ab090b14f88afb8c3a36ec40a0dbbb23d49/a64_ehci.c#L991-L1015"><strong>a64_putreg</strong></a> to read and write the <a href="https://lupyuen.github.io/articles/usb3#usb-enhanced-host-controller-interface"><strong>EHCI Registers</strong></a>.</p>
+<p>They appear in our log like so…</p>
 <div class="example-wrap"><pre class="language-text"><code>a64_printreg:
   01c1b010&lt;-00000000
 
@@ -437,7 +438,7 @@ a64_printreg:
 </li>
 <li>
 <p>Then we read <strong>USB Status Register USBSTS</strong>.</p>
-<p>This returns 0, which means that the USB Controller <strong>has NOT been halted</strong>.</p>
+<p>This returns 0, which means that the USB Controller <strong>has NOT been Halted</strong>.</p>
 <p>(HCHalted = 0)</p>
 </li>
 </ol>
@@ -450,7 +451,7 @@ TODO: Reset the controller from the OTG peripheral
 TODO: Program the controller to be the USB host controller
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/b921aa5259ef94ece41610ebf806ebd0fa19dee5/README.md#output-log">(Source)</a></p>
-<p>And maybe we need to initialise the <strong>USB Physical Layer</strong>?</p>
+<p>And maybe we need to initialise the <strong>USB Physical Layer</strong>.</p>
 <p><em>How do we power on the USB Controller?</em></p>
 <p>Let’s get inspired by consulting the U-Boot Bootloader…</p>
 <p><img src="https://lupyuen.github.io/images/uboot-uboot.png" alt="U-Boot Bootloader on PinePhone" /></p>
@@ -460,7 +461,7 @@ TODO: Program the controller to be the USB host controller
 <p><em>How can U-Boot Bootloader help?</em></p>
 <p><a href="https://lupyuen.github.io/articles/uboot#u-boot-bootloader"><strong>U-Boot Bootloader</strong></a> is the very first thing that runs when we power on our PinePhone.</p>
 <p>U-Boot allows booting from a USB Drive… Thus it must have a <strong>USB Driver inside</strong>!</p>
-<p>Let’s find the PinePhone USB Driver and understand it.</p>
+<p>Let’s find the PinePhone USB Driver inside U-Boot and study it.</p>
 <p><em>How to find the PinePhone USB Driver in U-Boot?</em></p>
 <p>When we search for PinePhone in the Source Code of <a href="https://github.com/u-boot/u-boot"><strong>U-Boot Bootloader</strong></a>, we find this Build Configuration: <a href="https://github.com/u-boot/u-boot/blob/master/configs/pinephone_defconfig#L3">pinephone_defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_DEFAULT_DEVICE_TREE=&quot;sun50i-a64-pinephone-1.2&quot;
@@ -526,7 +527,7 @@ TODO: Program the controller to be the USB host controller
   #phy-cells = &lt;1&gt;;
 };
 </code></pre></div>
-<p>(More about <strong>clocks</strong> and <strong>resets</strong> in a while)</p>
+<p>(We’ll come back to <strong>clocks</strong> and <strong>resets</strong> in a while)</p>
 <p>Then comes the <strong>EHCI Controller</strong> for <strong>Port USB0</strong> (which we’ll skip): <a href="https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/sun50i-a64.dtsi#L609-L633">sun50i-a64.dtsi</a></p>
 <div class="example-wrap"><pre class="language-text"><code>ehci0: usb@1c1a000 {
   compatible = &quot;allwinner,sun50i-a64-ehci&quot;, &quot;generic-ehci&quot;;
@@ -691,7 +692,7 @@ static int sun4i_usb_phy_init(struct phy *phy) {
 </code></pre></div>
 <p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/usb/musb-new/Kconfig#L68-L75">(Source)</a></p>
 <p>We assume <strong>CONFIG_USB_MUSB_SUNXI</strong> is disabled because we won’t be using USB OTG for NuttX (yet).</p>
-<p>Now we figure out how exactly we power on the USB Controller, via the USB Clocks and USB Resets…</p>
+<p>How exactly do we power on the USB Controller, via the USB Clocks and USB Resets? Let’s find out…</p>
 <h1 id="enable-usb-controller-clocks"><a href="#enable-usb-controller-clocks">9 Enable USB Controller Clocks</a></h1>
 <p><em>What are the USB Clocks for PinePhone?</em></p>
 <p>Earlier we looked at the <a href="https://lupyuen.github.io/articles/usb3#power-on-the-usb-controller"><strong>PinePhone USB PHY Driver for U-Boot</strong></a>…</p>
@@ -839,8 +840,8 @@ static void a64_usbhost_reset_deassert(void) {
 <p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L131-L136">(<strong>set_bit(addr, bit)</strong> sets the bit at an address)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L261-L279">(<strong>a64_usbhost_clk_enable</strong> is called by <strong>a64_usbhost_initialize</strong>)</a></p>
 <p>We’ve powered up the USB Controller via the USB Clocks and USB Resets. Let’s test this!</p>
-<p><img src="https://lupyuen.github.io/images/usb3-run.png" alt="Booting EHCI Driver on PinePhone" /></p>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/5238bc5246bcae896883f056d24691ebaa050f83/README.md#output-log"><em>Booting EHCI Driver on PinePhone</em></a></p>
+<p><img src="https://lupyuen.github.io/images/usb3-run.png" alt="Booting NuttX EHCI Driver on PinePhone" /></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/5238bc5246bcae896883f056d24691ebaa050f83/README.md#output-log"><em>Booting NuttX EHCI Driver on PinePhone</em></a></p>
 <h1 id="nuttx-ehci-driver-starts-ok-on-pinephone"><a href="#nuttx-ehci-driver-starts-ok-on-pinephone">11 NuttX EHCI Driver Starts OK on PinePhone</a></h1>
 <p><em>Now that we’ve powered up the USB Controller on PinePhone…</em></p>
 <p><em>Will the EHCI Driver start correctly on NuttX?</em></p>
