@@ -839,7 +839,8 @@ static void a64_usbhost_reset_deassert(void) {
 <p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L131-L136">(<strong>set_bit(addr, bit)</strong> sets the bit at an address)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L261-L279">(<strong>a64_usbhost_clk_enable</strong> is called by <strong>a64_usbhost_initialize</strong>)</a></p>
 <p>We’ve powered up the USB Controller via the USB Clocks and USB Resets. Let’s test this!</p>
-<p><img src="https://lupyuen.github.io/images/usb3-run.png" alt="NuttX EHCI Driver Starts OK on PinePhone" /></p>
+<p><img src="https://lupyuen.github.io/images/usb3-run.png" alt="Booting EHCI Driver on PinePhone" /></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/5238bc5246bcae896883f056d24691ebaa050f83/README.md#output-log"><em>Booting EHCI Driver on PinePhone</em></a></p>
 <h1 id="nuttx-ehci-driver-starts-ok-on-pinephone"><a href="#nuttx-ehci-driver-starts-ok-on-pinephone">11 NuttX EHCI Driver Starts OK on PinePhone</a></h1>
 <p><em>Now that we’ve powered up the USB Controller on PinePhone…</em></p>
 <p><em>Will the EHCI Driver start correctly on NuttX?</em></p>
@@ -869,39 +870,20 @@ int a64_usbhost_initialize(void) {
 <p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L138-L193">(<strong>a64_usbhost_clk_enable</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L206-L249">(<strong>a64_usbhost_reset_deassert</strong> is defined here)</a></p>
 <p>And now the NuttX EHCI Driver <strong>starts OK on PinePhone</strong> yay! 🎉</p>
-<p>TODO</p>
 <p>Here’s the log…</p>
-<div class="example-wrap"><pre class="language-text"><code>a64_usbhost_clk_enable: CLK_USB_PHY0
-set_bit: 0x1c200cc Bit 8
-a64_usbhost_clk_enable: CLK_USB_PHY1
-set_bit: 0x1c200cc Bit 9
-a64_usbhost_clk_enable: CLK_BUS_OHCI0
-set_bit: 0x1c20060 Bit 28
-a64_usbhost_clk_enable: CLK_BUS_EHCI0
-set_bit: 0x1c20060 Bit 24
-a64_usbhost_clk_enable: CLK_USB_OHCI0
-set_bit: 0x1c200cc Bit 16
-a64_usbhost_clk_enable: CLK_BUS_OHCI1
-set_bit: 0x1c20060 Bit 29
-a64_usbhost_clk_enable: CLK_BUS_EHCI1
-set_bit: 0x1c20060 Bit 25
-a64_usbhost_clk_enable: CLK_USB_OHCI1
-set_bit: 0x1c200cc Bit 17
-a64_usbhost_reset_deassert: RST_USB_PHY0
-set_bit: 0x1c200cc Bit 0
-a64_usbhost_reset_deassert: RST_USB_PHY1
-set_bit: 0x1c200cc Bit 1
-a64_usbhost_reset_deassert: RST_BUS_OHCI0
-set_bit: 0x1c202c0 Bit 28
-a64_usbhost_reset_deassert: RST_BUS_EHCI0
-set_bit: 0x1c202c0 Bit 24
-a64_usbhost_reset_deassert: RST_BUS_OHCI1
-set_bit: 0x1c202c0 Bit 29
-a64_usbhost_reset_deassert: RST_BUS_EHCI1
-set_bit: 0x1c202c0 Bit 25
+<div class="example-wrap"><pre class="language-text"><code>a64_usbhost_clk_enable:
+  CLK_USB_PHY0, CLK_USB_PHY1
+  CLK_BUS_OHCI0, CLK_BUS_EHCI0
+  CLK_USB_OHCI0, CLK_BUS_OHCI1
+  CLK_BUS_EHCI1, CLK_USB_OHCI1
+
+a64_usbhost_reset_deassert:
+  RST_USB_PHY0, RST_USB_PHY1
+  RST_BUS_OHCI0, RST_BUS_EHCI0
+  RST_BUS_OHCI1, RST_BUS_EHCI1
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/5238bc5246bcae896883f056d24691ebaa050f83/README.md#output-log">(Source)</a></p>
-<p>This log above shows NuttX enabling the USB Clocks and deasserting the USB Resets for…</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/5238bc5246bcae896883f056d24691ebaa050f83/README.md#output-log">(See the Complete Log)</a></p>
+<p>The log above shows NuttX enabling the <strong>USB Clocks</strong> and deasserting the <strong>USB Resets</strong> for…</p>
 <ul>
 <li>
 <p>USB PHY0 and USB PHY1</p>
@@ -914,61 +896,21 @@ set_bit: 0x1c202c0 Bit 25
 </li>
 </ul>
 <p>(Yeah this looks excessive. We probably need only USB PHY1, EHCI1 and OHCI1)</p>
-<p>Then the NuttX EHCI Driver starts…</p>
-<div class="example-wrap"><pre class="language-text"><code>a64_usbhost_initialize: TODO: a64_clockall_usboh3
-a64_usbhost_initialize: TODO: switch off USB bus power
-a64_usbhost_initialize: TODO: Setup pins, with power initially off
-usbhost_registerclass: Registering class:0x40124838 nids:2
-a64_ehci_initialize: sizeof(struct a64_qh_s)=96
-a64_ehci_initialize: sizeof(struct a64_qtd_s)=32
-a64_ehci_initialize: sizeof(struct ehci_itd_s)=64
-a64_ehci_initialize: sizeof(struct ehci_sitd_s)=28
-a64_ehci_initialize: sizeof(struct ehci_qtd_s)=32
-a64_ehci_initialize: sizeof(struct ehci_overlay_s)=32
-a64_ehci_initialize: sizeof(struct ehci_qh_s)=48
-a64_ehci_initialize: sizeof(struct ehci_fstn_s)=8
+<p>Then the <strong>NuttX EHCI Driver</strong> starts…</p>
+<div class="example-wrap"><pre class="language-text"><code>usbhost_registerclass:
+  Registering class:0x40124838 nids:2
 EHCI Initializing EHCI Stack
-a64_ehci_initialize: TODO: a64_clockall_usboh3
-a64_ehci_initialize: TODO: Reset the controller from the OTG peripheral
-a64_ehci_initialize: TODO: Program the controller to be the USB host controller
-a64_printreg: 01c1b010&lt;-00000000
-a64_printreg: 01c1b014-&gt;00001000
-a64_printreg: 01c1b010-&gt;00000000
-a64_printreg: 01c1b010&lt;-00000002
-a64_printreg: 01c1b010-&gt;00080b00
-a64_ehci_initialize: TODO: Re-program the USB host controller
-a64_printreg: 01c1b018&lt;-00000000
-a64_printreg: 01c1b014&lt;-0000003f
 EHCI HCIVERSION 1.00
-a64_printreg: 01c1b004-&gt;00001101
 EHCI nports=1, HCSPARAMS=1101
-a64_printreg: 01c1b008-&gt;0000a026
 EHCI HCCPARAMS=00a026
-a64_printreg: 01c1b028&lt;-40a87fa0
-a64_printreg: 01c1b024&lt;-40a95000
-a64_printreg: 01c1b010-&gt;00080b00
-a64_printreg: 01c1b010&lt;-00080b30
-a64_printreg: 01c1b010-&gt;00080b30
-a64_printreg: 01c1b010&lt;-00080b31
-a64_printreg: 01c1b050-&gt;00000000
-a64_printreg: 01c1b050&lt;-00000001
-a64_printreg: 01c1b014-&gt;00000000
-a64_ehci_initialize: TODO: irq_attach
-a64_printreg: 01c1b018&lt;-00000037
-a64_ehci_initialize: TODO: up_enable_irq
-a64_ehci_initialize: TODO: a64_usbhost_vbusdrive
-a64_printreg: 01c1b054-&gt;00001000
 EHCI USB EHCI Initialized
+
 NuttShell (NSH) NuttX-12.0.3
 nsh&gt; 
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/5238bc5246bcae896883f056d24691ebaa050f83/README.md#output-log">(Source)</a></p>
-<p>The log above says that NuttX has successfully started the EHCI Controller. Yay!</p>
-<div class="example-wrap"><pre class="language-text"><code>EHCI HCIVERSION 1.00
-EHCI nports=1, HCSPARAMS=1101
-EHCI HCCPARAMS=00a026
-EHCI USB EHCI Initialized
-</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/5238bc5246bcae896883f056d24691ebaa050f83/README.md#output-log">(See the Complete Log)</a></p>
+<p>Which says that NuttX has <strong>successfully started the EHCI Controller</strong>. Yay!</p>
+<p><em>But does the driver actually work?</em></p>
 <p>TODO: What next?</p>
 <div class="example-wrap"><pre class="language-text"><code>a64_usbhost_initialize: TODO: a64_clockall_usboh3
 a64_usbhost_initialize: TODO: switch off USB bus power
