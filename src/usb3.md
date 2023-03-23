@@ -571,6 +571,8 @@ usbphy: phy@1c19400 {
 };
 ```
 
+(More about __clocks__ and __resets__ in a while)
+
 Then comes the __EHCI Controller__ for __Port USB0__ (which we'll skip): [sun50i-a64.dtsi](https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/sun50i-a64.dtsi#L609-L633)
 
 ```text
@@ -735,7 +737,7 @@ Which will...
 
 [(__sun4i_usb_phy_passby__ is defined here)](https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L190-L215)
 
-[(__sun4i_usb_phy0_reroute__ is defined here)](https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L244-L257)
+[(__sun4i_usb_phy0_reroute__ is here)](https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L244-L257)
 
 _What's CONFIG_USB_MUSB_SUNXI?_
 
