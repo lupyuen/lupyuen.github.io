@@ -872,13 +872,13 @@ int a64_usbhost_initialize(void) {
 <p>And now the NuttX EHCI Driver <strong>starts OK on PinePhone</strong> yay! 🎉</p>
 <p>Here’s the log…</p>
 <div class="example-wrap"><pre class="language-text"><code>a64_usbhost_clk_enable:
-  CLK_USB_PHY0, CLK_USB_PHY1
+  CLK_USB_PHY0,  CLK_USB_PHY1
   CLK_BUS_OHCI0, CLK_BUS_EHCI0
   CLK_USB_OHCI0, CLK_BUS_OHCI1
   CLK_BUS_EHCI1, CLK_USB_OHCI1
 
 a64_usbhost_reset_deassert:
-  RST_USB_PHY0, RST_USB_PHY1
+  RST_USB_PHY0,  RST_USB_PHY1
   RST_BUS_OHCI0, RST_BUS_EHCI0
   RST_BUS_OHCI1, RST_BUS_EHCI1
 </code></pre></div>
@@ -931,35 +931,33 @@ EHCI USB EHCI Initialized
 <p>Check HCSPARAMS, HCCPARAMS</p>
 <p>Handle Interrupts</p>
 <h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
-<p>TODO</p>
 <p>(I promised to reward myself with a Bread Machine when the NuttX EHCI Driver boots OK on PinePhone… Time to go shopping! 😀)</p>
-<p>TODO</p>
-<p>Today we’ve made a significant breakthrough in supporting <strong>PinePhone USB on NuttX</strong>…</p>
+<p>Today we made a significant breakthrough in supporting <strong>PinePhone USB on NuttX</strong>…</p>
 <ul>
 <li>
-<p>NuttX USB Driver now <strong>boots OK on PinePhone!</strong> 🎉</p>
+<p>NuttX USB Driver now <a href="https://lupyuen.github.io/articles/usb3#nuttx-ehci-driver-starts-ok-on-pinephone"><strong>boots OK on PinePhone!</strong></a> 🎉</p>
 </li>
 <li>
-<p>What’s <strong>USB Enhanced Host Controller Interface</strong> (EHCI)</p>
+<p>TODO: What’s <strong>USB Enhanced Host Controller Interface</strong> (EHCI)</p>
 </li>
 <li>
-<p>Why it’s simpler than <strong>USB On-The-Go</strong> (OTG)</p>
+<p>TODO: Why it’s simpler than <strong>USB On-The-Go</strong> (OTG)</p>
 </li>
 <li>
-<p>How we ported the <strong>USB EHCI Driver</strong> from NuttX to PinePhone</p>
+<p>TODO: How we ported the <strong>USB EHCI Driver</strong> from NuttX to PinePhone</p>
 </li>
 <li>
-<p>By handling <strong>USB Clocks</strong> and <strong>USB Resets</strong> on PinePhone</p>
+<p>TODO: By handling <strong>USB Clocks</strong> and <strong>USB Resets</strong> on PinePhone</p>
 <p>(Based on tips from <strong>U-Boot Bootloader</strong>)</p>
 </li>
 </ul>
-<p>TODO</p>
-<p>One step closer to our vision of a NuttX Feature Phone!</p>
-<p>But stay tuned for updates! Meanwhile please check out the other articles on NuttX for PinePhone…</p>
+<p>We’re one step closer to our dream of a <strong>NuttX Feature Phone!</strong></p>
+<p>Meanwhile please check out the other articles on NuttX for PinePhone…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>“Apache NuttX RTOS for PinePhone”</strong></a></li>
 </ul>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
+<p>Special Thanks to <a href="https://news.apache.org/foundation/entry/the-apache-software-foundation-announced-apache-nuttx12-0"><strong>TL Lim</strong></a> for the inspiring and invigorating chat! 🙂</p>
 <ul>
 <li>
 <p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
