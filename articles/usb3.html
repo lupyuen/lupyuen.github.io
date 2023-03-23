@@ -526,6 +526,7 @@ TODO: Program the controller to be the USB host controller
   #phy-cells = &lt;1&gt;;
 };
 </code></pre></div>
+<p>(More about <strong>clocks</strong> and <strong>resets</strong> in a while)</p>
 <p>Then comes the <strong>EHCI Controller</strong> for <strong>Port USB0</strong> (which we’ll skip): <a href="https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/sun50i-a64.dtsi#L609-L633">sun50i-a64.dtsi</a></p>
 <div class="example-wrap"><pre class="language-text"><code>ehci0: usb@1c1a000 {
   compatible = &quot;allwinner,sun50i-a64-ehci&quot;, &quot;generic-ehci&quot;;
@@ -676,7 +677,7 @@ static int sun4i_usb_phy_init(struct phy *phy) {
 </ul>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx-usb#usb-controller-configuration">(<strong>phy0_dual_route</strong> is true for PinePhone)</a></p>
 <p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L190-L215">(<strong>sun4i_usb_phy_passby</strong> is defined here)</a></p>
-<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L244-L257">(<strong>sun4i_usb_phy0_reroute</strong> is defined here)</a></p>
+<p><a href="https://github.com/u-boot/u-boot/blob/master/drivers/phy/allwinner/phy-sun4i-usb.c#L244-L257">(<strong>sun4i_usb_phy0_reroute</strong> is here)</a></p>
 <p><em>What’s CONFIG_USB_MUSB_SUNXI?</em></p>
 <p><strong>CONFIG_USB_MUSB_SUNXI</strong> enables support for the Mentor Graphics OTG Controller…</p>
 <div class="example-wrap"><pre class="language-text"><code>config USB_MUSB_SUNXI
