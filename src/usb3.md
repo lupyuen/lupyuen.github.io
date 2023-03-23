@@ -995,13 +995,13 @@ Here's the log...
 
 ```text
 a64_usbhost_clk_enable:
-  CLK_USB_PHY0, CLK_USB_PHY1
+  CLK_USB_PHY0,  CLK_USB_PHY1
   CLK_BUS_OHCI0, CLK_BUS_EHCI0
   CLK_USB_OHCI0, CLK_BUS_OHCI1
   CLK_BUS_EHCI1, CLK_USB_OHCI1
 
 a64_usbhost_reset_deassert:
-  RST_USB_PHY0, RST_USB_PHY1
+  RST_USB_PHY0,  RST_USB_PHY1
   RST_BUS_OHCI0, RST_BUS_EHCI0
   RST_BUS_OHCI1, RST_BUS_EHCI1
 ```
@@ -1066,35 +1066,31 @@ Handle Interrupts
 
 # What's Next
 
-TODO
-
 (I promised to reward myself with a Bread Machine when the NuttX EHCI Driver boots OK on PinePhone... Time to go shopping! 😀)
 
-TODO
+Today we made a significant breakthrough in supporting __PinePhone USB on NuttX__...
 
-Today we've made a significant breakthrough in supporting __PinePhone USB on NuttX__...
+-   NuttX USB Driver now [__boots OK on PinePhone!__](https://lupyuen.github.io/articles/usb3#nuttx-ehci-driver-starts-ok-on-pinephone) 🎉
 
--   NuttX USB Driver now __boots OK on PinePhone!__ 🎉
+-   TODO: What's __USB Enhanced Host Controller Interface__ (EHCI)
 
--   What's __USB Enhanced Host Controller Interface__ (EHCI)
+-   TODO: Why it's simpler than __USB On-The-Go__ (OTG)
 
--   Why it's simpler than __USB On-The-Go__ (OTG)
+-   TODO: How we ported the __USB EHCI Driver__ from NuttX to PinePhone
 
--   How we ported the __USB EHCI Driver__ from NuttX to PinePhone
-
--   By handling __USB Clocks__ and __USB Resets__ on PinePhone
+-   TODO: By handling __USB Clocks__ and __USB Resets__ on PinePhone
 
     (Based on tips from __U-Boot Bootloader__)
 
-TODO
+We're one step closer to our dream of a __NuttX Feature Phone!__
 
-One step closer to our vision of a NuttX Feature Phone!
-
-But stay tuned for updates! Meanwhile please check out the other articles on NuttX for PinePhone...
+Meanwhile please check out the other articles on NuttX for PinePhone...
 
 -   [__"Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+
+Special Thanks to [__TL Lim__](https://news.apache.org/foundation/entry/the-apache-software-foundation-announced-apache-nuttx12-0) for the inspiring and invigorating chat! 🙂
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
 
