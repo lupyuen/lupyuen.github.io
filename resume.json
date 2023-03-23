@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "NuttX RTOS for PinePhone: Simpler USB with EHCI (Enhanced Host Controller Interface)",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-03-24",
+      "website": "https://lupyuen.github.io/articles/usb3",
+      "summary": "Porting the Enhanced Host Controller Interface (EHCI) USB Driver... From Apache NuttX RTOS to Pine64 PinePhone"
+    },
+    {
       "name": "(Clickable) Call Graph for Apache NuttX Real-Time Operating System",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-03-05",
