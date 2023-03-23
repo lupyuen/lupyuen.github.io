@@ -819,6 +819,8 @@ static const struct ccu_clk_gate a64_gates[] = {
 
 So to enable the USB Clock __CLK_BUS_EHCI0__, we'll set __Bit 24__ of the CCU Register at __`0x060` + `0x01C2` `0000`__.
 
+These CCU Registers are also mentioned in the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf), buried deep inside Pages 81 to 147.
+
 _How will NuttX enable the USB Clocks?_
 
 Our __NuttX EHCI Driver__ will enable the USB Clocks like this: [a64_usbhost.c](https://github.com/lupyuen/pinephone-nuttx-usb/blob/0e1632ed351975a6432b7e4fde1857d6bcc0940a/a64_usbhost.c#L138-L193)
@@ -916,6 +918,8 @@ static const struct ccu_reset a64_resets[] = {
 ```
 
 Hence to deassert the USB Reset __RST_USB_PHY0__, we'll set __Bit 0__ of the CCU Register at __`0x0CC` + `0x01C2` `0000`__.
+
+These CCU Registers are also mentioned in the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf), buried deep inside Pages 81 to 147.
 
 _How will NuttX deassert the USB Resets?_
 
