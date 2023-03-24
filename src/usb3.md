@@ -88,6 +88,8 @@ Yep USB Programming on PinePhone would be super complicated without EHCI!
 
 Let's take a peek at life without EHCI...
 
+[(EHCI always reminds me of Don Norman)](https://en.wikipedia.org/wiki/Human%E2%80%93computer_interaction)
+
 ![PinePhone Jumpdrive appears as a USB Drive when connected to a computer](https://lupyuen.github.io/images/arm-uart2.jpg)
 
 [_PinePhone Jumpdrive appears as a USB Drive when connected to a computer_](https://github.com/dreemurrs-embedded/Jumpdrive)
@@ -1095,6 +1097,10 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 Special Thanks to [__TL Lim__](https://news.apache.org/foundation/entry/the-apache-software-foundation-announced-apache-nuttx12-0) for the inspiring and invigorating chat! 🙂
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__Discuss this article on Reddit__](https://www.reddit.com/r/PINE64official/comments/11zn3zx/nuttx_rtos_for_pinephone_simpler_usb_with_ehci/)
+
+-   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=35275904)
 
 -   [__My Current Project: "Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
 
