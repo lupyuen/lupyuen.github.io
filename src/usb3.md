@@ -1066,7 +1066,17 @@ We'll find out soon as we __test the NuttX EHCI Driver__ on PinePhone! Our test 
 
     [(Based on the log)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/5238bc5246bcae896883f056d24691ebaa050f83/README.md#output-log)
 
-Stay Tuned for updates!
+Check out the progress here...
+
+-   [__"Decode EHCI Register Values"__](https://github.com/lupyuen/pinephone-nuttx-usb#decode-ehci-register-values)
+
+-   [__"Enumerate USB Devices on PinePhone"__](https://github.com/lupyuen/pinephone-nuttx-usb#enumerate-usb-devices-on-pinephone)
+
+-   [__"Handle USB Interrupt"__](https://github.com/lupyuen/pinephone-nuttx-usb#handle-usb-interrupt)
+
+-   [__"Power On LTE Modem"__](https://github.com/lupyuen/pinephone-nuttx-usb#power-on-lte-modem)
+
+-   [__"Testing CDC ACM"__](https://github.com/lupyuen/pinephone-nuttx-usb#testing-cdc-acm)
 
 # What's Next
 
