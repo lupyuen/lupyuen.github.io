@@ -106,6 +106,8 @@ Sadly we can't send AT Commands to PinePhone's LTE Modem over the UART Port.
 
 Instead, we talk to the LTE Modem over USB...
 
+__UPDATE:__ Actually the LTE Modem is connected to Allwinner A64 at UART3 and accepts AT Commands over UART. But the speed is limited to 115.2 kbps. [(See this)](https://genodians.org/ssumpf/2022-05-09-telephony)
+
 ![Quectel EG25-G LTE Modem in PinePhone Schematic (Page 15)](https://lupyuen.github.io/images/usb2-title.jpg)
 
 [_Quectel EG25-G LTE Modem in PinePhone Schematic (Page 15)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
