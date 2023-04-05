@@ -67,22 +67,36 @@
 
     <h1 class="title">NuttX RTOS for PinePhone: 4G LTE Modem</h1>
     <nav id="TOC"><ul>
-<li><a href="#power-on-lte-modem">1 Power On LTE Modem</a><ul></ul></li>
-<li><a href="#lte-modem-uart">2 LTE Modem UART</a><ul></ul></li>
-<li><a href="#whats-next">3 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-lte-modem-pins">4 Appendix: LTE Modem Pins</a><ul>
-<li><a href="#power-supply">4.1 Power Supply</a><ul></ul></li>
-<li><a href="#power-on--off">4.2 Power On / Off</a><ul></ul></li>
-<li><a href="#status-indication">4.3 Status Indication</a><ul></ul></li>
-<li><a href="#usb-interface">4.4 USB Interface</a><ul></ul></li>
-<li><a href="#main-uart-interface">4.5 Main UART Interface</a><ul></ul></li>
-<li><a href="#other-interface-pins">4.6 Other Interface Pins</a><ul></ul></li>
-<li><a href="#io-parameters-definition">4.7 I/O Parameters Definition</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>12 Apr 2023</em></p>
+<li><a href="#interfaces-for-lte-modem">1 Interfaces for LTE Modem</a><ul></ul></li>
+<li><a href="#other-pins-for-lte-modem">2 Other Pins for LTE Modem</a><ul></ul></li>
+<li><a href="#power-for-lte-modem">3 Power for LTE Modem</a><ul></ul></li>
+<li><a href="#power-on-lte-modem">4 Power On LTE Modem</a><ul></ul></li>
+<li><a href="#lte-modem-uart">5 LTE Modem UART</a><ul></ul></li>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-lte-modem-pins">7 Appendix: LTE Modem Pins</a><ul>
+<li><a href="#power-supply">7.1 Power Supply</a><ul></ul></li>
+<li><a href="#power-on--off">7.2 Power On / Off</a><ul></ul></li>
+<li><a href="#status-indication">7.3 Status Indication</a><ul></ul></li>
+<li><a href="#usb-interface">7.4 USB Interface</a><ul></ul></li>
+<li><a href="#main-uart-interface">7.5 Main UART Interface</a><ul></ul></li>
+<li><a href="#other-interface-pins">7.6 Other Interface Pins</a><ul></ul></li>
+<li><a href="#io-parameters-definition">7.7 I/O Parameters Definition</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>12 Apr 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/lte-title.jpg" alt="Quectel EG25-G Hardware Design" /></p>
 <p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><em>(Quectel EG25-G Hardware Design)</em></a></p>
 <p>TODO</p>
 <p>Weeks ago we talked about porting <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) to <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>. And how we might turn it into a <strong>Feature Phone</strong>…</p>
-<h1 id="power-on-lte-modem"><a href="#power-on-lte-modem">1 Power On LTE Modem</a></h1>
+<h1 id="interfaces-for-lte-modem"><a href="#interfaces-for-lte-modem">1 Interfaces for LTE Modem</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/lte-title4.jpg" alt="Quectel EG25-G Hardware Design" /></p>
+<h1 id="other-pins-for-lte-modem"><a href="#other-pins-for-lte-modem">2 Other Pins for LTE Modem</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/lte-title3.jpg" alt="Quectel EG25-G Hardware Design" /></p>
+<h1 id="power-for-lte-modem"><a href="#power-for-lte-modem">3 Power for LTE Modem</a></h1>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/lte-title1.jpg" alt="Quectel EG25-G Hardware Design" /></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/lte-title2.jpg" alt="Quectel EG25-G Hardware Design" /></p>
+<h1 id="power-on-lte-modem"><a href="#power-on-lte-modem">4 Power On LTE Modem</a></h1>
 <p>TODO</p>
 <p><em>How to power up PinePhone’s LTE Modem?</em></p>
 <p>According to PinePhone Schematic Page 15, the LTE Modem is connected to…</p>
@@ -253,7 +267,7 @@ _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
 <p><a href="https://genodians.org/ssumpf/2022-05-09-telephony">Genode PinePhone Telephony</a></p>
 </li>
 </ul>
-<h1 id="lte-modem-uart"><a href="#lte-modem-uart">2 LTE Modem UART</a></h1>
+<h1 id="lte-modem-uart"><a href="#lte-modem-uart">5 LTE Modem UART</a></h1>
 <p>TODO: LTE Modem UART</p>
 <ul>
 <li>
@@ -272,15 +286,7 @@ _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
 <p>BB-DTR: PB2-DTR</p>
 </li>
 </ul>
-<p>TODO1</p>
-<p><img src="https://lupyuen.github.io/images/lte-title1.jpg" alt="Quectel EG25-G Hardware Design" /></p>
-<p>TODO2</p>
-<p><img src="https://lupyuen.github.io/images/lte-title2.jpg" alt="Quectel EG25-G Hardware Design" /></p>
-<p>TODO3</p>
-<p><img src="https://lupyuen.github.io/images/lte-title3.jpg" alt="Quectel EG25-G Hardware Design" /></p>
-<p>TODO4</p>
-<p><img src="https://lupyuen.github.io/images/lte-title4.jpg" alt="Quectel EG25-G Hardware Design" /></p>
-<h1 id="whats-next"><a href="#whats-next">3 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
 <p>TODO</p>
 <p>Meanwhile please check out the other articles on NuttX for PinePhone…</p>
 <ul>
@@ -306,17 +312,17 @@ _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lte.md"><strong>lupyuen.github.io/src/lte.md</strong></a></p>
-<h1 id="appendix-lte-modem-pins"><a href="#appendix-lte-modem-pins">4 Appendix: LTE Modem Pins</a></h1>
+<h1 id="appendix-lte-modem-pins"><a href="#appendix-lte-modem-pins">7 Appendix: LTE Modem Pins</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lte-title.jpg" alt="LTE Modem inside PinePhone" /></p>
 <p><em>What’s the purpose of the above LTE Modem pins?</em></p>
 <p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">Quectel EG25-G Hardware Design</a>…</p>
-<h2 id="power-supply"><a href="#power-supply">4.1 Power Supply</a></h2>
+<h2 id="power-supply"><a href="#power-supply">7.1 Power Supply</a></h2>
 <p>TODO</p>
 <div><table><thead><tr><th>Pin Name</th><th>Pin No.</th><th>I/O</th><th>Description</th></tr></thead><tbody>
 <tr><td>VDD_EXT</td><td>7</td><td>PO</td><td>Provide 1.8 V for external circuit</td></tr>
 </tbody></table>
-</div><h2 id="power-on--off"><a href="#power-on--off">4.2 Power On / Off</a></h2>
+</div><h2 id="power-on--off"><a href="#power-on--off">7.2 Power On / Off</a></h2>
 <p>TODO</p>
 <div><table><thead><tr><th>Pin Name</th><th>Pin No.</th><th>I/O</th><th>Description</th></tr></thead><tbody>
 <tr><td>PWRKEY</td><td>21</td><td>DI</td><td>Turn on/off the module</td></tr>
@@ -337,7 +343,7 @@ _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
 <p>(EG25-G HW Design, Page 42)</p>
 </li>
 </ul>
-<h2 id="status-indication"><a href="#status-indication">4.3 Status Indication</a></h2>
+<h2 id="status-indication"><a href="#status-indication">7.3 Status Indication</a></h2>
 <p>TODO</p>
 <div><table><thead><tr><th>Pin Name</th><th>Pin No.</th><th>I/O</th><th>Description</th></tr></thead><tbody>
 <tr><td>STATUS</td><td>61</td><td>OD</td><td>Indicate the module operating status</td></tr>
@@ -349,17 +355,17 @@ _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
 <p>(EG25-G HW Design, Page 41)</p>
 </li>
 </ul>
-<h2 id="usb-interface"><a href="#usb-interface">4.4 USB Interface</a></h2>
+<h2 id="usb-interface"><a href="#usb-interface">7.4 USB Interface</a></h2>
 <p>TODO</p>
 <div><table><thead><tr><th>Pin Name</th><th>Pin No.</th><th>I/O</th><th>Description</th></tr></thead><tbody>
 <tr><td>USB_VBUS</td><td>71</td><td>PI</td><td>USB connection detection</td></tr>
 </tbody></table>
-</div><h2 id="main-uart-interface"><a href="#main-uart-interface">4.5 Main UART Interface</a></h2>
+</div><h2 id="main-uart-interface"><a href="#main-uart-interface">7.5 Main UART Interface</a></h2>
 <p>TODO</p>
 <div><table><thead><tr><th>Pin Name</th><th>Pin No.</th><th>I/O</th><th>Description</th></tr></thead><tbody>
 <tr><td>RI</td><td>62</td><td>DO</td><td>Ring indicator</td></tr>
 </tbody></table>
-</div><h2 id="other-interface-pins"><a href="#other-interface-pins">4.6 Other Interface Pins</a></h2>
+</div><h2 id="other-interface-pins"><a href="#other-interface-pins">7.6 Other Interface Pins</a></h2>
 <p>TODO</p>
 <div><table><thead><tr><th>Pin Name</th><th>Pin No.</th><th>I/O</th><th>Description</th></tr></thead><tbody>
 <tr><td>W_DISABLE#</td><td>4</td><td>DI</td><td>Airplane mode control</td></tr>
@@ -372,7 +378,7 @@ _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
 <p>(EG25-G HW Design, Page 37)</p>
 </li>
 </ul>
-<h2 id="io-parameters-definition"><a href="#io-parameters-definition">4.7 I/O Parameters Definition</a></h2>
+<h2 id="io-parameters-definition"><a href="#io-parameters-definition">7.7 I/O Parameters Definition</a></h2>
 <p>TODO</p>
 <div><table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody>
 <tr><td>AI</td><td>Analog Input</td></tr>
