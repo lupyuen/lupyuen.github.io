@@ -1080,7 +1080,7 @@ Check out the progress here...
 
 # What's Next
 
-(I promised to reward myself with a Bread Machine when the NuttX EHCI Driver boots OK on PinePhone... Time to go shopping! 😀)
+(I promised to reward myself with a [__Bread Machine__](https://qoto.org/@lupyuen/110109772143549589) when the NuttX EHCI Driver boots OK on PinePhone... Time to go shopping! 😀)
 
 Today we made a significant breakthrough in supporting __PinePhone USB on NuttX__...
 
