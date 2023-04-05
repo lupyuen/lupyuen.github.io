@@ -243,7 +243,7 @@ From [Quectel EG25-G Hardware Design](https://wiki.pine64.org/images/2/20/Quecte
 TODO
 
 | Pin Name | Pin No. | I/O | Description
-|----------|---------|-----|------------
+|:---------|:-------:|:---:|:-----------
 | VDD_EXT | 7 | PO | Provide 1.8 V for external circuit
 
 ## Power On / Off
@@ -251,8 +251,8 @@ TODO
 TODO
 
 | Pin Name | Pin No. | I/O | Description
-|----------|---------|-----|------------
-| PWRKEY | 21 | DI | Turn on/off the module
+|:---------|:-------:|:---:|:-----------
+| PWRKEY | 21 | DI | Turn on / off the module
 | RESET_N | 20 | DI | Reset signal of the module
 
 -   PWRKEY should be pulled down at least 500 ms, then pulled up
@@ -272,7 +272,7 @@ TODO
 TODO
 
 | Pin Name | Pin No. | I/O | Description
-|----------|---------|-----|------------
+|:---------|:-------:|:---:|:-----------
 | STATUS | 61 | OD | Indicate the module operating status
 
 -   When PWRKEY is pulled Low, STATUS goes High for ≥2.5 s, then STATUS goes Low
@@ -284,7 +284,7 @@ TODO
 TODO
 
 | Pin Name | Pin No. | I/O | Description
-|----------|---------|-----|------------
+|:---------|:-------:|:---:|:-----------
 | USB_VBUS | 71 | PI | USB connection detection
 
 ## Main UART Interface
@@ -292,7 +292,7 @@ TODO
 TODO
 
 | Pin Name | Pin No. | I/O | Description
-|----------|---------|-----|------------
+|:---------|:-------:|:---:|:-----------
 | RI | 62 | DO | Ring indicator
 
 ## Other Interface Pins
@@ -300,7 +300,7 @@ TODO
 TODO
 
 | Pin Name | Pin No. | I/O | Description
-|----------|---------|-----|------------
+|:---------|:-------:|:---:|:-----------
 | W_DISABLE# | 4 | DI | Airplane mode control
 | AP_READY | 2 | DI | Application processor sleep state detection
 
@@ -313,7 +313,7 @@ TODO
 TODO
 
 | Type | Description
-|------|------------
+|:-----|:-----------
 | AI | Analog Input
 | AO | Analog Output
 | DI | Digital Input
