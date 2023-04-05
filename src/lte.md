@@ -60,9 +60,95 @@ So to power up PinePhone's LTE Modem, we need to...
 
 1.  In Future: Set PH7 to High or Low for Sleep State
 
-The code looks like this...
+To do this in NuttX, our code looks like this: [a64_usbhost.c](https://github.com/lupyuen/pinephone-nuttx-usb/blob/3ceaf44c23b85ec105a0d85cd377f4a55eff5ef5/a64_usbhost.c#L337-L421)
 
-https://github.com/lupyuen/pinephone-nuttx-usb/blob/3ceaf44c23b85ec105a0d85cd377f4a55eff5ef5/a64_usbhost.c#L337-L421
+```c
+// Read PH9 to check LTE Modem Status
+#define STATUS (PIO_INPUT | PIO_PORT_PIOH | PIO_PIN9)
+ret = a64_pio_config(STATUS);
+DEBUGASSERT(ret == OK);
+_info("Status=%d\n", a64_pio_read(STATUS));
+
+// Power on DCDC1
+int pinephone_pmic_usb_init(void);
+ret = pinephone_pmic_usb_init();
+DEBUGASSERT(ret == OK);
+_info("Status=%d\n", a64_pio_read(STATUS));
+
+// Wait 1000 ms
+_info("Wait 1000 ms\n");
+up_mdelay(1000);
+_info("Status=%d\n", a64_pio_read(STATUS));
+
+// Set PL7 to High to Power On LTE Modem (4G-PWR-BAT)
+
+#define P_OUTPUT (PIO_OUTPUT | PIO_PULL_NONE | PIO_DRIVE_MEDLOW | \
+                PIO_INT_NONE | PIO_OUTPUT_SET)
+#define PWR_BAT (P_OUTPUT | PIO_PORT_PIOL | PIO_PIN7)
+_info("Configure PWR_BAT (PL7) for Output\n");
+ret = a64_pio_config(PWR_BAT);
+DEBUGASSERT(ret >= 0);
+
+_info("Set PWR_BAT (PL7) to High\n");
+a64_pio_write(PWR_BAT, true);
+_info("Status=%d\n", a64_pio_read(STATUS));
+
+// Wait 1000 ms
+_info("Wait 1000 ms\n");
+up_mdelay(1000);
+_info("Status=%d\n", a64_pio_read(STATUS));
+
+// Set PC4 to High to Deassert LTE Modem Reset (BB-RESET / RESET_N)
+
+#define RESET_N (P_OUTPUT | PIO_PORT_PIOC | PIO_PIN4)
+_info("Configure RESET_N (PC4) for Output\n");
+ret = a64_pio_config(RESET_N);
+DEBUGASSERT(ret >= 0);
+
+_info("Set RESET_N (PC4) to High\n");
+a64_pio_write(RESET_N, true);
+_info("Status=%d\n", a64_pio_read(STATUS));
+
+// Wait 30 ms for VBAT to be stable
+_info("Wait 30 ms for VBAT to be stable\n");
+up_mdelay(30);
+_info("Status=%d\n", a64_pio_read(STATUS));
+
+// Set PB3 to Power On LTE Modem (BB-PWRKEY / PWRKEY).
+// PWRKEY should be pulled down at least 500 ms, then pulled up.
+
+#define PWRKEY (P_OUTPUT | PIO_PORT_PIOB | PIO_PIN3)
+_info("Configure PWRKEY (PB3) for Output\n");
+ret = a64_pio_config(PWRKEY);
+DEBUGASSERT(ret >= 0);
+
+_info("Set PWRKEY (PB3) to Low\n");
+a64_pio_write(PWRKEY, false);
+_info("Status=%d\n", a64_pio_read(STATUS));
+
+_info("Wait 500 ms\n");
+up_mdelay(500);
+_info("Status=%d\n", a64_pio_read(STATUS));
+
+_info("Set PWRKEY (PB3) to High\n");
+a64_pio_write(PWRKEY, true);
+_info("Status=%d\n", a64_pio_read(STATUS));
+
+// Set PH8 to High to Enable LTE Modem and Disable Airplane Mode (BB-DISABLE / W_DISABLE#)
+
+#define W_DISABLE (P_OUTPUT | PIO_PORT_PIOH | PIO_PIN8)
+_info("Configure W_DISABLE (PH8) for Output\n");
+ret = a64_pio_config(W_DISABLE);
+DEBUGASSERT(ret >= 0);
+
+_info("Set W_DISABLE (PH8) to High\n");
+a64_pio_write(W_DISABLE, true);
+_info("Status=%d\n", a64_pio_read(STATUS));
+
+// TODO: Read PL6 to handle Ring Indicator / [Unsolicited Result Code](https://embeddedfreak.wordpress.com/2008/08/19/handling-urc-unsolicited-result-code-in-hayes-at-command/)
+
+// TODO: Set PH7 to High or Low for Sleep State
+```
 
 [(`pinephone_pmic_usb_init` is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/0216f6968a82a73b67fb48a276b3c0550c47008a/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L294-L340)
 
@@ -92,12 +178,22 @@ _What's the purpose of the above LTE Modem pins?_
 
 From [Quectel EG25-G Hardware Design](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)...
 
-__Power-on/off__
+## Power Supply
 
-| Pin Name | Pin No. | I/O | Description | DC Characteristics | Comment
-|----------|---------|-----|-------------|--------------------|--------
-| PWRKEY | 21 | DI | Turn on/off the module | VH = 0.8 V | The output voltage is 0.8V because of the diode drop in the Qualcomm chipset.
-| RESET_N | 20 | DI | Reset signal of the module | VIHmax = 2.1 V, VIHmin = 1.3 V, VILmax = 0.5 V | If unused, keep it open.
+TODO
+
+| Pin Name | Pin No. | I/O | Description
+|----------|---------|-----|------------
+| VDD_EXT | 7 | PO | Provide 1.8 V for external circuit
+
+## Power On / Off
+
+TODO
+
+| Pin Name | Pin No. | I/O | Description
+|----------|---------|-----|------------
+| PWRKEY | 21 | DI | Turn on/off the module
+| RESET_N | 20 | DI | Reset signal of the module
 
 -   PWRKEY should be pulled down at least 500 ms, then pulled up
     
@@ -111,46 +207,50 @@ __Power-on/off__
 
     (EG25-G HW Design, Page 42)
 
-__Other Interface Pins__
+## Status Indication
 
-| Pin Name | Pin No. | I/O | Description | DC Characteristics | Comment
-|----------|---------|-----|-------------|--------------------|--------
-| W_DISABLE# | 4 | DI | Airplane mode control | VILmin = -0.3 V, VILmax = 0.6 V, VIHmin = 1.2 V, VIHmax = 2.0 V | 1.8 V power domain. Pull-up by default. At low voltage level, module can enter into airplane mode. If unused, keep it open.
-| AP_READY | 2 | DI | Application processor sleep state detection | VILmin = -0.3 V, VILmax = 0.6 V, VIHmin = 1.2 V, VIHmax = 2.0 V | 1.8 V power domain. If unused, keep it open.
+TODO
 
--   "The W_DISABLE# pin is pulled up by default. Driving it to low level will let the module enter airplane mode"
-
-    (EG25-G HW Design, Page 37)
-
-__USB Interface__
-
-| Pin Name | Pin No. | I/O | Description | DC Characteristics | Comment
-|----------|---------|-----|-------------|--------------------|--------
-| USB_VBUS | 71 | PI | USB connection detection | Vmax = 5.25 V, Vmin = 3.0 V, Vnorm = 5.0 V, Typical: 5.0 V | If unused, keep it open.
-
-__Status Indication__
-
-| Pin Name | Pin No. | I/O | Description | DC Characteristics | Comment
-|----------|---------|-----|-------------|--------------------|--------
-| STATUS | 61 | OD | Indicate the module operating status. | The drive current should be less than 0.9 mA | An external pull-up resistor is required. If unused, keep it open.
+| Pin Name | Pin No. | I/O | Description
+|----------|---------|-----|------------
+| STATUS | 61 | OD | Indicate the module operating status
 
 -   When PWRKEY is pulled Low, STATUS goes High for ≥2.5 s, then STATUS goes Low
 
     (EG25-G HW Design, Page 41)
 
-__Main UART Interface__
+## USB Interface
 
-| Pin Name | Pin No. | I/O | Description | DC Characteristics | Comment
-|----------|---------|-----|-------------|--------------------|--------
-| RI | 62 | DO | Ring indicator | VOLmax = 0.45 V, VOHmin = 1.35 V | 1.8 V power domain. If unused, keep it open
+TODO
 
-__Power Supply__
+| Pin Name | Pin No. | I/O | Description
+|----------|---------|-----|------------
+| USB_VBUS | 71 | PI | USB connection detection
 
-| Pin Name | Pin No. | I/O | Description | DC Characteristics | Comment
-|----------|---------|-----|-------------|--------------------|--------
-| VDD_EXT | 7 | PO | Provide 1.8 V for external circuit | Vnorm = 1.8 V, IOmax = 50 mA | Power supply for external GPIO’s pull up circuits. If unused, keep it open.
+## Main UART Interface
 
-__I/O Parameters Definition__
+TODO
+
+| Pin Name | Pin No. | I/O | Description
+|----------|---------|-----|------------
+| RI | 62 | DO | Ring indicator
+
+## Other Interface Pins
+
+TODO
+
+| Pin Name | Pin No. | I/O | Description
+|----------|---------|-----|------------
+| W_DISABLE# | 4 | DI | Airplane mode control
+| AP_READY | 2 | DI | Application processor sleep state detection
+
+-   "The W_DISABLE# pin is pulled up by default. Driving it to low level will let the module enter airplane mode"
+
+    (EG25-G HW Design, Page 37)
+
+## I/O Parameters Definition
+
+TODO
 
 | Type | Description
 |------|------------
