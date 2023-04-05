@@ -2,7 +2,7 @@
 
 📝 _12 Apr 2023_
 
-![(Quectel EG25-G Hardware Design)](https://lupyuen.github.io/images/lte-title.jpg)
+![Quectel EG25-G Hardware Design](https://lupyuen.github.io/images/lte-title.jpg)
 
 [_(Quectel EG25-G Hardware Design)_](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
@@ -181,6 +181,22 @@ TODO: LTE Modem UART
 -   BB-RTS: PD4-UART4_RTS
 
 -   BB-DTR: PB2-DTR
+
+TODO1
+
+![Quectel EG25-G Hardware Design](https://lupyuen.github.io/images/lte-title1.jpg)
+
+TODO2
+
+![Quectel EG25-G Hardware Design](https://lupyuen.github.io/images/lte-title2.jpg)
+
+TODO3
+
+![Quectel EG25-G Hardware Design](https://lupyuen.github.io/images/lte-title3.jpg)
+
+TODO4
+
+![Quectel EG25-G Hardware Design](https://lupyuen.github.io/images/lte-title4.jpg)
 
 # What's Next
 
