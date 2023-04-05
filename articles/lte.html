@@ -68,7 +68,14 @@
     <h1 class="title">NuttX RTOS for PinePhone: 4G LTE Modem</h1>
     <nav id="TOC"><ul>
 <li><a href="#power-on-lte-modem">1 Power On LTE Modem</a><ul></ul></li>
-<li><a href="#lte-modem-pins">2 LTE Modem Pins</a><ul></ul></li>
+<li><a href="#lte-modem-pins">2 LTE Modem Pins</a><ul>
+<li><a href="#power-supply">2.1 Power Supply</a><ul></ul></li>
+<li><a href="#power-on--off">2.2 Power On / Off</a><ul></ul></li>
+<li><a href="#status-indication">2.3 Status Indication</a><ul></ul></li>
+<li><a href="#usb-interface">2.4 USB Interface</a><ul></ul></li>
+<li><a href="#main-uart-interface">2.5 Main UART Interface</a><ul></ul></li>
+<li><a href="#other-interface-pins">2.6 Other Interface Pins</a><ul></ul></li>
+<li><a href="#io-parameters-definition">2.7 I/O Parameters Definition</a><ul></ul></li></ul></li>
 <li><a href="#lte-modem-uart">3 LTE Modem UART</a><ul></ul></li>
 <li><a href="#whats-next">4 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>12 Apr 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/lte-title.jpg" alt="(Quectel EG25-G Hardware Design)" /></p>
@@ -140,8 +147,93 @@
 <p>In Future: Set PH7 to High or Low for Sleep State</p>
 </li>
 </ol>
-<p>The code looks like this…</p>
-<p>https://github.com/lupyuen/pinephone-nuttx-usb/blob/3ceaf44c23b85ec105a0d85cd377f4a55eff5ef5/a64_usbhost.c#L337-L421</p>
+<p>To do this in NuttX, our code looks like this: <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/3ceaf44c23b85ec105a0d85cd377f4a55eff5ef5/a64_usbhost.c#L337-L421">a64_usbhost.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Read PH9 to check LTE Modem Status
+#define STATUS (PIO_INPUT | PIO_PORT_PIOH | PIO_PIN9)
+ret = a64_pio_config(STATUS);
+DEBUGASSERT(ret == OK);
+_info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
+
+// Power on DCDC1
+int pinephone_pmic_usb_init(void);
+ret = pinephone_pmic_usb_init();
+DEBUGASSERT(ret == OK);
+_info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
+
+// Wait 1000 ms
+_info(&quot;Wait 1000 ms\n&quot;);
+up_mdelay(1000);
+_info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
+
+// Set PL7 to High to Power On LTE Modem (4G-PWR-BAT)
+
+#define P_OUTPUT (PIO_OUTPUT | PIO_PULL_NONE | PIO_DRIVE_MEDLOW | \
+                PIO_INT_NONE | PIO_OUTPUT_SET)
+#define PWR_BAT (P_OUTPUT | PIO_PORT_PIOL | PIO_PIN7)
+_info(&quot;Configure PWR_BAT (PL7) for Output\n&quot;);
+ret = a64_pio_config(PWR_BAT);
+DEBUGASSERT(ret &gt;= 0);
+
+_info(&quot;Set PWR_BAT (PL7) to High\n&quot;);
+a64_pio_write(PWR_BAT, true);
+_info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
+
+// Wait 1000 ms
+_info(&quot;Wait 1000 ms\n&quot;);
+up_mdelay(1000);
+_info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
+
+// Set PC4 to High to Deassert LTE Modem Reset (BB-RESET / RESET_N)
+
+#define RESET_N (P_OUTPUT | PIO_PORT_PIOC | PIO_PIN4)
+_info(&quot;Configure RESET_N (PC4) for Output\n&quot;);
+ret = a64_pio_config(RESET_N);
+DEBUGASSERT(ret &gt;= 0);
+
+_info(&quot;Set RESET_N (PC4) to High\n&quot;);
+a64_pio_write(RESET_N, true);
+_info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
+
+// Wait 30 ms for VBAT to be stable
+_info(&quot;Wait 30 ms for VBAT to be stable\n&quot;);
+up_mdelay(30);
+_info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
+
+// Set PB3 to Power On LTE Modem (BB-PWRKEY / PWRKEY).
+// PWRKEY should be pulled down at least 500 ms, then pulled up.
+
+#define PWRKEY (P_OUTPUT | PIO_PORT_PIOB | PIO_PIN3)
+_info(&quot;Configure PWRKEY (PB3) for Output\n&quot;);
+ret = a64_pio_config(PWRKEY);
+DEBUGASSERT(ret &gt;= 0);
+
+_info(&quot;Set PWRKEY (PB3) to Low\n&quot;);
+a64_pio_write(PWRKEY, false);
+_info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
+
+_info(&quot;Wait 500 ms\n&quot;);
+up_mdelay(500);
+_info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
+
+_info(&quot;Set PWRKEY (PB3) to High\n&quot;);
+a64_pio_write(PWRKEY, true);
+_info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
+
+// Set PH8 to High to Enable LTE Modem and Disable Airplane Mode (BB-DISABLE / W_DISABLE#)
+
+#define W_DISABLE (P_OUTPUT | PIO_PORT_PIOH | PIO_PIN8)
+_info(&quot;Configure W_DISABLE (PH8) for Output\n&quot;);
+ret = a64_pio_config(W_DISABLE);
+DEBUGASSERT(ret &gt;= 0);
+
+_info(&quot;Set W_DISABLE (PH8) to High\n&quot;);
+a64_pio_write(W_DISABLE, true);
+_info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
+
+// TODO: Read PL6 to handle Ring Indicator / [Unsolicited Result Code](https://embeddedfreak.wordpress.com/2008/08/19/handling-urc-unsolicited-result-code-in-hayes-at-command/)
+
+// TODO: Set PH7 to High or Low for Sleep State
+</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/0216f6968a82a73b67fb48a276b3c0550c47008a/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L294-L340">(<code>pinephone_pmic_usb_init</code> is defined here)</a></p>
 <p>TODO: Why does LTE Modem Status change from Low to High, then stay at High? <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/6fb84655b4ed19af7209817cc01b2a589798620a/README.md#output-log">(See this)</a></p>
 <p>Is it because of this…</p>
@@ -166,10 +258,16 @@
 <p><img src="https://lupyuen.github.io/images/lte-title.jpg" alt="LTE Modem inside PinePhone" /></p>
 <p><em>What’s the purpose of the above LTE Modem pins?</em></p>
 <p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">Quectel EG25-G Hardware Design</a>…</p>
-<p><strong>Power-on/off</strong></p>
-<div><table><thead><tr><th>Pin Name</th><th>Pin No.</th><th>I/O</th><th>Description</th><th>DC Characteristics</th><th>Comment</th></tr></thead><tbody>
-<tr><td>PWRKEY</td><td>21</td><td>DI</td><td>Turn on/off the module</td><td>VH = 0.8 V</td><td>The output voltage is 0.8V because of the diode drop in the Qualcomm chipset.</td></tr>
-<tr><td>RESET_N</td><td>20</td><td>DI</td><td>Reset signal of the module</td><td>VIHmax = 2.1 V, VIHmin = 1.3 V, VILmax = 0.5 V</td><td>If unused, keep it open.</td></tr>
+<h2 id="power-supply"><a href="#power-supply">2.1 Power Supply</a></h2>
+<p>TODO</p>
+<div><table><thead><tr><th>Pin Name</th><th>Pin No.</th><th>I/O</th><th>Description</th></tr></thead><tbody>
+<tr><td>VDD_EXT</td><td>7</td><td>PO</td><td>Provide 1.8 V for external circuit</td></tr>
+</tbody></table>
+</div><h2 id="power-on--off"><a href="#power-on--off">2.2 Power On / Off</a></h2>
+<p>TODO</p>
+<div><table><thead><tr><th>Pin Name</th><th>Pin No.</th><th>I/O</th><th>Description</th></tr></thead><tbody>
+<tr><td>PWRKEY</td><td>21</td><td>DI</td><td>Turn on/off the module</td></tr>
+<tr><td>RESET_N</td><td>20</td><td>DI</td><td>Reset signal of the module</td></tr>
 </tbody></table>
 </div>
 <ul>
@@ -186,26 +284,10 @@
 <p>(EG25-G HW Design, Page 42)</p>
 </li>
 </ul>
-<p><strong>Other Interface Pins</strong></p>
-<div><table><thead><tr><th>Pin Name</th><th>Pin No.</th><th>I/O</th><th>Description</th><th>DC Characteristics</th><th>Comment</th></tr></thead><tbody>
-<tr><td>W_DISABLE#</td><td>4</td><td>DI</td><td>Airplane mode control</td><td>VILmin = -0.3 V, VILmax = 0.6 V, VIHmin = 1.2 V, VIHmax = 2.0 V</td><td>1.8 V power domain. Pull-up by default. At low voltage level, module can enter into airplane mode. If unused, keep it open.</td></tr>
-<tr><td>AP_READY</td><td>2</td><td>DI</td><td>Application processor sleep state detection</td><td>VILmin = -0.3 V, VILmax = 0.6 V, VIHmin = 1.2 V, VIHmax = 2.0 V</td><td>1.8 V power domain. If unused, keep it open.</td></tr>
-</tbody></table>
-</div>
-<ul>
-<li>
-<p>“The W_DISABLE# pin is pulled up by default. Driving it to low level will let the module enter airplane mode”</p>
-<p>(EG25-G HW Design, Page 37)</p>
-</li>
-</ul>
-<p><strong>USB Interface</strong></p>
-<div><table><thead><tr><th>Pin Name</th><th>Pin No.</th><th>I/O</th><th>Description</th><th>DC Characteristics</th><th>Comment</th></tr></thead><tbody>
-<tr><td>USB_VBUS</td><td>71</td><td>PI</td><td>USB connection detection</td><td>Vmax = 5.25 V, Vmin = 3.0 V, Vnorm = 5.0 V, Typical: 5.0 V</td><td>If unused, keep it open.</td></tr>
-</tbody></table>
-</div>
-<p><strong>Status Indication</strong></p>
-<div><table><thead><tr><th>Pin Name</th><th>Pin No.</th><th>I/O</th><th>Description</th><th>DC Characteristics</th><th>Comment</th></tr></thead><tbody>
-<tr><td>STATUS</td><td>61</td><td>OD</td><td>Indicate the module operating status.</td><td>The drive current should be less than 0.9 mA</td><td>An external pull-up resistor is required. If unused, keep it open.</td></tr>
+<h2 id="status-indication"><a href="#status-indication">2.3 Status Indication</a></h2>
+<p>TODO</p>
+<div><table><thead><tr><th>Pin Name</th><th>Pin No.</th><th>I/O</th><th>Description</th></tr></thead><tbody>
+<tr><td>STATUS</td><td>61</td><td>OD</td><td>Indicate the module operating status</td></tr>
 </tbody></table>
 </div>
 <ul>
@@ -214,17 +296,31 @@
 <p>(EG25-G HW Design, Page 41)</p>
 </li>
 </ul>
-<p><strong>Main UART Interface</strong></p>
-<div><table><thead><tr><th>Pin Name</th><th>Pin No.</th><th>I/O</th><th>Description</th><th>DC Characteristics</th><th>Comment</th></tr></thead><tbody>
-<tr><td>RI</td><td>62</td><td>DO</td><td>Ring indicator</td><td>VOLmax = 0.45 V, VOHmin = 1.35 V</td><td>1.8 V power domain. If unused, keep it open</td></tr>
+<h2 id="usb-interface"><a href="#usb-interface">2.4 USB Interface</a></h2>
+<p>TODO</p>
+<div><table><thead><tr><th>Pin Name</th><th>Pin No.</th><th>I/O</th><th>Description</th></tr></thead><tbody>
+<tr><td>USB_VBUS</td><td>71</td><td>PI</td><td>USB connection detection</td></tr>
+</tbody></table>
+</div><h2 id="main-uart-interface"><a href="#main-uart-interface">2.5 Main UART Interface</a></h2>
+<p>TODO</p>
+<div><table><thead><tr><th>Pin Name</th><th>Pin No.</th><th>I/O</th><th>Description</th></tr></thead><tbody>
+<tr><td>RI</td><td>62</td><td>DO</td><td>Ring indicator</td></tr>
+</tbody></table>
+</div><h2 id="other-interface-pins"><a href="#other-interface-pins">2.6 Other Interface Pins</a></h2>
+<p>TODO</p>
+<div><table><thead><tr><th>Pin Name</th><th>Pin No.</th><th>I/O</th><th>Description</th></tr></thead><tbody>
+<tr><td>W_DISABLE#</td><td>4</td><td>DI</td><td>Airplane mode control</td></tr>
+<tr><td>AP_READY</td><td>2</td><td>DI</td><td>Application processor sleep state detection</td></tr>
 </tbody></table>
 </div>
-<p><strong>Power Supply</strong></p>
-<div><table><thead><tr><th>Pin Name</th><th>Pin No.</th><th>I/O</th><th>Description</th><th>DC Characteristics</th><th>Comment</th></tr></thead><tbody>
-<tr><td>VDD_EXT</td><td>7</td><td>PO</td><td>Provide 1.8 V for external circuit</td><td>Vnorm = 1.8 V, IOmax = 50 mA</td><td>Power supply for external GPIO’s pull up circuits. If unused, keep it open.</td></tr>
-</tbody></table>
-</div>
-<p><strong>I/O Parameters Definition</strong></p>
+<ul>
+<li>
+<p>“The W_DISABLE# pin is pulled up by default. Driving it to low level will let the module enter airplane mode”</p>
+<p>(EG25-G HW Design, Page 37)</p>
+</li>
+</ul>
+<h2 id="io-parameters-definition"><a href="#io-parameters-definition">2.7 I/O Parameters Definition</a></h2>
+<p>TODO</p>
 <div><table><thead><tr><th>Type</th><th>Description</th></tr></thead><tbody>
 <tr><td>AI</td><td>Analog Input</td></tr>
 <tr><td>AO</td><td>Analog Output</td></tr>
