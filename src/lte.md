@@ -10,6 +10,28 @@ TODO
 
 Weeks ago we talked about porting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System) to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone). And how we might turn it into a __Feature Phone__...
 
+# Interfaces for LTE Modem
+
+TODO
+
+![Quectel EG25-G Hardware Design](https://lupyuen.github.io/images/lte-title4.jpg)
+
+# Other Pins for LTE Modem
+
+TODO
+
+![Quectel EG25-G Hardware Design](https://lupyuen.github.io/images/lte-title3.jpg)
+
+# Power for LTE Modem
+
+TODO
+
+![Quectel EG25-G Hardware Design](https://lupyuen.github.io/images/lte-title1.jpg)
+
+TODO
+
+![Quectel EG25-G Hardware Design](https://lupyuen.github.io/images/lte-title2.jpg)
+
 # Power On LTE Modem
 
 TODO
@@ -181,22 +203,6 @@ TODO: LTE Modem UART
 -   BB-RTS: PD4-UART4_RTS
 
 -   BB-DTR: PB2-DTR
-
-TODO1
-
-![Quectel EG25-G Hardware Design](https://lupyuen.github.io/images/lte-title1.jpg)
-
-TODO2
-
-![Quectel EG25-G Hardware Design](https://lupyuen.github.io/images/lte-title2.jpg)
-
-TODO3
-
-![Quectel EG25-G Hardware Design](https://lupyuen.github.io/images/lte-title3.jpg)
-
-TODO4
-
-![Quectel EG25-G Hardware Design](https://lupyuen.github.io/images/lte-title4.jpg)
 
 # What's Next
 
