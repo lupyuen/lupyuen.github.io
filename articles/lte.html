@@ -149,11 +149,11 @@
 <p><img src="https://lupyuen.github.io/images/lte-title4.jpg" alt="Data Interfaces for LTE Modem" /></p>
 <h1 id="data-interfaces-for-lte-modem"><a href="#data-interfaces-for-lte-modem">2 Data Interfaces for LTE Modem</a></h1>
 <p><em>There’s a band of bass players in my PinePhone?</em></p>
-<p>Ahem the <a href="https://en.wikipedia.org/wiki/Baseband_processor"><strong>Baseband Processor</strong></a> inside the LTE Modem (pic above) is the chip that handles the Radio Functions for 4G LTE and GPS.</p>
+<p>Ahem the <a href="https://en.wikipedia.org/wiki/Baseband_processor"><strong>Baseband Processor</strong></a> inside the LTE Modem (pic above) is the hardware that handles the <strong>Radio Functions</strong> for 4G LTE and GPS.</p>
 <p>The Baseband Processor talks to PinePhone (Allwinner A64) over the following <strong>Data Interfaces</strong>…</p>
 <ul>
 <li>
-<p><strong>USB</strong> → A64 Port USB1 (USB Serial)</p>
+<p><strong>USB</strong> → A64 Port <strong>USB1</strong> <em>(USB Serial)</em></p>
 <p>For AT Commands and GPS Output. (Up to 480 Mbps)</p>
 </li>
 <li>
@@ -161,11 +161,11 @@
 <p>For connecting to the 4G LTE Mobile Network.</p>
 </li>
 <li>
-<p><strong>PCM</strong> → A64 Port PCM0</p>
+<p><strong>PCM</strong> → A64 Port <strong>PCM0</strong></p>
 <p>Digital Audio Stream for 4G Voice Calls.</p>
 </li>
 <li>
-<p><strong>UART</strong> → A64 Port UART3 (RX / TX), UART4 (CTS / RTS)</p>
+<p><strong>UART</strong> → A64 Port <strong>UART3</strong> <em>(RX / TX)</em>, <strong>UART4</strong> <em>(CTS / RTS)</em></p>
 <p>Simpler, alternative interface for AT Commands.</p>
 <p>(Default 115.2 kbps, up to 921.6 kbps)</p>
 </li>
