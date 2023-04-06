@@ -68,27 +68,29 @@ So if we're sending and receiving lots of 4G Mobile Data, USB is the better way.
 
 Let's talk about the UART and USB Interfaces...
 
-![Quectel EG25-G Hardware Design](https://lupyuen.github.io/images/lte-title4.jpg)
+![LTE Modem Interfaces](https://lupyuen.github.io/images/lte-title4.jpg)
 
 # LTE Modem Interfaces
 
 TODO
 
-# Other Pins for LTE Modem
+![Control Pins for LTE Modem](https://lupyuen.github.io/images/lte-title3.jpg)
+
+# Control Pins for LTE Modem
 
 TODO
 
-![Quectel EG25-G Hardware Design](https://lupyuen.github.io/images/lte-title3.jpg)
+![LTE Modem Power](https://lupyuen.github.io/images/lte-title1.jpg)
 
 # LTE Modem Power
 
 TODO
 
-![Quectel EG25-G Hardware Design](https://lupyuen.github.io/images/lte-title1.jpg)
+![LTE Modem Power Output](https://lupyuen.github.io/images/lte-title2.jpg)
 
 TODO
 
-![Quectel EG25-G Hardware Design](https://lupyuen.github.io/images/lte-title2.jpg)
+![LTE Modem inside PinePhone](https://lupyuen.github.io/images/lte-title.jpg)
 
 # Power On LTE Modem
 
@@ -117,8 +119,6 @@ According to PinePhone Schematic Page 15, the LTE Modem is connected to...
 -   AP Ready: BB-AP-READY (AP_READY) -> PH7-AP-READY
 
 (LTE Modem Pins are explained in the next section)
-
-![LTE Modem inside PinePhone](https://lupyuen.github.io/images/lte-title.jpg)
 
 So to power up PinePhone's LTE Modem, we need to...
 
