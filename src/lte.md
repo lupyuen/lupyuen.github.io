@@ -58,11 +58,11 @@ The LTE Modem accepts AT Commands in two ways (pic below)...
 
 -   Via the __UART Port (Serial)__
 
-    (Slower, up to 921.6 kbps)
+    Which is Slower: Up to 921.6 kbps
 
 -   Via the __USB Port (USB Serial)__
 
-    (Faster, up to 480 Mbps)
+    Which is Faster: Up to 480 Mbps
 
 So if we're sending and receiving lots of 4G Mobile Data, USB is the better way.
 
