@@ -78,7 +78,7 @@ _There's a band of bass players in my PinePhone?_
 
 Ahem the [__Baseband Processor__](https://en.wikipedia.org/wiki/Baseband_processor) inside the LTE Modem (pic above) is the hardware that handles the __Radio Functions__ for 4G LTE and GPS.
 
-The Baseband Processor talks to PinePhone (Allwinner A64) over the following __Data Interfaces__...
+According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (Page 15), the Baseband Processor talks to PinePhone (Allwinner A64) over the following __Data Interfaces__...
 
 -   __USB__ → A64 Port __USB1__ _(USB Serial)_
 
@@ -110,19 +110,19 @@ PinePhone controls the LTE Modem with a bunch of pins...
 
 TODO
 
--   __Baseband Power__ → A64 Port PL7
+-   __Baseband Power__ → A64 Port __PL7__
 
--   __Power Key__ → A64 Port PB3
+-   __Power Key__ → A64 Port __PB3__
 
--   __Reset__ → A64 Port PC4
+-   __Reset__ → A64 Port __PC4__
 
--   __Status__ → A64 Port PH9
+-   __Status__ → A64 Port __PH9__
 
--   __Disable__ → A64 Port PH8
+-   __Disable__ → A64 Port __PH8__
 
--   __AP Ready__ → A64 Port PH7
+-   __AP Ready__ → A64 Port __PH7__
 
--   __Ring Indicator__ → A64 Port PL6
+-   __Ring Indicator__ → A64 Port __PL6__
 
 ![LTE Modem Power](https://lupyuen.github.io/images/lte-title1.jpg)
 
@@ -130,11 +130,11 @@ TODO
 
 TODO
 
--   __RF Power__ → A64 Port PL7
+-   __RF Power__ → A64 Port __PL7__
 
--   __Baseband Power__ → A64 Port PL7
+-   __Baseband Power__ → A64 Port __PL7__
 
--   __Power Output__ → PinePhone VDD_EXT
+-   __Power Output__ → PinePhone __VDD_EXT__
 
 ![LTE Modem Power Output](https://lupyuen.github.io/images/lte-title2.jpg)
 
