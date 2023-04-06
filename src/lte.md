@@ -20,7 +20,7 @@ We're now building a [__Feature Phone__](https://lupyuen.github.io/articles/usb2
 
 -   __Programming the LTE Modem__ with UART, USB and Apache NuttX RTOS
 
-Let's talk about the 4G LTE Modem...
+Read on to learn everything about PinePhone's 4G LTE Modem...
 
 ![Quectel EG25-G LTE Modem](https://lupyuen.github.io/images/usb2-modem.jpg)
 
@@ -30,7 +30,7 @@ Let's talk about the 4G LTE Modem...
 
 _What's this LTE Modem?_
 
-Inside PinePhone is the [__Quectel EG25-G LTE Modem__](https://wiki.pine64.org/index.php/PinePhone#Modem) for [__4G LTE__](https://en.wikipedia.org/wiki/LTE_(telecommunication)) Voice Calls, SMS, Mobile Data and GPS (pic above)...
+Inside PinePhone is the [__Quectel EG25-G LTE Modem__](https://wiki.pine64.org/index.php/PinePhone#Modem) for [__4G LTE__](https://en.wikipedia.org/wiki/LTE_(telecommunication)) Voice Calls, SMS and Mobile Data, plus GPS (pic above)...
 
 -   [__Quectel EG25-G Datasheet__](https://wiki.pine64.org/wiki/File:Quectel_EG25-G_LTE_Standard_Specification_V1.3.pdf)
 
