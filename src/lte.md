@@ -76,11 +76,11 @@ Let's talk about the UART and USB Interfaces...
 
 _There's a band of bass players in my PinePhone?_
 
-Ahem the [__Baseband Processor__](https://en.wikipedia.org/wiki/Baseband_processor) inside the LTE Modem (pic above) is the chip that handles the Radio Functions for 4G LTE and GPS.
+Ahem the [__Baseband Processor__](https://en.wikipedia.org/wiki/Baseband_processor) inside the LTE Modem (pic above) is the hardware that handles the __Radio Functions__ for 4G LTE and GPS.
 
 The Baseband Processor talks to PinePhone (Allwinner A64) over the following __Data Interfaces__...
 
--   __USB__ → A64 Port USB1 (USB Serial)
+-   __USB__ → A64 Port __USB1__ _(USB Serial)_
 
     For AT Commands and GPS Output. (Up to 480 Mbps)
 
@@ -88,11 +88,11 @@ The Baseband Processor talks to PinePhone (Allwinner A64) over the following __D
 
     For connecting to the 4G LTE Mobile Network.
 
--   __PCM__ → A64 Port PCM0
+-   __PCM__ → A64 Port __PCM0__
 
     Digital Audio Stream for 4G Voice Calls.
 
--   __UART__ → A64 Port UART3 (RX / TX), UART4 (CTS / RTS)
+-   __UART__ → A64 Port __UART3__ _(RX / TX)_, __UART4__ _(CTS / RTS)_
 
     Simpler, alternative interface for AT Commands.
     
