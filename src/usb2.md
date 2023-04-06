@@ -102,15 +102,23 @@ ATD1711;
 
 [(EG25-G runs on __Qualcomm MDM 9607__ with a Cortex-A7 CPU inside)](https://xnux.eu/devices/feature/modem-pp.html#toc-modem-on-pinephone)
 
-_We send the AT Commands over UART?_
+_We send the AT Commands over the Serial / UART Port?_
 
-Sadly we can't send AT Commands to PinePhone's LTE Modem over the UART Port.
+The LTE Modem accepts AT Commands in two ways (pic below)...
 
-[(Unlike other LTE Modems)](https://lupyuen.github.io/articles/get-started-with-nb-iot-and-quectel-modules)
+-   Via the __UART Port (Serial)__
 
-Instead, we talk to the LTE Modem over USB...
+    Which is Slower: Up to 921.6 kbps
 
-__UPDATE:__ Actually the LTE Modem is connected to Allwinner A64 at UART3 and accepts AT Commands over UART. But the speed is limited to 115.2 kbps. [(See this)](https://genodians.org/ssumpf/2022-05-09-telephony)
+-   Via the __USB Port (USB Serial)__
+
+    Which is Faster: Up to 480 Mbps
+
+So if we're sending and receiving __lots of 4G Mobile Data__, USB is the better way.
+
+(UART Interface is probably sufficient for a Feature Phone)
+
+[(More about this)](https://lupyuen.github.io/articles/lte)
 
 ![Quectel EG25-G LTE Modem in PinePhone Schematic (Page 15)](https://lupyuen.github.io/images/usb2-title.jpg)
 
@@ -119,6 +127,10 @@ __UPDATE:__ Actually the LTE Modem is connected to Allwinner A64 at UART3 and ac
 # LTE Modem talks USB
 
 _How is the LTE Modem connected to PinePhone?_
+
+Check out the article...
+
+-   [__"NuttX RTOS for PinePhone: 4G LTE Modem"__](https://lupyuen.github.io/articles/lte)
 
 According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (Page 15), the Quectel EG25-G LTE Modem connects to the __Allwinner A64 SoC__ on the USB Pins...
 
