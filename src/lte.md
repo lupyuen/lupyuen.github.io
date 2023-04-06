@@ -2,9 +2,9 @@
 
 📝 _12 Apr 2023_
 
-![Quectel EG25-G LTE Modem](https://lupyuen.github.io/images/lte-title.jpg)
+![Quectel EG25-G LTE Modem inside PinePhone](https://lupyuen.github.io/images/lte-title.jpg)
 
-[_Quectel EG25-G LTE Modem_](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
+[_Quectel EG25-G LTE Modem inside PinePhone_](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
 What makes [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) a phone? It's the [__4G LTE Modem__](https://en.wikipedia.org/wiki/LTE_(telecommunication)) inside that makes Phone Calls and sends Text Messages!
 
@@ -30,7 +30,7 @@ Let's talk about the 4G LTE Modem...
 
 _What's this LTE Modem?_
 
-Inside PinePhone is the [__Quectel EG25-G LTE Modem__](https://wiki.pine64.org/index.php/PinePhone#Modem) for 4G Voice Calls, SMS, Mobile Data and GPS (pic above)...
+Inside PinePhone is the [__Quectel EG25-G LTE Modem__](https://wiki.pine64.org/index.php/PinePhone#Modem) for [__4G LTE__](https://en.wikipedia.org/wiki/LTE_(telecommunication)) Voice Calls, SMS, Mobile Data and GPS (pic above)...
 
 -   [__Quectel EG25-G Datasheet__](https://wiki.pine64.org/wiki/File:Quectel_EG25-G_LTE_Standard_Specification_V1.3.pdf)
 

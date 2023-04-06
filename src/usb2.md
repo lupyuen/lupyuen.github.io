@@ -78,6 +78,10 @@ Let's talk about PinePhone's LTE Modem...
 
 _What's this LTE Modem?_
 
+Check out the article...
+
+-   [__"NuttX RTOS for PinePhone: 4G LTE Modem"__](https://lupyuen.github.io/articles/lte)
+
 Inside PinePhone is the [__Quectel EG25-G LTE Modem__](https://wiki.pine64.org/index.php/PinePhone#Modem) for 4G Voice Calls, SMS, Mobile Data and GPS (pic above)...
 
 -   [__Quectel EG25-G Datasheet__](https://wiki.pine64.org/wiki/File:Quectel_EG25-G_LTE_Standard_Specification_V1.3.pdf)
