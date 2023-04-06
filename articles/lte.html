@@ -68,7 +68,7 @@
     <h1 class="title">NuttX RTOS for PinePhone: 4G LTE Modem</h1>
     <nav id="TOC"><ul>
 <li><a href="#quectel-eg25-g-lte-modem">1 Quectel EG25-G LTE Modem</a><ul></ul></li>
-<li><a href="#lte-modem-interfaces">2 LTE Modem Interfaces</a><ul></ul></li>
+<li><a href="#data-interfaces-for-lte-modem">2 Data Interfaces for LTE Modem</a><ul></ul></li>
 <li><a href="#control-pins-for-lte-modem">3 Control Pins for LTE Modem</a><ul></ul></li>
 <li><a href="#lte-modem-power">4 LTE Modem Power</a><ul></ul></li>
 <li><a href="#power-on-lte-modem">5 Power On LTE Modem</a><ul></ul></li>
@@ -146,25 +146,33 @@
 <p>So if we’re sending and receiving <strong>lots of 4G Mobile Data</strong>, USB is the better way.</p>
 <p>(UART Interface is probably sufficient for a Feature Phone)</p>
 <p>Let’s talk about the UART and USB Interfaces…</p>
-<p><img src="https://lupyuen.github.io/images/lte-title4.jpg" alt="LTE Modem Interfaces" /></p>
-<h1 id="lte-modem-interfaces"><a href="#lte-modem-interfaces">2 LTE Modem Interfaces</a></h1>
+<p><img src="https://lupyuen.github.io/images/lte-title4.jpg" alt="Data Interfaces for LTE Modem" /></p>
+<h1 id="data-interfaces-for-lte-modem"><a href="#data-interfaces-for-lte-modem">2 Data Interfaces for LTE Modem</a></h1>
 <p><em>There’s a band of bass players in my PinePhone?</em></p>
 <p>Ahem the <a href="https://en.wikipedia.org/wiki/Baseband_processor"><strong>Baseband Processor</strong></a> inside the LTE Modem (pic above) is the chip that handles the Radio Functions for 4G LTE and GPS.</p>
-<p>TODO</p>
+<p>The Baseband Processor talks to PinePhone (Allwinner A64) over the following <strong>Data Interfaces</strong>…</p>
 <ul>
 <li>
-<p><strong>USB</strong> → A64 Port USB1</p>
+<p><strong>USB</strong> → A64 Port USB1 (USB Serial)</p>
+<p>For AT Commands and GPS Output. (Up to 480 Mbps)</p>
 </li>
 <li>
-<p><strong>SIM</strong> → PinePhone SIM Card</p>
+<p><strong>SIM</strong> → PinePhone 4G SIM Card</p>
+<p>For connecting to the 4G LTE Mobile Network.</p>
 </li>
 <li>
 <p><strong>PCM</strong> → A64 Port PCM0</p>
+<p>Digital Audio Stream for 4G Voice Calls.</p>
 </li>
 <li>
 <p><strong>UART</strong> → A64 Port UART3 (RX / TX), UART4 (CTS / RTS)</p>
+<p>Simpler, alternative interface for AT Commands.</p>
+<p>(Default 115.2 kbps, up to 921.6 kbps)</p>
 </li>
 </ul>
+<p>UART is slower than USB, so we should probably use USB instead of UART.</p>
+<p>(Unless we’re building a simple Feature Phone)</p>
+<p>PinePhone controls the LTE Modem with a bunch of pins…</p>
 <p><img src="https://lupyuen.github.io/images/lte-title3.jpg" alt="Control Pins for LTE Modem" /></p>
 <h1 id="control-pins-for-lte-modem"><a href="#control-pins-for-lte-modem">3 Control Pins for LTE Modem</a></h1>
 <p>TODO</p>
