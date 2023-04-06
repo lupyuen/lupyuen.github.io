@@ -70,23 +70,39 @@ So if we're sending and receiving __lots of 4G Mobile Data__, USB is the better 
 
 Let's talk about the UART and USB Interfaces...
 
-![LTE Modem Interfaces](https://lupyuen.github.io/images/lte-title4.jpg)
+![Data Interfaces for LTE Modem](https://lupyuen.github.io/images/lte-title4.jpg)
 
-# LTE Modem Interfaces
+# Data Interfaces for LTE Modem
 
 _There's a band of bass players in my PinePhone?_
 
 Ahem the [__Baseband Processor__](https://en.wikipedia.org/wiki/Baseband_processor) inside the LTE Modem (pic above) is the chip that handles the Radio Functions for 4G LTE and GPS.
 
-TODO
+The Baseband Processor talks to PinePhone (Allwinner A64) over the following __Data Interfaces__...
 
--   __USB__ → A64 Port USB1
+-   __USB__ → A64 Port USB1 (USB Serial)
 
--   __SIM__ → PinePhone SIM Card
+    For AT Commands and GPS Output. (Up to 480 Mbps)
+
+-   __SIM__ → PinePhone 4G SIM Card
+
+    For connecting to the 4G LTE Mobile Network.
 
 -   __PCM__ → A64 Port PCM0
 
+    Digital Audio Stream for 4G Voice Calls.
+
 -   __UART__ → A64 Port UART3 (RX / TX), UART4 (CTS / RTS)
+
+    Simpler, alternative interface for AT Commands.
+    
+    (Default 115.2 kbps, up to 921.6 kbps)
+
+UART is slower than USB, so we should probably use USB instead of UART.
+
+(Unless we're building a simple Feature Phone)
+
+PinePhone controls the LTE Modem with a bunch of pins...
 
 ![Control Pins for LTE Modem](https://lupyuen.github.io/images/lte-title3.jpg)
 
