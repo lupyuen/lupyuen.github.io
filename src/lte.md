@@ -236,7 +236,7 @@ TODO: Why does LTE Modem Status change from Low to High, then stay at High? [(Se
 
 Is it because of this...
 
-> "Currently STATUS pin is connected to PWRKEY and to PB3. STATUS can't be read reliably since voltage divider from R1526 and R1517 places the STATUS signal at 0V or 0.5\*Vcc-IO, which is unspecified input value according to A64 datasheet (Vih is 0.7\*Vcc-IO, Vil is 0.3\*Vcc-IO, the range in between is unspecified)." 
+"Currently STATUS pin is connected to PWRKEY and to PB3. STATUS can't be read reliably since voltage divider from R1526 and R1517 places the STATUS signal at 0V or 0.5\*Vcc-IO, which is unspecified input value according to A64 datasheet (Vih is 0.7\*Vcc-IO, Vil is 0.3\*Vcc-IO, the range in between is unspecified)." 
 
 [(Source)](https://wiki.pine64.org/wiki/PinePhone_Power_Management#Open_Questions_2)
 
@@ -261,6 +261,12 @@ TODO: LTE Modem UART
 -   BB-RTS: PD4-UART4_RTS
 
 -   BB-DTR: PB2-DTR
+
+[Modem on PinePhone](https://xnux.eu/devices/feature/modem-pp.html)
+
+[Audio on PinePhone](https://xnux.eu/devices/feature/audio-pp.html)
+
+[EG25-G reverse engineering](https://xnux.eu/devices/feature/modem-pp-reveng.html)
 
 ![Quectel EG25-G LTE Modem inside PinePhone](https://lupyuen.github.io/images/wayland-sd.jpg)
 
