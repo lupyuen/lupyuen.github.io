@@ -68,9 +68,9 @@
     <h1 class="title">NuttX RTOS for PinePhone: 4G LTE Modem</h1>
     <nav id="TOC"><ul>
 <li><a href="#quectel-eg25-g-lte-modem">1 Quectel EG25-G LTE Modem</a><ul></ul></li>
-<li><a href="#interfaces-for-lte-modem">2 Interfaces for LTE Modem</a><ul></ul></li>
+<li><a href="#lte-modem-interfaces">2 LTE Modem Interfaces</a><ul></ul></li>
 <li><a href="#other-pins-for-lte-modem">3 Other Pins for LTE Modem</a><ul></ul></li>
-<li><a href="#power-for-lte-modem">4 Power for LTE Modem</a><ul></ul></li>
+<li><a href="#lte-modem-power">4 LTE Modem Power</a><ul></ul></li>
 <li><a href="#power-on-lte-modem">5 Power On LTE Modem</a><ul></ul></li>
 <li><a href="#lte-modem-uart">6 LTE Modem UART</a><ul></ul></li>
 <li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
@@ -85,7 +85,7 @@
 <p><img src="https://lupyuen.github.io/images/lte-title.jpg" alt="Quectel EG25-G LTE Modem inside PinePhone" /></p>
 <p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><em>Quectel EG25-G LTE Modem inside PinePhone</em></a></p>
 <p>What makes <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> a phone? It’s the <a href="https://en.wikipedia.org/wiki/LTE_(telecommunication)"><strong>4G LTE Modem</strong></a> inside that makes Phone Calls and sends Text Messages!</p>
-<p>We’re now building a <a href="https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone"><strong>Feature Phone</strong></a> with <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System). To make things simpler, we’re writing down <strong>everything we know</strong> about the 4G LTE Modem and how it works inside PinePhone…</p>
+<p>Now we’re building a <a href="https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone"><strong>Feature Phone</strong></a> with <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System). To make things simpler, we’re writing down <strong>everything we know</strong> about the 4G LTE Modem, and how it works inside PinePhone…</p>
 <ul>
 <li>
 <p>What’s the <strong>Quectel EG25-G LTE Modem</strong></p>
@@ -103,7 +103,7 @@
 <p><strong>Programming the LTE Modem</strong> with UART, USB and Apache NuttX RTOS</p>
 </li>
 </ul>
-<p>Read on to learn everything about PinePhone’s 4G LTE Modem…</p>
+<p>Read on to learn all about PinePhone’s 4G LTE Modem…</p>
 <p><img src="https://lupyuen.github.io/images/usb2-modem.jpg" alt="Quectel EG25-G LTE Modem" /></p>
 <p><a href="https://wiki.pine64.org/wiki/File:Quectel_EG25-G_LTE_Standard_Specification_V1.3.pdf"><em>Quectel EG25-G LTE Modem</em></a></p>
 <h1 id="quectel-eg25-g-lte-modem"><a href="#quectel-eg25-g-lte-modem">1 Quectel EG25-G LTE Modem</a></h1>
@@ -129,19 +129,29 @@
 <p>So to dial the number <strong><code>1711</code></strong>, we send this AT Command…</p>
 <div class="example-wrap"><pre class="language-text"><code>ATD1711;
 </code></pre></div>
+<p>The LTE Modem has similar AT Commands for SMS and Mobile Data.</p>
 <p><a href="https://xnux.eu/devices/feature/modem-pp.html#toc-modem-on-pinephone">(EG25-G runs on <strong>Qualcomm MDM 9607</strong> with a Cortex-A7 CPU inside)</a></p>
-<p><em>We send the AT Commands over UART?</em></p>
-<p>Sadly we can’t send AT Commands to PinePhone’s LTE Modem over the UART Port.</p>
-<p><a href="https://lupyuen.github.io/articles/get-started-with-nb-iot-and-quectel-modules">(Unlike other LTE Modems)</a></p>
-<p>Instead, we talk to the LTE Modem over USB…</p>
-<p><strong>UPDATE:</strong> Actually the LTE Modem is connected to Allwinner A64 at UART3 and accepts AT Commands over UART. But the speed is limited to 115.2 kbps. <a href="https://genodians.org/ssumpf/2022-05-09-telephony">(See this)</a></p>
-<h1 id="interfaces-for-lte-modem"><a href="#interfaces-for-lte-modem">2 Interfaces for LTE Modem</a></h1>
-<p>TODO</p>
+<p><em>We send the AT Commands over the Serial / UART Port?</em></p>
+<p>The LTE Modem accepts AT Commands in two ways (pic below)…</p>
+<ul>
+<li>
+<p>Via the <strong>UART Port (Serial)</strong></p>
+<p>(Slower, up to 921.6 kbps)</p>
+</li>
+<li>
+<p>Via the <strong>USB Port (USB Serial)</strong></p>
+<p>(Faster, up to 480 Mbps)</p>
+</li>
+</ul>
+<p>So if we’re sending and receiving lots of 4G Mobile Data, USB is the better way.</p>
+<p>Let’s talk about the UART and USB Interfaces…</p>
 <p><img src="https://lupyuen.github.io/images/lte-title4.jpg" alt="Quectel EG25-G Hardware Design" /></p>
+<h1 id="lte-modem-interfaces"><a href="#lte-modem-interfaces">2 LTE Modem Interfaces</a></h1>
+<p>TODO</p>
 <h1 id="other-pins-for-lte-modem"><a href="#other-pins-for-lte-modem">3 Other Pins for LTE Modem</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lte-title3.jpg" alt="Quectel EG25-G Hardware Design" /></p>
-<h1 id="power-for-lte-modem"><a href="#power-for-lte-modem">4 Power for LTE Modem</a></h1>
+<h1 id="lte-modem-power"><a href="#lte-modem-power">4 LTE Modem Power</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lte-title1.jpg" alt="Quectel EG25-G Hardware Design" /></p>
 <p>TODO</p>
