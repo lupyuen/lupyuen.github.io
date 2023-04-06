@@ -76,17 +76,45 @@ Let's talk about the UART and USB Interfaces...
 
 TODO
 
+-   __USB__ → A64 Port USB1
+
+-   __SIM__ → PinePhone SIM Card
+
+-   __PCM__ → A64 Port PCM0
+
+-   __UART__ → A64 Port UART3 (RX / TX), UART4 (CTS / RTS)
+
 ![Control Pins for LTE Modem](https://lupyuen.github.io/images/lte-title3.jpg)
 
 # Control Pins for LTE Modem
 
 TODO
 
+-   __Baseband Power__ → A64 Port PL7
+
+-   __Power Key__ → A64 Port PB3
+
+-   __Reset__ → A64 Port PC4
+
+-   __Status__ → A64 Port PH9
+
+-   __Disable__ → A64 Port PH8
+
+-   __AP Ready__ → A64 Port PH7
+
+-   __Ring Indicator__ → A64 Port PL6
+
 ![LTE Modem Power](https://lupyuen.github.io/images/lte-title1.jpg)
 
 # LTE Modem Power
 
 TODO
+
+-   __RF Power__ → A64 Port PL7
+
+-   __Baseband Power__ → A64 Port PL7
+
+-   __Power Output__ → PinePhone VDD_EXT
 
 ![LTE Modem Power Output](https://lupyuen.github.io/images/lte-title2.jpg)
 
