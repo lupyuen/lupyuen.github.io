@@ -74,6 +74,10 @@ Let's talk about the UART and USB Interfaces...
 
 # LTE Modem Interfaces
 
+_There's a band of bass players in my PinePhone?_
+
+Ahem the [__Baseband Processor__](https://en.wikipedia.org/wiki/Baseband_processor) inside the LTE Modem (pic above) is the chip that handles the Radio Functions for 4G LTE and GPS.
+
 TODO
 
 -   __USB__ → A64 Port USB1
