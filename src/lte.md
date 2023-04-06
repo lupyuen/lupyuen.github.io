@@ -64,7 +64,9 @@ The LTE Modem accepts AT Commands in two ways (pic below)...
 
     Which is Faster: Up to 480 Mbps
 
-So if we're sending and receiving lots of 4G Mobile Data, USB is the better way.
+So if we're sending and receiving __lots of 4G Mobile Data__, USB is the better way.
+
+(UART Interface is probably sufficient for a Feature Phone)
 
 Let's talk about the UART and USB Interfaces...
 
