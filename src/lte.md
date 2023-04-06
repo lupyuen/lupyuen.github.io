@@ -8,7 +8,7 @@
 
 What makes [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) a phone? It's the [__4G LTE Modem__](https://en.wikipedia.org/wiki/LTE_(telecommunication)) inside that makes Phone Calls and sends Text Messages!
 
-We're now building a [__Feature Phone__](https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone) with [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System). To make things simpler, we're writing down __everything we know__ about the 4G LTE Modem and how it works inside PinePhone...
+Now we're building a [__Feature Phone__](https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone) with [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System). To make things simpler, we're writing down __everything we know__ about the 4G LTE Modem, and how it works inside PinePhone...
 
 -   What's the __Quectel EG25-G LTE Modem__
 
@@ -20,7 +20,7 @@ We're now building a [__Feature Phone__](https://lupyuen.github.io/articles/usb2
 
 -   __Programming the LTE Modem__ with UART, USB and Apache NuttX RTOS
 
-Read on to learn everything about PinePhone's 4G LTE Modem...
+Read on to learn all about PinePhone's 4G LTE Modem...
 
 ![Quectel EG25-G LTE Modem](https://lupyuen.github.io/images/usb2-modem.jpg)
 
@@ -48,23 +48,31 @@ So to dial the number __`1711`__, we send this AT Command...
 ATD1711;
 ```
 
+The LTE Modem has similar AT Commands for SMS and Mobile Data.
+
 [(EG25-G runs on __Qualcomm MDM 9607__ with a Cortex-A7 CPU inside)](https://xnux.eu/devices/feature/modem-pp.html#toc-modem-on-pinephone)
 
-_We send the AT Commands over UART?_
+_We send the AT Commands over the Serial / UART Port?_
 
-Sadly we can't send AT Commands to PinePhone's LTE Modem over the UART Port.
+The LTE Modem accepts AT Commands in two ways (pic below)...
 
-[(Unlike other LTE Modems)](https://lupyuen.github.io/articles/get-started-with-nb-iot-and-quectel-modules)
+-   Via the __UART Port (Serial)__
 
-Instead, we talk to the LTE Modem over USB...
+    (Slower, up to 921.6 kbps)
 
-__UPDATE:__ Actually the LTE Modem is connected to Allwinner A64 at UART3 and accepts AT Commands over UART. But the speed is limited to 115.2 kbps. [(See this)](https://genodians.org/ssumpf/2022-05-09-telephony)
+-   Via the __USB Port (USB Serial)__
 
-# Interfaces for LTE Modem
+    (Faster, up to 480 Mbps)
 
-TODO
+So if we're sending and receiving lots of 4G Mobile Data, USB is the better way.
+
+Let's talk about the UART and USB Interfaces...
 
 ![Quectel EG25-G Hardware Design](https://lupyuen.github.io/images/lte-title4.jpg)
+
+# LTE Modem Interfaces
+
+TODO
 
 # Other Pins for LTE Modem
 
@@ -72,7 +80,7 @@ TODO
 
 ![Quectel EG25-G Hardware Design](https://lupyuen.github.io/images/lte-title3.jpg)
 
-# Power for LTE Modem
+# LTE Modem Power
 
 TODO
 
