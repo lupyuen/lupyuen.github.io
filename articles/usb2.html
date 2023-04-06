@@ -163,15 +163,29 @@
 <div class="example-wrap"><pre class="language-text"><code>ATD1711;
 </code></pre></div>
 <p><a href="https://xnux.eu/devices/feature/modem-pp.html#toc-modem-on-pinephone">(EG25-G runs on <strong>Qualcomm MDM 9607</strong> with a Cortex-A7 CPU inside)</a></p>
-<p><em>We send the AT Commands over UART?</em></p>
-<p>Sadly we can’t send AT Commands to PinePhone’s LTE Modem over the UART Port.</p>
-<p><a href="https://lupyuen.github.io/articles/get-started-with-nb-iot-and-quectel-modules">(Unlike other LTE Modems)</a></p>
-<p>Instead, we talk to the LTE Modem over USB…</p>
-<p><strong>UPDATE:</strong> Actually the LTE Modem is connected to Allwinner A64 at UART3 and accepts AT Commands over UART. But the speed is limited to 115.2 kbps. <a href="https://genodians.org/ssumpf/2022-05-09-telephony">(See this)</a></p>
+<p><em>We send the AT Commands over the Serial / UART Port?</em></p>
+<p>The LTE Modem accepts AT Commands in two ways (pic below)…</p>
+<ul>
+<li>
+<p>Via the <strong>UART Port (Serial)</strong></p>
+<p>Which is Slower: Up to 921.6 kbps</p>
+</li>
+<li>
+<p>Via the <strong>USB Port (USB Serial)</strong></p>
+<p>Which is Faster: Up to 480 Mbps</p>
+</li>
+</ul>
+<p>So if we’re sending and receiving <strong>lots of 4G Mobile Data</strong>, USB is the better way.</p>
+<p>(UART Interface is probably sufficient for a Feature Phone)</p>
+<p><a href="https://lupyuen.github.io/articles/lte">(More about this)</a></p>
 <p><img src="https://lupyuen.github.io/images/usb2-title.jpg" alt="Quectel EG25-G LTE Modem in PinePhone Schematic (Page 15)" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>Quectel EG25-G LTE Modem in PinePhone Schematic (Page 15)</em></a></p>
 <h1 id="lte-modem-talks-usb"><a href="#lte-modem-talks-usb">3 LTE Modem talks USB</a></h1>
 <p><em>How is the LTE Modem connected to PinePhone?</em></p>
+<p>Check out the article…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lte"><strong>“NuttX RTOS for PinePhone: 4G LTE Modem”</strong></a></li>
+</ul>
 <p>According to the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> (Page 15), the Quectel EG25-G LTE Modem connects to the <strong>Allwinner A64 SoC</strong> on the USB Pins…</p>
 <ul>
 <li>
