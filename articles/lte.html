@@ -311,9 +311,7 @@ _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/0216f6968a82a73b67fb48a276b3c0550c47008a/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L294-L340">(<code>pinephone_pmic_usb_init</code> is defined here)</a></p>
 <p>TODO: Why does LTE Modem Status change from Low to High, then stay at High? <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/6fb84655b4ed19af7209817cc01b2a589798620a/README.md#output-log">(See this)</a></p>
 <p>Is it because of this…</p>
-<blockquote>
 <p>“Currently STATUS pin is connected to PWRKEY and to PB3. STATUS can’t be read reliably since voltage divider from R1526 and R1517 places the STATUS signal at 0V or 0.5*Vcc-IO, which is unspecified input value according to A64 datasheet (Vih is 0.7*Vcc-IO, Vil is 0.3*Vcc-IO, the range in between is unspecified).” </p>
-</blockquote>
 <p><a href="https://wiki.pine64.org/wiki/PinePhone_Power_Management#Open_Questions_2">(Source)</a></p>
 <p>References:</p>
 <ul>
@@ -346,6 +344,9 @@ _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
 <p>BB-DTR: PB2-DTR</p>
 </li>
 </ul>
+<p><a href="https://xnux.eu/devices/feature/modem-pp.html">Modem on PinePhone</a></p>
+<p><a href="https://xnux.eu/devices/feature/audio-pp.html">Audio on PinePhone</a></p>
+<p><a href="https://xnux.eu/devices/feature/modem-pp-reveng.html">EG25-G reverse engineering</a></p>
 <p><img src="https://lupyuen.github.io/images/wayland-sd.jpg" alt="Quectel EG25-G LTE Modem inside PinePhone" /></p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone#Modem"><em>Quectel EG25-G LTE Modem inside PinePhone</em></a></p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
