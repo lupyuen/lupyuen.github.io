@@ -100,7 +100,7 @@ According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhon
 
 UART is slower than USB, so we should probably use USB instead of UART.
 
-(Unless we're building a simple Feature Phone)
+(Unless we're building a simple Feature Phone without GPS)
 
 PinePhone controls the LTE Modem with a bunch of pins...
 
