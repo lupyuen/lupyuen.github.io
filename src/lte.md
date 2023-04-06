@@ -2,9 +2,9 @@
 
 📝 _12 Apr 2023_
 
-![Quectel EG25-G Hardware Design](https://lupyuen.github.io/images/lte-title.jpg)
+![Quectel EG25-G LTE Modem](https://lupyuen.github.io/images/lte-title.jpg)
 
-[_(Quectel EG25-G Hardware Design)_](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
+[_Quectel EG25-G LTE Modem_](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
 What makes [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) a phone? It's the [__4G LTE Modem__](https://en.wikipedia.org/wiki/LTE_(telecommunication)) inside that makes Phone Calls and sends Text Messages!
 
@@ -253,6 +253,10 @@ TODO: LTE Modem UART
 -   BB-RTS: PD4-UART4_RTS
 
 -   BB-DTR: PB2-DTR
+
+![Quectel EG25-G LTE Modem inside PinePhone](https://lupyuen.github.io/images/wayland-sd.jpg)
+
+[_Quectel EG25-G LTE Modem inside PinePhone_](https://wiki.pine64.org/index.php/PinePhone#Modem)
 
 # What's Next
 
