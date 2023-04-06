@@ -8,7 +8,7 @@
 
 What makes [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) a phone? It's the [__4G LTE Modem__](https://en.wikipedia.org/wiki/LTE_(telecommunication)) inside that makes Phone Calls and sends Text Messages!
 
-We're now building a [__Feature Phone__](https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone) with [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System). This article documents everything we know about the 4G LTE Modem and how it works inside PinePhone...
+We're now building a [__Feature Phone__](https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone) with [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System). To make things simpler, we're writing down __everything we know__ about the 4G LTE Modem and how it works inside PinePhone...
 
 -   What's the __Quectel EG25-G LTE Modem__
 
