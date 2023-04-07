@@ -94,7 +94,7 @@ To control the LTE Modem, we send __AT Commands__...
 
 -   [__EG25-G GNSS__](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_GNSS_Application_Note_V1.3.pdf)
 
--   [__Get Started with EG25-G__](https://www.twilio.com/docs/iot/supersim/works-with-super-sim/quectel-eg25-g)
+-   [__Get Started with AT Commands__](https://www.twilio.com/docs/iot/supersim/works-with-super-sim/quectel-eg25-g)
 
 So to dial the number __`1711`__, we send this AT Command...
 
