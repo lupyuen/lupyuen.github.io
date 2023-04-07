@@ -182,6 +182,10 @@ TODO
 
     (Also connected to Battery Power VBAT and Power Management DCDC1)
 
+TODO: Hardware switch
+
+![LTE Modem Power](https://lupyuen.github.io/images/lte-power.png)
+
 TODO
 
 -   __Power Key__ ← A64 Port __PB3__
@@ -206,6 +210,10 @@ TODO
 
 ![LTE Modem Power Output](https://lupyuen.github.io/images/lte-title2.jpg)
 
+_Wait there's a Power Output for the LTE Modem?_
+
+TODO
+
 -   __Power Output__ → PinePhone __VDD_EXT__
 
     Power Output from LTE Modem to PinePhone.
@@ -214,7 +222,7 @@ TODO
 
 TODO: VDD_EXT is super confusing
 
-![LTE Modem Power Output](https://lupyuen.github.io/images/lte-vddext.jpg)
+![LTE Modem Power Output](https://lupyuen.github.io/images/lte-vddext.png)
 
 TODO
 
