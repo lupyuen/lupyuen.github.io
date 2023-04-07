@@ -94,6 +94,8 @@ To control the LTE Modem, we send __AT Commands__...
 
 -   [__EG25-G GNSS__](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_GNSS_Application_Note_V1.3.pdf)
 
+-   [__Get Started with EG25-G__](https://www.twilio.com/docs/iot/supersim/works-with-super-sim/quectel-eg25-g)
+
 So to dial the number __`1711`__, we send this AT Command...
 
 ```text
@@ -102,9 +104,9 @@ ATD1711;
 
 [(EG25-G runs on __Qualcomm MDM 9607__ with a Cortex-A7 CPU inside)](https://xnux.eu/devices/feature/modem-pp.html#toc-modem-on-pinephone)
 
-_We send the AT Commands over the Serial / UART Port?_
+_How to send the AT Commands to LTE Modem?_
 
-The LTE Modem accepts AT Commands in two ways (pic below)...
+The LTE Modem accepts __AT Commands__ in two ways (pic below)...
 
 -   Via the __UART Port (Serial)__
 
