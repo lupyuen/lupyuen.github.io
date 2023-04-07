@@ -156,19 +156,19 @@
 <p>According to the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> (Page 15), the Baseband Processor talks to PinePhone (Allwinner A64) over the following <strong>Data Interfaces</strong>…</p>
 <ul>
 <li>
-<p><strong>USB</strong> → A64 Port <strong>USB1</strong> <em>(USB Serial)</em></p>
+<p><strong>USB</strong> ⇆ A64 Port <strong>USB1</strong> <em>(USB Serial)</em></p>
 <p>For AT Commands and GPS Output. (Up to 480 Mbps)</p>
 </li>
 <li>
-<p><strong>SIM</strong> → PinePhone 4G SIM Card</p>
+<p><strong>SIM</strong> ⇆ PinePhone 4G SIM Card</p>
 <p>For connecting to the 4G LTE Mobile Network.</p>
 </li>
 <li>
-<p><strong>PCM</strong> → A64 Port <strong>PCM0</strong></p>
+<p><strong>PCM</strong> ⇆ A64 Port <strong>PCM0</strong></p>
 <p>Digital Audio Stream for 4G Voice Calls.</p>
 </li>
 <li>
-<p><strong>UART</strong> → A64 Port <strong>UART3</strong> <em>(RX / TX)</em>, <strong>UART4</strong> <em>(CTS / RTS)</em></p>
+<p><strong>UART</strong> ⇆ A64 Port <strong>UART3</strong> <em>(RX / TX)</em>, <strong>UART4</strong> <em>(CTS / RTS)</em></p>
 <p>Simpler, alternative interface for AT Commands.</p>
 <p>(Default 115.2 kbps, up to 921.6 kbps)</p>
 </li>
@@ -178,28 +178,53 @@
 <p>PinePhone controls the LTE Modem with a bunch of pins…</p>
 <p><img src="https://lupyuen.github.io/images/lte-title3.jpg" alt="Control Pins for LTE Modem" /></p>
 <h1 id="control-pins-for-lte-modem"><a href="#control-pins-for-lte-modem">3 Control Pins for LTE Modem</a></h1>
+<p><em>PinePhone’s LTE Modem is controlled only by AT Commands?</em></p>
+<p>Not quite. According to the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> (Page 15), the LTE Modem is also controlled by the following GPIO Pins…</p>
+<ul>
+<li>
+<p><strong>Baseband Power</strong> ← A64 Port <strong>PL7</strong></p>
+<p>Supplies power to LTE Modem.</p>
+<p>(Also connected to Battery Power VBAT and Power Management DCDC1)</p>
+</li>
+<li>
+<p><strong>Power Key</strong> ← A64 Port <strong>PB3</strong></p>
+<p>Power up the LTE Modem.</p>
+<p><a href="https://lupyuen.github.io/articles/lte#power-on--off">(See this)</a></p>
+</li>
+<li>
+<p><strong>Reset</strong> ← A64 Port <strong>PC4</strong></p>
+<p>Reset the LTE Modem.</p>
+</li>
+</ul>
+<p>We’ll control the above GPIO Pins to <strong>power up the LTE Modem</strong> at startup.</p>
+<p>(More in the next section)</p>
+<p>We’ll read this GPIO Pin to check if the <strong>LTE Modem is hunky dory</strong> at startup…</p>
+<ul>
+<li>
+<p><strong>Status</strong> → A64 Port <strong>PH9</strong></p>
+<p>Read the Modem Status.</p>
+<p><a href="https://lupyuen.github.io/articles/lte#status-indication">(See this)</a></p>
+</li>
+</ul>
 <p>TODO</p>
 <ul>
 <li>
-<p><strong>Baseband Power</strong> → A64 Port <strong>PL7</strong></p>
+<p><strong>Disable</strong> ← A64 Port <strong>PH8</strong></p>
+<p>Enable or Disable Airplane Mode.</p>
+<p><a href="https://lupyuen.github.io/articles/lte#other-interface-pins">(See this)</a></p>
 </li>
 <li>
-<p><strong>Power Key</strong> → A64 Port <strong>PB3</strong></p>
+<p><strong>AP Ready</strong> ← A64 Port <strong>PH7</strong></p>
+<p>Read the Modem Sleep State.</p>
+<p><a href="https://lupyuen.github.io/articles/lte#other-interface-pins">(See this)</a></p>
 </li>
-<li>
-<p><strong>Reset</strong> → A64 Port <strong>PC4</strong></p>
-</li>
-<li>
-<p><strong>Status</strong> → A64 Port <strong>PH9</strong></p>
-</li>
-<li>
-<p><strong>Disable</strong> → A64 Port <strong>PH8</strong></p>
-</li>
-<li>
-<p><strong>AP Ready</strong> → A64 Port <strong>PH7</strong></p>
-</li>
+</ul>
+<p>TODO</p>
+<ul>
 <li>
 <p><strong>Ring Indicator</strong> → A64 Port <strong>PL6</strong></p>
+<p>Indicates Incoming Calls.</p>
+<p><a href="https://lupyuen.github.io/articles/lte#main-uart-interface">(See this)</a></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/lte-title1.jpg" alt="LTE Modem Power" /></p>
@@ -207,13 +232,40 @@
 <p>TODO</p>
 <ul>
 <li>
-<p><strong>RF Power</strong> → A64 Port <strong>PL7</strong></p>
+<p><strong>RF Power</strong> ← A64 Port <strong>PL7</strong></p>
+<p>Supplies power to the RF Transceiver.</p>
+<p>(Also connected to Battery Power VBAT and Power Management DCDC1)</p>
 </li>
 <li>
-<p><strong>Baseband Power</strong> → A64 Port <strong>PL7</strong></p>
+<p><strong>Baseband Power</strong> ← A64 Port <strong>PL7</strong></p>
+<p>Supplies power to LTE Modem.</p>
+<p>(Also connected to Battery Power VBAT and Power Management DCDC1)</p>
 </li>
+</ul>
+<p>TODO</p>
+<ul>
+<li>
+<p><strong>Power Key</strong> ← A64 Port <strong>PB3</strong></p>
+<p>Power up the LTE Modem.</p>
+<p><a href="https://lupyuen.github.io/articles/lte#power-on--off">(See this)</a></p>
+</li>
+<li>
+<p><strong>Reset</strong> ← A64 Port <strong>PC4</strong></p>
+<p>Reset the LTE Modem.</p>
+<p><a href="https://lupyuen.github.io/articles/lte#power-on--off">(See this)</a></p>
+</li>
+<li>
+<p><strong>Status</strong> → A64 Port <strong>PH9</strong></p>
+<p>Read the Modem Status.</p>
+<p><a href="https://lupyuen.github.io/articles/lte#status-indication">(See this)</a></p>
+</li>
+</ul>
+<p>TODO</p>
+<ul>
 <li>
 <p><strong>Power Output</strong> → PinePhone <strong>VDD_EXT</strong></p>
+<p>Power Output from LTE Modem to PinePhone.</p>
+<p><a href="https://lupyuen.github.io/articles/lte#power-supply">(See this)</a></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/lte-title2.jpg" alt="LTE Modem Power Output" /></p>
