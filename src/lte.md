@@ -204,13 +204,17 @@ TODO
 
 TODO
 
+![LTE Modem Power Output](https://lupyuen.github.io/images/lte-title2.jpg)
+
 -   __Power Output__ → PinePhone __VDD_EXT__
 
     Power Output from LTE Modem to PinePhone.
 
     [(See this)](https://lupyuen.github.io/articles/lte#power-supply)
 
-![LTE Modem Power Output](https://lupyuen.github.io/images/lte-title2.jpg)
+TODO: VDD_EXT is super confusing
+
+![LTE Modem Power Output](https://lupyuen.github.io/images/lte-vddext.jpg)
 
 TODO
 
