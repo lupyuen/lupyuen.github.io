@@ -180,7 +180,7 @@
 <p><img src="https://lupyuen.github.io/images/lte-title3.jpg" alt="Control Pins for LTE Modem" /></p>
 <h1 id="control-pins-for-lte-modem"><a href="#control-pins-for-lte-modem">3 Control Pins for LTE Modem</a></h1>
 <p><em>PinePhone’s LTE Modem is controlled only by AT Commands?</em></p>
-<p>There’s more! According to the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> (Page 15), the LTE Modem is also controlled by the following GPIO Pins…</p>
+<p>There’s more! According to the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> (Page 15), the LTE Modem is controlled by the following GPIO Pins…</p>
 <ul>
 <li>
 <p><strong>Baseband Power</strong> ← A64 Port <strong>PL7</strong></p>
@@ -195,10 +195,10 @@
 <li>
 <p><strong>Reset</strong> ← A64 Port <strong>PC4</strong></p>
 <p>Reset the LTE Modem.</p>
+<p><a href="https://lupyuen.github.io/articles/lte#power-on--off">(See this)</a></p>
 </li>
 </ul>
-<p>We’ll control the above GPIO Pins to <strong>power up the LTE Modem</strong> at startup.</p>
-<p>(More in the next section)</p>
+<p>We’ll control the above GPIO Pins to <strong>power up the LTE Modem</strong> at startup. (More in the next section)</p>
 <p>Also at startup, we’ll read this GPIO Pin to check if the <strong>LTE Modem is hunky dory</strong>…</p>
 <ul>
 <li>
@@ -228,6 +228,7 @@
 <p><a href="https://lupyuen.github.io/articles/lte#main-uart-interface">(See this)</a></p>
 </li>
 </ul>
+<p>Let’s talk about powering up the LTE Modem…</p>
 <p><img src="https://lupyuen.github.io/images/lte-title1.jpg" alt="LTE Modem Power" /></p>
 <h1 id="lte-modem-power"><a href="#lte-modem-power">4 LTE Modem Power</a></h1>
 <p>TODO</p>
