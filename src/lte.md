@@ -331,9 +331,11 @@ This is how we control the GPIO Pins to __power up the LTE Modem__...
 
 ![LTE Modem Power](https://lupyuen.github.io/images/lte-power2.png)
 
-_Power Key looks funky..._
+_Power Key looks funky: High-Low-High..._
 
 Yeah the Power Key is probably inspired by the press-and-hold Power Button on vintage Nokia Phones.
+
+# Power On in NuttX
 
 TODO
 
@@ -557,6 +559,12 @@ From [Quectel EG25-G Hardware Design](https://wiki.pine64.org/images/2/20/Quecte
 -   When PWRKEY is pulled Low, STATUS goes High for ≥2.5 s, then STATUS goes Low
 
     (EG25-G HW Design, Page 41)
+
+-   STATUS can't be read reliably...
+
+    "Currently STATUS pin is connected to PWRKEY and to PB3. STATUS can't be read reliably since voltage divider from R1526 and R1517 places the STATUS signal at 0V or 0.5\*Vcc-IO, which is unspecified input value according to A64 datasheet (Vih is 0.7\*Vcc-IO, Vil is 0.3\*Vcc-IO, the range in between is unspecified)." 
+
+    [(Source)](https://wiki.pine64.org/wiki/PinePhone_Power_Management#Open_Questions_2)
 
 ## USB Interface
 
