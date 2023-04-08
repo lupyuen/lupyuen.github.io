@@ -349,18 +349,30 @@ To do this in NuttX, our code looks like this: [a64_usbhost.c](https://github.co
 ret = a64_pio_config(STATUS);
 DEBUGASSERT(ret == OK);
 _info("Status=%d\n", a64_pio_read(STATUS));
+```
 
+TODO
+
+```c
 // Power on DCDC1
 int pinephone_pmic_usb_init(void);
 ret = pinephone_pmic_usb_init();
 DEBUGASSERT(ret == OK);
 _info("Status=%d\n", a64_pio_read(STATUS));
+```
 
+TODO
+
+```c
 // Wait 1000 ms
 _info("Wait 1000 ms\n");
 up_mdelay(1000);
 _info("Status=%d\n", a64_pio_read(STATUS));
+```
 
+TODO
+
+```c
 // Set PL7 to High to Power On LTE Modem (4G-PWR-BAT)
 
 #define P_OUTPUT (PIO_OUTPUT | PIO_PULL_NONE | PIO_DRIVE_MEDLOW | \
@@ -374,11 +386,20 @@ _info("Set PWR_BAT (PL7) to High\n");
 a64_pio_write(PWR_BAT, true);
 _info("Status=%d\n", a64_pio_read(STATUS));
 
+```
+
+TODO
+
+```c
 // Wait 1000 ms
 _info("Wait 1000 ms\n");
 up_mdelay(1000);
 _info("Status=%d\n", a64_pio_read(STATUS));
+```
 
+TODO
+
+```c
 // Set PC4 to High to Deassert LTE Modem Reset (BB-RESET / RESET_N)
 
 #define RESET_N (P_OUTPUT | PIO_PORT_PIOC | PIO_PIN4)
@@ -389,12 +410,22 @@ DEBUGASSERT(ret >= 0);
 _info("Set RESET_N (PC4) to High\n");
 a64_pio_write(RESET_N, true);
 _info("Status=%d\n", a64_pio_read(STATUS));
+```
+
+TODO
+
+```c
+// TODO: Set PB3 to High (BB-PWRKEY / PWRKEY).
 
 // Wait 30 ms for VBAT to be stable
 _info("Wait 30 ms for VBAT to be stable\n");
 up_mdelay(30);
 _info("Status=%d\n", a64_pio_read(STATUS));
+```
 
+TODO
+
+```c
 // Set PB3 to Power On LTE Modem (BB-PWRKEY / PWRKEY).
 // PWRKEY should be pulled down at least 500 ms, then pulled up.
 
@@ -406,7 +437,11 @@ DEBUGASSERT(ret >= 0);
 _info("Set PWRKEY (PB3) to Low\n");
 a64_pio_write(PWRKEY, false);
 _info("Status=%d\n", a64_pio_read(STATUS));
+```
 
+TODO
+
+```c
 _info("Wait 500 ms\n");
 up_mdelay(500);
 _info("Status=%d\n", a64_pio_read(STATUS));
@@ -414,8 +449,12 @@ _info("Status=%d\n", a64_pio_read(STATUS));
 _info("Set PWRKEY (PB3) to High\n");
 a64_pio_write(PWRKEY, true);
 _info("Status=%d\n", a64_pio_read(STATUS));
+```
 
-// Set PH8 to High to Enable LTE Modem and Disable Airplane Mode (BB-DISABLE / W_DISABLE#)
+TODO
+
+```c
+// Set PH8 to High to Disable Airplane Mode (BB-DISABLE / W_DISABLE#)
 
 #define W_DISABLE (P_OUTPUT | PIO_PORT_PIOH | PIO_PIN8)
 _info("Configure W_DISABLE (PH8) for Output\n");
@@ -425,13 +464,9 @@ DEBUGASSERT(ret >= 0);
 _info("Set W_DISABLE (PH8) to High\n");
 a64_pio_write(W_DISABLE, true);
 _info("Status=%d\n", a64_pio_read(STATUS));
-
-// TODO: Read PL6 to handle Ring Indicator / [Unsolicited Result Code](https://embeddedfreak.wordpress.com/2008/08/19/handling-urc-unsolicited-result-code-in-hayes-at-command/)
-
-// TODO: Set PH7 to High or Low for Sleep State
 ```
 
-[(`pinephone_pmic_usb_init` is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/0216f6968a82a73b67fb48a276b3c0550c47008a/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L294-L340)
+[(__pinephone_pmic_usb_init__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/0216f6968a82a73b67fb48a276b3c0550c47008a/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L294-L340)
 
 TODO: Why does LTE Modem Status change from Low to High, then stay at High? [(See this)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/6fb84655b4ed19af7209817cc01b2a589798620a/README.md#output-log)
 
