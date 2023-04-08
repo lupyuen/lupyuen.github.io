@@ -335,7 +335,9 @@ _Power Key looks funky: High-Low-High..._
 
 Yeah the Power Key is probably inspired by the press-and-hold Power Button on vintage Nokia Phones.
 
-# Power On in NuttX
+Let's implement the steps with Apache NuttX RTOS...
+
+# Power Up wth NuttX
 
 TODO
 
@@ -468,6 +470,8 @@ TODO: Configure UART
 TODO: Copy from Allwinner A1X
 
 [a1x_serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/arm/src/a1x/a1x_serial.c)
+
+TODO: USB Enumerate Devices
 
 [Modem on PinePhone](https://xnux.eu/devices/feature/modem-pp.html)
 
