@@ -80,7 +80,7 @@ _There's a band of bass players in my PinePhone?_
 
 Ahem the [__Baseband Processor__](https://en.wikipedia.org/wiki/Baseband_processor) inside the LTE Modem (pic above) is the hardware that handles the __Radio Functions__ for 4G LTE and GPS.
 
-According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (Page 15), the Baseband Processor talks to PinePhone (Allwinner A64) over the following __Data Interfaces__...
+According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (Page 15), the Baseband Processor talks to PinePhone (Allwinner A64) over the following __Data Interfaces__ (pic above)...
 
 -   __USB__ ⇆ A64 Port __USB1__ _(USB Serial)_
 
@@ -104,7 +104,7 @@ UART is slower than USB, so we should probably use USB instead of UART.
 
 (Unless we're building a simple Feature Phone without GPS)
 
-PinePhone controls the LTE Modem with a bunch of pins...
+PinePhone also controls the LTE Modem with a bunch of GPIO Pins...
 
 ![Control Pins for LTE Modem](https://lupyuen.github.io/images/lte-title3.jpg)
 
@@ -112,7 +112,7 @@ PinePhone controls the LTE Modem with a bunch of pins...
 
 _PinePhone's LTE Modem is controlled only by AT Commands?_
 
-There's more! According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (Page 15), the LTE Modem is controlled by the following GPIO Pins...
+There's more! According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (Page 15), the LTE Modem is controlled by the following GPIO Pins (pic above)...
 
 -   __Baseband Power__ ← A64 Port __PL7__
 
@@ -172,7 +172,7 @@ Let's power up the LTE Modem...
 
 _How will we power up the LTE Modem?_
 
-[__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (Page 15) says that PinePhone controls the power via __GPIO Pin PL7__...
+[__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (Page 15) says that PinePhone controls the power via __GPIO Pin PL7__ (pic above)...
 
 -   __RF Power__ ← A64 Port __PL7__
 
