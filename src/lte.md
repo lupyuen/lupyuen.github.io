@@ -92,7 +92,7 @@ According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhon
 
 -   __PCM__ ⇆ A64 Port __PCM0__
 
-    Digital Audio Stream for 4G Voice Calls.
+    [__PCM Digital Audio Stream__](https://en.wikipedia.org/wiki/Pulse-code_modulation) for 4G Voice Calls.
 
 -   __UART__ ⇆ A64 Port __UART3__ _(RX / TX)_, __UART4__ _(CTS / RTS)_
 
