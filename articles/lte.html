@@ -310,9 +310,9 @@
 <p>We need to program PinePhone’s <a href="https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit"><strong>Power Management Integrated Circuit (PMIC)</strong></a> to supply <strong>3.3 V on DCDC1</strong>.</p>
 <p>Otherwise the UART Port (and the Control Pins) will get blocked by the Voltage Translators.</p>
 <p><em>Why 1.8 V for the LTE Modem?</em></p>
-<p>Most parts of the LTE Modem run on 3.3 V… Just that the <strong>SIM Card</strong> needs to run on <strong>1.8 V</strong>. <a href="https://en.wikipedia.org/wiki/SIM_card#Design">(See this)</a></p>
+<p>Most parts of the LTE Modem run on 3.3 V… Just that it needs to power up the <strong>SIM Card at 1.8 V</strong>. <a href="https://en.wikipedia.org/wiki/SIM_card#Design">(See this)</a></p>
 <p>(Remember that the SIM Card is actually a microcontroller)</p>
-<p>This <a href="https://www.sdcard.org/developers/sd-standard-overview/low-voltage-signaling/"><strong>Low Voltage Signaling</strong></a> is probably meant for newer, power-efficient gadgets. <a href="https://www.sdcard.org/developers/sd-standard-overview/low-voltage-signaling/">(See this)</a></p>
+<p>This <a href="https://www.sdcard.org/developers/sd-standard-overview/low-voltage-signaling/"><strong>Low Voltage Signaling</strong></a> is probably meant for newer, power-efficient gadgets. <a href="https://www.sdcard.org/developers/sd-standard-overview/low-voltage-signaling/">(Like this)</a></p>
 <p><img src="https://lupyuen.github.io/images/lte-title.jpg" alt="LTE Modem inside PinePhone" /></p>
 <h1 id="power-on-lte-modem"><a href="#power-on-lte-modem">6 Power On LTE Modem</a></h1>
 <p>TODO</p>
