@@ -112,7 +112,7 @@ PinePhone controls the LTE Modem with a bunch of pins...
 
 _PinePhone's LTE Modem is controlled only by AT Commands?_
 
-There's more! According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (Page 15), the LTE Modem is also controlled by the following GPIO Pins...
+There's more! According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (Page 15), the LTE Modem is controlled by the following GPIO Pins...
 
 -   __Baseband Power__ ← A64 Port __PL7__
 
@@ -130,9 +130,9 @@ There's more! According to the [__PinePhone Schematic__](https://files.pine64.or
 
     Reset the LTE Modem.
 
-We'll control the above GPIO Pins to __power up the LTE Modem__ at startup.
+    [(See this)](https://lupyuen.github.io/articles/lte#power-on--off)
 
-(More in the next section)
+We'll control the above GPIO Pins to __power up the LTE Modem__ at startup. (More in the next section)
 
 Also at startup, we'll read this GPIO Pin to check if the __LTE Modem is hunky dory__...
 
@@ -163,6 +163,8 @@ And the LTE Modem signals PinePhone on this GPIO Pin for __Incoming Calls__...
     Indicates Incoming Calls.
 
     [(See this)](https://lupyuen.github.io/articles/lte#main-uart-interface)
+
+Let's talk about powering up the LTE Modem...
 
 ![LTE Modem Power](https://lupyuen.github.io/images/lte-title1.jpg)
 
