@@ -154,7 +154,7 @@
 <h1 id="data-interfaces-for-lte-modem"><a href="#data-interfaces-for-lte-modem">2 Data Interfaces for LTE Modem</a></h1>
 <p><em>There’s a band of bass players in my PinePhone?</em></p>
 <p>Ahem the <a href="https://en.wikipedia.org/wiki/Baseband_processor"><strong>Baseband Processor</strong></a> inside the LTE Modem (pic above) is the hardware that handles the <strong>Radio Functions</strong> for 4G LTE and GPS.</p>
-<p>According to the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> (Page 15), the Baseband Processor talks to PinePhone (Allwinner A64) over the following <strong>Data Interfaces</strong>…</p>
+<p>According to the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> (Page 15), the Baseband Processor talks to PinePhone (Allwinner A64) over the following <strong>Data Interfaces</strong> (pic above)…</p>
 <ul>
 <li>
 <p><strong>USB</strong> ⇆ A64 Port <strong>USB1</strong> <em>(USB Serial)</em></p>
@@ -176,11 +176,11 @@
 </ul>
 <p>UART is slower than USB, so we should probably use USB instead of UART.</p>
 <p>(Unless we’re building a simple Feature Phone without GPS)</p>
-<p>PinePhone controls the LTE Modem with a bunch of pins…</p>
+<p>PinePhone also controls the LTE Modem with a bunch of GPIO Pins…</p>
 <p><img src="https://lupyuen.github.io/images/lte-title3.jpg" alt="Control Pins for LTE Modem" /></p>
 <h1 id="control-pins-for-lte-modem"><a href="#control-pins-for-lte-modem">3 Control Pins for LTE Modem</a></h1>
 <p><em>PinePhone’s LTE Modem is controlled only by AT Commands?</em></p>
-<p>There’s more! According to the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> (Page 15), the LTE Modem is controlled by the following GPIO Pins…</p>
+<p>There’s more! According to the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> (Page 15), the LTE Modem is controlled by the following GPIO Pins (pic above)…</p>
 <ul>
 <li>
 <p><strong>Baseband Power</strong> ← A64 Port <strong>PL7</strong></p>
@@ -232,7 +232,7 @@
 <p><img src="https://lupyuen.github.io/images/lte-title1.jpg" alt="LTE Modem Power" /></p>
 <h1 id="lte-modem-power"><a href="#lte-modem-power">4 LTE Modem Power</a></h1>
 <p><em>How will we power up the LTE Modem?</em></p>
-<p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> (Page 15) says that PinePhone controls the power via <strong>GPIO Pin PL7</strong>…</p>
+<p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a> (Page 15) says that PinePhone controls the power via <strong>GPIO Pin PL7</strong> (pic above)…</p>
 <ul>
 <li>
 <p><strong>RF Power</strong> ← A64 Port <strong>PL7</strong></p>
