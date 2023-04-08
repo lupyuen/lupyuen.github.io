@@ -270,7 +270,9 @@ Voltage Translators are also used for the [__LTE Modem Control Pins__](https://l
 
 _What's DCDC1? (Top right)_
 
-TODO
+We need to program PinePhone's [__Power Management Integrated Circuit (PMIC)__](https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit) to supply __3.3 V on DCDC1__.
+
+Otherwise the UART Port (and the Control Pins) will get blocked by the Voltage Translators.
 
 _Why 1.8 V for the LTE Modem?_
 
