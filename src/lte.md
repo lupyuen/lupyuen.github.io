@@ -172,7 +172,7 @@ Let's power up the LTE Modem...
 
 _How will we power up the LTE Modem?_
 
-TODO
+[__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf) (Page 15) says that PinePhone controls the power via __GPIO Pin PL7__...
 
 -   __RF Power__ ← A64 Port __PL7__
 
@@ -188,9 +188,11 @@ TODO
 
 TODO: Also connected to Battery Power VBAT and Power Management DCDC1
 
-TODO: Hardware switch
-
 ![LTE Modem Power](https://lupyuen.github.io/images/lte-power.png)
+
+[_PinePhone Schematic (Page 15)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
+
+TODO: Hardware switch
 
 TODO
 
