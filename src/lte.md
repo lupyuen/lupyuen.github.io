@@ -290,55 +290,44 @@ _Whoa LTE Modem has more pins than a Bowling Alley! (Pic above)_
 
 _How exactly do we power up the LTE Modem?_
 
-TODO
+Earlier we spoke about PinePhone's __GPIO Pins__ that control the LTE Modem...
+
+| LTE Modem Pin | A64 GPIO Pin |
+|:--------------|:--------:|
+| [__RF Power__](https://lupyuen.github.io/articles/lte#lte-modem-power) | ← __PL7__
+| [__Baseband Power__](https://lupyuen.github.io/articles/lte#lte-modem-power) | ← __PL7__
+| [__Reset__](https://lupyuen.github.io/articles/lte#lte-modem-power) | ←  __PC4__
+| [__Power Key__](https://lupyuen.github.io/articles/lte#lte-modem-power) | ← __PB3__
+| [__Disable__](https://lupyuen.github.io/articles/lte#control-pins-for-lte-modem) | ← __PH8__
+| [__Status__](https://lupyuen.github.io/articles/lte#lte-modem-power) | → __PH9__
+
+This is how we control the GPIO Pins to __power up the LTE Modem__...
+
+1.  Program PinePhone's [__Power Management Integrated Circuit (PMIC)__](https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit) to supply __3.3 V on DCDC1__
+
+1.  Set __PL7 to High__ to power on the RF Transceiver and Baseband Processor
+
+1.  Set __PC4 to High__ to deassert LTE Modem Reset
+
+1.  Set __PB3 to High__ (Power Key)
+
+1.  __Wait 30 milliseconds__ for VBAT Power Supply to be stable
+
+1.  Toggle __PB3 (Power Key)__ to start the LTE Modem, like this:
+
+    Set __PB3 to Low__ for at least 500 ms...
+    
+    Then set __PB3 to High__.
+
+1.  Set __PH8 to High__ to disable Airplane Mode
+
+1.  __Read PH9__ to check LTE Modem Status
+
+1.  __UART and USB Interfaces__ will be operational in 13 seconds
+
+[__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf) (Page 41) illustrates the __Power On Sequence__...
 
 ![LTE Modem Power](https://lupyuen.github.io/images/lte-power2.png)
-
-HW Page 41
-
-According to PinePhone Schematic Page 15, the LTE Modem is connected to...
-
--   Power DCDC1: From PMIC, 3.3V [(See this)](https://wiki.pine64.org/wiki/PinePhone_Power_Management#Current_Assignments)
-
--   Power VBAT: PL7 (4G-PWR-BAT) [(See this)](https://wiki.pine64.org/wiki/PinePhone_Power_Management#Current_Assignments)
-
--   Power VDD_EXT: From LTE Modem (EG25-G HW Design Page 22)
-
--   Reset: BB-RESET (RESET_N) -> PC4-RESET-4G
-
--   Power Key: BB-PWRKEY (PWRKEY) -> PB3-PWRKEY-4G
-
--   Disable: BB-DISABLE (W_DISABLE#) -> PH8-DISABLE-4G
-
--   Status: PH9-STATUS
-
--   Ring Indicator: PMIC ALDO2  1.8V / PL6 (RI) [(See this)](https://wiki.pine64.org/wiki/PinePhone_Power_Management#Current_Assignments)
-
--   AP Ready: BB-AP-READY (AP_READY) -> PH7-AP-READY
-
-(LTE Modem Pins are explained in the next section)
-
-So to power up PinePhone's LTE Modem, we need to...
-
-1.  Program PMIC to output DCDC1 at 3.3V
-
-1.  Set PL7 to High to Power On LTE Modem (4G-PWR-BAT)
-
-1.  Set PC4 to High to Deassert LTE Modem Reset (BB-RESET / RESET_N)
-
-1.  Wait 30 ms for VBAT to be stable
-
-1.  Set PB3 to Power On LTE Modem (BB-PWRKEY / PWRKEY). PWRKEY should be pulled down at least 500 ms, then pulled up.
-
-1.  Set PH8 to High to Enable LTE Modem and Disable Airplane Mode (BB-DISABLE / W_DISABLE#)
-
-1.  Read PH9 to check LTE Modem Status
-
-1.  In Future: Read PL6 to handle Ring Indicator / [Unsolicited Result Code](https://embeddedfreak.wordpress.com/2008/08/19/handling-urc-unsolicited-result-code-in-hayes-at-command/)
-
-1.  In Future: Set PH7 to High or Low for Sleep State
-
-TODO
 
 _Power Key looks funky..._
 
