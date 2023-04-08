@@ -307,7 +307,8 @@
 </ul>
 <p>Voltage Translators are also used for the <a href="https://lupyuen.github.io/articles/lte#control-pins-for-lte-modem"><strong>LTE Modem Control Pins</strong></a>.</p>
 <p><em>What’s DCDC1? (Top right)</em></p>
-<p>TODO</p>
+<p>We need to program PinePhone’s <a href="https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit"><strong>Power Management Integrated Circuit (PMIC)</strong></a> to supply <strong>3.3 V on DCDC1</strong>.</p>
+<p>Otherwise the UART Port (and the Control Pins) will get blocked by the Voltage Translators.</p>
 <p><em>Why 1.8 V for the LTE Modem?</em></p>
 <p>TODO: <a href="https://en.wikipedia.org/wiki/SIM_card#Design">1.8 V on SIM Cards</a></p>
 <p><a href="https://www.sdcard.org/developers/sd-standard-overview/low-voltage-signaling/">Low Voltage Signaling</a></p>
