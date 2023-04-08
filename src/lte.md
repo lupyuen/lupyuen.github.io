@@ -164,7 +164,7 @@ And the LTE Modem signals PinePhone on this GPIO Pin for __Incoming Calls__...
 
     [(See this)](https://lupyuen.github.io/articles/lte#main-uart-interface)
 
-Let's talk about powering up the LTE Modem...
+Let's power up the LTE Modem...
 
 ![LTE Modem Power](https://lupyuen.github.io/images/lte-title1.jpg)
 
@@ -450,6 +450,8 @@ From [Quectel EG25-G Hardware Design](https://wiki.pine64.org/images/2/20/Quecte
 
 TODO
 
+From [Quectel EG25-G Hardware Design](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)...
+
 | Pin Name | Pin No. | I/O | Description
 |:---------|:-------:|:---:|:-----------
 | VDD_EXT | 7 | PO | Provide 1.8 V for external circuit
@@ -457,6 +459,8 @@ TODO
 ## Power On / Off
 
 TODO
+
+From [Quectel EG25-G Hardware Design](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)...
 
 | Pin Name | Pin No. | I/O | Description
 |:---------|:-------:|:---:|:-----------
@@ -479,6 +483,8 @@ TODO
 
 TODO
 
+From [Quectel EG25-G Hardware Design](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)...
+
 | Pin Name | Pin No. | I/O | Description
 |:---------|:-------:|:---:|:-----------
 | STATUS | 61 | OD | Indicate the module operating status
@@ -491,6 +497,8 @@ TODO
 
 TODO
 
+From [Quectel EG25-G Hardware Design](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)...
+
 | Pin Name | Pin No. | I/O | Description
 |:---------|:-------:|:---:|:-----------
 | USB_VBUS | 71 | PI | USB connection detection
@@ -499,6 +507,8 @@ TODO
 
 TODO
 
+From [Quectel EG25-G Hardware Design](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)...
+
 | Pin Name | Pin No. | I/O | Description
 |:---------|:-------:|:---:|:-----------
 | RI | 62 | DO | Ring indicator
@@ -506,6 +516,8 @@ TODO
 ## Other Interface Pins
 
 TODO
+
+From [Quectel EG25-G Hardware Design](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)...
 
 | Pin Name | Pin No. | I/O | Description
 |:---------|:-------:|:---:|:-----------
@@ -519,6 +531,8 @@ TODO
 ## I/O Parameters Definition
 
 TODO
+
+From [Quectel EG25-G Hardware Design](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)...
 
 | Type | Description
 |:-----|:-----------
