@@ -186,21 +186,43 @@ _How will we power up the LTE Modem?_
 
     (4G LTE and GPS Radio Functions)
 
-TODO: Also connected to Battery Power VBAT and Power Management DCDC1
+__GPIO Pin PL7__ (bottom left) switches on the __Battery Power 4G-BAT__ (top left)...
 
 ![LTE Modem Power](https://lupyuen.github.io/images/lte-power.png)
 
 [_PinePhone Schematic (Page 15)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
 
-TODO: Hardware switch
+Which powers the __LTE Modem via VBAT_BB__ (top right).
 
-TODO
+Thus LTE Modem won't power up without the Lithium-ion Battery.
+
+[(__WPM1481__ is a Power Controller)](https://datasheet.lcsc.com/lcsc/1811131731_WILLSEMI-Will-Semicon-WPM1481-6-TR_C239798.pdf)
+
+_What's Switch SW1-A? (Bottom left)_
+
+[__Hardware Privacy Switch 1 (Modem)__](https://wiki.pine64.org/index.php/PinePhone#Privacy_switch_configuration) should be set to "On".
+
+Or the LTE Modem won't power on!
+
+(Indeed that's a Hardware Switch, not a Soft Switch)
+
+_So we set GPIO Pin PL7 and the modem powers on?_
+
+There's a __Soft Switch__ inside the LTE Modem that we need to toggle...
 
 -   __Power Key__ ← A64 Port __PB3__
 
     Power up the LTE Modem.
     
     [(See this)](https://lupyuen.github.io/articles/lte#power-on--off)
+
+Sounds complicated, but we'll explain the complete Power Up Sequence in a while.
+
+(Power Key works like the press-and-hold Power Button on vintage Nokia Phones)
+
+_Anything else to power up the LTE Modem?_
+
+In a while we'll set the __Reset Pin__ and check the __Status Pin__...
 
 -   __Reset__ ← A64 Port __PC4__
 
@@ -214,7 +236,7 @@ TODO
 
     [(See this)](https://lupyuen.github.io/articles/lte#status-indication)
 
-TODO
+We need to program PinePhone's __Power Management Integrated Circuit (PMIC)__ to supply __3.3 V on DCDC1__.  Here's why...
 
 ![LTE Modem Power Output](https://lupyuen.github.io/images/lte-title2.jpg)
 
@@ -222,19 +244,29 @@ TODO
 
 _Wait there's a Power Output for the LTE Modem?_
 
-TODO
+Yes indeed! The LTE Modem __outputs 1.8 Volts__ to PinePhone (pic above)...
 
--   __Power Output__ → PinePhone __VDD_EXT__
+-   __Power Output (1.8 V)__ → PinePhone __VDD_EXT__
 
-    Power Output from LTE Modem to PinePhone.
+    Power Output from LTE Modem to PinePhone. (1.8 V)
 
     [(See this)](https://lupyuen.github.io/articles/lte#power-supply)
 
-TODO: VDD_EXT is super confusing
+Which goes into PinePhone's __Voltage Translators__ as __VDD_EXT__ (top left)...
 
 ![LTE Modem Power Output](https://lupyuen.github.io/images/lte-vddext.png)
 
-TODO
+[_PinePhone Schematic (Page 15)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
+
+[(__TXB0104__ is a Voltage Translator)](https://www.ti.com/lit/ds/symlink/txb0104.pdf)
+
+Which converts the UART TX / RX / CTS / RTS signals from __1.8 V (LTE Modem, left) to 3.3 V (PinePhone, right)__.
+
+Voltage Translators are also used for the [__LTE Modem Control Pins__](https://lupyuen.github.io/articles/lte#control-pins-for-lte-modem).
+
+_What's DCDC1? (Top right)_
+
+TODO: [1.8 V on SIM Cards](https://en.wikipedia.org/wiki/SIM_card#Design)
 
 ![LTE Modem inside PinePhone](https://lupyuen.github.io/images/lte-title.jpg)
 
