@@ -292,7 +292,9 @@ _How exactly do we power up the LTE Modem?_
 
 TODO
 
-_How to power up PinePhone's LTE Modem?_
+![LTE Modem Power](https://lupyuen.github.io/images/lte-power2.png)
+
+HW Page 41
 
 According to PinePhone Schematic Page 15, the LTE Modem is connected to...
 
@@ -335,6 +337,14 @@ So to power up PinePhone's LTE Modem, we need to...
 1.  In Future: Read PL6 to handle Ring Indicator / [Unsolicited Result Code](https://embeddedfreak.wordpress.com/2008/08/19/handling-urc-unsolicited-result-code-in-hayes-at-command/)
 
 1.  In Future: Set PH7 to High or Low for Sleep State
+
+TODO
+
+_Power Key looks funky..._
+
+Yeah the Power Key is probably inspired by the press-and-hold Power Button on vintage Nokia Phones.
+
+TODO
 
 To do this in NuttX, our code looks like this: [a64_usbhost.c](https://github.com/lupyuen/pinephone-nuttx-usb/blob/3ceaf44c23b85ec105a0d85cd377f4a55eff5ef5/a64_usbhost.c#L337-L421)
 
