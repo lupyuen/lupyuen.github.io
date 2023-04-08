@@ -296,7 +296,7 @@
 <p><img src="https://lupyuen.github.io/images/lte-vddext.png" alt="LTE Modem Power Output" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>PinePhone Schematic (Page 15)</em></a></p>
 <p><a href="https://www.ti.com/lit/ds/symlink/txb0104.pdf">(<strong>TXB0104</strong> is a Voltage Translator)</a></p>
-<p>This converts the <strong>UART Signals</strong> (TX / RX / CTS / RTS)…</p>
+<p>The circuit above converts the <strong>UART Signals</strong> (TX / RX / CTS / RTS)…</p>
 <ul>
 <li>
 <p>From <strong>1.8 V (LTE Modem, left)</strong></p>
@@ -310,8 +310,9 @@
 <p>We need to program PinePhone’s <a href="https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit"><strong>Power Management Integrated Circuit (PMIC)</strong></a> to supply <strong>3.3 V on DCDC1</strong>.</p>
 <p>Otherwise the UART Port (and the Control Pins) will get blocked by the Voltage Translators.</p>
 <p><em>Why 1.8 V for the LTE Modem?</em></p>
-<p>TODO: <a href="https://en.wikipedia.org/wiki/SIM_card#Design">1.8 V on SIM Cards</a></p>
-<p><a href="https://www.sdcard.org/developers/sd-standard-overview/low-voltage-signaling/">Low Voltage Signaling</a></p>
+<p>Most parts of the LTE Modem run on 3.3 V… Just that the <strong>SIM Card</strong> needs to run on <strong>1.8 V</strong>. <a href="https://en.wikipedia.org/wiki/SIM_card#Design">(See this)</a></p>
+<p>(Remember that the SIM Card is actually a microcontroller)</p>
+<p>This <a href="https://www.sdcard.org/developers/sd-standard-overview/low-voltage-signaling/"><strong>Low Voltage Signaling</strong></a> is probably meant for newer, power-efficient gadgets. <a href="https://www.sdcard.org/developers/sd-standard-overview/low-voltage-signaling/">(See this)</a></p>
 <p><img src="https://lupyuen.github.io/images/lte-title.jpg" alt="LTE Modem inside PinePhone" /></p>
 <h1 id="power-on-lte-modem"><a href="#power-on-lte-modem">6 Power On LTE Modem</a></h1>
 <p>TODO</p>
