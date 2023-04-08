@@ -260,7 +260,7 @@ Which goes into PinePhone's __Voltage Translators__ as __VDD_EXT__ (top left)...
 
 [(__TXB0104__ is a Voltage Translator)](https://www.ti.com/lit/ds/symlink/txb0104.pdf)
 
-This converts the __UART Signals__ (TX / RX / CTS / RTS)...
+The circuit above converts the __UART Signals__ (TX / RX / CTS / RTS)...
 
 -   From __1.8 V (LTE Modem, left)__
 
@@ -276,9 +276,11 @@ Otherwise the UART Port (and the Control Pins) will get blocked by the Voltage T
 
 _Why 1.8 V for the LTE Modem?_
 
-TODO: [1.8 V on SIM Cards](https://en.wikipedia.org/wiki/SIM_card#Design)
+Most parts of the LTE Modem run on 3.3 V... Just that the __SIM Card__ needs to run on __1.8 V__. [(See this)](https://en.wikipedia.org/wiki/SIM_card#Design)
 
-[Low Voltage Signaling](https://www.sdcard.org/developers/sd-standard-overview/low-voltage-signaling/)
+(Remember that the SIM Card is actually a microcontroller)
+
+This [__Low Voltage Signaling__](https://www.sdcard.org/developers/sd-standard-overview/low-voltage-signaling/) is probably meant for newer, power-efficient gadgets. [(See this)](https://www.sdcard.org/developers/sd-standard-overview/low-voltage-signaling/)
 
 ![LTE Modem inside PinePhone](https://lupyuen.github.io/images/lte-title.jpg)
 
