@@ -73,7 +73,7 @@
 <li><a href="#lte-modem-power">4 LTE Modem Power</a><ul></ul></li>
 <li><a href="#power-output">5 Power Output</a><ul></ul></li>
 <li><a href="#power-on-lte-modem">6 Power On LTE Modem</a><ul></ul></li>
-<li><a href="#power-on-in-nuttx">7 Power On in NuttX</a><ul></ul></li>
+<li><a href="#power-up-wth-nuttx">7 Power Up wth NuttX</a><ul></ul></li>
 <li><a href="#lte-modem-uart">8 LTE Modem UART</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-lte-modem-pins">10 Appendix: LTE Modem Pins</a><ul>
@@ -365,7 +365,8 @@
 <p><img src="https://lupyuen.github.io/images/lte-power2.png" alt="LTE Modem Power" /></p>
 <p><em>Power Key looks funky: High-Low-High…</em></p>
 <p>Yeah the Power Key is probably inspired by the press-and-hold Power Button on vintage Nokia Phones.</p>
-<h1 id="power-on-in-nuttx"><a href="#power-on-in-nuttx">7 Power On in NuttX</a></h1>
+<p>Let’s implement the steps with Apache NuttX RTOS…</p>
+<h1 id="power-up-wth-nuttx"><a href="#power-up-wth-nuttx">7 Power Up wth NuttX</a></h1>
 <p>TODO</p>
 <p>To do this in NuttX, our code looks like this: <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/3ceaf44c23b85ec105a0d85cd377f4a55eff5ef5/a64_usbhost.c#L337-L421">a64_usbhost.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Read PH9 to check LTE Modem Status
@@ -494,6 +495,7 @@ _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
 <p>TODO: Configure UART</p>
 <p>TODO: Copy from Allwinner A1X</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/arm/src/a1x/a1x_serial.c">a1x_serial.c</a></p>
+<p>TODO: USB Enumerate Devices</p>
 <p><a href="https://xnux.eu/devices/feature/modem-pp.html">Modem on PinePhone</a></p>
 <p><a href="https://xnux.eu/devices/feature/audio-pp.html">Audio on PinePhone</a></p>
 <p><a href="https://xnux.eu/devices/feature/modem-pp-reveng.html">EG25-G reverse engineering</a></p>
