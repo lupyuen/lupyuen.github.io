@@ -317,71 +317,50 @@
 <h1 id="power-on-lte-modem"><a href="#power-on-lte-modem">6 Power On LTE Modem</a></h1>
 <p><em>Whoa LTE Modem has more pins than a Bowling Alley! (Pic above)</em></p>
 <p><em>How exactly do we power up the LTE Modem?</em></p>
-<p>TODO</p>
-<p><img src="https://lupyuen.github.io/images/lte-power2.png" alt="LTE Modem Power" /></p>
-<p>HW Page 41</p>
-<p>According to PinePhone Schematic Page 15, the LTE Modem is connected to…</p>
-<ul>
-<li>
-<p>Power DCDC1: From PMIC, 3.3V <a href="https://wiki.pine64.org/wiki/PinePhone_Power_Management#Current_Assignments">(See this)</a></p>
-</li>
-<li>
-<p>Power VBAT: PL7 (4G-PWR-BAT) <a href="https://wiki.pine64.org/wiki/PinePhone_Power_Management#Current_Assignments">(See this)</a></p>
-</li>
-<li>
-<p>Power VDD_EXT: From LTE Modem (EG25-G HW Design Page 22)</p>
-</li>
-<li>
-<p>Reset: BB-RESET (RESET_N) -&gt; PC4-RESET-4G</p>
-</li>
-<li>
-<p>Power Key: BB-PWRKEY (PWRKEY) -&gt; PB3-PWRKEY-4G</p>
-</li>
-<li>
-<p>Disable: BB-DISABLE (W_DISABLE#) -&gt; PH8-DISABLE-4G</p>
-</li>
-<li>
-<p>Status: PH9-STATUS</p>
-</li>
-<li>
-<p>Ring Indicator: PMIC ALDO2  1.8V / PL6 (RI) <a href="https://wiki.pine64.org/wiki/PinePhone_Power_Management#Current_Assignments">(See this)</a></p>
-</li>
-<li>
-<p>AP Ready: BB-AP-READY (AP_READY) -&gt; PH7-AP-READY</p>
-</li>
-</ul>
-<p>(LTE Modem Pins are explained in the next section)</p>
-<p>So to power up PinePhone’s LTE Modem, we need to…</p>
+<p>Earlier we spoke about PinePhone’s <strong>GPIO Pins</strong> that control the LTE Modem…</p>
+<div><table><thead><tr><th style="text-align: left">LTE Modem Pin</th><th style="text-align: center">A64 GPIO Pin</th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/lte#lte-modem-power"><strong>RF Power</strong></a></td><td style="text-align: center">← <strong>PL7</strong></td></tr>
+<tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/lte#lte-modem-power"><strong>Baseband Power</strong></a></td><td style="text-align: center">← <strong>PL7</strong></td></tr>
+<tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/lte#lte-modem-power"><strong>Reset</strong></a></td><td style="text-align: center">←  <strong>PC4</strong></td></tr>
+<tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/lte#lte-modem-power"><strong>Power Key</strong></a></td><td style="text-align: center">← <strong>PB3</strong></td></tr>
+<tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/lte#control-pins-for-lte-modem"><strong>Disable</strong></a></td><td style="text-align: center">← <strong>PH8</strong></td></tr>
+<tr><td style="text-align: left"><a href="https://lupyuen.github.io/articles/lte#lte-modem-power"><strong>Status</strong></a></td><td style="text-align: center">→ <strong>PH9</strong></td></tr>
+</tbody></table>
+</div>
+<p>This is how we control the GPIO Pins to <strong>power up the LTE Modem</strong>…</p>
 <ol>
 <li>
-<p>Program PMIC to output DCDC1 at 3.3V</p>
+<p>Program PinePhone’s <a href="https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit"><strong>Power Management Integrated Circuit (PMIC)</strong></a> to supply <strong>3.3 V on DCDC1</strong></p>
 </li>
 <li>
-<p>Set PL7 to High to Power On LTE Modem (4G-PWR-BAT)</p>
+<p>Set <strong>PL7 to High</strong> to power on the RF Transceiver and Baseband Processor</p>
 </li>
 <li>
-<p>Set PC4 to High to Deassert LTE Modem Reset (BB-RESET / RESET_N)</p>
+<p>Set <strong>PC4 to High</strong> to deassert LTE Modem Reset</p>
 </li>
 <li>
-<p>Wait 30 ms for VBAT to be stable</p>
+<p>Set <strong>PB3 to High</strong> (Power Key)</p>
 </li>
 <li>
-<p>Set PB3 to Power On LTE Modem (BB-PWRKEY / PWRKEY). PWRKEY should be pulled down at least 500 ms, then pulled up.</p>
+<p><strong>Wait 30 milliseconds</strong> for VBAT Power Supply to be stable</p>
 </li>
 <li>
-<p>Set PH8 to High to Enable LTE Modem and Disable Airplane Mode (BB-DISABLE / W_DISABLE#)</p>
+<p>Toggle <strong>PB3 (Power Key)</strong> to start the LTE Modem, like this:</p>
+<p>Set <strong>PB3 to Low</strong> for at least 500 ms…</p>
+<p>Then set <strong>PB3 to High</strong>.</p>
 </li>
 <li>
-<p>Read PH9 to check LTE Modem Status</p>
+<p>Set <strong>PH8 to High</strong> to disable Airplane Mode</p>
 </li>
 <li>
-<p>In Future: Read PL6 to handle Ring Indicator / <a href="https://embeddedfreak.wordpress.com/2008/08/19/handling-urc-unsolicited-result-code-in-hayes-at-command/">Unsolicited Result Code</a></p>
+<p><strong>Read PH9</strong> to check LTE Modem Status</p>
 </li>
 <li>
-<p>In Future: Set PH7 to High or Low for Sleep State</p>
+<p><strong>UART and USB Interfaces</strong> will be operational in 13 seconds</p>
 </li>
 </ol>
-<p>TODO</p>
+<p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 41) illustrates the <strong>Power On Sequence</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/lte-power2.png" alt="LTE Modem Power" /></p>
 <p><em>Power Key looks funky…</em></p>
 <p>Yeah the Power Key is probably inspired by the press-and-hold Power Button on vintage Nokia Phones.</p>
 <p>TODO</p>
