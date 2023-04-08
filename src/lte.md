@@ -244,7 +244,7 @@ We need to program PinePhone's __Power Management Integrated Circuit (PMIC)__ to
 
 _Wait there's a Power Output for the LTE Modem?_
 
-Yes indeed! The LTE Modem __outputs 1.8 Volts__ to PinePhone (pic above)...
+Yeah it gets confusing. The LTE Modem __outputs 1.8 Volts__ to PinePhone (pic above)...
 
 -   __Power Output (1.8 V)__ → PinePhone __VDD_EXT__
 
@@ -260,13 +260,23 @@ Which goes into PinePhone's __Voltage Translators__ as __VDD_EXT__ (top left)...
 
 [(__TXB0104__ is a Voltage Translator)](https://www.ti.com/lit/ds/symlink/txb0104.pdf)
 
-Which converts the UART TX / RX / CTS / RTS signals from __1.8 V (LTE Modem, left) to 3.3 V (PinePhone, right)__.
+This converts the __UART Signals__ (TX / RX / CTS / RTS)...
+
+-   From __1.8 V (LTE Modem, left)__
+
+-   To __3.3 V (PinePhone, right)__
 
 Voltage Translators are also used for the [__LTE Modem Control Pins__](https://lupyuen.github.io/articles/lte#control-pins-for-lte-modem).
 
 _What's DCDC1? (Top right)_
 
+TODO
+
+_Why 1.8 V for the LTE Modem?_
+
 TODO: [1.8 V on SIM Cards](https://en.wikipedia.org/wiki/SIM_card#Design)
+
+[Low Voltage Signaling](https://www.sdcard.org/developers/sd-standard-overview/low-voltage-signaling/)
 
 ![LTE Modem inside PinePhone](https://lupyuen.github.io/images/lte-title.jpg)
 
