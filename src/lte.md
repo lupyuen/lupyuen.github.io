@@ -286,6 +286,8 @@ This [__Low Voltage Signaling__](https://www.sdcard.org/developers/sd-standard-o
 
 # Power On LTE Modem
 
+_How exactly do we power up the LTE Modem?_
+
 TODO
 
 _How to power up PinePhone's LTE Modem?_
