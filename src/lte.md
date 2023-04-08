@@ -468,6 +468,14 @@ TODO: LTE Modem UART
 
 -   BB-DTR: PB2-DTR
 
+TODO: UART3
+
+TODO: Configure UART
+
+TODO: Copy from Allwinner A1X
+
+[a1x_serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/arm/src/a1x/a1x_serial.c)
+
 [Modem on PinePhone](https://xnux.eu/devices/feature/modem-pp.html)
 
 [Audio on PinePhone](https://xnux.eu/devices/feature/audio-pp.html)
