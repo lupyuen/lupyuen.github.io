@@ -170,19 +170,23 @@ Let's power up the LTE Modem...
 
 # LTE Modem Power
 
+_How will we power up the LTE Modem?_
+
 TODO
 
 -   __RF Power__ ← A64 Port __PL7__
 
-    Supplies power to the RF Transceiver.
-
-    (Also connected to Battery Power VBAT and Power Management DCDC1)
+    Supplies power to the Radio Frequency Transmitter and Receiver.
+    
+    (4G LTE and GPS Transceiver)
 
 -   __Baseband Power__ ← A64 Port __PL7__
 
-    Supplies power to LTE Modem.
+    Supplies power to the Baseband Processor.
 
-    (Also connected to Battery Power VBAT and Power Management DCDC1)
+    (4G LTE and GPS Radio Functions)
+
+TODO: Also connected to Battery Power VBAT and Power Management DCDC1
 
 TODO: Hardware switch
 
