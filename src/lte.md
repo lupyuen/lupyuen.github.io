@@ -276,11 +276,11 @@ Otherwise the UART Port (and the Control Pins) will get blocked by the Voltage T
 
 _Why 1.8 V for the LTE Modem?_
 
-Most parts of the LTE Modem run on 3.3 V... Just that the __SIM Card__ needs to run on __1.8 V__. [(See this)](https://en.wikipedia.org/wiki/SIM_card#Design)
+Most parts of the LTE Modem run on 3.3 V... Just that it needs to power up the __SIM Card at 1.8 V__. [(See this)](https://en.wikipedia.org/wiki/SIM_card#Design)
 
 (Remember that the SIM Card is actually a microcontroller)
 
-This [__Low Voltage Signaling__](https://www.sdcard.org/developers/sd-standard-overview/low-voltage-signaling/) is probably meant for newer, power-efficient gadgets. [(See this)](https://www.sdcard.org/developers/sd-standard-overview/low-voltage-signaling/)
+This [__Low Voltage Signaling__](https://www.sdcard.org/developers/sd-standard-overview/low-voltage-signaling/) is probably meant for newer, power-efficient gadgets. [(Like this)](https://www.sdcard.org/developers/sd-standard-overview/low-voltage-signaling/)
 
 ![LTE Modem inside PinePhone](https://lupyuen.github.io/images/lte-title.jpg)
 
