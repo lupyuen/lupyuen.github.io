@@ -245,17 +245,30 @@
 <p>(4G LTE and GPS Radio Functions)</p>
 </li>
 </ul>
-<p>TODO: Also connected to Battery Power VBAT and Power Management DCDC1</p>
+<p><strong>GPIO Pin PL7</strong> (bottom left) switches on the <strong>Battery Power 4G-BAT</strong> (top left)…</p>
 <p><img src="https://lupyuen.github.io/images/lte-power.png" alt="LTE Modem Power" /></p>
 <p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>PinePhone Schematic (Page 15)</em></a></p>
-<p>TODO: Hardware switch</p>
-<p>TODO</p>
+<p>Which powers the <strong>LTE Modem via VBAT_BB</strong> (top right).</p>
+<p>Thus LTE Modem won’t power up without the Lithium-ion Battery.</p>
+<p><a href="https://datasheet.lcsc.com/lcsc/1811131731_WILLSEMI-Will-Semicon-WPM1481-6-TR_C239798.pdf">(<strong>WPM1481</strong> is a Power Controller)</a></p>
+<p><em>What’s Switch SW1-A? (Bottom left)</em></p>
+<p><a href="https://wiki.pine64.org/index.php/PinePhone#Privacy_switch_configuration"><strong>Hardware Privacy Switch 1 (Modem)</strong></a> should be set to “On”.</p>
+<p>Or the LTE Modem won’t power on!</p>
+<p>(Indeed that’s a Hardware Switch, not a Soft Switch)</p>
+<p><em>So we set GPIO Pin PL7 and the modem powers on?</em></p>
+<p>There’s a <strong>Soft Switch</strong> inside the LTE Modem that we need to toggle…</p>
 <ul>
 <li>
 <p><strong>Power Key</strong> ← A64 Port <strong>PB3</strong></p>
 <p>Power up the LTE Modem.</p>
 <p><a href="https://lupyuen.github.io/articles/lte#power-on--off">(See this)</a></p>
 </li>
+</ul>
+<p>Sounds complicated, but we’ll explain the complete Power Up Sequence in a while.</p>
+<p>(Power Key works like the press-and-hold Power Button on vintage Nokia Phones)</p>
+<p><em>Anything else to power up the LTE Modem?</em></p>
+<p>In a while we’ll set the <strong>Reset Pin</strong> and check the <strong>Status Pin</strong>…</p>
+<ul>
 <li>
 <p><strong>Reset</strong> ← A64 Port <strong>PC4</strong></p>
 <p>Reset the LTE Modem.</p>
@@ -267,21 +280,26 @@
 <p><a href="https://lupyuen.github.io/articles/lte#status-indication">(See this)</a></p>
 </li>
 </ul>
-<p>TODO</p>
+<p>We need to program PinePhone’s <strong>Power Management Integrated Circuit (PMIC)</strong> to supply <strong>3.3 V on DCDC1</strong>.  Here’s why…</p>
 <p><img src="https://lupyuen.github.io/images/lte-title2.jpg" alt="LTE Modem Power Output" /></p>
 <h1 id="power-output"><a href="#power-output">5 Power Output</a></h1>
 <p><em>Wait there’s a Power Output for the LTE Modem?</em></p>
-<p>TODO</p>
+<p>Yes indeed! The LTE Modem <strong>outputs 1.8 Volts</strong> to PinePhone (pic above)…</p>
 <ul>
 <li>
-<p><strong>Power Output</strong> → PinePhone <strong>VDD_EXT</strong></p>
-<p>Power Output from LTE Modem to PinePhone.</p>
+<p><strong>Power Output (1.8 V)</strong> → PinePhone <strong>VDD_EXT</strong></p>
+<p>Power Output from LTE Modem to PinePhone. (1.8 V)</p>
 <p><a href="https://lupyuen.github.io/articles/lte#power-supply">(See this)</a></p>
 </li>
 </ul>
-<p>TODO: VDD_EXT is super confusing</p>
+<p>Which goes into PinePhone’s <strong>Voltage Translators</strong> as <strong>VDD_EXT</strong> (top left)…</p>
 <p><img src="https://lupyuen.github.io/images/lte-vddext.png" alt="LTE Modem Power Output" /></p>
-<p>TODO</p>
+<p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>PinePhone Schematic (Page 15)</em></a></p>
+<p><a href="https://www.ti.com/lit/ds/symlink/txb0104.pdf">(<strong>TXB0104</strong> is a Voltage Translator)</a></p>
+<p>Which converts the UART TX / RX / CTS / RTS signals from <strong>1.8 V (LTE Modem, left) to 3.3 V (PinePhone, right)</strong>.</p>
+<p>Voltage Translators are also used for the <a href="https://lupyuen.github.io/articles/lte#control-pins-for-lte-modem"><strong>LTE Modem Control Pins</strong></a>.</p>
+<p><em>What’s DCDC1? (Top right)</em></p>
+<p>TODO: <a href="https://en.wikipedia.org/wiki/SIM_card#Design">1.8 V on SIM Cards</a></p>
 <p><img src="https://lupyuen.github.io/images/lte-title.jpg" alt="LTE Modem inside PinePhone" /></p>
 <h1 id="power-on-lte-modem"><a href="#power-on-lte-modem">6 Power On LTE Modem</a></h1>
 <p>TODO</p>
