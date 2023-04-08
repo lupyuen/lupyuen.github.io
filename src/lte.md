@@ -331,7 +331,7 @@ This is how we control the GPIO Pins to __power up the LTE Modem__...
 
 ![LTE Modem Power](https://lupyuen.github.io/images/lte-power2.png)
 
-_Power Key looks funky: High-Low-High..._
+_Power Key looks funky: High - Low - High..._
 
 Yeah the Power Key is probably inspired by the press-and-hold Power Button on vintage Nokia Phones.
 
