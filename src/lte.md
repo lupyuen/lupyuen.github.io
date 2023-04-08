@@ -309,7 +309,7 @@ This is how we control the GPIO Pins to __power up the LTE Modem__...
 
 1.  Set __PC4 to High__ to deassert LTE Modem Reset
 
-1.  Set __PB3 to High__ (Power Key)
+1.  Set __PB3 to High__ to prepare the Power Key for startup
 
 1.  __Wait 30 milliseconds__ for VBAT Power Supply to be stable
 
@@ -321,7 +321,9 @@ This is how we control the GPIO Pins to __power up the LTE Modem__...
 
 1.  Set __PH8 to High__ to disable Airplane Mode
 
-1.  __Read PH9__ to check LTE Modem Status
+1.  __Read PH9__ to check the LTE Modem Status:
+
+    PH9 goes from __High to Low__ when the LTE Modem is ready.
 
 1.  __UART and USB Interfaces__ will be operational in 13 seconds
 
