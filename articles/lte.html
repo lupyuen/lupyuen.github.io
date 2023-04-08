@@ -318,7 +318,8 @@
 <p><em>Whoa that’s more pins than a pin cushion! (Pic above)</em></p>
 <p><em>How exactly do we power up the LTE Modem?</em></p>
 <p>TODO</p>
-<p><em>How to power up PinePhone’s LTE Modem?</em></p>
+<p><img src="https://lupyuen.github.io/images/lte-power2.png" alt="LTE Modem Power" /></p>
+<p>HW Page 41</p>
 <p>According to PinePhone Schematic Page 15, the LTE Modem is connected to…</p>
 <ul>
 <li>
@@ -380,6 +381,10 @@
 <p>In Future: Set PH7 to High or Low for Sleep State</p>
 </li>
 </ol>
+<p>TODO</p>
+<p><em>Power Key looks funky…</em></p>
+<p>Yeah the Power Key is probably inspired by the press-and-hold Power Button on vintage Nokia Phones.</p>
+<p>TODO</p>
 <p>To do this in NuttX, our code looks like this: <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/3ceaf44c23b85ec105a0d85cd377f4a55eff5ef5/a64_usbhost.c#L337-L421">a64_usbhost.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Read PH9 to check LTE Modem Status
 #define STATUS (PIO_INPUT | PIO_PORT_PIOH | PIO_PIN9)
