@@ -333,9 +333,9 @@ This is how we control the GPIO Pins to __power up the LTE Modem__...
 
 _LTE Modem Status goes High to Low when the LTE Modem is ready. Any gotchas?_
 
-We might not be able to read the LTE Modem Status reliably via GPIO Pin PH9.
+We might NOT be able to __read the LTE Modem Status reliably__ via GPIO Pin PH9.
 
-This will affect our NuttX Testing later.
+This will affect our NuttX Testing, as we'll soon see.
 
 [(More about this)](https://lupyuen.github.io/articles/lte#status-indication)
 
@@ -346,6 +346,10 @@ Yeah the Power Key is probably inspired by the press-and-hold Power Button on vi
 Let's implement the steps with Apache NuttX RTOS...
 
 # Power Up wth NuttX
+
+_We've seen the Power On Sequence for LTE Modem..._
+
+_How do we implement it in Apache NuttX RTOS?_
 
 TODO
 
@@ -482,17 +486,7 @@ Is it because of this...
 
 "Currently STATUS pin is connected to PWRKEY and to PB3. STATUS can't be read reliably since voltage divider from R1526 and R1517 places the STATUS signal at 0V or 0.5\*Vcc-IO, which is unspecified input value according to A64 datasheet (Vih is 0.7\*Vcc-IO, Vil is 0.3\*Vcc-IO, the range in between is unspecified)." 
 
-[(Source)](https://wiki.pine64.org/wiki/PinePhone_Power_Management#Open_Questions_2)
-
-References:
-
--   [PinePhone Power Management](https://wiki.pine64.org/wiki/PinePhone_Power_Management)
-
--   [OSDev PinePhone](https://wiki.osdev.org/PinePhone)
-
--   [Genode PinePhone Telephony](https://genodians.org/ssumpf/2022-05-09-telephony)
-
-# LTE Modem UART
+[(Source)](https://wiki.pine64.org/wiki/PinePhone_Power_Management#Open_Questions_2)# LTE Modem UART
 
 TODO: LTE Modem UART
 
@@ -515,12 +509,6 @@ TODO: Copy from Allwinner A1X
 [a1x_serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/arm/src/a1x/a1x_serial.c)
 
 TODO: USB Enumerate Devices
-
-[Modem on PinePhone](https://xnux.eu/devices/feature/modem-pp.html)
-
-[Audio on PinePhone](https://xnux.eu/devices/feature/audio-pp.html)
-
-[EG25-G reverse engineering](https://xnux.eu/devices/feature/modem-pp-reveng.html)
 
 ![Quectel EG25-G LTE Modem inside PinePhone](https://lupyuen.github.io/images/wayland-sd.jpg)
 
@@ -549,6 +537,22 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/lte.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lte.md)
+
+# Notes
+
+1.  References:
+
+    [__"PinePhone Power Management"__](https://wiki.pine64.org/wiki/PinePhone_Power_Management)
+
+    [__"Modem on PinePhone"__](https://xnux.eu/devices/feature/modem-pp.html)
+
+    [__"Audio on PinePhone"__](https://xnux.eu/devices/feature/audio-pp.html)
+
+    [__"EG25-G Reverse Engineering"__](https://xnux.eu/devices/feature/modem-pp-reveng.html)
+
+    [__"Genode: PinePhone Telephony"__](https://genodians.org/ssumpf/2022-05-09-telephony)
+
+    [__"OSDev: PinePhone"__](https://wiki.osdev.org/PinePhone)
 
 # Appendix: LTE Modem Pins
 
