@@ -349,7 +349,7 @@ Let's implement the steps with Apache NuttX RTOS...
 
 _We've seen the Power On Sequence for LTE Modem..._
 
-_How do we implement it in Apache NuttX RTOS?_
+_How will we implement it in Apache NuttX RTOS?_
 
 TODO
 
@@ -358,8 +358,7 @@ To do this in NuttX, our code looks like this: [a64_usbhost.c](https://github.co
 ```c
 // Read PH9 to check LTE Modem Status
 #define STATUS (PIO_INPUT | PIO_PORT_PIOH | PIO_PIN9)
-ret = a64_pio_config(STATUS);
-DEBUGASSERT(ret == OK);
+a64_pio_config(STATUS);
 _info("Status=%d\n", a64_pio_read(STATUS));
 ```
 
@@ -367,61 +366,52 @@ TODO
 
 ```c
 // Power on DCDC1
-int pinephone_pmic_usb_init(void);
-ret = pinephone_pmic_usb_init();
-DEBUGASSERT(ret == OK);
+pinephone_pmic_usb_init();
+
+// Print the status
 _info("Status=%d\n", a64_pio_read(STATUS));
-```
 
-TODO
-
-```c
 // Wait 1000 ms
-_info("Wait 1000 ms\n");
 up_mdelay(1000);
-_info("Status=%d\n", a64_pio_read(STATUS));
+// Omitted: Print the status
 ```
+
+[(__pinephone_pmic_usb_init__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/0216f6968a82a73b67fb48a276b3c0550c47008a/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L294-L340)
 
 TODO
 
 ```c
 // Set PL7 to High to Power On LTE Modem (4G-PWR-BAT)
-
+// Configure PWR_BAT (PL7) for Output
 #define P_OUTPUT (PIO_OUTPUT | PIO_PULL_NONE | PIO_DRIVE_MEDLOW | \
-                PIO_INT_NONE | PIO_OUTPUT_SET)
+                  PIO_INT_NONE | PIO_OUTPUT_SET)
 #define PWR_BAT (P_OUTPUT | PIO_PORT_PIOL | PIO_PIN7)
-_info("Configure PWR_BAT (PL7) for Output\n");
-ret = a64_pio_config(PWR_BAT);
-DEBUGASSERT(ret >= 0);
+a64_pio_config(PWR_BAT);
 
-_info("Set PWR_BAT (PL7) to High\n");
+// Set PWR_BAT (PL7) to High
 a64_pio_write(PWR_BAT, true);
-_info("Status=%d\n", a64_pio_read(STATUS));
-
+// Omitted: Print the status
 ```
 
 TODO
 
 ```c
 // Wait 1000 ms
-_info("Wait 1000 ms\n");
 up_mdelay(1000);
-_info("Status=%d\n", a64_pio_read(STATUS));
+// Omitted: Print the status
 ```
 
 TODO
 
 ```c
 // Set PC4 to High to Deassert LTE Modem Reset (BB-RESET / RESET_N)
-
+// Configure RESET_N (PC4) for Output
 #define RESET_N (P_OUTPUT | PIO_PORT_PIOC | PIO_PIN4)
-_info("Configure RESET_N (PC4) for Output\n");
-ret = a64_pio_config(RESET_N);
-DEBUGASSERT(ret >= 0);
+a64_pio_config(RESET_N);
 
-_info("Set RESET_N (PC4) to High\n");
+// Set RESET_N (PC4) to High
 a64_pio_write(RESET_N, true);
-_info("Status=%d\n", a64_pio_read(STATUS));
+// Omitted: Print the status
 ```
 
 TODO
@@ -430,9 +420,8 @@ TODO
 // TODO: Set PB3 to High (BB-PWRKEY / PWRKEY).
 
 // Wait 30 ms for VBAT to be stable
-_info("Wait 30 ms for VBAT to be stable\n");
 up_mdelay(30);
-_info("Status=%d\n", a64_pio_read(STATUS));
+// Omitted: Print the status
 ```
 
 TODO
@@ -440,45 +429,88 @@ TODO
 ```c
 // Set PB3 to Power On LTE Modem (BB-PWRKEY / PWRKEY).
 // PWRKEY should be pulled down at least 500 ms, then pulled up.
-
+// Configure PWRKEY (PB3) for Output
 #define PWRKEY (P_OUTPUT | PIO_PORT_PIOB | PIO_PIN3)
-_info("Configure PWRKEY (PB3) for Output\n");
-ret = a64_pio_config(PWRKEY);
-DEBUGASSERT(ret >= 0);
+a64_pio_config(PWRKEY);
 
-_info("Set PWRKEY (PB3) to Low\n");
+// Set PWRKEY (PB3) to Low
 a64_pio_write(PWRKEY, false);
-_info("Status=%d\n", a64_pio_read(STATUS));
+// Omitted: Print the status
 ```
 
 TODO
 
 ```c
-_info("Wait 500 ms\n");
+// Wait 500 ms
 up_mdelay(500);
-_info("Status=%d\n", a64_pio_read(STATUS));
+// Omitted: Print the status
 
-_info("Set PWRKEY (PB3) to High\n");
+// Set PWRKEY (PB3) to High
 a64_pio_write(PWRKEY, true);
-_info("Status=%d\n", a64_pio_read(STATUS));
+// Omitted: Print the status
 ```
 
 TODO
 
 ```c
 // Set PH8 to High to Disable Airplane Mode (BB-DISABLE / W_DISABLE#)
-
+// Configure W_DISABLE (PH8) for Output
 #define W_DISABLE (P_OUTPUT | PIO_PORT_PIOH | PIO_PIN8)
-_info("Configure W_DISABLE (PH8) for Output\n");
-ret = a64_pio_config(W_DISABLE);
-DEBUGASSERT(ret >= 0);
+a64_pio_config(W_DISABLE);
 
-_info("Set W_DISABLE (PH8) to High\n");
+// Set W_DISABLE (PH8) to High
 a64_pio_write(W_DISABLE, true);
-_info("Status=%d\n", a64_pio_read(STATUS));
+// Omitted: Print the status
 ```
 
-[(__pinephone_pmic_usb_init__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/0216f6968a82a73b67fb48a276b3c0550c47008a/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L294-L340)
+TODO
+
+# Is LTE Modem Up?
+
+TODO
+
+```text
+pinephone_pmic_usb_init: Set DCDC1 Voltage to 3.3V
+pmic_write: reg=0x20, val=0x11
+a64_rsb_write: rt_addr=0x2d, reg_addr=0x20, value=0x11
+pmic_clrsetbits: reg=0x10, clr_mask=0x0, set_mask=0x1
+a64_rsb_read: rt_addr=0x2d, reg_addr=0x10
+a64_rsb_write: rt_addr=0x2d, reg_addr=0x10, value=0x37
+a64_usbhost_initialize: Status=0
+
+a64_usbhost_initialize: Wait 1000 ms
+a64_usbhost_initialize: Status=0
+
+a64_usbhost_initialize: Configure PWR_BAT (PL7) for Output
+a64_usbhost_initialize: Set PWR_BAT (PL7) to High
+a64_usbhost_initialize: Status=1
+
+a64_usbhost_initialize: Wait 1000 ms
+a64_usbhost_initialize: Status=1
+
+a64_usbhost_initialize: Configure RESET_N (PC4) for Output
+a64_usbhost_initialize: Set RESET_N (PC4) to High
+a64_usbhost_initialize: Status=1
+
+a64_usbhost_initialize: Wait 30 ms for VBAT to be stable
+a64_usbhost_initialize: Status=1
+
+a64_usbhost_initialize: Configure PWRKEY (PB3) for Output
+a64_usbhost_initialize: Set PWRKEY (PB3) to Low
+a64_usbhost_initialize: Status=1
+
+a64_usbhost_initialize: Wait 500 ms
+a64_usbhost_initialize: Status=1
+
+a64_usbhost_initialize: Set PWRKEY (PB3) to High
+a64_usbhost_initialize: Status=1
+
+a64_usbhost_initialize: Configure W_DISABLE (PH8) for Output
+a64_usbhost_initialize: Set W_DISABLE (PH8) to High
+a64_usbhost_initialize: Status=1
+```
+
+[(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/bde9a2ffd4ce57237558c188a90c308907ae0788/README.md#output-log)
 
 TODO: Why does LTE Modem Status change from Low to High, then stay at High? [(See this)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/6fb84655b4ed19af7209817cc01b2a589798620a/README.md#output-log)
 
