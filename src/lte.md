@@ -327,7 +327,7 @@ This is how we control the GPIO Pins to __power up the LTE Modem__...
 
 1.  __UART and USB Interfaces__ will be operational in 13 seconds
 
-[__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf) (Page 41) illustrates the __Power On Sequence__...
+[__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf) (Page 41) beautifully illustrates the __Power On Sequence__...
 
 ![LTE Modem Power](https://lupyuen.github.io/images/lte-power2.png)
 
@@ -562,54 +562,60 @@ TODO
 
 _What's the purpose of the above LTE Modem pins?_
 
-From [Quectel EG25-G Hardware Design](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)...
+From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)...
 
 ## Power Supply
 
 TODO
 
-From [Quectel EG25-G Hardware Design](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)...
+From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf) (Page 22)...
 
 | Pin Name | Pin No. | I/O | Description
 |:---------|:-------:|:---:|:-----------
 | VDD_EXT | 7 | PO | Provide 1.8 V for external circuit
 
+[(__PO__ is Power Output)](https://lupyuen.github.io/articles/lte#io-parameters-definition)
+
 ## Power On / Off
 
 TODO
 
-From [Quectel EG25-G Hardware Design](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)...
+From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf) (Page 22)...
 
 | Pin Name | Pin No. | I/O | Description
 |:---------|:-------:|:---:|:-----------
 | PWRKEY | 21 | DI | Turn on / off the module
 | RESET_N | 20 | DI | Reset signal of the module
 
+[(__DI__ is Digital Input)](https://lupyuen.github.io/articles/lte#io-parameters-definition)
+
 -   PWRKEY should be pulled down at least 500 ms, then pulled up
     
-    (EG25-G HW Design, Page 41)
+    [(EG25-G Hardware Design, Page 41)](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
 -   "Make sure that VBAT is stable before pulling down PWRKEY pin. It is recommended that the time between powering up VBAT and pulling down PWRKEY pin is no less than 30 ms."
     
-    (EG25-G HW Design, Page 41)
+    [(EG25-G Hardware Design, Page 41)](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
 -   "The RESET_N pin can be used to reset the module. The module can be reset by driving RESET_N to a low level voltage for 150–460 ms"
 
-    (EG25-G HW Design, Page 42)
+    [(EG25-G Hardware Design, Page 42)](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
 ## Status Indication
 
 TODO
 
-From [Quectel EG25-G Hardware Design](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)...
+From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf) (Page 22)...
 
 | Pin Name | Pin No. | I/O | Description
 |:---------|:-------:|:---:|:-----------
 | STATUS | 61 | OD | Indicate the module operating status
 
+[(__OD__ is Open Drain)](https://lupyuen.github.io/articles/lte#io-parameters-definition)
+
 -   When PWRKEY is pulled Low, STATUS goes High for ≥2.5 s, then STATUS goes Low
 
-    (EG25-G HW Design, Page 41)
+    [(EG25-G Hardware Design, Page 41)](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
 -   STATUS can't be read reliably...
 
@@ -621,42 +627,52 @@ From [Quectel EG25-G Hardware Design](https://wiki.pine64.org/images/2/20/Quecte
 
 TODO
 
-From [Quectel EG25-G Hardware Design](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)...
+From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf) (Page 22)...
 
 | Pin Name | Pin No. | I/O | Description
 |:---------|:-------:|:---:|:-----------
 | USB_VBUS | 71 | PI | USB connection detection
 
+[(__PI__ is Power Input)](https://lupyuen.github.io/articles/lte#io-parameters-definition)
+
 ## Main UART Interface
 
 TODO
 
-From [Quectel EG25-G Hardware Design](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)...
+From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf) (Page 24)...
 
 | Pin Name | Pin No. | I/O | Description
 |:---------|:-------:|:---:|:-----------
 | RI | 62 | DO | Ring indicator
 
+[(__DO__ is Digital Output)](https://lupyuen.github.io/articles/lte#io-parameters-definition)
+
+-   Voltage Level is 1.8 V
+
 ## Other Interface Pins
 
 TODO
 
-From [Quectel EG25-G Hardware Design](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)...
+From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf) (Page 32)...
 
 | Pin Name | Pin No. | I/O | Description
 |:---------|:-------:|:---:|:-----------
 | W_DISABLE# | 4 | DI | Airplane mode control
 | AP_READY | 2 | DI | Application processor sleep state detection
 
+[(__DI__ is Digital Input)](https://lupyuen.github.io/articles/lte#io-parameters-definition)
+
+-   Voltage Level is 1.8 V
+
 -   "The W_DISABLE# pin is pulled up by default. Driving it to low level will let the module enter airplane mode"
 
-    (EG25-G HW Design, Page 37)
+    [(EG25-G Hardware Design, Page 37)](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
 ## I/O Parameters Definition
 
 TODO
 
-From [Quectel EG25-G Hardware Design](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)...
+From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)...
 
 | Type | Description
 |:-----|:-----------
