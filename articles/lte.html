@@ -361,7 +361,7 @@
 <p><strong>UART and USB Interfaces</strong> will be operational in 13 seconds</p>
 </li>
 </ol>
-<p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 41) illustrates the <strong>Power On Sequence</strong>…</p>
+<p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 41) beautifully illustrates the <strong>Power On Sequence</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/lte-power2.png" alt="LTE Modem Power" /></p>
 <p><em>LTE Modem Status goes High to Low when the LTE Modem is ready. Any gotchas?</em></p>
 <p>We might NOT be able to <strong>read the LTE Modem Status reliably</strong> via GPIO Pin PH9.</p>
@@ -541,46 +541,50 @@ _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lte-title.jpg" alt="LTE Modem inside PinePhone" /></p>
 <p><em>What’s the purpose of the above LTE Modem pins?</em></p>
-<p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">Quectel EG25-G Hardware Design</a>…</p>
+<p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a>…</p>
 <h2 id="power-supply"><a href="#power-supply">10.1 Power Supply</a></h2>
 <p>TODO</p>
-<p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">Quectel EG25-G Hardware Design</a>…</p>
+<p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 22)…</p>
 <div><table><thead><tr><th style="text-align: left">Pin Name</th><th style="text-align: center">Pin No.</th><th style="text-align: center">I/O</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: left">VDD_EXT</td><td style="text-align: center">7</td><td style="text-align: center">PO</td><td style="text-align: left">Provide 1.8 V for external circuit</td></tr>
 </tbody></table>
-</div><h2 id="power-on--off"><a href="#power-on--off">10.2 Power On / Off</a></h2>
+</div>
+<p><a href="https://lupyuen.github.io/articles/lte#io-parameters-definition">(<strong>PO</strong> is Power Output)</a></p>
+<h2 id="power-on--off"><a href="#power-on--off">10.2 Power On / Off</a></h2>
 <p>TODO</p>
-<p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">Quectel EG25-G Hardware Design</a>…</p>
+<p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 22)…</p>
 <div><table><thead><tr><th style="text-align: left">Pin Name</th><th style="text-align: center">Pin No.</th><th style="text-align: center">I/O</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: left">PWRKEY</td><td style="text-align: center">21</td><td style="text-align: center">DI</td><td style="text-align: left">Turn on / off the module</td></tr>
 <tr><td style="text-align: left">RESET_N</td><td style="text-align: center">20</td><td style="text-align: center">DI</td><td style="text-align: left">Reset signal of the module</td></tr>
 </tbody></table>
 </div>
+<p><a href="https://lupyuen.github.io/articles/lte#io-parameters-definition">(<strong>DI</strong> is Digital Input)</a></p>
 <ul>
 <li>
 <p>PWRKEY should be pulled down at least 500 ms, then pulled up</p>
-<p>(EG25-G HW Design, Page 41)</p>
+<p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">(EG25-G Hardware Design, Page 41)</a></p>
 </li>
 <li>
 <p>“Make sure that VBAT is stable before pulling down PWRKEY pin. It is recommended that the time between powering up VBAT and pulling down PWRKEY pin is no less than 30 ms.”</p>
-<p>(EG25-G HW Design, Page 41)</p>
+<p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">(EG25-G Hardware Design, Page 41)</a></p>
 </li>
 <li>
 <p>“The RESET_N pin can be used to reset the module. The module can be reset by driving RESET_N to a low level voltage for 150–460 ms”</p>
-<p>(EG25-G HW Design, Page 42)</p>
+<p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">(EG25-G Hardware Design, Page 42)</a></p>
 </li>
 </ul>
 <h2 id="status-indication"><a href="#status-indication">10.3 Status Indication</a></h2>
 <p>TODO</p>
-<p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">Quectel EG25-G Hardware Design</a>…</p>
+<p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 22)…</p>
 <div><table><thead><tr><th style="text-align: left">Pin Name</th><th style="text-align: center">Pin No.</th><th style="text-align: center">I/O</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: left">STATUS</td><td style="text-align: center">61</td><td style="text-align: center">OD</td><td style="text-align: left">Indicate the module operating status</td></tr>
 </tbody></table>
 </div>
+<p><a href="https://lupyuen.github.io/articles/lte#io-parameters-definition">(<strong>OD</strong> is Open Drain)</a></p>
 <ul>
 <li>
 <p>When PWRKEY is pulled Low, STATUS goes High for ≥2.5 s, then STATUS goes Low</p>
-<p>(EG25-G HW Design, Page 41)</p>
+<p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">(EG25-G Hardware Design, Page 41)</a></p>
 </li>
 <li>
 <p>STATUS can’t be read reliably…</p>
@@ -590,33 +594,44 @@ _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
 </ul>
 <h2 id="usb-interface"><a href="#usb-interface">10.4 USB Interface</a></h2>
 <p>TODO</p>
-<p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">Quectel EG25-G Hardware Design</a>…</p>
+<p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 22)…</p>
 <div><table><thead><tr><th style="text-align: left">Pin Name</th><th style="text-align: center">Pin No.</th><th style="text-align: center">I/O</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: left">USB_VBUS</td><td style="text-align: center">71</td><td style="text-align: center">PI</td><td style="text-align: left">USB connection detection</td></tr>
 </tbody></table>
-</div><h2 id="main-uart-interface"><a href="#main-uart-interface">10.5 Main UART Interface</a></h2>
+</div>
+<p><a href="https://lupyuen.github.io/articles/lte#io-parameters-definition">(<strong>PI</strong> is Power Input)</a></p>
+<h2 id="main-uart-interface"><a href="#main-uart-interface">10.5 Main UART Interface</a></h2>
 <p>TODO</p>
-<p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">Quectel EG25-G Hardware Design</a>…</p>
+<p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 24)…</p>
 <div><table><thead><tr><th style="text-align: left">Pin Name</th><th style="text-align: center">Pin No.</th><th style="text-align: center">I/O</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: left">RI</td><td style="text-align: center">62</td><td style="text-align: center">DO</td><td style="text-align: left">Ring indicator</td></tr>
 </tbody></table>
-</div><h2 id="other-interface-pins"><a href="#other-interface-pins">10.6 Other Interface Pins</a></h2>
+</div>
+<p><a href="https://lupyuen.github.io/articles/lte#io-parameters-definition">(<strong>DO</strong> is Digital Output)</a></p>
+<ul>
+<li>Voltage Level is 1.8 V</li>
+</ul>
+<h2 id="other-interface-pins"><a href="#other-interface-pins">10.6 Other Interface Pins</a></h2>
 <p>TODO</p>
-<p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">Quectel EG25-G Hardware Design</a>…</p>
+<p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 32)…</p>
 <div><table><thead><tr><th style="text-align: left">Pin Name</th><th style="text-align: center">Pin No.</th><th style="text-align: center">I/O</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: left">W_DISABLE#</td><td style="text-align: center">4</td><td style="text-align: center">DI</td><td style="text-align: left">Airplane mode control</td></tr>
 <tr><td style="text-align: left">AP_READY</td><td style="text-align: center">2</td><td style="text-align: center">DI</td><td style="text-align: left">Application processor sleep state detection</td></tr>
 </tbody></table>
 </div>
+<p><a href="https://lupyuen.github.io/articles/lte#io-parameters-definition">(<strong>DI</strong> is Digital Input)</a></p>
 <ul>
 <li>
+<p>Voltage Level is 1.8 V</p>
+</li>
+<li>
 <p>“The W_DISABLE# pin is pulled up by default. Driving it to low level will let the module enter airplane mode”</p>
-<p>(EG25-G HW Design, Page 37)</p>
+<p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">(EG25-G Hardware Design, Page 37)</a></p>
 </li>
 </ul>
 <h2 id="io-parameters-definition"><a href="#io-parameters-definition">10.7 I/O Parameters Definition</a></h2>
 <p>TODO</p>
-<p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">Quectel EG25-G Hardware Design</a>…</p>
+<p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a>…</p>
 <div><table><thead><tr><th style="text-align: left">Type</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: left">AI</td><td style="text-align: left">Analog Input</td></tr>
 <tr><td style="text-align: left">AO</td><td style="text-align: left">Analog Output</td></tr>
