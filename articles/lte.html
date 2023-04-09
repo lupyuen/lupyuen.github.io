@@ -333,6 +333,8 @@
 <ol>
 <li>
 <p>Program PinePhone’s <a href="https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit"><strong>Power Management Integrated Circuit (PMIC)</strong></a> to supply <strong>3.3 V on DCDC1</strong></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/0216f6968a82a73b67fb48a276b3c0550c47008a/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L294-L340">(Like this)</a></p>
+<p>(Don’t do this if DCDC1 is already powered on)</p>
 </li>
 <li>
 <p>Set <strong>PL7 to High</strong> to power on the RF Transceiver and Baseband Processor</p>
@@ -374,26 +376,27 @@
 <h1 id="power-up-wth-nuttx"><a href="#power-up-wth-nuttx">7 Power Up wth NuttX</a></h1>
 <p><em>We’ve seen the Power On Sequence for LTE Modem…</em></p>
 <p><em>How will we implement it in Apache NuttX RTOS?</em></p>
-<p>TODO</p>
-<p>To do this in NuttX, our code looks like this: <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/3ceaf44c23b85ec105a0d85cd377f4a55eff5ef5/a64_usbhost.c#L337-L421">a64_usbhost.c</a></p>
+<p>This is how we implement the LTE Modem’s <strong>Power On Sequence</strong> in NuttX: <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/3ceaf44c23b85ec105a0d85cd377f4a55eff5ef5/a64_usbhost.c#L337-L421">a64_usbhost.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Read PH9 to check LTE Modem Status
 #define STATUS (PIO_INPUT | PIO_PORT_PIOH | PIO_PIN9)
 a64_pio_config(STATUS);
 _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
 </code></pre></div>
-<p>TODO</p>
+<p>We begin by reading PH9 for the <strong>LTE Modem Status</strong>.</p>
+<p>Next we power up <strong>3.3 V on DCDC1</strong> with PinePhone’s Power Management Integrated Circuit (PMIC)…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Power on DCDC1
 pinephone_pmic_usb_init();
 
 // Print the status
 _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
 
-// Wait 1000 ms
+// Wait 1 second for DCDC1 to be stable
 up_mdelay(1000);
 // Omitted: Print the status
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/0216f6968a82a73b67fb48a276b3c0550c47008a/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L294-L340">(<strong>pinephone_pmic_usb_init</strong> is defined here)</a></p>
-<p>TODO</p>
+<p>(TODO: Don’t do this if DCDC1 is already powered on)</p>
+<p>Then we set PL7 to High to <strong>power up the RF Transceiver and Baseband Processor</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Set PL7 to High to Power On LTE Modem (4G-PWR-BAT)
 // Configure PWR_BAT (PL7) for Output
 #define P_OUTPUT (PIO_OUTPUT | PIO_PULL_NONE | PIO_DRIVE_MEDLOW | \
@@ -404,13 +407,12 @@ a64_pio_config(PWR_BAT);
 // Set PWR_BAT (PL7) to High
 a64_pio_write(PWR_BAT, true);
 // Omitted: Print the status
-</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>// Wait 1000 ms
+
+// Wait 1 second and check the status
 up_mdelay(1000);
 // Omitted: Print the status
 </code></pre></div>
-<p>TODO</p>
+<p>We set PC4 to High to <strong>deassert the LTE Modem Reset</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Set PC4 to High to Deassert LTE Modem Reset (BB-RESET / RESET_N)
 // Configure RESET_N (PC4) for Output
 #define RESET_N (P_OUTPUT | PIO_PORT_PIOC | PIO_PIN4)
@@ -420,26 +422,24 @@ a64_pio_config(RESET_N);
 a64_pio_write(RESET_N, true);
 // Omitted: Print the status
 </code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>// TODO: Set PB3 to High (BB-PWRKEY / PWRKEY).
-
-// Wait 30 ms for VBAT to be stable
-up_mdelay(30);
-// Omitted: Print the status
-</code></pre></div>
-<p>TODO</p>
+<p>Now we <strong>toggle PB3 for the Power Key</strong>: High - 30 ms - Low - 500 ms - High…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Set PB3 to Power On LTE Modem (BB-PWRKEY / PWRKEY).
 // PWRKEY should be pulled down at least 500 ms, then pulled up.
 // Configure PWRKEY (PB3) for Output
 #define PWRKEY (P_OUTPUT | PIO_PORT_PIOB | PIO_PIN3)
 a64_pio_config(PWRKEY);
 
+// TODO: Set PB3 to High (BB-PWRKEY / PWRKEY).
+
+// Wait 30 ms for VBAT to be stable
+up_mdelay(30);
+// Omitted: Print the status
+
 // Set PWRKEY (PB3) to Low
 a64_pio_write(PWRKEY, false);
 // Omitted: Print the status
-</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>// Wait 500 ms
+
+// Wait 500 ms for PWRKEY
 up_mdelay(500);
 // Omitted: Print the status
 
@@ -447,7 +447,7 @@ up_mdelay(500);
 a64_pio_write(PWRKEY, true);
 // Omitted: Print the status
 </code></pre></div>
-<p>TODO</p>
+<p>Finally we set PH8 to High to <strong>disable Airplane Mode</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Set PH8 to High to Disable Airplane Mode (BB-DISABLE / W_DISABLE#)
 // Configure W_DISABLE (PH8) for Output
 #define W_DISABLE (P_OUTPUT | PIO_PORT_PIOH | PIO_PIN8)
@@ -455,9 +455,11 @@ a64_pio_config(W_DISABLE);
 
 // Set W_DISABLE (PH8) to High
 a64_pio_write(W_DISABLE, true);
-// Omitted: Print the status
+
+// Print the status
+_info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
 </code></pre></div>
-<p>TODO</p>
+<p>And we print the status. Let’s run this!</p>
 <h1 id="is-lte-modem-up"><a href="#is-lte-modem-up">8 Is LTE Modem Up?</a></h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>pinephone_pmic_usb_init: Set DCDC1 Voltage to 3.3V
