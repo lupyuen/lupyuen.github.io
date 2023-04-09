@@ -333,7 +333,9 @@ This is how we control the GPIO Pins to __power up the LTE Modem__...
 
 _LTE Modem Status goes High to Low when the LTE Modem is ready. Any gotchas?_
 
-We might not be able to read the LTE Modem Status reliably, because of the 1.8 V signal output.
+We might not be able to read the LTE Modem Status reliably via GPIO Pin PH9.
+
+This will affect our NuttX Testing later.
 
 [(More about this)](https://lupyuen.github.io/articles/lte#status-indication)
 
