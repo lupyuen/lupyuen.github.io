@@ -355,7 +355,7 @@
 </li>
 <li>
 <p><strong>Read PH9</strong> to check the LTE Modem Status:</p>
-<p>PH9 goes from <strong>High to Low</strong> when the LTE Modem is ready.</p>
+<p>PH9 goes from <strong>High to Low</strong> when the LTE Modem is ready, in 2.5 seconds.</p>
 </li>
 <li>
 <p><strong>UART and USB Interfaces</strong> will be operational in 13 seconds</p>
@@ -363,6 +363,9 @@
 </ol>
 <p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 41) illustrates the <strong>Power On Sequence</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/lte-power2.png" alt="LTE Modem Power" /></p>
+<p><em>LTE Modem Status goes High to Low when the LTE Modem is ready. Any gotchas?</em></p>
+<p>We might not be able to read the LTE Modem Status reliably, because of the 1.8 V signal output.</p>
+<p><a href="https://lupyuen.github.io/articles/lte#status-indication">(More about this)</a></p>
 <p><em>Power Key looks funky: High - Low - High…</em></p>
 <p>Yeah the Power Key is probably inspired by the press-and-hold Power Button on vintage Nokia Phones.</p>
 <p>Let’s implement the steps with Apache NuttX RTOS…</p>
