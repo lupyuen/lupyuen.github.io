@@ -323,13 +323,19 @@ This is how we control the GPIO Pins to __power up the LTE Modem__...
 
 1.  __Read PH9__ to check the LTE Modem Status:
 
-    PH9 goes from __High to Low__ when the LTE Modem is ready.
+    PH9 goes from __High to Low__ when the LTE Modem is ready, in 2.5 seconds.
 
 1.  __UART and USB Interfaces__ will be operational in 13 seconds
 
 [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf) (Page 41) illustrates the __Power On Sequence__...
 
 ![LTE Modem Power](https://lupyuen.github.io/images/lte-power2.png)
+
+_LTE Modem Status goes High to Low when the LTE Modem is ready. Any gotchas?_
+
+We might not be able to read the LTE Modem Status reliably, because of the 1.8 V signal output.
+
+[(More about this)](https://lupyuen.github.io/articles/lte#status-indication)
 
 _Power Key looks funky: High - Low - High..._
 
