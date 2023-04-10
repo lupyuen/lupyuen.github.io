@@ -657,19 +657,15 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [__"OSDev: PinePhone"__](https://wiki.osdev.org/PinePhone)
 
-# Appendix: LTE Modem Pins
-
-TODO
-
 ![LTE Modem inside PinePhone](https://lupyuen.github.io/images/lte-title.jpg)
+
+# Appendix: LTE Modem Pins
 
 _What's the purpose of the above LTE Modem pins?_
 
-From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)...
+This section describes the purpose of every LTE Modem pin connected to PinePhone...
 
 ## Power Supply
-
-TODO
 
 From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf) (Page 22)...
 
@@ -680,8 +676,6 @@ From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG
 [(__PO__ is Power Output)](https://lupyuen.github.io/articles/lte#io-parameters-definition)
 
 ## Power On / Off
-
-TODO
 
 From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf) (Page 22)...
 
@@ -705,8 +699,6 @@ From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG
     [(EG25-G Hardware Design, Page 42)](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
 ## Status Indication
-
-TODO
 
 From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf) (Page 22)...
 
@@ -732,8 +724,6 @@ From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG
 
 ## USB Interface
 
-TODO
-
 From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf) (Page 22)...
 
 | Pin Name | Pin No. | I/O | Description
@@ -743,8 +733,6 @@ From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG
 [(__PI__ is Power Input)](https://lupyuen.github.io/articles/lte#io-parameters-definition)
 
 ## Main UART Interface
-
-TODO
 
 From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf) (Page 24)...
 
@@ -757,8 +745,6 @@ From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG
 -   Voltage Level is 1.8 V
 
 ## Other Interface Pins
-
-TODO
 
 From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf) (Page 32)...
 
@@ -776,8 +762,6 @@ From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG
     [(EG25-G Hardware Design, Page 37)](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
 ## I/O Parameters Definition
-
-TODO
 
 From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)...
 
