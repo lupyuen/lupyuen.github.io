@@ -526,7 +526,7 @@ Set W_DISABLE (PH8) to High
 Status=1
 ```
 
-But the __LTE Modem Status (PH9)__ stays at High...
+The LTE Modem should have powered up. But the __LTE Modem Status (PH9)__ stays at High...
 
 ```text
 (Wait 2 seconds)
@@ -547,13 +547,35 @@ Yeah we expect the LTE Modem Status to go __Low after 2.5 seconds__...
 
 [(EG25-G Hardware Design, Page 41)](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
-TODO: Why does LTE Modem Status change from Low to High, then stay at High? [(See this)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/6fb84655b4ed19af7209817cc01b2a589798620a/README.md#output-log)
+_Why did the LTE Modem Status get stuck at High?_
 
-Is it because of this...
+Maybe because of this...
 
-"Currently STATUS pin is connected to PWRKEY and to PB3. STATUS can't be read reliably since voltage divider from R1526 and R1517 places the STATUS signal at 0V or 0.5\*Vcc-IO, which is unspecified input value according to A64 datasheet (Vih is 0.7\*Vcc-IO, Vil is 0.3\*Vcc-IO, the range in between is unspecified)." 
+"Currently STATUS pin is connected to PWRKEY and to PB3."
 
-[(Source)](https://wiki.pine64.org/wiki/PinePhone_Power_Management#Open_Questions_2)# LTE Modem UART
+"__STATUS can't be read reliably__ since voltage divider from R1526 and R1517 places the STATUS signal at 0V or 0.5\*Vcc-IO, which is unspecified input value according to A64 datasheet"
+
+"(Vih is 0.7\*Vcc-IO, Vil is 0.3\*Vcc-IO, the range in between is unspecified)" 
+
+[(Source)](https://wiki.pine64.org/wiki/PinePhone_Power_Management#Open_Questions_2)
+
+Which means we __can't read the LTE Modem Status__ to check reliably whether the modem is powered up.
+
+_Is there another way to verify whether the LTE Modem is up?_
+
+Let's check the UART Port...
+
+![PinePhone Schematic (Page 15)](https://lupyuen.github.io/images/lte-vddext.png)
+
+[_PinePhone Schematic (Page 15)_](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)
+
+[(__TXB0104__ is a Voltage Translator)](https://www.ti.com/lit/ds/symlink/txb0104.pdf)
+
+# Upcoming Fixes
+
+TODO
+
+## UART on NuttX
 
 TODO: LTE Modem UART
 
@@ -574,6 +596,8 @@ TODO: Configure UART
 TODO: Copy from Allwinner A1X
 
 [a1x_serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/arm/src/a1x/a1x_serial.c)
+
+## USB on NuttX
 
 TODO: USB Enumerate Devices
 
@@ -684,9 +708,13 @@ From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG
 
     [(EG25-G Hardware Design, Page 41)](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
--   STATUS can't be read reliably...
+-   Note that STATUS can't be read reliably...
 
-    "Currently STATUS pin is connected to PWRKEY and to PB3. STATUS can't be read reliably since voltage divider from R1526 and R1517 places the STATUS signal at 0V or 0.5\*Vcc-IO, which is unspecified input value according to A64 datasheet (Vih is 0.7\*Vcc-IO, Vil is 0.3\*Vcc-IO, the range in between is unspecified)." 
+    "Currently STATUS pin is connected to PWRKEY and to PB3."
+
+    "__STATUS can't be read reliably__ since voltage divider from R1526 and R1517 places the STATUS signal at 0V or 0.5\*Vcc-IO, which is unspecified input value according to A64 datasheet"
+
+    "(Vih is 0.7\*Vcc-IO, Vil is 0.3\*Vcc-IO, the range in between is unspecified)" 
 
     [(Source)](https://wiki.pine64.org/wiki/PinePhone_Power_Management#Open_Questions_2)
 
