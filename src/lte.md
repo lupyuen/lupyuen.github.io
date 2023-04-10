@@ -585,6 +585,8 @@ The LTE Modem to connected to PinePhone (Allwinner A64) at these UART Ports...
 
 -   __A64 Port PB2__: DTR
 
+    (Default 115.2 kbps, up to 921.6 kbps)
+
 Thus we may __check UART3__ to see if the LTE Modem responds to [__AT Commands__](https://lupyuen.github.io/articles/lte#quectel-eg25-g-lte-modem).
 
 [(After 12 seconds from power up)](https://lupyuen.github.io/articles/lte#power-on-lte-modem)
@@ -600,6 +602,16 @@ We'll copy from the NuttX UART Driver for Allwinner A1X: [__a1x_serial.c__](http
 There's another way to test the LTE Modem: Via USB...
 
 # Test USB with NuttX
+
+_We walked about the UART way to test the LTE Modem..._
+
+_What about the USB way?_
+
+Yep the __USB Interface__ should work for testing the LTE Modem...
+
+-   __USB__ ⇆ A64 Port __USB1__ _(USB Serial)_
+
+    (Up to 480 Mbps)
 
 TODO: USB Enumerate Devices
 
