@@ -307,7 +307,7 @@ This is how we control the GPIO Pins to __power up the LTE Modem__...
 
     [(Like this)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/0216f6968a82a73b67fb48a276b3c0550c47008a/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L294-L340)
 
-    (Don't do this if DCDC1 is already powered on)
+    (Skip this if DCDC1 is already powered on)
 
 1.  Set __PL7 to High__ to power on the RF Transceiver and Baseband Processor
 
@@ -483,15 +483,18 @@ pmic_clrsetbits: reg=0x10, clr_mask=0x0, set_mask=0x1
 a64_rsb_read: rt_addr=0x2d, reg_addr=0x10
 a64_rsb_write: rt_addr=0x2d, reg_addr=0x10, value=0x37
 a64_usbhost_initialize: Status=0
-```
 
-
-TODO
-
-```text
 Wait 1000 ms
 Status=0
 ```
+
+[(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/893c7c914c0594d93fa4f75ce20bc990c4583454/README.md#output-log)
+
+NuttX begins by setting the __DCDC1 Voltage to 3.3 V__ through the Power Management Integrated Circuit (PMIC).
+
+(Actually we should skip this if DCDC1 is already powered on)
+
+(RSB refers to the Reduced Serial Bus)
 
 TODO
 
