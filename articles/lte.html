@@ -465,6 +465,7 @@ up_mdelay(2000); _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
 up_mdelay(2000); _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
 </code></pre></div>
 <p>And we print the status. Let’s run this!</p>
+<p><img src="https://lupyuen.github.io/images/lte-run.png" alt="Powering up LTE Modem on Apache NuttX RTOS" /></p>
 <h1 id="is-lte-modem-up"><a href="#is-lte-modem-up">8 Is LTE Modem Up?</a></h1>
 <p><em>We’ve implemented the Power On Sequence for LTE Modem…</em></p>
 <p><em>Does it work on Apache NuttX RTOS?</em></p>
@@ -477,7 +478,6 @@ a64_rsb_read: rt_addr=0x2d, reg_addr=0x10
 a64_rsb_write: rt_addr=0x2d, reg_addr=0x10, value=0x37
 a64_usbhost_initialize: Status=0
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/893c7c914c0594d93fa4f75ce20bc990c4583454/README.md#output-log">(See the Complete Log)</a></p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Wait 1000 ms
 Status=0
