@@ -466,7 +466,9 @@ up_mdelay(2000); _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
 </code></pre></div>
 <p>And we print the status. Let’s run this!</p>
 <h1 id="is-lte-modem-up"><a href="#is-lte-modem-up">8 Is LTE Modem Up?</a></h1>
-<p>TODO</p>
+<p><em>We’ve implemented the Power On Sequence for LTE Modem…</em></p>
+<p><em>Does it work on Apache NuttX RTOS?</em></p>
+<p>The results look a little peculiar…</p>
 <div class="example-wrap"><pre class="language-text"><code>pinephone_pmic_usb_init: Set DCDC1 Voltage to 3.3V
 pmic_write: reg=0x20, val=0x11
 a64_rsb_write: rt_addr=0x2d, reg_addr=0x20, value=0x11
@@ -474,49 +476,64 @@ pmic_clrsetbits: reg=0x10, clr_mask=0x0, set_mask=0x1
 a64_rsb_read: rt_addr=0x2d, reg_addr=0x10
 a64_rsb_write: rt_addr=0x2d, reg_addr=0x10, value=0x37
 a64_usbhost_initialize: Status=0
-
-a64_usbhost_initialize: Wait 1000 ms
-a64_usbhost_initialize: Status=0
-
-a64_usbhost_initialize: Configure PWR_BAT (PL7) for Output
-a64_usbhost_initialize: Set PWR_BAT (PL7) to High
-a64_usbhost_initialize: Status=1
-
-a64_usbhost_initialize: Wait 1000 ms
-a64_usbhost_initialize: Status=1
-
-a64_usbhost_initialize: Configure RESET_N (PC4) for Output
-a64_usbhost_initialize: Set RESET_N (PC4) to High
-a64_usbhost_initialize: Status=1
-
-a64_usbhost_initialize: Configure PWRKEY (PB3) for Output
-a64_usbhost_initialize: Set PWRKEY (PB3) to High
-a64_usbhost_initialize: Status=1
-
-a64_usbhost_initialize: Wait 30 ms for VBAT to be stable
-a64_usbhost_initialize: Status=1
-
-a64_usbhost_initialize: Set PWRKEY (PB3) to Low
-a64_usbhost_initialize: Status=1
-
-a64_usbhost_initialize: Wait 500 ms
-a64_usbhost_initialize: Status=1
-
-a64_usbhost_initialize: Set PWRKEY (PB3) to High
-a64_usbhost_initialize: Status=1
-
-a64_usbhost_initialize: Configure W_DISABLE (PH8) for Output
-a64_usbhost_initialize: Set W_DISABLE (PH8) to High
-a64_usbhost_initialize: Status=1
-
-a64_usbhost_initialize: Green LED
-a64_usbhost_initialize: Status=1
-a64_usbhost_initialize: Red LED
-a64_usbhost_initialize: Status=1
-a64_usbhost_initialize: Blue LED
-a64_usbhost_initialize: Status=1
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/893c7c914c0594d93fa4f75ce20bc990c4583454/README.md#output-log">(See the Complete Log)</a></p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Wait 1000 ms
+Status=0
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Configure PWR_BAT (PL7) for Output
+Set PWR_BAT (PL7) to High
+Status=1
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Wait 1000 ms
+Status=1
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Configure RESET_N (PC4) for Output
+Set RESET_N (PC4) to High
+Status=1
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Configure PWRKEY (PB3) for Output
+Set PWRKEY (PB3) to High
+Status=1
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Wait 30 ms for VBAT to be stable
+Status=1
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Set PWRKEY (PB3) to Low
+Status=1
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Wait 500 ms
+Status=1
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Set PWRKEY (PB3) to High
+Status=1
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Configure W_DISABLE (PH8) for Output
+Set W_DISABLE (PH8) to High
+Status=1
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Green LED
+Status=1
+Red LED
+Status=1
+Blue LED
+Status=1
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/893c7c914c0594d93fa4f75ce20bc990c4583454/README.md#output-log">(See the Complete Log)</a></p>
+<p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/lte-power2.png" alt="LTE Modem Power" /></p>
+<p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">(EG25-G Hardware Design, Page 41)</a></p>
 <p>TODO: Why does LTE Modem Status change from Low to High, then stay at High? <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/6fb84655b4ed19af7209817cc01b2a589798620a/README.md#output-log">(See this)</a></p>
 <p>Is it because of this…</p>
 <p>“Currently STATUS pin is connected to PWRKEY and to PB3. STATUS can’t be read reliably since voltage divider from R1526 and R1517 places the STATUS signal at 0V or 0.5*Vcc-IO, which is unspecified input value according to A64 datasheet (Vih is 0.7*Vcc-IO, Vil is 0.3*Vcc-IO, the range in between is unspecified).” </p>
