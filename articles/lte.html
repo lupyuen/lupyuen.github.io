@@ -385,6 +385,7 @@ _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
 <p>We begin by reading PH9 for the <strong>LTE Modem Status</strong>.</p>
 <p>Next we power up <strong>3.3 V on DCDC1</strong> with PinePhone’s Power Management Integrated Circuit (PMIC)…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Power on DCDC1
+// TODO: Don&#39;t do this if DCDC1 is already powered on
 pinephone_pmic_usb_init();
 
 // Print the status
@@ -395,7 +396,6 @@ up_mdelay(1000);
 // Omitted: Print the status
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/0216f6968a82a73b67fb48a276b3c0550c47008a/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L294-L340">(<strong>pinephone_pmic_usb_init</strong> is defined here)</a></p>
-<p>(TODO: Don’t do this if DCDC1 is already powered on)</p>
 <p>Then we set PL7 to High to <strong>power up the RF Transceiver and Baseband Processor</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Set PL7 to High to Power On LTE Modem (4G-PWR-BAT)
 // Configure PWR_BAT (PL7) for Output
