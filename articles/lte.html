@@ -469,7 +469,7 @@ up_mdelay(2000); _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
 <h1 id="is-lte-modem-up"><a href="#is-lte-modem-up">8 Is LTE Modem Up?</a></h1>
 <p><em>We’ve implemented the Power On Sequence for LTE Modem…</em></p>
 <p><em>Does it work on Apache NuttX RTOS?</em></p>
-<p>The results look a little peculiar…</p>
+<p>The results look a little peculiar. Here’s the output when NuttX powers up the LTE Modem…</p>
 <div class="example-wrap"><pre class="language-text"><code>pinephone_pmic_usb_init: Set DCDC1 Voltage to 3.3V
 pmic_write: reg=0x20, val=0x11
 a64_rsb_write: rt_addr=0x2d, reg_addr=0x20, value=0x11
