@@ -571,15 +571,11 @@ Let's check the UART Port...
 
 [(__TXB0104__ is a Voltage Translator)](https://www.ti.com/lit/ds/symlink/txb0104.pdf)
 
-# Upcoming Fixes
+# Test UART with NuttX
 
 _We can't check the LTE Modem Status on NuttX..._
 
 _How else can we verify if the modem is up?_
-
-TODO
-
-## UART on NuttX
 
 TODO: LTE Modem UART
 
@@ -601,7 +597,7 @@ TODO: Copy from Allwinner A1X
 
 [a1x_serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/arm/src/a1x/a1x_serial.c)
 
-## USB on NuttX
+# Test USB with NuttX
 
 TODO: USB Enumerate Devices
 
