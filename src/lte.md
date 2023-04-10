@@ -492,10 +492,13 @@ a64_usbhost_initialize: Configure RESET_N (PC4) for Output
 a64_usbhost_initialize: Set RESET_N (PC4) to High
 a64_usbhost_initialize: Status=1
 
+a64_usbhost_initialize: Configure PWRKEY (PB3) for Output
+a64_usbhost_initialize: Set PWRKEY (PB3) to High
+a64_usbhost_initialize: Status=1
+
 a64_usbhost_initialize: Wait 30 ms for VBAT to be stable
 a64_usbhost_initialize: Status=1
 
-a64_usbhost_initialize: Configure PWRKEY (PB3) for Output
 a64_usbhost_initialize: Set PWRKEY (PB3) to Low
 a64_usbhost_initialize: Status=1
 
@@ -517,7 +520,7 @@ a64_usbhost_initialize: Blue LED
 a64_usbhost_initialize: Status=1
 ```
 
-[(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/bde9a2ffd4ce57237558c188a90c308907ae0788/README.md#output-log)
+[(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/893c7c914c0594d93fa4f75ce20bc990c4583454/README.md#output-log)
 
 TODO: Why does LTE Modem Status change from Low to High, then stay at High? [(See this)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/6fb84655b4ed19af7209817cc01b2a589798620a/README.md#output-log)
 
