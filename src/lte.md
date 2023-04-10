@@ -496,87 +496,52 @@ NuttX begins by setting the __DCDC1 Voltage to 3.3 V__ through the Power Managem
 
 (RSB refers to the Reduced Serial Bus)
 
-TODO
+Then it __switches on the power__ (PL7) and __deasserts the reset__ (PC4)...
 
 ```text
-Configure PWR_BAT (PL7) for Output
 Set PWR_BAT (PL7) to High
 Status=1
-```
 
-TODO
-
-```text
-Wait 1000 ms
-Status=1
-```
-
-TODO
-
-```text
-Configure RESET_N (PC4) for Output
 Set RESET_N (PC4) to High
 Status=1
 ```
 
-TODO
+Toggle the __Power Key (PB3)__: High - Low - High...
 
 ```text
-Configure PWRKEY (PB3) for Output
 Set PWRKEY (PB3) to High
-Status=1
-```
-
-TODO
-
-```text
 Wait 30 ms for VBAT to be stable
-Status=1
-```
 
-TODO
-
-```text
 Set PWRKEY (PB3) to Low
-Status=1
-```
-
-TODO
-
-```text
 Wait 500 ms
-Status=1
-```
 
-TODO
-
-```text
 Set PWRKEY (PB3) to High
 Status=1
 ```
 
-TODO
+And __disable Airplane Mode__ (PH8)...
 
 ```text
-Configure W_DISABLE (PH8) for Output
 Set W_DISABLE (PH8) to High
 Status=1
 ```
 
-TODO
+But the __LTE Modem Status (PH9)__ stays at High...
 
 ```text
-Green LED
+(Wait 2 seconds)
 Status=1
-Red LED
+(Wait 2 seconds)
 Status=1
-Blue LED
+(Wait 2 seconds)
 Status=1
 ```
 
 [(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/893c7c914c0594d93fa4f75ce20bc990c4583454/README.md#output-log)
 
-TODO
+_This doesn't look right..._
+
+Yeah we expect the LTE Modem Status to go __Low after 2.5 seconds__...
 
 ![LTE Modem Power](https://lupyuen.github.io/images/lte-power2.png)
 
