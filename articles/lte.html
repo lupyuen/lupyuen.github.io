@@ -75,16 +75,19 @@
 <li><a href="#power-on-lte-modem">6 Power On LTE Modem</a><ul></ul></li>
 <li><a href="#power-up-wth-nuttx">7 Power Up wth NuttX</a><ul></ul></li>
 <li><a href="#is-lte-modem-up">8 Is LTE Modem Up?</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li>
-<li><a href="#notes">10 Notes</a><ul></ul></li>
-<li><a href="#appendix-lte-modem-pins">11 Appendix: LTE Modem Pins</a><ul>
-<li><a href="#power-supply">11.1 Power Supply</a><ul></ul></li>
-<li><a href="#power-on--off">11.2 Power On / Off</a><ul></ul></li>
-<li><a href="#status-indication">11.3 Status Indication</a><ul></ul></li>
-<li><a href="#usb-interface">11.4 USB Interface</a><ul></ul></li>
-<li><a href="#main-uart-interface">11.5 Main UART Interface</a><ul></ul></li>
-<li><a href="#other-interface-pins">11.6 Other Interface Pins</a><ul></ul></li>
-<li><a href="#io-parameters-definition">11.7 I/O Parameters Definition</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>12 Apr 2023</em></p>
+<li><a href="#upcoming-fixes">9 Upcoming Fixes</a><ul>
+<li><a href="#uart-on-nuttx">9.1 UART on NuttX</a><ul></ul></li>
+<li><a href="#usb-on-nuttx">9.2 USB on NuttX</a><ul></ul></li></ul></li>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
+<li><a href="#notes">11 Notes</a><ul></ul></li>
+<li><a href="#appendix-lte-modem-pins">12 Appendix: LTE Modem Pins</a><ul>
+<li><a href="#power-supply">12.1 Power Supply</a><ul></ul></li>
+<li><a href="#power-on--off">12.2 Power On / Off</a><ul></ul></li>
+<li><a href="#status-indication">12.3 Status Indication</a><ul></ul></li>
+<li><a href="#usb-interface">12.4 USB Interface</a><ul></ul></li>
+<li><a href="#main-uart-interface">12.5 Main UART Interface</a><ul></ul></li>
+<li><a href="#other-interface-pins">12.6 Other Interface Pins</a><ul></ul></li>
+<li><a href="#io-parameters-definition">12.7 I/O Parameters Definition</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>12 Apr 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/lte-title.jpg" alt="Quectel EG25-G LTE Modem inside PinePhone" /></p>
 <p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><em>Quectel EG25-G LTE Modem inside PinePhone</em></a></p>
 <p>What makes <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> a phone? It’s the <a href="https://en.wikipedia.org/wiki/LTE_(telecommunication)"><strong>4G LTE Modem</strong></a> inside that makes Phone Calls and sends Text Messages!</p>
@@ -506,7 +509,7 @@ Status=1
 <div class="example-wrap"><pre class="language-text"><code>Set W_DISABLE (PH8) to High
 Status=1
 </code></pre></div>
-<p>But the <strong>LTE Modem Status (PH9)</strong> stays at High…</p>
+<p>The LTE Modem should have powered up. But the <strong>LTE Modem Status (PH9)</strong> stays at High…</p>
 <div class="example-wrap"><pre class="language-text"><code>(Wait 2 seconds)
 Status=1
 (Wait 2 seconds)
@@ -519,10 +522,21 @@ Status=1
 <p>Yeah we expect the LTE Modem Status to go <strong>Low after 2.5 seconds</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/lte-power2.png" alt="LTE Modem Power" /></p>
 <p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">(EG25-G Hardware Design, Page 41)</a></p>
-<p>TODO: Why does LTE Modem Status change from Low to High, then stay at High? <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/6fb84655b4ed19af7209817cc01b2a589798620a/README.md#output-log">(See this)</a></p>
-<p>Is it because of this…</p>
-<p>“Currently STATUS pin is connected to PWRKEY and to PB3. STATUS can’t be read reliably since voltage divider from R1526 and R1517 places the STATUS signal at 0V or 0.5*Vcc-IO, which is unspecified input value according to A64 datasheet (Vih is 0.7*Vcc-IO, Vil is 0.3*Vcc-IO, the range in between is unspecified).” </p>
-<p><a href="https://wiki.pine64.org/wiki/PinePhone_Power_Management#Open_Questions_2">(Source)</a># LTE Modem UART</p>
+<p><em>Why did the LTE Modem Status get stuck at High?</em></p>
+<p>Maybe because of this…</p>
+<p>“Currently STATUS pin is connected to PWRKEY and to PB3.”</p>
+<p>“<strong>STATUS can’t be read reliably</strong> since voltage divider from R1526 and R1517 places the STATUS signal at 0V or 0.5*Vcc-IO, which is unspecified input value according to A64 datasheet”</p>
+<p>“(Vih is 0.7*Vcc-IO, Vil is 0.3*Vcc-IO, the range in between is unspecified)” </p>
+<p><a href="https://wiki.pine64.org/wiki/PinePhone_Power_Management#Open_Questions_2">(Source)</a></p>
+<p>Which means we <strong>can’t read the LTE Modem Status</strong> to check reliably whether the modem is powered up.</p>
+<p><em>Is there another way to verify whether the LTE Modem is up?</em></p>
+<p>Let’s check the UART Port…</p>
+<p><img src="https://lupyuen.github.io/images/lte-vddext.png" alt="PinePhone Schematic (Page 15)" /></p>
+<p><a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><em>PinePhone Schematic (Page 15)</em></a></p>
+<p><a href="https://www.ti.com/lit/ds/symlink/txb0104.pdf">(<strong>TXB0104</strong> is a Voltage Translator)</a></p>
+<h1 id="upcoming-fixes"><a href="#upcoming-fixes">9 Upcoming Fixes</a></h1>
+<p>TODO</p>
+<h2 id="uart-on-nuttx"><a href="#uart-on-nuttx">9.1 UART on NuttX</a></h2>
 <p>TODO: LTE Modem UART</p>
 <ul>
 <li>
@@ -545,10 +559,11 @@ Status=1
 <p>TODO: Configure UART</p>
 <p>TODO: Copy from Allwinner A1X</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/arm/src/a1x/a1x_serial.c">a1x_serial.c</a></p>
+<h2 id="usb-on-nuttx"><a href="#usb-on-nuttx">9.2 USB on NuttX</a></h2>
 <p>TODO: USB Enumerate Devices</p>
 <p><img src="https://lupyuen.github.io/images/wayland-sd.jpg" alt="Quectel EG25-G LTE Modem inside PinePhone" /></p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone#Modem"><em>Quectel EG25-G LTE Modem inside PinePhone</em></a></p>
-<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>Meanwhile please check out the other articles on NuttX for PinePhone…</p>
 <ul>
@@ -574,7 +589,7 @@ Status=1
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lte.md"><strong>lupyuen.github.io/src/lte.md</strong></a></p>
-<h1 id="notes"><a href="#notes">10 Notes</a></h1>
+<h1 id="notes"><a href="#notes">11 Notes</a></h1>
 <ol>
 <li>
 <p>References:</p>
@@ -586,12 +601,12 @@ Status=1
 <p><a href="https://wiki.osdev.org/PinePhone"><strong>“OSDev: PinePhone”</strong></a></p>
 </li>
 </ol>
-<h1 id="appendix-lte-modem-pins"><a href="#appendix-lte-modem-pins">11 Appendix: LTE Modem Pins</a></h1>
+<h1 id="appendix-lte-modem-pins"><a href="#appendix-lte-modem-pins">12 Appendix: LTE Modem Pins</a></h1>
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lte-title.jpg" alt="LTE Modem inside PinePhone" /></p>
 <p><em>What’s the purpose of the above LTE Modem pins?</em></p>
 <p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a>…</p>
-<h2 id="power-supply"><a href="#power-supply">11.1 Power Supply</a></h2>
+<h2 id="power-supply"><a href="#power-supply">12.1 Power Supply</a></h2>
 <p>TODO</p>
 <p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 22)…</p>
 <div><table><thead><tr><th style="text-align: left">Pin Name</th><th style="text-align: center">Pin No.</th><th style="text-align: center">I/O</th><th style="text-align: left">Description</th></tr></thead><tbody>
@@ -599,7 +614,7 @@ Status=1
 </tbody></table>
 </div>
 <p><a href="https://lupyuen.github.io/articles/lte#io-parameters-definition">(<strong>PO</strong> is Power Output)</a></p>
-<h2 id="power-on--off"><a href="#power-on--off">11.2 Power On / Off</a></h2>
+<h2 id="power-on--off"><a href="#power-on--off">12.2 Power On / Off</a></h2>
 <p>TODO</p>
 <p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 22)…</p>
 <div><table><thead><tr><th style="text-align: left">Pin Name</th><th style="text-align: center">Pin No.</th><th style="text-align: center">I/O</th><th style="text-align: left">Description</th></tr></thead><tbody>
@@ -622,7 +637,7 @@ Status=1
 <p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">(EG25-G Hardware Design, Page 42)</a></p>
 </li>
 </ul>
-<h2 id="status-indication"><a href="#status-indication">11.3 Status Indication</a></h2>
+<h2 id="status-indication"><a href="#status-indication">12.3 Status Indication</a></h2>
 <p>TODO</p>
 <p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 22)…</p>
 <div><table><thead><tr><th style="text-align: left">Pin Name</th><th style="text-align: center">Pin No.</th><th style="text-align: center">I/O</th><th style="text-align: left">Description</th></tr></thead><tbody>
@@ -636,12 +651,14 @@ Status=1
 <p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">(EG25-G Hardware Design, Page 41)</a></p>
 </li>
 <li>
-<p>STATUS can’t be read reliably…</p>
-<p>“Currently STATUS pin is connected to PWRKEY and to PB3. STATUS can’t be read reliably since voltage divider from R1526 and R1517 places the STATUS signal at 0V or 0.5*Vcc-IO, which is unspecified input value according to A64 datasheet (Vih is 0.7*Vcc-IO, Vil is 0.3*Vcc-IO, the range in between is unspecified).” </p>
+<p>Note that STATUS can’t be read reliably…</p>
+<p>“Currently STATUS pin is connected to PWRKEY and to PB3.”</p>
+<p>“<strong>STATUS can’t be read reliably</strong> since voltage divider from R1526 and R1517 places the STATUS signal at 0V or 0.5*Vcc-IO, which is unspecified input value according to A64 datasheet”</p>
+<p>“(Vih is 0.7*Vcc-IO, Vil is 0.3*Vcc-IO, the range in between is unspecified)” </p>
 <p><a href="https://wiki.pine64.org/wiki/PinePhone_Power_Management#Open_Questions_2">(Source)</a></p>
 </li>
 </ul>
-<h2 id="usb-interface"><a href="#usb-interface">11.4 USB Interface</a></h2>
+<h2 id="usb-interface"><a href="#usb-interface">12.4 USB Interface</a></h2>
 <p>TODO</p>
 <p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 22)…</p>
 <div><table><thead><tr><th style="text-align: left">Pin Name</th><th style="text-align: center">Pin No.</th><th style="text-align: center">I/O</th><th style="text-align: left">Description</th></tr></thead><tbody>
@@ -649,7 +666,7 @@ Status=1
 </tbody></table>
 </div>
 <p><a href="https://lupyuen.github.io/articles/lte#io-parameters-definition">(<strong>PI</strong> is Power Input)</a></p>
-<h2 id="main-uart-interface"><a href="#main-uart-interface">11.5 Main UART Interface</a></h2>
+<h2 id="main-uart-interface"><a href="#main-uart-interface">12.5 Main UART Interface</a></h2>
 <p>TODO</p>
 <p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 24)…</p>
 <div><table><thead><tr><th style="text-align: left">Pin Name</th><th style="text-align: center">Pin No.</th><th style="text-align: center">I/O</th><th style="text-align: left">Description</th></tr></thead><tbody>
@@ -660,7 +677,7 @@ Status=1
 <ul>
 <li>Voltage Level is 1.8 V</li>
 </ul>
-<h2 id="other-interface-pins"><a href="#other-interface-pins">11.6 Other Interface Pins</a></h2>
+<h2 id="other-interface-pins"><a href="#other-interface-pins">12.6 Other Interface Pins</a></h2>
 <p>TODO</p>
 <p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 32)…</p>
 <div><table><thead><tr><th style="text-align: left">Pin Name</th><th style="text-align: center">Pin No.</th><th style="text-align: center">I/O</th><th style="text-align: left">Description</th></tr></thead><tbody>
@@ -678,7 +695,7 @@ Status=1
 <p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">(EG25-G Hardware Design, Page 37)</a></p>
 </li>
 </ul>
-<h2 id="io-parameters-definition"><a href="#io-parameters-definition">11.7 I/O Parameters Definition</a></h2>
+<h2 id="io-parameters-definition"><a href="#io-parameters-definition">12.7 I/O Parameters Definition</a></h2>
 <p>TODO</p>
 <p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a>…</p>
 <div><table><thead><tr><th style="text-align: left">Type</th><th style="text-align: left">Description</th></tr></thead><tbody>
