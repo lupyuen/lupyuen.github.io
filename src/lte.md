@@ -573,6 +573,10 @@ Let's check the UART Port...
 
 # Upcoming Fixes
 
+_We can't check the LTE Modem Status on NuttX..._
+
+_How else can we verify if the modem is up?_
+
 TODO
 
 ## UART on NuttX
@@ -608,6 +612,16 @@ TODO: USB Enumerate Devices
 # What's Next
 
 TODO
+
+-   What's the __Quectel EG25-G LTE Modem__
+
+-   How it's __connected inside PinePhone__
+
+-   How we make __Phone Calls__ and send __Text Messages__
+
+-   How we __power up__ the LTE Modem
+
+-   __Programming the LTE Modem__ with UART, USB and Apache NuttX RTOS
 
 Meanwhile please check out the other articles on NuttX for PinePhone...
 
