@@ -334,7 +334,7 @@
 <li>
 <p>Program PinePhone’s <a href="https://lupyuen.github.io/articles/de#appendix-power-management-integrated-circuit"><strong>Power Management Integrated Circuit (PMIC)</strong></a> to supply <strong>3.3 V on DCDC1</strong></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/0216f6968a82a73b67fb48a276b3c0550c47008a/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L294-L340">(Like this)</a></p>
-<p>(Don’t do this if DCDC1 is already powered on)</p>
+<p>(Skip this if DCDC1 is already powered on)</p>
 </li>
 <li>
 <p>Set <strong>PL7 to High</strong> to power on the RF Transceiver and Baseband Processor</p>
@@ -477,11 +477,14 @@ pmic_clrsetbits: reg=0x10, clr_mask=0x0, set_mask=0x1
 a64_rsb_read: rt_addr=0x2d, reg_addr=0x10
 a64_rsb_write: rt_addr=0x2d, reg_addr=0x10, value=0x37
 a64_usbhost_initialize: Status=0
-</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>Wait 1000 ms
+
+Wait 1000 ms
 Status=0
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/893c7c914c0594d93fa4f75ce20bc990c4583454/README.md#output-log">(See the Complete Log)</a></p>
+<p>NuttX begins by setting the <strong>DCDC1 Voltage to 3.3 V</strong> through the Power Management Integrated Circuit (PMIC).</p>
+<p>(Actually we should skip this if DCDC1 is already powered on)</p>
+<p>(RSB refers to the Reduced Serial Bus)</p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>Configure PWR_BAT (PL7) for Output
 Set PWR_BAT (PL7) to High
