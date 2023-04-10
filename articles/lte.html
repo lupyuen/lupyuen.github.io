@@ -614,13 +614,11 @@ Status=1
 <p><a href="https://wiki.osdev.org/PinePhone"><strong>“OSDev: PinePhone”</strong></a></p>
 </li>
 </ol>
-<h1 id="appendix-lte-modem-pins"><a href="#appendix-lte-modem-pins">13 Appendix: LTE Modem Pins</a></h1>
-<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lte-title.jpg" alt="LTE Modem inside PinePhone" /></p>
+<h1 id="appendix-lte-modem-pins"><a href="#appendix-lte-modem-pins">13 Appendix: LTE Modem Pins</a></h1>
 <p><em>What’s the purpose of the above LTE Modem pins?</em></p>
-<p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a>…</p>
+<p>This section describes the purpose of every LTE Modem pin connected to PinePhone…</p>
 <h2 id="power-supply"><a href="#power-supply">13.1 Power Supply</a></h2>
-<p>TODO</p>
 <p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 22)…</p>
 <div><table><thead><tr><th style="text-align: left">Pin Name</th><th style="text-align: center">Pin No.</th><th style="text-align: center">I/O</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: left">VDD_EXT</td><td style="text-align: center">7</td><td style="text-align: center">PO</td><td style="text-align: left">Provide 1.8 V for external circuit</td></tr>
@@ -628,7 +626,6 @@ Status=1
 </div>
 <p><a href="https://lupyuen.github.io/articles/lte#io-parameters-definition">(<strong>PO</strong> is Power Output)</a></p>
 <h2 id="power-on--off"><a href="#power-on--off">13.2 Power On / Off</a></h2>
-<p>TODO</p>
 <p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 22)…</p>
 <div><table><thead><tr><th style="text-align: left">Pin Name</th><th style="text-align: center">Pin No.</th><th style="text-align: center">I/O</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: left">PWRKEY</td><td style="text-align: center">21</td><td style="text-align: center">DI</td><td style="text-align: left">Turn on / off the module</td></tr>
@@ -651,7 +648,6 @@ Status=1
 </li>
 </ul>
 <h2 id="status-indication"><a href="#status-indication">13.3 Status Indication</a></h2>
-<p>TODO</p>
 <p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 22)…</p>
 <div><table><thead><tr><th style="text-align: left">Pin Name</th><th style="text-align: center">Pin No.</th><th style="text-align: center">I/O</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: left">STATUS</td><td style="text-align: center">61</td><td style="text-align: center">OD</td><td style="text-align: left">Indicate the module operating status</td></tr>
@@ -672,7 +668,6 @@ Status=1
 </li>
 </ul>
 <h2 id="usb-interface"><a href="#usb-interface">13.4 USB Interface</a></h2>
-<p>TODO</p>
 <p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 22)…</p>
 <div><table><thead><tr><th style="text-align: left">Pin Name</th><th style="text-align: center">Pin No.</th><th style="text-align: center">I/O</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: left">USB_VBUS</td><td style="text-align: center">71</td><td style="text-align: center">PI</td><td style="text-align: left">USB connection detection</td></tr>
@@ -680,7 +675,6 @@ Status=1
 </div>
 <p><a href="https://lupyuen.github.io/articles/lte#io-parameters-definition">(<strong>PI</strong> is Power Input)</a></p>
 <h2 id="main-uart-interface"><a href="#main-uart-interface">13.5 Main UART Interface</a></h2>
-<p>TODO</p>
 <p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 24)…</p>
 <div><table><thead><tr><th style="text-align: left">Pin Name</th><th style="text-align: center">Pin No.</th><th style="text-align: center">I/O</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: left">RI</td><td style="text-align: center">62</td><td style="text-align: center">DO</td><td style="text-align: left">Ring indicator</td></tr>
@@ -691,7 +685,6 @@ Status=1
 <li>Voltage Level is 1.8 V</li>
 </ul>
 <h2 id="other-interface-pins"><a href="#other-interface-pins">13.6 Other Interface Pins</a></h2>
-<p>TODO</p>
 <p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 32)…</p>
 <div><table><thead><tr><th style="text-align: left">Pin Name</th><th style="text-align: center">Pin No.</th><th style="text-align: center">I/O</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: left">W_DISABLE#</td><td style="text-align: center">4</td><td style="text-align: center">DI</td><td style="text-align: left">Airplane mode control</td></tr>
@@ -709,7 +702,6 @@ Status=1
 </li>
 </ul>
 <h2 id="io-parameters-definition"><a href="#io-parameters-definition">13.7 I/O Parameters Definition</a></h2>
-<p>TODO</p>
 <p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a>…</p>
 <div><table><thead><tr><th style="text-align: left">Type</th><th style="text-align: left">Description</th></tr></thead><tbody>
 <tr><td style="text-align: left">AI</td><td style="text-align: left">Analog Input</td></tr>
