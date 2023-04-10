@@ -473,7 +473,7 @@ _We've implemented the Power On Sequence for LTE Modem..._
 
 _Does it work on Apache NuttX RTOS?_
 
-The results look a little peculiar...
+The results look a little peculiar. Here's the output when NuttX powers up the LTE Modem...
 
 ```text
 pinephone_pmic_usb_init: Set DCDC1 Voltage to 3.3V
