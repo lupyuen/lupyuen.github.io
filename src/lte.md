@@ -355,7 +355,7 @@ _We've seen the Power On Sequence for LTE Modem..._
 
 _How will we implement it in Apache NuttX RTOS?_
 
-This is how we implement the LTE Modem's __Power On Sequence__ in NuttX: [a64_usbhost.c](https://github.com/lupyuen/pinephone-nuttx-usb/blob/3ceaf44c23b85ec105a0d85cd377f4a55eff5ef5/a64_usbhost.c#L337-L421)
+This is how we implement the LTE Modem's __Power On Sequence__ in NuttX: [a64_usbhost.c](https://github.com/lupyuen/pinephone-nuttx-usb/blob/bcd8b474a61309dbaaaad85383a1a10789d237ab/a64_usbhost.c#L337-L464)
 
 ```c
 // Read PH9 to check LTE Modem Status
@@ -425,7 +425,9 @@ Now we __toggle PB3 for the Power Key__: High - 30 ms - Low - 500 ms - High...
 #define PWRKEY (P_OUTPUT | PIO_PORT_PIOB | PIO_PIN3)
 a64_pio_config(PWRKEY);
 
-// TODO: Set PB3 to High (BB-PWRKEY / PWRKEY).
+// Set PWRKEY (PB3) to High
+a64_pio_write(PWRKEY, true);
+// Omitted: Print the status
 
 // Wait 30 ms for VBAT to be stable
 up_mdelay(30);
@@ -455,8 +457,11 @@ a64_pio_config(W_DISABLE);
 // Set W_DISABLE (PH8) to High
 a64_pio_write(W_DISABLE, true);
 
-// Print the status
+// For Debugging: Print the status every 2 seconds
 _info("Status=%d\n", a64_pio_read(STATUS));
+up_mdelay(2000); _info("Status=%d\n", a64_pio_read(STATUS));
+up_mdelay(2000); _info("Status=%d\n", a64_pio_read(STATUS));
+up_mdelay(2000); _info("Status=%d\n", a64_pio_read(STATUS));
 ```
 
 And we print the status. Let's run this!
@@ -503,6 +508,13 @@ a64_usbhost_initialize: Status=1
 
 a64_usbhost_initialize: Configure W_DISABLE (PH8) for Output
 a64_usbhost_initialize: Set W_DISABLE (PH8) to High
+a64_usbhost_initialize: Status=1
+
+a64_usbhost_initialize: Green LED
+a64_usbhost_initialize: Status=1
+a64_usbhost_initialize: Red LED
+a64_usbhost_initialize: Status=1
+a64_usbhost_initialize: Blue LED
 a64_usbhost_initialize: Status=1
 ```
 
