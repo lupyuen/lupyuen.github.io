@@ -370,6 +370,7 @@ Next we power up __3.3 V on DCDC1__ with PinePhone's Power Management Integrated
 
 ```c
 // Power on DCDC1
+// TODO: Don't do this if DCDC1 is already powered on
 pinephone_pmic_usb_init();
 
 // Print the status
@@ -381,8 +382,6 @@ up_mdelay(1000);
 ```
 
 [(__pinephone_pmic_usb_init__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/0216f6968a82a73b67fb48a276b3c0550c47008a/boards/arm64/a64/pinephone/src/pinephone_pmic.c#L294-L340)
-
-(TODO: Don't do this if DCDC1 is already powered on)
 
 Then we set PL7 to High to __power up the RF Transceiver and Baseband Processor__...
 
