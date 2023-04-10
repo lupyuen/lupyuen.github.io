@@ -577,25 +577,27 @@ _We can't check the LTE Modem Status on NuttX..._
 
 _How else can we verify if the modem is up?_
 
-TODO: LTE Modem UART
+The LTE Modem to connected to PinePhone (Allwinner A64) at these UART Ports...
 
--   BB-TX: PD1-UART3_RX
+-   __A64 Port UART3__: RX and TX
 
--   BB-RX: PD0-UART3_TX
+-   __A64 Port UART4__: CTS and RTS
 
--   BB-CTS: PD5-UART4_CTS
+-   __A64 Port PB2__: DTR
 
--   BB-RTS: PD4-UART4_RTS
+Thus we may __check UART3__ to see if the LTE Modem responds to [__AT Commands__](https://lupyuen.github.io/articles/lte#quectel-eg25-g-lte-modem).
 
--   BB-DTR: PB2-DTR
+[(After 12 seconds from power up)](https://lupyuen.github.io/articles/lte#power-on-lte-modem)
 
-TODO: UART3
+(Do we need UART4 and PB2?)
 
-TODO: Configure UART
+_UART3 works with NuttX?_
 
-TODO: Copy from Allwinner A1X
+We need to fix the PinePhone UART Driver [__configure the UART Port__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L160-L180).
 
-[a1x_serial.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/master/arch/arm/src/a1x/a1x_serial.c)
+We'll copy from the NuttX UART Driver for Allwinner A1X: [__a1x_serial.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_serial.c#L695-L987)
+
+There's another way to test the LTE Modem: Via USB...
 
 # Test USB with NuttX
 
