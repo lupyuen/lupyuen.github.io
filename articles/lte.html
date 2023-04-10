@@ -489,10 +489,13 @@ a64_usbhost_initialize: Configure RESET_N (PC4) for Output
 a64_usbhost_initialize: Set RESET_N (PC4) to High
 a64_usbhost_initialize: Status=1
 
+a64_usbhost_initialize: Configure PWRKEY (PB3) for Output
+a64_usbhost_initialize: Set PWRKEY (PB3) to High
+a64_usbhost_initialize: Status=1
+
 a64_usbhost_initialize: Wait 30 ms for VBAT to be stable
 a64_usbhost_initialize: Status=1
 
-a64_usbhost_initialize: Configure PWRKEY (PB3) for Output
 a64_usbhost_initialize: Set PWRKEY (PB3) to Low
 a64_usbhost_initialize: Status=1
 
@@ -513,7 +516,7 @@ a64_usbhost_initialize: Status=1
 a64_usbhost_initialize: Blue LED
 a64_usbhost_initialize: Status=1
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/bde9a2ffd4ce57237558c188a90c308907ae0788/README.md#output-log">(See the Complete Log)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/893c7c914c0594d93fa4f75ce20bc990c4583454/README.md#output-log">(See the Complete Log)</a></p>
 <p>TODO: Why does LTE Modem Status change from Low to High, then stay at High? <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/6fb84655b4ed19af7209817cc01b2a589798620a/README.md#output-log">(See this)</a></p>
 <p>Is it because of this…</p>
 <p>“Currently STATUS pin is connected to PWRKEY and to PB3. STATUS can’t be read reliably since voltage divider from R1526 and R1517 places the STATUS signal at 0V or 0.5*Vcc-IO, which is unspecified input value according to A64 datasheet (Vih is 0.7*Vcc-IO, Vil is 0.3*Vcc-IO, the range in between is unspecified).” </p>
