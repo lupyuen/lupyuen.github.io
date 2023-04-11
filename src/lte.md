@@ -94,7 +94,7 @@ According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhon
 
     [__PCM Digital Audio Stream__](https://en.wikipedia.org/wiki/Pulse-code_modulation) for 4G Voice Calls.
 
--   __UART__ ⇆ A64 Port __UART3__ _(RX / TX)_, __UART4__ _(CTS / RTS)_
+-   __UART__ ⇆ A64 Port __UART3__ _(RX / TX)_, __UART4__ _(CTS / RTS)_, __PB2__ _(DTR)_
 
     Simpler, alternative interface for AT Commands.
     
@@ -343,7 +343,7 @@ This will affect our NuttX Testing, as we'll soon see.
 
 [(More about this)](https://lupyuen.github.io/articles/lte#status-indication)
 
-_Power Key looks funky: High - Low - High..._
+_Power Key looks funky: High → Low → High..._
 
 Yeah the Power Key is probably inspired by the press-and-hold Power Button on vintage Nokia Phones.
 
@@ -415,7 +415,7 @@ a64_pio_write(RESET_N, true);
 // Omitted: Print the status
 ```
 
-Now we __toggle PB3 for the Power Key__: High - 30 ms - Low - 500 ms - High...
+Now we __toggle PB3 for the Power Key__: High → 30 ms → Low → 500 ms → High...
 
 ```c
 // Set PB3 to Power On LTE Modem (BB-PWRKEY / PWRKEY).
@@ -494,7 +494,7 @@ NuttX begins by setting the __DCDC1 Voltage to 3.3 V__ through the Power Managem
 
 (Actually we should skip this if DCDC1 is already powered on)
 
-(RSB refers to the Reduced Serial Bus)
+[(__RSB__ refers to the __Reduced Serial Bus__)](https://lupyuen.github.io/articles/de#appendix-reduced-serial-bus)
 
 Then it __switches on the power__ (PL7) and __deasserts the reset__ (PC4)...
 
@@ -506,7 +506,7 @@ Set RESET_N (PC4) to High
 Status=1
 ```
 
-Toggle the __Power Key (PB3)__: High - Low - High...
+Toggle the __Power Key (PB3)__: High → Low → High...
 
 ```text
 Set PWRKEY (PB3) to High
@@ -577,7 +577,7 @@ _We can't check the LTE Modem Status on NuttX..._
 
 _How else can we verify if the modem is up?_
 
-The LTE Modem to connected to PinePhone (Allwinner A64) at these UART Ports...
+The LTE Modem to connected to PinePhone (Allwinner A64) at these UART Ports (pic above)...
 
 -   __A64 Port UART3__: RX and TX
 
