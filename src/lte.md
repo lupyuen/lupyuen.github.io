@@ -639,7 +639,7 @@ Stay tuned for updates on UART and USB Testing!
 
 # What's Next
 
-TODO
+I hope this article was helpful for learning about PinePhone's 4G LTE Modem...
 
 -   What's the __Quectel EG25-G LTE Modem__
 
@@ -650,6 +650,8 @@ TODO
 -   How we __power up__ the LTE Modem
 
 -   __Programming the LTE Modem__ with UART, USB and Apache NuttX RTOS
+
+We'll share more details when the LTE Modem is responding OK to UART and USB on NuttX!
 
 Meanwhile please check out the other articles on NuttX for PinePhone...
 
