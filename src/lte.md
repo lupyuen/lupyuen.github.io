@@ -601,9 +601,13 @@ We'll copy from the NuttX UART Driver for Allwinner A1X: [__a1x_serial.c__](http
 
 There's another way to test the LTE Modem: Via USB...
 
+![USB Controller Block Diagram from Allwinner A64 User Manual](https://lupyuen.github.io/images/usb3-title.jpg)
+
+[_USB Controller Block Diagram from Allwinner A64 User Manual_](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+
 # Test USB with NuttX
 
-_We walked about the UART way to test the LTE Modem..._
+_We talked about testing the LTE Modem the UART way..._
 
 _What about the USB way?_
 
@@ -613,7 +617,21 @@ Yep the __USB Interface__ should work for testing the LTE Modem...
 
     (Up to 480 Mbps)
 
-TODO: USB Enumerate Devices
+_How's that coming along?_
+
+We fixed the [__NuttX USB EHCI Driver__](https://lupyuen.github.io/articles/usb3) (pic above) to handle USB Interrupts...
+
+-   [__"Enumerate USB Devices on PinePhone"__](https://github.com/lupyuen/pinephone-nuttx-usb#enumerate-usb-devices-on-pinephone)
+
+-   [__"Handle USB Interrupt"__](https://github.com/lupyuen/pinephone-nuttx-usb#handle-usb-interrupt)
+
+But somehow the LTE Modem __isn't triggering any USB Interrupts__ 13 seconds after startup...
+
+Which __fails the enumeration__ of USB Devices (like the LTE Modem). And we can't connect to the USB Interface of the LTE Modem.
+
+(Maybe something else in the USB Controller needs to be powered up?)
+
+Stay tuned for updates on UART and USB Testing!
 
 ![Quectel EG25-G LTE Modem inside PinePhone](https://lupyuen.github.io/images/wayland-sd.jpg)
 
@@ -655,7 +673,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Notes
 
-1.  References:
+1.  There's plenty more inside PinePhone's LTE Modem. Check out these articles...
+
+    [__"Genode: PinePhone Telephony"__](https://genodians.org/ssumpf/2022-05-09-telephony)
 
     [__"PinePhone Power Management"__](https://wiki.pine64.org/wiki/PinePhone_Power_Management)
 
@@ -664,8 +684,6 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     [__"Audio on PinePhone"__](https://xnux.eu/devices/feature/audio-pp.html)
 
     [__"EG25-G Reverse Engineering"__](https://xnux.eu/devices/feature/modem-pp-reveng.html)
-
-    [__"Genode: PinePhone Telephony"__](https://genodians.org/ssumpf/2022-05-09-telephony)
 
     [__"OSDev: PinePhone"__](https://wiki.osdev.org/PinePhone)
 
