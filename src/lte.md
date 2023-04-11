@@ -661,6 +661,10 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
 
+-   [__Discuss this article on Reddit__](https://www.reddit.com/r/PINE64official/comments/12i3qzi/nuttx_rtos_for_pinephone_4g_lte_modem/)
+
+-   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=35519549)
+
 -   [__My Current Project: "Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
 
 -   [__My Other Project: "The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book)
