@@ -381,7 +381,7 @@
 <p>This is how we implement the LTE Modem’s <strong>Power On Sequence</strong> in NuttX: <a href="https://github.com/lupyuen/pinephone-nuttx-usb/blob/bcd8b474a61309dbaaaad85383a1a10789d237ab/a64_usbhost.c#L337-L464">a64_usbhost.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Read PH9 to check LTE Modem Status
 #define STATUS (PIO_INPUT | PIO_PORT_PIOH | PIO_PIN9)
-a64_pio_config(STATUS);
+a64_pio_config(STATUS);  // TODO: Check result
 _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
 </code></pre></div>
 <p>We begin by reading PH9 for the <strong>LTE Modem Status</strong>.</p>
@@ -404,7 +404,7 @@ up_mdelay(1000);
 #define P_OUTPUT (PIO_OUTPUT | PIO_PULL_NONE | PIO_DRIVE_MEDLOW | \
                   PIO_INT_NONE | PIO_OUTPUT_SET)
 #define PWR_BAT (P_OUTPUT | PIO_PORT_PIOL | PIO_PIN7)
-a64_pio_config(PWR_BAT);
+a64_pio_config(PWR_BAT);  // TODO: Check result
 
 // Set PWR_BAT (PL7) to High
 a64_pio_write(PWR_BAT, true);
@@ -418,7 +418,7 @@ up_mdelay(1000);
 <div class="example-wrap"><pre class="language-c"><code>// Set PC4 to High to Deassert LTE Modem Reset (BB-RESET / RESET_N)
 // Configure RESET_N (PC4) for Output
 #define RESET_N (P_OUTPUT | PIO_PORT_PIOC | PIO_PIN4)
-a64_pio_config(RESET_N);
+a64_pio_config(RESET_N);  // TODO: Check result
 
 // Set RESET_N (PC4) to High
 a64_pio_write(RESET_N, true);
@@ -429,7 +429,7 @@ a64_pio_write(RESET_N, true);
 // PWRKEY should be pulled down at least 500 ms, then pulled up.
 // Configure PWRKEY (PB3) for Output
 #define PWRKEY (P_OUTPUT | PIO_PORT_PIOB | PIO_PIN3)
-a64_pio_config(PWRKEY);
+a64_pio_config(PWRKEY);  // TODO: Check result
 
 // Set PWRKEY (PB3) to High
 a64_pio_write(PWRKEY, true);
@@ -455,7 +455,7 @@ a64_pio_write(PWRKEY, true);
 <div class="example-wrap"><pre class="language-c"><code>// Set PH8 to High to Disable Airplane Mode (BB-DISABLE / W_DISABLE#)
 // Configure W_DISABLE (PH8) for Output
 #define W_DISABLE (P_OUTPUT | PIO_PORT_PIOH | PIO_PIN8)
-a64_pio_config(W_DISABLE);
+a64_pio_config(W_DISABLE);  // TODO: Check result
 
 // Set W_DISABLE (PH8) to High
 a64_pio_write(W_DISABLE, true);
