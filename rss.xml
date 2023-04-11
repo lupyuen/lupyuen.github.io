@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>NuttX RTOS for PinePhone: 4G LTE Modem</title>
+            <link>https://lupyuen.github.io/articles/lte</link>
+            <description><![CDATA[All about the Quectel EG25-G 4G LTE Modem inside Pine64 PinePhone... And how we'll control it with Apache NuttX RTOS]]></description>
+            <guid>https://lupyuen.github.io/articles/lte</guid>
+            <pubDate>Wed, 12 Apr 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>NuttX RTOS for PinePhone: Simpler USB with EHCI (Enhanced Host Controller Interface)</title>
             <link>https://lupyuen.github.io/articles/usb3</link>
             <description><![CDATA[Porting the Enhanced Host Controller Interface (EHCI) USB Driver... From Apache NuttX RTOS to Pine64 PinePhone]]></description>

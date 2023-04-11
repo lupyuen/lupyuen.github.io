@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "NuttX RTOS for PinePhone: 4G LTE Modem",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-04-12",
+      "website": "https://lupyuen.github.io/articles/lte",
+      "summary": "All about the Quectel EG25-G 4G LTE Modem inside Pine64 PinePhone... And how we'll control it with Apache NuttX RTOS"
+    },
+    {
       "name": "NuttX RTOS for PinePhone: Simpler USB with EHCI (Enhanced Host Controller Interface)",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-03-24",
