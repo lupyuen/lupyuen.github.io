@@ -556,8 +556,10 @@ Status=1
 <p>We need to fix the PinePhone UART Driver <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L160-L180"><strong>configure the UART Port</strong></a>.</p>
 <p>We’ll copy from the NuttX UART Driver for Allwinner A1X: <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_serial.c#L695-L987"><strong>a1x_serial.c</strong></a></p>
 <p>There’s another way to test the LTE Modem: Via USB…</p>
+<p><img src="https://lupyuen.github.io/images/usb3-title.jpg" alt="USB Controller Block Diagram from Allwinner A64 User Manual" /></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><em>USB Controller Block Diagram from Allwinner A64 User Manual</em></a></p>
 <h1 id="test-usb-with-nuttx"><a href="#test-usb-with-nuttx">10 Test USB with NuttX</a></h1>
-<p><em>We walked about the UART way to test the LTE Modem…</em></p>
+<p><em>We talked about testing the LTE Modem the UART way…</em></p>
 <p><em>What about the USB way?</em></p>
 <p>Yep the <strong>USB Interface</strong> should work for testing the LTE Modem…</p>
 <ul>
@@ -566,7 +568,20 @@ Status=1
 <p>(Up to 480 Mbps)</p>
 </li>
 </ul>
-<p>TODO: USB Enumerate Devices</p>
+<p><em>How’s that coming along?</em></p>
+<p>We fixed the <a href="https://lupyuen.github.io/articles/usb3"><strong>NuttX USB EHCI Driver</strong></a> (pic above) to handle USB Interrupts…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb#enumerate-usb-devices-on-pinephone"><strong>“Enumerate USB Devices on PinePhone”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx-usb#handle-usb-interrupt"><strong>“Handle USB Interrupt”</strong></a></p>
+</li>
+</ul>
+<p>But somehow the LTE Modem <strong>isn’t triggering any USB Interrupts</strong> 13 seconds after startup…</p>
+<p>Which <strong>fails the enumeration</strong> of USB Devices (like the LTE Modem). And we can’t connect to the USB Interface of the LTE Modem.</p>
+<p>(Maybe something else in the USB Controller needs to be powered up?)</p>
+<p>Stay tuned for updates on UART and USB Testing!</p>
 <p><img src="https://lupyuen.github.io/images/wayland-sd.jpg" alt="Quectel EG25-G LTE Modem inside PinePhone" /></p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone#Modem"><em>Quectel EG25-G LTE Modem inside PinePhone</em></a></p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
@@ -615,12 +630,12 @@ Status=1
 <h1 id="notes"><a href="#notes">12 Notes</a></h1>
 <ol>
 <li>
-<p>References:</p>
+<p>There’s plenty more inside PinePhone’s LTE Modem. Check out these articles…</p>
+<p><a href="https://genodians.org/ssumpf/2022-05-09-telephony"><strong>“Genode: PinePhone Telephony”</strong></a></p>
 <p><a href="https://wiki.pine64.org/wiki/PinePhone_Power_Management"><strong>“PinePhone Power Management”</strong></a></p>
 <p><a href="https://xnux.eu/devices/feature/modem-pp.html"><strong>“Modem on PinePhone”</strong></a></p>
 <p><a href="https://xnux.eu/devices/feature/audio-pp.html"><strong>“Audio on PinePhone”</strong></a></p>
 <p><a href="https://xnux.eu/devices/feature/modem-pp-reveng.html"><strong>“EG25-G Reverse Engineering”</strong></a></p>
-<p><a href="https://genodians.org/ssumpf/2022-05-09-telephony"><strong>“Genode: PinePhone Telephony”</strong></a></p>
 <p><a href="https://wiki.osdev.org/PinePhone"><strong>“OSDev: PinePhone”</strong></a></p>
 </li>
 </ol>
