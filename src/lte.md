@@ -364,6 +364,10 @@ a64_pio_config(STATUS);  // TODO: Check result
 _info("Status=%d\n", a64_pio_read(STATUS));
 ```
 
+[(__a64_pio_config__ comes from A64 PIO Driver)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L175-L343)
+
+[(__a64_pio_read__ too)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L391-L419)
+
 We begin by reading PH9 for the __LTE Modem Status__.
 
 Next we power up __3.3 V on DCDC1__ with PinePhone's Power Management Integrated Circuit (PMIC)...
@@ -401,6 +405,8 @@ a64_pio_write(PWR_BAT, true);
 up_mdelay(1000);
 // Omitted: Print the status
 ```
+
+[(__a64_pio_write__ comes from A64 PIO Driver)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L345-L389)
 
 We set PC4 to High to __deassert the LTE Modem Reset__...
 
