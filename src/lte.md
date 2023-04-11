@@ -625,11 +625,11 @@ We fixed the [__NuttX USB EHCI Driver__](https://lupyuen.github.io/articles/usb3
 
 -   [__"Handle USB Interrupt"__](https://github.com/lupyuen/pinephone-nuttx-usb#handle-usb-interrupt)
 
-But somehow the LTE Modem __isn't triggering any USB Interrupts__ 13 seconds after startup...
+But somehow the LTE Modem __isn't triggering any USB Interrupts__ (13 seconds after startup)...
 
 Which __fails the enumeration__ of USB Devices (like the LTE Modem). And we can't connect to the USB Interface of the LTE Modem.
 
-(Maybe something else in the USB Controller needs to be powered up?)
+(Maybe something else in the USB Controller needs to be configured or powered up?)
 
 Stay tuned for updates on UART and USB Testing!
 
@@ -795,7 +795,7 @@ From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG
 
 ## I/O Parameters Definition
 
-From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)...
+From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf) (Page 21)...
 
 | Type | Description
 |:-----|:-----------
