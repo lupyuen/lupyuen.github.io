@@ -360,7 +360,7 @@ This is how we implement the LTE Modem's __Power On Sequence__ in NuttX: [a64_us
 ```c
 // Read PH9 to check LTE Modem Status
 #define STATUS (PIO_INPUT | PIO_PORT_PIOH | PIO_PIN9)
-a64_pio_config(STATUS);
+a64_pio_config(STATUS);  // TODO: Check result
 _info("Status=%d\n", a64_pio_read(STATUS));
 ```
 
@@ -391,7 +391,7 @@ Then we set PL7 to High to __power up the RF Transceiver and Baseband Processor_
 #define P_OUTPUT (PIO_OUTPUT | PIO_PULL_NONE | PIO_DRIVE_MEDLOW | \
                   PIO_INT_NONE | PIO_OUTPUT_SET)
 #define PWR_BAT (P_OUTPUT | PIO_PORT_PIOL | PIO_PIN7)
-a64_pio_config(PWR_BAT);
+a64_pio_config(PWR_BAT);  // TODO: Check result
 
 // Set PWR_BAT (PL7) to High
 a64_pio_write(PWR_BAT, true);
@@ -408,7 +408,7 @@ We set PC4 to High to __deassert the LTE Modem Reset__...
 // Set PC4 to High to Deassert LTE Modem Reset (BB-RESET / RESET_N)
 // Configure RESET_N (PC4) for Output
 #define RESET_N (P_OUTPUT | PIO_PORT_PIOC | PIO_PIN4)
-a64_pio_config(RESET_N);
+a64_pio_config(RESET_N);  // TODO: Check result
 
 // Set RESET_N (PC4) to High
 a64_pio_write(RESET_N, true);
@@ -422,7 +422,7 @@ Now we __toggle PB3 for the Power Key__: High - 30 ms - Low - 500 ms - High...
 // PWRKEY should be pulled down at least 500 ms, then pulled up.
 // Configure PWRKEY (PB3) for Output
 #define PWRKEY (P_OUTPUT | PIO_PORT_PIOB | PIO_PIN3)
-a64_pio_config(PWRKEY);
+a64_pio_config(PWRKEY);  // TODO: Check result
 
 // Set PWRKEY (PB3) to High
 a64_pio_write(PWRKEY, true);
@@ -451,7 +451,7 @@ Finally we set PH8 to High to __disable Airplane Mode__...
 // Set PH8 to High to Disable Airplane Mode (BB-DISABLE / W_DISABLE#)
 // Configure W_DISABLE (PH8) for Output
 #define W_DISABLE (P_OUTPUT | PIO_PORT_PIOH | PIO_PIN8)
-a64_pio_config(W_DISABLE);
+a64_pio_config(W_DISABLE);  // TODO: Check result
 
 // Set W_DISABLE (PH8) to High
 a64_pio_write(W_DISABLE, true);
