@@ -473,6 +473,8 @@ And we print the status. Let's run this!
 
 ![Powering up LTE Modem on Apache NuttX RTOS](https://lupyuen.github.io/images/lte-run.png)
 
+[_Powering up LTE Modem on Apache NuttX RTOS_](https://github.com/lupyuen/pinephone-nuttx-usb/blob/893c7c914c0594d93fa4f75ce20bc990c4583454/README.md#output-log)
+
 # Is LTE Modem Up?
 
 _We've implemented the Power On Sequence for LTE Modem..._
