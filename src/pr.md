@@ -699,14 +699,44 @@ And here's the output of the __validation script__...
 
 -   [__PinePhone Validation Output: release.log__](https://gist.github.com/lupyuen/5760e0375d44a06b3c730a10614e4d24)
 
+Remember to run "__uname -a__" and "__free__" in NuttX...
+
+```text
+NuttShell (NSH) NuttX-12.1.0
+nsh> uname -a
+NuttX 12.1.0 d40f4032fc Apr 12 2023 07:11:20 arm64 pinephone
+nsh> free
+      total     used   free      largest   nused nfree
+Umem: 133414240 550768 132863472 132863376 56    2
+```
+
 Which we copy into a __Validation Response__ email...
 
 -   [__NuttX Release Validation Response__](https://www.mail-archive.com/dev@nuttx.apache.org/msg09565.html)
 
-Which we'll send back to the Mailing List.
+And send back to the Mailing List. (Assuming everything is hunky dory)
 
 Since there are so many NuttX devices, we really appreciate your help with this! 🙏
 
 _What are the updates to the NuttX Validation Instructions?_
 
-TODO
+The [__NuttX Validation Instructions__](https://cwiki.apache.org/confluence/display/NUTTX/Validating+a+staged+Release) should be updated...
+
+-   To verify the NuttX Signature, we need to __import the NuttX Keys__...
+
+    ```bash
+    wget https://dist.apache.org/repos/dist/dev/nuttx/KEYS
+    gpg --import KEYS
+    ```
+
+-   We also need to __trust the NuttX Keys__...
+
+    ```bash
+    gpg --edit-key 9208D2E4B800D66F749AD4E94137A71698C5E4DB
+    ```
+
+    (That's the RSA Key Fingerprint from "__gpg --verify__")
+
+    Then enter "__trust__" and "__5__"
+
+-   The file "__DISCLAIMER-WIP__" no longer exists in the __nuttx__ and __apps__ folders
