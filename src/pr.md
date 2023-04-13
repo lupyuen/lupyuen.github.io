@@ -677,7 +677,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Validate NuttX Release
 
-_For each Official Release of NuttX, how do we check if it runs OK on all devices? Like PinePhone, ESP32, ..._
+_For each Official Release of NuttX, how do we check if it runs OK on all devices? Like PinePhone, ESP32, BL602, ..._
 
 NuttX needs to be __tested on every device__, and we need your help! 🙏
 
@@ -702,6 +702,10 @@ And here's the output of the __validation script__...
 Which we copy into a __Validation Response__ email...
 
 -   [__NuttX Release Validation Response__](https://www.mail-archive.com/dev@nuttx.apache.org/msg09565.html)
+
+Which we'll send back to the Mailing List.
+
+Since there are so many NuttX devices, we really appreciate your help with this! 🙏
 
 _What are the updates to the NuttX Validation Instructions?_
 
