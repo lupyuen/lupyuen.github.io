@@ -710,11 +710,13 @@ nsh> free
 Umem: 133414240 550768 132863472 132863376 56    2
 ```
 
-Which we copy into a __Validation Response__ email...
+The __NuttX Hash__ (like "d40f4032fc" above) should match the [__Validation Request__](https://www.mail-archive.com/dev@nuttx.apache.org/msg09563.html).
+
+Copy the above into a __Validation Response__ email...
 
 -   [__NuttX Release Validation Response__](https://www.mail-archive.com/dev@nuttx.apache.org/msg09565.html)
 
-And send back to the Mailing List. (Assuming everything is hunky dory)
+And send back to the Mailing List. (Assuming all is hunky dory)
 
 Since there are so many NuttX devices, we really appreciate your help with the NuttX Validation! 🙏
 
