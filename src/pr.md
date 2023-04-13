@@ -627,6 +627,10 @@ When we're ready to add our __next awesome feature__...
 
 And that's the Complete Lifecycle of a Pull Request for Apache NuttX RTOS!
 
+One last thing: Please help to validate that the __NuttX Release works OK__! We really appreciate your help with this... 🙏
+
+-   [__"Validate NuttX Release"__](https://lupyuen.github.io/articles/pr#appendix-validate-nuttx-release)
+
 # What's Next
 
 I hope this article will be helpful for folks contributing code to NuttX for the very first time.
@@ -673,9 +677,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Validate NuttX Release
 
-TODO
+_For each Official Release of NuttX, how do we check if it runs OK on all devices? Like PinePhone, ESP32, ..._
 
-[Validation Request](https://www.mail-archive.com/dev@nuttx.apache.org/msg09563.html)
+TODO: Before every Official Release of NuttX
+
+[NuttX Release Validation Request](https://www.mail-archive.com/dev@nuttx.apache.org/msg09563.html)
 
 [Validating a Staged Release](https://cwiki.apache.org/confluence/display/NUTTX/Validating+a+staged+Release)
 
@@ -683,4 +689,4 @@ TODO
 
 [release.log](https://gist.github.com/lupyuen/5760e0375d44a06b3c730a10614e4d24)
 
-[Validation Response](https://www.mail-archive.com/dev@nuttx.apache.org/msg09565.html)
+[NuttX Release Validation Response](https://www.mail-archive.com/dev@nuttx.apache.org/msg09565.html)
