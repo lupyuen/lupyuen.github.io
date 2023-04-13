@@ -692,14 +692,39 @@ int arm64_gic_initialize(void)
 <ul>
 <li><a href="https://gist.github.com/lupyuen/5760e0375d44a06b3c730a10614e4d24"><strong>PinePhone Validation Output: release.log</strong></a></li>
 </ul>
+<p>Remember to run “<strong>uname -a</strong>” and “<strong>free</strong>” in NuttX…</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.1.0
+nsh&gt; uname -a
+NuttX 12.1.0 d40f4032fc Apr 12 2023 07:11:20 arm64 pinephone
+nsh&gt; free
+      total     used   free      largest   nused nfree
+Umem: 133414240 550768 132863472 132863376 56    2
+</code></pre></div>
 <p>Which we copy into a <strong>Validation Response</strong> email…</p>
 <ul>
 <li><a href="https://www.mail-archive.com/dev@nuttx.apache.org/msg09565.html"><strong>NuttX Release Validation Response</strong></a></li>
 </ul>
-<p>Which we’ll send back to the Mailing List.</p>
+<p>And send back to the Mailing List. (Assuming everything is hunky dory)</p>
 <p>Since there are so many NuttX devices, we really appreciate your help with this! 🙏</p>
 <p><em>What are the updates to the NuttX Validation Instructions?</em></p>
-<p>TODO</p>
+<p>The <a href="https://cwiki.apache.org/confluence/display/NUTTX/Validating+a+staged+Release"><strong>NuttX Validation Instructions</strong></a> should be updated…</p>
+<ul>
+<li>
+<p>To verify the NuttX Signature, we need to <strong>import the NuttX Keys</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>wget https://dist.apache.org/repos/dist/dev/nuttx/KEYS
+gpg --import KEYS
+</code></pre></div></li>
+<li>
+<p>We also need to <strong>trust the NuttX Keys</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>gpg --edit-key 9208D2E4B800D66F749AD4E94137A71698C5E4DB
+</code></pre></div>
+<p>(That’s the RSA Key Fingerprint from “<strong>gpg –verify</strong>”)</p>
+<p>Then enter “<strong>trust</strong>” and “<strong>5</strong>”</p>
+</li>
+<li>
+<p>The file “<strong>DISCLAIMER-WIP</strong>” no longer exists in the <strong>nuttx</strong> and <strong>apps</strong> folders</p>
+</li>
+</ul>
 
     
 </body>
