@@ -683,7 +683,7 @@ NuttX needs to be __tested on every device__, and we need your help! 🙏
 
 Before every Official Release of NuttX, a __Validation Request__ will be broadcast on the [__NuttX Developers Mailing List__](https://nuttx.apache.org/community/)...
 
--   [__NuttX Release Validation Request__](https://www.mail-archive.com/dev@nuttx.apache.org/msg09563.html)
+-   [__Validation Request for NuttX Release__](https://www.mail-archive.com/dev@nuttx.apache.org/msg09563.html)
 
 Follow the instructions here to validate that the NuttX Release __builds correctly and runs OK__ on your device...
 
@@ -693,11 +693,11 @@ Follow the instructions here to validate that the NuttX Release __builds correct
 
 Here's the script I run to __validate NuttX on PinePhone__...
 
--   [__PinePhone Validation Script: release.sh__](https://gist.github.com/lupyuen/a08d3d478beefc5a492ed2dae39438f3)
+-   [__Validation Script for PinePhone: release.sh__](https://gist.github.com/lupyuen/a08d3d478beefc5a492ed2dae39438f3)
 
 And here's the output of the __validation script__...
 
--   [__PinePhone Validation Output: release.log__](https://gist.github.com/lupyuen/5760e0375d44a06b3c730a10614e4d24)
+-   [__Validation Output for PinePhone: release.log__](https://gist.github.com/lupyuen/5760e0375d44a06b3c730a10614e4d24)
 
 Boot NuttX on our device, run "__uname -a__" and "__free__"...
 
@@ -714,7 +714,7 @@ The __NuttX Hash__ (like "d40f4032fc" above) should match the [__Validation Requ
 
 Copy the above into a __Validation Response__ email...
 
--   [__NuttX Release Validation Response__](https://www.mail-archive.com/dev@nuttx.apache.org/msg09565.html)
+-   [__Validation Response for NuttX Release__](https://www.mail-archive.com/dev@nuttx.apache.org/msg09565.html)
 
 And send back to the Mailing List. (Assuming all is hunky dory)
 
