@@ -672,12 +672,32 @@ int arm64_gic_initialize(void)
 </ol>
 <h1 id="appendix-validate-nuttx-release"><a href="#appendix-validate-nuttx-release">11 Appendix: Validate NuttX Release</a></h1>
 <p><em>For each Official Release of NuttX, how do we check if it runs OK on all devices? Like PinePhone, ESP32, …</em></p>
-<p>TODO: Before every Official Release of NuttX</p>
-<p><a href="https://www.mail-archive.com/dev@nuttx.apache.org/msg09563.html">NuttX Release Validation Request</a></p>
-<p><a href="https://cwiki.apache.org/confluence/display/NUTTX/Validating+a+staged+Release">Validating a Staged Release</a></p>
-<p><a href="https://gist.github.com/lupyuen/a08d3d478beefc5a492ed2dae39438f3">release.sh</a></p>
-<p><a href="https://gist.github.com/lupyuen/5760e0375d44a06b3c730a10614e4d24">release.log</a></p>
-<p><a href="https://www.mail-archive.com/dev@nuttx.apache.org/msg09565.html">NuttX Release Validation Response</a></p>
+<p>NuttX needs to be <strong>tested on every device</strong>, and we need your help! 🙏</p>
+<p>Before every Official Release of NuttX, a <strong>Validation Request</strong> will be broadcast on the <a href="https://nuttx.apache.org/community/"><strong>NuttX Developers Mailing List</strong></a>…</p>
+<ul>
+<li><a href="https://www.mail-archive.com/dev@nuttx.apache.org/msg09563.html"><strong>NuttX Release Validation Request</strong></a></li>
+</ul>
+<p>Follow the instructions here to validate that the NuttX Release <strong>builds correctly and runs OK</strong> on your device…</p>
+<ul>
+<li>
+<p><a href="https://cwiki.apache.org/confluence/display/NUTTX/Validating+a+staged+Release"><strong>Validating a Staged Release</strong></a></p>
+<p>(See below for the updates)</p>
+</li>
+</ul>
+<p>Here’s the script I run to <strong>validate NuttX on PinePhone</strong>…</p>
+<ul>
+<li><a href="https://gist.github.com/lupyuen/a08d3d478beefc5a492ed2dae39438f3"><strong>PinePhone Validation Script: release.sh</strong></a></li>
+</ul>
+<p>And here’s the output of the <strong>validation script</strong>…</p>
+<ul>
+<li><a href="https://gist.github.com/lupyuen/5760e0375d44a06b3c730a10614e4d24"><strong>PinePhone Validation Output: release.log</strong></a></li>
+</ul>
+<p>Which we copy into a <strong>Validation Response</strong> email…</p>
+<ul>
+<li><a href="https://www.mail-archive.com/dev@nuttx.apache.org/msg09565.html"><strong>NuttX Release Validation Response</strong></a></li>
+</ul>
+<p><em>What are the updates to the NuttX Validation Instructions?</em></p>
+<p>TODO</p>
 
     
 </body>
