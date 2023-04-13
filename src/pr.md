@@ -674,3 +674,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 # Appendix: Validate NuttX Release
 
 TODO
+
+[Validation Request](https://www.mail-archive.com/dev@nuttx.apache.org/msg09563.html)
+
+[Validating a Staged Release](https://cwiki.apache.org/confluence/display/NUTTX/Validating+a+staged+Release)
+
+[release.sh](https://gist.github.com/lupyuen/a08d3d478beefc5a492ed2dae39438f3)
+
+[release.log](https://gist.github.com/lupyuen/5760e0375d44a06b3c730a10614e4d24)
+
+[Validation Response](https://www.mail-archive.com/dev@nuttx.apache.org/msg09565.html)
