@@ -716,7 +716,7 @@ Which we copy into a __Validation Response__ email...
 
 And send back to the Mailing List. (Assuming everything is hunky dory)
 
-Since there are so many NuttX devices, we really appreciate your help with this! 🙏
+Since there are so many NuttX devices, we really appreciate your help with the NuttX Validation! 🙏
 
 _What are the updates to the NuttX Validation Instructions?_
 
