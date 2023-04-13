@@ -679,14 +679,30 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 _For each Official Release of NuttX, how do we check if it runs OK on all devices? Like PinePhone, ESP32, ..._
 
-TODO: Before every Official Release of NuttX
+NuttX needs to be __tested on every device__, and we need your help! 🙏
 
-[NuttX Release Validation Request](https://www.mail-archive.com/dev@nuttx.apache.org/msg09563.html)
+Before every Official Release of NuttX, a __Validation Request__ will be broadcast on the [__NuttX Developers Mailing List__](https://nuttx.apache.org/community/)...
 
-[Validating a Staged Release](https://cwiki.apache.org/confluence/display/NUTTX/Validating+a+staged+Release)
+-   [__NuttX Release Validation Request__](https://www.mail-archive.com/dev@nuttx.apache.org/msg09563.html)
 
-[release.sh](https://gist.github.com/lupyuen/a08d3d478beefc5a492ed2dae39438f3)
+Follow the instructions here to validate that the NuttX Release __builds correctly and runs OK__ on your device...
 
-[release.log](https://gist.github.com/lupyuen/5760e0375d44a06b3c730a10614e4d24)
+-   [__Validating a Staged Release__](https://cwiki.apache.org/confluence/display/NUTTX/Validating+a+staged+Release)
 
-[NuttX Release Validation Response](https://www.mail-archive.com/dev@nuttx.apache.org/msg09565.html)
+    (See below for the updates)
+
+Here's the script I run to __validate NuttX on PinePhone__...
+
+-   [__PinePhone Validation Script: release.sh__](https://gist.github.com/lupyuen/a08d3d478beefc5a492ed2dae39438f3)
+
+And here's the output of the __validation script__...
+
+-   [__PinePhone Validation Output: release.log__](https://gist.github.com/lupyuen/5760e0375d44a06b3c730a10614e4d24)
+
+Which we copy into a __Validation Response__ email...
+
+-   [__NuttX Release Validation Response__](https://www.mail-archive.com/dev@nuttx.apache.org/msg09565.html)
+
+_What are the updates to the NuttX Validation Instructions?_
+
+TODO
