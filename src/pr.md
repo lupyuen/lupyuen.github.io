@@ -665,6 +665,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 1.  [__QEMU Emulator__](https://www.qemu.org/docs/master/system/target-arm.html) is incredibly helpful for Regression Testing...
 
-    Can we extend it to __emulate PinePhone__? Maybe just the UART Hardware?
+    Can we extend it to __emulate PinePhone__? Maybe just the UART Hardware? Check out the articles...
 
-    (I'd love to build a QEMU Extension in Zig!)
+    [__"(Possibly) Emulate PinePhone with Unicorn Emulator"__](https://lupyuen.github.io/articles/unicorn)
+
+    [__"(Clickable) Call Graph for Apache NuttX Real-Time Operating System"__](https://lupyuen.github.io/articles/unicorn2)
+
+# Appendix: Validate NuttX Release
+
+TODO
