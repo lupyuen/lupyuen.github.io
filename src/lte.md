@@ -641,7 +641,7 @@ Which __fails the enumeration__ of USB Devices (like the LTE Modem). And we can'
 
 Stay tuned for updates on UART and USB Testing!
 
-[(This crash needs to be fixed when USB Controller Host is enabled)](https://github.com/lupyuen/pinephone-nuttx-usb#ls-crashes-when-usb-hub-support-is-enabled)
+[(This crash needs to be fixed when __USB Hub Support__ is enabled)](https://github.com/lupyuen/pinephone-nuttx-usb#ls-crashes-when-usb-hub-support-is-enabled)
 
 ![Quectel EG25-G LTE Modem inside PinePhone](https://lupyuen.github.io/images/wayland-sd.jpg)
 
