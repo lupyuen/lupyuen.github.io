@@ -559,11 +559,10 @@ static int a64_uart_setup(struct uart_dev_s *dev)
 <ul>
 <li><a href="https://lupyuen.github.io/articles/uboot"><strong>“PinePhone boots Apache NuttX RTOS”</strong></a></li>
 </ul>
-<p>If we ever need to set the <strong>UART Baud Rate</strong>, the steps are explained here…</p>
+<p>Later when need to set the <strong>UART Baud Rate</strong>, the steps are explained here…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/uboot#initialise-uart"><strong>“Initialise UART”</strong></a></li>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx#configure-uart-port"><strong>“Configure UART Port”</strong></a></li>
 </ul>
-<p><strong>UPDATE:</strong> We could reuse the NuttX UART Driver for Allwinner A10 SoC. <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_serial.c#L890-L988">(See this)</a></p>
 <p><em>What about UART Shutdown?</em></p>
 <p>The UART Port is <strong>always active</strong>, thus we don’t have to shut it down: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L181-L204">a64_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Shutdown PinePhone Allwinner A64 UART
