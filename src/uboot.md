@@ -1155,6 +1155,10 @@ In Arm64 Assembly, this is how we wait for the UART to be ready: [a64_lowputc.S]
 
 _How will we initialise the UART Port?_
 
+__UPDATE:__ See the UART Configuration steps here...
+
+-   [__"Configure UART Port"__](https://github.com/lupyuen/pinephone-nuttx#configure-uart-port)
+
 According to the __Allwinner A64 UART__ doc (page 562, "UART")...
 
 -   [__Allwinner A64 User Manual__](https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf)

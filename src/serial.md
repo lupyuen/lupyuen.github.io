@@ -618,11 +618,9 @@ PinePhone's __U-Boot Bootloader__ has kindly set the Baud Rate for us (115.2 kbp
 
 -   [__"PinePhone boots Apache NuttX RTOS"__](https://lupyuen.github.io/articles/uboot)
 
-If we ever need to set the __UART Baud Rate__, the steps are explained here...
+Later when need to set the __UART Baud Rate__, the steps are explained here...
 
--   [__"Initialise UART"__](https://lupyuen.github.io/articles/uboot#initialise-uart)
-
-__UPDATE:__ We could reuse the NuttX UART Driver for Allwinner A10 SoC. [(See this)](https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_serial.c#L890-L988)
+-   [__"Configure UART Port"__](https://github.com/lupyuen/pinephone-nuttx#configure-uart-port)
 
 _What about UART Shutdown?_
 
