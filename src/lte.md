@@ -607,6 +607,10 @@ We need to fix the PinePhone UART Driver [__configure the UART Port__](https://g
 
 We'll copy from the NuttX UART Driver for Allwinner A1X: [__a1x_serial.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_serial.c#L695-L987)
 
+Like this...
+
+-   [__"Configure UART Port"__](https://github.com/lupyuen/pinephone-nuttx#configure-uart-port)
+
 There's another way to test the LTE Modem: Via USB...
 
 ![USB Controller Block Diagram from Allwinner A64 User Manual](https://lupyuen.github.io/images/usb3-title.jpg)
