@@ -559,6 +559,10 @@ Status=1
 <p><em>UART3 works with NuttX?</em></p>
 <p>We need to fix the PinePhone UART Driver <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L160-L180"><strong>configure the UART Port</strong></a>.</p>
 <p>We’ll copy from the NuttX UART Driver for Allwinner A1X: <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_serial.c#L695-L987"><strong>a1x_serial.c</strong></a></p>
+<p>Like this…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx#configure-uart-port"><strong>“Configure UART Port”</strong></a></li>
+</ul>
 <p>There’s another way to test the LTE Modem: Via USB…</p>
 <p><img src="https://lupyuen.github.io/images/usb3-title.jpg" alt="USB Controller Block Diagram from Allwinner A64 User Manual" /></p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><em>USB Controller Block Diagram from Allwinner A64 User Manual</em></a></p>
