@@ -101,6 +101,8 @@ Next we disable PWM through the __R_PWM Port__ on Allwinner A64...
   );
 ```
 
+[(__R_PWM__ is implemented in the Allwinner A100 Coprocessor)](https://www.hackster.io/news/intelligent-agent-s-recore-board-adds-some-serious-speed-to-your-3d-printer-c2757653d931)
+
 The __R_PWM Port__ isn't documented in the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf).
 
 But thanks to [__Reverse-Engineering__](https://lupyuen.github.io/articles/de#appendix-display-backlight), we figured out how it works: [pinephone_lcd.c](https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L88-L103)

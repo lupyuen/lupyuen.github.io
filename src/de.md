@@ -2184,6 +2184,8 @@ The Base Addresses above are...
 
 -   __R_PWM Base Address__ (CPUs-PWM?): `0x01F0` `3800` [(CPUs Domain, A64 Page 256)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
 
+    [(__R_PIO__ and __R_PWM__ refer to the Allwinner A100 Coprocessor)](https://www.hackster.io/news/intelligent-agent-s-recore-board-adds-some-serious-speed-to-your-3d-printer-c2757653d931)
+
 Based on the above steps, we have __implemented in Zig__ the Display Backlight Driver...
 
 -   [__pinephone-nuttx/backlight.zig__](https://github.com/lupyuen/pinephone-nuttx/blob/main/backlight.zig)
@@ -2465,6 +2467,8 @@ We're now converting the Reduced Serial Bus Driver from Zig to C. Work-in-progre
 -   [__arch/arm64/src/a64/a64_rsb.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb/arch/arm64/src/a64/a64_rsb.c)
 
 __Base Address of Reduced Serial Bus__ (R_RSB) is __`0x01F` `03400`__ [(A64 Page 75)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf)
+
+[(__R_RSB__ is implemented in the Allwinner A100 Coprocessor)](https://www.hackster.io/news/intelligent-agent-s-recore-board-adds-some-serious-speed-to-your-3d-printer-c2757653d931)
 
 The __Reduced Serial Bus Registers__ are [(A80 Page 922)](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf)...
 
