@@ -1986,6 +1986,7 @@ TODO: Set Bit 10 of PH_DATA (0x1c2090c)
 </li>
 <li>
 <p><strong>R_PWM Base Address</strong> (CPUs-PWM?): <code>0x01F0</code> <code>3800</code> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf">(CPUs Domain, A64 Page 256)</a></p>
+<p><a href="https://www.hackster.io/news/intelligent-agent-s-recore-board-adds-some-serious-speed-to-your-3d-printer-c2757653d931">(<strong>R_PIO</strong> and <strong>R_PWM</strong> refer to the Allwinner A100 Coprocessor)</a></p>
 </li>
 </ul>
 <p>Based on the above steps, we have <strong>implemented in Zig</strong> the Display Backlight Driver…</p>
@@ -2249,6 +2250,7 @@ udelay 15000
 <li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/rsb/arch/arm64/src/a64/a64_rsb.c"><strong>arch/arm64/src/a64/a64_rsb.c</strong></a></li>
 </ul>
 <p><strong>Base Address of Reduced Serial Bus</strong> (R_RSB) is <strong><code>0x01F</code> <code>03400</code></strong> <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf">(A64 Page 75)</a></p>
+<p><a href="https://www.hackster.io/news/intelligent-agent-s-recore-board-adds-some-serious-speed-to-your-3d-printer-c2757653d931">(<strong>R_RSB</strong> is implemented in the Allwinner A100 Coprocessor)</a></p>
 <p>The <strong>Reduced Serial Bus Registers</strong> are <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/A80_User_Manual_v1.3.1_20150513.pdf">(A80 Page 922)</a>…</p>
 <ul>
 <li>

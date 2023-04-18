@@ -158,6 +158,7 @@ int pinephone_lcd_backlight_enable(
     R_PWM_CTRL_REG    // Register Address
   );
 </code></pre></div>
+<p><a href="https://www.hackster.io/news/intelligent-agent-s-recore-board-adds-some-serious-speed-to-your-3d-printer-c2757653d931">(<strong>R_PWM</strong> is implemented in the Allwinner A100 Coprocessor)</a></p>
 <p>The <strong>R_PWM Port</strong> isn’t documented in the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>.</p>
 <p>But thanks to <a href="https://lupyuen.github.io/articles/de#appendix-display-backlight"><strong>Reverse-Engineering</strong></a>, we figured out how it works: <a href="https://github.com/apache/nuttx/blob/master/boards/arm64/a64/pinephone/src/pinephone_lcd.c#L88-L103">pinephone_lcd.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>  // R_PWM Control Register (Undocumented)
