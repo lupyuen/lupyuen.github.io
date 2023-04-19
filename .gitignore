@@ -3,5 +3,6 @@ lupyuen.resume.json
 .vscode/last.sql
 .vscode/temp.sql
 json-to-rss/target
+json-to-sitemap/target
 decode-base64/target
 .DS_Store
