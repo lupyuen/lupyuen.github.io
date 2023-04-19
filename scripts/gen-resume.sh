@@ -28,3 +28,8 @@ rm index2.html
 pushd json-to-rss
 cargo run >../rss.xml
 popd
+
+# Generate Sitemap
+pushd json-to-sitemap
+cargo run
+popd

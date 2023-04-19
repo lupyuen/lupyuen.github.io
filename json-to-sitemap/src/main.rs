@@ -42,27 +42,6 @@ fn main() {
     let mut output = Vec::<u8>::new();
     let sitemap_writer = SiteMapWriter::new(&mut output);
     let mut urlwriter = sitemap_writer.start_urlset().expect("Can't write the file");
-    let date = DateTime::from_utc(NaiveDate::from_ymd(2016, 7, 8).and_hms(9, 10, 11),
-                                    FixedOffset::east(0));
-    let url_entry = UrlEntry::builder()
-        .loc("http://www.example.com/index.html")
-        .changefreq(ChangeFreq::Daily)
-        .priority(0.2)
-        .lastmod(date)
-        .build()
-        .expect("valid");
-    urlwriter.url(url_entry).expect("Can't write the file");
-    let date1 = DateTime::from_utc(NaiveDate::from_ymd(2016, 7, 18).and_hms(9, 10, 11),
-                                    FixedOffset::east(0));
-    let url_entry = UrlEntry::builder()
-        .loc("http://www.example.com/other.html")
-        .changefreq(ChangeFreq::Monthly)
-        .priority(0.1)
-        .lastmod(date1)
-        .build()
-        .expect("valid");
-    urlwriter.url(url_entry).expect("Can't write the file");
-    let sitemap_writer = urlwriter.end().expect("close the urlset block");
 
     //  Convert each publication.
     for article in deserialized.publications {        
@@ -73,48 +52,32 @@ fn main() {
         ).unwrap();  //  "2018-03-20"
         //  println!("{}", date);
 
-        //  Set GUID to URL.
-        // let mut guid = rss::Guid::default();
-        // guid.set_value(article.website.clone().replace("&", "&amp;"));
+        //  Skip non-articles.
+        if (!article.website.starts_with("https://lupyuen.github.io/articles/")) { continue; }
 
-        /*
-        <item>
-        <guid>http://www.example.com/blog/post/1</guid>
-        <title>Example entry</title>
-        <description>Here is some text containing an interesting description.</description>
-        <link>http://www.example.com/blog/post/1</link>
-        <guid isPermaLink="false">7bd204c6-1655-4c27-aeee-53f933c5395f</guid>
-        <pubDate>Sun, 06 Sep 2009 16:20:00 +0000</pubDate>
-        </item>
-        */
         //  Compose the item.
-        // let item = ItemBuilder::default()
-        //     .guid(Some(guid))
-        //     .title(Some(article.name))
-        //     .description(Some(article.summary))
-        //     .link(Some(article.website))
-        //     .pub_date(Some(date.to_rfc2822()))
-        //     .build()
-        //     .unwrap();
-        // items.push(item);
+        let url_entry = UrlEntry::builder()
+            .loc(article.website)
+            .lastmod(date.into())
+            .build()
+            .expect("valid");
+        urlwriter.url(url_entry).expect("Can't write the file");
+        /*
+        <url>
+            <loc>https://lupyuen.github.io/articles/lte</loc>
+            <lastmod>2023-04-12T00:00:00+00:00</lastmod>
+        </url>
+        */
     }
     //  Compose the sitemap.
-    let mut sitemap_index_writer = sitemap_writer.start_sitemapindex()
-        .expect("start sitemap index tag");
-    let sitemap_entry = SiteMapEntry::builder()
-        .loc("http://www.example.com/other_sitemap.xml")
-        .lastmod(date1)
-        .build()
-        .expect("valid");
-    sitemap_index_writer.sitemap(sitemap_entry).expect("Can't write the file");
-    sitemap_index_writer.end().expect("close sitemap block");
-
-    //  Write the sitemap.
+    let sitemap_writer = urlwriter.end().expect("close the urlset block");
     let string = std::str::from_utf8(&output)
         .expect("Convert sitemap failed");
-    let mut file = File::create("/tmp/sitemap.xml")
+    // println!("{:?}", string);
+
+    //  Write the sitemap.
+    let mut file = File::create("../sitemap.xml")
         .expect("Create sitemap.xml failed");
     file.write_all(string.as_bytes())
         .expect("Write sitemap.xml failed");
-    // println!("{:?}", string);
 }
