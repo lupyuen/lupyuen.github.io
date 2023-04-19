@@ -3,7 +3,7 @@ use std::io::prelude::*;
 use serde::{ Deserialize };
 use chrono::prelude::*;
 use sitemap::writer::SiteMapWriter;
-use sitemap::structs::{UrlEntry, ChangeFreq, SiteMapEntry};
+use sitemap::structs::{UrlEntry};
 
 /*
 "publications": [
@@ -21,8 +21,9 @@ struct Resume {
     publications: Vec<Publication>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 #[allow(non_snake_case)]
+#[allow(dead_code)]
 struct Publication {
     name: String,           //  "Developing cost-effective, energy efficient IoT solutions for outdoor as well as indoor applications",
     publisher: String,      //  "OpenGov",
@@ -43,6 +44,19 @@ fn main() {
     let sitemap_writer = SiteMapWriter::new(&mut output);
     let mut urlwriter = sitemap_writer.start_urlset().expect("Can't write the file");
 
+    //  Add our home page based on the first date.
+    let article = deserialized.publications[0].clone();
+    let date = Utc.datetime_from_str(
+        &(article.releaseDate + " 00:00:00"),
+        "%Y-%m-%d %H:%M:%S"
+    ).unwrap();  //  "2018-03-20"
+    let url_entry = UrlEntry::builder()
+        .loc("https://lupyuen.github.io/")
+        .lastmod(date.into())
+        .build()
+        .expect("valid");
+    urlwriter.url(url_entry).expect("Can't write the file");
+
     //  Convert each publication.
     for article in deserialized.publications {        
         //  Convert date.
@@ -53,7 +67,7 @@ fn main() {
         //  println!("{}", date);
 
         //  Skip non-articles.
-        if (!article.website.starts_with("https://lupyuen.github.io/articles/")) { continue; }
+        if !article.website.starts_with("https://lupyuen.github.io/articles/") { continue; }
 
         //  Compose the item.
         let url_entry = UrlEntry::builder()
@@ -70,7 +84,6 @@ fn main() {
         */
     }
     //  Compose the sitemap.
-    let sitemap_writer = urlwriter.end().expect("close the urlset block");
     let string = std::str::from_utf8(&output)
         .expect("Convert sitemap failed");
     // println!("{:?}", string);
