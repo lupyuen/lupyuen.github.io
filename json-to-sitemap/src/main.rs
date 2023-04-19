@@ -84,6 +84,7 @@ fn main() {
         */
     }
     //  Compose the sitemap.
+    urlwriter.end().expect("close the urlset block");
     let string = std::str::from_utf8(&output)
         .expect("Convert sitemap failed");
     // println!("{:?}", string);
