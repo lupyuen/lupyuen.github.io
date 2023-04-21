@@ -559,7 +559,7 @@ Status=1
 </ul>
 <p>Thus we may <strong>check UART3</strong> to see if the LTE Modem responds to <a href="https://lupyuen.github.io/articles/lte#quectel-eg25-g-lte-modem"><strong>AT Commands</strong></a>.</p>
 <p><a href="https://lupyuen.github.io/articles/lte#power-on-lte-modem">(After 12 seconds from power up)</a></p>
-<p>(Do we need UART4 and PB2?)</p>
+<p><a href="https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_UART_flow_control_is_broken">(Modem UART flow control is broken)</a></p>
 <p><em>UART3 works with NuttX?</em></p>
 <p>We need to fix the PinePhone UART Driver <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L160-L180"><strong>configure the UART Port</strong></a>.</p>
 <p>We’ll copy from the NuttX UART Driver for Allwinner A1X: <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_serial.c#L695-L987"><strong>a1x_serial.c</strong></a></p>
@@ -662,6 +662,11 @@ Status=1
 <p><a href="https://xnux.eu/devices/feature/audio-pp.html"><strong>“Audio on PinePhone”</strong></a></p>
 <p><a href="https://xnux.eu/devices/feature/modem-pp-reveng.html"><strong>“EG25-G Reverse Engineering”</strong></a></p>
 <p><a href="https://wiki.osdev.org/PinePhone"><strong>“OSDev: PinePhone”</strong></a></p>
+</li>
+<li>
+<p>Take note of these limitations…</p>
+<p><a href="https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_UART_flow_control_is_broken"><strong>“Modem UART flow control is broken”</strong></a></p>
+<p><a href="https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_PWR_KEY_signal_resistor_population"><strong>“Modem PWR_KEY signal resistor population”</strong></a></p>
 </li>
 </ol>
 <p><img src="https://lupyuen.github.io/images/lte-title.jpg" alt="LTE Modem inside PinePhone" /></p>
