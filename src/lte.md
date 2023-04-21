@@ -96,9 +96,9 @@ According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhon
 
 -   __UART__ ⇆ A64 Port __UART3__ _(RX / TX)_, __UART4__ _(CTS / RTS)_, __PB2__ _(DTR)_
 
-    Simpler, alternative interface for AT Commands.
-    
-    (Default 115.2 kbps, up to 921.6 kbps)
+    Simpler, alternative interface for AT Commands. Default 115.2 kbps, up to 921.6 kbps.
+
+    [(See this)](https://lupyuen.github.io/articles/lte#main-uart-interface)
 
 UART is slower than USB, so we should probably use USB instead of UART.
 
@@ -330,6 +330,8 @@ This is how we control the GPIO Pins to __power up the LTE Modem__...
     PH9 goes from __High to Low__ when the LTE Modem is ready, in 2.5 seconds.
 
 1.  __UART and USB Interfaces__ will be operational in 13 seconds
+
+__TODO:__ Set DTR (PB2) to Low to wake up modem
 
 [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf) (Page 41) beautifully illustrates the __Power On Sequence__...
 
@@ -795,10 +797,19 @@ From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG
 | Pin Name | Pin No. | I/O | Description
 |:---------|:-------:|:---:|:-----------
 | RI | 62 | DO | Ring indicator
+| CTS | 64 | DO | Clear to send
+| RTS | 65 | DI | Request to send
+| DTR | 66 | DI | Data terminal ready, sleep mode control
+| TXD | 67 | DO | Transmit data
+| RXD | 68 | DI | Receive data
 
 [(__DO__ is Digital Output)](https://lupyuen.github.io/articles/lte#io-parameters-definition)
 
+[(__DI__ is Digital Input)](https://lupyuen.github.io/articles/lte#io-parameters-definition)
+
 -   Voltage Level is 1.8 V
+
+-   DTR is pulled up by default. Low level wakes up the module.
 
 ## Other Interface Pins
 
