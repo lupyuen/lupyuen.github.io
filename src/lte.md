@@ -589,7 +589,11 @@ The LTE Modem to connected to PinePhone (Allwinner A64) at these UART Ports (pic
 
 -   __A64 Port UART3__: RX and TX
 
+    (GPIO PD1 and PD0)
+
 -   __A64 Port UART4__: CTS and RTS
+
+    (GPIO PD5 and PD4)
 
 -   __A64 Port PB2__: DTR
 
