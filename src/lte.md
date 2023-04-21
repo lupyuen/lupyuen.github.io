@@ -607,7 +607,7 @@ Thus we may __check UART3__ to see if the LTE Modem responds to [__AT Commands__
 
 [(After 12 seconds from power up)](https://lupyuen.github.io/articles/lte#power-on-lte-modem)
 
-(Do we need UART4 and PB2?)
+[(Modem UART flow control is broken)](https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_UART_flow_control_is_broken)
 
 _UART3 works with NuttX?_
 
@@ -716,6 +716,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     [__"EG25-G Reverse Engineering"__](https://xnux.eu/devices/feature/modem-pp-reveng.html)
 
     [__"OSDev: PinePhone"__](https://wiki.osdev.org/PinePhone)
+
+1.  Take note of these limitations...
+
+    [__"Modem UART flow control is broken"__](https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_UART_flow_control_is_broken)
+
+    [__"Modem PWR_KEY signal resistor population"__](https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_PWR_KEY_signal_resistor_population)
 
 ![LTE Modem inside PinePhone](https://lupyuen.github.io/images/lte-title.jpg)
 
