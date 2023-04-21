@@ -601,6 +601,8 @@ The LTE Modem to connected to PinePhone (Allwinner A64) at these UART Ports (pic
 
     (Default 115.2 kbps, up to 921.6 kbps)
 
+    [(See this)](https://lupyuen.github.io/articles/lte#main-uart-interface)
+
 Thus we may __check UART3__ to see if the LTE Modem responds to [__AT Commands__](https://lupyuen.github.io/articles/lte#quectel-eg25-g-lte-modem).
 
 [(After 12 seconds from power up)](https://lupyuen.github.io/articles/lte#power-on-lte-modem)
@@ -808,6 +810,8 @@ From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG
 [(__DI__ is Digital Input)](https://lupyuen.github.io/articles/lte#io-parameters-definition)
 
 -   Voltage Level is 1.8 V
+
+-   Default 115.2 kbps, up to 921.6 kbps
 
 -   DTR is pulled up by default. Low level wakes up the module.
 
