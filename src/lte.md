@@ -465,55 +465,43 @@ And we print the status. Let's run this!
 
 # Is LTE Modem Up?
 
-TODO: Yes it works! Update the log
-
 _We've implemented the Power On Sequence for LTE Modem..._
 
 _Does it work on Apache NuttX RTOS?_
 
-The results look a little peculiar. Here's the output when NuttX powers up the LTE Modem...
+TODO: Yes it works! Update the log
 
 ```text
-pinephone_pmic_usb_init: Set DCDC1 Voltage to 3.3V
-pmic_write: reg=0x20, val=0x11
-a64_rsb_write: rt_addr=0x2d, reg_addr=0x20, value=0x11
-pmic_clrsetbits: reg=0x10, clr_mask=0x0, set_mask=0x1
-a64_rsb_read: rt_addr=0x2d, reg_addr=0x10
-a64_rsb_write: rt_addr=0x2d, reg_addr=0x10, value=0x37
-a64_usbhost_initialize: Status=0
-
-Wait 1000 ms
+Configure STATUS (PH9) for Input
 Status=0
+
+Configure PWR_BAT (PL7) for Output
+Set PWR_BAT (PL7) to High
+Status=1
 ```
 
-[(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/893c7c914c0594d93fa4f75ce20bc990c4583454/README.md#output-log)
-
-NuttX begins by setting the __DCDC1 Voltage to 3.3 V__ through the Power Management Integrated Circuit (PMIC).
-
-(Actually we should skip this if DCDC1 is already powered on)
-
-[(__RSB__ refers to the __Reduced Serial Bus__)](https://lupyuen.github.io/articles/de#appendix-reduced-serial-bus)
+[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/b2ff93bdf3f8603ad6181f3d4c371e8faa4a41b8/examples/hello/hello_main.c#L113-L230)
 
 Then it __switches on the power__ (PL7) and __deasserts the reset__ (PC4)...
 
 ```text
 Set PWR_BAT (PL7) to High
-Status=1
+Set RESET_N (PC4) to Low
 
-Set RESET_N (PC4) to High
+Set AP-READY (PH7) to Low to wake up modem
+Set DTR (PB2) to Low to wake up modem
+
+Wait 30 ms
 Status=1
 ```
 
-Toggle the __Power Key (PB3)__: High → Low → High...
+Toggle the __Power Key (PB3)__: High → 600 milliseconds → Low...
 
 ```text
 Set PWRKEY (PB3) to High
-Wait 30 ms for VBAT to be stable
+Wait 600 ms
 
 Set PWRKEY (PB3) to Low
-Wait 500 ms
-
-Set PWRKEY (PB3) to High
 Status=1
 ```
 
@@ -524,18 +512,11 @@ Set W_DISABLE (PH8) to High
 Status=1
 ```
 
-The LTE Modem should have powered up. But the __LTE Modem Status (PH9)__ stays at High...
+TODO
 
-```text
-(Wait 2 seconds)
-Status=1
-(Wait 2 seconds)
-Status=1
-(Wait 2 seconds)
-Status=1
-```
+The LTE Modem should have powered up. But the __LTE Modem Status (PH9)__ stays at High.
 
-[(See the Complete Log)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/893c7c914c0594d93fa4f75ce20bc990c4583454/README.md#output-log)
+[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/b2ff93bdf3f8603ad6181f3d4c371e8faa4a41b8/examples/hello/hello_main.c#L113-L230)
 
 _This doesn't look right..._
 
