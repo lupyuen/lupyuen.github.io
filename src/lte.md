@@ -339,9 +339,9 @@ This is how we control the GPIO Pins to __power up the LTE Modem__...
 
 ![LTE Modem Power](https://lupyuen.github.io/images/lte-power2.png)
 
-Note that Power Key and Reset are __High-Low Inverted__ for GPIO Pins PC4 and PB3.
+Note that Power Key and Reset are [__High-Low Inverted__](https://lupyuen.github.io/articles/lte#power-on--off) when accessed via GPIO Pins PC4 and PB3.
 
-(So High means Low and vice versa)
+[(High becomes Low and vice versa)](https://lupyuen.github.io/articles/lte#power-on--off)
 
 _Power Key looks funky: High → Low → High..._
 
@@ -733,6 +733,16 @@ From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG
 
     [(EG25-G Hardware Design, Page 42)](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
+-   Note that PWRKEY and RESET_N are __High-Low Inverted__ when accessed through PinePhone's GPIO Pins
+
+    (High becomes Low and vice versa)
+
+    ![PWRKEY is High-Low Inverted](https://lupyuen.github.io/images/lte-powerkey.png)
+
+    ![RESET_N is High-Low Inverted](https://lupyuen.github.io/images/lte-reset.png)
+
+    [(EG25-G Hardware Design, Pages 40 and 43)](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
+
 ## Status Indication
 
 From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf) (Page 22)...
@@ -746,16 +756,6 @@ From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG
 -   When PWRKEY is pulled Low, STATUS goes High for ≥2.5 s, then STATUS goes Low
 
     [(EG25-G Hardware Design, Page 41)](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
-
--   Note that STATUS can't be read reliably...
-
-    "Currently STATUS pin is connected to PWRKEY and to PB3."
-
-    "__STATUS can't be read reliably__ since voltage divider from R1526 and R1517 places the STATUS signal at 0V or 0.5\*Vcc-IO, which is unspecified input value according to A64 datasheet"
-
-    "(Vih is 0.7\*Vcc-IO, Vil is 0.3\*Vcc-IO, the range in between is unspecified)" 
-
-    [(Source)](https://wiki.pine64.org/wiki/PinePhone_Power_Management#Open_Questions_2)
 
 ## USB Interface
 
