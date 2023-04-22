@@ -372,8 +372,8 @@
 </ol>
 <p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 41) beautifully illustrates the <strong>Power On Sequence</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/lte-power2.png" alt="LTE Modem Power" /></p>
-<p>Note that Power Key and Reset are <strong>High-Low Inverted</strong> for GPIO Pins PC4 and PB3.</p>
-<p>(So High means Low and vice versa)</p>
+<p>Note that Power Key and Reset are <a href="https://lupyuen.github.io/articles/lte#power-on--off"><strong>High-Low Inverted</strong></a> when accessed via GPIO Pins PC4 and PB3.</p>
+<p><a href="https://lupyuen.github.io/articles/lte#power-on--off">(High becomes Low and vice versa)</a></p>
 <p><em>Power Key looks funky: High → Low → High…</em></p>
 <p>Yeah the Power Key is probably inspired by the press-and-hold Power Button on vintage Nokia Phones.</p>
 <p><a href="https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_PWR_KEY_signal_resistor_population">(Power Key works differently on pre-production PinePhones)</a></p>
@@ -682,6 +682,13 @@ Status=1
 <p>“The RESET_N pin can be used to reset the module. The module can be reset by driving RESET_N to a low level voltage for 150–460 ms”</p>
 <p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">(EG25-G Hardware Design, Page 42)</a></p>
 </li>
+<li>
+<p>Note that PWRKEY and RESET_N are <strong>High-Low Inverted</strong> when accessed through PinePhone’s GPIO Pins</p>
+<p>(High becomes Low and vice versa)</p>
+<p><img src="https://lupyuen.github.io/images/lte-powerkey.png" alt="PWRKEY is High-Low Inverted" /></p>
+<p><img src="https://lupyuen.github.io/images/lte-reset.png" alt="RESET_N is High-Low Inverted" /></p>
+<p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">(EG25-G Hardware Design, Pages 40 and 43)</a></p>
+</li>
 </ul>
 <h2 id="status-indication"><a href="#status-indication">13.3 Status Indication</a></h2>
 <p>From <a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf"><strong>EG25-G Hardware Design</strong></a> (Page 22)…</p>
@@ -694,13 +701,6 @@ Status=1
 <li>
 <p>When PWRKEY is pulled Low, STATUS goes High for ≥2.5 s, then STATUS goes Low</p>
 <p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">(EG25-G Hardware Design, Page 41)</a></p>
-</li>
-<li>
-<p>Note that STATUS can’t be read reliably…</p>
-<p>“Currently STATUS pin is connected to PWRKEY and to PB3.”</p>
-<p>“<strong>STATUS can’t be read reliably</strong> since voltage divider from R1526 and R1517 places the STATUS signal at 0V or 0.5*Vcc-IO, which is unspecified input value according to A64 datasheet”</p>
-<p>“(Vih is 0.7*Vcc-IO, Vil is 0.3*Vcc-IO, the range in between is unspecified)” </p>
-<p><a href="https://wiki.pine64.org/wiki/PinePhone_Power_Management#Open_Questions_2">(Source)</a></p>
 </li>
 </ul>
 <h2 id="usb-interface"><a href="#usb-interface">13.4 USB Interface</a></h2>
