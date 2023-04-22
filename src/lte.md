@@ -339,7 +339,7 @@ This is how we control the GPIO Pins to __power up the LTE Modem__...
 
 ![LTE Modem Power](https://lupyuen.github.io/images/lte-power2.png)
 
-Note that Power Key and Reset are __inverted for GPIO Pins__ PC4 and PB3.
+Note that Power Key and Reset are __High-Low Inverted__ for GPIO Pins PC4 and PB3.
 
 (So High means Low and vice versa)
 
