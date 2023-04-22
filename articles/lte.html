@@ -529,12 +529,10 @@ Status=1
 <p><img src="https://lupyuen.github.io/images/lte-power2.png" alt="LTE Modem Power" /></p>
 <p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">(EG25-G Hardware Design, Page 41)</a></p>
 <p><em>Why did the LTE Modem Status get stuck at High?</em></p>
-<p>Maybe because of this…</p>
-<p>“Currently STATUS pin is connected to PWRKEY and to PB3.”</p>
-<p>“<strong>STATUS can’t be read reliably</strong> since voltage divider from R1526 and R1517 places the STATUS signal at 0V or 0.5*Vcc-IO, which is unspecified input value according to A64 datasheet”</p>
-<p>“(Vih is 0.7*Vcc-IO, Vil is 0.3*Vcc-IO, the range in between is unspecified)” </p>
-<p><a href="https://wiki.pine64.org/wiki/PinePhone_Power_Management#Open_Questions_2">(Source)</a></p>
-<p>Which means we <strong>can’t read the LTE Modem Status</strong> to check reliably whether the modem is powered up.</p>
+<p>Not sure, but this might help…</p>
+<ul>
+<li><a href="https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_PWR_KEY_signal_resistor_population"><strong>“Modem PWR_KEY signal resistor population”</strong></a></li>
+</ul>
 <p><em>Is there another way to verify whether the LTE Modem is up?</em></p>
 <p>Let’s check the UART Port…</p>
 <p><img src="https://lupyuen.github.io/images/lte-vddext.png" alt="PinePhone Schematic (Page 15)" /></p>
