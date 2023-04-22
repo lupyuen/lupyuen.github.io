@@ -403,37 +403,30 @@ a64_pio_write(RESET_N, false);
 // Omitted: Print the status
 ```
 
-TODO
+Set PH7 (AP-READY) and PB2 (DTR) to Low to __wake up the modem__...
 
 ```c
-  // Set AP-READY (PH7) to Low to wake up modem
+// Set AP-READY (PH7) to Low to wake up modem
+// Configure AP-READY (PH7) for Output and set to Low
+#define AP_READY (P_OUTPUT | PIO_PORT_PIOH | PIO_PIN7)
+a64_pio_config(AP_READY);  // TODO: Check result
+a64_pio_write(AP_READY, false);
 
-  #define AP_READY (P_OUTPUT | PIO_PORT_PIOH | PIO_PIN7)
-  _info("Configure AP-READY (PH7) for Output\n");
-  ret = a64_pio_config(AP_READY);
-  DEBUGASSERT(ret >= 0);
-
-  _info("Set AP-READY (PH7) to Low to wake up modem\n");
-  a64_pio_write(AP_READY, false);
-  _info("Status=%d\n", a64_pio_read(STATUS));
-
-  // Set DTR (PB2) to Low to wake up modem
-
-  #define DTR (P_OUTPUT | PIO_PORT_PIOB | PIO_PIN2)
-  _info("Configure DTR (PB2) for Output\n");
-  ret = a64_pio_config(DTR);
-  DEBUGASSERT(ret >= 0);
-
-  _info("Set DTR (PB2) to Low to wake up modem\n");
-  a64_pio_write(DTR, false);
-  _info("Status=%d\n", a64_pio_read(STATUS));
-
-  _info("Wait 30 ms\n");
-  up_mdelay(30);
-  _info("Status=%d\n", a64_pio_read(STATUS));
+// Set DTR (PB2) to Low to wake up modem
+// Configure DTR (PB2) for Output and set to Low
+#define DTR (P_OUTPUT | PIO_PORT_PIOB | PIO_PIN2)
+a64_pio_config(DTR);  // TODO: Check result
+a64_pio_write(DTR, false);
 ```
 
-Now we __toggle PB3 for the Power Key__: High → 600 ms → Low...
+Wait 30 milliseconds for the __power to be stable__...
+
+```c
+// Wait 30 ms
+up_mdelay(30);
+```
+
+Now we __toggle PB3 for the Power Key__: High → 600 milliseconds → Low...
 
 ```c
 // Set PB3 to Power On LTE Modem (BB-PWRKEY / PWRKEY).
@@ -472,7 +465,7 @@ And we print the status. Let's run this!
 
 # Is LTE Modem Up?
 
-TODO: Update the log
+TODO: Yes it works! Update the log
 
 _We've implemented the Power On Sequence for LTE Modem..._
 
