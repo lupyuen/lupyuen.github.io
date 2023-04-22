@@ -98,7 +98,9 @@ According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhon
 
     Simpler, alternative interface for AT Commands. Default 115.2 kbps, up to 921.6 kbps.
 
-    [(See this)](https://lupyuen.github.io/articles/lte#main-uart-interface)
+    [(CTS / RTS might not work correctly)](https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_UART_flow_control_is_broken)
+
+    [(More about the UART pins)](https://lupyuen.github.io/articles/lte#main-uart-interface)
 
 UART is slower than USB, so we should probably use USB instead of UART.
 
@@ -348,6 +350,8 @@ This will affect our NuttX Testing, as we'll soon see.
 _Power Key looks funky: High → Low → High..._
 
 Yeah the Power Key is probably inspired by the press-and-hold Power Button on vintage Nokia Phones.
+
+[(History of Power Key)](https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_PWR_KEY_signal_resistor_population)
 
 Let's implement the steps with Apache NuttX RTOS...
 
@@ -820,6 +824,8 @@ From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG
 -   Default 115.2 kbps, up to 921.6 kbps
 
 -   DTR is pulled up by default. Low level wakes up the module.
+
+-   CTS / RTS might not work correctly [(See this)](https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_UART_flow_control_is_broken)
 
 ## Other Interface Pins
 
