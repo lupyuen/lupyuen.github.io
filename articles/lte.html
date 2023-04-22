@@ -414,34 +414,24 @@ a64_pio_config(RESET_N);  // TODO: Check result
 a64_pio_write(RESET_N, false);
 // Omitted: Print the status
 </code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-c"><code>  // Set AP-READY (PH7) to Low to wake up modem
+<p>Set PH7 (AP-READY) and PB2 (DTR) to Low to <strong>wake up the modem</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Set AP-READY (PH7) to Low to wake up modem
+// Configure AP-READY (PH7) for Output and set to Low
+#define AP_READY (P_OUTPUT | PIO_PORT_PIOH | PIO_PIN7)
+a64_pio_config(AP_READY);  // TODO: Check result
+a64_pio_write(AP_READY, false);
 
-  #define AP_READY (P_OUTPUT | PIO_PORT_PIOH | PIO_PIN7)
-  _info(&quot;Configure AP-READY (PH7) for Output\n&quot;);
-  ret = a64_pio_config(AP_READY);
-  DEBUGASSERT(ret &gt;= 0);
-
-  _info(&quot;Set AP-READY (PH7) to Low to wake up modem\n&quot;);
-  a64_pio_write(AP_READY, false);
-  _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
-
-  // Set DTR (PB2) to Low to wake up modem
-
-  #define DTR (P_OUTPUT | PIO_PORT_PIOB | PIO_PIN2)
-  _info(&quot;Configure DTR (PB2) for Output\n&quot;);
-  ret = a64_pio_config(DTR);
-  DEBUGASSERT(ret &gt;= 0);
-
-  _info(&quot;Set DTR (PB2) to Low to wake up modem\n&quot;);
-  a64_pio_write(DTR, false);
-  _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
-
-  _info(&quot;Wait 30 ms\n&quot;);
-  up_mdelay(30);
-  _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
+// Set DTR (PB2) to Low to wake up modem
+// Configure DTR (PB2) for Output and set to Low
+#define DTR (P_OUTPUT | PIO_PORT_PIOB | PIO_PIN2)
+a64_pio_config(DTR);  // TODO: Check result
+a64_pio_write(DTR, false);
 </code></pre></div>
-<p>Now we <strong>toggle PB3 for the Power Key</strong>: High → 600 ms → Low…</p>
+<p>Wait 30 milliseconds for the <strong>power to be stable</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Wait 30 ms
+up_mdelay(30);
+</code></pre></div>
+<p>Now we <strong>toggle PB3 for the Power Key</strong>: High → 600 milliseconds → Low…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Set PB3 to Power On LTE Modem (BB-PWRKEY / PWRKEY).
 // PWRKEY should be pulled down at least 500 ms, then pulled up.
 // Configure PWRKEY (PB3) for Output
@@ -472,7 +462,7 @@ a64_pio_write(W_DISABLE, true);
 </code></pre></div>
 <p>And we print the status. Let’s run this!</p>
 <h1 id="is-lte-modem-up"><a href="#is-lte-modem-up">8 Is LTE Modem Up?</a></h1>
-<p>TODO: Update the log</p>
+<p>TODO: Yes it works! Update the log</p>
 <p><em>We’ve implemented the Power On Sequence for LTE Modem…</em></p>
 <p><em>Does it work on Apache NuttX RTOS?</em></p>
 <p>The results look a little peculiar. Here’s the output when NuttX powers up the LTE Modem…</p>
