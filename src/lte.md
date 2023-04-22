@@ -721,11 +721,15 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [__"OSDev: PinePhone"__](https://wiki.osdev.org/PinePhone)
 
-1.  Take note of these limitations...
+1.  Take note of these __Limitations and Design Decisions__...
 
     [__"Modem UART flow control is broken"__](https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_UART_flow_control_is_broken)
 
     [__"Modem PWR_KEY signal resistor population"__](https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_PWR_KEY_signal_resistor_population)
+
+1.  Why are we experimenting with __BOTH UART and USB__ for the LTE Modem?
+
+    [__Here's the long story__](https://qoto.org/@lupyuen/110241405945668088)
 
 ![LTE Modem inside PinePhone](https://lupyuen.github.io/images/lte-title.jpg)
 
