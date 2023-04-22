@@ -563,17 +563,9 @@ Yeah we expect the LTE Modem Status to go __Low after 2.5 seconds__...
 
 _Why did the LTE Modem Status get stuck at High?_
 
-Maybe because of this...
+Not sure, but this might help...
 
-"Currently STATUS pin is connected to PWRKEY and to PB3."
-
-"__STATUS can't be read reliably__ since voltage divider from R1526 and R1517 places the STATUS signal at 0V or 0.5\*Vcc-IO, which is unspecified input value according to A64 datasheet"
-
-"(Vih is 0.7\*Vcc-IO, Vil is 0.3\*Vcc-IO, the range in between is unspecified)" 
-
-[(Source)](https://wiki.pine64.org/wiki/PinePhone_Power_Management#Open_Questions_2)
-
-Which means we __can't read the LTE Modem Status__ to check reliably whether the modem is powered up.
+-   [__"Modem PWR_KEY signal resistor population"__](https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_PWR_KEY_signal_resistor_population)
 
 _Is there another way to verify whether the LTE Modem is up?_
 
