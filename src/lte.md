@@ -628,22 +628,22 @@ Watch what happens when we run it...
 TODO
 
 ```text
-Open /dev/ttyS1: fd=3
-Write command: nbytes=4
+Open /dev/ttyS1
+Write command: AT\r
 ```
 
 TODO
 
 ```text
-Response: nbytes=7
+Response:
 RDY
 ```
 
 TODO
 
 ```text
-Write command: nbytes=4
-Response: nbytes=35
+Write command: AT\r
+Response:
 +CFUN: 1
 +CPIN: NOT INSERTED
 ```
@@ -651,8 +651,8 @@ Response: nbytes=35
 TODO
 
 ```text
-Write command: nbytes=4
-Response: nbytes=9
+Write command: AT\r
+Response:
 AT
 OK
 ```
