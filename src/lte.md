@@ -644,6 +644,8 @@ RDY
 
 "__`RDY`__" means that the LTE Modem is ready for AT Commands!
 
+[(EG25-G AT Commands, Page 297)](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
 Our NuttX App sends command "__`AT`__" again...
 
 ```text
@@ -659,9 +661,13 @@ LTE Modem replies...
 
   This says that the LTE Modem is fully operational
 
+  [(EG25-G AT Commands, Page 33)](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
 - "__`+CPIN: NOT INSERTED`__"
 
   This says that we haven't inserted a SIM Card into the LTE Modem
+
+  [(EG25-G AT Commands, Page 60)](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
 Our NuttX App sends command "__`AT`__" once more...
 
