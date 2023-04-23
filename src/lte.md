@@ -775,9 +775,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [__"Modem PWR_KEY signal resistor population"__](https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_PWR_KEY_signal_resistor_population)
 
-1.  __LTE Modem Pinout__ is different for earlier editions of PinePhone! (Like Braveheart 1.1)
+1.  __LTE Modem Pinout__ is different for pre-production editions of PinePhone! (Like Braveheart 1.1)
 
-    [__PinePhone Hardware Revisions__](https://wiki.pine64.org/wiki/PinePhone#Hardware_revisions)
+    I'm using PinePhone Hardware Revision 1.2 (Ubports Edition)...
+
+    [__"PinePhone Hardware Revisions"__](https://wiki.pine64.org/wiki/PinePhone#Hardware_revisions)
 
 1.  Why are we experimenting with __BOTH UART and USB__ for the LTE Modem?
 
