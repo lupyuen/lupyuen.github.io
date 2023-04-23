@@ -351,6 +351,8 @@ Yeah the Power Key is probably inspired by the press-and-hold Power Button on vi
 
 Let's implement the steps with Apache NuttX RTOS...
 
+[(Kudos to __Genode OS__ for the Power On Sequence)](https://github.com/genodelabs/genode-allwinner/blob/master/src/drivers/modem/pinephone/power.h#L52-L130)
+
 # Power Up wth NuttX
 
 _We've seen the Power On Sequence for LTE Modem..._
