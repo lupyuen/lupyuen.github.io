@@ -359,7 +359,7 @@ _We've seen the Power On Sequence for LTE Modem..._
 
 _How will we implement it in Apache NuttX RTOS?_
 
-This is how we implement the LTE Modem's __Power On Sequence__ in NuttX: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ad9522e29f4fe4e0e4828ed4f419e841c4154007/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L226-L342)
+This is how we implement the LTE Modem's __Power On Sequence__ in NuttX: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/bb1ef61d6dbb5309a1e92583caaf81513308320a/boards/arm64/a64/pinephone/src/pinephone_bringup.c)
 
 ```c
 // Read PH9 to check LTE Modem Status
@@ -463,7 +463,29 @@ a64_pio_write(W_DISABLE, true);
 // Omitted: Print the status
 ```
 
-And we print the status. Let's run this!
+To wrap up, we wait for __LTE Modem Status to become Low__...
+
+```c
+// Poll for Modem Status until it becomes Low
+for (int i = 0; i < 30; i++)  // Max 1 minute
+  {
+    // Read the Modem Status
+    uint32_t status = a64_pio_read(STATUS);
+    // Omitted: Print the status
+
+    // Stop if Modem Status is Low
+    if (status == 0) { break; }
+
+    // Wait 2 seconds
+    up_mdelay(2000);
+  }
+```
+
+Let's run this!
+
+![NuttX starts LTE Modem](https://lupyuen.github.io/images/lte-run2.png)
+
+[_NuttX starts LTE Modem_](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L72-L270)
 
 # Is LTE Modem Up?
 
@@ -482,7 +504,7 @@ Set PWR_BAT (PL7) to High
 Status=1
 ```
 
-[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/b2ff93bdf3f8603ad6181f3d4c371e8faa4a41b8/examples/hello/hello_main.c#L113-L230)
+[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L72-L270)
 
 Then it __switches on the power__ (PL7) and __deasserts the reset__ (PC4)...
 
@@ -516,27 +538,24 @@ Status=1
 
 TODO
 
-The LTE Modem should have powered up. But the __LTE Modem Status (PH9)__ stays at High.
+```text
+pinephone_modem_init: Status=1
+pinephone_modem_init: Status=1
+pinephone_modem_init: Status=1
+pinephone_modem_init: Status=0
+```
 
-[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/b2ff93bdf3f8603ad6181f3d4c371e8faa4a41b8/examples/hello/hello_main.c#L113-L230)
+TODO: __LTE Modem Status (PH9)__ 
 
-_This doesn't look right..._
+[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L72-L270)
 
-Yeah we expect the LTE Modem Status to go __Low after 2.5 seconds__...
+TODO: Yeah we expect the LTE Modem Status to go __Low after 2.5 seconds__...
 
 ![LTE Modem Power](https://lupyuen.github.io/images/lte-power2.png)
 
 [(EG25-G Hardware Design, Page 41)](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
-_Why did the LTE Modem Status get stuck at High?_
-
-Not sure, but this might help...
-
--   [__"Modem PWR_KEY signal resistor population"__](https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_PWR_KEY_signal_resistor_population)
-
-_Is there another way to verify whether the LTE Modem is up?_
-
-Let's check the UART Port...
+TODO: Let's check the UART Port...
 
 ![PinePhone Schematic (Page 15)](https://lupyuen.github.io/images/lte-vddext.png)
 
@@ -583,6 +602,10 @@ Like this...
 -   [__"Configure UART Port"__](https://github.com/lupyuen/pinephone-nuttx#configure-uart-port)
 
 -   [__"Test UART3 Port"__](https://github.com/lupyuen/pinephone-nuttx#test-uart3-port)
+
+TODO
+
+![Testing LTE Modem over UART](https://lupyuen.github.io/images/lte-run3.png)
 
 There's another way to test the LTE Modem: Via USB...
 
