@@ -618,7 +618,7 @@ for (int i = 0; i < 5; i++) {
 close(fd);
 ```
 
-The code above sends the command "__`AT`__" to the LTE Modem over UART3. (5 times)
+The NuttX App above sends the command "__`AT`__" to the LTE Modem over UART3. (5 times)
 
 Watch what happens when we run it...
 
@@ -718,9 +718,9 @@ But somehow the LTE Modem __isn't triggering any USB Interrupts__ (13 seconds af
 
 Which __fails the enumeration__ of USB Devices (like the LTE Modem). And we can't connect to the USB Interface of the LTE Modem.
 
-TODO
+But then we discovered that the GPIO Pins for Power Key and Reset are [__High-Low Inverted__](https://lupyuen.github.io/articles/lte#power-on--off). So we need to retest.
 
-Stay tuned for updates on UART and USB Testing!
+Stay tuned for updates on the USB Testing!
 
 [(This crash needs to be fixed when __USB Hub Support__ is enabled)](https://github.com/lupyuen/pinephone-nuttx-usb#ls-crashes-when-usb-hub-support-is-enabled)
 
