@@ -463,7 +463,7 @@ a64_pio_write(W_DISABLE, true);
 // Omitted: Print the status
 ```
 
-To wrap up, we wait for __LTE Modem Status to become Low__...
+To wrap up, we wait for __LTE Modem Status to turn Low__...
 
 ```c
 // Poll for Modem Status until it becomes Low
@@ -493,25 +493,22 @@ _We've implemented the Power On Sequence for LTE Modem..._
 
 _Does it work on Apache NuttX RTOS?_
 
-TODO: Yes it works! Update the log
+Yes it works! NuttX reads the Modem Status and __switches on the power__ (PL7)...
 
 ```text
 Configure STATUS (PH9) for Input
 Status=0
 
-Configure PWR_BAT (PL7) for Output
 Set PWR_BAT (PL7) to High
 Status=1
 ```
 
 [(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L72-L270)
 
-Then it __switches on the power__ (PL7) and __deasserts the reset__ (PC4)...
+Then it __deasserts the reset__ (PC4) and __wakes up the modem__ (PH7 and PB2)...
 
 ```text
-Set PWR_BAT (PL7) to High
 Set RESET_N (PC4) to Low
-
 Set AP-READY (PH7) to Low to wake up modem
 Set DTR (PB2) to Low to wake up modem
 
@@ -519,7 +516,7 @@ Wait 30 ms
 Status=1
 ```
 
-Toggle the __Power Key (PB3)__: High → 600 milliseconds → Low...
+NuttX toggles the __Power Key (PB3)__: High → 600 milliseconds → Low...
 
 ```text
 Set PWRKEY (PB3) to High
@@ -529,14 +526,14 @@ Set PWRKEY (PB3) to Low
 Status=1
 ```
 
-And __disable Airplane Mode__ (PH8)...
+And it __disable Airplane Mode__ (PH8)...
 
 ```text
 Set W_DISABLE (PH8) to High
 Status=1
 ```
 
-TODO
+Finally it waits for the __LTE Modem Status (PH9)__ to turn Low...
 
 ```text
 pinephone_modem_init: Status=1
@@ -545,17 +542,21 @@ pinephone_modem_init: Status=1
 pinephone_modem_init: Status=0
 ```
 
-TODO: __LTE Modem Status (PH9)__ 
+And the LTE Modem is up! (Roughly 6 seconds)
 
 [(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L72-L270)
 
-TODO: Yeah we expect the LTE Modem Status to go __Low after 2.5 seconds__...
+This matches the __Power Up Sequence__ that we saw earlier...
 
 ![LTE Modem Power](https://lupyuen.github.io/images/lte-power2.png)
 
 [(EG25-G Hardware Design, Page 41)](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
-TODO: Let's check the UART Port...
+_Will the LTE Modem accept AT Commands now?_
+
+Not yet. The LTE Modem might take __30 seconds__ to be fully operational!
+
+Let's watch what happens at the UART Port...
 
 ![PinePhone Schematic (Page 15)](https://lupyuen.github.io/images/lte-vddext.png)
 
