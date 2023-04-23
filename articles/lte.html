@@ -587,6 +587,7 @@ Write command: AT\r
 RDY
 </code></pre></div>
 <p>“<strong><code>RDY</code></strong>” means that the LTE Modem is ready for AT Commands!</p>
+<p><a href="https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 297)</a></p>
 <p>Our NuttX App sends command “<strong><code>AT</code></strong>” again…</p>
 <div class="example-wrap"><pre class="language-text"><code>Write command: AT\r
 Response:
@@ -598,10 +599,12 @@ Response:
 <li>
 <p>“<strong><code>+CFUN: 1</code></strong>”</p>
 <p>This says that the LTE Modem is fully operational</p>
+<p><a href="https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 33)</a></p>
 </li>
 <li>
 <p>“<strong><code>+CPIN: NOT INSERTED</code></strong>”</p>
 <p>This says that we haven’t inserted a SIM Card into the LTE Modem</p>
+<p><a href="https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 60)</a></p>
 </li>
 </ul>
 <p>Our NuttX App sends command “<strong><code>AT</code></strong>” once more…</p>
