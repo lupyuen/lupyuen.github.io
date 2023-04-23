@@ -661,13 +661,7 @@ OK
 
 _UART3 works with NuttX?_
 
-TODO
-
-We need to fix the PinePhone UART Driver [__configure the UART Port__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L160-L180).
-
-We'll copy from the NuttX UART Driver for Allwinner A1X: [__a1x_serial.c__](https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_serial.c#L695-L987)
-
-Like this...
+We modified the __Allwinner A64 UART Driver__ to support UART3. The changes will be upstreamed to NuttX Mainline later...
 
 -   [__"Configure UART Port"__](https://github.com/lupyuen/pinephone-nuttx#configure-uart-port)
 
