@@ -556,7 +556,7 @@ _Will the LTE Modem accept AT Commands now?_
 
 Not yet. The LTE Modem might take __30 seconds__ to be fully operational!
 
-Let's watch what happens at the UART Port...
+Let's observe the UART Port...
 
 ![PinePhone Schematic (Page 15)](https://lupyuen.github.io/images/lte-vddext.png)
 
@@ -566,33 +566,102 @@ Let's watch what happens at the UART Port...
 
 # Test UART with NuttX
 
-_We can't check the LTE Modem Status on NuttX..._
+_LTE Modem has started successfully on NuttX..._
 
-_How else can we verify if the modem is up?_
+_How will we send AT Commands to the modem?_
 
-The LTE Modem to connected to PinePhone (Allwinner A64) at these UART Ports (pic above)...
+The LTE Modem is connected to PinePhone (Allwinner A64) at these UART Ports (pic above)...
 
 -   __A64 Port UART3__: RX and TX
 
     (GPIO PD1 and PD0)
 
+    (Default 115.2 kbps, up to 921.6 kbps)
+
 -   __A64 Port UART4__: CTS and RTS
 
     (GPIO PD5 and PD4)
 
+    [(CTS and RTS might not work)](https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_UART_flow_control_is_broken)
+
 -   __A64 Port PB2__: DTR
 
-    (Default 115.2 kbps, up to 921.6 kbps)
+    [(More about the UART Pins)](https://lupyuen.github.io/articles/lte#main-uart-interface)
 
-    [(See this)](https://lupyuen.github.io/articles/lte#main-uart-interface)
+Thus we may __check UART3__ to see if the LTE Modem responds to [__AT Commands__](https://lupyuen.github.io/articles/lte#quectel-eg25-g-lte-modem): [hello_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L38-L70)
 
-Thus we may __check UART3__ to see if the LTE Modem responds to [__AT Commands__](https://lupyuen.github.io/articles/lte#quectel-eg25-g-lte-modem).
+```c
+// Open /dev/ttyS1 (UART3)
+int fd = open("/dev/ttyS1", O_RDWR);
+printf("Open /dev/ttyS1: fd=%d\n", fd);
+assert(fd > 0);
 
-[(After 12 seconds from power up)](https://lupyuen.github.io/articles/lte#power-on-lte-modem)
+// Repeat 5 times: Write command and read response
+for (int i = 0; i < 5; i++)
+  {
+    // Write command
+    const char cmd[] = "AT\r";
+    ssize_t nbytes = write(fd, cmd, sizeof(cmd));
+    printf("Write command: nbytes=%ld\n", nbytes);
+    assert(nbytes == sizeof(cmd));
 
-[(Modem UART flow control is broken)](https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_UART_flow_control_is_broken)
+    // Read response
+    static char buf[1024];
+    nbytes = read(fd, buf, sizeof(buf) - 1);
+    if (nbytes >= 0) { buf[nbytes] = 0; }
+    printf("Response: nbytes=%ld\n%s\n", nbytes, buf);
+
+    // Wait a while
+    sleep(2);
+  }
+
+// Close the device
+close(fd);
+```
+
+The code above sends the command "__`AT`__" to the LTE Modem over UART3. (5 times)
+
+Watch what happens when we run it...
+
+![Testing LTE Modem over UART](https://lupyuen.github.io/images/lte-run3.png)
+
+TODO
+
+```text
+Open /dev/ttyS1: fd=3
+Write command: nbytes=4
+```
+
+TODO
+
+```text
+Response: nbytes=7
+RDY
+```
+
+TODO
+
+```text
+Write command: nbytes=4
+Response: nbytes=35
++CFUN: 1
++CPIN: NOT INSERTED
+```
+
+TODO
+
+```text
+Write command: nbytes=4
+Response: nbytes=9
+AT
+OK
+```
+
+[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L72-L270)
 
 _UART3 works with NuttX?_
+
+TODO
 
 We need to fix the PinePhone UART Driver [__configure the UART Port__](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L160-L180).
 
@@ -603,10 +672,6 @@ Like this...
 -   [__"Configure UART Port"__](https://github.com/lupyuen/pinephone-nuttx#configure-uart-port)
 
 -   [__"Test UART3 Port"__](https://github.com/lupyuen/pinephone-nuttx#test-uart3-port)
-
-TODO
-
-![Testing LTE Modem over UART](https://lupyuen.github.io/images/lte-run3.png)
 
 There's another way to test the LTE Modem: Via USB...
 
