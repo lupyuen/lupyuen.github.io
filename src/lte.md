@@ -622,7 +622,7 @@ The NuttX App above sends the command "__`AT`__" to the LTE Modem over UART3. (5
 
 Watch what happens when we run it...
 
-![Testing LTE Modem over UART](https://lupyuen.github.io/images/lte-run3.png)
+![Testing LTE Modem over UART](https://lupyuen.github.io/images/lte-run3a.png)
 
 [(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L72-L270)
 
