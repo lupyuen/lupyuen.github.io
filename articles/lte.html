@@ -578,22 +578,22 @@ close(fd);
 <p>Watch what happens when we run it…</p>
 <p><img src="https://lupyuen.github.io/images/lte-run3.png" alt="Testing LTE Modem over UART" /></p>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>Open /dev/ttyS1: fd=3
-Write command: nbytes=4
+<div class="example-wrap"><pre class="language-text"><code>Open /dev/ttyS1
+Write command: AT\r
 </code></pre></div>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>Response: nbytes=7
+<div class="example-wrap"><pre class="language-text"><code>Response:
 RDY
 </code></pre></div>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>Write command: nbytes=4
-Response: nbytes=35
+<div class="example-wrap"><pre class="language-text"><code>Write command: AT\r
+Response:
 +CFUN: 1
 +CPIN: NOT INSERTED
 </code></pre></div>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>Write command: nbytes=4
-Response: nbytes=9
+<div class="example-wrap"><pre class="language-text"><code>Write command: AT\r
+Response:
 AT
 OK
 </code></pre></div>
@@ -708,8 +708,9 @@ OK
 <p><a href="https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_PWR_KEY_signal_resistor_population"><strong>“Modem PWR_KEY signal resistor population”</strong></a></p>
 </li>
 <li>
-<p><strong>LTE Modem Pinout</strong> is different for earlier editions of PinePhone! (Like Braveheart 1.1)</p>
-<p><a href="https://wiki.pine64.org/wiki/PinePhone#Hardware_revisions"><strong>PinePhone Hardware Revisions</strong></a></p>
+<p><strong>LTE Modem Pinout</strong> is different for pre-production editions of PinePhone! (Like Braveheart 1.1)</p>
+<p>I’m using PinePhone Hardware Revision 1.2 (Ubports Edition)…</p>
+<p><a href="https://wiki.pine64.org/wiki/PinePhone#Hardware_revisions"><strong>“PinePhone Hardware Revisions”</strong></a></p>
 </li>
 <li>
 <p>Why are we experimenting with <strong>BOTH UART and USB</strong> for the LTE Modem?</p>
