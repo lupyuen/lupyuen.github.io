@@ -573,7 +573,7 @@ for (int i = 0; i &lt; 5; i++) {
 // Close the device
 close(fd);
 </code></pre></div>
-<p>The code above sends the command “<strong><code>AT</code></strong>” to the LTE Modem over UART3. (5 times)</p>
+<p>The NuttX App above sends the command “<strong><code>AT</code></strong>” to the LTE Modem over UART3. (5 times)</p>
 <p>Watch what happens when we run it…</p>
 <p><img src="https://lupyuen.github.io/images/lte-run3.png" alt="Testing LTE Modem over UART" /></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L72-L270">(See the Complete Log)</a></p>
@@ -649,8 +649,8 @@ OK
 </ul>
 <p>But somehow the LTE Modem <strong>isn’t triggering any USB Interrupts</strong> (13 seconds after startup)…</p>
 <p>Which <strong>fails the enumeration</strong> of USB Devices (like the LTE Modem). And we can’t connect to the USB Interface of the LTE Modem.</p>
-<p>TODO</p>
-<p>Stay tuned for updates on UART and USB Testing!</p>
+<p>But then we discovered that the GPIO Pins for Power Key and Reset are <a href="https://lupyuen.github.io/articles/lte#power-on--off"><strong>High-Low Inverted</strong></a>. So we need to retest.</p>
+<p>Stay tuned for updates on the USB Testing!</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx-usb#ls-crashes-when-usb-hub-support-is-enabled">(This crash needs to be fixed when <strong>USB Hub Support</strong> is enabled)</a></p>
 <p><img src="https://lupyuen.github.io/images/wayland-sd.jpg" alt="Quectel EG25-G LTE Modem inside PinePhone" /></p>
 <p><a href="https://wiki.pine64.org/index.php/PinePhone#Modem"><em>Quectel EG25-G LTE Modem inside PinePhone</em></a></p>
