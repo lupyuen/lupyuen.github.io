@@ -526,7 +526,7 @@ Set PWRKEY (PB3) to Low
 Status=1
 ```
 
-And it __disable Airplane Mode__ (PH8)...
+And it __disables Airplane Mode__ (PH8)...
 
 ```text
 Set W_DISABLE (PH8) to High
