@@ -463,18 +463,18 @@ a64_pio_write(W_DISABLE, true);
 </code></pre></div>
 <p>To wrap up, we wait for <strong>LTE Modem Status to turn Low</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Poll for Modem Status until it becomes Low
-for (int i = 0; i &lt; 30; i++)  // Max 1 minute
-  {
-    // Read the Modem Status
-    uint32_t status = a64_pio_read(STATUS);
-    // Omitted: Print the status
+for (int i = 0; i &lt; 30; i++) {  // Max 1 minute
 
-    // Stop if Modem Status is Low
-    if (status == 0) { break; }
+  // Read the Modem Status
+  uint32_t status = a64_pio_read(STATUS);
+  // Omitted: Print the status
 
-    // Wait 2 seconds
-    up_mdelay(2000);
-  }
+  // Stop if Modem Status is Low
+  if (status == 0) { break; }
+
+  // Wait 2 seconds
+  up_mdelay(2000);
+}
 </code></pre></div>
 <p>Let’s run this!</p>
 <p><img src="https://lupyuen.github.io/images/lte-run2.png" alt="NuttX starts LTE Modem" /></p>
@@ -553,23 +553,22 @@ printf(&quot;Open /dev/ttyS1: fd=%d\n&quot;, fd);
 assert(fd &gt; 0);
 
 // Repeat 5 times: Write command and read response
-for (int i = 0; i &lt; 5; i++)
-  {
-    // Write command
-    const char cmd[] = &quot;AT\r&quot;;
-    ssize_t nbytes = write(fd, cmd, sizeof(cmd));
-    printf(&quot;Write command: nbytes=%ld\n&quot;, nbytes);
-    assert(nbytes == sizeof(cmd));
+for (int i = 0; i &lt; 5; i++) {
+  // Write command
+  const char cmd[] = &quot;AT\r&quot;;
+  ssize_t nbytes = write(fd, cmd, sizeof(cmd));
+  printf(&quot;Write command: nbytes=%ld\n&quot;, nbytes);
+  assert(nbytes == sizeof(cmd));
 
-    // Read response
-    static char buf[1024];
-    nbytes = read(fd, buf, sizeof(buf) - 1);
-    if (nbytes &gt;= 0) { buf[nbytes] = 0; }
-    printf(&quot;Response: nbytes=%ld\n%s\n&quot;, nbytes, buf);
+  // Read response
+  static char buf[1024];
+  nbytes = read(fd, buf, sizeof(buf) - 1);
+  if (nbytes &gt;= 0) { buf[nbytes] = 0; }
+  printf(&quot;Response: nbytes=%ld\n%s\n&quot;, nbytes, buf);
 
-    // Wait a while
-    sleep(2);
-  }
+  // Wait a while
+  sleep(2);
+}
 
 // Close the device
 close(fd);
@@ -577,26 +576,43 @@ close(fd);
 <p>The code above sends the command “<strong><code>AT</code></strong>” to the LTE Modem over UART3. (5 times)</p>
 <p>Watch what happens when we run it…</p>
 <p><img src="https://lupyuen.github.io/images/lte-run3.png" alt="Testing LTE Modem over UART" /></p>
-<p>TODO</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L72-L270">(See the Complete Log)</a></p>
+<p>Our NuttX App sends command “<strong><code>AT</code></strong>” to the LTE Modem over UART3…</p>
 <div class="example-wrap"><pre class="language-text"><code>Open /dev/ttyS1
 Write command: AT\r
 </code></pre></div>
-<p>TODO</p>
+<p>But it hangs there. No response!</p>
+<p>Remember that the LTE Modem might take <strong>30 seconds</strong> to become operational. Be patient, the response appears in a while…</p>
 <div class="example-wrap"><pre class="language-text"><code>Response:
 RDY
 </code></pre></div>
-<p>TODO</p>
+<p>“<strong><code>RDY</code></strong>” means that the LTE Modem is ready for AT Commands!</p>
+<p>Our NuttX App sends command “<strong><code>AT</code></strong>” again…</p>
 <div class="example-wrap"><pre class="language-text"><code>Write command: AT\r
 Response:
 +CFUN: 1
 +CPIN: NOT INSERTED
 </code></pre></div>
-<p>TODO</p>
+<p>LTE Modem replies…</p>
+<ul>
+<li>
+<p>“<strong><code>+CFUN: 1</code></strong>”</p>
+<p>This says that the LTE Modem is fully operational</p>
+</li>
+<li>
+<p>“<strong><code>+CPIN: NOT INSERTED</code></strong>”</p>
+<p>This says that we haven’t inserted a SIM Card into the LTE Modem</p>
+</li>
+</ul>
+<p>Our NuttX App sends command “<strong><code>AT</code></strong>” once more…</p>
 <div class="example-wrap"><pre class="language-text"><code>Write command: AT\r
 Response:
 AT
 OK
 </code></pre></div>
+<p>LTE Modem echoes our command “<strong><code>AT</code></strong>”…</p>
+<p>And responds to our command with  “<strong><code>OK</code></strong>”.</p>
+<p>Which means that our LTE Modem is running AT Commands all OK!</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L72-L270">(See the Complete Log)</a></p>
 <p><em>UART3 works with NuttX?</em></p>
 <p>We modified the <strong>Allwinner A64 UART Driver</strong> to support UART3. The changes will be upstreamed to NuttX Mainline later…</p>
@@ -633,7 +649,7 @@ OK
 </ul>
 <p>But somehow the LTE Modem <strong>isn’t triggering any USB Interrupts</strong> (13 seconds after startup)…</p>
 <p>Which <strong>fails the enumeration</strong> of USB Devices (like the LTE Modem). And we can’t connect to the USB Interface of the LTE Modem.</p>
-<p>(Maybe something else in the USB Controller needs to be configured or powered up?)</p>
+<p>TODO</p>
 <p>Stay tuned for updates on UART and USB Testing!</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx-usb#ls-crashes-when-usb-hub-support-is-enabled">(This crash needs to be fixed when <strong>USB Hub Support</strong> is enabled)</a></p>
 <p><img src="https://lupyuen.github.io/images/wayland-sd.jpg" alt="Quectel EG25-G LTE Modem inside PinePhone" /></p>
