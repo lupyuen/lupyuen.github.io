@@ -552,6 +552,8 @@ This matches the __Power Up Sequence__ that we saw earlier...
 
 [(EG25-G Hardware Design, Page 41)](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
+[(Power Key and Reset are __High-Low Inverted__)](https://lupyuen.github.io/articles/lte#power-on--off)
+
 _Will the LTE Modem accept AT Commands now?_
 
 Not yet. The LTE Modem might take __30 seconds__ to be fully operational!
