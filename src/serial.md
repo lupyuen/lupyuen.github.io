@@ -893,3 +893,39 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/serial.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/serial.md)
+
+# Appendix: UART Ports on PinePhone
+
+_Which Allwinner A64 UART Ports are used in PinePhone?_
+
+According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf), the following __UART Ports__ in Allwinner A64 are connected...
+
+-   __UART0:__ Serial Console
+
+    (Assigned as __/dev/ttyS0__)
+
+-   __UART1:__ Bluetooth Module (Realtek RTL8723CS)
+
+    Pins __PG6__ _(TX)_, __PG7__ _(RX)_, __PG8__ _(RTS)_ and __PG9__ _(CTS)_
+
+    (TODO: Assign as __/dev/ttyS1__)
+
+-   __UART2:__ Unused
+
+    Pins __PB0__ _(TX)_ and __PB1__ _(RX)_
+
+    (Wired to Light Sensor and Compass Sensor)
+
+-   __UART3:__ 4G LTE Modem (Quectel EG25-G)
+
+    Pins __PD0__ _(TX)_ and __PD1__ _(RX)_
+
+    (TODO: Assign as __/dev/ttyS2__)
+
+There's an Alternate UART0 port...
+
+-   __Alternate UART0:__ Debug UART for 4G LTE Modem (Quectel EG25-G)
+
+    Pins __PB8__ _(TX)_ and __PB9__ _(RX)_
+
+But using the Alternate UART0 might be tricky because it conflicts with the UART0 Serial Console.
