@@ -902,6 +902,8 @@ According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhon
 
 -   __UART0:__ Serial Console
 
+    Pins __PB8__ _(TX)_ and __PB9__ _(RX)_
+
     (Assigned as __/dev/ttyS0__)
 
 -   __UART1:__ Bluetooth Module (Realtek RTL8723CS)
@@ -912,9 +914,9 @@ According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhon
 
 -   __UART2:__ Unused
 
-    Pins __PB0__ _(TX)_ and __PB1__ _(RX)_
+    Pins __PB0__ and __PB1__
 
-    (Wired to Light Sensor and Compass Sensor)
+    (Wired to Light Sensor STK3311 and Compass Sensor AK09911)
 
 -   __UART3:__ 4G LTE Modem (Quectel EG25-G)
 
@@ -922,10 +924,12 @@ According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhon
 
     (TODO: Assign as __/dev/ttyS2__)
 
-There's an Alternate UART0 port...
+    [(More about this)](https://lupyuen.github.io/articles/lte#test-uart-with-nuttx)
 
--   __Alternate UART0:__ Debug UART for 4G LTE Modem (Quectel EG25-G)
+-   __UART4:__ 4G LTE Modem (Quectel EG25-G)
 
-    Pins __PB8__ _(TX)_ and __PB9__ _(RX)_
+    Pins __PD4__ and __PD5__
 
-But using the Alternate UART0 might be tricky because it conflicts with the UART0 Serial Console.
+    (Wired to RTS and CTS, not really a UART)
+
+    [(More about this)](https://lupyuen.github.io/articles/lte#test-uart-with-nuttx)

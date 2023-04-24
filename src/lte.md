@@ -359,7 +359,7 @@ _We've seen the Power On Sequence for LTE Modem..._
 
 _How will we implement it in Apache NuttX RTOS?_
 
-This is how we implement the LTE Modem's __Power On Sequence__ in NuttX: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/bb1ef61d6dbb5309a1e92583caaf81513308320a/boards/arm64/a64/pinephone/src/pinephone_bringup.c)
+This is how we implement the LTE Modem's __Power On Sequence__ in NuttX: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/bb1ef61d6dbb5309a1e92583caaf81513308320a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L226-L356)
 
 ```c
 // Read PH9 to check LTE Modem Status
