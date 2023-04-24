@@ -694,7 +694,8 @@ nsh: sysinit: fopen failed: 2
 nshn:x _msktfaarttf:s :C PcUo0m:m aBnedg innonti nfgo uInddle  L oNouptt
  Shell (NSH) NuttX-10.3.0-RC2
 ```
-(Yeah the output is slightly garbled, the UART Driver needs fixing)
+
+[(Yeah the output is slightly garbled, here's the workaround)](https://github.com/lupyuen/pinephone-nuttx#garbled-console-output)
 
 __NuttX Shell__ works perfectly OK on PinePhone...
 
