@@ -247,6 +247,8 @@ static int a64_uart_receive(struct uart_dev_s *dev, unsigned int *status)
 
 (We may drop the __`dev`__ and __`status`__ parameters if we're not on NuttX)
 
+[(__`a64_uart_receive`__ will be updated)](https://github.com/lupyuen/pinephone-nuttx#configure-uart-port)
+
 But don't read the UART Input yet! We need to wait for the UART Input to be available...
 
 ## Wait To Receive
@@ -555,6 +557,8 @@ static int a64_uart_irq_handler(int irq, void *context, void *arg)
 }
 ```
 
+[(__`a64_uart_irq_handler`__ will be updated)](https://github.com/lupyuen/pinephone-nuttx#configure-uart-port)
+
 Let's talk about __`uart_recvchars`__ and __`uart_xmitchars`__...
 
 ## UART Transmit
@@ -618,9 +622,11 @@ PinePhone's __U-Boot Bootloader__ has kindly set the Baud Rate for us (115.2 kbp
 
 -   [__"PinePhone boots Apache NuttX RTOS"__](https://lupyuen.github.io/articles/uboot)
 
-Later when need to set the __UART Baud Rate__, the steps are explained here...
+Later when need to set the __UART Baud Rate__ for other UART Ports, the steps are explained here...
 
 -   [__"Configure UART Port"__](https://github.com/lupyuen/pinephone-nuttx#configure-uart-port)
+
+-   [__"Test UART3 Port"__](https://github.com/lupyuen/pinephone-nuttx#test-uart3-port)
 
 _What about UART Shutdown?_
 
@@ -765,7 +771,7 @@ void arm64_serialinit(void)
 
 And we're done with our PinePhone UART Driver for NuttX!
 
-__UPDATE:__ We could reuse the NuttX UART Driver for Allwinner A10 SoC. [(See this)](https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_serial.c)
+[(__`arm64_serialinit`__ will be updated)](https://github.com/lupyuen/pinephone-nuttx#configure-uart-port)
 
 # UART In Action
 
@@ -849,6 +855,16 @@ nsh> ls /dev
 ```
 
 [__Watch the Demo on YouTube__](https://youtube.com/shorts/WmRzfCiWV6o?feature=share)
+
+_What about other UART Ports? (Besides UART0)_
+
+We're adding support for __other UART Ports__, like UART3 for PinePhone's 4G LTE Modem...
+
+-   [__"Configure UART Port"__](https://github.com/lupyuen/pinephone-nuttx#configure-uart-port)
+
+-   [__"Test UART3 Port"__](https://github.com/lupyuen/pinephone-nuttx#test-uart3-port)
+
+This will be upstreamed to NuttX Mainline soon.
 
 # What's Next
 
