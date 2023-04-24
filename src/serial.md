@@ -860,6 +860,8 @@ _What about other UART Ports? (Besides UART0)_
 
 We're adding support for __other UART Ports__, like UART3 for PinePhone's 4G LTE Modem...
 
+-   [__"UART Ports on PinePhone"__](https://lupyuen.github.io/articles/serial#appendix-uart-ports-on-pinephone)
+
 -   [__"Configure UART Port"__](https://github.com/lupyuen/pinephone-nuttx#configure-uart-port)
 
 -   [__"Test UART3 Port"__](https://github.com/lupyuen/pinephone-nuttx#test-uart3-port)
