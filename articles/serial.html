@@ -826,6 +826,7 @@ nsh&gt; ls /dev
 <ul>
 <li>
 <p><strong>UART0:</strong> Serial Console</p>
+<p>Pins <strong>PB8</strong> <em>(TX)</em> and <strong>PB9</strong> <em>(RX)</em></p>
 <p>(Assigned as <strong>/dev/ttyS0</strong>)</p>
 </li>
 <li>
@@ -835,23 +836,22 @@ nsh&gt; ls /dev
 </li>
 <li>
 <p><strong>UART2:</strong> Unused</p>
-<p>Pins <strong>PB0</strong> <em>(TX)</em> and <strong>PB1</strong> <em>(RX)</em></p>
-<p>(Wired to Light Sensor and Compass Sensor)</p>
+<p>Pins <strong>PB0</strong> and <strong>PB1</strong></p>
+<p>(Wired to Light Sensor STK3311 and Compass Sensor AK09911)</p>
 </li>
 <li>
 <p><strong>UART3:</strong> 4G LTE Modem (Quectel EG25-G)</p>
 <p>Pins <strong>PD0</strong> <em>(TX)</em> and <strong>PD1</strong> <em>(RX)</em></p>
 <p>(TODO: Assign as <strong>/dev/ttyS2</strong>)</p>
+<p><a href="https://lupyuen.github.io/articles/lte#test-uart-with-nuttx">(More about this)</a></p>
 </li>
-</ul>
-<p>There’s an Alternate UART0 port…</p>
-<ul>
 <li>
-<p><strong>Alternate UART0:</strong> Debug UART for 4G LTE Modem (Quectel EG25-G)</p>
-<p>Pins <strong>PB8</strong> <em>(TX)</em> and <strong>PB9</strong> <em>(RX)</em></p>
+<p><strong>UART4:</strong> 4G LTE Modem (Quectel EG25-G)</p>
+<p>Pins <strong>PD4</strong> and <strong>PD5</strong></p>
+<p>(Wired to RTS and CTS, not really a UART)</p>
+<p><a href="https://lupyuen.github.io/articles/lte#test-uart-with-nuttx">(More about this)</a></p>
 </li>
 </ul>
-<p>But using the Alternate UART0 might be tricky because it conflicts with the UART0 Serial Console.</p>
 
     
 </body>
