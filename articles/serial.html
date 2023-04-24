@@ -270,6 +270,7 @@ static int a64_uart_receive(struct uart_dev_s *dev, unsigned int *status)
 }
 </code></pre></div>
 <p>(We may drop the <strong><code>dev</code></strong> and <strong><code>status</code></strong> parameters if we’re not on NuttX)</p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#configure-uart-port">(<strong><code>a64_uart_receive</code></strong> will be updated)</a></p>
 <p>But don’t read the UART Input yet! We need to wait for the UART Input to be available…</p>
 <h2 id="wait-to-receive"><a href="#wait-to-receive">2.4 Wait To Receive</a></h2>
 <p>Let’s check if there’s <strong>UART Input</strong> ready to be read from the UART Port.</p>
@@ -520,6 +521,7 @@ static int a64_uart_irq_handler(int irq, void *context, void *arg)
   return OK;
 }
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#configure-uart-port">(<strong><code>a64_uart_irq_handler</code></strong> will be updated)</a></p>
 <p>Let’s talk about <strong><code>uart_recvchars</code></strong> and <strong><code>uart_xmitchars</code></strong>…</p>
 <h2 id="uart-transmit"><a href="#uart-transmit">3.4 UART Transmit</a></h2>
 <p><em>What’s <code>uart_xmitchars</code>?</em></p>
@@ -559,9 +561,14 @@ static int a64_uart_setup(struct uart_dev_s *dev)
 <ul>
 <li><a href="https://lupyuen.github.io/articles/uboot"><strong>“PinePhone boots Apache NuttX RTOS”</strong></a></li>
 </ul>
-<p>Later when need to set the <strong>UART Baud Rate</strong>, the steps are explained here…</p>
+<p>Later when need to set the <strong>UART Baud Rate</strong> for other UART Ports, the steps are explained here…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx#configure-uart-port"><strong>“Configure UART Port”</strong></a></li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#configure-uart-port"><strong>“Configure UART Port”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#test-uart3-port"><strong>“Test UART3 Port”</strong></a></p>
+</li>
 </ul>
 <p><em>What about UART Shutdown?</em></p>
 <p>The UART Port is <strong>always active</strong>, thus we don’t have to shut it down: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L181-L204">a64_serial.c</a></p>
@@ -697,7 +704,7 @@ void arm64_serialinit(void)
 }
 </code></pre></div>
 <p>And we’re done with our PinePhone UART Driver for NuttX!</p>
-<p><strong>UPDATE:</strong> We could reuse the NuttX UART Driver for Allwinner A10 SoC. <a href="https://github.com/apache/nuttx/blob/master/arch/arm/src/a1x/a1x_serial.c">(See this)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#configure-uart-port">(<strong><code>arm64_serialinit</code></strong> will be updated)</a></p>
 <h1 id="uart-in-action"><a href="#uart-in-action">6 UART In Action</a></h1>
 <p>Let’s watch our UART Driver in action! </p>
 <p>Follow these steps to <strong>build NuttX</strong> and copy to Jumpdrive microSD…</p>
@@ -771,6 +778,17 @@ nsh&gt; ls /dev
  zero
 </code></pre></div>
 <p><a href="https://youtube.com/shorts/WmRzfCiWV6o?feature=share"><strong>Watch the Demo on YouTube</strong></a></p>
+<p><em>What about other UART Ports? (Besides UART0)</em></p>
+<p>We’re adding support for <strong>other UART Ports</strong>, like UART3 for PinePhone’s 4G LTE Modem…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#configure-uart-port"><strong>“Configure UART Port”</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#test-uart3-port"><strong>“Test UART3 Port”</strong></a></p>
+</li>
+</ul>
+<p>This will be upstreamed to NuttX Mainline soon.</p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>Today we talked about PinePhone UART and how we created the NuttX UART Driver.</p>
 <p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
