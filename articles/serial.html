@@ -83,7 +83,8 @@
 <li><a href="#initialise-uart">4 Initialise UART</a><ul></ul></li>
 <li><a href="#nuttx-uart-driver">5 NuttX UART Driver</a><ul></ul></li>
 <li><a href="#uart-in-action">6 UART In Action</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Sep 2022</em></p>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-uart-ports-on-pinephone">8 Appendix: UART Ports on PinePhone</a><ul></ul></li></ul></nav><p>📝 <em>9 Sep 2022</em></p>
 <p><img src="https://lupyuen.github.io/images/serial-title.jpg" alt="PinePhone Hacking with Pinebook Pro and BLÅHAJ" /></p>
 <p><em>PinePhone Hacking with Pinebook Pro and BLÅHAJ</em></p>
 <p><strong>UPDATE:</strong> PinePhone is now officially supported by Apache NuttX RTOS <a href="https://lupyuen.github.io/articles/what">(See this)</a></p>
@@ -819,6 +820,38 @@ nsh&gt; ls /dev
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/serial.md"><strong>lupyuen.github.io/src/serial.md</strong></a></p>
+<h1 id="appendix-uart-ports-on-pinephone"><a href="#appendix-uart-ports-on-pinephone">8 Appendix: UART Ports on PinePhone</a></h1>
+<p><em>Which Allwinner A64 UART Ports are used in PinePhone?</em></p>
+<p>According to the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a>, the following <strong>UART Ports</strong> in Allwinner A64 are connected…</p>
+<ul>
+<li>
+<p><strong>UART0:</strong> Serial Console</p>
+<p>(Assigned as <strong>/dev/ttyS0</strong>)</p>
+</li>
+<li>
+<p><strong>UART1:</strong> Bluetooth Module (Realtek RTL8723CS)</p>
+<p>Pins <strong>PG6</strong> <em>(TX)</em>, <strong>PG7</strong> <em>(RX)</em>, <strong>PG8</strong> <em>(RTS)</em> and <strong>PG9</strong> <em>(CTS)</em></p>
+<p>(TODO: Assign as <strong>/dev/ttyS1</strong>)</p>
+</li>
+<li>
+<p><strong>UART2:</strong> Unused</p>
+<p>Pins <strong>PB0</strong> <em>(TX)</em> and <strong>PB1</strong> <em>(RX)</em></p>
+<p>(Wired to Light Sensor and Compass Sensor)</p>
+</li>
+<li>
+<p><strong>UART3:</strong> 4G LTE Modem (Quectel EG25-G)</p>
+<p>Pins <strong>PD0</strong> <em>(TX)</em> and <strong>PD1</strong> <em>(RX)</em></p>
+<p>(TODO: Assign as <strong>/dev/ttyS2</strong>)</p>
+</li>
+</ul>
+<p>There’s an Alternate UART0 port…</p>
+<ul>
+<li>
+<p><strong>Alternate UART0:</strong> Debug UART for 4G LTE Modem (Quectel EG25-G)</p>
+<p>Pins <strong>PB8</strong> <em>(TX)</em> and <strong>PB9</strong> <em>(RX)</em></p>
+</li>
+</ul>
+<p>But using the Alternate UART0 might be tricky because it conflicts with the UART0 Serial Console.</p>
 
     
 </body>
