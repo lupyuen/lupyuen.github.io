@@ -485,7 +485,7 @@ Let's run this!
 
 ![NuttX starts LTE Modem](https://lupyuen.github.io/images/lte-run2.png)
 
-[_NuttX starts LTE Modem_](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L72-L270)
+[_NuttX starts LTE Modem_](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L168-L513)
 
 # Is LTE Modem Up?
 
@@ -503,7 +503,7 @@ Set PWR_BAT (PL7) to High
 Status=1
 ```
 
-[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L72-L270)
+[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L168-L513)
 
 Then it __deasserts the reset__ (PC4) and __wakes up the modem__ (PH7 and PB2)...
 
@@ -544,7 +544,7 @@ pinephone_modem_init: Status=0
 
 And the LTE Modem is up! (Roughly 6 seconds)
 
-[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L72-L270)
+[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L168-L513)
 
 This matches the __Power Up Sequence__ that we saw earlier...
 
@@ -590,7 +590,7 @@ The LTE Modem is connected to PinePhone (Allwinner A64) at these UART Ports (pic
 
     [(More about the UART Pins)](https://lupyuen.github.io/articles/lte#main-uart-interface)
 
-Thus we may __check UART3__ to see if the LTE Modem responds to [__AT Commands__](https://lupyuen.github.io/articles/lte#quectel-eg25-g-lte-modem): [hello_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L38-L70)
+Thus we may __check UART3__ to see if the LTE Modem responds to [__AT Commands__](https://lupyuen.github.io/articles/lte#quectel-eg25-g-lte-modem): [hello_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L38-L166)
 
 ```c
 // Open /dev/ttyS1 (UART3)
@@ -600,16 +600,18 @@ assert(fd > 0);
 
 // Repeat 5 times: Write command and read response
 for (int i = 0; i < 5; i++) {
+
   // Write command
   const char cmd[] = "AT\r";
-  ssize_t nbytes = write(fd, cmd, sizeof(cmd));
-  printf("Write command: nbytes=%ld\n", nbytes);
-  assert(nbytes == sizeof(cmd));
+  ssize_t nbytes = write(fd, cmd, strlen(cmd));
+  printf("Write command: nbytes=%ld\n%s\n", nbytes, cmd);
+  assert(nbytes == strlen(cmd));
 
   // Read response
   static char buf[1024];
   nbytes = read(fd, buf, sizeof(buf) - 1);
   if (nbytes >= 0) { buf[nbytes] = 0; }
+  else { buf[0] = 0; }
   printf("Response: nbytes=%ld\n%s\n", nbytes, buf);
 
   // Wait a while
@@ -626,7 +628,7 @@ Watch what happens when we run it...
 
 ![Testing LTE Modem over UART](https://lupyuen.github.io/images/lte-run3a.png)
 
-[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L72-L270)
+[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L168-L513)
 
 Our NuttX App sends command "__`AT`__" to the LTE Modem over UART3...
 
@@ -686,7 +688,7 @@ And responds to our command with  "__`OK`__".
 
 Which means that our LTE Modem is running AT Commands all OK!
 
-[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L72-L270)
+[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L168-L513)
 
 _UART3 works with NuttX?_
 
