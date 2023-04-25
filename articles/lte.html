@@ -478,7 +478,7 @@ for (int i = 0; i &lt; 30; i++) {  // Max 1 minute
 </code></pre></div>
 <p>Let’s run this!</p>
 <p><img src="https://lupyuen.github.io/images/lte-run2.png" alt="NuttX starts LTE Modem" /></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L72-L270"><em>NuttX starts LTE Modem</em></a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L168-L513"><em>NuttX starts LTE Modem</em></a></p>
 <h1 id="is-lte-modem-up"><a href="#is-lte-modem-up">8 Is LTE Modem Up?</a></h1>
 <p><em>We’ve implemented the Power On Sequence for LTE Modem…</em></p>
 <p><em>Does it work on Apache NuttX RTOS?</em></p>
@@ -489,7 +489,7 @@ Status=0
 Set PWR_BAT (PL7) to High
 Status=1
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L72-L270">(See the Complete Log)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L168-L513">(See the Complete Log)</a></p>
 <p>Then it <strong>deasserts the reset</strong> (PC4) and <strong>wakes up the modem</strong> (PH7 and PB2)…</p>
 <div class="example-wrap"><pre class="language-text"><code>Set RESET_N (PC4) to Low
 Set AP-READY (PH7) to Low to wake up modem
@@ -516,7 +516,7 @@ pinephone_modem_init: Status=1
 pinephone_modem_init: Status=0
 </code></pre></div>
 <p>And the LTE Modem is up! (Roughly 6 seconds)</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L72-L270">(See the Complete Log)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L168-L513">(See the Complete Log)</a></p>
 <p>This matches the <strong>Power Up Sequence</strong> that we saw earlier…</p>
 <p><img src="https://lupyuen.github.io/images/lte-power2.png" alt="LTE Modem Power" /></p>
 <p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">(EG25-G Hardware Design, Page 41)</a></p>
@@ -547,7 +547,7 @@ pinephone_modem_init: Status=0
 <p><a href="https://lupyuen.github.io/articles/lte#main-uart-interface">(More about the UART Pins)</a></p>
 </li>
 </ul>
-<p>Thus we may <strong>check UART3</strong> to see if the LTE Modem responds to <a href="https://lupyuen.github.io/articles/lte#quectel-eg25-g-lte-modem"><strong>AT Commands</strong></a>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L38-L70">hello_main.c</a></p>
+<p>Thus we may <strong>check UART3</strong> to see if the LTE Modem responds to <a href="https://lupyuen.github.io/articles/lte#quectel-eg25-g-lte-modem"><strong>AT Commands</strong></a>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L38-L166">hello_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Open /dev/ttyS1 (UART3)
 int fd = open(&quot;/dev/ttyS1&quot;, O_RDWR);
 printf(&quot;Open /dev/ttyS1: fd=%d\n&quot;, fd);
@@ -555,16 +555,18 @@ assert(fd &gt; 0);
 
 // Repeat 5 times: Write command and read response
 for (int i = 0; i &lt; 5; i++) {
+
   // Write command
   const char cmd[] = &quot;AT\r&quot;;
-  ssize_t nbytes = write(fd, cmd, sizeof(cmd));
-  printf(&quot;Write command: nbytes=%ld\n&quot;, nbytes);
-  assert(nbytes == sizeof(cmd));
+  ssize_t nbytes = write(fd, cmd, strlen(cmd));
+  printf(&quot;Write command: nbytes=%ld\n%s\n&quot;, nbytes, cmd);
+  assert(nbytes == strlen(cmd));
 
   // Read response
   static char buf[1024];
   nbytes = read(fd, buf, sizeof(buf) - 1);
   if (nbytes &gt;= 0) { buf[nbytes] = 0; }
+  else { buf[0] = 0; }
   printf(&quot;Response: nbytes=%ld\n%s\n&quot;, nbytes, buf);
 
   // Wait a while
@@ -577,7 +579,7 @@ close(fd);
 <p>The NuttX App above sends the command “<strong><code>AT</code></strong>” to the LTE Modem over UART3. (5 times)</p>
 <p>Watch what happens when we run it…</p>
 <p><img src="https://lupyuen.github.io/images/lte-run3a.png" alt="Testing LTE Modem over UART" /></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L72-L270">(See the Complete Log)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L168-L513">(See the Complete Log)</a></p>
 <p>Our NuttX App sends command “<strong><code>AT</code></strong>” to the LTE Modem over UART3…</p>
 <div class="example-wrap"><pre class="language-text"><code>Open /dev/ttyS1
 Write command: AT\r
@@ -617,7 +619,7 @@ OK
 <p>LTE Modem echoes our command “<strong><code>AT</code></strong>”…</p>
 <p>And responds to our command with  “<strong><code>OK</code></strong>”.</p>
 <p>Which means that our LTE Modem is running AT Commands all OK!</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/e5aa2baba64c8d904d6c16b7c5dbc68cd5c8f1e1/examples/hello/hello_main.c#L72-L270">(See the Complete Log)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L168-L513">(See the Complete Log)</a></p>
 <p><em>UART3 works with NuttX?</em></p>
 <p>We modified the <strong>Allwinner A64 UART Driver</strong> to support UART3. The changes will be upstreamed to NuttX Mainline later…</p>
 <ul>
