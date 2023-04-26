@@ -428,6 +428,18 @@ OK
 
 [(EG25-G AT Commands, Page 167)](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
+# Receive Phone Call
+
+TODO
+
+# Receive SMS
+
+TODO
+
+# AT Modem API
+
+TODO
+
 # What's Next
 
 TODO
