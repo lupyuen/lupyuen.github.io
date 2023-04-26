@@ -12,6 +12,422 @@ Now we're building a [__Feature Phone__](https://lupyuen.github.io/articles/usb2
 
 TODO
 
+
+# Outgoing Phone Call
+
+TODO
+
+This is the NuttX App that makes a Phone Call on PinePhone: [dial_number](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L343-L432)
+
+Here's the output...
+
+```text
+NuttShell (NSH) NuttX-12.0.3
+nsh> hello
+
+// Check Modem Status
+Command: AT
+Response:
+RDY
++CFUN: 1
++CPIN: READY
++QUSIM: 1
++QIND: SMS DONE
+// SIM and SMS are ready
+
+// Check Network Status
+Command: AT+CREG?
+Response:
++CREG: 0,1
++QIND: PB DONE
+// Network and Phonebook are ready
+
+// Get Network Operator
+Command: AT+COPS?
+Response: +COPS: 0,0,"SGP-M1",7
+
+// Get Range of PCM Parameters for Digital Audio
+Command: AT+QDAI=?
+Response: +QDAI: (1-4),(0,1),(0,1),(0-5),(0-2),(0,1)(1)(1-16)
+
+// Get Current PCM Configuration for Digital Audio
+Command: AT+QDAI?
+Response: +QDAI: 1,1,0,1,0,0,1,1
+
+// Make Outgoing Phone Call
+Command: ATDyourphonenumber;
+Response:
+OK
+
+// Receiver has hung up
+Response:
+NO CARRIER
+
+// Hang up Phone Call
+Command: ATH
+Response: OK
+```
+
+[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L737)
+
+TODO: What does this say: `+QDAI: 1,1,0,1,0,0,1,1`
+
+# Send SMS in Text Mode
+
+TODO
+
+This is how we send an SMS in Text Mode: [send_sms_text](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L162-L253)
+
+Here's the log...
+
+```text
+// Set Message Format to Text Mode
+Command: AT+CMGF=1
+Response: OK
+
+// Set Character Set to GSM
+Command: AT+CSCS="GSM"
+Response: OK
+
+// Send an SMS to the Phone Number.
+// yourphonenumber looks like +1234567890
+// Works without country code, like 234567890
+Command:
+AT+CMGS="yourphonenumber"
+
+// We wait for Modem to respond with ">"
+Response:
+> 
+
+// SMS Message in Text Format, terminate with Ctrl-Z
+Command:
+Hello from Apache NuttX RTOS on PinePhone! (SMS Text Mode)<Ctrl-Z>
+
+// Modem sends the SMS Message
+Response:
++CMGS: 13
+OK
+```
+
+[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L622-L659)
+
+_Why do we get Error 350 sometimes? (Rejected by SMSC)_
+
+```text
++CMS ERROR: 350
+```
+
+Maybe the Modem isn't ready to transmit SMS? Should we retry?
+
+# Send SMS in PDU Mode
+
+TODO
+
+Now we send an SMS Message in PDU Mode. Based on...
+
+- [Quectel GSM AT Commands Application Note](https://www.cika.com/soporte/Information/GSMmodules/Quectel/AppNotes/Quectel_GSM_ATC_Application_Note.pdf), Section 9.3.2 "Send SMS in PDU mode", Page 26
+
+- [ETSI GSM 07.05 Spec](https://www.etsi.org/deliver/etsi_gts/07/0705/05.01.00_60/gsmts_0705v050100p.pdf) (AT Commands)
+
+- [ETSI GSM 03.40 Spec](https://en.wikipedia.org/wiki/GSM_03.40) (PDU Format)
+
+This is how we send an SMS in PDU Mode: [send_sms_pdu](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L255-L341)
+
+Suppose we're sending an SMS to this Phone Number (International Format)...
+
+```text
+#define PHONE_NUMBER    "+1234567890"
+#define PHONE_NUMBER_PDU "2143658709"
+```
+
+Note that we flip the nibbles (half-bytes) from the Original Phone Number to produce the PDU Phone Number.
+
+If the number of nibbles (half-bytes) is odd, insert "F" into the PDU Phone Number like this...
+
+```text
+#define PHONE_NUMBER    "+123456789"
+#define PHONE_NUMBER_PDU "214365870F9"
+```
+
+Assuming there are 10 decimal digits in our Phone Number "+1234567890", here's the AT Command...
+
+```text
+// Send SMS Command
+const char cmd[] = 
+  "AT+CMGS="
+  "41"  // TODO: PDU Length in bytes, excluding the Length of SMSC
+  "\r";
+```
+
+(We'll talk about PDU Length in a while)
+
+And here's the SMS Message PDU that we'll send in the AT Command...
+
+```text
+// SMS Message in PDU Format
+const char cmd[] = 
+  "00"  // Length of SMSC information (None)
+  "11"  // SMS-SUBMIT message
+  "00"  // TP-Message-Reference: 00 to let the phone set the message reference number itself
+  "0A"  // TODO: Address-Length: Length of phone number (Number of Decimal Digits in Phone Number)
+  "91"  // Type-of-Address: 91 for International Format of phone number
+  PHONE_NUMBER_PDU  // TODO: Phone Number in PDU Format
+  "00"  // TP-PID: Protocol identifier
+  "08"  // TP-DCS: Data coding scheme
+  "01"  // TP-Validity-Period
+  "1C"  // TP-User-Data-Length: Length of Encoded Message Text in bytes
+  // TP-User-Data: Encoded Message Text "Hello,Quectel!"
+  "00480065006C006C006F002C005100750065006300740065006C0021"
+  "\x1A";  // End of Message (Ctrl-Z)
+```
+
+(We'll talk about Encoded Message Text in a while)
+
+(Remember to update "Address-Length" according to your phone number)
+
+Here's the log...
+
+```text
+// Set Message Format to PDU Mode
+Command: AT+CMGF=0
+Response: OK
+
+// Send an SMS with 41 bytes (excluding SMSC)
+Command: AT+CMGS=41
+
+// We wait for Modem to respond with ">"
+Response: > 
+
+// SMS Message in PDU Format, terminate with Ctrl-Z.
+// yourphonenumberpdu looks like 2143658709, which represents +1234567890
+// Country Code is mandatory. Remember to insert "F" for odd number of nibbles.
+Command:
+0011000A91yourphonenumberpdu0008011C00480065006C006C006F002C005100750065006300740065006C0021<Ctrl-Z>
+
+// Modem sends the SMS Message
+Response: 
++CMGS: 14
+OK
+```
+
+[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L663-L681)
+
+_What's the PDU Length?_
+
+Our SMS Message PDU has 42 total bytes...
+
+```text
+"00"  // Length of SMSC information (None)
+"11"  // SMS-SUBMIT message
+"00"  // TP-Message-Reference: 00 to let the phone set the message reference number itself
+"0A"  // TODO: Address-Length: Length of phone number (Assume 10  Decimal Digits in Phone Number)
+"91"  // Type-of-Address: 91 for International Format of phone number
+PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits)
+"00"  // TP-PID: Protocol identifier
+"08"  // TP-DCS: Data coding scheme
+"01"  // TP-Validity-Period
+"1C"  // TP-User-Data-Length: Length of Encoded Message Text in bytes
+// TP-User-Data: Assume 28 bytes in Encoded Message Text
+"00480065006C006C006F002C005100750065006300740065006C0021"
+```
+
+PDU Length excludes the SMSC Information (First Byte).
+
+Thus our PDU Length is 41 bytes...
+
+```text
+// Send SMS Command
+const char cmd[] = 
+  "AT+CMGS="
+  "41"  // TODO: PDU Length in bytes, excluding the Length of SMSC
+  "\r";
+```
+
+Remember to update the PDU Length according to your phone number and message text.
+
+_What do the fields mean?_
+
+```text
+"00"  // Length of SMSC information (None)
+"11"  // SMS-SUBMIT message
+"00"  // TP-Message-Reference: 00 to let the phone set the message reference number itself
+"0A"  // TODO: Address-Length: Length of phone number (Assume 10 Decimal Digits in Phone Number)
+"91"  // Type-of-Address: 91 for International Format of phone number
+PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits)
+"00"  // TP-PID: Protocol identifier
+"08"  // TP-DCS: Data coding scheme
+"01"  // TP-Validity-Period
+"1C"  // TP-User-Data-Length: Length of Encoded Message Text in bytes
+// TP-User-Data: Assume 28 bytes in Encoded Message Text
+"00480065006C006C006F002C005100750065006300740065006C0021"
+```
+
+- Length of SMSC information: "00"
+
+  We use the default SMS Centre (SMSC), so the SMSC Info Length is 0.
+
+- SM-TL (Short Message Transfer Protocol) TPDU (Transfer Protocol Data Unit) is SMS-SUBMIT Message: "11"
+
+  [(GSM 03.40, TPDU Fields)](https://en.wikipedia.org/wiki/GSM_03.40#TPDU_Fields)
+
+  TP-Message-Type-Indicator (TP-MTI, Bits 0 and 1) is `0b01` (SMS-SUBMIT):
+
+  - Submit a message to SMSC for transmission.
+
+    [(GSM 03.40, TPDU Types)](https://en.wikipedia.org/wiki/GSM_03.40#TPDU_Types)
+
+  TP-Validity-Period-Format (TP-VPF, Bits 3 and 4) is `0b10` (Relative Format):
+
+  - Message Validity Period is in Relative Format.
+  
+    [(GSM 03.40, Validity Period)](https://en.wikipedia.org/wiki/GSM_03.40#Validity_Period)
+
+    Value of Message Validity Period is in TP-Validity-Period below.
+ 
+- TP-Message-Reference (TP-MR): "00"
+
+  "00" will let the phone generate the Message Reference Number itself
+
+  [(GSM 03.40, Message Reference)](https://en.wikipedia.org/wiki/GSM_03.40#Message_Reference)
+
+- Address-Length: "0A"
+
+  Length of phone number (Number of Decimal Digits in Phone Number, excluding "F")
+
+  [(GSM 03.40, Addresses)](https://en.wikipedia.org/wiki/GSM_03.40#Addresses)
+
+- Type-of-Address: "91"
+
+  91 for International Format of phone number
+
+  Numbering Plan Identification (NPI, Bits 0 to 3) = `0b0001` (ISDN / Telephone Numbering Plan)
+
+  Type Of Number (TON, Bits 4 to 6) = `0b001` (International Number)
+
+  EXT (Bit 7) = `1` (No Extension)
+
+  [(GSM 03.40, Addresses)](https://en.wikipedia.org/wiki/GSM_03.40#Addresses)
+
+- PHONE_NUMBER_PDU: Phone Number in PDU Format (nibbles swapped)
+
+  Remember to insert "F" for odd number of nibbles...
+
+  ```text
+  #define PHONE_NUMBER    "+123456789"
+  #define PHONE_NUMBER_PDU "214365870F9"
+  ```
+
+  [(GSM 03.40, Address Examples)](https://en.wikipedia.org/wiki/GSM_03.40#Address_examples)
+
+- TP-Protocol-Identifier (TP-PID): "00"
+
+  Default Store-and-Forward Short Message
+
+  [(GSM 03.40, Protocol Identifier)](https://en.wikipedia.org/wiki/GSM_03.40#Protocol_Identifier)
+
+- TP-Data-Coding-Scheme (TP-DCS): "08"
+
+  Message Text is encoded with UCS2 Character Set
+
+  [(GSM 03.40, Data Coding Scheme)](https://en.wikipedia.org/wiki/GSM_03.40#Data_Coding_Scheme)
+
+  [(SMS Data Coding Scheme)](https://en.wikipedia.org/wiki/Data_Coding_Scheme#SMS_data_coding_scheme)
+
+- TP-Validity-Period (TP-VP): "01"
+
+  Message is valid for 10 minutes, relative to current time:
+
+  (`"01"` + 1) x 5 minutes
+
+  [(GSM 03.40, Validity Period)](https://en.wikipedia.org/wiki/GSM_03.40#Validity_Period)
+
+  (See TP-Validity-Period-Format above)
+
+- TP-User-Data-Length (TP-UDL): "1C"
+
+  Length of Encoded Message Text in bytes
+
+  [(GSM 03.40, Message Content)](https://en.wikipedia.org/wiki/GSM_03.40#Message_Content)
+
+- TP-User-Data (TP-UD): Encoded Message Text
+
+  Message Text is encoded with UCS2 Character Set
+
+  (Because of TP-Data-Coding-Scheme above)
+
+  [(GSM 03.40, Message Content)](https://en.wikipedia.org/wiki/GSM_03.40#Message_Content)
+
+_How do we encode the Message Text?_
+
+From above we see that the Message Text is encoded with UCS2 Character Set...
+
+- TP-Data-Coding-Scheme (TP-DCS): "08"
+
+  Message Text is encoded in UCS2 Character Set
+
+  [(GSM 03.40, Data Coding Scheme)](https://en.wikipedia.org/wiki/GSM_03.40#Data_Coding_Scheme)
+
+  [(SMS Data Coding Scheme)](https://en.wikipedia.org/wiki/Data_Coding_Scheme#SMS_data_coding_scheme)
+
+The UCS2 Encoding is actually [Unicode UTF-16](https://en.wikipedia.org/wiki/UTF-16)...
+
+> "the SMS standard specifies UCS-2, but almost all users actually implement UTF-16 so that emojis work"
+
+[(Source)](https://en.wikipedia.org/wiki/UTF-16)
+
+So this Encoded Message Text...
+
+```text
+// TP-User-Data: Message Text encoded with UCS2 Character Set
+"00480065006C006C006F002C005100750065006300740065006C0021"
+```
+
+Comes from the [Unicode UTF-16 Encoding](https://en.wikipedia.org/wiki/UTF-16) of the Message Text "Hello,Quectel!"...
+
+| Character | UTF-16 Encoding |
+|:---------:|:---------------:|
+| `H` | `0048`
+| `e` | `0065`
+| `l` | `006C`
+| `l` | `006C`
+| `o` | `006F`
+| `,` | `002C`
+| `Q` | `0051`
+| `u` | `0075`
+| `e` | `0065`
+| `c` | `0063`
+| `t` | `0074`
+| `e` | `0065`
+| `l` | `006C`
+| `!` | `0021`
+
+(These are 7-Bit ASCII Characters, so the UTF-16 Encoding looks identical to ASCII)
+
+_Why send SMS in PDU Mode instead of Text Mode?_
+
+TODO: More reliable (304 Invalid PDU), UTF-16, Receive messages
+
+```text
+// Select Message Service 3GPP TS 23.040 and 3GPP TS 23.041
+AT+CSMS=1
++CSMS: 1,1,1
+OK
+
+// Set SMS Event Reporting Configuration
+AT+CNMI=1,2,0,0,0
+OK
+
+// Message is dumped directly when an SMS is received
++CMT: "+8615021012496",,"13/03/18,17:07:21+32",145,4,0,0,"+8613800551500",145,28
+This is a test from Quectel.
+
+// Send ACK to the network
+AT+CNMA
+OK
+```
+
+[(EG25-G AT Commands, Page 167)](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
 # What's Next
 
 TODO
