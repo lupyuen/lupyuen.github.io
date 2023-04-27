@@ -80,7 +80,7 @@ _Before sending AT Commands..._
 
 _How will we power up the LTE Modem?_
 
-In the previous article we spoke about __starting up the LTE Modem__ with NuttX...
+In the previous article we spoke about __starting the LTE Modem__ with NuttX (pic above)...
 
 -   [__"Power On LTE Modem"__](https://lupyuen.github.io/articles/lte#power-on-lte-modem)
 
@@ -88,13 +88,43 @@ In the previous article we spoke about __starting up the LTE Modem__ with NuttX.
 
 -   [__"Is LTE Modem Up?"__](https://lupyuen.github.io/articles/lte#is-lte-modem-up)
 
-Which we have implemented as [__pinephone_modem_init__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/bb1ef61d6dbb5309a1e92583caaf81513308320a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L226-L356).
+Which we have implemented in NuttX as [__pinephone_modem_init__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/bb1ef61d6dbb5309a1e92583caaf81513308320a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L226-L356).
+
+We see this at __NuttX Startup__...
 
 ```text
-TODO
+Starting kernel...
+Enable UART3 on PD0
+Enable UART3 on PD1
+Set PWR_BAT (PL7) to High
+Set RESET_N (PC4) to Low
+Set AP-READY (PH7) to Low to wake up modem
+Set DTR (PB2) to Low to wake up modem
+Set PWRKEY (PB3) to High
+Wait 600 ms
+Set PWRKEY (PB3) to Low
+Set W_DISABLE (PH8) to High
+Status=1
+...
+Status=0
+
+NuttShell (NSH) NuttX-12.0.3
+nsh> 
 ```
 
-[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L737)
+[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L473-L562)
+
+Which says that PinePhone's LTE Modem is up and __accessible at Port UART3__!
+
+Let's send some AT Commands to UART3...
+
+![Sending AT Commands to LTE Modem](https://lupyuen.github.io/images/lte-run3a.png)
+
+[_Sending AT Commands to LTE Modem_](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L630)
+
+# Send AT Commands
+
+TODO
 
 ![Apache NuttX RTOS makes a Phone Call from Pine64 PinePhone](https://lupyuen.github.io/images/lte2-title.jpg)
 
