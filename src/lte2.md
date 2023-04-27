@@ -68,9 +68,35 @@ So if we're sending and receiving __lots of 4G Mobile Data__, USB is the better 
 
 Today we'll talk about the __UART Interface__, which is sufficient for building a Feature Phone on NuttX.
 
+Let's power up the LTE Modem in PinePhone...
+
+![LTE Modem Power](https://lupyuen.github.io/images/lte-power2.png)
+
+[_Power Key and Reset are __High-Low Inverted__ for PinePhone_](https://lupyuen.github.io/articles/lte#power-on-lte-modem)
+
 # Start LTE Modem
 
+_Before sending AT Commands..._
+
+_How will we power up the LTE Modem?_
+
+In the previous article we spoke about __starting up the LTE Modem__ with NuttX...
+
+-   [__"Power On LTE Modem"__](https://lupyuen.github.io/articles/lte#power-on-lte-modem)
+
+-   [__"Power Up wth NuttX"__](https://lupyuen.github.io/articles/lte#power-up-wth-nuttx)
+
+-   [__"Is LTE Modem Up?"__](https://lupyuen.github.io/articles/lte#is-lte-modem-up)
+
+Which we have implemented as [__pinephone_modem_init__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/bb1ef61d6dbb5309a1e92583caaf81513308320a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L226-L356).
+
+```text
 TODO
+```
+
+[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L737)
+
+![Apache NuttX RTOS makes a Phone Call from Pine64 PinePhone](https://lupyuen.github.io/images/lte2-title.jpg)
 
 # Outgoing Phone Call
 
