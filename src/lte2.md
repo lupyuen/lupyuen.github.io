@@ -72,6 +72,8 @@ Response: OK
 
 TODO: What does this say: `+QDAI: 1,1,0,1,0,0,1,1`
 
+![TODO](https://lupyuen.github.io/images/lte2-sms.jpg)
+
 # Send SMS in Text Mode
 
 TODO
