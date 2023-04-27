@@ -698,6 +698,8 @@ We modified the __Allwinner A64 UART Driver__ to support UART3. The changes will
 
 -   [__"Test UART3 Port"__](https://github.com/lupyuen/pinephone-nuttx#test-uart3-port)
 
+-   [__"NuttX RTOS for PinePhone: Phone Calls and Text Messages"__](https://lupyuen.github.io/articles/lte2)
+
 There's another way to test the LTE Modem: Via USB...
 
 ![USB Controller Block Diagram from Allwinner A64 User Manual](https://lupyuen.github.io/images/usb3-title.jpg)
@@ -752,9 +754,11 @@ I hope this article was helpful for learning about PinePhone's 4G LTE Modem...
 
 -   __Programming the LTE Modem__ with UART, USB and Apache NuttX RTOS
 
-We'll share more details when the LTE Modem is responding OK to UART and USB on NuttX!
+Up Next: Find out how we make phone calls and send text messages with PinePhone's 4G LTE Modem...
 
-Meanwhile please check out the other articles on NuttX for PinePhone...
+-   [__"NuttX RTOS for PinePhone: Phone Calls and Text Messages"__](https://lupyuen.github.io/articles/lte2)
+
+Also check out the other articles on NuttX for PinePhone...
 
 -   [__"Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
 
