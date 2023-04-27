@@ -144,8 +144,29 @@
 </ul>
 <p>So if we’re sending and receiving <strong>lots of 4G Mobile Data</strong>, USB is the better way.</p>
 <p>Today we’ll talk about the <strong>UART Interface</strong>, which is sufficient for building a Feature Phone on NuttX.</p>
+<p>Let’s power up the LTE Modem in PinePhone…</p>
+<p><img src="https://lupyuen.github.io/images/lte-power2.png" alt="LTE Modem Power" /></p>
+<p><a href="https://lupyuen.github.io/articles/lte#power-on-lte-modem"><em>Power Key and Reset are <strong>High-Low Inverted</strong> for PinePhone</em></a></p>
 <h1 id="start-lte-modem"><a href="#start-lte-modem">2 Start LTE Modem</a></h1>
-<p>TODO</p>
+<p><em>Before sending AT Commands…</em></p>
+<p><em>How will we power up the LTE Modem?</em></p>
+<p>In the previous article we spoke about <strong>starting up the LTE Modem</strong> with NuttX…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lte#power-on-lte-modem"><strong>“Power On LTE Modem”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lte#power-up-wth-nuttx"><strong>“Power Up wth NuttX”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lte#is-lte-modem-up"><strong>“Is LTE Modem Up?”</strong></a></p>
+</li>
+</ul>
+<p>Which we have implemented as <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/bb1ef61d6dbb5309a1e92583caaf81513308320a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L226-L356"><strong>pinephone_modem_init</strong></a>.</p>
+<div class="example-wrap"><pre class="language-text"><code>TODO
+</code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L737">(See the Complete Log)</a></p>
+<p><img src="https://lupyuen.github.io/images/lte2-title.jpg" alt="Apache NuttX RTOS makes a Phone Call from Pine64 PinePhone" /></p>
 <h1 id="outgoing-phone-call"><a href="#outgoing-phone-call">3 Outgoing Phone Call</a></h1>
 <p>TODO</p>
 <p>This is the NuttX App that makes a Phone Call on PinePhone: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L343-L432">dial_number</a></p>
