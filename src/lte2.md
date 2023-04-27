@@ -2,16 +2,71 @@
 
 📝 _1 May 2023_
 
-![TODO](https://lupyuen.github.io/images/lte2-title.jpg)
+![Apache NuttX RTOS makes a Phone Call from Pine64 PinePhone](https://lupyuen.github.io/images/lte2-title.jpg)
 
-TODO
+What makes [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) a phone? Because it will make __Phone Calls__ and send __Text Messages__!
 
-What makes [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) a phone? It's the [__4G LTE Modem__](https://en.wikipedia.org/wiki/LTE_(telecommunication)) inside that makes Phone Calls and sends Text Messages!
+We're porting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System) to PinePhone. Today let's turn __NuttX into a Feature Phone__...
 
-Now we're building a [__Feature Phone__](https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone) with [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System). To make things simpler, we're writing down __everything we know__ about the 4G LTE Modem, and how it works inside PinePhone...
+-   Outgoing and Incoming __Phone Calls__ over 4G
 
-TODO
+-   Send and receive __SMS Text Messages__
 
+-   Why we prefer __PDU Text Messages__ for SMS
+
+-   Programming the __4G LTE Modem__ with Apache NuttX RTOS
+
+-   Doing all these over __UART vs USB__
+
+We begin with the 4G LTE Modem inside PinePhone...
+
+![Quectel EG25-G LTE Modem](https://lupyuen.github.io/images/usb2-modem.jpg)
+
+[_Quectel EG25-G LTE Modem_](https://wiki.pine64.org/wiki/File:Quectel_EG25-G_LTE_Standard_Specification_V1.3.pdf)
+
+# Quectel EG25-G LTE Modem
+
+_What's this LTE Modem?_
+
+Inside PinePhone is the [__Quectel EG25-G LTE Modem__](https://wiki.pine64.org/index.php/PinePhone#Modem) for [__4G LTE__](https://en.wikipedia.org/wiki/LTE_(telecommunication)) Voice Calls, SMS and Mobile Data, plus GPS (pic above)...
+
+-   [__Quectel EG25-G Datasheet__](https://wiki.pine64.org/wiki/File:Quectel_EG25-G_LTE_Standard_Specification_V1.3.pdf)
+
+-   [__EG25-G Hardware Design__](https://wiki.pine64.org/wiki/File:Quectel_EG25-G_Hardware_Design_V1.4.pdf)
+
+To control the LTE Modem, we send __AT Commands__...
+
+-   [__EG25-G AT Commands__](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
+-   [__EG25-G GNSS__](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_GNSS_Application_Note_V1.3.pdf)
+
+-   [__Get Started with AT Commands__](https://www.twilio.com/docs/iot/supersim/works-with-super-sim/quectel-eg25-g)
+
+So to dial the number __`1711`__, we send this AT Command...
+
+```text
+ATD1711;
+```
+
+The LTE Modem has similar AT Commands for SMS and Mobile Data.
+
+[(EG25-G runs on __Qualcomm MDM 9607__ with a Cortex-A7 CPU inside)](https://xnux.eu/devices/feature/modem-pp.html#toc-modem-on-pinephone)
+
+_How to send the AT Commands to LTE Modem?_
+
+The LTE Modem accepts __AT Commands__ in two ways (pic below)...
+
+-   Via the __UART Port (Serial)__
+
+    Which is Slower: Up to 921.6 kbps
+
+-   Via the __USB Port (USB Serial)__
+
+    Which is Faster: Up to 480 Mbps
+
+So if we're sending and receiving __lots of 4G Mobile Data__, USB is the better way.
+
+(UART Interface is probably sufficient for a Feature Phone)
 
 # Outgoing Phone Call
 
@@ -449,6 +504,10 @@ TODO
 TODO
 
 # AT Modem API
+
+TODO
+
+# UART vs USB
 
 TODO
 
