@@ -66,7 +66,11 @@ The LTE Modem accepts __AT Commands__ in two ways (pic below)...
 
 So if we're sending and receiving __lots of 4G Mobile Data__, USB is the better way.
 
-(UART Interface is probably sufficient for a Feature Phone)
+Today we'll talk about the __UART Interface__, which is sufficient for building a Feature Phone on NuttX.
+
+# Start LTE Modem
+
+TODO
 
 # Outgoing Phone Call
 
@@ -506,6 +510,12 @@ TODO
 # AT Modem API
 
 TODO
+
+[nRF Connect Modem Library: AT interface](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html)
+
+[uart_lorawan_layer.c](https://github.com/apache/nuttx-apps/blob/master/examples/tcp_ipc_server/uart_lorawan_layer.c#L262-L274)
+
+[esp8266.c](https://github.com/apache/nuttx-apps/blob/master/netutils/esp8266/esp8266.c#L1573-L1582)
 
 # UART vs USB
 
