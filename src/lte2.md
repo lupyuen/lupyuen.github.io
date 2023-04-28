@@ -1,6 +1,6 @@
 # NuttX RTOS for PinePhone: Phone Calls and Text Messages
 
-📝 _1 May 2023_
+📝 _5 May 2023_
 
 ![Apache NuttX RTOS makes a Phone Call from Pine64 PinePhone](https://lupyuen.github.io/images/lte2-title.jpg)
 
