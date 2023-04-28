@@ -124,6 +124,115 @@ Let's send some AT Commands to UART3...
 
 # Send AT Commands
 
+_LTE Modem has started successfully at UART3..._
+
+_How will we send AT Commands to the modem?_
+
+This is how we __send an AT Command__ to the LTE Modem over UART3: [hello_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L52-L75)
+
+```c
+// Open /dev/ttyS1 (UART3)
+int fd = open("/dev/ttyS1", O_RDWR);
+printf("Open /dev/ttyS1: fd=%d\n", fd);
+assert(fd > 0);
+
+// Repeat 5 times: Write command and read response
+for (int i = 0; i < 5; i++) {
+
+  // Write command
+  const char cmd[] = "AT\r";
+  ssize_t nbytes = write(fd, cmd, strlen(cmd));
+  printf("Write command: nbytes=%ld\n%s\n", nbytes, cmd);
+  assert(nbytes == strlen(cmd));
+
+  // Read response
+  static char buf[1024];
+  nbytes = read(fd, buf, sizeof(buf) - 1);
+  if (nbytes >= 0) { buf[nbytes] = 0; }
+  else { buf[0] = 0; }
+  printf("Response: nbytes=%ld\n%s\n", nbytes, buf);
+
+  // Wait a while
+  sleep(2);
+}
+
+// Close the device
+close(fd);
+```
+
+The NuttX App above sends the command "__`AT`__" to the LTE Modem over UART3. (5 times)
+
+Watch what happens when we run it...
+
+Our NuttX App sends command "__`AT`__" to the LTE Modem over UART3...
+
+```text
+Open /dev/ttyS1
+Write command: AT\r
+```
+
+But it hangs there. No response!
+
+Remember that the LTE Modem might take __30 seconds__ to become operational. Be patient, the response appears in a while...
+
+```text
+Response:
+RDY
+```
+
+"__`RDY`__" means that the LTE Modem is ready for AT Commands!
+
+[(EG25-G AT Commands, Page 297)](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
+Our NuttX App sends command "__`AT`__" again...
+
+```text
+Write command: AT\r
+Response:
++CFUN: 1
++CPIN: READY
++QUSIM: 1
++QIND: SMS DONE
++QIND: PB DONE
+```
+
+LTE Modem replies...
+
+- "__`+CFUN: 1`__"
+
+  This says that the LTE Modem is fully operational
+
+  [(EG25-G AT Commands, Page 33)](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
+- TODO: "__`+CPIN: READY`__"
+
+- TODO: "__`+QUSIM: 1`__"
+
+  TODO: This says that we haven't inserted a SIM Card into the LTE Modem
+
+  [(EG25-G AT Commands, Page 60)](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
+- TODO: "__`+QIND: SMS DONE`__"
+
+- TODO: "__`+QIND: PB DONE`__"
+
+Our NuttX App sends command "__`AT`__" once more...
+
+```text
+Write command: AT\r
+Response:
+AT
+OK
+```
+
+LTE Modem echoes our command "__`AT`__"...
+
+And responds to our command with  "__`OK`__".
+
+Which means that our LTE Modem is running AT Commands all OK!
+
+[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L630)
+
 TODO
 
 ![NuttX makes a Phone Call from PinePhone](https://lupyuen.github.io/images/lte2-title.jpg)
