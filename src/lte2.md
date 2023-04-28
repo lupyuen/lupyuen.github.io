@@ -171,9 +171,7 @@ Open /dev/ttyS1
 Write command: AT\r
 ```
 
-But it hangs there. No response!
-
-The LTE Modem might take [__30 seconds__](https://lupyuen.github.io/articles/lte#is-lte-modem-up) to become operational. Be patient, the response appears in a while...
+No response! At startup, the LTE Modem might take [__30 seconds__](https://lupyuen.github.io/articles/lte#is-lte-modem-up) to become operational. Then this appears...
 
 ```text
 Response:
@@ -249,7 +247,7 @@ _The actual log looks kinda messy..._
 
 Yeah we'll talk about the proper AT Modem API in a while.
 
-Right now let's make some phone calls!
+First let's check the network and make some phone calls...
 
 # Check the LTE Network
 
@@ -309,7 +307,8 @@ Response:
 
 // Get Network Operator (SGP-M1)
 Command: AT+COPS?
-Response: +COPS: 0,0,"SGP-M1",7
+Response:
++COPS: 0,0,"SGP-M1",7
 ```
 
 "__`+CREG: 0,1`__" says that the 4G LTE Network is ready.
@@ -559,7 +558,88 @@ OK
 
 Let's talk about the SMS PDU...
 
-# SMS PDU Format
+# SMS Text Mode vs PDU Mode
+
+TODO
+
+_Why send SMS in PDU Mode instead of Text Mode?_
+
+TODO: More reliable (304 Invalid PDU), UTF-16, Receive messages
+
+```text
+// Select Message Service 3GPP TS 23.040 and 3GPP TS 23.041
+AT+CSMS=1
++CSMS: 1,1,1
+OK
+
+// Set SMS Event Reporting Configuration
+AT+CNMI=1,2,0,0,0
+OK
+
+// Message is dumped directly when an SMS is received
++CMT: "+8615021012496",,"13/03/18,17:07:21+32",145,4,0,0,"+8613800551500",145,28
+This is a test from Quectel.
+
+// Send ACK to the network
+AT+CNMA
+OK
+```
+
+[(EG25-G AT Commands, Page 167)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
+# Receive Phone Call
+
+TODO
+
+# Receive SMS
+
+TODO
+
+# AT Modem API
+
+TODO
+
+[nRF Connect Modem Library: AT interface](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html)
+
+[uart_lorawan_layer.c](https://github.com/apache/nuttx-apps/blob/master/examples/tcp_ipc_server/uart_lorawan_layer.c#L262-L274)
+
+[esp8266.c](https://github.com/apache/nuttx-apps/blob/master/netutils/esp8266/esp8266.c#L1573-L1582)
+
+# UART vs USB
+
+TODO
+
+# What's Next
+
+TODO
+
+I hope this article was helpful for learning about PinePhone's 4G LTE Modem...
+
+TODO
+
+We'll share more details when the LTE Modem is responding OK to UART and USB on NuttX!
+
+Meanwhile please check out the other articles on NuttX for PinePhone...
+
+-   [__"Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
+
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+
+-   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__My Current Project: "Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
+
+-   [__My Other Project: "The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book)
+
+-   [__Check out my articles__](https://lupyuen.github.io)
+
+-   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[__lupyuen.github.io/src/lte2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lte2.md)
+
+# Appendix: SMS PDU Format
 
 TODO
 
@@ -708,6 +788,10 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 
   [(GSM 03.40, Message Content)](https://en.wikipedia.org/wiki/GSM_03.40#Message_Content)
 
+# Appendix: SMS PDU Encoding
+
+TODO
+
 _How do we encode the Message Text?_
 
 From above we see that the Message Text is encoded with UCS2 Character Set...
@@ -753,84 +837,3 @@ Comes from the [Unicode UTF-16 Encoding](https://en.wikipedia.org/wiki/UTF-16) o
 | `!` | `0021`
 
 (These are 7-Bit ASCII Characters, so the UTF-16 Encoding looks identical to ASCII)
-
-# SMS Text Mode vs PDU Mode
-
-TODO
-
-_Why send SMS in PDU Mode instead of Text Mode?_
-
-TODO: More reliable (304 Invalid PDU), UTF-16, Receive messages
-
-```text
-// Select Message Service 3GPP TS 23.040 and 3GPP TS 23.041
-AT+CSMS=1
-+CSMS: 1,1,1
-OK
-
-// Set SMS Event Reporting Configuration
-AT+CNMI=1,2,0,0,0
-OK
-
-// Message is dumped directly when an SMS is received
-+CMT: "+8615021012496",,"13/03/18,17:07:21+32",145,4,0,0,"+8613800551500",145,28
-This is a test from Quectel.
-
-// Send ACK to the network
-AT+CNMA
-OK
-```
-
-[(EG25-G AT Commands, Page 167)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
-
-# Receive Phone Call
-
-TODO
-
-# Receive SMS
-
-TODO
-
-# AT Modem API
-
-TODO
-
-[nRF Connect Modem Library: AT interface](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html)
-
-[uart_lorawan_layer.c](https://github.com/apache/nuttx-apps/blob/master/examples/tcp_ipc_server/uart_lorawan_layer.c#L262-L274)
-
-[esp8266.c](https://github.com/apache/nuttx-apps/blob/master/netutils/esp8266/esp8266.c#L1573-L1582)
-
-# UART vs USB
-
-TODO
-
-# What's Next
-
-TODO
-
-I hope this article was helpful for learning about PinePhone's 4G LTE Modem...
-
-TODO
-
-We'll share more details when the LTE Modem is responding OK to UART and USB on NuttX!
-
-Meanwhile please check out the other articles on NuttX for PinePhone...
-
--   [__"Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
-
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
-
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
-
--   [__My Current Project: "Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
-
--   [__My Other Project: "The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book)
-
--   [__Check out my articles__](https://lupyuen.github.io)
-
--   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[__lupyuen.github.io/src/lte2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lte2.md)
