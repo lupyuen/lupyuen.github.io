@@ -74,13 +74,14 @@
 <li><a href="#outgoing-phone-call">5 Outgoing Phone Call</a><ul></ul></li>
 <li><a href="#send-sms-in-text-mode">6 Send SMS in Text Mode</a><ul></ul></li>
 <li><a href="#send-sms-in-pdu-mode">7 Send SMS in PDU Mode</a><ul></ul></li>
-<li><a href="#sms-pdu-format">8 SMS PDU Format</a><ul></ul></li>
-<li><a href="#sms-text-mode-vs-pdu-mode">9 SMS Text Mode vs PDU Mode</a><ul></ul></li>
-<li><a href="#receive-phone-call">10 Receive Phone Call</a><ul></ul></li>
-<li><a href="#receive-sms">11 Receive SMS</a><ul></ul></li>
-<li><a href="#at-modem-api">12 AT Modem API</a><ul></ul></li>
-<li><a href="#uart-vs-usb">13 UART vs USB</a><ul></ul></li>
-<li><a href="#whats-next">14 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>1 May 2023</em></p>
+<li><a href="#sms-text-mode-vs-pdu-mode">8 SMS Text Mode vs PDU Mode</a><ul></ul></li>
+<li><a href="#receive-phone-call">9 Receive Phone Call</a><ul></ul></li>
+<li><a href="#receive-sms">10 Receive SMS</a><ul></ul></li>
+<li><a href="#at-modem-api">11 AT Modem API</a><ul></ul></li>
+<li><a href="#uart-vs-usb">12 UART vs USB</a><ul></ul></li>
+<li><a href="#whats-next">13 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-sms-pdu-format">14 Appendix: SMS PDU Format</a><ul></ul></li>
+<li><a href="#appendix-sms-pdu-encoding">15 Appendix: SMS PDU Encoding</a><ul></ul></li></ul></nav><p>📝 <em>1 May 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/lte2-title.jpg" alt="Apache NuttX RTOS makes a Phone Call from Pine64 PinePhone" /></p>
 <p>What makes <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> a phone? Because it will make <strong>Phone Calls</strong> and send <strong>Text Messages</strong>!</p>
 <p>We’re porting <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) to PinePhone. Today let’s turn <strong>NuttX into a Feature Phone</strong>…</p>
@@ -227,8 +228,7 @@ close(fd);
 <div class="example-wrap"><pre class="language-text"><code>Open /dev/ttyS1
 Write command: AT\r
 </code></pre></div>
-<p>But it hangs there. No response!</p>
-<p>The LTE Modem might take <a href="https://lupyuen.github.io/articles/lte#is-lte-modem-up"><strong>30 seconds</strong></a> to become operational. Be patient, the response appears in a while…</p>
+<p>No response! At startup, the LTE Modem might take <a href="https://lupyuen.github.io/articles/lte#is-lte-modem-up"><strong>30 seconds</strong></a> to become operational. Then this appears…</p>
 <div class="example-wrap"><pre class="language-text"><code>Response:
 RDY
 </code></pre></div>
@@ -283,7 +283,7 @@ OK
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L630">(See the Complete Log)</a></p>
 <p><em>The actual log looks kinda messy…</em></p>
 <p>Yeah we’ll talk about the proper AT Modem API in a while.</p>
-<p>Right now let’s make some phone calls!</p>
+<p>First let’s check the network and make some phone calls…</p>
 <h1 id="check-the-lte-network"><a href="#check-the-lte-network">4 Check the LTE Network</a></h1>
 <p><em>Before making a Phone Call…</em></p>
 <p><em>How to check if the 4G LTE Network is OK?</em></p>
@@ -333,7 +333,8 @@ Response:
 
 // Get Network Operator (SGP-M1)
 Command: AT+COPS?
-Response: +COPS: 0,0,&quot;SGP-M1&quot;,7
+Response:
++COPS: 0,0,&quot;SGP-M1&quot;,7
 </code></pre></div>
 <p>“<strong><code>+CREG: 0,1</code></strong>” says that the 4G LTE Network is ready.</p>
 <p>“<strong><code>SGP-M1</code></strong>” is the name of our 4G LTE Network Operator.</p>
@@ -532,7 +533,69 @@ OK
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L663-L681">(See the Complete Log)</a></p>
 <p>Let’s talk about the SMS PDU…</p>
-<h1 id="sms-pdu-format"><a href="#sms-pdu-format">8 SMS PDU Format</a></h1>
+<h1 id="sms-text-mode-vs-pdu-mode"><a href="#sms-text-mode-vs-pdu-mode">8 SMS Text Mode vs PDU Mode</a></h1>
+<p>TODO</p>
+<p><em>Why send SMS in PDU Mode instead of Text Mode?</em></p>
+<p>TODO: More reliable (304 Invalid PDU), UTF-16, Receive messages</p>
+<div class="example-wrap"><pre class="language-text"><code>// Select Message Service 3GPP TS 23.040 and 3GPP TS 23.041
+AT+CSMS=1
++CSMS: 1,1,1
+OK
+
+// Set SMS Event Reporting Configuration
+AT+CNMI=1,2,0,0,0
+OK
+
+// Message is dumped directly when an SMS is received
++CMT: &quot;+8615021012496&quot;,,&quot;13/03/18,17:07:21+32&quot;,145,4,0,0,&quot;+8613800551500&quot;,145,28
+This is a test from Quectel.
+
+// Send ACK to the network
+AT+CNMA
+OK
+</code></pre></div>
+<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 167)</a></p>
+<h1 id="receive-phone-call"><a href="#receive-phone-call">9 Receive Phone Call</a></h1>
+<p>TODO</p>
+<h1 id="receive-sms"><a href="#receive-sms">10 Receive SMS</a></h1>
+<p>TODO</p>
+<h1 id="at-modem-api"><a href="#at-modem-api">11 AT Modem API</a></h1>
+<p>TODO</p>
+<p><a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html">nRF Connect Modem Library: AT interface</a></p>
+<p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/tcp_ipc_server/uart_lorawan_layer.c#L262-L274">uart_lorawan_layer.c</a></p>
+<p><a href="https://github.com/apache/nuttx-apps/blob/master/netutils/esp8266/esp8266.c#L1573-L1582">esp8266.c</a></p>
+<h1 id="uart-vs-usb"><a href="#uart-vs-usb">12 UART vs USB</a></h1>
+<p>TODO</p>
+<h1 id="whats-next"><a href="#whats-next">13 What’s Next</a></h1>
+<p>TODO</p>
+<p>I hope this article was helpful for learning about PinePhone’s 4G LTE Modem…</p>
+<p>TODO</p>
+<p>We’ll share more details when the LTE Modem is responding OK to UART and USB on NuttX!</p>
+<p>Meanwhile please check out the other articles on NuttX for PinePhone…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>“Apache NuttX RTOS for PinePhone”</strong></a></li>
+</ul>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>My Current Project: “Apache NuttX RTOS for PinePhone”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/book"><strong>My Other Project: “The RISC-V BL602 Book”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lte2.md"><strong>lupyuen.github.io/src/lte2.md</strong></a></p>
+<h1 id="appendix-sms-pdu-format"><a href="#appendix-sms-pdu-format">14 Appendix: SMS PDU Format</a></h1>
 <p>TODO</p>
 <p><em>What’s the PDU Length?</em></p>
 <p>Our SMS Message PDU has 42 total bytes…</p>
@@ -652,6 +715,8 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 <p><a href="https://en.wikipedia.org/wiki/GSM_03.40#Message_Content">(GSM 03.40, Message Content)</a></p>
 </li>
 </ul>
+<h1 id="appendix-sms-pdu-encoding"><a href="#appendix-sms-pdu-encoding">15 Appendix: SMS PDU Encoding</a></h1>
+<p>TODO</p>
 <p><em>How do we encode the Message Text?</em></p>
 <p>From above we see that the Message Text is encoded with UCS2 Character Set…</p>
 <ul>
@@ -690,68 +755,6 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 </tbody></table>
 </div>
 <p>(These are 7-Bit ASCII Characters, so the UTF-16 Encoding looks identical to ASCII)</p>
-<h1 id="sms-text-mode-vs-pdu-mode"><a href="#sms-text-mode-vs-pdu-mode">9 SMS Text Mode vs PDU Mode</a></h1>
-<p>TODO</p>
-<p><em>Why send SMS in PDU Mode instead of Text Mode?</em></p>
-<p>TODO: More reliable (304 Invalid PDU), UTF-16, Receive messages</p>
-<div class="example-wrap"><pre class="language-text"><code>// Select Message Service 3GPP TS 23.040 and 3GPP TS 23.041
-AT+CSMS=1
-+CSMS: 1,1,1
-OK
-
-// Set SMS Event Reporting Configuration
-AT+CNMI=1,2,0,0,0
-OK
-
-// Message is dumped directly when an SMS is received
-+CMT: &quot;+8615021012496&quot;,,&quot;13/03/18,17:07:21+32&quot;,145,4,0,0,&quot;+8613800551500&quot;,145,28
-This is a test from Quectel.
-
-// Send ACK to the network
-AT+CNMA
-OK
-</code></pre></div>
-<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 167)</a></p>
-<h1 id="receive-phone-call"><a href="#receive-phone-call">10 Receive Phone Call</a></h1>
-<p>TODO</p>
-<h1 id="receive-sms"><a href="#receive-sms">11 Receive SMS</a></h1>
-<p>TODO</p>
-<h1 id="at-modem-api"><a href="#at-modem-api">12 AT Modem API</a></h1>
-<p>TODO</p>
-<p><a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html">nRF Connect Modem Library: AT interface</a></p>
-<p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/tcp_ipc_server/uart_lorawan_layer.c#L262-L274">uart_lorawan_layer.c</a></p>
-<p><a href="https://github.com/apache/nuttx-apps/blob/master/netutils/esp8266/esp8266.c#L1573-L1582">esp8266.c</a></p>
-<h1 id="uart-vs-usb"><a href="#uart-vs-usb">13 UART vs USB</a></h1>
-<p>TODO</p>
-<h1 id="whats-next"><a href="#whats-next">14 What’s Next</a></h1>
-<p>TODO</p>
-<p>I hope this article was helpful for learning about PinePhone’s 4G LTE Modem…</p>
-<p>TODO</p>
-<p>We’ll share more details when the LTE Modem is responding OK to UART and USB on NuttX!</p>
-<p>Meanwhile please check out the other articles on NuttX for PinePhone…</p>
-<ul>
-<li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>“Apache NuttX RTOS for PinePhone”</strong></a></li>
-</ul>
-<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
-<ul>
-<li>
-<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>My Current Project: “Apache NuttX RTOS for PinePhone”</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/articles/book"><strong>My Other Project: “The RISC-V BL602 Book”</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
-</li>
-<li>
-<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
-</li>
-</ul>
-<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
-<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lte2.md"><strong>lupyuen.github.io/src/lte2.md</strong></a></p>
 
     
 </body>
