@@ -355,6 +355,12 @@ write(fd, cmd, strlen(cmd));
 const char cmd[] = &quot;AT+QDAI?\r&quot;;
 write(fd, cmd, strlen(cmd));
 // Omitted: Read response and wait 2 seconds
+</code></pre></div>
+<p>(We’ll talk about “<strong><code>AT+QDAI</code></strong>” in a while)</p>
+<p>Suppose we’re dialing the (fictitious) number “<strong><code>+1234567890</code></strong>”.</p>
+<p>We send the command “<strong><code>ATD+1234567890;</code></strong>”…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Phone Number to dial
+#define PHONE_NUMBER &quot;+1234567890&quot;
 
 // Make Outgoing Phone Call
 const char cmd[] = 
@@ -363,42 +369,19 @@ const char cmd[] =
   &quot;;\r&quot;;
 write(fd, cmd, strlen(cmd));
 // Omitted: Read response
-
-// Wait 20 seconds for receiver to answer
+</code></pre></div>
+<p>We wait 20 seconds…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Wait 20 seconds for receiver to answer
 sleep(20);
-
-// Hang up Phone Call
+</code></pre></div>
+<p>Then we hang up the call with “<strong><code>ATH</code></strong>”…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Hang up Phone Call
 const char cmd[] = &quot;ATH\r&quot;;
 write(fd, cmd, strlen(cmd));
 // Omitted: Read response and wait 2 seconds
 </code></pre></div>
-<p>TODO</p>
-<p>Here’s the output…</p>
-<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.0.3
-nsh&gt; hello
-
-// Check Modem Status
-Command: AT
-Response:
-RDY
-+CFUN: 1
-+CPIN: READY
-+QUSIM: 1
-+QIND: SMS DONE
-// SIM and SMS are ready
-
-// Check Network Status
-Command: AT+CREG?
-Response:
-+CREG: 0,1
-+QIND: PB DONE
-// Network and Phonebook are ready
-
-// Get Network Operator
-Command: AT+COPS?
-Response: +COPS: 0,0,&quot;SGP-M1&quot;,7
-
-// Get Range of PCM Parameters for Digital Audio
+<p>Here’s the output (pic above)…</p>
+<div class="example-wrap"><pre class="language-text"><code>// Get Range of PCM Parameters for Digital Audio
 Command: AT+QDAI=?
 Response: +QDAI: (1-4),(0,1),(0,1),(0-5),(0-2),(0,1)(1)(1-16)
 
@@ -407,7 +390,7 @@ Command: AT+QDAI?
 Response: +QDAI: 1,1,0,1,0,0,1,1
 
 // Make Outgoing Phone Call
-Command: ATDyourphonenumber;
+Command: ATD+1234567890;
 Response:
 OK
 
@@ -415,11 +398,12 @@ OK
 Response:
 NO CARRIER
 
-// Hang up Phone Call
+// After 20 seconds, hang up Phone Call
 Command: ATH
 Response: OK
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L737">(See the Complete Log)</a></p>
+<p><em>What’s “<code>AT+QDAI</code>”?</em></p>
 <p>TODO: What does this say: <code>+QDAI: 1,1,0,1,0,0,1,1</code></p>
 <p><img src="https://lupyuen.github.io/images/lte2-sms.jpg" alt="NuttX sends an SMS in Text Mode" /></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L622-L659"><em>NuttX sends an SMS in Text Mode</em></a></p>
