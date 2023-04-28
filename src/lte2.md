@@ -417,6 +417,95 @@ TODO
 
 This is how we send an SMS in Text Mode: [send_sms_text](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L162-L253)
 
+```c
+  // Set Message Format to Text Mode
+  // AT+CMGF=1
+  {
+    // Write command
+    const char cmd[] = "AT+CMGF=1\r";
+    ssize_t nbytes = write(fd, cmd, strlen(cmd));
+    printf("Write command: nbytes=%ld\n%s\n", nbytes, cmd);
+    assert(nbytes == strlen(cmd));
+
+    // Read response
+    static char buf[1024];
+    nbytes = read(fd, buf, sizeof(buf) - 1);
+    if (nbytes >= 0) { buf[nbytes] = 0; }
+    else { buf[0] = 0; }
+    printf("Response: nbytes=%ld\n%s\n", nbytes, buf);
+
+    // Wait a while
+    sleep(2);
+  }
+
+  // Set Character Set to GSM
+  // AT+CSCS="GSM"
+  {
+    // Write command
+    const char cmd[] = "AT+CSCS=\"GSM\"\r";
+    ssize_t nbytes = write(fd, cmd, strlen(cmd));
+    printf("Write command: nbytes=%ld\n%s\n", nbytes, cmd);
+    assert(nbytes == strlen(cmd));
+
+    // Read response
+    static char buf[1024];
+    nbytes = read(fd, buf, sizeof(buf) - 1);
+    if (nbytes >= 0) { buf[nbytes] = 0; }
+    else { buf[0] = 0; }
+    printf("Response: nbytes=%ld\n%s\n", nbytes, buf);
+
+    // Wait a while
+    sleep(2);
+  }
+
+  // Send SMS Text Message, assuming Message Format is Text Mode
+  // AT+CMGS="yourphonenumber"\r
+  // text is entered
+  // <Ctrl+Z>
+  {
+    // Write command
+    const char cmd[] = 
+      "AT+CMGS=\""
+      PHONE_NUMBER
+      "\"\r";
+    ssize_t nbytes = write(fd, cmd, strlen(cmd));
+    printf("Write command: nbytes=%ld\n%s\n", nbytes, cmd);
+    assert(nbytes == strlen(cmd));
+  }
+  // Wait for ">"
+  for (;;)
+    {
+      // Read response
+      static char buf[1024];
+      ssize_t nbytes = read(fd, buf, sizeof(buf) - 1);
+      if (nbytes >= 0) { buf[nbytes] = 0; }
+      else { buf[0] = 0; }
+      printf("Response: nbytes=%ld\n%s\n", nbytes, buf);
+
+      // Stop if we find ">"
+      if (strchr(buf, '>') != NULL) { break; }
+    }
+  {
+    // Write message
+    const char cmd[] = 
+      "Hello from Apache NuttX RTOS on PinePhone! (SMS Text Mode)"
+      "\x1A";  // End of Message (Ctrl-Z)
+    ssize_t nbytes = write(fd, cmd, strlen(cmd));
+    printf("Write command: nbytes=%ld\n%s\n", nbytes, cmd);
+    assert(nbytes == strlen(cmd));
+
+    // Read response
+    static char buf[1024];
+    nbytes = read(fd, buf, sizeof(buf) - 1);
+    if (nbytes >= 0) { buf[nbytes] = 0; }
+    else { buf[0] = 0; }
+    printf("Response: nbytes=%ld\n%s\n", nbytes, buf);
+
+    // Wait a while
+    sleep(2);
+  }
+```
+
 Here's the log...
 
 ```text
@@ -464,11 +553,17 @@ TODO
 
 Now we send an SMS Message in PDU Mode. Based on...
 
-- [Quectel GSM AT Commands Application Note](https://www.cika.com/soporte/Information/GSMmodules/Quectel/AppNotes/Quectel_GSM_ATC_Application_Note.pdf), Section 9.3.2 "Send SMS in PDU mode", Page 26
+- [__Quectel GSM AT Commands Application Note__](https://www.cika.com/soporte/Information/GSMmodules/Quectel/AppNotes/Quectel_GSM_ATC_Application_Note.pdf)
 
-- [ETSI GSM 07.05 Spec](https://www.etsi.org/deliver/etsi_gts/07/0705/05.01.00_60/gsmts_0705v050100p.pdf) (AT Commands)
+  (Section 9.3.2 "Send SMS in PDU mode", Page 26)
 
-- [ETSI GSM 03.40 Spec](https://en.wikipedia.org/wiki/GSM_03.40) (PDU Format)
+- [__ETSI GSM 07.05 Spec__](https://www.etsi.org/deliver/etsi_gts/07/0705/05.01.00_60/gsmts_0705v050100p.pdf)
+
+  (For AT Commands)
+
+- [__ETSI GSM 03.40 Spec__](https://en.wikipedia.org/wiki/GSM_03.40)
+
+  (For PDU Format)
 
 This is how we send an SMS in PDU Mode: [send_sms_pdu](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L255-L341)
 
@@ -523,6 +618,88 @@ const char cmd[] =
 (We'll talk about Encoded Message Text in a while)
 
 (Remember to update "Address-Length" according to your phone number)
+
+TODO
+
+```c
+  // Set Message Format to PDU Mode
+  // AT+CMGF=0
+  {
+    // Write command
+    const char cmd[] = "AT+CMGF=0\r";
+    ssize_t nbytes = write(fd, cmd, strlen(cmd));
+    printf("Write command: nbytes=%ld\n%s\n", nbytes, cmd);
+    assert(nbytes == strlen(cmd));
+
+    // Read response
+    static char buf[1024];
+    nbytes = read(fd, buf, sizeof(buf) - 1);
+    if (nbytes >= 0) { buf[nbytes] = 0; }
+    else { buf[0] = 0; }
+    printf("Response: nbytes=%ld\n%s\n", nbytes, buf);
+
+    // Wait a while
+    sleep(2);
+  }
+
+  // Send SMS Text Message, assuming Message Format is PDU Mode
+  // AT+CMGS="yourphonenumber"\r
+  // text is entered
+  // <Ctrl+Z>
+  {
+    // Write command
+    const char cmd[] = 
+      "AT+CMGS="
+      "41"  // TODO: PDU Length in bytes, excluding the Length of SMSC
+      "\r";
+    ssize_t nbytes = write(fd, cmd, strlen(cmd));
+    printf("Write command: nbytes=%ld\n%s\n", nbytes, cmd);
+    assert(nbytes == strlen(cmd));
+  }
+  // Wait for ">"
+  for (;;)
+    {
+      // Read response
+      static char buf[1024];
+      ssize_t nbytes = read(fd, buf, sizeof(buf) - 1);
+      if (nbytes >= 0) { buf[nbytes] = 0; }
+      else { buf[0] = 0; }
+      printf("Response: nbytes=%ld\n%s\n", nbytes, buf);
+
+      // Stop if we find ">"
+      if (strchr(buf, '>') != NULL) { break; }
+    }
+  {
+    // Write message
+    const char cmd[] = 
+      "00"  // Length of SMSC information (None)
+      "11"  // SMS-SUBMIT message
+      "00"  // TP-Message-Reference: 00 to let the phone set the message reference number itself
+      "0A"  // TODO: Address-Length: Length of phone number (Number of Decimal Digits in Phone Number)
+      "91"  // Type-of-Address: 91 for International Format of phone number
+      PHONE_NUMBER_PDU  // TODO: Phone Number in PDU Format
+      "00"  // TP-PID: Protocol identifier
+      "08"  // TP-DCS: Data coding scheme
+      "01"  // TP-Validity-Period
+      "1C"  // TP-User-Data-Length: Length of message in bytes
+      // TP-User-Data: Encoded Message Text "Hello,Quectel!"
+      "00480065006C006C006F002C005100750065006300740065006C0021"
+      "\x1A";  // End of Message (Ctrl-Z)
+    ssize_t nbytes = write(fd, cmd, strlen(cmd));
+    printf("Write command: nbytes=%ld\n%s\n", nbytes, cmd);
+    assert(nbytes == strlen(cmd));
+
+    // Read response
+    static char buf[1024];
+    nbytes = read(fd, buf, sizeof(buf) - 1);
+    if (nbytes >= 0) { buf[nbytes] = 0; }
+    else { buf[0] = 0; }
+    printf("Response: nbytes=%ld\n%s\n", nbytes, buf);
+
+    // Wait a while
+    sleep(2);
+  }
+```
 
 Here's the log...
 
@@ -601,10 +778,6 @@ TODO
 [esp8266.c](https://github.com/apache/nuttx-apps/blob/master/netutils/esp8266/esp8266.c#L1573-L1582)
 
 # UART vs USB
-
-TODO
-
-# PCM Digital Audio
 
 TODO
 
@@ -838,3 +1011,17 @@ Comes from the [Unicode UTF-16 Encoding](https://en.wikipedia.org/wiki/UTF-16) o
 | `!` | `0021`
 
 (These are 7-Bit ASCII Characters, so the UTF-16 Encoding looks identical to ASCII)
+
+# Appendix: PCM Digital Audio
+
+TODO
+
+```text
+// Get Range of PCM Parameters for Digital Audio
+Command: AT+QDAI=?
+Response: +QDAI: (1-4),(0,1),(0,1),(0-5),(0-2),(0,1)(1)(1-16)
+
+// Get Current PCM Configuration for Digital Audio
+Command: AT+QDAI?
+Response: +QDAI: 1,1,0,1,0,0,1,1
+```
