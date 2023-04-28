@@ -79,10 +79,10 @@
 <li><a href="#receive-sms">10 Receive SMS</a><ul></ul></li>
 <li><a href="#at-modem-api">11 AT Modem API</a><ul></ul></li>
 <li><a href="#uart-vs-usb">12 UART vs USB</a><ul></ul></li>
-<li><a href="#pcm-digital-audio">13 PCM Digital Audio</a><ul></ul></li>
-<li><a href="#whats-next">14 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-sms-pdu-format">15 Appendix: SMS PDU Format</a><ul></ul></li>
-<li><a href="#appendix-sms-pdu-message-encoding">16 Appendix: SMS PDU Message Encoding</a><ul></ul></li></ul></nav><p>📝 <em>5 May 2023</em></p>
+<li><a href="#whats-next">13 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-sms-pdu-format">14 Appendix: SMS PDU Format</a><ul></ul></li>
+<li><a href="#appendix-sms-pdu-message-encoding">15 Appendix: SMS PDU Message Encoding</a><ul></ul></li>
+<li><a href="#appendix-pcm-digital-audio">16 Appendix: PCM Digital Audio</a><ul></ul></li></ul></nav><p>📝 <em>5 May 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/lte2-title.jpg" alt="Apache NuttX RTOS makes a Phone Call from Pine64 PinePhone" /></p>
 <p>What makes <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> a phone? Because it will make <strong>Phone Calls</strong> and send <strong>Text Messages</strong>!</p>
 <p>We’re porting <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) to PinePhone. Today let’s turn <strong>NuttX into a Feature Phone</strong>…</p>
@@ -410,6 +410,93 @@ Response: OK
 <h1 id="send-sms-in-text-mode"><a href="#send-sms-in-text-mode">6 Send SMS in Text Mode</a></h1>
 <p>TODO</p>
 <p>This is how we send an SMS in Text Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L162-L253">send_sms_text</a></p>
+<div class="example-wrap"><pre class="language-c"><code>  // Set Message Format to Text Mode
+  // AT+CMGF=1
+  {
+    // Write command
+    const char cmd[] = &quot;AT+CMGF=1\r&quot;;
+    ssize_t nbytes = write(fd, cmd, strlen(cmd));
+    printf(&quot;Write command: nbytes=%ld\n%s\n&quot;, nbytes, cmd);
+    assert(nbytes == strlen(cmd));
+
+    // Read response
+    static char buf[1024];
+    nbytes = read(fd, buf, sizeof(buf) - 1);
+    if (nbytes &gt;= 0) { buf[nbytes] = 0; }
+    else { buf[0] = 0; }
+    printf(&quot;Response: nbytes=%ld\n%s\n&quot;, nbytes, buf);
+
+    // Wait a while
+    sleep(2);
+  }
+
+  // Set Character Set to GSM
+  // AT+CSCS=&quot;GSM&quot;
+  {
+    // Write command
+    const char cmd[] = &quot;AT+CSCS=\&quot;GSM\&quot;\r&quot;;
+    ssize_t nbytes = write(fd, cmd, strlen(cmd));
+    printf(&quot;Write command: nbytes=%ld\n%s\n&quot;, nbytes, cmd);
+    assert(nbytes == strlen(cmd));
+
+    // Read response
+    static char buf[1024];
+    nbytes = read(fd, buf, sizeof(buf) - 1);
+    if (nbytes &gt;= 0) { buf[nbytes] = 0; }
+    else { buf[0] = 0; }
+    printf(&quot;Response: nbytes=%ld\n%s\n&quot;, nbytes, buf);
+
+    // Wait a while
+    sleep(2);
+  }
+
+  // Send SMS Text Message, assuming Message Format is Text Mode
+  // AT+CMGS=&quot;yourphonenumber&quot;\r
+  // text is entered
+  // &lt;Ctrl+Z&gt;
+  {
+    // Write command
+    const char cmd[] = 
+      &quot;AT+CMGS=\&quot;&quot;
+      PHONE_NUMBER
+      &quot;\&quot;\r&quot;;
+    ssize_t nbytes = write(fd, cmd, strlen(cmd));
+    printf(&quot;Write command: nbytes=%ld\n%s\n&quot;, nbytes, cmd);
+    assert(nbytes == strlen(cmd));
+  }
+  // Wait for &quot;&gt;&quot;
+  for (;;)
+    {
+      // Read response
+      static char buf[1024];
+      ssize_t nbytes = read(fd, buf, sizeof(buf) - 1);
+      if (nbytes &gt;= 0) { buf[nbytes] = 0; }
+      else { buf[0] = 0; }
+      printf(&quot;Response: nbytes=%ld\n%s\n&quot;, nbytes, buf);
+
+      // Stop if we find &quot;&gt;&quot;
+      if (strchr(buf, &#39;&gt;&#39;) != NULL) { break; }
+    }
+  {
+    // Write message
+    const char cmd[] = 
+      &quot;Hello from Apache NuttX RTOS on PinePhone! (SMS Text Mode)&quot;
+      &quot;\x1A&quot;;  // End of Message (Ctrl-Z)
+    ssize_t nbytes = write(fd, cmd, strlen(cmd));
+    printf(&quot;Write command: nbytes=%ld\n%s\n&quot;, nbytes, cmd);
+    assert(nbytes == strlen(cmd));
+
+    // Read response
+    static char buf[1024];
+    nbytes = read(fd, buf, sizeof(buf) - 1);
+    if (nbytes &gt;= 0) { buf[nbytes] = 0; }
+    else { buf[0] = 0; }
+    printf(&quot;Response: nbytes=%ld\n%s\n&quot;, nbytes, buf);
+
+    // Wait a while
+    sleep(2);
+  }
+</code></pre></div>
 <p>Here’s the log…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Set Message Format to Text Mode
 Command: AT+CMGF=1
@@ -448,13 +535,16 @@ OK
 <p>Now we send an SMS Message in PDU Mode. Based on…</p>
 <ul>
 <li>
-<p><a href="https://www.cika.com/soporte/Information/GSMmodules/Quectel/AppNotes/Quectel_GSM_ATC_Application_Note.pdf">Quectel GSM AT Commands Application Note</a>, Section 9.3.2 “Send SMS in PDU mode”, Page 26</p>
+<p><a href="https://www.cika.com/soporte/Information/GSMmodules/Quectel/AppNotes/Quectel_GSM_ATC_Application_Note.pdf"><strong>Quectel GSM AT Commands Application Note</strong></a></p>
+<p>(Section 9.3.2 “Send SMS in PDU mode”, Page 26)</p>
 </li>
 <li>
-<p><a href="https://www.etsi.org/deliver/etsi_gts/07/0705/05.01.00_60/gsmts_0705v050100p.pdf">ETSI GSM 07.05 Spec</a> (AT Commands)</p>
+<p><a href="https://www.etsi.org/deliver/etsi_gts/07/0705/05.01.00_60/gsmts_0705v050100p.pdf"><strong>ETSI GSM 07.05 Spec</strong></a></p>
+<p>(For AT Commands)</p>
 </li>
 <li>
-<p><a href="https://en.wikipedia.org/wiki/GSM_03.40">ETSI GSM 03.40 Spec</a> (PDU Format)</p>
+<p><a href="https://en.wikipedia.org/wiki/GSM_03.40"><strong>ETSI GSM 03.40 Spec</strong></a></p>
+<p>(For PDU Format)</p>
 </li>
 </ul>
 <p>This is how we send an SMS in PDU Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L255-L341">send_sms_pdu</a></p>
@@ -494,6 +584,85 @@ const char cmd[] =
 </code></pre></div>
 <p>(We’ll talk about Encoded Message Text in a while)</p>
 <p>(Remember to update “Address-Length” according to your phone number)</p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-c"><code>  // Set Message Format to PDU Mode
+  // AT+CMGF=0
+  {
+    // Write command
+    const char cmd[] = &quot;AT+CMGF=0\r&quot;;
+    ssize_t nbytes = write(fd, cmd, strlen(cmd));
+    printf(&quot;Write command: nbytes=%ld\n%s\n&quot;, nbytes, cmd);
+    assert(nbytes == strlen(cmd));
+
+    // Read response
+    static char buf[1024];
+    nbytes = read(fd, buf, sizeof(buf) - 1);
+    if (nbytes &gt;= 0) { buf[nbytes] = 0; }
+    else { buf[0] = 0; }
+    printf(&quot;Response: nbytes=%ld\n%s\n&quot;, nbytes, buf);
+
+    // Wait a while
+    sleep(2);
+  }
+
+  // Send SMS Text Message, assuming Message Format is PDU Mode
+  // AT+CMGS=&quot;yourphonenumber&quot;\r
+  // text is entered
+  // &lt;Ctrl+Z&gt;
+  {
+    // Write command
+    const char cmd[] = 
+      &quot;AT+CMGS=&quot;
+      &quot;41&quot;  // TODO: PDU Length in bytes, excluding the Length of SMSC
+      &quot;\r&quot;;
+    ssize_t nbytes = write(fd, cmd, strlen(cmd));
+    printf(&quot;Write command: nbytes=%ld\n%s\n&quot;, nbytes, cmd);
+    assert(nbytes == strlen(cmd));
+  }
+  // Wait for &quot;&gt;&quot;
+  for (;;)
+    {
+      // Read response
+      static char buf[1024];
+      ssize_t nbytes = read(fd, buf, sizeof(buf) - 1);
+      if (nbytes &gt;= 0) { buf[nbytes] = 0; }
+      else { buf[0] = 0; }
+      printf(&quot;Response: nbytes=%ld\n%s\n&quot;, nbytes, buf);
+
+      // Stop if we find &quot;&gt;&quot;
+      if (strchr(buf, &#39;&gt;&#39;) != NULL) { break; }
+    }
+  {
+    // Write message
+    const char cmd[] = 
+      &quot;00&quot;  // Length of SMSC information (None)
+      &quot;11&quot;  // SMS-SUBMIT message
+      &quot;00&quot;  // TP-Message-Reference: 00 to let the phone set the message reference number itself
+      &quot;0A&quot;  // TODO: Address-Length: Length of phone number (Number of Decimal Digits in Phone Number)
+      &quot;91&quot;  // Type-of-Address: 91 for International Format of phone number
+      PHONE_NUMBER_PDU  // TODO: Phone Number in PDU Format
+      &quot;00&quot;  // TP-PID: Protocol identifier
+      &quot;08&quot;  // TP-DCS: Data coding scheme
+      &quot;01&quot;  // TP-Validity-Period
+      &quot;1C&quot;  // TP-User-Data-Length: Length of message in bytes
+      // TP-User-Data: Encoded Message Text &quot;Hello,Quectel!&quot;
+      &quot;00480065006C006C006F002C005100750065006300740065006C0021&quot;
+      &quot;\x1A&quot;;  // End of Message (Ctrl-Z)
+    ssize_t nbytes = write(fd, cmd, strlen(cmd));
+    printf(&quot;Write command: nbytes=%ld\n%s\n&quot;, nbytes, cmd);
+    assert(nbytes == strlen(cmd));
+
+    // Read response
+    static char buf[1024];
+    nbytes = read(fd, buf, sizeof(buf) - 1);
+    if (nbytes &gt;= 0) { buf[nbytes] = 0; }
+    else { buf[0] = 0; }
+    printf(&quot;Response: nbytes=%ld\n%s\n&quot;, nbytes, buf);
+
+    // Wait a while
+    sleep(2);
+  }
+</code></pre></div>
 <p>Here’s the log…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Set Message Format to PDU Mode
 Command: AT+CMGF=0
@@ -551,9 +720,7 @@ OK
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/netutils/esp8266/esp8266.c#L1573-L1582">esp8266.c</a></p>
 <h1 id="uart-vs-usb"><a href="#uart-vs-usb">12 UART vs USB</a></h1>
 <p>TODO</p>
-<h1 id="pcm-digital-audio"><a href="#pcm-digital-audio">13 PCM Digital Audio</a></h1>
-<p>TODO</p>
-<h1 id="whats-next"><a href="#whats-next">14 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">13 What’s Next</a></h1>
 <p>TODO</p>
 <p>I hope this article was helpful for learning about PinePhone’s 4G LTE Modem…</p>
 <p>TODO</p>
@@ -582,7 +749,7 @@ OK
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lte2.md"><strong>lupyuen.github.io/src/lte2.md</strong></a></p>
-<h1 id="appendix-sms-pdu-format"><a href="#appendix-sms-pdu-format">15 Appendix: SMS PDU Format</a></h1>
+<h1 id="appendix-sms-pdu-format"><a href="#appendix-sms-pdu-format">14 Appendix: SMS PDU Format</a></h1>
 <p>TODO</p>
 <p><em>What’s the PDU Length?</em></p>
 <p>Our SMS Message PDU has 42 total bytes…</p>
@@ -703,7 +870,7 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 </li>
 </ul>
 <p>Let’s talk about the Message Text Encoding…</p>
-<h1 id="appendix-sms-pdu-message-encoding"><a href="#appendix-sms-pdu-message-encoding">16 Appendix: SMS PDU Message Encoding</a></h1>
+<h1 id="appendix-sms-pdu-message-encoding"><a href="#appendix-sms-pdu-message-encoding">15 Appendix: SMS PDU Message Encoding</a></h1>
 <p>TODO</p>
 <p><em>How do we encode the Message Text?</em></p>
 <p>From the previous section we see that the Message Text is encoded with UCS2 Character Set…</p>
@@ -743,7 +910,16 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 </tbody></table>
 </div>
 <p>(These are 7-Bit ASCII Characters, so the UTF-16 Encoding looks identical to ASCII)</p>
+<h1 id="appendix-pcm-digital-audio"><a href="#appendix-pcm-digital-audio">16 Appendix: PCM Digital Audio</a></h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>// Get Range of PCM Parameters for Digital Audio
+Command: AT+QDAI=?
+Response: +QDAI: (1-4),(0,1),(0,1),(0-5),(0-2),(0,1)(1)(1-16)
 
+// Get Current PCM Configuration for Digital Audio
+Command: AT+QDAI?
+Response: +QDAI: 1,1,0,1,0,0,1,1
+</code></pre></div>
     
 </body>
 </html>
