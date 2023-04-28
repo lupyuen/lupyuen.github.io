@@ -287,7 +287,56 @@ OK
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L683-L735"><em>NuttX makes a Phone Call from PinePhone</em></a></p>
 <h1 id="outgoing-phone-call"><a href="#outgoing-phone-call">4 Outgoing Phone Call</a></h1>
 <p>TODO</p>
-<p>This is the NuttX App that makes a Phone Call on PinePhone: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L343-L432">dial_number</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L81-L122">hello_main.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Check the Network Status: AT+CREG?
+const char cmd[] = &quot;AT+CREG?\r&quot;;
+write(fd, cmd, strlen(cmd));
+
+// Read response
+static char buf[1024];
+nbytes = read(fd, buf, sizeof(buf) - 1);
+if (nbytes &gt;= 0) { buf[nbytes] = 0; }
+else { buf[0] = 0; }
+printf(&quot;Response: nbytes=%ld\n%s\n&quot;, nbytes, buf);
+
+// Wait 2 seconds
+sleep(2);
+
+// Get the Network Operator
+const char cmd[] = &quot;AT+COPS?\r&quot;;
+write(fd, cmd, strlen(cmd));
+
+// Omitted: Read response and wait 2 seconds
+</code></pre></div>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L343-L432">dial_number</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Get Range of PCM Parameters for Digital Audio
+const char cmd[] = &quot;AT+QDAI=?\r&quot;;
+write(fd, cmd, strlen(cmd));
+// Omitted: Read response and wait 2 seconds
+
+// Get Current PCM Configuration for Digital Audio
+const char cmd[] = &quot;AT+QDAI?\r&quot;;
+write(fd, cmd, strlen(cmd));
+// Omitted: Read response and wait 2 seconds
+
+// Make Outgoing Phone Call
+const char cmd[] = 
+  &quot;ATD&quot;
+  PHONE_NUMBER
+  &quot;;\r&quot;;
+write(fd, cmd, strlen(cmd));
+// Omitted: Read response
+
+// Wait 20 seconds for receiver to answer
+sleep(20);
+
+// Hang up Phone Call
+const char cmd[] = &quot;ATH\r&quot;;
+write(fd, cmd, strlen(cmd));
+// Omitted: Read response and wait 2 seconds
+</code></pre></div>
+<p>TODO</p>
 <p>Here’s the output…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.0.3
 nsh&gt; hello
