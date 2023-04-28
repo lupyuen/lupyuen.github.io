@@ -339,6 +339,17 @@ write(fd, cmd, strlen(cmd));
 const char cmd[] = "AT+QDAI?\r";
 write(fd, cmd, strlen(cmd));
 // Omitted: Read response and wait 2 seconds
+```
+
+(We'll talk about "__`AT+QDAI`__" in a while)
+
+Suppose we're dialing the (fictitious) number "__`+1234567890`__".
+
+We send the command "__`ATD+1234567890;`__"...
+
+```c
+// Phone Number to dial
+#define PHONE_NUMBER "+1234567890"
 
 // Make Outgoing Phone Call
 const char cmd[] = 
@@ -347,45 +358,27 @@ const char cmd[] =
   ";\r";
 write(fd, cmd, strlen(cmd));
 // Omitted: Read response
+```
 
+We wait 20 seconds...
+
+```c
 // Wait 20 seconds for receiver to answer
 sleep(20);
+```
 
+Then we hang up the call with "__`ATH`__"...
+
+```c
 // Hang up Phone Call
 const char cmd[] = "ATH\r";
 write(fd, cmd, strlen(cmd));
 // Omitted: Read response and wait 2 seconds
 ```
 
-TODO
-
-Here's the output...
+Here's the output (pic above)...
 
 ```text
-NuttShell (NSH) NuttX-12.0.3
-nsh> hello
-
-// Check Modem Status
-Command: AT
-Response:
-RDY
-+CFUN: 1
-+CPIN: READY
-+QUSIM: 1
-+QIND: SMS DONE
-// SIM and SMS are ready
-
-// Check Network Status
-Command: AT+CREG?
-Response:
-+CREG: 0,1
-+QIND: PB DONE
-// Network and Phonebook are ready
-
-// Get Network Operator
-Command: AT+COPS?
-Response: +COPS: 0,0,"SGP-M1",7
-
 // Get Range of PCM Parameters for Digital Audio
 Command: AT+QDAI=?
 Response: +QDAI: (1-4),(0,1),(0,1),(0-5),(0-2),(0,1)(1)(1-16)
@@ -395,7 +388,7 @@ Command: AT+QDAI?
 Response: +QDAI: 1,1,0,1,0,0,1,1
 
 // Make Outgoing Phone Call
-Command: ATDyourphonenumber;
+Command: ATD+1234567890;
 Response:
 OK
 
@@ -403,12 +396,14 @@ OK
 Response:
 NO CARRIER
 
-// Hang up Phone Call
+// After 20 seconds, hang up Phone Call
 Command: ATH
 Response: OK
 ```
 
 [(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L737)
+
+_What's "`AT+QDAI`"?_
 
 TODO: What does this say: `+QDAI: 1,1,0,1,0,0,1,1`
 
