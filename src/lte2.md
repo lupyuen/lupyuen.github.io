@@ -173,7 +173,7 @@ Write command: AT\r
 
 But it hangs there. No response!
 
-Remember that the LTE Modem might take __30 seconds__ to become operational. Be patient, the response appears in a while...
+The LTE Modem might take [__30 seconds__](https://lupyuen.github.io/articles/lte#is-lte-modem-up) to become operational. Be patient, the response appears in a while...
 
 ```text
 Response:
@@ -208,9 +208,9 @@ LTE Modem replies...
 
 - TODO: "__`+QUSIM: 1`__"
 
-  TODO: This says that we haven't inserted a SIM Card into the LTE Modem
+  TODO: QUSIM: 1 is the identification of the SIM card type.
 
-  [(EG25-G AT Commands, Page 60)](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+  [(See this)](https://forums.quectel.com/t/what-means-qusim-1/2526/2)
 
 - TODO: "__`+QIND: SMS DONE`__"
 
