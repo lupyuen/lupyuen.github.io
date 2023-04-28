@@ -204,17 +204,29 @@ LTE Modem replies...
 
   [(EG25-G AT Commands, Page 33)](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
-- TODO: "__`+CPIN: READY`__"
+- "__`+CPIN: READY`__"
 
-- TODO: "__`+QUSIM: 1`__"
+  4G SIM Card is all ready, no PIN needed
 
-  TODO: QUSIM: 1 is the identification of the SIM card type.
+  [(EG25-G AT Commands, Page 60)](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
-  [(See this)](https://forums.quectel.com/t/what-means-qusim-1/2526/2)
+- "__`+QUSIM: 1`__"
 
-- TODO: "__`+QIND: SMS DONE`__"
+  Identifies SIM card type
 
-- TODO: "__`+QIND: PB DONE`__"
+  [(Says here)](https://forums.quectel.com/t/what-means-qusim-1/2526/2)
+
+- "__`+QIND: SMS DONE`__"
+
+  SMS is ready
+
+  [(EG25-G AT Commands, Page 297)](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
+- "__`+QIND: PB DONE`__"
+
+  Phonebook is ready (for SIM Contacts)
+
+  [(EG25-G AT Commands, Page 297)](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
 Our NuttX App sends command "__`AT`__" once more...
 
