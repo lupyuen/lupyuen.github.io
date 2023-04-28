@@ -70,16 +70,17 @@
 <li><a href="#quectel-eg25-g-lte-modem">1 Quectel EG25-G LTE Modem</a><ul></ul></li>
 <li><a href="#start-lte-modem">2 Start LTE Modem</a><ul></ul></li>
 <li><a href="#send-at-commands">3 Send AT Commands</a><ul></ul></li>
-<li><a href="#outgoing-phone-call">4 Outgoing Phone Call</a><ul></ul></li>
-<li><a href="#send-sms-in-text-mode">5 Send SMS in Text Mode</a><ul></ul></li>
-<li><a href="#send-sms-in-pdu-mode">6 Send SMS in PDU Mode</a><ul></ul></li>
-<li><a href="#sms-pdu-format">7 SMS PDU Format</a><ul></ul></li>
-<li><a href="#sms-text-mode-vs-pdu-mode">8 SMS Text Mode vs PDU Mode</a><ul></ul></li>
-<li><a href="#receive-phone-call">9 Receive Phone Call</a><ul></ul></li>
-<li><a href="#receive-sms">10 Receive SMS</a><ul></ul></li>
-<li><a href="#at-modem-api">11 AT Modem API</a><ul></ul></li>
-<li><a href="#uart-vs-usb">12 UART vs USB</a><ul></ul></li>
-<li><a href="#whats-next">13 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>1 May 2023</em></p>
+<li><a href="#check-the-lte-network">4 Check the LTE Network</a><ul></ul></li>
+<li><a href="#outgoing-phone-call">5 Outgoing Phone Call</a><ul></ul></li>
+<li><a href="#send-sms-in-text-mode">6 Send SMS in Text Mode</a><ul></ul></li>
+<li><a href="#send-sms-in-pdu-mode">7 Send SMS in PDU Mode</a><ul></ul></li>
+<li><a href="#sms-pdu-format">8 SMS PDU Format</a><ul></ul></li>
+<li><a href="#sms-text-mode-vs-pdu-mode">9 SMS Text Mode vs PDU Mode</a><ul></ul></li>
+<li><a href="#receive-phone-call">10 Receive Phone Call</a><ul></ul></li>
+<li><a href="#receive-sms">11 Receive SMS</a><ul></ul></li>
+<li><a href="#at-modem-api">12 AT Modem API</a><ul></ul></li>
+<li><a href="#uart-vs-usb">13 UART vs USB</a><ul></ul></li>
+<li><a href="#whats-next">14 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>1 May 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/lte2-title.jpg" alt="Apache NuttX RTOS makes a Phone Call from Pine64 PinePhone" /></p>
 <p>What makes <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> a phone? Because it will make <strong>Phone Calls</strong> and send <strong>Text Messages</strong>!</p>
 <p>We’re porting <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) to PinePhone. Today let’s turn <strong>NuttX into a Feature Phone</strong>…</p>
@@ -117,7 +118,7 @@
 <p>To control the LTE Modem, we send <strong>AT Commands</strong>…</p>
 <ul>
 <li>
-<p><a href="https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf"><strong>EG25-G AT Commands</strong></a></p>
+<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf"><strong>EG25-G AT Commands</strong></a></p>
 </li>
 <li>
 <p><a href="https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_GNSS_Application_Note_V1.3.pdf"><strong>EG25-G GNSS</strong></a></p>
@@ -232,7 +233,7 @@ Write command: AT\r
 RDY
 </code></pre></div>
 <p>“<strong><code>RDY</code></strong>” means that the LTE Modem is ready for AT Commands!</p>
-<p><a href="https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 297)</a></p>
+<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 297)</a></p>
 <p>Our NuttX App sends command “<strong><code>AT</code></strong>” again…</p>
 <div class="example-wrap"><pre class="language-text"><code>Write command: AT\r
 Response:
@@ -247,12 +248,12 @@ Response:
 <li>
 <p>“<strong><code>+CFUN: 1</code></strong>”</p>
 <p>This says that the LTE Modem is fully operational</p>
-<p><a href="https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 33)</a></p>
+<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 33)</a></p>
 </li>
 <li>
 <p>“<strong><code>+CPIN: READY</code></strong>”</p>
 <p>4G SIM Card is all ready, no PIN needed</p>
-<p><a href="https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 60)</a></p>
+<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 60)</a></p>
 </li>
 <li>
 <p>“<strong><code>+QUSIM: 1</code></strong>”</p>
@@ -262,12 +263,12 @@ Response:
 <li>
 <p>“<strong><code>+QIND: SMS DONE</code></strong>”</p>
 <p>SMS is ready</p>
-<p><a href="https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 297)</a></p>
+<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 297)</a></p>
 </li>
 <li>
 <p>“<strong><code>+QIND: PB DONE</code></strong>”</p>
 <p>Phonebook is ready (for SIM Contacts)</p>
-<p><a href="https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 297)</a></p>
+<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 297)</a></p>
 </li>
 </ul>
 <p>Our NuttX App sends command “<strong><code>AT</code></strong>” once more…</p>
@@ -283,11 +284,23 @@ OK
 <p><em>The actual log looks kinda messy…</em></p>
 <p>Yeah we’ll talk about the proper AT Modem API in a while.</p>
 <p>Right now let’s make some phone calls!</p>
-<p><img src="https://lupyuen.github.io/images/lte2-title.jpg" alt="NuttX makes a Phone Call from PinePhone" /></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L683-L735"><em>NuttX makes a Phone Call from PinePhone</em></a></p>
-<h1 id="outgoing-phone-call"><a href="#outgoing-phone-call">4 Outgoing Phone Call</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L81-L122">hello_main.c</a></p>
+<h1 id="check-the-lte-network"><a href="#check-the-lte-network">4 Check the LTE Network</a></h1>
+<p><em>Before making a Phone Call…</em></p>
+<p><em>How to check if the 4G LTE Network is OK?</em></p>
+<p>To check if the LTE Modem has connected successfully to the 4G LTE Network, we send these AT Commands…</p>
+<ul>
+<li>
+<p>“<strong><code>AT+CREG?</code></strong>”</p>
+<p>Check Network Status</p>
+<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 77)</a></p>
+</li>
+<li>
+<p>“<strong><code>AT+COPS?</code></strong>”</p>
+<p>Get Network Operator</p>
+<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 75)</a></p>
+</li>
+</ul>
+<p>This is how we do it: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L81-L122">hello_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Check the Network Status: AT+CREG?
 const char cmd[] = &quot;AT+CREG?\r&quot;;
 write(fd, cmd, strlen(cmd));
@@ -308,6 +321,27 @@ write(fd, cmd, strlen(cmd));
 
 // Omitted: Read response and wait 2 seconds
 </code></pre></div>
+<p>And here’s the output…</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.0.3
+nsh&gt; hello
+
+// Check Network Status
+Command: AT+CREG?
+Response:
++CREG: 0,1
+// Network is ready
+
+// Get Network Operator (SGP-M1)
+Command: AT+COPS?
+Response: +COPS: 0,0,&quot;SGP-M1&quot;,7
+</code></pre></div>
+<p>“<strong><code>+CREG: 0,1</code></strong>” says that the 4G LTE Network is ready.</p>
+<p>“<strong><code>SGP-M1</code></strong>” is the name of our 4G LTE Network Operator.</p>
+<p>We’re all set to make some calls!</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L737">(See the Complete Log)</a></p>
+<p><img src="https://lupyuen.github.io/images/lte2-title.jpg" alt="NuttX makes a Phone Call from PinePhone" /></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L683-L735"><em>NuttX makes a Phone Call from PinePhone</em></a></p>
+<h1 id="outgoing-phone-call"><a href="#outgoing-phone-call">5 Outgoing Phone Call</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L343-L432">dial_number</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Get Range of PCM Parameters for Digital Audio
@@ -387,7 +421,7 @@ Response: OK
 <p>TODO: What does this say: <code>+QDAI: 1,1,0,1,0,0,1,1</code></p>
 <p><img src="https://lupyuen.github.io/images/lte2-sms.jpg" alt="NuttX sends an SMS in Text Mode" /></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L622-L659"><em>NuttX sends an SMS in Text Mode</em></a></p>
-<h1 id="send-sms-in-text-mode"><a href="#send-sms-in-text-mode">5 Send SMS in Text Mode</a></h1>
+<h1 id="send-sms-in-text-mode"><a href="#send-sms-in-text-mode">6 Send SMS in Text Mode</a></h1>
 <p>TODO</p>
 <p>This is how we send an SMS in Text Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L162-L253">send_sms_text</a></p>
 <p>Here’s the log…</p>
@@ -423,7 +457,7 @@ OK
 <div class="example-wrap"><pre class="language-text"><code>+CMS ERROR: 350
 </code></pre></div>
 <p>Maybe the Modem isn’t ready to transmit SMS? Should we retry?</p>
-<h1 id="send-sms-in-pdu-mode"><a href="#send-sms-in-pdu-mode">6 Send SMS in PDU Mode</a></h1>
+<h1 id="send-sms-in-pdu-mode"><a href="#send-sms-in-pdu-mode">7 Send SMS in PDU Mode</a></h1>
 <p>TODO</p>
 <p>Now we send an SMS Message in PDU Mode. Based on…</p>
 <ul>
@@ -498,7 +532,7 @@ OK
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L663-L681">(See the Complete Log)</a></p>
 <p>Let’s talk about the SMS PDU…</p>
-<h1 id="sms-pdu-format"><a href="#sms-pdu-format">7 SMS PDU Format</a></h1>
+<h1 id="sms-pdu-format"><a href="#sms-pdu-format">8 SMS PDU Format</a></h1>
 <p>TODO</p>
 <p><em>What’s the PDU Length?</em></p>
 <p>Our SMS Message PDU has 42 total bytes…</p>
@@ -656,7 +690,7 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 </tbody></table>
 </div>
 <p>(These are 7-Bit ASCII Characters, so the UTF-16 Encoding looks identical to ASCII)</p>
-<h1 id="sms-text-mode-vs-pdu-mode"><a href="#sms-text-mode-vs-pdu-mode">8 SMS Text Mode vs PDU Mode</a></h1>
+<h1 id="sms-text-mode-vs-pdu-mode"><a href="#sms-text-mode-vs-pdu-mode">9 SMS Text Mode vs PDU Mode</a></h1>
 <p>TODO</p>
 <p><em>Why send SMS in PDU Mode instead of Text Mode?</em></p>
 <p>TODO: More reliable (304 Invalid PDU), UTF-16, Receive messages</p>
@@ -677,19 +711,19 @@ This is a test from Quectel.
 AT+CNMA
 OK
 </code></pre></div>
-<p><a href="https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 167)</a></p>
-<h1 id="receive-phone-call"><a href="#receive-phone-call">9 Receive Phone Call</a></h1>
+<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 167)</a></p>
+<h1 id="receive-phone-call"><a href="#receive-phone-call">10 Receive Phone Call</a></h1>
 <p>TODO</p>
-<h1 id="receive-sms"><a href="#receive-sms">10 Receive SMS</a></h1>
+<h1 id="receive-sms"><a href="#receive-sms">11 Receive SMS</a></h1>
 <p>TODO</p>
-<h1 id="at-modem-api"><a href="#at-modem-api">11 AT Modem API</a></h1>
+<h1 id="at-modem-api"><a href="#at-modem-api">12 AT Modem API</a></h1>
 <p>TODO</p>
 <p><a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html">nRF Connect Modem Library: AT interface</a></p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/tcp_ipc_server/uart_lorawan_layer.c#L262-L274">uart_lorawan_layer.c</a></p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/netutils/esp8266/esp8266.c#L1573-L1582">esp8266.c</a></p>
-<h1 id="uart-vs-usb"><a href="#uart-vs-usb">12 UART vs USB</a></h1>
+<h1 id="uart-vs-usb"><a href="#uart-vs-usb">13 UART vs USB</a></h1>
 <p>TODO</p>
-<h1 id="whats-next"><a href="#whats-next">13 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">14 What’s Next</a></h1>
 <p>TODO</p>
 <p>I hope this article was helpful for learning about PinePhone’s 4G LTE Modem…</p>
 <p>TODO</p>
