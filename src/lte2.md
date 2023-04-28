@@ -609,6 +609,10 @@ TODO
 
 TODO
 
+# PCM Digital Audio
+
+TODO
+
 # What's Next
 
 TODO
@@ -788,13 +792,15 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 
   [(GSM 03.40, Message Content)](https://en.wikipedia.org/wiki/GSM_03.40#Message_Content)
 
-# Appendix: SMS PDU Encoding
+Let's talk about the Message Text Encoding...
+
+# Appendix: SMS PDU Message Encoding
 
 TODO
 
 _How do we encode the Message Text?_
 
-From above we see that the Message Text is encoded with UCS2 Character Set...
+From the previous section we see that the Message Text is encoded with UCS2 Character Set...
 
 - TP-Data-Coding-Scheme (TP-DCS): "08"
 
