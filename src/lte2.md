@@ -259,7 +259,63 @@ Right now let's make some phone calls!
 
 TODO
 
-This is the NuttX App that makes a Phone Call on PinePhone: [dial_number](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L343-L432)
+[hello_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L81-L122)
+
+```c
+// Check the Network Status: AT+CREG?
+const char cmd[] = "AT+CREG?\r";
+write(fd, cmd, strlen(cmd));
+
+// Read response
+static char buf[1024];
+nbytes = read(fd, buf, sizeof(buf) - 1);
+if (nbytes >= 0) { buf[nbytes] = 0; }
+else { buf[0] = 0; }
+printf("Response: nbytes=%ld\n%s\n", nbytes, buf);
+
+// Wait 2 seconds
+sleep(2);
+
+// Get the Network Operator
+const char cmd[] = "AT+COPS?\r";
+write(fd, cmd, strlen(cmd));
+
+// Omitted: Read response and wait 2 seconds
+```
+
+TODO
+
+[dial_number](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L343-L432)
+
+```c
+// Get Range of PCM Parameters for Digital Audio
+const char cmd[] = "AT+QDAI=?\r";
+write(fd, cmd, strlen(cmd));
+// Omitted: Read response and wait 2 seconds
+
+// Get Current PCM Configuration for Digital Audio
+const char cmd[] = "AT+QDAI?\r";
+write(fd, cmd, strlen(cmd));
+// Omitted: Read response and wait 2 seconds
+
+// Make Outgoing Phone Call
+const char cmd[] = 
+  "ATD"
+  PHONE_NUMBER
+  ";\r";
+write(fd, cmd, strlen(cmd));
+// Omitted: Read response
+
+// Wait 20 seconds for receiver to answer
+sleep(20);
+
+// Hang up Phone Call
+const char cmd[] = "ATH\r";
+write(fd, cmd, strlen(cmd));
+// Omitted: Read response and wait 2 seconds
+```
+
+TODO
 
 Here's the output...
 
