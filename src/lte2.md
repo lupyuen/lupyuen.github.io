@@ -245,7 +245,11 @@ Which means that our LTE Modem is running AT Commands all OK!
 
 [(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L630)
 
-TODO
+_The actual log looks kinda messy..._
+
+Yeah we'll talk about the proper AT Modem API in a while.
+
+Right now let's make some phone calls!
 
 ![NuttX makes a Phone Call from PinePhone](https://lupyuen.github.io/images/lte2-title.jpg)
 
