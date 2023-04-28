@@ -38,7 +38,7 @@ Inside PinePhone is the [__Quectel EG25-G LTE Modem__](https://wiki.pine64.org/i
 
 To control the LTE Modem, we send __AT Commands__...
 
--   [__EG25-G AT Commands__](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+-   [__EG25-G AT Commands__](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
 -   [__EG25-G GNSS__](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_GNSS_Application_Note_V1.3.pdf)
 
@@ -648,7 +648,7 @@ RDY
 
 "__`RDY`__" means that the LTE Modem is ready for AT Commands!
 
-[(EG25-G AT Commands, Page 297)](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+[(EG25-G AT Commands, Page 297)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
 Our NuttX App sends command "__`AT`__" again...
 
@@ -665,13 +665,13 @@ LTE Modem replies...
 
   This says that the LTE Modem is fully operational
 
-  [(EG25-G AT Commands, Page 33)](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+  [(EG25-G AT Commands, Page 33)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
 - "__`+CPIN: NOT INSERTED`__"
 
   This says that we haven't inserted a SIM Card into the LTE Modem
 
-  [(EG25-G AT Commands, Page 60)](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+  [(EG25-G AT Commands, Page 60)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
 Our NuttX App sends command "__`AT`__" once more...
 

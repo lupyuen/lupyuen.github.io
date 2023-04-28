@@ -36,7 +36,7 @@ Inside PinePhone is the [__Quectel EG25-G LTE Modem__](https://wiki.pine64.org/i
 
 To control the LTE Modem, we send __AT Commands__...
 
--   [__EG25-G AT Commands__](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+-   [__EG25-G AT Commands__](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
 -   [__EG25-G GNSS__](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_GNSS_Application_Note_V1.3.pdf)
 
@@ -182,7 +182,7 @@ RDY
 
 "__`RDY`__" means that the LTE Modem is ready for AT Commands!
 
-[(EG25-G AT Commands, Page 297)](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+[(EG25-G AT Commands, Page 297)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
 Our NuttX App sends command "__`AT`__" again...
 
@@ -202,13 +202,13 @@ LTE Modem replies...
 
   This says that the LTE Modem is fully operational
 
-  [(EG25-G AT Commands, Page 33)](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+  [(EG25-G AT Commands, Page 33)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
 - "__`+CPIN: READY`__"
 
   4G SIM Card is all ready, no PIN needed
 
-  [(EG25-G AT Commands, Page 60)](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+  [(EG25-G AT Commands, Page 60)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
 - "__`+QUSIM: 1`__"
 
@@ -220,13 +220,13 @@ LTE Modem replies...
 
   SMS is ready
 
-  [(EG25-G AT Commands, Page 297)](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+  [(EG25-G AT Commands, Page 297)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
 - "__`+QIND: PB DONE`__"
 
   Phonebook is ready (for SIM Contacts)
 
-  [(EG25-G AT Commands, Page 297)](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+  [(EG25-G AT Commands, Page 297)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
 Our NuttX App sends command "__`AT`__" once more...
 
@@ -251,15 +251,27 @@ Yeah we'll talk about the proper AT Modem API in a while.
 
 Right now let's make some phone calls!
 
-![NuttX makes a Phone Call from PinePhone](https://lupyuen.github.io/images/lte2-title.jpg)
+# Check the LTE Network
 
-[_NuttX makes a Phone Call from PinePhone_](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L683-L735)
+_Before making a Phone Call..._
 
-# Outgoing Phone Call
+_How to check if the 4G LTE Network is OK?_
 
-TODO
+To check if the LTE Modem has connected successfully to the 4G LTE Network, we send these AT Commands...
 
-[hello_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L81-L122)
+- "__`AT+CREG?`__"
+
+  Check Network Status
+
+  [(EG25-G AT Commands, Page 77)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
+- "__`AT+COPS?`__"
+
+  Get Network Operator
+
+  [(EG25-G AT Commands, Page 75)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
+This is how we do it: [hello_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L81-L122)
 
 ```c
 // Check the Network Status: AT+CREG?
@@ -282,6 +294,37 @@ write(fd, cmd, strlen(cmd));
 
 // Omitted: Read response and wait 2 seconds
 ```
+
+And here's the output...
+
+```text
+NuttShell (NSH) NuttX-12.0.3
+nsh> hello
+
+// Check Network Status
+Command: AT+CREG?
+Response:
++CREG: 0,1
+// Network is ready
+
+// Get Network Operator (SGP-M1)
+Command: AT+COPS?
+Response: +COPS: 0,0,"SGP-M1",7
+```
+
+"__`+CREG: 0,1`__" says that the 4G LTE Network is ready.
+
+"__`SGP-M1`__" is the name of our 4G LTE Network Operator.
+
+We're all set to make some calls!
+
+[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L737)
+
+![NuttX makes a Phone Call from PinePhone](https://lupyuen.github.io/images/lte2-title.jpg)
+
+[_NuttX makes a Phone Call from PinePhone_](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L683-L735)
+
+# Outgoing Phone Call
 
 TODO
 
@@ -738,7 +781,7 @@ AT+CNMA
 OK
 ```
 
-[(EG25-G AT Commands, Page 167)](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+[(EG25-G AT Commands, Page 167)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
 # Receive Phone Call
 
