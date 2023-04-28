@@ -70,9 +70,9 @@ Today we'll talk about the __UART Interface__, which is sufficient for building 
 
 Let's power up the LTE Modem in PinePhone...
 
-![LTE Modem Power](https://lupyuen.github.io/images/lte-power2.png)
+![Note: Power Key and Reset are High-Low Inverted for PinePhone](https://lupyuen.github.io/images/lte-power2.png)
 
-[_Power Key and Reset are __High-Low Inverted__ for PinePhone_](https://lupyuen.github.io/articles/lte#power-on-lte-modem)
+[_Note: Power Key and Reset are __High-Low Inverted__ for PinePhone_](https://lupyuen.github.io/articles/lte#power-on-lte-modem)
 
 # Start LTE Modem
 
