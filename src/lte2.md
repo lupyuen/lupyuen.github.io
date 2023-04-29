@@ -792,6 +792,10 @@ TODO: More reliable (304 Invalid PDU), UTF-16, Receive messages
 
 TODO: What about receiving Phone Calls and SMS Messages?
 
+- [__"Receive Phone Call and SMS"__](https://lupyuen.github.io/articles/lte2#appendix-receive-phone-call-and-sms)
+
+TODO: Proper AT Modem API
+
 [nRF Connect Modem Library: AT interface](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html)
 
 [uart_lorawan_layer.c](https://github.com/apache/nuttx-apps/blob/master/examples/tcp_ipc_server/uart_lorawan_layer.c#L262-L274)
