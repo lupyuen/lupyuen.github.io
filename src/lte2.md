@@ -407,7 +407,7 @@ And the phone rings for the called Phone Number! (Pic above)
 
 _But how will we talk to the called Phone Number?_
 
-Aha! That's why we need the "__`AT+QDAI`__" commands for the __PCM Digital Audio__ setup. More about this...
+Aha! That's why we need the "__`AT+QDAI`__" commands, for the __PCM Digital Audio__ setup. More about this...
 
 - [__"PCM Digital Audio"__](https://lupyuen.github.io/articles/lte2#appendix-pcm-digital-audio)
 
