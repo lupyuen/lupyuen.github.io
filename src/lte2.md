@@ -598,7 +598,7 @@ Let's walk through the steps to send an __SMS in PDU Mode__...
 
     Suppose we're sending an SMS to this Phone Number (Country Code is mandatory)...
 
-    ```text
+    ```c
     #define PHONE_NUMBER    "+1234567890"
     #define PHONE_NUMBER_PDU "2143658709"
     ```
@@ -616,7 +616,7 @@ Let's walk through the steps to send an __SMS in PDU Mode__...
 
     This is the AT Command to __send an SMS__...
 
-    ```text
+    ```c
     // Send an SMS with 41 bytes (excluding SMSC)
     const char cmd[] = 
       "AT+CMGS="
@@ -632,7 +632,7 @@ Let's walk through the steps to send an __SMS in PDU Mode__...
 
 1.  __Enter SMS Message__ in PDU Format, like this...
 
-    ```text
+    ```c
     // SMS Message in PDU Format
     const char cmd[] = 
       "00"  // Length of SMSC information (None)
@@ -775,7 +775,9 @@ OK
 
 - [__"SMS PDU Message Encoding"__](https://lupyuen.github.io/articles/lte2#appendix-sms-pdu-message-encoding)
 
-Let's talk about the SMS PDU...
+TODO: 304 Invalid PDU
+
+Let's find out why we prefer PDU Mode over Text Mode...
 
 # SMS Text Mode vs PDU Mode
 
