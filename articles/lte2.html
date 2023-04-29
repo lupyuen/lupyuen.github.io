@@ -560,7 +560,7 @@ Response:
 <li>
 <p><strong>Phone Numbers</strong> are a little odd in PDU Mode.</p>
 <p>Suppose we’re sending an SMS to this Phone Number (Country Code is mandatory)…</p>
-<div class="example-wrap"><pre class="language-text"><code>#define PHONE_NUMBER    &quot;+1234567890&quot;
+<div class="example-wrap"><pre class="language-c"><code>#define PHONE_NUMBER    &quot;+1234567890&quot;
 #define PHONE_NUMBER_PDU &quot;2143658709&quot;
 </code></pre></div>
 <p>Note that we <strong>flip the nibbles</strong> (half-bytes) from the Original Phone Number to produce the <strong>PDU Phone Number</strong>.</p>
@@ -571,7 +571,7 @@ Response:
 <li>
 <p>Let’s assume there are 10 Decimal Digits in the destination Phone Number: “<strong><code>+1234567890</code></strong>” (Country Code is mandatory)</p>
 <p>This is the AT Command to <strong>send an SMS</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>// Send an SMS with 41 bytes (excluding SMSC)
+<div class="example-wrap"><pre class="language-c"><code>// Send an SMS with 41 bytes (excluding SMSC)
 const char cmd[] = 
   &quot;AT+CMGS=&quot;
   &quot;41&quot;  // TODO: PDU Length in bytes, excluding the Length of SMSC
@@ -585,7 +585,7 @@ const char cmd[] =
 </li>
 <li>
 <p><strong>Enter SMS Message</strong> in PDU Format, like this…</p>
-<div class="example-wrap"><pre class="language-text"><code>// SMS Message in PDU Format
+<div class="example-wrap"><pre class="language-c"><code>// SMS Message in PDU Format
 const char cmd[] = 
   &quot;00&quot;  // Length of SMSC information (None)
   &quot;11&quot;  // SMS-SUBMIT message
@@ -720,7 +720,8 @@ OK
 <p><a href="https://lupyuen.github.io/articles/lte2#appendix-sms-pdu-message-encoding"><strong>“SMS PDU Message Encoding”</strong></a></p>
 </li>
 </ul>
-<p>Let’s talk about the SMS PDU…</p>
+<p>TODO: 304 Invalid PDU</p>
+<p>Let’s find out why we prefer PDU Mode over Text Mode…</p>
 <h1 id="sms-text-mode-vs-pdu-mode"><a href="#sms-text-mode-vs-pdu-mode">8 SMS Text Mode vs PDU Mode</a></h1>
 <p>TODO</p>
 <p><em>Why send SMS in PDU Mode instead of Text Mode?</em></p>
