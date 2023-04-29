@@ -401,11 +401,17 @@ Command: ATH
 Response: OK
 ```
 
+And the phone rings for the called Phone Number! (Pic above)
+
 [(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L737)
 
-_What's "`AT+QDAI`"?_
+_But how will we talk to the called Phone Number?_
 
-TODO
+Aha! That's why we need the "__`AT+QDAI`__" commands for the __PCM Digital Audio__ setup. More about this...
+
+- [__"PCM Digital Audio"__](https://lupyuen.github.io/articles/lte2#appendix-pcm-digital-audio)
+
+Now we send an SMS Text Message...
 
 ![NuttX sends an SMS in Text Mode](https://lupyuen.github.io/images/lte2-sms.jpg)
 
