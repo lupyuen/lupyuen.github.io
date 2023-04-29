@@ -535,7 +535,7 @@ Hello from Apache NuttX RTOS on PinePhone!<Ctrl-Z>
 
 // Modem responds with the Message ID
 Response:
-+CMGS: 13
++CMGS: 22
 OK
 ```
 
@@ -566,9 +566,13 @@ Also check that the SIM Card works OK on another phone.
 
 # Send SMS in PDU Mode
 
-TODO
+_Sending an SMS Message looks easy!_
 
-Now we send an SMS Message in PDU Mode. Based on...
+Ah but there's another (preferred and precise) way: __PDU Mode__.
+
+[(Which means __Protocol Data Unit__)](https://en.wikipedia.org/wiki/GSM_03.40)
+
+In PDU Mode, we encode the SMS Messages as __Hexadecimal Numbers__. These are the official docs...
 
 - [__Quectel GSM AT Commands Application Note__](https://www.cika.com/soporte/Information/GSMmodules/Quectel/AppNotes/Quectel_GSM_ATC_Application_Note.pdf)
 
@@ -581,6 +585,10 @@ Now we send an SMS Message in PDU Mode. Based on...
 - [__ETSI GSM 03.40 Spec__](https://en.wikipedia.org/wiki/GSM_03.40)
 
   (For PDU Format)
+
+Let's walk through the steps to send an __SMS in PDU Mode__...
+
+TODO
 
 This is how we send an SMS in PDU Mode: [send_sms_pdu](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L255-L341)
 
@@ -721,25 +729,23 @@ TODO
 Here's the log...
 
 ```text
-// Set Message Format to PDU Mode
+// Select PDU Mode for SMS (instead of SMS Mode)
 Command: AT+CMGF=0
 Response: OK
 
 // Send an SMS with 41 bytes (excluding SMSC)
 Command: AT+CMGS=41
 
-// We wait for Modem to respond with ">"
+// Wait for Modem to respond with ">"
 Response: > 
 
-// SMS Message in PDU Format, terminate with Ctrl-Z.
-// yourphonenumberpdu looks like 2143658709, which represents +1234567890
-// Country Code is mandatory. Remember to insert "F" for odd number of nibbles.
+// Enter SMS Message in PDU Format, terminate with Ctrl-Z
 Command:
-0011000A91yourphonenumberpdu0008011C00480065006C006C006F002C005100750065006300740065006C0021<Ctrl-Z>
+0011000A9121436587090008011C00480065006C006C006F002C005100750065006300740065006C0021<Ctrl-Z>
 
-// Modem sends the SMS Message
+// Modem responds with the Message ID
 Response: 
-+CMGS: 14
++CMGS: 23
 OK
 ```
 
