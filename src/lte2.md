@@ -12,7 +12,7 @@ We're porting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (
 
 -   Send and receive __SMS Text Messages__
 
--   Why we prefer __PDU Text Messages__ for SMS
+-   Why we prefer __Encoded PDU Messages__ for SMS
 
 -   Programming the __4G LTE Modem__ with Apache NuttX RTOS
 
