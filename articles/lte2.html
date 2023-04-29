@@ -322,7 +322,7 @@ write(fd, cmd, strlen(cmd));
 
 // Omitted: Read response and wait 2 seconds
 </code></pre></div>
-<p>And here’s the output…</p>
+<p>And here’s the output (pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.0.3
 nsh&gt; hello
 
@@ -405,7 +405,7 @@ Response: OK
 <p>And the phone rings for the called Phone Number! (Pic above)</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L737">(See the Complete Log)</a></p>
 <p><em>But how will we talk to the called Phone Number?</em></p>
-<p>Aha! That’s why we need the “<strong><code>AT+QDAI</code></strong>” commands, for the <strong>PCM Digital Audio</strong> setup. More about this…</p>
+<p>Aha! That’s why we need the “<strong><code>AT+QDAI</code></strong>” commands, for the <strong>PCM Digital Audio</strong> setup. We’re still working on it…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lte2#appendix-pcm-digital-audio"><strong>“PCM Digital Audio”</strong></a></li>
 </ul>
@@ -413,128 +413,111 @@ Response: OK
 <p><img src="https://lupyuen.github.io/images/lte2-sms.jpg" alt="NuttX sends an SMS in Text Mode" /></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L622-L659"><em>NuttX sends an SMS in Text Mode</em></a></p>
 <h1 id="send-sms-in-text-mode"><a href="#send-sms-in-text-mode">6 Send SMS in Text Mode</a></h1>
-<p>TODO</p>
-<p>This is how we send an SMS in Text Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L162-L253">send_sms_text</a></p>
-<div class="example-wrap"><pre class="language-c"><code>  // Set Message Format to Text Mode
-  // AT+CMGF=1
-  {
-    // Write command
-    const char cmd[] = &quot;AT+CMGF=1\r&quot;;
-    ssize_t nbytes = write(fd, cmd, strlen(cmd));
-    printf(&quot;Write command: nbytes=%ld\n%s\n&quot;, nbytes, cmd);
-    assert(nbytes == strlen(cmd));
+<p>To send an <strong>SMS Message</strong> (in Text Mode), use these AT Commands…</p>
+<ol>
+<li>
+<p>“<strong><code>AT+CMGF=1</code></strong>”</p>
+<p>Select Text Mode for SMS (instead of PDU Mode)</p>
+</li>
+<li>
+<p>“<strong><code>AT+CSCS=&quot;GSM&quot;</code></strong>”</p>
+<p>Set SMS Character Set to GSM</p>
+</li>
+<li>
+<p>“<strong><code>AT+CMGS=&quot;+1234567890&quot;</code></strong>”</p>
+<p>Send an SMS to the (imaginary) Phone Number “<strong><code>+1234567890</code></strong>”</p>
+<p>(Also works without country code, like “<strong><code>234567890</code></strong>”)</p>
+</li>
+<li>
+<p><strong>Wait for Modem</strong> to respond with “<strong><code>&gt;</code></strong>”</p>
+</li>
+<li>
+<p><strong>Enter SMS Message</strong> in Text Format, terminate with Ctrl-Z…</p>
+<div class="example-wrap"><pre class="language-text"><code>Hello from Apache NuttX RTOS on PinePhone!&lt;Ctrl-Z&gt;
+</code></pre></div></li>
+<li>
+<p>Modem responds with the <strong>Message ID</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>+CMGS: 22
+</code></pre></div></li>
+</ol>
+<p>This is how we send an SMS with NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L162-L253">send_sms_text</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Select Text Mode for SMS (instead of PDU Mode)
+const char cmd[] = &quot;AT+CMGF=1\r&quot;;
+write(fd, cmd, strlen(cmd));
+// Omitted: Read response and wait 2 seconds
 
-    // Read response
-    static char buf[1024];
-    nbytes = read(fd, buf, sizeof(buf) - 1);
-    if (nbytes &gt;= 0) { buf[nbytes] = 0; }
-    else { buf[0] = 0; }
-    printf(&quot;Response: nbytes=%ld\n%s\n&quot;, nbytes, buf);
+// Set SMS Character Set to GSM
+const char cmd[] = &quot;AT+CSCS=\&quot;GSM\&quot;\r&quot;;
+write(fd, cmd, strlen(cmd));
+// Omitted: Read response and wait 2 seconds
 
-    // Wait a while
-    sleep(2);
-  }
+// Phone Number that will receive the SMS.
+// Also works without country code, like &quot;234567890&quot;
+#define PHONE_NUMBER &quot;+1234567890&quot;
 
-  // Set Character Set to GSM
-  // AT+CSCS=&quot;GSM&quot;
-  {
-    // Write command
-    const char cmd[] = &quot;AT+CSCS=\&quot;GSM\&quot;\r&quot;;
-    ssize_t nbytes = write(fd, cmd, strlen(cmd));
-    printf(&quot;Write command: nbytes=%ld\n%s\n&quot;, nbytes, cmd);
-    assert(nbytes == strlen(cmd));
+// Send an SMS to the (imaginary) Phone Number &quot;+1234567890&quot;
+const char cmd[] = 
+  &quot;AT+CMGS=\&quot;&quot;
+  PHONE_NUMBER
+  &quot;\&quot;\r&quot;;
+write(fd, cmd, strlen(cmd));
+// Omitted: Read response and wait 2 seconds
 
-    // Read response
-    static char buf[1024];
-    nbytes = read(fd, buf, sizeof(buf) - 1);
-    if (nbytes &gt;= 0) { buf[nbytes] = 0; }
-    else { buf[0] = 0; }
-    printf(&quot;Response: nbytes=%ld\n%s\n&quot;, nbytes, buf);
+// Wait for Modem to respond with &quot;&gt;&quot;
+for (;;) {
+  // Read response
+  static char buf[1024];
+  ssize_t nbytes = read(fd, buf, sizeof(buf) - 1);
+  if (nbytes &gt;= 0) { buf[nbytes] = 0; }
+  else { buf[0] = 0; }
+  printf(&quot;Response: nbytes=%ld\n%s\n&quot;, nbytes, buf);
 
-    // Wait a while
-    sleep(2);
-  }
+  // Stop if we find &quot;&gt;&quot;
+  if (strchr(buf, &#39;&gt;&#39;) != NULL) { break; }
+}
 
-  // Send SMS Text Message, assuming Message Format is Text Mode
-  // AT+CMGS=&quot;yourphonenumber&quot;\r
-  // text is entered
-  // &lt;Ctrl+Z&gt;
-  {
-    // Write command
-    const char cmd[] = 
-      &quot;AT+CMGS=\&quot;&quot;
-      PHONE_NUMBER
-      &quot;\&quot;\r&quot;;
-    ssize_t nbytes = write(fd, cmd, strlen(cmd));
-    printf(&quot;Write command: nbytes=%ld\n%s\n&quot;, nbytes, cmd);
-    assert(nbytes == strlen(cmd));
-  }
-  // Wait for &quot;&gt;&quot;
-  for (;;)
-    {
-      // Read response
-      static char buf[1024];
-      ssize_t nbytes = read(fd, buf, sizeof(buf) - 1);
-      if (nbytes &gt;= 0) { buf[nbytes] = 0; }
-      else { buf[0] = 0; }
-      printf(&quot;Response: nbytes=%ld\n%s\n&quot;, nbytes, buf);
+// Enter SMS Message in Text Format, terminate with Ctrl-Z
+const char cmd[] = 
+  &quot;Hello from Apache NuttX RTOS on PinePhone!&quot;
+  &quot;\x1A&quot;;  // End of Message (Ctrl-Z)
+write(fd, cmd, strlen(cmd));
 
-      // Stop if we find &quot;&gt;&quot;
-      if (strchr(buf, &#39;&gt;&#39;) != NULL) { break; }
-    }
-  {
-    // Write message
-    const char cmd[] = 
-      &quot;Hello from Apache NuttX RTOS on PinePhone! (SMS Text Mode)&quot;
-      &quot;\x1A&quot;;  // End of Message (Ctrl-Z)
-    ssize_t nbytes = write(fd, cmd, strlen(cmd));
-    printf(&quot;Write command: nbytes=%ld\n%s\n&quot;, nbytes, cmd);
-    assert(nbytes == strlen(cmd));
-
-    // Read response
-    static char buf[1024];
-    nbytes = read(fd, buf, sizeof(buf) - 1);
-    if (nbytes &gt;= 0) { buf[nbytes] = 0; }
-    else { buf[0] = 0; }
-    printf(&quot;Response: nbytes=%ld\n%s\n&quot;, nbytes, buf);
-
-    // Wait a while
-    sleep(2);
-  }
+// Omitted: Read response and wait 2 seconds
+// Modem responds with the Message ID
 </code></pre></div>
-<p>Here’s the log…</p>
-<div class="example-wrap"><pre class="language-text"><code>// Set Message Format to Text Mode
+<p>Here’s the log (pic above)…</p>
+<div class="example-wrap"><pre class="language-text"><code>// Select Text Mode for SMS (instead of PDU Mode)
 Command: AT+CMGF=1
 Response: OK
 
-// Set Character Set to GSM
+// Set SMS Character Set to GSM
 Command: AT+CSCS=&quot;GSM&quot;
 Response: OK
 
-// Send an SMS to the Phone Number.
-// yourphonenumber looks like +1234567890
-// Works without country code, like 234567890
+// Send an SMS to the (imaginary) Phone Number &quot;+1234567890&quot;
+// Also works without country code, like &quot;234567890&quot;
 Command:
-AT+CMGS=&quot;yourphonenumber&quot;
+AT+CMGS=&quot;+1234567890&quot;
 
-// We wait for Modem to respond with &quot;&gt;&quot;
+// Wait for Modem to respond with &quot;&gt;&quot;
 Response:
 &gt; 
 
-// SMS Message in Text Format, terminate with Ctrl-Z
+// Enter SMS Message in Text Format, terminate with Ctrl-Z
 Command:
-Hello from Apache NuttX RTOS on PinePhone! (SMS Text Mode)&lt;Ctrl-Z&gt;
+Hello from Apache NuttX RTOS on PinePhone!&lt;Ctrl-Z&gt;
 
-// Modem sends the SMS Message
+// Modem responds with the Message ID
 Response:
 +CMGS: 13
 OK
 </code></pre></div>
+<p>And the SMS Message will be sent to the Phone Number! (Pic above)</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L622-L659">(See the Complete Log)</a></p>
-<p><em>Why do we get Error 350 sometimes? (Rejected by SMSC)</em></p>
+<p><em>What if we get Error 350?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>+CMS ERROR: 350
 </code></pre></div>
-<p>Maybe the Modem isn’t ready to transmit SMS? Should we retry?</p>
+<p>TODO: (Rejected by SMSC)</p>
 <h1 id="send-sms-in-pdu-mode"><a href="#send-sms-in-pdu-mode">7 Send SMS in PDU Mode</a></h1>
 <p>TODO</p>
 <p>Now we send an SMS Message in PDU Mode. Based on…</p>
@@ -595,7 +578,7 @@ const char cmd[] =
   {
     // Write command
     const char cmd[] = &quot;AT+CMGF=0\r&quot;;
-    ssize_t nbytes = write(fd, cmd, strlen(cmd));
+    write(fd, cmd, strlen(cmd));
     printf(&quot;Write command: nbytes=%ld\n%s\n&quot;, nbytes, cmd);
     assert(nbytes == strlen(cmd));
 
@@ -620,7 +603,7 @@ const char cmd[] =
       &quot;AT+CMGS=&quot;
       &quot;41&quot;  // TODO: PDU Length in bytes, excluding the Length of SMSC
       &quot;\r&quot;;
-    ssize_t nbytes = write(fd, cmd, strlen(cmd));
+    write(fd, cmd, strlen(cmd));
     printf(&quot;Write command: nbytes=%ld\n%s\n&quot;, nbytes, cmd);
     assert(nbytes == strlen(cmd));
   }
