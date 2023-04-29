@@ -802,9 +802,7 @@ TODO: Proper AT Modem API
 
 [esp8266.c](https://github.com/apache/nuttx-apps/blob/master/netutils/esp8266/esp8266.c#L1573-L1582)
 
-# UART vs USB
-
-TODO
+TODO: UART vs USB
 
 # What's Next
 
