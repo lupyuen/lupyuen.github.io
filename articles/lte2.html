@@ -75,14 +75,13 @@
 <li><a href="#send-sms-in-text-mode">6 Send SMS in Text Mode</a><ul></ul></li>
 <li><a href="#send-sms-in-pdu-mode">7 Send SMS in PDU Mode</a><ul></ul></li>
 <li><a href="#sms-text-mode-vs-pdu-mode">8 SMS Text Mode vs PDU Mode</a><ul></ul></li>
-<li><a href="#receive-phone-call">9 Receive Phone Call</a><ul></ul></li>
-<li><a href="#receive-sms">10 Receive SMS</a><ul></ul></li>
-<li><a href="#at-modem-api">11 AT Modem API</a><ul></ul></li>
-<li><a href="#uart-vs-usb">12 UART vs USB</a><ul></ul></li>
-<li><a href="#whats-next">13 What’s Next</a><ul></ul></li>
+<li><a href="#at-modem-api">9 AT Modem API</a><ul></ul></li>
+<li><a href="#uart-vs-usb">10 UART vs USB</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-receive-phone-call-and-sms">12 Appendix: Receive Phone Call and SMS</a><ul></ul></li>
+<li><a href="#appendix-pcm-digital-audio">13 Appendix: PCM Digital Audio</a><ul></ul></li>
 <li><a href="#appendix-sms-pdu-format">14 Appendix: SMS PDU Format</a><ul></ul></li>
-<li><a href="#appendix-sms-pdu-message-encoding">15 Appendix: SMS PDU Message Encoding</a><ul></ul></li>
-<li><a href="#appendix-pcm-digital-audio">16 Appendix: PCM Digital Audio</a><ul></ul></li></ul></nav><p>📝 <em>5 May 2023</em></p>
+<li><a href="#appendix-sms-pdu-message-encoding">15 Appendix: SMS PDU Message Encoding</a><ul></ul></li></ul></nav><p>📝 <em>5 May 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/lte2-title.jpg" alt="Apache NuttX RTOS makes a Phone Call from Pine64 PinePhone" /></p>
 <p>What makes <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> a phone? Because it will make <strong>Phone Calls</strong> and send <strong>Text Messages</strong>!</p>
 <p>We’re porting <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) to PinePhone. Today let’s turn <strong>NuttX into a Feature Phone</strong>…</p>
@@ -370,16 +369,18 @@ const char cmd[] =
 write(fd, cmd, strlen(cmd));
 // Omitted: Read response
 </code></pre></div>
+<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 114)</a></p>
 <p>We wait 20 seconds…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Wait 20 seconds for receiver to answer
 sleep(20);
 </code></pre></div>
-<p>Then we hang up the call with “<strong><code>ATH</code></strong>”…</p>
+<p>Finally we hang up the call with “<strong><code>ATH</code></strong>”…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Hang up Phone Call
 const char cmd[] = &quot;ATH\r&quot;;
 write(fd, cmd, strlen(cmd));
 // Omitted: Read response and wait 2 seconds
 </code></pre></div>
+<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 116)</a></p>
 <p>Here’s the output (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Get Range of PCM Parameters for Digital Audio
 Command: AT+QDAI=?
@@ -418,15 +419,18 @@ Response: OK
 <li>
 <p>“<strong><code>AT+CMGF=1</code></strong>”</p>
 <p>Select Text Mode for SMS (instead of PDU Mode)</p>
+<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 146)</a></p>
 </li>
 <li>
 <p>“<strong><code>AT+CSCS=&quot;GSM&quot;</code></strong>”</p>
-<p>Set SMS Character Set to GSM</p>
+<p>Select GSM Character Set (instead of UCS2)</p>
+<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 25)</a></p>
 </li>
 <li>
 <p>“<strong><code>AT+CMGS=&quot;+1234567890&quot;</code></strong>”</p>
 <p>Send an SMS to the (imaginary) Phone Number “<strong><code>+1234567890</code></strong>”</p>
 <p>(Also works without country code, like “<strong><code>234567890</code></strong>”)</p>
+<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 159)</a></p>
 </li>
 <li>
 <p><strong>Wait for Modem</strong> to respond with “<strong><code>&gt;</code></strong>”</p>
@@ -438,7 +442,9 @@ Response: OK
 <li>
 <p>Modem responds with the <strong>Message ID</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>+CMGS: 22
-</code></pre></div></li>
+</code></pre></div>
+<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 159)</a></p>
+</li>
 </ol>
 <p>This is how we send an SMS with NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L162-L253">send_sms_text</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Select Text Mode for SMS (instead of PDU Mode)
@@ -446,7 +452,7 @@ const char cmd[] = &quot;AT+CMGF=1\r&quot;;
 write(fd, cmd, strlen(cmd));
 // Omitted: Read response and wait 2 seconds
 
-// Set SMS Character Set to GSM
+// Select GSM Character Set (instead of UCS2)
 const char cmd[] = &quot;AT+CSCS=\&quot;GSM\&quot;\r&quot;;
 write(fd, cmd, strlen(cmd));
 // Omitted: Read response and wait 2 seconds
@@ -490,7 +496,7 @@ write(fd, cmd, strlen(cmd));
 Command: AT+CMGF=1
 Response: OK
 
-// Set SMS Character Set to GSM
+// Select GSM Character Set (instead of UCS2)
 Command: AT+CSCS=&quot;GSM&quot;
 Response: OK
 
@@ -674,41 +680,27 @@ Response:
 OK
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L663-L681">(See the Complete Log)</a></p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lte2#appendix-sms-pdu-format"><strong>“SMS PDU Format”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lte2#appendix-sms-pdu-message-encoding"><strong>“SMS PDU Message Encoding”</strong></a></p>
+</li>
+</ul>
 <p>Let’s talk about the SMS PDU…</p>
 <h1 id="sms-text-mode-vs-pdu-mode"><a href="#sms-text-mode-vs-pdu-mode">8 SMS Text Mode vs PDU Mode</a></h1>
 <p>TODO</p>
 <p><em>Why send SMS in PDU Mode instead of Text Mode?</em></p>
 <p>TODO: More reliable (304 Invalid PDU), UTF-16, Receive messages</p>
-<div class="example-wrap"><pre class="language-text"><code>// Select Message Service 3GPP TS 23.040 and 3GPP TS 23.041
-AT+CSMS=1
-+CSMS: 1,1,1
-OK
-
-// Set SMS Event Reporting Configuration
-AT+CNMI=1,2,0,0,0
-OK
-
-// Message is dumped directly when an SMS is received
-+CMT: &quot;+8615021012496&quot;,,&quot;13/03/18,17:07:21+32&quot;,145,4,0,0,&quot;+8613800551500&quot;,145,28
-This is a test from Quectel.
-
-// Send ACK to the network
-AT+CNMA
-OK
-</code></pre></div>
-<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 167)</a></p>
-<h1 id="receive-phone-call"><a href="#receive-phone-call">9 Receive Phone Call</a></h1>
-<p>TODO</p>
-<h1 id="receive-sms"><a href="#receive-sms">10 Receive SMS</a></h1>
-<p>TODO</p>
-<h1 id="at-modem-api"><a href="#at-modem-api">11 AT Modem API</a></h1>
-<p>TODO</p>
+<h1 id="at-modem-api"><a href="#at-modem-api">9 AT Modem API</a></h1>
+<p>TODO: What about receiving Phone Calls and SMS Messages?</p>
 <p><a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html">nRF Connect Modem Library: AT interface</a></p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/tcp_ipc_server/uart_lorawan_layer.c#L262-L274">uart_lorawan_layer.c</a></p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/netutils/esp8266/esp8266.c#L1573-L1582">esp8266.c</a></p>
-<h1 id="uart-vs-usb"><a href="#uart-vs-usb">12 UART vs USB</a></h1>
+<h1 id="uart-vs-usb"><a href="#uart-vs-usb">10 UART vs USB</a></h1>
 <p>TODO</p>
-<h1 id="whats-next"><a href="#whats-next">13 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>I hope this article was helpful for learning about PinePhone’s 4G LTE Modem…</p>
 <p>TODO</p>
@@ -737,7 +729,48 @@ OK
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lte2.md"><strong>lupyuen.github.io/src/lte2.md</strong></a></p>
-<h1 id="appendix-sms-pdu-format"><a href="#appendix-sms-pdu-format">14 Appendix: SMS PDU Format</a></h1>
+<h1 id="appendix-receive-phone-call-and-sms"><a href="#appendix-receive-phone-call-and-sms">12 Appendix: Receive Phone Call and SMS</a></h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>RING //A voice call is ringing
+
+AT+CLCC
++CLCC: 1,0,0,1,0,&quot;&quot;,128 //PS call in LTE mode
++CLCC: 2,1,4,0,0,&quot;02154450290&quot;,129 //Incoming call
+OK
+
+ATA //Accept the voice call with ATA
+OK
+</code></pre></div>
+<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 114)</a></p>
+<div class="example-wrap"><pre class="language-text"><code>// Select Message Service 3GPP TS 23.040 and 3GPP TS 23.041
+AT+CSMS=1
++CSMS: 1,1,1
+OK
+
+// Set SMS Event Reporting Configuration
+AT+CNMI=1,2,0,0,0
+OK
+
+// Message is dumped directly when an SMS is received
++CMT: &quot;+8615021012496&quot;,,&quot;13/03/18,17:07:21+32&quot;,145,4,0,0,&quot;+8613800551500&quot;,145,28
+This is a test from Quectel.
+
+// Send ACK to the network
+AT+CNMA
+OK
+</code></pre></div>
+<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 167)</a></p>
+<p>TODO: Ring Indicator</p>
+<h1 id="appendix-pcm-digital-audio"><a href="#appendix-pcm-digital-audio">13 Appendix: PCM Digital Audio</a></h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>// Get Range of PCM Parameters for Digital Audio
+Command: AT+QDAI=?
+Response: +QDAI: (1-4),(0,1),(0,1),(0-5),(0-2),(0,1)(1)(1-16)
+
+// Get Current PCM Configuration for Digital Audio
+Command: AT+QDAI?
+Response: +QDAI: 1,1,0,1,0,0,1,1
+</code></pre></div><h1 id="appendix-sms-pdu-format"><a href="#appendix-sms-pdu-format">14 Appendix: SMS PDU Format</a></h1>
 <p>TODO</p>
 <p><em>What’s the PDU Length?</em></p>
 <p>Our SMS Message PDU has 42 total bytes…</p>
@@ -898,16 +931,7 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 </tbody></table>
 </div>
 <p>(These are 7-Bit ASCII Characters, so the UTF-16 Encoding looks identical to ASCII)</p>
-<h1 id="appendix-pcm-digital-audio"><a href="#appendix-pcm-digital-audio">16 Appendix: PCM Digital Audio</a></h1>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>// Get Range of PCM Parameters for Digital Audio
-Command: AT+QDAI=?
-Response: +QDAI: (1-4),(0,1),(0,1),(0-5),(0-2),(0,1)(1)(1-16)
 
-// Get Current PCM Configuration for Digital Audio
-Command: AT+QDAI?
-Response: +QDAI: 1,1,0,1,0,0,1,1
-</code></pre></div>
     
 </body>
 </html>
