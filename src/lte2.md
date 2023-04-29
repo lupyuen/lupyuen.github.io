@@ -588,61 +588,83 @@ In PDU Mode, we encode the SMS Messages as __Hexadecimal Numbers__. These are th
 
 Let's walk through the steps to send an __SMS in PDU Mode__...
 
+1.  "__`AT+CMGF=0`__"
+
+    We select PDU Mode for SMS (instead of SMS Mode)
+
+    [(EG25-G AT Commands, Page 146)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
+1.  __Phone Numbers__ are a little odd in PDU Mode.
+
+    Suppose we're sending an SMS to this Phone Number (Country Code is mandatory)...
+
+    ```text
+    #define PHONE_NUMBER    "+1234567890"
+    #define PHONE_NUMBER_PDU "2143658709"
+    ```
+
+    Note that we __flip the nibbles__ (half-bytes) from the Original Phone Number to produce the __PDU Phone Number__.
+
+    If the number of __nibbles is odd__, insert "__`F`__" into the PDU Phone Number, like this...
+
+    ```text
+    #define PHONE_NUMBER    "+123456789"
+    #define PHONE_NUMBER_PDU "214365870F9"
+    ```
+
+1.  Let's assume there are 10 Decimal Digits in the destination Phone Number: "__`+1234567890`__" (Country Code is mandatory)
+
+    This is the AT Command to __send an SMS__...
+
+    ```text
+    // Send an SMS with 41 bytes (excluding SMSC)
+    const char cmd[] = 
+      "AT+CMGS="
+      "41"  // TODO: PDU Length in bytes, excluding the Length of SMSC
+      "\r";
+    ```
+
+    (More about PDU Length in a while)
+
+    [(EG25-G AT Commands, Page 159)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
+1.  __Wait for Modem__ to respond with "__`>`__"
+
+1.  __Enter SMS Message__ in PDU Format, like this...
+
+    ```text
+    // SMS Message in PDU Format
+    const char cmd[] = 
+      "00"  // Length of SMSC information (None)
+      "11"  // SMS-SUBMIT message
+      "00"  // TP-Message-Reference: 00 to let the phone set the message reference number itself
+      "0A"  // TODO: Address-Length: Length of phone number (Number of Decimal Digits in Phone Number)
+      "91"  // Type-of-Address: 91 for International Format of phone number
+      PHONE_NUMBER_PDU  // TODO: Phone Number in PDU Format
+      "00"  // TP-PID: Protocol identifier
+      "08"  // TP-DCS: Data coding scheme
+      "01"  // TP-Validity-Period
+      "1C"  // TP-User-Data-Length: Length of Encoded Message Text in bytes
+      // TP-User-Data: Encoded Message Text "Hello,Quectel!"
+      "00480065006C006C006F002C005100750065006300740065006C0021"
+      "\x1A";  // End of Message (Ctrl-Z)
+    ```
+
+    (More about these fields in a while)
+
+    (Remember to set "__Address-Length__" according to the destination Phone Number)
+
+1.  Modem responds with the __Message ID__...
+
+    ```text
+    +CMGS: 23
+    ```
+
+    [(EG25-G AT Commands, Page 159)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
 TODO
 
 This is how we send an SMS in PDU Mode: [send_sms_pdu](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L255-L341)
-
-Suppose we're sending an SMS to this Phone Number (International Format)...
-
-```text
-#define PHONE_NUMBER    "+1234567890"
-#define PHONE_NUMBER_PDU "2143658709"
-```
-
-Note that we flip the nibbles (half-bytes) from the Original Phone Number to produce the PDU Phone Number.
-
-If the number of nibbles (half-bytes) is odd, insert "F" into the PDU Phone Number like this...
-
-```text
-#define PHONE_NUMBER    "+123456789"
-#define PHONE_NUMBER_PDU "214365870F9"
-```
-
-Assuming there are 10 decimal digits in our Phone Number "+1234567890", here's the AT Command...
-
-```text
-// Send SMS Command
-const char cmd[] = 
-  "AT+CMGS="
-  "41"  // TODO: PDU Length in bytes, excluding the Length of SMSC
-  "\r";
-```
-
-(We'll talk about PDU Length in a while)
-
-And here's the SMS Message PDU that we'll send in the AT Command...
-
-```text
-// SMS Message in PDU Format
-const char cmd[] = 
-  "00"  // Length of SMSC information (None)
-  "11"  // SMS-SUBMIT message
-  "00"  // TP-Message-Reference: 00 to let the phone set the message reference number itself
-  "0A"  // TODO: Address-Length: Length of phone number (Number of Decimal Digits in Phone Number)
-  "91"  // Type-of-Address: 91 for International Format of phone number
-  PHONE_NUMBER_PDU  // TODO: Phone Number in PDU Format
-  "00"  // TP-PID: Protocol identifier
-  "08"  // TP-DCS: Data coding scheme
-  "01"  // TP-Validity-Period
-  "1C"  // TP-User-Data-Length: Length of Encoded Message Text in bytes
-  // TP-User-Data: Encoded Message Text "Hello,Quectel!"
-  "00480065006C006C006F002C005100750065006300740065006C0021"
-  "\x1A";  // End of Message (Ctrl-Z)
-```
-
-(We'll talk about Encoded Message Text in a while)
-
-(Remember to update "Address-Length" according to your phone number)
 
 TODO
 
