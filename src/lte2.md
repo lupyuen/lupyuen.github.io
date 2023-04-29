@@ -325,9 +325,7 @@ We're all set to make some calls!
 
 # Outgoing Phone Call
 
-TODO
-
-[dial_number](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L343-L432)
+This is how we dial a Phone Number to make an __Outgoing Phone Call__: [dial_number](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L343-L432)
 
 ```c
 // Get Range of PCM Parameters for Digital Audio
@@ -341,7 +339,9 @@ write(fd, cmd, strlen(cmd));
 // Omitted: Read response and wait 2 seconds
 ```
 
-(We'll talk about "__`AT+QDAI`__" in a while)
+We begin by configuring the __PCM Digital Audio__ for our Voice Call.
+
+(More about "__`AT+QDAI`__" in a while)
 
 Suppose we're dialing the (fictitious) number "__`+1234567890`__".
 
@@ -405,7 +405,7 @@ Response: OK
 
 _What's "`AT+QDAI`"?_
 
-TODO: What does this say: `+QDAI: 1,1,0,1,0,0,1,1`
+TODO
 
 ![NuttX sends an SMS in Text Mode](https://lupyuen.github.io/images/lte2-sms.jpg)
 
