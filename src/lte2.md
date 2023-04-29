@@ -664,86 +664,52 @@ Let's walk through the steps to send an __SMS in PDU Mode__...
 
 Let's look at the NuttX Code: [send_sms_pdu](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L255-L341)
 
-TODO
-
 ```c
-  // Set Message Format to PDU Mode
-  // AT+CMGF=0
-  {
-    // Write command
-    const char cmd[] = "AT+CMGF=0\r";
-    write(fd, cmd, strlen(cmd));
-    printf("Write command: nbytes=%ld\n%s\n", nbytes, cmd);
-    assert(nbytes == strlen(cmd));
+// Select PDU Mode for SMS (instead of SMS Mode)
+const char cmd[] = "AT+CMGF=0\r";
+write(fd, cmd, strlen(cmd));
+// Omitted: Read response and wait 2 seconds
 
-    // Read response
-    static char buf[1024];
-    nbytes = read(fd, buf, sizeof(buf) - 1);
-    if (nbytes >= 0) { buf[nbytes] = 0; }
-    else { buf[0] = 0; }
-    printf("Response: nbytes=%ld\n%s\n", nbytes, buf);
+// Send an SMS with 41 bytes (excluding SMSC)
+const char cmd[] = 
+  "AT+CMGS="
+  "41"  // TODO: PDU Length in bytes, excluding the Length of SMSC
+  "\r";
+write(fd, cmd, strlen(cmd));
+// Omitted: Read response and wait 2 seconds
 
-    // Wait a while
-    sleep(2);
-  }
+// Wait for Modem to respond with ">"
+for (;;) {
+  // Read response
+  static char buf[1024];
+  ssize_t nbytes = read(fd, buf, sizeof(buf) - 1);
+  if (nbytes >= 0) { buf[nbytes] = 0; }
+  else { buf[0] = 0; }
+  printf("Response: nbytes=%ld\n%s\n", nbytes, buf);
 
-  // Send SMS Text Message, assuming Message Format is PDU Mode
-  // AT+CMGS="yourphonenumber"\r
-  // text is entered
-  // <Ctrl+Z>
-  {
-    // Write command
-    const char cmd[] = 
-      "AT+CMGS="
-      "41"  // TODO: PDU Length in bytes, excluding the Length of SMSC
-      "\r";
-    write(fd, cmd, strlen(cmd));
-    printf("Write command: nbytes=%ld\n%s\n", nbytes, cmd);
-    assert(nbytes == strlen(cmd));
-  }
-  // Wait for ">"
-  for (;;)
-    {
-      // Read response
-      static char buf[1024];
-      ssize_t nbytes = read(fd, buf, sizeof(buf) - 1);
-      if (nbytes >= 0) { buf[nbytes] = 0; }
-      else { buf[0] = 0; }
-      printf("Response: nbytes=%ld\n%s\n", nbytes, buf);
+  // Stop if we find ">"
+  if (strchr(buf, '>') != NULL) { break; }
+}
 
-      // Stop if we find ">"
-      if (strchr(buf, '>') != NULL) { break; }
-    }
-  {
-    // Write message
-    const char cmd[] = 
-      "00"  // Length of SMSC information (None)
-      "11"  // SMS-SUBMIT message
-      "00"  // TP-Message-Reference: 00 to let the phone set the message reference number itself
-      "0A"  // TODO: Address-Length: Length of phone number (Number of Decimal Digits in Phone Number)
-      "91"  // Type-of-Address: 91 for International Format of phone number
-      PHONE_NUMBER_PDU  // TODO: Phone Number in PDU Format
-      "00"  // TP-PID: Protocol identifier
-      "08"  // TP-DCS: Data coding scheme
-      "01"  // TP-Validity-Period
-      "1C"  // TP-User-Data-Length: Length of message in bytes
-      // TP-User-Data: Encoded Message Text "Hello,Quectel!"
-      "00480065006C006C006F002C005100750065006300740065006C0021"
-      "\x1A";  // End of Message (Ctrl-Z)
-    ssize_t nbytes = write(fd, cmd, strlen(cmd));
-    printf("Write command: nbytes=%ld\n%s\n", nbytes, cmd);
-    assert(nbytes == strlen(cmd));
+// Enter SMS Message in PDU Format, terminate with Ctrl-Z
+const char cmd[] = 
+  "00"  // Length of SMSC information (None)
+  "11"  // SMS-SUBMIT message
+  "00"  // TP-Message-Reference: 00 to let the phone set the message reference number itself
+  "0A"  // TODO: Address-Length: Length of phone number (Number of Decimal Digits in Phone Number)
+  "91"  // Type-of-Address: 91 for International Format of phone number
+  PHONE_NUMBER_PDU  // TODO: Phone Number in PDU Format
+  "00"  // TP-PID: Protocol identifier
+  "08"  // TP-DCS: Data coding scheme
+  "01"  // TP-Validity-Period
+  "1C"  // TP-User-Data-Length: Length of message in bytes
+  // TP-User-Data: Encoded Message Text "Hello,Quectel!"
+  "00480065006C006C006F002C005100750065006300740065006C0021"
+  "\x1A";  // End of Message (Ctrl-Z)
+write(fd, cmd, strlen(cmd));
 
-    // Read response
-    static char buf[1024];
-    nbytes = read(fd, buf, sizeof(buf) - 1);
-    if (nbytes >= 0) { buf[nbytes] = 0; }
-    else { buf[0] = 0; }
-    printf("Response: nbytes=%ld\n%s\n", nbytes, buf);
-
-    // Wait a while
-    sleep(2);
-  }
+// Omitted: Read response and wait 2 seconds
+// Modem responds with the Message ID
 ```
 
 Here's the log...
@@ -769,13 +735,27 @@ Response:
 OK
 ```
 
+And the SMS Message __"Hello,Quectel!"__ appears at the destination Phone Number!
+
 [(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L663-L681)
+
+_How do we encode the SMS in PDU Format?_
+
+The __PDU Encoding for SMS__ is explained here...
 
 - [__"SMS PDU Format"__](https://lupyuen.github.io/articles/lte2#appendix-sms-pdu-format)
 
 - [__"SMS PDU Message Encoding"__](https://lupyuen.github.io/articles/lte2#appendix-sms-pdu-message-encoding)
 
-TODO: 304 Invalid PDU
+_What if we get Error 304?_
+
+```text
++CMS ERROR: 304
+```
+
+The LTE Modem tells us that the __PDU Encoding is invalid__.
+
+Check the docs above to verify the PDU Encoding for our SMS Message.
 
 Let's find out why we prefer PDU Mode over Text Mode...
 
