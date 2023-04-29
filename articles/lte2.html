@@ -552,26 +552,40 @@ Response:
 </li>
 </ul>
 <p>Let’s walk through the steps to send an <strong>SMS in PDU Mode</strong>…</p>
-<p>TODO</p>
-<p>This is how we send an SMS in PDU Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L255-L341">send_sms_pdu</a></p>
-<p>Suppose we’re sending an SMS to this Phone Number (International Format)…</p>
+<ol>
+<li>
+<p>“<strong><code>AT+CMGF=0</code></strong>”</p>
+<p>We select PDU Mode for SMS (instead of SMS Mode)</p>
+<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 146)</a></p>
+</li>
+<li>
+<p><strong>Phone Numbers</strong> are a little odd in PDU Mode.</p>
+<p>Suppose we’re sending an SMS to this Phone Number (Country Code is mandatory)…</p>
 <div class="example-wrap"><pre class="language-text"><code>#define PHONE_NUMBER    &quot;+1234567890&quot;
 #define PHONE_NUMBER_PDU &quot;2143658709&quot;
 </code></pre></div>
-<p>Note that we flip the nibbles (half-bytes) from the Original Phone Number to produce the PDU Phone Number.</p>
-<p>If the number of nibbles (half-bytes) is odd, insert “F” into the PDU Phone Number like this…</p>
+<p>Note that we <strong>flip the nibbles</strong> (half-bytes) from the Original Phone Number to produce the <strong>PDU Phone Number</strong>.</p>
+<p>If the number of <strong>nibbles is odd</strong>, insert “<strong><code>F</code></strong>” into the PDU Phone Number, like this…</p>
 <div class="example-wrap"><pre class="language-text"><code>#define PHONE_NUMBER    &quot;+123456789&quot;
 #define PHONE_NUMBER_PDU &quot;214365870F9&quot;
-</code></pre></div>
-<p>Assuming there are 10 decimal digits in our Phone Number “+1234567890”, here’s the AT Command…</p>
-<div class="example-wrap"><pre class="language-text"><code>// Send SMS Command
+</code></pre></div></li>
+<li>
+<p>Let’s assume there are 10 Decimal Digits in the destination Phone Number: “<strong><code>+1234567890</code></strong>” (Country Code is mandatory)</p>
+<p>This is the AT Command to <strong>send an SMS</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>// Send an SMS with 41 bytes (excluding SMSC)
 const char cmd[] = 
   &quot;AT+CMGS=&quot;
   &quot;41&quot;  // TODO: PDU Length in bytes, excluding the Length of SMSC
   &quot;\r&quot;;
 </code></pre></div>
-<p>(We’ll talk about PDU Length in a while)</p>
-<p>And here’s the SMS Message PDU that we’ll send in the AT Command…</p>
+<p>(More about PDU Length in a while)</p>
+<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 159)</a></p>
+</li>
+<li>
+<p><strong>Wait for Modem</strong> to respond with “<strong><code>&gt;</code></strong>”</p>
+</li>
+<li>
+<p><strong>Enter SMS Message</strong> in PDU Format, like this…</p>
 <div class="example-wrap"><pre class="language-text"><code>// SMS Message in PDU Format
 const char cmd[] = 
   &quot;00&quot;  // Length of SMSC information (None)
@@ -588,8 +602,18 @@ const char cmd[] =
   &quot;00480065006C006C006F002C005100750065006300740065006C0021&quot;
   &quot;\x1A&quot;;  // End of Message (Ctrl-Z)
 </code></pre></div>
-<p>(We’ll talk about Encoded Message Text in a while)</p>
-<p>(Remember to update “Address-Length” according to your phone number)</p>
+<p>(More about these fields in a while)</p>
+<p>(Remember to set “<strong>Address-Length</strong>” according to the destination Phone Number)</p>
+</li>
+<li>
+<p>Modem responds with the <strong>Message ID</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>+CMGS: 23
+</code></pre></div>
+<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 159)</a></p>
+</li>
+</ol>
+<p>TODO</p>
+<p>This is how we send an SMS in PDU Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L255-L341">send_sms_pdu</a></p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-c"><code>  // Set Message Format to PDU Mode
   // AT+CMGF=0
