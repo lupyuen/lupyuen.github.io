@@ -816,21 +816,27 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Receive Phone Call and SMS
 
-TODO
+TODO: Receive Phone Call
 
 ```text
-RING //A voice call is ringing
+// Incoming Voice Call
+RING
 
 AT+CLCC
-+CLCC: 1,0,0,1,0,"",128 //PS call in LTE mode
-+CLCC: 2,1,4,0,0,"02154450290",129 //Incoming call
+// PS call in LTE mode
++CLCC: 1,0,0,1,0,"",128
+// Incoming call
++CLCC: 2,1,4,0,0,"02154450290",129
 OK
 
-ATA //Accept the voice call with ATA
+// Accept the Voice Call
+ATA
 OK
 ```
 
 [(EG25-G AT Commands, Page 114)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
+TODO: Receive SMS
 
 ```text
 // Select Message Service 3GPP TS 23.040 and 3GPP TS 23.041
