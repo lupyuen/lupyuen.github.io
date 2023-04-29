@@ -549,7 +549,20 @@ _What if we get Error 350?_
 +CMS ERROR: 350
 ```
 
-TODO: (Rejected by SMSC)
+This means that the Telco's __SMS Centre has rejected__ our SMS Message.
+
+Check that the SMS Centre is correct [(like this)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/b291696fcaaee1700161796ac8a8320842ebee3d/examples/hello/hello_main.c#L127-L145)...
+
+```text
+// Get SMS Centre
+Command: AT+CSCA?
+Response:
++CSCA: "+6587614701",145
+```
+
+Also check that the SIM Card works OK on another phone.
+
+(I had a peculiar SIM Card that blocks Outgoing SMS, but allows Outgoing Phone Calls)
 
 # Send SMS in PDU Mode
 
