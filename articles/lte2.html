@@ -344,8 +344,7 @@ Response:
 <p><img src="https://lupyuen.github.io/images/lte2-title.jpg" alt="NuttX makes a Phone Call from PinePhone" /></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L683-L735"><em>NuttX makes a Phone Call from PinePhone</em></a></p>
 <h1 id="outgoing-phone-call"><a href="#outgoing-phone-call">5 Outgoing Phone Call</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L343-L432">dial_number</a></p>
+<p>This is how we dial a Phone Number to make an <strong>Outgoing Phone Call</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L343-L432">dial_number</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Get Range of PCM Parameters for Digital Audio
 const char cmd[] = &quot;AT+QDAI=?\r&quot;;
 write(fd, cmd, strlen(cmd));
@@ -356,7 +355,8 @@ const char cmd[] = &quot;AT+QDAI?\r&quot;;
 write(fd, cmd, strlen(cmd));
 // Omitted: Read response and wait 2 seconds
 </code></pre></div>
-<p>(We’ll talk about “<strong><code>AT+QDAI</code></strong>” in a while)</p>
+<p>We begin by configuring the <strong>PCM Digital Audio</strong> for our Voice Call.</p>
+<p>(More about “<strong><code>AT+QDAI</code></strong>” in a while)</p>
 <p>Suppose we’re dialing the (fictitious) number “<strong><code>+1234567890</code></strong>”.</p>
 <p>We send the command “<strong><code>ATD+1234567890;</code></strong>”…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Phone Number to dial
@@ -404,7 +404,7 @@ Response: OK
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L737">(See the Complete Log)</a></p>
 <p><em>What’s “<code>AT+QDAI</code>”?</em></p>
-<p>TODO: What does this say: <code>+QDAI: 1,1,0,1,0,0,1,1</code></p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/lte2-sms.jpg" alt="NuttX sends an SMS in Text Mode" /></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L622-L659"><em>NuttX sends an SMS in Text Mode</em></a></p>
 <h1 id="send-sms-in-text-mode"><a href="#send-sms-in-text-mode">6 Send SMS in Text Mode</a></h1>
