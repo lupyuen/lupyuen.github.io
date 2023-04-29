@@ -740,18 +740,23 @@ OK
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lte2.md"><strong>lupyuen.github.io/src/lte2.md</strong></a></p>
 <h1 id="appendix-receive-phone-call-and-sms"><a href="#appendix-receive-phone-call-and-sms">11 Appendix: Receive Phone Call and SMS</a></h1>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>RING //A voice call is ringing
+<p>TODO: Receive Phone Call</p>
+<div class="example-wrap"><pre class="language-text"><code>// Incoming Voice Call
+RING
 
 AT+CLCC
-+CLCC: 1,0,0,1,0,&quot;&quot;,128 //PS call in LTE mode
-+CLCC: 2,1,4,0,0,&quot;02154450290&quot;,129 //Incoming call
+// PS call in LTE mode
++CLCC: 1,0,0,1,0,&quot;&quot;,128
+// Incoming call
++CLCC: 2,1,4,0,0,&quot;02154450290&quot;,129
 OK
 
-ATA //Accept the voice call with ATA
+// Accept the Voice Call
+ATA
 OK
 </code></pre></div>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 114)</a></p>
+<p>TODO: Receive SMS</p>
 <div class="example-wrap"><pre class="language-text"><code>// Select Message Service 3GPP TS 23.040 and 3GPP TS 23.041
 AT+CSMS=1
 +CSMS: 1,1,1
