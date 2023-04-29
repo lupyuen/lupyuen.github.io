@@ -735,7 +735,7 @@ Response:
 OK
 ```
 
-And the SMS Message __"Hello,Quectel!"__ appears at the destination Phone Number!
+And our SMS Message __"Hello,Quectel!"__ appears at the destination Phone Number!
 
 [(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L663-L681)
 
@@ -865,6 +865,12 @@ TODO: Ring Indicator
 
 TODO
 
+_Earlier we made an Outgoing Voice Call..._
+
+_How will we talk to the called Phone Number?_
+
+We need the "__`AT+QDAI`__" commands, for the __PCM Digital Audio__ setup. We're still working on it...
+
 ```text
 // Get Range of PCM Parameters for Digital Audio
 Command: AT+QDAI=?
@@ -875,15 +881,22 @@ Command: AT+QDAI?
 Response: +QDAI: 1,1,0,1,0,0,1,1
 ```
 
+- [__"Genode: PinePhone Telephony"__](https://genodians.org/ssumpf/2022-05-09-telephony)
+
 # Appendix: SMS PDU Format
 
-TODO
+_Earlier we saw this command for sending SMS in PDU Mode..._
 
 _What's the PDU Length?_
 
+```text
+// Send an SMS with 41 bytes (excluding SMSC)
+Command: AT+CMGS=41
+```
+
 Our SMS Message PDU has 42 total bytes...
 
-```text
+```c
 "00"  // Length of SMSC information (None)
 "11"  // SMS-SUBMIT message
 "00"  // TP-Message-Reference: 00 to let the phone set the message reference number itself
@@ -902,7 +915,7 @@ PDU Length excludes the SMSC Information (First Byte).
 
 Thus our PDU Length is 41 bytes...
 
-```text
+```c
 // Send SMS Command
 const char cmd[] = 
   "AT+CMGS="
@@ -914,7 +927,7 @@ Remember to update the PDU Length according to your phone number and message tex
 
 _What do the fields mean?_
 
-```text
+```c
 "00"  // Length of SMSC information (None)
 "11"  // SMS-SUBMIT message
 "00"  // TP-Message-Reference: 00 to let the phone set the message reference number itself
@@ -1028,9 +1041,7 @@ Let's talk about the Message Text Encoding...
 
 # Appendix: SMS PDU Message Encoding
 
-TODO
-
-_How do we encode the Message Text?_
+_How do we encode the Message Text in PDU Mode?_
 
 From the previous section we see that the Message Text is encoded with UCS2 Character Set...
 
@@ -1050,7 +1061,7 @@ The UCS2 Encoding is actually [Unicode UTF-16](https://en.wikipedia.org/wiki/UTF
 
 So this Encoded Message Text...
 
-```text
+```c
 // TP-User-Data: Message Text encoded with UCS2 Character Set
 "00480065006C006C006F002C005100750065006300740065006C0021"
 ```
