@@ -360,6 +360,8 @@ write(fd, cmd, strlen(cmd));
 // Omitted: Read response
 ```
 
+[(EG25-G AT Commands, Page 114)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
 We wait 20 seconds...
 
 ```c
@@ -367,7 +369,7 @@ We wait 20 seconds...
 sleep(20);
 ```
 
-Then we hang up the call with "__`ATH`__"...
+Finally we hang up the call with "__`ATH`__"...
 
 ```c
 // Hang up Phone Call
@@ -375,6 +377,8 @@ const char cmd[] = "ATH\r";
 write(fd, cmd, strlen(cmd));
 // Omitted: Read response and wait 2 seconds
 ```
+
+[(EG25-G AT Commands, Page 116)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
 Here's the output (pic above)...
 
@@ -425,15 +429,21 @@ To send an __SMS Message__ (in Text Mode), use these AT Commands...
 
     Select Text Mode for SMS (instead of PDU Mode)
 
+    [(EG25-G AT Commands, Page 146)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
 1.  "__`AT+CSCS="GSM"`__"
 
-    Set SMS Character Set to GSM
+    Select GSM Character Set (instead of UCS2)
+
+    [(EG25-G AT Commands, Page 25)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
 1.  "__`AT+CMGS="+1234567890"`__"
 
     Send an SMS to the (imaginary) Phone Number "__`+1234567890`__"
 
     (Also works without country code, like "__`234567890`__")
+
+    [(EG25-G AT Commands, Page 159)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
 1.  __Wait for Modem__ to respond with "__`>`__"
 
@@ -449,6 +459,8 @@ To send an __SMS Message__ (in Text Mode), use these AT Commands...
     +CMGS: 22
     ```
 
+    [(EG25-G AT Commands, Page 159)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
 This is how we send an SMS with NuttX: [send_sms_text](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L162-L253)
 
 ```c
@@ -457,7 +469,7 @@ const char cmd[] = "AT+CMGF=1\r";
 write(fd, cmd, strlen(cmd));
 // Omitted: Read response and wait 2 seconds
 
-// Set SMS Character Set to GSM
+// Select GSM Character Set (instead of UCS2)
 const char cmd[] = "AT+CSCS=\"GSM\"\r";
 write(fd, cmd, strlen(cmd));
 // Omitted: Read response and wait 2 seconds
@@ -504,7 +516,7 @@ Here's the log (pic above)...
 Command: AT+CMGF=1
 Response: OK
 
-// Set SMS Character Set to GSM
+// Select GSM Character Set (instead of UCS2)
 Command: AT+CSCS="GSM"
 Response: OK
 
@@ -720,6 +732,10 @@ OK
 
 [(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L663-L681)
 
+- [__"SMS PDU Format"__](https://lupyuen.github.io/articles/lte2#appendix-sms-pdu-format)
+
+- [__"SMS PDU Message Encoding"__](https://lupyuen.github.io/articles/lte2#appendix-sms-pdu-message-encoding)
+
 Let's talk about the SMS PDU...
 
 # SMS Text Mode vs PDU Mode
@@ -730,38 +746,10 @@ _Why send SMS in PDU Mode instead of Text Mode?_
 
 TODO: More reliable (304 Invalid PDU), UTF-16, Receive messages
 
-```text
-// Select Message Service 3GPP TS 23.040 and 3GPP TS 23.041
-AT+CSMS=1
-+CSMS: 1,1,1
-OK
-
-// Set SMS Event Reporting Configuration
-AT+CNMI=1,2,0,0,0
-OK
-
-// Message is dumped directly when an SMS is received
-+CMT: "+8615021012496",,"13/03/18,17:07:21+32",145,4,0,0,"+8613800551500",145,28
-This is a test from Quectel.
-
-// Send ACK to the network
-AT+CNMA
-OK
-```
-
-[(EG25-G AT Commands, Page 167)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
-
-# Receive Phone Call
-
-TODO
-
-# Receive SMS
-
-TODO
 
 # AT Modem API
 
-TODO
+TODO: What about receiving Phone Calls and SMS Messages?
 
 [nRF Connect Modem Library: AT interface](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html)
 
@@ -802,6 +790,61 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/lte2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lte2.md)
+
+# Appendix: Receive Phone Call and SMS
+
+TODO
+
+```text
+RING //A voice call is ringing
+
+AT+CLCC
++CLCC: 1,0,0,1,0,"",128 //PS call in LTE mode
++CLCC: 2,1,4,0,0,"02154450290",129 //Incoming call
+OK
+
+ATA //Accept the voice call with ATA
+OK
+```
+
+[(EG25-G AT Commands, Page 114)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
+```text
+// Select Message Service 3GPP TS 23.040 and 3GPP TS 23.041
+AT+CSMS=1
++CSMS: 1,1,1
+OK
+
+// Set SMS Event Reporting Configuration
+AT+CNMI=1,2,0,0,0
+OK
+
+// Message is dumped directly when an SMS is received
++CMT: "+8615021012496",,"13/03/18,17:07:21+32",145,4,0,0,"+8613800551500",145,28
+This is a test from Quectel.
+
+// Send ACK to the network
+AT+CNMA
+OK
+```
+
+[(EG25-G AT Commands, Page 167)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
+TODO: Ring Indicator
+
+# Appendix: PCM Digital Audio
+
+TODO
+
+```text
+// Get Range of PCM Parameters for Digital Audio
+Command: AT+QDAI=?
+Response: +QDAI: (1-4),(0,1),(0,1),(0-5),(0-2),(0,1)(1)(1-16)
+
+// Get Current PCM Configuration for Digital Audio
+Command: AT+QDAI?
+Response: +QDAI: 1,1,0,1,0,0,1,1
+```
 
 # Appendix: SMS PDU Format
 
@@ -1003,17 +1046,3 @@ Comes from the [Unicode UTF-16 Encoding](https://en.wikipedia.org/wiki/UTF-16) o
 | `!` | `0021`
 
 (These are 7-Bit ASCII Characters, so the UTF-16 Encoding looks identical to ASCII)
-
-# Appendix: PCM Digital Audio
-
-TODO
-
-```text
-// Get Range of PCM Parameters for Digital Audio
-Command: AT+QDAI=?
-Response: +QDAI: (1-4),(0,1),(0,1),(0-5),(0-2),(0,1)(1)(1-16)
-
-// Get Current PCM Configuration for Digital Audio
-Command: AT+QDAI?
-Response: +QDAI: 1,1,0,1,0,0,1,1
-```
