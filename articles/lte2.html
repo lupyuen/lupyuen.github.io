@@ -523,7 +523,15 @@ OK
 <p><em>What if we get Error 350?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>+CMS ERROR: 350
 </code></pre></div>
-<p>TODO: (Rejected by SMSC)</p>
+<p>This means that the Telco’s <strong>SMS Centre has rejected</strong> our SMS Message.</p>
+<p>Check that the SMS Centre is correct <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/b291696fcaaee1700161796ac8a8320842ebee3d/examples/hello/hello_main.c#L127-L145">(like this)</a>…</p>
+<div class="example-wrap"><pre class="language-text"><code>// Get SMS Centre
+Command: AT+CSCA?
+Response:
++CSCA: &quot;+6587614701&quot;,145
+</code></pre></div>
+<p>Also check that the SIM Card works OK on another phone.</p>
+<p>(I had a peculiar SIM Card that blocks Outgoing SMS, but allows Outgoing Phone Calls)</p>
 <h1 id="send-sms-in-pdu-mode"><a href="#send-sms-in-pdu-mode">7 Send SMS in PDU Mode</a></h1>
 <p>TODO</p>
 <p>Now we send an SMS Message in PDU Mode. Based on…</p>
