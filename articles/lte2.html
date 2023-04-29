@@ -515,7 +515,7 @@ Hello from Apache NuttX RTOS on PinePhone!&lt;Ctrl-Z&gt;
 
 // Modem responds with the Message ID
 Response:
-+CMGS: 13
++CMGS: 22
 OK
 </code></pre></div>
 <p>And the SMS Message will be sent to the Phone Number! (Pic above)</p>
@@ -533,8 +533,10 @@ Response:
 <p>Also check that the SIM Card works OK on another phone.</p>
 <p>(I had a peculiar SIM Card that blocks Outgoing SMS, but allows Outgoing Phone Calls)</p>
 <h1 id="send-sms-in-pdu-mode"><a href="#send-sms-in-pdu-mode">7 Send SMS in PDU Mode</a></h1>
-<p>TODO</p>
-<p>Now we send an SMS Message in PDU Mode. Based on…</p>
+<p><em>Sending an SMS Message looks easy!</em></p>
+<p>Ah but there’s another (preferred and precise) way: <strong>PDU Mode</strong>.</p>
+<p><a href="https://en.wikipedia.org/wiki/GSM_03.40">(Which means <strong>Protocol Data Unit</strong>)</a></p>
+<p>In PDU Mode, we encode the SMS Messages as <strong>Hexadecimal Numbers</strong>. These are the official docs…</p>
 <ul>
 <li>
 <p><a href="https://www.cika.com/soporte/Information/GSMmodules/Quectel/AppNotes/Quectel_GSM_ATC_Application_Note.pdf"><strong>Quectel GSM AT Commands Application Note</strong></a></p>
@@ -549,6 +551,8 @@ Response:
 <p>(For PDU Format)</p>
 </li>
 </ul>
+<p>Let’s walk through the steps to send an <strong>SMS in PDU Mode</strong>…</p>
+<p>TODO</p>
 <p>This is how we send an SMS in PDU Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L255-L341">send_sms_pdu</a></p>
 <p>Suppose we’re sending an SMS to this Phone Number (International Format)…</p>
 <div class="example-wrap"><pre class="language-text"><code>#define PHONE_NUMBER    &quot;+1234567890&quot;
@@ -666,25 +670,23 @@ const char cmd[] =
   }
 </code></pre></div>
 <p>Here’s the log…</p>
-<div class="example-wrap"><pre class="language-text"><code>// Set Message Format to PDU Mode
+<div class="example-wrap"><pre class="language-text"><code>// Select PDU Mode for SMS (instead of SMS Mode)
 Command: AT+CMGF=0
 Response: OK
 
 // Send an SMS with 41 bytes (excluding SMSC)
 Command: AT+CMGS=41
 
-// We wait for Modem to respond with &quot;&gt;&quot;
+// Wait for Modem to respond with &quot;&gt;&quot;
 Response: &gt; 
 
-// SMS Message in PDU Format, terminate with Ctrl-Z.
-// yourphonenumberpdu looks like 2143658709, which represents +1234567890
-// Country Code is mandatory. Remember to insert &quot;F&quot; for odd number of nibbles.
+// Enter SMS Message in PDU Format, terminate with Ctrl-Z
 Command:
-0011000A91yourphonenumberpdu0008011C00480065006C006C006F002C005100750065006300740065006C0021&lt;Ctrl-Z&gt;
+0011000A9121436587090008011C00480065006C006C006F002C005100750065006300740065006C0021&lt;Ctrl-Z&gt;
 
-// Modem sends the SMS Message
+// Modem responds with the Message ID
 Response: 
-+CMGS: 14
++CMGS: 23
 OK
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L663-L681">(See the Complete Log)</a></p>
