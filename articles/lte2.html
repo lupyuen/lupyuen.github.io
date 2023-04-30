@@ -696,11 +696,18 @@ OK
 <p>The LTE Modem tells us that the <strong>PDU Encoding is invalid</strong>.</p>
 <p>Check the docs above to verify the PDU Encoding for our SMS Message.</p>
 <p>Let’s find out why we prefer PDU Mode over Text Mode…</p>
+<p><a href="https://lupyuen.github.io/articles/lte2#send-sms-in-text-mode">(<strong>For Error 305:</strong> Check the SMSC and SIM)</a></p>
 <h1 id="sms-text-mode-vs-pdu-mode"><a href="#sms-text-mode-vs-pdu-mode">8 SMS Text Mode vs PDU Mode</a></h1>
-<p>TODO</p>
 <p><em>Why send SMS in PDU Mode instead of Text Mode?</em></p>
-<p>TODO: More reliable (304 Invalid PDU), UTF-16, Receive messages</p>
-<h1 id="at-modem-api"><a href="#at-modem-api">9 AT Modem API</a></h1>
+<p>Sending SMS Messages in Text Mode looks easier. But we <strong>should use PDU Mode</strong> instead. Here’s why…</p>
+<p>TODO: PDU Mode works more reliably (304 Invalid PDU)</p>
+<div class="example-wrap"><pre class="language-text"><code>// Text Mode: How many characters in this SMS?
+AT+CMGS=&quot;yourphonenumber&quot;
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>// PDU Mode: 41 bytes in this SMS (excluding SMSC)
+AT+CMGS=41
+</code></pre></div><h1 id="at-modem-api"><a href="#at-modem-api">9 AT Modem API</a></h1>
 <p>TODO: What about receiving Phone Calls and SMS Messages?</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lte2#appendix-receive-phone-call-and-sms"><strong>“Receive Phone Call and SMS”</strong></a></li>
