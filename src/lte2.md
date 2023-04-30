@@ -807,13 +807,18 @@ This is how we handle __Incoming Phone Calls and SMS__...
 
 - [__"Receive Phone Call and SMS"__](https://lupyuen.github.io/articles/lte2#appendix-receive-phone-call-and-sms)
 
-Yeah it looks messy. LTE Modem will __push us a notification__ whenever there's an Incoming Phone Call or SMS...
+Yeah it looks messy. LTE Modem will __output a notification__ whenever there's an Incoming Phone Call or SMS...
 
 ```text
-TODO
+// Incoming Voice Call
+RING
+...
+// Incoming SMS
++CMT: "+8615021012496",,"13/03/18,17:07:21+32",145,4,0,0,"+8613800551500",145,28
+// Followed by Message Text
 ```
 
-Which is totally asynchronous. And tricky to handle over UART.
+Which is totally __asynchronous__. And tricky to handle over UART.
 
 TODO: Is there a proper AT Modem API?
 
