@@ -700,14 +700,22 @@ OK
 <h1 id="sms-text-mode-vs-pdu-mode"><a href="#sms-text-mode-vs-pdu-mode">8 SMS Text Mode vs PDU Mode</a></h1>
 <p><em>Why send SMS in PDU Mode instead of Text Mode?</em></p>
 <p>Sending SMS Messages in Text Mode looks easier. But we <strong>should use PDU Mode</strong> instead. Here’s why…</p>
-<p>TODO: PDU Mode works more reliably (304 Invalid PDU)</p>
+<p><strong>In Text Mode:</strong> This is how we send an SMS…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Text Mode: How many characters in this SMS?
-AT+CMGS=&quot;yourphonenumber&quot;
+AT+CMGS=&quot;+1234567890&quot;
 </code></pre></div>
-<p>TODO</p>
+<p><strong>In PDU Mode:</strong> We do it like so…</p>
 <div class="example-wrap"><pre class="language-text"><code>// PDU Mode: 41 bytes in this SMS (excluding SMSC)
 AT+CMGS=41
-</code></pre></div><h1 id="at-modem-api"><a href="#at-modem-api">9 AT Modem API</a></h1>
+</code></pre></div>
+<p>See the difference? <strong>PDU Mode is more precise</strong> because we state exactly how many bytes there are in the SMS.</p>
+<p>With Text Mode, there’s a risk of garbled messages when characters are dropped during UART Transmission. (Which happens!)</p>
+<p><em>But what if characters are dropped in PDU Mode?</em></p>
+<p>The LTE Modem will say it’s an <strong>Invalid PDU</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>+CMS ERROR: 304
+</code></pre></div>
+<p>Our app should catch this error and resend.</p>
+<h1 id="at-modem-api"><a href="#at-modem-api">9 AT Modem API</a></h1>
 <p>TODO: What about receiving Phone Calls and SMS Messages?</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lte2#appendix-receive-phone-call-and-sms"><strong>“Receive Phone Call and SMS”</strong></a></li>
@@ -718,6 +726,7 @@ AT+CMGS=41
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/tcp_ipc_server/uart_lorawan_layer.c#L262-L274">uart_lorawan_layer.c</a></p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/netutils/esp8266/esp8266.c#L1573-L1582">esp8266.c</a></p>
 <p>TODO: UART vs USB</p>
+<p>TODO: Upstream UART Driver, LTE Modem Driver</p>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>I hope this article was helpful for learning about PinePhone’s 4G LTE Modem…</p>
