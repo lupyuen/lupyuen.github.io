@@ -767,18 +767,22 @@ _Why send SMS in PDU Mode instead of Text Mode?_
 
 Sending SMS Messages in Text Mode looks easier. But we __should use PDU Mode__ instead. Here's why...
 
-__In Text Mode:__ This is how we send an SMS...
+__Text Mode:__ This is how we send an SMS...
 
 ```text
 // Text Mode: How many characters in this SMS?
 AT+CMGS="+1234567890"
+
+// Followed by Message Text...
 ```
 
-__In PDU Mode:__ We do it like so...
+__PDU Mode:__ This is how we do it...
 
 ```text
 // PDU Mode: 41 bytes in this SMS (excluding SMSC)
 AT+CMGS=41
+
+// Followed by SMS Message encoded as PDU...
 ```
 
 See the difference? __PDU Mode is more precise__ because we state exactly how many bytes there are in the SMS.
