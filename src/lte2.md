@@ -801,11 +801,19 @@ Our app should catch this error and resend.
 
 # AT Modem API
 
-TODO: What about receiving Phone Calls and SMS Messages?
+_What about receiving Phone Calls and SMS Messages?_
+
+This is how we handle __Incoming Phone Calls and SMS__...
 
 - [__"Receive Phone Call and SMS"__](https://lupyuen.github.io/articles/lte2#appendix-receive-phone-call-and-sms)
 
-TODO: Looks messy
+Yeah it looks messy. LTE Modem will __push us a notification__ whenever there's an Incoming Phone Call or SMS...
+
+```text
+TODO
+```
+
+Which is totally asynchronous. And tricky to handle over UART.
 
 TODO: Is there a proper AT Modem API?
 
