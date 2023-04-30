@@ -720,11 +720,15 @@ AT+CMGS=41
 </code></pre></div>
 <p>Our app should catch this error and resend.</p>
 <h1 id="at-modem-api"><a href="#at-modem-api">9 AT Modem API</a></h1>
-<p>TODO: What about receiving Phone Calls and SMS Messages?</p>
+<p><em>What about receiving Phone Calls and SMS Messages?</em></p>
+<p>This is how we handle <strong>Incoming Phone Calls and SMS</strong>…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lte2#appendix-receive-phone-call-and-sms"><strong>“Receive Phone Call and SMS”</strong></a></li>
 </ul>
-<p>TODO: Looks messy</p>
+<p>Yeah it looks messy. LTE Modem will <strong>push us a notification</strong> whenever there’s an Incoming Phone Call or SMS…</p>
+<div class="example-wrap"><pre class="language-text"><code>TODO
+</code></pre></div>
+<p>Which is totally asynchronous. And tricky to handle over UART.</p>
 <p>TODO: Is there a proper AT Modem API?</p>
 <p><a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html">nRF Connect Modem Library: AT interface</a></p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/tcp_ipc_server/uart_lorawan_layer.c#L262-L274">uart_lorawan_layer.c</a></p>
