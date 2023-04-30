@@ -787,7 +787,9 @@ TODO: What about receiving Phone Calls and SMS Messages?
 
 - [__"Receive Phone Call and SMS"__](https://lupyuen.github.io/articles/lte2#appendix-receive-phone-call-and-sms)
 
-TODO: Proper AT Modem API
+TODO: Looks messy
+
+TODO: Is there a proper AT Modem API?
 
 [nRF Connect Modem Library: AT interface](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html)
 
