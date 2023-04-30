@@ -700,13 +700,17 @@ OK
 <h1 id="sms-text-mode-vs-pdu-mode"><a href="#sms-text-mode-vs-pdu-mode">8 SMS Text Mode vs PDU Mode</a></h1>
 <p><em>Why send SMS in PDU Mode instead of Text Mode?</em></p>
 <p>Sending SMS Messages in Text Mode looks easier. But we <strong>should use PDU Mode</strong> instead. Here’s why…</p>
-<p><strong>In Text Mode:</strong> This is how we send an SMS…</p>
+<p><strong>Text Mode:</strong> This is how we send an SMS…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Text Mode: How many characters in this SMS?
 AT+CMGS=&quot;+1234567890&quot;
+
+// Followed by Message Text...
 </code></pre></div>
-<p><strong>In PDU Mode:</strong> We do it like so…</p>
+<p><strong>PDU Mode:</strong> This is how we do it…</p>
 <div class="example-wrap"><pre class="language-text"><code>// PDU Mode: 41 bytes in this SMS (excluding SMSC)
 AT+CMGS=41
+
+// Followed by SMS Message encoded as PDU...
 </code></pre></div>
 <p>See the difference? <strong>PDU Mode is more precise</strong> because we state exactly how many bytes there are in the SMS.</p>
 <p>With Text Mode, there’s a risk of garbled messages when characters are dropped during UART Transmission. (Which happens!)</p>
