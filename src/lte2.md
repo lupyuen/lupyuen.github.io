@@ -767,19 +767,33 @@ _Why send SMS in PDU Mode instead of Text Mode?_
 
 Sending SMS Messages in Text Mode looks easier. But we __should use PDU Mode__ instead. Here's why...
 
-TODO: PDU Mode works more reliably (304 Invalid PDU)
+__In Text Mode:__ This is how we send an SMS...
 
 ```text
 // Text Mode: How many characters in this SMS?
-AT+CMGS="yourphonenumber"
+AT+CMGS="+1234567890"
 ```
 
-TODO
+__In PDU Mode:__ We do it like so...
 
 ```text
 // PDU Mode: 41 bytes in this SMS (excluding SMSC)
 AT+CMGS=41
 ```
+
+See the difference? __PDU Mode is more precise__ because we state exactly how many bytes there are in the SMS.
+
+With Text Mode, there's a risk of garbled messages when characters are dropped during UART Transmission. (Which happens!)
+
+_But what if characters are dropped in PDU Mode?_
+
+The LTE Modem will say it's an __Invalid PDU__...
+
+```text
++CMS ERROR: 304
+```
+
+Our app should catch this error and resend.
 
 # AT Modem API
 
@@ -798,6 +812,8 @@ TODO: Is there a proper AT Modem API?
 [esp8266.c](https://github.com/apache/nuttx-apps/blob/master/netutils/esp8266/esp8266.c#L1573-L1582)
 
 TODO: UART vs USB
+
+TODO: Upstream UART Driver, LTE Modem Driver
 
 # What's Next
 
