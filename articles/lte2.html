@@ -725,10 +725,15 @@ AT+CMGS=41
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lte2#appendix-receive-phone-call-and-sms"><strong>“Receive Phone Call and SMS”</strong></a></li>
 </ul>
-<p>Yeah it looks messy. LTE Modem will <strong>push us a notification</strong> whenever there’s an Incoming Phone Call or SMS…</p>
-<div class="example-wrap"><pre class="language-text"><code>TODO
+<p>Yeah it looks messy. LTE Modem will <strong>output a notification</strong> whenever there’s an Incoming Phone Call or SMS…</p>
+<div class="example-wrap"><pre class="language-text"><code>// Incoming Voice Call
+RING
+...
+// Incoming SMS
++CMT: &quot;+8615021012496&quot;,,&quot;13/03/18,17:07:21+32&quot;,145,4,0,0,&quot;+8613800551500&quot;,145,28
+// Followed by Message Text
 </code></pre></div>
-<p>Which is totally asynchronous. And tricky to handle over UART.</p>
+<p>Which is totally <strong>asynchronous</strong>. And tricky to handle over UART.</p>
 <p>TODO: Is there a proper AT Modem API?</p>
 <p><a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html">nRF Connect Modem Library: AT interface</a></p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/tcp_ipc_server/uart_lorawan_layer.c#L262-L274">uart_lorawan_layer.c</a></p>
