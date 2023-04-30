@@ -759,14 +759,27 @@ Check the docs above to verify the PDU Encoding for our SMS Message.
 
 Let's find out why we prefer PDU Mode over Text Mode...
 
-# SMS Text Mode vs PDU Mode
+[(__For Error 305:__ Check the SMSC and SIM)](https://lupyuen.github.io/articles/lte2#send-sms-in-text-mode)
 
-TODO
+# SMS Text Mode vs PDU Mode
 
 _Why send SMS in PDU Mode instead of Text Mode?_
 
-TODO: More reliable (304 Invalid PDU), UTF-16, Receive messages
+Sending SMS Messages in Text Mode looks easier. But we __should use PDU Mode__ instead. Here's why...
 
+TODO: PDU Mode works more reliably (304 Invalid PDU)
+
+```text
+// Text Mode: How many characters in this SMS?
+AT+CMGS="yourphonenumber"
+```
+
+TODO
+
+```text
+// PDU Mode: 41 bytes in this SMS (excluding SMSC)
+AT+CMGS=41
+```
 
 # AT Modem API
 
