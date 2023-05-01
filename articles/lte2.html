@@ -764,10 +764,33 @@ RING
 </ul>
 <p>Our NuttX App needs a <strong>robust parser</strong> for responses.</p>
 <p>And our app needs to <strong>timeout gracefully</strong> if we don’t get a timely response. (And retry)</p>
-<p>TODO: Is there a proper AT Modem API?</p>
-<p><a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html">nRF Connect Modem Library: AT interface</a></p>
-<p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/tcp_ipc_server/uart_lorawan_layer.c#L262-L274">uart_lorawan_layer.c</a></p>
-<p><a href="https://github.com/apache/nuttx-apps/blob/master/netutils/esp8266/esp8266.c#L1573-L1582">esp8266.c</a></p>
+<p><em>Is there a proper Modem API for AT Commands?</em></p>
+<p><strong>nRF Connect Modem Library</strong> has a nifty AT Interface, we might adapt for NuttX…</p>
+<ul>
+<li><a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html"><strong>nRF Connect Modem Library: AT Interface</strong></a></li>
+</ul>
+<p>The library uses <strong>printf</strong> and <strong>scanf</strong> to handle AT Commands…</p>
+<div class="example-wrap"><pre class="language-c"><code>err = modem_at_printf(&quot;AT+CFUN=%d&quot;, mode);
+if (err = 0) {
+  // &quot;OK&quot; success
+} else if (err &gt; 0) {
+  // Response is not &quot;OK&quot;
+  switch(modem_at_err_type(err)) {
+    // Modem returned &quot;ERROR&quot;
+    case NRF_MODEM_AT_ERROR: ...
+</code></pre></div>
+<p><a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html">(Source)</a></p>
+<p>And it handles <strong>AT Notifications</strong> too. <a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html#receiving-at-notifications">(Like this)</a></p>
+<p><em>Anything we might reuse from NuttX?</em></p>
+<p>The NuttX Sample Apps for <strong>LoRaWAN and ESP8266</strong> will do some (limited) AT Command Handling. We might copy bits of these…</p>
+<ul>
+<li>
+<p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/tcp_ipc_server/uart_lorawan_layer.c#L262-L274"><strong>uart_lorawan_layer.c</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/apache/nuttx-apps/blob/master/netutils/esp8266/esp8266.c#L1573-L1582"><strong>esp8266.c</strong></a></p>
+</li>
+</ul>
 <p>TODO: UART vs USB</p>
 <p>TODO: Upstream UART Driver, LTE Modem Driver</p>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
