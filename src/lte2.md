@@ -854,13 +854,36 @@ Our NuttX App needs a __robust parser__ for responses.
 
 And our app needs to __timeout gracefully__ if we don't get a timely response. (And retry)
 
-TODO: Is there a proper AT Modem API?
+_Is there a proper Modem API for AT Commands?_
 
-[nRF Connect Modem Library: AT interface](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html)
+__nRF Connect Modem Library__ has a nifty AT Interface, we might adapt for NuttX...
 
-[uart_lorawan_layer.c](https://github.com/apache/nuttx-apps/blob/master/examples/tcp_ipc_server/uart_lorawan_layer.c#L262-L274)
+- [__nRF Connect Modem Library: AT Interface__](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html)
 
-[esp8266.c](https://github.com/apache/nuttx-apps/blob/master/netutils/esp8266/esp8266.c#L1573-L1582)
+The library uses __printf__ and __scanf__ to handle AT Commands...
+
+```c
+err = modem_at_printf("AT+CFUN=%d", mode);
+if (err = 0) {
+  // "OK" success
+} else if (err > 0) {
+  // Response is not "OK"
+  switch(modem_at_err_type(err)) {
+    // Modem returned "ERROR"
+    case NRF_MODEM_AT_ERROR: ...
+```
+
+[(Source)](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html)
+
+And it handles __AT Notifications__ too. [(Like this)](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html#receiving-at-notifications)
+
+_Anything we might reuse from NuttX?_
+
+The NuttX Sample Apps for __LoRaWAN and ESP8266__ will do some (limited) AT Command Handling. We might copy bits of these...
+
+- [__uart_lorawan_layer.c__](https://github.com/apache/nuttx-apps/blob/master/examples/tcp_ipc_server/uart_lorawan_layer.c#L262-L274)
+
+- [__esp8266.c__](https://github.com/apache/nuttx-apps/blob/master/netutils/esp8266/esp8266.c#L1573-L1582)
 
 TODO: UART vs USB
 
