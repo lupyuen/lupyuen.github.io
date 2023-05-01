@@ -885,9 +885,17 @@ The NuttX Sample Apps for __LoRaWAN and ESP8266__ will do some (limited) AT Comm
 
 - [__esp8266.c__](https://github.com/apache/nuttx-apps/blob/master/netutils/esp8266/esp8266.c#L1573-L1582)
 
-TODO: UART vs USB
+_Wow this looks tedious. If only we had reliable, non-lossy UART..._
 
-TODO: Upstream UART Driver, LTE Modem Driver
+We do! The LTE Modem supports reliable AT Commands over __USB Serial__.
+
+Which we'll explore later when our USB Serial Driver is up!
+
+But first we need to __upstream these to NuttX Mainline__...
+
+- [__Allwinner A64 UART Driver__](https://github.com/lupyuen/pinephone-nuttx#configure-uart-port) (for UART3)
+
+- [__Quectel EG25-G LTE Modem Driver__](https://lupyuen.github.io/articles/lte#power-up-wth-nuttx) (for PinePhone)
 
 # What's Next
 
