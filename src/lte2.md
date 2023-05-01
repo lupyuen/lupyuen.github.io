@@ -807,10 +807,10 @@ This is how we handle __Incoming Phone Calls and SMS__...
 
 - [__"Receive Phone Call and SMS"__](https://lupyuen.github.io/articles/lte2#appendix-receive-phone-call-and-sms)
 
-Yeah it looks messy. LTE Modem will __output a notification__ whenever there's an Incoming Phone Call or SMS...
+And it looks messy. LTE Modem will __dump a Notification__ whenever there's an Incoming Call or SMS...
 
 ```text
-// Incoming Voice Call
+// Incoming Call
 RING
 ...
 // Incoming SMS
@@ -818,9 +818,15 @@ RING
 // Followed by Message Text
 ```
 
-Which is totally __asynchronous__. And tricky to handle over UART.
+Which is totally __Asynchronous__. And tricky to handle over UART.
 
 _Any other UART problems with LTE Modem?_
+
+The UART Output looks all jumbled up because our NuttX App didn't __wait for the status__ of every AT Command...
+
+TODO: Table
+
+TODO: what if status is missing or corrupted? need robust parsing (select)
 
 TODO: Is there a proper AT Modem API?
 
