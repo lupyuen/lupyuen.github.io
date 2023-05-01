@@ -836,13 +836,23 @@ The UART Output looks all jumbled up because our NuttX App didn't __wait for the
 | __`AT+CREG?`__
 |    | `AT` <br> `OK`
 | `AT+COPS?`
-|    | __`AT+CREG?`__ <br> `+CREG: 0,1` <br> `+QIND: PB DONE`
+|    | __`AT+CREG?`__ <br> `+CREG: 0,1` <br> `OK`
 
 [(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L621)
 
-TODO: Table
+Our NuttX App should have waited for the response of "__`AT+CREG`__"... Before sending "__`AT+COPS`__"!
 
-TODO: what if status is missing or corrupted? need robust parsing (select)
+_So we wait for OK or ERROR. Piece of cake right?_
+
+But hold up! Remember that __UART might drop characters__...
+
+- What if the LTE Modem __never received__ our AT Command?
+
+- What if the __OK__ or __ERROR__ response is missing or corrupted?
+
+Our NuttX App needs a __robust parser__ for responses.
+
+And our app needs to __timeout gracefully__ if we don't get a timely response. (And retry)
 
 TODO: Is there a proper AT Modem API?
 
