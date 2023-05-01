@@ -812,6 +812,7 @@ And it looks messy. LTE Modem will __dump a Notification__ whenever there's an I
 ```text
 // Incoming Call
 RING
+// Answer the call with ATA
 ...
 // Incoming SMS
 +CMT: "+8615021012496",,"13/03/18,17:07:21+32",145,4,0,0,"+8613800551500",145,28
@@ -823,6 +824,21 @@ Which is totally __Asynchronous__. And tricky to handle over UART.
 _Any other UART problems with LTE Modem?_
 
 The UART Output looks all jumbled up because our NuttX App didn't __wait for the status__ of every AT Command...
+
+| NuttX App writes | LTE Modem responds |
+|:-----------------|:-------------------|
+| `AT`
+|    | `RDY`
+| `AT`
+|    | `+CFUN: 1`
+| `AT`
+|    | `AT` <br> `OK` <br> `+CPIN: READY` <br> `+QUSIM: 1` <br> `+QIND: SMS DONE`
+| __`AT+CREG?`__
+|    | `AT` <br> `OK`
+| `AT+COPS?`
+|    | __`AT+CREG?`__ <br> `+CREG: 0,1` <br> `+QIND: PB DONE`
+
+[(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L621)
 
 TODO: Table
 
