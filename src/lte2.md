@@ -820,6 +820,8 @@ RING
 
 Which is totally __asynchronous__. And tricky to handle over UART.
 
+_Any other UART problems with LTE Modem?_
+
 TODO: Is there a proper AT Modem API?
 
 [nRF Connect Modem Library: AT interface](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html)
