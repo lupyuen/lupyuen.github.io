@@ -747,12 +747,23 @@ RING
 <tr><td style="text-align: left"><strong><code>AT+CREG?</code></strong></td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left"></td><td style="text-align: left"><code>AT</code> <br> <code>OK</code></td></tr>
 <tr><td style="text-align: left"><code>AT+COPS?</code></td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: left"></td><td style="text-align: left"><strong><code>AT+CREG?</code></strong> <br> <code>+CREG: 0,1</code> <br> <code>+QIND: PB DONE</code></td></tr>
+<tr><td style="text-align: left"></td><td style="text-align: left"><strong><code>AT+CREG?</code></strong> <br> <code>+CREG: 0,1</code> <br> <code>OK</code></td></tr>
 </tbody></table>
 </div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L621">(See the Complete Log)</a></p>
-<p>TODO: Table</p>
-<p>TODO: what if status is missing or corrupted? need robust parsing (select)</p>
+<p>Our NuttX App should have waited for the response of “<strong><code>AT+CREG</code></strong>”… Before sending “<strong><code>AT+COPS</code></strong>”!</p>
+<p><em>So we wait for OK or ERROR. Piece of cake right?</em></p>
+<p>But hold up! Remember that <strong>UART might drop characters</strong>…</p>
+<ul>
+<li>
+<p>What if the LTE Modem <strong>never received</strong> our AT Command?</p>
+</li>
+<li>
+<p>What if the <strong>OK</strong> or <strong>ERROR</strong> response is missing or corrupted?</p>
+</li>
+</ul>
+<p>Our NuttX App needs a <strong>robust parser</strong> for responses.</p>
+<p>And our app needs to <strong>timeout gracefully</strong> if we don’t get a timely response. (And retry)</p>
 <p>TODO: Is there a proper AT Modem API?</p>
 <p><a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html">nRF Connect Modem Library: AT interface</a></p>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/tcp_ipc_server/uart_lorawan_layer.c#L262-L274">uart_lorawan_layer.c</a></p>
