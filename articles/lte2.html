@@ -791,8 +791,18 @@ if (err = 0) {
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/netutils/esp8266/esp8266.c#L1573-L1582"><strong>esp8266.c</strong></a></p>
 </li>
 </ul>
-<p>TODO: UART vs USB</p>
-<p>TODO: Upstream UART Driver, LTE Modem Driver</p>
+<p><em>Wow this looks tedious. If only we had reliable, non-lossy UART…</em></p>
+<p>We do! The LTE Modem supports reliable AT Commands over <strong>USB Serial</strong>.</p>
+<p>Which we’ll explore later when our USB Serial Driver is up!</p>
+<p>But first we need to <strong>upstream these to NuttX Mainline</strong>…</p>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx#configure-uart-port"><strong>Allwinner A64 UART Driver</strong></a> (for UART3)</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lte#power-up-wth-nuttx"><strong>Quectel EG25-G LTE Modem Driver</strong></a> (for PinePhone)</p>
+</li>
+</ul>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>I hope this article was helpful for learning about PinePhone’s 4G LTE Modem…</p>
