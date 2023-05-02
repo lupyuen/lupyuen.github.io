@@ -833,7 +833,7 @@ if (err = 0) {
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lte2.md"><strong>lupyuen.github.io/src/lte2.md</strong></a></p>
 <h1 id="appendix-receive-phone-call-and-sms"><a href="#appendix-receive-phone-call-and-sms">11 Appendix: Receive Phone Call and SMS</a></h1>
-<p>TODO: Receive Phone Call</p>
+<p>This is how we receive an <strong>Incoming Phone Call</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Incoming Voice Call
 RING
 
@@ -849,7 +849,7 @@ ATA
 OK
 </code></pre></div>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 114)</a></p>
-<p>TODO: Receive SMS</p>
+<p>And this is how we <strong>receive an SMS</strong> in Text Mode…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Select Message Service 3GPP TS 23.040 and 3GPP TS 23.041
 AT+CSMS=1
 +CSMS: 1,1,1
@@ -868,6 +868,7 @@ AT+CNMA
 OK
 </code></pre></div>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 167)</a></p>
+<p>Receiving an SMS in <strong>PDU Mode</strong> will look slightly different.</p>
 <p>TODO: Ring Indicator</p>
 <h1 id="appendix-pcm-digital-audio"><a href="#appendix-pcm-digital-audio">12 Appendix: PCM Digital Audio</a></h1>
 <p>TODO</p>
