@@ -869,7 +869,15 @@ OK
 </code></pre></div>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 167)</a></p>
 <p>Receiving an SMS in <strong>PDU Mode</strong> will look slightly different.</p>
-<p>TODO: Ring Indicator</p>
+<p><em>How does the Ring Indicator work with Incoming Call and SMS?</em></p>
+<p>The LTE Modem sets <a href="https://lupyuen.github.io/articles/lte#main-uart-interface"><strong>Ring Indicator (PL6)</strong></a> to High when there’s an Incoming Call or SMS, configured like this…</p>
+<div class="example-wrap"><pre class="language-text"><code>// On Incoming Call, signal the Ring Indicator
+AT+QCFG=&quot;urc/ri/ring&quot;
+
+// On Incoming SMS, signal the Ring Indicator
+AT+QCFG=&quot;urc/ri/smsincoming&quot; 
+</code></pre></div>
+<p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 46)</a></p>
 <h1 id="appendix-pcm-digital-audio"><a href="#appendix-pcm-digital-audio">12 Appendix: PCM Digital Audio</a></h1>
 <p>TODO</p>
 <p><em>Earlier we made an Outgoing Voice Call…</em></p>
