@@ -158,11 +158,11 @@ These GPIO Pins control the __Airplane Mode__ and __Sleep State__...
 
     [(See this)](https://lupyuen.github.io/articles/lte#other-interface-pins)
 
-And the LTE Modem signals PinePhone on this GPIO Pin for __Incoming Calls__...
+And the LTE Modem signals PinePhone on this GPIO Pin for __Incoming Calls and SMS Messages__...
 
 -   __Ring Indicator__ → A64 Port __PL6__
 
-    Indicates Incoming Calls.
+    Indicates Incoming Calls and SMS Messages.
 
     [(See this)](https://lupyuen.github.io/articles/lte#main-uart-interface)
 

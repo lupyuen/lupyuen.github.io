@@ -974,7 +974,19 @@ OK
 
 Receiving an SMS in __PDU Mode__ will look slightly different.
 
-TODO: Ring Indicator
+_How does the Ring Indicator work with Incoming Call and SMS?_
+
+The LTE Modem sets [__Ring Indicator (PL6)__](https://lupyuen.github.io/articles/lte#main-uart-interface) to High when there's an Incoming Call or SMS, configured like this...
+
+```text
+// On Incoming Call, signal the Ring Indicator
+AT+QCFG="urc/ri/ring"
+
+// On Incoming SMS, signal the Ring Indicator
+AT+QCFG="urc/ri/smsincoming" 
+```
+
+[(EG25-G AT Commands, Page 46)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
 # Appendix: PCM Digital Audio
 
