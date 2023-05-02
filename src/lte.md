@@ -843,19 +843,19 @@ From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG
 
 [(__DI__ is Digital Input)](https://lupyuen.github.io/articles/lte#io-parameters-definition)
 
--   PWRKEY should be pulled down at least 500 ms, then pulled up
+-   __PWRKEY__ should be pulled down at least 500 ms, then pulled up
     
     [(EG25-G Hardware Design, Page 41)](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
--   "Make sure that VBAT is stable before pulling down PWRKEY pin. It is recommended that the time between powering up VBAT and pulling down PWRKEY pin is no less than 30 ms."
+-   "Make sure that __VBAT is stable__ before pulling down PWRKEY pin. It is recommended that the time between powering up VBAT and pulling down PWRKEY pin is no less than 30 ms."
     
     [(EG25-G Hardware Design, Page 41)](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
--   "The RESET_N pin can be used to reset the module. The module can be reset by driving RESET_N to a low level voltage for 150–460 ms"
+-   "__RESET_N__ pin can be used to reset the module. The module can be reset by driving RESET_N to a low level voltage for 150–460 ms"
 
     [(EG25-G Hardware Design, Page 42)](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
--   Note that PWRKEY and RESET_N are __High-Low Inverted__ when accessed through PinePhone's GPIO Pins
+-   Note: __PWRKEY and RESET_N__ are __High-Low Inverted__ when accessed through PinePhone's GPIO Pins
 
     (High becomes Low and vice versa)
 
@@ -875,7 +875,7 @@ From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG
 
 [(__OD__ is Open Drain)](https://lupyuen.github.io/articles/lte#io-parameters-definition)
 
--   When PWRKEY is pulled Low, STATUS goes High for ≥2.5 s, then STATUS goes Low
+-   When PWRKEY is pulled Low, __STATUS goes High__ for ≥2.5 s, then STATUS goes Low
 
     [(EG25-G Hardware Design, Page 41)](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
@@ -906,13 +906,15 @@ From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG
 
 [(__DI__ is Digital Input)](https://lupyuen.github.io/articles/lte#io-parameters-definition)
 
--   Voltage Level is 1.8 V
+-   __Voltage Level__ is 1.8 V
 
--   Default 115.2 kbps, up to 921.6 kbps
+-   __Ring Indicator__ is configured with AT Command "__`AT+QCFG`__"  [(See this)](https://lupyuen.github.io/articles/lte2#appendix-receive-phone-call-and-sms)
 
--   DTR is pulled up by default. Low level wakes up the module.
+-   __CTS and RTS__ might not work correctly on PinePhone [(See this)](https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_UART_flow_control_is_broken)
 
--   CTS / RTS might not work correctly [(See this)](https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_UART_flow_control_is_broken)
+-   __DTR__ is pulled up by default. Low level wakes up the module.
+
+-   __TXD and RXD__ (UART) default to 115.2 kbps, support up to 921.6 kbps
 
 ## Other Interface Pins
 
@@ -925,9 +927,9 @@ From [__EG25-G Hardware Design__](https://wiki.pine64.org/images/2/20/Quectel_EG
 
 [(__DI__ is Digital Input)](https://lupyuen.github.io/articles/lte#io-parameters-definition)
 
--   Voltage Level is 1.8 V
+-   __Voltage Level__ is 1.8 V
 
--   "The W_DISABLE# pin is pulled up by default. Driving it to low level will let the module enter airplane mode"
+-   "__W_DISABLE#__ pin is pulled up by default. Driving it to low level will let the module enter airplane mode"
 
     [(EG25-G Hardware Design, Page 37)](https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
