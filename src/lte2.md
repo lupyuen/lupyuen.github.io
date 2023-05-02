@@ -988,9 +988,11 @@ AT+QCFG="urc/ri/smsincoming"
 
 [(EG25-G AT Commands, Page 46)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
-# Appendix: PCM Digital Audio
+![LTE Modem is connected to Port PCM0 for Digital Audio](https://lupyuen.github.io/images/lte-title4.jpg)
 
-TODO
+[_LTE Modem is connected to Port PCM0 for Digital Audio_](https://lupyuen.github.io/articles/lte#control-pins-for-lte-modem)
+
+# Appendix: PCM Digital Audio
 
 _Earlier we made an Outgoing Voice Call..._
 
@@ -1008,6 +1010,46 @@ Command: AT+QDAI?
 Response: +QDAI: 1,1,0,1,0,0,1,1
 ```
 
+[(EG25-G AT Commands, Page 233)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
+The PCM Digital Audio configuration above says...
+
+- __io = 1__
+
+  Digital PCM Output 
+
+- __mode = 1__
+
+  Slave Mode
+
+- __fsync = 0__
+
+  Primary Mode (short-synchronization)
+
+- __clock = 1__
+
+  Clock Frequency is 256 kHz
+
+- __format = 0__
+
+  Data Format is 16-bit linear
+
+- __sample = 0__
+
+  Sampling Rate is 8 kHz
+
+- __num_slots = 1__
+
+  Number of Slot is 1
+
+- __slot_mapping = 1__
+
+  Slot Mapping Value is 1
+
+LTE Modem is connected to Allwinner A64 __Port PCM0__ for the Digital Audio. (Pic above)
+
+This (excellent) article explains how we'll program Port PCM0 to transmit and receive the Digital Audio Stream...
+
 - [__"Genode: PinePhone Telephony"__](https://genodians.org/ssumpf/2022-05-09-telephony)
 
 # Appendix: SMS PDU Format
@@ -1017,7 +1059,7 @@ _Earlier we saw this command for sending SMS in PDU Mode..._
 _What's the PDU Length?_
 
 ```text
-// Send an SMS with 41 bytes (excluding SMSC)
+// Send an SMS with PDU Length of 41 bytes (excluding SMSC)
 Command: AT+CMGS=41
 ```
 
