@@ -927,6 +927,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/lte2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lte2.md)
 
+![Ring Indicator is connected to GPIO Pin PL6](https://lupyuen.github.io/images/lte-title3.jpg)
+
+[_Ring Indicator is connected to GPIO Pin PL6_](https://lupyuen.github.io/articles/lte#control-pins-for-lte-modem)
+
 # Appendix: Receive Phone Call and SMS
 
 This is how we receive an __Incoming Phone Call__...
@@ -976,13 +980,15 @@ Receiving an SMS in __PDU Mode__ will look slightly different.
 
 _How does the Ring Indicator work with Incoming Call and SMS?_
 
-The LTE Modem sets [__Ring Indicator (PL6)__](https://lupyuen.github.io/articles/lte#main-uart-interface) to High when there's an Incoming Call or SMS, configured like this...
+The LTE Modem sets [__Ring Indicator (GPIO Pin PL6)__](https://lupyuen.github.io/articles/lte#control-pins-for-lte-modem) to High when there's an Incoming Call or SMS. (Pic above)
+
+Which we configure like this...
 
 ```text
-// On Incoming Call, signal the Ring Indicator
+// For Incoming Calls: Signal the Ring Indicator
 AT+QCFG="urc/ri/ring"
 
-// On Incoming SMS, signal the Ring Indicator
+// For Incoming SMS: Signal the Ring Indicator
 AT+QCFG="urc/ri/smsincoming" 
 ```
 
