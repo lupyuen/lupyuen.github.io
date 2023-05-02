@@ -565,7 +565,7 @@ Response:
 </code></pre></div>
 <p>Note that we <strong>flip the nibbles</strong> (half-bytes) from the Original Phone Number to produce the <strong>PDU Phone Number</strong>.</p>
 <p>If the number of <strong>nibbles is odd</strong>, insert “<strong><code>F</code></strong>” into the PDU Phone Number, like this…</p>
-<div class="example-wrap"><pre class="language-text"><code>#define PHONE_NUMBER    &quot;+123456789&quot;
+<div class="example-wrap"><pre class="language-c"><code>#define PHONE_NUMBER    &quot;+123456789&quot;
 #define PHONE_NUMBER_PDU &quot;214365870F9&quot;
 </code></pre></div></li>
 <li>
@@ -770,7 +770,10 @@ RING
 <li><a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html"><strong>nRF Connect Modem Library: AT Interface</strong></a></li>
 </ul>
 <p>The library uses <strong>printf</strong> and <strong>scanf</strong> to handle AT Commands…</p>
-<div class="example-wrap"><pre class="language-c"><code>err = modem_at_printf(&quot;AT+CFUN=%d&quot;, mode);
+<div class="example-wrap"><pre class="language-c"><code>// Send command &quot;AT+CFUN&quot;
+err = modem_at_printf(&quot;AT+CFUN=%d&quot;, mode);
+
+// Check commnd result
 if (err = 0) {
   // &quot;OK&quot; success
 } else if (err &gt; 0) {
@@ -780,7 +783,8 @@ if (err = 0) {
     case NRF_MODEM_AT_ERROR: ...
 </code></pre></div>
 <p><a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html">(Source)</a></p>
-<p>And it handles <strong>AT Notifications</strong> too. <a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html#receiving-at-notifications">(Like this)</a></p>
+<p>And it handles <strong>AT Notifications as Callbacks</strong>. <a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html#receiving-at-notifications">(Like this)</a></p>
+<p>(Very nice!)</p>
 <p><em>Anything we might reuse from NuttX?</em></p>
 <p>The NuttX Sample Apps for <strong>LoRaWAN and ESP8266</strong> will do some (limited) AT Command Handling. We might copy bits of these…</p>
 <ul>
