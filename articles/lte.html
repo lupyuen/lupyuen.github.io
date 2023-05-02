@@ -763,19 +763,19 @@ OK
 <p><a href="https://lupyuen.github.io/articles/lte#io-parameters-definition">(<strong>DI</strong> is Digital Input)</a></p>
 <ul>
 <li>
-<p>PWRKEY should be pulled down at least 500 ms, then pulled up</p>
+<p><strong>PWRKEY</strong> should be pulled down at least 500 ms, then pulled up</p>
 <p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">(EG25-G Hardware Design, Page 41)</a></p>
 </li>
 <li>
-<p>“Make sure that VBAT is stable before pulling down PWRKEY pin. It is recommended that the time between powering up VBAT and pulling down PWRKEY pin is no less than 30 ms.”</p>
+<p>“Make sure that <strong>VBAT is stable</strong> before pulling down PWRKEY pin. It is recommended that the time between powering up VBAT and pulling down PWRKEY pin is no less than 30 ms.”</p>
 <p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">(EG25-G Hardware Design, Page 41)</a></p>
 </li>
 <li>
-<p>“The RESET_N pin can be used to reset the module. The module can be reset by driving RESET_N to a low level voltage for 150–460 ms”</p>
+<p>“<strong>RESET_N</strong> pin can be used to reset the module. The module can be reset by driving RESET_N to a low level voltage for 150–460 ms”</p>
 <p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">(EG25-G Hardware Design, Page 42)</a></p>
 </li>
 <li>
-<p>Note that PWRKEY and RESET_N are <strong>High-Low Inverted</strong> when accessed through PinePhone’s GPIO Pins</p>
+<p>Note: <strong>PWRKEY and RESET_N</strong> are <strong>High-Low Inverted</strong> when accessed through PinePhone’s GPIO Pins</p>
 <p>(High becomes Low and vice versa)</p>
 <p><img src="https://lupyuen.github.io/images/lte-powerkey.png" alt="PWRKEY is High-Low Inverted" /></p>
 <p><img src="https://lupyuen.github.io/images/lte-reset.png" alt="RESET_N is High-Low Inverted" /></p>
@@ -791,7 +791,7 @@ OK
 <p><a href="https://lupyuen.github.io/articles/lte#io-parameters-definition">(<strong>OD</strong> is Open Drain)</a></p>
 <ul>
 <li>
-<p>When PWRKEY is pulled Low, STATUS goes High for ≥2.5 s, then STATUS goes Low</p>
+<p>When PWRKEY is pulled Low, <strong>STATUS goes High</strong> for ≥2.5 s, then STATUS goes Low</p>
 <p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">(EG25-G Hardware Design, Page 41)</a></p>
 </li>
 </ul>
@@ -817,16 +817,19 @@ OK
 <p><a href="https://lupyuen.github.io/articles/lte#io-parameters-definition">(<strong>DI</strong> is Digital Input)</a></p>
 <ul>
 <li>
-<p>Voltage Level is 1.8 V</p>
+<p><strong>Voltage Level</strong> is 1.8 V</p>
 </li>
 <li>
-<p>Default 115.2 kbps, up to 921.6 kbps</p>
+<p><strong>Ring Indicator</strong> is configured with AT Command “<strong><code>AT+QCFG</code></strong>”  <a href="https://lupyuen.github.io/articles/lte2#appendix-receive-phone-call-and-sms">(See this)</a></p>
 </li>
 <li>
-<p>DTR is pulled up by default. Low level wakes up the module.</p>
+<p><strong>CTS and RTS</strong> might not work correctly on PinePhone <a href="https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_UART_flow_control_is_broken">(See this)</a></p>
 </li>
 <li>
-<p>CTS / RTS might not work correctly <a href="https://wiki.pine64.org/wiki/PinePhone_v1.1_-_Braveheart#Modem_UART_flow_control_is_broken">(See this)</a></p>
+<p><strong>DTR</strong> is pulled up by default. Low level wakes up the module.</p>
+</li>
+<li>
+<p><strong>TXD and RXD</strong> (UART) default to 115.2 kbps, support up to 921.6 kbps</p>
 </li>
 </ul>
 <h2 id="other-interface-pins"><a href="#other-interface-pins">13.6 Other Interface Pins</a></h2>
@@ -839,10 +842,10 @@ OK
 <p><a href="https://lupyuen.github.io/articles/lte#io-parameters-definition">(<strong>DI</strong> is Digital Input)</a></p>
 <ul>
 <li>
-<p>Voltage Level is 1.8 V</p>
+<p><strong>Voltage Level</strong> is 1.8 V</p>
 </li>
 <li>
-<p>“The W_DISABLE# pin is pulled up by default. Driving it to low level will let the module enter airplane mode”</p>
+<p>“<strong>W_DISABLE#</strong> pin is pulled up by default. Driving it to low level will let the module enter airplane mode”</p>
 <p><a href="https://wiki.pine64.org/images/2/20/Quectel_EG25-G_Hardware_Design_V1.4.pdf">(EG25-G Hardware Design, Page 37)</a></p>
 </li>
 </ul>
