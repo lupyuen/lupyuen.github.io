@@ -929,7 +929,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Receive Phone Call and SMS
 
-TODO: Receive Phone Call
+This is how we receive an __Incoming Phone Call__...
 
 ```text
 // Incoming Voice Call
@@ -949,7 +949,7 @@ OK
 
 [(EG25-G AT Commands, Page 114)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
-TODO: Receive SMS
+And this is how we __receive an SMS__ in Text Mode...
 
 ```text
 // Select Message Service 3GPP TS 23.040 and 3GPP TS 23.041
@@ -971,6 +971,8 @@ OK
 ```
 
 [(EG25-G AT Commands, Page 167)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
+Receiving an SMS in __PDU Mode__ will look slightly different.
 
 TODO: Ring Indicator
 
