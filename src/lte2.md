@@ -607,7 +607,7 @@ Let's walk through the steps to send an __SMS in PDU Mode__...
 
     If the number of __nibbles is odd__, insert "__`F`__" into the PDU Phone Number, like this...
 
-    ```text
+    ```c
     #define PHONE_NUMBER    "+123456789"
     #define PHONE_NUMBER_PDU "214365870F9"
     ```
@@ -863,7 +863,10 @@ __nRF Connect Modem Library__ has a nifty AT Interface, we might adapt for NuttX
 The library uses __printf__ and __scanf__ to handle AT Commands...
 
 ```c
+// Send command "AT+CFUN"
 err = modem_at_printf("AT+CFUN=%d", mode);
+
+// Check commnd result
 if (err = 0) {
   // "OK" success
 } else if (err > 0) {
@@ -875,7 +878,9 @@ if (err = 0) {
 
 [(Source)](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html)
 
-And it handles __AT Notifications__ too. [(Like this)](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html#receiving-at-notifications)
+And it handles __AT Notifications as Callbacks__. [(Like this)](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html#receiving-at-notifications)
+
+(Very nice!)
 
 _Anything we might reuse from NuttX?_
 
