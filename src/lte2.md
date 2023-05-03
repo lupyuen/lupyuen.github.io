@@ -910,6 +910,8 @@ We do! The LTE Modem supports reliable communication over [__USB Serial__](https
 
 Which we'll explore later when our USB Serial Driver is up!
 
+[(__UART Hardware Flow Control__ won't work on PinePhone)](https://lupyuen.github.io/articles/lte#main-uart-interface)
+
 But first we need to __upstream these to NuttX Mainline__...
 
 - [__Allwinner A64 UART Driver__](https://github.com/lupyuen/pinephone-nuttx#configure-uart-port) (for UART3)
