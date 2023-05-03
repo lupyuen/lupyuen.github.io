@@ -944,9 +944,9 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
 
--   [__Discuss on Reddit__](https://www.reddit.com/r/PINE64official/comments/136ao1g/nuttx_rtos_for_pinephone_phone_calls_and_text/)
+-   [__Discuss this article on Reddit__](https://www.reddit.com/r/PINE64official/comments/136ao1g/nuttx_rtos_for_pinephone_phone_calls_and_text/)
 
--   [__Discuss on Hacker News__](https://news.ycombinator.com/item?id=35798118)
+-   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=35798118)
 
 -   [__My Current Project: "Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
 
