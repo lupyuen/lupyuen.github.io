@@ -1028,7 +1028,9 @@ _Earlier we made an Outgoing Voice Call..._
 
 _How will we talk to the called Phone Number?_
 
-We need the "__`AT+QDAI`__" commands, for the __PCM Digital Audio__ setup. We're still working on it...
+LTE Modem is connected to Allwinner A64 __Port PCM0__ for the __PCM Digital Audio__ Input and Output. (Pic above)
+
+We send the "__`AT+QDAI`__" commands for the __PCM Digital Audio__ setup. We're still working on it...
 
 ```text
 // Get Range of PCM Parameters for Digital Audio
@@ -1042,7 +1044,7 @@ Response: +QDAI: 1,1,0,1,0,0,1,1
 
 [(EG25-G AT Commands, Page 233)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
-The PCM Digital Audio configuration above says...
+The above __PCM Digital Audio Configuration__ for the LTE Modem says...
 
 - __io = 1__
 
@@ -1075,8 +1077,6 @@ The PCM Digital Audio configuration above says...
 - __slot_mapping = 1__
 
   Slot Mapping Value is 1
-
-LTE Modem is connected to Allwinner A64 __Port PCM0__ for the Digital Audio. (Pic above)
 
 This (excellent) article explains how we'll program Port PCM0 to transmit and receive the Digital Audio Stream...
 
