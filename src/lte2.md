@@ -325,7 +325,7 @@ We're all set to make some calls!
 
 # Outgoing Phone Call
 
-This is how we dial a Phone Number to make an __Outgoing Phone Call__: [dial_number](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L343-L432)
+In NuttX, this is how we dial a Phone Number to make an __Outgoing Phone Call__: [dial_number](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L343-L432)
 
 ```c
 // Get Range of PCM Parameters for Digital Audio
@@ -352,6 +352,7 @@ We send the command "__`ATD+1234567890;`__"...
 #define PHONE_NUMBER "+1234567890"
 
 // Make Outgoing Phone Call
+// ATD+1234567890;
 const char cmd[] = 
   "ATD"
   PHONE_NUMBER
@@ -362,7 +363,7 @@ write(fd, cmd, strlen(cmd));
 
 [(EG25-G AT Commands, Page 114)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
-We wait 20 seconds...
+We __wait 20 seconds__ for the Called Number to answer...
 
 ```c
 // Wait 20 seconds for receiver to answer
@@ -427,13 +428,17 @@ To send an __SMS Message__ (in Text Mode), use these AT Commands...
 
 1.  "__`AT+CMGF=1`__"
 
-    Select Text Mode for SMS (instead of PDU Mode)
+    Select __Text Mode__ for SMS
+    
+    (Instead of PDU Mode)
 
     [(EG25-G AT Commands, Page 146)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
 1.  "__`AT+CSCS="GSM"`__"
 
-    Select GSM Character Set (instead of UCS2)
+    Select (7-bit ASCII-like) __GSM Character Set__
+    
+    (Instead of 16-bit UCS2 Unicode)
 
     [(EG25-G AT Commands, Page 25)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
@@ -453,7 +458,9 @@ To send an __SMS Message__ (in Text Mode), use these AT Commands...
     Hello from Apache NuttX RTOS on PinePhone!<Ctrl-Z>
     ```
 
-1.  Modem responds with the __Message ID__...
+    (__Ctrl-Z__ is Character Code __`0x1A`__)
+
+1.  Modem sends our SMS and responds with the __Message ID__...
 
     ```text
     +CMGS: 22
@@ -461,7 +468,7 @@ To send an __SMS Message__ (in Text Mode), use these AT Commands...
 
     [(EG25-G AT Commands, Page 159)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
-This is how we send an SMS with NuttX: [send_sms_text](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L162-L253)
+This is how we __send an SMS__ (in Text Mode) with NuttX: [send_sms_text](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L162-L253)
 
 ```c
 // Select Text Mode for SMS (instead of PDU Mode)
@@ -479,6 +486,7 @@ write(fd, cmd, strlen(cmd));
 #define PHONE_NUMBER "+1234567890"
 
 // Send an SMS to the (imaginary) Phone Number "+1234567890"
+// AT+CMGS="+1234567890"
 const char cmd[] = 
   "AT+CMGS=\""
   PHONE_NUMBER
@@ -562,7 +570,7 @@ Response:
 
 Also check that the SIM Card works OK on another phone.
 
-(I had a peculiar SIM Card that blocks Outgoing SMS, but allows Outgoing Phone Calls)
+(My peculiar SIM Card blocks Outgoing SMS, but allows Outgoing Phone Calls)
 
 # Send SMS in PDU Mode
 
