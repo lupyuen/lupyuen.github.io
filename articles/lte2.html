@@ -537,10 +537,12 @@ Response:
 </code></pre></div>
 <p>Also check that the SIM Card works OK on another phone.</p>
 <p>(My peculiar SIM Card blocks Outgoing SMS, but allows Outgoing Phone Calls)</p>
+<p>There’s another way to send SMS…</p>
+<p><img src="https://lupyuen.github.io/images/lte2-pdu.jpg" alt="Send SMS in PDU Mode" /></p>
 <h1 id="send-sms-in-pdu-mode"><a href="#send-sms-in-pdu-mode">7 Send SMS in PDU Mode</a></h1>
 <p><em>Sending an SMS Message looks easy!</em></p>
 <p>Ah but there’s another (preferred and precise) way: <strong>PDU Mode</strong>.</p>
-<p><a href="https://en.wikipedia.org/wiki/GSM_03.40">(Which means <strong>Protocol Data Unit</strong>)</a></p>
+<p><a href="https://en.wikipedia.org/wiki/GSM_03.40">(<strong>Protocol Data Unit</strong>, works like a Data Packet)</a></p>
 <p>In PDU Mode, we encode the SMS Messages as <strong>Hexadecimal Numbers</strong>. These are the official docs…</p>
 <ul>
 <li>
@@ -611,7 +613,7 @@ const char cmd[] =
 <p>(Remember to set “<strong>Address-Length</strong>” according to the destination Phone Number)</p>
 </li>
 <li>
-<p>Modem responds with the <strong>Message ID</strong>…</p>
+<p>Modem sends our SMS and responds with the <strong>Message ID</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>+CMGS: 23
 </code></pre></div>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 159)</a></p>
@@ -719,7 +721,8 @@ AT+CMGS=41
 // Followed by SMS Message encoded as PDU...
 </code></pre></div>
 <p>See the difference? <strong>PDU Mode is more precise</strong> because we state exactly how many bytes there are in the SMS.</p>
-<p>With Text Mode, there’s a risk of garbled messages when characters are dropped during UART Transmission. (Which happens!)</p>
+<p>With Text Mode, there’s a risk of garbled messages when characters are dropped during UART Transmission.</p>
+<p>(Which happens!)</p>
 <p><em>But what if characters are dropped in PDU Mode?</em></p>
 <p>The LTE Modem will say it’s an <strong>Invalid PDU</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>+CMS ERROR: 304
