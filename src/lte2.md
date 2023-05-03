@@ -952,7 +952,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Receive Phone Call and SMS
 
-This is how we receive an __Incoming Phone Call__...
+_How do we receive Phone Calls and SMS Messages with the LTE Modem?_
+
+We receive an __Incoming Phone Call__ like this...
 
 ```text
 // Incoming Voice Call
