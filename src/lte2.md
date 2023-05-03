@@ -1,6 +1,6 @@
 # NuttX RTOS for PinePhone: Phone Calls and Text Messages
 
-📝 _5 May 2023_
+📝 _4 May 2023_
 
 ![Apache NuttX RTOS makes a Phone Call from Pine64 PinePhone](https://lupyuen.github.io/images/lte2-title.jpg)
 
@@ -918,25 +918,21 @@ But first we need to __upstream these to NuttX Mainline__...
 
 # What's Next
 
-TODO
+I hope this article was helpful for understanding the internals of Phone Calls and Text Messaging on PinePhone...
 
-I hope this article was helpful for learning about PinePhone's 4G LTE Modem...
+-   Outgoing and Incoming __Phone Calls__ over 4G
 
-TODO
+-   Send and receive __SMS Text Messages__
 
--   TODO: Outgoing and Incoming __Phone Calls__ over 4G
+-   Why we prefer __Encoded PDU Messages__ for SMS
 
--   TODO: Send and receive __SMS Text Messages__
+-   Programming the __4G LTE Modem__ with Apache NuttX RTOS
 
--   TODO: We prefer __Encoded PDU Messages__ for SMS
+-   Doing all these over __UART vs USB__
 
--   TODO: Programming the __4G LTE Modem__ with Apache NuttX RTOS
+-   Why we need an __AT Modem API__ for robust parsing, graceful timeout (plus retry) and notification callbacks
 
--   TODO: Doing all these over __UART vs USB__
-
--   TODO: Need AT Modem API for robust parsing, graceful timeout (plus retry) and notification callbacks
-
-We'll share more details when the LTE Modem is responding OK to UART and USB on NuttX!
+We'll share more details when the AT Modem API is up!
 
 Meanwhile please check out the other articles on NuttX for PinePhone...
 

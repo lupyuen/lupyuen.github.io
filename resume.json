@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "NuttX RTOS for PinePhone: Phone Calls and Text Messages",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-05-04",
+      "website": "https://lupyuen.github.io/articles/lte2",
+      "summary": "Making Phone Calls and Sending SMS Text Messages with PinePhone's Quectel EG25-G 4G LTE Modem... How we'll do it with Apache NuttX RTOS"
+    },
+    {
       "name": "NuttX RTOS for PinePhone: 4G LTE Modem",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-04-12",
