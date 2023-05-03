@@ -52,9 +52,9 @@ The LTE Modem has similar AT Commands for SMS and Mobile Data.
 
 [(EG25-G runs on __Qualcomm MDM 9607__ with a Cortex-A7 CPU inside)](https://xnux.eu/devices/feature/modem-pp.html#toc-modem-on-pinephone)
 
-_How to send the AT Commands to LTE Modem?_
+_How to send AT Commands to LTE Modem?_
 
-The LTE Modem accepts __AT Commands__ in two ways (pic below)...
+The LTE Modem accepts __AT Commands__ in two ways...
 
 -   Via the __UART Port (Serial)__
 
@@ -90,7 +90,7 @@ In the previous article we spoke about __starting the LTE Modem__ with NuttX (pi
 
 Which we have implemented in NuttX as [__pinephone_modem_init__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/bb1ef61d6dbb5309a1e92583caaf81513308320a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L226-L356).
 
-We see this at __NuttX Startup__...
+At __NuttX Startup__, we see this ...
 
 ```text
 Starting kernel...
@@ -128,7 +128,7 @@ _LTE Modem has started successfully at UART3..._
 
 _How will we send AT Commands to the modem?_
 
-This is how we __send an AT Command__ to the LTE Modem over UART3: [hello_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L52-L75)
+On NuttX, this is how we __send an AT Command__ to the LTE Modem over UART3: [hello_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L52-L75)
 
 ```c
 // Open /dev/ttyS1 (UART3)
@@ -160,7 +160,7 @@ for (int i = 0; i < 5; i++) {
 close(fd);
 ```
 
-The NuttX App above sends the command "__`AT`__" to the LTE Modem over UART3. (5 times)
+The above NuttX App sends the command "__`AT`__" to the LTE Modem over UART3. (5 times)
 
 Watch what happens when we run it...
 
@@ -198,7 +198,7 @@ LTE Modem replies...
 
 - "__`+CFUN: 1`__"
 
-  This says that the LTE Modem is fully operational
+  LTE Modem is fully operational
 
   [(EG25-G AT Commands, Page 33)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
@@ -210,19 +210,19 @@ LTE Modem replies...
 
 - "__`+QUSIM: 1`__"
 
-  Identifies SIM card type
+  Identifies the SIM Card Type
 
   [(Says here)](https://forums.quectel.com/t/what-means-qusim-1/2526/2)
 
 - "__`+QIND: SMS DONE`__"
 
-  SMS is ready
+  SMS Storage is ready
 
   [(EG25-G AT Commands, Page 297)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
 - "__`+QIND: PB DONE`__"
 
-  Phonebook is ready (for SIM Contacts)
+  Phonebook Storage is ready (for SIM Contacts)
 
   [(EG25-G AT Commands, Page 297)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
