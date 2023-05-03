@@ -1107,7 +1107,7 @@ _What's the PDU Length?_
 Command: AT+CMGS=41
 ```
 
-Our SMS Message PDU has __42 total bytes__...
+Our SMS Message PDU has __42 total bytes__ (assuming 5 bytes in our PDU Phone Number)...
 
 ```c
 "00"  // Length of SMSC information (None)
