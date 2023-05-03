@@ -688,7 +688,7 @@ OK
 </code></pre></div>
 <p>And our SMS Message <strong>“Hello,Quectel!”</strong> appears at the destination Phone Number!</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L663-L681">(See the Complete Log)</a></p>
-<p><em>How do we encode the SMS in PDU Format?</em></p>
+<p><em>How to encode the SMS in PDU Format? What’s the PDU Length?</em></p>
 <p>The <strong>PDU Encoding for SMS</strong> is explained here…</p>
 <ul>
 <li>
@@ -730,22 +730,22 @@ AT+CMGS=41
 <p>Our app should catch this error and resend.</p>
 <h1 id="at-modem-api"><a href="#at-modem-api">9 AT Modem API</a></h1>
 <p><em>What about receiving Phone Calls and SMS Messages?</em></p>
-<p>This is how we handle <strong>Incoming Phone Calls and SMS</strong>…</p>
+<p>We handle <strong>Incoming Phone Calls and SMS</strong> like this…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lte2#appendix-receive-phone-call-and-sms"><strong>“Receive Phone Call and SMS”</strong></a></li>
 </ul>
 <p>And it looks messy. LTE Modem will <strong>dump a Notification</strong> whenever there’s an Incoming Call or SMS…</p>
-<div class="example-wrap"><pre class="language-text"><code>// Incoming Call
+<div class="example-wrap"><pre class="language-text"><code>// Incoming Call Notification
 RING
-// Answer the call with ATA
+// We answer the call with ATA
 ...
-// Incoming SMS
+// Incoming SMS Notification
 +CMT: &quot;+8615021012496&quot;,,&quot;13/03/18,17:07:21+32&quot;,145,4,0,0,&quot;+8613800551500&quot;,145,28
 // Followed by Message Text
 </code></pre></div>
 <p>Which is totally <strong>Asynchronous</strong>. And tricky to handle over UART.</p>
 <p><em>Any other UART problems with LTE Modem?</em></p>
-<p>The UART Output looks all jumbled up because our NuttX App didn’t <strong>wait for the status</strong> of every AT Command…</p>
+<p>Our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L621"><strong>UART Output</strong></a> looks all jumbled up because our NuttX App didn’t <strong>wait for the response</strong> of every AT Command…</p>
 <div><table><thead><tr><th style="text-align: left">NuttX App writes</th><th style="text-align: left">LTE Modem responds</th></tr></thead><tbody>
 <tr><td style="text-align: left"><code>AT</code></td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left"></td><td style="text-align: left"><code>RDY</code></td></tr>
@@ -753,10 +753,10 @@ RING
 <tr><td style="text-align: left"></td><td style="text-align: left"><code>+CFUN: 1</code></td></tr>
 <tr><td style="text-align: left"><code>AT</code></td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left"></td><td style="text-align: left"><code>AT</code> <br> <code>OK</code> <br> <code>+CPIN: READY</code> <br> <code>+QUSIM: 1</code> <br> <code>+QIND: SMS DONE</code></td></tr>
-<tr><td style="text-align: left"><strong><code>AT+CREG?</code></strong></td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left"><strong><code>AT+CREG?</code></strong> <br> <em>(Where’s the CREG response?)</em></td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left"></td><td style="text-align: left"><code>AT</code> <br> <code>OK</code></td></tr>
 <tr><td style="text-align: left"><code>AT+COPS?</code></td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: left"></td><td style="text-align: left"><strong><code>AT+CREG?</code></strong> <br> <code>+CREG: 0,1</code> <br> <code>OK</code></td></tr>
+<tr><td style="text-align: left"></td><td style="text-align: left"><strong><code>AT+CREG?</code></strong> <br> <code>+CREG: 0,1</code> <br> <code>OK</code> <br> <em>(Oops CREG response is delayed!)</em></td></tr>
 </tbody></table>
 </div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L621">(See the Complete Log)</a></p>
@@ -772,13 +772,13 @@ RING
 </li>
 </ul>
 <p>Our NuttX App needs a <strong>robust parser</strong> for responses.</p>
-<p>And our app needs to <strong>timeout gracefully</strong> if we don’t get a timely response. (And retry)</p>
+<p>And our app needs to <strong>timeout gracefully</strong> if we don’t get a timely response. (Then retry)</p>
 <p><em>Is there a proper Modem API for AT Commands?</em></p>
-<p><strong>nRF Connect Modem Library</strong> has a nifty AT Interface, we might adapt for NuttX…</p>
+<p><strong>nRF Connect Modem Library</strong> has a nifty AT Interface. We might adapt it for NuttX…</p>
 <ul>
 <li><a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html"><strong>nRF Connect Modem Library: AT Interface</strong></a></li>
 </ul>
-<p>The library uses <strong>printf</strong> and <strong>scanf</strong> to handle AT Commands…</p>
+<p>The AT Modem API uses <strong>printf</strong> and <strong>scanf</strong> to handle AT Commands…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Send command &quot;AT+CFUN&quot;
 err = modem_at_printf(&quot;AT+CFUN=%d&quot;, mode);
 
@@ -795,7 +795,7 @@ if (err = 0) {
 <p>And it handles <strong>AT Notifications as Callbacks</strong>. <a href="https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html#receiving-at-notifications">(Like this)</a></p>
 <p>(Very nice!)</p>
 <p><em>Anything we might reuse from NuttX?</em></p>
-<p>The NuttX Sample Apps for <strong>LoRaWAN and ESP8266</strong> will do some (limited) AT Command Handling. We might copy bits of these…</p>
+<p>The NuttX Sample Apps for <strong>LoRaWAN and ESP8266</strong> will do some (very limited) AT Command Handling. We might copy bits of these…</p>
 <ul>
 <li>
 <p><a href="https://github.com/apache/nuttx-apps/blob/master/examples/tcp_ipc_server/uart_lorawan_layer.c#L262-L274"><strong>uart_lorawan_layer.c</strong></a></p>
