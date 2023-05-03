@@ -906,7 +906,7 @@ The NuttX Sample Apps for __LoRaWAN and ESP8266__ will do some (very limited) AT
 
 _Wow this looks tedious. If only we had reliable, non-lossy UART..._
 
-We do! The LTE Modem supports reliable AT Commands over __USB Serial__.
+We do! The LTE Modem supports reliable communication over [__USB Serial__](https://lupyuen.github.io/articles/usb3).
 
 Which we'll explore later when our USB Serial Driver is up!
 
@@ -923,6 +923,18 @@ TODO
 I hope this article was helpful for learning about PinePhone's 4G LTE Modem...
 
 TODO
+
+-   TODO: Outgoing and Incoming __Phone Calls__ over 4G
+
+-   TODO: Send and receive __SMS Text Messages__
+
+-   TODO: We prefer __Encoded PDU Messages__ for SMS
+
+-   TODO: Programming the __4G LTE Modem__ with Apache NuttX RTOS
+
+-   TODO: Doing all these over __UART vs USB__
+
+-   TODO: Need AT Modem API for robust parsing, graceful timeout (plus retry) and notification callbacks
 
 We'll share more details when the LTE Modem is responding OK to UART and USB on NuttX!
 
