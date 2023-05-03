@@ -930,9 +930,9 @@ I hope this article was helpful for understanding the internals of Phone Calls a
 
 -   Doing all these over __UART vs USB__
 
--   Why we need an __AT Modem API__ for robust parsing, graceful timeout (plus retry) and notification callbacks
+-   Upcoming __AT Modem API__ for robust parsing, graceful timeout (plus retry) and notification callbacks
 
-We'll share more details when the AT Modem API is up!
+We'll share more details when the AT Modem API is up on NuttX!
 
 Meanwhile please check out the other articles on NuttX for PinePhone...
 
@@ -941,6 +941,10 @@ Meanwhile please check out the other articles on NuttX for PinePhone...
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__Discuss on Reddit__](https://www.reddit.com/r/PINE64official/comments/136ao1g/nuttx_rtos_for_pinephone_phone_calls_and_text/)
+
+-   [__Discuss on Hacker News__](https://news.ycombinator.com/item?id=35798118)
 
 -   [__My Current Project: "Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
 
