@@ -572,13 +572,17 @@ Also check that the SIM Card works OK on another phone.
 
 (My peculiar SIM Card blocks Outgoing SMS, but allows Outgoing Phone Calls)
 
+There's another way to send SMS...
+
+![Send SMS in PDU Mode](https://lupyuen.github.io/images/lte2-pdu.jpg)
+
 # Send SMS in PDU Mode
 
 _Sending an SMS Message looks easy!_
 
 Ah but there's another (preferred and precise) way: __PDU Mode__.
 
-[(Which means __Protocol Data Unit__)](https://en.wikipedia.org/wiki/GSM_03.40)
+[(__Protocol Data Unit__, works like a Data Packet)](https://en.wikipedia.org/wiki/GSM_03.40)
 
 In PDU Mode, we encode the SMS Messages as __Hexadecimal Numbers__. These are the official docs...
 
@@ -662,7 +666,7 @@ Let's walk through the steps to send an __SMS in PDU Mode__...
 
     (Remember to set "__Address-Length__" according to the destination Phone Number)
 
-1.  Modem responds with the __Message ID__...
+1.  Modem sends our SMS and responds with the __Message ID__...
 
     ```text
     +CMGS: 23
@@ -795,7 +799,9 @@ AT+CMGS=41
 
 See the difference? __PDU Mode is more precise__ because we state exactly how many bytes there are in the SMS.
 
-With Text Mode, there's a risk of garbled messages when characters are dropped during UART Transmission. (Which happens!)
+With Text Mode, there's a risk of garbled messages when characters are dropped during UART Transmission.
+
+(Which happens!)
 
 _But what if characters are dropped in PDU Mode?_
 
