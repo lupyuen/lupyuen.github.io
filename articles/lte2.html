@@ -132,8 +132,8 @@
 </code></pre></div>
 <p>The LTE Modem has similar AT Commands for SMS and Mobile Data.</p>
 <p><a href="https://xnux.eu/devices/feature/modem-pp.html#toc-modem-on-pinephone">(EG25-G runs on <strong>Qualcomm MDM 9607</strong> with a Cortex-A7 CPU inside)</a></p>
-<p><em>How to send the AT Commands to LTE Modem?</em></p>
-<p>The LTE Modem accepts <strong>AT Commands</strong> in two ways (pic below)…</p>
+<p><em>How to send AT Commands to LTE Modem?</em></p>
+<p>The LTE Modem accepts <strong>AT Commands</strong> in two ways…</p>
 <ul>
 <li>
 <p>Via the <strong>UART Port (Serial)</strong></p>
@@ -165,7 +165,7 @@
 </li>
 </ul>
 <p>Which we have implemented in NuttX as <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/bb1ef61d6dbb5309a1e92583caaf81513308320a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L226-L356"><strong>pinephone_modem_init</strong></a>.</p>
-<p>We see this at <strong>NuttX Startup</strong>…</p>
+<p>At <strong>NuttX Startup</strong>, we see this …</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel...
 Enable UART3 on PD0
 Enable UART3 on PD1
@@ -192,7 +192,7 @@ nsh&gt;
 <h1 id="send-at-commands"><a href="#send-at-commands">3 Send AT Commands</a></h1>
 <p><em>LTE Modem has started successfully at UART3…</em></p>
 <p><em>How will we send AT Commands to the modem?</em></p>
-<p>This is how we <strong>send an AT Command</strong> to the LTE Modem over UART3: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L52-L75">hello_main.c</a></p>
+<p>On NuttX, this is how we <strong>send an AT Command</strong> to the LTE Modem over UART3: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L52-L75">hello_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Open /dev/ttyS1 (UART3)
 int fd = open(&quot;/dev/ttyS1&quot;, O_RDWR);
 printf(&quot;Open /dev/ttyS1: fd=%d\n&quot;, fd);
@@ -221,7 +221,7 @@ for (int i = 0; i &lt; 5; i++) {
 // Close the device
 close(fd);
 </code></pre></div>
-<p>The NuttX App above sends the command “<strong><code>AT</code></strong>” to the LTE Modem over UART3. (5 times)</p>
+<p>The above NuttX App sends the command “<strong><code>AT</code></strong>” to the LTE Modem over UART3. (5 times)</p>
 <p>Watch what happens when we run it…</p>
 <p>Our NuttX App sends command “<strong><code>AT</code></strong>” to the LTE Modem over UART3…</p>
 <div class="example-wrap"><pre class="language-text"><code>Open /dev/ttyS1
@@ -246,7 +246,7 @@ Response:
 <ul>
 <li>
 <p>“<strong><code>+CFUN: 1</code></strong>”</p>
-<p>This says that the LTE Modem is fully operational</p>
+<p>LTE Modem is fully operational</p>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 33)</a></p>
 </li>
 <li>
@@ -256,17 +256,17 @@ Response:
 </li>
 <li>
 <p>“<strong><code>+QUSIM: 1</code></strong>”</p>
-<p>Identifies SIM card type</p>
+<p>Identifies the SIM Card Type</p>
 <p><a href="https://forums.quectel.com/t/what-means-qusim-1/2526/2">(Says here)</a></p>
 </li>
 <li>
 <p>“<strong><code>+QIND: SMS DONE</code></strong>”</p>
-<p>SMS is ready</p>
+<p>SMS Storage is ready</p>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 297)</a></p>
 </li>
 <li>
 <p>“<strong><code>+QIND: PB DONE</code></strong>”</p>
-<p>Phonebook is ready (for SIM Contacts)</p>
+<p>Phonebook Storage is ready (for SIM Contacts)</p>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 297)</a></p>
 </li>
 </ul>
