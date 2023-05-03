@@ -80,7 +80,7 @@
 <li><a href="#appendix-receive-phone-call-and-sms">11 Appendix: Receive Phone Call and SMS</a><ul></ul></li>
 <li><a href="#appendix-pcm-digital-audio">12 Appendix: PCM Digital Audio</a><ul></ul></li>
 <li><a href="#appendix-sms-pdu-format">13 Appendix: SMS PDU Format</a><ul></ul></li>
-<li><a href="#appendix-sms-pdu-message-encoding">14 Appendix: SMS PDU Message Encoding</a><ul></ul></li></ul></nav><p>📝 <em>5 May 2023</em></p>
+<li><a href="#appendix-sms-pdu-message-encoding">14 Appendix: SMS PDU Message Encoding</a><ul></ul></li></ul></nav><p>📝 <em>4 May 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/lte2-title.jpg" alt="Apache NuttX RTOS makes a Phone Call from Pine64 PinePhone" /></p>
 <p>What makes <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> a phone? Because it will make <strong>Phone Calls</strong> and send <strong>Text Messages</strong>!</p>
 <p>We’re porting <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) to PinePhone. Today let’s turn <strong>NuttX into a Feature Phone</strong>…</p>
@@ -817,30 +817,28 @@ if (err = 0) {
 </li>
 </ul>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
-<p>TODO</p>
-<p>I hope this article was helpful for learning about PinePhone’s 4G LTE Modem…</p>
-<p>TODO</p>
+<p>I hope this article was helpful for understanding the internals of Phone Calls and Text Messaging on PinePhone…</p>
 <ul>
 <li>
-<p>TODO: Outgoing and Incoming <strong>Phone Calls</strong> over 4G</p>
+<p>Outgoing and Incoming <strong>Phone Calls</strong> over 4G</p>
 </li>
 <li>
-<p>TODO: Send and receive <strong>SMS Text Messages</strong></p>
+<p>Send and receive <strong>SMS Text Messages</strong></p>
 </li>
 <li>
-<p>TODO: We prefer <strong>Encoded PDU Messages</strong> for SMS</p>
+<p>Why we prefer <strong>Encoded PDU Messages</strong> for SMS</p>
 </li>
 <li>
-<p>TODO: Programming the <strong>4G LTE Modem</strong> with Apache NuttX RTOS</p>
+<p>Programming the <strong>4G LTE Modem</strong> with Apache NuttX RTOS</p>
 </li>
 <li>
-<p>TODO: Doing all these over <strong>UART vs USB</strong></p>
+<p>Doing all these over <strong>UART vs USB</strong></p>
 </li>
 <li>
-<p>TODO: Need AT Modem API for robust parsing, graceful timeout (plus retry) and notification callbacks</p>
+<p>Why we need an <strong>AT Modem API</strong> for robust parsing, graceful timeout (plus retry) and notification callbacks</p>
 </li>
 </ul>
-<p>We’ll share more details when the LTE Modem is responding OK to UART and USB on NuttX!</p>
+<p>We’ll share more details when the AT Modem API is up!</p>
 <p>Meanwhile please check out the other articles on NuttX for PinePhone…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>“Apache NuttX RTOS for PinePhone”</strong></a></li>
