@@ -973,7 +973,7 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 // TP-User-Data: Assume 28 bytes in Encoded Message Text
 &quot;00480065006C006C006F002C005100750065006300740065006C0021&quot;
 </code></pre></div>
-<p>PDU Length <strong>excludes the SMSC Information</strong>. (First Byte)</p>
+<p>But PDU Length <strong>excludes the SMS Centre Information</strong>. (First Byte)</p>
 <p>Thus our PDU Length is <strong>41 bytes</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Send SMS Command
 const char cmd[] = 
@@ -1005,14 +1005,14 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 <li>
 <p><strong>Short Message Transfer Protocol</strong> (SM-TL) <strong>Transfer Protocol Data Unit</strong> (TPDU) is SMS-SUBMIT Message: “<code>11</code>”</p>
 <p><a href="https://en.wikipedia.org/wiki/GSM_03.40#TPDU_Fields">(GSM 03.40, TPDU Fields)</a></p>
-<p><strong>TP-Message-Type-Indicator</strong> (TP-MTI, Bits 0 and 1) is <code>0b01</code> (SMS-SUBMIT):</p>
+<p><strong>TP-Message-Type-Indicator</strong> (TP-MTI, Bits 0 and 1) = <code>0b01</code> (SMS-SUBMIT):</p>
 <ul>
 <li>
 <p>Submit a message to SMSC for transmission.</p>
 <p><a href="https://en.wikipedia.org/wiki/GSM_03.40#TPDU_Types">(GSM 03.40, TPDU Types)</a></p>
 </li>
 </ul>
-<p><strong>TP-Validity-Period-Format</strong> (TP-VPF, Bits 3 and 4) is <code>0b10</code> (Relative Format):</p>
+<p><strong>TP-Validity-Period-Format</strong> (TP-VPF, Bits 3 and 4) = <code>0b10</code> (Relative Format):</p>
 <ul>
 <li>
 <p><strong>Message Validity Period</strong> is in Relative Format.</p>
@@ -1023,17 +1023,18 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 </li>
 <li>
 <p><strong>TP-Message-Reference</strong> (TP-MR): “<code>00</code>”</p>
-<p>“00” will let the phone generate the Message Reference Number itself</p>
+<p>“<code>00</code>” will let the phone generate the Message Reference Number itself</p>
 <p><a href="https://en.wikipedia.org/wiki/GSM_03.40#Message_Reference">(GSM 03.40, Message Reference)</a></p>
 </li>
 <li>
 <p><strong>Address-Length:</strong> “<code>0A</code>”</p>
-<p>Length of phone number (Number of Decimal Digits in Phone Number, excluding “F”)</p>
+<p>Length of phone number</p>
+<p>(Number of Decimal Digits in Phone Number, excluding “<code>F</code>”)</p>
 <p><a href="https://en.wikipedia.org/wiki/GSM_03.40#Addresses">(GSM 03.40, Addresses)</a></p>
 </li>
 <li>
 <p><strong>Type-of-Address:</strong> “<code>91</code>”</p>
-<p>91 for International Format of phone number</p>
+<p>“<code>91</code>” for International Format of Phone Number</p>
 <p><strong>Numbering Plan Identification</strong> (NPI, Bits 0 to 3) = <code>0b0001</code> (ISDN / Telephone Numbering Plan)</p>
 <p><strong>Type Of Number</strong> (TON, Bits 4 to 6) = <code>0b001</code> (International Number)</p>
 <p><strong>EXT</strong> (Bit 7) = <code>1</code> (No Extension)</p>
@@ -1041,7 +1042,10 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 </li>
 <li>
 <p><strong>PHONE_NUMBER_PDU:</strong> Phone Number in PDU Format (nibbles swapped)</p>
-<p>Remember to insert “F” for odd number of nibbles…</p>
+<div class="example-wrap"><pre class="language-c"><code>#define PHONE_NUMBER    &quot;+1234567890&quot;
+#define PHONE_NUMBER_PDU &quot;2143658709&quot;
+</code></pre></div>
+<p>Remember to insert “<code>F</code>” if Phone Number has <strong>odd number of nibbles</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>#define PHONE_NUMBER    &quot;+123456789&quot;
 #define PHONE_NUMBER_PDU &quot;214365870F9&quot;
 </code></pre></div>
@@ -1054,14 +1058,14 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 </li>
 <li>
 <p><strong>TP-Data-Coding-Scheme</strong> (TP-DCS): “<code>08</code>”</p>
-<p>Message Text is encoded with UCS2 Character Set</p>
+<p>Message Text is encoded with <strong>UCS2 Unicode Character Set</strong></p>
 <p><a href="https://en.wikipedia.org/wiki/GSM_03.40#Data_Coding_Scheme">(GSM 03.40, Data Coding Scheme)</a></p>
 <p><a href="https://en.wikipedia.org/wiki/Data_Coding_Scheme#SMS_data_coding_scheme">(SMS Data Coding Scheme)</a></p>
 </li>
 <li>
 <p><strong>TP-Validity-Period</strong> (TP-VP): “<code>01</code>”</p>
 <p>Message is valid for 10 minutes, relative to current time:</p>
-<p>(<code>&quot;01&quot;</code> + 1) x 5 minutes</p>
+<p><code>(&quot;01&quot; + 1) x 5</code> minutes</p>
 <p><a href="https://en.wikipedia.org/wiki/GSM_03.40#Validity_Period">(GSM 03.40, Validity Period)</a></p>
 <p>(See <strong>TP-Validity-Period-Format</strong> above)</p>
 </li>
@@ -1072,8 +1076,8 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 </li>
 <li>
 <p><strong>TP-User-Data</strong> (TP-UD): Encoded Message Text</p>
-<p>Message Text is encoded with <strong>UCS2 Character Set</strong></p>
-<p>(Because of TP-Data-Coding-Scheme above)</p>
+<p>Message Text is encoded with <strong>UCS2 Unicode Character Set</strong></p>
+<p>(Because of <strong>TP-Data-Coding-Scheme</strong> above)</p>
 <p><a href="https://en.wikipedia.org/wiki/GSM_03.40#Message_Content">(GSM 03.40, Message Content)</a></p>
 </li>
 </ul>
@@ -1084,15 +1088,13 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 <ul>
 <li>
 <p><strong>TP-Data-Coding-Scheme</strong> (TP-DCS): “<code>08</code>”</p>
-<p>Message Text is encoded in <strong>UCS2 Character Set</strong></p>
+<p>Message Text is encoded in <strong>UCS2 Unicode Character Set</strong></p>
 <p><a href="https://en.wikipedia.org/wiki/GSM_03.40#Data_Coding_Scheme">(GSM 03.40, Data Coding Scheme)</a></p>
 <p><a href="https://en.wikipedia.org/wiki/Data_Coding_Scheme#SMS_data_coding_scheme">(SMS Data Coding Scheme)</a></p>
 </li>
 </ul>
 <p>The UCS2 Encoding is actually <a href="https://en.wikipedia.org/wiki/UTF-16"><strong>Unicode UTF-16</strong></a>…</p>
-<blockquote>
 <p>“the SMS standard specifies UCS-2, but almost all users actually <strong>implement UTF-16</strong> so that emojis work”</p>
-</blockquote>
 <p><a href="https://en.wikipedia.org/wiki/UTF-16">(Source)</a></p>
 <p>So this Encoded Message Text…</p>
 <div class="example-wrap"><pre class="language-c"><code>// TP-User-Data: Message Text encoded with UCS2 Character Set
