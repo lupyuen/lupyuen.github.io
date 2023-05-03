@@ -957,13 +957,16 @@ _How do we receive Phone Calls and SMS Messages with the LTE Modem?_
 We receive an __Incoming Phone Call__ like this...
 
 ```text
-// Incoming Voice Call
+// Notification for Incoming Voice Call
 RING
 
+// List the Current Calls
 AT+CLCC
-// PS call in LTE mode
+
+// Outgoing Call: Call Type is Packet Switched Call (LTE Mode)
 +CLCC: 1,0,0,1,0,"",128
-// Incoming call
+
+// Incoming Call: Voice, Non-Multiparty, Phone Number, Unknown Number Type
 +CLCC: 2,1,4,0,0,"02154450290",129
 OK
 
@@ -974,7 +977,7 @@ OK
 
 [(EG25-G AT Commands, Page 114)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
-And this is how we __receive an SMS__ in Text Mode...
+And we __receive an SMS__ (in Text Mode) like this...
 
 ```text
 // Select Message Service 3GPP TS 23.040 and 3GPP TS 23.041
@@ -986,7 +989,7 @@ OK
 AT+CNMI=1,2,0,0,0
 OK
 
-// Message is dumped directly when an SMS is received
+// Notification for Incoming SMS
 +CMT: "+8615021012496",,"13/03/18,17:07:21+32",145,4,0,0,"+8613800551500",145,28
 This is a test from Quectel.
 
