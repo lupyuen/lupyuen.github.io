@@ -850,13 +850,16 @@ if (err = 0) {
 <h1 id="appendix-receive-phone-call-and-sms"><a href="#appendix-receive-phone-call-and-sms">11 Appendix: Receive Phone Call and SMS</a></h1>
 <p><em>How do we receive Phone Calls and SMS Messages with the LTE Modem?</em></p>
 <p>We receive an <strong>Incoming Phone Call</strong> like this…</p>
-<div class="example-wrap"><pre class="language-text"><code>// Incoming Voice Call
+<div class="example-wrap"><pre class="language-text"><code>// Notification for Incoming Voice Call
 RING
 
+// List the Current Calls
 AT+CLCC
-// PS call in LTE mode
+
+// Outgoing Call: Call Type is Packet Switched Call (LTE Mode)
 +CLCC: 1,0,0,1,0,&quot;&quot;,128
-// Incoming call
+
+// Incoming Call: Voice, Non-Multiparty, Phone Number, Unknown Number Type
 +CLCC: 2,1,4,0,0,&quot;02154450290&quot;,129
 OK
 
@@ -865,7 +868,7 @@ ATA
 OK
 </code></pre></div>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 114)</a></p>
-<p>And this is how we <strong>receive an SMS</strong> in Text Mode…</p>
+<p>And we <strong>receive an SMS</strong> (in Text Mode) like this…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Select Message Service 3GPP TS 23.040 and 3GPP TS 23.041
 AT+CSMS=1
 +CSMS: 1,1,1
@@ -875,7 +878,7 @@ OK
 AT+CNMI=1,2,0,0,0
 OK
 
-// Message is dumped directly when an SMS is received
+// Notification for Incoming SMS
 +CMT: &quot;+8615021012496&quot;,,&quot;13/03/18,17:07:21+32&quot;,145,4,0,0,&quot;+8613800551500&quot;,145,28
 This is a test from Quectel.
 
