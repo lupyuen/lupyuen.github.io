@@ -751,7 +751,7 @@ And our SMS Message __"Hello,Quectel!"__ appears at the destination Phone Number
 
 [(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L663-L681)
 
-_How do we encode the SMS in PDU Format?_
+_How to encode the SMS in PDU Format? What's the PDU Length?_
 
 The __PDU Encoding for SMS__ is explained here...
 
@@ -817,18 +817,18 @@ Our app should catch this error and resend.
 
 _What about receiving Phone Calls and SMS Messages?_
 
-This is how we handle __Incoming Phone Calls and SMS__...
+We handle __Incoming Phone Calls and SMS__ like this...
 
 - [__"Receive Phone Call and SMS"__](https://lupyuen.github.io/articles/lte2#appendix-receive-phone-call-and-sms)
 
 And it looks messy. LTE Modem will __dump a Notification__ whenever there's an Incoming Call or SMS...
 
 ```text
-// Incoming Call
+// Incoming Call Notification
 RING
-// Answer the call with ATA
+// We answer the call with ATA
 ...
-// Incoming SMS
+// Incoming SMS Notification
 +CMT: "+8615021012496",,"13/03/18,17:07:21+32",145,4,0,0,"+8613800551500",145,28
 // Followed by Message Text
 ```
@@ -837,7 +837,7 @@ Which is totally __Asynchronous__. And tricky to handle over UART.
 
 _Any other UART problems with LTE Modem?_
 
-The UART Output looks all jumbled up because our NuttX App didn't __wait for the status__ of every AT Command...
+Our [__UART Output__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L621) looks all jumbled up because our NuttX App didn't __wait for the response__ of every AT Command...
 
 | NuttX App writes | LTE Modem responds |
 |:-----------------|:-------------------|
@@ -847,10 +847,10 @@ The UART Output looks all jumbled up because our NuttX App didn't __wait for the
 |    | `+CFUN: 1`
 | `AT`
 |    | `AT` <br> `OK` <br> `+CPIN: READY` <br> `+QUSIM: 1` <br> `+QIND: SMS DONE`
-| __`AT+CREG?`__
+| __`AT+CREG?`__ <br> _(Where's the CREG response?)_
 |    | `AT` <br> `OK`
 | `AT+COPS?`
-|    | __`AT+CREG?`__ <br> `+CREG: 0,1` <br> `OK`
+|    | __`AT+CREG?`__ <br> `+CREG: 0,1` <br> `OK` <br> _(Oops CREG response is delayed!)_
 
 [(See the Complete Log)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L562-L621)
 
@@ -866,15 +866,15 @@ But hold up! Remember that __UART might drop characters__...
 
 Our NuttX App needs a __robust parser__ for responses.
 
-And our app needs to __timeout gracefully__ if we don't get a timely response. (And retry)
+And our app needs to __timeout gracefully__ if we don't get a timely response. (Then retry)
 
 _Is there a proper Modem API for AT Commands?_
 
-__nRF Connect Modem Library__ has a nifty AT Interface, we might adapt for NuttX...
+__nRF Connect Modem Library__ has a nifty AT Interface. We might adapt it for NuttX...
 
 - [__nRF Connect Modem Library: AT Interface__](https://developer.nordicsemi.com/nRF_Connect_SDK/doc/latest/nrfxlib/nrf_modem/doc/at_interface.html)
 
-The library uses __printf__ and __scanf__ to handle AT Commands...
+The AT Modem API uses __printf__ and __scanf__ to handle AT Commands...
 
 ```c
 // Send command "AT+CFUN"
@@ -898,7 +898,7 @@ And it handles __AT Notifications as Callbacks__. [(Like this)](https://develope
 
 _Anything we might reuse from NuttX?_
 
-The NuttX Sample Apps for __LoRaWAN and ESP8266__ will do some (limited) AT Command Handling. We might copy bits of these...
+The NuttX Sample Apps for __LoRaWAN and ESP8266__ will do some (very limited) AT Command Handling. We might copy bits of these...
 
 - [__uart_lorawan_layer.c__](https://github.com/apache/nuttx-apps/blob/master/examples/tcp_ipc_server/uart_lorawan_layer.c#L262-L274)
 
