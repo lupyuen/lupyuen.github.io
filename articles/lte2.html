@@ -805,7 +805,7 @@ if (err = 0) {
 </li>
 </ul>
 <p><em>Wow this looks tedious. If only we had reliable, non-lossy UART…</em></p>
-<p>We do! The LTE Modem supports reliable AT Commands over <strong>USB Serial</strong>.</p>
+<p>We do! The LTE Modem supports reliable communication over <a href="https://lupyuen.github.io/articles/usb3"><strong>USB Serial</strong></a>.</p>
 <p>Which we’ll explore later when our USB Serial Driver is up!</p>
 <p>But first we need to <strong>upstream these to NuttX Mainline</strong>…</p>
 <ul>
@@ -820,6 +820,26 @@ if (err = 0) {
 <p>TODO</p>
 <p>I hope this article was helpful for learning about PinePhone’s 4G LTE Modem…</p>
 <p>TODO</p>
+<ul>
+<li>
+<p>TODO: Outgoing and Incoming <strong>Phone Calls</strong> over 4G</p>
+</li>
+<li>
+<p>TODO: Send and receive <strong>SMS Text Messages</strong></p>
+</li>
+<li>
+<p>TODO: We prefer <strong>Encoded PDU Messages</strong> for SMS</p>
+</li>
+<li>
+<p>TODO: Programming the <strong>4G LTE Modem</strong> with Apache NuttX RTOS</p>
+</li>
+<li>
+<p>TODO: Doing all these over <strong>UART vs USB</strong></p>
+</li>
+<li>
+<p>TODO: Need AT Modem API for robust parsing, graceful timeout (plus retry) and notification callbacks</p>
+</li>
+</ul>
 <p>We’ll share more details when the LTE Modem is responding OK to UART and USB on NuttX!</p>
 <p>Meanwhile please check out the other articles on NuttX for PinePhone…</p>
 <ul>
