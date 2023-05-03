@@ -342,7 +342,7 @@ Response:
 <p><img src="https://lupyuen.github.io/images/lte2-title.jpg" alt="NuttX makes a Phone Call from PinePhone" /></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L683-L735"><em>NuttX makes a Phone Call from PinePhone</em></a></p>
 <h1 id="outgoing-phone-call"><a href="#outgoing-phone-call">5 Outgoing Phone Call</a></h1>
-<p>This is how we dial a Phone Number to make an <strong>Outgoing Phone Call</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L343-L432">dial_number</a></p>
+<p>In NuttX, this is how we dial a Phone Number to make an <strong>Outgoing Phone Call</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L343-L432">dial_number</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Get Range of PCM Parameters for Digital Audio
 const char cmd[] = &quot;AT+QDAI=?\r&quot;;
 write(fd, cmd, strlen(cmd));
@@ -361,6 +361,7 @@ write(fd, cmd, strlen(cmd));
 #define PHONE_NUMBER &quot;+1234567890&quot;
 
 // Make Outgoing Phone Call
+// ATD+1234567890;
 const char cmd[] = 
   &quot;ATD&quot;
   PHONE_NUMBER
@@ -369,7 +370,7 @@ write(fd, cmd, strlen(cmd));
 // Omitted: Read response
 </code></pre></div>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 114)</a></p>
-<p>We wait 20 seconds…</p>
+<p>We <strong>wait 20 seconds</strong> for the Called Number to answer…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Wait 20 seconds for receiver to answer
 sleep(20);
 </code></pre></div>
@@ -417,12 +418,14 @@ Response: OK
 <ol>
 <li>
 <p>“<strong><code>AT+CMGF=1</code></strong>”</p>
-<p>Select Text Mode for SMS (instead of PDU Mode)</p>
+<p>Select <strong>Text Mode</strong> for SMS</p>
+<p>(Instead of PDU Mode)</p>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 146)</a></p>
 </li>
 <li>
 <p>“<strong><code>AT+CSCS=&quot;GSM&quot;</code></strong>”</p>
-<p>Select GSM Character Set (instead of UCS2)</p>
+<p>Select (7-bit ASCII-like) <strong>GSM Character Set</strong></p>
+<p>(Instead of 16-bit UCS2 Unicode)</p>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 25)</a></p>
 </li>
 <li>
@@ -437,15 +440,17 @@ Response: OK
 <li>
 <p><strong>Enter SMS Message</strong> in Text Format, terminate with Ctrl-Z…</p>
 <div class="example-wrap"><pre class="language-text"><code>Hello from Apache NuttX RTOS on PinePhone!&lt;Ctrl-Z&gt;
-</code></pre></div></li>
+</code></pre></div>
+<p>(<strong>Ctrl-Z</strong> is Character Code <strong><code>0x1A</code></strong>)</p>
+</li>
 <li>
-<p>Modem responds with the <strong>Message ID</strong>…</p>
+<p>Modem sends our SMS and responds with the <strong>Message ID</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>+CMGS: 22
 </code></pre></div>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 159)</a></p>
 </li>
 </ol>
-<p>This is how we send an SMS with NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L162-L253">send_sms_text</a></p>
+<p>This is how we <strong>send an SMS</strong> (in Text Mode) with NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L162-L253">send_sms_text</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Select Text Mode for SMS (instead of PDU Mode)
 const char cmd[] = &quot;AT+CMGF=1\r&quot;;
 write(fd, cmd, strlen(cmd));
@@ -461,6 +466,7 @@ write(fd, cmd, strlen(cmd));
 #define PHONE_NUMBER &quot;+1234567890&quot;
 
 // Send an SMS to the (imaginary) Phone Number &quot;+1234567890&quot;
+// AT+CMGS=&quot;+1234567890&quot;
 const char cmd[] = 
   &quot;AT+CMGS=\&quot;&quot;
   PHONE_NUMBER
@@ -530,7 +536,7 @@ Response:
 +CSCA: &quot;+6587614701&quot;,145
 </code></pre></div>
 <p>Also check that the SIM Card works OK on another phone.</p>
-<p>(I had a peculiar SIM Card that blocks Outgoing SMS, but allows Outgoing Phone Calls)</p>
+<p>(My peculiar SIM Card blocks Outgoing SMS, but allows Outgoing Phone Calls)</p>
 <h1 id="send-sms-in-pdu-mode"><a href="#send-sms-in-pdu-mode">7 Send SMS in PDU Mode</a></h1>
 <p><em>Sending an SMS Message looks easy!</em></p>
 <p>Ah but there’s another (preferred and precise) way: <strong>PDU Mode</strong>.</p>
