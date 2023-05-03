@@ -984,7 +984,7 @@ Response: +QDAI: 1,1,0,1,0,0,1,1
 <div class="example-wrap"><pre class="language-text"><code>// Send an SMS with PDU Length of 41 bytes (excluding SMSC)
 Command: AT+CMGS=41
 </code></pre></div>
-<p>Our SMS Message PDU has <strong>42 total bytes</strong>…</p>
+<p>Our SMS Message PDU has <strong>42 total bytes</strong> (assuming 5 bytes in our PDU Phone Number)…</p>
 <div class="example-wrap"><pre class="language-c"><code>&quot;00&quot;  // Length of SMSC information (None)
 &quot;11&quot;  // SMS-SUBMIT message
 &quot;00&quot;  // TP-Message-Reference: 00 to let the phone set the message reference number itself
