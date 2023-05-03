@@ -903,7 +903,8 @@ AT+QCFG=&quot;urc/ri/smsincoming&quot;
 <h1 id="appendix-pcm-digital-audio"><a href="#appendix-pcm-digital-audio">12 Appendix: PCM Digital Audio</a></h1>
 <p><em>Earlier we made an Outgoing Voice Call…</em></p>
 <p><em>How will we talk to the called Phone Number?</em></p>
-<p>We need the “<strong><code>AT+QDAI</code></strong>” commands, for the <strong>PCM Digital Audio</strong> setup. We’re still working on it…</p>
+<p>LTE Modem is connected to Allwinner A64 <strong>Port PCM0</strong> for the <strong>PCM Digital Audio</strong> Input and Output. (Pic above)</p>
+<p>We send the “<strong><code>AT+QDAI</code></strong>” commands for the <strong>PCM Digital Audio</strong> setup. We’re still working on it…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Get Range of PCM Parameters for Digital Audio
 Command: AT+QDAI=?
 Response: +QDAI: (1-4),(0,1),(0,1),(0-5),(0-2),(0,1)(1)(1-16)
@@ -913,7 +914,7 @@ Command: AT+QDAI?
 Response: +QDAI: 1,1,0,1,0,0,1,1
 </code></pre></div>
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 233)</a></p>
-<p>The PCM Digital Audio configuration above says…</p>
+<p>The above <strong>PCM Digital Audio Configuration</strong> for the LTE Modem says…</p>
 <ul>
 <li>
 <p><strong>io = 1</strong></p>
@@ -948,7 +949,6 @@ Response: +QDAI: 1,1,0,1,0,0,1,1
 <p>Slot Mapping Value is 1</p>
 </li>
 </ul>
-<p>LTE Modem is connected to Allwinner A64 <strong>Port PCM0</strong> for the Digital Audio. (Pic above)</p>
 <p>This (excellent) article explains how we’ll program Port PCM0 to transmit and receive the Digital Audio Stream…</p>
 <ul>
 <li><a href="https://genodians.org/ssumpf/2022-05-09-telephony"><strong>“Genode: PinePhone Telephony”</strong></a></li>
