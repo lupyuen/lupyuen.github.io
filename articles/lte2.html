@@ -1004,10 +1004,14 @@ Response: +QDAI: 1,1,0,1,0,0,1,1
 <p>We tested with PinePhone two <strong>quirky SIM Cards</strong>…</p>
 <ul>
 <li>
-<p><strong>First SIM Card</strong> (M1): OK for Phone Calls, fails for SMS</p>
-</li>
+<p><strong>First SIM Card</strong> (M1): OK for Phone Calls, Fail for SMS</p>
+<div class="example-wrap"><pre class="language-text"><code>// Outgoing SMS fails with Error 350
+AT+CMGS=&quot;yourphonenumber&quot;
+...
++CMS ERROR: 350
+</code></pre></div></li>
 <li>
-<p><strong>Second SIM Card</strong> (SIMBA): Fails for Phone Calls, OK for SMS</p>
+<p><strong>Second SIM Card</strong> (SIMBA): Fail for Phone Calls, OK for SMS</p>
 <p><a href="https://en.wikipedia.org/wiki/Voice_over_LTE">(SIMBA requires <strong>VoLTE: Voice-over-LTE</strong>)</a></p>
 </li>
 </ul>
