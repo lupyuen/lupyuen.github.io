@@ -79,8 +79,9 @@
 <li><a href="#whats-next">10 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-receive-phone-call-and-sms">11 Appendix: Receive Phone Call and SMS</a><ul></ul></li>
 <li><a href="#appendix-pcm-digital-audio">12 Appendix: PCM Digital Audio</a><ul></ul></li>
-<li><a href="#appendix-sms-pdu-format">13 Appendix: SMS PDU Format</a><ul></ul></li>
-<li><a href="#appendix-sms-pdu-message-encoding">14 Appendix: SMS PDU Message Encoding</a><ul></ul></li></ul></nav><p>📝 <em>4 May 2023</em></p>
+<li><a href="#appendix-troubleshoot-lte-ip-multimedia-subsystem">13 Appendix: Troubleshoot LTE IP Multimedia Subsystem</a><ul></ul></li>
+<li><a href="#appendix-sms-pdu-format">14 Appendix: SMS PDU Format</a><ul></ul></li>
+<li><a href="#appendix-sms-pdu-message-encoding">15 Appendix: SMS PDU Message Encoding</a><ul></ul></li></ul></nav><p>📝 <em>4 May 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/lte2-title.jpg" alt="Apache NuttX RTOS makes a Phone Call from Pine64 PinePhone" /></p>
 <p>What makes <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a> a phone? Because it will make <strong>Phone Calls</strong> and send <strong>Text Messages</strong>!</p>
 <p>We’re porting <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) to PinePhone. Today let’s turn <strong>NuttX into a Feature Phone</strong>…</p>
@@ -983,7 +984,40 @@ Response: +QDAI: 1,1,0,1,0,0,1,1
 <ul>
 <li><a href="https://genodians.org/ssumpf/2022-05-09-telephony"><strong>“Genode: PinePhone Telephony”</strong></a></li>
 </ul>
-<h1 id="appendix-sms-pdu-format"><a href="#appendix-sms-pdu-format">13 Appendix: SMS PDU Format</a></h1>
+<h1 id="appendix-troubleshoot-lte-ip-multimedia-subsystem"><a href="#appendix-troubleshoot-lte-ip-multimedia-subsystem">13 Appendix: Troubleshoot LTE IP Multimedia Subsystem</a></h1>
+<p>TODO</p>
+<p><em>What’s LTE IMS?</em></p>
+<p>There are two ways of handling Phone Calls and SMS Messages in an LTE Network…</p>
+<ul>
+<li>
+<p><strong>Packet Switching</strong> is the Newer Way, created for 4G LTE</p>
+<p>(Works like routing IP Packets over internet)</p>
+</li>
+<li>
+<p><strong>Circuit Switching</strong> is the Older Way, inherited from 3G UMTS</p>
+<p>(Somewhat like plain old landline telephone point-to-point wires)</p>
+</li>
+</ul>
+<p><em>Is there a problem with LTE IMS?</em></p>
+<p>We tested with PinePhone two <strong>quirky SIM Cards</strong>…</p>
+<ul>
+<li>
+<p><strong>First SIM Card</strong> (M1): OK for Phone Calls, fails for SMS</p>
+</li>
+<li>
+<p><strong>Second SIM Card</strong> (SIMBA): Fails for Phone Calls, OK for SMS</p>
+<p>(SIMBA requires VoLTE: Voice-over-LTE)</p>
+</li>
+</ul>
+<p>But swap</p>
+<p><em>Is this caused by LTE IMS?</em></p>
+<p>Some folks suggested that we should <strong>force LTE IMS to be enabled</strong>…</p>
+<p>But maybe we should <strong>force LTE IMS to be disabled</strong>…</p>
+<p>VoLTE</p>
+<p>TODO: What happens when we test this on our SIM Cards</p>
+<p><a href="https://forum.pine64.org/showthread.php?tid=14917&amp;pid=101303&amp;highlight=immediately+response#pid101303">(Might be an issue with <strong>LTE IMS</strong>: IP Multimedia Subsystem)</a></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/images/Quectel_EC2x&amp;EG2x&amp;EG9x&amp;EM05_Series_QCFG_AT_Commands_Manual_V1.0.pdf">(See “<strong><code>AT+QCFG=ims</code></strong>”, Page 102)</a></p>
+<h1 id="appendix-sms-pdu-format"><a href="#appendix-sms-pdu-format">14 Appendix: SMS PDU Format</a></h1>
 <p><em>Earlier we saw this command for sending SMS in PDU Mode…</em></p>
 <p><em>What’s the PDU Length?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>// Send an SMS with PDU Length of 41 bytes (excluding SMSC)
@@ -1112,7 +1146,7 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 </li>
 </ul>
 <p>Let’s talk about the Message Text Encoding…</p>
-<h1 id="appendix-sms-pdu-message-encoding"><a href="#appendix-sms-pdu-message-encoding">14 Appendix: SMS PDU Message Encoding</a></h1>
+<h1 id="appendix-sms-pdu-message-encoding"><a href="#appendix-sms-pdu-message-encoding">15 Appendix: SMS PDU Message Encoding</a></h1>
 <p><em>How do we encode the Message Text in PDU Mode?</em></p>
 <p>From the previous section we see that the Message Text is encoded with <strong>UCS2 Character Set</strong>…</p>
 <ul>
