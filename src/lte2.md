@@ -1102,6 +1102,48 @@ This (excellent) article explains how we'll program Port PCM0 to transmit and re
 
 - [__"Genode: PinePhone Telephony"__](https://genodians.org/ssumpf/2022-05-09-telephony)
 
+# Appendix: Troubleshoot LTE IP Multimedia Subsystem
+
+TODO
+
+_What's LTE IMS?_
+
+There are two ways of handling Phone Calls and SMS Messages in an LTE Network...
+
+- __Packet Switching__ is the Newer Way, created for 4G LTE
+
+  (Works like routing IP Packets over internet)
+
+- __Circuit Switching__ is the Older Way, inherited from 3G UMTS
+
+  (Somewhat like plain old landline telephone point-to-point wires)
+
+_Is there a problem with LTE IMS?_
+
+We tested with PinePhone two __quirky SIM Cards__...
+
+- __First SIM Card__ (M1): OK for Phone Calls, fails for SMS
+
+- __Second SIM Card__ (SIMBA): Fails for Phone Calls, OK for SMS
+
+  (SIMBA requires VoLTE: Voice-over-LTE)
+
+But swap
+
+_Is this caused by LTE IMS?_
+
+Some folks suggested that we should __force LTE IMS to be enabled__...
+
+But maybe we should __force LTE IMS to be disabled__...
+
+VoLTE
+
+TODO: What happens when we test this on our SIM Cards
+
+[(Might be an issue with __LTE IMS__: IP Multimedia Subsystem)](https://forum.pine64.org/showthread.php?tid=14917&pid=101303&highlight=immediately+response#pid101303)
+
+[(See "__`AT+QCFG=ims`__", Page 102)](https://github.com/lupyuen/lupyuen.github.io/blob/master/images/Quectel_EC2x&EG2x&EG9x&EM05_Series_QCFG_AT_Commands_Manual_V1.0.pdf)
+
 # Appendix: SMS PDU Format
 
 _Earlier we saw this command for sending SMS in PDU Mode..._
