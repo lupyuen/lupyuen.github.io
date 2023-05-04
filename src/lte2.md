@@ -572,9 +572,9 @@ Response:
 
 Also check that the SIM Card works OK on another phone.
 
-[(Might be an issue with __LTE IMS__: IP Multimedia Subsystem)](https://forum.pine64.org/showthread.php?tid=14917&pid=101303&highlight=immediately+response#pid101303)
+We might have a problem with the __LTE IP Multimedia Subsystem__ (IMS)...
 
-[(See "__`AT+QCFG=ims`__", Page 102)](https://github.com/lupyuen/lupyuen.github.io/blob/master/images/Quectel_EC2x&EG2x&EG9x&EM05_Series_QCFG_AT_Commands_Manual_V1.0.pdf)
+- [__"Troubleshoot LTE IP Multimedia Subsystem"__](https://lupyuen.github.io/articles/lte2#appendix-troubleshoot-lte-ip-multimedia-subsystem)
 
 There's another way to send SMS...
 
@@ -1104,11 +1104,9 @@ This (excellent) article explains how we'll program Port PCM0 to transmit and re
 
 # Appendix: Troubleshoot LTE IP Multimedia Subsystem
 
-TODO
-
 _What's LTE IMS?_
 
-There are two ways of handling Phone Calls and SMS Messages in an LTE Network...
+There are two ways of handling __Phone Calls and SMS Messages__ in an LTE Network...
 
 - __Packet Switching__ is the Newer Way, created for 4G LTE
 
@@ -1118,6 +1116,8 @@ There are two ways of handling Phone Calls and SMS Messages in an LTE Network...
 
   (Somewhat like plain old landline telephone point-to-point wires)
 
+[__LTE IMS (IP Multimedia Subsystem)__](https://en.wikipedia.org/wiki/IP_Multimedia_Subsystem) is the newer Packet-Switched way to handle Phone Calls and SMS Messages in an LTE Network.
+
 _Is there a problem with LTE IMS?_
 
 We tested with PinePhone two __quirky SIM Cards__...
@@ -1126,23 +1126,45 @@ We tested with PinePhone two __quirky SIM Cards__...
 
 - __Second SIM Card__ (SIMBA): Fails for Phone Calls, OK for SMS
 
-  (SIMBA requires VoLTE: Voice-over-LTE)
+  [(SIMBA requires __VoLTE: Voice-over-LTE__)](https://en.wikipedia.org/wiki/Voice_over_LTE)
 
-But swap
+But when we __swap the Second SIM Card__ (SIMBA) back to the First SIM Card (M1)...
+
+__SMS magically works__ for the First SIM Card (M1)! How bizarre.
 
 _Is this caused by LTE IMS?_
 
-Some folks suggested that we should __force LTE IMS to be enabled__...
+Some folks suggested we should force [__LTE IMS to be Disabled__](https://forum.pine64.org/showthread.php?tid=14917&pid=101303&highlight=immediately+response#pid101303)...
 
-But maybe we should __force LTE IMS to be disabled__...
+```text
+// Force LTE IMS to be Disabled
+AT+QCFG="ims",2
+```
 
-VoLTE
-
-TODO: What happens when we test this on our SIM Cards
-
-[(Might be an issue with __LTE IMS__: IP Multimedia Subsystem)](https://forum.pine64.org/showthread.php?tid=14917&pid=101303&highlight=immediately+response#pid101303)
+[(Source)](https://forum.pine64.org/showthread.php?tid=14917&pid=101303&highlight=immediately+response#pid101303)
 
 [(See "__`AT+QCFG=ims`__", Page 102)](https://github.com/lupyuen/lupyuen.github.io/blob/master/images/Quectel_EC2x&EG2x&EG9x&EM05_Series_QCFG_AT_Commands_Manual_V1.0.pdf)
+
+But maybe for some SIM Cards, we should force __LTE IMS to be Enabled__...
+
+```text
+// Force LTE IMS to be Enabled
+AT+QCFG="ims",1
+```
+
+[(See "__`AT+QCFG=ims`__", Page 102)](https://github.com/lupyuen/lupyuen.github.io/blob/master/images/Quectel_EC2x&EG2x&EG9x&EM05_Series_QCFG_AT_Commands_Manual_V1.0.pdf)
+
+That's because Quectel says we should [__Force-Enable LTE IMS__](https://forums.quectel.com/t/volte-on-eg25-g/13512) to support [__VoLTE (Voice-over-LTE)__](https://en.wikipedia.org/wiki/Voice_over_LTE)...
+
+"You can use __`AT+QCFG="ims",1`__ to restart the module..."
+
+"And query __`AT+QCFG="ims"`__ again to use the VoLTE function"
+
+[(Source)](https://forums.quectel.com/t/volte-on-eg25-g/13512)
+
+TODO: What happens when we do this on our SIM Cards
+
+TODO: How to auto-enable LTE IMS for some Mobile Operators
 
 # Appendix: SMS PDU Format
 
