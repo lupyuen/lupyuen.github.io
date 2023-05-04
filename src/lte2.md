@@ -574,6 +574,8 @@ Also check that the SIM Card works OK on another phone.
 
 [(Might be an issue with __LTE IMS__: IP Multimedia Subsystem)](https://forum.pine64.org/showthread.php?tid=14917&pid=101303&highlight=immediately+response#pid101303)
 
+[(See "__`AT+QCFG=ims`__", Page 102)](https://github.com/lupyuen/lupyuen.github.io/blob/master/images/Quectel_EC2x&EG2x&EG9x&EM05_Series_QCFG_AT_Commands_Manual_V1.0.pdf)
+
 There's another way to send SMS...
 
 ![Send SMS in PDU Mode](https://lupyuen.github.io/images/lte2-pdu.jpg)
@@ -1033,6 +1035,8 @@ AT+QCFG="urc/ri/smsincoming"
 ```
 
 [(EG25-G AT Commands, Page 46)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
+
+[(See "__`AT+QCFG=urc/ri`__", Page 20)](https://github.com/lupyuen/lupyuen.github.io/blob/master/images/Quectel_EC2x&EG2x&EG9x&EM05_Series_QCFG_AT_Commands_Manual_V1.0.pdf)
 
 ![LTE Modem is connected to Port PCM0 for Digital Audio](https://lupyuen.github.io/images/lte-title4.jpg)
 
