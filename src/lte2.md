@@ -572,7 +572,7 @@ Response:
 
 Also check that the SIM Card works OK on another phone.
 
-(My peculiar SIM Card blocks Outgoing SMS, but allows Outgoing Phone Calls)
+[(Might be an issue with __LTE IMS__: IP Multimedia Subsystem)](https://forum.pine64.org/showthread.php?tid=14917&pid=101303&highlight=immediately+response#pid101303)
 
 There's another way to send SMS...
 
