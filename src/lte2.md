@@ -1122,9 +1122,16 @@ _Is there a problem with LTE IMS?_
 
 We tested with PinePhone two __quirky SIM Cards__...
 
-- __First SIM Card__ (M1): OK for Phone Calls, fails for SMS
+- __First SIM Card__ (M1): OK for Phone Calls, Fail for SMS
 
-- __Second SIM Card__ (SIMBA): Fails for Phone Calls, OK for SMS
+  ```text
+  // Outgoing SMS fails with Error 350
+  AT+CMGS="yourphonenumber"
+  ...
+  +CMS ERROR: 350
+  ```
+
+- __Second SIM Card__ (SIMBA): Fail for Phone Calls, OK for SMS
 
   [(SIMBA requires __VoLTE: Voice-over-LTE__)](https://en.wikipedia.org/wiki/Voice_over_LTE)
 
