@@ -540,8 +540,10 @@ Response:
 +CSCA: &quot;+6587614701&quot;,145
 </code></pre></div>
 <p>Also check that the SIM Card works OK on another phone.</p>
-<p><a href="https://forum.pine64.org/showthread.php?tid=14917&amp;pid=101303&amp;highlight=immediately+response#pid101303">(Might be an issue with <strong>LTE IMS</strong>: IP Multimedia Subsystem)</a></p>
-<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/images/Quectel_EC2x&amp;EG2x&amp;EG9x&amp;EM05_Series_QCFG_AT_Commands_Manual_V1.0.pdf">(See “<strong><code>AT+QCFG=ims</code></strong>”, Page 102)</a></p>
+<p>We might have a problem with the <strong>LTE IP Multimedia Subsystem</strong> (IMS)…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lte2#appendix-troubleshoot-lte-ip-multimedia-subsystem"><strong>“Troubleshoot LTE IP Multimedia Subsystem”</strong></a></li>
+</ul>
 <p>There’s another way to send SMS…</p>
 <p><img src="https://lupyuen.github.io/images/lte2-pdu.jpg" alt="Send SMS in PDU Mode" /></p>
 <h1 id="send-sms-in-pdu-mode"><a href="#send-sms-in-pdu-mode">7 Send SMS in PDU Mode</a></h1>
@@ -985,9 +987,8 @@ Response: +QDAI: 1,1,0,1,0,0,1,1
 <li><a href="https://genodians.org/ssumpf/2022-05-09-telephony"><strong>“Genode: PinePhone Telephony”</strong></a></li>
 </ul>
 <h1 id="appendix-troubleshoot-lte-ip-multimedia-subsystem"><a href="#appendix-troubleshoot-lte-ip-multimedia-subsystem">13 Appendix: Troubleshoot LTE IP Multimedia Subsystem</a></h1>
-<p>TODO</p>
 <p><em>What’s LTE IMS?</em></p>
-<p>There are two ways of handling Phone Calls and SMS Messages in an LTE Network…</p>
+<p>There are two ways of handling <strong>Phone Calls and SMS Messages</strong> in an LTE Network…</p>
 <ul>
 <li>
 <p><strong>Packet Switching</strong> is the Newer Way, created for 4G LTE</p>
@@ -998,6 +999,7 @@ Response: +QDAI: 1,1,0,1,0,0,1,1
 <p>(Somewhat like plain old landline telephone point-to-point wires)</p>
 </li>
 </ul>
+<p><a href="https://en.wikipedia.org/wiki/IP_Multimedia_Subsystem"><strong>LTE IMS (IP Multimedia Subsystem)</strong></a> is the newer Packet-Switched way to handle Phone Calls and SMS Messages in an LTE Network.</p>
 <p><em>Is there a problem with LTE IMS?</em></p>
 <p>We tested with PinePhone two <strong>quirky SIM Cards</strong>…</p>
 <ul>
@@ -1006,17 +1008,29 @@ Response: +QDAI: 1,1,0,1,0,0,1,1
 </li>
 <li>
 <p><strong>Second SIM Card</strong> (SIMBA): Fails for Phone Calls, OK for SMS</p>
-<p>(SIMBA requires VoLTE: Voice-over-LTE)</p>
+<p><a href="https://en.wikipedia.org/wiki/Voice_over_LTE">(SIMBA requires <strong>VoLTE: Voice-over-LTE</strong>)</a></p>
 </li>
 </ul>
-<p>But swap</p>
+<p>But when we <strong>swap the Second SIM Card</strong> (SIMBA) back to the First SIM Card (M1)…</p>
+<p><strong>SMS magically works</strong> for the First SIM Card (M1)! How bizarre.</p>
 <p><em>Is this caused by LTE IMS?</em></p>
-<p>Some folks suggested that we should <strong>force LTE IMS to be enabled</strong>…</p>
-<p>But maybe we should <strong>force LTE IMS to be disabled</strong>…</p>
-<p>VoLTE</p>
-<p>TODO: What happens when we test this on our SIM Cards</p>
-<p><a href="https://forum.pine64.org/showthread.php?tid=14917&amp;pid=101303&amp;highlight=immediately+response#pid101303">(Might be an issue with <strong>LTE IMS</strong>: IP Multimedia Subsystem)</a></p>
+<p>Some folks suggested we should force <a href="https://forum.pine64.org/showthread.php?tid=14917&amp;pid=101303&amp;highlight=immediately+response#pid101303"><strong>LTE IMS to be Disabled</strong></a>…</p>
+<div class="example-wrap"><pre class="language-text"><code>// Force LTE IMS to be Disabled
+AT+QCFG=&quot;ims&quot;,2
+</code></pre></div>
+<p><a href="https://forum.pine64.org/showthread.php?tid=14917&amp;pid=101303&amp;highlight=immediately+response#pid101303">(Source)</a></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/images/Quectel_EC2x&amp;EG2x&amp;EG9x&amp;EM05_Series_QCFG_AT_Commands_Manual_V1.0.pdf">(See “<strong><code>AT+QCFG=ims</code></strong>”, Page 102)</a></p>
+<p>But maybe for some SIM Cards, we should force <strong>LTE IMS to be Enabled</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>// Force LTE IMS to be Enabled
+AT+QCFG=&quot;ims&quot;,1
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/images/Quectel_EC2x&amp;EG2x&amp;EG9x&amp;EM05_Series_QCFG_AT_Commands_Manual_V1.0.pdf">(See “<strong><code>AT+QCFG=ims</code></strong>”, Page 102)</a></p>
+<p>That’s because Quectel says we should <a href="https://forums.quectel.com/t/volte-on-eg25-g/13512"><strong>Force-Enable LTE IMS</strong></a> to support <a href="https://en.wikipedia.org/wiki/Voice_over_LTE"><strong>VoLTE (Voice-over-LTE)</strong></a>…</p>
+<p>“You can use <strong><code>AT+QCFG=&quot;ims&quot;,1</code></strong> to restart the module…”</p>
+<p>“And query <strong><code>AT+QCFG=&quot;ims&quot;</code></strong> again to use the VoLTE function”</p>
+<p><a href="https://forums.quectel.com/t/volte-on-eg25-g/13512">(Source)</a></p>
+<p>TODO: What happens when we do this on our SIM Cards</p>
+<p>TODO: How to auto-enable LTE IMS for some Mobile Operators</p>
 <h1 id="appendix-sms-pdu-format"><a href="#appendix-sms-pdu-format">14 Appendix: SMS PDU Format</a></h1>
 <p><em>Earlier we saw this command for sending SMS in PDU Mode…</em></p>
 <p><em>What’s the PDU Length?</em></p>
