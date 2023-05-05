@@ -1106,7 +1106,7 @@ This (excellent) article explains how we'll program Port PCM0 to transmit and re
 
 _What's LTE IMS?_
 
-There are two ways of handling __Phone Calls and SMS Messages__ in an LTE Network...
+An LTE Mobile Network handles __Phone Calls and SMS Messages__ in two ways...
 
 - __Packet Switching__ is the Newer Way, created for 4G LTE
 
