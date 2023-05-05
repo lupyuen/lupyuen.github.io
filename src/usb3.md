@@ -1066,6 +1066,10 @@ We'll find out soon as we __test the NuttX EHCI Driver__ on PinePhone! Our test 
 
     [(Based on the log)](https://github.com/lupyuen/pinephone-nuttx-usb/blob/5238bc5246bcae896883f056d24691ebaa050f83/README.md#output-log)
 
+The USB Descriptors for PinePhone's LTE Modem are defined here...
+
+-   [__EG25-G USB Descriptors__](https://github.com/lupyuen/lupyuen.github.io/blob/master/images/Quectel_EC2x&EG2x-G&EG9x_Series_USB_Descriptor_Introduction_V1.1.pdf)
+
 Check out the progress here...
 
 -   [__"Decode EHCI Register Values"__](https://github.com/lupyuen/pinephone-nuttx-usb#decode-ehci-register-values)

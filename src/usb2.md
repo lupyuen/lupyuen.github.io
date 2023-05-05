@@ -88,6 +88,8 @@ Inside PinePhone is the [__Quectel EG25-G LTE Modem__](https://wiki.pine64.org/i
 
 -   [__EG25-G Hardware Design__](https://wiki.pine64.org/wiki/File:Quectel_EG25-G_Hardware_Design_V1.4.pdf)
 
+-   [__EG25-G USB Descriptors__](https://github.com/lupyuen/lupyuen.github.io/blob/master/images/Quectel_EC2x&EG2x-G&EG9x_Series_USB_Descriptor_Introduction_V1.1.pdf)
+
 To control the LTE Modem, we send __AT Commands__...
 
 -   [__EG25-G AT Commands__](https://wiki.pine64.org/wiki/File:Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
