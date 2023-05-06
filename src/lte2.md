@@ -1169,9 +1169,11 @@ That's because Quectel says we should [__Force-Enable LTE IMS__](https://forums.
 
 [(Source)](https://forums.quectel.com/t/volte-on-eg25-g/13512)
 
-TODO: What happens when we do this on our SIM Cards
+TODO: Run `AT+QCFG="ims"` on both SIM Cards to show IMS state
 
-TODO: How to auto-enable LTE IMS for some Mobile Operators
+TODO: Run `AT+QCFG="ims",1` or `AT+QCFG="ims",2` to enable / disable IMS on both SIM Cards
+
+TODO: Fetch Mobile Operator and auto-enable / disable LTE IMS according to Mobile Operator
 
 # Appendix: SMS PDU Format
 
