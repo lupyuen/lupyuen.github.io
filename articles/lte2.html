@@ -1120,6 +1120,7 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 <p>“<code>91</code>” for International Format of Phone Number</p>
 <p><strong>Numbering Plan Identification</strong> (NPI, Bits 0 to 3) = <code>0b0001</code> (ISDN / Telephone Numbering Plan)</p>
 <p><strong>Type Of Number</strong> (TON, Bits 4 to 6) = <code>0b001</code> (International Number)</p>
+<p>(Hence the mandatory Country Code)</p>
 <p><strong>EXT</strong> (Bit 7) = <code>1</code> (No Extension)</p>
 <p><a href="https://en.wikipedia.org/wiki/GSM_03.40#Addresses">(GSM 03.40, Addresses)</a></p>
 </li>
@@ -1132,6 +1133,7 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 <div class="example-wrap"><pre class="language-c"><code>#define PHONE_NUMBER    &quot;+123456789&quot;
 #define PHONE_NUMBER_PDU &quot;214365870F9&quot;
 </code></pre></div>
+<p>Country Code is mandatory because <strong>Type Of Number</strong> (above) is International Number.</p>
 <p><a href="https://en.wikipedia.org/wiki/GSM_03.40#Address_examples">(GSM 03.40, Address Examples)</a></p>
 </li>
 <li>
