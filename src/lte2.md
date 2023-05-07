@@ -1280,6 +1280,8 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
 
   __Type Of Number__ (TON, Bits 4 to 6) = `0b001` (International Number)
 
+  (Hence the mandatory Country Code)
+
   __EXT__ (Bit 7) = `1` (No Extension)
 
   [(GSM 03.40, Addresses)](https://en.wikipedia.org/wiki/GSM_03.40#Addresses)
@@ -1297,6 +1299,8 @@ PHONE_NUMBER_PDU  // TODO: Assume 5 bytes in PDU Phone Number (10 Decimal Digits
   #define PHONE_NUMBER    "+123456789"
   #define PHONE_NUMBER_PDU "214365870F9"
   ```
+
+  Country Code is mandatory because __Type Of Number__ (above) is International Number.
 
   [(GSM 03.40, Address Examples)](https://en.wikipedia.org/wiki/GSM_03.40#Address_examples)
 
