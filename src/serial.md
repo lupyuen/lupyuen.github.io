@@ -866,6 +866,24 @@ The changes have been upstreamed to NuttX Mainline...
 
 -   [__Pull Request: Support multiple UART Ports__](https://github.com/apache/nuttx/pull/9243)
 
+_How do we enable a UART Port? Like UART3?_
+
+Head over to the NuttX Build Configuration...
+
+```bash
+make menuconfig
+```
+
+Then select...
+
+- System Type > Allwinner A64 Peripheral Selection > UART3
+
+To configure the Baud Rate, Parity and Stop Bits...
+
+- Device Drivers > Serial Driver Support > UART3 Configuration
+
+(The default Baud Rate / Parity / Stop Bits work OK with the PinePhone LTE Modem on UART3)
+
 # What's Next
 
 Today we talked about PinePhone UART and how we created the NuttX UART Driver.
