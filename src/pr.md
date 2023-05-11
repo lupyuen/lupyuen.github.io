@@ -659,7 +659,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Notes
 
-1.  When we update the __Kconfig__ Configuration Files, remember to update the __defconfig__ Configuration Files too!
+1.  When we modify the __Kconfig__ Configuration Files, remember to update the __defconfig__ Configuration Files!
 
     [(Like this)](https://github.com/apache/nuttx/pull/9243#issuecomment-1542918859)
 
