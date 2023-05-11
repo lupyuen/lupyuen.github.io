@@ -862,7 +862,7 @@ We're adding support for __other UART Ports__, like UART3 for PinePhone's 4G LTE
 
 -   [__"Test UART3 Port"__](https://github.com/lupyuen/pinephone-nuttx#test-uart3-port)
 
-This will be upstreamed to NuttX Mainline here...
+The changes have been upstreamed to NuttX Mainline...
 
 -   [__Pull Request: Support multiple UART Ports__](https://github.com/apache/nuttx/pull/9243)
 
