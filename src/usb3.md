@@ -1120,6 +1120,8 @@ Special Thanks to [__TL Lim__](https://news.apache.org/foundation/entry/the-apac
 
 -   [__My Other Project: "The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book)
 
+-   [__My Sourdough Recipe__](https://gist.github.com/lupyuen/3272756eb8b93ebbcf23b92e13f3bfa9)
+
 -   [__Check out my articles__](https://lupyuen.github.io)
 
 -   [__RSS Feed__](https://lupyuen.github.io/rss.xml)

@@ -547,6 +547,8 @@ Finally it's time to submit our Pull Request!
 
     This might take a while (due to the time zones)... Grab a coffee and standby for fixes!
 
+    [(I bake sourdough while waiting)](https://gist.github.com/lupyuen/3272756eb8b93ebbcf23b92e13f3bfa9)
+
     If all goes Hunky Dory, our Pull Request will be __approved and merged!__ 🎉
 
 Sometimes we need to __Rebase To The Latest Master__ due to updates in the GitHub Actions Workflow (Continuous Integration Script). Here's how...
