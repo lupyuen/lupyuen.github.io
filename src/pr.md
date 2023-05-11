@@ -663,6 +663,24 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [(Like this)](https://github.com/apache/nuttx/pull/9243#issuecomment-1542918859)
 
+    What happens if we forget to update __defconfig__...
+
+    ```text
+    Configuration/Tool: pinephone/sensor
+    Building NuttX...
+    Normalize pinephone/sensor
+    71d70
+    < CONFIG_UART1_SERIAL_CONSOLE=y
+    Saving the new configuration file
+    HEAD detached at pull/9243/merge
+    Changes not staged for commit:
+    (use "git add <file>..." to update what will be committed)
+    (use "git restore <file>..." to discard changes in working directory)
+        modified:   boards/arm64/a64/pinephone/configs/sensor/defconfig
+    ```
+
+    [(Source)](https://github.com/apache/nuttx/pull/9243#issuecomment-1542918859)
+
 1.  Here's an excellent guide for the __Git Command Line__...
 
     [__"Flight rules for Git"__](https://github.com/k88hudson/git-flight-rules)
