@@ -793,6 +793,19 @@ nsh&gt; ls /dev
 <ul>
 <li><a href="https://github.com/apache/nuttx/pull/9243"><strong>Pull Request: Support multiple UART Ports</strong></a></li>
 </ul>
+<p><em>How do we enable a UART Port? Like UART3?</em></p>
+<p>Head over to the NuttX Build Configuration…</p>
+<div class="example-wrap"><pre class="language-bash"><code>make menuconfig
+</code></pre></div>
+<p>Then select…</p>
+<ul>
+<li>System Type &gt; Allwinner A64 Peripheral Selection &gt; UART3</li>
+</ul>
+<p>To configure the Baud Rate, Parity and Stop Bits…</p>
+<ul>
+<li>Device Drivers &gt; Serial Driver Support &gt; UART3 Configuration</li>
+</ul>
+<p>(The default Baud Rate / Parity / Stop Bits work OK with the PinePhone LTE Modem on UART3)</p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>Today we talked about PinePhone UART and how we created the NuttX UART Driver.</p>
 <p>There’s plenty to be done for NuttX on PinePhone, please lemme know if you would like to join me 🙏</p>
