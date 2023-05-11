@@ -123,15 +123,15 @@
 </ul>
 <p>Flip the <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>A64 User Manual</strong></a> to page 562 (“UART”) and we’ll see the <strong>UART Registers</strong>. (Pic above)</p>
 <p>PinePhone’s Serial Console is connected to <strong>UART0</strong> at Base Address <strong><code>0x01C2</code> <code>8000</code></strong></p>
-<p>Which we define like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/uart3/arch/arm64/src/a64/hardware/a64_memorymap.h#L42-L46">a64_memorymap.h</a></p>
+<p>Which we define like so: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/hardware/a64_memorymap.h#L42-L46">a64_memorymap.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>/* A64 UART0 Base Address */
-#define CONFIG_A64_UART_BASE      0x1C28000
+#define A64_UART0_ADDR      0x1C28000
 
 /* A64 UART0 IRQ */
-#define CONFIG_A64_UART_IRQ       32         
+#define A64_UART0_IRQ       32         
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/uart3/arch/arm64/src/a64/a64_serial.h#L53-L59">(<code>UART_IRQ</code> is defined here)</a></p>
-<p>(We’ll talk about <code>UART_IRQ</code> in a while)</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.h#L53-L59">(<code>A64_UART0_IRQ</code> is defined here)</a></p>
+<p>(We’ll talk about <code>A64_UART0_IRQ</code> in a while)</p>
 <p><img src="https://lupyuen.github.io/images/arm-uart2.jpg" alt="PinePhone connected to USB Serial Debug Cable" /></p>
 <p>Check that PinePhone is connected to our computer with the <strong>USB Serial Debug Cable</strong> (pic above) at 115.2 kbps…</p>
 <ul>
@@ -160,14 +160,14 @@
 <p>Let’s write some UART Data…</p>
 <h2 id="transmit-uart"><a href="#transmit-uart">2.1 Transmit UART</a></h2>
 <p>The <strong>Transmit Holding Register (THR)</strong> is at address <strong><code>0x01C2</code> <code>8000</code></strong>. (Since Offset is 0)</p>
-<p>We’ll write our output data to <strong><code>0x01C2</code> <code>8000</code></strong>, byte by byte, and the data will appear in the Serial Console: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/uart3/arch/arm64/src/a64/a64_serial.c#L815-L838">a64_serial.c</a></p>
+<p>We’ll write our output data to <strong><code>0x01C2</code> <code>8000</code></strong>, byte by byte, and the data will appear in the Serial Console: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L815-L838">a64_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Send one byte to PinePhone Allwinner A64 UART
 static void a64_uart_send(struct uart_dev_s *dev, int ch)
 {
   // Write to UART Transmit Holding Register (UART_THR)
   // Offset: 0x0000
   uint8_t *uart_thr = (uint8_t *) 
-    (CONFIG_A64_UART_BASE + 0x0);
+    (A64_UART0_ADDR + 0x0);
 
   // Bits 7 to 0: Transmit Holding Register (THR)
   // Data to be transmitted on the serial output port . Data should only be
@@ -199,14 +199,14 @@ a64_uart_send(NULL, &#39;Y&#39;);
 <p><em>Why we wait for the UART Port before we transmit</em></p>
 <h2 id="wait-to-transmit"><a href="#wait-to-transmit">2.2 Wait To Transmit</a></h2>
 <p>Let’s check if the UART Port is <strong>ready to accept output data</strong> for transmission.</p>
-<p>We read Bit 5 of the <strong>Line Status Register (UART_LSR)</strong> at Offset <code>0x14</code>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/uart3/arch/arm64/src/a64/a64_serial.c#L876-L898">a64_serial.c</a></p>
+<p>We read Bit 5 of the <strong>Line Status Register (UART_LSR)</strong> at Offset <code>0x14</code>: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L876-L898">a64_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Return true if Transmit FIFO is not full for PinePhone Allwinner A64 UART
 static bool a64_uart_txready(struct uart_dev_s *dev)
 {
   // Read from UART Line Status Register (UART_LSR)
   // Offset: 0x0014
   const uint8_t *uart_lsr = (const uint8_t *) 
-    (CONFIG_A64_UART_BASE + 0x14);
+    (A64_UART0_ADDR + 0x14);
 
   // Bit 5: TX Holding Register Empty (THRE)
   // If the FIFOs are disabled, this bit is set to &quot;1&quot; whenever the TX Holding
@@ -232,7 +232,7 @@ a64_uart_send(NULL, &#39;A&#39;);
 <p>We’ll cover this in a while.</p>
 <p>Also note that PinePhone’s UART Port has a <strong>Transmit FIFO Buffer</strong> of 16 characters.</p>
 <p>Our UART Driver doesn’t check for the available space in the Transmit FIFO Buffer.</p>
-<p>For efficiency, we should probably fix this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/uart3/arch/arm64/src/a64/a64_serial.c#L900-L919">a64_serial.c</a></p>
+<p>For efficiency, we should probably fix this: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L900-L919">a64_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Return true if Transmit FIFO is empty for PinePhone Allwinner A64 UART
 static bool a64_uart_txempty(struct uart_dev_s *dev)
 {
@@ -246,7 +246,7 @@ static bool a64_uart_txempty(struct uart_dev_s *dev)
 <h2 id="receive-uart"><a href="#receive-uart">2.3 Receive UART</a></h2>
 <p>Now that PinePhone can talk to us, let’s make sure we can talk back!</p>
 <p>Anything that we type into PinePhone’s Serial Console will appear in the <strong>Receiver Buffer Register (RBR)</strong>, byte by byte.</p>
-<p>The Receiver Buffer Register is at address <strong><code>0x01C2</code> <code>8000</code></strong>. (Since Offset is 0). This how we read it: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/uart3/arch/arm64/src/a64/a64_serial.c#L727-L753">a64_serial.c</a></p>
+<p>The Receiver Buffer Register is at address <strong><code>0x01C2</code> <code>8000</code></strong>. (Since Offset is 0). This how we read it: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L727-L753">a64_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Receive data from PinePhone Allwinner A64 UART
 static int a64_uart_receive(struct uart_dev_s *dev, unsigned int *status)
 {
@@ -256,7 +256,7 @@ static int a64_uart_receive(struct uart_dev_s *dev, unsigned int *status)
   // Read from UART Receiver Buffer Register (UART_RBR)
   // Offset: 0x0000
   const uint8_t *uart_rbr = (const uint8_t *) 
-    (CONFIG_A64_UART_BASE + 0x00);
+    (A64_UART0_ADDR + 0x00);
 
   // Bits 7 to 0: Receiver Buffer Register (RBR)
   // Data byte received on the serial input port . The data in this register is
@@ -275,14 +275,14 @@ static int a64_uart_receive(struct uart_dev_s *dev, unsigned int *status)
 <p>But don’t read the UART Input yet! We need to wait for the UART Input to be available…</p>
 <h2 id="wait-to-receive"><a href="#wait-to-receive">2.4 Wait To Receive</a></h2>
 <p>Let’s check if there’s <strong>UART Input</strong> ready to be read from the UART Port.</p>
-<p>We read Bit 0 of the <strong>Line Status Register (UART_LSR)</strong> at Offset <code>0x14</code>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/uart3/arch/arm64/src/a64/a64_serial.c#L791-L813">a64_serial.c</a></p>
+<p>We read Bit 0 of the <strong>Line Status Register (UART_LSR)</strong> at Offset <code>0x14</code>: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L791-L813">a64_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Return true if Receive FIFO is not empty for PinePhone Allwinner A64 UART
 static bool a64_uart_rxavailable(struct uart_dev_s *dev)
 {
   // Read from UART Line Status Register (UART_LSR)
   // Offset: 0x0014
   const uint8_t *uart_lsr = (const uint8_t *) 
-    (CONFIG_A64_UART_BASE + 0x14);
+    (A64_UART0_ADDR + 0x14);
 
   // Bit 0: Data Ready (DR)
   // This is used to indicate that the receiver contains at least one character in
@@ -331,7 +331,7 @@ int ch = a64_uart_receive(NULL, &amp;status);
 <p>NuttX uses both Polling-based UART and Interrupt-driven UART. NuttX OS writes <strong>System Logs</strong> (<code>syslog</code>) the UART Polling way…</p>
 <div class="example-wrap"><pre class="language-c"><code>sinfo(&quot;This is printed on UART with Polling\n&quot;);
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/uart3/arch/arm64/src/a64/a64_serial.c#L1400-L1432">(By calling <strong><code>up_putc</code></strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L1400-L1432">(By calling <strong><code>up_putc</code></strong>)</a></p>
 <p>And NuttX Apps print <strong>App Messages</strong> the UART Interrupt Way…</p>
 <div class="example-wrap"><pre class="language-c"><code>printf(&quot;This is printed on UART with Interrupts\n&quot;);
 </code></pre></div>
@@ -349,7 +349,7 @@ int ch = a64_uart_receive(NULL, &amp;status);
 </li>
 </ul>
 <p>The <a href="https://dl.linux-sunxi.org/A64/A64_Datasheet_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a> (page 211, “GIC”) reveals that UART0 Interrupts will be triggered at <strong>Interrupt Number 32</strong>. (Pic above)</p>
-<p>Let’s <strong>attach our Interrupt Handler</strong> to handle the UART Interrupts: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/uart3/arch/arm64/src/a64/a64_serial.c#L607-L657">a64_serial.c</a></p>
+<p>Let’s <strong>attach our Interrupt Handler</strong> to handle the UART Interrupts: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L607-L657">a64_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// UART0 IRQ Number for PinePhone Allwinner A64 UART
 #define UART_IRQ 32
 
@@ -404,7 +404,7 @@ arm64_gic_irq_set_priority(
 <li><a href="https://lupyuen.github.io/articles/interrupt#generic-interrupt-controller"><strong>“Generic Interrupt Controller”</strong></a></li>
 </ul>
 <p>The code above calls the Generic Interrupt Controller to set the priority of the UART Interrupt.</p>
-<p>Later when we’re done with UART Interrupts, we should <strong>detach the Interrupt Handler</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/uart3/arch/arm64/src/a64/a64_serial.c#L659-L688">a64_serial.c</a></p>
+<p>Later when we’re done with UART Interrupts, we should <strong>detach the Interrupt Handler</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L659-L688">a64_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Detach Interrupt Handler for PinePhone Allwinner A64 UART
 static void a64_uart_detach(struct uart_dev_s *dev)
 {
@@ -426,14 +426,14 @@ static void a64_uart_detach(struct uart_dev_s *dev)
 <p>(At Offset <code>0x04</code>)</p>
 </li>
 </ul>
-<p>This is how we enable (or disable) <strong>UART Receive Interrupts</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/uart3/arch/arm64/src/a64/a64_serial.c#L755-L789">a64_serial.c</a></p>
+<p>This is how we enable (or disable) <strong>UART Receive Interrupts</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L755-L789">a64_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable or disable Receive Interrupts for PinePhone Allwinner A64 UART
 static void a64_uart_rxint(struct uart_dev_s *dev, bool enable)
 {
   // Write to UART Interrupt Enable Register (UART_IER)
   // Offset: 0x0004
   uint8_t *uart_ier = (uint8_t *) 
-    (CONFIG_A64_UART_BASE + 0x04);
+    (A64_UART0_ADDR + 0x04);
 
   // Bit 0: Enable Received Data Available Interrupt (ERBFI)
   // This is used to enable/disable the generation of Received Data Available Interrupt and the Character Timeout Interrupt (if in FIFO mode and FIFOs enabled). These are the second highest priority interrupts.
@@ -443,14 +443,14 @@ static void a64_uart_rxint(struct uart_dev_s *dev, bool enable)
   else        { *uart_ier &amp;= 0b11111110; }
 }
 </code></pre></div>
-<p>And this is how we enable (or disable) <strong>UART Transmit Interrupts</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/uart3/arch/arm64/src/a64/a64_serial.c#L840-L874">a64_serial.c</a></p>
+<p>And this is how we enable (or disable) <strong>UART Transmit Interrupts</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L840-L874">a64_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Enable or disable Transmit Interrupts for PinePhone Allwinner A64 UART
 static void a64_uart_txint(struct uart_dev_s *dev, bool enable)
 {
   // Write to UART Interrupt Enable Register (UART_IER)
   // Offset: 0x0004
   uint8_t *uart_ier = (uint8_t *) 
-    (CONFIG_A64_UART_BASE + 0x04);
+    (A64_UART0_ADDR + 0x04);
 
   // Bit 1: Enable Transmit Holding Register Empty Interrupt (ETBEI)
   // This is used to enable/disable the generation of Transmitter Holding Register Empty Interrupt. This is the third highest priority interrupt.
@@ -481,7 +481,7 @@ int ret = irq_attach(
 <p>(Hence we should read the data received)</p>
 </li>
 </ul>
-<p>This is how we handle these conditions in our Interrupt Handler: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/uart3/arch/arm64/src/a64/a64_serial.c#L301-L415">a64_serial.c</a></p>
+<p>This is how we handle these conditions in our Interrupt Handler: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L301-L415">a64_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Interrupt Handler for PinePhone Allwinner A64 UART
 static int a64_uart_irq_handler(int irq, void *context, void *arg)
 {
@@ -493,7 +493,7 @@ static int a64_uart_irq_handler(int irq, void *context, void *arg)
 
   // Read UART Interrupt Identity Register (UART_IIR)
   // Offset: 0x0008 
-  const uint8_t *uart_iir = (const uint8_t *) (CONFIG_A64_UART_BASE + 0x08);
+  const uint8_t *uart_iir = (const uint8_t *) (A64_UART0_ADDR + 0x08);
 
   // Bits 3 to 0: Interrupt ID
   // This indicates the highest priority pending interrupt which can be one of the following types:
@@ -548,7 +548,7 @@ if (int_id == 0b0100) {
 <p>And that’s how we transmit and receive UART Data with Interrupts!</p>
 <h1 id="initialise-uart"><a href="#initialise-uart">4 Initialise UART</a></h1>
 <p><em>Did we forget something?</em></p>
-<p>Rightfully we should initialise the <strong>UART Baud Rate</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/uart3/arch/arm64/src/a64/a64_serial.c#L301-L582">a64_serial.c</a></p>
+<p>Rightfully we should initialise the <strong>UART Baud Rate</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L301-L582">a64_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Setup PinePhone Allwinner A64 UART
 static int a64_uart_setup(struct uart_dev_s *dev)
 {
@@ -570,7 +570,7 @@ static int a64_uart_setup(struct uart_dev_s *dev)
 </li>
 </ul>
 <p><em>What about UART Shutdown?</em></p>
-<p>To shutdown a UART Port, we disable the interrupts: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/uart3/arch/arm64/src/a64/a64_serial.c#L584-L605">a64_serial.c</a></p>
+<p>To shutdown a UART Port, we disable the interrupts: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L584-L605">a64_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Shutdown PinePhone Allwinner A64 UART
 static void a64_uart_shutdown(struct uart_dev_s *dev)
 {
@@ -582,7 +582,7 @@ static void a64_uart_shutdown(struct uart_dev_s *dev)
 <p>The Shutdown Function will <strong>never be called for UART0</strong> because it’s always active as the Serial Console.</p>
 <p>But for UART1 to UART4, the Shutdown Function will be called when our NuttX App closes the UART.</p>
 <p><em>Anything else?</em></p>
-<p>One last thing: For NuttX we need to implement a simple <strong>I/O Control Handler <code>ioctl</code></strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/uart3/arch/arm64/src/a64/a64_serial.c#L690-L725">a64_serial.c</a></p>
+<p>One last thing: For NuttX we need to implement a simple <strong>I/O Control Handler <code>ioctl</code></strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L690-L725">a64_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// I/O Control for PinePhone Allwinner A64 UART
 static int a64_uart_ioctl(struct file *filep, int cmd, unsigned long arg)
 {
@@ -642,7 +642,7 @@ static int a64_uart_ioctl(struct file *filep, int cmd, unsigned long arg)
 <p><a href="https://lupyuen.github.io/articles/serial#wait-to-transmit"><strong><code>a64_uart_txempty</code></strong></a>: Is Transmit Buffer Empty</p>
 </li>
 </ul>
-<p>NuttX expects us to wrap the UART Operations into a <strong><code>uart_ops_s</code></strong> Struct like so: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/uart3/arch/arm64/src/a64/a64_serial.c#L1002-L1021">a64_serial.c</a></p>
+<p>NuttX expects us to wrap the UART Operations into a <strong><code>uart_ops_s</code></strong> Struct like so: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L1002-L1021">a64_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>//  Serial driver UART operations for PinePhone Allwinner A64 UART
 static const struct uart_ops_s g_uart_ops =
 {
@@ -663,7 +663,7 @@ static const struct uart_ops_s g_uart_ops =
   .txempty  = a64_uart_txempty,
 };
 </code></pre></div>
-<p>We should <strong>start our UART Driver</strong> like this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/uart3/arch/arm64/src/a64/a64_serial.c#L1323-L1398">a64_serial.c</a></p>
+<p>We should <strong>start our UART Driver</strong> like this: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L1323-L1398">a64_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// UART0 is console and ttyS0
 #define CONSOLE_DEV g_uart0port
 #define TTYS0_DEV   g_uart0port
@@ -684,8 +684,8 @@ void a64_earlyserialinit(void)
 
   // Omitted: Init UART1 to UART4, if required
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/uart3/arch/arm64/src/a64/a64_serial.c#L1051-L1069">(<strong><code>g_uart0port</code></strong> contains the UART Operations <strong><code>g_uart_ops</code></strong>)</a></p>
-<p>Then we expose UART0 as <strong><code>/dev/console</code></strong> and <strong><code>/dev/ttyS0</code></strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/uart3/arch/arm64/src/a64/a64_serial.c#L143-L1501">a64_serial.c</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L1051-L1069">(<strong><code>g_uart0port</code></strong> contains the UART Operations <strong><code>g_uart_ops</code></strong>)</a></p>
+<p>Then we expose UART0 as <strong><code>/dev/console</code></strong> and <strong><code>/dev/ttyS0</code></strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_serial.c#L143-L1501">a64_serial.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Register serial console and serial ports.  This assumes
 // that imx_earlyserialinit was called previously.
 void arm64_serialinit(void)
