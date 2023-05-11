@@ -756,11 +756,11 @@ void arm64_serialinit(void)
 {
   // Register UART0 as /dev/console
   int ret = uart_register("/dev/console", &CONSOLE_DEV);
-  if (ret < 0) { sinfo("Register /dev/console failed, ret=%d\n", ret); }
+  if (ret < 0) { _err("Register /dev/console failed, ret=%d\n", ret); }
 
   // Register UART0 as /dev/ttyS0
   ret = uart_register("/dev/ttyS0", &TTYS0_DEV);
-  if (ret < 0) { sinfo("Register /dev/ttyS0 failed, ret=%d\n", ret); }
+  if (ret < 0) { _err("Register /dev/ttyS0 failed, ret=%d\n", ret); }
 
   // Omitted: Register UART1 to UART4 as /dev/ttyS1 to /dev/ttyS4
   // TTY Numbering is always Sequential:
