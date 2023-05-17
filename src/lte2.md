@@ -924,7 +924,7 @@ But first we need to __upstream these to NuttX Mainline__...
 
 - [__Quectel EG25-G LTE Modem Driver__](https://lupyuen.github.io/articles/lte#power-up-wth-nuttx) (for PinePhone)
 
-  [(See the __Pull Request__)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/30)
+  [(See the __Pull Request__)](https://github.com/apache/nuttx/pull/9304)
 
 # What's Next
 
