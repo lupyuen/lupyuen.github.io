@@ -385,7 +385,7 @@
 <h1 id="power-up-wth-nuttx"><a href="#power-up-wth-nuttx">7 Power Up wth NuttX</a></h1>
 <p><em>We’ve seen the Power On Sequence for LTE Modem…</em></p>
 <p><em>How will we implement it in Apache NuttX RTOS?</em></p>
-<p>This is how we implement the LTE Modem’s <strong>Power On Sequence</strong> in NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/bb1ef61d6dbb5309a1e92583caaf81513308320a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L226-L356">pinephone_bringup.c</a></p>
+<p>This is how we implement the LTE Modem’s <strong>Power On Sequence</strong> in NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_modem.c#L89-L132">pinephone_modem.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Read PH9 to check LTE Modem Status
 #define STATUS (PIO_INPUT | PIO_PORT_PIOH | PIO_PIN9)
 ret = a64_pio_config(STATUS);
@@ -395,7 +395,7 @@ _info(&quot;Status=%d\n&quot;, a64_pio_read(STATUS));
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L175-L343">(<strong>a64_pio_config</strong> comes from A64 PIO Driver)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L391-L419">(<strong>a64_pio_read</strong> too)</a></p>
 <p>We begin by reading PH9 for the <strong>LTE Modem Status</strong>.</p>
-<p>Then we set PL7 to High to <strong>power up the RF Transceiver and Baseband Processor</strong>…</p>
+<p>Then we set PL7 to High to <strong>power up the RF Transceiver and Baseband Processor</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_modem.c#L138-L245">pinephone_modem.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Set PL7 to High to Power On LTE Modem (4G-PWR-BAT)
 // Configure PWR_BAT (PL7) for Output
 #define P_OUTPUT (PIO_OUTPUT | PIO_PULL_NONE | PIO_DRIVE_MEDLOW | \
@@ -408,6 +408,7 @@ a64_pio_write(PWR_BAT, true);
 // Omitted: Print the status
 </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L345-L389">(<strong>a64_pio_write</strong> comes from A64 PIO Driver)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L211-L219">(<strong>pinephone_modem_init</strong> is called by <strong>pinephone_bringup</strong>)</a></p>
 <p>We set PC4 to Low to <strong>deassert the LTE Modem Reset</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Set PC4 to Low to Deassert LTE Modem Reset (BB-RESET / RESET_N)
 // Configure RESET_N (PC4) for Output
@@ -464,7 +465,7 @@ a64_pio_config(W_DISABLE);  // TODO: Check result
 a64_pio_write(W_DISABLE, true);
 // Omitted: Print the status
 </code></pre></div>
-<p>To wrap up, we wait for <strong>LTE Modem Status to turn Low</strong>…</p>
+<p>To wrap up, we wait for <strong>LTE Modem Status to turn Low</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_modem.c#L89-L132">pinephone_modem.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Poll for Modem Status until it becomes Low
 for (int i = 0; i &lt; 30; i++) {  // Max 1 minute
 
@@ -550,7 +551,7 @@ pinephone_modem_init: Status=0
 <p><a href="https://lupyuen.github.io/articles/lte#main-uart-interface">(More about the UART Pins)</a></p>
 </li>
 </ul>
-<p>Thus we may <strong>check UART3</strong> to see if the LTE Modem responds to <a href="https://lupyuen.github.io/articles/lte#quectel-eg25-g-lte-modem"><strong>AT Commands</strong></a>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L38-L166">hello_main.c</a></p>
+<p>Thus we may <strong>check UART3</strong> to see if the LTE Modem responds to <a href="https://lupyuen.github.io/articles/lte#quectel-eg25-g-lte-modem"><strong>AT Commands</strong></a>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/modem/examples/hello/hello_main.c#L69-L221">hello_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Open /dev/ttyS1 (UART3)
 int fd = open(&quot;/dev/ttyS1&quot;, O_RDWR);
 printf(&quot;Open /dev/ttyS1: fd=%d\n&quot;, fd);
@@ -634,6 +635,7 @@ OK
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/lte2"><strong>“NuttX RTOS for PinePhone: Phone Calls and Text Messages”</strong></a></p>
+<p><a href="https://github.com/apache/nuttx/pull/9304">(See the <strong>Pull Request</strong>)</a></p>
 </li>
 </ul>
 <p>There’s another way to test the LTE Modem: Via USB…</p>
