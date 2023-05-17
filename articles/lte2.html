@@ -168,7 +168,8 @@
 <p><a href="https://lupyuen.github.io/articles/lte#is-lte-modem-up"><strong>“Is LTE Modem Up?”</strong></a></p>
 </li>
 </ul>
-<p>Which we have implemented in NuttX as <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/bb1ef61d6dbb5309a1e92583caaf81513308320a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L226-L356"><strong>pinephone_modem_init</strong></a>.</p>
+<p>Which we have implemented in NuttX as <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_modem.c#L138-L245"><strong>pinephone_modem_init</strong></a>.</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L211-L219">(<strong>pinephone_modem_init</strong> is called by <strong>pinephone_bringup</strong>)</a></p>
 <p>At <strong>NuttX Startup</strong>, we see this …</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel...
 Enable UART3 on PD0
@@ -196,7 +197,7 @@ nsh&gt;
 <h1 id="send-at-commands"><a href="#send-at-commands">3 Send AT Commands</a></h1>
 <p><em>LTE Modem has started successfully at UART3…</em></p>
 <p><em>How will we send AT Commands to the modem?</em></p>
-<p>On NuttX, this is how we <strong>send an AT Command</strong> to the LTE Modem over UART3: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L52-L75">hello_main.c</a></p>
+<p>On NuttX, this is how we <strong>send an AT Command</strong> to the LTE Modem over UART3: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/modem/examples/hello/hello_main.c#L69-L221">hello_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Open /dev/ttyS1 (UART3)
 int fd = open(&quot;/dev/ttyS1&quot;, O_RDWR);
 printf(&quot;Open /dev/ttyS1: fd=%d\n&quot;, fd);
@@ -303,7 +304,7 @@ OK
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 75)</a></p>
 </li>
 </ul>
-<p>This is how we do it: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L81-L122">hello_main.c</a></p>
+<p>This is how we do it: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/modem/examples/hello/hello_main.c#L102-L143">hello_main.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Check the Network Status: AT+CREG?
 const char cmd[] = &quot;AT+CREG?\r&quot;;
 write(fd, cmd, strlen(cmd));
@@ -346,7 +347,7 @@ Response:
 <p><img src="https://lupyuen.github.io/images/lte2-title.jpg" alt="NuttX makes a Phone Call from PinePhone" /></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L683-L735"><em>NuttX makes a Phone Call from PinePhone</em></a></p>
 <h1 id="outgoing-phone-call"><a href="#outgoing-phone-call">5 Outgoing Phone Call</a></h1>
-<p>In NuttX, this is how we dial a Phone Number to make an <strong>Outgoing Phone Call</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L343-L432">dial_number</a></p>
+<p>In NuttX, this is how we dial a Phone Number to make an <strong>Outgoing Phone Call</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/modem/examples/hello/hello_main.c#L438-L543">dial_number</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Get Range of PCM Parameters for Digital Audio
 const char cmd[] = &quot;AT+QDAI=?\r&quot;;
 write(fd, cmd, strlen(cmd));
@@ -454,7 +455,7 @@ Response: OK
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 159)</a></p>
 </li>
 </ol>
-<p>This is how we <strong>send an SMS</strong> (in Text Mode) with NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L162-L253">send_sms_text</a></p>
+<p>This is how we <strong>send an SMS</strong> (in Text Mode) with NuttX: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/modem/examples/hello/hello_main.c#L223-L331">send_sms_text</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Select Text Mode for SMS (instead of PDU Mode)
 const char cmd[] = &quot;AT+CMGF=1\r&quot;;
 write(fd, cmd, strlen(cmd));
@@ -533,7 +534,7 @@ OK
 <div class="example-wrap"><pre class="language-text"><code>+CMS ERROR: 350
 </code></pre></div>
 <p>This means that the Telco’s <strong>SMS Centre has rejected</strong> our SMS Message.</p>
-<p>Check that the SMS Centre is correct <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/b291696fcaaee1700161796ac8a8320842ebee3d/examples/hello/hello_main.c#L127-L145">(like this)</a>…</p>
+<p>Check that the SMS Centre is correct <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/modem/examples/hello/hello_main.c#L145-L163">(like this)</a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>// Get SMS Centre
 Command: AT+CSCA?
 Response:
@@ -626,7 +627,7 @@ const char cmd[] =
 <p><a href="https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf">(EG25-G AT Commands, Page 159)</a></p>
 </li>
 </ol>
-<p>Let’s look at the NuttX Code: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L255-L341">send_sms_pdu</a></p>
+<p>Let’s look at the NuttX Code: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/modem/examples/hello/hello_main.c#L333-L436">send_sms_pdu</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Select PDU Mode for SMS (instead of SMS Mode)
 const char cmd[] = &quot;AT+CMGF=0\r&quot;;
 write(fd, cmd, strlen(cmd));
@@ -823,7 +824,7 @@ if (err = 0) {
 </li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/lte#power-up-wth-nuttx"><strong>Quectel EG25-G LTE Modem Driver</strong></a> (for PinePhone)</p>
-<p><a href="https://github.com/apache/nuttx/pull/9304">(See the <strong>Pull Request</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/pull/9304">(See the <strong>Incomplete Pull Request</strong>)</a></p>
 </li>
 </ul>
 <h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
