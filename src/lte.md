@@ -361,7 +361,7 @@ _We've seen the Power On Sequence for LTE Modem..._
 
 _How will we implement it in Apache NuttX RTOS?_
 
-This is how we implement the LTE Modem's __Power On Sequence__ in NuttX: [pinephone_bringup.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/bb1ef61d6dbb5309a1e92583caaf81513308320a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L226-L356)
+This is how we implement the LTE Modem's __Power On Sequence__ in NuttX: [pinephone_modem.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_modem.c#L89-L132)
 
 ```c
 // Read PH9 to check LTE Modem Status
@@ -377,7 +377,7 @@ _info("Status=%d\n", a64_pio_read(STATUS));
 
 We begin by reading PH9 for the __LTE Modem Status__.
 
-Then we set PL7 to High to __power up the RF Transceiver and Baseband Processor__...
+Then we set PL7 to High to __power up the RF Transceiver and Baseband Processor__: [pinephone_modem.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_modem.c#L138-L245)
 
 ```c
 // Set PL7 to High to Power On LTE Modem (4G-PWR-BAT)
@@ -393,6 +393,9 @@ a64_pio_write(PWR_BAT, true);
 ```
 
 [(__a64_pio_write__ comes from A64 PIO Driver)](https://github.com/apache/nuttx/blob/master/arch/arm64/src/a64/a64_pio.c#L345-L389)
+
+[(__pinephone_modem_init__ is called by __pinephone_bringup__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L211-L219)
+
 
 We set PC4 to Low to __deassert the LTE Modem Reset__...
 
@@ -465,7 +468,7 @@ a64_pio_write(W_DISABLE, true);
 // Omitted: Print the status
 ```
 
-To wrap up, we wait for __LTE Modem Status to turn Low__...
+To wrap up, we wait for __LTE Modem Status to turn Low__: [pinephone_modem.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_modem.c#L89-L132)
 
 ```c
 // Poll for Modem Status until it becomes Low
@@ -592,7 +595,7 @@ The LTE Modem is connected to PinePhone (Allwinner A64) at these UART Ports (pic
 
     [(More about the UART Pins)](https://lupyuen.github.io/articles/lte#main-uart-interface)
 
-Thus we may __check UART3__ to see if the LTE Modem responds to [__AT Commands__](https://lupyuen.github.io/articles/lte#quectel-eg25-g-lte-modem): [hello_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/86899c1350e2870ce686f6c1a01ba5541f243b77/examples/hello/hello_main.c#L38-L166)
+Thus we may __check UART3__ to see if the LTE Modem responds to [__AT Commands__](https://lupyuen.github.io/articles/lte#quectel-eg25-g-lte-modem): [hello_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/modem/examples/hello/hello_main.c#L69-L221)
 
 ```c
 // Open /dev/ttyS1 (UART3)
@@ -701,6 +704,8 @@ We modified the __Allwinner A64 UART Driver__ to support UART3. The changes will
 -   [__"Test UART3 Port"__](https://github.com/lupyuen/pinephone-nuttx#test-uart3-port)
 
 -   [__"NuttX RTOS for PinePhone: Phone Calls and Text Messages"__](https://lupyuen.github.io/articles/lte2)
+
+    [(See the __Pull Request__)](https://github.com/apache/nuttx/pull/9304)
 
 There's another way to test the LTE Modem: Via USB...
 
