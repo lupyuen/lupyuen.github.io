@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Inside a Smartphone Accelerometer: PinePhone with NuttX RTOS",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-05-17",
+      "website": "https://www.hackster.io/lupyuen/inside-a-smartphone-accelerometer-pinephone-with-nuttx-rtos-b92b58",
+      "summary": "When we tilt our Smartphone from Portrait to Landscape... How does it know that we're tilting our phone? Watch what happens when we snoop the MPU-6050 Accelerometer Data from PinePhone with Apache NuttX RTOS"
+    },
+    {
       "name": "NuttX RTOS for PinePhone: Phone Calls and Text Messages",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-05-04",
