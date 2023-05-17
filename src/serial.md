@@ -951,3 +951,5 @@ According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhon
     (Wired to RTS and CTS, not really a UART)
 
     [(More about this)](https://lupyuen.github.io/articles/lte#test-uart-with-nuttx)
+
+Thus unfortunately we can't map UART3 neatly to /dev/ttyS3. [(See this)](https://github.com/apache/nuttx/pull/9304#discussion_r1195862416)
