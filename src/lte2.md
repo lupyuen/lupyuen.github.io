@@ -90,7 +90,9 @@ In the previous article we spoke about __starting the LTE Modem__ with NuttX (pi
 
 -   [__"Is LTE Modem Up?"__](https://lupyuen.github.io/articles/lte#is-lte-modem-up)
 
-Which we have implemented in NuttX as [__pinephone_modem_init__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/bb1ef61d6dbb5309a1e92583caaf81513308320a/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L226-L356).
+Which we have implemented in NuttX as [__pinephone_modem_init__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_modem.c#L138-L245).
+
+[(__pinephone_modem_init__ is called by __pinephone_bringup__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L211-L219)
 
 At __NuttX Startup__, we see this ...
 
@@ -130,7 +132,7 @@ _LTE Modem has started successfully at UART3..._
 
 _How will we send AT Commands to the modem?_
 
-On NuttX, this is how we __send an AT Command__ to the LTE Modem over UART3: [hello_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L52-L75)
+On NuttX, this is how we __send an AT Command__ to the LTE Modem over UART3: [hello_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/modem/examples/hello/hello_main.c#L69-L221)
 
 ```c
 // Open /dev/ttyS1 (UART3)
@@ -271,7 +273,7 @@ To check if the LTE Modem has connected successfully to the 4G LTE Network, we s
 
   [(EG25-G AT Commands, Page 75)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
-This is how we do it: [hello_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L81-L122)
+This is how we do it: [hello_main.c](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/modem/examples/hello/hello_main.c#L102-L143)
 
 ```c
 // Check the Network Status: AT+CREG?
@@ -327,7 +329,7 @@ We're all set to make some calls!
 
 # Outgoing Phone Call
 
-In NuttX, this is how we dial a Phone Number to make an __Outgoing Phone Call__: [dial_number](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L343-L432)
+In NuttX, this is how we dial a Phone Number to make an __Outgoing Phone Call__: [dial_number](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/modem/examples/hello/hello_main.c#L438-L543)
 
 ```c
 // Get Range of PCM Parameters for Digital Audio
@@ -470,7 +472,7 @@ To send an __SMS Message__ (in Text Mode), use these AT Commands...
 
     [(EG25-G AT Commands, Page 159)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
-This is how we __send an SMS__ (in Text Mode) with NuttX: [send_sms_text](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L162-L253)
+This is how we __send an SMS__ (in Text Mode) with NuttX: [send_sms_text](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/modem/examples/hello/hello_main.c#L223-L331)
 
 ```c
 // Select Text Mode for SMS (instead of PDU Mode)
@@ -561,7 +563,7 @@ _What if we get Error 350?_
 
 This means that the Telco's __SMS Centre has rejected__ our SMS Message.
 
-Check that the SMS Centre is correct [(like this)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/b291696fcaaee1700161796ac8a8320842ebee3d/examples/hello/hello_main.c#L127-L145)...
+Check that the SMS Centre is correct [(like this)](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/modem/examples/hello/hello_main.c#L145-L163)...
 
 ```text
 // Get SMS Centre
@@ -678,7 +680,7 @@ Let's walk through the steps to send an __SMS in PDU Mode__...
 
     [(EG25-G AT Commands, Page 159)](https://wiki.pine64.org/images/1/1b/Quectel_EC2x%26EG9x%26EG2x-G%26EM05_Series_AT_Commands_Manual_V2.0.pdf)
 
-Let's look at the NuttX Code: [send_sms_pdu](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/8ea4208cbd4758a0f1443c61bffa7ec4a8390695/examples/hello/hello_main.c#L255-L341)
+Let's look at the NuttX Code: [send_sms_pdu](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/modem/examples/hello/hello_main.c#L333-L436)
 
 ```c
 // Select PDU Mode for SMS (instead of SMS Mode)
@@ -924,7 +926,7 @@ But first we need to __upstream these to NuttX Mainline__...
 
 - [__Quectel EG25-G LTE Modem Driver__](https://lupyuen.github.io/articles/lte#power-up-wth-nuttx) (for PinePhone)
 
-  [(See the __Pull Request__)](https://github.com/apache/nuttx/pull/9304)
+  [(See the __Incomplete Pull Request__)](https://github.com/apache/nuttx/pull/9304)
 
 # What's Next
 

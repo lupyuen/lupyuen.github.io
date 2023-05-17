@@ -396,7 +396,6 @@ a64_pio_write(PWR_BAT, true);
 
 [(__pinephone_modem_init__ is called by __pinephone_bringup__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/modem/boards/arm64/a64/pinephone/src/pinephone_bringup.c#L211-L219)
 
-
 We set PC4 to Low to __deassert the LTE Modem Reset__...
 
 ```c
@@ -705,7 +704,7 @@ We modified the __Allwinner A64 UART Driver__ to support UART3. The changes will
 
 -   [__"NuttX RTOS for PinePhone: Phone Calls and Text Messages"__](https://lupyuen.github.io/articles/lte2)
 
-    [(See the __Pull Request__)](https://github.com/apache/nuttx/pull/9304)
+    [(See the __Incomplete Pull Request__)](https://github.com/apache/nuttx/pull/9304)
 
 There's another way to test the LTE Modem: Via USB...
 
