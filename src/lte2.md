@@ -928,6 +928,8 @@ But first we need to __upstream these to NuttX Mainline__...
 
   [(See the __Incomplete Pull Request__)](https://github.com/apache/nuttx/pull/9304)
 
+TODO: Disable UART2 and /dev/ttyS2 so that UART3 maps neatly to /dev/ttyS3. [(See this)](https://github.com/apache/nuttx/pull/9304#discussion_r1195862416)
+
 # What's Next
 
 I hope this article was helpful for understanding the internals of Phone Calls and Text Messaging on PinePhone...

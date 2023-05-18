@@ -706,6 +706,8 @@ We modified the __Allwinner A64 UART Driver__ to support UART3. The changes will
 
     [(See the __Incomplete Pull Request__)](https://github.com/apache/nuttx/pull/9304)
 
+TODO: Disable UART2 and /dev/ttyS2 so that UART3 maps neatly to /dev/ttyS3. [(See this)](https://github.com/apache/nuttx/pull/9304#discussion_r1195862416)
+
 There's another way to test the LTE Modem: Via USB...
 
 ![USB Controller Block Diagram from Allwinner A64 User Manual](https://lupyuen.github.io/images/usb3-title.jpg)

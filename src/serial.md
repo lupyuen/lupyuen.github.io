@@ -940,7 +940,7 @@ According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhon
 
     Pins __PD0__ _(TX)_ and __PD1__ _(RX)_
 
-    (TODO: Assign as __/dev/ttyS2__)
+    (TODO: Assign as __/dev/ttyS3__)
 
     [(More about this)](https://lupyuen.github.io/articles/lte#test-uart-with-nuttx)
 
@@ -952,4 +952,4 @@ According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhon
 
     [(More about this)](https://lupyuen.github.io/articles/lte#test-uart-with-nuttx)
 
-Thus unfortunately we can't map UART3 neatly to /dev/ttyS3. [(See this)](https://github.com/apache/nuttx/pull/9304#discussion_r1195862416)
+TODO: Disable UART2 and /dev/ttyS2 so that UART3 maps neatly to /dev/ttyS3. [(See this)](https://github.com/apache/nuttx/pull/9304#discussion_r1195862416)
