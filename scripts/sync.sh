@@ -40,9 +40,6 @@ set -x  #  Echo all commands.
 # Go to the sync folder
 pushd $sync
 
-# Testing: Rewrite lupyuen.github.io to lupyuen.codeberg.page
-# generate_article lte2 ; exit
-
 # Rewrite lupyuen.github.io to lupyuen.codeberg.page in articles/*.html
 set +x  #  Disable Echo.
 for f in src/*.md
@@ -54,6 +51,16 @@ do
     generate_article $filename
 done
 set -x  #  Echo all commands.
+
+# Rewrite lupyuen.github.io to lupyuen.codeberg.page in resume
+set +x  #  Disable Echo.
+cp index.html articles
+generate_article index
+cp articles/index.html .
+set -x  #  Echo all commands.
+
+# Testing: Rewrite lupyuen.github.io to lupyuen.codeberg.page
+# generate_article lte2 ; exit
 
 # Commit the modified files
 git status
