@@ -40,7 +40,7 @@
                 "args": [
                     "-c",
                     "-l",
-                    " git pull && echo ✅ ◾ ️Done! "
+                    " git pull && scripts/sync.sh && echo ✅ ◾ ️Done! "
                 ]
             },
             "linux": {
