@@ -858,7 +858,7 @@ nsh&gt; ls /dev
 <li>
 <p><strong>UART3:</strong> 4G LTE Modem (Quectel EG25-G)</p>
 <p>Pins <strong>PD0</strong> <em>(TX)</em> and <strong>PD1</strong> <em>(RX)</em></p>
-<p>(TODO: Assign as <strong>/dev/ttyS2</strong>)</p>
+<p>(TODO: Assign as <strong>/dev/ttyS3</strong>)</p>
 <p><a href="https://lupyuen.github.io/articles/lte#test-uart-with-nuttx">(More about this)</a></p>
 </li>
 <li>
@@ -868,7 +868,7 @@ nsh&gt; ls /dev
 <p><a href="https://lupyuen.github.io/articles/lte#test-uart-with-nuttx">(More about this)</a></p>
 </li>
 </ul>
-<p>Thus unfortunately we can’t map UART3 neatly to /dev/ttyS3. <a href="https://github.com/apache/nuttx/pull/9304#discussion_r1195862416">(See this)</a></p>
+<p>TODO: Disable UART2 and /dev/ttyS2 so that UART3 maps neatly to /dev/ttyS3. <a href="https://github.com/apache/nuttx/pull/9304#discussion_r1195862416">(See this)</a></p>
 
     
 </body>
