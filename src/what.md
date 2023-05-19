@@ -24,7 +24,7 @@ _What's Apache NuttX RTOS?_
 
 Think Linux, Ubuntu, Manjaro, Arch, ... But a lot __smaller and simpler__!
 
-NuttX is a __tiny operating system__ (10 MB) that boots on a __microSD Card__ and provides a Command-Line Interface for developers. (Pic above)
+NuttX is a __tiny operating system__ (10 MB) that boots on a __microSD Card__ (runs entirely in RAM) and provides a Command-Line Interface for developers. (Pic above)
 
 [(Full build in 2.5 minutes on a 10-year-old MacBook Pro)](https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc)
 
@@ -114,7 +114,7 @@ If we're keen to boot NuttX on our PinePhone, please read on...
 
 [(Watch the Demo on YouTube)](https://youtu.be/kGI_0yK1vws)
 
-Let's make a __Bootable microSD__ that will start NuttX on our PinePhone...
+Let's make a __Bootable microSD__ that will start NuttX (in RAM) on our PinePhone (without touching the eMMC Storage)...
 
 1.  Download the __PinePhone Jumpdrive Image `pine64-pinephone.img.xz`__ from...
 
