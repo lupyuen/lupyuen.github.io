@@ -76,7 +76,7 @@ git pull
 # Sync to Codeberg Pages
 sync_folder ../lupyuen.codeberg.page
 
-# Sync to Codeberg Mirror roughly every 10th time
-if [[ $(($RANDOM % 10)) == 0 ]]; then
+# Sync to Codeberg Mirror roughly every 8th time
+if [[ $(($RANDOM % 8)) == 0 ]]; then
     sync_folder ../codeberg.lupyuen.github.io
 fi
