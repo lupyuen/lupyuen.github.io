@@ -81,7 +81,7 @@
 <h1 id="smaller-and-simpler"><a href="#smaller-and-simpler">1 Smaller and Simpler</a></h1>
 <p><em>What’s Apache NuttX RTOS?</em></p>
 <p>Think Linux, Ubuntu, Manjaro, Arch, … But a lot <strong>smaller and simpler</strong>!</p>
-<p>NuttX is a <strong>tiny operating system</strong> (10 MB) that boots on a <strong>microSD Card</strong> and provides a Command-Line Interface for developers. (Pic above)</p>
+<p>NuttX is a <strong>tiny operating system</strong> (10 MB) that boots on a <strong>microSD Card</strong> (runs entirely in RAM) and provides a Command-Line Interface for developers. (Pic above)</p>
 <p><a href="https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc">(Full build in 2.5 minutes on a 10-year-old MacBook Pro)</a></p>
 <p><em>Why “Real-Time”?</em></p>
 <p>It’s a <strong>Real-Time Operating System</strong> (RTOS) because NuttX was created for <a href="https://nuttx.apache.org/docs/latest/platforms/index.html"><strong>tiny microcontrollers</strong></a>: STM32, nRF52, BL602, ESP32, …</p>
@@ -126,7 +126,7 @@
 <p><a href="https://lupyuen.github.io/articles/lvgl2#appendix-boot-apache-nuttx-rtos-on-pinephone"><em>Bootable microSD for PinePhone</em></a></p>
 <h1 id="boot-nuttx"><a href="#boot-nuttx">3 Boot NuttX</a></h1>
 <p><a href="https://youtu.be/kGI_0yK1vws">(Watch the Demo on YouTube)</a></p>
-<p>Let’s make a <strong>Bootable microSD</strong> that will start NuttX on our PinePhone…</p>
+<p>Let’s make a <strong>Bootable microSD</strong> that will start NuttX (in RAM) on our PinePhone (without touching the eMMC Storage)…</p>
 <ol>
 <li>
 <p>Download the <strong>PinePhone Jumpdrive Image <code>pine64-pinephone.img.xz</code></strong> from…</p>
