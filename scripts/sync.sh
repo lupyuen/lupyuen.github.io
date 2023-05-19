@@ -18,55 +18,65 @@ function generate_article() {
     rm $tmp
 }
 
+# Sync the files in the current folder to $1
+function sync_folder() {
+    local sync=$1
+
+    # Copy the files that may change
+    set +x  #  Disable Echo.
+    cp *.* $sync/
+    cp .gitattributes $sync/
+    cp .gitignore $sync/
+    cp .vscode/* $sync/.vscode/
+    cp articles/* $sync/articles/
+    cp images/*.* $sync/images/
+    cp scripts/*.* $sync/scripts/
+    cp scripts/articles/* $sync/scripts/articles/
+    cp src/* $sync/src/
+    set -x  #  Echo all commands.
+
+    # Go to the sync folder
+    pushd $sync
+
+    # Rewrite lupyuen.github.io to lupyuen.codeberg.page in articles/*.html
+    set +x  #  Disable Echo.
+    for f in src/*.md
+    do
+        # echo $f
+        filename=$(basename -- "$f")
+        # extension="${filename##*.}"
+        filename="${filename%.*}"
+        generate_article $filename
+    done
+    set -x  #  Echo all commands.
+
+    # Rewrite lupyuen.github.io to lupyuen.codeberg.page in resume
+    set +x  #  Disable Echo.
+    cp index.html articles
+    generate_article index
+    cp articles/index.html .
+    set -x  #  Echo all commands.
+
+    # Testing: Rewrite lupyuen.github.io to lupyuen.codeberg.page
+    # generate_article lte2 ; exit
+
+    # Commit the modified files
+    git status
+    git add .
+    git commit --all --message="Sync from lupyuen.github.io"
+    git push
+
+    # Return to the previous folder
+    popd
+}
+
 # Update the current folder
 git pull
 
-# Sync to this folder
-sync=../lupyuen.codeberg.page
+# Sync to Codeberg Pages
+sync_folder ../lupyuen.codeberg.page
 
-# Copy the modified files
-set +x  #  Disable Echo.
-cp *.* $sync/
-cp .gitattributes $sync/
-cp .gitignore $sync/
-cp .vscode/* $sync/.vscode/
-cp articles/* $sync/articles/
-cp images/*.* $sync/images/
-cp scripts/*.* $sync/scripts/
-cp scripts/articles/* $sync/scripts/articles/
-cp src/* $sync/src/
-set -x  #  Echo all commands.
-
-# Go to the sync folder
-pushd $sync
-
-# Rewrite lupyuen.github.io to lupyuen.codeberg.page in articles/*.html
-set +x  #  Disable Echo.
-for f in src/*.md
-do
-    # echo $f
-    filename=$(basename -- "$f")
-    # extension="${filename##*.}"
-    filename="${filename%.*}"
-    generate_article $filename
-done
-set -x  #  Echo all commands.
-
-# Rewrite lupyuen.github.io to lupyuen.codeberg.page in resume
-set +x  #  Disable Echo.
-cp index.html articles
-generate_article index
-cp articles/index.html .
-set -x  #  Echo all commands.
-
-# Testing: Rewrite lupyuen.github.io to lupyuen.codeberg.page
-# generate_article lte2 ; exit
-
-# Commit the modified files
-git status
-git add .
-git commit --all --message="Sync from lupyuen.github.io"
-git push
-
-# Return to the previous folder
-popd
+# Sync to Codeberg Mirror roughly every 10th time
+if [[ $(($RANDOM % 10)) == 0 ]]; then
+    sync_folder ../codeberg.lupyuen.github.io
+fi
