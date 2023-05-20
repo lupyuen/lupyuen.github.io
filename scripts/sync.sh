@@ -12,8 +12,10 @@ function generate_article() {
 
     cp  $html $tmp
     cat $tmp \
-        | sed 's/lupyuen.github.io\/images/lupyuen.codeberg.page\/images/' \
-        | sed 's/lupyuen.github.io\/articles/lupyuen.codeberg.page\/articles/' \
+        | sed 's/lupyuen.github.io\"/lupyuen.codeberg.page\"/g' \
+        | sed 's/lupyuen.github.io\/articles/lupyuen.codeberg.page\/articles/g' \
+        | sed 's/lupyuen.github.io\/images/lupyuen.codeberg.page\/images/g' \
+        | sed 's/lupyuen.github.io\/rss/lupyuen.codeberg.page\/rss/g' \
         >$html
     rm $tmp
 }
@@ -55,6 +57,13 @@ function sync_folder() {
     cp index.html articles
     generate_article index
     cp articles/index.html .
+    set -x  #  Echo all commands.
+
+    # Rewrite lupyuen.github.io to lupyuen.codeberg.page in rss.xml
+    set +x  #  Disable Echo.
+    cp rss.xml articles/rss.html
+    generate_article rss
+    mv articles/rss.html rss.xml
     set -x  #  Echo all commands.
 
     # Testing: Rewrite lupyuen.github.io to lupyuen.codeberg.page
