@@ -16,6 +16,7 @@ function generate_article() {
         | sed 's/lupyuen.github.io\/articles/lupyuen.codeberg.page\/articles/g' \
         | sed 's/lupyuen.github.io\/images/lupyuen.codeberg.page\/images/g' \
         | sed 's/lupyuen.github.io\/rss/lupyuen.codeberg.page\/rss/g' \
+        | sed 's/github.com\/lupyuen\/lupyuen.github.io\/blob\/master\/images/codeberg.org\/lupyuen\/pages\/src\/branch\/main\/images/g' \
         >$html
     rm $tmp
 }

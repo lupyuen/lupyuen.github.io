@@ -695,7 +695,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     boards/<archname>/<chipname>/<boardname>/config/mynewcustomconfig/
     ```
 
-    [(Thanks to Alan C. Assis for the tip!)](https://www.mail-archive.com/dev@nuttx.apache.org/msg09876.html)
+    [(Thanks to __Alan C. Assis__ for the tip!)](https://www.mail-archive.com/dev@nuttx.apache.org/msg09876.html)
 
 1.  TODO: UART Settings
 
