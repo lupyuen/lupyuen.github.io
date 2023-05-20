@@ -696,8 +696,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     ```bash
     mkdir boards/<archname>/<chipname>/<boardname>/config/<mynewcustomconfig>
 
-    mv defconfig 
-    boards/<archname>/<chipname>/<boardname>/config/<mynewcustomconfig>/
+    mv defconfig boards/<archname>/<chipname>/<boardname>/config/<mynewcustomconfig>/
     ```
 
     [(Thanks to __Alan C. Assis__ for the tip!)](https://www.mail-archive.com/dev@nuttx.apache.org/msg09876.html)
