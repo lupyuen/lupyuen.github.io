@@ -674,16 +674,16 @@ Changes not staged for commit:
 <p><a href="https://github.com/apache/nuttx/pull/9243#issuecomment-1542918859">(Source)</a></p>
 </li>
 <li>
-<p>TODO: <a href="https://www.mail-archive.com/dev@nuttx.apache.org/msg09876.html">Create a new defconfig</a></p>
-<div class="example-wrap"><pre class="language-text"><code>After running &quot;make savedefconfig&quot; you can create a directory inside
-your board config that will retain your config customization:
+<p>How do we create a new <strong>defconfig</strong>?</p>
+<p>In the “<strong>nuttx/nuttx</strong>” folder, run this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>make savedefconfig
+</code></pre></div>
+<p>This creates the file <strong>defconfig</strong> that contains the changed settings.</p>
+<p>Copy the <strong>defconfig</strong> file to the new <strong>config</strong> subfolder…</p>
+<div class="example-wrap"><pre class="language-bash"><code>mkdir boards/&lt;archname&gt;/&lt;chipname&gt;/&lt;boardname&gt;/config/&lt;mynewcustomconfig&gt;
 
-$ make savedefconfig
-
-$ mkdir boards/&lt;archname&gt;/&lt;chipname&gt;/&lt;boardname&gt;/config/mynewcustomconfig
-
-$ mv defconfig 
-boards/&lt;archname&gt;/&lt;chipname&gt;/&lt;boardname&gt;/config/mynewcustomconfig/
+mv defconfig 
+boards/&lt;archname&gt;/&lt;chipname&gt;/&lt;boardname&gt;/config/&lt;mynewcustomconfig&gt;/
 </code></pre></div>
 <p><a href="https://www.mail-archive.com/dev@nuttx.apache.org/msg09876.html">(Thanks to <strong>Alan C. Assis</strong> for the tip!)</a></p>
 </li>
