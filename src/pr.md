@@ -681,6 +681,52 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [(Source)](https://github.com/apache/nuttx/pull/9243#issuecomment-1542918859)
 
+1.  TODO: [Create a new defconfig](https://www.mail-archive.com/dev@nuttx.apache.org/msg09876.html)
+
+    ```text
+    After running "make savedefconfig" you can create a directory inside
+    your board config that will retain your config customization:
+
+    $ make savedefconfig
+
+    $ mkdir boards/<archname>/<chipname>/<boardname>/config/mynewcustomconfig
+
+    $ mv defconfig 
+    boards/<archname>/<chipname>/<boardname>/config/mynewcustomconfig/
+    ```
+
+    [(Thanks to Alan C. Assis for the tip!)](https://www.mail-archive.com/dev@nuttx.apache.org/msg09876.html)
+
+1.  TODO: UART Settings
+
+    ```text
+    CONFIG_UART3_BAUD=115200
+    CONFIG_UART3_BITS=8
+    CONFIG_UART3_PARITY=0
+    CONFIG_UART3_2STOP=0
+    ```
+
+    TODO
+
+    ```text
+    Configuration/Tool: pinephone/modem
+    Building NuttX...
+    Normalize pinephone/modem
+    69,72d68
+    < CONFIG_UART3_BAUD=115200
+    < CONFIG_UART3_BITS=8
+    < CONFIG_UART3_PARITY=0
+    < CONFIG_UART3_2STOP=0
+    Saving the new configuration file
+    HEAD detached at pull/9304/merge
+    Changes not staged for commit:
+    (use "git add <file>..." to update what will be committed)
+    (use "git restore <file>..." to discard changes in working directory)
+        modified:   boards/arm64/a64/pinephone/configs/modem/defconfig
+    ```
+
+    [(Source)](https://github.com/apache/nuttx/actions/runs/4997328093/jobs/8951602341)
+
 1.  Here's an excellent guide for the __Git Command Line__...
 
     [__"Flight rules for Git"__](https://github.com/k88hudson/git-flight-rules)
