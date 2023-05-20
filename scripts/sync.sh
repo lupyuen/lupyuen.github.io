@@ -60,7 +60,7 @@ function sync_folder() {
     cp articles/index.html .
     set -x  #  Echo all commands.
 
-    # Rewrite lupyuen.github.io to lupyuen.codeberg.page in rss.xml
+    # Rewrite lupyuen.github.io to lupyuen.codeberg.page in RSS Feed
     set +x  #  Disable Echo.
     cp rss.xml articles/rss.html
     generate_article rss

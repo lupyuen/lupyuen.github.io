@@ -681,18 +681,23 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [(Source)](https://github.com/apache/nuttx/pull/9243#issuecomment-1542918859)
 
-1.  TODO: [Create a new defconfig](https://www.mail-archive.com/dev@nuttx.apache.org/msg09876.html)
+1.  How do we create a new __defconfig__?
 
-    ```text
-    After running "make savedefconfig" you can create a directory inside
-    your board config that will retain your config customization:
+    In the "__nuttx/nuttx__" folder, run this...
 
-    $ make savedefconfig
+    ```bash
+    make savedefconfig
+    ```
 
-    $ mkdir boards/<archname>/<chipname>/<boardname>/config/mynewcustomconfig
+    This creates the file __defconfig__ that contains the changed settings.
 
-    $ mv defconfig 
-    boards/<archname>/<chipname>/<boardname>/config/mynewcustomconfig/
+    Copy the __defconfig__ file to the new __config__ subfolder...
+
+    ```bash
+    mkdir boards/<archname>/<chipname>/<boardname>/config/<mynewcustomconfig>
+
+    mv defconfig 
+    boards/<archname>/<chipname>/<boardname>/config/<mynewcustomconfig>/
     ```
 
     [(Thanks to __Alan C. Assis__ for the tip!)](https://www.mail-archive.com/dev@nuttx.apache.org/msg09876.html)
