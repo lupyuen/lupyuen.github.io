@@ -783,7 +783,9 @@ Our grand plan is to have __GitHub Actions__ trigger these tasks every day...
 
 1.  Do a complete __NuttX Build__ for PinePhone
 
-    [(Like this)](https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx)
+    [(See the __GitHub Actions Workflow__)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/build/.github/workflows/pinephone.yml)
+
+    [(As explained here)](https://github.com/lupyuen/pinephone-emulator/blob/main/nuttx)
 
 1.  Run the built NuttX Image with __Unicorn Emulator__
 
