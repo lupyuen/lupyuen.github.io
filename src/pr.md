@@ -701,7 +701,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [(Thanks to __Alan C. Assis__ for the tip!)](https://www.mail-archive.com/dev@nuttx.apache.org/msg09876.html)
 
-1.  TODO: UART Settings
+1.  Some Default Settings in __.config__ are missing from __defconfig__. Can we add them ourselves to __defconfig__?
+
+    Sorry it won't work. Suppose we copy these Default UART3 Settings from __.config__ to __defconfig__ (to hard-code the UART3 Baud Rate)...
 
     ```text
     CONFIG_UART3_BAUD=115200
@@ -710,7 +712,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     CONFIG_UART3_2STOP=0
     ```
 
-    TODO
+    The "Linux (Other)" Build will fail with this error...
 
     ```text
     Configuration/Tool: pinephone/modem
@@ -730,6 +732,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
     ```
 
     [(Source)](https://github.com/apache/nuttx/actions/runs/4997328093/jobs/8951602341)
+
+    Thus we can't copy any Default Settings in __.config__ to __defconfig__.
 
 1.  Here's an excellent guide for the __Git Command Line__...
 
