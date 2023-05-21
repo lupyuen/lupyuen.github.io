@@ -1,6 +1,8 @@
-![Wholemeal Sourdough with Bread Machine](https://lupyuen.github.io/images/sourdough.jpg)
-
 # Recipe for Wholemeal Sourdough with Bread Machine
+
+📝 _22 May 2023_
+
+![Wholemeal Sourdough with Bread Machine](https://lupyuen.github.io/images/sourdough.jpg)
 
 # Wholemeal Sourdough Starter
 
