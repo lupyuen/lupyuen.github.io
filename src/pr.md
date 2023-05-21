@@ -701,7 +701,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [(Thanks to __Alan C. Assis__ for the tip!)](https://www.mail-archive.com/dev@nuttx.apache.org/msg09876.html)
 
-1.  Some Default Settings in __.config__ are missing from __defconfig__. Can we add them ourselves to __defconfig__?
+1.  Some Default Settings in __.config__ are missing from __defconfig__. Can we copy them ourselves to __defconfig__?
 
     Sorry it won't work. Suppose we copy these Default UART3 Settings from __.config__ to __defconfig__ (to hard-code the UART3 Baud Rate)...
 
