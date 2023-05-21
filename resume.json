@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Recipe for Wholemeal Sourdough with Bread Machine",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-05-22",
+      "website": "https://lupyuen.github.io/articles/sourdough",
+      "summary": "Yep it's a Sourdough Recipe"
+    },
+    {
       "name": "Inside a Smartphone Accelerometer: PinePhone with NuttX RTOS",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-05-17",

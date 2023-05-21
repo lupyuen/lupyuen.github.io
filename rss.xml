@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Recipe for Wholemeal Sourdough with Bread Machine</title>
+            <link>https://lupyuen.github.io/articles/sourdough</link>
+            <description><![CDATA[Yep it's a Sourdough Recipe]]></description>
+            <guid>https://lupyuen.github.io/articles/sourdough</guid>
+            <pubDate>Mon, 22 May 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Inside a Smartphone Accelerometer: PinePhone with NuttX RTOS</title>
             <link>https://www.hackster.io/lupyuen/inside-a-smartphone-accelerometer-pinephone-with-nuttx-rtos-b92b58</link>
             <description><![CDATA[When we tilt our Smartphone from Portrait to Landscape... How does it know that we're tilting our phone? Watch what happens when we snoop the MPU-6050 Accelerometer Data from PinePhone with Apache NuttX RTOS]]></description>
