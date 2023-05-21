@@ -547,7 +547,7 @@ Finally it's time to submit our Pull Request!
 
     This might take a while (due to the time zones)... Grab a coffee and standby for fixes!
 
-    [(I bake sourdough while waiting)](https://gist.github.com/lupyuen/3272756eb8b93ebbcf23b92e13f3bfa9)
+    [(I bake sourdough while waiting)](https://lupyuen.github.io/articles/sourdough)
 
     If all goes Hunky Dory, our Pull Request will be __approved and merged!__ 🎉
 
