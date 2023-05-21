@@ -989,10 +989,16 @@ aarch64-none-elf-objdump \
 <div class="example-wrap"><pre class="language-text"><code>token &quot;@&quot; is not valid in preprocessor
 </code></pre></div>
 <p>Look for this file in the Arm64 Toolchain…</p>
-<div class="example-wrap"><pre class="language-text"><code>gcc-arm-none-eabi/arm-none-eabi/include/_newlib_version.h
+<div class="example-wrap"><pre class="language-text"><code>aarch64-none-elf/include/_newlib_version.h
 </code></pre></div>
-<p>And <a href="https://github.com/apache/nuttx/pull/7284/commits/518b0eb31cb66f25b590ae9a79ab16c319b96b94#diff-12291efd8a0ded1bc38bad733d99e4840ae5112b465c04287f91ba5169612c73"><strong>apply this patch</strong></a>.</p>
-<h2 id="output-files"><a href="#output-files">18.5 Output Files</a></h2>
+<p>And <a href="https://github.com/apache/nuttx/pull/7284/commits/518b0eb31cb66f25b590ae9a79ab16c319b96b94#diff-12291efd8a0ded1bc38bad733d99e4840ae5112b465c04287f91ba5169612c73"><strong>apply this patch</strong></a>, so that it looks like this…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Near the end of _newlib_version.h, insert this...
+#define _NEWLIB_VERSION &quot;4.2.0&quot;
+#define __NEWLIB__ 4
+#define __NEWLIB_MINOR__ 2
+
+#endif /* !_NEWLIB_VERSION_H__ */
+</code></pre></div><h2 id="output-files"><a href="#output-files">18.5 Output Files</a></h2>
 <p>The NuttX Output Files may be found here…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx/releases/tag/v11.0.0"><strong>Apache NuttX RTOS for PinePhone</strong></a></li>
