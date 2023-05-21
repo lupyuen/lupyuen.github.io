@@ -1069,10 +1069,19 @@ token "@" is not valid in preprocessor
 Look for this file in the Arm64 Toolchain...
 
 ```text
-gcc-arm-none-eabi/arm-none-eabi/include/_newlib_version.h
+aarch64-none-elf/include/_newlib_version.h
 ```
 
-And [__apply this patch__](https://github.com/apache/nuttx/pull/7284/commits/518b0eb31cb66f25b590ae9a79ab16c319b96b94#diff-12291efd8a0ded1bc38bad733d99e4840ae5112b465c04287f91ba5169612c73).
+And [__apply this patch__](https://github.com/apache/nuttx/pull/7284/commits/518b0eb31cb66f25b590ae9a79ab16c319b96b94#diff-12291efd8a0ded1bc38bad733d99e4840ae5112b465c04287f91ba5169612c73), so that it looks like this...
+
+```c
+// Near the end of _newlib_version.h, insert this...
+#define _NEWLIB_VERSION "4.2.0"
+#define __NEWLIB__ 4
+#define __NEWLIB_MINOR__ 2
+
+#endif /* !_NEWLIB_VERSION_H__ */
+```
 
 ## Output Files
 
