@@ -138,9 +138,15 @@ _Prune Wholemeal Sourdough with Currants_
 
 <hr>
 
-![Banana Wholemeal Sourdough with Cranberry. Needs 1 Whole Banana, 2 teaspoons Baking Powder, 3 teaspoons Instant Dry Yeast](https://lupyuen.github.io/images/sourdough11.jpg)
+![Banana Wholemeal Sourdough with Cranberry. Needs 1 Whole Banana, 2 teaspoons Baking Powder, 4 teaspoons Instant Dry Yeast](https://lupyuen.github.io/images/sourdough11.jpg)
 
-_Banana Wholemeal Sourdough with Cranberry. Needs 1 Whole Banana, 2 teaspoons Baking Powder, 3 teaspoons Instant Dry Yeast_
+_Banana Wholemeal Sourdough with Cranberry. Needs 1 Whole Banana, 2 teaspoons Baking Powder, 4 teaspoons Instant Dry Yeast_
+
+<hr>
+
+![Chocolate Raisin Wholemeal Sourdough. Needs 4 teaspoons Instant Dry Yeast](https://lupyuen.github.io/images/sourdough12.jpg)
+
+_Chocolate Raisin Wholemeal Sourdough. Needs 4 teaspoons Instant Dry Yeast_
 
 <hr>
 
