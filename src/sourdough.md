@@ -96,6 +96,10 @@ Just Before Baking: (1 hour 35 mins remaining)
 
 Adapted from [King Arthur Bread Machine Sourdough Recipe](https://www.kingarthurbaking.com/recipes/bread-machine-sourdough-bread-recipe) (Non-Wholemeal)
 
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[__lupyuen.github.io/src/sourdough.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/sourdough.md)
+
 <hr>
 
 ![Smooth Ball of Wholemeal Sourdough kneading in Bread Machine](https://lupyuen.github.io/images/sourdough3.jpg)
