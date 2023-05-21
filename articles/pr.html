@@ -687,13 +687,14 @@ mv defconfig boards/&lt;archname&gt;/&lt;chipname&gt;/&lt;boardname&gt;/config/&
 <p><a href="https://www.mail-archive.com/dev@nuttx.apache.org/msg09876.html">(Thanks to <strong>Alan C. Assis</strong> for the tip!)</a></p>
 </li>
 <li>
-<p>TODO: UART Settings</p>
+<p>Some Default Settings in <strong>.config</strong> are missing from <strong>defconfig</strong>. Can we add them ourselves to <strong>defconfig</strong>?</p>
+<p>Sorry it won’t work. Suppose we copy these Default UART3 Settings from <strong>.config</strong> to <strong>defconfig</strong> (to hard-code the UART3 Baud Rate)…</p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_UART3_BAUD=115200
 CONFIG_UART3_BITS=8
 CONFIG_UART3_PARITY=0
 CONFIG_UART3_2STOP=0
 </code></pre></div>
-<p>TODO</p>
+<p>The “Linux (Other)” Build will fail with this error…</p>
 <div class="example-wrap"><pre class="language-text"><code>Configuration/Tool: pinephone/modem
 Building NuttX...
 Normalize pinephone/modem
@@ -710,6 +711,7 @@ Changes not staged for commit:
     modified:   boards/arm64/a64/pinephone/configs/modem/defconfig
 </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/actions/runs/4997328093/jobs/8951602341">(Source)</a></p>
+<p>Thus we can’t copy any Default Settings in <strong>.config</strong> to <strong>defconfig</strong>.</p>
 </li>
 <li>
 <p>Here’s an excellent guide for the <strong>Git Command Line</strong>…</p>
