@@ -687,7 +687,7 @@ mv defconfig boards/&lt;archname&gt;/&lt;chipname&gt;/&lt;boardname&gt;/config/&
 <p><a href="https://www.mail-archive.com/dev@nuttx.apache.org/msg09876.html">(Thanks to <strong>Alan C. Assis</strong> for the tip!)</a></p>
 </li>
 <li>
-<p>Some Default Settings in <strong>.config</strong> are missing from <strong>defconfig</strong>. Can we add them ourselves to <strong>defconfig</strong>?</p>
+<p>Some Default Settings in <strong>.config</strong> are missing from <strong>defconfig</strong>. Can we copy them ourselves to <strong>defconfig</strong>?</p>
 <p>Sorry it won’t work. Suppose we copy these Default UART3 Settings from <strong>.config</strong> to <strong>defconfig</strong> (to hard-code the UART3 Baud Rate)…</p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_UART3_BAUD=115200
 CONFIG_UART3_BITS=8
