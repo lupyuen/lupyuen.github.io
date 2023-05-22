@@ -58,7 +58,7 @@ Add in this sequence to Bread Machine...
 
 -   2 teaspoon Instant Dry Yeast [(Redman)](https://www.redmanshop.com/shop-by-category/baking-ingredients/baking-aids/yeast/000000000000012294.html)
 
--   1/3 teaspoon Baking Soda / Sodium Bicarbonate (to neutralise the sourness and give extra poofiness). Too much Baking Soda will taste soapy!
+-   1/4 teaspoon Baking Soda / Sodium Bicarbonate (to neutralise the sourness and give extra poofiness). Too much Baking Soda will taste soapy!
 
     Separate the Yeast and Baking Soda from the Wet Ingredients. Pile on the Vital Wheat Gluten + Sugar + Salt, dig a little hole, place the Yeast and Baking Soda inside the hole.
 
