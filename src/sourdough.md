@@ -120,15 +120,21 @@ _Poking holes in (Cranberry) Wholemeal Sourdough to prevent overflow_
 
 <hr>
 
-![Raisin Wholemeal Sourdough](https://lupyuen.github.io/images/sourdough7.jpg)
-
-_Raisin Wholemeal Sourdough_
-
-<hr>
-
 ![Prune Wholemeal Sourdough](https://lupyuen.github.io/images/sourdough9.jpg)
 
 _Prune Wholemeal Sourdough_
+
+<hr>
+
+![Dark Chocolate Wholemeal Sourdough. Needs 4 teaspoons Instant Dry Yeast](https://lupyuen.github.io/images/sourdough15.jpg)
+
+_Dark Chocolate Wholemeal Sourdough. Needs 4 teaspoons Instant Dry Yeast_
+
+<hr>
+
+![Banana Wholemeal Sourdough with Cranberry. Needs 1 Whole Banana, 2 teaspoons Baking Powder, 4 teaspoons Instant Dry Yeast](https://lupyuen.github.io/images/sourdough11.jpg)
+
+_Banana Wholemeal Sourdough with Cranberry. Needs 1 Whole Banana, 2 teaspoons Baking Powder, 4 teaspoons Instant Dry Yeast_
 
 <hr>
 
@@ -138,9 +144,9 @@ _Prune Wholemeal Sourdough with Currants_
 
 <hr>
 
-![Banana Wholemeal Sourdough with Cranberry. Needs 1 Whole Banana, 2 teaspoons Baking Powder, 4 teaspoons Instant Dry Yeast](https://lupyuen.github.io/images/sourdough11.jpg)
+![Raisin Wholemeal Sourdough](https://lupyuen.github.io/images/sourdough7.jpg)
 
-_Banana Wholemeal Sourdough with Cranberry. Needs 1 Whole Banana, 2 teaspoons Baking Powder, 4 teaspoons Instant Dry Yeast_
+_Raisin Wholemeal Sourdough_
 
 <hr>
 
