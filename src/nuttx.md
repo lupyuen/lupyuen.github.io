@@ -950,9 +950,11 @@ First we install the build prerequisites...
     popd
     ```
 
+    [(Instructions for Alpine Linux)](https://gist.github.com/lupyuen/880caa0547378028243b8cc5cfdc50a8)
+
     [(Instructions for Arch Linux and Arm64 Development Machines)](https://gist.github.com/lupyuen/abca4d656ba0c93787e7705eec8707c8)
 
-    [(Instructions for Alpine Linux)](https://gist.github.com/lupyuen/880caa0547378028243b8cc5cfdc50a8)
+    [(Running an obsolete version of macOS? Try Rancher Desktop)](https://github.com/lupyuen/pinephone-lvgl-zig#zig-with-rancher-desktop)
 
 1.  __For BL602:__ Download the __RISC-V GCC Toolchain__ from BL602 IoT SDK...
 
