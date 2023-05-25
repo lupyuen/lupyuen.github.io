@@ -665,11 +665,16 @@ click arm64_head href &quot;https://github.com/apache/nuttx/blob/master/arch/arm
 </ul>
 <p>And the <strong>NSH Command Prompt</strong> appears. We’ve just completed the entire Boot Sequence for NuttX on PinePhone!</p>
 <p>(Hopefully we’ll generate the complete Call Graph someday!)</p>
+<p><em>How does nx_bringup start the NSH Shell?</em></p>
+<p>Check out the details here…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/unicorn2#appendix-start-nsh-shell"><strong>“Start NSH Shell”</strong></a></li>
+</ul>
 <h2 id="pinephone-drivers"><a href="#pinephone-drivers">7.3 PinePhone Drivers</a></h2>
 <p><em>But wait… Who starts the other PinePhone Drivers?</em></p>
 <p><em>Like the drivers for LCD Display, Touch Panel, Accelerometer, …</em></p>
 <p>Ah this sounds surprising, but the other PinePhone Drivers are started by <strong>NSH Shell</strong>!</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/nshlib/nsh_init.c#L140-L166"><strong>nsh_initialize</strong></a> does this…</p>
+<p><a href="https://github.com/apache/nuttx-apps/blob/dd2c3b3f6aff797241fe0f02e02cb1fa082dcdbb/nshlib/nsh_init.c#L143-L169"><strong>nsh_initialize</strong></a> does this…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Perform architecture-specific initialization (if configured)
 boardctl(BOARDIOC_INIT, 0);
 
@@ -804,7 +809,46 @@ boardctl(BOARDIOC_FINALINIT, 0);
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/unicorn2.md"><strong>lupyuen.github.io/src/unicorn2.md</strong></a></p>
 <h1 id="appendix-start-nsh-shell"><a href="#appendix-start-nsh-shell">11 Appendix: Start NSH Shell</a></h1>
 <p><em>How does NuttX start the NSH Shell?</em></p>
-<p>TODO</p>
+<p>Earlier we stepped through the <strong>Boot Sequence</strong> for NuttX…</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/unicorn2#pinephone-boots-nuttx"><strong>“PinePhone Boots NuttX”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/unicorn2#pinephone-continues-booting-nuttx"><strong>“PinePhone Continues Booting NuttX”</strong></a></p>
+</li>
+</ul>
+<p>Right after that, <a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_bringup.c#L373-L458"><strong>nx_bringup</strong></a> calls…</p>
+<ul>
+<li>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_bringup.c#L330-L367"><strong>nx_create_initthread</strong></a>, which calls…</p>
+</li>
+<li>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_bringup.c#L212C1-L302"><strong>nx_start_application</strong></a>, which starts a <strong>NuttX Task</strong> for…</p>
+</li>
+<li>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_bringup.c#L264-L273"><strong>CONFIG_INIT_ENTRYNAME</strong></a></p>
+</li>
+</ul>
+<p><em>What’s CONFIG_INIT_ENTRYNAME?</em></p>
+<p><a href="https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_bringup.c#L264-L273"><strong>CONFIG_INIT_ENTRYNAME</strong></a> defines the Application Function that will be called at NuttX Startup.</p>
+<p><em>How to configure CONFIG_INIT_ENTRYNAME?</em></p>
+<p>In “<strong>make menuconfig</strong> &gt; <strong>RTOS Features</strong> &gt; <strong>Tasks and Scheduling</strong>”…</p>
+<p>We normally set <strong>“Application Entry Name”</strong> to <strong><code>nsh_main</code></strong></p>
+<p>Which configures <strong>CONFIG_INIT_ENTRYNAME</strong> as…</p>
+<div class="example-wrap"><pre class="language-text"><code>CONFIG_INIT_ENTRYNAME=&quot;nsh_main&quot;
+</code></pre></div>
+<p><a href="https://github.com/apache/nuttx-apps/blob/dd2c3b3f6aff797241fe0f02e02cb1fa082dcdbb/system/nsh/nsh_main.c#L41-L85"><strong>nsh_main</strong></a> is the function that runs the NSH Shell.</p>
+<p>Eventually <a href="https://github.com/apache/nuttx-apps/blob/dd2c3b3f6aff797241fe0f02e02cb1fa082dcdbb/system/nsh/nsh_main.c#L41-L85"><strong>nsh_main</strong></a> will initialise the PinePhone Drivers…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/unicorn2#pinephone-drivers"><strong>“PinePhone Drivers”</strong></a></li>
+</ul>
+<p><em>Can we configure NuttX to start another app?</em></p>
+<p>Yep we may set <strong>CONFIG_INIT_ENTRYNAME</strong> to another function like…</p>
+<div class="example-wrap"><pre class="language-text"><code>CONFIG_INIT_ENTRYNAME=&quot;lvgldemo_main&quot;
+</code></pre></div>
+<p>NuttX will start our <a href="https://lupyuen.github.io/articles/lvgl2#boot-to-lvgl"><strong>LVGL Demo App</strong></a> when it boots.</p>
+<p>(<a href="https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L208-L220"><strong>lvgldemo_main</strong></a> will also initialise the <a href="https://lupyuen.github.io/articles/unicorn2#pinephone-drivers"><strong>PinePhone Drivers</strong></a>)</p>
 <p><img src="https://lupyuen.github.io/images/unicorn2-dwarf.png" alt="DWARF Debugging Format" /></p>
 <p><a href="https://dwarfstd.org/doc/Debugging%20using%20DWARF-2012.pdf"><em>DWARF Debugging Format</em></a></p>
 <h1 id="appendix-parse-dwarf-debug-symbols"><a href="#appendix-parse-dwarf-debug-symbols">12 Appendix: Parse DWARF Debug Symbols</a></h1>
