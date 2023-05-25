@@ -693,6 +693,12 @@ And the __NSH Command Prompt__ appears. We've just completed the entire Boot Seq
 
 (Hopefully we'll generate the complete Call Graph someday!)
 
+_How does nx_bringup start the NSH Shell?_
+
+Check out the details here...
+
+-   [__"Start NSH Shell"__](https://lupyuen.github.io/articles/unicorn2#appendix-start-nsh-shell)
+
 ## PinePhone Drivers
 
 _But wait... Who starts the other PinePhone Drivers?_
@@ -701,7 +707,7 @@ _Like the drivers for LCD Display, Touch Panel, Accelerometer, ..._
 
 Ah this sounds surprising, but the other PinePhone Drivers are started by __NSH Shell__!
 
-[__nsh_initialize__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/term2/nshlib/nsh_init.c#L140-L166) does this...
+[__nsh_initialize__](https://github.com/apache/nuttx-apps/blob/dd2c3b3f6aff797241fe0f02e02cb1fa082dcdbb/nshlib/nsh_init.c#L143-L169) does this...
 
 ```c
 // Perform architecture-specific initialization (if configured)
@@ -843,7 +849,53 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 _How does NuttX start the NSH Shell?_
 
-TODO
+Earlier we stepped through the __Boot Sequence__ for NuttX...
+
+- [__"PinePhone Boots NuttX"__](https://lupyuen.github.io/articles/unicorn2#pinephone-boots-nuttx)
+
+- [__"PinePhone Continues Booting NuttX"__](https://lupyuen.github.io/articles/unicorn2#pinephone-continues-booting-nuttx)
+
+Right after that, [__nx_bringup__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_bringup.c#L373-L458) calls...
+
+- [__nx_create_initthread__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_bringup.c#L330-L367), which calls...
+
+- [__nx_start_application__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_bringup.c#L212C1-L302), which starts a __NuttX Task__ for...
+
+- [__CONFIG_INIT_ENTRYNAME__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_bringup.c#L264-L273)
+
+_What's CONFIG_INIT_ENTRYNAME?_
+
+[__CONFIG_INIT_ENTRYNAME__](https://github.com/apache/nuttx/blob/0f20888a0ececc5dc7419d57a01ac508ac3ace5b/sched/init/nx_bringup.c#L264-L273) defines the Application Function that will be called at NuttX Startup.
+
+_How to configure CONFIG_INIT_ENTRYNAME?_
+
+In "__make menuconfig__ > __RTOS Features__ > __Tasks and Scheduling__"...
+
+We normally set __"Application Entry Name"__ to __`nsh_main`__
+
+Which configures __CONFIG_INIT_ENTRYNAME__ as...
+
+```text
+CONFIG_INIT_ENTRYNAME="nsh_main"
+```
+
+[__nsh_main__](https://github.com/apache/nuttx-apps/blob/dd2c3b3f6aff797241fe0f02e02cb1fa082dcdbb/system/nsh/nsh_main.c#L41-L85) is the function that runs the NSH Shell.
+
+Eventually [__nsh_main__](https://github.com/apache/nuttx-apps/blob/dd2c3b3f6aff797241fe0f02e02cb1fa082dcdbb/system/nsh/nsh_main.c#L41-L85) will initialise the PinePhone Drivers...
+
+- [__"PinePhone Drivers"__](https://lupyuen.github.io/articles/unicorn2#pinephone-drivers)
+
+_Can we configure NuttX to start another app?_
+
+Yep we may set __CONFIG_INIT_ENTRYNAME__ to another function like...
+
+```text
+CONFIG_INIT_ENTRYNAME="lvgldemo_main"
+```
+
+NuttX will start our [__LVGL Demo App__](https://lupyuen.github.io/articles/lvgl2#boot-to-lvgl) when it boots.
+
+([__lvgldemo_main__](https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L208-L220) will also initialise the [__PinePhone Drivers__](https://lupyuen.github.io/articles/unicorn2#pinephone-drivers))
 
 ![DWARF Debugging Format](https://lupyuen.github.io/images/unicorn2-dwarf.png)
 
