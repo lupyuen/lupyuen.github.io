@@ -839,6 +839,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/unicorn2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/unicorn2.md)
 
+# Appendix: Start NSH Shell
+
+_How does NuttX start the NSH Shell?_
+
+TODO
+
 ![DWARF Debugging Format](https://lupyuen.github.io/images/unicorn2-dwarf.png)
 
 [_DWARF Debugging Format_](https://dwarfstd.org/doc/Debugging%20using%20DWARF-2012.pdf)
