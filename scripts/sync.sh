@@ -16,6 +16,8 @@ function generate_article() {
         | sed 's/lupyuen.github.io\/articles/lupyuen.codeberg.page\/articles/g' \
         | sed 's/lupyuen.github.io\/images/lupyuen.codeberg.page\/images/g' \
         | sed 's/lupyuen.github.io\/rss/lupyuen.codeberg.page\/rss/g' \
+        | sed 's/lupyuen.github.io\/sitemap/lupyuen.codeberg.page\/sitemap/g' \
+        | sed 's/lupyuen.github.io\/<\/loc>/lupyuen.codeberg.page\/<\/loc>/g' \
         | sed 's/github.com\/lupyuen\/lupyuen.github.io\/blob\/master\/images/codeberg.org\/lupyuen\/pages\/src\/branch\/main\/images/g' \
         >$html
     rm $tmp
@@ -65,6 +67,20 @@ function sync_folder() {
     cp rss.xml articles/rss.html
     generate_article rss
     mv articles/rss.html rss.xml
+    set -x  #  Echo all commands.
+
+    # Rewrite lupyuen.github.io to lupyuen.codeberg.page in robots.txt
+    set +x  #  Disable Echo.
+    cp robots.txt articles/robots.txt.html
+    generate_article robots.txt
+    mv articles/robots.txt.html robots.txt
+    set -x  #  Echo all commands.
+
+    # Rewrite lupyuen.github.io to lupyuen.codeberg.page in Sitemap
+    set +x  #  Disable Echo.
+    cp sitemap.xml articles/sitemap.xml.html
+    generate_article sitemap.xml
+    mv articles/sitemap.xml.html sitemap.xml
     set -x  #  Echo all commands.
 
     # Testing: Rewrite lupyuen.github.io to lupyuen.codeberg.page
