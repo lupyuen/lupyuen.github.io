@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>(Possibly) LVGL in WebAssembly with Zig Compiler</title>
+
+    
+    <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<meta property="og:title" 
+    content="(Possibly) LVGL in WebAssembly with Zig Compiler" 
+    data-rh="true">
+<meta property="og:description" 
+    content="Can we preview an LVGL App in the Web Browser... With WebAssembly and Zig Compiler? Let's find out!"
+    data-rh="true">
+<meta name="description" 
+    content="Can we preview an LVGL App in the Web Browser... With WebAssembly and Zig Compiler? Let's find out!">
+<meta property="og:image" 
+    content="https://lupyuen.github.io/images/lvgl3-title.png">
+<meta property="og:type" 
+    content="article" data-rh="true">
+<!-- End scripts/articles/*-header.html -->
+<!-- Begin scripts/rustdoc-header.html: Header for Custom Markdown files processed by rustdoc, like chip8.md -->
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for lupyuen" href="/rss.xml" />
+<link rel="stylesheet" type="text/css" href="../normalize.css">
+<link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+<link rel="stylesheet" type="text/css" href="../dark.css">
+<link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle">
+<link rel="stylesheet" type="text/css" href="../prism.css">
+<script src="../storage.js"></script><noscript>
+<link rel="stylesheet" href="../noscript.css"></noscript>
+<link rel="shortcut icon" href="../favicon.ico">
+<style type="text/css">
+    #crate-search {
+        background-image: url("../down-arrow.svg");
+    }
+    a {
+        color: #77d;
+    }
+</style>
+<!-- End scripts/rustdoc-header.html -->
+
+
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+        <!-- Begin scripts/rustdoc-before.html: Pre-HTML for Custom Markdown files processed by rustdoc, like chip8.md -->
+
+    <!-- Begin Theme Picker -->
+    <div class="theme-picker" style="left: 0"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg"
+        width="18" alt="Pick another theme!"></button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
+    <script src="../prism.js"></script>
+    <!-- Theme Picker -->
+
+    <!-- End scripts/rustdoc-before.html -->
+    
+
+    <h1 class="title">(Possibly) LVGL in WebAssembly with Zig Compiler</h1>
+    <nav id="TOC"><ul>
+<li><a href="#todo">1 TODO</a><ul></ul></li>
+<li><a href="#whats-next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Jun 2023</em></p>
+<p><img src="https://lupyuen.github.io/images/lvgl3-title.png" alt="LVGL in WebAssembly with Zig Compiler" /></p>
+<p><a href="https://docs.lvgl.io/master/index.html"><strong>LVGL</strong></a> is a popular <strong>Graphics Library</strong> for Microcontrollers. (In C)</p>
+<p><a href="https://ziglang.org/"><strong>Zig Compiler</strong></a> works great for compiling <strong>C Libraries into WebAssembly</strong>. (Based on Clang)</p>
+<p>Can we preview an <strong>LVGL App in the Web Browser</strong>… With WebAssembly and Zig Compiler? Let’s find out!</p>
+<p><em>Why are we doing this?</em></p>
+<p>Right now we’re creating a <a href="https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone"><strong>Feature Phone UI</strong></a> (in Zig) for <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) on <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>.</p>
+<p>Would be awesome if we could prototype the Feature Phone UI in our Web Browser… To make the <strong>UI Coding a little easier</strong>!</p>
+<p><em>Doesn’t LVGL support WebAssembly already?</em></p>
+<p>Today LVGL runs in a Web Browser by compiling with <a href="https://github.com/lvgl/lv_web_emscripten"><strong>Emscripten and SDL</strong></a>.</p>
+<p>Maybe we can do better with newer tools like <strong>Zig Compiler</strong>? In this article we’ll…</p>
+<ul>
+<li>
+<p>Compile <strong>LVGL Library from C to WebAssembly</strong> (with Zig Compiler)</p>
+</li>
+<li>
+<p>Test it with an <strong>LVGL App</strong> (in Zig)</p>
+</li>
+<li>
+<p>How we made it work for rendering <strong>Simple UIs</strong></p>
+</li>
+<li>
+<p>What’s next for rendering <strong>UI Controls</strong></p>
+</li>
+</ul>
+<h1 id="todo"><a href="#todo">1 TODO</a></h1>
+<p><img src="https://lupyuen.github.io/images/lvgl3-wasm.png" alt="Mandelbrot Set rendered with Zig and WebAssembly" /></p>
+<p><img src="https://lupyuen.github.io/images/lvgl3-wasm2.png" alt="WebAssembly Logger for LVGL" /></p>
+<h1 id="whats-next"><a href="#whats-next">2 What’s Next</a></h1>
+<p>TODO</p>
+<p>Meanwhile please check out the other articles on NuttX for PinePhone…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>“Apache NuttX RTOS for PinePhone”</strong></a></li>
+</ul>
+<p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
+<ul>
+<li>
+<p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>My Current Project: “Apache NuttX RTOS for PinePhone”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/book"><strong>My Other Project: “The RISC-V BL602 Book”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/sourdough"><strong>My Sourdough Recipe</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io"><strong>Check out my articles</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/rss.xml"><strong>RSS Feed</strong></a></p>
+</li>
+</ul>
+<p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl3.md"><strong>lupyuen.github.io/src/lvgl3.md</strong></a></p>
+
+    
+</body>
+</html>
