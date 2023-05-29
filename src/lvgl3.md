@@ -26,13 +26,15 @@ Maybe we can do better with newer tools like __Zig Compiler__? In this article w
 
 -   Test it with an __LVGL App__ (in Zig)
 
--   How we made it work for rendering __Simple UIs__
+-   How it works for rendering __Simple UIs__
 
 -   What's next for rendering __UI Controls__
 
 # TODO
 
 ![Mandelbrot Set rendered with Zig and WebAssembly](https://lupyuen.github.io/images/lvgl3-wasm.png)
+
+![Zig LVGL App in Zig on PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/lvgl2-zig.jpg)
 
 ![WebAssembly Logger for LVGL](https://lupyuen.github.io/images/lvgl3-wasm2.png)
 
