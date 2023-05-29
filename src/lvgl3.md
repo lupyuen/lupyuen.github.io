@@ -746,9 +746,9 @@ _What's an Opaque Type in Zig?_
 
 When we __import a C Struct__ into Zig and it contains __Bit Fields__...
 
-Zig won't let us __access the fields__ of the C Struct. (And we can't allocate the C Struct either)
+Zig Compiler won't let us __access the fields__ of the C Struct. And we can't allocate the C Struct either.
 
-__lv_disp_drv_t__ contains Bit Fields, hence it's Opaque and inaccessible in Zig. [(See this)](https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types)
+__lv_disp_drv_t__ contains Bit Fields, hence it's an Opaque Type and inaccessible in Zig. [(See this)](https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types)
 
 _Bummer. How to fix Opaque Types in Zig?_
 
