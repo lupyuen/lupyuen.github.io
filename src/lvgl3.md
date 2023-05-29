@@ -765,7 +765,8 @@ Finally with the workaround, here's how we __initialise the LVGL Display__ in Zi
 pub export fn lv_demo_widgets() void {
 
   // Create the Memory Allocator for malloc
-  memory_allocator = std.heap.FixedBufferAllocator.init(&memory_buffer);
+  memory_allocator = std.heap.FixedBufferAllocator
+    .init(&memory_buffer);
 
   // Set the Custom Logger for LVGL
   c.lv_log_register_print_cb(custom_logger);
@@ -1028,73 +1029,18 @@ _strlen is missing from our Zig WebAssembly..._
 
 _But strlen should come from the C Standard Library! (musl)_
 
-Not sure why `strlen` is missing, but we fixed it temporarily by copying from the Zig Library Source Code: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/e99593df6b46ced52f3f8ed644b9c6e455a9d682/lvglwasm.zig#L213-L265)
+Not sure why `strlen` is missing, but we fixed it temporarily by copying from the Zig Library Source Code: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L280-L336)
 
 ```zig
-///////////////////////////////////////////////////////////////////////////////
-//  C Standard Library
-//  From zig-macos-x86_64-0.10.0-dev.2351+b64a1d5ab/lib/zig/c.zig
-
-export fn memset(dest: ?[*]u8, c2: u8, len: usize) callconv(.C) ?[*]u8 {
-    @setRuntimeSafety(false);
-
-    if (len != 0) {
-        var d = dest.?;
-        var n = len;
-        while (true) {
-            d.* = c2;
-            n -= 1;
-            if (n == 0) break;
-            d += 1;
-        }
-    }
-
-    return dest;
-}
-
-export fn memcpy(noalias dest: ?[*]u8, noalias src: ?[*]const u8, len: usize) callconv(.C) ?[*]u8 {
-    @setRuntimeSafety(false);
-
-    if (len != 0) {
-        var d = dest.?;
-        var s = src.?;
-        var n = len;
-        while (true) {
-            d[0] = s[0];
-            n -= 1;
-            if (n == 0) break;
-            d += 1;
-            s += 1;
-        }
-    }
-
-    return dest;
-}
-
-export fn strcpy(dest: [*:0]u8, src: [*:0]const u8) callconv(.C) [*:0]u8 {
-    var i: usize = 0;
-    while (src[i] != 0) : (i += 1) {
-        dest[i] = src[i];
-    }
-    dest[i] = 0;
-
-    return dest;
-}
-
+// C Standard Library from zig-macos-x86_64-0.10.0-dev.2351+b64a1d5ab/lib/zig/c.zig
 export fn strlen(s: [*:0]const u8) callconv(.C) usize {
-    return std.mem.len(s);
+  return std.mem.len(s);
 }
+
+// Also memset, memcpy and strcpy...
 ```
 
-This seems to be the [same problem mentioned here](https://github.com/andrewrk/lua-in-the-browser#status).
-
-[(Referenced by this pull request)](https://github.com/ziglang/zig/pull/2512)
-
-[(And this issue)](https://github.com/ziglang/zig/issues/5854)
-
 TODO: Maybe because we didn't export `strlen` in our Main Program `lvglwasm.zig`?
-
-TODO: Do we compile C Standard Library ourselves? From musl? Newlib? [wasi-libc](https://github.com/WebAssembly/wasi-libc)?
 
 _What if we change the target to `wasm32-freestanding-musl`?_
 
@@ -1131,16 +1077,16 @@ before lv_init
 [Error]	block_next: Asserted at expression: !block_is_last(block) 	(in lv_tlsf.c line #459)
 
 004a5b4a:0x29ab2 Uncaught (in promise) RuntimeError: unreachable
-    at std.builtin.default_panic (004a5b4a:0x29ab2)
-    at lv_assert_handler (004a5b4a:0x2ac6c)
-    at block_next (004a5b4a:0xd5b3)
-    at lv_tlsf_realloc (004a5b4a:0xe226)
-    at lv_mem_realloc (004a5b4a:0x20f1)
-    at lv_layout_register (004a5b4a:0x75d8)
-    at lv_flex_init (004a5b4a:0x16afe)
-    at lv_extra_init (004a5b4a:0x16ae5)
-    at lv_init (004a5b4a:0x3f28)
-    at lv_demo_widgets (004a5b4a:0x29bb9)
+  at std.builtin.default_panic (004a5b4a:0x29ab2)
+  at lv_assert_handler (004a5b4a:0x2ac6c)
+  at block_next (004a5b4a:0xd5b3)
+  at lv_tlsf_realloc (004a5b4a:0xe226)
+  at lv_mem_realloc (004a5b4a:0x20f1)
+  at lv_layout_register (004a5b4a:0x75d8)
+  at lv_flex_init (004a5b4a:0x16afe)
+  at lv_extra_init (004a5b4a:0x16ae5)
+  at lv_init (004a5b4a:0x3f28)
+  at lv_demo_widgets (004a5b4a:0x29bb9)
 ```
 
 Thus we set `-DLV_MEM_CUSTOM=1` to use `malloc` instead of LVGL's TLSF Allocator.
@@ -1149,64 +1095,57 @@ Thus we set `-DLV_MEM_CUSTOM=1` to use `malloc` instead of LVGL's TLSF Allocator
 
 _But Zig doesn't support `malloc` for WebAssembly!_
 
-We used Zig's FixedBufferAllocator: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/43fa982d38a7ae8f931c171a80b006a9faa95b58/lvglwasm.zig#L38-L44)
+We used Zig's FixedBufferAllocator: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L38-L44)
 
 ```zig
-/// We render an LVGL Screen with LVGL Widgets
+/// Main Function for our Zig LVGL App
 pub export fn lv_demo_widgets() void {
-    debug("lv_demo_widgets: start", .{});
-    defer debug("lv_demo_widgets: end", .{});
 
-    // Create the Memory Allocator for malloc
-    memory_allocator = std.heap.FixedBufferAllocator.init(&memory_buffer);
+  // Create the Memory Allocator for malloc
+  memory_allocator = std.heap.FixedBufferAllocator
+    .init(&memory_buffer);
 ```
 
-To implement `malloc` ourselves: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/43fa982d38a7ae8f931c171a80b006a9faa95b58/lvglwasm.zig#L195-L237)
+To implement `malloc` ourselves: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L201-L244)
 
 ```zig
-///////////////////////////////////////////////////////////////////////////////
-//  Memory Allocator for malloc
-
 /// Zig replacement for malloc
 export fn malloc(size: usize) ?*anyopaque {
-    // TODO: Save the slice length
-    const mem = memory_allocator.allocator().alloc(u8, size) catch {
-        @panic("*** malloc error: out of memory");
-    };
-    return mem.ptr;
+  // TODO: Save the slice length
+  const mem = memory_allocator.allocator().alloc(u8, size) catch {
+    @panic("*** malloc error: out of memory");
+  };
+  return mem.ptr;
 }
 
 /// Zig replacement for realloc
 export fn realloc(old_mem: [*c]u8, size: usize) ?*anyopaque {
-    // TODO: Call realloc instead
-    // const mem = memory_allocator.allocator().realloc(old_mem[0..???], size) catch {
-    //     @panic("*** realloc error: out of memory");
-    // };
-    const mem = memory_allocator.allocator().alloc(u8, size) catch {
-        @panic("*** realloc error: out of memory");
-    };
-    _ = memcpy(mem.ptr, old_mem, size);
-    if (old_mem != null) {
-        // TODO: How to free without the slice length?
-        // memory_allocator.allocator().free(old_mem[0..???]);
-    }
-    return mem.ptr;
+  // TODO: Call realloc instead
+  const mem = memory_allocator.allocator().alloc(u8, size) catch {
+    @panic("*** realloc error: out of memory");
+  };
+  _ = memcpy(mem.ptr, old_mem, size);
+  if (old_mem != null) {
+    // TODO: How to free without the slice length?
+    // memory_allocator.allocator().free(old_mem[0..???]);
+  }
+  return mem.ptr;
 }
 
 /// Zig replacement for free
 export fn free(mem: [*c]u8) void {
-    if (mem == null) {
-        @panic("*** free error: pointer is null");
-    }
-    // TODO: How to free without the slice length?
-    // memory_allocator.allocator().free(mem[0..???]);
+  if (mem == null) {
+    @panic("*** free error: pointer is null");
+  }
+  // TODO: How to free without the slice length?
+  // memory_allocator.allocator().free(mem[0..???]);
 }
 
 /// Memory Allocator for malloc
 var memory_allocator: std.heap.FixedBufferAllocator = undefined;
 
 /// Memory Buffer for malloc
-var memory_buffer: [1024 * 1024]u8 = undefined;
+var memory_buffer = std.mem.zeroes([1024 * 1024]u8);
 ```
 
 [(Remember to copy the old memory in `realloc`!)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/aade32dd70286866676b2d9728970c6b3cca9489/README.md#todo)
@@ -1235,23 +1174,13 @@ Remember to compile the LVGL Fonts! Or nothing will be rendered...
     lv_font_montserrat_20.o \
 ```
 
-[(Source)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/2e1c97e49e51b1cbbe0964a9512eba141d0dd09f/build.sh#L21-L191)
+[(Source)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L21-L191)
 
 # Appendix: LVGL Screen Not Found
 
 TODO
 
 _Why does LVGL say "no screen found" in [lv_obj_get_disp](https://github.com/lvgl/lvgl/blob/v8.3.3/src/core/lv_obj_tree.c#L270-L289)?_
-
-That's because the Display Linked List `_lv_disp_ll` is allocated by `LV_ITERATE_ROOTS` in [_lv_gc_clear_roots](https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42)...
-
-And we forgot to compile [_lv_gc_clear_roots](https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42) in [lv_gc.c](https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42). Duh!
-
-(Zig Compiler assumes that missing variables like `_lv_disp_ll` are at WebAssembly Address 0)
-
-After compiling [_lv_gc_clear_roots](https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42) and [lv_gc.c](https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42), the "no screen found" error below no longer appears.
-
-TODO: Disassemble the Compiled WebAssembly and look for other Undefined Variables at WebAssembly Address 0
 
 ```text
 [Info]	lv_init: begin 	(in lv_obj.c line #102)
@@ -1264,3 +1193,13 @@ before lv_disp_drv_register
 ```
 
 [(See the Complete Log)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/9610bb5209a072fc5950cf0559b1274d53dd8b8b/README.md#lvgl-screen-not-found)
+
+That's because the Display Linked List `_lv_disp_ll` is allocated by `LV_ITERATE_ROOTS` in [_lv_gc_clear_roots](https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42)...
+
+And we forgot to compile [_lv_gc_clear_roots](https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42) in [lv_gc.c](https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42). Duh!
+
+(Zig Compiler assumes that missing variables like `_lv_disp_ll` are at WebAssembly Address 0)
+
+After compiling [_lv_gc_clear_roots](https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42) and [lv_gc.c](https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42), the "no screen found" error below no longer appears.
+
+TODO: Disassemble the Compiled WebAssembly and look for other Undefined Variables at WebAssembly Address 0
