@@ -753,7 +753,7 @@ pub export fn lv_demo_widgets() void {
 
   // Handle LVGL Tasks
   // TODO: Call this from Web Browser JavaScript,
-  // so that Web Browser won&#39;t block
+  // so that our Web Browser won&#39;t block
   var i: usize = 0;
   while (i &lt; 5) : (i += 1) {
     _ = c.lv_timer_handler();
@@ -762,7 +762,7 @@ pub export fn lv_demo_widgets() void {
 <p>We’re ready to render the LVGL Display in our HTML Page!</p>
 <p><em>Something doesn’t look right…</em></p>
 <p>Yeah we should have called <strong>lv_timer_handler</strong> from our JavaScript.</p>
-<p>(Triggered by a JavaScript Timer or <strong>requestAnimationFrame</strong>)</p>
+<p>(Triggered by a JavaScript Timer or <a href="https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame"><strong>requestAnimationFrame</strong></a>)</p>
 <p>But for our quick demo, this will do. For now!</p>
 <p><img src="https://lupyuen.github.io/images/zig-wasm3.png" alt="Zig LVGL App rendered in Web Browser with WebAssembly" /></p>
 <p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/lvglwasm.html"><em>Zig LVGL App rendered in Web Browser with WebAssembly</em></a></p>
