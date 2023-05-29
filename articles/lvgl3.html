@@ -850,6 +850,7 @@ render: function() {  // TODO: Add width and height
   context.putImageData(imageData, 0, 0);
 }
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.js#L69-L75">(<strong>imageData</strong> and <strong>context</strong> are defined here)</a></p>
 <p><em>But how does it fetch the LVGL Canvas Buffer?</em></p>
 <p>The JavaScript above calls <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L100-L104"><strong>getCanvasBuffer</strong></a> (in Zig) and <strong>get_canvas_buffer</strong> (in C) to fetch the LVGL Canvas Buffer: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L9-L29">display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Canvas Buffer for rendering LVGL Display
