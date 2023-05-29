@@ -870,9 +870,8 @@ lv_color_t *get_canvas_buffer(void) {
 <p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/lvglwasm.html">(Try the <strong>LVGL Demo</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/8c9f45401eb15ff68961bd53e237baa798cc8fb5/README.md#todo">(See the <strong>JavaScript Log</strong>)</a></p>
 <p>(Thanks to <a href="https://github.com/daneelsan/minimal-zig-wasm-canvas"><strong>daneelsan/minimal-zig-wasm-canvas</strong></a>)</p>
-<p>TODO: How to disassemble Compiled WebAssembly with cross-reference to Source Code? Like <code>objdump --source</code>? See <a href="https://github.com/WebAssembly/wabt">wabt</a> and <a href="https://github.com/WebAssembly/binaryen">binaryen</a></p>
 <h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
-<p>TODO: Feature Phone UI, sufficient to press the buttons</p>
+<p>TODO: Feature Phone UI, sufficient to press the buttons, implement Mouse Down/Up Events</p>
 <p>Meanwhile please check out the other articles on NuttX for PinePhone…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>“Apache NuttX RTOS for PinePhone”</strong></a></li>
@@ -1032,6 +1031,7 @@ before lv_disp_drv_register
 <p>(Zig Compiler assumes that Undefined Variables like _<strong>lv_disp_ll</strong> are at <strong>WebAssembly Address 0</strong>)</p>
 <p>After compiling <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42">_<strong>lv_gc_clear_roots</strong></a> and <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42"><strong>lv_gc.c</strong></a>, the “No Screen Found” error no longer appears.</p>
 <p>(Maybe we should disassemble the Compiled WebAssembly and look for other Undefined Variables at WebAssembly Address 0)</p>
+<p>TODO: How to disassemble Compiled WebAssembly with cross-reference to Source Code? Like <code>objdump --source</code>? See <a href="https://github.com/WebAssembly/wabt">wabt</a> and <a href="https://github.com/WebAssembly/binaryen">binaryen</a></p>
 
     
 </body>
