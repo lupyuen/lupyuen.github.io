@@ -799,50 +799,52 @@ pub export fn lv_demo_widgets() void {
     return;
   };
 
-  // Up Next: Handle LVGL Events
+  // Up Next: Handle LVGL Tasks
 ```
 
 [(__memory_allocator__ is explained here)](https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation)
 
-Now we handle LVGL Events...
+Now we handle LVGL Tasks...
 
-# Handle LVGL Events
+# Handle LVGL Tasks
 
-TODO: To handle LVGL Events, call `lv_tick_inc` and `lv_timer_handler`
+Earlier we talked about __handling LVGL Tasks__...
 
-1.  Call `lv_tick_inc(x)` every x milliseconds in an interrupt to report the elapsed time to LVGL
+1.  Call __lv_tick_inc(x)__ every __x__ milliseconds (in an Interrupt) to report the __Elapsed Time__ to LVGL
 
-    (Not required, because LVGL calls `millis` to fetch the elapsed time)
+    [(Not required, because LVGL calls __millis__ to fetch the Elapsed Time)](https://lupyuen.github.io/articles/lvgl3#lvgl-porting-layer-for-webassembly)
 
-1.  Call `lv_timer_handler()` every few milliseconds to handle LVGL related tasks
+1.  Call __lv_timer_handler__ every few milliseconds to handle __LVGL Tasks__
 
-[(Source)](https://docs.lvgl.io/8.3/porting/project.html#initialization)
+[(From the __LVGL Docs__)](https://docs.lvgl.io/8.3/porting/project.html#initialization)
 
-Like this: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/d584f43c6354f12bdc15bdb8632cdd3f6f5dc7ff/lvglwasm.zig#L65-L83)
+This is how we call __lv_timer_handler__ in Zig: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L69-L85)
 
 ```zig
-    // Register the Display Driver
-    const disp = c.lv_disp_drv_register(disp_drv);
-    _ = disp;
+/// Main Function for our Zig LVGL App
+pub export fn lv_demo_widgets() void {
 
-    // Create the widgets for display (with Zig Wrapper)
-    createWidgetsWrapped() catch |e| {
-        // In case of error, quit
-        std.log.err("createWidgetsWrapped failed: {}", .{e});
-        return;
-    };
+  // Omitted: Init LVGL Display
 
-    // Handle LVGL Events
-    // TODO: Call this from Web Browser JavaScript, so that Web Browser won't block
-    var i: usize = 0;
-    while (i < 5) : (i += 1) {
-        debug("lv_timer_handler: start", .{});
-        _ = c.lv_timer_handler();
-        debug("lv_timer_handler: end", .{});
-    }
+  // Create the widgets for display
+  createWidgetsWrapped() catch |e| {
+    // In case of error, quit
+    std.log.err("createWidgetsWrapped failed: {}", .{e});
+    return;
+  };
+
+  // Handle LVGL Tasks
+  // TODO: Call this from Web Browser JavaScript,
+  // so that Web Browser won't block
+  var i: usize = 0;
+  while (i < 5) : (i += 1) {
+    _ = c.lv_timer_handler();
+  }
 ```
 
 We're ready to render the LVGL Display!
+
+TODO
 
 ![Zig LVGL App rendered in Web Browser with WebAssembly](https://lupyuen.github.io/images/zig-wasm3.png)
 
