@@ -928,7 +928,7 @@ export fn flushDisplay(
   color_p: [*c]c.lv_color_t     // LVGL Display Buffer
 ) void {
 
-  // Call the Web Browser JavaScript o render the LVGL Canvas Buffer
+  // Call the Web Browser JavaScript to render the LVGL Canvas Buffer
   render();
 
   // Notify LVGL that the display is flushed.
@@ -939,7 +939,9 @@ export fn flushDisplay(
 
 __flushDisplay__ (in Zig) calls __render__ (in JavaScript) to render the LVGL Display Canvas.
 
-__render__ (in JavaScript) draws the LVGL Display to our HTML Canvas: [lvglwasm.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.js#L29-L53)
+_Phew OK. What happens in JavaScript?_
+
+__render__ (in JavaScript) draws the LVGL Canvas Buffer to our HTML Canvas: [lvglwasm.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.js#L29-L53)
 
 ```javascript
 // Export JavaScript Functions to Zig
@@ -965,7 +967,9 @@ const importObject = {
       context.putImageData(imageData, 0, 0);
 ```
 
-Which calls [__getCanvasBuffer__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L100-L104) (in Zig) and __get_canvas_buffer__ (in C) to fetch the LVGL Canvas Buffer: [display.c](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L9-L29)
+_But how does it fetch the LVGL Canvas Buffer?_
+
+The JavaScript above calls [__getCanvasBuffer__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L100-L104) (in Zig) and __get_canvas_buffer__ (in C) to fetch the LVGL Canvas Buffer: [display.c](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L9-L29)
 
 ```c
 // Canvas Buffer for rendering LVGL Display
