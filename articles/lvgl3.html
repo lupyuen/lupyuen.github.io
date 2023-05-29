@@ -67,11 +67,11 @@
 
     <h1 class="title">(Possibly) LVGL in WebAssembly with Zig Compiler</h1>
     <nav id="TOC"><ul>
-<li><a href="#lvgl-zig-app">1 LVGL Zig App</a><ul></ul></li>
-<li><a href="#build-lvgl-zig-app">2 Build LVGL Zig App</a><ul></ul></li>
-<li><a href="#simulate-pinephone-ui-with-zig-lvgl-and-webassembly">3 Simulate PinePhone UI with Zig, LVGL and WebAssembly</a><ul></ul></li>
-<li><a href="#webassembly-demo-with-zig-and-javascript">4 WebAssembly Demo with Zig and JavaScript</a><ul></ul></li>
-<li><a href="#import-javascript-functions-into-zig">5 Import JavaScript Functions into Zig</a><ul></ul></li>
+<li><a href="#webassembly-with-zig">1 WebAssembly with Zig</a><ul></ul></li>
+<li><a href="#import-javascript-functions-into-zig">2 Import JavaScript Functions into Zig</a><ul></ul></li>
+<li><a href="#lvgl-zig-app">3 LVGL Zig App</a><ul></ul></li>
+<li><a href="#build-lvgl-zig-app">4 Build LVGL Zig App</a><ul></ul></li>
+<li><a href="#simulate-pinephone-ui-with-zig-lvgl-and-webassembly">5 Simulate PinePhone UI with Zig, LVGL and WebAssembly</a><ul></ul></li>
 <li><a href="#compile-zig-lvgl-app-to-webassembly">6 Compile Zig LVGL App to WebAssembly</a><ul></ul></li>
 <li><a href="#fix-webassembly-imports">7 Fix WebAssembly Imports</a><ul></ul></li>
 <li><a href="#compile-lvgl-to-webassembly-with-zig-compiler">8 Compile LVGL to WebAssembly with Zig Compiler</a><ul></ul></li>
@@ -108,15 +108,94 @@
 <p>Test it with an <strong>LVGL App</strong> (in Zig)</p>
 </li>
 <li>
-<p>How it works for rendering <strong>Simple LVGL UIs</strong></p>
+<p>How it renders <strong>Simple LVGL UIs</strong> (in a Web Browser)</p>
 </li>
 <li>
 <p>What’s next for rendering <strong>LVGL UI Controls</strong></p>
 </li>
 </ul>
-<p>Soon we’ll have LVGL Apps that will run in a <strong>Web Browser and on PinePhone</strong>!</p>
+<p>Someday our LVGL Apps will run in a <strong>Web Browser and on PinePhone</strong>!</p>
 <p>(And many other LVGL Devices!)</p>
-<h1 id="lvgl-zig-app"><a href="#lvgl-zig-app">1 LVGL Zig App</a></h1>
+<h1 id="webassembly-with-zig"><a href="#webassembly-with-zig">1 WebAssembly with Zig</a></h1>
+<p><em>Why Zig? How does it work with WebAssembly?</em></p>
+<p>TODO</p>
+<p>We can run <strong>Zig (WebAssembly) + JavaScript</strong> in a Web Browser like so…</p>
+<ul>
+<li><a href="https://dev.to/sleibrock/webassembly-with-zig-pt-ii-ei7">WebAssembly With Zig in a Web Browser</a></li>
+</ul>
+<p>Let’s run a simple demo…</p>
+<ul>
+<li>
+<p><a href="demo/mandelbrot.zig">demo/mandelbrot.zig</a>: Zig Program that compiles to WebAssembly</p>
+</li>
+<li>
+<p><a href="demo/game.js">demo/game.js</a>: JavaScript that loads the Zig WebAssembly</p>
+</li>
+<li>
+<p><a href="demo/demo.html">demo/demo.html</a>: HTML that calls the JavaScript</p>
+</li>
+</ul>
+<p>To compile Zig to WebAssembly…</p>
+<div class="example-wrap"><pre class="language-bash"><code>git clone --recursive https://github.com/lupyuen/pinephone-lvgl-zig
+cd pinephone-lvgl-zig
+cd demo
+zig build-lib \
+  mandelbrot.zig \
+  -target wasm32-freestanding \
+  -dynamic \
+  -rdynamic
+</code></pre></div>
+<p><a href="https://ziglang.org/documentation/master/#Freestanding">(According to this)</a></p>
+<p>This produces the Compiled WebAssembly <a href="mandelbrot.wasm"><code>mandelbrot.wasm</code></a>.</p>
+<p>Start a Local Web Server. <a href="https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb">(Like Web Server for Chrome)</a></p>
+<p>Browse to <code>demo/demo.html</code>. We should see the Mandelbrot Set yay!</p>
+<p><img src="https://lupyuen.github.io/images/lvgl3-wasm.png" alt="Mandelbrot Set rendered with Zig and WebAssembly" /></p>
+<h1 id="import-javascript-functions-into-zig"><a href="#import-javascript-functions-into-zig">2 Import JavaScript Functions into Zig</a></h1>
+<p>TODO</p>
+<p><em>How do we import JavaScript Functions into our Zig Program?</em></p>
+<p>This is documented here…</p>
+<ul>
+<li><a href="https://ziglang.org/documentation/master/#WebAssembly">WebAssembly on Zig</a></li>
+</ul>
+<p>In our Zig Program, this is how we import and call a JavaScript Function: <a href="demo/mandelbrot.zig">demo/mandelbrot.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Import `print` Function from JavaScript
+extern fn print(i32) void;
+...
+// Test printing to JavaScript Console.
+// Warning: This is slow!
+if (iterations == 1) { print(iterations); }
+</code></pre></div>
+<p>We define the JavaScript Function <code>print</code> when loading the WebAssembly Module in our JavaScript: <a href="demo/game.js">demo/game.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Export JavaScript Functions to Zig
+let importObject = {
+    // JavaScript Environment exported to Zig
+    env: {
+        // JavaScript Print Function exported to Zig
+        print: function(x) { console.log(x); }
+    }
+};
+
+// Load the WebAssembly Module
+// https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/instantiateStreaming
+async function bootstrap() {
+
+    // Store references to WebAssembly Functions and Memory exported by Zig
+    Game = await WebAssembly.instantiateStreaming(
+        fetch(&quot;mandelbrot.wasm&quot;),
+        importObject
+    );
+
+    // Start the Main Function
+    main();
+}
+
+// Start the loading of WebAssembly Module
+bootstrap();
+</code></pre></div>
+<p><em>Will this work for passing Strings and Buffers as parameters?</em></p>
+<p>Nope, the parameter will be passed as a number. (Probably a WebAssembly Data Address)</p>
+<p>To pass Strings and Buffers between JavaScript and Zig, see <a href="https://github.com/daneelsan/zig-wasm-logger">daneelsan/zig-wasm-logger</a>.</p>
+<h1 id="lvgl-zig-app"><a href="#lvgl-zig-app">3 LVGL Zig App</a></h1>
 <p>TODO</p>
 <p>Let’s run this LVGL Zig App on PinePhone: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/c7a33f1fe3af4babaa8bc5502ca2b719ae95c2ca/lvgltest.zig#L55-L89">lvgltest.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Create the LVGL Widgets that will be rendered on the display. Calls the
@@ -177,7 +256,7 @@ pub export fn lv_demo_widgets() void {
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/c7a33f1fe3af4babaa8bc5502ca2b719ae95c2ca/lvgltest.zig#L91-L126">lvgltest.zig</a></li>
 </ul>
-<h1 id="build-lvgl-zig-app"><a href="#build-lvgl-zig-app">2 Build LVGL Zig App</a></h1>
+<h1 id="build-lvgl-zig-app"><a href="#build-lvgl-zig-app">4 Build LVGL Zig App</a></h1>
 <p>TODO</p>
 <p>NuttX Build runs this GCC Command to compile <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L96-L198">lv_demo_widgets.c</a> for PinePhone…</p>
 <div class="example-wrap"><pre class="language-bash"><code>$ make --trace
@@ -293,7 +372,7 @@ make -j
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/2e1c97e49e51b1cbbe0964a9512eba141d0dd09f/build.sh#L192-L223">(Updated Build Script)</a></p>
 <p>And our LVGL Zig App runs OK on PinePhone!</p>
 <p><img src="https://lupyuen.github.io/images/lvgl2-zig.jpg" alt="Zig LVGL App in Zig on PinePhone with Apache NuttX RTOS" /></p>
-<h1 id="simulate-pinephone-ui-with-zig-lvgl-and-webassembly"><a href="#simulate-pinephone-ui-with-zig-lvgl-and-webassembly">3 Simulate PinePhone UI with Zig, LVGL and WebAssembly</a></h1>
+<h1 id="simulate-pinephone-ui-with-zig-lvgl-and-webassembly"><a href="#simulate-pinephone-ui-with-zig-lvgl-and-webassembly">5 Simulate PinePhone UI with Zig, LVGL and WebAssembly</a></h1>
 <p>TODO</p>
 <p>We’re now building a <strong>Feature Phone UI</strong> for NuttX on PinePhone…</p>
 <p>Can we simulate the Feature Phone UI with <strong>Zig, LVGL and WebAssembly</strong> in a Web Browser? To make the UI Coding a little easier?</p>
@@ -322,84 +401,6 @@ make -j
 <p>Use Zig to connect the JavaScript UI (canvas rendering + input events) to LVGL WebAssembly <a href="https://dev.to/sleibrock/webassembly-with-zig-pt-ii-ei7">(Like this)</a></p>
 </li>
 </ol>
-<h1 id="webassembly-demo-with-zig-and-javascript"><a href="#webassembly-demo-with-zig-and-javascript">4 WebAssembly Demo with Zig and JavaScript</a></h1>
-<p>TODO</p>
-<p>We can run <strong>Zig (WebAssembly) + JavaScript</strong> in a Web Browser like so…</p>
-<ul>
-<li><a href="https://dev.to/sleibrock/webassembly-with-zig-pt-ii-ei7">WebAssembly With Zig in a Web Browser</a></li>
-</ul>
-<p>Let’s run a simple demo…</p>
-<ul>
-<li>
-<p><a href="demo/mandelbrot.zig">demo/mandelbrot.zig</a>: Zig Program that compiles to WebAssembly</p>
-</li>
-<li>
-<p><a href="demo/game.js">demo/game.js</a>: JavaScript that loads the Zig WebAssembly</p>
-</li>
-<li>
-<p><a href="demo/demo.html">demo/demo.html</a>: HTML that calls the JavaScript</p>
-</li>
-</ul>
-<p>To compile Zig to WebAssembly…</p>
-<div class="example-wrap"><pre class="language-bash"><code>git clone --recursive https://github.com/lupyuen/pinephone-lvgl-zig
-cd pinephone-lvgl-zig
-cd demo
-zig build-lib \
-  mandelbrot.zig \
-  -target wasm32-freestanding \
-  -dynamic \
-  -rdynamic
-</code></pre></div>
-<p><a href="https://ziglang.org/documentation/master/#Freestanding">(According to this)</a></p>
-<p>This produces the Compiled WebAssembly <a href="mandelbrot.wasm"><code>mandelbrot.wasm</code></a>.</p>
-<p>Start a Local Web Server. <a href="https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb">(Like Web Server for Chrome)</a></p>
-<p>Browse to <code>demo/demo.html</code>. We should see the Mandelbrot Set yay!</p>
-<p><img src="https://lupyuen.github.io/images/lvgl3-wasm.png" alt="Mandelbrot Set rendered with Zig and WebAssembly" /></p>
-<h1 id="import-javascript-functions-into-zig"><a href="#import-javascript-functions-into-zig">5 Import JavaScript Functions into Zig</a></h1>
-<p>TODO</p>
-<p><em>How do we import JavaScript Functions into our Zig Program?</em></p>
-<p>This is documented here…</p>
-<ul>
-<li><a href="https://ziglang.org/documentation/master/#WebAssembly">WebAssembly on Zig</a></li>
-</ul>
-<p>In our Zig Program, this is how we import and call a JavaScript Function: <a href="demo/mandelbrot.zig">demo/mandelbrot.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Import `print` Function from JavaScript
-extern fn print(i32) void;
-...
-// Test printing to JavaScript Console.
-// Warning: This is slow!
-if (iterations == 1) { print(iterations); }
-</code></pre></div>
-<p>We define the JavaScript Function <code>print</code> when loading the WebAssembly Module in our JavaScript: <a href="demo/game.js">demo/game.js</a></p>
-<div class="example-wrap"><pre class="language-javascript"><code>// Export JavaScript Functions to Zig
-let importObject = {
-    // JavaScript Environment exported to Zig
-    env: {
-        // JavaScript Print Function exported to Zig
-        print: function(x) { console.log(x); }
-    }
-};
-
-// Load the WebAssembly Module
-// https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/instantiateStreaming
-async function bootstrap() {
-
-    // Store references to WebAssembly Functions and Memory exported by Zig
-    Game = await WebAssembly.instantiateStreaming(
-        fetch(&quot;mandelbrot.wasm&quot;),
-        importObject
-    );
-
-    // Start the Main Function
-    main();
-}
-
-// Start the loading of WebAssembly Module
-bootstrap();
-</code></pre></div>
-<p><em>Will this work for passing Strings and Buffers as parameters?</em></p>
-<p>Nope, the parameter will be passed as a number. (Probably a WebAssembly Data Address)</p>
-<p>To pass Strings and Buffers between JavaScript and Zig, see <a href="https://github.com/daneelsan/zig-wasm-logger">daneelsan/zig-wasm-logger</a>.</p>
 <h1 id="compile-zig-lvgl-app-to-webassembly"><a href="#compile-zig-lvgl-app-to-webassembly">6 Compile Zig LVGL App to WebAssembly</a></h1>
 <p>TODO</p>
 <p><em>Does our Zig LVGL App lvgltest.zig compile to WebAssembly?</em></p>
