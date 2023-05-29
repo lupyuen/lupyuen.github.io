@@ -26,9 +26,11 @@ Maybe we can do better with newer tools like __Zig Compiler__? In this article w
 
 -   Test it with an __LVGL App__ (in Zig)
 
--   How it works for rendering __Simple UIs__
+-   How it works for rendering __Simple LVGL UIs__
 
--   What's next for rendering __UI Controls__
+-   What's next for rendering __LVGL UI Controls__
+
+-   Soon we'll have LVGL Apps that will run in a __Web Browser and on PinePhone__!
 
 # LVGL Zig App
 
