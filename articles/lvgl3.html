@@ -507,25 +507,30 @@ zig build-lib \
   ...
 </code></pre></div>
 <p>Thus we’re done with LVGL Library in WebAssembly! (Almost)</p>
-<p><em>Now what happens when we run this?</em></p>
+<p><em>Now what happens when we run it?</em></p>
 <p>JavaScript Console says that <strong>strlen</strong> is missing…</p>
 <div class="example-wrap"><pre class="language-text"><code>Uncaught (in promise) LinkError: 
 WebAssembly.instantiate(): 
 Import #0 module=&quot;env&quot; function=&quot;strlen&quot; error: 
 function import requires a callable
 </code></pre></div>
-<p>TODO</p>
-<p>Let’s fix <code>strlen</code>…</p>
-<p><em>Is it really OK to compile only the necessary LVGL Source Files? Instead of compiling ALL the LVGL Source Files?</em></p>
-<p>Be careful! We might miss out some symbols. Zig Compiler happily assumes that they are at WebAssembly Address 0…</p>
+<p>Which comes from the <strong>C Standard Library</strong>. Here’s the workaround…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/pinephone-lvgl-zig#lvgl-screen-not-found">“LVGL Screen Not Found”</a></li>
+<li><a href="https://lupyuen.github.io/articles/lvgl3#appendix-c-standard-library-is-missing"><strong>“C Standard Library is Missing”</strong></a></li>
 </ul>
-<p>And remember to compile the LVGL Fonts!</p>
+<p><em>Is it really OK to compile only the necessary LVGL Source Files?</em></p>
+<p><em>Instead of compiling ALL the LVGL Source Files?</em></p>
+<p>Be careful! We might miss out some <strong>Undefined Variables</strong>… Zig Compiler happily assumes they’re at <strong>WebAssembly Address 0</strong>. And remember to compile the <strong>LVGL Fonts</strong>!</p>
 <ul>
-<li><a href="https://github.com/lupyuen/pinephone-lvgl-zig#lvgl-fonts">“LVGL Fonts”</a></li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-screen-not-found"><strong>“LVGL Screen Not Found”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-fonts"><strong>“LVGL Fonts”</strong></a></p>
+</li>
 </ul>
-<p>TODO: Disassemble the Compiled WebAssembly and look for other Undefined Variables at WebAssembly Address 0</p>
+<p>Thus we really ought to compile ALL the LVGL Source Files.</p>
+<p>(Maybe we should disassemble the Compiled WebAssembly and look for other Undefined Variables at WebAssembly Address 0)</p>
 <h1 id="lvgl-porting-layer-for-webassembly"><a href="#lvgl-porting-layer-for-webassembly">7 LVGL Porting Layer for WebAssembly</a></h1>
 <p>TODO</p>
 <p>LVGL expects us to provide a <code>millis</code> function that returns the number of elapsed milliseconds…</p>
