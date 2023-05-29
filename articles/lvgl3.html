@@ -68,7 +68,7 @@
     <h1 class="title">(Possibly) LVGL in WebAssembly with Zig Compiler</h1>
     <nav id="TOC"><ul>
 <li><a href="#webassembly-with-zig">1 WebAssembly with Zig</a><ul></ul></li>
-<li><a href="#import-javascript-functions-into-zig">2 Import JavaScript Functions into Zig</a><ul></ul></li>
+<li><a href="#zig-calls-javascript">2 Zig Calls JavaScript</a><ul></ul></li>
 <li><a href="#lvgl-zig-app">3 LVGL Zig App</a><ul></ul></li>
 <li><a href="#build-lvgl-zig-app">4 Build LVGL Zig App</a><ul></ul></li>
 <li><a href="#simulate-pinephone-ui-with-zig-lvgl-and-webassembly">5 Simulate PinePhone UI with Zig, LVGL and WebAssembly</a><ul></ul></li>
@@ -116,41 +116,92 @@
 </ul>
 <p>Someday our LVGL Apps will run in a <strong>Web Browser and on PinePhone</strong>!</p>
 <p>(And many other LVGL Devices!)</p>
+<p><img src="https://lupyuen.github.io/images/lvgl3-wasm.png" alt="Mandelbrot Set rendered with Zig and WebAssembly" /></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/demo"><em>Mandelbrot Set rendered with Zig and WebAssembly</em></a></p>
 <h1 id="webassembly-with-zig"><a href="#webassembly-with-zig">1 WebAssembly with Zig</a></h1>
 <p><em>Why Zig? How does it work with WebAssembly?</em></p>
-<p>TODO</p>
-<p>We can run <strong>Zig (WebAssembly) + JavaScript</strong> in a Web Browser like so…</p>
-<ul>
-<li><a href="https://dev.to/sleibrock/webassembly-with-zig-pt-ii-ei7">WebAssembly With Zig in a Web Browser</a></li>
-</ul>
-<p>Let’s run a simple demo…</p>
-<ul>
+<p><a href="https://ziglang.org/"><strong>Zig Programming Language</strong></a> is a Low-Level Systems Language (like C and Rust) that works surprisingly well with WebAssembly.</p>
+<p>(And Embedded Devices like PinePhone)</p>
+<p>The pic above shows a <strong>WebAssembly App</strong> that we created with Zig, JavaScript and HTML…</p>
+<ol>
 <li>
-<p><a href="demo/mandelbrot.zig">demo/mandelbrot.zig</a>: Zig Program that compiles to WebAssembly</p>
+<p>Our <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/demo/mandelbrot.zig"><strong>Zig Program</strong></a> exports a function that computes the <a href="https://en.wikipedia.org/wiki/Mandelbrot_set"><strong>Mandelbrot Set</strong></a> pixels: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/demo/mandelbrot.zig">mandelbrot.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Compute the Pixel Color at (px,py) for Mandelbrot Set
+export fn get_pixel_color(px: i32, py: i32) u8 {
+  var iterations: u8 = 0;
+  var x0 = @intToFloat(f32, px);
+  var y0 = @intToFloat(f32, py);
+  ...
+  while ((xsquare + ysquare &lt; 4.0) and (iterations &lt; MAX_ITER)) : (iterations += 1) {
+    tmp = xsquare - ysquare + x0;
+    y = 2 * x * y + y0;
+    x = tmp;
+    xsquare = x * x;
+    ysquare = y * y;
+  }
+  return iterations;
+}
+</code></pre></div>
+<p><a href="https://github.com/sleibrock/zigtoys/blob/main/toys/mandelbrot/mandelbrot.zig">(Thanks to <strong>sleibrock/zigtoys</strong>)</a></p>
 </li>
 <li>
-<p><a href="demo/game.js">demo/game.js</a>: JavaScript that loads the Zig WebAssembly</p>
+<p>Our <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/demo/game.js"><strong>JavaScript</strong></a> calls the Zig Function above to compute the Mandelbrot Set: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/demo/game.js">game.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Load the WebAssembly Module `mandelbrot.wasm`
+// https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/instantiateStreaming
+let Game = await WebAssembly.instantiateStreaming(
+  fetch(&quot;mandelbrot.wasm&quot;),
+  importObject
+);
+...
+// For every Pixel in our HTML Canvas...
+for (let x = 0; x &lt; canvas.width; x++) {
+  for (let y = 0; y &lt; canvas.height; y++) {
+
+    // Get the Pixel Color from Zig
+    const color = Game.instance.exports
+      .get_pixel_color(x, y);
+
+    // Render the Pixel in our HTML Canvas
+    if      (color &lt; 10)  { context.fillStyle = &quot;red&quot;; }
+    else if (color &lt; 128) { context.fillStyle = &quot;grey&quot;; }
+    else { context.fillStyle = &quot;white&quot;; }
+    context.fillRect(x, y, x + 1, y + 1);
+  }
+}
+</code></pre></div>
+<p>And it renders the pixels in a HTML Canvas.</p>
 </li>
 <li>
-<p><a href="demo/demo.html">demo/demo.html</a>: HTML that calls the JavaScript</p>
-</li>
-</ul>
-<p>To compile Zig to WebAssembly…</p>
-<div class="example-wrap"><pre class="language-bash"><code>git clone --recursive https://github.com/lupyuen/pinephone-lvgl-zig
-cd pinephone-lvgl-zig
-cd demo
+<p>Our <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/demo/demo.html"><strong>HTML Page</strong></a> defines the HTML Canvas and loads the above JavaScript: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/demo/demo.html">demo.html</a></p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;html&gt;
+  &lt;body&gt;
+    &lt;!-- HTML Canvas for rendering Mandelbrot Set --&gt;
+    &lt;canvas id=&quot;game_canvas&quot; width=&quot;640&quot; height=&quot;480&quot;&gt;&lt;/canvas&gt;
+  &lt;/body&gt;
+  &lt;!-- Load our JavaScript --&gt;
+  &lt;script src=&quot;game.js&quot;&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre></div></li>
+</ol>
+<p>That’s all we need to create a WebAssembly App with Zig!</p>
+<p><em>What’s mandelbrot.wasm?</em></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/demo/mandelbrot.wasm"><strong>mandelbrot.wasm</strong></a> is the <strong>WebAssembly Module</strong> for our Zig Program, compiled by the <strong>Zig Compiler</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Download and compile the Zig Program for our Mandelbrot Demo
+git clone --recursive https://github.com/lupyuen/pinephone-lvgl-zig
+cd pinephone-lvgl-zig/demo
 zig build-lib \
   mandelbrot.zig \
   -target wasm32-freestanding \
   -dynamic \
   -rdynamic
 </code></pre></div>
-<p><a href="https://ziglang.org/documentation/master/#Freestanding">(According to this)</a></p>
-<p>This produces the Compiled WebAssembly <a href="mandelbrot.wasm"><code>mandelbrot.wasm</code></a>.</p>
-<p>Start a Local Web Server. <a href="https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb">(Like Web Server for Chrome)</a></p>
-<p>Browse to <code>demo/demo.html</code>. We should see the Mandelbrot Set yay!</p>
-<p><img src="https://lupyuen.github.io/images/lvgl3-wasm.png" alt="Mandelbrot Set rendered with Zig and WebAssembly" /></p>
-<h1 id="import-javascript-functions-into-zig"><a href="#import-javascript-functions-into-zig">2 Import JavaScript Functions into Zig</a></h1>
+<p><strong>wasm32-freestanding</strong> tells the Zig Compiler to compile our <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/demo/mandelbrot.zig"><strong>Zig Program</strong></a> into a <strong>WebAssembly Module</strong>.</p>
+<p><a href="https://ziglang.org/documentation/master/#Freestanding">(More about this)</a></p>
+<p><em>How do we run this?</em></p>
+<p>Start a <strong>Local Web Server</strong>. <a href="https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb">(Like Web Server for Chrome)</a></p>
+<p>Browse to <strong>demo/demo.html</strong>. And we’ll see the Mandelbrot Set in our Web Browser! (Pic above)</p>
+<h1 id="zig-calls-javascript"><a href="#zig-calls-javascript">2 Zig Calls JavaScript</a></h1>
+<p><em>Can our Zig Function call out to JavaScript?</em></p>
 <p>TODO</p>
 <p><em>How do we import JavaScript Functions into our Zig Program?</em></p>
 <p>This is documented here…</p>
