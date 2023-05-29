@@ -860,7 +860,7 @@ But for our quick demo, this will do. For now!
 
 TODO
 
-Let's render the LVGL Display in the Web Browser!
+Finally we render the LVGL Display in the Web Browser!
 
 (Based on [daneelsan/minimal-zig-wasm-canvas](https://github.com/daneelsan/minimal-zig-wasm-canvas))
 
