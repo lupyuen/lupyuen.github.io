@@ -30,15 +30,6 @@ Maybe we can do better with newer tools like __Zig Compiler__? In this article w
 
 -   What's next for rendering __UI Controls__
 
-# TODO
-
-![Mandelbrot Set rendered with Zig and WebAssembly](https://lupyuen.github.io/images/lvgl3-wasm.png)
-
-![Zig LVGL App in Zig on PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/lvgl2-zig.jpg)
-
-![WebAssembly Logger for LVGL](https://lupyuen.github.io/images/lvgl3-wasm2.png)
-
-
 # LVGL Zig App
 
 TODO
@@ -236,7 +227,7 @@ make -j
 
 And our LVGL Zig App runs OK on PinePhone!
 
-![LVGL for PinePhone with Zig and Apache NuttX RTOS](https://lupyuen.github.io/images/lvgl2-zig.jpg)
+![Zig LVGL App in Zig on PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/lvgl2-zig.jpg)
 
 # Simulate PinePhone UI with Zig, LVGL and WebAssembly
 
@@ -305,7 +296,7 @@ Start a Local Web Server. [(Like Web Server for Chrome)](https://chrome.google.c
 
 Browse to `demo/demo.html`. We should see the Mandelbrot Set yay!
 
-![Mandelbrot Set rendered with Zig and WebAssembly](https://lupyuen.github.io/images/zig-wasm.png)
+![Mandelbrot Set rendered with Zig and WebAssembly](https://lupyuen.github.io/images/lvgl3-wasm.png)
 
 # Import JavaScript Functions into Zig
 
@@ -1037,92 +1028,6 @@ And remember to compile the LVGL Fonts!
 
 TODO: Disassemble the Compiled WebAssembly and look for other Undefined Variables at WebAssembly Address 0
 
-# C Standard Library is Missing
-
-TODO
-
-_strlen is missing from our Zig WebAssembly..._
-
-_But strlen should come from the C Standard Library! (musl)_
-
-Not sure why `strlen` is missing, but we fixed it temporarily by copying from the Zig Library Source Code: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/e99593df6b46ced52f3f8ed644b9c6e455a9d682/lvglwasm.zig#L213-L265)
-
-```zig
-///////////////////////////////////////////////////////////////////////////////
-//  C Standard Library
-//  From zig-macos-x86_64-0.10.0-dev.2351+b64a1d5ab/lib/zig/c.zig
-
-export fn memset(dest: ?[*]u8, c2: u8, len: usize) callconv(.C) ?[*]u8 {
-    @setRuntimeSafety(false);
-
-    if (len != 0) {
-        var d = dest.?;
-        var n = len;
-        while (true) {
-            d.* = c2;
-            n -= 1;
-            if (n == 0) break;
-            d += 1;
-        }
-    }
-
-    return dest;
-}
-
-export fn memcpy(noalias dest: ?[*]u8, noalias src: ?[*]const u8, len: usize) callconv(.C) ?[*]u8 {
-    @setRuntimeSafety(false);
-
-    if (len != 0) {
-        var d = dest.?;
-        var s = src.?;
-        var n = len;
-        while (true) {
-            d[0] = s[0];
-            n -= 1;
-            if (n == 0) break;
-            d += 1;
-            s += 1;
-        }
-    }
-
-    return dest;
-}
-
-export fn strcpy(dest: [*:0]u8, src: [*:0]const u8) callconv(.C) [*:0]u8 {
-    var i: usize = 0;
-    while (src[i] != 0) : (i += 1) {
-        dest[i] = src[i];
-    }
-    dest[i] = 0;
-
-    return dest;
-}
-
-export fn strlen(s: [*:0]const u8) callconv(.C) usize {
-    return std.mem.len(s);
-}
-```
-
-This seems to be the [same problem mentioned here](https://github.com/andrewrk/lua-in-the-browser#status).
-
-[(Referenced by this pull request)](https://github.com/ziglang/zig/pull/2512)
-
-[(And this issue)](https://github.com/ziglang/zig/issues/5854)
-
-TODO: Maybe because we didn't export `strlen` in our Main Program `lvglwasm.zig`?
-
-TODO: Do we compile C Standard Library ourselves? From musl? Newlib? [wasi-libc](https://github.com/WebAssembly/wasi-libc)?
-
-_What if we change the target to `wasm32-freestanding-musl`?_
-
-Nope doesn't help, same problem.
-
-_What if we use `zig build-exe` instead of `zig build-lib`?_
-
-Sorry `zig build-exe` is meant for building WASI Executables. [(See this)](https://www.fermyon.com/wasm-languages/c-lang)
-
-`zig build-exe` is not supposed to work for WebAssembly in the Web Browser. [(See this)](https://github.com/ziglang/zig/issues/1570#issuecomment-426370371)
-
 # LVGL Porting Layer for WebAssembly
 
 TODO
@@ -1256,7 +1161,43 @@ no display registered to get its active screen
 
 Let's initialise the LVGL Display...
 
-![WebAssembly Logger for LVGL](https://lupyuen.github.io/images/zig-wasm2.png)
+![WebAssembly Logger for LVGL](https://lupyuen.github.io/images/lvgl3-wasm2.png)
+
+# Handle LVGL Events
+
+TODO: To handle LVGL Events, call `lv_tick_inc` and `lv_timer_handler`
+
+1.  Call `lv_tick_inc(x)` every x milliseconds in an interrupt to report the elapsed time to LVGL
+
+    (Not required, because LVGL calls `millis` to fetch the elapsed time)
+
+1.  Call `lv_timer_handler()` every few milliseconds to handle LVGL related tasks
+
+[(Source)](https://docs.lvgl.io/8.3/porting/project.html#initialization)
+
+Like this: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/d584f43c6354f12bdc15bdb8632cdd3f6f5dc7ff/lvglwasm.zig#L65-L83)
+
+```zig
+    // Register the Display Driver
+    const disp = c.lv_disp_drv_register(disp_drv);
+    _ = disp;
+
+    // Create the widgets for display (with Zig Wrapper)
+    createWidgetsWrapped() catch |e| {
+        // In case of error, quit
+        std.log.err("createWidgetsWrapped failed: {}", .{e});
+        return;
+    };
+
+    // Handle LVGL Events
+    // TODO: Call this from Web Browser JavaScript, so that Web Browser won't block
+    var i: usize = 0;
+    while (i < 5) : (i += 1) {
+        debug("lv_timer_handler: start", .{});
+        _ = c.lv_timer_handler();
+        debug("lv_timer_handler: end", .{});
+    }
+```
 
 # Initialise LVGL Display
 
@@ -1481,31 +1422,202 @@ And the LVGL Display renders OK in our HTML Canvas yay!
 
 ![Render LVGL Display in Web Browser](https://lupyuen.github.io/images/zig-wasm3.png)
 
-# LVGL Fonts
+Here's the log...
+
+```text
+main: start
+loop: start
+lv_demo_widgets: start
+[Info]	lv_init: begin 	(in lv_obj.c line #102)
+[Warn]	lv_init: Log level is set to 'Trace' which makes LVGL much slower 	(in lv_obj.c line #176)
+[Trace]	lv_init: finished 	(in lv_obj.c line #183)
+[Info]	lv_obj_create: begin 	(in lv_obj.c line #206)
+[Trace]	lv_obj_class_create_obj: Creating object with 0x174cc class on 0 parent 	(in lv_obj_class.c line #45)
+[Trace]	lv_obj_class_create_obj: creating a screen 	(in lv_obj_class.c line #55)
+[Trace]	lv_obj_constructor: begin 	(in lv_obj.c line #403)
+[Trace]	lv_obj_constructor: finished 	(in lv_obj.c line #428)
+[Info]	lv_obj_create: begin 	(in lv_obj.c line #206)
+[Trace]	lv_obj_class_create_obj: Creating object with 0x174cc class on 0 parent 	(in lv_obj_class.c line #45)
+[Trace]	lv_obj_class_create_obj: creating a screen 	(in lv_obj_class.c line #55)
+[Trace]	lv_obj_constructor: begin 	(in lv_obj.c line #403)
+[Trace]	lv_obj_constructor: finished 	(in lv_obj.c line #428)
+[Info]	lv_obj_create: begin 	(in lv_obj.c line #206)
+[Trace]	lv_obj_class_create_obj: Creating object with 0x174cc class on 0 parent 	(in lv_obj_class.c line #45)
+[Trace]	lv_obj_class_create_obj: creating a screen 	(in lv_obj_class.c line #55)
+[Trace]	lv_obj_constructor: begin 	(in lv_obj.c line #403)
+[Trace]	lv_obj_constructor: finished 	(in lv_obj.c line #428)
+createWidgetsWrapped: start
+[Info]	lv_label_create: begin 	(in lv_label.c line #75)
+[Trace]	lv_obj_class_create_obj: Creating object with 0x174b0 class on 0x39dfd0 parent 	(in lv_obj_class.c line #45)
+[Trace]	lv_obj_class_create_obj: creating normal object 	(in lv_obj_class.c line #82)
+[Trace]	lv_obj_constructor: begin 	(in lv_obj.c line #403)
+[Trace]	lv_obj_constructor: finished 	(in lv_obj.c line #428)
+[Trace]	lv_label_constructor: begin 	(in lv_label.c line #691)
+[Trace]	lv_label_constructor: finished 	(in lv_label.c line #721)
+createWidgetsWrapped: end
+lv_timer_handler: start
+[Trace]	lv_timer_handler: begin 	(in lv_timer.c line #69)
+[Trace]	lv_timer_exec: calling timer callback: 0x19 	(in lv_timer.c line #312)
+[Info]	lv_obj_update_layout: Layout update begin 	(in lv_obj_pos.c line #314)
+[Trace]	lv_obj_update_layout: Layout update end 	(in lv_obj_pos.c line #317)
+[Info]	lv_obj_update_layout: Layout update begin 	(in lv_obj_pos.c line #314)
+[Trace]	lv_obj_update_layout: Layout update end 	(in lv_obj_pos.c line #317)
+[Info]	lv_obj_update_layout: Layout update begin 	(in lv_obj_pos.c line #314)
+[Trace]	lv_obj_update_layout: Layout update end 	(in lv_obj_pos.c line #317)
+[Info]	lv_obj_update_layout: Layout update begin 	(in lv_obj_pos.c line #314)
+[Trace]	lv_obj_update_layout: Layout update end 	(in lv_obj_pos.c line #317)
+[Info]	lv_obj_update_layout: Layout update begin 	(in lv_obj_pos.c line #314)
+[Trace]	lv_obj_update_layout: Layout update end 	(in lv_obj_pos.c line #317)
+flushDisplay: start
+render: start
+get_canvas_buffer: 1782 non-empty pixels
+canvas_buffer: 0x17e70
+{bufferOffset: 97904}
+render: end
+flushDisplay: end
+[Trace]	lv_timer_exec: timer callback 0x19 finished 	(in lv_timer.c line #314)
+[Trace]	lv_timer_handler: finished (15 ms until the next timer call) 	(in lv_timer.c line #144)
+lv_timer_handler: end
+lv_timer_handler: start
+[Trace]	lv_timer_handler: begin 	(in lv_timer.c line #69)
+[Trace]	lv_timer_handler: finished (8 ms until the next timer call) 	(in lv_timer.c line #144)
+lv_timer_handler: end
+lv_timer_handler: start
+[Trace]	lv_timer_handler: begin 	(in lv_timer.c line #69)
+[Trace]	lv_timer_handler: finished (1 ms until the next timer call) 	(in lv_timer.c line #144)
+lv_timer_handler: end
+lv_timer_handler: start
+[Trace]	lv_timer_handler: begin 	(in lv_timer.c line #69)
+[Trace]	lv_timer_exec: calling timer callback: 0x19 	(in lv_timer.c line #312)
+[Trace]	lv_timer_exec: timer callback 0x19 finished 	(in lv_timer.c line #314)
+[Trace]	lv_timer_handler: finished (-1 ms until the next timer call) 	(in lv_timer.c line #144)
+lv_timer_handler: end
+lv_timer_handler: start
+[Trace]	lv_timer_handler: begin 	(in lv_timer.c line #69)
+[Trace]	lv_timer_handler: finished (-1 ms until the next timer call) 	(in lv_timer.c line #144)
+lv_timer_handler: end
+lv_demo_widgets: end
+loop: end
+main: end
+```
+
+# TODO
+
+TODO: How to disassemble Compiled WebAssembly with cross-reference to Source Code? Like `objdump --source`? See [wabt](https://github.com/WebAssembly/wabt) and [binaryen](https://github.com/WebAssembly/binaryen)
+
+# What's Next
 
 TODO
 
-Remember to compile the LVGL Fonts! Or nothing will be rendered...
+Meanwhile please check out the other articles on NuttX for PinePhone...
 
-```bash
-  ## Compile LVGL Library from C to WebAssembly with Zig Compiler
-  compile_lvgl font/lv_font_montserrat_14.c lv_font_montserrat_14
-  compile_lvgl font/lv_font_montserrat_20.c lv_font_montserrat_20
+-   [__"Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
 
-  ## Compile the Zig LVGL App for WebAssembly 
-  zig build-lib \
-    -DLV_FONT_MONTSERRAT_14=1 \
-    -DLV_FONT_MONTSERRAT_20=1 \
-    -DLV_FONT_DEFAULT_MONTSERRAT_20=1 \
-    -DLV_USE_FONT_PLACEHOLDER=1 \
-    ...
-    lv_font_montserrat_14.o \
-    lv_font_montserrat_20.o \
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+
+-   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__My Current Project: "Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
+
+-   [__My Other Project: "The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book)
+
+-   [__My Sourdough Recipe__](https://lupyuen.github.io/articles/sourdough)
+
+-   [__Check out my articles__](https://lupyuen.github.io)
+
+-   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[__lupyuen.github.io/src/lvgl3.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl3.md)
+
+# Appendix: C Standard Library is Missing
+
+TODO
+
+_strlen is missing from our Zig WebAssembly..._
+
+_But strlen should come from the C Standard Library! (musl)_
+
+Not sure why `strlen` is missing, but we fixed it temporarily by copying from the Zig Library Source Code: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/e99593df6b46ced52f3f8ed644b9c6e455a9d682/lvglwasm.zig#L213-L265)
+
+```zig
+///////////////////////////////////////////////////////////////////////////////
+//  C Standard Library
+//  From zig-macos-x86_64-0.10.0-dev.2351+b64a1d5ab/lib/zig/c.zig
+
+export fn memset(dest: ?[*]u8, c2: u8, len: usize) callconv(.C) ?[*]u8 {
+    @setRuntimeSafety(false);
+
+    if (len != 0) {
+        var d = dest.?;
+        var n = len;
+        while (true) {
+            d.* = c2;
+            n -= 1;
+            if (n == 0) break;
+            d += 1;
+        }
+    }
+
+    return dest;
+}
+
+export fn memcpy(noalias dest: ?[*]u8, noalias src: ?[*]const u8, len: usize) callconv(.C) ?[*]u8 {
+    @setRuntimeSafety(false);
+
+    if (len != 0) {
+        var d = dest.?;
+        var s = src.?;
+        var n = len;
+        while (true) {
+            d[0] = s[0];
+            n -= 1;
+            if (n == 0) break;
+            d += 1;
+            s += 1;
+        }
+    }
+
+    return dest;
+}
+
+export fn strcpy(dest: [*:0]u8, src: [*:0]const u8) callconv(.C) [*:0]u8 {
+    var i: usize = 0;
+    while (src[i] != 0) : (i += 1) {
+        dest[i] = src[i];
+    }
+    dest[i] = 0;
+
+    return dest;
+}
+
+export fn strlen(s: [*:0]const u8) callconv(.C) usize {
+    return std.mem.len(s);
+}
 ```
 
-[(Source)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/2e1c97e49e51b1cbbe0964a9512eba141d0dd09f/build.sh#L21-L191)
+This seems to be the [same problem mentioned here](https://github.com/andrewrk/lua-in-the-browser#status).
 
-# LVGL Memory Allocation
+[(Referenced by this pull request)](https://github.com/ziglang/zig/pull/2512)
+
+[(And this issue)](https://github.com/ziglang/zig/issues/5854)
+
+TODO: Maybe because we didn't export `strlen` in our Main Program `lvglwasm.zig`?
+
+TODO: Do we compile C Standard Library ourselves? From musl? Newlib? [wasi-libc](https://github.com/WebAssembly/wasi-libc)?
+
+_What if we change the target to `wasm32-freestanding-musl`?_
+
+Nope doesn't help, same problem.
+
+_What if we use `zig build-exe` instead of `zig build-lib`?_
+
+Sorry `zig build-exe` is meant for building WASI Executables. [(See this)](https://www.fermyon.com/wasm-languages/c-lang)
+
+`zig build-exe` is not supposed to work for WebAssembly in the Web Browser. [(See this)](https://github.com/ziglang/zig/issues/1570#issuecomment-426370371)
+
+# Appendix: LVGL Memory Allocation
 
 TODO
 
@@ -1612,126 +1724,31 @@ var memory_buffer: [1024 * 1024]u8 = undefined;
 
 [(If we ever remove `-DLV_MEM_CUSTOM=1`, remember to set `-DLV_MEM_SIZE=1000000`)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/aa080fb2ce55f9959cce2b6fff7e5fd5c9907cd6/README.md#lvgl-memory-allocation)
 
-# Handle LVGL Events
+# Appendix: LVGL Fonts
 
-TODO: To handle LVGL Events, call `lv_tick_inc` and `lv_timer_handler`
+TODO
 
-1.  Call `lv_tick_inc(x)` every x milliseconds in an interrupt to report the elapsed time to LVGL
+Remember to compile the LVGL Fonts! Or nothing will be rendered...
 
-    (Not required, because LVGL calls `millis` to fetch the elapsed time)
+```bash
+  ## Compile LVGL Library from C to WebAssembly with Zig Compiler
+  compile_lvgl font/lv_font_montserrat_14.c lv_font_montserrat_14
+  compile_lvgl font/lv_font_montserrat_20.c lv_font_montserrat_20
 
-1.  Call `lv_timer_handler()` every few milliseconds to handle LVGL related tasks
-
-[(Source)](https://docs.lvgl.io/8.3/porting/project.html#initialization)
-
-Like this: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/d584f43c6354f12bdc15bdb8632cdd3f6f5dc7ff/lvglwasm.zig#L65-L83)
-
-```zig
-    // Register the Display Driver
-    const disp = c.lv_disp_drv_register(disp_drv);
-    _ = disp;
-
-    // Create the widgets for display (with Zig Wrapper)
-    createWidgetsWrapped() catch |e| {
-        // In case of error, quit
-        std.log.err("createWidgetsWrapped failed: {}", .{e});
-        return;
-    };
-
-    // Handle LVGL Events
-    // TODO: Call this from Web Browser JavaScript, so that Web Browser won't block
-    var i: usize = 0;
-    while (i < 5) : (i += 1) {
-        debug("lv_timer_handler: start", .{});
-        _ = c.lv_timer_handler();
-        debug("lv_timer_handler: end", .{});
-    }
+  ## Compile the Zig LVGL App for WebAssembly 
+  zig build-lib \
+    -DLV_FONT_MONTSERRAT_14=1 \
+    -DLV_FONT_MONTSERRAT_20=1 \
+    -DLV_FONT_DEFAULT_MONTSERRAT_20=1 \
+    -DLV_USE_FONT_PLACEHOLDER=1 \
+    ...
+    lv_font_montserrat_14.o \
+    lv_font_montserrat_20.o \
 ```
 
-Here's the log...
+[(Source)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/2e1c97e49e51b1cbbe0964a9512eba141d0dd09f/build.sh#L21-L191)
 
-```text
-main: start
-loop: start
-lv_demo_widgets: start
-[Info]	lv_init: begin 	(in lv_obj.c line #102)
-[Warn]	lv_init: Log level is set to 'Trace' which makes LVGL much slower 	(in lv_obj.c line #176)
-[Trace]	lv_init: finished 	(in lv_obj.c line #183)
-[Info]	lv_obj_create: begin 	(in lv_obj.c line #206)
-[Trace]	lv_obj_class_create_obj: Creating object with 0x174cc class on 0 parent 	(in lv_obj_class.c line #45)
-[Trace]	lv_obj_class_create_obj: creating a screen 	(in lv_obj_class.c line #55)
-[Trace]	lv_obj_constructor: begin 	(in lv_obj.c line #403)
-[Trace]	lv_obj_constructor: finished 	(in lv_obj.c line #428)
-[Info]	lv_obj_create: begin 	(in lv_obj.c line #206)
-[Trace]	lv_obj_class_create_obj: Creating object with 0x174cc class on 0 parent 	(in lv_obj_class.c line #45)
-[Trace]	lv_obj_class_create_obj: creating a screen 	(in lv_obj_class.c line #55)
-[Trace]	lv_obj_constructor: begin 	(in lv_obj.c line #403)
-[Trace]	lv_obj_constructor: finished 	(in lv_obj.c line #428)
-[Info]	lv_obj_create: begin 	(in lv_obj.c line #206)
-[Trace]	lv_obj_class_create_obj: Creating object with 0x174cc class on 0 parent 	(in lv_obj_class.c line #45)
-[Trace]	lv_obj_class_create_obj: creating a screen 	(in lv_obj_class.c line #55)
-[Trace]	lv_obj_constructor: begin 	(in lv_obj.c line #403)
-[Trace]	lv_obj_constructor: finished 	(in lv_obj.c line #428)
-createWidgetsWrapped: start
-[Info]	lv_label_create: begin 	(in lv_label.c line #75)
-[Trace]	lv_obj_class_create_obj: Creating object with 0x174b0 class on 0x39dfd0 parent 	(in lv_obj_class.c line #45)
-[Trace]	lv_obj_class_create_obj: creating normal object 	(in lv_obj_class.c line #82)
-[Trace]	lv_obj_constructor: begin 	(in lv_obj.c line #403)
-[Trace]	lv_obj_constructor: finished 	(in lv_obj.c line #428)
-[Trace]	lv_label_constructor: begin 	(in lv_label.c line #691)
-[Trace]	lv_label_constructor: finished 	(in lv_label.c line #721)
-createWidgetsWrapped: end
-lv_timer_handler: start
-[Trace]	lv_timer_handler: begin 	(in lv_timer.c line #69)
-[Trace]	lv_timer_exec: calling timer callback: 0x19 	(in lv_timer.c line #312)
-[Info]	lv_obj_update_layout: Layout update begin 	(in lv_obj_pos.c line #314)
-[Trace]	lv_obj_update_layout: Layout update end 	(in lv_obj_pos.c line #317)
-[Info]	lv_obj_update_layout: Layout update begin 	(in lv_obj_pos.c line #314)
-[Trace]	lv_obj_update_layout: Layout update end 	(in lv_obj_pos.c line #317)
-[Info]	lv_obj_update_layout: Layout update begin 	(in lv_obj_pos.c line #314)
-[Trace]	lv_obj_update_layout: Layout update end 	(in lv_obj_pos.c line #317)
-[Info]	lv_obj_update_layout: Layout update begin 	(in lv_obj_pos.c line #314)
-[Trace]	lv_obj_update_layout: Layout update end 	(in lv_obj_pos.c line #317)
-[Info]	lv_obj_update_layout: Layout update begin 	(in lv_obj_pos.c line #314)
-[Trace]	lv_obj_update_layout: Layout update end 	(in lv_obj_pos.c line #317)
-flushDisplay: start
-render: start
-get_canvas_buffer: 1782 non-empty pixels
-canvas_buffer: 0x17e70
-{bufferOffset: 97904}
-render: end
-flushDisplay: end
-[Trace]	lv_timer_exec: timer callback 0x19 finished 	(in lv_timer.c line #314)
-[Trace]	lv_timer_handler: finished (15 ms until the next timer call) 	(in lv_timer.c line #144)
-lv_timer_handler: end
-lv_timer_handler: start
-[Trace]	lv_timer_handler: begin 	(in lv_timer.c line #69)
-[Trace]	lv_timer_handler: finished (8 ms until the next timer call) 	(in lv_timer.c line #144)
-lv_timer_handler: end
-lv_timer_handler: start
-[Trace]	lv_timer_handler: begin 	(in lv_timer.c line #69)
-[Trace]	lv_timer_handler: finished (1 ms until the next timer call) 	(in lv_timer.c line #144)
-lv_timer_handler: end
-lv_timer_handler: start
-[Trace]	lv_timer_handler: begin 	(in lv_timer.c line #69)
-[Trace]	lv_timer_exec: calling timer callback: 0x19 	(in lv_timer.c line #312)
-[Trace]	lv_timer_exec: timer callback 0x19 finished 	(in lv_timer.c line #314)
-[Trace]	lv_timer_handler: finished (-1 ms until the next timer call) 	(in lv_timer.c line #144)
-lv_timer_handler: end
-lv_timer_handler: start
-[Trace]	lv_timer_handler: begin 	(in lv_timer.c line #69)
-[Trace]	lv_timer_handler: finished (-1 ms until the next timer call) 	(in lv_timer.c line #144)
-lv_timer_handler: end
-lv_demo_widgets: end
-loop: end
-main: end
-```
-
-# TODO
-
-TODO: How to disassemble Compiled WebAssembly with cross-reference to Source Code? Like `objdump --source`? See [wabt](https://github.com/WebAssembly/wabt) and [binaryen](https://github.com/WebAssembly/binaryen)
-
-# LVGL Screen Not Found
+# Appendix: LVGL Screen Not Found
 
 TODO
 
@@ -1758,29 +1775,3 @@ before lv_disp_drv_register
 ```
 
 [(See the Complete Log)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/9610bb5209a072fc5950cf0559b1274d53dd8b8b/README.md#lvgl-screen-not-found)
-
-# What's Next
-
-TODO
-
-Meanwhile please check out the other articles on NuttX for PinePhone...
-
--   [__"Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
-
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
-
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
-
--   [__My Current Project: "Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
-
--   [__My Other Project: "The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book)
-
--   [__My Sourdough Recipe__](https://lupyuen.github.io/articles/sourdough)
-
--   [__Check out my articles__](https://lupyuen.github.io)
-
--   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[__lupyuen.github.io/src/lvgl3.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl3.md)
