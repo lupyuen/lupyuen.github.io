@@ -637,7 +637,7 @@ no display registered to get its active screen
 </code></pre></div>
 <p>Let’s initialise the LVGL Display…</p>
 <h1 id="initialise-lvgl-display"><a href="#initialise-lvgl-display">9 Initialise LVGL Display</a></h1>
-<p><em>What will happen when LVGL starts running?</em></p>
+<p><em>What happens when LVGL starts running?</em></p>
 <p>According to the <a href="https://docs.lvgl.io/8.3/porting/project.html#initialization"><strong>LVGL Docs</strong></a>, this is how we <strong>initialise and operate LVGL</strong>…</p>
 <ol>
 <li>
@@ -647,7 +647,7 @@ no display registered to get its active screen
 <p>Register the <strong>LVGL Display</strong> (and Input Devices)</p>
 </li>
 <li>
-<p>Call <strong>lv_tick_inc(x)</strong> every <strong>x</strong> milliseconds in an interrupt to report the <strong>Elapsed Time</strong> to LVGL</p>
+<p>Call <strong>lv_tick_inc(x)</strong> every <strong>x</strong> milliseconds (in an Interrupt) to report the <strong>Elapsed Time</strong> to LVGL</p>
 <p><a href="https://lupyuen.github.io/articles/lvgl3#lvgl-porting-layer-for-webassembly">(Not required, because LVGL calls <strong>millis</strong> to fetch the Elapsed Time)</a></p>
 </li>
 <li>
@@ -701,11 +701,12 @@ pub export fn lv_demo_widgets() void {
 
     // Init Display Buffer and Display Driver as pointers
     c.init_disp_buf(disp_buf);
-    c.init_disp_drv(disp_drv, // Display Driver
-        disp_buf, // Display Buffer
-        flushDisplay, // Callback Function to Flush Display
-        720, // Horizontal Resolution
-        1280 // Vertical Resolution
+    c.init_disp_drv(
+      disp_drv,  // Display Driver
+      disp_buf,  // Display Buffer
+      flushDisplay,  // Callback Function to Flush Display
+      720,  // Horizontal Resolution
+      1280  // Vertical Resolution
     );
 
     // Register the Display Driver
@@ -713,9 +714,9 @@ pub export fn lv_demo_widgets() void {
 
     // Create the widgets for display (with Zig Wrapper)
     createWidgetsWrapped() catch |e| {
-        // In case of error, quit
-        std.log.err(&quot;createWidgetsWrapped failed: {}&quot;, .{e});
-        return;
+      // In case of error, quit
+      std.log.err(&quot;createWidgetsWrapped failed: {}&quot;, .{e});
+      return;
     };
 
     // Up Next: Handle LVGL Events
