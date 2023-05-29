@@ -28,13 +28,111 @@ Maybe we can do better with newer tools like __Zig Compiler__? In this article w
 
 -   Test it with an __LVGL App__ (in Zig)
 
--   How it works for rendering __Simple LVGL UIs__
+-   How it renders __Simple LVGL UIs__ (in a Web Browser)
 
 -   What's next for rendering __LVGL UI Controls__
 
-Soon we'll have LVGL Apps that will run in a __Web Browser and on PinePhone__!
+Someday our LVGL Apps will run in a __Web Browser and on PinePhone__!
 
 (And many other LVGL Devices!)
+
+# WebAssembly with Zig
+
+_Why Zig? How does it work with WebAssembly?_
+
+TODO
+
+We can run __Zig (WebAssembly) + JavaScript__ in a Web Browser like so...
+
+- [WebAssembly With Zig in a Web Browser](https://dev.to/sleibrock/webassembly-with-zig-pt-ii-ei7)
+
+Let's run a simple demo...
+
+- [demo/mandelbrot.zig](demo/mandelbrot.zig): Zig Program that compiles to WebAssembly
+
+- [demo/game.js](demo/game.js): JavaScript that loads the Zig WebAssembly
+
+- [demo/demo.html](demo/demo.html): HTML that calls the JavaScript
+
+To compile Zig to WebAssembly...
+
+```bash
+git clone --recursive https://github.com/lupyuen/pinephone-lvgl-zig
+cd pinephone-lvgl-zig
+cd demo
+zig build-lib \
+  mandelbrot.zig \
+  -target wasm32-freestanding \
+  -dynamic \
+  -rdynamic
+```
+
+[(According to this)](https://ziglang.org/documentation/master/#Freestanding)
+
+This produces the Compiled WebAssembly [`mandelbrot.wasm`](mandelbrot.wasm).
+
+Start a Local Web Server. [(Like Web Server for Chrome)](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb)
+
+Browse to `demo/demo.html`. We should see the Mandelbrot Set yay!
+
+![Mandelbrot Set rendered with Zig and WebAssembly](https://lupyuen.github.io/images/lvgl3-wasm.png)
+
+# Import JavaScript Functions into Zig
+
+TODO
+
+_How do we import JavaScript Functions into our Zig Program?_
+
+This is documented here...
+
+- [WebAssembly on Zig](https://ziglang.org/documentation/master/#WebAssembly)
+
+In our Zig Program, this is how we import and call a JavaScript Function: [demo/mandelbrot.zig](demo/mandelbrot.zig)
+
+```zig
+/// Import `print` Function from JavaScript
+extern fn print(i32) void;
+...
+// Test printing to JavaScript Console.
+// Warning: This is slow!
+if (iterations == 1) { print(iterations); }
+```
+
+We define the JavaScript Function `print` when loading the WebAssembly Module in our JavaScript: [demo/game.js](demo/game.js)
+
+```javascript
+// Export JavaScript Functions to Zig
+let importObject = {
+    // JavaScript Environment exported to Zig
+    env: {
+        // JavaScript Print Function exported to Zig
+        print: function(x) { console.log(x); }
+    }
+};
+
+// Load the WebAssembly Module
+// https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/instantiateStreaming
+async function bootstrap() {
+
+    // Store references to WebAssembly Functions and Memory exported by Zig
+    Game = await WebAssembly.instantiateStreaming(
+        fetch("mandelbrot.wasm"),
+        importObject
+    );
+
+    // Start the Main Function
+    main();
+}
+
+// Start the loading of WebAssembly Module
+bootstrap();
+```
+
+_Will this work for passing Strings and Buffers as parameters?_
+
+Nope, the parameter will be passed as a number. (Probably a WebAssembly Data Address)
+
+To pass Strings and Buffers between JavaScript and Zig, see [daneelsan/zig-wasm-logger](https://github.com/daneelsan/zig-wasm-logger).
 
 # LVGL Zig App
 
@@ -264,102 +362,6 @@ Therefore we shall do this...
 1.  Use Zig to compile LVGL from C to WebAssembly [(With `zig cc`)](https://github.com/lupyuen/zig-bl602-nuttx#zig-compiler-as-drop-in-replacement-for-gcc)
 
 1.  Use Zig to connect the JavaScript UI (canvas rendering + input events) to LVGL WebAssembly [(Like this)](https://dev.to/sleibrock/webassembly-with-zig-pt-ii-ei7)
-
-# WebAssembly Demo with Zig and JavaScript
-
-TODO
-
-We can run __Zig (WebAssembly) + JavaScript__ in a Web Browser like so...
-
-- [WebAssembly With Zig in a Web Browser](https://dev.to/sleibrock/webassembly-with-zig-pt-ii-ei7)
-
-Let's run a simple demo...
-
-- [demo/mandelbrot.zig](demo/mandelbrot.zig): Zig Program that compiles to WebAssembly
-
-- [demo/game.js](demo/game.js): JavaScript that loads the Zig WebAssembly
-
-- [demo/demo.html](demo/demo.html): HTML that calls the JavaScript
-
-To compile Zig to WebAssembly...
-
-```bash
-git clone --recursive https://github.com/lupyuen/pinephone-lvgl-zig
-cd pinephone-lvgl-zig
-cd demo
-zig build-lib \
-  mandelbrot.zig \
-  -target wasm32-freestanding \
-  -dynamic \
-  -rdynamic
-```
-
-[(According to this)](https://ziglang.org/documentation/master/#Freestanding)
-
-This produces the Compiled WebAssembly [`mandelbrot.wasm`](mandelbrot.wasm).
-
-Start a Local Web Server. [(Like Web Server for Chrome)](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb)
-
-Browse to `demo/demo.html`. We should see the Mandelbrot Set yay!
-
-![Mandelbrot Set rendered with Zig and WebAssembly](https://lupyuen.github.io/images/lvgl3-wasm.png)
-
-# Import JavaScript Functions into Zig
-
-TODO
-
-_How do we import JavaScript Functions into our Zig Program?_
-
-This is documented here...
-
-- [WebAssembly on Zig](https://ziglang.org/documentation/master/#WebAssembly)
-
-In our Zig Program, this is how we import and call a JavaScript Function: [demo/mandelbrot.zig](demo/mandelbrot.zig)
-
-```zig
-/// Import `print` Function from JavaScript
-extern fn print(i32) void;
-...
-// Test printing to JavaScript Console.
-// Warning: This is slow!
-if (iterations == 1) { print(iterations); }
-```
-
-We define the JavaScript Function `print` when loading the WebAssembly Module in our JavaScript: [demo/game.js](demo/game.js)
-
-```javascript
-// Export JavaScript Functions to Zig
-let importObject = {
-    // JavaScript Environment exported to Zig
-    env: {
-        // JavaScript Print Function exported to Zig
-        print: function(x) { console.log(x); }
-    }
-};
-
-// Load the WebAssembly Module
-// https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/instantiateStreaming
-async function bootstrap() {
-
-    // Store references to WebAssembly Functions and Memory exported by Zig
-    Game = await WebAssembly.instantiateStreaming(
-        fetch("mandelbrot.wasm"),
-        importObject
-    );
-
-    // Start the Main Function
-    main();
-}
-
-// Start the loading of WebAssembly Module
-bootstrap();
-```
-
-_Will this work for passing Strings and Buffers as parameters?_
-
-Nope, the parameter will be passed as a number. (Probably a WebAssembly Data Address)
-
-To pass Strings and Buffers between JavaScript and Zig, see [daneelsan/zig-wasm-logger](https://github.com/daneelsan/zig-wasm-logger).
 
 # Compile Zig LVGL App to WebAssembly
 
