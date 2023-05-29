@@ -853,13 +853,9 @@ Yeah we should have called __lv_timer_handler__ from our JavaScript.
 
 But for our quick demo, this will do. For now!
 
-![Zig LVGL App rendered in Web Browser with WebAssembly](https://lupyuen.github.io/images/zig-wasm3.png)
+# Render LVGL Display in Zig
 
-[_Zig LVGL App rendered in Web Browser with WebAssembly_](https://lupyuen.github.io/pinephone-lvgl-zig/lvglwasm.html)
-
-# Render LVGL Display in Web Browser
-
-Finally we __render our LVGL Display__ in the Web Browser!
+Finally we __render our LVGL Display__ in the Web Browser... Spanning Zig, C and JavaScript!
 
 Earlier we saw this __LVGL Initialisation__ in our Zig App: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L49-L63)
 
@@ -940,7 +936,17 @@ export fn flushDisplay(
 
 __flushDisplay__ (in Zig) calls __render__ (in JavaScript) to render the LVGL Display Canvas.
 
+We bubble up from Zig to JavaScript...
+
+![Zig LVGL App rendered in Web Browser with WebAssembly](https://lupyuen.github.io/images/zig-wasm3.png)
+
+[_Zig LVGL App rendered in Web Browser with WebAssembly_](https://lupyuen.github.io/pinephone-lvgl-zig/lvglwasm.html)
+
+# Render LVGL Display in JavaScript
+
 _Phew OK. What happens in our JavaScript?_
+
+Earlier we saw that [__flushDisplay__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L86-L98) (in Zig) calls __render__ (in JavaScript) to render the LVGL Display Canvas.
 
 __render__ (in JavaScript) draws the LVGL Canvas Buffer to our HTML Canvas: [lvglwasm.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.js#L29-L53)
 
@@ -967,7 +973,7 @@ render: function() {  // TODO: Add width and height
 
 [(__imageData__ and __context__ are defined here)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.js#L69-L75)
 
-_But how does it fetch the LVGL Canvas Buffer?_
+_How does it fetch the LVGL Canvas Buffer?_
 
 The JavaScript above calls [__getCanvasBuffer__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L100-L104) (in Zig) and __get_canvas_buffer__ (in C) to fetch the LVGL Canvas Buffer: [display.c](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L9-L29)
 
@@ -995,7 +1001,13 @@ And the LVGL Display renders OK in our HTML Canvas yay! (Pic above)
 
 # What's Next
 
-TODO: Feature Phone UI, sufficient to press the buttons, implement Mouse Down/Up Events
+Up Next: [__Feature Phone UI__](https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone) for PinePhone! To make our Feature Phone clickable, we'll pass __Mouse Events__ from JavaScript to LVGL.
+
+(Through an LVGL Input Device Driver)
+
+We'll experiment with __Live Reloading__: Whenever we save our Zig LVGL App, it __auto-recompiles__ and __auto-reloads__ the WebAssembly HTML.
+
+Which makes UI Prototyping a lot quicker in LVGL. Stay Tuned for updates!
 
 Meanwhile please check out the other articles on NuttX for PinePhone...
 
