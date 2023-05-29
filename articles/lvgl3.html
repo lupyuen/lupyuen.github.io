@@ -664,31 +664,27 @@ no display registered to get its active screen
 </li>
 </ul>
 <p><em>Easy peasy for Zig right?</em></p>
-<p>But we can’t do it in Zig…</p>
-<div class="example-wrap"><pre class="language-zig"><code>// Nope can&#39;t allocate `lv_disp_drv_t` in Zig!
+<p>Sadly we can’t do it in Zig…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Nope can&#39;t allocate LVGL Display Driver in Zig!
 // `lv_disp_drv_t` is an Opaque Type
 
 var disp_drv = c.lv_disp_drv_t{};
 c.lv_disp_drv_init(&amp;disp_drv);
 </code></pre></div>
-<p>Because <strong>lv_disp_drv_t</strong> is an <strong>Opaque Type</strong>.</p>
+<p>Because LVGL Display Driver <strong>lv_disp_drv_t</strong> is an <strong>Opaque Type</strong>.</p>
 <p><em>What’s an Opaque Type in Zig?</em></p>
 <p>When we <strong>import a C Struct</strong> into Zig and it contains <strong>Bit Fields</strong>…</p>
-<p>Zig won’t let us <strong>access the fields</strong> of the C Struct.</p>
-<p>(And we can’t allocate the C Struct either)</p>
-<p><strong>lv_disp_drv_t</strong> contains Bit Fields, hence it’s Opaque. <a href="https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types">(See this)</a></p>
-<p><em>Bummer. So how do we handle Opaque Types in Zig?</em></p>
-<p>TODO</p>
-<p>Thus we apply this workaround to create <code>lv_disp_drv_t</code> in C…</p>
+<p>Zig won’t let us <strong>access the fields</strong> of the C Struct. (And we can’t allocate the C Struct either)</p>
+<p><strong>lv_disp_drv_t</strong> contains Bit Fields, hence it’s Opaque and inaccessible in Zig. <a href="https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types">(See this)</a></p>
+<p><em>Bummer. How to fix Opaque Types in Zig?</em></p>
+<p>Our workaround is to write <strong>C Functions to allocate</strong> and initialise the Opaque Types…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/lvgl#fix-opaque-types">“Fix Opaque Types”</a></li>
+<li><a href="https://lupyuen.github.io/articles/lvgl#fix-opaque-types"><strong>“Fix Opaque Types”</strong></a></li>
 </ul>
-<p>And we get this LVGL Display Interface for Zig: <a href="display.c">display.c</a></p>
-<p>Finally this is how we initialise the LVGL Display in Zig WebAssembly: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/d584f43c6354f12bdc15bdb8632cdd3f6f5dc7ff/lvglwasm.zig#L38-L84">lvglwasm.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// We render an LVGL Screen with LVGL Widgets
+<p>Which gives us this <strong>LVGL Display Interface</strong> for Zig: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c">display.c</a></p>
+<p>Finally with the workaround, here’s how we <strong>initialise the LVGL Display</strong> in Zig: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L38-L84">lvglwasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Main Function for our Zig LVGL App
 pub export fn lv_demo_widgets() void {
-    debug(&quot;lv_demo_widgets: start&quot;, .{});
-    defer debug(&quot;lv_demo_widgets: end&quot;, .{});
 
     // Create the Memory Allocator for malloc
     memory_allocator = std.heap.FixedBufferAllocator.init(&amp;memory_buffer);
@@ -714,7 +710,6 @@ pub export fn lv_demo_widgets() void {
 
     // Register the Display Driver
     const disp = c.lv_disp_drv_register(disp_drv);
-    _ = disp;
 
     // Create the widgets for display (with Zig Wrapper)
     createWidgetsWrapped() catch |e| {
@@ -723,15 +718,7 @@ pub export fn lv_demo_widgets() void {
         return;
     };
 
-    // Handle LVGL Events
-    // TODO: Call this from Web Browser JavaScript, so that Web Browser won&#39;t block
-    var i: usize = 0;
-    while (i &lt; 5) : (i += 1) {
-        debug(&quot;lv_timer_handler: start&quot;, .{});
-        _ = c.lv_timer_handler();
-        debug(&quot;lv_timer_handler: end&quot;, .{});
-    }
-}
+    // Up Next: Handle LVGL Events
 </code></pre></div><h1 id="handle-lvgl-events"><a href="#handle-lvgl-events">10 Handle LVGL Events</a></h1>
 <p>TODO: To handle LVGL Events, call <code>lv_tick_inc</code> and <code>lv_timer_handler</code></p>
 <ol>
