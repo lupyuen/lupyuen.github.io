@@ -198,6 +198,7 @@ zig build-lib \
 <p><em>How do we run this?</em></p>
 <p>Start a <strong>Local Web Server</strong>. <a href="https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb">(Like Web Server for Chrome)</a></p>
 <p>Browse to <strong>demo/demo.html</strong>. And we’ll see the Mandelbrot Set in our Web Browser! (Pic above)</p>
+<p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/demo/demo.html">(Try the <strong>Mandelbrot Demo</strong>)</a></p>
 <h1 id="zig-calls-javascript"><a href="#zig-calls-javascript">2 Zig Calls JavaScript</a></h1>
 <p><em>Can Zig call out to JavaScript?</em></p>
 <p>Yep Zig and JavaScript will happily <strong>interoperate both ways</strong>!</p>
@@ -341,12 +342,24 @@ zig build-lib \
 <p>We removed our <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgltest.zig#L128-L149"><strong>Custom Panic Handler</strong></a>, the default one works fine for WebAssembly.</p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig#compile-zig-lvgl-app-to-webassembly">(More about this)</a></p>
 <p><em>What happens when we run this?</em></p>
-<p>TODO</p>
-<p>The command above produces the Compiled WebAssembly <a href="lvglwasm.wasm"><code>lvglwasm.wasm</code></a>.</p>
+<p>The command above produces the Compiled WebAssembly <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.wasm"><strong>lvglwasm.wasm</strong></a>.</p>
 <p>Start a Local Web Server. <a href="https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb">(Like Web Server for Chrome)</a></p>
-<p>Browse to our HTML <a href="lvglwasm.html"><code>lvglwasm.html</code></a>. Which calls our JavaScript <a href="lvglwasm.js"><code>lvglwasm.js</code></a> to load the Compiled WebAssembly.</p>
-<p>Our JavaScript <a href="lvglwasm.js"><code>lvglwasm.js</code></a> calls the Zig Function <code>lv_demo_widgets</code> that’s exported to WebAssembly by our Zig App <a href="lvglwasm.zig"><code>lvglwasm.zig</code></a>.</p>
-<p>But the WebAssembly won’t load because we haven’t fixed the WebAssembly Imports…</p>
+<p>Browse to our HTML <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.html"><strong>lvglwasm.html</strong></a></p>
+<ul>
+<li>
+<p>Which calls our JavaScript <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.js#L96-L114"><strong>lvglwasm.js</strong></a></p>
+<p>(To load the Compiled WebAssembly)</p>
+</li>
+<li>
+<p>Which calls our Zig Function <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L35-L85"><strong>lv_demo_widgets</strong></a></p>
+<p>(To render the LVGL Widgets)</p>
+</li>
+<li>
+<p>That’s exported to WebAssembly by our Zig App <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L35-L85"><strong>lvglwasm.zig</strong></a></p>
+<p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/lvglwasm.html">(Try the <strong>LVGL Demo</strong>)</a></p>
+</li>
+</ul>
+<p>But the WebAssembly won’t load in our Web Browser! We haven’t fixed the WebAssembly Imports…</p>
 <h1 id="fix-webassembly-imports"><a href="#fix-webassembly-imports">5 Fix WebAssembly Imports</a></h1>
 <p>TODO</p>
 <p><em>What happens if we don’t fix the WebAssembly Imports in our Zig Program?</em></p>
@@ -1199,6 +1212,7 @@ lv_color_t *get_canvas_buffer(void)
 }
 </code></pre></div>
 <p>And the LVGL Display renders OK in our HTML Canvas yay!</p>
+<p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/lvglwasm.html">(Try the <strong>LVGL Demo</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/zig-wasm3.png" alt="Render LVGL Display in Web Browser" /></p>
 <p>Here’s the log…</p>
 <div class="example-wrap"><pre class="language-text"><code>main: start
