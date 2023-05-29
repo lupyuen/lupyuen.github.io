@@ -964,6 +964,8 @@ render: function() {  // TODO: Add width and height
 }
 ```
 
+[(__imageData__ and __context__ are defined here)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.js#L69-L75)
+
 _But how does it fetch the LVGL Canvas Buffer?_
 
 The JavaScript above calls [__getCanvasBuffer__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L100-L104) (in Zig) and __get_canvas_buffer__ (in C) to fetch the LVGL Canvas Buffer: [display.c](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L9-L29)
