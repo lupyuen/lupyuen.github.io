@@ -993,11 +993,9 @@ And the LVGL Display renders OK in our HTML Canvas yay! (Pic above)
 
 (Thanks to [__daneelsan/minimal-zig-wasm-canvas__](https://github.com/daneelsan/minimal-zig-wasm-canvas))
 
-TODO: How to disassemble Compiled WebAssembly with cross-reference to Source Code? Like `objdump --source`? See [wabt](https://github.com/WebAssembly/wabt) and [binaryen](https://github.com/WebAssembly/binaryen)
-
 # What's Next
 
-TODO: Feature Phone UI, sufficient to press the buttons
+TODO: Feature Phone UI, sufficient to press the buttons, implement Mouse Down/Up Events
 
 Meanwhile please check out the other articles on NuttX for PinePhone...
 
@@ -1196,3 +1194,5 @@ And we forgot to compile [___lv_gc_clear_roots__](https://github.com/lvgl/lvgl/b
 After compiling [___lv_gc_clear_roots__](https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42) and [__lv_gc.c__](https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42), the "No Screen Found" error no longer appears.
 
 (Maybe we should disassemble the Compiled WebAssembly and look for other Undefined Variables at WebAssembly Address 0)
+
+TODO: How to disassemble Compiled WebAssembly with cross-reference to Source Code? Like `objdump --source`? See [wabt](https://github.com/WebAssembly/wabt) and [binaryen](https://github.com/WebAssembly/binaryen)
