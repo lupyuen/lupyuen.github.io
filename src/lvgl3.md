@@ -598,7 +598,7 @@ export fn custom_logger(buf: [*c]const u8) void {
 }
 ```
 
-(We should reimplement __millis__ in JavaScipt)
+(We should reimplement __millis__ in JavaScipt, though it might be slow)
 
 In the code above, we defined __lv_assert_handler__ and __custom_logger__ to handle __Assertions and Logging__ in LVGL.
 
