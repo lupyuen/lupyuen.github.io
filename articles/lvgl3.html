@@ -338,10 +338,11 @@ zig build-lib \
   lvglwasm.zig
 </code></pre></div>
 <p>And we cloned <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgltest.zig"><strong>lvgltest.zig</strong></a> to  <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig"><strong>lvglwasm.zig</strong></a>, because we’ll tweak it for WebAssembly.</p>
+<p>We removed our <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgltest.zig#L128-L149"><strong>Custom Panic Handler</strong></a>, the default one works fine for WebAssembly.</p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig#compile-zig-lvgl-app-to-webassembly">(More about this)</a></p>
+<p><em>What happens when we run this?</em></p>
 <p>TODO</p>
-<p>(We removed our Custom Panic Handler, the default one works fine for WebAssembly)</p>
-<p>This produces the Compiled WebAssembly <a href="lvglwasm.wasm"><code>lvglwasm.wasm</code></a>.</p>
+<p>The command above produces the Compiled WebAssembly <a href="lvglwasm.wasm"><code>lvglwasm.wasm</code></a>.</p>
 <p>Start a Local Web Server. <a href="https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb">(Like Web Server for Chrome)</a></p>
 <p>Browse to our HTML <a href="lvglwasm.html"><code>lvglwasm.html</code></a>. Which calls our JavaScript <a href="lvglwasm.js"><code>lvglwasm.js</code></a> to load the Compiled WebAssembly.</p>
 <p>Our JavaScript <a href="lvglwasm.js"><code>lvglwasm.js</code></a> calls the Zig Function <code>lv_demo_widgets</code> that’s exported to WebAssembly by our Zig App <a href="lvglwasm.zig"><code>lvglwasm.zig</code></a>.</p>
