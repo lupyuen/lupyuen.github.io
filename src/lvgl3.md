@@ -32,7 +32,7 @@ Maybe we can do better with newer tools like __Zig Compiler__? In this article w
 
 -   What's next for rendering __LVGL UI Controls__
 
-Someday our LVGL Apps will run in a __Web Browser and on PinePhone__!
+Maybe someday all our LVGL Apps will run in a __Web Browser and on PinePhone__!
 
 (And many other LVGL Devices!)
 
@@ -229,7 +229,7 @@ fn createWidgetsWrapped() !void {
 }
 ```
 
-[(__lvgl__ is our LVGL Wrapper Module for Zig)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig)
+[(__lvgl__ is our LVGL Wrapper for Zig)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig)
 
 [(More about this)](https://github.com/lupyuen/pinephone-lvgl-zig#lvgl-zig-app)
 
@@ -265,6 +265,10 @@ And our LVGL Zig App runs OK on PinePhone! (Pic above)
 [(More about this)](https://github.com/lupyuen/pinephone-lvgl-zig#build-lvgl-zig-app)
 
 # Simulate PinePhone UI with Zig, LVGL and WebAssembly
+
+_But will our Zig LVGL App run in a Web Browser with WebAssembly?_
+
+Let's find out!
 
 TODO
 
