@@ -264,120 +264,54 @@ And our LVGL Zig App runs OK on PinePhone! (Pic above)
 
 [(More about this)](https://github.com/lupyuen/pinephone-lvgl-zig#build-lvgl-zig-app)
 
-# Simulate PinePhone UI with Zig, LVGL and WebAssembly
+# LVGL App in WebAssembly
 
 _But will our Zig LVGL App run in a Web Browser with WebAssembly?_
 
-Let's find out!
+Let's find out! We shall...
 
-TODO
+1.  Compile our __Zig LVGL App__ to WebAssembly
 
-We're now building a __Feature Phone UI__ for NuttX on PinePhone...
+1.  Compile __LVGL Library__ from C to WebAssembly
 
-Can we simulate the Feature Phone UI with __Zig, LVGL and WebAssembly__ in a Web Browser? To make the UI Coding a little easier?
+    (With Zig Compiler)
 
-We have previously created a simple __LVGL App with Zig__ for PinePhone...
+1.  Render the __LVGL Display__ in JavaScript
 
-- [pinephone-lvgl-zig](https://github.com/lupyuen/pinephone-lvgl-zig)
+_Will our Zig LVGL App compile to WebAssembly?_
 
-Zig natively supports __WebAssembly__...
+Let's take the earlier steps to compile our Zig LVGL App. To __compile for WebAssembly__, we change...
 
-- [WebAssembly on Zig](https://ziglang.org/documentation/master/#WebAssembly)
+- "__zig build-obj__" to "__zig build-lib__"
 
-So we might run __Zig + JavaScript__ in a Web Browser like so...
+- Target becomes "__wasm32-freestanding__"
 
-- [WebAssembly With Zig in a Web Browser](https://dev.to/sleibrock/webassembly-with-zig-pt-ii-ei7)
+- Add "__-dynamic__" and "__-rdynamic__"
 
-But LVGL doesn't work with JavaScript yet. LVGL runs in a Web Browser by compiling with Emscripten and SDL...
-
-- [LVGL with Emscripten and SDL](https://github.com/lvgl/lv_web_emscripten)
-
-Therefore we shall do this...
-
-1.  Use Zig to compile LVGL from C to WebAssembly [(With `zig cc`)](https://github.com/lupyuen/zig-bl602-nuttx#zig-compiler-as-drop-in-replacement-for-gcc)
-
-1.  Use Zig to connect the JavaScript UI (canvas rendering + input events) to LVGL WebAssembly [(Like this)](https://dev.to/sleibrock/webassembly-with-zig-pt-ii-ei7)
-
-# Compile Zig LVGL App to WebAssembly
-
-TODO
-
-_Does our Zig LVGL App lvgltest.zig compile to WebAssembly?_
-
-Let's take the earlier steps to compile our Zig LVGL App `lvgltest.zig`. To compile for WebAssembly, we change...
-
-- `zig build-obj` to `zig build-lib`
-
-- Target becomes `-target wasm32-freestanding`
-
-- Remove `-mcpu`
-
-- Add `-dynamic` and `-rdynamic`
+- Remove "__-mcpu__"
 
 Like this...
 
 ```bash
-  ## Compile the Zig App for WebAssembly 
-  ## TODO: Change ".." to your NuttX Project Directory
-  zig build-lib \
-    --verbose-cimport \
-    -target wasm32-freestanding \
-    -dynamic \
-    -rdynamic \
-    -isystem "../nuttx/include" \
-    -I "../apps/include" \
-    -I "../apps/graphics/lvgl" \
-    -I "../apps/graphics/lvgl/lvgl/src/core" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/arm2d" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/nxp" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/nxp/pxp" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/nxp/vglite" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/sdl" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/stm32_dma2d" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/sw" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/swm341_dma2d" \
-    -I "../apps/graphics/lvgl/lvgl/src/font" \
-    -I "../apps/graphics/lvgl/lvgl/src/hal" \
-    -I "../apps/graphics/lvgl/lvgl/src/misc" \
-    -I "../apps/graphics/lvgl/lvgl/src/widgets" \
-    lvgltest.zig
+## Compile the Zig App `lvglwasm.zig`
+## for WebAssembly
+zig build-lib \
+  --verbose-cimport \
+  -target wasm32-freestanding \
+  -dynamic \
+  -rdynamic \
+  -isystem "../nuttx/include" \
+  -I "../apps/include" \
+  -I "../apps/graphics/lvgl" \
+  ...\
+  lvglwasm.zig
 ```
 
-[(According to this)](https://ziglang.org/documentation/master/#Freestanding)
+And we cloned [__lvgltest.zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgltest.zig) to  [__lvglwasm.zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig), because we'll tweak it for WebAssembly.
 
-OK no errors, this produces the Compiled WebAssembly `lvgltest.wasm`.
+[(More about this)](https://github.com/lupyuen/pinephone-lvgl-zig#compile-zig-lvgl-app-to-webassembly)
 
-Now we tweak [`lvgltest.zig`](lvgltest.zig) for WebAssembly, and call it [`lvglwasm.zig`](lvglwasm.zig)...
-
-```bash
-  ## Compile the Zig App for WebAssembly 
-  ## TODO: Change ".." to your NuttX Project Directory
-  zig build-lib \
-    --verbose-cimport \
-    -target wasm32-freestanding \
-    -dynamic \
-    -isystem "../nuttx/include" \
-    -I "../apps/include" \
-    -I "../apps/graphics/lvgl" \
-    -I "../apps/graphics/lvgl/lvgl/src/core" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/arm2d" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/nxp" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/nxp/pxp" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/nxp/vglite" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/sdl" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/stm32_dma2d" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/sw" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/swm341_dma2d" \
-    -I "../apps/graphics/lvgl/lvgl/src/font" \
-    -I "../apps/graphics/lvgl/lvgl/src/hal" \
-    -I "../apps/graphics/lvgl/lvgl/src/misc" \
-    -I "../apps/graphics/lvgl/lvgl/src/widgets" \
-    lvglwasm.zig
-```
-
-[(According to this)](https://ziglang.org/documentation/master/#Freestanding)
+TODO
 
 (We removed our Custom Panic Handler, the default one works fine for WebAssembly)
 
