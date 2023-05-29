@@ -470,9 +470,9 @@ Now we need to compile __lv_obj_clear_flag__ (and the other LVGL Files) from C t
 
 # Compile Entire LVGL Library to WebAssembly
 
-TODO
+_Compile the entire LVGL Library to WebAssembly? Sounds so tedious!_
 
-When we track down `lv_obj_clear_flag` and the other Missing Functions (by sheer tenacity), we get this trail of LVGL Source Files that need to be compiled from C to WebAssembly...
+Yeah through sheer tenacity we tracked down __lv_obj_clear_flag__ and all the __Missing LVGL Functions__ called by our Zig LVGL App...
 
 ```text
 widgets/lv_label.c
@@ -488,10 +488,12 @@ misc/lv_area.c
 core/lv_obj_scroll.c
 font/lv_font.c
 core/lv_obj_class.c
-(And many more)
+(Many many more)
 ```
 
 [(Based on LVGL 8.3.3)](https://github.com/lvgl/lvgl/tree/v8.3.3)
+
+TODO
 
 So we wrote a script to compile the above LVGL Source Files from C to WebAssembly with `zig cc`: [build.sh](https://github.com/lupyuen/pinephone-lvgl-zig/blob/2e1c97e49e51b1cbbe0964a9512eba141d0dd09f/build.sh#L7-L191)
 
@@ -1043,6 +1045,10 @@ pub export fn lv_demo_widgets() void {
 
 We're ready to render the LVGL Display!
 
+![Zig LVGL App rendered in Web Browser with WebAssembly](https://lupyuen.github.io/images/zig-wasm3.png)
+
+[_Zig LVGL App rendered in Web Browser with WebAssembly_](https://lupyuen.github.io/pinephone-lvgl-zig/lvglwasm.html)
+
 # Render LVGL Display in Web Browser
 
 TODO
@@ -1169,8 +1175,6 @@ lv_color_t *get_canvas_buffer(void)
 And the LVGL Display renders OK in our HTML Canvas yay!
 
 [(Try the __LVGL Demo__)](https://lupyuen.github.io/pinephone-lvgl-zig/lvglwasm.html)
-
-![Render LVGL Display in Web Browser](https://lupyuen.github.io/images/zig-wasm3.png)
 
 Here's the log...
 
