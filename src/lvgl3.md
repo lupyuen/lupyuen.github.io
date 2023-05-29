@@ -529,7 +529,7 @@ zig build-lib \
 
 Thus we're done with LVGL Library in WebAssembly! (Almost)
 
-_Now what happens when we run this?_
+_Now what happens when we run it?_
 
 JavaScript Console says that __strlen__ is missing...
 
@@ -540,21 +540,23 @@ Import #0 module="env" function="strlen" error:
 function import requires a callable
 ```
 
-TODO
+Which comes from the __C Standard Library__. Here's the workaround...
 
-Let's fix `strlen`...
+- [__"C Standard Library is Missing"__](https://lupyuen.github.io/articles/lvgl3#appendix-c-standard-library-is-missing)
 
-_Is it really OK to compile only the necessary LVGL Source Files? Instead of compiling ALL the LVGL Source Files?_
+_Is it really OK to compile only the necessary LVGL Source Files?_
 
-Be careful! We might miss out some symbols. Zig Compiler happily assumes that they are at WebAssembly Address 0...
+_Instead of compiling ALL the LVGL Source Files?_
 
-- ["LVGL Screen Not Found"](https://github.com/lupyuen/pinephone-lvgl-zig#lvgl-screen-not-found)
+Be careful! We might miss out some __Undefined Variables__... Zig Compiler happily assumes they're at __WebAssembly Address 0__. And remember to compile the __LVGL Fonts__!
 
-And remember to compile the LVGL Fonts!
+- [__"LVGL Screen Not Found"__](https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-screen-not-found)
 
-- ["LVGL Fonts"](https://github.com/lupyuen/pinephone-lvgl-zig#lvgl-fonts)
+- [__"LVGL Fonts"__](https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-fonts)
 
-TODO: Disassemble the Compiled WebAssembly and look for other Undefined Variables at WebAssembly Address 0
+Thus we really ought to compile ALL the LVGL Source Files.
+
+(Maybe we should disassemble the Compiled WebAssembly and look for other Undefined Variables at WebAssembly Address 0)
 
 # LVGL Porting Layer for WebAssembly
 
