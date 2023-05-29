@@ -676,7 +676,7 @@ c.lv_disp_drv_init(&amp;disp_drv);
 <p><em>What’s an Opaque Type in Zig?</em></p>
 <p>When we <strong>import a C Struct</strong> into Zig and it contains <strong>Bit Fields</strong>…</p>
 <p>Zig Compiler won’t let us <strong>access the fields</strong> of the C Struct. And we can’t allocate the C Struct either.</p>
-<p><strong>lv_disp_drv_t</strong> contains Bit Fields, hence it’s an Opaque Type and inaccessible in Zig. <a href="https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types">(See this)</a></p>
+<p><strong>lv_disp_drv_t</strong> contains Bit Fields, hence it’s an <strong>Opaque Type</strong> and inaccessible in Zig. <a href="https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types">(See this)</a></p>
 <p><em>Bummer. How to fix Opaque Types in Zig?</em></p>
 <p>Our workaround is to write <strong>C Functions to allocate</strong> and initialise the Opaque Types…</p>
 <ul>
@@ -759,8 +759,11 @@ pub export fn lv_demo_widgets() void {
     _ = c.lv_timer_handler();
   }
 </code></pre></div>
-<p>We’re ready to render the LVGL Display!</p>
-<p>TODO</p>
+<p>We’re ready to render the LVGL Display in our HTML Page!</p>
+<p><em>Something doesn’t look right…</em></p>
+<p>Yeah we should have called <strong>lv_timer_handler</strong> from our JavaScript.</p>
+<p>(Triggered by a JavaScript Timer or <strong>requestAnimationFrame</strong>)</p>
+<p>But for our quick demo, this will do. For now!</p>
 <p><img src="https://lupyuen.github.io/images/zig-wasm3.png" alt="Zig LVGL App rendered in Web Browser with WebAssembly" /></p>
 <p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/lvglwasm.html"><em>Zig LVGL App rendered in Web Browser with WebAssembly</em></a></p>
 <h1 id="render-lvgl-display-in-web-browser"><a href="#render-lvgl-display-in-web-browser">11 Render LVGL Display in Web Browser</a></h1>
