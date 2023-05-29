@@ -829,29 +829,26 @@ export fn flushDisplay(
 }
 </code></pre></div>
 <p><strong>flushDisplay</strong> (in Zig) calls <strong>render</strong> (in JavaScript) to render the LVGL Display Canvas.</p>
-<p><em>Phew OK. What happens in JavaScript?</em></p>
+<p><em>Phew OK. What happens in our JavaScript?</em></p>
 <p><strong>render</strong> (in JavaScript) draws the LVGL Canvas Buffer to our HTML Canvas: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.js#L29-L53">lvglwasm.js</a></p>
-<div class="example-wrap"><pre class="language-javascript"><code>// Export JavaScript Functions to Zig
-const importObject = {
-  // JavaScript Functions exported to Zig
-  env: {
-    // Render the LVGL Canvas from Zig to HTML
-    // https://github.com/daneelsan/minimal-zig-wasm-canvas/blob/master/script.js
-    render: function() {  // TODO: Add width and height
+<div class="example-wrap"><pre class="language-javascript"><code>// Render the LVGL Canvas from Zig to HTML
+// https://github.com/daneelsan/minimal-zig-wasm-canvas/blob/master/script.js
+render: function() {  // TODO: Add width and height
 
-      // Get the WebAssembly Pointer to the LVGL Canvas Buffer
-      const bufferOffset = wasm.instance.exports.getCanvasBuffer();
+  // Get the WebAssembly Pointer to the LVGL Canvas Buffer
+  const bufferOffset = wasm.instance.exports.getCanvasBuffer();
 
-      // Load the WebAssembly Pointer into a JavaScript Image Data
-      const memory = wasm.instance.exports.memory;
-      const ptr = bufferOffset;
-      const len = (canvas.width * canvas.height) * 4;
-      const imageDataArray = new Uint8Array(memory.buffer, ptr, len)
-      imageData.data.set(imageDataArray);
+  // Load the WebAssembly Pointer into a JavaScript Image Data
+  const memory = wasm.instance.exports.memory;
+  const ptr = bufferOffset;
+  const len = (canvas.width * canvas.height) * 4;
+  const imageDataArray = new Uint8Array(memory.buffer, ptr, len)
+  imageData.data.set(imageDataArray);
 
-      // Render the Image Data to the HTML Canvas
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      context.putImageData(imageData, 0, 0);
+  // Render the Image Data to the HTML Canvas
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.putImageData(imageData, 0, 0);
+}
 </code></pre></div>
 <p><em>But how does it fetch the LVGL Canvas Buffer?</em></p>
 <p>The JavaScript above calls <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L100-L104"><strong>getCanvasBuffer</strong></a> (in Zig) and <strong>get_canvas_buffer</strong> (in C) to fetch the LVGL Canvas Buffer: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L9-L29">display.c</a></p>
