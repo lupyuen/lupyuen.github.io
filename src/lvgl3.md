@@ -643,7 +643,7 @@ __wasmlog__ is our __Zig Logger for WebAssembly__: [wasmlog.zig](https://github.
 
 (Thanks to [__daneelsan/zig-wasm-logger__](https://github.com/daneelsan/zig-wasm-logger))
 
-Which calls JavaScript Functions __jsConsoleLogWrite__ and __jsConsoleLogFlush__ to log to the __JavaScript Console__: [lvglwasm.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.js#L54C1-L69)
+Which calls JavaScript Functions __jsConsoleLogWrite__ and __jsConsoleLogFlush__ to write logs to the JavaScript Console: [lvglwasm.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.js#L54C1-L69)
 
 ```javascript
 // Export JavaScript Functions to Zig
@@ -764,41 +764,47 @@ Finally with the workaround, here's how we __initialise the LVGL Display__ in Zi
 /// Main Function for our Zig LVGL App
 pub export fn lv_demo_widgets() void {
 
-    // Create the Memory Allocator for malloc
-    memory_allocator = std.heap.FixedBufferAllocator.init(&memory_buffer);
+  // Create the Memory Allocator for malloc
+  memory_allocator = std.heap.FixedBufferAllocator.init(&memory_buffer);
 
-    // Set the Custom Logger for LVGL
-    c.lv_log_register_print_cb(custom_logger);
+  // Set the Custom Logger for LVGL
+  c.lv_log_register_print_cb(custom_logger);
 
-    // Init LVGL
-    c.lv_init();
+  // Init LVGL
+  c.lv_init();
 
-    // Fetch pointers to Display Driver and Display Buffer
-    const disp_drv = c.get_disp_drv();
-    const disp_buf = c.get_disp_buf();
+  // Fetch pointers to Display Driver and Display Buffer,
+  // exported by our C Functions
+  const disp_drv = c.get_disp_drv();
+  const disp_buf = c.get_disp_buf();
 
-    // Init Display Buffer and Display Driver as pointers
-    c.init_disp_buf(disp_buf);
-    c.init_disp_drv(
-      disp_drv,  // Display Driver
-      disp_buf,  // Display Buffer
-      flushDisplay,  // Callback Function to Flush Display
-      720,  // Horizontal Resolution
-      1280  // Vertical Resolution
-    );
+  // Init Display Buffer and Display Driver as pointers,
+  // by calling our C Functions
+  c.init_disp_buf(disp_buf);
+  c.init_disp_drv(
+    disp_drv,  // Display Driver
+    disp_buf,  // Display Buffer
+    flushDisplay,  // Callback Function to Flush Display
+    720,  // Horizontal Resolution
+    1280  // Vertical Resolution
+  );
 
-    // Register the Display Driver
-    const disp = c.lv_disp_drv_register(disp_drv);
+  // Register the Display Driver as a pointer
+  const disp = c.lv_disp_drv_register(disp_drv);
 
-    // Create the widgets for display (with Zig Wrapper)
-    createWidgetsWrapped() catch |e| {
-      // In case of error, quit
-      std.log.err("createWidgetsWrapped failed: {}", .{e});
-      return;
-    };
+  // Create the widgets for display
+  createWidgetsWrapped() catch |e| {
+    // In case of error, quit
+    std.log.err("createWidgetsWrapped failed: {}", .{e});
+    return;
+  };
 
-    // Up Next: Handle LVGL Events
+  // Up Next: Handle LVGL Events
 ```
+
+[(__memory_allocator__ is explained here)](https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation)
+
+Now we handle LVGL Events...
 
 # Handle LVGL Events
 
