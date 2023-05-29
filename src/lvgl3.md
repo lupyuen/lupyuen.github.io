@@ -728,45 +728,39 @@ To __register the LVGL Display__, we follow these steps...
 
 _Easy peasy for Zig right?_
 
-But we can't do it in Zig...
+Sadly we can't do it in Zig...
 
 ```zig
-// Nope can't allocate `lv_disp_drv_t` in Zig!
+// Nope can't allocate LVGL Display Driver in Zig!
 // `lv_disp_drv_t` is an Opaque Type
 
 var disp_drv = c.lv_disp_drv_t{};
 c.lv_disp_drv_init(&disp_drv);
 ```
 
-Because __lv_disp_drv_t__ is an __Opaque Type__.
+Because LVGL Display Driver __lv_disp_drv_t__ is an __Opaque Type__.
 
 _What's an Opaque Type in Zig?_
 
 When we __import a C Struct__ into Zig and it contains __Bit Fields__...
 
-Zig won't let us __access the fields__ of the C Struct.
+Zig won't let us __access the fields__ of the C Struct. (And we can't allocate the C Struct either)
 
-(And we can't allocate the C Struct either)
+__lv_disp_drv_t__ contains Bit Fields, hence it's Opaque and inaccessible in Zig. [(See this)](https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types)
 
-__lv_disp_drv_t__ contains Bit Fields, hence it's Opaque. [(See this)](https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types)
+_Bummer. How to fix Opaque Types in Zig?_
 
-_Bummer. So how do we handle Opaque Types in Zig?_
+Our workaround is to write __C Functions to allocate__ and initialise the Opaque Types...
 
-TODO
+- [__"Fix Opaque Types"__](https://lupyuen.github.io/articles/lvgl#fix-opaque-types)
 
-Thus we apply this workaround to create `lv_disp_drv_t` in C...
+Which gives us this __LVGL Display Interface__ for Zig: [display.c](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c)
 
-- ["Fix Opaque Types"](https://lupyuen.github.io/articles/lvgl#fix-opaque-types)
-
-And we get this LVGL Display Interface for Zig: [display.c](display.c)
-
-Finally this is how we initialise the LVGL Display in Zig WebAssembly: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/d584f43c6354f12bdc15bdb8632cdd3f6f5dc7ff/lvglwasm.zig#L38-L84)
+Finally with the workaround, here's how we __initialise the LVGL Display__ in Zig: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L38-L84)
 
 ```zig
-/// We render an LVGL Screen with LVGL Widgets
+/// Main Function for our Zig LVGL App
 pub export fn lv_demo_widgets() void {
-    debug("lv_demo_widgets: start", .{});
-    defer debug("lv_demo_widgets: end", .{});
 
     // Create the Memory Allocator for malloc
     memory_allocator = std.heap.FixedBufferAllocator.init(&memory_buffer);
@@ -792,7 +786,6 @@ pub export fn lv_demo_widgets() void {
 
     // Register the Display Driver
     const disp = c.lv_disp_drv_register(disp_drv);
-    _ = disp;
 
     // Create the widgets for display (with Zig Wrapper)
     createWidgetsWrapped() catch |e| {
@@ -801,15 +794,7 @@ pub export fn lv_demo_widgets() void {
         return;
     };
 
-    // Handle LVGL Events
-    // TODO: Call this from Web Browser JavaScript, so that Web Browser won't block
-    var i: usize = 0;
-    while (i < 5) : (i += 1) {
-        debug("lv_timer_handler: start", .{});
-        _ = c.lv_timer_handler();
-        debug("lv_timer_handler: end", .{});
-    }
-}
+    // Up Next: Handle LVGL Events
 ```
 
 # Handle LVGL Events
