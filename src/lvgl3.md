@@ -720,25 +720,39 @@ According to the [__LVGL Docs__](https://docs.lvgl.io/8.3/porting/project.html#i
 
 1.  Call __lv_timer_handler__ every few milliseconds to handle __LVGL Tasks__
 
-TODO
+To __register the LVGL Display__, we follow these steps...
 
-To register the LVGL Display, we should do this...
+- [__Create LVGL Draw Buffer__](https://docs.lvgl.io/8.3/porting/display.html#draw-buffer)
 
-- [Create LVGL Draw Buffer](https://docs.lvgl.io/8.3/porting/display.html#draw-buffer)
+- [__Register LVGL Display__](https://docs.lvgl.io/8.3/porting/display.html#examples)
 
-- [Register LVGL Display](https://docs.lvgl.io/8.3/porting/display.html#examples)
+_Easy peasy for Zig right?_
 
-But we can't do this in Zig...
+But we can't do it in Zig...
 
 ```zig
-// Nope! lv_disp_drv_t is an Opaque Type
+// Nope can't allocate `lv_disp_drv_t` in Zig!
+// `lv_disp_drv_t` is an Opaque Type
+
 var disp_drv = c.lv_disp_drv_t{};
 c.lv_disp_drv_init(&disp_drv);
 ```
 
-Because `lv_disp_drv_t` is an Opaque Type.
+Because __lv_disp_drv_t__ is an __Opaque Type__.
 
-[(`lv_disp_drv_t` contains Bit Fields, hence it's Opaque)](https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types)
+_What's an Opaque Type in Zig?_
+
+When we __import a C Struct__ into Zig and it contains __Bit Fields__...
+
+Zig won't let us __access the fields__ of the C Struct.
+
+(And we can't allocate the C Struct either)
+
+__lv_disp_drv_t__ contains Bit Fields, hence it's Opaque. [(See this)](https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types)
+
+_Bummer. So how do we handle Opaque Types in Zig?_
+
+TODO
 
 Thus we apply this workaround to create `lv_disp_drv_t` in C...
 
