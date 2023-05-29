@@ -76,7 +76,7 @@
 <li><a href="#lvgl-porting-layer-for-webassembly">7 LVGL Porting Layer for WebAssembly</a><ul></ul></li>
 <li><a href="#webassembly-logger-for-lvgl">8 WebAssembly Logger for LVGL</a><ul></ul></li>
 <li><a href="#initialise-lvgl-display">9 Initialise LVGL Display</a><ul></ul></li>
-<li><a href="#handle-lvgl-events">10 Handle LVGL Events</a><ul></ul></li>
+<li><a href="#handle-lvgl-tasks">10 Handle LVGL Tasks</a><ul></ul></li>
 <li><a href="#render-lvgl-display-in-web-browser">11 Render LVGL Display in Web Browser</a><ul></ul></li>
 <li><a href="#todo">12 TODO</a><ul></ul></li>
 <li><a href="#whats-next">13 What’s Next</a><ul></ul></li>
@@ -722,44 +722,45 @@ pub export fn lv_demo_widgets() void {
     return;
   };
 
-  // Up Next: Handle LVGL Events
+  // Up Next: Handle LVGL Tasks
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation">(<strong>memory_allocator</strong> is explained here)</a></p>
-<p>Now we handle LVGL Events…</p>
-<h1 id="handle-lvgl-events"><a href="#handle-lvgl-events">10 Handle LVGL Events</a></h1>
-<p>TODO: To handle LVGL Events, call <code>lv_tick_inc</code> and <code>lv_timer_handler</code></p>
+<p>Now we handle LVGL Tasks…</p>
+<h1 id="handle-lvgl-tasks"><a href="#handle-lvgl-tasks">10 Handle LVGL Tasks</a></h1>
+<p>Earlier we talked about <strong>handling LVGL Tasks</strong>…</p>
 <ol>
 <li>
-<p>Call <code>lv_tick_inc(x)</code> every x milliseconds in an interrupt to report the elapsed time to LVGL</p>
-<p>(Not required, because LVGL calls <code>millis</code> to fetch the elapsed time)</p>
+<p>Call <strong>lv_tick_inc(x)</strong> every <strong>x</strong> milliseconds (in an Interrupt) to report the <strong>Elapsed Time</strong> to LVGL</p>
+<p><a href="https://lupyuen.github.io/articles/lvgl3#lvgl-porting-layer-for-webassembly">(Not required, because LVGL calls <strong>millis</strong> to fetch the Elapsed Time)</a></p>
 </li>
 <li>
-<p>Call <code>lv_timer_handler()</code> every few milliseconds to handle LVGL related tasks</p>
+<p>Call <strong>lv_timer_handler</strong> every few milliseconds to handle <strong>LVGL Tasks</strong></p>
 </li>
 </ol>
-<p><a href="https://docs.lvgl.io/8.3/porting/project.html#initialization">(Source)</a></p>
-<p>Like this: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/d584f43c6354f12bdc15bdb8632cdd3f6f5dc7ff/lvglwasm.zig#L65-L83">lvglwasm.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>    // Register the Display Driver
-    const disp = c.lv_disp_drv_register(disp_drv);
-    _ = disp;
+<p><a href="https://docs.lvgl.io/8.3/porting/project.html#initialization">(From the <strong>LVGL Docs</strong>)</a></p>
+<p>This is how we call <strong>lv_timer_handler</strong> in Zig: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L69-L85">lvglwasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Main Function for our Zig LVGL App
+pub export fn lv_demo_widgets() void {
 
-    // Create the widgets for display (with Zig Wrapper)
-    createWidgetsWrapped() catch |e| {
-        // In case of error, quit
-        std.log.err(&quot;createWidgetsWrapped failed: {}&quot;, .{e});
-        return;
-    };
+  // Omitted: Init LVGL Display
 
-    // Handle LVGL Events
-    // TODO: Call this from Web Browser JavaScript, so that Web Browser won&#39;t block
-    var i: usize = 0;
-    while (i &lt; 5) : (i += 1) {
-        debug(&quot;lv_timer_handler: start&quot;, .{});
-        _ = c.lv_timer_handler();
-        debug(&quot;lv_timer_handler: end&quot;, .{});
-    }
+  // Create the widgets for display
+  createWidgetsWrapped() catch |e| {
+    // In case of error, quit
+    std.log.err(&quot;createWidgetsWrapped failed: {}&quot;, .{e});
+    return;
+  };
+
+  // Handle LVGL Tasks
+  // TODO: Call this from Web Browser JavaScript,
+  // so that Web Browser won&#39;t block
+  var i: usize = 0;
+  while (i &lt; 5) : (i += 1) {
+    _ = c.lv_timer_handler();
+  }
 </code></pre></div>
 <p>We’re ready to render the LVGL Display!</p>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/zig-wasm3.png" alt="Zig LVGL App rendered in Web Browser with WebAssembly" /></p>
 <p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/lvglwasm.html"><em>Zig LVGL App rendered in Web Browser with WebAssembly</em></a></p>
 <h1 id="render-lvgl-display-in-web-browser"><a href="#render-lvgl-display-in-web-browser">11 Render LVGL Display in Web Browser</a></h1>
