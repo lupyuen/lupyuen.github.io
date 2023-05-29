@@ -901,28 +901,26 @@ lv_color_t *get_canvas_buffer(void) {
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl3.md"><strong>lupyuen.github.io/src/lvgl3.md</strong></a></p>
 <h1 id="appendix-c-standard-library-is-missing"><a href="#appendix-c-standard-library-is-missing">13 Appendix: C Standard Library is Missing</a></h1>
-<p>TODO</p>
 <p><em>strlen is missing from our Zig WebAssembly…</em></p>
 <p><em>But strlen should come from the C Standard Library! (musl)</em></p>
-<p>Not sure why <code>strlen</code> is missing, but we fixed it temporarily by copying from the Zig Library Source Code: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L280-L336">lvglwasm.zig</a></p>
+<p>Not sure why <strong>strlen</strong> is missing, but we fixed it (temporarily)) by copying from the <strong>Zig Library Source Code</strong>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L280-L336">lvglwasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// C Standard Library from zig-macos-x86_64-0.10.0-dev.2351+b64a1d5ab/lib/zig/c.zig
 export fn strlen(s: [*:0]const u8) callconv(.C) usize {
   return std.mem.len(s);
 }
 
-// Also memset, memcpy and strcpy...
+// Also memset, memcpy, strcpy...
 </code></pre></div>
-<p>TODO: Maybe because we didn’t export <code>strlen</code> in our Main Program <code>lvglwasm.zig</code>?</p>
-<p><em>What if we change the target to <code>wasm32-freestanding-musl</code>?</em></p>
+<p>(Maybe because we didn’t export <strong>strlen</strong> in our Zig Main Program <strong>lvglwasm.zig</strong>?)</p>
+<p><em>What if we change the target to wasm32-freestanding-musl?</em></p>
 <p>Nope doesn’t help, same problem.</p>
-<p><em>What if we use <code>zig build-exe</code> instead of <code>zig build-lib</code>?</em></p>
-<p>Sorry <code>zig build-exe</code> is meant for building WASI Executables. <a href="https://www.fermyon.com/wasm-languages/c-lang">(See this)</a></p>
-<p><code>zig build-exe</code> is not supposed to work for WebAssembly in the Web Browser. <a href="https://github.com/ziglang/zig/issues/1570#issuecomment-426370371">(See this)</a></p>
+<p><em>What if we use “zig build-exe” instead of “zig build-lib”?</em></p>
+<p>Sorry “<strong>zig build-exe</strong>” is meant for building <strong>WASI Executables</strong>. <a href="https://www.fermyon.com/wasm-languages/c-lang">(See this)</a></p>
+<p>“<strong>zig build-exe</strong>” is not supposed to work for WebAssembly in the Web Browser. <a href="https://github.com/ziglang/zig/issues/1570#issuecomment-426370371">(See this)</a></p>
 <h1 id="appendix-lvgl-memory-allocation"><a href="#appendix-lvgl-memory-allocation">14 Appendix: LVGL Memory Allocation</a></h1>
-<p>TODO</p>
-<p><em>What happens if we omit <code>-DLV_MEM_CUSTOM=1</code>?</em></p>
-<p>By default, LVGL uses the <a href="http://www.gii.upv.es/tlsf/">Two-Level Segregate Fit (TLSF) Allocator</a> for Heap Memory.</p>
-<p>But TLSF Allocator fails in <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_tlsf.c#L453-L460"><code>block_next</code></a>…</p>
+<p><em>What happens if we omit “-DLV_MEM_CUSTOM=1”?</em></p>
+<p>By default, LVGL uses the <a href="http://www.gii.upv.es/tlsf/"><strong>Two-Level Segregate Fit (TLSF) Allocator</strong></a> for Heap Memory.</p>
+<p>But TLSF Allocator fails inside <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_tlsf.c#L453-L460"><strong>block_next</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>main: start
 loop: start
 lv_demo_widgets: start
@@ -948,10 +946,10 @@ before lv_init
   at lv_init (004a5b4a:0x3f28)
   at lv_demo_widgets (004a5b4a:0x29bb9)
 </code></pre></div>
-<p>Thus we set <code>-DLV_MEM_CUSTOM=1</code> to use <code>malloc</code> instead of LVGL’s TLSF Allocator.</p>
-<p>(<a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_tlsf.c#L453-L460"><code>block_next</code></a> calls <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_tlsf.c#L440-L444"><code>offset_to_block</code></a>, which calls <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_tlsf.c#L274"><code>tlsf_cast</code></a>. Maybe the Pointer Cast doesn’t work for Clang WebAssembly?)</p>
-<p><em>But Zig doesn’t support <code>malloc</code> for WebAssembly!</em></p>
-<p>We used Zig’s FixedBufferAllocator: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L38-L44">lvglwasm.zig</a></p>
+<p>Thus we set “<strong>-DLV_MEM_CUSTOM=1</strong>” to call <strong>malloc</strong> instead of LVGL’s TLSF Allocator.</p>
+<p>(<a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_tlsf.c#L453-L460"><strong>block_next</strong></a> calls <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_tlsf.c#L440-L444"><strong>offset_to_block</strong></a>, which calls <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_tlsf.c#L274"><strong>tlsf_cast</strong></a>. Maybe the Pointer Cast doesn’t work for <strong>Clang WebAssembly</strong>?)</p>
+<p><em>But Zig doesn’t support malloc for WebAssembly!</em></p>
+<p>We called Zig’s <strong>FixedBufferAllocator</strong> to implement <strong>malloc</strong>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L38-L44">lvglwasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Main Function for our Zig LVGL App
 pub export fn lv_demo_widgets() void {
 
@@ -959,7 +957,7 @@ pub export fn lv_demo_widgets() void {
   memory_allocator = std.heap.FixedBufferAllocator
     .init(&amp;memory_buffer);
 </code></pre></div>
-<p>To implement <code>malloc</code> ourselves: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L201-L244">lvglwasm.zig</a></p>
+<p>Here’s our implementation of <strong>malloc</strong>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L201-L244">lvglwasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Zig replacement for malloc
 export fn malloc(size: usize) ?*anyopaque {
   // TODO: Save the slice length
@@ -998,29 +996,28 @@ var memory_allocator: std.heap.FixedBufferAllocator = undefined;
 /// Memory Buffer for malloc
 var memory_buffer = std.mem.zeroes([1024 * 1024]u8);
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/aade32dd70286866676b2d9728970c6b3cca9489/README.md#todo">(Remember to copy the old memory in <code>realloc</code>!)</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/aa080fb2ce55f9959cce2b6fff7e5fd5c9907cd6/README.md#lvgl-memory-allocation">(If we ever remove <code>-DLV_MEM_CUSTOM=1</code>, remember to set <code>-DLV_MEM_SIZE=1000000</code>)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/aade32dd70286866676b2d9728970c6b3cca9489/README.md#todo">(Remember to copy the old memory in <strong>realloc</strong>!)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/aa080fb2ce55f9959cce2b6fff7e5fd5c9907cd6/README.md#lvgl-memory-allocation">(If we ever remove “<strong>-DLV_MEM_CUSTOM=1</strong>”, remember to set “<strong>-DLV_MEM_SIZE=1000000</strong>”)</a></p>
 <h1 id="appendix-lvgl-fonts"><a href="#appendix-lvgl-fonts">15 Appendix: LVGL Fonts</a></h1>
-<p>TODO</p>
-<p>Remember to compile the LVGL Fonts! Or nothing will be rendered…</p>
-<div class="example-wrap"><pre class="language-bash"><code>  ## Compile LVGL Library from C to WebAssembly with Zig Compiler
-  compile_lvgl font/lv_font_montserrat_14.c lv_font_montserrat_14
-  compile_lvgl font/lv_font_montserrat_20.c lv_font_montserrat_20
+<p>Remember to <strong>compile the LVGL Fonts</strong>! Or our LVGL Text Label won’t be rendered…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Compile LVGL Fonts from C to WebAssembly with Zig Compiler
+compile_lvgl font/lv_font_montserrat_14.c lv_font_montserrat_14
+compile_lvgl font/lv_font_montserrat_20.c lv_font_montserrat_20
 
-  ## Compile the Zig LVGL App for WebAssembly 
-  zig build-lib \
-    -DLV_FONT_MONTSERRAT_14=1 \
-    -DLV_FONT_MONTSERRAT_20=1 \
-    -DLV_FONT_DEFAULT_MONTSERRAT_20=1 \
-    -DLV_USE_FONT_PLACEHOLDER=1 \
-    ...
-    lv_font_montserrat_14.o \
-    lv_font_montserrat_20.o \
+## Compile the Zig LVGL App for WebAssembly 
+## and link with LVGL Fonts
+zig build-lib \
+  -DLV_FONT_MONTSERRAT_14=1 \
+  -DLV_FONT_MONTSERRAT_20=1 \
+  -DLV_FONT_DEFAULT_MONTSERRAT_20=1 \
+  -DLV_USE_FONT_PLACEHOLDER=1 \
+  ...
+  lv_font_montserrat_14.o \
+  lv_font_montserrat_20.o \
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L21-L191">(Source)</a></p>
 <h1 id="appendix-lvgl-screen-not-found"><a href="#appendix-lvgl-screen-not-found">16 Appendix: LVGL Screen Not Found</a></h1>
-<p>TODO</p>
-<p><em>Why does LVGL say “no screen found” in <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/core/lv_obj_tree.c#L270-L289">lv_obj_get_disp</a>?</em></p>
+<p><em>Why does LVGL say “No Screen Found” in <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/core/lv_obj_tree.c#L270-L289">lv_obj_get_disp</a>?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>[Info]	lv_init: begin 	(in lv_obj.c line #102)
 [Trace]	lv_init: finished 	(in lv_obj.c line #183)
 before lv_disp_drv_register
@@ -1030,11 +1027,11 @@ before lv_disp_drv_register
 [Warn]	lv_obj_get_disp: No screen found 	(in lv_obj_tree.c line #290)
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/9610bb5209a072fc5950cf0559b1274d53dd8b8b/README.md#lvgl-screen-not-found">(See the Complete Log)</a></p>
-<p>That’s because the Display Linked List <code>_lv_disp_ll</code> is allocated by <code>LV_ITERATE_ROOTS</code> in <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42">_lv_gc_clear_roots</a>…</p>
-<p>And we forgot to compile <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42">_lv_gc_clear_roots</a> in <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42">lv_gc.c</a>. Duh!</p>
-<p>(Zig Compiler assumes that missing variables like <code>_lv_disp_ll</code> are at WebAssembly Address 0)</p>
-<p>After compiling <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42">_lv_gc_clear_roots</a> and <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42">lv_gc.c</a>, the “no screen found” error below no longer appears.</p>
-<p>TODO: Disassemble the Compiled WebAssembly and look for other Undefined Variables at WebAssembly Address 0</p>
+<p>That’s because the Display Linked List _<strong>lv_disp_ll</strong> is allocated by <strong>LV_ITERATE_ROOTS</strong> in <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42">_<strong>lv_gc_clear_roots</strong></a>…</p>
+<p>And we forgot to compile <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42">_<strong>lv_gc_clear_roots</strong></a> in <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42"><strong>lv_gc.c</strong></a>. Duh!</p>
+<p>(Zig Compiler assumes that Undefined Variables like _<strong>lv_disp_ll</strong> are at <strong>WebAssembly Address 0</strong>)</p>
+<p>After compiling <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42">_<strong>lv_gc_clear_roots</strong></a> and <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42"><strong>lv_gc.c</strong></a>, the “No Screen Found” error no longer appears.</p>
+<p>(Maybe we should disassemble the Compiled WebAssembly and look for other Undefined Variables at WebAssembly Address 0)</p>
 
     
 </body>
