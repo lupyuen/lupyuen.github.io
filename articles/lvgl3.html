@@ -146,7 +146,7 @@ export fn get_pixel_color(px: i32, py: i32) u8 {
 </li>
 <li>
 <p>Our <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/demo/game.js"><strong>JavaScript</strong></a> calls the Zig Function above to compute the Mandelbrot Set: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/demo/game.js">game.js</a></p>
-<div class="example-wrap"><pre class="language-javascript"><code>// Load the WebAssembly Module `mandelbrot.wasm`
+<div class="example-wrap"><pre class="language-javascript"><code>// Load our WebAssembly Module `mandelbrot.wasm`
 // https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/instantiateStreaming
 let Game = await WebAssembly.instantiateStreaming(
   fetch(&quot;mandelbrot.wasm&quot;),
@@ -201,51 +201,37 @@ zig build-lib \
 <p>Start a <strong>Local Web Server</strong>. <a href="https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb">(Like Web Server for Chrome)</a></p>
 <p>Browse to <strong>demo/demo.html</strong>. And we’ll see the Mandelbrot Set in our Web Browser! (Pic above)</p>
 <h1 id="zig-calls-javascript"><a href="#zig-calls-javascript">2 Zig Calls JavaScript</a></h1>
-<p><em>Can our Zig Function call out to JavaScript?</em></p>
-<p>TODO</p>
-<p><em>How do we import JavaScript Functions into our Zig Program?</em></p>
-<p>This is documented here…</p>
-<ul>
-<li><a href="https://ziglang.org/documentation/master/#WebAssembly">WebAssembly on Zig</a></li>
-</ul>
-<p>In our Zig Program, this is how we import and call a JavaScript Function: <a href="demo/mandelbrot.zig">demo/mandelbrot.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Import `print` Function from JavaScript
+<p><em>Can Zig call out to JavaScript?</em></p>
+<p>Yep Zig and JavaScript will happily <strong>interoperate both ways</strong>!</p>
+<p>In our Zig Program, this is how we <strong>import a JavaScript Function</strong> and call it: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/demo/mandelbrot.zig">mandelbrot.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// Import Print Function from JavaScript into Zig
 extern fn print(i32) void;
-...
-// Test printing to JavaScript Console.
-// Warning: This is slow!
+
+// Print a number to JavaScript Console. Warning: This is slow!
 if (iterations == 1) { print(iterations); }
 </code></pre></div>
-<p>We define the JavaScript Function <code>print</code> when loading the WebAssembly Module in our JavaScript: <a href="demo/game.js">demo/game.js</a></p>
+<p>We export the JavaScript Function <strong>print</strong> as we load the WebAssembly Module: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/demo/game.js">game.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Export JavaScript Functions to Zig
 let importObject = {
-    // JavaScript Environment exported to Zig
-    env: {
-        // JavaScript Print Function exported to Zig
-        print: function(x) { console.log(x); }
-    }
+  // JavaScript Environment exported to Zig
+  env: {
+    // JavaScript Print Function exported to Zig
+    print: function(x) { console.log(x); }
+  }
 };
 
-// Load the WebAssembly Module
-// https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/instantiateStreaming
-async function bootstrap() {
-
-    // Store references to WebAssembly Functions and Memory exported by Zig
-    Game = await WebAssembly.instantiateStreaming(
-        fetch(&quot;mandelbrot.wasm&quot;),
-        importObject
-    );
-
-    // Start the Main Function
-    main();
-}
-
-// Start the loading of WebAssembly Module
-bootstrap();
+// Load our WebAssembly Module
+// and export our Print Function to Zig
+let Game = await WebAssembly.instantiateStreaming(
+  fetch(&quot;mandelbrot.wasm&quot;),  // Load our WebAssembly Module
+  importObject               // Export our Print Function to Zig
+);
 </code></pre></div>
-<p><em>Will this work for passing Strings and Buffers as parameters?</em></p>
-<p>Nope, the parameter will be passed as a number. (Probably a WebAssembly Data Address)</p>
-<p>To pass Strings and Buffers between JavaScript and Zig, see <a href="https://github.com/daneelsan/zig-wasm-logger">daneelsan/zig-wasm-logger</a>.</p>
+<p>This works OK for printing numbers to the JavaScript Console.</p>
+<p><a href="https://ziglang.org/documentation/master/#WebAssembly">(As explained here)</a></p>
+<p><em>Will this work for passing Strings and Buffers?</em></p>
+<p>It gets complicated… We need to snoop the <strong>WebAssembly Memory</strong>.</p>
+<p>We’ll come back to this when we talk about WebAssembly Logging.</p>
 <h1 id="lvgl-zig-app"><a href="#lvgl-zig-app">3 LVGL Zig App</a></h1>
 <p>TODO</p>
 <p>Let’s run this LVGL Zig App on PinePhone: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/c7a33f1fe3af4babaa8bc5502ca2b719ae95c2ca/lvgltest.zig#L55-L89">lvgltest.zig</a></p>
