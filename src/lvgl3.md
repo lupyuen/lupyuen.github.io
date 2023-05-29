@@ -241,7 +241,6 @@ To __compile our Zig LVGL App__ for PinePhone and NuttX RTOS...
 ## Compile the Zig App `lvgltest.zig`
 ## for PinePhone (Armv8-A with Cortex-A53)
 zig build-obj \
-  --verbose-cimport \
   -target aarch64-freestanding-none \
   -mcpu cortex_a53 \
   -isystem "../nuttx/include" \
@@ -298,7 +297,6 @@ Like this...
 ## Compile the Zig App `lvglwasm.zig`
 ## for WebAssembly
 zig build-lib \
-  --verbose-cimport \
   -target wasm32-freestanding \
   -dynamic \
   -rdynamic \
@@ -309,7 +307,7 @@ zig build-lib \
   lvglwasm.zig
 ```
 
-And we cloned [__lvgltest.zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgltest.zig) to  [__lvglwasm.zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig), because we'll tweak it for WebAssembly.
+And we cloned [__lvgltest.zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgltest.zig) to [__lvglwasm.zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig), because we'll tweak it for WebAssembly.
 
 We removed our [__Custom Panic Handler__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgltest.zig#L128-L149), the default one works fine for WebAssembly.
 
@@ -335,26 +333,7 @@ Browse to our HTML [__lvglwasm.html__](https://github.com/lupyuen/pinephone-lvgl
 
   [(Try the __LVGL Demo__)](https://lupyuen.github.io/pinephone-lvgl-zig/lvglwasm.html)
 
-But the WebAssembly won't load in our Web Browser! We haven't fixed the WebAssembly Imports...
-
-# Fix WebAssembly Imports
-
-TODO
-
-_What happens if we don't fix the WebAssembly Imports in our Zig Program?_
-
-Suppose we forgot to import `puts()`. JavaScript Console will show this error when the Web Browser loads our Zig WebAssembly...
-
-```text
-Uncaught (in promise) LinkError:
-WebAssembly.instantiate():
-Import #0 module="env" function="puts" error:
-function import requires a callable
-```
-
-_But we haven't compiled the LVGL Library to WebAssembly!_
-
-Yep that's why LVGL Functions like `lv_label_create` are failing when the Web Browser loads our Zig WebAssembly...
+But the WebAssembly won't load in our Web Browser!
 
 ```text
 Uncaught (in promise) LinkError:
@@ -363,130 +342,18 @@ Import #1 module="env" function="lv_label_create" error:
 function import requires a callable
 ```
 
-We need to compile the LVGL Library with `zig cc` and link it in...
+That's because we haven't linked __lv_label_create__ from the LVGL Library.
+
+Let's compile the LVGL Library to WebAssembly...
 
 # Compile LVGL to WebAssembly with Zig Compiler
 
-TODO
+_Will Zig Compiler compile C Libraries? Like LVGL?_
 
-_How to compile LVGL from C to WebAssembly with Zig Compiler?_
-
-We'll use [`zig cc`](https://github.com/lupyuen/zig-bl602-nuttx#zig-compiler-as-drop-in-replacement-for-gcc), since Zig can compile C programs to WebAssembly.
-
-In the previous section, we're missing the LVGL Function `lv_label_create` in our Zig WebAssembly Module.
-
-`lv_label_create` is defined in this file...
-
-```text
-apps/lvgl/src/widgets/lv_label.c
-```
-
-According to `make --trace`, `lv_label.c` is compiled with...
-
-```bash
-## Compile LVGL in C
-## TODO: Change "../../.." to your NuttX Project Directory
-cd apps/graphics/lvgl
-aarch64-none-elf-gcc \
-  -c \
-  -fno-common \
-  -Wall \
-  -Wstrict-prototypes \
-  -Wshadow \
-  -Wundef \
-  -Werror \
-  -Os \
-  -fno-strict-aliasing \
-  -fomit-frame-pointer \
-  -ffunction-sections \
-  -fdata-sections \
-  -g \
-  -march=armv8-a \
-  -mtune=cortex-a53 \
-  -isystem ../../../nuttx/include \
-  -D__NuttX__  \
-  -pipe \
-  -I ../../../apps/graphics/lvgl \
-  -I "../../../apps/include" \
-  -Wno-format \
-  -Wno-format-security \
-  -Wno-unused-variable \
-  "-I./lvgl/src/core" \
-  "-I./lvgl/src/draw" \
-  "-I./lvgl/src/draw/arm2d" \
-  "-I./lvgl/src/draw/nxp" \
-  "-I./lvgl/src/draw/nxp/pxp" \
-  "-I./lvgl/src/draw/nxp/vglite" \
-  "-I./lvgl/src/draw/sdl" \
-  "-I./lvgl/src/draw/stm32_dma2d" \
-  "-I./lvgl/src/draw/sw" \
-  "-I./lvgl/src/draw/swm341_dma2d" \
-  "-I./lvgl/src/font" \
-  "-I./lvgl/src/hal" \
-  "-I./lvgl/src/misc" \
-  "-I./lvgl/src/widgets" \
-  "-DLV_ASSERT_HANDLER=ASSERT(0);" \
-  ./lvgl/src/widgets/lv_label.c \
-  -o  lv_label.c.Users.Luppy.PinePhone.wip-nuttx.apps.graphics.lvgl.o
-```
-
-Let's use the Zig Compiler to compile `lv_label.c` from C to WebAssembly....
-
-- Change `aarch64-none-elf-gcc` to `zig cc`
-
-- Remove `-march`, `-mtune`
-
-- Add the target `-target wasm32-freestanding`
-
-- Add `-dynamic` and `-rdynamic`
-
-- Add `-lc` (because we're calling C Standard Library)
-
-- Add `-DFAR=` (because we won't need Far Pointers)
-
-- Add `-DLV_MEM_CUSTOM=1` (because we're using `malloc` instead of LVGL's TLSF Allocator)
-
-- Set the Default Font to Montserrat 20...
-
-  ```text
-  -DLV_FONT_MONTSERRAT_14=1 \
-  -DLV_FONT_MONTSERRAT_20=1 \
-  -DLV_FONT_DEFAULT_MONTSERRAT_20=1 \
-  -DLV_USE_FONT_PLACEHOLDER=1 \
-  ```
-
-- Add `-DLV_USE_LOG=1` (to enable logging)
-
-- Add `-DLV_LOG_LEVEL=LV_LOG_LEVEL_TRACE` (for detailed logging)
-
-- For extra logging...
-
-  ```text
-  -DLV_LOG_TRACE_OBJ_CREATE=1 \
-  -DLV_LOG_TRACE_TIMER=1 \
-  -DLV_LOG_TRACE_MEM=1 \
-  ```
-
-- Change `"-DLV_ASSERT_HANDLER..."` to...
-
-  ```text
-  "-DLV_ASSERT_HANDLER={void lv_assert_handler(void); lv_assert_handler();}"
-  ```
-
-  [(To handle Assertion Failures ourselves)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/bee0e8d8ab9eae3a8c7cea6c64cc7896a5678f53/lvglwasm.zig#L170-L190)
-
-- Change the output to...
-
-  ```text
-  -o ../../../pinephone-lvgl-zig/lv_label.o`
-  ```
-
-Like this...
+Yep! This is how we call Zig Compiler to compile __lv_label_create__ from the LVGL Library...
 
 ```bash
 ## Compile LVGL from C to WebAssembly
-## TODO: Change "../../.." to your NuttX Project Directory
-cd apps/graphics/lvgl
 zig cc \
   -target wasm32-freestanding \
   -dynamic \
@@ -494,107 +361,99 @@ zig cc \
   -lc \
   -DFAR= \
   -DLV_MEM_CUSTOM=1 \
-  -DLV_FONT_MONTSERRAT_14=1 \
   -DLV_FONT_MONTSERRAT_20=1 \
   -DLV_FONT_DEFAULT_MONTSERRAT_20=1 \
-  -DLV_USE_FONT_PLACEHOLDER=1 \
   -DLV_USE_LOG=1 \
   -DLV_LOG_LEVEL=LV_LOG_LEVEL_TRACE \
-  -DLV_LOG_TRACE_OBJ_CREATE=1 \
-  -DLV_LOG_TRACE_TIMER=1 \
-  -DLV_LOG_TRACE_MEM=1 \
   "-DLV_ASSERT_HANDLER={void lv_assert_handler(void); lv_assert_handler();}" \
-  -c \
-  -fno-common \
-  -Wall \
-  -Wstrict-prototypes \
-  -Wshadow \
-  -Wundef \
-  -Werror \
-  -Os \
-  -fno-strict-aliasing \
-  -fomit-frame-pointer \
-  -ffunction-sections \
-  -fdata-sections \
-  -g \
-  -isystem ../../../nuttx/include \
-  -D__NuttX__  \
-  -pipe \
-  -I ../../../apps/graphics/lvgl \
-  -I "../../../apps/include" \
-  -Wno-format \
-  -Wno-format-security \
-  -Wno-unused-variable \
-  "-I./lvgl/src/core" \
-  "-I./lvgl/src/draw" \
-  "-I./lvgl/src/draw/arm2d" \
-  "-I./lvgl/src/draw/nxp" \
-  "-I./lvgl/src/draw/nxp/pxp" \
-  "-I./lvgl/src/draw/nxp/vglite" \
-  "-I./lvgl/src/draw/sdl" \
-  "-I./lvgl/src/draw/stm32_dma2d" \
-  "-I./lvgl/src/draw/sw" \
-  "-I./lvgl/src/draw/swm341_dma2d" \
-  "-I./lvgl/src/font" \
-  "-I./lvgl/src/hal" \
-  "-I./lvgl/src/misc" \
-  "-I./lvgl/src/widgets" \
-  ./lvgl/src/widgets/lv_label.c \
+  ... \
+  lvgl/src/widgets/lv_label.c \
   -o ../../../pinephone-lvgl-zig/lv_label.o
 ```
 
-This produces the Compiled WebAssembly `lv_label.o`.
+[(See the Complete Command)](https://github.com/lupyuen/pinephone-lvgl-zig#compile-lvgl-to-webassembly-with-zig-compiler)
 
-_Will Zig Compiler let us link `lv_label.o` with our Zig LVGL App?_
+This compiles __lv_label.c__ from C to WebAssembly and generates __lv_label.o__.
 
-Let's ask Zig Compiler to link `lv_label.o` with our Zig LVGL App [`lvglwasm.zig`](lvglwasm.zig)...
+We changed these options...
+
+- "__zig build-lib__" becomes "__zig cc__"
+
+  (Because we're compiling C, not Zig)
+
+- Add "__-lc__"
+
+  (Because we're calling C Standard Library)
+
+- Add "__-DFAR=__`
+
+  (Because we won't need Far Pointers)
+
+- Add "__-DLV_MEM_CUSTOM=1__"
+
+  [(Because we're calling __malloc__ instead of LVGL's TLSF Allocator)](https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation)
+
+- Set the __Default Font__ to Montserrat 20...
+
+  ```text
+  -DLV_FONT_MONTSERRAT_20=1 \
+  -DLV_FONT_DEFAULT_MONTSERRAT_20=1 \
+  ```
+
+  [(Remember to compile LVGL Fonts!)](https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-fonts)
+
+- Enable __Detailed Logging__...
+
+  ```text
+  -DLV_USE_LOG=1 \
+  -DLV_LOG_LEVEL=LV_LOG_LEVEL_TRACE \
+  ```
+
+  (We'll come back to this)
+
+- Handle __Assertion Failure__ ourselves...
+
+  ```text
+  "-DLV_ASSERT_HANDLER={void lv_assert_handler(void); lv_assert_handler();} \"
+  ```
+
+  [(Like this)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L190-L195)
+
+- Emit the __WebAssembly Object File__...
+
+  ```text
+  -o ../../../pinephone-lvgl-zig/lv_label.o`
+  ```
+
+This works because Zig Compiler calls [__Clang Compiler__](https://andrewkelley.me/post/zig-cc-powerful-drop-in-replacement-gcc-clang.html) to compile LVGL Library from C to WebAssembly.
+
+_So we link lv_label.o with our Zig LVGL App?_
+
+Yep we ask Zig Compiler to link the Compiled WebAssembly __lv_label.o__ with our Zig LVGL App [__lvglwasm.zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig)...
 
 ```bash
-  ## Compile the Zig App for WebAssembly 
-  ## TODO: Change ".." to your NuttX Project Directory
-  zig build-lib \
-    --verbose-cimport \
-    -target wasm32-freestanding \
-    -dynamic \
-    -rdynamic \
-    -lc \
-    -DFAR= \
-    -DLV_MEM_CUSTOM=1 \
-    -DLV_FONT_MONTSERRAT_14=1 \
-    -DLV_FONT_MONTSERRAT_20=1 \
-    -DLV_FONT_DEFAULT_MONTSERRAT_20=1 \
-    -DLV_USE_FONT_PLACEHOLDER=1 \
-    -DLV_USE_LOG=1 \
-    -DLV_LOG_LEVEL=LV_LOG_LEVEL_TRACE \
-    -DLV_LOG_TRACE_OBJ_CREATE=1 \
-    -DLV_LOG_TRACE_TIMER=1 \
-    -DLV_LOG_TRACE_MEM=1 \
-    "-DLV_ASSERT_HANDLER={void lv_assert_handler(void); lv_assert_handler();}" \
-    -I . \
-    -isystem "../nuttx/include" \
-    -I "../apps/include" \
-    -I "../apps/graphics/lvgl" \
-    -I "../apps/graphics/lvgl/lvgl/src/core" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/arm2d" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/nxp" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/nxp/pxp" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/nxp/vglite" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/sdl" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/stm32_dma2d" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/sw" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/swm341_dma2d" \
-    -I "../apps/graphics/lvgl/lvgl/src/font" \
-    -I "../apps/graphics/lvgl/lvgl/src/hal" \
-    -I "../apps/graphics/lvgl/lvgl/src/misc" \
-    -I "../apps/graphics/lvgl/lvgl/src/widgets" \
-    lvglwasm.zig \
-    lv_label.o
+## Compile the Zig App `lvglwasm.zig` for WebAssembly
+## linked with `lv_label.o` from LVGL Library
+zig build-lib \
+  -target wasm32-freestanding \
+  -dynamic \
+  -rdynamic \
+  -lc \
+  -DFAR= \
+  -DLV_MEM_CUSTOM=1 \
+  -DLV_FONT_MONTSERRAT_20=1 \
+  -DLV_FONT_DEFAULT_MONTSERRAT_20=1 \
+  -DLV_USE_LOG=1 \
+  -DLV_LOG_LEVEL=LV_LOG_LEVEL_TRACE \
+  "-DLV_ASSERT_HANDLER={void lv_assert_handler(void); lv_assert_handler();}" \
+  ... \
+  lvglwasm.zig \
+  lv_label.o
 ```
 
-[(Source)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/2e1c97e49e51b1cbbe0964a9512eba141d0dd09f/build.sh#L87-L191)
+[(See the Complete Command)](https://github.com/lupyuen/pinephone-lvgl-zig#compile-lvgl-to-webassembly-with-zig-compiler)
 
-Now we see this error in the Web Browser...
+When we browse to our HTML [__lvglwasm.html__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.html), we see this error in the JavaScript Console...
 
 ```text
 Uncaught (in promise) LinkError: 
@@ -603,11 +462,11 @@ Import #0 module="env" function="lv_obj_clear_flag" error:
 function import requires a callable
 ```
 
-`lv_label_create` is no longer missing, because Zig Compiler has linked `lv_label.o` into our Zig LVGL App.
+__lv_label_create__ is no longer missing, because Zig Compiler has linked __lv_label.o__ into our Zig LVGL App.
 
-Yep Zig Compiler will happily link WebAssembly Object Files with our Zig App yay!
+(Yep Zig Compiler works great for linking WebAssembly Object Files with our Zig App!)
 
-Now we need to compile `lv_obj_clear_flag` and the other LVGL Files from C to WebAssembly with Zig Compiler...
+Now we need to compile __lv_obj_clear_flag__ (and the other LVGL Files) from C to WebAssembly...
 
 # Compile Entire LVGL Library to WebAssembly
 
