@@ -675,8 +675,8 @@ c.lv_disp_drv_init(&amp;disp_drv);
 <p>(Same for the LVGL Draw Buffer <strong>lv_disp_draw_buf_t</strong>)</p>
 <p><em>What’s an Opaque Type in Zig?</em></p>
 <p>When we <strong>import a C Struct</strong> into Zig and it contains <strong>Bit Fields</strong>…</p>
-<p>Zig won’t let us <strong>access the fields</strong> of the C Struct. (And we can’t allocate the C Struct either)</p>
-<p><strong>lv_disp_drv_t</strong> contains Bit Fields, hence it’s Opaque and inaccessible in Zig. <a href="https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types">(See this)</a></p>
+<p>Zig Compiler won’t let us <strong>access the fields</strong> of the C Struct. And we can’t allocate the C Struct either.</p>
+<p><strong>lv_disp_drv_t</strong> contains Bit Fields, hence it’s an Opaque Type and inaccessible in Zig. <a href="https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types">(See this)</a></p>
 <p><em>Bummer. How to fix Opaque Types in Zig?</em></p>
 <p>Our workaround is to write <strong>C Functions to allocate</strong> and initialise the Opaque Types…</p>
 <ul>
