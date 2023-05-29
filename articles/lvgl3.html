@@ -561,7 +561,7 @@ export fn custom_logger(buf: [*c]const u8) void {
   wasmlog.Console.log(&quot;{s}&quot;, .{buf});
 }
 </code></pre></div>
-<p>(We should reimplement <strong>millis</strong> in JavaScipt)</p>
+<p>(We should reimplement <strong>millis</strong> in JavaScipt, though it might be slow)</p>
 <p>In the code above, we defined <strong>lv_assert_handler</strong> and <strong>custom_logger</strong> to handle <strong>Assertions and Logging</strong> in LVGL.</p>
 <p>Let’s talk about LVGL Logging…</p>
 <h1 id="webassembly-logger-for-lvgl"><a href="#webassembly-logger-for-lvgl">8 WebAssembly Logger for LVGL</a></h1>
