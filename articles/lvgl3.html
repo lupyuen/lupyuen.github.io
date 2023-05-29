@@ -541,7 +541,7 @@ Import #0 module=&quot;env&quot; function=&quot;millis&quot; error:
 function import requires a callable
 </code></pre></div>
 <p><a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/lv_conf_internal.h#L252-L254">(Because of this)</a></p>
-<p>We implement <strong>millis</strong> ourselves for WebAssembly: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L179-L200">lvglwasm.zig</a></p>
+<p>We implement <strong>millis</strong> in Zig: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L179-L200">lvglwasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// TODO: Return the number of elapsed milliseconds
 export fn millis() u32 {
   elapsed_ms += 1;
