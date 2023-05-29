@@ -748,7 +748,7 @@ When we __import a C Struct__ into Zig and it contains __Bit Fields__...
 
 Zig Compiler won't let us __access the fields__ of the C Struct. And we can't allocate the C Struct either.
 
-__lv_disp_drv_t__ contains Bit Fields, hence it's an Opaque Type and inaccessible in Zig. [(See this)](https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types)
+__lv_disp_drv_t__ contains Bit Fields, hence it's an __Opaque Type__ and inaccessible in Zig. [(See this)](https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types)
 
 _Bummer. How to fix Opaque Types in Zig?_
 
@@ -842,9 +842,15 @@ pub export fn lv_demo_widgets() void {
   }
 ```
 
-We're ready to render the LVGL Display!
+We're ready to render the LVGL Display in our HTML Page!
 
-TODO
+_Something doesn't look right..._
+
+Yeah we should have called __lv_timer_handler__ from our JavaScript.
+
+(Triggered by a JavaScript Timer or __requestAnimationFrame__)
+
+But for our quick demo, this will do. For now!
 
 ![Zig LVGL App rendered in Web Browser with WebAssembly](https://lupyuen.github.io/images/zig-wasm3.png)
 
