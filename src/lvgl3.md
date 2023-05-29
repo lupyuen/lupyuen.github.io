@@ -997,7 +997,7 @@ TODO: How to disassemble Compiled WebAssembly with cross-reference to Source Cod
 
 # What's Next
 
-TODO
+TODO: Feature Phone UI, sufficient to press the buttons
 
 Meanwhile please check out the other articles on NuttX for PinePhone...
 
