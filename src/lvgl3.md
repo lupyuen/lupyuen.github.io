@@ -939,32 +939,29 @@ export fn flushDisplay(
 
 __flushDisplay__ (in Zig) calls __render__ (in JavaScript) to render the LVGL Display Canvas.
 
-_Phew OK. What happens in JavaScript?_
+_Phew OK. What happens in our JavaScript?_
 
 __render__ (in JavaScript) draws the LVGL Canvas Buffer to our HTML Canvas: [lvglwasm.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.js#L29-L53)
 
 ```javascript
-// Export JavaScript Functions to Zig
-const importObject = {
-  // JavaScript Functions exported to Zig
-  env: {
-    // Render the LVGL Canvas from Zig to HTML
-    // https://github.com/daneelsan/minimal-zig-wasm-canvas/blob/master/script.js
-    render: function() {  // TODO: Add width and height
+// Render the LVGL Canvas from Zig to HTML
+// https://github.com/daneelsan/minimal-zig-wasm-canvas/blob/master/script.js
+render: function() {  // TODO: Add width and height
 
-      // Get the WebAssembly Pointer to the LVGL Canvas Buffer
-      const bufferOffset = wasm.instance.exports.getCanvasBuffer();
+  // Get the WebAssembly Pointer to the LVGL Canvas Buffer
+  const bufferOffset = wasm.instance.exports.getCanvasBuffer();
 
-      // Load the WebAssembly Pointer into a JavaScript Image Data
-      const memory = wasm.instance.exports.memory;
-      const ptr = bufferOffset;
-      const len = (canvas.width * canvas.height) * 4;
-      const imageDataArray = new Uint8Array(memory.buffer, ptr, len)
-      imageData.data.set(imageDataArray);
+  // Load the WebAssembly Pointer into a JavaScript Image Data
+  const memory = wasm.instance.exports.memory;
+  const ptr = bufferOffset;
+  const len = (canvas.width * canvas.height) * 4;
+  const imageDataArray = new Uint8Array(memory.buffer, ptr, len)
+  imageData.data.set(imageDataArray);
 
-      // Render the Image Data to the HTML Canvas
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      context.putImageData(imageData, 0, 0);
+  // Render the Image Data to the HTML Canvas
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.putImageData(imageData, 0, 0);
+}
 ```
 
 _But how does it fetch the LVGL Canvas Buffer?_
