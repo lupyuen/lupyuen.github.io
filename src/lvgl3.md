@@ -706,7 +706,7 @@ Let's initialise the LVGL Display...
 
 # Initialise LVGL Display
 
-_What will happen when LVGL starts running?_
+_What happens when LVGL starts running?_
 
 According to the [__LVGL Docs__](https://docs.lvgl.io/8.3/porting/project.html#initialization), this is how we __initialise and operate LVGL__...
 
@@ -714,7 +714,7 @@ According to the [__LVGL Docs__](https://docs.lvgl.io/8.3/porting/project.html#i
 
 1.  Register the __LVGL Display__ (and Input Devices)
 
-1.  Call __lv_tick_inc(x)__ every __x__ milliseconds in an interrupt to report the __Elapsed Time__ to LVGL
+1.  Call __lv_tick_inc(x)__ every __x__ milliseconds (in an Interrupt) to report the __Elapsed Time__ to LVGL
 
     [(Not required, because LVGL calls __millis__ to fetch the Elapsed Time)](https://lupyuen.github.io/articles/lvgl3#lvgl-porting-layer-for-webassembly)
 
@@ -777,11 +777,12 @@ pub export fn lv_demo_widgets() void {
 
     // Init Display Buffer and Display Driver as pointers
     c.init_disp_buf(disp_buf);
-    c.init_disp_drv(disp_drv, // Display Driver
-        disp_buf, // Display Buffer
-        flushDisplay, // Callback Function to Flush Display
-        720, // Horizontal Resolution
-        1280 // Vertical Resolution
+    c.init_disp_drv(
+      disp_drv,  // Display Driver
+      disp_buf,  // Display Buffer
+      flushDisplay,  // Callback Function to Flush Display
+      720,  // Horizontal Resolution
+      1280  // Vertical Resolution
     );
 
     // Register the Display Driver
@@ -789,9 +790,9 @@ pub export fn lv_demo_widgets() void {
 
     // Create the widgets for display (with Zig Wrapper)
     createWidgetsWrapped() catch |e| {
-        // In case of error, quit
-        std.log.err("createWidgetsWrapped failed: {}", .{e});
-        return;
+      // In case of error, quit
+      std.log.err("createWidgetsWrapped failed: {}", .{e});
+      return;
     };
 
     // Up Next: Handle LVGL Events
