@@ -835,7 +835,7 @@ pub export fn lv_demo_widgets() void {
 
   // Handle LVGL Tasks
   // TODO: Call this from Web Browser JavaScript,
-  // so that Web Browser won't block
+  // so that our Web Browser won't block
   var i: usize = 0;
   while (i < 5) : (i += 1) {
     _ = c.lv_timer_handler();
@@ -848,7 +848,7 @@ _Something doesn't look right..._
 
 Yeah we should have called __lv_timer_handler__ from our JavaScript.
 
-(Triggered by a JavaScript Timer or __requestAnimationFrame__)
+(Triggered by a JavaScript Timer or [__requestAnimationFrame__](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame))
 
 But for our quick demo, this will do. For now!
 
