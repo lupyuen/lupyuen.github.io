@@ -550,7 +550,7 @@ _Is it really OK to compile only the necessary LVGL Source Files?_
 
 _Instead of compiling ALL the LVGL Source Files?_
 
-Be careful! We might miss out some __Undefined Variables__... Zig Compiler happily assumes they're at __WebAssembly Address 0__. And remember to compile the __LVGL Fonts__!
+Be careful! We might miss out some __Undefined Variables__... Zig Compiler blissfully assumes they're at __WebAssembly Address 0__. And remember to compile the __LVGL Fonts__!
 
 - [__"LVGL Screen Not Found"__](https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-screen-not-found)
 
