@@ -654,23 +654,31 @@ no display registered to get its active screen
 <p>Call <strong>lv_timer_handler</strong> every few milliseconds to handle <strong>LVGL Tasks</strong></p>
 </li>
 </ol>
-<p>TODO</p>
-<p>To register the LVGL Display, we should do this…</p>
+<p>To <strong>register the LVGL Display</strong>, we follow these steps…</p>
 <ul>
 <li>
-<p><a href="https://docs.lvgl.io/8.3/porting/display.html#draw-buffer">Create LVGL Draw Buffer</a></p>
+<p><a href="https://docs.lvgl.io/8.3/porting/display.html#draw-buffer"><strong>Create LVGL Draw Buffer</strong></a></p>
 </li>
 <li>
-<p><a href="https://docs.lvgl.io/8.3/porting/display.html#examples">Register LVGL Display</a></p>
+<p><a href="https://docs.lvgl.io/8.3/porting/display.html#examples"><strong>Register LVGL Display</strong></a></p>
 </li>
 </ul>
-<p>But we can’t do this in Zig…</p>
-<div class="example-wrap"><pre class="language-zig"><code>// Nope! lv_disp_drv_t is an Opaque Type
+<p><em>Easy peasy for Zig right?</em></p>
+<p>But we can’t do it in Zig…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Nope can&#39;t allocate `lv_disp_drv_t` in Zig!
+// `lv_disp_drv_t` is an Opaque Type
+
 var disp_drv = c.lv_disp_drv_t{};
 c.lv_disp_drv_init(&amp;disp_drv);
 </code></pre></div>
-<p>Because <code>lv_disp_drv_t</code> is an Opaque Type.</p>
-<p><a href="https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types">(<code>lv_disp_drv_t</code> contains Bit Fields, hence it’s Opaque)</a></p>
+<p>Because <strong>lv_disp_drv_t</strong> is an <strong>Opaque Type</strong>.</p>
+<p><em>What’s an Opaque Type in Zig?</em></p>
+<p>When we <strong>import a C Struct</strong> into Zig and it contains <strong>Bit Fields</strong>…</p>
+<p>Zig won’t let us <strong>access the fields</strong> of the C Struct.</p>
+<p>(And we can’t allocate the C Struct either)</p>
+<p><strong>lv_disp_drv_t</strong> contains Bit Fields, hence it’s Opaque. <a href="https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types">(See this)</a></p>
+<p><em>Bummer. So how do we handle Opaque Types in Zig?</em></p>
+<p>TODO</p>
 <p>Thus we apply this workaround to create <code>lv_disp_drv_t</code> in C…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lvgl#fix-opaque-types">“Fix Opaque Types”</a></li>
