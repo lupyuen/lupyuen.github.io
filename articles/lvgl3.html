@@ -533,38 +533,36 @@ function import requires a callable
 <p>Thus we really ought to compile ALL the LVGL Source Files.</p>
 <p>(Maybe we should disassemble the Compiled WebAssembly and look for other Undefined Variables at WebAssembly Address 0)</p>
 <h1 id="lvgl-porting-layer-for-webassembly"><a href="#lvgl-porting-layer-for-webassembly">7 LVGL Porting Layer for WebAssembly</a></h1>
-<p>TODO</p>
-<p>LVGL expects us to provide a <code>millis</code> function that returns the number of elapsed milliseconds…</p>
+<p><em>Anything else we need for LVGL in WebAssembly?</em></p>
+<p>LVGL expects us to provide a <strong>millis</strong> function that returns the number of <strong>Elapsed Milliseconds</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Uncaught (in promise) LinkError: 
 WebAssembly.instantiate(): 
 Import #0 module=&quot;env&quot; function=&quot;millis&quot; error: 
 function import requires a callable
 </code></pre></div>
-<p>We implement <code>millis</code> ourselves for WebAssembly: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/bee0e8d8ab9eae3a8c7cea6c64cc7896a5678f53/lvglwasm.zig#L170-L190">lvglwasm.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>///////////////////////////////////////////////////////////////////////////////
-//  LVGL Porting Layer for WebAssembly
-
-/// TODO: Return the number of elapsed milliseconds
+<p><a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/lv_conf_internal.h#L252-L254">(Because of this)</a></p>
+<p>We implement <strong>millis</strong> ourselves for WebAssembly: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L179-L200">lvglwasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// TODO: Return the number of elapsed milliseconds
 export fn millis() u32 {
-    elapsed_ms += 1;
-    return elapsed_ms;
+  elapsed_ms += 1;
+  return elapsed_ms;
 }
 
 /// Number of elapsed milliseconds
 var elapsed_ms: u32 = 0;
 
-/// On Assertion Failure, print a Stack Trace and halt
+/// On Assertion Failure, ask Zig to print a Stack Trace and halt
 export fn lv_assert_handler() void {
-    @panic(&quot;*** lv_assert_handler: ASSERTION FAILED&quot;);
+  @panic(&quot;*** lv_assert_handler: ASSERTION FAILED&quot;);
 }
 
 /// Custom Logger for LVGL that writes to JavaScript Console
 export fn custom_logger(buf: [*c]const u8) void {
-    wasmlog.Console.log(&quot;{s}&quot;, .{buf});
+  wasmlog.Console.log(&quot;{s}&quot;, .{buf});
 }
 </code></pre></div>
-<p>TODO: Fix <code>millis</code>. How would it work in WebAssembly? Using a counter?</p>
-<p>In the code above, we defined <code>lv_assert_handler</code> and <code>custom_logger</code> to handle Assertions and Logging in LVGL.</p>
+<p>(We should reimplement <strong>millis</strong> in JavaScipt)</p>
+<p>In the code above, we defined <strong>lv_assert_handler</strong> and <strong>custom_logger</strong> to handle <strong>Assertions and Logging</strong> in LVGL.</p>
 <p>Let’s talk about LVGL Logging…</p>
 <h1 id="webassembly-logger-for-lvgl"><a href="#webassembly-logger-for-lvgl">8 WebAssembly Logger for LVGL</a></h1>
 <p>TODO</p>
