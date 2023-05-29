@@ -141,6 +141,8 @@ Start a __Local Web Server__. [(Like Web Server for Chrome)](https://chrome.goog
 
 Browse to __demo/demo.html__. And we'll see the Mandelbrot Set in our Web Browser! (Pic above)
 
+[(Try the __Mandelbrot Demo__)](https://lupyuen.github.io/pinephone-lvgl-zig/demo/demo.html)
+
 # Zig Calls JavaScript
 
 _Can Zig call out to JavaScript?_
@@ -315,17 +317,25 @@ We removed our [__Custom Panic Handler__](https://github.com/lupyuen/pinephone-l
 
 _What happens when we run this?_
 
-TODO
-
-The command above produces the Compiled WebAssembly [`lvglwasm.wasm`](lvglwasm.wasm).
+The command above produces the Compiled WebAssembly [__lvglwasm.wasm__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.wasm).
 
 Start a Local Web Server. [(Like Web Server for Chrome)](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb)
 
-Browse to our HTML [`lvglwasm.html`](lvglwasm.html). Which calls our JavaScript [`lvglwasm.js`](lvglwasm.js) to load the Compiled WebAssembly.
+Browse to our HTML [__lvglwasm.html__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.html)
 
-Our JavaScript [`lvglwasm.js`](lvglwasm.js) calls the Zig Function `lv_demo_widgets` that's exported to WebAssembly by our Zig App [`lvglwasm.zig`](lvglwasm.zig).
+- Which calls our JavaScript [__lvglwasm.js__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.js#L96-L114)
 
-But the WebAssembly won't load because we haven't fixed the WebAssembly Imports...
+  (To load the Compiled WebAssembly)
+
+- Which calls our Zig Function [__lv_demo_widgets__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L35-L85)
+
+  (To render the LVGL Widgets)
+
+- That's exported to WebAssembly by our Zig App [__lvglwasm.zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L35-L85)
+
+  [(Try the __LVGL Demo__)](https://lupyuen.github.io/pinephone-lvgl-zig/lvglwasm.html)
+
+But the WebAssembly won't load in our Web Browser! We haven't fixed the WebAssembly Imports...
 
 # Fix WebAssembly Imports
 
@@ -1298,6 +1308,8 @@ lv_color_t *get_canvas_buffer(void)
 ```
 
 And the LVGL Display renders OK in our HTML Canvas yay!
+
+[(Try the __LVGL Demo__)](https://lupyuen.github.io/pinephone-lvgl-zig/lvglwasm.html)
 
 ![Render LVGL Display in Web Browser](https://lupyuen.github.io/images/zig-wasm3.png)
 
