@@ -724,7 +724,7 @@ To __register the LVGL Display__, we follow these steps...
 
 - [__Create LVGL Draw Buffer__](https://docs.lvgl.io/8.3/porting/display.html#draw-buffer)
 
-- [__Register LVGL Display__](https://docs.lvgl.io/8.3/porting/display.html#examples)
+- [__Register LVGL Display Driver__](https://docs.lvgl.io/8.3/porting/display.html#examples)
 
 _Easy peasy for Zig right?_
 
@@ -739,6 +739,8 @@ c.lv_disp_drv_init(&disp_drv);
 ```
 
 Because LVGL Display Driver __lv_disp_drv_t__ is an __Opaque Type__.
+
+(Same for the LVGL Draw Buffer __lv_disp_draw_buf_t__)
 
 _What's an Opaque Type in Zig?_
 
