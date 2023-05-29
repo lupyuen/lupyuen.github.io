@@ -187,204 +187,82 @@ It gets complicated... We need to snoop the __WebAssembly Memory__.
 
 We'll come back to this when we talk about WebAssembly Logging.
 
-# LVGL Zig App
-
-TODO
-
-Let's run this LVGL Zig App on PinePhone: [lvgltest.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/c7a33f1fe3af4babaa8bc5502ca2b719ae95c2ca/lvgltest.zig#L55-L89)
-
-```zig
-/// Create the LVGL Widgets that will be rendered on the display. Calls the
-/// LVGL API that has been wrapped in Zig. Based on
-/// https://docs.lvgl.io/master/widgets/label.html?highlight=lv_label_create#line-wrap-recoloring-and-scrolling
-fn createWidgetsWrapped() !void {
-    debug("createWidgetsWrapped: start", .{});
-    defer { debug("createWidgetsWrapped: end", .{}); }
-
-    // Get the Active Screen
-    var screen = try lvgl.getActiveScreen();
-
-    // Create a Label Widget
-    var label = try screen.createLabel();
-
-    // Wrap long lines in the label text
-    label.setLongMode(c.LV_LABEL_LONG_WRAP);
-
-    // Interpret color codes in the label text
-    label.setRecolor(true);
-
-    // Center align the label text
-    label.setAlign(c.LV_TEXT_ALIGN_CENTER);
-
-    // Set the label text and colors
-    label.setText(
-        "#ff0000 HELLO# " ++    // Red Text
-        "#00aa00 LVGL ON# " ++  // Green Text
-        "#0000ff PINEPHONE!# "  // Blue Text
-    );
-
-    // Set the label width
-    label.setWidth(200);
-
-    // Align the label to the center of the screen, shift 30 pixels up
-    label.alignObject(c.LV_ALIGN_CENTER, 0, -30);
-}
-```
-
-_How is createWidgetsWrapped called?_
-
-`createWidgetsWrapped` will be called by the LVGL Widget Demo [`lv_demo_widgets`](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L96-L198), which we'll replace by this Zig version: [lvgltest.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/c7a33f1fe3af4babaa8bc5502ca2b719ae95c2ca/lvgltest.zig#L32-L41)
-
-```zig
-/// We render an LVGL Screen with LVGL Widgets
-pub export fn lv_demo_widgets() void {
-
-    // Create the widgets for display (with Zig Wrapper)
-    createWidgetsWrapped()
-        catch |e| {
-            // In case of error, quit
-            std.log.err("createWidgetsWrapped failed: {}", .{e});
-            return;
-        };
-```
-
-_Where's the Zig Wrapper for LVGL?_
-
-Our Zig Wrapper for LVGL is defined here...
-
--   [lvgl.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig)
-
-We also have a version of the LVGL Zig Code that doesn't call the Zig Wrapper...
-
--   [lvgltest.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/c7a33f1fe3af4babaa8bc5502ca2b719ae95c2ca/lvgltest.zig#L91-L126)
-
-# Build LVGL Zig App
-
-TODO
-
-NuttX Build runs this GCC Command to compile [lv_demo_widgets.c](https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L96-L198) for PinePhone...
-
-```bash
-$ make --trace
-...
-cd $HOME/PinePhone/wip-nuttx/apps/graphics/lvgl
-aarch64-none-elf-gcc
-  -c
-  -fno-common
-  -Wall
-  -Wstrict-prototypes
-  -Wshadow
-  -Wundef
-  -Werror
-  -Os
-  -fno-strict-aliasing
-  -fomit-frame-pointer
-  -g
-  -march=armv8-a
-  -mtune=cortex-a53
-  -isystem $HOME/PinePhone/wip-nuttx/nuttx/include
-  -D__NuttX__ 
-  -pipe
-  -I $HOME/PinePhone/wip-nuttx/apps/graphics/lvgl
-  -I "$HOME/PinePhone/wip-nuttx/apps/include"
-  -Wno-format
-  -Wno-unused-variable
-  "-I./lvgl/src/core"
-  "-I./lvgl/src/draw"
-  "-I./lvgl/src/draw/arm2d"
-  "-I./lvgl/src/draw/nxp"
-  "-I./lvgl/src/draw/nxp/pxp"
-  "-I./lvgl/src/draw/nxp/vglite"
-  "-I./lvgl/src/draw/sdl"
-  "-I./lvgl/src/draw/stm32_dma2d"
-  "-I./lvgl/src/draw/sw"
-  "-I./lvgl/src/draw/swm341_dma2d"
-  "-I./lvgl/src/font"
-  "-I./lvgl/src/hal"
-  "-I./lvgl/src/misc"
-  "-I./lvgl/src/widgets"
-  "-DLV_ASSERT_HANDLER=ASSERT(0);"   
-  lvgl/demos/widgets/lv_demo_widgets.c
-  -o  lvgl/demos/widgets/lv_demo_widgets.c.Users.Luppy.PinePhone.wip-nuttx.apps.graphics.lvgl.o
-```
-
-We'll copy the above GCC Options to the Zig Compiler and build this Zig Program for PinePhone...
-
--   [lvgltest.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgltest.zig)
-
-Here's the Shell Script...
-
-```bash
-## Build the LVGL Zig App
-function build_zig {
-
-  ## Go to LVGL Zig Folder
-  pushd ../pinephone-lvgl-zig
-  git pull
-
-  ## Check that NuttX Build has completed and `lv_demo_widgets.*.o` exists
-  if [ ! -f ../apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.*.o ] 
-  then
-    echo "*** Error: Build NuttX first before building Zig app"
-    exit 1
-  fi
-
-  ## Compile the Zig App for PinePhone 
-  ## (armv8-a with cortex-a53)
-  ## TODO: Change ".." to your NuttX Project Directory
-  zig build-obj \
-    --verbose-cimport \
-    -target aarch64-freestanding-none \
-    -mcpu cortex_a53 \
-    -isystem "../nuttx/include" \
-    -I "../apps/include" \
-    -I "../apps/graphics/lvgl" \
-    -I "../apps/graphics/lvgl/lvgl/src/core" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/arm2d" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/nxp" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/nxp/pxp" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/nxp/vglite" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/sdl" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/stm32_dma2d" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/sw" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/swm341_dma2d" \
-    -I "../apps/graphics/lvgl/lvgl/src/font" \
-    -I "../apps/graphics/lvgl/lvgl/src/hal" \
-    -I "../apps/graphics/lvgl/lvgl/src/misc" \
-    -I "../apps/graphics/lvgl/lvgl/src/widgets" \
-    lvgltest.zig
-
-  ## Copy the compiled app to NuttX and overwrite `lv_demo_widgets.*.o`
-  ## TODO: Change ".." to your NuttX Project Directory
-  cp lvgltest.o \
-    ../apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.*.o
-
-  ## Return to NuttX Folder
-  popd
-}
-
-## Download the LVGL Zig App
-git clone https://github.com/lupyuen/pinephone-lvgl-zig
-
-## Build NuttX for PinePhone
-cd nuttx
-make -j
-
-## Build the LVGL Zig App
-build_zig
-
-## Link the LVGL Zig App with NuttX
-make -j
-```
-
-[(Original Build Script)](https://gist.github.com/lupyuen/aa1f5c0c45e6029b10e5e2f955d8386c)
-
-[(Updated Build Script)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/2e1c97e49e51b1cbbe0964a9512eba141d0dd09f/build.sh#L192-L223)
-
-And our LVGL Zig App runs OK on PinePhone!
-
 ![Zig LVGL App in Zig on PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/lvgl2-zig.jpg)
+
+# LVGL App in Zig
+
+_Will Zig work with LVGL?_
+
+Yep we tested an __LVGL App in Zig__ with PinePhone and Apache NuttX RTOS (pic above): [lvgltest.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgltest.zig#L55-L89)
+
+```zig
+/// LVGL App in Zig that renders a Text Label 
+fn createWidgetsWrapped() !void {
+
+  // Get the Active Screen
+  var screen = try lvgl.getActiveScreen();
+
+  // Create a Label Widget
+  var label = try screen.createLabel();
+
+  // Wrap long lines in the label text
+  label.setLongMode(c.LV_LABEL_LONG_WRAP);
+
+  // Interpret color codes in the label text
+  label.setRecolor(true);
+
+  // Center align the label text
+  label.setAlign(c.LV_TEXT_ALIGN_CENTER);
+
+  // Set the label text and colors
+  label.setText(
+    "#ff0000 HELLO# " ++    // Red Text
+    "#00aa00 LVGL ON# " ++  // Green Text
+    "#0000ff PINEPHONE!# "  // Blue Text
+  );
+
+  // Set the label width
+  label.setWidth(200);
+
+  // Align the label to the center of the screen, shift 30 pixels up
+  label.alignObject(c.LV_ALIGN_CENTER, 0, -30);
+}
+```
+
+[(__lvgl__ is our LVGL Wrapper Module for Zig)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig)
+
+[(More about this)](https://github.com/lupyuen/pinephone-lvgl-zig#lvgl-zig-app)
+
+To __compile our Zig LVGL App__ for PinePhone and NuttX RTOS...
+
+```bash
+## Compile the Zig App `lvgltest.zig`
+## for PinePhone (Armv8-A with Cortex-A53)
+zig build-obj \
+  --verbose-cimport \
+  -target aarch64-freestanding-none \
+  -mcpu cortex_a53 \
+  -isystem "../nuttx/include" \
+  -I "../apps/include" \
+  -I "../apps/graphics/lvgl" \
+  ... \
+  lvgltest.zig
+
+## Copy the Compiled Zig App to NuttX RTOS
+## and overwrite `lv_demo_widgets.*.o`
+cp lvgltest.o \
+  ../apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.*.o
+
+## Omitted: Link the Compiled Zig App with NuttX RTOS
+```
+
+Zig Compiler produces an __Object File lvgltest.o__ that looks exactly like an ordinary C Object File...
+
+Which links perfectly fine into __Apache NuttX RTOS__.
+
+And our LVGL Zig App runs OK on PinePhone! (Pic above)
+
+[(More about this)](https://github.com/lupyuen/pinephone-lvgl-zig#build-lvgl-zig-app)
 
 # Simulate PinePhone UI with Zig, LVGL and WebAssembly
 
