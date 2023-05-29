@@ -637,24 +637,24 @@ no display registered to get its active screen
 </code></pre></div>
 <p>Let’s initialise the LVGL Display…</p>
 <h1 id="initialise-lvgl-display"><a href="#initialise-lvgl-display">9 Initialise LVGL Display</a></h1>
-<p>TODO</p>
-<p>According to the LVGL Docs, this is how we inititialise and operate LVGL…</p>
+<p><em>What will happen when LVGL starts running?</em></p>
+<p>According to the <a href="https://docs.lvgl.io/8.3/porting/project.html#initialization"><strong>LVGL Docs</strong></a>, this is how we <strong>initialise and operate LVGL</strong>…</p>
 <ol>
 <li>
-<p>Call <code>lv_init()</code></p>
+<p>Call <strong>lv_init</strong></p>
 </li>
 <li>
-<p>Register the LVGL Display and LVGL Input Devices</p>
+<p>Register the <strong>LVGL Display</strong> (and Input Devices)</p>
 </li>
 <li>
-<p>Call <code>lv_tick_inc(x)</code> every x milliseconds in an interrupt to report the elapsed time to LVGL</p>
-<p>(Not required, because LVGL calls <code>millis</code> to fetch the elapsed time)</p>
+<p>Call <strong>lv_tick_inc(x)</strong> every <strong>x</strong> milliseconds in an interrupt to report the <strong>Elapsed Time</strong> to LVGL</p>
+<p><a href="https://lupyuen.github.io/articles/lvgl3#lvgl-porting-layer-for-webassembly">(Not required, because LVGL calls <strong>millis</strong> to fetch the Elapsed Time)</a></p>
 </li>
 <li>
-<p>Call <code>lv_timer_handler()</code> every few milliseconds to handle LVGL related tasks</p>
+<p>Call <strong>lv_timer_handler</strong> every few milliseconds to handle <strong>LVGL Tasks</strong></p>
 </li>
 </ol>
-<p><a href="https://docs.lvgl.io/8.3/porting/project.html#initialization">(Source)</a></p>
+<p>TODO</p>
 <p>To register the LVGL Display, we should do this…</p>
 <ul>
 <li>
