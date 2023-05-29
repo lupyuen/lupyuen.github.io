@@ -562,9 +562,9 @@ Thus we really ought to compile ALL the LVGL Source Files.
 
 # LVGL Porting Layer for WebAssembly
 
-TODO
+_Anything else we need for LVGL in WebAssembly?_
 
-LVGL expects us to provide a `millis` function that returns the number of elapsed milliseconds...
+LVGL expects us to provide a __millis__ function that returns the number of __Elapsed Milliseconds__...
 
 ```text
 Uncaught (in promise) LinkError: 
@@ -573,35 +573,34 @@ Import #0 module="env" function="millis" error:
 function import requires a callable
 ```
 
-We implement `millis` ourselves for WebAssembly: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/bee0e8d8ab9eae3a8c7cea6c64cc7896a5678f53/lvglwasm.zig#L170-L190)
+[(Because of this)](https://github.com/lvgl/lvgl/blob/v8.3.3/src/lv_conf_internal.h#L252-L254)
+
+We implement __millis__ ourselves for WebAssembly: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L179-L200)
 
 ```zig
-///////////////////////////////////////////////////////////////////////////////
-//  LVGL Porting Layer for WebAssembly
-
 /// TODO: Return the number of elapsed milliseconds
 export fn millis() u32 {
-    elapsed_ms += 1;
-    return elapsed_ms;
+  elapsed_ms += 1;
+  return elapsed_ms;
 }
 
 /// Number of elapsed milliseconds
 var elapsed_ms: u32 = 0;
 
-/// On Assertion Failure, print a Stack Trace and halt
+/// On Assertion Failure, ask Zig to print a Stack Trace and halt
 export fn lv_assert_handler() void {
-    @panic("*** lv_assert_handler: ASSERTION FAILED");
+  @panic("*** lv_assert_handler: ASSERTION FAILED");
 }
 
 /// Custom Logger for LVGL that writes to JavaScript Console
 export fn custom_logger(buf: [*c]const u8) void {
-    wasmlog.Console.log("{s}", .{buf});
+  wasmlog.Console.log("{s}", .{buf});
 }
 ```
 
-TODO: Fix `millis`. How would it work in WebAssembly? Using a counter?
+(We should reimplement __millis__ in JavaScipt)
 
-In the code above, we defined `lv_assert_handler` and `custom_logger` to handle Assertions and Logging in LVGL.
+In the code above, we defined __lv_assert_handler__ and __custom_logger__ to handle __Assertions and Logging__ in LVGL.
 
 Let's talk about LVGL Logging...
 
