@@ -575,7 +575,7 @@ function import requires a callable
 
 [(Because of this)](https://github.com/lvgl/lvgl/blob/v8.3.3/src/lv_conf_internal.h#L252-L254)
 
-We implement __millis__ ourselves for WebAssembly: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L179-L200)
+We implement __millis__ in Zig: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L179-L200)
 
 ```zig
 /// TODO: Return the number of elapsed milliseconds
