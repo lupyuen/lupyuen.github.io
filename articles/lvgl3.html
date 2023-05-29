@@ -660,7 +660,7 @@ no display registered to get its active screen
 <p><a href="https://docs.lvgl.io/8.3/porting/display.html#draw-buffer"><strong>Create LVGL Draw Buffer</strong></a></p>
 </li>
 <li>
-<p><a href="https://docs.lvgl.io/8.3/porting/display.html#examples"><strong>Register LVGL Display</strong></a></p>
+<p><a href="https://docs.lvgl.io/8.3/porting/display.html#examples"><strong>Register LVGL Display Driver</strong></a></p>
 </li>
 </ul>
 <p><em>Easy peasy for Zig right?</em></p>
@@ -672,6 +672,7 @@ var disp_drv = c.lv_disp_drv_t{};
 c.lv_disp_drv_init(&amp;disp_drv);
 </code></pre></div>
 <p>Because LVGL Display Driver <strong>lv_disp_drv_t</strong> is an <strong>Opaque Type</strong>.</p>
+<p>(Same for the LVGL Draw Buffer <strong>lv_disp_draw_buf_t</strong>)</p>
 <p><em>What’s an Opaque Type in Zig?</em></p>
 <p>When we <strong>import a C Struct</strong> into Zig and it contains <strong>Bit Fields</strong>…</p>
 <p>Zig won’t let us <strong>access the fields</strong> of the C Struct. (And we can’t allocate the C Struct either)</p>
