@@ -22,6 +22,8 @@ Today LVGL runs in a Web Browser by compiling with [__Emscripten and SDL__](http
 
 Maybe we can do better with newer tools like __Zig Compiler__? In this article we'll...
 
+-   Explain how __Zig works with WebAssembly__ (and C Libraries)
+
 -   Compile __LVGL Library from C to WebAssembly__ (with Zig Compiler)
 
 -   Test it with an __LVGL App__ (in Zig)
@@ -30,7 +32,9 @@ Maybe we can do better with newer tools like __Zig Compiler__? In this article w
 
 -   What's next for rendering __LVGL UI Controls__
 
--   Soon we'll have LVGL Apps that will run in a __Web Browser and on PinePhone__!
+Soon we'll have LVGL Apps that will run in a __Web Browser and on PinePhone__!
+
+(And many other LVGL Devices!)
 
 # LVGL Zig App
 
