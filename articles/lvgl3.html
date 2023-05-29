@@ -68,7 +68,26 @@
     <h1 class="title">(Possibly) LVGL in WebAssembly with Zig Compiler</h1>
     <nav id="TOC"><ul>
 <li><a href="#todo">1 TODO</a><ul></ul></li>
-<li><a href="#whats-next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Jun 2023</em></p>
+<li><a href="#lvgl-zig-app">2 LVGL Zig App</a><ul></ul></li>
+<li><a href="#build-lvgl-zig-app">3 Build LVGL Zig App</a><ul></ul></li>
+<li><a href="#simulate-pinephone-ui-with-zig-lvgl-and-webassembly">4 Simulate PinePhone UI with Zig, LVGL and WebAssembly</a><ul></ul></li>
+<li><a href="#webassembly-demo-with-zig-and-javascript">5 WebAssembly Demo with Zig and JavaScript</a><ul></ul></li>
+<li><a href="#import-javascript-functions-into-zig">6 Import JavaScript Functions into Zig</a><ul></ul></li>
+<li><a href="#compile-zig-lvgl-app-to-webassembly">7 Compile Zig LVGL App to WebAssembly</a><ul></ul></li>
+<li><a href="#fix-webassembly-imports">8 Fix WebAssembly Imports</a><ul></ul></li>
+<li><a href="#compile-lvgl-to-webassembly-with-zig-compiler">9 Compile LVGL to WebAssembly with Zig Compiler</a><ul></ul></li>
+<li><a href="#compile-entire-lvgl-library-to-webassembly">10 Compile Entire LVGL Library to WebAssembly</a><ul></ul></li>
+<li><a href="#c-standard-library-is-missing">11 C Standard Library is Missing</a><ul></ul></li>
+<li><a href="#lvgl-porting-layer-for-webassembly">12 LVGL Porting Layer for WebAssembly</a><ul></ul></li>
+<li><a href="#webassembly-logger-for-lvgl">13 WebAssembly Logger for LVGL</a><ul></ul></li>
+<li><a href="#initialise-lvgl-display">14 Initialise LVGL Display</a><ul></ul></li>
+<li><a href="#render-lvgl-display-in-web-browser">15 Render LVGL Display in Web Browser</a><ul></ul></li>
+<li><a href="#lvgl-fonts">16 LVGL Fonts</a><ul></ul></li>
+<li><a href="#lvgl-memory-allocation">17 LVGL Memory Allocation</a><ul></ul></li>
+<li><a href="#handle-lvgl-events">18 Handle LVGL Events</a><ul></ul></li>
+<li><a href="#todo-1">19 TODO</a><ul></ul></li>
+<li><a href="#lvgl-screen-not-found">20 LVGL Screen Not Found</a><ul></ul></li>
+<li><a href="#whats-next">21 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Jun 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/lvgl3-title.png" alt="LVGL in WebAssembly with Zig Compiler" /></p>
 <p><a href="https://docs.lvgl.io/master/index.html"><strong>LVGL</strong></a> is a popular <strong>Graphics Library</strong> for Microcontrollers. (In C)</p>
 <p><a href="https://ziglang.org/"><strong>Zig Compiler</strong></a> works great for compiling <strong>C Libraries into WebAssembly</strong>. (Based on Clang)</p>
@@ -97,7 +116,1495 @@
 <p><img src="https://lupyuen.github.io/images/lvgl3-wasm.png" alt="Mandelbrot Set rendered with Zig and WebAssembly" /></p>
 <p><img src="https://lupyuen.github.io/images/lvgl2-zig.jpg" alt="Zig LVGL App in Zig on PinePhone with Apache NuttX RTOS" /></p>
 <p><img src="https://lupyuen.github.io/images/lvgl3-wasm2.png" alt="WebAssembly Logger for LVGL" /></p>
-<h1 id="whats-next"><a href="#whats-next">2 What’s Next</a></h1>
+<h1 id="lvgl-zig-app"><a href="#lvgl-zig-app">2 LVGL Zig App</a></h1>
+<p>TODO</p>
+<p>Let’s run this LVGL Zig App on PinePhone: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/c7a33f1fe3af4babaa8bc5502ca2b719ae95c2ca/lvgltest.zig#L55-L89">lvgltest.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Create the LVGL Widgets that will be rendered on the display. Calls the
+/// LVGL API that has been wrapped in Zig. Based on
+/// https://docs.lvgl.io/master/widgets/label.html?highlight=lv_label_create#line-wrap-recoloring-and-scrolling
+fn createWidgetsWrapped() !void {
+    debug(&quot;createWidgetsWrapped: start&quot;, .{});
+    defer { debug(&quot;createWidgetsWrapped: end&quot;, .{}); }
+
+    // Get the Active Screen
+    var screen = try lvgl.getActiveScreen();
+
+    // Create a Label Widget
+    var label = try screen.createLabel();
+
+    // Wrap long lines in the label text
+    label.setLongMode(c.LV_LABEL_LONG_WRAP);
+
+    // Interpret color codes in the label text
+    label.setRecolor(true);
+
+    // Center align the label text
+    label.setAlign(c.LV_TEXT_ALIGN_CENTER);
+
+    // Set the label text and colors
+    label.setText(
+        &quot;#ff0000 HELLO# &quot; ++    // Red Text
+        &quot;#00aa00 LVGL ON# &quot; ++  // Green Text
+        &quot;#0000ff PINEPHONE!# &quot;  // Blue Text
+    );
+
+    // Set the label width
+    label.setWidth(200);
+
+    // Align the label to the center of the screen, shift 30 pixels up
+    label.alignObject(c.LV_ALIGN_CENTER, 0, -30);
+}
+</code></pre></div>
+<p><em>How is createWidgetsWrapped called?</em></p>
+<p><code>createWidgetsWrapped</code> will be called by the LVGL Widget Demo <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L96-L198"><code>lv_demo_widgets</code></a>, which we’ll replace by this Zig version: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/c7a33f1fe3af4babaa8bc5502ca2b719ae95c2ca/lvgltest.zig#L32-L41">lvgltest.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// We render an LVGL Screen with LVGL Widgets
+pub export fn lv_demo_widgets() void {
+
+    // Create the widgets for display (with Zig Wrapper)
+    createWidgetsWrapped()
+        catch |e| {
+            // In case of error, quit
+            std.log.err(&quot;createWidgetsWrapped failed: {}&quot;, .{e});
+            return;
+        };
+</code></pre></div>
+<p><em>Where’s the Zig Wrapper for LVGL?</em></p>
+<p>Our Zig Wrapper for LVGL is defined here…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig">lvgl.zig</a></li>
+</ul>
+<p>We also have a version of the LVGL Zig Code that doesn’t call the Zig Wrapper…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/c7a33f1fe3af4babaa8bc5502ca2b719ae95c2ca/lvgltest.zig#L91-L126">lvgltest.zig</a></li>
+</ul>
+<h1 id="build-lvgl-zig-app"><a href="#build-lvgl-zig-app">3 Build LVGL Zig App</a></h1>
+<p>TODO</p>
+<p>NuttX Build runs this GCC Command to compile <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/demos/widgets/lv_demo_widgets.c#L96-L198">lv_demo_widgets.c</a> for PinePhone…</p>
+<div class="example-wrap"><pre class="language-bash"><code>$ make --trace
+...
+cd $HOME/PinePhone/wip-nuttx/apps/graphics/lvgl
+aarch64-none-elf-gcc
+  -c
+  -fno-common
+  -Wall
+  -Wstrict-prototypes
+  -Wshadow
+  -Wundef
+  -Werror
+  -Os
+  -fno-strict-aliasing
+  -fomit-frame-pointer
+  -g
+  -march=armv8-a
+  -mtune=cortex-a53
+  -isystem $HOME/PinePhone/wip-nuttx/nuttx/include
+  -D__NuttX__ 
+  -pipe
+  -I $HOME/PinePhone/wip-nuttx/apps/graphics/lvgl
+  -I &quot;$HOME/PinePhone/wip-nuttx/apps/include&quot;
+  -Wno-format
+  -Wno-unused-variable
+  &quot;-I./lvgl/src/core&quot;
+  &quot;-I./lvgl/src/draw&quot;
+  &quot;-I./lvgl/src/draw/arm2d&quot;
+  &quot;-I./lvgl/src/draw/nxp&quot;
+  &quot;-I./lvgl/src/draw/nxp/pxp&quot;
+  &quot;-I./lvgl/src/draw/nxp/vglite&quot;
+  &quot;-I./lvgl/src/draw/sdl&quot;
+  &quot;-I./lvgl/src/draw/stm32_dma2d&quot;
+  &quot;-I./lvgl/src/draw/sw&quot;
+  &quot;-I./lvgl/src/draw/swm341_dma2d&quot;
+  &quot;-I./lvgl/src/font&quot;
+  &quot;-I./lvgl/src/hal&quot;
+  &quot;-I./lvgl/src/misc&quot;
+  &quot;-I./lvgl/src/widgets&quot;
+  &quot;-DLV_ASSERT_HANDLER=ASSERT(0);&quot;   
+  lvgl/demos/widgets/lv_demo_widgets.c
+  -o  lvgl/demos/widgets/lv_demo_widgets.c.Users.Luppy.PinePhone.wip-nuttx.apps.graphics.lvgl.o
+</code></pre></div>
+<p>We’ll copy the above GCC Options to the Zig Compiler and build this Zig Program for PinePhone…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgltest.zig">lvgltest.zig</a></li>
+</ul>
+<p>Here’s the Shell Script…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Build the LVGL Zig App
+function build_zig {
+
+  ## Go to LVGL Zig Folder
+  pushd ../pinephone-lvgl-zig
+  git pull
+
+  ## Check that NuttX Build has completed and `lv_demo_widgets.*.o` exists
+  if [ ! -f ../apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.*.o ] 
+  then
+    echo &quot;*** Error: Build NuttX first before building Zig app&quot;
+    exit 1
+  fi
+
+  ## Compile the Zig App for PinePhone 
+  ## (armv8-a with cortex-a53)
+  ## TODO: Change &quot;..&quot; to your NuttX Project Directory
+  zig build-obj \
+    --verbose-cimport \
+    -target aarch64-freestanding-none \
+    -mcpu cortex_a53 \
+    -isystem &quot;../nuttx/include&quot; \
+    -I &quot;../apps/include&quot; \
+    -I &quot;../apps/graphics/lvgl&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/core&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/arm2d&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/nxp&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/nxp/pxp&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/nxp/vglite&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/sdl&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/stm32_dma2d&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/sw&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/swm341_dma2d&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/font&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/hal&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/misc&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/widgets&quot; \
+    lvgltest.zig
+
+  ## Copy the compiled app to NuttX and overwrite `lv_demo_widgets.*.o`
+  ## TODO: Change &quot;..&quot; to your NuttX Project Directory
+  cp lvgltest.o \
+    ../apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.*.o
+
+  ## Return to NuttX Folder
+  popd
+}
+
+## Download the LVGL Zig App
+git clone https://github.com/lupyuen/pinephone-lvgl-zig
+
+## Build NuttX for PinePhone
+cd nuttx
+make -j
+
+## Build the LVGL Zig App
+build_zig
+
+## Link the LVGL Zig App with NuttX
+make -j
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/aa1f5c0c45e6029b10e5e2f955d8386c">(Original Build Script)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/2e1c97e49e51b1cbbe0964a9512eba141d0dd09f/build.sh#L192-L223">(Updated Build Script)</a></p>
+<p>And our LVGL Zig App runs OK on PinePhone!</p>
+<p><img src="https://lupyuen.github.io/images/lvgl2-zig.jpg" alt="LVGL for PinePhone with Zig and Apache NuttX RTOS" /></p>
+<h1 id="simulate-pinephone-ui-with-zig-lvgl-and-webassembly"><a href="#simulate-pinephone-ui-with-zig-lvgl-and-webassembly">4 Simulate PinePhone UI with Zig, LVGL and WebAssembly</a></h1>
+<p>TODO</p>
+<p>We’re now building a <strong>Feature Phone UI</strong> for NuttX on PinePhone…</p>
+<p>Can we simulate the Feature Phone UI with <strong>Zig, LVGL and WebAssembly</strong> in a Web Browser? To make the UI Coding a little easier?</p>
+<p>We have previously created a simple <strong>LVGL App with Zig</strong> for PinePhone…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-lvgl-zig">pinephone-lvgl-zig</a></li>
+</ul>
+<p>Zig natively supports <strong>WebAssembly</strong>…</p>
+<ul>
+<li><a href="https://ziglang.org/documentation/master/#WebAssembly">WebAssembly on Zig</a></li>
+</ul>
+<p>So we might run <strong>Zig + JavaScript</strong> in a Web Browser like so…</p>
+<ul>
+<li><a href="https://dev.to/sleibrock/webassembly-with-zig-pt-ii-ei7">WebAssembly With Zig in a Web Browser</a></li>
+</ul>
+<p>But LVGL doesn’t work with JavaScript yet. LVGL runs in a Web Browser by compiling with Emscripten and SDL…</p>
+<ul>
+<li><a href="https://github.com/lvgl/lv_web_emscripten">LVGL with Emscripten and SDL</a></li>
+</ul>
+<p>Therefore we shall do this…</p>
+<ol>
+<li>
+<p>Use Zig to compile LVGL from C to WebAssembly <a href="https://github.com/lupyuen/zig-bl602-nuttx#zig-compiler-as-drop-in-replacement-for-gcc">(With <code>zig cc</code>)</a></p>
+</li>
+<li>
+<p>Use Zig to connect the JavaScript UI (canvas rendering + input events) to LVGL WebAssembly <a href="https://dev.to/sleibrock/webassembly-with-zig-pt-ii-ei7">(Like this)</a></p>
+</li>
+</ol>
+<h1 id="webassembly-demo-with-zig-and-javascript"><a href="#webassembly-demo-with-zig-and-javascript">5 WebAssembly Demo with Zig and JavaScript</a></h1>
+<p>TODO</p>
+<p>We can run <strong>Zig (WebAssembly) + JavaScript</strong> in a Web Browser like so…</p>
+<ul>
+<li><a href="https://dev.to/sleibrock/webassembly-with-zig-pt-ii-ei7">WebAssembly With Zig in a Web Browser</a></li>
+</ul>
+<p>Let’s run a simple demo…</p>
+<ul>
+<li>
+<p><a href="demo/mandelbrot.zig">demo/mandelbrot.zig</a>: Zig Program that compiles to WebAssembly</p>
+</li>
+<li>
+<p><a href="demo/game.js">demo/game.js</a>: JavaScript that loads the Zig WebAssembly</p>
+</li>
+<li>
+<p><a href="demo/demo.html">demo/demo.html</a>: HTML that calls the JavaScript</p>
+</li>
+</ul>
+<p>To compile Zig to WebAssembly…</p>
+<div class="example-wrap"><pre class="language-bash"><code>git clone --recursive https://github.com/lupyuen/pinephone-lvgl-zig
+cd pinephone-lvgl-zig
+cd demo
+zig build-lib \
+  mandelbrot.zig \
+  -target wasm32-freestanding \
+  -dynamic \
+  -rdynamic
+</code></pre></div>
+<p><a href="https://ziglang.org/documentation/master/#Freestanding">(According to this)</a></p>
+<p>This produces the Compiled WebAssembly <a href="mandelbrot.wasm"><code>mandelbrot.wasm</code></a>.</p>
+<p>Start a Local Web Server. <a href="https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb">(Like Web Server for Chrome)</a></p>
+<p>Browse to <code>demo/demo.html</code>. We should see the Mandelbrot Set yay!</p>
+<p><img src="https://lupyuen.github.io/images/zig-wasm.png" alt="Mandelbrot Set rendered with Zig and WebAssembly" /></p>
+<h1 id="import-javascript-functions-into-zig"><a href="#import-javascript-functions-into-zig">6 Import JavaScript Functions into Zig</a></h1>
+<p>TODO</p>
+<p><em>How do we import JavaScript Functions into our Zig Program?</em></p>
+<p>This is documented here…</p>
+<ul>
+<li><a href="https://ziglang.org/documentation/master/#WebAssembly">WebAssembly on Zig</a></li>
+</ul>
+<p>In our Zig Program, this is how we import and call a JavaScript Function: <a href="demo/mandelbrot.zig">demo/mandelbrot.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Import `print` Function from JavaScript
+extern fn print(i32) void;
+...
+// Test printing to JavaScript Console.
+// Warning: This is slow!
+if (iterations == 1) { print(iterations); }
+</code></pre></div>
+<p>We define the JavaScript Function <code>print</code> when loading the WebAssembly Module in our JavaScript: <a href="demo/game.js">demo/game.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Export JavaScript Functions to Zig
+let importObject = {
+    // JavaScript Environment exported to Zig
+    env: {
+        // JavaScript Print Function exported to Zig
+        print: function(x) { console.log(x); }
+    }
+};
+
+// Load the WebAssembly Module
+// https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/instantiateStreaming
+async function bootstrap() {
+
+    // Store references to WebAssembly Functions and Memory exported by Zig
+    Game = await WebAssembly.instantiateStreaming(
+        fetch(&quot;mandelbrot.wasm&quot;),
+        importObject
+    );
+
+    // Start the Main Function
+    main();
+}
+
+// Start the loading of WebAssembly Module
+bootstrap();
+</code></pre></div>
+<p><em>Will this work for passing Strings and Buffers as parameters?</em></p>
+<p>Nope, the parameter will be passed as a number. (Probably a WebAssembly Data Address)</p>
+<p>To pass Strings and Buffers between JavaScript and Zig, see <a href="https://github.com/daneelsan/zig-wasm-logger">daneelsan/zig-wasm-logger</a>.</p>
+<h1 id="compile-zig-lvgl-app-to-webassembly"><a href="#compile-zig-lvgl-app-to-webassembly">7 Compile Zig LVGL App to WebAssembly</a></h1>
+<p>TODO</p>
+<p><em>Does our Zig LVGL App lvgltest.zig compile to WebAssembly?</em></p>
+<p>Let’s take the earlier steps to compile our Zig LVGL App <code>lvgltest.zig</code>. To compile for WebAssembly, we change…</p>
+<ul>
+<li>
+<p><code>zig build-obj</code> to <code>zig build-lib</code></p>
+</li>
+<li>
+<p>Target becomes <code>-target wasm32-freestanding</code></p>
+</li>
+<li>
+<p>Remove <code>-mcpu</code></p>
+</li>
+<li>
+<p>Add <code>-dynamic</code> and <code>-rdynamic</code></p>
+</li>
+</ul>
+<p>Like this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>  ## Compile the Zig App for WebAssembly 
+  ## TODO: Change &quot;..&quot; to your NuttX Project Directory
+  zig build-lib \
+    --verbose-cimport \
+    -target wasm32-freestanding \
+    -dynamic \
+    -rdynamic \
+    -isystem &quot;../nuttx/include&quot; \
+    -I &quot;../apps/include&quot; \
+    -I &quot;../apps/graphics/lvgl&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/core&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/arm2d&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/nxp&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/nxp/pxp&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/nxp/vglite&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/sdl&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/stm32_dma2d&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/sw&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/swm341_dma2d&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/font&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/hal&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/misc&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/widgets&quot; \
+    lvgltest.zig
+</code></pre></div>
+<p><a href="https://ziglang.org/documentation/master/#Freestanding">(According to this)</a></p>
+<p>OK no errors, this produces the Compiled WebAssembly <code>lvgltest.wasm</code>.</p>
+<p>Now we tweak <a href="lvgltest.zig"><code>lvgltest.zig</code></a> for WebAssembly, and call it <a href="lvglwasm.zig"><code>lvglwasm.zig</code></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>  ## Compile the Zig App for WebAssembly 
+  ## TODO: Change &quot;..&quot; to your NuttX Project Directory
+  zig build-lib \
+    --verbose-cimport \
+    -target wasm32-freestanding \
+    -dynamic \
+    -isystem &quot;../nuttx/include&quot; \
+    -I &quot;../apps/include&quot; \
+    -I &quot;../apps/graphics/lvgl&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/core&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/arm2d&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/nxp&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/nxp/pxp&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/nxp/vglite&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/sdl&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/stm32_dma2d&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/sw&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/swm341_dma2d&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/font&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/hal&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/misc&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/widgets&quot; \
+    lvglwasm.zig
+</code></pre></div>
+<p><a href="https://ziglang.org/documentation/master/#Freestanding">(According to this)</a></p>
+<p>(We removed our Custom Panic Handler, the default one works fine for WebAssembly)</p>
+<p>This produces the Compiled WebAssembly <a href="lvglwasm.wasm"><code>lvglwasm.wasm</code></a>.</p>
+<p>Start a Local Web Server. <a href="https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb">(Like Web Server for Chrome)</a></p>
+<p>Browse to our HTML <a href="lvglwasm.html"><code>lvglwasm.html</code></a>. Which calls our JavaScript <a href="lvglwasm.js"><code>lvglwasm.js</code></a> to load the Compiled WebAssembly.</p>
+<p>Our JavaScript <a href="lvglwasm.js"><code>lvglwasm.js</code></a> calls the Zig Function <code>lv_demo_widgets</code> that’s exported to WebAssembly by our Zig App <a href="lvglwasm.zig"><code>lvglwasm.zig</code></a>.</p>
+<p>But the WebAssembly won’t load because we haven’t fixed the WebAssembly Imports…</p>
+<h1 id="fix-webassembly-imports"><a href="#fix-webassembly-imports">8 Fix WebAssembly Imports</a></h1>
+<p>TODO</p>
+<p><em>What happens if we don’t fix the WebAssembly Imports in our Zig Program?</em></p>
+<p>Suppose we forgot to import <code>puts()</code>. JavaScript Console will show this error when the Web Browser loads our Zig WebAssembly…</p>
+<div class="example-wrap"><pre class="language-text"><code>Uncaught (in promise) LinkError:
+WebAssembly.instantiate():
+Import #0 module=&quot;env&quot; function=&quot;puts&quot; error:
+function import requires a callable
+</code></pre></div>
+<p><em>But we haven’t compiled the LVGL Library to WebAssembly!</em></p>
+<p>Yep that’s why LVGL Functions like <code>lv_label_create</code> are failing when the Web Browser loads our Zig WebAssembly…</p>
+<div class="example-wrap"><pre class="language-text"><code>Uncaught (in promise) LinkError:
+WebAssembly.instantiate():
+Import #1 module=&quot;env&quot; function=&quot;lv_label_create&quot; error:
+function import requires a callable
+</code></pre></div>
+<p>We need to compile the LVGL Library with <code>zig cc</code> and link it in…</p>
+<h1 id="compile-lvgl-to-webassembly-with-zig-compiler"><a href="#compile-lvgl-to-webassembly-with-zig-compiler">9 Compile LVGL to WebAssembly with Zig Compiler</a></h1>
+<p>TODO</p>
+<p><em>How to compile LVGL from C to WebAssembly with Zig Compiler?</em></p>
+<p>We’ll use <a href="https://github.com/lupyuen/zig-bl602-nuttx#zig-compiler-as-drop-in-replacement-for-gcc"><code>zig cc</code></a>, since Zig can compile C programs to WebAssembly.</p>
+<p>In the previous section, we’re missing the LVGL Function <code>lv_label_create</code> in our Zig WebAssembly Module.</p>
+<p><code>lv_label_create</code> is defined in this file…</p>
+<div class="example-wrap"><pre class="language-text"><code>apps/lvgl/src/widgets/lv_label.c
+</code></pre></div>
+<p>According to <code>make --trace</code>, <code>lv_label.c</code> is compiled with…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Compile LVGL in C
+## TODO: Change &quot;../../..&quot; to your NuttX Project Directory
+cd apps/graphics/lvgl
+aarch64-none-elf-gcc \
+  -c \
+  -fno-common \
+  -Wall \
+  -Wstrict-prototypes \
+  -Wshadow \
+  -Wundef \
+  -Werror \
+  -Os \
+  -fno-strict-aliasing \
+  -fomit-frame-pointer \
+  -ffunction-sections \
+  -fdata-sections \
+  -g \
+  -march=armv8-a \
+  -mtune=cortex-a53 \
+  -isystem ../../../nuttx/include \
+  -D__NuttX__  \
+  -pipe \
+  -I ../../../apps/graphics/lvgl \
+  -I &quot;../../../apps/include&quot; \
+  -Wno-format \
+  -Wno-format-security \
+  -Wno-unused-variable \
+  &quot;-I./lvgl/src/core&quot; \
+  &quot;-I./lvgl/src/draw&quot; \
+  &quot;-I./lvgl/src/draw/arm2d&quot; \
+  &quot;-I./lvgl/src/draw/nxp&quot; \
+  &quot;-I./lvgl/src/draw/nxp/pxp&quot; \
+  &quot;-I./lvgl/src/draw/nxp/vglite&quot; \
+  &quot;-I./lvgl/src/draw/sdl&quot; \
+  &quot;-I./lvgl/src/draw/stm32_dma2d&quot; \
+  &quot;-I./lvgl/src/draw/sw&quot; \
+  &quot;-I./lvgl/src/draw/swm341_dma2d&quot; \
+  &quot;-I./lvgl/src/font&quot; \
+  &quot;-I./lvgl/src/hal&quot; \
+  &quot;-I./lvgl/src/misc&quot; \
+  &quot;-I./lvgl/src/widgets&quot; \
+  &quot;-DLV_ASSERT_HANDLER=ASSERT(0);&quot; \
+  ./lvgl/src/widgets/lv_label.c \
+  -o  lv_label.c.Users.Luppy.PinePhone.wip-nuttx.apps.graphics.lvgl.o
+</code></pre></div>
+<p>Let’s use the Zig Compiler to compile <code>lv_label.c</code> from C to WebAssembly….</p>
+<ul>
+<li>
+<p>Change <code>aarch64-none-elf-gcc</code> to <code>zig cc</code></p>
+</li>
+<li>
+<p>Remove <code>-march</code>, <code>-mtune</code></p>
+</li>
+<li>
+<p>Add the target <code>-target wasm32-freestanding</code></p>
+</li>
+<li>
+<p>Add <code>-dynamic</code> and <code>-rdynamic</code></p>
+</li>
+<li>
+<p>Add <code>-lc</code> (because we’re calling C Standard Library)</p>
+</li>
+<li>
+<p>Add <code>-DFAR=</code> (because we won’t need Far Pointers)</p>
+</li>
+<li>
+<p>Add <code>-DLV_MEM_CUSTOM=1</code> (because we’re using <code>malloc</code> instead of LVGL’s TLSF Allocator)</p>
+</li>
+<li>
+<p>Set the Default Font to Montserrat 20…</p>
+<div class="example-wrap"><pre class="language-text"><code>-DLV_FONT_MONTSERRAT_14=1 \
+-DLV_FONT_MONTSERRAT_20=1 \
+-DLV_FONT_DEFAULT_MONTSERRAT_20=1 \
+-DLV_USE_FONT_PLACEHOLDER=1 \
+</code></pre></div></li>
+<li>
+<p>Add <code>-DLV_USE_LOG=1</code> (to enable logging)</p>
+</li>
+<li>
+<p>Add <code>-DLV_LOG_LEVEL=LV_LOG_LEVEL_TRACE</code> (for detailed logging)</p>
+</li>
+<li>
+<p>For extra logging…</p>
+<div class="example-wrap"><pre class="language-text"><code>-DLV_LOG_TRACE_OBJ_CREATE=1 \
+-DLV_LOG_TRACE_TIMER=1 \
+-DLV_LOG_TRACE_MEM=1 \
+</code></pre></div></li>
+<li>
+<p>Change <code>&quot;-DLV_ASSERT_HANDLER...&quot;</code> to…</p>
+<div class="example-wrap"><pre class="language-text"><code>&quot;-DLV_ASSERT_HANDLER={void lv_assert_handler(void); lv_assert_handler();}&quot;
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/bee0e8d8ab9eae3a8c7cea6c64cc7896a5678f53/lvglwasm.zig#L170-L190">(To handle Assertion Failures ourselves)</a></p>
+</li>
+<li>
+<p>Change the output to…</p>
+<div class="example-wrap"><pre class="language-text"><code>-o ../../../pinephone-lvgl-zig/lv_label.o`
+</code></pre></div></li>
+</ul>
+<p>Like this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Compile LVGL from C to WebAssembly
+## TODO: Change &quot;../../..&quot; to your NuttX Project Directory
+cd apps/graphics/lvgl
+zig cc \
+  -target wasm32-freestanding \
+  -dynamic \
+  -rdynamic \
+  -lc \
+  -DFAR= \
+  -DLV_MEM_CUSTOM=1 \
+  -DLV_FONT_MONTSERRAT_14=1 \
+  -DLV_FONT_MONTSERRAT_20=1 \
+  -DLV_FONT_DEFAULT_MONTSERRAT_20=1 \
+  -DLV_USE_FONT_PLACEHOLDER=1 \
+  -DLV_USE_LOG=1 \
+  -DLV_LOG_LEVEL=LV_LOG_LEVEL_TRACE \
+  -DLV_LOG_TRACE_OBJ_CREATE=1 \
+  -DLV_LOG_TRACE_TIMER=1 \
+  -DLV_LOG_TRACE_MEM=1 \
+  &quot;-DLV_ASSERT_HANDLER={void lv_assert_handler(void); lv_assert_handler();}&quot; \
+  -c \
+  -fno-common \
+  -Wall \
+  -Wstrict-prototypes \
+  -Wshadow \
+  -Wundef \
+  -Werror \
+  -Os \
+  -fno-strict-aliasing \
+  -fomit-frame-pointer \
+  -ffunction-sections \
+  -fdata-sections \
+  -g \
+  -isystem ../../../nuttx/include \
+  -D__NuttX__  \
+  -pipe \
+  -I ../../../apps/graphics/lvgl \
+  -I &quot;../../../apps/include&quot; \
+  -Wno-format \
+  -Wno-format-security \
+  -Wno-unused-variable \
+  &quot;-I./lvgl/src/core&quot; \
+  &quot;-I./lvgl/src/draw&quot; \
+  &quot;-I./lvgl/src/draw/arm2d&quot; \
+  &quot;-I./lvgl/src/draw/nxp&quot; \
+  &quot;-I./lvgl/src/draw/nxp/pxp&quot; \
+  &quot;-I./lvgl/src/draw/nxp/vglite&quot; \
+  &quot;-I./lvgl/src/draw/sdl&quot; \
+  &quot;-I./lvgl/src/draw/stm32_dma2d&quot; \
+  &quot;-I./lvgl/src/draw/sw&quot; \
+  &quot;-I./lvgl/src/draw/swm341_dma2d&quot; \
+  &quot;-I./lvgl/src/font&quot; \
+  &quot;-I./lvgl/src/hal&quot; \
+  &quot;-I./lvgl/src/misc&quot; \
+  &quot;-I./lvgl/src/widgets&quot; \
+  ./lvgl/src/widgets/lv_label.c \
+  -o ../../../pinephone-lvgl-zig/lv_label.o
+</code></pre></div>
+<p>This produces the Compiled WebAssembly <code>lv_label.o</code>.</p>
+<p><em>Will Zig Compiler let us link <code>lv_label.o</code> with our Zig LVGL App?</em></p>
+<p>Let’s ask Zig Compiler to link <code>lv_label.o</code> with our Zig LVGL App <a href="lvglwasm.zig"><code>lvglwasm.zig</code></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>  ## Compile the Zig App for WebAssembly 
+  ## TODO: Change &quot;..&quot; to your NuttX Project Directory
+  zig build-lib \
+    --verbose-cimport \
+    -target wasm32-freestanding \
+    -dynamic \
+    -rdynamic \
+    -lc \
+    -DFAR= \
+    -DLV_MEM_CUSTOM=1 \
+    -DLV_FONT_MONTSERRAT_14=1 \
+    -DLV_FONT_MONTSERRAT_20=1 \
+    -DLV_FONT_DEFAULT_MONTSERRAT_20=1 \
+    -DLV_USE_FONT_PLACEHOLDER=1 \
+    -DLV_USE_LOG=1 \
+    -DLV_LOG_LEVEL=LV_LOG_LEVEL_TRACE \
+    -DLV_LOG_TRACE_OBJ_CREATE=1 \
+    -DLV_LOG_TRACE_TIMER=1 \
+    -DLV_LOG_TRACE_MEM=1 \
+    &quot;-DLV_ASSERT_HANDLER={void lv_assert_handler(void); lv_assert_handler();}&quot; \
+    -I . \
+    -isystem &quot;../nuttx/include&quot; \
+    -I &quot;../apps/include&quot; \
+    -I &quot;../apps/graphics/lvgl&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/core&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/arm2d&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/nxp&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/nxp/pxp&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/nxp/vglite&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/sdl&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/stm32_dma2d&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/sw&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/swm341_dma2d&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/font&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/hal&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/misc&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/widgets&quot; \
+    lvglwasm.zig \
+    lv_label.o
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/2e1c97e49e51b1cbbe0964a9512eba141d0dd09f/build.sh#L87-L191">(Source)</a></p>
+<p>Now we see this error in the Web Browser…</p>
+<div class="example-wrap"><pre class="language-text"><code>Uncaught (in promise) LinkError: 
+WebAssembly.instantiate(): 
+Import #0 module=&quot;env&quot; function=&quot;lv_obj_clear_flag&quot; error:
+function import requires a callable
+</code></pre></div>
+<p><code>lv_label_create</code> is no longer missing, because Zig Compiler has linked <code>lv_label.o</code> into our Zig LVGL App.</p>
+<p>Yep Zig Compiler will happily link WebAssembly Object Files with our Zig App yay!</p>
+<p>Now we need to compile <code>lv_obj_clear_flag</code> and the other LVGL Files from C to WebAssembly with Zig Compiler…</p>
+<h1 id="compile-entire-lvgl-library-to-webassembly"><a href="#compile-entire-lvgl-library-to-webassembly">10 Compile Entire LVGL Library to WebAssembly</a></h1>
+<p>TODO</p>
+<p>When we track down <code>lv_obj_clear_flag</code> and the other Missing Functions (by sheer tenacity), we get this trail of LVGL Source Files that need to be compiled from C to WebAssembly…</p>
+<div class="example-wrap"><pre class="language-text"><code>widgets/lv_label.c
+core/lv_obj.c
+misc/lv_mem.c
+core/lv_event.c
+core/lv_obj_style.c
+core/lv_obj_pos.c
+misc/lv_txt.c
+draw/lv_draw_label.c
+core/lv_obj_draw.c
+misc/lv_area.c
+core/lv_obj_scroll.c
+font/lv_font.c
+core/lv_obj_class.c
+(And many more)
+</code></pre></div>
+<p><a href="https://github.com/lvgl/lvgl/tree/v8.3.3">(Based on LVGL 8.3.3)</a></p>
+<p>So we wrote a script to compile the above LVGL Source Files from C to WebAssembly with <code>zig cc</code>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/2e1c97e49e51b1cbbe0964a9512eba141d0dd09f/build.sh#L7-L191">build.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Build the LVGL App (in Zig) and LVGL Library (in C) for PinePhone and WebAssembly
+## TODO: Change &quot;..&quot; to your NuttX Project Directory
+function build_zig {
+
+  ## Check that NuttX Build has completed and `lv_demo_widgets.*.o` exists
+  if [ ! -f ../apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.*.o ] 
+  then
+    echo &quot;*** Error: Build NuttX first before building Zig app&quot;
+    exit 1
+  fi
+
+  ## Compile our LVGL Display Driver from C to WebAssembly with Zig Compiler
+  compile_lvgl ../../../../../pinephone-lvgl-zig/display.c display.o
+
+  ## Compile LVGL Library from C to WebAssembly with Zig Compiler
+  compile_lvgl font/lv_font_montserrat_14.c lv_font_montserrat_14.o
+  compile_lvgl font/lv_font_montserrat_20.c lv_font_montserrat_20.o
+  compile_lvgl widgets/lv_label.c lv_label.o
+  compile_lvgl core/lv_obj.c lv_obj.o
+  compile_lvgl misc/lv_mem.c lv_mem.o
+  compile_lvgl core/lv_event.c lv_event.o
+  compile_lvgl core/lv_obj_style.c lv_obj_style.o
+  compile_lvgl core/lv_obj_pos.c lv_obj_pos.o
+  compile_lvgl misc/lv_txt.c lv_txt.o
+  compile_lvgl draw/lv_draw_label.c lv_draw_label.o
+  compile_lvgl core/lv_obj_draw.c lv_obj_draw.o
+  compile_lvgl misc/lv_area.c lv_area.o
+  compile_lvgl core/lv_obj_scroll.c lv_obj_scroll.o
+  compile_lvgl font/lv_font.c lv_font.o
+  compile_lvgl core/lv_obj_class.c lv_obj_class.o
+  compile_lvgl core/lv_obj_tree.c lv_obj_tree.o
+  compile_lvgl hal/lv_hal_disp.c lv_hal_disp.o
+  compile_lvgl misc/lv_anim.c lv_anim.o
+  compile_lvgl misc/lv_tlsf.c lv_tlsf.o
+  compile_lvgl core/lv_group.c lv_group.o
+  compile_lvgl core/lv_indev.c lv_indev.o
+  compile_lvgl draw/lv_draw_rect.c lv_draw_rect.o
+  compile_lvgl draw/lv_draw_mask.c lv_draw_mask.o
+  compile_lvgl misc/lv_style.c lv_style.o
+  compile_lvgl misc/lv_ll.c lv_ll.o
+  compile_lvgl core/lv_obj_style_gen.c lv_obj_style_gen.o
+  compile_lvgl misc/lv_timer.c lv_timer.o
+  compile_lvgl core/lv_disp.c lv_disp.o
+  compile_lvgl core/lv_refr.c lv_refr.o
+  compile_lvgl misc/lv_color.c lv_color.o
+  compile_lvgl draw/lv_draw_line.c lv_draw_line.o
+  compile_lvgl draw/lv_draw_img.c lv_draw_img.o
+  compile_lvgl misc/lv_math.c lv_math.o
+  compile_lvgl hal/lv_hal_indev.c lv_hal_indev.o
+  compile_lvgl core/lv_theme.c lv_theme.o
+  compile_lvgl hal/lv_hal_tick.c lv_hal_tick.o
+  compile_lvgl misc/lv_log.c lv_log.o
+  compile_lvgl misc/lv_printf.c lv_printf.o
+  compile_lvgl misc/lv_fs.c lv_fs.o
+  compile_lvgl draw/lv_draw.c lv_draw.o
+  compile_lvgl draw/lv_img_decoder.c lv_img_decoder.o
+  compile_lvgl extra/lv_extra.c lv_extra.o
+  compile_lvgl extra/layouts/flex/lv_flex.c lv_flex.o
+  compile_lvgl extra/layouts/grid/lv_grid.c lv_grid.o
+  compile_lvgl draw/sw/lv_draw_sw.c lv_draw_sw.o
+  compile_lvgl draw/sw/lv_draw_sw_rect.c lv_draw_sw_rect.o
+  compile_lvgl draw/lv_img_cache.c lv_img_cache.o
+  compile_lvgl draw/lv_img_buf.c lv_img_buf.o
+  compile_lvgl draw/sw/lv_draw_sw_arc.c lv_draw_sw_arc.o
+  compile_lvgl draw/sw/lv_draw_sw_letter.c lv_draw_sw_letter.o
+  compile_lvgl draw/sw/lv_draw_sw_blend.c lv_draw_sw_blend.o
+  compile_lvgl draw/sw/lv_draw_sw_layer.c lv_draw_sw_layer.o
+  compile_lvgl draw/sw/lv_draw_sw_transform.c lv_draw_sw_transform.o
+  compile_lvgl draw/sw/lv_draw_sw_polygon.c lv_draw_sw_polygon.o
+  compile_lvgl draw/sw/lv_draw_sw_line.c lv_draw_sw_line.o
+  compile_lvgl draw/sw/lv_draw_sw_img.c lv_draw_sw_img.o
+  compile_lvgl draw/sw/lv_draw_sw_gradient.c lv_draw_sw_gradient.o
+  compile_lvgl draw/lv_draw_transform.c lv_draw_transform.o
+  compile_lvgl extra/themes/default/lv_theme_default.c lv_theme_default.o
+  compile_lvgl font/lv_font_fmt_txt.c lv_font_fmt_txt.o
+  compile_lvgl draw/lv_draw_layer.c lv_draw_layer.o
+  compile_lvgl misc/lv_style_gen.c lv_style_gen.o
+  compile_lvgl misc/lv_gc.c lv_gc.o
+  compile_lvgl misc/lv_utils.c lv_utils.o
+
+  ## Compile the Zig LVGL App for WebAssembly 
+  ## TODO: Change &quot;..&quot; to your NuttX Project Directory
+  zig build-lib \
+    --verbose-cimport \
+    -target wasm32-freestanding \
+    -dynamic \
+    -rdynamic \
+    -lc \
+    -DFAR= \
+    -DLV_MEM_CUSTOM=1 \
+    -DLV_FONT_MONTSERRAT_14=1 \
+    -DLV_FONT_MONTSERRAT_20=1 \
+    -DLV_FONT_DEFAULT_MONTSERRAT_20=1 \
+    -DLV_USE_FONT_PLACEHOLDER=1 \
+    -DLV_USE_LOG=1 \
+    -DLV_LOG_LEVEL=LV_LOG_LEVEL_TRACE \
+    -DLV_LOG_TRACE_OBJ_CREATE=1 \
+    -DLV_LOG_TRACE_TIMER=1 \
+    &quot;-DLV_ASSERT_HANDLER={void lv_assert_handler(void); lv_assert_handler();}&quot; \
+    -I . \
+    \
+    -isystem &quot;../nuttx/include&quot; \
+    -I &quot;../apps/include&quot; \
+    -I &quot;../apps/graphics/lvgl&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/core&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/arm2d&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/nxp&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/nxp/pxp&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/nxp/vglite&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/sdl&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/stm32_dma2d&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/sw&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/swm341_dma2d&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/font&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/hal&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/misc&quot; \
+    -I &quot;../apps/graphics/lvgl/lvgl/src/widgets&quot; \
+    \
+    lvglwasm.zig \
+    display.o \
+    lv_font_montserrat_14.o \
+    lv_font_montserrat_20.o \
+    lv_label.o \
+    lv_mem.o \
+    lv_obj.o \
+    lv_event.o \
+    lv_obj_style.o \
+    lv_obj_pos.o \
+    lv_txt.o \
+    lv_draw_label.o \
+    lv_obj_draw.o \
+    lv_area.o \
+    lv_obj_scroll.o \
+    lv_font.o \
+    lv_obj_class.o \
+    lv_obj_tree.o \
+    lv_hal_disp.o \
+    lv_anim.o \
+    lv_tlsf.o \
+    lv_group.o \
+    lv_indev.o \
+    lv_draw_rect.o \
+    lv_draw_mask.o \
+    lv_style.o \
+    lv_ll.o \
+    lv_obj_style_gen.o \
+    lv_timer.o \
+    lv_disp.o \
+    lv_refr.o \
+    lv_color.o \
+    lv_draw_line.o \
+    lv_draw_img.o \
+    lv_math.o \
+    lv_hal_indev.o \
+    lv_theme.o \
+    lv_hal_tick.o \
+    lv_log.o \
+    lv_printf.o \
+    lv_fs.o \
+    lv_draw.o \
+    lv_img_decoder.o \
+    lv_extra.o \
+    lv_flex.o \
+    lv_grid.o \
+    lv_draw_sw.o \
+    lv_draw_sw_rect.o \
+    lv_img_cache.o \
+    lv_img_buf.o \
+    lv_draw_sw_arc.o \
+    lv_draw_sw_letter.o \
+    lv_draw_sw_blend.o \
+    lv_draw_sw_layer.o \
+    lv_draw_sw_transform.o \
+    lv_draw_sw_polygon.o \
+    lv_draw_sw_line.o \
+    lv_draw_sw_img.o \
+    lv_draw_sw_gradient.o \
+    lv_draw_transform.o \
+    lv_theme_default.o \
+    lv_font_fmt_txt.o \
+    lv_draw_layer.o \
+    lv_style_gen.o \
+    lv_gc.o \
+    lv_utils.o \
+</code></pre></div>
+<p>Which calls <code>compile_lvgl</code> to compile a single LVGL Source File from C to WebAssembly with <code>zig cc</code>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/2e1c97e49e51b1cbbe0964a9512eba141d0dd09f/build.sh#L226-L288">build.sh</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Compile LVGL Library from C to WebAssembly with Zig Compiler
+## TODO: Change &quot;..&quot; to your NuttX Project Directory
+function compile_lvgl {
+  local source_file=$1  ## Input Source File (LVGL in C)
+  local object_file=$2  ## Output Object File (WebAssembly)
+
+  pushd ../apps/graphics/lvgl
+  zig cc \
+    -target wasm32-freestanding \
+    -dynamic \
+    -rdynamic \
+    -lc \
+    -DFAR= \
+    -DLV_MEM_CUSTOM=1 \
+    -DLV_FONT_MONTSERRAT_14=1 \
+    -DLV_FONT_MONTSERRAT_20=1 \
+    -DLV_FONT_DEFAULT_MONTSERRAT_20=1 \
+    -DLV_USE_FONT_PLACEHOLDER=1 \
+    -DLV_USE_LOG=1 \
+    -DLV_LOG_LEVEL=LV_LOG_LEVEL_TRACE \
+    -DLV_LOG_TRACE_OBJ_CREATE=1 \
+    -DLV_LOG_TRACE_TIMER=1 \
+    &quot;-DLV_ASSERT_HANDLER={void lv_assert_handler(void); lv_assert_handler();}&quot; \
+    \
+    -c \
+    -fno-common \
+    -Wall \
+    -Wstrict-prototypes \
+    -Wshadow \
+    -Wundef \
+    -Werror \
+    -Os \
+    -fno-strict-aliasing \
+    -fomit-frame-pointer \
+    -ffunction-sections \
+    -fdata-sections \
+    -g \
+    -isystem ../../../nuttx/include \
+    -D__NuttX__  \
+    -pipe \
+    -I ../../../apps/graphics/lvgl \
+    -I &quot;../../../apps/include&quot; \
+    -Wno-format \
+    -Wno-format-security \
+    -Wno-unused-variable \
+    &quot;-I./lvgl/src/core&quot; \
+    &quot;-I./lvgl/src/draw&quot; \
+    &quot;-I./lvgl/src/draw/arm2d&quot; \
+    &quot;-I./lvgl/src/draw/nxp&quot; \
+    &quot;-I./lvgl/src/draw/nxp/pxp&quot; \
+    &quot;-I./lvgl/src/draw/nxp/vglite&quot; \
+    &quot;-I./lvgl/src/draw/sdl&quot; \
+    &quot;-I./lvgl/src/draw/stm32_dma2d&quot; \
+    &quot;-I./lvgl/src/draw/sw&quot; \
+    &quot;-I./lvgl/src/draw/swm341_dma2d&quot; \
+    &quot;-I./lvgl/src/font&quot; \
+    &quot;-I./lvgl/src/hal&quot; \
+    &quot;-I./lvgl/src/misc&quot; \
+    &quot;-I./lvgl/src/widgets&quot; \
+    lvgl/src/$source_file \
+    -o ../../../pinephone-lvgl-zig/$object_file
+  popd
+}
+</code></pre></div>
+<p><em>What happens after we compile the whole bunch of LVGL Source Files from C to WebAssembly?</em></p>
+<p>Now the Web Browser says that <code>strlen</code> is missing…</p>
+<div class="example-wrap"><pre class="language-text"><code>Uncaught (in promise) LinkError: 
+WebAssembly.instantiate(): 
+Import #0 module=&quot;env&quot; function=&quot;strlen&quot; error: 
+function import requires a callable
+</code></pre></div>
+<p>Let’s fix <code>strlen</code>…</p>
+<p><em>Is it really OK to compile only the necessary LVGL Source Files? Instead of compiling ALL the LVGL Source Files?</em></p>
+<p>Be careful! We might miss out some symbols. Zig Compiler happily assumes that they are at WebAssembly Address 0…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-lvgl-zig#lvgl-screen-not-found">“LVGL Screen Not Found”</a></li>
+</ul>
+<p>And remember to compile the LVGL Fonts!</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-lvgl-zig#lvgl-fonts">“LVGL Fonts”</a></li>
+</ul>
+<p>TODO: Disassemble the Compiled WebAssembly and look for other Undefined Variables at WebAssembly Address 0</p>
+<h1 id="c-standard-library-is-missing"><a href="#c-standard-library-is-missing">11 C Standard Library is Missing</a></h1>
+<p>TODO</p>
+<p><em>strlen is missing from our Zig WebAssembly…</em></p>
+<p><em>But strlen should come from the C Standard Library! (musl)</em></p>
+<p>Not sure why <code>strlen</code> is missing, but we fixed it temporarily by copying from the Zig Library Source Code: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/e99593df6b46ced52f3f8ed644b9c6e455a9d682/lvglwasm.zig#L213-L265">lvglwasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>///////////////////////////////////////////////////////////////////////////////
+//  C Standard Library
+//  From zig-macos-x86_64-0.10.0-dev.2351+b64a1d5ab/lib/zig/c.zig
+
+export fn memset(dest: ?[*]u8, c2: u8, len: usize) callconv(.C) ?[*]u8 {
+    @setRuntimeSafety(false);
+
+    if (len != 0) {
+        var d = dest.?;
+        var n = len;
+        while (true) {
+            d.* = c2;
+            n -= 1;
+            if (n == 0) break;
+            d += 1;
+        }
+    }
+
+    return dest;
+}
+
+export fn memcpy(noalias dest: ?[*]u8, noalias src: ?[*]const u8, len: usize) callconv(.C) ?[*]u8 {
+    @setRuntimeSafety(false);
+
+    if (len != 0) {
+        var d = dest.?;
+        var s = src.?;
+        var n = len;
+        while (true) {
+            d[0] = s[0];
+            n -= 1;
+            if (n == 0) break;
+            d += 1;
+            s += 1;
+        }
+    }
+
+    return dest;
+}
+
+export fn strcpy(dest: [*:0]u8, src: [*:0]const u8) callconv(.C) [*:0]u8 {
+    var i: usize = 0;
+    while (src[i] != 0) : (i += 1) {
+        dest[i] = src[i];
+    }
+    dest[i] = 0;
+
+    return dest;
+}
+
+export fn strlen(s: [*:0]const u8) callconv(.C) usize {
+    return std.mem.len(s);
+}
+</code></pre></div>
+<p>This seems to be the <a href="https://github.com/andrewrk/lua-in-the-browser#status">same problem mentioned here</a>.</p>
+<p><a href="https://github.com/ziglang/zig/pull/2512">(Referenced by this pull request)</a></p>
+<p><a href="https://github.com/ziglang/zig/issues/5854">(And this issue)</a></p>
+<p>TODO: Maybe because we didn’t export <code>strlen</code> in our Main Program <code>lvglwasm.zig</code>?</p>
+<p>TODO: Do we compile C Standard Library ourselves? From musl? Newlib? <a href="https://github.com/WebAssembly/wasi-libc">wasi-libc</a>?</p>
+<p><em>What if we change the target to <code>wasm32-freestanding-musl</code>?</em></p>
+<p>Nope doesn’t help, same problem.</p>
+<p><em>What if we use <code>zig build-exe</code> instead of <code>zig build-lib</code>?</em></p>
+<p>Sorry <code>zig build-exe</code> is meant for building WASI Executables. <a href="https://www.fermyon.com/wasm-languages/c-lang">(See this)</a></p>
+<p><code>zig build-exe</code> is not supposed to work for WebAssembly in the Web Browser. <a href="https://github.com/ziglang/zig/issues/1570#issuecomment-426370371">(See this)</a></p>
+<h1 id="lvgl-porting-layer-for-webassembly"><a href="#lvgl-porting-layer-for-webassembly">12 LVGL Porting Layer for WebAssembly</a></h1>
+<p>TODO</p>
+<p>LVGL expects us to provide a <code>millis</code> function that returns the number of elapsed milliseconds…</p>
+<div class="example-wrap"><pre class="language-text"><code>Uncaught (in promise) LinkError: 
+WebAssembly.instantiate(): 
+Import #0 module=&quot;env&quot; function=&quot;millis&quot; error: 
+function import requires a callable
+</code></pre></div>
+<p>We implement <code>millis</code> ourselves for WebAssembly: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/bee0e8d8ab9eae3a8c7cea6c64cc7896a5678f53/lvglwasm.zig#L170-L190">lvglwasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>///////////////////////////////////////////////////////////////////////////////
+//  LVGL Porting Layer for WebAssembly
+
+/// TODO: Return the number of elapsed milliseconds
+export fn millis() u32 {
+    elapsed_ms += 1;
+    return elapsed_ms;
+}
+
+/// Number of elapsed milliseconds
+var elapsed_ms: u32 = 0;
+
+/// On Assertion Failure, print a Stack Trace and halt
+export fn lv_assert_handler() void {
+    @panic(&quot;*** lv_assert_handler: ASSERTION FAILED&quot;);
+}
+
+/// Custom Logger for LVGL that writes to JavaScript Console
+export fn custom_logger(buf: [*c]const u8) void {
+    wasmlog.Console.log(&quot;{s}&quot;, .{buf});
+}
+</code></pre></div>
+<p>TODO: Fix <code>millis</code>. How would it work in WebAssembly? Using a counter?</p>
+<p>In the code above, we defined <code>lv_assert_handler</code> and <code>custom_logger</code> to handle Assertions and Logging in LVGL.</p>
+<p>Let’s talk about LVGL Logging…</p>
+<h1 id="webassembly-logger-for-lvgl"><a href="#webassembly-logger-for-lvgl">13 WebAssembly Logger for LVGL</a></h1>
+<p>TODO</p>
+<p>Let’s trace the LVGL Execution with a WebAssembly Logger.</p>
+<p>(Remember: <code>printf</code> won’t work in WebAssembly)</p>
+<p>We set the Custom Logger for LVGL, so that we can print Log Messages to the JavaScript Console: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/f9dc7e1afba2f876c8397d753a79a9cb40b90b75/lvglwasm.zig#L32-L43">lvglwasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>///////////////////////////////////////////////////////////////////////////////
+//  Main Function
+
+/// We render an LVGL Screen with LVGL Widgets
+pub export fn lv_demo_widgets() void {
+    // TODO: Change to `debug`
+    wasmlog.Console.log(&quot;lv_demo_widgets: start&quot;, .{});
+    defer wasmlog.Console.log(&quot;lv_demo_widgets: end&quot;, .{});
+
+    // Set the Custom Logger for LVGL
+    c.lv_log_register_print_cb(custom_logger);
+</code></pre></div>
+<p>The Custom Logger is defined in our Zig Program: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/f9dc7e1afba2f876c8397d753a79a9cb40b90b75/lvglwasm.zig#L149-L152">lvglwasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Custom Logger for LVGL that writes to JavaScript Console
+export fn custom_logger(buf: [*c]const u8) void {
+    wasmlog.Console.log(&quot;custom_logger: {s}&quot;, .{buf});
+}
+</code></pre></div>
+<p><code>wasmlog</code> is our Zig Logger for WebAssembly: <a href="wasmlog.zig">wasmlog.zig</a></p>
+<p>(Based on <a href="https://github.com/daneelsan/zig-wasm-logger">daneelsan/zig-wasm-logger</a>)</p>
+<p><code>jsConsoleLogWrite</code> and <code>jsConsoleLogFlush</code> are defined in our JavaScript: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/1ed4940d505e263727a36c362da54388be4cbca0/lvglwasm.js#L55-L66">lvglwasm.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>        // Write to JavaScript Console from Zig
+        // https://github.com/daneelsan/zig-wasm-logger/blob/master/script.js
+        jsConsoleLogWrite: function(ptr, len) {
+            console_log_buffer += wasm.getString(ptr, len);
+        },
+
+        // Flush JavaScript Console from Zig
+        // https://github.com/daneelsan/zig-wasm-logger/blob/master/script.js
+        jsConsoleLogFlush: function() {
+            console.log(console_log_buffer);
+            console_log_buffer = &quot;&quot;;
+        },
+</code></pre></div>
+<p><code>wasm.getString</code> also comes from our JavaScript: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/1ed4940d505e263727a36c362da54388be4cbca0/lvglwasm.js#L10-L27">lvglwasm.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// WebAssembly Helper Functions
+const wasm = {
+    // WebAssembly Instance
+    instance: undefined,
+
+    // Init the WebAssembly Instance
+    init: function (obj) {
+        this.instance = obj.instance;
+    },
+
+    // Fetch the Zig String from a WebAssembly Pointer
+    getString: function (ptr, len) {
+        const memory = this.instance.exports.memory;
+        return text_decoder.decode(
+            new Uint8Array(memory.buffer, ptr, len)
+        );
+    },
+};
+</code></pre></div>
+<p>Now we can see the LVGL Log Messages in the JavaScript Console yay! (Pic below)</p>
+<div class="example-wrap"><pre class="language-text"><code>custom_logger: [Warn]	(0.001, +1)
+lv_disp_get_scr_act:
+no display registered to get its active screen
+(in lv_disp.c line #54)
+</code></pre></div>
+<p>Let’s initialise the LVGL Display…</p>
+<p><img src="https://lupyuen.github.io/images/zig-wasm2.png" alt="WebAssembly Logger for LVGL" /></p>
+<h1 id="initialise-lvgl-display"><a href="#initialise-lvgl-display">14 Initialise LVGL Display</a></h1>
+<p>TODO</p>
+<p>According to the LVGL Docs, this is how we inititialise and operate LVGL…</p>
+<ol>
+<li>
+<p>Call <code>lv_init()</code></p>
+</li>
+<li>
+<p>Register the LVGL Display and LVGL Input Devices</p>
+</li>
+<li>
+<p>Call <code>lv_tick_inc(x)</code> every x milliseconds in an interrupt to report the elapsed time to LVGL</p>
+<p>(Not required, because LVGL calls <code>millis</code> to fetch the elapsed time)</p>
+</li>
+<li>
+<p>Call <code>lv_timer_handler()</code> every few milliseconds to handle LVGL related tasks</p>
+</li>
+</ol>
+<p><a href="https://docs.lvgl.io/8.3/porting/project.html#initialization">(Source)</a></p>
+<p>To register the LVGL Display, we should do this…</p>
+<ul>
+<li>
+<p><a href="https://docs.lvgl.io/8.3/porting/display.html#draw-buffer">Create LVGL Draw Buffer</a></p>
+</li>
+<li>
+<p><a href="https://docs.lvgl.io/8.3/porting/display.html#examples">Register LVGL Display</a></p>
+</li>
+</ul>
+<p>But we can’t do this in Zig…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Nope! lv_disp_drv_t is an Opaque Type
+var disp_drv = c.lv_disp_drv_t{};
+c.lv_disp_drv_init(&amp;disp_drv);
+</code></pre></div>
+<p>Because <code>lv_disp_drv_t</code> is an Opaque Type.</p>
+<p><a href="https://lupyuen.github.io/articles/lvgl#appendix-zig-opaque-types">(<code>lv_disp_drv_t</code> contains Bit Fields, hence it’s Opaque)</a></p>
+<p>Thus we apply this workaround to create <code>lv_disp_drv_t</code> in C…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lvgl#fix-opaque-types">“Fix Opaque Types”</a></li>
+</ul>
+<p>And we get this LVGL Display Interface for Zig: <a href="display.c">display.c</a></p>
+<p>Finally this is how we initialise the LVGL Display in Zig WebAssembly: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/d584f43c6354f12bdc15bdb8632cdd3f6f5dc7ff/lvglwasm.zig#L38-L84">lvglwasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// We render an LVGL Screen with LVGL Widgets
+pub export fn lv_demo_widgets() void {
+    debug(&quot;lv_demo_widgets: start&quot;, .{});
+    defer debug(&quot;lv_demo_widgets: end&quot;, .{});
+
+    // Create the Memory Allocator for malloc
+    memory_allocator = std.heap.FixedBufferAllocator.init(&amp;memory_buffer);
+
+    // Set the Custom Logger for LVGL
+    c.lv_log_register_print_cb(custom_logger);
+
+    // Init LVGL
+    c.lv_init();
+
+    // Fetch pointers to Display Driver and Display Buffer
+    const disp_drv = c.get_disp_drv();
+    const disp_buf = c.get_disp_buf();
+
+    // Init Display Buffer and Display Driver as pointers
+    c.init_disp_buf(disp_buf);
+    c.init_disp_drv(disp_drv, // Display Driver
+        disp_buf, // Display Buffer
+        flushDisplay, // Callback Function to Flush Display
+        720, // Horizontal Resolution
+        1280 // Vertical Resolution
+    );
+
+    // Register the Display Driver
+    const disp = c.lv_disp_drv_register(disp_drv);
+    _ = disp;
+
+    // Create the widgets for display (with Zig Wrapper)
+    createWidgetsWrapped() catch |e| {
+        // In case of error, quit
+        std.log.err(&quot;createWidgetsWrapped failed: {}&quot;, .{e});
+        return;
+    };
+
+    // Handle LVGL Events
+    // TODO: Call this from Web Browser JavaScript, so that Web Browser won&#39;t block
+    var i: usize = 0;
+    while (i &lt; 5) : (i += 1) {
+        debug(&quot;lv_timer_handler: start&quot;, .{});
+        _ = c.lv_timer_handler();
+        debug(&quot;lv_timer_handler: end&quot;, .{});
+    }
+}
+</code></pre></div>
+<p>We’re ready to render the LVGL Display!</p>
+<h1 id="render-lvgl-display-in-web-browser"><a href="#render-lvgl-display-in-web-browser">15 Render LVGL Display in Web Browser</a></h1>
+<p>TODO</p>
+<p>Let’s render the LVGL Display in the Web Browser!</p>
+<p>(Based on <a href="https://github.com/daneelsan/minimal-zig-wasm-canvas">daneelsan/minimal-zig-wasm-canvas</a>)</p>
+<p>LVGL renders the display pixels to <code>canvas_buffer</code>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/5e4d661a7a9a962260d1f63c3b79a688037ed642/display.c#L95-L107">display.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>/****************************************************************************
+ * Name: init_disp_buf
+ *
+ * Description:
+ *   Initialise the LVGL Display Buffer, because Zig can&#39;t access the fields.
+ *
+ ****************************************************************************/
+
+void init_disp_buf(lv_disp_draw_buf_t *disp_buf)
+{
+  LV_ASSERT(disp_buf != NULL);
+  lv_disp_draw_buf_init(disp_buf, canvas_buffer, NULL, BUFFER_SIZE);
+}
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/d584f43c6354f12bdc15bdb8632cdd3f6f5dc7ff/lvglwasm.zig#L49-L63">(<code>init_disp_buf</code> is called by our Zig Program)</a></p>
+<p>LVGL calls <code>flushDisplay</code> (in Zig) when the LVGL Display Canvas is ready to be rendered: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/d584f43c6354f12bdc15bdb8632cdd3f6f5dc7ff/lvglwasm.zig#L49-L63">lvglwasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>    // Init LVGL
+    c.lv_init();
+
+    // Fetch pointers to Display Driver and Display Buffer
+    const disp_drv = c.get_disp_drv();
+    const disp_buf = c.get_disp_buf();
+
+    // Init Display Buffer and Display Driver as pointers
+    c.init_disp_buf(disp_buf);
+    c.init_disp_drv(disp_drv, // Display Driver
+        disp_buf, // Display Buffer
+        flushDisplay, // Callback Function to Flush Display
+        720, // Horizontal Resolution
+        1280 // Vertical Resolution
+    );
+</code></pre></div>
+<p><code>flushDisplay</code> (in Zig) calls <code>render</code> (in JavaScript) to render the LVGL Display Canvas: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/d584f43c6354f12bdc15bdb8632cdd3f6f5dc7ff/lvglwasm.zig#L86-L98">lvglwasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// LVGL Callback Function to Flush Display
+export fn flushDisplay(disp_drv: ?*c.lv_disp_drv_t, area: [*c]const c.lv_area_t, color_p: [*c]c.lv_color_t) void {
+    _ = area;
+    _ = color_p;
+    debug(&quot;flushDisplay: start&quot;, .{});
+    defer debug(&quot;flushDisplay: end&quot;, .{});
+
+    // Call the Web Browser JavaScript o render the LVGL Canvas Buffer
+    render();
+
+    // Notify LVGL that the display is flushed
+    c.lv_disp_flush_ready(disp_drv);
+}
+</code></pre></div>
+<p>(Remember to call <code>lv_disp_flush_ready</code> or Web Browser will hang on reload)</p>
+<p><code>render</code> (in JavaScript) draws the LVGL Display to our HTML Canvas: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/1ed4940d505e263727a36c362da54388be4cbca0/lvglwasm.js#L29-L53">lvglwasm.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Export JavaScript Functions to Zig
+const importObject = {
+    // JavaScript Functions exported to Zig
+    env: {
+        // Render the LVGL Canvas from Zig to HTML
+        // https://github.com/daneelsan/minimal-zig-wasm-canvas/blob/master/script.js
+        render: function() {  // TODO: Add width and height
+
+            // Get the WebAssembly Pointer to the LVGL Canvas Buffer
+            console.log(&quot;render: start&quot;);
+            const bufferOffset = wasm.instance.exports.getCanvasBuffer();
+            console.log({ bufferOffset });
+
+            // Load the WebAssembly Pointer into a JavaScript Image Data
+            const memory = wasm.instance.exports.memory;
+            const ptr = bufferOffset;
+            const len = (canvas.width * canvas.height) * 4;
+            const imageDataArray = new Uint8Array(memory.buffer, ptr, len)
+            imageData.data.set(imageDataArray);
+
+            // Render the Image Data to the HTML Canvas
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.putImageData(imageData, 0, 0);
+            console.log(&quot;render: end&quot;);
+        },
+</code></pre></div>
+<p>Which calls <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/d584f43c6354f12bdc15bdb8632cdd3f6f5dc7ff/lvglwasm.zig#L100-L104"><code>getCanvasBuffer</code></a> (in Zig) and <code>get_canvas_buffer</code> (in C) to fetch the LVGL Canvas Buffer <code>canvas_buffer</code>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/5e4d661a7a9a962260d1f63c3b79a688037ed642/display.c#L9-L29">display.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Canvas Buffer for rendering LVGL Display
+#define HOR_RES     720      // Horizontal Resolution
+#define VER_RES     1280     // Vertical Resolution
+#define BUFFER_ROWS VER_RES  // Number of rows to buffer
+#define BUFFER_SIZE (HOR_RES * BUFFER_ROWS)
+static lv_color_t canvas_buffer[BUFFER_SIZE];
+
+lv_color_t *get_canvas_buffer(void)
+{
+  int count = 0;
+  for (int i = 0; i &lt; BUFFER_SIZE; i++) {
+    if (canvas_buffer[i].full != 0xfff5f5f5) {  // TODO
+      // lv_log(&quot;get_canvas_buffer: 0x%x&quot;, canvas_buffer[i].full);
+      count++; 
+    }
+  }
+  lv_log(&quot;get_canvas_buffer: %d non-empty pixels&quot;, count);
+  lv_log(&quot;canvas_buffer: %p&quot;, canvas_buffer);
+  return canvas_buffer;
+}
+</code></pre></div>
+<p>And the LVGL Display renders OK in our HTML Canvas yay!</p>
+<p><img src="https://lupyuen.github.io/images/zig-wasm3.png" alt="Render LVGL Display in Web Browser" /></p>
+<h1 id="lvgl-fonts"><a href="#lvgl-fonts">16 LVGL Fonts</a></h1>
+<p>TODO</p>
+<p>Remember to compile the LVGL Fonts! Or nothing will be rendered…</p>
+<div class="example-wrap"><pre class="language-bash"><code>  ## Compile LVGL Library from C to WebAssembly with Zig Compiler
+  compile_lvgl font/lv_font_montserrat_14.c lv_font_montserrat_14
+  compile_lvgl font/lv_font_montserrat_20.c lv_font_montserrat_20
+
+  ## Compile the Zig LVGL App for WebAssembly 
+  zig build-lib \
+    -DLV_FONT_MONTSERRAT_14=1 \
+    -DLV_FONT_MONTSERRAT_20=1 \
+    -DLV_FONT_DEFAULT_MONTSERRAT_20=1 \
+    -DLV_USE_FONT_PLACEHOLDER=1 \
+    ...
+    lv_font_montserrat_14.o \
+    lv_font_montserrat_20.o \
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/2e1c97e49e51b1cbbe0964a9512eba141d0dd09f/build.sh#L21-L191">(Source)</a></p>
+<h1 id="lvgl-memory-allocation"><a href="#lvgl-memory-allocation">17 LVGL Memory Allocation</a></h1>
+<p>TODO</p>
+<p><em>What happens if we omit <code>-DLV_MEM_CUSTOM=1</code>?</em></p>
+<p>By default, LVGL uses the <a href="http://www.gii.upv.es/tlsf/">Two-Level Segregate Fit (TLSF) Allocator</a> for Heap Memory.</p>
+<p>But TLSF Allocator fails in <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_tlsf.c#L453-L460"><code>block_next</code></a>…</p>
+<div class="example-wrap"><pre class="language-text"><code>main: start
+loop: start
+lv_demo_widgets: start
+before lv_init
+[Info]	lv_init: begin 	(in lv_obj.c line #102)
+[Trace]	lv_mem_alloc: allocating 76 bytes 	(in lv_mem.c line #127)
+[Trace]	lv_mem_alloc: allocated at 0x1a700 	(in lv_mem.c line #160)
+[Trace]	lv_mem_alloc: allocating 28 bytes 	(in lv_mem.c line #127)
+[Trace]	lv_mem_alloc: allocated at 0x1a750 	(in lv_mem.c line #160)
+[Warn]	lv_init: Log level is set to &#39;Trace&#39; which makes LVGL much slower 	(in lv_obj.c line #176)
+[Trace]	lv_mem_realloc: reallocating 0x14 with 8 size 	(in lv_mem.c line #196)
+[Error]	block_next: Asserted at expression: !block_is_last(block) 	(in lv_tlsf.c line #459)
+
+004a5b4a:0x29ab2 Uncaught (in promise) RuntimeError: unreachable
+    at std.builtin.default_panic (004a5b4a:0x29ab2)
+    at lv_assert_handler (004a5b4a:0x2ac6c)
+    at block_next (004a5b4a:0xd5b3)
+    at lv_tlsf_realloc (004a5b4a:0xe226)
+    at lv_mem_realloc (004a5b4a:0x20f1)
+    at lv_layout_register (004a5b4a:0x75d8)
+    at lv_flex_init (004a5b4a:0x16afe)
+    at lv_extra_init (004a5b4a:0x16ae5)
+    at lv_init (004a5b4a:0x3f28)
+    at lv_demo_widgets (004a5b4a:0x29bb9)
+</code></pre></div>
+<p>Thus we set <code>-DLV_MEM_CUSTOM=1</code> to use <code>malloc</code> instead of LVGL’s TLSF Allocator.</p>
+<p>(<a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_tlsf.c#L453-L460"><code>block_next</code></a> calls <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_tlsf.c#L440-L444"><code>offset_to_block</code></a>, which calls <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_tlsf.c#L274"><code>tlsf_cast</code></a>. Maybe the Pointer Cast doesn’t work for Clang WebAssembly?)</p>
+<p><em>But Zig doesn’t support <code>malloc</code> for WebAssembly!</em></p>
+<p>We used Zig’s FixedBufferAllocator: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/43fa982d38a7ae8f931c171a80b006a9faa95b58/lvglwasm.zig#L38-L44">lvglwasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// We render an LVGL Screen with LVGL Widgets
+pub export fn lv_demo_widgets() void {
+    debug(&quot;lv_demo_widgets: start&quot;, .{});
+    defer debug(&quot;lv_demo_widgets: end&quot;, .{});
+
+    // Create the Memory Allocator for malloc
+    memory_allocator = std.heap.FixedBufferAllocator.init(&amp;memory_buffer);
+</code></pre></div>
+<p>To implement <code>malloc</code> ourselves: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/43fa982d38a7ae8f931c171a80b006a9faa95b58/lvglwasm.zig#L195-L237">lvglwasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>///////////////////////////////////////////////////////////////////////////////
+//  Memory Allocator for malloc
+
+/// Zig replacement for malloc
+export fn malloc(size: usize) ?*anyopaque {
+    // TODO: Save the slice length
+    const mem = memory_allocator.allocator().alloc(u8, size) catch {
+        @panic(&quot;*** malloc error: out of memory&quot;);
+    };
+    return mem.ptr;
+}
+
+/// Zig replacement for realloc
+export fn realloc(old_mem: [*c]u8, size: usize) ?*anyopaque {
+    // TODO: Call realloc instead
+    // const mem = memory_allocator.allocator().realloc(old_mem[0..???], size) catch {
+    //     @panic(&quot;*** realloc error: out of memory&quot;);
+    // };
+    const mem = memory_allocator.allocator().alloc(u8, size) catch {
+        @panic(&quot;*** realloc error: out of memory&quot;);
+    };
+    _ = memcpy(mem.ptr, old_mem, size);
+    if (old_mem != null) {
+        // TODO: How to free without the slice length?
+        // memory_allocator.allocator().free(old_mem[0..???]);
+    }
+    return mem.ptr;
+}
+
+/// Zig replacement for free
+export fn free(mem: [*c]u8) void {
+    if (mem == null) {
+        @panic(&quot;*** free error: pointer is null&quot;);
+    }
+    // TODO: How to free without the slice length?
+    // memory_allocator.allocator().free(mem[0..???]);
+}
+
+/// Memory Allocator for malloc
+var memory_allocator: std.heap.FixedBufferAllocator = undefined;
+
+/// Memory Buffer for malloc
+var memory_buffer: [1024 * 1024]u8 = undefined;
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/aade32dd70286866676b2d9728970c6b3cca9489/README.md#todo">(Remember to copy the old memory in <code>realloc</code>!)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/aa080fb2ce55f9959cce2b6fff7e5fd5c9907cd6/README.md#lvgl-memory-allocation">(If we ever remove <code>-DLV_MEM_CUSTOM=1</code>, remember to set <code>-DLV_MEM_SIZE=1000000</code>)</a></p>
+<h1 id="handle-lvgl-events"><a href="#handle-lvgl-events">18 Handle LVGL Events</a></h1>
+<p>TODO: To handle LVGL Events, call <code>lv_tick_inc</code> and <code>lv_timer_handler</code></p>
+<ol>
+<li>
+<p>Call <code>lv_tick_inc(x)</code> every x milliseconds in an interrupt to report the elapsed time to LVGL</p>
+<p>(Not required, because LVGL calls <code>millis</code> to fetch the elapsed time)</p>
+</li>
+<li>
+<p>Call <code>lv_timer_handler()</code> every few milliseconds to handle LVGL related tasks</p>
+</li>
+</ol>
+<p><a href="https://docs.lvgl.io/8.3/porting/project.html#initialization">(Source)</a></p>
+<p>Like this: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/d584f43c6354f12bdc15bdb8632cdd3f6f5dc7ff/lvglwasm.zig#L65-L83">lvglwasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>    // Register the Display Driver
+    const disp = c.lv_disp_drv_register(disp_drv);
+    _ = disp;
+
+    // Create the widgets for display (with Zig Wrapper)
+    createWidgetsWrapped() catch |e| {
+        // In case of error, quit
+        std.log.err(&quot;createWidgetsWrapped failed: {}&quot;, .{e});
+        return;
+    };
+
+    // Handle LVGL Events
+    // TODO: Call this from Web Browser JavaScript, so that Web Browser won&#39;t block
+    var i: usize = 0;
+    while (i &lt; 5) : (i += 1) {
+        debug(&quot;lv_timer_handler: start&quot;, .{});
+        _ = c.lv_timer_handler();
+        debug(&quot;lv_timer_handler: end&quot;, .{});
+    }
+</code></pre></div>
+<p>Here’s the log…</p>
+<div class="example-wrap"><pre class="language-text"><code>main: start
+loop: start
+lv_demo_widgets: start
+[Info]	lv_init: begin 	(in lv_obj.c line #102)
+[Warn]	lv_init: Log level is set to &#39;Trace&#39; which makes LVGL much slower 	(in lv_obj.c line #176)
+[Trace]	lv_init: finished 	(in lv_obj.c line #183)
+[Info]	lv_obj_create: begin 	(in lv_obj.c line #206)
+[Trace]	lv_obj_class_create_obj: Creating object with 0x174cc class on 0 parent 	(in lv_obj_class.c line #45)
+[Trace]	lv_obj_class_create_obj: creating a screen 	(in lv_obj_class.c line #55)
+[Trace]	lv_obj_constructor: begin 	(in lv_obj.c line #403)
+[Trace]	lv_obj_constructor: finished 	(in lv_obj.c line #428)
+[Info]	lv_obj_create: begin 	(in lv_obj.c line #206)
+[Trace]	lv_obj_class_create_obj: Creating object with 0x174cc class on 0 parent 	(in lv_obj_class.c line #45)
+[Trace]	lv_obj_class_create_obj: creating a screen 	(in lv_obj_class.c line #55)
+[Trace]	lv_obj_constructor: begin 	(in lv_obj.c line #403)
+[Trace]	lv_obj_constructor: finished 	(in lv_obj.c line #428)
+[Info]	lv_obj_create: begin 	(in lv_obj.c line #206)
+[Trace]	lv_obj_class_create_obj: Creating object with 0x174cc class on 0 parent 	(in lv_obj_class.c line #45)
+[Trace]	lv_obj_class_create_obj: creating a screen 	(in lv_obj_class.c line #55)
+[Trace]	lv_obj_constructor: begin 	(in lv_obj.c line #403)
+[Trace]	lv_obj_constructor: finished 	(in lv_obj.c line #428)
+createWidgetsWrapped: start
+[Info]	lv_label_create: begin 	(in lv_label.c line #75)
+[Trace]	lv_obj_class_create_obj: Creating object with 0x174b0 class on 0x39dfd0 parent 	(in lv_obj_class.c line #45)
+[Trace]	lv_obj_class_create_obj: creating normal object 	(in lv_obj_class.c line #82)
+[Trace]	lv_obj_constructor: begin 	(in lv_obj.c line #403)
+[Trace]	lv_obj_constructor: finished 	(in lv_obj.c line #428)
+[Trace]	lv_label_constructor: begin 	(in lv_label.c line #691)
+[Trace]	lv_label_constructor: finished 	(in lv_label.c line #721)
+createWidgetsWrapped: end
+lv_timer_handler: start
+[Trace]	lv_timer_handler: begin 	(in lv_timer.c line #69)
+[Trace]	lv_timer_exec: calling timer callback: 0x19 	(in lv_timer.c line #312)
+[Info]	lv_obj_update_layout: Layout update begin 	(in lv_obj_pos.c line #314)
+[Trace]	lv_obj_update_layout: Layout update end 	(in lv_obj_pos.c line #317)
+[Info]	lv_obj_update_layout: Layout update begin 	(in lv_obj_pos.c line #314)
+[Trace]	lv_obj_update_layout: Layout update end 	(in lv_obj_pos.c line #317)
+[Info]	lv_obj_update_layout: Layout update begin 	(in lv_obj_pos.c line #314)
+[Trace]	lv_obj_update_layout: Layout update end 	(in lv_obj_pos.c line #317)
+[Info]	lv_obj_update_layout: Layout update begin 	(in lv_obj_pos.c line #314)
+[Trace]	lv_obj_update_layout: Layout update end 	(in lv_obj_pos.c line #317)
+[Info]	lv_obj_update_layout: Layout update begin 	(in lv_obj_pos.c line #314)
+[Trace]	lv_obj_update_layout: Layout update end 	(in lv_obj_pos.c line #317)
+flushDisplay: start
+render: start
+get_canvas_buffer: 1782 non-empty pixels
+canvas_buffer: 0x17e70
+{bufferOffset: 97904}
+render: end
+flushDisplay: end
+[Trace]	lv_timer_exec: timer callback 0x19 finished 	(in lv_timer.c line #314)
+[Trace]	lv_timer_handler: finished (15 ms until the next timer call) 	(in lv_timer.c line #144)
+lv_timer_handler: end
+lv_timer_handler: start
+[Trace]	lv_timer_handler: begin 	(in lv_timer.c line #69)
+[Trace]	lv_timer_handler: finished (8 ms until the next timer call) 	(in lv_timer.c line #144)
+lv_timer_handler: end
+lv_timer_handler: start
+[Trace]	lv_timer_handler: begin 	(in lv_timer.c line #69)
+[Trace]	lv_timer_handler: finished (1 ms until the next timer call) 	(in lv_timer.c line #144)
+lv_timer_handler: end
+lv_timer_handler: start
+[Trace]	lv_timer_handler: begin 	(in lv_timer.c line #69)
+[Trace]	lv_timer_exec: calling timer callback: 0x19 	(in lv_timer.c line #312)
+[Trace]	lv_timer_exec: timer callback 0x19 finished 	(in lv_timer.c line #314)
+[Trace]	lv_timer_handler: finished (-1 ms until the next timer call) 	(in lv_timer.c line #144)
+lv_timer_handler: end
+lv_timer_handler: start
+[Trace]	lv_timer_handler: begin 	(in lv_timer.c line #69)
+[Trace]	lv_timer_handler: finished (-1 ms until the next timer call) 	(in lv_timer.c line #144)
+lv_timer_handler: end
+lv_demo_widgets: end
+loop: end
+main: end
+</code></pre></div><h1 id="todo-1"><a href="#todo-1">19 TODO</a></h1>
+<p>TODO: How to disassemble Compiled WebAssembly with cross-reference to Source Code? Like <code>objdump --source</code>? See <a href="https://github.com/WebAssembly/wabt">wabt</a> and <a href="https://github.com/WebAssembly/binaryen">binaryen</a></p>
+<h1 id="lvgl-screen-not-found"><a href="#lvgl-screen-not-found">20 LVGL Screen Not Found</a></h1>
+<p>TODO</p>
+<p><em>Why does LVGL say “no screen found” in <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/core/lv_obj_tree.c#L270-L289">lv_obj_get_disp</a>?</em></p>
+<p>That’s because the Display Linked List <code>_lv_disp_ll</code> is allocated by <code>LV_ITERATE_ROOTS</code> in <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42">_lv_gc_clear_roots</a>…</p>
+<p>And we forgot to compile <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42">_lv_gc_clear_roots</a> in <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42">lv_gc.c</a>. Duh!</p>
+<p>(Zig Compiler assumes that missing variables like <code>_lv_disp_ll</code> are at WebAssembly Address 0)</p>
+<p>After compiling <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42">_lv_gc_clear_roots</a> and <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_gc.c#L42">lv_gc.c</a>, the “no screen found” error below no longer appears.</p>
+<p>TODO: Disassemble the Compiled WebAssembly and look for other Undefined Variables at WebAssembly Address 0</p>
+<div class="example-wrap"><pre class="language-text"><code>[Info]	lv_init: begin 	(in lv_obj.c line #102)
+[Trace]	lv_init: finished 	(in lv_obj.c line #183)
+before lv_disp_drv_register
+[Warn]	lv_obj_get_disp: No screen found 	(in lv_obj_tree.c line #290)
+[Info]	lv_obj_create: begin 	(in lv_obj.c line #206)
+[Trace]	lv_obj_class_create_obj: Creating object with 0x12014 class on 0 parent 	(in lv_obj_class.c line #45)
+[Warn]	lv_obj_get_disp: No screen found 	(in lv_obj_tree.c line #290)
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/9610bb5209a072fc5950cf0559b1274d53dd8b8b/README.md#lvgl-screen-not-found">(See the Complete Log)</a></p>
+<h1 id="whats-next"><a href="#whats-next">21 What’s Next</a></h1>
 <p>TODO</p>
 <p>Meanwhile please check out the other articles on NuttX for PinePhone…</p>
 <ul>
