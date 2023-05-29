@@ -70,8 +70,6 @@ The pic above shows a __WebAssembly App__ that we created with Zig, JavaScript a
     }
     ```
 
-    [(Thanks to __sleibrock/zigtoys__)](https://github.com/sleibrock/zigtoys/blob/main/toys/mandelbrot/mandelbrot.zig)
-
 1.  Our [__JavaScript__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/demo/game.js) calls the Zig Function above to compute the Mandelbrot Set: [game.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/demo/game.js)
 
     ```javascript
@@ -115,6 +113,8 @@ The pic above shows a __WebAssembly App__ that we created with Zig, JavaScript a
     ```
 
 That's all we need to create a WebAssembly App with Zig!
+
+[(Thanks to __sleibrock/zigtoys__)](https://github.com/sleibrock/zigtoys/blob/main/toys/mandelbrot/mandelbrot.zig)
 
 _What's mandelbrot.wasm?_
 
@@ -641,8 +641,6 @@ export fn custom_logger(buf: [*c]const u8) void {
 
 __wasmlog__ is our __Zig Logger for WebAssembly__: [wasmlog.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasmlog.zig)
 
-(Thanks to [__daneelsan/zig-wasm-logger__](https://github.com/daneelsan/zig-wasm-logger))
-
 Which calls JavaScript Functions __jsConsoleLogWrite__ and __jsConsoleLogFlush__ to write logs to the JavaScript Console: [lvglwasm.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.js#L54C1-L69)
 
 ```javascript
@@ -663,6 +661,8 @@ const importObject = {
       console_log_buffer = "";
     },
 ```
+
+(Thanks to [__daneelsan/zig-wasm-logger__](https://github.com/daneelsan/zig-wasm-logger))
 
 _What's wasm.getString?_
 
@@ -858,103 +858,114 @@ But for our quick demo, this will do. For now!
 
 # Render LVGL Display in Web Browser
 
-TODO
+Finally we __render our LVGL Display__ in the Web Browser!
 
-Finally we render the LVGL Display in the Web Browser!
+Earlier we saw this __LVGL Initialisation__ in our Zig App: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L49-L63)
 
-(Based on [daneelsan/minimal-zig-wasm-canvas](https://github.com/daneelsan/minimal-zig-wasm-canvas))
+```zig
+// Init LVGL
+c.lv_init();
 
-LVGL renders the display pixels to `canvas_buffer`: [display.c](https://github.com/lupyuen/pinephone-lvgl-zig/blob/5e4d661a7a9a962260d1f63c3b79a688037ed642/display.c#L95-L107)
+// Fetch pointers to Display Driver and Display Buffer,
+// exported by our C Functions
+const disp_drv = c.get_disp_drv();
+const disp_buf = c.get_disp_buf();
+
+// Init Display Buffer and Display Driver as pointers,
+// by calling our C Functions
+c.init_disp_buf(disp_buf);
+c.init_disp_drv(
+  disp_drv,  // Display Driver
+  disp_buf,  // Display Buffer
+  flushDisplay,  // Callback Function to Flush Display
+  720,  // Horizontal Resolution
+  1280  // Vertical Resolution
+);
+```
+
+_What's inside init_disp_buf?_
+
+__init_disp_buf__ tells LVGL to render the display pixels to our __LVGL Canvas Buffer__: [display.c](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L95-L107)
 
 ```c
-/****************************************************************************
- * Name: init_disp_buf
- *
- * Description:
- *   Initialise the LVGL Display Buffer, because Zig can't access the fields.
- *
- ****************************************************************************/
-
-void init_disp_buf(lv_disp_draw_buf_t *disp_buf)
-{
-  LV_ASSERT(disp_buf != NULL);
-  lv_disp_draw_buf_init(disp_buf, canvas_buffer, NULL, BUFFER_SIZE);
+// Init the LVGL Display Buffer in C, because Zig
+// can't access the fields of the Opaque Type
+void init_disp_buf(lv_disp_draw_buf_t *disp_buf) {
+  lv_disp_draw_buf_init(
+    disp_buf,       // LVGL Display Buffer
+    canvas_buffer,  // Render the pixels to our LVGL Canvas Buffer
+    NULL,           // No Secondary Buffer
+    BUFFER_SIZE     // Buffer the entire display (720 x 1280 pixels)
+  );
 }
 ```
 
-[(`init_disp_buf` is called by our Zig Program)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/d584f43c6354f12bdc15bdb8632cdd3f6f5dc7ff/lvglwasm.zig#L49-L63)
+[(__canvas_buffer__ is defined here)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L9-L29)
 
-LVGL calls `flushDisplay` (in Zig) when the LVGL Display Canvas is ready to be rendered: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/d584f43c6354f12bdc15bdb8632cdd3f6f5dc7ff/lvglwasm.zig#L49-L63)
+Then our Zig App initialises the __LVGL Display Driver__: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L49-L63)
 
 ```zig
-    // Init LVGL
-    c.lv_init();
-
-    // Fetch pointers to Display Driver and Display Buffer
-    const disp_drv = c.get_disp_drv();
-    const disp_buf = c.get_disp_buf();
-
-    // Init Display Buffer and Display Driver as pointers
-    c.init_disp_buf(disp_buf);
-    c.init_disp_drv(disp_drv, // Display Driver
-        disp_buf, // Display Buffer
-        flushDisplay, // Callback Function to Flush Display
-        720, // Horizontal Resolution
-        1280 // Vertical Resolution
-    );
+// Init Display Driver as pointer,
+// by calling our C Function
+c.init_disp_drv(
+  disp_drv,  // Display Driver
+  disp_buf,  // Display Buffer
+  flushDisplay,  // Callback Function to Flush Display
+  720,  // Horizontal Resolution
+  1280  // Vertical Resolution
+);
 ```
 
-`flushDisplay` (in Zig) calls `render` (in JavaScript) to render the LVGL Display Canvas: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/d584f43c6354f12bdc15bdb8632cdd3f6f5dc7ff/lvglwasm.zig#L86-L98)
+[(__init_disp_drv__ is defined here)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L60-L93)
+
+This tells LVGL to call __flushDisplay__ (in Zig) when the LVGL Display Canvas is ready to be rendered: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L86-L98)
 
 ```zig
-/// LVGL Callback Function to Flush Display
-export fn flushDisplay(disp_drv: ?*c.lv_disp_drv_t, area: [*c]const c.lv_area_t, color_p: [*c]c.lv_color_t) void {
-    _ = area;
-    _ = color_p;
-    debug("flushDisplay: start", .{});
-    defer debug("flushDisplay: end", .{});
+/// LVGL calls this Callback Function to flush our display
+export fn flushDisplay(
+  disp_drv: ?*c.lv_disp_drv_t,  // LVGL Display Driver
+  area: [*c]const c.lv_area_t,  // LVGL Display Area
+  color_p: [*c]c.lv_color_t     // LVGL Display Buffer
+) void {
 
-    // Call the Web Browser JavaScript o render the LVGL Canvas Buffer
-    render();
+  // Call the Web Browser JavaScript o render the LVGL Canvas Buffer
+  render();
 
-    // Notify LVGL that the display is flushed
-    c.lv_disp_flush_ready(disp_drv);
+  // Notify LVGL that the display is flushed.
+  // Remember to call `lv_disp_flush_ready` or Web Browser will hang on reload!
+  c.lv_disp_flush_ready(disp_drv);
 }
 ```
 
-(Remember to call `lv_disp_flush_ready` or Web Browser will hang on reload)
+__flushDisplay__ (in Zig) calls __render__ (in JavaScript) to render the LVGL Display Canvas.
 
-`render` (in JavaScript) draws the LVGL Display to our HTML Canvas: [lvglwasm.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/1ed4940d505e263727a36c362da54388be4cbca0/lvglwasm.js#L29-L53)
+__render__ (in JavaScript) draws the LVGL Display to our HTML Canvas: [lvglwasm.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.js#L29-L53)
 
 ```javascript
 // Export JavaScript Functions to Zig
 const importObject = {
-    // JavaScript Functions exported to Zig
-    env: {
-        // Render the LVGL Canvas from Zig to HTML
-        // https://github.com/daneelsan/minimal-zig-wasm-canvas/blob/master/script.js
-        render: function() {  // TODO: Add width and height
+  // JavaScript Functions exported to Zig
+  env: {
+    // Render the LVGL Canvas from Zig to HTML
+    // https://github.com/daneelsan/minimal-zig-wasm-canvas/blob/master/script.js
+    render: function() {  // TODO: Add width and height
 
-            // Get the WebAssembly Pointer to the LVGL Canvas Buffer
-            console.log("render: start");
-            const bufferOffset = wasm.instance.exports.getCanvasBuffer();
-            console.log({ bufferOffset });
+      // Get the WebAssembly Pointer to the LVGL Canvas Buffer
+      const bufferOffset = wasm.instance.exports.getCanvasBuffer();
 
-            // Load the WebAssembly Pointer into a JavaScript Image Data
-            const memory = wasm.instance.exports.memory;
-            const ptr = bufferOffset;
-            const len = (canvas.width * canvas.height) * 4;
-            const imageDataArray = new Uint8Array(memory.buffer, ptr, len)
-            imageData.data.set(imageDataArray);
+      // Load the WebAssembly Pointer into a JavaScript Image Data
+      const memory = wasm.instance.exports.memory;
+      const ptr = bufferOffset;
+      const len = (canvas.width * canvas.height) * 4;
+      const imageDataArray = new Uint8Array(memory.buffer, ptr, len)
+      imageData.data.set(imageDataArray);
 
-            // Render the Image Data to the HTML Canvas
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            context.putImageData(imageData, 0, 0);
-            console.log("render: end");
-        },
+      // Render the Image Data to the HTML Canvas
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.putImageData(imageData, 0, 0);
 ```
 
-Which calls [`getCanvasBuffer`](https://github.com/lupyuen/pinephone-lvgl-zig/blob/d584f43c6354f12bdc15bdb8632cdd3f6f5dc7ff/lvglwasm.zig#L100-L104) (in Zig) and `get_canvas_buffer` (in C) to fetch the LVGL Canvas Buffer `canvas_buffer`: [display.c](https://github.com/lupyuen/pinephone-lvgl-zig/blob/5e4d661a7a9a962260d1f63c3b79a688037ed642/display.c#L9-L29)
+Which calls [__getCanvasBuffer__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L100-L104) (in Zig) and __get_canvas_buffer__ (in C) to fetch the LVGL Canvas Buffer: [display.c](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L9-L29)
 
 ```c
 // Canvas Buffer for rendering LVGL Display
@@ -964,105 +975,19 @@ Which calls [`getCanvasBuffer`](https://github.com/lupyuen/pinephone-lvgl-zig/bl
 #define BUFFER_SIZE (HOR_RES * BUFFER_ROWS)
 static lv_color_t canvas_buffer[BUFFER_SIZE];
 
-lv_color_t *get_canvas_buffer(void)
-{
-  int count = 0;
-  for (int i = 0; i < BUFFER_SIZE; i++) {
-    if (canvas_buffer[i].full != 0xfff5f5f5) {  // TODO
-      // lv_log("get_canvas_buffer: 0x%x", canvas_buffer[i].full);
-      count++; 
-    }
-  }
-  lv_log("get_canvas_buffer: %d non-empty pixels", count);
-  lv_log("canvas_buffer: %p", canvas_buffer);
+// Return a pointer to the LVGL Canvas Buffer
+lv_color_t *get_canvas_buffer(void) {
   return canvas_buffer;
 }
 ```
 
-And the LVGL Display renders OK in our HTML Canvas yay!
+And the LVGL Display renders OK in our HTML Canvas yay! (Pic above)
 
 [(Try the __LVGL Demo__)](https://lupyuen.github.io/pinephone-lvgl-zig/lvglwasm.html)
 
-Here's the log...
+[(See the __JavaScript Log__)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/8c9f45401eb15ff68961bd53e237baa798cc8fb5/README.md#todo)
 
-```text
-main: start
-loop: start
-lv_demo_widgets: start
-[Info]	lv_init: begin 	(in lv_obj.c line #102)
-[Warn]	lv_init: Log level is set to 'Trace' which makes LVGL much slower 	(in lv_obj.c line #176)
-[Trace]	lv_init: finished 	(in lv_obj.c line #183)
-[Info]	lv_obj_create: begin 	(in lv_obj.c line #206)
-[Trace]	lv_obj_class_create_obj: Creating object with 0x174cc class on 0 parent 	(in lv_obj_class.c line #45)
-[Trace]	lv_obj_class_create_obj: creating a screen 	(in lv_obj_class.c line #55)
-[Trace]	lv_obj_constructor: begin 	(in lv_obj.c line #403)
-[Trace]	lv_obj_constructor: finished 	(in lv_obj.c line #428)
-[Info]	lv_obj_create: begin 	(in lv_obj.c line #206)
-[Trace]	lv_obj_class_create_obj: Creating object with 0x174cc class on 0 parent 	(in lv_obj_class.c line #45)
-[Trace]	lv_obj_class_create_obj: creating a screen 	(in lv_obj_class.c line #55)
-[Trace]	lv_obj_constructor: begin 	(in lv_obj.c line #403)
-[Trace]	lv_obj_constructor: finished 	(in lv_obj.c line #428)
-[Info]	lv_obj_create: begin 	(in lv_obj.c line #206)
-[Trace]	lv_obj_class_create_obj: Creating object with 0x174cc class on 0 parent 	(in lv_obj_class.c line #45)
-[Trace]	lv_obj_class_create_obj: creating a screen 	(in lv_obj_class.c line #55)
-[Trace]	lv_obj_constructor: begin 	(in lv_obj.c line #403)
-[Trace]	lv_obj_constructor: finished 	(in lv_obj.c line #428)
-createWidgetsWrapped: start
-[Info]	lv_label_create: begin 	(in lv_label.c line #75)
-[Trace]	lv_obj_class_create_obj: Creating object with 0x174b0 class on 0x39dfd0 parent 	(in lv_obj_class.c line #45)
-[Trace]	lv_obj_class_create_obj: creating normal object 	(in lv_obj_class.c line #82)
-[Trace]	lv_obj_constructor: begin 	(in lv_obj.c line #403)
-[Trace]	lv_obj_constructor: finished 	(in lv_obj.c line #428)
-[Trace]	lv_label_constructor: begin 	(in lv_label.c line #691)
-[Trace]	lv_label_constructor: finished 	(in lv_label.c line #721)
-createWidgetsWrapped: end
-lv_timer_handler: start
-[Trace]	lv_timer_handler: begin 	(in lv_timer.c line #69)
-[Trace]	lv_timer_exec: calling timer callback: 0x19 	(in lv_timer.c line #312)
-[Info]	lv_obj_update_layout: Layout update begin 	(in lv_obj_pos.c line #314)
-[Trace]	lv_obj_update_layout: Layout update end 	(in lv_obj_pos.c line #317)
-[Info]	lv_obj_update_layout: Layout update begin 	(in lv_obj_pos.c line #314)
-[Trace]	lv_obj_update_layout: Layout update end 	(in lv_obj_pos.c line #317)
-[Info]	lv_obj_update_layout: Layout update begin 	(in lv_obj_pos.c line #314)
-[Trace]	lv_obj_update_layout: Layout update end 	(in lv_obj_pos.c line #317)
-[Info]	lv_obj_update_layout: Layout update begin 	(in lv_obj_pos.c line #314)
-[Trace]	lv_obj_update_layout: Layout update end 	(in lv_obj_pos.c line #317)
-[Info]	lv_obj_update_layout: Layout update begin 	(in lv_obj_pos.c line #314)
-[Trace]	lv_obj_update_layout: Layout update end 	(in lv_obj_pos.c line #317)
-flushDisplay: start
-render: start
-get_canvas_buffer: 1782 non-empty pixels
-canvas_buffer: 0x17e70
-{bufferOffset: 97904}
-render: end
-flushDisplay: end
-[Trace]	lv_timer_exec: timer callback 0x19 finished 	(in lv_timer.c line #314)
-[Trace]	lv_timer_handler: finished (15 ms until the next timer call) 	(in lv_timer.c line #144)
-lv_timer_handler: end
-lv_timer_handler: start
-[Trace]	lv_timer_handler: begin 	(in lv_timer.c line #69)
-[Trace]	lv_timer_handler: finished (8 ms until the next timer call) 	(in lv_timer.c line #144)
-lv_timer_handler: end
-lv_timer_handler: start
-[Trace]	lv_timer_handler: begin 	(in lv_timer.c line #69)
-[Trace]	lv_timer_handler: finished (1 ms until the next timer call) 	(in lv_timer.c line #144)
-lv_timer_handler: end
-lv_timer_handler: start
-[Trace]	lv_timer_handler: begin 	(in lv_timer.c line #69)
-[Trace]	lv_timer_exec: calling timer callback: 0x19 	(in lv_timer.c line #312)
-[Trace]	lv_timer_exec: timer callback 0x19 finished 	(in lv_timer.c line #314)
-[Trace]	lv_timer_handler: finished (-1 ms until the next timer call) 	(in lv_timer.c line #144)
-lv_timer_handler: end
-lv_timer_handler: start
-[Trace]	lv_timer_handler: begin 	(in lv_timer.c line #69)
-[Trace]	lv_timer_handler: finished (-1 ms until the next timer call) 	(in lv_timer.c line #144)
-lv_timer_handler: end
-lv_demo_widgets: end
-loop: end
-main: end
-```
-
-# TODO
+(Thanks to [__daneelsan/minimal-zig-wasm-canvas__](https://github.com/daneelsan/minimal-zig-wasm-canvas))
 
 TODO: How to disassemble Compiled WebAssembly with cross-reference to Source Code? Like `objdump --source`? See [wabt](https://github.com/WebAssembly/wabt) and [binaryen](https://github.com/WebAssembly/binaryen)
 
