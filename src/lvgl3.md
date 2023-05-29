@@ -309,13 +309,15 @@ zig build-lib \
 
 And we cloned [__lvgltest.zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgltest.zig) to  [__lvglwasm.zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig), because we'll tweak it for WebAssembly.
 
+We removed our [__Custom Panic Handler__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgltest.zig#L128-L149), the default one works fine for WebAssembly.
+
 [(More about this)](https://github.com/lupyuen/pinephone-lvgl-zig#compile-zig-lvgl-app-to-webassembly)
+
+_What happens when we run this?_
 
 TODO
 
-(We removed our Custom Panic Handler, the default one works fine for WebAssembly)
-
-This produces the Compiled WebAssembly [`lvglwasm.wasm`](lvglwasm.wasm).
+The command above produces the Compiled WebAssembly [`lvglwasm.wasm`](lvglwasm.wasm).
 
 Start a Local Web Server. [(Like Web Server for Chrome)](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb)
 
