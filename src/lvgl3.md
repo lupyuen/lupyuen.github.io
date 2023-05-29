@@ -706,21 +706,21 @@ Let's initialise the LVGL Display...
 
 # Initialise LVGL Display
 
+_What will happen when LVGL starts running?_
+
+According to the [__LVGL Docs__](https://docs.lvgl.io/8.3/porting/project.html#initialization), this is how we __initialise and operate LVGL__...
+
+1.  Call __lv_init__
+
+1.  Register the __LVGL Display__ (and Input Devices)
+
+1.  Call __lv_tick_inc(x)__ every __x__ milliseconds in an interrupt to report the __Elapsed Time__ to LVGL
+
+    [(Not required, because LVGL calls __millis__ to fetch the Elapsed Time)](https://lupyuen.github.io/articles/lvgl3#lvgl-porting-layer-for-webassembly)
+
+1.  Call __lv_timer_handler__ every few milliseconds to handle __LVGL Tasks__
+
 TODO
-
-According to the LVGL Docs, this is how we inititialise and operate LVGL...
-
-1.  Call `lv_init()`
-
-1.  Register the LVGL Display and LVGL Input Devices
-
-1.  Call `lv_tick_inc(x)` every x milliseconds in an interrupt to report the elapsed time to LVGL
-
-    (Not required, because LVGL calls `millis` to fetch the elapsed time)
-
-1.  Call `lv_timer_handler()` every few milliseconds to handle LVGL related tasks
-
-[(Source)](https://docs.lvgl.io/8.3/porting/project.html#initialization)
 
 To register the LVGL Display, we should do this...
 
