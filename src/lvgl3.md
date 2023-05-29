@@ -604,131 +604,105 @@ In the code above, we defined __lv_assert_handler__ and __custom_logger__ to han
 
 Let's talk about LVGL Logging...
 
+
+![WebAssembly Logger for LVGL](https://lupyuen.github.io/images/lvgl3-wasm2.png)
+
 # WebAssembly Logger for LVGL
 
-TODO
+_printf won't work in WebAssembly..._
 
-Let's trace the LVGL Execution with a WebAssembly Logger.
+_How will we trace the LVGL Execution?_
 
-(Remember: `printf` won't work in WebAssembly)
-
-We set the Custom Logger for LVGL, so that we can print Log Messages to the JavaScript Console: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/f9dc7e1afba2f876c8397d753a79a9cb40b90b75/lvglwasm.zig#L32-L43)
+We set the __Custom Logger__ for LVGL, so that we can print Log Messages to the JavaScript Console: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L35-L51)
 
 ```zig
-///////////////////////////////////////////////////////////////////////////////
-//  Main Function
-
-/// We render an LVGL Screen with LVGL Widgets
+/// Main Function for our Zig LVGL App
 pub export fn lv_demo_widgets() void {
-    // TODO: Change to `debug`
-    wasmlog.Console.log("lv_demo_widgets: start", .{});
-    defer wasmlog.Console.log("lv_demo_widgets: end", .{});
 
-    // Set the Custom Logger for LVGL
-    c.lv_log_register_print_cb(custom_logger);
+  // Set the Custom Logger for LVGL
+  c.lv_log_register_print_cb(custom_logger);
+
+  // Init LVGL
+  c.lv_init();
 ```
 
-The Custom Logger is defined in our Zig Program: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/f9dc7e1afba2f876c8397d753a79a9cb40b90b75/lvglwasm.zig#L149-L152)
+[("__`c.`__" refers to functions __imported from C to Zig__)](https://lupyuen.github.io/articles/lvgl#import-c-functions)
+
+__custom_logger__ is defined in our Zig Program: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L195-L200)
 
 ```zig
 /// Custom Logger for LVGL that writes to JavaScript Console
 export fn custom_logger(buf: [*c]const u8) void {
-    wasmlog.Console.log("custom_logger: {s}", .{buf});
+  wasmlog.Console.log("{s}", .{buf});
 }
 ```
 
-`wasmlog` is our Zig Logger for WebAssembly: [wasmlog.zig](wasmlog.zig)
+[("__`[*c]`__" means __C Pointer__)](https://ziglang.org/documentation/master/#C-Pointers)
 
-(Based on [daneelsan/zig-wasm-logger](https://github.com/daneelsan/zig-wasm-logger))
+__wasmlog__ is our __Zig Logger for WebAssembly__: [wasmlog.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasmlog.zig)
 
-`jsConsoleLogWrite` and `jsConsoleLogFlush` are defined in our JavaScript: [lvglwasm.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/1ed4940d505e263727a36c362da54388be4cbca0/lvglwasm.js#L55-L66)
+(Thanks to [__daneelsan/zig-wasm-logger__](https://github.com/daneelsan/zig-wasm-logger))
+
+Which calls JavaScript Functions __jsConsoleLogWrite__ and __jsConsoleLogFlush__ to log to the __JavaScript Console__: [lvglwasm.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.js#L54C1-L69)
 
 ```javascript
-        // Write to JavaScript Console from Zig
-        // https://github.com/daneelsan/zig-wasm-logger/blob/master/script.js
-        jsConsoleLogWrite: function(ptr, len) {
-            console_log_buffer += wasm.getString(ptr, len);
-        },
+// Export JavaScript Functions to Zig
+const importObject = {
+  // JavaScript Functions exported to Zig
+  env: {
+    // Write to JavaScript Console from Zig
+    // https://github.com/daneelsan/zig-wasm-logger/blob/master/script.js
+    jsConsoleLogWrite: function(ptr, len) {
+      console_log_buffer += wasm.getString(ptr, len);
+    },
 
-        // Flush JavaScript Console from Zig
-        // https://github.com/daneelsan/zig-wasm-logger/blob/master/script.js
-        jsConsoleLogFlush: function() {
-            console.log(console_log_buffer);
-            console_log_buffer = "";
-        },
+    // Flush JavaScript Console from Zig
+    // https://github.com/daneelsan/zig-wasm-logger/blob/master/script.js
+    jsConsoleLogFlush: function() {
+      console.log(console_log_buffer);
+      console_log_buffer = "";
+    },
 ```
 
-`wasm.getString` also comes from our JavaScript: [lvglwasm.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/1ed4940d505e263727a36c362da54388be4cbca0/lvglwasm.js#L10-L27)
+_What's wasm.getString?_
+
+__wasm.getString__ is our JavaScript Function that __reads the WebAssembly Memory__ into a JavaScript Array: [lvglwasm.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.js#L10-L27)
 
 ```javascript
-// WebAssembly Helper Functions
+// WebAssembly Helper Functions in JavaScript
 const wasm = {
-    // WebAssembly Instance
-    instance: undefined,
+  // WebAssembly Instance
+  instance: undefined,
 
-    // Init the WebAssembly Instance
-    init: function (obj) {
-        this.instance = obj.instance;
-    },
+  // Init the WebAssembly Instance
+  init: function (obj) {
+    this.instance = obj.instance;
+  },
 
-    // Fetch the Zig String from a WebAssembly Pointer
-    getString: function (ptr, len) {
-        const memory = this.instance.exports.memory;
-        return text_decoder.decode(
-            new Uint8Array(memory.buffer, ptr, len)
-        );
-    },
+  // Fetch the Zig String from a WebAssembly Pointer
+  getString: function (ptr, len) {
+    const memory = this.instance.exports.memory;
+    const text_decoder = new TextDecoder();
+    return text_decoder.decode(
+      new Uint8Array(memory.buffer, ptr, len)
+    );
+  },
 };
 ```
 
-Now we can see the LVGL Log Messages in the JavaScript Console yay! (Pic below)
+[(__TextDecoder__ converts bytes to text)](https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder)
+
+(Remember earlier we spoke about __snooping WebAssembly Memory__ with a WebAssembly Pointer? This is how we do it!)
+
+Now we can see the __LVGL Log Messages__ in the JavaScript Console yay! (Pic above)
 
 ```text
-custom_logger: [Warn]	(0.001, +1)
-lv_disp_get_scr_act:
+[Warn] lv_disp_get_scr_act:
 no display registered to get its active screen
 (in lv_disp.c line #54)
 ```
 
 Let's initialise the LVGL Display...
-
-![WebAssembly Logger for LVGL](https://lupyuen.github.io/images/lvgl3-wasm2.png)
-
-# Handle LVGL Events
-
-TODO: To handle LVGL Events, call `lv_tick_inc` and `lv_timer_handler`
-
-1.  Call `lv_tick_inc(x)` every x milliseconds in an interrupt to report the elapsed time to LVGL
-
-    (Not required, because LVGL calls `millis` to fetch the elapsed time)
-
-1.  Call `lv_timer_handler()` every few milliseconds to handle LVGL related tasks
-
-[(Source)](https://docs.lvgl.io/8.3/porting/project.html#initialization)
-
-Like this: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/d584f43c6354f12bdc15bdb8632cdd3f6f5dc7ff/lvglwasm.zig#L65-L83)
-
-```zig
-    // Register the Display Driver
-    const disp = c.lv_disp_drv_register(disp_drv);
-    _ = disp;
-
-    // Create the widgets for display (with Zig Wrapper)
-    createWidgetsWrapped() catch |e| {
-        // In case of error, quit
-        std.log.err("createWidgetsWrapped failed: {}", .{e});
-        return;
-    };
-
-    // Handle LVGL Events
-    // TODO: Call this from Web Browser JavaScript, so that Web Browser won't block
-    var i: usize = 0;
-    while (i < 5) : (i += 1) {
-        debug("lv_timer_handler: start", .{});
-        _ = c.lv_timer_handler();
-        debug("lv_timer_handler: end", .{});
-    }
-```
 
 # Initialise LVGL Display
 
@@ -822,6 +796,42 @@ pub export fn lv_demo_widgets() void {
         debug("lv_timer_handler: end", .{});
     }
 }
+```
+
+# Handle LVGL Events
+
+TODO: To handle LVGL Events, call `lv_tick_inc` and `lv_timer_handler`
+
+1.  Call `lv_tick_inc(x)` every x milliseconds in an interrupt to report the elapsed time to LVGL
+
+    (Not required, because LVGL calls `millis` to fetch the elapsed time)
+
+1.  Call `lv_timer_handler()` every few milliseconds to handle LVGL related tasks
+
+[(Source)](https://docs.lvgl.io/8.3/porting/project.html#initialization)
+
+Like this: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/d584f43c6354f12bdc15bdb8632cdd3f6f5dc7ff/lvglwasm.zig#L65-L83)
+
+```zig
+    // Register the Display Driver
+    const disp = c.lv_disp_drv_register(disp_drv);
+    _ = disp;
+
+    // Create the widgets for display (with Zig Wrapper)
+    createWidgetsWrapped() catch |e| {
+        // In case of error, quit
+        std.log.err("createWidgetsWrapped failed: {}", .{e});
+        return;
+    };
+
+    // Handle LVGL Events
+    // TODO: Call this from Web Browser JavaScript, so that Web Browser won't block
+    var i: usize = 0;
+    while (i < 5) : (i += 1) {
+        debug("lv_timer_handler: start", .{});
+        _ = c.lv_timer_handler();
+        debug("lv_timer_handler: end", .{});
+    }
 ```
 
 We're ready to render the LVGL Display!
