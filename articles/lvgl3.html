@@ -848,7 +848,6 @@ render: function() {  // TODO: Add width and height
   const bufferOffset = wasm.instance.exports.getCanvasBuffer();
 
   // Load the WebAssembly Pointer into a JavaScript Image Data
-  // TODO: Swap the RGB Bytes in LVGL, the colours are inverted
   const memory = wasm.instance.exports.memory;
   const ptr = bufferOffset;
   const len = (canvas.width * canvas.height) * 4;
@@ -864,6 +863,7 @@ render: function() {  // TODO: Add width and height
 <p><em>How does it fetch the LVGL Canvas Buffer?</em></p>
 <p>The JavaScript above calls <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L100-L104"><strong>getCanvasBuffer</strong></a> (in Zig) and <strong>get_canvas_buffer</strong> (in C) to fetch the LVGL Canvas Buffer: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L9-L29">display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Canvas Buffer for rendering LVGL Display
+// TODO: Swap the RGB Bytes in LVGL, the colours are inverted for HTML Canvas
 #define HOR_RES     720      // Horizontal Resolution
 #define VER_RES     1280     // Vertical Resolution
 #define BUFFER_ROWS VER_RES  // Number of rows to buffer
