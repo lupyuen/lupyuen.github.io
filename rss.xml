@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>(Possibly) LVGL in WebAssembly with Zig Compiler</title>
+            <link>https://lupyuen.github.io/articles/lvgl3</link>
+            <description><![CDATA[Can we preview an LVGL App in the Web Browser... With WebAssembly and Zig Compiler? Let's find out!]]></description>
+            <guid>https://lupyuen.github.io/articles/lvgl3</guid>
+            <pubDate>Wed, 31 May 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Recipe for Wholemeal Sourdough with Bread Machine</title>
             <link>https://lupyuen.github.io/articles/sourdough</link>
             <description><![CDATA[Yep it's a Sourdough Recipe]]></description>

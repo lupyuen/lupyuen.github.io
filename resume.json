@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "(Possibly) LVGL in WebAssembly with Zig Compiler",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-05-31",
+      "website": "https://lupyuen.github.io/articles/lvgl3",
+      "summary": "Can we preview an LVGL App in the Web Browser... With WebAssembly and Zig Compiler? Let's find out!"
+    },
+    {
       "name": "Recipe for Wholemeal Sourdough with Bread Machine",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-05-22",
