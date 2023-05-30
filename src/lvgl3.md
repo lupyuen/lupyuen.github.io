@@ -2,11 +2,13 @@
 
 📝 _31 May 2023_
 
-![LVGL in WebAssembly with Zig Compiler](https://lupyuen.github.io/images/lvgl3-title.png)
+![Zig LVGL App rendered in Web Browser with WebAssembly](https://lupyuen.github.io/images/lvgl3-title.png)
+
+[_Zig LVGL App rendered in Web Browser with WebAssembly_](https://lupyuen.github.io/pinephone-lvgl-zig/lvglwasm.html)
 
 [__LVGL__](https://docs.lvgl.io/master/index.html) is a popular __Graphics Library__ for Microcontrollers. (In C)
 
-[__Zig Compiler__](https://ziglang.org/) works great for compiling __C Libraries into WebAssembly__. (Based on Clang)
+[__Zig Compiler__](https://ziglang.org/) works great for compiling __C Libraries into WebAssembly__. (Based on Clang Compiler)
 
 Can we preview an __LVGL App in the Web Browser__... With WebAssembly and Zig Compiler? Let's find out!
 
@@ -34,9 +36,7 @@ Maybe we can do better with newer tools like __Zig Compiler__? In this article w
 
 -   Later we might render __LVGL UI Controls__ (with Touch Input)
 
-Maybe someday all our LVGL Apps will run in a __Web Browser and on PinePhone__!
-
-(And many other LVGL Devices!)
+Maybe someday we'll code and test our LVGL Apps in a Web Browser, thanks to Zig Compiler and WebAssembly!
 
 ![Mandelbrot Set rendered with Zig and WebAssembly](https://lupyuen.github.io/images/lvgl3-wasm.png)
 
