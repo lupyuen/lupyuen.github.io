@@ -853,9 +853,11 @@ Yeah we should have called __lv_timer_handler__ from our JavaScript.
 
 But for our quick demo, this will do. For now!
 
+![Render LVGL Display in WebAssembly](https://lupyuen.github.io/images/lvgl3-render.jpg)
+
 # Render LVGL Display in Zig
 
-Finally we __render our LVGL Display__ in the Web Browser... Spanning Zig, C and JavaScript!
+Finally we __render our LVGL Display__ in the Web Browser... Spanning C, Zig and JavaScript! (Pic above)
 
 Earlier we saw this __LVGL Initialisation__ in our Zig App: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L49-L63)
 
@@ -938,7 +940,7 @@ __flushDisplay__ (in Zig) calls __render__ (in JavaScript) to render the LVGL Di
 
 We bubble up from Zig to JavaScript...
 
-![Zig LVGL App rendered in Web Browser with WebAssembly](https://lupyuen.github.io/images/zig-wasm3.png)
+![Zig LVGL App rendered in Web Browser with WebAssembly](https://lupyuen.github.io/images/lvgl3-title.png)
 
 [_Zig LVGL App rendered in Web Browser with WebAssembly_](https://lupyuen.github.io/pinephone-lvgl-zig/lvglwasm.html)
 
