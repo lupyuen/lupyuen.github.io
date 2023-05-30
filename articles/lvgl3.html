@@ -291,6 +291,7 @@ cp lvgltest.o \
 ## Omitted: Link the Compiled Zig App with NuttX RTOS
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig#build-lvgl-zig-app">(See the Complete Command)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/releases/tag/nuttx-build-files">(NuttX Build Files)</a></p>
 <p>Zig Compiler produces an Object File <strong>lvgltest.o</strong> that looks exactly like an ordinary C Object File…</p>
 <p>Which links perfectly fine into <strong>Apache NuttX RTOS</strong>.</p>
 <p>And our LVGL Zig App runs OK on PinePhone! (Pic above)</p>
@@ -340,6 +341,7 @@ zig build-lib \
   lvglwasm.zig
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig#compile-zig-lvgl-app-to-webassembly">(See the Complete Command)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/releases/tag/nuttx-build-files">(NuttX Build Files)</a></p>
 <p>And we cloned <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgltest.zig"><strong>lvgltest.zig</strong></a> to <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig"><strong>lvglwasm.zig</strong></a>, because we’ll tweak it for WebAssembly.</p>
 <p>We removed our <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgltest.zig#L128-L149"><strong>Custom Panic Handler</strong></a>, the default one works fine for WebAssembly.</p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig#compile-zig-lvgl-app-to-webassembly">(More about this)</a></p>
@@ -390,6 +392,7 @@ zig cc \
   -o ../../../pinephone-lvgl-zig/lv_label.o
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig#compile-lvgl-to-webassembly-with-zig-compiler">(See the Complete Command)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/releases/tag/nuttx-build-files">(NuttX Build Files)</a></p>
 <p>This compiles <strong>lv_label.c</strong> from C to WebAssembly and generates <strong>lv_label.o</strong>.</p>
 <p>We changed these options…</p>
 <ul>
@@ -456,6 +459,7 @@ zig build-lib \
   lv_label.o
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig#compile-lvgl-to-webassembly-with-zig-compiler">(See the Complete Command)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/releases/tag/nuttx-build-files">(NuttX Build Files)</a></p>
 <p>When we browse to our HTML <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.html"><strong>lvglwasm.html</strong></a>, we see this in the JavaScript Console…</p>
 <div class="example-wrap"><pre class="language-text"><code>Uncaught (in promise) LinkError: 
 WebAssembly.instantiate(): 
