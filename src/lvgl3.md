@@ -161,7 +161,7 @@ extern fn print(i32) void;
 if (iterations == 1) { print(iterations); }
 ```
 
-We export the JavaScript Function __print__ as we load the WebAssembly Module: [game.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/demo/game.js)
+In our JavaScript, we export the __print__ function as we load the WebAssembly Module: [game.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/demo/game.js)
 
 ```javascript
 // Export JavaScript Functions to Zig
@@ -191,13 +191,15 @@ It gets complicated... We need to snoop the __WebAssembly Memory__.
 
 We'll come back to this when we talk about WebAssembly Logging.
 
-![Zig LVGL App in Zig on PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/lvgl2-zig.jpg)
+![Zig LVGL App on PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/lvgl2-zig.jpg)
+
+[_Zig LVGL App on PinePhone with Apache NuttX RTOS_](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgltest.zig)
 
 # LVGL App in Zig
 
 _Will Zig work with LVGL?_
 
-Yep we tested an __LVGL App in Zig__ with PinePhone and Apache NuttX RTOS (pic above): [lvgltest.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgltest.zig#L55-L89)
+Yep we tested an __LVGL App in Zig__ with PinePhone and Apache NuttX RTOS (pic above): [lvgltest.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgltest.zig#L28-L90)
 
 ```zig
 /// LVGL App in Zig that renders a Text Label 
@@ -259,7 +261,9 @@ cp lvgltest.o \
 ## Omitted: Link the Compiled Zig App with NuttX RTOS
 ```
 
-Zig Compiler produces an __Object File lvgltest.o__ that looks exactly like an ordinary C Object File...
+[(See the Complete Command)](https://github.com/lupyuen/pinephone-lvgl-zig#build-lvgl-zig-app)
+
+Zig Compiler produces an Object File __lvgltest.o__ that looks exactly like an ordinary C Object File...
 
 Which links perfectly fine into __Apache NuttX RTOS__.
 
@@ -309,6 +313,8 @@ zig build-lib \
   lvglwasm.zig
 ```
 
+[(See the Complete Command)](https://github.com/lupyuen/pinephone-lvgl-zig#compile-zig-lvgl-app-to-webassembly)
+
 And we cloned [__lvgltest.zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgltest.zig) to [__lvglwasm.zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig), because we'll tweak it for WebAssembly.
 
 We removed our [__Custom Panic Handler__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgltest.zig#L128-L149), the default one works fine for WebAssembly.
@@ -319,9 +325,9 @@ _What happens when we run this?_
 
 The command above produces the Compiled WebAssembly [__lvglwasm.wasm__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.wasm).
 
-Start a Local Web Server. [(Like Web Server for Chrome)](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb)
+We start a Local Web Server. [(Like Web Server for Chrome)](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb)
 
-Browse to our HTML [__lvglwasm.html__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.html)
+And browse to our HTML [__lvglwasm.html__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.html)
 
 - Which calls our JavaScript [__lvglwasm.js__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.js#L96-L114)
 
@@ -352,7 +358,7 @@ Let's compile the LVGL Library to WebAssembly...
 
 _Will Zig Compiler compile C Libraries? Like LVGL?_
 
-Yep! This is how we call Zig Compiler to compile __lv_label_create__ from the LVGL Library...
+Yep! This is how we call Zig Compiler to compile __lv_label_create__ and __lv_label.c__ from the LVGL Library...
 
 ```bash
 ## Compile LVGL from C to WebAssembly
@@ -387,7 +393,7 @@ We changed these options...
 
   (Because we're calling C Standard Library)
 
-- Add "__-DFAR=__`
+- Add "__-DFAR=__"
 
   (Because we won't need Far Pointers)
 
@@ -402,7 +408,7 @@ We changed these options...
   -DLV_FONT_DEFAULT_MONTSERRAT_20=1 \
   ```
 
-  [(Remember to compile LVGL Fonts!)](https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-fonts)
+  [(Remember to compile __LVGL Fonts__!)](https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-fonts)
 
 - Enable __Detailed Logging__...
 
@@ -411,9 +417,9 @@ We changed these options...
   -DLV_LOG_LEVEL=LV_LOG_LEVEL_TRACE \
   ```
 
-  (We'll come back to this)
+  [(We'll come back to this)](https://lupyuen.github.io/articles/lvgl3#webassembly-logger-for-lvgl)
 
-- Handle __Assertion Failure__ ourselves...
+- Handle __Assertion Failure__...
 
   ```text
   "-DLV_ASSERT_HANDLER={void lv_assert_handler(void); lv_assert_handler();} \"
@@ -424,7 +430,7 @@ We changed these options...
 - Emit the __WebAssembly Object File__...
 
   ```text
-  -o ../../../pinephone-lvgl-zig/lv_label.o`
+  -o ../../../pinephone-lvgl-zig/lv_label.o
   ```
 
 This works because Zig Compiler calls [__Clang Compiler__](https://andrewkelley.me/post/zig-cc-powerful-drop-in-replacement-gcc-clang.html) to compile LVGL Library from C to WebAssembly.
@@ -455,7 +461,7 @@ zig build-lib \
 
 [(See the Complete Command)](https://github.com/lupyuen/pinephone-lvgl-zig#compile-lvgl-to-webassembly-with-zig-compiler)
 
-When we browse to our HTML [__lvglwasm.html__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.html), we see this error in the JavaScript Console...
+When we browse to our HTML [__lvglwasm.html__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.html), we see this in the JavaScript Console...
 
 ```text
 Uncaught (in promise) LinkError: 
@@ -531,7 +537,7 @@ zig build-lib \
   ...
 ```
 
-Thus we're done with LVGL Library in WebAssembly! (Almost)
+We're done with LVGL Library in WebAssembly! (Almost)
 
 _Now what happens when we run it?_
 
@@ -566,7 +572,7 @@ Thus we really ought to compile ALL the LVGL Source Files.
 
 _Anything else we need for LVGL in WebAssembly?_
 
-LVGL expects us to provide a __millis__ function that returns the number of __Elapsed Milliseconds__...
+LVGL expects a __millis__ function that returns the number of __Elapsed Milliseconds__...
 
 ```text
 Uncaught (in promise) LinkError: 
@@ -600,7 +606,7 @@ export fn custom_logger(buf: [*c]const u8) void {
 }
 ```
 
-(We should reimplement __millis__ in JavaScipt, though it might be slow)
+(We should reimplement __millis__ in JavaScript, though it might be slow)
 
 In the code above, we defined __lv_assert_handler__ and __custom_logger__ to handle __Assertions and Logging__ in LVGL.
 
@@ -694,7 +700,7 @@ const wasm = {
 
 [(__TextDecoder__ converts bytes to text)](https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder)
 
-(Remember earlier we spoke about __snooping WebAssembly Memory__ with a WebAssembly Pointer? This is how we do it!)
+(Remember earlier we spoke about __snooping WebAssembly Memory__ with a WebAssembly Pointer? This is how we do it)
 
 Now we can see the __LVGL Log Messages__ in the JavaScript Console yay! (Pic above)
 
@@ -708,7 +714,7 @@ Let's initialise the LVGL Display...
 
 # Initialise LVGL Display
 
-_What happens when LVGL starts running?_
+_What happens when LVGL runs?_
 
 According to the [__LVGL Docs__](https://docs.lvgl.io/8.3/porting/project.html#initialization), this is how we __initialise and operate LVGL__...
 
@@ -724,16 +730,16 @@ According to the [__LVGL Docs__](https://docs.lvgl.io/8.3/porting/project.html#i
 
 To __register the LVGL Display__, we follow these steps...
 
-- [__Create LVGL Draw Buffer__](https://docs.lvgl.io/8.3/porting/display.html#draw-buffer)
+- [__Create the LVGL Draw Buffer__](https://docs.lvgl.io/8.3/porting/display.html#draw-buffer)
 
-- [__Register LVGL Display Driver__](https://docs.lvgl.io/8.3/porting/display.html#examples)
+- [__Register the LVGL Display Driver__](https://docs.lvgl.io/8.3/porting/display.html#examples)
 
 _Easy peasy for Zig right?_
 
 Sadly we can't do it in Zig...
 
 ```zig
-// Nope can't allocate LVGL Display Driver in Zig!
+// Nope, can't allocate LVGL Display Driver in Zig!
 // `lv_disp_drv_t` is an Opaque Type
 
 var disp_drv = c.lv_disp_drv_t{};
@@ -924,16 +930,18 @@ This tells LVGL to call __flushDisplay__ (in Zig) when the LVGL Display Canvas i
 ```zig
 /// LVGL calls this Callback Function to flush our display
 export fn flushDisplay(
-  disp_drv: ?*c.lv_disp_drv_t,  // LVGL Display Driver
-  area: [*c]const c.lv_area_t,  // LVGL Display Area
-  color_p: [*c]c.lv_color_t     // LVGL Display Buffer
+  disp_drv: ?*c.lv_disp_drv_t,      // LVGL Display Driver
+  area:     [*c]const c.lv_area_t,  // LVGL Display Area
+  color_p:  [*c]c.lv_color_t        // LVGL Display Buffer
 ) void {
 
-  // Call the Web Browser JavaScript to render the LVGL Canvas Buffer
+  // Call the Web Browser JavaScript
+  // to render the LVGL Canvas Buffer
   render();
 
-  // Notify LVGL that the display is flushed.
-  // Remember to call `lv_disp_flush_ready` or Web Browser will hang on reload!
+  // Notify LVGL that the display has been flushed.
+  // Remember to call `lv_disp_flush_ready`
+  // or Web Browser will hang on reload!
   c.lv_disp_flush_ready(disp_drv);
 }
 ```
@@ -1042,7 +1050,7 @@ _strlen is missing from our Zig WebAssembly..._
 
 _But strlen should come from the C Standard Library! (musl)_
 
-Not sure why __strlen__ is missing, but we fixed it (temporarily)) by copying from the __Zig Library Source Code__: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L280-L336)
+Not sure why __strlen__ is missing, but we fixed it (temporarily) by copying from the [__Zig Library Source Code__](https://github.com/ziglang/zig/blob/master/lib/c.zig): [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L280-L336)
 
 ```zig
 // C Standard Library from zig-macos-x86_64-0.10.0-dev.2351+b64a1d5ab/lib/zig/c.zig
@@ -1102,11 +1110,11 @@ before lv_init
 
 Thus we set "__-DLV_MEM_CUSTOM=1__" to call __malloc__ instead of LVGL's TLSF Allocator.
 
-([__block_next__](https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_tlsf.c#L453-L460) calls [__offset_to_block__](https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_tlsf.c#L440-L444), which calls [__tlsf_cast__](https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_tlsf.c#L274). Maybe the Pointer Cast doesn't work for __Clang WebAssembly__?)
+([__block_next__](https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_tlsf.c#L453-L460) calls [__offset_to_block__](https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_tlsf.c#L440-L444), which calls [__tlsf_cast__](https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_tlsf.c#L274). Maybe the Pointer Cast doesn't work for [__Clang WebAssembly__](https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_tlsf.c#L25-L215)?)
 
 _But Zig doesn't support malloc for WebAssembly!_
 
-We called Zig's __FixedBufferAllocator__ to implement __malloc__: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L38-L44)
+We call Zig's [__FixedBufferAllocator__](https://ziglang.org/documentation/master/#Memory) to implement __malloc__: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L38-L44)
 
 ```zig
 /// Main Function for our Zig LVGL App
@@ -1117,7 +1125,7 @@ pub export fn lv_demo_widgets() void {
     .init(&memory_buffer);
 ```
 
-Here's our implementation of __malloc__: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L201-L244)
+Here's our (incomplete) implementation of __malloc__: [lvglwasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L201-L244)
 
 ```zig
 /// Zig replacement for malloc
@@ -1212,4 +1220,4 @@ After compiling [___lv_gc_clear_roots__](https://github.com/lvgl/lvgl/blob/v8.3.
 
 (Maybe we should disassemble the Compiled WebAssembly and look for other Undefined Variables at WebAssembly Address 0)
 
-TODO: How to disassemble Compiled WebAssembly with cross-reference to Source Code? Like `objdump --source`? See [wabt](https://github.com/WebAssembly/wabt) and [binaryen](https://github.com/WebAssembly/binaryen)
+TODO: For easier debugging, how to disassemble Compiled WebAssembly with cross-reference to Source Code? Similar to "__objdump --source__"? Maybe with [__wabt__](https://github.com/WebAssembly/wabt) or [__binaryen__](https://github.com/WebAssembly/binaryen)?
