@@ -764,8 +764,9 @@ pub export fn lv_demo_widgets() void {
 <p>Yeah we should have called <strong>lv_timer_handler</strong> from our JavaScript.</p>
 <p>(Triggered by a JavaScript Timer or <a href="https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame"><strong>requestAnimationFrame</strong></a>)</p>
 <p>But for our quick demo, this will do. For now!</p>
+<p><img src="https://lupyuen.github.io/images/lvgl3-render.jpg" alt="Render LVGL Display in WebAssembly" /></p>
 <h1 id="render-lvgl-display-in-zig"><a href="#render-lvgl-display-in-zig">11 Render LVGL Display in Zig</a></h1>
-<p>Finally we <strong>render our LVGL Display</strong> in the Web Browser… Spanning Zig, C and JavaScript!</p>
+<p>Finally we <strong>render our LVGL Display</strong> in the Web Browser… Spanning C, Zig and JavaScript! (Pic above)</p>
 <p>Earlier we saw this <strong>LVGL Initialisation</strong> in our Zig App: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L49-L63">lvglwasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Init LVGL
 c.lv_init();
@@ -830,7 +831,7 @@ export fn flushDisplay(
 </code></pre></div>
 <p><strong>flushDisplay</strong> (in Zig) calls <strong>render</strong> (in JavaScript) to render the LVGL Display Canvas.</p>
 <p>We bubble up from Zig to JavaScript…</p>
-<p><img src="https://lupyuen.github.io/images/zig-wasm3.png" alt="Zig LVGL App rendered in Web Browser with WebAssembly" /></p>
+<p><img src="https://lupyuen.github.io/images/lvgl3-title.png" alt="Zig LVGL App rendered in Web Browser with WebAssembly" /></p>
 <p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/lvglwasm.html"><em>Zig LVGL App rendered in Web Browser with WebAssembly</em></a></p>
 <h1 id="render-lvgl-display-in-javascript"><a href="#render-lvgl-display-in-javascript">12 Render LVGL Display in JavaScript</a></h1>
 <p><em>Phew OK. What happens in our JavaScript?</em></p>
