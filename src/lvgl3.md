@@ -263,6 +263,8 @@ cp lvgltest.o \
 
 [(See the Complete Command)](https://github.com/lupyuen/pinephone-lvgl-zig#build-lvgl-zig-app)
 
+[(NuttX Build Files)](https://github.com/lupyuen/pinephone-lvgl-zig/releases/tag/nuttx-build-files)
+
 Zig Compiler produces an Object File __lvgltest.o__ that looks exactly like an ordinary C Object File...
 
 Which links perfectly fine into __Apache NuttX RTOS__.
@@ -314,6 +316,8 @@ zig build-lib \
 ```
 
 [(See the Complete Command)](https://github.com/lupyuen/pinephone-lvgl-zig#compile-zig-lvgl-app-to-webassembly)
+
+[(NuttX Build Files)](https://github.com/lupyuen/pinephone-lvgl-zig/releases/tag/nuttx-build-files)
 
 And we cloned [__lvgltest.zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgltest.zig) to [__lvglwasm.zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig), because we'll tweak it for WebAssembly.
 
@@ -380,6 +384,8 @@ zig cc \
 ```
 
 [(See the Complete Command)](https://github.com/lupyuen/pinephone-lvgl-zig#compile-lvgl-to-webassembly-with-zig-compiler)
+
+[(NuttX Build Files)](https://github.com/lupyuen/pinephone-lvgl-zig/releases/tag/nuttx-build-files)
 
 This compiles __lv_label.c__ from C to WebAssembly and generates __lv_label.o__.
 
@@ -460,6 +466,8 @@ zig build-lib \
 ```
 
 [(See the Complete Command)](https://github.com/lupyuen/pinephone-lvgl-zig#compile-lvgl-to-webassembly-with-zig-compiler)
+
+[(NuttX Build Files)](https://github.com/lupyuen/pinephone-lvgl-zig/releases/tag/nuttx-build-files)
 
 When we browse to our HTML [__lvglwasm.html__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.html), we see this in the JavaScript Console...
 
