@@ -1030,6 +1030,10 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
 
+-   [__Discuss this article on Reddit__](https://www.reddit.com/r/Zig/comments/13vgbfp/possibly_lvgl_in_webassembly_with_zig_compiler/)
+
+-   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=36121090)
+
 -   [__My Current Project: "Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
 
 -   [__My Other Project: "The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book)
