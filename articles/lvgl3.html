@@ -77,12 +77,13 @@
 <li><a href="#webassembly-logger-for-lvgl">8 WebAssembly Logger for LVGL</a><ul></ul></li>
 <li><a href="#initialise-lvgl-display">9 Initialise LVGL Display</a><ul></ul></li>
 <li><a href="#handle-lvgl-tasks">10 Handle LVGL Tasks</a><ul></ul></li>
-<li><a href="#render-lvgl-display-in-web-browser">11 Render LVGL Display in Web Browser</a><ul></ul></li>
-<li><a href="#whats-next">12 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-c-standard-library-is-missing">13 Appendix: C Standard Library is Missing</a><ul></ul></li>
-<li><a href="#appendix-lvgl-memory-allocation">14 Appendix: LVGL Memory Allocation</a><ul></ul></li>
-<li><a href="#appendix-lvgl-fonts">15 Appendix: LVGL Fonts</a><ul></ul></li>
-<li><a href="#appendix-lvgl-screen-not-found">16 Appendix: LVGL Screen Not Found</a><ul></ul></li></ul></nav><p>📝 <em>7 Jun 2023</em></p>
+<li><a href="#render-lvgl-display-in-zig">11 Render LVGL Display in Zig</a><ul></ul></li>
+<li><a href="#render-lvgl-display-in-javascript">12 Render LVGL Display in JavaScript</a><ul></ul></li>
+<li><a href="#whats-next">13 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-c-standard-library-is-missing">14 Appendix: C Standard Library is Missing</a><ul></ul></li>
+<li><a href="#appendix-lvgl-memory-allocation">15 Appendix: LVGL Memory Allocation</a><ul></ul></li>
+<li><a href="#appendix-lvgl-fonts">16 Appendix: LVGL Fonts</a><ul></ul></li>
+<li><a href="#appendix-lvgl-screen-not-found">17 Appendix: LVGL Screen Not Found</a><ul></ul></li></ul></nav><p>📝 <em>7 Jun 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/lvgl3-title.png" alt="LVGL in WebAssembly with Zig Compiler" /></p>
 <p><a href="https://docs.lvgl.io/master/index.html"><strong>LVGL</strong></a> is a popular <strong>Graphics Library</strong> for Microcontrollers. (In C)</p>
 <p><a href="https://ziglang.org/"><strong>Zig Compiler</strong></a> works great for compiling <strong>C Libraries into WebAssembly</strong>. (Based on Clang)</p>
@@ -763,10 +764,8 @@ pub export fn lv_demo_widgets() void {
 <p>Yeah we should have called <strong>lv_timer_handler</strong> from our JavaScript.</p>
 <p>(Triggered by a JavaScript Timer or <a href="https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame"><strong>requestAnimationFrame</strong></a>)</p>
 <p>But for our quick demo, this will do. For now!</p>
-<p><img src="https://lupyuen.github.io/images/zig-wasm3.png" alt="Zig LVGL App rendered in Web Browser with WebAssembly" /></p>
-<p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/lvglwasm.html"><em>Zig LVGL App rendered in Web Browser with WebAssembly</em></a></p>
-<h1 id="render-lvgl-display-in-web-browser"><a href="#render-lvgl-display-in-web-browser">11 Render LVGL Display in Web Browser</a></h1>
-<p>Finally we <strong>render our LVGL Display</strong> in the Web Browser!</p>
+<h1 id="render-lvgl-display-in-zig"><a href="#render-lvgl-display-in-zig">11 Render LVGL Display in Zig</a></h1>
+<p>Finally we <strong>render our LVGL Display</strong> in the Web Browser… Spanning Zig, C and JavaScript!</p>
 <p>Earlier we saw this <strong>LVGL Initialisation</strong> in our Zig App: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L49-L63">lvglwasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Init LVGL
 c.lv_init();
@@ -830,7 +829,12 @@ export fn flushDisplay(
 }
 </code></pre></div>
 <p><strong>flushDisplay</strong> (in Zig) calls <strong>render</strong> (in JavaScript) to render the LVGL Display Canvas.</p>
+<p>We bubble up from Zig to JavaScript…</p>
+<p><img src="https://lupyuen.github.io/images/zig-wasm3.png" alt="Zig LVGL App rendered in Web Browser with WebAssembly" /></p>
+<p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/lvglwasm.html"><em>Zig LVGL App rendered in Web Browser with WebAssembly</em></a></p>
+<h1 id="render-lvgl-display-in-javascript"><a href="#render-lvgl-display-in-javascript">12 Render LVGL Display in JavaScript</a></h1>
 <p><em>Phew OK. What happens in our JavaScript?</em></p>
+<p>Earlier we saw that <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L86-L98"><strong>flushDisplay</strong></a> (in Zig) calls <strong>render</strong> (in JavaScript) to render the LVGL Display Canvas.</p>
 <p><strong>render</strong> (in JavaScript) draws the LVGL Canvas Buffer to our HTML Canvas: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.js#L29-L53">lvglwasm.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Render the LVGL Canvas from Zig to HTML
 // https://github.com/daneelsan/minimal-zig-wasm-canvas/blob/master/script.js
@@ -852,7 +856,7 @@ render: function() {  // TODO: Add width and height
 }
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.js#L69-L75">(<strong>imageData</strong> and <strong>context</strong> are defined here)</a></p>
-<p><em>But how does it fetch the LVGL Canvas Buffer?</em></p>
+<p><em>How does it fetch the LVGL Canvas Buffer?</em></p>
 <p>The JavaScript above calls <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L100-L104"><strong>getCanvasBuffer</strong></a> (in Zig) and <strong>get_canvas_buffer</strong> (in C) to fetch the LVGL Canvas Buffer: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L9-L29">display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Canvas Buffer for rendering LVGL Display
 #define HOR_RES     720      // Horizontal Resolution
@@ -870,8 +874,11 @@ lv_color_t *get_canvas_buffer(void) {
 <p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/lvglwasm.html">(Try the <strong>LVGL Demo</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/8c9f45401eb15ff68961bd53e237baa798cc8fb5/README.md#todo">(See the <strong>JavaScript Log</strong>)</a></p>
 <p>(Thanks to <a href="https://github.com/daneelsan/minimal-zig-wasm-canvas"><strong>daneelsan/minimal-zig-wasm-canvas</strong></a>)</p>
-<h1 id="whats-next"><a href="#whats-next">12 What’s Next</a></h1>
-<p>TODO: Feature Phone UI, sufficient to press the buttons, implement Mouse Down/Up Events</p>
+<h1 id="whats-next"><a href="#whats-next">13 What’s Next</a></h1>
+<p>Up Next: <a href="https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone"><strong>Feature Phone UI</strong></a> for PinePhone! To make our Feature Phone clickable, we’ll pass <strong>Mouse Events</strong> from JavaScript to LVGL.</p>
+<p>(Through an LVGL Input Device Driver)</p>
+<p>We’ll experiment with <strong>Live Reloading</strong>: Whenever we save our Zig LVGL App, it <strong>auto-recompiles</strong> and <strong>auto-reloads</strong> the WebAssembly HTML.</p>
+<p>Which makes UI Prototyping a lot quicker in LVGL. Stay Tuned for updates!</p>
 <p>Meanwhile please check out the other articles on NuttX for PinePhone…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>“Apache NuttX RTOS for PinePhone”</strong></a></li>
@@ -899,7 +906,7 @@ lv_color_t *get_canvas_buffer(void) {
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl3.md"><strong>lupyuen.github.io/src/lvgl3.md</strong></a></p>
-<h1 id="appendix-c-standard-library-is-missing"><a href="#appendix-c-standard-library-is-missing">13 Appendix: C Standard Library is Missing</a></h1>
+<h1 id="appendix-c-standard-library-is-missing"><a href="#appendix-c-standard-library-is-missing">14 Appendix: C Standard Library is Missing</a></h1>
 <p><em>strlen is missing from our Zig WebAssembly…</em></p>
 <p><em>But strlen should come from the C Standard Library! (musl)</em></p>
 <p>Not sure why <strong>strlen</strong> is missing, but we fixed it (temporarily)) by copying from the <strong>Zig Library Source Code</strong>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L280-L336">lvglwasm.zig</a></p>
@@ -916,7 +923,7 @@ export fn strlen(s: [*:0]const u8) callconv(.C) usize {
 <p><em>What if we use “zig build-exe” instead of “zig build-lib”?</em></p>
 <p>Sorry “<strong>zig build-exe</strong>” is meant for building <strong>WASI Executables</strong>. <a href="https://www.fermyon.com/wasm-languages/c-lang">(See this)</a></p>
 <p>“<strong>zig build-exe</strong>” is not supposed to work for WebAssembly in the Web Browser. <a href="https://github.com/ziglang/zig/issues/1570#issuecomment-426370371">(See this)</a></p>
-<h1 id="appendix-lvgl-memory-allocation"><a href="#appendix-lvgl-memory-allocation">14 Appendix: LVGL Memory Allocation</a></h1>
+<h1 id="appendix-lvgl-memory-allocation"><a href="#appendix-lvgl-memory-allocation">15 Appendix: LVGL Memory Allocation</a></h1>
 <p><em>What happens if we omit “-DLV_MEM_CUSTOM=1”?</em></p>
 <p>By default, LVGL uses the <a href="http://www.gii.upv.es/tlsf/"><strong>Two-Level Segregate Fit (TLSF) Allocator</strong></a> for Heap Memory.</p>
 <p>But TLSF Allocator fails inside <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/misc/lv_tlsf.c#L453-L460"><strong>block_next</strong></a>…</p>
@@ -997,7 +1004,7 @@ var memory_buffer = std.mem.zeroes([1024 * 1024]u8);
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/aade32dd70286866676b2d9728970c6b3cca9489/README.md#todo">(Remember to copy the old memory in <strong>realloc</strong>!)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/aa080fb2ce55f9959cce2b6fff7e5fd5c9907cd6/README.md#lvgl-memory-allocation">(If we ever remove “<strong>-DLV_MEM_CUSTOM=1</strong>”, remember to set “<strong>-DLV_MEM_SIZE=1000000</strong>”)</a></p>
-<h1 id="appendix-lvgl-fonts"><a href="#appendix-lvgl-fonts">15 Appendix: LVGL Fonts</a></h1>
+<h1 id="appendix-lvgl-fonts"><a href="#appendix-lvgl-fonts">16 Appendix: LVGL Fonts</a></h1>
 <p>Remember to <strong>compile the LVGL Fonts</strong>! Or our LVGL Text Label won’t be rendered…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile LVGL Fonts from C to WebAssembly with Zig Compiler
 compile_lvgl font/lv_font_montserrat_14.c lv_font_montserrat_14
@@ -1015,7 +1022,7 @@ zig build-lib \
   lv_font_montserrat_20.o \
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L21-L191">(Source)</a></p>
-<h1 id="appendix-lvgl-screen-not-found"><a href="#appendix-lvgl-screen-not-found">16 Appendix: LVGL Screen Not Found</a></h1>
+<h1 id="appendix-lvgl-screen-not-found"><a href="#appendix-lvgl-screen-not-found">17 Appendix: LVGL Screen Not Found</a></h1>
 <p><em>Why does LVGL say “No Screen Found” in <a href="https://github.com/lvgl/lvgl/blob/v8.3.3/src/core/lv_obj_tree.c#L270-L289">lv_obj_get_disp</a>?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>[Info]	lv_init: begin 	(in lv_obj.c line #102)
 [Trace]	lv_init: finished 	(in lv_obj.c line #183)
