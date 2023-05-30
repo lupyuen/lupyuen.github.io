@@ -1,6 +1,6 @@
 # (Possibly) LVGL in WebAssembly with Zig Compiler
 
-📝 _7 Jun 2023_
+📝 _31 May 2023_
 
 ![LVGL in WebAssembly with Zig Compiler](https://lupyuen.github.io/images/lvgl3-title.png)
 
