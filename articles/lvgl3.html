@@ -848,6 +848,7 @@ render: function() {  // TODO: Add width and height
   const bufferOffset = wasm.instance.exports.getCanvasBuffer();
 
   // Load the WebAssembly Pointer into a JavaScript Image Data
+  // TODO: Swap the RGB Bytes in LVGL, the colours are inverted
   const memory = wasm.instance.exports.memory;
   const ptr = bufferOffset;
   const len = (canvas.width * canvas.height) * 4;
