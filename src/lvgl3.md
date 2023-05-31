@@ -1038,6 +1038,8 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
 
+-   [__Discuss this article on LVGL Forum__](https://forum.lvgl.io/t/possibly-lvgl-in-webassembly-with-zig-compiler/11886)
+
 -   [__Discuss this article on Reddit__](https://www.reddit.com/r/Zig/comments/13vgbfp/possibly_lvgl_in_webassembly_with_zig_compiler/)
 
 -   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=36121090)
