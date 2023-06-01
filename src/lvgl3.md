@@ -821,6 +821,9 @@ pub export fn lv_demo_widgets() void {
 
 [(__memory_allocator__ is explained here)](https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation)
 
+[(Remember to set __Direct Mode__ in the Display Driver!)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/86700c3453d91bc7d2fe0a46192fa41b7a24b6df/display.c#L94-L95
+)
+
 Now we handle LVGL Tasks...
 
 # Handle LVGL Tasks
@@ -863,11 +866,9 @@ We're ready to render the LVGL Display in our HTML Page!
 
 _Something doesn't look right..._
 
-Yeah we should have called __lv_timer_handler__ from our JavaScript.
+Yeah we should have called __lv_timer_handler__ from our JavaScript...
 
-(Triggered by a JavaScript Timer or [__requestAnimationFrame__](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame))
-
-But for our quick demo, this will do. For now!
+- [__"Handle LVGL Timer"__](https://github.com/lupyuen/pinephone-lvgl-zig#handle-lvgl-timer)
 
 ![Render LVGL Display in WebAssembly](https://lupyuen.github.io/images/lvgl3-render.jpg)
 
@@ -1022,9 +1023,9 @@ And the LVGL Display renders OK in our HTML Canvas yay! (Pic above)
 
 # What's Next
 
-Up Next: [__Feature Phone UI__](https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone) for PinePhone! To make our Feature Phone clickable, we'll pass __Mouse Events__ from JavaScript to LVGL.
+Up Next: [__Feature Phone UI__](https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone) for PinePhone! To make our Feature Phone clickable, we'll pass __Mouse Events__ from JavaScript to LVGL...
 
-(Through an LVGL Input Device Driver)
+- [__"Handle LVGL Input"__](https://github.com/lupyuen/pinephone-lvgl-zig#handle-lvgl-input)
 
 We'll experiment with __Live Reloading__: Whenever we save our Zig LVGL App, it __auto-recompiles__ and __auto-reloads__ the WebAssembly HTML.
 
