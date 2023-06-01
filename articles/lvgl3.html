@@ -735,6 +735,7 @@ pub export fn lv_demo_widgets() void {
   // Up Next: Handle LVGL Tasks
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation">(<strong>memory_allocator</strong> is explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/86700c3453d91bc7d2fe0a46192fa41b7a24b6df/display.c#L94-L95">(Remember to set <strong>Direct Mode</strong> in the Display Driver!)</a></p>
 <p>Now we handle LVGL Tasks…</p>
 <h1 id="handle-lvgl-tasks"><a href="#handle-lvgl-tasks">10 Handle LVGL Tasks</a></h1>
 <p>Earlier we talked about <strong>handling LVGL Tasks</strong>…</p>
@@ -771,9 +772,10 @@ pub export fn lv_demo_widgets() void {
 </code></pre></div>
 <p>We’re ready to render the LVGL Display in our HTML Page!</p>
 <p><em>Something doesn’t look right…</em></p>
-<p>Yeah we should have called <strong>lv_timer_handler</strong> from our JavaScript.</p>
-<p>(Triggered by a JavaScript Timer or <a href="https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame"><strong>requestAnimationFrame</strong></a>)</p>
-<p>But for our quick demo, this will do. For now!</p>
+<p>Yeah we should have called <strong>lv_timer_handler</strong> from our JavaScript…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-lvgl-zig#handle-lvgl-timer"><strong>“Handle LVGL Timer”</strong></a></li>
+</ul>
 <p><img src="https://lupyuen.github.io/images/lvgl3-render.jpg" alt="Render LVGL Display in WebAssembly" /></p>
 <h1 id="render-lvgl-display-in-zig"><a href="#render-lvgl-display-in-zig">11 Render LVGL Display in Zig</a></h1>
 <p>Finally we <strong>render our LVGL Display</strong> in the Web Browser… Spanning C, Zig and JavaScript! (Pic above)</p>
@@ -889,8 +891,10 @@ lv_color_t *get_canvas_buffer(void) {
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/8c9f45401eb15ff68961bd53e237baa798cc8fb5/README.md#todo">(See the <strong>JavaScript Log</strong>)</a></p>
 <p>(Thanks to <a href="https://github.com/daneelsan/minimal-zig-wasm-canvas"><strong>daneelsan/minimal-zig-wasm-canvas</strong></a>)</p>
 <h1 id="whats-next"><a href="#whats-next">13 What’s Next</a></h1>
-<p>Up Next: <a href="https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone"><strong>Feature Phone UI</strong></a> for PinePhone! To make our Feature Phone clickable, we’ll pass <strong>Mouse Events</strong> from JavaScript to LVGL.</p>
-<p>(Through an LVGL Input Device Driver)</p>
+<p>Up Next: <a href="https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone"><strong>Feature Phone UI</strong></a> for PinePhone! To make our Feature Phone clickable, we’ll pass <strong>Mouse Events</strong> from JavaScript to LVGL…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/pinephone-lvgl-zig#handle-lvgl-input"><strong>“Handle LVGL Input”</strong></a></li>
+</ul>
 <p>We’ll experiment with <strong>Live Reloading</strong>: Whenever we save our Zig LVGL App, it <strong>auto-recompiles</strong> and <strong>auto-reloads</strong> the WebAssembly HTML.</p>
 <p>Which makes UI Prototyping a lot quicker in LVGL. Stay Tuned for updates!</p>
 <p>Meanwhile please check out the other articles on NuttX for PinePhone…</p>
