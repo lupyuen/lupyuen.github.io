@@ -56,7 +56,7 @@ Add in this sequence to Bread Machine...
 
 -   1/2 teaspoon (2.8g) Salt
 
--   2 teaspoon Instant Dry Yeast [(Redman)](https://www.redmanshop.com/shop-by-category/baking-ingredients/baking-aids/yeast/000000000000012294.html)
+-   2 teaspoon Instant Dry Yeast [(Redman)](https://www.redmanshop.com/shop-by-category/baking-ingredients/baking-aids/yeast/000000000000012294.html). If our Sourdough Starter is super floofy, skip the Yeast.
 
 -   1/4 teaspoon Baking Soda / Sodium Bicarbonate (to neutralise the sourness and give extra poofiness). Too much Baking Soda will taste soapy!
 
