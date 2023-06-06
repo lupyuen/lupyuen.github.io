@@ -77,7 +77,8 @@
 <li><a href="#feature-phone-ui-for-apache-nuttx-rtos">3 Feature Phone UI for Apache NuttX RTOS</a><ul></ul></li>
 <li><a href="#whats-next">4 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-handle-lvgl-timer">5 Appendix: Handle LVGL Timer</a><ul></ul></li>
-<li><a href="#appendix-handle-lvgl-input">6 Appendix: Handle LVGL Input</a><ul></ul></li></ul></nav><p>📝 <em>12 Jun 2023</em></p>
+<li><a href="#appendix-handle-lvgl-input">6 Appendix: Handle LVGL Input</a><ul></ul></li>
+<li><a href="#appendix-import-lvgl-library">7 Appendix: Import LVGL Library</a><ul></ul></li></ul></nav><p>📝 <em>12 Jun 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/lvgl4-title.jpg" alt="LVGL Feature Phone UI running on PinePhone with Apache NuttX RTOS" /></p>
 <p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html"><em>LVGL Feature Phone UI running on PinePhone with Apache NuttX RTOS</em></a></p>
 <p>This article explains how we created an <a href="https://docs.lvgl.io/master/index.html"><strong>LVGL Graphical App</strong></a> for <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>… By tweaking and testing in a <strong>Web Browser!</strong></p>
@@ -240,7 +241,7 @@ c.lv_style_set_layout(&amp;cont_style, c.LV_LAYOUT_FLEX);
 <p><a href="https://ziglang.org/documentation/master/std/#A;std:mem.zeroes">(<strong>std.mem.zeroes</strong> populates the struct with zeroes)</a></p>
 <p>This says that the Buttons inside the Containers will be <strong>wrapped with equal spacing</strong>.</p>
 <h2 id="display-label"><a href="#display-label">1.5 Display Label</a></h2>
-<p>Last LVGL Widget for today: The <strong>Display Label</strong> that shows the number we’re dialing: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L83-L116">feature-phone.zig</a></p>
+<p>Final LVGL Widget for today is the <strong>Display Label</strong> that shows the number we’re dialing: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L83-L116">feature-phone.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// LVGL Display Text (64 bytes, null-terminated)
 var display_text = std.mem.zeroes([64:0]u8);
 
@@ -282,7 +283,9 @@ fn createDisplayLabel(cont: *c.lv_obj_t) !void {
   display_label.alignObject(c.LV_ALIGN_TOP_MID, 0, 0);
 }
 </code></pre></div>
-<p><em>This looks different from the rest of the code?</em></p>
+<p><em>This code looks different from the rest?</em></p>
+<p>Yep this code calls our <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig"><strong>Zig Wrapper for LVGL</strong></a>.</p>
+<p>Someday we might create a Zig Wrapper for the rest of the code.</p>
 <p>TODO</p>
 <p>When we test our Zig LVGL App in WebAssembly, we see this…</p>
 <p><img src="https://lupyuen.github.io/images/lvgl3-wasm5.png" alt="Feature Phone UI" /></p>
@@ -734,6 +737,8 @@ var input_y: c.lv_coord_t = 0;
 <p><a href="https://youtube.com/shorts/J6ugzVyKC4U?feature=share">(Watch the demo on YouTube)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/e70b2df50fa562bec7e02f24191dbbb1e5a7553a/README.md#todo">(See the log)</a></p>
 <p><img src="https://lupyuen.github.io/images/lvgl3-wasm4.png" alt="Handle LVGL Input" /></p>
+<h1 id="appendix-import-lvgl-library"><a href="#appendix-import-lvgl-library">7 Appendix: Import LVGL Library</a></h1>
+<p>TODO</p>
 
     
 </body>
