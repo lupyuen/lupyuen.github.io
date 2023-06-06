@@ -2,23 +2,41 @@
 
 📝 _12 Jun 2023_
 
-![TODO](https://lupyuen.github.io/images/lvgl4-title.jpg)
+![LVGL Feature Phone UI running on PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/lvgl4-title.jpg)
+
+[_LVGL Feature Phone UI running on PinePhone with Apache NuttX RTOS_](https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html)
 
 This article explains how we created an [__LVGL Graphical App__](https://docs.lvgl.io/master/index.html) for [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)... By tweaking and testing in a __Web Browser!__
 
 (Plus a little [__Zig Programming__](https://ziglang.org))
 
-TODO: Web Browser?
+_LVGL runs in a Web Browser?_
 
-TODO: Zig?
+Yep today we'll run LVGL in WebAssembly. We'll run [__Zig Compiler__](https://ziglang.org) to compile LVGL Library from __C to WebAssembly__.
 
-TODO: PinePhone?
+(Which works because Zig Compiler calls __Clang Compiler__ to compile C programs)
 
-is a popular __Graphics Library__ for Microcontrollers. (In C)
+LVGL also compiles to WebAssembly with [__Emscripten and SDL__](https://github.com/lvgl/lv_web_emscripten), but we won't use it today.
 
-[__Zig Compiler__](https://ziglang.org/) works great for compiling __C Libraries into WebAssembly__. (Based on Clang Compiler)
+_Why Zig?_
 
-Right now we're creating a [__Feature Phone UI__](https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone) (in Zig) for [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System)
+Since we're using Zig Compiler to compile LVGL Library (from C to WebAssembly)...
+
+Let's build our LVGL App in the [__Zig Programming Language__](https://ziglang.org)! (Instead of C)
+
+Hopefully Zig will need fewer lines of code, because coding LVGL Apps in C can get rather tedious.
+
+_Why PinePhone?_
+
+Right now we're creating a [__Feature Phone UI__](https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone) for [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System) on PinePhone.
+
+(Phone Calls and Text Messages only)
+
+TODO
+
+_We could have done all this in C right?_
+
+Yeah but it's 2023... Surely there must be a better way to build and test LVGL Apps? Let's experiment and find out!
 
 # What's Next
 
