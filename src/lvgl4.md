@@ -200,13 +200,15 @@ Finally we pass the LVGL Containers when we __create the Label and Buttons__...
 
 (We've seen [__createCallButtons__](https://lupyuen.github.io/articles/lvgl4#call-and-cancel-buttons) and [__createDigitButtons__](https://lupyuen.github.io/articles/lvgl4#digit-buttons))
 
-We'll come back to __createDisplayLabel__ right after we talk about the Container Style...
+We'll come back to __createDisplayLabel__. Let's talk about the Container Style...
 
 ## Container Style
 
-TODO
+_What's cont_style in the previous section?_
 
-[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L47-L52)
+__cont_style__ is the LVGL Style for our Containers.
+
+It tells LVGL that our Containers will have [__Flex Layout__](https://docs.lvgl.io/8.3/layouts/flex.html#): [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L46-L54)
 
 ```zig
 // LVGL Style for Containers (std.mem.zeroes crashes the compiler)
@@ -220,6 +222,10 @@ c.lv_style_set_flex_flow(&cont_style, c.LV_FLEX_FLOW_ROW_WRAP);
 c.lv_style_set_flex_main_place(&cont_style, c.LV_FLEX_ALIGN_SPACE_EVENLY);
 c.lv_style_set_layout(&cont_style, c.LV_LAYOUT_FLEX);
 ```
+
+[(__std.mem.zeroes__ populates the struct with zeroes)](https://ziglang.org/documentation/master/std/#A;std:mem.zeroes)
+
+This says that the Buttons inside the Containers will be __wrapped with equal spacing__.
 
 ## Display Label
 
