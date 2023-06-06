@@ -240,7 +240,7 @@ c.lv_style_set_layout(&amp;cont_style, c.LV_LAYOUT_FLEX);
 <p><a href="https://ziglang.org/documentation/master/std/#A;std:mem.zeroes">(<strong>std.mem.zeroes</strong> populates the struct with zeroes)</a></p>
 <p>This says that the Buttons inside the Containers will be <strong>wrapped with equal spacing</strong>.</p>
 <h2 id="display-label"><a href="#display-label">1.5 Display Label</a></h2>
-<p>One last LVGL Widget for today: The <strong>Display Label</strong> that shows the number we’re dialing: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L83-L116">feature-phone.zig</a></p>
+<p>Last LVGL Widget for today: The <strong>Display Label</strong> that shows the number we’re dialing: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L83-L116">feature-phone.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// LVGL Display Text (64 bytes, null-terminated)
 var display_text = std.mem.zeroes([64:0]u8);
 
@@ -270,7 +270,7 @@ fn createDisplayLabel(cont: *c.lv_obj_t) !void {
 
   // Set the label text and colors
   display_label.setText(
-    &quot;#ff0000 HELLO# &quot; ++ // Red Text
+    &quot;#ff0000 HELLO# &quot;   ++ // Red Text
     &quot;#00aa00 LVGL ON# &quot; ++ // Green Text
     &quot;#0000ff PINEPHONE!# &quot; // Blue Text
   );
