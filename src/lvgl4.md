@@ -20,9 +20,9 @@ LVGL also compiles to WebAssembly with [__Emscripten and SDL__](https://github.c
 
 _Why Zig?_
 
-Since we're using Zig Compiler to compile LVGL Library (from C to WebAssembly)...
+Since we're running Zig Compiler to compile LVGL Library (from C to WebAssembly)...
 
-Let's build our LVGL App in the [__Zig Programming Language__](https://ziglang.org)! (Instead of C)
+Let's write our LVGL App in the [__Zig Programming Language__](https://ziglang.org)! (Instead of C)
 
 Hopefully Zig will need fewer lines of code, because coding LVGL Apps in C can get rather tedious.
 
@@ -32,9 +32,9 @@ Right now we're creating a [__Feature Phone UI__](https://lupyuen.github.io/arti
 
 (Phone Calls and Text Messages only)
 
-TODO
+This article describes how we're creating the Feature Phone UI as an LVGL App.
 
-_We could have done all this in C right?_
+_We could've done all this in plain old C and on-device testing right?_
 
 Yeah but it's 2023... Surely there must be a better way to build and test LVGL Apps? Let's experiment and find out!
 
