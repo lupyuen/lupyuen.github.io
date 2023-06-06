@@ -153,30 +153,50 @@ We create 3 LVGL Containers for the Display Label, Call / Cancel Buttons and Dig
 [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L54-L77)
 
 ```zig
-    // Create the Containers for Display, Call / Cancel Buttons, Digit Buttons
-    const display_cont = c.lv_obj_create(c.lv_scr_act()).?;
-    c.lv_obj_set_size(display_cont, 700, 150);
-    c.lv_obj_align(display_cont, c.LV_ALIGN_TOP_MID, 0, 5);
-    c.lv_obj_add_style(display_cont, &cont_style, 0);
+/// Create the LVGL Widgets that will be rendered on the display
+fn createWidgets() !void {
 
-    const call_cont = c.lv_obj_create(c.lv_scr_act()).?;
-    c.lv_obj_set_size(call_cont, 700, 200);
-    c.lv_obj_align_to(call_cont, display_cont, c.LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
-    c.lv_obj_add_style(call_cont, &cont_style, 0);
+  // Omitted: Create the Style for the Containers
+  ...
 
-    const digit_cont = c.lv_obj_create(c.lv_scr_act()).?;
-    c.lv_obj_set_size(digit_cont, 700, 800);
-    c.lv_obj_align_to(digit_cont, call_cont, c.LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
-    c.lv_obj_add_style(digit_cont, &cont_style, 0);
+  // Create the Container for Display
+  const display_cont = c.lv_obj_create(c.lv_scr_act()).?;
+  c.lv_obj_set_size(display_cont, 700, 150);
+  c.lv_obj_align(display_cont, c.LV_ALIGN_TOP_MID, 0, 5);
+  c.lv_obj_add_style(display_cont, &cont_style, 0);
+```
 
-    // Create the Display Label
-    try createDisplayLabel(display_cont);
+TODO: "__`.?`__"
 
-    // Create the Call and Cancel Buttons
-    try createCallButtons(call_cont);
+```zig
+  // Create the Container for Call / Cancel Buttons
+  const call_cont = c.lv_obj_create(c.lv_scr_act()).?;
+  c.lv_obj_set_size(call_cont, 700, 200);
+  c.lv_obj_align_to(call_cont, display_cont, c.LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
+  c.lv_obj_add_style(call_cont, &cont_style, 0);
+```
 
-    // Create the Digit Buttons
-    try createDigitButtons(digit_cont);
+TODO
+
+```zig
+  // Create the Container for Digit Buttons
+  const digit_cont = c.lv_obj_create(c.lv_scr_act()).?;
+  c.lv_obj_set_size(digit_cont, 700, 800);
+  c.lv_obj_align_to(digit_cont, call_cont, c.LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
+  c.lv_obj_add_style(digit_cont, &cont_style, 0);
+```
+
+TODO
+
+```zig
+  // Create the Display Label
+  try createDisplayLabel(display_cont);
+
+  // Create the Call and Cancel Buttons
+  try createCallButtons(call_cont);
+
+  // Create the Digit Buttons
+  try createDigitButtons(digit_cont);
 ```
 
 ## Styles
