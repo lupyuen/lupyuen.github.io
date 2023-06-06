@@ -67,7 +67,12 @@
 
     <h1 class="title">NuttX RTOS for PinePhone: Feature Phone UI in LVGL, Zig and WebAssembly</h1>
     <nav id="TOC"><ul>
-<li><a href="#feature-phone-ui">1 Feature Phone UI</a><ul></ul></li>
+<li><a href="#feature-phone-ui">1 Feature Phone UI</a><ul>
+<li><a href="#call-and-cancel-buttons">1.1 Call and Cancel Buttons</a><ul></ul></li>
+<li><a href="#digit-buttons">1.2 Digit Buttons</a><ul></ul></li>
+<li><a href="#containers">1.3 Containers</a><ul></ul></li>
+<li><a href="#styles">1.4 Styles</a><ul></ul></li>
+<li><a href="#display-label">1.5 Display Label</a><ul></ul></li></ul></li>
 <li><a href="#handle-buttons-in-feature-phone-ui">2 Handle Buttons in Feature Phone UI</a><ul></ul></li>
 <li><a href="#feature-phone-ui-for-apache-nuttx-rtos">3 Feature Phone UI for Apache NuttX RTOS</a><ul></ul></li>
 <li><a href="#whats-next">4 What’s Next</a><ul></ul></li>
@@ -95,23 +100,67 @@
 <h1 id="feature-phone-ui"><a href="#feature-phone-ui">1 Feature Phone UI</a></h1>
 <p>TODO</p>
 <p>Let’s create a Feature Phone UI for PinePhone on Apache NuttX RTOS!</p>
+<h2 id="call-and-cancel-buttons"><a href="#call-and-cancel-buttons">1.1 Call and Cancel Buttons</a></h2>
+<p>TODO</p>
+<p>We create the Call and Cancel Buttons inside the Second Container…</p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L113-L125">feature-phone.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Labels for Call and Cancel Buttons
+const call_labels = [_][]const u8{ &quot;Call&quot;, &quot;Cancel&quot; };
+
+/// Create the Call and Cancel Buttons
+/// https://docs.lvgl.io/8.3/examples.html#simple-buttons
+fn createCallButtons(cont: *c.lv_obj_t) !void {
+    for (call_labels) |text| {
+        const btn = c.lv_btn_create(cont);
+        c.lv_obj_set_size(btn, 250, 100);
+        _ = c.lv_obj_add_event_cb(btn, eventHandler, c.LV_EVENT_ALL, @intToPtr(*anyopaque, @ptrToInt(text.ptr)));
+
+        const label = c.lv_label_create(btn);
+        c.lv_label_set_text(label, text.ptr);
+        c.lv_obj_center(label);
+    }
+}
+</code></pre></div><h2 id="digit-buttons"><a href="#digit-buttons">1.2 Digit Buttons</a></h2>
+<p>TODO</p>
+<p>We create the Digit Buttons inside the Third Container…</p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L127-L139">feature-phone.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Labels for Digit Buttons
+const digit_labels = [_][]const u8{ &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;, &quot;9&quot;, &quot;*&quot;, &quot;0&quot;, &quot;#&quot; };
+
+/// Create the Digit Buttons
+/// https://docs.lvgl.io/8.3/examples.html#simple-buttons
+fn createDigitButtons(cont: *c.lv_obj_t) !void {
+    for (digit_labels) |text| {
+        const btn = c.lv_btn_create(cont);
+        c.lv_obj_set_size(btn, 150, 120);
+        _ = c.lv_obj_add_event_cb(btn, eventHandler, c.LV_EVENT_ALL, @intToPtr(*anyopaque, @ptrToInt(text.ptr)));
+
+        const label = c.lv_label_create(btn);
+        c.lv_label_set_text(label, text.ptr);
+        c.lv_obj_center(label);
+    }
+}
+</code></pre></div>
+<p><a href="https://docs.lvgl.io/8.3/widgets/core/btnmatrix.html">(Or use an LVGL Button Matrix)</a></p>
+<h2 id="containers"><a href="#containers">1.3 Containers</a></h2>
+<p>TODO</p>
 <p>We create 3 LVGL Containers for the Display Label, Call / Cancel Buttons and Digit Buttons…</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L113-L136">feature-phone.zig</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L54-L77">feature-phone.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>    // Create the Containers for Display, Call / Cancel Buttons, Digit Buttons
     const display_cont = c.lv_obj_create(c.lv_scr_act()).?;
     c.lv_obj_set_size(display_cont, 700, 150);
     c.lv_obj_align(display_cont, c.LV_ALIGN_TOP_MID, 0, 5);
-    c.lv_obj_add_style(display_cont, &amp;display_style, 0);
+    c.lv_obj_add_style(display_cont, &amp;cont_style, 0);
 
     const call_cont = c.lv_obj_create(c.lv_scr_act()).?;
     c.lv_obj_set_size(call_cont, 700, 200);
     c.lv_obj_align_to(call_cont, display_cont, c.LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
-    c.lv_obj_add_style(call_cont, &amp;call_style, 0);
+    c.lv_obj_add_style(call_cont, &amp;cont_style, 0);
 
     const digit_cont = c.lv_obj_create(c.lv_scr_act()).?;
     c.lv_obj_set_size(digit_cont, 700, 800);
     c.lv_obj_align_to(digit_cont, call_cont, c.LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
-    c.lv_obj_add_style(digit_cont, &amp;digit_style, 0);
+    c.lv_obj_add_style(digit_cont, &amp;cont_style, 0);
 
     // Create the Display Label
     try createDisplayLabel(display_cont);
@@ -121,11 +170,33 @@
 
     // Create the Digit Buttons
     try createDigitButtons(digit_cont);
-</code></pre></div>
+</code></pre></div><h2 id="styles"><a href="#styles">1.4 Styles</a></h2>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L47-L52">feature-phone.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>// LVGL Style for Containers (std.mem.zeroes crashes the compiler)
+var cont_style: c.lv_style_t = undefined;
+
+// Create the Style for the Containers
+cont_style = std.mem.zeroes(c.lv_style_t);
+c.lv_style_init(&amp;cont_style);
+c.lv_style_set_flex_flow(&amp;cont_style, c.LV_FLEX_FLOW_ROW_WRAP);
+c.lv_style_set_flex_main_place(&amp;cont_style, c.LV_FLEX_ALIGN_SPACE_EVENLY);
+c.lv_style_set_layout(&amp;cont_style, c.LV_LAYOUT_FLEX);
+</code></pre></div><h2 id="display-label"><a href="#display-label">1.5 Display Label</a></h2>
+<p>TODO</p>
 <p>We create the Display Label…</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L139-L167">feature-phone.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Create the Display Label
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L80-L111">feature-phone.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// LVGL Display Text (Null-Terminated)
+var display_text = std.mem.zeroes([64:0]u8);
+
+/// LVGL Display Label
+var display_label: lvgl.Label = undefined;
+
+/// Create the Display Label
 fn createDisplayLabel(cont: *c.lv_obj_t) !void {
+    // Init the Display Text to `+`
+    display_text[0] = &#39;+&#39;;
+
     // Get the Container
     var container = lvgl.Object.init(cont);
 
@@ -154,45 +225,6 @@ fn createDisplayLabel(cont: *c.lv_obj_t) !void {
     display_label.alignObject(c.LV_ALIGN_TOP_MID, 0, 0);
 }
 </code></pre></div>
-<p>Then we create the Call and Cancel Buttons inside the Second Container…</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L169-L184">feature-phone.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Create the Call and Cancel Buttons
-/// https://docs.lvgl.io/8.3/examples.html#simple-buttons
-fn createCallButtons(cont: *c.lv_obj_t) !void {
-    const labels = [_][]const u8{ &quot;Call&quot;, &quot;Cancel&quot; };
-    var i: usize = 0;
-    while (i &lt; labels.len) : (i += 1) {
-        const btn = c.lv_btn_create(cont);
-        c.lv_obj_set_size(btn, 250, 100);
-        c.lv_obj_add_flag(btn, c.LV_OBJ_FLAG_CHECKABLE);
-        _ = c.lv_obj_add_event_cb(btn, eventHandler, c.LV_EVENT_ALL, null);
-
-        const label = c.lv_label_create(btn);
-        c.lv_label_set_text(label, labels[i].ptr);
-        c.lv_obj_center(label);
-    }
-}
-</code></pre></div>
-<p>Finally we create the Digit Buttons inside the Third Container…</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L186-L201">feature-phone.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Create the Digit Buttons
-/// https://docs.lvgl.io/8.3/examples.html#simple-buttons
-fn createDigitButtons(cont: *c.lv_obj_t) !void {
-    const labels = [_][]const u8{ &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;, &quot;9&quot;, &quot;*&quot;, &quot;0&quot;, &quot;#&quot; };
-    var i: usize = 0;
-    while (i &lt; labels.len) : (i += 1) {
-        const btn = c.lv_btn_create(cont);
-        c.lv_obj_set_size(btn, 150, 120);
-        c.lv_obj_add_flag(btn, c.LV_OBJ_FLAG_CHECKABLE);
-        _ = c.lv_obj_add_event_cb(btn, eventHandler, c.LV_EVENT_ALL, null);
-
-        const label = c.lv_label_create(btn);
-        c.lv_label_set_text(label, labels[i].ptr);
-        c.lv_obj_center(label);
-    }
-}
-</code></pre></div>
-<p><a href="https://docs.lvgl.io/8.3/widgets/core/btnmatrix.html">(Or use an LVGL Button Matrix)</a></p>
 <p>When we test our Zig LVGL App in WebAssembly, we see this…</p>
 <p><img src="https://lupyuen.github.io/images/lvgl3-wasm5.png" alt="Feature Phone UI" /></p>
 <p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html">(Try the Feature Phone Demo)</a></p>
