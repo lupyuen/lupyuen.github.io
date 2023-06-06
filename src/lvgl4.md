@@ -12,7 +12,9 @@ This article explains how we created an [__LVGL Graphical App__](https://docs.lv
 
 _LVGL runs in a Web Browser?_
 
-Yep today we'll run LVGL in WebAssembly. We'll run [__Zig Compiler__](https://ziglang.org) to compile LVGL Library from __C to WebAssembly__.
+Yep today we'll test our LVGL App in a Web Browser with __WebAssembly__.
+
+We'll run [__Zig Compiler__](https://ziglang.org) to compile LVGL Library from __C to WebAssembly__.
 
 (Which works because Zig Compiler calls __Clang Compiler__ to compile C programs)
 
