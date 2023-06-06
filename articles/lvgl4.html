@@ -240,10 +240,8 @@ c.lv_style_set_layout(&amp;cont_style, c.LV_LAYOUT_FLEX);
 <p><a href="https://ziglang.org/documentation/master/std/#A;std:mem.zeroes">(<strong>std.mem.zeroes</strong> populates the struct with zeroes)</a></p>
 <p>This says that the Buttons inside the Containers will be <strong>wrapped with equal spacing</strong>.</p>
 <h2 id="display-label"><a href="#display-label">1.5 Display Label</a></h2>
-<p>TODO</p>
-<p>We create the Display Label…</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L80-L111">feature-phone.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// LVGL Display Text (Null-Terminated)
+<p>One last LVGL Widget for today: The <strong>Display Label</strong> that shows the number we’re dialing: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L83-L116">feature-phone.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// LVGL Display Text (64 bytes, null-terminated)
 var display_text = std.mem.zeroes([64:0]u8);
 
 /// LVGL Display Label
@@ -251,37 +249,41 @@ var display_label: lvgl.Label = undefined;
 
 /// Create the Display Label
 fn createDisplayLabel(cont: *c.lv_obj_t) !void {
-    // Init the Display Text to `+`
-    display_text[0] = &#39;+&#39;;
 
-    // Get the Container
-    var container = lvgl.Object.init(cont);
+  // Init the Display Text to `+`
+  display_text[0] = &#39;+&#39;;
 
-    // Create a Label Widget
-    display_label = try container.createLabel();
+  // Get the Container
+  var container = lvgl.Object.init(cont);
 
-    // Wrap long lines in the label text
-    display_label.setLongMode(c.LV_LABEL_LONG_WRAP);
+  // Create a Label Widget
+  display_label = try container.createLabel();
 
-    // Interpret color codes in the label text
-    display_label.setRecolor(true);
+  // Wrap long lines in the label text
+  display_label.setLongMode(c.LV_LABEL_LONG_WRAP);
 
-    // Center align the label text
-    display_label.setAlign(c.LV_TEXT_ALIGN_CENTER);
+  // Interpret color codes in the label text
+  display_label.setRecolor(true);
 
-    // Set the label text and colors
-    display_label.setText(&quot;#ff0000 HELLO# &quot; ++ // Red Text
-        &quot;#00aa00 LVGL ON# &quot; ++ // Green Text
-        &quot;#0000ff PINEPHONE!# &quot; // Blue Text
-    );
+  // Center align the label text
+  display_label.setAlign(c.LV_TEXT_ALIGN_CENTER);
 
-    // Set the label width
-    display_label.setWidth(200);
+  // Set the label text and colors
+  display_label.setText(
+    &quot;#ff0000 HELLO# &quot; ++ // Red Text
+    &quot;#00aa00 LVGL ON# &quot; ++ // Green Text
+    &quot;#0000ff PINEPHONE!# &quot; // Blue Text
+  );
 
-    // Align the label to the top middle
-    display_label.alignObject(c.LV_ALIGN_TOP_MID, 0, 0);
+  // Set the label width
+  display_label.setWidth(200);
+
+  // Align the label to the top middle
+  display_label.alignObject(c.LV_ALIGN_TOP_MID, 0, 0);
 }
 </code></pre></div>
+<p><em>This looks different from the rest of the code?</em></p>
+<p>TODO</p>
 <p>When we test our Zig LVGL App in WebAssembly, we see this…</p>
 <p><img src="https://lupyuen.github.io/images/lvgl3-wasm5.png" alt="Feature Phone UI" /></p>
 <p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html">(Try the Feature Phone Demo)</a></p>
