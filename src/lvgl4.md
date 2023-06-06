@@ -237,7 +237,7 @@ This says that the Buttons inside the Containers will be __wrapped with equal sp
 
 ## Display Label
 
-One last LVGL Widget for today: The __Display Label__ that shows the number we're dialing: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L83-L116)
+Last LVGL Widget for today: The __Display Label__ that shows the number we're dialing: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L83-L116)
 
 ```zig
 /// LVGL Display Text (64 bytes, null-terminated)
