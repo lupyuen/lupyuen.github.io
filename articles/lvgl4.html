@@ -73,7 +73,7 @@
 <li><a href="#containers">1.3 Containers</a><ul></ul></li>
 <li><a href="#styles">1.4 Styles</a><ul></ul></li>
 <li><a href="#display-label">1.5 Display Label</a><ul></ul></li></ul></li>
-<li><a href="#handle-buttons-in-feature-phone-ui">2 Handle Buttons in Feature Phone UI</a><ul></ul></li>
+<li><a href="#handle-lvgl-buttons">2 Handle LVGL Buttons</a><ul></ul></li>
 <li><a href="#feature-phone-ui-for-apache-nuttx-rtos">3 Feature Phone UI for Apache NuttX RTOS</a><ul></ul></li>
 <li><a href="#whats-next">4 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-handle-lvgl-timer">5 Appendix: Handle LVGL Timer</a><ul></ul></li>
@@ -172,6 +172,8 @@ fn createDigitButtons(cont: *c.lv_obj_t) !void {
 }
 </code></pre></div>
 <p><a href="https://docs.lvgl.io/8.3/widgets/core/btnmatrix.html">(Or use an LVGL <strong>Button Matrix</strong>)</a></p>
+<p>Again, LVGL will call our Zig Function <strong>eventHandler</strong> when the Button is clicked.</p>
+<p>(More about this in a while)</p>
 <h2 id="containers"><a href="#containers">1.3 Containers</a></h2>
 <p>TODO</p>
 <p>We create 3 LVGL Containers for the Display Label, Call / Cancel Buttons and Digit Buttons…</p>
@@ -260,7 +262,7 @@ fn createDisplayLabel(cont: *c.lv_obj_t) !void {
 <p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html">(Try the Feature Phone Demo)</a></p>
 <p><a href="https://www.youtube.com/shorts/iKa0bcSa22U">(Watch the demo on YouTube)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/1feb919e17018222dd3ebf79b206de97eb4cfbeb/README.md#output-log">(See the log)</a></p>
-<h1 id="handle-buttons-in-feature-phone-ui"><a href="#handle-buttons-in-feature-phone-ui">2 Handle Buttons in Feature Phone UI</a></h1>
+<h1 id="handle-lvgl-buttons"><a href="#handle-lvgl-buttons">2 Handle LVGL Buttons</a></h1>
 <p>TODO</p>
 <p>Now that we have rendered the Feature Phone UI in Zig and LVGL, let’s wire up the Buttons.</p>
 <p>Clicking any Button will call our Button Event Handler…</p>
