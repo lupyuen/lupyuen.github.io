@@ -237,7 +237,7 @@ This says that the Buttons inside the Containers will be __wrapped with equal sp
 
 ## Display Label
 
-Last LVGL Widget for today: The __Display Label__ that shows the number we're dialing: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L83-L116)
+Final LVGL Widget for today is the __Display Label__ that shows the number we're dialing: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L83-L116)
 
 ```zig
 /// LVGL Display Text (64 bytes, null-terminated)
@@ -282,7 +282,11 @@ fn createDisplayLabel(cont: *c.lv_obj_t) !void {
 }
 ```
 
-_This looks different from the rest of the code?_
+_This code looks different from the rest?_
+
+Yep this code calls our [__Zig Wrapper for LVGL__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig).
+
+Someday we might create a Zig Wrapper for the rest of the code.
 
 TODO
 
@@ -852,3 +856,7 @@ And the LVGL Button will respond correctly to Mouse and Touch Input in the Web B
 [(See the log)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/e70b2df50fa562bec7e02f24191dbbb1e5a7553a/README.md#todo)
 
 ![Handle LVGL Input](https://lupyuen.github.io/images/lvgl3-wasm4.png)
+
+# Appendix: Import LVGL Library
+
+TODO
