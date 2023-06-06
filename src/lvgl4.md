@@ -52,23 +52,38 @@ TODO
 
 We create the Call and Cancel Buttons inside the Second Container...
 
-[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L113-L125)
+[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L152-L155)
 
 ```zig
 /// Labels for Call and Cancel Buttons
-const call_labels = [_][]const u8{ "Call", "Cancel" };
+const call_labels = [_][]const u8{
+    "Call",
+    "Cancel" 
+};
+```
 
+TODO
+
+[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L112-L132)
+
+```zig
 /// Create the Call and Cancel Buttons
 /// https://docs.lvgl.io/8.3/examples.html#simple-buttons
 fn createCallButtons(cont: *c.lv_obj_t) !void {
+    // For each Button: Call and Connect...
     for (call_labels) |text| {
+        // Create a Button of 250 x 100 pixels
         const btn = c.lv_btn_create(cont);
         c.lv_obj_set_size(btn, 250, 100);
-        _ = c.lv_obj_add_event_cb(btn, eventHandler, c.LV_EVENT_ALL, @intToPtr(*anyopaque, @ptrToInt(text.ptr)));
 
+        // Center the Button Label: Call or Cancel
         const label = c.lv_label_create(btn);
         c.lv_label_set_text(label, text.ptr);
         c.lv_obj_center(label);
+
+        // Set the Event Callback Function and Callback Data for the Button
+        const data = @intToPtr(*anyopaque, @ptrToInt(text.ptr));
+        _ = c.lv_obj_add_event_cb(btn, eventHandler, c.LV_EVENT_ALL, data);
     }
 }
 ```
@@ -79,23 +94,35 @@ TODO
 
 We create the Digit Buttons inside the Third Container...
 
-[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L127-L139)
+[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L155-L158)
 
 ```zig
 /// Labels for Digit Buttons
 const digit_labels = [_][]const u8{ "1", "2", "3", "4", "5", "6", "7", "8", "9", "*", "0", "#" };
+```
 
+TODO
+
+[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L132-L152)
+
+```zig
 /// Create the Digit Buttons
 /// https://docs.lvgl.io/8.3/examples.html#simple-buttons
 fn createDigitButtons(cont: *c.lv_obj_t) !void {
+    // For each Digit Button...
     for (digit_labels) |text| {
+        // Create a Button of 150 x 120 pixels
         const btn = c.lv_btn_create(cont);
         c.lv_obj_set_size(btn, 150, 120);
-        _ = c.lv_obj_add_event_cb(btn, eventHandler, c.LV_EVENT_ALL, @intToPtr(*anyopaque, @ptrToInt(text.ptr)));
 
+        // Center the Button Label
         const label = c.lv_label_create(btn);
         c.lv_label_set_text(label, text.ptr);
         c.lv_obj_center(label);
+
+        // Set the Event Callback Function and Callback Data for the Button
+        const data = @intToPtr(*anyopaque, @ptrToInt(text.ptr));
+        _ = c.lv_obj_add_event_cb(btn, eventHandler, c.LV_EVENT_ALL, data);
     }
 }
 ```
