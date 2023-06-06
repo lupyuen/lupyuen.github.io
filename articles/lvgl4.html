@@ -191,7 +191,7 @@ fn createWidgets() !void {
 </code></pre></div>
 <p>In the code above, we create the <strong>LVGL Container</strong> for the Display.</p>
 <p>(We write “<strong><code>.?</code></strong>” to check for Null Pointers)</p>
-<p>(We’ll see <strong>cont_style</strong> in the next section)</p>
+<p>(More about <strong>cont_style</strong> in the next section)</p>
 <p>Then we create the <strong>LVGL Containers</strong> for the Call / Cancel Buttons and Digit Buttons…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Create the Container for Call / Cancel Buttons (700 x 200 pixels)
   const call_cont = c.lv_obj_create(c.lv_scr_act()).?;
@@ -205,6 +205,7 @@ fn createWidgets() !void {
   c.lv_obj_align_to(digit_cont, call_cont, c.LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
   c.lv_obj_add_style(digit_cont, &amp;cont_style, 0);
 </code></pre></div>
+<p><a href="https://docs.lvgl.io/8.3/overview/coords.html#align"><strong>lv_obj_align_to</strong></a> tells LVGL to space out the Containers, 10 pixels apart.</p>
 <p>Finally we pass the LVGL Containers when we <strong>create the Label and Buttons</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Create the Display Label
   try createDisplayLabel(display_cont);
@@ -219,8 +220,12 @@ fn createWidgets() !void {
 <p>We’ll come back to <strong>createDisplayLabel</strong>. Let’s talk about the Container Style…</p>
 <h2 id="container-style"><a href="#container-style">1.4 Container Style</a></h2>
 <p><em>What’s cont_style in the previous section?</em></p>
+<div class="example-wrap"><pre class="language-c"><code>c.lv_obj_add_style(display_cont, &amp;cont_style, 0);
+c.lv_obj_add_style(call_cont,    &amp;cont_style, 0);
+c.lv_obj_add_style(digit_cont,   &amp;cont_style, 0);
+</code></pre></div>
 <p><strong>cont_style</strong> is the LVGL Style for our Containers.</p>
-<p>It tells LVGL that our Containers will have <a href="https://docs.lvgl.io/8.3/layouts/flex.html#"><strong>Flex Layout</strong></a>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L46-L54">feature-phone.zig</a></p>
+<p>The Style tells LVGL that our Containers will have <a href="https://docs.lvgl.io/8.3/layouts/flex.html#"><strong>Flex Layout</strong></a>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L46-L54">feature-phone.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// LVGL Style for Containers (std.mem.zeroes crashes the compiler)
 var cont_style: c.lv_style_t = undefined;
 
