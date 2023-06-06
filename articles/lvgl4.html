@@ -68,15 +68,24 @@
     <h1 class="title">NuttX RTOS for PinePhone: Feature Phone UI in LVGL, Zig and WebAssembly</h1>
     <nav id="TOC"><ul>
 <li><a href="#whats-next">1 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>12 Jun 2023</em></p>
-<p><img src="https://lupyuen.github.io/images/lvgl4-title.jpg" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/lvgl4-title.jpg" alt="LVGL Feature Phone UI running on PinePhone with Apache NuttX RTOS" /></p>
+<p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html"><em>LVGL Feature Phone UI running on PinePhone with Apache NuttX RTOS</em></a></p>
 <p>This article explains how we created an <a href="https://docs.lvgl.io/master/index.html"><strong>LVGL Graphical App</strong></a> for <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>… By tweaking and testing in a <strong>Web Browser!</strong></p>
 <p>(Plus a little <a href="https://ziglang.org"><strong>Zig Programming</strong></a>)</p>
-<p>TODO: Web Browser?</p>
-<p>TODO: Zig?</p>
-<p>TODO: PinePhone?</p>
-<p>is a popular <strong>Graphics Library</strong> for Microcontrollers. (In C)</p>
-<p><a href="https://ziglang.org/"><strong>Zig Compiler</strong></a> works great for compiling <strong>C Libraries into WebAssembly</strong>. (Based on Clang Compiler)</p>
-<p>Right now we’re creating a <a href="https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone"><strong>Feature Phone UI</strong></a> (in Zig) for <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System)</p>
+<p><em>LVGL runs in a Web Browser?</em></p>
+<p>Yep today we’ll run LVGL in WebAssembly. We’ll run <a href="https://ziglang.org"><strong>Zig Compiler</strong></a> to compile LVGL Library from <strong>C to WebAssembly</strong>.</p>
+<p>(Which works because Zig Compiler calls <strong>Clang Compiler</strong> to compile C programs)</p>
+<p>LVGL also compiles to WebAssembly with <a href="https://github.com/lvgl/lv_web_emscripten"><strong>Emscripten and SDL</strong></a>, but we won’t use it today.</p>
+<p><em>Why Zig?</em></p>
+<p>Since we’re using Zig Compiler to compile LVGL Library (from C to WebAssembly)…</p>
+<p>Let’s build our LVGL App in the <a href="https://ziglang.org"><strong>Zig Programming Language</strong></a>! (Instead of C)</p>
+<p>Hopefully Zig will need fewer lines of code, because coding LVGL Apps in C can get rather tedious.</p>
+<p><em>Why PinePhone?</em></p>
+<p>Right now we’re creating a <a href="https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone"><strong>Feature Phone UI</strong></a> for <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) on PinePhone.</p>
+<p>(Phone Calls and Text Messages only)</p>
+<p>TODO</p>
+<p><em>We could have done all this in C right?</em></p>
+<p>Yeah but it’s 2023… Surely there must be a better way to build and test LVGL Apps? Let’s experiment and find out!</p>
 <h1 id="whats-next"><a href="#whats-next">1 What’s Next</a></h1>
 <p>TODO</p>
 <p>We’ll experiment with <strong>Live Reloading</strong>: Whenever we save our Zig LVGL App, it <strong>auto-recompiles</strong> and <strong>auto-reloads</strong> the WebAssembly HTML.</p>
