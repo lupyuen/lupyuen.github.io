@@ -269,7 +269,7 @@ fn createDisplayLabel(cont: *c.lv_obj_t) !void {
 
   // Set the label text and colors
   display_label.setText(
-    "#ff0000 HELLO# " ++ // Red Text
+    "#ff0000 HELLO# "   ++ // Red Text
     "#00aa00 LVGL ON# " ++ // Green Text
     "#0000ff PINEPHONE!# " // Blue Text
   );
