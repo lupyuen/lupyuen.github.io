@@ -237,14 +237,10 @@ This says that the Buttons inside the Containers will be __wrapped with equal sp
 
 ## Display Label
 
-TODO
-
-We create the Display Label...
-
-[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L80-L111)
+One last LVGL Widget for today: The __Display Label__ that shows the number we're dialing: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L83-L116)
 
 ```zig
-/// LVGL Display Text (Null-Terminated)
+/// LVGL Display Text (64 bytes, null-terminated)
 var display_text = std.mem.zeroes([64:0]u8);
 
 /// LVGL Display Label
@@ -252,37 +248,43 @@ var display_label: lvgl.Label = undefined;
 
 /// Create the Display Label
 fn createDisplayLabel(cont: *c.lv_obj_t) !void {
-    // Init the Display Text to `+`
-    display_text[0] = '+';
 
-    // Get the Container
-    var container = lvgl.Object.init(cont);
+  // Init the Display Text to `+`
+  display_text[0] = '+';
 
-    // Create a Label Widget
-    display_label = try container.createLabel();
+  // Get the Container
+  var container = lvgl.Object.init(cont);
 
-    // Wrap long lines in the label text
-    display_label.setLongMode(c.LV_LABEL_LONG_WRAP);
+  // Create a Label Widget
+  display_label = try container.createLabel();
 
-    // Interpret color codes in the label text
-    display_label.setRecolor(true);
+  // Wrap long lines in the label text
+  display_label.setLongMode(c.LV_LABEL_LONG_WRAP);
 
-    // Center align the label text
-    display_label.setAlign(c.LV_TEXT_ALIGN_CENTER);
+  // Interpret color codes in the label text
+  display_label.setRecolor(true);
 
-    // Set the label text and colors
-    display_label.setText("#ff0000 HELLO# " ++ // Red Text
-        "#00aa00 LVGL ON# " ++ // Green Text
-        "#0000ff PINEPHONE!# " // Blue Text
-    );
+  // Center align the label text
+  display_label.setAlign(c.LV_TEXT_ALIGN_CENTER);
 
-    // Set the label width
-    display_label.setWidth(200);
+  // Set the label text and colors
+  display_label.setText(
+    "#ff0000 HELLO# " ++ // Red Text
+    "#00aa00 LVGL ON# " ++ // Green Text
+    "#0000ff PINEPHONE!# " // Blue Text
+  );
 
-    // Align the label to the top middle
-    display_label.alignObject(c.LV_ALIGN_TOP_MID, 0, 0);
+  // Set the label width
+  display_label.setWidth(200);
+
+  // Align the label to the top middle
+  display_label.alignObject(c.LV_ALIGN_TOP_MID, 0, 0);
 }
 ```
+
+_This looks different from the rest of the code?_
+
+TODO
 
 When we test our Zig LVGL App in WebAssembly, we see this...
 
