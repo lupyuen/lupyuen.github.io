@@ -87,7 +87,7 @@ fn createCallButtons(cont: *c.lv_obj_t) !void {
 
 (TODO: We write "__c.something__" to call an LVGL Function imported from C into Zig)
 
-__lv_obj_add_event_cb__ tells LVGL to call our Zig Function __eventHandler__ when the Button is clicked. We'll see the Event Callback Function in a while.
+[__lv_obj_add_event_cb__](https://docs.lvgl.io/8.3/overview/event.html#add-events-to-the-object) tells LVGL to call our Zig Function __eventHandler__ when the Button is clicked. We'll see the Event Callback Function in a while.
 
 ("__\_ = something__" tells Zig Compiler that we're not using the Returned Value)
 
