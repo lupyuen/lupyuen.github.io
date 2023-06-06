@@ -38,7 +38,7 @@ This article describes how we're creating the Feature Phone UI as an LVGL App.
 
 _We could've done all this in plain old C and on-device testing right?_
 
-Yeah but it's 2023... Surely there must be a better way to build and test LVGL Apps? Let's experiment and find out!
+Yeah but it's 2023... Maybe there's an a easier way to build and test LVGL Apps? Let's experiment and find out!
 
 # What's Next
 
