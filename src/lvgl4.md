@@ -140,6 +140,10 @@ fn createDigitButtons(cont: *c.lv_obj_t) !void {
 
 [(Or use an LVGL __Button Matrix__)](https://docs.lvgl.io/8.3/widgets/core/btnmatrix.html)
 
+Again, LVGL will call our Zig Function __eventHandler__ when the Button is clicked.
+
+(More about this in a while)
+
 ## Containers
 
 TODO
@@ -252,7 +256,7 @@ When we test our Zig LVGL App in WebAssembly, we see this...
 
 [(See the log)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/1feb919e17018222dd3ebf79b206de97eb4cfbeb/README.md#output-log)
 
-# Handle Buttons in Feature Phone UI
+# Handle LVGL Buttons
 
 TODO
 
