@@ -178,30 +178,41 @@ fn createDigitButtons(cont: *c.lv_obj_t) !void {
 <p>TODO</p>
 <p>We create 3 LVGL Containers for the Display Label, Call / Cancel Buttons and Digit Buttons…</p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L54-L77">feature-phone.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>    // Create the Containers for Display, Call / Cancel Buttons, Digit Buttons
-    const display_cont = c.lv_obj_create(c.lv_scr_act()).?;
-    c.lv_obj_set_size(display_cont, 700, 150);
-    c.lv_obj_align(display_cont, c.LV_ALIGN_TOP_MID, 0, 5);
-    c.lv_obj_add_style(display_cont, &amp;cont_style, 0);
+<div class="example-wrap"><pre class="language-zig"><code>/// Create the LVGL Widgets that will be rendered on the display
+fn createWidgets() !void {
 
-    const call_cont = c.lv_obj_create(c.lv_scr_act()).?;
-    c.lv_obj_set_size(call_cont, 700, 200);
-    c.lv_obj_align_to(call_cont, display_cont, c.LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
-    c.lv_obj_add_style(call_cont, &amp;cont_style, 0);
+  // Omitted: Create the Style for the Containers
+  ...
 
-    const digit_cont = c.lv_obj_create(c.lv_scr_act()).?;
-    c.lv_obj_set_size(digit_cont, 700, 800);
-    c.lv_obj_align_to(digit_cont, call_cont, c.LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
-    c.lv_obj_add_style(digit_cont, &amp;cont_style, 0);
+  // Create the Container for Display
+  const display_cont = c.lv_obj_create(c.lv_scr_act()).?;
+  c.lv_obj_set_size(display_cont, 700, 150);
+  c.lv_obj_align(display_cont, c.LV_ALIGN_TOP_MID, 0, 5);
+  c.lv_obj_add_style(display_cont, &amp;cont_style, 0);
+</code></pre></div>
+<p>TODO: “<strong><code>.?</code></strong>”</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Create the Container for Call / Cancel Buttons
+  const call_cont = c.lv_obj_create(c.lv_scr_act()).?;
+  c.lv_obj_set_size(call_cont, 700, 200);
+  c.lv_obj_align_to(call_cont, display_cont, c.LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
+  c.lv_obj_add_style(call_cont, &amp;cont_style, 0);
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Create the Container for Digit Buttons
+  const digit_cont = c.lv_obj_create(c.lv_scr_act()).?;
+  c.lv_obj_set_size(digit_cont, 700, 800);
+  c.lv_obj_align_to(digit_cont, call_cont, c.LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
+  c.lv_obj_add_style(digit_cont, &amp;cont_style, 0);
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Create the Display Label
+  try createDisplayLabel(display_cont);
 
-    // Create the Display Label
-    try createDisplayLabel(display_cont);
+  // Create the Call and Cancel Buttons
+  try createCallButtons(call_cont);
 
-    // Create the Call and Cancel Buttons
-    try createCallButtons(call_cont);
-
-    // Create the Digit Buttons
-    try createDigitButtons(digit_cont);
+  // Create the Digit Buttons
+  try createDigitButtons(digit_cont);
 </code></pre></div><h2 id="styles"><a href="#styles">1.4 Styles</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L47-L52">feature-phone.zig</a></p>
