@@ -144,13 +144,9 @@ Again, LVGL will call our Zig Function __eventHandler__ when the Button is click
 
 (More about this in a while)
 
-## Containers
+## Label and Button Containers
 
-TODO
-
-We create 3 LVGL Containers for the Display Label, Call / Cancel Buttons and Digit Buttons...
-
-[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L54-L77)
+We create 3 __LVGL Containers__ for the Display Label, Call / Cancel Buttons and Digit Buttons: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L54-L77)
 
 ```zig
 /// Create the LVGL Widgets that will be rendered on the display
@@ -159,34 +155,37 @@ fn createWidgets() !void {
   // Omitted: Create the Style for the Containers
   ...
 
-  // Create the Container for Display
+  // Create the Container for Display (700 x 150 pixels)
+  // https://docs.lvgl.io/8.3/layouts/flex.html#arrange-items-in-rows-with-wrap-and-even-spacing
   const display_cont = c.lv_obj_create(c.lv_scr_act()).?;
   c.lv_obj_set_size(display_cont, 700, 150);
   c.lv_obj_align(display_cont, c.LV_ALIGN_TOP_MID, 0, 5);
   c.lv_obj_add_style(display_cont, &cont_style, 0);
 ```
 
-TODO: "__`.?`__"
+In the code above, we create the __LVGL Container__ for the Display.
+
+(We write "__`.?`__" to check for Null Pointers)
+
+(We'll see __cont_style__ in the next section)
+
+Then we create the __LVGL Containers__ for the Call / Cancel Buttons and Digit Buttons...
 
 ```zig
-  // Create the Container for Call / Cancel Buttons
+  // Create the Container for Call / Cancel Buttons (700 x 200 pixels)
   const call_cont = c.lv_obj_create(c.lv_scr_act()).?;
   c.lv_obj_set_size(call_cont, 700, 200);
   c.lv_obj_align_to(call_cont, display_cont, c.LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
   c.lv_obj_add_style(call_cont, &cont_style, 0);
-```
 
-TODO
-
-```zig
-  // Create the Container for Digit Buttons
+  // Create the Container for Digit Buttons (700 x 800 pixels)
   const digit_cont = c.lv_obj_create(c.lv_scr_act()).?;
   c.lv_obj_set_size(digit_cont, 700, 800);
   c.lv_obj_align_to(digit_cont, call_cont, c.LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
   c.lv_obj_add_style(digit_cont, &cont_style, 0);
 ```
 
-TODO
+Finally we pass the LVGL Containers when we __create the Label and Buttons__...
 
 ```zig
   // Create the Display Label
@@ -199,7 +198,11 @@ TODO
   try createDigitButtons(digit_cont);
 ```
 
-## Styles
+(We've seen [__createCallButtons__](https://lupyuen.github.io/articles/lvgl4#call-and-cancel-buttons) and [__createDigitButtons__](https://lupyuen.github.io/articles/lvgl4#digit-buttons))
+
+We'll come back to __createDisplayLabel__ right after we talk about the Container Style...
+
+## Container Style
 
 TODO
 
@@ -210,6 +213,7 @@ TODO
 var cont_style: c.lv_style_t = undefined;
 
 // Create the Style for the Containers
+// https://docs.lvgl.io/8.3/layouts/flex.html#arrange-items-in-rows-with-wrap-and-even-spacing
 cont_style = std.mem.zeroes(c.lv_style_t);
 c.lv_style_init(&cont_style);
 c.lv_style_set_flex_flow(&cont_style, c.LV_FLEX_FLOW_ROW_WRAP);
