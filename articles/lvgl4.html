@@ -70,8 +70,8 @@
 <li><a href="#feature-phone-ui">1 Feature Phone UI</a><ul>
 <li><a href="#call-and-cancel-buttons">1.1 Call and Cancel Buttons</a><ul></ul></li>
 <li><a href="#digit-buttons">1.2 Digit Buttons</a><ul></ul></li>
-<li><a href="#containers">1.3 Containers</a><ul></ul></li>
-<li><a href="#styles">1.4 Styles</a><ul></ul></li>
+<li><a href="#label-and-button-containers">1.3 Label and Button Containers</a><ul></ul></li>
+<li><a href="#container-style">1.4 Container Style</a><ul></ul></li>
 <li><a href="#display-label">1.5 Display Label</a><ul></ul></li></ul></li>
 <li><a href="#handle-lvgl-buttons">2 Handle LVGL Buttons</a><ul></ul></li>
 <li><a href="#feature-phone-ui-for-apache-nuttx-rtos">3 Feature Phone UI for Apache NuttX RTOS</a><ul></ul></li>
@@ -174,37 +174,38 @@ fn createDigitButtons(cont: *c.lv_obj_t) !void {
 <p><a href="https://docs.lvgl.io/8.3/widgets/core/btnmatrix.html">(Or use an LVGL <strong>Button Matrix</strong>)</a></p>
 <p>Again, LVGL will call our Zig Function <strong>eventHandler</strong> when the Button is clicked.</p>
 <p>(More about this in a while)</p>
-<h2 id="containers"><a href="#containers">1.3 Containers</a></h2>
-<p>TODO</p>
-<p>We create 3 LVGL Containers for the Display Label, Call / Cancel Buttons and Digit Buttons…</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L54-L77">feature-phone.zig</a></p>
+<h2 id="label-and-button-containers"><a href="#label-and-button-containers">1.3 Label and Button Containers</a></h2>
+<p>We create 3 <strong>LVGL Containers</strong> for the Display Label, Call / Cancel Buttons and Digit Buttons: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L54-L77">feature-phone.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Create the LVGL Widgets that will be rendered on the display
 fn createWidgets() !void {
 
   // Omitted: Create the Style for the Containers
   ...
 
-  // Create the Container for Display
+  // Create the Container for Display (700 x 150 pixels)
+  // https://docs.lvgl.io/8.3/layouts/flex.html#arrange-items-in-rows-with-wrap-and-even-spacing
   const display_cont = c.lv_obj_create(c.lv_scr_act()).?;
   c.lv_obj_set_size(display_cont, 700, 150);
   c.lv_obj_align(display_cont, c.LV_ALIGN_TOP_MID, 0, 5);
   c.lv_obj_add_style(display_cont, &amp;cont_style, 0);
 </code></pre></div>
-<p>TODO: “<strong><code>.?</code></strong>”</p>
-<div class="example-wrap"><pre class="language-zig"><code>  // Create the Container for Call / Cancel Buttons
+<p>In the code above, we create the <strong>LVGL Container</strong> for the Display.</p>
+<p>(We write “<strong><code>.?</code></strong>” to check for Null Pointers)</p>
+<p>(We’ll see <strong>cont_style</strong> in the next section)</p>
+<p>Then we create the <strong>LVGL Containers</strong> for the Call / Cancel Buttons and Digit Buttons…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Create the Container for Call / Cancel Buttons (700 x 200 pixels)
   const call_cont = c.lv_obj_create(c.lv_scr_act()).?;
   c.lv_obj_set_size(call_cont, 700, 200);
   c.lv_obj_align_to(call_cont, display_cont, c.LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
   c.lv_obj_add_style(call_cont, &amp;cont_style, 0);
-</code></pre></div>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-zig"><code>  // Create the Container for Digit Buttons
+
+  // Create the Container for Digit Buttons (700 x 800 pixels)
   const digit_cont = c.lv_obj_create(c.lv_scr_act()).?;
   c.lv_obj_set_size(digit_cont, 700, 800);
   c.lv_obj_align_to(digit_cont, call_cont, c.LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
   c.lv_obj_add_style(digit_cont, &amp;cont_style, 0);
 </code></pre></div>
-<p>TODO</p>
+<p>Finally we pass the LVGL Containers when we <strong>create the Label and Buttons</strong>…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Create the Display Label
   try createDisplayLabel(display_cont);
 
@@ -213,13 +214,17 @@ fn createWidgets() !void {
 
   // Create the Digit Buttons
   try createDigitButtons(digit_cont);
-</code></pre></div><h2 id="styles"><a href="#styles">1.4 Styles</a></h2>
+</code></pre></div>
+<p>(We’ve seen <a href="https://lupyuen.github.io/articles/lvgl4#call-and-cancel-buttons"><strong>createCallButtons</strong></a> and <a href="https://lupyuen.github.io/articles/lvgl4#digit-buttons"><strong>createDigitButtons</strong></a>)</p>
+<p>We’ll come back to <strong>createDisplayLabel</strong> right after we talk about the Container Style…</p>
+<h2 id="container-style"><a href="#container-style">1.4 Container Style</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L47-L52">feature-phone.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// LVGL Style for Containers (std.mem.zeroes crashes the compiler)
 var cont_style: c.lv_style_t = undefined;
 
 // Create the Style for the Containers
+// https://docs.lvgl.io/8.3/layouts/flex.html#arrange-items-in-rows-with-wrap-and-even-spacing
 cont_style = std.mem.zeroes(c.lv_style_t);
 c.lv_style_init(&amp;cont_style);
 c.lv_style_set_flex_flow(&amp;cont_style, c.LV_FLEX_FLOW_ROW_WRAP);
