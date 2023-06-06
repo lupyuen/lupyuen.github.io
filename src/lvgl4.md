@@ -167,7 +167,7 @@ In the code above, we create the __LVGL Container__ for the Display.
 
 (We write "__`.?`__" to check for Null Pointers)
 
-(We'll see __cont_style__ in the next section)
+(More about __cont_style__ in the next section)
 
 Then we create the __LVGL Containers__ for the Call / Cancel Buttons and Digit Buttons...
 
@@ -184,6 +184,8 @@ Then we create the __LVGL Containers__ for the Call / Cancel Buttons and Digit B
   c.lv_obj_align_to(digit_cont, call_cont, c.LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
   c.lv_obj_add_style(digit_cont, &cont_style, 0);
 ```
+
+[__lv_obj_align_to__](https://docs.lvgl.io/8.3/overview/coords.html#align) tells LVGL to space out the Containers, 10 pixels apart.
 
 Finally we pass the LVGL Containers when we __create the Label and Buttons__...
 
@@ -206,9 +208,15 @@ We'll come back to __createDisplayLabel__. Let's talk about the Container Style.
 
 _What's cont_style in the previous section?_
 
+```c
+c.lv_obj_add_style(display_cont, &cont_style, 0);
+c.lv_obj_add_style(call_cont,    &cont_style, 0);
+c.lv_obj_add_style(digit_cont,   &cont_style, 0);
+```
+
 __cont_style__ is the LVGL Style for our Containers.
 
-It tells LVGL that our Containers will have [__Flex Layout__](https://docs.lvgl.io/8.3/layouts/flex.html#): [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L46-L54)
+The Style tells LVGL that our Containers will have [__Flex Layout__](https://docs.lvgl.io/8.3/layouts/flex.html#): [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L46-L54)
 
 ```zig
 // LVGL Style for Containers (std.mem.zeroes crashes the compiler)
