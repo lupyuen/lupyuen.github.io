@@ -216,10 +216,11 @@ fn createWidgets() !void {
   try createDigitButtons(digit_cont);
 </code></pre></div>
 <p>(We’ve seen <a href="https://lupyuen.github.io/articles/lvgl4#call-and-cancel-buttons"><strong>createCallButtons</strong></a> and <a href="https://lupyuen.github.io/articles/lvgl4#digit-buttons"><strong>createDigitButtons</strong></a>)</p>
-<p>We’ll come back to <strong>createDisplayLabel</strong> right after we talk about the Container Style…</p>
+<p>We’ll come back to <strong>createDisplayLabel</strong>. Let’s talk about the Container Style…</p>
 <h2 id="container-style"><a href="#container-style">1.4 Container Style</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L47-L52">feature-phone.zig</a></p>
+<p><em>What’s cont_style in the previous section?</em></p>
+<p><strong>cont_style</strong> is the LVGL Style for our Containers.</p>
+<p>It tells LVGL that our Containers will have <a href="https://docs.lvgl.io/8.3/layouts/flex.html#"><strong>Flex Layout</strong></a>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L46-L54">feature-phone.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// LVGL Style for Containers (std.mem.zeroes crashes the compiler)
 var cont_style: c.lv_style_t = undefined;
 
@@ -230,7 +231,10 @@ c.lv_style_init(&amp;cont_style);
 c.lv_style_set_flex_flow(&amp;cont_style, c.LV_FLEX_FLOW_ROW_WRAP);
 c.lv_style_set_flex_main_place(&amp;cont_style, c.LV_FLEX_ALIGN_SPACE_EVENLY);
 c.lv_style_set_layout(&amp;cont_style, c.LV_LAYOUT_FLEX);
-</code></pre></div><h2 id="display-label"><a href="#display-label">1.5 Display Label</a></h2>
+</code></pre></div>
+<p><a href="https://ziglang.org/documentation/master/std/#A;std:mem.zeroes">(<strong>std.mem.zeroes</strong> populates the struct with zeroes)</a></p>
+<p>This says that the Buttons inside the Containers will be <strong>wrapped with equal spacing</strong>.</p>
+<h2 id="display-label"><a href="#display-label">1.5 Display Label</a></h2>
 <p>TODO</p>
 <p>We create the Display Label…</p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L80-L111">feature-phone.zig</a></p>
