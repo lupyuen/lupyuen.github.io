@@ -475,153 +475,89 @@ And for the __Call Button__: We dial the Phone Number (simulated for WebAssembly
     debug("Call {s}", .{call_number});
 ```
 
-TODO
+When we compile our Zig LVGL App and run it in a Web Browser, the LVGL Buttons work correctly! (Pic below)
 
-The buttons work OK on WebAssembly. (Pic below)
+[(Try the __Feature Phone Demo__)](https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html)
 
-Let's run the Feature Phone UI on PinePhone and Apache NuttX RTOS!
+[(Watch the __Demo on YouTube__)](https://youtu.be/vBKhk5Q6rnE)
 
-![Feature Phone UI](https://lupyuen.github.io/images/lvgl3-wasm6.png)
+[(See the __JavaScript Log__)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/665847f513a44648b0d4ae602d6fcf7cc364a342/README.md#output-log)
 
-[(Try the Feature Phone Demo)](https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html)
+![Handling LVGL Buttons in our Feature Phone UI](https://lupyuen.github.io/images/lvgl3-wasm6.png)
 
-[(Watch the demo on YouTube)](https://youtu.be/vBKhk5Q6rnE)
+[_Handling LVGL Buttons in our Feature Phone UI_](https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html)
 
-[(See the log)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/665847f513a44648b0d4ae602d6fcf7cc364a342/README.md#output-log)
+# Works on WebAssembly AND PinePhone!
+
+_Our LVGL App runs in a Web Browser with WebAssembly..._
+
+_Will it run on PinePhone?_
+
+Yep the exact same LVGL App runs on __PinePhone with Apache NuttX RTOS__!
+
+The magic happens here: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L15-L19)
+
+```zig
+/// Import the functions specific to WebAssembly and Apache NuttX RTOS
+/// into the Global Namespace
+pub usingnamespace
+
+  // Depending on the Target CPU Architecture...
+  switch (builtin.cpu.arch) {
+
+    // Import WebAssembly-Specific Functions from `wasm.zig`
+    .wasm32, .wasm64 => @import("wasm.zig"),
+
+    // Import NuttX-Specific Functions from `nuttx.zig`
+    else => @import("nuttx.zig"),
+  };
+```
+
+Depending on the __Target CPU Architecture__, our Zig LVGL App imports either...
+
+- __WebAssembly-Specific__ Functions: [__wasm.zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig) or...
+
+- __NuttX-Specific__ Functions: [__nuttx.zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/nuttx.zig)
+
+Let's dive into the functions...
+
+## LVGL for WebAssembly
+
+[__wasm.zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig) defines the LVGL Functions specific to WebAssembly...
+
+- [__LVGL Display__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L15-L75) [(Explained here)](https://lupyuen.github.io/articles/lvgl3#render-lvgl-display-in-zig)
+
+- [__LVGL Input__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L75-L130) TODO: Explained here
+
+- [__LVGL Porting Layer__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L130-L152) [(Explained here)](https://lupyuen.github.io/articles/lvgl3#lvgl-porting-layer-for-webassembly)
+
+- [__LVGL Logger__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L152-L177) [(Explained here)](https://lupyuen.github.io/articles/lvgl3#webassembly-logger-for-lvgl)
+
+- [__Memory Allocator__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L177-L221) [(Explained here)](https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation)
+
+- [__C Standard Library__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L221-L279) [(Explained here)](https://lupyuen.github.io/articles/lvgl3#appendix-c-standard-library-is-missing)
+
+TODO: JavaScript for WebAssembly
+
+## LVGL for NuttX
+
+_What about PinePhone on Apache NuttX RTOS?_
+
+Thankfully most of the above LVGL Functions are already implemented by Apache NuttX RTOS.
+
+[__nuttx.zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/nuttx.zig) defines the following functions that are needed by the Zig Runtime...
+
+- [__Custom Panic Handler for Zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/nuttx.zig#L6-L29)
+
+  [(Explained here)](https://lupyuen.github.io/articles/iot#appendix-logging)
+
+- [__Custom Logger for Zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/nuttx.zig#L29-L59)
+
+  [(Explained here)](https://lupyuen.github.io/articles/iot#appendix-panic-handler)
 
 # Run LVGL App on PinePhone
 
 TODO
-
-_We created an LVGL Feature Phone UI for WebAssembly. Will it run on PinePhone?_
-
-Let's refactor the LVGL Feature Phone UI, so that the same Zig Source File will run on BOTH WebAssembly and PinePhone! (With Apache NuttX RTOS)
-
-We moved all the WebAssembly-Specific Functions to... 
-
-[wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L19-L288)
-
-Our Zig LVGL App imports `wasm.zig` only when compiling for WebAssembly...
-
-[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L15-L19)
-
-```zig
-/// Import the functions specific to WebAssembly and Apache NuttX RTOS
-pub usingnamespace switch (builtin.cpu.arch) {
-    .wasm32, .wasm64 => @import("wasm.zig"),
-    else => @import("nuttx.zig"),
-};
-```
-
-In our JavaScript, we call `initDisplay` (from [`wasm.zig`](wasm.zig)) to initialise the LVGL Display and LVGL Input for WebAssembly...
-
-[feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L124-L153)
-
-```javascript
-// Main Function
-function main() {
-    console.log("main: start");
-    const start_ms = Date.now();
-    const zig = wasm.instance.exports;
-
-    // Init the LVGL Display and Input
-    zig.initDisplay();
-
-    // Render the LVGL Widgets in Zig
-    zig.lv_demo_widgets();
-
-    // Render Loop
-    const loop = function() {
-
-        // Compute the Elapsed Milliseconds
-        const elapsed_ms = Date.now() - start_ms;
-
-        // Handle LVGL Tasks to update the display
-        zig.handleTimer(elapsed_ms);
-
-        // Loop to next frame
-        window.requestAnimationFrame(loop);
-        // Previously: window.setTimeout(loop, 100);
-    };
-
-    // Start the Render Loop
-    loop();
-    console.log("main: end");
-};
-```
-
-_What about PinePhone on Apache NuttX RTOS?_
-
-When compiling for NuttX, our Zig LVGL App imports [`nuttx.zig`](nuttx.zig)...
-
-[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L15-L19)
-
-```zig
-/// Import the functions specific to WebAssembly and Apache NuttX RTOS
-pub usingnamespace switch (builtin.cpu.arch) {
-    .wasm32, .wasm64 => @import("wasm.zig"),
-    else => @import("nuttx.zig"),
-};
-```
-
-Which defines the Custom Panic Handler and Custom Logger specific to NuttX...
-
-[nuttx.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/nuttx.zig#L7-L70)
-
-```zig
-///////////////////////////////////////////////////////////////////////////////
-//  Panic Handler
-
-/// Called by Zig when it hits a Panic. We print the Panic Message, Stack Trace and halt. See
-/// https://andrewkelley.me/post/zig-stack-traces-kernel-panic-bare-bones-os.html
-/// https://github.com/ziglang/zig/blob/master/lib/std/builtin.zig#L763-L847
-pub fn panic(message: []const u8, _stack_trace: ?*std.builtin.StackTrace) noreturn {
-    // Print the Panic Message
-    _ = _stack_trace;
-    _ = puts("\n!ZIG PANIC!");
-    _ = puts(@ptrCast([*c]const u8, message));
-
-    // Print the Stack Trace
-    _ = puts("Stack Trace:");
-    var it = std.debug.StackIterator.init(@returnAddress(), null);
-    while (it.next()) |return_address| {
-        _ = printf("%p\n", return_address);
-    }
-
-    // Halt
-    while (true) {}
-}
-
-///////////////////////////////////////////////////////////////////////////////
-//  Logging
-
-/// Called by Zig for `std.log.debug`, `std.log.info`, `std.log.err`, ...
-/// https://gist.github.com/leecannon/d6f5d7e5af5881c466161270347ce84d
-pub fn log(
-    comptime _message_level: std.log.Level,
-    comptime _scope: @Type(.EnumLiteral),
-    comptime format: []const u8,
-    args: anytype,
-) void {
-    _ = _message_level;
-    _ = _scope;
-
-    // Format the message
-    var buf: [100]u8 = undefined; // Limit to 100 chars
-    var slice = std.fmt.bufPrint(&buf, format, args) catch {
-        _ = puts("*** log error: buf too small");
-        return;
-    };
-
-    // Terminate the formatted message with a null
-    var buf2: [buf.len + 1:0]u8 = undefined;
-    std.mem.copy(u8, buf2[0..slice.len], slice[0..slice.len]);
-    buf2[slice.len] = 0;
-
-    // Print the formatted message
-    _ = puts(&buf2);
-}
-```
 
 We compile our Zig LVGL App for NuttX (using the exact same Zig Source File for WebAssembly)...
 
@@ -702,6 +638,56 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/lvgl4.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl4.md)
+
+# Appendix: JavaScript for LVGL
+
+TODO
+
+Let's refactor the LVGL Feature Phone UI, so that the same Zig Source File will run on BOTH WebAssembly and PinePhone! (With Apache NuttX RTOS)
+
+We moved all the WebAssembly-Specific Functions to... 
+
+[wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L19-L288)
+
+Our Zig LVGL App imports `wasm.zig` only when compiling for WebAssembly...
+
+
+In our JavaScript, we call `initDisplay` (from [`wasm.zig`](wasm.zig)) to initialise the LVGL Display and LVGL Input for WebAssembly...
+
+[feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L124-L153)
+
+```javascript
+// Main Function
+function main() {
+    console.log("main: start");
+    const start_ms = Date.now();
+    const zig = wasm.instance.exports;
+
+    // Init the LVGL Display and Input
+    zig.initDisplay();
+
+    // Render the LVGL Widgets in Zig
+    zig.lv_demo_widgets();
+
+    // Render Loop
+    const loop = function() {
+
+        // Compute the Elapsed Milliseconds
+        const elapsed_ms = Date.now() - start_ms;
+
+        // Handle LVGL Tasks to update the display
+        zig.handleTimer(elapsed_ms);
+
+        // Loop to next frame
+        window.requestAnimationFrame(loop);
+        // Previously: window.setTimeout(loop, 100);
+    };
+
+    // Start the Render Loop
+    loop();
+    console.log("main: end");
+};
+```
 
 # Appendix: Handle LVGL Timer
 
