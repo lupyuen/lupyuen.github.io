@@ -398,38 +398,44 @@ export fn eventHandler(e: ?*c.lv_event_t) void {
     const span = std.mem.span(text);
 </code></pre></div>
 <p>TODO</p>
-<p>If it’s a Digit Button, we append the Digit to the Phone Number…</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L238-L242">feature-phone.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>        } else {
-            // Else append the digit clicked to the text
-            display_text[len] = text[0];
-            c.lv_label_set_text(display_label.obj, display_text[0.. :0]);
-        }
+<p>If it’s a <strong>Digit Button</strong>: We append the Digit to the Phone Number…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  // Handle the identified button...
+  if (std.mem.eql(u8, span, &quot;Call&quot;)) {
+    // Omitted: Handle Call Button
+    ...
+  } else if (std.mem.eql(u8, span, &quot;Cancel&quot;)) {
+    // Omitted: Handle Cancel Button
+    ...
+  } else {
+    // Handle Digit Button:
+    // Append the digit clicked to the text
+    display_text[len] = text[0];
+    c.lv_label_set_text(
+      display_label.obj,    // LVGL Label
+      display_text[0.. :0]  // Get Null-Terminated String
+    );
+  }
 </code></pre></div>
-<p>If it’s the Cancel Button, we erase the last digit of the Phone Number…</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L232-L238">feature-phone.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>        } else if (std.mem.eql(u8, span, &quot;Cancel&quot;)) {
-            // If Cancel is clicked, erase the last digit
-            if (len &gt;= 2) {
-                display_text[len - 1] = 0;
-                c.lv_label_set_text(display_label.obj, display_text[0.. :0]);
-            }
-        } else {
+<p>If it’s the <strong>Cancel Button</strong>: We erase the last digit of the Phone Number…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  } else if (std.mem.eql(u8, span, &quot;Cancel&quot;)) {
+    // Handle Cancel Button:
+    // Erase the last digit
+    if (len &gt;= 2) {
+      display_text[len - 1] = 0;
+      c.lv_label_set_text(
+        display_label.obj,    // LVGL Label
+        display_text[0.. :0]  // Get Null-Terminated String
+      );
+    }
 </code></pre></div>
-<p>If it’s the Call Button, we call PinePhone’s LTE Modem to dial the Phone Number…</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L222-L231">feature-phone.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>        if (std.mem.eql(u8, span, &quot;Call&quot;)) {
-            // If Call is clicked, call the number
-            const call_number = display_text[0..len :0];
-            debug(&quot;Call {s}&quot;, .{call_number});
-
-            if (builtin.cpu.arch == .wasm32 or builtin.cpu.arch == .wasm64) {
-                debug(&quot;Running in WebAssembly, simulate the Phone Call&quot;, .{});
-            } else {
-                debug(&quot;Running on PinePhone, make an actual Phone Call&quot;, {});
-            }
+<p>And for the <strong>Call Button</strong>: We dial the Phone Number (simulated for WebAssembly)…</p>
+<div class="example-wrap"><pre class="language-zig"><code>  if (std.mem.eql(u8, span, &quot;Call&quot;)) {
+    // Handle Call Button:
+    // Call the number
+    const call_number = display_text[0..len :0];  // Get Null-Terminated String
+    debug(&quot;Call {s}&quot;, .{call_number});
 </code></pre></div>
-<p>(Simulated for WebAssembly)</p>
+<p>TODO</p>
 <p>The buttons work OK on WebAssembly. (Pic below)</p>
 <p>Let’s run the Feature Phone UI on PinePhone and Apache NuttX RTOS!</p>
 <p><img src="https://lupyuen.github.io/images/lvgl3-wasm6.png" alt="Feature Phone UI" /></p>
