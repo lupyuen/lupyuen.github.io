@@ -572,10 +572,200 @@ make
 <p><em>What’s inside the HTML Page for our LVGL App in WebAssembly?</em></p>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.html"><strong>feature-phone.html</strong></a></p>
-<h1 id="appendix-javascript-for-lvgl"><a href="#appendix-javascript-for-lvgl">8 Appendix: JavaScript for LVGL</a></h1>
+<div class="example-wrap"><pre class="language-html"><code>&lt;!doctype html&gt;
+&lt;!-- From https://dev.to/sleibrock/webassembly-with-zig-pt-ii-ei7 --&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Feature Phone UI: LVGL in WebAssembly with Zig&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body style=&quot;margin: 0; background-color: lightgrey;&quot;&gt;
+
+    &lt;!-- HTML Canvas for rendering LVGL Display --&gt;
+    &lt;canvas id=&quot;lvgl_canvas&quot; width=&quot;720&quot; height=&quot;1280&quot;&gt;
+      Browser does not support HTML5 canvas element
+    &lt;/canvas&gt;
+
+  &lt;/body&gt;
+  &lt;script src=&quot;feature-phone.js&quot;&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre></div><h1 id="appendix-javascript-for-lvgl"><a href="#appendix-javascript-for-lvgl">8 Appendix: JavaScript for LVGL</a></h1>
 <p><em>What’s inside the JavaScript for our LVGL App in WebAssembly?</em></p>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js"><strong>feature-phone.js</strong></a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Render LVGL in WebAssembly, compiled with Zig Compiler. Based on...
+// https://github.com/daneelsan/minimal-zig-wasm-canvas/blob/master/script.js
+// https://github.com/daneelsan/zig-wasm-logger/blob/master/script.js
+
+// Log WebAssembly Messages from Zig to JavaScript Console
+// https://github.com/daneelsan/zig-wasm-logger/blob/master/script.js
+const text_decoder = new TextDecoder();
+let console_log_buffer = &quot;&quot;;
+
+// WebAssembly Helper Functions
+const wasm = {
+    // WebAssembly Instance
+    instance: undefined,
+
+    // Init the WebAssembly Instance
+    init: function (obj) {
+        this.instance = obj.instance;
+    },
+
+    // Fetch the Zig String from a WebAssembly Pointer
+    getString: function (ptr, len) {
+        const memory = this.instance.exports.memory;
+        return text_decoder.decode(
+            new Uint8Array(memory.buffer, ptr, len)
+        );
+    },
+};
+
+// Export JavaScript Functions to Zig
+const importObject = {
+    // JavaScript Functions exported to Zig
+    env: {
+        // Render the LVGL Canvas from Zig to HTML
+        // https://github.com/daneelsan/minimal-zig-wasm-canvas/blob/master/script.js
+        render: function() {  // TODO: Add width and height
+
+            // Get the WebAssembly Pointer to the LVGL Canvas Buffer
+            const bufferOffset = wasm.instance.exports
+                .getCanvasBuffer();
+
+            // Load the WebAssembly Pointer into a JavaScript Image Data
+            const memory = wasm.instance.exports.memory;
+            const ptr = bufferOffset;
+            const len = (canvas.width * canvas.height) * 4;
+            const imageDataArray = new Uint8Array(memory.buffer, ptr, len)
+            imageData.data.set(imageDataArray);
+
+            // Render the Image Data to the HTML Canvas
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.putImageData(imageData, 0, 0);
+        },
+
+        // Write to JavaScript Console from Zig
+        // https://github.com/daneelsan/zig-wasm-logger/blob/master/script.js
+        jsConsoleLogWrite: function(ptr, len) {
+            console_log_buffer += wasm.getString(ptr, len);
+        },
+
+        // Flush JavaScript Console from Zig
+        // https://github.com/daneelsan/zig-wasm-logger/blob/master/script.js
+        jsConsoleLogFlush: function() {
+            console.log(console_log_buffer);
+            console_log_buffer = &quot;&quot;;
+        },
+    }
+};
+
+// Get the HTML Canvas Context and Image Data
+const canvas = window.document.getElementById(&quot;lvgl_canvas&quot;);
+const context = canvas.getContext(&quot;2d&quot;);
+const imageData = context.createImageData(canvas.width, canvas.height);
+context.clearRect(0, 0, canvas.width, canvas.height);
+
+// Handle Mouse Down on HTML Canvas
+canvas.addEventListener(&quot;mousedown&quot;, (e) =&gt; {
+    // Notify Zig of Mouse Down
+    const x = e.offsetX;
+    const y = e.offsetY;
+    console.log({mousedown: {x, y}});
+    wasm.instance.exports
+        .notifyInput(1, x, y);  // TODO: Handle LVGL not ready
+});
+
+// Handle Mouse Up on HTML Canvas
+canvas.addEventListener(&quot;mouseup&quot;, (e) =&gt; {
+    // Notify Zig of Mouse Up
+    x = e.offsetX;
+    y = e.offsetY;
+    console.log({mouseup: {x, y}});
+    wasm.instance.exports
+        .notifyInput(0, x, y);  // TODO: Handle LVGL not ready
+});
+
+// Handle Touch Start on HTML Canvas
+canvas.addEventListener(&quot;touchstart&quot;, (e) =&gt; {
+    // Notify Zig of Touch Start
+    e.preventDefault();
+    const touches = e.changedTouches;
+    if (touches.length == 0) { return; }
+
+    // Assume that HTML Canvas is at (0,0)
+    const x = touches[0].pageX;
+    const y = touches[0].pageY;
+    console.log({touchstart: {x, y}});
+    wasm.instance.exports
+        .notifyInput(1, x, y);  // TODO: Handle LVGL not ready
+});
+
+// Handle Touch End on HTML Canvas
+canvas.addEventListener(&quot;touchend&quot;, (e) =&gt; {
+    // Notify Zig of Touch End
+    e.preventDefault();
+    const touches = e.changedTouches;
+    if (touches.length == 0) { return; }
+
+    // Assume that HTML Canvas is at (0,0)
+    const x = touches[0].pageX;
+    const y = touches[0].pageY;
+    console.log({touchend: {x, y}});
+    wasm.instance.exports
+        .notifyInput(0, x, y);  // TODO: Handle LVGL not ready
+});
+
+// Main Function
+function main() {
+    console.log(&quot;main: start&quot;);
+    const start_ms = Date.now();
+    const zig = wasm.instance.exports;
+
+    // Init the LVGL Display and Input
+    zig.initDisplay();
+
+    // Render the LVGL Widgets in Zig
+    zig.lv_demo_widgets();
+
+    // Render Loop
+    const loop = function() {
+
+        // Compute the Elapsed Milliseconds
+        const elapsed_ms = Date.now() - start_ms;
+
+        // Handle LVGL Tasks to update the display
+        zig.handleTimer(elapsed_ms);
+
+        // Loop to next frame
+        window.requestAnimationFrame(loop);
+        // Previously: window.setTimeout(loop, 100);
+    };
+
+    // Start the Render Loop
+    loop();
+    console.log(&quot;main: end&quot;);
+};
+
+// Load the WebAssembly Module and start the Main Function
+async function bootstrap() {
+
+    // Load the WebAssembly Module
+    // https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/instantiateStreaming
+    const result = await WebAssembly.instantiateStreaming(
+        fetch(&quot;feature-phone.wasm&quot;),
+        importObject
+    );
+
+    // Store references to WebAssembly Functions and Memory exported by Zig
+    wasm.init(result);
+
+    // Start the Main Function
+    main();
+}
+
+// Start the loading of WebAssembly Module
+bootstrap();
+</code></pre></div>
 <p>Let’s refactor the LVGL Feature Phone UI, so that the same Zig Source File will run on BOTH WebAssembly and PinePhone! (With Apache NuttX RTOS)</p>
 <p>We moved all the WebAssembly-Specific Functions to… </p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L19-L288">wasm.zig</a></p>
