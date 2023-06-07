@@ -805,23 +805,23 @@ Which will be called by our Zig Logger for LVGL...
 
 Our Main JavaScript Function will...
 
-1.  Intialise the __LVGL Display__
+1.  Intialise the __LVGL Display__ in Zig
 
     [(Implemented here)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L15-L75)
 
     [(Explained here)](https://lupyuen.github.io/articles/lvgl3#render-lvgl-display-in-zig)
 
-1.  Initialise the __LVGL Input__
+1.  Initialise the __LVGL Input__ in Zig
 
     [(Explained here)](https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-input)
 
-1.  Render the __LVGL Widgets__
+1.  Render the __LVGL Widgets__ in Zig
 
     [(Implemented here)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L20-L83)
 
     [(Explained here)](https://lupyuen.github.io/articles/lvgl4#label-and-button-containers)
 
-1.  Handle __LVGL Timer__ to execute LVGL Tasks periodically
+1.  Handle the __LVGL Timer__ in Zig, to execute LVGL Tasks periodically
 
     [(Explained here)](https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-timer)
 
