@@ -286,6 +286,9 @@ fn createDisplayLabel(cont: *c.lv_obj_t) !void {
 <p><em>This code looks different from the rest?</em></p>
 <p>Yep this code calls our <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig"><strong>Zig Wrapper for LVGL</strong></a>.</p>
 <p>Someday we might create a Zig Wrapper for the rest of the code.</p>
+<p><em>So many hard-coded coordinates in our code…</em></p>
+<p>That’s the beauty of testing our LVGL App in a Web Browser!</p>
+<p>With WebAssembly, we can tweak the values and test our LVGL App (nearly) instantly. And after testing, we refactor the numbers to make them generic across Screen Sizes.</p>
 <p>TODO</p>
 <p>When we test our Zig LVGL App in WebAssembly, we see this…</p>
 <p><img src="https://lupyuen.github.io/images/lvgl3-wasm5.png" alt="Feature Phone UI" /></p>
