@@ -80,10 +80,11 @@
 <li><a href="#lvgl-for-nuttx">4.2 LVGL for NuttX</a><ul></ul></li></ul></li>
 <li><a href="#run-lvgl-app-on-pinephone">5 Run LVGL App on PinePhone</a><ul></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-javascript-for-lvgl">7 Appendix: JavaScript for LVGL</a><ul></ul></li>
-<li><a href="#appendix-handle-lvgl-timer">8 Appendix: Handle LVGL Timer</a><ul></ul></li>
-<li><a href="#appendix-handle-lvgl-input">9 Appendix: Handle LVGL Input</a><ul></ul></li>
-<li><a href="#appendix-import-lvgl-library">10 Appendix: Import LVGL Library</a><ul></ul></li></ul></nav><p>📝 <em>12 Jun 2023</em></p>
+<li><a href="#appendix-html-for-lvgl">7 Appendix: HTML for LVGL</a><ul></ul></li>
+<li><a href="#appendix-javascript-for-lvgl">8 Appendix: JavaScript for LVGL</a><ul></ul></li>
+<li><a href="#appendix-handle-lvgl-timer">9 Appendix: Handle LVGL Timer</a><ul></ul></li>
+<li><a href="#appendix-handle-lvgl-input">10 Appendix: Handle LVGL Input</a><ul></ul></li>
+<li><a href="#appendix-import-lvgl-library">11 Appendix: Import LVGL Library</a><ul></ul></li></ul></nav><p>📝 <em>12 Jun 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/lvgl4-title.jpg" alt="LVGL Feature Phone UI running on PinePhone with Apache NuttX RTOS" /></p>
 <p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html"><em>LVGL Feature Phone UI running on PinePhone with Apache NuttX RTOS</em></a></p>
 <p>This article explains how we created an <a href="https://docs.lvgl.io/master/index.html"><strong>LVGL Graphical App</strong></a> for <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>… By tweaking and testing in a <strong>Web Browser!</strong></p>
@@ -513,9 +514,9 @@ pub usingnamespace
 <h1 id="run-lvgl-app-on-pinephone"><a href="#run-lvgl-app-on-pinephone">5 Run LVGL App on PinePhone</a></h1>
 <p>TODO</p>
 <p>We compile our Zig LVGL App for NuttX (using the exact same Zig Source File for WebAssembly)…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Compile the Zig LVGL App for PinePhone 
+<div class="example-wrap"><pre class="language-bash"><code>## TODO: Change &quot;..&quot; to your NuttX Project Directory
+## Compile the Zig LVGL App for PinePhone 
 ## (armv8-a with cortex-a53)
-## TODO: Change &quot;..&quot; to your NuttX Project Directory
 zig build-obj \
   --verbose-cimport \
   -target aarch64-freestanding-none \
@@ -526,9 +527,12 @@ zig build-obj \
   ...
 
 ## Copy the compiled Zig LVGL App to NuttX and overwrite `lv_demo_widgets.*.o`
-## TODO: Change &quot;..&quot; to your NuttX Project Directory
 cp feature-phone.o \
   ../apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.*.o
+
+## Link the compiled Zig LVGL App with NuttX
+cd ../nuttx
+make
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L402-L438">(See the <strong>Complete Command</strong>)</a></p>
 <p>And our Feature Phone UI runs on PinePhone with NuttX yay! (Pic below)</p>
@@ -564,8 +568,14 @@ cp feature-phone.o \
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl4.md"><strong>lupyuen.github.io/src/lvgl4.md</strong></a></p>
-<h1 id="appendix-javascript-for-lvgl"><a href="#appendix-javascript-for-lvgl">7 Appendix: JavaScript for LVGL</a></h1>
+<h1 id="appendix-html-for-lvgl"><a href="#appendix-html-for-lvgl">7 Appendix: HTML for LVGL</a></h1>
+<p><em>What’s inside the HTML Page for our LVGL App in WebAssembly?</em></p>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.html"><strong>feature-phone.html</strong></a></p>
+<h1 id="appendix-javascript-for-lvgl"><a href="#appendix-javascript-for-lvgl">8 Appendix: JavaScript for LVGL</a></h1>
+<p><em>What’s inside the JavaScript for our LVGL App in WebAssembly?</em></p>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js"><strong>feature-phone.js</strong></a></p>
 <p>Let’s refactor the LVGL Feature Phone UI, so that the same Zig Source File will run on BOTH WebAssembly and PinePhone! (With Apache NuttX RTOS)</p>
 <p>We moved all the WebAssembly-Specific Functions to… </p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L19-L288">wasm.zig</a></p>
@@ -602,7 +612,7 @@ function main() {
     loop();
     console.log(&quot;main: end&quot;);
 };
-</code></pre></div><h1 id="appendix-handle-lvgl-timer"><a href="#appendix-handle-lvgl-timer">8 Appendix: Handle LVGL Timer</a></h1>
+</code></pre></div><h1 id="appendix-handle-lvgl-timer"><a href="#appendix-handle-lvgl-timer">9 Appendix: Handle LVGL Timer</a></h1>
 <p>TODO</p>
 <p>To execute LVGL Tasks periodically, here’s the proper way to handle the LVGL Timer in JavaScript…</p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L134-L150">feature-phone.js</a></p>
@@ -647,7 +657,7 @@ export fn handleTimer(ms: i32) i32 {
     _ = c.lv_timer_handler();
     return 0;
 }
-</code></pre></div><h1 id="appendix-handle-lvgl-input"><a href="#appendix-handle-lvgl-input">9 Appendix: Handle LVGL Input</a></h1>
+</code></pre></div><h1 id="appendix-handle-lvgl-input"><a href="#appendix-handle-lvgl-input">10 Appendix: Handle LVGL Input</a></h1>
 <p>TODO</p>
 <p>Let’s handle Mouse and Touch Input in LVGL!</p>
 <p>We create an LVGL Button in our Zig LVGL App…</p>
@@ -787,7 +797,7 @@ var input_y: c.lv_coord_t = 0;
 <p><a href="https://youtube.com/shorts/J6ugzVyKC4U?feature=share">(Watch the demo on YouTube)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/e70b2df50fa562bec7e02f24191dbbb1e5a7553a/README.md#todo">(See the log)</a></p>
 <p><img src="https://lupyuen.github.io/images/lvgl3-wasm4.png" alt="Handle LVGL Input" /></p>
-<h1 id="appendix-import-lvgl-library"><a href="#appendix-import-lvgl-library">10 Appendix: Import LVGL Library</a></h1>
+<h1 id="appendix-import-lvgl-library"><a href="#appendix-import-lvgl-library">11 Appendix: Import LVGL Library</a></h1>
 <p>TODO</p>
 
     
