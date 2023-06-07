@@ -372,6 +372,10 @@ Browse to __feature-phone.html__. And we'll see our Feature Phone UI in the Web 
 
 # Handle LVGL Buttons
 
+_Earlier we created LVGL Buttons in our Zig App..._
+
+_How will we handle them?_
+
 TODO
 
 Now that we have rendered the Feature Phone UI in Zig and LVGL, let's wire up the Buttons.
