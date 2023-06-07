@@ -549,7 +549,9 @@ Let's dive into the functions...
 
   [(Explained here)](https://lupyuen.github.io/articles/lvgl3#appendix-c-standard-library-is-missing)
 
-TODO: JavaScript for WebAssembly
+The LVGL Display and LVGL Input Functions above are called by our JavaScript...
+
+- [__"JavaScript for LVGL"__](https://lupyuen.github.io/articles/lvgl4#appendix-javascript-for-lvgl)
 
 ## LVGL for NuttX
 
@@ -670,7 +672,7 @@ TODO
 
 ## Load WebAssembly Module
 
-[__feature-phone.js__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js)
+[feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js)
 
 ```javascript
 // Load the WebAssembly Module and start the Main Function
@@ -697,6 +699,8 @@ bootstrap();
 ## Import Zig Functions into JavaScript
 
 TODO
+
+[feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js)
 
 ```javascript
 // Render LVGL in WebAssembly, compiled with Zig Compiler. Based on...
@@ -731,6 +735,8 @@ const wasm = {
 ## Export JavaScript Functions to Zig
 
 TODO
+
+[feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js)
 
 ```javascript
 // Export JavaScript Functions to Zig
@@ -776,6 +782,8 @@ const importObject = {
 ## Main JavaScript Function
 
 TODO
+
+[feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js)
 
 ```javascript
 // Get the HTML Canvas Context and Image Data
