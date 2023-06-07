@@ -774,7 +774,6 @@ function main() {
 
     // Loop to next frame
     window.requestAnimationFrame(loop);
-    // Previously: window.setTimeout(loop, 100);
   };
 
   // Start the Render Loop
@@ -792,9 +791,16 @@ function main() {
 </ul>
 <h1 id="appendix-handle-lvgl-timer"><a href="#appendix-handle-lvgl-timer">9 Appendix: Handle LVGL Timer</a></h1>
 <p><em>What’s this LVGL Timer?</em></p>
-<p>TODO</p>
-<p>To execute LVGL Tasks periodically, here’s the proper way to handle the LVGL Timer in JavaScript…</p>
-<p>Like so: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L123-L154">feature-phone.js</a></p>
+<p>According to the <a href="https://docs.lvgl.io/8.3/porting/project.html#initialization"><strong>LVGL Docs</strong></a>, we need to call <strong>lv_timer_handler</strong> every few milliseconds to handle LVGL Tasks, which will…</p>
+<ul>
+<li>
+<p>Redraw the <strong>LVGL Display</strong></p>
+</li>
+<li>
+<p>Poll for <strong>LVGL Input</strong></p>
+</li>
+</ul>
+<p>To execute LVGL Tasks periodically, we do this in our JavaScript <strong>Render Loop</strong>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L123-L154">feature-phone.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Main Function
 function main() {
   const start_ms = Date.now();
@@ -817,26 +823,27 @@ function main() {
 
     // Loop to next frame
     window.requestAnimationFrame(loop);
-    // Previously: window.setTimeout(loop, 100);
   };
 
   // Start the Render Loop
   loop();
 };
 </code></pre></div>
-<p><code>handleTimer</code> comes from our Zig LVGL App, it executes LVGL Tasks periodically…</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L213-L222">feature-phone.zig</a></p>
+<p><strong>handleTimer</strong> comes from our Zig LVGL Module, it executes LVGL Tasks by calling <strong>lv_timer_handler</strong>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L78-L89">wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Called by JavaScript to execute LVGL Tasks periodically, passing the Elapsed Milliseconds
 export fn handleTimer(ms: i32) i32 {
-    // Set the Elapsed Milliseconds, don&#39;t allow time rewind
-    if (ms &gt; elapsed_ms) {
-        elapsed_ms = @intCast(u32, ms);
-    }
-    // Handle LVGL Tasks
-    _ = c.lv_timer_handler();
-    return 0;
+  // Set the Elapsed Milliseconds, don&#39;t allow time rewind
+  if (ms &gt; elapsed_ms) {
+    elapsed_ms = @intCast(u32, ms);
+  }
+
+  // Handle LVGL Tasks
+  _ = c.lv_timer_handler();
+  return 0;
 }
-</code></pre></div><h1 id="appendix-handle-lvgl-input"><a href="#appendix-handle-lvgl-input">10 Appendix: Handle LVGL Input</a></h1>
+</code></pre></div>
+<p>Which will redraw the LVGL Display and poll for LVGL Input.</p>
+<h1 id="appendix-handle-lvgl-input"><a href="#appendix-handle-lvgl-input">10 Appendix: Handle LVGL Input</a></h1>
 <p>TODO</p>
 <p>When our app starts, we register the LVGL Input Device…</p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L69-L75">feature-phone.zig</a></p>
