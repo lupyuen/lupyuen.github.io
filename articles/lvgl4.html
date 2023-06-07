@@ -506,7 +506,10 @@ pub usingnamespace
 <p><a href="https://lupyuen.github.io/articles/lvgl3#appendix-c-standard-library-is-missing">(Explained here)</a></p>
 </li>
 </ul>
-<p>TODO: JavaScript for WebAssembly</p>
+<p>The LVGL Display and LVGL Input Functions above are called by our JavaScript…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lvgl4#appendix-javascript-for-lvgl"><strong>“JavaScript for LVGL”</strong></a></li>
+</ul>
 <h2 id="lvgl-for-nuttx"><a href="#lvgl-for-nuttx">4.2 LVGL for NuttX</a></h2>
 <p><em>What about PinePhone on Apache NuttX RTOS?</em></p>
 <p>Thankfully most of the above LVGL Functions are already implemented by Apache NuttX RTOS.</p>
@@ -603,7 +606,7 @@ make
 <p><em>What’s inside the JavaScript for our LVGL App in WebAssembly?</em></p>
 <p>TODO</p>
 <h2 id="load-webassembly-module"><a href="#load-webassembly-module">8.1 Load WebAssembly Module</a></h2>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js"><strong>feature-phone.js</strong></a></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js">feature-phone.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Load the WebAssembly Module and start the Main Function
 async function bootstrap() {
 
@@ -625,6 +628,7 @@ async function bootstrap() {
 bootstrap();
 </code></pre></div><h2 id="import-zig-functions-into-javascript"><a href="#import-zig-functions-into-javascript">8.2 Import Zig Functions into JavaScript</a></h2>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js">feature-phone.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Render LVGL in WebAssembly, compiled with Zig Compiler. Based on...
 // https://github.com/daneelsan/minimal-zig-wasm-canvas/blob/master/script.js
 // https://github.com/daneelsan/zig-wasm-logger/blob/master/script.js
@@ -654,6 +658,7 @@ const wasm = {
 };
 </code></pre></div><h2 id="export-javascript-functions-to-zig"><a href="#export-javascript-functions-to-zig">8.3 Export JavaScript Functions to Zig</a></h2>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js">feature-phone.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Export JavaScript Functions to Zig
 const importObject = {
   // JavaScript Functions exported to Zig
@@ -694,6 +699,7 @@ const importObject = {
 };
 </code></pre></div><h2 id="main-javascript-function"><a href="#main-javascript-function">8.4 Main JavaScript Function</a></h2>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js">feature-phone.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Get the HTML Canvas Context and Image Data
 const canvas = window.document.getElementById(&quot;lvgl_canvas&quot;);
 const context = canvas.getContext(&quot;2d&quot;);
