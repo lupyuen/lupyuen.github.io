@@ -75,7 +75,7 @@
 <li><a href="#display-label">1.5 Display Label</a><ul></ul></li></ul></li>
 <li><a href="#run-lvgl-app-in-web-browser">2 Run LVGL App in Web Browser</a><ul></ul></li>
 <li><a href="#handle-lvgl-buttons">3 Handle LVGL Buttons</a><ul></ul></li>
-<li><a href="#feature-phone-ui-for-apache-nuttx-rtos">4 Feature Phone UI for Apache NuttX RTOS</a><ul></ul></li>
+<li><a href="#run-lvgl-app-on-pinephone">4 Run LVGL App on PinePhone</a><ul></ul></li>
 <li><a href="#whats-next">5 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-handle-lvgl-timer">6 Appendix: Handle LVGL Timer</a><ul></ul></li>
 <li><a href="#appendix-handle-lvgl-input">7 Appendix: Handle LVGL Input</a><ul></ul></li>
@@ -353,45 +353,51 @@ const result = await WebAssembly.instantiateStreaming(
 <h1 id="handle-lvgl-buttons"><a href="#handle-lvgl-buttons">3 Handle LVGL Buttons</a></h1>
 <p><em>Earlier we created LVGL Buttons in our Zig App…</em></p>
 <p><em>How will we handle them?</em></p>
-<p>TODO</p>
-<p>Now that we have rendered the Feature Phone UI in Zig and LVGL, let’s wire up the Buttons.</p>
-<p>Clicking any Button will call our Button Event Handler…</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L189-L197">feature-phone.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Create the Digit Buttons
-/// https://docs.lvgl.io/8.3/examples.html#simple-buttons
-fn createDigitButtons(cont: *c.lv_obj_t) !void {
-    var i: usize = 0;
-    while (i &lt; digit_labels.len) : (i += 1) {
-        const text = digit_labels[i].ptr;
-        const btn = c.lv_btn_create(cont);
-        c.lv_obj_set_size(btn, 150, 120);
-        _ = c.lv_obj_add_event_cb(btn, eventHandler, c.LV_EVENT_ALL, @intToPtr(*anyopaque, @ptrToInt(text)));
+<p>We created our LVGL Buttons like this…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// For each Button: `text` is the Button Text
+for (call_labels) |text| {
 
-        const label = c.lv_label_create(btn);
-        c.lv_label_set_text(label, text);
-        c.lv_obj_center(label);
-    }
-}
+  // Create a Button of 250 x 100 pixels
+  const btn = c.lv_btn_create(cont);
+  ...
+
+  // Convert the Button Text from Zig Pointer to C Pointer
+  const data = @intToPtr(
+    *anyopaque,          // Convert to `void *` C Pointer
+    @ptrToInt(text.ptr)  // Convert from Zig Pointer
+  );
+
+  // Set the Event Callback Function and Callback Data for the Button
+  _ = c.lv_obj_add_event_cb(
+    btn,             // LVGL Button
+    eventHandler,    // Callback Function
+    c.LV_EVENT_ALL,  // Handle all events
+    data             // Callback Data (Button Text)
+  );
 </code></pre></div>
-<p>In our Button Event Handler, we identify the Button Clicked…</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L205-L220">feature-phone.zig</a></p>
+<p><a href="https://lupyuen.github.io/articles/lvgl4#call-and-cancel-buttons">(Source)</a></p>
+<p><a href="https://lupyuen.github.io/articles/lvgl4#digit-buttons">(Digit Buttons too)</a></p>
+<p><a href="https://docs.lvgl.io/8.3/overview/event.html#add-events-to-the-object"><strong>lv_obj_add_event_cb</strong></a> tells LVGL to call our Zig Function <strong>eventHandler</strong> when the Button is clicked.</p>
+<p>In our Event Handler, we <strong>identify the Button clicked</strong>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L174-L219">feature-phone.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Handle LVGL Button Event
 /// https://docs.lvgl.io/8.3/examples.html#simple-buttons
 export fn eventHandler(e: ?*c.lv_event_t) void {
-    const code = c.lv_event_get_code(e);
 
-    if (code == c.LV_EVENT_CLICKED) {
-        // Handle Button Clicked
-        debug(&quot;eventHandler: clicked&quot;, .{});
+  // Get the Event Code
+  const code = c.lv_event_get_code(e);
 
-        // Get the length of Display Text
-        const len = std.mem.indexOfSentinel(u8, 0, &amp;display_text);
+  // If Button was clicked...
+  if (code == c.LV_EVENT_CLICKED) {
 
-        // Get the Button Text
-        const data = c.lv_event_get_user_data(e);
-        const text = @ptrCast([*:0]u8, data);
-        const span = std.mem.span(text);
+    // Get the length of Display Text (index of null)
+    const len = std.mem.indexOfSentinel(u8, 0, &amp;display_text);
+
+    // Get the Button Text (from Callback Data)
+    const data = c.lv_event_get_user_data(e);
+    const text = @ptrCast([*:0]u8, data);
+    const span = std.mem.span(text);
 </code></pre></div>
+<p>TODO</p>
 <p>If it’s a Digit Button, we append the Digit to the Phone Number…</p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L238-L242">feature-phone.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>        } else {
@@ -430,7 +436,7 @@ export fn eventHandler(e: ?*c.lv_event_t) void {
 <p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html">(Try the Feature Phone Demo)</a></p>
 <p><a href="https://youtu.be/vBKhk5Q6rnE">(Watch the demo on YouTube)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/665847f513a44648b0d4ae602d6fcf7cc364a342/README.md#output-log">(See the log)</a></p>
-<h1 id="feature-phone-ui-for-apache-nuttx-rtos"><a href="#feature-phone-ui-for-apache-nuttx-rtos">4 Feature Phone UI for Apache NuttX RTOS</a></h1>
+<h1 id="run-lvgl-app-on-pinephone"><a href="#run-lvgl-app-on-pinephone">4 Run LVGL App on PinePhone</a></h1>
 <p>TODO</p>
 <p><em>We created an LVGL Feature Phone UI for WebAssembly. Will it run on PinePhone?</em></p>
 <p>Let’s refactor the LVGL Feature Phone UI, so that the same Zig Source File will run on BOTH WebAssembly and PinePhone! (With Apache NuttX RTOS)</p>
