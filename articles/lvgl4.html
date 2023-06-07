@@ -323,10 +323,25 @@ zig build-lib \
 </li>
 <li>
 <p>Which will be loaded by our <strong>JavaScript</strong>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js"><strong>feature-phone.js</strong></a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Load the WebAssembly Module `feature-phone.wasm`
+// https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/instantiateStreaming
+const result = await WebAssembly.instantiateStreaming(
+  fetch(&quot;feature-phone.wasm&quot;),
+  importObject
+);
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lvgl3#webassembly-with-zig">(Similar to this JavaScript)</a></p>
 </li>
 <li>
 <p>Which will be executed by our <strong>HTML Page</strong>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.html"><strong>feature-phone.html</strong></a></p>
+<div class="example-wrap"><pre class="language-html"><code>&lt;html&gt;
+&lt;body style=&quot;margin: 0; background-color: lightgrey;&quot;&gt;
+  &lt;!-- HTML Canvas for rendering LVGL Display --&gt;
+  &lt;canvas id=&quot;lvgl_canvas&quot; width=&quot;720&quot; height=&quot;1280&quot;&gt;&lt;/canvas&gt;
+&lt;/body&gt;
+&lt;script src=&quot;feature-phone.js&quot;&gt;&lt;/script&gt;
+&lt;/html&gt;
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lvgl3#webassembly-with-zig">(Similar to this HTML)</a></p>
 </li>
 </ul>
