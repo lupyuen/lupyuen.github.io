@@ -323,7 +323,7 @@ zig build-lib \
   display.o \
   lv_font_montserrat_14.o \
   lv_font_montserrat_20.o \
-  lv_label.o
+  lv_label.o \
   ...
 ```
 
@@ -561,45 +561,26 @@ TODO
 
 We compile our Zig LVGL App for NuttX (using the exact same Zig Source File for WebAssembly)...
 
-[build.sh](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L403-L437)
-
 ```bash
-## Compile the Feature Phone Zig LVGL App for Apache NuttX RTOS
-function build_feature_phone_nuttx {
-  ## Compile the Zig LVGL App for PinePhone 
-  ## (armv8-a with cortex-a53)
-  ## TODO: Change ".." to your NuttX Project Directory
-  zig build-obj \
-    --verbose-cimport \
-    -target aarch64-freestanding-none \
-    -mcpu cortex_a53 \
-    \
-    -isystem "../nuttx/include" \
-    -I . \
-    -I "../apps/include" \
-    -I "../apps/graphics/lvgl" \
-    -I "../apps/graphics/lvgl/lvgl/src/core" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/arm2d" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/nxp" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/nxp/pxp" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/nxp/vglite" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/sdl" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/stm32_dma2d" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/sw" \
-    -I "../apps/graphics/lvgl/lvgl/src/draw/swm341_dma2d" \
-    -I "../apps/graphics/lvgl/lvgl/src/font" \
-    -I "../apps/graphics/lvgl/lvgl/src/hal" \
-    -I "../apps/graphics/lvgl/lvgl/src/misc" \
-    -I "../apps/graphics/lvgl/lvgl/src/widgets" \
-    feature-phone.zig
+## Compile the Zig LVGL App for PinePhone 
+## (armv8-a with cortex-a53)
+## TODO: Change ".." to your NuttX Project Directory
+zig build-obj \
+  --verbose-cimport \
+  -target aarch64-freestanding-none \
+  -mcpu cortex_a53 \
+  -isystem "../nuttx/include" \
+  -I "../apps/graphics/lvgl" \
+  feature-phone.zig \
+  ...
 
-  ## Copy the compiled Zig LVGL App to NuttX and overwrite `lv_demo_widgets.*.o`
-  ## TODO: Change ".." to your NuttX Project Directory
-  cp feature-phone.o \
-    ../apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.*.o
-}
+## Copy the compiled Zig LVGL App to NuttX and overwrite `lv_demo_widgets.*.o`
+## TODO: Change ".." to your NuttX Project Directory
+cp feature-phone.o \
+  ../apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.*.o
 ```
+
+[(See the __Complete Command__)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L402-L438)
 
 And our Feature Phone UI runs on PinePhone with NuttX yay! (Pic below)
 
