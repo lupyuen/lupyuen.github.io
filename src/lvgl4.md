@@ -349,7 +349,7 @@ Browse to __feature-phone.html__. And we'll see our Feature Phone UI in the Web 
 
 [(Watch the demo on YouTube)](https://www.youtube.com/shorts/iKa0bcSa22U)
 
-[(See the log)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/1feb919e17018222dd3ebf79b206de97eb4cfbeb/README.md#output-log)
+[(See the JavaScript Log)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/1feb919e17018222dd3ebf79b206de97eb4cfbeb/README.md#output-log)
 
 # Handle LVGL Buttons
 
