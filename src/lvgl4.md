@@ -294,11 +294,56 @@ That's the beauty of testing our LVGL App in a Web Browser!
 
 With WebAssembly, we can tweak the values and test our LVGL App (nearly) instantly. And after testing, we refactor the numbers to make them generic across Screen Sizes.
 
-TODO
+This is how we run our LVGL App in a Web Browser...
 
-When we test our Zig LVGL App in WebAssembly, we see this...
+![Feature Phone UI in the Web Browser](https://lupyuen.github.io/images/lvgl3-wasm5.png)
 
-![Feature Phone UI](https://lupyuen.github.io/images/lvgl3-wasm5.png)
+[_Feature Phone UI in the Web Browser_](https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html)
+
+# Run LVGL App in Web Browser
+
+_How to run our LVGL App in the Web Browser?_
+
+Follow the instructions from the previous article to compile the __LVGL Library to WebAssembly__ with Zig Compiler...
+
+- [__"Compile LVGL Library to WebAssembly"__](https://lupyuen.github.io/articles/lvgl3#compile-entire-lvgl-library-to-webassembly)
+
+Then we compile our __Zig LVGL App__ [__feature-phone.zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig) and link it with the Compiled LVGL Library...
+
+```bash
+## Build the Feature Phone Zig LVGL App for WebAssembly 
+zig build-lib \
+  -target wasm32-freestanding \
+  -dynamic \
+  -rdynamic \
+  -lc \
+  -DFAR= \
+  -DLV_MEM_CUSTOM=1 \
+  feature-phone.zig \
+  display.o \
+  lv_font_montserrat_14.o \
+  lv_font_montserrat_20.o \
+  lv_label.o
+  ...
+```
+
+[(See the Complete Command)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L292-L402)
+
+This produces...
+
+- Our __WebAssembly Module__: [__feature-phone.wasm__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.wasm)
+
+- Which will be loaded by our __JavaScript__: [__feature-phone.js__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js)
+
+  [(Similar to this JavaScript)](https://lupyuen.github.io/articles/lvgl3#webassembly-with-zig)
+
+- Which will be executed by our __HTML Page__: [__feature-phone.html__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.html)
+
+  [(Similar to this HTML)](https://lupyuen.github.io/articles/lvgl3#webassembly-with-zig)
+
+Start a __Local Web Server__. [(Like Web Server for Chrome)](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb)
+
+Browse to __feature-phone.html__. And we'll see our Feature Phone UI in the Web Browser! (Pic above)
 
 [(Try the Feature Phone Demo)](https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html)
 
