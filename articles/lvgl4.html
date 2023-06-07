@@ -397,7 +397,6 @@ export fn eventHandler(e: ?*c.lv_event_t) void {
     const text = @ptrCast([*:0]u8, data);
     const span = std.mem.span(text);
 </code></pre></div>
-<p>TODO</p>
 <p>If it’s a <strong>Digit Button</strong>: We append the Digit to the Phone Number…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Handle the identified button...
   if (std.mem.eql(u8, span, &quot;Call&quot;)) {
