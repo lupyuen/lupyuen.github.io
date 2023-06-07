@@ -316,7 +316,7 @@ zig build-lib \
   display.o \
   lv_font_montserrat_14.o \
   lv_font_montserrat_20.o \
-  lv_label.o
+  lv_label.o \
   ...
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L292-L402">(See the <strong>Complete Command</strong>)</a></p>
@@ -513,43 +513,24 @@ pub usingnamespace
 <h1 id="run-lvgl-app-on-pinephone"><a href="#run-lvgl-app-on-pinephone">5 Run LVGL App on PinePhone</a></h1>
 <p>TODO</p>
 <p>We compile our Zig LVGL App for NuttX (using the exact same Zig Source File for WebAssembly)…</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L403-L437">build.sh</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>## Compile the Feature Phone Zig LVGL App for Apache NuttX RTOS
-function build_feature_phone_nuttx {
-  ## Compile the Zig LVGL App for PinePhone 
-  ## (armv8-a with cortex-a53)
-  ## TODO: Change &quot;..&quot; to your NuttX Project Directory
-  zig build-obj \
-    --verbose-cimport \
-    -target aarch64-freestanding-none \
-    -mcpu cortex_a53 \
-    \
-    -isystem &quot;../nuttx/include&quot; \
-    -I . \
-    -I &quot;../apps/include&quot; \
-    -I &quot;../apps/graphics/lvgl&quot; \
-    -I &quot;../apps/graphics/lvgl/lvgl/src/core&quot; \
-    -I &quot;../apps/graphics/lvgl/lvgl/src/draw&quot; \
-    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/arm2d&quot; \
-    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/nxp&quot; \
-    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/nxp/pxp&quot; \
-    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/nxp/vglite&quot; \
-    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/sdl&quot; \
-    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/stm32_dma2d&quot; \
-    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/sw&quot; \
-    -I &quot;../apps/graphics/lvgl/lvgl/src/draw/swm341_dma2d&quot; \
-    -I &quot;../apps/graphics/lvgl/lvgl/src/font&quot; \
-    -I &quot;../apps/graphics/lvgl/lvgl/src/hal&quot; \
-    -I &quot;../apps/graphics/lvgl/lvgl/src/misc&quot; \
-    -I &quot;../apps/graphics/lvgl/lvgl/src/widgets&quot; \
-    feature-phone.zig
+<div class="example-wrap"><pre class="language-bash"><code>## Compile the Zig LVGL App for PinePhone 
+## (armv8-a with cortex-a53)
+## TODO: Change &quot;..&quot; to your NuttX Project Directory
+zig build-obj \
+  --verbose-cimport \
+  -target aarch64-freestanding-none \
+  -mcpu cortex_a53 \
+  -isystem &quot;../nuttx/include&quot; \
+  -I &quot;../apps/graphics/lvgl&quot; \
+  feature-phone.zig \
+  ...
 
-  ## Copy the compiled Zig LVGL App to NuttX and overwrite `lv_demo_widgets.*.o`
-  ## TODO: Change &quot;..&quot; to your NuttX Project Directory
-  cp feature-phone.o \
-    ../apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.*.o
-}
+## Copy the compiled Zig LVGL App to NuttX and overwrite `lv_demo_widgets.*.o`
+## TODO: Change &quot;..&quot; to your NuttX Project Directory
+cp feature-phone.o \
+  ../apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.*.o
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L402-L438">(See the <strong>Complete Command</strong>)</a></p>
 <p>And our Feature Phone UI runs on PinePhone with NuttX yay! (Pic below)</p>
 <p>The exact same Zig Source File runs on both WebAssembly and PinePhone, no changes needed! This is super helpful for creating LVGL Apps.</p>
 <p><img src="https://lupyuen.github.io/images/lvgl3-pinephone.jpg" alt="Feature Phone UI on PinePhone and Apache NuttX RTOS" /></p>
