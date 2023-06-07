@@ -429,8 +429,6 @@ export fn eventHandler(e: ?*c.lv_event_t) void {
     const span = std.mem.span(text);
 ```
 
-TODO
-
 If it's a __Digit Button__: We append the Digit to the Phone Number...
 
 ```zig
