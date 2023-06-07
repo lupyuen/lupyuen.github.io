@@ -431,50 +431,53 @@ export fn eventHandler(e: ?*c.lv_event_t) void {
 
 TODO
 
-If it's a Digit Button, we append the Digit to the Phone Number...
-
-[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L238-L242)
+If it's a __Digit Button__: We append the Digit to the Phone Number...
 
 ```zig
-        } else {
-            // Else append the digit clicked to the text
-            display_text[len] = text[0];
-            c.lv_label_set_text(display_label.obj, display_text[0.. :0]);
-        }
+  // Handle the identified button...
+  if (std.mem.eql(u8, span, "Call")) {
+    // Omitted: Handle Call Button
+    ...
+  } else if (std.mem.eql(u8, span, "Cancel")) {
+    // Omitted: Handle Cancel Button
+    ...
+  } else {
+    // Handle Digit Button:
+    // Append the digit clicked to the text
+    display_text[len] = text[0];
+    c.lv_label_set_text(
+      display_label.obj,    // LVGL Label
+      display_text[0.. :0]  // Get Null-Terminated String
+    );
+  }
 ```
 
-If it's the Cancel Button, we erase the last digit of the Phone Number...
-
-[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L232-L238)
+If it's the __Cancel Button__: We erase the last digit of the Phone Number...
 
 ```zig
-        } else if (std.mem.eql(u8, span, "Cancel")) {
-            // If Cancel is clicked, erase the last digit
-            if (len >= 2) {
-                display_text[len - 1] = 0;
-                c.lv_label_set_text(display_label.obj, display_text[0.. :0]);
-            }
-        } else {
+  } else if (std.mem.eql(u8, span, "Cancel")) {
+    // Handle Cancel Button:
+    // Erase the last digit
+    if (len >= 2) {
+      display_text[len - 1] = 0;
+      c.lv_label_set_text(
+        display_label.obj,    // LVGL Label
+        display_text[0.. :0]  // Get Null-Terminated String
+      );
+    }
 ```
 
-If it's the Call Button, we call PinePhone's LTE Modem to dial the Phone Number...
-
-[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L222-L231)
+And for the __Call Button__: We dial the Phone Number (simulated for WebAssembly)...
 
 ```zig
-        if (std.mem.eql(u8, span, "Call")) {
-            // If Call is clicked, call the number
-            const call_number = display_text[0..len :0];
-            debug("Call {s}", .{call_number});
-
-            if (builtin.cpu.arch == .wasm32 or builtin.cpu.arch == .wasm64) {
-                debug("Running in WebAssembly, simulate the Phone Call", .{});
-            } else {
-                debug("Running on PinePhone, make an actual Phone Call", {});
-            }
+  if (std.mem.eql(u8, span, "Call")) {
+    // Handle Call Button:
+    // Call the number
+    const call_number = display_text[0..len :0];  // Get Null-Terminated String
+    debug("Call {s}", .{call_number});
 ```
 
-(Simulated for WebAssembly)
+TODO
 
 The buttons work OK on WebAssembly. (Pic below)
 
