@@ -327,7 +327,7 @@ zig build-lib \
   ...
 ```
 
-[(See the Complete Command)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L292-L402)
+[(See the __Complete Command__)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L292-L402)
 
 This produces...
 
@@ -345,11 +345,11 @@ Start a __Local Web Server__. [(Like Web Server for Chrome)](https://chrome.goog
 
 Browse to __feature-phone.html__. And we'll see our Feature Phone UI in the Web Browser! (Pic above)
 
-[(Try the Feature Phone Demo)](https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html)
+[(Try the __Feature Phone Demo__)](https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html)
 
-[(Watch the demo on YouTube)](https://www.youtube.com/shorts/iKa0bcSa22U)
+[(Watch the __Demo on YouTube__)](https://www.youtube.com/shorts/iKa0bcSa22U)
 
-[(See the JavaScript Log)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/1feb919e17018222dd3ebf79b206de97eb4cfbeb/README.md#output-log)
+[(See the __JavaScript Log__)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/1feb919e17018222dd3ebf79b206de97eb4cfbeb/README.md#output-log)
 
 # Handle LVGL Buttons
 
