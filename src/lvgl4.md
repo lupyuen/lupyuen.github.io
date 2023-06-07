@@ -856,7 +856,6 @@ function main() {
 
     // Loop to next frame
     window.requestAnimationFrame(loop);
-    // Previously: window.setTimeout(loop, 100);
   };
 
   // Start the Render Loop
@@ -874,11 +873,13 @@ Next we talk about handling the LVGL Timer and LVGL Input...
 
 _What's this LVGL Timer?_
 
-TODO
+According to the [__LVGL Docs__](https://docs.lvgl.io/8.3/porting/project.html#initialization), we need to call __lv_timer_handler__ every few milliseconds to handle LVGL Tasks, which will...
 
-To execute LVGL Tasks periodically, here's the proper way to handle the LVGL Timer in JavaScript...
+- Redraw the __LVGL Display__
 
-Like so: [feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L123-L154)
+- Poll for __LVGL Input__
+
+To execute LVGL Tasks periodically, we do this in our JavaScript __Render Loop__: [feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L123-L154)
 
 ```javascript
 // Main Function
@@ -903,7 +904,6 @@ function main() {
 
     // Loop to next frame
     window.requestAnimationFrame(loop);
-    // Previously: window.setTimeout(loop, 100);
   };
 
   // Start the Render Loop
@@ -911,22 +911,23 @@ function main() {
 };
 ```
 
-`handleTimer` comes from our Zig LVGL App, it executes LVGL Tasks periodically...
-
-[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L213-L222)
+__handleTimer__ comes from our Zig LVGL Module, it executes LVGL Tasks by calling __lv_timer_handler__: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L78-L89)
 
 ```zig
 /// Called by JavaScript to execute LVGL Tasks periodically, passing the Elapsed Milliseconds
 export fn handleTimer(ms: i32) i32 {
-    // Set the Elapsed Milliseconds, don't allow time rewind
-    if (ms > elapsed_ms) {
-        elapsed_ms = @intCast(u32, ms);
-    }
-    // Handle LVGL Tasks
-    _ = c.lv_timer_handler();
-    return 0;
+  // Set the Elapsed Milliseconds, don't allow time rewind
+  if (ms > elapsed_ms) {
+    elapsed_ms = @intCast(u32, ms);
+  }
+
+  // Handle LVGL Tasks
+  _ = c.lv_timer_handler();
+  return 0;
 }
 ```
+
+Which will redraw the LVGL Display and poll for LVGL Input.
 
 # Appendix: Handle LVGL Input
 
