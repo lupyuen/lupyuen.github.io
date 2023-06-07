@@ -81,7 +81,11 @@
 <li><a href="#run-lvgl-app-on-pinephone">5 Run LVGL App on PinePhone</a><ul></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
 <li><a href="#appendix-html-for-lvgl">7 Appendix: HTML for LVGL</a><ul></ul></li>
-<li><a href="#appendix-javascript-for-lvgl">8 Appendix: JavaScript for LVGL</a><ul></ul></li>
+<li><a href="#appendix-javascript-for-lvgl">8 Appendix: JavaScript for LVGL</a><ul>
+<li><a href="#load-webassembly-module">8.1 Load WebAssembly Module</a><ul></ul></li>
+<li><a href="#import-zig-functions-into-javascript">8.2 Import Zig Functions into JavaScript</a><ul></ul></li>
+<li><a href="#export-javascript-functions-to-zig">8.3 Export JavaScript Functions to Zig</a><ul></ul></li>
+<li><a href="#main-javascript-function">8.4 Main JavaScript Function</a><ul></ul></li></ul></li>
 <li><a href="#appendix-handle-lvgl-timer">9 Appendix: Handle LVGL Timer</a><ul></ul></li>
 <li><a href="#appendix-handle-lvgl-input">10 Appendix: Handle LVGL Input</a><ul></ul></li>
 <li><a href="#appendix-import-lvgl-library">11 Appendix: Import LVGL Library</a><ul></ul></li></ul></nav><p>📝 <em>12 Jun 2023</em></p>
@@ -139,7 +143,7 @@ fn createCallButtons(cont: *c.lv_obj_t) !void {
   }
 }
 </code></pre></div>
-<p>(TODO: We write “<strong>c.something</strong>” to call an LVGL Function imported from C into Zig)</p>
+<p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-import-lvgl-library">(We write “<strong>c.something</strong>” to call an LVGL Function)</a></p>
 <p><a href="https://docs.lvgl.io/8.3/overview/event.html#add-events-to-the-object"><strong>lv_obj_add_event_cb</strong></a> tells LVGL to call our Zig Function <strong>eventHandler</strong> when the Button is clicked. We’ll see the Event Callback Function in a while.</p>
 <p>(“<strong>_ = something</strong>” tells Zig Compiler that we’re not using the Returned Value)</p>
 <p>(We call <a href="https://ziglang.org/documentation/master/#intToPtr"><strong>@intToPtr</strong></a> and <a href="https://ziglang.org/documentation/master/#ptrToInt"><strong>@ptrToInt</strong></a> to pass Zig Pointers as C Pointers)</p>
@@ -335,7 +339,7 @@ const result = await WebAssembly.instantiateStreaming(
   importObject
 );
 </code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/lvgl3#webassembly-with-zig">(Similar to this JavaScript)</a></p>
+<p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-javascript-for-lvgl">(Explained here)</a></p>
 </li>
 <li>
 <p>Which will be executed by our <strong>HTML Page</strong>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.html"><strong>feature-phone.html</strong></a></p>
@@ -347,7 +351,7 @@ const result = await WebAssembly.instantiateStreaming(
 &lt;script src=&quot;feature-phone.js&quot;&gt;&lt;/script&gt;
 &lt;/html&gt;
 </code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/lvgl3#webassembly-with-zig">(Similar to this HTML)</a></p>
+<p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-html-for-lvgl">(Explained here)</a></p>
 </li>
 </ul>
 <p>Start a <strong>Local Web Server</strong>. <a href="https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb">(Like Web Server for Chrome)</a></p>
@@ -478,22 +482,28 @@ pub usingnamespace
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig"><strong>wasm.zig</strong></a> defines the LVGL Functions specific to WebAssembly…</p>
 <ul>
 <li>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L15-L75"><strong>LVGL Display</strong></a> <a href="https://lupyuen.github.io/articles/lvgl3#render-lvgl-display-in-zig">(Explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L15-L75"><strong>LVGL Display</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/lvgl3#render-lvgl-display-in-zig">(Explained here)</a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L75-L130"><strong>LVGL Input</strong></a> TODO: Explained here</p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L75-L130"><strong>LVGL Input</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-input">(Explained here)</a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L130-L152"><strong>LVGL Porting Layer</strong></a> <a href="https://lupyuen.github.io/articles/lvgl3#lvgl-porting-layer-for-webassembly">(Explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L130-L152"><strong>LVGL Porting Layer</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/lvgl3#lvgl-porting-layer-for-webassembly">(Explained here)</a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L152-L177"><strong>LVGL Logger</strong></a> <a href="https://lupyuen.github.io/articles/lvgl3#webassembly-logger-for-lvgl">(Explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L152-L177"><strong>LVGL Logger</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/lvgl3#webassembly-logger-for-lvgl">(Explained here)</a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L177-L221"><strong>Memory Allocator</strong></a> <a href="https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation">(Explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L177-L221"><strong>Memory Allocator</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation">(Explained here)</a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L221-L279"><strong>C Standard Library</strong></a> <a href="https://lupyuen.github.io/articles/lvgl3#appendix-c-standard-library-is-missing">(Explained here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L221-L279"><strong>C Standard Library</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/lvgl3#appendix-c-standard-library-is-missing">(Explained here)</a></p>
 </li>
 </ul>
 <p>TODO: JavaScript for WebAssembly</p>
@@ -570,8 +580,7 @@ make
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl4.md"><strong>lupyuen.github.io/src/lvgl4.md</strong></a></p>
 <h1 id="appendix-html-for-lvgl"><a href="#appendix-html-for-lvgl">7 Appendix: HTML for LVGL</a></h1>
 <p><em>What’s inside the HTML Page for our LVGL App in WebAssembly?</em></p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.html"><strong>feature-phone.html</strong></a></p>
+<p>Our HTML Page defines a <strong>HTML Canvas</strong> for rendering the LVGL Display: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.html">feature-phone.html</a></p>
 <div class="example-wrap"><pre class="language-html"><code>&lt;!doctype html&gt;
 &lt;!-- From https://dev.to/sleibrock/webassembly-with-zig-pt-ii-ei7 --&gt;
 &lt;html&gt;
@@ -588,10 +597,34 @@ make
   &lt;/body&gt;
   &lt;script src=&quot;feature-phone.js&quot;&gt;&lt;/script&gt;
 &lt;/html&gt;
-</code></pre></div><h1 id="appendix-javascript-for-lvgl"><a href="#appendix-javascript-for-lvgl">8 Appendix: JavaScript for LVGL</a></h1>
+</code></pre></div>
+<p>Then our HTML Page loads and executes our JavaScript…</p>
+<h1 id="appendix-javascript-for-lvgl"><a href="#appendix-javascript-for-lvgl">8 Appendix: JavaScript for LVGL</a></h1>
 <p><em>What’s inside the JavaScript for our LVGL App in WebAssembly?</em></p>
 <p>TODO</p>
+<h2 id="load-webassembly-module"><a href="#load-webassembly-module">8.1 Load WebAssembly Module</a></h2>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js"><strong>feature-phone.js</strong></a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Load the WebAssembly Module and start the Main Function
+async function bootstrap() {
+
+  // Load the WebAssembly Module `feature-phone.wasm`
+  // https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/instantiateStreaming
+  const result = await WebAssembly.instantiateStreaming(
+    fetch(&quot;feature-phone.wasm&quot;),
+    importObject
+  );
+
+  // Store references to WebAssembly Functions and Memory exported by Zig
+  wasm.init(result);
+
+  // Start the Main Function
+  main();
+}
+
+// Start the loading of WebAssembly Module
+bootstrap();
+</code></pre></div><h2 id="import-zig-functions-into-javascript"><a href="#import-zig-functions-into-javascript">8.2 Import Zig Functions into JavaScript</a></h2>
+<p>TODO</p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Render LVGL in WebAssembly, compiled with Zig Compiler. Based on...
 // https://github.com/daneelsan/minimal-zig-wasm-canvas/blob/master/script.js
 // https://github.com/daneelsan/zig-wasm-logger/blob/master/script.js
@@ -619,8 +652,9 @@ const wasm = {
     );
   },
 };
-
-// Export JavaScript Functions to Zig
+</code></pre></div><h2 id="export-javascript-functions-to-zig"><a href="#export-javascript-functions-to-zig">8.3 Export JavaScript Functions to Zig</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Export JavaScript Functions to Zig
 const importObject = {
   // JavaScript Functions exported to Zig
   env: {
@@ -658,14 +692,95 @@ const importObject = {
     },
   }
 };
-
-// Get the HTML Canvas Context and Image Data
+</code></pre></div><h2 id="main-javascript-function"><a href="#main-javascript-function">8.4 Main JavaScript Function</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Get the HTML Canvas Context and Image Data
 const canvas = window.document.getElementById(&quot;lvgl_canvas&quot;);
 const context = canvas.getContext(&quot;2d&quot;);
 const imageData = context.createImageData(canvas.width, canvas.height);
 context.clearRect(0, 0, canvas.width, canvas.height);
 
-// Handle Mouse Down on HTML Canvas
+// Main Function
+function main() {
+  console.log(&quot;main: start&quot;);
+  const start_ms = Date.now();
+  const zig = wasm.instance.exports;
+
+  // Init the LVGL Display and Input
+  zig.initDisplay();
+
+  // Render the LVGL Widgets in Zig
+  zig.lv_demo_widgets();
+
+  // Render Loop
+  const loop = function() {
+
+    // Compute the Elapsed Milliseconds
+    const elapsed_ms = Date.now() - start_ms;
+
+    // Handle LVGL Tasks to update the display
+    zig.handleTimer(elapsed_ms);
+
+    // Loop to next frame
+    window.requestAnimationFrame(loop);
+    // Previously: window.setTimeout(loop, 100);
+  };
+
+  // Start the Render Loop
+  loop();
+  console.log(&quot;main: end&quot;);
+};
+</code></pre></div>
+<p>TODO</p>
+<ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-timer"><strong>“Handle LVGL Timer”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-input"><strong>“Handle LVGL Input”</strong></a></p>
+</li>
+</ul>
+<h1 id="appendix-handle-lvgl-timer"><a href="#appendix-handle-lvgl-timer">9 Appendix: Handle LVGL Timer</a></h1>
+<p>TODO</p>
+<p>To execute LVGL Tasks periodically, here’s the proper way to handle the LVGL Timer in JavaScript…</p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L134-L150">feature-phone.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Main Function
+
+</code></pre></div>
+<p><code>handleTimer</code> comes from our Zig LVGL App, it executes LVGL Tasks periodically…</p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L213-L222">feature-phone.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Called by JavaScript to execute LVGL Tasks periodically, passing the Elapsed Milliseconds
+export fn handleTimer(ms: i32) i32 {
+    // Set the Elapsed Milliseconds, don&#39;t allow time rewind
+    if (ms &gt; elapsed_ms) {
+        elapsed_ms = @intCast(u32, ms);
+    }
+    // Handle LVGL Tasks
+    _ = c.lv_timer_handler();
+    return 0;
+}
+</code></pre></div><h1 id="appendix-handle-lvgl-input"><a href="#appendix-handle-lvgl-input">10 Appendix: Handle LVGL Input</a></h1>
+<p>TODO</p>
+<p>When our app starts, we register the LVGL Input Device…</p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L69-L75">feature-phone.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>    // Register the Input Device
+    // https://docs.lvgl.io/8.3/porting/indev.html
+    indev_drv = std.mem.zeroes(c.lv_indev_drv_t);
+    c.lv_indev_drv_init(&amp;indev_drv);
+    indev_drv.type = c.LV_INDEV_TYPE_POINTER;
+    indev_drv.read_cb = readInput;
+    _ = c.register_input(&amp;indev_drv);
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c">(We define <code>register_input</code> in C because <code>lv_indev_t</code> is an Opaque Type in Zig)</a></p>
+<p>This tells LVGL to call <code>readInput</code> periodically to poll for input. (More about this below)</p>
+<p><code>indev_drv</code> is our LVGL Input Device Driver…</p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L287-L288">feature-phone.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// LVGL Input Device Driver (std.mem.zeroes crashes the compiler)
+var indev_drv: c.lv_indev_drv_t = undefined;
+</code></pre></div>
+<p>Now we handle Mouse and Touch Events in our JavaScript…</p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L77-L123">feature-phone.js</a></p>
+<div class="example-wrap"><pre class="language-javascript"><code>// Handle Mouse Down on HTML Canvas
 canvas.addEventListener(&quot;mousedown&quot;, (e) =&gt; {
   // Notify Zig of Mouse Down
   const x = e.offsetX;
@@ -713,237 +828,6 @@ canvas.addEventListener(&quot;touchend&quot;, (e) =&gt; {
   console.log({touchend: {x, y}});
   wasm.instance.exports
     .notifyInput(0, x, y);  // TODO: Handle LVGL not ready
-});
-
-// Main Function
-function main() {
-  console.log(&quot;main: start&quot;);
-  const start_ms = Date.now();
-  const zig = wasm.instance.exports;
-
-  // Init the LVGL Display and Input
-  zig.initDisplay();
-
-  // Render the LVGL Widgets in Zig
-  zig.lv_demo_widgets();
-
-  // Render Loop
-  const loop = function() {
-
-    // Compute the Elapsed Milliseconds
-    const elapsed_ms = Date.now() - start_ms;
-
-    // Handle LVGL Tasks to update the display
-    zig.handleTimer(elapsed_ms);
-
-    // Loop to next frame
-    window.requestAnimationFrame(loop);
-    // Previously: window.setTimeout(loop, 100);
-  };
-
-  // Start the Render Loop
-  loop();
-  console.log(&quot;main: end&quot;);
-};
-
-// Load the WebAssembly Module and start the Main Function
-async function bootstrap() {
-
-  // Load the WebAssembly Module `feature-phone.wasm`
-  // https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/instantiateStreaming
-  const result = await WebAssembly.instantiateStreaming(
-    fetch(&quot;feature-phone.wasm&quot;),
-    importObject
-  );
-
-  // Store references to WebAssembly Functions and Memory exported by Zig
-  wasm.init(result);
-
-  // Start the Main Function
-  main();
-}
-
-// Start the loading of WebAssembly Module
-bootstrap();
-</code></pre></div>
-<p>Let’s refactor the LVGL Feature Phone UI, so that the same Zig Source File will run on BOTH WebAssembly and PinePhone! (With Apache NuttX RTOS)</p>
-<p>We moved all the WebAssembly-Specific Functions to… </p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L19-L288">wasm.zig</a></p>
-<p>Our Zig LVGL App imports <code>wasm.zig</code> only when compiling for WebAssembly…</p>
-<p>In our JavaScript, we call <code>initDisplay</code> (from <a href="wasm.zig"><code>wasm.zig</code></a>) to initialise the LVGL Display and LVGL Input for WebAssembly…</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L124-L153">feature-phone.js</a></p>
-<div class="example-wrap"><pre class="language-javascript"><code>// Main Function
-function main() {
-    console.log(&quot;main: start&quot;);
-    const start_ms = Date.now();
-    const zig = wasm.instance.exports;
-
-    // Init the LVGL Display and Input
-    zig.initDisplay();
-
-    // Render the LVGL Widgets in Zig
-    zig.lv_demo_widgets();
-
-    // Render Loop
-    const loop = function() {
-
-        // Compute the Elapsed Milliseconds
-        const elapsed_ms = Date.now() - start_ms;
-
-        // Handle LVGL Tasks to update the display
-        zig.handleTimer(elapsed_ms);
-
-        // Loop to next frame
-        window.requestAnimationFrame(loop);
-        // Previously: window.setTimeout(loop, 100);
-    };
-
-    // Start the Render Loop
-    loop();
-    console.log(&quot;main: end&quot;);
-};
-</code></pre></div><h1 id="appendix-handle-lvgl-timer"><a href="#appendix-handle-lvgl-timer">9 Appendix: Handle LVGL Timer</a></h1>
-<p>TODO</p>
-<p>To execute LVGL Tasks periodically, here’s the proper way to handle the LVGL Timer in JavaScript…</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L134-L150">feature-phone.js</a></p>
-<div class="example-wrap"><pre class="language-javascript"><code>// Main Function
-function main() {
-    console.log(&quot;main: start&quot;);
-    const start_ms = Date.now();
-
-    // Render the LVGL Widgets in Zig
-    wasm.instance.exports
-        .lv_demo_widgets();
-
-    // Render Loop
-    const loop = function() {
-
-        // Compute the Elapsed Milliseconds
-        const elapsed_ms = Date.now() - start_ms;
-
-        // Handle LVGL Tasks to update the display
-        wasm.instance.exports
-            .handleTimer(elapsed_ms);
-
-        // Loop to next frame
-        window.requestAnimationFrame(loop);
-        // Previously: window.setTimeout(loop, 100);
-    };
-
-    // Start the Render Loop
-    loop();
-    console.log(&quot;main: end&quot;);
-};
-</code></pre></div>
-<p><code>handleTimer</code> comes from our Zig LVGL App, it executes LVGL Tasks periodically…</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L213-L222">feature-phone.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Called by JavaScript to execute LVGL Tasks periodically, passing the Elapsed Milliseconds
-export fn handleTimer(ms: i32) i32 {
-    // Set the Elapsed Milliseconds, don&#39;t allow time rewind
-    if (ms &gt; elapsed_ms) {
-        elapsed_ms = @intCast(u32, ms);
-    }
-    // Handle LVGL Tasks
-    _ = c.lv_timer_handler();
-    return 0;
-}
-</code></pre></div><h1 id="appendix-handle-lvgl-input"><a href="#appendix-handle-lvgl-input">10 Appendix: Handle LVGL Input</a></h1>
-<p>TODO</p>
-<p>Let’s handle Mouse and Touch Input in LVGL!</p>
-<p>We create an LVGL Button in our Zig LVGL App…</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L185-L196">feature-phone.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Create an LVGL Button
-/// https://docs.lvgl.io/8.3/examples.html#simple-buttons
-fn createButton() void {
-    const btn = c.lv_btn_create(c.lv_scr_act());
-    _ = c.lv_obj_add_event_cb(btn, eventHandler, c.LV_EVENT_ALL, null);
-    c.lv_obj_align(btn, c.LV_ALIGN_CENTER, 0, 40);
-    c.lv_obj_add_flag(btn, c.LV_OBJ_FLAG_CHECKABLE);
-
-    const label = c.lv_label_create(btn);
-    c.lv_label_set_text(label, &quot;Button&quot;);
-    c.lv_obj_center(label);
-}
-</code></pre></div>
-<p><code>eventHandler</code> is our Zig Handler for Button Events…</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L198-L208">feature-phone.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Handle LVGL Button Event
-/// https://docs.lvgl.io/8.3/examples.html#simple-buttons
-export fn eventHandler(e: ?*c.lv_event_t) void {
-    const code = c.lv_event_get_code(e);
-    // debug(&quot;eventHandler: code={}&quot;, .{code});
-    if (code == c.LV_EVENT_CLICKED) {
-        debug(&quot;eventHandler: clicked&quot;, .{});
-    } else if (code == c.LV_EVENT_VALUE_CHANGED) {
-        debug(&quot;eventHandler: toggled&quot;, .{});
-    }
-}
-</code></pre></div>
-<p>When our app starts, we register the LVGL Input Device…</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L69-L75">feature-phone.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>    // Register the Input Device
-    // https://docs.lvgl.io/8.3/porting/indev.html
-    indev_drv = std.mem.zeroes(c.lv_indev_drv_t);
-    c.lv_indev_drv_init(&amp;indev_drv);
-    indev_drv.type = c.LV_INDEV_TYPE_POINTER;
-    indev_drv.read_cb = readInput;
-    _ = c.register_input(&amp;indev_drv);
-</code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c">(We define <code>register_input</code> in C because <code>lv_indev_t</code> is an Opaque Type in Zig)</a></p>
-<p>This tells LVGL to call <code>readInput</code> periodically to poll for input. (More about this below)</p>
-<p><code>indev_drv</code> is our LVGL Input Device Driver…</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L287-L288">feature-phone.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// LVGL Input Device Driver (std.mem.zeroes crashes the compiler)
-var indev_drv: c.lv_indev_drv_t = undefined;
-</code></pre></div>
-<p>Now we handle Mouse and Touch Events in our JavaScript…</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L77-L123">feature-phone.js</a></p>
-<div class="example-wrap"><pre class="language-javascript"><code>// Handle Mouse Down on HTML Canvas
-canvas.addEventListener(&quot;mousedown&quot;, (e) =&gt; {
-    // Notify Zig of Mouse Down
-    const x = e.offsetX;
-    const y = e.offsetY;
-    console.log({mousedown: {x, y}});
-    wasm.instance.exports
-        .notifyInput(1, x, y);
-});
-
-// Handle Mouse Up on HTML Canvas
-canvas.addEventListener(&quot;mouseup&quot;, (e) =&gt; {
-    // Notify Zig of Mouse Up
-    x = e.offsetX;
-    y = e.offsetY;
-    console.log({mouseup: {x, y}});
-    wasm.instance.exports
-        .notifyInput(0, x, y);
-});
-
-// Handle Touch Start on HTML Canvas
-canvas.addEventListener(&quot;touchstart&quot;, (e) =&gt; {
-    // Notify Zig of Touch Start
-    e.preventDefault();
-    const touches = e.changedTouches;
-    if (touches.length == 0) { return; }
-
-    const x = touches[0].pageX;
-    const y = touches[0].pageY;
-    console.log({touchstart: {x, y}});
-    wasm.instance.exports
-        .notifyInput(1, x, y);
-});
-
-// Handle Touch End on HTML Canvas
-canvas.addEventListener(&quot;touchend&quot;, (e) =&gt; {
-    // Notify Zig of Touch End
-    e.preventDefault();
-    const touches = e.changedTouches;
-    if (touches.length == 0) { return; }
-
-    const x = touches[0].pageX;
-    const y = touches[0].pageY;
-    console.log({touchend: {x, y}});
-    wasm.instance.exports
-        .notifyInput(0, x, y);
 });
 </code></pre></div>
 <p>Which calls <code>notifyInput</code> in our Zig App to set the Input State and Input Coordinates…</p>
