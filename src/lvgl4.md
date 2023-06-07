@@ -288,6 +288,12 @@ Yep this code calls our [__Zig Wrapper for LVGL__](https://github.com/lupyuen/pi
 
 Someday we might create a Zig Wrapper for the rest of the code.
 
+_So many hard-coded coordinates in our code..._
+
+That's the beauty of testing our LVGL App in a Web Browser!
+
+With WebAssembly, we can tweak the values and test our LVGL App (nearly) instantly. And after testing, we refactor the numbers to make them generic across Screen Sizes.
+
 TODO
 
 When we test our Zig LVGL App in WebAssembly, we see this...
