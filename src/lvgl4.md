@@ -562,9 +562,9 @@ TODO
 We compile our Zig LVGL App for NuttX (using the exact same Zig Source File for WebAssembly)...
 
 ```bash
+## TODO: Change ".." to your NuttX Project Directory
 ## Compile the Zig LVGL App for PinePhone 
 ## (armv8-a with cortex-a53)
-## TODO: Change ".." to your NuttX Project Directory
 zig build-obj \
   --verbose-cimport \
   -target aarch64-freestanding-none \
@@ -575,9 +575,12 @@ zig build-obj \
   ...
 
 ## Copy the compiled Zig LVGL App to NuttX and overwrite `lv_demo_widgets.*.o`
-## TODO: Change ".." to your NuttX Project Directory
 cp feature-phone.o \
   ../apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.*.o
+
+## Link the compiled Zig LVGL App with NuttX
+cd ../nuttx
+make
 ```
 
 [(See the __Complete Command__)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L402-L438)
@@ -620,9 +623,21 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/lvgl4.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl4.md)
 
-# Appendix: JavaScript for LVGL
+# Appendix: HTML for LVGL
+
+_What's inside the HTML Page for our LVGL App in WebAssembly?_
 
 TODO
+
+[__feature-phone.html__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.html)
+
+# Appendix: JavaScript for LVGL
+
+_What's inside the JavaScript for our LVGL App in WebAssembly?_
+
+TODO
+
+[__feature-phone.js__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js)
 
 Let's refactor the LVGL Feature Phone UI, so that the same Zig Source File will run on BOTH WebAssembly and PinePhone! (With Apache NuttX RTOS)
 
