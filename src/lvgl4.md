@@ -335,9 +335,28 @@ This produces...
 
 - Which will be loaded by our __JavaScript__: [__feature-phone.js__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js)
 
+  ```javascript
+  // Load the WebAssembly Module `feature-phone.wasm`
+  // https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/instantiateStreaming
+  const result = await WebAssembly.instantiateStreaming(
+    fetch("feature-phone.wasm"),
+    importObject
+  );
+  ```
+
   [(Similar to this JavaScript)](https://lupyuen.github.io/articles/lvgl3#webassembly-with-zig)
 
 - Which will be executed by our __HTML Page__: [__feature-phone.html__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.html)
+
+  ```html
+  <html>
+  <body style="margin: 0; background-color: lightgrey;">
+    <!-- HTML Canvas for rendering LVGL Display -->
+    <canvas id="lvgl_canvas" width="720" height="1280"></canvas>
+  </body>
+  <script src="feature-phone.js"></script>
+  </html>
+  ```
 
   [(Similar to this HTML)](https://lupyuen.github.io/articles/lvgl3#webassembly-with-zig)
 
