@@ -836,7 +836,10 @@ context.clearRect(0, 0, canvas.width, canvas.height);
 
 // Main Function
 function main() {
+  // Remember the Start Time
   const start_ms = Date.now();
+
+  // Fetch the imported Zig Functions
   const zig = wasm.instance.exports;
 
   // Init the LVGL Display and Input
@@ -884,7 +887,10 @@ To execute LVGL Tasks periodically, we do this in our JavaScript __Render Loop__
 ```javascript
 // Main Function
 function main() {
+  // Remember the Start Time
   const start_ms = Date.now();
+
+  // Fetch the imported Zig Functions
   const zig = wasm.instance.exports;
 
   // Init the LVGL Display and Input
@@ -929,22 +935,86 @@ export fn handleTimer(ms: i32) i32 {
 
 Which will redraw the LVGL Display and poll for LVGL Input.
 
-# Appendix: Handle LVGL Input
+_What's elapsed_ms?_
 
-TODO
-
-When our app starts, we register the LVGL Input Device...
-
-[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L69-L75)
+__elapsed_ms__ remembers the Elapsed Milliseconds since startup: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L133-L142)
 
 ```zig
-    // Register the Input Device
-    // https://docs.lvgl.io/8.3/porting/indev.html
-    indev_drv = std.mem.zeroes(c.lv_indev_drv_t);
-    c.lv_indev_drv_init(&indev_drv);
-    indev_drv.type = c.LV_INDEV_TYPE_POINTER;
-    indev_drv.read_cb = readInput;
-    _ = c.register_input(&indev_drv);
+/// Return the number of elapsed milliseconds
+export fn millis() u32 {
+  elapsed_ms += 1;
+  return elapsed_ms;
+}
+
+/// Number of elapsed milliseconds
+var elapsed_ms: u32 = 0;
+```
+
+The Elapsed Milliseconds is returned by our Zig Function __millis__, which is called by LVGL periodically.
+
+[(More about this)](https://lupyuen.github.io/articles/lvgl3#lvgl-porting-layer-for-webassembly)
+
+# Appendix: Handle LVGL Input
+
+_How do we handle LVGL Mouse Input and Touch Input?_
+
+In our JavaScript Main Function, we call Zig Function __initDisplay__ at startup: [feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L123-L154)
+
+```javascript
+// Main Function
+function main() {
+  // Fetch the imported Zig Functions
+  const zig = wasm.instance.exports;
+
+  // Init the LVGL Display and Input
+  zig.initDisplay();
+
+  // Render the LVGL Widgets in Zig
+  zig.lv_demo_widgets();
+```
+
+TODO: __initDisplay__ (in Zig)
+
+[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L18-L58)
+
+```zig
+/// Init the LVGL Display and Input
+pub export fn initDisplay() void {
+
+  // Create the Memory Allocator for malloc
+  memory_allocator = std.heap.FixedBufferAllocator.init(&memory_buffer);
+
+  // Set the Custom Logger for LVGL
+  c.lv_log_register_print_cb(custom_logger);
+
+  // Init LVGL
+  c.lv_init();
+
+  // Fetch pointers to Display Driver and Display Buffer
+  const disp_drv = c.get_disp_drv();
+  const disp_buf = c.get_disp_buf();
+
+  // Init Display Buffer and Display Driver as pointers
+  c.init_disp_buf(disp_buf);
+  c.init_disp_drv(disp_drv, // Display Driver
+      disp_buf, // Display Buffer
+      flushDisplay, // Callback Function to Flush Display
+      720, // Horizontal Resolution
+      1280 // Vertical Resolution
+  );
+
+  // Register the Display Driver
+  const disp = c.lv_disp_drv_register(disp_drv);
+  _ = disp;
+
+  // Register the Input Device
+  // https://docs.lvgl.io/8.3/porting/indev.html
+  indev_drv = std.mem.zeroes(c.lv_indev_drv_t);
+  c.lv_indev_drv_init(&indev_drv);
+  indev_drv.type = c.LV_INDEV_TYPE_POINTER;
+  indev_drv.read_cb = readInput;
+  _ = c.register_input(&indev_drv);
+}
 ```
 
 [(We define `register_input` in C because `lv_indev_t` is an Opaque Type in Zig)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c)
