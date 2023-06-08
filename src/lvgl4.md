@@ -652,7 +652,7 @@ _First in the Web Browser, then on the Actual Device!_
 
 Yep potentially! But first we need to tidy up...
 
-- Try __Live Reloading__: Whenever we save our Zig LVGL App, it __auto-recompiles__ and __auto-reloads__ the WebAssembly HTML
+- __Live Reloading__: Whenever we save our Zig LVGL App, it __auto-recompiles__ and __auto-reloads__ the WebAssembly HTML
 
 - Compile the __entire LVGL Library__
 
