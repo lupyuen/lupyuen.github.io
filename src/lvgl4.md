@@ -662,6 +662,10 @@ Yep potentially! But first we need to tidy up...
 
   [(See this)](https://github.com/lupyuen/pinephone-lvgl-zig/releases/tag/nuttx-build-files)
 
+- Complete our implementation of __Memory Allocator__
+
+  [(See this)](https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation)
+
 # What's Next
 
 TODO
