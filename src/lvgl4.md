@@ -1131,10 +1131,15 @@ Zig Function periodically to read the Input State and Input Coordinates...
 
 ```zig
 /// LVGL Callback Function to read Input Device
-export fn readInput(drv: [*c]c.lv_indev_drv_t, data: [*c]c.lv_indev_data_t) void {
+export fn readInput(
+  drv:  [*c]c.lv_indev_drv_t,  // LVGL Input Device Driver
+  data: [*c]c.lv_indev_data_t  // LVGL Input Data to be returned
+) void {
   _ = drv;
   if (input_updated) {
     input_updated = false;
+
+    // Set the LVGL Input Data to be returned
     c.set_input_data(
       data,         // LVGL Input Data
       input_state,  // Input State
