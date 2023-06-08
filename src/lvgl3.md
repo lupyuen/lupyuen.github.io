@@ -1025,7 +1025,7 @@ And the LVGL Display renders OK in our HTML Canvas yay! (Pic above)
 
 Up Next: [__Feature Phone UI__](https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone) for PinePhone! To make our Feature Phone clickable, we'll pass __Mouse Events__ from JavaScript to LVGL...
 
-- [__"Handle LVGL Input"__](https://github.com/lupyuen/pinephone-lvgl-zig#handle-lvgl-input)
+-   [__"NuttX RTOS for PinePhone: Feature Phone UI in LVGL, Zig and WebAssembly"__](https://lupyuen.github.io/articles/lvgl4)
 
 We'll experiment with __Live Reloading__: Whenever we save our Zig LVGL App, it __auto-recompiles__ and __auto-reloads__ the WebAssembly HTML.
 
