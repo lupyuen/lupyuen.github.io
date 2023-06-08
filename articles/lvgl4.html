@@ -784,8 +784,11 @@ function main() {
   loop();
 };
 </code></pre></div>
-<p>Next we talk about handling the LVGL Timer and LVGL Input…</p>
+<p>Next we talk about LVGL Initialisation, LVGL Timer and LVGL Input…</p>
 <ul>
+<li>
+<p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-initialise-lvgl"><strong>“Initialise LVGL”</strong></a></p>
+</li>
 <li>
 <p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-timer"><strong>“Handle LVGL Timer”</strong></a></p>
 </li>
@@ -794,7 +797,7 @@ function main() {
 </li>
 </ul>
 <h1 id="appendix-initialise-lvgl"><a href="#appendix-initialise-lvgl">9 Appendix: Initialise LVGL</a></h1>
-<p>TODO</p>
+<p><em>How do we initialise LVGL Library in our JavaScript?</em></p>
 <p>In our JavaScript Main Function, we call Zig Function <strong>initDisplay</strong> at startup: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L123-L154">feature-phone.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Main Function
 function main() {
@@ -807,18 +810,43 @@ function main() {
   // Render the LVGL Widgets in Zig
   zig.lv_demo_widgets();
 </code></pre></div>
-<p>TODO: <strong>initDisplay</strong> (in Zig)</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L18-L58">feature-phone.zig</a></p>
+<p><strong>initDisplay</strong> (in Zig) will…</p>
+<ol>
+<li>
+<p>Create the <strong>Memory Allocator</strong> (for <strong>malloc</strong>)</p>
+<p><a href="https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation">(Explained here)</a></p>
+</li>
+<li>
+<p>Set the <strong>LVGL Custom Logger</strong> (with <strong>lv_log_register_print_cb</strong>)</p>
+<p><a href="https://lupyuen.github.io/articles/lvgl3#webassembly-logger-for-lvgl">(Explained here)</a></p>
+</li>
+<li>
+<p>Initialise the <strong>LVGL Library</strong> (with <strong>lv_init</strong>)</p>
+<p><a href="https://lupyuen.github.io/articles/lvgl3#initialise-lvgl-display">(Explained here)</a></p>
+</li>
+<li>
+<p>Initialise the <strong>LVGL Display</strong></p>
+<p><a href="https://lupyuen.github.io/articles/lvgl3#initialise-lvgl-display">(Explained here)</a></p>
+</li>
+<li>
+<p>Initialise the <strong>LVGL Input</strong></p>
+<p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-input">(Explained here)</a></p>
+</li>
+</ol>
+<p>Like so: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L18-L58">feature-phone.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Init the LVGL Display and Input
 pub export fn initDisplay() void {
 
   // Create the Memory Allocator for malloc
+  // https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation
   memory_allocator = std.heap.FixedBufferAllocator.init(&amp;memory_buffer);
 
   // Set the Custom Logger for LVGL
+  // https://lupyuen.github.io/articles/lvgl3#webassembly-logger-for-lvgl
   c.lv_log_register_print_cb(custom_logger);
 
   // Init LVGL
+  // https://lupyuen.github.io/articles/lvgl3#initialise-lvgl-display
   c.lv_init();
 
   // Fetch pointers to Display Driver and Display Buffer
@@ -826,6 +854,7 @@ pub export fn initDisplay() void {
   const disp_buf = c.get_disp_buf();
 
   // Init Display Buffer and Display Driver as pointers
+  // https://lupyuen.github.io/articles/lvgl3#initialise-lvgl-display
   c.init_disp_buf(disp_buf);
   c.init_disp_drv(
     disp_drv, // Display Driver
@@ -836,11 +865,12 @@ pub export fn initDisplay() void {
   );
 
   // Register the Display Driver
+  // https://lupyuen.github.io/articles/lvgl3#initialise-lvgl-display
   const disp = c.lv_disp_drv_register(disp_drv);
   _ = disp;
 
   // Register the Input Device
-  // https://docs.lvgl.io/8.3/porting/indev.html
+  // https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-input
   indev_drv = std.mem.zeroes(c.lv_indev_drv_t);
   c.lv_indev_drv_init(&amp;indev_drv);
   indev_drv.type = c.LV_INDEV_TYPE_POINTER;
@@ -848,7 +878,7 @@ pub export fn initDisplay() void {
   _ = c.register_input(&amp;indev_drv);
 }
 </code></pre></div><h1 id="appendix-handle-lvgl-timer"><a href="#appendix-handle-lvgl-timer">10 Appendix: Handle LVGL Timer</a></h1>
-<p><em>What’s this LVGL Timer?</em></p>
+<p><em>What’s this LVGL Timer that’s called by our JavaScript?</em></p>
 <p>According to the <a href="https://docs.lvgl.io/8.3/porting/project.html#initialization"><strong>LVGL Docs</strong></a>, we need to call <strong>lv_timer_handler</strong> every few milliseconds to handle LVGL Tasks, which will…</p>
 <ul>
 <li>
@@ -890,7 +920,7 @@ function main() {
   loop();
 };
 </code></pre></div>
-<p><strong>handleTimer</strong> comes from our Zig LVGL Module, it executes LVGL Tasks by calling <strong>lv_timer_handler</strong>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L78-L89">wasm.zig</a></p>
+<p><strong>handleTimer</strong> (in Zig) comes from our WebAssembly-Specific Module, it executes LVGL Tasks by calling <strong>lv_timer_handler</strong>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L78-L89">wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Called by JavaScript to execute LVGL Tasks periodically, passing the Elapsed Milliseconds
 export fn handleTimer(ms: i32) i32 {
   // Set the Elapsed Milliseconds, don&#39;t allow time rewind
