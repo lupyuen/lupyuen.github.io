@@ -866,7 +866,9 @@ function main() {
 };
 ```
 
-Next we talk about handling the LVGL Timer and LVGL Input...
+Next we talk about LVGL Initialisation, LVGL Timer and LVGL Input...
+
+- [__"Initialise LVGL"__](https://lupyuen.github.io/articles/lvgl4#appendix-initialise-lvgl)
 
 - [__"Handle LVGL Timer"__](https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-timer)
 
@@ -874,7 +876,7 @@ Next we talk about handling the LVGL Timer and LVGL Input...
 
 # Appendix: Initialise LVGL
 
-TODO
+_How do we initialise LVGL Library in our JavaScript?_
 
 In our JavaScript Main Function, we call Zig Function __initDisplay__ at startup: [feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L123-L154)
 
@@ -891,21 +893,44 @@ function main() {
   zig.lv_demo_widgets();
 ```
 
-TODO: __initDisplay__ (in Zig)
+__initDisplay__ (in Zig) will...
 
-[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L18-L58)
+1.  Create the __Memory Allocator__ (for __malloc__)
+
+    [(Explained here)](https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation)
+
+1.  Set the __LVGL Custom Logger__ (with __lv_log_register_print_cb__)
+
+    [(Explained here)](https://lupyuen.github.io/articles/lvgl3#webassembly-logger-for-lvgl)
+
+1.  Initialise the __LVGL Library__ (with __lv_init__)
+
+    [(Explained here)](https://lupyuen.github.io/articles/lvgl3#initialise-lvgl-display)
+
+1.  Initialise the __LVGL Display__
+
+    [(Explained here)](https://lupyuen.github.io/articles/lvgl3#initialise-lvgl-display)
+
+1.  Initialise the __LVGL Input__
+
+    [(Explained here)](https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-input)
+
+Like so: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L18-L58)
 
 ```zig
 /// Init the LVGL Display and Input
 pub export fn initDisplay() void {
 
   // Create the Memory Allocator for malloc
+  // https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation
   memory_allocator = std.heap.FixedBufferAllocator.init(&memory_buffer);
 
   // Set the Custom Logger for LVGL
+  // https://lupyuen.github.io/articles/lvgl3#webassembly-logger-for-lvgl
   c.lv_log_register_print_cb(custom_logger);
 
   // Init LVGL
+  // https://lupyuen.github.io/articles/lvgl3#initialise-lvgl-display
   c.lv_init();
 
   // Fetch pointers to Display Driver and Display Buffer
@@ -913,6 +938,7 @@ pub export fn initDisplay() void {
   const disp_buf = c.get_disp_buf();
 
   // Init Display Buffer and Display Driver as pointers
+  // https://lupyuen.github.io/articles/lvgl3#initialise-lvgl-display
   c.init_disp_buf(disp_buf);
   c.init_disp_drv(
     disp_drv, // Display Driver
@@ -923,11 +949,12 @@ pub export fn initDisplay() void {
   );
 
   // Register the Display Driver
+  // https://lupyuen.github.io/articles/lvgl3#initialise-lvgl-display
   const disp = c.lv_disp_drv_register(disp_drv);
   _ = disp;
 
   // Register the Input Device
-  // https://docs.lvgl.io/8.3/porting/indev.html
+  // https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-input
   indev_drv = std.mem.zeroes(c.lv_indev_drv_t);
   c.lv_indev_drv_init(&indev_drv);
   indev_drv.type = c.LV_INDEV_TYPE_POINTER;
@@ -938,7 +965,7 @@ pub export fn initDisplay() void {
 
 # Appendix: Handle LVGL Timer
 
-_What's this LVGL Timer?_
+_What's this LVGL Timer that's called by our JavaScript?_
 
 According to the [__LVGL Docs__](https://docs.lvgl.io/8.3/porting/project.html#initialization), we need to call __lv_timer_handler__ every few milliseconds to handle LVGL Tasks, which will...
 
@@ -981,7 +1008,7 @@ function main() {
 };
 ```
 
-__handleTimer__ comes from our Zig LVGL Module, it executes LVGL Tasks by calling __lv_timer_handler__: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L78-L89)
+__handleTimer__ (in Zig) comes from our WebAssembly-Specific Module, it executes LVGL Tasks by calling __lv_timer_handler__: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L78-L89)
 
 ```zig
 /// Called by JavaScript to execute LVGL Tasks periodically, passing the Elapsed Milliseconds
