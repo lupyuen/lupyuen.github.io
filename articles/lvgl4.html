@@ -859,11 +859,11 @@ pub export fn initDisplay() void {
   // https://lupyuen.github.io/articles/lvgl3#initialise-lvgl-display
   c.init_disp_buf(disp_buf);
   c.init_disp_drv(
-    disp_drv, // Display Driver
-    disp_buf, // Display Buffer
+    disp_drv,     // Display Driver
+    disp_buf,     // Display Buffer
     flushDisplay, // Callback Function to Flush Display
-    720, // Horizontal Resolution
-    1280 // Vertical Resolution
+    720,          // Horizontal Resolution
+    1280          // Vertical Resolution
   );
 
   // Register the Display Driver
@@ -875,7 +875,7 @@ pub export fn initDisplay() void {
   // https://lupyuen.github.io/articles/lvgl4#appendix-initialise-lvgl-input
   indev_drv = std.mem.zeroes(c.lv_indev_drv_t);
   c.lv_indev_drv_init(&amp;indev_drv);
-  indev_drv.type = c.LV_INDEV_TYPE_POINTER;
+  indev_drv.type    = c.LV_INDEV_TYPE_POINTER;
   indev_drv.read_cb = readInput;
   _ = c.register_input(&amp;indev_drv);
 }
@@ -899,16 +899,16 @@ pub export fn initDisplay() void {
   c.lv_indev_drv_init(&amp;indev_drv);
 
   // Set the Input Driver Type and Callback Function
-  indev_drv.type = c.LV_INDEV_TYPE_POINTER;
+  indev_drv.type    = c.LV_INDEV_TYPE_POINTER;
   indev_drv.read_cb = readInput;
 
   // Register the Input Device
   _ = c.register_input(&amp;indev_drv);
 }
 </code></pre></div>
+<p>This tells LVGL to call our Zig Function <strong>readInput</strong> periodically to poll for input. (More about this below)</p>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c">(We define <code>register_input</code> in C because <code>lv_indev_t</code> is an Opaque Type in Zig)</a></p>
-<p>This tells LVGL to call <code>readInput</code> periodically to poll for input. (More about this below)</p>
 <p><code>indev_drv</code> is our LVGL Input Device Driver…</p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L287-L288">feature-phone.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code></code></pre></div><h1 id="appendix-handle-lvgl-timer"><a href="#appendix-handle-lvgl-timer">11 Appendix: Handle LVGL Timer</a></h1>
