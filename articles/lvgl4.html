@@ -110,9 +110,25 @@
 <p>This article describes how we’re creating the Feature Phone UI as an LVGL App.</p>
 <p><em>We could’ve done all this in plain old C and on-device testing right?</em></p>
 <p>Yeah but it’s 2023… Maybe there’s an easier way to build and test LVGL Apps? Let’s experiment and find out!</p>
+<p>TODO: Pic</p>
 <h1 id="feature-phone-ui"><a href="#feature-phone-ui">1 Feature Phone UI</a></h1>
-<p>TODO</p>
-<p>Let’s create a Feature Phone UI for PinePhone on Apache NuttX RTOS!</p>
+<p><em>Imagine a Feature Phone from 25 years ago…</em></p>
+<p>The pic above shows the <a href="https://en.wikipedia.org/wiki/Feature_phone"><strong>Feature Phone UI</strong></a> that we’ll create with LVGL…</p>
+<ul>
+<li>
+<p><strong>Display Containter</strong></p>
+<p>(For the Phone Number Display)</p>
+</li>
+<li>
+<p><strong>Call / Cancel Container</strong></p>
+<p>(For the Call and Cancel Buttons)</p>
+</li>
+<li>
+<p><strong>Digit Container</strong></p>
+<p>(For the Digit Buttons)</p>
+</li>
+</ul>
+<p>Let’s create the Buttons…</p>
 <h2 id="call-and-cancel-buttons"><a href="#call-and-cancel-buttons">1.1 Call and Cancel Buttons</a></h2>
 <p>We begin with the “Call” and “Cancel” Buttons: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L152-L155">feature-phone.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Labels for Call and Cancel Buttons
@@ -529,8 +545,9 @@ pub usingnamespace
 </li>
 </ul>
 <h1 id="run-lvgl-app-on-pinephone"><a href="#run-lvgl-app-on-pinephone">5 Run LVGL App on PinePhone</a></h1>
-<p>TODO</p>
-<p>We compile our Zig LVGL App for NuttX (using the exact same Zig Source File for WebAssembly)…</p>
+<p>We’re finally ready to run our Feature Phone UI… On a real Phone!</p>
+<p>We compile our Zig LVGL App for <strong>PinePhone and Apache NuttX RTOS</strong>…</p>
+<p>(With the exact same Zig Source File tested on WebAssembly)</p>
 <div class="example-wrap"><pre class="language-bash"><code>## TODO: Change &quot;..&quot; to your NuttX Project Directory
 ## Compile the Zig LVGL App for PinePhone 
 ## (armv8-a with cortex-a53)
@@ -548,15 +565,24 @@ cp feature-phone.o \
   ../apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.*.o
 
 ## Link the compiled Zig LVGL App with NuttX
+## https://lupyuen.github.io/articles/lvgl2#appendix-build-apache-nuttx-rtos-for-pinephone
+## https://lupyuen.github.io/articles/lvgl2#appendix-boot-apache-nuttx-rtos-on-pinephone
 cd ../nuttx
 make
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L402-L438">(See the <strong>Complete Command</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/lvgl3#lvgl-app-in-zig">(Explained here)</a></p>
+<p>We copy the <strong>NuttX Image</strong> to a microSD Card, boot it on PinePhone.</p>
+<p>At the NuttX Prompt, enter this command to start our LVGL App…</p>
+<div class="example-wrap"><pre class="language-text"><code>NuttShell (NSH) NuttX-12.0.3
+nsh&gt; lvgldemo
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/07ec0cd87b7888ac20736a7472643ee5d4758096/README.md#pinephone-log">(See the <strong>PinePhone Log</strong>)</a></p>
 <p>And our Feature Phone UI runs on PinePhone with NuttX yay! (Pic below)</p>
-<p>The exact same Zig Source File runs on both WebAssembly and PinePhone, no changes needed! This is super helpful for creating LVGL Apps.</p>
+<p>The exact same Zig Source File runs on <strong>both WebAssembly and PinePhone</strong>, no changes needed!</p>
+<p>This is super helpful for creating LVGL Apps.</p>
 <p><img src="https://lupyuen.github.io/images/lvgl3-pinephone.jpg" alt="Feature Phone UI on PinePhone and Apache NuttX RTOS" /></p>
 <p><a href="https://www.youtube.com/shorts/tOUnj0XEP-Q">(Watch the <strong>Demo on YouTube</strong>)</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/07ec0cd87b7888ac20736a7472643ee5d4758096/README.md#pinephone-log">(See the <strong>PinePhone Log</strong>)</a></p>
 <h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
 <p>TODO: Compile entire LVGL Library</p>
 <p>TODO: Remove NuttX Build Files</p>
