@@ -544,6 +544,8 @@ pub usingnamespace
 <p><a href="https://lupyuen.github.io/articles/iot#appendix-panic-handler">(Explained here)</a></p>
 </li>
 </ul>
+<p><img src="https://lupyuen.github.io/images/lvgl3-pinephone.jpg" alt="Feature Phone UI on PinePhone and Apache NuttX RTOS" /></p>
+<p><a href="https://www.youtube.com/shorts/tOUnj0XEP-Q"><em>Feature Phone UI on PinePhone and Apache NuttX RTOS</em></a></p>
 <h1 id="run-lvgl-app-on-pinephone"><a href="#run-lvgl-app-on-pinephone">5 Run LVGL App on PinePhone</a></h1>
 <p>We’re finally ready to run our Feature Phone UI… On a real Phone!</p>
 <p>We compile our Zig LVGL App for <strong>PinePhone and Apache NuttX RTOS</strong>…</p>
@@ -578,15 +580,27 @@ make
 nsh&gt; lvgldemo
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/07ec0cd87b7888ac20736a7472643ee5d4758096/README.md#pinephone-log">(See the <strong>PinePhone Log</strong>)</a></p>
-<p>And our Feature Phone UI runs on PinePhone with NuttX yay! (Pic below)</p>
+<p>And our Feature Phone UI runs on PinePhone with NuttX yay! (Pic above)</p>
 <p>The exact same Zig Source File runs on <strong>both WebAssembly and PinePhone</strong>, no changes needed!</p>
-<p>This is super helpful for creating LVGL Apps.</p>
-<p><img src="https://lupyuen.github.io/images/lvgl3-pinephone.jpg" alt="Feature Phone UI on PinePhone and Apache NuttX RTOS" /></p>
 <p><a href="https://www.youtube.com/shorts/tOUnj0XEP-Q">(Watch the <strong>Demo on YouTube</strong>)</a></p>
+<p><em>Looks like a fun new way to build and test LVGL Apps…</em></p>
+<p><em>First in the Web Browser, then on the Actual Device!</em></p>
+<p>Yep potentially! But first we need to tidy up…</p>
+<ul>
+<li>
+<p>Try <strong>Live Reloading</strong>: Whenever we save our Zig LVGL App, it <strong>auto-recompiles</strong> and <strong>auto-reloads</strong> the WebAssembly HTML</p>
+</li>
+<li>
+<p>Compile the <strong>entire LVGL Library</strong></p>
+<p><a href="https://lupyuen.github.io/articles/lvgl3#compile-entire-lvgl-library-to-webassembly">(See this)</a></p>
+</li>
+<li>
+<p>Remove the dependency on <strong>NuttX Build Files</strong></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/releases/tag/nuttx-build-files">(See this)</a></p>
+</li>
+</ul>
 <h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
-<p>TODO: Compile entire LVGL Library</p>
-<p>TODO: Remove NuttX Build Files</p>
-<p>We’ll experiment with <strong>Live Reloading</strong>: Whenever we save our Zig LVGL App, it <strong>auto-recompiles</strong> and <strong>auto-reloads</strong> the WebAssembly HTML.</p>
+<p>TODO</p>
 <p>Which makes UI Prototyping a lot quicker in LVGL. Stay Tuned for updates!</p>
 <p>Meanwhile please check out the other articles on NuttX for PinePhone…</p>
 <ul>
