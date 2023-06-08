@@ -531,7 +531,7 @@ Let's dive into the functions...
 
 - [__LVGL Input__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L75-L130)
 
-  [(Explained here)](https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-input)
+  [(Explained here)](https://lupyuen.github.io/articles/lvgl4#appendix-initialise-lvgl-input)
 
 - [__LVGL Porting Layer__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L130-L152)
 
@@ -805,15 +805,9 @@ Which will be called by our Zig Logger for LVGL...
 
 Our Main JavaScript Function will...
 
-1.  Intialise the __LVGL Display__ in Zig
+1.  Intialise the __LVGL Display and Input__ in Zig
 
-    [(Implemented here)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L15-L75)
-
-    [(Explained here)](https://lupyuen.github.io/articles/lvgl3#render-lvgl-display-in-zig)
-
-1.  Initialise the __LVGL Input__ in Zig
-
-    [(Explained here)](https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-input)
+    [(Explained here)](https://lupyuen.github.io/articles/lvgl4#appendix-initialise-lvgl)
 
 1.  Render the __LVGL Widgets__ in Zig
 
@@ -843,6 +837,7 @@ function main() {
   const zig = wasm.instance.exports;
 
   // Init the LVGL Display and Input
+  // https://lupyuen.github.io/articles/lvgl4#appendix-initialise-lvgl
   zig.initDisplay();
 
   // Render the LVGL Widgets in Zig
@@ -855,6 +850,7 @@ function main() {
     const elapsed_ms = Date.now() - start_ms;
 
     // Handle LVGL Tasks to update the display
+    // https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-timer
     zig.handleTimer(elapsed_ms);
 
     // Loop to next frame
@@ -869,6 +865,8 @@ function main() {
 Next we talk about LVGL Initialisation, LVGL Timer and LVGL Input...
 
 - [__"Initialise LVGL"__](https://lupyuen.github.io/articles/lvgl4#appendix-initialise-lvgl)
+
+- [__"Initialise LVGL Input"__](https://lupyuen.github.io/articles/lvgl4#appendix-initialise-lvgl-input)
 
 - [__"Handle LVGL Timer"__](https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-timer)
 
@@ -887,6 +885,7 @@ function main() {
   const zig = wasm.instance.exports;
 
   // Init the LVGL Display and Input
+  // https://lupyuen.github.io/articles/lvgl4#appendix-initialise-lvgl
   zig.initDisplay();
 
   // Render the LVGL Widgets in Zig
@@ -913,7 +912,7 @@ __initDisplay__ (in Zig) will...
 
 1.  Initialise the __LVGL Input__
 
-    [(Explained here)](https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-input)
+    [(Explained here)](https://lupyuen.github.io/articles/lvgl4#appendix-initialise-lvgl-input)
 
 Like so: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L18-L58)
 
@@ -954,13 +953,60 @@ pub export fn initDisplay() void {
   _ = disp;
 
   // Register the Input Device
-  // https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-input
+  // https://lupyuen.github.io/articles/lvgl4#appendix-initialise-lvgl-input
   indev_drv = std.mem.zeroes(c.lv_indev_drv_t);
   c.lv_indev_drv_init(&indev_drv);
   indev_drv.type = c.LV_INDEV_TYPE_POINTER;
   indev_drv.read_cb = readInput;
   _ = c.register_input(&indev_drv);
 }
+```
+
+Let's talk about LVGL Input...
+
+# Appendix: Initialise LVGL Input
+
+_How does Zig initialise LVGL Input at startup?_
+
+In the previous section we saw that __initDisplay__ (in Zig) initialises the LVGL Input at startup: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L18-L58)
+
+```zig
+/// LVGL Input Device Driver (std.mem.zeroes crashes the compiler)
+var indev_drv: c.lv_indev_drv_t = undefined;
+
+/// Init the LVGL Display and Input
+pub export fn initDisplay() void {
+
+  // Omitted: Register the Display Driver
+  // https://lupyuen.github.io/articles/lvgl3#initialise-lvgl-display
+  ...
+
+  // Init the Input Device Driver
+  indev_drv = std.mem.zeroes(c.lv_indev_drv_t);
+  c.lv_indev_drv_init(&indev_drv);
+
+  // Set the Input Driver Type and Callback Function
+  indev_drv.type = c.LV_INDEV_TYPE_POINTER;
+  indev_drv.read_cb = readInput;
+
+  // Register the Input Device
+  _ = c.register_input(&indev_drv);
+}
+```
+
+
+
+TODO
+
+[(We define `register_input` in C because `lv_indev_t` is an Opaque Type in Zig)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c)
+
+This tells LVGL to call `readInput` periodically to poll for input. (More about this below)
+
+`indev_drv` is our LVGL Input Device Driver...
+
+[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L287-L288)
+
+```zig
 ```
 
 # Appendix: Handle LVGL Timer
@@ -985,6 +1031,7 @@ function main() {
   const zig = wasm.instance.exports;
 
   // Init the LVGL Display and Input
+  // https://lupyuen.github.io/articles/lvgl4#appendix-initialise-lvgl
   zig.initDisplay();
 
   // Render the LVGL Widgets in Zig
@@ -1032,6 +1079,7 @@ __elapsed_ms__ remembers the Elapsed Milliseconds since startup: [wasm.zig](http
 
 ```zig
 /// Return the number of elapsed milliseconds
+/// https://lupyuen.github.io/articles/lvgl3#lvgl-porting-layer-for-webassembly
 export fn millis() u32 {
   elapsed_ms += 1;
   return elapsed_ms;
@@ -1051,22 +1099,7 @@ _How do we handle LVGL Mouse Input and Touch Input?_
 
 TODO
 
-[(We define `register_input` in C because `lv_indev_t` is an Opaque Type in Zig)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c)
-
-This tells LVGL to call `readInput` periodically to poll for input. (More about this below)
-
-`indev_drv` is our LVGL Input Device Driver...
-
-[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L287-L288)
-
-```zig
-/// LVGL Input Device Driver (std.mem.zeroes crashes the compiler)
-var indev_drv: c.lv_indev_drv_t = undefined;
-```
-
-Now we handle Mouse and Touch Events in our JavaScript...
-
-[feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L77-L123)
+We capture __Mouse Down__ and __Mouse Up__ events in our JavaScript: [feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L77-L123)
 
 ```javascript
 // Handle Mouse Down on HTML Canvas
@@ -1088,7 +1121,13 @@ canvas.addEventListener("mouseup", (e) => {
   wasm.instance.exports
     .notifyInput(0, x, y);  // TODO: Handle LVGL not ready
 });
+```
 
+And call __notifyInput__ (in Zig) to handle the events.
+
+We do the same for __Touch Start__ and Touch Up__ events...
+
+```javascript
 // Handle Touch Start on HTML Canvas
 canvas.addEventListener("touchstart", (e) => {
   // Notify Zig of Touch Start
