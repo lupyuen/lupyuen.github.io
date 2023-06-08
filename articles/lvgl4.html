@@ -1013,6 +1013,14 @@ var input_x: c.lv_coord_t = 0;
 var input_y: c.lv_coord_t = 0;
 </code></pre></div>
 <p><em>What happens to the saved Input State and Input Coordinates?</em></p>
+<p>From the previous section, we saw that Zig sets <strong>readInput</strong> as the Callback Function for our LVGL Input Device: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L18-L58">wasm.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Init the LVGL Display and Input
+pub export fn initDisplay() void {
+  ...
+  // Set the Input Driver Type and Callback Function
+  indev_drv.type    = c.LV_INDEV_TYPE_POINTER;
+  indev_drv.read_cb = readInput;
+</code></pre></div>
 <p>TODO</p>
 <p><strong>readInput</strong> (in Zig) comes from our WebAssembly-Specific Module</p>
 <p>Zig Function periodically to read the Input State and Input Coordinates…</p>
