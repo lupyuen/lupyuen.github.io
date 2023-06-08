@@ -671,7 +671,17 @@ Then our HTML Page loads and executes our JavaScript...
 
 _What's inside the JavaScript for our LVGL App in WebAssembly?_
 
-TODO
+Our JavaScript shall...
+
+1.  Load the __WebAssembly Module__ (compiled from Zig and C)
+
+1.  __Import Zig Functions__ into JavaScript
+
+1.  __Export JavaScript Functions__ to Zig
+
+1.  Run the __Main JavaScript Function__
+
+Let's walk through the JavaScript...
 
 ## Load WebAssembly Module
 
@@ -1310,6 +1320,8 @@ pub const c = @cImport({
 });
 ```
 
+(Together with NuttX and other C Functions)
+
 According to the code above, we imported the LVGL Functions into the __Namespace "c"__...
 
 ```zig
@@ -1317,18 +1329,16 @@ According to the code above, we imported the LVGL Functions into the __Namespace
 pub const c = @cImport({ ... });
 ```
 
-Which means that we write "__c.something__" to call LVGL Functions from Zig...
+Which means that we'll write "__c.something__" to call LVGL Functions from Zig...
 
 ```zig
 // Call LVGL Function imported from C into Zig
 const btn = c.lv_btn_create(cont);
 ```
 
-_But the above import happens in lvgl.zig, not in feature-phone.zig?_
+_But we call the LVGL Functions in 2 Zig Source Files: lvgl.zig AND feature-phone.zig_
 
-TODO
-
-[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L8-L14)
+That's why we import the LVGL Wrapper __lvgl.zig__ into our LVGL App __feature-phone.zig__: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L8-L14)
 
 ```zig
 /// Import the LVGL Module
@@ -1338,4 +1348,10 @@ const lvgl = @import("lvgl.zig");
 const c = lvgl.c;
 ```
 
-TODO: Why not import in feature-phone.zig?
+And we expose the C Namespace from __lvgl.zig__. So both Zig Source Files can call LVGL Functions.
+
+_Why not import the LVGL Functions in feature-phone.zig?_
+
+Zig Compiler doesn't like it when we call [__@cImport__](https://ziglang.org/documentation/master/#cImport) twice from different Source Files...
+
+Zig Compiler will think that the __LVGL Types are different__. And we can't pass the same LVGL Types across Source Files.
