@@ -914,7 +914,7 @@ __initDisplay__ (in Zig) will...
 
     [(Explained here)](https://lupyuen.github.io/articles/lvgl4#appendix-initialise-lvgl-input)
 
-Like so: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L18-L58)
+Like so: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L18-L58)
 
 ```zig
 /// Init the LVGL Display and Input
@@ -968,7 +968,7 @@ Let's talk about LVGL Input...
 
 _How does Zig initialise LVGL Input at startup?_
 
-In the previous section we saw that __initDisplay__ (in Zig) initialises the LVGL Input at startup: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L18-L58)
+In the previous section we saw that __initDisplay__ (in Zig) initialises the LVGL Input at startup: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L18-L58)
 
 ```zig
 /// LVGL Input Device Driver (std.mem.zeroes crashes the compiler)
@@ -982,6 +982,7 @@ pub export fn initDisplay() void {
   ...
 
   // Init the Input Device Driver
+  // https://docs.lvgl.io/8.3/porting/indev.html
   indev_drv = std.mem.zeroes(c.lv_indev_drv_t);
   c.lv_indev_drv_init(&indev_drv);
 
@@ -994,19 +995,167 @@ pub export fn initDisplay() void {
 }
 ```
 
-This tells LVGL to call our Zig Function __readInput__ periodically to poll for input. (More about this below)
+[(__lv_indev_drv_init__ initialises the LVGL Input Device Driver Struct)](https://docs.lvgl.io/8.3/porting/indev.html)
+
+This tells LVGL to call our Zig Function __readInput__ periodically to poll for Mouse and Touch Input.
+
+[(More about __readInput__)](https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-input)
+
+_What's register_input?_
+
+The LVGL Input Device Struct __lv_indev_t__ is an [__Opaque Type__](https://lupyuen.github.io/articles/lvgl3#initialise-lvgl-display), which is inaccessible in Zig.
+
+To work around this, we define __register_input__ in C (instead of Zig) to register the LVGL Input Device: [display.c](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L109-L117)
+
+```C
+// Register the LVGL Input Device Driver and return the LVGL Input Device
+// https://docs.lvgl.io/8.3/porting/indev.html
+void *register_input(lv_indev_drv_t *indev_drv) {
+  lv_indev_t *indev = lv_indev_drv_register(indev_drv);
+  LV_ASSERT(indev != NULL);
+  return indev;
+}
+```
+
+Now we can handle the LVGL Input in Zig and JavaScript...
+
+# Appendix: Handle LVGL Input
+
+_How do we handle LVGL Mouse Input and Touch Input?_
+
+In our JavaScript, we capture __Mouse Down__ and __Mouse Up__ events: [feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L77-L123)
+
+```javascript
+// Handle Mouse Down on HTML Canvas
+canvas.addEventListener("mousedown", (e) => {
+  // Notify Zig of Mouse Down
+  const x = e.offsetX;
+  const y = e.offsetY;
+  console.log({mousedown: {x, y}});
+  wasm.instance.exports
+    .notifyInput(1, x, y);  // TODO: Handle LVGL not ready
+});
+
+// Handle Mouse Up on HTML Canvas
+canvas.addEventListener("mouseup", (e) => {
+  // Notify Zig of Mouse Up
+  x = e.offsetX;
+  y = e.offsetY;
+  console.log({mouseup: {x, y}});
+  wasm.instance.exports
+    .notifyInput(0, x, y);  // TODO: Handle LVGL not ready
+});
+```
+
+And call __notifyInput__ (in Zig) to handle the events, passing the...
+
+- __Input State__: Mouse Down or Mouse Up
+
+- __Input Coordinates__: X and Y
+
+We do the same for __Touch Start__ and __Touch End__ events...
+
+```javascript
+// Handle Touch Start on HTML Canvas
+canvas.addEventListener("touchstart", (e) => {
+  // Notify Zig of Touch Start
+  e.preventDefault();
+  const touches = e.changedTouches;
+  if (touches.length == 0) { return; }
+
+  // Assume that HTML Canvas is at (0,0)
+  const x = touches[0].pageX;
+  const y = touches[0].pageY;
+  console.log({touchstart: {x, y}});
+  wasm.instance.exports
+    .notifyInput(1, x, y);  // TODO: Handle LVGL not ready
+});
+
+// Handle Touch End on HTML Canvas
+canvas.addEventListener("touchend", (e) => {
+  // Notify Zig of Touch End
+  e.preventDefault();
+  const touches = e.changedTouches;
+  if (touches.length == 0) { return; }
+
+  // Assume that HTML Canvas is at (0,0)
+  const x = touches[0].pageX;
+  const y = touches[0].pageY;
+  console.log({touchend: {x, y}});
+  wasm.instance.exports
+    .notifyInput(0, x, y);  // TODO: Handle LVGL not ready
+});
+```
+
+Which will work on Touch Devices (like our Phones).
+
+_What happens inside notifyInput?_
+
+__notifyInput__ (in Zig) comes from our WebAssembly-Specific Module. It saves the __Input State__ and __Input Coordinates__ passed by our JavaScript: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L89-L109)
+
+```zig
+/// Called by JavaScript to notify Mouse Down and Mouse Up.
+/// Return 1 if we're still waiting for LVGL to process the last input.
+export fn notifyInput(pressed: i32, x: i32, y: i32) i32 {
+
+  // If LVGL hasn't processed the last input, try again later
+  if (input_updated) { return 1; }
+
+  // Save the Input State and Input Coordinates
+  if (pressed == 0) { input_state = c.LV_INDEV_STATE_RELEASED; }
+  else              { input_state = c.LV_INDEV_STATE_PRESSED; }
+  input_x = @intCast(c.lv_coord_t, x);
+  input_y = @intCast(c.lv_coord_t, y);
+  input_updated = true;
+  return 0;
+}
+
+/// True if LVGL Input State has been updated
+var input_updated: bool = false;
+
+/// LVGL Input State and Coordinates
+var input_state: c.lv_indev_state_t = 0;
+var input_x: c.lv_coord_t = 0;
+var input_y: c.lv_coord_t = 0;
+```
+
+_What happens to the saved Input State and Input Coordinates?_
 
 TODO
 
-[(We define `register_input` in C because `lv_indev_t` is an Opaque Type in Zig)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c)
+__readInput__ (in Zig) comes from our WebAssembly-Specific Module
 
+Zig Function periodically to read the Input State and Input Coordinates...
 
-`indev_drv` is our LVGL Input Device Driver...
-
-[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L287-L288)
+[wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L109-L119)
 
 ```zig
+/// LVGL Callback Function to read Input Device
+export fn readInput(drv: [*c]c.lv_indev_drv_t, data: [*c]c.lv_indev_data_t) void {
+  _ = drv;
+  if (input_updated) {
+    input_updated = false;
+    c.set_input_data(
+      data,         // LVGL Input Data
+      input_state,  // Input State
+      input_x,      // Input X
+      input_y       // Input Y
+    );
+  }
+}
 ```
+
+[(We define `set_input_data` in C because `lv_indev_data_t` is an Opaque Type in Zig)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c)
+
+And the LVGL Button will respond correctly to Mouse and Touch Input in the Web Browser! (Pic below)
+
+[(Try the LVGL Button Demo)](https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html)
+
+[(Watch the demo on YouTube)](https://youtube.com/shorts/J6ugzVyKC4U?feature=share)
+
+[(See the log)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/e70b2df50fa562bec7e02f24191dbbb1e5a7553a/README.md#todo)
+
+![Handle LVGL Input](https://lupyuen.github.io/images/lvgl3-wasm4.png)
 
 # Appendix: Handle LVGL Timer
 
@@ -1091,127 +1240,6 @@ var elapsed_ms: u32 = 0;
 The Elapsed Milliseconds is returned by our Zig Function __millis__, which is called by LVGL periodically.
 
 [(More about this)](https://lupyuen.github.io/articles/lvgl3#lvgl-porting-layer-for-webassembly)
-
-# Appendix: Handle LVGL Input
-
-_How do we handle LVGL Mouse Input and Touch Input?_
-
-TODO
-
-We capture __Mouse Down__ and __Mouse Up__ events in our JavaScript: [feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L77-L123)
-
-```javascript
-// Handle Mouse Down on HTML Canvas
-canvas.addEventListener("mousedown", (e) => {
-  // Notify Zig of Mouse Down
-  const x = e.offsetX;
-  const y = e.offsetY;
-  console.log({mousedown: {x, y}});
-  wasm.instance.exports
-    .notifyInput(1, x, y);  // TODO: Handle LVGL not ready
-});
-
-// Handle Mouse Up on HTML Canvas
-canvas.addEventListener("mouseup", (e) => {
-  // Notify Zig of Mouse Up
-  x = e.offsetX;
-  y = e.offsetY;
-  console.log({mouseup: {x, y}});
-  wasm.instance.exports
-    .notifyInput(0, x, y);  // TODO: Handle LVGL not ready
-});
-```
-
-And call __notifyInput__ (in Zig) to handle the events.
-
-We do the same for __Touch Start__ and Touch Up__ events...
-
-```javascript
-// Handle Touch Start on HTML Canvas
-canvas.addEventListener("touchstart", (e) => {
-  // Notify Zig of Touch Start
-  e.preventDefault();
-  const touches = e.changedTouches;
-  if (touches.length == 0) { return; }
-
-  // Assume that HTML Canvas is at (0,0)
-  const x = touches[0].pageX;
-  const y = touches[0].pageY;
-  console.log({touchstart: {x, y}});
-  wasm.instance.exports
-    .notifyInput(1, x, y);  // TODO: Handle LVGL not ready
-});
-
-// Handle Touch End on HTML Canvas
-canvas.addEventListener("touchend", (e) => {
-  // Notify Zig of Touch End
-  e.preventDefault();
-  const touches = e.changedTouches;
-  if (touches.length == 0) { return; }
-
-  // Assume that HTML Canvas is at (0,0)
-  const x = touches[0].pageX;
-  const y = touches[0].pageY;
-  console.log({touchend: {x, y}});
-  wasm.instance.exports
-    .notifyInput(0, x, y);  // TODO: Handle LVGL not ready
-});
-```
-
-Which calls `notifyInput` in our Zig App to set the Input State and Input Coordinates...
-
-[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L224-L235)
-
-```zig
-/// Called by JavaScript to notify Mouse Down and Mouse Up
-export fn notifyInput(pressed: i32, x: i32, y: i32) i32 {
-    if (pressed == 0) {
-        input_state = c.LV_INDEV_STATE_RELEASED;
-    } else {
-        input_state = c.LV_INDEV_STATE_PRESSED;
-    }
-    input_x = @intCast(c.lv_coord_t, x);
-    input_y = @intCast(c.lv_coord_t, y);
-    input_updated = true;
-    return 0;
-}
-```
-
-LVGL polls our `readInput` Zig Function periodically to read the Input State and Input Coordinates...
-
-[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L237-L253)
-
-```zig
-/// LVGL Callback Function to read Input Device
-export fn readInput(drv: [*c]c.lv_indev_drv_t, data: [*c]c.lv_indev_data_t) void {
-    _ = drv;
-    if (input_updated) {
-        input_updated = false;
-        c.set_input_data(data, input_state, input_x, input_y);
-        debug("readInput: state={}, x={}, y={}", .{ input_state, input_x, input_y });
-    }
-}
-
-/// True if LVGL Input State has been updated
-var input_updated: bool = false;
-
-/// LVGL Input State and Coordinates
-var input_state: c.lv_indev_state_t = 0;
-var input_x: c.lv_coord_t = 0;
-var input_y: c.lv_coord_t = 0;
-```
-
-[(We define `set_input_data` in C because `lv_indev_data_t` is an Opaque Type in Zig)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c)
-
-And the LVGL Button will respond correctly to Mouse and Touch Input in the Web Browser! (Pic below)
-
-[(Try the LVGL Button Demo)](https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html)
-
-[(Watch the demo on YouTube)](https://youtube.com/shorts/J6ugzVyKC4U?feature=share)
-
-[(See the log)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/e70b2df50fa562bec7e02f24191dbbb1e5a7553a/README.md#todo)
-
-![Handle LVGL Input](https://lupyuen.github.io/images/lvgl3-wasm4.png)
 
 # Appendix: Import LVGL Library
 
