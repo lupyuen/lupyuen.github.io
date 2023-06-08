@@ -553,10 +553,11 @@ make
 <p>And our Feature Phone UI runs on PinePhone with NuttX yay! (Pic below)</p>
 <p>The exact same Zig Source File runs on both WebAssembly and PinePhone, no changes needed! This is super helpful for creating LVGL Apps.</p>
 <p><img src="https://lupyuen.github.io/images/lvgl3-pinephone.jpg" alt="Feature Phone UI on PinePhone and Apache NuttX RTOS" /></p>
-<p><a href="https://www.youtube.com/shorts/tOUnj0XEP-Q">(Watch the demo on YouTube)</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/07ec0cd87b7888ac20736a7472643ee5d4758096/README.md#pinephone-log">(See the PinePhone Log)</a></p>
+<p><a href="https://www.youtube.com/shorts/tOUnj0XEP-Q">(Watch the <strong>Demo on YouTube</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/07ec0cd87b7888ac20736a7472643ee5d4758096/README.md#pinephone-log">(See the <strong>PinePhone Log</strong>)</a></p>
 <h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
-<p>TODO</p>
+<p>TODO: Compile entire LVGL Library</p>
+<p>TODO: Remove NuttX Build Files</p>
 <p>We’ll experiment with <strong>Live Reloading</strong>: Whenever we save our Zig LVGL App, it <strong>auto-recompiles</strong> and <strong>auto-reloads</strong> the WebAssembly HTML.</p>
 <p>Which makes UI Prototyping a lot quicker in LVGL. Stay Tuned for updates!</p>
 <p>Meanwhile please check out the other articles on NuttX for PinePhone…</p>
@@ -1021,10 +1022,9 @@ pub export fn initDisplay() void {
   indev_drv.type    = c.LV_INDEV_TYPE_POINTER;
   indev_drv.read_cb = readInput;
 </code></pre></div>
-<p>TODO</p>
-<p><strong>readInput</strong> (in Zig) comes from our WebAssembly-Specific Module</p>
-<p>Zig Function periodically to read the Input State and Input Coordinates…</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L109-L119">wasm.zig</a></p>
+<p>This tells LVGL to call our Zig Function <strong>readInput</strong> periodically to poll for Mouse and Touch Input.</p>
+<p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-timer">(Initiated by the <strong>LVGL Timer</strong>)</a></p>
+<p><strong>readInput</strong> (in Zig) comes from our WebAssembly-Specific Module: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L109-L119">wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// LVGL Callback Function to read Input Device
 export fn readInput(
   drv:  [*c]c.lv_indev_drv_t,  // LVGL Input Device Driver
@@ -1037,18 +1037,35 @@ export fn readInput(
     // Set the LVGL Input Data to be returned
     c.set_input_data(
       data,         // LVGL Input Data
-      input_state,  // Input State
+      input_state,  // Input State (Mouse Up or Down)
       input_x,      // Input X
       input_y       // Input Y
     );
   }
 }
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c">(We define <code>set_input_data</code> in C because <code>lv_indev_data_t</code> is an Opaque Type in Zig)</a></p>
+<p><strong>readInput</strong> simply returns the <strong>Input State</strong> and <strong>Input Coordinates</strong> to LVGL.</p>
+<p><em>What’s set_input_data?</em></p>
+<p>The LVGL Input Data Struct <strong>lv_indev_data_t</strong> is an <a href="https://lupyuen.github.io/articles/lvgl3#initialise-lvgl-display"><strong>Opaque Type</strong></a>, which is inaccessible in Zig.</p>
+<p>To work around this, we define <strong>set_input_data</strong> in C (instead of Zig) to set the LVGL Input Data: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L117-L129">display.c</a></p>
+<div class="example-wrap"><pre class="language-C"><code>// Set the LVGL Input Device Data
+// https://docs.lvgl.io/8.3/porting/indev.html#touchpad-mouse-or-any-pointer
+void set_input_data(
+  lv_indev_data_t *data,   // LVGL Input Data
+  lv_indev_state_t state,  // Input State (Mouse Up or Down)
+  lv_coord_t x,            // Input X
+  lv_coord_t y             // Input Y
+) {
+  LV_ASSERT(data != NULL);
+  data-&gt;state   = state;
+  data-&gt;point.x = x;
+  data-&gt;point.y = y;
+}
+</code></pre></div>
 <p>And the LVGL Button will respond correctly to Mouse and Touch Input in the Web Browser! (Pic below)</p>
-<p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html">(Try the LVGL Button Demo)</a></p>
-<p><a href="https://youtube.com/shorts/J6ugzVyKC4U?feature=share">(Watch the demo on YouTube)</a></p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/e70b2df50fa562bec7e02f24191dbbb1e5a7553a/README.md#todo">(See the log)</a></p>
+<p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html">(Try the <strong>LVGL Button Demo</strong>)</a></p>
+<p><a href="https://youtube.com/shorts/J6ugzVyKC4U?feature=share">(Watch the <strong>Demo on YouTube</strong>)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/e70b2df50fa562bec7e02f24191dbbb1e5a7553a/README.md#todo">(See the <strong>JavaScript Log</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/lvgl3-wasm4.png" alt="Handle LVGL Input" /></p>
 <h1 id="appendix-handle-lvgl-timer"><a href="#appendix-handle-lvgl-timer">12 Appendix: Handle LVGL Timer</a></h1>
 <p><em>What’s this LVGL Timer that’s called by our JavaScript?</em></p>
@@ -1124,7 +1141,30 @@ var elapsed_ms: u32 = 0;
 <p><a href="https://lupyuen.github.io/articles/lvgl3#lvgl-porting-layer-for-webassembly">(More about this)</a></p>
 <h1 id="appendix-import-lvgl-library"><a href="#appendix-import-lvgl-library">13 Appendix: Import LVGL Library</a></h1>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig#L5-L28">lvgl.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Import the LVGL Library from C
+pub const c = @cImport({
+  // NuttX Defines
+  @cDefine(&quot;__NuttX__&quot;, &quot;&quot;);
+  @cDefine(&quot;NDEBUG&quot;, &quot;&quot;);
 
+  // NuttX Header Files
+  @cInclude(&quot;arch/types.h&quot;);
+  @cInclude(&quot;../../nuttx/include/limits.h&quot;);
+  @cInclude(&quot;stdio.h&quot;);
+  @cInclude(&quot;nuttx/config.h&quot;);
+  @cInclude(&quot;sys/boardctl.h&quot;);
+  @cInclude(&quot;unistd.h&quot;);
+  @cInclude(&quot;stddef.h&quot;);
+  @cInclude(&quot;stdlib.h&quot;);
+
+  // LVGL Header Files
+  @cInclude(&quot;lvgl/lvgl.h&quot;);
+
+  // LVGL Display Interface for Zig
+  @cInclude(&quot;display.h&quot;);
+});
+</code></pre></div>
     
 </body>
 </html>
