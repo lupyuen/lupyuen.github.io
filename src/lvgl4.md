@@ -940,11 +940,11 @@ pub export fn initDisplay() void {
   // https://lupyuen.github.io/articles/lvgl3#initialise-lvgl-display
   c.init_disp_buf(disp_buf);
   c.init_disp_drv(
-    disp_drv, // Display Driver
-    disp_buf, // Display Buffer
+    disp_drv,     // Display Driver
+    disp_buf,     // Display Buffer
     flushDisplay, // Callback Function to Flush Display
-    720, // Horizontal Resolution
-    1280 // Vertical Resolution
+    720,          // Horizontal Resolution
+    1280          // Vertical Resolution
   );
 
   // Register the Display Driver
@@ -956,7 +956,7 @@ pub export fn initDisplay() void {
   // https://lupyuen.github.io/articles/lvgl4#appendix-initialise-lvgl-input
   indev_drv = std.mem.zeroes(c.lv_indev_drv_t);
   c.lv_indev_drv_init(&indev_drv);
-  indev_drv.type = c.LV_INDEV_TYPE_POINTER;
+  indev_drv.type    = c.LV_INDEV_TYPE_POINTER;
   indev_drv.read_cb = readInput;
   _ = c.register_input(&indev_drv);
 }
@@ -986,7 +986,7 @@ pub export fn initDisplay() void {
   c.lv_indev_drv_init(&indev_drv);
 
   // Set the Input Driver Type and Callback Function
-  indev_drv.type = c.LV_INDEV_TYPE_POINTER;
+  indev_drv.type    = c.LV_INDEV_TYPE_POINTER;
   indev_drv.read_cb = readInput;
 
   // Register the Input Device
@@ -994,13 +994,12 @@ pub export fn initDisplay() void {
 }
 ```
 
-
+This tells LVGL to call our Zig Function __readInput__ periodically to poll for input. (More about this below)
 
 TODO
 
 [(We define `register_input` in C because `lv_indev_t` is an Opaque Type in Zig)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c)
 
-This tells LVGL to call `readInput` periodically to poll for input. (More about this below)
 
 `indev_drv` is our LVGL Input Device Driver...
 
