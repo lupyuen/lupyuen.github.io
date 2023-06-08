@@ -1281,9 +1281,9 @@ The Elapsed Milliseconds is returned by our Zig Function __millis__, which is ca
 
 # Appendix: Import LVGL Library
 
-TODO
+_How we did we import the LVGL Library from C into Zig?_
 
-[lvgl.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig#L5-L28)
+Our Zig Wrapper for LVGL calls [__@cImport__](https://ziglang.org/documentation/master/#cImport) to import the LVGL Header Files into Zig: [lvgl.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig#L5-L28)
 
 ```zig
 /// Import the LVGL Library from C
@@ -1309,3 +1309,33 @@ pub const c = @cImport({
   @cInclude("display.h");
 });
 ```
+
+According to the code above, we imported the LVGL Functions into the __Namespace "c"__...
+
+```zig
+// Import into Namespace `c`
+pub const c = @cImport({ ... });
+```
+
+Which means that we write "__c.something__" to call LVGL Functions from Zig...
+
+```zig
+// Call LVGL Function imported from C into Zig
+const btn = c.lv_btn_create(cont);
+```
+
+_But the above import happens in lvgl.zig, not in feature-phone.zig?_
+
+TODO
+
+[feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L8-L14)
+
+```zig
+/// Import the LVGL Module
+const lvgl = @import("lvgl.zig");
+
+/// Import the LVGL Library from C
+const c = lvgl.c;
+```
+
+TODO: Why not import in feature-phone.zig?
