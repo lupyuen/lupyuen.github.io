@@ -146,6 +146,7 @@ fn createCallButtons(cont: *c.lv_obj_t) !void {
 }
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-import-lvgl-library">(We write “<strong>c.something</strong>” to call an LVGL Function)</a></p>
+<p><em>What’s lv_obj_add_event_cb?</em></p>
 <p><a href="https://docs.lvgl.io/8.3/overview/event.html#add-events-to-the-object"><strong>lv_obj_add_event_cb</strong></a> tells LVGL to call our Zig Function <strong>eventHandler</strong> when the Button is clicked. We’ll see the Event Callback Function in a while.</p>
 <p>(“<strong>_ = something</strong>” tells Zig Compiler that we’re not using the Returned Value)</p>
 <p>(We call <a href="https://ziglang.org/documentation/master/#intToPtr"><strong>@intToPtr</strong></a> and <a href="https://ziglang.org/documentation/master/#ptrToInt"><strong>@ptrToInt</strong></a> to pass Zig Pointers as C Pointers)</p>
@@ -386,8 +387,9 @@ for (call_labels) |text| {
     data             // Callback Data (Button Text)
   );
 </code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/lvgl4#call-and-cancel-buttons">(Source)</a></p>
-<p><a href="https://lupyuen.github.io/articles/lvgl4#digit-buttons">(Digit Buttons too)</a></p>
+<p><a href="https://lupyuen.github.io/articles/lvgl4#call-and-cancel-buttons">(For <strong>Call and Cancel Buttons</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/lvgl4#digit-buttons">(And <strong>Digit Buttons</strong>)</a></p>
+<p><em>What’s lv_obj_add_event_cb?</em></p>
 <p><a href="https://docs.lvgl.io/8.3/overview/event.html#add-events-to-the-object"><strong>lv_obj_add_event_cb</strong></a> tells LVGL to call our Zig Function <strong>eventHandler</strong> when the Button is clicked.</p>
 <p>In our Event Handler, we <strong>identify the Button clicked</strong>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L174-L219">feature-phone.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Handle LVGL Button Event
@@ -815,7 +817,7 @@ function main() {
 </ul>
 <h1 id="appendix-initialise-lvgl"><a href="#appendix-initialise-lvgl">9 Appendix: Initialise LVGL</a></h1>
 <p><em>How do we initialise LVGL Library in our JavaScript?</em></p>
-<p>In our JavaScript Main Function, we call Zig Function <strong>initDisplay</strong> at startup: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L123-L154">feature-phone.js</a></p>
+<p>In our <a href="https://lupyuen.github.io/articles/lvgl4#main-javascript-function"><strong>JavaScript Main Function</strong></a>, we call Zig Function <strong>initDisplay</strong> at startup: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L123-L154">feature-phone.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Main Function
 function main() {
   // Fetch the imported Zig Functions
@@ -946,7 +948,6 @@ canvas.addEventListener(&quot;mousedown&quot;, (e) =&gt; {
   // Notify Zig of Mouse Down
   const x = e.offsetX;
   const y = e.offsetY;
-  console.log({mousedown: {x, y}});
   wasm.instance.exports
     .notifyInput(1, x, y);  // TODO: Handle LVGL not ready
 });
@@ -956,7 +957,6 @@ canvas.addEventListener(&quot;mouseup&quot;, (e) =&gt; {
   // Notify Zig of Mouse Up
   x = e.offsetX;
   y = e.offsetY;
-  console.log({mouseup: {x, y}});
   wasm.instance.exports
     .notifyInput(0, x, y);  // TODO: Handle LVGL not ready
 });
@@ -981,7 +981,6 @@ canvas.addEventListener(&quot;touchstart&quot;, (e) =&gt; {
   // Assume that HTML Canvas is at (0,0)
   const x = touches[0].pageX;
   const y = touches[0].pageY;
-  console.log({touchstart: {x, y}});
   wasm.instance.exports
     .notifyInput(1, x, y);  // TODO: Handle LVGL not ready
 });
@@ -996,7 +995,6 @@ canvas.addEventListener(&quot;touchend&quot;, (e) =&gt; {
   // Assume that HTML Canvas is at (0,0)
   const x = touches[0].pageX;
   const y = touches[0].pageY;
-  console.log({touchend: {x, y}});
   wasm.instance.exports
     .notifyInput(0, x, y);  // TODO: Handle LVGL not ready
 });
@@ -1156,7 +1154,7 @@ var elapsed_ms: u32 = 0;
 <p><a href="https://lupyuen.github.io/articles/lvgl3#lvgl-porting-layer-for-webassembly">(More about this)</a></p>
 <h1 id="appendix-import-lvgl-library"><a href="#appendix-import-lvgl-library">13 Appendix: Import LVGL Library</a></h1>
 <p><em>How we did we import the LVGL Library from C into Zig?</em></p>
-<p>Our Zig Wrapper for LVGL calls <a href="https://ziglang.org/documentation/master/#cImport"><strong>@cImport</strong></a> to import the LVGL Header Files into Zig: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig#L5-L28">lvgl.zig</a></p>
+<p>Our Zig Wrapper for LVGL calls <a href="https://ziglang.org/documentation/master/#cImport"><strong>@cImport</strong></a> to import the LVGL Header Files from C into Zig: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig#L5-L28">lvgl.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Import the LVGL Library from C
 pub const c = @cImport({
   // NuttX Defines
@@ -1189,15 +1187,16 @@ pub const c = @cImport({ ... });
 <div class="example-wrap"><pre class="language-zig"><code>// Call LVGL Function imported from C into Zig
 const btn = c.lv_btn_create(cont);
 </code></pre></div>
-<p><em>But we call the LVGL Functions in 2 Zig Source Files: lvgl.zig AND feature-phone.zig</em></p>
+<p><em>But we call the LVGL Functions in two Zig Source Files: lvgl.zig AND feature-phone.zig…</em></p>
 <p>That’s why we import the LVGL Wrapper <strong>lvgl.zig</strong> into our LVGL App <strong>feature-phone.zig</strong>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L8-L14">feature-phone.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Import the LVGL Module
 const lvgl = @import(&quot;lvgl.zig&quot;);
 
-/// Import the LVGL Library from C
+/// Import the C Namespace
 const c = lvgl.c;
 </code></pre></div>
-<p>And we expose the C Namespace from <strong>lvgl.zig</strong>. So both Zig Source Files can call LVGL Functions.</p>
+<p>And we import the C Namespace from <strong>lvgl.zig</strong>.</p>
+<p>So both Zig Source Files can call LVGL Functions.</p>
 <p><em>Why not import the LVGL Functions in feature-phone.zig?</em></p>
 <p>Zig Compiler doesn’t like it when we call <a href="https://ziglang.org/documentation/master/#cImport"><strong>@cImport</strong></a> twice from different Source Files…</p>
 <p>Zig Compiler will think that the <strong>LVGL Types are different</strong>. And we can’t pass the same LVGL Types across Source Files.</p>
