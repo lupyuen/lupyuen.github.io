@@ -1140,8 +1140,8 @@ var elapsed_ms: u32 = 0;
 <p>The Elapsed Milliseconds is returned by our Zig Function <strong>millis</strong>, which is called by LVGL periodically.</p>
 <p><a href="https://lupyuen.github.io/articles/lvgl3#lvgl-porting-layer-for-webassembly">(More about this)</a></p>
 <h1 id="appendix-import-lvgl-library"><a href="#appendix-import-lvgl-library">13 Appendix: Import LVGL Library</a></h1>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig#L5-L28">lvgl.zig</a></p>
+<p><em>How we did we import the LVGL Library from C into Zig?</em></p>
+<p>Our Zig Wrapper for LVGL calls <a href="https://ziglang.org/documentation/master/#cImport"><strong>@cImport</strong></a> to import the LVGL Header Files into Zig: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig#L5-L28">lvgl.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Import the LVGL Library from C
 pub const c = @cImport({
   // NuttX Defines
@@ -1165,6 +1165,25 @@ pub const c = @cImport({
   @cInclude(&quot;display.h&quot;);
 });
 </code></pre></div>
+<p>According to the code above, we imported the LVGL Functions into the <strong>Namespace “c”</strong>…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Import into Namespace `c`
+pub const c = @cImport({ ... });
+</code></pre></div>
+<p>Which means that we write “<strong>c.something</strong>” to call LVGL Functions from Zig…</p>
+<div class="example-wrap"><pre class="language-zig"><code>// Call LVGL Function imported from C into Zig
+const btn = c.lv_btn_create(cont);
+</code></pre></div>
+<p><em>But the above import happens in lvgl.zig, not in feature-phone.zig?</em></p>
+<p>TODO</p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L8-L14">feature-phone.zig</a></p>
+<div class="example-wrap"><pre class="language-zig"><code>/// Import the LVGL Module
+const lvgl = @import(&quot;lvgl.zig&quot;);
+
+/// Import the LVGL Library from C
+const c = lvgl.c;
+</code></pre></div>
+<p>TODO: Why not import in feature-phone.zig?</p>
+
     
 </body>
 </html>
