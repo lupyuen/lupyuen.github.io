@@ -40,11 +40,27 @@ _We could've done all this in plain old C and on-device testing right?_
 
 Yeah but it's 2023... Maybe there's an easier way to build and test LVGL Apps? Let's experiment and find out!
 
+TODO: Pic
+
 # Feature Phone UI
 
-TODO
+_Imagine a Feature Phone from 25 years ago..._
 
-Let's create a Feature Phone UI for PinePhone on Apache NuttX RTOS!
+The pic above shows the [__Feature Phone UI__](https://en.wikipedia.org/wiki/Feature_phone) that we'll create with LVGL...
+
+- __Display Containter__
+
+  (For the Phone Number Display)
+
+- __Call / Cancel Container__
+
+  (For the Call and Cancel Buttons)
+
+- __Digit Container__
+
+  (For the Digit Buttons)
+
+Let's create the Buttons...
 
 ## Call and Cancel Buttons
 
@@ -575,9 +591,11 @@ Thankfully most of the above LVGL Functions are already implemented by Apache Nu
 
 # Run LVGL App on PinePhone
 
-TODO
+We're finally ready to run our Feature Phone UI... On a real Phone!
 
-We compile our Zig LVGL App for NuttX (using the exact same Zig Source File for WebAssembly)...
+We compile our Zig LVGL App for __PinePhone and Apache NuttX RTOS__...
+
+(With the exact same Zig Source File tested on WebAssembly)
 
 ```bash
 ## TODO: Change ".." to your NuttX Project Directory
@@ -597,21 +615,36 @@ cp feature-phone.o \
   ../apps/graphics/lvgl/lvgl/demos/widgets/lv_demo_widgets.*.o
 
 ## Link the compiled Zig LVGL App with NuttX
+## https://lupyuen.github.io/articles/lvgl2#appendix-build-apache-nuttx-rtos-for-pinephone
+## https://lupyuen.github.io/articles/lvgl2#appendix-boot-apache-nuttx-rtos-on-pinephone
 cd ../nuttx
 make
 ```
 
 [(See the __Complete Command__)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L402-L438)
 
+[(Explained here)](https://lupyuen.github.io/articles/lvgl3#lvgl-app-in-zig)
+
+We copy the __NuttX Image__ to a microSD Card, boot it on PinePhone.
+
+At the NuttX Prompt, enter this command to start our LVGL App...
+
+```text
+NuttShell (NSH) NuttX-12.0.3
+nsh> lvgldemo
+```
+
+[(See the __PinePhone Log__)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/07ec0cd87b7888ac20736a7472643ee5d4758096/README.md#pinephone-log)
+
 And our Feature Phone UI runs on PinePhone with NuttX yay! (Pic below)
 
-The exact same Zig Source File runs on both WebAssembly and PinePhone, no changes needed! This is super helpful for creating LVGL Apps.
+The exact same Zig Source File runs on __both WebAssembly and PinePhone__, no changes needed!
+
+This is super helpful for creating LVGL Apps.
 
 ![Feature Phone UI on PinePhone and Apache NuttX RTOS](https://lupyuen.github.io/images/lvgl3-pinephone.jpg)
 
 [(Watch the __Demo on YouTube__)](https://www.youtube.com/shorts/tOUnj0XEP-Q)
-
-[(See the __PinePhone Log__)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/07ec0cd87b7888ac20736a7472643ee5d4758096/README.md#pinephone-log)
 
 # What's Next
 
