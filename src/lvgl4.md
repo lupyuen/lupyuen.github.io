@@ -654,7 +654,7 @@ Yep potentially! But first we need to tidy up...
 
 - __Live Reloading__: Whenever we save our Zig LVGL App, it __auto-recompiles__ and __auto-reloads__ the WebAssembly HTML
 
-- Compile the __entire LVGL Library__
+- Compile the __entire LVGL Library__ to WebAssembly
 
   [(See this)](https://lupyuen.github.io/articles/lvgl3#compile-entire-lvgl-library-to-webassembly)
 
