@@ -605,13 +605,15 @@ The exact same Zig Source File runs on both WebAssembly and PinePhone, no change
 
 ![Feature Phone UI on PinePhone and Apache NuttX RTOS](https://lupyuen.github.io/images/lvgl3-pinephone.jpg)
 
-[(Watch the demo on YouTube)](https://www.youtube.com/shorts/tOUnj0XEP-Q)
+[(Watch the __Demo on YouTube__)](https://www.youtube.com/shorts/tOUnj0XEP-Q)
 
-[(See the PinePhone Log)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/07ec0cd87b7888ac20736a7472643ee5d4758096/README.md#pinephone-log)
+[(See the __PinePhone Log__)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/07ec0cd87b7888ac20736a7472643ee5d4758096/README.md#pinephone-log)
 
 # What's Next
 
-TODO
+TODO: Compile entire LVGL Library
+
+TODO: Remove NuttX Build Files
 
 We'll experiment with __Live Reloading__: Whenever we save our Zig LVGL App, it __auto-recompiles__ and __auto-reloads__ the WebAssembly HTML.
 
@@ -1132,13 +1134,11 @@ pub export fn initDisplay() void {
   indev_drv.read_cb = readInput;
 ```
 
-TODO
+This tells LVGL to call our Zig Function __readInput__ periodically to poll for Mouse and Touch Input.
 
-__readInput__ (in Zig) comes from our WebAssembly-Specific Module
+[(Initiated by the __LVGL Timer__)](https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-timer)
 
-Zig Function periodically to read the Input State and Input Coordinates...
-
-[wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L109-L119)
+__readInput__ (in Zig) comes from our WebAssembly-Specific Module: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L109-L119)
 
 ```zig
 /// LVGL Callback Function to read Input Device
@@ -1153,7 +1153,7 @@ export fn readInput(
     // Set the LVGL Input Data to be returned
     c.set_input_data(
       data,         // LVGL Input Data
-      input_state,  // Input State
+      input_state,  // Input State (Mouse Up or Down)
       input_x,      // Input X
       input_y       // Input Y
     );
@@ -1161,15 +1161,37 @@ export fn readInput(
 }
 ```
 
-[(We define `set_input_data` in C because `lv_indev_data_t` is an Opaque Type in Zig)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c)
+__readInput__ simply returns the __Input State__ and __Input Coordinates__ to LVGL.
+
+_What's set_input_data?_
+
+The LVGL Input Data Struct __lv_indev_data_t__ is an [__Opaque Type__](https://lupyuen.github.io/articles/lvgl3#initialise-lvgl-display), which is inaccessible in Zig.
+
+To work around this, we define __set_input_data__ in C (instead of Zig) to set the LVGL Input Data: [display.c](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L117-L129)
+
+```C
+// Set the LVGL Input Device Data
+// https://docs.lvgl.io/8.3/porting/indev.html#touchpad-mouse-or-any-pointer
+void set_input_data(
+  lv_indev_data_t *data,   // LVGL Input Data
+  lv_indev_state_t state,  // Input State (Mouse Up or Down)
+  lv_coord_t x,            // Input X
+  lv_coord_t y             // Input Y
+) {
+  LV_ASSERT(data != NULL);
+  data->state   = state;
+  data->point.x = x;
+  data->point.y = y;
+}
+```
 
 And the LVGL Button will respond correctly to Mouse and Touch Input in the Web Browser! (Pic below)
 
-[(Try the LVGL Button Demo)](https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html)
+[(Try the __LVGL Button Demo__)](https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html)
 
-[(Watch the demo on YouTube)](https://youtube.com/shorts/J6ugzVyKC4U?feature=share)
+[(Watch the __Demo on YouTube__)](https://youtube.com/shorts/J6ugzVyKC4U?feature=share)
 
-[(See the log)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/e70b2df50fa562bec7e02f24191dbbb1e5a7553a/README.md#todo)
+[(See the __JavaScript Log__)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/e70b2df50fa562bec7e02f24191dbbb1e5a7553a/README.md#todo)
 
 ![Handle LVGL Input](https://lupyuen.github.io/images/lvgl3-wasm4.png)
 
@@ -1260,3 +1282,30 @@ The Elapsed Milliseconds is returned by our Zig Function __millis__, which is ca
 # Appendix: Import LVGL Library
 
 TODO
+
+[lvgl.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig#L5-L28)
+
+```zig
+/// Import the LVGL Library from C
+pub const c = @cImport({
+  // NuttX Defines
+  @cDefine("__NuttX__", "");
+  @cDefine("NDEBUG", "");
+
+  // NuttX Header Files
+  @cInclude("arch/types.h");
+  @cInclude("../../nuttx/include/limits.h");
+  @cInclude("stdio.h");
+  @cInclude("nuttx/config.h");
+  @cInclude("sys/boardctl.h");
+  @cInclude("unistd.h");
+  @cInclude("stddef.h");
+  @cInclude("stdlib.h");
+
+  // LVGL Header Files
+  @cInclude("lvgl/lvgl.h");
+
+  // LVGL Display Interface for Zig
+  @cInclude("display.h");
+});
+```
