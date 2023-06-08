@@ -589,6 +589,10 @@ Thankfully most of the above LVGL Functions are already implemented by Apache Nu
 
   [(Explained here)](https://lupyuen.github.io/articles/iot#appendix-panic-handler)
 
+![Feature Phone UI on PinePhone and Apache NuttX RTOS](https://lupyuen.github.io/images/lvgl3-pinephone.jpg)
+
+[_Feature Phone UI on PinePhone and Apache NuttX RTOS_](https://www.youtube.com/shorts/tOUnj0XEP-Q)
+
 # Run LVGL App on PinePhone
 
 We're finally ready to run our Feature Phone UI... On a real Phone!
@@ -636,23 +640,31 @@ nsh> lvgldemo
 
 [(See the __PinePhone Log__)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/07ec0cd87b7888ac20736a7472643ee5d4758096/README.md#pinephone-log)
 
-And our Feature Phone UI runs on PinePhone with NuttX yay! (Pic below)
+And our Feature Phone UI runs on PinePhone with NuttX yay! (Pic above)
 
 The exact same Zig Source File runs on __both WebAssembly and PinePhone__, no changes needed!
 
-This is super helpful for creating LVGL Apps.
-
-![Feature Phone UI on PinePhone and Apache NuttX RTOS](https://lupyuen.github.io/images/lvgl3-pinephone.jpg)
-
 [(Watch the __Demo on YouTube__)](https://www.youtube.com/shorts/tOUnj0XEP-Q)
+
+_Looks like a fun new way to build and test LVGL Apps..._
+
+_First in the Web Browser, then on the Actual Device!_
+
+Yep potentially! But first we need to tidy up...
+
+- Try __Live Reloading__: Whenever we save our Zig LVGL App, it __auto-recompiles__ and __auto-reloads__ the WebAssembly HTML
+
+- Compile the __entire LVGL Library__
+
+  [(See this)](https://lupyuen.github.io/articles/lvgl3#compile-entire-lvgl-library-to-webassembly)
+
+- Remove the dependency on __NuttX Build Files__
+
+  [(See this)](https://github.com/lupyuen/pinephone-lvgl-zig/releases/tag/nuttx-build-files)
 
 # What's Next
 
-TODO: Compile entire LVGL Library
-
-TODO: Remove NuttX Build Files
-
-We'll experiment with __Live Reloading__: Whenever we save our Zig LVGL App, it __auto-recompiles__ and __auto-reloads__ the WebAssembly HTML.
+TODO
 
 Which makes UI Prototyping a lot quicker in LVGL. Stay Tuned for updates!
 
