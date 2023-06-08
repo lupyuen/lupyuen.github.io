@@ -87,6 +87,8 @@ fn createCallButtons(cont: *c.lv_obj_t) !void {
 
 [(We write "__c.something__" to call an LVGL Function)](https://lupyuen.github.io/articles/lvgl4#appendix-import-lvgl-library)
 
+_What's lv_obj_add_event_cb?_
+
 [__lv_obj_add_event_cb__](https://docs.lvgl.io/8.3/overview/event.html#add-events-to-the-object) tells LVGL to call our Zig Function __eventHandler__ when the Button is clicked. We'll see the Event Callback Function in a while.
 
 ("__\_ = something__" tells Zig Compiler that we're not using the Returned Value)
@@ -401,9 +403,11 @@ for (call_labels) |text| {
   );
 ```
 
-[(Source)](https://lupyuen.github.io/articles/lvgl4#call-and-cancel-buttons)
+[(For __Call and Cancel Buttons__)](https://lupyuen.github.io/articles/lvgl4#call-and-cancel-buttons)
 
-[(Digit Buttons too)](https://lupyuen.github.io/articles/lvgl4#digit-buttons)
+[(And __Digit Buttons__)](https://lupyuen.github.io/articles/lvgl4#digit-buttons)
+
+_What's lv_obj_add_event_cb?_
 
 [__lv_obj_add_event_cb__](https://docs.lvgl.io/8.3/overview/event.html#add-events-to-the-object) tells LVGL to call our Zig Function __eventHandler__ when the Button is clicked.
 
@@ -888,7 +892,7 @@ Next we talk about LVGL Initialisation, LVGL Timer and LVGL Input...
 
 _How do we initialise LVGL Library in our JavaScript?_
 
-In our JavaScript Main Function, we call Zig Function __initDisplay__ at startup: [feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L123-L154)
+In our [__JavaScript Main Function__](https://lupyuen.github.io/articles/lvgl4#main-javascript-function), we call Zig Function __initDisplay__ at startup: [feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L123-L154)
 
 ```javascript
 // Main Function
@@ -1043,7 +1047,6 @@ canvas.addEventListener("mousedown", (e) => {
   // Notify Zig of Mouse Down
   const x = e.offsetX;
   const y = e.offsetY;
-  console.log({mousedown: {x, y}});
   wasm.instance.exports
     .notifyInput(1, x, y);  // TODO: Handle LVGL not ready
 });
@@ -1053,7 +1056,6 @@ canvas.addEventListener("mouseup", (e) => {
   // Notify Zig of Mouse Up
   x = e.offsetX;
   y = e.offsetY;
-  console.log({mouseup: {x, y}});
   wasm.instance.exports
     .notifyInput(0, x, y);  // TODO: Handle LVGL not ready
 });
@@ -1078,7 +1080,6 @@ canvas.addEventListener("touchstart", (e) => {
   // Assume that HTML Canvas is at (0,0)
   const x = touches[0].pageX;
   const y = touches[0].pageY;
-  console.log({touchstart: {x, y}});
   wasm.instance.exports
     .notifyInput(1, x, y);  // TODO: Handle LVGL not ready
 });
@@ -1093,7 +1094,6 @@ canvas.addEventListener("touchend", (e) => {
   // Assume that HTML Canvas is at (0,0)
   const x = touches[0].pageX;
   const y = touches[0].pageY;
-  console.log({touchend: {x, y}});
   wasm.instance.exports
     .notifyInput(0, x, y);  // TODO: Handle LVGL not ready
 });
@@ -1293,7 +1293,7 @@ The Elapsed Milliseconds is returned by our Zig Function __millis__, which is ca
 
 _How we did we import the LVGL Library from C into Zig?_
 
-Our Zig Wrapper for LVGL calls [__@cImport__](https://ziglang.org/documentation/master/#cImport) to import the LVGL Header Files into Zig: [lvgl.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig#L5-L28)
+Our Zig Wrapper for LVGL calls [__@cImport__](https://ziglang.org/documentation/master/#cImport) to import the LVGL Header Files from C into Zig: [lvgl.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig#L5-L28)
 
 ```zig
 /// Import the LVGL Library from C
@@ -1336,7 +1336,7 @@ Which means that we'll write "__c.something__" to call LVGL Functions from Zig..
 const btn = c.lv_btn_create(cont);
 ```
 
-_But we call the LVGL Functions in 2 Zig Source Files: lvgl.zig AND feature-phone.zig_
+_But we call the LVGL Functions in two Zig Source Files: lvgl.zig AND feature-phone.zig..._
 
 That's why we import the LVGL Wrapper __lvgl.zig__ into our LVGL App __feature-phone.zig__: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L8-L14)
 
@@ -1344,11 +1344,13 @@ That's why we import the LVGL Wrapper __lvgl.zig__ into our LVGL App __feature-p
 /// Import the LVGL Module
 const lvgl = @import("lvgl.zig");
 
-/// Import the LVGL Library from C
+/// Import the C Namespace
 const c = lvgl.c;
 ```
 
-And we expose the C Namespace from __lvgl.zig__. So both Zig Source Files can call LVGL Functions.
+And we import the C Namespace from __lvgl.zig__.
+
+So both Zig Source Files can call LVGL Functions.
 
 _Why not import the LVGL Functions in feature-phone.zig?_
 
