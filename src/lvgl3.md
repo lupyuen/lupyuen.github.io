@@ -616,12 +616,11 @@ export fn custom_logger(buf: [*c]const u8) void {
 }
 ```
 
-(We should reimplement __millis__ in JavaScript, though it might be slow)
+[(We should reimplement __millis__ with JavaScript)](https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-timer)
 
 In the code above, we defined __lv_assert_handler__ and __custom_logger__ to handle __Assertions and Logging__ in LVGL.
 
 Let's talk about LVGL Logging...
-
 
 ![WebAssembly Logger for LVGL](https://lupyuen.github.io/images/lvgl3-wasm2.png)
 
@@ -870,7 +869,7 @@ _Something doesn't look right..._
 
 Yeah we should have called __lv_timer_handler__ from our JavaScript...
 
-- [__"Handle LVGL Timer"__](https://github.com/lupyuen/pinephone-lvgl-zig#handle-lvgl-timer)
+- [__"Handle LVGL Timer"__](https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-timer)
 
 ![Render LVGL Display in WebAssembly](https://lupyuen.github.io/images/lvgl3-render.jpg)
 

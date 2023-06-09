@@ -1316,9 +1316,9 @@ _What's this LVGL Timer that's called by our JavaScript?_
 
 According to the [__LVGL Docs__](https://docs.lvgl.io/8.3/porting/project.html#initialization), we need to call __lv_timer_handler__ every few milliseconds to handle LVGL Tasks, which will...
 
-- Redraw the __LVGL Display__
-
 - Poll for __LVGL Input__
+
+- Redraw the __LVGL Display__
 
 To execute LVGL Tasks periodically, we do this in our JavaScript __Render Loop__ (pic above): [feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L123-L154)
 
@@ -1356,12 +1356,19 @@ function main() {
 };
 ```
 
-__handleTimer__ (in Zig) comes from our WebAssembly-Specific Module, it executes LVGL Tasks by calling __lv_timer_handler__: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L78-L89)
+The above Render Loop (in JavaScript) calls __handleTimer__ (in Zig) every few milliseconds.
+
+__handleTimer__ (in Zig) comes from our WebAssembly-Specific Module.
+
+It executes LVGL Tasks by calling __lv_timer_handler__: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L78-L89)
 
 ```zig
-/// Called by JavaScript to execute LVGL Tasks periodically, passing the Elapsed Milliseconds
+/// Called by JavaScript to execute LVGL Tasks
+/// periodically, passing the Elapsed Milliseconds
 export fn handleTimer(ms: i32) i32 {
-  // Set the Elapsed Milliseconds, don't allow time rewind
+
+  // Set the Elapsed Milliseconds,
+  // don't allow time rewind
   if (ms > elapsed_ms) {
     elapsed_ms = @intCast(u32, ms);
   }
@@ -1372,7 +1379,7 @@ export fn handleTimer(ms: i32) i32 {
 }
 ```
 
-Which will redraw the LVGL Display and poll for LVGL Input.
+Which will poll for LVGL Input and redraw the LVGL Display.
 
 _What's elapsed_ms?_
 
@@ -1398,11 +1405,12 @@ The Elapsed Milliseconds is returned by our Zig Function __millis__, which is ca
 
 _How we did we import the LVGL Library from C into Zig?_
 
-Our Zig Wrapper for LVGL calls [__@cImport__](https://ziglang.org/documentation/master/#cImport) to import the LVGL Header Files from C into Zig: [lvgl.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig#L5-L28)
+Our Zig Wrapper for LVGL calls [__@cImport__](https://ziglang.org/documentation/master/#cImport) to import the __LVGL Header Files__ from C into Zig: [lvgl.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig#L5-L28)
 
 ```zig
 /// Import the LVGL Library from C
 pub const c = @cImport({
+
   // NuttX Defines
   @cDefine("__NuttX__", "");
   @cDefine("NDEBUG", "");
@@ -1427,6 +1435,8 @@ pub const c = @cImport({
 
 (Together with NuttX and other C Functions)
 
+[(__display.h__ is the C Interface for our LVGL Display and Input Functions)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.h)
+
 According to the code above, we imported the LVGL Functions into the __Namespace "c"__...
 
 ```zig
@@ -1440,6 +1450,8 @@ Which means that we'll write "__c.something__" to call LVGL Functions from Zig..
 // Call LVGL Function imported from C into Zig
 const btn = c.lv_btn_create(cont);
 ```
+
+(Zig Compiler calls Clang Compiler to parse the C Header Files)
 
 _But we call the LVGL Functions in two Zig Source Files: lvgl.zig AND feature-phone.zig..._
 
