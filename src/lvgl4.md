@@ -766,7 +766,7 @@ Then our HTML Page loads and executes our JavaScript...
 
 _What's inside the JavaScript for our LVGL App in WebAssembly?_
 
-Our JavaScript shall...
+Our JavaScript will...
 
 1.  Load the __WebAssembly Module__ (compiled from Zig and C)
 
@@ -797,7 +797,8 @@ async function bootstrap() {
     importObject
   );
 
-  // Store references to WebAssembly Functions and Memory exported by Zig
+  // Store references to WebAssembly Functions
+  // and Memory exported by Zig
   wasm.init(result);
 
   // Start the Main Function
@@ -812,7 +813,7 @@ Then our script __imports the Zig Functions__ and calls the __Main JavaScript Fu
 
 ## Import Zig Functions into JavaScript
 
-Our script defines the JavaScript Module __wasm__ to store the WebAssembly Functions and Memory imported from Zig: [feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L4-L28)
+Our script defines the JavaScript Module __wasm__ that will store the WebAssembly Functions and Memory imported from Zig: [feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L4-L28)
 
 ```javascript
 // Log WebAssembly Messages from Zig to JavaScript Console
