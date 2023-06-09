@@ -259,7 +259,7 @@ c.lv_obj_add_style(digit_cont,   &amp;cont_style, 0);
 </code></pre></div>
 <p><strong>cont_style</strong> is the LVGL Style for our Containers.</p>
 <p>The Style tells LVGL that our Containers will have <a href="https://docs.lvgl.io/8.3/layouts/flex.html#"><strong>Flex Layout</strong></a>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L46-L54">feature-phone.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>// LVGL Style for Containers (std.mem.zeroes crashes the compiler)
+<div class="example-wrap"><pre class="language-zig"><code>// LVGL Style for Containers
 var cont_style: c.lv_style_t = undefined;
 
 // Create the Style for the Containers
@@ -954,7 +954,7 @@ pub export fn initDisplay() void {
 <h1 id="appendix-initialise-lvgl-input"><a href="#appendix-initialise-lvgl-input">10 Appendix: Initialise LVGL Input</a></h1>
 <p><em>How does Zig initialise LVGL Input at startup?</em></p>
 <p>In the previous section we saw that <strong>initDisplay</strong> (in Zig) initialises the LVGL Input at startup: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L18-L58">wasm.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// LVGL Input Device Driver (std.mem.zeroes crashes the compiler)
+<div class="example-wrap"><pre class="language-zig"><code>/// LVGL Input Device Driver
 var indev_drv: c.lv_indev_drv_t = undefined;
 
 /// Init the LVGL Display and Input
