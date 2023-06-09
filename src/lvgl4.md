@@ -424,6 +424,8 @@ Browse to __feature-phone.html__. And we'll see our Feature Phone UI in the Web 
 
 [(See the __JavaScript Log__)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/1feb919e17018222dd3ebf79b206de97eb4cfbeb/README.md#output-log)
 
+![Call and Cancel Buttons](https://lupyuen.github.io/images/lvgl4-ui2.jpg)
+
 # Handle LVGL Buttons
 
 _Earlier we created LVGL Buttons in our Zig App..._

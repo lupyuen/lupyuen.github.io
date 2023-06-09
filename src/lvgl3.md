@@ -526,6 +526,8 @@ compile_lvgl misc/lv_mem.c lv_mem.o
 
 [(__compile_lvgl__ is defined here)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L226-L289)
 
+[(NuttX Build Files)](https://github.com/lupyuen/pinephone-lvgl-zig/releases/tag/nuttx-build-files)
+
 (More about __display.c__ later)
 
 And __link the Compiled LVGL WebAssemblies__ with our Zig LVGL App: [build.sh](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L86-L192)
