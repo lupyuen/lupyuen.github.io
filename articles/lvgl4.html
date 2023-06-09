@@ -112,7 +112,7 @@
 <p>Yeah but it’s 2023… Maybe there’s an easier way to build and test LVGL Apps? Let’s experiment and find out!</p>
 <p><img src="https://lupyuen.github.io/images/lvgl4-ui.jpg" alt="Feature Phone UI" /></p>
 <h1 id="feature-phone-ui"><a href="#feature-phone-ui">1 Feature Phone UI</a></h1>
-<p><em>Remember Feature Phones from 25 years ago?</em></p>
+<p><em>Wow that looks like a Feature Phone from 25 years ago…</em></p>
 <p>The pic above shows the <a href="https://en.wikipedia.org/wiki/Feature_phone"><strong>Feature Phone UI</strong></a> that we’ll create with LVGL…</p>
 <ul>
 <li>
@@ -156,15 +156,26 @@ fn createCallButtons(cont: *c.lv_obj_t) !void {
     c.lv_label_set_text(label, text.ptr);
     c.lv_obj_center(label);
 
+    // Convert the Button Text from Zig Pointer to C Pointer
+    const data = @intToPtr(
+      *anyopaque,          // Convert to `void *` C Pointer
+      @ptrToInt(text.ptr)  // Convert from Zig Pointer
+    );
+
     // Set the Event Callback Function and Callback Data for the Button
-    const data = @intToPtr(*anyopaque, @ptrToInt(text.ptr));
-    _ = c.lv_obj_add_event_cb(btn, eventHandler, c.LV_EVENT_ALL, data);
+    _ = c.lv_obj_add_event_cb(
+      btn,             // LVGL Button
+      eventHandler,    // Callback Function
+      c.LV_EVENT_ALL,  // Handle all events
+      data             // Callback Data (Button Text)
+    );
   }
 }
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-import-lvgl-library">(We write “<strong>c.something</strong>” to call an LVGL Function)</a></p>
 <p><em>What’s lv_obj_add_event_cb?</em></p>
-<p><a href="https://docs.lvgl.io/8.3/overview/event.html#add-events-to-the-object"><strong>lv_obj_add_event_cb</strong></a> tells LVGL to call our Zig Function <strong>eventHandler</strong> when the Button is clicked. We’ll see the Event Callback Function in a while.</p>
+<p><a href="https://docs.lvgl.io/8.3/overview/event.html#add-events-to-the-object"><strong>lv_obj_add_event_cb</strong></a> tells LVGL to call our Zig Function <strong>eventHandler</strong> when the Button is clicked.</p>
+<p>We’ll see the Event Callback Function in a while.</p>
 <p>(“<strong>_ = something</strong>” tells Zig Compiler that we’re not using the Returned Value)</p>
 <p>(We call <a href="https://ziglang.org/documentation/master/#intToPtr"><strong>@intToPtr</strong></a> and <a href="https://ziglang.org/documentation/master/#ptrToInt"><strong>@ptrToInt</strong></a> to pass Zig Pointers as C Pointers)</p>
 <p><em>What’s cont?</em></p>
@@ -197,9 +208,19 @@ fn createDigitButtons(cont: *c.lv_obj_t) !void {
     c.lv_label_set_text(label, text.ptr);
     c.lv_obj_center(label);
 
+    // Convert the Button Text from Zig Pointer to C Pointer
+    const data = @intToPtr(
+      *anyopaque,          // Convert to `void *` C Pointer
+      @ptrToInt(text.ptr)  // Convert from Zig Pointer
+    );
+
     // Set the Event Callback Function and Callback Data for the Button
-    const data = @intToPtr(*anyopaque, @ptrToInt(text.ptr));
-    _ = c.lv_obj_add_event_cb(btn, eventHandler, c.LV_EVENT_ALL, data);
+    _ = c.lv_obj_add_event_cb(
+      btn,             // LVGL Button
+      eventHandler,    // Callback Function
+      c.LV_EVENT_ALL,  // Handle all events
+      data             // Callback Data (Button Text)
+    );
   }
 }
 </code></pre></div>
@@ -215,9 +236,13 @@ fn createWidgets() !void {
   // Omitted: Create the Style for the Containers
   ...
 
-  // Create the Container for Display (700 x 150 pixels)
+  // Create the Container for Display
   // https://docs.lvgl.io/8.3/layouts/flex.html#arrange-items-in-rows-with-wrap-and-even-spacing
-  const display_cont = c.lv_obj_create(c.lv_scr_act()).?;
+  const display_cont = c.lv_obj_create(
+    c.lv_scr_act()  // Get Active Screen
+  ).?;              // If a Null Pointer is returned, stop
+
+  // Set the Container Size (700 x 150 pixels), Alignment and Style
   c.lv_obj_set_size(display_cont, 700, 150);
   c.lv_obj_align(display_cont, c.LV_ALIGN_TOP_MID, 0, 5);
   c.lv_obj_add_style(display_cont, &amp;cont_style, 0);
@@ -225,7 +250,7 @@ fn createWidgets() !void {
 <p>In the code above, we create the <strong>LVGL Container</strong> for the Display.</p>
 <p>(We write “<strong><code>.?</code></strong>” to check for Null Pointers)</p>
 <p>(More about <strong>cont_style</strong> in the next section)</p>
-<p>Then we create the <strong>LVGL Containers</strong> for the Call / Cancel Buttons and Digit Buttons…</p>
+<p>In the same way, we create the <strong>LVGL Containers</strong> for the Call / Cancel Buttons and Digit Buttons…</p>
 <div class="example-wrap"><pre class="language-zig"><code>  // Create the Container for Call / Cancel Buttons (700 x 200 pixels)
   const call_cont = c.lv_obj_create(c.lv_scr_act()).?;
   c.lv_obj_set_size(call_cont, 700, 200);
@@ -319,10 +344,11 @@ fn createDisplayLabel(cont: *c.lv_obj_t) !void {
 <p><em>This code looks different from the rest?</em></p>
 <p>Yep this code calls our <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig"><strong>Zig Wrapper for LVGL</strong></a>.</p>
 <p>Someday we might create a Zig Wrapper for the rest of the code.</p>
+<p><a href="https://lupyuen.github.io/articles/lvgl#wrap-lvgl-api">(More about Zig Wrapper for LVGL)</a></p>
 <p><em>So many hard-coded coordinates in our code…</em></p>
-<p>That’s the beauty of testing our LVGL App in a Web Browser!</p>
-<p>With WebAssembly, we can tweak the values and test our LVGL App (nearly) instantly. And after testing, we refactor the numbers to make them generic across Screen Sizes.</p>
-<p>This is how we run our LVGL App in a Web Browser…</p>
+<p>That’s the beauty of testing our LVGL App in a <strong>Web Browser</strong>!</p>
+<p>With WebAssembly, we can <strong>quickly tweak the values</strong> and test our LVGL App (nearly) instantly. And after testing, we refactor the numbers to make them generic across Screen Sizes.</p>
+<p>Let’s run our LVGL App in a Web Browser…</p>
 <p><img src="https://lupyuen.github.io/images/lvgl3-wasm5.png" alt="Feature Phone UI in the Web Browser" /></p>
 <p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html"><em>Feature Phone UI in the Web Browser</em></a></p>
 <h1 id="run-lvgl-app-in-web-browser"><a href="#run-lvgl-app-in-web-browser">2 Run LVGL App in Web Browser</a></h1>
@@ -501,7 +527,7 @@ pub usingnamespace
 <p><strong>NuttX-Specific</strong> Functions: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/nuttx.zig"><strong>nuttx.zig</strong></a></p>
 </li>
 </ul>
-<p>Let’s dive into the functions…</p>
+<p>Let’s dive into the Platform-Specific Functions…</p>
 <h2 id="lvgl-for-webassembly"><a href="#lvgl-for-webassembly">4.1 LVGL for WebAssembly</a></h2>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig"><strong>wasm.zig</strong></a> defines the LVGL Functions specific to WebAssembly…</p>
 <ul>
