@@ -66,7 +66,7 @@ Let's create the Buttons...
 
 ## Call and Cancel Buttons
 
-We begin with the __"Call" and "Cancel"__ Buttons (pic above): [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L152-L155)
+We begin with the __"Call" and "Cancel"__ Buttons (pic above): [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L156-L159)
 
 ```zig
 /// Labels for Call and Cancel Buttons
@@ -76,7 +76,7 @@ const call_labels = [_][]const u8{
 };
 ```
 
-This is how we create the __LVGL Buttons__ for "Call" and "Cancel": [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L112-L132)
+This is how we create the __LVGL Buttons__ for "Call" and "Cancel": [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L116-L136)
 
 ```zig
 /// Create the Call and Cancel Buttons
@@ -135,7 +135,7 @@ We'll create the Container when we call __createCallButtons__.
 
 ## Digit Buttons
 
-Now we do the same for the __Digit Buttons__ (pic above): [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L155-L158)
+Now we do the same for the __Digit Buttons__ (pic above): [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L159-L162)
 
 ```zig
 /// Labels for Digit Buttons
@@ -145,7 +145,7 @@ const digit_labels = [_][]const u8{
 };
 ```
 
-This is how we create the __Digit Buttons__ in LVGL: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L132-L152)
+This is how we create the __Digit Buttons__ in LVGL: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L136-L156)
 
 ```zig
 /// Create the Digit Buttons
@@ -192,7 +192,7 @@ Again, LVGL will call our Zig Function __eventHandler__ when the Button is click
 
 ## Label and Button Containers
 
-We create 3 __LVGL Containers__ for the Display Label, Call / Cancel Buttons and Digit Buttons (pic above): [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L54-L77)
+We create 3 __LVGL Containers__ for the Display Label, Call / Cancel Buttons and Digit Buttons (pic above): [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L38-L83)
 
 ```zig
 /// Create the LVGL Widgets that will be rendered on the display
@@ -465,7 +465,7 @@ _What's lv_obj_add_event_cb?_
 
 [__lv_obj_add_event_cb__](https://docs.lvgl.io/8.3/overview/event.html#add-events-to-the-object) tells LVGL to call our Zig Function __eventHandler__ when the Button is clicked.
 
-In our Event Handler, we __identify the Button clicked__: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L174-L219)
+In our Event Handler, we __identify the Button clicked__: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L171-L219)
 
 ```zig
 /// Handle LVGL Button Event
@@ -553,7 +553,7 @@ _Will it run on PinePhone?_
 
 Yep the exact same LVGL App runs on __PinePhone with Apache NuttX RTOS__!
 
-The magic happens here: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L15-L19)
+The magic happens here: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L14-L20)
 
 ```zig
 /// Import the functions specific to WebAssembly
@@ -710,9 +710,19 @@ Yep potentially! But first we need to tidy up...
 
 # What's Next
 
-TODO
+TODO: how we created an [__LVGL Graphical App__](https://docs.lvgl.io/master/index.html) for [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)... By tweaking and testing in a __Web Browser!__
 
-Which makes UI Prototyping a lot quicker in LVGL. Stay Tuned for updates!
+TODO: run [__Zig Compiler__](https://ziglang.org) to compile LVGL Library from __C to WebAssembly__.
+
+TODO: write our LVGL App in the [__Zig Programming Language__](https://ziglang.org)! (Instead of C)
+
+TODO: Hopefully Zig will need fewer lines of code
+
+TODO: Which makes UI Prototyping a lot quicker in LVGL
+
+TODO: we're creating a [__Feature Phone UI__](https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone) for [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System) on PinePhone.
+
+TODO: Maybe we've discovered the easier way to build and test LVGL Apps... Thanks to our Web Browser!
 
 Meanwhile please check out the other articles on NuttX for PinePhone...
 
@@ -850,7 +860,7 @@ __getString__ will be called by our Zig Logger for LVGL...
 
 ## Export JavaScript Functions to Zig
 
-Our script exports the JavaScript Function __render__ to Zig: [feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js)
+Our script exports the JavaScript Function __render__ to Zig: [feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L28-L67)
 
 ```javascript
 // Export JavaScript Functions to Zig
@@ -880,11 +890,11 @@ const importObject = {
 
 __render__ will be called by our Zig Function for LVGL Display...
 
-- [__LVGL Display in Zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L15-L75)
+- [__LVGL Display in Zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L16-L76)
 
   [(Explained here)](https://lupyuen.github.io/articles/lvgl3#render-lvgl-display-in-zig)
 
-Our script also exports the JavaScript Functions __jsConsoleLogWrite__ and __jsConsoleLogFlush__...
+Our script also exports the JavaScript Functions __jsConsoleLogWrite__ and __jsConsoleLogFlush__ to Zig...
 
 ```javascript
     // Write to JavaScript Console from Zig
@@ -905,7 +915,7 @@ Our script also exports the JavaScript Functions __jsConsoleLogWrite__ and __jsC
 
 Which will be called by our Zig Logger for LVGL...
 
-- [__LVGL Logger in Zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L152-L177)
+- [__LVGL Logger in Zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L153-L178)
 
   [(Explained here)](https://lupyuen.github.io/articles/lvgl3#webassembly-logger-for-lvgl)
 
@@ -1022,7 +1032,7 @@ __initDisplay__ (in Zig) will...
 
     [(Explained here)](https://lupyuen.github.io/articles/lvgl4#appendix-initialise-lvgl-input)
 
-Like so: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L18-L58)
+Like so: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L16-L59)
 
 ```zig
 /// Init the LVGL Display and Input
@@ -1076,7 +1086,7 @@ Let's talk about LVGL Input...
 
 _How does Zig initialise LVGL Input at startup?_
 
-In the previous section we saw that __initDisplay__ (in Zig) initialises the LVGL Input at startup: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L18-L58)
+In the previous section we saw that __initDisplay__ (in Zig) initialises the LVGL Input at startup: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L16-L59)
 
 ```zig
 /// LVGL Input Device Driver
@@ -1138,7 +1148,7 @@ Now we can handle the LVGL Input in Zig and JavaScript...
 
 _How do we handle LVGL Mouse Input and Touch Input?_
 
-In our JavaScript, we capture the __Mouse Down__ and __Mouse Up__ events (pic above): [feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L77-L123)
+In our JavaScript, we capture the __Mouse Down__ and __Mouse Up__ events (pic above): [feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L73-L123)
 
 ```javascript
 // Handle Mouse Down on HTML Canvas
@@ -1202,7 +1212,7 @@ Which will work on Touch Devices. (Like our Phones)
 
 _What happens inside notifyInput?_
 
-__notifyInput__ (in Zig) comes from our WebAssembly-Specific Module. It saves the __Input State__ and __Input Coordinates__ passed by our JavaScript: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L89-L109)
+__notifyInput__ (in Zig) comes from our WebAssembly-Specific Module. It saves the __Input State__ and __Input Coordinates__ passed by our JavaScript: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L90-L110)
 
 ```zig
 /// Called by JavaScript to notify Mouse Down and Mouse Up.
@@ -1232,7 +1242,7 @@ var input_y: c.lv_coord_t = 0;
 
 _What happens to the saved Input State and Input Coordinates?_
 
-From the previous section, we saw that Zig sets __readInput__ as the Callback Function for our LVGL Input Device: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L18-L58)
+From the previous section, we saw that Zig sets __readInput__ as the Callback Function for our LVGL Input Device: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L16-L59)
 
 ```zig
 /// Init the LVGL Display and Input
@@ -1247,7 +1257,7 @@ This tells LVGL to call our Zig Function __readInput__ periodically to poll for 
 
 [(Initiated by the __LVGL Timer__)](https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-timer)
 
-__readInput__ (in Zig) comes from our WebAssembly-Specific Module: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L109-L119)
+__readInput__ (in Zig) comes from our WebAssembly-Specific Module: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L110-L120)
 
 ```zig
 /// LVGL Callback Function to read Input Device
@@ -1303,6 +1313,8 @@ And the LVGL Button will respond correctly to Mouse and Touch Input in the Web B
 [(Watch the __Demo on YouTube__)](https://youtube.com/shorts/J6ugzVyKC4U?feature=share)
 
 [(See the __JavaScript Log__)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/e70b2df50fa562bec7e02f24191dbbb1e5a7553a/README.md#todo)
+
+Let's find out how the LVGL Timer triggers the reading of LVGL Input...
 
 ![Handle LVGL Timer](https://lupyuen.github.io/images/lvgl4-flow.jpg)
 
@@ -1360,7 +1372,7 @@ The above Render Loop (in JavaScript) calls __handleTimer__ (in Zig) every few m
 
 __handleTimer__ (in Zig) comes from our WebAssembly-Specific Module.
 
-It executes LVGL Tasks by calling __lv_timer_handler__: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L78-L89)
+It executes LVGL Tasks by calling __lv_timer_handler__: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L76-L90)
 
 ```zig
 /// Called by JavaScript to execute LVGL Tasks
@@ -1383,7 +1395,7 @@ Which will poll for LVGL Input and redraw the LVGL Display.
 
 _What's elapsed_ms?_
 
-__elapsed_ms__ remembers the Elapsed Milliseconds since startup: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L133-L142)
+__elapsed_ms__ remembers the number of __Elapsed Milliseconds__ (since startup): [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L131-L143)
 
 ```zig
 /// Return the number of elapsed milliseconds
@@ -1433,9 +1445,11 @@ pub const c = @cImport({
 });
 ```
 
-(Together with NuttX and other C Functions)
+Together with the NuttX Functions and other C Functions.
 
 [(__display.h__ is the C Interface for our LVGL Display and Input Functions)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.h)
+
+[(__display.c__ is the C Implementation)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c)
 
 According to the code above, we imported the LVGL Functions into the __Namespace "c"__...
 
@@ -1467,7 +1481,7 @@ const c = lvgl.c;
 
 And we import the C Namespace from __lvgl.zig__.
 
-So both Zig Source Files can call LVGL Functions.
+Thus both Zig Source Files can call LVGL Functions.
 
 _Why not import the LVGL Functions in feature-phone.zig?_
 
