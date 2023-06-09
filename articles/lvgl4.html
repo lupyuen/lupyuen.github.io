@@ -1083,7 +1083,7 @@ canvas.addEventListener(&quot;touchend&quot;, (e) =&gt; {
     .notifyInput(0, x, y);  // TODO: Handle LVGL not ready
 });
 </code></pre></div>
-<p>Which will work on Touch Devices (like our Phones).</p>
+<p>Which will work on Touch Devices. (Like our Phones)</p>
 <p><em>What happens inside notifyInput?</em></p>
 <p><strong>notifyInput</strong> (in Zig) comes from our WebAssembly-Specific Module. It saves the <strong>Input State</strong> and <strong>Input Coordinates</strong> passed by our JavaScript: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L89-L109">wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Called by JavaScript to notify Mouse Down and Mouse Up.
@@ -1159,8 +1159,8 @@ void set_input_data(
   data-&gt;point.y = y;
 }
 </code></pre></div>
+<p>And the LVGL Button will respond correctly to Mouse and Touch Input in the Web Browser! (Pic below)</p>
 <p><img src="https://lupyuen.github.io/images/lvgl3-wasm4.png" alt="Handle LVGL Input" /></p>
-<p>And the LVGL Button will respond correctly to Mouse and Touch Input in the Web Browser! (Pic above)</p>
 <p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html">(Try the <strong>LVGL Button Demo</strong>)</a></p>
 <p><a href="https://youtube.com/shorts/J6ugzVyKC4U?feature=share">(Watch the <strong>Demo on YouTube</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/e70b2df50fa562bec7e02f24191dbbb1e5a7553a/README.md#todo">(See the <strong>JavaScript Log</strong>)</a></p>
