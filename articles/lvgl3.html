@@ -571,7 +571,7 @@ export fn custom_logger(buf: [*c]const u8) void {
   wasmlog.Console.log(&quot;{s}&quot;, .{buf});
 }
 </code></pre></div>
-<p>(We should reimplement <strong>millis</strong> in JavaScript, though it might be slow)</p>
+<p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-timer">(We should reimplement <strong>millis</strong> with JavaScript)</a></p>
 <p>In the code above, we defined <strong>lv_assert_handler</strong> and <strong>custom_logger</strong> to handle <strong>Assertions and Logging</strong> in LVGL.</p>
 <p>Let’s talk about LVGL Logging…</p>
 <p><img src="https://lupyuen.github.io/images/lvgl3-wasm2.png" alt="WebAssembly Logger for LVGL" /></p>
@@ -775,7 +775,7 @@ pub export fn lv_demo_widgets() void {
 <p><em>Something doesn’t look right…</em></p>
 <p>Yeah we should have called <strong>lv_timer_handler</strong> from our JavaScript…</p>
 <ul>
-<li><a href="https://github.com/lupyuen/pinephone-lvgl-zig#handle-lvgl-timer"><strong>“Handle LVGL Timer”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-timer"><strong>“Handle LVGL Timer”</strong></a></li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/lvgl3-render.jpg" alt="Render LVGL Display in WebAssembly" /></p>
 <h1 id="render-lvgl-display-in-zig"><a href="#render-lvgl-display-in-zig">11 Render LVGL Display in Zig</a></h1>
