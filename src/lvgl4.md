@@ -243,7 +243,7 @@ __cont_style__ is the LVGL Style for our Containers.
 The Style tells LVGL that our Containers will have [__Flex Layout__](https://docs.lvgl.io/8.3/layouts/flex.html#): [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L46-L54)
 
 ```zig
-// LVGL Style for Containers (std.mem.zeroes crashes the compiler)
+// LVGL Style for Containers
 var cont_style: c.lv_style_t = undefined;
 
 // Create the Style for the Containers
@@ -1048,7 +1048,7 @@ _How does Zig initialise LVGL Input at startup?_
 In the previous section we saw that __initDisplay__ (in Zig) initialises the LVGL Input at startup: [wasm.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L18-L58)
 
 ```zig
-/// LVGL Input Device Driver (std.mem.zeroes crashes the compiler)
+/// LVGL Input Device Driver
 var indev_drv: c.lv_indev_drv_t = undefined;
 
 /// Init the LVGL Display and Input
