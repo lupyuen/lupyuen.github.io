@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>NuttX RTOS for PinePhone: Feature Phone UI in LVGL, Zig and WebAssembly</title>
+            <link>https://lupyuen.github.io/articles/lvgl4</link>
+            <description><![CDATA[How we created the LVGL Feature Phone UI for Pine64 PinePhone on Apache NuttX RTOS... By tweaking and testing in a Web Browser!]]></description>
+            <guid>https://lupyuen.github.io/articles/lvgl4</guid>
+            <pubDate>Sat, 10 Jun 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>(Possibly) LVGL in WebAssembly with Zig Compiler</title>
             <link>https://lupyuen.github.io/articles/lvgl3</link>
             <description><![CDATA[Can we preview an LVGL App in the Web Browser... With WebAssembly and Zig Compiler? Let's find out!]]></description>

@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "NuttX RTOS for PinePhone: Feature Phone UI in LVGL, Zig and WebAssembly",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-06-10",
+      "website": "https://lupyuen.github.io/articles/lvgl4",
+      "summary": "How we created the LVGL Feature Phone UI for Pine64 PinePhone on Apache NuttX RTOS... By tweaking and testing in a Web Browser!"
+    },
+    {
       "name": "(Possibly) LVGL in WebAssembly with Zig Compiler",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-05-31",

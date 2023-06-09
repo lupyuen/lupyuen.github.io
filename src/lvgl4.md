@@ -1,6 +1,6 @@
 # NuttX RTOS for PinePhone: Feature Phone UI in LVGL, Zig and WebAssembly
 
-📝 _12 Jun 2023_
+📝 _10 Jun 2023_
 
 ![LVGL Feature Phone UI running on PinePhone with Apache NuttX RTOS](https://lupyuen.github.io/images/lvgl4-title.jpg)
 
@@ -710,21 +710,21 @@ Yep potentially! But first we need to tidy up...
 
 # What's Next
 
-TODO: how we created an [__LVGL Graphical App__](https://docs.lvgl.io/master/index.html) for [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)... By tweaking and testing in a __Web Browser!__
+Today we successfully created an LVGL App for PinePhone... By tweaking and testing in a __Web Browser!__
 
-TODO: run [__Zig Compiler__](https://ziglang.org) to compile LVGL Library from __C to WebAssembly__.
+- We compiled LVGL Library from __C to WebAssembly__ with Zig Compiler
 
-TODO: write our LVGL App in the [__Zig Programming Language__](https://ziglang.org)! (Instead of C)
+- We wrote our LVGL App in the __Zig Programming Language__ (instead of C)
 
-TODO: Hopefully Zig will need fewer lines of code
+- Our LVGL App in Zig looks (somewhat) __cleaner and simpler__ than C (except for the Opaque Types)
 
-TODO: Which makes UI Prototyping a lot quicker in LVGL
+- Exact same code runs in a __Web Browser__ and on __PinePhone with Apache NuttX RTOS__
 
-TODO: we're creating a [__Feature Phone UI__](https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone) for [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System) on PinePhone.
+- Which is super helpful for __prototyping LVGL Apps__
 
-TODO: Maybe we've discovered the easier way to build and test LVGL Apps... Thanks to our Web Browser!
+Maybe we've discovered the easier way to build and test LVGL Apps... Thanks to our Web Browser!
 
-Meanwhile please check out the other articles on NuttX for PinePhone...
+Please check out the other articles on NuttX for PinePhone...
 
 -   [__"Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
 
@@ -1409,9 +1409,17 @@ export fn millis() u32 {
 var elapsed_ms: u32 = 0;
 ```
 
-The Elapsed Milliseconds is returned by our Zig Function __millis__, which is called by LVGL periodically.
+The Elapsed Milliseconds is returned by our Zig Function __millis__, which is called by LVGL periodically...
 
-[(More about this)](https://lupyuen.github.io/articles/lvgl3#lvgl-porting-layer-for-webassembly)
+- [__"LVGL Porting Layer for WebAssembly"__](https://lupyuen.github.io/articles/lvgl3#lvgl-porting-layer-for-webassembly)
+
+To find out how we render the LVGL Display, check out the previous article...
+
+- [__"Render LVGL Display in Zig"__](https://lupyuen.github.io/articles/lvgl3#render-lvgl-display-in-zig)
+
+![Rendering LVGL Display in Zig](https://lupyuen.github.io/images/lvgl3-render.jpg)
+
+[_Rendering LVGL Display in Zig_](https://lupyuen.github.io/articles/lvgl3#render-lvgl-display-in-zig)
 
 # Appendix: Import LVGL Library
 
@@ -1488,3 +1496,5 @@ _Why not import the LVGL Functions in feature-phone.zig?_
 Zig Compiler doesn't like it when we call [__@cImport__](https://ziglang.org/documentation/master/#cImport) twice from different Source Files...
 
 Zig Compiler will think that the __LVGL Types are different__. And we can't pass the same LVGL Types across Source Files.
+
+That's why we call [__@cImport__](https://ziglang.org/documentation/master/#cImport) once, and import the C Namespace instead.
