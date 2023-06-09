@@ -674,6 +674,10 @@ Yep potentially! But first we need to tidy up...
 
   [(See this)](https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation)
 
+- Make actual __Phone Calls__ on PinePhone
+
+  [(See this)](https://lupyuen.github.io/articles/lte2#outgoing-phone-call)
+
 # What's Next
 
 TODO
