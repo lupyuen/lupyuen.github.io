@@ -556,8 +556,8 @@ Yep the exact same LVGL App runs on __PinePhone with Apache NuttX RTOS__!
 The magic happens here: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L15-L19)
 
 ```zig
-/// Import the functions specific to WebAssembly and Apache NuttX RTOS
-/// into the Global Namespace
+/// Import the functions specific to WebAssembly
+/// and Apache NuttX RTOS into the Global Namespace
 pub usingnamespace
 
   // Depending on the Target CPU Architecture...
@@ -566,7 +566,7 @@ pub usingnamespace
     // Import WebAssembly-Specific Functions from `wasm.zig`
     .wasm32, .wasm64 => @import("wasm.zig"),
 
-    // Import NuttX-Specific Functions from `nuttx.zig`
+    // Or import NuttX-Specific Functions from `nuttx.zig`
     else => @import("nuttx.zig"),
   };
 ```
@@ -621,11 +621,11 @@ Thankfully most of the above LVGL Functions are already implemented by Apache Nu
 
 - [__Custom Panic Handler for Zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/nuttx.zig#L6-L29)
 
-  [(Explained here)](https://lupyuen.github.io/articles/iot#appendix-logging)
+  [(Explained here)](https://lupyuen.github.io/articles/iot#appendix-panic-handler)
 
 - [__Custom Logger for Zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/nuttx.zig#L29-L59)
 
-  [(Explained here)](https://lupyuen.github.io/articles/iot#appendix-panic-handler)
+  [(Explained here)](https://lupyuen.github.io/articles/iot#appendix-logging)
 
 ![Feature Phone UI on PinePhone and Apache NuttX RTOS](https://lupyuen.github.io/images/lvgl3-pinephone.jpg)
 
