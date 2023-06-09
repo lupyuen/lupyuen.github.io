@@ -880,7 +880,7 @@ function main() {
   loop();
 };
 </code></pre></div>
-<p>Next we talk about LVGL Initialisation, LVGL Timer and LVGL Input…</p>
+<p>Next we talk about LVGL Initialisation, Input and Timer…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-initialise-lvgl"><strong>“Initialise LVGL”</strong></a></p>
@@ -889,10 +889,10 @@ function main() {
 <p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-initialise-lvgl-input"><strong>“Initialise LVGL Input”</strong></a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-timer"><strong>“Handle LVGL Timer”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-input"><strong>“Handle LVGL Input”</strong></a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-input"><strong>“Handle LVGL Input”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-timer"><strong>“Handle LVGL Timer”</strong></a></p>
 </li>
 </ul>
 <h1 id="appendix-initialise-lvgl"><a href="#appendix-initialise-lvgl">9 Appendix: Initialise LVGL</a></h1>
@@ -1011,7 +1011,8 @@ pub export fn initDisplay() void {
 <p><em>What’s register_input?</em></p>
 <p>The LVGL Input Device Struct <strong>lv_indev_t</strong> is an <a href="https://lupyuen.github.io/articles/lvgl3#initialise-lvgl-display"><strong>Opaque Type</strong></a>, which is inaccessible in Zig.</p>
 <p>To work around this, we define <strong>register_input</strong> in C (instead of Zig) to register the LVGL Input Device: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L109-L117">display.c</a></p>
-<div class="example-wrap"><pre class="language-C"><code>// Register the LVGL Input Device Driver and return the LVGL Input Device
+<div class="example-wrap"><pre class="language-C"><code>// Register the LVGL Input Device Driver
+// and return the LVGL Input Device
 // https://docs.lvgl.io/8.3/porting/indev.html
 void *register_input(lv_indev_drv_t *indev_drv) {
   lv_indev_t *indev = lv_indev_drv_register(indev_drv);
@@ -1025,7 +1026,7 @@ void *register_input(lv_indev_drv_t *indev_drv) {
 <p><a href="https://lupyuen.github.io/articles/lvgl3#render-lvgl-display-in-zig">(Explained here)</a></p>
 <h1 id="appendix-handle-lvgl-input"><a href="#appendix-handle-lvgl-input">11 Appendix: Handle LVGL Input</a></h1>
 <p><em>How do we handle LVGL Mouse Input and Touch Input?</em></p>
-<p>In our JavaScript, we capture <strong>Mouse Down</strong> and <strong>Mouse Up</strong> events (pic above): <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L77-L123">feature-phone.js</a></p>
+<p>In our JavaScript, we capture the <strong>Mouse Down</strong> and <strong>Mouse Up</strong> events (pic above): <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L77-L123">feature-phone.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Handle Mouse Down on HTML Canvas
 canvas.addEventListener(&quot;mousedown&quot;, (e) =&gt; {
   // Notify Zig of Mouse Down
