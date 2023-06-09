@@ -689,7 +689,7 @@ nsh&gt; lvgldemo
 <p>Then our HTML Page loads and executes our JavaScript…</p>
 <h1 id="appendix-javascript-for-lvgl"><a href="#appendix-javascript-for-lvgl">8 Appendix: JavaScript for LVGL</a></h1>
 <p><em>What’s inside the JavaScript for our LVGL App in WebAssembly?</em></p>
-<p>Our JavaScript shall…</p>
+<p>Our JavaScript will…</p>
 <ol>
 <li>
 <p>Load the <strong>WebAssembly Module</strong> (compiled from Zig and C)</p>
@@ -721,7 +721,8 @@ async function bootstrap() {
     importObject
   );
 
-  // Store references to WebAssembly Functions and Memory exported by Zig
+  // Store references to WebAssembly Functions
+  // and Memory exported by Zig
   wasm.init(result);
 
   // Start the Main Function
@@ -733,7 +734,7 @@ bootstrap();
 </code></pre></div>
 <p>Then our script <strong>imports the Zig Functions</strong> and calls the <strong>Main JavaScript Function</strong>. (See below)</p>
 <h2 id="import-zig-functions-into-javascript"><a href="#import-zig-functions-into-javascript">8.2 Import Zig Functions into JavaScript</a></h2>
-<p>Our script defines the JavaScript Module <strong>wasm</strong> to store the WebAssembly Functions and Memory imported from Zig: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L4-L28">feature-phone.js</a></p>
+<p>Our script defines the JavaScript Module <strong>wasm</strong> that will store the WebAssembly Functions and Memory imported from Zig: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L4-L28">feature-phone.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Log WebAssembly Messages from Zig to JavaScript Console
 // https://github.com/daneelsan/zig-wasm-logger/blob/master/script.js
 const text_decoder = new TextDecoder();
