@@ -1198,7 +1198,7 @@ canvas.addEventListener("touchend", (e) => {
 });
 ```
 
-Which will work on Touch Devices (like our Phones).
+Which will work on Touch Devices. (Like our Phones)
 
 _What happens inside notifyInput?_
 
@@ -1294,9 +1294,9 @@ void set_input_data(
 }
 ```
 
-![Handle LVGL Input](https://lupyuen.github.io/images/lvgl3-wasm4.png)
+And the LVGL Button will respond correctly to Mouse and Touch Input in the Web Browser! (Pic below)
 
-And the LVGL Button will respond correctly to Mouse and Touch Input in the Web Browser! (Pic above)
+![Handle LVGL Input](https://lupyuen.github.io/images/lvgl3-wasm4.png)
 
 [(Try the __LVGL Button Demo__)](https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html)
 
