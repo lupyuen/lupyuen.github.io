@@ -90,7 +90,7 @@
 <li><a href="#appendix-initialise-lvgl-input">10 Appendix: Initialise LVGL Input</a><ul></ul></li>
 <li><a href="#appendix-handle-lvgl-input">11 Appendix: Handle LVGL Input</a><ul></ul></li>
 <li><a href="#appendix-handle-lvgl-timer">12 Appendix: Handle LVGL Timer</a><ul></ul></li>
-<li><a href="#appendix-import-lvgl-library">13 Appendix: Import LVGL Library</a><ul></ul></li></ul></nav><p>📝 <em>12 Jun 2023</em></p>
+<li><a href="#appendix-import-lvgl-library">13 Appendix: Import LVGL Library</a><ul></ul></li></ul></nav><p>📝 <em>10 Jun 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/lvgl4-title.jpg" alt="LVGL Feature Phone UI running on PinePhone with Apache NuttX RTOS" /></p>
 <p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html"><em>LVGL Feature Phone UI running on PinePhone with Apache NuttX RTOS</em></a></p>
 <p>This article explains how we created an <a href="https://docs.lvgl.io/master/index.html"><strong>LVGL Graphical App</strong></a> for <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>… By tweaking and testing in a <strong>Web Browser!</strong></p>
@@ -639,14 +639,26 @@ nsh&gt; lvgldemo
 </li>
 </ul>
 <h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
-<p>TODO: how we created an <a href="https://docs.lvgl.io/master/index.html"><strong>LVGL Graphical App</strong></a> for <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>… By tweaking and testing in a <strong>Web Browser!</strong></p>
-<p>TODO: run <a href="https://ziglang.org"><strong>Zig Compiler</strong></a> to compile LVGL Library from <strong>C to WebAssembly</strong>.</p>
-<p>TODO: write our LVGL App in the <a href="https://ziglang.org"><strong>Zig Programming Language</strong></a>! (Instead of C)</p>
-<p>TODO: Hopefully Zig will need fewer lines of code</p>
-<p>TODO: Which makes UI Prototyping a lot quicker in LVGL</p>
-<p>TODO: we’re creating a <a href="https://lupyuen.github.io/articles/usb2#pinephone--nuttx--feature-phone"><strong>Feature Phone UI</strong></a> for <a href="https://lupyuen.github.io/articles/what"><strong>Apache NuttX RTOS</strong></a> (Real-Time Operating System) on PinePhone.</p>
-<p>TODO: Maybe we’ve discovered the easier way to build and test LVGL Apps… Thanks to our Web Browser!</p>
-<p>Meanwhile please check out the other articles on NuttX for PinePhone…</p>
+<p>Today we successfully created an LVGL App for PinePhone… By tweaking and testing in a <strong>Web Browser!</strong></p>
+<ul>
+<li>
+<p>We compiled LVGL Library from <strong>C to WebAssembly</strong> with Zig Compiler</p>
+</li>
+<li>
+<p>We wrote our LVGL App in the <strong>Zig Programming Language</strong> (instead of C)</p>
+</li>
+<li>
+<p>Our LVGL App in Zig looks (somewhat) <strong>cleaner and simpler</strong> than C (except for the Opaque Types)</p>
+</li>
+<li>
+<p>Exact same code runs in a <strong>Web Browser</strong> and on <strong>PinePhone with Apache NuttX RTOS</strong></p>
+</li>
+<li>
+<p>Which is super helpful for <strong>prototyping LVGL Apps</strong></p>
+</li>
+</ul>
+<p>Maybe we’ve discovered the easier way to build and test LVGL Apps… Thanks to our Web Browser!</p>
+<p>Please check out the other articles on NuttX for PinePhone…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/pinephone-nuttx"><strong>“Apache NuttX RTOS for PinePhone”</strong></a></li>
 </ul>
@@ -1248,8 +1260,16 @@ export fn millis() u32 {
 /// Number of elapsed milliseconds
 var elapsed_ms: u32 = 0;
 </code></pre></div>
-<p>The Elapsed Milliseconds is returned by our Zig Function <strong>millis</strong>, which is called by LVGL periodically.</p>
-<p><a href="https://lupyuen.github.io/articles/lvgl3#lvgl-porting-layer-for-webassembly">(More about this)</a></p>
+<p>The Elapsed Milliseconds is returned by our Zig Function <strong>millis</strong>, which is called by LVGL periodically…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lvgl3#lvgl-porting-layer-for-webassembly"><strong>“LVGL Porting Layer for WebAssembly”</strong></a></li>
+</ul>
+<p>To find out how we render the LVGL Display, check out the previous article…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lvgl3#render-lvgl-display-in-zig"><strong>“Render LVGL Display in Zig”</strong></a></li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/lvgl3-render.jpg" alt="Rendering LVGL Display in Zig" /></p>
+<p><a href="https://lupyuen.github.io/articles/lvgl3#render-lvgl-display-in-zig"><em>Rendering LVGL Display in Zig</em></a></p>
 <h1 id="appendix-import-lvgl-library"><a href="#appendix-import-lvgl-library">13 Appendix: Import LVGL Library</a></h1>
 <p><em>How we did we import the LVGL Library from C into Zig?</em></p>
 <p>Our Zig Wrapper for LVGL calls <a href="https://ziglang.org/documentation/master/#cImport"><strong>@cImport</strong></a> to import the <strong>LVGL Header Files</strong> from C into Zig: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig#L5-L28">lvgl.zig</a></p>
@@ -1302,6 +1322,7 @@ const c = lvgl.c;
 <p><em>Why not import the LVGL Functions in feature-phone.zig?</em></p>
 <p>Zig Compiler doesn’t like it when we call <a href="https://ziglang.org/documentation/master/#cImport"><strong>@cImport</strong></a> twice from different Source Files…</p>
 <p>Zig Compiler will think that the <strong>LVGL Types are different</strong>. And we can’t pass the same LVGL Types across Source Files.</p>
+<p>That’s why we call <a href="https://ziglang.org/documentation/master/#cImport"><strong>@cImport</strong></a> once, and import the C Namespace instead.</p>
 
     
 </body>
