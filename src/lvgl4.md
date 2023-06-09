@@ -44,7 +44,7 @@ Yeah but it's 2023... Maybe there's an easier way to build and test LVGL Apps? L
 
 # Feature Phone UI
 
-_Remember Feature Phones from 25 years ago?_
+_Wow that looks like a Feature Phone from 25 years ago..._
 
 The pic above shows the [__Feature Phone UI__](https://en.wikipedia.org/wiki/Feature_phone) that we'll create with LVGL...
 
@@ -96,9 +96,19 @@ fn createCallButtons(cont: *c.lv_obj_t) !void {
     c.lv_label_set_text(label, text.ptr);
     c.lv_obj_center(label);
 
+    // Convert the Button Text from Zig Pointer to C Pointer
+    const data = @intToPtr(
+      *anyopaque,          // Convert to `void *` C Pointer
+      @ptrToInt(text.ptr)  // Convert from Zig Pointer
+    );
+
     // Set the Event Callback Function and Callback Data for the Button
-    const data = @intToPtr(*anyopaque, @ptrToInt(text.ptr));
-    _ = c.lv_obj_add_event_cb(btn, eventHandler, c.LV_EVENT_ALL, data);
+    _ = c.lv_obj_add_event_cb(
+      btn,             // LVGL Button
+      eventHandler,    // Callback Function
+      c.LV_EVENT_ALL,  // Handle all events
+      data             // Callback Data (Button Text)
+    );
   }
 }
 ```
@@ -107,7 +117,9 @@ fn createCallButtons(cont: *c.lv_obj_t) !void {
 
 _What's lv_obj_add_event_cb?_
 
-[__lv_obj_add_event_cb__](https://docs.lvgl.io/8.3/overview/event.html#add-events-to-the-object) tells LVGL to call our Zig Function __eventHandler__ when the Button is clicked. We'll see the Event Callback Function in a while.
+[__lv_obj_add_event_cb__](https://docs.lvgl.io/8.3/overview/event.html#add-events-to-the-object) tells LVGL to call our Zig Function __eventHandler__ when the Button is clicked.
+
+We'll see the Event Callback Function in a while.
 
 ("__\_ = something__" tells Zig Compiler that we're not using the Returned Value)
 
@@ -153,9 +165,19 @@ fn createDigitButtons(cont: *c.lv_obj_t) !void {
     c.lv_label_set_text(label, text.ptr);
     c.lv_obj_center(label);
 
+    // Convert the Button Text from Zig Pointer to C Pointer
+    const data = @intToPtr(
+      *anyopaque,          // Convert to `void *` C Pointer
+      @ptrToInt(text.ptr)  // Convert from Zig Pointer
+    );
+
     // Set the Event Callback Function and Callback Data for the Button
-    const data = @intToPtr(*anyopaque, @ptrToInt(text.ptr));
-    _ = c.lv_obj_add_event_cb(btn, eventHandler, c.LV_EVENT_ALL, data);
+    _ = c.lv_obj_add_event_cb(
+      btn,             // LVGL Button
+      eventHandler,    // Callback Function
+      c.LV_EVENT_ALL,  // Handle all events
+      data             // Callback Data (Button Text)
+    );
   }
 }
 ```
@@ -179,9 +201,13 @@ fn createWidgets() !void {
   // Omitted: Create the Style for the Containers
   ...
 
-  // Create the Container for Display (700 x 150 pixels)
+  // Create the Container for Display
   // https://docs.lvgl.io/8.3/layouts/flex.html#arrange-items-in-rows-with-wrap-and-even-spacing
-  const display_cont = c.lv_obj_create(c.lv_scr_act()).?;
+  const display_cont = c.lv_obj_create(
+    c.lv_scr_act()  // Get Active Screen
+  ).?;              // If a Null Pointer is returned, stop
+
+  // Set the Container Size (700 x 150 pixels), Alignment and Style
   c.lv_obj_set_size(display_cont, 700, 150);
   c.lv_obj_align(display_cont, c.LV_ALIGN_TOP_MID, 0, 5);
   c.lv_obj_add_style(display_cont, &cont_style, 0);
@@ -193,7 +219,7 @@ In the code above, we create the __LVGL Container__ for the Display.
 
 (More about __cont_style__ in the next section)
 
-Then we create the __LVGL Containers__ for the Call / Cancel Buttons and Digit Buttons...
+In the same way, we create the __LVGL Containers__ for the Call / Cancel Buttons and Digit Buttons...
 
 ```zig
   // Create the Container for Call / Cancel Buttons (700 x 200 pixels)
@@ -314,13 +340,15 @@ Yep this code calls our [__Zig Wrapper for LVGL__](https://github.com/lupyuen/pi
 
 Someday we might create a Zig Wrapper for the rest of the code.
 
+[(More about Zig Wrapper for LVGL)](https://lupyuen.github.io/articles/lvgl#wrap-lvgl-api)
+
 _So many hard-coded coordinates in our code..._
 
-That's the beauty of testing our LVGL App in a Web Browser!
+That's the beauty of testing our LVGL App in a __Web Browser__!
 
-With WebAssembly, we can tweak the values and test our LVGL App (nearly) instantly. And after testing, we refactor the numbers to make them generic across Screen Sizes.
+With WebAssembly, we can __quickly tweak the values__ and test our LVGL App (nearly) instantly. And after testing, we refactor the numbers to make them generic across Screen Sizes.
 
-This is how we run our LVGL App in a Web Browser...
+Let's run our LVGL App in a Web Browser...
 
 ![Feature Phone UI in the Web Browser](https://lupyuen.github.io/images/lvgl3-wasm5.png)
 
@@ -547,7 +575,7 @@ Depending on the __Target CPU Architecture__, our Zig LVGL App imports either...
 
 - __NuttX-Specific__ Functions: [__nuttx.zig__](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/nuttx.zig)
 
-Let's dive into the functions...
+Let's dive into the Platform-Specific Functions...
 
 ## LVGL for WebAssembly
 
