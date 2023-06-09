@@ -40,11 +40,11 @@ _We could've done all this in plain old C and on-device testing right?_
 
 Yeah but it's 2023... Maybe there's an easier way to build and test LVGL Apps? Let's experiment and find out!
 
-TODO: Pic
+![Feature Phone UI](https://lupyuen.github.io/images/lvgl4-ui.jpg)
 
 # Feature Phone UI
 
-_Imagine a Feature Phone from 25 years ago..._
+_Remember Feature Phones from 25 years ago?_
 
 The pic above shows the [__Feature Phone UI__](https://en.wikipedia.org/wiki/Feature_phone) that we'll create with LVGL...
 
@@ -62,9 +62,11 @@ The pic above shows the [__Feature Phone UI__](https://en.wikipedia.org/wiki/Fea
 
 Let's create the Buttons...
 
+![Call and Cancel Buttons](https://lupyuen.github.io/images/lvgl4-ui2.jpg)
+
 ## Call and Cancel Buttons
 
-We begin with the "Call" and "Cancel" Buttons: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L152-L155)
+We begin with the __"Call" and "Cancel"__ Buttons (pic above): [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L152-L155)
 
 ```zig
 /// Labels for Call and Cancel Buttons
@@ -117,9 +119,11 @@ __cont__ is the LVGL Container for the Call and Cancel Buttons.
 
 We'll create the Container when we call __createCallButtons__.
 
+![Digit Buttons](https://lupyuen.github.io/images/lvgl4-ui3.jpg)
+
 ## Digit Buttons
 
-Now we do the same for the Digit Buttons: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L155-L158)
+Now we do the same for the __Digit Buttons__ (pic above): [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L155-L158)
 
 ```zig
 /// Labels for Digit Buttons
@@ -162,9 +166,11 @@ Again, LVGL will call our Zig Function __eventHandler__ when the Button is click
 
 (More about this in a while)
 
+![Label and Button Containers](https://lupyuen.github.io/images/lvgl4-ui4.jpg)
+
 ## Label and Button Containers
 
-We create 3 __LVGL Containers__ for the Display Label, Call / Cancel Buttons and Digit Buttons: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L54-L77)
+We create 3 __LVGL Containers__ for the Display Label, Call / Cancel Buttons and Digit Buttons (pic above): [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L54-L77)
 
 ```zig
 /// Create the LVGL Widgets that will be rendered on the display
@@ -253,9 +259,11 @@ c.lv_style_set_layout(&cont_style, c.LV_LAYOUT_FLEX);
 
 This says that the Buttons inside the Containers will be __wrapped with equal spacing__.
 
+![Display Label](https://lupyuen.github.io/images/lvgl4-ui1.jpg)
+
 ## Display Label
 
-Final LVGL Widget for today is the __Display Label__ that shows the number we're dialing: [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L83-L116)
+Final LVGL Widget for today is the __Display Label__ that shows the number we're dialing (pic above): [feature-phone.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L83-L116)
 
 ```zig
 /// LVGL Display Text (64 bytes, null-terminated)
@@ -1084,11 +1092,17 @@ void *register_input(lv_indev_drv_t *indev_drv) {
 
 Now we can handle the LVGL Input in Zig and JavaScript...
 
+![Handle LVGL Input](https://lupyuen.github.io/images/lvgl4-flow.jpg)
+
+[("Render Diagram" is here)](https://lupyuen.github.io/images/lvgl3-render.jpg)
+
+[(Explained here)](https://lupyuen.github.io/articles/lvgl3#render-lvgl-display-in-zig)
+
 # Appendix: Handle LVGL Input
 
 _How do we handle LVGL Mouse Input and Touch Input?_
 
-In our JavaScript, we capture __Mouse Down__ and __Mouse Up__ events: [feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L77-L123)
+In our JavaScript, we capture __Mouse Down__ and __Mouse Up__ events (pic above): [feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L77-L123)
 
 ```javascript
 // Handle Mouse Down on HTML Canvas
@@ -1244,7 +1258,9 @@ void set_input_data(
 }
 ```
 
-And the LVGL Button will respond correctly to Mouse and Touch Input in the Web Browser! (Pic below)
+![Handle LVGL Input](https://lupyuen.github.io/images/lvgl3-wasm4.png)
+
+And the LVGL Button will respond correctly to Mouse and Touch Input in the Web Browser! (Pic above)
 
 [(Try the __LVGL Button Demo__)](https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html)
 
@@ -1252,7 +1268,11 @@ And the LVGL Button will respond correctly to Mouse and Touch Input in the Web B
 
 [(See the __JavaScript Log__)](https://github.com/lupyuen/pinephone-lvgl-zig/blob/e70b2df50fa562bec7e02f24191dbbb1e5a7553a/README.md#todo)
 
-![Handle LVGL Input](https://lupyuen.github.io/images/lvgl3-wasm4.png)
+![Handle LVGL Timer](https://lupyuen.github.io/images/lvgl4-flow.jpg)
+
+[("Render Diagram" is here)](https://lupyuen.github.io/images/lvgl3-render.jpg)
+
+[(Explained here)](https://lupyuen.github.io/articles/lvgl3#render-lvgl-display-in-zig)
 
 # Appendix: Handle LVGL Timer
 
@@ -1264,7 +1284,7 @@ According to the [__LVGL Docs__](https://docs.lvgl.io/8.3/porting/project.html#i
 
 - Poll for __LVGL Input__
 
-To execute LVGL Tasks periodically, we do this in our JavaScript __Render Loop__: [feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L123-L154)
+To execute LVGL Tasks periodically, we do this in our JavaScript __Render Loop__ (pic above): [feature-phone.js](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L123-L154)
 
 ```javascript
 // Main Function
