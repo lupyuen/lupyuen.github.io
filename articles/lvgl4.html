@@ -505,8 +505,8 @@ export fn eventHandler(e: ?*c.lv_event_t) void {
 <p><em>Will it run on PinePhone?</em></p>
 <p>Yep the exact same LVGL App runs on <strong>PinePhone with Apache NuttX RTOS</strong>!</p>
 <p>The magic happens here: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L15-L19">feature-phone.zig</a></p>
-<div class="example-wrap"><pre class="language-zig"><code>/// Import the functions specific to WebAssembly and Apache NuttX RTOS
-/// into the Global Namespace
+<div class="example-wrap"><pre class="language-zig"><code>/// Import the functions specific to WebAssembly
+/// and Apache NuttX RTOS into the Global Namespace
 pub usingnamespace
 
   // Depending on the Target CPU Architecture...
@@ -515,7 +515,7 @@ pub usingnamespace
     // Import WebAssembly-Specific Functions from `wasm.zig`
     .wasm32, .wasm64 =&gt; @import(&quot;wasm.zig&quot;),
 
-    // Import NuttX-Specific Functions from `nuttx.zig`
+    // Or import NuttX-Specific Functions from `nuttx.zig`
     else =&gt; @import(&quot;nuttx.zig&quot;),
   };
 </code></pre></div>
@@ -568,11 +568,11 @@ pub usingnamespace
 <ul>
 <li>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/nuttx.zig#L6-L29"><strong>Custom Panic Handler for Zig</strong></a></p>
-<p><a href="https://lupyuen.github.io/articles/iot#appendix-logging">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/iot#appendix-panic-handler">(Explained here)</a></p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/nuttx.zig#L29-L59"><strong>Custom Logger for Zig</strong></a></p>
-<p><a href="https://lupyuen.github.io/articles/iot#appendix-panic-handler">(Explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/iot#appendix-logging">(Explained here)</a></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/lvgl3-pinephone.jpg" alt="Feature Phone UI on PinePhone and Apache NuttX RTOS" /></p>
