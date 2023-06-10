@@ -283,7 +283,7 @@ c.lv_style_set_layout(&cont_style, c.LV_LAYOUT_FLEX);
 
 [(__std.mem.zeroes__ populates the struct with zeroes)](https://ziglang.org/documentation/master/std/#A;std:mem.zeroes)
 
-This says that the Buttons inside the Containers will be __wrapped with equal spacing__.
+The code above says that the Buttons inside the Containers will be __wrapped with equal spacing__.
 
 ![Display Label](https://lupyuen.github.io/images/lvgl4-ui1.jpg)
 
