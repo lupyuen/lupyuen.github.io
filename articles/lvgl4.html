@@ -1277,7 +1277,7 @@ var elapsed_ms: u32 = 0;
 <p><img src="https://lupyuen.github.io/images/lvgl3-render.jpg" alt="Rendering LVGL Display in Zig" /></p>
 <p><a href="https://lupyuen.github.io/articles/lvgl3#render-lvgl-display-in-zig"><em>Rendering LVGL Display in Zig</em></a></p>
 <h1 id="appendix-import-lvgl-library"><a href="#appendix-import-lvgl-library">13 Appendix: Import LVGL Library</a></h1>
-<p><em>How we did we import the LVGL Library from C into Zig?</em></p>
+<p><em>How did we import the LVGL Library from C into Zig?</em></p>
 <p>Our Zig Wrapper for LVGL calls <a href="https://ziglang.org/documentation/master/#cImport"><strong>@cImport</strong></a> to import the <strong>LVGL Header Files</strong> from C into Zig: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig#L5-L28">lvgl.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Import the LVGL Library from C
 pub const c = @cImport({
