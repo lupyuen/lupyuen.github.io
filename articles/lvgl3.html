@@ -269,6 +269,7 @@ fn createWidgetsWrapped() !void {
   label.alignObject(c.LV_ALIGN_CENTER, 0, -30);
 }
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.zig#L83-L116">(Moving to feature-phone.zig)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig">(<strong>lvgl</strong> is our LVGL Wrapper for Zig)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig#lvgl-zig-app">(More about this)</a></p>
 <p>To <strong>compile our Zig LVGL App</strong> for PinePhone and NuttX RTOS…</p>
@@ -431,6 +432,7 @@ zig cc \
 <div class="example-wrap"><pre class="language-text"><code>&quot;-DLV_ASSERT_HANDLER={void lv_assert_handler(void); lv_assert_handler();} \&quot;
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L190-L195">(Like this)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L143-L148">(Moving to wasm.zig)</a></p>
 </li>
 <li>
 <p>Emit the <strong>WebAssembly Object File</strong>…</p>
@@ -500,10 +502,10 @@ compile_lvgl core/lv_obj.c lv_obj.o
 compile_lvgl misc/lv_mem.c lv_mem.o
 ## Many many more
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L226-L289">(<strong>compile_lvgl</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L229-L292">(<strong>compile_lvgl</strong> is defined here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/releases/tag/nuttx-build-files">(NuttX Build Files)</a></p>
 <p>(More about <strong>display.c</strong> later)</p>
-<p>And <strong>link the Compiled LVGL WebAssemblies</strong> with our Zig LVGL App: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L86-L192">build.sh</a></p>
+<p>And <strong>link the Compiled LVGL WebAssemblies</strong> with our Zig LVGL App: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/build.sh#L88-L195">build.sh</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>## Compile the Zig App `lvglwasm.zig` for WebAssembly
 ## and link with LVGL Library compiled for WebAssembly
 zig build-lib \
@@ -571,6 +573,7 @@ export fn custom_logger(buf: [*c]const u8) void {
   wasmlog.Console.log(&quot;{s}&quot;, .{buf});
 }
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L131-L153">(Moving to wasm.zig)</a></p>
 <p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-timer">(We should reimplement <strong>millis</strong> with JavaScript)</a></p>
 <p>In the code above, we defined <strong>lv_assert_handler</strong> and <strong>custom_logger</strong> to handle <strong>Assertions and Logging</strong> in LVGL.</p>
 <p>Let’s talk about LVGL Logging…</p>
@@ -588,6 +591,7 @@ pub export fn lv_demo_widgets() void {
   // Init LVGL
   c.lv_init();
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L16-L59">(Moving to wasm.zig)</a></p>
 <p><a href="https://lupyuen.github.io/articles/lvgl#import-c-functions">(“<strong><code>c.</code></strong>” refers to functions <strong>imported from C to Zig</strong>)</a></p>
 <p><strong>custom_logger</strong> is defined in our Zig Program: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L195-L200">lvglwasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Custom Logger for LVGL that writes to JavaScript Console
@@ -595,6 +599,7 @@ export fn custom_logger(buf: [*c]const u8) void {
   wasmlog.Console.log(&quot;{s}&quot;, .{buf});
 }
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L148-L153">(Moving to wasm.zig)</a></p>
 <p><a href="https://ziglang.org/documentation/master/#C-Pointers">(“<strong><code>[*c]</code></strong>” means <strong>C Pointer</strong>)</a></p>
 <p><strong>wasmlog</strong> is our <strong>Zig Logger for WebAssembly</strong>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasmlog.zig">wasmlog.zig</a></p>
 <p>Which calls JavaScript Functions <strong>jsConsoleLogWrite</strong> and <strong>jsConsoleLogFlush</strong> to write logs to the JavaScript Console: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.js#L54C1-L69">lvglwasm.js</a></p>
@@ -615,6 +620,7 @@ const importObject = {
       console_log_buffer = &quot;&quot;;
     },
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L28-L67">(Moving to feature-phone.js)</a></p>
 <p>(Thanks to <a href="https://github.com/daneelsan/zig-wasm-logger"><strong>daneelsan/zig-wasm-logger</strong></a>)</p>
 <p><em>What’s wasm.getString?</em></p>
 <p><strong>wasm.getString</strong> is our JavaScript Function that <strong>reads the WebAssembly Memory</strong> into a JavaScript Array: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.js#L10-L27">lvglwasm.js</a></p>
@@ -638,6 +644,7 @@ const wasm = {
   },
 };
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L9-L28">(Moving to feature-phone.js)</a></p>
 <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder">(<strong>TextDecoder</strong> converts bytes to text)</a></p>
 <p>(Remember earlier we spoke about <strong>snooping WebAssembly Memory</strong> with a WebAssembly Pointer? This is how we do it)</p>
 <p>Now we can see the <strong>LVGL Log Messages</strong> in the JavaScript Console yay! (Pic above)</p>
@@ -735,6 +742,7 @@ pub export fn lv_demo_widgets() void {
 
   // Up Next: Handle LVGL Tasks
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L16-L59">(Moving to wasm.zig)</a></p>
 <p><a href="https://lupyuen.github.io/articles/lvgl3#appendix-lvgl-memory-allocation">(<strong>memory_allocator</strong> is explained here)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/86700c3453d91bc7d2fe0a46192fa41b7a24b6df/display.c#L94-L95">(Remember to set <strong>Direct Mode</strong> in the Display Driver!)</a></p>
 <p>Now we handle LVGL Tasks…</p>
@@ -771,9 +779,10 @@ pub export fn lv_demo_widgets() void {
     _ = c.lv_timer_handler();
   }
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L76-L90">(Moving to wasm.zig)</a></p>
 <p>We’re ready to render the LVGL Display in our HTML Page!</p>
 <p><em>Something doesn’t look right…</em></p>
-<p>Yeah we should have called <strong>lv_timer_handler</strong> from our JavaScript…</p>
+<p>Yeah actually we should trigger <strong>lv_timer_handler</strong> from our JavaScript like this…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-timer"><strong>“Handle LVGL Timer”</strong></a></li>
 </ul>
@@ -800,8 +809,9 @@ c.init_disp_drv(
   1280  // Vertical Resolution
 );
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L16-L59">(Moving to wasm.zig)</a></p>
 <p><em>What’s inside init_disp_buf?</em></p>
-<p><strong>init_disp_buf</strong> tells LVGL to render the display pixels to our <strong>LVGL Canvas Buffer</strong>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L95-L107">display.c</a></p>
+<p><strong>init_disp_buf</strong> tells LVGL to render the display pixels to our <strong>LVGL Canvas Buffer</strong>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L95-L109">display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Init the LVGL Display Buffer in C, because Zig
 // can&#39;t access the fields of the Opaque Type
 void init_disp_buf(lv_disp_draw_buf_t *disp_buf) {
@@ -813,7 +823,7 @@ void init_disp_buf(lv_disp_draw_buf_t *disp_buf) {
   );
 }
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L9-L29">(<strong>canvas_buffer</strong> is defined here)</a></p>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L8C1-L27">(<strong>canvas_buffer</strong> is defined here)</a></p>
 <p>Then our Zig App initialises the <strong>LVGL Display Driver</strong>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L49-L63">lvglwasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>// Init Display Driver as pointer,
 // by calling our C Function
@@ -825,6 +835,7 @@ c.init_disp_drv(
   1280  // Vertical Resolution
 );
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L16-L59">(Moving to wasm.zig)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L60-L93">(<strong>init_disp_drv</strong> is defined here)</a></p>
 <p>This tells LVGL to call <strong>flushDisplay</strong> (in Zig) when the LVGL Display Canvas is ready to be rendered: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L86-L98">lvglwasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// LVGL calls this Callback Function to flush our display
@@ -844,6 +855,7 @@ export fn flushDisplay(
   c.lv_disp_flush_ready(disp_drv);
 }
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L59-L70">(Moving to wasm.zig)</a></p>
 <p><strong>flushDisplay</strong> (in Zig) calls <strong>render</strong> (in JavaScript) to render the LVGL Display Canvas.</p>
 <p>We bubble up from Zig to JavaScript…</p>
 <p><img src="https://lupyuen.github.io/images/lvgl3-title.png" alt="Zig LVGL App rendered in Web Browser with WebAssembly" /></p>
@@ -871,9 +883,10 @@ render: function() {  // TODO: Add width and height
   context.putImageData(imageData, 0, 0);
 }
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L28-L67">(Moving to feature-phone.js)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.js#L69-L75">(<strong>imageData</strong> and <strong>context</strong> are defined here)</a></p>
 <p><em>How does it fetch the LVGL Canvas Buffer?</em></p>
-<p>The JavaScript above calls <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L100-L104"><strong>getCanvasBuffer</strong></a> (in Zig) and <strong>get_canvas_buffer</strong> (in C) to fetch the LVGL Canvas Buffer: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L9-L29">display.c</a></p>
+<p>The JavaScript above calls <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L100-L104"><strong>getCanvasBuffer</strong></a> (in Zig) and <strong>get_canvas_buffer</strong> (in C) to fetch the LVGL Canvas Buffer: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/display.c#L8-L27">display.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Canvas Buffer for rendering LVGL Display
 // TODO: Swap the RGB Bytes in LVGL, the colours are inverted for HTML Canvas
 #define HOR_RES     720      // Horizontal Resolution
@@ -991,6 +1004,7 @@ pub export fn lv_demo_widgets() void {
   memory_allocator = std.heap.FixedBufferAllocator
     .init(&amp;memory_buffer);
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L16-L27">(Moving to wasm.zig)</a></p>
 <p>Here’s our (incomplete) implementation of <strong>malloc</strong>: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvglwasm.zig#L201-L244">lvglwasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Zig replacement for malloc
 export fn malloc(size: usize) ?*anyopaque {
@@ -1030,6 +1044,7 @@ var memory_allocator: std.heap.FixedBufferAllocator = undefined;
 /// Memory Buffer for malloc
 var memory_buffer = std.mem.zeroes([1024 * 1024]u8);
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L178-L222">(Moving to wasm.zig)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/aade32dd70286866676b2d9728970c6b3cca9489/README.md#todo">(Remember to copy the old memory in <strong>realloc</strong>!)</a></p>
 <p><a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/aa080fb2ce55f9959cce2b6fff7e5fd5c9907cd6/README.md#lvgl-memory-allocation">(If we ever remove “<strong>-DLV_MEM_CUSTOM=1</strong>”, remember to set “<strong>-DLV_MEM_SIZE=1000000</strong>”)</a></p>
 <h1 id="appendix-lvgl-fonts"><a href="#appendix-lvgl-fonts">16 Appendix: LVGL Fonts</a></h1>
