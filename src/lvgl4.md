@@ -1427,7 +1427,7 @@ To find out how we render the LVGL Display, check out the previous article...
 
 # Appendix: Import LVGL Library
 
-_How we did we import the LVGL Library from C into Zig?_
+_How did we import the LVGL Library from C into Zig?_
 
 Our Zig Wrapper for LVGL calls [__@cImport__](https://ziglang.org/documentation/master/#cImport) to import the __LVGL Header Files__ from C into Zig: [lvgl.zig](https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig#L5-L28)
 
