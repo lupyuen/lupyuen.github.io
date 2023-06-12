@@ -12,13 +12,19 @@ Daily routine for Sourdough Starter...
 
     Place the discard at Bread Machine, ready for baking.
     
--   Feed 4 times daily:
+-   Feed 3 times daily:
 
-    1/2 cup Extra Fine Wholemeal Flour [(Redman)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000067696.html)
+    1/2 cup Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
     
     1/4 cup Boiled Water at Room Temperature
 
-    Consistency should be like thick oatmeal. If it's too watery, skip the water.
+    For final feeding of the day, increase to:
+
+    1 1/2 cup Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
+    
+    3/4 cup Boiled Water at Room Temperature
+
+    After each feeding, consistency should be like thick oatmeal. If it's too watery, skip the water.
 
 -   Stir the Sourdough Starter with a chopstick (the blunt end) and keep cool in oven on metal rack.
 
@@ -44,7 +50,7 @@ Add in this sequence to Bread Machine...
 
 -   4 tablespoons Boiling Water (100 deg C, to melt the butter)
 
--   1 2/3 cups (200g) Extra Fine Wholemeal Flour [(Redman)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000067696.html)
+-   1 2/3 cups (200g) Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
 
 -   3 ladles (2 cups) Wholemeal Sourdough Starter, ripe (fed) from above.
 
@@ -79,8 +85,8 @@ Start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.c
 [(Page 17)](https://www.zojirushi.com/servicesupport/manuals/manual_pdf/bb_hac10.pdf)
 
 During Kneading:
--   Sprinkle Extra Fine Wholemeal Flour until dough becomes a Smooth Ball
--   But not too much flour. Dough Ball should look like a Fresh Egg Yolk: Skin is shiny, slightly wet, inside is foamy liquid.
+-   Sprinkle Superfine Wholegrain Flour (or water) until dough becomes a Smooth Ball
+-   But not too much flour (or water). Dough Ball should look like a Fresh Egg Yolk: Skin is shiny, slightly wet, inside is foamy liquid.
 -   Tap a chopstick on the Dough Ball. The dough shouldn't stick to the chopstick.
     [(See pic below)](https://lupyuen.github.io/images/sourdough3.jpg)
 -   (Optional) At 4 hours 30 mins remaining, add 1/2 cup of Raisins (separated) or Prunes (quartered). This will sweeten the sourdough. Sourdough Starter will uplift any Dried Fruit, amazing!
