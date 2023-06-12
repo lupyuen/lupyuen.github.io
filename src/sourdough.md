@@ -121,6 +121,8 @@ _Rising of Wholemeal Sourdough_
 
 _Dark Chocolate Raisin Wholemeal Sourdough with Toasted Sunflower Seeds_
 
+_(1/3 cup [Dark Couverture Chocolate](https://www.redmanshop.com/shop-by-category/baking-ingredients/chocolate-and-cocoa/chocolate-couvertures/000000000000012582.html), 1/3 cup Raisins, 1/2 cup Toasted Sunflower Seeds)_
+
 <hr>
 
 ![Prune Wholemeal Sourdough with Currants](https://lupyuen.github.io/images/sourdough10.jpg)
