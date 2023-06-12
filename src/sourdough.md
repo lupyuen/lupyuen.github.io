@@ -14,15 +14,15 @@ Daily routine for Sourdough Starter...
     
 -   Feed 3 times daily:
 
-    1/2 cup Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
+    -   1/2 cup Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
     
-    1/4 cup Boiled Water at Room Temperature
+    -   1/4 cup Boiled Water at Room Temperature
 
-    For final feeding of the day, increase to:
+    For final feeding of the day (just before bedtime), increase to:
 
-    1 1/2 cup Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
+    -   1 1/2 cup Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
     
-    3/4 cup Boiled Water at Room Temperature
+    -   3/4 cup Boiled Water at Room Temperature
 
     After each feeding, consistency should be like thick oatmeal. If it's too watery, skip the water.
 
