@@ -84,15 +84,12 @@ During Kneading:
 -   Tap a chopstick on the Dough Ball. The dough shouldn't stick to the chopstick.
     [(See pic below)](https://lupyuen.github.io/images/sourdough3.jpg)
 -   (Optional) At 4 hours 30 mins remaining, add 1/2 cup of Raisins (separated) or Prunes (quartered). This will sweeten the sourdough. Sourdough Starter will uplift any Dried Fruit, amazing!
-    [(See Raisin Sourdough below)](https://lupyuen.github.io/images/sourdough7.jpg)
+    [(See Raisin Sourdough below)](https://lupyuen.github.io/images/sourdough17.jpg)
     [(And Prune Sourdough)](https://lupyuen.github.io/images/sourdough9.jpg)
 
 During First Rising:
 -   Warning: Dough may overflow! Before it overflows, keeping poking the dough with a chopstick (the blunt end) until the dough deflates.
-    [(See pic below)](https://lupyuen.github.io/images/sourdough5.jpg)
-
-Just Before Baking: (1 hour 35 mins remaining)
--   Score the dough, so the steam can escape
+    [(Like this)](https://lupyuen.github.io/images/sourdough5.jpg)
 
 Adapted from [King Arthur Bread Machine Sourdough Recipe](https://www.kingarthurbaking.com/recipes/bread-machine-sourdough-bread-recipe) (Non-Wholemeal)
 
@@ -108,33 +105,15 @@ _Smooth Ball of Wholemeal Sourdough kneading in Bread Machine_
 
 <hr>
 
-![First Rising of Wholemeal Sourdough](https://lupyuen.github.io/images/sourdough4.jpg)
+![Rising of Wholemeal Sourdough](https://lupyuen.github.io/images/sourdough4.jpg)
 
-_First Rising of Wholemeal Sourdough_
-
-<hr>
-
-![Poking holes in (Cranberry) Wholemeal Sourdough to prevent overflow](https://lupyuen.github.io/images/sourdough5.jpg)
-
-_Poking holes in (Cranberry) Wholemeal Sourdough to prevent overflow_
+_Rising of Wholemeal Sourdough_
 
 <hr>
 
-![Prune Wholemeal Sourdough](https://lupyuen.github.io/images/sourdough9.jpg)
+![Dark Chocolate Raisin Wholemeal Sourdough with Toasted Sunflower Seeds](https://lupyuen.github.io/images/sourdough17.jpg)
 
-_Prune Wholemeal Sourdough_
-
-<hr>
-
-![Dark Chocolate Wholemeal Sourdough. Needs 4 teaspoons Instant Dry Yeast](https://lupyuen.github.io/images/sourdough15.jpg)
-
-_Dark Chocolate Wholemeal Sourdough. Needs 4 teaspoons Instant Dry Yeast_
-
-<hr>
-
-![Banana Wholemeal Sourdough with Cranberry. Needs 1 Whole Banana, 2 teaspoons Baking Powder, 4 teaspoons Instant Dry Yeast](https://lupyuen.github.io/images/sourdough11.jpg)
-
-_Banana Wholemeal Sourdough with Cranberry. Needs 1 Whole Banana, 2 teaspoons Baking Powder, 4 teaspoons Instant Dry Yeast_
+_Dark Chocolate Raisin Wholemeal Sourdough with Toasted Sunflower Seeds_
 
 <hr>
 
@@ -147,12 +126,6 @@ _Prune Wholemeal Sourdough with Currants_
 ![Raisin Wholemeal Sourdough](https://lupyuen.github.io/images/sourdough7.jpg)
 
 _Raisin Wholemeal Sourdough_
-
-<hr>
-
-![Chocolate Raisin Wholemeal Sourdough. Needs 4 teaspoons Instant Dry Yeast](https://lupyuen.github.io/images/sourdough12.jpg)
-
-_Chocolate Raisin Wholemeal Sourdough. Needs 4 teaspoons Instant Dry Yeast_
 
 <hr>
 
