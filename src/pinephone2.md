@@ -50,7 +50,7 @@ TODO
 
 # Core Features
 
-TODO
+TODO: Storage
 
 # What's Next
 
