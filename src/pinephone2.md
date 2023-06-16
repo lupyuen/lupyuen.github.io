@@ -16,13 +16,13 @@ TODO
 
 TODO
 
-![Touchscreen Features](https://lupyuen.github.io/images/pinephone2-roadmap1.jpg)
+> ![Touchscreen Features](https://lupyuen.github.io/images/pinephone2-roadmap1.jpg)
 
 # Touchscreen Features
 
 TODO
 
-![Sensor Features](https://lupyuen.github.io/images/pinephone2-roadmap3.jpg)
+> ![Sensor Features](https://lupyuen.github.io/images/pinephone2-roadmap3.jpg)
 
 # Sensor Features
 
@@ -46,7 +46,7 @@ TODO
 
 TODO
 
-![Core Features](https://lupyuen.github.io/images/pinephone2-roadmap2.jpg)
+> ![Core Features](https://lupyuen.github.io/images/pinephone2-roadmap2.jpg)
 
 # Core Features
 
