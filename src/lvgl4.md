@@ -684,6 +684,8 @@ The exact same Zig Source File runs on __both WebAssembly and PinePhone__, no ch
 
 [(Watch the __Demo on YouTube__)](https://www.youtube.com/shorts/tOUnj0XEP-Q)
 
+[(Download the __NuttX Image__)](https://github.com/lupyuen/pinephone-lvgl-zig/releases/tag/v1.0.0)
+
 _Looks like a fun new way to build and test LVGL Apps..._
 
 _First in the Web Browser, then on the Actual Device!_
