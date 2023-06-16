@@ -117,17 +117,17 @@ _Rising of Wholemeal Sourdough_
 
 <hr>
 
-![Dark Chocolate Raisin Wholemeal Sourdough with Sunflower Seeds](https://lupyuen.github.io/images/sourdough17.jpg)
+![Dark Chocolate Raisin Wholemeal Sourdough with Sunflower Seed](https://lupyuen.github.io/images/sourdough17.jpg)
 
-_Dark Chocolate Raisin Wholemeal Sourdough with Sunflower Seeds_
+_Dark Chocolate Raisin Wholemeal Sourdough with Sunflower Seed_
 
 _(1/3 cup [Dark Couverture Chocolate](https://www.redmanshop.com/shop-by-category/baking-ingredients/chocolate-and-cocoa/chocolate-couvertures/000000000000012582.html), 1/3 cup Raisins, 1/2 cup Toasted Sunflower Seeds)_
 
 <hr>
 
-![(1) Looks messy after kneading (2) But it rises! (3) After baking (4) Carrot Raisin Wholemeal Sourdough with Sunflower Seeds](https://lupyuen.github.io/images/sourdough18.jpg)
+![(1) Looks messy after kneading (2) But it rises! (3) After baking (4) Carrot Raisin Wholemeal Sourdough with Sunflower Seed](https://lupyuen.github.io/images/sourdough18.jpg)
 
-_(1) Looks messy after kneading (2) But it rises! (3) After baking (4) Carrot Raisin Wholemeal Sourdough with Sunflower Seeds_
+_(1) Looks messy after kneading (2) But it rises! (3) After baking (4) Carrot Raisin Wholemeal Sourdough with Sunflower Seed_
 
 _(1 cup Carrot shredded with a potato peeler, 1/2 cup Raisins, 1/3 cup Toasted Sunflower Seeds)_
 
@@ -136,6 +136,12 @@ _(1 cup Carrot shredded with a potato peeler, 1/2 cup Raisins, 1/3 cup Toasted S
 ![Prune Wholemeal Sourdough with Currants](https://lupyuen.github.io/images/sourdough10.jpg)
 
 _Prune Wholemeal Sourdough with Currants_
+
+<hr>
+
+![Dark Chocolate Raisin Wholemeal Sourdough with Carrot and Sunflower Seed](https://lupyuen.github.io/images/sourdough19.jpg)
+
+_Dark Chocolate Raisin Wholemeal Sourdough with Carrot and Sunflower Seed_
 
 <hr>
 

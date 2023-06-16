@@ -10,7 +10,47 @@ TODO
 
 [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System)
 
-![TODO](https://lupyuen.github.io/images/pinephone2-roadmap.jpg)
+![Apache NuttX on PinePhone Roadmap](https://lupyuen.github.io/images/pinephone2-roadmap.jpg)
+
+# NuttX on PinePhone Roadmap
+
+TODO
+
+![Touchscreen Features](https://lupyuen.github.io/images/pinephone2-roadmap1.jpg)
+
+# Touchscreen Features
+
+TODO
+
+![Sensor Features](https://lupyuen.github.io/images/pinephone2-roadmap3.jpg)
+
+# Sensor Features
+
+TODO
+
+![LTE Modem](https://lupyuen.github.io/images/pinephone2-roadmap5.jpg)
+
+# LTE Modem
+
+TODO
+
+![Feature Phone](https://lupyuen.github.io/images/pinephone2-roadmap4.jpg)
+
+# Feature Phone
+
+TODO
+
+![Smart Phone](https://lupyuen.github.io/images/pinephone2-roadmap6.jpg)
+
+# Smart Phone
+
+TODO
+
+![Core Features](https://lupyuen.github.io/images/pinephone2-roadmap2.jpg)
+
+# Core Features
+
+TODO
 
 # What's Next
 
@@ -36,14 +76,3 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/pinephone2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pinephone2.md)
 
-![TODO](https://lupyuen.github.io/images/pinephone2-roadmap1.jpg)
-
-![TODO](https://lupyuen.github.io/images/pinephone2-roadmap2.jpg)
-
-![TODO](https://lupyuen.github.io/images/pinephone2-roadmap3.jpg)
-
-![TODO](https://lupyuen.github.io/images/pinephone2-roadmap4.jpg)
-
-![TODO](https://lupyuen.github.io/images/pinephone2-roadmap5.jpg)
-
-![TODO](https://lupyuen.github.io/images/pinephone2-roadmap6.jpg)
