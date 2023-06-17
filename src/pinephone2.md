@@ -20,11 +20,11 @@ TODO
 
 # Touchscreen Features
 
-We're incredibly fortunate that __PinePhone's Touchscreen__ runs OK with NuttX, after we implemented these features...
+We're incredibly fortunate that __PinePhone's Touchscreen__ runs OK with NuttX, after we built these features...
 
 -   [__MIPI Display Serial Interface (DSI)__](https://lupyuen.github.io/articles/dsi3) transmits pixel data to the [__LCD Panel__](https://lupyuen.github.io/articles/lcd)
 
--   [__Allwinner Display Engine__](https://lupyuen.github.io/articles/de3) renders graphics and pushes the pixels over MIPI DSI
+-   [__Allwinner Display Engine__](https://lupyuen.github.io/articles/de3) renders bitmap graphics and pushes the pixels over MIPI DSI
 
 -   [__NuttX Framebuffer__](https://lupyuen.github.io/articles/fb) exposes the rendering API to NuttX Apps
 
@@ -36,7 +36,11 @@ We're incredibly fortunate that __PinePhone's Touchscreen__ runs OK with NuttX, 
 
 -   [__WebAssembly Simulator__](https://lupyuen.github.io/articles/lvgl4) previews Touchscreen Apps in the Web Browser
 
-TODO
+On NuttX for PinePhone, we can create __Touchscreen Apps__ that will work like a regular Smartphone App!
+
+(But we're not yet a Complete Smartphone, we'll come back to this)
+
+Let's talk about the Sensors inside PinePhone...
 
 > ![Sensor Features](https://lupyuen.github.io/images/pinephone2-roadmap3.jpg)
 
