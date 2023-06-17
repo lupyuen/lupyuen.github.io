@@ -20,7 +20,19 @@ TODO
 
 # Touchscreen Features
 
-TODO: We were incredibly fortunate to have PinePhone's Touchscreen running OK on NuttX
+We're incredibly fortunate to have PinePhone's Touchscreen running OK with NuttX...
+
+-   TODO: MIPI DSI
+
+-   TODO: Display Engine
+
+-   TODO: I2C Touch Panel
+
+-   TODO: LVGL Library
+
+TODO: Touchscreen Apps
+
+TODO: WebAssembly Simulator
 
 > ![Sensor Features](https://lupyuen.github.io/images/pinephone2-roadmap3.jpg)
 
