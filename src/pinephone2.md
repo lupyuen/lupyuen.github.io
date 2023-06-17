@@ -22,17 +22,21 @@ TODO
 
 We're incredibly fortunate that __PinePhone's Touchscreen__ runs OK with NuttX, after we implemented these features...
 
--   __MIPI Display Serial Interface (DSI)__ for transmitting pixel data to the LCD Panel
+-   [__MIPI Display Serial Interface (DSI)__](https://lupyuen.github.io/articles/dsi3) transmits pixel data to the [__LCD Panel__](https://lupyuen.github.io/articles/lcd)
 
--   __Allwinner Display Engine__ for rendering graphics and pushing the pixels over MIPI DSI
+-   [__Allwinner Display Engine__](https://lupyuen.github.io/articles/de3) renders graphics and pushes the pixels over MIPI DSI
 
--   __I2C Touch Panel__ for detecting Touch Input
+-   [__NuttX Framebuffer__](https://lupyuen.github.io/articles/fb) exposes the rendering API to NuttX Apps
 
--   __LVGL Graphics Library__ for rendering User Interfaces and handling Touch Input
+-   [__I2C Touch Panel__](https://lupyuen.github.io/articles/touch2) detects Touch Input
 
-TODO: Touchscreen Apps
+-   [__LVGL Graphics Library__](https://lupyuen.github.io/articles/lvgl2) renders User Interfaces and handles Touch Input
 
-TODO: WebAssembly Simulator
+-   [__LVGL Terminal__](https://lupyuen.github.io/articles/terminal) is a Touchscreen App that we created with LVGL
+
+-   [__WebAssembly Simulator__](https://lupyuen.github.io/articles/lvgl4) previews Touchscreen Apps in the Web Browser
+
+TODO
 
 > ![Sensor Features](https://lupyuen.github.io/images/pinephone2-roadmap3.jpg)
 
