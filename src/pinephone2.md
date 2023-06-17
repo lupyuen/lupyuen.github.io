@@ -14,7 +14,7 @@ TODO
 
 # NuttX on PinePhone Roadmap
 
-TODO
+TODO: Educational Exercise, 25 articles
 
 > ![Touchscreen Features](https://lupyuen.github.io/images/pinephone2-roadmap1.jpg)
 
@@ -48,11 +48,21 @@ Let's talk about the Sensors inside PinePhone...
 
 TODO
 
+-   TODO: Accelerometer and Gyroscope
+
+-   TODO: Magnetometer, Light and Promixity Sensors
+
+-   TODO: Front and Rear Cameras
+
+-   TODO: Power Management
+
+-   TODO: Low Power Mode
+
 ![LTE Modem](https://lupyuen.github.io/images/pinephone2-roadmap5.jpg)
 
 # LTE Modem
 
-TODO
+TODO: What makes PinePhone a Phone?
 
 ![Feature Phone](https://lupyuen.github.io/images/pinephone2-roadmap4.jpg)
 
