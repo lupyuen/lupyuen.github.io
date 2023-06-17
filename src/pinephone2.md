@@ -28,7 +28,7 @@ We're incredibly fortunate that __PinePhone's Touchscreen__ runs OK with NuttX, 
 
 -   [__NuttX Framebuffer__](https://lupyuen.github.io/articles/fb) exposes the rendering API to NuttX Apps
 
--   [__I2C Touch Panel__](https://lupyuen.github.io/articles/touch2) detects Touch Input
+-   [__I2C Touch Panel__](https://lupyuen.github.io/articles/touch2) detects Touch Input from the LCD Panel
 
 -   [__LVGL Graphics Library__](https://lupyuen.github.io/articles/lvgl2) renders User Interfaces and handles Touch Input
 
@@ -36,7 +36,7 @@ We're incredibly fortunate that __PinePhone's Touchscreen__ runs OK with NuttX, 
 
 -   [__WebAssembly Simulator__](https://lupyuen.github.io/articles/lvgl4) previews Touchscreen Apps in the Web Browser
 
-On NuttX for PinePhone, we can create __Touchscreen Apps__ that will work like a regular Smartphone App!
+Today with NuttX for PinePhone, we can create __Touchscreen Apps__ that will work like a regular Smartphone App!
 
 (But we're not yet a Complete Smartphone, we'll come back to this)
 
@@ -48,15 +48,17 @@ Let's talk about the Sensors inside PinePhone...
 
 TODO
 
--   TODO: Accelerometer and Gyroscope
+-   [__Accelerometer and Gyroscope__](https://www.hackster.io/lupyuen/inside-a-smartphone-accelerometer-pinephone-with-nuttx-rtos-b92b58) will detect PinePhone motion and orientation
 
--   TODO: Magnetometer, Light and Promixity Sensors
+-   __Magnetometer, Light and Promixity Sensors__ are not yet supported
 
--   TODO: Front and Rear Cameras
+-   __Front and Rear Cameras__ are not supported
 
--   TODO: Power Management
+-   [__Power Management__](https://lupyuen.github.io/articles/lcd#power-on-lcd-panel) is partially implemented. PinePhone's LCD Display and Sensors will power on correctly, but...
 
--   TODO: Low Power Mode
+-   __Battery Charging and Low Power Mode__ are not done yet
+
+TODO
 
 ![LTE Modem](https://lupyuen.github.io/images/pinephone2-roadmap5.jpg)
 
