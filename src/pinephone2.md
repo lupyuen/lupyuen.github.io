@@ -20,15 +20,15 @@ TODO
 
 # Touchscreen Features
 
-We're incredibly fortunate to have PinePhone's Touchscreen running OK with NuttX...
+We're incredibly fortunate that __PinePhone's Touchscreen__ runs OK with NuttX, after we implemented these features...
 
--   TODO: MIPI DSI
+-   __MIPI Display Serial Interface (DSI)__ for transmitting pixel data to the LCD Panel
 
--   TODO: Display Engine
+-   __Allwinner Display Engine__ for rendering graphics and pushing the pixels over MIPI DSI
 
--   TODO: I2C Touch Panel
+-   __I2C Touch Panel__ for detecting Touch Input
 
--   TODO: LVGL Library
+-   __LVGL Graphics Library__ for rendering User Interfaces and handling Touch Input
 
 TODO: Touchscreen Apps
 
