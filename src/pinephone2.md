@@ -6,6 +6,8 @@
 
 TODO
 
+2023 has been an awesome year for Apache NuttX RTOS on Pine64 PinePhone! Let's review the features that we've implemented... And what we'll do next
+
 [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)
 
 [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System)
@@ -64,7 +66,9 @@ TODO
 
 # LTE Modem
 
-What makes PinePhone a Phone? It's the __LTE Modem__ inside PinePhone! (Pic above)
+_What makes PinePhone a Phone?_
+
+It's the __LTE Modem__ inside PinePhone! (Pic above)
 
 -   [__Outgoing Calls__](https://lupyuen.github.io/articles/lte2#outgoing-phone-call) and [__Outgoing SMS__](https://lupyuen.github.io/articles/lte2#send-sms-in-pdu-mode) are OK, but...
 
@@ -86,23 +90,31 @@ TODO
 
 # Feature Phone
 
-TODO: Are we a Feature Phone yet? Almost! Pic above
+_Are we a Feature Phone yet?_
+
+TODO: Almost! Pic above
 
 ![Smartphone](https://lupyuen.github.io/images/pinephone2-roadmap6.jpg)
 
 # Smartphone
 
-TODO: Pic above
+_Are we a Smartphone yet?_
+
+TODO: Not quite. Pic above
 
 > ![Core Features](https://lupyuen.github.io/images/pinephone2-roadmap2.jpg)
 
 # Core Features
+
+_Have we missed any Core Features?_
 
 TODO: Storage, pic above
 
 ![Rolling to RISC-V](https://lupyuen.github.io/images/pinephone2-roadmap6.jpg)
 
 # Rolling to RISC-V
+
+_We're moving to RISC-V?_
 
 TODO
 
