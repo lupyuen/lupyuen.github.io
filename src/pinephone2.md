@@ -20,7 +20,7 @@ TODO: Educational Exercise, 25 articles
 
 # Touchscreen Features
 
-We're incredibly fortunate that __PinePhone's Touchscreen__ runs OK with NuttX, after we built these features...
+We're incredibly fortunate that __PinePhone's Touchscreen__ runs OK with NuttX, after we built these features (pic above)...
 
 -   [__MIPI Display Serial Interface (DSI)__](https://lupyuen.github.io/articles/dsi3) transmits pixel data to the [__LCD Panel__](https://lupyuen.github.io/articles/lcd)
 
@@ -46,7 +46,7 @@ Let's talk about the Sensors inside PinePhone...
 
 # Sensor Features
 
-TODO
+TODO: Pic above
 
 -   [__Accelerometer and Gyroscope__](https://www.hackster.io/lupyuen/inside-a-smartphone-accelerometer-pinephone-with-nuttx-rtos-b92b58) will detect PinePhone motion and orientation
 
@@ -64,25 +64,41 @@ TODO
 
 # LTE Modem
 
-TODO: What makes PinePhone a Phone?
+What makes PinePhone a Phone? It's the __LTE Modem__ inside PinePhone! (Pic above)
+
+-   [__Outgoing Calls__](https://lupyuen.github.io/articles/lte2#outgoing-phone-call) and [__Outgoing SMS__](https://lupyuen.github.io/articles/lte2#send-sms-in-pdu-mode) are OK, but...
+
+-   __PCM Audio__ is not implemented, so we won't have audio
+
+-   __Incoming Calls__ and __Incoming SMS__? Not yet
+
+-   [__UART Interface__](https://lupyuen.github.io/articles/lte2#send-at-commands) is ready for AT Commands
+
+-   __USB Interface__ is not ready yet, so we won't have __GPS__
+
+-   [__USB EHCI Controller__](https://lupyuen.github.io/articles/usb3) is partially done
+
+-   __USB OTG Controller__? Not started
+
+TODO
 
 ![Feature Phone](https://lupyuen.github.io/images/pinephone2-roadmap4.jpg)
 
 # Feature Phone
 
-TODO
+TODO: Are we a Feature Phone yet? Almost! Pic above
 
 ![Smartphone](https://lupyuen.github.io/images/pinephone2-roadmap6.jpg)
 
 # Smartphone
 
-TODO
+TODO: Pic above
 
 > ![Core Features](https://lupyuen.github.io/images/pinephone2-roadmap2.jpg)
 
 # Core Features
 
-TODO: Storage
+TODO: Storage, pic above
 
 ![Rolling to RISC-V](https://lupyuen.github.io/images/pinephone2-roadmap6.jpg)
 
