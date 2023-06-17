@@ -20,7 +20,7 @@ TODO
 
 # Touchscreen Features
 
-TODO
+TODO: We were incredibly fortunate to have PinePhone's Touchscreen running OK on NuttX
 
 > ![Sensor Features](https://lupyuen.github.io/images/pinephone2-roadmap3.jpg)
 
