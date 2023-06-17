@@ -40,9 +40,9 @@ TODO
 
 TODO
 
-![Smart Phone](https://lupyuen.github.io/images/pinephone2-roadmap6.jpg)
+![Smartphone](https://lupyuen.github.io/images/pinephone2-roadmap6.jpg)
 
-# Smart Phone
+# Smartphone
 
 TODO
 
@@ -51,6 +51,12 @@ TODO
 # Core Features
 
 TODO: Storage
+
+![Rolling to RISC-V](https://lupyuen.github.io/images/pinephone2-roadmap6.jpg)
+
+# Rolling to RISC-V
+
+TODO
 
 # What's Next
 
