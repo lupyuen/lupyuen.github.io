@@ -132,6 +132,8 @@ TODO: Not quite. Pic above
 
     (Meshtastic Mesh Networking too)
 
+-   __USB EHCI and OTG__ won't work either
+
 TODO
 
 > ![Core Features](https://lupyuen.github.io/images/pinephone2-roadmap2.jpg)
