@@ -8,9 +8,9 @@ TODO
 
 2023 has been an awesome year for Apache NuttX RTOS on Pine64 PinePhone!
 
-Let's talk about the...
+Let's talk about...
 
--   Features that we've implemented
+-   The features that we've implemented
 
 -   What we'll do next
 
@@ -25,6 +25,10 @@ Let's talk about the...
 # NuttX on PinePhone Roadmap
 
 TODO: Educational Exercise, 25 articles
+
+Smartphones are incredibly complex gadgets. What if we could learn the internals of smartphones... By booting Apache NuttX RTOS (Real-Time Operating System) on our phone?
+
+Over the past year, we have written a series of 24 articles explaining the inner workings of PinePhone, and how we implemented the smartphone features with Apache NuttX RTOS.
 
 > ![Touchscreen Features](https://lupyuen.github.io/images/pinephone2-roadmap1.jpg)
 
