@@ -90,25 +90,65 @@ TODO
 
 # Feature Phone
 
+_We've done quite a bit with the LTE Modem..._
+
 _Are we a Feature Phone yet?_
 
 TODO: Almost! Pic above
+
+-   We have created a [__Feature Phone UI__](https://lupyuen.github.io/articles/lvgl4) as an LVGL Touchscreen App
+
+-   That also runs in the [__Web Browser with WebAssembly__](https://lupyuen.github.io/articles/lvgl4#run-lvgl-app-in-web-browser)
+
+-   We need to integrate [__Outgoing Calls__](https://lupyuen.github.io/articles/lte2#outgoing-phone-call) and [__Outgoing SMS__](https://lupyuen.github.io/articles/lte2#send-sms-in-pdu-mode) into our Feature Phone App
+
+-   Though __PCM Audio__, __Incoming Calls__ and __Incoming SMS__ are still missing
+
+TODO: This is probably the next thing we'll do
 
 ![Smartphone](https://lupyuen.github.io/images/pinephone2-roadmap6.jpg)
 
 # Smartphone
 
-_Are we a Smartphone yet?_
+_OK we're almost a Feature Phone..._
+
+_But are we a Smartphone yet?_
 
 TODO: Not quite. Pic above
+
+-   __Wireless Networking__ is completely missing: __Bluetooth LE__ and __WiFi__
+
+    (Which will require plenty of coding)
+
+-   __LoRa Networking__ with the [__LoRa Add-On Case__](https://lupyuen.github.io/articles/usb2#appendix-lora-communicator-for-pinephone-on-nuttx) will be really interesting, but sadly missing today
+
+    (Meshtastic Mesh Networking too)
+
+TODO
 
 > ![Core Features](https://lupyuen.github.io/images/pinephone2-roadmap2.jpg)
 
 # Core Features
 
+_What else do we need for a Smartphone?_
+
 _Have we missed any Core Features?_
 
 TODO: Storage, pic above
+
+-   __Multiple CPUs__ are not working yet, we're running on a Single Core today
+
+-   __Memory Management__ will be needed for Virtual Memory and to protect the NuttX Kernel
+
+-   __Security__ needs to be implemented (similar to SELinux and AppArmor)
+
+-   __eMMC and microSD Storage__ are not there yet
+
+-   __GPU__ will be needed for serious graphics
+
+-   [__PinePhone Emulator__](https://lupyuen.github.io/articles/unicorn) will be super helpful for testing the above features
+
+TODO
 
 ![Rolling to RISC-V](https://lupyuen.github.io/images/pinephone2-roadmap6.jpg)
 
