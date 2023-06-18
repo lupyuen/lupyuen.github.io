@@ -750,6 +750,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/lvgl4.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl4.md)
 
+# Notes
+
+1.  The code in this article was tested with Zig Compiler version 0.10.0.
+
+    For new versions of Zig Compiler, check out the [__updates by WhiteHexagon__](https://forum.pine64.org/showthread.php?tid=18353&pid=118104#pid118104)
+
 # Appendix: HTML for LVGL
 
 _What's inside the HTML Page for our LVGL App in WebAssembly?_
