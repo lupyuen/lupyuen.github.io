@@ -175,44 +175,64 @@ _We're moving to RISC-V?_
 TODO
 
 Retrospective
-Getting dated
+
+Getting dated, since 2015, 8 years ago!
+
 [Other Allwinner A64 handhelds](https://retrododo.com/funnyplaying-retro-pixel-pocket/)
+
 PinePhone Pro? Same steps as PinePhone 
+
 iPhone Samsung phone
+
 Pmos
+
 Feels like "grinding"
 
-Why moving on to RISC-V Tablet
+
+_Why moving on to RISC-V Tablet?_
+
 No phone, so tablet
+
 Sbc first
+
 [RISC-V Emulator](https://github.com/apache/nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt)
+
 [Hinted one year ago](https://www.mail-archive.com/dev@nuttx.apache.org/msg08395.html)
 
 Better docs
+
 Tidier code
+
 But might not be well tested
 
-Anyone teaching? Lemme know!
-
-Not sponsored 
 RISC-V tablet next, since no RISC-V phones yet
-Why pine64? Sponsored?
+
+_Why Pine64? Sponsored?_
+
 Affordable phones and tablets for devs
+
 Lemme know!
 
-Matrix dkscord
+
+_Why not FreeRTOS or Zephyr?_
+
+POSIX 
+
+
+_Matrix Discord?_
+
 Pine64 forum probably the best way to catch me for a discussion 
 
-Why not one more year on PinePhone or PinePhone pro
+
+_Why not one more year on PinePhone or PinePhone Pro?_
+
 I already in my fifties and i have severe hypertension 
+
 I'm carefully planning for my remaining days as IoT Techie and Educator :-)
 
 (And maybe Sourdough Hacker)
 
 But I'm still keen to promote NuttX as a teaching tool for learning the internals PinePhone! If you know of any school, please lemme know 🙏
-
-Why not zephyr or FreeRTOS?
-POSIX 
 
 # What's Next
 
