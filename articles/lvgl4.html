@@ -80,17 +80,18 @@
 <li><a href="#lvgl-for-nuttx">4.2 LVGL for NuttX</a><ul></ul></li></ul></li>
 <li><a href="#run-lvgl-app-on-pinephone">5 Run LVGL App on PinePhone</a><ul></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-html-for-lvgl">7 Appendix: HTML for LVGL</a><ul></ul></li>
-<li><a href="#appendix-javascript-for-lvgl">8 Appendix: JavaScript for LVGL</a><ul>
-<li><a href="#load-webassembly-module">8.1 Load WebAssembly Module</a><ul></ul></li>
-<li><a href="#import-zig-functions-into-javascript">8.2 Import Zig Functions into JavaScript</a><ul></ul></li>
-<li><a href="#export-javascript-functions-to-zig">8.3 Export JavaScript Functions to Zig</a><ul></ul></li>
-<li><a href="#main-javascript-function">8.4 Main JavaScript Function</a><ul></ul></li></ul></li>
-<li><a href="#appendix-initialise-lvgl">9 Appendix: Initialise LVGL</a><ul></ul></li>
-<li><a href="#appendix-initialise-lvgl-input">10 Appendix: Initialise LVGL Input</a><ul></ul></li>
-<li><a href="#appendix-handle-lvgl-input">11 Appendix: Handle LVGL Input</a><ul></ul></li>
-<li><a href="#appendix-handle-lvgl-timer">12 Appendix: Handle LVGL Timer</a><ul></ul></li>
-<li><a href="#appendix-import-lvgl-library">13 Appendix: Import LVGL Library</a><ul></ul></li></ul></nav><p>📝 <em>10 Jun 2023</em></p>
+<li><a href="#notes">7 Notes</a><ul></ul></li>
+<li><a href="#appendix-html-for-lvgl">8 Appendix: HTML for LVGL</a><ul></ul></li>
+<li><a href="#appendix-javascript-for-lvgl">9 Appendix: JavaScript for LVGL</a><ul>
+<li><a href="#load-webassembly-module">9.1 Load WebAssembly Module</a><ul></ul></li>
+<li><a href="#import-zig-functions-into-javascript">9.2 Import Zig Functions into JavaScript</a><ul></ul></li>
+<li><a href="#export-javascript-functions-to-zig">9.3 Export JavaScript Functions to Zig</a><ul></ul></li>
+<li><a href="#main-javascript-function">9.4 Main JavaScript Function</a><ul></ul></li></ul></li>
+<li><a href="#appendix-initialise-lvgl">10 Appendix: Initialise LVGL</a><ul></ul></li>
+<li><a href="#appendix-initialise-lvgl-input">11 Appendix: Initialise LVGL Input</a><ul></ul></li>
+<li><a href="#appendix-handle-lvgl-input">12 Appendix: Handle LVGL Input</a><ul></ul></li>
+<li><a href="#appendix-handle-lvgl-timer">13 Appendix: Handle LVGL Timer</a><ul></ul></li>
+<li><a href="#appendix-import-lvgl-library">14 Appendix: Import LVGL Library</a><ul></ul></li></ul></nav><p>📝 <em>10 Jun 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/lvgl4-title.jpg" alt="LVGL Feature Phone UI running on PinePhone with Apache NuttX RTOS" /></p>
 <p><a href="https://lupyuen.github.io/pinephone-lvgl-zig/feature-phone.html"><em>LVGL Feature Phone UI running on PinePhone with Apache NuttX RTOS</em></a></p>
 <p>This article explains how we created an <a href="https://docs.lvgl.io/master/index.html"><strong>LVGL Graphical App</strong></a> for <a href="https://wiki.pine64.org/index.php/PinePhone"><strong>Pine64 PinePhone</strong></a>… By tweaking and testing in a <strong>Web Browser!</strong></p>
@@ -689,7 +690,14 @@ nsh&gt; lvgldemo
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/lvgl4.md"><strong>lupyuen.github.io/src/lvgl4.md</strong></a></p>
-<h1 id="appendix-html-for-lvgl"><a href="#appendix-html-for-lvgl">7 Appendix: HTML for LVGL</a></h1>
+<h1 id="notes"><a href="#notes">7 Notes</a></h1>
+<ol>
+<li>
+<p>The code in this article was tested with Zig Compiler version 0.10.0.</p>
+<p>For new versions of Zig Compiler, check out the <a href="https://forum.pine64.org/showthread.php?tid=18353&amp;pid=118104#pid118104"><strong>updates by WhiteHexagon</strong></a></p>
+</li>
+</ol>
+<h1 id="appendix-html-for-lvgl"><a href="#appendix-html-for-lvgl">8 Appendix: HTML for LVGL</a></h1>
 <p><em>What’s inside the HTML Page for our LVGL App in WebAssembly?</em></p>
 <p>Our HTML Page defines a <strong>HTML Canvas</strong> for rendering the LVGL Display: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.html">feature-phone.html</a></p>
 <div class="example-wrap"><pre class="language-html"><code>&lt;!doctype html&gt;
@@ -711,7 +719,7 @@ nsh&gt; lvgldemo
 &lt;/html&gt;
 </code></pre></div>
 <p>Then our HTML Page loads and executes our JavaScript…</p>
-<h1 id="appendix-javascript-for-lvgl"><a href="#appendix-javascript-for-lvgl">8 Appendix: JavaScript for LVGL</a></h1>
+<h1 id="appendix-javascript-for-lvgl"><a href="#appendix-javascript-for-lvgl">9 Appendix: JavaScript for LVGL</a></h1>
 <p><em>What’s inside the JavaScript for our LVGL App in WebAssembly?</em></p>
 <p>Our JavaScript will…</p>
 <ol>
@@ -729,7 +737,7 @@ nsh&gt; lvgldemo
 </li>
 </ol>
 <p>Let’s walk through the JavaScript…</p>
-<h2 id="load-webassembly-module"><a href="#load-webassembly-module">8.1 Load WebAssembly Module</a></h2>
+<h2 id="load-webassembly-module"><a href="#load-webassembly-module">9.1 Load WebAssembly Module</a></h2>
 <p>Our JavaScript loads the <strong>WebAssembly Module</strong> (feature-phone.wasm) generated by Zig Compiler: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L154-L173">feature-phone.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Render LVGL in WebAssembly, compiled with Zig Compiler. Based on...
 // https://github.com/daneelsan/minimal-zig-wasm-canvas/blob/master/script.js
@@ -757,7 +765,7 @@ async function bootstrap() {
 bootstrap();
 </code></pre></div>
 <p>Then our script <strong>imports the Zig Functions</strong> and calls the <strong>Main JavaScript Function</strong>. (See below)</p>
-<h2 id="import-zig-functions-into-javascript"><a href="#import-zig-functions-into-javascript">8.2 Import Zig Functions into JavaScript</a></h2>
+<h2 id="import-zig-functions-into-javascript"><a href="#import-zig-functions-into-javascript">9.2 Import Zig Functions into JavaScript</a></h2>
 <p>Our script defines the JavaScript Module <strong>wasm</strong> that will store the WebAssembly Functions and Memory imported from Zig: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L4-L28">feature-phone.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Log WebAssembly Messages from Zig to JavaScript Console
 // https://github.com/daneelsan/zig-wasm-logger/blob/master/script.js
@@ -791,7 +799,7 @@ const wasm = {
 <p><a href="https://lupyuen.github.io/articles/lvgl3#webassembly-logger-for-lvgl">(Explained here)</a></p>
 </li>
 </ul>
-<h2 id="export-javascript-functions-to-zig"><a href="#export-javascript-functions-to-zig">8.3 Export JavaScript Functions to Zig</a></h2>
+<h2 id="export-javascript-functions-to-zig"><a href="#export-javascript-functions-to-zig">9.3 Export JavaScript Functions to Zig</a></h2>
 <p>Our script exports the JavaScript Function <strong>render</strong> to Zig: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L28-L67">feature-phone.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Export JavaScript Functions to Zig
 const importObject = {
@@ -847,7 +855,7 @@ const importObject = {
 <p><a href="https://lupyuen.github.io/articles/lvgl3#webassembly-logger-for-lvgl">(Explained here)</a></p>
 </li>
 </ul>
-<h2 id="main-javascript-function"><a href="#main-javascript-function">8.4 Main JavaScript Function</a></h2>
+<h2 id="main-javascript-function"><a href="#main-javascript-function">9.4 Main JavaScript Function</a></h2>
 <p>Our Main JavaScript Function will…</p>
 <ol>
 <li>
@@ -919,7 +927,7 @@ function main() {
 <p><a href="https://lupyuen.github.io/articles/lvgl4#appendix-handle-lvgl-timer"><strong>“Handle LVGL Timer”</strong></a></p>
 </li>
 </ul>
-<h1 id="appendix-initialise-lvgl"><a href="#appendix-initialise-lvgl">9 Appendix: Initialise LVGL</a></h1>
+<h1 id="appendix-initialise-lvgl"><a href="#appendix-initialise-lvgl">10 Appendix: Initialise LVGL</a></h1>
 <p><em>How do we initialise LVGL Library in our JavaScript?</em></p>
 <p>In our <a href="https://lupyuen.github.io/articles/lvgl4#main-javascript-function"><strong>JavaScript Main Function</strong></a>, we call Zig Function <strong>initDisplay</strong> at startup: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L123-L154">feature-phone.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Main Function
@@ -1003,7 +1011,7 @@ pub export fn initDisplay() void {
 }
 </code></pre></div>
 <p>Let’s talk about LVGL Input…</p>
-<h1 id="appendix-initialise-lvgl-input"><a href="#appendix-initialise-lvgl-input">10 Appendix: Initialise LVGL Input</a></h1>
+<h1 id="appendix-initialise-lvgl-input"><a href="#appendix-initialise-lvgl-input">11 Appendix: Initialise LVGL Input</a></h1>
 <p><em>How does Zig initialise LVGL Input at startup?</em></p>
 <p>In the previous section we saw that <strong>initDisplay</strong> (in Zig) initialises the LVGL Input at startup: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/wasm.zig#L16-L59">wasm.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// LVGL Input Device Driver
@@ -1048,7 +1056,7 @@ void *register_input(lv_indev_drv_t *indev_drv) {
 <p><img src="https://lupyuen.github.io/images/lvgl4-flow.jpg" alt="Handle LVGL Input" /></p>
 <p><a href="https://lupyuen.github.io/images/lvgl3-render.jpg">(“Render Diagram” is here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/lvgl3#render-lvgl-display-in-zig">(Explained here)</a></p>
-<h1 id="appendix-handle-lvgl-input"><a href="#appendix-handle-lvgl-input">11 Appendix: Handle LVGL Input</a></h1>
+<h1 id="appendix-handle-lvgl-input"><a href="#appendix-handle-lvgl-input">12 Appendix: Handle LVGL Input</a></h1>
 <p><em>How do we handle LVGL Mouse Input and Touch Input?</em></p>
 <p>In our JavaScript, we capture the <strong>Mouse Down</strong> and <strong>Mouse Up</strong> events (pic above): <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/feature-phone.js#L73-L123">feature-phone.js</a></p>
 <div class="example-wrap"><pre class="language-javascript"><code>// Handle Mouse Down on HTML Canvas
@@ -1192,7 +1200,7 @@ void set_input_data(
 <p><img src="https://lupyuen.github.io/images/lvgl4-flow.jpg" alt="Handle LVGL Timer" /></p>
 <p><a href="https://lupyuen.github.io/images/lvgl3-render.jpg">(“Render Diagram” is here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/lvgl3#render-lvgl-display-in-zig">(Explained here)</a></p>
-<h1 id="appendix-handle-lvgl-timer"><a href="#appendix-handle-lvgl-timer">12 Appendix: Handle LVGL Timer</a></h1>
+<h1 id="appendix-handle-lvgl-timer"><a href="#appendix-handle-lvgl-timer">13 Appendix: Handle LVGL Timer</a></h1>
 <p><em>What’s this LVGL Timer that’s called by our JavaScript?</em></p>
 <p>According to the <a href="https://docs.lvgl.io/8.3/porting/project.html#initialization"><strong>LVGL Docs</strong></a>, we need to call <strong>lv_timer_handler</strong> every few milliseconds to handle LVGL Tasks, which will…</p>
 <ul>
@@ -1277,7 +1285,7 @@ var elapsed_ms: u32 = 0;
 </ul>
 <p><img src="https://lupyuen.github.io/images/lvgl3-render.jpg" alt="Rendering LVGL Display in Zig" /></p>
 <p><a href="https://lupyuen.github.io/articles/lvgl3#render-lvgl-display-in-zig"><em>Rendering LVGL Display in Zig</em></a></p>
-<h1 id="appendix-import-lvgl-library"><a href="#appendix-import-lvgl-library">13 Appendix: Import LVGL Library</a></h1>
+<h1 id="appendix-import-lvgl-library"><a href="#appendix-import-lvgl-library">14 Appendix: Import LVGL Library</a></h1>
 <p><em>How did we import the LVGL Library from C into Zig?</em></p>
 <p>Our Zig Wrapper for LVGL calls <a href="https://ziglang.org/documentation/master/#cImport"><strong>@cImport</strong></a> to import the <strong>LVGL Header Files</strong> from C into Zig: <a href="https://github.com/lupyuen/pinephone-lvgl-zig/blob/main/lvgl.zig#L5-L28">lvgl.zig</a></p>
 <div class="example-wrap"><pre class="language-zig"><code>/// Import the LVGL Library from C
