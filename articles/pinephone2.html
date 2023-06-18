@@ -168,18 +168,68 @@
 <p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/pinephone2-roadmap4.jpg" alt="Feature Phone" /></p>
 <h1 id="feature-phone"><a href="#feature-phone">5 Feature Phone</a></h1>
+<p><em>We’ve done quite a bit with the LTE Modem…</em></p>
 <p><em>Are we a Feature Phone yet?</em></p>
 <p>TODO: Almost! Pic above</p>
+<ul>
+<li>
+<p>We have created a <a href="https://lupyuen.github.io/articles/lvgl4"><strong>Feature Phone UI</strong></a> as an LVGL Touchscreen App</p>
+</li>
+<li>
+<p>That also runs in the <a href="https://lupyuen.github.io/articles/lvgl4#run-lvgl-app-in-web-browser"><strong>Web Browser with WebAssembly</strong></a></p>
+</li>
+<li>
+<p>We need to integrate <a href="https://lupyuen.github.io/articles/lte2#outgoing-phone-call"><strong>Outgoing Calls</strong></a> and <a href="https://lupyuen.github.io/articles/lte2#send-sms-in-pdu-mode"><strong>Outgoing SMS</strong></a> into our Feature Phone App</p>
+</li>
+<li>
+<p>Though <strong>PCM Audio</strong>, <strong>Incoming Calls</strong> and <strong>Incoming SMS</strong> are still missing</p>
+</li>
+</ul>
+<p>TODO: This is probably the next thing we’ll do</p>
 <p><img src="https://lupyuen.github.io/images/pinephone2-roadmap6.jpg" alt="Smartphone" /></p>
 <h1 id="smartphone"><a href="#smartphone">6 Smartphone</a></h1>
-<p><em>Are we a Smartphone yet?</em></p>
+<p><em>OK we’re almost a Feature Phone…</em></p>
+<p><em>But are we a Smartphone yet?</em></p>
 <p>TODO: Not quite. Pic above</p>
+<ul>
+<li>
+<p><strong>Wireless Networking</strong> is completely missing: <strong>Bluetooth LE</strong> and <strong>WiFi</strong></p>
+<p>(Which will require plenty of coding)</p>
+</li>
+<li>
+<p><strong>LoRa Networking</strong> with the <a href="https://lupyuen.github.io/articles/usb2#appendix-lora-communicator-for-pinephone-on-nuttx"><strong>LoRa Add-On Case</strong></a> will be really interesting, but sadly missing today</p>
+<p>(Meshtastic Mesh Networking too)</p>
+</li>
+</ul>
+<p>TODO</p>
 <blockquote>
 <p><img src="https://lupyuen.github.io/images/pinephone2-roadmap2.jpg" alt="Core Features" /></p>
 </blockquote>
 <h1 id="core-features"><a href="#core-features">7 Core Features</a></h1>
+<p><em>What else do we need for a Smartphone?</em></p>
 <p><em>Have we missed any Core Features?</em></p>
 <p>TODO: Storage, pic above</p>
+<ul>
+<li>
+<p><strong>Multiple CPUs</strong> are not working yet, we’re running on a Single Core today</p>
+</li>
+<li>
+<p><strong>Memory Management</strong> will be needed for Virtual Memory and to protect the NuttX Kernel</p>
+</li>
+<li>
+<p><strong>Security</strong> needs to be implemented (similar to SELinux and AppArmor)</p>
+</li>
+<li>
+<p><strong>eMMC and microSD Storage</strong> are not there yet</p>
+</li>
+<li>
+<p><strong>GPU</strong> will be needed for serious graphics</p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/unicorn"><strong>PinePhone Emulator</strong></a> will be super helpful for testing the above features</p>
+</li>
+</ul>
+<p>TODO</p>
 <p><img src="https://lupyuen.github.io/images/pinephone2-roadmap6.jpg" alt="Rolling to RISC-V" /></p>
 <h1 id="rolling-to-risc-v"><a href="#rolling-to-risc-v">8 Rolling to RISC-V</a></h1>
 <p><em>We’re moving to RISC-V?</em></p>
