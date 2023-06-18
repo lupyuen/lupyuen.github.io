@@ -122,7 +122,7 @@ _OK we're almost a Feature Phone..._
 
 _But are we a Smartphone yet?_
 
-TODO: Not quite. Pic above
+Sorry we're not quite ready to be a __Smartphone__ (pic above), because...
 
 -   __Wireless Networking__ is completely missing: __Bluetooth LE__ and __WiFi__
 
@@ -130,7 +130,7 @@ TODO: Not quite. Pic above
 
 -   __LoRa Networking__ with the [__LoRa Add-On Case__](https://lupyuen.github.io/articles/usb2#appendix-lora-communicator-for-pinephone-on-nuttx) will be really interesting, but sadly missing today
 
-    (Meshtastic Mesh Networking too)
+    (Mesh Networking with Meshtastic would be awesome)
 
 -   __USB EHCI and OTG__ won't work either
 
