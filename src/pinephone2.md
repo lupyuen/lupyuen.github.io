@@ -88,7 +88,7 @@ TODO
 
 ![Feature Phone](https://lupyuen.github.io/images/pinephone2-roadmap4.jpg)
 
-# Feature Phone
+# NuttX Feature Phone
 
 _We've done quite a bit with the LTE Modem..._
 
@@ -108,7 +108,7 @@ TODO: This is probably the next thing we'll do
 
 ![Smartphone](https://lupyuen.github.io/images/pinephone2-roadmap6.jpg)
 
-# Smartphone
+# NuttX Smartphone
 
 _OK we're almost a Feature Phone..._
 
