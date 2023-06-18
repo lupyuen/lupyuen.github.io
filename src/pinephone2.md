@@ -6,7 +6,15 @@
 
 TODO
 
-2023 has been an awesome year for Apache NuttX RTOS on Pine64 PinePhone! Let's review the features that we've implemented... And what we'll do next
+2023 has been an awesome year for Apache NuttX RTOS on Pine64 PinePhone!
+
+Let's talk about the...
+
+-   Features that we've implemented
+
+-   What we'll do next
+
+-   Why we might move to a RISC-V Tablet!
 
 [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)
 
