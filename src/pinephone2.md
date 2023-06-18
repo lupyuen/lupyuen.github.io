@@ -130,7 +130,7 @@ TODO
 
 # Core Features
 
-_What else do we need for a Smartphone?_
+_What else do we need for a Smartphone..._
 
 _Have we missed any Core Features?_
 
@@ -140,13 +140,15 @@ TODO: Storage, pic above
 
 -   __Memory Management__ will be needed for Virtual Memory and to protect the NuttX Kernel
 
--   __Security__ needs to be implemented (similar to SELinux and AppArmor)
+-   __App Security__ needs to be implemented (similar to SELinux and AppArmor)
 
--   __eMMC and microSD Storage__ are not there yet
+-   __eMMC and microSD Storage__ won't work (because we're running in RAM)
 
 -   __GPU__ will be needed for serious graphics
 
 -   [__PinePhone Emulator__](https://lupyuen.github.io/articles/unicorn) will be super helpful for testing the above features
+
+Some of these features are probably supported by NuttX already. But we need to test thoroughly on PinePhone. (Hence the PinePhone Emulator)
 
 TODO
 
