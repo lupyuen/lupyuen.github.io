@@ -174,24 +174,19 @@ _We're moving to RISC-V?_
 
 TODO
 
-Priority
-Pcm audio
-Usb ehci with lte modem
-Ble / wifi
-Lora / meshtastic
-
 Retrospective
 Getting dated
-Other Allwinner A64 handhelds 
+[Other Allwinner A64 handhelds](https://retrododo.com/funnyplaying-retro-pixel-pocket/)
 PinePhone Pro? Same steps as PinePhone 
+iPhone Samsung phone
+Pmos
 Feels like "grinding"
 
 Why moving on to RISC-V Tablet
 No phone, so tablet
 Sbc first
-RISC-V Emulator 
-https://github.com/apache/nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt
-Hinted one year ago
+[RISC-V Emulator](https://github.com/apache/nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt)
+[Hinted one year ago](https://www.mail-archive.com/dev@nuttx.apache.org/msg08395.html)
 
 Better docs
 Tidier code
@@ -199,19 +194,11 @@ But might not be well tested
 
 Anyone teaching? Lemme know!
 
-Modem interface redesign
-connect usb to modem
-modem pcm audio
-wifi / ble
-
 Not sponsored 
 RISC-V tablet next, since no RISC-V phones yet
 Why pine64? Sponsored?
 Affordable phones and tablets for devs
 Lemme know!
-
-iPhone Samsung phone
-Pmos
 
 Matrix dkscord
 Pine64 forum probably the best way to catch me for a discussion 
