@@ -30,6 +30,8 @@ Smartphones are incredibly complex gadgets. What if we could learn the internals
 
 Over the past year, we have written a series of 24 articles explaining the inner workings of PinePhone, and how we implemented the smartphone features with Apache NuttX RTOS.
 
+(Yep that's our target: 1 article every 2 weeks!)
+
 > ![Touchscreen Features](https://lupyuen.github.io/images/pinephone2-roadmap1.jpg)
 
 # Touchscreen Features
