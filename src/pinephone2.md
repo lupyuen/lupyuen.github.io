@@ -172,7 +172,7 @@ TODO
 
 1.  _Fixing up NuttX for PinePhone..._
 
-    _Surely we can do that for the next couple of years?_
+    _Surely we can do that for the next couple of months?_
 
     Allwinner A64 SoC was released in 2015... That's __8 years ago__!
 
@@ -220,7 +220,11 @@ TODO
 
 1.  _Why not FreeRTOS? Or Zephyr OS?_
 
-    TODO: POSIX 
+    Our objective is to teach the internals of PinePhone using a very simple operating system. NuttX is super tiny, so it works just fine!
+
+    __FreeRTOS__ is too bare-bones though. We would need to build a bunch of drivers from scratch: Display, Touch Input, USB, LVGL, Accelerometer, ... NuttX has many drivers that we need.
+
+    __Zephyr OS__ has plenty of code contributed by large companies, it's better for writing commercial, industrial-grade firmware. But it might be too complex for learning about the internals of a smartphone.
 
 1.  _Why Pine64 gadgets? Are they sponsored?_
 
@@ -228,11 +232,11 @@ TODO
 
     Pine64 sells affordable phones and tablets for devs and learners. If you know of other similar companies, please lemme know! 🙏
 
-1.  _Matrix or Discord?_
+1.  _Why not collaborate with the Pine64 Community on Matrix or Discord?_
 
     TODO: Pine64 forum probably the best way to catch me for a discussion 
 
-1.  _Why not one more year on PinePhone or PinePhone Pro?_
+1.  _Why not spend a bit more time on PinePhone or PinePhone Pro?_
 
     I'm already in my fifties and I have severe hypertension...
 
