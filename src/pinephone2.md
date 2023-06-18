@@ -180,14 +180,19 @@ TODO
 
     [(NuttX might still run on other Allwinner A64 handhelds)](https://retrododo.com/funnyplaying-retro-pixel-pocket/)
 
-PinePhone Pro? Same steps as PinePhone 
+1.  _Like PinePhone Pro? Or PineTab 2?_
 
-iPhone Samsung phone
+    Well that's more of the same same Arm64, innit?
 
-Pmos
+    Just follow the exact same steps we've meticulously documented for NuttX on PinePhone...
+    
+    And we'll have NuttX running on __any Arm64 Device__: iPhone, Samsung Phones, tablets, ...
+
+    [(Like the super-impressive Mobile Linux ecosystem)](https://postmarketos.org/)
+
+
 
 Feels like "grinding"
-
 
 _Why moving on to RISC-V Tablet?_
 
