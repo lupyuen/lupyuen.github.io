@@ -170,13 +170,13 @@ TODO
 
 # Rolling to RISC-V
 
-_We're moving to RISC-V?_
+_Fixing up NuttX for PinePhone..._
+
+_Surely we can do that for the next couple of years?_
 
 TODO
 
-Retrospective
-
-Getting dated, since 2015, 8 years ago!
+Allwinner A64 SoC was released in 2015... That's 8 years ago!
 
 [Other Allwinner A64 handhelds](https://retrododo.com/funnyplaying-retro-pixel-pocket/)
 
