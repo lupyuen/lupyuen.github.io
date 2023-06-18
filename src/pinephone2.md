@@ -218,32 +218,33 @@ TODO
     
     So the migration might not be so challenging after all!
 
-1.  _Why Pine64 gadgets? Are they sponsored?_
-
-    I bought my own PinePhone for porting NuttX, and I'll do the same for the RISC-V gadgets.
-
-    Pine64 sells affordable phones and tablets for devs and learners. If you know of other similar companies, please lemme know!
-
 1.  _Why not FreeRTOS? Or Zephyr OS?_
 
-TODO
+    TODO: POSIX 
 
-POSIX 
+1.  _Why Pine64 gadgets? Are they sponsored?_
 
-_Matrix Discord?_
+    I bought my own PinePhone for porting NuttX. And I'll do the same for the RISC-V gadgets.
 
-Pine64 forum probably the best way to catch me for a discussion 
+    Pine64 sells affordable phones and tablets for devs and learners. If you know of other similar companies, please lemme know! 🙏
 
+1.  _Matrix or Discord?_
 
-_Why not one more year on PinePhone or PinePhone Pro?_
+    TODO: Pine64 forum probably the best way to catch me for a discussion 
 
-I already in my fifties and i have severe hypertension 
+1.  _Why not one more year on PinePhone or PinePhone Pro?_
 
-I'm carefully planning for my remaining days as IoT Techie and Educator :-)
+    I'm already in my fifties and I have severe hypertension...
 
-(And maybe Sourdough Hacker)
+    I'm carefully planning my remaining days as IoT Techie and Educator :-)
 
-But I'm still keen to promote NuttX as a teaching tool for learning the internals PinePhone! If you know of any school, please lemme know 🙏
+    [(And possibly Sourdough Hacker)](https://lupyuen.codeberg.page/articles/sourdough.html)
+
+1.  _What will happen to NuttX for PinePhone?_
+
+    I'm still keen to promote NuttX as a teaching tool for learning the internals of PinePhone!
+
+    If you know of any schools that might be interested, please lemme know! 🙏
 
 # What's Next
 
