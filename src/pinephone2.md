@@ -234,7 +234,11 @@ TODO
 
 1.  _Why not collaborate with the Pine64 Community on Matrix or Discord?_
 
-    TODO: Pine64 forum probably the best way to catch me for a discussion 
+    I tried... But my sleeping hours got out of whack.
+
+    (I'm in Singapore, my time zone is GMT+8 hours)
+
+    [__Pine64 Forum__](https://forum.pine64.org/index.php) is probably the best place to catch me for a discussion.
 
 1.  _Why not spend a bit more time on PinePhone or PinePhone Pro?_
 
