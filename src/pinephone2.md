@@ -102,7 +102,7 @@ _We've done quite a bit with the LTE Modem..._
 
 _Are we a Feature Phone yet?_
 
-TODO: Almost! Pic above
+TODO: Almost! Phone Calls + SMS, Pic above
 
 -   We have created a [__Feature Phone UI__](https://lupyuen.github.io/articles/lvgl4) as an LVGL Touchscreen App
 
@@ -112,7 +112,9 @@ TODO: Almost! Pic above
 
 -   Though __PCM Audio__, __Incoming Calls__ and __Incoming SMS__ are still missing
 
-TODO: This is probably the next thing we'll do
+It's sad that we haven't done PCM Audio... It would've been a terrific educational exercise. And we'd have a working Feature Phone!
+
+TODO
 
 ![Smartphone](https://lupyuen.github.io/images/pinephone2-roadmap6.jpg)
 
@@ -133,6 +135,8 @@ Sorry we're not quite ready to be a __Smartphone__ (pic above), because...
     (Mesh Networking with Meshtastic would be awesome)
 
 -   __USB EHCI and OTG__ won't work either
+
+If we had the energy (and patience), we should definitely do LoRa with Meshtastic on PinePhone!
 
 TODO
 
@@ -169,6 +173,59 @@ TODO
 _We're moving to RISC-V?_
 
 TODO
+
+Priority
+Pcm audio
+Usb ehci with lte modem
+Ble / wifi
+Lora / meshtastic
+
+Retrospective
+Getting dated
+Other Allwinner A64 handhelds 
+PinePhone Pro? Same steps as PinePhone 
+Feels like "grinding"
+
+Why moving on to RISC-V Tablet
+No phone, so tablet
+Sbc first
+RISC-V Emulator 
+https://github.com/apache/nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt
+Hinted one year ago
+
+Better docs
+Tidier code
+But might not be well tested
+
+Anyone teaching? Lemme know!
+
+Modem interface redesign
+connect usb to modem
+modem pcm audio
+wifi / ble
+
+Not sponsored 
+RISC-V tablet next, since no RISC-V phones yet
+Why pine64? Sponsored?
+Affordable phones and tablets for devs
+Lemme know!
+
+iPhone Samsung phone
+Pmos
+
+Matrix dkscord
+Pine64 forum probably the best way to catch me for a discussion 
+
+Why not one more year on PinePhone or PinePhone pro
+I already in my fifties and i have severe hypertension 
+I'm carefully planning for my remaining days as IoT Techie and Educator :-)
+
+(And maybe Sourdough Hacker)
+
+But I'm still keen to promote NuttX as a teaching tool for learning the internals PinePhone! If you know of any school, please lemme know 🙏
+
+Why not zephyr or FreeRTOS?
+POSIX 
 
 # What's Next
 
