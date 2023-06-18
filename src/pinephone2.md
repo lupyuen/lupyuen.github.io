@@ -2,23 +2,17 @@
 
 📝 _1 Jul 2023_
 
-![TODO](https://lupyuen.github.io/images/pinephone2-title.jpg)
+![Apache NuttX RTOS for Pine64 PinePhone](https://lupyuen.github.io/images/pinephone2-title.jpg)
 
-TODO
+2023 has been an awesome year for [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System) on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)!
 
-2023 has been an awesome year for Apache NuttX RTOS on Pine64 PinePhone!
-
-Let's talk about...
+It's time to talk about...
 
 -   The features that we've implemented
 
 -   What we'll do next
 
 -   Why we might move to a RISC-V Tablet!
-
-[__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)
-
-[__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System)
 
 ![Apache NuttX on PinePhone Roadmap](https://lupyuen.github.io/images/pinephone2-roadmap.jpg)
 
