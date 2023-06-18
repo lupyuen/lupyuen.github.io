@@ -186,43 +186,49 @@ TODO
 
     Just follow the exact same steps we've meticulously documented for NuttX on PinePhone...
     
-    And we'll have NuttX running on __any Arm64 Device__: iPhone, Samsung Phones, tablets, ...
+    And we'll have NuttX running on __any Arm64 Device__: iPhone, Samsung Phones, Tablets, ...
 
     [(Like the super-impressive Mobile Linux ecosystem)](https://postmarketos.org/)
 
+1.  _So we're moving from Arm64 to RISC-V?_
 
+    Yep! We have a fresh new opportunity to teach the __RISC-V 64-bit Architecture__ from scratch.
 
-Feels like "grinding"
+    And hopefully RISC-V Devices will still be around after 8 years!
 
-_Why moving on to RISC-V Tablet?_
+1.  _We're porting NuttX to a RISC-V Phone?_
 
-No phone, so tablet
+    Sadly there isn't a __RISC-V Phone__ yet.
+    
+    Thus we'll port NuttX to a RISC-V Tablet instead: [__PineTab-V__](https://wiki.pine64.org/wiki/PineTab-V)
 
-Sbc first
+1.  _But PineTab-V isn't shipping yet!_
 
-[RISC-V Emulator](https://github.com/apache/nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt)
+    That's OK, we'll begin by porting NuttX to the [__Star64 SBC__](https://wiki.pine64.org/wiki/STAR64)
 
-[Hinted one year ago](https://www.mail-archive.com/dev@nuttx.apache.org/msg08395.html)
+    Which runs on the same RISC-V SoC as PineTab-V: [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html)
 
-Better docs
+    (Hopefully we have better docs and tidier code than the older Arm64 SoCs)
 
-Tidier code
+1.  _Hopping from Arm64 to RISC-V sounds like a major migration..._
 
-But might not be well tested
+    Actually we planned for this [__one year ago__](https://www.mail-archive.com/dev@nuttx.apache.org/msg08395.html).
 
-RISC-V tablet next, since no RISC-V phones yet
+    NuttX already runs OK on the (64-bit) [__QEMU RISC-V Emulator__](https://github.com/apache/nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt).
+    
+    So the migration might not be so challenging after all!
 
-_Why Pine64? Sponsored?_
+1.  _Why Pine64 gadgets? Are they sponsored?_
 
-Affordable phones and tablets for devs
+    I bought my own PinePhone for porting NuttX, and I'll do the same for the RISC-V gadgets.
 
-Lemme know!
+    Pine64 sells affordable phones and tablets for devs and learners. If you know of other similar companies, please lemme know!
 
+1.  _Why not FreeRTOS? Or Zephyr OS?_
 
-_Why not FreeRTOS or Zephyr?_
+TODO
 
 POSIX 
-
 
 _Matrix Discord?_
 
