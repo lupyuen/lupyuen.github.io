@@ -170,15 +170,15 @@ TODO
 
 # Rolling to RISC-V
 
-_Fixing up NuttX for PinePhone..._
+1.  _Fixing up NuttX for PinePhone..._
 
-_Surely we can do that for the next couple of years?_
+    _Surely we can do that for the next couple of years?_
 
-TODO
+    Allwinner A64 SoC was released in 2015... That's __8 years ago__!
 
-Allwinner A64 SoC was released in 2015... That's 8 years ago!
+    Before Allwinner A64 becomes obsolete, maybe we should consider a newer device?
 
-[Other Allwinner A64 handhelds](https://retrododo.com/funnyplaying-retro-pixel-pocket/)
+    [(NuttX might still run on other Allwinner A64 handhelds)](https://retrododo.com/funnyplaying-retro-pixel-pocket/)
 
 PinePhone Pro? Same steps as PinePhone 
 
