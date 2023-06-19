@@ -76,9 +76,9 @@ Today with NuttX for PinePhone, we can create __Touchscreen Apps__ that will wor
 
 Let's talk about the Sensors inside PinePhone...
 
-> ![Sensor Features](https://lupyuen.github.io/images/pinephone2-roadmap3.jpg)
+> ![PinePhone Sensors](https://lupyuen.github.io/images/pinephone2-roadmap3.jpg)
 
-# PinePhone Sensor
+# PinePhone Sensors
 
 Our support for __PinePhone's Sensors__ is a little spotty...
 
@@ -96,7 +96,7 @@ Our support for __PinePhone's Sensors__ is a little spotty...
 
 _Can we build the missing drivers with NuttX?_
 
-Most certainly! Though to me it's starting feel a little like "grinding". (Like the pic at the top of the article)
+Most certainly! Though to me it's starting feel a bit like "grinding". (Like the pic at the top of the article)
 
 But it would be a highly educational experience for Embedded Learners!
 
