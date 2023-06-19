@@ -242,7 +242,7 @@ TODO
 
 1.  _Why not spend a bit more time on PinePhone or PinePhone Pro?_
 
-    I'm already in my fifties and I have severe hypertension...
+    I'm already in my fifties and I have severe hypertension (when I get stressed)...
 
     I'm carefully planning my remaining days as IoT Techie and Educator :-)
 
