@@ -180,7 +180,7 @@ _What else do we need for a Smartphone..._
 
 _Have we missed any Core Features?_
 
-TODO: pic above
+Yeah these are the __Core Features__ needed to complete our Smartphone OS (pic above)...
 
 -   __Multiple CPUs__ are not working yet, we're running on a Single Core today
 
