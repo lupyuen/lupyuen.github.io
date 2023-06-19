@@ -196,7 +196,7 @@ Yeah these are the __Core Features__ needed to complete our Smartphone OS (pic a
 
 Some of these features are probably supported by NuttX already. But we need to test thoroughly on PinePhone. (Hence the PinePhone Emulator)
 
-TODO
+Unfortunately we're running out of time...
 
 ![Rolling to RISC-V](https://lupyuen.github.io/images/pinephone2-roadmap6.jpg)
 
