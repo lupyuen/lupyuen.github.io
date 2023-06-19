@@ -32,7 +32,7 @@ Over the past year we've carefully documented the __entire porting process__ in 
 
 -   [__"Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone)
 
-(Yep that's our target: 1 article every 2 weeks!)
+(Yep we targeted 1 article every 2 weeks!)
 
 _Why did we do all this?_
 
