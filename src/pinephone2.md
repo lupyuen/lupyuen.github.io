@@ -16,13 +16,11 @@ Let's look back and talk about...
 
 -   Why we might move to a __RISC-V Tablet__!
 
-![Apache NuttX on PinePhone Roadmap](https://lupyuen.github.io/images/pinephone2-roadmap.jpg)
+![Roadmap for PinePhone NuttX](https://lupyuen.github.io/images/pinephone2-roadmap.jpg)
 
-# NuttX on PinePhone Roadmap
+# Roadmap for PinePhone NuttX
 
-TODO: Educational Exercise, 25 articles
-
-Smartphones are incredibly complex gadgets. What if we could learn the internals of smartphones... By booting Apache NuttX RTOS (Real-Time Operating System) on our phone?
+TODO: Educational Exercise, 25 articles (pic above)
 
 Over the past year, we have written a series of 24 articles explaining the inner workings of PinePhone, and how we implemented the smartphone features with Apache NuttX RTOS.
 
