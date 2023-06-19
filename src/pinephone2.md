@@ -4,15 +4,17 @@
 
 ![Apache NuttX RTOS for Pine64 PinePhone](https://lupyuen.github.io/images/pinephone2-title.jpg)
 
-2023 has been an awesome year for [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System) on [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)!
+One year ago we started porting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System) to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)...
 
-It's time to talk about...
+-   [__"NuttX RTOS for PinePhone: What is it?"__](https://lupyuen.github.io/articles/what)
 
--   The features that we've implemented
+Let's look back and talk about...
 
--   What we'll do next
+-   __The features__ that we've implemented
 
--   Why we might move to a RISC-V Tablet!
+-   __Our plans__ for the future
+
+-   Why we might move to a __RISC-V Tablet__!
 
 ![Apache NuttX on PinePhone Roadmap](https://lupyuen.github.io/images/pinephone2-roadmap.jpg)
 
@@ -67,6 +69,12 @@ TODO: Pic above
 -   [__Power Management__](https://lupyuen.github.io/articles/lcd#power-on-lcd-panel) is partially implemented. PinePhone's LCD Display and Sensors will power on correctly, but...
 
 -   __Battery Charging and Low Power Mode__ are not done yet
+
+_Can we build the missing drivers with NuttX?_
+
+Most certainly! Though to me it's starting feel a little like "grinding". (Like the pic at the top of the article)
+
+But it would be a highly educational experience for Embedded Learners!
 
 TODO
 
