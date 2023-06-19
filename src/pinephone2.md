@@ -36,9 +36,13 @@ Over the past year we've carefully documented the __entire porting process__ in 
 
 _Why did we do all this?_
 
-We ported NuttX RTOS to PinePhone as an __Educational Experiment__. NuttX on PinePhone could become an Teaching Tool for learning the inner workings of a Smartphone.
+1.  We ported NuttX RTOS to PinePhone as an __Educational Experiment__.
 
-Some folks think that NuttX might also become a __Benchmarking Tool__. How fast can PinePhone actually run? Just run barebones real-time NuttX on PinePhone and measure the performance... Without any unnecessary overheads!
+    NuttX on PinePhone could become a Teaching Tool for learning the inner workings of a Smartphone.
+
+1.  Some folks think that NuttX might become a __Benchmarking Tool__.
+
+    How fast can PinePhone actually run? Just run barebones real-time NuttX on PinePhone and measure the performance... Without any unnecessary overheads!
 
 _Is NuttX on PinePhone a Daily Driver?_
 
