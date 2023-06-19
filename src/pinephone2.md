@@ -80,7 +80,7 @@ Let's talk about the Sensors inside PinePhone...
 
 # Sensor Features
 
-TODO: Pic above
+Our support for __PinePhone's Sensors__ is a little spotty...
 
 -   [__Accelerometer and Gyroscope__](https://www.hackster.io/lupyuen/inside-a-smartphone-accelerometer-pinephone-with-nuttx-rtos-b92b58) will detect PinePhone motion and orientation
 
@@ -88,9 +88,11 @@ TODO: Pic above
 
 -   __Front and Rear Cameras__ are not supported
 
--   [__Power Management__](https://lupyuen.github.io/articles/lcd#power-on-lcd-panel) is partially implemented. PinePhone's LCD Display and Sensors will power on correctly, but...
+-   [__Power Management__](https://lupyuen.github.io/articles/lcd#power-on-lcd-panel) is partially implemented.
 
--   __Battery Charging and Low Power Mode__ are not done yet
+    PinePhone's LCD Display and Sensors will power on correctly, but...
+
+-   __Battery Charging__ and __Sleep Mode__ are not done yet
 
 _Can we build the missing drivers with NuttX?_
 
@@ -98,7 +100,7 @@ Most certainly! Though to me it's starting feel a little like "grinding". (Like 
 
 But it would be a highly educational experience for Embedded Learners!
 
-TODO
+Let's talk about the key component inside PinePhone...
 
 ![LTE Modem](https://lupyuen.github.io/images/pinephone2-roadmap5.jpg)
 
