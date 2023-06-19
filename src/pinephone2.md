@@ -108,7 +108,7 @@ Let's talk about the key component inside PinePhone...
 
 _What makes PinePhone a Phone?_
 
-It's the __LTE Modem__ inside PinePhone! (Pic above)
+It's the __4G LTE Modem__ that's inside PinePhone! (Pic above)
 
 -   [__Outgoing Calls__](https://lupyuen.github.io/articles/lte2#outgoing-phone-call) and [__Outgoing SMS__](https://lupyuen.github.io/articles/lte2#send-sms-in-pdu-mode) are OK, but...
 
