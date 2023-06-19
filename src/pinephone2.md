@@ -10,9 +10,9 @@ One year ago we started porting [__Apache NuttX RTOS__](https://lupyuen.github.i
 
 Let's look back and talk about...
 
--   __The features__ that we've implemented
+-   __The Features__ that we've implemented
 
--   __Our plans__ for the future
+-   __Our Plans__ for the future
 
 -   Why we might move to a __RISC-V Tablet__!
 
