@@ -114,7 +114,7 @@ It's the __4G LTE Modem__ that's inside PinePhone! (Pic above)
 
 -   __PCM Audio__ is not implemented, so we won't have audio
 
--   __Incoming Calls__ and __Incoming SMS__? Not yet
+-   __Incoming Calls__ and __Incoming SMS__: Not yet
 
 -   [__UART Interface__](https://lupyuen.github.io/articles/lte2#send-at-commands) is ready for AT Commands
 
@@ -122,7 +122,7 @@ It's the __4G LTE Modem__ that's inside PinePhone! (Pic above)
 
 -   [__USB EHCI Controller__](https://lupyuen.github.io/articles/usb3) is partially done
 
--   __USB OTG Controller__? Not started
+-   __USB OTG Controller__: Not started
 
 TODO
 
