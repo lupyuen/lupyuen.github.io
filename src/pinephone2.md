@@ -124,7 +124,7 @@ It's the __4G LTE Modem__ inside PinePhone! Let's walk through the features for 
 
 -   __USB OTG Controller__: [Not started](https://lupyuen.github.io/articles/usb3#ehci-is-simpler-than-usb-on-the-go)
 
-TODO
+With the LTE Modem partially supported, we could build a Feature Phone...
 
 ![Feature Phone](https://lupyuen.github.io/images/pinephone2-roadmap4.jpg)
 
@@ -166,7 +166,7 @@ Sorry we're not quite ready to be a __Smartphone__ (pic above), because...
 
     (Mesh Networking with Meshtastic would be awesome)
 
--   __USB EHCI and OTG__ won't work either
+-   __USB EHCI and OTG__ [won't work either](https://lupyuen.github.io/articles/pinephone2#lte-modem)
 
 If we had the energy (and patience), we should definitely do LoRa with Meshtastic on PinePhone!
 
