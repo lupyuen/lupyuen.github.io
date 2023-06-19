@@ -20,11 +20,24 @@ Let's look back and talk about...
 
 # Roadmap for PinePhone NuttX
 
+The pic above shows the features that we planned for NuttX on PinePhone...
+
+-   ✔️: Implemented
+-   ✖️: Not Yet
+-   ✔️✖️: Partially Implemented
+
+Over the past year we have carefully documented the __entire porting process__ in a series of 24 articles...
+
+-   [__"Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone)
+
+    (Yep that's our target: 1 article every 2 weeks!)
+
+
+
 TODO: Educational Exercise, 25 articles (pic above)
 
 Over the past year, we have written a series of 24 articles explaining the inner workings of PinePhone, and how we implemented the smartphone features with Apache NuttX RTOS.
 
-(Yep that's our target: 1 article every 2 weeks!)
 
 > ![Touchscreen Features](https://lupyuen.github.io/images/pinephone2-roadmap1.jpg)
 
