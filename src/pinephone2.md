@@ -108,21 +108,21 @@ Let's talk about the key component inside PinePhone...
 
 _What makes PinePhone a Phone?_
 
-It's the __4G LTE Modem__ that's inside PinePhone! (Pic above)
+It's the __4G LTE Modem__ inside PinePhone! Let's walk through the features for Phone Calls, SMS and GPS (pic above)...
 
 -   [__Outgoing Calls__](https://lupyuen.github.io/articles/lte2#outgoing-phone-call) and [__Outgoing SMS__](https://lupyuen.github.io/articles/lte2#send-sms-in-pdu-mode) are OK, but...
 
--   __PCM Audio__ is not implemented, so we won't have audio
+-   __PCM Audio__ is [not implemented](https://lupyuen.github.io/articles/lte2#appendix-pcm-digital-audio), so we won't have audio
 
--   __Incoming Calls__ and __Incoming SMS__: Not yet
+-   __Incoming Calls__ and __Incoming SMS__: [Not yet](https://lupyuen.github.io/articles/lte2#appendix-receive-phone-call-and-sms)
 
 -   [__UART Interface__](https://lupyuen.github.io/articles/lte2#send-at-commands) is ready for Voice Call and SMS Commands
 
--   __USB Interface__ is not ready yet, so we won't have __GPS__
+-   __USB Interface__ is [not ready](https://lupyuen.github.io/articles/lte#test-usb-with-nuttx), so we won't have [__GPS__](https://lupyuen.github.io/articles/lte#data-interfaces-for-lte-modem)
 
 -   [__USB EHCI Controller__](https://lupyuen.github.io/articles/usb3) is partially done
 
--   __USB OTG Controller__: Not started
+-   __USB OTG Controller__: [Not started](https://lupyuen.github.io/articles/usb3#ehci-is-simpler-than-usb-on-the-go)
 
 TODO
 
@@ -278,7 +278,7 @@ TODO
 
     I'm carefully planning my remaining days as IoT Techie and Educator :-)
 
-    [(And possibly Sourdough Hacker)](https://lupyuen.codeberg.page/articles/sourdough.html)
+    [(And possibly __Sourdough Hacker__)](https://lupyuen.github.io/articles/sourdough)
 
 1.  _What will happen to NuttX for PinePhone?_
 
