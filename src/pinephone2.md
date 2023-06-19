@@ -116,7 +116,7 @@ It's the __4G LTE Modem__ that's inside PinePhone! (Pic above)
 
 -   __Incoming Calls__ and __Incoming SMS__: Not yet
 
--   [__UART Interface__](https://lupyuen.github.io/articles/lte2#send-at-commands) is ready for AT Commands
+-   [__UART Interface__](https://lupyuen.github.io/articles/lte2#send-at-commands) is ready for Voice Call and SMS Commands
 
 -   __USB Interface__ is not ready yet, so we won't have __GPS__
 
