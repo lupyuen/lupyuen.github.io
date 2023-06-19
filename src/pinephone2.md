@@ -134,19 +134,19 @@ _We've done quite a bit with the LTE Modem..._
 
 _Are we a Feature Phone yet?_
 
-TODO: Almost! Phone Calls + SMS, Pic above
+Almost! Let's talk about the User Interface, Phone Calls and SMS needed for a __Feature Phone__ (pic above)...
 
--   We have created a [__Feature Phone UI__](https://lupyuen.github.io/articles/lvgl4) as an LVGL Touchscreen App
+-   We've created a [__Feature Phone UI__](https://lupyuen.github.io/articles/lvgl4) as an LVGL Touchscreen App
 
 -   That also runs in the [__Web Browser with WebAssembly__](https://lupyuen.github.io/articles/lvgl4#run-lvgl-app-in-web-browser)
 
 -   We need to integrate [__Outgoing Calls__](https://lupyuen.github.io/articles/lte2#outgoing-phone-call) and [__Outgoing SMS__](https://lupyuen.github.io/articles/lte2#send-sms-in-pdu-mode) into our Feature Phone App
 
--   Though __PCM Audio__, __Incoming Calls__ and __Incoming SMS__ are still missing
+-   Though __PCM Audio__, __Incoming Calls__ and __Incoming SMS__ are [still missing](https://lupyuen.github.io/articles/pinephone2#lte-modem)
 
-It's sad that we haven't done PCM Audio... It would've been a terrific educational exercise. And we'd have a working Feature Phone!
+It's sad that we haven't done PCM Audio. It would've been a terrific educational exercise. And we'd have a working Feature Phone!
 
-TODO
+Let's head back to our question about NuttX as a Daily Driver...
 
 ![Smartphone](https://lupyuen.github.io/images/pinephone2-roadmap6.jpg)
 
@@ -170,7 +170,7 @@ Sorry we're not quite ready to be a __Smartphone__ (pic above), because...
 
 If we had the energy (and patience), we should definitely do LoRa with Meshtastic on PinePhone!
 
-TODO
+Our Daily Driver also needs these features...
 
 > ![Core Features](https://lupyuen.github.io/images/pinephone2-roadmap2.jpg)
 
@@ -180,7 +180,7 @@ _What else do we need for a Smartphone..._
 
 _Have we missed any Core Features?_
 
-TODO: Storage, pic above
+TODO: pic above
 
 -   __Multiple CPUs__ are not working yet, we're running on a Single Core today
 
