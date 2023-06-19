@@ -50,9 +50,9 @@ We're not quite ready for that, we'll see why in a while.
 
 Let's begin with the Touchscreen Features...
 
-> ![Touchscreen Features](https://lupyuen.github.io/images/pinephone2-roadmap1.jpg)
+> ![PinePhone Touchscreen](https://lupyuen.github.io/images/pinephone2-roadmap1.jpg)
 
-# Touchscreen Features
+# PinePhone Touchscreen
 
 We're incredibly fortunate that __PinePhone's Touchscreen__ runs OK with NuttX, after we built these features (pic above)...
 
@@ -78,7 +78,7 @@ Let's talk about the Sensors inside PinePhone...
 
 > ![Sensor Features](https://lupyuen.github.io/images/pinephone2-roadmap3.jpg)
 
-# Sensor Features
+# PinePhone Sensor
 
 Our support for __PinePhone's Sensors__ is a little spotty...
 
