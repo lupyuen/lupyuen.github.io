@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>NuttX RTOS for PinePhone: The First Year</title>
+            <link>https://lupyuen.github.io/articles/pinephone2</link>
+            <description><![CDATA[2023 has been an awesome year for Apache NuttX RTOS on Pine64 PinePhone! Let's review the features that we've implemented... And what we'll do next]]></description>
+            <guid>https://lupyuen.github.io/articles/pinephone2</guid>
+            <pubDate>Wed, 21 Jun 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>NuttX RTOS for PinePhone: Feature Phone UI in LVGL, Zig and WebAssembly</title>
             <link>https://lupyuen.github.io/articles/lvgl4</link>
             <description><![CDATA[How we created the LVGL Feature Phone UI for Pine64 PinePhone on Apache NuttX RTOS... By tweaking and testing in a Web Browser!]]></description>

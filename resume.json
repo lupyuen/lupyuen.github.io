@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "NuttX RTOS for PinePhone: The First Year",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-06-21",
+      "website": "https://lupyuen.github.io/articles/pinephone2",
+      "summary": "2023 has been an awesome year for Apache NuttX RTOS on Pine64 PinePhone! Let's review the features that we've implemented... And what we'll do next"
+    },
+    {
       "name": "NuttX RTOS for PinePhone: Feature Phone UI in LVGL, Zig and WebAssembly",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-06-10",

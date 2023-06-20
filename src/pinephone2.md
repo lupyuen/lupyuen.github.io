@@ -1,6 +1,6 @@
 # NuttX RTOS for PinePhone: The First Year
 
-📝 _1 Jul 2023_
+📝 _21 Jun 2023_
 
 ![Apache NuttX RTOS for Pine64 PinePhone](https://lupyuen.github.io/images/pinephone2-title.jpg)
 
