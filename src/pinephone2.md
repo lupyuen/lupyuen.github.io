@@ -158,13 +158,13 @@ _But are we a Smartphone yet?_
 
 Sorry we're not quite ready to be a __Smartphone__ (pic above), because...
 
--   __Wireless Networking__ is completely missing: __Bluetooth LE__ and __WiFi__
+-   __Wireless Networking__ is completely missing: __Bluetooth LE__, __WiFi__ and __Mobile Data__
 
     (Which will require plenty of coding)
 
 -   __LoRa Networking__ with the [__LoRa Add-On Case__](https://lupyuen.github.io/articles/usb2#appendix-lora-communicator-for-pinephone-on-nuttx) will be really interesting, but sadly missing today
 
-    (Mesh Networking with Meshtastic would be awesome)
+    (Mesh Networking with __Meshtastic__ would be awesome)
 
 -   __USB EHCI and OTG__ [won't work either](https://lupyuen.github.io/articles/pinephone2#lte-modem)
 
@@ -252,23 +252,23 @@ Unfortunately we're running out of time...
 
 1.  _Why not FreeRTOS? Or Zephyr OS?_
 
-    Our objective is to teach the internals of PinePhone using a very simple operating system. NuttX is super tiny, so it works just fine!
+    Our objective is to teach the internals of PinePhone with a very simple Operating System. NuttX is super tiny, so it works just fine!
 
-    __FreeRTOS__ is too bare-bones though. We would need to build a bunch of drivers from scratch: Display, Touch Input, USB, LVGL, Accelerometer, ... NuttX has many drivers that we need.
+    __FreeRTOS__ is too bare-bones though. We'd need to build a bunch of drivers from scratch: Display, Touch Input, USB, LVGL, Accelerometer, ... NuttX has many drivers that we need.
 
-    __Zephyr OS__ has plenty of code contributed by large companies, it's better for writing commercial, industrial-grade firmware. But it might be too complex for learning about the internals of a smartphone.
+    __Zephyr OS__ has plenty of code contributed by large companies, it's great for writing commercial, industrial-grade firmware. But it might be too complex for learning about the internals of a smartphone.
 
 1.  _Why Pine64 gadgets? Are they sponsored?_
 
     I bought my own PinePhone for porting NuttX. And I'll do the same for the RISC-V gadgets.
 
-    Pine64 sells affordable phones and tablets for devs and learners. If you know of other similar companies, please lemme know! 🙏
+    Pine64 sells affordable phones and tablets for devs and learners. If you know of similar companies, please lemme know! 🙏
 
 1.  _Why not collaborate with the Pine64 Community on Matrix or Discord?_
 
     I tried... But my sleeping hours got out of whack.
 
-    (I'm in Singapore, my time zone is GMT+8 hours)
+    (I'm in Singapore, time zone is GMT+8 hours)
 
     [__Pine64 Forum__](https://forum.pine64.org/index.php) is probably the best place to catch me for a discussion.
 
@@ -292,9 +292,9 @@ Unfortunately we're running out of time...
 
 # What's Next
 
-NuttX on PinePhone has been an incredible journey, thanks to the awesome NuttX and Pine64 Communities!
+NuttX on PinePhone has been an incredibly rewarding journey, thanks to the awesome NuttX and Pine64 Communities!
 
-Please join me in the next article... As we begin our exploration of __Apache NuttX RTOS on 64-bit RISC-V__!
+Please join me in the next article... As we begin our exploration of __Apache NuttX RTOS on 64-bit RISC-V__.
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
