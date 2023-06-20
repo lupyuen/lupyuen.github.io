@@ -246,7 +246,7 @@ Unfortunately we're running out of time...
 
     Actually we planned for this [__one year ago__](https://www.mail-archive.com/dev@nuttx.apache.org/msg08395.html).
 
-    NuttX already runs OK on the (64-bit) [__QEMU RISC-V Emulator__](https://github.com/apache/nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt).
+    NuttX already runs OK on the (64-bit) [__QEMU RISC-V Emulator__](https://github.com/apache/nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt). (Pic below)
     
     So the migration might not be so challenging after all!
 
@@ -286,13 +286,15 @@ Unfortunately we're running out of time...
 
     If you know of any schools that might be interested, please lemme know! 🙏
 
+![Apache NuttX RTOS on 64-bit QEMU RISC-V Emulator](https://lupyuen.github.io/images/riscv-title.png)
+
+[_Apache NuttX RTOS on 64-bit QEMU RISC-V Emulator_](https://github.com/apache/nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt)
+
 # What's Next
 
-TODO
+NuttX on PinePhone has been an incredible journey, thanks to the awesome NuttX and Pine64 Communities!
 
-Please check out the other articles on NuttX for PinePhone...
-
--   [__"Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
+Please join me in the next article... As we begin our exploration of __Apache NuttX RTOS on 64-bit RISC-V__!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -309,4 +311,3 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/pinephone2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pinephone2.md)
-
