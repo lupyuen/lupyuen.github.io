@@ -48,7 +48,7 @@ Add in this sequence to Bread Machine...
 
 -   1 tablespoon (14g) Cold Unsalted Butter (from fridge)
 
--   4 tablespoons Boiling Water (100 deg C, to melt the butter)
+-   8 tablespoons Boiling Water (100 deg C, to melt the butter)
 
 -   1 2/3 cups (200g) Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
 
