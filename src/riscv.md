@@ -4,6 +4,16 @@
 
 ![TODO](https://lupyuen.github.io/images/riscv-title.png)
 
+[__Apache NuttX__](https://nuttx.apache.org/docs/latest/index.html) is a Real-Time Operating System (RTOS) that runs on many kinds of devices, from 8-bit to 64-bit.
+
+(Think Linux, but a lot smaller and simpler)
+
+In this article, we'll boot NuttX RTOS on a __64-bit RISC-V Device__ and explore the Boot Code inside NuttX.
+
+_But we need RISC-V Hardware to do this?_
+
+No worries! We'll run NuttX on the __QEMU Emulator__ for 64-bit RISC-V. Which will work on Linux, macOS and Windows machines.
+
 TODO
 
 # What's Next
