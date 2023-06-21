@@ -8,7 +8,7 @@
 
 (Think Linux, but a lot smaller and simpler)
 
-In this article, we'll...
+In this article we'll...
 
 -   Boot NuttX RTOS on a __64-bit RISC-V__ device
 
