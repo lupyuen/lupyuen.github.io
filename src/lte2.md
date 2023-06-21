@@ -1112,6 +1112,34 @@ This (excellent) article explains how we'll program Port PCM0 to transmit and re
 
 - [__"Genode: PinePhone Telephony"__](https://genodians.org/ssumpf/2022-05-09-telephony)
 
+_But how do we actually wire up PCM0 to PinePhone's Microphone and Speaker?_
+
+Yep it looks complex, let walk through the connections...
+
+1.  From above, the LTE Modem is connected to __Allwinner A64 Port PCM0__ for PCM Audio
+
+1.  __A64 Port PCM0__ is documented in the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf), "I2C/PCM", Page 621
+
+1.  So we need to route the PCM Audio from PCM0 to __PinePhone's Microphone / Speaker__
+
+According to the [__PinePhone Schematic__](https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf)...
+
+1.  The [__Audio Connections__](https://codeberg.org/lupyuen/pages/src/branch/main/images/pinephone-audio1.png) are HPOUT, MIC1 (MICIN1), MIC2 (MICIN2), EAROUT, LINEOUT
+
+1.  __HPOUT and MIC2 (MICIN2)__ are connected to the [__Headphone Jack__](https://codeberg.org/lupyuen/pages/src/branch/main/images/pinephone-audio2.png)
+
+1.  __MIC1 (MICIN1)__ is connected to the [__Digital Video Connector__](https://codeberg.org/lupyuen/pages/src/branch/main/images/pinephone-audio3.png) (What's this?)
+
+1.  __EAROUT__ is connected to the [__Earpiece Speaker__](https://codeberg.org/lupyuen/pages/src/branch/main/images/pinephone-audio4.png)
+
+1.  __LINEOUT__ is connected to the [__Loudspeaker__](https://codeberg.org/lupyuen/pages/src/branch/main/images/pinephone-audio5.png)
+
+A64 Ports HPOUT, MICIN1, MICIN2, EAROUT, LINEOUT are documented in the [__Allwinner A64 User Manual__](https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf), "Audio Codec", Page 278.
+
+I hope this will get us started :-)
+
+[(Kudos to __WhiteHexagon__)](https://forum.pine64.org/showthread.php?tid=18353&pid=118189#pid118189)
+
 # Appendix: Troubleshoot LTE IP Multimedia Subsystem
 
 _What's LTE IMS?_
