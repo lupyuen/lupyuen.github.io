@@ -993,6 +993,40 @@ Response: +QDAI: 1,1,0,1,0,0,1,1
 <ul>
 <li><a href="https://genodians.org/ssumpf/2022-05-09-telephony"><strong>“Genode: PinePhone Telephony”</strong></a></li>
 </ul>
+<p><em>But how do we actually wire up PCM0 to PinePhone’s Microphone and Speaker?</em></p>
+<p>Yep it looks complex, let walk through the connections…</p>
+<ol>
+<li>
+<p>From above, the LTE Modem is connected to <strong>Allwinner A64 Port PCM0</strong> for PCM Audio</p>
+</li>
+<li>
+<p><strong>A64 Port PCM0</strong> is documented in the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>, “I2C/PCM”, Page 621</p>
+</li>
+<li>
+<p>So we need to route the PCM Audio from PCM0 to <strong>PinePhone’s Microphone / Speaker</strong></p>
+</li>
+</ol>
+<p>According to the <a href="https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Schematic.pdf"><strong>PinePhone Schematic</strong></a>…</p>
+<ol>
+<li>
+<p>The <a href="https://codeberg.org/lupyuen/pages/src/branch/main/images/pinephone-audio1.png"><strong>Audio Connections</strong></a> are HPOUT, MIC1 (MICIN1), MIC2 (MICIN2), EAROUT, LINEOUT</p>
+</li>
+<li>
+<p><strong>HPOUT and MIC2 (MICIN2)</strong> are connected to the <a href="https://codeberg.org/lupyuen/pages/src/branch/main/images/pinephone-audio2.png"><strong>Headphone Jack</strong></a></p>
+</li>
+<li>
+<p><strong>MIC1 (MICIN1)</strong> is connected to the <a href="https://codeberg.org/lupyuen/pages/src/branch/main/images/pinephone-audio3.png"><strong>Digital Video Connector</strong></a> (What’s this?)</p>
+</li>
+<li>
+<p><strong>EAROUT</strong> is connected to the <a href="https://codeberg.org/lupyuen/pages/src/branch/main/images/pinephone-audio4.png"><strong>Earpiece Speaker</strong></a></p>
+</li>
+<li>
+<p><strong>LINEOUT</strong> is connected to the <a href="https://codeberg.org/lupyuen/pages/src/branch/main/images/pinephone-audio5.png"><strong>Loudspeaker</strong></a></p>
+</li>
+</ol>
+<p>A64 Ports HPOUT, MICIN1, MICIN2, EAROUT, LINEOUT are documented in the <a href="https://github.com/lupyuen/pinephone-nuttx/releases/download/doc/Allwinner_A64_User_Manual_V1.1.pdf"><strong>Allwinner A64 User Manual</strong></a>, “Audio Codec”, Page 278.</p>
+<p>I hope this will get us started :-)</p>
+<p><a href="https://forum.pine64.org/showthread.php?tid=18353&amp;pid=118189#pid118189">(Kudos to <strong>WhiteHexagon</strong>)</a></p>
 <h1 id="appendix-troubleshoot-lte-ip-multimedia-subsystem"><a href="#appendix-troubleshoot-lte-ip-multimedia-subsystem">13 Appendix: Troubleshoot LTE IP Multimedia Subsystem</a></h1>
 <p><em>What’s LTE IMS?</em></p>
 <p>An LTE Mobile Network handles <strong>Phone Calls and SMS Messages</strong> in two ways…</p>
