@@ -20,7 +20,7 @@ _But we need RISC-V Hardware?_
 
 No worries! We'll run NuttX on the __QEMU Emulator__ for 64-bit RISC-V.
 
-Which will work on Linux, macOS and Windows machines.
+(Which will work on Linux, macOS and Windows machines)
 
 TODO
 

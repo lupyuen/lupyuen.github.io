@@ -956,7 +956,9 @@ First we install the build prerequisites...
 
     [(Running an obsolete version of macOS? Try __Rancher Desktop__)](https://github.com/lupyuen/pinephone-lvgl-zig#zig-with-rancher-desktop)
 
-1.  __For BL602:__ Download the __RISC-V GCC Toolchain__ from BL602 IoT SDK...
+1.  __For PinePhone__ and __64-bit RISC-V__: Skip this step
+
+    __For BL602:__ Download the __RISC-V GCC Toolchain__ from BL602 IoT SDK...
 
     ```bash
     git clone https://github.com/lupyuen/bl_iot_sdk
@@ -980,7 +982,7 @@ First we install the build prerequisites...
     . ~/.bashrc
     ```
 
-    [(For ESP32: Instructions here)](https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html)
+    __For ESP32__: [Instructions here](https://nuttx.apache.org/docs/latest/platforms/xtensa/esp32/index.html)
 
 ## Build NuttX
 
