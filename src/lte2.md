@@ -1114,7 +1114,7 @@ This (excellent) article explains how we'll program Port PCM0 to transmit and re
 
 _But how do we actually wire up PCM0 to PinePhone's Microphone and Speaker?_
 
-Yep it looks complex, let walk through the connections...
+Yep it looks complex, let's walk through the connections...
 
 1.  From above, the LTE Modem is connected to __Allwinner A64 Port PCM0__ for PCM Audio
 
