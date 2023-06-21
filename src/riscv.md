@@ -8,11 +8,19 @@
 
 (Think Linux, but a lot smaller and simpler)
 
-In this article, we'll boot NuttX RTOS on a __64-bit RISC-V Device__ and explore the Boot Code inside NuttX.
+In this article, we'll...
 
-_But we need RISC-V Hardware to do this?_
+-   Boot NuttX RTOS on a __64-bit RISC-V Device__
 
-No worries! We'll run NuttX on the __QEMU Emulator__ for 64-bit RISC-V. Which will work on Linux, macOS and Windows machines.
+-   Explore the __Boot Code__ inside NuttX
+
+-   And learn a little __RISC-V Assembly__!
+
+_But we need RISC-V Hardware?_
+
+No worries! We'll run NuttX on the __QEMU Emulator__ for 64-bit RISC-V.
+
+Which will work on Linux, macOS and Windows machines.
 
 TODO
 
