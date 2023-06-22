@@ -24,7 +24,7 @@ No worries! We'll run NuttX on the __QEMU Emulator__ for 64-bit RISC-V.
 
 # Boot NuttX on 64-bit RISC-V QEMU
 
-TODO
+We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
 
 1.  Download and install [__QEMU Emulator__](https://www.qemu.org/download/)...
 
@@ -40,7 +40,7 @@ TODO
 
     If we prefer to __build NuttX__ ourselves: [__Follow these steps__](https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu)
 
-1.  Start the __QEMU RISC-V Emulator__ (64-bit) and boot NuttX RTOS...
+1.  Start the __QEMU RISC-V Emulator__ (64-bit) with NuttX RTOS...
 
     ```bash
     qemu-system-riscv64 \
@@ -53,7 +53,58 @@ TODO
       -nographic
     ```
 
-TODO: [Run Log](https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8)
+1.  NuttX is now running in the QEMU Emluator!
+
+    ```text
+    uart_register: Registering /dev/console
+    uart_register: Registering /dev/ttyS0
+    nx_start_application: Starting init thread
+
+    NuttShell (NSH) NuttX-12.1.0-RC0
+    nsh> nx_start: CPU0: Beginning Idle Loop
+    nsh>
+    ```
+
+    [(See the Complete Log)](https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8)
+
+1.  Enter "__help__" to see the available commands...
+
+    ```text
+    nsh> help
+    help usage:  help [-v] [<cmd>]
+
+        .         break     dd        exit      ls        ps        source    umount
+        [         cat       df        false     mkdir     pwd       test      unset
+        ?         cd        dmesg     free      mkrd      rm        time      uptime
+        alias     cp        echo      help      mount     rmdir     true      usleep
+        unalias   cmp       env       hexdump   mv        set       truncate  xd
+        basename  dirname   exec      kill      printf    sleep     uname
+
+    Builtin Apps:
+        nsh     ostest  sh
+    ```
+
+1.  NuttX works like a tiny version of Linux, so the commands will look familiar...
+
+    ```text
+    nsh> uname -a
+    NuttX 12.1.0-RC0 275db39 Jun 16 2023 20:22:08 risc-v rv-virt
+
+    nsh> ls /dev
+    /dev:
+    console
+    null
+    ttyS0
+    zero
+
+    nsh> ps
+      PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK           STACK   USED  FILLED COMMAND
+        0     0   0 FIFO     Kthread N-- Ready              0000000000000000 002000 001224  61.2%  Idle Task
+        1     1 100 RR       Task    --- Running            0000000000000000 002992 002024  67.6%  nsh_main
+    nsh>
+    ```
+
+    [(See the Complete Log)](https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8)
 
 # RISC-V Boot Code in NuttX
 
