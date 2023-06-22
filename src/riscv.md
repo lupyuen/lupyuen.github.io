@@ -204,7 +204,7 @@ This is how we fetch the __CPU ID__ in RISC-V Assembly: [qemu_rv_head.S](https:/
 
 ```text
 /* Load mhartid (cpuid) */
-csrr a0, mhartid
+csrr  a0, mhartid
 ```
 
 Let's break it down...
@@ -219,7 +219,7 @@ Let's break it down...
 
   ("a" refers to "Function Call Argument")
 
-- __mhartid__ refers to the [__Hart ID Register__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid), containing the ID of the Hardware Thread ("Hart") that's running our code.
+- __mhartid__ says that we'll read from the [__Hart ID Register__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid), containing the ID of the Hardware Thread ("Hart") that's running our code.
 
   (Equivalent to CPU ID)
 
@@ -229,21 +229,30 @@ So the above line of code will load the CPU ID into Register __x10__.
 
 ## Disable Interrupts
 
-TODO
+To __disable interrupts__ in RISC-V, we do this: [qemu_rv_head.S](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L98-L102)
 
 ```text
-  /* Disable all interrupts (i.e. timer, external) in mie */
-	csrw	mie, zero
-
-csrw: Write Control and Status Register
-https://five-embeddev.com/riscv-isa-manual/latest/csr.html
-
-mie: Machine Interrupt Enable Register
-https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie
-
-zero: x0 Register, which is always 0
-https://five-embeddev.com/quickref/regs_abi.html
+/* Disable all interrupts (i.e. timer, external) in mie */
+csrw  mie, zero
 ```
+
+Which means...
+
+- __csrw__ will write to the [__Control and Status Register__](https://five-embeddev.com/riscv-isa-manual/latest/csr.html)
+
+  (Which controls interrupts and other things)
+
+- __mie__ says that we'll write to the [__Machine Interrupt Enable Register__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie)
+
+  (0 to Disable Interrupts, 1 to Enable)
+
+- __zero__ says that we'll read from [__Register x0__](https://five-embeddev.com/quickref/regs_abi.html)...
+
+  Which always reads as 0!
+
+Thus the instruction will set the Machine Interrupt Enable Register to 0, which will disable interrupts.
+
+(Yeah RISC-V has a funny concept of "0")
 
 ## Wait for Interrupt
 
