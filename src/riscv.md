@@ -123,7 +123,7 @@ qemu-system-riscv64 \
   -nographic
 ```
 
-This command starts the [__QEMU Emulator for RISC-V__](https://www.qemu.org/docs/master/system/target-riscv.html) (64-bit) with...
+The above command starts the [__QEMU Emulator for RISC-V__](https://www.qemu.org/docs/master/system/target-riscv.html) (64-bit) with...
 
 - Kernel Image: __nuttx__ 
 
@@ -131,15 +131,13 @@ This command starts the [__QEMU Emulator for RISC-V__](https://www.qemu.org/docs
 
 - Symmetric Multiprocessing: __8 CPU Cores__
 
-- Machine: [__virt (Generic Virtual Platform)__](https://www.qemu.org/docs/master/system/riscv/virt.html)
+- Machine: [__Generic Virtual Platform (virt)__](https://www.qemu.org/docs/master/system/riscv/virt.html)
 
-- __ACLINT Devices__ will be emulated (instead of SiFive CLINT)
+- Handle Interrupts with [__Advanced Core Local Interruptor (ACLINT)__](https://patchwork.kernel.org/project/qemu-devel/cover/20210724122407.2486558-1-anup.patel@wdc.com/)
 
-  TODO
+  (Instead of SiFive CLINT)
 
-- Enable Semihosting and No BIOS
-
-  TODO
+- Enable [__Semihosting Debugging__](https://www.qemu.org/docs/master/about/emulation.html#semihosting) without BIOS
 
 TODO
 
