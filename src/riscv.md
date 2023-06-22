@@ -106,6 +106,25 @@ We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
 
     [(See the Complete Log)](https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8)
 
+TODO
+
+# QEMU Emulator for RISC-V
+
+_Earlier we ran this command. What does it mean?_
+
+```bash
+qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -smp 8 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+```
+
+TODO
+
 # RISC-V Boot Code in NuttX
 
 TODO
