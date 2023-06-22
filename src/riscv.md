@@ -114,12 +114,12 @@ _Earlier we ran this command. What does it mean?_
 
 ```bash
 qemu-system-riscv64 \
-  -semihosting \
-  -M virt,aclint=on \
-  -cpu rv64 \
-  -smp 8 \
-  -bios none \
   -kernel nuttx \
+  -cpu rv64 \
+  -M virt,aclint=on \
+  -smp 8 \
+  -semihosting \
+  -bios none \
   -nographic
 ```
 
