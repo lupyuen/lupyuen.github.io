@@ -168,12 +168,12 @@ nsh&gt;
 <h1 id="qemu-emulator-for-risc-v"><a href="#qemu-emulator-for-risc-v">2 QEMU Emulator for RISC-V</a></h1>
 <p><em>Earlier we ran this command. What does it mean?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>qemu-system-riscv64 \
-  -semihosting \
-  -M virt,aclint=on \
-  -cpu rv64 \
-  -smp 8 \
-  -bios none \
   -kernel nuttx \
+  -cpu rv64 \
+  -M virt,aclint=on \
+  -smp 8 \
+  -semihosting \
+  -bios none \
   -nographic
 </code></pre></div>
 <p>TODO</p>
