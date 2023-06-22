@@ -22,7 +22,180 @@ No worries! We'll run NuttX on the __QEMU Emulator__ for 64-bit RISC-V.
 
 (Which will work on Linux, macOS and Windows machines)
 
+# Build NuttX for RISC-V
+
 TODO
+
+https://github.com/lupyuen/lupyuen.github.io/releases/tag/nuttx-riscv64
+
+Toolchain:
+Original:
+https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14.tar.gz
+
+Updated:
+https://github.com/sifive/freedom-tools/releases/tag/v2020.12.0
+
+https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-apple-darwin.tar.gz
+
+https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-centos6.tar.gz
+
+https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz
+
+https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-w64-mingw32.zip
+
+Add to PATH
+
+sudo apt install genromfs
+→ brew install genromfs
+
+mkdir ./nuttx; cd ./nuttx
+git clone https://github.com/apache/nuttx.git nuttx
+git clone https://github.com/apache/nuttx-apps.git apps
+cd nuttx
+./tools/configure.sh rv-virt:nsh64
+make V=1 -j7
+
+riscv64-unknown-elf-objdump \
+  -t -S --demangle --line-numbers --wide \
+  nuttx \
+  >nuttx.S \
+  2>&1
+
+make menuconfig
+Build Setup > Debug Options
+│ │            [*] Enable Debug Features                                                          │ │
+  │ │                  *** Debug SYSLOG Output Controls ***                                         │ │
+  │ │            [*]   Enable Error Output                                                          │ │
+  │ │            [*]     Enable Warnings Output                                                     │ │
+  │ │            [*]       Enable Informational Debug Output
+
+  │ │            [*]   Scheduler Debug Features                                                     │ │
+  │ │            [*]     Scheduler Error Output                                                     │ │
+  │ │            [*]     Scheduler Warnings Output                                                  │ │
+  │ │            [*]     Scheduler Informational Output
+
+Build Log:
+https://gist.github.com/lupyuen/9d9b89dfd91b27f93459828178b83b77
+
+riscv64-unknown-elf-gcc \
+  -c \
+  -fno-common \
+  -Wall \
+  -Wstrict-prototypes \
+  -Wshadow \
+  -Wundef \
+  -Os \
+  -fno-strict-aliasing \
+  -fomit-frame-pointer \
+  -ffunction-sections \
+  -fdata-sections \
+  -g \
+  -march=rv64imac \
+  -mabi=lp64 \
+  -mcmodel=medany \
+  -isystem nuttx/include \
+  -D__NuttX__ \
+  -DNDEBUG \
+  -D__KERNEL__  \
+  -pipe \
+  -I nuttx/arch/risc-v/src/chip \
+  -I nuttx/arch/risc-v/src/common \
+  -I nuttx/sched    chip/qemu_rv_start.c \
+  -o  qemu_rv_start.o
+
+rv64imac: no floating-point
+
+lp64: Long pointers are 64-bit, no floating-point arguments will be passed in registers.
+https://gcc.gnu.org/onlinedocs/gcc-9.1.0/gcc/RISC-V-Options.html
+
+-mcmodel=medany
+Generate code for the medium-any code model. The program and its statically defined symbols must be within any single 2 GiB address range. Programs can be statically or dynamically linked.
+Sounds like a burger (or fast-food AI model?)
+
+# Boot NuttX on RISC-V
+
+TODO
+
+qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -smp 8 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+
+# RISC-V Boot Code in NuttX
+
+TODO
+
+https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L41-L120
+
+qemu_rv_start
+https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151
+Calls nx_start
+
+qemu-system-riscv64
+https://www.qemu.org/docs/master/system/target-riscv.html
+
+  -M virt,aclint=on \
+‘virt’ Generic Virtual Platform (virt)
+https://www.qemu.org/docs/master/system/riscv/virt.html
+
+ACLINT devices will be emulated instead of SiFive CLINT
+
+  /* Load mhartid (cpuid) */
+  csrr a0, mhartid
+
+csrr: Read Control and Status Register
+https://five-embeddev.com/riscv-isa-manual/latest/csr.html
+
+a0: x10
+Embedded ABI (EABI) vs Unix ABI (UABI)
+https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc
+
+mhartid: Hart ID Register, ID of the hardware thread running the code.
+https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid
+
+#ifdef CONFIG_ARCH_RV32
+  slli t1, a0, 2
+#else
+  slli t1, a0, 3
+#endif
+
+works with 32-bit and 64-bit modes!
+sounds like "silly"
+but it's Logical Shift Left
+https://five-embeddev.com/riscv-isa-manual/latest/rv64.html#integer-computational-instructions
+
+  /* Disable all interrupts (i.e. timer, external) in mie */
+	csrw	mie, zero
+
+csrw: Write Control and Status Register
+https://five-embeddev.com/riscv-isa-manual/latest/csr.html
+
+mie: Machine Interrupt Enable Register
+https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie
+
+zero: x0 Register, which is always 0
+https://five-embeddev.com/quickref/regs_abi.html
+
+  csrw mie, zero
+  wfi
+
+wfi: Wait for Interrupt
+which will never happen because we disabled interrupts
+https://five-embeddev.com/riscv-isa-manual/latest/machine.html#wfi
+
+  la   t0, __trap_vec
+  csrw mtvec, t0
+
+csrw: Write Control and Status Register
+https://five-embeddev.com/riscv-isa-manual/latest/csr.html
+
+mtvec: Machine Trap-Vector Base-Address Register
+The mtvec register is an MXLEN-bit WARL read/write register that holds trap vector configuration, consisting of a vector base address (BASE) and a vector mode (MODE).
+https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec
 
 # What's Next
 
