@@ -263,7 +263,7 @@ __start:
 <h2 id="get-cpu-id"><a href="#get-cpu-id">4.1 Get CPU ID</a></h2>
 <p>This is how we fetch the <strong>CPU ID</strong> in RISC-V Assembly: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L43-L47">qemu_rv_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* Load mhartid (cpuid) */
-csrr a0, mhartid
+csrr  a0, mhartid
 </code></pre></div>
 <p>Let’s break it down…</p>
 <ul>
@@ -277,26 +277,35 @@ csrr a0, mhartid
 <p>(“a” refers to “Function Call Argument”)</p>
 </li>
 <li>
-<p><strong>mhartid</strong> refers to the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid"><strong>Hart ID Register</strong></a>, containing the ID of the Hardware Thread (“Hart”) that’s running our code.</p>
+<p><strong>mhartid</strong> says that we’ll read from the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid"><strong>Hart ID Register</strong></a>, containing the ID of the Hardware Thread (“Hart”) that’s running our code.</p>
 <p>(Equivalent to CPU ID)</p>
 </li>
 </ul>
 <p>So the above line of code will load the CPU ID into Register <strong>x10</strong>.</p>
 <p>(We’ll call it <strong>a0</strong> for convenience)</p>
 <h2 id="disable-interrupts"><a href="#disable-interrupts">4.2 Disable Interrupts</a></h2>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>  /* Disable all interrupts (i.e. timer, external) in mie */
-	csrw	mie, zero
-
-csrw: Write Control and Status Register
-https://five-embeddev.com/riscv-isa-manual/latest/csr.html
-
-mie: Machine Interrupt Enable Register
-https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie
-
-zero: x0 Register, which is always 0
-https://five-embeddev.com/quickref/regs_abi.html
-</code></pre></div><h2 id="wait-for-interrupt"><a href="#wait-for-interrupt">4.3 Wait for Interrupt</a></h2>
+<p>To <strong>disable interrupts</strong> in RISC-V, we do this: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L98-L102">qemu_rv_head.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>/* Disable all interrupts (i.e. timer, external) in mie */
+csrw  mie, zero
+</code></pre></div>
+<p>Which means…</p>
+<ul>
+<li>
+<p><strong>csrw</strong> will write to the <a href="https://five-embeddev.com/riscv-isa-manual/latest/csr.html"><strong>Control and Status Register</strong></a></p>
+<p>(Which controls interrupts and other things)</p>
+</li>
+<li>
+<p><strong>mie</strong> says that we’ll write to the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"><strong>Machine Interrupt Enable Register</strong></a></p>
+<p>(0 to Disable Interrupts, 1 to Enable)</p>
+</li>
+<li>
+<p><strong>zero</strong> says that we’ll read from <a href="https://five-embeddev.com/quickref/regs_abi.html"><strong>Register x0</strong></a>…</p>
+<p>Which always reads as 0!</p>
+</li>
+</ul>
+<p>Thus the instruction will set the Machine Interrupt Enable Register to 0, which will disable interrupts.</p>
+<p>(Yeah RISC-V has a funny concept of “0”)</p>
+<h2 id="wait-for-interrupt"><a href="#wait-for-interrupt">4.3 Wait for Interrupt</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>  csrw mie, zero
   wfi
