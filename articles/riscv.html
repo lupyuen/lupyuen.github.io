@@ -303,17 +303,19 @@ csrw  mie, zero
 <p>Which always reads as 0!</p>
 </li>
 </ul>
-<p>Thus the instruction will set the Machine Interrupt Enable Register to 0, which will disable interrupts.</p>
+<p>Thus the above instruction will set the Machine Interrupt Enable Register to 0, which will disable interrupts.</p>
 <p>(Yeah RISC-V has a funny concept of “0”)</p>
 <h2 id="wait-for-interrupt"><a href="#wait-for-interrupt">4.3 Wait for Interrupt</a></h2>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>  csrw mie, zero
-  wfi
-
-wfi: Wait for Interrupt
-which will never happen because we disabled interrupts
-https://five-embeddev.com/riscv-isa-manual/latest/machine.html#wfi
-</code></pre></div><h2 id="load-vector-base-address"><a href="#load-vector-base-address">4.4 Load Vector Base Address</a></h2>
+<p>Now check out this curious combination of instructions: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L62-L68">qemu_rv_head.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>/* Wait forever */
+csrw mie, zero
+wfi
+</code></pre></div>
+<p>From the previous section, we know that “<strong>csrw mie, zero</strong>” will disable interrupts.</p>
+<p>But <strong>wfi</strong> will <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#wfi"><strong>Wait for Interrupt</strong></a>…</p>
+<p>Which will never happen because we disabled interrupts!</p>
+<p>Thus the above code will get stuck there, <strong>waiting forever</strong>. (Intentionally)</p>
+<h2 id="load-vector-base-address"><a href="#load-vector-base-address">4.4 Load Vector Base Address</a></h2>
 <p>TODO</p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_vectors.S">trap_vec</a></p>
 <div class="example-wrap"><pre class="language-text"><code>  la   t0, __trap_vec
