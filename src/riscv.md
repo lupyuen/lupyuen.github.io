@@ -196,6 +196,8 @@ TODO
 
 1.  Jump to __qemu_rv_start__
 
+Let's decipher the RISC-V Instructions in our Boot Code...
+
 ## Get CPU ID
 
 This is how we fetch the __CPU ID__ in RISC-V Assembly: [qemu_rv_head.S](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L43-L47)
@@ -293,18 +295,25 @@ https://five-embeddev.com/riscv-isa-manual/latest/rv64.html#integer-computationa
 
 ## Other Instructions
 
+_What about the other RISC-V Instructions in our Boot Code?_
+
+Let's skim through the rest...
+
 TODO
 
 ```text
   bnez a0, 1f
   la   sp, QEMU_RV_IDLESTACK_TOP
   j    2f
+  li   t1, 1
   blt  a0, t1, 3f
   add  t0, t0, t1
   REGLOAD sp, 0(t0)
   jal  x1, qemu_rv_start
   ret
 ```
+
+[REGLOAD](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_internal.h#L55-L63) expands to __ld__
 
 # Jump to Start
 
