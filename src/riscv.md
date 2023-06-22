@@ -22,7 +22,7 @@ No worries! We'll run NuttX on the __QEMU Emulator__ for 64-bit RISC-V.
 
 (Which will work on Linux, macOS and Windows machines)
 
-# Build NuttX for RISC-V
+# Boot NuttX on 64-bit RISC-V QEMU
 
 TODO
 
@@ -43,14 +43,8 @@ TODO
     (Very briefly)
 
 1.  TODO: Enter __`help`__ to see the available commands.
-    
-https://github.com/lupyuen/lupyuen.github.io/releases/tag/nuttx-riscv64
 
-
-# Boot NuttX on RISC-V
-
-TODO
-
+```bash
 qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on \
@@ -59,11 +53,13 @@ qemu-system-riscv64 \
   -bios none \
   -kernel nuttx \
   -nographic
+```
 
 # RISC-V Boot Code in NuttX
 
 TODO
 
+```bash
 https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L41-L120
 
 qemu_rv_start
@@ -131,6 +127,9 @@ https://five-embeddev.com/riscv-isa-manual/latest/csr.html
 mtvec: Machine Trap-Vector Base-Address Register
 The mtvec register is an MXLEN-bit WARL read/write register that holds trap vector configuration, consisting of a vector base address (BASE) and a vector mode (MODE).
 https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec
+```
+
+TODO: Other instructions
 
 # What's Next
 
@@ -206,26 +205,7 @@ But if we're keen to __build NuttX ourselves__, here are the steps...
     [(See the Build Log)](https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc)
 
 
-Toolchain:
-Original:
-https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14.tar.gz
-
-Updated:
-https://github.com/sifive/freedom-tools/releases/tag/v2020.12.0
-
-https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-apple-darwin.tar.gz
-
-https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-centos6.tar.gz
-
-https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz
-
-https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-w64-mingw32.zip
-
-Add to PATH
-
-sudo apt install genromfs
-→ brew install genromfs
-
+```bash
 mkdir ./nuttx; cd ./nuttx
 git clone https://github.com/apache/nuttx.git nuttx
 git clone https://github.com/apache/nuttx-apps.git apps
@@ -254,6 +234,7 @@ Build Setup > Debug Options
 
 Build Log:
 https://gist.github.com/lupyuen/9d9b89dfd91b27f93459828178b83b77
+```
 
 # Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V
 
@@ -294,4 +275,27 @@ https://gcc.gnu.org/onlinedocs/gcc-9.1.0/gcc/RISC-V-Options.html
 -mcmodel=medany
 Generate code for the medium-any code model. The program and its statically defined symbols must be within any single 2 GiB address range. Programs can be statically or dynamically linked.
 Sounds like a burger (or fast-food AI model?)
+```
+
+# Appendix: Download Toolchain for 64-bit RISC-V
+
+TODO
+
+```bash
+Toolchain:
+Original:
+https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14.tar.gz
+
+Updated:
+https://github.com/sifive/freedom-tools/releases/tag/v2020.12.0
+
+https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-apple-darwin.tar.gz
+
+https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-centos6.tar.gz
+
+https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz
+
+https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-w64-mingw32.zip
+
+Add to PATH
 ```
