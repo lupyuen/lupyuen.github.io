@@ -95,23 +95,17 @@
 <p>TODO</p>
 <ol>
 <li>
+<p>Download and install <a href="https://www.qemu.org/download/"><strong>QEMU Emulator</strong></a>…</p>
+<p>For macOS we may use <strong><code>brew</code></strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>brew install qemu
+</code></pre></div></li>
+<li>
 <p>Download <strong><code>nuttx</code></strong> from the <a href="https://github.com/lupyuen/lupyuen.github.io/releases/tag/nuttx-riscv64"><strong>NuttX Release</strong></a>…</p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/releases/download/nuttx-riscv64/nuttx"><strong>nuttx: NuttX Image for 64-bit RISC-V QEMU</strong></a></p>
-<p>(If we prefer to <strong>build NuttX</strong> ourselves: <a href="TODO"><strong>Follow these steps</strong></a>)</p>
+<p>If we prefer to <strong>build NuttX</strong> ourselves: <a href="https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><strong>Follow these steps</strong></a></p>
 </li>
 <li>
-<p>Copy the downloaded <strong><code>Image.gz</code></strong> and overwrite the file on the microSD Card.</p>
-<p>(Pic above)</p>
-</li>
-<li>
-<p>Insert the microSD Card into PinePhone and power up PinePhone.</p>
-<p>NuttX boots on PinePhone and shows a <a href="https://lupyuen.github.io/images/dsi3-title.jpg"><strong>Test Pattern</strong></a>.</p>
-<p>(Very briefly)</p>
-</li>
-<li>
-<p>TODO: Enter <strong><code>help</code></strong> to see the available commands.</p>
-</li>
-</ol>
+<p>Start the <strong>QEMU RISC-V Emulator</strong> (64-bit) and boot NuttX RTOS…</p>
 <div class="example-wrap"><pre class="language-bash"><code>qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on \
@@ -120,7 +114,10 @@
   -bios none \
   -kernel nuttx \
   -nographic
-</code></pre></div><h1 id="risc-v-boot-code-in-nuttx"><a href="#risc-v-boot-code-in-nuttx">2 RISC-V Boot Code in NuttX</a></h1>
+</code></pre></div></li>
+</ol>
+<p>TODO</p>
+<h1 id="risc-v-boot-code-in-nuttx"><a href="#risc-v-boot-code-in-nuttx">2 RISC-V Boot Code in NuttX</a></h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L41-L120
 
