@@ -70,7 +70,8 @@
 <li><a href="#build-nuttx-for-risc-v">1 Build NuttX for RISC-V</a><ul></ul></li>
 <li><a href="#boot-nuttx-on-risc-v">2 Boot NuttX on RISC-V</a><ul></ul></li>
 <li><a href="#risc-v-boot-code-in-nuttx">3 RISC-V Boot Code in NuttX</a><ul></ul></li>
-<li><a href="#whats-next">4 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>1 Jul 2023</em></p>
+<li><a href="#whats-next">4 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v">5 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V</a><ul></ul></li></ul></nav><p>📝 <em>1 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/riscv-title.png" alt="Apache NuttX RTOS on 64-bit QEMU RISC-V Emulator" /></p>
 <p><a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX</strong></a> is a <strong>Real-Time Operating System (RTOS)</strong> that runs on many kinds of devices, from 8-bit to 64-bit.</p>
 <p>(Think Linux, but a lot smaller and simpler)</p>
@@ -91,6 +92,25 @@
 <p>(Which will work on Linux, macOS and Windows machines)</p>
 <h1 id="build-nuttx-for-risc-v"><a href="#build-nuttx-for-risc-v">1 Build NuttX for RISC-V</a></h1>
 <p>TODO</p>
+<ol>
+<li>
+<p>Download <strong><code>Image.gz</code></strong> from the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.0.2"><strong>NuttX Release</strong></a>…</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/nuttx-12.0.2/Image.gz"><strong>Image.gz: NuttX Image for PinePhone</strong></a></p>
+<p>(If we prefer to <strong>build NuttX</strong> ourselves: <a href="TODO"><strong>Follow these steps</strong></a>)</p>
+</li>
+<li>
+<p>Copy the downloaded <strong><code>Image.gz</code></strong> and overwrite the file on the microSD Card.</p>
+<p>(Pic above)</p>
+</li>
+<li>
+<p>Insert the microSD Card into PinePhone and power up PinePhone.</p>
+<p>NuttX boots on PinePhone and shows a <a href="https://lupyuen.github.io/images/dsi3-title.jpg"><strong>Test Pattern</strong></a>.</p>
+<p>(Very briefly)</p>
+</li>
+<li>
+<p>TODO: Enter <strong><code>help</code></strong> to see the available commands.</p>
+</li>
+</ol>
 <p>https://github.com/lupyuen/lupyuen.github.io/releases/tag/nuttx-riscv64</p>
 <p>Toolchain:
 Original:
@@ -241,6 +261,48 @@ https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-vect
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/riscv.md"><strong>lupyuen.github.io/src/riscv.md</strong></a></p>
+<h1 id="appendix-build-apache-nuttx-rtos-for-64-bit-risc-v"><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v">5 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V</a></h1>
+<p>TODO</p>
+<p>The easiest way to run Apache NuttX RTOS on PinePhone is to download the <strong>NuttX Image</strong> and boot it on PinePhone…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/lvgl2#boot-nuttx-on-pinephone"><strong>“Boot NuttX on PinePhone”</strong></a></li>
+</ul>
+<p>But if we’re keen to <strong>build NuttX ourselves</strong>, here are the steps…</p>
+<ol>
+<li>
+<p>Install the Build Prerequisites, skip the RISC-V Toolchain…</p>
+<p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites">“<strong>Install Prerequisites</strong>”</a></p>
+</li>
+<li>
+<p>TODO: Download the ARM64 Toolchain for
+<strong>AArch64 Bare-Metal Target <code>aarch64-none-elf</code></strong></p>
+<p><a href="https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads"><strong>Arm GNU Toolchain Downloads</strong></a></p>
+<p>(Skip the section for Beta Releases)</p>
+</li>
+<li>
+<p>TODO: Add the downloaded toolchain to the <strong><code>PATH</code></strong> Environment Variable…</p>
+<div class="example-wrap"><pre class="language-text"><code>gcc-arm-...-aarch64-none-elf/bin
+</code></pre></div>
+<p>Check the ARM64 Toolchain…</p>
+<div class="example-wrap"><pre class="language-bash"><code>aarch64-none-elf-gcc -v
+</code></pre></div></li>
+<li>
+<p>TODO: Download and configure NuttX…</p>
+<div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
+cd nuttx
+git clone https://github.com/apache/nuttx nuttx
+git clone https://github.com/apache/nuttx-apps apps
+
+cd nuttx
+tools/configure.sh pinephone:lvgl
+</code></pre></div></li>
+<li>
+<p>Build the NuttX Project…</p>
+<div class="example-wrap"><pre class="language-bash"><code>make
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc">(See the Build Log)</a></p>
+</li>
+</ol>
 
     
 </body>
