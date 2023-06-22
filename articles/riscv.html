@@ -70,11 +70,18 @@
 <li><a href="#boot-nuttx-on-64-bit-risc-v-qemu">1 Boot NuttX on 64-bit RISC-V QEMU</a><ul></ul></li>
 <li><a href="#qemu-emulator-for-risc-v">2 QEMU Emulator for RISC-V</a><ul></ul></li>
 <li><a href="#qemu-starts-nuttx">3 QEMU Starts NuttX</a><ul></ul></li>
-<li><a href="#risc-v-boot-code-in-nuttx">4 RISC-V Boot Code in NuttX</a><ul></ul></li>
-<li><a href="#whats-next">5 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">6 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V QEMU</a><ul></ul></li>
-<li><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu">7 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V QEMU</a><ul></ul></li>
-<li><a href="#appendix-download-toolchain-for-64-bit-risc-v">8 Appendix: Download Toolchain for 64-bit RISC-V</a><ul></ul></li></ul></nav><p>📝 <em>1 Jul 2023</em></p>
+<li><a href="#risc-v-boot-code-in-nuttx">4 RISC-V Boot Code in NuttX</a><ul>
+<li><a href="#load-cpu-id">4.1 Load CPU ID</a><ul></ul></li>
+<li><a href="#disable-interrupts">4.2 Disable Interrupts</a><ul></ul></li>
+<li><a href="#wait-for-interrupt">4.3 Wait for Interrupt</a><ul></ul></li>
+<li><a href="#load-vector-base-address">4.4 Load Vector Base Address</a><ul></ul></li>
+<li><a href="#32-bit-vs-64-bit-risc-v">4.5 32-bit vs 64-bit RISC-V</a><ul></ul></li>
+<li><a href="#other-instructions">4.6 Other Instructions</a><ul></ul></li></ul></li>
+<li><a href="#jump-to-start">5 Jump to Start</a><ul></ul></li>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">7 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V QEMU</a><ul></ul></li>
+<li><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu">8 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V QEMU</a><ul></ul></li>
+<li><a href="#appendix-download-toolchain-for-64-bit-risc-v">9 Appendix: Download Toolchain for 64-bit RISC-V</a><ul></ul></li></ul></nav><p>📝 <em>1 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/riscv-title.png" alt="Apache NuttX RTOS on 64-bit QEMU RISC-V Emulator" /></p>
 <p><a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX</strong></a> is a <strong>Real-Time Operating System (RTOS)</strong> that runs on many kinds of devices, from 8-bit to 64-bit.</p>
 <p>(Think Linux, but a lot smaller and simpler)</p>
@@ -232,11 +239,29 @@ __start:
 <p>TODO</p>
 <h1 id="risc-v-boot-code-in-nuttx"><a href="#risc-v-boot-code-in-nuttx">4 RISC-V Boot Code in NuttX</a></h1>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>qemu_rv_start
-https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151
-Calls nx_start
-
-  /* Load mhartid (cpuid) */
+<ol>
+<li>
+<p>Load the <strong>CPU ID</strong></p>
+</li>
+<li>
+<p>Set the <strong>Stack Pointer</strong></p>
+</li>
+<li>
+<p>Check the <strong>Number of CPUs</strong></p>
+</li>
+<li>
+<p>Disable <strong>Interrupts</strong></p>
+</li>
+<li>
+<p>Load the <strong>Vector Base Address</strong></p>
+</li>
+<li>
+<p>Jump to <strong>qemu_rv_start</strong></p>
+</li>
+</ol>
+<h2 id="load-cpu-id"><a href="#load-cpu-id">4.1 Load CPU ID</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>  /* Load mhartid (cpuid) */
   csrr a0, mhartid
 
 csrr: Read Control and Status Register
@@ -248,19 +273,9 @@ https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc
 
 mhartid: Hart ID Register, ID of the hardware thread running the code.
 https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid
-
-#ifdef CONFIG_ARCH_RV32
-  slli t1, a0, 2
-#else
-  slli t1, a0, 3
-#endif
-
-works with 32-bit and 64-bit modes!
-sounds like &quot;silly&quot;
-but it&#39;s Logical Shift Left
-https://five-embeddev.com/riscv-isa-manual/latest/rv64.html#integer-computational-instructions
-
-  /* Disable all interrupts (i.e. timer, external) in mie */
+</code></pre></div><h2 id="disable-interrupts"><a href="#disable-interrupts">4.2 Disable Interrupts</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>  /* Disable all interrupts (i.e. timer, external) in mie */
 	csrw	mie, zero
 
 csrw: Write Control and Status Register
@@ -271,15 +286,18 @@ https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-interrupt
 
 zero: x0 Register, which is always 0
 https://five-embeddev.com/quickref/regs_abi.html
-
-  csrw mie, zero
+</code></pre></div><h2 id="wait-for-interrupt"><a href="#wait-for-interrupt">4.3 Wait for Interrupt</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>  csrw mie, zero
   wfi
 
 wfi: Wait for Interrupt
 which will never happen because we disabled interrupts
 https://five-embeddev.com/riscv-isa-manual/latest/machine.html#wfi
-
-  la   t0, __trap_vec
+</code></pre></div><h2 id="load-vector-base-address"><a href="#load-vector-base-address">4.4 Load Vector Base Address</a></h2>
+<p>TODO</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_vectors.S">trap_vec</a></p>
+<div class="example-wrap"><pre class="language-text"><code>  la   t0, __trap_vec
   csrw mtvec, t0
 
 csrw: Write Control and Status Register
@@ -288,9 +306,36 @@ https://five-embeddev.com/riscv-isa-manual/latest/csr.html
 mtvec: Machine Trap-Vector Base-Address Register
 The mtvec register is an MXLEN-bit WARL read/write register that holds trap vector configuration, consisting of a vector base address (BASE) and a vector mode (MODE).
 https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec
-</code></pre></div>
-<p>TODO: Other instructions</p>
-<h1 id="whats-next"><a href="#whats-next">5 What’s Next</a></h1>
+</code></pre></div><h2 id="32-bit-vs-64-bit-risc-v"><a href="#32-bit-vs-64-bit-risc-v">4.5 32-bit vs 64-bit RISC-V</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>#ifdef CONFIG_ARCH_RV32
+  slli t1, a0, 2
+#else
+  slli t1, a0, 3
+#endif
+
+works with 32-bit and 64-bit modes!
+sounds like &quot;silly&quot;
+but it&#39;s Logical Shift Left
+https://five-embeddev.com/riscv-isa-manual/latest/rv64.html#integer-computational-instructions
+</code></pre></div><h2 id="other-instructions"><a href="#other-instructions">4.6 Other Instructions</a></h2>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>  /* Load mhartid (cpuid) */
+  /* Set stack pointer to the idle thread stack */
+  /* Load the number of CPUs that the kernel supports */
+  /* If a0 (mhartid) &gt;= t1 (the number of CPUs), stop here */
+  /* To get g_cpu_basestack[mhartid], must get g_cpu_basestack first */
+  /* Offset = pointer width * hart id */
+  /* Load idle stack base to sp */
+   * sp (stack top) = sp + idle stack size - XCPTCONTEXT_SIZE
+  /* Disable all interrupts (i.e. timer, external) in mie */
+  /* Jump to qemu_rv_start */
+</code></pre></div><h1 id="jump-to-start"><a href="#jump-to-start">5 Jump to Start</a></h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>qemu_rv_start
+https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151
+Calls nx_start
+</code></pre></div><h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -312,7 +357,7 @@ https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-vect
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/riscv.md"><strong>lupyuen.github.io/src/riscv.md</strong></a></p>
-<h1 id="appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">6 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V QEMU</a></h1>
+<h1 id="appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">7 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V QEMU</a></h1>
 <p>The easiest way to run <strong>Apache NuttX RTOS on 64-bit RISC-V</strong> is to download the <strong>NuttX Image</strong> and boot it on QEMU Emulator…</p>
 <ul>
 <li>TODO: <a href="TODO"><strong>“Boot NuttX on PinePhone”</strong></a></li>
@@ -371,7 +416,7 @@ riscv64-unknown-elf-objdump \
 <p>TODO: Boot NuttX</p>
 </li>
 </ol>
-<h1 id="appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu">7 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V QEMU</a></h1>
+<h1 id="appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu">8 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V QEMU</a></h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>riscv64-unknown-elf-gcc \
   -c \
@@ -407,7 +452,7 @@ https://gcc.gnu.org/onlinedocs/gcc-9.1.0/gcc/RISC-V-Options.html
 -mcmodel=medany
 Generate code for the medium-any code model. The program and its statically defined symbols must be within any single 2 GiB address range. Programs can be statically or dynamically linked.
 Sounds like a burger (or fast-food AI model?)
-</code></pre></div><h1 id="appendix-download-toolchain-for-64-bit-risc-v"><a href="#appendix-download-toolchain-for-64-bit-risc-v">8 Appendix: Download Toolchain for 64-bit RISC-V</a></h1>
+</code></pre></div><h1 id="appendix-download-toolchain-for-64-bit-risc-v"><a href="#appendix-download-toolchain-for-64-bit-risc-v">9 Appendix: Download Toolchain for 64-bit RISC-V</a></h1>
 <p>Follow these steps to download the <strong>64-bit RISC-V Toolchain</strong> for building Apache NuttX RTOS on Linux, macOS or Windows…</p>
 <ol>
 <li>
