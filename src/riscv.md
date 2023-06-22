@@ -279,23 +279,28 @@ Sounds like a burger (or fast-food AI model?)
 
 # Appendix: Download Toolchain for 64-bit RISC-V
 
-TODO
+Follow these steps to download the __64-bit RISC-V Toolchain__ for building Apache NuttX RTOS on Linux, macOS or Windows...
 
-```bash
-Toolchain:
-Original:
-https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14.tar.gz
+1.  Download the [__riscv64-unknown-elf RISC-V Toolchain__](https://github.com/sifive/freedom-tools/releases/tag/v2020.12.0) for Linux, macOS or Windows...
 
-Updated:
-https://github.com/sifive/freedom-tools/releases/tag/v2020.12.0
+    -   [__Ubuntu Linux__](https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz)
 
-https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-apple-darwin.tar.gz
+    -   [__CentOS Linux__](https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-centos6.tar.gz)
 
-https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-centos6.tar.gz
+    -   [__macOS__](https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-apple-darwin.tar.gz)
 
-https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz
+    -   [__Windows MinGW__](https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-w64-mingw32.zip)
 
-https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-w64-mingw32.zip
+1.  Extract the Downloaded Toolchain
 
-Add to PATH
-```
+1.  Add the extracted toolchain to the __`PATH`__ Environment Variable...
+
+    ```text
+    riscv64-unknown-elf-toolchain-.../bin
+    ```
+
+1.  Check the RISC-V Toolchain...
+
+    ```bash
+    riscv64-unknown-elf-gcc -v
+    ```
