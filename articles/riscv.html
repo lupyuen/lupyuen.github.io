@@ -67,12 +67,12 @@
 
     <h1 class="title">64-bit RISC-V with Apache NuttX RTOS</h1>
     <nav id="TOC"><ul>
-<li><a href="#build-nuttx-for-risc-v">1 Build NuttX for RISC-V</a><ul></ul></li>
-<li><a href="#boot-nuttx-on-risc-v">2 Boot NuttX on RISC-V</a><ul></ul></li>
-<li><a href="#risc-v-boot-code-in-nuttx">3 RISC-V Boot Code in NuttX</a><ul></ul></li>
-<li><a href="#whats-next">4 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v">5 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V</a><ul></ul></li>
-<li><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v">6 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V</a><ul></ul></li></ul></nav><p>📝 <em>1 Jul 2023</em></p>
+<li><a href="#boot-nuttx-on-64-bit-risc-v-qemu">1 Boot NuttX on 64-bit RISC-V QEMU</a><ul></ul></li>
+<li><a href="#risc-v-boot-code-in-nuttx">2 RISC-V Boot Code in NuttX</a><ul></ul></li>
+<li><a href="#whats-next">3 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v">4 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V</a><ul></ul></li>
+<li><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v">5 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V</a><ul></ul></li>
+<li><a href="#appendix-download-toolchain-for-64-bit-risc-v">6 Appendix: Download Toolchain for 64-bit RISC-V</a><ul></ul></li></ul></nav><p>📝 <em>1 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/riscv-title.png" alt="Apache NuttX RTOS on 64-bit QEMU RISC-V Emulator" /></p>
 <p><a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX</strong></a> is a <strong>Real-Time Operating System (RTOS)</strong> that runs on many kinds of devices, from 8-bit to 64-bit.</p>
 <p>(Think Linux, but a lot smaller and simpler)</p>
@@ -91,7 +91,7 @@
 <p><em>But we need RISC-V Hardware?</em></p>
 <p>No worries! We’ll run NuttX on the <strong>QEMU Emulator</strong> for 64-bit RISC-V.</p>
 <p>(Which will work on Linux, macOS and Windows machines)</p>
-<h1 id="build-nuttx-for-risc-v"><a href="#build-nuttx-for-risc-v">1 Build NuttX for RISC-V</a></h1>
+<h1 id="boot-nuttx-on-64-bit-risc-v-qemu"><a href="#boot-nuttx-on-64-bit-risc-v-qemu">1 Boot NuttX on 64-bit RISC-V QEMU</a></h1>
 <p>TODO</p>
 <ol>
 <li>
@@ -112,68 +112,86 @@
 <p>TODO: Enter <strong><code>help</code></strong> to see the available commands.</p>
 </li>
 </ol>
-<p>https://github.com/lupyuen/lupyuen.github.io/releases/tag/nuttx-riscv64</p>
-<h1 id="boot-nuttx-on-risc-v"><a href="#boot-nuttx-on-risc-v">2 Boot NuttX on RISC-V</a></h1>
+<div class="example-wrap"><pre class="language-bash"><code>qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -smp 8 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+</code></pre></div><h1 id="risc-v-boot-code-in-nuttx"><a href="#risc-v-boot-code-in-nuttx">2 RISC-V Boot Code in NuttX</a></h1>
 <p>TODO</p>
-<p>qemu-system-riscv64 <br />
--semihosting <br />
--M virt,aclint=on <br />
--cpu rv64 <br />
--smp 8 <br />
--bios none <br />
--kernel nuttx <br />
--nographic</p>
-<h1 id="risc-v-boot-code-in-nuttx"><a href="#risc-v-boot-code-in-nuttx">3 RISC-V Boot Code in NuttX</a></h1>
-<p>TODO</p>
-<p>https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L41-L120</p>
-<p>qemu_rv_start
+<div class="example-wrap"><pre class="language-bash"><code>https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L41-L120
+
+qemu_rv_start
 https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151
-Calls nx_start</p>
-<p>qemu-system-riscv64
-https://www.qemu.org/docs/master/system/target-riscv.html</p>
-<p>-M virt,aclint=on <br />
+Calls nx_start
+
+qemu-system-riscv64
+https://www.qemu.org/docs/master/system/target-riscv.html
+
+  -M virt,aclint=on \
 ‘virt’ Generic Virtual Platform (virt)
-https://www.qemu.org/docs/master/system/riscv/virt.html</p>
-<p>ACLINT devices will be emulated instead of SiFive CLINT</p>
-<p>/* Load mhartid (cpuid) */
-csrr a0, mhartid</p>
-<p>csrr: Read Control and Status Register
-https://five-embeddev.com/riscv-isa-manual/latest/csr.html</p>
-<p>a0: x10
+https://www.qemu.org/docs/master/system/riscv/virt.html
+
+ACLINT devices will be emulated instead of SiFive CLINT
+
+  /* Load mhartid (cpuid) */
+  csrr a0, mhartid
+
+csrr: Read Control and Status Register
+https://five-embeddev.com/riscv-isa-manual/latest/csr.html
+
+a0: x10
 Embedded ABI (EABI) vs Unix ABI (UABI)
-https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc</p>
-<p>mhartid: Hart ID Register, ID of the hardware thread running the code.
-https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid</p>
-<p>#ifdef CONFIG_ARCH_RV32
-slli t1, a0, 2
+https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc
+
+mhartid: Hart ID Register, ID of the hardware thread running the code.
+https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid
+
+#ifdef CONFIG_ARCH_RV32
+  slli t1, a0, 2
 #else
-slli t1, a0, 3
-#endif</p>
-<p>works with 32-bit and 64-bit modes!
-sounds like “silly”
-but it’s Logical Shift Left
-https://five-embeddev.com/riscv-isa-manual/latest/rv64.html#integer-computational-instructions</p>
-<p>/* Disable all interrupts (i.e. timer, external) in mie */
-csrw	mie, zero</p>
-<p>csrw: Write Control and Status Register
-https://five-embeddev.com/riscv-isa-manual/latest/csr.html</p>
-<p>mie: Machine Interrupt Enable Register
-https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie</p>
-<p>zero: x0 Register, which is always 0
-https://five-embeddev.com/quickref/regs_abi.html</p>
-<p>csrw mie, zero
-wfi</p>
-<p>wfi: Wait for Interrupt
+  slli t1, a0, 3
+#endif
+
+works with 32-bit and 64-bit modes!
+sounds like &quot;silly&quot;
+but it&#39;s Logical Shift Left
+https://five-embeddev.com/riscv-isa-manual/latest/rv64.html#integer-computational-instructions
+
+  /* Disable all interrupts (i.e. timer, external) in mie */
+	csrw	mie, zero
+
+csrw: Write Control and Status Register
+https://five-embeddev.com/riscv-isa-manual/latest/csr.html
+
+mie: Machine Interrupt Enable Register
+https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie
+
+zero: x0 Register, which is always 0
+https://five-embeddev.com/quickref/regs_abi.html
+
+  csrw mie, zero
+  wfi
+
+wfi: Wait for Interrupt
 which will never happen because we disabled interrupts
-https://five-embeddev.com/riscv-isa-manual/latest/machine.html#wfi</p>
-<p>la   t0, __trap_vec
-csrw mtvec, t0</p>
-<p>csrw: Write Control and Status Register
-https://five-embeddev.com/riscv-isa-manual/latest/csr.html</p>
-<p>mtvec: Machine Trap-Vector Base-Address Register
+https://five-embeddev.com/riscv-isa-manual/latest/machine.html#wfi
+
+  la   t0, __trap_vec
+  csrw mtvec, t0
+
+csrw: Write Control and Status Register
+https://five-embeddev.com/riscv-isa-manual/latest/csr.html
+
+mtvec: Machine Trap-Vector Base-Address Register
 The mtvec register is an MXLEN-bit WARL read/write register that holds trap vector configuration, consisting of a vector base address (BASE) and a vector mode (MODE).
-https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec</p>
-<h1 id="whats-next"><a href="#whats-next">4 What’s Next</a></h1>
+https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec
+</code></pre></div>
+<p>TODO: Other instructions</p>
+<h1 id="whats-next"><a href="#whats-next">3 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -195,7 +213,7 @@ https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-vect
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/riscv.md"><strong>lupyuen.github.io/src/riscv.md</strong></a></p>
-<h1 id="appendix-build-apache-nuttx-rtos-for-64-bit-risc-v"><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v">5 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V</a></h1>
+<h1 id="appendix-build-apache-nuttx-rtos-for-64-bit-risc-v"><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v">4 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V</a></h1>
 <p>TODO</p>
 <p>The easiest way to run Apache NuttX RTOS on PinePhone is to download the <strong>NuttX Image</strong> and boot it on PinePhone…</p>
 <ul>
@@ -237,43 +255,35 @@ tools/configure.sh pinephone:lvgl
 <p><a href="https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc">(See the Build Log)</a></p>
 </li>
 </ol>
-<p>Toolchain:
-Original:
-https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14.tar.gz</p>
-<p>Updated:
-https://github.com/sifive/freedom-tools/releases/tag/v2020.12.0</p>
-<p>https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-apple-darwin.tar.gz</p>
-<p>https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-centos6.tar.gz</p>
-<p>https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz</p>
-<p>https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-w64-mingw32.zip</p>
-<p>Add to PATH</p>
-<p>sudo apt install genromfs
-→ brew install genromfs</p>
-<p>mkdir ./nuttx; cd ./nuttx
+<div class="example-wrap"><pre class="language-bash"><code>mkdir ./nuttx; cd ./nuttx
 git clone https://github.com/apache/nuttx.git nuttx
 git clone https://github.com/apache/nuttx-apps.git apps
 cd nuttx
 ./tools/configure.sh rv-virt:nsh64
-make V=1 -j7</p>
-<p>riscv64-unknown-elf-objdump <br />
--t -S –demangle –line-numbers –wide <br />
-nuttx <br />
-&gt;nuttx.S <br />
-2&gt;&amp;1</p>
-<p>make menuconfig
+make V=1 -j7
+
+riscv64-unknown-elf-objdump \
+  -t -S --demangle --line-numbers --wide \
+  nuttx \
+  &gt;nuttx.S \
+  2&gt;&amp;1
+
+make menuconfig
 Build Setup &gt; Debug Options
-│ │            [<em>] Enable Debug Features                                                          │ │
-│ │                  *** Debug SYSLOG Output Controls ***                                         │ │
-│ │            [</em>]   Enable Error Output                                                          │ │
-│ │            [<em>]     Enable Warnings Output                                                     │ │
-│ │            [</em>]       Enable Informational Debug Output</p>
-<p>│ │            [<em>]   Scheduler Debug Features                                                     │ │
-│ │            [</em>]     Scheduler Error Output                                                     │ │
-│ │            [<em>]     Scheduler Warnings Output                                                  │ │
-│ │            [</em>]     Scheduler Informational Output</p>
-<p>Build Log:
-https://gist.github.com/lupyuen/9d9b89dfd91b27f93459828178b83b77</p>
-<h1 id="appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v"><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v">6 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V</a></h1>
+│ │            [*] Enable Debug Features                                                          │ │
+  │ │                  *** Debug SYSLOG Output Controls ***                                         │ │
+  │ │            [*]   Enable Error Output                                                          │ │
+  │ │            [*]     Enable Warnings Output                                                     │ │
+  │ │            [*]       Enable Informational Debug Output
+
+  │ │            [*]   Scheduler Debug Features                                                     │ │
+  │ │            [*]     Scheduler Error Output                                                     │ │
+  │ │            [*]     Scheduler Warnings Output                                                  │ │
+  │ │            [*]     Scheduler Informational Output
+
+Build Log:
+https://gist.github.com/lupyuen/9d9b89dfd91b27f93459828178b83b77
+</code></pre></div><h1 id="appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v"><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v">5 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V</a></h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>riscv64-unknown-elf-gcc \
   -c \
@@ -309,6 +319,24 @@ https://gcc.gnu.org/onlinedocs/gcc-9.1.0/gcc/RISC-V-Options.html
 -mcmodel=medany
 Generate code for the medium-any code model. The program and its statically defined symbols must be within any single 2 GiB address range. Programs can be statically or dynamically linked.
 Sounds like a burger (or fast-food AI model?)
+</code></pre></div><h1 id="appendix-download-toolchain-for-64-bit-risc-v"><a href="#appendix-download-toolchain-for-64-bit-risc-v">6 Appendix: Download Toolchain for 64-bit RISC-V</a></h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>Toolchain:
+Original:
+https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14.tar.gz
+
+Updated:
+https://github.com/sifive/freedom-tools/releases/tag/v2020.12.0
+
+https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-apple-darwin.tar.gz
+
+https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-centos6.tar.gz
+
+https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz
+
+https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-w64-mingw32.zip
+
+Add to PATH
 </code></pre></div>
     
 </body>
