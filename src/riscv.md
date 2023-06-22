@@ -250,22 +250,27 @@ Which means...
 
   Which always reads as 0!
 
-Thus the instruction will set the Machine Interrupt Enable Register to 0, which will disable interrupts.
+Thus the above instruction will set the Machine Interrupt Enable Register to 0, which will disable interrupts.
 
 (Yeah RISC-V has a funny concept of "0")
 
 ## Wait for Interrupt
 
-TODO
+Now check out this curious combination of instructions: [qemu_rv_head.S](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L62-L68)
 
 ```text
-  csrw mie, zero
-  wfi
-
-wfi: Wait for Interrupt
-which will never happen because we disabled interrupts
-https://five-embeddev.com/riscv-isa-manual/latest/machine.html#wfi
+/* Wait forever */
+csrw mie, zero
+wfi
 ```
+
+From the previous section, we know that "__csrw mie, zero__" will disable interrupts.
+
+But __wfi__ will [__Wait for Interrupt__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#wfi)...
+
+Which will never happen because we disabled interrupts!
+
+Thus the above code will get stuck there, __waiting forever__. (Intentionally)
 
 ## Load Vector Base Address
 
