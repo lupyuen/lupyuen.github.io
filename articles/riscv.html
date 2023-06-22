@@ -71,7 +71,7 @@
 <li><a href="#qemu-emulator-for-risc-v">2 QEMU Emulator for RISC-V</a><ul></ul></li>
 <li><a href="#qemu-starts-nuttx">3 QEMU Starts NuttX</a><ul></ul></li>
 <li><a href="#risc-v-boot-code-in-nuttx">4 RISC-V Boot Code in NuttX</a><ul>
-<li><a href="#load-cpu-id">4.1 Load CPU ID</a><ul></ul></li>
+<li><a href="#get-cpu-id">4.1 Get CPU ID</a><ul></ul></li>
 <li><a href="#disable-interrupts">4.2 Disable Interrupts</a><ul></ul></li>
 <li><a href="#wait-for-interrupt">4.3 Wait for Interrupt</a><ul></ul></li>
 <li><a href="#load-vector-base-address">4.4 Load Vector Base Address</a><ul></ul></li>
@@ -241,7 +241,7 @@ __start:
 <p>TODO</p>
 <ol>
 <li>
-<p>Load the <strong>CPU ID</strong></p>
+<p>Get the <strong>CPU ID</strong></p>
 </li>
 <li>
 <p>Set the <strong>Stack Pointer</strong></p>
@@ -259,21 +259,30 @@ __start:
 <p>Jump to <strong>qemu_rv_start</strong></p>
 </li>
 </ol>
-<h2 id="load-cpu-id"><a href="#load-cpu-id">4.1 Load CPU ID</a></h2>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>  /* Load mhartid (cpuid) */
-  csrr a0, mhartid
-
-csrr: Read Control and Status Register
-https://five-embeddev.com/riscv-isa-manual/latest/csr.html
-
-a0: x10
-Embedded ABI (EABI) vs Unix ABI (UABI)
-https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc
-
-mhartid: Hart ID Register, ID of the hardware thread running the code.
-https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid
-</code></pre></div><h2 id="disable-interrupts"><a href="#disable-interrupts">4.2 Disable Interrupts</a></h2>
+<h2 id="get-cpu-id"><a href="#get-cpu-id">4.1 Get CPU ID</a></h2>
+<p>This is how we fetch the <strong>CPU ID</strong> in RISC-V Assembly: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L43-L47">qemu_rv_head.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>/* Load mhartid (cpuid) */
+csrr a0, mhartid
+</code></pre></div>
+<p>Let’s break it down…</p>
+<ul>
+<li>
+<p><strong>csrr</strong> is the RISC-V Instruction that reads the <a href="https://five-embeddev.com/riscv-isa-manual/latest/csr.html"><strong>Control and Status Register</strong></a></p>
+<p>(Which contains the CPU ID)</p>
+</li>
+<li>
+<p><strong>a0</strong> is the RISC-V Register that will be loaded with the CPU ID.</p>
+<p>According to the <a href="https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc"><strong>RISC-V EABI</strong></a> (Embedded Application Binary Interface), <strong>a0</strong> is actually an alias for the Official RISC-V Register <strong>x10</strong>.</p>
+<p>(“a” refers to “Function Call Argument”)</p>
+</li>
+<li>
+<p><strong>mhartid</strong> refers to the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid"><strong>Hart ID Register</strong></a>, containing the ID of the Hardware Thread (“Hart”) that’s running our code.</p>
+<p>(Equivalent to CPU ID)</p>
+</li>
+</ul>
+<p>So the above line of code will load the CPU ID into Register <strong>x10</strong>.</p>
+<p>(We’ll call it <strong>a0</strong> for convenience)</p>
+<h2 id="disable-interrupts"><a href="#disable-interrupts">4.2 Disable Interrupts</a></h2>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>  /* Disable all interrupts (i.e. timer, external) in mie */
 	csrw	mie, zero
