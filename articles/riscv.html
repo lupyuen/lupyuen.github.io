@@ -320,24 +320,38 @@ https://gcc.gnu.org/onlinedocs/gcc-9.1.0/gcc/RISC-V-Options.html
 Generate code for the medium-any code model. The program and its statically defined symbols must be within any single 2 GiB address range. Programs can be statically or dynamically linked.
 Sounds like a burger (or fast-food AI model?)
 </code></pre></div><h1 id="appendix-download-toolchain-for-64-bit-risc-v"><a href="#appendix-download-toolchain-for-64-bit-risc-v">6 Appendix: Download Toolchain for 64-bit RISC-V</a></h1>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>Toolchain:
-Original:
-https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14.tar.gz
+<p>Follow these steps to download the <strong>64-bit RISC-V Toolchain</strong> for building Apache NuttX RTOS on Linux, macOS or Windows…</p>
+<ol>
+<li>
+<p>Download the <a href="https://github.com/sifive/freedom-tools/releases/tag/v2020.12.0"><strong>riscv64-unknown-elf RISC-V Toolchain</strong></a> for Linux, macOS or Windows…</p>
+<ul>
+<li>
+<p><a href="https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz"><strong>Ubuntu Linux</strong></a></p>
+</li>
+<li>
+<p><a href="https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-centos6.tar.gz"><strong>CentOS Linux</strong></a></p>
+</li>
+<li>
+<p><a href="https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-apple-darwin.tar.gz"><strong>macOS</strong></a></p>
+</li>
+<li>
+<p><a href="https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-w64-mingw32.zip"><strong>Windows MinGW</strong></a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>Extract the Downloaded Toolchain</p>
+</li>
+<li>
+<p>Add the extracted toolchain to the <strong><code>PATH</code></strong> Environment Variable…</p>
+<div class="example-wrap"><pre class="language-text"><code>riscv64-unknown-elf-toolchain-.../bin
+</code></pre></div></li>
+<li>
+<p>Check the RISC-V Toolchain…</p>
+<div class="example-wrap"><pre class="language-bash"><code>riscv64-unknown-elf-gcc -v
+</code></pre></div></li>
+</ol>
 
-Updated:
-https://github.com/sifive/freedom-tools/releases/tag/v2020.12.0
-
-https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-apple-darwin.tar.gz
-
-https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-centos6.tar.gz
-
-https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz
-
-https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-w64-mingw32.zip
-
-Add to PATH
-</code></pre></div>
     
 </body>
 </html>
