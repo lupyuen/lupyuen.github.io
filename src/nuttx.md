@@ -934,7 +934,7 @@ First we install the build prerequisites...
       kconfig-frontends
 
     ##  For macOS:
-    brew install automake
+    brew install automake genromfs
     ##  Build "kconfig-frontends" because the "brew install" version doesn't work
     pushd /tmp
     git clone https://bitbucket.org/nuttx/tools.git
