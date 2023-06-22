@@ -69,11 +69,12 @@
     <nav id="TOC"><ul>
 <li><a href="#boot-nuttx-on-64-bit-risc-v-qemu">1 Boot NuttX on 64-bit RISC-V QEMU</a><ul></ul></li>
 <li><a href="#qemu-emulator-for-risc-v">2 QEMU Emulator for RISC-V</a><ul></ul></li>
-<li><a href="#risc-v-boot-code-in-nuttx">3 RISC-V Boot Code in NuttX</a><ul></ul></li>
-<li><a href="#whats-next">4 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">5 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V QEMU</a><ul></ul></li>
-<li><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu">6 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V QEMU</a><ul></ul></li>
-<li><a href="#appendix-download-toolchain-for-64-bit-risc-v">7 Appendix: Download Toolchain for 64-bit RISC-V</a><ul></ul></li></ul></nav><p>📝 <em>1 Jul 2023</em></p>
+<li><a href="#qemu-starts-nuttx">3 QEMU Starts NuttX</a><ul></ul></li>
+<li><a href="#risc-v-boot-code-in-nuttx">4 RISC-V Boot Code in NuttX</a><ul></ul></li>
+<li><a href="#whats-next">5 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">6 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V QEMU</a><ul></ul></li>
+<li><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu">7 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V QEMU</a><ul></ul></li>
+<li><a href="#appendix-download-toolchain-for-64-bit-risc-v">8 Appendix: Download Toolchain for 64-bit RISC-V</a><ul></ul></li></ul></nav><p>📝 <em>1 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/riscv-title.png" alt="Apache NuttX RTOS on 64-bit QEMU RISC-V Emulator" /></p>
 <p><a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX</strong></a> is a <strong>Real-Time Operating System (RTOS)</strong> that runs on many kinds of devices, from 8-bit to 64-bit.</p>
 <p>(Think Linux, but a lot smaller and simpler)</p>
@@ -192,18 +193,46 @@ nsh&gt;
 </li>
 <li>
 <p>Handle Interrupts with <a href="https://patchwork.kernel.org/project/qemu-devel/cover/20210724122407.2486558-1-anup.patel@wdc.com/"><strong>Advanced Core Local Interruptor (ACLINT)</strong></a></p>
-<p>(Instead of SiFive CLINT)</p>
+<p>(Instead of the older SiFive CLINT)</p>
 </li>
 <li>
 <p>Enable <a href="https://www.qemu.org/docs/master/about/emulation.html#semihosting"><strong>Semihosting Debugging</strong></a> without BIOS</p>
 </li>
 </ul>
 <p>TODO</p>
-<h1 id="risc-v-boot-code-in-nuttx"><a href="#risc-v-boot-code-in-nuttx">3 RISC-V Boot Code in NuttX</a></h1>
+<h1 id="qemu-starts-nuttx"><a href="#qemu-starts-nuttx">3 QEMU Starts NuttX</a></h1>
+<p><em>What happens when NuttX RTOS boots on QEMU?</em></p>
+<p>Let’s find out by tracing the <strong>RISC-V Boot Code</strong> in NuttX!</p>
+<p>Earlier we ran this command to generate the <a href="https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><strong>RISC-V Disassembly</strong></a> for the NuttX Kernel…</p>
+<div class="example-wrap"><pre class="language-bash"><code>riscv64-unknown-elf-objdump \
+  -t -S --demangle --line-numbers --wide \
+  nuttx \
+  &gt;nuttx.S \
+  2&gt;&amp;1
+</code></pre></div>
+<p>This produces <a href="https://github.com/lupyuen/lupyuen.github.io/releases/download/nuttx-riscv64/nuttx.S"><strong>nuttx.S</strong></a>, the disassembled NuttX Kernel for RISC-V.</p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/releases/download/nuttx-riscv64/nuttx.S"><strong>nuttx.S</strong></a> begins with this RISC-V code…</p>
+<div class="example-wrap"><pre class="language-text"><code>0000000080000000 &lt;__start&gt;:
+nuttx/arch/risc-v/src/chip/qemu_rv_head.S:46
+__start:
+  /* Load mhartid (cpuid) */
+  csrr a0, mhartid
+    80000000:	f1402573  csrr  a0, mhartid
+</code></pre></div>
+<p>This says…</p>
+<ul>
+<li>
+<p>NuttX Boot Code is at <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L41-L120"><strong>qemu_rv_head.S</strong></a></p>
+</li>
+<li>
+<p>NuttX Kernel begins execution at address <strong><code>0x8000</code> <code>0000</code></strong></p>
+<p>(Why? What if NuttX is started by the U-Boot Bootloader?)</p>
+</li>
+</ul>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L41-L120
-
-qemu_rv_start
+<h1 id="risc-v-boot-code-in-nuttx"><a href="#risc-v-boot-code-in-nuttx">4 RISC-V Boot Code in NuttX</a></h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>qemu_rv_start
 https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151
 Calls nx_start
 
@@ -261,7 +290,7 @@ The mtvec register is an MXLEN-bit WARL read/write register that holds trap vect
 https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec
 </code></pre></div>
 <p>TODO: Other instructions</p>
-<h1 id="whats-next"><a href="#whats-next">4 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">5 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -283,7 +312,7 @@ https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-vect
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/riscv.md"><strong>lupyuen.github.io/src/riscv.md</strong></a></p>
-<h1 id="appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">5 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V QEMU</a></h1>
+<h1 id="appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">6 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V QEMU</a></h1>
 <p>The easiest way to run <strong>Apache NuttX RTOS on 64-bit RISC-V</strong> is to download the <strong>NuttX Image</strong> and boot it on QEMU Emulator…</p>
 <ul>
 <li>TODO: <a href="TODO"><strong>“Boot NuttX on PinePhone”</strong></a></li>
@@ -335,13 +364,14 @@ riscv64-unknown-elf-objdump \
   2&gt;&amp;1
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/9d9b89dfd91b27f93459828178b83b77">(See the Build Log)</a></p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/releases/tag/nuttx-riscv64">(See the Build Outputs)</a></p>
 </li>
 <li>
 <p>This produces the NuttX Image <strong>nuttx</strong> that we may boot on QEMU RISC-V Emulator…</p>
 <p>TODO: Boot NuttX</p>
 </li>
 </ol>
-<h1 id="appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu">6 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V QEMU</a></h1>
+<h1 id="appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu">7 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V QEMU</a></h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>riscv64-unknown-elf-gcc \
   -c \
@@ -377,7 +407,7 @@ https://gcc.gnu.org/onlinedocs/gcc-9.1.0/gcc/RISC-V-Options.html
 -mcmodel=medany
 Generate code for the medium-any code model. The program and its statically defined symbols must be within any single 2 GiB address range. Programs can be statically or dynamically linked.
 Sounds like a burger (or fast-food AI model?)
-</code></pre></div><h1 id="appendix-download-toolchain-for-64-bit-risc-v"><a href="#appendix-download-toolchain-for-64-bit-risc-v">7 Appendix: Download Toolchain for 64-bit RISC-V</a></h1>
+</code></pre></div><h1 id="appendix-download-toolchain-for-64-bit-risc-v"><a href="#appendix-download-toolchain-for-64-bit-risc-v">8 Appendix: Download Toolchain for 64-bit RISC-V</a></h1>
 <p>Follow these steps to download the <strong>64-bit RISC-V Toolchain</strong> for building Apache NuttX RTOS on Linux, macOS or Windows…</p>
 <ol>
 <li>
