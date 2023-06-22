@@ -71,7 +71,8 @@
 <li><a href="#boot-nuttx-on-risc-v">2 Boot NuttX on RISC-V</a><ul></ul></li>
 <li><a href="#risc-v-boot-code-in-nuttx">3 RISC-V Boot Code in NuttX</a><ul></ul></li>
 <li><a href="#whats-next">4 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v">5 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V</a><ul></ul></li></ul></nav><p>📝 <em>1 Jul 2023</em></p>
+<li><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v">5 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V</a><ul></ul></li>
+<li><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v">6 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V</a><ul></ul></li></ul></nav><p>📝 <em>1 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/riscv-title.png" alt="Apache NuttX RTOS on 64-bit QEMU RISC-V Emulator" /></p>
 <p><a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX</strong></a> is a <strong>Real-Time Operating System (RTOS)</strong> that runs on many kinds of devices, from 8-bit to 64-bit.</p>
 <p>(Think Linux, but a lot smaller and simpler)</p>
@@ -94,8 +95,8 @@
 <p>TODO</p>
 <ol>
 <li>
-<p>Download <strong><code>Image.gz</code></strong> from the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.0.2"><strong>NuttX Release</strong></a>…</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/nuttx-12.0.2/Image.gz"><strong>Image.gz: NuttX Image for PinePhone</strong></a></p>
+<p>Download <strong><code>nuttx</code></strong> from the <a href="https://github.com/lupyuen/lupyuen.github.io/releases/tag/nuttx-riscv64"><strong>NuttX Release</strong></a>…</p>
+<p><a href="https://github.com/lupyuen/lupyuen.github.io/releases/download/nuttx-riscv64/nuttx"><strong>nuttx: NuttX Image for 64-bit RISC-V QEMU</strong></a></p>
 <p>(If we prefer to <strong>build NuttX</strong> ourselves: <a href="TODO"><strong>Follow these steps</strong></a>)</p>
 </li>
 <li>
@@ -112,73 +113,6 @@
 </li>
 </ol>
 <p>https://github.com/lupyuen/lupyuen.github.io/releases/tag/nuttx-riscv64</p>
-<p>Toolchain:
-Original:
-https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14.tar.gz</p>
-<p>Updated:
-https://github.com/sifive/freedom-tools/releases/tag/v2020.12.0</p>
-<p>https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-apple-darwin.tar.gz</p>
-<p>https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-centos6.tar.gz</p>
-<p>https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz</p>
-<p>https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-w64-mingw32.zip</p>
-<p>Add to PATH</p>
-<p>sudo apt install genromfs
-→ brew install genromfs</p>
-<p>mkdir ./nuttx; cd ./nuttx
-git clone https://github.com/apache/nuttx.git nuttx
-git clone https://github.com/apache/nuttx-apps.git apps
-cd nuttx
-./tools/configure.sh rv-virt:nsh64
-make V=1 -j7</p>
-<p>riscv64-unknown-elf-objdump <br />
--t -S –demangle –line-numbers –wide <br />
-nuttx <br />
-&gt;nuttx.S <br />
-2&gt;&amp;1</p>
-<p>make menuconfig
-Build Setup &gt; Debug Options
-│ │            [<em>] Enable Debug Features                                                          │ │
-│ │                  *** Debug SYSLOG Output Controls ***                                         │ │
-│ │            [</em>]   Enable Error Output                                                          │ │
-│ │            [<em>]     Enable Warnings Output                                                     │ │
-│ │            [</em>]       Enable Informational Debug Output</p>
-<p>│ │            [<em>]   Scheduler Debug Features                                                     │ │
-│ │            [</em>]     Scheduler Error Output                                                     │ │
-│ │            [<em>]     Scheduler Warnings Output                                                  │ │
-│ │            [</em>]     Scheduler Informational Output</p>
-<p>Build Log:
-https://gist.github.com/lupyuen/9d9b89dfd91b27f93459828178b83b77</p>
-<p>riscv64-unknown-elf-gcc <br />
--c <br />
--fno-common <br />
--Wall <br />
--Wstrict-prototypes <br />
--Wshadow <br />
--Wundef <br />
--Os <br />
--fno-strict-aliasing <br />
--fomit-frame-pointer <br />
--ffunction-sections <br />
--fdata-sections <br />
--g <br />
--march=rv64imac <br />
--mabi=lp64 <br />
--mcmodel=medany <br />
--isystem nuttx/include <br />
--D__NuttX__ <br />
--DNDEBUG <br />
--D__KERNEL__  <br />
--pipe <br />
--I nuttx/arch/risc-v/src/chip <br />
--I nuttx/arch/risc-v/src/common <br />
--I nuttx/sched    chip/qemu_rv_start.c <br />
--o  qemu_rv_start.o</p>
-<p>rv64imac: no floating-point</p>
-<p>lp64: Long pointers are 64-bit, no floating-point arguments will be passed in registers.
-https://gcc.gnu.org/onlinedocs/gcc-9.1.0/gcc/RISC-V-Options.html</p>
-<p>-mcmodel=medany
-Generate code for the medium-any code model. The program and its statically defined symbols must be within any single 2 GiB address range. Programs can be statically or dynamically linked.
-Sounds like a burger (or fast-food AI model?)</p>
 <h1 id="boot-nuttx-on-risc-v"><a href="#boot-nuttx-on-risc-v">2 Boot NuttX on RISC-V</a></h1>
 <p>TODO</p>
 <p>qemu-system-riscv64 <br />
@@ -303,7 +237,79 @@ tools/configure.sh pinephone:lvgl
 <p><a href="https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc">(See the Build Log)</a></p>
 </li>
 </ol>
+<p>Toolchain:
+Original:
+https://static.dev.sifive.com/dev-tools/riscv64-unknown-elf-gcc-8.3.0-2019.08.0-x86_64-linux-ubuntu14.tar.gz</p>
+<p>Updated:
+https://github.com/sifive/freedom-tools/releases/tag/v2020.12.0</p>
+<p>https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-apple-darwin.tar.gz</p>
+<p>https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-centos6.tar.gz</p>
+<p>https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-linux-ubuntu14.tar.gz</p>
+<p>https://static.dev.sifive.com/dev-tools/freedom-tools/v2020.12/riscv64-unknown-elf-toolchain-10.2.0-2020.12.8-x86_64-w64-mingw32.zip</p>
+<p>Add to PATH</p>
+<p>sudo apt install genromfs
+→ brew install genromfs</p>
+<p>mkdir ./nuttx; cd ./nuttx
+git clone https://github.com/apache/nuttx.git nuttx
+git clone https://github.com/apache/nuttx-apps.git apps
+cd nuttx
+./tools/configure.sh rv-virt:nsh64
+make V=1 -j7</p>
+<p>riscv64-unknown-elf-objdump <br />
+-t -S –demangle –line-numbers –wide <br />
+nuttx <br />
+&gt;nuttx.S <br />
+2&gt;&amp;1</p>
+<p>make menuconfig
+Build Setup &gt; Debug Options
+│ │            [<em>] Enable Debug Features                                                          │ │
+│ │                  *** Debug SYSLOG Output Controls ***                                         │ │
+│ │            [</em>]   Enable Error Output                                                          │ │
+│ │            [<em>]     Enable Warnings Output                                                     │ │
+│ │            [</em>]       Enable Informational Debug Output</p>
+<p>│ │            [<em>]   Scheduler Debug Features                                                     │ │
+│ │            [</em>]     Scheduler Error Output                                                     │ │
+│ │            [<em>]     Scheduler Warnings Output                                                  │ │
+│ │            [</em>]     Scheduler Informational Output</p>
+<p>Build Log:
+https://gist.github.com/lupyuen/9d9b89dfd91b27f93459828178b83b77</p>
+<h1 id="appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v"><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v">6 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V</a></h1>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>riscv64-unknown-elf-gcc \
+  -c \
+  -fno-common \
+  -Wall \
+  -Wstrict-prototypes \
+  -Wshadow \
+  -Wundef \
+  -Os \
+  -fno-strict-aliasing \
+  -fomit-frame-pointer \
+  -ffunction-sections \
+  -fdata-sections \
+  -g \
+  -march=rv64imac \
+  -mabi=lp64 \
+  -mcmodel=medany \
+  -isystem nuttx/include \
+  -D__NuttX__ \
+  -DNDEBUG \
+  -D__KERNEL__  \
+  -pipe \
+  -I nuttx/arch/risc-v/src/chip \
+  -I nuttx/arch/risc-v/src/common \
+  -I nuttx/sched    chip/qemu_rv_start.c \
+  -o  qemu_rv_start.o
 
+rv64imac: no floating-point
+
+lp64: Long pointers are 64-bit, no floating-point arguments will be passed in registers.
+https://gcc.gnu.org/onlinedocs/gcc-9.1.0/gcc/RISC-V-Options.html
+
+-mcmodel=medany
+Generate code for the medium-any code model. The program and its statically defined symbols must be within any single 2 GiB address range. Programs can be statically or dynamically linked.
+Sounds like a burger (or fast-food AI model?)
+</code></pre></div>
     
 </body>
 </html>
