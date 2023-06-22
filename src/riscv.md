@@ -296,16 +296,14 @@ https://five-embeddev.com/riscv-isa-manual/latest/rv64.html#integer-computationa
 TODO
 
 ```text
-  /* Load mhartid (cpuid) */
-  /* Set stack pointer to the idle thread stack */
-  /* Load the number of CPUs that the kernel supports */
-  /* If a0 (mhartid) >= t1 (the number of CPUs), stop here */
-  /* To get g_cpu_basestack[mhartid], must get g_cpu_basestack first */
-  /* Offset = pointer width * hart id */
-  /* Load idle stack base to sp */
-   * sp (stack top) = sp + idle stack size - XCPTCONTEXT_SIZE
-  /* Disable all interrupts (i.e. timer, external) in mie */
-  /* Jump to qemu_rv_start */
+  bnez a0, 1f
+  la   sp, QEMU_RV_IDLESTACK_TOP
+  j    2f
+  blt  a0, t1, 3f
+  add  t0, t0, t1
+  REGLOAD sp, 0(t0)
+  jal  x1, qemu_rv_start
+  ret
 ```
 
 # Jump to Start
