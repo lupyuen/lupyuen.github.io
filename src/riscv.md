@@ -184,7 +184,7 @@ TODO
 
 TODO
 
-1.  Load the __CPU ID__
+1.  Get the __CPU ID__
 
 1.  Set the __Stack Pointer__
 
@@ -196,24 +196,34 @@ TODO
 
 1.  Jump to __qemu_rv_start__
 
-## Load CPU ID
+## Get CPU ID
 
-TODO
+This is how we fetch the __CPU ID__ in RISC-V Assembly: [qemu_rv_head.S](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L43-L47)
 
 ```text
-  /* Load mhartid (cpuid) */
-  csrr a0, mhartid
-
-csrr: Read Control and Status Register
-https://five-embeddev.com/riscv-isa-manual/latest/csr.html
-
-a0: x10
-Embedded ABI (EABI) vs Unix ABI (UABI)
-https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc
-
-mhartid: Hart ID Register, ID of the hardware thread running the code.
-https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid
+/* Load mhartid (cpuid) */
+csrr a0, mhartid
 ```
+
+Let's break it down...
+
+- __csrr__ is the RISC-V Instruction that reads the [__Control and Status Register__](https://five-embeddev.com/riscv-isa-manual/latest/csr.html)
+
+  (Which contains the CPU ID)
+
+- __a0__ is the RISC-V Register that will be loaded with the CPU ID.
+
+  According to the [__RISC-V EABI__](https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc) (Embedded Application Binary Interface), __a0__ is actually an alias for the Official RISC-V Register __x10__.
+
+  ("a" refers to "Function Call Argument")
+
+- __mhartid__ refers to the [__Hart ID Register__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid), containing the ID of the Hardware Thread ("Hart") that's running our code.
+
+  (Equivalent to CPU ID)
+
+So the above line of code will load the CPU ID into Register __x10__.
+
+(We'll call it __a0__ for convenience)
 
 ## Disable Interrupts
 
