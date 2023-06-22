@@ -237,37 +237,40 @@ git clone https://github.com/apache/nuttx-apps apps
 
 cd nuttx
 tools/configure.sh rv-virt:nsh64
+make menuconfig
 </code></pre></div></li>
 <li>
-<p>Build the NuttX Project…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make V=1 -j7
+<p>In <strong>menuconfig</strong>, browse to “<strong>Build Setup</strong> &gt; <strong>Debug Options</strong>”</p>
+<p>Select the following options…</p>
+<div class="example-wrap"><pre class="language-text"><code>Enable Debug Features
+Enable Error Output
+Enable Warnings Output
+Enable Informational Debug Output
+Scheduler Debug Features
+Scheduler Error Output
+Scheduler Warnings Output
+Scheduler Informational Output
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/9d9b89dfd91b27f93459828178b83b77">(See the Build Log)</a></p>
+<p>Save and exit <strong>menuconfig</strong>.</p>
 </li>
 <li>
-<p>This produces the NuttX Image <strong>nuttx</strong> that we may boot on QEMU RISC-V Emulator</p>
-</li>
-</ol>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-bash"><code>riscv64-unknown-elf-objdump \
+<p>Build the NuttX Project and dump the RISC-V Disassembly…</p>
+<div class="example-wrap"><pre class="language-bash"><code>make V=1 -j7
+
+riscv64-unknown-elf-objdump \
   -t -S --demangle --line-numbers --wide \
   nuttx \
   &gt;nuttx.S \
   2&gt;&amp;1
-
-make menuconfig
-Build Setup &gt; Debug Options
-│ │            [*] Enable Debug Features                                                          │ │
-  │ │                  *** Debug SYSLOG Output Controls ***                                         │ │
-  │ │            [*]   Enable Error Output                                                          │ │
-  │ │            [*]     Enable Warnings Output                                                     │ │
-  │ │            [*]       Enable Informational Debug Output
-
-  │ │            [*]   Scheduler Debug Features                                                     │ │
-  │ │            [*]     Scheduler Error Output                                                     │ │
-  │ │            [*]     Scheduler Warnings Output                                                  │ │
-  │ │            [*]     Scheduler Informational Output
-</code></pre></div><h1 id="appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu">5 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V QEMU</a></h1>
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/9d9b89dfd91b27f93459828178b83b77">(See the Build Log)</a></p>
+</li>
+<li>
+<p>This produces the NuttX Image <strong>nuttx</strong> that we may boot on QEMU RISC-V Emulator…</p>
+<p>TODO: Boot NuttX</p>
+</li>
+</ol>
+<h1 id="appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu">5 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V QEMU</a></h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>riscv64-unknown-elf-gcc \
   -c \
