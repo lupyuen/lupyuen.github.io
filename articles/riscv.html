@@ -259,6 +259,7 @@ __start:
 <p>Jump to <strong>qemu_rv_start</strong></p>
 </li>
 </ol>
+<p>Let’s decipher the RISC-V Instructions in our Boot Code…</p>
 <h2 id="get-cpu-id"><a href="#get-cpu-id">4.1 Get CPU ID</a></h2>
 <p>This is how we fetch the <strong>CPU ID</strong> in RISC-V Assembly: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L43-L47">qemu_rv_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* Load mhartid (cpuid) */
@@ -328,16 +329,21 @@ sounds like &quot;silly&quot;
 but it&#39;s Logical Shift Left
 https://five-embeddev.com/riscv-isa-manual/latest/rv64.html#integer-computational-instructions
 </code></pre></div><h2 id="other-instructions"><a href="#other-instructions">4.6 Other Instructions</a></h2>
+<p><em>What about the other RISC-V Instructions in our Boot Code?</em></p>
+<p>Let’s skim through the rest…</p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>  bnez a0, 1f
   la   sp, QEMU_RV_IDLESTACK_TOP
   j    2f
+  li   t1, 1
   blt  a0, t1, 3f
   add  t0, t0, t1
   REGLOAD sp, 0(t0)
   jal  x1, qemu_rv_start
   ret
-</code></pre></div><h1 id="jump-to-start"><a href="#jump-to-start">5 Jump to Start</a></h1>
+</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_internal.h#L55-L63">REGLOAD</a> expands to <strong>ld</strong></p>
+<h1 id="jump-to-start"><a href="#jump-to-start">5 Jump to Start</a></h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>qemu_rv_start
 https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151
