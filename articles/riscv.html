@@ -92,7 +92,7 @@
 <p>No worries! We’ll run NuttX on the <strong>QEMU Emulator</strong> for 64-bit RISC-V.</p>
 <p>(Which will work on Linux, macOS and Windows machines)</p>
 <h1 id="boot-nuttx-on-64-bit-risc-v-qemu"><a href="#boot-nuttx-on-64-bit-risc-v-qemu">1 Boot NuttX on 64-bit RISC-V QEMU</a></h1>
-<p>TODO</p>
+<p>We begin by <strong>booting NuttX RTOS</strong> on RISC-V QEMU Emulator (64-bit)…</p>
 <ol>
 <li>
 <p>Download and install <a href="https://www.qemu.org/download/"><strong>QEMU Emulator</strong></a>…</p>
@@ -105,7 +105,7 @@
 <p>If we prefer to <strong>build NuttX</strong> ourselves: <a href="https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><strong>Follow these steps</strong></a></p>
 </li>
 <li>
-<p>Start the <strong>QEMU RISC-V Emulator</strong> (64-bit) and boot NuttX RTOS…</p>
+<p>Start the <strong>QEMU RISC-V Emulator</strong> (64-bit) with NuttX RTOS…</p>
 <div class="example-wrap"><pre class="language-bash"><code>qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on \
@@ -115,8 +115,54 @@
   -kernel nuttx \
   -nographic
 </code></pre></div></li>
+<li>
+<p>NuttX is now running in the QEMU Emluator!</p>
+<div class="example-wrap"><pre class="language-text"><code>uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+nx_start_application: Starting init thread
+
+NuttShell (NSH) NuttX-12.1.0-RC0
+nsh&gt; nx_start: CPU0: Beginning Idle Loop
+nsh&gt;
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8">(See the Complete Log)</a></p>
+</li>
+<li>
+<p>Enter “<strong>help</strong>” to see the available commands…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; help
+help usage:  help [-v] [&lt;cmd&gt;]
+
+    .         break     dd        exit      ls        ps        source    umount
+    [         cat       df        false     mkdir     pwd       test      unset
+    ?         cd        dmesg     free      mkrd      rm        time      uptime
+    alias     cp        echo      help      mount     rmdir     true      usleep
+    unalias   cmp       env       hexdump   mv        set       truncate  xd
+    basename  dirname   exec      kill      printf    sleep     uname
+
+Builtin Apps:
+    nsh     ostest  sh
+</code></pre></div></li>
+<li>
+<p>NuttX works like a tiny version of Linux, so the commands will look familiar…</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; uname -a
+NuttX 12.1.0-RC0 275db39 Jun 16 2023 20:22:08 risc-v rv-virt
+
+nsh&gt; ls /dev
+/dev:
+console
+null
+ttyS0
+zero
+
+nsh&gt; ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK           STACK   USED  FILLED COMMAND
+    0     0   0 FIFO     Kthread N-- Ready              0000000000000000 002000 001224  61.2%  Idle Task
+    1     1 100 RR       Task    --- Running            0000000000000000 002992 002024  67.6%  nsh_main
+nsh&gt;
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8">(See the Complete Log)</a></p>
+</li>
 </ol>
-<p>TODO: <a href="https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8">Run Log</a></p>
 <h1 id="risc-v-boot-code-in-nuttx"><a href="#risc-v-boot-code-in-nuttx">2 RISC-V Boot Code in NuttX</a></h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L41-L120
