@@ -153,11 +153,9 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Build Apache NuttX RTOS for 64-bit RISC-V
 
-TODO
+TODO: The easiest way to run Apache NuttX RTOS on 64-bit RISC-V is to download the __NuttX Image__ and boot it on QEMU Emulator...
 
-The easiest way to run Apache NuttX RTOS on PinePhone is to download the __NuttX Image__ and boot it on PinePhone...
-
--   [__"Boot NuttX on PinePhone"__](https://lupyuen.github.io/articles/lvgl2#boot-nuttx-on-pinephone)
+-   TODO: [__"Boot NuttX on PinePhone"__](https://lupyuen.github.io/articles/lvgl2#boot-nuttx-on-pinephone)
 
 But if we're keen to __build NuttX ourselves__, here are the steps...
 
