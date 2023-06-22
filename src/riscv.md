@@ -184,11 +184,23 @@ TODO
 
 TODO
 
-```bash
-qemu_rv_start
-https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151
-Calls nx_start
+1.  Load the __CPU ID__
 
+1.  Set the __Stack Pointer__
+
+1.  Check the __Number of CPUs__
+
+1.  Disable __Interrupts__
+
+1.  Load the __Vector Base Address__
+
+1.  Jump to __qemu_rv_start__
+
+## Load CPU ID
+
+TODO
+
+```text
   /* Load mhartid (cpuid) */
   csrr a0, mhartid
 
@@ -201,18 +213,13 @@ https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc
 
 mhartid: Hart ID Register, ID of the hardware thread running the code.
 https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid
+```
 
-#ifdef CONFIG_ARCH_RV32
-  slli t1, a0, 2
-#else
-  slli t1, a0, 3
-#endif
+## Disable Interrupts
 
-works with 32-bit and 64-bit modes!
-sounds like "silly"
-but it's Logical Shift Left
-https://five-embeddev.com/riscv-isa-manual/latest/rv64.html#integer-computational-instructions
+TODO
 
+```text
   /* Disable all interrupts (i.e. timer, external) in mie */
 	csrw	mie, zero
 
@@ -224,14 +231,28 @@ https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-interrupt
 
 zero: x0 Register, which is always 0
 https://five-embeddev.com/quickref/regs_abi.html
+```
 
+## Wait for Interrupt
+
+TODO
+
+```text
   csrw mie, zero
   wfi
 
 wfi: Wait for Interrupt
 which will never happen because we disabled interrupts
 https://five-embeddev.com/riscv-isa-manual/latest/machine.html#wfi
+```
 
+## Load Vector Base Address
+
+TODO
+
+[trap_vec](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_vectors.S)
+
+```text
   la   t0, __trap_vec
   csrw mtvec, t0
 
@@ -243,7 +264,49 @@ The mtvec register is an MXLEN-bit WARL read/write register that holds trap vect
 https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec
 ```
 
-TODO: Other instructions
+## 32-bit vs 64-bit RISC-V
+
+TODO
+
+```text
+#ifdef CONFIG_ARCH_RV32
+  slli t1, a0, 2
+#else
+  slli t1, a0, 3
+#endif
+
+works with 32-bit and 64-bit modes!
+sounds like "silly"
+but it's Logical Shift Left
+https://five-embeddev.com/riscv-isa-manual/latest/rv64.html#integer-computational-instructions
+```
+
+## Other Instructions
+
+TODO
+
+```text
+  /* Load mhartid (cpuid) */
+  /* Set stack pointer to the idle thread stack */
+  /* Load the number of CPUs that the kernel supports */
+  /* If a0 (mhartid) >= t1 (the number of CPUs), stop here */
+  /* To get g_cpu_basestack[mhartid], must get g_cpu_basestack first */
+  /* Offset = pointer width * hart id */
+  /* Load idle stack base to sp */
+   * sp (stack top) = sp + idle stack size - XCPTCONTEXT_SIZE
+  /* Disable all interrupts (i.e. timer, external) in mie */
+  /* Jump to qemu_rv_start */
+```
+
+# Jump to Start
+
+TODO
+
+```text
+qemu_rv_start
+https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151
+Calls nx_start
+```
 
 # What's Next
 
