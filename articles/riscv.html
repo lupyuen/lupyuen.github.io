@@ -170,12 +170,35 @@ nsh&gt;
 <div class="example-wrap"><pre class="language-bash"><code>qemu-system-riscv64 \
   -kernel nuttx \
   -cpu rv64 \
-  -M virt,aclint=on \
   -smp 8 \
+  -M virt,aclint=on \
   -semihosting \
   -bios none \
   -nographic
 </code></pre></div>
+<p>This command starts the <a href="https://www.qemu.org/docs/master/system/target-riscv.html"><strong>QEMU Emulator for RISC-V</strong></a> (64-bit) with…</p>
+<ul>
+<li>
+<p>Kernel Image: <strong>nuttx</strong> </p>
+</li>
+<li>
+<p>CPU: <a href="https://www.qemu.org/docs/master/system/target-riscv.html"><strong>64-bit RISC-V</strong></a></p>
+</li>
+<li>
+<p>Symmetric Multiprocessing: <strong>8 CPU Cores</strong></p>
+</li>
+<li>
+<p>Machine: <a href="https://www.qemu.org/docs/master/system/riscv/virt.html"><strong>virt (Generic Virtual Platform)</strong></a></p>
+</li>
+<li>
+<p><strong>ACLINT Devices</strong> will be emulated (instead of SiFive CLINT)</p>
+<p>TODO</p>
+</li>
+<li>
+<p>Enable Semihosting and No BIOS</p>
+<p>TODO</p>
+</li>
+</ul>
 <p>TODO</p>
 <h1 id="risc-v-boot-code-in-nuttx"><a href="#risc-v-boot-code-in-nuttx">3 RISC-V Boot Code in NuttX</a></h1>
 <p>TODO</p>
@@ -184,15 +207,6 @@ nsh&gt;
 qemu_rv_start
 https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151
 Calls nx_start
-
-qemu-system-riscv64
-https://www.qemu.org/docs/master/system/target-riscv.html
-
-  -M virt,aclint=on \
-‘virt’ Generic Virtual Platform (virt)
-https://www.qemu.org/docs/master/system/riscv/virt.html
-
-ACLINT devices will be emulated instead of SiFive CLINT
 
   /* Load mhartid (cpuid) */
   csrr a0, mhartid
