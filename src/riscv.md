@@ -135,9 +135,48 @@ The above command starts the [__QEMU Emulator for RISC-V__](https://www.qemu.org
 
 - Handle Interrupts with [__Advanced Core Local Interruptor (ACLINT)__](https://patchwork.kernel.org/project/qemu-devel/cover/20210724122407.2486558-1-anup.patel@wdc.com/)
 
-  (Instead of SiFive CLINT)
+  (Instead of the older SiFive CLINT)
 
 - Enable [__Semihosting Debugging__](https://www.qemu.org/docs/master/about/emulation.html#semihosting) without BIOS
+
+TODO
+
+# QEMU Starts NuttX
+
+_What happens when NuttX RTOS boots on QEMU?_
+
+Let's find out by tracing the __RISC-V Boot Code__ in NuttX!
+
+Earlier we ran this command to generate the [__RISC-V Disassembly__](https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu) for the NuttX Kernel...
+
+```bash
+riscv64-unknown-elf-objdump \
+  -t -S --demangle --line-numbers --wide \
+  nuttx \
+  >nuttx.S \
+  2>&1
+```
+
+This produces [__nuttx.S__](https://github.com/lupyuen/lupyuen.github.io/releases/download/nuttx-riscv64/nuttx.S), the disassembled NuttX Kernel for RISC-V.
+
+[__nuttx.S__](https://github.com/lupyuen/lupyuen.github.io/releases/download/nuttx-riscv64/nuttx.S) begins with this RISC-V code...
+
+```text
+0000000080000000 <__start>:
+nuttx/arch/risc-v/src/chip/qemu_rv_head.S:46
+__start:
+  /* Load mhartid (cpuid) */
+  csrr a0, mhartid
+    80000000:	f1402573  csrr  a0, mhartid
+```
+
+This says...
+
+- NuttX Boot Code is at [__qemu_rv_head.S__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L41-L120)
+
+- NuttX Kernel begins execution at address __`0x8000` `0000`__
+
+  (Why? What if NuttX is started by the U-Boot Bootloader?)
 
 TODO
 
@@ -146,8 +185,6 @@ TODO
 TODO
 
 ```bash
-https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L41-L120
-
 qemu_rv_start
 https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151
 Calls nx_start
@@ -288,6 +325,8 @@ But if we're keen to __build NuttX ourselves__, here are the steps...
     ```
 
     [(See the Build Log)](https://gist.github.com/lupyuen/9d9b89dfd91b27f93459828178b83b77)
+
+    [(See the Build Outputs)](https://github.com/lupyuen/lupyuen.github.io/releases/tag/nuttx-riscv64)
 
 1.  This produces the NuttX Image __nuttx__ that we may boot on QEMU RISC-V Emulator...
 
