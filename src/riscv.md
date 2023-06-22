@@ -22,6 +22,10 @@ No worries! We'll run NuttX on the __QEMU Emulator__ for 64-bit RISC-V.
 
 (Which will work on Linux, macOS and Windows machines)
 
+![Building Apache NuttX RTOS in 4 minutes](https://lupyuen.github.io/images/riscv-build.png)
+
+[_Building Apache NuttX RTOS in 4 minutes_](https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu)
+
 # Boot NuttX on 64-bit RISC-V QEMU
 
 We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
@@ -53,7 +57,7 @@ We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
       -nographic
     ```
 
-1.  NuttX is now running in the QEMU Emluator!
+1.  NuttX is now running in the QEMU Emluator! (Pic below)
 
     ```text
     uart_register: Registering /dev/console
@@ -107,6 +111,10 @@ We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
     [(See the Complete Log)](https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8)
 
 TODO
+
+![Apache NuttX RTOS on 64-bit QEMU RISC-V Emulator](https://lupyuen.github.io/images/riscv-title.png)
+
+[_Apache NuttX RTOS on 64-bit QEMU RISC-V Emulator_](https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8)
 
 # QEMU Emulator for RISC-V
 
@@ -179,6 +187,10 @@ This says...
   (Why? What if NuttX is started by the U-Boot Bootloader?)
 
 TODO
+
+![RISC-V Boot Code for Apache NuttX RTOS](https://lupyuen.github.io/images/riscv-code.png)
+
+[_RISC-V Boot Code for Apache NuttX RTOS_](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S)
 
 # RISC-V Boot Code in NuttX
 
