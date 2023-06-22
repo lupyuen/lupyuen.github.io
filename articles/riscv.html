@@ -176,7 +176,7 @@ nsh&gt;
   -bios none \
   -nographic
 </code></pre></div>
-<p>This command starts the <a href="https://www.qemu.org/docs/master/system/target-riscv.html"><strong>QEMU Emulator for RISC-V</strong></a> (64-bit) with…</p>
+<p>The above command starts the <a href="https://www.qemu.org/docs/master/system/target-riscv.html"><strong>QEMU Emulator for RISC-V</strong></a> (64-bit) with…</p>
 <ul>
 <li>
 <p>Kernel Image: <strong>nuttx</strong> </p>
@@ -188,15 +188,14 @@ nsh&gt;
 <p>Symmetric Multiprocessing: <strong>8 CPU Cores</strong></p>
 </li>
 <li>
-<p>Machine: <a href="https://www.qemu.org/docs/master/system/riscv/virt.html"><strong>virt (Generic Virtual Platform)</strong></a></p>
+<p>Machine: <a href="https://www.qemu.org/docs/master/system/riscv/virt.html"><strong>Generic Virtual Platform (virt)</strong></a></p>
 </li>
 <li>
-<p><strong>ACLINT Devices</strong> will be emulated (instead of SiFive CLINT)</p>
-<p>TODO</p>
+<p>Handle Interrupts with <a href="https://patchwork.kernel.org/project/qemu-devel/cover/20210724122407.2486558-1-anup.patel@wdc.com/"><strong>Advanced Core Local Interruptor (ACLINT)</strong></a></p>
+<p>(Instead of SiFive CLINT)</p>
 </li>
 <li>
-<p>Enable Semihosting and No BIOS</p>
-<p>TODO</p>
+<p>Enable <a href="https://www.qemu.org/docs/master/about/emulation.html#semihosting"><strong>Semihosting Debugging</strong></a> without BIOS</p>
 </li>
 </ul>
 <p>TODO</p>
