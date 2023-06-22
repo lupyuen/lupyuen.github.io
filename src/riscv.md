@@ -116,12 +116,30 @@ _Earlier we ran this command. What does it mean?_
 qemu-system-riscv64 \
   -kernel nuttx \
   -cpu rv64 \
-  -M virt,aclint=on \
   -smp 8 \
+  -M virt,aclint=on \
   -semihosting \
   -bios none \
   -nographic
 ```
+
+This command starts the [__QEMU Emulator for RISC-V__](https://www.qemu.org/docs/master/system/target-riscv.html) (64-bit) with...
+
+- Kernel Image: __nuttx__ 
+
+- CPU: [__64-bit RISC-V__](https://www.qemu.org/docs/master/system/target-riscv.html)
+
+- Symmetric Multiprocessing: __8 CPU Cores__
+
+- Machine: [__virt (Generic Virtual Platform)__](https://www.qemu.org/docs/master/system/riscv/virt.html)
+
+- __ACLINT Devices__ will be emulated (instead of SiFive CLINT)
+
+  TODO
+
+- Enable Semihosting and No BIOS
+
+  TODO
 
 TODO
 
@@ -135,15 +153,6 @@ https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head
 qemu_rv_start
 https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151
 Calls nx_start
-
-qemu-system-riscv64
-https://www.qemu.org/docs/master/system/target-riscv.html
-
-  -M virt,aclint=on \
-‘virt’ Generic Virtual Platform (virt)
-https://www.qemu.org/docs/master/system/riscv/virt.html
-
-ACLINT devices will be emulated instead of SiFive CLINT
 
   /* Load mhartid (cpuid) */
   csrr a0, mhartid
