@@ -26,34 +26,34 @@ No worries! We'll run NuttX on the __QEMU Emulator__ for 64-bit RISC-V.
 
 TODO
 
+1.  Download and install [__QEMU Emulator__](https://www.qemu.org/download/)...
+
+    For macOS we may use __`brew`__...
+
+    ```bash
+    brew install qemu
+    ```
+
 1.  Download __`nuttx`__ from the [__NuttX Release__](https://github.com/lupyuen/lupyuen.github.io/releases/tag/nuttx-riscv64)...
 
     [__nuttx: NuttX Image for 64-bit RISC-V QEMU__](https://github.com/lupyuen/lupyuen.github.io/releases/download/nuttx-riscv64/nuttx)
 
-    (If we prefer to __build NuttX__ ourselves: [__Follow these steps__](TODO))
+    If we prefer to __build NuttX__ ourselves: [__Follow these steps__](https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu)
 
-1.  Copy the downloaded __`Image.gz`__ and overwrite the file on the microSD Card.
+1.  Start the __QEMU RISC-V Emulator__ (64-bit) and boot NuttX RTOS...
 
-    (Pic above)
+    ```bash
+    qemu-system-riscv64 \
+      -semihosting \
+      -M virt,aclint=on \
+      -cpu rv64 \
+      -smp 8 \
+      -bios none \
+      -kernel nuttx \
+      -nographic
+    ```
 
-1.  Insert the microSD Card into PinePhone and power up PinePhone.
-
-    NuttX boots on PinePhone and shows a [__Test Pattern__](https://lupyuen.github.io/images/dsi3-title.jpg).
-
-    (Very briefly)
-
-1.  TODO: Enter __`help`__ to see the available commands.
-
-```bash
-qemu-system-riscv64 \
-  -semihosting \
-  -M virt,aclint=on \
-  -cpu rv64 \
-  -smp 8 \
-  -bios none \
-  -kernel nuttx \
-  -nographic
-```
+TODO
 
 # RISC-V Boot Code in NuttX
 
