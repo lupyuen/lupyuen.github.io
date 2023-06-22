@@ -100,6 +100,8 @@
 <p><em>But we need RISC-V Hardware?</em></p>
 <p>No worries! We’ll run NuttX on the <strong>QEMU Emulator</strong> for 64-bit RISC-V.</p>
 <p>(Which will work on Linux, macOS and Windows machines)</p>
+<p><img src="https://lupyuen.github.io/images/riscv-build.png" alt="Building Apache NuttX RTOS in 4 minutes" /></p>
+<p><a href="https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><em>Building Apache NuttX RTOS in 4 minutes</em></a></p>
 <h1 id="boot-nuttx-on-64-bit-risc-v-qemu"><a href="#boot-nuttx-on-64-bit-risc-v-qemu">1 Boot NuttX on 64-bit RISC-V QEMU</a></h1>
 <p>We begin by <strong>booting NuttX RTOS</strong> on RISC-V QEMU Emulator (64-bit)…</p>
 <ol>
@@ -125,7 +127,7 @@
   -nographic
 </code></pre></div></li>
 <li>
-<p>NuttX is now running in the QEMU Emluator!</p>
+<p>NuttX is now running in the QEMU Emluator! (Pic below)</p>
 <div class="example-wrap"><pre class="language-text"><code>uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
 nx_start_application: Starting init thread
@@ -173,6 +175,8 @@ nsh&gt;
 </li>
 </ol>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/riscv-title.png" alt="Apache NuttX RTOS on 64-bit QEMU RISC-V Emulator" /></p>
+<p><a href="https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8"><em>Apache NuttX RTOS on 64-bit QEMU RISC-V Emulator</em></a></p>
 <h1 id="qemu-emulator-for-risc-v"><a href="#qemu-emulator-for-risc-v">2 QEMU Emulator for RISC-V</a></h1>
 <p><em>Earlier we ran this command. What does it mean?</em></p>
 <div class="example-wrap"><pre class="language-bash"><code>qemu-system-riscv64 \
@@ -237,6 +241,8 @@ __start:
 </li>
 </ul>
 <p>TODO</p>
+<p><img src="https://lupyuen.github.io/images/riscv-code.png" alt="RISC-V Boot Code for Apache NuttX RTOS" /></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S"><em>RISC-V Boot Code for Apache NuttX RTOS</em></a></p>
 <h1 id="risc-v-boot-code-in-nuttx"><a href="#risc-v-boot-code-in-nuttx">4 RISC-V Boot Code in NuttX</a></h1>
 <p>TODO</p>
 <ol>
