@@ -53,7 +53,7 @@ TODO
       -nographic
     ```
 
-TODO
+TODO: [Run Log](https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8)
 
 # RISC-V Boot Code in NuttX
 
@@ -189,6 +189,7 @@ But if we're keen to __build NuttX ourselves__, here are the steps...
     Enable Error Output
     Enable Warnings Output
     Enable Informational Debug Output
+    Enable Debug Assertions
     Scheduler Debug Features
     Scheduler Error Output
     Scheduler Warnings Output
