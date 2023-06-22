@@ -70,8 +70,8 @@
 <li><a href="#boot-nuttx-on-64-bit-risc-v-qemu">1 Boot NuttX on 64-bit RISC-V QEMU</a><ul></ul></li>
 <li><a href="#risc-v-boot-code-in-nuttx">2 RISC-V Boot Code in NuttX</a><ul></ul></li>
 <li><a href="#whats-next">3 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v">4 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V</a><ul></ul></li>
-<li><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v">5 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V</a><ul></ul></li>
+<li><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">4 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V QEMU</a><ul></ul></li>
+<li><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu">5 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V QEMU</a><ul></ul></li>
 <li><a href="#appendix-download-toolchain-for-64-bit-risc-v">6 Appendix: Download Toolchain for 64-bit RISC-V</a><ul></ul></li></ul></nav><p>📝 <em>1 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/riscv-title.png" alt="Apache NuttX RTOS on 64-bit QEMU RISC-V Emulator" /></p>
 <p><a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX</strong></a> is a <strong>Real-Time Operating System (RTOS)</strong> that runs on many kinds of devices, from 8-bit to 64-bit.</p>
@@ -213,55 +213,43 @@ https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-vect
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/riscv.md"><strong>lupyuen.github.io/src/riscv.md</strong></a></p>
-<h1 id="appendix-build-apache-nuttx-rtos-for-64-bit-risc-v"><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v">4 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V</a></h1>
-<p>TODO: The easiest way to run Apache NuttX RTOS on 64-bit RISC-V is to download the <strong>NuttX Image</strong> and boot it on QEMU Emulator…</p>
+<h1 id="appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">4 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V QEMU</a></h1>
+<p>The easiest way to run <strong>Apache NuttX RTOS on 64-bit RISC-V</strong> is to download the <strong>NuttX Image</strong> and boot it on QEMU Emulator…</p>
 <ul>
-<li>TODO: <a href="https://lupyuen.github.io/articles/lvgl2#boot-nuttx-on-pinephone"><strong>“Boot NuttX on PinePhone”</strong></a></li>
+<li>TODO: <a href="TODO"><strong>“Boot NuttX on PinePhone”</strong></a></li>
 </ul>
 <p>But if we’re keen to <strong>build NuttX ourselves</strong>, here are the steps…</p>
 <ol>
 <li>
 <p>Install the Build Prerequisites, skip the RISC-V Toolchain…</p>
-<p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites">“<strong>Install Prerequisites</strong>”</a></p>
+<p><a href="https://lupyuen.github.io/articles/nuttx#install-prerequisites"><strong>“Install Prerequisites”</strong></a></p>
 </li>
 <li>
-<p>TODO: Download the ARM64 Toolchain for
-<strong>AArch64 Bare-Metal Target <code>aarch64-none-elf</code></strong></p>
-<p><a href="https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads"><strong>Arm GNU Toolchain Downloads</strong></a></p>
-<p>(Skip the section for Beta Releases)</p>
+<p>Download the RISC-V Toolchain for <strong>riscv64-unknown-elf</strong>…</p>
+<p><a href="https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads"><strong>“Download Toolchain for 64-bit RISC-V”</strong></a></p>
 </li>
 <li>
-<p>TODO: Add the downloaded toolchain to the <strong><code>PATH</code></strong> Environment Variable…</p>
-<div class="example-wrap"><pre class="language-text"><code>gcc-arm-...-aarch64-none-elf/bin
-</code></pre></div>
-<p>Check the ARM64 Toolchain…</p>
-<div class="example-wrap"><pre class="language-bash"><code>aarch64-none-elf-gcc -v
-</code></pre></div></li>
-<li>
-<p>TODO: Download and configure NuttX…</p>
+<p>Download and configure NuttX…</p>
 <div class="example-wrap"><pre class="language-bash"><code>mkdir nuttx
 cd nuttx
 git clone https://github.com/apache/nuttx nuttx
 git clone https://github.com/apache/nuttx-apps apps
 
 cd nuttx
-tools/configure.sh pinephone:lvgl
+tools/configure.sh rv-virt:nsh64
 </code></pre></div></li>
 <li>
 <p>Build the NuttX Project…</p>
-<div class="example-wrap"><pre class="language-bash"><code>make
+<div class="example-wrap"><pre class="language-bash"><code>make V=1 -j7
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc">(See the Build Log)</a></p>
+<p><a href="https://gist.github.com/lupyuen/9d9b89dfd91b27f93459828178b83b77">(See the Build Log)</a></p>
+</li>
+<li>
+<p>This produces the NuttX Image <strong>nuttx</strong> that we may boot on QEMU RISC-V Emulator</p>
 </li>
 </ol>
-<div class="example-wrap"><pre class="language-bash"><code>mkdir ./nuttx; cd ./nuttx
-git clone https://github.com/apache/nuttx.git nuttx
-git clone https://github.com/apache/nuttx-apps.git apps
-cd nuttx
-./tools/configure.sh rv-virt:nsh64
-make V=1 -j7
-
-riscv64-unknown-elf-objdump \
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-bash"><code>riscv64-unknown-elf-objdump \
   -t -S --demangle --line-numbers --wide \
   nuttx \
   &gt;nuttx.S \
@@ -279,10 +267,7 @@ Build Setup &gt; Debug Options
   │ │            [*]     Scheduler Error Output                                                     │ │
   │ │            [*]     Scheduler Warnings Output                                                  │ │
   │ │            [*]     Scheduler Informational Output
-
-Build Log:
-https://gist.github.com/lupyuen/9d9b89dfd91b27f93459828178b83b77
-</code></pre></div><h1 id="appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v"><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v">5 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V</a></h1>
+</code></pre></div><h1 id="appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu">5 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V QEMU</a></h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-bash"><code>riscv64-unknown-elf-gcc \
   -c \
