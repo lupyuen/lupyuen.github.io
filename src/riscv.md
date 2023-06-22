@@ -177,40 +177,43 @@ But if we're keen to __build NuttX ourselves__, here are the steps...
 
     cd nuttx
     tools/configure.sh rv-virt:nsh64
+    make menuconfig
     ```
 
-1.  Build the NuttX Project...
+1.  In __menuconfig__, browse to "__Build Setup__ > __Debug Options__"
+
+    Select the following options...
+
+    ```text
+    Enable Debug Features
+    Enable Error Output
+    Enable Warnings Output
+    Enable Informational Debug Output
+    Scheduler Debug Features
+    Scheduler Error Output
+    Scheduler Warnings Output
+    Scheduler Informational Output
+    ```
+
+    Save and exit __menuconfig__.
+
+1.  Build the NuttX Project and dump the RISC-V Disassembly...
 
     ```bash
     make V=1 -j7
+
+    riscv64-unknown-elf-objdump \
+      -t -S --demangle --line-numbers --wide \
+      nuttx \
+      >nuttx.S \
+      2>&1
     ```
 
     [(See the Build Log)](https://gist.github.com/lupyuen/9d9b89dfd91b27f93459828178b83b77)
 
-1.  This produces the NuttX Image __nuttx__ that we may boot on QEMU RISC-V Emulator
+1.  This produces the NuttX Image __nuttx__ that we may boot on QEMU RISC-V Emulator...
 
-TODO
-
-```bash
-riscv64-unknown-elf-objdump \
-  -t -S --demangle --line-numbers --wide \
-  nuttx \
-  >nuttx.S \
-  2>&1
-
-make menuconfig
-Build Setup > Debug Options
-│ │            [*] Enable Debug Features                                                          │ │
-  │ │                  *** Debug SYSLOG Output Controls ***                                         │ │
-  │ │            [*]   Enable Error Output                                                          │ │
-  │ │            [*]     Enable Warnings Output                                                     │ │
-  │ │            [*]       Enable Informational Debug Output
-
-  │ │            [*]   Scheduler Debug Features                                                     │ │
-  │ │            [*]     Scheduler Error Output                                                     │ │
-  │ │            [*]     Scheduler Warnings Output                                                  │ │
-  │ │            [*]     Scheduler Informational Output
-```
+    TODO: Boot NuttX
 
 # Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V QEMU
 
