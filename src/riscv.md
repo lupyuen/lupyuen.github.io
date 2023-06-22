@@ -151,38 +151,23 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/riscv.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/riscv.md)
 
-# Appendix: Build Apache NuttX RTOS for 64-bit RISC-V
+# Appendix: Build Apache NuttX RTOS for 64-bit RISC-V QEMU
 
-TODO: The easiest way to run Apache NuttX RTOS on 64-bit RISC-V is to download the __NuttX Image__ and boot it on QEMU Emulator...
+The easiest way to run __Apache NuttX RTOS on 64-bit RISC-V__ is to download the __NuttX Image__ and boot it on QEMU Emulator...
 
--   TODO: [__"Boot NuttX on PinePhone"__](https://lupyuen.github.io/articles/lvgl2#boot-nuttx-on-pinephone)
+-   TODO: [__"Boot NuttX on PinePhone"__](TODO)
 
 But if we're keen to __build NuttX ourselves__, here are the steps...
 
 1.  Install the Build Prerequisites, skip the RISC-V Toolchain...
 
-    ["__Install Prerequisites__"](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
+    [__"Install Prerequisites"__](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
 
-1.  TODO: Download the ARM64 Toolchain for
-    __AArch64 Bare-Metal Target `aarch64-none-elf`__
+1.  Download the RISC-V Toolchain for __riscv64-unknown-elf__...
     
-    [__Arm GNU Toolchain Downloads__](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
+    [__"Download Toolchain for 64-bit RISC-V"__](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
 
-    (Skip the section for Beta Releases)
-
-1.  TODO: Add the downloaded toolchain to the __`PATH`__ Environment Variable...
-
-    ```text
-    gcc-arm-...-aarch64-none-elf/bin
-    ```
-
-    Check the ARM64 Toolchain...
-
-    ```bash
-    aarch64-none-elf-gcc -v
-    ```
-
-1.  TODO: Download and configure NuttX...
+1.  Download and configure NuttX...
 
     ```bash
     mkdir nuttx
@@ -191,26 +176,22 @@ But if we're keen to __build NuttX ourselves__, here are the steps...
     git clone https://github.com/apache/nuttx-apps apps
 
     cd nuttx
-    tools/configure.sh pinephone:lvgl
+    tools/configure.sh rv-virt:nsh64
     ```
 
 1.  Build the NuttX Project...
 
     ```bash
-    make
+    make V=1 -j7
     ```
 
-    [(See the Build Log)](https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc)
+    [(See the Build Log)](https://gist.github.com/lupyuen/9d9b89dfd91b27f93459828178b83b77)
 
+1.  This produces the NuttX Image __nuttx__ that we may boot on QEMU RISC-V Emulator
+
+TODO
 
 ```bash
-mkdir ./nuttx; cd ./nuttx
-git clone https://github.com/apache/nuttx.git nuttx
-git clone https://github.com/apache/nuttx-apps.git apps
-cd nuttx
-./tools/configure.sh rv-virt:nsh64
-make V=1 -j7
-
 riscv64-unknown-elf-objdump \
   -t -S --demangle --line-numbers --wide \
   nuttx \
@@ -229,12 +210,9 @@ Build Setup > Debug Options
   │ │            [*]     Scheduler Error Output                                                     │ │
   │ │            [*]     Scheduler Warnings Output                                                  │ │
   │ │            [*]     Scheduler Informational Output
-
-Build Log:
-https://gist.github.com/lupyuen/9d9b89dfd91b27f93459828178b83b77
 ```
 
-# Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V
+# Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V QEMU
 
 TODO
 
