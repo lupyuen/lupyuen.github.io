@@ -26,6 +26,24 @@ No worries! We'll run NuttX on the __QEMU Emulator__ for 64-bit RISC-V.
 
 TODO
 
+1.  Download __`Image.gz`__ from the [__NuttX Release__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/nuttx-12.0.2)...
+
+    [__Image.gz: NuttX Image for PinePhone__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/nuttx-12.0.2/Image.gz)
+
+    (If we prefer to __build NuttX__ ourselves: [__Follow these steps__](TODO))
+
+1.  Copy the downloaded __`Image.gz`__ and overwrite the file on the microSD Card.
+
+    (Pic above)
+
+1.  Insert the microSD Card into PinePhone and power up PinePhone.
+
+    NuttX boots on PinePhone and shows a [__Test Pattern__](https://lupyuen.github.io/images/dsi3-title.jpg).
+
+    (Very briefly)
+
+1.  TODO: Enter __`help`__ to see the available commands.
+    
 https://github.com/lupyuen/lupyuen.github.io/releases/tag/nuttx-riscv64
 
 Toolchain:
@@ -216,3 +234,56 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/riscv.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/riscv.md)
+
+# Appendix: Build Apache NuttX RTOS for 64-bit RISC-V
+
+TODO
+
+The easiest way to run Apache NuttX RTOS on PinePhone is to download the __NuttX Image__ and boot it on PinePhone...
+
+-   [__"Boot NuttX on PinePhone"__](https://lupyuen.github.io/articles/lvgl2#boot-nuttx-on-pinephone)
+
+But if we're keen to __build NuttX ourselves__, here are the steps...
+
+1.  Install the Build Prerequisites, skip the RISC-V Toolchain...
+
+    ["__Install Prerequisites__"](https://lupyuen.github.io/articles/nuttx#install-prerequisites)
+
+1.  TODO: Download the ARM64 Toolchain for
+    __AArch64 Bare-Metal Target `aarch64-none-elf`__
+    
+    [__Arm GNU Toolchain Downloads__](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
+
+    (Skip the section for Beta Releases)
+
+1.  TODO: Add the downloaded toolchain to the __`PATH`__ Environment Variable...
+
+    ```text
+    gcc-arm-...-aarch64-none-elf/bin
+    ```
+
+    Check the ARM64 Toolchain...
+
+    ```bash
+    aarch64-none-elf-gcc -v
+    ```
+
+1.  TODO: Download and configure NuttX...
+
+    ```bash
+    mkdir nuttx
+    cd nuttx
+    git clone https://github.com/apache/nuttx nuttx
+    git clone https://github.com/apache/nuttx-apps apps
+
+    cd nuttx
+    tools/configure.sh pinephone:lvgl
+    ```
+
+1.  Build the NuttX Project...
+
+    ```bash
+    make
+    ```
+
+    [(See the Build Log)](https://gist.github.com/lupyuen/7ce5f5abedba365cb70b59e39e081cdc)
