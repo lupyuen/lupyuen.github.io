@@ -441,6 +441,10 @@ TODO
 
 # Jump to Start
 
+_Our Boot Code jumps to qemu_rv_start..._
+
+_What happens next?_
+
 TODO
 
 ```text
