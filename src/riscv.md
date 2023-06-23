@@ -203,7 +203,7 @@ This says...
 
   (Why? What if NuttX is started by the U-Boot Bootloader?)
 
-TODO
+Let's dive into the NuttX Boot Code...
 
 ![RISC-V Boot Code for Apache NuttX RTOS](https://lupyuen.github.io/images/riscv-code.png)
 
@@ -456,6 +456,10 @@ _Why are the RISC-V Labels named "1f", "2f", "3f"?_
 
 Let's jump to __qemu_rv_start__...
 
+![RISC-V Start Code for Apache NuttX RTOS](https://lupyuen.github.io/images/riscv-start.png)
+
+[_RISC-V Start Code for Apache NuttX RTOS_](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151)
+
 # Jump to Start
 
 _Our Boot Code jumps to qemu_rv_start..._
@@ -471,6 +475,8 @@ _What happens next?_
 1.  Initialise the [__Serial Port__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L119-L123)
 
 1.  Initialise the [__Memory Management Unit__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L129-L135)
+
+    (For Kernel Mode only)
 
 1.  Call [__nx_start__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L135-L139)
 
