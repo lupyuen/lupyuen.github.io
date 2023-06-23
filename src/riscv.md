@@ -109,7 +109,7 @@ We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
 
     [(See the Complete Log)](https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8)
 
-TODO
+Now we talk about QEMU...
 
 ![Apache NuttX RTOS on RISC-V QEMU](https://lupyuen.github.io/images/riscv-title.png)
 
@@ -210,7 +210,9 @@ Let's dive into the NuttX Boot Code...
 
 # RISC-V Boot Code in NuttX
 
-TODO
+_What's inside the NuttX Boot Code for RISC-V?_
+
+The RISC-V Assembly code in [__qemu_rv_head.S__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L41-L120) will do the following...
 
 1.  Get the [__CPU ID__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L41-L47)
 
@@ -500,6 +502,14 @@ Stay tuned for updates in the next article!
 # What's Next
 
 TODO
+
+-   Boot NuttX RTOS on a __64-bit RISC-V__ device
+
+-   Explore the __Boot Code__ that starts NuttX on RISC-V
+
+-   And learn a little __RISC-V Assembly__!
+
+Tiny operating system, it's perfect for learning the internals of RISC-V gadgets.
 
 [(We welcome __your contribution__ to Apache NuttX RTOS!)](https://lupyuen.github.io/articles/pr)
 
