@@ -491,13 +491,13 @@ _What happens in nx_start?_
 
 - [__"After Primary Routine: nx_start"__](https://lupyuen.github.io/articles/unicorn2#after-primary-routine)
 
-Which will start the NuttX Shell.
+Which will start the NuttX Shell that we've seen earlier.
 
 And that's how NuttX RTOS boots on QEMU Emulator for RISC-V!
 
 _Why are we doing all this?_
 
-We're about to port NuttX to the [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) RISC-V SoC and [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) SBC.
+We're about to port NuttX to the [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) RISC-V SoC and [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) Single-Board Computer.
 
 The analysis we've done today will be super helpful as we write the Boot Code for these RISC-V devices.
 
