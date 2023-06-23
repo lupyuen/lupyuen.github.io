@@ -341,13 +341,15 @@ _What about the other RISC-V Instructions in our Boot Code?_
 
 Let's skim through the rest...
 
-- [__`bnez`__](https://five-embeddev.com/quickref/instructions.html#-c--control-transfer-instructions) jumps to __Label 1f__ if __Register a0__ is non-zero...
+- [__`bnez`__](https://five-embeddev.com/quickref/instructions.html#-c--control-transfer-instructions) jumps to __Label `1f`__ if __Register a0__ is Non-Zero
 
   ```text
   bnez  a0, 1f
   ```
 
-- [__`j`__](https://five-embeddev.com/quickref/instructions.html#-c--control-transfer-instructions) jumps to __Label 2f__
+- [__`j`__](https://five-embeddev.com/quickref/instructions.html#-c--control-transfer-instructions) jumps to __Label `2f`__
+
+  (We'll explain Labels in a while)
 
   ```text
   j  2f
@@ -363,7 +365,7 @@ Let's skim through the rest...
   li  t1, 1
   ```
 
-- [__`blt`__](https://five-embeddev.com/quickref/instructions.html#-rv32--conditional-branches) branches to __Label 3f__ if __Register a0__ is less than __Register t1__
+- [__`blt`__](https://five-embeddev.com/quickref/instructions.html#-rv32--conditional-branches) branches to __Label `3f`__ if __Register a0__ is less than __Register t1__
 
   (And grabs a sandwich)
 
@@ -372,6 +374,8 @@ Let's skim through the rest...
   ```
 
 - [__`add`__](https://five-embeddev.com/quickref/instructions.html#-rv32--integer-computational-instructions) sets __Register t0__ to the value of __Register t0__ + __Register t1__
+
+  [(__t1__ is aliased to __Register x15__)](https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc#3-register-usage-and-symbolic-names)
 
   ```text
   add  t0, t0, t1
@@ -387,19 +391,35 @@ Let's skim through the rest...
   REGLOAD  sp, 0(t0)
   ```
 
-- [__`jal__](https://five-embeddev.com/quickref/instructions.html#-rv32--programmers-model-for-base-integer-isa)
+- [__`jal`__](https://five-embeddev.com/quickref/instructions.html#-rv32--programmers-model-for-base-integer-isa) (Jump And Link) will jump to the address __qemu_rv_start__ and store the Return Address in __Register x1__
 
-```text
-jal  x1, qemu_rv_start
-```
+  (Works like a Function Call)
+
+  ```text
+  jal  x1, qemu_rv_start
+  ```
+
+- [__`ret`__](https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#-a-listing-of-standard-risc-v-pseudoinstructions) returns from a Function Call.
+
+  [(__`ret`__ is a Pseudo-Instruction that expands to __`jalr`__)](https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#-a-listing-of-standard-risc-v-pseudoinstructions)
+
+  [(__`jalr`__ "Jump And Link Register" will jump to the Return Address stored in __Register x1__)](https://five-embeddev.com/quickref/instructions.html#-rv32--unconditional-jumps)
+
+  ```text
+  ret
+  ```
+
+  [(See the list of all __RISC-V Instructions__)](https://five-embeddev.com/quickref/instructions.html)
+
+  [(And __RISC-V Pseudo-Instructions__)](https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#-a-listing-of-standard-risc-v-pseudoinstructions)
+
+_Why are the RISC-V Labels named "1f", "2f", "3f"?_
+
+__"`1f`"__ refers to the [__Local Label "`1`"__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L53-L56) with a [__Forward Reference__](https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#labels).
+
+(Instead of a [__Backward Reference__](https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#labels))
 
 TODO
-
-```text
-ret
-```
-
-TODO: Labels
 
 # Jump to Start
 
