@@ -239,7 +239,7 @@ csrr  a0, mhartid
 
 Let's break it down...
 
-- __`csrr`__ is the RISC-V Instruction that reads the [__Control and Status Register__](https://five-embeddev.com/riscv-isa-manual/latest/csr.html)
+- __`csrr`__ is the RISC-V Instruction that reads the [__Control and Status Register__](https://five-embeddev.com/quickref/instructions.html#-csr--csr-instructions)
 
   (Which contains the CPU ID)
 
@@ -253,7 +253,7 @@ Let's break it down...
 
   (Equivalent to CPU ID)
 
-So the above line of code will load the CPU ID into Register __x10__.
+So the above code will load the CPU ID into Register __x10__.
 
 (We'll call it __a0__ for convenience)
 
@@ -268,9 +268,9 @@ csrw  mie, zero
 
 Which means...
 
-- __`csrw`__ will write to the [__Control and Status Register__](https://five-embeddev.com/riscv-isa-manual/latest/csr.html)
+- __`csrw`__ will write to the [__Control and Status Register__](https://five-embeddev.com/quickref/instructions.html#-csr--csr-instructions)
 
-  (Which controls interrupts and other things)
+  (Which controls interrupts and other CPU settings)
 
 - __`mie`__ says that we'll write to the [__Machine Interrupt Enable Register__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie)
 
@@ -298,15 +298,17 @@ From the previous section, we know that "__csrw mie, zero__" will disable interr
 
 But __`wfi`__ will [__Wait for Interrupt__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#wfi)...
 
-Which will never happen because we disabled interrupts!
+Which will never happen because we __disabled interrupts!__
 
 Thus the above code will get stuck there, __waiting forever__. (Intentionally)
+
+[(__`wfi`__ is probably the only instruction common to __RISC-V and Arm CPUs__)](https://developer.arm.com/documentation/ddi0596/2020-12/Base-Instructions/WFI--Wait-For-Interrupt-)
 
 ## Load Interrupt Vector
 
 RISC-V handles interrupts by looking up the [__Interrupt Vector Table__](https://five-embeddev.com/quickref/interrupts.html).
 
-This is how we load the __Address of the Vector Table__: [qemu_rv_head.S](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L102-L105)
+This is how we load the __Address of the Vector Table__ into the CPU Settings: [qemu_rv_head.S](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L102-L105)
 
 ```text
 /* Load address of Interrupt Vector Table */
@@ -320,11 +322,11 @@ csrw  mtvec, t0
 
   [(__trap_vec__ is defined here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_vectors.S)
 
-- __`csrw`__ writes __t0__ into the [__Control and Status Register__](https://five-embeddev.com/riscv-isa-manual/latest/csr.html) at...
+- __`csrw`__ writes __t0__ into the [__Control and Status Register__](https://five-embeddev.com/quickref/instructions.html#-csr--csr-instructions) at...
 
 - __`mtvec`__, the [__Machine Trap-Vector Base-Address Register__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec)
 
-Which loads the address of our Interrupt Vector Table.
+Which will load the Address of our Interrupt Vector Table into the CPU Settings.
 
 [(__`la`__ is actually a Pseudo-Instruction that expands to __`auipc`__ and __`addi`__)](https://michaeljclark.github.io/asm.html#:~:text=The%20la%20(load%20address)%20instruction,command%20line%20options%20or%20an%20.)
 
@@ -379,9 +381,9 @@ Let's skim through the rest...
 
   [(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L52-L54)
 
-- [__`li`__](https://itnext.io/risc-v-instruction-set-cheatsheet-70961b4bbe8#:~:text=You%20can%20see%20some%20instructions,of%20different%20RISC%2DV%20instructions.) loads the __Value 1__ into __Register t1__
+- [__`li`__](https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#-a-listing-of-standard-risc-v-pseudoinstructions) loads the __Value 1__ into __Register t1__
 
-  [(__`li`__ is a Pseudo-Instruction that expands to __`addi`__)](https://itnext.io/risc-v-instruction-set-cheatsheet-70961b4bbe8#:~:text=You%20can%20see%20some%20instructions,of%20different%20RISC%2DV%20instructions.)
+  [(__`li`__ is a Pseudo-Instruction that expands to __`addi`__)](https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#-a-listing-of-standard-risc-v-pseudoinstructions)
 
   [(__`addi`__ adds an Immediate Value to a Register)](https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions)
 
@@ -413,7 +415,7 @@ Let's skim through the rest...
 
 - [__`REGLOAD`__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_internal.h#L55-L63) is an Assembly Macro that expands to __`ld`__
 
-  [__`ld`__](https://five-embeddev.com/quickref/instructions.html#-rv64--load-and-store-instructions) loads __Register t0__ to the __Stack Pointer Register__
+  [__`ld`__](https://five-embeddev.com/quickref/instructions.html#-rv64--load-and-store-instructions) loads __Register t0__ into the __Stack Pointer Register__
 
   [(Which is aliased to __Register x2__)](https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc#3-register-usage-and-symbolic-names)
 
