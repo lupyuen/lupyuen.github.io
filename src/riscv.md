@@ -594,6 +594,14 @@ But if we're keen to __build NuttX ourselves__, here are the steps...
 
     [(See the Build Outputs)](https://github.com/lupyuen/lupyuen.github.io/releases/tag/nuttx-riscv64)
 
+1.  If the build fails with...
+
+    ```text
+    sed: 1: "/CONFIG_BASE_DEFCONFIG/ ...": bad flag in substitute command: '}'
+    ```
+
+    Please run "__make menuconfig__ > __Build Setup__ > __Debug Options__" and uncheck "__Enable Debug Features__". Save, exit __menuconfig__ and rebuild NuttX with __make__.
+
 This produces the NuttX Image __nuttx__ that we may boot on QEMU RISC-V Emulator...
 
 - [__"Boot NuttX on 64-bit RISC-V QEMU"__](https://lupyuen.github.io/articles/riscv#boot-nuttx-on-64-bit-risc-v-qemu)
