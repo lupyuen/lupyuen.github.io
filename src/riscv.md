@@ -30,7 +30,7 @@ No worries! We'll run NuttX on the __QEMU Emulator__ for 64-bit RISC-V.
 
 We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
 
-1.  Download and install [__QEMU Emulator__](https://www.qemu.org/download/)...
+1.  Download and install [__QEMU Emulator__](https://www.qemu.org/download/).
 
     For macOS we may use __`brew`__...
 
@@ -57,7 +57,7 @@ We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
       -nographic
     ```
 
-1.  NuttX is now running in the QEMU Emluator! (Pic below)
+1.  NuttX is now running in the QEMU Emulator! (Pic below)
 
     ```text
     uart_register: Registering /dev/console
