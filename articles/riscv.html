@@ -449,7 +449,8 @@ csrw  mtvec, t0
 <h1 id="jump-to-start"><a href="#jump-to-start">5 Jump to Start</a></h1>
 <p><em>Our Boot Code jumps to qemu_rv_start…</em></p>
 <p><em>What happens next?</em></p>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151"><strong>qemu_rv_start</strong></a> is the very first C Function that NuttX runs when it boots. It will…</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151"><strong>qemu_rv_start</strong></a> is the very first C Function that NuttX runs when it boots on QEMU.</p>
+<p>The function will…</p>
 <ol>
 <li>
 <p>Configure the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L105-L108"><strong>Floating-Point Unit</strong></a></p>
