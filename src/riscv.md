@@ -1,4 +1,4 @@
-# 64-bit RISC-V with Apache NuttX RTOS
+# 64-bit RISC-V with Apache NuttX Real-Time Operating System
 
 📝 _1 Jul 2023_
 
@@ -308,7 +308,7 @@ csrw  mtvec, t0
 
 Which loads the address of our Interrupt Vector Table.
 
-[(__`la`__ is actually a Pseudo-Instruction that expands to __auipc__ and __addi__)](https://michaeljclark.github.io/asm.html#:~:text=The%20la%20(load%20address)%20instruction,command%20line%20options%20or%20an%20.)
+[(__`la`__ is actually a Pseudo-Instruction that expands to __`auipc`__ and __`addi`__)](https://michaeljclark.github.io/asm.html#:~:text=The%20la%20(load%20address)%20instruction,command%20line%20options%20or%20an%20.)
 
 [(__`auipc`__ loads an Address Offset from the Program Counter)](https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions)
 
@@ -334,6 +334,8 @@ Our Boot Code uses an Assembler Macro to figure out if we're running __32-bit or
 Which means that the exact same Boot Code will run on __32-bit AND 64-bit RISC-V__!
 
 (__`slli`__ sounds "silly", but it's [__Logical Shift Left__](https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions))
+
+(__CONFIG_ARCH_RV32__ is derived from our [__NuttX Build Configuration__](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig))
 
 ## Other Instructions
 
