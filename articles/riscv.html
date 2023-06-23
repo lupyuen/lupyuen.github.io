@@ -274,16 +274,16 @@ csrr  a0, mhartid
 <p>Let’s break it down…</p>
 <ul>
 <li>
-<p><strong>csrr</strong> is the RISC-V Instruction that reads the <a href="https://five-embeddev.com/riscv-isa-manual/latest/csr.html"><strong>Control and Status Register</strong></a></p>
+<p><strong><code>csrr</code></strong> is the RISC-V Instruction that reads the <a href="https://five-embeddev.com/riscv-isa-manual/latest/csr.html"><strong>Control and Status Register</strong></a></p>
 <p>(Which contains the CPU ID)</p>
 </li>
 <li>
-<p><strong>a0</strong> is the RISC-V Register that will be loaded with the CPU ID.</p>
-<p>According to the <a href="https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc"><strong>RISC-V EABI</strong></a> (Embedded Application Binary Interface), <strong>a0</strong> is actually an alias for the Official RISC-V Register <strong>x10</strong>.</p>
+<p><strong><code>a0</code></strong> is the RISC-V Register that will be loaded with the CPU ID.</p>
+<p>According to the <a href="https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc#3-register-usage-and-symbolic-names"><strong>RISC-V EABI</strong></a> (Embedded Application Binary Interface), <strong>a0</strong> is actually an alias for the Official RISC-V Register <strong>x10</strong>.</p>
 <p>(“a” refers to “Function Call Argument”)</p>
 </li>
 <li>
-<p><strong>mhartid</strong> says that we’ll read from the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid"><strong>Hart ID Register</strong></a>, containing the ID of the Hardware Thread (“Hart”) that’s running our code.</p>
+<p><strong><code>mhartid</code></strong> says that we’ll read from the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid"><strong>Hart ID Register</strong></a>, containing the ID of the Hardware Thread (“Hart”) that’s running our code.</p>
 <p>(Equivalent to CPU ID)</p>
 </li>
 </ul>
@@ -297,15 +297,15 @@ csrw  mie, zero
 <p>Which means…</p>
 <ul>
 <li>
-<p><strong>csrw</strong> will write to the <a href="https://five-embeddev.com/riscv-isa-manual/latest/csr.html"><strong>Control and Status Register</strong></a></p>
+<p><strong><code>csrw</code></strong> will write to the <a href="https://five-embeddev.com/riscv-isa-manual/latest/csr.html"><strong>Control and Status Register</strong></a></p>
 <p>(Which controls interrupts and other things)</p>
 </li>
 <li>
-<p><strong>mie</strong> says that we’ll write to the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"><strong>Machine Interrupt Enable Register</strong></a></p>
+<p><strong><code>mie</code></strong> says that we’ll write to the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"><strong>Machine Interrupt Enable Register</strong></a></p>
 <p>(0 to Disable Interrupts, 1 to Enable)</p>
 </li>
 <li>
-<p><strong>zero</strong> says that we’ll read from <a href="https://five-embeddev.com/quickref/regs_abi.html"><strong>Register x0</strong></a>…</p>
+<p><strong><code>zero</code></strong> says that we’ll read from <a href="https://five-embeddev.com/quickref/regs_abi.html"><strong>Register x0</strong></a>…</p>
 <p>Which always reads as 0!</p>
 </li>
 </ul>
@@ -318,7 +318,7 @@ csrw  mie, zero
 wfi
 </code></pre></div>
 <p>From the previous section, we know that “<strong>csrw mie, zero</strong>” will disable interrupts.</p>
-<p>But <strong>wfi</strong> will <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#wfi"><strong>Wait for Interrupt</strong></a>…</p>
+<p>But <strong><code>wfi</code></strong> will <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#wfi"><strong>Wait for Interrupt</strong></a>…</p>
 <p>Which will never happen because we disabled interrupts!</p>
 <p>Thus the above code will get stuck there, <strong>waiting forever</strong>. (Intentionally)</p>
 <h2 id="load-interrupt-vector"><a href="#load-interrupt-vector">4.4 Load Interrupt Vector</a></h2>
@@ -330,21 +330,21 @@ csrw  mtvec, t0
 </code></pre></div>
 <ul>
 <li>
-<p><a href="https://michaeljclark.github.io/asm.html#:~:text=The%20la%20(load%20address)%20instruction,command%20line%20options%20or%20an%20."><strong>la</strong></a> loads the Address of the Vector Table into <strong>Register t0</strong></p>
-<p><a href="https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc">(Which is aliased to <strong>Register x5</strong>)</a></p>
+<p><a href="https://michaeljclark.github.io/asm.html#:~:text=The%20la%20(load%20address)%20instruction,command%20line%20options%20or%20an%20."><strong><code>la</code></strong></a> loads the Address of the Vector Table into <strong>Register t0</strong></p>
+<p><a href="https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc#3-register-usage-and-symbolic-names">(Which is aliased to <strong>Register x5</strong>)</a></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_vectors.S">(<strong>trap_vec</strong> is defined here)</a></p>
 </li>
 <li>
-<p><strong>csrw</strong> writes <strong>t0</strong> into the <a href="https://five-embeddev.com/riscv-isa-manual/latest/csr.html"><strong>Control and Status Register</strong></a>…</p>
+<p><strong><code>csrw</code></strong> writes <strong>t0</strong> into the <a href="https://five-embeddev.com/riscv-isa-manual/latest/csr.html"><strong>Control and Status Register</strong></a> at…</p>
 </li>
 <li>
-<p>At <strong>mtvec</strong>, the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"><strong>Machine Trap-Vector Base-Address Register</strong></a></p>
+<p><strong><code>mtvec</code></strong>, the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"><strong>Machine Trap-Vector Base-Address Register</strong></a></p>
 </li>
 </ul>
 <p>Which loads the address of our Interrupt Vector Table.</p>
-<p><a href="https://michaeljclark.github.io/asm.html#:~:text=The%20la%20(load%20address)%20instruction,command%20line%20options%20or%20an%20.">(<strong>la</strong> is actually a Pseudo-Instruction that expands to <strong>auipc</strong> and <strong>addi</strong>)</a></p>
-<p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions">(<strong>auipc</strong> loads an Address Offset from the Program Counter)</a></p>
-<p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions">(<strong>addi</strong> adds an Immediate Value to a Register)</a></p>
+<p><a href="https://michaeljclark.github.io/asm.html#:~:text=The%20la%20(load%20address)%20instruction,command%20line%20options%20or%20an%20.">(<strong><code>la</code></strong> is actually a Pseudo-Instruction that expands to <strong>auipc</strong> and <strong>addi</strong>)</a></p>
+<p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions">(<strong><code>auipc</code></strong> loads an Address Offset from the Program Counter)</a></p>
+<p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions">(<strong><code>addi</code></strong> adds an Immediate Value to a Register)</a></p>
 <h2 id="32-bit-vs-64-bit-risc-v"><a href="#32-bit-vs-64-bit-risc-v">4.5 32-bit vs 64-bit RISC-V</a></h2>
 <p>Adapting 32-bit code for 64-bit sounds hard… But it’s easy peasy for RISC-V!</p>
 <p>Our Boot Code uses an Assembler Macro to figure out if we’re running <strong>32-bit or 64-bit</strong> RISC-V: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L73-L82">qemu_rv_head.S</a></p>
@@ -358,21 +358,50 @@ csrw  mtvec, t0
 #endif
 </code></pre></div>
 <p>Which means that the exact same Boot Code will run on <strong>32-bit AND 64-bit RISC-V</strong>!</p>
-<p>(<strong>slli</strong> sounds “silly”, but it’s <a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions"><strong>Logical Shift Left</strong></a>)</p>
+<p>(<strong><code>slli</code></strong> sounds “silly”, but it’s <a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions"><strong>Logical Shift Left</strong></a>)</p>
 <h2 id="other-instructions"><a href="#other-instructions">4.6 Other Instructions</a></h2>
 <p><em>What about the other RISC-V Instructions in our Boot Code?</em></p>
 <p>Let’s skim through the rest…</p>
-<p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>  bnez a0, 1f
-  j    2f
-  li   t1, 1
-  blt  a0, t1, 3f
-  add  t0, t0, t1
-  REGLOAD sp, 0(t0)
-  jal  x1, qemu_rv_start
-  ret
+<ul>
+<li>
+<p><a href="https://five-embeddev.com/quickref/instructions.html#-c--control-transfer-instructions"><strong><code>bnez</code></strong></a> jumps to <strong>Label 1f</strong> if <strong>Register a0</strong> is non-zero…</p>
+<div class="example-wrap"><pre class="language-text"><code>bnez  a0, 1f
+</code></pre></div></li>
+<li>
+<p><a href="https://five-embeddev.com/quickref/instructions.html#-c--control-transfer-instructions"><strong><code>j</code></strong></a> jumps to <strong>Label 2f</strong></p>
+<div class="example-wrap"><pre class="language-text"><code>j  2f
+</code></pre></div></li>
+<li>
+<p><a href="https://itnext.io/risc-v-instruction-set-cheatsheet-70961b4bbe8#:~:text=You%20can%20see%20some%20instructions,of%20different%20RISC%2DV%20instructions."><strong><code>li</code></strong></a> loads the <strong>Value 1</strong> into <strong>Register t1</strong></p>
+<p><a href="https://itnext.io/risc-v-instruction-set-cheatsheet-70961b4bbe8#:~:text=You%20can%20see%20some%20instructions,of%20different%20RISC%2DV%20instructions.">(<strong><code>li</code></strong> is a Pseudo-Instruction that expands to <strong><code>addi</code></strong>)</a></p>
+<p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions">(<strong><code>addi</code></strong> adds an Immediate Value to a Register)</a></p>
+<div class="example-wrap"><pre class="language-text"><code>li  t1, 1
+</code></pre></div></li>
+<li>
+<p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--conditional-branches"><strong><code>blt</code></strong></a> branches to <strong>Label 3f</strong> if <strong>Register a0</strong> is less than <strong>Register t1</strong></p>
+<p>(And grabs a sandwich)</p>
+<div class="example-wrap"><pre class="language-text"><code>blt  a0, t1, 3f
+</code></pre></div></li>
+<li>
+<p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-computational-instructions"><strong><code>add</code></strong></a> sets <strong>Register t0</strong> to the value of <strong>Register t0</strong> + <strong>Register t1</strong></p>
+<div class="example-wrap"><pre class="language-text"><code>add  t0, t0, t1
+</code></pre></div></li>
+<li>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_internal.h#L55-L63"><strong><code>REGLOAD</code></strong></a> is an Assembly Macro that expands to <strong><code>ld</code></strong></p>
+<p><a href="https://five-embeddev.com/quickref/instructions.html#-rv64--load-and-store-instructions"><strong><code>ld</code></strong></a> loads <strong>Register t0</strong> to the <strong>Stack Pointer Register</strong></p>
+<p><a href="https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc#3-register-usage-and-symbolic-names">(Which is aliased to <strong>Register x2</strong>)</a></p>
+<div class="example-wrap"><pre class="language-text"><code>REGLOAD  sp, 0(t0)
+</code></pre></div></li>
+<li>
+<p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--programmers-model-for-base-integer-isa"><strong>`jal</strong></a></p>
+</li>
+</ul>
+<div class="example-wrap"><pre class="language-text"><code>jal  x1, qemu_rv_start
 </code></pre></div>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_internal.h#L55-L63">REGLOAD</a> expands to <strong>ld</strong></p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>ret
+</code></pre></div>
+<p>TODO: Labels</p>
 <h1 id="jump-to-start"><a href="#jump-to-start">5 Jump to Start</a></h1>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>qemu_rv_start
