@@ -649,15 +649,15 @@ riscv64-unknown-elf-gcc \
 
 The __RISC-V Options__ are...
 
-- __march=rv64imac__: This generates Integer-only RISC-V code, no Floating-Point.
+- __march=rv64imac__: This generates Integer-Only 64-bit RISC-V code, no Floating-Point.
 
   Which is surprising because RISC-V QEMU actually [__supports Floating-Point__](https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v).
 
-  We need to fix this as we port NuttX to the [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) RISC-V SoC and [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) SBC.
+  We will fix this as we port NuttX to the [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) RISC-V SoC and [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) SBC.
 
-- __mabi=lp64__: Long pointers are 64-bit, no Floating-Point arguments will be passed in registers.
+- __mabi=lp64__: This Application Binary Interface says that Long Pointers are 64-bit. No Floating-Point Arguments will be passed in Registers.
 
-  We might need fix this for JH7110 SoC and Star64 SBC.
+  We might fix this for JH7110 SoC and Star64 SBC.
 
   [(More about this)](https://gcc.gnu.org/onlinedocs/gcc-9.1.0/gcc/RISC-V-Options.html)
 
@@ -681,7 +681,7 @@ Follow these steps to download the __64-bit RISC-V Toolchain__ for building Apac
 
 1.  Extract the Downloaded Toolchain
 
-1.  Add the extracted toolchain to the __`PATH`__ Environment Variable...
+1.  Add the Extracted Toolchain to the __`PATH`__ Environment Variable...
 
     ```text
     riscv64-unknown-elf-toolchain-.../bin
