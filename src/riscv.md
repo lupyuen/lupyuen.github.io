@@ -221,17 +221,17 @@ csrr  a0, mhartid
 
 Let's break it down...
 
-- __csrr__ is the RISC-V Instruction that reads the [__Control and Status Register__](https://five-embeddev.com/riscv-isa-manual/latest/csr.html)
+- __`csrr`__ is the RISC-V Instruction that reads the [__Control and Status Register__](https://five-embeddev.com/riscv-isa-manual/latest/csr.html)
 
   (Which contains the CPU ID)
 
-- __a0__ is the RISC-V Register that will be loaded with the CPU ID.
+- __`a0`__ is the RISC-V Register that will be loaded with the CPU ID.
 
-  According to the [__RISC-V EABI__](https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc) (Embedded Application Binary Interface), __a0__ is actually an alias for the Official RISC-V Register __x10__.
+  According to the [__RISC-V EABI__](https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc#3-register-usage-and-symbolic-names) (Embedded Application Binary Interface), __a0__ is actually an alias for the Official RISC-V Register __x10__.
 
   ("a" refers to "Function Call Argument")
 
-- __mhartid__ says that we'll read from the [__Hart ID Register__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid), containing the ID of the Hardware Thread ("Hart") that's running our code.
+- __`mhartid`__ says that we'll read from the [__Hart ID Register__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid), containing the ID of the Hardware Thread ("Hart") that's running our code.
 
   (Equivalent to CPU ID)
 
@@ -250,15 +250,15 @@ csrw  mie, zero
 
 Which means...
 
-- __csrw__ will write to the [__Control and Status Register__](https://five-embeddev.com/riscv-isa-manual/latest/csr.html)
+- __`csrw`__ will write to the [__Control and Status Register__](https://five-embeddev.com/riscv-isa-manual/latest/csr.html)
 
   (Which controls interrupts and other things)
 
-- __mie__ says that we'll write to the [__Machine Interrupt Enable Register__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie)
+- __`mie`__ says that we'll write to the [__Machine Interrupt Enable Register__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie)
 
   (0 to Disable Interrupts, 1 to Enable)
 
-- __zero__ says that we'll read from [__Register x0__](https://five-embeddev.com/quickref/regs_abi.html)...
+- __`zero`__ says that we'll read from [__Register x0__](https://five-embeddev.com/quickref/regs_abi.html)...
 
   Which always reads as 0!
 
@@ -278,7 +278,7 @@ wfi
 
 From the previous section, we know that "__csrw mie, zero__" will disable interrupts.
 
-But __wfi__ will [__Wait for Interrupt__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#wfi)...
+But __`wfi`__ will [__Wait for Interrupt__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#wfi)...
 
 Which will never happen because we disabled interrupts!
 
@@ -296,23 +296,23 @@ la    t0, __trap_vec
 csrw  mtvec, t0
 ```
 
-- [__la__](https://michaeljclark.github.io/asm.html#:~:text=The%20la%20(load%20address)%20instruction,command%20line%20options%20or%20an%20.) loads the Address of the Vector Table into __Register t0__
+- [__`la`__](https://michaeljclark.github.io/asm.html#:~:text=The%20la%20(load%20address)%20instruction,command%20line%20options%20or%20an%20.) loads the Address of the Vector Table into __Register t0__
 
-  [(Which is aliased to __Register x5__)](https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc)
+  [(Which is aliased to __Register x5__)](https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc#3-register-usage-and-symbolic-names)
 
   [(__trap_vec__ is defined here)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_vectors.S)
 
-- __csrw__ writes __t0__ into the [__Control and Status Register__](https://five-embeddev.com/riscv-isa-manual/latest/csr.html)...
+- __`csrw`__ writes __t0__ into the [__Control and Status Register__](https://five-embeddev.com/riscv-isa-manual/latest/csr.html) at...
 
-- At __mtvec__, the [__Machine Trap-Vector Base-Address Register__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec)
+- __`mtvec`__, the [__Machine Trap-Vector Base-Address Register__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec)
 
 Which loads the address of our Interrupt Vector Table.
 
-[(__la__ is actually a Pseudo-Instruction that expands to __auipc__ and __addi__)](https://michaeljclark.github.io/asm.html#:~:text=The%20la%20(load%20address)%20instruction,command%20line%20options%20or%20an%20.)
+[(__`la`__ is actually a Pseudo-Instruction that expands to __auipc__ and __addi__)](https://michaeljclark.github.io/asm.html#:~:text=The%20la%20(load%20address)%20instruction,command%20line%20options%20or%20an%20.)
 
-[(__auipc__ loads an Address Offset from the Program Counter)](https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions)
+[(__`auipc`__ loads an Address Offset from the Program Counter)](https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions)
 
-[(__addi__ adds an Immediate Value to a Register)](https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions)
+[(__`addi`__ adds an Immediate Value to a Register)](https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions)
 
 ## 32-bit vs 64-bit RISC-V
 
@@ -333,7 +333,7 @@ Our Boot Code uses an Assembler Macro to figure out if we're running __32-bit or
 
 Which means that the exact same Boot Code will run on __32-bit AND 64-bit RISC-V__!
 
-(__slli__ sounds "silly", but it's [__Logical Shift Left__](https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions))
+(__`slli`__ sounds "silly", but it's [__Logical Shift Left__](https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions))
 
 ## Other Instructions
 
@@ -341,20 +341,65 @@ _What about the other RISC-V Instructions in our Boot Code?_
 
 Let's skim through the rest...
 
+- [__`bnez`__](https://five-embeddev.com/quickref/instructions.html#-c--control-transfer-instructions) jumps to __Label 1f__ if __Register a0__ is non-zero...
+
+  ```text
+  bnez  a0, 1f
+  ```
+
+- [__`j`__](https://five-embeddev.com/quickref/instructions.html#-c--control-transfer-instructions) jumps to __Label 2f__
+
+  ```text
+  j  2f
+  ```
+
+- [__`li`__](https://itnext.io/risc-v-instruction-set-cheatsheet-70961b4bbe8#:~:text=You%20can%20see%20some%20instructions,of%20different%20RISC%2DV%20instructions.) loads the __Value 1__ into __Register t1__
+
+  [(__`li`__ is a Pseudo-Instruction that expands to __`addi`__)](https://itnext.io/risc-v-instruction-set-cheatsheet-70961b4bbe8#:~:text=You%20can%20see%20some%20instructions,of%20different%20RISC%2DV%20instructions.)
+
+  [(__`addi`__ adds an Immediate Value to a Register)](https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions)
+
+  ```text
+  li  t1, 1
+  ```
+
+- [__`blt`__](https://five-embeddev.com/quickref/instructions.html#-rv32--conditional-branches) branches to __Label 3f__ if __Register a0__ is less than __Register t1__
+
+  (And grabs a sandwich)
+
+  ```text
+  blt  a0, t1, 3f
+  ```
+
+- [__`add`__](https://five-embeddev.com/quickref/instructions.html#-rv32--integer-computational-instructions) sets __Register t0__ to the value of __Register t0__ + __Register t1__
+
+  ```text
+  add  t0, t0, t1
+  ```
+
+- [__`REGLOAD`__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_internal.h#L55-L63) is an Assembly Macro that expands to __`ld`__
+
+  [__`ld`__](https://five-embeddev.com/quickref/instructions.html#-rv64--load-and-store-instructions) loads __Register t0__ to the __Stack Pointer Register__
+
+  [(Which is aliased to __Register x2__)](https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc#3-register-usage-and-symbolic-names)
+
+  ```text
+  REGLOAD  sp, 0(t0)
+  ```
+
+- [__`jal__](https://five-embeddev.com/quickref/instructions.html#-rv32--programmers-model-for-base-integer-isa)
+
+```text
+jal  x1, qemu_rv_start
+```
+
 TODO
 
 ```text
-  bnez a0, 1f
-  j    2f
-  li   t1, 1
-  blt  a0, t1, 3f
-  add  t0, t0, t1
-  REGLOAD sp, 0(t0)
-  jal  x1, qemu_rv_start
-  ret
+ret
 ```
 
-[REGLOAD](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_internal.h#L55-L63) expands to __ld__
+TODO: Labels
 
 # Jump to Start
 
