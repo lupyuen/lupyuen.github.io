@@ -501,17 +501,17 @@ Stay tuned for updates in the next article!
 
 # What's Next
 
-TODO
+I hope this article has been an educational exploration of Apache NuttX RTOS on 64-bit RISC-V...
 
--   Boot NuttX RTOS on a __64-bit RISC-V__ device
+-   We booted NuttX RTOS on an emulated __64-bit RISC-V__ device
 
--   Explore the __Boot Code__ that starts NuttX on RISC-V
+-   We peeked at the __Boot Code__ that starts NuttX on RISC-V
 
--   And learn a little __RISC-V Assembly__!
+-   And hopefully we learnt a little __RISC-V Assembly__!
 
-Tiny operating system, it's perfect for learning the internals of RISC-V gadgets.
+NuttX is a tiny operating system, perfect for experimenting with RISC-V gadgets. We'll do this and much more in the upcoming articles!
 
-[(We welcome __your contribution__ to Apache NuttX RTOS!)](https://lupyuen.github.io/articles/pr)
+[(We welcome __your contribution__ to Apache NuttX RTOS)](https://lupyuen.github.io/articles/pr)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
