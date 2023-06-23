@@ -459,7 +459,11 @@ _What happens next?_
 
 _What happens in nx_start?_
 
-[__nx_start__](https://github.com/apache/nuttx/blob/master/sched/init/nx_start.c#L297-L707) will probably
+[__nx_start__](https://github.com/apache/nuttx/blob/master/sched/init/nx_start.c#L297-L707) will initialise a whole bunch of NuttX things...
+
+- [__"After Primary Routine (nx_start)"__](https://lupyuen.github.io/articles/unicorn2#after-primary-routine)
+
+Which will start the NuttX Shell.
 
 TODO
 
