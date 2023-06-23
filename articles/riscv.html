@@ -169,7 +169,6 @@ nsh&gt; ps
   PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK           STACK   USED  FILLED COMMAND
     0     0   0 FIFO     Kthread N-- Ready              0000000000000000 002000 001224  61.2%  Idle Task
     1     1 100 RR       Task    --- Running            0000000000000000 002992 002024  67.6%  nsh_main
-nsh&gt;
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8">(See the Complete Log)</a></p>
 </li>
@@ -443,8 +442,8 @@ csrw  mtvec, t0
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L47-L50"><strong>“<code>1f</code>”</strong></a> refers to the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L53-L56"><strong>Local Label “<code>1</code>”</strong></a> with a <a href="https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#labels"><strong>Forward Reference</strong></a>.</p>
 <p>(Instead of a <a href="https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#labels"><strong>Backward Reference</strong></a>)</p>
 <p>Let’s jump to <strong>qemu_rv_start</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/riscv-start.png" alt="RISC-V Start Code for Apache NuttX RTOS" /></p>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151"><em>RISC-V Start Code for Apache NuttX RTOS</em></a></p>
+<p><img src="https://lupyuen.github.io/images/riscv-start.png" alt="RISC-V Start Code for NuttX RTOS" /></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151"><em>RISC-V Start Code for NuttX RTOS</em></a></p>
 <h1 id="jump-to-start"><a href="#jump-to-start">5 Jump to Start</a></h1>
 <p><em>Our Boot Code jumps to qemu_rv_start…</em></p>
 <p><em>What happens next?</em></p>
@@ -475,10 +474,12 @@ csrw  mtvec, t0
 <p>Which will start the NuttX Shell.</p>
 <p>And that’s how NuttX RTOS boots on QEMU Emulator for RISC-V!</p>
 <p><em>Why are we doing all this?</em></p>
-<p>TODO</p>
+<p>We’re about to port NuttX to the <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> RISC-V SoC and <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> SBC.</p>
+<p>The analysis we’ve done today will be super helpful as we write the Boot Code for these RISC-V devices.</p>
+<p>Stay tuned for updates in the next article!</p>
 <h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
 <p>TODO</p>
-<p>(We welcome <strong>your contribution</strong> to Apache NuttX RTOS!)</p>
+<p><a href="https://lupyuen.github.io/articles/pr">(We welcome <strong>your contribution</strong> to Apache NuttX RTOS!)</a></p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
@@ -503,7 +504,7 @@ csrw  mtvec, t0
 <h1 id="appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">7 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V QEMU</a></h1>
 <p>The easiest way to run <strong>Apache NuttX RTOS on 64-bit RISC-V</strong> is to download the <strong>NuttX Image</strong> and boot it on QEMU Emulator…</p>
 <ul>
-<li>TODO: <a href="TODO"><strong>“Boot NuttX on PinePhone”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/riscv#boot-nuttx-on-64-bit-risc-v-qemu"><strong>“Boot NuttX on 64-bit RISC-V QEMU”</strong></a></li>
 </ul>
 <p>But if we’re keen to <strong>build NuttX ourselves</strong>, here are the steps…</p>
 <ol>
@@ -513,7 +514,7 @@ csrw  mtvec, t0
 </li>
 <li>
 <p>Download the RISC-V Toolchain for <strong>riscv64-unknown-elf</strong>…</p>
-<p><a href="https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads"><strong>“Download Toolchain for 64-bit RISC-V”</strong></a></p>
+<p><a href="https://lupyuen.github.io/articles/riscv#appendix-download-toolchain-for-64-bit-risc-v"><strong>“Download Toolchain for 64-bit RISC-V”</strong></a></p>
 </li>
 <li>
 <p>Download and configure NuttX…</p>
@@ -554,13 +555,14 @@ riscv64-unknown-elf-objdump \
 <p><a href="https://gist.github.com/lupyuen/9d9b89dfd91b27f93459828178b83b77">(See the Build Log)</a></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/releases/tag/nuttx-riscv64">(See the Build Outputs)</a></p>
 </li>
-<li>
-<p>This produces the NuttX Image <strong>nuttx</strong> that we may boot on QEMU RISC-V Emulator…</p>
-<p>TODO: Boot NuttX</p>
-</li>
 </ol>
+<p>This produces the NuttX Image <strong>nuttx</strong> that we may boot on QEMU RISC-V Emulator…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/riscv#boot-nuttx-on-64-bit-risc-v-qemu"><strong>“Boot NuttX on 64-bit RISC-V QEMU”</strong></a></li>
+</ul>
+<p>Let’s look at the GCC Command that compiles NuttX for 64-bit RISC-V QEMU…</p>
 <h1 id="appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu">8 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V QEMU</a></h1>
-<p>TODO</p>
+<p>From the previous section, we see that the NuttX Build compiles the source files with these <strong>GCC Options</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>riscv64-unknown-elf-gcc \
   -c \
   -fno-common \
@@ -584,18 +586,29 @@ riscv64-unknown-elf-objdump \
   -pipe \
   -I nuttx/arch/risc-v/src/chip \
   -I nuttx/arch/risc-v/src/common \
-  -I nuttx/sched    chip/qemu_rv_start.c \
+  -I nuttx/sched \
+  chip/qemu_rv_start.c \
   -o  qemu_rv_start.o
-
-rv64imac: no floating-point
-
-lp64: Long pointers are 64-bit, no floating-point arguments will be passed in registers.
-https://gcc.gnu.org/onlinedocs/gcc-9.1.0/gcc/RISC-V-Options.html
-
--mcmodel=medany
-Generate code for the medium-any code model. The program and its statically defined symbols must be within any single 2 GiB address range. Programs can be statically or dynamically linked.
-Sounds like a burger (or fast-food AI model?)
-</code></pre></div><h1 id="appendix-download-toolchain-for-64-bit-risc-v"><a href="#appendix-download-toolchain-for-64-bit-risc-v">9 Appendix: Download Toolchain for 64-bit RISC-V</a></h1>
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/9d9b89dfd91b27f93459828178b83b77">(See the Build Log)</a></p>
+<p>The <strong>RISC-V Options</strong> are…</p>
+<ul>
+<li>
+<p><strong>march=rv64imac</strong>: This generates Integer-only RISC-V code, no Floating-Point.</p>
+<p>Which is surprising because RISC-V QEMU actually <a href="https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v"><strong>supports Floating-Point</strong></a>.</p>
+<p>We need to fix this as we port NuttX to the <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> RISC-V SoC and <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> SBC.</p>
+</li>
+<li>
+<p><strong>mabi=lp64</strong>: Long pointers are 64-bit, no Floating-Point arguments will be passed in registers.</p>
+<p>We might need fix this for JH7110 SoC and Star64 SBC.</p>
+<p><a href="https://gcc.gnu.org/onlinedocs/gcc-9.1.0/gcc/RISC-V-Options.html">(More about this)</a></p>
+</li>
+<li>
+<p><strong>mcmodel=medany</strong>: Sounds like a burger (or fast-food AI model) but it actually generates code for the Medium-Any Code Model. (Instead of Medium-Low)</p>
+<p><a href="https://gcc.gnu.org/onlinedocs/gcc-9.1.0/gcc/RISC-V-Options.html">(More about this)</a></p>
+</li>
+</ul>
+<h1 id="appendix-download-toolchain-for-64-bit-risc-v"><a href="#appendix-download-toolchain-for-64-bit-risc-v">9 Appendix: Download Toolchain for 64-bit RISC-V</a></h1>
 <p>Follow these steps to download the <strong>64-bit RISC-V Toolchain</strong> for building Apache NuttX RTOS on Linux, macOS or Windows…</p>
 <ol>
 <li>
