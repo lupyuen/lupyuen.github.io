@@ -254,7 +254,7 @@ __start:
 <p>(Why? What if NuttX is started by the U-Boot Bootloader?)</p>
 </li>
 </ul>
-<p>TODO</p>
+<p>Let’s dive into the NuttX Boot Code…</p>
 <p><img src="https://lupyuen.github.io/images/riscv-code.png" alt="RISC-V Boot Code for Apache NuttX RTOS" /></p>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S"><em>RISC-V Boot Code for Apache NuttX RTOS</em></a></p>
 <h1 id="risc-v-boot-code-in-nuttx"><a href="#risc-v-boot-code-in-nuttx">4 RISC-V Boot Code in NuttX</a></h1>
@@ -443,6 +443,8 @@ csrw  mtvec, t0
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L47-L50"><strong>“<code>1f</code>”</strong></a> refers to the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L53-L56"><strong>Local Label “<code>1</code>”</strong></a> with a <a href="https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#labels"><strong>Forward Reference</strong></a>.</p>
 <p>(Instead of a <a href="https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#labels"><strong>Backward Reference</strong></a>)</p>
 <p>Let’s jump to <strong>qemu_rv_start</strong>…</p>
+<p><img src="https://lupyuen.github.io/images/riscv-start.png" alt="RISC-V Start Code for Apache NuttX RTOS" /></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151"><em>RISC-V Start Code for Apache NuttX RTOS</em></a></p>
 <h1 id="jump-to-start"><a href="#jump-to-start">5 Jump to Start</a></h1>
 <p><em>Our Boot Code jumps to qemu_rv_start…</em></p>
 <p><em>What happens next?</em></p>
@@ -459,6 +461,7 @@ csrw  mtvec, t0
 </li>
 <li>
 <p>Initialise the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L129-L135"><strong>Memory Management Unit</strong></a></p>
+<p>(For Kernel Mode only)</p>
 </li>
 <li>
 <p>Call <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L135-L139"><strong>nx_start</strong></a></p>
