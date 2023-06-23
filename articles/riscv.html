@@ -615,13 +615,13 @@ riscv64-unknown-elf-objdump \
 <p>The <strong>RISC-V Options</strong> are…</p>
 <ul>
 <li>
-<p><strong>march=rv64imac</strong>: This generates Integer-only RISC-V code, no Floating-Point.</p>
+<p><strong>march=rv64imac</strong>: This generates Integer-Only 64-bit RISC-V code, no Floating-Point.</p>
 <p>Which is surprising because RISC-V QEMU actually <a href="https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v"><strong>supports Floating-Point</strong></a>.</p>
-<p>We need to fix this as we port NuttX to the <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> RISC-V SoC and <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> SBC.</p>
+<p>We will fix this as we port NuttX to the <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> RISC-V SoC and <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> SBC.</p>
 </li>
 <li>
-<p><strong>mabi=lp64</strong>: Long pointers are 64-bit, no Floating-Point arguments will be passed in registers.</p>
-<p>We might need fix this for JH7110 SoC and Star64 SBC.</p>
+<p><strong>mabi=lp64</strong>: This Application Binary Interface says that Long Pointers are 64-bit. No Floating-Point Arguments will be passed in Registers.</p>
+<p>We might fix this for JH7110 SoC and Star64 SBC.</p>
 <p><a href="https://gcc.gnu.org/onlinedocs/gcc-9.1.0/gcc/RISC-V-Options.html">(More about this)</a></p>
 </li>
 <li>
@@ -653,7 +653,7 @@ riscv64-unknown-elf-objdump \
 <p>Extract the Downloaded Toolchain</p>
 </li>
 <li>
-<p>Add the extracted toolchain to the <strong><code>PATH</code></strong> Environment Variable…</p>
+<p>Add the Extracted Toolchain to the <strong><code>PATH</code></strong> Environment Variable…</p>
 <div class="example-wrap"><pre class="language-text"><code>riscv64-unknown-elf-toolchain-.../bin
 </code></pre></div></li>
 <li>
