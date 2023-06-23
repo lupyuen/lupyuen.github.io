@@ -147,7 +147,24 @@ The above command starts the [__QEMU Emulator for RISC-V__](https://www.qemu.org
 
 - Enable [__Semihosting Debugging__](https://www.qemu.org/docs/master/about/emulation.html#semihosting) without BIOS
 
-TODO
+_Which RISC-V Instructions are supported by QEMU?_
+
+QEMU's RISC-V [__Generic Virtual Platform (virt)__](https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices) supports __RV64GC__, which is equivalent to [__RV64IMAFDCZicsr_Zifencei__](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions) (phew)...
+
+| | |
+|:-:|:-|
+| __RV64I__ | 64-bit Base Integer Instruction Set
+| __M__ | Integer Multiplication and Division
+| __A__ | Atomic Instructions
+| __F__ | Single-Precision Floating-Point
+| __D__ | Double-Precision Floating-Point
+| __C__ | Compressed Instructions
+| __Zicsr__ | Control and Status Register (CSR) Instructions
+| __Zifencei__ | Instruction-Fetch Fence
+
+[(Source)](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions)
+
+We'll meet these instructions shortly.
 
 # QEMU Starts NuttX
 
@@ -467,11 +484,15 @@ Which will start the NuttX Shell.
 
 And that's how NuttX RTOS boots on QEMU Emulator for RISC-V!
 
+_Why are we doing all this?_
+
 TODO
 
 # What's Next
 
 TODO
+
+(We welcome __your contribution__ to Apache NuttX RTOS!)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
