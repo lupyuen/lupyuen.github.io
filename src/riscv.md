@@ -112,9 +112,9 @@ We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
 
 TODO
 
-![Apache NuttX RTOS on 64-bit QEMU RISC-V Emulator](https://lupyuen.github.io/images/riscv-title.png)
+![Apache NuttX RTOS on RISC-V QEMU](https://lupyuen.github.io/images/riscv-title.png)
 
-[_Apache NuttX RTOS on 64-bit QEMU RISC-V Emulator_](https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8)
+[_Apache NuttX RTOS on RISC-V QEMU_](https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8)
 
 # QEMU Emulator for RISC-V
 
@@ -464,6 +464,8 @@ _What happens in nx_start?_
 - [__"After Primary Routine (nx_start)"__](https://lupyuen.github.io/articles/unicorn2#after-primary-routine)
 
 Which will start the NuttX Shell.
+
+And that's how NuttX RTOS boots on QEMU Emulator for RISC-V!
 
 TODO
 
