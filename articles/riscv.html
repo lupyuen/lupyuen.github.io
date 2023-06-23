@@ -380,7 +380,7 @@ csrw  mtvec, t0
 <p>Let’s skim through the rest…</p>
 <ul>
 <li>
-<p><a href="https://five-embeddev.com/quickref/instructions.html#-c--control-transfer-instructions"><strong><code>bnez</code></strong></a> jumps to <strong>Label <code>1f</code></strong> if <strong>Register a0</strong> is Non-Zero</p>
+<p><a href="https://five-embeddev.com/quickref/instructions.html#-c--control-transfer-instructions"><strong><code>bnez</code></strong></a> branches to <strong>Label <code>1f</code></strong> if <strong>Register a0</strong> is Non-Zero</p>
 <div class="example-wrap"><pre class="language-text"><code>bnez  a0, 1f
 </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L47-L50">(Source)</a></p>
