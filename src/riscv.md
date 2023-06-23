@@ -653,7 +653,7 @@ The __RISC-V Options__ are...
 
   Which is surprising because RISC-V QEMU actually [__supports Floating-Point__](https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v).
 
-  We will fix this as we port NuttX to the [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) RISC-V SoC and [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) SBC.
+  We'll fix this as we port NuttX to the [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) RISC-V SoC and [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) SBC.
 
 - __mabi=lp64__: This Application Binary Interface says that Long Pointers are 64-bit. No Floating-Point Arguments will be passed in Registers.
 
