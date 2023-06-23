@@ -469,7 +469,9 @@ _Our Boot Code jumps to qemu_rv_start..._
 
 _What happens next?_
 
-[__qemu_rv_start__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151) is the very first C Function that NuttX runs when it boots. It will...
+[__qemu_rv_start__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151) is the very first C Function that NuttX runs when it boots on QEMU.
+
+The function will...
 
 1.  Configure the [__Floating-Point Unit__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L105-L108)
 
