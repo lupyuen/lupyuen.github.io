@@ -433,11 +433,11 @@ Let's skim through the rest...
 
 _Why are the RISC-V Labels named "1f", "2f", "3f"?_
 
-__"`1f`"__ refers to the [__Local Label "`1`"__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L53-L56) with a [__Forward Reference__](https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#labels).
+[__"`1f`"__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L47-L50) refers to the [__Local Label "`1`"__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L53-L56) with a [__Forward Reference__](https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#labels).
 
 (Instead of a [__Backward Reference__](https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#labels))
 
-TODO
+Let's jump to __qemu_rv_start__...
 
 # Jump to Start
 
@@ -445,13 +445,23 @@ _Our Boot Code jumps to qemu_rv_start..._
 
 _What happens next?_
 
-TODO
+[__qemu_rv_start__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151) is the very first C Function that NuttX runs when it boots. It will...
 
-```text
-qemu_rv_start
-https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151
-Calls nx_start
-```
+1.  Configure the [__Floating-Point Unit__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L105-L108)
+
+1.  Clear the [__BSS Memory__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L113-L117)
+
+1.  Initialise the [__Serial Port__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L119-L123)
+
+1.  Initialise the [__Memory Management Unit__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L129-L135)
+
+1.  Call [__nx_start__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L135-L139)
+
+_What happens in nx_start?_
+
+[__nx_start__](https://github.com/apache/nuttx/blob/master/sched/init/nx_start.c#L297-L707) will probably
+
+TODO
 
 # What's Next
 
