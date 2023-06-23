@@ -202,7 +202,7 @@ This says...
 
   (Why? What if NuttX is started by the U-Boot Bootloader?)
 
-Now we dive into the NuttX Boot Code...
+Now we head into the NuttX Boot Code...
 
 ![RISC-V Boot Code for Apache NuttX RTOS](https://lupyuen.github.io/images/riscv-code.png)
 
@@ -210,9 +210,9 @@ Now we dive into the NuttX Boot Code...
 
 # RISC-V Boot Code in NuttX
 
-_What's inside the NuttX Boot Code for RISC-V?_
+_What's inside the NuttX Boot Code?_
 
-The RISC-V Assembly code in [__qemu_rv_head.S__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L41-L120) will do the following...
+The RISC-V Assembly code in [__qemu_rv_head.S__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L41-L120) will...
 
 1.  Get the [__CPU ID__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L41-L47)
 
