@@ -247,22 +247,22 @@ __start:
 <p>TODO</p>
 <ol>
 <li>
-<p>Get the <strong>CPU ID</strong></p>
+<p>Get the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L41-L47"><strong>CPU ID</strong></a></p>
 </li>
 <li>
-<p>Set the <strong>Stack Pointer</strong></p>
+<p>Check the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L54-L68"><strong>Number of CPUs</strong></a></p>
 </li>
 <li>
-<p>Check the <strong>Number of CPUs</strong></p>
+<p>Set the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L68-L98"><strong>Stack Pointer</strong></a></p>
 </li>
 <li>
-<p>Disable <strong>Interrupts</strong></p>
+<p>Disable <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L96-L102"><strong>Interrupts</strong></a></p>
 </li>
 <li>
-<p>Load the <strong>Interrupt Vector</strong></p>
+<p>Load the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L102-L105"><strong>Interrupt Vector</strong></a></p>
 </li>
 <li>
-<p>Jump to <strong>qemu_rv_start</strong></p>
+<p>Jump to <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L105-L109"><strong>qemu_rv_start</strong></a></p>
 </li>
 </ol>
 <p>Let’s decipher the RISC-V Instructions in our Boot Code…</p>
@@ -322,7 +322,7 @@ wfi
 <p>Which will never happen because we disabled interrupts!</p>
 <p>Thus the above code will get stuck there, <strong>waiting forever</strong>. (Intentionally)</p>
 <h2 id="load-interrupt-vector"><a href="#load-interrupt-vector">4.4 Load Interrupt Vector</a></h2>
-<p>RISC-V handles interrupts by looking up an <a href="https://five-embeddev.com/quickref/interrupts.html"><strong>Interrupt Vector Table</strong></a>.</p>
+<p>RISC-V handles interrupts by looking up the <a href="https://five-embeddev.com/quickref/interrupts.html"><strong>Interrupt Vector Table</strong></a>.</p>
 <p>This is how we load the <strong>Address of the Vector Table</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L102-L105">qemu_rv_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* Load address of Interrupt Vector Table */
 la    t0, __trap_vec
@@ -367,45 +367,60 @@ csrw  mtvec, t0
 <li>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-c--control-transfer-instructions"><strong><code>bnez</code></strong></a> jumps to <strong>Label <code>1f</code></strong> if <strong>Register a0</strong> is Non-Zero</p>
 <div class="example-wrap"><pre class="language-text"><code>bnez  a0, 1f
-</code></pre></div></li>
+</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L47-L50">(Source)</a></p>
+</li>
 <li>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-c--control-transfer-instructions"><strong><code>j</code></strong></a> jumps to <strong>Label <code>2f</code></strong></p>
 <p>(We’ll explain Labels in a while)</p>
 <div class="example-wrap"><pre class="language-text"><code>j  2f
-</code></pre></div></li>
+</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L52-L54">(Source)</a></p>
+</li>
 <li>
 <p><a href="https://itnext.io/risc-v-instruction-set-cheatsheet-70961b4bbe8#:~:text=You%20can%20see%20some%20instructions,of%20different%20RISC%2DV%20instructions."><strong><code>li</code></strong></a> loads the <strong>Value 1</strong> into <strong>Register t1</strong></p>
 <p><a href="https://itnext.io/risc-v-instruction-set-cheatsheet-70961b4bbe8#:~:text=You%20can%20see%20some%20instructions,of%20different%20RISC%2DV%20instructions.">(<strong><code>li</code></strong> is a Pseudo-Instruction that expands to <strong><code>addi</code></strong>)</a></p>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions">(<strong><code>addi</code></strong> adds an Immediate Value to a Register)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>li  t1, 1
-</code></pre></div></li>
+</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L59-L62">(Source)</a></p>
+</li>
 <li>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--conditional-branches"><strong><code>blt</code></strong></a> branches to <strong>Label <code>3f</code></strong> if <strong>Register a0</strong> is less than <strong>Register t1</strong></p>
 <p>(And grabs a sandwich)</p>
 <div class="example-wrap"><pre class="language-text"><code>blt  a0, t1, 3f
-</code></pre></div></li>
+</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L62-L65">(Source)</a></p>
+</li>
 <li>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-computational-instructions"><strong><code>add</code></strong></a> sets <strong>Register t0</strong> to the value of <strong>Register t0</strong> + <strong>Register t1</strong></p>
 <p><a href="https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc#3-register-usage-and-symbolic-names">(<strong>t1</strong> is aliased to <strong>Register x15</strong>)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>add  t0, t0, t1
-</code></pre></div></li>
+</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L80-L82">(Source)</a></p>
+</li>
 <li>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_internal.h#L55-L63"><strong><code>REGLOAD</code></strong></a> is an Assembly Macro that expands to <strong><code>ld</code></strong></p>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv64--load-and-store-instructions"><strong><code>ld</code></strong></a> loads <strong>Register t0</strong> to the <strong>Stack Pointer Register</strong></p>
 <p><a href="https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc#3-register-usage-and-symbolic-names">(Which is aliased to <strong>Register x2</strong>)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>REGLOAD  sp, 0(t0)
-</code></pre></div></li>
+</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L82-L86">(Source)</a></p>
+</li>
 <li>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--programmers-model-for-base-integer-isa"><strong><code>jal</code></strong></a> (Jump And Link) will jump to the address <strong>qemu_rv_start</strong> and store the Return Address in <strong>Register x1</strong></p>
 <p>(Works like a Function Call)</p>
 <div class="example-wrap"><pre class="language-text"><code>jal  x1, qemu_rv_start
-</code></pre></div></li>
+</code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L105-L109">(Source)</a></p>
+</li>
 <li>
 <p><a href="https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#-a-listing-of-standard-risc-v-pseudoinstructions"><strong><code>ret</code></strong></a> returns from a Function Call.</p>
 <p><a href="https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#-a-listing-of-standard-risc-v-pseudoinstructions">(<strong><code>ret</code></strong> is a Pseudo-Instruction that expands to <strong><code>jalr</code></strong>)</a></p>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--unconditional-jumps">(<strong><code>jalr</code></strong> “Jump And Link Register” will jump to the Return Address stored in <strong>Register x1</strong>)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>ret
 </code></pre></div>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L117-L120">(Source)</a></p>
 <p><a href="https://five-embeddev.com/quickref/instructions.html">(See the list of all <strong>RISC-V Instructions</strong>)</a></p>
 <p><a href="https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#-a-listing-of-standard-risc-v-pseudoinstructions">(And <strong>RISC-V Pseudo-Instructions</strong>)</a></p>
 </li>
