@@ -513,7 +513,7 @@ I hope this article has been an educational exploration of Apache NuttX RTOS on 
 
 -   And hopefully we learnt a little __RISC-V Assembly__!
 
-NuttX is a tiny operating system, perfect for experimenting with RISC-V gadgets. We'll do this and much more in the upcoming articles!
+We've seen that NuttX is a tiny operating system, perfect for experimenting with RISC-V gadgets. We'll do this and much more in the upcoming articles!
 
 [(We welcome __your contribution__ to Apache NuttX RTOS)](https://lupyuen.github.io/articles/pr)
 
