@@ -196,17 +196,17 @@ TODO
 
 TODO
 
-1.  Get the __CPU ID__
+1.  Get the [__CPU ID__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L41-L47)
 
-1.  Set the __Stack Pointer__
+1.  Check the [__Number of CPUs__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L54-L68)
 
-1.  Check the __Number of CPUs__
+1.  Set the [__Stack Pointer__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L68-L98)
 
-1.  Disable __Interrupts__
+1.  Disable [__Interrupts__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L96-L102)
 
-1.  Load the __Interrupt Vector__
+1.  Load the [__Interrupt Vector__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L102-L105)
 
-1.  Jump to __qemu_rv_start__
+1.  Jump to [__qemu_rv_start__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L105-L109)
 
 Let's decipher the RISC-V Instructions in our Boot Code...
 
@@ -286,7 +286,7 @@ Thus the above code will get stuck there, __waiting forever__. (Intentionally)
 
 ## Load Interrupt Vector
 
-RISC-V handles interrupts by looking up an [__Interrupt Vector Table__](https://five-embeddev.com/quickref/interrupts.html).
+RISC-V handles interrupts by looking up the [__Interrupt Vector Table__](https://five-embeddev.com/quickref/interrupts.html).
 
 This is how we load the __Address of the Vector Table__: [qemu_rv_head.S](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L102-L105)
 
@@ -349,6 +349,8 @@ Let's skim through the rest...
   bnez  a0, 1f
   ```
 
+  [(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L47-L50)
+
 - [__`j`__](https://five-embeddev.com/quickref/instructions.html#-c--control-transfer-instructions) jumps to __Label `2f`__
 
   (We'll explain Labels in a while)
@@ -356,6 +358,8 @@ Let's skim through the rest...
   ```text
   j  2f
   ```
+
+  [(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L52-L54)
 
 - [__`li`__](https://itnext.io/risc-v-instruction-set-cheatsheet-70961b4bbe8#:~:text=You%20can%20see%20some%20instructions,of%20different%20RISC%2DV%20instructions.) loads the __Value 1__ into __Register t1__
 
@@ -367,6 +371,8 @@ Let's skim through the rest...
   li  t1, 1
   ```
 
+  [(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L59-L62)
+
 - [__`blt`__](https://five-embeddev.com/quickref/instructions.html#-rv32--conditional-branches) branches to __Label `3f`__ if __Register a0__ is less than __Register t1__
 
   (And grabs a sandwich)
@@ -375,6 +381,8 @@ Let's skim through the rest...
   blt  a0, t1, 3f
   ```
 
+  [(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L62-L65)
+
 - [__`add`__](https://five-embeddev.com/quickref/instructions.html#-rv32--integer-computational-instructions) sets __Register t0__ to the value of __Register t0__ + __Register t1__
 
   [(__t1__ is aliased to __Register x15__)](https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc#3-register-usage-and-symbolic-names)
@@ -382,6 +390,8 @@ Let's skim through the rest...
   ```text
   add  t0, t0, t1
   ```
+
+  [(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L80-L82)
 
 - [__`REGLOAD`__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_internal.h#L55-L63) is an Assembly Macro that expands to __`ld`__
 
@@ -393,6 +403,8 @@ Let's skim through the rest...
   REGLOAD  sp, 0(t0)
   ```
 
+  [(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L82-L86)
+
 - [__`jal`__](https://five-embeddev.com/quickref/instructions.html#-rv32--programmers-model-for-base-integer-isa) (Jump And Link) will jump to the address __qemu_rv_start__ and store the Return Address in __Register x1__
 
   (Works like a Function Call)
@@ -400,6 +412,8 @@ Let's skim through the rest...
   ```text
   jal  x1, qemu_rv_start
   ```
+
+  [(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L105-L109)
 
 - [__`ret`__](https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#-a-listing-of-standard-risc-v-pseudoinstructions) returns from a Function Call.
 
@@ -410,6 +424,8 @@ Let's skim through the rest...
   ```text
   ret
   ```
+
+  [(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L117-L120)
 
   [(See the list of all __RISC-V Instructions__)](https://five-embeddev.com/quickref/instructions.html)
 
