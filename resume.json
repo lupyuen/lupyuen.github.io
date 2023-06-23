@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "64-bit RISC-V with Apache NuttX Real-Time Operating System",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-06-25",
+      "website": "https://lupyuen.github.io/articles/riscv",
+      "summary": "Let's boot Apache NuttX Real-Time Operating System on a 64-bit RISC-V Device (QEMU Emulator) and explore the Boot Code inside NuttX"
+    },
+    {
       "name": "NuttX RTOS for PinePhone: The First Year",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-06-21",

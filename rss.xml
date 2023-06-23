@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>64-bit RISC-V with Apache NuttX Real-Time Operating System</title>
+            <link>https://lupyuen.github.io/articles/riscv</link>
+            <description><![CDATA[Let's boot Apache NuttX Real-Time Operating System on a 64-bit RISC-V Device (QEMU Emulator) and explore the Boot Code inside NuttX]]></description>
+            <guid>https://lupyuen.github.io/articles/riscv</guid>
+            <pubDate>Sun, 25 Jun 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>NuttX RTOS for PinePhone: The First Year</title>
             <link>https://lupyuen.github.io/articles/pinephone2</link>
             <description><![CDATA[2023 has been an awesome year for Apache NuttX RTOS on Pine64 PinePhone! Let's review the features that we've implemented... And what we'll do next]]></description>

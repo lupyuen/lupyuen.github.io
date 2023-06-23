@@ -1,6 +1,6 @@
 # 64-bit RISC-V with Apache NuttX Real-Time Operating System
 
-📝 _1 Jul 2023_
+📝 _25 Jun 2023_
 
 ![Apache NuttX RTOS on 64-bit QEMU RISC-V Emulator](https://lupyuen.github.io/images/riscv-title.png)
 
