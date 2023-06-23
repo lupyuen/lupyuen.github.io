@@ -74,7 +74,7 @@
 <li><a href="#get-cpu-id">4.1 Get CPU ID</a><ul></ul></li>
 <li><a href="#disable-interrupts">4.2 Disable Interrupts</a><ul></ul></li>
 <li><a href="#wait-for-interrupt">4.3 Wait for Interrupt</a><ul></ul></li>
-<li><a href="#load-vector-base-address">4.4 Load Vector Base Address</a><ul></ul></li>
+<li><a href="#load-interrupt-vector">4.4 Load Interrupt Vector</a><ul></ul></li>
 <li><a href="#32-bit-vs-64-bit-risc-v">4.5 32-bit vs 64-bit RISC-V</a><ul></ul></li>
 <li><a href="#other-instructions">4.6 Other Instructions</a><ul></ul></li></ul></li>
 <li><a href="#jump-to-start">5 Jump to Start</a><ul></ul></li>
@@ -204,7 +204,7 @@ nsh&gt;
 </li>
 <li>
 <p>Handle Interrupts with <a href="https://patchwork.kernel.org/project/qemu-devel/cover/20210724122407.2486558-1-anup.patel@wdc.com/"><strong>Advanced Core Local Interruptor (ACLINT)</strong></a></p>
-<p>(Instead of the older SiFive CLINT)</p>
+<p><a href="https://five-embeddev.com/baremetal/interrupts/#the-machine-mode-interrupts">(Instead of the older SiFive Core Local Interruptor CLINT)</a></p>
 </li>
 <li>
 <p>Enable <a href="https://www.qemu.org/docs/master/about/emulation.html#semihosting"><strong>Semihosting Debugging</strong></a> without BIOS</p>
@@ -259,7 +259,7 @@ __start:
 <p>Disable <strong>Interrupts</strong></p>
 </li>
 <li>
-<p>Load the <strong>Vector Base Address</strong></p>
+<p>Load the <strong>Interrupt Vector</strong></p>
 </li>
 <li>
 <p>Jump to <strong>qemu_rv_start</strong></p>
@@ -314,43 +314,56 @@ csrw  mie, zero
 <h2 id="wait-for-interrupt"><a href="#wait-for-interrupt">4.3 Wait for Interrupt</a></h2>
 <p>Now check out this curious combination of instructions: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L62-L68">qemu_rv_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* Wait forever */
-csrw mie, zero
+csrw  mie, zero
 wfi
 </code></pre></div>
 <p>From the previous section, we know that “<strong>csrw mie, zero</strong>” will disable interrupts.</p>
 <p>But <strong>wfi</strong> will <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#wfi"><strong>Wait for Interrupt</strong></a>…</p>
 <p>Which will never happen because we disabled interrupts!</p>
 <p>Thus the above code will get stuck there, <strong>waiting forever</strong>. (Intentionally)</p>
-<h2 id="load-vector-base-address"><a href="#load-vector-base-address">4.4 Load Vector Base Address</a></h2>
-<p>TODO</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_vectors.S">trap_vec</a></p>
-<div class="example-wrap"><pre class="language-text"><code>  la   t0, __trap_vec
-  csrw mtvec, t0
-
-csrw: Write Control and Status Register
-https://five-embeddev.com/riscv-isa-manual/latest/csr.html
-
-mtvec: Machine Trap-Vector Base-Address Register
-The mtvec register is an MXLEN-bit WARL read/write register that holds trap vector configuration, consisting of a vector base address (BASE) and a vector mode (MODE).
-https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec
-</code></pre></div><h2 id="32-bit-vs-64-bit-risc-v"><a href="#32-bit-vs-64-bit-risc-v">4.5 32-bit vs 64-bit RISC-V</a></h2>
-<p>TODO</p>
+<h2 id="load-interrupt-vector"><a href="#load-interrupt-vector">4.4 Load Interrupt Vector</a></h2>
+<p>RISC-V handles interrupts by looking up an <a href="https://five-embeddev.com/quickref/interrupts.html"><strong>Interrupt Vector Table</strong></a>.</p>
+<p>This is how we load the <strong>Address of the Vector Table</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L102-L105">qemu_rv_head.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>/* Load address of Interrupt Vector Table */
+la    t0, __trap_vec
+csrw  mtvec, t0
+</code></pre></div>
+<ul>
+<li>
+<p><a href="https://michaeljclark.github.io/asm.html#:~:text=The%20la%20(load%20address)%20instruction,command%20line%20options%20or%20an%20."><strong>la</strong></a> loads the Address of the Vector Table into <strong>Register t0</strong></p>
+<p><a href="https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc">(Which is aliased to <strong>Register x5</strong>)</a></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_vectors.S">(<strong>trap_vec</strong> is defined here)</a></p>
+</li>
+<li>
+<p><strong>csrw</strong> writes <strong>t0</strong> into the <a href="https://five-embeddev.com/riscv-isa-manual/latest/csr.html"><strong>Control and Status Register</strong></a>…</p>
+</li>
+<li>
+<p>At <strong>mtvec</strong>, the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"><strong>Machine Trap-Vector Base-Address Register</strong></a></p>
+</li>
+</ul>
+<p>Which loads the address of our Interrupt Vector Table.</p>
+<p><a href="https://michaeljclark.github.io/asm.html#:~:text=The%20la%20(load%20address)%20instruction,command%20line%20options%20or%20an%20.">(<strong>la</strong> is actually a Pseudo-Instruction that expands to <strong>auipc</strong> and <strong>addi</strong>)</a></p>
+<p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions">(<strong>auipc</strong> loads an Address Offset from the Program Counter)</a></p>
+<p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions">(<strong>addi</strong> adds an Immediate Value to a Register)</a></p>
+<h2 id="32-bit-vs-64-bit-risc-v"><a href="#32-bit-vs-64-bit-risc-v">4.5 32-bit vs 64-bit RISC-V</a></h2>
+<p>Adapting 32-bit code for 64-bit sounds hard… But it’s easy peasy for RISC-V!</p>
+<p>Our Boot Code uses an Assembler Macro to figure out if we’re running <strong>32-bit or 64-bit</strong> RISC-V: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L73-L82">qemu_rv_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>#ifdef CONFIG_ARCH_RV32
+  /* Do this for 32-bit RISC-V */
   slli t1, a0, 2
+
 #else
+  /* Do this for 64-bit RISC-V */
   slli t1, a0, 3
 #endif
-
-works with 32-bit and 64-bit modes!
-sounds like &quot;silly&quot;
-but it&#39;s Logical Shift Left
-https://five-embeddev.com/riscv-isa-manual/latest/rv64.html#integer-computational-instructions
-</code></pre></div><h2 id="other-instructions"><a href="#other-instructions">4.6 Other Instructions</a></h2>
+</code></pre></div>
+<p>Which means that the exact same Boot Code will run on <strong>32-bit AND 64-bit RISC-V</strong>!</p>
+<p>(<strong>slli</strong> sounds “silly”, but it’s <a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions"><strong>Logical Shift Left</strong></a>)</p>
+<h2 id="other-instructions"><a href="#other-instructions">4.6 Other Instructions</a></h2>
 <p><em>What about the other RISC-V Instructions in our Boot Code?</em></p>
 <p>Let’s skim through the rest…</p>
 <p>TODO</p>
 <div class="example-wrap"><pre class="language-text"><code>  bnez a0, 1f
-  la   sp, QEMU_RV_IDLESTACK_TOP
   j    2f
   li   t1, 1
   blt  a0, t1, 3f
