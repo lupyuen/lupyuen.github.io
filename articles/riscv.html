@@ -4,18 +4,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <title>64-bit RISC-V with Apache NuttX RTOS</title>
+    <title>64-bit RISC-V with Apache NuttX Real-Time Operating System</title>
 
     
     <!-- Begin scripts/articles/*-header.html: Article Header for Custom Markdown files processed by rustdoc, like chip8.md -->
 <meta property="og:title" 
-    content="64-bit RISC-V with Apache NuttX RTOS" 
+    content="64-bit RISC-V with Apache NuttX Real-Time Operating System" 
     data-rh="true">
 <meta property="og:description" 
-    content="Let's boot Apache NuttX RTOS on a 64-bit RISC-V Device (QEMU Emulator) and explore the Boot Code inside NuttX"
+    content="Let's boot Apache NuttX Real-Time Operating System on a 64-bit RISC-V Device (QEMU Emulator) and explore the Boot Code inside NuttX"
     data-rh="true">
 <meta name="description" 
-    content="Let's boot Apache NuttX RTOS on a 64-bit RISC-V Device (QEMU Emulator) and explore the Boot Code inside NuttX">
+    content="Let's boot Apache NuttX Real-Time Operating System on a 64-bit RISC-V Device (QEMU Emulator) and explore the Boot Code inside NuttX">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/riscv-title.png">
 <meta property="og:type" 
@@ -65,7 +65,7 @@
     <!-- End scripts/rustdoc-before.html -->
     
 
-    <h1 class="title">64-bit RISC-V with Apache NuttX RTOS</h1>
+    <h1 class="title">64-bit RISC-V with Apache NuttX Real-Time Operating System</h1>
     <nav id="TOC"><ul>
 <li><a href="#boot-nuttx-on-64-bit-risc-v-qemu">1 Boot NuttX on 64-bit RISC-V QEMU</a><ul></ul></li>
 <li><a href="#qemu-emulator-for-risc-v">2 QEMU Emulator for RISC-V</a><ul></ul></li>
@@ -342,7 +342,7 @@ csrw  mtvec, t0
 </li>
 </ul>
 <p>Which loads the address of our Interrupt Vector Table.</p>
-<p><a href="https://michaeljclark.github.io/asm.html#:~:text=The%20la%20(load%20address)%20instruction,command%20line%20options%20or%20an%20.">(<strong><code>la</code></strong> is actually a Pseudo-Instruction that expands to <strong>auipc</strong> and <strong>addi</strong>)</a></p>
+<p><a href="https://michaeljclark.github.io/asm.html#:~:text=The%20la%20(load%20address)%20instruction,command%20line%20options%20or%20an%20.">(<strong><code>la</code></strong> is actually a Pseudo-Instruction that expands to <strong><code>auipc</code></strong> and <strong><code>addi</code></strong>)</a></p>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions">(<strong><code>auipc</code></strong> loads an Address Offset from the Program Counter)</a></p>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions">(<strong><code>addi</code></strong> adds an Immediate Value to a Register)</a></p>
 <h2 id="32-bit-vs-64-bit-risc-v"><a href="#32-bit-vs-64-bit-risc-v">4.5 32-bit vs 64-bit RISC-V</a></h2>
@@ -359,6 +359,7 @@ csrw  mtvec, t0
 </code></pre></div>
 <p>Which means that the exact same Boot Code will run on <strong>32-bit AND 64-bit RISC-V</strong>!</p>
 <p>(<strong><code>slli</code></strong> sounds “silly”, but it’s <a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions"><strong>Logical Shift Left</strong></a>)</p>
+<p>(<strong>CONFIG_ARCH_RV32</strong> is derived from our <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig"><strong>NuttX Build Configuration</strong></a>)</p>
 <h2 id="other-instructions"><a href="#other-instructions">4.6 Other Instructions</a></h2>
 <p><em>What about the other RISC-V Instructions in our Boot Code?</em></p>
 <p>Let’s skim through the rest…</p>
