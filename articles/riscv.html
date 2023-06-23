@@ -288,7 +288,7 @@ csrr  a0, mhartid
 <p>Let’s break it down…</p>
 <ul>
 <li>
-<p><strong><code>csrr</code></strong> is the RISC-V Instruction that reads the <a href="https://five-embeddev.com/riscv-isa-manual/latest/csr.html"><strong>Control and Status Register</strong></a></p>
+<p><strong><code>csrr</code></strong> is the RISC-V Instruction that reads the <a href="https://five-embeddev.com/quickref/instructions.html#-csr--csr-instructions"><strong>Control and Status Register</strong></a></p>
 <p>(Which contains the CPU ID)</p>
 </li>
 <li>
@@ -301,7 +301,7 @@ csrr  a0, mhartid
 <p>(Equivalent to CPU ID)</p>
 </li>
 </ul>
-<p>So the above line of code will load the CPU ID into Register <strong>x10</strong>.</p>
+<p>So the above code will load the CPU ID into Register <strong>x10</strong>.</p>
 <p>(We’ll call it <strong>a0</strong> for convenience)</p>
 <h2 id="disable-interrupts"><a href="#disable-interrupts">4.2 Disable Interrupts</a></h2>
 <p>To <strong>disable interrupts</strong> in RISC-V, we do this: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L98-L102">qemu_rv_head.S</a></p>
@@ -311,8 +311,8 @@ csrw  mie, zero
 <p>Which means…</p>
 <ul>
 <li>
-<p><strong><code>csrw</code></strong> will write to the <a href="https://five-embeddev.com/riscv-isa-manual/latest/csr.html"><strong>Control and Status Register</strong></a></p>
-<p>(Which controls interrupts and other things)</p>
+<p><strong><code>csrw</code></strong> will write to the <a href="https://five-embeddev.com/quickref/instructions.html#-csr--csr-instructions"><strong>Control and Status Register</strong></a></p>
+<p>(Which controls interrupts and other CPU settings)</p>
 </li>
 <li>
 <p><strong><code>mie</code></strong> says that we’ll write to the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-interrupt-registers-mip-and-mie"><strong>Machine Interrupt Enable Register</strong></a></p>
@@ -333,11 +333,12 @@ wfi
 </code></pre></div>
 <p>From the previous section, we know that “<strong>csrw mie, zero</strong>” will disable interrupts.</p>
 <p>But <strong><code>wfi</code></strong> will <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#wfi"><strong>Wait for Interrupt</strong></a>…</p>
-<p>Which will never happen because we disabled interrupts!</p>
+<p>Which will never happen because we <strong>disabled interrupts!</strong></p>
 <p>Thus the above code will get stuck there, <strong>waiting forever</strong>. (Intentionally)</p>
+<p><a href="https://developer.arm.com/documentation/ddi0596/2020-12/Base-Instructions/WFI--Wait-For-Interrupt-">(<strong><code>wfi</code></strong> is probably the only instruction common to <strong>RISC-V and Arm CPUs</strong>)</a></p>
 <h2 id="load-interrupt-vector"><a href="#load-interrupt-vector">4.4 Load Interrupt Vector</a></h2>
 <p>RISC-V handles interrupts by looking up the <a href="https://five-embeddev.com/quickref/interrupts.html"><strong>Interrupt Vector Table</strong></a>.</p>
-<p>This is how we load the <strong>Address of the Vector Table</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L102-L105">qemu_rv_head.S</a></p>
+<p>This is how we load the <strong>Address of the Vector Table</strong> into the CPU Settings: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L102-L105">qemu_rv_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* Load address of Interrupt Vector Table */
 la    t0, __trap_vec
 csrw  mtvec, t0
@@ -349,13 +350,13 @@ csrw  mtvec, t0
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_vectors.S">(<strong>trap_vec</strong> is defined here)</a></p>
 </li>
 <li>
-<p><strong><code>csrw</code></strong> writes <strong>t0</strong> into the <a href="https://five-embeddev.com/riscv-isa-manual/latest/csr.html"><strong>Control and Status Register</strong></a> at…</p>
+<p><strong><code>csrw</code></strong> writes <strong>t0</strong> into the <a href="https://five-embeddev.com/quickref/instructions.html#-csr--csr-instructions"><strong>Control and Status Register</strong></a> at…</p>
 </li>
 <li>
 <p><strong><code>mtvec</code></strong>, the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-trap-vector-base-address-register-mtvec"><strong>Machine Trap-Vector Base-Address Register</strong></a></p>
 </li>
 </ul>
-<p>Which loads the address of our Interrupt Vector Table.</p>
+<p>Which will load the Address of our Interrupt Vector Table into the CPU Settings.</p>
 <p><a href="https://michaeljclark.github.io/asm.html#:~:text=The%20la%20(load%20address)%20instruction,command%20line%20options%20or%20an%20.">(<strong><code>la</code></strong> is actually a Pseudo-Instruction that expands to <strong><code>auipc</code></strong> and <strong><code>addi</code></strong>)</a></p>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions">(<strong><code>auipc</code></strong> loads an Address Offset from the Program Counter)</a></p>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions">(<strong><code>addi</code></strong> adds an Immediate Value to a Register)</a></p>
@@ -392,8 +393,8 @@ csrw  mtvec, t0
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L52-L54">(Source)</a></p>
 </li>
 <li>
-<p><a href="https://itnext.io/risc-v-instruction-set-cheatsheet-70961b4bbe8#:~:text=You%20can%20see%20some%20instructions,of%20different%20RISC%2DV%20instructions."><strong><code>li</code></strong></a> loads the <strong>Value 1</strong> into <strong>Register t1</strong></p>
-<p><a href="https://itnext.io/risc-v-instruction-set-cheatsheet-70961b4bbe8#:~:text=You%20can%20see%20some%20instructions,of%20different%20RISC%2DV%20instructions.">(<strong><code>li</code></strong> is a Pseudo-Instruction that expands to <strong><code>addi</code></strong>)</a></p>
+<p><a href="https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#-a-listing-of-standard-risc-v-pseudoinstructions"><strong><code>li</code></strong></a> loads the <strong>Value 1</strong> into <strong>Register t1</strong></p>
+<p><a href="https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#-a-listing-of-standard-risc-v-pseudoinstructions">(<strong><code>li</code></strong> is a Pseudo-Instruction that expands to <strong><code>addi</code></strong>)</a></p>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions">(<strong><code>addi</code></strong> adds an Immediate Value to a Register)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>li  t1, 1
 </code></pre></div>
@@ -415,7 +416,7 @@ csrw  mtvec, t0
 </li>
 <li>
 <p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/common/riscv_internal.h#L55-L63"><strong><code>REGLOAD</code></strong></a> is an Assembly Macro that expands to <strong><code>ld</code></strong></p>
-<p><a href="https://five-embeddev.com/quickref/instructions.html#-rv64--load-and-store-instructions"><strong><code>ld</code></strong></a> loads <strong>Register t0</strong> to the <strong>Stack Pointer Register</strong></p>
+<p><a href="https://five-embeddev.com/quickref/instructions.html#-rv64--load-and-store-instructions"><strong><code>ld</code></strong></a> loads <strong>Register t0</strong> into the <strong>Stack Pointer Register</strong></p>
 <p><a href="https://github.com/riscv-non-isa/riscv-eabi-spec/blob/master/EABI.adoc#3-register-usage-and-symbolic-names">(Which is aliased to <strong>Register x2</strong>)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>REGLOAD  sp, 0(t0)
 </code></pre></div>
