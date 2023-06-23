@@ -363,7 +363,7 @@ _What about the other RISC-V Instructions in our Boot Code?_
 
 Let's skim through the rest...
 
-- [__`bnez`__](https://five-embeddev.com/quickref/instructions.html#-c--control-transfer-instructions) jumps to __Label `1f`__ if __Register a0__ is Non-Zero
+- [__`bnez`__](https://five-embeddev.com/quickref/instructions.html#-c--control-transfer-instructions) branches to __Label `1f`__ if __Register a0__ is Non-Zero
 
   ```text
   bnez  a0, 1f
