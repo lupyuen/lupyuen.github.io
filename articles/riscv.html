@@ -426,17 +426,34 @@ csrw  mtvec, t0
 </li>
 </ul>
 <p><em>Why are the RISC-V Labels named “1f”, “2f”, “3f”?</em></p>
-<p><strong>“<code>1f</code>”</strong> refers to the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L53-L56"><strong>Local Label “<code>1</code>”</strong></a> with a <a href="https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#labels"><strong>Forward Reference</strong></a>.</p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L47-L50"><strong>“<code>1f</code>”</strong></a> refers to the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L53-L56"><strong>Local Label “<code>1</code>”</strong></a> with a <a href="https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#labels"><strong>Forward Reference</strong></a>.</p>
 <p>(Instead of a <a href="https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#labels"><strong>Backward Reference</strong></a>)</p>
-<p>TODO</p>
+<p>Let’s jump to <strong>qemu_rv_start</strong>…</p>
 <h1 id="jump-to-start"><a href="#jump-to-start">5 Jump to Start</a></h1>
 <p><em>Our Boot Code jumps to qemu_rv_start…</em></p>
 <p><em>What happens next?</em></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151"><strong>qemu_rv_start</strong></a> is the very first C Function that NuttX runs when it boots. It will…</p>
+<ol>
+<li>
+<p>Configure the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L105-L108"><strong>Floating-Point Unit</strong></a></p>
+</li>
+<li>
+<p>Clear the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L113-L117"><strong>BSS Memory</strong></a></p>
+</li>
+<li>
+<p>Initialise the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L119-L123"><strong>Serial Port</strong></a></p>
+</li>
+<li>
+<p>Initialise the <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L129-L135"><strong>Memory Management Unit</strong></a></p>
+</li>
+<li>
+<p>Call <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L135-L139"><strong>nx_start</strong></a></p>
+</li>
+</ol>
+<p><em>What happens in nx_start?</em></p>
+<p><a href="https://github.com/apache/nuttx/blob/master/sched/init/nx_start.c#L297-L707"><strong>nx_start</strong></a> will probably</p>
 <p>TODO</p>
-<div class="example-wrap"><pre class="language-text"><code>qemu_rv_start
-https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L151
-Calls nx_start
-</code></pre></div><h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
