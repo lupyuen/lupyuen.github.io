@@ -79,9 +79,10 @@
 <li><a href="#other-instructions">4.6 Other Instructions</a><ul></ul></li></ul></li>
 <li><a href="#jump-to-start">5 Jump to Start</a><ul></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">7 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V QEMU</a><ul></ul></li>
-<li><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu">8 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V QEMU</a><ul></ul></li>
-<li><a href="#appendix-download-toolchain-for-64-bit-risc-v">9 Appendix: Download Toolchain for 64-bit RISC-V</a><ul></ul></li></ul></nav><p>📝 <em>25 Jun 2023</em></p>
+<li><a href="#notes">7 Notes</a><ul></ul></li>
+<li><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">8 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V QEMU</a><ul></ul></li>
+<li><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu">9 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V QEMU</a><ul></ul></li>
+<li><a href="#appendix-download-toolchain-for-64-bit-risc-v">10 Appendix: Download Toolchain for 64-bit RISC-V</a><ul></ul></li></ul></nav><p>📝 <em>25 Jun 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/riscv-title.png" alt="Apache NuttX RTOS on 64-bit QEMU RISC-V Emulator" /></p>
 <p><a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX</strong></a> is a <strong>Real-Time Operating System (RTOS)</strong> that runs on many kinds of devices, from 8-bit to 64-bit.</p>
 <p>(Think Linux, but a lot smaller and simpler)</p>
@@ -518,8 +519,15 @@ csrw  mtvec, t0
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/riscv.md"><strong>lupyuen.github.io/src/riscv.md</strong></a></p>
+<h1 id="notes"><a href="#notes">7 Notes</a></h1>
+<ol>
+<li>
+<p><strong>Hart IDs</strong> are not guaranteed to be contiguous. One is guaranteed to be 0, the rest will all be different, but not necessarily 0, 1, 2, 3, 4, 5, …</p>
+<p><a href="https://news.ycombinator.com/item?id=36453810#36455404">(Source)</a></p>
+</li>
+</ol>
 <p><img src="https://lupyuen.github.io/images/riscv-build.png" alt="Build Apache NuttX RTOS for 64-bit RISC-V QEMU" /></p>
-<h1 id="appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">7 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V QEMU</a></h1>
+<h1 id="appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><a href="#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">8 Appendix: Build Apache NuttX RTOS for 64-bit RISC-V QEMU</a></h1>
 <p>The easiest way to run <strong>Apache NuttX RTOS on 64-bit RISC-V</strong> is to download the <strong>NuttX Image</strong> and boot it on QEMU Emulator…</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/riscv#boot-nuttx-on-64-bit-risc-v-qemu"><strong>“Boot NuttX on 64-bit RISC-V QEMU”</strong></a></li>
@@ -585,7 +593,7 @@ riscv64-unknown-elf-objdump \
 <li><a href="https://lupyuen.github.io/articles/riscv#boot-nuttx-on-64-bit-risc-v-qemu"><strong>“Boot NuttX on 64-bit RISC-V QEMU”</strong></a></li>
 </ul>
 <p>Let’s look at the GCC Command that compiles NuttX for 64-bit RISC-V QEMU…</p>
-<h1 id="appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu">8 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V QEMU</a></h1>
+<h1 id="appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><a href="#appendix-compile-apache-nuttx-rtos-for-64-bit-risc-v-qemu">9 Appendix: Compile Apache NuttX RTOS for 64-bit RISC-V QEMU</a></h1>
 <p>From the previous section, we see that the NuttX Build compiles the source files with these <strong>GCC Options</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>riscv64-unknown-elf-gcc \
   -c \
@@ -632,7 +640,7 @@ riscv64-unknown-elf-objdump \
 <p><a href="https://gcc.gnu.org/onlinedocs/gcc-9.1.0/gcc/RISC-V-Options.html">(More about this)</a></p>
 </li>
 </ul>
-<h1 id="appendix-download-toolchain-for-64-bit-risc-v"><a href="#appendix-download-toolchain-for-64-bit-risc-v">9 Appendix: Download Toolchain for 64-bit RISC-V</a></h1>
+<h1 id="appendix-download-toolchain-for-64-bit-risc-v"><a href="#appendix-download-toolchain-for-64-bit-risc-v">10 Appendix: Download Toolchain for 64-bit RISC-V</a></h1>
 <p>Follow these steps to download the <strong>64-bit RISC-V Toolchain</strong> for building Apache NuttX RTOS on Linux, macOS or Windows…</p>
 <ol>
 <li>
