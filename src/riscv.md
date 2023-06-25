@@ -535,6 +535,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/riscv.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/riscv.md)
 
+# Notes
+
+1.  __Hart IDs__ are not guaranteed to be contiguous. One is guaranteed to be 0, the rest will all be different, but not necessarily 0, 1, 2, 3, 4, 5, ...
+
+    [(Source)](https://news.ycombinator.com/item?id=36453810#36455404)
+
 ![Build Apache NuttX RTOS for 64-bit RISC-V QEMU](https://lupyuen.github.io/images/riscv-build.png)
 
 # Appendix: Build Apache NuttX RTOS for 64-bit RISC-V QEMU
