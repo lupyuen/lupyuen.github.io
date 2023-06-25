@@ -84,7 +84,7 @@ Our support for __PinePhone's Sensors__ is a little spotty...
 
 -   [__Accelerometer and Gyroscope__](https://www.hackster.io/lupyuen/inside-a-smartphone-accelerometer-pinephone-with-nuttx-rtos-b92b58) will detect PinePhone motion and orientation
 
--   __Magnetometer, Light and Promixity Sensors__ are not yet supported
+-   __Magnetometer, Light and Proximity Sensors__ are not yet supported
 
 -   __Front and Rear Cameras__ are not supported
 
