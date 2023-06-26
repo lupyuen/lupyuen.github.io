@@ -1,6 +1,6 @@
 # Recipe for Wholemeal Sourdough with Bread Machine
 
-📝 _22 May 2023_
+📝 _27 Jun 2023_
 
 ![Wholemeal Sourdough with Bread Machine](https://lupyuen.github.io/images/sourdough.jpg)
 
@@ -48,9 +48,9 @@ Add in this sequence to Bread Machine...
 
 -   1 tablespoon (14g) Cold Unsalted Butter (from fridge)
 
--   8 tablespoons Boiling Water (100 deg C, to melt the butter)
+-   2 tablespoons Boiling Water (100 deg C, to melt the butter)
 
--   1 2/3 cups (200g) Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
+-   2/3 cups (200g) Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
 
 -   3 ladles (2 cups) Wholemeal Sourdough Starter, ripe (fed) from above.
 
@@ -62,11 +62,9 @@ Add in this sequence to Bread Machine...
 
 -   1/2 teaspoon (2.8g) Salt
 
--   2 teaspoon Instant Dry Yeast [(Redman)](https://www.redmanshop.com/shop-by-category/baking-ingredients/baking-aids/yeast/000000000000012294.html). If our Sourdough Starter is super floofy, skip the Yeast.
+-   1/2 teaspoon Baking Soda / Sodium Bicarbonate (to neutralise the sourness and give extra poofiness). Too much Baking Soda will taste soapy!
 
--   1/4 teaspoon Baking Soda / Sodium Bicarbonate (to neutralise the sourness and give extra poofiness). Too much Baking Soda will taste soapy!
-
-    Separate the Yeast and Baking Soda from the Wet Ingredients. Pile on the Vital Wheat Gluten + Sugar + Salt, dig a little hole, place the Yeast and Baking Soda inside the hole.
+    Separate the Baking Soda from the Wet Ingredients. Pile on the Vital Wheat Gluten + Sugar + Salt, dig a little hole, place the Baking Soda inside the hole.
 
 -   NO MILK because the loaf will look burnt
 
@@ -89,13 +87,10 @@ During Kneading:
 -   But not too much flour (or water). Dough Ball should look like a Fresh Egg Yolk: Skin is shiny, slightly wet, inside is foamy liquid.
 -   Tap a chopstick on the Dough Ball. The dough shouldn't stick to the chopstick.
     [(See pic below)](https://lupyuen.github.io/images/sourdough3.jpg)
+-   UPDATE: It's OK for the dough to look slightly wet
 -   (Optional) At 4 hours 30 mins remaining, add 1/2 cup of Raisins (separated) or Prunes (quartered). This will sweeten the sourdough. Sourdough Starter will uplift any Dried Fruit, amazing!
     [(See Raisin Sourdough below)](https://lupyuen.github.io/images/sourdough17.jpg)
     [(And Prune Sourdough)](https://lupyuen.github.io/images/sourdough9.jpg)
-
-During First Rising:
--   Warning: Dough may overflow! Before it overflows, keeping poking the dough with a chopstick (the blunt end) until the dough deflates.
-    [(Like this)](https://lupyuen.github.io/images/sourdough5.jpg)
 
 Adapted from [King Arthur Bread Machine Sourdough Recipe](https://www.kingarthurbaking.com/recipes/bread-machine-sourdough-bread-recipe) (Non-Wholemeal)
 
