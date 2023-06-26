@@ -200,7 +200,7 @@ This says...
 
 - NuttX Kernel begins execution at address __`0x8000` `0000`__
 
-  (Why? What if NuttX is started by the U-Boot Bootloader?)
+  (Why? What if NuttX is started by the U-Boot Bootloader? [__See this__](https://github.com/lupyuen/nuttx-star64#armbian-image-for-star64))
 
 Now we head into the NuttX Boot Code...
 
