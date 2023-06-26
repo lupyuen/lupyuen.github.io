@@ -503,6 +503,8 @@ The analysis we've done today will be super helpful as we write the Boot Code fo
 
 Stay tuned for updates in the next article!
 
+-   [__"Apache NuttX RTOS for Pine64 Star64 64-bit RISC-V SBC (StarFive JH7110)"__](https://github.com/lupyuen/nuttx-star64)
+
 # What's Next
 
 I hope this article has been an educational exploration of Apache NuttX RTOS on 64-bit RISC-V...

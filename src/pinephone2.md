@@ -298,6 +298,8 @@ Please join me in the next article, as we begin our exploration of __Apache Nutt
 
 -   [__"64-bit RISC-V with Apache NuttX Real-Time Operating System"__](https://lupyuen.github.io/articles/riscv)
 
+-   [__"Apache NuttX RTOS for Pine64 Star64 64-bit RISC-V SBC (StarFive JH7110)"__](https://github.com/lupyuen/nuttx-star64)
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
