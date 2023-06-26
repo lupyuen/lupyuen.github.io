@@ -260,7 +260,7 @@ Unfortunately we're running out of time...
 
 1.  _Why Pine64 gadgets? Are they sponsored?_
 
-    I bought my own PinePhone for porting NuttX. And I'll do the same for the RISC-V gadgets.
+    I bought my own PinePhone for porting NuttX. And I'll do the same for the [__RISC-V Gadgets__](https://qoto.org/@lupyuen/110607965321072519).
 
     Pine64 sells affordable phones and tablets for devs and learners. If you know of similar companies, please lemme know! 🙏
 
