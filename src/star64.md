@@ -22,7 +22,9 @@ _What's NuttX?_
 
 [__Apache NuttX__](https://nuttx.apache.org/docs/latest/index.html) is a __Real-Time Operating System (RTOS)__ that runs on many kinds of devices, from 8-bit to 64-bit.
 
-The analysis that we do today will be super helpful for __porting NuttX to Star64__. Let's inspect the microSD Images...
+The analysis that we do today will be super helpful for __porting NuttX to Star64__.
+
+Let's inspect the microSD Images...
 
 !["All we need is a microSD"](https://lupyuen.github.io/images/star64-microsd.jpg)
 
@@ -30,7 +32,7 @@ _"All we need is a microSD"_
 
 # Linux Images for Star64
 
-According to [__Software Releases for Star64__](https://wiki.pine64.org/wiki/STAR64#Software_releases), we have...
+According to [__Software Releases for Star64__](https://wiki.pine64.org/wiki/STAR64#Software_releases), we have these Linux Images...
 
 -   [__Armbian Images__](https://www.armbian.com/star64/)
 
@@ -38,7 +40,7 @@ According to [__Software Releases for Star64__](https://wiki.pine64.org/wiki/STA
 
 -   [__Yocto Images__](https://github.com/Fishwaldo/meta-pine64) at [__pine64.my-ho.st__](https://pine64.my-ho.st:8443/)
 
-    Let's inspect [__star64-image-minimal 1.2__](https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2)
+    We pick [__star64-image-minimal 1.2__](https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2)
 
 _What about other Linux Distros?_
 
@@ -52,19 +54,23 @@ Check out the current state of RISC-V Linux...
 
 -   [__Star64 GPU not supported yet__](https://github.com/Fishwaldo/meta-pine64#quickstart)
 
+![Armbian Image for Star64](https://lupyuen.github.io/images/star64-armbian.png)
+
 # Armbian Image for Star64
 
-TODO
+We begin with the __Armbian Image for Star64__...
 
-Let's inspect the Armbian Image for Star64: [Armbian 23.8 Lunar (Minimal)](https://github.com/armbianro/os/releases/download/23.8.0-trunk.56/Armbian_23.8.0-trunk.56_Star64_lunar_edge_5.15.0_minimal.img.xz)
+-   [__Armbian 23.8 Lunar for Star64 (Minimal)__](https://github.com/armbianro/os/releases/download/23.8.0-trunk.56/Armbian_23.8.0-trunk.56_Star64_lunar_edge_5.15.0_minimal.img.xz)
 
-Uncompress the .xz, mount the .img file on Linux / macOS / Windows as an ISO Volume.
+Uncompress the __.xz__ file, mount the __.img__ file on Linux / macOS / Windows as an ISO Volume.
 
-The image contains 1 used partition: `armbi_root` (612 MB) that contains the Linux Root Filesystem.
+The pic above shows that the Armbian Image contains 1 used partition: __armbi_root__ (612 MB), that contains the __Linux Root Filesystem__.
 
 Plus one unused partition (4 MB) at the top. (Why?)
 
-![Armbian Image for Star64](https://lupyuen.github.io/images/star64-armbian.png)
+_What will happen when it boots?_
+
+TODO
 
 We see the U-Boot Bootloader Configuration at `armbi_root/boot/uEnv.txt`...
 
@@ -159,7 +165,7 @@ TODO: Explain `boot/uInitrd` RAM Disk
 
 TODO
 
-Let's inspect the Yocto Image for Star64: [star64-image-minimal](https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2)
+Let's inspect the Yocto Image for Star64: [star64-image-minimal 1.2](https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2)
 
 Uncompress the .bz2, rename as .img. Balena Etcher won't work with .bz2 files!
 
