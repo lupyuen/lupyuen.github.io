@@ -20,9 +20,9 @@ We won't actually run anything on Star64 yet. We'll save the fun parts for the n
 
 _What's NuttX?_
 
-[__Apache NuttX__](https://nuttx.apache.org/docs/latest/index.html) is a __Real-Time Operating System (RTOS)__ that runs on many kinds of devices, from 8-bit to 64-bit.
+[__Apache NuttX__](https://lupyuen.github.io/articles/riscv) is a __Real-Time Operating System (RTOS)__ that runs on many kinds of devices, from 8-bit to 64-bit.
 
-The analysis that we do today will be super helpful for __porting NuttX to Star64__.
+The analysis that we do today will be super helpful for [__porting NuttX to Star64__](https://lupyuen.github.io/articles/riscv#jump-to-start).
 
 Let's inspect the microSD Images...
 
@@ -83,12 +83,12 @@ kernel_comp_size=0x10000000
 fdt_addr_r=0x48000000
 ramdisk_addr_r=0x48100000
 
-# Move distro to first boot to speed up booting
+## Move distro to first boot to speed up booting
 boot_targets=distro mmc1 dhcp 
 
 distro_bootpart=1
 
-# Fix missing bootcmd
+## Fix missing bootcmd
 bootcmd=run bootcmd_distro
 ```
 
@@ -244,19 +244,19 @@ total 14808
 __/boot/vf2_uEnv.txt__ contains the configuration for [__U-Boot Bootloader__](https://u-boot.readthedocs.io/en/latest/index.html)...
 
 ```text
-# This is the sample jh7110_uEnv.txt file for starfive visionfive U-boot
-# The current convention (SUBJECT TO CHANGE) is that this file
-# will be loaded from the third partition on the
-# MMC card.
+## This is the sample jh7110_uEnv.txt file for starfive visionfive U-boot
+## The current convention (SUBJECT TO CHANGE) is that this file
+## will be loaded from the third partition on the
+## MMC card.
 partnum=3
 
-# The FIT file to boot from
+## The FIT file to boot from
 fitfile=fitImage
 
-# for addr info
+## for addr info
 fileaddr=0xa0000000
 fdtaddr=0x46000000
-# boot Linux flat or compressed 'Image' stored at 'kernel_addr_r'
+## boot Linux flat or compressed 'Image' stored at 'kernel_addr_r'
 kernel_addr_r=0x40200000
 irdaddr=46100000
 irdsize=5f00000
@@ -268,7 +268,7 @@ irdsize=5f00000
 [__kernel_addr_r__](https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables) says that Linux Kernel will be loaded at RAM Address __`0x4020` `0000`__...
 
 ```text
-# boot Linux flat or compressed 'Image' stored at 'kernel_addr_r'
+## boot Linux flat or compressed 'Image' stored at 'kernel_addr_r'
 kernel_addr_r=0x40200000
 ```
 
@@ -276,7 +276,12 @@ kernel_addr_r=0x40200000
 
 Also different from Armbian: Yocto boots from the [__Flat Image Tree (FIT)__](https://u-boot.readthedocs.io/en/latest/usage/fit/index.html#) at __/boot/fitImage__
 
-Which packs everything inside: __Kernel Image, RAM Disk, Device Tree__...
+```text
+## The FIT file to boot from
+fitfile=fitImage
+```
+
+Which packs everything into a Single FIT File: __Kernel Image, RAM Disk, Device Tree__...
 
 ```text
 Loading kernel from FIT Image at a0000000 ...
@@ -358,7 +363,9 @@ Our NuttX Kernel shall __recreate this RISC-V Linux Image Header__.
 
 _Why does the pic show "MZ" at 0x0? Who is "MZ"?_
 
-To solve the "MZ" Mystery, we decompile the Linux Kernel...
+We'll find out in a while.
+
+First we decompile the Kernel Image...
 
 # Decompile Kernel with Ghidra
 
@@ -392,7 +399,7 @@ Yep! Let's decompile the Armbian Kernel with [__Ghidra__](https://github.com/Nat
 
     Analyse the file with the Default Options.
 
-Ghidra displays the __Decompiled Linux Kernel__...
+We'll see the __Decompiled Linux Kernel__ in Ghidra...
 
 ![Disassembled Linux Kernel in Ghidra](https://lupyuen.github.io/images/star64-ghidra3.png)
 
@@ -432,9 +439,19 @@ We'll recreate "MZ" in our NuttX Kernel too.
 
 ![Yocto Plasma on Star64](https://lupyuen.github.io/images/star64-plasma.jpg)
 
+[_Yocto Plasma on Star64_](https://github.com/lupyuen/nuttx-star64#boot-yocto-plasma-on-star64)
+
 # What's Next
 
-TODO
+Today we've completed our Linux Homework... Without a Star64 SBC!
+
+-   We inspected the brand new __Linux Images__ for Star64
+
+-   We __decompiled with Ghidra__ the RISC-V Linux Kernel
+
+-   And we have some idea how __Apache NuttX RTOS__ might run on Star64
+
+Please join me in the next article as we actually boot Linux on Star64! (Pic above)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
