@@ -417,6 +417,8 @@ TODO: Where is the source file?
 
 TODO: Any interesting CSR Instructions?
 
+[(The __CSR Instructions__ look interesting, but we'll skip them today)](https://lupyuen.github.io/articles/riscv#get-cpu-id)
+
 ![Yocto Plasma on Star64](https://lupyuen.github.io/images/star64-plasma.jpg)
 
 # What's Next
