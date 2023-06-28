@@ -216,6 +216,18 @@ lrwxrwxrwx       24 Jun 21 13:59 vmlinuz.old -&gt; vmlinuz-5.15.0-starfive2
 <div class="example-wrap"><pre class="language-text"><code>initrd /boot/uInitrd
 </code></pre></div>
 <p><a href="https://docs.kernel.org/admin-guide/initrd.html"><strong>initrd</strong></a></p>
+<p>According to the <a href="https://github.com/lupyuen/nuttx-star64#boot-armbian-on-star64"><strong>U-Boot Log</strong></a>…</p>
+<ol>
+<li>
+<p><strong>Initial RAM Disk</strong> will be loaded first (<strong>uInitrd</strong>)</p>
+</li>
+<li>
+<p>Followed by <strong>Linux Kernel</strong> (<strong>Image</strong>)</p>
+</li>
+<li>
+<p>Then <strong>Device Tree</strong> (which is missing)</p>
+</li>
+</ol>
 <h1 id="yocto-image-for-star64"><a href="#yocto-image-for-star64">3 Yocto Image for Star64</a></h1>
 <p>TODO</p>
 <p>Let’s inspect the Yocto Image for Star64: <a href="https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2">star64-image-minimal 1.2</a></p>
