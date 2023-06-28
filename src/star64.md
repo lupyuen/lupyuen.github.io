@@ -395,25 +395,26 @@ Yep! Let's decompile the Armbian Kernel Image with [__Ghidra__](https://github.c
 
     Analyse the file with the Default Options.
 
-TODO
-
-Ghidra displays the Decompiled Linux Kernel...
+Ghidra displays the __Decompiled Linux Kernel__...
 
 ![Disassembled Linux Kernel in Ghidra](https://lupyuen.github.io/images/star64-ghidra3.png)
 
-At Address `0x4400` `0002` we see a Jump to `FUN_440010c8`.
+At Address __`0x4400` `0002`__ we see a Jump to __FUN_440010c8__.
 
-Double-click `FUN_440010c8` to see the Linux Boot Code...
+Double-click __FUN_440010c8__ to see the Linux Boot Code...
 
 ![Linux Boot Code in Ghidra](https://lupyuen.github.io/images/star64-ghidra4.png)
 
 The [__CSR Instructions__](https://lupyuen.github.io/articles/riscv#get-cpu-id) look interesting, but we'll skip them today.
+
+(TODO: Where's the source file?)
 
 _The first RISC-V Instruction looks kinda sus..._
 
 ```text
 // Load -13 into Register S4
 li  s4,-0xd
+
 // Jump to Actual Boot Code
 j   FUN_440010c8
 ```
@@ -422,15 +423,13 @@ Remember the __"MZ"__ at the top of our Kernel Image?
 
 ![Armbian Kernel Image](https://lupyuen.github.io/images/star64-kernel.png)
 
-For [__Legacy Reasons__](https://en.wikipedia.org/wiki/DOS_MZ_executable), the Linux Kernel needs "MZ" to signify that it's a PE / COFF File, that looks like a [__UEFI Application__](https://lupyuen.github.io/articles/uboot#nuttx-header).
+For [__Legacy Reasons__](https://en.wikipedia.org/wiki/DOS_MZ_executable), the Linux Kernel embeds "MZ" to signify that it's a PE / COFF File, to look like a [__UEFI Application__](https://lupyuen.github.io/articles/uboot#nuttx-header).
 
-The RISC-V Instruction __`li`__ assembles into Machine Code as __"MZ"__. That's why it's the first instruction at the top of the Linux Kernel!
+The RISC-V Instruction __`li`__ assembles into Machine Code as __"MZ"__. That's why it's the first instruction in the Linux Kernel!
 
 We'll recreate "MZ" in our NuttX Kernel too.
 
 [("MZ" refers to __Mark Zbikowski__)](https://en.wikipedia.org/wiki/DOS_MZ_executable)
-
-__TODO:__ Where's the source file?
 
 ![Yocto Plasma on Star64](https://lupyuen.github.io/images/star64-plasma.jpg)
 
