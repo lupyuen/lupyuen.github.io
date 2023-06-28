@@ -132,8 +132,7 @@
 <p>The pic above shows that the Armbian Image contains 1 used partition: <strong>armbi_root</strong> (612 MB), that contains the <strong>Linux Root Filesystem</strong>.</p>
 <p>Plus one unused partition (4 MB) at the top. (Why?)</p>
 <p><em>What will happen when it boots?</em></p>
-<p>TODO</p>
-<p>We see the U-Boot Bootloader Configuration at <code>armbi_root/boot/uEnv.txt</code>…</p>
+<p>We see the <strong>U-Boot Bootloader Configuration</strong> at <strong>/boot/uEnv.txt</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>fdt_high=0xffffffffffffffff
 initrd_high=0xffffffffffffffff
 
@@ -152,22 +151,27 @@ distro_bootpart=1
 # Fix missing bootcmd
 bootcmd=run bootcmd_distro
 </code></pre></div>
-<p><a href="https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables"><code>kernel_addr_r</code></a> says that Linux Kernel will be loaded at <code>0x4400</code> <code>0000</code>…</p>
+<p><a href="https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables"><strong>kernel_addr_r</strong></a> says that Linux Kernel will be loaded at <strong><code>0x4400</code> <code>0000</code></strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>kernel_addr_r=0x44000000
 </code></pre></div>
-<p>(Yocto Image boots Linux Kernel at a different address, see next section)</p>
-<p>This probably means that U-Boot Bootloader is loaded at <code>0x4000</code> <code>0000</code>.</p>
-<p>U-Boot Bootloader will also read the options from <code>armbi_root/boot/extlinux/extlinux.conf</code>…</p>
+<p>(Yocto boots Linux at a different address, as we’ll see)</p>
+<p>This probably means that U-Boot Bootloader is loaded at <strong><code>0x4000</code> <code>0000</code></strong>.</p>
+<p><a href="https://doc-en.rvspace.org/JH7110/PDF/JH7110_TRM_StarFive_Preliminary_V2.pdf#memory_map">(Which is consistent with the <strong>JH7110 Memory Map</strong>)</a></p>
+<p>U-Boot Bootloader will also read the options from <strong>/boot/extlinux/extlinux.conf</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>label Armbian
   kernel /boot/Image
   initrd /boot/uInitrd
   fdt /boot/dtb/starfive/jh7110-star64-pine64.dtb
   append root=UUID=99f62df4-be35-475c-99ef-2ba3f74fe6b5 console=ttyS0,115200n8 console=tty0 earlycon=sbi rootflags=data=writeback stmmaceth=chain_mode:1 rw rw no_console_suspend consoleblank=0 fsck.fix=yes fsck.repair=yes net.ifnames=0 splash plymouth.ignore-serial-consoles
 </code></pre></div>
-<p>This says that U-Boot will load the Linux Kernel from <code>armbi_root/boot/Image</code></p>
-<p>Which is sym-linked to <code>armbi_root/boot/vmlinuz-5.15.0-starfive2</code></p>
-<p>But the Flattened Device Tree (FDT) is missing! <code>/boot/dtb/starfive/jh7110-star64-pine64.dtb</code></p>
-<p>Which will fail the Armbian boot. (As we’ll see later)</p>
+<p>This says that U-Boot will load the Linux Kernel Image from <strong>/boot/Image</strong>.</p>
+<p>(Which is sym-linked to <strong>/boot/vmlinuz-5.15.0-starfive2</strong>)</p>
+<p><em>Everything looks hunky dory?</em></p>
+<p>Nope the <strong>Flattened Device Tree (FDT)</strong> is missing!</p>
+<div class="example-wrap"><pre class="language-text"><code>fdt /boot/dtb/starfive/jh7110-star64-pine64.dtb
+</code></pre></div>
+<p>Which means that Armbian will <strong>fail to boot</strong> on Star64.</p>
+<p>Here’s the list of <strong>Device Trees</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>→ ls /Volumes/armbi_root/boot/dtb-5.15.0-starfive2/starfive
 evb-overlay                      jh7110-evb-usbdevice.dtb
 jh7110-evb-can-pdm-pwmdac.dtb    jh7110-evb.dtb
@@ -179,26 +183,26 @@ jh7110-evb-uart1-rgb2hdmi.dtb    jh7110-visionfive-v2-wm8960.dtb
 jh7110-evb-uart4-emmc-spdif.dtb  jh7110-visionfive-v2.dtb
 jh7110-evb-uart5-pwm-i2c-tdm.dtb vf2-overlay
 </code></pre></div>
-<p>Here are the files in <code>armbi_root/boot</code>…</p>
+<p>For reference, here are the other files in <strong>/boot</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>→ ls -l /Volumes/armbi_root/boot
 total 94416
-lrwxrwxrwx  1 Luppy  staff        24 Jun 21 13:59 Image -&gt; vmlinuz-5.15.0-starfive2
--rw-r--r--  1 Luppy  staff   4276712 Jun 21 12:16 System.map-5.15.0-starfive2
--rw-r--r--  1 Luppy  staff      1536 Jun 21 14:00 armbian_first_run.txt.template
--rw-r--r--  1 Luppy  staff     38518 Jun 21 14:00 boot.bmp
--rw-r--r--  1 Luppy  staff    144938 Jun 21 12:16 config-5.15.0-starfive2
-lrwxrwxrwx  1 Luppy  staff        20 Jun 21 13:59 dtb -&gt; dtb-5.15.0-starfive2
-drwxr-xr-x  1 Luppy  staff         0 Jun 21 13:59 dtb-5.15.0-starfive2
-drwxrwxr-x  1 Luppy  staff         0 Jun 21 13:58 extlinux
-lrwxrwxrwx  1 Luppy  staff        27 Jun 21 13:59 initrd.img -&gt; initrd.img-5.15.0-starfive2
--rw-r--r--  1 Luppy  staff  10911474 Jun 21 14:01 initrd.img-5.15.0-starfive2
-lrwxrwxrwx  1 Luppy  staff        27 Jun 21 13:59 initrd.img.old -&gt; initrd.img-5.15.0-starfive2
--rw-rw-r--  1 Luppy  staff       341 Jun 21 14:00 uEnv.txt
-lrwxrwxrwx  1 Luppy  staff        24 Jun 21 14:01 uInitrd -&gt; uInitrd-5.15.0-starfive2
--rw-r--r--  1 Luppy  staff  10911538 Jun 21 14:01 uInitrd-5.15.0-starfive2
-lrwxrwxrwx  1 Luppy  staff        24 Jun 21 13:59 vmlinuz -&gt; vmlinuz-5.15.0-starfive2
--rw-r--r--  1 Luppy  staff  22040576 Jun 21 12:16 vmlinuz-5.15.0-starfive2
-lrwxrwxrwx  1 Luppy  staff        24 Jun 21 13:59 vmlinuz.old -&gt; vmlinuz-5.15.0-starfive2
+lrwxrwxrwx       24 Jun 21 13:59 Image -&gt; vmlinuz-5.15.0-starfive2
+-rw-r--r--  4276712 Jun 21 12:16 System.map-5.15.0-starfive2
+-rw-r--r--     1536 Jun 21 14:00 armbian_first_run.txt.template
+-rw-r--r--    38518 Jun 21 14:00 boot.bmp
+-rw-r--r--   144938 Jun 21 12:16 config-5.15.0-starfive2
+lrwxrwxrwx       20 Jun 21 13:59 dtb -&gt; dtb-5.15.0-starfive2
+drwxr-xr-x        0 Jun 21 13:59 dtb-5.15.0-starfive2
+drwxrwxr-x        0 Jun 21 13:58 extlinux
+lrwxrwxrwx       27 Jun 21 13:59 initrd.img -&gt; initrd.img-5.15.0-starfive2
+-rw-r--r-- 10911474 Jun 21 14:01 initrd.img-5.15.0-starfive2
+lrwxrwxrwx       27 Jun 21 13:59 initrd.img.old -&gt; initrd.img-5.15.0-starfive2
+-rw-rw-r--      341 Jun 21 14:00 uEnv.txt
+lrwxrwxrwx       24 Jun 21 14:01 uInitrd -&gt; uInitrd-5.15.0-starfive2
+-rw-r--r-- 10911538 Jun 21 14:01 uInitrd-5.15.0-starfive2
+lrwxrwxrwx       24 Jun 21 13:59 vmlinuz -&gt; vmlinuz-5.15.0-starfive2
+-rw-r--r-- 22040576 Jun 21 12:16 vmlinuz-5.15.0-starfive2
+lrwxrwxrwx       24 Jun 21 13:59 vmlinuz.old -&gt; vmlinuz-5.15.0-starfive2
 </code></pre></div>
 <p>TODO: Explain <code>boot/uInitrd</code> RAM Disk</p>
 <h1 id="yocto-image-for-star64"><a href="#yocto-image-for-star64">3 Yocto Image for Star64</a></h1>
