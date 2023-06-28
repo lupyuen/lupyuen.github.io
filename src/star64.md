@@ -92,7 +92,7 @@ distro_bootpart=1
 bootcmd=run bootcmd_distro
 ```
 
-[__kernel_addr_r__](https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables) says that Linux Kernel will be loaded at __`0x4400` `0000`__...
+[__kernel_addr_r__](https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables) says that Linux Kernel will be loaded at RAM Address __`0x4400` `0000`__...
 
 ```text
 kernel_addr_r=0x44000000
@@ -265,7 +265,7 @@ irdsize=5f00000
 
 [(See the Complete File)](https://github.com/lupyuen/nuttx-star64#yocto-image-for-star64)
 
-[__kernel_addr_r__](https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables) says that Linux Kernel will be loaded at __`0x4020` `0000`__...
+[__kernel_addr_r__](https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables) says that Linux Kernel will be loaded at RAM Address __`0x4020` `0000`__...
 
 ```text
 # boot Linux flat or compressed 'Image' stored at 'kernel_addr_r'
@@ -296,7 +296,7 @@ lrwxrwxrwx       17 fitImage -> fitImage-5.15.107
 -rw-r--r-- 15151064 fitImage-initramfs-5.15.107
 ```
 
-Yes Yocto looks more complicated than Armbian, but it boots OK on Star64!
+Yocto looks more complicated than Armbian, but it boots OK on Star64!
 
 ![U-Boot Bootloader Log](https://lupyuen.github.io/images/star64-opensbi.jpg)
 
@@ -310,7 +310,7 @@ Armbian looks simpler than Yocto, since it uses a plain Kernel Image File __/boo
 
 (Instead of Yocto's complicated Flat Image Tree)
 
-Hence we'll adopt the Armbian Boot Settings, but overwrite __/boot/Image__ by the __NuttX Kernel Image__. 
+Hence for NuttX we'll adopt the Armbian Boot Settings, overwriting __/boot/Image__ by the __NuttX Kernel Image__. 
 
 And hopefully U-Boot Bootloader will __boot NuttX on Star64__! Assuming that we fix these...
 
@@ -366,7 +366,7 @@ First we decompile the Kernel Image...
 
 _Can we actually see the RISC-V Code inside the Linux Kernel?_
 
-Yep! Let's decompile the Armbian Kernel Image with [__Ghidra__](https://github.com/NationalSecurityAgency/ghidra), the popular tool for Reverse Engineering...
+Yep! Let's decompile the Armbian Kernel with [__Ghidra__](https://github.com/NationalSecurityAgency/ghidra), the popular tool for Reverse Engineering...
 
 1.  In Ghidra, create a __New Project__
 
