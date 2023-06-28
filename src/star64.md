@@ -409,6 +409,19 @@ Double-click `FUN_440010ac` to see the Linux Boot Code...
 
 TODO: Explain MZ and the funny RISC-V instruction at the top
 
+_The first RISC-V Instruction looks kinda sus..._
+
+```text
+// Load -13 into Register S4
+li  s4,-0xd
+// Jump to Actual Boot Code
+j   FUN_440010c8
+```
+
+Remember the "MZ" at the top of our Kernel Image?
+
+![Armbian Kernel Image](https://lupyuen.github.io/images/star64-kernel.png)
+
 [opcode forms the magic "MZ" signature of a PE/COFF file that is required for UEFI applications](https://lupyuen.github.io/articles/uboot#nuttx-header)
 
 [("MZ" refers to Mark Zbikowski)](https://en.wikipedia.org/wiki/DOS_MZ_executable)
