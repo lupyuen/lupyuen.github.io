@@ -66,7 +66,7 @@ Uncompress the __.xz__ file, mount the __.img__ file on Linux / macOS / Windows 
 
 The pic above shows that the Armbian Image contains 1 used partition: __armbi_root__ (612 MB), that contains the __Linux Root Filesystem__.
 
-Plus one unused partition (4 MB) at the top. (Why?)
+Plus one unused partition (4 MB) at the top. (Partition Table)
 
 _What will happen when it boots?_
 
@@ -220,15 +220,15 @@ Insert the microSD Card into a Linux Machine. (Like Pinebook Pro)
 
 From the pic above, we see 4 used partitions...
 
--   __spl__ (2 MB): For [__Secondary Program Loader__](https://u-boot.readthedocs.io/en/latest/develop/spl.html#u-boot-phases) (Why?)
+-   __spl__ (2 MB): For [__Secondary Program Loader__](https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html#flashing)
 
--   __uboot__ (4 MB): For [__U-Boot Bootloader__](https://u-boot.readthedocs.io/en/latest/index.html) (Why?)
+-   __uboot__ (4 MB): For [__U-Boot Bootloader__](https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html#flashing)
 
 -   __boot__ (380 MB): U-Boot Configuration and Linux Kernel Image
 
 -   __root__ (686 MB): Linux Root Filesystem
 
-Plus one unused partition (2 MB) at the top. (Why?)
+Plus one unused partition (2 MB) at the top. (Partition Table)
 
 _What will happen when it boots?_
 
