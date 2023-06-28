@@ -365,29 +365,37 @@ First we decompile the Kernel Image...
 
 # Decompile Armbian Kernel Image with Ghidra
 
-TODO
+_Can we actually see the RISC-V Code inside the Linux Kernel?_
 
-We decompile the Armbian Linux Kernel Image with [Ghidra](https://github.com/NationalSecurityAgency/ghidra).
+Yep! Let's decompile the Armbian Kernel Image with [__Ghidra__](https://github.com/NationalSecurityAgency/ghidra), the popular tool for Reverse Engineering.
 
-In Ghidra, create a New Project. Click File > Import File.
+1.  In Ghidra, create a __New Project__
 
-Select `armbi_root/boot/vmlinuz-5.15.0-starfive2` and enter these Import Options...
+1.  Click __File__ > __Import File__
 
--   Format: Raw Binary
+1.  Select __boot/vmlinuz-5.15.0-starfive2__ and enter these Import Options...
 
--   Language: RISCV > RV64GC (RISCV:LE:64:RV64GC:gcc)
+    __Format:__ Raw Binary
+
+    __Language:__ RISCV > RV64GC (RISCV:LE:64:RV64GC:gcc)
 
     [(StarFive JH7110 has 4 × RV64GC U74 Application Cores)](https://doc-en.rvspace.org/JH7110/Datasheet/JH7110_DS/c_u74_quad_core.html)
 
--   Options > Base Address: 0x44000000
+    __Options > Base Address:__ 0x44000000
 
     (Based on the U-Boot Configuration from above)
 
-![Load the Armbian Linux Kernel Image into Ghidra](https://lupyuen.github.io/images/star64-ghidra.png)
+    Like this...
 
-![Load the Armbian Linux Kernel Image into Ghidra](https://lupyuen.github.io/images/star64-ghidra2.png)
+    ![Load the Armbian Linux Kernel Image into Ghidra](https://lupyuen.github.io/images/star64-ghidra.png)
 
-Double-click `vmlinuz-5.15.0-starfive2`, analyse the file with the Default Options.
+    ![Load the Armbian Linux Kernel Image into Ghidra](https://lupyuen.github.io/images/star64-ghidra2.png)
+
+1.  In the Ghidra Project, double-click __vmlinuz-5.15.0-starfive2__
+
+    Analyse the file with the Default Options.
+
+TODO
 
 Ghidra displays the Decompiled Linux Kernel...
 
