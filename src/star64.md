@@ -315,11 +315,11 @@ Armbian looks simpler than Yocto, since it uses a plain Kernel Image File __/boo
 
 (Instead of Yocto's complicated Flat Image Tree)
 
-Hence for NuttX we'll adopt the Armbian Boot Settings, overwriting __/boot/Image__ by the __NuttX Kernel Image__. 
+Hence for NuttX we'll adopt the Armbian Boot Settings, overwriting __/boot/Image__ by the [__NuttX Kernel Image__](https://lupyuen.github.io/articles/riscv#boot-nuttx-on-64-bit-risc-v-qemu). 
 
 And hopefully U-Boot Bootloader will __boot NuttX on Star64__! Assuming that we fix these...
 
--   Compile NuttX Kernel to boot at __`0x4400` `0000`__
+-   Compile [__NuttX Kernel__](https://lupyuen.github.io/articles/riscv#risc-v-boot-code-in-nuttx) to boot at __`0x4400` `0000`__
 
 -   Use a placeholder for __Device Tree__ (since it's missing)
 
@@ -433,7 +433,7 @@ For [__Legacy Reasons__](https://en.wikipedia.org/wiki/DOS_MZ_executable), the L
 
 The RISC-V Instruction __`li`__ assembles into Machine Code as __"MZ"__. That's why it's the first instruction in the Linux Kernel!
 
-We'll recreate "MZ" in our NuttX Kernel too.
+We'll recreate "MZ" in our [__NuttX Kernel__](https://lupyuen.github.io/articles/riscv#qemu-starts-nuttx).
 
 [("MZ" refers to __Mark Zbikowski__)](https://en.wikipedia.org/wiki/DOS_MZ_executable)
 
