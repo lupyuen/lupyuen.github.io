@@ -159,23 +159,23 @@ For reference, here are the other files in __/boot__...
 ```text
 → ls -l /Volumes/armbi_root/boot
 total 94416
-lrwxrwxrwx       24 Jun 21 13:59 Image -> vmlinuz-5.15.0-starfive2
--rw-r--r--  4276712 Jun 21 12:16 System.map-5.15.0-starfive2
--rw-r--r--     1536 Jun 21 14:00 armbian_first_run.txt.template
--rw-r--r--    38518 Jun 21 14:00 boot.bmp
--rw-r--r--   144938 Jun 21 12:16 config-5.15.0-starfive2
-lrwxrwxrwx       20 Jun 21 13:59 dtb -> dtb-5.15.0-starfive2
-drwxr-xr-x        0 Jun 21 13:59 dtb-5.15.0-starfive2
-drwxrwxr-x        0 Jun 21 13:58 extlinux
-lrwxrwxrwx       27 Jun 21 13:59 initrd.img -> initrd.img-5.15.0-starfive2
--rw-r--r-- 10911474 Jun 21 14:01 initrd.img-5.15.0-starfive2
-lrwxrwxrwx       27 Jun 21 13:59 initrd.img.old -> initrd.img-5.15.0-starfive2
--rw-rw-r--      341 Jun 21 14:00 uEnv.txt
-lrwxrwxrwx       24 Jun 21 14:01 uInitrd -> uInitrd-5.15.0-starfive2
--rw-r--r-- 10911538 Jun 21 14:01 uInitrd-5.15.0-starfive2
-lrwxrwxrwx       24 Jun 21 13:59 vmlinuz -> vmlinuz-5.15.0-starfive2
--rw-r--r-- 22040576 Jun 21 12:16 vmlinuz-5.15.0-starfive2
-lrwxrwxrwx       24 Jun 21 13:59 vmlinuz.old -> vmlinuz-5.15.0-starfive2
+lrwxrwxrwx       24 Image -> vmlinuz-5.15.0-starfive2
+-rw-r--r--  4276712 System.map-5.15.0-starfive2
+-rw-r--r--     1536 armbian_first_run.txt.template
+-rw-r--r--    38518 boot.bmp
+-rw-r--r--   144938 config-5.15.0-starfive2
+lrwxrwxrwx       20 dtb -> dtb-5.15.0-starfive2
+drwxr-xr-x        0 dtb-5.15.0-starfive2
+drwxrwxr-x        0 extlinux
+lrwxrwxrwx       27 initrd.img -> initrd.img-5.15.0-starfive2
+-rw-r--r-- 10911474 initrd.img-5.15.0-starfive2
+lrwxrwxrwx       27 initrd.img.old -> initrd.img-5.15.0-starfive2
+-rw-rw-r--      341 uEnv.txt
+lrwxrwxrwx       24 uInitrd -> uInitrd-5.15.0-starfive2
+-rw-r--r-- 10911538 uInitrd-5.15.0-starfive2
+lrwxrwxrwx       24 vmlinuz -> vmlinuz-5.15.0-starfive2
+-rw-r--r-- 22040576 vmlinuz-5.15.0-starfive2
+lrwxrwxrwx       24 vmlinuz.old -> vmlinuz-5.15.0-starfive2
 ```
 
 _What's initrd?_
@@ -220,7 +220,7 @@ Insert the microSD Card into a Linux Machine. (Like Pinebook Pro)
 
 From the pic above, we see 4 used partitions...
 
--   __spl__ (2 MB): For [__Secondary Program Loader__](https://github.com/u-boot/u-boot) (Why?)
+-   __spl__ (2 MB): For [__Secondary Program Loader__](https://u-boot.readthedocs.io/en/latest/develop/spl.html#u-boot-phases) (Why?)
 
 -   __uboot__ (4 MB): For [__U-Boot Bootloader__](https://u-boot.readthedocs.io/en/latest/index.html) (Why?)
 
@@ -315,17 +315,17 @@ Armbian looks simpler than Yocto, since it uses a plain Kernel Image File __/boo
 
 (Instead of Yocto's complicated Flat Image Tree)
 
-Hence for NuttX we'll adopt the Armbian Boot Settings, overwriting __/boot/Image__ by the [__NuttX Kernel Image__](https://lupyuen.github.io/articles/riscv#boot-nuttx-on-64-bit-risc-v-qemu). 
+Hence for NuttX we'll adopt the Armbian Boot Settings, overwriting __/boot/Image__ by our [__NuttX Kernel Image__](https://lupyuen.github.io/articles/riscv#boot-nuttx-on-64-bit-risc-v-qemu). 
 
 And hopefully U-Boot Bootloader will __boot NuttX on Star64__! Assuming that we fix these...
 
--   Compile [__NuttX Kernel__](https://lupyuen.github.io/articles/riscv#risc-v-boot-code-in-nuttx) to boot at __`0x4400` `0000`__
+-   Compile [__NuttX Kernel__](https://lupyuen.codeberg.page/articles/riscv.html#qemu-starts-nuttx) to boot at __`0x4400` `0000`__
 
--   Use a placeholder for __Device Tree__ (since it's missing)
+-   Add a placeholder for __Device Tree__ (since it's missing)
 
 -   Use the special File Format for __Linux Kernel Image__ ("MZ")
 
-Let's figure out the File Format for __/boot/Image__...
+Let's figure out the special File Format for __/boot/Image__...
 
 ![Armbian Kernel Image](https://lupyuen.github.io/images/star64-kernel.png)
 
@@ -363,9 +363,7 @@ Our NuttX Kernel shall __recreate this RISC-V Linux Image Header__.
 
 _Why does the pic show "MZ" at 0x0? Who is "MZ"?_
 
-We'll find out in a while.
-
-First we decompile the Kernel Image...
+To solve the "MZ" Mystery, we decompile the Linux Kernel...
 
 # Decompile the Kernel with Ghidra
 
@@ -399,7 +397,7 @@ Yep! Let's decompile the Armbian Kernel with [__Ghidra__](https://github.com/Nat
 
     Analyse the file with the Default Options.
 
-We'll see the __Decompiled Linux Kernel__ in Ghidra...
+Wait a while and we'll see the __Decompiled Linux Kernel__ in Ghidra...
 
 ![Disassembled Linux Kernel in Ghidra](https://lupyuen.github.io/images/star64-ghidra3.png)
 
@@ -443,13 +441,13 @@ We'll recreate "MZ" in our [__NuttX Kernel__](https://lupyuen.github.io/articles
 
 # What's Next
 
-Today we've completed our Linux Homework... Without a Star64 SBC!
+Today we completed our Linux Homework... Without a Star64 SBC!
 
 -   We inspected the brand new __Linux Images__ for Star64
 
 -   We __decompiled with Ghidra__ the RISC-V Linux Kernel
 
--   And we have some idea how __Apache NuttX RTOS__ might run on Star64
+-   And we got some idea how __Apache NuttX RTOS__ might boot on Star64
 
 Please join me in the next article as we actually boot Linux on Star64! (Pic above)
 
