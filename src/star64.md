@@ -333,6 +333,8 @@ Let's look inside `armbi_root/boot/vmlinuz-5.15.0-starfive2`...
 
 ![Armbian Kernel Image](https://lupyuen.github.io/images/star64-kernel.png)
 
+Open the file with a [__Hex Editor__](https://marketplace.visualstudio.com/items?itemName=ms-vscode.hexeditor)
+
 See the "RISCV" at `0x30`? That's the Magic Number for the RISC-V Linux Image Header!
 
 -   ["Boot image header in RISC-V Linux"](https://www.kernel.org/doc/html/latest/riscv/boot-image-header.html)
