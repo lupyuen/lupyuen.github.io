@@ -352,9 +352,9 @@ u32 magic2 = 0x05435352;  /* Magic number 2, little endian, "RSC\x05" */
 u32 res3;                 /* Reserved for PE COFF offset */
 ```
 
-This means that our NuttX Kernel will have to __recreate this RISC-V Linux Image Header__.
+Our NuttX Kernel shall __recreate this RISC-V Linux Image Header__.
 
-(Or U-Boot might not boot NuttX)
+(Or U-Boot Bootloader might refuse to boot NuttX)
 
 _Why does the pic show "MZ" at 0x0? Who is "MZ"?_
 
