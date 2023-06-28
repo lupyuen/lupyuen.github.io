@@ -314,11 +314,11 @@ lrwxrwxrwx       17 fitImage -&gt; fitImage-5.15.107
 <p><em>Will NuttX boot with Armbian or Yocto settings?</em></p>
 <p>Armbian looks simpler than Yocto, since it uses a plain Kernel Image File <strong>/boot/Image</strong>. </p>
 <p>(Instead of Yocto’s complicated Flat Image Tree)</p>
-<p>Hence for NuttX we’ll adopt the Armbian Boot Settings, overwriting <strong>/boot/Image</strong> by the <strong>NuttX Kernel Image</strong>. </p>
+<p>Hence for NuttX we’ll adopt the Armbian Boot Settings, overwriting <strong>/boot/Image</strong> by the <a href="https://lupyuen.github.io/articles/riscv#boot-nuttx-on-64-bit-risc-v-qemu"><strong>NuttX Kernel Image</strong></a>. </p>
 <p>And hopefully U-Boot Bootloader will <strong>boot NuttX on Star64</strong>! Assuming that we fix these…</p>
 <ul>
 <li>
-<p>Compile NuttX Kernel to boot at <strong><code>0x4400</code> <code>0000</code></strong></p>
+<p>Compile <a href="https://lupyuen.github.io/articles/riscv#risc-v-boot-code-in-nuttx"><strong>NuttX Kernel</strong></a> to boot at <strong><code>0x4400</code> <code>0000</code></strong></p>
 </li>
 <li>
 <p>Use a placeholder for <strong>Device Tree</strong> (since it’s missing)</p>
@@ -400,7 +400,7 @@ j   FUN_440010c8
 <p><img src="https://lupyuen.github.io/images/star64-kernel.png" alt="Armbian Kernel Image" /></p>
 <p>For <a href="https://en.wikipedia.org/wiki/DOS_MZ_executable"><strong>Legacy Reasons</strong></a>, the Linux Kernel embeds “MZ” to signify that it’s a PE / COFF File, to look like a <a href="https://lupyuen.github.io/articles/uboot#nuttx-header"><strong>UEFI Application</strong></a>.</p>
 <p>The RISC-V Instruction <strong><code>li</code></strong> assembles into Machine Code as <strong>“MZ”</strong>. That’s why it’s the first instruction in the Linux Kernel!</p>
-<p>We’ll recreate “MZ” in our NuttX Kernel too.</p>
+<p>We’ll recreate “MZ” in our <a href="https://lupyuen.github.io/articles/riscv#qemu-starts-nuttx"><strong>NuttX Kernel</strong></a>.</p>
 <p><a href="https://en.wikipedia.org/wiki/DOS_MZ_executable">(“MZ” refers to <strong>Mark Zbikowski</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/star64-plasma.jpg" alt="Yocto Plasma on Star64" /></p>
 <p><a href="https://github.com/lupyuen/nuttx-star64#boot-yocto-plasma-on-star64"><em>Yocto Plasma on Star64</em></a></p>
