@@ -358,9 +358,7 @@ Our NuttX Kernel shall __recreate this RISC-V Linux Image Header__.
 
 _Why does the pic show "MZ" at 0x0? Who is "MZ"?_
 
-We'll find out in a while.
-
-First we decompile the Kernel Image...
+To solve the "MZ" Mystery, we decompile the Linux Kernel...
 
 # Decompile Kernel with Ghidra
 
@@ -417,6 +415,8 @@ li  s4,-0xd
 // Jump to Actual Boot Code
 j   FUN_440010c8
 ```
+
+It's highly sus because the First Instruction doesn't do anything meaningful!
 
 Remember the __"MZ"__ at the top of our Kernel Image?
 
