@@ -386,21 +386,20 @@ u32 res3;                 /* Reserved for PE COFF offset */
 <p>At Address <code>0x4400</code> <code>0002</code> we see a Jump to <code>FUN_440010c8</code>.</p>
 <p>Double-click <code>FUN_440010c8</code> to see the Linux Boot Code…</p>
 <p><img src="https://lupyuen.github.io/images/star64-ghidra4.png" alt="Linux Boot Code in Ghidra" /></p>
-<p>TODO: Explain MZ and the funny RISC-V instruction at the top</p>
+<p>The <a href="https://lupyuen.github.io/articles/riscv#get-cpu-id"><strong>CSR Instructions</strong></a> look interesting, but we’ll skip them today.</p>
 <p><em>The first RISC-V Instruction looks kinda sus…</em></p>
 <div class="example-wrap"><pre class="language-text"><code>// Load -13 into Register S4
 li  s4,-0xd
 // Jump to Actual Boot Code
 j   FUN_440010c8
 </code></pre></div>
-<p>Remember the “MZ” at the top of our Kernel Image?</p>
+<p>Remember the <strong>“MZ”</strong> at the top of our Kernel Image?</p>
 <p><img src="https://lupyuen.github.io/images/star64-kernel.png" alt="Armbian Kernel Image" /></p>
-<p>For <a href="https://en.wikipedia.org/wiki/DOS_MZ_executable"><strong>Legacy Reasons</strong></a></p>
-<p><a href="https://lupyuen.github.io/articles/uboot#nuttx-header">opcode forms the magic “MZ” signature of a PE/COFF file that is required for UEFI applications</a></p>
+<p>For <a href="https://en.wikipedia.org/wiki/DOS_MZ_executable"><strong>Legacy Reasons</strong></a>, the Linux Kernel needs “MZ” to signify that it’s a PE / COFF File, that looks like a <a href="https://lupyuen.github.io/articles/uboot#nuttx-header"><strong>UEFI Application</strong></a>.</p>
+<p>The RISC-V Instruction <strong><code>li</code></strong> assembles into Machine Code as <strong>“MZ”</strong>. That’s why it’s the first instruction at the top of the Linux Kernel!</p>
+<p>We’ll recreate “MZ” in our NuttX Kernel too.</p>
 <p><a href="https://en.wikipedia.org/wiki/DOS_MZ_executable">(“MZ” refers to <strong>Mark Zbikowski</strong>)</a></p>
-<p>TODO: Where is the source file?</p>
-<p>TODO: Any interesting CSR Instructions?</p>
-<p><a href="https://lupyuen.github.io/articles/riscv#get-cpu-id">(The <strong>CSR Instructions</strong> look interesting, but we’ll skip them today)</a></p>
+<p><strong>TODO:</strong> Where’s the source file?</p>
 <p><img src="https://lupyuen.github.io/images/star64-plasma.jpg" alt="Yocto Plasma on Star64" /></p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
