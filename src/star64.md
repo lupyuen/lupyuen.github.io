@@ -307,37 +307,37 @@ _When we port NuttX RTOS to Star64..._
 
 _Will we boot NuttX with Armbian or Yocto settings?_
 
-TODO
-
-Armbian looks simpler, since it uses a plain Kernel Image File __/boot/Image__. 
+Armbian looks simpler than Yocto, since it uses a plain Kernel Image File __/boot/Image__. 
 
 (Instead of Yocto's complicated Flat Image Tree)
 
-Hence we'll overwrite Armbian's `armbi_root/boot/Image` by the NuttX Kernel Image.
+Hence we'll overwrite Armbian's __/boot/Image__ by the __NuttX Kernel Image__. 
 
-We'll compile NuttX Kernel to boot at `0x4400` `0000`.
+And hopefully U-Boot Bootloader will __boot NuttX on Star64__! Assuming that we fix these...
 
-NuttX Kernel will begin with a RISC-V Linux Header. (See next section)
+-   Compile NuttX Kernel to boot at __`0x4400` `0000`__
 
-We'll use a Temporary File for the Flattened Device Tree (FDT) since it's missing from Armbian.
+-   Use a placeholder for __Device Tree__ since it's missing
+
+-   Apply the special File Format for __Linux Kernel Image__
 
 Let's figure out the File Format for __/boot/Image__...
 
-# Inside the Armbian Kernel Image
-
-TODO
-
-_What's inside the Armbian Linux Kernel Image?_
-
-Let's look inside `armbi_root/boot/vmlinuz-5.15.0-starfive2`...
-
 ![Armbian Kernel Image](https://lupyuen.github.io/images/star64-kernel.png)
 
-Open the file with a [__Hex Editor__](https://marketplace.visualstudio.com/items?itemName=ms-vscode.hexeditor)
+# Inside the Armbian Kernel Image
 
-See the "RISCV" at `0x30`? That's the Magic Number for the RISC-V Linux Image Header!
+_What's inside the Linux Kernel Image?_
 
--   ["Boot image header in RISC-V Linux"](https://www.kernel.org/doc/html/latest/riscv/boot-image-header.html)
+Let's look inside the __Armbian Kernel Image__ at __/boot/Image__.
+
+(Which is sym-linked to __/boot/vmlinuz-5.15.0-starfive2__)
+
+Open the file with a [__Hex Editor__](https://marketplace.visualstudio.com/items?itemName=ms-vscode.hexeditor). (Pic above)
+
+See the "RISCV" at __`0x30`__? That's the __Magic Number__ for the __RISC-V Linux Image Header__!
+
+-   [__"Boot Image Header in RISC-V Linux"__](https://www.kernel.org/doc/html/latest/riscv/boot-image-header.html)
 
 ```text
 u32 code0;                /* Executable code */
@@ -353,9 +353,15 @@ u32 magic2 = 0x05435352;  /* Magic number 2, little endian, "RSC\x05" */
 u32 res3;                 /* Reserved for PE COFF offset */
 ```
 
-Let's decompile the Kernel Image...
+This means that our NuttX Kernel will have to __recreate this RISC-V Linux Image Header__.
 
-TODO: Explain MZ and the funny RISC-V instruction at the top
+(Or U-Boot might not boot NuttX)
+
+_Why does the pic show "MZ" at 0x0? Who is "MZ"?_
+
+We'll find out in a while.
+
+First we decompile the Kernel Image...
 
 # Decompile Armbian Kernel Image with Ghidra
 
@@ -394,6 +400,10 @@ Double-click `FUN_440010ac` to see the Linux Boot Code...
 ![Linux Boot Code in Ghidra](https://lupyuen.github.io/images/star64-ghidra4.png)
 
 TODO: Explain MZ and the funny RISC-V instruction at the top
+
+[opcode forms the magic "MZ" signature of a PE/COFF file that is required for UEFI applications](https://lupyuen.github.io/articles/uboot#nuttx-header)
+
+[("MZ" refers to Mark Zbikowski)](https://en.wikipedia.org/wiki/DOS_MZ_executable)
 
 TODO: Where is the source file?
 
