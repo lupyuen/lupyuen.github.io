@@ -308,22 +308,23 @@ lrwxrwxrwx       17 fitImage -&gt; fitImage-5.15.107
 -rw-r--r-- 15151064 fitImage-initramfs-5.15.107
 </code></pre></div>
 <p>Yes Yocto looks more complicated than Armbian, but it boots OK on Star64!</p>
+<p><img src="https://lupyuen.github.io/images/star64-opensbi.jpg" alt="U-Boot Bootloader Log" /></p>
 <h1 id="boot-nuttx-with-u-boot-bootloader"><a href="#boot-nuttx-with-u-boot-bootloader">4 Boot NuttX with U-Boot Bootloader</a></h1>
 <p><em>When we port NuttX RTOS to Star64…</em></p>
-<p><em>Will we boot NuttX with Armbian or Yocto settings?</em></p>
+<p><em>Will NuttX boot with Armbian or Yocto settings?</em></p>
 <p>Armbian looks simpler than Yocto, since it uses a plain Kernel Image File <strong>/boot/Image</strong>. </p>
 <p>(Instead of Yocto’s complicated Flat Image Tree)</p>
-<p>Hence we’ll overwrite Armbian’s <strong>/boot/Image</strong> by the <strong>NuttX Kernel Image</strong>. </p>
+<p>Hence we’ll adopt the Armbian Boot Settings, but overwrite <strong>/boot/Image</strong> by the <strong>NuttX Kernel Image</strong>. </p>
 <p>And hopefully U-Boot Bootloader will <strong>boot NuttX on Star64</strong>! Assuming that we fix these…</p>
 <ul>
 <li>
 <p>Compile NuttX Kernel to boot at <strong><code>0x4400</code> <code>0000</code></strong></p>
 </li>
 <li>
-<p>Use a placeholder for <strong>Device Tree</strong> since it’s missing</p>
+<p>Use a placeholder for <strong>Device Tree</strong> (since it’s missing)</p>
 </li>
 <li>
-<p>Apply the special File Format for <strong>Linux Kernel Image</strong></p>
+<p>Use the special File Format for <strong>Linux Kernel Image</strong> (“MZ”)</p>
 </li>
 </ul>
 <p>Let’s figure out the File Format for <strong>/boot/Image</strong>…</p>
