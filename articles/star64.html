@@ -71,8 +71,8 @@
 <li><a href="#armbian-image-for-star64">2 Armbian Image for Star64</a><ul></ul></li>
 <li><a href="#yocto-image-for-star64">3 Yocto Image for Star64</a><ul></ul></li>
 <li><a href="#boot-nuttx-with-u-boot-bootloader">4 Boot NuttX with U-Boot Bootloader</a><ul></ul></li>
-<li><a href="#inside-the-armbian-kernel-image">5 Inside the Armbian Kernel Image</a><ul></ul></li>
-<li><a href="#decompile-armbian-kernel-image-with-ghidra">6 Decompile Armbian Kernel Image with Ghidra</a><ul></ul></li>
+<li><a href="#inside-the-kernel-image">5 Inside the Kernel Image</a><ul></ul></li>
+<li><a href="#decompile-kernel-with-ghidra">6 Decompile Kernel with Ghidra</a><ul></ul></li>
 <li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>7 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/star64-title.jpg" alt="Pine64 Star64 64-bit RISC-V SBC" /></p>
 <p><a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> is a new 64-bit RISC-V SBC, based on the <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC.</p>
@@ -328,7 +328,7 @@ lrwxrwxrwx       17 fitImage -&gt; fitImage-5.15.107
 </ul>
 <p>Let’s figure out the File Format for <strong>/boot/Image</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/star64-kernel.png" alt="Armbian Kernel Image" /></p>
-<h1 id="inside-the-armbian-kernel-image"><a href="#inside-the-armbian-kernel-image">5 Inside the Armbian Kernel Image</a></h1>
+<h1 id="inside-the-kernel-image"><a href="#inside-the-kernel-image">5 Inside the Kernel Image</a></h1>
 <p><em>What’s inside the Linux Kernel Image?</em></p>
 <p>Let’s look inside the <strong>Armbian Kernel Image</strong> at <strong>/boot/Image</strong>.</p>
 <p>(Which is sym-linked to <strong>/boot/vmlinuz-5.15.0-starfive2</strong>)</p>
@@ -354,9 +354,9 @@ u32 res3;                 /* Reserved for PE COFF offset */
 <p><em>Why does the pic show “MZ” at 0x0? Who is “MZ”?</em></p>
 <p>We’ll find out in a while.</p>
 <p>First we decompile the Kernel Image…</p>
-<h1 id="decompile-armbian-kernel-image-with-ghidra"><a href="#decompile-armbian-kernel-image-with-ghidra">6 Decompile Armbian Kernel Image with Ghidra</a></h1>
+<h1 id="decompile-kernel-with-ghidra"><a href="#decompile-kernel-with-ghidra">6 Decompile Kernel with Ghidra</a></h1>
 <p><em>Can we actually see the RISC-V Code inside the Linux Kernel?</em></p>
-<p>Yep! Let’s decompile the Armbian Kernel Image with <a href="https://github.com/NationalSecurityAgency/ghidra"><strong>Ghidra</strong></a>, the popular tool for Reverse Engineering.</p>
+<p>Yep! Let’s decompile the Armbian Kernel Image with <a href="https://github.com/NationalSecurityAgency/ghidra"><strong>Ghidra</strong></a>, the popular tool for Reverse Engineering…</p>
 <ol>
 <li>
 <p>In Ghidra, create a <strong>New Project</strong></p>
@@ -369,10 +369,9 @@ u32 res3;                 /* Reserved for PE COFF offset */
 <p><strong>Format:</strong> Raw Binary</p>
 <p><strong>Language:</strong> RISCV &gt; RV64GC (RISCV:LE:64:RV64GC:gcc)</p>
 <p><a href="https://doc-en.rvspace.org/JH7110/Datasheet/JH7110_DS/c_u74_quad_core.html">(StarFive JH7110 has 4 × RV64GC U74 Application Cores)</a></p>
-<p><strong>Options &gt; Base Address:</strong> 0x44000000</p>
+<p><strong>Options &gt; Base Address:</strong> <code>0x44000000</code></p>
 <p>(Based on the U-Boot Configuration from above)</p>
 <p>(Ghidra thinks it’s PE Format because of “MZ”… But it’s not!)</p>
-<p>Like this…</p>
 <p><img src="https://lupyuen.github.io/images/star64-ghidra.png" alt="Load the Armbian Linux Kernel Image into Ghidra" /></p>
 <p><img src="https://lupyuen.github.io/images/star64-ghidra2.png" alt="Load the Armbian Linux Kernel Image into Ghidra" /></p>
 </li>
