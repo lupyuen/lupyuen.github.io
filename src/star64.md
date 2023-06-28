@@ -321,6 +321,8 @@ NuttX Kernel will begin with a RISC-V Linux Header. (See next section)
 
 We'll use a Temporary File for the Flattened Device Tree (FDT) since it's missing from Armbian.
 
+Let's figure out the File Format for __/boot/Image__...
+
 # Inside the Armbian Kernel Image
 
 TODO
