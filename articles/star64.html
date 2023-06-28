@@ -194,23 +194,23 @@ jh7110-evb-uart5-pwm-i2c-tdm.dtb vf2-overlay
 <p>For reference, here are the other files in <strong>/boot</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>→ ls -l /Volumes/armbi_root/boot
 total 94416
-lrwxrwxrwx       24 Jun 21 13:59 Image -&gt; vmlinuz-5.15.0-starfive2
--rw-r--r--  4276712 Jun 21 12:16 System.map-5.15.0-starfive2
--rw-r--r--     1536 Jun 21 14:00 armbian_first_run.txt.template
--rw-r--r--    38518 Jun 21 14:00 boot.bmp
--rw-r--r--   144938 Jun 21 12:16 config-5.15.0-starfive2
-lrwxrwxrwx       20 Jun 21 13:59 dtb -&gt; dtb-5.15.0-starfive2
-drwxr-xr-x        0 Jun 21 13:59 dtb-5.15.0-starfive2
-drwxrwxr-x        0 Jun 21 13:58 extlinux
-lrwxrwxrwx       27 Jun 21 13:59 initrd.img -&gt; initrd.img-5.15.0-starfive2
--rw-r--r-- 10911474 Jun 21 14:01 initrd.img-5.15.0-starfive2
-lrwxrwxrwx       27 Jun 21 13:59 initrd.img.old -&gt; initrd.img-5.15.0-starfive2
--rw-rw-r--      341 Jun 21 14:00 uEnv.txt
-lrwxrwxrwx       24 Jun 21 14:01 uInitrd -&gt; uInitrd-5.15.0-starfive2
--rw-r--r-- 10911538 Jun 21 14:01 uInitrd-5.15.0-starfive2
-lrwxrwxrwx       24 Jun 21 13:59 vmlinuz -&gt; vmlinuz-5.15.0-starfive2
--rw-r--r-- 22040576 Jun 21 12:16 vmlinuz-5.15.0-starfive2
-lrwxrwxrwx       24 Jun 21 13:59 vmlinuz.old -&gt; vmlinuz-5.15.0-starfive2
+lrwxrwxrwx       24 Image -&gt; vmlinuz-5.15.0-starfive2
+-rw-r--r--  4276712 System.map-5.15.0-starfive2
+-rw-r--r--     1536 armbian_first_run.txt.template
+-rw-r--r--    38518 boot.bmp
+-rw-r--r--   144938 config-5.15.0-starfive2
+lrwxrwxrwx       20 dtb -&gt; dtb-5.15.0-starfive2
+drwxr-xr-x        0 dtb-5.15.0-starfive2
+drwxrwxr-x        0 extlinux
+lrwxrwxrwx       27 initrd.img -&gt; initrd.img-5.15.0-starfive2
+-rw-r--r-- 10911474 initrd.img-5.15.0-starfive2
+lrwxrwxrwx       27 initrd.img.old -&gt; initrd.img-5.15.0-starfive2
+-rw-rw-r--      341 uEnv.txt
+lrwxrwxrwx       24 uInitrd -&gt; uInitrd-5.15.0-starfive2
+-rw-r--r-- 10911538 uInitrd-5.15.0-starfive2
+lrwxrwxrwx       24 vmlinuz -&gt; vmlinuz-5.15.0-starfive2
+-rw-r--r-- 22040576 vmlinuz-5.15.0-starfive2
+lrwxrwxrwx       24 vmlinuz.old -&gt; vmlinuz-5.15.0-starfive2
 </code></pre></div>
 <p><em>What’s initrd?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>initrd /boot/uInitrd
@@ -245,7 +245,7 @@ lrwxrwxrwx       24 Jun 21 13:59 vmlinuz.old -&gt; vmlinuz-5.15.0-starfive2
 <p>From the pic above, we see 4 used partitions…</p>
 <ul>
 <li>
-<p><strong>spl</strong> (2 MB): For <a href="https://github.com/u-boot/u-boot"><strong>Secondary Program Loader</strong></a> (Why?)</p>
+<p><strong>spl</strong> (2 MB): For <a href="https://u-boot.readthedocs.io/en/latest/develop/spl.html#u-boot-phases"><strong>Secondary Program Loader</strong></a> (Why?)</p>
 </li>
 <li>
 <p><strong>uboot</strong> (4 MB): For <a href="https://u-boot.readthedocs.io/en/latest/index.html"><strong>U-Boot Bootloader</strong></a> (Why?)</p>
@@ -314,20 +314,20 @@ lrwxrwxrwx       17 fitImage -&gt; fitImage-5.15.107
 <p><em>Will NuttX boot with Armbian or Yocto settings?</em></p>
 <p>Armbian looks simpler than Yocto, since it uses a plain Kernel Image File <strong>/boot/Image</strong>. </p>
 <p>(Instead of Yocto’s complicated Flat Image Tree)</p>
-<p>Hence for NuttX we’ll adopt the Armbian Boot Settings, overwriting <strong>/boot/Image</strong> by the <a href="https://lupyuen.github.io/articles/riscv#boot-nuttx-on-64-bit-risc-v-qemu"><strong>NuttX Kernel Image</strong></a>. </p>
+<p>Hence for NuttX we’ll adopt the Armbian Boot Settings, overwriting <strong>/boot/Image</strong> by our <a href="https://lupyuen.github.io/articles/riscv#boot-nuttx-on-64-bit-risc-v-qemu"><strong>NuttX Kernel Image</strong></a>. </p>
 <p>And hopefully U-Boot Bootloader will <strong>boot NuttX on Star64</strong>! Assuming that we fix these…</p>
 <ul>
 <li>
-<p>Compile <a href="https://lupyuen.github.io/articles/riscv#risc-v-boot-code-in-nuttx"><strong>NuttX Kernel</strong></a> to boot at <strong><code>0x4400</code> <code>0000</code></strong></p>
+<p>Compile <a href="https://lupyuen.codeberg.page/articles/riscv.html#qemu-starts-nuttx"><strong>NuttX Kernel</strong></a> to boot at <strong><code>0x4400</code> <code>0000</code></strong></p>
 </li>
 <li>
-<p>Use a placeholder for <strong>Device Tree</strong> (since it’s missing)</p>
+<p>Add a placeholder for <strong>Device Tree</strong> (since it’s missing)</p>
 </li>
 <li>
 <p>Use the special File Format for <strong>Linux Kernel Image</strong> (“MZ”)</p>
 </li>
 </ul>
-<p>Let’s figure out the File Format for <strong>/boot/Image</strong>…</p>
+<p>Let’s figure out the special File Format for <strong>/boot/Image</strong>…</p>
 <p><img src="https://lupyuen.github.io/images/star64-kernel.png" alt="Armbian Kernel Image" /></p>
 <h1 id="inside-the-kernel-image"><a href="#inside-the-kernel-image">5 Inside the Kernel Image</a></h1>
 <p><em>What’s inside the Linux Kernel Image?</em></p>
@@ -353,8 +353,7 @@ u32 res3;                 /* Reserved for PE COFF offset */
 <p>Our NuttX Kernel shall <strong>recreate this RISC-V Linux Image Header</strong>.</p>
 <p>(Or U-Boot Bootloader might refuse to boot NuttX)</p>
 <p><em>Why does the pic show “MZ” at 0x0? Who is “MZ”?</em></p>
-<p>We’ll find out in a while.</p>
-<p>First we decompile the Kernel Image…</p>
+<p>To solve the “MZ” Mystery, we decompile the Linux Kernel…</p>
 <h1 id="decompile-the-kernel-with-ghidra"><a href="#decompile-the-kernel-with-ghidra">6 Decompile the Kernel with Ghidra</a></h1>
 <p><em>Can we actually see the RISC-V Code inside the Linux Kernel?</em></p>
 <p>Yep! Let’s decompile the Armbian Kernel with <a href="https://github.com/NationalSecurityAgency/ghidra"><strong>Ghidra</strong></a>, the popular tool for Reverse Engineering…</p>
@@ -381,7 +380,7 @@ u32 res3;                 /* Reserved for PE COFF offset */
 <p>Analyse the file with the Default Options.</p>
 </li>
 </ol>
-<p>We’ll see the <strong>Decompiled Linux Kernel</strong> in Ghidra…</p>
+<p>Wait a while and we’ll see the <strong>Decompiled Linux Kernel</strong> in Ghidra…</p>
 <p><img src="https://lupyuen.github.io/images/star64-ghidra3.png" alt="Disassembled Linux Kernel in Ghidra" /></p>
 <p>At Address <strong><code>0x4400</code> <code>0002</code></strong> we see a Jump to <strong>FUN_440010c8</strong>.</p>
 <p>Double-click <strong>FUN_440010c8</strong> to see the Linux Boot Code…</p>
@@ -405,7 +404,7 @@ j   FUN_440010c8
 <p><img src="https://lupyuen.github.io/images/star64-plasma.jpg" alt="Yocto Plasma on Star64" /></p>
 <p><a href="https://github.com/lupyuen/nuttx-star64#boot-yocto-plasma-on-star64"><em>Yocto Plasma on Star64</em></a></p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
-<p>Today we’ve completed our Linux Homework… Without a Star64 SBC!</p>
+<p>Today we completed our Linux Homework… Without a Star64 SBC!</p>
 <ul>
 <li>
 <p>We inspected the brand new <strong>Linux Images</strong> for Star64</p>
@@ -414,7 +413,7 @@ j   FUN_440010c8
 <p>We <strong>decompiled with Ghidra</strong> the RISC-V Linux Kernel</p>
 </li>
 <li>
-<p>And we have some idea how <strong>Apache NuttX RTOS</strong> might run on Star64</p>
+<p>And we got some idea how <strong>Apache NuttX RTOS</strong> might boot on Star64</p>
 </li>
 </ul>
 <p>Please join me in the next article as we actually boot Linux on Star64! (Pic above)</p>
