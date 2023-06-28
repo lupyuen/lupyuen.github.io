@@ -92,11 +92,12 @@
 <p>We won’t actually run anything on Star64 yet. We’ll save the fun parts for the next article!</p>
 <p><em>What’s NuttX?</em></p>
 <p><a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX</strong></a> is a <strong>Real-Time Operating System (RTOS)</strong> that runs on many kinds of devices, from 8-bit to 64-bit.</p>
-<p>The analysis that we do today will be super helpful for <strong>porting NuttX to Star64</strong>. Let’s inspect the microSD Images…</p>
+<p>The analysis that we do today will be super helpful for <strong>porting NuttX to Star64</strong>.</p>
+<p>Let’s inspect the microSD Images…</p>
 <p><img src="https://lupyuen.github.io/images/star64-microsd.jpg" alt="“All we need is a microSD”" /></p>
 <p><em>“All we need is a microSD”</em></p>
 <h1 id="linux-images-for-star64"><a href="#linux-images-for-star64">1 Linux Images for Star64</a></h1>
-<p>According to <a href="https://wiki.pine64.org/wiki/STAR64#Software_releases"><strong>Software Releases for Star64</strong></a>, we have…</p>
+<p>According to <a href="https://wiki.pine64.org/wiki/STAR64#Software_releases"><strong>Software Releases for Star64</strong></a>, we have these Linux Images…</p>
 <ul>
 <li>
 <p><a href="https://www.armbian.com/star64/"><strong>Armbian Images</strong></a></p>
@@ -104,7 +105,7 @@
 </li>
 <li>
 <p><a href="https://github.com/Fishwaldo/meta-pine64"><strong>Yocto Images</strong></a> at <a href="https://pine64.my-ho.st:8443/"><strong>pine64.my-ho.st</strong></a></p>
-<p>Let’s inspect <a href="https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2"><strong>star64-image-minimal 1.2</strong></a></p>
+<p>We pick <a href="https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2"><strong>star64-image-minimal 1.2</strong></a></p>
 </li>
 </ul>
 <p><em>What about other Linux Distros?</em></p>
@@ -121,13 +122,17 @@
 <p><a href="https://github.com/Fishwaldo/meta-pine64#quickstart"><strong>Star64 GPU not supported yet</strong></a></p>
 </li>
 </ul>
-<h1 id="armbian-image-for-star64"><a href="#armbian-image-for-star64">2 Armbian Image for Star64</a></h1>
-<p>TODO</p>
-<p>Let’s inspect the Armbian Image for Star64: <a href="https://github.com/armbianro/os/releases/download/23.8.0-trunk.56/Armbian_23.8.0-trunk.56_Star64_lunar_edge_5.15.0_minimal.img.xz">Armbian 23.8 Lunar (Minimal)</a></p>
-<p>Uncompress the .xz, mount the .img file on Linux / macOS / Windows as an ISO Volume.</p>
-<p>The image contains 1 used partition: <code>armbi_root</code> (612 MB) that contains the Linux Root Filesystem.</p>
-<p>Plus one unused partition (4 MB) at the top. (Why?)</p>
 <p><img src="https://lupyuen.github.io/images/star64-armbian.png" alt="Armbian Image for Star64" /></p>
+<h1 id="armbian-image-for-star64"><a href="#armbian-image-for-star64">2 Armbian Image for Star64</a></h1>
+<p>We begin with the <strong>Armbian Image for Star64</strong>…</p>
+<ul>
+<li><a href="https://github.com/armbianro/os/releases/download/23.8.0-trunk.56/Armbian_23.8.0-trunk.56_Star64_lunar_edge_5.15.0_minimal.img.xz"><strong>Armbian 23.8 Lunar for Star64 (Minimal)</strong></a></li>
+</ul>
+<p>Uncompress the <strong>.xz</strong> file, mount the <strong>.img</strong> file on Linux / macOS / Windows as an ISO Volume.</p>
+<p>The pic above shows that the Armbian Image contains 1 used partition: <strong>armbi_root</strong> (612 MB), that contains the <strong>Linux Root Filesystem</strong>.</p>
+<p>Plus one unused partition (4 MB) at the top. (Why?)</p>
+<p><em>What will happen when it boots?</em></p>
+<p>TODO</p>
 <p>We see the U-Boot Bootloader Configuration at <code>armbi_root/boot/uEnv.txt</code>…</p>
 <div class="example-wrap"><pre class="language-text"><code>fdt_high=0xffffffffffffffff
 initrd_high=0xffffffffffffffff
@@ -198,7 +203,7 @@ lrwxrwxrwx  1 Luppy  staff        24 Jun 21 13:59 vmlinuz.old -&gt; vmlinuz-5.15
 <p>TODO: Explain <code>boot/uInitrd</code> RAM Disk</p>
 <h1 id="yocto-image-for-star64"><a href="#yocto-image-for-star64">3 Yocto Image for Star64</a></h1>
 <p>TODO</p>
-<p>Let’s inspect the Yocto Image for Star64: <a href="https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2">star64-image-minimal</a></p>
+<p>Let’s inspect the Yocto Image for Star64: <a href="https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2">star64-image-minimal 1.2</a></p>
 <p>Uncompress the .bz2, rename as .img. Balena Etcher won’t work with .bz2 files!</p>
 <p>Write the .img to a microSD Card with Balena Etcher. Insert the microSD Card into a Linux Machine. (Like Pinebook Pro)</p>
 <p>We see 4 used partitions…</p>
