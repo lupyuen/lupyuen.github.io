@@ -367,7 +367,7 @@ We'll find out in a while.
 
 First we decompile the Kernel Image...
 
-# Decompile Kernel with Ghidra
+# Decompile the Kernel with Ghidra
 
 _Can we actually see the RISC-V Code inside the Linux Kernel?_
 
