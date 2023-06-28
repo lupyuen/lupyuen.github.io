@@ -385,6 +385,8 @@ Yep! Let's decompile the Armbian Kernel Image with [__Ghidra__](https://github.c
 
     (Based on the U-Boot Configuration from above)
 
+    (Ghidra thinks it's PE Format because of "MZ"... But it's not!)
+
     Like this...
 
     ![Load the Armbian Linux Kernel Image into Ghidra](https://lupyuen.github.io/images/star64-ghidra.png)
@@ -422,9 +424,11 @@ Remember the "MZ" at the top of our Kernel Image?
 
 ![Armbian Kernel Image](https://lupyuen.github.io/images/star64-kernel.png)
 
+For [__Legacy Reasons__](https://en.wikipedia.org/wiki/DOS_MZ_executable)
+
 [opcode forms the magic "MZ" signature of a PE/COFF file that is required for UEFI applications](https://lupyuen.github.io/articles/uboot#nuttx-header)
 
-[("MZ" refers to Mark Zbikowski)](https://en.wikipedia.org/wiki/DOS_MZ_executable)
+[("MZ" refers to __Mark Zbikowski__)](https://en.wikipedia.org/wiki/DOS_MZ_executable)
 
 TODO: Where is the source file?
 
