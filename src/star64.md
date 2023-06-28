@@ -70,7 +70,7 @@ Plus one unused partition (4 MB) at the top. (Why?)
 
 _What will happen when it boots?_
 
-We see the __U-Boot Bootloader Configuration__ at __/boot/uEnv.txt__...
+Let's check the configuration for [__U-Boot Bootloader__](https://u-boot.readthedocs.io/en/latest/index.html) at __/boot/uEnv.txt__...
 
 ```text
 fdt_high=0xffffffffffffffff
@@ -178,71 +178,78 @@ lrwxrwxrwx       24 Jun 21 13:59 vmlinuz -> vmlinuz-5.15.0-starfive2
 lrwxrwxrwx       24 Jun 21 13:59 vmlinuz.old -> vmlinuz-5.15.0-starfive2
 ```
 
-TODO: Explain __/boot/uInitrd__ RAM Disk
+_What's initrd?_
 
 ```text
 initrd /boot/uInitrd
 ```
 
-[__initrd__](https://docs.kernel.org/admin-guide/initrd.html)
+__initrd__ is the [__Initial RAM Disk__](https://docs.kernel.org/admin-guide/initrd.html) that will be loaded into RAM while starting the Linux Kernel.
 
-According to the [__U-Boot Log__](https://github.com/lupyuen/nuttx-star64#boot-armbian-on-star64)...
+According to the [__U-Boot Bootloader Log__](https://github.com/lupyuen/nuttx-star64#boot-armbian-on-star64)...
 
-1.  __Initial RAM Disk__ will be loaded first (__uInitrd__)
+1.  __Initial RAM Disk__ will be loaded first:
 
-1.  Followed by __Linux Kernel__ (__Image__)
+    __/boot/uInitrd__
 
-1.  Then __Device Tree__ (which is missing)
+1.  Followed by __Linux Kernel__:
+
+    __/boot/Image__
+
+1.  Then __Device Tree__
+
+    (Which is missing)
+
+Let's compare Armbian with Yocto...
 
 # Yocto Image for Star64
 
-TODO
+The __Yocto Image for Star64__ looks more complicated than Armbian (but it works)...
 
-Let's inspect the Yocto Image for Star64: [star64-image-minimal 1.2](https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2)
+-   [__star64-image-minimal 1.2__](https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2)
 
-Uncompress the .bz2, rename as .img. Balena Etcher won't work with .bz2 files!
+Uncompress the __.bz2__ file, rename as __.img__.
 
-Write the .img to a microSD Card with Balena Etcher. Insert the microSD Card into a Linux Machine. (Like Pinebook Pro)
+(Balena Etcher won't work with __.bz2__ files!)
+
+Write the __.img__ file to a microSD Card with [__Balena Etcher__](https://www.balena.io/etcher/) or [__GNOME Disks__](https://wiki.gnome.org/Apps/Disks).
+
+Insert the microSD Card into a Linux Machine. (Like Pinebook Pro)
 
 We see 4 used partitions...
 
--   spl (2 MB): [Secondary Program Loader](https://github.com/u-boot/u-boot)
+-   __spl__ (2 MB): For [__Secondary Program Loader__](https://github.com/u-boot/u-boot) (Why?)
 
--   uboot (4 MB): [U-Boot Bootloader](https://u-boot.readthedocs.io/en/latest/index.html)
+-   __uboot__ (4 MB): For [__U-Boot Bootloader__](https://u-boot.readthedocs.io/en/latest/index.html) (Why?)
 
--   boot (380 MB): U-Boot Configuration and Linux Kernel Image
+-   __boot__ (380 MB): U-Boot Configuration and Linux Kernel Image
 
--   root (686 MB): Linux Root Filesystem
+-   __root__ (686 MB): Linux Root Filesystem
 
 Plus one unused partition (2 MB) at the top. (Why?)
 
 ![Yocto Image for Star64](https://lupyuen.github.io/images/star64-yocto.png)
 
-`boot` partition has 2 files...
+__boot__ partition has 2 files...
 
 ```text
 $ ls -l /run/media/luppy/boot
 total 14808
--rw-r--r-- 1 luppy luppy 15151064 Apr  6  2011 fitImage
--rw-r--r-- 1 luppy luppy     1562 Apr  6  2011 vf2_uEnv.txt
+-rw-r--r-- 15151064 fitImage
+-rw-r--r--     1562 vf2_uEnv.txt
 ```
 
-`boot/vf2_uEnv.txt` contains the U-Boot Bootloader Configuration...
+__/boot/vf2_uEnv.txt__ contains the U-Boot Bootloader Configuration...
 
 ```text
 # This is the sample jh7110_uEnv.txt file for starfive visionfive U-boot
 # The current convention (SUBJECT TO CHANGE) is that this file
 # will be loaded from the third partition on the
 # MMC card.
-#devnum=1
 partnum=3
 
 # The FIT file to boot from
 fitfile=fitImage
-
-# for debugging boot
-bootargs_ext=if test ${devnum} = 0; then setenv bootargs "earlyprintk console=tty1 console=ttyS0,115200 rootwait earlycon=sbi root=/dev/mmcblk0p4"; else setenv bootargs "earlyprintk console=tty1 console=ttyS0,115200 rootwait earlycon=sbi root=/dev/mmcblk1p4"; fi;
-#bootargs=earlyprintk console=ttyS0,115200 debug rootwait earlycon=sbi root=/dev/mmcblk1p4
 
 # for addr info
 fileaddr=0xa0000000
@@ -251,39 +258,46 @@ fdtaddr=0x46000000
 kernel_addr_r=0x40200000
 irdaddr=46100000
 irdsize=5f00000
-
-# Use the FDT in the FIT image..
-setupfdt1=fdt addr ${fdtaddr}; fdt resize;
-
-setupird=setexpr irdend ${irdaddr} + ${irdsize}; fdt set /chosen linux,initrd-start <0x0 0x${irdaddr}>; fdt set /chosen linux,initrd-end <0x0 0x${irdend}>
-
-setupfdt2=fdt set /chosen bootargs "${bootargs}";
-
-bootwait=setenv _delay ${bootdelay}; echo ${_delay}; while test ${_delay} > 0; do sleep 1; setexpr _delay ${_delay} - 1; echo ${_delay}; done
-
-boot2=run bootargs_ext; mmc dev ${devnum}; fatload mmc ${devnum}:${partnum} ${fileaddr} ${fitfile}; bootm start ${fileaddr}; run setupfdt1;run setupird;run setupfdt2; bootm loados ${fileaddr}; run chipa_set_linux; run cpu_vol_set; echo "Booting kernel in"; booti ${kernel_addr_r} ${irdaddr}:${filesize} ${fdtaddr}
+...
 ```
 
-[`kernel_addr_r`](https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables) says that Linux Kernel will be loaded at `0x4020` `0000`...
+[(See the Complete File)](https://github.com/lupyuen/nuttx-star64#yocto-image-for-star64)
+
+[__kernel_addr_r__](https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables) says that Linux Kernel will be loaded at __`0x4020` `0000`__...
 
 ```text
 # boot Linux flat or compressed 'Image' stored at 'kernel_addr_r'
 kernel_addr_r=0x40200000
 ```
 
-(Different from Armbian: `0x4400` `0000`)
+(Different from Armbian's __`0x4400` `0000`__)
 
-Yocto boots from the [Flat Image Tree (FIT)](https://u-boot.readthedocs.io/en/latest/usage/fit/index.html#): `boot/fitImage`
+Also different from Armbian: Yocto boots from the [__Flat Image Tree (FIT)__](https://u-boot.readthedocs.io/en/latest/usage/fit/index.html#) at __/boot/fitImage__
 
-Yocto's `root/boot` looks different from Armbian...
+Which contains everything inside: __Kernel Image, RAM Disk, Device Tree__...
+
+```text
+## Loading kernel from FIT Image at a0000000 ...
+   Using 'conf-starfive_jh7110-pine64-star64.dtb' configuration
+## Loading ramdisk from FIT Image at a0000000 ...
+   Using 'conf-starfive_jh7110-pine64-star64.dtb' configuration
+## Loading fdt from FIT Image at a0000000 ...
+   Using 'conf-starfive_jh7110-pine64-star64.dtb' configuration
+```
+
+[(Source)](https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528)
+
+Yocto's __/root/boot__ looks different from Armbian...
 
 ```text
 $ ls -l /run/media/luppy/root/boot
 total 24376
-lrwxrwxrwx 1 root root       17 Mar  9  2018 fitImage -> fitImage-5.15.107
--rw-r--r-- 1 root root  9807808 Mar  9  2018 fitImage-5.15.107
--rw-r--r-- 1 root root 15151064 Mar  9  2018 fitImage-initramfs-5.15.107
+lrwxrwxrwx       17 fitImage -> fitImage-5.15.107
+-rw-r--r--  9807808 fitImage-5.15.107
+-rw-r--r-- 15151064 fitImage-initramfs-5.15.107
 ```
+
+Looks more complicated than Armbian, but it boots OK on Star64!
 
 # Boot NuttX with U-Boot Bootloader
 
