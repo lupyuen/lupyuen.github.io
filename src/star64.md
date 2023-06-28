@@ -407,7 +407,7 @@ Double-click `FUN_440010c8` to see the Linux Boot Code...
 
 ![Linux Boot Code in Ghidra](https://lupyuen.github.io/images/star64-ghidra4.png)
 
-TODO: Explain MZ and the funny RISC-V instruction at the top
+The [__CSR Instructions__](https://lupyuen.github.io/articles/riscv#get-cpu-id) look interesting, but we'll skip them today.
 
 _The first RISC-V Instruction looks kinda sus..._
 
@@ -418,21 +418,19 @@ li  s4,-0xd
 j   FUN_440010c8
 ```
 
-Remember the "MZ" at the top of our Kernel Image?
+Remember the __"MZ"__ at the top of our Kernel Image?
 
 ![Armbian Kernel Image](https://lupyuen.github.io/images/star64-kernel.png)
 
-For [__Legacy Reasons__](https://en.wikipedia.org/wiki/DOS_MZ_executable)
+For [__Legacy Reasons__](https://en.wikipedia.org/wiki/DOS_MZ_executable), the Linux Kernel needs "MZ" to signify that it's a PE / COFF File, that looks like a [__UEFI Application__](https://lupyuen.github.io/articles/uboot#nuttx-header).
 
-[opcode forms the magic "MZ" signature of a PE/COFF file that is required for UEFI applications](https://lupyuen.github.io/articles/uboot#nuttx-header)
+The RISC-V Instruction __`li`__ assembles into Machine Code as __"MZ"__. That's why it's the first instruction at the top of the Linux Kernel!
+
+We'll recreate "MZ" in our NuttX Kernel too.
 
 [("MZ" refers to __Mark Zbikowski__)](https://en.wikipedia.org/wiki/DOS_MZ_executable)
 
-TODO: Where is the source file?
-
-TODO: Any interesting CSR Instructions?
-
-[(The __CSR Instructions__ look interesting, but we'll skip them today)](https://lupyuen.github.io/articles/riscv#get-cpu-id)
+__TODO:__ Where's the source file?
 
 ![Yocto Plasma on Star64](https://lupyuen.github.io/images/star64-plasma.jpg)
 
