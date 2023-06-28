@@ -381,7 +381,9 @@ Yep! Let's decompile the Armbian Kernel with [__Ghidra__](https://github.com/Nat
 
     __Language:__ RISCV > RV64GC (RISCV:LE:64:RV64GC:gcc)
 
-    [(StarFive JH7110 has 4 × RV64GC U74 Application Cores)](https://doc-en.rvspace.org/JH7110/Datasheet/JH7110_DS/c_u74_quad_core.html)
+    [(StarFive JH7110 has 4 × __RV64GC__ U74 Application Cores)](https://doc-en.rvspace.org/JH7110/Datasheet/JH7110_DS/c_u74_quad_core.html)
+
+    [(__RV64GC__ is short for RV64IMAFDCZicsr_Zifencei)](https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v)
 
     __Options > Base Address:__ `0x44000000`
 
