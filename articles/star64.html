@@ -232,6 +232,7 @@ lrwxrwxrwx       24 Jun 21 13:59 vmlinuz.old -&gt; vmlinuz-5.15.0-starfive2
 </li>
 </ol>
 <p>Let’s compare Armbian with Yocto…</p>
+<p><img src="https://lupyuen.github.io/images/star64-yocto.png" alt="Yocto Image for Star64" /></p>
 <h1 id="yocto-image-for-star64"><a href="#yocto-image-for-star64">3 Yocto Image for Star64</a></h1>
 <p>The <strong>Yocto Image for Star64</strong> looks more complicated than Armbian (but it works)…</p>
 <ul>
@@ -241,7 +242,7 @@ lrwxrwxrwx       24 Jun 21 13:59 vmlinuz.old -&gt; vmlinuz-5.15.0-starfive2
 <p>(Balena Etcher won’t work with <strong>.bz2</strong> files!)</p>
 <p>Write the <strong>.img</strong> file to a microSD Card with <a href="https://www.balena.io/etcher/"><strong>Balena Etcher</strong></a> or <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a>.</p>
 <p>Insert the microSD Card into a Linux Machine. (Like Pinebook Pro)</p>
-<p>We see 4 used partitions…</p>
+<p>From the pic above, we see 4 used partitions…</p>
 <ul>
 <li>
 <p><strong>spl</strong> (2 MB): For <a href="https://github.com/u-boot/u-boot"><strong>Secondary Program Loader</strong></a> (Why?)</p>
@@ -257,14 +258,14 @@ lrwxrwxrwx       24 Jun 21 13:59 vmlinuz.old -&gt; vmlinuz-5.15.0-starfive2
 </li>
 </ul>
 <p>Plus one unused partition (2 MB) at the top. (Why?)</p>
-<p><img src="https://lupyuen.github.io/images/star64-yocto.png" alt="Yocto Image for Star64" /></p>
+<p><em>What will happen when it boots?</em></p>
 <p><strong>boot</strong> partition has 2 files…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ ls -l /run/media/luppy/boot
 total 14808
 -rw-r--r-- 15151064 fitImage
 -rw-r--r--     1562 vf2_uEnv.txt
 </code></pre></div>
-<p><strong>/boot/vf2_uEnv.txt</strong> contains the U-Boot Bootloader Configuration…</p>
+<p><strong>/boot/vf2_uEnv.txt</strong> contains the configuration for <a href="https://u-boot.readthedocs.io/en/latest/index.html"><strong>U-Boot Bootloader</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code># This is the sample jh7110_uEnv.txt file for starfive visionfive U-boot
 # The current convention (SUBJECT TO CHANGE) is that this file
 # will be loaded from the third partition on the
@@ -290,7 +291,7 @@ kernel_addr_r=0x40200000
 </code></pre></div>
 <p>(Different from Armbian’s <strong><code>0x4400</code> <code>0000</code></strong>)</p>
 <p>Also different from Armbian: Yocto boots from the <a href="https://u-boot.readthedocs.io/en/latest/usage/fit/index.html#"><strong>Flat Image Tree (FIT)</strong></a> at <strong>/boot/fitImage</strong></p>
-<p>Which contains everything inside: <strong>Kernel Image, RAM Disk, Device Tree</strong>…</p>
+<p>Which packs everything inside: <strong>Kernel Image, RAM Disk, Device Tree</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>## Loading kernel from FIT Image at a0000000 ...
    Using &#39;conf-starfive_jh7110-pine64-star64.dtb&#39; configuration
 ## Loading ramdisk from FIT Image at a0000000 ...
@@ -306,11 +307,13 @@ lrwxrwxrwx       17 fitImage -&gt; fitImage-5.15.107
 -rw-r--r--  9807808 fitImage-5.15.107
 -rw-r--r-- 15151064 fitImage-initramfs-5.15.107
 </code></pre></div>
-<p>Looks more complicated than Armbian, but it boots OK on Star64!</p>
+<p>Yes Yocto looks more complicated than Armbian, but it boots OK on Star64!</p>
 <h1 id="boot-nuttx-with-u-boot-bootloader"><a href="#boot-nuttx-with-u-boot-bootloader">4 Boot NuttX with U-Boot Bootloader</a></h1>
+<p><em>When we port NuttX RTOS to Star64…</em></p>
+<p><em>Will we boot NuttX with Armbian or Yocto settings?</em></p>
 <p>TODO</p>
-<p><em>Will we boot NuttX with Armbian or Yocto settings? <code>0x4400</code> <code>0000</code> or <code>0x4020</code> <code>0000</code>?</em></p>
-<p>Armbian looks simpler, since it uses a plain Linux Kernel Image File <code>Image</code>. (Instead of Yocto’s complicated Flat Image Tree)</p>
+<p>Armbian looks simpler, since it uses a plain Kernel Image File <strong>/boot/Image</strong>. </p>
+<p>(Instead of Yocto’s complicated Flat Image Tree)</p>
 <p>Hence we’ll overwrite Armbian’s <code>armbi_root/boot/Image</code> by the NuttX Kernel Image.</p>
 <p>We’ll compile NuttX Kernel to boot at <code>0x4400</code> <code>0000</code>.</p>
 <p>NuttX Kernel will begin with a RISC-V Linux Header. (See next section)</p>
