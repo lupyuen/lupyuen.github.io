@@ -186,6 +186,14 @@ initrd /boot/uInitrd
 
 [__initrd__](https://docs.kernel.org/admin-guide/initrd.html)
 
+According to the [__U-Boot Log__](https://github.com/lupyuen/nuttx-star64#boot-armbian-on-star64)...
+
+1.  __Initial RAM Disk__ will be loaded first (__uInitrd__)
+
+1.  Followed by __Linux Kernel__ (__Image__)
+
+1.  Then __Device Tree__ (which is missing)
+
 # Yocto Image for Star64
 
 TODO
