@@ -4,9 +4,25 @@
 
 ![Pine64 Star64 64-bit RISC-V SBC](https://lupyuen.github.io/images/star64-title.jpg)
 
-TODO
+[__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) is a new 64-bit RISC-V SBC, based on the [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC.
+
+[(Star64 version 1.1 was released May 2023)](https://wiki.pine64.org/wiki/STAR64#Board_Information,_Schematics_and_Certifications)
+
+In this article we'll...
+
+-   Look inside the brand new __Linux Images__ for Star64
+
+-   __Decompile with Ghidra__ the RISC-V Linux Kernel
+
+-   Figure out how __Apache NuttX RTOS__ might run on Star64
+
+We won't actually run anything on Star64 yet. We'll save the fun parts for the next article!
+
+_What's NuttX?_
 
 [__Apache NuttX__](https://nuttx.apache.org/docs/latest/index.html) is a __Real-Time Operating System (RTOS)__ that runs on many kinds of devices, from 8-bit to 64-bit.
+
+TODO
 
 # Linux Images for Star64
 
