@@ -151,7 +151,7 @@ distro_bootpart=1
 # Fix missing bootcmd
 bootcmd=run bootcmd_distro
 </code></pre></div>
-<p><a href="https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables"><strong>kernel_addr_r</strong></a> says that Linux Kernel will be loaded at <strong><code>0x4400</code> <code>0000</code></strong>…</p>
+<p><a href="https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables"><strong>kernel_addr_r</strong></a> says that Linux Kernel will be loaded at RAM Address <strong><code>0x4400</code> <code>0000</code></strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>kernel_addr_r=0x44000000
 </code></pre></div>
 <p>(Yocto boots Linux at a different address, as we’ll see)</p>
@@ -285,7 +285,7 @@ irdsize=5f00000
 ...
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64#yocto-image-for-star64">(See the Complete File)</a></p>
-<p><a href="https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables"><strong>kernel_addr_r</strong></a> says that Linux Kernel will be loaded at <strong><code>0x4020</code> <code>0000</code></strong>…</p>
+<p><a href="https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables"><strong>kernel_addr_r</strong></a> says that Linux Kernel will be loaded at RAM Address <strong><code>0x4020</code> <code>0000</code></strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code># boot Linux flat or compressed &#39;Image&#39; stored at &#39;kernel_addr_r&#39;
 kernel_addr_r=0x40200000
 </code></pre></div>
@@ -304,14 +304,14 @@ lrwxrwxrwx       17 fitImage -&gt; fitImage-5.15.107
 -rw-r--r--  9807808 fitImage-5.15.107
 -rw-r--r-- 15151064 fitImage-initramfs-5.15.107
 </code></pre></div>
-<p>Yes Yocto looks more complicated than Armbian, but it boots OK on Star64!</p>
+<p>Yocto looks more complicated than Armbian, but it boots OK on Star64!</p>
 <p><img src="https://lupyuen.github.io/images/star64-opensbi.jpg" alt="U-Boot Bootloader Log" /></p>
 <h1 id="boot-nuttx-with-u-boot-bootloader"><a href="#boot-nuttx-with-u-boot-bootloader">4 Boot NuttX with U-Boot Bootloader</a></h1>
 <p><em>When we port NuttX RTOS to Star64…</em></p>
 <p><em>Will NuttX boot with Armbian or Yocto settings?</em></p>
 <p>Armbian looks simpler than Yocto, since it uses a plain Kernel Image File <strong>/boot/Image</strong>. </p>
 <p>(Instead of Yocto’s complicated Flat Image Tree)</p>
-<p>Hence we’ll adopt the Armbian Boot Settings, but overwrite <strong>/boot/Image</strong> by the <strong>NuttX Kernel Image</strong>. </p>
+<p>Hence for NuttX we’ll adopt the Armbian Boot Settings, overwriting <strong>/boot/Image</strong> by the <strong>NuttX Kernel Image</strong>. </p>
 <p>And hopefully U-Boot Bootloader will <strong>boot NuttX on Star64</strong>! Assuming that we fix these…</p>
 <ul>
 <li>
@@ -354,7 +354,7 @@ u32 res3;                 /* Reserved for PE COFF offset */
 <p>First we decompile the Kernel Image…</p>
 <h1 id="decompile-kernel-with-ghidra"><a href="#decompile-kernel-with-ghidra">6 Decompile Kernel with Ghidra</a></h1>
 <p><em>Can we actually see the RISC-V Code inside the Linux Kernel?</em></p>
-<p>Yep! Let’s decompile the Armbian Kernel Image with <a href="https://github.com/NationalSecurityAgency/ghidra"><strong>Ghidra</strong></a>, the popular tool for Reverse Engineering…</p>
+<p>Yep! Let’s decompile the Armbian Kernel with <a href="https://github.com/NationalSecurityAgency/ghidra"><strong>Ghidra</strong></a>, the popular tool for Reverse Engineering…</p>
 <ol>
 <li>
 <p>In Ghidra, create a <strong>New Project</strong></p>
