@@ -325,7 +325,7 @@ Let's figure out the File Format for __/boot/Image__...
 
 ![Armbian Kernel Image](https://lupyuen.github.io/images/star64-kernel.png)
 
-# Inside the Armbian Kernel Image
+# Inside the Kernel Image
 
 _What's inside the Linux Kernel Image?_
 
@@ -363,11 +363,11 @@ We'll find out in a while.
 
 First we decompile the Kernel Image...
 
-# Decompile Armbian Kernel Image with Ghidra
+# Decompile Kernel with Ghidra
 
 _Can we actually see the RISC-V Code inside the Linux Kernel?_
 
-Yep! Let's decompile the Armbian Kernel Image with [__Ghidra__](https://github.com/NationalSecurityAgency/ghidra), the popular tool for Reverse Engineering.
+Yep! Let's decompile the Armbian Kernel Image with [__Ghidra__](https://github.com/NationalSecurityAgency/ghidra), the popular tool for Reverse Engineering...
 
 1.  In Ghidra, create a __New Project__
 
@@ -381,13 +381,11 @@ Yep! Let's decompile the Armbian Kernel Image with [__Ghidra__](https://github.c
 
     [(StarFive JH7110 has 4 × RV64GC U74 Application Cores)](https://doc-en.rvspace.org/JH7110/Datasheet/JH7110_DS/c_u74_quad_core.html)
 
-    __Options > Base Address:__ 0x44000000
+    __Options > Base Address:__ `0x44000000`
 
     (Based on the U-Boot Configuration from above)
 
     (Ghidra thinks it's PE Format because of "MZ"... But it's not!)
-
-    Like this...
 
     ![Load the Armbian Linux Kernel Image into Ghidra](https://lupyuen.github.io/images/star64-ghidra.png)
 
