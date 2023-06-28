@@ -301,25 +301,27 @@ lrwxrwxrwx       17 fitImage -> fitImage-5.15.107
 
 Yes Yocto looks more complicated than Armbian, but it boots OK on Star64!
 
+![U-Boot Bootloader Log](https://lupyuen.github.io/images/star64-opensbi.jpg)
+
 # Boot NuttX with U-Boot Bootloader
 
 _When we port NuttX RTOS to Star64..._
 
-_Will we boot NuttX with Armbian or Yocto settings?_
+_Will NuttX boot with Armbian or Yocto settings?_
 
 Armbian looks simpler than Yocto, since it uses a plain Kernel Image File __/boot/Image__. 
 
 (Instead of Yocto's complicated Flat Image Tree)
 
-Hence we'll overwrite Armbian's __/boot/Image__ by the __NuttX Kernel Image__. 
+Hence we'll adopt the Armbian Boot Settings, but overwrite __/boot/Image__ by the __NuttX Kernel Image__. 
 
 And hopefully U-Boot Bootloader will __boot NuttX on Star64__! Assuming that we fix these...
 
 -   Compile NuttX Kernel to boot at __`0x4400` `0000`__
 
--   Use a placeholder for __Device Tree__ since it's missing
+-   Use a placeholder for __Device Tree__ (since it's missing)
 
--   Apply the special File Format for __Linux Kernel Image__
+-   Use the special File Format for __Linux Kernel Image__ ("MZ")
 
 Let's figure out the File Format for __/boot/Image__...
 
