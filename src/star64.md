@@ -202,6 +202,8 @@ According to the [__U-Boot Bootloader Log__](https://github.com/lupyuen/nuttx-st
 
 Let's compare Armbian with Yocto...
 
+![Yocto Image for Star64](https://lupyuen.github.io/images/star64-yocto.png)
+
 # Yocto Image for Star64
 
 The __Yocto Image for Star64__ looks more complicated than Armbian (but it works)...
@@ -216,7 +218,7 @@ Write the __.img__ file to a microSD Card with [__Balena Etcher__](https://www.b
 
 Insert the microSD Card into a Linux Machine. (Like Pinebook Pro)
 
-We see 4 used partitions...
+From the pic above, we see 4 used partitions...
 
 -   __spl__ (2 MB): For [__Secondary Program Loader__](https://github.com/u-boot/u-boot) (Why?)
 
@@ -228,7 +230,7 @@ We see 4 used partitions...
 
 Plus one unused partition (2 MB) at the top. (Why?)
 
-![Yocto Image for Star64](https://lupyuen.github.io/images/star64-yocto.png)
+_What will happen when it boots?_
 
 __boot__ partition has 2 files...
 
@@ -239,7 +241,7 @@ total 14808
 -rw-r--r--     1562 vf2_uEnv.txt
 ```
 
-__/boot/vf2_uEnv.txt__ contains the U-Boot Bootloader Configuration...
+__/boot/vf2_uEnv.txt__ contains the configuration for [__U-Boot Bootloader__](https://u-boot.readthedocs.io/en/latest/index.html)...
 
 ```text
 # This is the sample jh7110_uEnv.txt file for starfive visionfive U-boot
@@ -274,7 +276,7 @@ kernel_addr_r=0x40200000
 
 Also different from Armbian: Yocto boots from the [__Flat Image Tree (FIT)__](https://u-boot.readthedocs.io/en/latest/usage/fit/index.html#) at __/boot/fitImage__
 
-Which contains everything inside: __Kernel Image, RAM Disk, Device Tree__...
+Which packs everything inside: __Kernel Image, RAM Disk, Device Tree__...
 
 ```text
 ## Loading kernel from FIT Image at a0000000 ...
@@ -297,15 +299,19 @@ lrwxrwxrwx       17 fitImage -> fitImage-5.15.107
 -rw-r--r-- 15151064 fitImage-initramfs-5.15.107
 ```
 
-Looks more complicated than Armbian, but it boots OK on Star64!
+Yes Yocto looks more complicated than Armbian, but it boots OK on Star64!
 
 # Boot NuttX with U-Boot Bootloader
 
+_When we port NuttX RTOS to Star64..._
+
+_Will we boot NuttX with Armbian or Yocto settings?_
+
 TODO
 
-_Will we boot NuttX with Armbian or Yocto settings? `0x4400` `0000` or `0x4020` `0000`?_
+Armbian looks simpler, since it uses a plain Kernel Image File __/boot/Image__. 
 
-Armbian looks simpler, since it uses a plain Linux Kernel Image File `Image`. (Instead of Yocto's complicated Flat Image Tree)
+(Instead of Yocto's complicated Flat Image Tree)
 
 Hence we'll overwrite Armbian's `armbi_root/boot/Image` by the NuttX Kernel Image.
 
