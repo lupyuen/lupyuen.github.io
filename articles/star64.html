@@ -387,6 +387,14 @@ u32 res3;                 /* Reserved for PE COFF offset */
 <p>Double-click <code>FUN_440010ac</code> to see the Linux Boot Code…</p>
 <p><img src="https://lupyuen.github.io/images/star64-ghidra4.png" alt="Linux Boot Code in Ghidra" /></p>
 <p>TODO: Explain MZ and the funny RISC-V instruction at the top</p>
+<p><em>The first RISC-V Instruction looks kinda sus…</em></p>
+<div class="example-wrap"><pre class="language-text"><code>// Load -13 into Register S4
+li  s4,-0xd
+// Jump to Actual Boot Code
+j   FUN_440010c8
+</code></pre></div>
+<p>Remember the “MZ” at the top of our Kernel Image?</p>
+<p><img src="https://lupyuen.github.io/images/star64-kernel.png" alt="Armbian Kernel Image" /></p>
 <p><a href="https://lupyuen.github.io/articles/uboot#nuttx-header">opcode forms the magic “MZ” signature of a PE/COFF file that is required for UEFI applications</a></p>
 <p><a href="https://en.wikipedia.org/wiki/DOS_MZ_executable">(“MZ” refers to Mark Zbikowski)</a></p>
 <p>TODO: Where is the source file?</p>
