@@ -132,7 +132,7 @@
 <p>The pic above shows that the Armbian Image contains 1 used partition: <strong>armbi_root</strong> (612 MB), that contains the <strong>Linux Root Filesystem</strong>.</p>
 <p>Plus one unused partition (4 MB) at the top. (Why?)</p>
 <p><em>What will happen when it boots?</em></p>
-<p>We see the <strong>U-Boot Bootloader Configuration</strong> at <strong>/boot/uEnv.txt</strong>…</p>
+<p>Let’s check the configuration for <a href="https://u-boot.readthedocs.io/en/latest/index.html"><strong>U-Boot Bootloader</strong></a> at <strong>/boot/uEnv.txt</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>fdt_high=0xffffffffffffffff
 initrd_high=0xffffffffffffffff
 
@@ -212,64 +212,67 @@ lrwxrwxrwx       24 Jun 21 13:59 vmlinuz -&gt; vmlinuz-5.15.0-starfive2
 -rw-r--r-- 22040576 Jun 21 12:16 vmlinuz-5.15.0-starfive2
 lrwxrwxrwx       24 Jun 21 13:59 vmlinuz.old -&gt; vmlinuz-5.15.0-starfive2
 </code></pre></div>
-<p>TODO: Explain <strong>/boot/uInitrd</strong> RAM Disk</p>
+<p><em>What’s initrd?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>initrd /boot/uInitrd
 </code></pre></div>
-<p><a href="https://docs.kernel.org/admin-guide/initrd.html"><strong>initrd</strong></a></p>
-<p>According to the <a href="https://github.com/lupyuen/nuttx-star64#boot-armbian-on-star64"><strong>U-Boot Log</strong></a>…</p>
+<p><strong>initrd</strong> is the <a href="https://docs.kernel.org/admin-guide/initrd.html"><strong>Initial RAM Disk</strong></a> that will be loaded into RAM while starting the Linux Kernel.</p>
+<p>According to the <a href="https://github.com/lupyuen/nuttx-star64#boot-armbian-on-star64"><strong>U-Boot Bootloader Log</strong></a>…</p>
 <ol>
 <li>
-<p><strong>Initial RAM Disk</strong> will be loaded first (<strong>uInitrd</strong>)</p>
+<p><strong>Initial RAM Disk</strong> will be loaded first:</p>
+<p><strong>/boot/uInitrd</strong></p>
 </li>
 <li>
-<p>Followed by <strong>Linux Kernel</strong> (<strong>Image</strong>)</p>
+<p>Followed by <strong>Linux Kernel</strong>:</p>
+<p><strong>/boot/Image</strong></p>
 </li>
 <li>
-<p>Then <strong>Device Tree</strong> (which is missing)</p>
+<p>Then <strong>Device Tree</strong></p>
+<p>(Which is missing)</p>
 </li>
 </ol>
+<p>Let’s compare Armbian with Yocto…</p>
 <h1 id="yocto-image-for-star64"><a href="#yocto-image-for-star64">3 Yocto Image for Star64</a></h1>
-<p>TODO</p>
-<p>Let’s inspect the Yocto Image for Star64: <a href="https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2">star64-image-minimal 1.2</a></p>
-<p>Uncompress the .bz2, rename as .img. Balena Etcher won’t work with .bz2 files!</p>
-<p>Write the .img to a microSD Card with Balena Etcher. Insert the microSD Card into a Linux Machine. (Like Pinebook Pro)</p>
+<p>The <strong>Yocto Image for Star64</strong> looks more complicated than Armbian (but it works)…</p>
+<ul>
+<li><a href="https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2"><strong>star64-image-minimal 1.2</strong></a></li>
+</ul>
+<p>Uncompress the <strong>.bz2</strong> file, rename as <strong>.img</strong>.</p>
+<p>(Balena Etcher won’t work with <strong>.bz2</strong> files!)</p>
+<p>Write the <strong>.img</strong> file to a microSD Card with <a href="https://www.balena.io/etcher/"><strong>Balena Etcher</strong></a> or <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a>.</p>
+<p>Insert the microSD Card into a Linux Machine. (Like Pinebook Pro)</p>
 <p>We see 4 used partitions…</p>
 <ul>
 <li>
-<p>spl (2 MB): <a href="https://github.com/u-boot/u-boot">Secondary Program Loader</a></p>
+<p><strong>spl</strong> (2 MB): For <a href="https://github.com/u-boot/u-boot"><strong>Secondary Program Loader</strong></a> (Why?)</p>
 </li>
 <li>
-<p>uboot (4 MB): <a href="https://u-boot.readthedocs.io/en/latest/index.html">U-Boot Bootloader</a></p>
+<p><strong>uboot</strong> (4 MB): For <a href="https://u-boot.readthedocs.io/en/latest/index.html"><strong>U-Boot Bootloader</strong></a> (Why?)</p>
 </li>
 <li>
-<p>boot (380 MB): U-Boot Configuration and Linux Kernel Image</p>
+<p><strong>boot</strong> (380 MB): U-Boot Configuration and Linux Kernel Image</p>
 </li>
 <li>
-<p>root (686 MB): Linux Root Filesystem</p>
+<p><strong>root</strong> (686 MB): Linux Root Filesystem</p>
 </li>
 </ul>
 <p>Plus one unused partition (2 MB) at the top. (Why?)</p>
 <p><img src="https://lupyuen.github.io/images/star64-yocto.png" alt="Yocto Image for Star64" /></p>
-<p><code>boot</code> partition has 2 files…</p>
+<p><strong>boot</strong> partition has 2 files…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ ls -l /run/media/luppy/boot
 total 14808
--rw-r--r-- 1 luppy luppy 15151064 Apr  6  2011 fitImage
--rw-r--r-- 1 luppy luppy     1562 Apr  6  2011 vf2_uEnv.txt
+-rw-r--r-- 15151064 fitImage
+-rw-r--r--     1562 vf2_uEnv.txt
 </code></pre></div>
-<p><code>boot/vf2_uEnv.txt</code> contains the U-Boot Bootloader Configuration…</p>
+<p><strong>/boot/vf2_uEnv.txt</strong> contains the U-Boot Bootloader Configuration…</p>
 <div class="example-wrap"><pre class="language-text"><code># This is the sample jh7110_uEnv.txt file for starfive visionfive U-boot
 # The current convention (SUBJECT TO CHANGE) is that this file
 # will be loaded from the third partition on the
 # MMC card.
-#devnum=1
 partnum=3
 
 # The FIT file to boot from
 fitfile=fitImage
-
-# for debugging boot
-bootargs_ext=if test ${devnum} = 0; then setenv bootargs &quot;earlyprintk console=tty1 console=ttyS0,115200 rootwait earlycon=sbi root=/dev/mmcblk0p4&quot;; else setenv bootargs &quot;earlyprintk console=tty1 console=ttyS0,115200 rootwait earlycon=sbi root=/dev/mmcblk1p4&quot;; fi;
-#bootargs=earlyprintk console=ttyS0,115200 debug rootwait earlycon=sbi root=/dev/mmcblk1p4
 
 # for addr info
 fileaddr=0xa0000000
@@ -278,31 +281,33 @@ fdtaddr=0x46000000
 kernel_addr_r=0x40200000
 irdaddr=46100000
 irdsize=5f00000
-
-# Use the FDT in the FIT image..
-setupfdt1=fdt addr ${fdtaddr}; fdt resize;
-
-setupird=setexpr irdend ${irdaddr} + ${irdsize}; fdt set /chosen linux,initrd-start &lt;0x0 0x${irdaddr}&gt;; fdt set /chosen linux,initrd-end &lt;0x0 0x${irdend}&gt;
-
-setupfdt2=fdt set /chosen bootargs &quot;${bootargs}&quot;;
-
-bootwait=setenv _delay ${bootdelay}; echo ${_delay}; while test ${_delay} &gt; 0; do sleep 1; setexpr _delay ${_delay} - 1; echo ${_delay}; done
-
-boot2=run bootargs_ext; mmc dev ${devnum}; fatload mmc ${devnum}:${partnum} ${fileaddr} ${fitfile}; bootm start ${fileaddr}; run setupfdt1;run setupird;run setupfdt2; bootm loados ${fileaddr}; run chipa_set_linux; run cpu_vol_set; echo &quot;Booting kernel in&quot;; booti ${kernel_addr_r} ${irdaddr}:${filesize} ${fdtaddr}
+...
 </code></pre></div>
-<p><a href="https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables"><code>kernel_addr_r</code></a> says that Linux Kernel will be loaded at <code>0x4020</code> <code>0000</code>…</p>
+<p><a href="https://github.com/lupyuen/nuttx-star64#yocto-image-for-star64">(See the Complete File)</a></p>
+<p><a href="https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables"><strong>kernel_addr_r</strong></a> says that Linux Kernel will be loaded at <strong><code>0x4020</code> <code>0000</code></strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code># boot Linux flat or compressed &#39;Image&#39; stored at &#39;kernel_addr_r&#39;
 kernel_addr_r=0x40200000
 </code></pre></div>
-<p>(Different from Armbian: <code>0x4400</code> <code>0000</code>)</p>
-<p>Yocto boots from the <a href="https://u-boot.readthedocs.io/en/latest/usage/fit/index.html#">Flat Image Tree (FIT)</a>: <code>boot/fitImage</code></p>
-<p>Yocto’s <code>root/boot</code> looks different from Armbian…</p>
+<p>(Different from Armbian’s <strong><code>0x4400</code> <code>0000</code></strong>)</p>
+<p>Also different from Armbian: Yocto boots from the <a href="https://u-boot.readthedocs.io/en/latest/usage/fit/index.html#"><strong>Flat Image Tree (FIT)</strong></a> at <strong>/boot/fitImage</strong></p>
+<p>Which contains everything inside: <strong>Kernel Image, RAM Disk, Device Tree</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>## Loading kernel from FIT Image at a0000000 ...
+   Using &#39;conf-starfive_jh7110-pine64-star64.dtb&#39; configuration
+## Loading ramdisk from FIT Image at a0000000 ...
+   Using &#39;conf-starfive_jh7110-pine64-star64.dtb&#39; configuration
+## Loading fdt from FIT Image at a0000000 ...
+   Using &#39;conf-starfive_jh7110-pine64-star64.dtb&#39; configuration
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528">(Source)</a></p>
+<p>Yocto’s <strong>/root/boot</strong> looks different from Armbian…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ ls -l /run/media/luppy/root/boot
 total 24376
-lrwxrwxrwx 1 root root       17 Mar  9  2018 fitImage -&gt; fitImage-5.15.107
--rw-r--r-- 1 root root  9807808 Mar  9  2018 fitImage-5.15.107
--rw-r--r-- 1 root root 15151064 Mar  9  2018 fitImage-initramfs-5.15.107
-</code></pre></div><h1 id="boot-nuttx-with-u-boot-bootloader"><a href="#boot-nuttx-with-u-boot-bootloader">4 Boot NuttX with U-Boot Bootloader</a></h1>
+lrwxrwxrwx       17 fitImage -&gt; fitImage-5.15.107
+-rw-r--r--  9807808 fitImage-5.15.107
+-rw-r--r-- 15151064 fitImage-initramfs-5.15.107
+</code></pre></div>
+<p>Looks more complicated than Armbian, but it boots OK on Star64!</p>
+<h1 id="boot-nuttx-with-u-boot-bootloader"><a href="#boot-nuttx-with-u-boot-bootloader">4 Boot NuttX with U-Boot Bootloader</a></h1>
 <p>TODO</p>
 <p><em>Will we boot NuttX with Armbian or Yocto settings? <code>0x4400</code> <code>0000</code> or <code>0x4020</code> <code>0000</code>?</em></p>
 <p>Armbian looks simpler, since it uses a plain Linux Kernel Image File <code>Image</code>. (Instead of Yocto’s complicated Flat Image Tree)</p>
