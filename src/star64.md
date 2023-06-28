@@ -4,7 +4,7 @@
 
 ![Pine64 Star64 64-bit RISC-V SBC](https://lupyuen.github.io/images/star64-title.jpg)
 
-[__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) is a new 64-bit RISC-V SBC, based on the [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC.
+[__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) is a new 64-bit RISC-V Single-Board Computer, based on the [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC.
 
 [(Star64 version 1.1 was released May 2023)](https://wiki.pine64.org/wiki/STAR64#Board_Information,_Schematics_and_Certifications)
 
@@ -216,7 +216,7 @@ Uncompress the __.bz2__ file, rename as __.img__.
 
 Write the __.img__ file to a microSD Card with [__Balena Etcher__](https://www.balena.io/etcher/) or [__GNOME Disks__](https://wiki.gnome.org/Apps/Disks).
 
-Insert the microSD Card into a Linux Machine. (Like Pinebook Pro)
+Insert the microSD Card into a Linux Computer. (Like Pinebook Pro)
 
 From the pic above, we see 4 used partitions...
 
