@@ -447,7 +447,7 @@ Today we completed our Linux Homework... Without a Star64 SBC!
 
 -   We __decompiled with Ghidra__ the RISC-V Linux Kernel
 
--   And we got some idea how __Apache NuttX RTOS__ might boot on Star64
+-   And we figured out how __Apache NuttX RTOS__ might boot on Star64
 
 Please join me in the next article as we actually boot Linux on Star64! (Pic above)
 
