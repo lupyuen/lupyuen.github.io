@@ -30,21 +30,27 @@ _"All we need is a microSD"_
 
 # Linux Images for Star64
 
-TODO
+According to [__Software Releases for Star64__](https://wiki.pine64.org/wiki/STAR64#Software_releases), we have...
 
-Let's examine the Linux Images for Star64 SBC, to see how U-Boot Bootloader is configured. (We'll boot NuttX later with U-Boot)
+-   [__Armbian Images__](https://www.armbian.com/star64/)
 
-According to [Software Releases for Star64](https://wiki.pine64.org/wiki/STAR64#Software_releases), we have...
+    Let's inspect [__Armbian 23.8 Lunar (Minimal)__](https://github.com/armbianro/os/releases/download/23.8.0-trunk.56/Armbian_23.8.0-trunk.56_Star64_lunar_edge_5.15.0_minimal.img.xz)
 
--   [Yocto Images](https://github.com/Fishwaldo/meta-pine64) at [pine64.my-ho.st](https://pine64.my-ho.st:8443/)
+-   [__Yocto Images__](https://github.com/Fishwaldo/meta-pine64) at [__pine64.my-ho.st__](https://pine64.my-ho.st:8443/)
 
-    Let's inspect [star64-image-minimal](https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2)
+    Let's inspect [__star64-image-minimal 1.2__](https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2)
 
--   [Armbian Images](https://www.armbian.com/star64/)
+_What about other Linux Distros?_
 
-    Let's inspect [Armbian 23.8 Lunar (Minimal)](https://github.com/armbianro/os/releases/download/23.8.0-trunk.56/Armbian_23.8.0-trunk.56_Star64_lunar_edge_5.15.0_minimal.img.xz)
+Linux on RISC-V is in __Active Development__, many distros are not quite ready for the StarFive JH7110 SoC.
 
-Current state of RISC-V Linux: [Linux on RISC-V (2022)](https://docs.google.com/presentation/d/1A0A6DnGyXR_MPpeg7QunQbv_yePPqid_uRswQe8Sj8M/edit#slide=id.p)
+Check out the current state of RISC-V Linux...
+
+-   [__Linux on RISC-V (2022)__](https://docs.google.com/presentation/d/1A0A6DnGyXR_MPpeg7QunQbv_yePPqid_uRswQe8Sj8M/edit#slide=id.p)
+
+-   [__Linux 6.4 supports StarFive JH7110 SoC__](https://www.cnx-software.com/2023/06/26/linux-6-4-release-main-changes-arm-risc-v-and-mips-architectures/)
+
+-   [__Star64 GPU not supported yet__](https://github.com/Fishwaldo/meta-pine64#quickstart)
 
 # Armbian Image for Star64
 
