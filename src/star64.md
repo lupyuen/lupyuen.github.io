@@ -12,7 +12,7 @@ In this article we'll...
 
 -   Look inside the brand new __Linux Images__ for Star64
 
--   __Decompile with Ghidra__ the RISC-V Linux Kernel
+-   __Decompile (with Ghidra)__ the RISC-V Linux Kernel
 
 -   Figure out how __Apache NuttX RTOS__ might run on Star64
 
