@@ -371,6 +371,7 @@ u32 res3;                 /* Reserved for PE COFF offset */
 <p><a href="https://doc-en.rvspace.org/JH7110/Datasheet/JH7110_DS/c_u74_quad_core.html">(StarFive JH7110 has 4 × RV64GC U74 Application Cores)</a></p>
 <p><strong>Options &gt; Base Address:</strong> 0x44000000</p>
 <p>(Based on the U-Boot Configuration from above)</p>
+<p>(Ghidra thinks it’s PE Format because of “MZ”… But it’s not!)</p>
 <p>Like this…</p>
 <p><img src="https://lupyuen.github.io/images/star64-ghidra.png" alt="Load the Armbian Linux Kernel Image into Ghidra" /></p>
 <p><img src="https://lupyuen.github.io/images/star64-ghidra2.png" alt="Load the Armbian Linux Kernel Image into Ghidra" /></p>
@@ -395,8 +396,9 @@ j   FUN_440010c8
 </code></pre></div>
 <p>Remember the “MZ” at the top of our Kernel Image?</p>
 <p><img src="https://lupyuen.github.io/images/star64-kernel.png" alt="Armbian Kernel Image" /></p>
+<p>For <a href="https://en.wikipedia.org/wiki/DOS_MZ_executable"><strong>Legacy Reasons</strong></a></p>
 <p><a href="https://lupyuen.github.io/articles/uboot#nuttx-header">opcode forms the magic “MZ” signature of a PE/COFF file that is required for UEFI applications</a></p>
-<p><a href="https://en.wikipedia.org/wiki/DOS_MZ_executable">(“MZ” refers to Mark Zbikowski)</a></p>
+<p><a href="https://en.wikipedia.org/wiki/DOS_MZ_executable">(“MZ” refers to <strong>Mark Zbikowski</strong>)</a></p>
 <p>TODO: Where is the source file?</p>
 <p>TODO: Any interesting CSR Instructions?</p>
 <p><a href="https://lupyuen.github.io/articles/riscv#get-cpu-id">(The <strong>CSR Instructions</strong> look interesting, but we’ll skip them today)</a></p>
