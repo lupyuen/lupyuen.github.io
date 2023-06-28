@@ -22,7 +22,7 @@ _What's NuttX?_
 
 [__Apache NuttX__](https://nuttx.apache.org/docs/latest/index.html) is a __Real-Time Operating System (RTOS)__ that runs on many kinds of devices, from 8-bit to 64-bit.
 
-The analysis that we do today will be super helpful for porting NuttX to the Star64 SBC. Let's inspect the microSD Images...
+The analysis that we do today will be super helpful for __porting NuttX to Star64__. Let's inspect the microSD Images...
 
 !["All we need is a microSD"](https://lupyuen.github.io/images/star64-microsd.jpg)
 
