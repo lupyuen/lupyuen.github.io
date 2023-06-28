@@ -130,7 +130,7 @@
 </ul>
 <p>Uncompress the <strong>.xz</strong> file, mount the <strong>.img</strong> file on Linux / macOS / Windows as an ISO Volume.</p>
 <p>The pic above shows that the Armbian Image contains 1 used partition: <strong>armbi_root</strong> (612 MB), that contains the <strong>Linux Root Filesystem</strong>.</p>
-<p>Plus one unused partition (4 MB) at the top. (Why?)</p>
+<p>Plus one unused partition (4 MB) at the top. (Partition Table)</p>
 <p><em>What will happen when it boots?</em></p>
 <p>Let’s check the configuration for <a href="https://u-boot.readthedocs.io/en/latest/index.html"><strong>U-Boot Bootloader</strong></a> at <strong>/boot/uEnv.txt</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>fdt_high=0xffffffffffffffff
@@ -245,10 +245,10 @@ lrwxrwxrwx       24 vmlinuz.old -&gt; vmlinuz-5.15.0-starfive2
 <p>From the pic above, we see 4 used partitions…</p>
 <ul>
 <li>
-<p><strong>spl</strong> (2 MB): For <a href="https://u-boot.readthedocs.io/en/latest/develop/spl.html#u-boot-phases"><strong>Secondary Program Loader</strong></a> (Why?)</p>
+<p><strong>spl</strong> (2 MB): For <a href="https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html#flashing"><strong>Secondary Program Loader</strong></a></p>
 </li>
 <li>
-<p><strong>uboot</strong> (4 MB): For <a href="https://u-boot.readthedocs.io/en/latest/index.html"><strong>U-Boot Bootloader</strong></a> (Why?)</p>
+<p><strong>uboot</strong> (4 MB): For <a href="https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html#flashing"><strong>U-Boot Bootloader</strong></a></p>
 </li>
 <li>
 <p><strong>boot</strong> (380 MB): U-Boot Configuration and Linux Kernel Image</p>
@@ -257,7 +257,7 @@ lrwxrwxrwx       24 vmlinuz.old -&gt; vmlinuz-5.15.0-starfive2
 <p><strong>root</strong> (686 MB): Linux Root Filesystem</p>
 </li>
 </ul>
-<p>Plus one unused partition (2 MB) at the top. (Why?)</p>
+<p>Plus one unused partition (2 MB) at the top. (Partition Table)</p>
 <p><em>What will happen when it boots?</em></p>
 <p><strong>boot</strong> partition has 2 files…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ ls -l /run/media/luppy/boot
