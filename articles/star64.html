@@ -170,7 +170,15 @@ bootcmd=run bootcmd_distro
 <p>Nope the <strong>Flattened Device Tree (FDT)</strong> is missing!</p>
 <div class="example-wrap"><pre class="language-text"><code>fdt /boot/dtb/starfive/jh7110-star64-pine64.dtb
 </code></pre></div>
-<p>Which means that Armbian will <strong>fail to boot</strong> on Star64.</p>
+<p>Which means that Armbian will <a href="https://github.com/lupyuen/nuttx-star64#boot-armbian-on-star64"><strong>fail to boot</strong></a> on Star64!</p>
+<div class="example-wrap"><pre class="language-text"><code>Retrieving file: /boot/uInitrd
+10911538 bytes read in 466 ms (22.3 MiB/s)
+Retrieving file: /boot/Image
+22040576 bytes read in 936 ms (22.5 MiB/s)
+Retrieving file: /boot/dtb/starfive/jh7110-star64-pine64.dtb
+Failed to load &#39;/boot/dtb/starfive/jh7110-star64-pine64.dtb&#39;
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-star64#boot-armbian-on-star64">(Source)</a></p>
 <p>Here’s the list of <strong>Device Trees</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>→ ls /Volumes/armbi_root/boot/dtb-5.15.0-starfive2/starfive
 evb-overlay                      jh7110-evb-usbdevice.dtb
@@ -204,7 +212,10 @@ lrwxrwxrwx       24 Jun 21 13:59 vmlinuz -&gt; vmlinuz-5.15.0-starfive2
 -rw-r--r-- 22040576 Jun 21 12:16 vmlinuz-5.15.0-starfive2
 lrwxrwxrwx       24 Jun 21 13:59 vmlinuz.old -&gt; vmlinuz-5.15.0-starfive2
 </code></pre></div>
-<p>TODO: Explain <code>boot/uInitrd</code> RAM Disk</p>
+<p>TODO: Explain <strong>/boot/uInitrd</strong> RAM Disk</p>
+<div class="example-wrap"><pre class="language-text"><code>initrd /boot/uInitrd
+</code></pre></div>
+<p><a href="https://docs.kernel.org/admin-guide/initrd.html"><strong>initrd</strong></a></p>
 <h1 id="yocto-image-for-star64"><a href="#yocto-image-for-star64">3 Yocto Image for Star64</a></h1>
 <p>TODO</p>
 <p>Let’s inspect the Yocto Image for Star64: <a href="https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2">star64-image-minimal 1.2</a></p>
