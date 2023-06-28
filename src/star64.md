@@ -126,7 +126,18 @@ Nope the __Flattened Device Tree (FDT)__ is missing!
 fdt /boot/dtb/starfive/jh7110-star64-pine64.dtb
 ```
 
-Which means that Armbian will __fail to boot__ on Star64.
+Which means that Armbian will [__fail to boot__](https://github.com/lupyuen/nuttx-star64#boot-armbian-on-star64) on Star64!
+
+```text
+Retrieving file: /boot/uInitrd
+10911538 bytes read in 466 ms (22.3 MiB/s)
+Retrieving file: /boot/Image
+22040576 bytes read in 936 ms (22.5 MiB/s)
+Retrieving file: /boot/dtb/starfive/jh7110-star64-pine64.dtb
+Failed to load '/boot/dtb/starfive/jh7110-star64-pine64.dtb'
+```
+
+[(Source)](https://github.com/lupyuen/nuttx-star64#boot-armbian-on-star64)
 
 Here's the list of __Device Trees__...
 
@@ -167,7 +178,13 @@ lrwxrwxrwx       24 Jun 21 13:59 vmlinuz -> vmlinuz-5.15.0-starfive2
 lrwxrwxrwx       24 Jun 21 13:59 vmlinuz.old -> vmlinuz-5.15.0-starfive2
 ```
 
-TODO: Explain `boot/uInitrd` RAM Disk
+TODO: Explain __/boot/uInitrd__ RAM Disk
+
+```text
+initrd /boot/uInitrd
+```
+
+[__initrd__](https://docs.kernel.org/admin-guide/initrd.html)
 
 # Yocto Image for Star64
 
