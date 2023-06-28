@@ -350,8 +350,7 @@ u32 res3;                 /* Reserved for PE COFF offset */
 <p>Our NuttX Kernel shall <strong>recreate this RISC-V Linux Image Header</strong>.</p>
 <p>(Or U-Boot Bootloader might refuse to boot NuttX)</p>
 <p><em>Why does the pic show “MZ” at 0x0? Who is “MZ”?</em></p>
-<p>We’ll find out in a while.</p>
-<p>First we decompile the Kernel Image…</p>
+<p>To solve the “MZ” Mystery, we decompile the Linux Kernel…</p>
 <h1 id="decompile-kernel-with-ghidra"><a href="#decompile-kernel-with-ghidra">6 Decompile Kernel with Ghidra</a></h1>
 <p><em>Can we actually see the RISC-V Code inside the Linux Kernel?</em></p>
 <p>Yep! Let’s decompile the Armbian Kernel with <a href="https://github.com/NationalSecurityAgency/ghidra"><strong>Ghidra</strong></a>, the popular tool for Reverse Engineering…</p>
@@ -392,6 +391,7 @@ li  s4,-0xd
 // Jump to Actual Boot Code
 j   FUN_440010c8
 </code></pre></div>
+<p>It’s highly sus because the First Instruction doesn’t do anything meaningful!</p>
 <p>Remember the <strong>“MZ”</strong> at the top of our Kernel Image?</p>
 <p><img src="https://lupyuen.github.io/images/star64-kernel.png" alt="Armbian Kernel Image" /></p>
 <p>For <a href="https://en.wikipedia.org/wiki/DOS_MZ_executable"><strong>Legacy Reasons</strong></a>, the Linux Kernel embeds “MZ” to signify that it’s a PE / COFF File, to look like a <a href="https://lupyuen.github.io/articles/uboot#nuttx-header"><strong>UEFI Application</strong></a>.</p>
