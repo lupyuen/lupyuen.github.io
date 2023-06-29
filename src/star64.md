@@ -139,7 +139,11 @@ Failed to load '/boot/dtb/starfive/jh7110-star64-pine64.dtb'
 
 [(Source)](https://github.com/lupyuen/nuttx-star64#boot-armbian-on-star64)
 
-Here's the list of __Device Trees__...
+The missing Device Tree is noted in this [__Pine64 Forum Post__](https://forum.pine64.org/showthread.php?tid=18276&pid=117607#pid117607). So we might need to check back later for the Official Armbian Image, if it's fixed.
+
+[(__balbes150__ suggests that we try this Armbian Image instead)](https://forum.pine64.org/showthread.php?tid=18420&pid=118331#pid118331)
+
+For Reference: Here's the list of __Supported Device Trees__...
 
 ```text
 → ls /Volumes/armbi_root/boot/dtb-5.15.0-starfive2/starfive
@@ -154,7 +158,7 @@ jh7110-evb-uart4-emmc-spdif.dtb  jh7110-visionfive-v2.dtb
 jh7110-evb-uart5-pwm-i2c-tdm.dtb vf2-overlay
 ```
 
-For reference, here are the other files in __/boot__...
+And here are the other files in __/boot__...
 
 ```text
 → ls -l /Volumes/armbi_root/boot
