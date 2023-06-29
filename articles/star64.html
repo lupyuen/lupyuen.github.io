@@ -156,7 +156,7 @@ bootcmd=run bootcmd_distro
 </code></pre></div>
 <p>(Yocto boots Linux at a different address, as we’ll see)</p>
 <p>This probably means that U-Boot Bootloader is loaded at <strong><code>0x4000</code> <code>0000</code></strong>.</p>
-<p><a href="https://doc-en.rvspace.org/JH7110/PDF/JH7110_TRM_StarFive_Preliminary_V2.pdf#memory_map">(Which is consistent with the <strong>JH7110 Memory Map</strong>)</a></p>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html">(Which is consistent with the <strong>JH7110 Memory Map</strong>)</a></p>
 <p>U-Boot Bootloader will also read the options from <strong>/boot/extlinux/extlinux.conf</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>label Armbian
   kernel /boot/Image
