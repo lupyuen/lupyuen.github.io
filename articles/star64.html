@@ -309,7 +309,7 @@ lrwxrwxrwx       17 fitImage -&gt; fitImage-5.15.107
 </code></pre></div>
 <p>Yocto looks more complicated than Armbian, but it boots OK on Star64!</p>
 <p><em>How will Star64 boot from the <strong>spl</strong> and <strong>uboot</strong> partitions?</em></p>
-<p>Normally we don’t! (SPL and U-Boot from Star64’s Flash Memory will work OK)</p>
+<p>Normally we don’t! (SPL and U-Boot from Star64’s Internal Flash Memory will work OK)</p>
 <p>But if we need to (for testing), flip the <a href="https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html#booting"><strong>DIP Switches</strong></a> and set GPIO 0 = High, GPIO 1 = Low.</p>
 <p><a href="https://wiki.pine64.org/wiki/STAR64#Prototype_Bringup_Notes">(DIP Switch Labels are inverted: <strong>“ON”</strong> actually means <strong>“Low”</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/star64-opensbi.jpg" alt="U-Boot Bootloader Log" /></p>
