@@ -296,6 +296,8 @@ NuttX on PinePhone has been an incredibly rewarding journey, thanks to the aweso
 
 Please join me in the next article, as we begin our exploration of __Apache NuttX RTOS on 64-bit RISC-V__...
 
+-   [__"Inspecting the RISC-V Linux Images for Star64 SBC"__](https://lupyuen.github.io/articles/star64)
+
 -   [__"64-bit RISC-V with Apache NuttX Real-Time Operating System"__](https://lupyuen.github.io/articles/riscv)
 
 -   [__"Apache NuttX RTOS for Pine64 Star64 64-bit RISC-V SBC (StarFive JH7110)"__](https://github.com/lupyuen/nuttx-star64)
