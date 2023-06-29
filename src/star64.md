@@ -449,6 +449,8 @@ We'll recreate "MZ" in our [__NuttX Kernel__](https://lupyuen.github.io/articles
 
 [("MZ" refers to __Mark Zbikowski__)](https://en.wikipedia.org/wiki/DOS_MZ_executable)
 
+(Linux Kernel pretends to be a DOS File... NuttX Kernel pretends to be Linux. Hilarious!)
+
 ![Yocto Plasma on Star64](https://lupyuen.github.io/images/star64-plasma.jpg)
 
 [_Yocto Plasma on Star64_](https://github.com/lupyuen/nuttx-star64#boot-yocto-plasma-on-star64)
