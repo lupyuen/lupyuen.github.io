@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Inspecting the RISC-V Linux Images for Star64 SBC</title>
+            <link>https://lupyuen.github.io/articles/star64</link>
+            <description><![CDATA[Let's look inside the Linux Images for Pine64's Star64 64-bit RISC-V Single-Board Computer: Armbian and Yocto]]></description>
+            <guid>https://lupyuen.github.io/articles/star64</guid>
+            <pubDate>Fri, 30 Jun 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>64-bit RISC-V with Apache NuttX Real-Time Operating System</title>
             <link>https://lupyuen.github.io/articles/riscv</link>
             <description><![CDATA[Let's boot Apache NuttX Real-Time Operating System on a 64-bit RISC-V Device (QEMU Emulator) and explore the Boot Code inside NuttX]]></description>

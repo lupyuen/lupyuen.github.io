@@ -1,6 +1,6 @@
 # Inspecting the RISC-V Linux Images for Star64 SBC
 
-📝 _7 Jul 2023_
+📝 _30 Jun 2023_
 
 ![Pine64 Star64 64-bit RISC-V SBC](https://lupyuen.github.io/images/star64-title.jpg)
 

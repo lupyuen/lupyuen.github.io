@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Inspecting the RISC-V Linux Images for Star64 SBC",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-06-30",
+      "website": "https://lupyuen.github.io/articles/star64",
+      "summary": "Let's look inside the Linux Images for Pine64's Star64 64-bit RISC-V Single-Board Computer: Armbian and Yocto"
+    },
+    {
       "name": "64-bit RISC-V with Apache NuttX Real-Time Operating System",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-06-25",
