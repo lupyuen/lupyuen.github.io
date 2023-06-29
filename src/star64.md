@@ -305,7 +305,7 @@ Yocto looks more complicated than Armbian, but it boots OK on Star64!
 
 _How will Star64 boot from the __spl__ and __uboot__ partitions?_
 
-Normally we don't! (SPL and U-Boot from Star64's Flash Memory will work OK)
+Normally we don't! (SPL and U-Boot from Star64's Internal Flash Memory will work OK)
 
 But if we need to (for testing), flip the [__DIP Switches__](https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html#booting) and set GPIO 0 = High, GPIO 1 = Low.
 
