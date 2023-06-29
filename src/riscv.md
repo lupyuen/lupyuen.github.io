@@ -503,6 +503,8 @@ The analysis we've done today will be super helpful as we write the Boot Code fo
 
 Stay tuned for updates in the next article!
 
+-   [__"Inspecting the RISC-V Linux Images for Star64 SBC"__](https://lupyuen.github.io/articles/star64)
+
 -   [__"Apache NuttX RTOS for Pine64 Star64 64-bit RISC-V SBC (StarFive JH7110)"__](https://github.com/lupyuen/nuttx-star64)
 
 # What's Next
@@ -517,7 +519,11 @@ I hope this article has been an educational exploration of Apache NuttX RTOS on 
 
 As we've seen, NuttX is a tiny operating system that's perfect for experimenting with RISC-V gadgets. We'll do this and much more in the upcoming articles!
 
-[(We welcome __your contribution__ to Apache NuttX RTOS)](https://lupyuen.github.io/articles/pr)
+-   [__"Inspecting the RISC-V Linux Images for Star64 SBC"__](https://lupyuen.github.io/articles/star64)
+
+-   [__"Apache NuttX RTOS for Pine64 Star64 64-bit RISC-V SBC (StarFive JH7110)"__](https://github.com/lupyuen/nuttx-star64)
+
+    [(We welcome __your contribution__ to Apache NuttX RTOS)](https://lupyuen.github.io/articles/pr)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
