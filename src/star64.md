@@ -102,7 +102,7 @@ kernel_addr_r=0x44000000
 
 This probably means that U-Boot Bootloader is loaded at __`0x4000` `0000`__.
 
-[(Which is consistent with the __JH7110 Memory Map__)](https://doc-en.rvspace.org/JH7110/PDF/JH7110_TRM_StarFive_Preliminary_V2.pdf#memory_map)
+[(Which is consistent with the __JH7110 Memory Map__)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html)
 
 U-Boot Bootloader will also read the options from __/boot/extlinux/extlinux.conf__...
 
