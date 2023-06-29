@@ -120,7 +120,7 @@ This says that U-Boot will load the Linux Kernel Image from __/boot/Image__.
 
 _Everything looks hunky dory?_
 
-Nope the __Flattened Device Tree (FDT)__ is missing!
+Nope the [__Flattened Device Tree (FDT)__](https://u-boot.readthedocs.io/en/latest/develop/devicetree/index.html) is missing!
 
 ```text
 fdt /boot/dtb/starfive/jh7110-star64-pine64.dtb
