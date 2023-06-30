@@ -457,6 +457,12 @@ _Why are the RISC-V Labels named "1f", "2f", "3f"?_
 
 (Instead of a [__Backward Reference__](https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#labels))
 
+_Can we write our own RISC-V Assembly Code? As a learning exercise?_
+
+Yep! Here's how we inserted our own RISC-V Assembly Code into the NuttX Boot Code...
+
+-   [__"NuttX prints to QEMU Console"__](https://github.com/lupyuen/nuttx-star64#nuttx-prints-to-qemu-console)
+
 Let's jump to __qemu_rv_start__...
 
 ![RISC-V Start Code for NuttX RTOS](https://lupyuen.github.io/images/riscv-start.png)
