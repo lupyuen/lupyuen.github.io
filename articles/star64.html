@@ -475,51 +475,62 @@ j   FUN_440010c8
 <p>Here are the decoded bytes…</p>
 <ol>
 <li>
-<p><strong>code0</strong>: Executable code (4 bytes)</p>
+<p><strong>code0</strong>: Executable code</p>
+<p>(4 bytes, offset <code>0x00</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>4D  5A  6F  10
 </code></pre></div></li>
 <li>
-<p><strong>code1</strong>: Executable code (4 bytes)</p>
+<p><strong>code1</strong>: Executable code </p>
+<p>(4 bytes, offset <code>0x04</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>60  0C  01  00  
 </code></pre></div></li>
 <li>
-<p><strong>text_offset</strong>: Image load offset, little endian (8 bytes)</p>
+<p><strong>text_offset</strong>: Image load offset, little endian</p>
+<p>(8 bytes, offset <code>0x08</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>00  00  20  00  00  00  00  00
 </code></pre></div></li>
 <li>
-<p><strong>image_size</strong>: Effective Image size, little endian (8 bytes)</p>
+<p><strong>image_size</strong>: Effective Image size, little endian </p>
+<p>(8 bytes, offset <code>0x10</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>00  C0  56  01  00  00  00  00
 </code></pre></div></li>
 <li>
-<p><strong>flags</strong>: Kernel flags, little endian (8 bytes)</p>
+<p><strong>flags</strong>: Kernel flags, little endian </p>
+<p>(8 bytes, offset <code>0x18</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>00  00  00  00  00  00  00  00
 </code></pre></div></li>
 <li>
-<p><strong>version</strong>: Version of this header (4 bytes: <em>MinL</em> <em>MinM</em> <code>.</code> <em>MaxL</em> <em>MaxM</em>)</p>
+<p><strong>version</strong>: Version of this header (<em>MinL</em> <em>MinM</em> <code>.</code> <em>MajL</em> <em>MajM</em>)</p>
+<p>(4 bytes, offset <code>0x20</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>02  00  00  00  
 </code></pre></div></li>
 <li>
-<p><strong>res1</strong>: Reserved (4 bytes)</p>
+<p><strong>res1</strong>: Reserved</p>
+<p>(4 bytes, offset <code>0x24</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>00  00  00  00  
 </code></pre></div></li>
 <li>
-<p><strong>res2</strong>: Reserved (8 bytes)</p>
+<p><strong>res2</strong>: Reserved</p>
+<p>(8 bytes, offset <code>0x28</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>00  00  00  00  00  00  00  00
 </code></pre></div></li>
 <li>
-<p><strong>magic</strong>: Magic number, little endian, “RISCV\x00\x00\x00” (8 bytes)</p>
+<p><strong>magic</strong>: Magic number, little endian, “RISCV\x00\x00\x00” </p>
+<p>(8 bytes, offset <code>0x30</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>52  49  53  43  56  00  00  00  
 </code></pre></div></li>
 <li>
-<p><strong>magic2</strong>: Magic number 2, little endian, “RSC\x05” (4 bytes)</p>
+<p><strong>magic2</strong>: Magic number 2, little endian, “RSC\x05” </p>
+<p>(4 bytes, offset <code>0x38</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>52  53  43  05
 </code></pre></div></li>
 <li>
 <p><strong>res3</strong>: Reserved for PE COFF offset</p>
+<p>(4 bytes, offset <code>0x3C</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>40  00  00  00
 </code></pre></div></li>
 </ol>
-<p>Our NuttX Kernel shall <strong>recreate this RISC-V Linux Image Header</strong>.</p>
+<p>Our NuttX Kernel shall <strong>recreate this RISC-V Linux Image Header</strong>. (Total <code>0x40</code> bytes)</p>
 <p>(Or U-Boot Bootloader might refuse to boot NuttX)</p>
 
     
