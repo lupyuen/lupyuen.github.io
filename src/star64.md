@@ -501,14 +501,14 @@ Earlier we downloaded the __Armbian Kernel Image__...
 
 -   [__"Armbian Image for Star64"__](https://lupyuen.github.io/articles/star64#armbian-image-for-star64)
 
-Let's decode the Kernel Image at __/boot/Image__. (Pic above)
+Let's decode the RISC-V Linux Header at __/boot/Image__. (Pic above)
 
 (Which is sym-linked to __/boot/vmlinuz-5.15.0-starfive2__)
 
 We dump the bytes in the file...
 
 ```bash
-od -t x1 vmlinuz-5.15.0-starfive2 
+hexdump vmlinuz-5.15.0-starfive2 
 ```
 
 Which will begin with this __RISC-V Linux Image Header__...
