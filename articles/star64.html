@@ -73,7 +73,8 @@
 <li><a href="#boot-nuttx-with-u-boot-bootloader">4 Boot NuttX with U-Boot Bootloader</a><ul></ul></li>
 <li><a href="#inside-the-kernel-image">5 Inside the Kernel Image</a><ul></ul></li>
 <li><a href="#decompile-the-kernel-with-ghidra">6 Decompile the Kernel with Ghidra</a><ul></ul></li>
-<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>30 Jun 2023</em></p>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-decode-the-risc-v-linux-header">8 Appendix: Decode the RISC-V Linux Header</a><ul></ul></li></ul></nav><p>📝 <em>30 Jun 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/star64-title.jpg" alt="Pine64 Star64 64-bit RISC-V SBC" /></p>
 <p><a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> is a new 64-bit RISC-V Single-Board Computer, based on the <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC.</p>
 <p><a href="https://wiki.pine64.org/wiki/STAR64#Board_Information,_Schematics_and_Certifications">(Star64 version 1.1 was released May 2023)</a></p>
@@ -451,6 +452,71 @@ j   FUN_440010c8
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/star64.md"><strong>lupyuen.github.io/src/star64.md</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/star64-kernel.png" alt="Armbian Kernel Image" /></p>
+<h1 id="appendix-decode-the-risc-v-linux-header"><a href="#appendix-decode-the-risc-v-linux-header">8 Appendix: Decode the RISC-V Linux Header</a></h1>
+<p><em>What’s inside the RISC-V Linux Header?</em></p>
+<p>Earlier we downloaded the <strong>Armbian Kernel Image</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/star64#armbian-image-for-star64"><strong>“Armbian Image for Star64”</strong></a></li>
+</ul>
+<p>Let’s decode the Kernel Image at <strong>/boot/Image</strong>. (Pic above)</p>
+<p>(Which is sym-linked to <strong>/boot/vmlinuz-5.15.0-starfive2</strong>)</p>
+<p>We dump the bytes in the file…</p>
+<div class="example-wrap"><pre class="language-bash"><code>od -t x1 vmlinuz-5.15.0-starfive2 
+</code></pre></div>
+<p>Which will begin with this <strong>RISC-V Linux Image Header</strong>…</p>
+<ul>
+<li><a href="https://www.kernel.org/doc/html/latest/riscv/boot-image-header.html"><strong>“Boot Image Header in RISC-V Linux”</strong></a></li>
+</ul>
+<p>Here are the decoded bytes…</p>
+<ol>
+<li>
+<p><strong>code0</strong>: Executable code (4 bytes)</p>
+<div class="example-wrap"><pre class="language-text"><code>4D  5A  6F  10
+</code></pre></div></li>
+<li>
+<p><strong>code1</strong>: Executable code (4 bytes)</p>
+<div class="example-wrap"><pre class="language-text"><code>60  0C  01  00  
+</code></pre></div></li>
+<li>
+<p><strong>text_offset</strong>: Image load offset, little endian (8 bytes)</p>
+<div class="example-wrap"><pre class="language-text"><code>00  00  20  00  00  00  00  00
+</code></pre></div></li>
+<li>
+<p><strong>image_size</strong>: Effective Image size, little endian (8 bytes)</p>
+<div class="example-wrap"><pre class="language-text"><code>00  C0  56  01  00  00  00  00
+</code></pre></div></li>
+<li>
+<p><strong>flags</strong>: Kernel flags, little endian (8 bytes)</p>
+<div class="example-wrap"><pre class="language-text"><code>00  00  00  00  00  00  00  00
+</code></pre></div></li>
+<li>
+<p><strong>version</strong>: Version of this header (4 bytes: <em>MinL</em> <em>MinM</em> <code>.</code> <em>MaxL</em> <em>MaxM</em>)</p>
+<div class="example-wrap"><pre class="language-text"><code>02  00  00  00  
+</code></pre></div></li>
+<li>
+<p><strong>res1</strong>: Reserved (4 bytes)</p>
+<div class="example-wrap"><pre class="language-text"><code>00  00  00  00  
+</code></pre></div></li>
+<li>
+<p><strong>res2</strong>: Reserved (8 bytes)</p>
+<div class="example-wrap"><pre class="language-text"><code>00  00  00  00  00  00  00  00
+</code></pre></div></li>
+<li>
+<p><strong>magic</strong>: Magic number, little endian, “RISCV\x00\x00\x00” (8 bytes)</p>
+<div class="example-wrap"><pre class="language-text"><code>52  49  53  43  56  00  00  00  
+</code></pre></div></li>
+<li>
+<p><strong>magic2</strong>: Magic number 2, little endian, “RSC\x05” (4 bytes)</p>
+<div class="example-wrap"><pre class="language-text"><code>52  53  43  05
+</code></pre></div></li>
+<li>
+<p><strong>res3</strong>: Reserved for PE COFF offset</p>
+<div class="example-wrap"><pre class="language-text"><code>40  00  00  00
+</code></pre></div></li>
+</ol>
+<p>Our NuttX Kernel shall <strong>recreate this RISC-V Linux Image Header</strong>.</p>
+<p>(Or U-Boot Bootloader might refuse to boot NuttX)</p>
 
     
 </body>
