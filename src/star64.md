@@ -517,61 +517,81 @@ Which will begin with this __RISC-V Linux Image Header__...
 
 Here are the decoded bytes...
 
-1.  __code0__: Executable code (4 bytes)
+1.  __code0__: Executable code
+
+    (4 bytes, offset `0x00`)
 
     ```text
     4D  5A  6F  10
     ```
 
-1.  __code1__: Executable code (4 bytes)
+1.  __code1__: Executable code 
+
+    (4 bytes, offset `0x04`)
 
     ```text
     60  0C  01  00  
     ```
 
-1.  __text_offset__: Image load offset, little endian (8 bytes)
+1.  __text_offset__: Image load offset, little endian
+
+    (8 bytes, offset `0x08`)
 
     ```text
     00  00  20  00  00  00  00  00
     ```
 
-1.  __image_size__: Effective Image size, little endian (8 bytes)
+1.  __image_size__: Effective Image size, little endian 
+
+    (8 bytes, offset `0x10`)
 
     ```text
     00  C0  56  01  00  00  00  00
     ```
 
-1.  __flags__: Kernel flags, little endian (8 bytes)
+1.  __flags__: Kernel flags, little endian 
+
+    (8 bytes, offset `0x18`)
 
     ```text
     00  00  00  00  00  00  00  00
     ```
 
-1.  __version__: Version of this header (4 bytes: _MinL_ _MinM_ `.` _MaxL_ _MaxM_)
+1.  __version__: Version of this header (_MinL_ _MinM_ `.` _MajL_ _MajM_)
+
+    (4 bytes, offset `0x20`)
 
     ```text
     02  00  00  00  
     ```
 
-1.  __res1__: Reserved (4 bytes)
+1.  __res1__: Reserved
+
+    (4 bytes, offset `0x24`)
 
     ```text
     00  00  00  00  
     ```
 
-1.  __res2__: Reserved (8 bytes)
+1.  __res2__: Reserved
+
+    (8 bytes, offset `0x28`)
 
     ```text
     00  00  00  00  00  00  00  00
     ```
 
-1.  __magic__: Magic number, little endian, "RISCV\x00\x00\x00" (8 bytes)
+1.  __magic__: Magic number, little endian, "RISCV\x00\x00\x00" 
+    
+    (8 bytes, offset `0x30`)
 
     ```text
     52  49  53  43  56  00  00  00  
     ```
 
-1.  __magic2__: Magic number 2, little endian, "RSC\x05" (4 bytes)
+1.  __magic2__: Magic number 2, little endian, "RSC\x05" 
+
+    (4 bytes, offset `0x38`)
 
     ```text
     52  53  43  05
@@ -579,10 +599,12 @@ Here are the decoded bytes...
 
 1.  __res3__: Reserved for PE COFF offset
 
+    (4 bytes, offset `0x3C`)
+    
     ```text
     40  00  00  00
     ```
 
-Our NuttX Kernel shall __recreate this RISC-V Linux Image Header__.
+Our NuttX Kernel shall __recreate this RISC-V Linux Image Header__. (Total `0x40` bytes)
 
 (Or U-Boot Bootloader might refuse to boot NuttX)
