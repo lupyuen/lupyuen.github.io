@@ -359,6 +359,10 @@ u32 res3;                 /* Reserved for PE COFF offset */
 </code></pre></div>
 <p>Our NuttX Kernel shall <strong>recreate this RISC-V Linux Image Header</strong>.</p>
 <p>(Or U-Boot Bootloader might refuse to boot NuttX)</p>
+<p>This is how we decode the RISC-V Linux Header…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/star64#appendix-decode-the-risc-v-linux-header"><strong>“Decode the RISC-V Linux Header”</strong></a></li>
+</ul>
 <p><em>Why does the pic show “MZ” at 0x0? Who is “MZ”?</em></p>
 <p>To solve the “MZ” Mystery, we decompile the Linux Kernel…</p>
 <h1 id="decompile-the-kernel-with-ghidra"><a href="#decompile-the-kernel-with-ghidra">6 Decompile the Kernel with Ghidra</a></h1>
