@@ -463,10 +463,10 @@ j   FUN_440010c8
 <ul>
 <li><a href="https://lupyuen.github.io/articles/star64#armbian-image-for-star64"><strong>“Armbian Image for Star64”</strong></a></li>
 </ul>
-<p>Let’s decode the Kernel Image at <strong>/boot/Image</strong>. (Pic above)</p>
+<p>Let’s decode the RISC-V Linux Header at <strong>/boot/Image</strong>. (Pic above)</p>
 <p>(Which is sym-linked to <strong>/boot/vmlinuz-5.15.0-starfive2</strong>)</p>
 <p>We dump the bytes in the file…</p>
-<div class="example-wrap"><pre class="language-bash"><code>od -t x1 vmlinuz-5.15.0-starfive2 
+<div class="example-wrap"><pre class="language-bash"><code>hexdump vmlinuz-5.15.0-starfive2 
 </code></pre></div>
 <p>Which will begin with this <strong>RISC-V Linux Image Header</strong>…</p>
 <ul>
