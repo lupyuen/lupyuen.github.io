@@ -373,6 +373,10 @@ Our NuttX Kernel shall __recreate this RISC-V Linux Image Header__.
 
 (Or U-Boot Bootloader might refuse to boot NuttX)
 
+This is how we decode the RISC-V Linux Header...
+
+-   [__"Decode the RISC-V Linux Header"__](https://lupyuen.github.io/articles/star64#appendix-decode-the-risc-v-linux-header)
+
 _Why does the pic show "MZ" at 0x0? Who is "MZ"?_
 
 To solve the "MZ" Mystery, we decompile the Linux Kernel...
