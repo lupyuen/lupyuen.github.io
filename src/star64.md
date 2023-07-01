@@ -70,41 +70,7 @@ Plus one unused partition (4 MB) at the top. (Partition Table)
 
 _What will happen when it boots?_
 
-Let's check the configuration for [__U-Boot Bootloader__](https://u-boot.readthedocs.io/en/latest/index.html) at __/boot/uEnv.txt__...
-
-```text
-fdt_high=0xffffffffffffffff
-initrd_high=0xffffffffffffffff
-
-kernel_addr_r=0x44000000
-kernel_comp_addr_r=0x90000000
-kernel_comp_size=0x10000000
-
-fdt_addr_r=0x48000000
-ramdisk_addr_r=0x48100000
-
-## Move distro to first boot to speed up booting
-boot_targets=distro mmc1 dhcp 
-
-distro_bootpart=1
-
-## Fix missing bootcmd
-bootcmd=run bootcmd_distro
-```
-
-[__kernel_addr_r__](https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables) says that Linux Kernel will be loaded at RAM Address __`0x4400` `0000`__...
-
-```text
-kernel_addr_r=0x44000000
-```
-
-(Yocto boots Linux at a different address, as we'll see)
-
-This probably means that U-Boot Bootloader is loaded at __`0x4000` `0000`__.
-
-[(Which is consistent with the __JH7110 Memory Map__)](https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html)
-
-U-Boot Bootloader will also read the options from __/boot/extlinux/extlinux.conf__...
+Let's check the configuration for [__U-Boot Bootloader__](https://u-boot.readthedocs.io/en/latest/index.html) at __/boot/extlinux/extlinux.conf__...
 
 ```text
 label Armbian
@@ -117,6 +83,16 @@ label Armbian
 This says that U-Boot will load the Linux Kernel Image from __/boot/Image__.
 
 (Which is sym-linked to __/boot/vmlinuz-5.15.0-starfive2__)
+
+_Where in RAM will the Kernel Image be loaded?_
+
+According to [__kernel_addr_r__](https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables) from the [__Default U-Boot Settings__](https://github.com/lupyuen/nuttx-star64#u-boot-settings-for-star64), the Linux Kernel will be loaded at RAM Address __`0x4020` `0000`__...
+
+```text
+kernel_addr_r=0x40200000
+```
+
+[(Source)](https://github.com/lupyuen/nuttx-star64#u-boot-settings-for-star64)
 
 _Everything looks hunky dory?_
 
@@ -276,8 +252,6 @@ irdsize=5f00000
 kernel_addr_r=0x40200000
 ```
 
-(Different from Armbian's __`0x4400` `0000`__)
-
 Also different from Armbian: Yocto boots from the [__Flat Image Tree (FIT)__](https://u-boot.readthedocs.io/en/latest/usage/fit/index.html#) at __/boot/fitImage__
 
 ```text
@@ -331,7 +305,7 @@ Hence for NuttX we'll adopt the Armbian Boot Settings, overwriting __/boot/Image
 
 And hopefully U-Boot Bootloader will __boot NuttX on Star64__! Assuming that we fix these...
 
--   Compile [__NuttX Kernel__](https://lupyuen.codeberg.page/articles/riscv.html#qemu-starts-nuttx) to boot at __`0x4400` `0000`__
+-   Compile [__NuttX Kernel__](https://lupyuen.codeberg.page/articles/riscv.html#qemu-starts-nuttx) to boot at __`0x4020` `0000`__
 
 -   Add a placeholder for __Device Tree__ (since it's missing)
 
@@ -540,6 +514,10 @@ Here are the decoded bytes...
     ```text
     00  00  20  00  00  00  00  00
     ```
+
+    This is set to __`0x20` `0000`__ because the Linux Kernel boots at __`0x4020` `0000`__.
+    
+    (We'll do the same for NuttX)
 
 1.  __image_size__: Effective Image size, little endian 
 
