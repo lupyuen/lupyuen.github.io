@@ -361,11 +361,12 @@ u32 res3;                 /* Reserved for PE COFF offset */
 <p><strong>Language:</strong> RISCV &gt; RV64GC (RISCV:LE:64:RV64GC:gcc)</p>
 <p><a href="https://doc-en.rvspace.org/JH7110/Datasheet/JH7110_DS/c_u74_quad_core.html">(StarFive JH7110 has 4 × <strong>RV64GC</strong> U74 Application Cores)</a></p>
 <p><a href="https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v">(<strong>RV64GC</strong> is short for RV64IMAFDCZicsr_Zifencei)</a></p>
-<p><strong>Options &gt; Base Address:</strong> <code>0x44000000</code></p>
+<p><strong>Options &gt; Base Address:</strong> <code>0x40200000</code></p>
 <p>(Based on the U-Boot Configuration from above)</p>
 <p>(Ghidra thinks it’s PE Format because of “MZ”… But it’s not!)</p>
 <p><img src="https://lupyuen.github.io/images/star64-ghidra.png" alt="Load the Armbian Linux Kernel Image into Ghidra" /></p>
 <p><img src="https://lupyuen.github.io/images/star64-ghidra2.png" alt="Load the Armbian Linux Kernel Image into Ghidra" /></p>
+<p>(TODO: Pic should show <strong><code>0x4020</code> <code>0000</code></strong> instead)</p>
 </li>
 <li>
 <p>In the Ghidra Project, double-click <strong>vmlinuz-5.15.0-starfive2</strong></p>
@@ -374,8 +375,8 @@ u32 res3;                 /* Reserved for PE COFF offset */
 </ol>
 <p>Wait a while and we’ll see the <strong>Decompiled Linux Kernel</strong> in Ghidra…</p>
 <p><img src="https://lupyuen.github.io/images/star64-ghidra3.png" alt="Disassembled Linux Kernel in Ghidra" /></p>
-<p>At Address <strong><code>0x4400</code> <code>0002</code></strong> we see a Jump to <strong>FUN_440010c8</strong>.</p>
-<p>Double-click <strong>FUN_440010c8</strong> to see the Linux Boot Code…</p>
+<p>At Address <strong><code>0x4020</code> <code>0002</code></strong> we see a Jump to <strong>FUN_402010c8</strong>.</p>
+<p>Double-click <strong>FUN_402010c8</strong> to see the Linux Boot Code…</p>
 <p><img src="https://lupyuen.github.io/images/star64-ghidra4.png" alt="Linux Boot Code in Ghidra" /></p>
 <p>The <a href="https://lupyuen.github.io/articles/riscv#get-cpu-id"><strong>CSR Instructions</strong></a> look interesting, but we’ll skip them today.</p>
 <p>(TODO: Where’s the source file?)</p>
@@ -384,7 +385,7 @@ u32 res3;                 /* Reserved for PE COFF offset */
 li  s4,-0xd
 
 // Jump to Actual Boot Code
-j   FUN_440010c8
+j   FUN_402010c8
 </code></pre></div>
 <p>It’s highly sus because the First Instruction doesn’t do anything meaningful!</p>
 <p>Remember the <strong>“MZ”</strong> at the top of our Kernel Image?</p>
