@@ -377,7 +377,7 @@ Yep! Let's decompile the Armbian Kernel with [__Ghidra__](https://github.com/Nat
 
     [(__RV64GC__ is short for RV64IMAFDCZicsr_Zifencei)](https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v)
 
-    __Options > Base Address:__ `0x44000000`
+    __Options > Base Address:__ `0x40200000`
 
     (Based on the U-Boot Configuration from above)
 
@@ -387,6 +387,8 @@ Yep! Let's decompile the Armbian Kernel with [__Ghidra__](https://github.com/Nat
 
     ![Load the Armbian Linux Kernel Image into Ghidra](https://lupyuen.github.io/images/star64-ghidra2.png)
 
+    (TODO: Pic should show __`0x4020` `0000`__ instead)
+
 1.  In the Ghidra Project, double-click __vmlinuz-5.15.0-starfive2__
 
     Analyse the file with the Default Options.
@@ -395,9 +397,9 @@ Wait a while and we'll see the __Decompiled Linux Kernel__ in Ghidra...
 
 ![Disassembled Linux Kernel in Ghidra](https://lupyuen.github.io/images/star64-ghidra3.png)
 
-At Address __`0x4400` `0002`__ we see a Jump to __FUN_440010c8__.
+At Address __`0x4020` `0002`__ we see a Jump to __FUN_402010c8__.
 
-Double-click __FUN_440010c8__ to see the Linux Boot Code...
+Double-click __FUN_402010c8__ to see the Linux Boot Code...
 
 ![Linux Boot Code in Ghidra](https://lupyuen.github.io/images/star64-ghidra4.png)
 
@@ -412,7 +414,7 @@ _The first RISC-V Instruction looks kinda sus..._
 li  s4,-0xd
 
 // Jump to Actual Boot Code
-j   FUN_440010c8
+j   FUN_402010c8
 ```
 
 It's highly sus because the First Instruction doesn't do anything meaningful!
