@@ -405,7 +405,9 @@ Double-click __FUN_402010c8__ to see the Linux Boot Code...
 
 The [__CSR Instructions__](https://lupyuen.github.io/articles/riscv#get-cpu-id) look interesting, but we'll skip them today.
 
-(TODO: Where's the source file?)
+When we match the RISC-V Instructions, the __Linux Kernel Source File__ is probably this...
+
+-   [__linux/arch/riscv/kernel/head.S__](https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S)
 
 _The first RISC-V Instruction looks kinda sus..._
 
