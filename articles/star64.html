@@ -140,6 +140,7 @@
   fdt /boot/dtb/starfive/jh7110-star64-pine64.dtb
   append root=UUID=99f62df4-be35-475c-99ef-2ba3f74fe6b5 console=ttyS0,115200n8 console=tty0 earlycon=sbi rootflags=data=writeback stmmaceth=chain_mode:1 rw rw no_console_suspend consoleblank=0 fsck.fix=yes fsck.repair=yes net.ifnames=0 splash plymouth.ignore-serial-consoles
 </code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-star64#u-boot-settings-for-star64">(<em>“extlinux/extlinux.conf”</em> is specified by U-Boot’s <strong>boot_syslinux_conf</strong>)</a></p>
 <p>This says that U-Boot will load the Linux Kernel Image from <strong>/boot/Image</strong>.</p>
 <p>(Which is sym-linked to <strong>/boot/vmlinuz-5.15.0-starfive2</strong>)</p>
 <p><em>Where in RAM will the Kernel Image be loaded?</em></p>
