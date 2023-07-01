@@ -379,7 +379,10 @@ u32 res3;                 /* Reserved for PE COFF offset */
 <p>Double-click <strong>FUN_402010c8</strong> to see the Linux Boot Code…</p>
 <p><img src="https://lupyuen.github.io/images/star64-ghidra4.png" alt="Linux Boot Code in Ghidra" /></p>
 <p>The <a href="https://lupyuen.github.io/articles/riscv#get-cpu-id"><strong>CSR Instructions</strong></a> look interesting, but we’ll skip them today.</p>
-<p>(TODO: Where’s the source file?)</p>
+<p>When we match the RISC-V Instructions, the <strong>Linux Kernel Source File</strong> is probably this…</p>
+<ul>
+<li><a href="https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S"><strong>linux/arch/riscv/kernel/head.S</strong></a></li>
+</ul>
 <p><em>The first RISC-V Instruction looks kinda sus…</em></p>
 <div class="example-wrap"><pre class="language-text"><code>// Load -13 into Register S4
 li  s4,-0xd
