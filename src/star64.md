@@ -80,6 +80,8 @@ label Armbian
   append root=UUID=99f62df4-be35-475c-99ef-2ba3f74fe6b5 console=ttyS0,115200n8 console=tty0 earlycon=sbi rootflags=data=writeback stmmaceth=chain_mode:1 rw rw no_console_suspend consoleblank=0 fsck.fix=yes fsck.repair=yes net.ifnames=0 splash plymouth.ignore-serial-consoles
 ```
 
+[(_"extlinux/extlinux.conf"_ is specified by U-Boot's __boot_syslinux_conf__)](https://github.com/lupyuen/nuttx-star64#u-boot-settings-for-star64)
+
 This says that U-Boot will load the Linux Kernel Image from __/boot/Image__.
 
 (Which is sym-linked to __/boot/vmlinuz-5.15.0-starfive2__)
