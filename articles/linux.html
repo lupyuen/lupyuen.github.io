@@ -113,7 +113,7 @@
 <p>TODO: Pic</p>
 <h1 id="serial-console-on-star64"><a href="#serial-console-on-star64">1 Serial Console on Star64</a></h1>
 <p>Before we begin, let’s connect a <strong>USB Serial Adapter</strong> to Star64. (So we can see the Boot Log)</p>
-<p>We’ll use the <a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>Pine64 Woodpecker Serial Adapter</strong></a>. (Any CH340 or similar adapter will probably work)</p>
+<p>We’ll use the <a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>Pine64 Woodpecker Serial Adapter</strong></a>. (Any CH340 or similar adapter should work)</p>
 <p>According to <a href="https://files.pine64.org/doc/star64/Star64_Schematic_V1.1_20230504.pdf"><strong>Star64 Schematic</strong></a> (Page 18), <strong>UART0 TX and RX</strong> (GPIO 5 and 6) are connected to the <strong>GPIO Header</strong> (Pins 8 and 10).</p>
 <p>Thus we connect these pins…</p>
 <div><table><thead><tr><th style="text-align: center">Star64 GPIO Header</th><th style="text-align: center"><a href="https://pine64.com/product/serial-console-woodpecker-edition/">USB Serial Adapter</a></th><th style="text-align: left">Wire Colour</th></tr></thead><tbody>
@@ -127,7 +127,8 @@
 <div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 115200
 </code></pre></div>
 <p>And power up Star64.</p>
-<p>The <strong>DIP Switches</strong> for GPIO 0 and 1 default to Low and Low, so Star64 should boot from <strong>Internal Flash Memory</strong>. (Which has U-Boot Bootloader inside)</p>
+<p>Check that the <strong>DIP Switches</strong> for GPIO 0 and 1 are set to <strong>Low and Low</strong>. (Default)</p>
+<p>So Star64 should start the U-Boot Bootloader from <strong>Internal Flash Memory</strong>.</p>
 <p><a href="https://wiki.pine64.org/wiki/STAR64#Prototype_Bringup_Notes">(DIP Switch Labels are inverted: <strong>“ON”</strong> actually means <strong>“Low”</strong>)</a></p>
 <h1 id="boot-yocto-on-star64"><a href="#boot-yocto-on-star64">2 Boot Yocto on Star64</a></h1>
 <p>TODO</p>
