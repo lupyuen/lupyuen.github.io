@@ -36,9 +36,9 @@ _What's NuttX?_
 
 The analysis that we do today will be super helpful for [__porting NuttX to Star64__](https://lupyuen.github.io/articles/riscv#jump-to-start).
 
-![Yocto Plasma on Star64](https://lupyuen.github.io/images/star64-plasma.jpg)
-
 # Serial Console on Star64
+
+Before we begin, let's connect a __USB Serial Adapter__ to Star64. (So we can see the Boot Log)
 
 TODO
 
