@@ -40,11 +40,9 @@ The analysis that we do today will be super helpful for [__porting NuttX to Star
 
 Before we begin, let's connect a __USB Serial Adapter__ to Star64. (So we can see the Boot Log)
 
-TODO
+We'll use the [__Pine64 Woodpecker Serial Adapter__](https://pine64.com/product/serial-console-woodpecker-edition/). (Any CH340 or similar adapter will probably work)
 
-To access the Serial Console, we connect a [USB Serial Adapter](https://pine64.com/product/serial-console-woodpecker-edition/) to Star64...
-
-According to [Star64 Schematic](https://files.pine64.org/doc/star64/Star64_Schematic_V1.1_20230504.pdf), UART0 TX and RX (GPIO 5 and 6) are connected to the Pi GPIO Header (Pins 8 and 10).
+According to [__Star64 Schematic__](https://files.pine64.org/doc/star64/Star64_Schematic_V1.1_20230504.pdf) (Page 18), __UART0 TX and RX__ (GPIO 5 and 6) are connected to the __GPIO Header__ (Pins 8 and 10).
 
 Thus we connect these pins...
 
@@ -54,21 +52,19 @@ Thus we connect these pins...
 | Pin 8 (TX) | RX | Red
 | Pin 10 (RX) | TX | Orange
 
-Set the Voltage Jumper to 3V3. (Instead of 5V)
+On our USB Serial Adapter, set the Voltage Jumper to __3V3__. (Instead of 5V)
 
-On our computer, connect to the USB Serial Port at 115.2 kbps...
+On our computer, connect to the USB Serial Port at __115.2 kbps__...
 
 ```bash
 screen /dev/ttyUSB0 115200
 ```
 
-Power up Star64. The DIP Switches for GPIO 0 and 1 default to Low and Low, so Star64 should boot from Flash Memory, which has the U-Boot Bootloader inside.
+And power up Star64.
+
+The __DIP Switches__ for GPIO 0 and 1 default to Low and Low, so Star64 should boot from __Internal Flash Memory__. (Which has U-Boot Bootloader inside)
 
 [(DIP Switch Labels are inverted: __"ON"__ actually means __"Low"__)](https://wiki.pine64.org/wiki/STAR64#Prototype_Bringup_Notes)
-
-We'll see this U-Boot Bootloader Log...
-
-TODO: Explain [OpenSBI](https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/)
 
 # Star64 U-Boot Bootloader Log
 
