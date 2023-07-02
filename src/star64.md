@@ -521,10 +521,6 @@ Here are the decoded bytes...
     00  00  20  00  00  00  00  00
     ```
 
-    This is set to __`0x20` `0000`__ because the Linux Kernel boots at __`0x4020` `0000`__.
-    
-    (We'll do the same for NuttX)
-
 1.  __image_size__: Effective Image size, little endian 
 
     (8 bytes, offset `0x10`)
@@ -592,3 +588,33 @@ Here are the decoded bytes...
 Our NuttX Kernel shall __recreate this RISC-V Linux Image Header__. (Total `0x40` bytes)
 
 (Or U-Boot Bootloader might refuse to boot NuttX)
+
+_Why is the Image Load Offset set to `0x20` `0000`?_
+
+__Image Load Offset__ (from Start of RAM) is set to __`0x20` `0000`__ because the Linux Kernel boots at __`0x4020` `0000`__.
+
+The Image Load Offset is hardcoded in the [__Linux Kernel Boot Code__](https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S#L41-L51) for 64-bit RISC-V...
+
+```text
+#ifdef CONFIG_RISCV_M_MODE
+  /* If running at Machine Privilege Level... */
+  /* Image Load Offset is 0 MB from Start of RAM */
+  .dword 0
+
+#else
+  #if __riscv_xlen == 64
+    /* If running at 64-bit Supervisor Privilege Level... */
+    /* Image Load Offset is 2 MB from Start of RAM */
+    .dword 0x200000
+
+  #else
+    /* If running at 32-bit Supervisor Privilege Level... */
+    /* Image Load Offset is 4 MB from Start of RAM */
+    .dword 0x400000
+  #endif
+#endif
+```
+
+[(Source)](https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S#L41-L51)
+
+We'll do the same for NuttX.
