@@ -62,6 +62,8 @@ On our computer, connect to the USB Serial Port at __115.2 kbps__...
 screen /dev/ttyUSB0 115200
 ```
 
+TODO
+
 And power up Star64.
 
 Check that the __DIP Switches__ for GPIO 0 and 1 are set to __Low and Low__. (Default)
@@ -74,23 +76,25 @@ So Star64 should start the U-Boot Bootloader from __Internal Flash Memory__.
 
 _What's Yocto Linux?_
 
-[__Yocto__](https://www.yoctoproject.org/) provides tools for creating a Custom Linux System. (Like for Star64)
+[__Yocto__](https://www.yoctoproject.org/) provides tools for creating a Custom Linux Image. (Like for Star64)
 
 Yocto is like baking [__Sourdough Bread__](https://lupyuen.github.io/articles/sourdough)...
 
-We start with the base (Sourdough Starter + Flour), then we add seeds, nuts, fruits, chocolate, ... Baked into a delicious loaf that's uniquely ours!
+We start with the base (Sourdough Starter + Flour), then we add fruits, nuts, seeds, chocolate, ... Baked into a delicious loaf that's uniquely ours!
 
 (Compare with Linux Distros, which is like buying a loaf of bread)
 
+We download the [__Yocto Minimal Image for Star64__](https://github.com/Fishwaldo/meta-pine64)...
+
+-   [__star64-image-minimal 1.2__](https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2)
+
+Uncompress the __.bz2__ file, rename as __.img__.
+
+(Balena Etcher won't work with __.bz2__ files!)
+
+Write the __.img__ file to a microSD Card with [__Balena Etcher__](https://www.balena.io/etcher/) or [__GNOME Disks__](https://wiki.gnome.org/Apps/Disks).
+
 TODO
-
-Now we boot Yocto on Star64.
-
-We download the Yocto Minimal Image for Star64: [star64-image-minimal](https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2)
-
-Uncompress the .bz2, rename as .img. Balena Etcher won't work with .bz2 files!
-
-Write the .img to a microSD Card with Balena Etcher.
 
 Here's what happens when we boot the microSD Card on Star64...
 
