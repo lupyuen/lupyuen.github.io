@@ -81,9 +81,32 @@
 <li><a href="#boot-nuttx-on-star64">10 Boot NuttX on Star64</a><ul></ul></li>
 <li><a href="#nuttx-fails-to-get-hart-id">11 NuttX Fails To Get Hart ID</a><ul></ul></li>
 <li><a href="#whats-next">12 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>9 Jul 2023</em></p>
-<p><img src="https://lupyuen.github.io/images/linux-title.jpg" alt="TODO" /></p>
-<p>TODO</p>
-<p><a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> is a new 64-bit RISC-V Single-Board Computer, based on the <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC.</p>
+<p><img src="https://lupyuen.github.io/images/linux-title.jpg" alt="Booting Pine64 Star64 SBC" /></p>
+<p>Previously we talked about the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer. (Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
+<p>And we inspected the Linux Images for Star64…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/star64"><strong>“Inspecting the RISC-V Linux Images for Star64 SBC (JH7110)”</strong></a></li>
+</ul>
+<p>Let’s boot them on Star64! We’ll soon see…</p>
+<ul>
+<li>
+<p><strong>Yocto Linux</strong> boots OK on Star64</p>
+<p>(Even KDE Plasma)</p>
+</li>
+<li>
+<p><strong>Armbian Linux</strong> is not quite ready</p>
+<p>(Missing Device Tree)</p>
+</li>
+<li>
+<p><strong>Apache NuttX RTOS</strong> boots a bit</p>
+<p>(Thanks to Armbian)</p>
+</li>
+<li>
+<p>Made possible by <strong>OpenSBI</strong> and <strong>U-Boot Bootloader</strong></p>
+<p>(We’ll explain why)</p>
+</li>
+</ul>
+<p>Read on for the details…</p>
 <p><em>What’s NuttX?</em></p>
 <p><a href="https://lupyuen.github.io/articles/riscv"><strong>Apache NuttX</strong></a> is a <strong>Real-Time Operating System (RTOS)</strong> that runs on many kinds of devices, from 8-bit to 64-bit.</p>
 <p>The analysis that we do today will be super helpful for <a href="https://lupyuen.github.io/articles/riscv#jump-to-start"><strong>porting NuttX to Star64</strong></a>.</p>
