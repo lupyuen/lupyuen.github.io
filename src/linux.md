@@ -42,7 +42,7 @@ TODO: Pic
 
 Before we begin, let's connect a __USB Serial Adapter__ to Star64. (So we can see the Boot Log)
 
-We'll use the [__Pine64 Woodpecker Serial Adapter__](https://pine64.com/product/serial-console-woodpecker-edition/). (Any CH340 or similar adapter will probably work)
+We'll use the [__Pine64 Woodpecker Serial Adapter__](https://pine64.com/product/serial-console-woodpecker-edition/). (Any CH340 or similar adapter should work)
 
 According to [__Star64 Schematic__](https://files.pine64.org/doc/star64/Star64_Schematic_V1.1_20230504.pdf) (Page 18), __UART0 TX and RX__ (GPIO 5 and 6) are connected to the __GPIO Header__ (Pins 8 and 10).
 
@@ -64,7 +64,9 @@ screen /dev/ttyUSB0 115200
 
 And power up Star64.
 
-The __DIP Switches__ for GPIO 0 and 1 default to Low and Low, so Star64 should boot from __Internal Flash Memory__. (Which has U-Boot Bootloader inside)
+Check that the __DIP Switches__ for GPIO 0 and 1 are set to __Low and Low__. (Default)
+
+So Star64 should start the U-Boot Bootloader from __Internal Flash Memory__.
 
 [(DIP Switch Labels are inverted: __"ON"__ actually means __"Low"__)](https://wiki.pine64.org/wiki/STAR64#Prototype_Bringup_Notes)
 
