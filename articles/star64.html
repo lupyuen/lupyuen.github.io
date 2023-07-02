@@ -472,10 +472,7 @@ j   FUN_402010c8
 <p><strong>text_offset</strong>: Image load offset, little endian</p>
 <p>(8 bytes, offset <code>0x08</code>)</p>
 <div class="example-wrap"><pre class="language-text"><code>00  00  20  00  00  00  00  00
-</code></pre></div>
-<p>This is set to <strong><code>0x20</code> <code>0000</code></strong> because the Linux Kernel boots at <strong><code>0x4020</code> <code>0000</code></strong>.</p>
-<p>(We’ll do the same for NuttX)</p>
-</li>
+</code></pre></div></li>
 <li>
 <p><strong>image_size</strong>: Effective Image size, little endian </p>
 <p>(8 bytes, offset <code>0x10</code>)</p>
@@ -519,6 +516,29 @@ j   FUN_402010c8
 </ol>
 <p>Our NuttX Kernel shall <strong>recreate this RISC-V Linux Image Header</strong>. (Total <code>0x40</code> bytes)</p>
 <p>(Or U-Boot Bootloader might refuse to boot NuttX)</p>
+<p><em>Why is the Image Load Offset set to <code>0x20</code> <code>0000</code>?</em></p>
+<p><strong>Image Load Offset</strong> (from Start of RAM) is set to <strong><code>0x20</code> <code>0000</code></strong> because the Linux Kernel boots at <strong><code>0x4020</code> <code>0000</code></strong>.</p>
+<p>The Image Load Offset is hardcoded in the <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S#L41-L51"><strong>Linux Kernel Boot Code</strong></a> for 64-bit RISC-V…</p>
+<div class="example-wrap"><pre class="language-text"><code>#ifdef CONFIG_RISCV_M_MODE
+  /* If running at Machine Privilege Level... */
+  /* Image Load Offset is 0 MB from Start of RAM */
+  .dword 0
+
+#else
+  #if __riscv_xlen == 64
+    /* If running at 64-bit Supervisor Privilege Level... */
+    /* Image Load Offset is 2 MB from Start of RAM */
+    .dword 0x200000
+
+  #else
+    /* If running at 32-bit Supervisor Privilege Level... */
+    /* Image Load Offset is 4 MB from Start of RAM */
+    .dword 0x400000
+  #endif
+#endif
+</code></pre></div>
+<p><a href="https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S#L41-L51">(Source)</a></p>
+<p>We’ll do the same for NuttX.</p>
 
     
 </body>
