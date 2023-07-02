@@ -2,11 +2,33 @@
 
 📝 _9 Jul 2023_
 
-![TODO](https://lupyuen.github.io/images/linux-title.jpg)
+![Booting Pine64 Star64 SBC](https://lupyuen.github.io/images/linux-title.jpg)
 
-TODO
+Previously we talked about the [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) 64-bit RISC-V Single-Board Computer. (Based on [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC)
 
-[__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) is a new 64-bit RISC-V Single-Board Computer, based on the [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC.
+And we inspected the Linux Images for Star64...
+
+- [__"Inspecting the RISC-V Linux Images for Star64 SBC (JH7110)"__](https://lupyuen.github.io/articles/star64)
+
+Let's boot them on Star64! We'll soon see...
+
+- __Yocto Linux__ boots OK on Star64
+
+  (Even KDE Plasma)
+
+- __Armbian Linux__ is not quite ready
+
+  (Missing Device Tree)
+
+- __Apache NuttX RTOS__ boots a bit
+
+  (Thanks to Armbian)
+
+- Made possible by __OpenSBI__ and __U-Boot Bootloader__
+
+  (We'll explain why)
+
+Read on for the details...
 
 _What's NuttX?_
 
