@@ -70,16 +70,19 @@ So Star64 should start the U-Boot Bootloader from __Internal Flash Memory__.
 
 [(DIP Switch Labels are inverted: __"ON"__ actually means __"Low"__)](https://wiki.pine64.org/wiki/STAR64#Prototype_Bringup_Notes)
 
-# Boot Yocto on Star64
+# Boot Yocto Linux on Star64
+
+_What's Yocto Linux?_
+
+[__Yocto__](https://www.yoctoproject.org/) provides tools for creating a Custom Linux System. (Like for Star64)
+
+Yocto is like baking [__Sourdough Bread__](https://lupyuen.github.io/articles/sourdough)...
+
+We start with the base (Sourdough Starter + Flour), then we add seeds, nuts, fruits, chocolate, ... Baked into a delicious loaf that's uniquely ours!
+
+(Compare with Linux Distros, which is like buying a loaf of bread)
 
 TODO
-
-Yocto is like baking sourdough bread.
-Start with the base: We have the base sourdough starter, then we add flour, nuts, raisins, chocolate, ... To make it our own!
-
-Baked into a delicious loaf that's uniquely ours!
-
-Linux Distro is like buying a loaf of bread from the store 
 
 Now we boot Yocto on Star64.
 
@@ -101,7 +104,7 @@ Usernames and Passwords are...
 
 Yep the Yocto Minimal Image boots OK on Star64!
 
-# Yocto with KDE Plasma
+# Yocto Linux with KDE Plasma
 
 TODO
 
@@ -123,7 +126,7 @@ Usernames and Passwords are...
 
 ![Yocto Plasma on Star64](https://lupyuen.github.io/images/star64-plasma.jpg)
 
-# Boot Armbian on Star64
+# Boot Armbian Linux on Star64
 
 TODO
 
