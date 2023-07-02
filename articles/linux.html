@@ -68,9 +68,9 @@
     <h1 class="title">Booting RISC-V Linux on Star64 SBC (JH7110)</h1>
     <nav id="TOC"><ul>
 <li><a href="#serial-console-on-star64">1 Serial Console on Star64</a><ul></ul></li>
-<li><a href="#boot-yocto-on-star64">2 Boot Yocto on Star64</a><ul></ul></li>
-<li><a href="#yocto-with-kde-plasma">3 Yocto with KDE Plasma</a><ul></ul></li>
-<li><a href="#boot-armbian-on-star64">4 Boot Armbian on Star64</a><ul></ul></li>
+<li><a href="#boot-yocto-linux-on-star64">2 Boot Yocto Linux on Star64</a><ul></ul></li>
+<li><a href="#yocto-linux-with-kde-plasma">3 Yocto Linux with KDE Plasma</a><ul></ul></li>
+<li><a href="#boot-armbian-linux-on-star64">4 Boot Armbian Linux on Star64</a><ul></ul></li>
 <li><a href="#nuttx-prints-to-qemu-console">5 NuttX prints to QEMU Console</a><ul></ul></li>
 <li><a href="#uart-base-address-for-star64">6 UART Base Address for Star64</a><ul></ul></li>
 <li><a href="#risc-v-linux-kernel-header">7 RISC-V Linux Kernel Header</a><ul></ul></li>
@@ -130,12 +130,13 @@
 <p>Check that the <strong>DIP Switches</strong> for GPIO 0 and 1 are set to <strong>Low and Low</strong>. (Default)</p>
 <p>So Star64 should start the U-Boot Bootloader from <strong>Internal Flash Memory</strong>.</p>
 <p><a href="https://wiki.pine64.org/wiki/STAR64#Prototype_Bringup_Notes">(DIP Switch Labels are inverted: <strong>“ON”</strong> actually means <strong>“Low”</strong>)</a></p>
-<h1 id="boot-yocto-on-star64"><a href="#boot-yocto-on-star64">2 Boot Yocto on Star64</a></h1>
+<h1 id="boot-yocto-linux-on-star64"><a href="#boot-yocto-linux-on-star64">2 Boot Yocto Linux on Star64</a></h1>
+<p><em>What’s Yocto Linux?</em></p>
+<p><a href="https://www.yoctoproject.org/"><strong>Yocto</strong></a> provides tools for creating a Custom Linux System. (Like for Star64)</p>
+<p>Yocto is like baking <a href="https://lupyuen.github.io/articles/sourdough"><strong>Sourdough Bread</strong></a>…</p>
+<p>We start with the base (Sourdough Starter + Flour), then we add seeds, nuts, fruits, chocolate, … Baked into a delicious loaf that’s uniquely ours!</p>
+<p>(Compare with Linux Distros, which is like buying a loaf of bread)</p>
 <p>TODO</p>
-<p>Yocto is like baking sourdough bread.
-Start with the base: We have the base sourdough starter, then we add flour, nuts, raisins, chocolate, … To make it our own!</p>
-<p>Baked into a delicious loaf that’s uniquely ours!</p>
-<p>Linux Distro is like buying a loaf of bread from the store </p>
 <p>Now we boot Yocto on Star64.</p>
 <p>We download the Yocto Minimal Image for Star64: <a href="https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2">star64-image-minimal</a></p>
 <p>Uncompress the .bz2, rename as .img. Balena Etcher won’t work with .bz2 files!</p>
@@ -151,7 +152,7 @@ Start with the base: We have the base sourdough starter, then we add flour, nuts
 </ul>
 <p><a href="https://github.com/Fishwaldo/meta-pine64#usernames">(Source)</a></p>
 <p>Yep the Yocto Minimal Image boots OK on Star64!</p>
-<h1 id="yocto-with-kde-plasma"><a href="#yocto-with-kde-plasma">3 Yocto with KDE Plasma</a></h1>
+<h1 id="yocto-linux-with-kde-plasma"><a href="#yocto-linux-with-kde-plasma">3 Yocto Linux with KDE Plasma</a></h1>
 <p>TODO</p>
 <p>Finally we boot Yocto Plasma on Star64.</p>
 <p>We download the Yocto Plasma Image for Star64: <a href="https://pine64.my-ho.st:8443/star64-image-plasma-star64-1.2.wic.bz2">star64-image-plasma</a></p>
@@ -165,7 +166,7 @@ Start with the base: We have the base sourdough starter, then we add flour, nuts
 </ul>
 <p><a href="https://github.com/Fishwaldo/meta-pine64#usernames">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/star64-plasma.jpg" alt="Yocto Plasma on Star64" /></p>
-<h1 id="boot-armbian-on-star64"><a href="#boot-armbian-on-star64">4 Boot Armbian on Star64</a></h1>
+<h1 id="boot-armbian-linux-on-star64"><a href="#boot-armbian-linux-on-star64">4 Boot Armbian Linux on Star64</a></h1>
 <p>TODO</p>
 <p>Let’s boot Armbian on Star64!</p>
 <p>We download the Armbian Image for Star64: <a href="https://github.com/armbianro/os/releases/download/23.8.0-trunk.56/Armbian_23.8.0-trunk.56_Star64_lunar_edge_5.15.0_minimal.img.xz">Armbian 23.8 Lunar (Minimal)</a></p>
