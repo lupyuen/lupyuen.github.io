@@ -112,9 +112,8 @@
 <p>The analysis that we do today will be super helpful for <a href="https://lupyuen.github.io/articles/riscv#jump-to-start"><strong>porting NuttX to Star64</strong></a>.</p>
 <h1 id="serial-console-on-star64"><a href="#serial-console-on-star64">1 Serial Console on Star64</a></h1>
 <p>Before we begin, let’s connect a <strong>USB Serial Adapter</strong> to Star64. (So we can see the Boot Log)</p>
-<p>TODO</p>
-<p>To access the Serial Console, we connect a <a href="https://pine64.com/product/serial-console-woodpecker-edition/">USB Serial Adapter</a> to Star64…</p>
-<p>According to <a href="https://files.pine64.org/doc/star64/Star64_Schematic_V1.1_20230504.pdf">Star64 Schematic</a>, UART0 TX and RX (GPIO 5 and 6) are connected to the Pi GPIO Header (Pins 8 and 10).</p>
+<p>We’ll use the <a href="https://pine64.com/product/serial-console-woodpecker-edition/"><strong>Pine64 Woodpecker Serial Adapter</strong></a>. (Any CH340 or similar adapter will probably work)</p>
+<p>According to <a href="https://files.pine64.org/doc/star64/Star64_Schematic_V1.1_20230504.pdf"><strong>Star64 Schematic</strong></a> (Page 18), <strong>UART0 TX and RX</strong> (GPIO 5 and 6) are connected to the <strong>GPIO Header</strong> (Pins 8 and 10).</p>
 <p>Thus we connect these pins…</p>
 <div><table><thead><tr><th style="text-align: center">Star64 GPIO Header</th><th style="text-align: center"><a href="https://pine64.com/product/serial-console-woodpecker-edition/">USB Serial Adapter</a></th><th style="text-align: left">Wire Colour</th></tr></thead><tbody>
 <tr><td style="text-align: center">Pin 6 (GND)</td><td style="text-align: center">GND</td><td style="text-align: left">Brown</td></tr>
@@ -122,14 +121,13 @@
 <tr><td style="text-align: center">Pin 10 (RX)</td><td style="text-align: center">TX</td><td style="text-align: left">Orange</td></tr>
 </tbody></table>
 </div>
-<p>Set the Voltage Jumper to 3V3. (Instead of 5V)</p>
-<p>On our computer, connect to the USB Serial Port at 115.2 kbps…</p>
+<p>On our USB Serial Adapter, set the Voltage Jumper to <strong>3V3</strong>. (Instead of 5V)</p>
+<p>On our computer, connect to the USB Serial Port at <strong>115.2 kbps</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 115200
 </code></pre></div>
-<p>Power up Star64. The DIP Switches for GPIO 0 and 1 default to Low and Low, so Star64 should boot from Flash Memory, which has the U-Boot Bootloader inside.</p>
+<p>And power up Star64.</p>
+<p>The <strong>DIP Switches</strong> for GPIO 0 and 1 default to Low and Low, so Star64 should boot from <strong>Internal Flash Memory</strong>. (Which has U-Boot Bootloader inside)</p>
 <p><a href="https://wiki.pine64.org/wiki/STAR64#Prototype_Bringup_Notes">(DIP Switch Labels are inverted: <strong>“ON”</strong> actually means <strong>“Low”</strong>)</a></p>
-<p>We’ll see this U-Boot Bootloader Log…</p>
-<p>TODO: Explain <a href="https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/">OpenSBI</a></p>
 <h1 id="star64-u-boot-bootloader-log"><a href="#star64-u-boot-bootloader-log">2 Star64 U-Boot Bootloader Log</a></h1>
 <p>TODO</p>
 <p>Here’s the log for U-Boot Bootloader on Star64 (without microSD Card)…</p>
