@@ -126,21 +126,25 @@
 <p>On our computer, connect to the USB Serial Port at <strong>115.2 kbps</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>screen /dev/ttyUSB0 115200
 </code></pre></div>
+<p>TODO</p>
 <p>And power up Star64.</p>
 <p>Check that the <strong>DIP Switches</strong> for GPIO 0 and 1 are set to <strong>Low and Low</strong>. (Default)</p>
 <p>So Star64 should start the U-Boot Bootloader from <strong>Internal Flash Memory</strong>.</p>
 <p><a href="https://wiki.pine64.org/wiki/STAR64#Prototype_Bringup_Notes">(DIP Switch Labels are inverted: <strong>“ON”</strong> actually means <strong>“Low”</strong>)</a></p>
 <h1 id="boot-yocto-linux-on-star64"><a href="#boot-yocto-linux-on-star64">2 Boot Yocto Linux on Star64</a></h1>
 <p><em>What’s Yocto Linux?</em></p>
-<p><a href="https://www.yoctoproject.org/"><strong>Yocto</strong></a> provides tools for creating a Custom Linux System. (Like for Star64)</p>
+<p><a href="https://www.yoctoproject.org/"><strong>Yocto</strong></a> provides tools for creating a Custom Linux Image. (Like for Star64)</p>
 <p>Yocto is like baking <a href="https://lupyuen.github.io/articles/sourdough"><strong>Sourdough Bread</strong></a>…</p>
-<p>We start with the base (Sourdough Starter + Flour), then we add seeds, nuts, fruits, chocolate, … Baked into a delicious loaf that’s uniquely ours!</p>
+<p>We start with the base (Sourdough Starter + Flour), then we add fruits, nuts, seeds, chocolate, … Baked into a delicious loaf that’s uniquely ours!</p>
 <p>(Compare with Linux Distros, which is like buying a loaf of bread)</p>
+<p>We download the <a href="https://github.com/Fishwaldo/meta-pine64"><strong>Yocto Minimal Image for Star64</strong></a>…</p>
+<ul>
+<li><a href="https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2"><strong>star64-image-minimal 1.2</strong></a></li>
+</ul>
+<p>Uncompress the <strong>.bz2</strong> file, rename as <strong>.img</strong>.</p>
+<p>(Balena Etcher won’t work with <strong>.bz2</strong> files!)</p>
+<p>Write the <strong>.img</strong> file to a microSD Card with <a href="https://www.balena.io/etcher/"><strong>Balena Etcher</strong></a> or <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a>.</p>
 <p>TODO</p>
-<p>Now we boot Yocto on Star64.</p>
-<p>We download the Yocto Minimal Image for Star64: <a href="https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2">star64-image-minimal</a></p>
-<p>Uncompress the .bz2, rename as .img. Balena Etcher won’t work with .bz2 files!</p>
-<p>Write the .img to a microSD Card with Balena Etcher.</p>
 <p>Here’s what happens when we boot the microSD Card on Star64…</p>
 <ul>
 <li><a href="https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528">Yocto Boot Log</a></li>
