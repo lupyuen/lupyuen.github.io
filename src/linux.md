@@ -318,6 +318,8 @@ Boot HART MIDELEG         : 0x0000000000000222
 Boot HART MEDELEG         : 0x000000000000b109
 ```
 
+[(A __RISC-V HART__ is equivalent to a Single CPU)](https://lupyuen.github.io/articles/riscv#get-cpu-id)
+
 # U-Boot Bootloader on Star64
 
 TODO
