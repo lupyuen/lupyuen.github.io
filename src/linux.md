@@ -88,7 +88,9 @@ We start with the base (Sourdough Starter + Flour), then we add fruits, nuts, se
 
 (Compare with Linux Distros, which is like buying a loaf of bread)
 
-We download the [__Yocto Minimal Image for Star64__](https://github.com/Fishwaldo/meta-pine64)...
+_Ahem enough with the bread..._
+
+Righto! We download the [__Yocto Minimal Image for Star64__](https://github.com/Fishwaldo/meta-pine64)...
 
 -   [__star64-image-minimal 1.2__](https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2)
 
@@ -100,15 +102,58 @@ Write the __.img__ file to a microSD Card with [__Balena Etcher__](https://www.b
 
 TODO
 
-Here's what happens when we boot the microSD Card on Star64...
+```text
+OpenSBI v1.2
+   ____                    _____ ____ _____
+  / __ \                  / ____|  _ \_   _|
+ | |  | |_ __   ___ _ __ | (___ | |_) || |
+ | |  | | '_ \ / _ \ '_ \ \___ \|  _ < | |
+ | |__| | |_) |  __/ | | |____) | |_) || |_
+  \____/| .__/ \___|_| |_|_____/|____/_____|
+        | |
+        |_|
+Platform Name: StarFive VisionFive V2
+```
 
--   [Yocto Boot Log](https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528)
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528)
 
-Usernames and Passwords are...
--   root / pine64
--   pine64 / pine64
+TODO
+
+```text
+U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800), Build: jenkins-github_visionfive2-6
+CPU:   rv64imacu
+Model: StarFive VisionFive V2
+DRAM:  8 GiB
+```
+
+TODO
+
+```text
+Starting kernel ...
+clk u5_dw_i2c_clk_core already disabled
+clk u5_dw_i2c_clk_apb already disabled
+[    0.000000] Linux version 5.15.107 (oe-user@oe-host) (riscv64-pine64-linux-gcc (GCC) 11.3.0, GNU ld (GNU Binutils) 2.38.20220708) #1 SMP Mon May 15 17:57:25 UTC 2023
+```
+
+Login with __root__ or __pine64__...
+
+| Username | Password |
+|:--|:--| 
+| `root` | `pine64`
+| `pine64` | `pine64`
 
 [(Source)](https://github.com/Fishwaldo/meta-pine64#usernames)
+
+```text
+PinIx 1.2 star64 hvc0
+star64 login: root
+Password: pine64
+
+root@star64:~# uname -a
+Linux star64 5.15.107 #1 SMP Mon May 15 17:57:25 UTC 2023 riscv64 riscv64 riscv64 GNU/Linux
+```
+
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528)
 
 Yep the Yocto Minimal Image boots OK on Star64!
 
