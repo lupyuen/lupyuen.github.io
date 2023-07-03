@@ -239,7 +239,7 @@ That's because the [__Flattened Device Tree (FDT)__](https://u-boot.readthedocs.
 
 - [__Armbian Image fails to boot__](https://lupyuen.github.io/articles/star64#armbian-image-for-star64)
 
-TODO: So Armbian is not quite ready yet for Star64.
+So Armbian is not quite ready for Star64. But no worries! Armbian will be super helpful for booting NuttX RTOS, we we'll soon see...
 
 # NuttX prints to QEMU Console
 
