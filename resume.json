@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Booting RISC-V Linux on Star64 JH7110 SBC",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-07-04",
+      "website": "https://lupyuen.github.io/articles/linux",
+      "summary": "Watch what happens when we boot Yocto and Armbian Linux on Pine64's Star64 64-bit RISC-V Single-Board Computer, based on StarFive JH7110 SoC"
+    },
+    {
       "name": "Inspecting the RISC-V Linux Images for Star64 SBC",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-06-30",

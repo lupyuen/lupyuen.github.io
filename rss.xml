@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Booting RISC-V Linux on Star64 JH7110 SBC</title>
+            <link>https://lupyuen.github.io/articles/linux</link>
+            <description><![CDATA[Watch what happens when we boot Yocto and Armbian Linux on Pine64's Star64 64-bit RISC-V Single-Board Computer, based on StarFive JH7110 SoC]]></description>
+            <guid>https://lupyuen.github.io/articles/linux</guid>
+            <pubDate>Tue, 04 Jul 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Inspecting the RISC-V Linux Images for Star64 SBC</title>
             <link>https://lupyuen.github.io/articles/star64</link>
             <description><![CDATA[Let's look inside the Linux Images for Pine64's Star64 64-bit RISC-V Single-Board Computer: Armbian and Yocto]]></description>

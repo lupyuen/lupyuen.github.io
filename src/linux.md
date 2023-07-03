@@ -1,6 +1,6 @@
 # Booting RISC-V Linux on Star64 JH7110 SBC
 
-📝 _9 Jul 2023_
+📝 _4 Jul 2023_
 
 ![Star64 JH7110 RISC-V SBC with Woodpecker USB Serial Adapter](https://lupyuen.github.io/images/linux-title.jpg)
 
@@ -458,8 +458,8 @@ Let's do it! We take the [__Armbian microSD Card__](https://lupyuen.github.io/ar
 sudo chmod go+w /run/media/$USER/armbi_root/boot
 sudo chmod go+w /run/media/$USER/armbi_root/boot/dtb/starfive
 cp \
-  /boot/dtb/starfive/jh7110-visionfive-v2.dtb \
-  /boot/dtb/starfive/jh7110-star64-pine64.dtb
+  /run/media/$USER/armbi_root/boot/dtb/starfive/jh7110-visionfive-v2.dtb \
+  /run/media/$USER/armbi_root/boot/dtb/starfive/jh7110-star64-pine64.dtb
 
 ## We assume that `nuttx` contains the NuttX ELF Image.
 ## Export the NuttX Binary Image to `nuttx.bin`
@@ -539,7 +539,7 @@ _Cody AI Assistant tries to explain our RISC-V Exception_
 
 # What's Next
 
-TODO
+Please join me in the next article as we talk about Apache NuttX RTOS for Star64 SBC.
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
