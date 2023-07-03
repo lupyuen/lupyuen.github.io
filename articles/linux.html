@@ -71,16 +71,18 @@
 <li><a href="#boot-yocto-linux-on-star64">2 Boot Yocto Linux on Star64</a><ul></ul></li>
 <li><a href="#yocto-linux-with-kde-plasma">3 Yocto Linux with KDE Plasma</a><ul></ul></li>
 <li><a href="#boot-armbian-linux-on-star64">4 Boot Armbian Linux on Star64</a><ul></ul></li>
-<li><a href="#nuttx-prints-to-qemu-console">5 NuttX prints to QEMU Console</a><ul></ul></li>
-<li><a href="#uart-base-address-for-star64">6 UART Base Address for Star64</a><ul></ul></li>
-<li><a href="#risc-v-linux-kernel-header">7 RISC-V Linux Kernel Header</a><ul></ul></li>
-<li><a href="#set-start-address-of-nuttx-kernel">8 Set Start Address of NuttX Kernel</a><ul></ul></li>
-<li><a href="#boot-nuttx-on-star64">9 Boot NuttX on Star64</a><ul></ul></li>
-<li><a href="#nuttx-fails-to-get-hart-id">10 NuttX Fails To Get Hart ID</a><ul></ul></li>
-<li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-star64-u-boot-bootloader-log">12 Appendix: Star64 U-Boot Bootloader Log</a><ul>
-<li><a href="#u-boot-commands-for-star64">12.1 U-Boot Commands for Star64</a><ul></ul></li>
-<li><a href="#u-boot-settings-for-star64">12.2 U-Boot Settings for Star64</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>9 Jul 2023</em></p>
+<li><a href="#opensbi-supervisor-binary-interface">5 OpenSBI Supervisor Binary Interface</a><ul></ul></li>
+<li><a href="#u-boot-bootloader-on-star64">6 U-Boot Bootloader on Star64</a><ul></ul></li>
+<li><a href="#nuttx-prints-to-qemu-console">7 NuttX prints to QEMU Console</a><ul></ul></li>
+<li><a href="#uart-base-address-for-star64">8 UART Base Address for Star64</a><ul></ul></li>
+<li><a href="#risc-v-linux-kernel-header">9 RISC-V Linux Kernel Header</a><ul></ul></li>
+<li><a href="#set-start-address-of-nuttx-kernel">10 Set Start Address of NuttX Kernel</a><ul></ul></li>
+<li><a href="#boot-nuttx-on-star64">11 Boot NuttX on Star64</a><ul></ul></li>
+<li><a href="#nuttx-fails-to-get-hart-id">12 NuttX Fails To Get Hart ID</a><ul></ul></li>
+<li><a href="#whats-next">13 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-star64-u-boot-bootloader-log">14 Appendix: Star64 U-Boot Bootloader Log</a><ul>
+<li><a href="#u-boot-commands-for-star64">14.1 U-Boot Commands for Star64</a><ul></ul></li>
+<li><a href="#u-boot-settings-for-star64">14.2 U-Boot Settings for Star64</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>9 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/linux-title.jpg" alt="Star64 JH7110 RISC-V SBC with Woodpecker USB Serial Adapter" /></p>
 <p><a href="https://wiki.pine64.org/wiki/STAR64"><em>Star64 JH7110 RISC-V SBC with Woodpecker USB Serial Adapter</em></a></p>
 <p>Previously we talked about the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer. (Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
@@ -249,7 +251,66 @@ Failed to load &#39;/boot/dtb/starfive/jh7110-star64-pine64.dtb&#39;
 <li><a href="https://lupyuen.github.io/articles/star64#armbian-image-for-star64"><strong>Armbian Image fails to boot</strong></a></li>
 </ul>
 <p>So Armbian is not quite ready for Star64. But no worries! Armbian will be super helpful for booting NuttX RTOS, we we’ll soon see…</p>
-<h1 id="nuttx-prints-to-qemu-console"><a href="#nuttx-prints-to-qemu-console">5 NuttX prints to QEMU Console</a></h1>
+<h1 id="opensbi-supervisor-binary-interface"><a href="#opensbi-supervisor-binary-interface">5 OpenSBI Supervisor Binary Interface</a></h1>
+<p><em>Earlier we saw OpenSBI when booting Star64…</em></p>
+<p><em>What’s OpenSBI?</em></p>
+<div class="example-wrap"><pre class="language-text"><code>U-Boot SPL 2021.10 (Jan 19 2023 - 04:09:41 +0800)
+DDR version: dc2e84f0.
+Trying to boot from SPI
+OpenSBI v1.2
+   ____                    _____ ____ _____
+  / __ \                  / ____|  _ \_   _|
+ | |  | |_ __   ___ _ __ | (___ | |_) || |
+ | |  | | &#39;_ \ / _ \ &#39;_ \ \___ \|  _ &lt; | |
+ | |__| | |_) |  __/ | | |____) | |_) || |_
+  \____/| .__/ \___|_| |_|_____/|____/_____|
+        | |
+        |_|
+Platform Name             : StarFive VisionFive V2
+Platform Features         : medeleg
+Platform HART Count       : 5
+Platform IPI Device       : aclint-mswi
+Platform Timer Device     : aclint-mtimer @ 4000000Hz
+Platform Console Device   : uart8250
+Platform HSM Device       : jh7110-hsm
+Platform PMU Device       : ---
+Platform Reboot Device    : pm-reset
+Platform Shutdown Device  : pm-reset
+Firmware Base             : 0x40000000
+Firmware Size             : 288 KB
+Runtime SBI Version       : 1.0
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528">(Source)</a></p>
+<p><a href="https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/"><strong>OpenSBI (Supervisor Binary Interface)</strong></a> is the first thing that boots on Star64.</p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Domain0 Name              : root
+Domain0 Boot HART         : 1
+Domain0 HARTs             : 0*,1*,2*,3*,4*
+Domain0 Region00          : 0x0000000002000000-0x000000000200ffff (I)
+Domain0 Region01          : 0x0000000040000000-0x000000004007ffff ()
+Domain0 Region02          : 0x0000000000000000-0xffffffffffffffff (R,W,X)
+Domain0 Next Address      : 0x0000000040200000
+Domain0 Next Arg1         : 0x0000000042200000
+Domain0 Next Mode         : S-mode
+Domain0 SysReset          : yes
+</code></pre></div>
+<p>(What is <code>0x4220</code> <code>0000</code>?)</p>
+<p>TODO</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>Boot HART ID              : <span class="number">1
+</span>Boot HART Domain          : root
+Boot HART Priv Version    : v1.<span class="number">11
+</span>Boot HART Base ISA        : rv64imafdcbx
+Boot HART ISA Extensions  : none
+Boot HART PMP Count       : <span class="number">8
+</span>Boot HART PMP Granularity : <span class="number">4096
+</span>Boot HART PMP Address Bits: <span class="number">34
+</span>Boot HART MHPM Count      : <span class="number">2
+</span>Boot HART MIDELEG         : <span class="number">0x0000000000000222
+</span>Boot HART MEDELEG         : <span class="number">0x000000000000b109</span></code></pre></div>
+<h1 id="u-boot-bootloader-on-star64"><a href="#u-boot-bootloader-on-star64">6 U-Boot Bootloader on Star64</a></h1>
+<p>TODO</p>
+<h1 id="nuttx-prints-to-qemu-console"><a href="#nuttx-prints-to-qemu-console">7 NuttX prints to QEMU Console</a></h1>
 <p>TODO</p>
 <p>Our NuttX Kernel will print to Star64 Serial Console for debugging. Before that, let’s write some RISC-V Assembly Code to print to the QEMU Console!</p>
 <p>Earlier we ran NuttX on QEMU Emulator for 64-bit RISC-V…</p>
@@ -339,7 +400,7 @@ NuttShell (NSH) NuttX-12.0.3
 nsh&gt; 
 </code></pre></div>
 <p>The correct output is <code>123123123123123123112323</code>. (Because of the 8 CPUs)</p>
-<h1 id="uart-base-address-for-star64"><a href="#uart-base-address-for-star64">6 UART Base Address for Star64</a></h1>
+<h1 id="uart-base-address-for-star64"><a href="#uart-base-address-for-star64">8 UART Base Address for Star64</a></h1>
 <p>TODO</p>
 <p>We’ll take the UART Assembly Code from the previous section and run on Star64 / JH7110. (So we can troubleshoot the NuttX Boot Code)</p>
 <p><em>Does Star64 / JH7110 use a 16550 UART Controller like QEMU?</em></p>
@@ -361,7 +422,7 @@ CONFIG_16550_UART=y
 </code></pre></div>
 <p>NuttX UART Base Address is <code>0x1000</code> <code>0000</code>. The exact same UART Base Address for QEMU AND Star64!</p>
 <p>So no changes needed, our UART Assembly Code will run on QEMU AND Star64 yay!</p>
-<h1 id="risc-v-linux-kernel-header"><a href="#risc-v-linux-kernel-header">7 RISC-V Linux Kernel Header</a></h1>
+<h1 id="risc-v-linux-kernel-header"><a href="#risc-v-linux-kernel-header">9 RISC-V Linux Kernel Header</a></h1>
 <p>TODO</p>
 <p>For U-Boot Bootloader to boot NuttX, we need to embed the RISC-V Linux Kernel Header…</p>
 <ul>
@@ -443,7 +504,7 @@ real_start:
 <li><a href="https://lupyuen.github.io/articles/star64#appendix-decode-the-risc-v-linux-header"><strong>“Decode the RISC-V Linux Header”</strong></a></li>
 </ul>
 <p>And our RISC-V Boot Code tested OK with QEMU.</p>
-<h1 id="set-start-address-of-nuttx-kernel"><a href="#set-start-address-of-nuttx-kernel">8 Set Start Address of NuttX Kernel</a></h1>
+<h1 id="set-start-address-of-nuttx-kernel"><a href="#set-start-address-of-nuttx-kernel">10 Set Start Address of NuttX Kernel</a></h1>
 <p>TODO</p>
 <p>Earlier we saw that Star64’s U-Boot Bootloader will load Linux Kernels into RAM at Address <code>0x4020</code> <code>0000</code>…</p>
 <ul>
@@ -492,7 +553,7 @@ SECTIONS
     40200002:	a83d                	j	40200040 &lt;real_start&gt;
 </code></pre></div>
 <p>We’re ready to boot NuttX on Star64!</p>
-<h1 id="boot-nuttx-on-star64"><a href="#boot-nuttx-on-star64">9 Boot NuttX on Star64</a></h1>
+<h1 id="boot-nuttx-on-star64"><a href="#boot-nuttx-on-star64">11 Boot NuttX on Star64</a></h1>
 <p>TODO</p>
 <p>Let’s boot NuttX on Star64! We compile <a href="https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu">NuttX for 64-bit RISC-V QEMU</a> with these tweaks…</p>
 <ul>
@@ -592,7 +653,7 @@ reset not supported yet
 ### ERROR ### Please RESET the board ###
 </code></pre></div>
 <p>Why does NuttX crash at <code>4020005c</code>? See the next section…</p>
-<h1 id="nuttx-fails-to-get-hart-id"><a href="#nuttx-fails-to-get-hart-id">10 NuttX Fails To Get Hart ID</a></h1>
+<h1 id="nuttx-fails-to-get-hart-id"><a href="#nuttx-fails-to-get-hart-id">12 NuttX Fails To Get Hart ID</a></h1>
 <p>TODO</p>
 <p>Earlier we saw NuttX crashing when booting on Star64…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
@@ -711,7 +772,7 @@ csrw CSR_IP, zero
 <div class="example-wrap"><pre class="language-c"><code>#define QEMU_RV_CLINT_BASE   0x02000000
 #define QEMU_RV_ACLINT_BASE  0x02f00000
 #define QEMU_RV_PLIC_BASE    0x0c000000
-</code></pre></div><h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
+</code></pre></div><h1 id="whats-next"><a href="#whats-next">13 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -733,7 +794,7 @@ csrw CSR_IP, zero
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/linux.md"><strong>lupyuen.github.io/src/linux.md</strong></a></p>
-<h1 id="appendix-star64-u-boot-bootloader-log"><a href="#appendix-star64-u-boot-bootloader-log">12 Appendix: Star64 U-Boot Bootloader Log</a></h1>
+<h1 id="appendix-star64-u-boot-bootloader-log"><a href="#appendix-star64-u-boot-bootloader-log">14 Appendix: Star64 U-Boot Bootloader Log</a></h1>
 <p>TODO</p>
 <p>Here’s the log for U-Boot Bootloader on Star64 (without microSD Card)…</p>
 <p><img src="https://lupyuen.github.io/images/star64-opensbi.jpg" alt="U-Boot Bootloader Log" /></p>
@@ -840,7 +901,7 @@ phy_startup() failed: -110FAILED: -110StarFive #
 StarFive # 
 </code></pre></div>
 <p>Which is OK because we haven’t inserted a microSD Card.</p>
-<h2 id="u-boot-commands-for-star64"><a href="#u-boot-commands-for-star64">12.1 U-Boot Commands for Star64</a></h2>
+<h2 id="u-boot-commands-for-star64"><a href="#u-boot-commands-for-star64">14.1 U-Boot Commands for Star64</a></h2>
 <p>TODO</p>
 <p>Here are the U-Boot Commands…</p>
 <div class="example-wrap"><pre class="language-text"><code>StarFive # help
@@ -946,7 +1007,7 @@ true      - do nothing, successfully
 unlz4     - lz4 uncompress a memory region
 unzip     - unzip a memory region
 version   - print monitor, compiler and linker version
-</code></pre></div><h2 id="u-boot-settings-for-star64"><a href="#u-boot-settings-for-star64">12.2 U-Boot Settings for Star64</a></h2>
+</code></pre></div><h2 id="u-boot-settings-for-star64"><a href="#u-boot-settings-for-star64">14.2 U-Boot Settings for Star64</a></h2>
 <p>TODO</p>
 <p>Here are the U-Boot Settings…</p>
 <div class="example-wrap"><pre class="language-text"><code>StarFive # printenv
