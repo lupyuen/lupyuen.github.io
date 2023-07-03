@@ -547,6 +547,8 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 
 -   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=36579963)
 
+-   [__Discuss this article on Pine64 Forum__](https://forum.pine64.org/showthread.php?tid=18449)
+
 -   [__My Current Project: "Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
 
 -   [__My Other Project: "The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book)
