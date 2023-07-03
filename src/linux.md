@@ -533,6 +533,10 @@ Code: 0313 0320 8023 0062 0313 0330 8023 0062 (2573 f140)
 
 Why did NuttX crash at __`4020` `005C`__? All shall be revealed in the next article!
 
+![Cody AI Assistant tries to explain our RISC-V Exception](https://lupyuen.github.io/images/star64-exception.jpg)
+
+_Cody AI Assistant tries to explain our RISC-V Exception_
+
 # What's Next
 
 TODO
