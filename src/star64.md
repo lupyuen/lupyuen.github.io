@@ -1,4 +1,4 @@
-# Inspecting the RISC-V Linux Images for Star64 SBC (JH7110)
+# Inspecting the RISC-V Linux Images for Star64 JH7110 SBC
 
 📝 _30 Jun 2023_
 

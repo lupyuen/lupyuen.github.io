@@ -1,8 +1,10 @@
-# Booting RISC-V Linux on Star64 SBC (JH7110)
+# Booting RISC-V Linux on Star64 JH7110 SBC
 
 📝 _9 Jul 2023_
 
-![Booting Pine64 Star64 SBC](https://lupyuen.github.io/images/linux-title.jpg)
+![Star64 JH7110 RISC-V SBC with Woodpecker USB Serial Adapter](https://lupyuen.github.io/images/linux-title.jpg)
+
+[_Star64 JH7110 RISC-V SBC with Woodpecker USB Serial Adapter_](https://wiki.pine64.org/wiki/STAR64)
 
 Previously we talked about the [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) 64-bit RISC-V Single-Board Computer. (Based on [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC)
 
@@ -36,7 +38,7 @@ _What's NuttX?_
 
 The analysis that we do today will be super helpful for [__porting NuttX to Star64__](https://lupyuen.github.io/articles/riscv#jump-to-start).
 
-TODO: Pic
+![UART0 TX and RX on GPIO Header Pins 8 and 10](https://lupyuen.github.io/images/star64-uart1.jpg)
 
 # Serial Console on Star64
 
@@ -44,7 +46,7 @@ Before we begin, let's connect a __USB Serial Adapter__ to Star64. (So we can se
 
 We'll use the [__Pine64 Woodpecker Serial Adapter__](https://pine64.com/product/serial-console-woodpecker-edition/). (Any CH340 or similar adapter should work)
 
-According to [__Star64 Schematic__](https://files.pine64.org/doc/star64/Star64_Schematic_V1.1_20230504.pdf) (Page 18), __UART0 TX and RX__ (GPIO 5 and 6) are connected to the __GPIO Header__ (Pins 8 and 10).
+According to [__Star64 Schematic__](https://files.pine64.org/doc/star64/Star64_Schematic_V1.1_20230504.pdf) (Page 18), __UART0 TX and RX__ (GPIO 5 and 6) are connected to the __GPIO Header__ (Pins 8 and 10). (Pic above)
 
 Thus we connect these pins...
 
@@ -54,7 +56,9 @@ Thus we connect these pins...
 | Pin 8 (TX) | RX | Red
 | Pin 10 (RX) | TX | Orange
 
-On our USB Serial Adapter, set the Voltage Jumper to __3V3__. (Instead of 5V)
+![Pine64 Woodpecker Serial Adapter](https://lupyuen.github.io/images/star64-uart3.jpg)
+
+On our USB Serial Adapter, set the Voltage Jumper to __3V3__. (Instead of 5V, pic above)
 
 On our computer, connect to the USB Serial Port at __115.2 kbps__...
 
@@ -62,15 +66,15 @@ On our computer, connect to the USB Serial Port at __115.2 kbps__...
 screen /dev/ttyUSB0 115200
 ```
 
-TODO
+Insert the __microSD Card__ (from next section) and power up Star64.
 
-And power up Star64.
-
-Check that the __DIP Switches__ for GPIO 0 and 1 are set to __Low and Low__. (Default)
+Verify that the __DIP Switches__ for GPIO 0 and 1 are set to __Low and Low__. (Default, pic below)
 
 So Star64 should start the U-Boot Bootloader from __Internal Flash Memory__.
 
 [(DIP Switch Labels are inverted: __"ON"__ actually means __"Low"__)](https://wiki.pine64.org/wiki/STAR64#Prototype_Bringup_Notes)
+
+![DIP Switches for GPIO 0 and 1 are set to Low and Low](https://lupyuen.github.io/images/star64-uart2.jpg)
 
 # Boot Yocto Linux on Star64
 
