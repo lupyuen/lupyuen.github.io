@@ -12,7 +12,7 @@ And we inspected the Linux Images for Star64...
 
 - [__"Inspecting the RISC-V Linux Images for Star64 JH7110 SBC"__](https://lupyuen.github.io/articles/star64)
 
-Let's boot them on Star64! We'll soon see...
+Today we'll boot them on Star64! We'll soon see...
 
 - __Yocto Linux__ boots OK on Star64
 
@@ -72,7 +72,7 @@ Verify that the __DIP Switches__ for GPIO 0 and 1 are set to __Low and Low__. (D
 
 So Star64 should start the U-Boot Bootloader from __Internal Flash Memory__.
 
-[(DIP Switch Labels are inverted: __"ON"__ actually means __"Low"__)](https://wiki.pine64.org/wiki/STAR64#Prototype_Bringup_Notes)
+[(DIP Switch Labels are inverted: __"ON KE"__ actually means __"Low"__)](https://wiki.pine64.org/wiki/STAR64#Prototype_Bringup_Notes)
 
 ![DIP Switches for GPIO 0 and 1 are set to Low and Low](https://lupyuen.github.io/images/star64-uart2.jpg)
 
@@ -100,7 +100,7 @@ Uncompress the __.bz2__ file, rename as __.img__.
 
 Write the __.img__ file to a microSD Card with [__Balena Etcher__](https://www.balena.io/etcher/) or [__GNOME Disks__](https://wiki.gnome.org/Apps/Disks).
 
-When we boot the microSD Card on Star64, the __OpenSBI (Supervisor Binary Interface)__ appears (running from Internal Flash Memory)...
+When we boot the microSD Card on Star64, the __OpenSBI (Supervisor Binary Interface)__ appears (loaded from Internal Flash Memory)...
 
 ```text
 OpenSBI v1.2
@@ -119,7 +119,7 @@ Platform Name: StarFive VisionFive V2
 
 (We'll explain OpenSBI in a while)
 
-OpenSBI starts the [__U-Boot Bootloader__](https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html#flashing) (also from Internal Flash Memory)...
+OpenSBI starts the [__U-Boot Bootloader__](https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html#flashing) (also loaded from Internal Flash Memory)...
 
 ```text
 U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800), Build: jenkins-github_visionfive2-6
@@ -181,7 +181,7 @@ Linux star64 5.15.107 #1 SMP Mon May 15 17:57:25 UTC 2023
 
 [(Source)](https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528)
 
-Yep the Yocto Minimal Image boots OK on Star64!
+Yep the Yocto Minimal Image boots OK on Star64! Let's do something more colourful...
 
 ![Yocto Linux with KDE Plasma on Star64](https://lupyuen.github.io/images/star64-plasma.jpg)
 
@@ -212,7 +212,7 @@ Remember to log in as __root__ or __pine64__...
 
 # Boot Armbian Linux on Star64
 
-_What about other Linux Distros for Star64?_
+_What about other Linux Distros?_
 
 Let's boot Armbian Linux on Star64! We download the [__Armbian Image for Star64__](https://www.armbian.com/star64/)...
 
@@ -222,7 +222,7 @@ Uncompress the __.xz__ file. Write the __.img__ file to a microSD Card with [__B
 
 _What happens when we boot the microSD on Star64?_
 
-Armbian won't boot on Star64!
+Sadly, Armbian won't boot on Star64!
 
 ```text
 Retrieving file: /boot/uInitrd
@@ -277,7 +277,7 @@ Firmware Size             : 288 KB
 Runtime SBI Version       : 1.0
 ```
 
-[(Source)](TODO)
+[(Source)](https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64)
 
 [__OpenSBI (Open Source Supervisor Binary Interface)__](https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/) is the first thing that boots on Star64.
 
@@ -306,7 +306,7 @@ Domain0 SysReset          : yes
 
 And the __RISC-V Hardware Thread__ (HART) will support ["__rv64imafdcbx__"](https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v)...
 
-```
+```text
 Boot HART ID              : 1
 Boot HART Domain          : root
 Boot HART Priv Version    : v1.11
@@ -342,7 +342,7 @@ SF: Detected gd25lq128 with page size 256 Bytes, erase size 4 KiB, total 16 MiB
 Hit any key to stop autoboot
 ```
 
-[(Source)](TODO)
+[(Source)](https://lupyuen.github.io/articles/linux#appendix-u-boot-bootloader-log-for-star64)
 
 Suppose there's __no microSD Card inserted__.
 
@@ -363,10 +363,11 @@ Can't set block device
 Card did not respond to voltage select! : -110
 ```
 
-U-Boot tries loading the Linux Image __from the Network__, but also fails...
+Then it tries to load the Linux Image __from the Network__, but also fails...
 
 ```text
-ethernet@16030000 Waiting for PHY auto negotiation to complete......... TIMEOUT !
+ethernet@16030000 Waiting for PHY auto negotiation to complete.........
+TIMEOUT !
 phy_startup() failed: -110
 FAILED: -110
 ethernet@16040000 Waiting for PHY auto negotiation to complete......... 
@@ -399,7 +400,7 @@ U-Boot says that...
 
   [__/boot/extlinux/extlinux.conf__](https://lupyuen.github.io/articles/star64#armbian-image-for-star64)
 
-- __Linux Kernel__ will be loaded into RAM at [__kernel_addr_r__](https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables)
+- __Linux Kernel__ will be loaded at RAM Address [__kernel_addr_r__](https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables)
 
   __`0x4020` `0000`__
 
@@ -530,9 +531,7 @@ Code: 0313 0320 8023 0062 0313 0330 8023 0062 (2573 f140)
 
 [(Source)](https://github.com/lupyuen/nuttx-star64#boot-nuttx-on-star64)
 
-_Why did NuttX crash at `4020` `005C`?_
-
-All shall be revealed in the next article!
+Why did NuttX crash at __`4020` `005C`__? All shall be revealed in the next article!
 
 # What's Next
 
@@ -560,7 +559,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__OpenSBI (Open Source Supervisor Binary Interface)__](https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/) is the first thing that boots on Star64.
 
-Here is the OpenSBI Log...
+Here's the OpenSBI Log for Star64...
 
 ```text
 U-Boot SPL 2021.10 (Jan 19 2023 - 04:09:41 +0800)
@@ -619,9 +618,7 @@ After OpenSBI, Star64 runs U-Boot Bootloader...
 
 # Appendix: U-Boot Bootloader Log for Star64
 
-TODO
-
-Here's the log for U-Boot Bootloader on Star64 (without microSD Card)...
+Here's the log for __U-Boot Bootloader__ on Star64 (without microSD Card inserted)...
 
 ```text
 U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800), Build: jenkins-github_visionfive2-6
@@ -679,9 +676,7 @@ Which is OK because we haven't inserted a microSD Card.
 
 ## U-Boot Settings for Star64
 
-TODO
-
-Here are the U-Boot Settings...
+Here are the __U-Boot Settings__ for Star64...
 
 ```text
 StarFive # printenv
@@ -777,9 +772,7 @@ Environment size: 7246/65532 bytes
 
 ## U-Boot Commands for Star64
 
-TODO
-
-Here are the U-Boot Commands...
+Here are the __U-Boot Commands__ for Star64...
 
 ```text
 StarFive # help
