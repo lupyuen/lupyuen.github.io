@@ -155,7 +155,7 @@ And boots the [__Yocto Linux Kernel__](https://lupyuen.github.io/articles/star64
 Starting kernel ...
 clk u5_dw_i2c_clk_core already disabled
 clk u5_dw_i2c_clk_apb already disabled
-[    0.000000] Linux version 5.15.107 (oe-user@oe-host) (riscv64-pine64-linux-gcc (GCC) 11.3.0, GNU ld (GNU Binutils) 2.38.20220708) #1 SMP Mon May 15 17:57:25 UTC 2023
+Linux version 5.15.107 (oe-user@oe-host) (riscv64-pine64-linux-gcc (GCC) 11.3.0, GNU ld (GNU Binutils) 2.38.20220708) #1 SMP Mon May 15 17:57:25 UTC 2023
 ```
 
 We log in with __root__ or __pine64__...
