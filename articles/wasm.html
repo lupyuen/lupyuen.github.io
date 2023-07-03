@@ -323,7 +323,7 @@ ctx.fillRect(315, 116, 35, 74);
 <p><em>How shall we connect uLisp to the BL602 Simulator… And blink the Simulated LED?</em></p>
 <p>Oh yes we have ways of <strong>making uLisp talk to BL602 Simulator</strong>… From WebAssembly to JavaScript!</p>
 <p>Here’s one way: A <strong>JSON Stream of BL602 Simulation Events</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/lisp-simulator.png" alt="BL602 Simulator Design" /></p>
+<p><img src="https://lupyuen.github.io/images/lisp-simulator.jpg" alt="BL602 Simulator Design" /></p>
 <p><em>What’s a BL602 Simulation Event?</em></p>
 <p>When uLisp needs to <strong>set the GPIO Output</strong> to High or Low (to flip an LED On/Off)…</p>
 <div class="example-wrap"><pre class="language-text"><code>( digitalwrite 11 :high )
@@ -1058,7 +1058,7 @@ uint32_t time_ms_to_ticks32(uint32_t millisec) { return millisec; }
 <p>It’s heavily <strong>dependent on the implementation</strong> of the uLisp Interpreter. And the way we render the simulator (like SDL).</p>
 <p>Which makes this design <strong>harder to reuse</strong> for other kinds of BL602 Firmware (like our BL602 Blinky Firmware in C) and other ways of rendering the simulator (like JavaScript).</p>
 <p>To fix this, we apply <a href="https://en.wikipedia.org/wiki/Inversion_of_control"><strong>Inversion of Control</strong></a> and flip the design, so that <strong>uLisp no longer controls the simulator directly</strong>…</p>
-<p><img src="https://lupyuen.github.io/images/lisp-simulator.png" alt="BL602 Simulator Design" /></p>
+<p><img src="https://lupyuen.github.io/images/lisp-simulator.jpg" alt="BL602 Simulator Design" /></p>
 <p>And we get the <strong>chosen design of our BL602 Simulator</strong>.</p>
 <p>Some Higher Entity (the Simulator JavaScript) takes the Simulation Events emitted by uLisp, and feeds them to the BL602 Simulator.</p>
 <p>With this simulator design we get…</p>
