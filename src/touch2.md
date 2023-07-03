@@ -593,6 +593,8 @@ read(
 );
 ```
 
+(More about the Event Loop in a while)
+
 We'll receive a Touch Sample that contains __0 or 1 Touch Points__. [(More about Touch Samples)](https://lupyuen.github.io/articles/touch2#read-a-touch-sample)
 
 (The Read Operation above is __Non-Blocking__. It returns 0 Touch Points if the screen hasn't been touched)
@@ -650,6 +652,26 @@ Yep we need to [__flush the CPU Cache__](https://lupyuen.github.io/articles/fb#f
 This ought to improve the rendering speed and make LVGL more responsive.
 
 [(More about this)](https://lupyuen.github.io/articles/fb#fix-missing-pixels)
+
+_Where's this LVGL Event Loop that periodically reads a Touch Sample from our driver?_
+
+The __LVGL Event Loop__ comes from the Main Function of our LVGL Demo App: [lvgldemo.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L240-L249)
+
+```c
+// LVGL Event Loop
+while (1) {
+  // Minimum sleep of 1ms
+  uint32_t idle = lv_timer_handler();
+  idle = idle ? idle : 1;
+  usleep(idle * 1000);
+}
+```
+
+[__lv_timer_handler__](https://docs.lvgl.io/8.3/porting/project.html#initialization) will periodically execute __LVGL Background Tasks__ to...
+
+- Read __Touch Samples__ (from our Touch Input Driver)
+
+- Update the __LVGL Display__
 
 # Driver Limitations
 
