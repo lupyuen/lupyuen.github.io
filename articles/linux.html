@@ -147,7 +147,7 @@
 <p>Uncompress the <strong>.bz2</strong> file, rename as <strong>.img</strong>.</p>
 <p>(Balena Etcher won’t work with <strong>.bz2</strong> files!)</p>
 <p>Write the <strong>.img</strong> file to a microSD Card with <a href="https://www.balena.io/etcher/"><strong>Balena Etcher</strong></a> or <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a>.</p>
-<p>TODO</p>
+<p>When we boot the microSD Card on Star64, the <strong>OpenSBI (Supervisor Binary Interface)</strong> appears (running from Internal Flash Memory)…</p>
 <div class="example-wrap"><pre class="language-text"><code>OpenSBI v1.2
    ____                    _____ ____ _____
   / __ \                  / ____|  _ \_   _|
@@ -160,19 +160,37 @@
 Platform Name: StarFive VisionFive V2
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528">(See the <strong>Complete Log</strong>)</a></p>
-<p>TODO</p>
+<p>(We’ll explain OpenSBI in a while)</p>
+<p>OpenSBI starts the <a href="https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html#flashing"><strong>U-Boot Bootloader</strong></a> (also from Internal Flash Memory)…</p>
 <div class="example-wrap"><pre class="language-text"><code>U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800), Build: jenkins-github_visionfive2-6
 CPU:   rv64imacu
 Model: StarFive VisionFive V2
 DRAM:  8 GiB
 </code></pre></div>
-<p>TODO</p>
+<p>U-Boot Bootloader loads the <a href="https://lupyuen.github.io/articles/star64#yocto-image-for-star64"><strong>Yocto Linux Image</strong></a> from the microSD Card…</p>
+<div class="example-wrap"><pre class="language-text"><code>Loading kernel from FIT Image at a0000000 ...
+  Load Address: 0x40200000
+  Entry Point:  0x40200000
+Loading ramdisk from FIT Image at a0000000 ...
+  Load Address: 0x46100000
+Loading fdt from FIT Image at a0000000 ...
+  Load Address: 0x46000000
+  Loading fdt from 0xa094e97c to 0x46000000
+  Booting using the fdt blob at 0x46000000
+  Uncompressing Kernel Image
+Booting kernel in
+  Flattened Device Tree blob at 46000000
+  Booting using the fdt blob at 0x46000000
+  Using Device Tree in place at 0000000046000000, end 000000004600efff
+</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/star64#yocto-image-for-star64">(With a <strong>FIT: Flat Image Tree</strong>)</a></p>
+<p>And boots the <a href="https://lupyuen.github.io/articles/star64#yocto-image-for-star64"><strong>Yocto Linux Kernel</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 clk u5_dw_i2c_clk_core already disabled
 clk u5_dw_i2c_clk_apb already disabled
 [    0.000000] Linux version 5.15.107 (oe-user@oe-host) (riscv64-pine64-linux-gcc (GCC) 11.3.0, GNU ld (GNU Binutils) 2.38.20220708) #1 SMP Mon May 15 17:57:25 UTC 2023
 </code></pre></div>
-<p>Login with <strong>root</strong> or <strong>pine64</strong>…</p>
+<p>We log in with <strong>root</strong> or <strong>pine64</strong>…</p>
 <div><table><thead><tr><th style="text-align: left">Username</th><th style="text-align: left">Password</th></tr></thead><tbody>
 <tr><td style="text-align: left"><code>root</code></td><td style="text-align: left"><code>pine64</code></td></tr>
 <tr><td style="text-align: left"><code>pine64</code></td><td style="text-align: left"><code>pine64</code></td></tr>
