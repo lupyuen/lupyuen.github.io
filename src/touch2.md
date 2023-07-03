@@ -658,10 +658,13 @@ _Where's this LVGL Event Loop that periodically reads a Touch Sample from our dr
 The __LVGL Event Loop__ comes from the Main Function of our LVGL Demo App: [lvgldemo.c](https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L240-L249)
 
 ```c
-// LVGL Event Loop
+// Loop forever handling LVGL Event...
 while (1) {
-  // Minimum sleep of 1ms
+
+  // Execute LVGL Background Tasks
   uint32_t idle = lv_timer_handler();
+
+  // Minimum sleep of 1ms
   idle = idle ? idle : 1;
   usleep(idle * 1000);
 }
