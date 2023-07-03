@@ -414,19 +414,19 @@ _Can we boot NuttX RTOS on Star64?_
 
 Let's review everything that we learnt today...
 
-- Armbian Image fails to boot because the [__Device Tree is missing__](https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64)
+1.  Armbian Image fails to boot because the [__Device Tree is missing__](https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64)
 
-- Though the [__Armbian Kernel loads OK__](https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64) with U-Boot Bootloader
+1.  Though the [__Armbian Kernel loads OK__](https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64) with U-Boot Bootloader
 
-- U-Boot Bootloader will boot Linux Kernels at [__RAM Address `0x4020` `0000`__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64)
+1.  U-Boot Bootloader will boot Linux Kernels at [__RAM Address `0x4020` `0000`__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64)
 
 So why don't we...
 
-- Fix the __Missing Device Tree__ for NuttX
+1.  Fix the __Missing Device Tree__ for NuttX
 
-- Overwrite the Armbian Kernel by __NuttX Kernel__
+1.  Overwrite the Armbian Kernel by __NuttX Kernel__
 
-- And compile NuttX to boot at __`0x4020` `0000`__?
+1.  And compile NuttX to boot at __`0x4020` `0000`__?
 
 Let's do it! We take the [__Armbian microSD Card__](https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64) and patch it like this...
 
@@ -508,7 +508,9 @@ Code: 0313 0320 8023 0062 0313 0330 8023 0062 (2573 f140)
 
 [(Source)](https://github.com/lupyuen/nuttx-star64#boot-nuttx-on-star64)
 
-Why does NuttX crash at __`4020` `005C`__? We'll explain everything in the next article!
+_Why did NuttX crash at `4020` `005C`?_
+
+We'll explain everything in the next article!
 
 # What's Next
 
