@@ -100,7 +100,7 @@ Uncompress the __.bz2__ file, rename as __.img__.
 
 Write the __.img__ file to a microSD Card with [__Balena Etcher__](https://www.balena.io/etcher/) or [__GNOME Disks__](https://wiki.gnome.org/Apps/Disks).
 
-TODO
+When we boot the microSD Card on Star64, the __OpenSBI (Supervisor Binary Interface)__ appears (running from Internal Flash Memory)...
 
 ```text
 OpenSBI v1.2
@@ -117,7 +117,9 @@ Platform Name: StarFive VisionFive V2
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528)
 
-TODO
+(We'll explain OpenSBI in a while)
+
+OpenSBI starts the [__U-Boot Bootloader__](https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html#flashing) (also from Internal Flash Memory)...
 
 ```text
 U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800), Build: jenkins-github_visionfive2-6
@@ -126,7 +128,28 @@ Model: StarFive VisionFive V2
 DRAM:  8 GiB
 ```
 
-TODO
+U-Boot Bootloader loads the [__Yocto Linux Image__](https://lupyuen.github.io/articles/star64#yocto-image-for-star64) from the microSD Card...
+
+```text
+Loading kernel from FIT Image at a0000000 ...
+  Load Address: 0x40200000
+  Entry Point:  0x40200000
+Loading ramdisk from FIT Image at a0000000 ...
+  Load Address: 0x46100000
+Loading fdt from FIT Image at a0000000 ...
+  Load Address: 0x46000000
+  Loading fdt from 0xa094e97c to 0x46000000
+  Booting using the fdt blob at 0x46000000
+  Uncompressing Kernel Image
+Booting kernel in
+  Flattened Device Tree blob at 46000000
+  Booting using the fdt blob at 0x46000000
+  Using Device Tree in place at 0000000046000000, end 000000004600efff
+```
+
+[(With a __FIT: Flat Image Tree__)](https://lupyuen.github.io/articles/star64#yocto-image-for-star64)
+
+And boots the [__Yocto Linux Kernel__](https://lupyuen.github.io/articles/star64#yocto-image-for-star64)...
 
 ```text
 Starting kernel ...
@@ -135,7 +158,7 @@ clk u5_dw_i2c_clk_apb already disabled
 [    0.000000] Linux version 5.15.107 (oe-user@oe-host) (riscv64-pine64-linux-gcc (GCC) 11.3.0, GNU ld (GNU Binutils) 2.38.20220708) #1 SMP Mon May 15 17:57:25 UTC 2023
 ```
 
-Login with __root__ or __pine64__...
+We log in with __root__ or __pine64__...
 
 | Username | Password |
 |:--|:--| 
