@@ -226,46 +226,29 @@ Linux star64 5.15.107 #1 SMP Mon May 15 17:57:25 UTC 2023
 </tbody></table>
 </div>
 <p><a href="https://github.com/Fishwaldo/meta-pine64#usernames">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/star64-armbian.png" alt="Armbian Image for Star64" /></p>
 <h1 id="boot-armbian-linux-on-star64"><a href="#boot-armbian-linux-on-star64">4 Boot Armbian Linux on Star64</a></h1>
-<p>TODO</p>
-<p>Let’s boot Armbian on Star64!</p>
-<p>We download the <a href="https://www.armbian.com/star64/"><strong>Armbian Image for Star64</strong></a>…</p>
+<p><em>What about other Linux Distros for Star64?</em></p>
+<p>Let’s boot Armbian Linux on Star64! We download the <a href="https://www.armbian.com/star64/"><strong>Armbian Image for Star64</strong></a>…</p>
 <ul>
 <li><a href="https://github.com/armbianro/os/releases/download/23.8.0-trunk.56/Armbian_23.8.0-trunk.56_Star64_lunar_edge_5.15.0_minimal.img.xz"><strong>Armbian 23.8 Lunar for Star64 (Minimal)</strong></a></li>
 </ul>
 <p>Uncompress the <strong>.xz</strong> file. Write the <strong>.img</strong> file to a microSD Card with <a href="https://www.balena.io/etcher/"><strong>Balena Etcher</strong></a> or <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a>.</p>
-<p>Here’s what happens when we boot the microSD Card on Star64…</p>
-<ul>
-<li><a href="https://gist.github.com/lupyuen/d73ace627318375fe20e90e4950f9c50">Armbian Boot Log</a></li>
-</ul>
-<p>Armbian fails to boot…</p>
-<div class="example-wrap"><pre class="language-text"><code>Found /boot/extlinux/extlinux.conf
-Retrieving file: /boot/extlinux/extlinux.conf
-383 bytes read in 7 ms (52.7 KiB/s)
-1:[6CArmbian
-Retrieving file: /boot/uInitrd
+<p><em>What happens when we boot the microSD on Star64?</em></p>
+<p>Armbian fails to boot on Star64!</p>
+<div class="example-wrap"><pre class="language-text"><code>Retrieving file: /boot/uInitrd
 10911538 bytes read in 466 ms (22.3 MiB/s)
 Retrieving file: /boot/Image
 22040576 bytes read in 936 ms (22.5 MiB/s)
-append: root=UUID=99f62df4-be35-475c-99ef-2ba3f74fe6b5 console=ttyS0,115200n8 console=tty0 earlycon=sbi rootflags=data=writeback stmmaceth=chain_mode:1 rw rw no_console_suspend consoleblank=0 fsck.fix=yes fsck.repair=yes net.ifnames=0 splash plymouth.ignore-serial-consoles
 Retrieving file: /boot/dtb/starfive/jh7110-star64-pine64.dtb
 Failed to load &#39;/boot/dtb/starfive/jh7110-star64-pine64.dtb&#39;
-Skipping Armbian for failure retrieving FDT
 </code></pre></div>
-<p>The Flattened Device Tree (FDT) is missing! <code>/boot/dtb/starfive/jh7110-star64-pine64.dtb</code></p>
-<div class="example-wrap"><pre class="language-text"><code>→ ls /Volumes/armbi_root/boot/dtb-5.15.0-starfive2/starfive
-evb-overlay                      jh7110-evb-usbdevice.dtb
-jh7110-evb-can-pdm-pwmdac.dtb    jh7110-evb.dtb
-jh7110-evb-dvp-rgb2hdmi.dtb      jh7110-fpga.dtb
-jh7110-evb-i2s-ac108.dtb         jh7110-visionfive-v2-A10.dtb
-jh7110-evb-pcie-i2s-sd.dtb       jh7110-visionfive-v2-A11.dtb
-jh7110-evb-spi-uart2.dtb         jh7110-visionfive-v2-ac108.dtb
-jh7110-evb-uart1-rgb2hdmi.dtb    jh7110-visionfive-v2-wm8960.dtb
-jh7110-evb-uart4-emmc-spdif.dtb  jh7110-visionfive-v2.dtb
-jh7110-evb-uart5-pwm-i2c-tdm.dtb vf2-overlay
-</code></pre></div>
-<p>The missing Device Tree is noted in this <a href="https://forum.pine64.org/showthread.php?tid=18276&amp;pid=117607#pid117607"><strong>Pine64 Forum Post</strong></a>. So we might need to check back later for the Official Armbian Image, if it’s fixed.</p>
-<p><a href="https://forum.pine64.org/showthread.php?tid=18420&amp;pid=118331#pid118331">(<strong>balbes150</strong> suggests that we try this Armbian Image instead)</a></p>
+<p><a href="https://gist.github.com/lupyuen/d73ace627318375fe20e90e4950f9c50">(See the <strong>Complete Log</strong>)</a></p>
+<p>That’s because the <a href="https://u-boot.readthedocs.io/en/latest/develop/devicetree/index.html"><strong>Flattened Device Tree (FDT)</strong></a> is missing…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/star64#armbian-image-for-star64"><strong>Armbian Image fails to boot</strong></a></li>
+</ul>
+<p>TODO: So Armbian is not quite ready yet for Star64.</p>
 <h1 id="nuttx-prints-to-qemu-console"><a href="#nuttx-prints-to-qemu-console">5 NuttX prints to QEMU Console</a></h1>
 <p>TODO</p>
 <p>Our NuttX Kernel will print to Star64 Serial Console for debugging. Before that, let’s write some RISC-V Assembly Code to print to the QEMU Console!</p>
