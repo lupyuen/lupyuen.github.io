@@ -10,7 +10,7 @@ Previously we talked about the [__Pine64 Star64__](https://wiki.pine64.org/wiki/
 
 And we inspected the Linux Images for Star64...
 
-- [__"Inspecting the RISC-V Linux Images for Star64 SBC (JH7110)"__](https://lupyuen.github.io/articles/star64)
+- [__"Inspecting the RISC-V Linux Images for Star64 JH7110 SBC"__](https://lupyuen.github.io/articles/star64)
 
 Let's boot them on Star64! We'll soon see...
 
@@ -68,7 +68,7 @@ screen /dev/ttyUSB0 115200
 
 Insert the __microSD Card__ (from next section) and power up Star64.
 
-Verify that the __DIP Switches__ for GPIO 0 and 1 are set to __Low and Low__. (Default, pic below)
+Verify that the __DIP Switches__ for GPIO 0 and 1 are set to __Low and Low__. (Default setting, pic below)
 
 So Star64 should start the U-Boot Bootloader from __Internal Flash Memory__.
 
