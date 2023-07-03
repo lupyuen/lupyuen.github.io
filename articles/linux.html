@@ -281,8 +281,12 @@ Firmware Size             : 288 KB
 Runtime SBI Version       : 1.0
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528">(Source)</a></p>
-<p><a href="https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/"><strong>OpenSBI (Supervisor Binary Interface)</strong></a> is the first thing that boots on Star64.</p>
-<p>TODO</p>
+<p><a href="https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/"><strong>OpenSBI (Open Source Supervisor Binary Interface)</strong></a> is the first thing that boots on Star64.</p>
+<p>OpenSBI provides Secure Access to the <strong>Low-Level System Functions</strong> (controlling CPUs, Timers, Interrupts) for the JH7110 SoC…</p>
+<ul>
+<li><a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/riscv-sbi.pdf"><strong>RISC-V Supervisor Binary Interface</strong></a></li>
+</ul>
+<p>This says that <a href="https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html#flashing"><strong>U-Boot Bootloader</strong></a> will be started next (at Address <code>0x4020</code> <code>0000</code>)…</p>
 <div class="example-wrap"><pre class="language-text"><code>Domain0 Name              : root
 Domain0 Boot HART         : 1
 Domain0 HARTs             : 0*,1*,2*,3*,4*
@@ -294,8 +298,9 @@ Domain0 Next Arg1         : 0x0000000042200000
 Domain0 Next Mode         : S-mode
 Domain0 SysReset          : yes
 </code></pre></div>
-<p>(What is <code>0x4220</code> <code>0000</code>?)</p>
-<p>TODO</p>
+<p><a href="https://github.com/lupyuen/nuttx-star64#nuttx-fails-to-get-hart-id">(“S-mode” refers to <strong>Supervisor Mode</strong>)</a></p>
+<p>(What’s <code>0x4220</code> <code>0000</code>?)</p>
+<p>And the <strong>RISC-V Hardware Thread</strong> (HART) will support <a href="https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v">“<strong>rv64imafdcbx</strong>”</a>…</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>Boot HART ID              : <span class="number">1
 </span>Boot HART Domain          : root
