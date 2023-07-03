@@ -531,7 +531,7 @@ Code: 0313 0320 8023 0062 0313 0330 8023 0062 (2573 f140)
 
 [(Source)](https://github.com/lupyuen/nuttx-star64#boot-nuttx-on-star64)
 
-Why did NuttX crash at __`4020` `005C`__? All shall be revealed in the next article!
+Why did NuttX crash at __`0x4020` `005C`__? All shall be revealed in the next article!
 
 ![Cody AI Assistant tries to explain our RISC-V Exception](https://lupyuen.github.io/images/star64-exception.jpg)
 
