@@ -208,58 +208,38 @@ Remember to log in as __root__ or __pine64__...
 
 [(Source)](https://github.com/Fishwaldo/meta-pine64#usernames)
 
+![Armbian Image for Star64](https://lupyuen.github.io/images/star64-armbian.png)
+
 # Boot Armbian Linux on Star64
 
-TODO
+_What about other Linux Distros for Star64?_
 
-
-Let's boot Armbian on Star64!
-
-We download the [__Armbian Image for Star64__](https://www.armbian.com/star64/)...
+Let's boot Armbian Linux on Star64! We download the [__Armbian Image for Star64__](https://www.armbian.com/star64/)...
 
 -   [__Armbian 23.8 Lunar for Star64 (Minimal)__](https://github.com/armbianro/os/releases/download/23.8.0-trunk.56/Armbian_23.8.0-trunk.56_Star64_lunar_edge_5.15.0_minimal.img.xz)
 
 Uncompress the __.xz__ file. Write the __.img__ file to a microSD Card with [__Balena Etcher__](https://www.balena.io/etcher/) or [__GNOME Disks__](https://wiki.gnome.org/Apps/Disks).
 
-Here's what happens when we boot the microSD Card on Star64...
+_What happens when we boot the microSD on Star64?_
 
--   [Armbian Boot Log](https://gist.github.com/lupyuen/d73ace627318375fe20e90e4950f9c50)
-
-Armbian fails to boot...
+Armbian fails to boot on Star64!
 
 ```text
-Found /boot/extlinux/extlinux.conf
-Retrieving file: /boot/extlinux/extlinux.conf
-383 bytes read in 7 ms (52.7 KiB/s)
-1:[6CArmbian
 Retrieving file: /boot/uInitrd
 10911538 bytes read in 466 ms (22.3 MiB/s)
 Retrieving file: /boot/Image
 22040576 bytes read in 936 ms (22.5 MiB/s)
-append: root=UUID=99f62df4-be35-475c-99ef-2ba3f74fe6b5 console=ttyS0,115200n8 console=tty0 earlycon=sbi rootflags=data=writeback stmmaceth=chain_mode:1 rw rw no_console_suspend consoleblank=0 fsck.fix=yes fsck.repair=yes net.ifnames=0 splash plymouth.ignore-serial-consoles
 Retrieving file: /boot/dtb/starfive/jh7110-star64-pine64.dtb
 Failed to load '/boot/dtb/starfive/jh7110-star64-pine64.dtb'
-Skipping Armbian for failure retrieving FDT
 ```
 
-The Flattened Device Tree (FDT) is missing! `/boot/dtb/starfive/jh7110-star64-pine64.dtb`
+[(See the __Complete Log__)](https://gist.github.com/lupyuen/d73ace627318375fe20e90e4950f9c50)
 
-```text
-→ ls /Volumes/armbi_root/boot/dtb-5.15.0-starfive2/starfive
-evb-overlay                      jh7110-evb-usbdevice.dtb
-jh7110-evb-can-pdm-pwmdac.dtb    jh7110-evb.dtb
-jh7110-evb-dvp-rgb2hdmi.dtb      jh7110-fpga.dtb
-jh7110-evb-i2s-ac108.dtb         jh7110-visionfive-v2-A10.dtb
-jh7110-evb-pcie-i2s-sd.dtb       jh7110-visionfive-v2-A11.dtb
-jh7110-evb-spi-uart2.dtb         jh7110-visionfive-v2-ac108.dtb
-jh7110-evb-uart1-rgb2hdmi.dtb    jh7110-visionfive-v2-wm8960.dtb
-jh7110-evb-uart4-emmc-spdif.dtb  jh7110-visionfive-v2.dtb
-jh7110-evb-uart5-pwm-i2c-tdm.dtb vf2-overlay
-```
+That's because the [__Flattened Device Tree (FDT)__](https://u-boot.readthedocs.io/en/latest/develop/devicetree/index.html) is missing...
 
-The missing Device Tree is noted in this [__Pine64 Forum Post__](https://forum.pine64.org/showthread.php?tid=18276&pid=117607#pid117607). So we might need to check back later for the Official Armbian Image, if it's fixed.
+- [__Armbian Image fails to boot__](https://lupyuen.github.io/articles/star64#armbian-image-for-star64)
 
-[(__balbes150__ suggests that we try this Armbian Image instead)](https://forum.pine64.org/showthread.php?tid=18420&pid=118331#pid118331)
+TODO: So Armbian is not quite ready yet for Star64.
 
 # NuttX prints to QEMU Console
 
