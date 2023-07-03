@@ -451,6 +451,8 @@ Today we completed our Linux Homework... Without a Star64 SBC!
 
 Please join me in the next article as we actually boot Linux on Star64! (Pic above)
 
+-   [__"Booting RISC-V Linux on Star64 JH7110 SBC"__](https://lupyuen.github.io/articles/linux)
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
