@@ -464,7 +464,7 @@ We shall study the source code and learn how the LoRaWAN Driver is called by our
 
 Our BL602 Driver for LoRaWAN has layers (like Onions, Shrek and Kueh Lapis): __Application Layer, Node Layer and Medium Access Control Layer__...
 
-![BL602 LoRaWAN Driver](https://lupyuen.github.io/images/lorawan-driver.png)
+![BL602 LoRaWAN Driver](https://lupyuen.github.io/images/lorawan-driver.jpg)
 
 1.  [__Application Layer: `lora_app.c`__](https://github.com/lupyuen/lorawan/blob/main/src/lora_app.c)
 
@@ -622,7 +622,7 @@ And that's how our LoRaWAN Driver sends a __Join Network Request__...
 
 LoRaWAN Firmware → Application Layer → Node Layer → Medium Access Control Layer → LoRa Transceiver Driver!
 
-![Medium Access Control Layer](https://lupyuen.github.io/images/lorawan-driver5.png)
+![Medium Access Control Layer](https://lupyuen.github.io/images/lorawan-driver5.jpg)
 
 ## Join Network Response
 
@@ -1291,7 +1291,7 @@ If our LoRaWAN Gateway didn't receive the data packet from BL602, here are some 
 
     Here's the __Join Network Request__ transmitted by BL602 with RFM90...
 
-    ![Join Request](https://lupyuen.github.io/images/lorawan-sdr1.png)
+    ![Join Request](https://lupyuen.github.io/images/lorawan-sdr1.jpg)
 
     And here's the __Join Network Response__ returned by our WisGate D4H LoRaWAN Gateway...
 

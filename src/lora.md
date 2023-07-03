@@ -632,7 +632,7 @@ Let's capture and visualise our LoRa Packet with [__Airspy R2 SDR__](https://www
 
 1.  Our __LoRa Packet should scroll down__ like so...
 
-![CubicSDR software with Airspy R2 SDR](https://lupyuen.github.io/images/lora-sdr4.png)
+![CubicSDR software with Airspy R2 SDR](https://lupyuen.github.io/images/lora-sdr4.jpg)
 
 _CubicSDR software with Airspy R2 SDR_
 

@@ -1150,7 +1150,7 @@ The custom blocks were inspired by __MakeCode for BBC micro:bit__...
 
 -   [__MakeCode__](https://makecode.microbit.org/)
 
-![uLisp Code Generator](https://lupyuen.github.io/images/lisp-generate.png)
+![uLisp Code Generator](https://lupyuen.github.io/images/lisp-generate.jpg)
 
 # Code Generator for uLisp
 
@@ -1436,7 +1436,7 @@ What if we...
 
 1.  To allow embedded developers to __preview their BL602 Blockly Apps in the Web Browser__?
 
-![BL602 Simulator with uLisp WebAssembly](https://lupyuen.github.io/images/lisp-simulator.png)
+![BL602 Simulator with uLisp WebAssembly](https://lupyuen.github.io/images/lisp-simulator.jpg)
 
 Read the article...
 

@@ -311,7 +311,7 @@ Oh yes we have ways of __making uLisp talk to BL602 Simulator__... From WebAssem
 
 Here's one way: A __JSON Stream of BL602 Simulation Events__...
 
-![BL602 Simulator Design](https://lupyuen.github.io/images/lisp-simulator.png)
+![BL602 Simulator Design](https://lupyuen.github.io/images/lisp-simulator.jpg)
 
 _What's a BL602 Simulation Event?_
 
@@ -1263,7 +1263,7 @@ Which makes this design __harder to reuse__ for other kinds of BL602 Firmware (l
 
 To fix this, we apply [__Inversion of Control__](https://en.wikipedia.org/wiki/Inversion_of_control) and flip the design, so that __uLisp no longer controls the simulator directly__...
 
-![BL602 Simulator Design](https://lupyuen.github.io/images/lisp-simulator.png)
+![BL602 Simulator Design](https://lupyuen.github.io/images/lisp-simulator.jpg)
 
 And we get the __chosen design of our BL602 Simulator__.
 

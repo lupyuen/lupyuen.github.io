@@ -141,7 +141,7 @@ By using layers of code that isolate the differences between microcontrollers (l
 
 Here's how we layer the code in Mynewt...
 
-![Mynewt and BL602 IoT SDK Layers](https://lupyuen.github.io/images/gpio-stack.png)
+![Mynewt and BL602 IoT SDK Layers](https://lupyuen.github.io/images/gpio-stack.jpg)
 
 1.  __Main Function__: We've seen the Main Function at the top of the article... It lights up the Blue LED.
 
