@@ -86,7 +86,7 @@
 <ul>
 <li><a href="https://lupyuen.github.io/articles/star64"><strong>“Inspecting the RISC-V Linux Images for Star64 JH7110 SBC”</strong></a></li>
 </ul>
-<p>Let’s boot them on Star64! We’ll soon see…</p>
+<p>Today we’ll boot them on Star64! We’ll soon see…</p>
 <ul>
 <li>
 <p><strong>Yocto Linux</strong> boots OK on Star64</p>
@@ -129,7 +129,7 @@
 <p>Insert the <strong>microSD Card</strong> (from next section) and power up Star64.</p>
 <p>Verify that the <strong>DIP Switches</strong> for GPIO 0 and 1 are set to <strong>Low and Low</strong>. (Default setting, pic below)</p>
 <p>So Star64 should start the U-Boot Bootloader from <strong>Internal Flash Memory</strong>.</p>
-<p><a href="https://wiki.pine64.org/wiki/STAR64#Prototype_Bringup_Notes">(DIP Switch Labels are inverted: <strong>“ON”</strong> actually means <strong>“Low”</strong>)</a></p>
+<p><a href="https://wiki.pine64.org/wiki/STAR64#Prototype_Bringup_Notes">(DIP Switch Labels are inverted: <strong>“ON KE”</strong> actually means <strong>“Low”</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/star64-uart2.jpg" alt="DIP Switches for GPIO 0 and 1 are set to Low and Low" /></p>
 <h1 id="boot-yocto-linux-on-star64"><a href="#boot-yocto-linux-on-star64">2 Boot Yocto Linux on Star64</a></h1>
 <p><em>What’s Yocto Linux?</em></p>
@@ -145,7 +145,7 @@
 <p>Uncompress the <strong>.bz2</strong> file, rename as <strong>.img</strong>.</p>
 <p>(Balena Etcher won’t work with <strong>.bz2</strong> files!)</p>
 <p>Write the <strong>.img</strong> file to a microSD Card with <a href="https://www.balena.io/etcher/"><strong>Balena Etcher</strong></a> or <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a>.</p>
-<p>When we boot the microSD Card on Star64, the <strong>OpenSBI (Supervisor Binary Interface)</strong> appears (running from Internal Flash Memory)…</p>
+<p>When we boot the microSD Card on Star64, the <strong>OpenSBI (Supervisor Binary Interface)</strong> appears (loaded from Internal Flash Memory)…</p>
 <div class="example-wrap"><pre class="language-text"><code>OpenSBI v1.2
    ____                    _____ ____ _____
   / __ \                  / ____|  _ \_   _|
@@ -159,7 +159,7 @@ Platform Name: StarFive VisionFive V2
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528">(See the <strong>Complete Log</strong>)</a></p>
 <p>(We’ll explain OpenSBI in a while)</p>
-<p>OpenSBI starts the <a href="https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html#flashing"><strong>U-Boot Bootloader</strong></a> (also from Internal Flash Memory)…</p>
+<p>OpenSBI starts the <a href="https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html#flashing"><strong>U-Boot Bootloader</strong></a> (also loaded from Internal Flash Memory)…</p>
 <div class="example-wrap"><pre class="language-text"><code>U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800), Build: jenkins-github_visionfive2-6
 CPU:   rv64imacu
 Model: StarFive VisionFive V2
@@ -206,7 +206,7 @@ Linux star64 5.15.107 #1 SMP Mon May 15 17:57:25 UTC 2023
   riscv64 riscv64 riscv64 GNU/Linux
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528">(Source)</a></p>
-<p>Yep the Yocto Minimal Image boots OK on Star64!</p>
+<p>Yep the Yocto Minimal Image boots OK on Star64! Let’s do something more colourful…</p>
 <p><img src="https://lupyuen.github.io/images/star64-plasma.jpg" alt="Yocto Linux with KDE Plasma on Star64" /></p>
 <h1 id="yocto-linux-with-kde-plasma"><a href="#yocto-linux-with-kde-plasma">3 Yocto Linux with KDE Plasma</a></h1>
 <p><em>Yocto Minimal looks so dull. Is there anything graphical?</em></p>
@@ -226,14 +226,14 @@ Linux star64 5.15.107 #1 SMP Mon May 15 17:57:25 UTC 2023
 <p><a href="https://github.com/Fishwaldo/meta-pine64#usernames">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/star64-armbian.png" alt="Armbian Image for Star64" /></p>
 <h1 id="boot-armbian-linux-on-star64"><a href="#boot-armbian-linux-on-star64">4 Boot Armbian Linux on Star64</a></h1>
-<p><em>What about other Linux Distros for Star64?</em></p>
+<p><em>What about other Linux Distros?</em></p>
 <p>Let’s boot Armbian Linux on Star64! We download the <a href="https://www.armbian.com/star64/"><strong>Armbian Image for Star64</strong></a>…</p>
 <ul>
 <li><a href="https://github.com/armbianro/os/releases/download/23.8.0-trunk.56/Armbian_23.8.0-trunk.56_Star64_lunar_edge_5.15.0_minimal.img.xz"><strong>Armbian 23.8 Lunar for Star64 (Minimal)</strong></a></li>
 </ul>
 <p>Uncompress the <strong>.xz</strong> file. Write the <strong>.img</strong> file to a microSD Card with <a href="https://www.balena.io/etcher/"><strong>Balena Etcher</strong></a> or <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a>.</p>
 <p><em>What happens when we boot the microSD on Star64?</em></p>
-<p>Armbian won’t boot on Star64!</p>
+<p>Sadly, Armbian won’t boot on Star64!</p>
 <div class="example-wrap"><pre class="language-text"><code>Retrieving file: /boot/uInitrd
   10911538 bytes read in 466 ms (22.3 MiB/s)
 Retrieving file: /boot/Image
@@ -277,7 +277,7 @@ Firmware Base             : 0x40000000
 Firmware Size             : 288 KB
 Runtime SBI Version       : 1.0
 </code></pre></div>
-<p><a href="TODO">(Source)</a></p>
+<p><a href="https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64">(Source)</a></p>
 <p><a href="https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/"><strong>OpenSBI (Open Source Supervisor Binary Interface)</strong></a> is the first thing that boots on Star64.</p>
 <p>OpenSBI provides Secure Access to the <strong>Low-Level System Functions</strong> (controlling CPUs, Timers, Interrupts) for the JH7110 SoC…</p>
 <ul>
@@ -298,18 +298,18 @@ Domain0 SysReset          : yes
 <p><a href="https://github.com/lupyuen/nuttx-star64#nuttx-fails-to-get-hart-id">(“S-mode” refers to <strong>Supervisor Mode</strong>)</a></p>
 <p>(What’s <code>0x4220</code> <code>0000</code>?)</p>
 <p>And the <strong>RISC-V Hardware Thread</strong> (HART) will support <a href="https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v">“<strong>rv64imafdcbx</strong>”</a>…</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>Boot HART ID              : <span class="number">1
-</span>Boot HART Domain          : root
-Boot HART Priv Version    : v1.<span class="number">11
-</span>Boot HART Base ISA        : rv64imafdcbx
+<div class="example-wrap"><pre class="language-text"><code>Boot HART ID              : 1
+Boot HART Domain          : root
+Boot HART Priv Version    : v1.11
+Boot HART Base ISA        : rv64imafdcbx
 Boot HART ISA Extensions  : none
-Boot HART PMP Count       : <span class="number">8
-</span>Boot HART PMP Granularity : <span class="number">4096
-</span>Boot HART PMP Address Bits: <span class="number">34
-</span>Boot HART MHPM Count      : <span class="number">2
-</span>Boot HART MIDELEG         : <span class="number">0x0000000000000222
-</span>Boot HART MEDELEG         : <span class="number">0x000000000000b109</span></code></pre></div>
+Boot HART PMP Count       : 8
+Boot HART PMP Granularity : 4096
+Boot HART PMP Address Bits: 34
+Boot HART MHPM Count      : 2
+Boot HART MIDELEG         : 0x0000000000000222
+Boot HART MEDELEG         : 0x000000000000b109
+</code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/riscv#get-cpu-id">(A <strong>RISC-V HART</strong> is equivalent to a Single CPU Core)</a></p>
 <p>Let’s jump to U-Boot…</p>
 <h1 id="u-boot-bootloader-for-star64"><a href="#u-boot-bootloader-for-star64">6 U-Boot Bootloader for Star64</a></h1>
@@ -325,7 +325,7 @@ SF: Detected gd25lq128 with page size 256 Bytes, erase size 4 KiB, total 16 MiB
 *** Warning - bad CRC, using default environment
 Hit any key to stop autoboot
 </code></pre></div>
-<p><a href="TODO">(Source)</a></p>
+<p><a href="https://lupyuen.github.io/articles/linux#appendix-u-boot-bootloader-log-for-star64">(Source)</a></p>
 <p>Suppose there’s <strong>no microSD Card inserted</strong>.</p>
 <p>U-Boot tries to <strong>load the Linux Image</strong> from the microSD Card, but fails…</p>
 <div class="example-wrap"><pre class="language-text"><code>Card did not respond to voltage select! : -110
@@ -341,8 +341,9 @@ Can&#39;t set block device
 ## Error: &quot;boot2&quot; not defined
 Card did not respond to voltage select! : -110
 </code></pre></div>
-<p>U-Boot tries loading the Linux Image <strong>from the Network</strong>, but also fails…</p>
-<div class="example-wrap"><pre class="language-text"><code>ethernet@16030000 Waiting for PHY auto negotiation to complete......... TIMEOUT !
+<p>Then it tries to load the Linux Image <strong>from the Network</strong>, but also fails…</p>
+<div class="example-wrap"><pre class="language-text"><code>ethernet@16030000 Waiting for PHY auto negotiation to complete.........
+TIMEOUT !
 phy_startup() failed: -110
 FAILED: -110
 ethernet@16040000 Waiting for PHY auto negotiation to complete......... 
@@ -370,7 +371,7 @@ ver=U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800)
 <p><a href="https://lupyuen.github.io/articles/star64#armbian-image-for-star64"><strong>/boot/extlinux/extlinux.conf</strong></a></p>
 </li>
 <li>
-<p><strong>Linux Kernel</strong> will be loaded into RAM at <a href="https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables"><strong>kernel_addr_r</strong></a></p>
+<p><strong>Linux Kernel</strong> will be loaded at RAM Address <a href="https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables"><strong>kernel_addr_r</strong></a></p>
 <p><strong><code>0x4020</code> <code>0000</code></strong></p>
 </li>
 </ul>
@@ -490,8 +491,7 @@ T4:  000000004600b5cc T5:  000000000000ff00 T6:  000000004600b5cc
 Code: 0313 0320 8023 0062 0313 0330 8023 0062 (2573 f140)
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64#boot-nuttx-on-star64">(Source)</a></p>
-<p><em>Why did NuttX crash at <code>4020</code> <code>005C</code>?</em></p>
-<p>All shall be revealed in the next article!</p>
+<p>Why did NuttX crash at <strong><code>4020</code> <code>005C</code></strong>? All shall be revealed in the next article!</p>
 <h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -517,7 +517,7 @@ Code: 0313 0320 8023 0062 0313 0330 8023 0062 (2573 f140)
 <p><img src="https://lupyuen.github.io/images/star64-opensbi.jpg" alt="U-Boot Bootloader Log" /></p>
 <h1 id="appendix-opensbi-log-for-star64"><a href="#appendix-opensbi-log-for-star64">9 Appendix: OpenSBI Log for Star64</a></h1>
 <p><a href="https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/"><strong>OpenSBI (Open Source Supervisor Binary Interface)</strong></a> is the first thing that boots on Star64.</p>
-<p>Here is the OpenSBI Log…</p>
+<p>Here’s the OpenSBI Log for Star64…</p>
 <div class="example-wrap"><pre class="language-text"><code>U-Boot SPL 2021.10 (Jan 19 2023 - 04:09:41 +0800)
 DDR version: dc2e84f0.
 Trying to boot from SPI
@@ -571,8 +571,7 @@ Boot HART MEDELEG         : 0x000000000000b109
 </code></pre></div>
 <p>After OpenSBI, Star64 runs U-Boot Bootloader…</p>
 <h1 id="appendix-u-boot-bootloader-log-for-star64"><a href="#appendix-u-boot-bootloader-log-for-star64">10 Appendix: U-Boot Bootloader Log for Star64</a></h1>
-<p>TODO</p>
-<p>Here’s the log for U-Boot Bootloader on Star64 (without microSD Card)…</p>
+<p>Here’s the log for <strong>U-Boot Bootloader</strong> on Star64 (without microSD Card inserted)…</p>
 <div class="example-wrap"><pre class="language-text"><code>U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800), Build: jenkins-github_visionfive2-6
 
 CPU:   rv64imacu
@@ -625,8 +624,7 @@ StarFive #
 </code></pre></div>
 <p>Which is OK because we haven’t inserted a microSD Card.</p>
 <h2 id="u-boot-settings-for-star64"><a href="#u-boot-settings-for-star64">10.1 U-Boot Settings for Star64</a></h2>
-<p>TODO</p>
-<p>Here are the U-Boot Settings…</p>
+<p>Here are the <strong>U-Boot Settings</strong> for Star64…</p>
 <div class="example-wrap"><pre class="language-text"><code>StarFive # printenv
 baudrate=115200
 boot_a_script=load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${prefix}${script}; source ${scriptaddr}
@@ -717,8 +715,7 @@ visionfive2_mem_set=fdt memory ${memory_addr} ${memory_size};
 
 Environment size: 7246/65532 bytes
 </code></pre></div><h2 id="u-boot-commands-for-star64"><a href="#u-boot-commands-for-star64">10.2 U-Boot Commands for Star64</a></h2>
-<p>TODO</p>
-<p>Here are the U-Boot Commands…</p>
+<p>Here are the <strong>U-Boot Commands</strong> for Star64…</p>
 <div class="example-wrap"><pre class="language-text"><code>StarFive # help
 ?         - alias for &#39;help&#39;
 base      - print or set address offset
