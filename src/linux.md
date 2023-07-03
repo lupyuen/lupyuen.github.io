@@ -56,9 +56,9 @@ Thus we connect these pins...
 | Pin 8 (TX) | RX | Red
 | Pin 10 (RX) | TX | Orange
 
-![Pine64 Woodpecker Serial Adapter](https://lupyuen.github.io/images/star64-uart3.jpg)
+On our USB Serial Adapter, set the Voltage Jumper to __3V3__. (Instead of 5V, pic below)
 
-On our USB Serial Adapter, set the Voltage Jumper to __3V3__. (Instead of 5V, pic above)
+![Pine64 Woodpecker Serial Adapter](https://lupyuen.github.io/images/star64-uart3.jpg)
 
 On our computer, connect to the USB Serial Port at __115.2 kbps__...
 
