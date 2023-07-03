@@ -183,21 +183,23 @@ Linux star64 5.15.107 #1 SMP Mon May 15 17:57:25 UTC 2023
 
 Yep the Yocto Minimal Image boots OK on Star64!
 
+![Yocto Linux with KDE Plasma on Star64](https://lupyuen.github.io/images/star64-plasma.jpg)
+
 # Yocto Linux with KDE Plasma
 
-TODO
+_Yocto Minimal looks so dull. Is there anything graphical?_
 
-Finally we boot Yocto Plasma on Star64.
+Yep! Let's download the [__Yocto Plasma Image for Star64__](https://github.com/Fishwaldo/meta-pine64)...
 
-We download the Yocto Plasma Image for Star64: [star64-image-plasma](https://pine64.my-ho.st:8443/star64-image-plasma-star64-1.2.wic.bz2)
+-   [__star64-image-plasma__](https://pine64.my-ho.st:8443/star64-image-plasma-star64-1.2.wic.bz2)
 
-Uncompress the .bz2, rename as .img. Balena Etcher won't work with .bz2 files!
+Uncompress the __.bz2__ file, rename as __.img__.
 
-Write the .img to a microSD Card with Balena Etcher.
+Write it to a microSD Card with [__Balena Etcher__](https://www.balena.io/etcher/) or [__GNOME Disks__](https://wiki.gnome.org/Apps/Disks).
 
-When we boot the microSD Card on Star64, the Plasma Desktop Environment runs OK on a HDMI Display! (Pic below)
+When we boot the microSD Card on Star64, the KDE Plasma Desktop Environment runs OK on a HDMI Display! (Pic above)
 
-We log in with __root__ or __pine64__...
+Remember to log in as __root__ or __pine64__...
 
 | Username | Password |
 |:--|:--| 
@@ -206,17 +208,18 @@ We log in with __root__ or __pine64__...
 
 [(Source)](https://github.com/Fishwaldo/meta-pine64#usernames)
 
-![Yocto Plasma on Star64](https://lupyuen.github.io/images/star64-plasma.jpg)
-
 # Boot Armbian Linux on Star64
 
 TODO
 
+
 Let's boot Armbian on Star64!
 
-We download the Armbian Image for Star64: [Armbian 23.8 Lunar (Minimal)](https://github.com/armbianro/os/releases/download/23.8.0-trunk.56/Armbian_23.8.0-trunk.56_Star64_lunar_edge_5.15.0_minimal.img.xz)
+We download the [__Armbian Image for Star64__](https://www.armbian.com/star64/)...
 
-Uncompress the .xz, write the .img to a microSD Card with Balena Etcher.
+-   [__Armbian 23.8 Lunar for Star64 (Minimal)__](https://github.com/armbianro/os/releases/download/23.8.0-trunk.56/Armbian_23.8.0-trunk.56_Star64_lunar_edge_5.15.0_minimal.img.xz)
+
+Uncompress the __.xz__ file. Write the __.img__ file to a microSD Card with [__Balena Etcher__](https://www.balena.io/etcher/) or [__GNOME Disks__](https://wiki.gnome.org/Apps/Disks).
 
 Here's what happens when we boot the microSD Card on Star64...
 
