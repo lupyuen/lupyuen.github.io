@@ -139,7 +139,8 @@
 <p>Yocto is like baking <a href="https://lupyuen.github.io/articles/sourdough"><strong>Sourdough Bread</strong></a>…</p>
 <p>We start with the base (Sourdough Starter + Flour), then we add fruits, nuts, seeds, chocolate, … Baked into a delicious loaf that’s uniquely ours!</p>
 <p>(Compare with Linux Distros, which is like buying a loaf of bread)</p>
-<p>We download the <a href="https://github.com/Fishwaldo/meta-pine64"><strong>Yocto Minimal Image for Star64</strong></a>…</p>
+<p><em>Ahem enough with the bread…</em></p>
+<p>Righto! We download the <a href="https://github.com/Fishwaldo/meta-pine64"><strong>Yocto Minimal Image for Star64</strong></a>…</p>
 <ul>
 <li><a href="https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2"><strong>star64-image-minimal 1.2</strong></a></li>
 </ul>
@@ -147,16 +148,45 @@
 <p>(Balena Etcher won’t work with <strong>.bz2</strong> files!)</p>
 <p>Write the <strong>.img</strong> file to a microSD Card with <a href="https://www.balena.io/etcher/"><strong>Balena Etcher</strong></a> or <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a>.</p>
 <p>TODO</p>
-<p>Here’s what happens when we boot the microSD Card on Star64…</p>
-<ul>
-<li><a href="https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528">Yocto Boot Log</a></li>
-</ul>
-<p>Usernames and Passwords are…</p>
-<ul>
-<li>root / pine64</li>
-<li>pine64 / pine64</li>
-</ul>
+<div class="example-wrap"><pre class="language-text"><code>OpenSBI v1.2
+   ____                    _____ ____ _____
+  / __ \                  / ____|  _ \_   _|
+ | |  | |_ __   ___ _ __ | (___ | |_) || |
+ | |  | | &#39;_ \ / _ \ &#39;_ \ \___ \|  _ &lt; | |
+ | |__| | |_) |  __/ | | |____) | |_) || |_
+  \____/| .__/ \___|_| |_|_____/|____/_____|
+        | |
+        |_|
+Platform Name: StarFive VisionFive V2
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528">(See the <strong>Complete Log</strong>)</a></p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800), Build: jenkins-github_visionfive2-6
+CPU:   rv64imacu
+Model: StarFive VisionFive V2
+DRAM:  8 GiB
+</code></pre></div>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
+clk u5_dw_i2c_clk_core already disabled
+clk u5_dw_i2c_clk_apb already disabled
+[    0.000000] Linux version 5.15.107 (oe-user@oe-host) (riscv64-pine64-linux-gcc (GCC) 11.3.0, GNU ld (GNU Binutils) 2.38.20220708) #1 SMP Mon May 15 17:57:25 UTC 2023
+</code></pre></div>
+<p>Login with <strong>root</strong> or <strong>pine64</strong>…</p>
+<div><table><thead><tr><th style="text-align: left">Username</th><th style="text-align: left">Password</th></tr></thead><tbody>
+<tr><td style="text-align: left"><code>root</code></td><td style="text-align: left"><code>pine64</code></td></tr>
+<tr><td style="text-align: left"><code>pine64</code></td><td style="text-align: left"><code>pine64</code></td></tr>
+</tbody></table>
+</div>
 <p><a href="https://github.com/Fishwaldo/meta-pine64#usernames">(Source)</a></p>
+<div class="example-wrap"><pre class="language-text"><code>PinIx 1.2 star64 hvc0
+star64 login: root
+Password: pine64
+
+root@star64:~# uname -a
+Linux star64 5.15.107 #1 SMP Mon May 15 17:57:25 UTC 2023 riscv64 riscv64 riscv64 GNU/Linux
+</code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528">(See the <strong>Complete Log</strong>)</a></p>
 <p>Yep the Yocto Minimal Image boots OK on Star64!</p>
 <h1 id="yocto-linux-with-kde-plasma"><a href="#yocto-linux-with-kde-plasma">3 Yocto Linux with KDE Plasma</a></h1>
 <p>TODO</p>
