@@ -75,9 +75,10 @@
 <li><a href="#u-boot-bootloader-for-star64">6 U-Boot Bootloader for Star64</a><ul></ul></li>
 <li><a href="#boot-apache-nuttx-rtos-on-star64">7 Boot Apache NuttX RTOS on Star64</a><ul></ul></li>
 <li><a href="#whats-next">8 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-u-boot-bootloader-log-for-star64">9 Appendix: U-Boot Bootloader Log for Star64</a><ul>
-<li><a href="#u-boot-settings-for-star64">9.1 U-Boot Settings for Star64</a><ul></ul></li>
-<li><a href="#u-boot-commands-for-star64">9.2 U-Boot Commands for Star64</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>9 Jul 2023</em></p>
+<li><a href="#appendix-opensbi-log-for-star64">9 Appendix: OpenSBI Log for Star64</a><ul></ul></li>
+<li><a href="#appendix-u-boot-bootloader-log-for-star64">10 Appendix: U-Boot Bootloader Log for Star64</a><ul>
+<li><a href="#u-boot-settings-for-star64">10.1 U-Boot Settings for Star64</a><ul></ul></li>
+<li><a href="#u-boot-commands-for-star64">10.2 U-Boot Commands for Star64</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>9 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/linux-title.jpg" alt="Star64 JH7110 RISC-V SBC with Woodpecker USB Serial Adapter" /></p>
 <p><a href="https://wiki.pine64.org/wiki/STAR64"><em>Star64 JH7110 RISC-V SBC with Woodpecker USB Serial Adapter</em></a></p>
 <p>Previously we talked about the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer. (Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
@@ -276,7 +277,7 @@ Firmware Base             : 0x40000000
 Firmware Size             : 288 KB
 Runtime SBI Version       : 1.0
 </code></pre></div>
-<p><a href="https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528">(Source)</a></p>
+<p><a href="TODO">(Source)</a></p>
 <p><a href="https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/"><strong>OpenSBI (Open Source Supervisor Binary Interface)</strong></a> is the first thing that boots on Star64.</p>
 <p>OpenSBI provides Secure Access to the <strong>Low-Level System Functions</strong> (controlling CPUs, Timers, Interrupts) for the JH7110 SoC…</p>
 <ul>
@@ -312,7 +313,8 @@ Boot HART PMP Count       : <span class="number">8
 <p><a href="https://lupyuen.github.io/articles/riscv#get-cpu-id">(A <strong>RISC-V HART</strong> is equivalent to a Single CPU Core)</a></p>
 <p>Let’s jump to U-Boot…</p>
 <h1 id="u-boot-bootloader-for-star64"><a href="#u-boot-bootloader-for-star64">6 U-Boot Bootloader for Star64</a></h1>
-<p>TODO</p>
+<p><em>What happens when U-Boot Bootloader starts on Star64?</em></p>
+<p>Star64 loads <strong>U-Boot Bootloader</strong> from Internal Flash Memory into RAM Address <a href="https://github.com/u-boot/u-boot/blob/master/board/starfive/visionfive2/Kconfig#L14-L19"><strong><code>0x4020</code> <code>0000</code></strong></a> and runs it…</p>
 <div class="example-wrap"><pre class="language-text"><code>U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800), Build: jenkins-github_visionfive2-6
 CPU:   rv64imacu
 Model: StarFive VisionFive V2
@@ -324,7 +326,8 @@ SF: Detected gd25lq128 with page size 256 Bytes, erase size 4 KiB, total 16 MiB
 Hit any key to stop autoboot
 </code></pre></div>
 <p><a href="TODO">(Source)</a></p>
-<p>TODO</p>
+<p>Suppose there’s <strong>no microSD Card inserted</strong>.</p>
+<p>U-Boot tries to <strong>load the Linux Image</strong> from the microSD Card, but fails…</p>
 <div class="example-wrap"><pre class="language-text"><code>Card did not respond to voltage select! : -110
 Couldn&#39;t find partition mmc 0:3
 Can&#39;t set block device
@@ -338,7 +341,7 @@ Can&#39;t set block device
 ## Error: &quot;boot2&quot; not defined
 Card did not respond to voltage select! : -110
 </code></pre></div>
-<p>TODO: Network</p>
+<p>U-Boot tries loading the Linux Image <strong>from the Network</strong>, but also fails…</p>
 <div class="example-wrap"><pre class="language-text"><code>ethernet@16030000 Waiting for PHY auto negotiation to complete......... TIMEOUT !
 phy_startup() failed: -110
 FAILED: -110
@@ -346,7 +349,8 @@ ethernet@16040000 Waiting for PHY auto negotiation to complete.........
 TIMEOUT !
 StarFive # 
 </code></pre></div>
-<p>Here are the U-Boot Settings…</p>
+<p>And stops at the <strong>U-Boot Command Prompt</strong>.  Here’s our chance to experiment with U-Boot!</p>
+<p>Enter “<strong>printenv</strong>” to see the <strong>U-Boot Settings</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>StarFive # printenv
 boot_prefixes=/ /boot/
 boot_syslinux_conf=extlinux/extlinux.conf
@@ -359,8 +363,19 @@ ver=U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800)
 ...
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(Source)</a></p>
-<p>TODO</p>
-<p>Here are the U-Boot Commands…</p>
+<p>U-Boot says that…</p>
+<ul>
+<li>
+<p><strong>Boot Configuration</strong> will be loaded from microSD at</p>
+<p><a href="https://lupyuen.github.io/articles/star64#armbian-image-for-star64"><strong>/boot/extlinux/extlinux.conf</strong></a></p>
+</li>
+<li>
+<p><strong>Linux Kernel</strong> will be loaded into RAM at <a href="https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables"><strong>kernel_addr_r</strong></a></p>
+<p><strong><code>0x4020</code> <code>0000</code></strong></p>
+</li>
+</ul>
+<p>We’ll use these in the next section.</p>
+<p>To see the other <strong>U-Boot Commands</strong>, enter “<strong>help</strong>”…</p>
 <div class="example-wrap"><pre class="language-text"><code>StarFive # help
 boot      - boot default, i.e., run &#39;bootcmd&#39;
 bootefi   - Boots an EFI payload from memory
@@ -373,11 +388,15 @@ printenv  - print environment variables
 ...
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-commands-for-star64">(Source)</a></p>
+<p>Finally let’s talk about NuttX…</p>
 <p><img src="https://lupyuen.github.io/images/star64-nuttx.png" alt="Boot Apache NuttX RTOS on Star64" /></p>
 <h1 id="boot-apache-nuttx-rtos-on-star64"><a href="#boot-apache-nuttx-rtos-on-star64">7 Boot Apache NuttX RTOS on Star64</a></h1>
 <p><em>Will NuttX RTOS boot on Star64?</em></p>
 <p>Let’s review everything that we learnt today…</p>
 <ol>
+<li>
+<p>Boot Configuration is loaded from microSD at <a href="https://lupyuen.github.io/articles/star64#armbian-image-for-star64"><strong>/boot/extlinux/extlinux.conf</strong></a></p>
+</li>
 <li>
 <p>Armbian Image fails to boot because the <a href="https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64"><strong>Device Tree is missing</strong></a></p>
 </li>
@@ -388,19 +407,22 @@ printenv  - print environment variables
 <p>U-Boot Bootloader will boot Linux Kernels at <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>RAM Address <code>0x4020</code> <code>0000</code></strong></a></p>
 </li>
 </ol>
-<p>So why don’t we…</p>
+<p>So why don’t we patch the Armbian Image to <strong>boot NuttX instead</strong>…</p>
 <ol>
 <li>
-<p>Fix the <strong>Missing Device Tree</strong> for NuttX</p>
+<p>Keep the same Boot Configuration at <strong>extlinux.conf</strong></p>
+</li>
+<li>
+<p>But fix the <strong>Missing Device Tree</strong> for NuttX</p>
 </li>
 <li>
 <p>Overwrite the Armbian Kernel by <strong>NuttX Kernel</strong></p>
 </li>
 <li>
-<p>And compile NuttX to boot at <strong><code>0x4020</code> <code>0000</code></strong>?</p>
+<p>And compile NuttX to boot at <strong><code>0x4020</code> <code>0000</code></strong></p>
 </li>
 </ol>
-<p>Let’s do it! We take the <a href="https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64"><strong>Armbian microSD Card</strong></a> and patch it like this…</p>
+<p>Let’s do it! We take the <a href="https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64"><strong>Armbian microSD Card</strong></a> and patch it…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Fix the Missing Device Tree
 sudo chmod go+w /run/media/$USER/armbi_root/boot
 sudo chmod go+w /run/media/$USER/armbi_root/boot/dtb/starfive
@@ -492,10 +514,10 @@ Code: 0313 0320 8023 0062 0313 0330 8023 0062 (2573 f140)
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/linux.md"><strong>lupyuen.github.io/src/linux.md</strong></a></p>
-<h1 id="appendix-u-boot-bootloader-log-for-star64"><a href="#appendix-u-boot-bootloader-log-for-star64">9 Appendix: U-Boot Bootloader Log for Star64</a></h1>
-<p>TODO</p>
-<p>Here’s the log for U-Boot Bootloader on Star64 (without microSD Card)…</p>
 <p><img src="https://lupyuen.github.io/images/star64-opensbi.jpg" alt="U-Boot Bootloader Log" /></p>
+<h1 id="appendix-opensbi-log-for-star64"><a href="#appendix-opensbi-log-for-star64">9 Appendix: OpenSBI Log for Star64</a></h1>
+<p><a href="https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/"><strong>OpenSBI (Open Source Supervisor Binary Interface)</strong></a> is the first thing that boots on Star64.</p>
+<p>Here is the OpenSBI Log…</p>
 <div class="example-wrap"><pre class="language-text"><code>U-Boot SPL 2021.10 (Jan 19 2023 - 04:09:41 +0800)
 DDR version: dc2e84f0.
 Trying to boot from SPI
@@ -546,9 +568,12 @@ Boot HART PMP Address Bits: 34
 Boot HART MHPM Count      : 2
 Boot HART MIDELEG         : 0x0000000000000222
 Boot HART MEDELEG         : 0x000000000000b109
-
-
-U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800), Build: jenkins-github_visionfive2-6
+</code></pre></div>
+<p>After OpenSBI, Star64 runs U-Boot Bootloader…</p>
+<h1 id="appendix-u-boot-bootloader-log-for-star64"><a href="#appendix-u-boot-bootloader-log-for-star64">10 Appendix: U-Boot Bootloader Log for Star64</a></h1>
+<p>TODO</p>
+<p>Here’s the log for U-Boot Bootloader on Star64 (without microSD Card)…</p>
+<div class="example-wrap"><pre class="language-text"><code>U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800), Build: jenkins-github_visionfive2-6
 
 CPU:   rv64imacu
 Model: StarFive VisionFive V2
@@ -599,7 +624,7 @@ phy_startup() failed: -110FAILED: -110StarFive #
 StarFive # 
 </code></pre></div>
 <p>Which is OK because we haven’t inserted a microSD Card.</p>
-<h2 id="u-boot-settings-for-star64"><a href="#u-boot-settings-for-star64">9.1 U-Boot Settings for Star64</a></h2>
+<h2 id="u-boot-settings-for-star64"><a href="#u-boot-settings-for-star64">10.1 U-Boot Settings for Star64</a></h2>
 <p>TODO</p>
 <p>Here are the U-Boot Settings…</p>
 <div class="example-wrap"><pre class="language-text"><code>StarFive # printenv
@@ -691,7 +716,7 @@ ver=U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800)
 visionfive2_mem_set=fdt memory ${memory_addr} ${memory_size};
 
 Environment size: 7246/65532 bytes
-</code></pre></div><h2 id="u-boot-commands-for-star64"><a href="#u-boot-commands-for-star64">9.2 U-Boot Commands for Star64</a></h2>
+</code></pre></div><h2 id="u-boot-commands-for-star64"><a href="#u-boot-commands-for-star64">10.2 U-Boot Commands for Star64</a></h2>
 <p>TODO</p>
 <p>Here are the U-Boot Commands…</p>
 <div class="example-wrap"><pre class="language-text"><code>StarFive # help
