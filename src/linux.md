@@ -277,7 +277,7 @@ Firmware Size             : 288 KB
 Runtime SBI Version       : 1.0
 ```
 
-[(Source)](https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528)
+[(Source)](TODO)
 
 [__OpenSBI (Open Source Supervisor Binary Interface)__](https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/) is the first thing that boots on Star64.
 
@@ -326,7 +326,9 @@ Let's jump to U-Boot...
 
 # U-Boot Bootloader for Star64
 
-TODO
+_What happens when U-Boot Bootloader starts on Star64?_
+
+Star64 loads __U-Boot Bootloader__ from Internal Flash Memory into RAM Address [__`0x4020` `0000`__](https://github.com/u-boot/u-boot/blob/master/board/starfive/visionfive2/Kconfig#L14-L19) and runs it...
 
 ```text
 U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800), Build: jenkins-github_visionfive2-6
@@ -342,7 +344,9 @@ Hit any key to stop autoboot
 
 [(Source)](TODO)
 
-TODO
+Suppose there's __no microSD Card inserted__.
+
+U-Boot tries to __load the Linux Image__ from the microSD Card, but fails...
 
 ```text
 Card did not respond to voltage select! : -110
@@ -359,7 +363,7 @@ Can't set block device
 Card did not respond to voltage select! : -110
 ```
 
-TODO: Network
+U-Boot tries loading the Linux Image __from the Network__, but also fails...
 
 ```text
 ethernet@16030000 Waiting for PHY auto negotiation to complete......... TIMEOUT !
@@ -370,7 +374,9 @@ TIMEOUT !
 StarFive # 
 ```
 
-Here are the U-Boot Settings...
+And stops at the __U-Boot Command Prompt__.  Here's our chance to experiment with U-Boot!
+
+Enter "__printenv__" to see the __U-Boot Settings__...
 
 ```text
 StarFive # printenv
@@ -387,9 +393,19 @@ ver=U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800)
 
 [(Source)](https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64)
 
-TODO
+U-Boot says that...
 
-Here are the U-Boot Commands...
+- __Boot Configuration__ will be loaded from microSD at
+
+  [__/boot/extlinux/extlinux.conf__](https://lupyuen.github.io/articles/star64#armbian-image-for-star64)
+
+- __Linux Kernel__ will be loaded into RAM at [__kernel_addr_r__](https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables)
+
+  __`0x4020` `0000`__
+
+We'll use these in the next section.
+
+To see the other __U-Boot Commands__, enter "__help__"...
 
 ```text
 StarFive # help
@@ -406,6 +422,8 @@ printenv  - print environment variables
 
 [(Source)](https://lupyuen.github.io/articles/linux#u-boot-commands-for-star64)
 
+Finally let's talk about NuttX...
+
 ![Boot Apache NuttX RTOS on Star64](https://lupyuen.github.io/images/star64-nuttx.png)
 
 # Boot Apache NuttX RTOS on Star64
@@ -414,21 +432,25 @@ _Will NuttX RTOS boot on Star64?_
 
 Let's review everything that we learnt today...
 
+1.  Boot Configuration is loaded from microSD at [__/boot/extlinux/extlinux.conf__](https://lupyuen.github.io/articles/star64#armbian-image-for-star64)
+
 1.  Armbian Image fails to boot because the [__Device Tree is missing__](https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64)
 
 1.  Though the [__Armbian Kernel loads OK__](https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64) with U-Boot Bootloader
 
 1.  U-Boot Bootloader will boot Linux Kernels at [__RAM Address `0x4020` `0000`__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64)
 
-So why don't we...
+So why don't we patch the Armbian Image to __boot NuttX instead__...
 
-1.  Fix the __Missing Device Tree__ for NuttX
+1.  Keep the same Boot Configuration at __extlinux.conf__
+
+1.  But fix the __Missing Device Tree__ for NuttX
 
 1.  Overwrite the Armbian Kernel by __NuttX Kernel__
 
-1.  And compile NuttX to boot at __`0x4020` `0000`__?
+1.  And compile NuttX to boot at __`0x4020` `0000`__
 
-Let's do it! We take the [__Armbian microSD Card__](https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64) and patch it like this...
+Let's do it! We take the [__Armbian microSD Card__](https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64) and patch it...
 
 ```bash
 ## Fix the Missing Device Tree
@@ -532,13 +554,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/linux.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/linux.md)
 
-# Appendix: U-Boot Bootloader Log for Star64
-
-TODO
-
-Here's the log for U-Boot Bootloader on Star64 (without microSD Card)...
-
 ![U-Boot Bootloader Log](https://lupyuen.github.io/images/star64-opensbi.jpg)
+
+# Appendix: OpenSBI Log for Star64
+
+[__OpenSBI (Open Source Supervisor Binary Interface)__](https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/) is the first thing that boots on Star64.
+
+Here is the OpenSBI Log...
 
 ```text
 U-Boot SPL 2021.10 (Jan 19 2023 - 04:09:41 +0800)
@@ -591,8 +613,17 @@ Boot HART PMP Address Bits: 34
 Boot HART MHPM Count      : 2
 Boot HART MIDELEG         : 0x0000000000000222
 Boot HART MEDELEG         : 0x000000000000b109
+```
 
+After OpenSBI, Star64 runs U-Boot Bootloader...
 
+# Appendix: U-Boot Bootloader Log for Star64
+
+TODO
+
+Here's the log for U-Boot Bootloader on Star64 (without microSD Card)...
+
+```text
 U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800), Build: jenkins-github_visionfive2-6
 
 CPU:   rv64imacu
