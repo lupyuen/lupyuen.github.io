@@ -410,7 +410,7 @@ printenv  - print environment variables
 
 # Boot Apache NuttX RTOS on Star64
 
-_Can we boot NuttX RTOS on Star64?_
+_Will NuttX RTOS boot on Star64?_
 
 Let's review everything that we learnt today...
 
@@ -510,7 +510,7 @@ Code: 0313 0320 8023 0062 0313 0330 8023 0062 (2573 f140)
 
 _Why did NuttX crash at `4020` `005C`?_
 
-We'll explain everything in the next article!
+All shall be revealed in the next article!
 
 # What's Next
 
