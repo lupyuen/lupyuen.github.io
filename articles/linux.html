@@ -377,7 +377,7 @@ printenv  - print environment variables
 <h1 id="boot-apache-nuttx-rtos-on-star64"><a href="#boot-apache-nuttx-rtos-on-star64">7 Boot Apache NuttX RTOS on Star64</a></h1>
 <p><em>Can we boot NuttX RTOS on Star64?</em></p>
 <p>Let’s review everything that we learnt today…</p>
-<ul>
+<ol>
 <li>
 <p>Armbian Image fails to boot because the <a href="https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64"><strong>Device Tree is missing</strong></a></p>
 </li>
@@ -387,9 +387,9 @@ printenv  - print environment variables
 <li>
 <p>U-Boot Bootloader will boot Linux Kernels at <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>RAM Address <code>0x4020</code> <code>0000</code></strong></a></p>
 </li>
-</ul>
+</ol>
 <p>So why don’t we…</p>
-<ul>
+<ol>
 <li>
 <p>Fix the <strong>Missing Device Tree</strong> for NuttX</p>
 </li>
@@ -399,7 +399,7 @@ printenv  - print environment variables
 <li>
 <p>And compile NuttX to boot at <strong><code>0x4020</code> <code>0000</code></strong>?</p>
 </li>
-</ul>
+</ol>
 <p>Let’s do it! We take the <a href="https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64"><strong>Armbian microSD Card</strong></a> and patch it like this…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Fix the Missing Device Tree
 sudo chmod go+w /run/media/$USER/armbi_root/boot
@@ -468,7 +468,8 @@ T4:  000000004600b5cc T5:  000000000000ff00 T6:  000000004600b5cc
 Code: 0313 0320 8023 0062 0313 0330 8023 0062 (2573 f140)
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64#boot-nuttx-on-star64">(Source)</a></p>
-<p>Why does NuttX crash at <strong><code>4020</code> <code>005C</code></strong>? We’ll explain everything in the next article!</p>
+<p><em>Why did NuttX crash at <code>4020</code> <code>005C</code>?</em></p>
+<p>We’ll explain everything in the next article!</p>
 <h1 id="whats-next"><a href="#whats-next">8 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
