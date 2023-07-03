@@ -379,7 +379,7 @@ Can we configure BL602 to run at a lower Baud Rate? It's not easy because the Ba
 
 -   [__ESPHome Feature Request for MagicHome BL602__](https://github.com/esphome/feature-requests/issues/1049)
 
-![BL602 Flashing Process reverse engineered from BLOpenFlasher](https://lupyuen.github.io/images/pinecone-flash-steps.png)
+![BL602 Flashing Process reverse engineered from BLOpenFlasher](https://lupyuen.github.io/images/pinecone-flash-steps.jpg)
 
 _BL602 Flashing Process reverse engineered from BLOpenFlasher_
 

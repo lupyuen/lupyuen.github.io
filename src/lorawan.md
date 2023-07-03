@@ -73,7 +73,7 @@ Let's study the source code and learn how the driver is called by our Demo Firmw
 
 Our LoRa Driver has 3 layers: __Radio Interface, Transceiver Interface and Board Interface__...
 
-![BL602 Driver for RFM90 / SX1262](https://lupyuen.github.io/images/lorawan-transceiver.png)
+![BL602 Driver for RFM90 / SX1262](https://lupyuen.github.io/images/lorawan-transceiver.jpg)
 
 1.  [__Radio Interface: `radio.c`__](https://github.com/lupyuen/lora-sx1262/blob/master/src/radio.c)
 
