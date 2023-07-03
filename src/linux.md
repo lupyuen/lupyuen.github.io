@@ -277,9 +277,13 @@ Runtime SBI Version       : 1.0
 
 [(Source)](https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528)
 
-[__OpenSBI (Supervisor Binary Interface)__](https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/) is the first thing that boots on Star64.
+[__OpenSBI (Open Source Supervisor Binary Interface)__](https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/) is the first thing that boots on Star64.
 
-TODO
+OpenSBI provides Secure Access to the __Low-Level System Functions__ (controlling CPUs, Timers, Interrupts) for the JH7110 SoC...
+
+- [__RISC-V Supervisor Binary Interface__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/riscv-sbi.pdf)
+
+This says that [__U-Boot Bootloader__](https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html#flashing) will be started next (at Address `0x4020` `0000`)...
 
 ```text
 Domain0 Name              : root
@@ -294,9 +298,11 @@ Domain0 Next Mode         : S-mode
 Domain0 SysReset          : yes
 ```
 
-(What is `0x4220` `0000`?)
+[("S-mode" refers to __Supervisor Mode__)](https://github.com/lupyuen/nuttx-star64#nuttx-fails-to-get-hart-id)
 
-TODO
+(What's `0x4220` `0000`?)
+
+And the __RISC-V Hardware Thread__ (HART) will support ["__rv64imafdcbx__"](https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v)...
 
 ```
 Boot HART ID              : 1
