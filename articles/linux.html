@@ -167,7 +167,7 @@ CPU:   rv64imacu
 Model: StarFive VisionFive V2
 DRAM:  8 GiB
 </code></pre></div>
-<p>U-Boot Bootloader loads the <a href="https://lupyuen.github.io/articles/star64#yocto-image-for-star64"><strong>Yocto Linux Image</strong></a> from the microSD Card…</p>
+<p>U-Boot Bootloader loads the <a href="https://lupyuen.github.io/articles/star64#yocto-image-for-star64"><strong>Yocto Linux Kernel</strong></a>, <a href="https://docs.kernel.org/admin-guide/initrd.html"><strong>Initial RAM Disk</strong></a> and <a href="https://u-boot.readthedocs.io/en/latest/develop/devicetree/index.html"><strong>Flattened Device Tree (FDT)</strong></a> from the microSD Card…</p>
 <div class="example-wrap"><pre class="language-text"><code>Loading kernel from FIT Image at a0000000 ...
   Load Address: 0x40200000
   Entry Point:  0x40200000
@@ -183,12 +183,14 @@ Booting kernel in
   Booting using the fdt blob at 0x46000000
   Using Device Tree in place at 0000000046000000, end 000000004600efff
 </code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/star64#yocto-image-for-star64">(With a <strong>FIT: Flat Image Tree</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/star64#yocto-image-for-star64">(Packed into a <strong>FIT: Flat Image Tree</strong>)</a></p>
 <p>And boots the <a href="https://lupyuen.github.io/articles/star64#yocto-image-for-star64"><strong>Yocto Linux Kernel</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 clk u5_dw_i2c_clk_core already disabled
 clk u5_dw_i2c_clk_apb already disabled
-Linux version 5.15.107 (oe-user@oe-host) (riscv64-pine64-linux-gcc (GCC) 11.3.0, GNU ld (GNU Binutils) 2.38.20220708) #1 SMP Mon May 15 17:57:25 UTC 2023
+Linux version 5.15.107 (oe-user@oe-host) 
+  (riscv64-pine64-linux-gcc (GCC) 11.3.0, GNU ld (GNU Binutils) 2.38.20220708) 
+  #1 SMP Mon May 15 17:57:25 UTC 2023
 </code></pre></div>
 <p>We log in with <strong>root</strong> or <strong>pine64</strong>…</p>
 <div><table><thead><tr><th style="text-align: left">Username</th><th style="text-align: left">Password</th></tr></thead><tbody>
@@ -202,7 +204,8 @@ star64 login: root
 Password: pine64
 
 root@star64:~# uname -a
-Linux star64 5.15.107 #1 SMP Mon May 15 17:57:25 UTC 2023 riscv64 riscv64 riscv64 GNU/Linux
+Linux star64 5.15.107 #1 SMP Mon May 15 17:57:25 UTC 2023
+  riscv64 riscv64 riscv64 GNU/Linux
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528">(See the <strong>Complete Log</strong>)</a></p>
 <p>Yep the Yocto Minimal Image boots OK on Star64!</p>
@@ -213,11 +216,12 @@ Linux star64 5.15.107 #1 SMP Mon May 15 17:57:25 UTC 2023 riscv64 riscv64 riscv6
 <p>Uncompress the .bz2, rename as .img. Balena Etcher won’t work with .bz2 files!</p>
 <p>Write the .img to a microSD Card with Balena Etcher.</p>
 <p>When we boot the microSD Card on Star64, the Plasma Desktop Environment runs OK on a HDMI Display! (Pic below)</p>
-<p>Usernames and Passwords are…</p>
-<ul>
-<li>root / pine64</li>
-<li>pine64 / pine64</li>
-</ul>
+<p>We log in with <strong>root</strong> or <strong>pine64</strong>…</p>
+<div><table><thead><tr><th style="text-align: left">Username</th><th style="text-align: left">Password</th></tr></thead><tbody>
+<tr><td style="text-align: left"><code>root</code></td><td style="text-align: left"><code>pine64</code></td></tr>
+<tr><td style="text-align: left"><code>pine64</code></td><td style="text-align: left"><code>pine64</code></td></tr>
+</tbody></table>
+</div>
 <p><a href="https://github.com/Fishwaldo/meta-pine64#usernames">(Source)</a></p>
 <p><img src="https://lupyuen.github.io/images/star64-plasma.jpg" alt="Yocto Plasma on Star64" /></p>
 <h1 id="boot-armbian-linux-on-star64"><a href="#boot-armbian-linux-on-star64">4 Boot Armbian Linux on Star64</a></h1>
