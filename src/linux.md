@@ -128,7 +128,7 @@ Model: StarFive VisionFive V2
 DRAM:  8 GiB
 ```
 
-U-Boot Bootloader loads the [__Yocto Linux Image__](https://lupyuen.github.io/articles/star64#yocto-image-for-star64) from the microSD Card...
+U-Boot Bootloader loads the [__Yocto Linux Kernel__](https://lupyuen.github.io/articles/star64#yocto-image-for-star64), [__Initial RAM Disk__](https://docs.kernel.org/admin-guide/initrd.html) and [__Flattened Device Tree (FDT)__](https://u-boot.readthedocs.io/en/latest/develop/devicetree/index.html) from the microSD Card...
 
 ```text
 Loading kernel from FIT Image at a0000000 ...
@@ -147,7 +147,7 @@ Booting kernel in
   Using Device Tree in place at 0000000046000000, end 000000004600efff
 ```
 
-[(With a __FIT: Flat Image Tree__)](https://lupyuen.github.io/articles/star64#yocto-image-for-star64)
+[(Packed into a __FIT: Flat Image Tree__)](https://lupyuen.github.io/articles/star64#yocto-image-for-star64)
 
 And boots the [__Yocto Linux Kernel__](https://lupyuen.github.io/articles/star64#yocto-image-for-star64)...
 
@@ -155,7 +155,9 @@ And boots the [__Yocto Linux Kernel__](https://lupyuen.github.io/articles/star64
 Starting kernel ...
 clk u5_dw_i2c_clk_core already disabled
 clk u5_dw_i2c_clk_apb already disabled
-Linux version 5.15.107 (oe-user@oe-host) (riscv64-pine64-linux-gcc (GCC) 11.3.0, GNU ld (GNU Binutils) 2.38.20220708) #1 SMP Mon May 15 17:57:25 UTC 2023
+Linux version 5.15.107 (oe-user@oe-host) 
+  (riscv64-pine64-linux-gcc (GCC) 11.3.0, GNU ld (GNU Binutils) 2.38.20220708) 
+  #1 SMP Mon May 15 17:57:25 UTC 2023
 ```
 
 We log in with __root__ or __pine64__...
@@ -173,7 +175,8 @@ star64 login: root
 Password: pine64
 
 root@star64:~# uname -a
-Linux star64 5.15.107 #1 SMP Mon May 15 17:57:25 UTC 2023 riscv64 riscv64 riscv64 GNU/Linux
+Linux star64 5.15.107 #1 SMP Mon May 15 17:57:25 UTC 2023
+  riscv64 riscv64 riscv64 GNU/Linux
 ```
 
 [(See the __Complete Log__)](https://gist.github.com/lupyuen/b23edf50cecbee13e5aab3c0bae6c528)
@@ -194,9 +197,12 @@ Write the .img to a microSD Card with Balena Etcher.
 
 When we boot the microSD Card on Star64, the Plasma Desktop Environment runs OK on a HDMI Display! (Pic below)
 
-Usernames and Passwords are...
--   root / pine64
--   pine64 / pine64
+We log in with __root__ or __pine64__...
+
+| Username | Password |
+|:--|:--| 
+| `root` | `pine64`
+| `pine64` | `pine64`
 
 [(Source)](https://github.com/Fishwaldo/meta-pine64#usernames)
 
