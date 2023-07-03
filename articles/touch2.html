@@ -572,6 +572,7 @@ read(
   sizeof(struct touch_sample_s)  // Size of Touch Sample
 );
 </code></pre></div>
+<p>(More about the Event Loop in a while)</p>
 <p>We’ll receive a Touch Sample that contains <strong>0 or 1 Touch Points</strong>. <a href="https://lupyuen.github.io/articles/touch2#read-a-touch-sample">(More about Touch Samples)</a></p>
 <p>(The Read Operation above is <strong>Non-Blocking</strong>. It returns 0 Touch Points if the screen hasn’t been touched)</p>
 <p>We extract the <strong>First Touch Point</strong> (inside the Touch Sample) and return it to LVGL: <a href="https://github.com/apache/nuttx-apps/blob/master/graphics/lvgl/port/lv_port_touchpad.c#L56-L99">lv_port_touchpad.c</a></p>
@@ -614,6 +615,25 @@ void lv_demo_widgets(void) {
 <p>Yep we need to <a href="https://lupyuen.github.io/articles/fb#fix-missing-pixels"><strong>flush the CPU Cache</strong></a> to fix a rendering issue with the Allwinner A64 Display Engine.</p>
 <p>This ought to improve the rendering speed and make LVGL more responsive.</p>
 <p><a href="https://lupyuen.github.io/articles/fb#fix-missing-pixels">(More about this)</a></p>
+<p><em>Where’s this LVGL Event Loop that periodically reads a Touch Sample from our driver?</em></p>
+<p>The <strong>LVGL Event Loop</strong> comes from the Main Function of our LVGL Demo App: <a href="https://github.com/apache/nuttx-apps/blob/master/examples/lvgldemo/lvgldemo.c#L240-L249">lvgldemo.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// LVGL Event Loop
+while (1) {
+  // Minimum sleep of 1ms
+  uint32_t idle = lv_timer_handler();
+  idle = idle ? idle : 1;
+  usleep(idle * 1000);
+}
+</code></pre></div>
+<p><a href="https://docs.lvgl.io/8.3/porting/project.html#initialization"><strong>lv_timer_handler</strong></a> will periodically execute <strong>LVGL Background Tasks</strong> to…</p>
+<ul>
+<li>
+<p>Read <strong>Touch Samples</strong> (from our Touch Input Driver)</p>
+</li>
+<li>
+<p>Update the <strong>LVGL Display</strong></p>
+</li>
+</ul>
 <h1 id="driver-limitations"><a href="#driver-limitations">8 Driver Limitations</a></h1>
 <p><em>Is there anything missing in our NuttX Touch Panel Driver for PinePhone?</em></p>
 <p>Yep our <strong>driver has limitations</strong>, since the Touch Panel Hardware is poorly documented…</p>
