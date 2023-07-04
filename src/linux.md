@@ -239,7 +239,13 @@ That's because the [__Flattened Device Tree (FDT)__](https://u-boot.readthedocs.
 
 - [__Armbian Image fails to boot__](https://lupyuen.github.io/articles/star64#armbian-image-for-star64)
 
-So Armbian is not quite ready for Star64. But no worries! Armbian will be super helpful for booting NuttX RTOS, as we'll soon see...
+So Armbian is not quite ready for Star64. But no worries! Armbian will be super helpful for booting NuttX RTOS, as we'll soon see.
+
+_When will Linux Distros officially support Star64 and JH7110?_
+
+Real soon! Check the upstreaming progress here...
+
+- [__JH7110 Upstream Status__](https://rvspace.org/en/project/JH7110_Upstream_Plan)
 
 ![OpenSBI and U-Boot Bootloader on Star64](https://lupyuen.github.io/images/star64-opensbi.jpg)
 

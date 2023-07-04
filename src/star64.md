@@ -50,6 +50,8 @@ Check out the current state of RISC-V Linux...
 
 -   [__Linux on RISC-V (2022)__](https://docs.google.com/presentation/d/1A0A6DnGyXR_MPpeg7QunQbv_yePPqid_uRswQe8Sj8M/edit#slide=id.p)
 
+-   [__JH7110 Upstream Status__](https://rvspace.org/en/project/JH7110_Upstream_Plan)
+
 -   [__Linux 6.4 supports StarFive JH7110 SoC__](https://www.cnx-software.com/2023/06/26/linux-6-4-release-main-changes-arm-risc-v-and-mips-architectures/)
 
 -   [__Star64 GPU not supported yet__](https://github.com/Fishwaldo/meta-pine64#quickstart)
