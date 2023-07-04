@@ -531,6 +531,10 @@ S10: 0000000000000000 S11: 0000000000000000 T3:  0000000000000023
 T4:  000000004600b5cc T5:  000000000000ff00 T6:  000000004600b5cc
 
 Code: 0313 0320 8023 0062 0313 0330 8023 0062 (2573 f140)
+
+resetting ...
+reset not supported yet
+### ERROR ### Please RESET the board ###
 ```
 
 [(Source)](https://github.com/lupyuen/nuttx-star64#boot-nuttx-on-star64)
