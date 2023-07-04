@@ -311,6 +311,7 @@ Boot HART MIDELEG         : 0x0000000000000222
 Boot HART MEDELEG         : 0x000000000000b109
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/riscv#get-cpu-id">(A <strong>RISC-V HART</strong> is equivalent to a Single CPU Core)</a></p>
+<p><a href="https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64">(More about <strong>OpenSBI for Star64</strong>)</a></p>
 <p>Let’s jump to U-Boot…</p>
 <h1 id="u-boot-bootloader-for-star64"><a href="#u-boot-bootloader-for-star64">6 U-Boot Bootloader for Star64</a></h1>
 <p><em>What happens when U-Boot Bootloader starts on Star64?</em></p>
@@ -389,6 +390,7 @@ printenv  - print environment variables
 ...
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-commands-for-star64">(Source)</a></p>
+<p><a href="https://lupyuen.github.io/articles/linux#appendix-u-boot-bootloader-log-for-star64">(More about <strong>U-Boot for Star64</strong>)</a></p>
 <p>Finally let’s talk about NuttX…</p>
 <p><img src="https://lupyuen.github.io/images/star64-nuttx.png" alt="Boot Apache NuttX RTOS on Star64" /></p>
 <h1 id="boot-apache-nuttx-rtos-on-star64"><a href="#boot-apache-nuttx-rtos-on-star64">7 Boot Apache NuttX RTOS on Star64</a></h1>
@@ -524,7 +526,7 @@ Code: 0313 0320 8023 0062 0313 0330 8023 0062 (2573 f140)
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/linux.md"><strong>lupyuen.github.io/src/linux.md</strong></a></p>
 <p><img src="https://lupyuen.github.io/images/star64-opensbi.jpg" alt="U-Boot Bootloader Log" /></p>
 <h1 id="appendix-opensbi-log-for-star64"><a href="#appendix-opensbi-log-for-star64">9 Appendix: OpenSBI Log for Star64</a></h1>
-<p><a href="https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/"><strong>OpenSBI (Open Source Supervisor Binary Interface)</strong></a> is the first thing that boots on Star64.</p>
+<p><a href="https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/"><strong>OpenSBI (Open Source Supervisor Binary Interface)</strong></a> is the first thing that boots on Star64. (Loaded from Internal Flash Memory)</p>
 <p>OpenSBI provides Secure Access to the <strong>Low-Level System Functions</strong> (controlling CPUs, Timers, Interrupts) for the JH7110 SoC…</p>
 <ul>
 <li><a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/riscv-sbi.pdf"><strong>RISC-V Supervisor Binary Interface</strong></a></li>
@@ -587,7 +589,7 @@ Boot HART MEDELEG         : 0x000000000000b109
 </code></pre></div>
 <p>After OpenSBI, Star64 runs U-Boot Bootloader…</p>
 <h1 id="appendix-u-boot-bootloader-log-for-star64"><a href="#appendix-u-boot-bootloader-log-for-star64">10 Appendix: U-Boot Bootloader Log for Star64</a></h1>
-<p><a href="https://u-boot.readthedocs.io/en/latest/index.html"><strong>U-Boot Bootloader</strong></a> is loaded from Internal Flash Memory and starts the Linux Kernel for Star64, as documented here…</p>
+<p><a href="https://u-boot.readthedocs.io/en/latest/index.html"><strong>U-Boot Bootloader</strong></a> is loaded from Internal Flash Memory, runs right after OpenSBI, and starts the Linux Kernel for Star64, as documented here…</p>
 <ul>
 <li><a href="https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html"><strong>U-Boot for StarFive VisionFive2</strong></a></li>
 </ul>
