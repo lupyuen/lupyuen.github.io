@@ -1,6 +1,6 @@
 # Recipe for Wholemeal Sourdough with Bread Machine
 
-📝 _27 Jun 2023_
+📝 _4 Jul 2023_
 
 ![Wholemeal Sourdough with Bread Machine](https://lupyuen.github.io/images/sourdough.jpg)
 
@@ -50,7 +50,7 @@ Add in this sequence to Bread Machine...
 
 -   2 tablespoons Boiling Water (100 deg C, to melt the butter)
 
--   2/3 cups (200g) Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
+-   1 2/3 cups (200g) Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
 
 -   3 ladles (2 cups) Wholemeal Sourdough Starter, ripe (fed) from above.
 
@@ -87,7 +87,6 @@ During Kneading:
 -   But not too much flour (or water). Dough Ball should look like a Fresh Egg Yolk: Skin is shiny, slightly wet, inside is foamy liquid.
 -   Tap a chopstick on the Dough Ball. The dough shouldn't stick to the chopstick.
     [(See pic below)](https://lupyuen.github.io/images/sourdough3.jpg)
--   UPDATE: It's OK for the dough to look slightly wet
 -   (Optional) At 4 hours 30 mins remaining, add 1/2 cup of Raisins (separated) or Prunes (quartered). This will sweeten the sourdough. Sourdough Starter will uplift any Dried Fruit, amazing!
     [(See Raisin Sourdough below)](https://lupyuen.github.io/images/sourdough17.jpg)
     [(And Prune Sourdough)](https://lupyuen.github.io/images/sourdough9.jpg)
