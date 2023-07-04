@@ -567,6 +567,14 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__OpenSBI (Open Source Supervisor Binary Interface)__](https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/) is the first thing that boots on Star64.
 
+OpenSBI provides Secure Access to the __Low-Level System Functions__ (controlling CPUs, Timers, Interrupts) for the JH7110 SoC...
+
+- [__RISC-V Supervisor Binary Interface__](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/riscv-sbi.pdf)
+
+__OpenSBI for Star64__ is documented here...
+
+- [__U-Boot for StarFive VisionFive2__](https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html)
+
 Here's the OpenSBI Log for Star64...
 
 ```text
@@ -626,7 +634,15 @@ After OpenSBI, Star64 runs U-Boot Bootloader...
 
 # Appendix: U-Boot Bootloader Log for Star64
 
-Here's the log for __U-Boot Bootloader__ on Star64 (without microSD Card inserted)...
+[__U-Boot Bootloader__](https://u-boot.readthedocs.io/en/latest/index.html) is loaded from Internal Flash Memory and starts the Linux Kernel for Star64, as documented here...
+
+- [__U-Boot for StarFive VisionFive2__](https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html)
+
+The U-Boot __Build Settings__ are here...
+
+- [__u-boot/board/starfive/visionfive2/Kconfig__](https://github.com/u-boot/u-boot/blob/master/board/starfive/visionfive2/Kconfig#L14-L19)
+
+Here's the log for U-Boot Bootloader on Star64 (without microSD Card inserted)...
 
 ```text
 U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800), Build: jenkins-github_visionfive2-6
@@ -685,6 +701,8 @@ Which is OK because we haven't inserted a microSD Card.
 ## U-Boot Settings for Star64
 
 Here are the __U-Boot Settings__ for Star64...
+
+[(Derived from the __Build Settings__)](https://github.com/u-boot/u-boot/blob/master/board/starfive/visionfive2/Kconfig#L14-L19)
 
 ```text
 StarFive # printenv
@@ -781,6 +799,8 @@ Environment size: 7246/65532 bytes
 ## U-Boot Commands for Star64
 
 Here are the __U-Boot Commands__ for Star64...
+
+[(Derived from the __Build Settings__)](https://github.com/u-boot/u-boot/blob/master/board/starfive/visionfive2/Kconfig#L14-L19)
 
 ```text
 StarFive # help
