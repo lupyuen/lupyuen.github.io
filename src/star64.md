@@ -82,7 +82,7 @@ label Armbian
   append root=UUID=99f62df4-be35-475c-99ef-2ba3f74fe6b5 console=ttyS0,115200n8 console=tty0 earlycon=sbi rootflags=data=writeback stmmaceth=chain_mode:1 rw rw no_console_suspend consoleblank=0 fsck.fix=yes fsck.repair=yes net.ifnames=0 splash plymouth.ignore-serial-consoles
 ```
 
-[(_"extlinux/extlinux.conf"_ is specified by U-Boot's __boot_syslinux_conf__)](https://github.com/lupyuen/nuttx-star64#u-boot-settings-for-star64)
+[(_"extlinux/extlinux.conf"_ is specified by U-Boot's __boot_syslinux_conf__)](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64)
 
 This says that U-Boot will load the Linux Kernel Image from __/boot/Image__.
 
@@ -90,13 +90,13 @@ This says that U-Boot will load the Linux Kernel Image from __/boot/Image__.
 
 _Where in RAM will the Kernel Image be loaded?_
 
-According to [__kernel_addr_r__](https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables) from the [__Default U-Boot Settings__](https://github.com/lupyuen/nuttx-star64#u-boot-settings-for-star64), the Linux Kernel will be loaded at RAM Address __`0x4020` `0000`__...
+According to [__kernel_addr_r__](https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables) from the [__Default U-Boot Settings__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64), the Linux Kernel will be loaded at RAM Address __`0x4020` `0000`__...
 
 ```text
 kernel_addr_r=0x40200000
 ```
 
-[(Source)](https://github.com/lupyuen/nuttx-star64#u-boot-settings-for-star64)
+[(Source)](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64)
 
 _Everything looks hunky dory?_
 
@@ -106,18 +106,18 @@ Nope the [__Flattened Device Tree (FDT)__](https://u-boot.readthedocs.io/en/late
 fdt /boot/dtb/starfive/jh7110-star64-pine64.dtb
 ```
 
-Which means that Armbian will [__fail to boot__](https://github.com/lupyuen/nuttx-star64#boot-armbian-on-star64) on Star64!
+Which means that Armbian will [__fail to boot__](https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64) on Star64!
 
 ```text
 Retrieving file: /boot/uInitrd
-10911538 bytes read in 466 ms (22.3 MiB/s)
+  10911538 bytes read in 466 ms (22.3 MiB/s)
 Retrieving file: /boot/Image
-22040576 bytes read in 936 ms (22.5 MiB/s)
+  22040576 bytes read in 936 ms (22.5 MiB/s)
 Retrieving file: /boot/dtb/starfive/jh7110-star64-pine64.dtb
-Failed to load '/boot/dtb/starfive/jh7110-star64-pine64.dtb'
+  Failed to load '/boot/dtb/starfive/jh7110-star64-pine64.dtb'
 ```
 
-[(Source)](https://github.com/lupyuen/nuttx-star64#boot-armbian-on-star64)
+[(Source)](https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64)
 
 The missing Device Tree is noted in this [__Pine64 Forum Post__](https://forum.pine64.org/showthread.php?tid=18276&pid=117607#pid117607). So we might need to check back later for the Official Armbian Image, if it's fixed.
 
@@ -170,7 +170,7 @@ initrd /boot/uInitrd
 
 __initrd__ is the [__Initial RAM Disk__](https://docs.kernel.org/admin-guide/initrd.html) that will be loaded into RAM while starting the Linux Kernel.
 
-According to the [__U-Boot Bootloader Log__](https://github.com/lupyuen/nuttx-star64#boot-armbian-on-star64)...
+According to the [__U-Boot Bootloader Log__](https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64)...
 
 1.  __Initial RAM Disk__ will be loaded first:
 
@@ -437,9 +437,9 @@ We'll recreate "MZ" in our [__NuttX Kernel__](https://lupyuen.github.io/articles
 
 (Linux Kernel pretends to be a DOS File... NuttX Kernel pretends to be Linux. Hilarious!)
 
-![Yocto Plasma on Star64](https://lupyuen.github.io/images/star64-plasma.jpg)
+![Yocto Linux with KDE Plasma on Star64](https://lupyuen.github.io/images/star64-plasma.jpg)
 
-[_Yocto Plasma on Star64_](https://github.com/lupyuen/nuttx-star64#boot-yocto-plasma-on-star64)
+[_Yocto Linux with KDE Plasma on Star64_](https://lupyuen.github.io/articles/linux#yocto-linux-with-kde-plasma)
 
 # What's Next
 
