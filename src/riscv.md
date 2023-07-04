@@ -555,6 +555,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Notes
 
+1.  Learning about __RISC-V Architecture__? This book has a concise overview, it might be available from your Local Library through the Libby App...
+
+    [__"Modern Computer Architecture and Organization" by Jim Ledin__](https://share.libbyapp.com/title/5479987)
+
 1.  __Hart IDs__ are not guaranteed to be contiguous. One is guaranteed to be 0, the rest will all be different, but not necessarily 0, 1, 2, 3, 4, 5, ...
 
     [(Source)](https://news.ycombinator.com/item?id=36453810#36455404)
