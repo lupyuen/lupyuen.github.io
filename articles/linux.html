@@ -525,6 +525,14 @@ Code: 0313 0320 8023 0062 0313 0330 8023 0062 (2573 f140)
 <p><img src="https://lupyuen.github.io/images/star64-opensbi.jpg" alt="U-Boot Bootloader Log" /></p>
 <h1 id="appendix-opensbi-log-for-star64"><a href="#appendix-opensbi-log-for-star64">9 Appendix: OpenSBI Log for Star64</a></h1>
 <p><a href="https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/"><strong>OpenSBI (Open Source Supervisor Binary Interface)</strong></a> is the first thing that boots on Star64.</p>
+<p>OpenSBI provides Secure Access to the <strong>Low-Level System Functions</strong> (controlling CPUs, Timers, Interrupts) for the JH7110 SoC…</p>
+<ul>
+<li><a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/riscv-sbi.pdf"><strong>RISC-V Supervisor Binary Interface</strong></a></li>
+</ul>
+<p><strong>OpenSBI for Star64</strong> is documented here…</p>
+<ul>
+<li><a href="https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html"><strong>U-Boot for StarFive VisionFive2</strong></a></li>
+</ul>
 <p>Here’s the OpenSBI Log for Star64…</p>
 <div class="example-wrap"><pre class="language-text"><code>U-Boot SPL 2021.10 (Jan 19 2023 - 04:09:41 +0800)
 DDR version: dc2e84f0.
@@ -579,7 +587,15 @@ Boot HART MEDELEG         : 0x000000000000b109
 </code></pre></div>
 <p>After OpenSBI, Star64 runs U-Boot Bootloader…</p>
 <h1 id="appendix-u-boot-bootloader-log-for-star64"><a href="#appendix-u-boot-bootloader-log-for-star64">10 Appendix: U-Boot Bootloader Log for Star64</a></h1>
-<p>Here’s the log for <strong>U-Boot Bootloader</strong> on Star64 (without microSD Card inserted)…</p>
+<p><a href="https://u-boot.readthedocs.io/en/latest/index.html"><strong>U-Boot Bootloader</strong></a> is loaded from Internal Flash Memory and starts the Linux Kernel for Star64, as documented here…</p>
+<ul>
+<li><a href="https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html"><strong>U-Boot for StarFive VisionFive2</strong></a></li>
+</ul>
+<p>The U-Boot <strong>Build Settings</strong> are here…</p>
+<ul>
+<li><a href="https://github.com/u-boot/u-boot/blob/master/board/starfive/visionfive2/Kconfig#L14-L19"><strong>u-boot/board/starfive/visionfive2/Kconfig</strong></a></li>
+</ul>
+<p>Here’s the log for U-Boot Bootloader on Star64 (without microSD Card inserted)…</p>
 <div class="example-wrap"><pre class="language-text"><code>U-Boot 2021.10 (Jan 19 2023 - 04:09:41 +0800), Build: jenkins-github_visionfive2-6
 
 CPU:   rv64imacu
@@ -633,6 +649,7 @@ StarFive #
 <p>Which is OK because we haven’t inserted a microSD Card.</p>
 <h2 id="u-boot-settings-for-star64"><a href="#u-boot-settings-for-star64">10.1 U-Boot Settings for Star64</a></h2>
 <p>Here are the <strong>U-Boot Settings</strong> for Star64…</p>
+<p><a href="https://github.com/u-boot/u-boot/blob/master/board/starfive/visionfive2/Kconfig#L14-L19">(Derived from the <strong>Build Settings</strong>)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>StarFive # printenv
 baudrate=115200
 boot_a_script=load ${devtype} ${devnum}:${distro_bootpart} ${scriptaddr} ${prefix}${script}; source ${scriptaddr}
@@ -724,6 +741,7 @@ visionfive2_mem_set=fdt memory ${memory_addr} ${memory_size};
 Environment size: 7246/65532 bytes
 </code></pre></div><h2 id="u-boot-commands-for-star64"><a href="#u-boot-commands-for-star64">10.2 U-Boot Commands for Star64</a></h2>
 <p>Here are the <strong>U-Boot Commands</strong> for Star64…</p>
+<p><a href="https://github.com/u-boot/u-boot/blob/master/board/starfive/visionfive2/Kconfig#L14-L19">(Derived from the <strong>Build Settings</strong>)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>StarFive # help
 ?         - alias for &#39;help&#39;
 base      - print or set address offset
