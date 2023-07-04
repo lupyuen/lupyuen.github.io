@@ -583,6 +583,12 @@ __OpenSBI for Star64__ is documented here...
 
 - [__U-Boot for StarFive VisionFive2__](https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html)
 
+__Source Code__ for OpenSBI is at...
+
+- [__github.com/riscv-software-src/opensbi__](https://github.com/riscv-software-src/opensbi)
+
+- [__opensbi/platform/generic/starfive__](https://github.com/riscv-software-src/opensbi/tree/master/platform/generic/starfive)
+
 Here's the OpenSBI Log for Star64...
 
 ```text
