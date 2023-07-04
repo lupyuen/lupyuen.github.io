@@ -143,27 +143,27 @@
   fdt /boot/dtb/starfive/jh7110-star64-pine64.dtb
   append root=UUID=99f62df4-be35-475c-99ef-2ba3f74fe6b5 console=ttyS0,115200n8 console=tty0 earlycon=sbi rootflags=data=writeback stmmaceth=chain_mode:1 rw rw no_console_suspend consoleblank=0 fsck.fix=yes fsck.repair=yes net.ifnames=0 splash plymouth.ignore-serial-consoles
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-star64#u-boot-settings-for-star64">(<em>“extlinux/extlinux.conf”</em> is specified by U-Boot’s <strong>boot_syslinux_conf</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64">(<em>“extlinux/extlinux.conf”</em> is specified by U-Boot’s <strong>boot_syslinux_conf</strong>)</a></p>
 <p>This says that U-Boot will load the Linux Kernel Image from <strong>/boot/Image</strong>.</p>
 <p>(Which is sym-linked to <strong>/boot/vmlinuz-5.15.0-starfive2</strong>)</p>
 <p><em>Where in RAM will the Kernel Image be loaded?</em></p>
-<p>According to <a href="https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables"><strong>kernel_addr_r</strong></a> from the <a href="https://github.com/lupyuen/nuttx-star64#u-boot-settings-for-star64"><strong>Default U-Boot Settings</strong></a>, the Linux Kernel will be loaded at RAM Address <strong><code>0x4020</code> <code>0000</code></strong>…</p>
+<p>According to <a href="https://u-boot.readthedocs.io/en/latest/develop/bootstd.html#environment-variables"><strong>kernel_addr_r</strong></a> from the <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>Default U-Boot Settings</strong></a>, the Linux Kernel will be loaded at RAM Address <strong><code>0x4020</code> <code>0000</code></strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>kernel_addr_r=0x40200000
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-star64#u-boot-settings-for-star64">(Source)</a></p>
+<p><a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64">(Source)</a></p>
 <p><em>Everything looks hunky dory?</em></p>
 <p>Nope the <a href="https://u-boot.readthedocs.io/en/latest/develop/devicetree/index.html"><strong>Flattened Device Tree (FDT)</strong></a> is missing!</p>
 <div class="example-wrap"><pre class="language-text"><code>fdt /boot/dtb/starfive/jh7110-star64-pine64.dtb
 </code></pre></div>
-<p>Which means that Armbian will <a href="https://github.com/lupyuen/nuttx-star64#boot-armbian-on-star64"><strong>fail to boot</strong></a> on Star64!</p>
+<p>Which means that Armbian will <a href="https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64"><strong>fail to boot</strong></a> on Star64!</p>
 <div class="example-wrap"><pre class="language-text"><code>Retrieving file: /boot/uInitrd
-10911538 bytes read in 466 ms (22.3 MiB/s)
+  10911538 bytes read in 466 ms (22.3 MiB/s)
 Retrieving file: /boot/Image
-22040576 bytes read in 936 ms (22.5 MiB/s)
+  22040576 bytes read in 936 ms (22.5 MiB/s)
 Retrieving file: /boot/dtb/starfive/jh7110-star64-pine64.dtb
-Failed to load &#39;/boot/dtb/starfive/jh7110-star64-pine64.dtb&#39;
+  Failed to load &#39;/boot/dtb/starfive/jh7110-star64-pine64.dtb&#39;
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-star64#boot-armbian-on-star64">(Source)</a></p>
+<p><a href="https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64">(Source)</a></p>
 <p>The missing Device Tree is noted in this <a href="https://forum.pine64.org/showthread.php?tid=18276&amp;pid=117607#pid117607"><strong>Pine64 Forum Post</strong></a>. So we might need to check back later for the Official Armbian Image, if it’s fixed.</p>
 <p><a href="https://forum.pine64.org/showthread.php?tid=18420&amp;pid=118331#pid118331">(<strong>balbes150</strong> suggests that we try this Armbian Image instead)</a></p>
 <p>For Reference: Here’s the list of <strong>Supported Device Trees</strong>…</p>
@@ -203,7 +203,7 @@ lrwxrwxrwx       24 vmlinuz.old -&gt; vmlinuz-5.15.0-starfive2
 <div class="example-wrap"><pre class="language-text"><code>initrd /boot/uInitrd
 </code></pre></div>
 <p><strong>initrd</strong> is the <a href="https://docs.kernel.org/admin-guide/initrd.html"><strong>Initial RAM Disk</strong></a> that will be loaded into RAM while starting the Linux Kernel.</p>
-<p>According to the <a href="https://github.com/lupyuen/nuttx-star64#boot-armbian-on-star64"><strong>U-Boot Bootloader Log</strong></a>…</p>
+<p>According to the <a href="https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64"><strong>U-Boot Bootloader Log</strong></a>…</p>
 <ol>
 <li>
 <p><strong>Initial RAM Disk</strong> will be loaded first:</p>
@@ -401,8 +401,8 @@ j   FUN_402010c8
 <p>We’ll recreate “MZ” in our <a href="https://lupyuen.github.io/articles/riscv#qemu-starts-nuttx"><strong>NuttX Kernel</strong></a>.</p>
 <p><a href="https://en.wikipedia.org/wiki/DOS_MZ_executable">(“MZ” refers to <strong>Mark Zbikowski</strong>)</a></p>
 <p>(Linux Kernel pretends to be a DOS File… NuttX Kernel pretends to be Linux. Hilarious!)</p>
-<p><img src="https://lupyuen.github.io/images/star64-plasma.jpg" alt="Yocto Plasma on Star64" /></p>
-<p><a href="https://github.com/lupyuen/nuttx-star64#boot-yocto-plasma-on-star64"><em>Yocto Plasma on Star64</em></a></p>
+<p><img src="https://lupyuen.github.io/images/star64-plasma.jpg" alt="Yocto Linux with KDE Plasma on Star64" /></p>
+<p><a href="https://lupyuen.github.io/articles/linux#yocto-linux-with-kde-plasma"><em>Yocto Linux with KDE Plasma on Star64</em></a></p>
 <h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>Today we completed our Linux Homework… Without a Star64 SBC!</p>
 <ul>
