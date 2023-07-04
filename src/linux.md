@@ -322,6 +322,8 @@ Boot HART MEDELEG         : 0x000000000000b109
 
 [(A __RISC-V HART__ is equivalent to a Single CPU Core)](https://lupyuen.github.io/articles/riscv#get-cpu-id)
 
+[(More about __OpenSBI for Star64__)](https://lupyuen.github.io/articles/linux#appendix-opensbi-log-for-star64)
+
 Let's jump to U-Boot...
 
 # U-Boot Bootloader for Star64
@@ -422,6 +424,8 @@ printenv  - print environment variables
 ```
 
 [(Source)](https://lupyuen.github.io/articles/linux#u-boot-commands-for-star64)
+
+[(More about __U-Boot for Star64__)](https://lupyuen.github.io/articles/linux#appendix-u-boot-bootloader-log-for-star64)
 
 Finally let's talk about NuttX...
 
@@ -565,7 +569,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: OpenSBI Log for Star64
 
-[__OpenSBI (Open Source Supervisor Binary Interface)__](https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/) is the first thing that boots on Star64.
+[__OpenSBI (Open Source Supervisor Binary Interface)__](https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/) is the first thing that boots on Star64. (Loaded from Internal Flash Memory)
 
 OpenSBI provides Secure Access to the __Low-Level System Functions__ (controlling CPUs, Timers, Interrupts) for the JH7110 SoC...
 
@@ -634,7 +638,7 @@ After OpenSBI, Star64 runs U-Boot Bootloader...
 
 # Appendix: U-Boot Bootloader Log for Star64
 
-[__U-Boot Bootloader__](https://u-boot.readthedocs.io/en/latest/index.html) is loaded from Internal Flash Memory and starts the Linux Kernel for Star64, as documented here...
+[__U-Boot Bootloader__](https://u-boot.readthedocs.io/en/latest/index.html) is loaded from Internal Flash Memory, runs right after OpenSBI, and starts the Linux Kernel for Star64, as documented here...
 
 - [__U-Boot for StarFive VisionFive2__](https://u-boot.readthedocs.io/en/latest/board/starfive/visionfive2.html)
 
