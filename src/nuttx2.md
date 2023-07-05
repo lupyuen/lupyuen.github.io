@@ -86,27 +86,27 @@ This says that QEMU emulates a [__16550 UART Controller__](https://en.wikipedia.
 
 And the __Base Address__ of QEMU's UART Controller is __`0x1000` `0000`__.
 
-TODO
-
 _How to print to the 16550 UART Port?_
 
-Let's check the 16550 UART Driver in NuttX. From [uart_16550.c](https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L1539-L1553):
+Checking the __NuttX Driver__ for 16550 UART: [uart_16550.c](https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L1539-L1553):
 
 ```c
-/****************************************************************************
- * Name: u16550_send
- *
- * Description:
- *   This method will send one byte on the UART
- *
- ****************************************************************************/
+// Send one byte to 16550 UART
+static void u16550_send(struct uart_dev_s *dev, int ch) {
 
-static void u16550_send(struct uart_dev_s *dev, int ch)
-{
+  // Fetch the 16550 Struct
   FAR struct u16550_s *priv = (FAR struct u16550_s *)dev->priv;
-  u16550_serialout(priv, UART_THR_OFFSET, (uart_datawidth_t)ch);
+
+  // Print to 16550 UART...
+  u16550_serialout(
+    priv,                 // 16550 Struct
+    UART_THR_OFFSET,      // Offset of Transmit Holding Register
+    (uart_datawidth_t)ch  // Character to print
+  );
 }
 ```
+
+TODO
 
 [(u16550_serialout is defined here)](https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L610-L624)
 
