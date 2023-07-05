@@ -20,9 +20,11 @@ But the things that we learn today will be super helpful for [__porting NuttX to
 
 Please read on to find out how we're __booting a new OS__ (from scratch) on Star64 and JH7110, as we...
 
+- Migrate NuttX from __QEMU Emulator__ to Real Hardware
+
 - Log to the __Serial Console__ in RISC-V Assembly
 
-- Trick __U-Boot Booting__ into thinking we're Linux
+- Trick __U-Boot Bootloader__ into thinking we're Linux
 
 TODO
 
