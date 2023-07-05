@@ -14,7 +14,7 @@ _What's NuttX?_
 
 _NuttX supports Star64?_
 
-Nope NuttX won't run on Star64 yet, we'll hit some interesting (but highly educational) RISC-V issues.
+Nope NuttX won't run on Star64 yet, we'll hit some interesting (and highly educational) RISC-V challenges.
 
 The things that we learn today will be super helpful for [__porting NuttX to Star64__](https://lupyuen.github.io/articles/riscv#jump-to-start).
 
