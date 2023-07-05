@@ -4,7 +4,7 @@
 
 ![TODO](https://lupyuen.github.io/images/nuttx2-title.jpg)
 
-TODO
+TODO: This is the first in a series of articles on porting NuttX to Star64.
 
 Previously we talked about the [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) 64-bit RISC-V Single-Board Computer. (Based on [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC)
 
