@@ -50,7 +50,7 @@ We'll print some __Debug Logs__ as we run the NuttX Boot Code.
 
 _But the NuttX Boot Code is in RISC-V Assembly!_
 
-Yep we'll print the Debug Logs with __RISC-V Assembly Code__.
+Yep we'll print the Debug Logs with our own __RISC-V Assembly Code__.
 
 Here's our plan...
 
@@ -58,27 +58,19 @@ Here's our plan...
 
 - __Test our Debug Log__ on QEMU Emulator
 
-- __Port our Debug Logger__ to Star64 JH7110
+- __Port our Debug Log__ to Star64 JH7110
 
-![Star64 JH7110 RISC-V SBC with Woodpecker USB Serial Adapter](https://lupyuen.github.io/images/linux-title.jpg)
+![Star64 SBC with Woodpecker USB Serial Adapter](https://lupyuen.github.io/images/linux-title.jpg)
 
-[_Star64 JH7110 RISC-V SBC with Woodpecker USB Serial Adapter_](https://lupyuen.github.io/articles/linux)
+[_Star64 with Woodpecker USB Serial Adapter_](https://lupyuen.github.io/articles/linux)
 
 # Print to QEMU Console
 
-TODO
+_We're printing to the Serial Console on QEMU Emulator..._
 
-Our NuttX Kernel will print to Star64 Serial Console for debugging. Before that, let's write some RISC-V Assembly Code to print to the QEMU Console!
+_What's the UART Controller in QEMU?_
 
-Earlier we ran NuttX on QEMU Emulator for 64-bit RISC-V...
-
--   ["64-bit RISC-V with Apache NuttX Real-Time Operating System"](https://lupyuen.github.io/articles/riscv)
-
-QEMU emulates a 16550 UART Port. (Similar to Star64 / JH7110)
-
-_What's the Base Address of QEMU's UART Port?_
-
-According to the NuttX Configuration for QEMU: [nsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16)
+Let's check the __NuttX Build Configuration__ for QEMU: [nsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16)
 
 ```text
 CONFIG_16550_ADDRWIDTH=0
@@ -90,7 +82,11 @@ CONFIG_16550_UART0_SERIAL_CONSOLE=y
 CONFIG_16550_UART=y
 ```
 
-Base Address of QEMU's UART Port is `0x1000` `0000`. (Same as Star64 / JH7110 yay!)
+This says that QEMU emulates a [__16550 UART Controller__](https://en.wikipedia.org/wiki/16550_UART).
+
+And the __Base Address__ of QEMU's UART Controller is __`0x1000` `0000`__.
+
+TODO
 
 _How to print to the 16550 UART Port?_
 
