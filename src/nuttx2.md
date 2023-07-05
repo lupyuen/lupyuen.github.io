@@ -28,6 +28,8 @@ Please read on to find out how we're __booting a new OS__ (from scratch) on Star
 
 - Downgrade from Machine to __Supervisor Privilege Level__
 
+- With a little help from __OpenSBI Supervisor Interface__
+
 TODO
 
 # Start with QEMU Emulator
