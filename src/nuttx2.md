@@ -26,6 +26,8 @@ Please read on to find out how we're __booting a new OS__ (from scratch) on Star
 
 - Trick __U-Boot Bootloader__ into thinking we're Linux
 
+- Downgrade from Machine to __Supervisor Privilege Level__
+
 TODO
 
 # Start with QEMU Emulator
