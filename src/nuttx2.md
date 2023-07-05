@@ -36,13 +36,35 @@ Please read on to find out how we're __booting a new OS__ (from scratch) on Star
 
 Earlier we successfully tested __NuttX RTOS on QEMU Emulator__ for 64-bit RISC-V (pic above)...
 
--   [__"64-bit RISC-V with Apache NuttX Real-Time Operating System"__](https://lupyuen.github.io/articles/riscv)
+- [__"64-bit RISC-V with Apache NuttX Real-Time Operating System"__](https://lupyuen.github.io/articles/riscv)
 
-Let's run this on Star64 JH7110 SBC!
+Let's run this on Star64 JH7110 SBC! Starting with the __NuttX Boot Code__ (in RISC-V Assembly)...
 
-TODO
+- [__"RISC-V Boot Code in NuttX"__](https://lupyuen.github.io/articles/riscv#risc-v-boot-code-in-nuttx)
 
-# NuttX prints to QEMU Console
+_Surely we'll run into problems?_
+
+Fortunately we have a [__Serial Debug Console__](https://lupyuen.github.io/articles/linux#serial-console-on-star64) connected to Star64. (Pic below)
+
+We'll print some __Debug Logs__ as we run the NuttX Boot Code.
+
+_But the NuttX Boot Code is in RISC-V Assembly!_
+
+Yep we'll print the Debug Logs with __RISC-V Assembly Code__.
+
+Here's our plan...
+
+- Check the __Serial Console on QEMU Emulator__, how it's wired up
+
+- __Test our Debug Log__ on QEMU Emulator
+
+- __Port our Debug Logger__ to Star64 JH7110
+
+![Star64 JH7110 RISC-V SBC with Woodpecker USB Serial Adapter](https://lupyuen.github.io/images/linux-title.jpg)
+
+[_Star64 JH7110 RISC-V SBC with Woodpecker USB Serial Adapter_](https://lupyuen.github.io/articles/linux)
+
+# Print to QEMU Console
 
 TODO
 
