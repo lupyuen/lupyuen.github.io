@@ -68,7 +68,7 @@
     <h1 class="title">Apache NuttX RTOS on RISC-V: Star64 JH7110 SBC</h1>
     <nav id="TOC"><ul>
 <li><a href="#start-with-qemu-emulator">1 Start with QEMU Emulator</a><ul></ul></li>
-<li><a href="#nuttx-prints-to-qemu-console">2 NuttX prints to QEMU Console</a><ul></ul></li>
+<li><a href="#print-to-qemu-console">2 Print to QEMU Console</a><ul></ul></li>
 <li><a href="#uart-base-address-for-star64">3 UART Base Address for Star64</a><ul></ul></li>
 <li><a href="#risc-v-linux-kernel-header">4 RISC-V Linux Kernel Header</a><ul></ul></li>
 <li><a href="#set-start-address-of-nuttx-kernel">5 Set Start Address of NuttX Kernel</a><ul></ul></li>
@@ -108,9 +108,30 @@
 <ul>
 <li><a href="https://lupyuen.github.io/articles/riscv"><strong>“64-bit RISC-V with Apache NuttX Real-Time Operating System”</strong></a></li>
 </ul>
-<p>Let’s run this on Star64 JH7110 SBC!</p>
-<p>TODO</p>
-<h1 id="nuttx-prints-to-qemu-console"><a href="#nuttx-prints-to-qemu-console">2 NuttX prints to QEMU Console</a></h1>
+<p>Let’s run this on Star64 JH7110 SBC! Starting with the <strong>NuttX Boot Code</strong> (in RISC-V Assembly)…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/riscv#risc-v-boot-code-in-nuttx"><strong>“RISC-V Boot Code in NuttX”</strong></a></li>
+</ul>
+<p><em>Surely we’ll run into problems?</em></p>
+<p>Fortunately we have a <a href="https://lupyuen.github.io/articles/linux#serial-console-on-star64"><strong>Serial Debug Console</strong></a> connected to Star64. (Pic below)</p>
+<p>We’ll print some <strong>Debug Logs</strong> as we run the NuttX Boot Code.</p>
+<p><em>But the NuttX Boot Code is in RISC-V Assembly!</em></p>
+<p>Yep we’ll print the Debug Logs with <strong>RISC-V Assembly Code</strong>.</p>
+<p>Here’s our plan…</p>
+<ul>
+<li>
+<p>Check the <strong>Serial Console on QEMU Emulator</strong>, how it’s wired up</p>
+</li>
+<li>
+<p><strong>Test our Debug Log</strong> on QEMU Emulator</p>
+</li>
+<li>
+<p><strong>Port our Debug Logger</strong> to Star64 JH7110</p>
+</li>
+</ul>
+<p><img src="https://lupyuen.github.io/images/linux-title.jpg" alt="Star64 JH7110 RISC-V SBC with Woodpecker USB Serial Adapter" /></p>
+<p><a href="https://lupyuen.github.io/articles/linux"><em>Star64 JH7110 RISC-V SBC with Woodpecker USB Serial Adapter</em></a></p>
+<h1 id="print-to-qemu-console"><a href="#print-to-qemu-console">2 Print to QEMU Console</a></h1>
 <p>TODO</p>
 <p>Our NuttX Kernel will print to Star64 Serial Console for debugging. Before that, let’s write some RISC-V Assembly Code to print to the QEMU Console!</p>
 <p>Earlier we ran NuttX on QEMU Emulator for 64-bit RISC-V…</p>
