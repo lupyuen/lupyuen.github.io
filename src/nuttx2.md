@@ -30,7 +30,15 @@ Please read on to find out how we're __booting a new OS__ (from scratch) on Star
 
 - With a little help from __OpenSBI Supervisor Interface__
 
+![Apache NuttX RTOS on 64-bit QEMU RISC-V Emulator](https://lupyuen.github.io/images/riscv-title.png)
+
 # Start with QEMU Emulator
+
+Earlier we successfully tested __NuttX RTOS on QEMU Emulator__ for 64-bit RISC-V (pic above)...
+
+-   [__"64-bit RISC-V with Apache NuttX Real-Time Operating System"__](https://lupyuen.github.io/articles/riscv)
+
+Let's run this on Star64 JH7110 SBC!
 
 TODO
 
