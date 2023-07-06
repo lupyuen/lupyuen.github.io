@@ -71,7 +71,7 @@
 <li><a href="#print-to-qemu-console">2 Print to QEMU Console</a><ul></ul></li>
 <li><a href="#uart-controller-on-star64">3 UART Controller on Star64</a><ul></ul></li>
 <li><a href="#risc-v-linux-kernel-header">4 RISC-V Linux Kernel Header</a><ul></ul></li>
-<li><a href="#set-start-address-of-nuttx-kernel">5 Set Start Address of NuttX Kernel</a><ul></ul></li>
+<li><a href="#start-address-of-nuttx-kernel">5 Start Address of NuttX Kernel</a><ul></ul></li>
 <li><a href="#boot-nuttx-on-star64">6 Boot NuttX on Star64</a><ul></ul></li>
 <li><a href="#nuttx-fails-to-get-hart-id">7 NuttX Fails To Get Hart ID</a><ul></ul></li>
 <li><a href="#risc-v-privilege-levels">8 RISC-V Privilege Levels</a><ul></ul></li>
@@ -259,8 +259,7 @@ CONFIG_16550_UART=y
 </ul>
 <p>We’ve done this previously for the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/arm64/src/common/arm64_head.S#L79-L118"><strong>Arm64 Linux Header</strong></a>.</p>
 <p>This is how we adapt it for our <strong>RISC-V Linux Header</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L42-L75">qemu_rv_head.S</a></p>
-<div class="example-wrap"><pre class="language-text"><code>/* RISC-V Linux Header */
-c.li    s4, -13              /* Magic Signature &quot;MZ&quot; (2 bytes) */
+<div class="example-wrap"><pre class="language-text"><code>c.li    s4, -13              /* Magic Signature &quot;MZ&quot; (2 bytes) */
 j       real_start           /* Jump to Kernel Start (2 bytes) */
 .long   0                    /* Executable Code padded to 8 bytes */
 .quad   0x200000             /* Image load offset from start of RAM */
@@ -277,67 +276,35 @@ j       real_start           /* Jump to Kernel Start (2 bytes) */
 real_start:
   /* Actual Boot Code starts here... */
 </code></pre></div>
-<p>TODO</p>
-<p>Note that Image Load Offset must be <code>0x20</code> <code>0000</code>!</p>
-<div class="example-wrap"><pre class="language-text"><code>  .quad   0x200000             /* Image load offset from start of RAM */
+<p><a href="https://lupyuen.github.io/articles/star64#decompile-the-kernel-with-ghidra">(Why we need <strong>Magic Signature “MZ”</strong>)</a></p>
+<p>Note that <strong>Image Load Offset</strong> must be <strong><code>0x20</code> <code>0000</code></strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>.quad   0x200000             /* Image load offset from start of RAM */
 </code></pre></div>
-<p>That’s because our kernel starts at <code>0x4020</code> <code>0000</code></p>
-<p>Here’s the assembled output…</p>
-<div class="example-wrap"><pre class="language-text"><code>0000000040200000 &lt;__start&gt;:
-  li      s4, -0xd             /* Magic Signature &quot;MZ&quot; (2 bytes) */
-    40200000:	5a4d                	li	s4,-13
-  j       real_start           /* Jump to Kernel Start (2 bytes) */
-    40200002:	a83d                	j	40200040 &lt;real_start&gt;
-    40200004:	0000                	unimp
-    40200006:	0000                	unimp
-    40200008:	0000                	unimp
-    4020000a:	0020                	addi	s0,sp,8
-    4020000c:	0000                	unimp
-    4020000e:	0000                	unimp
-    40200010:	9e7c                	0x9e7c
-    40200012:	0002                	c.slli64	zero
-	...
-    40200020:	0002                	c.slli64	zero
-	...
-    4020002e:	0000                	unimp
-    40200030:	4952                	lw	s2,20(sp)
-    40200032:	00564353          	fadd.s	ft6,fa2,ft5,rmm
-    40200036:	0000                	unimp
-    40200038:	5352                	lw	t1,52(sp)
-    4020003a:	00000543          	fmadd.s	fa0,ft0,ft0,ft0,rne
-	...
-
-0000000040200040 &lt;real_start&gt;:
-</code></pre></div>
-<p>Check that the lengths and offsets match the RISC-V Linux Header Format…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/star64#appendix-decode-the-risc-v-linux-header"><strong>“Decode the RISC-V Linux Header”</strong></a></li>
-</ul>
-<p>And our RISC-V Boot Code tested OK with QEMU.</p>
-<h1 id="set-start-address-of-nuttx-kernel"><a href="#set-start-address-of-nuttx-kernel">5 Set Start Address of NuttX Kernel</a></h1>
-<p>TODO</p>
-<p>Earlier we saw that Star64’s U-Boot Bootloader will load Linux Kernels into RAM at Address <code>0x4020</code> <code>0000</code>…</p>
+<p>That’s because our NuttX Kernel starts at <strong><code>0x4020</code> <code>0000</code></strong>. Here’s why…</p>
+<h1 id="start-address-of-nuttx-kernel"><a href="#start-address-of-nuttx-kernel">5 Start Address of NuttX Kernel</a></h1>
+<p><em>What’s this magical address <code>0x4020</code> <code>0000</code>?</em></p>
+<p>From previous articles, we saw that Star64’s U-Boot Bootloader will load Linux Kernels into RAM at Address <strong><code>0x4020</code> <code>0000</code></strong>…</p>
 <ul>
 <li>
-<p><a href="https://lupyuen.github.io/articles/star64#armbian-image-for-star64">“Armbian Image for Star64”</a></p>
+<p><a href="https://lupyuen.github.io/articles/star64#armbian-image-for-star64"><strong>“Armbian Image for Star64”</strong></a></p>
 </li>
 <li>
-<p><a href="https://lupyuen.github.io/articles/star64#yocto-image-for-star64">“Yocto Image for Star64”</a></p>
+<p><a href="https://lupyuen.github.io/articles/star64#yocto-image-for-star64"><strong>“Yocto Image for Star64”</strong></a></p>
 </li>
 </ul>
-<p>To boot NuttX on Star64, let’s set the Start Address of the NuttX Kernel to <code>0x4020</code> <code>0000</code>.</p>
-<p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L56-L57">nsh64/defconfig</a>:</p>
+<p>Thus we do the same to boot NuttX on Star64.</p>
+<p>This is how we set the Start Address to <strong><code>0x4020</code> <code>0000</code></strong> in the <strong>NuttX Build Configuration</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L56-L57">nsh64/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_RAM_SIZE=33554432
-CONFIG_RAM_START=0x80000000
+CONFIG_RAM_START=0x40200000
 </code></pre></div>
-<p>We changed the above NuttX Build Config to <code>0x40200000</code></p>
-<p>We also updated the Linker Script: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L26">ld.script</a></p>
+<p>And we updated the <strong>NuttX Linker Script</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L26">ld.script</a></p>
 <div class="example-wrap"><pre class="language-text"><code>SECTIONS
 {
   /* Previously 0x80000000 */
   . = 0x40200000;
   .text :
 </code></pre></div>
+<p>TODO</p>
 <p>Remember to change this if building for NuttX Kernel Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel64.script#L21-L51">ld-kernel64.script</a>:</p>
 <div class="example-wrap"><pre class="language-text"><code>MEMORY
 {
