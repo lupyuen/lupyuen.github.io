@@ -69,7 +69,7 @@
     <nav id="TOC"><ul>
 <li><a href="#start-with-qemu-emulator">1 Start with QEMU Emulator</a><ul></ul></li>
 <li><a href="#print-to-qemu-console">2 Print to QEMU Console</a><ul></ul></li>
-<li><a href="#uart-controller-in-star64">3 UART Controller in Star64</a><ul></ul></li>
+<li><a href="#uart-controller-on-star64">3 UART Controller on Star64</a><ul></ul></li>
 <li><a href="#risc-v-linux-kernel-header">4 RISC-V Linux Kernel Header</a><ul></ul></li>
 <li><a href="#set-start-address-of-nuttx-kernel">5 Set Start Address of NuttX Kernel</a><ul></ul></li>
 <li><a href="#boot-nuttx-on-star64">6 Boot NuttX on Star64</a><ul></ul></li>
@@ -173,29 +173,29 @@ static void u16550_send(struct uart_dev_s *dev, int ch) {
 <div class="example-wrap"><pre class="language-c"><code>// Print `1` to QEMU Console
 *(volatile uint8_t *) 0x10000000 = &#39;1&#39;;
 </code></pre></div>
-<p><em>But how to print with RISC-V Assembly?</em></p>
-<p>TODO</p>
-<p>Let’s do the printing in RISC-V Assembly Code, so that we can debug the NuttX Boot Code.</p>
-<p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L71-L93">qemu_rv_head.S</a>:</p>
-<div class="example-wrap"><pre class="language-text"><code>  /* Load UART Base Address to Register t0 */
-  li  t0, 0x10000000
+<p><em>What about RISC-V Assembly?</em></p>
+<p>This is how we print to QEMU Console in <strong>RISC-V Assembly Code</strong>, so we can debug the NuttX Boot Code: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L71-L93">qemu_rv_head.S</a>:</p>
+<div class="example-wrap"><pre class="language-text"><code>/* Load UART Base Address to Register t0 */
+li  t0, 0x10000000
 
-  /* Load `1` to Register t1 */
-  li  t1, 0x31
-  /* Store byte from Register t1 to UART Base Address, Offset 0 */
-  sb  t1, 0(t0)
+/* Load `1` to Register t1 */
+li  t1, 0x31
+/* Store byte from Register t1 to UART Base Address, Offset 0 */
+sb  t1, 0(t0)
 
-  /* Load `2` to Register t1 */
-  li  t1, 0x32
-  /* Store byte from Register t1 to UART Base Address, Offset 0 */
-  sb  t1, 0(t0)
+/* Load `2` to Register t1 */
+li  t1, 0x32
+/* Store byte from Register t1 to UART Base Address, Offset 0 */
+sb  t1, 0(t0)
 
-  /* Load `3` to Register t1 */
-  li  t1, 0x33
-  /* Store byte from Register t1 to UART Base Address, Offset 0 */
-  sb  t1, 0(t0)
+/* Load `3` to Register t1 */
+li  t1, 0x33
+/* Store byte from Register t1 to UART Base Address, Offset 0 */
+sb  t1, 0(t0)
 </code></pre></div>
-<p>This prints “123” to the QEMU Console. Here’s the output:</p>
+<p><a href="https://lupyuen.github.io/articles/riscv#other-instructions">(<strong><code>li</code></strong> loads a Value into a Register)</a></p>
+<p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--load-and-store-instructions">(<strong><code>sb</code></strong> stores a byte from a Register into an Address)</a></p>
+<p>The code above prints “<strong><code>123</code></strong>” to the QEMU Console (pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>+ qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on \
@@ -209,9 +209,10 @@ static void u16550_send(struct uart_dev_s *dev, int ch) {
 NuttShell (NSH) NuttX-12.0.3
 nsh&gt; 
 </code></pre></div>
-<p>Which is correct because QEMU is running with 8 CPUs. Yay!</p>
+<p>“<strong><code>123</code></strong>” is printed 8 times because QEMU is running with 8 CPUs.</p>
+<p>Now we port this Debug Code to Star64…</p>
 <p><img src="https://lupyuen.github.io/images/riscv-print.png" alt="NuttX prints to QEMU Console" /></p>
-<h1 id="uart-controller-in-star64"><a href="#uart-controller-in-star64">3 UART Controller in Star64</a></h1>
+<h1 id="uart-controller-on-star64"><a href="#uart-controller-on-star64">3 UART Controller on Star64</a></h1>
 <p>TODO</p>
 <p>We’ll take the UART Assembly Code from the previous section and run on Star64 / JH7110. (So we can troubleshoot the NuttX Boot Code)</p>
 <p><em>Does Star64 / JH7110 use a 16550 UART Controller like QEMU?</em></p>
