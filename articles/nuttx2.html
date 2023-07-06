@@ -443,7 +443,7 @@ csrr a0, mhartid
 <p>TODO: Pic</p>
 <h1 id="risc-v-privilege-levels"><a href="#risc-v-privilege-levels">8 RISC-V Privilege Levels</a></h1>
 <p><em>What’s this Privilege Level?</em></p>
-<p>RISC-V runs at three <strong>Privilege Levels</strong>…</p>
+<p>RISC-V Machine Code runs at three <strong>Privilege Levels</strong>…</p>
 <ul>
 <li>
 <p><strong>M: Machine Mode</strong> (Most powerful)</p>
@@ -469,9 +469,11 @@ csrr a0, mhartid
 <p><em>What about U-Boot Bootloader?</em></p>
 <p><strong>U-Boot Bootloader</strong> runs in <strong>Supervisor Mode</strong>. And starts NuttX, also in Supervisor Mode.</p>
 <p>Thus <strong>OpenSBI is the only thing</strong> that runs in Machine Mode. And can access the Machine-Mode Registers.</p>
+<p><a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64">(More about <strong>U-Boot</strong>)</a></p>
 <p><em>QEMU doesn’t have this problem?</em></p>
 <p>Because QEMU runs everything in (super-powerful) <strong>Machine Mode</strong>!</p>
-<p>NuttX gets to fetch the Hart ID in different way…</p>
+<p>TODO: Pic</p>
+<p>NuttX needs to fetch the Hart ID in a different way…</p>
 <h1 id="downgrade-nuttx-to-supervisor-mode"><a href="#downgrade-nuttx-to-supervisor-mode">9 Downgrade NuttX to Supervisor Mode</a></h1>
 <p><em>OpenSBI runs in Machine Mode and reads the Hart ID (CPU ID)…</em></p>
 <p><em>How will NuttX get the Hart ID from OpenSBI?</em></p>
