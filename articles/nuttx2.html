@@ -459,6 +459,8 @@ csrr a0, mhartid
 <p><em>What about U-Boot Bootloader?</em></p>
 <p>U-Boot Bootloader runs at Supervisor Level. And starts NuttX, also at Supervisor Level.</p>
 <p>So OpenSBI is the only thing that runs at Machine Level. And can access the Machine-Level Registers.</p>
+<p><em>QEMU doesn’t have this problem?</em></p>
+<p>Because QEMU runs everything in Machine Mode.</p>
 <h1 id="downgrade-nuttx-to-supervisor-mode"><a href="#downgrade-nuttx-to-supervisor-mode">9 Downgrade NuttX to Supervisor Mode</a></h1>
 <p>TODO</p>
 <p><em>How to get the Hart ID from OpenSBI?</em></p>
