@@ -516,110 +516,27 @@ csrw  stvec, t0
 </ul>
 <p>Let’s test this…</p>
 <h1 id="fix-the-nuttx-boot-code"><a href="#fix-the-nuttx-boot-code">10 Fix the NuttX Boot Code</a></h1>
-<p>TODO</p>
 <p>From the previous section, we identified these fixes for the NuttX Boot Code…</p>
-<ol>
+<ul>
 <li>
-<p>Remove <code>csrr a0, mhartid</code> because OpenSBI will pass Hart ID in Register A0. Subtract 1 from Register A0 because NuttX expects Hart ID to start with 0.</p>
+<p>Remove <strong><code>mhartid</code></strong> because OpenSBI will pass <strong>Hart ID</strong> in Register A0</p>
 </li>
 <li>
-<p>To Disable Interrupts: Change <code>mie</code> to <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie"><code>sie</code></a></p>
+<p>Subtract 1 from <strong>Register A0</strong> because NuttX expects Hart ID to start with 0.</p>
 </li>
 <li>
-<p>To Load Interrupt Vector Table: Change <code>mtvec</code> to <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec"><code>stvec</code></a></p>
+<p>To Disable Interrupts: Change <a href="https://lupyuen.github.io/articles/riscv#disable-interrupts"><strong><code>mie</code></strong></a> to <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie"><strong><code>sie</code></strong></a></p>
 </li>
-</ol>
-<p>Here’s the updated Boot Code, and our analysis: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S">qemu_rv_head.S</a></p>
-<div class="example-wrap"><pre class="language-text"><code>real_start:
-  ...
-  /* Load mhartid (cpuid) */
-  /* Previously: csrr a0, mhartid */
-
-  /* We assume that OpenSBI has passed Hart ID (value 1) in Register a0. */
-  /* But NuttX expects Hart ID to start at 0, so we subtract 1. */
-  addi a0, a0, -1
-
-  /* Print the Hart ID */
-  addi t1, a0, 0x30
-  /* Store byte from Register t1 to UART Base Address, Offset 0 */
-  sb   t1, 0(t0)
-</code></pre></div>
-<p><strong>If Hart ID is 0:</strong></p>
-<ul>
-<li>Set Stack Pointer to the Idle Thread Stack</li>
+<li>
+<p>To Load Trap Vector Table: Change <a href="https://lupyuen.github.io/articles/riscv#load-interrupt-vector"><strong><code>mtvec</code></strong></a> to <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec"><strong><code>stvec</code></strong></a></p>
+</li>
 </ul>
-<div class="example-wrap"><pre class="language-text"><code>  /* Set stack pointer to the idle thread stack */
-  bnez a0, 1f
-  la   sp, QEMU_RV_IDLESTACK_TOP
-  j    2f
-</code></pre></div>
-<p><strong>If Hart ID is 1, 2, 3, …</strong></p>
+<p>Here’s the updated NuttX Boot Code and our analysis…</p>
 <ul>
-<li>Validate the Hart ID (Must be less than number of CPUs)</li>
-<li>Compute the Stack Base Address based on <code>g_cpu_basestack</code> and Hart ID</li>
-<li>Set the Stack Pointer to the computed Stack Base Address</li>
+<li><a href="https://lupyuen.github.io/articles/nuttx2#appendix-fix-the-nuttx-boot-code"><strong>“Fix the NuttX Boot Code”</strong></a></li>
 </ul>
-<div class="example-wrap"><pre class="language-text"><code>1:
-  /* Load the number of CPUs that the kernel supports */
-#ifdef CONFIG_SMP
-  li   t1, CONFIG_SMP_NCPUS
-#else
-  li   t1, 1
-#endif
-
-  /* If a0 (mhartid) &gt;= t1 (the number of CPUs), stop here */
-  blt  a0, t1, 3f
-  csrw sie, zero
-  /* Previously: csrw mie, zero */
-  wfi
-
-3:
-  /* To get g_cpu_basestack[mhartid], must get g_cpu_basestack first */
-  la   t0, g_cpu_basestack
-
-  /* Offset = pointer width * hart id */
-#ifdef CONFIG_ARCH_RV32
-  slli t1, a0, 2
-#else
-  slli t1, a0, 3
-#endif
-  add  t0, t0, t1
-
-  /* Load idle stack base to sp */
-  REGLOAD sp, 0(t0)
-
-  /*
-   * sp (stack top) = sp + idle stack size - XCPTCONTEXT_SIZE
-   *
-   * Note: Reserve some space used by up_initial_state since we are already
-   * running and using the per CPU idle stack.
-   */
-  li   t0, STACK_ALIGN_UP(CONFIG_IDLETHREAD_STACKSIZE - XCPTCONTEXT_SIZE)
-  add  sp, sp, t0
-</code></pre></div>
-<p><strong>For All Hart IDs:</strong></p>
-<ul>
-<li>Disable Interrupts</li>
-<li>Load the Interrupt Vector Table</li>
-<li>Jump to <code>qemu_rv_start</code></li>
-</ul>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="number">2</span>:
-  <span class="comment">/* Disable all interrupts (i.e. timer, external) in mie */
-  </span>csrw	sie, zero
-  <span class="comment">/* Previously: csrw	mie, zero */
-
-  /* Don&#39;t load the Interrupt Vector Table, use OpenSBI for crash logging */
-  /* la   t0, __trap_vec */
-  /* csrw stvec, t0 */
-  /* Previously: csrw mtvec, t0 */
-
-  /* Jump to qemu_rv_start */
-  </span>jal  x1, qemu_rv_start
-
-  <span class="comment">/* We shouldn&#39;t return from _start */</span></code></pre></div>
-<p>Note that we don’t load the Interrupt Vector Table, because we’ll use OpenSBI for crash logging. (Like when we hit M-Mode Instructions)</p>
 <p><em>What happens when we run this?</em></p>
+<p>TODO</p>
 <p>Hart ID is now 0, which is correct…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 clk u5_dw_i2c_clk_core already disabled
@@ -779,18 +696,6 @@ A1:  0000000046000000 A2:  0000000000000600 A3:  0000000000004000
 </li>
 </ul>
 <p>Yep looks correct! But we’ll subtract 1 from Register A0 because NuttX expects Hart ID to start with 0.</p>
-<p><em>What about other CSR Instructions in our NuttX Boot Code?</em></p>
-<p>We change the Machine-Level <code>m</code> Registers to Supervisor-Level <code>s</code> Registers.</p>
-<p>To Disable Interrupts: Change <code>mie</code> to <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie"><code>sie</code></a></p>
-<div class="example-wrap"><pre class="language-text"><code>/* Disable all interrupts (i.e. timer, external) in mie */
-csrw  mie, zero
-</code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/riscv#disable-interrupts">(Source)</a></p>
-<p>To Load Interrupt Vector Table: Change <code>mtvec</code> to <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec"><code>stvec</code></a></p>
-<div class="example-wrap"><pre class="language-text"><code>/* Load address of Interrupt Vector Table */
-csrw  mtvec, t0
-</code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/riscv#load-interrupt-vector">(Source)</a></p>
 <p><em>The Linux Boot Code looks confusing. What are CSR_IE and CSR_IP?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>/* Mask all interrupts */
 csrw CSR_IE, zero
@@ -814,19 +719,22 @@ csrw CSR_IP, zero
 <p><a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/csr.h#L391-L444">(Source)</a></p>
 <h1 id="appendix-fix-the-nuttx-boot-code"><a href="#appendix-fix-the-nuttx-boot-code">15 Appendix: Fix the NuttX Boot Code</a></h1>
 <p>TODO</p>
-<p>From the previous section, we identified these fixes for the NuttX Boot Code…</p>
-<ol>
+<p>Earlier we identified these fixes for the <strong>NuttX Boot Code</strong>…</p>
+<ul>
 <li>
-<p>Remove <code>csrr a0, mhartid</code> because OpenSBI will pass Hart ID in Register A0. Subtract 1 from Register A0 because NuttX expects Hart ID to start with 0.</p>
+<p>Remove <strong><code>mhartid</code></strong> because OpenSBI will pass <strong>Hart ID</strong> in Register A0</p>
 </li>
 <li>
-<p>To Disable Interrupts: Change <code>mie</code> to <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie"><code>sie</code></a></p>
+<p>Subtract 1 from <strong>Register A0</strong> because NuttX expects Hart ID to start with 0.</p>
 </li>
 <li>
-<p>To Load Interrupt Vector Table: Change <code>mtvec</code> to <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec"><code>stvec</code></a></p>
+<p>To Disable Interrupts: Change <a href="https://lupyuen.github.io/articles/riscv#disable-interrupts"><strong><code>mie</code></strong></a> to <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie"><strong><code>sie</code></strong></a></p>
 </li>
-</ol>
-<p>Here’s the updated Boot Code, and our analysis: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S">qemu_rv_head.S</a></p>
+<li>
+<p>To Load Trap Vector Table: Change <a href="https://lupyuen.github.io/articles/riscv#load-interrupt-vector"><strong><code>mtvec</code></strong></a> to <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec"><strong><code>stvec</code></strong></a></p>
+</li>
+</ul>
+<p>Here’s the updated NuttX Boot Code and our analysis: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S">qemu_rv_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>real_start:
   ...
   /* Load mhartid (cpuid) */
@@ -916,23 +824,6 @@ csrw CSR_IP, zero
 
   <span class="comment">/* We shouldn&#39;t return from _start */</span></code></pre></div>
 <p>Note that we don’t load the Interrupt Vector Table, because we’ll use OpenSBI for crash logging. (Like when we hit M-Mode Instructions)</p>
-<p><em>What happens when we run this?</em></p>
-<p>Hart ID is now 0, which is correct…</p>
-<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
-clk u5_dw_i2c_clk_core already disabled
-clk u5_dw_i2c_clk_apb already disabled
-123067
-</code></pre></div>
-<p>But <code>qemu_rv_start</code> hangs. Why?</p>
-<div class="example-wrap"><pre class="language-text"><code>  /* Print `7` */
-  li  t0, 0x10000000
-  li  t1, 0x37
-  sb  t1, 0(t0)
-
-  /* Jump to qemu_rv_start */
-  jal  x1, qemu_rv_start
-</code></pre></div>
-<p>TODO: Trace <code>qemu_rv_start</code></p>
 
     
 </body>
