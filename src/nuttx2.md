@@ -470,7 +470,7 @@ TODO: Pic
 
 _What's this Privilege Level?_
 
-RISC-V runs at three __Privilege Levels__...
+RISC-V Machine Code runs at three __Privilege Levels__...
 
 - __M: Machine Mode__ (Most powerful)
 
@@ -505,11 +505,15 @@ __U-Boot Bootloader__ runs in __Supervisor Mode__. And starts NuttX, also in Sup
 
 Thus __OpenSBI is the only thing__ that runs in Machine Mode. And can access the Machine-Mode Registers.
 
+[(More about __U-Boot__)](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64)
+
 _QEMU doesn't have this problem?_
 
 Because QEMU runs everything in (super-powerful) __Machine Mode__!
 
-NuttX gets to fetch the Hart ID in different way...
+TODO: Pic
+
+NuttX needs to fetch the Hart ID in a different way...
 
 # Downgrade NuttX to Supervisor Mode
 
