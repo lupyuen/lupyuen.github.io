@@ -310,7 +310,7 @@ CONFIG_RAM_START=0x40200000
   . = 0x40200000;
   .text :
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-star64#set-start-address-of-nuttx-kernel">(Remember to update <strong>knsh64/defconfig</strong> and <strong>ld-kernel64.script</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-start-address-of-nuttx-kernel">(Remember to update <strong>knsh64/defconfig</strong> and <strong>ld-kernel64.script</strong>)</a></p>
 <p><em>We’re sure this is correct?</em></p>
 <p>Checking the <strong>RISC-V Disassembly</strong> of NuttX Kernel: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64-0.0.1/nuttx.S">nuttx.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>0000000040200000 &lt;__start&gt;:
@@ -397,7 +397,7 @@ S7:  0000000000000000 S8:  00000000fff47194 S9:  0000000000000002
 S10: 0000000000000000 S11: 0000000000000000 T3:  0000000000000023
 T4:  000000004600b5cc T5:  000000000000ff00 T6:  000000004600b5cc
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-star64#boot-nuttx-on-star64">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-boot-nuttx-on-star64">(See the <strong>Complete Log</strong>)</a></p>
 <p>(<strong>EPC</strong> is the Program Counter for the Exception: <strong><code>0x4020</code> <code>005C</code></strong>)</p>
 <p>And shows (cryptically) the offending <strong>RISC-V Machine Code</strong> (in brackets)…</p>
 <div class="example-wrap"><pre class="language-text"><code>Code:
@@ -477,12 +477,12 @@ csrr a0, mhartid
 <h1 id="downgrade-nuttx-to-supervisor-mode"><a href="#downgrade-nuttx-to-supervisor-mode">9 Downgrade NuttX to Supervisor Mode</a></h1>
 <p><em>OpenSBI runs in Machine Mode and reads the Hart ID (CPU ID)…</em></p>
 <p><em>How will NuttX get the Hart ID from OpenSBI?</em></p>
-<p>Thankfully OpenSBI will pass the Hart ID to NuttX through <a href="https://github.com/lupyuen/nuttx-star64#downgrade-nuttx-to-supervisor-mode"><strong>Register A0</strong></a>.</p>
-<p>So this (overly-powerful) line in our <strong>NuttX Boot Code</strong>…</p>
+<p>Thankfully OpenSBI will pass the Hart ID to NuttX through <a href="https://lupyuen.github.io/articles/nuttx2#appendix-downgrade-nuttx-to-supervisor-mode"><strong>Register A0</strong></a>.</p>
+<p>So this (overly-powerful) line in our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ed09c34532ee7c51ac2da816cd6cf0adcce336e6/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L103"><strong>NuttX Boot Code</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>/* Load the Hart ID (CPU ID) */
 csrr a0, mhartid
 </code></pre></div>
-<p>Becomes this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L104">qemu_rv_head.S</a></p>
+<p>Gets demoted to: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L104">qemu_rv_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* We assume that OpenSBI has passed Hart ID (value 1) in Register A0. */
 /* But NuttX expects Hart ID to start at 0, so we subtract 1. */
 addi a0, a0, -1
@@ -492,7 +492,7 @@ addi t1, a0, 0x30
 /* Store byte from Register t1 to UART Base Address, Offset 0 */
 sb   t1, 0(t0)
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-star64#downgrade-nuttx-to-supervisor-mode">(OpenSBI passes <strong>Hart ID as 1</strong>, instead of 0)</a></p>
+<p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-downgrade-nuttx-to-supervisor-mode">(OpenSBI passes <strong>Hart ID as 1</strong>, instead of 0)</a></p>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions">(<strong><code>addi</code></strong> adds an Immediate Value to a Register)</a></p>
 <p><em>What about other CSR Instructions in our NuttX Boot Code?</em></p>
 <p>Easy! We change the Machine-Mode <strong><code>m</code></strong> Registers to Supervisor-Mode <strong><code>s</code></strong> Registers…</p>
@@ -763,7 +763,7 @@ mv s1, a1
 <p>So we’ll simply read the Hart ID from Register A0. (And ignore A1)</p>
 <p>We’ll remove <code>csrr a0, mhartid</code>.</p>
 <p><em>What are the actual values of Registers A0 and A1?</em></p>
-<p>Thanks to our <a href="https://github.com/lupyuen/nuttx-star64#boot-nuttx-on-star64">earlier Crash Dump</a>, we know the actual values of A0 and A1!</p>
+<p>Thanks to our <a href="https://lupyuen.github.io/articles/nuttx2#appendix-boot-nuttx-on-star64">earlier Crash Dump</a>, we know the actual values of A0 and A1!</p>
 <div class="example-wrap"><pre class="language-text"><code>SP:  00000000ff733630 GP:  00000000ff735e00 TP:  0000000000000001
 T0:  0000000010000000 T1:  0000000000000033 T2:  7869662e6b637366
 S0:  0000000000000400 S1:  00000000ffff1428 A0:  0000000000000001
