@@ -171,7 +171,7 @@ nsh>
 
 "__`123`__" is printed 8 times because QEMU is running with 8 CPUs.
 
-Now we port this Debug Code to Star64...
+Now we port the Debug Code to Star64...
 
 ![NuttX prints to QEMU Console](https://lupyuen.github.io/images/riscv-print.png)
 
@@ -179,13 +179,11 @@ Now we port this Debug Code to Star64...
 
 TODO
 
-We'll take the UART Assembly Code from the previous section and run on Star64 / JH7110. (So we can troubleshoot the NuttX Boot Code)
-
-_Does Star64 / JH7110 use a 16550 UART Controller like QEMU?_
+_What's the UART Controller in Star64?_
 
 According to the [JH7110 UART Developing Guide](https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/function_layer.html), Star64 / JH7110 uses the 8250 UART Controller...
 
-Which is [compatible with QEMU's 16550 UART Controller](https://en.wikipedia.org/wiki/16550_UART). So our UART Assembly Code for QEMU will run on Star64!
+Which is [compatible with QEMU's 16550 UART Controller](https://en.wikipedia.org/wiki/16550_UART). So our UART Debug Code for QEMU will run on Star64!
 
 _What's the UART Base Address for Star64 / JH7110?_
 
