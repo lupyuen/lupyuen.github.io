@@ -88,7 +88,7 @@ And the __Base Address__ of QEMU's UART Controller is __`0x1000` `0000`__.
 
 _How to print to the 16550 UART Port?_
 
-Checking the __NuttX Driver__ for 16550 UART: [uart_16550.c](https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L1539-L1553):
+Checking the __NuttX Driver__ for 16550 UART: [uart_16550.c](https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L1539-L1553)
 
 ```c
 // Send one byte to 16550 UART
@@ -99,29 +99,34 @@ static void u16550_send(struct uart_dev_s *dev, int ch) {
 
   // Print to 16550 UART...
   u16550_serialout(
-    priv,                 // 16550 Struct
-    UART_THR_OFFSET,      // Offset of Transmit Holding Register
-    (uart_datawidth_t)ch  // Character to print
+    priv,                  // 16550 Struct
+    UART_THR_OFFSET,       // Offset of Transmit Holding Register
+    (uart_datawidth_t) ch  // Character to print
   );
 }
 ```
 
-TODO
+[(__u16550_serialout__ is defined here)](https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L610-L624)
 
-[(u16550_serialout is defined here)](https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L610-L624)
+To print a character, the driver writes to the UART Base Address __`0x1000` `0000`__ at Offset __UART_THR_OFFSET__.
 
-To print a character, the driver writes to the UART Base Address (`0x1000` `0000`) at Offset UART_THR_OFFSET.
-
-And we discover that [UART_THR_OFFSET](https://github.com/apache/nuttx/blob/dc69b108b8e0547ecf6990207526c27aceaf1e2e/include/nuttx/serial/uart_16550.h#L172-L200) is 0:
+And we discover that __UART_THR_OFFSET__ is 0: [uart_16550.h](https://github.com/apache/nuttx/blob/master/include/nuttx/serial/uart_16550.h#L172-L200) is 0:
 
 ```c
-#define UART_THR_INCR          0 /* (DLAB =0) Transmit Holding Register */
-#define UART_THR_OFFSET        (CONFIG_16550_REGINCR*UART_THR_INCR)
+#define UART_THR_INCR 0 /* (DLAB =0) Transmit Holding Register */
+#define UART_THR_OFFSET (CONFIG_16550_REGINCR*UART_THR_INCR)
 ```
 
-So we can transmit to UART Port by simply writing to `0x1000` `0000`. How convenient!
+Which means that we can print to the QEMU Console by writing to __`0x1000` `0000`__. How convenient!
 
-_How to print to the QEMU Console?_
+```c
+// Print `1` to QEMU Console
+*(volatile uint8_t *) 0x10000000 = '1';
+```
+
+_But how to print with RISC-V Assembly?_
+
+TODO
 
 Let's do the printing in RISC-V Assembly Code, so that we can debug the NuttX Boot Code.
 
@@ -168,7 +173,7 @@ Which is correct because QEMU is running with 8 CPUs. Yay!
 
 ![NuttX prints to QEMU Console](https://lupyuen.github.io/images/riscv-print.png)
 
-# UART Controller for Star64
+# UART Controller in Star64
 
 TODO
 
