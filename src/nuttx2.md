@@ -293,7 +293,7 @@ SECTIONS
   .text :
 ```
 
-[(Remember to update __knsh64/defconfig__ and __ld-kernel64.script__)](https://github.com/lupyuen/nuttx-star64#set-start-address-of-nuttx-kernel)
+[(Remember to update __knsh64/defconfig__ and __ld-kernel64.script__)](https://lupyuen.github.io/articles/nuttx2#appendix-start-address-of-nuttx-kernel)
 
 _We're sure this is correct?_
 
@@ -403,7 +403,7 @@ S10: 0000000000000000 S11: 0000000000000000 T3:  0000000000000023
 T4:  000000004600b5cc T5:  000000000000ff00 T6:  000000004600b5cc
 ```
 
-[(See the __Complete Log__)](https://github.com/lupyuen/nuttx-star64#boot-nuttx-on-star64)
+[(See the __Complete Log__)](https://lupyuen.github.io/articles/nuttx2#appendix-boot-nuttx-on-star64)
 
 (__EPC__ is the Program Counter for the Exception: __`0x4020` `005C`__)
 
@@ -521,16 +521,16 @@ _OpenSBI runs in Machine Mode and reads the Hart ID (CPU ID)..._
 
 _How will NuttX get the Hart ID from OpenSBI?_
 
-Thankfully OpenSBI will pass the Hart ID to NuttX through [__Register A0__](https://github.com/lupyuen/nuttx-star64#downgrade-nuttx-to-supervisor-mode).
+Thankfully OpenSBI will pass the Hart ID to NuttX through [__Register A0__](https://lupyuen.github.io/articles/nuttx2#appendix-downgrade-nuttx-to-supervisor-mode).
 
-So this (overly-powerful) line in our __NuttX Boot Code__...
+So this (overly-powerful) line in our [__NuttX Boot Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ed09c34532ee7c51ac2da816cd6cf0adcce336e6/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L103)...
 
 ```text
 /* Load the Hart ID (CPU ID) */
 csrr a0, mhartid
 ```
 
-Becomes this: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L104)
+Gets demoted to: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L104)
 
 ```text
 /* We assume that OpenSBI has passed Hart ID (value 1) in Register A0. */
@@ -543,7 +543,7 @@ addi t1, a0, 0x30
 sb   t1, 0(t0)
 ```
 
-[(OpenSBI passes __Hart ID as 1__, instead of 0)](https://github.com/lupyuen/nuttx-star64#downgrade-nuttx-to-supervisor-mode)
+[(OpenSBI passes __Hart ID as 1__, instead of 0)](https://lupyuen.github.io/articles/nuttx2#appendix-downgrade-nuttx-to-supervisor-mode)
 
 [(__`addi`__ adds an Immediate Value to a Register)](https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions)
 
@@ -861,7 +861,7 @@ We'll remove `csrr a0, mhartid`.
 
 _What are the actual values of Registers A0 and A1?_
 
-Thanks to our [earlier Crash Dump](https://github.com/lupyuen/nuttx-star64#boot-nuttx-on-star64), we know the actual values of A0 and A1!
+Thanks to our [earlier Crash Dump](https://lupyuen.github.io/articles/nuttx2#appendix-boot-nuttx-on-star64), we know the actual values of A0 and A1!
 
 ```text
 SP:  00000000ff733630 GP:  00000000ff735e00 TP:  0000000000000001
