@@ -168,7 +168,7 @@ Which is correct because QEMU is running with 8 CPUs. Yay!
 
 ![NuttX prints to QEMU Console](https://lupyuen.github.io/images/riscv-print.png)
 
-# UART Base Address for Star64
+# UART Controller for Star64
 
 TODO
 
