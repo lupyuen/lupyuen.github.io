@@ -69,7 +69,7 @@
     <nav id="TOC"><ul>
 <li><a href="#start-with-qemu-emulator">1 Start with QEMU Emulator</a><ul></ul></li>
 <li><a href="#print-to-qemu-console">2 Print to QEMU Console</a><ul></ul></li>
-<li><a href="#uart-controller-for-star64">3 UART Controller for Star64</a><ul></ul></li>
+<li><a href="#uart-controller-in-star64">3 UART Controller in Star64</a><ul></ul></li>
 <li><a href="#risc-v-linux-kernel-header">4 RISC-V Linux Kernel Header</a><ul></ul></li>
 <li><a href="#set-start-address-of-nuttx-kernel">5 Set Start Address of NuttX Kernel</a><ul></ul></li>
 <li><a href="#boot-nuttx-on-star64">6 Boot NuttX on Star64</a><ul></ul></li>
@@ -148,7 +148,7 @@ CONFIG_16550_UART=y
 <p>This says that QEMU emulates a <a href="https://en.wikipedia.org/wiki/16550_UART"><strong>16550 UART Controller</strong></a>.</p>
 <p>And the <strong>Base Address</strong> of QEMU’s UART Controller is <strong><code>0x1000</code> <code>0000</code></strong>.</p>
 <p><em>How to print to the 16550 UART Port?</em></p>
-<p>Checking the <strong>NuttX Driver</strong> for 16550 UART: <a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L1539-L1553">uart_16550.c</a>:</p>
+<p>Checking the <strong>NuttX Driver</strong> for 16550 UART: <a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L1539-L1553">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Send one byte to 16550 UART
 static void u16550_send(struct uart_dev_s *dev, int ch) {
 
@@ -157,21 +157,24 @@ static void u16550_send(struct uart_dev_s *dev, int ch) {
 
   // Print to 16550 UART...
   u16550_serialout(
-    priv,                 // 16550 Struct
-    UART_THR_OFFSET,      // Offset of Transmit Holding Register
-    (uart_datawidth_t)ch  // Character to print
+    priv,                  // 16550 Struct
+    UART_THR_OFFSET,       // Offset of Transmit Holding Register
+    (uart_datawidth_t) ch  // Character to print
   );
 }
 </code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L610-L624">(u16550_serialout is defined here)</a></p>
-<p>To print a character, the driver writes to the UART Base Address (<code>0x1000</code> <code>0000</code>) at Offset UART_THR_OFFSET.</p>
-<p>And we discover that <a href="https://github.com/apache/nuttx/blob/dc69b108b8e0547ecf6990207526c27aceaf1e2e/include/nuttx/serial/uart_16550.h#L172-L200">UART_THR_OFFSET</a> is 0:</p>
-<div class="example-wrap"><pre class="language-c"><code>#define UART_THR_INCR          0 /* (DLAB =0) Transmit Holding Register */
-#define UART_THR_OFFSET        (CONFIG_16550_REGINCR*UART_THR_INCR)
+<p><a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L610-L624">(<strong>u16550_serialout</strong> is defined here)</a></p>
+<p>To print a character, the driver writes to the UART Base Address <strong><code>0x1000</code> <code>0000</code></strong> at Offset <strong>UART_THR_OFFSET</strong>.</p>
+<p>And we discover that <strong>UART_THR_OFFSET</strong> is 0: <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/serial/uart_16550.h#L172-L200">uart_16550.h</a> is 0:</p>
+<div class="example-wrap"><pre class="language-c"><code>#define UART_THR_INCR 0 /* (DLAB =0) Transmit Holding Register */
+#define UART_THR_OFFSET (CONFIG_16550_REGINCR*UART_THR_INCR)
 </code></pre></div>
-<p>So we can transmit to UART Port by simply writing to <code>0x1000</code> <code>0000</code>. How convenient!</p>
-<p><em>How to print to the QEMU Console?</em></p>
+<p>Which means that we can print to the QEMU Console by writing to <strong><code>0x1000</code> <code>0000</code></strong>. How convenient!</p>
+<div class="example-wrap"><pre class="language-c"><code>// Print `1` to QEMU Console
+*(volatile uint8_t *) 0x10000000 = &#39;1&#39;;
+</code></pre></div>
+<p><em>But how to print with RISC-V Assembly?</em></p>
+<p>TODO</p>
 <p>Let’s do the printing in RISC-V Assembly Code, so that we can debug the NuttX Boot Code.</p>
 <p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L71-L93">qemu_rv_head.S</a>:</p>
 <div class="example-wrap"><pre class="language-text"><code>  /* Load UART Base Address to Register t0 */
@@ -208,7 +211,7 @@ nsh&gt;
 </code></pre></div>
 <p>Which is correct because QEMU is running with 8 CPUs. Yay!</p>
 <p><img src="https://lupyuen.github.io/images/riscv-print.png" alt="NuttX prints to QEMU Console" /></p>
-<h1 id="uart-controller-for-star64"><a href="#uart-controller-for-star64">3 UART Controller for Star64</a></h1>
+<h1 id="uart-controller-in-star64"><a href="#uart-controller-in-star64">3 UART Controller in Star64</a></h1>
 <p>TODO</p>
 <p>We’ll take the UART Assembly Code from the previous section and run on Star64 / JH7110. (So we can troubleshoot the NuttX Boot Code)</p>
 <p><em>Does Star64 / JH7110 use a 16550 UART Controller like QEMU?</em></p>
