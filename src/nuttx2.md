@@ -517,102 +517,57 @@ _OpenSBI runs in Machine Mode and reads the Hart ID (CPU ID)..._
 
 _How will NuttX get the Hart ID from OpenSBI?_
 
-TODO
+Thankfully OpenSBI will pass the Hart ID to NuttX through [__Register A0__](https://github.com/lupyuen/nuttx-star64#downgrade-nuttx-to-supervisor-mode).
 
-Let's refer to the Linux Boot Code: [linux/arch/riscv/kernel/head.S](https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S)
-
-(Tip: `CONFIG_RISCV_M_MODE` is False and `CONFIG_EFI` is True)
-
-From [linux/blob/master/arch/riscv/kernel/head.S](https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S#L292-L295):
-
-```c
-/* Save hart ID and DTB physical address */
-mv s0, a0
-mv s1, a1
-```
-
-Here we see that U-Boot [(or OpenSBI)](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/riscv-sbi.adoc#function-hart-start-fid-0) will pass 2 arguments when it starts our kernel...
-
-- Register A0: Hart ID
-
-- Register A1: RAM Address of Device Tree
-
-So we'll simply read the Hart ID from Register A0. (And ignore A1)
-
-We'll remove `csrr a0, mhartid`.
-
-_What are the actual values of Registers A0 and A1?_
-
-Thanks to our [earlier Crash Dump](https://github.com/lupyuen/nuttx-star64#boot-nuttx-on-star64), we know the actual values of A0 and A1!
+So this (overly-powerful) line in our __NuttX Boot Code__...
 
 ```text
-SP:  00000000ff733630 GP:  00000000ff735e00 TP:  0000000000000001
-T0:  0000000010000000 T1:  0000000000000033 T2:  7869662e6b637366
-S0:  0000000000000400 S1:  00000000ffff1428 A0:  0000000000000001
-A1:  0000000046000000 A2:  0000000000000600 A3:  0000000000004000
+/* Load the Hart ID (CPU ID) */
+csrr a0, mhartid
 ```
 
-This says that...
+Becomes this: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L104)
 
-- Hart ID is 1 (Register A0)
+```text
+/* We assume that OpenSBI has passed Hart ID (value 1) in Register A0. */
+/* But NuttX expects Hart ID to start at 0, so we subtract 1. */
+addi a0, a0, -1
 
-- RAM Address of Device Tree is `0x4600` `0000` (Register A1)
+/* Print the Hart ID */
+addi t1, a0, 0x30
+/* Store byte from Register t1 to UART Base Address, Offset 0 */
+sb   t1, 0(t0)
+```
 
-Yep looks correct! But we'll subtract 1 from Register A0 because NuttX expects Hart ID to start with 0.
+[(OpenSBI passes __Hart ID as 1__, instead of 0)](https://github.com/lupyuen/nuttx-star64#downgrade-nuttx-to-supervisor-mode)
+
+[(__`addi`__ adds an Immediate Value to a Register)](https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions)
 
 _What about other CSR Instructions in our NuttX Boot Code?_
 
-We change the Machine-Level `m` Registers to Supervisor-Level `s` Registers.
+Easy! We change the Machine-Mode __`m`__ Registers to Supervisor-Mode __`s`__ Registers...
 
-To Disable Interrupts: Change `mie` to [`sie`](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie)
+- __To Disable Interrupts:__ Change [__`mie`__](https://lupyuen.github.io/articles/riscv#disable-interrupts) to [__`sie`__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie)
 
-```text
-/* Disable all interrupts (i.e. timer, external) in mie */
-csrw  mie, zero
-```
+  ```text
+  /* Disable all interrupts (i.e. timer, external) */
+  csrw  sie, zero
+  /* Previously `mie` */
+  ```
 
-[(Source)](https://lupyuen.github.io/articles/riscv#disable-interrupts)
+  [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L169-L174)
 
-To Load Interrupt Vector Table: Change `mtvec` to [`stvec`](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec)
+- __To Load Trap Vector Table:__ Change [__`mtvec`__](https://lupyuen.github.io/articles/riscv#load-interrupt-vector) to [__`stvec`__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec)
 
-```text
-/* Load address of Interrupt Vector Table */
-csrw  mtvec, t0
-```
+  ```text
+  /* Load address of Interrupt Vector Table */
+  csrw  stvec, t0
+  /* Previously `mtvec` */
+  ```
 
-[(Source)](https://lupyuen.github.io/articles/riscv#load-interrupt-vector)
+  [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L174-L179)
 
-_The Linux Boot Code looks confusing. What are CSR_IE and CSR_IP?_
-
-```text
-/* Mask all interrupts */
-csrw CSR_IE, zero
-csrw CSR_IP, zero
-```
-
-[(Source)](https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S#L195-L200)
-
-That's because the Linux Boot Code will work for Machine Level AND Supervisor Level! Here's how `CSR_IE` and `CSR_IP` are mapped to the `m` and `s` CSR Registers...
-
-(Remember: `CONFIG_RISCV_M_MODE` is false for NuttX)
-
-```text
-#ifdef CONFIG_RISCV_M_MODE
-  /* Use Machine-Level CSR Registers */
-  # define CSR_IE		CSR_MIE
-  # define CSR_IP		CSR_MIP
-  ...
-#else
-  /* Use Supervisor-Level CSR Registers */
-  # define CSR_IE		CSR_SIE
-  # define CSR_IP		CSR_SIP
-  ...
-#endif /* !CONFIG_RISCV_M_MODE */
-```
-
-[(Source)](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/csr.h#L391-L444)
-
-Let's fix the Boot Code...
+Let's test this...
 
 # Fix the NuttX Boot Code
 
