@@ -321,6 +321,8 @@ CONFIG_RAM_SIZE=1048576
 CONFIG_RAM_START=0x40200000
 ```
 
+_We're sure this is correct?_
+
 RISC-V Disassembly of NuttX Kernel shows that the Start Address is correct...
 
 ```text
