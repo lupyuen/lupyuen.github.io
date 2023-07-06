@@ -232,7 +232,6 @@ We've done this previously for the [__Arm64 Linux Header__](https://github.com/l
 This is how we adapt it for our __RISC-V Linux Header__: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L42-L75)
 
 ```text
-/* RISC-V Linux Header */
 c.li    s4, -13              /* Magic Signature "MZ" (2 bytes) */
 j       real_start           /* Jump to Kernel Start (2 bytes) */
 .long   0                    /* Executable Code padded to 8 bytes */
@@ -251,74 +250,36 @@ real_start:
   /* Actual Boot Code starts here... */
 ```
 
-TODO
+[(Why we need __Magic Signature "MZ"__)](https://lupyuen.github.io/articles/star64#decompile-the-kernel-with-ghidra)
 
-Note that Image Load Offset must be `0x20` `0000`!
-
-```text
-  .quad   0x200000             /* Image load offset from start of RAM */
-```
-
-That's because our kernel starts at `0x4020` `0000`
-
-Here's the assembled output...
+Note that __Image Load Offset__ must be __`0x20` `0000`__...
 
 ```text
-0000000040200000 <__start>:
-  li      s4, -0xd             /* Magic Signature "MZ" (2 bytes) */
-    40200000:	5a4d                	li	s4,-13
-  j       real_start           /* Jump to Kernel Start (2 bytes) */
-    40200002:	a83d                	j	40200040 <real_start>
-    40200004:	0000                	unimp
-    40200006:	0000                	unimp
-    40200008:	0000                	unimp
-    4020000a:	0020                	addi	s0,sp,8
-    4020000c:	0000                	unimp
-    4020000e:	0000                	unimp
-    40200010:	9e7c                	0x9e7c
-    40200012:	0002                	c.slli64	zero
-	...
-    40200020:	0002                	c.slli64	zero
-	...
-    4020002e:	0000                	unimp
-    40200030:	4952                	lw	s2,20(sp)
-    40200032:	00564353          	fadd.s	ft6,fa2,ft5,rmm
-    40200036:	0000                	unimp
-    40200038:	5352                	lw	t1,52(sp)
-    4020003a:	00000543          	fmadd.s	fa0,ft0,ft0,ft0,rne
-	...
-
-0000000040200040 <real_start>:
+.quad   0x200000             /* Image load offset from start of RAM */
 ```
 
-Check that the lengths and offsets match the RISC-V Linux Header Format...
+That's because our NuttX Kernel starts at __`0x4020` `0000`__. Here's why...
 
--   [__"Decode the RISC-V Linux Header"__](https://lupyuen.github.io/articles/star64#appendix-decode-the-risc-v-linux-header)
+# Start Address of NuttX Kernel
 
-And our RISC-V Boot Code tested OK with QEMU.
+_What's this magical address `0x4020` `0000`?_
 
-# Set Start Address of NuttX Kernel
+From previous articles, we saw that Star64's U-Boot Bootloader will load Linux Kernels into RAM at Address __`0x4020` `0000`__...
 
-TODO
+- [__"Armbian Image for Star64"__](https://lupyuen.github.io/articles/star64#armbian-image-for-star64)
 
-Earlier we saw that Star64's U-Boot Bootloader will load Linux Kernels into RAM at Address `0x4020` `0000`...
+- [__"Yocto Image for Star64"__](https://lupyuen.github.io/articles/star64#yocto-image-for-star64)
 
-- ["Armbian Image for Star64"](https://lupyuen.github.io/articles/star64#armbian-image-for-star64)
+Thus we do the same to boot NuttX on Star64.
 
-- ["Yocto Image for Star64"](https://lupyuen.github.io/articles/star64#yocto-image-for-star64)
-
-To boot NuttX on Star64, let's set the Start Address of the NuttX Kernel to `0x4020` `0000`.
-
-From [nsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L56-L57):
+This is how we set the Start Address to __`0x4020` `0000`__ in the __NuttX Build Configuration__: [nsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L56-L57)
 
 ```text
 CONFIG_RAM_SIZE=33554432
-CONFIG_RAM_START=0x80000000
+CONFIG_RAM_START=0x40200000
 ```
 
-We changed the above NuttX Build Config to `0x40200000`
-
-We also updated the Linker Script: [ld.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L26)
+And we updated the __NuttX Linker Script__: [ld.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L26)
 
 ```text
 SECTIONS
@@ -327,6 +288,8 @@ SECTIONS
   . = 0x40200000;
   .text :
 ```
+
+TODO
 
 Remember to change this if building for NuttX Kernel Mode: [ld-kernel64.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel64.script#L21-L51):
 
