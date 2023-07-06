@@ -289,51 +289,23 @@ SECTIONS
   .text :
 ```
 
-TODO
-
-Remember to change this if building for NuttX Kernel Mode: [ld-kernel64.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel64.script#L21-L51):
-
-```text
-MEMORY
-{
-    /* Previously 0x80000000 */
-    kflash (rx) : ORIGIN = 0x40200000, LENGTH = 2048K   /* w/ cache */
-    /* Previously 0x80200000 */
-    ksram (rwx) : ORIGIN = 0x40400000, LENGTH = 2048K   /* w/ cache */
-    /* Previously 0x80400000 */
-    pgram (rwx) : ORIGIN = 0x40600000, LENGTH = 4096K   /* w/ cache */
-}
-...
-SECTIONS
-{
-  /* Previously 0x80000000 */
-  . = 0x40200000;
-  .text :
-```
-
-Which should match [knsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig):
-
-```text
-CONFIG_ARCH_PGPOOL_PBASE=0x40600000
-CONFIG_ARCH_PGPOOL_VBASE=0x40600000
-// TODO: Fix CONFIG_RAM_SIZE
-CONFIG_RAM_SIZE=1048576
-CONFIG_RAM_START=0x40200000
-```
+[(Remember to update __knsh64/defconfig__ and __ld-kernel64.script__)](https://github.com/lupyuen/nuttx-star64#set-start-address-of-nuttx-kernel)
 
 _We're sure this is correct?_
 
-RISC-V Disassembly of NuttX Kernel shows that the Start Address is correct...
+Checking the __RISC-V Disassembly__ of NuttX Kernel: [nuttx.S](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64-0.0.1/nuttx.S)
 
 ```text
 0000000040200000 <__start>:
-  li      s4, -0xd             /* Magic Signature "MZ" (2 bytes) */
-    40200000:	5a4d                	li	s4,-13
-  j       real_start           /* Jump to Kernel Start (2 bytes) */
-    40200002:	a83d                	j	40200040 <real_start>
+  li  s4, -0xd    /* Magic Signature "MZ" (2 bytes) */
+    40200000:	5a4d  li  s4,-13
+  j   real_start  /* Jump to Kernel Start (2 bytes) */
+    40200002:	a83d  j	  40200040 <real_start>
 ```
 
-We're ready to boot NuttX on Star64!
+The NuttX Start Address is indeed __`0x4020` `0000`__.
+
+Yep Looks Good To Us (YLGTU), we're ready to boot on Star64!
 
 # Boot NuttX on Star64
 
