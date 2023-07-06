@@ -74,8 +74,10 @@
 <li><a href="#set-start-address-of-nuttx-kernel">5 Set Start Address of NuttX Kernel</a><ul></ul></li>
 <li><a href="#boot-nuttx-on-star64">6 Boot NuttX on Star64</a><ul></ul></li>
 <li><a href="#nuttx-fails-to-get-hart-id">7 NuttX Fails To Get Hart ID</a><ul></ul></li>
-<li><a href="#fix-the-nuttx-boot-code">8 Fix the NuttX Boot Code</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>12 Jul 2023</em></p>
+<li><a href="#risc-v-privilege-levels">8 RISC-V Privilege Levels</a><ul></ul></li>
+<li><a href="#downgrade-nuttx-to-supervisor-mode">9 Downgrade NuttX to Supervisor Mode</a><ul></ul></li>
+<li><a href="#fix-the-nuttx-boot-code">10 Fix the NuttX Boot Code</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>12 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-title.jpg" alt="Pine64 Star64 64-bit RISC-V SBC" /></p>
 <p>In this article we’ll boot a tiny bit of <a href="https://lupyuen.github.io/articles/riscv"><strong>Apache NuttX RTOS</strong></a> on the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer.</p>
 <p>(Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
@@ -206,17 +208,6 @@ nsh&gt;
 </code></pre></div>
 <p>Which is correct because QEMU is running with 8 CPUs. Yay!</p>
 <p><img src="https://lupyuen.github.io/images/riscv-print.png" alt="NuttX prints to QEMU Console" /></p>
-<p><a href="https://about.sourcegraph.com/cody">Cody AI Assistant</a> explains our RISC-V Assembly Code…</p>
-<p><img src="https://lupyuen.github.io/images/riscv-cody1.png" alt="Cody AI Assistant explains our RISC-V Assembly Code" /></p>
-<p>And offers to optimise our RISC-V Assembly Code…</p>
-<p><img src="https://lupyuen.github.io/images/riscv-cody2.png" alt="Cody AI Assistant optimises our RISC-V Assembly Code" /></p>
-<p>But the output is incorrect ;-)</p>
-<div class="example-wrap"><pre class="language-text"><code>+ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
-11111111
-NuttShell (NSH) NuttX-12.0.3
-nsh&gt; 
-</code></pre></div>
-<p>The correct output is <code>123123123123123123112323</code>. (Because of the 8 CPUs)</p>
 <h1 id="uart-base-address-for-star64"><a href="#uart-base-address-for-star64">3 UART Base Address for Star64</a></h1>
 <p>TODO</p>
 <p>We’ll take the UART Assembly Code from the previous section and run on Star64 / JH7110. (So we can troubleshoot the NuttX Boot Code)</p>
@@ -501,6 +492,8 @@ EPC: 000000004020005c RA: 00000000fff471c6 TVAL: 00000000f1402573
 </code></pre></div>
 <p>NuttX tries loads the CPU ID or Hardware Thread “Hart” ID from the RISC-V Control and Status Register (CSR). <a href="https://lupyuen.github.io/articles/riscv#get-cpu-id">(Explained here)</a></p>
 <p>But it fails! Because we don’t have sufficient privilege to access the Hart ID.</p>
+<h1 id="risc-v-privilege-levels"><a href="#risc-v-privilege-levels">8 RISC-V Privilege Levels</a></h1>
+<p>TODO</p>
 <p>RISC-V runs at 3 Privilege Levels…</p>
 <ul>
 <li>
@@ -521,6 +514,8 @@ EPC: 000000004020005c RA: 00000000fff471c6 TVAL: 00000000f1402573
 <p><em>What about U-Boot Bootloader?</em></p>
 <p>U-Boot Bootloader runs at Supervisor Level. And starts NuttX, also at Supervisor Level.</p>
 <p>So OpenSBI is the only thing that runs at Machine Level. And can access the Machine-Level Registers.</p>
+<h1 id="downgrade-nuttx-to-supervisor-mode"><a href="#downgrade-nuttx-to-supervisor-mode">9 Downgrade NuttX to Supervisor Mode</a></h1>
+<p>TODO</p>
 <p><em>How to get the Hart ID from OpenSBI?</em></p>
 <p>Let’s refer to the Linux Boot Code: <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S">linux/arch/riscv/kernel/head.S</a></p>
 <p>(Tip: <code>CONFIG_RISCV_M_MODE</code> is False and <code>CONFIG_EFI</code> is True)</p>
@@ -591,7 +586,7 @@ csrw CSR_IP, zero
 </code></pre></div>
 <p><a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/csr.h#L391-L444">(Source)</a></p>
 <p>Let’s fix the Boot Code…</p>
-<h1 id="fix-the-nuttx-boot-code"><a href="#fix-the-nuttx-boot-code">8 Fix the NuttX Boot Code</a></h1>
+<h1 id="fix-the-nuttx-boot-code"><a href="#fix-the-nuttx-boot-code">10 Fix the NuttX Boot Code</a></h1>
 <p>TODO</p>
 <p>From the previous section, we identified these fixes for the NuttX Boot Code…</p>
 <ol>
@@ -712,7 +707,7 @@ clk u5_dw_i2c_clk_apb already disabled
   jal  x1, qemu_rv_start
 </code></pre></div>
 <p>TODO: Trace <code>qemu_rv_start</code></p>
-<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO: This is the first in a series of articles on porting NuttX to Star64.</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
