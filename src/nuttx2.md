@@ -231,9 +231,9 @@ For U-Boot Bootloader to boot NuttX, we need to embed the __RISC-V Linux Kernel 
 
 -   [__"Decode the RISC-V Linux Header"__](https://lupyuen.github.io/articles/star64#appendix-decode-the-risc-v-linux-header)
 
-We've done this previously for the [__Arm64 Linux Header__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/arm64/src/common/arm64_head.S#L79-L118).
+We've done this previously for the [__Arm64 Linux Header__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/arm64/src/common/arm64_head.S#L79-L118)...
 
-This is how we adapt it for our __RISC-V Linux Header__: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L42-L75)
+Now we adapt it for our __RISC-V Linux Header__: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L42-L75)
 
 ```text
 c.li    s4, -13              /* Magic Signature "MZ" (2 bytes) */
@@ -464,45 +464,60 @@ _But it worked perfectly on QEMU! Why did it fail?_
 
 Ah that's because something has changed on Star64: Our Privilege Level...
 
+TODO: Pic
+
 # RISC-V Privilege Levels
 
 _What's this Privilege Level?_
 
-TODO
+RISC-V runs at three __Privilege Levels__...
 
-RISC-V runs at 3 Privilege Levels...
+- __M: Machine Mode__ (Most powerful)
 
-- M: Machine Mode (Most powerful)
+- __S: Supervisor Mode__ (Less powerful)
 
-- S: Supervisor Mode (Less powerful)
+- __U: User Mode__ (Least powerful)
 
-- U: User Mode (Least powerful)
+NuttX on Star64 runs in __Supervisor Mode__. Which doesn't allow access to [__Machine-Mode CSR Registers__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html).
 
-NuttX runs at Supervisor Level, which [doesn't allow access to Machine-Level CSR Registers](https://five-embeddev.com/riscv-isa-manual/latest/machine.html).  (Including [Hart ID](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid))
+Remember this?
 
-(The `m` in `mhartid` signifies that it's a Machine-Level Register)
+```text
+/* Load the Hart ID (CPU ID) */
+csrr a0, mhartid
+```
 
-_What runs at Machine Level?_
+The __"`m`"__ in [__`mhartid`__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid) signifies that it's a __Machine-Mode Register__.
 
-[OpenSBI](https://www.thegoodpenguin.co.uk/blog/an-overview-of-opensbi/) (Supervisor Binary Interface) is the first thing that boots on Star64. It runs at Machine Level and starts the U-Boot Bootloader.
+That's why NuttX fails to read the Hart ID!
 
-[(See the RISC-V SBI Spec)](https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/riscv-sbi.pdf)
+_What runs in Machine Mode?_
+
+[__OpenSBI (Supervisor Binary Interface)__](https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface) is the first thing that boots on Star64.
+
+It runs in __Machine Mode__ and starts the U-Boot Bootloader.
+
+[(More about __OpenSBI__)](https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface)
 
 _What about U-Boot Bootloader?_
 
-U-Boot Bootloader runs at Supervisor Level. And starts NuttX, also at Supervisor Level.
+__U-Boot Bootloader__ runs in __Supervisor Mode__. And starts NuttX, also in Supervisor Mode.
 
-So OpenSBI is the only thing that runs at Machine Level. And can access the Machine-Level Registers.
+Thus __OpenSBI is the only thing__ that runs in Machine Mode. And can access the Machine-Mode Registers.
 
 _QEMU doesn't have this problem?_
 
-Because QEMU runs everything in Machine Mode.
+Because QEMU runs everything in (super-powerful) __Machine Mode__!
+
+NuttX gets to fetch the Hart ID in different way...
 
 # Downgrade NuttX to Supervisor Mode
 
-TODO
+_OpenSBI runs in Machine Mode and reads the Hart ID (CPU ID)..._
 
-_How to get the Hart ID from OpenSBI?_
+_How will NuttX get the Hart ID from OpenSBI?_
+
+TODO
 
 Let's refer to the Linux Boot Code: [linux/arch/riscv/kernel/head.S](https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S)
 
