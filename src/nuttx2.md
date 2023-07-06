@@ -494,6 +494,10 @@ U-Boot Bootloader runs at Supervisor Level. And starts NuttX, also at Supervisor
 
 So OpenSBI is the only thing that runs at Machine Level. And can access the Machine-Level Registers.
 
+_QEMU doesn't have this problem?_
+
+Because QEMU runs everything in Machine Mode.
+
 # Downgrade NuttX to Supervisor Mode
 
 TODO
