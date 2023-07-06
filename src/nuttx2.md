@@ -152,10 +152,10 @@ sb  t1, 0(t0)
 
 [(__`sb`__ stores a byte from a Register into an Address)](https://five-embeddev.com/quickref/instructions.html#-rv32--load-and-store-instructions)
 
-The code above prints "__`123`__" to the QEMU Console (pic below)...
+When we start QEMU Emulator, the code above prints "__`123`__" to the QEMU Console (pic below)...
 
 ```text
-+ qemu-system-riscv64 \
+$ qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on \
   -cpu rv64 \
@@ -270,7 +270,7 @@ From previous articles, we saw that Star64's U-Boot Bootloader will load Linux K
 
 - [__"Yocto Image for Star64"__](https://lupyuen.github.io/articles/star64#yocto-image-for-star64)
 
-Thus we do the same to boot NuttX on Star64.
+Thus we do the same for NuttX on Star64.
 
 This is how we set the Start Address to __`0x4020` `0000`__ in the __NuttX Build Configuration__: [nsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L56-L57)
 
