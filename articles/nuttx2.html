@@ -407,16 +407,9 @@ reset not supported yet
 <p><img src="https://lupyuen.github.io/images/star64-exception.jpg" alt="Cody AI Assistant tries to explain our RISC-V Exception" /></p>
 <p><em>Cody AI Assistant tries to explain our RISC-V Exception</em></p>
 <h1 id="nuttx-fails-to-get-hart-id"><a href="#nuttx-fails-to-get-hart-id">7 NuttX Fails To Get Hart ID</a></h1>
+<p><em>What’s at <code>0x4020</code> <code>005C</code>?</em></p>
+<p><em>Why did it crash NuttX?</em></p>
 <p>TODO</p>
-<p>Earlier we saw NuttX crashing when booting on Star64…</p>
-<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
-clk u5_dw_i2c_clk_core already disabled
-clk u5_dw_i2c_clk_apb already disabled
-123
-Unhandled exception: Illegal instruction
-EPC: 000000004020005c RA: 00000000fff471c6 TVAL: 00000000f1402573
-</code></pre></div>
-<p><em>Why did NuttX crash at <code>4020005c</code>?</em></p>
 <p>Here’s our RISC-V Boot Code…</p>
 <p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ed09c34532ee7c51ac2da816cd6cf0adcce336e6/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L103">qemu_rv_head.S</a>:</p>
 <div class="example-wrap"><pre class="language-text"><code>nuttx/arch/risc-v/src/chip/qemu_rv_head.S:95
