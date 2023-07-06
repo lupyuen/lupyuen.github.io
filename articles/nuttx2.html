@@ -210,14 +210,13 @@ NuttShell (NSH) NuttX-12.0.3
 nsh&gt; 
 </code></pre></div>
 <p>“<strong><code>123</code></strong>” is printed 8 times because QEMU is running with 8 CPUs.</p>
-<p>Now we port this Debug Code to Star64…</p>
+<p>Now we port the Debug Code to Star64…</p>
 <p><img src="https://lupyuen.github.io/images/riscv-print.png" alt="NuttX prints to QEMU Console" /></p>
 <h1 id="uart-controller-on-star64"><a href="#uart-controller-on-star64">3 UART Controller on Star64</a></h1>
 <p>TODO</p>
-<p>We’ll take the UART Assembly Code from the previous section and run on Star64 / JH7110. (So we can troubleshoot the NuttX Boot Code)</p>
-<p><em>Does Star64 / JH7110 use a 16550 UART Controller like QEMU?</em></p>
+<p><em>What’s the UART Controller in Star64?</em></p>
 <p>According to the <a href="https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/function_layer.html">JH7110 UART Developing Guide</a>, Star64 / JH7110 uses the 8250 UART Controller…</p>
-<p>Which is <a href="https://en.wikipedia.org/wiki/16550_UART">compatible with QEMU’s 16550 UART Controller</a>. So our UART Assembly Code for QEMU will run on Star64!</p>
+<p>Which is <a href="https://en.wikipedia.org/wiki/16550_UART">compatible with QEMU’s 16550 UART Controller</a>. So our UART Debug Code for QEMU will run on Star64!</p>
 <p><em>What’s the UART Base Address for Star64 / JH7110?</em></p>
 <p>Based on <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html">JH7110 System Memory Map</a>, UART0 is at <code>0x1000</code> <code>0000</code>.</p>
 <p>Also from the <a href="https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/general_uart_controller.html">JH7110 UART Device Tree</a>: UART Register Base Address is <code>0x1000</code> <code>0000</code> with range <code>0x10000</code>.</p>
