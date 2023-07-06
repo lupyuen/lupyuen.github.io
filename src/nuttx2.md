@@ -168,25 +168,6 @@ Which is correct because QEMU is running with 8 CPUs. Yay!
 
 ![NuttX prints to QEMU Console](https://lupyuen.github.io/images/riscv-print.png)
 
-[Cody AI Assistant](https://about.sourcegraph.com/cody) explains our RISC-V Assembly Code...
-
-![Cody AI Assistant explains our RISC-V Assembly Code](https://lupyuen.github.io/images/riscv-cody1.png)
-
-And offers to optimise our RISC-V Assembly Code...
-
-![Cody AI Assistant optimises our RISC-V Assembly Code](https://lupyuen.github.io/images/riscv-cody2.png)
-
-But the output is incorrect ;-)
-
-```text
-+ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -nographic
-11111111
-NuttShell (NSH) NuttX-12.0.3
-nsh> 
-```
-
-The correct output is `123123123123123123112323`. (Because of the 8 CPUs)
-
 # UART Base Address for Star64
 
 TODO
@@ -545,6 +526,10 @@ NuttX tries loads the CPU ID or Hardware Thread "Hart" ID from the RISC-V Contro
 
 But it fails! Because we don't have sufficient privilege to access the Hart ID.
 
+# RISC-V Privilege Levels
+
+TODO
+
 RISC-V runs at 3 Privilege Levels...
 
 - M: Machine Level (Most powerful)
@@ -568,6 +553,10 @@ _What about U-Boot Bootloader?_
 U-Boot Bootloader runs at Supervisor Level. And starts NuttX, also at Supervisor Level.
 
 So OpenSBI is the only thing that runs at Machine Level. And can access the Machine-Level Registers.
+
+# Downgrade NuttX to Supervisor Mode
+
+TODO
 
 _How to get the Hart ID from OpenSBI?_
 
