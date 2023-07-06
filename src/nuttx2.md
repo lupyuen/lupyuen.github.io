@@ -124,35 +124,35 @@ Which means that we can print to the QEMU Console by writing to __`0x1000` `0000
 *(volatile uint8_t *) 0x10000000 = '1';
 ```
 
-_But how to print with RISC-V Assembly?_
+_What about RISC-V Assembly?_
 
-TODO
-
-Let's do the printing in RISC-V Assembly Code, so that we can debug the NuttX Boot Code.
-
-From [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L71-L93):
+This is how we print to QEMU Console in __RISC-V Assembly Code__, so we can debug the NuttX Boot Code: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L71-L93):
 
 ```text
-  /* Load UART Base Address to Register t0 */
-  li  t0, 0x10000000
+/* Load UART Base Address to Register t0 */
+li  t0, 0x10000000
 
-  /* Load `1` to Register t1 */
-  li  t1, 0x31
-  /* Store byte from Register t1 to UART Base Address, Offset 0 */
-  sb  t1, 0(t0)
+/* Load `1` to Register t1 */
+li  t1, 0x31
+/* Store byte from Register t1 to UART Base Address, Offset 0 */
+sb  t1, 0(t0)
 
-  /* Load `2` to Register t1 */
-  li  t1, 0x32
-  /* Store byte from Register t1 to UART Base Address, Offset 0 */
-  sb  t1, 0(t0)
+/* Load `2` to Register t1 */
+li  t1, 0x32
+/* Store byte from Register t1 to UART Base Address, Offset 0 */
+sb  t1, 0(t0)
 
-  /* Load `3` to Register t1 */
-  li  t1, 0x33
-  /* Store byte from Register t1 to UART Base Address, Offset 0 */
-  sb  t1, 0(t0)
+/* Load `3` to Register t1 */
+li  t1, 0x33
+/* Store byte from Register t1 to UART Base Address, Offset 0 */
+sb  t1, 0(t0)
 ```
 
-This prints "123" to the QEMU Console. Here's the output:
+[(__`li`__ loads a Value into a Register)](https://lupyuen.github.io/articles/riscv#other-instructions)
+
+[(__`sb`__ stores a byte from a Register into an Address)](https://five-embeddev.com/quickref/instructions.html#-rv32--load-and-store-instructions)
+
+The code above prints "__`123`__" to the QEMU Console (pic below)...
 
 ```text
 + qemu-system-riscv64 \
@@ -169,11 +169,13 @@ NuttShell (NSH) NuttX-12.0.3
 nsh> 
 ```
 
-Which is correct because QEMU is running with 8 CPUs. Yay!
+"__`123`__" is printed 8 times because QEMU is running with 8 CPUs.
+
+Now we port this Debug Code to Star64...
 
 ![NuttX prints to QEMU Console](https://lupyuen.github.io/images/riscv-print.png)
 
-# UART Controller in Star64
+# UART Controller on Star64
 
 TODO
 
