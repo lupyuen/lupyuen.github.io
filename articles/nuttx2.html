@@ -213,16 +213,28 @@ nsh&gt;
 <p>Now we port the Debug Code to Star64…</p>
 <p><img src="https://lupyuen.github.io/images/riscv-print.png" alt="NuttX prints to QEMU Console" /></p>
 <h1 id="uart-controller-on-star64"><a href="#uart-controller-on-star64">3 UART Controller on Star64</a></h1>
-<p>TODO</p>
 <p><em>What’s the UART Controller in Star64?</em></p>
-<p>According to the <a href="https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/function_layer.html">JH7110 UART Developing Guide</a>, Star64 / JH7110 uses the 8250 UART Controller…</p>
-<p>Which is <a href="https://en.wikipedia.org/wiki/16550_UART">compatible with QEMU’s 16550 UART Controller</a>. So our UART Debug Code for QEMU will run on Star64!</p>
-<p><em>What’s the UART Base Address for Star64 / JH7110?</em></p>
-<p>Based on <a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html">JH7110 System Memory Map</a>, UART0 is at <code>0x1000</code> <code>0000</code>.</p>
-<p>Also from the <a href="https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/general_uart_controller.html">JH7110 UART Device Tree</a>: UART Register Base Address is <code>0x1000</code> <code>0000</code> with range <code>0x10000</code>.</p>
-<p><a href="https://doc-en.rvspace.org/JH7110/Datasheet/JH7110_DS/uart.html">(JH7110 UART Datasheet)</a></p>
+<p>Star64 JH7110 uses the <strong>8250 UART Controller</strong>, according to…</p>
+<ul>
+<li><a href="https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/function_layer.html"><strong>JH7110 UART Developing Guide</strong></a></li>
+</ul>
+<p>Which is <a href="https://en.wikipedia.org/wiki/16550_UART"><strong>compatible with the 16550 UART Controller</strong></a> used by QEMU.</p>
+<p>So our UART Debug Code for QEMU will run on Star64!</p>
+<p><em>But what’s the UART Base Address for Star64 JH7110?</em></p>
+<p>UART0 Base Address is at <strong><code>0x1000</code> <code>0000</code></strong>, according to…</p>
+<ul>
+<li>
+<p><a href="https://doc-en.rvspace.org/JH7110/TRM/JH7110_TRM/system_memory_map.html"><strong>JH7110 System Memory Map</strong></a></p>
+</li>
+<li>
+<p><a href="https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/general_uart_controller.html"><strong>JH7110 UART Device Tree</strong></a></p>
+</li>
+<li>
+<p><a href="https://doc-en.rvspace.org/JH7110/Datasheet/JH7110_DS/uart.html"><strong>JH7110 UART Datasheet</strong></a></p>
+</li>
+</ul>
 <p><em>Isn’t that the same UART Base Address as QEMU?</em></p>
-<p>Let’s check the UART Base Address in NuttX for QEMU. From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16">nsh64/defconfig</a>:</p>
+<p>Yep! Earlier we saw the <strong>UART Base Address</strong> for NuttX QEMU: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16">nsh64/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_16550_ADDRWIDTH=0
 CONFIG_16550_UART0=y
 CONFIG_16550_UART0_BASE=0x10000000
@@ -231,54 +243,41 @@ CONFIG_16550_UART0_IRQ=37
 CONFIG_16550_UART0_SERIAL_CONSOLE=y
 CONFIG_16550_UART=y
 </code></pre></div>
-<p>NuttX UART Base Address is <code>0x1000</code> <code>0000</code>. The exact same UART Base Address for QEMU AND Star64!</p>
-<p>So no changes needed, our UART Assembly Code will run on QEMU AND Star64 yay!</p>
+<p>NuttX QEMU UART Base Address is <strong><code>0x1000</code> <code>0000</code></strong>. The exact same UART Base Address for QEMU AND Star64!</p>
+<p>So no changes needed, our UART Debug Code will run on <strong>QEMU AND Star64</strong>!</p>
+<p>There’s a special format needed for our Boot Code, let’s tweak it…</p>
 <h1 id="risc-v-linux-kernel-header"><a href="#risc-v-linux-kernel-header">4 RISC-V Linux Kernel Header</a></h1>
-<p>TODO</p>
-<p>For U-Boot Bootloader to boot NuttX, we need to embed the RISC-V Linux Kernel Header…</p>
+<p><em>How will U-Boot Bootloader boot NuttX?</em></p>
+<p>For U-Boot Bootloader to boot NuttX, we need to embed the <strong>RISC-V Linux Kernel Header</strong> (and pretend we’re Linux)…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/star64#inside-the-kernel-image"><strong>“Inside the Kernel Image”</strong></a></li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/star64#inside-the-kernel-image"><strong>“Inside the Kernel Image”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/star64#appendix-decode-the-risc-v-linux-header"><strong>“Decode the RISC-V Linux Header”</strong></a></p>
+</li>
 </ul>
-<p>This is how we decode the RISC-V Linux Header…</p>
-<ul>
-<li><a href="https://lupyuen.github.io/articles/star64#appendix-decode-the-risc-v-linux-header"><strong>“Decode the RISC-V Linux Header”</strong></a></li>
-</ul>
-<p>We copy the Arm64 Linux Header from <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/arm64/src/common/arm64_head.S#L79-L118">arm64_head.S</a>…</p>
-<p>And tweak for RISC-V Linux Header, like this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L42-L75">qemu_rv_head.S</a>:</p>
-<div class="example-wrap"><pre class="language-text"><code>__start:
-  /* Begin Test */
-
-  /* DO NOT MODIFY. Image Header expected by Linux bootloaders.
-   *
-   * This `li` instruction has no meaningful effect except that
-   * its opcode forms the magic &quot;MZ&quot; signature of a PE/COFF file
-   * that is required for UEFI applications.
-   *
-   * Some bootloaders check the magic &quot;MZ&quot; to see if the image is a valid
-   * Linux image. But modifying the bootLoader is unnecessary unless we
-   * need to do a customized secure boot. So we just put &quot;MZ&quot; in the
-   * header to make the bootloader happy.
-   */
-
-  c.li    s4, -13              /* Magic Signature &quot;MZ&quot; (2 bytes) */
-  j       real_start           /* Jump to Kernel Start (2 bytes) */
-  .long   0                    /* Executable Code padded to 8 bytes */
-  .quad   0x200000             /* Image load offset from start of RAM */
-  /* TODO: _e_initstack - __start */
-  .quad   171644               /* Effective size of kernel image, little-endian */
-  .quad   0x0                  /* Kernel flags, little-endian */
-  .long   0x2                  /* Version of this header */
-  .long   0                    /* Reserved */
-  .quad   0                    /* Reserved */
-  .ascii  &quot;RISCV\x00\x00\x00&quot;  /* Magic number, &quot;RISCV&quot; (8 bytes) */
-  .ascii  &quot;RSC\x05&quot;            /* Magic number 2, &quot;RSC\x05&quot; (4 bytes) */
-  .long   0                    /* Reserved for PE COFF offset */
+<p>We’ve done this previously for the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/arm64/src/common/arm64_head.S#L79-L118"><strong>Arm64 Linux Header</strong></a>.</p>
+<p>This is how we adapt it for our <strong>RISC-V Linux Header</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L42-L75">qemu_rv_head.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>/* RISC-V Linux Header */
+c.li    s4, -13              /* Magic Signature &quot;MZ&quot; (2 bytes) */
+j       real_start           /* Jump to Kernel Start (2 bytes) */
+.long   0                    /* Executable Code padded to 8 bytes */
+.quad   0x200000             /* Image load offset from start of RAM */
+/* TODO: Change this to `_e_initstack - __start` */
+.quad   171644               /* Effective size of kernel image, little-endian */
+.quad   0x0                  /* Kernel flags, little-endian */
+.long   0x2                  /* Version of this header */
+.long   0                    /* Reserved */
+.quad   0                    /* Reserved */
+.ascii  &quot;RISCV\x00\x00\x00&quot;  /* Magic number, &quot;RISCV&quot; (8 bytes) */
+.ascii  &quot;RSC\x05&quot;            /* Magic number 2, &quot;RSC\x05&quot; (4 bytes) */
+.long   0                    /* Reserved for PE COFF offset */
 
 real_start:
-
-  /* Load UART Base Address to Register t0 */
-  li  t0, 0x10000000
+  /* Actual Boot Code starts here... */
 </code></pre></div>
+<p>TODO</p>
 <p>Note that Image Load Offset must be <code>0x20</code> <code>0000</code>!</p>
 <div class="example-wrap"><pre class="language-text"><code>  .quad   0x200000             /* Image load offset from start of RAM */
 </code></pre></div>
