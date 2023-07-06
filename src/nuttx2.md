@@ -215,7 +215,11 @@ NuttX QEMU UART Base Address is __`0x1000` `0000`__. The exact same UART Base Ad
 
 So no changes needed, our UART Debug Code will run on __QEMU AND Star64__!
 
-There's a special format needed for our Boot Code, let's tweak it...
+Our Kernel Image needs a special format, let's tweak it...
+
+![Armbian Kernel Image](https://lupyuen.github.io/images/star64-kernel.png)
+
+[_Kernel Header for RISC-V Armbian Linux_](https://lupyuen.github.io/articles/star64#inside-the-kernel-image)
 
 # RISC-V Linux Kernel Header
 
@@ -307,27 +311,39 @@ The NuttX Start Address is indeed __`0x4020` `0000`__.
 
 Yep Looks Good To Us (YLGTU), we're ready to boot on Star64!
 
+![Boot NuttX on Star64](https://lupyuen.github.io/images/star64-nuttx.png)
+
 # Boot NuttX on Star64
 
-TODO
+We're finally ready to __boot NuttX on Star64__! We compile __NuttX for RISC-V QEMU__ with these steps...
 
-Let's boot NuttX on Star64! We compile [NuttX for 64-bit RISC-V QEMU](https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu) with these tweaks...
+- [__"Build Apache NuttX RTOS for 64-bit RISC-V QEMU"__](https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu) 
 
-- ["NuttX prints to QEMU Console"](https://github.com/lupyuen/nuttx-star64#nuttx-prints-to-qemu-console)
+Then we tweak it to __boot on Star64__ (and rebuild)...
 
-- ["UART Base Address for Star64"](https://github.com/lupyuen/nuttx-star64#uart-base-address-for-star64)
+- [__"Print to QEMU Console"__](https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console)
 
-- ["RISC-V Linux Kernel Header"](https://github.com/lupyuen/nuttx-star64#risc-v-linux-kernel-header)
+- [__"UART Controller on Star64"__](https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64)
 
-- ["Set Start Address of NuttX Kernel"](https://github.com/lupyuen/nuttx-star64#set-start-address-of-nuttx-kernel)
+- [__"RISC-V Linux Kernel Header"__](https://lupyuen.github.io/articles/nuttx2#risc-v-linux-kernel-header)
 
-For the microSD Image, we pick this [__Armbian Image for Star64__](https://www.armbian.com/star64/)...
+- [__"Start Address of NuttX Kernel"__](https://lupyuen.github.io/articles/nuttx2#start-address-of-nuttx-kernel)
+
+This produces the __NuttX ELF Image__ for Star64: [__nuttx__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64-0.0.1/nuttx)
+
+[(See the __Modified Files__)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/31/files)
+
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1)
+
+_How to copy it to microSD?_
+
+For the microSD Image, we start with this [__Armbian Image for Star64__](https://www.armbian.com/star64/)...
 
 -   [__Armbian 23.8 Lunar for Star64 (Minimal)__](https://github.com/armbianro/os/releases/download/23.8.0-trunk.56/Armbian_23.8.0-trunk.56_Star64_lunar_edge_5.15.0_minimal.img.xz)
 
-Write the Armbian Image to a microSD Card with Balena Etcher.
+Uncompress the __.xz__ file. Write the __.img__ file to a microSD Card with [__Balena Etcher__](https://www.balena.io/etcher/) or [__GNOME Disks__](https://wiki.gnome.org/Apps/Disks).
 
-We fix the [Missing Device Tree](https://lupyuen.github.io/articles/star64#armbian-image-for-star64)...
+We fix the [__Missing Device Tree__](https://lupyuen.github.io/articles/star64#armbian-image-for-star64)...
 
 ```bash
 ## Fix the Missing Device Tree
@@ -338,7 +354,7 @@ cp \
   /run/media/$USER/armbi_root/boot/dtb/starfive/jh7110-star64-pine64.dtb
 ```
 
-Then we delete the sym-link `/boot/Image` and copy the NuttX Binary Image `nuttx.bin` to `/boot/Image`...
+Then we delete the sym-link __/boot/Image__ and copy the NuttX Binary Image __nuttx.bin__ to __/boot/Image__...
 
 ```bash
 ## We assume that `nuttx` contains the NuttX ELF Image.
@@ -357,47 +373,21 @@ cp nuttx.bin /run/media/$USER/armbi_root/boot/Image
 
 Insert the microSD Card into Star64 and power up.
 
-NuttX boots with `123` yay! [(Which is printed by our Boot Code)](https://github.com/lupyuen/nuttx-star64#nuttx-prints-to-qemu-console)
+NuttX boots on Star64 and prints "__`123`__" yay! (Pic above)
 
 ```text
 Starting kernel ...
 clk u5_dw_i2c_clk_core already disabled
 clk u5_dw_i2c_clk_apb already disabled
 123
-Unhandled exception: Illegal instruction
 ```
 
-![Boot NuttX on Star64](https://lupyuen.github.io/images/star64-nuttx.png)
+[(Which is printed by our __Boot Code__)](https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console)
 
-Here's the complete log...
+But NuttX crashes with a __RISC-V Illegal Instruction Exception__...
 
 ```text
-Retrieving file: /boot/extlinux/extlinux.conf
-383 bytes read in 7 ms (52.7 KiB/s)
-1:[6CArmbian
-Retrieving file: /boot/uInitrd
-10911538 bytes read in 466 ms (22.3 MiB/s)
-Retrieving file: /boot/Image
-163201 bytes read in 14 ms (11.1 MiB/s)
-append: root=UUID=99f62df4-be35-475c-99ef-2ba3f74fe6b5 console=ttyS0,115200n8 console=tty0 earlycon=sbi rootflags=data=writeback stmmaceth=chain_mode:1 rw rw no_console_suspend consoleblank=0 fsck.fix=yes fsck.repair=yes net.ifnames=0 splash plymouth.ignore-serial-consoles
-Retrieving file: /boot/dtb/starfive/jh7110-star64-pine64.dtb
-50235 bytes read in 14 ms (3.4 MiB/s)
-## Loading init Ramdisk from Legacy Image at 46100000 ...
-   Image Name:   uInitrd
-   Image Type:   RISC-V Linux RAMDisk Image (gzip compressed)
-   Data Size:    10911474 Bytes = 10.4 MiB
-   Load Address: 00000000
-   Entry Point:  00000000
-   Verifying Checksum ... OK
-## Flattened Device Tree blob at 46000000
-   Booting using the fdt blob at 0x46000000
-   Using Device Tree in place at 0000000046000000, end 000000004600f43a
-
-Starting kernel ...
-
-clk u5_dw_i2c_clk_core already disabled
-clk u5_dw_i2c_clk_apb already disabled
-123Unhandled exception: Illegal instruction
+Unhandled exception: Illegal instruction
 EPC: 000000004020005c RA: 00000000fff471c6 TVAL: 00000000f1402573
 EPC: ffffffff804ba05c RA: 00000000402011c6 reloc adjusted
 
@@ -414,13 +404,16 @@ T4:  000000004600b5cc T5:  000000000000ff00 T6:  000000004600b5cc
 
 Code: 0313 0320 8023 0062 0313 0330 8023 0062 (2573 f140)
 
-
 resetting ...
 reset not supported yet
 ### ERROR ### Please RESET the board ###
 ```
 
-Why does NuttX crash at `4020005c`? See the next section...
+[(See the __Complete Log__)](https://github.com/lupyuen/nuttx-star64#boot-nuttx-on-star64)
+
+(__EPC__ is the Exception Program Counter)
+
+Why did NuttX crash at __`0x4020` `005C`__? Let's find out...
 
 ![Cody AI Assistant tries to explain our RISC-V Exception](https://lupyuen.github.io/images/star64-exception.jpg)
 
