@@ -430,36 +430,53 @@ _What's at `0x4020` `005C`?_
 
 _Why did it crash NuttX?_
 
-TODO
-
-Here's our RISC-V Boot Code...
-
-From [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ed09c34532ee7c51ac2da816cd6cf0adcce336e6/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L103):
+We look up our __NuttX RISC-V Disassembly nuttx.S__ and we see this in our Boot Code: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ed09c34532ee7c51ac2da816cd6cf0adcce336e6/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L103)
 
 ```text
 nuttx/arch/risc-v/src/chip/qemu_rv_head.S:95
-  /* Load mhartid (cpuid) */
+  /* Load the Hart ID (CPU ID) */
   csrr a0, mhartid
     4020005c:	f1402573  csrr a0, mhartid
 ```
 
-NuttX tries loads the CPU ID or Hardware Thread "Hart" ID from the RISC-V Control and Status Register (CSR). [(Explained here)](https://lupyuen.github.io/articles/riscv#get-cpu-id)
+Let's break it down...
 
-_But this worked perfectly OK on QEMU!_
+```text
+/* Load the Hart ID (CPU ID) */
+csrr a0, mhartid
+```
+
+- __`csrr`__ is the RISC-V Instruction that reads the [__Control and Status Register__](https://five-embeddev.com/quickref/instructions.html#-csr--csr-instructions)
+
+  (Which contains the CPU ID)
+
+- __`a0`__ is the RISC-V Register that will be loaded with the CPU ID
+
+- __`mhartid`__ says that we'll read from the [__Hart ID Register__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid), containing the ID of the Hardware Thread ("Hart") that's running our code.
+
+  (Equivalent to CPU ID)
+
+So the above code will load the Hart ID (or CPU ID) into Register __a0__.
+
+[(As explained here)](https://lupyuen.github.io/articles/riscv#get-cpu-id)
+
+_But it worked perfectly on QEMU! Why did it fail?_
 
 Ah that's because something has changed on Star64: Our Privilege Level...
 
 # RISC-V Privilege Levels
 
+_What's this Privilege Level?_
+
 TODO
 
 RISC-V runs at 3 Privilege Levels...
 
-- M: Machine Level (Most powerful)
+- M: Machine Mode (Most powerful)
 
-- S: Supervisor Level (Less powerful)
+- S: Supervisor Mode (Less powerful)
 
-- U: User Level (Least powerful)
+- U: User Mode (Least powerful)
 
 NuttX runs at Supervisor Level, which [doesn't allow access to Machine-Level CSR Registers](https://five-embeddev.com/riscv-isa-manual/latest/machine.html).  (Including [Hart ID](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid))
 
