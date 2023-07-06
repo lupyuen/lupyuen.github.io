@@ -411,7 +411,7 @@ reset not supported yet
 
 [(See the __Complete Log__)](https://github.com/lupyuen/nuttx-star64#boot-nuttx-on-star64)
 
-(__EPC__ is the Exception Program Counter)
+(__EPC__ is the Program Counter for the Exception)
 
 Why did NuttX crash at __`0x4020` `005C`__? Let's find out...
 
