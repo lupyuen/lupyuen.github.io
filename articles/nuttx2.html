@@ -69,7 +69,7 @@
     <nav id="TOC"><ul>
 <li><a href="#start-with-qemu-emulator">1 Start with QEMU Emulator</a><ul></ul></li>
 <li><a href="#print-to-qemu-console">2 Print to QEMU Console</a><ul></ul></li>
-<li><a href="#uart-base-address-for-star64">3 UART Base Address for Star64</a><ul></ul></li>
+<li><a href="#uart-controller-for-star64">3 UART Controller for Star64</a><ul></ul></li>
 <li><a href="#risc-v-linux-kernel-header">4 RISC-V Linux Kernel Header</a><ul></ul></li>
 <li><a href="#set-start-address-of-nuttx-kernel">5 Set Start Address of NuttX Kernel</a><ul></ul></li>
 <li><a href="#boot-nuttx-on-star64">6 Boot NuttX on Star64</a><ul></ul></li>
@@ -208,7 +208,7 @@ nsh&gt;
 </code></pre></div>
 <p>Which is correct because QEMU is running with 8 CPUs. Yay!</p>
 <p><img src="https://lupyuen.github.io/images/riscv-print.png" alt="NuttX prints to QEMU Console" /></p>
-<h1 id="uart-base-address-for-star64"><a href="#uart-base-address-for-star64">3 UART Base Address for Star64</a></h1>
+<h1 id="uart-controller-for-star64"><a href="#uart-controller-for-star64">3 UART Controller for Star64</a></h1>
 <p>TODO</p>
 <p>We’ll take the UART Assembly Code from the previous section and run on Star64 / JH7110. (So we can troubleshoot the NuttX Boot Code)</p>
 <p><em>Does Star64 / JH7110 use a 16550 UART Controller like QEMU?</em></p>
