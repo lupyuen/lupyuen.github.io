@@ -409,29 +409,46 @@ reset not supported yet
 <h1 id="nuttx-fails-to-get-hart-id"><a href="#nuttx-fails-to-get-hart-id">7 NuttX Fails To Get Hart ID</a></h1>
 <p><em>What’s at <code>0x4020</code> <code>005C</code>?</em></p>
 <p><em>Why did it crash NuttX?</em></p>
-<p>TODO</p>
-<p>Here’s our RISC-V Boot Code…</p>
-<p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ed09c34532ee7c51ac2da816cd6cf0adcce336e6/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L103">qemu_rv_head.S</a>:</p>
+<p>We look up our <strong>NuttX RISC-V Disassembly nuttx.S</strong> and we see this in our Boot Code: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ed09c34532ee7c51ac2da816cd6cf0adcce336e6/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L103">qemu_rv_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>nuttx/arch/risc-v/src/chip/qemu_rv_head.S:95
-  /* Load mhartid (cpuid) */
+  /* Load the Hart ID (CPU ID) */
   csrr a0, mhartid
     4020005c:	f1402573  csrr a0, mhartid
 </code></pre></div>
-<p>NuttX tries loads the CPU ID or Hardware Thread “Hart” ID from the RISC-V Control and Status Register (CSR). <a href="https://lupyuen.github.io/articles/riscv#get-cpu-id">(Explained here)</a></p>
-<p><em>But this worked perfectly OK on QEMU!</em></p>
+<p>Let’s break it down…</p>
+<div class="example-wrap"><pre class="language-text"><code>/* Load the Hart ID (CPU ID) */
+csrr a0, mhartid
+</code></pre></div>
+<ul>
+<li>
+<p><strong><code>csrr</code></strong> is the RISC-V Instruction that reads the <a href="https://five-embeddev.com/quickref/instructions.html#-csr--csr-instructions"><strong>Control and Status Register</strong></a></p>
+<p>(Which contains the CPU ID)</p>
+</li>
+<li>
+<p><strong><code>a0</code></strong> is the RISC-V Register that will be loaded with the CPU ID</p>
+</li>
+<li>
+<p><strong><code>mhartid</code></strong> says that we’ll read from the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid"><strong>Hart ID Register</strong></a>, containing the ID of the Hardware Thread (“Hart”) that’s running our code.</p>
+<p>(Equivalent to CPU ID)</p>
+</li>
+</ul>
+<p>So the above code will load the Hart ID (or CPU ID) into Register <strong>a0</strong>.</p>
+<p><a href="https://lupyuen.github.io/articles/riscv#get-cpu-id">(As explained here)</a></p>
+<p><em>But it worked perfectly on QEMU! Why did it fail?</em></p>
 <p>Ah that’s because something has changed on Star64: Our Privilege Level…</p>
 <h1 id="risc-v-privilege-levels"><a href="#risc-v-privilege-levels">8 RISC-V Privilege Levels</a></h1>
+<p><em>What’s this Privilege Level?</em></p>
 <p>TODO</p>
 <p>RISC-V runs at 3 Privilege Levels…</p>
 <ul>
 <li>
-<p>M: Machine Level (Most powerful)</p>
+<p>M: Machine Mode (Most powerful)</p>
 </li>
 <li>
-<p>S: Supervisor Level (Less powerful)</p>
+<p>S: Supervisor Mode (Less powerful)</p>
 </li>
 <li>
-<p>U: User Level (Least powerful)</p>
+<p>U: User Mode (Least powerful)</p>
 </li>
 </ul>
 <p>NuttX runs at Supervisor Level, which <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html">doesn’t allow access to Machine-Level CSR Registers</a>.  (Including <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid">Hart ID</a>)</p>
