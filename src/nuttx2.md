@@ -445,7 +445,9 @@ nuttx/arch/risc-v/src/chip/qemu_rv_head.S:95
 
 NuttX tries loads the CPU ID or Hardware Thread "Hart" ID from the RISC-V Control and Status Register (CSR). [(Explained here)](https://lupyuen.github.io/articles/riscv#get-cpu-id)
 
-But it fails! Because we don't have sufficient privilege to access the Hart ID.
+_But this worked perfectly OK on QEMU!_
+
+Ah that's because something has changed on Star64: Our Privilege Level...
 
 # RISC-V Privilege Levels
 
