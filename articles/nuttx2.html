@@ -195,8 +195,8 @@ sb  t1, 0(t0)
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/riscv#other-instructions">(<strong><code>li</code></strong> loads a Value into a Register)</a></p>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--load-and-store-instructions">(<strong><code>sb</code></strong> stores a byte from a Register into an Address)</a></p>
-<p>The code above prints “<strong><code>123</code></strong>” to the QEMU Console (pic below)…</p>
-<div class="example-wrap"><pre class="language-text"><code>+ qemu-system-riscv64 \
+<p>When we start QEMU Emulator, the code above prints “<strong><code>123</code></strong>” to the QEMU Console (pic below)…</p>
+<div class="example-wrap"><pre class="language-text"><code>$ qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on \
   -cpu rv64 \
@@ -292,7 +292,7 @@ real_start:
 <p><a href="https://lupyuen.github.io/articles/star64#yocto-image-for-star64"><strong>“Yocto Image for Star64”</strong></a></p>
 </li>
 </ul>
-<p>Thus we do the same to boot NuttX on Star64.</p>
+<p>Thus we do the same for NuttX on Star64.</p>
 <p>This is how we set the Start Address to <strong><code>0x4020</code> <code>0000</code></strong> in the <strong>NuttX Build Configuration</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L56-L57">nsh64/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_RAM_SIZE=33554432
 CONFIG_RAM_START=0x40200000
