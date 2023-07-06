@@ -426,20 +426,11 @@ _Cody AI Assistant tries to explain our RISC-V Exception_
 
 # NuttX Fails To Get Hart ID
 
+_What's at `0x4020` `005C`?_
+
+_Why did it crash NuttX?_
+
 TODO
-
-Earlier we saw NuttX crashing when booting on Star64...
-
-```text
-Starting kernel ...
-clk u5_dw_i2c_clk_core already disabled
-clk u5_dw_i2c_clk_apb already disabled
-123
-Unhandled exception: Illegal instruction
-EPC: 000000004020005c RA: 00000000fff471c6 TVAL: 00000000f1402573
-```
-
-_Why did NuttX crash at `4020005c`?_
 
 Here's our RISC-V Boot Code...
 
