@@ -78,9 +78,9 @@
 <li><a href="#downgrade-nuttx-to-supervisor-mode">9 Downgrade NuttX to Supervisor Mode</a><ul></ul></li>
 <li><a href="#fix-the-nuttx-boot-code">10 Fix the NuttX Boot Code</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-start-address-of-nuttx-kernel">12 Appendix: Start Address of NuttX Kernel</a><ul></ul></li>
-<li><a href="#appendix-boot-nuttx-on-star64">13 Appendix: Boot NuttX on Star64</a><ul></ul></li>
-<li><a href="#appendix-downgrade-nuttx-to-supervisor-mode">14 Appendix: Downgrade NuttX to Supervisor Mode</a><ul></ul></li>
+<li><a href="#appendix-nuttx-start-address">12 Appendix: NuttX Start Address</a><ul></ul></li>
+<li><a href="#appendix-nuttx-crash-log">13 Appendix: NuttX Crash Log</a><ul></ul></li>
+<li><a href="#appendix-nuttx-in-supervisor-mode">14 Appendix: NuttX in Supervisor Mode</a><ul></ul></li>
 <li><a href="#appendix-fix-the-nuttx-boot-code">15 Appendix: Fix the NuttX Boot Code</a><ul></ul></li></ul></nav><p>📝 <em>12 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-title.jpg" alt="Pine64 Star64 64-bit RISC-V SBC" /></p>
 <p>In this article we’ll boot a tiny bit of <a href="https://lupyuen.github.io/articles/riscv"><strong>Apache NuttX RTOS</strong></a> on the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer.</p>
@@ -321,13 +321,13 @@ CONFIG_RAM_START=0x40200000
 <p>Then we tweak it to <strong>boot on Star64</strong> (and rebuild)…</p>
 <ol>
 <li>
-<p>Print <a href="https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console"><strong>Debug Logs</strong></a> in RISC-V Assembly</p>
+<p>Print the <a href="https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console"><strong>Debug Logs</strong></a> in RISC-V Assembly</p>
 </li>
 <li>
-<p>Check the <a href="https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64"><strong>UART Base Address</strong></a> for Star64</p>
+<p>Check the <a href="https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64"><strong>UART Base Address</strong></a></p>
 </li>
 <li>
-<p>Embed the <a href="https://lupyuen.github.io/articles/nuttx2#risc-v-linux-kernel-header"><strong>RISC-V Kernel Header</strong></a> for NuttX</p>
+<p>Embed the <a href="https://lupyuen.github.io/articles/nuttx2#risc-v-linux-kernel-header"><strong>RISC-V Kernel Header</strong></a></p>
 </li>
 <li>
 <p>Set the <a href="https://lupyuen.github.io/articles/nuttx2#start-address-of-nuttx-kernel"><strong>Start Address</strong></a> of NuttX Kernel</p>
@@ -577,7 +577,7 @@ clk u5_dw_i2c_clk_apb already disabled
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/nuttx2.md"><strong>lupyuen.github.io/src/nuttx2.md</strong></a></p>
-<h1 id="appendix-start-address-of-nuttx-kernel"><a href="#appendix-start-address-of-nuttx-kernel">12 Appendix: Start Address of NuttX Kernel</a></h1>
+<h1 id="appendix-nuttx-start-address"><a href="#appendix-nuttx-start-address">12 Appendix: NuttX Start Address</a></h1>
 <p>TODO</p>
 <p>Remember to change this if building for NuttX Kernel Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel64.script#L21-L51">ld-kernel64.script</a>:</p>
 <div class="example-wrap"><pre class="language-text"><code>MEMORY
@@ -611,7 +611,7 @@ CONFIG_RAM_START=0x40200000
     40200002:	a83d                	j	40200040 &lt;real_start&gt;
 </code></pre></div>
 <p><img src="https://lupyuen.github.io/images/star64-nuttx.png" alt="Boot NuttX on Star64" /></p>
-<h1 id="appendix-boot-nuttx-on-star64"><a href="#appendix-boot-nuttx-on-star64">13 Appendix: Boot NuttX on Star64</a></h1>
+<h1 id="appendix-nuttx-crash-log"><a href="#appendix-nuttx-crash-log">13 Appendix: NuttX Crash Log</a></h1>
 <p>TODO</p>
 <p>Here’s the complete log…</p>
 <div class="example-wrap"><pre class="language-text"><code>Retrieving file: /boot/extlinux/extlinux.conf
@@ -660,7 +660,7 @@ Code: 0313 0320 8023 0062 0313 0330 8023 0062 (2573 f140)
 resetting ...
 reset not supported yet
 ### ERROR ### Please RESET the board ###
-</code></pre></div><h1 id="appendix-downgrade-nuttx-to-supervisor-mode"><a href="#appendix-downgrade-nuttx-to-supervisor-mode">14 Appendix: Downgrade NuttX to Supervisor Mode</a></h1>
+</code></pre></div><h1 id="appendix-nuttx-in-supervisor-mode"><a href="#appendix-nuttx-in-supervisor-mode">14 Appendix: NuttX in Supervisor Mode</a></h1>
 <p>TODO</p>
 <p><em>How to get the Hart ID from OpenSBI?</em></p>
 <p>We refer to the Linux Boot Code: <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S">linux/arch/riscv/kernel/head.S</a></p>
