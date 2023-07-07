@@ -54,6 +54,8 @@ We'll print some __Debug Logs__ as NuttX boots on Star64. Here's our plan...
 
 - __Port our Debug Log__ to Star64
 
+Let's get cooking...
+
 ![Star64 SBC with Woodpecker USB Serial Adapter](https://lupyuen.github.io/images/linux-title.jpg)
 
 [_Star64 with Woodpecker USB Serial Adapter_](https://lupyuen.github.io/articles/linux)
