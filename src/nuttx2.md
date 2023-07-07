@@ -38,7 +38,7 @@ Earlier we successfully tested __NuttX RTOS on QEMU Emulator__ for 64-bit RISC-V
 
 - [__"64-bit RISC-V with Apache NuttX Real-Time Operating System"__](https://lupyuen.github.io/articles/riscv)
 
-Let's run this on Star64 JH7110 SBC! Starting with the __NuttX Boot Code__ (in RISC-V Assembly)...
+Let's run this on Star64! Starting with the __NuttX Boot Code__ (in RISC-V Assembly)...
 
 - [__"RISC-V Boot Code in NuttX"__](https://lupyuen.github.io/articles/riscv#risc-v-boot-code-in-nuttx)
 
@@ -46,13 +46,7 @@ _Surely we'll run into problems?_
 
 Fortunately we have a [__Serial Debug Console__](https://lupyuen.github.io/articles/linux#serial-console-on-star64) connected to Star64. (Pic below)
 
-We'll print some __Debug Logs__ as we run the NuttX Boot Code.
-
-_But the NuttX Boot Code is in RISC-V Assembly!_
-
-Yep we'll print the Debug Logs with our own __RISC-V Assembly Code__.
-
-Here's our plan...
+We'll print some __Debug Logs__ as we run the NuttX Boot Code. Here's our plan...
 
 - Check the __Serial Console on QEMU Emulator__, how it's wired up
 
@@ -88,7 +82,7 @@ And the __Base Address__ of QEMU's UART Controller is __`0x1000` `0000`__.
 
 _How to print to the 16550 UART Port?_
 
-Checking the __NuttX Driver__ for 16550 UART: [uart_16550.c](https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L1539-L1553)
+We check the __NuttX Driver__ for 16550 UART: [uart_16550.c](https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L1539-L1553)
 
 ```c
 // Send one byte to 16550 UART
@@ -126,7 +120,7 @@ Which means that we can print to the QEMU Console by writing to __`0x1000` `0000
 
 _What about RISC-V Assembly?_
 
-This is how we print to QEMU Console in __RISC-V Assembly Code__, so we can debug the NuttX Boot Code: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L71-L93):
+This is how we print to QEMU Console in __RISC-V Assembly Code__, so we can debug the NuttX Boot Code: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L71-L93)
 
 ```text
 /* Load UART Base Address to Register t0 */
@@ -187,7 +181,7 @@ Which is [__compatible with the 16550 UART Controller__](https://en.wikipedia.or
 
 So our UART Debug Code for QEMU will run on Star64!
 
-_But what's the UART Base Address for Star64 JH7110?_
+_But what's the UART Base Address for Star64?_
 
 UART0 Base Address is at __`0x1000` `0000`__, according to...
 
@@ -202,20 +196,14 @@ _Isn't that the same UART Base Address as QEMU?_
 Yep! Earlier we saw the __UART Base Address__ for NuttX QEMU: [nsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16)
 
 ```text
-CONFIG_16550_ADDRWIDTH=0
-CONFIG_16550_UART0=y
 CONFIG_16550_UART0_BASE=0x10000000
-CONFIG_16550_UART0_CLOCK=3686400
-CONFIG_16550_UART0_IRQ=37
-CONFIG_16550_UART0_SERIAL_CONSOLE=y
-CONFIG_16550_UART=y
 ```
 
 NuttX QEMU UART Base Address is __`0x1000` `0000`__. The exact same UART Base Address for QEMU AND Star64!
 
 So no changes needed, our UART Debug Code will run on __QEMU AND Star64__!
 
-Our Kernel Image needs a special format, let's tweak it...
+To boot NuttX on Star64, it needs a special file format...
 
 ![Armbian Kernel Image](https://lupyuen.github.io/images/star64-kernel.png)
 
@@ -223,9 +211,11 @@ Our Kernel Image needs a special format, let's tweak it...
 
 # RISC-V Linux Kernel Header
 
-_How will U-Boot Bootloader boot NuttX?_
+_How will Star64 boot NuttX?_
 
-For U-Boot Bootloader to boot NuttX, we need to embed the __RISC-V Linux Kernel Header__ (and pretend we're Linux)...
+Star64's __U-Boot Bootloader__ will load NuttX into RAM and run it.
+
+But we need to embed the __RISC-V Linux Kernel Header__ (and pretend we're Linux)...
 
 -   [__"Inside the Kernel Image"__](https://lupyuen.github.io/articles/star64#inside-the-kernel-image)
 
@@ -254,15 +244,15 @@ real_start:
   /* Actual Boot Code starts here... */
 ```
 
-[(Why we need __Magic Signature "MZ"__)](https://lupyuen.github.io/articles/star64#decompile-the-kernel-with-ghidra)
+[(__`c.li`__ emits the __Magic Signature "MZ"__)](https://lupyuen.github.io/articles/star64#decompile-the-kernel-with-ghidra)
 
 Note that __Image Load Offset__ must be __`0x20` `0000`__...
 
 ```text
-.quad   0x200000             /* Image load offset from start of RAM */
+.quad  0x200000  /* Image load offset from start of RAM */
 ```
 
-That's because our NuttX Kernel starts at __`0x4020` `0000`__. Here's why...
+That's because our NuttX Kernel will start at RAM Address __`0x4020` `0000`__. Here's why...
 
 # Start Address of NuttX Kernel
 
