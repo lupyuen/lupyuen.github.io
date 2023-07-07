@@ -626,7 +626,7 @@ Stay tuned, we'll have plenty more tantalising treats in the next article!
 
 TODO: I hope this has been an Educational Experience on booting a fresh new OS for a 64-bit RISC-V SBC...
 
-This is the first in a series of articles on porting NuttX to Star64.
+This is the first in a series of (yummy) articles on porting NuttX to Star64.
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
