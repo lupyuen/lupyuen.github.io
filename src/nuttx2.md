@@ -618,9 +618,9 @@ Now we're smokin' hot...
 
 - Which means that our __NuttX Boot Code has completed__ execution yay!
 
-- But NuttX hangs in the C Function __qemu_rv_start__
+- But NuttX hangs in the C Function [__qemu_rv_start__](https://lupyuen.github.io/articles/riscv#jump-to-start)
 
-We'll have plenty more tantalising treats in the next article!
+Stay tuned, we'll have plenty more tantalising treats in the next article!
 
 # What's Next
 
