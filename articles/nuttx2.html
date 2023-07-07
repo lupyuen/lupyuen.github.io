@@ -132,13 +132,13 @@
 <p><strong>Port our Debug Log</strong> to Star64</p>
 </li>
 </ul>
-<p>Let’s get cooking…</p>
+<p>Our cooking begins…</p>
 <p><img src="https://lupyuen.github.io/images/linux-title.jpg" alt="Star64 SBC with Woodpecker USB Serial Adapter" /></p>
 <p><a href="https://lupyuen.github.io/articles/linux"><em>Star64 with Woodpecker USB Serial Adapter</em></a></p>
 <h1 id="print-to-qemu-console"><a href="#print-to-qemu-console">2 Print to QEMU Console</a></h1>
 <p><em>We’re printing to the Serial Console on QEMU Emulator…</em></p>
 <p><em>What’s the UART Controller in QEMU?</em></p>
-<p>Let’s check the <strong>NuttX Build Configuration</strong> for QEMU: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16">nsh64/defconfig</a></p>
+<p>We check the <strong>NuttX Build Configuration</strong> for QEMU: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16">nsh64/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_16550_ADDRWIDTH=0
 CONFIG_16550_UART0=y
 CONFIG_16550_UART0_BASE=0x10000000
@@ -277,7 +277,7 @@ real_start:
 <p>Note that <strong>Image Load Offset</strong> must be <strong><code>0x20</code> <code>0000</code></strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>.quad  0x200000  /* Image load offset from start of RAM */
 </code></pre></div>
-<p>That’s because our NuttX Kernel will start at RAM Address <strong><code>0x4020</code> <code>0000</code></strong>. Let’s chew on it…</p>
+<p>That’s because our NuttX Kernel will start at RAM Address <strong><code>0x4020</code> <code>0000</code></strong>. Chew on it for a bit…</p>
 <h1 id="start-address-of-nuttx-kernel"><a href="#start-address-of-nuttx-kernel">5 Start Address of NuttX Kernel</a></h1>
 <p><em>What’s this magical address <code>0x4020</code> <code>0000</code>?</em></p>
 <p>From previous articles, we saw that Star64’s U-Boot Bootloader will load Linux Kernels into RAM at Address <strong><code>0x4020</code> <code>0000</code></strong>…</p>
@@ -661,7 +661,7 @@ reset not supported yet
 </code></pre></div><h1 id="appendix-downgrade-nuttx-to-supervisor-mode"><a href="#appendix-downgrade-nuttx-to-supervisor-mode">14 Appendix: Downgrade NuttX to Supervisor Mode</a></h1>
 <p>TODO</p>
 <p><em>How to get the Hart ID from OpenSBI?</em></p>
-<p>Let’s refer to the Linux Boot Code: <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S">linux/arch/riscv/kernel/head.S</a></p>
+<p>We refer to the Linux Boot Code: <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S">linux/arch/riscv/kernel/head.S</a></p>
 <p>(Tip: <code>CONFIG_RISCV_M_MODE</code> is False and <code>CONFIG_EFI</code> is True)</p>
 <p>From <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S#L292-L295">linux/blob/master/arch/riscv/kernel/head.S</a>:</p>
 <div class="example-wrap"><pre class="language-c"><code>/* Save hart ID and DTB physical address */
