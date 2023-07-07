@@ -567,6 +567,8 @@ Easy! We change the Machine-Mode __`m`__ Registers to Supervisor-Mode __`s`__ Re
 
 Time to taste this...
 
+![After fixing NuttX for Supervisor Mode](https://lupyuen.github.io/images/nuttx2-boot.png)
+
 # Fix the NuttX Boot Code
 
 From the previous section, we identified these fixes for the NuttX Boot Code...
@@ -585,7 +587,7 @@ Here's the updated NuttX Boot Code and our analysis...
 
 _What happens when we run this?_
 
-TODO
+TODO: (Pic above)
 
 Hart ID is now 0, which is correct...
 
