@@ -753,7 +753,7 @@ real_start:
 
 __If Hart ID is 0:__
 
-Set Stack Pointer to the Idle Thread Stack
+Set Stack Pointer to the Idle Thread Stack...
 
 ```text
   /* Set stack pointer to the idle thread stack */
@@ -816,7 +816,7 @@ __For All Hart IDs:__
 
 - Disable Interrupts
 - Load the Trap Vector Table
-- Jump to __qemu_rv_start__
+- Jump to [__qemu_rv_start__](https://lupyuen.github.io/articles/riscv#jump-to-start)
 
 ```text
 2:
@@ -837,7 +837,9 @@ __For All Hart IDs:__
 
 [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L163-L199)
 
-Note that we don't load the Trap Vector Table, because we'll use OpenSBI for Crash Logging. (Like when we hit Machine-Mode Instructions)
+Note that we don't load the Trap Vector Table, because we'll use OpenSBI for Crash Logging.
+
+(Like when we hit Exceptions with Machine-Mode Instructions)
 
 # Appendix: NuttX Start Address
 
