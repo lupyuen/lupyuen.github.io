@@ -454,7 +454,7 @@ _But it worked perfectly on QEMU! Why did it fail?_
 
 Ah that's because something super spicy has changed on Star64: Our Privilege Level...
 
-TODO: Pic
+![RISC-V Privilege Levels](https://lupyuen.github.io/images/nuttx2-privilege.jpg)
 
 # RISC-V Privilege Levels
 
@@ -468,7 +468,7 @@ RISC-V Machine Code runs at three __Privilege Levels__...
 
 - __U: User Mode__ (Least powerful)
 
-NuttX on Star64 runs in __Supervisor Mode__. Which doesn't allow access to [__Machine-Mode CSR Registers__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html).
+NuttX on Star64 runs in __Supervisor Mode__. Which doesn't allow access to [__Machine-Mode CSR Registers__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html). (Pic above)
 
 Remember this?
 
@@ -493,7 +493,7 @@ _What about U-Boot Bootloader?_
 
 __U-Boot Bootloader__ runs in __Supervisor Mode__. And starts NuttX, also in Supervisor Mode.
 
-Thus __OpenSBI is the only thing__ that runs in Machine Mode. And can access the Machine-Mode Registers.
+Thus __OpenSBI is the only thing__ that runs in Machine Mode. And can access the Machine-Mode Registers. (Pic above)
 
 [(More about __U-Boot__)](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64)
 
@@ -501,7 +501,7 @@ _QEMU doesn't have this problem?_
 
 Because QEMU runs everything in (super-powerful) __Machine Mode__!
 
-TODO: Pic
+![NuttX QEMU runs in Machine Mode](https://lupyuen.github.io/images/nuttx2-privilege2.jpg)
 
 NuttX needs to fetch the Hart ID with a different recipe...
 
