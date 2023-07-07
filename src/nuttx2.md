@@ -54,7 +54,7 @@ We'll print some __Debug Logs__ as NuttX boots on Star64. Here's our plan...
 
 - __Port our Debug Log__ to Star64
 
-Let's get cooking...
+Our cooking begins...
 
 ![Star64 SBC with Woodpecker USB Serial Adapter](https://lupyuen.github.io/images/linux-title.jpg)
 
@@ -66,7 +66,7 @@ _We're printing to the Serial Console on QEMU Emulator..._
 
 _What's the UART Controller in QEMU?_
 
-Let's check the __NuttX Build Configuration__ for QEMU: [nsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16)
+We check the __NuttX Build Configuration__ for QEMU: [nsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16)
 
 ```text
 CONFIG_16550_ADDRWIDTH=0
@@ -250,7 +250,7 @@ Note that __Image Load Offset__ must be __`0x20` `0000`__...
 .quad  0x200000  /* Image load offset from start of RAM */
 ```
 
-That's because our NuttX Kernel will start at RAM Address __`0x4020` `0000`__. Let's chew on it...
+That's because our NuttX Kernel will start at RAM Address __`0x4020` `0000`__. Chew on it for a bit...
 
 # Start Address of NuttX Kernel
 
@@ -733,7 +733,7 @@ TODO
 
 _How to get the Hart ID from OpenSBI?_
 
-Let's refer to the Linux Boot Code: [linux/arch/riscv/kernel/head.S](https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S)
+We refer to the Linux Boot Code: [linux/arch/riscv/kernel/head.S](https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S)
 
 (Tip: `CONFIG_RISCV_M_MODE` is False and `CONFIG_EFI` is True)
 
