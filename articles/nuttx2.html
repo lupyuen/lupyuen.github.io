@@ -440,7 +440,7 @@ csrr a0, mhartid
 <p><a href="https://lupyuen.github.io/articles/riscv#get-cpu-id">(As explained here)</a></p>
 <p><em>But it worked perfectly on QEMU! Why did it fail?</em></p>
 <p>Ah that’s because something super spicy has changed on Star64: Our Privilege Level…</p>
-<p>TODO: Pic</p>
+<p><img src="https://lupyuen.github.io/images/nuttx2-privilege.jpg" alt="RISC-V Privilege Levels" /></p>
 <h1 id="risc-v-privilege-levels"><a href="#risc-v-privilege-levels">8 RISC-V Privilege Levels</a></h1>
 <p><em>What’s this Privilege Level?</em></p>
 <p>RISC-V Machine Code runs at three <strong>Privilege Levels</strong>…</p>
@@ -455,7 +455,7 @@ csrr a0, mhartid
 <p><strong>U: User Mode</strong> (Least powerful)</p>
 </li>
 </ul>
-<p>NuttX on Star64 runs in <strong>Supervisor Mode</strong>. Which doesn’t allow access to <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html"><strong>Machine-Mode CSR Registers</strong></a>.</p>
+<p>NuttX on Star64 runs in <strong>Supervisor Mode</strong>. Which doesn’t allow access to <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html"><strong>Machine-Mode CSR Registers</strong></a>. (Pic above)</p>
 <p>Remember this?</p>
 <div class="example-wrap"><pre class="language-text"><code>/* Load the Hart ID (CPU ID) */
 csrr a0, mhartid
@@ -468,11 +468,11 @@ csrr a0, mhartid
 <p><a href="https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface">(More about <strong>OpenSBI</strong>)</a></p>
 <p><em>What about U-Boot Bootloader?</em></p>
 <p><strong>U-Boot Bootloader</strong> runs in <strong>Supervisor Mode</strong>. And starts NuttX, also in Supervisor Mode.</p>
-<p>Thus <strong>OpenSBI is the only thing</strong> that runs in Machine Mode. And can access the Machine-Mode Registers.</p>
+<p>Thus <strong>OpenSBI is the only thing</strong> that runs in Machine Mode. And can access the Machine-Mode Registers. (Pic above)</p>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64">(More about <strong>U-Boot</strong>)</a></p>
 <p><em>QEMU doesn’t have this problem?</em></p>
 <p>Because QEMU runs everything in (super-powerful) <strong>Machine Mode</strong>!</p>
-<p>TODO: Pic</p>
+<p><img src="https://lupyuen.github.io/images/nuttx2-privilege2.jpg" alt="NuttX QEMU runs in Machine Mode" /></p>
 <p>NuttX needs to fetch the Hart ID with a different recipe…</p>
 <h1 id="downgrade-nuttx-to-supervisor-mode"><a href="#downgrade-nuttx-to-supervisor-mode">9 Downgrade NuttX to Supervisor Mode</a></h1>
 <p><em>OpenSBI runs in Machine Mode and reads the Hart ID (CPU ID)…</em></p>
