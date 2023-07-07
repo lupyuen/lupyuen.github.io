@@ -505,6 +505,10 @@ Because QEMU runs NuttX in (super-powerful) __Machine Mode__!
 
 NuttX needs to fetch the Hart ID with a different recipe...
 
+![OpenSBI starts U-Boot Bootloader on Star64](https://lupyuen.github.io/images/star64-opensbi.jpg)
+
+[_OpenSBI starts U-Boot Bootloader on Star64_](https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface)
+
 # Downgrade NuttX to Supervisor Mode
 
 _OpenSBI runs in Machine Mode and reads the Hart ID (CPU ID)..._
