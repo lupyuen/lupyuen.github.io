@@ -600,6 +600,8 @@ clk u5_dw_i2c_clk_apb already disabled
 123067
 ```
 
+[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1)
+
 Now we're smokin' hot...
 
 - No more [__Crash Dump__](https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-crash-log)!
