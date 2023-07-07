@@ -591,9 +591,7 @@ Here's the updated NuttX Boot Code and our analysis...
 
 _What happens when we run this?_
 
-TODO: (Pic above)
-
-Hart ID is now 0, which is correct...
+When we boot the modified NuttX on Star64, we see this...
 
 ```text
 Starting kernel ...
@@ -602,9 +600,15 @@ clk u5_dw_i2c_clk_apb already disabled
 123067
 ```
 
-But `qemu_rv_start` hangs. Why?
+Now we're smokin' hot...
 
-```text
+- No more [__Crash Dump__](https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-crash-log)!
+
+- "__`0`__" is the Adjusted Hart ID passed by OpenSBI to NuttX
+
+- "__`7`__" is the last thing that's printed by our NuttX Boot Code...
+
+  ```text
   /* Print `7` */
   li  t0, 0x10000000
   li  t1, 0x37
@@ -612,9 +616,15 @@ But `qemu_rv_start` hangs. Why?
 
   /* Jump to qemu_rv_start */
   jal  x1, qemu_rv_start
-```
+  ```
 
-TODO: Trace `qemu_rv_start`
+  [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L163-L199)
+
+- Which means that our __NuttX Boot Code has completed__ execution yay!
+
+- But NuttX hangs in the C Function __qemu_rv_start__
+
+We'll find out why in the next article!
 
 # What's Next
 
@@ -723,6 +733,10 @@ Earlier we identified these fixes for the [__NuttX Boot Code__](https://lupyuen.
 
 Here's the updated NuttX Boot Code for Supervisor Mode, and our analysis: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S)
 
+__For All Hart IDs:__
+
+We receive the Hart ID from OpenSBI, subtract one, and print it...
+
 ```text
 real_start:
   ...
@@ -739,6 +753,8 @@ real_start:
   sb   t1, 0(t0)
 ```
 
+[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L104)
+
 __If Hart ID is 0:__
 
 - Set Stack Pointer to the Idle Thread Stack
@@ -749,6 +765,8 @@ __If Hart ID is 0:__
   la   sp, QEMU_RV_IDLESTACK_TOP
   j    2f
 ```
+
+[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L104-L110)
 
 __If Hart ID is 1, 2, 3, ...__
 
@@ -796,11 +814,13 @@ __If Hart ID is 1, 2, 3, ...__
   add  sp, sp, t0
 ```
 
+[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L110-L164)
+
 __For All Hart IDs:__
 
 - Disable Interrupts
-- Load the Interrupt Vector Table
-- Jump to `qemu_rv_start`
+- Load the Trap Vector Table
+- Jump to __qemu_rv_start__
 
 ```
 2:
@@ -818,6 +838,8 @@ __For All Hart IDs:__
 
   /* We shouldn't return from _start */
 ```
+
+[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L163-L199)
 
 Note that we don't load the Trap Vector Table, because we'll use OpenSBI for Crash Logging. (Like when we hit Machine-Mode Instructions)
 
