@@ -175,7 +175,7 @@ static void u16550_send(struct uart_dev_s *dev, int ch) {
 *(volatile uint8_t *) 0x10000000 = &#39;1&#39;;
 </code></pre></div>
 <p><em>What about RISC-V Assembly?</em></p>
-<p>This is how we print to QEMU Console in <strong>RISC-V Assembly Code</strong>, so we can debug the NuttX Boot Code: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L71-L93">qemu_rv_head.S</a></p>
+<p>This is how we print to QEMU Console in <strong>RISC-V Assembly Code</strong> (to debug our NuttX Boot Code): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L71-L93">qemu_rv_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* Load UART Base Address to Register t0 */
 li  t0, 0x10000000
 
@@ -254,8 +254,7 @@ nsh&gt;
 <p><a href="https://lupyuen.github.io/articles/star64#appendix-decode-the-risc-v-linux-header"><strong>“Decode the RISC-V Linux Header”</strong></a></p>
 </li>
 </ul>
-<p>We’ve done this previously for the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/arm64/src/common/arm64_head.S#L79-L118"><strong>Arm64 Linux Header</strong></a>…</p>
-<p>Now we adapt it for our <strong>RISC-V Linux Header</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L42-L75">qemu_rv_head.S</a></p>
+<p>This is the Assembly Code for our <strong>RISC-V Linux Header</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L42-L75">qemu_rv_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>c.li    s4, -13              /* Magic Signature &quot;MZ&quot; (2 bytes) */
 j       real_start           /* Jump to Kernel Start (2 bytes) */
 .long   0                    /* Executable Code padded to 8 bytes */
@@ -290,27 +289,27 @@ real_start:
 </li>
 </ul>
 <p>Thus we do the same for NuttX on Star64.</p>
-<p>This is how we set the Start Address to <strong><code>0x4020</code> <code>0000</code></strong> in the <strong>NuttX Build Configuration</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L56-L57">nsh64/defconfig</a></p>
+<p>This is how we set the Start Address to <strong><code>0x4020</code> <code>0000</code></strong> in our <strong>NuttX Build Configuration</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L56-L57">nsh64/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_RAM_SIZE=33554432
 CONFIG_RAM_START=0x40200000
 </code></pre></div>
-<p>And we updated the <strong>NuttX Linker Script</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L26">ld.script</a></p>
+<p>And our <strong>NuttX Linker Script</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L26">ld.script</a></p>
 <div class="example-wrap"><pre class="language-text"><code>SECTIONS
 {
   /* Previously 0x80000000 */
   . = 0x40200000;
   .text :
 </code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-start-address-of-nuttx-kernel">(Remember to update <strong>knsh64/defconfig</strong> and <strong>ld-kernel64.script</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-start-address-of-nuttx-kernel">(Also <strong>knsh64/defconfig</strong> and <strong>ld-kernel64.script</strong>)</a></p>
 <p><em>We’re sure this is correct?</em></p>
-<p>Checking the <strong>RISC-V Disassembly</strong> of NuttX Kernel: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64-0.0.1/nuttx.S">nuttx.S</a></p>
+<p>We check the <strong>RISC-V Disassembly</strong> of our NuttX Kernel: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64-0.0.1/nuttx.S">nuttx.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>0000000040200000 &lt;__start&gt;:
   li  s4, -0xd    /* Magic Signature &quot;MZ&quot; (2 bytes) */
     40200000:	5a4d  li  s4,-13
   j   real_start  /* Jump to Kernel Start (2 bytes) */
     40200002:	a83d  j	  40200040 &lt;real_start&gt;
 </code></pre></div>
-<p>The NuttX Start Address is indeed <strong><code>0x4020</code> <code>0000</code></strong>.</p>
+<p>The Start Address is indeed <strong><code>0x4020</code> <code>0000</code></strong>.</p>
 <p>Yep Looks Good To Us (YLGTU), we’re ready to boot on Star64!</p>
 <p><img src="https://lupyuen.github.io/images/star64-nuttx.png" alt="Boot NuttX on Star64" /></p>
 <h1 id="boot-nuttx-on-star64"><a href="#boot-nuttx-on-star64">6 Boot NuttX on Star64</a></h1>
