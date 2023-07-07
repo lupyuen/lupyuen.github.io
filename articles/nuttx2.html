@@ -756,11 +756,10 @@ csrw CSR_IP, zero
 <li>Load the Trap Vector Table</li>
 <li>Jump to <strong>qemu_rv_start</strong></li>
 </ul>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="number">2</span>:
-  <span class="comment">/* Disable all interrupts (i.e. timer, external) in mie */
-  </span>csrw	sie, zero
-  <span class="comment">/* Previously: csrw	mie, zero */
+<div class="example-wrap"><pre class="language-text"><code>2:
+  /* Disable all interrupts (i.e. timer, external) in mie */
+  csrw	sie, zero
+  /* Previously: csrw	mie, zero */
 
   /* Don&#39;t load the Trap Vector Table, use OpenSBI for crash logging */
   /* la   t0, __trap_vec */
@@ -768,9 +767,10 @@ csrw CSR_IP, zero
   /* Previously: csrw mtvec, t0 */
 
   /* Jump to qemu_rv_start */
-  </span>jal  x1, qemu_rv_start
+  jal  x1, qemu_rv_start
 
-  <span class="comment">/* We shouldn&#39;t return from _start */</span></code></pre></div>
+  /* We shouldn&#39;t return from _start */
+</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L163-L199">(Source)</a></p>
 <p>Note that we don’t load the Trap Vector Table, because we’ll use OpenSBI for Crash Logging. (Like when we hit Machine-Mode Instructions)</p>
 <h1 id="appendix-nuttx-start-address"><a href="#appendix-nuttx-start-address">14 Appendix: NuttX Start Address</a></h1>
