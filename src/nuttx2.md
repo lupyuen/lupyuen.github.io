@@ -408,7 +408,7 @@ reset not supported yet
 ### ERROR ### Please RESET the board ###
 ```
 
-Why did NuttX crash at __`0x4020` `005C`__? Let's find out...
+Why did NuttX crash at __`0x4020` `005C`__? We percolate our code...
 
 ![Cody AI Assistant tries to explain our RISC-V Exception](https://lupyuen.github.io/images/star64-exception.jpg)
 
