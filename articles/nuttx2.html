@@ -547,23 +547,40 @@ csrw  stvec, t0
 </li>
 </ul>
 <p><em>What happens when we run this?</em></p>
-<p>TODO: (Pic above)</p>
-<p>Hart ID is now 0, which is correct…</p>
+<p>When we boot the modified NuttX on Star64, we see this…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 clk u5_dw_i2c_clk_core already disabled
 clk u5_dw_i2c_clk_apb already disabled
 123067
 </code></pre></div>
-<p>But <code>qemu_rv_start</code> hangs. Why?</p>
-<div class="example-wrap"><pre class="language-text"><code>  /* Print `7` */
-  li  t0, 0x10000000
-  li  t1, 0x37
-  sb  t1, 0(t0)
+<p>Now we’re smokin’ hot…</p>
+<ul>
+<li>
+<p>No more <a href="https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-crash-log"><strong>Crash Dump</strong></a>!</p>
+</li>
+<li>
+<p>“<strong><code>0</code></strong>” is the Adjusted Hart ID passed by OpenSBI to NuttX</p>
+</li>
+<li>
+<p>“<strong><code>7</code></strong>” is the last thing that’s printed by our NuttX Boot Code…</p>
+<div class="example-wrap"><pre class="language-text"><code>/* Print `7` */
+li  t0, 0x10000000
+li  t1, 0x37
+sb  t1, 0(t0)
 
-  /* Jump to qemu_rv_start */
-  jal  x1, qemu_rv_start
+/* Jump to qemu_rv_start */
+jal  x1, qemu_rv_start
 </code></pre></div>
-<p>TODO: Trace <code>qemu_rv_start</code></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L163-L199">(Source)</a></p>
+</li>
+<li>
+<p>Which means that our <strong>NuttX Boot Code has completed</strong> execution yay!</p>
+</li>
+<li>
+<p>But NuttX hangs in the C Function <strong>qemu_rv_start</strong></p>
+</li>
+</ul>
+<p>We’ll find out why in the next article!</p>
 <h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO: This is the first in a series of articles on porting NuttX to Star64.</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
@@ -660,6 +677,8 @@ csrw CSR_IP, zero
 </li>
 </ol>
 <p>Here’s the updated NuttX Boot Code for Supervisor Mode, and our analysis: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S">qemu_rv_head.S</a></p>
+<p><strong>For All Hart IDs:</strong></p>
+<p>We receive the Hart ID from OpenSBI, subtract one, and print it…</p>
 <div class="example-wrap"><pre class="language-text"><code>real_start:
   ...
   /* Load mhartid (cpuid) */
@@ -674,6 +693,7 @@ csrw CSR_IP, zero
   /* Store byte from Register t1 to UART Base Address, Offset 0 */
   sb   t1, 0(t0)
 </code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L104">(Source)</a></p>
 <p><strong>If Hart ID is 0:</strong></p>
 <ul>
 <li>Set Stack Pointer to the Idle Thread Stack</li>
@@ -683,6 +703,7 @@ csrw CSR_IP, zero
   la   sp, QEMU_RV_IDLESTACK_TOP
   j    2f
 </code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L104-L110">(Source)</a></p>
 <p><strong>If Hart ID is 1, 2, 3, …</strong></p>
 <ul>
 <li>Validate the Hart ID (Must be less than number of CPUs)</li>
@@ -727,11 +748,12 @@ csrw CSR_IP, zero
   li   t0, STACK_ALIGN_UP(CONFIG_IDLETHREAD_STACKSIZE - XCPTCONTEXT_SIZE)
   add  sp, sp, t0
 </code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L110-L164">(Source)</a></p>
 <p><strong>For All Hart IDs:</strong></p>
 <ul>
 <li>Disable Interrupts</li>
-<li>Load the Interrupt Vector Table</li>
-<li>Jump to <code>qemu_rv_start</code></li>
+<li>Load the Trap Vector Table</li>
+<li>Jump to <strong>qemu_rv_start</strong></li>
 </ul>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="number">2</span>:
@@ -748,6 +770,7 @@ csrw CSR_IP, zero
   </span>jal  x1, qemu_rv_start
 
   <span class="comment">/* We shouldn&#39;t return from _start */</span></code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L163-L199">(Source)</a></p>
 <p>Note that we don’t load the Trap Vector Table, because we’ll use OpenSBI for Crash Logging. (Like when we hit Machine-Mode Instructions)</p>
 <h1 id="appendix-nuttx-start-address"><a href="#appendix-nuttx-start-address">14 Appendix: NuttX Start Address</a></h1>
 <p>Previously we changed the NuttX Start Address in <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L56-L57"><strong>nsh64/defconfig</strong></a> and <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L26"><strong>ld.script</strong></a>…</p>
