@@ -696,9 +696,7 @@ csrw CSR_IP, zero
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L104">(Source)</a></p>
 <p><strong>If Hart ID is 0:</strong></p>
-<ul>
-<li>Set Stack Pointer to the Idle Thread Stack</li>
-</ul>
+<p>Set Stack Pointer to the Idle Thread Stack</p>
 <div class="example-wrap"><pre class="language-text"><code>  /* Set stack pointer to the idle thread stack */
   bnez a0, 1f
   la   sp, QEMU_RV_IDLESTACK_TOP
