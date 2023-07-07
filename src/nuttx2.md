@@ -630,108 +630,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/nuttx2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/nuttx2.md)
 
-# Appendix: NuttX Start Address
-
-TODO
-
-Remember to change this if building for NuttX Kernel Mode: [ld-kernel64.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel64.script#L21-L51):
-
-```text
-MEMORY
-{
-    /* Previously 0x80000000 */
-    kflash (rx) : ORIGIN = 0x40200000, LENGTH = 2048K   /* w/ cache */
-    /* Previously 0x80200000 */
-    ksram (rwx) : ORIGIN = 0x40400000, LENGTH = 2048K   /* w/ cache */
-    /* Previously 0x80400000 */
-    pgram (rwx) : ORIGIN = 0x40600000, LENGTH = 4096K   /* w/ cache */
-}
-...
-SECTIONS
-{
-  /* Previously 0x80000000 */
-  . = 0x40200000;
-  .text :
-```
-
-Which should match [knsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig):
-
-```text
-CONFIG_ARCH_PGPOOL_PBASE=0x40600000
-CONFIG_ARCH_PGPOOL_VBASE=0x40600000
-// TODO: Fix CONFIG_RAM_SIZE
-CONFIG_RAM_SIZE=1048576
-CONFIG_RAM_START=0x40200000
-```
-
-RISC-V Disassembly of NuttX Kernel shows that the Start Address is correct...
-
-```text
-0000000040200000 <__start>:
-  li      s4, -0xd             /* Magic Signature "MZ" (2 bytes) */
-    40200000:	5a4d                	li	s4,-13
-  j       real_start           /* Jump to Kernel Start (2 bytes) */
-    40200002:	a83d                	j	40200040 <real_start>
-```
-
-![Boot NuttX on Star64](https://lupyuen.github.io/images/star64-nuttx.png)
-
-# Appendix: NuttX Crash Log
-
-TODO
-
-Here's the complete log...
-
-```text
-Retrieving file: /boot/extlinux/extlinux.conf
-383 bytes read in 7 ms (52.7 KiB/s)
-1:[6CArmbian
-Retrieving file: /boot/uInitrd
-10911538 bytes read in 466 ms (22.3 MiB/s)
-Retrieving file: /boot/Image
-163201 bytes read in 14 ms (11.1 MiB/s)
-append: root=UUID=99f62df4-be35-475c-99ef-2ba3f74fe6b5 console=ttyS0,115200n8 console=tty0 earlycon=sbi rootflags=data=writeback stmmaceth=chain_mode:1 rw rw no_console_suspend consoleblank=0 fsck.fix=yes fsck.repair=yes net.ifnames=0 splash plymouth.ignore-serial-consoles
-Retrieving file: /boot/dtb/starfive/jh7110-star64-pine64.dtb
-50235 bytes read in 14 ms (3.4 MiB/s)
-## Loading init Ramdisk from Legacy Image at 46100000 ...
-   Image Name:   uInitrd
-   Image Type:   RISC-V Linux RAMDisk Image (gzip compressed)
-   Data Size:    10911474 Bytes = 10.4 MiB
-   Load Address: 00000000
-   Entry Point:  00000000
-   Verifying Checksum ... OK
-## Flattened Device Tree blob at 46000000
-   Booting using the fdt blob at 0x46000000
-   Using Device Tree in place at 0000000046000000, end 000000004600f43a
-
-Starting kernel ...
-
-clk u5_dw_i2c_clk_core already disabled
-clk u5_dw_i2c_clk_apb already disabled
-123Unhandled exception: Illegal instruction
-EPC: 000000004020005c RA: 00000000fff471c6 TVAL: 00000000f1402573
-EPC: ffffffff804ba05c RA: 00000000402011c6 reloc adjusted
-
-SP:  00000000ff733630 GP:  00000000ff735e00 TP:  0000000000000001
-T0:  0000000010000000 T1:  0000000000000033 T2:  7869662e6b637366
-S0:  0000000000000400 S1:  00000000ffff1428 A0:  0000000000000001
-A1:  0000000046000000 A2:  0000000000000600 A3:  0000000000004000
-A4:  0000000000000000 A5:  0000000040200000 A6:  00000000fffd5708
-A7:  0000000000000000 S2:  00000000fff47194 S3:  0000000000000003
-S4:  fffffffffffffff3 S5:  00000000fffdbb50 S6:  0000000000000000
-S7:  0000000000000000 S8:  00000000fff47194 S9:  0000000000000002
-S10: 0000000000000000 S11: 0000000000000000 T3:  0000000000000023
-T4:  000000004600b5cc T5:  000000000000ff00 T6:  000000004600b5cc
-
-Code: 0313 0320 8023 0062 0313 0330 8023 0062 (2573 f140)
-
-
-resetting ...
-reset not supported yet
-### ERROR ### Please RESET the board ###
-```
-
-# Appendix: NuttX in Supervisor Mode
+# Appendix: Hart ID from OpenSBI
 
 TODO
 
@@ -808,7 +707,7 @@ That's because the Linux Boot Code will work for Machine Level AND Supervisor Le
 
 [(Source)](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/csr.h#L391-L444)
 
-# Appendix: Fix the NuttX Boot Code
+# Appendix: NuttX in Supervisor Mode
 
 TODO
 
@@ -921,3 +820,94 @@ __For All Hart IDs:__
 ```
 
 Note that we don't load the Interrupt Vector Table, because we'll use OpenSBI for crash logging. (Like when we hit M-Mode Instructions)
+
+# Appendix: NuttX Start Address
+
+TODO
+
+Remember to change this if building for NuttX Kernel Mode: [ld-kernel64.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel64.script#L21-L51):
+
+```text
+MEMORY
+{
+    /* Previously 0x80000000 */
+    kflash (rx) : ORIGIN = 0x40200000, LENGTH = 2048K   /* w/ cache */
+    /* Previously 0x80200000 */
+    ksram (rwx) : ORIGIN = 0x40400000, LENGTH = 2048K   /* w/ cache */
+    /* Previously 0x80400000 */
+    pgram (rwx) : ORIGIN = 0x40600000, LENGTH = 4096K   /* w/ cache */
+}
+...
+SECTIONS
+{
+  /* Previously 0x80000000 */
+  . = 0x40200000;
+  .text :
+```
+
+Which should match [knsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig):
+
+```text
+CONFIG_ARCH_PGPOOL_PBASE=0x40600000
+CONFIG_ARCH_PGPOOL_VBASE=0x40600000
+// TODO: Fix CONFIG_RAM_SIZE
+CONFIG_RAM_SIZE=1048576
+CONFIG_RAM_START=0x40200000
+```
+
+![Boot NuttX on Star64](https://lupyuen.github.io/images/star64-nuttx.png)
+
+# Appendix: NuttX Crash Log
+
+TODO
+
+Here's the complete log...
+
+```text
+Retrieving file: /boot/extlinux/extlinux.conf
+383 bytes read in 7 ms (52.7 KiB/s)
+1:[6CArmbian
+Retrieving file: /boot/uInitrd
+10911538 bytes read in 466 ms (22.3 MiB/s)
+Retrieving file: /boot/Image
+163201 bytes read in 14 ms (11.1 MiB/s)
+append: root=UUID=99f62df4-be35-475c-99ef-2ba3f74fe6b5 console=ttyS0,115200n8 console=tty0 earlycon=sbi rootflags=data=writeback stmmaceth=chain_mode:1 rw rw no_console_suspend consoleblank=0 fsck.fix=yes fsck.repair=yes net.ifnames=0 splash plymouth.ignore-serial-consoles
+Retrieving file: /boot/dtb/starfive/jh7110-star64-pine64.dtb
+50235 bytes read in 14 ms (3.4 MiB/s)
+## Loading init Ramdisk from Legacy Image at 46100000 ...
+   Image Name:   uInitrd
+   Image Type:   RISC-V Linux RAMDisk Image (gzip compressed)
+   Data Size:    10911474 Bytes = 10.4 MiB
+   Load Address: 00000000
+   Entry Point:  00000000
+   Verifying Checksum ... OK
+## Flattened Device Tree blob at 46000000
+   Booting using the fdt blob at 0x46000000
+   Using Device Tree in place at 0000000046000000, end 000000004600f43a
+
+Starting kernel ...
+
+clk u5_dw_i2c_clk_core already disabled
+clk u5_dw_i2c_clk_apb already disabled
+123Unhandled exception: Illegal instruction
+EPC: 000000004020005c RA: 00000000fff471c6 TVAL: 00000000f1402573
+EPC: ffffffff804ba05c RA: 00000000402011c6 reloc adjusted
+
+SP:  00000000ff733630 GP:  00000000ff735e00 TP:  0000000000000001
+T0:  0000000010000000 T1:  0000000000000033 T2:  7869662e6b637366
+S0:  0000000000000400 S1:  00000000ffff1428 A0:  0000000000000001
+A1:  0000000046000000 A2:  0000000000000600 A3:  0000000000004000
+A4:  0000000000000000 A5:  0000000040200000 A6:  00000000fffd5708
+A7:  0000000000000000 S2:  00000000fff47194 S3:  0000000000000003
+S4:  fffffffffffffff3 S5:  00000000fffdbb50 S6:  0000000000000000
+S7:  0000000000000000 S8:  00000000fff47194 S9:  0000000000000002
+S10: 0000000000000000 S11: 0000000000000000 T3:  0000000000000023
+T4:  000000004600b5cc T5:  000000000000ff00 T6:  000000004600b5cc
+
+Code: 0313 0320 8023 0062 0313 0330 8023 0062 (2573 f140)
+
+
+resetting ...
+reset not supported yet
+### ERROR ### Please RESET the board ###
+```
