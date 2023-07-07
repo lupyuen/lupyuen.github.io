@@ -518,7 +518,7 @@ So this (overly-powerful) line in our [__NuttX Boot Code__](https://github.com/l
 csrr a0, mhartid
 ```
 
-Gets demoted to: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L104)
+Gets demoted to this: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L104)
 
 ```text
 /* We assume that OpenSBI has passed Hart ID (value 1) in Register A0. */
