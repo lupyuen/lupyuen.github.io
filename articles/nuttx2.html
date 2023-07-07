@@ -608,7 +608,7 @@ jal  x1, qemu_rv_start
 <p><em>NuttX can’t read the <code>mhartid</code> CSR Register in Supervisor Mode…</em></p>
 <p><em>How to get the Hart ID from OpenSBI?</em></p>
 <p>We refer to the Linux Boot Code: <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S">linux/arch/riscv/kernel/head.S</a></p>
-<p>(Tip: <code>CONFIG_RISCV_M_MODE</code> is False and <code>CONFIG_EFI</code> is True)</p>
+<p>(Tip: CONFIG_RISCV_M_MODE is False and CONFIG_EFI is True)</p>
 <div class="example-wrap"><pre class="language-c"><code>/* Save hart ID and DTB physical address */
 mv s0, a0
 mv s1, a1
@@ -646,15 +646,15 @@ csrw CSR_IE, zero
 csrw CSR_IP, zero
 </code></pre></div>
 <p><a href="https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S#L195-L200">(Source)</a></p>
-<p>That’s because the Linux Boot Code will work for Machine Level AND Supervisor Level! Here’s how <strong><code>CSR_IE</code></strong> and <strong><code>CSR_IP</code></strong> are mapped to the <strong><code>m</code></strong> and <strong><code>s</code></strong> CSR Registers…</p>
-<p>(Remember: <strong>CONFIG_RISCV_M_MODE</strong> is false for NuttX)</p>
+<p>That’s because the Linux Boot Code will work for Machine Mode AND Supervisor Mode! Here’s how <strong><code>CSR_IE</code></strong> and <strong><code>CSR_IP</code></strong> are mapped to the <strong><code>m</code></strong> and <strong><code>s</code></strong> CSR Registers…</p>
+<p>(Remember: CONFIG_RISCV_M_MODE is false for NuttX)</p>
 <div class="example-wrap"><pre class="language-text"><code>#ifdef CONFIG_RISCV_M_MODE
-  /* Use Machine-Level CSR Registers */
+  /* Use Machine-Mode CSR Registers */
   # define CSR_IE		CSR_MIE
   # define CSR_IP		CSR_MIP
   ...
 #else
-  /* Use Supervisor-Level CSR Registers */
+  /* Use Supervisor-Mode CSR Registers */
   # define CSR_IE		CSR_SIE
   # define CSR_IP		CSR_SIP
   ...
