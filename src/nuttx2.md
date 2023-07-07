@@ -120,7 +120,7 @@ Which means that we can print to QEMU Console by writing to __`0x1000` `0000`__.
 
 _What about RISC-V Assembly?_
 
-This is how we print to QEMU Console in __RISC-V Assembly Code__, so we can debug the NuttX Boot Code: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L71-L93)
+This is how we print to QEMU Console in __RISC-V Assembly Code__ (to debug our NuttX Boot Code): [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L71-L93)
 
 ```text
 /* Load UART Base Address to Register t0 */
@@ -219,9 +219,7 @@ But we need to embed the __RISC-V Linux Kernel Header__ (and pretend we're Linux
 
 -   [__"Decode the RISC-V Linux Header"__](https://lupyuen.github.io/articles/star64#appendix-decode-the-risc-v-linux-header)
 
-We've done this previously for the [__Arm64 Linux Header__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/arm64/src/common/arm64_head.S#L79-L118)...
-
-Now we adapt it for our __RISC-V Linux Header__: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L42-L75)
+This is the Assembly Code for our __RISC-V Linux Header__: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L42-L75)
 
 ```text
 c.li    s4, -13              /* Magic Signature "MZ" (2 bytes) */
@@ -264,14 +262,14 @@ From previous articles, we saw that Star64's U-Boot Bootloader will load Linux K
 
 Thus we do the same for NuttX on Star64.
 
-This is how we set the Start Address to __`0x4020` `0000`__ in the __NuttX Build Configuration__: [nsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L56-L57)
+This is how we set the Start Address to __`0x4020` `0000`__ in our __NuttX Build Configuration__: [nsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L56-L57)
 
 ```text
 CONFIG_RAM_SIZE=33554432
 CONFIG_RAM_START=0x40200000
 ```
 
-And we updated the __NuttX Linker Script__: [ld.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L26)
+And our __NuttX Linker Script__: [ld.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L26)
 
 ```text
 SECTIONS
@@ -281,11 +279,11 @@ SECTIONS
   .text :
 ```
 
-[(Remember to update __knsh64/defconfig__ and __ld-kernel64.script__)](https://lupyuen.github.io/articles/nuttx2#appendix-start-address-of-nuttx-kernel)
+[(Also __knsh64/defconfig__ and __ld-kernel64.script__)](https://lupyuen.github.io/articles/nuttx2#appendix-start-address-of-nuttx-kernel)
 
 _We're sure this is correct?_
 
-Checking the __RISC-V Disassembly__ of NuttX Kernel: [nuttx.S](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64-0.0.1/nuttx.S)
+We check the __RISC-V Disassembly__ of our NuttX Kernel: [nuttx.S](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64-0.0.1/nuttx.S)
 
 ```text
 0000000040200000 <__start>:
@@ -295,7 +293,7 @@ Checking the __RISC-V Disassembly__ of NuttX Kernel: [nuttx.S](https://github.co
     40200002:	a83d  j	  40200040 <real_start>
 ```
 
-The NuttX Start Address is indeed __`0x4020` `0000`__.
+The Start Address is indeed __`0x4020` `0000`__.
 
 Yep Looks Good To Us (YLGTU), we're ready to boot on Star64!
 
