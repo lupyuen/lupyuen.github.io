@@ -309,11 +309,11 @@ We're finally ready to __boot NuttX on Star64__! We compile __NuttX for RISC-V Q
 
 Then we tweak it to __boot on Star64__ (and rebuild)...
 
-1.  Print [__Debug Logs__](https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console) in RISC-V Assembly
+1.  Print the [__Debug Logs__](https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console) in RISC-V Assembly
 
-1.  Check the [__UART Base Address__](https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64) for Star64
+1.  Check the [__UART Base Address__](https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64)
 
-1.  Embed the [__RISC-V Kernel Header__](https://lupyuen.github.io/articles/nuttx2#risc-v-linux-kernel-header) for NuttX
+1.  Embed the [__RISC-V Kernel Header__](https://lupyuen.github.io/articles/nuttx2#risc-v-linux-kernel-header)
 
 1.  Set the [__Start Address__](https://lupyuen.github.io/articles/nuttx2#start-address-of-nuttx-kernel) of NuttX Kernel
 
@@ -630,7 +630,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/nuttx2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/nuttx2.md)
 
-# Appendix: Start Address of NuttX Kernel
+# Appendix: NuttX Start Address
 
 TODO
 
@@ -676,7 +676,7 @@ RISC-V Disassembly of NuttX Kernel shows that the Start Address is correct...
 
 ![Boot NuttX on Star64](https://lupyuen.github.io/images/star64-nuttx.png)
 
-# Appendix: Boot NuttX on Star64
+# Appendix: NuttX Crash Log
 
 TODO
 
@@ -731,7 +731,7 @@ reset not supported yet
 ### ERROR ### Please RESET the board ###
 ```
 
-# Appendix: Downgrade NuttX to Supervisor Mode
+# Appendix: NuttX in Supervisor Mode
 
 TODO
 
