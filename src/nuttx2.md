@@ -852,12 +852,12 @@ Remember to change this Linker Script if building for __NuttX Kernel Mode__: [ld
 ```text
 MEMORY
 {
-    /* Previously 0x80000000 */
-    kflash (rx) : ORIGIN = 0x40200000, LENGTH = 2048K   /* w/ cache */
-    /* Previously 0x80200000 */
-    ksram (rwx) : ORIGIN = 0x40400000, LENGTH = 2048K   /* w/ cache */
-    /* Previously 0x80400000 */
-    pgram (rwx) : ORIGIN = 0x40600000, LENGTH = 4096K   /* w/ cache */
+  /* Previously 0x80000000 */
+  kflash (rx) : ORIGIN = 0x40200000, LENGTH = 2048K   /* w/ cache */
+  /* Previously 0x80200000 */
+  ksram (rwx) : ORIGIN = 0x40400000, LENGTH = 2048K   /* w/ cache */
+  /* Previously 0x80400000 */
+  pgram (rwx) : ORIGIN = 0x40600000, LENGTH = 4096K   /* w/ cache */
 }
 ...
 SECTIONS
