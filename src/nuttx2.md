@@ -452,7 +452,7 @@ So the above code will load the Hart ID (or CPU ID) into Register __a0__.
 
 _But it worked perfectly on QEMU! Why did it fail?_
 
-Ah that's because something has changed on Star64: Our Privilege Level...
+Ah that's because something super spicy has changed on Star64: Our Privilege Level...
 
 TODO: Pic
 
@@ -503,7 +503,7 @@ Because QEMU runs everything in (super-powerful) __Machine Mode__!
 
 TODO: Pic
 
-NuttX needs to fetch the Hart ID in a different way...
+NuttX needs to fetch the Hart ID with a different recipe...
 
 # Downgrade NuttX to Supervisor Mode
 
@@ -561,7 +561,7 @@ Easy! We change the Machine-Mode __`m`__ Registers to Supervisor-Mode __`s`__ Re
 
   [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L174-L179)
 
-Let's test this...
+Let's taste this...
 
 # Fix the NuttX Boot Code
 
