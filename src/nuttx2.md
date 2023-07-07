@@ -824,7 +824,7 @@ __For All Hart IDs:__
 - Load the Trap Vector Table
 - Jump to __qemu_rv_start__
 
-```
+```text
 2:
   /* Disable all interrupts (i.e. timer, external) in mie */
   csrw	sie, zero
