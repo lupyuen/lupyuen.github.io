@@ -503,7 +503,7 @@ csrw  sie, zero
 </li>
 <li>
 <p><strong>To Load Trap Vector Table:</strong> Change <a href="https://lupyuen.github.io/articles/riscv#load-interrupt-vector"><strong><code>mtvec</code></strong></a> to <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec"><strong><code>stvec</code></strong></a></p>
-<div class="example-wrap"><pre class="language-text"><code>/* Load address of Interrupt Vector Table */
+<div class="example-wrap"><pre class="language-text"><code>/* Load address of Trap Vector Table */
 csrw  stvec, t0
 /* Previously `mtvec` */
 </code></pre></div>
