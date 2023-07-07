@@ -301,7 +301,7 @@ CONFIG_RAM_START=0x40200000
   . = 0x40200000;
   .text :
 </code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-start-address-of-nuttx-kernel">(Also <strong>knsh64/defconfig</strong> and <strong>ld-kernel64.script</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-start-address">(Also <strong>knsh64/defconfig</strong> and <strong>ld-kernel64.script</strong>)</a></p>
 <p><em>We’re sure this is correct?</em></p>
 <p>We check the <strong>RISC-V Disassembly</strong> of our NuttX Kernel: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64-0.0.1/nuttx.S">nuttx.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>0000000040200000 &lt;__start&gt;:
@@ -397,7 +397,7 @@ S7:  0000000000000000 S8:  00000000fff47194 S9:  0000000000000002
 S10: 0000000000000000 S11: 0000000000000000 T3:  0000000000000023
 T4:  000000004600b5cc T5:  000000000000ff00 T6:  000000004600b5cc
 </code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-boot-nuttx-on-star64">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-crash-log">(See the <strong>Complete Log</strong>)</a></p>
 <p>(<strong>EPC</strong> is the Program Counter for the Exception: <strong><code>0x4020</code> <code>005C</code></strong>)</p>
 <p>And Star64 (OpenSBI) shows the offending <strong>RISC-V Machine Code</strong> (in brackets)…</p>
 <div class="example-wrap"><pre class="language-text"><code>Code:
@@ -479,7 +479,7 @@ csrr a0, mhartid
 <h1 id="downgrade-nuttx-to-supervisor-mode"><a href="#downgrade-nuttx-to-supervisor-mode">9 Downgrade NuttX to Supervisor Mode</a></h1>
 <p><em>OpenSBI runs in Machine Mode and reads the Hart ID (CPU ID)…</em></p>
 <p><em>How will NuttX get the Hart ID from OpenSBI?</em></p>
-<p>Thankfully OpenSBI will pass the Hart ID to NuttX through <a href="https://lupyuen.github.io/articles/nuttx2#appendix-downgrade-nuttx-to-supervisor-mode"><strong>Register A0</strong></a>.</p>
+<p>Thankfully OpenSBI will pass the Hart ID to NuttX through <a href="https://lupyuen.github.io/articles/nuttx2#appendix-hart-id-from-opensbi"><strong>Register A0</strong></a>.</p>
 <p>So this (overly-powerful) line in our <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ed09c34532ee7c51ac2da816cd6cf0adcce336e6/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L103"><strong>NuttX Boot Code</strong></a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>/* Load the Hart ID (CPU ID) */
 csrr a0, mhartid
@@ -494,7 +494,7 @@ addi t1, a0, 0x30
 /* Store byte from Register t1 to UART Base Address, Offset 0 */
 sb   t1, 0(t0)
 </code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-downgrade-nuttx-to-supervisor-mode">(OpenSBI passes <strong>Hart ID as 1</strong>, instead of 0)</a></p>
+<p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-hart-id-from-opensbi">(OpenSBI passes <strong>Hart ID as 1</strong>, instead of 0)</a></p>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--integer-register-immediate-instructions">(<strong><code>addi</code></strong> adds an Immediate Value to a Register)</a></p>
 <p><em>What about other CSR Instructions in our NuttX Boot Code?</em></p>
 <p>Easy! We change the Machine-Mode <strong><code>m</code></strong> Registers to Supervisor-Mode <strong><code>s</code></strong> Registers…</p>
@@ -524,7 +524,7 @@ csrw  stvec, t0
 <p>Remove <strong><code>mhartid</code></strong> because OpenSBI will pass <strong>Hart ID</strong> in Register A0</p>
 </li>
 <li>
-<p>Subtract 1 from <strong>Register A0</strong> because NuttX expects Hart ID to start with 0.</p>
+<p>Subtract 1 from <strong>Register A0</strong> because NuttX expects Hart ID to start with 0</p>
 </li>
 <li>
 <p>To Disable Interrupts: Change <a href="https://lupyuen.github.io/articles/riscv#disable-interrupts"><strong><code>mie</code></strong></a> to <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie"><strong><code>sie</code></strong></a></p>
@@ -535,7 +535,7 @@ csrw  stvec, t0
 </ul>
 <p>Here’s the updated NuttX Boot Code and our analysis…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/nuttx2#appendix-fix-the-nuttx-boot-code"><strong>“Fix the NuttX Boot Code”</strong></a></li>
+<li><a href="https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-in-supervisor-mode"><strong>“NuttX in Supervisor Mode”</strong></a></li>
 </ul>
 <p><em>What happens when we run this?</em></p>
 <p>TODO</p>
@@ -578,11 +578,10 @@ clk u5_dw_i2c_clk_apb already disabled
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/nuttx2.md"><strong>lupyuen.github.io/src/nuttx2.md</strong></a></p>
 <h1 id="appendix-hart-id-from-opensbi"><a href="#appendix-hart-id-from-opensbi">12 Appendix: Hart ID from OpenSBI</a></h1>
-<p>TODO</p>
+<p><em>NuttX can’t read the <code>mhartid</code> CSR Register in Supervisor Mode…</em></p>
 <p><em>How to get the Hart ID from OpenSBI?</em></p>
 <p>We refer to the Linux Boot Code: <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S">linux/arch/riscv/kernel/head.S</a></p>
 <p>(Tip: <code>CONFIG_RISCV_M_MODE</code> is False and <code>CONFIG_EFI</code> is True)</p>
-<p>From <a href="https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S#L292-L295">linux/blob/master/arch/riscv/kernel/head.S</a>:</p>
 <div class="example-wrap"><pre class="language-c"><code>/* Save hart ID and DTB physical address */
 mv s0, a0
 mv s1, a1
@@ -590,16 +589,15 @@ mv s1, a1
 <p>Here we see that U-Boot <a href="https://github.com/riscv-non-isa/riscv-sbi-doc/blob/master/riscv-sbi.adoc#function-hart-start-fid-0">(or OpenSBI)</a> will pass 2 arguments when it starts our kernel…</p>
 <ul>
 <li>
-<p>Register A0: Hart ID</p>
+<p><strong>Register A0:</strong> Hart ID</p>
 </li>
 <li>
-<p>Register A1: RAM Address of Device Tree</p>
+<p><strong>Register A1:</strong> RAM Address of Device Tree</p>
 </li>
 </ul>
 <p>So we’ll simply read the Hart ID from Register A0. (And ignore A1)</p>
-<p>We’ll remove <code>csrr a0, mhartid</code>.</p>
 <p><em>What are the actual values of Registers A0 and A1?</em></p>
-<p>Thanks to our <a href="https://lupyuen.github.io/articles/nuttx2#appendix-boot-nuttx-on-star64">earlier Crash Dump</a>, we know the actual values of A0 and A1!</p>
+<p>Thanks to our <a href="https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-crash-log"><strong>Crash Dump</strong></a>, we know the actual values of A0 and A1!</p>
 <div class="example-wrap"><pre class="language-text"><code>SP:  00000000ff733630 GP:  00000000ff735e00 TP:  0000000000000001
 T0:  0000000010000000 T1:  0000000000000033 T2:  7869662e6b637366
 S0:  0000000000000400 S1:  00000000ffff1428 A0:  0000000000000001
@@ -608,10 +606,10 @@ A1:  0000000046000000 A2:  0000000000000600 A3:  0000000000004000
 <p>This says that…</p>
 <ul>
 <li>
-<p>Hart ID is 1 (Register A0)</p>
+<p><strong>Hart ID</strong> is 1 (Register A0)</p>
 </li>
 <li>
-<p>RAM Address of Device Tree is <code>0x4600</code> <code>0000</code> (Register A1)</p>
+<p><strong>RAM Address of Device Tree</strong> is <code>0x4600</code> <code>0000</code> (Register A1)</p>
 </li>
 </ul>
 <p>Yep looks correct! But we’ll subtract 1 from Register A0 because NuttX expects Hart ID to start with 0.</p>
@@ -621,8 +619,8 @@ csrw CSR_IE, zero
 csrw CSR_IP, zero
 </code></pre></div>
 <p><a href="https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S#L195-L200">(Source)</a></p>
-<p>That’s because the Linux Boot Code will work for Machine Level AND Supervisor Level! Here’s how <code>CSR_IE</code> and <code>CSR_IP</code> are mapped to the <code>m</code> and <code>s</code> CSR Registers…</p>
-<p>(Remember: <code>CONFIG_RISCV_M_MODE</code> is false for NuttX)</p>
+<p>That’s because the Linux Boot Code will work for Machine Level AND Supervisor Level! Here’s how <strong><code>CSR_IE</code></strong> and <strong><code>CSR_IP</code></strong> are mapped to the <strong><code>m</code></strong> and <strong><code>s</code></strong> CSR Registers…</p>
+<p>(Remember: <strong>CONFIG_RISCV_M_MODE</strong> is false for NuttX)</p>
 <div class="example-wrap"><pre class="language-text"><code>#ifdef CONFIG_RISCV_M_MODE
   /* Use Machine-Level CSR Registers */
   # define CSR_IE		CSR_MIE
@@ -637,14 +635,13 @@ csrw CSR_IP, zero
 </code></pre></div>
 <p><a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/csr.h#L391-L444">(Source)</a></p>
 <h1 id="appendix-nuttx-in-supervisor-mode"><a href="#appendix-nuttx-in-supervisor-mode">13 Appendix: NuttX in Supervisor Mode</a></h1>
-<p>TODO</p>
-<p>Earlier we identified these fixes for the <strong>NuttX Boot Code</strong>…</p>
+<p>Earlier we identified these fixes for the <a href="https://lupyuen.github.io/articles/nuttx2#fix-the-nuttx-boot-code"><strong>NuttX Boot Code</strong></a> to work in Supervisor Mode…</p>
 <ul>
 <li>
 <p>Remove <strong><code>mhartid</code></strong> because OpenSBI will pass <strong>Hart ID</strong> in Register A0</p>
 </li>
 <li>
-<p>Subtract 1 from <strong>Register A0</strong> because NuttX expects Hart ID to start with 0.</p>
+<p>Subtract 1 from <strong>Register A0</strong> because NuttX expects Hart ID to start with 0</p>
 </li>
 <li>
 <p>To Disable Interrupts: Change <a href="https://lupyuen.github.io/articles/riscv#disable-interrupts"><strong><code>mie</code></strong></a> to <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie"><strong><code>sie</code></strong></a></p>
@@ -653,7 +650,7 @@ csrw CSR_IP, zero
 <p>To Load Trap Vector Table: Change <a href="https://lupyuen.github.io/articles/riscv#load-interrupt-vector"><strong><code>mtvec</code></strong></a> to <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec"><strong><code>stvec</code></strong></a></p>
 </li>
 </ul>
-<p>Here’s the updated NuttX Boot Code and our analysis: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S">qemu_rv_head.S</a></p>
+<p>Here’s the updated NuttX Boot Code for Supervisor Mode, and our analysis: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S">qemu_rv_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>real_start:
   ...
   /* Load mhartid (cpuid) */
@@ -733,7 +730,7 @@ csrw CSR_IP, zero
   </span>csrw	sie, zero
   <span class="comment">/* Previously: csrw	mie, zero */
 
-  /* Don&#39;t load the Interrupt Vector Table, use OpenSBI for crash logging */
+  /* Don&#39;t load the Trap Vector Table, use OpenSBI for crash logging */
   /* la   t0, __trap_vec */
   /* csrw stvec, t0 */
   /* Previously: csrw mtvec, t0 */
@@ -742,10 +739,13 @@ csrw CSR_IP, zero
   </span>jal  x1, qemu_rv_start
 
   <span class="comment">/* We shouldn&#39;t return from _start */</span></code></pre></div>
-<p>Note that we don’t load the Interrupt Vector Table, because we’ll use OpenSBI for crash logging. (Like when we hit M-Mode Instructions)</p>
+<p>Note that we don’t load the Trap Vector Table, because we’ll use OpenSBI for Crash Logging. (Like when we hit Machine-Mode Instructions)</p>
 <h1 id="appendix-nuttx-start-address"><a href="#appendix-nuttx-start-address">14 Appendix: NuttX Start Address</a></h1>
-<p>TODO</p>
-<p>Remember to change this if building for NuttX Kernel Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel64.script#L21-L51">ld-kernel64.script</a>:</p>
+<p>Previously we changed the NuttX Start Address in <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L56-L57"><strong>nsh64/defconfig</strong></a> and <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L26"><strong>ld.script</strong></a>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/nuttx2#start-address-of-nuttx-kernel"><strong>“Start Address of NuttX Kernel”</strong></a></li>
+</ul>
+<p>Remember to change this Linker Script if building for <strong>NuttX Kernel Mode</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel64.script#L21-L51">ld-kernel64.script</a></p>
 <div class="example-wrap"><pre class="language-text"><code>MEMORY
 {
     /* Previously 0x80000000 */
@@ -762,7 +762,7 @@ SECTIONS
   . = 0x40200000;
   .text :
 </code></pre></div>
-<p>Which should match <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig">knsh64/defconfig</a>:</p>
+<p>Which should match the <strong>NuttX Build Configuration</strong> for Kernel Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig">knsh64/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_ARCH_PGPOOL_PBASE=0x40600000
 CONFIG_ARCH_PGPOOL_VBASE=0x40600000
 // TODO: Fix CONFIG_RAM_SIZE
@@ -771,8 +771,11 @@ CONFIG_RAM_START=0x40200000
 </code></pre></div>
 <p><img src="https://lupyuen.github.io/images/star64-nuttx.png" alt="Boot NuttX on Star64" /></p>
 <h1 id="appendix-nuttx-crash-log"><a href="#appendix-nuttx-crash-log">15 Appendix: NuttX Crash Log</a></h1>
-<p>TODO</p>
-<p>Here’s the complete log…</p>
+<p>Earlier we ran NuttX for QEMU on Star64 (before fixing for Supervisor Mode)…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/nuttx2#boot-nuttx-on-star64"><strong>“Boot NuttX on Star64”</strong></a></li>
+</ul>
+<p>Here’s the Crash Log dumped by OpenSBI…</p>
 <div class="example-wrap"><pre class="language-text"><code>Retrieving file: /boot/extlinux/extlinux.conf
 383 bytes read in 7 ms (52.7 KiB/s)
 1:[6CArmbian
