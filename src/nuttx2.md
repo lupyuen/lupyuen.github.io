@@ -297,7 +297,7 @@ We check the __RISC-V Disassembly__ of our NuttX Kernel: [nuttx.S](https://githu
 
 The Start Address is indeed __`0x4020` `0000`__.
 
-Yep Looks Good To Us (YLGTU), we're ready to boot on Star64!
+Yep Looks Good To Us (YLGTU), we're ready to serve it on Star64!
 
 ![Boot NuttX on Star64](https://lupyuen.github.io/images/star64-nuttx.png)
 
