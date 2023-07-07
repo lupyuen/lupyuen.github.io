@@ -429,7 +429,7 @@ nuttx/arch/risc-v/src/chip/qemu_rv_head.S:95
     4020005c:	f1402573  csrr a0, mhartid
 ```
 
-Let's break it down...
+Break it down...
 
 ```text
 /* Load the Hart ID (CPU ID) */
@@ -561,7 +561,7 @@ Easy! We change the Machine-Mode __`m`__ Registers to Supervisor-Mode __`s`__ Re
 
   [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L174-L179)
 
-Let's taste this...
+Time to taste this...
 
 # Fix the NuttX Boot Code
 
