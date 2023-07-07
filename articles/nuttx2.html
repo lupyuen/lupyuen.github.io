@@ -519,8 +519,8 @@ csrw  stvec, t0
 <p>Time to taste this…</p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-boot.png" alt="After fixing NuttX for Supervisor Mode" /></p>
 <h1 id="fix-the-nuttx-boot-code"><a href="#fix-the-nuttx-boot-code">10 Fix the NuttX Boot Code</a></h1>
-<p>From the previous section, we identified these fixes for the NuttX Boot Code…</p>
-<ul>
+<p>From the previous section, we identified these fixes to run NuttX Boot Code in <strong>Supervisor Mode</strong>…</p>
+<ol>
 <li>
 <p>Remove <strong><code>mhartid</code></strong> because OpenSBI will pass <strong>Hart ID</strong> in Register A0</p>
 </li>
@@ -533,10 +533,18 @@ csrw  stvec, t0
 <li>
 <p>To Load Trap Vector Table: Change <a href="https://lupyuen.github.io/articles/riscv#load-interrupt-vector"><strong><code>mtvec</code></strong></a> to <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec"><strong><code>stvec</code></strong></a></p>
 </li>
-</ul>
+</ol>
 <p>Here’s the updated NuttX Boot Code and our analysis…</p>
 <ul>
-<li><a href="https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-in-supervisor-mode"><strong>“NuttX in Supervisor Mode”</strong></a></li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-in-supervisor-mode"><strong>NuttX in Supervisor Mode</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/31/files">See the <strong>Modified Files</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1">See the <strong>Build Outputs</strong></a></p>
+</li>
 </ul>
 <p><em>What happens when we run this?</em></p>
 <p>TODO: (Pic above)</p>
@@ -636,8 +644,8 @@ csrw CSR_IP, zero
 </code></pre></div>
 <p><a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/csr.h#L391-L444">(Source)</a></p>
 <h1 id="appendix-nuttx-in-supervisor-mode"><a href="#appendix-nuttx-in-supervisor-mode">13 Appendix: NuttX in Supervisor Mode</a></h1>
-<p>Earlier we identified these fixes for the <a href="https://lupyuen.github.io/articles/nuttx2#fix-the-nuttx-boot-code"><strong>NuttX Boot Code</strong></a> to work in Supervisor Mode…</p>
-<ul>
+<p>Earlier we identified these fixes for the <a href="https://lupyuen.github.io/articles/nuttx2#fix-the-nuttx-boot-code"><strong>NuttX Boot Code</strong></a> to run in Supervisor Mode…</p>
+<ol>
 <li>
 <p>Remove <strong><code>mhartid</code></strong> because OpenSBI will pass <strong>Hart ID</strong> in Register A0</p>
 </li>
@@ -650,7 +658,7 @@ csrw CSR_IP, zero
 <li>
 <p>To Load Trap Vector Table: Change <a href="https://lupyuen.github.io/articles/riscv#load-interrupt-vector"><strong><code>mtvec</code></strong></a> to <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec"><strong><code>stvec</code></strong></a></p>
 </li>
-</ul>
+</ol>
 <p>Here’s the updated NuttX Boot Code for Supervisor Mode, and our analysis: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S">qemu_rv_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>real_start:
   ...
