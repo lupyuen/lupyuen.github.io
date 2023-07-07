@@ -624,7 +624,7 @@ Now we're smokin' hot...
 
 - But NuttX hangs in the C Function __qemu_rv_start__
 
-We'll find out why in the next article!
+We'll have plenty more tantalising treats in the next article!
 
 # What's Next
 
