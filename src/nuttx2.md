@@ -18,7 +18,7 @@ Nope NuttX won't run on Star64 yet, we'll hit some interesting (and highly educa
 
 But the things that we learn today will be super helpful for [__porting NuttX to Star64__](https://lupyuen.github.io/articles/riscv#jump-to-start).
 
-Please read on to find out how we're __booting a new OS__ (from scratch) on Star64 and JH7110, as we...
+Please read on as we cook up a tiny tasty treat of NuttX on Star64...
 
 - Migrate NuttX from __QEMU Emulator__ to Real Hardware
 
