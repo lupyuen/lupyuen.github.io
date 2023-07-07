@@ -759,7 +759,7 @@ real_start:
 
 __If Hart ID is 0:__
 
-- Set Stack Pointer to the Idle Thread Stack
+Set Stack Pointer to the Idle Thread Stack
 
 ```text
   /* Set stack pointer to the idle thread stack */
