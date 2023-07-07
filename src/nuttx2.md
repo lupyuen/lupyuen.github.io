@@ -307,21 +307,23 @@ We're finally ready to __boot NuttX on Star64__! We compile __NuttX for RISC-V Q
 
 Then we tweak it to __boot on Star64__ (and rebuild)...
 
-- [__"Print to QEMU Console"__](https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console)
+1.  Print [__Debug Logs__](https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console) in RISC-V Assembly
 
-- [__"UART Controller on Star64"__](https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64)
+1.  Check the [__UART Base Address__](https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64) for Star64
 
-- [__"RISC-V Linux Kernel Header"__](https://lupyuen.github.io/articles/nuttx2#risc-v-linux-kernel-header)
+1.  Embed the [__RISC-V Kernel Header__](https://lupyuen.github.io/articles/nuttx2#risc-v-linux-kernel-header) for NuttX
 
-- [__"Start Address of NuttX Kernel"__](https://lupyuen.github.io/articles/nuttx2#start-address-of-nuttx-kernel)
+1.  Set the [__Start Address__](https://lupyuen.github.io/articles/nuttx2#start-address-of-nuttx-kernel) of NuttX Kernel
 
-This produces the __NuttX ELF Image__ for Star64: [__nuttx__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64-0.0.1/nuttx)
+This produces the __NuttX ELF Image__ for Star64...
 
-[(See the __Modified Files__)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/31/files)
+- [__nuttx: NuttX ELF Image__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64-0.0.1/nuttx)
 
-[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1)
+- [See the __Modified Files__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/31/files)
 
-_How to copy it to microSD?_
+- [See the __Build Outputs__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1)
+
+_How to boot NuttX on microSD?_
 
 For the microSD Image, we start with this [__Armbian Image for Star64__](https://www.armbian.com/star64/)...
 
@@ -329,7 +331,7 @@ For the microSD Image, we start with this [__Armbian Image for Star64__](https:/
 
 Uncompress the __.xz__ file. Write the __.img__ file to a microSD Card with [__Balena Etcher__](https://www.balena.io/etcher/) or [__GNOME Disks__](https://wiki.gnome.org/Apps/Disks).
 
-We fix the [__Missing Device Tree__](https://lupyuen.github.io/articles/star64#armbian-image-for-star64)...
+The [__Device Tree__](https://lupyuen.github.io/articles/star64#armbian-image-for-star64) is missing, so we fix it...
 
 ```bash
 ## Fix the Missing Device Tree
@@ -340,7 +342,7 @@ cp \
   /run/media/$USER/armbi_root/boot/dtb/starfive/jh7110-star64-pine64.dtb
 ```
 
-Then we delete the sym-link __/boot/Image__ and copy the NuttX Binary Image __nuttx.bin__ to __/boot/Image__...
+Then we overwrite the Linux Kernel Image by our __NuttX Binary Image__...
 
 ```bash
 ## We assume that `nuttx` contains the NuttX ELF Image.
@@ -359,7 +361,7 @@ cp nuttx.bin /run/media/$USER/armbi_root/boot/Image
 
 Insert the microSD Card into Star64 and power up.
 
-NuttX boots on Star64 and prints "__`123`__" yay! (Pic above)
+When it boots on Star64, NuttX prints "__`123`__" yay! (Pic above)
 
 ```text
 Starting kernel ...
@@ -368,7 +370,7 @@ clk u5_dw_i2c_clk_apb already disabled
 123
 ```
 
-[(Which is printed by our __Boot Code__)](https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console)
+[(Printed by our __Boot Code__)](https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console)
 
 But NuttX crashes with a __RISC-V Illegal Instruction Exception__...
 
@@ -393,7 +395,7 @@ T4:  000000004600b5cc T5:  000000000000ff00 T6:  000000004600b5cc
 
 (__EPC__ is the Program Counter for the Exception: __`0x4020` `005C`__)
 
-And shows (cryptically) the offending __RISC-V Machine Code__ (in brackets)...
+And Star64 (OpenSBI) shows the offending __RISC-V Machine Code__ (in brackets)...
 
 ```text
 Code:
@@ -416,7 +418,7 @@ _What's at `0x4020` `005C`?_
 
 _Why did it crash NuttX?_
 
-We look up our __NuttX RISC-V Disassembly nuttx.S__ and we see this in our Boot Code: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ed09c34532ee7c51ac2da816cd6cf0adcce336e6/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L103)
+We look up our __NuttX RISC-V Disassembly nuttx.S__ and see this in our Boot Code: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ed09c34532ee7c51ac2da816cd6cf0adcce336e6/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L103)
 
 ```text
 nuttx/arch/risc-v/src/chip/qemu_rv_head.S:95
