@@ -167,7 +167,7 @@ nsh>
 
 "__`123`__" is printed 8 times because QEMU is running with 8 CPUs.
 
-Now we port the Debug Log to Star64...
+Now we sprinkle some Debug Logs on Star64...
 
 ![NuttX prints to QEMU Console](https://lupyuen.github.io/images/riscv-print.png)
 
