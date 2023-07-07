@@ -571,19 +571,23 @@ Time to taste this...
 
 # Fix the NuttX Boot Code
 
-From the previous section, we identified these fixes for the NuttX Boot Code...
+From the previous section, we identified these fixes to run NuttX Boot Code in __Supervisor Mode__...
 
-- Remove __`mhartid`__ because OpenSBI will pass __Hart ID__ in Register A0
+1.  Remove __`mhartid`__ because OpenSBI will pass __Hart ID__ in Register A0
 
-- Subtract 1 from __Register A0__ because NuttX expects Hart ID to start with 0
+1.  Subtract 1 from __Register A0__ because NuttX expects Hart ID to start with 0
 
-- To Disable Interrupts: Change [__`mie`__](https://lupyuen.github.io/articles/riscv#disable-interrupts) to [__`sie`__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie)
+1.  To Disable Interrupts: Change [__`mie`__](https://lupyuen.github.io/articles/riscv#disable-interrupts) to [__`sie`__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie)
 
-- To Load Trap Vector Table: Change [__`mtvec`__](https://lupyuen.github.io/articles/riscv#load-interrupt-vector) to [__`stvec`__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec)
+1.  To Load Trap Vector Table: Change [__`mtvec`__](https://lupyuen.github.io/articles/riscv#load-interrupt-vector) to [__`stvec`__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec)
 
 Here's the updated NuttX Boot Code and our analysis...
 
-- [__"NuttX in Supervisor Mode"__](https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-in-supervisor-mode)
+- [__NuttX in Supervisor Mode__](https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-in-supervisor-mode)
+
+- [See the __Modified Files__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/31/files)
+
+- [See the __Build Outputs__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1)
 
 _What happens when we run this?_
 
@@ -707,15 +711,15 @@ That's because the Linux Boot Code will work for Machine Level AND Supervisor Le
 
 # Appendix: NuttX in Supervisor Mode
 
-Earlier we identified these fixes for the [__NuttX Boot Code__](https://lupyuen.github.io/articles/nuttx2#fix-the-nuttx-boot-code) to work in Supervisor Mode...
+Earlier we identified these fixes for the [__NuttX Boot Code__](https://lupyuen.github.io/articles/nuttx2#fix-the-nuttx-boot-code) to run in Supervisor Mode...
 
-- Remove __`mhartid`__ because OpenSBI will pass __Hart ID__ in Register A0
+1.  Remove __`mhartid`__ because OpenSBI will pass __Hart ID__ in Register A0
 
-- Subtract 1 from __Register A0__ because NuttX expects Hart ID to start with 0
+1.  Subtract 1 from __Register A0__ because NuttX expects Hart ID to start with 0
 
-- To Disable Interrupts: Change [__`mie`__](https://lupyuen.github.io/articles/riscv#disable-interrupts) to [__`sie`__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie)
+1.  To Disable Interrupts: Change [__`mie`__](https://lupyuen.github.io/articles/riscv#disable-interrupts) to [__`sie`__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-interrupt-registers-sip-and-sie)
 
-- To Load Trap Vector Table: Change [__`mtvec`__](https://lupyuen.github.io/articles/riscv#load-interrupt-vector) to [__`stvec`__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec)
+1.  To Load Trap Vector Table: Change [__`mtvec`__](https://lupyuen.github.io/articles/riscv#load-interrupt-vector) to [__`stvec`__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec)
 
 Here's the updated NuttX Boot Code for Supervisor Mode, and our analysis: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S)
 
