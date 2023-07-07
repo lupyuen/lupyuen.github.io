@@ -439,7 +439,7 @@ csrr a0, mhartid
 <p>So the above code will load the Hart ID (or CPU ID) into Register <strong>a0</strong>.</p>
 <p><a href="https://lupyuen.github.io/articles/riscv#get-cpu-id">(As explained here)</a></p>
 <p><em>But it worked perfectly on QEMU! Why did it fail?</em></p>
-<p>Ah that’s because something has changed on Star64: Our Privilege Level…</p>
+<p>Ah that’s because something super spicy has changed on Star64: Our Privilege Level…</p>
 <p>TODO: Pic</p>
 <h1 id="risc-v-privilege-levels"><a href="#risc-v-privilege-levels">8 RISC-V Privilege Levels</a></h1>
 <p><em>What’s this Privilege Level?</em></p>
@@ -473,7 +473,7 @@ csrr a0, mhartid
 <p><em>QEMU doesn’t have this problem?</em></p>
 <p>Because QEMU runs everything in (super-powerful) <strong>Machine Mode</strong>!</p>
 <p>TODO: Pic</p>
-<p>NuttX needs to fetch the Hart ID in a different way…</p>
+<p>NuttX needs to fetch the Hart ID with a different recipe…</p>
 <h1 id="downgrade-nuttx-to-supervisor-mode"><a href="#downgrade-nuttx-to-supervisor-mode">9 Downgrade NuttX to Supervisor Mode</a></h1>
 <p><em>OpenSBI runs in Machine Mode and reads the Hart ID (CPU ID)…</em></p>
 <p><em>How will NuttX get the Hart ID from OpenSBI?</em></p>
@@ -514,7 +514,7 @@ csrw  stvec, t0
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L174-L179">(Source)</a></p>
 </li>
 </ul>
-<p>Let’s test this…</p>
+<p>Let’s taste this…</p>
 <h1 id="fix-the-nuttx-boot-code"><a href="#fix-the-nuttx-boot-code">10 Fix the NuttX Boot Code</a></h1>
 <p>From the previous section, we identified these fixes for the NuttX Boot Code…</p>
 <ul>
