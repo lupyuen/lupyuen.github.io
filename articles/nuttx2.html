@@ -471,7 +471,7 @@ csrr a0, mhartid
 <p>Thus <strong>OpenSBI is the only thing</strong> that runs in Machine Mode. And can access the Machine-Mode Registers. (Pic above)</p>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64">(More about <strong>U-Boot</strong>)</a></p>
 <p><em>QEMU doesn’t have this problem?</em></p>
-<p>Because QEMU runs everything in (super-powerful) <strong>Machine Mode</strong>!</p>
+<p>Because QEMU runs NuttX in (super-powerful) <strong>Machine Mode</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-privilege2.jpg" alt="NuttX QEMU runs in Machine Mode" /></p>
 <p>NuttX needs to fetch the Hart ID with a different recipe…</p>
 <h1 id="downgrade-nuttx-to-supervisor-mode"><a href="#downgrade-nuttx-to-supervisor-mode">9 Downgrade NuttX to Supervisor Mode</a></h1>
