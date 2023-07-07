@@ -478,7 +478,7 @@ csrr a0, mhartid
 <div class="example-wrap"><pre class="language-text"><code>/* Load the Hart ID (CPU ID) */
 csrr a0, mhartid
 </code></pre></div>
-<p>Gets demoted to: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L104">qemu_rv_head.S</a></p>
+<p>Gets demoted to this: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L104">qemu_rv_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* We assume that OpenSBI has passed Hart ID (value 1) in Register A0. */
 /* But NuttX expects Hart ID to start at 0, so we subtract 1. */
 addi a0, a0, -1
