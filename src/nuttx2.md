@@ -552,7 +552,7 @@ Easy! We change the Machine-Mode __`m`__ Registers to Supervisor-Mode __`s`__ Re
 - __To Load Trap Vector Table:__ Change [__`mtvec`__](https://lupyuen.github.io/articles/riscv#load-interrupt-vector) to [__`stvec`__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#supervisor-trap-vector-base-address-register-stvec)
 
   ```text
-  /* Load address of Interrupt Vector Table */
+  /* Load address of Trap Vector Table */
   csrw  stvec, t0
   /* Previously `mtvec` */
   ```
