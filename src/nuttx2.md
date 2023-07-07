@@ -656,7 +656,7 @@ _How to get the Hart ID from OpenSBI?_
 
 We refer to the Linux Boot Code: [linux/arch/riscv/kernel/head.S](https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S)
 
-(Tip: `CONFIG_RISCV_M_MODE` is False and `CONFIG_EFI` is True)
+(Tip: CONFIG_RISCV_M_MODE is False and CONFIG_EFI is True)
 
 ```c
 /* Save hart ID and DTB physical address */
@@ -701,18 +701,18 @@ csrw CSR_IP, zero
 
 [(Source)](https://github.com/torvalds/linux/blob/master/arch/riscv/kernel/head.S#L195-L200)
 
-That's because the Linux Boot Code will work for Machine Level AND Supervisor Level! Here's how __`CSR_IE`__ and __`CSR_IP`__ are mapped to the __`m`__ and __`s`__ CSR Registers...
+That's because the Linux Boot Code will work for Machine Mode AND Supervisor Mode! Here's how __`CSR_IE`__ and __`CSR_IP`__ are mapped to the __`m`__ and __`s`__ CSR Registers...
 
-(Remember: __CONFIG_RISCV_M_MODE__ is false for NuttX)
+(Remember: CONFIG_RISCV_M_MODE is false for NuttX)
 
 ```text
 #ifdef CONFIG_RISCV_M_MODE
-  /* Use Machine-Level CSR Registers */
+  /* Use Machine-Mode CSR Registers */
   # define CSR_IE		CSR_MIE
   # define CSR_IP		CSR_MIP
   ...
 #else
-  /* Use Supervisor-Level CSR Registers */
+  /* Use Supervisor-Mode CSR Registers */
   # define CSR_IE		CSR_SIE
   # define CSR_IP		CSR_SIP
   ...
