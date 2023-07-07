@@ -277,7 +277,7 @@ real_start:
 <p>Note that <strong>Image Load Offset</strong> must be <strong><code>0x20</code> <code>0000</code></strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>.quad  0x200000  /* Image load offset from start of RAM */
 </code></pre></div>
-<p>That’s because our NuttX Kernel will start at RAM Address <strong><code>0x4020</code> <code>0000</code></strong>. Here’s why…</p>
+<p>That’s because our NuttX Kernel will start at RAM Address <strong><code>0x4020</code> <code>0000</code></strong>. Let’s chew on it…</p>
 <h1 id="start-address-of-nuttx-kernel"><a href="#start-address-of-nuttx-kernel">5 Start Address of NuttX Kernel</a></h1>
 <p><em>What’s this magical address <code>0x4020</code> <code>0000</code>?</em></p>
 <p>From previous articles, we saw that Star64’s U-Boot Bootloader will load Linux Kernels into RAM at Address <strong><code>0x4020</code> <code>0000</code></strong>…</p>
