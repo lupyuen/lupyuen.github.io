@@ -120,7 +120,7 @@
 </ul>
 <p><em>Surely we’ll run into problems?</em></p>
 <p>Fortunately we have a <a href="https://lupyuen.github.io/articles/linux#serial-console-on-star64"><strong>Serial Debug Console</strong></a> connected to Star64. (Pic below)</p>
-<p>We’ll print some <strong>Debug Logs</strong> as we run the NuttX Boot Code. Here’s our plan…</p>
+<p>We’ll print some <strong>Debug Logs</strong> as NuttX boots on Star64. Here’s our plan…</p>
 <ul>
 <li>
 <p>Check the <strong>Serial Console on QEMU Emulator</strong>, how it’s wired up</p>
@@ -129,7 +129,7 @@
 <p><strong>Test our Debug Log</strong> on QEMU Emulator</p>
 </li>
 <li>
-<p><strong>Port our Debug Log</strong> to Star64 JH7110</p>
+<p><strong>Port our Debug Log</strong> to Star64</p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/linux-title.jpg" alt="Star64 SBC with Woodpecker USB Serial Adapter" /></p>
@@ -166,11 +166,11 @@ static void u16550_send(struct uart_dev_s *dev, int ch) {
 </code></pre></div>
 <p><a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L610-L624">(<strong>u16550_serialout</strong> is defined here)</a></p>
 <p>To print a character, the driver writes to the UART Base Address <strong><code>0x1000</code> <code>0000</code></strong> at Offset <strong>UART_THR_OFFSET</strong>.</p>
-<p>And we discover that <strong>UART_THR_OFFSET</strong> is 0: <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/serial/uart_16550.h#L172-L200">uart_16550.h</a> is 0:</p>
+<p>And we discover that <strong>UART_THR_OFFSET</strong> is 0: <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/serial/uart_16550.h#L172-L200">uart_16550.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>#define UART_THR_INCR 0 /* (DLAB =0) Transmit Holding Register */
 #define UART_THR_OFFSET (CONFIG_16550_REGINCR*UART_THR_INCR)
 </code></pre></div>
-<p>Which means that we can print to the QEMU Console by writing to <strong><code>0x1000</code> <code>0000</code></strong>. How convenient!</p>
+<p>Which means that we can print to QEMU Console by writing to <strong><code>0x1000</code> <code>0000</code></strong>. How convenient!</p>
 <div class="example-wrap"><pre class="language-c"><code>// Print `1` to QEMU Console
 *(volatile uint8_t *) 0x10000000 = &#39;1&#39;;
 </code></pre></div>
@@ -211,7 +211,7 @@ NuttShell (NSH) NuttX-12.0.3
 nsh&gt; 
 </code></pre></div>
 <p>“<strong><code>123</code></strong>” is printed 8 times because QEMU is running with 8 CPUs.</p>
-<p>Now we port the Debug Code to Star64…</p>
+<p>Now we port the Debug Log to Star64…</p>
 <p><img src="https://lupyuen.github.io/images/riscv-print.png" alt="NuttX prints to QEMU Console" /></p>
 <h1 id="uart-controller-on-star64"><a href="#uart-controller-on-star64">3 UART Controller on Star64</a></h1>
 <p><em>What’s the UART Controller in Star64?</em></p>
@@ -220,7 +220,6 @@ nsh&gt;
 <li><a href="https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/function_layer.html"><strong>JH7110 UART Developing Guide</strong></a></li>
 </ul>
 <p>Which is <a href="https://en.wikipedia.org/wiki/16550_UART"><strong>compatible with the 16550 UART Controller</strong></a> used by QEMU.</p>
-<p>So our UART Debug Code for QEMU will run on Star64!</p>
 <p><em>But what’s the UART Base Address for Star64?</em></p>
 <p>UART0 Base Address is at <strong><code>0x1000</code> <code>0000</code></strong>, according to…</p>
 <ul>
@@ -238,14 +237,14 @@ nsh&gt;
 <p>Yep! Earlier we saw the <strong>UART Base Address</strong> for NuttX QEMU: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L10-L16">nsh64/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_16550_UART0_BASE=0x10000000
 </code></pre></div>
-<p>NuttX QEMU UART Base Address is <strong><code>0x1000</code> <code>0000</code></strong>. The exact same UART Base Address for QEMU AND Star64!</p>
-<p>So no changes needed, our UART Debug Code will run on <strong>QEMU AND Star64</strong>!</p>
+<p><strong><code>0x1000</code> <code>0000</code></strong> is the exact same UART Base Address for QEMU AND Star64…</p>
+<p>So no changes needed, our Debug Log will work on Star64!</p>
 <p>To boot NuttX on Star64, it needs a special file format…</p>
 <p><img src="https://lupyuen.github.io/images/star64-kernel.png" alt="Armbian Kernel Image" /></p>
 <p><a href="https://lupyuen.github.io/articles/star64#inside-the-kernel-image"><em>Kernel Header for RISC-V Armbian Linux</em></a></p>
 <h1 id="risc-v-linux-kernel-header"><a href="#risc-v-linux-kernel-header">4 RISC-V Linux Kernel Header</a></h1>
 <p><em>How will Star64 boot NuttX?</em></p>
-<p>Star64’s <strong>U-Boot Bootloader</strong> will load NuttX into RAM and run it.</p>
+<p>Star64’s <strong>U-Boot Bootloader</strong> will load NuttX Kernel into RAM and run it.</p>
 <p>But we need to embed the <strong>RISC-V Linux Kernel Header</strong> (and pretend we’re Linux)…</p>
 <ul>
 <li>
