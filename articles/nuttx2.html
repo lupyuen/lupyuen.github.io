@@ -690,7 +690,7 @@ csrw CSR_IP, zero
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L92-L104">(Source)</a></p>
 <p><strong>If Hart ID is 0:</strong></p>
-<p>Set Stack Pointer to the Idle Thread Stack</p>
+<p>Set Stack Pointer to the Idle Thread Stack…</p>
 <div class="example-wrap"><pre class="language-text"><code>  /* Set stack pointer to the idle thread stack */
   bnez a0, 1f
   la   sp, QEMU_RV_IDLESTACK_TOP
@@ -746,7 +746,7 @@ csrw CSR_IP, zero
 <ul>
 <li>Disable Interrupts</li>
 <li>Load the Trap Vector Table</li>
-<li>Jump to <strong>qemu_rv_start</strong></li>
+<li>Jump to <a href="https://lupyuen.github.io/articles/riscv#jump-to-start"><strong>qemu_rv_start</strong></a></li>
 </ul>
 <div class="example-wrap"><pre class="language-text"><code>2:
   /* Disable all interrupts (i.e. timer, external) in mie */
@@ -764,7 +764,8 @@ csrw CSR_IP, zero
   /* We shouldn&#39;t return from _start */
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L163-L199">(Source)</a></p>
-<p>Note that we don’t load the Trap Vector Table, because we’ll use OpenSBI for Crash Logging. (Like when we hit Machine-Mode Instructions)</p>
+<p>Note that we don’t load the Trap Vector Table, because we’ll use OpenSBI for Crash Logging.</p>
+<p>(Like when we hit Exceptions with Machine-Mode Instructions)</p>
 <h1 id="appendix-nuttx-start-address"><a href="#appendix-nuttx-start-address">14 Appendix: NuttX Start Address</a></h1>
 <p>Previously we changed the NuttX Start Address in <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L56-L57"><strong>nsh64/defconfig</strong></a> and <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L26"><strong>ld.script</strong></a>…</p>
 <ul>
