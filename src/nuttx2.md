@@ -659,6 +659,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/nuttx2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/nuttx2.md)
 
+![RISC-V Privilege Levels](https://lupyuen.github.io/images/nuttx2-privilege.jpg)
+
 # Appendix: Hart ID from OpenSBI
 
 _NuttX can't read the `mhartid` CSR Register in Supervisor Mode..._
@@ -739,6 +741,8 @@ That's because the Linux Boot Code will work for Machine Mode AND Supervisor Mod
 ```
 
 [(Source)](https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/csr.h#L393-L446)
+
+![After fixing NuttX for Supervisor Mode](https://lupyuen.github.io/images/nuttx2-boot.png)
 
 # Appendix: NuttX in Supervisor Mode
 
@@ -867,6 +871,8 @@ __For All Hart IDs:__
 Note that we don't load the Trap Vector Table, because we'll use OpenSBI for Crash Logging.
 
 [(Like when we hit Exceptions with __Machine-Mode Instructions__)](https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-crash-log)
+
+![Building Apache NuttX RTOS in 4 minutes](https://lupyuen.github.io/images/riscv-build.png)
 
 # Appendix: NuttX Start Address
 
