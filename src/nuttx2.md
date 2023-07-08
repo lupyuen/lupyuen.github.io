@@ -708,6 +708,8 @@ This says that...
 
 Yep looks correct! But we'll subtract 1 from Register A0 because NuttX expects Hart ID to start with 0.
 
+We'll see this implementation in our modified NuttX Boot Code. (Next section)
+
 _The Linux Boot Code looks confusing. What are CSR_IE and CSR_IP?_
 
 ```text
