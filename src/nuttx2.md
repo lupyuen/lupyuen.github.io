@@ -667,7 +667,7 @@ _NuttX can't read the `mhartid` CSR Register in Supervisor Mode..._
 
 _How to get the Hart ID from OpenSBI?_
 
-NuttX failed to read the __`mhartid`__ CSR Register because it's a __Machine-Mode Register__...
+NuttX failed to read the __`mhartid`__ CSR Register because it's a __Machine-Mode Register__ (pic above)...
 
 - [__"NuttX Fails To Get Hart ID"__](https://lupyuen.github.io/articles/nuttx2#nuttx-fails-to-get-hart-id)
 
