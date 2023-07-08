@@ -921,7 +921,7 @@ More about this in the next article.
 
 # Appendix: NuttX Crash Log
 
-Earlier we ran NuttX QEMU on Star64 (before fixing for Supervisor Mode) and it crashed...
+Earlier we ran NuttX QEMU on Star64 (before fixing for [__Supervisor Mode__](https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-in-supervisor-mode)) and it crashed...
 
 - [__"Boot NuttX on Star64"__](https://lupyuen.github.io/articles/nuttx2#boot-nuttx-on-star64)
 
