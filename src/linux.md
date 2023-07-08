@@ -216,7 +216,7 @@ _What about other Linux Distros?_
 
 Let's boot Armbian Linux on Star64! We download the [__Armbian Image for Star64__](https://www.armbian.com/star64/)...
 
--   [__Armbian 23.8 Lunar for Star64 (Minimal)__](https://github.com/armbianro/os/releases/download/23.8.0-trunk.56/Armbian_23.8.0-trunk.56_Star64_lunar_edge_5.15.0_minimal.img.xz)
+-   [__Armbian 23.8 Lunar for Star64 (Minimal)__](https://github.com/armbianro/os/releases/download/23.8.0-trunk.69/Armbian_23.8.0-trunk.69_Star64_lunar_edge_5.15.0_minimal.img.xz)
 
 Uncompress the __.xz__ file. Write the __.img__ file to a microSD Card with [__Balena Etcher__](https://www.balena.io/etcher/) or [__GNOME Disks__](https://wiki.gnome.org/Apps/Disks).
 

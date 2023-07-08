@@ -4,13 +4,13 @@
 
 ![Pine64 Star64 64-bit RISC-V SBC](https://lupyuen.github.io/images/nuttx2-title.jpg)
 
-In this article we'll boot a tiny bit of [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/riscv) on the [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) 64-bit RISC-V Single-Board Computer.
+In this article we'll boot a tiny bit of [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html) on the [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) 64-bit RISC-V Single-Board Computer.
 
 (Based on [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC)
 
 _What's NuttX?_
 
-[__Apache NuttX__](https://lupyuen.github.io/articles/riscv) is a __Real-Time Operating System (RTOS)__ that runs on many kinds of devices, from 8-bit to 64-bit.
+[__Apache NuttX__](https://nuttx.apache.org/docs/latest/index.html) is a __Real-Time Operating System (RTOS)__ that runs on many kinds of devices, from 8-bit to 64-bit.
 
 _NuttX supports Star64?_
 
@@ -109,7 +109,7 @@ To print a character, the driver writes to the UART Base Address __`0x1000` `000
 And we discover that __UART_THR_OFFSET__ is 0: [uart_16550.h](https://github.com/apache/nuttx/blob/master/include/nuttx/serial/uart_16550.h#L172-L200)
 
 ```c
-#define UART_THR_INCR 0 /* (DLAB =0) Transmit Holding Register */
+#define UART_THR_INCR 0 /* Transmit Holding Register (when DLAB is 0) */
 #define UART_THR_OFFSET (CONFIG_16550_REGINCR*UART_THR_INCR)
 ```
 
@@ -122,7 +122,7 @@ Which means that we can print to QEMU Console by writing to __`0x1000` `0000`__.
 
 _What about RISC-V Assembly?_
 
-This is how we print to QEMU Console in __RISC-V Assembly Code__ (to debug our NuttX Boot Code): [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L71-L93)
+This is how we print to QEMU Console in __RISC-V Assembly__ (to debug our NuttX Boot Code): [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L71-L93)
 
 ```text
 /* Load UART Base Address to Register t0 */
@@ -148,7 +148,7 @@ sb  t1, 0(t0)
 
 [(__`sb`__ stores a byte from a Register into an Address)](https://five-embeddev.com/quickref/instructions.html#-rv32--load-and-store-instructions)
 
-When we start QEMU Emulator, the code above prints "__`123`__" to the QEMU Console (pic below)...
+When we start QEMU Emulator, our RISC-V Assembly prints "__`123`__" to the QEMU Console (pic below)...
 
 ```text
 $ qemu-system-riscv64 \
@@ -213,7 +213,7 @@ To boot NuttX on Star64, it needs a special ingredient...
 
 _How will Star64 boot NuttX?_
 
-Star64's __U-Boot Bootloader__ will load NuttX Kernel into RAM and run it.
+Star64's [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64) will load NuttX Kernel into RAM and run it.
 
 But we need to embed the __RISC-V Linux Kernel Header__ (and pretend we're Linux)...
 
@@ -221,7 +221,7 @@ But we need to embed the __RISC-V Linux Kernel Header__ (and pretend we're Linux
 
 -   [__"Decode the RISC-V Linux Header"__](https://lupyuen.github.io/articles/star64#appendix-decode-the-risc-v-linux-header)
 
-This is the Assembly Code for our __RISC-V Linux Header__: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L42-L75)
+Thus we cooked up this Assembly Code for our __RISC-V Linux Header__: [qemu_rv_head.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L42-L75)
 
 ```text
 c.li    s4, -13              /* Magic Signature "MZ" (2 bytes) */
@@ -267,6 +267,7 @@ Thus we do the same for NuttX on Star64.
 This is how we set the Start Address to __`0x4020` `0000`__ in our __NuttX Build Configuration__: [nsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L56-L57)
 
 ```text
+// TODO: Fix CONFIG_RAM_SIZE
 CONFIG_RAM_SIZE=33554432
 CONFIG_RAM_START=0x40200000
 ```
@@ -329,7 +330,7 @@ _How to boot NuttX on microSD?_
 
 For the microSD Image, we start with this [__Armbian Image for Star64__](https://www.armbian.com/star64/)...
 
--   [__Armbian 23.8 Lunar for Star64 (Minimal)__](https://github.com/armbianro/os/releases/download/23.8.0-trunk.56/Armbian_23.8.0-trunk.56_Star64_lunar_edge_5.15.0_minimal.img.xz)
+-   [__Armbian 23.8 Lunar for Star64 (Minimal)__](https://github.com/armbianro/os/releases/download/23.8.0-trunk.69/Armbian_23.8.0-trunk.69_Star64_lunar_edge_5.15.0_minimal.img.xz)
 
 Uncompress the __.xz__ file. Write the __.img__ file to a microSD Card with [__Balena Etcher__](https://www.balena.io/etcher/) or [__GNOME Disks__](https://wiki.gnome.org/Apps/Disks).
 
@@ -585,7 +586,7 @@ Here's the updated NuttX Boot Code and our analysis...
 
 _What happens when we run this?_
 
-When we boot the modified NuttX on Star64, we see this...
+When we boot the modified NuttX on Star64, we see this (pic above)...
 
 ```text
 Starting kernel ...
@@ -636,7 +637,7 @@ I hope this has been an Educational Experience on booting a fresh new OS for a 6
 
 - Helped by __OpenSBI Supervisor Interface__
 
-This is the first in a series of (yummy) articles on porting NuttX to Star64, please join me next time!
+This is the first in a series of (yummy) articles on porting NuttX to Star64, please join me next time...
 
 - [__"Apache NuttX RTOS for Star64"__](https://github.com/lupyuen/nuttx-star64)
 
