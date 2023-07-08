@@ -921,7 +921,7 @@ tools/configure.sh rv-virt:knsh64
 
 [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1)
 
-We use `rv-virt:knsh64` (Kernel Mode) instead of `rv-virt:nsh64` (Flat Mode) so that NuttX will run in __RISC-V Supervisor Mode__. (Instead of Machine Mode)
+We use `rv-virt:knsh64` (NuttX Kernel Mode) instead of `rv-virt:nsh64` (NuttX Flat Mode) so that NuttX will run in __RISC-V Supervisor Mode__. (Instead of RISC-V Machine Mode)
 
 More about this in the next article.
 
