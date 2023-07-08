@@ -291,9 +291,9 @@ We check the __RISC-V Disassembly__ of our NuttX Kernel: [nuttx.S](https://githu
 ```text
 0000000040200000 <__start>:
   li  s4, -0xd    /* Magic Signature "MZ" (2 bytes) */
-    40200000:	5a4d  li  s4,-13
+    40200000: 5a4d  li s4,-13
   j   real_start  /* Jump to Kernel Start (2 bytes) */
-    40200002:	a83d  j	  40200040 <real_start>
+    40200002: a83d  j  40200040 <real_start>
 ```
 
 The Start Address is indeed __`0x4020` `0000`__.
