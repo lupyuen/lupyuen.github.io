@@ -621,6 +621,7 @@ jal  x1, qemu_rv_start
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/nuttx2.md"><strong>lupyuen.github.io/src/nuttx2.md</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/nuttx2-privilege.jpg" alt="RISC-V Privilege Levels" /></p>
 <h1 id="appendix-hart-id-from-opensbi"><a href="#appendix-hart-id-from-opensbi">12 Appendix: Hart ID from OpenSBI</a></h1>
 <p><em>NuttX can’t read the <code>mhartid</code> CSR Register in Supervisor Mode…</em></p>
 <p><em>How to get the Hart ID from OpenSBI?</em></p>
@@ -688,6 +689,7 @@ csrw CSR_IP, zero
 #endif /* !CONFIG_RISCV_M_MODE */
 </code></pre></div>
 <p><a href="https://github.com/torvalds/linux/blob/master/arch/riscv/include/asm/csr.h#L393-L446">(Source)</a></p>
+<p><img src="https://lupyuen.github.io/images/nuttx2-boot.png" alt="After fixing NuttX for Supervisor Mode" /></p>
 <h1 id="appendix-nuttx-in-supervisor-mode"><a href="#appendix-nuttx-in-supervisor-mode">13 Appendix: NuttX in Supervisor Mode</a></h1>
 <p>Earlier we identified these fixes for the <a href="https://lupyuen.github.io/articles/nuttx2#downgrade-nuttx-to-supervisor-mode"><strong>NuttX Boot Code</strong></a> to run in Supervisor Mode…</p>
 <ol>
@@ -800,6 +802,7 @@ csrw CSR_IP, zero
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L163-L199">(Source)</a></p>
 <p>Note that we don’t load the Trap Vector Table, because we’ll use OpenSBI for Crash Logging.</p>
 <p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-crash-log">(Like when we hit Exceptions with <strong>Machine-Mode Instructions</strong>)</a></p>
+<p><img src="https://lupyuen.github.io/images/riscv-build.png" alt="Building Apache NuttX RTOS in 4 minutes" /></p>
 <h1 id="appendix-nuttx-start-address"><a href="#appendix-nuttx-start-address">14 Appendix: NuttX Start Address</a></h1>
 <p>Previously we changed the NuttX Start Address in <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L56-L57"><strong>nsh64/defconfig</strong></a> and <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L26"><strong>ld.script</strong></a>…</p>
 <ul>
