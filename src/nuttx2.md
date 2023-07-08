@@ -625,6 +625,8 @@ Now we're smokin' hot...
 
 Why? Stay tuned for more tantalising treats in the next article!
 
+![Pine64 Star64 64-bit RISC-V SBC](https://lupyuen.github.io/images/nuttx2-star64.jpg)
+
 # What's Next
 
 I hope this has been an Educational Experience on booting a fresh new OS for a 64-bit RISC-V SBC...
