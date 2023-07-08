@@ -1,6 +1,6 @@
 # Apache NuttX RTOS on RISC-V: Star64 JH7110 SBC
 
-📝 _12 Jul 2023_
+📝 _9 Jul 2023_
 
 ![Pine64 Star64 64-bit RISC-V SBC](https://lupyuen.github.io/images/nuttx2-title.jpg)
 

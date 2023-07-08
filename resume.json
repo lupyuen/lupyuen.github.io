@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Apache NuttX RTOS on RISC-V: Star64 JH7110 SBC",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-07-09",
+      "website": "https://lupyuen.github.io/articles/nuttx2",
+      "summary": "(Partially) Booting Apache NuttX Real-Time Operating System on Pine64's Star64 64-bit RISC-V Single-Board Computer, based on StarFive JH7110 SoC"
+    },
+    {
       "name": "Booting RISC-V Linux on Star64 JH7110 SBC",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-07-04",

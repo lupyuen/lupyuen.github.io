@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Apache NuttX RTOS on RISC-V: Star64 JH7110 SBC</title>
+            <link>https://lupyuen.github.io/articles/nuttx2</link>
+            <description><![CDATA[(Partially) Booting Apache NuttX Real-Time Operating System on Pine64's Star64 64-bit RISC-V Single-Board Computer, based on StarFive JH7110 SoC]]></description>
+            <guid>https://lupyuen.github.io/articles/nuttx2</guid>
+            <pubDate>Sun, 09 Jul 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Booting RISC-V Linux on Star64 JH7110 SBC</title>
             <link>https://lupyuen.github.io/articles/linux</link>
             <description><![CDATA[Watch what happens when we boot Yocto and Armbian Linux on Pine64's Star64 64-bit RISC-V Single-Board Computer, based on StarFive JH7110 SoC]]></description>
