@@ -838,7 +838,7 @@ CONFIG_RAM_START=0x40200000
 tools/configure.sh rv-virt:knsh64
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1">(Source)</a></p>
-<p>We use <code>rv-virt:knsh64</code> (Kernel Mode) instead of <code>rv-virt:nsh64</code> (Flat Mode) so that NuttX will run in <strong>RISC-V Supervisor Mode</strong>. (Instead of Machine Mode)</p>
+<p>We use <code>rv-virt:knsh64</code> (NuttX Kernel Mode) instead of <code>rv-virt:nsh64</code> (NuttX Flat Mode) so that NuttX will run in <strong>RISC-V Supervisor Mode</strong>. (Instead of RISC-V Machine Mode)</p>
 <p>More about this in the next article.</p>
 <p><img src="https://lupyuen.github.io/images/star64-nuttx.png" alt="Boot NuttX on Star64" /></p>
 <h1 id="appendix-nuttx-crash-log"><a href="#appendix-nuttx-crash-log">15 Appendix: NuttX Crash Log</a></h1>
