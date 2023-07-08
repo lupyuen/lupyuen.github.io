@@ -421,7 +421,7 @@ We look up our __NuttX RISC-V Disassembly nuttx.S__ and see this in our Boot Cod
 nuttx/arch/risc-v/src/chip/qemu_rv_head.S:95
   /* Load the Hart ID (CPU ID) */
   csrr a0, mhartid
-    4020005c:	f1402573  csrr a0, mhartid
+    4020005c: f1402573  csrr a0, mhartid
 ```
 
 Breaking it down...
