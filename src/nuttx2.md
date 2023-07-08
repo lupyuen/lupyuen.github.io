@@ -441,7 +441,7 @@ csrr a0, mhartid
 
   (Equivalent to CPU ID)
 
-So the above code will load the Hart ID (or CPU ID) into Register __a0__.
+So the above code will load the __Hart ID__ (or CPU ID) into Register A0.
 
 [(As explained here)](https://lupyuen.github.io/articles/riscv#get-cpu-id)
 
