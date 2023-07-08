@@ -355,10 +355,10 @@ riscv64-unknown-elf-objcopy \
   nuttx \
   nuttx.bin
 
-## Delete Armbian Kernel `/boot/Image`
+## Delete Linux Kernel `/boot/Image`
 rm /run/media/$USER/armbi_root/boot/Image
 
-## Copy `nuttx.bin` to Armbian Kernel `/boot/Image`
+## Copy `nuttx.bin` to Linux Kernel `/boot/Image`
 cp nuttx.bin /run/media/$USER/armbi_root/boot/Image
 ```
 
@@ -486,7 +486,7 @@ It runs in __Machine Mode__ and starts the U-Boot Bootloader.
 
 _What about U-Boot Bootloader?_
 
-__U-Boot Bootloader__ runs in __Supervisor Mode__. And starts NuttX, also in Supervisor Mode.
+[__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64) runs in __Supervisor Mode__. And starts NuttX, also in Supervisor Mode.
 
 Thus __OpenSBI is the only thing__ that runs in Machine Mode. And can access the Machine-Mode Registers. (Pic above)
 
@@ -603,6 +603,8 @@ Now we're smokin' hot...
 
 - "__`0`__" is the Adjusted Hart ID passed by OpenSBI to NuttX
 
+  [(From here)](https://lupyuen.github.io/articles/nuttx2#appendix-hart-id-from-opensbi)
+
 - "__`7`__" is the last thing that's printed by our NuttX Boot Code...
 
   ```text
@@ -621,13 +623,13 @@ Now we're smokin' hot...
 
 - But NuttX hangs in the C Function [__qemu_rv_start__](https://lupyuen.github.io/articles/riscv#jump-to-start)
 
-Stay tuned for more tantalising treats in the next article!
+Why? Stay tuned for more tantalising treats in the next article!
 
 # What's Next
 
 I hope this has been an Educational Experience on booting a fresh new OS for a 64-bit RISC-V SBC...
 
-- We migrated NuttX from __QEMU Emulator__ to Star64
+- We migrated NuttX RTOS from __QEMU Emulator__ to Star64 JH7110
 
 - And printed to the __Serial Console__ in RISC-V Assembly
 
@@ -639,13 +641,13 @@ I hope this has been an Educational Experience on booting a fresh new OS for a 6
 
 This is the first in a series of (yummy) articles on porting NuttX to Star64, please join me next time...
 
-- [__"Apache NuttX RTOS for Star64"__](https://github.com/lupyuen/nuttx-star64)
+- [__"Apache NuttX RTOS for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
 
--   [__My Current Project: "Apache NuttX RTOS for Star64"__](https://github.com/lupyuen/nuttx-star64)
+-   [__My Current Project: "Apache NuttX RTOS for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
 
 -   [__My Other Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
 
