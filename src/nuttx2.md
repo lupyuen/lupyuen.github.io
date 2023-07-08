@@ -624,17 +624,29 @@ Stay tuned for more tantalising treats in the next article!
 
 # What's Next
 
-TODO: I hope this has been an Educational Experience on booting a fresh new OS for a 64-bit RISC-V SBC...
+I hope this has been an Educational Experience on booting a fresh new OS for a 64-bit RISC-V SBC...
 
-This is the first in a series of (yummy) articles on porting NuttX to Star64...
+- We migrated NuttX from __QEMU Emulator__ to Star64
+
+- And printed to the __Serial Console__ in RISC-V Assembly
+
+- We fooled __U-Boot Bootloader__ into thinking we're Linux
+
+- But we demoted NuttX to __Supervisor Privilege Level__
+
+- Helped by __OpenSBI Supervisor Interface__
+
+This is the first in a series of (yummy) articles on porting NuttX to Star64, please join me next time!
+
+- [__"Apache NuttX RTOS for Star64"__](https://github.com/lupyuen/nuttx-star64)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
 
--   [__My Current Project: "Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
+-   [__My Current Project: "Apache NuttX RTOS for Star64"__](https://github.com/lupyuen/nuttx-star64)
 
--   [__My Other Project: "The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book)
+-   [__My Other Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
 
 -   [__Check out my articles__](https://lupyuen.github.io)
 
