@@ -666,6 +666,7 @@ A1:  0000000046000000 A2:  0000000000000600 A3:  0000000000004000
 </li>
 </ul>
 <p>Yep looks correct! But we’ll subtract 1 from Register A0 because NuttX expects Hart ID to start with 0.</p>
+<p>We’ll see this implementation in our modified NuttX Boot Code. (Next section)</p>
 <p><em>The Linux Boot Code looks confusing. What are CSR_IE and CSR_IP?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>/* Mask all interrupts */
 csrw CSR_IE, zero
