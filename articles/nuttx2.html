@@ -307,9 +307,9 @@ CONFIG_RAM_START=0x40200000
 <p>We check the <strong>RISC-V Disassembly</strong> of our NuttX Kernel: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64-0.0.1/nuttx.S">nuttx.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>0000000040200000 &lt;__start&gt;:
   li  s4, -0xd    /* Magic Signature &quot;MZ&quot; (2 bytes) */
-    40200000:	5a4d  li  s4,-13
+    40200000: 5a4d  li s4,-13
   j   real_start  /* Jump to Kernel Start (2 bytes) */
-    40200002:	a83d  j	  40200040 &lt;real_start&gt;
+    40200002: a83d  j  40200040 &lt;real_start&gt;
 </code></pre></div>
 <p>The Start Address is indeed <strong><code>0x4020</code> <code>0000</code></strong>.</p>
 <p>Yep Looks Good To Us (YLGTU), we’re ready to serve it on Star64!</p>
