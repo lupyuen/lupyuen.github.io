@@ -83,10 +83,10 @@
 <li><a href="#appendix-nuttx-start-address">14 Appendix: NuttX Start Address</a><ul></ul></li>
 <li><a href="#appendix-nuttx-crash-log">15 Appendix: NuttX Crash Log</a><ul></ul></li></ul></nav><p>📝 <em>12 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-title.jpg" alt="Pine64 Star64 64-bit RISC-V SBC" /></p>
-<p>In this article we’ll boot a tiny bit of <a href="https://lupyuen.github.io/articles/riscv"><strong>Apache NuttX RTOS</strong></a> on the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer.</p>
+<p>In this article we’ll boot a tiny bit of <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a> on the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer.</p>
 <p>(Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
 <p><em>What’s NuttX?</em></p>
-<p><a href="https://lupyuen.github.io/articles/riscv"><strong>Apache NuttX</strong></a> is a <strong>Real-Time Operating System (RTOS)</strong> that runs on many kinds of devices, from 8-bit to 64-bit.</p>
+<p><a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX</strong></a> is a <strong>Real-Time Operating System (RTOS)</strong> that runs on many kinds of devices, from 8-bit to 64-bit.</p>
 <p><em>NuttX supports Star64?</em></p>
 <p>Nope NuttX won’t run on Star64 yet, we’ll hit some interesting (and highly educational) RISC-V challenges.</p>
 <p>But the things that we learn today will be super helpful for <a href="https://lupyuen.github.io/articles/riscv#jump-to-start"><strong>porting NuttX to Star64</strong></a>.</p>
@@ -168,7 +168,7 @@ static void u16550_send(struct uart_dev_s *dev, int ch) {
 <p><a href="https://github.com/apache/nuttx/blob/master/drivers/serial/uart_16550.c#L610-L624">(<strong>u16550_serialout</strong> is defined here)</a></p>
 <p>To print a character, the driver writes to the UART Base Address <strong><code>0x1000</code> <code>0000</code></strong> at Offset <strong>UART_THR_OFFSET</strong>.</p>
 <p>And we discover that <strong>UART_THR_OFFSET</strong> is 0: <a href="https://github.com/apache/nuttx/blob/master/include/nuttx/serial/uart_16550.h#L172-L200">uart_16550.h</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define UART_THR_INCR 0 /* (DLAB =0) Transmit Holding Register */
+<div class="example-wrap"><pre class="language-c"><code>#define UART_THR_INCR 0 /* Transmit Holding Register (when DLAB is 0) */
 #define UART_THR_OFFSET (CONFIG_16550_REGINCR*UART_THR_INCR)
 </code></pre></div>
 <p>Which means that we can print to QEMU Console by writing to <strong><code>0x1000</code> <code>0000</code></strong>. How convenient!</p>
@@ -176,7 +176,7 @@ static void u16550_send(struct uart_dev_s *dev, int ch) {
 *(volatile uint8_t *) 0x10000000 = &#39;1&#39;;
 </code></pre></div>
 <p><em>What about RISC-V Assembly?</em></p>
-<p>This is how we print to QEMU Console in <strong>RISC-V Assembly Code</strong> (to debug our NuttX Boot Code): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L71-L93">qemu_rv_head.S</a></p>
+<p>This is how we print to QEMU Console in <strong>RISC-V Assembly</strong> (to debug our NuttX Boot Code): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L71-L93">qemu_rv_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>/* Load UART Base Address to Register t0 */
 li  t0, 0x10000000
 
@@ -197,7 +197,7 @@ sb  t1, 0(t0)
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/riscv#other-instructions">(<strong><code>li</code></strong> loads a Value into a Register)</a></p>
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-rv32--load-and-store-instructions">(<strong><code>sb</code></strong> stores a byte from a Register into an Address)</a></p>
-<p>When we start QEMU Emulator, the code above prints “<strong><code>123</code></strong>” to the QEMU Console (pic below)…</p>
+<p>When we start QEMU Emulator, our RISC-V Assembly prints “<strong><code>123</code></strong>” to the QEMU Console (pic below)…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ qemu-system-riscv64 \
   -semihosting \
   -M virt,aclint=on \
@@ -245,7 +245,7 @@ nsh&gt;
 <p><a href="https://lupyuen.github.io/articles/star64#inside-the-kernel-image"><em>Kernel Header for RISC-V Armbian Linux</em></a></p>
 <h1 id="risc-v-linux-kernel-header"><a href="#risc-v-linux-kernel-header">4 RISC-V Linux Kernel Header</a></h1>
 <p><em>How will Star64 boot NuttX?</em></p>
-<p>Star64’s <strong>U-Boot Bootloader</strong> will load NuttX Kernel into RAM and run it.</p>
+<p>Star64’s <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a> will load NuttX Kernel into RAM and run it.</p>
 <p>But we need to embed the <strong>RISC-V Linux Kernel Header</strong> (and pretend we’re Linux)…</p>
 <ul>
 <li>
@@ -255,7 +255,7 @@ nsh&gt;
 <p><a href="https://lupyuen.github.io/articles/star64#appendix-decode-the-risc-v-linux-header"><strong>“Decode the RISC-V Linux Header”</strong></a></p>
 </li>
 </ul>
-<p>This is the Assembly Code for our <strong>RISC-V Linux Header</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L42-L75">qemu_rv_head.S</a></p>
+<p>Thus we cooked up this Assembly Code for our <strong>RISC-V Linux Header</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L42-L75">qemu_rv_head.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>c.li    s4, -13              /* Magic Signature &quot;MZ&quot; (2 bytes) */
 j       real_start           /* Jump to Kernel Start (2 bytes) */
 .long   0                    /* Executable Code padded to 8 bytes */
@@ -291,7 +291,8 @@ real_start:
 </ul>
 <p>Thus we do the same for NuttX on Star64.</p>
 <p>This is how we set the Start Address to <strong><code>0x4020</code> <code>0000</code></strong> in our <strong>NuttX Build Configuration</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/nsh64/defconfig#L56-L57">nsh64/defconfig</a></p>
-<div class="example-wrap"><pre class="language-text"><code>CONFIG_RAM_SIZE=33554432
+<div class="example-wrap"><pre class="language-text"><code>// TODO: Fix CONFIG_RAM_SIZE
+CONFIG_RAM_SIZE=33554432
 CONFIG_RAM_START=0x40200000
 </code></pre></div>
 <p>And our <strong>NuttX Linker Script</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/scripts/ld.script#L21-L26">ld.script</a></p>
@@ -348,7 +349,7 @@ CONFIG_RAM_START=0x40200000
 <p><em>How to boot NuttX on microSD?</em></p>
 <p>For the microSD Image, we start with this <a href="https://www.armbian.com/star64/"><strong>Armbian Image for Star64</strong></a>…</p>
 <ul>
-<li><a href="https://github.com/armbianro/os/releases/download/23.8.0-trunk.56/Armbian_23.8.0-trunk.56_Star64_lunar_edge_5.15.0_minimal.img.xz"><strong>Armbian 23.8 Lunar for Star64 (Minimal)</strong></a></li>
+<li><a href="https://github.com/armbianro/os/releases/download/23.8.0-trunk.69/Armbian_23.8.0-trunk.69_Star64_lunar_edge_5.15.0_minimal.img.xz"><strong>Armbian 23.8 Lunar for Star64 (Minimal)</strong></a></li>
 </ul>
 <p>Uncompress the <strong>.xz</strong> file. Write the <strong>.img</strong> file to a microSD Card with <a href="https://www.balena.io/etcher/"><strong>Balena Etcher</strong></a> or <a href="https://wiki.gnome.org/Apps/Disks"><strong>GNOME Disks</strong></a>.</p>
 <p>The <a href="https://lupyuen.github.io/articles/star64#armbian-image-for-star64"><strong>Device Tree</strong></a> is missing, so we fix it…</p>
@@ -541,7 +542,7 @@ csrw  stvec, t0
 </li>
 </ul>
 <p><em>What happens when we run this?</em></p>
-<p>When we boot the modified NuttX on Star64, we see this…</p>
+<p>When we boot the modified NuttX on Star64, we see this (pic above)…</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 clk u5_dw_i2c_clk_core already disabled
 clk u5_dw_i2c_clk_apb already disabled
@@ -595,7 +596,7 @@ jal  x1, qemu_rv_start
 <p>Helped by <strong>OpenSBI Supervisor Interface</strong></p>
 </li>
 </ul>
-<p>This is the first in a series of (yummy) articles on porting NuttX to Star64, please join me next time!</p>
+<p>This is the first in a series of (yummy) articles on porting NuttX to Star64, please join me next time…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/nuttx-star64"><strong>“Apache NuttX RTOS for Star64”</strong></a></li>
 </ul>
