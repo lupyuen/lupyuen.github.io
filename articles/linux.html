@@ -300,7 +300,7 @@ Domain0 Next Arg1         : 0x0000000042200000
 Domain0 Next Mode         : S-mode
 Domain0 SysReset          : yes
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-star64#nuttx-fails-to-get-hart-id">(“S-mode” refers to <strong>Supervisor Mode</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/nuttx2#risc-v-privilege-levels">(“S-mode” refers to <strong>Supervisor Mode</strong>)</a></p>
 <p>(What’s <code>0x4220</code> <code>0000</code>?)</p>
 <p>And the <strong>RISC-V Hardware Thread</strong> (HART) will support <a href="https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v">“<strong>rv64imafdcbx</strong>”</a>…</p>
 <div class="example-wrap"><pre class="language-text"><code>Boot HART ID              : 1
@@ -451,34 +451,34 @@ rm /run/media/$USER/armbi_root/boot/Image
 ## Copy `nuttx.bin` to Armbian Kernel `/boot/Image`
 cp nuttx.bin /run/media/$USER/armbi_root/boot/Image
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-star64#boot-nuttx-on-star64">(Source)</a></p>
+<p><a href="https://lupyuen.github.io/articles/nuttx2#boot-nuttx-on-star64">(Source)</a></p>
 <p><em>What’s this NuttX ELF Image “nuttx”?</em></p>
 <p>We generate the <strong>NuttX ELF Image</strong> by compiling <a href="https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu"><strong>NuttX for 64-bit RISC-V QEMU</strong></a> with these tweaks…</p>
-<ul>
+<ol>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-star64#nuttx-prints-to-qemu-console"><strong>“NuttX prints to QEMU Console”</strong></a></p>
+<p>Print the <a href="https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console"><strong>Debug Logs</strong></a> in RISC-V Assembly</p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-star64#uart-base-address-for-star64"><strong>“UART Base Address for Star64”</strong></a></p>
+<p>Check the <a href="https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64"><strong>UART Base Address</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-star64#risc-v-linux-kernel-header"><strong>“RISC-V Linux Kernel Header”</strong></a></p>
+<p>Embed the <a href="https://lupyuen.github.io/articles/nuttx2#risc-v-linux-kernel-header"><strong>RISC-V Kernel Header</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-star64#set-start-address-of-nuttx-kernel"><strong>“Set Start Address of NuttX Kernel”</strong></a></p>
+<p>Set the <a href="https://lupyuen.github.io/articles/nuttx2#start-address-of-nuttx-kernel"><strong>Start Address</strong></a> of NuttX Kernel</p>
 </li>
-</ul>
+</ol>
 <p>We’ll explain why in the next article.</p>
 <p><em>Does it boot?</em></p>
 <p>When we insert the microSD Card into Star64 and power up…</p>
 <p>NuttX boots and prints “<strong><code>123</code></strong>” yay! (Pic above)</p>
-<p><a href="https://github.com/lupyuen/nuttx-star64#nuttx-prints-to-qemu-console">(As printed by our <strong>Boot Code</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console">(As printed by our <strong>Boot Code</strong>)</a></p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 clk u5_dw_i2c_clk_core already disabled
 clk u5_dw_i2c_clk_apb already disabled
 123
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-star64#boot-nuttx-on-star64">(See the <strong>Complete Log</strong>)</a></p>
+<p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-crash-log">(See the <strong>Complete Log</strong>)</a></p>
 <p>But NuttX crashes right after that…</p>
 <div class="example-wrap"><pre class="language-text"><code>Unhandled exception: Illegal instruction
 EPC: 000000004020005c RA: 00000000fff471c6 TVAL: 00000000f1402573
@@ -501,7 +501,7 @@ resetting ...
 reset not supported yet
 ### ERROR ### Please RESET the board ###
 </code></pre></div>
-<p><a href="https://github.com/lupyuen/nuttx-star64#boot-nuttx-on-star64">(Source)</a></p>
+<p><a href="https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-crash-log">(Source)</a></p>
 <p>Why did NuttX crash at <strong><code>0x4020</code> <code>005C</code></strong>? All shall be revealed in the next article!</p>
 <ul>
 <li><a href="https://lupyuen.github.io/articles/nuttx2"><strong>“Apache NuttX RTOS on RISC-V: Star64 JH7110 SBC”</strong></a></li>
