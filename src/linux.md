@@ -306,7 +306,7 @@ Domain0 Next Mode         : S-mode
 Domain0 SysReset          : yes
 ```
 
-[("S-mode" refers to __Supervisor Mode__)](https://github.com/lupyuen/nuttx-star64#nuttx-fails-to-get-hart-id)
+[("S-mode" refers to __Supervisor Mode__)](https://lupyuen.github.io/articles/nuttx2#risc-v-privilege-levels)
 
 (What's `0x4220` `0000`?)
 
@@ -485,19 +485,19 @@ rm /run/media/$USER/armbi_root/boot/Image
 cp nuttx.bin /run/media/$USER/armbi_root/boot/Image
 ```
 
-[(Source)](https://github.com/lupyuen/nuttx-star64#boot-nuttx-on-star64)
+[(Source)](https://lupyuen.github.io/articles/nuttx2#boot-nuttx-on-star64)
 
 _What's this NuttX ELF Image "nuttx"?_
 
 We generate the __NuttX ELF Image__ by compiling [__NuttX for 64-bit RISC-V QEMU__](https://lupyuen.github.io/articles/riscv#appendix-build-apache-nuttx-rtos-for-64-bit-risc-v-qemu) with these tweaks...
 
-- [__"NuttX prints to QEMU Console"__](https://github.com/lupyuen/nuttx-star64#nuttx-prints-to-qemu-console)
+1.  Print the [__Debug Logs__](https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console) in RISC-V Assembly
 
-- [__"UART Base Address for Star64"__](https://github.com/lupyuen/nuttx-star64#uart-base-address-for-star64)
+1.  Check the [__UART Base Address__](https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64)
 
-- [__"RISC-V Linux Kernel Header"__](https://github.com/lupyuen/nuttx-star64#risc-v-linux-kernel-header)
+1.  Embed the [__RISC-V Kernel Header__](https://lupyuen.github.io/articles/nuttx2#risc-v-linux-kernel-header)
 
-- [__"Set Start Address of NuttX Kernel"__](https://github.com/lupyuen/nuttx-star64#set-start-address-of-nuttx-kernel)
+1.  Set the [__Start Address__](https://lupyuen.github.io/articles/nuttx2#start-address-of-nuttx-kernel) of NuttX Kernel
 
 We'll explain why in the next article.
 
@@ -507,7 +507,7 @@ When we insert the microSD Card into Star64 and power up...
 
 NuttX boots and prints "__`123`__" yay! (Pic above)
 
-[(As printed by our __Boot Code__)](https://github.com/lupyuen/nuttx-star64#nuttx-prints-to-qemu-console)
+[(As printed by our __Boot Code__)](https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console)
 
 ```text
 Starting kernel ...
@@ -516,7 +516,7 @@ clk u5_dw_i2c_clk_apb already disabled
 123
 ```
 
-[(See the __Complete Log__)](https://github.com/lupyuen/nuttx-star64#boot-nuttx-on-star64)
+[(See the __Complete Log__)](https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-crash-log)
 
 But NuttX crashes right after that...
 
@@ -543,7 +543,7 @@ reset not supported yet
 ### ERROR ### Please RESET the board ###
 ```
 
-[(Source)](https://github.com/lupyuen/nuttx-star64#boot-nuttx-on-star64)
+[(Source)](https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-crash-log)
 
 Why did NuttX crash at __`0x4020` `005C`__? All shall be revealed in the next article!
 

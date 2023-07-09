@@ -200,7 +200,7 @@ This says...
 
 - NuttX Kernel begins execution at address __`0x8000` `0000`__
 
-  (Why? What if NuttX is started by the U-Boot Bootloader? [__See this__](https://github.com/lupyuen/nuttx-star64#armbian-image-for-star64))
+  (What if NuttX is started by the U-Boot Bootloader? [__See this__](https://lupyuen.github.io/articles/nuttx2#start-address-of-nuttx-kernel))
 
 Now we head into the NuttX Boot Code...
 
@@ -465,7 +465,7 @@ _Can we write our own RISC-V Assembly Code? As a learning exercise?_
 
 Yep! Here's how we inserted our own RISC-V Assembly Code into the NuttX Boot Code...
 
--   [__"NuttX prints to QEMU Console"__](https://github.com/lupyuen/nuttx-star64#nuttx-prints-to-qemu-console)
+-   [__"Print to QEMU Console"__](https://lupyuen.github.io/articles/nuttx2#print-to-qemu-console)
 
 Let's jump to __qemu_rv_start__...
 
