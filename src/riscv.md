@@ -447,9 +447,13 @@ Let's skim through the rest...
 
   [(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L117-L120)
 
-  [(See the list of all __RISC-V Instructions__)](https://five-embeddev.com/quickref/instructions.html)
+Here's the complete list of RISC-V Instructions...
 
-  [(And __RISC-V Pseudo-Instructions__)](https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#-a-listing-of-standard-risc-v-pseudoinstructions)
+- [__RISC-V Instructions__](https://five-embeddev.com/quickref/instructions.html)
+
+- [__RISC-V Pseudo-Instructions__](https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#-a-listing-of-standard-risc-v-pseudoinstructions)
+
+- [__RISC-V Reference Card__](https://web.archive.org/web/20230331004925/http://riscvbook.com/greencard-20181213.pdf)
 
 _Why are the RISC-V Labels named "1f", "2f", "3f"?_
 
@@ -527,6 +531,8 @@ I hope this article has been an educational exploration of Apache NuttX RTOS on 
 
 As we've seen, NuttX is a tiny operating system that's perfect for experimenting with RISC-V gadgets. We'll do this and much more in the upcoming articles!
 
+-   [__"Apache NuttX RTOS on RISC-V: Star64 JH7110 SBC"__](https://lupyuen.github.io/articles/nuttx2)
+
 -   [__"Booting RISC-V Linux on Star64 JH7110 SBC"__](https://lupyuen.github.io/articles/linux)
 
 -   [__"Inspecting the RISC-V Linux Images for Star64 SBC"__](https://lupyuen.github.io/articles/star64)
@@ -541,9 +547,9 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 
 -   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=36453810)
 
--   [__My Current Project: "Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
+-   [__My Current Project: "Apache NuttX RTOS for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
 
--   [__My Other Project: "The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book)
+-   [__My Other Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
 
 -   [__Check out my articles__](https://lupyuen.github.io)
 

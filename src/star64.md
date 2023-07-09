@@ -455,6 +455,8 @@ Please join me in the next article as we actually boot Linux on Star64! (Pic abo
 
 -   [__"Booting RISC-V Linux on Star64 JH7110 SBC"__](https://lupyuen.github.io/articles/linux)
 
+-   [__"Apache NuttX RTOS on RISC-V: Star64 JH7110 SBC"__](https://lupyuen.github.io/articles/nuttx2)
+
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
@@ -463,9 +465,9 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 
 -   [__Discuss this article on Pine64 Forum__](https://forum.pine64.org/showthread.php?tid=18420)
 
--   [__My Current Project: "Apache NuttX RTOS for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
+-   [__My Current Project: "Apache NuttX RTOS for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
 
--   [__My Other Project: "The RISC-V BL602 Book"__](https://lupyuen.github.io/articles/book)
+-   [__My Other Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
 
 -   [__Check out my articles__](https://lupyuen.github.io)
 
