@@ -378,7 +378,7 @@ boot_targets=mmc0 dhcp  tftp
 
 Thus U-Boot will execute the Boot Script __bootcmd_tftp__ at startup.
 
-TODO: Why
+TODO: As explained here
 
 _What's bootcmd_tftp?_
 
@@ -436,43 +436,128 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Boot Script
 
-TODO
+_Earlier we saw boot_targets and bootcmd_tftp. How do they work?_
 
-_How does it work?_
+We talked about __boot_targets__ and __bootcmd_tftp__...
 
-`bootcmd` is now...
+- [__"Configure U-Boot for TFTP"__](https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp)
 
-```text
-bootcmd=run load_vf2_env;run importbootenv;run load_distro_uenv;run boot2;run distro_bootcmd
+Let's figure out how they will __Auto-Boot NuttX__ (or Linux) from the Network...
 
-load_vf2_env=fatload mmc ${bootpart} ${loadaddr} ${testenv}
+1.  At startup, U-Boot Bootloader always executes the __Boot Script__ in [__bootcmd__](https://u-boot.readthedocs.io/en/latest/usage/environment.html#list-of-environment-variables).
 
-importbootenv=echo Importing environment from mmc${devnum} ...; env import -t ${loadaddr} ${filesize}
+1.  __bootcmd__ is set to...
 
-load_distro_uenv=fatload mmc ${fatbootpart} ${distroloadaddr} ${bootdir}/${bootenv}; env import ${distroloadaddr} 17c; 
+    ```bash
+    ## Load the VF2 Environment from MMC
+    run load_vf2_env;
 
-boot2 not defined, comes from `boot/vf2_uEnv.txt`
+    ## Import the Environment from MMC
+    run importbootenv;
+
+    ## Load the Distro Environment from MMC
+    run load_distro_uenv;
+
+    ## Run `boot2` script (missing)
+    run boot2;
+
+    ## Run the Boot Command for every Boot Target
+    run distro_bootcmd
+    ```
+
+    [(Source)](https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64)
+
+    Which executes __distro_bootcmd__
+
+1.  __distro_bootcmd__ is set to...
+
+    ```bash
+    ## For Every Boot Target...
+    for target in ${boot_targets};
+
+      ## Run the Boot Command for the Target
+      do run bootcmd_${target};
+    done
+    ```
+
+    [(Source)](https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64)
+
+1.  Previously we changed __boot_targets__ to...
+
+    ```text
+    mmc0 dhcp  tftp
+    ```
+
+    [(Source)](https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp)
+
+    Which means U-Boot will execute this sequence...
+
+    - __bootcmd_mmc0__: Try to boot from MicroSD
+
+    - __bootcmd_dhcp__: Try to boot from DHCP+TFTP Combo Server
+
+    - __bootcmd_tftp__: Try to boot from TFTP
+
+1.  We saw __bootcmd_tftp__ earlier...
+
+    [__"Configure U-Boot for TFTP"__](https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp)
+
+    It boots NuttX (or Linux) over the Network via TFTP.
+
+And that's how U-Boot Bootloader boots NuttX (or Linux) over the Network at startup!
+
+## Boot from MMC0
+
+_What's in bootcmd_mmc0?_
+
+__bootcmd_mmc0__ tries to boot from MicroSD...
+
+```bash
+## Set Device Number
+devnum=0;
+
+## Boot from MMC
+run mmc_boot
 ```
 
-`bootcmd` calls `distro_bootcmd`, which runs `bootcmd_mmc0` and `bootcmd_dhcp`...
+[(Source)](https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64)
 
-```text
-distro_bootcmd=for target in ${boot_targets}; do run bootcmd_${target}; done
+__mmc_boot__ is...
 
-boot_targets=mmc0 dhcp 
+```bash
+if mmc dev ${devnum};
+then 
+  devtype=mmc;
+  run scan_dev_for_boot_part;
+fi;
 
-bootcmd_mmc0=devnum=0; run mmc_boot
+mmcbootenv=run scan_mmc_dev;
+setenv bootpart ${devnum}:${mmcpart};
 
-bootcmd_distro=run fdt_loaddtb; run fdt_sizecheck; run set_fdt_distro; sysboot mmc ${fatbootpart} fat c0000000 ${bootdir}/${boot_syslinux_conf}; 
+if mmc rescan;
+then 
+  run loadbootenv && run importbootenv;
+  run ext4bootenv && run importbootenv;
+
+  if test -n $uenvcmd;
+  then
+    echo Running uenvcmd ...;
+    run uenvcmd;
+  fi;
+fi
 ```
 
-`bootcmd_dhcp` is...
+[(Source)](https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64)
 
-```text
-bootcmd_dhcp=devtype=dhcp; if dhcp ${scriptaddr} ${boot_script_dhcp}; then source ${scriptaddr}; fi;setenv efi_fdtfile ${fdtfile}; setenv efi_old_vci ${bootp_vci};setenv efi_old_arch ${bootp_arch};setenv bootp_vci PXEClient:Arch:00027:UNDI:003000;setenv bootp_arch 0x1b;if dhcp ${kernel_addr_r}; then tftpboot ${fdt_addr_r} dtb/${efi_fdtfile};if fdt addr ${fdt_addr_r}; then bootefi ${kernel_addr_r} ${fdt_addr_r}; else bootefi ${kernel_addr_r} ${fdtcontroladdr};fi;fi;setenv bootp_vci ${efi_old_vci};setenv bootp_arch ${efi_old_arch};setenv efi_fdtfile;setenv efi_old_arch;setenv efi_old_vci;
-```
+## Boot from DHCP
 
-Which expands to...
+_What about bootcmd_dhcp?_
+
+__bootcmd_dhcp__ tries to boot from DHCP+TFTP Combo Server.
+
+It assumes that the DHCP Server is also a TFTP Server.
+
+__bootcmd_dhcp__ is set to...
 
 ```bash
 devtype=dhcp;
@@ -526,6 +611,16 @@ setenv efi_fdtfile;
 setenv efi_old_arch;
 setenv efi_old_vci;
 ```
+
+[(Source)](https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64)
+
+TODO: __dhcp__ explained here
+
+TODO: __tftpboot__ explained here
+
+TODO: __fdt__ explained here
+
+TODO: __booti__ explained here
 
 # Appendix: U-Boot Commands
 
