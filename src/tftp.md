@@ -434,7 +434,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/tftp.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tftp.md)
 
-# Appendix: Boot Script
+# Appendix: Boot Script for U-Boot Bootloader
 
 _Earlier we saw boot_targets and bootcmd_tftp. How do they work?_
 
@@ -622,7 +622,7 @@ TODO: __fdt__ explained here
 
 TODO: __booti__ explained here
 
-# Appendix: U-Boot Bootloader Commands
+# Appendix: Commands for U-Boot Bootloader
 
 Here are the __U-Boot Bootloader Commands__ mentioned in this article...
 
