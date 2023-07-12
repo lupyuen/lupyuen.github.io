@@ -67,7 +67,12 @@
 
     <h1 class="title">Star64 JH7110 RISC-V SBC: Boot from Network with U-Boot and TFTP</h1>
     <nav id="TOC"><ul>
-<li><a href="#whats-next">1 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>19 Jul 2023</em></p>
+<li><a href="#setup-tftp-server">1 Setup TFTP Server</a><ul></ul></li>
+<li><a href="#copy-nuttx-image-to-tftp-server">2 Copy NuttX Image to TFTP Server</a><ul></ul></li>
+<li><a href="#test-u-boot-with-tftp">3 Test U-Boot with TFTP</a><ul></ul></li>
+<li><a href="#configure-u-boot-for-tftp">4 Configure U-Boot for TFTP</a><ul></ul></li>
+<li><a href="#u-boot-commands-for-network-boot">5 U-Boot Commands for Network Boot</a><ul></ul></li>
+<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>19 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/tftp-title.jpg" alt="Pine64 Star64 JH7110 64-bit RISC-V SBC" /></p>
 <p>Testing a new Operating System like <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a> (or Linux) can get <em>painfully tedious</em> on a Single-Board Computer…</p>
 <p>Swapping, reflashing and rebooting a MicroSD Card, again and again and again!</p>
@@ -76,7 +81,402 @@
 <p>Today we’ll configure TFTP Network Boot on <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer.</p>
 <p>(Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
 <p><img src="https://lupyuen.github.io/images/tftp-flow.jpg" alt="TODO" /></p>
-<h1 id="whats-next"><a href="#whats-next">1 What’s Next</a></h1>
+<h1 id="setup-tftp-server"><a href="#setup-tftp-server">1 Setup TFTP Server</a></h1>
+<p>TODO</p>
+<p>First we set up a TFTP Server with <a href="https://crates.io/crates/tftpd"><code>tftpd</code></a>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>cargo install tftpd
+mkdir $HOME/tftproot
+sudo tftpd -i 0.0.0.0 -p 69 -d &quot;$HOME/tftproot&quot;
+## `sudo` because port 69 is a privileged low port
+</code></pre></div>
+<p>(<a href="https://crates.io/crates/tftp_server"><code>tftp_server</code></a> won’t work, it only supports localhost)</p>
+<p>We should see…</p>
+<div class="example-wrap"><pre class="language-text"><code>Running TFTP Server on 0.0.0.0:69 in $HOME/tftproot
+Sending a.txt to 127.0.0.1:57125
+Sent a.txt to 127.0.0.1:57125
+Sending a.txt to 192.168.x.x:33499
+Sent a.txt to 192.168.x.x:33499
+</code></pre></div>
+<p>Let’s test the TFTP Server…</p>
+<div class="example-wrap"><pre class="language-bash"><code>echo Test123 &gt;$HOME/tftproot/a.txt
+curl -v tftp://127.0.0.1/a.txt
+curl -v tftp://192.168.x.x/a.txt
+</code></pre></div>
+<p>(<code>localhost</code> won’t work because of IPv6, I think)</p>
+<p>We should see…</p>
+<div class="example-wrap"><pre class="language-text"><code>$ curl -v tftp://192.168.x.x/a.txt
+*   Trying 192.168.x.x:69...
+* getpeername() failed with errno 107: Transport endpoint is not connected
+* Connected to 192.168.x.x () port 69 (#0)
+* getpeername() failed with errno 107: Transport endpoint is not connected
+* set timeouts for state 0; Total  300000, retry 6 maxtry 50
+* got option=(tsize) value=(8)
+* tsize parsed from OACK (8)
+* got option=(blksize) value=(512)
+* blksize parsed from OACK (512) requested (512)
+* got option=(timeout) value=(6)
+* Connected for receive
+* set timeouts for state 1; Total  0, retry 72 maxtry 50
+Test123
+* Closing connection 0
+</code></pre></div>
+<p>If it fails…</p>
+<div class="example-wrap"><pre class="language-text"><code>$ curl -v tftp://192.168.x.x/a.txt
+*   Trying 192.168.x.x:69...
+* getpeername() failed with errno 107: Transport endpoint is not connected
+* Connected to 192.168.x.x () port 69 (#0)
+* getpeername() failed with errno 107: Transport endpoint is not connected
+* set timeouts for state 0; Total  300000, retry 6 maxtry 50
+</code></pre></div>
+<p>In the olden days we would actually do this…</p>
+<div class="example-wrap"><pre class="language-text"><code>$ tftp 127.0.0.1
+tftp&gt; get a.txt
+Received 8 bytes in 0.0 seconds
+tftp&gt; quit
+</code></pre></div>
+<p>Just like FTP!</p>
+<h1 id="copy-nuttx-image-to-tftp-server"><a href="#copy-nuttx-image-to-tftp-server">2 Copy NuttX Image to TFTP Server</a></h1>
+<p>TODO</p>
+<p>Next we copy the NuttX Image and Device Tree to the TFTP Folder…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Copy the Device Tree from Armbian microSD
+cp \
+  /run/media/$USER/armbi_root/boot/dtb/starfive/jh7110-visionfive-v2.dtb \
+  jh7110-star64-pine64.dtb
+
+## Copy NuttX Binary Image and Device Tree to TFTP Folder
+## `nuttx.bin` comes from here:
+## https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1
+cp nuttx.bin $HOME/tftproot/Image
+cp jh7110-star64-pine64.dtb $HOME/tftproot
+
+## Test NuttX Binary Image and Device Tree over FTP
+curl -v tftp://192.168.x.x/Image
+curl -v tftp://192.168.x.x/jh7110-star64-pine64.dtb
+
+## Show see
+## Warning: Binary output can mess up your terminal. Use &quot;--output -&quot; to tell 
+## Warning: curl to output it to your terminal anyway, or consider &quot;--output 
+## Warning: &lt;FILE&gt;&quot; to save to a file.
+</code></pre></div><h1 id="test-u-boot-with-tftp"><a href="#test-u-boot-with-tftp">3 Test U-Boot with TFTP</a></h1>
+<p>TODO</p>
+<p>Now we boot Star64 JH7110 SBC and test the TFTP Commands.</p>
+<p>Connect Star64 SBC to the Ethernet wired network and power up.</p>
+<p>Star64 fails to boot over the network (because we don’t have a <a href="https://en.wikipedia.org/wiki/Bootstrap_Protocol">BOOTP Server</a> or DHCP+TFTP Combo Server), but that’s OK…</p>
+<div class="example-wrap"><pre class="language-text"><code>ethernet@16030000 Waiting for PHY auto negotiation to complete....... done
+BOOTP broadcast 1
+*** Unhandled DHCP Option in OFFER/ACK: 43
+*** Unhandled DHCP Option in OFFER/ACK: 43
+DHCP client bound to address 192.168.x.x (351 ms)
+Using ethernet@16030000 device
+TFTP from server 192.168.x.x; our IP address is 192.168.x.x
+Filename &#39;boot.scr.uimg&#39;.
+Load address: 0x43900000
+Loading: *
+TFTP server died; starting again
+BOOTP broadcast 1
+*** Unhandled DHCP Option in OFFER/ACK: 43
+*** Unhandled DHCP Option in OFFER/ACK: 43
+DHCP client bound to address 192.168.x.x (576 ms)
+Using ethernet@16030000 device
+TFTP from server 192.168.x.x; our IP address is 192.168.x.x
+Filename &#39;boot.scr.uimg&#39;.
+Load address: 0x40200000
+Loading: *
+TFTP server died; starting again
+StarFive #
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-star64#u-boot-bootloader-log-for-tftp">(Source)</a></p>
+<p>Run these commands…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Set the TFTP Server IP
+setenv tftp_server 192.168.x.x
+
+## Load the NuttX Image from TFTP Server
+## kernel_addr_r=0x40200000
+## tftp_server=192.168.x.x
+tftpboot ${kernel_addr_r} ${tftp_server}:Image
+
+## Load the Device Tree from TFTP Server
+## fdt_addr_r=0x46000000
+## tftp_server=192.168.x.x
+tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
+
+## Set the RAM Address of Device Tree
+## fdt_addr_r=0x46000000
+fdt addr ${fdt_addr_r}
+
+## Boot the NuttX Image with the Device Tree
+## kernel_addr_r=0x40200000
+## fdt_addr_r=0x46000000
+booti ${kernel_addr_r} - ${fdt_addr_r}
+</code></pre></div>
+<p><a href="https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot">(Inspired by this article)</a></p>
+<p>We should see…</p>
+<div class="example-wrap"><pre class="language-text"><code>StarFive # setenv tftp_server 192.168.x.x
+
+StarFive # tftpboot ${kernel_addr_r} ${tftp_server}:Image
+Using ethernet@16030000 device
+TFTP from server 192.168.x.x; our IP address is 192.168.x.x
+Filename &#39;Image&#39;.
+Load address: 0x40200000
+Loading: #############################################################T ####
+#################################################################
+#############
+221.7 KiB/s
+done
+Bytes transferred = 2097832 (2002a8 hex)
+
+StarFive # tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
+Using ethernet@16030000 device
+TFTP from server 192.168.x.x; our IP address is 192.168.x.x
+Filename &#39;jh7110-star64-pine64.dtb&#39;.
+Load address: 0x46000000
+Loading: ####
+374 KiB/s
+done
+Bytes transferred = 50235 (c43b hex)
+
+StarFive # fdt addr ${fdt_addr_r}
+
+StarFive # booti ${kernel_addr_r} - ${fdt_addr_r}
+## Flattened Device Tree blob at 46000000
+   Booting using the fdt blob at 0x46000000
+   Using Device Tree in place at 0000000046000000, end 000000004600f43a
+
+Starting kernel ...
+
+clk u5_dw_i2c_clk_core already disabled
+clk u5_dw_i2c_clk_apb already disabled
+123067DFAGHBC
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-star64#u-boot-bootloader-log-for-tftp">(Source)</a></p>
+<h1 id="configure-u-boot-for-tftp"><a href="#configure-u-boot-for-tftp">4 Configure U-Boot for TFTP</a></h1>
+<p>TODO</p>
+<p>Let’s configure U-Boot so that it will boot from TFTP every time we power up!</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Remember the TFTP Server IP
+setenv tftp_server 192.168.x.x
+## Check that it&#39;s correct
+printenv tftp_server
+## Save it for future reboots
+saveenv
+
+## Add the Boot Command for TFTP
+setenv bootcmd_tftp &#39;if tftpboot ${kernel_addr_r} ${tftp_server}:Image ; then if tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; then if fdt addr ${fdt_addr_r} ; then booti ${kernel_addr_r} - ${fdt_addr_r} ; fi ; fi ; fi&#39;
+## Check that it&#39;s correct
+printenv bootcmd_tftp
+## Save it for future reboots
+saveenv
+
+## Test the Boot Command for TFTP
+run bootcmd_tftp
+
+## Remember the Original Boot Targets
+setenv orig_boot_targets &quot;$boot_targets&quot;
+## Should show `mmc0 dhcp`
+printenv boot_targets
+## Save it for future reboots
+saveenv
+
+## Add TFTP to the Boot Targets
+setenv boot_targets &quot;$boot_targets tftp&quot;
+## Should show `mmc0 dhcp  tftp`
+printenv boot_targets
+## Save it for future reboots
+saveenv
+</code></pre></div>
+<p><code>bootcmd_tftp</code> expands to…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Load the NuttX Image from TFTP Server
+## kernel_addr_r=0x40200000
+## tftp_server=192.168.x.x
+if tftpboot ${kernel_addr_r} ${tftp_server}:Image ;
+then
+
+  ## Load the Device Tree from TFTP Server
+  ## fdt_addr_r=0x46000000
+  if tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ;
+  then
+
+    ## Set the RAM Address of Device Tree
+    ## fdt_addr_r=0x46000000
+    if fdt addr ${fdt_addr_r} ;
+    then
+
+      ## Boot the NuttX Image with the Device Tree
+      ## kernel_addr_r=0x40200000
+      ## fdt_addr_r=0x46000000
+      booti ${kernel_addr_r} - ${fdt_addr_r} ;
+    fi ;
+  fi ;
+fi
+</code></pre></div>
+<p><a href="https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot">(From here)</a> This is a persistent change, i.e. the device will boot via TFTP on every power up. To revert back to the default boot behaviour:</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Restore the Boot Targets
+setenv boot_targets &quot;$orig_boot_targets&quot;
+## Should show `mmc0 dhcp`
+printenv boot_targets
+## Save it for future reboots
+saveenv
+</code></pre></div><h1 id="u-boot-commands-for-network-boot"><a href="#u-boot-commands-for-network-boot">5 U-Boot Commands for Network Boot</a></h1>
+<p>TODO</p>
+<p><em>How does it work?</em></p>
+<p><code>bootcmd</code> is now…</p>
+<div class="example-wrap"><pre class="language-text"><code>bootcmd=run load_vf2_env;run importbootenv;run load_distro_uenv;run boot2;run distro_bootcmd
+
+load_vf2_env=fatload mmc ${bootpart} ${loadaddr} ${testenv}
+
+importbootenv=echo Importing environment from mmc${devnum} ...; env import -t ${loadaddr} ${filesize}
+
+load_distro_uenv=fatload mmc ${fatbootpart} ${distroloadaddr} ${bootdir}/${bootenv}; env import ${distroloadaddr} 17c; 
+
+boot2 not defined, comes from `boot/vf2_uEnv.txt`
+</code></pre></div>
+<p><code>bootcmd</code> calls <code>distro_bootcmd</code>, which runs <code>bootcmd_mmc0</code> and <code>bootcmd_dhcp</code>…</p>
+<div class="example-wrap"><pre class="language-text"><code>distro_bootcmd=for target in ${boot_targets}; do run bootcmd_${target}; done
+
+boot_targets=mmc0 dhcp 
+
+bootcmd_mmc0=devnum=0; run mmc_boot
+
+bootcmd_distro=run fdt_loaddtb; run fdt_sizecheck; run set_fdt_distro; sysboot mmc ${fatbootpart} fat c0000000 ${bootdir}/${boot_syslinux_conf}; 
+</code></pre></div>
+<p><code>bootcmd_dhcp</code> is…</p>
+<div class="example-wrap"><pre class="language-text"><code>bootcmd_dhcp=devtype=dhcp; if dhcp ${scriptaddr} ${boot_script_dhcp}; then source ${scriptaddr}; fi;setenv efi_fdtfile ${fdtfile}; setenv efi_old_vci ${bootp_vci};setenv efi_old_arch ${bootp_arch};setenv bootp_vci PXEClient:Arch:00027:UNDI:003000;setenv bootp_arch 0x1b;if dhcp ${kernel_addr_r}; then tftpboot ${fdt_addr_r} dtb/${efi_fdtfile};if fdt addr ${fdt_addr_r}; then bootefi ${kernel_addr_r} ${fdt_addr_r}; else bootefi ${kernel_addr_r} ${fdtcontroladdr};fi;fi;setenv bootp_vci ${efi_old_vci};setenv bootp_arch ${efi_old_arch};setenv efi_fdtfile;setenv efi_old_arch;setenv efi_old_vci;
+</code></pre></div>
+<p>Which expands to…</p>
+<div class="example-wrap"><pre class="language-bash"><code>devtype=dhcp
+
+## Load the Boot Script from DHCP+TFTP Server
+## scriptaddr=0x43900000
+## boot_script_dhcp=boot.scr.uimg
+if dhcp ${scriptaddr} ${boot_script_dhcp}
+then
+  source ${scriptaddr}
+fi
+
+## Set the EFI Variables
+## fdtfile=starfive/starfive_visionfive2.dtb
+setenv efi_fdtfile ${fdtfile}
+setenv efi_old_vci ${bootp_vci}
+setenv efi_old_arch ${bootp_arch}
+setenv bootp_vci PXEClient:Arch:00027:UNDI:003000
+setenv bootp_arch 0x1b
+
+## Load the Kernel Image from DHCP+TFTP Server...
+## kernel_addr_r=0x40200000
+if dhcp ${kernel_addr_r}
+then
+
+  ## Load the Device Tree from the DHCP+TFTP Server
+  ## fdt_addr_r=0x46000000
+  ## efi_fdtfile=starfive/starfive_visionfive2.dtb
+  tftpboot ${fdt_addr_r} dtb/${efi_fdtfile}
+
+  ## Set the RAM Address of Device Tree
+  ## fdt_addr_r=0x46000000
+  if fdt addr ${fdt_addr_r}
+  then
+
+    ## Boot the EFI Kernel Image
+    ## fdt_addr_r=0x46000000
+    bootefi ${kernel_addr_r} ${fdt_addr_r}
+  else
+
+    ## Boot the EFI Kernel Image
+    ## fdtcontroladdr=fffc6aa0
+    bootefi ${kernel_addr_r} ${fdtcontroladdr}
+  fi
+fi
+
+## Unset the EFI Variables
+setenv bootp_vci ${efi_old_vci}
+setenv bootp_arch ${efi_old_arch}
+setenv efi_fdtfile
+setenv efi_old_arch
+setenv efi_old_vci
+</code></pre></div>
+<p><code>dhcp</code> command is…</p>
+<div class="example-wrap"><pre class="language-text"><code>dhcp - boot image via network using DHCP/TFTP protocol
+
+Usage:
+dhcp [loadAddress] [[hostIPaddr:]bootfilename]
+</code></pre></div>
+<p>(Assume <a href="https://www.emcraft.com/som/using-dhcp">DHCP/TFTP</a> is not used)</p>
+<p><code>tftpboot</code> command is…</p>
+<div class="example-wrap"><pre class="language-text"><code>tftpboot - boot image via network using TFTP protocol
+
+Usage:
+tftpboot [loadAddress] [[hostIPaddr:]bootfilename]
+</code></pre></div>
+<p><code>fdt</code> command is…</p>
+<div class="example-wrap"><pre class="language-text"><code>fdt - flattened device tree utility commands
+
+Usage:
+fdt addr [-c]  &lt;addr&gt; [&lt;length&gt;]   - Set the [control] fdt location to &lt;addr&gt;
+fdt apply &lt;addr&gt;                    - Apply overlay to the DT
+fdt move   &lt;fdt&gt; &lt;newaddr&gt; &lt;length&gt; - Copy the fdt to &lt;addr&gt; and make it active
+fdt resize [&lt;extrasize&gt;]            - Resize fdt to size + padding to 4k addr + some optional &lt;extrasize&gt; if needed
+fdt print  &lt;path&gt; [&lt;prop&gt;]          - Recursive print starting at &lt;path&gt;
+fdt list   &lt;path&gt; [&lt;prop&gt;]          - Print one level starting at &lt;path&gt;
+fdt get value &lt;var&gt; &lt;path&gt; &lt;prop&gt;   - Get &lt;property&gt; and store in &lt;var&gt;
+fdt get name &lt;var&gt; &lt;path&gt; &lt;index&gt;   - Get name of node &lt;index&gt; and store in &lt;var&gt;
+fdt get addr &lt;var&gt; &lt;path&gt; &lt;prop&gt;    - Get start address of &lt;property&gt; and store in &lt;var&gt;
+fdt get size &lt;var&gt; &lt;path&gt; [&lt;prop&gt;]  - Get size of [&lt;property&gt;] or num nodes and store in &lt;var&gt;
+fdt set    &lt;path&gt; &lt;prop&gt; [&lt;val&gt;]    - Set &lt;property&gt; [to &lt;val&gt;]
+fdt mknode &lt;path&gt; &lt;node&gt;            - Create a new node after &lt;path&gt;
+fdt rm     &lt;path&gt; [&lt;prop&gt;]          - Delete the node or &lt;property&gt;
+fdt header [get &lt;var&gt; &lt;member&gt;]     - Display header info
+                                      get - get header member &lt;member&gt; and store it in &lt;var&gt;
+fdt bootcpu &lt;id&gt;                    - Set boot cpuid
+fdt memory &lt;addr&gt; &lt;size&gt;            - Add/Update memory node
+fdt rsvmem print                    - Show current mem reserves
+fdt rsvmem add &lt;addr&gt; &lt;size&gt;        - Add a mem reserve
+fdt rsvmem delete &lt;index&gt;           - Delete a mem reserves
+fdt chosen [&lt;start&gt; &lt;end&gt;]          - Add/update the /chosen branch in the tree
+                                        &lt;start&gt;/&lt;end&gt; - initrd start/end addr
+NOTE: Dereference aliases by omitting the leading &#39;/&#39;, e.g. fdt print ethernet0.
+</code></pre></div>
+<p><code>booti</code> command is…</p>
+<div class="example-wrap"><pre class="language-text"><code>booti - boot Linux kernel &#39;Image&#39; format from memory
+
+Usage:
+booti [addr [initrd[:size]] [fdt]]
+    - boot Linux flat or compressed &#39;Image&#39; stored at &#39;addr&#39;
+        The argument &#39;initrd&#39; is optional and specifies the address
+        of an initrd in memory. The optional parameter &#39;:size&#39; allows
+        specifying the size of a RAW initrd.
+        Currently only booting from gz, bz2, lzma and lz4 compression
+        types are supported. In order to boot from any of these compressed
+        images, user have to set kernel_comp_addr_r and kernel_comp_size environment
+        variables beforehand.
+        Since booting a Linux kernel requires a flat device-tree, a
+        third argument providing the address of the device-tree blob
+        is required. To boot a kernel with a device-tree blob but
+        without an initrd image, use a &#39;-&#39; for the initrd argument.
+</code></pre></div>
+<p><code>bootefi</code> command is…</p>
+<div class="example-wrap"><pre class="language-text"><code>bootefi - Boots an EFI payload from memory
+
+Usage:
+bootefi &lt;image address&gt; [fdt address]
+  - boot EFI payload stored at address &lt;image address&gt;.
+    If specified, the device tree located at &lt;fdt address&gt; gets
+    exposed as EFI configuration table.
+bootefi bootmgr [fdt address]
+  - load and boot EFI payload based on BootOrder/BootXXXX variables.
+
+    If specified, the device tree located at &lt;fdt address&gt; gets
+    exposed as EFI configuration table.
+</code></pre></div>
+<p>Doesn’t work for NuttX…</p>
+<div class="example-wrap"><pre class="language-text"><code>StarFive # bootefi ${kernel_addr_r} ${fdt_addr_r}
+Card did not respond to voltage select! : -110
+Card did not respond to voltage select! : -110
+No EFI system partition
+No UEFI binary known at 0x40200000
+</code></pre></div>
+<p><a href="https://u-boot.readthedocs.io/en/latest/usage/environment.html"><code>autoload</code></a> setting is…</p>
+<div class="example-wrap"><pre class="language-text"><code>autoload:
+if set to “no” (any string beginning with ‘n’), “bootp” and “dhcp” will just load perform a lookup of the configuration from the BOOTP server, but not try to load any image.
+</code></pre></div><h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
