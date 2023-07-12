@@ -638,55 +638,7 @@ tftpboot - boot image via network using TFTP protocol
 
 - tftpboot [loadAddress] [[hostIPaddr:]bootfilename]
 
-## fdt Command 
-
-fdt - flattened device tree utility commands
-
-- fdt addr [-c]  \<addr> [\<length>]   - Set the [control] fdt location to \<addr>
-
-- fdt apply \<addr>                    - Apply overlay to the DT
-
-- fdt move   \<fdt> \<newaddr> \<length> - Copy the fdt to \<addr> and make it active
-
-- fdt resize [\<extrasize>]            - Resize fdt to size + padding to 4k addr + some optional \<extrasize> if needed
-
-- fdt print  \<path> [\<prop>]          - Recursive print starting at \<path>
-
-- fdt list   \<path> [\<prop>]          - Print one level starting at \<path>
-
-- fdt get value \<var> \<path> \<prop>   - Get \<property> and store in \<var>
-
-- fdt get name \<var> \<path> \<index>   - Get name of node \<index> and store in \<var>
-
-- fdt get addr \<var> \<path> \<prop>    - Get start address of \<property> and store in \<var>
-
-- fdt get size \<var> \<path> [\<prop>]  - Get size of [\<property>] or num nodes and store in \<var>
-
-- fdt set    \<path> \<prop> [\<val>]    - Set \<property> [to \<val>]
-
-- fdt mknode \<path> \<node>            - Create a new node after \<path>
-
-- fdt rm     \<path> [\<prop>]          - Delete the node or \<property>
-
-- fdt header [get \<var> \<member>]     - Display header info
-
-  get - get header member \<member> and store it in \<var>
-
-- fdt bootcpu \<id>                    - Set boot cpuid
-
-- fdt memory \<addr> \<size>            - Add/Update memory node
-
-- fdt rsvmem print                    - Show current mem reserves
-
-- fdt rsvmem add \<addr> \<size>        - Add a mem reserve
-
-- fdt rsvmem delete \<index>           - Delete a mem reserves
-
-- fdt chosen [\<start> \<end>]          - Add/update the /chosen branch in the tree
-
-  \<start>/\<end> - initrd start/end addr
-
-NOTE: Dereference aliases by omitting the leading '/', e.g. fdt print ethernet0.
+(Same as __dhcp__ Command?)
 
 ## booti Command
 
@@ -744,3 +696,93 @@ TODO: [`autoload`](https://u-boot.readthedocs.io/en/latest/usage/environment.htm
 autoload:
 if set to “no” (any string beginning with ‘n’), “bootp” and “dhcp” will just load perform a lookup of the configuration from the BOOTP server, but not try to load any image.
 ```
+
+## fdt Command 
+
+fdt - flattened device tree utility commands
+
+- fdt addr [-c]  \<addr> [\<length>]   
+
+  Set the [control] fdt location to \<addr>
+
+- fdt apply \<addr>                    
+
+  Apply overlay to the DT
+
+- fdt move   \<fdt> \<newaddr> \<length> 
+
+  Copy the fdt to \<addr> and make it active
+
+- fdt resize [\<extrasize>]            
+
+  Resize fdt to size + padding to 4k addr + some optional \<extrasize> if needed
+
+- fdt print  \<path> [\<prop>]          
+
+  Recursive print starting at \<path>
+
+- fdt list   \<path> [\<prop>]          
+
+  Print one level starting at \<path>
+
+- fdt get value \<var> \<path> \<prop>   
+
+  Get \<property> and store in \<var>
+
+- fdt get name \<var> \<path> \<index>   
+
+  Get name of node \<index> and store in \<var>
+
+- fdt get addr \<var> \<path> \<prop>    
+
+  Get start address of \<property> and store in \<var>
+
+- fdt get size \<var> \<path> [\<prop>]  
+
+  Get size of [\<property>] or num nodes and store in \<var>
+
+- fdt set    \<path> \<prop> [\<val>]    
+
+  Set \<property> [to \<val>]
+
+- fdt mknode \<path> \<node>            
+
+  Create a new node after \<path>
+
+- fdt rm     \<path> [\<prop>]          
+
+  Delete the node or \<property>
+
+- fdt header [get \<var> \<member>]     
+
+  Display header info
+
+  get - get header member \<member> and store it in \<var>
+
+- fdt bootcpu \<id>                    
+
+  Set boot cpuid
+
+- fdt memory \<addr> \<size>            
+
+  Add/Update memory node
+
+- fdt rsvmem print                    
+
+  Show current mem reserves
+
+- fdt rsvmem add \<addr> \<size>        
+
+  Add a mem reserve
+
+- fdt rsvmem delete \<index>           
+
+  Delete a mem reserves
+
+- fdt chosen [\<start> \<end>]          
+
+  Add/update the /chosen branch in the tree
+
+  \<start>/\<end> - initrd start/end addr
+
+NOTE: Dereference aliases by omitting the leading '/', e.g. fdt print ethernet0.
