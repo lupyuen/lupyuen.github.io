@@ -188,47 +188,42 @@ curl -v tftp://192.168.x.x/jh7110-star64-pine64.dtb
 
 __For Linux:__ Just copy the Linux Device Tree __jh7110-star64-pine64.dtb__ to our TFTP Folder.
 
+![Boot from Network with U-Boot and TFTP](https://lupyuen.github.io/images/tftp-flow.jpg)
+
 # Test U-Boot with TFTP
 
-TODO
+We're ready to test U-Boot Bootloader with TFTP!
 
-Now we boot Star64 JH7110 SBC and test the TFTP Commands.
+Connect Star64 to the __Ethernet Wired Network__ (pic above).
 
-Connect Star64 SBC to the Ethernet wired network and power up.
+Connect to the [__Serial Console__](https://lupyuen.github.io/articles/linux#serial-console-on-star64) and power up without a MicroSD Card.
 
-Star64 fails to boot over the network (because we don't have a [BOOTP Server](https://en.wikipedia.org/wiki/Bootstrap_Protocol) or DHCP+TFTP Combo Server), but that's OK...
+Star64 __fails to boot__ over the network, but that's OK...
 
 ```text
-ethernet@16030000 Waiting for PHY auto negotiation to complete....... done
 BOOTP broadcast 1
 *** Unhandled DHCP Option in OFFER/ACK: 43
-*** Unhandled DHCP Option in OFFER/ACK: 43
 DHCP client bound to address 192.168.x.x (351 ms)
-Using ethernet@16030000 device
+
 TFTP from server 192.168.x.x; our IP address is 192.168.x.x
 Filename 'boot.scr.uimg'.
 Load address: 0x43900000
-Loading: *
-TFTP server died; starting again
-BOOTP broadcast 1
-*** Unhandled DHCP Option in OFFER/ACK: 43
-*** Unhandled DHCP Option in OFFER/ACK: 43
-DHCP client bound to address 192.168.x.x (576 ms)
-Using ethernet@16030000 device
-TFTP from server 192.168.x.x; our IP address is 192.168.x.x
-Filename 'boot.scr.uimg'.
+  TFTP server died; starting again
+
 Load address: 0x40200000
-Loading: *
-TFTP server died; starting again
+  TFTP server died; starting again
 StarFive #
 ```
 
 [(Source)](https://github.com/lupyuen/nuttx-star64#u-boot-bootloader-log-for-tftp)
 
-Run these commands...
+That's because we don't have a [__BOOTP Server__](https://en.wikipedia.org/wiki/Bootstrap_Protocol) or a __DHCP+TFTP__ Combo Server.
+
+Since we have a Dedicated TFTP Server, we run these __U-Boot Commands__ at the prompt...
 
 ```bash
 ## Set the TFTP Server IP
+## TODO: Change `192.168.x.x` to our Computer's IP Address
 setenv tftp_server 192.168.x.x
 
 ## Load the NuttX Image from TFTP Server
@@ -251,50 +246,57 @@ fdt addr ${fdt_addr_r}
 booti ${kernel_addr_r} - ${fdt_addr_r}
 ```
 
-[(Inspired by this article)](https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot)
+TODO: __tftpboot__ explained here
 
-We should see...
+TODO: __fdt__ explained here
+
+TODO: __booti__ explained here
+
+Our Star64 SBC will (pic above)...
+
+1.  __Fetch the Kernel__ over TFTP
+
+1.  __Load the Kernel__ into RAM
+
+1.  __Fetch the Device Tree__ over TFTP
+
+1.  __Load the Device Tree__ into RAM
+
+1.  __Boot the Kernel__
+
+Like so...
 
 ```text
 StarFive # setenv tftp_server 192.168.x.x
 
 StarFive # tftpboot ${kernel_addr_r} ${tftp_server}:Image
-Using ethernet@16030000 device
-TFTP from server 192.168.x.x; our IP address is 192.168.x.x
 Filename 'Image'.
 Load address: 0x40200000
-Loading: #############################################################T ####
-#################################################################
-#############
-221.7 KiB/s
-done
+Loading: #### 221.7 KiB/s done
 Bytes transferred = 2097832 (2002a8 hex)
 
 StarFive # tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
-Using ethernet@16030000 device
-TFTP from server 192.168.x.x; our IP address is 192.168.x.x
 Filename 'jh7110-star64-pine64.dtb'.
 Load address: 0x46000000
-Loading: ####
-374 KiB/s
-done
+Loading: #### 374 KiB/s done
 Bytes transferred = 50235 (c43b hex)
 
 StarFive # fdt addr ${fdt_addr_r}
 
 StarFive # booti ${kernel_addr_r} - ${fdt_addr_r}
-## Flattened Device Tree blob at 46000000
-   Booting using the fdt blob at 0x46000000
-   Using Device Tree in place at 0000000046000000, end 000000004600f43a
+Flattened Device Tree blob at 46000000
+Booting using the fdt blob at 0x46000000
+Using Device Tree in place at 0000000046000000, end 000000004600f43a
 
 Starting kernel ...
-
 clk u5_dw_i2c_clk_core already disabled
 clk u5_dw_i2c_clk_apb already disabled
 123067DFAGHBC
 ```
 
 [(Source)](https://github.com/lupyuen/nuttx-star64#u-boot-bootloader-log-for-tftp)
+
+[(Inspired by this article)](https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot)
 
 # Configure U-Boot for TFTP
 
