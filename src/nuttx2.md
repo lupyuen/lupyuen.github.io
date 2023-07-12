@@ -625,7 +625,15 @@ Now we're smokin' hot...
 
 - But NuttX hangs in the C Function [__qemu_rv_start__](https://lupyuen.github.io/articles/riscv#jump-to-start)
 
-Why? Stay tuned for more tantalising treats in the next article!
+Why? Stay tuned for more tantalising treats in the next article! Sneak peek...
+
+- [__"Hang in Enter Critical Section"__](https://github.com/lupyuen/nuttx-star64#hang-in-enter-critical-section)
+
+- [__"Hang in UART Setup"__](https://github.com/lupyuen/nuttx-star64#hang-in-uart-setup)
+
+- [__"Hang in UART Transmit"__](https://github.com/lupyuen/nuttx-star64#hang-in-uart-transmit)
+
+- [__"Boot from Network with U-Boot and TFTP"__](https://github.com/lupyuen/nuttx-star64#boot-from-network-with-u-boot-and-tftp)
 
 ![Pine64 Star64 64-bit RISC-V SBC](https://lupyuen.github.io/images/nuttx2-star64.jpg)
 
