@@ -20,7 +20,7 @@ Today we'll configure TFTP Network Boot on [__Pine64 Star64__](https://wiki.pine
 
 # Boot From Network
 
-The pic above shows our grand plan for today...
+The pic above shows our __Grand Plan__ for today...
 
 0.  We'll install __TFTP Server__ on our Computer
 
@@ -135,7 +135,7 @@ tftp> quit
 
 But __`curl`__ is so much simpler!
 
-# Copy NuttX Image to TFTP Server
+# Copy Kernel Image to TFTP Server
 
 TODO
 
