@@ -79,9 +79,9 @@
 <li><a href="#appendix-commands-for-u-boot-bootloader">8 Appendix: Commands for U-Boot Bootloader</a><ul>
 <li><a href="#dhcp-command">8.1 dhcp Command</a><ul></ul></li>
 <li><a href="#tftpboot-command">8.2 tftpboot Command</a><ul></ul></li>
-<li><a href="#fdt-command">8.3 fdt Command</a><ul></ul></li>
-<li><a href="#booti-command">8.4 booti Command</a><ul></ul></li>
-<li><a href="#bootefi-command">8.5 bootefi Command</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>19 Jul 2023</em></p>
+<li><a href="#booti-command">8.3 booti Command</a><ul></ul></li>
+<li><a href="#bootefi-command">8.4 bootefi Command</a><ul></ul></li>
+<li><a href="#fdt-command">8.5 fdt Command</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>19 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/tftp-title.jpg" alt="Pine64 Star64 JH7110 64-bit RISC-V SBC" /></p>
 <p>Testing a new Operating System like <a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX RTOS</strong></a> (or Linux) can get <em>painfully tedious</em> on a Single-Board Computer…</p>
 <p>Swapping, reflashing and rebooting a MicroSD Card, <a href="https://lupyuen.github.io/articles/nuttx2#boot-nuttx-on-star64"><strong>again and again and again</strong></a>!</p>
@@ -595,74 +595,8 @@ setenv efi_old_vci;
 <ul>
 <li>tftpboot [loadAddress] [[hostIPaddr:]bootfilename]</li>
 </ul>
-<h2 id="fdt-command"><a href="#fdt-command">8.3 fdt Command</a></h2>
-<p>fdt - flattened device tree utility commands</p>
-<ul>
-<li>
-<p>fdt addr [-c]  &lt;addr&gt; [&lt;length&gt;]   - Set the [control] fdt location to &lt;addr&gt;</p>
-</li>
-<li>
-<p>fdt apply &lt;addr&gt;                    - Apply overlay to the DT</p>
-</li>
-<li>
-<p>fdt move   &lt;fdt&gt; &lt;newaddr&gt; &lt;length&gt; - Copy the fdt to &lt;addr&gt; and make it active</p>
-</li>
-<li>
-<p>fdt resize [&lt;extrasize&gt;]            - Resize fdt to size + padding to 4k addr + some optional &lt;extrasize&gt; if needed</p>
-</li>
-<li>
-<p>fdt print  &lt;path&gt; [&lt;prop&gt;]          - Recursive print starting at &lt;path&gt;</p>
-</li>
-<li>
-<p>fdt list   &lt;path&gt; [&lt;prop&gt;]          - Print one level starting at &lt;path&gt;</p>
-</li>
-<li>
-<p>fdt get value &lt;var&gt; &lt;path&gt; &lt;prop&gt;   - Get &lt;property&gt; and store in &lt;var&gt;</p>
-</li>
-<li>
-<p>fdt get name &lt;var&gt; &lt;path&gt; &lt;index&gt;   - Get name of node &lt;index&gt; and store in &lt;var&gt;</p>
-</li>
-<li>
-<p>fdt get addr &lt;var&gt; &lt;path&gt; &lt;prop&gt;    - Get start address of &lt;property&gt; and store in &lt;var&gt;</p>
-</li>
-<li>
-<p>fdt get size &lt;var&gt; &lt;path&gt; [&lt;prop&gt;]  - Get size of [&lt;property&gt;] or num nodes and store in &lt;var&gt;</p>
-</li>
-<li>
-<p>fdt set    &lt;path&gt; &lt;prop&gt; [&lt;val&gt;]    - Set &lt;property&gt; [to &lt;val&gt;]</p>
-</li>
-<li>
-<p>fdt mknode &lt;path&gt; &lt;node&gt;            - Create a new node after &lt;path&gt;</p>
-</li>
-<li>
-<p>fdt rm     &lt;path&gt; [&lt;prop&gt;]          - Delete the node or &lt;property&gt;</p>
-</li>
-<li>
-<p>fdt header [get &lt;var&gt; &lt;member&gt;]     - Display header info</p>
-<p>get - get header member &lt;member&gt; and store it in &lt;var&gt;</p>
-</li>
-<li>
-<p>fdt bootcpu &lt;id&gt;                    - Set boot cpuid</p>
-</li>
-<li>
-<p>fdt memory &lt;addr&gt; &lt;size&gt;            - Add/Update memory node</p>
-</li>
-<li>
-<p>fdt rsvmem print                    - Show current mem reserves</p>
-</li>
-<li>
-<p>fdt rsvmem add &lt;addr&gt; &lt;size&gt;        - Add a mem reserve</p>
-</li>
-<li>
-<p>fdt rsvmem delete &lt;index&gt;           - Delete a mem reserves</p>
-</li>
-<li>
-<p>fdt chosen [&lt;start&gt; &lt;end&gt;]          - Add/update the /chosen branch in the tree</p>
-<p>&lt;start&gt;/&lt;end&gt; - initrd start/end addr</p>
-</li>
-</ul>
-<p>NOTE: Dereference aliases by omitting the leading ‘/’, e.g. fdt print ethernet0.</p>
-<h2 id="booti-command"><a href="#booti-command">8.4 booti Command</a></h2>
+<p>(Same as <strong>dhcp</strong> Command?)</p>
+<h2 id="booti-command"><a href="#booti-command">8.3 booti Command</a></h2>
 <p>booti - boot Linux kernel ‘Image’ format from memory</p>
 <ul>
 <li>
@@ -681,7 +615,7 @@ is required. To boot a kernel with a device-tree blob but
 without an initrd image, use a ‘-’ for the initrd argument.</p>
 </li>
 </ul>
-<h2 id="bootefi-command"><a href="#bootefi-command">8.5 bootefi Command</a></h2>
+<h2 id="bootefi-command"><a href="#bootefi-command">8.4 bootefi Command</a></h2>
 <p>bootefi - Boots an EFI payload from memory</p>
 <ul>
 <li>
@@ -707,7 +641,94 @@ No UEFI binary known at 0x40200000
 <p>TODO: <a href="https://u-boot.readthedocs.io/en/latest/usage/environment.html"><code>autoload</code></a> setting is…</p>
 <div class="example-wrap"><pre class="language-text"><code>autoload:
 if set to “no” (any string beginning with ‘n’), “bootp” and “dhcp” will just load perform a lookup of the configuration from the BOOTP server, but not try to load any image.
-</code></pre></div>
+</code></pre></div><h2 id="fdt-command"><a href="#fdt-command">8.5 fdt Command</a></h2>
+<p>fdt - flattened device tree utility commands</p>
+<ul>
+<li>
+<p>fdt addr [-c]  &lt;addr&gt; [&lt;length&gt;]</p>
+<p>Set the [control] fdt location to &lt;addr&gt;</p>
+</li>
+<li>
+<p>fdt apply &lt;addr&gt;</p>
+<p>Apply overlay to the DT</p>
+</li>
+<li>
+<p>fdt move   &lt;fdt&gt; &lt;newaddr&gt; &lt;length&gt; </p>
+<p>Copy the fdt to &lt;addr&gt; and make it active</p>
+</li>
+<li>
+<p>fdt resize [&lt;extrasize&gt;]</p>
+<p>Resize fdt to size + padding to 4k addr + some optional &lt;extrasize&gt; if needed</p>
+</li>
+<li>
+<p>fdt print  &lt;path&gt; [&lt;prop&gt;]</p>
+<p>Recursive print starting at &lt;path&gt;</p>
+</li>
+<li>
+<p>fdt list   &lt;path&gt; [&lt;prop&gt;]</p>
+<p>Print one level starting at &lt;path&gt;</p>
+</li>
+<li>
+<p>fdt get value &lt;var&gt; &lt;path&gt; &lt;prop&gt;</p>
+<p>Get &lt;property&gt; and store in &lt;var&gt;</p>
+</li>
+<li>
+<p>fdt get name &lt;var&gt; &lt;path&gt; &lt;index&gt;</p>
+<p>Get name of node &lt;index&gt; and store in &lt;var&gt;</p>
+</li>
+<li>
+<p>fdt get addr &lt;var&gt; &lt;path&gt; &lt;prop&gt;</p>
+<p>Get start address of &lt;property&gt; and store in &lt;var&gt;</p>
+</li>
+<li>
+<p>fdt get size &lt;var&gt; &lt;path&gt; [&lt;prop&gt;]</p>
+<p>Get size of [&lt;property&gt;] or num nodes and store in &lt;var&gt;</p>
+</li>
+<li>
+<p>fdt set    &lt;path&gt; &lt;prop&gt; [&lt;val&gt;]</p>
+<p>Set &lt;property&gt; [to &lt;val&gt;]</p>
+</li>
+<li>
+<p>fdt mknode &lt;path&gt; &lt;node&gt;</p>
+<p>Create a new node after &lt;path&gt;</p>
+</li>
+<li>
+<p>fdt rm     &lt;path&gt; [&lt;prop&gt;]</p>
+<p>Delete the node or &lt;property&gt;</p>
+</li>
+<li>
+<p>fdt header [get &lt;var&gt; &lt;member&gt;]</p>
+<p>Display header info</p>
+<p>get - get header member &lt;member&gt; and store it in &lt;var&gt;</p>
+</li>
+<li>
+<p>fdt bootcpu &lt;id&gt;</p>
+<p>Set boot cpuid</p>
+</li>
+<li>
+<p>fdt memory &lt;addr&gt; &lt;size&gt;</p>
+<p>Add/Update memory node</p>
+</li>
+<li>
+<p>fdt rsvmem print</p>
+<p>Show current mem reserves</p>
+</li>
+<li>
+<p>fdt rsvmem add &lt;addr&gt; &lt;size&gt;</p>
+<p>Add a mem reserve</p>
+</li>
+<li>
+<p>fdt rsvmem delete &lt;index&gt;</p>
+<p>Delete a mem reserves</p>
+</li>
+<li>
+<p>fdt chosen [&lt;start&gt; &lt;end&gt;]</p>
+<p>Add/update the /chosen branch in the tree</p>
+<p>&lt;start&gt;/&lt;end&gt; - initrd start/end addr</p>
+</li>
+</ul>
+<p>NOTE: Dereference aliases by omitting the leading ‘/’, e.g. fdt print ethernet0.</p>
+
     
 </body>
 </html>
