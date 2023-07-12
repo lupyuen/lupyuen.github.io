@@ -121,7 +121,7 @@ Add in this sequence to Bread Machine...
 
 During Kneading...
 
--   Add 1 / 2 cup Raisins
+-   Add 1/2 cup Raisins
 
 -   Sprinkle a few teaspoons of [Superfine Wholegrain Flour](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html) until it looks like a smooth bump
 
