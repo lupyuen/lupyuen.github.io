@@ -67,21 +67,57 @@
 
     <h1 class="title">Star64 JH7110 RISC-V SBC: Boot from Network with U-Boot and TFTP</h1>
     <nav id="TOC"><ul>
-<li><a href="#setup-tftp-server">1 Setup TFTP Server</a><ul></ul></li>
-<li><a href="#copy-nuttx-image-to-tftp-server">2 Copy NuttX Image to TFTP Server</a><ul></ul></li>
-<li><a href="#test-u-boot-with-tftp">3 Test U-Boot with TFTP</a><ul></ul></li>
-<li><a href="#configure-u-boot-for-tftp">4 Configure U-Boot for TFTP</a><ul></ul></li>
-<li><a href="#u-boot-commands-for-network-boot">5 U-Boot Commands for Network Boot</a><ul></ul></li>
-<li><a href="#whats-next">6 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>19 Jul 2023</em></p>
+<li><a href="#boot-from-network">1 Boot From Network</a><ul></ul></li>
+<li><a href="#setup-tftp-server">2 Setup TFTP Server</a><ul></ul></li>
+<li><a href="#copy-nuttx-image-to-tftp-server">3 Copy NuttX Image to TFTP Server</a><ul></ul></li>
+<li><a href="#test-u-boot-with-tftp">4 Test U-Boot with TFTP</a><ul></ul></li>
+<li><a href="#configure-u-boot-for-tftp">5 Configure U-Boot for TFTP</a><ul></ul></li>
+<li><a href="#u-boot-commands-for-network-boot">6 U-Boot Commands for Network Boot</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>19 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/tftp-title.jpg" alt="Pine64 Star64 JH7110 64-bit RISC-V SBC" /></p>
 <p>Testing a new Operating System like <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a> (or Linux) can get <em>painfully tedious</em> on a Single-Board Computer…</p>
 <p>Swapping, reflashing and rebooting a MicroSD Card, again and again and again!</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx">(Like how we tested <strong>NuttX on PinePhone</strong>)</a></p>
 <p>Thankfully there’s a better way: Booting NuttX (or Linux) over the <strong>Local Network</strong>, with <strong>U-Boot Bootloader</strong> and <strong>TFTP</strong>!</p>
-<p>Today we’ll configure TFTP Network Boot on <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer.</p>
-<p>(Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
-<p><img src="https://lupyuen.github.io/images/tftp-flow.jpg" alt="TODO" /></p>
-<h1 id="setup-tftp-server"><a href="#setup-tftp-server">1 Setup TFTP Server</a></h1>
+<p>Today we’ll configure TFTP Network Boot on <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a>, the new 64-bit RISC-V Single-Board Computer (SBC).</p>
+<p>(Powered by <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
+<p><img src="https://lupyuen.github.io/images/tftp-flow.jpg" alt="Boot from Network with U-Boot and TFTP" /></p>
+<h1 id="boot-from-network"><a href="#boot-from-network">1 Boot From Network</a></h1>
+<p>The pic above shows our grand plan for today…</p>
+<ol start="0">
+<li>
+<p>We’ll install <strong>TFTP Server</strong> on our Computer</p>
+<p>(Which will provide the Kernel Image and Device Tree for Star64)</p>
+</li>
+<li>
+<p>Star64 SBC will fetch the <strong>Kernel Image</strong> from our Computer</p>
+<p>(NuttX or Linux)</p>
+</li>
+<li>
+<p>Our SBC will load the <strong>Kernel into RAM</strong></p>
+<p>(At RAM Address <code>0x4020</code> <code>0000</code>)</p>
+</li>
+<li>
+<p>Star64 will fetch the <strong>Linux Device Tree</strong> from our Computer</p>
+<p>(NuttX doesn’t need it, but we’ll do it anyway)</p>
+</li>
+<li>
+<p>Our SBC will load the <strong>Device Tree into RAM</strong></p>
+<p>(At RAM Address <code>0x4600</code> <code>0000</code>)</p>
+</li>
+<li>
+<p>Star64 will <strong>boot the Kernel</strong> and Device Tree from RAM</p>
+<p>(NuttX or Linux)</p>
+</li>
+<li>
+<p>We’ll configure the SBC to do this <strong>every time it powers on</strong></p>
+<p>(It will try MicroSD first, before the Network Boot)</p>
+</li>
+</ol>
+<p><em>Do we need to install anything on our SBC?</em></p>
+<p>TODO</p>
+<h1 id="setup-tftp-server"><a href="#setup-tftp-server">2 Setup TFTP Server</a></h1>
+<p><em>What’s this TFTP Server?</em></p>
 <p>TODO</p>
 <p>First we set up a TFTP Server with <a href="https://crates.io/crates/tftpd"><code>tftpd</code></a>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cargo install tftpd
@@ -135,7 +171,7 @@ Received 8 bytes in 0.0 seconds
 tftp&gt; quit
 </code></pre></div>
 <p>Just like FTP!</p>
-<h1 id="copy-nuttx-image-to-tftp-server"><a href="#copy-nuttx-image-to-tftp-server">2 Copy NuttX Image to TFTP Server</a></h1>
+<h1 id="copy-nuttx-image-to-tftp-server"><a href="#copy-nuttx-image-to-tftp-server">3 Copy NuttX Image to TFTP Server</a></h1>
 <p>TODO</p>
 <p>Next we copy the NuttX Image and Device Tree to the TFTP Folder…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy the Device Tree from Armbian microSD
@@ -157,7 +193,7 @@ curl -v tftp://192.168.x.x/jh7110-star64-pine64.dtb
 ## Warning: Binary output can mess up your terminal. Use &quot;--output -&quot; to tell 
 ## Warning: curl to output it to your terminal anyway, or consider &quot;--output 
 ## Warning: &lt;FILE&gt;&quot; to save to a file.
-</code></pre></div><h1 id="test-u-boot-with-tftp"><a href="#test-u-boot-with-tftp">3 Test U-Boot with TFTP</a></h1>
+</code></pre></div><h1 id="test-u-boot-with-tftp"><a href="#test-u-boot-with-tftp">4 Test U-Boot with TFTP</a></h1>
 <p>TODO</p>
 <p>Now we boot Star64 JH7110 SBC and test the TFTP Commands.</p>
 <p>Connect Star64 SBC to the Ethernet wired network and power up.</p>
@@ -249,7 +285,7 @@ clk u5_dw_i2c_clk_apb already disabled
 123067DFAGHBC
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64#u-boot-bootloader-log-for-tftp">(Source)</a></p>
-<h1 id="configure-u-boot-for-tftp"><a href="#configure-u-boot-for-tftp">4 Configure U-Boot for TFTP</a></h1>
+<h1 id="configure-u-boot-for-tftp"><a href="#configure-u-boot-for-tftp">5 Configure U-Boot for TFTP</a></h1>
 <p>TODO</p>
 <p>Let’s configure U-Boot so that it will boot from TFTP every time we power up!</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Remember the TFTP Server IP
@@ -315,7 +351,7 @@ setenv boot_targets &quot;$orig_boot_targets&quot;
 printenv boot_targets
 ## Save it for future reboots
 saveenv
-</code></pre></div><h1 id="u-boot-commands-for-network-boot"><a href="#u-boot-commands-for-network-boot">5 U-Boot Commands for Network Boot</a></h1>
+</code></pre></div><h1 id="u-boot-commands-for-network-boot"><a href="#u-boot-commands-for-network-boot">6 U-Boot Commands for Network Boot</a></h1>
 <p>TODO</p>
 <p><em>How does it work?</em></p>
 <p><code>bootcmd</code> is now…</p>
@@ -476,7 +512,7 @@ No UEFI binary known at 0x40200000
 <p><a href="https://u-boot.readthedocs.io/en/latest/usage/environment.html"><code>autoload</code></a> setting is…</p>
 <div class="example-wrap"><pre class="language-text"><code>autoload:
 if set to “no” (any string beginning with ‘n’), “bootp” and “dhcp” will just load perform a lookup of the configuration from the BOOTP server, but not try to load any image.
-</code></pre></div><h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
+</code></pre></div><h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
