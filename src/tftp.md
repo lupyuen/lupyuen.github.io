@@ -632,11 +632,15 @@ dhcp - boot image via network using DHCP/TFTP protocol
 
 - dhcp [loadAddress] [[hostIPaddr:]bootfilename]
 
+[(Source)](https://github.com/u-boot/u-boot/blob/master/cmd/net.c#L144-L150)
+
 ## tftpboot Command
 
 tftpboot - boot image via network using TFTP protocol
 
 - tftpboot [loadAddress] [[hostIPaddr:]bootfilename]
+
+[(Source)](https://github.com/u-boot/u-boot/blob/master/cmd/net.c#L61-L69)
 
 (Same as __dhcp__ Command?)
 
@@ -662,6 +666,8 @@ booti - boot Linux kernel 'Image' format from memory
   is required. To boot a kernel with a device-tree blob but
   without an initrd image, use a '-' for the initrd argument.
 
+[(Source)](https://github.com/u-boot/u-boot/blob/master/cmd/net.c#L61-L69)
+
 ## bootefi Command
 
 bootefi - Boots an EFI payload from memory
@@ -679,6 +685,8 @@ bootefi - Boots an EFI payload from memory
 
   If specified, the device tree located at \<fdt address> gets
   exposed as EFI configuration table.
+
+TODO: Source
 
 TODO: Doesn't work for NuttX...
 
@@ -786,3 +794,5 @@ fdt - flattened device tree utility commands
   \<start>/\<end> - initrd start/end addr
 
 NOTE: Dereference aliases by omitting the leading '/', e.g. fdt print ethernet0.
+
+TODO: Source
