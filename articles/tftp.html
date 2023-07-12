@@ -69,7 +69,7 @@
     <nav id="TOC"><ul>
 <li><a href="#boot-from-network">1 Boot From Network</a><ul></ul></li>
 <li><a href="#setup-tftp-server">2 Setup TFTP Server</a><ul></ul></li>
-<li><a href="#copy-nuttx-image-to-tftp-server">3 Copy NuttX Image to TFTP Server</a><ul></ul></li>
+<li><a href="#copy-kernel-image-to-tftp-server">3 Copy Kernel Image to TFTP Server</a><ul></ul></li>
 <li><a href="#test-u-boot-with-tftp">4 Test U-Boot with TFTP</a><ul></ul></li>
 <li><a href="#configure-u-boot-for-tftp">5 Configure U-Boot for TFTP</a><ul></ul></li>
 <li><a href="#u-boot-commands-for-network-boot">6 U-Boot Commands for Network Boot</a><ul></ul></li>
@@ -83,7 +83,7 @@
 <p>(Powered by <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
 <p><img src="https://lupyuen.github.io/images/tftp-flow.jpg" alt="Boot from Network with U-Boot and TFTP" /></p>
 <h1 id="boot-from-network"><a href="#boot-from-network">1 Boot From Network</a></h1>
-<p>The pic above shows our grand plan for today…</p>
+<p>The pic above shows our <strong>Grand Plan</strong> for today…</p>
 <ol start="0">
 <li>
 <p>We’ll install <strong>TFTP Server</strong> on our Computer</p>
@@ -171,7 +171,7 @@ tftp&gt; quit
 </code></pre></div>
 <p><a href="https://en.wikipedia.org/wiki/File_Transfer_Protocol">(Just like <strong>FTP</strong>)</a></p>
 <p>But <strong><code>curl</code></strong> is so much simpler!</p>
-<h1 id="copy-nuttx-image-to-tftp-server"><a href="#copy-nuttx-image-to-tftp-server">3 Copy NuttX Image to TFTP Server</a></h1>
+<h1 id="copy-kernel-image-to-tftp-server"><a href="#copy-kernel-image-to-tftp-server">3 Copy Kernel Image to TFTP Server</a></h1>
 <p>TODO</p>
 <p>Next we copy the NuttX Image and Device Tree to the TFTP Folder…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy the Device Tree from Armbian microSD
