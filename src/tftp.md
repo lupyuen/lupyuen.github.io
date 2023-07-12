@@ -62,9 +62,9 @@ Let's find out how...
 
 _What's this TFTP Server?_
 
-That's a simple program (running on our computer) that operates the [__Trivial File Transfer Protocol (TFTP)__](https://en.wikipedia.org/wiki/Trivial_File_Transfer_Protocol).
+That's a simple program (running on our computer) that handles the [__Trivial File Transfer Protocol (TFTP)__](https://en.wikipedia.org/wiki/Trivial_File_Transfer_Protocol).
 
-It dishes out files over the __Local Network__ (via UDP), when requested by our SBC.
+It dishes out files over the __Local Network__ (via UDP not TCP), when requested by our SBC.
 
 Follow these steps to install the [__`tftpd` TFTP Server__](https://crates.io/crates/tftpd) on our Linux / macOS / Windows Computer...
 
@@ -101,7 +101,7 @@ Let's __test the server__...
 echo Test123 >$HOME/tftproot/a.txt
 
 ## Fetch the Test File over TFTP.
-## `192.168.x.x` is our computer's IP Address
+## Change `192.168.x.x` to our Computer's IP Address
 curl -v tftp://127.0.0.1/a.txt
 curl -v tftp://192.168.x.x/a.txt
 ```
@@ -122,19 +122,7 @@ Test123
 
 (Ignore the warnings)
 
-If it fails...
-
-```text
-* Trying 192.168.x.x:69...
-* getpeername() failed with errno 107: Transport endpoint is not connected
-* Connected to 192.168.x.x () port 69 (#0)
-* getpeername() failed with errno 107: Transport endpoint is not connected
-* set timeouts for state 0; Total  300000, retry 6 maxtry 50
-```
-
-TODO: Check
-
-In the olden days we would actually do this...
+Our TFTP Server is up! In the olden days we would actually do this...
 
 ```text
 $ tftp 127.0.0.1
@@ -143,7 +131,9 @@ Received 8 bytes in 0.0 seconds
 tftp> quit
 ```
 
-Just like FTP!
+[(Just like __FTP__)](https://en.wikipedia.org/wiki/File_Transfer_Protocol)
+
+But __`curl`__ is so much simpler!
 
 # Copy NuttX Image to TFTP Server
 
