@@ -73,7 +73,9 @@
 <li><a href="#test-u-boot-with-tftp">4 Test U-Boot with TFTP</a><ul></ul></li>
 <li><a href="#configure-u-boot-for-tftp">5 Configure U-Boot for TFTP</a><ul></ul></li>
 <li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-boot-script">7 Appendix: Boot Script</a><ul></ul></li>
+<li><a href="#appendix-boot-script">7 Appendix: Boot Script</a><ul>
+<li><a href="#boot-from-mmc0">7.1 Boot from MMC0</a><ul></ul></li>
+<li><a href="#boot-from-dhcp">7.2 Boot from DHCP</a><ul></ul></li></ul></li>
 <li><a href="#appendix-u-boot-commands">8 Appendix: U-Boot Commands</a><ul></ul></li></ul></nav><p>📝 <em>19 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/tftp-title.jpg" alt="Pine64 Star64 JH7110 64-bit RISC-V SBC" /></p>
 <p>Testing a new Operating System like <a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX RTOS</strong></a> (or Linux) can get <em>painfully tedious</em> on a Single-Board Computer…</p>
@@ -364,7 +366,7 @@ boot_targets=mmc0 dhcp
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code># We added TFTP to the Boot Targets
 boot_targets=mmc0 dhcp  tftp</code></pre></div>
 <p>Thus U-Boot will execute the Boot Script <strong>bootcmd_tftp</strong> at startup.</p>
-<p>TODO: Why</p>
+<p>TODO: As explained here</p>
 <p><em>What’s bootcmd_tftp?</em></p>
 <p><strong>bootcmd_tftp</strong> expands to this U-Boot Script…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Load the NuttX Image from TFTP Server
@@ -416,32 +418,110 @@ fi
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tftp.md"><strong>lupyuen.github.io/src/tftp.md</strong></a></p>
 <h1 id="appendix-boot-script"><a href="#appendix-boot-script">7 Appendix: Boot Script</a></h1>
-<p>TODO</p>
-<p><em>How does it work?</em></p>
-<p><code>bootcmd</code> is now…</p>
-<div class="example-wrap"><pre class="language-text"><code>bootcmd=run load_vf2_env;run importbootenv;run load_distro_uenv;run boot2;run distro_bootcmd
+<p><em>Earlier we saw boot_targets and bootcmd_tftp. How do they work?</em></p>
+<p>We talked about <strong>boot_targets</strong> and <strong>bootcmd_tftp</strong>…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp"><strong>“Configure U-Boot for TFTP”</strong></a></li>
+</ul>
+<p>Let’s figure out how they will <strong>Auto-Boot NuttX</strong> (or Linux) from the Network…</p>
+<ol>
+<li>
+<p>At startup, U-Boot Bootloader always executes the <strong>Boot Script</strong> in <a href="https://u-boot.readthedocs.io/en/latest/usage/environment.html#list-of-environment-variables"><strong>bootcmd</strong></a>.</p>
+</li>
+<li>
+<p><strong>bootcmd</strong> is set to…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Load the VF2 Environment from MMC
+run load_vf2_env;
 
-load_vf2_env=fatload mmc ${bootpart} ${loadaddr} ${testenv}
+## Import the Environment from MMC
+run importbootenv;
 
-importbootenv=echo Importing environment from mmc${devnum} ...; env import -t ${loadaddr} ${filesize}
+## Load the Distro Environment from MMC
+run load_distro_uenv;
 
-load_distro_uenv=fatload mmc ${fatbootpart} ${distroloadaddr} ${bootdir}/${bootenv}; env import ${distroloadaddr} 17c; 
+## Run `boot2` script (missing)
+run boot2;
 
-boot2 not defined, comes from `boot/vf2_uEnv.txt`
+## Run the Boot Command for every Boot Target
+run distro_bootcmd
 </code></pre></div>
-<p><code>bootcmd</code> calls <code>distro_bootcmd</code>, which runs <code>bootcmd_mmc0</code> and <code>bootcmd_dhcp</code>…</p>
-<div class="example-wrap"><pre class="language-text"><code>distro_bootcmd=for target in ${boot_targets}; do run bootcmd_${target}; done
+<p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(Source)</a></p>
+<p>Which executes <strong>distro_bootcmd</strong></p>
+</li>
+<li>
+<p><strong>distro_bootcmd</strong> is set to…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## For Every Boot Target...
+for target in ${boot_targets};
 
-boot_targets=mmc0 dhcp 
-
-bootcmd_mmc0=devnum=0; run mmc_boot
-
-bootcmd_distro=run fdt_loaddtb; run fdt_sizecheck; run set_fdt_distro; sysboot mmc ${fatbootpart} fat c0000000 ${bootdir}/${boot_syslinux_conf}; 
+  ## Run the Boot Command for the Target
+  do run bootcmd_${target};
+done
 </code></pre></div>
-<p><code>bootcmd_dhcp</code> is…</p>
-<div class="example-wrap"><pre class="language-text"><code>bootcmd_dhcp=devtype=dhcp; if dhcp ${scriptaddr} ${boot_script_dhcp}; then source ${scriptaddr}; fi;setenv efi_fdtfile ${fdtfile}; setenv efi_old_vci ${bootp_vci};setenv efi_old_arch ${bootp_arch};setenv bootp_vci PXEClient:Arch:00027:UNDI:003000;setenv bootp_arch 0x1b;if dhcp ${kernel_addr_r}; then tftpboot ${fdt_addr_r} dtb/${efi_fdtfile};if fdt addr ${fdt_addr_r}; then bootefi ${kernel_addr_r} ${fdt_addr_r}; else bootefi ${kernel_addr_r} ${fdtcontroladdr};fi;fi;setenv bootp_vci ${efi_old_vci};setenv bootp_arch ${efi_old_arch};setenv efi_fdtfile;setenv efi_old_arch;setenv efi_old_vci;
+<p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(Source)</a></p>
+</li>
+<li>
+<p>Previously we changed <strong>boot_targets</strong> to…</p>
+<div class="example-wrap"><pre class="language-text"><code>mmc0 dhcp  tftp
 </code></pre></div>
-<p>Which expands to…</p>
+<p><a href="https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp">(Source)</a></p>
+<p>Which means U-Boot will execute this sequence…</p>
+<ul>
+<li>
+<p><strong>bootcmd_mmc0</strong>: Try to boot from MicroSD</p>
+</li>
+<li>
+<p><strong>bootcmd_dhcp</strong>: Try to boot from DHCP+TFTP Combo Server</p>
+</li>
+<li>
+<p><strong>bootcmd_tftp</strong>: Try to boot from TFTP</p>
+</li>
+</ul>
+</li>
+<li>
+<p>We saw <strong>bootcmd_tftp</strong> earlier…</p>
+<p><a href="https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp"><strong>“Configure U-Boot for TFTP”</strong></a></p>
+<p>It boots NuttX (or Linux) over the Network via TFTP.</p>
+</li>
+</ol>
+<p>And that’s how U-Boot Bootloader boots NuttX (or Linux) over the Network at startup!</p>
+<h2 id="boot-from-mmc0"><a href="#boot-from-mmc0">7.1 Boot from MMC0</a></h2>
+<p><em>What’s in bootcmd_mmc0?</em></p>
+<p><strong>bootcmd_mmc0</strong> tries to boot from MicroSD…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Set Device Number
+devnum=0;
+
+## Boot from MMC
+run mmc_boot
+</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(Source)</a></p>
+<p><strong>mmc_boot</strong> is…</p>
+<div class="example-wrap"><pre class="language-bash"><code>if mmc dev ${devnum};
+then 
+  devtype=mmc;
+  run scan_dev_for_boot_part;
+fi;
+
+mmcbootenv=run scan_mmc_dev;
+setenv bootpart ${devnum}:${mmcpart};
+
+if mmc rescan;
+then 
+  run loadbootenv &amp;&amp; run importbootenv;
+  run ext4bootenv &amp;&amp; run importbootenv;
+
+  if test -n $uenvcmd;
+  then
+    echo Running uenvcmd ...;
+    run uenvcmd;
+  fi;
+fi
+</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(Source)</a></p>
+<h2 id="boot-from-dhcp"><a href="#boot-from-dhcp">7.2 Boot from DHCP</a></h2>
+<p><em>What about bootcmd_dhcp?</em></p>
+<p><strong>bootcmd_dhcp</strong> tries to boot from DHCP+TFTP Combo Server.</p>
+<p>It assumes that the DHCP Server is also a TFTP Server.</p>
+<p><strong>bootcmd_dhcp</strong> is set to…</p>
 <div class="example-wrap"><pre class="language-bash"><code>devtype=dhcp;
 
 ## Load the Boot Script from DHCP+TFTP Server
@@ -492,7 +572,13 @@ setenv bootp_arch ${efi_old_arch};
 setenv efi_fdtfile;
 setenv efi_old_arch;
 setenv efi_old_vci;
-</code></pre></div><h1 id="appendix-u-boot-commands"><a href="#appendix-u-boot-commands">8 Appendix: U-Boot Commands</a></h1>
+</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(Source)</a></p>
+<p>TODO: <strong>dhcp</strong> explained here</p>
+<p>TODO: <strong>tftpboot</strong> explained here</p>
+<p>TODO: <strong>fdt</strong> explained here</p>
+<p>TODO: <strong>booti</strong> explained here</p>
+<h1 id="appendix-u-boot-commands"><a href="#appendix-u-boot-commands">8 Appendix: U-Boot Commands</a></h1>
 <p>TODO</p>
 <p><code>dhcp</code> command is…</p>
 <div class="example-wrap"><pre class="language-text"><code>dhcp - boot image via network using DHCP/TFTP protocol
