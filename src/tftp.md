@@ -4,9 +4,9 @@
 
 ![Pine64 Star64 JH7110 64-bit RISC-V SBC](https://lupyuen.github.io/images/tftp-title.jpg)
 
-Testing a new Operating System like [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html) (or Linux) can get _painfully tedious_ on a Single-Board Computer...
+Testing a new Operating System like [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/nuttx2) (or Linux) can get _painfully tedious_ on a Single-Board Computer...
 
-Swapping, reflashing and rebooting a MicroSD Card, again and again and again!
+Swapping, reflashing and rebooting a MicroSD Card, [__again and again and again__](https://lupyuen.github.io/articles/nuttx2#boot-nuttx-on-star64)!
 
 [(Like how we tested __NuttX on PinePhone__)](https://github.com/lupyuen/pinephone-nuttx)
 
@@ -50,77 +50,89 @@ The pic above shows our grand plan for today...
 
     (It will try MicroSD first, before the Network Boot)
 
-_Do we need to install anything on our SBC?_
+_Do we install anything on our SBC?_
 
-TODO
+Everything we need is already in the __Internal Flash Memory__ of our SBC!
+
+Inside our SBC Flash Memory is the [__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64). Which normally boots from MicroSD, but can be configured for __Network Boot__.
+
+Let's find out how...
 
 # Setup TFTP Server
 
 _What's this TFTP Server?_
 
-TODO
+That's a simple program (running on our computer) that operates the [__Trivial File Transfer Protocol (TFTP)__](https://en.wikipedia.org/wiki/Trivial_File_Transfer_Protocol).
 
-First we set up a TFTP Server with [`tftpd`](https://crates.io/crates/tftpd)...
+It dishes out files over the __Local Network__ (via UDP), when requested by our SBC.
+
+Follow these steps to install the [__`tftpd` TFTP Server__](https://crates.io/crates/tftpd) on our Linux / macOS / Windows Computer...
 
 ```bash
+## Install `tftpd` in Rust
 cargo install tftpd
+
+## Create a folder for the TFTP Files
 mkdir $HOME/tftproot
+
+## Start the TFTP Server. Needs `sudo` because
+## Port 69 is a privileged low port.
 sudo tftpd -i 0.0.0.0 -p 69 -d "$HOME/tftproot"
-## `sudo` because port 69 is a privileged low port
 ```
 
-([`tftp_server`](https://crates.io/crates/tftp_server) won't work, it only supports localhost)
+([__`tftp_server`__](https://crates.io/crates/tftp_server) won't work, it only supports localhost)
 
 We should see...
 
 ```text
 Running TFTP Server on 0.0.0.0:69 in $HOME/tftproot
-Sending a.txt to 127.0.0.1:57125
-Sent a.txt to 127.0.0.1:57125
-Sending a.txt to 192.168.x.x:33499
-Sent a.txt to 192.168.x.x:33499
+
+## Later we'll see the dishy files...
+## Sending a.txt to 127.0.0.1:57125
+## Sent a.txt to 127.0.0.1:57125
+## Sending a.txt to 192.168.x.x:33499
+## Sent a.txt to 192.168.x.x:33499
 ```
 
-Let's test the TFTP Server...
+Let's __test the server__...
 
 ```bash
+## Create a Test File for TFTP
 echo Test123 >$HOME/tftproot/a.txt
+
+## Fetch the Test File over TFTP.
+## `192.168.x.x` is our computer's IP Address
 curl -v tftp://127.0.0.1/a.txt
 curl -v tftp://192.168.x.x/a.txt
 ```
 
-(`localhost` won't work because of IPv6, I think)
+(__`localhost`__ won't work because of IPv6, I think)
 
-We should see...
+We should see our __Test File__...
 
 ```text
-$ curl -v tftp://192.168.x.x/a.txt
-*   Trying 192.168.x.x:69...
+* Trying 192.168.x.x:69...
 * getpeername() failed with errno 107: Transport endpoint is not connected
 * Connected to 192.168.x.x () port 69 (#0)
 * getpeername() failed with errno 107: Transport endpoint is not connected
 * set timeouts for state 0; Total  300000, retry 6 maxtry 50
-* got option=(tsize) value=(8)
-* tsize parsed from OACK (8)
-* got option=(blksize) value=(512)
-* blksize parsed from OACK (512) requested (512)
-* got option=(timeout) value=(6)
-* Connected for receive
-* set timeouts for state 1; Total  0, retry 72 maxtry 50
+...
 Test123
-* Closing connection 0
 ```
+
+(Ignore the warnings)
 
 If it fails...
 
 ```text
-$ curl -v tftp://192.168.x.x/a.txt
-*   Trying 192.168.x.x:69...
+* Trying 192.168.x.x:69...
 * getpeername() failed with errno 107: Transport endpoint is not connected
 * Connected to 192.168.x.x () port 69 (#0)
 * getpeername() failed with errno 107: Transport endpoint is not connected
 * set timeouts for state 0; Total  300000, retry 6 maxtry 50
 ```
+
+TODO: Check
 
 In the olden days we would actually do this...
 
