@@ -590,11 +590,13 @@ setenv efi_old_vci;
 <ul>
 <li>dhcp [loadAddress] [[hostIPaddr:]bootfilename]</li>
 </ul>
+<p><a href="https://github.com/u-boot/u-boot/blob/master/cmd/net.c#L144-L150">(Source)</a></p>
 <h2 id="tftpboot-command"><a href="#tftpboot-command">8.2 tftpboot Command</a></h2>
 <p>tftpboot - boot image via network using TFTP protocol</p>
 <ul>
 <li>tftpboot [loadAddress] [[hostIPaddr:]bootfilename]</li>
 </ul>
+<p><a href="https://github.com/u-boot/u-boot/blob/master/cmd/net.c#L61-L69">(Source)</a></p>
 <p>(Same as <strong>dhcp</strong> Command?)</p>
 <h2 id="booti-command"><a href="#booti-command">8.3 booti Command</a></h2>
 <p>booti - boot Linux kernel ‘Image’ format from memory</p>
@@ -615,6 +617,7 @@ is required. To boot a kernel with a device-tree blob but
 without an initrd image, use a ‘-’ for the initrd argument.</p>
 </li>
 </ul>
+<p><a href="https://github.com/u-boot/u-boot/blob/master/cmd/net.c#L61-L69">(Source)</a></p>
 <h2 id="bootefi-command"><a href="#bootefi-command">8.4 bootefi Command</a></h2>
 <p>bootefi - Boots an EFI payload from memory</p>
 <ul>
@@ -631,6 +634,7 @@ exposed as EFI configuration table.</p>
 exposed as EFI configuration table.</p>
 </li>
 </ul>
+<p>TODO: Source</p>
 <p>TODO: Doesn’t work for NuttX…</p>
 <div class="example-wrap"><pre class="language-text"><code>StarFive # bootefi ${kernel_addr_r} ${fdt_addr_r}
 Card did not respond to voltage select! : -110
@@ -728,6 +732,7 @@ if set to “no” (any string beginning with ‘n’), “bootp” and “dhcp�
 </li>
 </ul>
 <p>NOTE: Dereference aliases by omitting the leading ‘/’, e.g. fdt print ethernet0.</p>
+<p>TODO: Source</p>
 
     
 </body>
