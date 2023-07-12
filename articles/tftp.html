@@ -313,8 +313,7 @@ clk u5_dw_i2c_clk_apb already disabled
 123067DFAGHBC
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64#u-boot-bootloader-log-for-tftp">(Source)</a></p>
-<p>TODO: RAM Disk</p>
-<p><a href="https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot">(Inspired by this article)</a></p>
+<p><strong>For Linux:</strong> We might need to load the <a href="https://lupyuen.github.io/articles/tftp#booti-command"><strong>Initial RAM Disk initrd</strong></a></p>
 <h1 id="configure-u-boot-for-tftp"><a href="#configure-u-boot-for-tftp">5 Configure U-Boot for TFTP</a></h1>
 <p><em>But can we Auto-Boot from Network, every time we power on?</em></p>
 <p>Sure can! The trick is to use the <strong>saveenv</strong> command, which will save the U-Boot Settings into the Internal Flash Memory…</p>
@@ -400,6 +399,7 @@ fi
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(See the <strong>U-Boot Settings</strong>)</a></p>
 <p>Which does the same thing as the previous section: Boot NuttX (or Linux) over the Network at startup.</p>
+<p><a href="https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot">(Thanks to this article)</a></p>
 <h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
 <p>TODO</p>
 <p>With Network Boot running, we’re now ready for <strong>Automated Testing of Apache NuttX RTOS</strong> on Star64 SBC!</p>
