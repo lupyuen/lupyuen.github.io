@@ -120,8 +120,8 @@
 <p>Let’s find out how…</p>
 <h1 id="setup-tftp-server"><a href="#setup-tftp-server">2 Setup TFTP Server</a></h1>
 <p><em>What’s this TFTP Server?</em></p>
-<p>That’s a simple program (running on our computer) that operates the <a href="https://en.wikipedia.org/wiki/Trivial_File_Transfer_Protocol"><strong>Trivial File Transfer Protocol (TFTP)</strong></a>.</p>
-<p>It dishes out files over the <strong>Local Network</strong> (via UDP), when requested by our SBC.</p>
+<p>That’s a simple program (running on our computer) that handles the <a href="https://en.wikipedia.org/wiki/Trivial_File_Transfer_Protocol"><strong>Trivial File Transfer Protocol (TFTP)</strong></a>.</p>
+<p>It dishes out files over the <strong>Local Network</strong> (via UDP not TCP), when requested by our SBC.</p>
 <p>Follow these steps to install the <a href="https://crates.io/crates/tftpd"><strong><code>tftpd</code> TFTP Server</strong></a> on our Linux / macOS / Windows Computer…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install `tftpd` in Rust
 cargo install tftpd
@@ -148,7 +148,7 @@ sudo tftpd -i 0.0.0.0 -p 69 -d &quot;$HOME/tftproot&quot;
 echo Test123 &gt;$HOME/tftproot/a.txt
 
 ## Fetch the Test File over TFTP.
-## `192.168.x.x` is our computer&#39;s IP Address
+## Change `192.168.x.x` to our Computer&#39;s IP Address
 curl -v tftp://127.0.0.1/a.txt
 curl -v tftp://192.168.x.x/a.txt
 </code></pre></div>
@@ -163,21 +163,14 @@ curl -v tftp://192.168.x.x/a.txt
 Test123
 </code></pre></div>
 <p>(Ignore the warnings)</p>
-<p>If it fails…</p>
-<div class="example-wrap"><pre class="language-text"><code>* Trying 192.168.x.x:69...
-* getpeername() failed with errno 107: Transport endpoint is not connected
-* Connected to 192.168.x.x () port 69 (#0)
-* getpeername() failed with errno 107: Transport endpoint is not connected
-* set timeouts for state 0; Total  300000, retry 6 maxtry 50
-</code></pre></div>
-<p>TODO: Check</p>
-<p>In the olden days we would actually do this…</p>
+<p>Our TFTP Server is up! In the olden days we would actually do this…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ tftp 127.0.0.1
 tftp&gt; get a.txt
 Received 8 bytes in 0.0 seconds
 tftp&gt; quit
 </code></pre></div>
-<p>Just like FTP!</p>
+<p><a href="https://en.wikipedia.org/wiki/File_Transfer_Protocol">(Just like <strong>FTP</strong>)</a></p>
+<p>But <strong><code>curl</code></strong> is so much simpler!</p>
 <h1 id="copy-nuttx-image-to-tftp-server"><a href="#copy-nuttx-image-to-tftp-server">3 Copy NuttX Image to TFTP Server</a></h1>
 <p>TODO</p>
 <p>Next we copy the NuttX Image and Device Tree to the TFTP Folder…</p>
