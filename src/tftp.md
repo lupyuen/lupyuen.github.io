@@ -246,13 +246,13 @@ fdt addr ${fdt_addr_r}
 booti ${kernel_addr_r} - ${fdt_addr_r}
 ```
 
-TODO: __tftpboot__ explained here
+[(__tftpboot__ explained here)](https://lupyuen.github.io/articles/tftp#tftpboot-command)
 
-TODO: __fdt__ explained here
+[(__fdt__ explained here)](https://lupyuen.github.io/articles/tftp#fdt-command)
 
-TODO: __booti__ explained here
+[(__booti__ explained here)](https://lupyuen.github.io/articles/tftp#booti-command)
 
-Our Star64 SBC will (pic above)...
+Our Star64 SBC shall (pic above)...
 
 1.  __Fetch the Kernel__ over TFTP
 
@@ -378,7 +378,7 @@ boot_targets=mmc0 dhcp  tftp
 
 Thus U-Boot will execute the Boot Script __bootcmd_tftp__ at startup.
 
-TODO: As explained here
+[(As explained here)](https://lupyuen.github.io/articles/tftp#appendix-boot-script-for-u-boot-bootloader)
 
 _What's bootcmd_tftp?_
 
@@ -410,13 +410,19 @@ then
 fi
 ```
 
-Which does the same thing as the previous section: Boot NuttX (or Linux) over the Network at startup.
-
 [(See the __U-Boot Settings__)](https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64)
+
+Which does the same thing as the previous section: Boot NuttX (or Linux) over the Network at startup.
 
 # What's Next
 
 TODO
+
+With Network Boot running, we're now ready for __Automated Testing of Apache NuttX RTOS__ on Star64 SBC!
+
+(Though we might need a __Smart Power Switch__ to power the SBC on and off: [__IKEA TRÅDFRI__](https://www.ikea.com/sg/en/p/tradfri-control-outlet-kit-smart-10364797/) and [__DIRIGERA__](https://www.ikea.com/sg/en/p/dirigera-hub-for-smart-products-white-smart-50503409/))
+
+Porting NuttX to Star64 JH7110 becomes so much faster. Stay tuned for updates!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
@@ -557,6 +563,8 @@ __bootcmd_dhcp__ tries to boot from DHCP+TFTP Combo Server.
 
 It assumes that the DHCP Server is also a TFTP Server.
 
+[(We should probably disable __autoload__)](https://u-boot.readthedocs.io/en/latest/usage/environment.html)
+
 __bootcmd_dhcp__ is set to...
 
 ```bash
@@ -614,17 +622,17 @@ setenv efi_old_vci;
 
 [(Source)](https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64)
 
-TODO: __dhcp__ explained here
+[(__dhcp__ explained here)](https://lupyuen.github.io/articles/tftp#dhcp-command)
 
-TODO: __tftpboot__ explained here
+[(__tftpboot__ explained here)](https://lupyuen.github.io/articles/tftp#tftpboot-command)
 
-TODO: __fdt__ explained here
+[(__fdt__ explained here)](https://lupyuen.github.io/articles/tftp#fdt-command)
 
-TODO: __booti__ explained here
+[(__booti__ explained here)](https://lupyuen.github.io/articles/tftp#booti-command)
 
 # Appendix: Commands for U-Boot Bootloader
 
-Here are the __U-Boot Bootloader Commands__ mentioned in this article...
+Here are the __U-Boot Bootloader Commands__ mentioned in this article. We ran "help \<command>" to explain the commands...
 
 ## dhcp Command
 
@@ -686,9 +694,11 @@ bootefi - Boots an EFI payload from memory
   If specified, the device tree located at \<fdt address> gets
   exposed as EFI configuration table.
 
-TODO: Source
+[(Source)](https://github.com/u-boot/u-boot/blob/master/cmd/bootefi.c#L724-L733)
 
-TODO: Doesn't work for NuttX...
+_Will it work for NuttX?_
+
+Nope it doesn't, since NuttX isn't a UEFI Binary...
 
 ```text
 StarFive # bootefi ${kernel_addr_r} ${fdt_addr_r}
@@ -696,13 +706,6 @@ Card did not respond to voltage select! : -110
 Card did not respond to voltage select! : -110
 No EFI system partition
 No UEFI binary known at 0x40200000
-```
-
-TODO: [`autoload`](https://u-boot.readthedocs.io/en/latest/usage/environment.html) setting is...
-
-```text
-autoload:
-if set to “no” (any string beginning with ‘n’), “bootp” and “dhcp” will just load perform a lookup of the configuration from the BOOTP server, but not try to load any image.
 ```
 
 ## fdt Command 
@@ -795,4 +798,4 @@ fdt - flattened device tree utility commands
 
 NOTE: Dereference aliases by omitting the leading '/', e.g. fdt print ethernet0.
 
-TODO: Source
+[(Source)](https://github.com/u-boot/u-boot/blob/master/cmd/fdt.c#L1114-L1162)
