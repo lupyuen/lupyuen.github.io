@@ -272,13 +272,13 @@ StarFive # setenv tftp_server 192.168.x.x
 StarFive # tftpboot ${kernel_addr_r} ${tftp_server}:Image
 Filename 'Image'.
 Load address: 0x40200000
-Loading: #### 221.7 KiB/s done
+Loading: 221.7 KiB/s done
 Bytes transferred = 2097832 (2002a8 hex)
 
 StarFive # tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
 Filename 'jh7110-star64-pine64.dtb'.
 Load address: 0x46000000
-Loading: #### 374 KiB/s done
+Loading: 374 KiB/s done
 Bytes transferred = 50235 (c43b hex)
 
 StarFive # fdt addr ${fdt_addr_r}
@@ -287,7 +287,11 @@ StarFive # booti ${kernel_addr_r} - ${fdt_addr_r}
 Flattened Device Tree blob at 46000000
 Booting using the fdt blob at 0x46000000
 Using Device Tree in place at 0000000046000000, end 000000004600f43a
+```
 
+And NuttX (or Linux) boots magically over the Network, no more MicroSD yay!
+
+```text
 Starting kernel ...
 clk u5_dw_i2c_clk_core already disabled
 clk u5_dw_i2c_clk_apb already disabled
@@ -296,16 +300,19 @@ clk u5_dw_i2c_clk_apb already disabled
 
 [(Source)](https://github.com/lupyuen/nuttx-star64#u-boot-bootloader-log-for-tftp)
 
+TODO: RAM Disk
+
 [(Inspired by this article)](https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot)
 
 # Configure U-Boot for TFTP
 
-TODO
+_But can we Auto-Boot from Network, every time we power on?_
 
-Let's configure U-Boot so that it will boot from TFTP every time we power up!
+Sure can! The trick is to use the __saveenv__ command, which will save the U-Boot Settings into the Internal Flash Memory...
 
 ```bash
-## Remember the TFTP Server IP
+## Remember the TFTP Server IP.
+## TODO: Change `192.168.x.x` to our Computer's IP Address
 setenv tftp_server 192.168.x.x
 ## Check that it's correct
 printenv tftp_server
@@ -319,7 +326,7 @@ printenv bootcmd_tftp
 ## Save it for future reboots
 saveenv
 
-## Test the Boot Command for TFTP
+## Test the Boot Command for TFTP, then reboot
 run bootcmd_tftp
 
 ## Remember the Original Boot Targets
@@ -337,35 +344,11 @@ printenv boot_targets
 saveenv
 ```
 
-`bootcmd_tftp` expands to...
+Now Star64 will __Auto-Boot from the Network__, every time we power up!
 
-```bash
-## Load the NuttX Image from TFTP Server
-## kernel_addr_r=0x40200000
-## tftp_server=192.168.x.x
-if tftpboot ${kernel_addr_r} ${tftp_server}:Image ;
-then
+(It will try to boot from MicroSD before Network)
 
-  ## Load the Device Tree from TFTP Server
-  ## fdt_addr_r=0x46000000
-  if tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ;
-  then
-
-    ## Set the RAM Address of Device Tree
-    ## fdt_addr_r=0x46000000
-    if fdt addr ${fdt_addr_r} ;
-    then
-
-      ## Boot the NuttX Image with the Device Tree
-      ## kernel_addr_r=0x40200000
-      ## fdt_addr_r=0x46000000
-      booti ${kernel_addr_r} - ${fdt_addr_r} ;
-    fi ;
-  fi ;
-fi
-```
-
-[(From here)](https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot) This is a persistent change, i.e. the device will boot via TFTP on every power up. To revert back to the default boot behaviour:
+If we change our mind, we can switch back to the __Original Boot Targets__...
 
 ```bash
 ## Restore the Boot Targets
@@ -376,7 +359,82 @@ printenv boot_targets
 saveenv
 ```
 
-# U-Boot Commands for Network Boot
+_What's boot_targets?_
+
+U-Boot Bootloader defines a list of __Targets for Auto-Booting__...
+
+```text
+## On Power Up: Try booting from MicroSD,
+## then from DHCP+TFTP Combo Server
+boot_targets=mmc0 dhcp 
+```
+
+We added __TFTP to the Boot Targets__ (ignore the space)...
+
+```
+## We added TFTP to the Boot Targets
+boot_targets=mmc0 dhcp  tftp
+```
+
+Thus U-Boot will execute the Boot Script __bootcmd_tftp__ at startup.
+
+TODO: Why
+
+_What's bootcmd_tftp?_
+
+__bootcmd_tftp__ expands to this U-Boot Script...
+
+```bash
+## Load the NuttX Image from TFTP Server
+## kernel_addr_r=0x40200000
+## tftp_server=192.168.x.x
+if tftpboot ${kernel_addr_r} ${tftp_server}:Image;
+then
+
+  ## Load the Device Tree from TFTP Server
+  ## fdt_addr_r=0x46000000
+  if tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb;
+  then
+
+    ## Set the RAM Address of Device Tree
+    ## fdt_addr_r=0x46000000
+    if fdt addr ${fdt_addr_r};
+    then
+
+      ## Boot the NuttX Image with the Device Tree
+      ## kernel_addr_r=0x40200000
+      ## fdt_addr_r=0x46000000
+      booti ${kernel_addr_r} - ${fdt_addr_r};
+    fi;
+  fi;
+fi
+```
+
+Which does the same thing as the previous section: Boot NuttX (or Linux) over the Network at startup.
+
+[(See the __U-Boot Settings__)](https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64)
+
+# What's Next
+
+TODO
+
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+
+-   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__My Current Project: "Apache NuttX RTOS for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
+
+-   [__My Other Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
+
+-   [__Check out my articles__](https://lupyuen.github.io)
+
+-   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[__lupyuen.github.io/src/tftp.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tftp.md)
+
+# Appendix: Boot Script
 
 TODO
 
@@ -417,57 +475,61 @@ bootcmd_dhcp=devtype=dhcp; if dhcp ${scriptaddr} ${boot_script_dhcp}; then sourc
 Which expands to...
 
 ```bash
-devtype=dhcp
+devtype=dhcp;
 
 ## Load the Boot Script from DHCP+TFTP Server
 ## scriptaddr=0x43900000
 ## boot_script_dhcp=boot.scr.uimg
-if dhcp ${scriptaddr} ${boot_script_dhcp}
+if dhcp ${scriptaddr} ${boot_script_dhcp};
 then
-  source ${scriptaddr}
-fi
+  source ${scriptaddr};
+fi;
 
 ## Set the EFI Variables
 ## fdtfile=starfive/starfive_visionfive2.dtb
-setenv efi_fdtfile ${fdtfile}
-setenv efi_old_vci ${bootp_vci}
-setenv efi_old_arch ${bootp_arch}
-setenv bootp_vci PXEClient:Arch:00027:UNDI:003000
-setenv bootp_arch 0x1b
+setenv efi_fdtfile ${fdtfile};
+setenv efi_old_vci ${bootp_vci};
+setenv efi_old_arch ${bootp_arch};
+setenv bootp_vci PXEClient:Arch:00027:UNDI:003000;
+setenv bootp_arch 0x1b;
 
 ## Load the Kernel Image from DHCP+TFTP Server...
 ## kernel_addr_r=0x40200000
-if dhcp ${kernel_addr_r}
+if dhcp ${kernel_addr_r};
 then
 
   ## Load the Device Tree from the DHCP+TFTP Server
   ## fdt_addr_r=0x46000000
   ## efi_fdtfile=starfive/starfive_visionfive2.dtb
-  tftpboot ${fdt_addr_r} dtb/${efi_fdtfile}
+  tftpboot ${fdt_addr_r} dtb/${efi_fdtfile};
 
   ## Set the RAM Address of Device Tree
   ## fdt_addr_r=0x46000000
-  if fdt addr ${fdt_addr_r}
+  if fdt addr ${fdt_addr_r};
   then
 
     ## Boot the EFI Kernel Image
     ## fdt_addr_r=0x46000000
-    bootefi ${kernel_addr_r} ${fdt_addr_r}
+    bootefi ${kernel_addr_r} ${fdt_addr_r};
   else
 
     ## Boot the EFI Kernel Image
     ## fdtcontroladdr=fffc6aa0
-    bootefi ${kernel_addr_r} ${fdtcontroladdr}
-  fi
-fi
+    bootefi ${kernel_addr_r} ${fdtcontroladdr};
+  fi;
+fi;
 
 ## Unset the EFI Variables
-setenv bootp_vci ${efi_old_vci}
-setenv bootp_arch ${efi_old_arch}
-setenv efi_fdtfile
-setenv efi_old_arch
-setenv efi_old_vci
+setenv bootp_vci ${efi_old_vci};
+setenv bootp_arch ${efi_old_arch};
+setenv efi_fdtfile;
+setenv efi_old_arch;
+setenv efi_old_vci;
 ```
+
+# Appendix: U-Boot Commands
+
+TODO
 
 `dhcp` command is...
 
@@ -574,23 +636,3 @@ No UEFI binary known at 0x40200000
 autoload:
 if set to “no” (any string beginning with ‘n’), “bootp” and “dhcp” will just load perform a lookup of the configuration from the BOOTP server, but not try to load any image.
 ```
-
-# What's Next
-
-TODO
-
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
-
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
-
--   [__My Current Project: "Apache NuttX RTOS for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
-
--   [__My Other Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
-
--   [__Check out my articles__](https://lupyuen.github.io)
-
--   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
-
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
-
-[__lupyuen.github.io/src/tftp.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tftp.md)
