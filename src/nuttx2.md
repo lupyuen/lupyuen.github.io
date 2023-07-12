@@ -334,6 +334,8 @@ For the microSD Image, we start with this [__Armbian Image for Star64__](https:/
 
 -   [__Armbian 23.8 Lunar for Star64 (Minimal)__](https://github.com/armbianro/os/releases/download/23.8.0-trunk.69/Armbian_23.8.0-trunk.69_Star64_lunar_edge_5.15.0_minimal.img.xz)
 
+    [(Or pick the latest __Star64 Minimal Image__)](https://github.com/armbianro/os/releases/)
+
 Uncompress the __.xz__ file. Write the __.img__ file to a microSD Card with [__Balena Etcher__](https://www.balena.io/etcher/) or [__GNOME Disks__](https://wiki.gnome.org/Apps/Disks).
 
 The [__Device Tree__](https://lupyuen.github.io/articles/star64#armbian-image-for-star64) is missing, so we fix it...

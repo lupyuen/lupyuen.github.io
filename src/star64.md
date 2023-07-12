@@ -38,6 +38,8 @@ According to [__Software Releases for Star64__](https://wiki.pine64.org/wiki/STA
 
     Let's inspect [__Armbian 23.8 Lunar (Minimal)__](https://github.com/armbianro/os/releases/download/23.8.0-trunk.69/Armbian_23.8.0-trunk.69_Star64_lunar_edge_5.15.0_minimal.img.xz)
 
+    [(Or pick the latest __Star64 Minimal Image__)](https://github.com/armbianro/os/releases/)
+
 -   [__Yocto Images__](https://github.com/Fishwaldo/meta-pine64) at [__pine64.my-ho.st__](https://pine64.my-ho.st:8443/)
 
     We pick [__star64-image-minimal 1.2__](https://pine64.my-ho.st:8443/star64-image-minimal-star64-1.2.wic.bz2)
@@ -63,6 +65,8 @@ Check out the current state of RISC-V Linux...
 We begin with the [__Armbian Image for Star64__](https://www.armbian.com/star64/)...
 
 -   [__Armbian 23.8 Lunar for Star64 (Minimal)__](https://github.com/armbianro/os/releases/download/23.8.0-trunk.69/Armbian_23.8.0-trunk.69_Star64_lunar_edge_5.15.0_minimal.img.xz)
+
+    [(Or pick the latest __Star64 Minimal Image__)](https://github.com/armbianro/os/releases/)
 
 Uncompress the __.xz__ file, mount the __.img__ file on Linux / macOS / Windows as an ISO Volume.
 
