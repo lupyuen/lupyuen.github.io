@@ -8,11 +8,11 @@
 
 Daily routine for Sourdough Starter...
 
--   Every morning: Discard 3 ladles (2 cups) of Sourdough Starter.
+-   Every morning: Discard 2 ladles (2/3 cups) of Sourdough Starter.
 
     Place the discard at Bread Machine, ready for baking.
     
--   Feed 3 times daily:
+-   Feed 2 times daily:
 
     -   1/2 cup Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
     
@@ -20,9 +20,9 @@ Daily routine for Sourdough Starter...
 
     For final feeding of the day (just before bedtime), increase to:
 
-    -   1 1/2 cup Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
+    -   1 cup Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
     
-    -   3/4 cup Boiled Water at Room Temperature
+    -   1/2 cup Boiled Water at Room Temperature
 
     After each feeding, consistency should be like thick oatmeal. If it's too watery, skip the water.
 
@@ -52,7 +52,7 @@ Add in this sequence to Bread Machine...
 
 -   2/3 cups (80g) Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
 
--   3 ladles (2 cups) Wholemeal Sourdough Starter, ripe (fed) from above.
+-   2 ladles (2/3 cups) Wholemeal Sourdough Starter, ripe (fed) from above.
 
     Don't scald the Sourdough Starter with the Boiling Water.
 
@@ -93,21 +93,45 @@ During Kneading:
 
 Adapted from [King Arthur Bread Machine Sourdough Recipe](https://www.kingarthurbaking.com/recipes/bread-machine-sourdough-bread-recipe) (Non-Wholemeal)
 
+# Okinawa Black Sugar Sourdough
+
+![Okinawa Black Sugar Sourdough](https://lupyuen.github.io/images/sourdough22.jpg)
+
+Add in this sequence to Bread Machine...
+
+-   3 cubes [Okinawa Black Sugar](https://lupyuen.github.io/images/sourdough23.jpg)
+
+-   1 tablespoon (14g) Cold Unsalted Butter (from fridge)
+
+-   4 tablespoons Boiling Water (100 deg C, to melt the sugar and butter)
+
+-   2/3 cups (80g) [Brown Sugar Flour](https://lupyuen.github.io/images/sourdough24.jpg)
+
+-   2 ladles (2/3 cups) Wholemeal Sourdough Starter, ripe (fed) from above.
+
+    Don't scald the Sourdough Starter with the Boiling Water.
+
+-   1/2 teaspoon (2.8g) Salt
+
+-   1/2 teaspoon Baking Soda / Sodium Bicarbonate (to neutralise the sourness and give extra poofiness). Too much Baking Soda will taste soapy!
+
+-   No Gluten
+
+-   NO MILK because the loaf will look burnt
+
+During Kneading...
+
+-   Add 1 / 2 cup Raisins
+
+-   Sprinkle a few teaspoons of [Superfine Wholegrain Flour](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html) until it looks like a smooth bump
+
+    (Dough will not become a Ball because it's too wet and frothy)
+
+-   Bake according to the above "French Bread" Cycle
+
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/sourdough.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/sourdough.md)
-
-<hr>
-
-![Smooth Ball of Wholemeal Sourdough kneading in Bread Machine](https://lupyuen.github.io/images/sourdough3.jpg)
-
-_Smooth Ball of Wholemeal Sourdough kneading in Bread Machine_
-
-<hr>
-
-![Rising of Wholemeal Sourdough](https://lupyuen.github.io/images/sourdough4.jpg)
-
-_Rising of Wholemeal Sourdough_
 
 <hr>
 
@@ -148,3 +172,15 @@ _Raisin Wholemeal Sourdough_
 ![Wholemeal Sourdough Sandwich](https://lupyuen.github.io/images/sourdough6.jpg)
 
 _Wholemeal Sourdough Sandwich_
+
+<hr>
+
+![Smooth Ball of Wholemeal Sourdough kneading in Bread Machine](https://lupyuen.github.io/images/sourdough3.jpg)
+
+_Smooth Ball of Wholemeal Sourdough kneading in Bread Machine_
+
+<hr>
+
+![Rising of Wholemeal Sourdough](https://lupyuen.github.io/images/sourdough4.jpg)
+
+_Rising of Wholemeal Sourdough_
