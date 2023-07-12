@@ -135,7 +135,32 @@ tftp> quit
 
 But __`curl`__ is so much simpler!
 
-# Copy Kernel Image to TFTP Server
+# Copy Kernel to TFTP Server
+
+_How to copy the Kernel to our TFTP Server?_
+
+We build __Apache NuttX RTOS__ with these steps...
+
+- [__"Apache NuttX RTOS for Star64"__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1)
+
+This produces the [__NuttX Kernel Image `nuttx.bin`__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64-0.0.1/nuttx.bin) that we'll copy to our TFTP Folder...
+
+```bash
+## Copy NuttX Binary Image `nuttx.bin` to TFTP Folder
+cp nuttx.bin $HOME/tftproot/Image
+
+## Test NuttX Binary Image over TFTP
+curl -v tftp://192.168.x.x/Image
+
+## We should see:
+## `Warning: Binary output can mess up your terminal`
+```
+
+__For Linux:__ Copy the Linux Kernel File __`Image`__ to our TFTP Folder.
+
+_What about the Linux Device Tree?_
+
+(We won't need it for NuttX, but let's do it anyway)
 
 TODO
 
@@ -147,20 +172,13 @@ cp \
   /run/media/$USER/armbi_root/boot/dtb/starfive/jh7110-visionfive-v2.dtb \
   jh7110-star64-pine64.dtb
 
-## Copy NuttX Binary Image and Device Tree to TFTP Folder
-## `nuttx.bin` comes from here:
-## https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1
-cp nuttx.bin $HOME/tftproot/Image
 cp jh7110-star64-pine64.dtb $HOME/tftproot
 
-## Test NuttX Binary Image and Device Tree over FTP
-curl -v tftp://192.168.x.x/Image
+## Test Device Tree over TFTP
 curl -v tftp://192.168.x.x/jh7110-star64-pine64.dtb
 
-## Show see
-## Warning: Binary output can mess up your terminal. Use "--output -" to tell 
-## Warning: curl to output it to your terminal anyway, or consider "--output 
-## Warning: <FILE>" to save to a file.
+## We should see:
+## `Warning: Binary output can mess up your terminal`
 ```
 
 # Test U-Boot with TFTP
