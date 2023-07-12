@@ -101,7 +101,7 @@ Let's __test the server__...
 echo Test123 >$HOME/tftproot/a.txt
 
 ## Fetch the Test File over TFTP.
-## Change `192.168.x.x` to our Computer's IP Address
+## TODO: Change `192.168.x.x` to our Computer's IP Address
 curl -v tftp://127.0.0.1/a.txt
 curl -v tftp://192.168.x.x/a.txt
 ```
@@ -135,6 +135,10 @@ tftp> quit
 
 But __`curl`__ is so much simpler!
 
+![Armbian MicroSD for Star64](https://lupyuen.github.io/images/star64-armbian.png)
+
+[_Armbian MicroSD for Star64_](https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64)
+
 # Copy Kernel to TFTP Server
 
 _How to copy the Kernel to our TFTP Server?_
@@ -149,7 +153,8 @@ This produces the [__NuttX Kernel Image `nuttx.bin`__](https://github.com/lupyue
 ## Copy NuttX Binary Image `nuttx.bin` to TFTP Folder
 cp nuttx.bin $HOME/tftproot/Image
 
-## Test NuttX Binary Image over TFTP
+## Test NuttX Binary Image over TFTP.
+## TODO: Change `192.168.x.x` to our Computer's IP Address
 curl -v tftp://192.168.x.x/Image
 
 ## We should see:
@@ -162,9 +167,7 @@ _What about the Linux Device Tree?_
 
 (We won't need it for NuttX, but let's do it anyway)
 
-TODO
-
-Next we copy the NuttX Image and Device Tree to the TFTP Folder...
+__For NuttX:__ Copy the Device Tree from the [__Armbian MicroSD__](https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64) to our TFTP Folder...
 
 ```bash
 ## Copy the Device Tree from Armbian microSD
@@ -172,14 +175,18 @@ cp \
   /run/media/$USER/armbi_root/boot/dtb/starfive/jh7110-visionfive-v2.dtb \
   jh7110-star64-pine64.dtb
 
+## Copy to TFTP Folder
 cp jh7110-star64-pine64.dtb $HOME/tftproot
 
 ## Test Device Tree over TFTP
+## TODO: Change `192.168.x.x` to our Computer's IP Address
 curl -v tftp://192.168.x.x/jh7110-star64-pine64.dtb
 
 ## We should see:
 ## `Warning: Binary output can mess up your terminal`
 ```
+
+__For Linux:__ Just copy the Linux Device Tree __jh7110-star64-pine64.dtb__ to our TFTP Folder.
 
 # Test U-Boot with TFTP
 
