@@ -76,7 +76,12 @@
 <li><a href="#appendix-boot-script">7 Appendix: Boot Script</a><ul>
 <li><a href="#boot-from-mmc0">7.1 Boot from MMC0</a><ul></ul></li>
 <li><a href="#boot-from-dhcp">7.2 Boot from DHCP</a><ul></ul></li></ul></li>
-<li><a href="#appendix-u-boot-commands">8 Appendix: U-Boot Commands</a><ul></ul></li></ul></nav><p>📝 <em>19 Jul 2023</em></p>
+<li><a href="#appendix-u-boot-bootloader-commands">8 Appendix: U-Boot Bootloader Commands</a><ul>
+<li><a href="#dhcp-command">8.1 dhcp Command</a><ul></ul></li>
+<li><a href="#tftpboot-command">8.2 tftpboot Command</a><ul></ul></li>
+<li><a href="#fdt-command">8.3 fdt Command</a><ul></ul></li>
+<li><a href="#booti-command">8.4 booti Command</a><ul></ul></li>
+<li><a href="#bootefi-command">8.5 bootefi Command</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>19 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/tftp-title.jpg" alt="Pine64 Star64 JH7110 64-bit RISC-V SBC" /></p>
 <p>Testing a new Operating System like <a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX RTOS</strong></a> (or Linux) can get <em>painfully tedious</em> on a Single-Board Computer…</p>
 <p>Swapping, reflashing and rebooting a MicroSD Card, <a href="https://lupyuen.github.io/articles/nuttx2#boot-nuttx-on-star64"><strong>again and again and again</strong></a>!</p>
@@ -578,89 +583,128 @@ setenv efi_old_vci;
 <p>TODO: <strong>tftpboot</strong> explained here</p>
 <p>TODO: <strong>fdt</strong> explained here</p>
 <p>TODO: <strong>booti</strong> explained here</p>
-<h1 id="appendix-u-boot-commands"><a href="#appendix-u-boot-commands">8 Appendix: U-Boot Commands</a></h1>
-<p>TODO</p>
-<p><code>dhcp</code> command is…</p>
-<div class="example-wrap"><pre class="language-text"><code>dhcp - boot image via network using DHCP/TFTP protocol
-
-Usage:
-dhcp [loadAddress] [[hostIPaddr:]bootfilename]
-</code></pre></div>
-<p>(Assume <a href="https://www.emcraft.com/som/using-dhcp">DHCP/TFTP</a> is not used)</p>
-<p><code>tftpboot</code> command is…</p>
-<div class="example-wrap"><pre class="language-text"><code>tftpboot - boot image via network using TFTP protocol
-
-Usage:
-tftpboot [loadAddress] [[hostIPaddr:]bootfilename]
-</code></pre></div>
-<p><code>fdt</code> command is…</p>
-<div class="example-wrap"><pre class="language-text"><code>fdt - flattened device tree utility commands
-
-Usage:
-fdt addr [-c]  &lt;addr&gt; [&lt;length&gt;]   - Set the [control] fdt location to &lt;addr&gt;
-fdt apply &lt;addr&gt;                    - Apply overlay to the DT
-fdt move   &lt;fdt&gt; &lt;newaddr&gt; &lt;length&gt; - Copy the fdt to &lt;addr&gt; and make it active
-fdt resize [&lt;extrasize&gt;]            - Resize fdt to size + padding to 4k addr + some optional &lt;extrasize&gt; if needed
-fdt print  &lt;path&gt; [&lt;prop&gt;]          - Recursive print starting at &lt;path&gt;
-fdt list   &lt;path&gt; [&lt;prop&gt;]          - Print one level starting at &lt;path&gt;
-fdt get value &lt;var&gt; &lt;path&gt; &lt;prop&gt;   - Get &lt;property&gt; and store in &lt;var&gt;
-fdt get name &lt;var&gt; &lt;path&gt; &lt;index&gt;   - Get name of node &lt;index&gt; and store in &lt;var&gt;
-fdt get addr &lt;var&gt; &lt;path&gt; &lt;prop&gt;    - Get start address of &lt;property&gt; and store in &lt;var&gt;
-fdt get size &lt;var&gt; &lt;path&gt; [&lt;prop&gt;]  - Get size of [&lt;property&gt;] or num nodes and store in &lt;var&gt;
-fdt set    &lt;path&gt; &lt;prop&gt; [&lt;val&gt;]    - Set &lt;property&gt; [to &lt;val&gt;]
-fdt mknode &lt;path&gt; &lt;node&gt;            - Create a new node after &lt;path&gt;
-fdt rm     &lt;path&gt; [&lt;prop&gt;]          - Delete the node or &lt;property&gt;
-fdt header [get &lt;var&gt; &lt;member&gt;]     - Display header info
-                                      get - get header member &lt;member&gt; and store it in &lt;var&gt;
-fdt bootcpu &lt;id&gt;                    - Set boot cpuid
-fdt memory &lt;addr&gt; &lt;size&gt;            - Add/Update memory node
-fdt rsvmem print                    - Show current mem reserves
-fdt rsvmem add &lt;addr&gt; &lt;size&gt;        - Add a mem reserve
-fdt rsvmem delete &lt;index&gt;           - Delete a mem reserves
-fdt chosen [&lt;start&gt; &lt;end&gt;]          - Add/update the /chosen branch in the tree
-                                        &lt;start&gt;/&lt;end&gt; - initrd start/end addr
-NOTE: Dereference aliases by omitting the leading &#39;/&#39;, e.g. fdt print ethernet0.
-</code></pre></div>
-<p><code>booti</code> command is…</p>
-<div class="example-wrap"><pre class="language-text"><code>booti - boot Linux kernel &#39;Image&#39; format from memory
-
-Usage:
-booti [addr [initrd[:size]] [fdt]]
-    - boot Linux flat or compressed &#39;Image&#39; stored at &#39;addr&#39;
-        The argument &#39;initrd&#39; is optional and specifies the address
-        of an initrd in memory. The optional parameter &#39;:size&#39; allows
-        specifying the size of a RAW initrd.
-        Currently only booting from gz, bz2, lzma and lz4 compression
-        types are supported. In order to boot from any of these compressed
-        images, user have to set kernel_comp_addr_r and kernel_comp_size environment
-        variables beforehand.
-        Since booting a Linux kernel requires a flat device-tree, a
-        third argument providing the address of the device-tree blob
-        is required. To boot a kernel with a device-tree blob but
-        without an initrd image, use a &#39;-&#39; for the initrd argument.
-</code></pre></div>
-<p><code>bootefi</code> command is…</p>
-<div class="example-wrap"><pre class="language-text"><code>bootefi - Boots an EFI payload from memory
-
-Usage:
-bootefi &lt;image address&gt; [fdt address]
-  - boot EFI payload stored at address &lt;image address&gt;.
-    If specified, the device tree located at &lt;fdt address&gt; gets
-    exposed as EFI configuration table.
-bootefi bootmgr [fdt address]
-  - load and boot EFI payload based on BootOrder/BootXXXX variables.
-
-    If specified, the device tree located at &lt;fdt address&gt; gets
-    exposed as EFI configuration table.
-</code></pre></div>
-<p>Doesn’t work for NuttX…</p>
+<h1 id="appendix-u-boot-bootloader-commands"><a href="#appendix-u-boot-bootloader-commands">8 Appendix: U-Boot Bootloader Commands</a></h1>
+<p>Here are the <strong>U-Boot Bootloader Commands</strong> mentioned in this article…</p>
+<h2 id="dhcp-command"><a href="#dhcp-command">8.1 dhcp Command</a></h2>
+<p>dhcp - boot image via network using DHCP/TFTP protocol</p>
+<ul>
+<li>dhcp [loadAddress] [[hostIPaddr:]bootfilename]</li>
+</ul>
+<h2 id="tftpboot-command"><a href="#tftpboot-command">8.2 tftpboot Command</a></h2>
+<p>tftpboot - boot image via network using TFTP protocol</p>
+<ul>
+<li>tftpboot [loadAddress] [[hostIPaddr:]bootfilename]</li>
+</ul>
+<h2 id="fdt-command"><a href="#fdt-command">8.3 fdt Command</a></h2>
+<p>fdt - flattened device tree utility commands</p>
+<ul>
+<li>
+<p>fdt addr [-c]  &lt;addr&gt; [&lt;length&gt;]   - Set the [control] fdt location to &lt;addr&gt;</p>
+</li>
+<li>
+<p>fdt apply &lt;addr&gt;                    - Apply overlay to the DT</p>
+</li>
+<li>
+<p>fdt move   &lt;fdt&gt; &lt;newaddr&gt; &lt;length&gt; - Copy the fdt to &lt;addr&gt; and make it active</p>
+</li>
+<li>
+<p>fdt resize [&lt;extrasize&gt;]            - Resize fdt to size + padding to 4k addr + some optional &lt;extrasize&gt; if needed</p>
+</li>
+<li>
+<p>fdt print  &lt;path&gt; [&lt;prop&gt;]          - Recursive print starting at &lt;path&gt;</p>
+</li>
+<li>
+<p>fdt list   &lt;path&gt; [&lt;prop&gt;]          - Print one level starting at &lt;path&gt;</p>
+</li>
+<li>
+<p>fdt get value &lt;var&gt; &lt;path&gt; &lt;prop&gt;   - Get &lt;property&gt; and store in &lt;var&gt;</p>
+</li>
+<li>
+<p>fdt get name &lt;var&gt; &lt;path&gt; &lt;index&gt;   - Get name of node &lt;index&gt; and store in &lt;var&gt;</p>
+</li>
+<li>
+<p>fdt get addr &lt;var&gt; &lt;path&gt; &lt;prop&gt;    - Get start address of &lt;property&gt; and store in &lt;var&gt;</p>
+</li>
+<li>
+<p>fdt get size &lt;var&gt; &lt;path&gt; [&lt;prop&gt;]  - Get size of [&lt;property&gt;] or num nodes and store in &lt;var&gt;</p>
+</li>
+<li>
+<p>fdt set    &lt;path&gt; &lt;prop&gt; [&lt;val&gt;]    - Set &lt;property&gt; [to &lt;val&gt;]</p>
+</li>
+<li>
+<p>fdt mknode &lt;path&gt; &lt;node&gt;            - Create a new node after &lt;path&gt;</p>
+</li>
+<li>
+<p>fdt rm     &lt;path&gt; [&lt;prop&gt;]          - Delete the node or &lt;property&gt;</p>
+</li>
+<li>
+<p>fdt header [get &lt;var&gt; &lt;member&gt;]     - Display header info</p>
+<p>get - get header member &lt;member&gt; and store it in &lt;var&gt;</p>
+</li>
+<li>
+<p>fdt bootcpu &lt;id&gt;                    - Set boot cpuid</p>
+</li>
+<li>
+<p>fdt memory &lt;addr&gt; &lt;size&gt;            - Add/Update memory node</p>
+</li>
+<li>
+<p>fdt rsvmem print                    - Show current mem reserves</p>
+</li>
+<li>
+<p>fdt rsvmem add &lt;addr&gt; &lt;size&gt;        - Add a mem reserve</p>
+</li>
+<li>
+<p>fdt rsvmem delete &lt;index&gt;           - Delete a mem reserves</p>
+</li>
+<li>
+<p>fdt chosen [&lt;start&gt; &lt;end&gt;]          - Add/update the /chosen branch in the tree</p>
+<p>&lt;start&gt;/&lt;end&gt; - initrd start/end addr</p>
+</li>
+</ul>
+<p>NOTE: Dereference aliases by omitting the leading ‘/’, e.g. fdt print ethernet0.</p>
+<h2 id="booti-command"><a href="#booti-command">8.4 booti Command</a></h2>
+<p>booti - boot Linux kernel ‘Image’ format from memory</p>
+<ul>
+<li>
+<p>booti [addr [initrd[:size]] [fdt]]</p>
+<p>boot Linux flat or compressed ‘Image’ stored at ‘addr’</p>
+<p>The argument ‘initrd’ is optional and specifies the address
+of an initrd in memory. The optional parameter ‘:size’ allows
+specifying the size of a RAW initrd.</p>
+<p>Currently only booting from gz, bz2, lzma and lz4 compression
+types are supported. In order to boot from any of these compressed
+images, user have to set kernel_comp_addr_r and kernel_comp_size environment
+variables beforehand.</p>
+<p>Since booting a Linux kernel requires a flat device-tree, a
+third argument providing the address of the device-tree blob
+is required. To boot a kernel with a device-tree blob but
+without an initrd image, use a ‘-’ for the initrd argument.</p>
+</li>
+</ul>
+<h2 id="bootefi-command"><a href="#bootefi-command">8.5 bootefi Command</a></h2>
+<p>bootefi - Boots an EFI payload from memory</p>
+<ul>
+<li>
+<p>bootefi &lt;image address&gt; [fdt address]</p>
+<p>boot EFI payload stored at address &lt;image address&gt;.</p>
+<p>If specified, the device tree located at &lt;fdt address&gt; gets
+exposed as EFI configuration table.</p>
+</li>
+<li>
+<p>bootefi bootmgr [fdt address]</p>
+<p>load and boot EFI payload based on BootOrder/BootXXXX variables.</p>
+<p>If specified, the device tree located at &lt;fdt address&gt; gets
+exposed as EFI configuration table.</p>
+</li>
+</ul>
+<p>TODO: Doesn’t work for NuttX…</p>
 <div class="example-wrap"><pre class="language-text"><code>StarFive # bootefi ${kernel_addr_r} ${fdt_addr_r}
 Card did not respond to voltage select! : -110
 Card did not respond to voltage select! : -110
 No EFI system partition
 No UEFI binary known at 0x40200000
 </code></pre></div>
-<p><a href="https://u-boot.readthedocs.io/en/latest/usage/environment.html"><code>autoload</code></a> setting is…</p>
+<p>TODO: <a href="https://u-boot.readthedocs.io/en/latest/usage/environment.html"><code>autoload</code></a> setting is…</p>
 <div class="example-wrap"><pre class="language-text"><code>autoload:
 if set to “no” (any string beginning with ‘n’), “bootp” and “dhcp” will just load perform a lookup of the configuration from the BOOTP server, but not try to load any image.
 </code></pre></div>
