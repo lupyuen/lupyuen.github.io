@@ -263,10 +263,10 @@ fdt addr ${fdt_addr_r}
 ## fdt_addr_r=0x46000000
 booti ${kernel_addr_r} - ${fdt_addr_r}
 </code></pre></div>
-<p>TODO: <strong>tftpboot</strong> explained here</p>
-<p>TODO: <strong>fdt</strong> explained here</p>
-<p>TODO: <strong>booti</strong> explained here</p>
-<p>Our Star64 SBC will (pic above)…</p>
+<p><a href="https://lupyuen.github.io/articles/tftp#tftpboot-command">(<strong>tftpboot</strong> explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/tftp#fdt-command">(<strong>fdt</strong> explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/tftp#booti-command">(<strong>booti</strong> explained here)</a></p>
+<p>Our Star64 SBC shall (pic above)…</p>
 <ol>
 <li>
 <p><strong>Fetch the Kernel</strong> over TFTP</p>
@@ -371,7 +371,7 @@ boot_targets=mmc0 dhcp
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code># We added TFTP to the Boot Targets
 boot_targets=mmc0 dhcp  tftp</code></pre></div>
 <p>Thus U-Boot will execute the Boot Script <strong>bootcmd_tftp</strong> at startup.</p>
-<p>TODO: As explained here</p>
+<p><a href="https://lupyuen.github.io/articles/tftp#appendix-boot-script-for-u-boot-bootloader">(As explained here)</a></p>
 <p><em>What’s bootcmd_tftp?</em></p>
 <p><strong>bootcmd_tftp</strong> expands to this U-Boot Script…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Load the NuttX Image from TFTP Server
@@ -398,10 +398,13 @@ then
   fi;
 fi
 </code></pre></div>
-<p>Which does the same thing as the previous section: Boot NuttX (or Linux) over the Network at startup.</p>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(See the <strong>U-Boot Settings</strong>)</a></p>
+<p>Which does the same thing as the previous section: Boot NuttX (or Linux) over the Network at startup.</p>
 <h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
 <p>TODO</p>
+<p>With Network Boot running, we’re now ready for <strong>Automated Testing of Apache NuttX RTOS</strong> on Star64 SBC!</p>
+<p>(Though we might need a <strong>Smart Power Switch</strong> to power the SBC on and off: <a href="https://www.ikea.com/sg/en/p/tradfri-control-outlet-kit-smart-10364797/"><strong>IKEA TRÅDFRI</strong></a> and <a href="https://www.ikea.com/sg/en/p/dirigera-hub-for-smart-products-white-smart-50503409/"><strong>DIRIGERA</strong></a>)</p>
+<p>Porting NuttX to Star64 JH7110 becomes so much faster. Stay tuned for updates!</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
@@ -526,6 +529,7 @@ fi
 <p><em>What about bootcmd_dhcp?</em></p>
 <p><strong>bootcmd_dhcp</strong> tries to boot from DHCP+TFTP Combo Server.</p>
 <p>It assumes that the DHCP Server is also a TFTP Server.</p>
+<p><a href="https://u-boot.readthedocs.io/en/latest/usage/environment.html">(We should probably disable <strong>autoload</strong>)</a></p>
 <p><strong>bootcmd_dhcp</strong> is set to…</p>
 <div class="example-wrap"><pre class="language-bash"><code>devtype=dhcp;
 
@@ -579,12 +583,12 @@ setenv efi_old_arch;
 setenv efi_old_vci;
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(Source)</a></p>
-<p>TODO: <strong>dhcp</strong> explained here</p>
-<p>TODO: <strong>tftpboot</strong> explained here</p>
-<p>TODO: <strong>fdt</strong> explained here</p>
-<p>TODO: <strong>booti</strong> explained here</p>
+<p><a href="https://lupyuen.github.io/articles/tftp#dhcp-command">(<strong>dhcp</strong> explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/tftp#tftpboot-command">(<strong>tftpboot</strong> explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/tftp#fdt-command">(<strong>fdt</strong> explained here)</a></p>
+<p><a href="https://lupyuen.github.io/articles/tftp#booti-command">(<strong>booti</strong> explained here)</a></p>
 <h1 id="appendix-commands-for-u-boot-bootloader"><a href="#appendix-commands-for-u-boot-bootloader">8 Appendix: Commands for U-Boot Bootloader</a></h1>
-<p>Here are the <strong>U-Boot Bootloader Commands</strong> mentioned in this article…</p>
+<p>Here are the <strong>U-Boot Bootloader Commands</strong> mentioned in this article. We ran “help &lt;command&gt;” to explain the commands…</p>
 <h2 id="dhcp-command"><a href="#dhcp-command">8.1 dhcp Command</a></h2>
 <p>dhcp - boot image via network using DHCP/TFTP protocol</p>
 <ul>
@@ -634,17 +638,14 @@ exposed as EFI configuration table.</p>
 exposed as EFI configuration table.</p>
 </li>
 </ul>
-<p>TODO: Source</p>
-<p>TODO: Doesn’t work for NuttX…</p>
+<p><a href="https://github.com/u-boot/u-boot/blob/master/cmd/bootefi.c#L724-L733">(Source)</a></p>
+<p><em>Will it work for NuttX?</em></p>
+<p>Nope it doesn’t, since NuttX isn’t a UEFI Binary…</p>
 <div class="example-wrap"><pre class="language-text"><code>StarFive # bootefi ${kernel_addr_r} ${fdt_addr_r}
 Card did not respond to voltage select! : -110
 Card did not respond to voltage select! : -110
 No EFI system partition
 No UEFI binary known at 0x40200000
-</code></pre></div>
-<p>TODO: <a href="https://u-boot.readthedocs.io/en/latest/usage/environment.html"><code>autoload</code></a> setting is…</p>
-<div class="example-wrap"><pre class="language-text"><code>autoload:
-if set to “no” (any string beginning with ‘n’), “bootp” and “dhcp” will just load perform a lookup of the configuration from the BOOTP server, but not try to load any image.
 </code></pre></div><h2 id="fdt-command"><a href="#fdt-command">8.5 fdt Command</a></h2>
 <p>fdt - flattened device tree utility commands</p>
 <ul>
@@ -732,7 +733,7 @@ if set to “no” (any string beginning with ‘n’), “bootp” and “dhcp�
 </li>
 </ul>
 <p>NOTE: Dereference aliases by omitting the leading ‘/’, e.g. fdt print ethernet0.</p>
-<p>TODO: Source</p>
+<p><a href="https://github.com/u-boot/u-boot/blob/master/cmd/fdt.c#L1114-L1162">(Source)</a></p>
 
     
 </body>
