@@ -12,13 +12,51 @@ Swapping, reflashing and rebooting a MicroSD Card, again and again and again!
 
 Thankfully there's a better way: Booting NuttX (or Linux) over the __Local Network__, with __U-Boot Bootloader__ and __TFTP__!
 
-Today we'll configure TFTP Network Boot on [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) 64-bit RISC-V Single-Board Computer.
+Today we'll configure TFTP Network Boot on [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64), the new 64-bit RISC-V Single-Board Computer (SBC).
 
-(Based on [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC)
+(Powered by [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC)
 
-![TODO](https://lupyuen.github.io/images/tftp-flow.jpg)
+![Boot from Network with U-Boot and TFTP](https://lupyuen.github.io/images/tftp-flow.jpg)
+
+# Boot From Network
+
+The pic above shows our grand plan for today...
+
+0.  We'll install __TFTP Server__ on our Computer
+
+    (Which will provide the Kernel Image and Device Tree for Star64)
+
+0.  Star64 SBC will fetch the __Kernel Image__ from our Computer
+
+    (NuttX or Linux)
+
+0.  Our SBC will load the __Kernel into RAM__
+
+    (At RAM Address `0x4020` `0000`)
+
+0.  Star64 will fetch the __Linux Device Tree__ from our Computer
+
+    (NuttX doesn't need it, but we'll do it anyway)
+
+0.  Our SBC will load the __Device Tree into RAM__
+
+    (At RAM Address `0x4600` `0000`)
+
+0.  Star64 will __boot the Kernel__ and Device Tree from RAM
+
+    (NuttX or Linux)
+
+0.  We'll configure the SBC to do this __every time it powers on__
+
+    (It will try MicroSD first, before the Network Boot)
+
+_Do we need to install anything on our SBC?_
+
+TODO
 
 # Setup TFTP Server
+
+_What's this TFTP Server?_
 
 TODO
 
