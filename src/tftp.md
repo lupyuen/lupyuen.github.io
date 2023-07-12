@@ -622,100 +622,113 @@ TODO: __fdt__ explained here
 
 TODO: __booti__ explained here
 
-# Appendix: U-Boot Commands
+# Appendix: U-Boot Bootloader Commands
 
-TODO
+Here are the __U-Boot Bootloader Commands__ mentioned in this article...
 
-`dhcp` command is...
+## dhcp Command
 
-```text
 dhcp - boot image via network using DHCP/TFTP protocol
 
-Usage:
-dhcp [loadAddress] [[hostIPaddr:]bootfilename]
-```
+- dhcp [loadAddress] [[hostIPaddr:]bootfilename]
 
-(Assume [DHCP/TFTP](https://www.emcraft.com/som/using-dhcp) is not used)
+## tftpboot Command
 
-`tftpboot` command is...
-
-```text
 tftpboot - boot image via network using TFTP protocol
 
-Usage:
-tftpboot [loadAddress] [[hostIPaddr:]bootfilename]
-```
+- tftpboot [loadAddress] [[hostIPaddr:]bootfilename]
 
-`fdt` command is...
+## fdt Command 
 
-```text
 fdt - flattened device tree utility commands
 
-Usage:
-fdt addr [-c]  <addr> [<length>]   - Set the [control] fdt location to <addr>
-fdt apply <addr>                    - Apply overlay to the DT
-fdt move   <fdt> <newaddr> <length> - Copy the fdt to <addr> and make it active
-fdt resize [<extrasize>]            - Resize fdt to size + padding to 4k addr + some optional <extrasize> if needed
-fdt print  <path> [<prop>]          - Recursive print starting at <path>
-fdt list   <path> [<prop>]          - Print one level starting at <path>
-fdt get value <var> <path> <prop>   - Get <property> and store in <var>
-fdt get name <var> <path> <index>   - Get name of node <index> and store in <var>
-fdt get addr <var> <path> <prop>    - Get start address of <property> and store in <var>
-fdt get size <var> <path> [<prop>]  - Get size of [<property>] or num nodes and store in <var>
-fdt set    <path> <prop> [<val>]    - Set <property> [to <val>]
-fdt mknode <path> <node>            - Create a new node after <path>
-fdt rm     <path> [<prop>]          - Delete the node or <property>
-fdt header [get <var> <member>]     - Display header info
-                                      get - get header member <member> and store it in <var>
-fdt bootcpu <id>                    - Set boot cpuid
-fdt memory <addr> <size>            - Add/Update memory node
-fdt rsvmem print                    - Show current mem reserves
-fdt rsvmem add <addr> <size>        - Add a mem reserve
-fdt rsvmem delete <index>           - Delete a mem reserves
-fdt chosen [<start> <end>]          - Add/update the /chosen branch in the tree
-                                        <start>/<end> - initrd start/end addr
+- fdt addr [-c]  \<addr> [\<length>]   - Set the [control] fdt location to \<addr>
+
+- fdt apply \<addr>                    - Apply overlay to the DT
+
+- fdt move   \<fdt> \<newaddr> \<length> - Copy the fdt to \<addr> and make it active
+
+- fdt resize [\<extrasize>]            - Resize fdt to size + padding to 4k addr + some optional \<extrasize> if needed
+
+- fdt print  \<path> [\<prop>]          - Recursive print starting at \<path>
+
+- fdt list   \<path> [\<prop>]          - Print one level starting at \<path>
+
+- fdt get value \<var> \<path> \<prop>   - Get \<property> and store in \<var>
+
+- fdt get name \<var> \<path> \<index>   - Get name of node \<index> and store in \<var>
+
+- fdt get addr \<var> \<path> \<prop>    - Get start address of \<property> and store in \<var>
+
+- fdt get size \<var> \<path> [\<prop>]  - Get size of [\<property>] or num nodes and store in \<var>
+
+- fdt set    \<path> \<prop> [\<val>]    - Set \<property> [to \<val>]
+
+- fdt mknode \<path> \<node>            - Create a new node after \<path>
+
+- fdt rm     \<path> [\<prop>]          - Delete the node or \<property>
+
+- fdt header [get \<var> \<member>]     - Display header info
+
+  get - get header member \<member> and store it in \<var>
+
+- fdt bootcpu \<id>                    - Set boot cpuid
+
+- fdt memory \<addr> \<size>            - Add/Update memory node
+
+- fdt rsvmem print                    - Show current mem reserves
+
+- fdt rsvmem add \<addr> \<size>        - Add a mem reserve
+
+- fdt rsvmem delete \<index>           - Delete a mem reserves
+
+- fdt chosen [\<start> \<end>]          - Add/update the /chosen branch in the tree
+
+  \<start>/\<end> - initrd start/end addr
+
 NOTE: Dereference aliases by omitting the leading '/', e.g. fdt print ethernet0.
-```
 
-`booti` command is...
+## booti Command
 
-```text
 booti - boot Linux kernel 'Image' format from memory
 
-Usage:
-booti [addr [initrd[:size]] [fdt]]
-    - boot Linux flat or compressed 'Image' stored at 'addr'
-        The argument 'initrd' is optional and specifies the address
-        of an initrd in memory. The optional parameter ':size' allows
-        specifying the size of a RAW initrd.
-        Currently only booting from gz, bz2, lzma and lz4 compression
-        types are supported. In order to boot from any of these compressed
-        images, user have to set kernel_comp_addr_r and kernel_comp_size environment
-        variables beforehand.
-        Since booting a Linux kernel requires a flat device-tree, a
-        third argument providing the address of the device-tree blob
-        is required. To boot a kernel with a device-tree blob but
-        without an initrd image, use a '-' for the initrd argument.
-```
+- booti [addr [initrd[:size]] [fdt]]
 
-`bootefi` command is...
+  boot Linux flat or compressed 'Image' stored at 'addr'
 
-```text
+  The argument 'initrd' is optional and specifies the address
+  of an initrd in memory. The optional parameter ':size' allows
+  specifying the size of a RAW initrd.
+
+  Currently only booting from gz, bz2, lzma and lz4 compression
+  types are supported. In order to boot from any of these compressed
+  images, user have to set kernel_comp_addr_r and kernel_comp_size environment
+  variables beforehand.
+
+  Since booting a Linux kernel requires a flat device-tree, a
+  third argument providing the address of the device-tree blob
+  is required. To boot a kernel with a device-tree blob but
+  without an initrd image, use a '-' for the initrd argument.
+
+## bootefi Command
+
 bootefi - Boots an EFI payload from memory
 
-Usage:
-bootefi <image address> [fdt address]
-  - boot EFI payload stored at address <image address>.
-    If specified, the device tree located at <fdt address> gets
-    exposed as EFI configuration table.
-bootefi bootmgr [fdt address]
-  - load and boot EFI payload based on BootOrder/BootXXXX variables.
+- bootefi \<image address> [fdt address]
+  
+  boot EFI payload stored at address \<image address>.
 
-    If specified, the device tree located at <fdt address> gets
-    exposed as EFI configuration table.
-```
+  If specified, the device tree located at \<fdt address> gets
+  exposed as EFI configuration table.
 
-Doesn't work for NuttX...
+- bootefi bootmgr [fdt address]
+
+  load and boot EFI payload based on BootOrder/BootXXXX variables.
+
+  If specified, the device tree located at \<fdt address> gets
+  exposed as EFI configuration table.
+
+TODO: Doesn't work for NuttX...
 
 ```text
 StarFive # bootefi ${kernel_addr_r} ${fdt_addr_r}
@@ -725,7 +738,7 @@ No EFI system partition
 No UEFI binary known at 0x40200000
 ```
 
-[`autoload`](https://u-boot.readthedocs.io/en/latest/usage/environment.html) setting is...
+TODO: [`autoload`](https://u-boot.readthedocs.io/en/latest/usage/environment.html) setting is...
 
 ```text
 autoload:
