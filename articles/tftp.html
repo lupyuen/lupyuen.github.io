@@ -75,8 +75,8 @@
 <li><a href="#u-boot-commands-for-network-boot">6 U-Boot Commands for Network Boot</a><ul></ul></li>
 <li><a href="#whats-next">7 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>19 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/tftp-title.jpg" alt="Pine64 Star64 JH7110 64-bit RISC-V SBC" /></p>
-<p>Testing a new Operating System like <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a> (or Linux) can get <em>painfully tedious</em> on a Single-Board Computer…</p>
-<p>Swapping, reflashing and rebooting a MicroSD Card, again and again and again!</p>
+<p>Testing a new Operating System like <a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX RTOS</strong></a> (or Linux) can get <em>painfully tedious</em> on a Single-Board Computer…</p>
+<p>Swapping, reflashing and rebooting a MicroSD Card, <a href="https://lupyuen.github.io/articles/nuttx2#boot-nuttx-on-star64"><strong>again and again and again</strong></a>!</p>
 <p><a href="https://github.com/lupyuen/pinephone-nuttx">(Like how we tested <strong>NuttX on PinePhone</strong>)</a></p>
 <p>Thankfully there’s a better way: Booting NuttX (or Linux) over the <strong>Local Network</strong>, with <strong>U-Boot Bootloader</strong> and <strong>TFTP</strong>!</p>
 <p>Today we’ll configure TFTP Network Boot on <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a>, the new 64-bit RISC-V Single-Board Computer (SBC).</p>
@@ -114,56 +114,63 @@
 <p>(It will try MicroSD first, before the Network Boot)</p>
 </li>
 </ol>
-<p><em>Do we need to install anything on our SBC?</em></p>
-<p>TODO</p>
+<p><em>Do we install anything on our SBC?</em></p>
+<p>Everything we need is already in the <strong>Internal Flash Memory</strong> of our SBC!</p>
+<p>Inside our SBC Flash Memory is the <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>. Which normally boots from MicroSD, but can be configured for <strong>Network Boot</strong>.</p>
+<p>Let’s find out how…</p>
 <h1 id="setup-tftp-server"><a href="#setup-tftp-server">2 Setup TFTP Server</a></h1>
 <p><em>What’s this TFTP Server?</em></p>
-<p>TODO</p>
-<p>First we set up a TFTP Server with <a href="https://crates.io/crates/tftpd"><code>tftpd</code></a>…</p>
-<div class="example-wrap"><pre class="language-bash"><code>cargo install tftpd
+<p>That’s a simple program (running on our computer) that operates the <a href="https://en.wikipedia.org/wiki/Trivial_File_Transfer_Protocol"><strong>Trivial File Transfer Protocol (TFTP)</strong></a>.</p>
+<p>It dishes out files over the <strong>Local Network</strong> (via UDP), when requested by our SBC.</p>
+<p>Follow these steps to install the <a href="https://crates.io/crates/tftpd"><strong><code>tftpd</code> TFTP Server</strong></a> on our Linux / macOS / Windows Computer…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Install `tftpd` in Rust
+cargo install tftpd
+
+## Create a folder for the TFTP Files
 mkdir $HOME/tftproot
+
+## Start the TFTP Server. Needs `sudo` because
+## Port 69 is a privileged low port.
 sudo tftpd -i 0.0.0.0 -p 69 -d &quot;$HOME/tftproot&quot;
-## `sudo` because port 69 is a privileged low port
 </code></pre></div>
-<p>(<a href="https://crates.io/crates/tftp_server"><code>tftp_server</code></a> won’t work, it only supports localhost)</p>
+<p>(<a href="https://crates.io/crates/tftp_server"><strong><code>tftp_server</code></strong></a> won’t work, it only supports localhost)</p>
 <p>We should see…</p>
 <div class="example-wrap"><pre class="language-text"><code>Running TFTP Server on 0.0.0.0:69 in $HOME/tftproot
-Sending a.txt to 127.0.0.1:57125
-Sent a.txt to 127.0.0.1:57125
-Sending a.txt to 192.168.x.x:33499
-Sent a.txt to 192.168.x.x:33499
+
+## Later we&#39;ll see the dishy files...
+## Sending a.txt to 127.0.0.1:57125
+## Sent a.txt to 127.0.0.1:57125
+## Sending a.txt to 192.168.x.x:33499
+## Sent a.txt to 192.168.x.x:33499
 </code></pre></div>
-<p>Let’s test the TFTP Server…</p>
-<div class="example-wrap"><pre class="language-bash"><code>echo Test123 &gt;$HOME/tftproot/a.txt
+<p>Let’s <strong>test the server</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Create a Test File for TFTP
+echo Test123 &gt;$HOME/tftproot/a.txt
+
+## Fetch the Test File over TFTP.
+## `192.168.x.x` is our computer&#39;s IP Address
 curl -v tftp://127.0.0.1/a.txt
 curl -v tftp://192.168.x.x/a.txt
 </code></pre></div>
-<p>(<code>localhost</code> won’t work because of IPv6, I think)</p>
-<p>We should see…</p>
-<div class="example-wrap"><pre class="language-text"><code>$ curl -v tftp://192.168.x.x/a.txt
-*   Trying 192.168.x.x:69...
+<p>(<strong><code>localhost</code></strong> won’t work because of IPv6, I think)</p>
+<p>We should see our <strong>Test File</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>* Trying 192.168.x.x:69...
 * getpeername() failed with errno 107: Transport endpoint is not connected
 * Connected to 192.168.x.x () port 69 (#0)
 * getpeername() failed with errno 107: Transport endpoint is not connected
 * set timeouts for state 0; Total  300000, retry 6 maxtry 50
-* got option=(tsize) value=(8)
-* tsize parsed from OACK (8)
-* got option=(blksize) value=(512)
-* blksize parsed from OACK (512) requested (512)
-* got option=(timeout) value=(6)
-* Connected for receive
-* set timeouts for state 1; Total  0, retry 72 maxtry 50
+...
 Test123
-* Closing connection 0
 </code></pre></div>
+<p>(Ignore the warnings)</p>
 <p>If it fails…</p>
-<div class="example-wrap"><pre class="language-text"><code>$ curl -v tftp://192.168.x.x/a.txt
-*   Trying 192.168.x.x:69...
+<div class="example-wrap"><pre class="language-text"><code>* Trying 192.168.x.x:69...
 * getpeername() failed with errno 107: Transport endpoint is not connected
 * Connected to 192.168.x.x () port 69 (#0)
 * getpeername() failed with errno 107: Transport endpoint is not connected
 * set timeouts for state 0; Total  300000, retry 6 maxtry 50
 </code></pre></div>
+<p>TODO: Check</p>
 <p>In the olden days we would actually do this…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ tftp 127.0.0.1
 tftp&gt; get a.txt
