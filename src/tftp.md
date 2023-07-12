@@ -300,9 +300,7 @@ clk u5_dw_i2c_clk_apb already disabled
 
 [(Source)](https://github.com/lupyuen/nuttx-star64#u-boot-bootloader-log-for-tftp)
 
-TODO: RAM Disk
-
-[(Inspired by this article)](https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot)
+__For Linux:__ We might need to load the [__Initial RAM Disk initrd__](https://lupyuen.github.io/articles/tftp#booti-command)
 
 # Configure U-Boot for TFTP
 
@@ -413,6 +411,8 @@ fi
 [(See the __U-Boot Settings__)](https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64)
 
 Which does the same thing as the previous section: Boot NuttX (or Linux) over the Network at startup.
+
+[(Thanks to this article)](https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot)
 
 # What's Next
 
