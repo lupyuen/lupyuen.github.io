@@ -64,7 +64,7 @@ Let's find out how...
 
 _What's this TFTP Server? (Pic above)_
 
-That's a simple program (running on our computer) that handles the [__Trivial File Transfer Protocol (TFTP)__](https://en.wikipedia.org/wiki/Trivial_File_Transfer_Protocol).
+That's a simple program (running on our Computer) that handles the [__Trivial File Transfer Protocol (TFTP)__](https://en.wikipedia.org/wiki/Trivial_File_Transfer_Protocol).
 
 It dishes out files over the __Local Network__ (via UDP not TCP), when requested by our SBC.
 
@@ -124,7 +124,7 @@ Test123
 
 (Ignore the warnings)
 
-Our TFTP Server is up! In the olden days we would actually do this...
+Our TFTP Server is up! In olden days we would actually do this...
 
 ```text
 $ tftp 127.0.0.1
