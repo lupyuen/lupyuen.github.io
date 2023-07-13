@@ -126,8 +126,9 @@
 <p>Everything we need is already in the <strong>Internal Flash Memory</strong> of our SBC!</p>
 <p>Inside our SBC Flash Memory is the <a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a>. Which normally boots from MicroSD, but can be configured for <strong>Network Boot</strong>.</p>
 <p>Let’s find out how…</p>
+<p><img src="https://lupyuen.github.io/images/tftp-flow2.jpg" alt="TFTP Server" /></p>
 <h1 id="setup-tftp-server"><a href="#setup-tftp-server">2 Setup TFTP Server</a></h1>
-<p><em>What’s this TFTP Server?</em></p>
+<p><em>What’s this TFTP Server? (Pic above)</em></p>
 <p>That’s a simple program (running on our computer) that handles the <a href="https://en.wikipedia.org/wiki/Trivial_File_Transfer_Protocol"><strong>Trivial File Transfer Protocol (TFTP)</strong></a>.</p>
 <p>It dishes out files over the <strong>Local Network</strong> (via UDP not TCP), when requested by our SBC.</p>
 <p>Follow these steps to install the <a href="https://crates.io/crates/tftpd"><strong><code>tftpd</code> TFTP Server</strong></a> on our Linux / macOS / Windows Computer…</p>
@@ -147,9 +148,9 @@ sudo tftpd -i 0.0.0.0 -p 69 -d &quot;$HOME/tftproot&quot;
 
 ## Later we&#39;ll see the dishy files...
 ## Sending a.txt to 127.0.0.1:57125
-## Sent a.txt to 127.0.0.1:57125
+##   Sent a.txt to 127.0.0.1:57125
 ## Sending a.txt to 192.168.x.x:33499
-## Sent a.txt to 192.168.x.x:33499
+##   Sent a.txt to 192.168.x.x:33499
 </code></pre></div>
 <p>Let’s <strong>test the server</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Create a Test File for TFTP
@@ -221,7 +222,7 @@ curl -v tftp://192.168.x.x/jh7110-star64-pine64.dtb
 <p><img src="https://lupyuen.github.io/images/tftp-flow.jpg" alt="Boot from Network with U-Boot and TFTP" /></p>
 <h1 id="test-u-boot-with-tftp"><a href="#test-u-boot-with-tftp">4 Test U-Boot with TFTP</a></h1>
 <p>We’re ready to test U-Boot Bootloader with TFTP!</p>
-<p>Connect Star64 to the <strong>Ethernet Wired Network</strong> (pic above).</p>
+<p>Connect Star64 to the <strong>Ethernet Wired Network</strong>. (Pic above)</p>
 <p>Connect to the <a href="https://lupyuen.github.io/articles/linux#serial-console-on-star64"><strong>Serial Console</strong></a> and power up without a MicroSD Card.</p>
 <p>Star64 <strong>fails to boot</strong> over the network, but that’s OK…</p>
 <div class="example-wrap"><pre class="language-text"><code>BOOTP broadcast 1
@@ -316,7 +317,7 @@ clk u5_dw_i2c_clk_apb already disabled
 <p><strong>For Linux:</strong> We might need to load the <a href="https://lupyuen.github.io/articles/tftp#booti-command"><strong>Initial RAM Disk initrd</strong></a></p>
 <h1 id="configure-u-boot-for-tftp"><a href="#configure-u-boot-for-tftp">5 Configure U-Boot for TFTP</a></h1>
 <p><em>But can we Auto-Boot from Network, every time we power on?</em></p>
-<p>Sure can! The trick is to use the <strong>saveenv</strong> command, which will save the U-Boot Settings into the Internal Flash Memory…</p>
+<p>Sure can! The trick is to use the <strong>saveenv</strong> command, which will save the U-Boot Settings into the <strong>Internal Flash Memory</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Remember the TFTP Server IP.
 ## TODO: Change `192.168.x.x` to our Computer&#39;s IP Address
 setenv tftp_server 192.168.x.x
