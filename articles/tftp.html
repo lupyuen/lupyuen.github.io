@@ -588,25 +588,41 @@ setenv efi_old_vci;
 <p><a href="https://lupyuen.github.io/articles/tftp#fdt-command">(<strong>fdt</strong> explained here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/tftp#booti-command">(<strong>booti</strong> explained here)</a></p>
 <h1 id="appendix-commands-for-u-boot-bootloader"><a href="#appendix-commands-for-u-boot-bootloader">8 Appendix: Commands for U-Boot Bootloader</a></h1>
-<p>Here are the <strong>U-Boot Bootloader Commands</strong> mentioned in this article. We ran “help &lt;command&gt;” to explain the commands…</p>
-<h2 id="dhcp-command"><a href="#dhcp-command">8.1 dhcp Command</a></h2>
-<p>dhcp - boot image via network using DHCP/TFTP protocol</p>
+<p>We talked about the <strong>U-Boot Bootloader</strong> in previous articles…</p>
 <ul>
-<li>dhcp [loadAddress] [[hostIPaddr:]bootfilename]</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>“U-Boot Bootloader for Star64”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/linux#appendix-u-boot-bootloader-log-for-star64"><strong>“U-Boot Bootloader Log for Star64”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64"><strong>“U-Boot Settings for Star64”</strong></a></p>
+</li>
+<li>
+<p><a href="https://lupyuen.github.io/articles/linux#u-boot-commands-for-star64"><strong>“U-Boot Commands for Star64”</strong></a></p>
+</li>
+</ul>
+<p>Below are the <strong>U-Boot Bootloader Commands</strong> mentioned in this article.</p>
+<p>We ran “help &lt;command&gt;” to explain the commands…</p>
+<h2 id="dhcp-command"><a href="#dhcp-command">8.1 dhcp Command</a></h2>
+<p><strong>dhcp</strong> - boot image via network using DHCP/TFTP protocol</p>
+<ul>
+<li><strong>dhcp</strong> [loadAddress] [[hostIPaddr:]bootfilename]</li>
 </ul>
 <p><a href="https://github.com/u-boot/u-boot/blob/master/cmd/net.c#L144-L150">(Source)</a></p>
 <h2 id="tftpboot-command"><a href="#tftpboot-command">8.2 tftpboot Command</a></h2>
-<p>tftpboot - boot image via network using TFTP protocol</p>
+<p><strong>tftpboot</strong> - boot image via network using TFTP protocol</p>
 <ul>
-<li>tftpboot [loadAddress] [[hostIPaddr:]bootfilename]</li>
+<li><strong>tftpboot</strong> [loadAddress] [[hostIPaddr:]bootfilename]</li>
 </ul>
 <p><a href="https://github.com/u-boot/u-boot/blob/master/cmd/net.c#L61-L69">(Source)</a></p>
 <p>(Same as <strong>dhcp</strong> Command?)</p>
 <h2 id="booti-command"><a href="#booti-command">8.3 booti Command</a></h2>
-<p>booti - boot Linux kernel ‘Image’ format from memory</p>
+<p><strong>booti</strong> - boot Linux kernel ‘Image’ format from memory</p>
 <ul>
 <li>
-<p>booti [addr [initrd[:size]] [fdt]]</p>
+<p><strong>booti</strong> [addr [initrd[:size]] [fdt]]</p>
 <p>boot Linux flat or compressed ‘Image’ stored at ‘addr’</p>
 <p>The argument ‘initrd’ is optional and specifies the address
 of an initrd in memory. The optional parameter ‘:size’ allows
@@ -623,16 +639,16 @@ without an initrd image, use a ‘-’ for the initrd argument.</p>
 </ul>
 <p><a href="https://github.com/u-boot/u-boot/blob/master/cmd/net.c#L61-L69">(Source)</a></p>
 <h2 id="bootefi-command"><a href="#bootefi-command">8.4 bootefi Command</a></h2>
-<p>bootefi - Boots an EFI payload from memory</p>
+<p><strong>bootefi</strong> - Boots an EFI payload from memory</p>
 <ul>
 <li>
-<p>bootefi &lt;image address&gt; [fdt address]</p>
+<p><strong>bootefi</strong> &lt;image address&gt; [fdt address]</p>
 <p>boot EFI payload stored at address &lt;image address&gt;.</p>
 <p>If specified, the device tree located at &lt;fdt address&gt; gets
 exposed as EFI configuration table.</p>
 </li>
 <li>
-<p>bootefi bootmgr [fdt address]</p>
+<p><strong>bootefi</strong> bootmgr [fdt address]</p>
 <p>load and boot EFI payload based on BootOrder/BootXXXX variables.</p>
 <p>If specified, the device tree located at &lt;fdt address&gt; gets
 exposed as EFI configuration table.</p>
@@ -647,92 +663,92 @@ Card did not respond to voltage select! : -110
 No EFI system partition
 No UEFI binary known at 0x40200000
 </code></pre></div><h2 id="fdt-command"><a href="#fdt-command">8.5 fdt Command</a></h2>
-<p>fdt - flattened device tree utility commands</p>
+<p><strong>fdt</strong> - flattened device tree utility commands</p>
 <ul>
 <li>
-<p>fdt addr [-c]  &lt;addr&gt; [&lt;length&gt;]</p>
+<p><strong>fdt</strong> addr [-c]  &lt;addr&gt; [&lt;length&gt;]</p>
 <p>Set the [control] fdt location to &lt;addr&gt;</p>
 </li>
 <li>
-<p>fdt apply &lt;addr&gt;</p>
+<p><strong>fdt</strong> apply &lt;addr&gt;</p>
 <p>Apply overlay to the DT</p>
 </li>
 <li>
-<p>fdt move   &lt;fdt&gt; &lt;newaddr&gt; &lt;length&gt; </p>
+<p><strong>fdt</strong> move   &lt;fdt&gt; &lt;newaddr&gt; &lt;length&gt; </p>
 <p>Copy the fdt to &lt;addr&gt; and make it active</p>
 </li>
 <li>
-<p>fdt resize [&lt;extrasize&gt;]</p>
+<p><strong>fdt</strong> resize [&lt;extrasize&gt;]</p>
 <p>Resize fdt to size + padding to 4k addr + some optional &lt;extrasize&gt; if needed</p>
 </li>
 <li>
-<p>fdt print  &lt;path&gt; [&lt;prop&gt;]</p>
+<p><strong>fdt</strong> print  &lt;path&gt; [&lt;prop&gt;]</p>
 <p>Recursive print starting at &lt;path&gt;</p>
 </li>
 <li>
-<p>fdt list   &lt;path&gt; [&lt;prop&gt;]</p>
+<p><strong>fdt</strong> list   &lt;path&gt; [&lt;prop&gt;]</p>
 <p>Print one level starting at &lt;path&gt;</p>
 </li>
 <li>
-<p>fdt get value &lt;var&gt; &lt;path&gt; &lt;prop&gt;</p>
+<p><strong>fdt</strong> get value &lt;var&gt; &lt;path&gt; &lt;prop&gt;</p>
 <p>Get &lt;property&gt; and store in &lt;var&gt;</p>
 </li>
 <li>
-<p>fdt get name &lt;var&gt; &lt;path&gt; &lt;index&gt;</p>
+<p><strong>fdt</strong> get name &lt;var&gt; &lt;path&gt; &lt;index&gt;</p>
 <p>Get name of node &lt;index&gt; and store in &lt;var&gt;</p>
 </li>
 <li>
-<p>fdt get addr &lt;var&gt; &lt;path&gt; &lt;prop&gt;</p>
+<p><strong>fdt</strong> get addr &lt;var&gt; &lt;path&gt; &lt;prop&gt;</p>
 <p>Get start address of &lt;property&gt; and store in &lt;var&gt;</p>
 </li>
 <li>
-<p>fdt get size &lt;var&gt; &lt;path&gt; [&lt;prop&gt;]</p>
+<p><strong>fdt</strong> get size &lt;var&gt; &lt;path&gt; [&lt;prop&gt;]</p>
 <p>Get size of [&lt;property&gt;] or num nodes and store in &lt;var&gt;</p>
 </li>
 <li>
-<p>fdt set    &lt;path&gt; &lt;prop&gt; [&lt;val&gt;]</p>
+<p><strong>fdt</strong> set    &lt;path&gt; &lt;prop&gt; [&lt;val&gt;]</p>
 <p>Set &lt;property&gt; [to &lt;val&gt;]</p>
 </li>
 <li>
-<p>fdt mknode &lt;path&gt; &lt;node&gt;</p>
+<p><strong>fdt</strong> mknode &lt;path&gt; &lt;node&gt;</p>
 <p>Create a new node after &lt;path&gt;</p>
 </li>
 <li>
-<p>fdt rm     &lt;path&gt; [&lt;prop&gt;]</p>
+<p><strong>fdt</strong> rm     &lt;path&gt; [&lt;prop&gt;]</p>
 <p>Delete the node or &lt;property&gt;</p>
 </li>
 <li>
-<p>fdt header [get &lt;var&gt; &lt;member&gt;]</p>
+<p><strong>fdt</strong> header [get &lt;var&gt; &lt;member&gt;]</p>
 <p>Display header info</p>
 <p>get - get header member &lt;member&gt; and store it in &lt;var&gt;</p>
 </li>
 <li>
-<p>fdt bootcpu &lt;id&gt;</p>
+<p><strong>fdt</strong> bootcpu &lt;id&gt;</p>
 <p>Set boot cpuid</p>
 </li>
 <li>
-<p>fdt memory &lt;addr&gt; &lt;size&gt;</p>
+<p><strong>fdt</strong> memory &lt;addr&gt; &lt;size&gt;</p>
 <p>Add/Update memory node</p>
 </li>
 <li>
-<p>fdt rsvmem print</p>
+<p><strong>fdt</strong> rsvmem print</p>
 <p>Show current mem reserves</p>
 </li>
 <li>
-<p>fdt rsvmem add &lt;addr&gt; &lt;size&gt;</p>
+<p><strong>fdt</strong> rsvmem add &lt;addr&gt; &lt;size&gt;</p>
 <p>Add a mem reserve</p>
 </li>
 <li>
-<p>fdt rsvmem delete &lt;index&gt;</p>
+<p><strong>fdt</strong> rsvmem delete &lt;index&gt;</p>
 <p>Delete a mem reserves</p>
 </li>
 <li>
-<p>fdt chosen [&lt;start&gt; &lt;end&gt;]</p>
+<p><strong>fdt</strong> chosen [&lt;start&gt; &lt;end&gt;]</p>
 <p>Add/update the /chosen branch in the tree</p>
 <p>&lt;start&gt;/&lt;end&gt; - initrd start/end addr</p>
 </li>
 </ul>
-<p>NOTE: Dereference aliases by omitting the leading ‘/’, e.g. fdt print ethernet0.</p>
+<p><strong>NOTE:</strong> Dereference aliases by omitting the leading ‘/’, e.g. fdt print ethernet0.</p>
 <p><a href="https://github.com/u-boot/u-boot/blob/master/cmd/fdt.c#L1114-L1162">(Source)</a></p>
 
     
