@@ -381,6 +381,7 @@ rm /run/media/$USER/armbi_root/boot/Image
 cp nuttx.bin /run/media/$USER/armbi_root/boot/Image
 </code></pre></div>
 <p>Insert the microSD Card into Star64 and power up.</p>
+<p><a href="https://lupyuen.github.io/articles/tftp">(Or boot <strong>NuttX over the Network</strong>)</a></p>
 <p>When it boots on Star64, NuttX prints “<strong><code>123</code></strong>” yay! (Pic above)</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 clk u5_dw_i2c_clk_core already disabled
@@ -589,6 +590,9 @@ jal  x1, qemu_rv_start
 <p>Why? Stay tuned for more tantalising treats in the next article! Sneak peek…</p>
 <ul>
 <li>
+<p><a href="https://lupyuen.github.io/articles/tftp"><strong>“Boot from Network with U-Boot and TFTP”</strong></a></p>
+</li>
+<li>
 <p><a href="https://github.com/lupyuen/nuttx-star64#hang-in-enter-critical-section"><strong>“Hang in Enter Critical Section”</strong></a></p>
 </li>
 <li>
@@ -596,9 +600,6 @@ jal  x1, qemu_rv_start
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/nuttx-star64#hang-in-uart-transmit"><strong>“Hang in UART Transmit”</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen/nuttx-star64#boot-from-network-with-u-boot-and-tftp"><strong>“Boot from Network with U-Boot and TFTP”</strong></a></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/nuttx2-star64.jpg" alt="Pine64 Star64 64-bit RISC-V SBC" /></p>
