@@ -201,7 +201,7 @@ curl -v tftp://192.168.x.x/Image
 </code></pre></div>
 <p><strong>For Linux:</strong> Copy the Linux Kernel File <strong><code>Image</code></strong> to our TFTP Folder.</p>
 <p><em>What about the Linux Device Tree?</em></p>
-<p>(We won’t need it for NuttX, but let’s do it anyway)</p>
+<p>(NuttX won’t need it, but let’s do it anyway)</p>
 <p><strong>For NuttX:</strong> Copy the Device Tree from the <a href="https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64"><strong>Armbian MicroSD</strong></a> to our TFTP Folder…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Copy the Device Tree from Armbian microSD
 cp \
@@ -226,16 +226,18 @@ curl -v tftp://192.168.x.x/jh7110-star64-pine64.dtb
 <p>Connect to the <a href="https://lupyuen.github.io/articles/linux#serial-console-on-star64"><strong>Serial Console</strong></a> and power up without a MicroSD Card.</p>
 <p>Star64 <strong>fails to boot</strong> over the network, but that’s OK…</p>
 <div class="example-wrap"><pre class="language-text"><code>BOOTP broadcast 1
-*** Unhandled DHCP Option in OFFER/ACK: 43
-DHCP client bound to address 192.168.x.x (351 ms)
+  *** Unhandled DHCP Option in OFFER/ACK: 43
+  DHCP client bound to address 192.168.x.x (351 ms)
 
 TFTP from server 192.168.x.x; our IP address is 192.168.x.x
-Filename &#39;boot.scr.uimg&#39;.
+  Filename &#39;boot.scr.uimg&#39;.
+
 Load address: 0x43900000
   TFTP server died; starting again
 
 Load address: 0x40200000
   TFTP server died; starting again
+
 StarFive #
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64#u-boot-bootloader-log-for-tftp">(Source)</a></p>
@@ -287,23 +289,23 @@ booti ${kernel_addr_r} - ${fdt_addr_r}
 </li>
 </ol>
 <p>Like so…</p>
-<div class="example-wrap"><pre class="language-text"><code>StarFive # setenv tftp_server 192.168.x.x
+<div class="example-wrap"><pre class="language-text"><code>$ setenv tftp_server 192.168.x.x
 
-StarFive # tftpboot ${kernel_addr_r} ${tftp_server}:Image
+$ tftpboot ${kernel_addr_r} ${tftp_server}:Image
 Filename &#39;Image&#39;.
 Load address: 0x40200000
 Loading: 221.7 KiB/s done
 Bytes transferred = 2097832 (2002a8 hex)
 
-StarFive # tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
+$ tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
 Filename &#39;jh7110-star64-pine64.dtb&#39;.
 Load address: 0x46000000
 Loading: 374 KiB/s done
 Bytes transferred = 50235 (c43b hex)
 
-StarFive # fdt addr ${fdt_addr_r}
+$ fdt addr ${fdt_addr_r}
 
-StarFive # booti ${kernel_addr_r} - ${fdt_addr_r}
+$ booti ${kernel_addr_r} - ${fdt_addr_r}
 Flattened Device Tree blob at 46000000
 Booting using the fdt blob at 0x46000000
 Using Device Tree in place at 0000000046000000, end 000000004600f43a
@@ -668,7 +670,7 @@ exposed as EFI configuration table.</p>
 <p><a href="https://github.com/u-boot/u-boot/blob/master/cmd/bootefi.c#L724-L733">(Source)</a></p>
 <p><em>Will it work for NuttX?</em></p>
 <p>Nope it doesn’t, since NuttX isn’t a UEFI Binary…</p>
-<div class="example-wrap"><pre class="language-text"><code>StarFive # bootefi ${kernel_addr_r} ${fdt_addr_r}
+<div class="example-wrap"><pre class="language-text"><code>$ bootefi ${kernel_addr_r} ${fdt_addr_r}
 Card did not respond to voltage select! : -110
 Card did not respond to voltage select! : -110
 No EFI system partition
