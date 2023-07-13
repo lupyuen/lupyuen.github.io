@@ -597,6 +597,7 @@ setenv efi_old_vci;
 <p><a href="https://lupyuen.github.io/articles/tftp#tftpboot-command">(<strong>tftpboot</strong> explained here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/tftp#fdt-command">(<strong>fdt</strong> explained here)</a></p>
 <p><a href="https://lupyuen.github.io/articles/tftp#booti-command">(<strong>booti</strong> explained here)</a></p>
+<p>We used this as the template for our TFTP Boot Script <a href="https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp"><strong><strong>bootcmd_tftp</strong></strong></a>.</p>
 <h1 id="appendix-commands-for-u-boot-bootloader"><a href="#appendix-commands-for-u-boot-bootloader">8 Appendix: Commands for U-Boot Bootloader</a></h1>
 <p>We talked about the <strong>U-Boot Bootloader</strong> in previous articles…</p>
 <ul>
@@ -672,7 +673,9 @@ Card did not respond to voltage select! : -110
 Card did not respond to voltage select! : -110
 No EFI system partition
 No UEFI binary known at 0x40200000
-</code></pre></div><h2 id="fdt-command"><a href="#fdt-command">8.5 fdt Command</a></h2>
+</code></pre></div>
+<p>That’s why we call <a href="https://lupyuen.github.io/articles/tftp#booti-command"><strong>booti</strong></a> to boot NuttX.</p>
+<h2 id="fdt-command"><a href="#fdt-command">8.5 fdt Command</a></h2>
 <p><strong>fdt</strong> - flattened device tree utility commands</p>
 <ul>
 <li>
