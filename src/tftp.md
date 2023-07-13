@@ -167,7 +167,7 @@ __For Linux:__ Copy the Linux Kernel File __`Image`__ to our TFTP Folder.
 
 _What about the Linux Device Tree?_
 
-(We won't need it for NuttX, but let's do it anyway)
+(NuttX won't need it, but let's do it anyway)
 
 __For NuttX:__ Copy the Device Tree from the [__Armbian MicroSD__](https://lupyuen.github.io/articles/linux#boot-armbian-linux-on-star64) to our TFTP Folder...
 
@@ -204,16 +204,18 @@ Star64 __fails to boot__ over the network, but that's OK...
 
 ```text
 BOOTP broadcast 1
-*** Unhandled DHCP Option in OFFER/ACK: 43
-DHCP client bound to address 192.168.x.x (351 ms)
+  *** Unhandled DHCP Option in OFFER/ACK: 43
+  DHCP client bound to address 192.168.x.x (351 ms)
 
 TFTP from server 192.168.x.x; our IP address is 192.168.x.x
-Filename 'boot.scr.uimg'.
+  Filename 'boot.scr.uimg'.
+
 Load address: 0x43900000
   TFTP server died; starting again
 
 Load address: 0x40200000
   TFTP server died; starting again
+
 StarFive #
 ```
 
@@ -271,23 +273,23 @@ Our Star64 SBC shall (pic above)...
 Like so...
 
 ```text
-StarFive # setenv tftp_server 192.168.x.x
+$ setenv tftp_server 192.168.x.x
 
-StarFive # tftpboot ${kernel_addr_r} ${tftp_server}:Image
+$ tftpboot ${kernel_addr_r} ${tftp_server}:Image
 Filename 'Image'.
 Load address: 0x40200000
 Loading: 221.7 KiB/s done
 Bytes transferred = 2097832 (2002a8 hex)
 
-StarFive # tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
+$ tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
 Filename 'jh7110-star64-pine64.dtb'.
 Load address: 0x46000000
 Loading: 374 KiB/s done
 Bytes transferred = 50235 (c43b hex)
 
-StarFive # fdt addr ${fdt_addr_r}
+$ fdt addr ${fdt_addr_r}
 
-StarFive # booti ${kernel_addr_r} - ${fdt_addr_r}
+$ booti ${kernel_addr_r} - ${fdt_addr_r}
 Flattened Device Tree blob at 46000000
 Booting using the fdt blob at 0x46000000
 Using Device Tree in place at 0000000046000000, end 000000004600f43a
@@ -734,7 +736,7 @@ _Will it work for NuttX?_
 Nope it doesn't, since NuttX isn't a UEFI Binary...
 
 ```text
-StarFive # bootefi ${kernel_addr_r} ${fdt_addr_r}
+$ bootefi ${kernel_addr_r} ${fdt_addr_r}
 Card did not respond to voltage select! : -110
 Card did not respond to voltage select! : -110
 No EFI system partition
