@@ -649,6 +649,8 @@ setenv efi_old_vci;
 
 [(__booti__ explained here)](https://lupyuen.github.io/articles/tftp#booti-command)
 
+We used this as the template for our TFTP Boot Script [____bootcmd_tftp____](https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp).
+
 # Appendix: Commands for U-Boot Bootloader
 
 We talked about the __U-Boot Bootloader__ in previous articles...
@@ -738,6 +740,8 @@ Card did not respond to voltage select! : -110
 No EFI system partition
 No UEFI binary known at 0x40200000
 ```
+
+That's why we call [__booti__](https://lupyuen.github.io/articles/tftp#booti-command) to boot NuttX.
 
 ## fdt Command 
 
