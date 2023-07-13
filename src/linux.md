@@ -828,9 +828,13 @@ Environment size: 7246/65532 bytes
 
 ## U-Boot Commands for Star64
 
-Here are the __U-Boot Commands__ for Star64...
+Below are the __U-Boot Commands__ for Star64.
 
 [(Derived from the __Build Settings__)](https://github.com/u-boot/u-boot/blob/master/board/starfive/visionfive2/Kconfig#L14-L19)
+
+Some of the commands are explained here...
+
+- [__"Commands for U-Boot Bootloader"__](https://lupyuen.github.io/articles/tftp#appendix-commands-for-u-boot-bootloader)
 
 ```text
 StarFive # help
