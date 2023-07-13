@@ -12,10 +12,10 @@
     content="Star64 JH7110 RISC-V SBC: Boot from Network with U-Boot and TFTP" 
     data-rh="true">
 <meta property="og:description" 
-    content="Let's boot Apache NuttX RTOS (or Linux) over the Network with U-Boot Bootloader and TFTP"
+    content="Let's boot Apache NuttX RTOS (or Linux) over the Network with U-Boot Bootloader and TFTP... On Pine64's Star64 JH7110 RISC-V Single-Board Computer"
     data-rh="true">
 <meta name="description" 
-    content="Let's boot Apache NuttX RTOS (or Linux) over the Network with U-Boot Bootloader and TFTP">
+    content="Let's boot Apache NuttX RTOS (or Linux) over the Network with U-Boot Bootloader and TFTP... On Pine64's Star64 JH7110 RISC-V Single-Board Computer">
 <meta property="og:image" 
     content="https://lupyuen.github.io/images/tftp-title.jpg">
 <meta property="og:type" 
@@ -81,7 +81,7 @@
 <li><a href="#tftpboot-command">8.2 tftpboot Command</a><ul></ul></li>
 <li><a href="#booti-command">8.3 booti Command</a><ul></ul></li>
 <li><a href="#bootefi-command">8.4 bootefi Command</a><ul></ul></li>
-<li><a href="#fdt-command">8.5 fdt Command</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>19 Jul 2023</em></p>
+<li><a href="#fdt-command">8.5 fdt Command</a><ul></ul></li></ul></li></ul></nav><p>📝 <em>13 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/tftp-title.jpg" alt="Pine64 Star64 JH7110 64-bit RISC-V SBC" /></p>
 <p>Testing a new Operating System like <a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX RTOS</strong></a> (or Linux) can get <em>painfully tedious</em> on a Single-Board Computer…</p>
 <p>Swapping, reflashing and rebooting a MicroSD Card, <a href="https://lupyuen.github.io/articles/nuttx2#boot-nuttx-on-star64"><strong>again and again and again</strong></a>!</p>
@@ -409,7 +409,6 @@ fi
 <p><a href="https://lupyuen.github.io/articles/tftp#appendix-boot-script-for-u-boot-bootloader">(As explained here)</a></p>
 <p><a href="https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot">(Thanks to this article)</a></p>
 <h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
-<p>TODO</p>
 <p>With Network Boot running, we’re now ready for <strong>Automated Testing of Apache NuttX RTOS</strong> on Star64 SBC!</p>
 <p>(Though we might need a <strong>Smart Power Plug</strong> to reboot our SBC: <a href="https://www.ikea.com/sg/en/p/tradfri-control-outlet-kit-smart-10364797/"><strong>IKEA TRÅDFRI</strong></a> and <a href="https://www.ikea.com/sg/en/p/dirigera-hub-for-smart-products-white-smart-50503409/"><strong>DIRIGERA</strong></a>)</p>
 <p>Porting NuttX to Star64 JH7110 becomes so much faster. Stay tuned for updates!</p>
@@ -631,6 +630,7 @@ setenv efi_old_vci;
 </ul>
 <p><a href="https://github.com/u-boot/u-boot/blob/master/cmd/net.c#L61-L69">(Source)</a></p>
 <p>(Same as <strong>dhcp</strong> Command?)</p>
+<p><strong>Note:</strong> Don’t use the special variable <strong>serverip</strong>, it will change after running <a href="https://lupyuen.github.io/articles/tftp#tftpboot-command"><strong>tftpboot</strong></a>!</p>
 <h2 id="booti-command"><a href="#booti-command">8.3 booti Command</a></h2>
 <p><strong>booti</strong> - boot Linux kernel ‘Image’ format from memory</p>
 <ul>
@@ -763,7 +763,7 @@ No UEFI binary known at 0x40200000
 <p>&lt;start&gt;/&lt;end&gt; - initrd start/end addr</p>
 </li>
 </ul>
-<p><strong>NOTE:</strong> Dereference aliases by omitting the leading ‘/’, e.g. fdt print ethernet0.</p>
+<p><strong>Note:</strong> Dereference aliases by omitting the leading ‘/’, e.g. fdt print ethernet0.</p>
 <p><a href="https://github.com/u-boot/u-boot/blob/master/cmd/fdt.c#L1114-L1162">(Source)</a></p>
 
     
