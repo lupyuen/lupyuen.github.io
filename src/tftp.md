@@ -60,7 +60,7 @@ Let's find out how...
 
 ![TFTP Server](https://lupyuen.github.io/images/tftp-flow2.jpg)
 
-# Setup TFTP Server
+# Install TFTP Server
 
 _What's this TFTP Server? (Pic above)_
 
@@ -180,7 +180,7 @@ cp \
 ## Copy to TFTP Folder
 cp jh7110-star64-pine64.dtb $HOME/tftproot
 
-## Test Device Tree over TFTP
+## Test the Device Tree over TFTP
 ## TODO: Change `192.168.x.x` to our Computer's IP Address
 curl -v tftp://192.168.x.x/jh7110-star64-pine64.dtb
 
@@ -219,9 +219,9 @@ StarFive #
 
 [(Source)](https://github.com/lupyuen/nuttx-star64#u-boot-bootloader-log-for-tftp)
 
-That's because we don't have a [__BOOTP Server__](https://en.wikipedia.org/wiki/Bootstrap_Protocol) or a __DHCP+TFTP__ Combo Server.
+That's because we don't have a [__BOOTP Server__](https://en.wikipedia.org/wiki/Bootstrap_Protocol) or a [__DHCP+TFTP Combo Server__](https://lupyuen.github.io/articles/tftp#boot-from-dhcp).
 
-Since we have a Dedicated TFTP Server, we run these __U-Boot Commands__ at the prompt...
+Since we have a [__Dedicated TFTP Server__](https://lupyuen.github.io/articles/tftp#install-tftp-server), we run these __U-Boot Commands__ at the prompt...
 
 ```bash
 ## Set the TFTP Server IP
@@ -253,6 +253,8 @@ booti ${kernel_addr_r} - ${fdt_addr_r}
 [(__fdt__ explained here)](https://lupyuen.github.io/articles/tftp#fdt-command)
 
 [(__booti__ explained here)](https://lupyuen.github.io/articles/tftp#booti-command)
+
+[(See the __U-Boot Settings__)](https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64)
 
 Our Star64 SBC shall (pic above)...
 
@@ -291,6 +293,8 @@ Booting using the fdt blob at 0x46000000
 Using Device Tree in place at 0000000046000000, end 000000004600f43a
 ```
 
+[(Source)](https://github.com/lupyuen/nuttx-star64#u-boot-bootloader-log-for-tftp)
+
 And NuttX (or Linux) boots magically over the Network, no more MicroSD yay!
 
 ```text
@@ -299,8 +303,6 @@ clk u5_dw_i2c_clk_core already disabled
 clk u5_dw_i2c_clk_apb already disabled
 123067DFAGHBC
 ```
-
-[(Source)](https://github.com/lupyuen/nuttx-star64#u-boot-bootloader-log-for-tftp)
 
 __For Linux:__ We might need to load the [__Initial RAM Disk initrd__](https://lupyuen.github.io/articles/tftp#booti-command)
 
@@ -344,11 +346,17 @@ printenv boot_targets
 saveenv
 ```
 
+[(See the __U-Boot Settings__)](https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64)
+
+[(See the __Network Boot Log__)](https://github.com/lupyuen/nuttx-star64#u-boot-bootloader-log-for-auto-network-boot)
+
 Now Star64 will __Auto-Boot from the Network__, every time we power up!
 
-(It will try to boot from MicroSD before Network)
+[(It will try to boot from __MicroSD before Network__)](https://lupyuen.github.io/articles/tftp#appendix-boot-script-for-u-boot-bootloader)
 
-If we change our mind, we can switch back to the __Original Boot Targets__...
+_What if we change our mind?_
+
+We can switch back to the __Original Boot Targets__...
 
 ```bash
 ## Restore the Boot Targets
@@ -363,20 +371,20 @@ _What's boot_targets?_
 
 U-Boot Bootloader defines a list of __Targets for Auto-Booting__...
 
-```text
+```bash
 ## On Power Up: Try booting from MicroSD,
 ## then from DHCP+TFTP Combo Server
 boot_targets=mmc0 dhcp 
 ```
 
-We added __TFTP to the Boot Targets__ (ignore the space)...
+We added __TFTP to the Boot Targets__ (pardon the space)...
 
-```
+```bash
 ## We added TFTP to the Boot Targets
 boot_targets=mmc0 dhcp  tftp
 ```
 
-Thus U-Boot will execute the Boot Script __bootcmd_tftp__ at startup.
+Thus U-Boot will execute our TFTP Boot Script __bootcmd_tftp__ at startup.
 
 [(As explained here)](https://lupyuen.github.io/articles/tftp#appendix-boot-script-for-u-boot-bootloader)
 
@@ -414,6 +422,8 @@ fi
 
 Which does the same thing as the previous section: Boot NuttX (or Linux) over the Network at startup.
 
+[(As explained here)](https://lupyuen.github.io/articles/tftp#appendix-boot-script-for-u-boot-bootloader)
+
 [(Thanks to this article)](https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot)
 
 # What's Next
@@ -422,7 +432,7 @@ TODO
 
 With Network Boot running, we're now ready for __Automated Testing of Apache NuttX RTOS__ on Star64 SBC!
 
-(Though we might need a __Smart Power Switch__ to power the SBC on and off: [__IKEA TRÅDFRI__](https://www.ikea.com/sg/en/p/tradfri-control-outlet-kit-smart-10364797/) and [__DIRIGERA__](https://www.ikea.com/sg/en/p/dirigera-hub-for-smart-products-white-smart-50503409/))
+(Though we might need a __Smart Power Plug__ to reboot our SBC: [__IKEA TRÅDFRI__](https://www.ikea.com/sg/en/p/tradfri-control-outlet-kit-smart-10364797/) and [__DIRIGERA__](https://www.ikea.com/sg/en/p/dirigera-hub-for-smart-products-white-smart-50503409/))
 
 Porting NuttX to Star64 JH7110 becomes so much faster. Stay tuned for updates!
 
@@ -513,6 +523,8 @@ Let's figure out how they will __Auto-Boot NuttX__ (or Linux) from the Network..
     It boots NuttX (or Linux) over the Network via TFTP.
 
 And that's how U-Boot Bootloader boots NuttX (or Linux) over the Network at startup!
+
+__Note:__ Don't use the special variable __serverip__, it will change after running [__tftpboot__](https://lupyuen.github.io/articles/tftp#tftpboot-command)!
 
 ## Boot from MMC0
 
