@@ -632,21 +632,33 @@ setenv efi_old_vci;
 
 # Appendix: Commands for U-Boot Bootloader
 
-Here are the __U-Boot Bootloader Commands__ mentioned in this article. We ran "help \<command>" to explain the commands...
+We talked about the __U-Boot Bootloader__ in previous articles...
+
+- [__"U-Boot Bootloader for Star64"__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64)
+
+- [__"U-Boot Bootloader Log for Star64"__](https://lupyuen.github.io/articles/linux#appendix-u-boot-bootloader-log-for-star64)
+
+- [__"U-Boot Settings for Star64"__](https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64)
+
+- [__"U-Boot Commands for Star64"__](https://lupyuen.github.io/articles/linux#u-boot-commands-for-star64)
+
+Below are the __U-Boot Bootloader Commands__ mentioned in this article.
+
+We ran "help \<command>" to explain the commands...
 
 ## dhcp Command
 
-dhcp - boot image via network using DHCP/TFTP protocol
+__dhcp__ - boot image via network using DHCP/TFTP protocol
 
-- dhcp [loadAddress] [[hostIPaddr:]bootfilename]
+- __dhcp__ [loadAddress] [[hostIPaddr:]bootfilename]
 
 [(Source)](https://github.com/u-boot/u-boot/blob/master/cmd/net.c#L144-L150)
 
 ## tftpboot Command
 
-tftpboot - boot image via network using TFTP protocol
+__tftpboot__ - boot image via network using TFTP protocol
 
-- tftpboot [loadAddress] [[hostIPaddr:]bootfilename]
+- __tftpboot__ [loadAddress] [[hostIPaddr:]bootfilename]
 
 [(Source)](https://github.com/u-boot/u-boot/blob/master/cmd/net.c#L61-L69)
 
@@ -654,9 +666,9 @@ tftpboot - boot image via network using TFTP protocol
 
 ## booti Command
 
-booti - boot Linux kernel 'Image' format from memory
+__booti__ - boot Linux kernel 'Image' format from memory
 
-- booti [addr [initrd[:size]] [fdt]]
+- __booti__ [addr [initrd[:size]] [fdt]]
 
   boot Linux flat or compressed 'Image' stored at 'addr'
 
@@ -678,16 +690,16 @@ booti - boot Linux kernel 'Image' format from memory
 
 ## bootefi Command
 
-bootefi - Boots an EFI payload from memory
+__bootefi__ - Boots an EFI payload from memory
 
-- bootefi \<image address> [fdt address]
+- __bootefi__ \<image address> [fdt address]
   
   boot EFI payload stored at address \<image address>.
 
   If specified, the device tree located at \<fdt address> gets
   exposed as EFI configuration table.
 
-- bootefi bootmgr [fdt address]
+- __bootefi__ bootmgr [fdt address]
 
   load and boot EFI payload based on BootOrder/BootXXXX variables.
 
@@ -710,92 +722,92 @@ No UEFI binary known at 0x40200000
 
 ## fdt Command 
 
-fdt - flattened device tree utility commands
+__fdt__ - flattened device tree utility commands
 
-- fdt addr [-c]  \<addr> [\<length>]   
+- __fdt__ addr [-c]  \<addr> [\<length>]   
 
   Set the [control] fdt location to \<addr>
 
-- fdt apply \<addr>                    
+- __fdt__ apply \<addr>                    
 
   Apply overlay to the DT
 
-- fdt move   \<fdt> \<newaddr> \<length> 
+- __fdt__ move   \<fdt> \<newaddr> \<length> 
 
   Copy the fdt to \<addr> and make it active
 
-- fdt resize [\<extrasize>]            
+- __fdt__ resize [\<extrasize>]            
 
   Resize fdt to size + padding to 4k addr + some optional \<extrasize> if needed
 
-- fdt print  \<path> [\<prop>]          
+- __fdt__ print  \<path> [\<prop>]          
 
   Recursive print starting at \<path>
 
-- fdt list   \<path> [\<prop>]          
+- __fdt__ list   \<path> [\<prop>]          
 
   Print one level starting at \<path>
 
-- fdt get value \<var> \<path> \<prop>   
+- __fdt__ get value \<var> \<path> \<prop>   
 
   Get \<property> and store in \<var>
 
-- fdt get name \<var> \<path> \<index>   
+- __fdt__ get name \<var> \<path> \<index>   
 
   Get name of node \<index> and store in \<var>
 
-- fdt get addr \<var> \<path> \<prop>    
+- __fdt__ get addr \<var> \<path> \<prop>    
 
   Get start address of \<property> and store in \<var>
 
-- fdt get size \<var> \<path> [\<prop>]  
+- __fdt__ get size \<var> \<path> [\<prop>]  
 
   Get size of [\<property>] or num nodes and store in \<var>
 
-- fdt set    \<path> \<prop> [\<val>]    
+- __fdt__ set    \<path> \<prop> [\<val>]    
 
   Set \<property> [to \<val>]
 
-- fdt mknode \<path> \<node>            
+- __fdt__ mknode \<path> \<node>            
 
   Create a new node after \<path>
 
-- fdt rm     \<path> [\<prop>]          
+- __fdt__ rm     \<path> [\<prop>]          
 
   Delete the node or \<property>
 
-- fdt header [get \<var> \<member>]     
+- __fdt__ header [get \<var> \<member>]     
 
   Display header info
 
   get - get header member \<member> and store it in \<var>
 
-- fdt bootcpu \<id>                    
+- __fdt__ bootcpu \<id>                    
 
   Set boot cpuid
 
-- fdt memory \<addr> \<size>            
+- __fdt__ memory \<addr> \<size>            
 
   Add/Update memory node
 
-- fdt rsvmem print                    
+- __fdt__ rsvmem print                    
 
   Show current mem reserves
 
-- fdt rsvmem add \<addr> \<size>        
+- __fdt__ rsvmem add \<addr> \<size>        
 
   Add a mem reserve
 
-- fdt rsvmem delete \<index>           
+- __fdt__ rsvmem delete \<index>           
 
   Delete a mem reserves
 
-- fdt chosen [\<start> \<end>]          
+- __fdt__ chosen [\<start> \<end>]          
 
   Add/update the /chosen branch in the tree
 
   \<start>/\<end> - initrd start/end addr
 
-NOTE: Dereference aliases by omitting the leading '/', e.g. fdt print ethernet0.
+__NOTE:__ Dereference aliases by omitting the leading '/', e.g. fdt print ethernet0.
 
 [(Source)](https://github.com/u-boot/u-boot/blob/master/cmd/fdt.c#L1114-L1162)
