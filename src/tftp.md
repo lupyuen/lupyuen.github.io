@@ -58,9 +58,11 @@ Inside our SBC Flash Memory is the [__U-Boot Bootloader__](https://lupyuen.githu
 
 Let's find out how...
 
+![TFTP Server](https://lupyuen.github.io/images/tftp-flow2.jpg)
+
 # Setup TFTP Server
 
-_What's this TFTP Server?_
+_What's this TFTP Server? (Pic above)_
 
 That's a simple program (running on our computer) that handles the [__Trivial File Transfer Protocol (TFTP)__](https://en.wikipedia.org/wiki/Trivial_File_Transfer_Protocol).
 
@@ -89,9 +91,9 @@ Running TFTP Server on 0.0.0.0:69 in $HOME/tftproot
 
 ## Later we'll see the dishy files...
 ## Sending a.txt to 127.0.0.1:57125
-## Sent a.txt to 127.0.0.1:57125
+##   Sent a.txt to 127.0.0.1:57125
 ## Sending a.txt to 192.168.x.x:33499
-## Sent a.txt to 192.168.x.x:33499
+##   Sent a.txt to 192.168.x.x:33499
 ```
 
 Let's __test the server__...
@@ -194,7 +196,7 @@ __For Linux:__ Just copy the Linux Device Tree __jh7110-star64-pine64.dtb__ to o
 
 We're ready to test U-Boot Bootloader with TFTP!
 
-Connect Star64 to the __Ethernet Wired Network__ (pic above).
+Connect Star64 to the __Ethernet Wired Network__. (Pic above)
 
 Connect to the [__Serial Console__](https://lupyuen.github.io/articles/linux#serial-console-on-star64) and power up without a MicroSD Card.
 
@@ -306,7 +308,7 @@ __For Linux:__ We might need to load the [__Initial RAM Disk initrd__](https://l
 
 _But can we Auto-Boot from Network, every time we power on?_
 
-Sure can! The trick is to use the __saveenv__ command, which will save the U-Boot Settings into the Internal Flash Memory...
+Sure can! The trick is to use the __saveenv__ command, which will save the U-Boot Settings into the __Internal Flash Memory__...
 
 ```bash
 ## Remember the TFTP Server IP.
