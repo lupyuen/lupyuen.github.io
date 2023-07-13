@@ -129,7 +129,7 @@
 <p><img src="https://lupyuen.github.io/images/tftp-flow2.jpg" alt="TFTP Server" /></p>
 <h1 id="setup-tftp-server"><a href="#setup-tftp-server">2 Setup TFTP Server</a></h1>
 <p><em>What’s this TFTP Server? (Pic above)</em></p>
-<p>That’s a simple program (running on our computer) that handles the <a href="https://en.wikipedia.org/wiki/Trivial_File_Transfer_Protocol"><strong>Trivial File Transfer Protocol (TFTP)</strong></a>.</p>
+<p>That’s a simple program (running on our Computer) that handles the <a href="https://en.wikipedia.org/wiki/Trivial_File_Transfer_Protocol"><strong>Trivial File Transfer Protocol (TFTP)</strong></a>.</p>
 <p>It dishes out files over the <strong>Local Network</strong> (via UDP not TCP), when requested by our SBC.</p>
 <p>Follow these steps to install the <a href="https://crates.io/crates/tftpd"><strong><code>tftpd</code> TFTP Server</strong></a> on our Linux / macOS / Windows Computer…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Install `tftpd` in Rust
@@ -172,7 +172,7 @@ curl -v tftp://192.168.x.x/a.txt
 Test123
 </code></pre></div>
 <p>(Ignore the warnings)</p>
-<p>Our TFTP Server is up! In the olden days we would actually do this…</p>
+<p>Our TFTP Server is up! In olden days we would actually do this…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ tftp 127.0.0.1
 tftp&gt; get a.txt
 Received 8 bytes in 0.0 seconds
