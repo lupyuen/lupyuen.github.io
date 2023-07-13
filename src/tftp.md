@@ -689,7 +689,7 @@ __tftpboot__ - boot image via network using TFTP protocol
 
 (Same as __dhcp__ Command?)
 
-__Note:__ Don't use the special variable __serverip__, it will change after running [__tftpboot__](https://lupyuen.github.io/articles/tftp#tftpboot-command)!
+__Note:__ Don't use the special variable [__serverip__](https://community.arm.com/oss-platforms/w/docs/495/tftp-remote-network-kernel-using-u-boot), it will change after running [__tftpboot__](https://lupyuen.github.io/articles/tftp#tftpboot-command)!
 
 ## booti Command
 
