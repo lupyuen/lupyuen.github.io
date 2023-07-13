@@ -733,7 +733,7 @@ __bootefi__ - Boots an EFI payload from memory
 
 _Will it work for NuttX?_
 
-Nope it doesn't, since NuttX isn't a UEFI Binary...
+Nope it won't, since NuttX isn't a UEFI Binary...
 
 ```text
 $ bootefi ${kernel_addr_r} ${fdt_addr_r}
