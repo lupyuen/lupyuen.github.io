@@ -444,19 +444,20 @@ fi
 </li>
 <li>
 <p><strong>bootcmd</strong> is set to…</p>
-<div class="example-wrap"><pre class="language-bash"><code>## Load the VF2 Environment from MMC
+<div class="example-wrap"><pre class="language-bash"><code>## Load the VisionFive 2 Environment from MMC
 run load_vf2_env;
 
-## Import the Environment from MMC
+## Load the Boot Environment from MMC
 run importbootenv;
 
 ## Load the Distro Environment from MMC
 run load_distro_uenv;
 
-## Run `boot2` script (missing)
+## Run the `boot2` script (missing)
 run boot2;
 
-## Run the Boot Command for every Boot Target
+## For every Boot Target:
+## Run the Boot Command 
 run distro_bootcmd
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(Source)</a></p>
@@ -482,9 +483,11 @@ done
 <ul>
 <li>
 <p><strong>bootcmd_mmc0</strong>: Try to boot from MicroSD</p>
+<p>(See below)</p>
 </li>
 <li>
 <p><strong>bootcmd_dhcp</strong>: Try to boot from DHCP+TFTP Combo Server</p>
+<p>(See below)</p>
 </li>
 <li>
 <p><strong>bootcmd_tftp</strong>: Try to boot from TFTP</p>
