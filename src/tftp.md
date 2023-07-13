@@ -1,6 +1,6 @@
 # Star64 JH7110 RISC-V SBC: Boot from Network with U-Boot and TFTP
 
-📝 _19 Jul 2023_
+📝 _13 Jul 2023_
 
 ![Pine64 Star64 JH7110 64-bit RISC-V SBC](https://lupyuen.github.io/images/tftp-title.jpg)
 
@@ -430,8 +430,6 @@ Which does the same thing as the previous section: Boot NuttX (or Linux) over th
 
 # What's Next
 
-TODO
-
 With Network Boot running, we're now ready for __Automated Testing of Apache NuttX RTOS__ on Star64 SBC!
 
 (Though we might need a __Smart Power Plug__ to reboot our SBC: [__IKEA TRÅDFRI__](https://www.ikea.com/sg/en/p/tradfri-control-outlet-kit-smart-10364797/) and [__DIRIGERA__](https://www.ikea.com/sg/en/p/dirigera-hub-for-smart-products-white-smart-50503409/))
@@ -687,6 +685,8 @@ __tftpboot__ - boot image via network using TFTP protocol
 
 (Same as __dhcp__ Command?)
 
+__Note:__ Don't use the special variable __serverip__, it will change after running [__tftpboot__](https://lupyuen.github.io/articles/tftp#tftpboot-command)!
+
 ## booti Command
 
 __booti__ - boot Linux kernel 'Image' format from memory
@@ -833,6 +833,6 @@ __fdt__ - flattened device tree utility commands
 
   \<start>/\<end> - initrd start/end addr
 
-__NOTE:__ Dereference aliases by omitting the leading '/', e.g. fdt print ethernet0.
+__Note:__ Dereference aliases by omitting the leading '/', e.g. fdt print ethernet0.
 
 [(Source)](https://github.com/u-boot/u-boot/blob/master/cmd/fdt.c#L1114-L1162)

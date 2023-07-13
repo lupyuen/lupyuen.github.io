@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Star64 JH7110 RISC-V SBC: Boot from Network with U-Boot and TFTP",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-07-13",
+      "website": "https://lupyuen.github.io/articles/tftp",
+      "summary": "Let's boot Apache NuttX RTOS (or Linux) over the Network with U-Boot Bootloader and TFTP... On Pine64's Star64 JH7110 RISC-V Single-Board Computer"
+    },
+    {
       "name": "Apache NuttX RTOS on RISC-V: Star64 JH7110 SBC",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-07-09",

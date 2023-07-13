@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Star64 JH7110 RISC-V SBC: Boot from Network with U-Boot and TFTP</title>
+            <link>https://lupyuen.github.io/articles/tftp</link>
+            <description><![CDATA[Let's boot Apache NuttX RTOS (or Linux) over the Network with U-Boot Bootloader and TFTP... On Pine64's Star64 JH7110 RISC-V Single-Board Computer]]></description>
+            <guid>https://lupyuen.github.io/articles/tftp</guid>
+            <pubDate>Thu, 13 Jul 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Apache NuttX RTOS on RISC-V: Star64 JH7110 SBC</title>
             <link>https://lupyuen.github.io/articles/nuttx2</link>
             <description><![CDATA[(Partially) Booting Apache NuttX Real-Time Operating System on Pine64's Star64 64-bit RISC-V Single-Board Computer, based on StarFive JH7110 SoC]]></description>
