@@ -467,19 +467,20 @@ Let's figure out how they will __Auto-Boot NuttX__ (or Linux) from the Network..
 1.  __bootcmd__ is set to...
 
     ```bash
-    ## Load the VF2 Environment from MMC
+    ## Load the VisionFive 2 Environment from MMC
     run load_vf2_env;
 
-    ## Import the Environment from MMC
+    ## Load the Boot Environment from MMC
     run importbootenv;
 
     ## Load the Distro Environment from MMC
     run load_distro_uenv;
 
-    ## Run `boot2` script (missing)
+    ## Run the `boot2` script (missing)
     run boot2;
 
-    ## Run the Boot Command for every Boot Target
+    ## For every Boot Target:
+    ## Run the Boot Command 
     run distro_bootcmd
     ```
 
@@ -512,7 +513,11 @@ Let's figure out how they will __Auto-Boot NuttX__ (or Linux) from the Network..
 
     - __bootcmd_mmc0__: Try to boot from MicroSD
 
+      (See below)
+
     - __bootcmd_dhcp__: Try to boot from DHCP+TFTP Combo Server
+
+      (See below)
 
     - __bootcmd_tftp__: Try to boot from TFTP
 
