@@ -641,8 +641,6 @@ Why? Stay tuned for more tantalising treats in the next article! Sneak peek...
 
 - [__"Hang in UART Transmit"__](https://github.com/lupyuen/nuttx-star64#hang-in-uart-transmit)
 
-- [__"Hang in UART Setup"__](https://github.com/lupyuen/nuttx-star64#hang-in-uart-setup)
-
 - [__"Enable Scheduler Logging"__](https://github.com/lupyuen/nuttx-star64#enable-scheduler-logging)
 
 ![Pine64 Star64 64-bit RISC-V SBC](https://lupyuen.github.io/images/nuttx2-star64.jpg)
