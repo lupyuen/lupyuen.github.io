@@ -203,6 +203,8 @@ __`0x1000` `0000`__ is the exact same UART Base Address for QEMU AND Star64...
 
 So no changes needed, our Debug Log will work on Star64!
 
+[(Star64 uses a different __CONFIG_16550_REGINCR__)](https://github.com/lupyuen/nuttx-star64#hang-in-uart-transmit)
+
 To boot NuttX on Star64, it needs a special ingredient...
 
 ![Armbian Kernel Image](https://lupyuen.github.io/images/star64-kernel.png)
@@ -637,9 +639,11 @@ Why? Stay tuned for more tantalising treats in the next article! Sneak peek...
 
 - [__"Hang in Enter Critical Section"__](https://github.com/lupyuen/nuttx-star64#hang-in-enter-critical-section)
 
+- [__"Hang in UART Transmit"__](https://github.com/lupyuen/nuttx-star64#hang-in-uart-transmit)
+
 - [__"Hang in UART Setup"__](https://github.com/lupyuen/nuttx-star64#hang-in-uart-setup)
 
-- [__"Hang in UART Transmit"__](https://github.com/lupyuen/nuttx-star64#hang-in-uart-transmit)
+- [__"Enable Scheduler Logging"__](https://github.com/lupyuen/nuttx-star64#enable-scheduler-logging)
 
 ![Pine64 Star64 64-bit RISC-V SBC](https://lupyuen.github.io/images/nuttx2-star64.jpg)
 
