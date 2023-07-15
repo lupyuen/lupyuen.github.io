@@ -240,6 +240,7 @@ nsh&gt;
 </code></pre></div>
 <p><strong><code>0x1000</code> <code>0000</code></strong> is the exact same UART Base Address for QEMU AND Star64…</p>
 <p>So no changes needed, our Debug Log will work on Star64!</p>
+<p><a href="https://github.com/lupyuen/nuttx-star64#hang-in-uart-transmit">(Star64 uses a different <strong>CONFIG_16550_REGINCR</strong>)</a></p>
 <p>To boot NuttX on Star64, it needs a special ingredient…</p>
 <p><img src="https://lupyuen.github.io/images/star64-kernel.png" alt="Armbian Kernel Image" /></p>
 <p><a href="https://lupyuen.github.io/articles/star64#inside-the-kernel-image"><em>Kernel Header for RISC-V Armbian Linux</em></a></p>
@@ -596,10 +597,13 @@ jal  x1, qemu_rv_start
 <p><a href="https://github.com/lupyuen/nuttx-star64#hang-in-enter-critical-section"><strong>“Hang in Enter Critical Section”</strong></a></p>
 </li>
 <li>
+<p><a href="https://github.com/lupyuen/nuttx-star64#hang-in-uart-transmit"><strong>“Hang in UART Transmit”</strong></a></p>
+</li>
+<li>
 <p><a href="https://github.com/lupyuen/nuttx-star64#hang-in-uart-setup"><strong>“Hang in UART Setup”</strong></a></p>
 </li>
 <li>
-<p><a href="https://github.com/lupyuen/nuttx-star64#hang-in-uart-transmit"><strong>“Hang in UART Transmit”</strong></a></p>
+<p><a href="https://github.com/lupyuen/nuttx-star64#enable-scheduler-logging"><strong>“Enable Scheduler Logging”</strong></a></p>
 </li>
 </ul>
 <p><img src="https://lupyuen.github.io/images/nuttx2-star64.jpg" alt="Pine64 Star64 64-bit RISC-V SBC" /></p>
