@@ -297,6 +297,8 @@ Using Device Tree in place at 0000000046000000, end 000000004600f43a
 
 [(Source)](https://github.com/lupyuen/nuttx-star64#u-boot-bootloader-log-for-tftp)
 
+(It might load quicker if we connect our Computer to the __Ethernet Wired Network__, instead of WiFi)
+
 And NuttX (or Linux) boots magically over the Network, no more MicroSD yay!
 
 ```text
