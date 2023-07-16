@@ -22,6 +22,8 @@ In this article we'll talk about the interesting things that we learnt about __R
 
 # Hang in UART Transmit
 
+Here's a fun quiz...
+
 This NuttX Kernel Code prints a character to the UART Port. Guess why it __hangs on Star64 JH7110?__
 
 ```c
@@ -48,55 +50,63 @@ static void u16550_putc(
 
 [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/drivers/serial/uart_16550.c#L1638-L1642)
 
-TODO
+_Is the UART Base Address correct?_
 
-Where [`u16550_serialin`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/uart_16550.c#L596-L611) is defined as...
+Actually it's correct. Previously we validated the __16550 UART Base Address for JH7110__, and we successfully printed to it...
+
+- [__"UART Controller on Star64"__](https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64)
+
+- [__"Boot NuttX on Star64"__](https://lupyuen.github.io/articles/nuttx2#boot-nuttx-on-star64)
+
+But strangely it hangs while waiting for the UART to be ready!
+
+__What's inside u16550_serialin?__
 
 ```c
-*((FAR volatile uart_datawidth_t *)priv->uartbase + offset);
+u16550_serialin(   // Read UART Register...
+  priv,            // From UART Base Address...
+  UART_LSR_OFFSET  // At offset of Line Status Register
+)
 ```
 
-And [`UART_THR_OFFSET`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/include/nuttx/serial/uart_16550.h#L197) is...
+[__u16550_serialin__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/uart_16550.c#L596-L611) reads a UART Register...
 
 ```c
-#define UART_LSR_OFFSET        (CONFIG_16550_REGINCR*UART_LSR_INCR)
+*((FAR volatile uart_datawidth_t *)
+  priv->uartbase +  // UART Base Address
+  offset);          // Offset of UART Register
 ```
 
-`CONFIG_16550_REGINCR` is 1...
+And the offset of Line Status Register [__UART_THR_OFFSET__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/include/nuttx/serial/uart_16550.h#L197) is...
 
-```text
-→ grep 16550 .config
-CONFIG_16550_REGINCR=1
-CONFIG_16550_REGWIDTH=8
-CONFIG_16550_ADDRWIDTH=0
+```c
+// Line Status Register is Register #5
+#define UART_LSR_INCR 5
+
+// Compute offset of Line Status Register
+#define UART_LSR_OFFSET \
+  (CONFIG_16550_REGINCR * UART_LSR_INCR)
 ```
 
-As defined according to the Default Config for 16550: [Kconfig-16550](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/Kconfig-16550#L501-L520):
+__CONFIG_16550_REGINCR__ defaults to 1, which we copied from QEMU: [Kconfig-16550](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/Kconfig-16550#L501-L520)
 
 ```text
 config 16550_REGINCR
-	int "Address increment between 16550 registers"
-	default 1
-	---help---
-		The address increment between 16550 registers.  Options are 1, 2, or 4.
-		Default: 1
-
-config 16550_REGWIDTH
-	int "Bit width of 16550 registers"
-	default 8
-	---help---
-		The bit width of registers.  Options are 8, 16, or 32. Default: 8
-
-config 16550_ADDRWIDTH
-	int "Address width of 16550 registers"
-	default 8
-	---help---
-		The bit width of registers.  Options are 0, 8, 16, or 32.
-		Default: 8
-		Note: 0 means auto detect address size (uintptr_t)
+  int "Address increment between 16550 registers"
+  default 1
+  ---help---
+    The address increment between 16550 registers.
+    Options are 1, 2, or 4.
+    Default: 1
 ```
 
-_But is CONFIG_16550_REGINCR correct for Star64 JH7110?_
+_Ah but is CONFIG_16550_REGINCR correct for Star64 JH7110?_
+
+Let's check...
+
+# TODO
+
+TODO
 
 Let's check the official Linux Driver. According to [JH7110 Linux Device Tree](https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/general_uart_controller.html)...
 
@@ -113,12 +123,12 @@ And from the Linux 8250 Driver: [8250_dw.c](https://github.com/torvalds/linux/bl
 ```text
 static void dw8250_serial_out(struct uart_port *p, int offset, int value)
 {
-	struct dw8250_data *d = to_dw8250_data(p->private_data);
+  struct dw8250_data *d = to_dw8250_data(p->private_data);
 
-	writeb(value, p->membase + (offset << p->regshift));
+  writeb(value, p->membase + (offset << p->regshift));
 
-	if (offset == UART_LCR && !d->uart_16550_compatible)
-		dw8250_check_lcr(p, value);
+  if (offset == UART_LCR && !d->uart_16550_compatible)
+    dw8250_check_lcr(p, value);
 }
 ```
 
