@@ -10,30 +10,45 @@ We're in the super-early stage of porting [__Apache NuttX Real-Time Operating Sy
 
 In this article we'll talk about the interesting things that we learnt about __RISC-V and Star64 JH7110__...
 
--   TODO: RISC-V Privilege Levels (pic above)
+-   What are __RISC-V Privilege Levels__ (pic above)
 
--   TODO: 16550 UART Registers
+    (And why they make our OS a little more complicated)
 
--   TODO: (Naively) Porting NuttX from QEMU to Star64 might become really challenging!
+-   All about __JH7110's UART Registers__
 
-TODO
+    (And how they are different from other 16550 UARTs)
+
+-   Why (naively) porting NuttX from __QEMU to Star64__ might become really challenging!
 
 # Hang in UART Transmit
 
-TODO
-
-When printing to UART Port, the UART Transmit hangs while waiting for UART Transmit Ready...
-
-From [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/drivers/serial/uart_16550.c#L1638-L1642)
+This NuttX Kernel Code prints a character to the UART Port. Guess why it __hangs on Star64 JH7110?__
 
 ```c
-static void u16550_putc(FAR struct u16550_s *priv, int ch)
-{
-  //// This will hang!
-  while ((u16550_serialin(priv, UART_LSR_OFFSET) & UART_LSR_THRE) == 0);
+// Print a character to UART Port
+static void u16550_putc(
+  FAR struct u16550_s *priv,  // UART Struct
+  int ch                      // Character to be printed
+) {
+  // Wait for UART Port to be ready to transmit.
+  // Note: This will hang!
+  while (
+    (
+      u16550_serialin(   // Read UART Register...
+        priv,            // From UART Base Address...
+        UART_LSR_OFFSET  // At offset of Line Status Register
+      ) & UART_LSR_THRE  // If THRE Flag (Transmit Holding Register Empty)...
+    ) == 0               // Says that Transmit Register is Not Empty...
+  );                     // Then loop until it's empty
+
+  // Write the character
   u16550_serialout(priv, UART_THR_OFFSET, (uart_datawidth_t)ch);
 }
 ```
+
+[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/drivers/serial/uart_16550.c#L1638-L1642)
+
+TODO
 
 Where [`u16550_serialin`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/uart_16550.c#L596-L611) is defined as...
 
