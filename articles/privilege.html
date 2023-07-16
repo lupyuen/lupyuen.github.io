@@ -76,12 +76,22 @@
 <li><a href="#nuttx-system-filesystem">7 NuttX System Filesystem</a><ul></ul></li>
 <li><a href="#todo">8 TODO</a><ul></ul></li>
 <li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Jul 2023</em></p>
-<p><img src="https://lupyuen.github.io/images/privilege-title.jpg" alt="TODO" /></p>
-<p>TODO</p>
-<p>In this article we’ll boot a tiny bit of <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a> on the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer.</p>
+<p><img src="https://lupyuen.github.io/images/privilege-title.jpg" alt="RISC-V Privilege Levels on Star64 JH7110 SBC" /></p>
+<p>We’re in the super-early stage of porting <a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX Real-Time Operating System (RTOS)</strong></a> to the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer.</p>
 <p>(Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
-<p><em>What’s NuttX?</em></p>
-<p><a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX</strong></a> is a <strong>Real-Time Operating System (RTOS)</strong> that runs on many kinds of devices, from 8-bit to 64-bit.</p>
+<p>In this article we’ll talk about the interesting things that we learnt about <strong>RISC-V and Star64 JH7110</strong>…</p>
+<ul>
+<li>
+<p>TODO: RISC-V Privilege Levels (pic above)</p>
+</li>
+<li>
+<p>TODO: 16550 UART Registers</p>
+</li>
+<li>
+<p>TODO: (Naively) Porting NuttX from QEMU to Star64 might become really challenging!</p>
+</li>
+</ul>
+<p>TODO</p>
 <h1 id="hang-in-uart-transmit"><a href="#hang-in-uart-transmit">1 Hang in UART Transmit</a></h1>
 <p>TODO</p>
 <p>When printing to UART Port, the UART Transmit hangs while waiting for UART Transmit Ready…</p>
