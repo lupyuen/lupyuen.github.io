@@ -20,6 +20,10 @@ In this article we'll talk about the interesting things that we learnt about __R
 
 -   Why (naively) porting NuttX from __QEMU to Star64__ might become really challenging!
 
+![Star64 JH7110 SBC with Woodpecker USB Serial Adapter](https://lupyuen.github.io/images/linux-title.jpg)
+
+[_Star64 JH7110 SBC with Woodpecker USB Serial Adapter_](https://lupyuen.github.io/articles/linux#serial-console-on-star64)
+
 # Wait Forever in UART Transmit
 
 Here's a fun quiz...
@@ -129,9 +133,17 @@ Which means that the 16550 UART Registers are spaced __1 byte apart__...
 
 _But is it the same for Star64 JH7110?_
 
-TODO
+JH7110 (oddly) doesn't document the UART Registers, so we follow the trial of JH7110 Docs...
 
-Let's check the official Linux Driver. According to [JH7110 Linux Device Tree](https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/general_uart_controller.html)...
+- [__JH7110 UART Datasheet__](https://doc-en.rvspace.org/JH7110/Datasheet/JH7110_DS/uart.html)
+
+- [__JH7110 UART Developing Guide__](https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/function_layer.html)
+
+- [__JH7110 UART Device Tree__](https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/general_uart_controller.html)
+
+- [__JH7110 UART Source Code__](https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/source_code_structure_uart.html)
+
+From the [__JH7110 UART Device Tree__](https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/general_uart_controller.html)...
 
 ```text
 reg = <0x0 0x10000000 0x0 0xl0000>;
@@ -139,25 +151,29 @@ reg-io-width = <4>;
 reg-shift = <2>;
 ```
 
-`reg-shift` is 2.
+We see that __reg-shift__ is 2.
 
-And from the Linux 8250 Driver: [8250_dw.c](https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_dw.c#L159-L169)
+_What's reg-shift?_
+
+According to the [__JH7110 UART Source Code__](https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/source_code_structure_uart.html), this is how we write to a UART Register: [8250_dw.c](https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_dw.c#L159-L169)
 
 ```text
-static void dw8250_serial_out(struct uart_port *p, int offset, int value)
-{
-  struct dw8250_data *d = to_dw8250_data(p->private_data);
-
-  writeb(value, p->membase + (offset << p->regshift));
-
-  if (offset == UART_LCR && !d->uart_16550_compatible)
-    dw8250_check_lcr(p, value);
-}
+// Linux Kernel Driver: Write to 8250 UART Register
+static void dw8250_serial_out(struct uart_port *p, int offset, int value) {
+  ...
+  // Write to UART Register
+  writeb(
+    value,                     // Register Value
+    p->membase +               // UART Base Address plus...
+      (offset << p->regshift)  // Offset shifted by `regshift`
+  );
 ```
 
-We see that the UART Offset is shifted by 2 (`regshift`). Which means we multiply the UART Offset by 4.
+We see that the UART Register Offset is shifted by 2 (__regshift__).
 
-Thus `CONFIG_16550_REGINCR` should be 4, not 1!
+Which means we __multiply the UART Offset by 4!__
+
+Thus the UART Registers are spaced __4 bytes apart.__ And __CONFIG_16550_REGINCR__ should be 4, not 1!
 
 | Address | Register |
 |:-------:|:---------|
@@ -169,6 +185,8 @@ Thus `CONFIG_16550_REGINCR` should be 4, not 1!
 |`0x1000` `0014` | Line Status Register
 
 _How to fix CONFIG_16550_REGINCR?_
+
+TODO
 
 We fix the NuttX Configuration: Device Drivers > Serial Driver Support > 16550 UART Chip support > Address increment between 16550 registers
 
