@@ -69,8 +69,8 @@
     <nav id="TOC"><ul>
 <li><a href="#wait-forever-in-uart-transmit">1 Wait Forever in UART Transmit</a><ul></ul></li>
 <li><a href="#uart-registers-are-spaced-differently">2 UART Registers are Spaced Differently</a><ul></ul></li>
-<li><a href="#risc-v-privilege-levels">3 RISC-V Privilege Levels</a><ul></ul></li>
-<li><a href="#hang-in-enter-critical-section">4 Hang in Enter Critical Section</a><ul></ul></li>
+<li><a href="#hang-in-enter-critical-section">3 Hang in Enter Critical Section</a><ul></ul></li>
+<li><a href="#risc-v-privilege-levels">4 RISC-V Privilege Levels</a><ul></ul></li>
 <li><a href="#enable-scheduler-logging">5 Enable Scheduler Logging</a><ul></ul></li>
 <li><a href="#initialise-risc-v-supervisor-mode">6 Initialise RISC-V Supervisor Mode</a><ul></ul></li>
 <li><a href="#qemu-semihosting-in-nuttx">7 QEMU Semihosting in NuttX</a><ul></ul></li>
@@ -213,6 +213,7 @@ static void dw8250_serial_out(struct uart_port *p, int offset, int value) {
       (offset &lt;&lt; p-&gt;regshift)  // Offset shifted by `regshift`
   );
 </code></pre></div>
+<p><a href="https://en.wikipedia.org/wiki/16550_UART">(<strong>8250 UART</strong> is compatible with 16550)</a></p>
 <p>We see that the UART Register Offset is shifted by 2 (<strong>regshift</strong>).</p>
 <p>Which means we <strong>multiply the UART Offset by 4!</strong></p>
 <p>Thus the UART Registers are spaced <strong>4 bytes apart.</strong> And <strong>CONFIG_16550_REGINCR</strong> should be 4, not 1!</p>
@@ -244,42 +245,9 @@ qemu_rv_kernel_mappings: map the page pool
 qemu_rv_mm_init: mmu_enable: satp=1077956608
 nx_start: Entry
 </code></pre></div>
+<p><strong>Lesson Learnt:</strong> 8250 UARTs (and 16550) can work a little differently across Hardware Platforms! (Due to Word Alignment maybe?)</p>
 <p>Let’s move on to the tougher topic: Machine Mode vs Supervisor Mode…</p>
-<p><img src="https://lupyuen.github.io/images/nuttx2-privilege.jpg" alt="RISC-V Privilege Levels" /></p>
-<h1 id="risc-v-privilege-levels"><a href="#risc-v-privilege-levels">3 RISC-V Privilege Levels</a></h1>
-<p>TODO</p>
-<p><em>What’s this Privilege Level?</em></p>
-<p>RISC-V Machine Code runs at three <strong>Privilege Levels</strong>…</p>
-<ul>
-<li>
-<p><strong>M: Machine Mode</strong> (Most powerful)</p>
-</li>
-<li>
-<p><strong>S: Supervisor Mode</strong> (Less powerful)</p>
-</li>
-<li>
-<p><strong>U: User Mode</strong> (Least powerful)</p>
-</li>
-</ul>
-<p>NuttX on Star64 runs in <strong>Supervisor Mode</strong>. Which doesn’t allow access to <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html"><strong>Machine-Mode CSR Registers</strong></a>. (Pic above)</p>
-<p>Remember this?</p>
-<div class="example-wrap"><pre class="language-text"><code>/* Load the Hart ID (CPU ID) */
-csrr a0, mhartid
-</code></pre></div>
-<p>The <strong>“<code>m</code>”</strong> in <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid"><strong><code>mhartid</code></strong></a> signifies that it’s a <strong>Machine-Mode Register</strong>.</p>
-<p>That’s why NuttX fails to read the Hart ID!</p>
-<p><em>What runs in Machine Mode?</em></p>
-<p><a href="https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface"><strong>OpenSBI (Supervisor Binary Interface)</strong></a> is the first thing that boots on Star64.</p>
-<p>It runs in <strong>Machine Mode</strong> and starts the U-Boot Bootloader.</p>
-<p><a href="https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface">(More about <strong>OpenSBI</strong>)</a></p>
-<p><em>What about U-Boot Bootloader?</em></p>
-<p><a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a> runs in <strong>Supervisor Mode</strong>. And starts NuttX, also in Supervisor Mode.</p>
-<p>Thus <strong>OpenSBI is the only thing</strong> that runs in Machine Mode. And can access the Machine-Mode Registers. (Pic above)</p>
-<p><a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64">(More about <strong>U-Boot</strong>)</a></p>
-<p><em>QEMU doesn’t have this problem?</em></p>
-<p>Because QEMU runs NuttX in (super-powerful) <strong>Machine Mode</strong>!</p>
-<p><img src="https://lupyuen.github.io/images/nuttx2-privilege2.jpg" alt="NuttX QEMU runs in Machine Mode" /></p>
-<h1 id="hang-in-enter-critical-section"><a href="#hang-in-enter-critical-section">4 Hang in Enter Critical Section</a></h1>
+<h1 id="hang-in-enter-critical-section"><a href="#hang-in-enter-critical-section">3 Hang in Enter Critical Section</a></h1>
 <p>TODO</p>
 <p>NuttX on Star64 JH7110 hangs when entering Critical Section…</p>
 <p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/drivers/serial/uart_16550.c#L1713-L1737">uart_16550.c</a>:</p>
@@ -419,6 +387,40 @@ nuttx/arch/risc-v/src/common/riscv_mmu.h:237
     40200630:	8082                	ret
 </code></pre></div>
 <p>TODO: Trace this Store/AMO Access Fault</p>
+<p><img src="https://lupyuen.github.io/images/nuttx2-privilege.jpg" alt="RISC-V Privilege Levels" /></p>
+<h1 id="risc-v-privilege-levels"><a href="#risc-v-privilege-levels">4 RISC-V Privilege Levels</a></h1>
+<p>TODO</p>
+<p><em>What’s this Privilege Level?</em></p>
+<p>RISC-V Machine Code runs at three <strong>Privilege Levels</strong>…</p>
+<ul>
+<li>
+<p><strong>M: Machine Mode</strong> (Most powerful)</p>
+</li>
+<li>
+<p><strong>S: Supervisor Mode</strong> (Less powerful)</p>
+</li>
+<li>
+<p><strong>U: User Mode</strong> (Least powerful)</p>
+</li>
+</ul>
+<p>NuttX on Star64 runs in <strong>Supervisor Mode</strong>. Which doesn’t allow access to <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html"><strong>Machine-Mode CSR Registers</strong></a>. (Pic above)</p>
+<p>Remember this?</p>
+<div class="example-wrap"><pre class="language-text"><code>/* Load the Hart ID (CPU ID) */
+csrr a0, mhartid
+</code></pre></div>
+<p>The <strong>“<code>m</code>”</strong> in <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid"><strong><code>mhartid</code></strong></a> signifies that it’s a <strong>Machine-Mode Register</strong>.</p>
+<p>That’s why NuttX fails to read the Hart ID!</p>
+<p><em>What runs in Machine Mode?</em></p>
+<p><a href="https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface"><strong>OpenSBI (Supervisor Binary Interface)</strong></a> is the first thing that boots on Star64.</p>
+<p>It runs in <strong>Machine Mode</strong> and starts the U-Boot Bootloader.</p>
+<p><a href="https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface">(More about <strong>OpenSBI</strong>)</a></p>
+<p><em>What about U-Boot Bootloader?</em></p>
+<p><a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64"><strong>U-Boot Bootloader</strong></a> runs in <strong>Supervisor Mode</strong>. And starts NuttX, also in Supervisor Mode.</p>
+<p>Thus <strong>OpenSBI is the only thing</strong> that runs in Machine Mode. And can access the Machine-Mode Registers. (Pic above)</p>
+<p><a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64">(More about <strong>U-Boot</strong>)</a></p>
+<p><em>QEMU doesn’t have this problem?</em></p>
+<p>Because QEMU runs NuttX in (super-powerful) <strong>Machine Mode</strong>!</p>
+<p><img src="https://lupyuen.github.io/images/nuttx2-privilege2.jpg" alt="NuttX QEMU runs in Machine Mode" /></p>
 <h1 id="enable-scheduler-logging"><a href="#enable-scheduler-logging">5 Enable Scheduler Logging</a></h1>
 <p>TODO</p>
 <p>Scheduler Logging in NuttX seems to have changed recently. To enable Scheduler Logging…</p>
