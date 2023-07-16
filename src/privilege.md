@@ -20,6 +20,8 @@ In this article we'll talk about the interesting things that we learnt about __R
 
 -   Why (naively) porting NuttX from __QEMU to Star64__ might become really challenging!
 
+We begin with the simpler topic: UART...
+
 ![Star64 JH7110 SBC with Woodpecker USB Serial Adapter](https://lupyuen.github.io/images/linux-title.jpg)
 
 [_Star64 JH7110 SBC with Woodpecker USB Serial Adapter_](https://lupyuen.github.io/articles/linux#serial-console-on-star64)
@@ -151,9 +153,9 @@ reg-io-width = <4>;
 reg-shift = <2>;
 ```
 
-We see that __reg-shift__ is 2.
+We see that __regshift__ is 2.
 
-_What's reg-shift?_
+_What's regshift?_
 
 According to the [__JH7110 UART Source Code__](https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/source_code_structure_uart.html), this is how we write to a UART Register: [8250_dw.c](https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_dw.c#L159-L169)
 
@@ -186,9 +188,9 @@ Thus the UART Registers are spaced __4 bytes apart.__ And __CONFIG_16550_REGINCR
 
 _How to fix CONFIG_16550_REGINCR?_
 
-TODO
+We fix the NuttX Configuration in `make menuconfig`...
 
-We fix the NuttX Configuration: Device Drivers > Serial Driver Support > 16550 UART Chip support > Address increment between 16550 registers
+- Device Drivers > Serial Driver Support > 16550 UART Chip support > Address Increment Between 16550 Registers
 
 And change it from 1 to 4: [knsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L11)
 
@@ -196,16 +198,21 @@ And change it from 1 to 4: [knsh64/defconfig](https://github.com/lupyuen2/wip-pi
 CONFIG_16550_REGINCR=4
 ```
 
-Now UART Transmit doesn't hang yay!
+Now UART Transmit works perfectly yay!
 
 ```text
 Starting kernel ...
-clk u5_dw_i2c_clk_core already disabled
-clk u5_dw_i2c_clk_apb already disabled
-123067DFm45DTpAqGaclbHm45DTpBqm45DTpCqI
+123067DFHBC
+qemu_rv_kernel_mappings: map I/O regions
+qemu_rv_kernel_mappings: map kernel text
+qemu_rv_kernel_mappings: map kernel data
+qemu_rv_kernel_mappings: connect the L1 and L2 page tables
+qemu_rv_kernel_mappings: map the page pool
+qemu_rv_mm_init: mmu_enable: satp=1077956608
+nx_start: Entry
 ```
 
-NuttX now hangs somewhere in `nx_start`
+Let's move on to the tougher topic: Machine Mode vs Supervisor Mode...
 
 ![RISC-V Privilege Levels](https://lupyuen.github.io/images/nuttx2-privilege.jpg)
 
