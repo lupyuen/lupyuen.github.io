@@ -82,27 +82,41 @@
 <p>In this article we’ll talk about the interesting things that we learnt about <strong>RISC-V and Star64 JH7110</strong>…</p>
 <ul>
 <li>
-<p>TODO: RISC-V Privilege Levels (pic above)</p>
+<p>What are <strong>RISC-V Privilege Levels</strong> (pic above)</p>
+<p>(And why they make our OS a little more complicated)</p>
 </li>
 <li>
-<p>TODO: 16550 UART Registers</p>
+<p>All about <strong>JH7110’s UART Registers</strong></p>
+<p>(And how they are different from other 16550 UARTs)</p>
 </li>
 <li>
-<p>TODO: (Naively) Porting NuttX from QEMU to Star64 might become really challenging!</p>
+<p>Why (naively) porting NuttX from <strong>QEMU to Star64</strong> might become really challenging!</p>
 </li>
 </ul>
-<p>TODO</p>
 <h1 id="hang-in-uart-transmit"><a href="#hang-in-uart-transmit">1 Hang in UART Transmit</a></h1>
-<p>TODO</p>
-<p>When printing to UART Port, the UART Transmit hangs while waiting for UART Transmit Ready…</p>
-<p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/drivers/serial/uart_16550.c#L1638-L1642">uart_16550.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static void u16550_putc(FAR struct u16550_s *priv, int ch)
-{
-  //// This will hang!
-  while ((u16550_serialin(priv, UART_LSR_OFFSET) &amp; UART_LSR_THRE) == 0);
+<p>This NuttX Kernel Code prints a character to the UART Port. Guess why it <strong>hangs on Star64 JH7110?</strong></p>
+<div class="example-wrap"><pre class="language-c"><code>// Print a character to UART Port
+static void u16550_putc(
+  FAR struct u16550_s *priv,  // UART Struct
+  int ch                      // Character to be printed
+) {
+  // Wait for UART Port to be ready to transmit.
+  // Note: This will hang!
+  while (
+    (
+      u16550_serialin(   // Read UART Register...
+        priv,            // From UART Base Address...
+        UART_LSR_OFFSET  // At offset of Line Status Register
+      ) &amp; UART_LSR_THRE  // If THRE Flag (Transmit Holding Register Empty)...
+    ) == 0               // Says that Transmit Register is Not Empty...
+  );                     // Then loop until it&#39;s empty
+
+  // Write the character
   u16550_serialout(priv, UART_THR_OFFSET, (uart_datawidth_t)ch);
 }
 </code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/drivers/serial/uart_16550.c#L1638-L1642">(Source)</a></p>
+<p>TODO</p>
 <p>Where <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/uart_16550.c#L596-L611"><code>u16550_serialin</code></a> is defined as…</p>
 <div class="example-wrap"><pre class="language-c"><code>*((FAR volatile uart_datawidth_t *)priv-&gt;uartbase + offset);
 </code></pre></div>
