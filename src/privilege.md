@@ -2,17 +2,21 @@
 
 📝 _23 Jul 2023_
 
-![TODO](https://lupyuen.github.io/images/privilege-title.jpg)
+![RISC-V Privilege Levels on Star64 JH7110 SBC](https://lupyuen.github.io/images/privilege-title.jpg)
 
-TODO
-
-In this article we'll boot a tiny bit of [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/index.html) on the [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) 64-bit RISC-V Single-Board Computer.
+We're in the super-early stage of porting [__Apache NuttX Real-Time Operating System (RTOS)__](https://lupyuen.github.io/articles/nuttx2) to the [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) 64-bit RISC-V Single-Board Computer.
 
 (Based on [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC)
 
-_What's NuttX?_
+In this article we'll talk about the interesting things that we learnt about __RISC-V and Star64 JH7110__...
 
-[__Apache NuttX__](https://nuttx.apache.org/docs/latest/index.html) is a __Real-Time Operating System (RTOS)__ that runs on many kinds of devices, from 8-bit to 64-bit.
+-   TODO: RISC-V Privilege Levels (pic above)
+
+-   TODO: 16550 UART Registers
+
+-   TODO: (Naively) Porting NuttX from QEMU to Star64 might become really challenging!
+
+TODO
 
 # Hang in UART Transmit
 
