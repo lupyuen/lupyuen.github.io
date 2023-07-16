@@ -94,6 +94,7 @@
 <p>Why (naively) porting NuttX from <strong>QEMU to Star64</strong> might become really challenging!</p>
 </li>
 </ul>
+<p>We begin with the simpler topic: UART…</p>
 <p><img src="https://lupyuen.github.io/images/linux-title.jpg" alt="Star64 JH7110 SBC with Woodpecker USB Serial Adapter" /></p>
 <p><a href="https://lupyuen.github.io/articles/linux#serial-console-on-star64"><em>Star64 JH7110 SBC with Woodpecker USB Serial Adapter</em></a></p>
 <h1 id="wait-forever-in-uart-transmit"><a href="#wait-forever-in-uart-transmit">1 Wait Forever in UART Transmit</a></h1>
@@ -199,8 +200,8 @@ static void u16550_putc(
 reg-io-width = &lt;4&gt;;
 reg-shift = &lt;2&gt;;
 </code></pre></div>
-<p>We see that <strong>reg-shift</strong> is 2.</p>
-<p><em>What’s reg-shift?</em></p>
+<p>We see that <strong>regshift</strong> is 2.</p>
+<p><em>What’s regshift?</em></p>
 <p>According to the <a href="https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/source_code_structure_uart.html"><strong>JH7110 UART Source Code</strong></a>, this is how we write to a UART Register: <a href="https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_dw.c#L159-L169">8250_dw.c</a></p>
 <div class="example-wrap"><pre class="language-text"><code>// Linux Kernel Driver: Write to 8250 UART Register
 static void dw8250_serial_out(struct uart_port *p, int offset, int value) {
@@ -225,18 +226,25 @@ static void dw8250_serial_out(struct uart_port *p, int offset, int value) {
 </tbody></table>
 </div>
 <p><em>How to fix CONFIG_16550_REGINCR?</em></p>
-<p>TODO</p>
-<p>We fix the NuttX Configuration: Device Drivers &gt; Serial Driver Support &gt; 16550 UART Chip support &gt; Address increment between 16550 registers</p>
+<p>We fix the NuttX Configuration in <code>make menuconfig</code>…</p>
+<ul>
+<li>Device Drivers &gt; Serial Driver Support &gt; 16550 UART Chip support &gt; Address Increment Between 16550 Registers</li>
+</ul>
 <p>And change it from 1 to 4: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L11">knsh64/defconfig</a></p>
 <div class="example-wrap"><pre class="language-text"><code>CONFIG_16550_REGINCR=4
 </code></pre></div>
-<p>Now UART Transmit doesn’t hang yay!</p>
+<p>Now UART Transmit works perfectly yay!</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
-clk u5_dw_i2c_clk_core already disabled
-clk u5_dw_i2c_clk_apb already disabled
-123067DFm45DTpAqGaclbHm45DTpBqm45DTpCqI
+123067DFHBC
+qemu_rv_kernel_mappings: map I/O regions
+qemu_rv_kernel_mappings: map kernel text
+qemu_rv_kernel_mappings: map kernel data
+qemu_rv_kernel_mappings: connect the L1 and L2 page tables
+qemu_rv_kernel_mappings: map the page pool
+qemu_rv_mm_init: mmu_enable: satp=1077956608
+nx_start: Entry
 </code></pre></div>
-<p>NuttX now hangs somewhere in <code>nx_start</code></p>
+<p>Let’s move on to the tougher topic: Machine Mode vs Supervisor Mode…</p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-privilege.jpg" alt="RISC-V Privilege Levels" /></p>
 <h1 id="risc-v-privilege-levels"><a href="#risc-v-privilege-levels">3 RISC-V Privilege Levels</a></h1>
 <p>TODO</p>
