@@ -20,11 +20,11 @@ In this article we'll talk about the interesting things that we learnt about __R
 
 -   Why (naively) porting NuttX from __QEMU to Star64__ might become really challenging!
 
-# Hang in UART Transmit
+# Wait Forever in UART Transmit
 
 Here's a fun quiz...
 
-This NuttX Kernel Code prints a character to the UART Port. Guess why it __hangs on Star64 JH7110?__
+This NuttX Kernel Code prints a character to the UART Port. Guess why it __waits forever on Star64 JH7110?__
 
 ```c
 // Print a character to UART Port
@@ -33,7 +33,7 @@ static void u16550_putc(
   int ch                      // Character to be printed
 ) {
   // Wait for UART Port to be ready to transmit.
-  // Note: This will hang!
+  // Note: This will get stuck!
   while (
     (
       u16550_serialin(   // Read UART Register...
@@ -58,9 +58,9 @@ Actually it's correct. Previously we validated the __16550 UART Base Address for
 
 - [__"Boot NuttX on Star64"__](https://lupyuen.github.io/articles/nuttx2#boot-nuttx-on-star64)
 
-But strangely it hangs while waiting for the UART to be ready!
+But strangely it loops forever while waiting for the UART to be ready!
 
-__What's inside u16550_serialin?__
+_What's inside u16550_serialin?_
 
 ```c
 u16550_serialin(   // Read UART Register...
@@ -104,7 +104,30 @@ _Ah but is CONFIG_16550_REGINCR correct for Star64 JH7110?_
 
 Let's check...
 
-# TODO
+# UART Registers are Spaced Differently
+
+Earlier we talked about the Address Increment between 16550 UART Registers (__CONFIG_16550_REGINCR__), which defaults to 1...
+
+```text
+config 16550_REGINCR
+  int "Address increment between 16550 registers"
+  default 1
+```
+
+[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/Kconfig-16550#L501-L520)
+
+Which means that the 16550 UART Registers are spaced __1 byte apart__...
+
+| Address | Register |
+|:-------:|:---------|
+|`0x1000` `0000` | Transmit Holding Register 
+|`0x1000` `0001` | Interrupt Enable Register
+|`0x1000` `0002` | Interrupt ID Register
+|`0x1000` `0003` | Line Control Register
+|`0x1000` `0004` | Modem Control Register
+|`0x1000` `0005` | Line Status Register
+
+_But is it the same for Star64 JH7110?_
 
 TODO
 
@@ -135,6 +158,15 @@ static void dw8250_serial_out(struct uart_port *p, int offset, int value)
 We see that the UART Offset is shifted by 2 (`regshift`). Which means we multiply the UART Offset by 4.
 
 Thus `CONFIG_16550_REGINCR` should be 4, not 1!
+
+| Address | Register |
+|:-------:|:---------|
+|`0x1000` `0000` | Transmit Holding Register 
+|`0x1000` `0004` | Interrupt Enable Register
+|`0x1000` `0008` | Interrupt ID Register
+|`0x1000` `000C` | Line Control Register
+|`0x1000` `0010` | Modem Control Register
+|`0x1000` `0014` | Line Status Register
 
 _How to fix CONFIG_16550_REGINCR?_
 
