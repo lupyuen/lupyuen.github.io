@@ -67,16 +67,100 @@
 
     <h1 class="title">Star64 JH7110 + NuttX RTOS: RISC-V Privilege Levels and UART Registers</h1>
     <nav id="TOC"><ul>
-<li><a href="#risc-v-privilege-levels">1 RISC-V Privilege Levels</a><ul></ul></li>
-<li><a href="#whats-next">2 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Jul 2023</em></p>
+<li><a href="#hang-in-uart-transmit">1 Hang in UART Transmit</a><ul></ul></li>
+<li><a href="#risc-v-privilege-levels">2 RISC-V Privilege Levels</a><ul></ul></li>
+<li><a href="#hang-in-enter-critical-section">3 Hang in Enter Critical Section</a><ul></ul></li>
+<li><a href="#enable-scheduler-logging">4 Enable Scheduler Logging</a><ul></ul></li>
+<li><a href="#initialise-risc-v-supervisor-mode">5 Initialise RISC-V Supervisor Mode</a><ul></ul></li>
+<li><a href="#qemu-semihosting-in-nuttx">6 QEMU Semihosting in NuttX</a><ul></ul></li>
+<li><a href="#nuttx-system-filesystem">7 NuttX System Filesystem</a><ul></ul></li>
+<li><a href="#todo">8 TODO</a><ul></ul></li>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/privilege-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <p>In this article we’ll boot a tiny bit of <a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX RTOS</strong></a> on the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer.</p>
 <p>(Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
 <p><em>What’s NuttX?</em></p>
 <p><a href="https://nuttx.apache.org/docs/latest/index.html"><strong>Apache NuttX</strong></a> is a <strong>Real-Time Operating System (RTOS)</strong> that runs on many kinds of devices, from 8-bit to 64-bit.</p>
+<h1 id="hang-in-uart-transmit"><a href="#hang-in-uart-transmit">1 Hang in UART Transmit</a></h1>
+<p>TODO</p>
+<p>When printing to UART Port, the UART Transmit hangs while waiting for UART Transmit Ready…</p>
+<p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/drivers/serial/uart_16550.c#L1638-L1642">uart_16550.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static void u16550_putc(FAR struct u16550_s *priv, int ch)
+{
+  //// This will hang!
+  while ((u16550_serialin(priv, UART_LSR_OFFSET) &amp; UART_LSR_THRE) == 0);
+  u16550_serialout(priv, UART_THR_OFFSET, (uart_datawidth_t)ch);
+}
+</code></pre></div>
+<p>Where <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/uart_16550.c#L596-L611"><code>u16550_serialin</code></a> is defined as…</p>
+<div class="example-wrap"><pre class="language-c"><code>*((FAR volatile uart_datawidth_t *)priv-&gt;uartbase + offset);
+</code></pre></div>
+<p>And <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/include/nuttx/serial/uart_16550.h#L197"><code>UART_THR_OFFSET</code></a> is…</p>
+<div class="example-wrap"><pre class="language-c"><code>#define UART_LSR_OFFSET        (CONFIG_16550_REGINCR*UART_LSR_INCR)
+</code></pre></div>
+<p><code>CONFIG_16550_REGINCR</code> is 1…</p>
+<div class="example-wrap"><pre class="language-text"><code>→ grep 16550 .config
+CONFIG_16550_REGINCR=1
+CONFIG_16550_REGWIDTH=8
+CONFIG_16550_ADDRWIDTH=0
+</code></pre></div>
+<p>As defined according to the Default Config for 16550: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/Kconfig-16550#L501-L520">Kconfig-16550</a>:</p>
+<div class="example-wrap"><pre class="language-text"><code>config 16550_REGINCR
+	int &quot;Address increment between 16550 registers&quot;
+	default 1
+	---help---
+		The address increment between 16550 registers.  Options are 1, 2, or 4.
+		Default: 1
+
+config 16550_REGWIDTH
+	int &quot;Bit width of 16550 registers&quot;
+	default 8
+	---help---
+		The bit width of registers.  Options are 8, 16, or 32. Default: 8
+
+config 16550_ADDRWIDTH
+	int &quot;Address width of 16550 registers&quot;
+	default 8
+	---help---
+		The bit width of registers.  Options are 0, 8, 16, or 32.
+		Default: 8
+		Note: 0 means auto detect address size (uintptr_t)
+</code></pre></div>
+<p><em>But is CONFIG_16550_REGINCR correct for Star64 JH7110?</em></p>
+<p>Let’s check the official Linux Driver. According to <a href="https://doc-en.rvspace.org/VisionFive2/DG_UART/JH7110_SDK/general_uart_controller.html">JH7110 Linux Device Tree</a>…</p>
+<div class="example-wrap"><pre class="language-text"><code>reg = &lt;0x0 0x10000000 0x0 0xl0000&gt;;
+reg-io-width = &lt;4&gt;;
+reg-shift = &lt;2&gt;;
+</code></pre></div>
+<p><code>reg-shift</code> is 2.</p>
+<p>And from the Linux 8250 Driver: <a href="https://github.com/torvalds/linux/blob/master/drivers/tty/serial/8250/8250_dw.c#L159-L169">8250_dw.c</a></p>
+<div class="example-wrap"><pre class="language-text"><code>static void dw8250_serial_out(struct uart_port *p, int offset, int value)
+{
+	struct dw8250_data *d = to_dw8250_data(p-&gt;private_data);
+
+	writeb(value, p-&gt;membase + (offset &lt;&lt; p-&gt;regshift));
+
+	if (offset == UART_LCR &amp;&amp; !d-&gt;uart_16550_compatible)
+		dw8250_check_lcr(p, value);
+}
+</code></pre></div>
+<p>We see that the UART Offset is shifted by 2 (<code>regshift</code>). Which means we multiply the UART Offset by 4.</p>
+<p>Thus <code>CONFIG_16550_REGINCR</code> should be 4, not 1!</p>
+<p><em>How to fix CONFIG_16550_REGINCR?</em></p>
+<p>We fix the NuttX Configuration: Device Drivers &gt; Serial Driver Support &gt; 16550 UART Chip support &gt; Address increment between 16550 registers</p>
+<p>And change it from 1 to 4: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L11">knsh64/defconfig</a></p>
+<div class="example-wrap"><pre class="language-text"><code>CONFIG_16550_REGINCR=4
+</code></pre></div>
+<p>Now UART Transmit doesn’t hang yay!</p>
+<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
+clk u5_dw_i2c_clk_core already disabled
+clk u5_dw_i2c_clk_apb already disabled
+123067DFm45DTpAqGaclbHm45DTpBqm45DTpCqI
+</code></pre></div>
+<p>NuttX now hangs somewhere in <code>nx_start</code></p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-privilege.jpg" alt="RISC-V Privilege Levels" /></p>
-<h1 id="risc-v-privilege-levels"><a href="#risc-v-privilege-levels">1 RISC-V Privilege Levels</a></h1>
+<h1 id="risc-v-privilege-levels"><a href="#risc-v-privilege-levels">2 RISC-V Privilege Levels</a></h1>
 <p>TODO</p>
 <p><em>What’s this Privilege Level?</em></p>
 <p>RISC-V Machine Code runs at three <strong>Privilege Levels</strong>…</p>
@@ -109,7 +193,500 @@ csrr a0, mhartid
 <p><em>QEMU doesn’t have this problem?</em></p>
 <p>Because QEMU runs NuttX in (super-powerful) <strong>Machine Mode</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-privilege2.jpg" alt="NuttX QEMU runs in Machine Mode" /></p>
-<h1 id="whats-next"><a href="#whats-next">2 What’s Next</a></h1>
+<h1 id="hang-in-enter-critical-section"><a href="#hang-in-enter-critical-section">3 Hang in Enter Critical Section</a></h1>
+<p>TODO</p>
+<p>NuttX on Star64 JH7110 hangs when entering Critical Section…</p>
+<p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/drivers/serial/uart_16550.c#L1713-L1737">uart_16550.c</a>:</p>
+<div class="example-wrap"><pre class="language-c"><code>int up_putc(int ch)
+{
+  FAR struct u16550_s *priv = (FAR struct u16550_s *)CONSOLE_DEV.priv;
+  irqstate_t flags;
+
+  /* All interrupts must be disabled to prevent re-entrancy and to prevent
+   * interrupts from firing in the serial driver code.
+   */
+
+  //// This will hang!
+  flags = enter_critical_section();
+  ...
+  u16550_putc(priv, ch);
+  leave_critical_section(flags);
+  return ch;
+}
+</code></pre></div>
+<p>Which assembles to…</p>
+<div class="example-wrap"><pre class="language-text"><code>int up_putc(int ch)
+{
+  ...
+up_irq_save():
+/Users/Luppy/PinePhone/wip-nuttx/nuttx/include/arch/irq.h:675
+  __asm__ __volatile__
+    40204598:	47a1                	li	a5,8
+    4020459a:	3007b7f3          	csrrc	a5,mstatus,a5
+up_putc():
+/Users/Luppy/PinePhone/wip-nuttx/nuttx/drivers/serial/uart_16550.c:1726
+  flags = enter_critical_section();
+</code></pre></div>
+<p>But <code>mstatus</code> is not accessible at Supervisor Level! Let’s trace this.</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/include/nuttx/irq.h#L156-L191"><code>enter_critical_section</code></a> calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/include/irq.h#L660-L689"><code>up_irq_save</code></a>…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Disable interrupts and return the previous value of the mstatus register
+static inline irqstate_t up_irq_save(void)
+{
+  irqstate_t flags;
+
+  /* Read mstatus &amp; clear machine interrupt enable (MIE) in mstatus */
+
+  __asm__ __volatile__
+    (
+      &quot;csrrc %0, &quot; __XSTR(CSR_STATUS) &quot;, %1\n&quot;
+      : &quot;=r&quot; (flags)
+      : &quot;r&quot;(STATUS_IE)
+      : &quot;memory&quot;
+    );
+
+  /* Return the previous mstatus value so that it can be restored with
+   * up_irq_restore().
+   */
+
+  return flags;
+}
+</code></pre></div>
+<p><code>CSR_STATUS</code> is defined in <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/include/mode.h#L35-L103">mode.h</a>:</p>
+<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_ARCH_USE_S_MODE
+#  define CSR_STATUS        sstatus          /* Global status register */
+#else
+#  define CSR_STATUS        mstatus          /* Global status register */
+#endif
+</code></pre></div>
+<p>So we need to set <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/Kconfig#L278-L296">CONFIG_ARCH_USE_S_MODE</a>.</p>
+<p>Which is defined in Kernel Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig"><code>rv-virt:knsh64</code></a>. So we change Build Config to…</p>
+<div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh rv-virt:knsh64
+</code></pre></div>
+<p>And we bypassed Machine Mode Initialisation during startup…</p>
+<p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L166-L231">qemu_rv_start.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>void qemu_rv_start(int mhartid)
+{
+  // Clear BSS
+  DEBUGASSERT(mhartid == 0);
+  if (0 == mhartid) { qemu_rv_clear_bss(); }
+
+  // Bypass to S-Mode Init
+  qemu_rv_start_s(mhartid);
+
+  // Skip M-Mode Init
+  // TODO: What about `satp`, `stvec`, `pmpaddr0`, `pmpcfg0`?
+  ...
+}
+</code></pre></div>
+<p>grep for <code>csr</code> in <code>nuttx.S</code> shows that no more M-Mode Registers are used.</p>
+<p>Now Critical Section is OK yay!</p>
+<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
+clk u5_dw_i2c_clk_core already disabled
+clk u5_dw_i2c_clk_apb already disabled
+123067DFAGHBCIcd
+</code></pre></div>
+<ul>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1">See the <strong>Build Steps</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/31/files">See the <strong>Modified Files</strong></a></p>
+</li>
+<li>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1">See the <strong>Build Outputs</strong></a></p>
+</li>
+</ul>
+<p><em>What about <code>satp</code>, <code>stvec</code>, <code>pmpaddr0</code>, <code>pmpcfg0</code>?</em></p>
+<p>We’ll handle them in a while.</p>
+<p>Sometimes we see this…</p>
+<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
+clk u5_dw_i2c_clk_core already disabled
+clk u5_dw_i2c_clk_apb already disabled
+123067DFAGHBCUnhandled exception: Store/AMO access fault
+EPC: 0000000040200628 RA: 00000000402004ba TVAL: ffffff8000008000
+EPC: ffffffff804ba628 RA: ffffffff804ba4ba reloc adjusted
+
+SP:  0000000040406a30 GP:  00000000ff735e00 TP:  0000000000000001
+T0:  0000000010000000 T1:  0000000000000037 T2:  ffffffffffffffff
+S0:  0000000040400000 S1:  0000000000000200 A0:  0000000000000003
+A1:  0000080000008000 A2:  0000000010100000 A3:  0000000040400000
+A4:  0000000000000026 A5:  0000000000000000 A6:  00000000101000e7
+A7:  0000000000000000 S2:  0000080000008000 S3:  0000000040600000
+S4:  0000000040400000 S5:  0000000000000000 S6:  0000000000000026
+S7:  00fffffffffff000 S8:  0000000040404000 S9:  0000000000001000
+S10: 0000000040400ab0 S11: 0000000000200000 T3:  0000000000000023
+T4:  000000004600f43a T5:  000000004600d000 T6:  000000004600cfff
+
+Code: 879b 0277 d7b3 00f6 f793 1ff7 078e 95be (b023 0105)
+</code></pre></div>
+<p>Which fails at…</p>
+<div class="example-wrap"><pre class="language-text"><code>nuttx/arch/risc-v/src/common/riscv_mmu.c:101
+  lntable[index] = (paddr | mmuflags);
+    40200620:	1ff7f793          	andi	a5,a5,511
+    40200624:	078e                	slli	a5,a5,0x3
+    40200626:	95be                	add	a1,a1,a5
+    40200628:	0105b023          	sd	a6,0(a1)  /* Fails Here */
+mmu_invalidate_tlb_by_vaddr():
+nuttx/arch/risc-v/src/common/riscv_mmu.h:237
+  __asm__ __volatile__
+    4020062c:	12d00073          	sfence.vma	zero,a3
+    40200630:	8082                	ret
+</code></pre></div>
+<p>TODO: Trace this Store/AMO Access Fault</p>
+<h1 id="enable-scheduler-logging"><a href="#enable-scheduler-logging">4 Enable Scheduler Logging</a></h1>
+<p>TODO</p>
+<p>Scheduler Logging in NuttX seems to have changed recently. To enable Scheduler Logging…</p>
+<ul>
+<li>
+<p><code>make menuconfig</code></p>
+</li>
+<li>
+<p>Disable this setting: Device Drivers &gt; System Logging &gt; Prepend timestamp to syslog message</p>
+</li>
+<li>
+<p>Enable these settings: Build Setup &gt; Debug Options &gt; Scheduler Debug Features &gt; Scheduler Error, Warnings and Info Output</p>
+</li>
+<li>
+<p>Also enable: Build Setup &gt; Debug Options &gt; Binary Loader Debug Features &gt; Binary Loader Error, Warnings and Info Output</p>
+</li>
+</ul>
+<p>After enabling Scheduler Logging and Binary Loader Logging, we see…</p>
+<div class="example-wrap"><pre class="language-text"><code>123067DFAGaclbHBCqemu_rv_kernel_mappings: map I/O regions
+qemu_rv_kernel_mappings: map kernel text
+qemu_rv_kernel_mappings: map kernel data
+qemu_rv_kernel_mappings: connect the L1 and L2 page tables
+qemu_rv_kernel_mappings: map the page pool
+qemu_rv_mm_init: mmu_enable: satp=1077956608
+Inx_start: Entry
+elf_initialize: Registering ELF
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+nx_start_application: Starting init task: /system/bin/init
+load_absmodule: Loading /system/bin/init
+elf_loadbinary: Loading file: /system/bin/init
+elf_init: filename: /system/bin/init loadinfo: 0x404069e8
+</code></pre></div>
+<p><em>What is <code>/system/bin/init</code>?</em></p>
+<p>We’ll find out in a while…</p>
+<p><a href="https://gist.github.com/lupyuen/19c0393167644280ec5c8deb3f15dcd9">Compare with QEMU Kernel Mode Run Log</a></p>
+<p><a href="https://gist.github.com/lupyuen/dce0cdbbf4a4bdf9c79e617b3fe1b679">See the QEMU Kernel Mode Build Log</a></p>
+<h1 id="initialise-risc-v-supervisor-mode"><a href="#initialise-risc-v-supervisor-mode">5 Initialise RISC-V Supervisor Mode</a></h1>
+<p>TODO</p>
+<p>Earlier we bypassed the Machine Mode and Supervisor Mode Initialisation during NuttX startup…</p>
+<p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L166-L231">qemu_rv_start.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>void qemu_rv_start(int mhartid)
+{
+  // Clear BSS
+  DEBUGASSERT(mhartid == 0);
+  if (0 == mhartid) { qemu_rv_clear_bss(); }
+
+  // Bypass to S-Mode Init
+  qemu_rv_start_s(mhartid);
+
+  // Skip M-Mode Init
+  // TODO: What about `satp`, `stvec`, `pmpaddr0`, `pmpcfg0`?
+  ...
+}
+</code></pre></div>
+<p>Now we restore the Supervisor Mode Initialisation, commenting out the Machine Mode Initialisation…</p>
+<p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L165-L233">qemu_rv_start.c</a>:</p>
+<div class="example-wrap"><pre class="language-c"><code>void qemu_rv_start(int mhartid)
+{
+  DEBUGASSERT(mhartid == 0); //
+
+  /* NOTE: still in M-mode */
+
+  if (0 == mhartid)
+    {
+      qemu_rv_clear_bss();
+
+      /* Initialize the per CPU areas */
+
+      riscv_percpu_add_hart(mhartid);
+    }
+
+  /* Disable MMU and enable PMP */
+
+  WRITE_CSR(satp, 0x0);
+  //WRITE_CSR(pmpaddr0, 0x3fffffffffffffull);
+  //WRITE_CSR(pmpcfg0, 0xf);
+
+  /* Set exception and interrupt delegation for S-mode */
+
+  //WRITE_CSR(medeleg, 0xffff);
+  //WRITE_CSR(mideleg, 0xffff);
+
+  /* Allow to write satp from S-mode */
+
+  //CLEAR_CSR(mstatus, MSTATUS_TVM);
+
+  /* Set mstatus to S-mode and enable SUM */
+
+  //CLEAR_CSR(mstatus, ~MSTATUS_MPP_MASK);
+  //SET_CSR(mstatus, MSTATUS_MPPS | SSTATUS_SUM);
+
+  /* Set the trap vector for S-mode */
+
+  WRITE_CSR(stvec, (uintptr_t)__trap_vec);
+
+  /* Set the trap vector for M-mode */
+
+  //WRITE_CSR(mtvec, (uintptr_t)__trap_vec_m);
+
+  if (0 == mhartid)
+    {
+      /* Only the primary CPU needs to initialize mtimer
+       * before entering to S-mode
+       */
+
+      // TODO
+      //up_mtimer_initialize();
+    }
+
+  /* Set mepc to the entry */
+
+  //WRITE_CSR(mepc, (uintptr_t)qemu_rv_start_s);
+
+  /* Set a0 to mhartid explicitly and enter to S-mode */
+
+  //asm volatile (
+  //    &quot;mv a0, %0 \n&quot;
+  //    &quot;mret \n&quot;
+  //    :: &quot;r&quot; (mhartid)
+  //);
+
+  // Jump to S-Mode Init ourselves
+  qemu_rv_start_s(mhartid); //
+}
+</code></pre></div>
+<p>TODO: Check <code>up_mtimer_initialize</code></p>
+<p>Now NuttX boots further!</p>
+<div class="example-wrap"><pre class="language-text"><code>123067DFHBCqemu_rv_kernel_mappings: map I/O regions
+qemu_rv_kernel_mappings: map kernel text
+qemu_rv_kernel_mappings: map kernel data
+qemu_rv_kernel_mappings: connect the L1 and L2 page tables
+qemu_rv_kernel_mappings: map the page pool
+qemu_rv_mm_init: mmu_enable: satp=1077956608
+Inx_start: Entry
+elf_initialize: Registering ELF
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+nx_start_application: Starting init task: /system/bin/init
+load_absmodule: Loading /system/bin/init
+elf_loadbinary: Loading file: /system/bin/init
+elf_init: filename: /system/bin/init loadinfo: 0x404069e8
+riscv_exception: EXCEPTION: Breakpoint. MCAUSE: 0000000000000003, EPC: 0000000040200434, MTVAL: 0000000000000000
+riscv_exception: PANIC!!! Exception = 0000000000000003
+_assert: Current Version: NuttX  12.0.3 2261b80-dirty Jul 15 2023 20:38:57 risc-v
+_assert: Assertion failed panic: at file: common/riscv_exception.c:85 task: Idle Task 0x40200ce6
+up_dump_register: EPC: 0000000040200434
+up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000 A3: 0000000000000001
+up_dump_register: A4: 0000000000000000 A5: 00000000404067e0 A6: 0000000000000074 A7: fffffffffffffff8
+up_dump_register: T0: 0000000000000030 T1: 0000000000000007 T2: 0000000000000020 T3: 0000000040406aa0
+up_dump_register: T4: 0000000040406a98 T5: 00000000000001ff T6: 000000000000002d
+up_dump_register: S0: 0000000000000000 S1: 0000000040406968 S2: 0000000040408720 S3: 0000000000000000
+up_dump_register: S4: 0000000000000000 S5: 0000000000000000 S6: 0000000000000000 S7: 0000000000000000
+up_dump_register: S8: 00000000fff47194 S9: 0000000000000000 S10: 0000000000000000 S11: 0000000000000000
+up_dump_register: SP: 0000000040406760 FP: 0000000000000000 TP: 0000000000000001 RA: 0000000040213e24
+dump_stack: User Stack:
+dump_stack:   base: 0x40406030
+dump_stack:   size: 00003024
+dump_stack:     sp: 0x40406760
+stack_dump: 0x40406760: 00000000 00000000 40213e6a 00000000 fff47194 00000000 404067d0 00000000
+stack_dump: 0x40406780: 00000001 00000000 00000010 00000000 00000000 00000000 40213ffc 00000000
+stack_dump: 0x404067a0: 40408720 00000000 40406968 00000000 00000000 00000000 4020c7ec 00000000
+stack_dump: 0x404067c0: 00000800 00000000 40219f30 00000000 612f2e2e 2f737070 2f6e6962 74696e69
+stack_dump: 0x404067e0: 00000a00 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406800: fff47194 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406820: 00000000 00000000 00000000 00000000 40219f28 00000000 404069e8 00000000
+stack_dump: 0x40406840: 40219f28 00000000 40212bde 00000000 40227776 00000000 40406870 00000000
+stack_dump: 0x40406860: 00000000 00000000 fffffffc ffffffff 40219f28 00000000 404069e8 00000000
+stack_dump: 0x40406880: 40400170 00000000 40204fea 00000000 0000006c 00000000 404069e8 00000000
+stack_dump: 0x404068a0: 40400170 00000000 402050ae 00000000 40406908 00000000 40208f66 00000000
+stack_dump: 0x404068c0: 40406908 00000000 4020c8c6 00000000 40219f28 00000000 404086d0 00000000
+stack_dump: 0x404068e0: ffffffda ffffffff 40215be6 00000000 40406968 00000000 00000001 00000000
+stack_dump: 0x40406900: 40400b28 00000000 40219f30 00000000 404086d0 00000000 40407e30 00000000
+stack_dump: 0x40406920: 40407370 00000000 40219f30 00000000 00000000 00000000 40219f01 00000000
+stack_dump: 0x40406940: 404069e8 00000000 404069e8 00000000 40219f28 00000000 4020dfdc 00000000
+stack_dump: 0x40406960: 40219f28 00000000 40205ede 00000000 fff47194 00000000 404069b0 00000000
+stack_dump: 0x40406980: 00000000 00000000 40205efe 00000000 00000000 00000000 404069b0 00000000
+stack_dump: 0x404069a0: 40408830 00000000 4020d88c 00000000 40226bc0 00000000 40219f28 00000000
+stack_dump: 0x404069c0: 40408830 00000000 00000000 00000000 40219f28 00000000 4020d894 00000000
+stack_dump: 0x404069e0: 40406a18 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406a00: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406a20: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406a40: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406a60: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406a80: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406aa0: 402277d0 00000000 40219f28 00000000 40408830 00000000 404001f8 00000000
+stack_dump: 0x40406ac0: fffffffe ffffffff 4020eb36 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406ae0: 40406b60 00000000 40406b68 00000000 40219f28 00000000 40408830 00000000
+stack_dump: 0x40406b00: 00000c00 00000000 4020d38a 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406b20: 00000000 00000000 fffda848 00000000 fffffff3 ffffffff 40400b18 00000000
+stack_dump: 0x40406b40: 4040177c 00000000 00000064 00000000 00000c00 00000000 40200ff4 00000000
+stack_dump: 0x40406b60: 00000000 00000000 40016400 00000000 00000000 00000000 00000c00 00000000
+stack_dump: 0x40406b80: 4040177c 00000000 40401780 00000000 40400b28 00000000 40200ee6 00000000
+stack_dump: 0x40406ba0: 40600000 00000000 00400000 00000000 00000026 00000000 00000003 00000000
+stack_dump: 0x40406bc0: fff47194 00000000 ffff1428 00000000 10000000 00000000 40200514 00000000
+stack_dump: 0x40406be0: 00000400 00000000 40200552 00000000 40000000 00000000 402000de 00000000
+dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
+dump_tasks:   ----   --- --- -------- ------- --- ------- ---------- -------- 0x404002b0      2048      1160    56.6%    irq
+dump_task:       0     0   0 FIFO     Kthread N-- Running            0000000000000000 0x40406030      3024      1448    47.8%    Idle Task
+dump_task:       1     1 100 RR       Kthread --- Waiting Unlock     0000000000000000 0x4040a060      1952       264    13.5%    lpwork 0x404013e0
+</code></pre></div>
+<p>But NuttX crashes. Let’s find out why…</p>
+<h1 id="qemu-semihosting-in-nuttx"><a href="#qemu-semihosting-in-nuttx">6 QEMU Semihosting in NuttX</a></h1>
+<p>TODO</p>
+<p><code>mcause</code> is 3, “Machine Software Interrupt”.</p>
+<p>Exception Program Counter <code>0x4020</code> <code>0434</code> is in RISC-V Semihosting <code>smh_call</code>…</p>
+<div class="example-wrap"><pre class="language-text"><code>0000000040200430 &lt;smh_call&gt;:
+smh_call():
+/Users/Luppy/PinePhone/wip-nuttx/nuttx/arch/risc-v/src/common/riscv_semihost.S:37
+  .global smh_call
+  .type smh_call @function
+
+smh_call:
+
+  slli zero, zero, 0x1f
+    40200430:	01f01013          	slli	zero,zero,0x1f
+/Users/Luppy/PinePhone/wip-nuttx/nuttx/arch/risc-v/src/common/riscv_semihost.S:38
+  ebreak
+    //// Crashes here (Trigger semihosting breakpoint)
+    40200434:	00100073          	ebreak
+/Users/Luppy/PinePhone/wip-nuttx/nuttx/arch/risc-v/src/common/riscv_semihost.S:39
+  srai zero, zero, 0x7
+    40200438:	40705013          	srai	zero,zero,0x7
+/Users/Luppy/PinePhone/wip-nuttx/nuttx/arch/risc-v/src/common/riscv_semihost.S:40
+  ret
+    4020043c:	00008067          	ret
+    40200440:	0000                	unimp
+</code></pre></div>
+<p>TODO: Who calls <code>smh_call</code>?</p>
+<div class="example-wrap"><pre class="language-text"><code>host_call: nbr=0x1, parm=0x40406778, size=24
+</code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/common/riscv_hostfs.c#L35-L73">host_call</a> says that the Semihosting Call is for HOST_OPEN. (Open a file)</p>
+<p>When we disable Semihosting…</p>
+<div class="example-wrap"><pre class="language-text"><code>123067DFHBCqemu_rv_kernel_mappings: map I/O regions
+qemu_rv_kernel_mappings: map kernel text
+qemu_rv_kernel_mappings: map kernel data
+qemu_rv_kernel_mappings: connect the L1 and L2 page tables
+qemu_rv_kernel_mappings: map the page pool
+qemu_rv_mm_init: mmu_enable: satp=1077956608
+Inx_start: Entry
+elf_initialize: Registering ELF
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+nx_start_application: Starting init task: /system/bin/init
+load_absmodule: Loading /system/bin/init
+elf_loadbinary: Loading file: /system/bin/init
+elf_init: filename: /system/bin/init loadinfo: 0x404069e8
+host_call: nbr=0x1, parm=0x40406788, size=24
+_assert: Current Version: NuttX  12.0.3 6ed2880-dirty Jul 15 2023 21:00:59 risc-v
+_assert: Assertion failed panic: at file: common/riscv_hostfs.c:58 task: Idle Task 0x40200cd0
+up_dump_register: EPC: 000000004020f590
+up_dump_register: A0: 0000000040401630 A1: 000000000000003a A2: 0000000040219ee8 A3: 0000000000000000
+up_dump_register: A4: 000000000000000a A5: 0000000000000000 A6: 0000000000000009 A7: 0000000000000068
+up_dump_register: T0: 0000000000000030 T1: 0000000000000009 T2: 0000000000000020 T3: 000000000000002a
+up_dump_register: T4: 000000000000002e T5: 00000000000001ff T6: 000000000000002d
+up_dump_register: S0: 0000000000000000 S1: 0000000040400b28 S2: 0000000040401768 S3: 0000000040219ee8
+up_dump_register: S4: 0000000040229b10 S5: 000000000000003a S6: 0000000000000000 S7: 0000000000000000
+up_dump_register: S8: 00000000fff47194 S9: 0000000000000000 S10: 0000000000000000 S11: 0000000000000000
+up_dump_register: SP: 0000000040406650 FP: 0000000000000000 TP: 0000000000000001 RA: 000000004020f590
+dump_stack: User Stack:
+dump_stack:   base: 0x40406030
+dump_stack:   size: 00003024
+dump_stack:     sp: 0x40406650
+stack_dump: 0x40406640: 40406650 00000000 4020f688 00000000 00000000 00000000 40212bc8 00000000
+stack_dump: 0x40406660: deadbeef deadbeef 40406680 00000000 deadbeef deadbeef 7474754e 00000058
+stack_dump: 0x40406680: 404066b8 00000000 00000001 00000000 40406788 00000000 40205cc0 00000000
+stack_dump: 0x404066a0: 00000074 00000000 fffffff8 2e323100 00332e30 00000000 40229ae8 00000000
+stack_dump: 0x404066c0: 65366708 38383264 69642d30 20797472 206c754a 32203531 20333230 303a3132
+stack_dump: 0x404066e0: 39353a30 00000000 0000000a 00000000 00000000 73697200 00762d63 00000000
+stack_dump: 0x40406700: ffff9fef ffffffff 40406740 00000000 fff47194 00000000 00000000 00000000
+stack_dump: 0x40406720: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406740: 40408720 00000000 40406968 00000000 00000000 00000000 40204e80 00000000
+stack_dump: 0x40406760: 00000074 00000000 40213e3c 00000000 fff47194 00000000 40213e64 00000000
+stack_dump: 0x40406780: 00000000 00000000 404067d0 00000000 00000001 00000000 00000010 00000000
+stack_dump: 0x404067a0: 40408720 00000000 40213f7e 00000000 00000000 00000000 4020c7d6 00000000
+stack_dump: 0x404067c0: 00000800 00000000 40219e70 00000000 612f2e2e 2f737070 2f6e6962 74696e69
+stack_dump: 0x404067e0: 00000a00 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406800: fff47194 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406820: 00000000 00000000 00000000 00000000 40219e68 00000000 404069e8 00000000
+stack_dump: 0x40406840: 40219e68 00000000 40212bc8 00000000 402276b6 00000000 40406870 00000000
+stack_dump: 0x40406860: 00000000 00000000 fffffffc ffffffff 40219e68 00000000 404069e8 00000000
+stack_dump: 0x40406880: 40400170 00000000 40204fd4 00000000 0000006c 00000000 404069e8 00000000
+stack_dump: 0x404068a0: 40400170 00000000 40205098 00000000 40406908 00000000 40208f50 00000000
+stack_dump: 0x404068c0: 40406908 00000000 4020c8b0 00000000 40219e68 00000000 404086d0 00000000
+stack_dump: 0x404068e0: ffffffda ffffffff 40215b2a 00000000 40406968 00000000 00000001 00000000
+stack_dump: 0x40406900: 40400b28 00000000 40219e70 00000000 404086d0 00000000 40407e30 00000000
+stack_dump: 0x40406920: 40407370 00000000 40219e70 00000000 00000000 00000000 40219e01 00000000
+stack_dump: 0x40406940: 404069e8 00000000 404069e8 00000000 40219e68 00000000 4020dfc6 00000000
+stack_dump: 0x40406960: 40219e68 00000000 40205ec8 00000000 fff47194 00000000 404069b0 00000000
+stack_dump: 0x40406980: 00000000 00000000 40205ee8 00000000 00000000 00000000 404069b0 00000000
+stack_dump: 0x404069a0: 40408830 00000000 4020d876 00000000 40226b00 00000000 40219e68 00000000
+stack_dump: 0x404069c0: 40408830 00000000 00000000 00000000 40219e68 00000000 4020d87e 00000000
+stack_dump: 0x404069e0: 40406a18 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406a00: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406a20: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406a40: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406a60: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406a80: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406aa0: 40227710 00000000 40219e68 00000000 40408830 00000000 404001f8 00000000
+stack_dump: 0x40406ac0: fffffffe ffffffff 4020eb20 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406ae0: 40406b60 00000000 40406b68 00000000 40219e68 00000000 40408830 00000000
+stack_dump: 0x40406b00: 00000c00 00000000 4020d374 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406b20: 00000000 00000000 fffda848 00000000 fffffff3 ffffffff 40400b18 00000000
+stack_dump: 0x40406b40: 4040177c 00000000 00000064 00000000 00000c00 00000000 40200fde 00000000
+stack_dump: 0x40406b60: 00000000 00000000 40016400 00000000 00000000 00000000 00000c00 00000000
+stack_dump: 0x40406b80: 4040177c 00000000 40401780 00000000 40400b28 00000000 40200ed0 00000000
+stack_dump: 0x40406ba0: 40600000 00000000 00400000 00000000 00000026 00000000 00000003 00000000
+stack_dump: 0x40406bc0: fff47194 00000000 ffff1428 00000000 10000000 00000000 402004fe 00000000
+stack_dump: 0x40406be0: 00000400 00000000 4020053c 00000000 00000000 00000000 402000de 00000000
+dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
+dump_tasks:   ----   --- --- -------- ------- --- ------- ---------- -------- 0x404002b0      2048         0     0.0%    irq
+dump_task:       0     0   0 FIFO     Kthread N-- Running            0000000000000000 0x40406030      3024      2248    74.3%    Idle Task
+dump_task:       1     1 100 RR       Kthread --- Waiting Unlock     0000000000000000 0x4040a060      1952       264    13.5%    lpwork 0x404013e0
+</code></pre></div>
+<p>TODO: See https://github.com/apache/nuttx/issues/9501</p>
+<h1 id="nuttx-system-filesystem"><a href="#nuttx-system-filesystem">7 NuttX System Filesystem</a></h1>
+<p>TODO: Where is <code>/system/bin/init</code>?</p>
+<div class="example-wrap"><pre class="language-text"><code>→ grep INIT .config
+CONFIG_INIT_FILE=y
+CONFIG_INIT_ARGS=&quot;&quot;
+CONFIG_INIT_STACKSIZE=3072
+CONFIG_INIT_PRIORITY=100
+CONFIG_INIT_FILEPATH=&quot;/system/bin/init&quot;
+CONFIG_INIT_MOUNT=y
+CONFIG_INIT_MOUNT_SOURCE=&quot;&quot;
+CONFIG_INIT_MOUNT_TARGET=&quot;/system&quot;
+CONFIG_INIT_MOUNT_FSTYPE=&quot;hostfs&quot;
+CONFIG_INIT_MOUNT_FLAGS=0x1
+CONFIG_INIT_MOUNT_DATA=&quot;fs=../apps&quot;
+CONFIG_PATH_INITIAL=&quot;/system/bin&quot;
+CONFIG_NSH_ARCHINIT=y
+</code></pre></div>
+<p>Which means that <code>../apps</code> is mounted as <code>/system</code>.</p>
+<p>That’s how <code>/system/bin/init</code> gets loaded over Semihosting…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>→ ls ../apps/bin       
+getprime hello    init     sh</code></pre></div>
+<h1 id="todo"><a href="#todo">8 TODO</a></h1>
+<p>TODO: up_mtimer_initialize</p>
+<p>TODO: Any NuttX Boards using Supervisor Mode / OpenSBI?</p>
+<p><code>litex</code> boots from OpenSBI to NuttX, but doesn’t callback to OpenSBI:</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/litex/litex_shead.S#L56">litex_shead.S</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/litex/litex_start.c#L50">litex_start.c</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/litex/arty_a7/configs/knsh/defconfig#L34">litex/arty_a7/configs/knsh/defconfig</a></p>
+<p><code>mpfs</code> runs a copy of OpenSBI inside NuttX:</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_start.c#L52">mpfs_start.c</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_shead.S#L62">mpfs_shead.S</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_opensbi.c#L602">mpfs_opensbi.c</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_opensbi_utils.S#L62-L107">mpfs_opensbi_utils.S</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_ihc_sbi.c#L570">mpfs_ihc_sbi.c</a></p>
+<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
