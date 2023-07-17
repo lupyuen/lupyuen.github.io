@@ -492,11 +492,7 @@ Yep, because NuttX boots in [__Supervisor Mode__](https://lupyuen.github.io/arti
 
 (And can't access the Machine Mode Registers)
 
-TODO
-
-Now we restore the Supervisor Mode Initialisation, commenting out the Machine Mode Initialisation...
-
-From [qemu_rv_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L165-L233):
+This is how we fixed __qemu_rv_start__ to remove the Machine Mode Registers: [qemu_rv_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L165-L233):
 
 ```c
 // Called by NuttX Boot Code
@@ -541,9 +537,11 @@ void qemu_rv_start(int mhartid) {
 }
 ```
 
-TODO: Check `up_mtimer_initialize`
+We're not sure if this is entirely corect... But it's a good start!
 
-Now NuttX boots further!
+(Yeah we're naively copying code again sigh)
+
+TODO: Now NuttX boots further!
 
 ```text
 123067DFHBCqemu_rv_kernel_mappings: map I/O regions
