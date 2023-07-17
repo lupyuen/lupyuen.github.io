@@ -216,7 +216,7 @@ And change it from 1 to 4: [knsh64/defconfig](https://github.com/lupyuen2/wip-pi
 CONFIG_16550_REGINCR=4
 ```
 
-Now UART Transmit works perfectly yay!
+Now UART Transmit works perfectly yay! (Pic below)
 
 ```text
 Starting kernel ...
@@ -233,6 +233,8 @@ nx_start: Entry
 __Lesson Learnt:__ 8250 UARTs (and 16550) can work a little differently across Hardware Platforms! (Due to Word Alignment maybe?)
 
 Let's move on to the tougher topic: Machine Mode vs Supervisor Mode...
+
+![TODO](https://lupyuen.github.io/images/privilege-run1.png)
 
 # Critical Section Doesn't Return
 
@@ -478,6 +480,8 @@ No more problems with [__Critical Section__](https://lupyuen.github.io/articles/
 
 Let's eliminate the remaining Machine Mode Registers...
 
+![TODO](https://lupyuen.github.io/images/privilege-run2.png)
+
 # Initialise RISC-V Supervisor Mode
 
 _We rebuilt NuttX from Flat Mode to Kernel Mode..._
@@ -635,7 +639,9 @@ dump_task:       0     0   0 FIFO     Kthread N-- Running            00000000000
 dump_task:       1     1 100 RR       Kthread --- Waiting Unlock     0000000000000000 0x4040a060      1952       264    13.5%    lpwork 0x404013e0
 ```
 
-But NuttX crashes due to a Semihosting Problem. We'll find out why in the next article!
+But NuttX crashes due to a Semihosting Problem. (Pic above)
+
+We'll find out why in the next article!
 
 ![Semihosting on RISC-V NuttX](https://lupyuen.github.io/images/privilege-semihosting.jpg)
 
