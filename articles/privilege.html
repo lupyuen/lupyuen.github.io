@@ -74,9 +74,8 @@
 <li><a href="#risc-v-machine-mode-becomes-supervisor-mode">5 RISC-V Machine Mode becomes Supervisor Mode</a><ul></ul></li>
 <li><a href="#nuttx-flat-mode-becomes-kernel-mode">6 NuttX Flat Mode becomes Kernel Mode</a><ul></ul></li>
 <li><a href="#initialise-risc-v-supervisor-mode">7 Initialise RISC-V Supervisor Mode</a><ul></ul></li>
-<li><a href="#qemu-semihosting-in-nuttx">8 QEMU Semihosting in NuttX</a><ul></ul></li>
-<li><a href="#other-risc-v-ports-of-nuttx">9 Other RISC-V Ports of NuttX</a><ul></ul></li>
-<li><a href="#whats-next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Jul 2023</em></p>
+<li><a href="#other-risc-v-ports-of-nuttx">8 Other RISC-V Ports of NuttX</a><ul></ul></li>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/privilege-title.jpg" alt="RISC-V Privilege Levels on Star64 JH7110 SBC" /></p>
 <p>We’re in the super-early stage of porting <a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX Real-Time Operating System (RTOS)</strong></a> to the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer.</p>
 <p>(Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
@@ -334,6 +333,8 @@ csrrc a5, mstatus, a5
 </code></pre></div>
 <p>The <strong>“<code>m</code>”</strong> in <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush"><strong><code>mstatus</code></strong></a> signifies that it’s a <strong>Machine-Mode Register</strong>.</p>
 <p>That’s why NuttX failed to modify the <strong><code>mstatus</code></strong>!</p>
+<p><em>What’s the equivalent of <code>mstatus</code> for Supervisor Mode?</em></p>
+<p>NuttX should use the <a href="https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sstatus"><strong><code>sstatus</code></strong></a> Register instead.</p>
 <p><em>What runs in Machine Mode?</em></p>
 <p><a href="https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface"><strong>OpenSBI (Supervisor Binary Interface)</strong></a> is the first thing that boots on Star64.</p>
 <p>It runs in <strong>Machine Mode</strong> and starts the U-Boot Bootloader.</p>
@@ -573,123 +574,10 @@ dump_tasks:   ----   --- --- -------- ------- --- ------- ---------- -------- 0x
 dump_task:       0     0   0 FIFO     Kthread N-- Running            0000000000000000 0x40406030      3024      1448    47.8%    Idle Task
 dump_task:       1     1 100 RR       Kthread --- Waiting Unlock     0000000000000000 0x4040a060      1952       264    13.5%    lpwork 0x404013e0
 </code></pre></div>
-<p>But NuttX crashes. Let’s find out why…</p>
-<h1 id="qemu-semihosting-in-nuttx"><a href="#qemu-semihosting-in-nuttx">8 QEMU Semihosting in NuttX</a></h1>
-<p>TODO</p>
-<p><code>mcause</code> is 3, “Machine Software Interrupt”.</p>
-<p>Exception Program Counter <code>0x4020</code> <code>0434</code> is in RISC-V Semihosting <code>smh_call</code>…</p>
-<div class="example-wrap"><pre class="language-text"><code>0000000040200430 &lt;smh_call&gt;:
-smh_call():
-nuttx/arch/risc-v/src/common/riscv_semihost.S:37
-  .global smh_call
-  .type smh_call @function
-
-smh_call:
-
-  slli zero, zero, 0x1f
-    40200430:	01f01013          	slli	zero,zero,0x1f
-nuttx/arch/risc-v/src/common/riscv_semihost.S:38
-  ebreak
-    //// Crashes here (Trigger semihosting breakpoint)
-    40200434:	00100073          	ebreak
-nuttx/arch/risc-v/src/common/riscv_semihost.S:39
-  srai zero, zero, 0x7
-    40200438:	40705013          	srai	zero,zero,0x7
-nuttx/arch/risc-v/src/common/riscv_semihost.S:40
-  ret
-    4020043c:	00008067          	ret
-    40200440:	0000                	unimp
-</code></pre></div>
-<p>TODO: Who calls <code>smh_call</code>?</p>
-<div class="example-wrap"><pre class="language-text"><code>host_call: nbr=0x1, parm=0x40406778, size=24
-</code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/common/riscv_hostfs.c#L35-L73">host_call</a> says that the Semihosting Call is for HOST_OPEN. (Open a file)</p>
-<p>When we disable Semihosting…</p>
-<div class="example-wrap"><pre class="language-text"><code>123067DFHBCqemu_rv_kernel_mappings: map I/O regions
-qemu_rv_kernel_mappings: map kernel text
-qemu_rv_kernel_mappings: map kernel data
-qemu_rv_kernel_mappings: connect the L1 and L2 page tables
-qemu_rv_kernel_mappings: map the page pool
-qemu_rv_mm_init: mmu_enable: satp=1077956608
-Inx_start: Entry
-elf_initialize: Registering ELF
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-work_start_lowpri: Starting low-priority kernel worker thread(s)
-nx_start_application: Starting init task: /system/bin/init
-load_absmodule: Loading /system/bin/init
-elf_loadbinary: Loading file: /system/bin/init
-elf_init: filename: /system/bin/init loadinfo: 0x404069e8
-host_call: nbr=0x1, parm=0x40406788, size=24
-_assert: Current Version: NuttX  12.0.3 6ed2880-dirty Jul 15 2023 21:00:59 risc-v
-_assert: Assertion failed panic: at file: common/riscv_hostfs.c:58 task: Idle Task 0x40200cd0
-up_dump_register: EPC: 000000004020f590
-up_dump_register: A0: 0000000040401630 A1: 000000000000003a A2: 0000000040219ee8 A3: 0000000000000000
-up_dump_register: A4: 000000000000000a A5: 0000000000000000 A6: 0000000000000009 A7: 0000000000000068
-up_dump_register: T0: 0000000000000030 T1: 0000000000000009 T2: 0000000000000020 T3: 000000000000002a
-up_dump_register: T4: 000000000000002e T5: 00000000000001ff T6: 000000000000002d
-up_dump_register: S0: 0000000000000000 S1: 0000000040400b28 S2: 0000000040401768 S3: 0000000040219ee8
-up_dump_register: S4: 0000000040229b10 S5: 000000000000003a S6: 0000000000000000 S7: 0000000000000000
-up_dump_register: S8: 00000000fff47194 S9: 0000000000000000 S10: 0000000000000000 S11: 0000000000000000
-up_dump_register: SP: 0000000040406650 FP: 0000000000000000 TP: 0000000000000001 RA: 000000004020f590
-dump_stack: User Stack:
-dump_stack:   base: 0x40406030
-dump_stack:   size: 00003024
-dump_stack:     sp: 0x40406650
-stack_dump: 0x40406640: 40406650 00000000 4020f688 00000000 00000000 00000000 40212bc8 00000000
-stack_dump: 0x40406660: deadbeef deadbeef 40406680 00000000 deadbeef deadbeef 7474754e 00000058
-stack_dump: 0x40406680: 404066b8 00000000 00000001 00000000 40406788 00000000 40205cc0 00000000
-stack_dump: 0x404066a0: 00000074 00000000 fffffff8 2e323100 00332e30 00000000 40229ae8 00000000
-stack_dump: 0x404066c0: 65366708 38383264 69642d30 20797472 206c754a 32203531 20333230 303a3132
-stack_dump: 0x404066e0: 39353a30 00000000 0000000a 00000000 00000000 73697200 00762d63 00000000
-stack_dump: 0x40406700: ffff9fef ffffffff 40406740 00000000 fff47194 00000000 00000000 00000000
-stack_dump: 0x40406720: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x40406740: 40408720 00000000 40406968 00000000 00000000 00000000 40204e80 00000000
-stack_dump: 0x40406760: 00000074 00000000 40213e3c 00000000 fff47194 00000000 40213e64 00000000
-stack_dump: 0x40406780: 00000000 00000000 404067d0 00000000 00000001 00000000 00000010 00000000
-stack_dump: 0x404067a0: 40408720 00000000 40213f7e 00000000 00000000 00000000 4020c7d6 00000000
-stack_dump: 0x404067c0: 00000800 00000000 40219e70 00000000 612f2e2e 2f737070 2f6e6962 74696e69
-stack_dump: 0x404067e0: 00000a00 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x40406800: fff47194 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x40406820: 00000000 00000000 00000000 00000000 40219e68 00000000 404069e8 00000000
-stack_dump: 0x40406840: 40219e68 00000000 40212bc8 00000000 402276b6 00000000 40406870 00000000
-stack_dump: 0x40406860: 00000000 00000000 fffffffc ffffffff 40219e68 00000000 404069e8 00000000
-stack_dump: 0x40406880: 40400170 00000000 40204fd4 00000000 0000006c 00000000 404069e8 00000000
-stack_dump: 0x404068a0: 40400170 00000000 40205098 00000000 40406908 00000000 40208f50 00000000
-stack_dump: 0x404068c0: 40406908 00000000 4020c8b0 00000000 40219e68 00000000 404086d0 00000000
-stack_dump: 0x404068e0: ffffffda ffffffff 40215b2a 00000000 40406968 00000000 00000001 00000000
-stack_dump: 0x40406900: 40400b28 00000000 40219e70 00000000 404086d0 00000000 40407e30 00000000
-stack_dump: 0x40406920: 40407370 00000000 40219e70 00000000 00000000 00000000 40219e01 00000000
-stack_dump: 0x40406940: 404069e8 00000000 404069e8 00000000 40219e68 00000000 4020dfc6 00000000
-stack_dump: 0x40406960: 40219e68 00000000 40205ec8 00000000 fff47194 00000000 404069b0 00000000
-stack_dump: 0x40406980: 00000000 00000000 40205ee8 00000000 00000000 00000000 404069b0 00000000
-stack_dump: 0x404069a0: 40408830 00000000 4020d876 00000000 40226b00 00000000 40219e68 00000000
-stack_dump: 0x404069c0: 40408830 00000000 00000000 00000000 40219e68 00000000 4020d87e 00000000
-stack_dump: 0x404069e0: 40406a18 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x40406a00: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x40406a20: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x40406a40: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x40406a60: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x40406a80: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x40406aa0: 40227710 00000000 40219e68 00000000 40408830 00000000 404001f8 00000000
-stack_dump: 0x40406ac0: fffffffe ffffffff 4020eb20 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x40406ae0: 40406b60 00000000 40406b68 00000000 40219e68 00000000 40408830 00000000
-stack_dump: 0x40406b00: 00000c00 00000000 4020d374 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x40406b20: 00000000 00000000 fffda848 00000000 fffffff3 ffffffff 40400b18 00000000
-stack_dump: 0x40406b40: 4040177c 00000000 00000064 00000000 00000c00 00000000 40200fde 00000000
-stack_dump: 0x40406b60: 00000000 00000000 40016400 00000000 00000000 00000000 00000c00 00000000
-stack_dump: 0x40406b80: 4040177c 00000000 40401780 00000000 40400b28 00000000 40200ed0 00000000
-stack_dump: 0x40406ba0: 40600000 00000000 00400000 00000000 00000026 00000000 00000003 00000000
-stack_dump: 0x40406bc0: fff47194 00000000 ffff1428 00000000 10000000 00000000 402004fe 00000000
-stack_dump: 0x40406be0: 00000400 00000000 4020053c 00000000 00000000 00000000 402000de 00000000
-dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
-dump_tasks:   ----   --- --- -------- ------- --- ------- ---------- -------- 0x404002b0      2048         0     0.0%    irq
-dump_task:       0     0   0 FIFO     Kthread N-- Running            0000000000000000 0x40406030      3024      2248    74.3%    Idle Task
-dump_task:       1     1 100 RR       Kthread --- Waiting Unlock     0000000000000000 0x4040a060      1952       264    13.5%    lpwork 0x404013e0
-</code></pre></div>
+<p>But NuttX crashes due to a Semihosting Problem. We’ll find out why in the next article!</p>
 <p><img src="https://lupyuen.github.io/images/privilege-semihosting.jpg" alt="Semihosting on RISC-V NuttX" /></p>
 <p><a href="https://github.com/apache/nuttx/issues/9501"><em>Semihosting on RISC-V NuttX</em></a></p>
-<h1 id="other-risc-v-ports-of-nuttx"><a href="#other-risc-v-ports-of-nuttx">9 Other RISC-V Ports of NuttX</a></h1>
+<h1 id="other-risc-v-ports-of-nuttx"><a href="#other-risc-v-ports-of-nuttx">8 Other RISC-V Ports of NuttX</a></h1>
 <p><em>Porting NuttX from QEMU to Star64 JH7110 looks challenging…</em></p>
 <p><em>Are there other ports of NuttX for RISC-V?</em></p>
 <p>We found the following NuttX Ports that run in <strong>RISC-V Supervisor Mode with OpenSBI</strong>.</p>
@@ -733,7 +621,7 @@ dump_task:       1     1 100 RR       Kthread --- Waiting Unlock     00000000000
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_ihc_sbi.c#L570">mpfs_ihc_sbi.c</a></p>
 </li>
 </ul>
-<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
