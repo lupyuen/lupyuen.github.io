@@ -265,7 +265,7 @@ int up_putc(int ch) {
   leave_critical_section(flags);
 </code></pre></div>
 <p><em>What’s this Critical Section?</em></p>
-<p>To avoid garbled output, NuttX prevents mutiple threads from printing to the UART Port at the same time.</p>
+<p>To avoid garbled output, NuttX prevents mutiple threads (or interrupts) from printing to the UART Port simultaneously.</p>
 <p>It uses a <a href="https://en.wikipedia.org/wiki/Critical_section"><strong>Critical Section</strong></a> to lock the chunk of code above, so only a single thread can run it at a time.</p>
 <p>But it seems the locking isn’t working… It never returns!</p>
 <p><em>How it is implemented?</em></p>
