@@ -749,39 +749,11 @@ dump_task:       1     1 100 RR       Kthread --- Waiting Unlock     00000000000
 
 TODO: See https://github.com/apache/nuttx/issues/9501
 
-# NuttX System Filesystem
+# Other RISC-V Ports of NuttX
 
-TODO: Where is `/system/bin/init`?
+_Porting NuttX from QEMU to Star64 JH7110 looks challenging..._
 
-```text
-→ grep INIT .config
-CONFIG_INIT_FILE=y
-CONFIG_INIT_ARGS=""
-CONFIG_INIT_STACKSIZE=3072
-CONFIG_INIT_PRIORITY=100
-CONFIG_INIT_FILEPATH="/system/bin/init"
-CONFIG_INIT_MOUNT=y
-CONFIG_INIT_MOUNT_SOURCE=""
-CONFIG_INIT_MOUNT_TARGET="/system"
-CONFIG_INIT_MOUNT_FSTYPE="hostfs"
-CONFIG_INIT_MOUNT_FLAGS=0x1
-CONFIG_INIT_MOUNT_DATA="fs=../apps"
-CONFIG_PATH_INITIAL="/system/bin"
-CONFIG_NSH_ARCHINIT=y
-```
-
-Which means that `../apps` is mounted as `/system`.
-
-That's how `/system/bin/init` gets loaded over Semihosting...
-
-```
-→ ls ../apps/bin       
-getprime hello    init     sh
-```
-
-# TODO
-
-TODO: up_mtimer_initialize
+_Are there other ports of NuttX for RISC-V?_
 
 TODO: Any NuttX Boards using Supervisor Mode / OpenSBI?
 
