@@ -342,6 +342,16 @@ Let's make it work for Star64...
 
 # Machine Mode becomes Supervisor Mode
 
+_Earlier we saw the `csrrc` instruction..._
+
+_From whence it came?_
+
+```text
+// (Atomically) Read and Clear Bits
+// in `mstatus` Register
+csrrc a5, mstatus, a5
+```
+
 TODO
 
 [`enter_critical_section`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/include/nuttx/irq.h#L156-L191) calls [`up_irq_save`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/include/irq.h#L660-L689)...
