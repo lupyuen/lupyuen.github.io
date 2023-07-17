@@ -2,13 +2,15 @@
 
 📝 _4 Jul 2023_
 
-![Wholemeal Sourdough with Bread Machine](https://lupyuen.github.io/images/sourdough.jpg)
+![Okiwana Black Sugar Sourdough with Dark Chocolate Couverture](https://lupyuen.github.io/images/sourdough.jpg)
+
+_Okiwana Black Sugar Sourdough with Dark Chocolate Couverture_
 
 # Wholemeal Sourdough Starter
 
-Daily routine for Sourdough Starter...
+Daily routine for Sourdough Starter, assuming that we bake every other day...
 
--   Every morning: Discard 2 ladles (2/3 cups) of Sourdough Starter.
+-   Every Other Morning: Discard 2 ladles (2/3 cups) of Sourdough Starter.
 
     Place the discard at Bread Machine, ready for baking.
     
@@ -18,7 +20,7 @@ Daily routine for Sourdough Starter...
     
     -   1/4 cup Boiled Water at Room Temperature
 
-    For final feeding of the day (just before bedtime), increase to:
+    Except for the night before baking, increase to:
 
     -   1 cup Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
     
@@ -26,13 +28,9 @@ Daily routine for Sourdough Starter...
 
     After each feeding, consistency should be like thick oatmeal. If it's too watery, skip the water.
 
--   Stir the Sourdough Starter with a chopstick (the blunt end) and keep cool in oven on metal rack.
+-   Stir the Sourdough Starter with a chopstick (the blunt end)
 
-    Place a [Freezer Pack](https://www.amazon.com/AmazonBasics-Reusable-Hard-Sided-Rectangular/dp/B07YX8SBJK/ref=sxin_18_trfobq2a_1_B07YX8SBJK) (wrapped in Dish Towel) on the Oven Rack if too warm. (Especially in Sunny Singapore)
-    
-    Should see tiny bubbles in Sourdough Starter.
-
--   Sourdough Starter should double in size by next morning, ready for baking.
+-   Every Other Morning: Sourdough Starter should double in size by morning, ready for baking.
 
     [(See pic below)](https://lupyuen.github.io/images/sourdough2.jpg)
 
@@ -42,29 +40,25 @@ Daily routine for Sourdough Starter...
 
 # Baking the Wholemeal Sourdough
 
-Every morning we bake a One-Pound Loaf of Sourdough Bread.
+Every other morning we bake a One-Pound Loaf of Sourdough Bread.
 
 Add in this sequence to Bread Machine...
 
 -   1 tablespoon (14g) Cold Unsalted Butter (from fridge)
 
--   4 tablespoons Boiling Water (100 deg C, to melt the butter)
-
--   2/3 cups (80g) Superfine Wholegrain Flour [(Prima)](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html)
-
--   2 ladles (2/3 cups) Wholemeal Sourdough Starter, ripe (fed) from above.
-
-    Don't scald the Sourdough Starter with the Boiling Water.
-
--   8 teaspoons Vital Wheat Gluten (to perk up the wholemeal flour)
-
 -   2 teaspoons Granulated Sugar
+
+    (Or 3 cubes [Okinawa Black Sugar](https://lupyuen.github.io/images/sourdough23.jpg))
+
+-   4 tablespoons Boiling Water (100 deg C, to melt the butter and sugar)
+
+-   2 ladles (2/3 cups) Wholemeal Sourdough Starter, ripe (fed) from above
+
+-   1 cup (120g) Bread Flour
 
 -   1/2 teaspoon (2.8g) Salt
 
 -   1/2 teaspoon Baking Soda / Sodium Bicarbonate (to neutralise the sourness and give extra poofiness). Too much Baking Soda will taste soapy!
-
-    Separate the Baking Soda from the Wet Ingredients. Pile on the Vital Wheat Gluten + Sugar + Salt, dig a little hole, place the Baking Soda inside the hole.
 
 -   NO MILK because the loaf will look burnt
 
@@ -83,12 +77,19 @@ Start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.c
 [(Page 17)](https://www.zojirushi.com/servicesupport/manuals/manual_pdf/bb_hac10.pdf)
 
 During Kneading:
--   Sprinkle Superfine Wholegrain Flour (or water) until dough becomes a Smooth Ball
--   But not too much flour (or water). Dough Ball should look like a Fresh Egg Yolk: Skin is shiny, slightly wet, inside is foamy liquid.
+
+-   Sprinkle a few teaspoons of [Superfine Wholegrain Flour](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html) until dough becomes a Smooth Ball
+
+-   But not too much flour. Dough Ball should look like a Fresh Egg Yolk: Skin is shiny, slightly wet, inside is foamy liquid.
+
 -   Tap a chopstick on the Dough Ball. The dough shouldn't stick to the chopstick.
+
     [(See pic below)](https://lupyuen.github.io/images/sourdough3.jpg)
+
 -   (Optional) At 4 hours 30 mins remaining, add 1/2 cup of Raisins (separated) or Prunes (quartered). This will sweeten the sourdough. Sourdough Starter will uplift any Dried Fruit, amazing!
+    
     [(See Raisin Sourdough below)](https://lupyuen.github.io/images/sourdough17.jpg)
+    
     [(And Prune Sourdough)](https://lupyuen.github.io/images/sourdough9.jpg)
 
 Adapted from [King Arthur Bread Machine Sourdough Recipe](https://www.kingarthurbaking.com/recipes/bread-machine-sourdough-bread-recipe) (Non-Wholemeal)
@@ -105,17 +106,13 @@ Add in this sequence to Bread Machine...
 
 -   4 tablespoons Boiling Water (100 deg C, to melt the sugar and butter)
 
--   2/3 cups (80g) [Brown Sugar Flour](https://lupyuen.github.io/images/sourdough24.jpg)
+-   2 ladles (2/3 cups) Wholemeal Sourdough Starter, ripe (fed) from above
 
--   2 ladles (2/3 cups) Wholemeal Sourdough Starter, ripe (fed) from above.
-
-    Don't scald the Sourdough Starter with the Boiling Water.
+-   1 cup (120g) [Brown Sugar Flour](https://lupyuen.github.io/images/sourdough24.jpg)
 
 -   1/2 teaspoon (2.8g) Salt
 
 -   1/2 teaspoon Baking Soda / Sodium Bicarbonate (to neutralise the sourness and give extra poofiness). Too much Baking Soda will taste soapy!
-
--   No Gluten
 
 -   NO MILK because the loaf will look burnt
 
@@ -139,7 +136,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 _Dark Chocolate Raisin Wholemeal Sourdough with Sunflower Seed_
 
-_(1/3 cup [Dark Couverture Chocolate](https://www.redmanshop.com/shop-by-category/baking-ingredients/chocolate-and-cocoa/chocolate-couvertures/000000000000012582.html), 1/3 cup Raisins, 1/2 cup Toasted Sunflower Seeds)_
+_(1/3 cup [Dark Chocolate Couverture](https://www.redmanshop.com/shop-by-category/baking-ingredients/chocolate-and-cocoa/chocolate-couvertures/000000000000012582.html), 1/3 cup Raisins, 1/2 cup Toasted Sunflower Seeds)_
 
 <hr>
 
