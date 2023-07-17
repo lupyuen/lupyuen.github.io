@@ -472,7 +472,7 @@ NuttX accesses the RISC-V Machine Mode Registers during __NuttX Startup__...
 
 1.  __NuttX Boot Code__ calls __qemu_rv_start__
 
-    [(As explained here)](TODO)
+    [(As explained here)](https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-in-supervisor-mode)
 
 1.  __qemu_rv_start__ assumes it's in __Machine Mode__
 
@@ -494,98 +494,50 @@ Yep, because NuttX boots in [__Supervisor Mode__](https://lupyuen.github.io/arti
 
 TODO
 
-Earlier we bypassed the Machine Mode and Supervisor Mode Initialisation during NuttX startup...
-
-From [qemu_rv_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L166-L231)
-
-```c
-void qemu_rv_start(int mhartid)
-{
-  // Clear BSS
-  DEBUGASSERT(mhartid == 0);
-  if (0 == mhartid) { qemu_rv_clear_bss(); }
-
-  // Bypass to S-Mode Init
-  qemu_rv_start_s(mhartid);
-
-  // Skip M-Mode Init
-  // TODO: What about `satp`, `stvec`, `pmpaddr0`, `pmpcfg0`?
-  ...
-}
-```
-
 Now we restore the Supervisor Mode Initialisation, commenting out the Machine Mode Initialisation...
 
 From [qemu_rv_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L165-L233):
 
 ```c
-void qemu_rv_start(int mhartid)
-{
-  DEBUGASSERT(mhartid == 0); //
+// Called by NuttX Boot Code
+// to init System Registers
+void qemu_rv_start(int mhartid) {
 
-  /* NOTE: still in M-mode */
+  // For the First CPU...
+  if (0 == mhartid) {
 
-  if (0 == mhartid)
-    {
-      qemu_rv_clear_bss();
+    // Clear the BSS
+    qemu_rv_clear_bss();
 
-      /* Initialize the per CPU areas */
+    // Initialize the per CPU areas
+    riscv_percpu_add_hart(mhartid);
+  }
 
-      riscv_percpu_add_hart(mhartid);
-    }
-
-  /* Disable MMU and enable PMP */
-
+  // Disable MMU and enable PMP
   WRITE_CSR(satp, 0x0);
-  //WRITE_CSR(pmpaddr0, 0x3fffffffffffffull);
-  //WRITE_CSR(pmpcfg0, 0xf);
+  // Removed: pmpaddr0 and pmpcfg0
 
-  /* Set exception and interrupt delegation for S-mode */
+  // Set exception and interrupt delegation for S-mode
+  // Removed: medeleg and mideleg
 
-  //WRITE_CSR(medeleg, 0xffff);
-  //WRITE_CSR(mideleg, 0xffff);
+  // Allow to write satp from S-mode
+  // Set mstatus to S-mode and enable SUM
+  // Removed: mstatus
 
-  /* Allow to write satp from S-mode */
-
-  //CLEAR_CSR(mstatus, MSTATUS_TVM);
-
-  /* Set mstatus to S-mode and enable SUM */
-
-  //CLEAR_CSR(mstatus, ~MSTATUS_MPP_MASK);
-  //SET_CSR(mstatus, MSTATUS_MPPS | SSTATUS_SUM);
-
-  /* Set the trap vector for S-mode */
-
+  // Set the trap vector for S-mode
   WRITE_CSR(stvec, (uintptr_t)__trap_vec);
 
-  /* Set the trap vector for M-mode */
+  // Set the trap vector for M-mode
+  // Removed: mtvec
 
-  //WRITE_CSR(mtvec, (uintptr_t)__trap_vec_m);
+  // TODO: up_mtimer_initialize();
 
-  if (0 == mhartid)
-    {
-      /* Only the primary CPU needs to initialize mtimer
-       * before entering to S-mode
-       */
+  // Set mepc to the entry
+  // Set a0 to mhartid explicitly and enter to S-mode
+  // Removed: mepc
 
-      // TODO
-      //up_mtimer_initialize();
-    }
-
-  /* Set mepc to the entry */
-
-  //WRITE_CSR(mepc, (uintptr_t)qemu_rv_start_s);
-
-  /* Set a0 to mhartid explicitly and enter to S-mode */
-
-  //asm volatile (
-  //    "mv a0, %0 \n"
-  //    "mret \n"
-  //    :: "r" (mhartid)
-  //);
-
-  // Jump to S-Mode Init ourselves
-  qemu_rv_start_s(mhartid); //
+  // Added: Jump to S-Mode Init ourselves
+  qemu_rv_start_s(mhartid);
 }
 ```
 
