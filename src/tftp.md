@@ -310,6 +310,8 @@ clk u5_dw_i2c_clk_apb already disabled
 
 __For Linux:__ We might need to load the [__Initial RAM Disk initrd__](https://lupyuen.github.io/articles/tftp#booti-command)
 
+![Auto-Boot from Network, every time we power on](https://lupyuen.github.io/images/privilege-run1.png)
+
 # Configure U-Boot for TFTP
 
 _But can we Auto-Boot from Network, every time we power on?_
@@ -354,7 +356,7 @@ saveenv
 
 [(See the __Network Boot Log__)](https://github.com/lupyuen/nuttx-star64#u-boot-bootloader-log-for-auto-network-boot)
 
-Now Star64 will __Auto-Boot from the Network__, every time we power up!
+Now Star64 will __Auto-Boot from the Network__, every time we power up! (Pic above)
 
 [(It will try to boot from __MicroSD before Network__)](https://lupyuen.github.io/articles/tftp#appendix-boot-script-for-u-boot-bootloader)
 
@@ -461,6 +463,8 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/tftp.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tftp.md)
+
+![Auto-Boot from Network, every time we power on](https://lupyuen.github.io/images/privilege-run1.png)
 
 # Appendix: Boot Script for U-Boot Bootloader
 
