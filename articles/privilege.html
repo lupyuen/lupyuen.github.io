@@ -75,9 +75,8 @@
 <li><a href="#nuttx-flat-mode-becomes-kernel-mode">6 NuttX Flat Mode becomes Kernel Mode</a><ul></ul></li>
 <li><a href="#initialise-risc-v-supervisor-mode">7 Initialise RISC-V Supervisor Mode</a><ul></ul></li>
 <li><a href="#qemu-semihosting-in-nuttx">8 QEMU Semihosting in NuttX</a><ul></ul></li>
-<li><a href="#nuttx-system-filesystem">9 NuttX System Filesystem</a><ul></ul></li>
-<li><a href="#todo">10 TODO</a><ul></ul></li>
-<li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Jul 2023</em></p>
+<li><a href="#other-risc-v-ports-of-nuttx">9 Other RISC-V Ports of NuttX</a><ul></ul></li>
+<li><a href="#whats-next">10 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/privilege-title.jpg" alt="RISC-V Privilege Levels on Star64 JH7110 SBC" /></p>
 <p>We’re in the super-early stage of porting <a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX Real-Time Operating System (RTOS)</strong></a> to the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer.</p>
 <p>(Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
@@ -682,30 +681,9 @@ dump_task:       0     0   0 FIFO     Kthread N-- Running            00000000000
 dump_task:       1     1 100 RR       Kthread --- Waiting Unlock     0000000000000000 0x4040a060      1952       264    13.5%    lpwork 0x404013e0
 </code></pre></div>
 <p>TODO: See https://github.com/apache/nuttx/issues/9501</p>
-<h1 id="nuttx-system-filesystem"><a href="#nuttx-system-filesystem">9 NuttX System Filesystem</a></h1>
-<p>TODO: Where is <code>/system/bin/init</code>?</p>
-<div class="example-wrap"><pre class="language-text"><code>→ grep INIT .config
-CONFIG_INIT_FILE=y
-CONFIG_INIT_ARGS=&quot;&quot;
-CONFIG_INIT_STACKSIZE=3072
-CONFIG_INIT_PRIORITY=100
-CONFIG_INIT_FILEPATH=&quot;/system/bin/init&quot;
-CONFIG_INIT_MOUNT=y
-CONFIG_INIT_MOUNT_SOURCE=&quot;&quot;
-CONFIG_INIT_MOUNT_TARGET=&quot;/system&quot;
-CONFIG_INIT_MOUNT_FSTYPE=&quot;hostfs&quot;
-CONFIG_INIT_MOUNT_FLAGS=0x1
-CONFIG_INIT_MOUNT_DATA=&quot;fs=../apps&quot;
-CONFIG_PATH_INITIAL=&quot;/system/bin&quot;
-CONFIG_NSH_ARCHINIT=y
-</code></pre></div>
-<p>Which means that <code>../apps</code> is mounted as <code>/system</code>.</p>
-<p>That’s how <code>/system/bin/init</code> gets loaded over Semihosting…</p>
-
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code>→ ls ../apps/bin       
-getprime hello    init     sh</code></pre></div>
-<h1 id="todo"><a href="#todo">10 TODO</a></h1>
-<p>TODO: up_mtimer_initialize</p>
+<h1 id="other-risc-v-ports-of-nuttx"><a href="#other-risc-v-ports-of-nuttx">9 Other RISC-V Ports of NuttX</a></h1>
+<p><em>Porting NuttX from QEMU to Star64 JH7110 looks challenging…</em></p>
+<p><em>Are there other ports of NuttX for RISC-V?</em></p>
 <p>TODO: Any NuttX Boards using Supervisor Mode / OpenSBI?</p>
 <p><code>litex</code> boots from OpenSBI to NuttX, but doesn’t callback to OpenSBI:</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/litex/litex_shead.S#L56">litex_shead.S</a></p>
@@ -717,7 +695,7 @@ getprime hello    init     sh</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_opensbi.c#L602">mpfs_opensbi.c</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_opensbi_utils.S#L62-L107">mpfs_opensbi_utils.S</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_ihc_sbi.c#L570">mpfs_ihc_sbi.c</a></p>
-<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">10 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
