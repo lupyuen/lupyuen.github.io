@@ -73,13 +73,11 @@
 <li><a href="#risc-v-privilege-levels">4 RISC-V Privilege Levels</a><ul></ul></li>
 <li><a href="#risc-v-machine-mode-becomes-supervisor-mode">5 RISC-V Machine Mode becomes Supervisor Mode</a><ul></ul></li>
 <li><a href="#nuttx-flat-mode-becomes-kernel-mode">6 NuttX Flat Mode becomes Kernel Mode</a><ul></ul></li>
-<li><a href="#initialise-supversor-mode">7 Initialise Supversor Mode</a><ul></ul></li>
-<li><a href="#enable-scheduler-logging">8 Enable Scheduler Logging</a><ul></ul></li>
-<li><a href="#initialise-risc-v-supervisor-mode">9 Initialise RISC-V Supervisor Mode</a><ul></ul></li>
-<li><a href="#qemu-semihosting-in-nuttx">10 QEMU Semihosting in NuttX</a><ul></ul></li>
-<li><a href="#nuttx-system-filesystem">11 NuttX System Filesystem</a><ul></ul></li>
-<li><a href="#todo">12 TODO</a><ul></ul></li>
-<li><a href="#whats-next">13 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Jul 2023</em></p>
+<li><a href="#initialise-risc-v-supervisor-mode">7 Initialise RISC-V Supervisor Mode</a><ul></ul></li>
+<li><a href="#qemu-semihosting-in-nuttx">8 QEMU Semihosting in NuttX</a><ul></ul></li>
+<li><a href="#nuttx-system-filesystem">9 NuttX System Filesystem</a><ul></ul></li>
+<li><a href="#todo">10 TODO</a><ul></ul></li>
+<li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/privilege-title.jpg" alt="RISC-V Privilege Levels on Star64 JH7110 SBC" /></p>
 <p>We’re in the super-early stage of porting <a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX Real-Time Operating System (RTOS)</strong></a> to the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer.</p>
 <p>(Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
@@ -88,6 +86,10 @@
 <li>
 <p>What are <strong>RISC-V Privilege Levels</strong> (pic above)</p>
 <p>(And why they make our OS a little more complicated)</p>
+</li>
+<li>
+<p>What is <strong>NuttX Kernel Mode</strong></p>
+<p>(And how it differs from Flat Mode)</p>
 </li>
 <li>
 <p>All about <strong>JH7110’s UART Registers</strong></p>
@@ -405,124 +407,21 @@ make
 ## tools/configure.sh rv-virt:nsh64
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64a/boards/risc-v/qemu-rv/rv-virt">(Complete Steps for <strong>Kernel Mode</strong>)</a></p>
-<p><em>What’s NuttX Kernel Mode?</em></p>
-<p>TODO</p>
-<p>grep for <code>csr</code> in <code>nuttx.S</code> shows that no more M-Mode Registers are used.</p>
+<p><em>What’s this Kernel Mode?</em></p>
+<p>According to the <a href="https://cwiki.apache.org/confluence/display/NUTTX/Memory+Configurations"><strong>NuttX Docs on Kernel Mode</strong></a>…</p>
+<blockquote>
+<p>“All of the code that executes within the Kernel executes in Privileged, Kernel Mode”</p>
+</blockquote>
+<blockquote>
+<p>“All User Applications are executed with their own private address environments in Unprivileged, User-Mode”</p>
+</blockquote>
+<p>Hence Kernel Mode is a lot more secure than the normal <strong>NuttX Flat Mode</strong>, which runs Kernel and User Application in the same Privileged, Unprotected Mode.</p>
+<p><a href="https://cwiki.apache.org/confluence/display/NUTTX/NuttX+Protected+Build">(More about <strong>Kernel Mode</strong>)</a></p>
+<p><em>Does it work?</em></p>
+<p>When we <code>grep</code> for <strong><code>csr</code> Instructions</strong> in the rebuilt NuttX Disassembly, we see (almost) no more Machine Mode Registers used.</p>
 <p>No more problems with Critical Section yay!</p>
-<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
-123067DFHBC
-qemu_rv_kernel_mappings: map I/O regions
-qemu_rv_kernel_mappings: map kernel text
-qemu_rv_kernel_mappings: map kernel data
-qemu_rv_kernel_mappings: connect the L1 and L2 page tables
-qemu_rv_kernel_mappings: map the page pool
-qemu_rv_mm_init: mmu_enable: satp=1077956608
-nx_start: Entry
-</code></pre></div><h1 id="initialise-supversor-mode"><a href="#initialise-supversor-mode">7 Initialise Supversor Mode</a></h1>
-<p>TODO</p>
-<p>And we bypassed Machine Mode Initialisation during startup…</p>
-<p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L166-L231">qemu_rv_start.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>void qemu_rv_start(int mhartid)
-{
-  // Clear BSS
-  DEBUGASSERT(mhartid == 0);
-  if (0 == mhartid) { qemu_rv_clear_bss(); }
-
-  // Bypass to S-Mode Init
-  qemu_rv_start_s(mhartid);
-
-  // Skip M-Mode Init
-  // TODO: What about `satp`, `stvec`, `pmpaddr0`, `pmpcfg0`?
-  ...
-}
-</code></pre></div>
-<ul>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1">See the <strong>Build Steps</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/31/files">See the <strong>Modified Files</strong></a></p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1">See the <strong>Build Outputs</strong></a></p>
-</li>
-</ul>
-<p><em>What about <code>satp</code>, <code>stvec</code>, <code>pmpaddr0</code>, <code>pmpcfg0</code>?</em></p>
-<p>We’ll handle them in a while.</p>
-<p>Sometimes we see this…</p>
-<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
-clk u5_dw_i2c_clk_core already disabled
-clk u5_dw_i2c_clk_apb already disabled
-123067DFAGHBCUnhandled exception: Store/AMO access fault
-EPC: 0000000040200628 RA: 00000000402004ba TVAL: ffffff8000008000
-EPC: ffffffff804ba628 RA: ffffffff804ba4ba reloc adjusted
-
-SP:  0000000040406a30 GP:  00000000ff735e00 TP:  0000000000000001
-T0:  0000000010000000 T1:  0000000000000037 T2:  ffffffffffffffff
-S0:  0000000040400000 S1:  0000000000000200 A0:  0000000000000003
-A1:  0000080000008000 A2:  0000000010100000 A3:  0000000040400000
-A4:  0000000000000026 A5:  0000000000000000 A6:  00000000101000e7
-A7:  0000000000000000 S2:  0000080000008000 S3:  0000000040600000
-S4:  0000000040400000 S5:  0000000000000000 S6:  0000000000000026
-S7:  00fffffffffff000 S8:  0000000040404000 S9:  0000000000001000
-S10: 0000000040400ab0 S11: 0000000000200000 T3:  0000000000000023
-T4:  000000004600f43a T5:  000000004600d000 T6:  000000004600cfff
-
-Code: 879b 0277 d7b3 00f6 f793 1ff7 078e 95be (b023 0105)
-</code></pre></div>
-<p>Which fails at…</p>
-<div class="example-wrap"><pre class="language-text"><code>nuttx/arch/risc-v/src/common/riscv_mmu.c:101
-  lntable[index] = (paddr | mmuflags);
-    40200620:	1ff7f793          	andi	a5,a5,511
-    40200624:	078e                	slli	a5,a5,0x3
-    40200626:	95be                	add	a1,a1,a5
-    40200628:	0105b023          	sd	a6,0(a1)  /* Fails Here */
-mmu_invalidate_tlb_by_vaddr():
-nuttx/arch/risc-v/src/common/riscv_mmu.h:237
-  __asm__ __volatile__
-    4020062c:	12d00073          	sfence.vma	zero,a3
-    40200630:	8082                	ret
-</code></pre></div>
-<p>TODO: Trace this Store/AMO Access Fault</p>
-<h1 id="enable-scheduler-logging"><a href="#enable-scheduler-logging">8 Enable Scheduler Logging</a></h1>
-<p>TODO</p>
-<p>Scheduler Logging in NuttX seems to have changed recently. To enable Scheduler Logging…</p>
-<ul>
-<li>
-<p><code>make menuconfig</code></p>
-</li>
-<li>
-<p>Disable this setting: Device Drivers &gt; System Logging &gt; Prepend timestamp to syslog message</p>
-</li>
-<li>
-<p>Enable these settings: Build Setup &gt; Debug Options &gt; Scheduler Debug Features &gt; Scheduler Error, Warnings and Info Output</p>
-</li>
-<li>
-<p>Also enable: Build Setup &gt; Debug Options &gt; Binary Loader Debug Features &gt; Binary Loader Error, Warnings and Info Output</p>
-</li>
-</ul>
-<p>After enabling Scheduler Logging and Binary Loader Logging, we see…</p>
-<div class="example-wrap"><pre class="language-text"><code>123067DFAGaclbHBCqemu_rv_kernel_mappings: map I/O regions
-qemu_rv_kernel_mappings: map kernel text
-qemu_rv_kernel_mappings: map kernel data
-qemu_rv_kernel_mappings: connect the L1 and L2 page tables
-qemu_rv_kernel_mappings: map the page pool
-qemu_rv_mm_init: mmu_enable: satp=1077956608
-Inx_start: Entry
-elf_initialize: Registering ELF
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-work_start_lowpri: Starting low-priority kernel worker thread(s)
-nx_start_application: Starting init task: /system/bin/init
-load_absmodule: Loading /system/bin/init
-elf_loadbinary: Loading file: /system/bin/init
-elf_init: filename: /system/bin/init loadinfo: 0x404069e8
-</code></pre></div>
-<p><em>What is <code>/system/bin/init</code>?</em></p>
-<p>We’ll find out in a while…</p>
-<p><a href="https://gist.github.com/lupyuen/19c0393167644280ec5c8deb3f15dcd9">Compare with QEMU Kernel Mode Run Log</a></p>
-<p><a href="https://gist.github.com/lupyuen/dce0cdbbf4a4bdf9c79e617b3fe1b679">See the QEMU Kernel Mode Build Log</a></p>
-<h1 id="initialise-risc-v-supervisor-mode"><a href="#initialise-risc-v-supervisor-mode">9 Initialise RISC-V Supervisor Mode</a></h1>
+<p>Let’s eliminate the remaining few Machine Mode Registers…</p>
+<h1 id="initialise-risc-v-supervisor-mode"><a href="#initialise-risc-v-supervisor-mode">7 Initialise RISC-V Supervisor Mode</a></h1>
 <p>TODO</p>
 <p>Earlier we bypassed the Machine Mode and Supervisor Mode Initialisation during NuttX startup…</p>
 <p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L166-L231">qemu_rv_start.c</a></p>
@@ -688,7 +587,7 @@ dump_task:       0     0   0 FIFO     Kthread N-- Running            00000000000
 dump_task:       1     1 100 RR       Kthread --- Waiting Unlock     0000000000000000 0x4040a060      1952       264    13.5%    lpwork 0x404013e0
 </code></pre></div>
 <p>But NuttX crashes. Let’s find out why…</p>
-<h1 id="qemu-semihosting-in-nuttx"><a href="#qemu-semihosting-in-nuttx">10 QEMU Semihosting in NuttX</a></h1>
+<h1 id="qemu-semihosting-in-nuttx"><a href="#qemu-semihosting-in-nuttx">8 QEMU Semihosting in NuttX</a></h1>
 <p>TODO</p>
 <p><code>mcause</code> is 3, “Machine Software Interrupt”.</p>
 <p>Exception Program Counter <code>0x4020</code> <code>0434</code> is in RISC-V Semihosting <code>smh_call</code>…</p>
@@ -802,7 +701,7 @@ dump_task:       0     0   0 FIFO     Kthread N-- Running            00000000000
 dump_task:       1     1 100 RR       Kthread --- Waiting Unlock     0000000000000000 0x4040a060      1952       264    13.5%    lpwork 0x404013e0
 </code></pre></div>
 <p>TODO: See https://github.com/apache/nuttx/issues/9501</p>
-<h1 id="nuttx-system-filesystem"><a href="#nuttx-system-filesystem">11 NuttX System Filesystem</a></h1>
+<h1 id="nuttx-system-filesystem"><a href="#nuttx-system-filesystem">9 NuttX System Filesystem</a></h1>
 <p>TODO: Where is <code>/system/bin/init</code>?</p>
 <div class="example-wrap"><pre class="language-text"><code>→ grep INIT .config
 CONFIG_INIT_FILE=y
@@ -824,7 +723,7 @@ CONFIG_NSH_ARCHINIT=y
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>→ ls ../apps/bin       
 getprime hello    init     sh</code></pre></div>
-<h1 id="todo"><a href="#todo">12 TODO</a></h1>
+<h1 id="todo"><a href="#todo">10 TODO</a></h1>
 <p>TODO: up_mtimer_initialize</p>
 <p>TODO: Any NuttX Boards using Supervisor Mode / OpenSBI?</p>
 <p><code>litex</code> boots from OpenSBI to NuttX, but doesn’t callback to OpenSBI:</p>
@@ -837,7 +736,7 @@ getprime hello    init     sh</code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_opensbi.c#L602">mpfs_opensbi.c</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_opensbi_utils.S#L62-L107">mpfs_opensbi_utils.S</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_ihc_sbi.c#L570">mpfs_ihc_sbi.c</a></p>
-<h1 id="whats-next"><a href="#whats-next">13 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">11 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
