@@ -319,6 +319,7 @@ clk u5_dw_i2c_clk_apb already disabled
 123067DFAGHBC
 </code></pre></div>
 <p><strong>For Linux:</strong> We might need to load the <a href="https://lupyuen.github.io/articles/tftp#booti-command"><strong>Initial RAM Disk initrd</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/privilege-run1.png" alt="Auto-Boot from Network, every time we power on" /></p>
 <h1 id="configure-u-boot-for-tftp"><a href="#configure-u-boot-for-tftp">5 Configure U-Boot for TFTP</a></h1>
 <p><em>But can we Auto-Boot from Network, every time we power on?</em></p>
 <p>Sure can! The trick is to use the <strong>saveenv</strong> command, which will save the U-Boot Settings into the <strong>Internal Flash Memory</strong>…</p>
@@ -356,7 +357,7 @@ saveenv
 </code></pre></div>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(See the <strong>U-Boot Settings</strong>)</a></p>
 <p><a href="https://github.com/lupyuen/nuttx-star64#u-boot-bootloader-log-for-auto-network-boot">(See the <strong>Network Boot Log</strong>)</a></p>
-<p>Now Star64 will <strong>Auto-Boot from the Network</strong>, every time we power up!</p>
+<p>Now Star64 will <strong>Auto-Boot from the Network</strong>, every time we power up! (Pic above)</p>
 <p><a href="https://lupyuen.github.io/articles/tftp#appendix-boot-script-for-u-boot-bootloader">(It will try to boot from <strong>MicroSD before Network</strong>)</a></p>
 <p><em>What if we change our mind?</em></p>
 <p>We can switch back to the <strong>Original Boot Targets</strong>…</p>
@@ -441,6 +442,7 @@ fi
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/tftp.md"><strong>lupyuen.github.io/src/tftp.md</strong></a></p>
+<p><img src="https://lupyuen.github.io/images/privilege-run1.png" alt="Auto-Boot from Network, every time we power on" /></p>
 <h1 id="appendix-boot-script-for-u-boot-bootloader"><a href="#appendix-boot-script-for-u-boot-bootloader">7 Appendix: Boot Script for U-Boot Bootloader</a></h1>
 <p><em>Earlier we saw boot_targets and bootcmd_tftp. How do they work?</em></p>
 <p>We talked about <strong>boot_targets</strong> and <strong>bootcmd_tftp</strong>…</p>
