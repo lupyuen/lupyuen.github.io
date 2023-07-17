@@ -196,7 +196,7 @@ We fix the NuttX Configuration in `make menuconfig`...
 
 And change it from 1 to 4: [knsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L11)
 
-```text
+```bash
 CONFIG_16550_REGINCR=4
 ```
 
@@ -399,14 +399,47 @@ Let's dig around for the elusive (but essential) __ARCH_USE_S_MODE__...
 
 # NuttX Flat Mode becomes Kernel Mode
 
-TODO
+_How to enable ARCH_USE_S_MODE in NuttX?_
 
-So we need to set [CONFIG_ARCH_USE_S_MODE](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/Kconfig#L278-L296).
+In the previous section we discovered that we should enable __ARCH_USE_S_MODE__, so that NuttX will run in __RISC-V Supervisor Mode__.
 
-Which is defined in Kernel Mode: [`rv-virt:knsh64`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig). So we change Build Config to...
+(Because Star64 JH7110 boots NuttX in Supervisor Mode)
+
+Searching NuttX for __ARCH_USE_S_MODE__ gives us this Build Configuration for __NuttX Kernel Mode__: [rv-virt:knsh64](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L43)
 
 ```bash
+CONFIG_ARCH_USE_S_MODE=y
+```
+
+_Perfect! Exactly what we need!_
+
+Thus we change the NuttX Build Configuration from __Flat Mode to Kernel Mode__...
+
+```bash
+## Configure NuttX for Kernel Mode and build NuttX
 tools/configure.sh rv-virt:knsh64
+make
+
+## Previously: Configure NuttX for Flat Mode
+## tools/configure.sh rv-virt:nsh64
+```
+
+TODO
+
+grep for `csr` in `nuttx.S` shows that no more M-Mode Registers are used.
+
+No more problems with Critical Section yay!
+
+```text
+Starting kernel ...
+123067DFHBC
+qemu_rv_kernel_mappings: map I/O regions
+qemu_rv_kernel_mappings: map kernel text
+qemu_rv_kernel_mappings: map kernel data
+qemu_rv_kernel_mappings: connect the L1 and L2 page tables
+qemu_rv_kernel_mappings: map the page pool
+qemu_rv_mm_init: mmu_enable: satp=1077956608
+nx_start: Entry
 ```
 
 # Initialise Supversor Mode
@@ -431,17 +464,6 @@ void qemu_rv_start(int mhartid)
   // TODO: What about `satp`, `stvec`, `pmpaddr0`, `pmpcfg0`?
   ...
 }
-```
-
-grep for `csr` in `nuttx.S` shows that no more M-Mode Registers are used.
-
-Now Critical Section is OK yay!
-
-```text
-Starting kernel ...
-clk u5_dw_i2c_clk_core already disabled
-clk u5_dw_i2c_clk_apb already disabled
-123067DFAGHBCIcd
 ```
 
 - [See the __Build Steps__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1)
