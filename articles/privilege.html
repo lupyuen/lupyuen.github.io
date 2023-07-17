@@ -71,12 +71,12 @@
 <li><a href="#uart-registers-are-spaced-differently">2 UART Registers are Spaced Differently</a><ul></ul></li>
 <li><a href="#critical-section-doesnt-return">3 Critical Section Doesn’t Return</a><ul></ul></li>
 <li><a href="#risc-v-privilege-levels">4 RISC-V Privilege Levels</a><ul></ul></li>
-<li><a href="#todo">5 TODO</a><ul></ul></li>
+<li><a href="#machine-mode-becomes-supervisor-mode">5 Machine Mode becomes Supervisor Mode</a><ul></ul></li>
 <li><a href="#enable-scheduler-logging">6 Enable Scheduler Logging</a><ul></ul></li>
 <li><a href="#initialise-risc-v-supervisor-mode">7 Initialise RISC-V Supervisor Mode</a><ul></ul></li>
 <li><a href="#qemu-semihosting-in-nuttx">8 QEMU Semihosting in NuttX</a><ul></ul></li>
 <li><a href="#nuttx-system-filesystem">9 NuttX System Filesystem</a><ul></ul></li>
-<li><a href="#todo-1">10 TODO</a><ul></ul></li>
+<li><a href="#todo">10 TODO</a><ul></ul></li>
 <li><a href="#whats-next">11 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/privilege-title.jpg" alt="RISC-V Privilege Levels on Star64 JH7110 SBC" /></p>
 <p>We’re in the super-early stage of porting <a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX Real-Time Operating System (RTOS)</strong></a> to the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer.</p>
@@ -337,7 +337,7 @@ csrrc a5, mstatus, a5
 <p>But QEMU doesn’t have this problem because it runs NuttX in (super-powerful) <strong>Machine Mode</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-privilege2.jpg" alt="NuttX QEMU runs in Machine Mode" /></p>
 <p>Let’s make it work for Star64…</p>
-<h1 id="todo"><a href="#todo">5 TODO</a></h1>
+<h1 id="machine-mode-becomes-supervisor-mode"><a href="#machine-mode-becomes-supervisor-mode">5 Machine Mode becomes Supervisor Mode</a></h1>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/include/nuttx/irq.h#L156-L191"><code>enter_critical_section</code></a> calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/include/irq.h#L660-L689"><code>up_irq_save</code></a>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Disable interrupts and return the previous value of the mstatus register
@@ -784,7 +784,7 @@ CONFIG_NSH_ARCHINIT=y
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>→ ls ../apps/bin       
 getprime hello    init     sh</code></pre></div>
-<h1 id="todo-1"><a href="#todo-1">10 TODO</a></h1>
+<h1 id="todo"><a href="#todo">10 TODO</a></h1>
 <p>TODO: up_mtimer_initialize</p>
 <p>TODO: Any NuttX Boards using Supervisor Mode / OpenSBI?</p>
 <p><code>litex</code> boots from OpenSBI to NuttX, but doesn’t callback to OpenSBI:</p>
