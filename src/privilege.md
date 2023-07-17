@@ -456,13 +456,37 @@ Hence Kernel Mode is a lot more secure than the normal __NuttX Flat Mode__, whic
 
 _Does it work?_
 
-When we `grep` for __`csr` Instructions__ in the rebuilt NuttX Disassembly, we see (almost) no more Machine Mode Registers used.
+When we `grep` for __`csr` Instructions__ in the rebuilt NuttX Disassembly, we see (nearly) all Machine-Mode __`m`__ Registers replaced by Supervisor-Mode __`s`__ Registers.
 
-No more problems with Critical Section yay!
+No more problems with [__Critical Section__](https://lupyuen.github.io/articles/privilege#critical-section-doesnt-return) yay!
 
-Let's eliminate the remaining few Machine Mode Registers...
+Let's eliminate the remaining Machine Mode Registers...
 
 # Initialise RISC-V Supervisor Mode
+
+_We rebuilt NuttX from Flat Mode to Kernel Mode..._
+
+_Why does it still access RISC-V Machine Mode Registers?_
+
+NuttX accesses the RISC-V Machine Mode Registers during NuttX Startup...
+
+1.  __NuttX Boot Code__ calls __qemu_rv_start__
+
+    [(As explained here)](TODO)
+
+1.  __qemu_rv_start__ assumes it's in __Machine Mode__
+
+    (Because QEMU boots NuttX in Machine Mode)
+
+1.  __qemu_rv_start__ initialises the __Machine Mode Registers__
+
+    (And some Supervisor Mode Registers)
+
+1.  __qemu_rv_start__ jumps to __qemu_rv_start_s__ in __Supervisor Mode__
+
+1.  __qemu_rv_start_s__ initialises the __Supervisor Mode Registers__
+
+_So we need to remove the Machine Mode Registers from qemu_rv_start?_
 
 TODO
 
