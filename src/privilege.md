@@ -352,43 +352,44 @@ _From whence it came?_
 csrrc a5, mstatus, a5
 ```
 
-TODO
+We saw the above RISC-V Assembly emitted by [__up_putc__](https://lupyuen.github.io/articles/privilege#critical-section-doesnt-return) and [__enter_critical_section__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/include/nuttx/irq.h#L156-L191), let's track it down.
 
-[`enter_critical_section`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/include/nuttx/irq.h#L156-L191) calls [`up_irq_save`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/include/irq.h#L660-L689)...
+[__enter_critical_section__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/include/nuttx/irq.h#L156-L191) calls [__up_irq_save__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/include/irq.h#L660-L689), which is defined as...
 
 ```c
-// Disable interrupts and return the previous value of the mstatus register
-static inline irqstate_t up_irq_save(void)
-{
-  irqstate_t flags;
-
-  /* Read mstatus & clear machine interrupt enable (MIE) in mstatus */
-
+// Disable interrupts
+static inline irqstate_t up_irq_save(void) {
+  ...
+  // Read `mstatus` and clear 
+  // Machine Interrupt Enable (MIE) in `mstatus`
   __asm__ __volatile__
-    (
-      "csrrc %0, " __XSTR(CSR_STATUS) ", %1\n"
-      : "=r" (flags)
-      : "r"(STATUS_IE)
-      : "memory"
-    );
-
-  /* Return the previous mstatus value so that it can be restored with
-   * up_irq_restore().
-   */
-
-  return flags;
-}
+  (
+    "csrrc %0, " __XSTR(CSR_STATUS) ", %1\n"
+    : "=r" (flags)
+    : "r"(STATUS_IE)
+    : "memory"
+  );
 ```
 
-`CSR_STATUS` is defined in [mode.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/include/mode.h#L35-L103):
+_Ah so CSR_STATUS maps to `mstatus`?_
+
+Yes indeed, __CSR_STATUS__ becomes __`mstatus`__: [mode.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/include/mode.h#L35-L103)
 
 ```c
+// If NuttX runs in Supervisor Mode...
 #ifdef CONFIG_ARCH_USE_S_MODE
-#  define CSR_STATUS        sstatus          /* Global status register */
-#else
-#  define CSR_STATUS        mstatus          /* Global status register */
+  // Use Global Status Register for Supervisor Mode
+  #define CSR_STATUS sstatus
+
+#else  // If NuttX runs in Machine Mode...
+  // Use Global Status Register for Machine Mode 
+  #define CSR_STATUS mstatus
 #endif
 ```
+
+But only if __ARCH_USE_S_MODE__ is disabled!
+
+TODO
 
 So we need to set [CONFIG_ARCH_USE_S_MODE](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/Kconfig#L278-L296).
 
