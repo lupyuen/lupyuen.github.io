@@ -14,6 +14,10 @@ In this article we'll talk about the interesting things that we learnt about __R
 
     (And why they make our OS a little more complicated)
 
+-   What is __NuttX Kernel Mode__
+
+    (And how it differs from Flat Mode)
+
 -   All about __JH7110's UART Registers__
 
     (And how they are different from other 16550 UARTs)
@@ -438,143 +442,25 @@ make
 
 [(Complete Steps for __Kernel Mode__)](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64a/boards/risc-v/qemu-rv/rv-virt)
 
-_What's NuttX Kernel Mode?_
+_What's this Kernel Mode?_
 
-TODO
+According to the [__NuttX Docs on Kernel Mode__](https://cwiki.apache.org/confluence/display/NUTTX/Memory+Configurations)...
 
-grep for `csr` in `nuttx.S` shows that no more M-Mode Registers are used.
+> "All of the code that executes within the Kernel executes in Privileged, Kernel Mode"
+
+> "All User Applications are executed with their own private address environments in Unprivileged, User-Mode"
+
+Hence Kernel Mode is a lot more secure than the normal __NuttX Flat Mode__, which runs Kernel and User Application in the same Privileged, Unprotected Mode.
+
+[(More about __Kernel Mode__)](https://cwiki.apache.org/confluence/display/NUTTX/NuttX+Protected+Build)
+
+_Does it work?_
+
+When we `grep` for __`csr` Instructions__ in the rebuilt NuttX Disassembly, we see (almost) no more Machine Mode Registers used.
 
 No more problems with Critical Section yay!
 
-```text
-Starting kernel ...
-123067DFHBC
-qemu_rv_kernel_mappings: map I/O regions
-qemu_rv_kernel_mappings: map kernel text
-qemu_rv_kernel_mappings: map kernel data
-qemu_rv_kernel_mappings: connect the L1 and L2 page tables
-qemu_rv_kernel_mappings: map the page pool
-qemu_rv_mm_init: mmu_enable: satp=1077956608
-nx_start: Entry
-```
-
-# Initialise Supversor Mode
-
-TODO
-
-And we bypassed Machine Mode Initialisation during startup...
-
-From [qemu_rv_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L166-L231)
-
-```c
-void qemu_rv_start(int mhartid)
-{
-  // Clear BSS
-  DEBUGASSERT(mhartid == 0);
-  if (0 == mhartid) { qemu_rv_clear_bss(); }
-
-  // Bypass to S-Mode Init
-  qemu_rv_start_s(mhartid);
-
-  // Skip M-Mode Init
-  // TODO: What about `satp`, `stvec`, `pmpaddr0`, `pmpcfg0`?
-  ...
-}
-```
-
-- [See the __Build Steps__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1)
-
-- [See the __Modified Files__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/31/files)
-
-- [See the __Build Outputs__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64-0.0.1)
-
-_What about `satp`, `stvec`, `pmpaddr0`, `pmpcfg0`?_
-
-We'll handle them in a while.
-
-Sometimes we see this...
-
-```text
-Starting kernel ...
-clk u5_dw_i2c_clk_core already disabled
-clk u5_dw_i2c_clk_apb already disabled
-123067DFAGHBCUnhandled exception: Store/AMO access fault
-EPC: 0000000040200628 RA: 00000000402004ba TVAL: ffffff8000008000
-EPC: ffffffff804ba628 RA: ffffffff804ba4ba reloc adjusted
-
-SP:  0000000040406a30 GP:  00000000ff735e00 TP:  0000000000000001
-T0:  0000000010000000 T1:  0000000000000037 T2:  ffffffffffffffff
-S0:  0000000040400000 S1:  0000000000000200 A0:  0000000000000003
-A1:  0000080000008000 A2:  0000000010100000 A3:  0000000040400000
-A4:  0000000000000026 A5:  0000000000000000 A6:  00000000101000e7
-A7:  0000000000000000 S2:  0000080000008000 S3:  0000000040600000
-S4:  0000000040400000 S5:  0000000000000000 S6:  0000000000000026
-S7:  00fffffffffff000 S8:  0000000040404000 S9:  0000000000001000
-S10: 0000000040400ab0 S11: 0000000000200000 T3:  0000000000000023
-T4:  000000004600f43a T5:  000000004600d000 T6:  000000004600cfff
-
-Code: 879b 0277 d7b3 00f6 f793 1ff7 078e 95be (b023 0105)
-```
-
-Which fails at...
-
-```text
-nuttx/arch/risc-v/src/common/riscv_mmu.c:101
-  lntable[index] = (paddr | mmuflags);
-    40200620:	1ff7f793          	andi	a5,a5,511
-    40200624:	078e                	slli	a5,a5,0x3
-    40200626:	95be                	add	a1,a1,a5
-    40200628:	0105b023          	sd	a6,0(a1)  /* Fails Here */
-mmu_invalidate_tlb_by_vaddr():
-nuttx/arch/risc-v/src/common/riscv_mmu.h:237
-  __asm__ __volatile__
-    4020062c:	12d00073          	sfence.vma	zero,a3
-    40200630:	8082                	ret
-```
-
-TODO: Trace this Store/AMO Access Fault
-
-# Enable Scheduler Logging
-
-TODO
-
-Scheduler Logging in NuttX seems to have changed recently. To enable Scheduler Logging...
-
-- `make menuconfig`
-
-- Disable this setting: Device Drivers > System Logging > Prepend timestamp to syslog message
-
-- Enable these settings: Build Setup > Debug Options > Scheduler Debug Features > Scheduler Error, Warnings and Info Output
-
-- Also enable: Build Setup > Debug Options > Binary Loader Debug Features > Binary Loader Error, Warnings and Info Output
-
-After enabling Scheduler Logging and Binary Loader Logging, we see...
-
-```text
-123067DFAGaclbHBCqemu_rv_kernel_mappings: map I/O regions
-qemu_rv_kernel_mappings: map kernel text
-qemu_rv_kernel_mappings: map kernel data
-qemu_rv_kernel_mappings: connect the L1 and L2 page tables
-qemu_rv_kernel_mappings: map the page pool
-qemu_rv_mm_init: mmu_enable: satp=1077956608
-Inx_start: Entry
-elf_initialize: Registering ELF
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-work_start_lowpri: Starting low-priority kernel worker thread(s)
-nx_start_application: Starting init task: /system/bin/init
-load_absmodule: Loading /system/bin/init
-elf_loadbinary: Loading file: /system/bin/init
-elf_init: filename: /system/bin/init loadinfo: 0x404069e8
-```
-
-_What is `/system/bin/init`?_
-
-We'll find out in a while...
-
-[Compare with QEMU Kernel Mode Run Log](https://gist.github.com/lupyuen/19c0393167644280ec5c8deb3f15dcd9)
-
-[See the QEMU Kernel Mode Build Log](https://gist.github.com/lupyuen/dce0cdbbf4a4bdf9c79e617b3fe1b679)
+Let's eliminate the remaining few Machine Mode Registers...
 
 # Initialise RISC-V Supervisor Mode
 
