@@ -69,7 +69,7 @@
     <nav id="TOC"><ul>
 <li><a href="#wait-forever-in-uart-transmit">1 Wait Forever in UART Transmit</a><ul></ul></li>
 <li><a href="#uart-registers-are-spaced-differently">2 UART Registers are Spaced Differently</a><ul></ul></li>
-<li><a href="#hang-in-enter-critical-section">3 Hang in Enter Critical Section</a><ul></ul></li>
+<li><a href="#critical-section-doesnt-return">3 Critical Section Doesn’t Return</a><ul></ul></li>
 <li><a href="#risc-v-privilege-levels">4 RISC-V Privilege Levels</a><ul></ul></li>
 <li><a href="#enable-scheduler-logging">5 Enable Scheduler Logging</a><ul></ul></li>
 <li><a href="#initialise-risc-v-supervisor-mode">6 Initialise RISC-V Supervisor Mode</a><ul></ul></li>
@@ -106,7 +106,7 @@ static void u16550_putc(
   int ch                      // Character to be printed
 ) {
   // Wait for UART Port to be ready to transmit.
-  // Note: This will get stuck!
+  // TODO: This will get stuck!
   while (
     (
       u16550_serialin(   // Read UART Register...
@@ -247,27 +247,28 @@ nx_start: Entry
 </code></pre></div>
 <p><strong>Lesson Learnt:</strong> 8250 UARTs (and 16550) can work a little differently across Hardware Platforms! (Due to Word Alignment maybe?)</p>
 <p>Let’s move on to the tougher topic: Machine Mode vs Supervisor Mode…</p>
-<h1 id="hang-in-enter-critical-section"><a href="#hang-in-enter-critical-section">3 Hang in Enter Critical Section</a></h1>
-<p>TODO</p>
-<p>NuttX on Star64 JH7110 hangs when entering Critical Section…</p>
-<p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/drivers/serial/uart_16550.c#L1713-L1737">uart_16550.c</a>:</p>
-<div class="example-wrap"><pre class="language-c"><code>int up_putc(int ch)
-{
-  FAR struct u16550_s *priv = (FAR struct u16550_s *)CONSOLE_DEV.priv;
-  irqstate_t flags;
-
-  /* All interrupts must be disabled to prevent re-entrancy and to prevent
-   * interrupts from firing in the serial driver code.
-   */
-
-  //// This will hang!
-  flags = enter_critical_section();
+<h1 id="critical-section-doesnt-return"><a href="#critical-section-doesnt-return">3 Critical Section Doesn’t Return</a></h1>
+<p>We ran into another problem when printing to the UART Port…</p>
+<p>NuttX on Star64 gets stuck when we enter a <strong>Critical Section</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/drivers/serial/uart_16550.c#L1713-L1737">uart_16550.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Print a character to the UART Port
+int up_putc(int ch) {
   ...
+  // Enter the Critical Section
+  // TODO: This doesn&#39;t return!
+  flags = enter_critical_section();
+
+  // Print the character
   u16550_putc(priv, ch);
+
+  // Exit the Critical Section
   leave_critical_section(flags);
-  return ch;
-}
 </code></pre></div>
+<p><em>What’s this Critical Section?</em></p>
+<p>To avoid garbled output, NuttX prevents mutiple threads from printing to the UART Port at the same time.</p>
+<p>It uses a <a href="https://en.wikipedia.org/wiki/Critical_section"><strong>Critical Section</strong></a> to lock the chunk of code above, so only a single thread can run it at a time.</p>
+<p>But it seems the locking isn’t working… It never returns!</p>
+<p><em>How it is implemented?</em></p>
+<p>TODO</p>
 <p>Which assembles to…</p>
 <div class="example-wrap"><pre class="language-text"><code>int up_putc(int ch)
 {
