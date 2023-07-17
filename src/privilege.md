@@ -230,6 +230,8 @@ qemu_rv_mm_init: mmu_enable: satp=1077956608
 nx_start: Entry
 ```
 
+[(Source)](https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode)
+
 __Lesson Learnt:__ 8250 UARTs (and 16550) can work a little differently across Hardware Platforms! (Due to Word Alignment maybe?)
 
 Let's move on to the tougher topic: Machine Mode vs Supervisor Mode...
@@ -335,6 +337,8 @@ That's why NuttX failed to modify the __`mstatus`__!
 _What's the equivalent of `mstatus` for Supervisor Mode?_
 
 NuttX should use the [__`sstatus`__](https://five-embeddev.com/riscv-isa-manual/latest/supervisor.html#sstatus) Register instead.
+
+(We should switch all Machine-Mode __`m`__ Registers to Supervisor-Mode __`s`__ Registers)
 
 _What runs in Machine Mode?_
 
@@ -474,11 +478,13 @@ Hence Kernel Mode is a lot more secure than the normal __NuttX Flat Mode__, whic
 
 _Does it work?_
 
-When we `grep` for __`csr` Instructions__ in the rebuilt NuttX Disassembly, we see (nearly) all Machine-Mode __`m`__ Registers replaced by Supervisor-Mode __`s`__ Registers.
+When we `grep` for __`csr` Instructions__ in the rebuilt NuttX Disassembly [__nuttx.S__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64a-0.0.1/nuttx.S)...
+
+We see (nearly) all Machine-Mode __`m`__ Registers replaced by Supervisor-Mode __`s`__ Registers.
 
 No more problems with [__Critical Section__](https://lupyuen.github.io/articles/privilege#critical-section-doesnt-return) yay!
 
-Let's eliminate the remaining Machine Mode Registers...
+Let's eliminate the remaining Machine-Mode Registers...
 
 ![TODO](https://lupyuen.github.io/images/privilege-run2.png)
 
@@ -486,9 +492,9 @@ Let's eliminate the remaining Machine Mode Registers...
 
 _We rebuilt NuttX from Flat Mode to Kernel Mode..._
 
-_Why does it still need RISC-V Machine Mode Registers?_
+_Why does it still need RISC-V Machine-Mode Registers?_
 
-NuttX accesses the RISC-V Machine Mode Registers during __NuttX Startup__...
+NuttX accesses the RISC-V Machine-Mode Registers during __NuttX Startup__...
 
 1.  __NuttX Boot Code__ calls __qemu_rv_start__
 
@@ -498,21 +504,21 @@ NuttX accesses the RISC-V Machine Mode Registers during __NuttX Startup__...
 
     [(Because QEMU boots NuttX in Machine Mode)](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels)
 
-1.  __qemu_rv_start__ initialises the __Machine Mode Registers__
+1.  __qemu_rv_start__ initialises the __Machine-Mode Registers__
 
-    (And some Supervisor Mode Registers)
+    (And some Supervisor-Mode Registers)
 
 1.  __qemu_rv_start__ jumps to __qemu_rv_start_s__ in __Supervisor Mode__
 
-1.  __qemu_rv_start_s__ initialises the __Supervisor Mode Registers__
+1.  __qemu_rv_start_s__ initialises the __Supervisor-Mode Registers__
 
-_So we need to remove the Machine Mode Registers from qemu_rv_start?_
+_So we need to remove the Machine-Mode Registers from qemu_rv_start?_
 
 Yep, because NuttX boots in [__Supervisor Mode__](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels) on Star64.
 
-(And can't access the Machine Mode Registers)
+(And can't access the Machine-Mode Registers)
 
-This is how we fixed __qemu_rv_start__ to remove the Machine Mode Registers: [qemu_rv_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L165-L233):
+This is how we fixed __qemu_rv_start__ to remove the Machine-Mode Registers: [qemu_rv_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L165-L233):
 
 ```c
 // Called by NuttX Boot Code
@@ -561,10 +567,11 @@ We're not sure if this is entirely corect... But it's a good start!
 
 (Yeah we're naively copying code again sigh)
 
-TODO: Now NuttX boots further!
+Now NuttX boots further!
 
 ```text
-123067DFHBCqemu_rv_kernel_mappings: map I/O regions
+123067DFHBC
+qemu_rv_kernel_mappings: map I/O regions
 qemu_rv_kernel_mappings: map kernel text
 qemu_rv_kernel_mappings: map kernel data
 qemu_rv_kernel_mappings: connect the L1 and L2 page tables
@@ -579,67 +586,22 @@ nx_start_application: Starting init task: /system/bin/init
 load_absmodule: Loading /system/bin/init
 elf_loadbinary: Loading file: /system/bin/init
 elf_init: filename: /system/bin/init loadinfo: 0x404069e8
+```
+
+[(Source)](https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode)
+
+But NuttX crashes due to a Semihosting Problem. (Pic above)
+
+```text
 riscv_exception: EXCEPTION: Breakpoint. MCAUSE: 0000000000000003, EPC: 0000000040200434, MTVAL: 0000000000000000
 riscv_exception: PANIC!!! Exception = 0000000000000003
 _assert: Current Version: NuttX  12.0.3 2261b80-dirty Jul 15 2023 20:38:57 risc-v
 _assert: Assertion failed panic: at file: common/riscv_exception.c:85 task: Idle Task 0x40200ce6
 up_dump_register: EPC: 0000000040200434
 up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000 A3: 0000000000000001
-up_dump_register: A4: 0000000000000000 A5: 00000000404067e0 A6: 0000000000000074 A7: fffffffffffffff8
-up_dump_register: T0: 0000000000000030 T1: 0000000000000007 T2: 0000000000000020 T3: 0000000040406aa0
-up_dump_register: T4: 0000000040406a98 T5: 00000000000001ff T6: 000000000000002d
-up_dump_register: S0: 0000000000000000 S1: 0000000040406968 S2: 0000000040408720 S3: 0000000000000000
-up_dump_register: S4: 0000000000000000 S5: 0000000000000000 S6: 0000000000000000 S7: 0000000000000000
-up_dump_register: S8: 00000000fff47194 S9: 0000000000000000 S10: 0000000000000000 S11: 0000000000000000
-up_dump_register: SP: 0000000040406760 FP: 0000000000000000 TP: 0000000000000001 RA: 0000000040213e24
-dump_stack: User Stack:
-dump_stack:   base: 0x40406030
-dump_stack:   size: 00003024
-dump_stack:     sp: 0x40406760
-stack_dump: 0x40406760: 00000000 00000000 40213e6a 00000000 fff47194 00000000 404067d0 00000000
-stack_dump: 0x40406780: 00000001 00000000 00000010 00000000 00000000 00000000 40213ffc 00000000
-stack_dump: 0x404067a0: 40408720 00000000 40406968 00000000 00000000 00000000 4020c7ec 00000000
-stack_dump: 0x404067c0: 00000800 00000000 40219f30 00000000 612f2e2e 2f737070 2f6e6962 74696e69
-stack_dump: 0x404067e0: 00000a00 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x40406800: fff47194 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x40406820: 00000000 00000000 00000000 00000000 40219f28 00000000 404069e8 00000000
-stack_dump: 0x40406840: 40219f28 00000000 40212bde 00000000 40227776 00000000 40406870 00000000
-stack_dump: 0x40406860: 00000000 00000000 fffffffc ffffffff 40219f28 00000000 404069e8 00000000
-stack_dump: 0x40406880: 40400170 00000000 40204fea 00000000 0000006c 00000000 404069e8 00000000
-stack_dump: 0x404068a0: 40400170 00000000 402050ae 00000000 40406908 00000000 40208f66 00000000
-stack_dump: 0x404068c0: 40406908 00000000 4020c8c6 00000000 40219f28 00000000 404086d0 00000000
-stack_dump: 0x404068e0: ffffffda ffffffff 40215be6 00000000 40406968 00000000 00000001 00000000
-stack_dump: 0x40406900: 40400b28 00000000 40219f30 00000000 404086d0 00000000 40407e30 00000000
-stack_dump: 0x40406920: 40407370 00000000 40219f30 00000000 00000000 00000000 40219f01 00000000
-stack_dump: 0x40406940: 404069e8 00000000 404069e8 00000000 40219f28 00000000 4020dfdc 00000000
-stack_dump: 0x40406960: 40219f28 00000000 40205ede 00000000 fff47194 00000000 404069b0 00000000
-stack_dump: 0x40406980: 00000000 00000000 40205efe 00000000 00000000 00000000 404069b0 00000000
-stack_dump: 0x404069a0: 40408830 00000000 4020d88c 00000000 40226bc0 00000000 40219f28 00000000
-stack_dump: 0x404069c0: 40408830 00000000 00000000 00000000 40219f28 00000000 4020d894 00000000
-stack_dump: 0x404069e0: 40406a18 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x40406a00: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x40406a20: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x40406a40: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x40406a60: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x40406a80: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x40406aa0: 402277d0 00000000 40219f28 00000000 40408830 00000000 404001f8 00000000
-stack_dump: 0x40406ac0: fffffffe ffffffff 4020eb36 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x40406ae0: 40406b60 00000000 40406b68 00000000 40219f28 00000000 40408830 00000000
-stack_dump: 0x40406b00: 00000c00 00000000 4020d38a 00000000 00000000 00000000 00000000 00000000
-stack_dump: 0x40406b20: 00000000 00000000 fffda848 00000000 fffffff3 ffffffff 40400b18 00000000
-stack_dump: 0x40406b40: 4040177c 00000000 00000064 00000000 00000c00 00000000 40200ff4 00000000
-stack_dump: 0x40406b60: 00000000 00000000 40016400 00000000 00000000 00000000 00000c00 00000000
-stack_dump: 0x40406b80: 4040177c 00000000 40401780 00000000 40400b28 00000000 40200ee6 00000000
-stack_dump: 0x40406ba0: 40600000 00000000 00400000 00000000 00000026 00000000 00000003 00000000
-stack_dump: 0x40406bc0: fff47194 00000000 ffff1428 00000000 10000000 00000000 40200514 00000000
-stack_dump: 0x40406be0: 00000400 00000000 40200552 00000000 40000000 00000000 402000de 00000000
-dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
-dump_tasks:   ----   --- --- -------- ------- --- ------- ---------- -------- 0x404002b0      2048      1160    56.6%    irq
-dump_task:       0     0   0 FIFO     Kthread N-- Running            0000000000000000 0x40406030      3024      1448    47.8%    Idle Task
-dump_task:       1     1 100 RR       Kthread --- Waiting Unlock     0000000000000000 0x4040a060      1952       264    13.5%    lpwork 0x404013e0
 ```
 
-But NuttX crashes due to a Semihosting Problem. (Pic above)
+[(Source)](https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode)
 
 We'll find out why in the next article!
 
@@ -659,29 +621,29 @@ They might be good references for Star64...
 
 [__LiteX Arty-A7__](https://nuttx.apache.org/docs/latest/platforms/risc-v/litex/index.html) will boot from OpenSBI to NuttX (but doesn't call back to OpenSBI)...
 
-- [litex/arty_a7](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/litex/arty_a7)
+- [litex/arty_a7](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/litex/arty_a7): RISC-V Board
 
-- [knsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/litex/arty_a7/configs/knsh/defconfig#L34)
+- [knsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/litex/arty_a7/configs/knsh/defconfig#L34): Build Configuration
 
-- [litex_shead.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/litex/litex_shead.S#L56)
+- [litex_shead.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/litex/litex_shead.S#L56): Boot Code
 
-- [litex_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/litex/litex_start.c#L50)
+- [litex_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/litex/litex_start.c#L50): Start Code
 
 [__MPFS ICICLE__](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/mpfs/icicle) will run a copy of OpenSBI inside NuttX (so it boots in Machine Mode before Supervisor Mode)...
 
-- [mpfs/icicle](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/mpfs/icicle)
+- [mpfs/icicle](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/mpfs/icicle): RISC-V Board
 
-- [knsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/boards/risc-v/mpfs/icicle/configs/knsh/defconfig#L39)
+- [knsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/boards/risc-v/mpfs/icicle/configs/knsh/defconfig#L39): Build Configuration
 
-- [mpfs_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_start.c#L52)
+- [mpfs_shead.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_shead.S#L62): Boot Code
 
-- [mpfs_shead.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_shead.S#L62)
+- [mpfs_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_start.c#L52): Start Code
 
-- [mpfs_opensbi.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_opensbi.c#L602)
+- [mpfs_opensbi.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_opensbi.c#L602): OpenSBI in NuttX
 
-- [mpfs_opensbi_utils.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_opensbi_utils.S#L62-L107)
+- [mpfs_opensbi_utils.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_opensbi_utils.S#L62-L107): OpenSBI Helper
 
-- [mpfs_ihc_sbi.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_ihc_sbi.c#L570)
+- [mpfs_ihc_sbi.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_ihc_sbi.c#L570): OpenSBI Inter-Hart Comms
 
 # What's Next
 
