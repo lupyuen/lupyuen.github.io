@@ -380,9 +380,19 @@ static inline irqstate_t up_irq_save(void) {
 <p>Let’s dig around for the elusive (but essential) <strong>ARCH_USE_S_MODE</strong>…</p>
 <h1 id="nuttx-flat-mode-becomes-kernel-mode"><a href="#nuttx-flat-mode-becomes-kernel-mode">6 NuttX Flat Mode becomes Kernel Mode</a></h1>
 <p><em>How to enable ARCH_USE_S_MODE in NuttX?</em></p>
-<p>In the previous section we discovered that we should enable <strong>ARCH_USE_S_MODE</strong>, so that NuttX will run in <strong>RISC-V Supervisor Mode</strong>.</p>
+<p>In the previous section we discovered that we should enable <strong>ARCH_USE_S_MODE</strong>, so that NuttX will run in <strong>RISC-V Supervisor Mode</strong>…</p>
+<div class="example-wrap"><pre class="language-c"><code>// If NuttX runs in Supervisor Mode...
+#ifdef CONFIG_ARCH_USE_S_MODE
+  // Use Global Status Register for Supervisor Mode
+  #define CSR_STATUS sstatus
+
+#else  // If NuttX runs in Machine Mode...
+  // Use Global Status Register for Machine Mode 
+  #define CSR_STATUS mstatus
+#endif
+</code></pre></div>
 <p>(Because Star64 JH7110 boots NuttX in Supervisor Mode)</p>
-<p>Searching NuttX for <strong>ARCH_USE_S_MODE</strong> gives us this Build Configuration for <strong>NuttX Kernel Mode</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L43">rv-virt:knsh64</a></p>
+<p>Searching NuttX for <strong>ARCH_USE_S_MODE</strong> gives us this Build Configuration for <strong>NuttX Kernel Mode</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L43">knsh64/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_ARCH_USE_S_MODE=y
 </code></pre></div>
 <p><em>Perfect! Exactly what we need!</em></p>
@@ -394,6 +404,8 @@ make
 ## Previously: Configure NuttX for Flat Mode
 ## tools/configure.sh rv-virt:nsh64
 </code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64a/boards/risc-v/qemu-rv/rv-virt">(Complete Steps for <strong>Kernel Mode</strong>)</a></p>
+<p><em>What’s NuttX Kernel Mode?</em></p>
 <p>TODO</p>
 <p>grep for <code>csr</code> in <code>nuttx.S</code> shows that no more M-Mode Registers are used.</p>
 <p>No more problems with Critical Section yay!</p>
