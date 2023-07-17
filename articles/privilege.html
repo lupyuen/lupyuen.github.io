@@ -127,7 +127,7 @@ static void u16550_putc(
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/drivers/serial/uart_16550.c#L1638-L1642">(Source)</a></p>
 <p><em>Is the UART Base Address correct?</em></p>
-<p>Actually it’s correct. Previously we validated the <strong>16550 UART Base Address for JH7110</strong>, and we successfully printed to it…</p>
+<p>Absolutely it’s correct. Previously we validated the <strong>16550 UART Base Address for JH7110</strong>…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64"><strong>“UART Controller on Star64”</strong></a></p>
@@ -136,7 +136,13 @@ static void u16550_putc(
 <p><a href="https://lupyuen.github.io/articles/nuttx2#boot-nuttx-on-star64"><strong>“Boot NuttX on Star64”</strong></a></p>
 </li>
 </ul>
-<p>But strangely it loops forever while waiting for the UART to be ready!</p>
+<p>And we successfully printed to UART…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Print `A` to the UART Port at
+// UART Base Address 0x1000 0000
+*(volatile uint8_t *) 0x10000000 = &#39;A&#39;;
+</code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L159">(Source)</a></p>
+<p>But strangely it loops forever waiting for the UART Port to be ready!</p>
 <p><em>What’s inside u16550_serialin?</em></p>
 <div class="example-wrap"><pre class="language-c"><code>u16550_serialin(   // Read UART Register...
   priv,            // From UART Base Address...
@@ -681,7 +687,8 @@ dump_tasks:   ----   --- --- -------- ------- --- ------- ---------- -------- 0x
 dump_task:       0     0   0 FIFO     Kthread N-- Running            0000000000000000 0x40406030      3024      2248    74.3%    Idle Task
 dump_task:       1     1 100 RR       Kthread --- Waiting Unlock     0000000000000000 0x4040a060      1952       264    13.5%    lpwork 0x404013e0
 </code></pre></div>
-<p>TODO: See https://github.com/apache/nuttx/issues/9501</p>
+<p><img src="https://lupyuen.github.io/images/privilege-semihosting.jpg" alt="Semihosting on RISC-V NuttX" /></p>
+<p><a href="https://github.com/apache/nuttx/issues/9501"><em>Semihosting on RISC-V NuttX</em></a></p>
 <h1 id="other-risc-v-ports-of-nuttx"><a href="#other-risc-v-ports-of-nuttx">9 Other RISC-V Ports of NuttX</a></h1>
 <p><em>Porting NuttX from QEMU to Star64 JH7110 looks challenging…</em></p>
 <p><em>Are there other ports of NuttX for RISC-V?</em></p>
