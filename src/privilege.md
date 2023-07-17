@@ -39,7 +39,7 @@ static void u16550_putc(
   int ch                      // Character to be printed
 ) {
   // Wait for UART Port to be ready to transmit.
-  // Note: This will get stuck!
+  // TODO: This will get stuck!
   while (
     (
       u16550_serialin(   // Read UART Register...
@@ -218,32 +218,40 @@ __Lesson Learnt:__ 8250 UARTs (and 16550) can work a little differently across H
 
 Let's move on to the tougher topic: Machine Mode vs Supervisor Mode...
 
-# Hang in Enter Critical Section
+# Critical Section Doesn't Return
 
-TODO
+We ran into another problem when printing to the UART Port...
 
-NuttX on Star64 JH7110 hangs when entering Critical Section...
-
-From [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/drivers/serial/uart_16550.c#L1713-L1737):
+NuttX on Star64 gets stuck when we enter a __Critical Section__: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/drivers/serial/uart_16550.c#L1713-L1737)
 
 ```c
-int up_putc(int ch)
-{
-  FAR struct u16550_s *priv = (FAR struct u16550_s *)CONSOLE_DEV.priv;
-  irqstate_t flags;
-
-  /* All interrupts must be disabled to prevent re-entrancy and to prevent
-   * interrupts from firing in the serial driver code.
-   */
-
-  //// This will hang!
-  flags = enter_critical_section();
+// Print a character to the UART Port
+int up_putc(int ch) {
   ...
+  // Enter the Critical Section
+  // TODO: This doesn't return!
+  flags = enter_critical_section();
+
+  // Print the character
   u16550_putc(priv, ch);
+
+  // Exit the Critical Section
   leave_critical_section(flags);
-  return ch;
-}
 ```
+
+_What's this Critical Section?_
+
+To avoid garbled output, NuttX prevents mutiple threads from printing to the UART Port at the same time.
+
+It uses a [__Critical Section__](https://en.wikipedia.org/wiki/Critical_section) to lock the chunk of code above, so only a single thread can run it at a time.
+
+But it seems the locking isn't working... It never returns!
+
+_How it is implemented?_
+
+
+
+TODO
 
 Which assembles to...
 
