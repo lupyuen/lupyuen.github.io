@@ -64,13 +64,23 @@ static void u16550_putc(
 
 _Is the UART Base Address correct?_
 
-Actually it's correct. Previously we validated the __16550 UART Base Address for JH7110__, and we successfully printed to it...
+Absolutely it's correct. Previously we validated the __16550 UART Base Address for JH7110__...
 
 - [__"UART Controller on Star64"__](https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64)
 
 - [__"Boot NuttX on Star64"__](https://lupyuen.github.io/articles/nuttx2#boot-nuttx-on-star64)
 
-But strangely it loops forever while waiting for the UART to be ready!
+And we successfully printed to UART...
+
+```c
+// Print `A` to the UART Port at
+// UART Base Address 0x1000 0000
+*(volatile uint8_t *) 0x10000000 = 'A';
+```
+
+[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L159)
+
+But strangely it loops forever waiting for the UART Port to be ready!
 
 _What's inside u16550_serialin?_
 
@@ -749,7 +759,9 @@ dump_task:       0     0   0 FIFO     Kthread N-- Running            00000000000
 dump_task:       1     1 100 RR       Kthread --- Waiting Unlock     0000000000000000 0x4040a060      1952       264    13.5%    lpwork 0x404013e0
 ```
 
-TODO: See https://github.com/apache/nuttx/issues/9501
+![Semihosting on RISC-V NuttX](https://lupyuen.github.io/images/privilege-semihosting.jpg)
+
+[_Semihosting on RISC-V NuttX_](https://github.com/apache/nuttx/issues/9501)
 
 # Other RISC-V Ports of NuttX
 
