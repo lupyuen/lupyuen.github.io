@@ -466,9 +466,9 @@ Let's eliminate the remaining Machine Mode Registers...
 
 _We rebuilt NuttX from Flat Mode to Kernel Mode..._
 
-_Why does it still access RISC-V Machine Mode Registers?_
+_Why does it still need RISC-V Machine Mode Registers?_
 
-NuttX accesses the RISC-V Machine Mode Registers during NuttX Startup...
+NuttX accesses the RISC-V Machine Mode Registers during __NuttX Startup__...
 
 1.  __NuttX Boot Code__ calls __qemu_rv_start__
 
@@ -476,7 +476,7 @@ NuttX accesses the RISC-V Machine Mode Registers during NuttX Startup...
 
 1.  __qemu_rv_start__ assumes it's in __Machine Mode__
 
-    (Because QEMU boots NuttX in Machine Mode)
+    [(Because QEMU boots NuttX in Machine Mode)](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels)
 
 1.  __qemu_rv_start__ initialises the __Machine Mode Registers__
 
@@ -487,6 +487,10 @@ NuttX accesses the RISC-V Machine Mode Registers during NuttX Startup...
 1.  __qemu_rv_start_s__ initialises the __Supervisor Mode Registers__
 
 _So we need to remove the Machine Mode Registers from qemu_rv_start?_
+
+Yep, because NuttX boots in [__Supervisor Mode__](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels) on Star64.
+
+(And can't access the Machine Mode Registers)
 
 TODO
 
