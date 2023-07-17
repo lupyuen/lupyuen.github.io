@@ -267,24 +267,28 @@ nuttx/drivers/serial/uart_16550.c:1726
 Which has this curious __RISC-V Instruction__...
 
 ```text
+// (Atomically) Read and Clear Bits
+// in `mstatus` Register
 csrrc a5, mstatus, a5
 ```
 
 According to the [__RISC-V Spec__](https://five-embeddev.com/quickref/instructions.html#-csr--csr-instructions), __`csrrc`__ (Atomic Read and Clear Bits in CSR) will...
 
-- Read the __`mstatus`__ Register
+- Read the [__`mstatus`__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush) Register
 
-- Clear the bits specified by Register __`a5`__
+  [(Which is a __Control and Status Register__)](https://five-embeddev.com/quickref/instructions.html#-csr--csr-instructions)
+
+- Clear the [__`mstatus`__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush)  bits specified by Register __`a5`__ (with value 8)
+
+  [(Which is the __MIE Bit__ for Machine Interrupt Enable)](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush)
 
 - Save the result back to Register __`a5`__
 
-Which is a problem: NuttX can't read the __`mstatus`__ Register, because of its Privilege Level...
+Which is a problem: NuttX can't modify the __`mstatus`__ Register, because of its Privilege Level...
 
 ![RISC-V Privilege Levels](https://lupyuen.github.io/images/nuttx2-privilege.jpg)
 
 # RISC-V Privilege Levels
-
-TODO
 
 _What's this Privilege Level?_
 
@@ -296,18 +300,19 @@ RISC-V Machine Code runs at three __Privilege Levels__...
 
 - __U: User Mode__ (Least powerful)
 
-NuttX on Star64 runs in __Supervisor Mode__. Which doesn't allow access to [__Machine-Mode CSR Registers__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html). (Pic above)
+NuttX on Star64 runs in __Supervisor Mode__. Which doesn't allow write access to [__Machine-Mode CSR Registers__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html). (Pic above)
 
 Remember this?
 
 ```text
-/* Load the Hart ID (CPU ID) */
-csrr a0, mhartid
+// (Atomically) Read and Clear Bits
+// in `mstatus` Register
+csrrc a5, mstatus, a5
 ```
 
-The __"`m`"__ in [__`mhartid`__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid) signifies that it's a __Machine-Mode Register__.
+The __"`m`"__ in [__`mstatus`__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush) signifies that it's a __Machine-Mode Register__.
 
-That's why NuttX fails to read the Hart ID!
+That's why NuttX failed to modify the __`mstatus`__!
 
 _What runs in Machine Mode?_
 
@@ -327,11 +332,17 @@ Thus __OpenSBI is the only thing__ that runs in Machine Mode. And can access the
 
 _QEMU doesn't have this problem?_
 
-Because QEMU runs NuttX in (super-powerful) __Machine Mode__!
+We (naively) copied the code above from NuttX for QEMU.
+
+But QEMU doesn't have this problem because it runs NuttX in (super-powerful) __Machine Mode__!
 
 ![NuttX QEMU runs in Machine Mode](https://lupyuen.github.io/images/nuttx2-privilege2.jpg)
 
+Let's make it work for Star64...
+
 # TODO
+
+TODO
 
 [`enter_critical_section`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/include/nuttx/irq.h#L156-L191) calls [`up_irq_save`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/include/irq.h#L660-L689)...
 
