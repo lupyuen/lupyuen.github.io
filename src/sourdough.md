@@ -80,6 +80,8 @@ Start [Zojirushi Home Bakery Mini Breadmaker (BB-HAC10)](https://www.zojirushi.c
 
 [(Page 17)](https://www.zojirushi.com/servicesupport/manuals/manual_pdf/bb_hac10.pdf)
 
+[(Watch the Video on YouTube)](https://www.youtube.com/shorts/R7GI71rqUc8)
+
 During Kneading:
 
 -   Sprinkle a few teaspoons of [Superfine Wholegrain Flour](https://www.redmanshop.com/shop-by-category/baking-ingredients/flour/speciality-flour/000000000000103830.html) until dough becomes a Smooth Ball
