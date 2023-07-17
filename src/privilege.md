@@ -249,27 +249,40 @@ But it seems the locking isn't working... It never returns!
 
 _How it is implemented?_
 
-
-
-TODO
-
-Which assembles to...
+When we browse the __RISC-V Disassembly__ of NuttX, we see the implementation of the Critical Section: [nuttx.S](https://github.com/lupyuen/lupyuen.github.io/releases/download/nuttx-riscv64/nuttx.S)
 
 ```text
-int up_putc(int ch)
-{
+int up_putc(int ch) {
   ...
 up_irq_save():
-/Users/Luppy/PinePhone/wip-nuttx/nuttx/include/arch/irq.h:675
+nuttx/include/arch/irq.h:675
   __asm__ __volatile__
-    40204598:	47a1                	li	a5,8
-    4020459a:	3007b7f3          	csrrc	a5,mstatus,a5
+    40204598:	47a1      li	  a5, 8
+    4020459a:	3007b7f3  csrrc	a5, mstatus, a5
 up_putc():
-/Users/Luppy/PinePhone/wip-nuttx/nuttx/drivers/serial/uart_16550.c:1726
+nuttx/drivers/serial/uart_16550.c:1726
   flags = enter_critical_section();
 ```
 
+Which has this curious __RISC-V Instruction__...
+
+```text
+csrrc	a5, mstatus, a5
+```
+
+According to the [__RISC-V Spec__](https://five-embeddev.com/quickref/instructions.html#-csr--csr-instructions), __`csrrc`__ (Atomic Read and Clear Bits in CSR) will...
+
+- Read the __`mstatus`__ Register
+
+- Clear the bits specified by Register __`a5`__
+
+- Save the result back to Register __`a5`__
+
+TODO
+
 But `mstatus` is not accessible at Supervisor Level! Let's trace this.
+
+# TODO
 
 [`enter_critical_section`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/include/nuttx/irq.h#L156-L191) calls [`up_irq_save`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/include/irq.h#L660-L689)...
 
@@ -683,7 +696,7 @@ Exception Program Counter `0x4020` `0434` is in RISC-V Semihosting `smh_call`...
 ```text
 0000000040200430 <smh_call>:
 smh_call():
-/Users/Luppy/PinePhone/wip-nuttx/nuttx/arch/risc-v/src/common/riscv_semihost.S:37
+nuttx/arch/risc-v/src/common/riscv_semihost.S:37
   .global smh_call
   .type smh_call @function
 
@@ -691,14 +704,14 @@ smh_call:
 
   slli zero, zero, 0x1f
     40200430:	01f01013          	slli	zero,zero,0x1f
-/Users/Luppy/PinePhone/wip-nuttx/nuttx/arch/risc-v/src/common/riscv_semihost.S:38
+nuttx/arch/risc-v/src/common/riscv_semihost.S:38
   ebreak
     //// Crashes here (Trigger semihosting breakpoint)
     40200434:	00100073          	ebreak
-/Users/Luppy/PinePhone/wip-nuttx/nuttx/arch/risc-v/src/common/riscv_semihost.S:39
+nuttx/arch/risc-v/src/common/riscv_semihost.S:39
   srai zero, zero, 0x7
     40200438:	40705013          	srai	zero,zero,0x7
-/Users/Luppy/PinePhone/wip-nuttx/nuttx/arch/risc-v/src/common/riscv_semihost.S:40
+nuttx/arch/risc-v/src/common/riscv_semihost.S:40
   ret
     4020043c:	00008067          	ret
     40200440:	0000                	unimp
