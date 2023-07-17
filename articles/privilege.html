@@ -244,7 +244,7 @@ static void dw8250_serial_out(struct uart_port *p, int offset, int value) {
 <p>And change it from 1 to 4: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L11">knsh64/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_REGINCR=4
 </code></pre></div>
-<p>Now UART Transmit works perfectly yay!</p>
+<p>Now UART Transmit works perfectly yay! (Pic below)</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
 123067DFHBC
 qemu_rv_kernel_mappings: map I/O regions
@@ -257,6 +257,7 @@ nx_start: Entry
 </code></pre></div>
 <p><strong>Lesson Learnt:</strong> 8250 UARTs (and 16550) can work a little differently across Hardware Platforms! (Due to Word Alignment maybe?)</p>
 <p>Let’s move on to the tougher topic: Machine Mode vs Supervisor Mode…</p>
+<p><img src="https://lupyuen.github.io/images/privilege-run1.png" alt="TODO" /></p>
 <h1 id="critical-section-doesnt-return"><a href="#critical-section-doesnt-return">3 Critical Section Doesn’t Return</a></h1>
 <p>We ran into another problem when printing to the UART Port…</p>
 <p>NuttX on Star64 gets stuck when we enter a <strong>Critical Section</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/drivers/serial/uart_16550.c#L1713-L1737">uart_16550.c</a></p>
@@ -428,6 +429,7 @@ make
 <p>When we <code>grep</code> for <strong><code>csr</code> Instructions</strong> in the rebuilt NuttX Disassembly, we see (nearly) all Machine-Mode <strong><code>m</code></strong> Registers replaced by Supervisor-Mode <strong><code>s</code></strong> Registers.</p>
 <p>No more problems with <a href="https://lupyuen.github.io/articles/privilege#critical-section-doesnt-return"><strong>Critical Section</strong></a> yay!</p>
 <p>Let’s eliminate the remaining Machine Mode Registers…</p>
+<p><img src="https://lupyuen.github.io/images/privilege-run2.png" alt="TODO" /></p>
 <h1 id="initialise-risc-v-supervisor-mode"><a href="#initialise-risc-v-supervisor-mode">7 Initialise RISC-V Supervisor Mode</a></h1>
 <p><em>We rebuilt NuttX from Flat Mode to Kernel Mode…</em></p>
 <p><em>Why does it still need RISC-V Machine Mode Registers?</em></p>
@@ -574,7 +576,8 @@ dump_tasks:   ----   --- --- -------- ------- --- ------- ---------- -------- 0x
 dump_task:       0     0   0 FIFO     Kthread N-- Running            0000000000000000 0x40406030      3024      1448    47.8%    Idle Task
 dump_task:       1     1 100 RR       Kthread --- Waiting Unlock     0000000000000000 0x4040a060      1952       264    13.5%    lpwork 0x404013e0
 </code></pre></div>
-<p>But NuttX crashes due to a Semihosting Problem. We’ll find out why in the next article!</p>
+<p>But NuttX crashes due to a Semihosting Problem. (Pic above)</p>
+<p>We’ll find out why in the next article!</p>
 <p><img src="https://lupyuen.github.io/images/privilege-semihosting.jpg" alt="Semihosting on RISC-V NuttX" /></p>
 <p><a href="https://github.com/apache/nuttx/issues/9501"><em>Semihosting on RISC-V NuttX</em></a></p>
 <h1 id="other-risc-v-ports-of-nuttx"><a href="#other-risc-v-ports-of-nuttx">8 Other RISC-V Ports of NuttX</a></h1>
