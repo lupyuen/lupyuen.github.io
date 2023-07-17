@@ -241,7 +241,7 @@ int up_putc(int ch) {
 
 _What's this Critical Section?_
 
-To avoid garbled output, NuttX prevents mutiple threads from printing to the UART Port at the same time.
+To avoid garbled output, NuttX prevents mutiple threads (or interrupts) from printing to the UART Port simultaneously.
 
 It uses a [__Critical Section__](https://en.wikipedia.org/wiki/Critical_section) to lock the chunk of code above, so only a single thread can run it at a time.
 
