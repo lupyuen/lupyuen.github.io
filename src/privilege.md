@@ -332,9 +332,9 @@ Thus __OpenSBI is the only thing__ that runs in Machine Mode. And can access the
 
 _QEMU doesn't have this problem?_
 
-We (naively) copied the code above from NuttX for QEMU.
+We (naively) copied the code above from [__NuttX for QEMU Emulator__](https://lupyuen.github.io/articles/riscv).
 
-But QEMU doesn't have this problem because it runs NuttX in (super-powerful) __Machine Mode__!
+But QEMU doesn't have this problem, because it runs NuttX in (super-powerful) __Machine Mode__!
 
 ![NuttX QEMU runs in Machine Mode](https://lupyuen.github.io/images/nuttx2-privilege2.jpg)
 
