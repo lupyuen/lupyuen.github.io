@@ -1,6 +1,6 @@
 # Recipe for Wholemeal Sourdough with Bread Machine
 
-📝 _4 Jul 2023_
+📝 _17 Jul 2023_
 
 ![Okiwana Black Sugar Sourdough with Dark Chocolate Couverture](https://lupyuen.github.io/images/sourdough.jpg)
 
