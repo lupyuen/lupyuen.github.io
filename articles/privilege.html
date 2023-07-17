@@ -275,14 +275,14 @@ int up_putc(int ch) {
 up_irq_save():
 nuttx/include/arch/irq.h:675
   __asm__ __volatile__
-    40204598:	47a1      li	  a5, 8
-    4020459a:	3007b7f3  csrrc	a5, mstatus, a5
+    40204598:	47a1      li    a5, 8
+    4020459a:	3007b7f3  csrrc a5, mstatus, a5
 up_putc():
 nuttx/drivers/serial/uart_16550.c:1726
   flags = enter_critical_section();
 </code></pre></div>
 <p>Which has this curious <strong>RISC-V Instruction</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>csrrc	a5, mstatus, a5
+<div class="example-wrap"><pre class="language-text"><code>csrrc a5, mstatus, a5
 </code></pre></div>
 <p>According to the <a href="https://five-embeddev.com/quickref/instructions.html#-csr--csr-instructions"><strong>RISC-V Spec</strong></a>, <strong><code>csrrc</code></strong> (Atomic Read and Clear Bits in CSR) will…</p>
 <ul>
