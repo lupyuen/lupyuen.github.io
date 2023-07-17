@@ -2,9 +2,9 @@
 
 📝 _17 Jul 2023_
 
-![Okiwana Black Sugar Sourdough with Dark Chocolate Couverture](https://lupyuen.github.io/images/sourdough.jpg)
+![Okinawa Black Sugar Sourdough with Dark Chocolate Couverture](https://lupyuen.github.io/images/sourdough.jpg)
 
-_Okiwana Black Sugar Sourdough with Dark Chocolate Couverture_
+_Okinawa Black Sugar Sourdough with Dark Chocolate Couverture_
 
 # Wholemeal Sourdough Starter
 
