@@ -235,7 +235,7 @@ static void dw8250_serial_out(struct uart_port *p, int offset, int value) {
 <li>Device Drivers &gt; Serial Driver Support &gt; 16550 UART Chip support &gt; Address Increment Between 16550 Registers</li>
 </ul>
 <p>And change it from 1 to 4: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L11">knsh64/defconfig</a></p>
-<div class="example-wrap"><pre class="language-text"><code>CONFIG_16550_REGINCR=4
+<div class="example-wrap"><pre class="language-bash"><code>CONFIG_16550_REGINCR=4
 </code></pre></div>
 <p>Now UART Transmit works perfectly yay!</p>
 <div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
@@ -379,10 +379,33 @@ static inline irqstate_t up_irq_save(void) {
 <p>Which is perfectly valid for <strong>RISC-V Supervisor Mode</strong>!</p>
 <p>Let’s dig around for the elusive (but essential) <strong>ARCH_USE_S_MODE</strong>…</p>
 <h1 id="nuttx-flat-mode-becomes-kernel-mode"><a href="#nuttx-flat-mode-becomes-kernel-mode">6 NuttX Flat Mode becomes Kernel Mode</a></h1>
+<p><em>How to enable ARCH_USE_S_MODE in NuttX?</em></p>
+<p>In the previous section we discovered that we should enable <strong>ARCH_USE_S_MODE</strong>, so that NuttX will run in <strong>RISC-V Supervisor Mode</strong>.</p>
+<p>(Because Star64 JH7110 boots NuttX in Supervisor Mode)</p>
+<p>Searching NuttX for <strong>ARCH_USE_S_MODE</strong> gives us this Build Configuration for <strong>NuttX Kernel Mode</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L43">rv-virt:knsh64</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>CONFIG_ARCH_USE_S_MODE=y
+</code></pre></div>
+<p><em>Perfect! Exactly what we need!</em></p>
+<p>Thus we change the NuttX Build Configuration from <strong>Flat Mode to Kernel Mode</strong>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Configure NuttX for Kernel Mode and build NuttX
+tools/configure.sh rv-virt:knsh64
+make
+
+## Previously: Configure NuttX for Flat Mode
+## tools/configure.sh rv-virt:nsh64
+</code></pre></div>
 <p>TODO</p>
-<p>So we need to set <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/Kconfig#L278-L296">CONFIG_ARCH_USE_S_MODE</a>.</p>
-<p>Which is defined in Kernel Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig"><code>rv-virt:knsh64</code></a>. So we change Build Config to…</p>
-<div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh rv-virt:knsh64
+<p>grep for <code>csr</code> in <code>nuttx.S</code> shows that no more M-Mode Registers are used.</p>
+<p>No more problems with Critical Section yay!</p>
+<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
+123067DFHBC
+qemu_rv_kernel_mappings: map I/O regions
+qemu_rv_kernel_mappings: map kernel text
+qemu_rv_kernel_mappings: map kernel data
+qemu_rv_kernel_mappings: connect the L1 and L2 page tables
+qemu_rv_kernel_mappings: map the page pool
+qemu_rv_mm_init: mmu_enable: satp=1077956608
+nx_start: Entry
 </code></pre></div><h1 id="initialise-supversor-mode"><a href="#initialise-supversor-mode">7 Initialise Supversor Mode</a></h1>
 <p>TODO</p>
 <p>And we bypassed Machine Mode Initialisation during startup…</p>
@@ -400,13 +423,6 @@ static inline irqstate_t up_irq_save(void) {
   // TODO: What about `satp`, `stvec`, `pmpaddr0`, `pmpcfg0`?
   ...
 }
-</code></pre></div>
-<p>grep for <code>csr</code> in <code>nuttx.S</code> shows that no more M-Mode Registers are used.</p>
-<p>Now Critical Section is OK yay!</p>
-<div class="example-wrap"><pre class="language-text"><code>Starting kernel ...
-clk u5_dw_i2c_clk_core already disabled
-clk u5_dw_i2c_clk_apb already disabled
-123067DFAGHBCIcd
 </code></pre></div>
 <ul>
 <li>
