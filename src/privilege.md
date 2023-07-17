@@ -759,6 +759,8 @@ TODO: Any NuttX Boards using Supervisor Mode / OpenSBI?
 
 `litex` boots from OpenSBI to NuttX, but doesn't callback to OpenSBI:
 
+[litex/arty_a7](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/litex/arty_a7)
+
 [litex_shead.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/litex/litex_shead.S#L56)
 
 [litex_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/litex/litex_start.c#L50)
@@ -766,6 +768,12 @@ TODO: Any NuttX Boards using Supervisor Mode / OpenSBI?
 [litex/arty_a7/configs/knsh/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/litex/arty_a7/configs/knsh/defconfig#L34)
 
 `mpfs` runs a copy of OpenSBI inside NuttX:
+
+[mpfs](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/mpfs)
+
+[icicle](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/mpfs/icicle)
+
+[m100pfsevp](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/mpfs/m100pfsevp)
 
 [mpfs_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_start.c#L52)
 
@@ -784,10 +792,6 @@ TODO
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
 -   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
-
--   [__Discuss this article on Hacker News__](https://news.ycombinator.com/item?id=36649714)
-
--   [__Discuss this article on Pine64 Forum__](https://forum.pine64.org/showthread.php?tid=18469)
 
 -   [__My Current Project: "Apache NuttX RTOS for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
 
