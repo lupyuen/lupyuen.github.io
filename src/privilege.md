@@ -278,9 +278,58 @@ According to the [__RISC-V Spec__](https://five-embeddev.com/quickref/instructio
 
 - Save the result back to Register __`a5`__
 
+Which is a problem: NuttX can't read the __`mstatus`__ Register in RISC-V Supervisor Mode...
+
+![RISC-V Privilege Levels](https://lupyuen.github.io/images/nuttx2-privilege.jpg)
+
+# RISC-V Privilege Levels
+
 TODO
 
-But `mstatus` is not accessible at Supervisor Level! Let's trace this.
+_What's this Privilege Level?_
+
+RISC-V Machine Code runs at three __Privilege Levels__...
+
+- __M: Machine Mode__ (Most powerful)
+
+- __S: Supervisor Mode__ (Less powerful)
+
+- __U: User Mode__ (Least powerful)
+
+NuttX on Star64 runs in __Supervisor Mode__. Which doesn't allow access to [__Machine-Mode CSR Registers__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html). (Pic above)
+
+Remember this?
+
+```text
+/* Load the Hart ID (CPU ID) */
+csrr a0, mhartid
+```
+
+The __"`m`"__ in [__`mhartid`__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid) signifies that it's a __Machine-Mode Register__.
+
+That's why NuttX fails to read the Hart ID!
+
+_What runs in Machine Mode?_
+
+[__OpenSBI (Supervisor Binary Interface)__](https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface) is the first thing that boots on Star64.
+
+It runs in __Machine Mode__ and starts the U-Boot Bootloader.
+
+[(More about __OpenSBI__)](https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface)
+
+_What about U-Boot Bootloader?_
+
+[__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64) runs in __Supervisor Mode__. And starts NuttX, also in Supervisor Mode.
+
+Thus __OpenSBI is the only thing__ that runs in Machine Mode. And can access the Machine-Mode Registers. (Pic above)
+
+[(More about __U-Boot__)](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64)
+
+_QEMU doesn't have this problem?_
+
+Because QEMU runs NuttX in (super-powerful) __Machine Mode__!
+
+![NuttX QEMU runs in Machine Mode](https://lupyuen.github.io/images/nuttx2-privilege2.jpg)
 
 # TODO
 
@@ -410,57 +459,6 @@ nuttx/arch/risc-v/src/common/riscv_mmu.h:237
 ```
 
 TODO: Trace this Store/AMO Access Fault
-
-![RISC-V Privilege Levels](https://lupyuen.github.io/images/nuttx2-privilege.jpg)
-
-# RISC-V Privilege Levels
-
-TODO
-
-_What's this Privilege Level?_
-
-RISC-V Machine Code runs at three __Privilege Levels__...
-
-- __M: Machine Mode__ (Most powerful)
-
-- __S: Supervisor Mode__ (Less powerful)
-
-- __U: User Mode__ (Least powerful)
-
-NuttX on Star64 runs in __Supervisor Mode__. Which doesn't allow access to [__Machine-Mode CSR Registers__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html). (Pic above)
-
-Remember this?
-
-```text
-/* Load the Hart ID (CPU ID) */
-csrr a0, mhartid
-```
-
-The __"`m`"__ in [__`mhartid`__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid) signifies that it's a __Machine-Mode Register__.
-
-That's why NuttX fails to read the Hart ID!
-
-_What runs in Machine Mode?_
-
-[__OpenSBI (Supervisor Binary Interface)__](https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface) is the first thing that boots on Star64.
-
-It runs in __Machine Mode__ and starts the U-Boot Bootloader.
-
-[(More about __OpenSBI__)](https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface)
-
-_What about U-Boot Bootloader?_
-
-[__U-Boot Bootloader__](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64) runs in __Supervisor Mode__. And starts NuttX, also in Supervisor Mode.
-
-Thus __OpenSBI is the only thing__ that runs in Machine Mode. And can access the Machine-Mode Registers. (Pic above)
-
-[(More about __U-Boot__)](https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64)
-
-_QEMU doesn't have this problem?_
-
-Because QEMU runs NuttX in (super-powerful) __Machine Mode__!
-
-![NuttX QEMU runs in Machine Mode](https://lupyuen.github.io/images/nuttx2-privilege2.jpg)
 
 # Enable Scheduler Logging
 
