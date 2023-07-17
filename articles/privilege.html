@@ -258,7 +258,7 @@ nx_start: Entry
 <p><a href="https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode">(Source)</a></p>
 <p><strong>Lesson Learnt:</strong> 8250 UARTs (and 16550) can work a little differently across Hardware Platforms! (Due to Word Alignment maybe?)</p>
 <p>Let’s move on to the tougher topic: Machine Mode vs Supervisor Mode…</p>
-<p><img src="https://lupyuen.github.io/images/privilege-run1.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/privilege-run1.png" alt="UART Transmit works perfectly yay" /></p>
 <h1 id="critical-section-doesnt-return"><a href="#critical-section-doesnt-return">3 Critical Section Doesn’t Return</a></h1>
 <p>We ran into another problem when printing to the UART Port…</p>
 <p>NuttX on Star64 gets stuck when we enter a <strong>Critical Section</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/drivers/serial/uart_16550.c#L1713-L1737">uart_16550.c</a></p>
@@ -432,7 +432,7 @@ make
 <p>We see (nearly) all Machine-Mode <strong><code>m</code></strong> Registers replaced by Supervisor-Mode <strong><code>s</code></strong> Registers.</p>
 <p>No more problems with <a href="https://lupyuen.github.io/articles/privilege#critical-section-doesnt-return"><strong>Critical Section</strong></a> yay!</p>
 <p>Let’s eliminate the remaining Machine-Mode Registers…</p>
-<p><img src="https://lupyuen.github.io/images/privilege-run2.png" alt="TODO" /></p>
+<p><img src="https://lupyuen.github.io/images/privilege-run2.png" alt="NuttX crashes due to a Semihosting Problem" /></p>
 <h1 id="initialise-risc-v-supervisor-mode"><a href="#initialise-risc-v-supervisor-mode">7 Initialise RISC-V Supervisor Mode</a></h1>
 <p><em>We rebuilt NuttX from Flat Mode to Kernel Mode…</em></p>
 <p><em>Why does it still need RISC-V Machine-Mode Registers?</em></p>
@@ -539,47 +539,26 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 <p><em>Porting NuttX from QEMU to Star64 JH7110 looks challenging…</em></p>
 <p><em>Are there other ports of NuttX for RISC-V?</em></p>
 <p>We found the following NuttX Ports that run in <strong>RISC-V Supervisor Mode with OpenSBI</strong>.</p>
-<p>They might be good references for Star64…</p>
-<p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/litex/index.html"><strong>LiteX Arty-A7</strong></a> will boot from OpenSBI to NuttX (but doesn’t call back to OpenSBI)…</p>
-<ul>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/litex/arty_a7">litex/arty_a7</a>: RISC-V Board</p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/litex/arty_a7/configs/knsh/defconfig#L34">knsh/defconfig</a>: Build Configuration</p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/litex/litex_shead.S#L56">litex_shead.S</a>: Boot Code</p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/litex/litex_start.c#L50">litex_start.c</a>: Start Code</p>
-</li>
-</ul>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/mpfs/icicle"><strong>MPFS ICICLE</strong></a> will run a copy of OpenSBI inside NuttX (so it boots in Machine Mode before Supervisor Mode)…</p>
-<ul>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/mpfs/icicle">mpfs/icicle</a>: RISC-V Board</p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/boards/risc-v/mpfs/icicle/configs/knsh/defconfig#L39">knsh/defconfig</a>: Build Configuration</p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_shead.S#L62">mpfs_shead.S</a>: Boot Code</p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_start.c#L52">mpfs_start.c</a>: Start Code</p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_opensbi.c#L602">mpfs_opensbi.c</a>: OpenSBI in NuttX</p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_opensbi_utils.S#L62-L107">mpfs_opensbi_utils.S</a>: OpenSBI Helper</p>
-</li>
-<li>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_ihc_sbi.c#L570">mpfs_ihc_sbi.c</a>: OpenSBI Inter-Hart Comms</p>
-</li>
-</ul>
-<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
+<p>(They might be good references for Star64)</p>
+<p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/litex/index.html"><strong>LiteX Arty-A7</strong></a> boots from OpenSBI to NuttX (but doesn’t call back to OpenSBI)…</p>
+<div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/litex/arty_a7">litex/arty_a7</a></td><td style="text-align: left">RISC-V Board</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/litex/arty_a7/configs/knsh/defconfig#L34">knsh/defconfig</a></td><td style="text-align: left">Build Configuration</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/litex/litex_shead.S#L56">litex_shead.S</a></td><td style="text-align: left">Boot Code</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/litex/litex_start.c#L50">litex_start.c</a></td><td style="text-align: left">Startup Code</td></tr>
+</tbody></table>
+</div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/mpfs/icicle"><strong>MPFS ICICLE</strong></a> runs a copy of OpenSBI inside NuttX (so it boots in Machine Mode before Supervisor Mode)…</p>
+<div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/mpfs/icicle">mpfs/icicle</a></td><td style="text-align: left">RISC-V Board</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/boards/risc-v/mpfs/icicle/configs/knsh/defconfig#L39">knsh/defconfig</a></td><td style="text-align: left">Build Configuration</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_shead.S#L62">mpfs_shead.S</a></td><td style="text-align: left">Boot Code</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_start.c#L52">mpfs_start.c</a></td><td style="text-align: left">Startup Code</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_opensbi.c#L602">mpfs_opensbi.c</a></td><td style="text-align: left">OpenSBI in NuttX</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_opensbi_utils.S#L62-L107">mpfs_opensbi_utils.S</a></td><td style="text-align: left">OpenSBI Helper</td></tr>
+<tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_ihc_sbi.c#L570">mpfs_ihc_sbi.c</a></td><td style="text-align: left">OpenSBI Inter-Hart Comms</td></tr>
+</tbody></table>
+</div><h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
