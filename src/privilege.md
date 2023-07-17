@@ -401,11 +401,23 @@ Let's dig around for the elusive (but essential) __ARCH_USE_S_MODE__...
 
 _How to enable ARCH_USE_S_MODE in NuttX?_
 
-In the previous section we discovered that we should enable __ARCH_USE_S_MODE__, so that NuttX will run in __RISC-V Supervisor Mode__.
+In the previous section we discovered that we should enable __ARCH_USE_S_MODE__, so that NuttX will run in __RISC-V Supervisor Mode__...
+
+```c
+// If NuttX runs in Supervisor Mode...
+#ifdef CONFIG_ARCH_USE_S_MODE
+  // Use Global Status Register for Supervisor Mode
+  #define CSR_STATUS sstatus
+
+#else  // If NuttX runs in Machine Mode...
+  // Use Global Status Register for Machine Mode 
+  #define CSR_STATUS mstatus
+#endif
+```
 
 (Because Star64 JH7110 boots NuttX in Supervisor Mode)
 
-Searching NuttX for __ARCH_USE_S_MODE__ gives us this Build Configuration for __NuttX Kernel Mode__: [rv-virt:knsh64](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L43)
+Searching NuttX for __ARCH_USE_S_MODE__ gives us this Build Configuration for __NuttX Kernel Mode__: [knsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L43)
 
 ```bash
 CONFIG_ARCH_USE_S_MODE=y
@@ -423,6 +435,10 @@ make
 ## Previously: Configure NuttX for Flat Mode
 ## tools/configure.sh rv-virt:nsh64
 ```
+
+[(Complete Steps for __Kernel Mode__)](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64a/boards/risc-v/qemu-rv/rv-virt)
+
+_What's NuttX Kernel Mode?_
 
 TODO
 
