@@ -448,9 +448,7 @@ make
 <p><em>So we need to remove the Machine Mode Registers from qemu_rv_start?</em></p>
 <p>Yep, because NuttX boots in <a href="https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels"><strong>Supervisor Mode</strong></a> on Star64.</p>
 <p>(And can’t access the Machine Mode Registers)</p>
-<p>TODO</p>
-<p>Now we restore the Supervisor Mode Initialisation, commenting out the Machine Mode Initialisation…</p>
-<p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L165-L233">qemu_rv_start.c</a>:</p>
+<p>This is how we fixed <strong>qemu_rv_start</strong> to remove the Machine Mode Registers: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L165-L233">qemu_rv_start.c</a>:</p>
 <div class="example-wrap"><pre class="language-c"><code>// Called by NuttX Boot Code
 // to init System Registers
 void qemu_rv_start(int mhartid) {
@@ -492,8 +490,9 @@ void qemu_rv_start(int mhartid) {
   qemu_rv_start_s(mhartid);
 }
 </code></pre></div>
-<p>TODO: Check <code>up_mtimer_initialize</code></p>
-<p>Now NuttX boots further!</p>
+<p>We’re not sure if this is entirely corect… But it’s a good start!</p>
+<p>(Yeah we’re naively copying code again sigh)</p>
+<p>TODO: Now NuttX boots further!</p>
 <div class="example-wrap"><pre class="language-text"><code>123067DFHBCqemu_rv_kernel_mappings: map I/O regions
 qemu_rv_kernel_mappings: map kernel text
 qemu_rv_kernel_mappings: map kernel data
