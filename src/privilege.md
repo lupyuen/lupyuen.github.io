@@ -340,7 +340,7 @@ But QEMU doesn't have this problem because it runs NuttX in (super-powerful) __M
 
 Let's make it work for Star64...
 
-# TODO
+# Machine Mode becomes Supervisor Mode
 
 TODO
 
