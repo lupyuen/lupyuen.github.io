@@ -344,37 +344,35 @@ csrrc a5, mstatus, a5
 // in `mstatus` Register
 csrrc a5, mstatus, a5
 </code></pre></div>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/include/nuttx/irq.h#L156-L191"><code>enter_critical_section</code></a> calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/include/irq.h#L660-L689"><code>up_irq_save</code></a>…</p>
-<div class="example-wrap"><pre class="language-c"><code>// Disable interrupts and return the previous value of the mstatus register
-static inline irqstate_t up_irq_save(void)
-{
-  irqstate_t flags;
-
-  /* Read mstatus &amp; clear machine interrupt enable (MIE) in mstatus */
-
+<p>We saw the above RISC-V Assembly emitted by <a href="https://lupyuen.github.io/articles/privilege#critical-section-doesnt-return"><strong>up_putc</strong></a> and <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/include/nuttx/irq.h#L156-L191"><strong>enter_critical_section</strong></a>, let’s track it down.</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/include/nuttx/irq.h#L156-L191"><strong>enter_critical_section</strong></a> calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/include/irq.h#L660-L689"><strong>up_irq_save</strong></a>, which is defined as…</p>
+<div class="example-wrap"><pre class="language-c"><code>// Disable interrupts
+static inline irqstate_t up_irq_save(void) {
+  ...
+  // Read `mstatus` and clear 
+  // Machine Interrupt Enable (MIE) in `mstatus`
   __asm__ __volatile__
-    (
-      &quot;csrrc %0, &quot; __XSTR(CSR_STATUS) &quot;, %1\n&quot;
-      : &quot;=r&quot; (flags)
-      : &quot;r&quot;(STATUS_IE)
-      : &quot;memory&quot;
-    );
-
-  /* Return the previous mstatus value so that it can be restored with
-   * up_irq_restore().
-   */
-
-  return flags;
-}
+  (
+    &quot;csrrc %0, &quot; __XSTR(CSR_STATUS) &quot;, %1\n&quot;
+    : &quot;=r&quot; (flags)
+    : &quot;r&quot;(STATUS_IE)
+    : &quot;memory&quot;
+  );
 </code></pre></div>
-<p><code>CSR_STATUS</code> is defined in <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/include/mode.h#L35-L103">mode.h</a>:</p>
-<div class="example-wrap"><pre class="language-c"><code>#ifdef CONFIG_ARCH_USE_S_MODE
-#  define CSR_STATUS        sstatus          /* Global status register */
-#else
-#  define CSR_STATUS        mstatus          /* Global status register */
+<p><em>Ah so CSR_STATUS maps to <code>mstatus</code>?</em></p>
+<p>Yes indeed, <strong>CSR_STATUS</strong> becomes <strong><code>mstatus</code></strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/include/mode.h#L35-L103">mode.h</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// If NuttX runs in Supervisor Mode...
+#ifdef CONFIG_ARCH_USE_S_MODE
+  // Use Global Status Register for Supervisor Mode
+  #define CSR_STATUS sstatus
+
+#else  // If NuttX runs in Machine Mode...
+  // Use Global Status Register for Machine Mode 
+  #define CSR_STATUS mstatus
 #endif
 </code></pre></div>
+<p>But only if <strong>ARCH_USE_S_MODE</strong> is disabled!</p>
+<p>TODO</p>
 <p>So we need to set <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/Kconfig#L278-L296">CONFIG_ARCH_USE_S_MODE</a>.</p>
 <p>Which is defined in Kernel Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig"><code>rv-virt:knsh64</code></a>. So we change Build Config to…</p>
 <div class="example-wrap"><pre class="language-bash"><code>tools/configure.sh rv-virt:knsh64
