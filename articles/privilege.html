@@ -338,6 +338,12 @@ csrrc a5, mstatus, a5
 <p><img src="https://lupyuen.github.io/images/nuttx2-privilege2.jpg" alt="NuttX QEMU runs in Machine Mode" /></p>
 <p>Let’s make it work for Star64…</p>
 <h1 id="machine-mode-becomes-supervisor-mode"><a href="#machine-mode-becomes-supervisor-mode">5 Machine Mode becomes Supervisor Mode</a></h1>
+<p><em>Earlier we saw the <code>csrrc</code> instruction…</em></p>
+<p><em>From whence it came?</em></p>
+<div class="example-wrap"><pre class="language-text"><code>// (Atomically) Read and Clear Bits
+// in `mstatus` Register
+csrrc a5, mstatus, a5
+</code></pre></div>
 <p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/include/nuttx/irq.h#L156-L191"><code>enter_critical_section</code></a> calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/include/irq.h#L660-L689"><code>up_irq_save</code></a>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Disable interrupts and return the previous value of the mstatus register
