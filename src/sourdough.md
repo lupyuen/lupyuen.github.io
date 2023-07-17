@@ -50,7 +50,9 @@ Add in this sequence to Bread Machine...
 
     (Or 3 cubes [Okinawa Black Sugar](https://lupyuen.github.io/images/sourdough23.jpg))
 
--   4 tablespoons Boiling Water (100 deg C, to melt the butter and sugar)
+-   4 tablespoons Boiling Water
+
+    (100 deg C, to melt the butter and sugar)
 
 -   2 ladles (2/3 cups) Wholemeal Sourdough Starter, ripe (fed) from above
 
@@ -58,7 +60,9 @@ Add in this sequence to Bread Machine...
 
 -   1/2 teaspoon (2.8g) Salt
 
--   1/2 teaspoon Baking Soda / Sodium Bicarbonate (to neutralise the sourness and give extra poofiness). Too much Baking Soda will taste soapy!
+-   1/2 teaspoon Baking Soda / Sodium Bicarbonate (to neutralise the sourness and give extra poofiness).
+
+    Too much Baking Soda will taste soapy!
 
 -   NO MILK because the loaf will look burnt
 
@@ -86,7 +90,9 @@ During Kneading:
 
     [(See pic below)](https://lupyuen.github.io/images/sourdough3.jpg)
 
--   (Optional) At 4 hours 30 mins remaining, add 1/2 cup of Raisins (separated) or Prunes (quartered). This will sweeten the sourdough. Sourdough Starter will uplift any Dried Fruit, amazing!
+-   (Optional) At 4 hours 30 mins remaining, add 1/2 cup of Raisins (separated) or Prunes (quartered) or [Dark Chocolate Couverture](https://www.redmanshop.com/shop-by-category/baking-ingredients/chocolate-and-cocoa/chocolate-couvertures/000000000000012582.html). 
+
+    This will sweeten the sourdough. Sourdough will uplift any Dried Fruit, amazing!
     
     [(See Raisin Sourdough below)](https://lupyuen.github.io/images/sourdough17.jpg)
     
@@ -132,6 +138,12 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 <hr>
 
+![Dark Chocolate Raisin Wholemeal Sourdough with Carrot and Sunflower Seed](https://lupyuen.github.io/images/sourdough19.jpg)
+
+_Dark Chocolate Raisin Wholemeal Sourdough with Carrot and Sunflower Seed_
+
+<hr>
+
 ![Dark Chocolate Raisin Wholemeal Sourdough with Sunflower Seed](https://lupyuen.github.io/images/sourdough17.jpg)
 
 _Dark Chocolate Raisin Wholemeal Sourdough with Sunflower Seed_
@@ -140,23 +152,9 @@ _(1/3 cup [Dark Chocolate Couverture](https://www.redmanshop.com/shop-by-categor
 
 <hr>
 
-![(1) Looks messy after kneading (2) But it rises! (3) After baking (4) Carrot Raisin Wholemeal Sourdough with Sunflower Seed](https://lupyuen.github.io/images/sourdough18.jpg)
-
-_(1) Looks messy after kneading (2) But it rises! (3) After baking (4) Carrot Raisin Wholemeal Sourdough with Sunflower Seed_
-
-_(1 cup Carrot shredded with a potato peeler, 1/2 cup Raisins, 1/3 cup Toasted Sunflower Seeds)_
-
-<hr>
-
 ![Prune Wholemeal Sourdough with Currants](https://lupyuen.github.io/images/sourdough10.jpg)
 
 _Prune Wholemeal Sourdough with Currants_
-
-<hr>
-
-![Dark Chocolate Raisin Wholemeal Sourdough with Carrot and Sunflower Seed](https://lupyuen.github.io/images/sourdough19.jpg)
-
-_Dark Chocolate Raisin Wholemeal Sourdough with Carrot and Sunflower Seed_
 
 <hr>
 
