@@ -278,7 +278,7 @@ According to the [__RISC-V Spec__](https://five-embeddev.com/quickref/instructio
 
 - Save the result back to Register __`a5`__
 
-Which is a problem: NuttX can't read the __`mstatus`__ Register in RISC-V Supervisor Mode...
+Which is a problem: NuttX can't read the __`mstatus`__ Register, because of its Privilege Level...
 
 ![RISC-V Privilege Levels](https://lupyuen.github.io/images/nuttx2-privilege.jpg)
 
