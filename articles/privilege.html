@@ -686,10 +686,14 @@ dump_task:       1     1 100 RR       Kthread --- Waiting Unlock     00000000000
 <p><em>Are there other ports of NuttX for RISC-V?</em></p>
 <p>TODO: Any NuttX Boards using Supervisor Mode / OpenSBI?</p>
 <p><code>litex</code> boots from OpenSBI to NuttX, but doesn’t callback to OpenSBI:</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/litex/arty_a7">litex/arty_a7</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/litex/litex_shead.S#L56">litex_shead.S</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/litex/litex_start.c#L50">litex_start.c</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/litex/arty_a7/configs/knsh/defconfig#L34">litex/arty_a7/configs/knsh/defconfig</a></p>
 <p><code>mpfs</code> runs a copy of OpenSBI inside NuttX:</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/mpfs">mpfs</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/mpfs/icicle">icicle</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/mpfs/m100pfsevp">m100pfsevp</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_start.c#L52">mpfs_start.c</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_shead.S#L62">mpfs_shead.S</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_opensbi.c#L602">mpfs_opensbi.c</a></p>
@@ -701,12 +705,6 @@ dump_task:       1     1 100 RR       Kthread --- Waiting Unlock     00000000000
 <ul>
 <li>
 <p><a href="https://github.com/sponsors/lupyuen"><strong>Sponsor me a coffee</strong></a></p>
-</li>
-<li>
-<p><a href="https://news.ycombinator.com/item?id=36649714"><strong>Discuss this article on Hacker News</strong></a></p>
-</li>
-<li>
-<p><a href="https://forum.pine64.org/showthread.php?tid=18469"><strong>Discuss this article on Pine64 Forum</strong></a></p>
 </li>
 <li>
 <p><a href="https://github.com/lupyuen/nuttx-star64"><strong>My Current Project: “Apache NuttX RTOS for Star64 JH7110”</strong></a></p>
