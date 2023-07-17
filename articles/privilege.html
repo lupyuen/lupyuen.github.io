@@ -282,24 +282,27 @@ nuttx/drivers/serial/uart_16550.c:1726
   flags = enter_critical_section();
 </code></pre></div>
 <p>Which has this curious <strong>RISC-V Instruction</strong>…</p>
-<div class="example-wrap"><pre class="language-text"><code>csrrc a5, mstatus, a5
+<div class="example-wrap"><pre class="language-text"><code>// (Atomically) Read and Clear Bits
+// in `mstatus` Register
+csrrc a5, mstatus, a5
 </code></pre></div>
 <p>According to the <a href="https://five-embeddev.com/quickref/instructions.html#-csr--csr-instructions"><strong>RISC-V Spec</strong></a>, <strong><code>csrrc</code></strong> (Atomic Read and Clear Bits in CSR) will…</p>
 <ul>
 <li>
-<p>Read the <strong><code>mstatus</code></strong> Register</p>
+<p>Read the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush"><strong><code>mstatus</code></strong></a> Register</p>
+<p><a href="https://five-embeddev.com/quickref/instructions.html#-csr--csr-instructions">(Which is a <strong>Control and Status Register</strong>)</a></p>
 </li>
 <li>
-<p>Clear the bits specified by Register <strong><code>a5</code></strong></p>
+<p>Clear the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush"><strong><code>mstatus</code></strong></a>  bits specified by Register <strong><code>a5</code></strong> (with value 8)</p>
+<p><a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush">(Which is the <strong>MIE Bit</strong> for Machine Interrupt Enable)</a></p>
 </li>
 <li>
 <p>Save the result back to Register <strong><code>a5</code></strong></p>
 </li>
 </ul>
-<p>Which is a problem: NuttX can’t read the <strong><code>mstatus</code></strong> Register, because of its Privilege Level…</p>
+<p>Which is a problem: NuttX can’t modify the <strong><code>mstatus</code></strong> Register, because of its Privilege Level…</p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-privilege.jpg" alt="RISC-V Privilege Levels" /></p>
 <h1 id="risc-v-privilege-levels"><a href="#risc-v-privilege-levels">4 RISC-V Privilege Levels</a></h1>
-<p>TODO</p>
 <p><em>What’s this Privilege Level?</em></p>
 <p>RISC-V Machine Code runs at three <strong>Privilege Levels</strong>…</p>
 <ul>
@@ -313,13 +316,14 @@ nuttx/drivers/serial/uart_16550.c:1726
 <p><strong>U: User Mode</strong> (Least powerful)</p>
 </li>
 </ul>
-<p>NuttX on Star64 runs in <strong>Supervisor Mode</strong>. Which doesn’t allow access to <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html"><strong>Machine-Mode CSR Registers</strong></a>. (Pic above)</p>
+<p>NuttX on Star64 runs in <strong>Supervisor Mode</strong>. Which doesn’t allow write access to <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html"><strong>Machine-Mode CSR Registers</strong></a>. (Pic above)</p>
 <p>Remember this?</p>
-<div class="example-wrap"><pre class="language-text"><code>/* Load the Hart ID (CPU ID) */
-csrr a0, mhartid
+<div class="example-wrap"><pre class="language-text"><code>// (Atomically) Read and Clear Bits
+// in `mstatus` Register
+csrrc a5, mstatus, a5
 </code></pre></div>
-<p>The <strong>“<code>m</code>”</strong> in <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#hart-id-register-mhartid"><strong><code>mhartid</code></strong></a> signifies that it’s a <strong>Machine-Mode Register</strong>.</p>
-<p>That’s why NuttX fails to read the Hart ID!</p>
+<p>The <strong>“<code>m</code>”</strong> in <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush"><strong><code>mstatus</code></strong></a> signifies that it’s a <strong>Machine-Mode Register</strong>.</p>
+<p>That’s why NuttX failed to modify the <strong><code>mstatus</code></strong>!</p>
 <p><em>What runs in Machine Mode?</em></p>
 <p><a href="https://lupyuen.github.io/articles/linux#opensbi-supervisor-binary-interface"><strong>OpenSBI (Supervisor Binary Interface)</strong></a> is the first thing that boots on Star64.</p>
 <p>It runs in <strong>Machine Mode</strong> and starts the U-Boot Bootloader.</p>
@@ -329,9 +333,12 @@ csrr a0, mhartid
 <p>Thus <strong>OpenSBI is the only thing</strong> that runs in Machine Mode. And can access the Machine-Mode Registers. (Pic above)</p>
 <p><a href="https://lupyuen.github.io/articles/linux#u-boot-bootloader-for-star64">(More about <strong>U-Boot</strong>)</a></p>
 <p><em>QEMU doesn’t have this problem?</em></p>
-<p>Because QEMU runs NuttX in (super-powerful) <strong>Machine Mode</strong>!</p>
+<p>We (naively) copied the code above from NuttX for QEMU.</p>
+<p>But QEMU doesn’t have this problem because it runs NuttX in (super-powerful) <strong>Machine Mode</strong>!</p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-privilege2.jpg" alt="NuttX QEMU runs in Machine Mode" /></p>
+<p>Let’s make it work for Star64…</p>
 <h1 id="todo"><a href="#todo">5 TODO</a></h1>
+<p>TODO</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/include/nuttx/irq.h#L156-L191"><code>enter_critical_section</code></a> calls <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/include/irq.h#L660-L689"><code>up_irq_save</code></a>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Disable interrupts and return the previous value of the mstatus register
 static inline irqstate_t up_irq_save(void)
