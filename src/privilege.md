@@ -340,7 +340,7 @@ But QEMU doesn't have this problem, because it runs NuttX in (super-powerful) __
 
 Let's make it work for Star64...
 
-# Machine Mode becomes Supervisor Mode
+# RISC-V Machine Mode becomes Supervisor Mode
 
 _Earlier we saw the `csrrc` instruction..._
 
@@ -387,7 +387,17 @@ Yes indeed, __CSR_STATUS__ becomes __`mstatus`__: [mode.h](https://github.com/lu
 #endif
 ```
 
-But only if __ARCH_USE_S_MODE__ is disabled!
+But only if the NuttX Configuration __ARCH_USE_S_MODE__ is disabled!
+
+_So if ARCH_USE_S_MODE is enabled, NuttX will use `sstatus` instead?_
+
+Yep! We need to disable __ARCH_USE_S_MODE__, so that NuttX will use __`sstatus`__ (instead of __`mstatus`__)...
+
+Which is perfectly valid for __RISC-V Supervisor Mode__!
+
+Let's dig around for the elusive (but essential) __ARCH_USE_S_MODE__...
+
+# NuttX Flat Mode becomes Kernel Mode
 
 TODO
 
@@ -398,6 +408,10 @@ Which is defined in Kernel Mode: [`rv-virt:knsh64`](https://github.com/lupyuen2/
 ```bash
 tools/configure.sh rv-virt:knsh64
 ```
+
+# Initialise Supversor Mode
+
+TODO
 
 And we bypassed Machine Mode Initialisation during startup...
 
