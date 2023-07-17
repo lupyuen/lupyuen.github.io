@@ -418,10 +418,34 @@ make
 <p>Hence Kernel Mode is a lot more secure than the normal <strong>NuttX Flat Mode</strong>, which runs Kernel and User Application in the same Privileged, Unprotected Mode.</p>
 <p><a href="https://cwiki.apache.org/confluence/display/NUTTX/NuttX+Protected+Build">(More about <strong>Kernel Mode</strong>)</a></p>
 <p><em>Does it work?</em></p>
-<p>When we <code>grep</code> for <strong><code>csr</code> Instructions</strong> in the rebuilt NuttX Disassembly, we see (almost) no more Machine Mode Registers used.</p>
-<p>No more problems with Critical Section yay!</p>
-<p>Let’s eliminate the remaining few Machine Mode Registers…</p>
+<p>When we <code>grep</code> for <strong><code>csr</code> Instructions</strong> in the rebuilt NuttX Disassembly, we see (nearly) all Machine-Mode <strong><code>m</code></strong> Registers replaced by Supervisor-Mode <strong><code>s</code></strong> Registers.</p>
+<p>No more problems with <a href="https://lupyuen.github.io/articles/privilege#critical-section-doesnt-return"><strong>Critical Section</strong></a> yay!</p>
+<p>Let’s eliminate the remaining Machine Mode Registers…</p>
 <h1 id="initialise-risc-v-supervisor-mode"><a href="#initialise-risc-v-supervisor-mode">7 Initialise RISC-V Supervisor Mode</a></h1>
+<p><em>We rebuilt NuttX from Flat Mode to Kernel Mode…</em></p>
+<p><em>Why does it still access RISC-V Machine Mode Registers?</em></p>
+<p>NuttX accesses the RISC-V Machine Mode Registers during NuttX Startup…</p>
+<ol>
+<li>
+<p><strong>NuttX Boot Code</strong> calls <strong>qemu_rv_start</strong></p>
+<p><a href="TODO">(As explained here)</a></p>
+</li>
+<li>
+<p><strong>qemu_rv_start</strong> assumes it’s in <strong>Machine Mode</strong></p>
+<p>(Because QEMU boots NuttX in Machine Mode)</p>
+</li>
+<li>
+<p><strong>qemu_rv_start</strong> initialises the <strong>Machine Mode Registers</strong></p>
+<p>(And some Supervisor Mode Registers)</p>
+</li>
+<li>
+<p><strong>qemu_rv_start</strong> jumps to <strong>qemu_rv_start_s</strong> in <strong>Supervisor Mode</strong></p>
+</li>
+<li>
+<p><strong>qemu_rv_start_s</strong> initialises the <strong>Supervisor Mode Registers</strong></p>
+</li>
+</ol>
+<p><em>So we need to remove the Machine Mode Registers from qemu_rv_start?</em></p>
 <p>TODO</p>
 <p>Earlier we bypassed the Machine Mode and Supervisor Mode Initialisation during NuttX startup…</p>
 <p>From <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L166-L231">qemu_rv_start.c</a></p>
