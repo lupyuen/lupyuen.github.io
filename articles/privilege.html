@@ -296,7 +296,7 @@ nuttx/drivers/serial/uart_16550.c:1726
 <p>Save the result back to Register <strong><code>a5</code></strong></p>
 </li>
 </ul>
-<p>Which is a problem: NuttX can’t read the <strong><code>mstatus</code></strong> Register in RISC-V Supervisor Mode…</p>
+<p>Which is a problem: NuttX can’t read the <strong><code>mstatus</code></strong> Register, because of its Privilege Level…</p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-privilege.jpg" alt="RISC-V Privilege Levels" /></p>
 <h1 id="risc-v-privilege-levels"><a href="#risc-v-privilege-levels">4 RISC-V Privilege Levels</a></h1>
 <p>TODO</p>
