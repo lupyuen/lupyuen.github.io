@@ -306,11 +306,11 @@ According to the [__RISC-V Spec__](https://five-embeddev.com/quickref/instructio
 
 - Read the [__`mstatus`__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush) Register
 
-  [(Which is a __Control and Status Register__)](https://five-embeddev.com/quickref/instructions.html#-csr--csr-instructions)
+  [(Which is a __CSR: Control and Status Register__)](https://five-embeddev.com/quickref/instructions.html#-csr--csr-instructions)
 
 - Clear the [__`mstatus`__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush) bits specified by Register __`a5`__ (with value 8)
 
-  [(Which is the __MIE Bit__: Machine Interrupt Enable)](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush)
+  [(Which is the __MIE Bit: Machine Interrupt Enable__)](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush)
 
 - Return the initial value of [__`mstatus`__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush) in Register __`a5`__
 
