@@ -283,7 +283,7 @@ int up_putc(int ch) {
 <p><em>What’s this Critical Section?</em></p>
 <p>To prevent garbled output, NuttX stops mutiple threads (or interrupts) from printing to the UART Port simultaneously.</p>
 <p>It uses a <a href="https://en.wikipedia.org/wiki/Critical_section"><strong>Critical Section</strong></a> to lock the chunk of code above, so only a single thread can print to UART at any time.</p>
-<p>But it seems the locking isn’t working… It never returns!</p>
+<p>But the locking isn’t working… It never returns!</p>
 <p><em>How is it implemented?</em></p>
 <p>When we browse the <strong>RISC-V Disassembly</strong> of NuttX, we see the implementation of the Critical Section: <a href="https://github.com/lupyuen/lupyuen.github.io/releases/download/nuttx-riscv64/nuttx.S">nuttx.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>int up_putc(int ch) {
@@ -313,10 +313,12 @@ csrrc a5, mstatus, a5
 <p><a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush">(Which is the <strong>MIE Bit</strong>: Machine Interrupt Enable)</a></p>
 </li>
 <li>
-<p>Save the result back to Register <strong><code>a5</code></strong></p>
+<p>Return the initial value of <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush"><strong><code>mstatus</code></strong></a> in Register <strong><code>a5</code></strong></p>
+<p>(Before clearing the bits)</p>
 </li>
 </ul>
-<p>We have a problem: NuttX can’t modify the <strong><code>mstatus</code></strong> Register, because of its Privilege Level…</p>
+<p>Effectively we’re <strong>disabling interrupts</strong>, so we won’t possibly switch to another thread.</p>
+<p>But we have a problem: NuttX can’t modify the <strong><code>mstatus</code></strong> Register, because of its Privilege Level…</p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-privilege.jpg" alt="RISC-V Privilege Levels" /></p>
 <h1 id="risc-v-privilege-levels"><a href="#risc-v-privilege-levels">4 RISC-V Privilege Levels</a></h1>
 <p><em>What’s this Privilege Level?</em></p>
