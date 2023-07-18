@@ -75,7 +75,7 @@
 <li><a href="#nuttx-flat-mode-becomes-kernel-mode">6 NuttX Flat Mode becomes Kernel Mode</a><ul></ul></li>
 <li><a href="#initialise-risc-v-supervisor-mode">7 Initialise RISC-V Supervisor Mode</a><ul></ul></li>
 <li><a href="#other-risc-v-ports-of-nuttx">8 Other RISC-V Ports of NuttX</a><ul></ul></li>
-<li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>23 Jul 2023</em></p>
+<li><a href="#whats-next">9 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>19 Jul 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/privilege-title.jpg" alt="RISC-V Privilege Levels on Star64 JH7110 SBC" /></p>
 <p>We’re in the super-early stage of porting <a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX Real-Time Operating System (RTOS)</strong></a> to the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer.</p>
 <p>(Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
@@ -95,7 +95,7 @@
 </li>
 <li>
 <p>Why (naively) porting NuttX from <strong>QEMU to Star64</strong> might become really challenging!</p>
-<p>(Thankfully we have the LiteX Arty-A7 and MPFS ICICLE ports)</p>
+<p>(Thankfully we have the LiteX Arty-A7 and PolarFire Icicle ports)</p>
 </li>
 </ul>
 <p>We begin with the simpler topic: UART…</p>
@@ -506,7 +506,7 @@ void qemu_rv_start(int mhartid) {
   // Set the trap vector for M-mode
   // Removed: mtvec
 
-  // TODO: up_mtimer_initialize
+  // TODO: Call up_mtimer_initialize
   // https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_timerisr.c#L151-L210
 
   // Set mepc to the entry
@@ -569,7 +569,7 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 <tr><td style="text-align: left"> </td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/mpfs/icicle"><strong>MPFS ICICLE</strong></a> runs a copy of OpenSBI inside NuttX (so it boots in Machine Mode before Supervisor Mode)…</p>
+<p><a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/mpfs/boards/icicle/index.html"><strong>PolarFire Icicle</strong></a> (based on <a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/mpfs/index.html"><strong>PolarFire MPFS</strong></a>) runs a copy of OpenSBI inside NuttX (so it boots in Machine Mode before Supervisor Mode)…</p>
 <div><table><thead><tr><th style="text-align: left"></th><th style="text-align: left"></th></tr></thead><tbody>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/mpfs/icicle">mpfs/icicle</a></td><td style="text-align: left">RISC-V Board</td></tr>
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/boards/risc-v/mpfs/icicle/configs/knsh/defconfig#L39">knsh/defconfig</a></td><td style="text-align: left">Build Configuration</td></tr>
@@ -580,8 +580,9 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 <tr><td style="text-align: left"><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_ihc_sbi.c#L570">mpfs_ihc_sbi.c</a></td><td style="text-align: left">OpenSBI Inter-Hart Comms</td></tr>
 <tr><td style="text-align: left"> </td><td style="text-align: left"></td></tr>
 </tbody></table>
-</div><h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
-<p>TODO</p>
+</div>
+<p><a href="https://www.qemu.org/docs/master/system/riscv/microchip-icicle-kit.html">(QEMU has an <strong>Emulator for PolarFire Icicle</strong>)</a></p>
+<h1 id="whats-next"><a href="#whats-next">9 What’s Next</a></h1>
 <p>I hope we learnt a bit more about <strong>RISC-V and Star64 JH7110 SBC</strong> today…</p>
 <ul>
 <li>
@@ -598,7 +599,7 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 </li>
 <li>
 <p>Porting NuttX from <strong>QEMU to Star64</strong> might become really challenging!</p>
-<p>(Thankfully we have the LiteX Arty-A7 and MPFS ICICLE ports)</p>
+<p>(Thankfully we have the LiteX Arty-A7 and PolarFire Icicle ports)</p>
 </li>
 </ul>
 <p>Please join me in the next article as we solve the <strong>RISC-V Semihosting Problem</strong>. (We might use an <strong>Initial RAM Disk</strong> with ROMFS)</p>
