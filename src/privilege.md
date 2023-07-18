@@ -572,7 +572,8 @@ void qemu_rv_start(int mhartid) {
   // Set the trap vector for M-mode
   // Removed: mtvec
 
-  // TODO: up_mtimer_initialize();
+  // TODO: up_mtimer_initialize
+  // https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_timerisr.c#L151-L210
 
   // Set mepc to the entry
   // Set a0 to mhartid explicitly and enter to S-mode
@@ -627,7 +628,7 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 
 We'll find out why in the next article!
 
-__TODO:__ Port __up_mtimer_initialize__ to Star64
+__TODO:__ Port [__up_mtimer_initialize__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_timerisr.c#L151-L210) to Star64
 
 [(See the __Modified Files__)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/32/files)
 
