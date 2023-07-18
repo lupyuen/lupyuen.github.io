@@ -605,6 +605,8 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 
 We'll find out why in the next article!
 
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64a-0.0.1)
+
 ![Semihosting on RISC-V NuttX](https://lupyuen.github.io/images/privilege-semihosting.jpg)
 
 [_Semihosting on RISC-V NuttX_](https://github.com/apache/nuttx/issues/9501)
