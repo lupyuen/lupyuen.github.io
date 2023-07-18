@@ -126,7 +126,7 @@ config 16550_REGINCR
     Default: 1
 ```
 
-Which we copied from [__NuttX for QEMU__](https://lupyuen.github.io/articles/riscv).
+Which we copied from [__NuttX for QEMU Emulator__](https://lupyuen.github.io/articles/riscv).
 
 _Ah but is 16550_REGINCR correct for Star64 JH7110?_
 
