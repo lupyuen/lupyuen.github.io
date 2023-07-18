@@ -594,6 +594,8 @@ elf_init: filename: /system/bin/init loadinfo: 0x404069e8
 
 [(Source)](https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode)
 
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64a-0.0.1)
+
 But NuttX crashes due to a Semihosting Problem. (Pic above)
 
 ```text
@@ -609,7 +611,7 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 
 We'll find out why in the next article!
 
-[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64a-0.0.1)
+__TODO:__ Port __up_mtimer_initialize__ to Star64
 
 ![Semihosting on RISC-V NuttX](https://lupyuen.github.io/images/privilege-semihosting.jpg)
 
@@ -651,6 +653,8 @@ We found the following NuttX Ports that run in __RISC-V Supervisor Mode with Ope
 # What's Next
 
 TODO
+
+Please join me in the next article as we solve the __RISC-V Semihosting Problem__. (We might use an __Initial RAM Disk__ with ROMFS)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
