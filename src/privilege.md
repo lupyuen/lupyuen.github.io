@@ -64,7 +64,7 @@ static void u16550_putc(
 
 _Is the UART Base Address correct?_
 
-Absolutely it's correct. Previously we validated the __16550 UART Base Address for JH7110__...
+It's correct. Previously we validated the __16550 UART Base Address for JH7110__...
 
 - [__"UART Controller on Star64"__](https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64)
 
@@ -74,7 +74,7 @@ And we successfully printed to UART...
 
 ```c
 // Print `A` to the UART Port at
-// UART Base Address 0x1000 0000
+// Base Address 0x1000 0000
 *(volatile uint8_t *) 0x10000000 = 'A';
 ```
 
