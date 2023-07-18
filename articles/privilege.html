@@ -506,7 +506,8 @@ void qemu_rv_start(int mhartid) {
   // Set the trap vector for M-mode
   // Removed: mtvec
 
-  // TODO: up_mtimer_initialize();
+  // TODO: up_mtimer_initialize
+  // https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_timerisr.c#L151-L210
 
   // Set mepc to the entry
   // Set a0 to mhartid explicitly and enter to S-mode
@@ -548,7 +549,7 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode">(Source)</a></p>
 <p>We’ll find out why in the next article!</p>
-<p><strong>TODO:</strong> Port <strong>up_mtimer_initialize</strong> to Star64</p>
+<p><strong>TODO:</strong> Port <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_timerisr.c#L151-L210"><strong>up_mtimer_initialize</strong></a> to Star64</p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/32/files">(See the <strong>Modified Files</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64a-0.0.1">(See the <strong>Build Steps</strong>)</a></p>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64a-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
