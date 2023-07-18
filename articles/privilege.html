@@ -163,7 +163,7 @@ static void u16550_putc(
 #define UART_LSR_OFFSET \
   (CONFIG_16550_REGINCR * UART_LSR_INCR)
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/Kconfig-16550#L501-L520"><strong>16550_REGINCR</strong></a> defaults to 1, which we copied from QEMU: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/Kconfig-16550#L501-L520">Kconfig-16550</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/Kconfig-16550#L501-L520"><strong>16550_REGINCR</strong></a> defaults to 1…</p>
 <div class="example-wrap"><pre class="language-text"><code>config 16550_REGINCR
   int &quot;Address increment between 16550 registers&quot;
   default 1
@@ -172,8 +172,9 @@ static void u16550_putc(
     Options are 1, 2, or 4.
     Default: 1
 </code></pre></div>
+<p>Which we copied from <a href="https://lupyuen.github.io/articles/riscv"><strong>NuttX for QEMU</strong></a>.</p>
 <p><em>Ah but is 16550_REGINCR correct for Star64 JH7110?</em></p>
-<p>Let’s check…</p>
+<p>Let’s find out…</p>
 <h1 id="uart-registers-are-spaced-differently"><a href="#uart-registers-are-spaced-differently">2 UART Registers are Spaced Differently</a></h1>
 <p>Earlier we talked about the Address Increment between 16550 UART Registers (<strong>16550_REGINCR</strong>), which defaults to 1…</p>
 <div class="example-wrap"><pre class="language-text"><code>config 16550_REGINCR
