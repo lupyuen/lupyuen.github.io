@@ -110,7 +110,7 @@ And the offset of Line Status Register [__UART_THR_OFFSET__](https://github.com/
   (CONFIG_16550_REGINCR * UART_LSR_INCR)
 ```
 
-__CONFIG_16550_REGINCR__ defaults to 1, which we copied from QEMU: [Kconfig-16550](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/Kconfig-16550#L501-L520)
+__16550_REGINCR__ defaults to 1, which we copied from QEMU: [Kconfig-16550](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/Kconfig-16550#L501-L520)
 
 ```text
 config 16550_REGINCR
@@ -122,13 +122,13 @@ config 16550_REGINCR
     Default: 1
 ```
 
-_Ah but is CONFIG_16550_REGINCR correct for Star64 JH7110?_
+_Ah but is 16550_REGINCR correct for Star64 JH7110?_
 
 Let's check...
 
 # UART Registers are Spaced Differently
 
-Earlier we talked about the Address Increment between 16550 UART Registers (__CONFIG_16550_REGINCR__), which defaults to 1...
+Earlier we talked about the Address Increment between 16550 UART Registers (__16550_REGINCR__), which defaults to 1...
 
 ```text
 config 16550_REGINCR
@@ -193,7 +193,7 @@ We see that the UART Register Offset is shifted by 2 (__regshift__).
 
 Which means we __multiply the UART Offset by 4!__
 
-Thus the UART Registers are spaced __4 bytes apart.__ And __CONFIG_16550_REGINCR__ should be 4, not 1!
+Thus the UART Registers are spaced __4 bytes apart.__ And __16550_REGINCR__ should be 4, not 1!
 
 | Address | Register |
 |:-------:|:---------|
@@ -204,7 +204,7 @@ Thus the UART Registers are spaced __4 bytes apart.__ And __CONFIG_16550_REGINCR
 |`0x1000` `0010` | Modem Control Register
 |`0x1000` `0014` | Line Status Register
 
-_How to fix CONFIG_16550_REGINCR?_
+_How to fix 16550_REGINCR?_
 
 We fix the NuttX Configuration in `make menuconfig`...
 
@@ -234,7 +234,7 @@ nx_start: Entry
 
 __Lesson Learnt:__ 8250 UARTs (and 16550) can work a little differently across Hardware Platforms! (Due to Word Alignment maybe?)
 
-Let's move on to the tougher topic: Machine Mode vs Supervisor Mode...
+We move on to the tougher topic: Machine Mode vs Supervisor Mode...
 
 ![UART Transmit works perfectly yay](https://lupyuen.github.io/images/privilege-run1.png)
 
@@ -421,7 +421,7 @@ Yep! We need to disable __ARCH_USE_S_MODE__, so that NuttX will use __`sstatus`_
 
 Which is perfectly valid for __RISC-V Supervisor Mode__!
 
-Let's dig around for the elusive (but essential) __ARCH_USE_S_MODE__...
+We dig around for the elusive (but essential) __ARCH_USE_S_MODE__...
 
 # NuttX Flat Mode becomes Kernel Mode
 
@@ -496,21 +496,23 @@ _Why does it still need RISC-V Machine-Mode Registers?_
 
 NuttX accesses the RISC-V Machine-Mode Registers during __NuttX Startup__...
 
-1.  __NuttX Boot Code__ calls __qemu_rv_start__
+1.  [__NuttX Boot Code__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L183-L187) calls [__qemu_rv_start__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L161-L235)
 
     [(As explained here)](https://lupyuen.github.io/articles/nuttx2#appendix-nuttx-in-supervisor-mode)
 
-1.  __qemu_rv_start__ assumes it's in __Machine Mode__
+1.  [__qemu_rv_start__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L161-L235) assumes it's in __Machine Mode__
 
     [(Because QEMU boots NuttX in Machine Mode)](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels)
 
-1.  __qemu_rv_start__ initialises the __Machine-Mode Registers__
+1.  [__qemu_rv_start__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L161-L235) initialises the __Machine-Mode Registers__
 
     (And some Supervisor-Mode Registers)
 
-1.  __qemu_rv_start__ jumps to __qemu_rv_start_s__ in __Supervisor Mode__
+1.  [__qemu_rv_start__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L161-L235) jumps to [__qemu_rv_start_s__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L159) in __Supervisor Mode__
 
-1.  __qemu_rv_start_s__ initialises the __Supervisor-Mode Registers__
+1.  [__qemu_rv_start_s__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L159) initialises the __Supervisor-Mode Registers__
+
+    (And starts NuttX)
 
 _So we need to remove the Machine-Mode Registers from qemu_rv_start?_
 
@@ -518,7 +520,7 @@ Yep, because NuttX boots in [__Supervisor Mode__](https://lupyuen.github.io/arti
 
 (And can't access the Machine-Mode Registers)
 
-This is how we fixed __qemu_rv_start__ to remove the Machine-Mode Registers: [qemu_rv_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L165-L233):
+This is how we fixed __qemu_rv_start__ to remove the Machine-Mode Registers: [qemu_rv_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L161-L235):
 
 ```c
 // Called by NuttX Boot Code
@@ -562,6 +564,8 @@ void qemu_rv_start(int mhartid) {
   qemu_rv_start_s(mhartid);
 }
 ```
+
+[(__qemu_rv_start_s__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L159)
 
 We're not sure if this is entirely corect... But it's a good start!
 
