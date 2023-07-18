@@ -306,7 +306,7 @@ csrrc a5, mstatus, a5
 <p><a href="https://five-embeddev.com/quickref/instructions.html#-csr--csr-instructions">(Which is a <strong>Control and Status Register</strong>)</a></p>
 </li>
 <li>
-<p>Clear the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush"><strong><code>mstatus</code></strong></a>  bits specified by Register <strong><code>a5</code></strong> (with value 8)</p>
+<p>Clear the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush"><strong><code>mstatus</code></strong></a> bits specified by Register <strong><code>a5</code></strong> (with value 8)</p>
 <p><a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush">(Which is the <strong>MIE Bit</strong>: Machine Interrupt Enable)</a></p>
 </li>
 <li>
@@ -387,10 +387,10 @@ static inline irqstate_t up_irq_save(void) {
   #define CSR_STATUS mstatus
 #endif
 </code></pre></div>
-<p>But only if the NuttX Configuration <strong>ARCH_USE_S_MODE</strong> is disabled!</p>
+<p>…BUT only if NuttX Configuration <strong>ARCH_USE_S_MODE</strong> is disabled!</p>
 <p><em>So if ARCH_USE_S_MODE is enabled, NuttX will use <code>sstatus</code> instead?</em></p>
 <p>Yep! We need to disable <strong>ARCH_USE_S_MODE</strong>, so that NuttX will use <strong><code>sstatus</code></strong> (instead of <strong><code>mstatus</code></strong>)…</p>
-<p>Which is perfectly valid for <strong>RISC-V Supervisor Mode</strong>!</p>
+<p>Which is perfectly hunky dory for <strong>RISC-V Supervisor Mode</strong>!</p>
 <p>We dig around for the elusive (but essential) <strong>ARCH_USE_S_MODE</strong>…</p>
 <h1 id="nuttx-flat-mode-becomes-kernel-mode"><a href="#nuttx-flat-mode-becomes-kernel-mode">6 NuttX Flat Mode becomes Kernel Mode</a></h1>
 <p><em>How to enable ARCH_USE_S_MODE in NuttX?</em></p>
@@ -405,12 +405,12 @@ static inline irqstate_t up_irq_save(void) {
   #define CSR_STATUS mstatus
 #endif
 </code></pre></div>
-<p>(Because Star64 JH7110 boots NuttX in Supervisor Mode)</p>
+<p><a href="https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels">(Because Star64 JH7110 boots NuttX in Supervisor Mode)</a></p>
 <p>Searching NuttX for <strong>ARCH_USE_S_MODE</strong> gives us this Build Configuration for <strong>NuttX Kernel Mode</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L43">knsh64/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_ARCH_USE_S_MODE=y
 </code></pre></div>
 <p><em>Perfect! Exactly what we need!</em></p>
-<p>Thus we change the NuttX Build Configuration from <strong>Flat Mode to Kernel Mode</strong>…</p>
+<p>Thus we switch the NuttX Build Configuration from <strong>Flat Mode to Kernel Mode</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Configure NuttX for Kernel Mode and build NuttX
 tools/configure.sh rv-virt:knsh64
 make
@@ -463,7 +463,7 @@ make
 <p><em>So we need to remove the Machine-Mode Registers from qemu_rv_start?</em></p>
 <p>Yep, because NuttX boots in <a href="https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels"><strong>Supervisor Mode</strong></a> on Star64.</p>
 <p>(And can’t access the Machine-Mode Registers)</p>
-<p>This is how we fixed <strong>qemu_rv_start</strong> to remove the Machine-Mode Registers: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L161-L235">qemu_rv_start.c</a>:</p>
+<p>This is how we patched <strong>qemu_rv_start</strong> to remove the Machine-Mode Registers: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L161-L235">qemu_rv_start.c</a>:</p>
 <div class="example-wrap"><pre class="language-c"><code>// Called by NuttX Boot Code
 // to init System Registers
 void qemu_rv_start(int mhartid) {
@@ -506,7 +506,7 @@ void qemu_rv_start(int mhartid) {
 }
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L159">(<strong>qemu_rv_start_s</strong> is defined here)</a></p>
-<p>We’re not sure if this is entirely corect… But it’s a good start!</p>
+<p>We’re not sure if this is entirely correct… But it’s a good start!</p>
 <p>(Yeah we’re naively copying code again sigh)</p>
 <p>Now NuttX boots further!</p>
 <div class="example-wrap"><pre class="language-text"><code>123067DFHBC
@@ -527,7 +527,6 @@ elf_loadbinary: Loading file: /system/bin/init
 elf_init: filename: /system/bin/init loadinfo: 0x404069e8
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode">(Source)</a></p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64a-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
 <p>But NuttX crashes due to a Semihosting Problem. (Pic above)</p>
 <div class="example-wrap"><pre class="language-text"><code>riscv_exception: EXCEPTION: Breakpoint. MCAUSE: 0000000000000003, EPC: 0000000040200434, MTVAL: 0000000000000000
 riscv_exception: PANIC!!! Exception = 0000000000000003
@@ -539,6 +538,8 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 <p><a href="https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode">(Source)</a></p>
 <p>We’ll find out why in the next article!</p>
 <p><strong>TODO:</strong> Port <strong>up_mtimer_initialize</strong> to Star64</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64a-0.0.1">(See the <strong>Build Steps</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64a-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
 <p><img src="https://lupyuen.github.io/images/privilege-semihosting.jpg" alt="Semihosting on RISC-V NuttX" /></p>
 <p><a href="https://github.com/apache/nuttx/issues/9501"><em>Semihosting on RISC-V NuttX</em></a></p>
 <h1 id="other-risc-v-ports-of-nuttx"><a href="#other-risc-v-ports-of-nuttx">8 Other RISC-V Ports of NuttX</a></h1>
