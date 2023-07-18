@@ -103,13 +103,15 @@ Inside [__u16550_serialin__](https://github.com/lupyuen2/wip-pinephone-nuttx/blo
 
 _What's the UART Register Offset?_
 
-[__UART_THR_OFFSET__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/include/nuttx/serial/uart_16550.h#L197) (Offset of Line Status Register) is...
+[__UART_LSR_OFFSET__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/include/nuttx/serial/uart_16550.h#L172-L200) (Offset of Line Status Register) is...
 
 ```c
-// Line Status Register is Register #5
+// UART Line Status Register
+// is Register #5
 #define UART_LSR_INCR 5
 
-// Compute offset of Line Status Register
+// Offset of Line Status Register
+// is 16550_REGINCR * 5
 #define UART_LSR_OFFSET \
   (CONFIG_16550_REGINCR * UART_LSR_INCR)
 ```
