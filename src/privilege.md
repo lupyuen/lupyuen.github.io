@@ -285,8 +285,8 @@ int up_putc(int ch) {
 up_irq_save():
 nuttx/include/arch/irq.h:675
   __asm__ __volatile__
-    40204598:	47a1      li    a5, 8
-    4020459a:	3007b7f3  csrrc a5, mstatus, a5
+    40204598: 47a1      li    a5, 8
+    4020459a: 3007b7f3  csrrc a5, mstatus, a5
 up_putc():
 nuttx/drivers/serial/uart_16550.c:1726
   flags = enter_critical_section();
@@ -535,7 +535,7 @@ This is how we patched __qemu_rv_start__ to remove the Machine-Mode Registers: [
 // to init System Registers
 void qemu_rv_start(int mhartid) {
 
-  // For the First CPU...
+  // For the First CPU Core...
   if (0 == mhartid) {
 
     // Clear the BSS
