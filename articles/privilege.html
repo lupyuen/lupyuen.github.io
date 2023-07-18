@@ -126,7 +126,7 @@ static void u16550_putc(
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/uart_16550.c#L1622-L1638">(Source)</a></p>
 <p><em>Is the UART Base Address correct?</em></p>
-<p>Absolutely it’s correct. Previously we validated the <strong>16550 UART Base Address for JH7110</strong>…</p>
+<p>It’s correct. Previously we validated the <strong>16550 UART Base Address for JH7110</strong>…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64"><strong>“UART Controller on Star64”</strong></a></p>
@@ -137,7 +137,7 @@ static void u16550_putc(
 </ul>
 <p>And we successfully printed to UART…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Print `A` to the UART Port at
-// UART Base Address 0x1000 0000
+// Base Address 0x1000 0000
 *(volatile uint8_t *) 0x10000000 = &#39;A&#39;;
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L159">(Source)</a></p>
