@@ -282,7 +282,7 @@ int up_putc(int ch) {
 </code></pre></div>
 <p><em>What’s this Critical Section?</em></p>
 <p>To prevent garbled output, NuttX stops mutiple threads (or interrupts) from printing to the UART Port simultaneously.</p>
-<p>It uses a <a href="https://en.wikipedia.org/wiki/Critical_section"><strong>Critical Section</strong></a> to lock the chunk of code above, so only a single thread can run it at a time.</p>
+<p>It uses a <a href="https://en.wikipedia.org/wiki/Critical_section"><strong>Critical Section</strong></a> to lock the chunk of code above, so only a single thread can print to UART at any time.</p>
 <p>But it seems the locking isn’t working… It never returns!</p>
 <p><em>How is it implemented?</em></p>
 <p>When we browse the <strong>RISC-V Disassembly</strong> of NuttX, we see the implementation of the Critical Section: <a href="https://github.com/lupyuen/lupyuen.github.io/releases/download/nuttx-riscv64/nuttx.S">nuttx.S</a></p>
