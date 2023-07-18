@@ -114,7 +114,7 @@ _What's the UART Register Offset?_
   (CONFIG_16550_REGINCR * UART_LSR_INCR)
 ```
 
-[__16550_REGINCR__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/Kconfig-16550#L501-L520) defaults to 1, which we copied from QEMU: [Kconfig-16550](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/Kconfig-16550#L501-L520)
+[__16550_REGINCR__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/Kconfig-16550#L501-L520) defaults to 1...
 
 ```text
 config 16550_REGINCR
@@ -126,9 +126,11 @@ config 16550_REGINCR
     Default: 1
 ```
 
+Which we copied from [__NuttX for QEMU__](https://lupyuen.github.io/articles/riscv).
+
 _Ah but is 16550_REGINCR correct for Star64 JH7110?_
 
-Let's check...
+Let's find out...
 
 # UART Registers are Spaced Differently
 
