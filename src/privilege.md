@@ -273,7 +273,7 @@ To prevent garbled output, NuttX stops mutiple threads (or interrupts) from prin
 
 It uses a [__Critical Section__](https://en.wikipedia.org/wiki/Critical_section) to lock the chunk of code above, so only a single thread can print to UART at any time.
 
-But it seems the locking isn't working... It never returns!
+But the locking isn't working... It never returns!
 
 _How is it implemented?_
 
@@ -310,9 +310,13 @@ According to the [__RISC-V Spec__](https://five-embeddev.com/quickref/instructio
 
   [(Which is the __MIE Bit__: Machine Interrupt Enable)](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush)
 
-- Save the result back to Register __`a5`__
+- Return the initial value of [__`mstatus`__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush) in Register __`a5`__
 
-We have a problem: NuttX can't modify the __`mstatus`__ Register, because of its Privilege Level...
+  (Before clearing the bits)
+
+Effectively we're __disabling interrupts__, so we won't possibly switch to another thread.
+
+But we have a problem: NuttX can't modify the __`mstatus`__ Register, because of its Privilege Level...
 
 ![RISC-V Privilege Levels](https://lupyuen.github.io/images/nuttx2-privilege.jpg)
 
