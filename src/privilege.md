@@ -60,7 +60,7 @@ static void u16550_putc(
 }
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/drivers/serial/uart_16550.c#L1638-L1642)
+[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/uart_16550.c#L1622-L1638)
 
 _Is the UART Base Address correct?_
 
@@ -99,7 +99,7 @@ u16550_serialin(   // Read UART Register...
   offset);          // Offset of UART Register
 ```
 
-And the offset of Line Status Register [__UART_THR_OFFSET__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/include/nuttx/serial/uart_16550.h#L197) is...
+And the Offset of Line Status Register [__UART_THR_OFFSET__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/include/nuttx/serial/uart_16550.h#L197) is...
 
 ```c
 // Line Status Register is Register #5
@@ -208,7 +208,7 @@ Thus the UART Registers are spaced __4 bytes apart.__ And __16550_REGINCR__ shou
 
 _How to fix 16550_REGINCR?_
 
-We fix the NuttX Configuration in `make menuconfig`...
+We fix the NuttX Configuration in "`make` `menuconfig`"...
 
 - Device Drivers > Serial Driver Support > 16550 UART Chip support > Address Increment Between 16550 Registers
 
@@ -234,7 +234,7 @@ nx_start: Entry
 
 [(Source)](https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode)
 
-__Lesson Learnt:__ 8250 UARTs (and 16550) can work a little differently across Hardware Platforms! (Due to Word Alignment maybe?)
+__Lesson Learnt:__ 8250 UARTs (and 16550) might work a little differently across Hardware Platforms! (Due to Word Alignment maybe?)
 
 We move on to the tougher topic: Machine Mode vs Supervisor Mode...
 
@@ -244,7 +244,7 @@ We move on to the tougher topic: Machine Mode vs Supervisor Mode...
 
 We ran into another problem when printing to the UART Port...
 
-NuttX on Star64 gets stuck when we enter a __Critical Section__: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/drivers/serial/uart_16550.c#L1713-L1737)
+NuttX on Star64 gets stuck when we enter a __Critical Section__: [uart_16550.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/drivers/serial/uart_16550.c#L1712C1-L1748)
 
 ```c
 // Print a character to the UART Port
@@ -263,13 +263,13 @@ int up_putc(int ch) {
 
 _What's this Critical Section?_
 
-To avoid garbled output, NuttX prevents mutiple threads (or interrupts) from printing to the UART Port simultaneously.
+To prevent garbled output, NuttX stops mutiple threads (or interrupts) from printing to the UART Port simultaneously.
 
 It uses a [__Critical Section__](https://en.wikipedia.org/wiki/Critical_section) to lock the chunk of code above, so only a single thread can run it at a time.
 
 But it seems the locking isn't working... It never returns!
 
-_How it is implemented?_
+_How is it implemented?_
 
 When we browse the __RISC-V Disassembly__ of NuttX, we see the implementation of the Critical Section: [nuttx.S](https://github.com/lupyuen/lupyuen.github.io/releases/download/nuttx-riscv64/nuttx.S)
 
@@ -302,11 +302,11 @@ According to the [__RISC-V Spec__](https://five-embeddev.com/quickref/instructio
 
 - Clear the [__`mstatus`__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush)  bits specified by Register __`a5`__ (with value 8)
 
-  [(Which is the __MIE Bit__ for Machine Interrupt Enable)](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush)
+  [(Which is the __MIE Bit__: Machine Interrupt Enable)](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush)
 
 - Save the result back to Register __`a5`__
 
-Which is a problem: NuttX can't modify the __`mstatus`__ Register, because of its Privilege Level...
+We have a problem: NuttX can't modify the __`mstatus`__ Register, because of its Privilege Level...
 
 ![RISC-V Privilege Levels](https://lupyuen.github.io/images/nuttx2-privilege.jpg)
 
