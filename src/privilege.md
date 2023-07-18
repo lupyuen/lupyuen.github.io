@@ -416,11 +416,13 @@ Yes indeed, __CSR_STATUS__ becomes __`mstatus`__: [mode.h](https://github.com/lu
 ```c
 // If NuttX runs in Supervisor Mode...
 #ifdef CONFIG_ARCH_USE_S_MODE
-  // Use Global Status Register for Supervisor Mode
+  // Use Global Status Register 
+  // for Supervisor Mode
   #define CSR_STATUS sstatus
 
 #else  // If NuttX runs in Machine Mode...
-  // Use Global Status Register for Machine Mode 
+  // Use Global Status Register 
+  // for Machine Mode 
   #define CSR_STATUS mstatus
 #endif
 ```
@@ -444,16 +446,18 @@ In the previous section we discovered that we should enable __ARCH_USE_S_MODE__,
 ```c
 // If NuttX runs in Supervisor Mode...
 #ifdef CONFIG_ARCH_USE_S_MODE
-  // Use Global Status Register for Supervisor Mode
+  // Use Global Status Register 
+  // for Supervisor Mode
   #define CSR_STATUS sstatus
 
 #else  // If NuttX runs in Machine Mode...
-  // Use Global Status Register for Machine Mode 
+  // Use Global Status Register 
+  // for Machine Mode 
   #define CSR_STATUS mstatus
 #endif
 ```
 
-[(Because Star64 JH7110 boots NuttX in Supervisor Mode)](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels)
+[(Because Star64 boots NuttX in Supervisor Mode)](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels)
 
 Searching NuttX for __ARCH_USE_S_MODE__ gives us this Build Configuration for __NuttX Kernel Mode__: [knsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L43)
 
