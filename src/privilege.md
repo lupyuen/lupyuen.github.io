@@ -84,6 +84,8 @@ But strangely it loops forever waiting for the UART Port to be ready!
 
 _What's inside u16550_serialin?_
 
+Remember we call __u16550_serialin__ like this...
+
 ```c
 u16550_serialin(   // Read UART Register...
   priv,            // From UART Base Address...
@@ -91,7 +93,7 @@ u16550_serialin(   // Read UART Register...
 )
 ```
 
-[__u16550_serialin__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/uart_16550.c#L596-L611) reads a UART Register...
+Inside [__u16550_serialin__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/uart_16550.c#L596-L611), we read a UART Register...
 
 ```c
 *((FAR volatile uart_datawidth_t *)
@@ -99,7 +101,9 @@ u16550_serialin(   // Read UART Register...
   offset);          // Offset of UART Register
 ```
 
-And the Offset of Line Status Register [__UART_THR_OFFSET__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/include/nuttx/serial/uart_16550.h#L197) is...
+_What's the UART Register Offset?_
+
+[__UART_THR_OFFSET__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/include/nuttx/serial/uart_16550.h#L197) (Offset of Line Status Register) is...
 
 ```c
 // Line Status Register is Register #5
@@ -110,7 +114,7 @@ And the Offset of Line Status Register [__UART_THR_OFFSET__](https://github.com/
   (CONFIG_16550_REGINCR * UART_LSR_INCR)
 ```
 
-__16550_REGINCR__ defaults to 1, which we copied from QEMU: [Kconfig-16550](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/Kconfig-16550#L501-L520)
+[__16550_REGINCR__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/Kconfig-16550#L501-L520) defaults to 1, which we copied from QEMU: [Kconfig-16550](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/Kconfig-16550#L501-L520)
 
 ```text
 config 16550_REGINCR
