@@ -187,6 +187,7 @@ static void u16550_putc(
 <tr><td style="text-align: center"><code>0x1000</code> <code>0003</code></td><td style="text-align: left">Line Control Register</td></tr>
 <tr><td style="text-align: center"><code>0x1000</code> <code>0004</code></td><td style="text-align: left">Modem Control Register</td></tr>
 <tr><td style="text-align: center"><code>0x1000</code> <code>0005</code></td><td style="text-align: left">Line Status Register</td></tr>
+<tr><td style="text-align: center"> </td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
 <p><em>But is it the same for Star64 JH7110?</em></p>
@@ -234,6 +235,7 @@ static void dw8250_serial_out(struct uart_port *p, int offset, int value) {
 <tr><td style="text-align: center"><code>0x1000</code> <code>000C</code></td><td style="text-align: left">Line Control Register</td></tr>
 <tr><td style="text-align: center"><code>0x1000</code> <code>0010</code></td><td style="text-align: left">Modem Control Register</td></tr>
 <tr><td style="text-align: center"><code>0x1000</code> <code>0014</code></td><td style="text-align: left">Line Status Register</td></tr>
+<tr><td style="text-align: center"> </td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
 <p><em>How to fix 16550_REGINCR?</em></p>
