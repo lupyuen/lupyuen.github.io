@@ -300,7 +300,7 @@ According to the [__RISC-V Spec__](https://five-embeddev.com/quickref/instructio
 
   [(Which is a __Control and Status Register__)](https://five-embeddev.com/quickref/instructions.html#-csr--csr-instructions)
 
-- Clear the [__`mstatus`__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush)  bits specified by Register __`a5`__ (with value 8)
+- Clear the [__`mstatus`__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush) bits specified by Register __`a5`__ (with value 8)
 
   [(Which is the __MIE Bit__: Machine Interrupt Enable)](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush)
 
@@ -415,13 +415,13 @@ Yes indeed, __CSR_STATUS__ becomes __`mstatus`__: [mode.h](https://github.com/lu
 #endif
 ```
 
-But only if the NuttX Configuration __ARCH_USE_S_MODE__ is disabled!
+...BUT only if NuttX Configuration __ARCH_USE_S_MODE__ is disabled!
 
 _So if ARCH_USE_S_MODE is enabled, NuttX will use `sstatus` instead?_
 
 Yep! We need to disable __ARCH_USE_S_MODE__, so that NuttX will use __`sstatus`__ (instead of __`mstatus`__)...
 
-Which is perfectly valid for __RISC-V Supervisor Mode__!
+Which is perfectly hunky dory for __RISC-V Supervisor Mode__!
 
 We dig around for the elusive (but essential) __ARCH_USE_S_MODE__...
 
@@ -443,7 +443,7 @@ In the previous section we discovered that we should enable __ARCH_USE_S_MODE__,
 #endif
 ```
 
-(Because Star64 JH7110 boots NuttX in Supervisor Mode)
+[(Because Star64 JH7110 boots NuttX in Supervisor Mode)](https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels)
 
 Searching NuttX for __ARCH_USE_S_MODE__ gives us this Build Configuration for __NuttX Kernel Mode__: [knsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L43)
 
@@ -453,7 +453,7 @@ CONFIG_ARCH_USE_S_MODE=y
 
 _Perfect! Exactly what we need!_
 
-Thus we change the NuttX Build Configuration from __Flat Mode to Kernel Mode__...
+Thus we switch the NuttX Build Configuration from __Flat Mode to Kernel Mode__...
 
 ```bash
 ## Configure NuttX for Kernel Mode and build NuttX
@@ -522,7 +522,7 @@ Yep, because NuttX boots in [__Supervisor Mode__](https://lupyuen.github.io/arti
 
 (And can't access the Machine-Mode Registers)
 
-This is how we fixed __qemu_rv_start__ to remove the Machine-Mode Registers: [qemu_rv_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L161-L235):
+This is how we patched __qemu_rv_start__ to remove the Machine-Mode Registers: [qemu_rv_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L161-L235):
 
 ```c
 // Called by NuttX Boot Code
@@ -569,7 +569,7 @@ void qemu_rv_start(int mhartid) {
 
 [(__qemu_rv_start_s__ is defined here)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L159)
 
-We're not sure if this is entirely corect... But it's a good start!
+We're not sure if this is entirely correct... But it's a good start!
 
 (Yeah we're naively copying code again sigh)
 
@@ -596,8 +596,6 @@ elf_init: filename: /system/bin/init loadinfo: 0x404069e8
 
 [(Source)](https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode)
 
-[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64a-0.0.1)
-
 But NuttX crashes due to a Semihosting Problem. (Pic above)
 
 ```text
@@ -614,6 +612,10 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 We'll find out why in the next article!
 
 __TODO:__ Port __up_mtimer_initialize__ to Star64
+
+[(See the __Build Steps__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64a-0.0.1)
+
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64a-0.0.1)
 
 ![Semihosting on RISC-V NuttX](https://lupyuen.github.io/images/privilege-semihosting.jpg)
 
