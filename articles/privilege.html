@@ -384,11 +384,13 @@ static inline irqstate_t up_irq_save(void) {
 <p>Yes indeed, <strong>CSR_STATUS</strong> becomes <strong><code>mstatus</code></strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/include/mode.h#L35-L103">mode.h</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// If NuttX runs in Supervisor Mode...
 #ifdef CONFIG_ARCH_USE_S_MODE
-  // Use Global Status Register for Supervisor Mode
+  // Use Global Status Register 
+  // for Supervisor Mode
   #define CSR_STATUS sstatus
 
 #else  // If NuttX runs in Machine Mode...
-  // Use Global Status Register for Machine Mode 
+  // Use Global Status Register 
+  // for Machine Mode 
   #define CSR_STATUS mstatus
 #endif
 </code></pre></div>
@@ -402,15 +404,17 @@ static inline irqstate_t up_irq_save(void) {
 <p>In the previous section we discovered that we should enable <strong>ARCH_USE_S_MODE</strong>, so that NuttX will run in <strong>RISC-V Supervisor Mode</strong>…</p>
 <div class="example-wrap"><pre class="language-c"><code>// If NuttX runs in Supervisor Mode...
 #ifdef CONFIG_ARCH_USE_S_MODE
-  // Use Global Status Register for Supervisor Mode
+  // Use Global Status Register 
+  // for Supervisor Mode
   #define CSR_STATUS sstatus
 
 #else  // If NuttX runs in Machine Mode...
-  // Use Global Status Register for Machine Mode 
+  // Use Global Status Register 
+  // for Machine Mode 
   #define CSR_STATUS mstatus
 #endif
 </code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels">(Because Star64 JH7110 boots NuttX in Supervisor Mode)</a></p>
+<p><a href="https://lupyuen.github.io/articles/privilege#risc-v-privilege-levels">(Because Star64 boots NuttX in Supervisor Mode)</a></p>
 <p>Searching NuttX for <strong>ARCH_USE_S_MODE</strong> gives us this Build Configuration for <strong>NuttX Kernel Mode</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig#L43">knsh64/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_ARCH_USE_S_MODE=y
 </code></pre></div>
