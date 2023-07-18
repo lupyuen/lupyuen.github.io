@@ -124,7 +124,7 @@ static void u16550_putc(
   u16550_serialout(priv, UART_THR_OFFSET, (uart_datawidth_t)ch);
 }
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/drivers/serial/uart_16550.c#L1638-L1642">(Source)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/uart_16550.c#L1622-L1638">(Source)</a></p>
 <p><em>Is the UART Base Address correct?</em></p>
 <p>Absolutely it’s correct. Previously we validated the <strong>16550 UART Base Address for JH7110</strong>…</p>
 <ul>
@@ -153,7 +153,7 @@ static void u16550_putc(
   priv-&gt;uartbase +  // UART Base Address
   offset);          // Offset of UART Register
 </code></pre></div>
-<p>And the offset of Line Status Register <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/include/nuttx/serial/uart_16550.h#L197"><strong>UART_THR_OFFSET</strong></a> is…</p>
+<p>And the Offset of Line Status Register <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/include/nuttx/serial/uart_16550.h#L197"><strong>UART_THR_OFFSET</strong></a> is…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Line Status Register is Register #5
 #define UART_LSR_INCR 5
 
@@ -239,7 +239,7 @@ static void dw8250_serial_out(struct uart_port *p, int offset, int value) {
 </tbody></table>
 </div>
 <p><em>How to fix 16550_REGINCR?</em></p>
-<p>We fix the NuttX Configuration in <code>make menuconfig</code>…</p>
+<p>We fix the NuttX Configuration in “<code>make</code> <code>menuconfig</code>”…</p>
 <ul>
 <li>Device Drivers &gt; Serial Driver Support &gt; 16550 UART Chip support &gt; Address Increment Between 16550 Registers</li>
 </ul>
@@ -258,12 +258,12 @@ qemu_rv_mm_init: mmu_enable: satp=1077956608
 nx_start: Entry
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode">(Source)</a></p>
-<p><strong>Lesson Learnt:</strong> 8250 UARTs (and 16550) can work a little differently across Hardware Platforms! (Due to Word Alignment maybe?)</p>
+<p><strong>Lesson Learnt:</strong> 8250 UARTs (and 16550) might work a little differently across Hardware Platforms! (Due to Word Alignment maybe?)</p>
 <p>We move on to the tougher topic: Machine Mode vs Supervisor Mode…</p>
 <p><img src="https://lupyuen.github.io/images/privilege-run1.png" alt="UART Transmit works perfectly yay" /></p>
 <h1 id="critical-section-doesnt-return"><a href="#critical-section-doesnt-return">3 Critical Section Doesn’t Return</a></h1>
 <p>We ran into another problem when printing to the UART Port…</p>
-<p>NuttX on Star64 gets stuck when we enter a <strong>Critical Section</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/drivers/serial/uart_16550.c#L1713-L1737">uart_16550.c</a></p>
+<p>NuttX on Star64 gets stuck when we enter a <strong>Critical Section</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/drivers/serial/uart_16550.c#L1712C1-L1748">uart_16550.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// Print a character to the UART Port
 int up_putc(int ch) {
   ...
@@ -278,10 +278,10 @@ int up_putc(int ch) {
   leave_critical_section(flags);
 </code></pre></div>
 <p><em>What’s this Critical Section?</em></p>
-<p>To avoid garbled output, NuttX prevents mutiple threads (or interrupts) from printing to the UART Port simultaneously.</p>
+<p>To prevent garbled output, NuttX stops mutiple threads (or interrupts) from printing to the UART Port simultaneously.</p>
 <p>It uses a <a href="https://en.wikipedia.org/wiki/Critical_section"><strong>Critical Section</strong></a> to lock the chunk of code above, so only a single thread can run it at a time.</p>
 <p>But it seems the locking isn’t working… It never returns!</p>
-<p><em>How it is implemented?</em></p>
+<p><em>How is it implemented?</em></p>
 <p>When we browse the <strong>RISC-V Disassembly</strong> of NuttX, we see the implementation of the Critical Section: <a href="https://github.com/lupyuen/lupyuen.github.io/releases/download/nuttx-riscv64/nuttx.S">nuttx.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>int up_putc(int ch) {
   ...
@@ -307,13 +307,13 @@ csrrc a5, mstatus, a5
 </li>
 <li>
 <p>Clear the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush"><strong><code>mstatus</code></strong></a>  bits specified by Register <strong><code>a5</code></strong> (with value 8)</p>
-<p><a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush">(Which is the <strong>MIE Bit</strong> for Machine Interrupt Enable)</a></p>
+<p><a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#machine-status-registers-mstatus-and-mstatush">(Which is the <strong>MIE Bit</strong>: Machine Interrupt Enable)</a></p>
 </li>
 <li>
 <p>Save the result back to Register <strong><code>a5</code></strong></p>
 </li>
 </ul>
-<p>Which is a problem: NuttX can’t modify the <strong><code>mstatus</code></strong> Register, because of its Privilege Level…</p>
+<p>We have a problem: NuttX can’t modify the <strong><code>mstatus</code></strong> Register, because of its Privilege Level…</p>
 <p><img src="https://lupyuen.github.io/images/nuttx2-privilege.jpg" alt="RISC-V Privilege Levels" /></p>
 <h1 id="risc-v-privilege-levels"><a href="#risc-v-privilege-levels">4 RISC-V Privilege Levels</a></h1>
 <p><em>What’s this Privilege Level?</em></p>
