@@ -148,6 +148,7 @@ Which means that the 16550 UART Registers are spaced __1 byte apart__...
 |`0x1000` `0003` | Line Control Register
 |`0x1000` `0004` | Modem Control Register
 |`0x1000` `0005` | Line Status Register
+| &nbsp;
 
 _But is it the same for Star64 JH7110?_
 
@@ -203,6 +204,7 @@ Thus the UART Registers are spaced __4 bytes apart.__ And __16550_REGINCR__ shou
 |`0x1000` `000C` | Line Control Register
 |`0x1000` `0010` | Modem Control Register
 |`0x1000` `0014` | Line Status Register
+| &nbsp;
 
 _How to fix 16550_REGINCR?_
 
