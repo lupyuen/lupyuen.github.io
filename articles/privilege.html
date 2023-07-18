@@ -143,17 +143,19 @@ static void u16550_putc(
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_start.c#L94-L159">(Source)</a></p>
 <p>But strangely it loops forever waiting for the UART Port to be ready!</p>
 <p><em>What’s inside u16550_serialin?</em></p>
+<p>Remember we call <strong>u16550_serialin</strong> like this…</p>
 <div class="example-wrap"><pre class="language-c"><code>u16550_serialin(   // Read UART Register...
   priv,            // From UART Base Address...
   UART_LSR_OFFSET  // At offset of Line Status Register
 )
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/uart_16550.c#L596-L611"><strong>u16550_serialin</strong></a> reads a UART Register…</p>
+<p>Inside <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/uart_16550.c#L596-L611"><strong>u16550_serialin</strong></a>, we read a UART Register…</p>
 <div class="example-wrap"><pre class="language-c"><code>*((FAR volatile uart_datawidth_t *)
   priv-&gt;uartbase +  // UART Base Address
   offset);          // Offset of UART Register
 </code></pre></div>
-<p>And the Offset of Line Status Register <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/include/nuttx/serial/uart_16550.h#L197"><strong>UART_THR_OFFSET</strong></a> is…</p>
+<p><em>What’s the UART Register Offset?</em></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/include/nuttx/serial/uart_16550.h#L197"><strong>UART_THR_OFFSET</strong></a> (Offset of Line Status Register) is…</p>
 <div class="example-wrap"><pre class="language-c"><code>// Line Status Register is Register #5
 #define UART_LSR_INCR 5
 
@@ -161,7 +163,7 @@ static void u16550_putc(
 #define UART_LSR_OFFSET \
   (CONFIG_16550_REGINCR * UART_LSR_INCR)
 </code></pre></div>
-<p><strong>16550_REGINCR</strong> defaults to 1, which we copied from QEMU: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/Kconfig-16550#L501-L520">Kconfig-16550</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/Kconfig-16550#L501-L520"><strong>16550_REGINCR</strong></a> defaults to 1, which we copied from QEMU: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/Kconfig-16550#L501-L520">Kconfig-16550</a></p>
 <div class="example-wrap"><pre class="language-text"><code>config 16550_REGINCR
   int &quot;Address increment between 16550 registers&quot;
   default 1
