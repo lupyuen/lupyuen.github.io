@@ -271,7 +271,7 @@ _What's this Critical Section?_
 
 To prevent garbled output, NuttX stops mutiple threads (or interrupts) from printing to the UART Port simultaneously.
 
-It uses a [__Critical Section__](https://en.wikipedia.org/wiki/Critical_section) to lock the chunk of code above, so only a single thread can run it at a time.
+It uses a [__Critical Section__](https://en.wikipedia.org/wiki/Critical_section) to lock the chunk of code above, so only a single thread can print to UART at any time.
 
 But it seems the locking isn't working... It never returns!
 
