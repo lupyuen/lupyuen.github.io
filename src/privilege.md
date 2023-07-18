@@ -490,7 +490,7 @@ According to the [__NuttX Docs on Kernel Mode__](https://cwiki.apache.org/conflu
 
 > "All User Applications are executed with their own private address environments in Unprivileged, User-Mode"
 
-Hence Kernel Mode is a lot more secure than the normal __NuttX Flat Mode__, which runs Kernel and User Application in the same Privileged, Unprotected Mode.
+Hence Kernel Mode is a lot more secure than the normal __NuttX Flat Mode__, which runs the Kernel and User Applications in the same Unprotected, Privileged Mode.
 
 [(More about __Kernel Mode__)](https://cwiki.apache.org/confluence/display/NUTTX/NuttX+Protected+Build)
 
