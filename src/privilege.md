@@ -1,6 +1,6 @@
 # Star64 JH7110 + NuttX RTOS: RISC-V Privilege Levels and UART Registers
 
-📝 _23 Jul 2023_
+📝 _19 Jul 2023_
 
 ![RISC-V Privilege Levels on Star64 JH7110 SBC](https://lupyuen.github.io/images/privilege-title.jpg)
 
@@ -24,7 +24,7 @@ In this article we'll talk about the interesting things that we learnt about __R
 
 -   Why (naively) porting NuttX from __QEMU to Star64__ might become really challenging!
 
-    (Thankfully we have the LiteX Arty-A7 and MPFS ICICLE ports)
+    (Thankfully we have the LiteX Arty-A7 and PolarFire Icicle ports)
 
 We begin with the simpler topic: UART...
 
@@ -572,7 +572,7 @@ void qemu_rv_start(int mhartid) {
   // Set the trap vector for M-mode
   // Removed: mtvec
 
-  // TODO: up_mtimer_initialize
+  // TODO: Call up_mtimer_initialize
   // https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/qemu-rv/qemu_rv_timerisr.c#L151-L210
 
   // Set mepc to the entry
@@ -660,7 +660,7 @@ We found the following NuttX Ports that run in __RISC-V Supervisor Mode with Ope
 | [litex_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/litex/litex_start.c#L50) | Startup Code
 | &nbsp;
 
-[__MPFS ICICLE__](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64/boards/risc-v/mpfs/icicle) runs a copy of OpenSBI inside NuttX (so it boots in Machine Mode before Supervisor Mode)...
+[__PolarFire Icicle__](https://nuttx.apache.org/docs/latest/platforms/risc-v/mpfs/boards/icicle/index.html) (based on [__PolarFire MPFS__](https://nuttx.apache.org/docs/latest/platforms/risc-v/mpfs/index.html)) runs a copy of OpenSBI inside NuttX (so it boots in Machine Mode before Supervisor Mode)...
 
 | | |
 |:---|:---|
@@ -673,9 +673,9 @@ We found the following NuttX Ports that run in __RISC-V Supervisor Mode with Ope
 | [mpfs_ihc_sbi.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/mpfs/mpfs_ihc_sbi.c#L570) | OpenSBI Inter-Hart Comms
 | &nbsp;
 
-# What's Next
+[(QEMU has an __Emulator for PolarFire Icicle__)](https://www.qemu.org/docs/master/system/riscv/microchip-icicle-kit.html)
 
-TODO
+# What's Next
 
 I hope we learnt a bit more about __RISC-V and Star64 JH7110 SBC__ today...
 
@@ -693,7 +693,7 @@ I hope we learnt a bit more about __RISC-V and Star64 JH7110 SBC__ today...
 
 -   Porting NuttX from __QEMU to Star64__ might become really challenging!
 
-    (Thankfully we have the LiteX Arty-A7 and MPFS ICICLE ports)
+    (Thankfully we have the LiteX Arty-A7 and PolarFire Icicle ports)
 
 Please join me in the next article as we solve the __RISC-V Semihosting Problem__. (We might use an __Initial RAM Disk__ with ROMFS)
 

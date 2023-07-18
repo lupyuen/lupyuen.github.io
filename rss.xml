@@ -4,6 +4,13 @@
         <link>https://lupyuen.github.io</link>
         <description>IoT Techie and Educator</description>
         <item>
+            <title>Star64 JH7110 + NuttX RTOS: RISC-V Privilege Levels and UART Registers</title>
+            <link>https://lupyuen.github.io/articles/privilege</link>
+            <description><![CDATA[We're porting Apache NuttX RTOS to Pine64's Star64 JH7110 RISC-V SBC... And we see interesting issues with RISC-V Privilege Levels and 16550 UART Registers]]></description>
+            <guid>https://lupyuen.github.io/articles/privilege</guid>
+            <pubDate>Wed, 19 Jul 2023 00:00:00 +0000</pubDate>
+        </item>
+        <item>
             <title>Star64 JH7110 RISC-V SBC: Boot from Network with U-Boot and TFTP</title>
             <link>https://lupyuen.github.io/articles/tftp</link>
             <description><![CDATA[Let's boot Apache NuttX RTOS (or Linux) over the Network with U-Boot Bootloader and TFTP... On Pine64's Star64 JH7110 RISC-V Single-Board Computer]]></description>

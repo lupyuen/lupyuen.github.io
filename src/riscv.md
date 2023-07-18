@@ -455,6 +455,8 @@ Here's the complete list of RISC-V Instructions...
 
 - [__RISC-V Reference Card__](https://web.archive.org/web/20230331004925/http://riscvbook.com/greencard-20181213.pdf)
 
+(Check the Appendix for the Detailed Analysis of the NuttX Boot Code)
+
 _Why are the RISC-V Labels named "1f", "2f", "3f"?_
 
 [__"`1f`"__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L47-L50) refers to the [__Local Label "`1`"__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L53-L56) with a [__Forward Reference__](https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md#labels).
@@ -569,6 +571,107 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [(Source)](https://news.ycombinator.com/item?id=36453810#36455404)
 
+# Appendix: Analysis of NuttX Boot Code
+
+Below is our analysis of the __NuttX Boot Code__: [qemu_rv_head.S](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S)
+
+__For All Hart IDs:__
+
+Load the Hart ID (CPU ID) from the system...
+
+```text
+__start:
+  /* Load mhartid (cpuid) */
+  csrr a0, mhartid
+```
+
+[(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L41-L47)
+
+[(__RISC-V Instructions__ explained)](https://lupyuen.github.io/articles/riscv#risc-v-boot-code-in-nuttx)
+
+__If Hart ID is 0 (First CPU):__
+
+Set Stack Pointer to the Idle Thread Stack...
+
+```text
+  /* Set stack pointer to the idle thread stack */
+  bnez a0, 1f
+  la   sp, QEMU_RV_IDLESTACK_TOP
+  j    2f
+```
+
+[(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L47-L54)
+
+__If Hart ID is 1, 2, 3, ...__
+
+- Validate the Hart ID (Must be less than Number of CPUs)
+- Compute the Stack Base Address based on `g_cpu_basestack` and Hart ID
+- Set the Stack Pointer to the computed Stack Base Address
+
+```text
+1:
+  /* Load the number of CPUs that the kernel supports */
+#ifdef CONFIG_SMP
+  li   t1, CONFIG_SMP_NCPUS
+#else
+  li   t1, 1
+#endif
+
+  /* If a0 (mhartid) >= t1 (the number of CPUs), stop here */
+  blt  a0, t1, 3f
+  csrw mie, zero
+  wfi
+
+3:
+  /* To get g_cpu_basestack[mhartid], must get g_cpu_basestack first */
+  la   t0, g_cpu_basestack
+
+  /* Offset = pointer width * hart id */
+#ifdef CONFIG_ARCH_RV32
+  slli t1, a0, 2
+#else
+  slli t1, a0, 3
+#endif
+  add  t0, t0, t1
+
+  /* Load idle stack base to sp */
+  REGLOAD sp, 0(t0)
+
+  /*
+   * sp (stack top) = sp + idle stack size - XCPTCONTEXT_SIZE
+   *
+   * Note: Reserve some space used by up_initial_state since we are already
+   * running and using the per CPU idle stack.
+   */
+  li   t0, STACK_ALIGN_UP(CONFIG_IDLETHREAD_STACKSIZE - XCPTCONTEXT_SIZE)
+  add  sp, sp, t0
+```
+
+[(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L53-L96)
+
+__For All Hart IDs:__
+
+- Disable Interrupts
+- Load the Trap Vector Table
+- Jump to [__qemu_rv_start__](https://lupyuen.github.io/articles/riscv#jump-to-start)
+
+```text
+2:
+  /* Disable all interrupts (i.e. timer, external) in mie */
+  csrw mie, zero
+
+  /* Load the Trap Vector Table */
+  la   t0, __trap_vec
+  csrw mtvec, t0
+
+  /* Jump to qemu_rv_start */
+  jal  x1, qemu_rv_start
+
+  /* We shouldn't return from _start */
+```
+
+[(Source)](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S#L96-L120)
+
 ![Build Apache NuttX RTOS for 64-bit RISC-V QEMU](https://lupyuen.github.io/images/riscv-build.png)
 
 # Appendix: Build Apache NuttX RTOS for 64-bit RISC-V QEMU
@@ -600,7 +703,15 @@ But if we're keen to __build NuttX ourselves__, here are the steps...
     make menuconfig
     ```
 
-1.  In __menuconfig__, browse to "__Build Setup__ > __Debug Options__"
+1.  In __menuconfig__, browse to "__Device Drivers__ > __System Logging__"
+
+    Disable this option...
+    
+    ```text
+    Prepend Timestamp to Syslog Message
+    ```
+
+1.  Browse to "__Build Setup__ > __Debug Options__"
 
     Select the following options...
 

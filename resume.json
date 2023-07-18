@@ -157,6 +157,13 @@
   ],
   "publications": [
     {
+      "name": "Star64 JH7110 + NuttX RTOS: RISC-V Privilege Levels and UART Registers",
+      "publisher": "lupyuen.github.io",
+      "releaseDate": "2023-07-19",
+      "website": "https://lupyuen.github.io/articles/privilege",
+      "summary": "We're porting Apache NuttX RTOS to Pine64's Star64 JH7110 RISC-V SBC... And we see interesting issues with RISC-V Privilege Levels and 16550 UART Registers"
+    },
+    {
       "name": "Star64 JH7110 RISC-V SBC: Boot from Network with U-Boot and TFTP",
       "publisher": "lupyuen.github.io",
       "releaseDate": "2023-07-13",
