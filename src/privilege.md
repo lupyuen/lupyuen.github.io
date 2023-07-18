@@ -627,6 +627,8 @@ We'll find out why in the next article!
 
 __TODO:__ Port __up_mtimer_initialize__ to Star64
 
+[(See the __Modified Files__)](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/32/files)
+
 [(See the __Build Steps__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64a-0.0.1)
 
 [(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64a-0.0.1)
@@ -672,19 +674,19 @@ We found the following NuttX Ports that run in __RISC-V Supervisor Mode with Ope
 
 TODO
 
-We hope we learnt a bit more about __RISC-V and Star64 JH7110__ today...
+I hope we learnt a bit more about __RISC-V and Star64 JH7110 SBC__ today...
 
 -   __RISC-V Privilege Levels__
 
-    (And why they make our OS a little more complicated)
+    (Why they make our OS a little more complicated)
 
 -   __NuttX Kernel Mode__
 
-    (And how it differs from Flat Mode)
+    (How it differs from Flat Mode)
 
 -   __JH7110's UART Registers__
 
-    (And how they are different from other 16550 UARTs)
+    (How they are different from other 16550 UARTs)
 
 -   Porting NuttX from __QEMU to Star64__ might become really challenging!
 
