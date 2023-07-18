@@ -664,6 +664,24 @@ We found the following NuttX Ports that run in __RISC-V Supervisor Mode with Ope
 
 TODO
 
+We hope we learnt a bit more about __RISC-V and Star64 JH7110__ today...
+
+-   __RISC-V Privilege Levels__
+
+    (And why they make our OS a little more complicated)
+
+-   __NuttX Kernel Mode__
+
+    (And how it differs from Flat Mode)
+
+-   __JH7110's UART Registers__
+
+    (And how they are different from other 16550 UARTs)
+
+-   Porting NuttX from __QEMU to Star64__ might become really challenging!
+
+    (Thankfully we have the LiteX Arty-A7 and MPFS ICICLE ports)
+
 Please join me in the next article as we solve the __RISC-V Semihosting Problem__. (We might use an __Initial RAM Disk__ with ROMFS)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
