@@ -64,7 +64,7 @@ static void u16550_putc(
 
 _Is the UART Base Address correct?_
 
-It's correct. Previously we validated the __16550 UART Base Address for JH7110__...
+It's correct, actually. Previously we validated the __16550 UART Base Address__ for JH7110...
 
 - [__"UART Controller on Star64"__](https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64)
 
@@ -93,7 +93,7 @@ u16550_serialin(   // Read UART Register...
 )
 ```
 
-Inside [__u16550_serialin__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/uart_16550.c#L596-L611), we read a UART Register...
+Inside [__u16550_serialin__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/uart_16550.c#L596-L611), we read a UART Register at the Offset...
 
 ```c
 *((FAR volatile uart_datawidth_t *)
