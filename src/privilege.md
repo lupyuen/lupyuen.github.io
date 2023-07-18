@@ -130,7 +130,7 @@ config 16550_REGINCR
 
 Which we copied from [__NuttX for QEMU Emulator__](https://lupyuen.github.io/articles/riscv).
 
-_Ah but is 16550_REGINCR correct for Star64 JH7110?_
+_Ah but is 16550_REGINCR correct for Star64?_
 
 Let's find out...
 
