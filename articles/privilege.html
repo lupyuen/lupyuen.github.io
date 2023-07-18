@@ -126,7 +126,7 @@ static void u16550_putc(
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/uart_16550.c#L1622-L1638">(Source)</a></p>
 <p><em>Is the UART Base Address correct?</em></p>
-<p>It’s correct. Previously we validated the <strong>16550 UART Base Address for JH7110</strong>…</p>
+<p>It’s correct, actually. Previously we validated the <strong>16550 UART Base Address</strong> for JH7110…</p>
 <ul>
 <li>
 <p><a href="https://lupyuen.github.io/articles/nuttx2#uart-controller-on-star64"><strong>“UART Controller on Star64”</strong></a></p>
@@ -149,7 +149,7 @@ static void u16550_putc(
   UART_LSR_OFFSET  // At offset of Line Status Register
 )
 </code></pre></div>
-<p>Inside <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/uart_16550.c#L596-L611"><strong>u16550_serialin</strong></a>, we read a UART Register…</p>
+<p>Inside <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/drivers/serial/uart_16550.c#L596-L611"><strong>u16550_serialin</strong></a>, we read a UART Register at the Offset…</p>
 <div class="example-wrap"><pre class="language-c"><code>*((FAR volatile uart_datawidth_t *)
   priv-&gt;uartbase +  // UART Base Address
   offset);          // Offset of UART Register
