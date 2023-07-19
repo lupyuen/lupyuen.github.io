@@ -573,7 +573,14 @@ csrw  mtvec, t0
 </li>
 </ol>
 <h1 id="appendix-analysis-of-nuttx-boot-code"><a href="#appendix-analysis-of-nuttx-boot-code">8 Appendix: Analysis of NuttX Boot Code</a></h1>
-<p>Below is our analysis of the <strong>NuttX Boot Code</strong>: <a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S">qemu_rv_head.S</a></p>
+<p>Earlier we talked about the <strong>NuttX Boot Code</strong> for RISC-V QEMU…</p>
+<ul>
+<li><a href="https://lupyuen.github.io/articles/riscv#risc-v-boot-code-in-nuttx"><strong>“RISC-V Boot Code in NuttX”</strong></a></li>
+</ul>
+<p>Below is our Detailed Analysis of the Boot Code in…</p>
+<ul>
+<li><a href="https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S"><strong>qemu_rv_head.S</strong></a></li>
+</ul>
 <p><strong>For All Hart IDs:</strong></p>
 <p>Load the Hart ID (CPU ID) from the system…</p>
 <div class="example-wrap"><pre class="language-text"><code>__start:
