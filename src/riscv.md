@@ -455,7 +455,7 @@ Here's the complete list of RISC-V Instructions...
 
 - [__RISC-V Reference Card__](https://web.archive.org/web/20230331004925/http://riscvbook.com/greencard-20181213.pdf)
 
-(Check the Appendix for the Detailed Analysis of the NuttX Boot Code)
+[(See the __Detailed Analysis__ of the NuttX Boot Code)](https://lupyuen.github.io/articles/riscv#appendix-analysis-of-nuttx-boot-code)
 
 _Why are the RISC-V Labels named "1f", "2f", "3f"?_
 
