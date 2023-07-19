@@ -613,7 +613,7 @@ elf_init: filename: /system/bin/init loadinfo: 0x404069e8
 
 [(Source)](https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode)
 
-But NuttX crashes due to a Semihosting Problem. (Pic above)
+But NuttX crashes due to a [__Semihosting Problem__](https://github.com/lupyuen/nuttx-star64#qemu-semihosting-in-nuttx). (Pic above)
 
 ```text
 riscv_exception: EXCEPTION: Breakpoint. MCAUSE: 0000000000000003, EPC: 0000000040200434, MTVAL: 0000000000000000
@@ -697,7 +697,7 @@ I hope we learnt a bit more about __RISC-V and Star64 JH7110 SBC__ today...
 
     (Thankfully we have the LiteX Arty-A7 and PolarFire Icicle ports)
 
-Please join me in the next article as we solve the __RISC-V Semihosting Problem__. (We might use an __Initial RAM Disk__ with ROMFS)
+Please join me in the next article as we solve the [__RISC-V Semihosting Problem__](https://github.com/lupyuen/nuttx-star64#qemu-semihosting-in-nuttx). (We might use an [__Initial RAM Disk__](https://github.com/apache/nuttx/issues/9501) with ROMFS)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
