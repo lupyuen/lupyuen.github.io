@@ -571,6 +571,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [(Source)](https://news.ycombinator.com/item?id=36453810#36455404)
 
+![RISC-V Boot Code for Apache NuttX RTOS](https://lupyuen.github.io/images/riscv-code.png)
+
+[_RISC-V Boot Code for Apache NuttX RTOS_](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S)
+
 # Appendix: Analysis of NuttX Boot Code
 
 Earlier we talked about the __NuttX Boot Code__ for RISC-V QEMU...
