@@ -539,7 +539,7 @@ elf_loadbinary: Loading file: /system/bin/init
 elf_init: filename: /system/bin/init loadinfo: 0x404069e8
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode">(Source)</a></p>
-<p>But NuttX crashes due to a Semihosting Problem. (Pic above)</p>
+<p>But NuttX crashes due to a <a href="https://github.com/lupyuen/nuttx-star64#qemu-semihosting-in-nuttx"><strong>Semihosting Problem</strong></a>. (Pic above)</p>
 <div class="example-wrap"><pre class="language-text"><code>riscv_exception: EXCEPTION: Breakpoint. MCAUSE: 0000000000000003, EPC: 0000000040200434, MTVAL: 0000000000000000
 riscv_exception: PANIC!!! Exception = 0000000000000003
 _assert: Current Version: NuttX  12.0.3 2261b80-dirty Jul 15 2023 20:38:57 risc-v
@@ -603,7 +603,7 @@ up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000
 <p>(Thankfully we have the LiteX Arty-A7 and PolarFire Icicle ports)</p>
 </li>
 </ul>
-<p>Please join me in the next article as we solve the <strong>RISC-V Semihosting Problem</strong>. (We might use an <strong>Initial RAM Disk</strong> with ROMFS)</p>
+<p>Please join me in the next article as we solve the <a href="https://github.com/lupyuen/nuttx-star64#qemu-semihosting-in-nuttx"><strong>RISC-V Semihosting Problem</strong></a>. (We might use an <a href="https://github.com/apache/nuttx/issues/9501"><strong>Initial RAM Disk</strong></a> with ROMFS)</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
 <li>
