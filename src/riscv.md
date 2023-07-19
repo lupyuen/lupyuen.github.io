@@ -573,7 +573,13 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 # Appendix: Analysis of NuttX Boot Code
 
-Below is our analysis of the __NuttX Boot Code__: [qemu_rv_head.S](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S)
+Earlier we talked about the __NuttX Boot Code__ for RISC-V QEMU...
+
+- [__"RISC-V Boot Code in NuttX"__](https://lupyuen.github.io/articles/riscv#risc-v-boot-code-in-nuttx)
+
+Below is our Detailed Analysis of the Boot Code in...
+
+- [__qemu_rv_head.S__](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S)
 
 __For All Hart IDs:__
 
