@@ -660,6 +660,8 @@ We found the following NuttX Ports that run in __RISC-V Supervisor Mode with Ope
 | [litex_start.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/arch/risc-v/src/litex/litex_start.c#L50) | Startup Code
 | &nbsp;
 
+[(__VexRISCV SMP__ uses a RAM Disk for NuttX Apps)](https://nuttx.apache.org/docs/latest/platforms/risc-v/litex/cores/vexriscv_smp/index.html)
+
 [__PolarFire Icicle__](https://nuttx.apache.org/docs/latest/platforms/risc-v/mpfs/boards/icicle/index.html) (based on [__PolarFire MPFS__](https://nuttx.apache.org/docs/latest/platforms/risc-v/mpfs/index.html)) runs a copy of OpenSBI inside NuttX (so it boots in Machine Mode before Supervisor Mode)...
 
 | | |
