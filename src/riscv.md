@@ -575,6 +575,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [(Source)](https://news.ycombinator.com/item?id=36453810#36455404)
 
+1.  To __Enable Logging__ for RISC-V QEMU: Use the `-trace "*"` option.
+
+    [(Like this)](https://github.com/lupyuen/nuttx-star64#ram-disk-address-for-risc-v-qemu)
+
 ![RISC-V Boot Code for Apache NuttX RTOS](https://lupyuen.github.io/images/riscv-code.png)
 
 [_RISC-V Boot Code for Apache NuttX RTOS_](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S)
