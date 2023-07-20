@@ -579,6 +579,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [(Like this)](https://github.com/lupyuen/nuttx-star64#ram-disk-address-for-risc-v-qemu)
 
+1.  Here's the [__Device Tree__](https://github.com/lupyuen/nuttx-star64#device-tree-for-risc-v-qemu) for RISC-V QEMU
+
 ![RISC-V Boot Code for Apache NuttX RTOS](https://lupyuen.github.io/images/riscv-code.png)
 
 [_RISC-V Boot Code for Apache NuttX RTOS_](https://github.com/apache/nuttx/blob/master/arch/risc-v/src/qemu-rv/qemu_rv_head.S)
