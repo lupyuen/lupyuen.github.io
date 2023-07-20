@@ -109,6 +109,8 @@ We begin by __booting NuttX RTOS__ on RISC-V QEMU Emulator (64-bit)...
 
     [(See the Complete Log)](https://gist.github.com/lupyuen/93ad51d49e5f02ad79bb40b0a57e3ac8)
 
+1.  To Exit QEMU: Press __`Ctrl-A`__ then __`x`__
+
 Let's talk about QEMU...
 
 ![Apache NuttX RTOS on RISC-V QEMU](https://lupyuen.github.io/images/riscv-title.png)
