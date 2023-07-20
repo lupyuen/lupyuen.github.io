@@ -146,6 +146,8 @@ The above command starts the [__QEMU Emulator for RISC-V__](https://www.qemu.org
 
 - Enable [__Semihosting Debugging__](https://www.qemu.org/docs/master/about/emulation.html#semihosting) without BIOS
 
+- Run Emulator in __Console Mode__ (instead of Graphical Mode)
+
 _Which RISC-V Instructions are supported by QEMU?_
 
 QEMU's RISC-V [__Generic Virtual Platform (virt)__](https://www.qemu.org/docs/master/system/riscv/virt.html#supported-devices) supports __RV64GC__, which is equivalent to [__RV64IMAFDCZicsr_Zifencei__](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions) (phew)...
