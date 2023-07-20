@@ -756,6 +756,10 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     For new versions of Zig Compiler, check out the [__updates by WhiteHexagon__](https://forum.pine64.org/showthread.php?tid=18353&pid=118104#pid118104)
 
+1.  The Colours for PinePhone vs JavaScript Canvas are swapped, probably ARGB vs RGBA. [(See this)](https://forum.pine64.org/showthread.php?tid=18353&pid=118791#pid118791)
+
+1.  Loading Multiple Fonts? [(See this)](https://forum.pine64.org/showthread.php?tid=18353&pid=118791#pid118791)
+
 # Appendix: HTML for LVGL
 
 _What's inside the HTML Page for our LVGL App in WebAssembly?_

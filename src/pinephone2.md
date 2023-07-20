@@ -321,3 +321,7 @@ Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for
 _Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
 
 [__lupyuen.github.io/src/pinephone2.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/pinephone2.md)
+
+# Notes
+
+1.  To protect PinePhone's __MicroSD Connector__ from wearing out after too much MicroSD Swapping, we could use the [__PinePhone MicroSD Extender__](https://pine64.com/product/pinephone-microsd-extender/).
