@@ -1,3 +1,23 @@
+# Lup's Presentation Slides for (ApacheCon) Community Over Code - ASF Conference Asia 2023
+
+[__Presentation Slides__](https://docs.google.com/presentation/d/1xB0uzIUlzbd5-Lkh9QGaJe5ZPlbgXTTDvDV5EWn3G0E/edit?usp=sharing)
+
+__What's inside a Smartphone? Exploring the internals with Apache NuttX Real-Time Operating System__
+
+Smartphones are incredibly complex gadgets. What if we could learn the internals of smartphones... By booting Apache NuttX RTOS (Real-Time Operating System) on our phone?
+
+Over the past year, we have written a series of 24 articles explaining the inner workings of PINE64 PinePhone, and how we implemented the smartphone features with Apache NuttX RTOS.
+
+The articles cover the essential (and esoteric) topics on smartphone technology: MIPI DSI LCD Display, I2C Touch Panel, USB Controller, LTE Modem, Accelerometer / Gyroscope, Arm64 Interrupts and many more.
+
+We are also experimenting with newer, easier ways to create Smartphone Apps, with LVGL Graphics Library, Zig Programming Language, WebAssembly Simulation and Arm64 Emulation.
+
+[More about Apache NuttX RTOS for PinePhone](https://lupyuen.github.io/articles/what)
+
+[Articles on Apache NuttX RTOS for PinePhone](https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone)
+
+<hr>
+
 # Lup's Presentation Slides for NuttX Online Workshop 2022
 
 Join me at [__NuttX Online Workshop 2022__](https://nuttx.events/)! (24-25 Sep 2022)
