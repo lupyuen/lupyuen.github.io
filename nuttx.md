@@ -2,6 +2,8 @@
 
 [__Presentation Slides__](https://docs.google.com/presentation/d/1xB0uzIUlzbd5-Lkh9QGaJe5ZPlbgXTTDvDV5EWn3G0E/edit?usp=sharing)
 
+[__Video Presentation__](https://drive.google.com/file/d/1WL-6HVjhtqktHRmZiDbPCOs6934fQlEQ/view?usp=drive_link)
+
 __What's inside a Smartphone? Exploring the internals with Apache NuttX Real-Time Operating System__
 
 Smartphones are incredibly complex gadgets. What if we could learn the internals of smartphones... By booting Apache NuttX RTOS (Real-Time Operating System) on our phone?
