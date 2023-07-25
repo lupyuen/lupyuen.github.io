@@ -32,7 +32,7 @@ In this article, we find out...
 
 # NuttX Crashes On Star64
 
-Last article we tried porting Apache NuttX RTOS from __QEMU Emulator to Star64 JH7110 SBC__...
+In the last article, we tried porting Apache NuttX RTOS from __QEMU Emulator to Star64 JH7110 SBC__...
 
 - [__"Star64 JH7110 + NuttX RTOS: RISC-V Privilege Levels and UART Registers"__](https://lupyuen.github.io/articles/privilege)
 
@@ -59,15 +59,13 @@ elf_init: filename: /system/bin/init loadinfo: 0x404069e8
 
 [(Source)](https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode)
 
-But then NuttX crashes with a __RISC-V Exception__ (pic below)...
+But then NuttX crashes with a __RISC-V Exception__...
 
 ```text
-riscv_exception: EXCEPTION: Breakpoint. MCAUSE: 0000000000000003, EPC: 0000000040200434, MTVAL: 0000000000000000
-riscv_exception: PANIC!!! Exception = 0000000000000003
-_assert: Current Version: NuttX  12.0.3 2261b80-dirty Jul 15 2023 20:38:57 risc-v
-_assert: Assertion failed panic: at file: common/riscv_exception.c:85 task: Idle Task 0x40200ce6
-up_dump_register: EPC: 0000000040200434
-up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000 A3: 0000000000000001
+EXCEPTION: Breakpoint
+MCAUSE:    00000003
+EPC:       40200434
+MTVAL:     00000000
 ```
 
 [(Source)](https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode)
@@ -77,6 +75,17 @@ Let's find out why...
 ![NuttX crashes due to a Semihosting Problem](https://lupyuen.github.io/images/privilege-run2.png)
 
 # QEMU Semihosting in NuttX
+
+_What's this RISC-V Exception?_
+
+```text
+EXCEPTION: Breakpoint
+MCAUSE:    00000003
+EPC:       40200434
+MTVAL:     00000000
+```
+
+[(Source)](https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode)
 
 TODO
 
