@@ -67,15 +67,576 @@
 
     <h1 class="title">Star64 JH7110 + NuttX RTOS: RISC-V Semihosting and Initial RAM Disk</h1>
     <nav id="TOC"><ul>
-<li><a href="#whats-next">1 What’s Next</a><ul></ul></li></ul></nav><p>📝 <em>2 Aug 2023</em></p>
+<li><a href="#qemu-semihosting-in-nuttx">1 QEMU Semihosting in NuttX</a><ul></ul></li>
+<li><a href="#nuttx-apps-filesystem">2 NuttX Apps Filesystem</a><ul></ul></li>
+<li><a href="#modify-nuttx-qemu-to-load-initial-ram-disk">3 Modify NuttX QEMU to Load Initial RAM Disk</a><ul></ul></li>
+<li><a href="#load-initial-ram-disk-in-nuttx-star64">4 Load Initial RAM Disk in NuttX Star64</a><ul></ul></li>
+<li><a href="#whats-next">5 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-initial-ram-disk-for-litex-arty-a7">6 Appendix: Initial RAM Disk for LiteX Arty-A7</a><ul></ul></li>
+<li><a href="#appendix-ram-disk-address-for-risc-v-qemu">7 Appendix: RAM Disk Address for RISC-V QEMU</a><ul></ul></li>
+<li><a href="#appendix-device-tree-for-risc-v-qemu">8 Appendix: Device Tree for RISC-V QEMU</a><ul></ul></li></ul></nav><p>📝 <em>2 Aug 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/semihost-title.jpg" alt="TODO" /></p>
 <p>TODO</p>
 <p>We’re in the super-early stage of porting <a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX Real-Time Operating System (RTOS)</strong></a> to the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer.</p>
 <p>(Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
-<p><img src="https://lupyuen.github.io/images/semihost-qemu.jpg" alt="TODO" /></p>
-<p><img src="https://lupyuen.github.io/images/semihost-qemu2.jpg" alt="TODO" /></p>
-<p><img src="https://lupyuen.github.io/images/semihost-title.jpg" alt="TODO" /></p>
-<h1 id="whats-next"><a href="#whats-next">1 What’s Next</a></h1>
+<h1 id="qemu-semihosting-in-nuttx"><a href="#qemu-semihosting-in-nuttx">1 QEMU Semihosting in NuttX</a></h1>
+<p>TODO</p>
+<p>NuttX crashes while booting on Star64 JH7110 SBC. From the Crash Dump above, <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause"><code>mcause</code></a> is 3: “Machine Software Interrupt”.</p>
+<p>Exception Program Counter <code>0x4020</code> <code>0434</code> is in RISC-V Semihosting <code>smh_call</code>…</p>
+<div class="example-wrap"><pre class="language-text"><code>0000000040200430 &lt;smh_call&gt;:
+smh_call():
+nuttx/arch/risc-v/src/common/riscv_semihost.S:37
+  .global smh_call
+  .type smh_call @function
+
+smh_call:
+
+  slli zero, zero, 0x1f
+    40200430:	01f01013          	slli	zero,zero,0x1f
+nuttx/arch/risc-v/src/common/riscv_semihost.S:38
+  ebreak
+    //// Crashes here (Trigger semihosting breakpoint)
+    40200434:	00100073          	ebreak
+nuttx/arch/risc-v/src/common/riscv_semihost.S:39
+  srai zero, zero, 0x7
+    40200438:	40705013          	srai	zero,zero,0x7
+nuttx/arch/risc-v/src/common/riscv_semihost.S:40
+  ret
+    4020043c:	00008067          	ret
+    40200440:	0000                	unimp
+</code></pre></div>
+<p>When we log <code>smh_call</code>…</p>
+<div class="example-wrap"><pre class="language-text"><code>host_call: nbr=0x1, parm=0x40406778, size=24
+</code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/common/riscv_hostfs.c#L35-L73">host_call</a> says that the Semihosting Call is for HOST_OPEN. (Open a file)</p>
+<p>So NuttX crashes on Star64 because it’s trying to read <code>/system/bin/init</code> via Semihosting!</p>
+<p>(See next section)</p>
+<p>Let’s disable Semihosting and replace by Initial RAM Disk and ROMFS.</p>
+<p>(See https://github.com/apache/nuttx/issues/9501)</p>
+<p><img src="https://lupyuen.github.io/images/semihost-qemu.jpg" alt="QEMU reads the Apps Filesystem over Semihosting" /></p>
+<p>Here’s the Crash Dump after we disabled Semihosting…</p>
+<div class="example-wrap"><pre class="language-text"><code>123067DFHBCqemu_rv_kernel_mappings: map I/O regions
+qemu_rv_kernel_mappings: map kernel text
+qemu_rv_kernel_mappings: map kernel data
+qemu_rv_kernel_mappings: connect the L1 and L2 page tables
+qemu_rv_kernel_mappings: map the page pool
+qemu_rv_mm_init: mmu_enable: satp=1077956608
+Inx_start: Entry
+elf_initialize: Registering ELF
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+nx_start_application: Starting init task: /system/bin/init
+load_absmodule: Loading /system/bin/init
+elf_loadbinary: Loading file: /system/bin/init
+elf_init: filename: /system/bin/init loadinfo: 0x404069e8
+host_call: nbr=0x1, parm=0x40406788, size=24
+_assert: Current Version: NuttX  12.0.3 6ed2880-dirty Jul 15 2023 21:00:59 risc-v
+_assert: Assertion failed panic: at file: common/riscv_hostfs.c:58 task: Idle Task 0x40200cd0
+up_dump_register: EPC: 000000004020f590
+up_dump_register: A0: 0000000040401630 A1: 000000000000003a A2: 0000000040219ee8 A3: 0000000000000000
+up_dump_register: A4: 000000000000000a A5: 0000000000000000 A6: 0000000000000009 A7: 0000000000000068
+up_dump_register: T0: 0000000000000030 T1: 0000000000000009 T2: 0000000000000020 T3: 000000000000002a
+up_dump_register: T4: 000000000000002e T5: 00000000000001ff T6: 000000000000002d
+up_dump_register: S0: 0000000000000000 S1: 0000000040400b28 S2: 0000000040401768 S3: 0000000040219ee8
+up_dump_register: S4: 0000000040229b10 S5: 000000000000003a S6: 0000000000000000 S7: 0000000000000000
+up_dump_register: S8: 00000000fff47194 S9: 0000000000000000 S10: 0000000000000000 S11: 0000000000000000
+up_dump_register: SP: 0000000040406650 FP: 0000000000000000 TP: 0000000000000001 RA: 000000004020f590
+dump_stack: User Stack:
+dump_stack:   base: 0x40406030
+dump_stack:   size: 00003024
+dump_stack:     sp: 0x40406650
+stack_dump: 0x40406640: 40406650 00000000 4020f688 00000000 00000000 00000000 40212bc8 00000000
+stack_dump: 0x40406660: deadbeef deadbeef 40406680 00000000 deadbeef deadbeef 7474754e 00000058
+stack_dump: 0x40406680: 404066b8 00000000 00000001 00000000 40406788 00000000 40205cc0 00000000
+stack_dump: 0x404066a0: 00000074 00000000 fffffff8 2e323100 00332e30 00000000 40229ae8 00000000
+stack_dump: 0x404066c0: 65366708 38383264 69642d30 20797472 206c754a 32203531 20333230 303a3132
+stack_dump: 0x404066e0: 39353a30 00000000 0000000a 00000000 00000000 73697200 00762d63 00000000
+stack_dump: 0x40406700: ffff9fef ffffffff 40406740 00000000 fff47194 00000000 00000000 00000000
+stack_dump: 0x40406720: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406740: 40408720 00000000 40406968 00000000 00000000 00000000 40204e80 00000000
+stack_dump: 0x40406760: 00000074 00000000 40213e3c 00000000 fff47194 00000000 40213e64 00000000
+stack_dump: 0x40406780: 00000000 00000000 404067d0 00000000 00000001 00000000 00000010 00000000
+stack_dump: 0x404067a0: 40408720 00000000 40213f7e 00000000 00000000 00000000 4020c7d6 00000000
+stack_dump: 0x404067c0: 00000800 00000000 40219e70 00000000 612f2e2e 2f737070 2f6e6962 74696e69
+stack_dump: 0x404067e0: 00000a00 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406800: fff47194 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406820: 00000000 00000000 00000000 00000000 40219e68 00000000 404069e8 00000000
+stack_dump: 0x40406840: 40219e68 00000000 40212bc8 00000000 402276b6 00000000 40406870 00000000
+stack_dump: 0x40406860: 00000000 00000000 fffffffc ffffffff 40219e68 00000000 404069e8 00000000
+stack_dump: 0x40406880: 40400170 00000000 40204fd4 00000000 0000006c 00000000 404069e8 00000000
+stack_dump: 0x404068a0: 40400170 00000000 40205098 00000000 40406908 00000000 40208f50 00000000
+stack_dump: 0x404068c0: 40406908 00000000 4020c8b0 00000000 40219e68 00000000 404086d0 00000000
+stack_dump: 0x404068e0: ffffffda ffffffff 40215b2a 00000000 40406968 00000000 00000001 00000000
+stack_dump: 0x40406900: 40400b28 00000000 40219e70 00000000 404086d0 00000000 40407e30 00000000
+stack_dump: 0x40406920: 40407370 00000000 40219e70 00000000 00000000 00000000 40219e01 00000000
+stack_dump: 0x40406940: 404069e8 00000000 404069e8 00000000 40219e68 00000000 4020dfc6 00000000
+stack_dump: 0x40406960: 40219e68 00000000 40205ec8 00000000 fff47194 00000000 404069b0 00000000
+stack_dump: 0x40406980: 00000000 00000000 40205ee8 00000000 00000000 00000000 404069b0 00000000
+stack_dump: 0x404069a0: 40408830 00000000 4020d876 00000000 40226b00 00000000 40219e68 00000000
+stack_dump: 0x404069c0: 40408830 00000000 00000000 00000000 40219e68 00000000 4020d87e 00000000
+stack_dump: 0x404069e0: 40406a18 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406a00: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406a20: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406a40: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406a60: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406a80: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406aa0: 40227710 00000000 40219e68 00000000 40408830 00000000 404001f8 00000000
+stack_dump: 0x40406ac0: fffffffe ffffffff 4020eb20 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406ae0: 40406b60 00000000 40406b68 00000000 40219e68 00000000 40408830 00000000
+stack_dump: 0x40406b00: 00000c00 00000000 4020d374 00000000 00000000 00000000 00000000 00000000
+stack_dump: 0x40406b20: 00000000 00000000 fffda848 00000000 fffffff3 ffffffff 40400b18 00000000
+stack_dump: 0x40406b40: 4040177c 00000000 00000064 00000000 00000c00 00000000 40200fde 00000000
+stack_dump: 0x40406b60: 00000000 00000000 40016400 00000000 00000000 00000000 00000c00 00000000
+stack_dump: 0x40406b80: 4040177c 00000000 40401780 00000000 40400b28 00000000 40200ed0 00000000
+stack_dump: 0x40406ba0: 40600000 00000000 00400000 00000000 00000026 00000000 00000003 00000000
+stack_dump: 0x40406bc0: fff47194 00000000 ffff1428 00000000 10000000 00000000 402004fe 00000000
+stack_dump: 0x40406be0: 00000400 00000000 4020053c 00000000 00000000 00000000 402000de 00000000
+dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED    COMMAND
+dump_tasks:   ----   --- --- -------- ------- --- ------- ---------- -------- 0x404002b0      2048         0     0.0%    irq
+dump_task:       0     0   0 FIFO     Kthread N-- Running            0000000000000000 0x40406030      3024      2248    74.3%    Idle Task
+dump_task:       1     1 100 RR       Kthread --- Waiting Unlock     0000000000000000 0x4040a060      1952       264    13.5%    lpwork 0x404013e0
+</code></pre></div><h1 id="nuttx-apps-filesystem"><a href="#nuttx-apps-filesystem">2 NuttX Apps Filesystem</a></h1>
+<p>TODO</p>
+<p><em>Where is <code>/system/bin/init</code>? Why is it loaded by NuttX over Semihosting?</em></p>
+<p><code>/system/bin/init</code> is needed for starting the NuttX Shell (and NuttX Apps) on Star64 JH7110 SBC.</p>
+<p>We see it in the NuttX Build Configuration…</p>
+<div class="example-wrap"><pre class="language-text"><code>→ grep INIT .config
+CONFIG_INIT_FILE=y
+CONFIG_INIT_ARGS=&quot;&quot;
+CONFIG_INIT_STACKSIZE=3072
+CONFIG_INIT_PRIORITY=100
+CONFIG_INIT_FILEPATH=&quot;/system/bin/init&quot;
+CONFIG_INIT_MOUNT=y
+CONFIG_INIT_MOUNT_SOURCE=&quot;&quot;
+CONFIG_INIT_MOUNT_TARGET=&quot;/system&quot;
+CONFIG_INIT_MOUNT_FSTYPE=&quot;hostfs&quot;
+CONFIG_INIT_MOUNT_FLAGS=0x1
+CONFIG_INIT_MOUNT_DATA=&quot;fs=../apps&quot;
+CONFIG_PATH_INITIAL=&quot;/system/bin&quot;
+CONFIG_NSH_ARCHINIT=y
+</code></pre></div>
+<p>Which says that <code>../apps</code> is mounted as <code>/system</code>, via Semihosting HostFS.</p>
+<p>That’s how <code>/system/bin/init</code> gets loaded over Semihosting…</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code>→ ls ../apps/bin       
+getprime hello    init     sh</code></pre></div>
+<p><img src="https://lupyuen.github.io/images/semihost-qemu.jpg" alt="QEMU reads the Apps Filesystem over Semihosting" /></p>
+<p>We traced the Semihosting Calls in QEMU Kernel Mode, here’s what we observed…</p>
+<p><a href="https://gist.github.com/lupyuen/6888376da6561bdc060c2459dffdef01">QEMU Kernel Mode Run Log</a></p>
+<div class="example-wrap"><pre class="language-text"><code>nx_start_application: Starting init task: /system/bin/init
+load_absmodule: Loading /system/bin/init
+elf_loadbinary: Loading file: /system/bin/init
+elf_init: filename: /system/bin/init loadinfo: 0x802069e8
+hostfs_open: relpath=bin/init, oflags=0x1, mode=0x1b6
+...
+NuttShell (NSH) NuttX-12.2.1-RC0
+nsh&gt; nx_start: CPU0: Beginning Idle Loop
+
+nsh&gt; 
+nsh&gt; uname -a
+posix_spawn: pid=0xc0202978 path=uname file_actions=0xc0202980 attr=0xc0202988 argv=0xc0202a28
+hostfs_stat: relpath=bin/uname
+host_call: nbr=0x1, parm=0x80208fe0, size=24
+exec_spawn: ERROR: Failed to load program &#39;uname&#39;: -2
+nxposix_spawn_exec: ERROR: exec failed: 2
+NuttX 12.2.1-RC0 cafbbb1 Jul 15 2023 16:55:00 risc-v rv-virt
+nsh&gt; 
+nsh&gt; ls /
+posix_spawn: pid=0xc0202978 path=ls file_actions=0xc0202980 attr=0xc0202988 argv=0xc0202a28
+hostfs_stat: relpath=bin/ls
+host_call: nbr=0x1, parm=0x80208fe0, size=24
+exec_spawn: ERROR: Failed to load program &#39;ls&#39;: -2
+nxposix_spawn_exec: ERROR: exec failed: 2
+/:
+ dev/
+ proc/
+ system/
+nsh&gt; 
+nsh&gt; ls /system
+posix_spawn: pid=0xc0202978 path=ls file_actions=0xc0202980 attr=0xc0202988 argv=0xc0202a28
+hostfs_stat: relpath=bin/ls
+host_call: nbr=0x1, parm=0x80208fe0, size=24
+exec_spawn: ERROR: Failed to load program &#39;ls&#39;: -2
+nxposix_spawn_exec: ERROR: exec failed: 2
+hostfs_stat: relpath=
+host_call: nbr=0x1, parm=0x80209180, size=24
+host_call: nbr=0xc, parm=0x80209180, size=8
+host_call: nbr=0x2, parm=0x80209190, size=8
+ /system
+nsh&gt; 
+nsh&gt; ls /system/bin
+posix_spawn: pid=0xc0202978 path=ls file_actions=0xc0202980 attr=0xc0202988 argv=0xc0202a28
+hostfs_stat: relpath=bin/ls
+host_call: nbr=0x1, parm=0x80208fe0, size=24
+exec_spawn: ERROR: Failed to load program &#39;ls&#39;: -2
+nxposix_spawn_exec: ERROR: exec failed: 2
+hostfs_stat: relpath=bin
+host_call: nbr=0x1, parm=0x80209180, size=24
+host_call: nbr=0xc, parm=0x80209180, size=8
+host_call: nbr=0x2, parm=0x80209190, size=8
+ /system/bin
+nsh&gt; 
+nsh&gt; ls /system/bin/init
+posix_spawn: pid=0xc0202978 path=ls file_actions=0xc0202980 attr=0xc0202988 argv=0xc0202a28
+hostfs_stat: relpath=bin/ls
+host_call: nbr=0x1, parm=0x80208fe0, size=24
+exec_spawn: ERROR: Failed to load program &#39;ls&#39;: -2
+nxposix_spawn_exec: ERROR: exec failed: 2
+hostfs_stat: relpath=bin/init
+host_call: nbr=0x1, parm=0x80209180, size=24
+host_call: nbr=0xc, parm=0x80209180, size=8
+host_call: nbr=0x2, parm=0x80209190, size=8
+ /system/bin/init
+</code></pre></div>
+<p>Semihosting won’t work on Star64 SBC. Let’s replace this with Initial RAM Disk and ROMFS…</p>
+<p>(See https://github.com/apache/nuttx/issues/9501)</p>
+<h1 id="modify-nuttx-qemu-to-load-initial-ram-disk"><a href="#modify-nuttx-qemu-to-load-initial-ram-disk">3 Modify NuttX QEMU to Load Initial RAM Disk</a></h1>
+<p>TODO</p>
+<p>Now we can modify NuttX for QEMU to mount the Apps Filesystem from an Initial RAM Disk instead of Semihosting.</p>
+<p>(So later we can replicate this on Star64 JH7110 SBC)</p>
+<p><img src="https://lupyuen.github.io/images/semihost-qemu2.jpg" alt="NuttX for QEMU will mount the Apps Filesystem from an Initial RAM Disk" /></p>
+<p>We follow the steps from LiteX Arty-A7 (from the previous section)…</p>
+<p>We build NuttX QEMU in Kernel Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt">Build Steps</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Build NuttX QEMU Kernel Mode
+./tools/configure.sh rv-virt:knsh64 
+make V=1 -j7
+
+## Build Apps Filesystem
+make export V=1
+pushd ../apps
+./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+make import V=1
+popd
+</code></pre></div>
+<p>We generate the Initial RAM Disk <code>initrd</code>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>cd nuttx
+genromfs -f initrd -d ../apps/bin -V &quot;NuttXBootVol&quot;
+</code></pre></div>
+<p><a href="https://www.systutorials.com/docs/linux/man/8-genromfs/">(About <code>genromfs</code>)</a></p>
+<p>Initial RAM Disk <code>initrd</code> is 7.9 MB…</p>
+<div class="example-wrap"><pre class="language-text"><code>→ ls -l initrd
+-rw-r--r--  1 7902208 Jul 21 13:41 initrd
+</code></pre></div>
+<p>This is how we load the Initial RAM Disk on QEMU: <a href="https://www.qemu.org/docs/master/system/riscv/virt.html#running-linux-kernel">‘virt’ Generic Virtual Platform (virt)</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -smp 8 \
+  -bios none \
+  -kernel nuttx \
+  -initrd initrd \
+  -nographic
+</code></pre></div>
+<p><em>What is the RAM Address of the Initial RAM Disk in QEMU?</em></p>
+<p>Initial RAM Disk is loaded by QEMU at <code>0x8400</code> <code>0000</code>…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/nuttx-star64#ram-disk-address-for-risc-v-qemu">“RAM Disk Address for RISC-V QEMU”</a></li>
+</ul>
+<p>Below are the files that we changed in NuttX for QEMU to load the Initial RAM Disk (instead of Semihosting)…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/33/files">Modified Files for QEMU with Initial RAM Disk</a></li>
+</ul>
+<p>We configured QEMU to mount the RAM Disk as ROMFS (instead of Semihosting): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig">knsh64/defconfig</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>CONFIG_BOARDCTL_ROMDISK=y
+CONFIG_BOARD_LATE_INITIALIZE=y
+CONFIG_FS_ROMFS=y
+CONFIG_INIT_FILEPATH=&quot;/system/bin/init&quot;
+CONFIG_INIT_MOUNT=y
+CONFIG_INIT_MOUNT_FLAGS=0x1
+CONFIG_INIT_MOUNT_TARGET=&quot;/system/bin&quot;
+
+## We removed these...
+## CONFIG_FS_HOSTFS=y
+## CONFIG_RISCV_SEMIHOSTING_HOSTFS=y
+</code></pre></div>
+<p>We defined the RAM Disk Memory in the Linker Script: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel64.script#L20-L54">ld-kernel64.script</a></p>
+<div class="example-wrap"><pre class="language-text"><code>MEMORY
+{
+  ...
+  /* Added RAM Disk */
+  ramdisk (rwx) : ORIGIN = 0x80800000, LENGTH = 16M   /* w/ cache */
+
+  /* This won&#39;t work, crashes with a Memory Mgmt Fault...
+     ramdisk (rwx) : ORIGIN = 0x84000000, LENGTH = 16M */   /* w/ cache */
+}
+
+/* Added RAM Disk */
+/* Page heap */
+
+__pgheap_start = ORIGIN(pgram);
+__pgheap_size = LENGTH(pgram) + LENGTH(ramdisk);
+/* Previously: __pgheap_size = LENGTH(pgram); */
+
+/* Added RAM Disk */
+/* Application ramdisk */
+
+__ramdisk_start = ORIGIN(ramdisk);
+__ramdisk_size = LENGTH(ramdisk);
+__ramdisk_end  = ORIGIN(ramdisk) + LENGTH(ramdisk);
+</code></pre></div>
+<p>(We increased RAM Disk Memory from 4 MB to 16 MB because our RAM Disk is now bigger)</p>
+<p>At Startup, we mount the RAM Disk: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L83C1-L179C2">qemu_rv_appinit.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Called at NuttX Startup
+void board_late_initialize(void) {
+  // Mount the RAM Disk
+  mount_ramdisk();
+
+  /* Perform board-specific initialization */
+#ifdef CONFIG_NSH_ARCHINIT
+  mount(NULL, &quot;/proc&quot;, &quot;procfs&quot;, 0, NULL);
+#endif
+}
+
+// Mount the RAM Disk
+int mount_ramdisk(void) {
+  int ret;
+  struct boardioc_romdisk_s desc;
+
+  desc.minor    = RAMDISK_DEVICE_MINOR;
+  desc.nsectors = NSECTORS((ssize_t)__ramdisk_size);
+  desc.sectsize = SECTORSIZE;
+  desc.image    = __ramdisk_start;
+
+  ret = boardctl(BOARDIOC_ROMDISK, (uintptr_t)&amp;desc);
+  if (ret &lt; 0)
+    {
+      syslog(LOG_ERR, &quot;Ramdisk register failed: %s\n&quot;, strerror(errno));
+      syslog(LOG_ERR, &quot;Ramdisk mountpoint /dev/ram%d\n&quot;,
+                                          RAMDISK_DEVICE_MINOR);
+      syslog(LOG_ERR, &quot;Ramdisk length %lu, origin %lx\n&quot;,
+                                          (ssize_t)__ramdisk_size,
+                                          (uintptr_t)__ramdisk_start);
+    }
+
+  return ret;
+}
+</code></pre></div>
+<p>We copied the RAM Disk from the QEMU Address (0x84000000) to the NuttX Address (__ramdisk_start): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L271-L280">qemu_rv_mm_init.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>void qemu_rv_kernel_mappings(void) {
+  ...
+  // Copy 0x84000000 to __ramdisk_start (__ramdisk_size bytes)
+  // TODO: RAM Disk must not exceed __ramdisk_size bytes
+  memcpy((void *)__ramdisk_start, (void *)0x84000000, (size_t)__ramdisk_size);
+</code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L280-L287">(Because somehow <code>map_region</code> crashes when we try to map 0x84000000)</a></p>
+<p>We check that the RAM Disk Memory is sufficient: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/fs/romfs/fs_romfsutil.c#L85-L105">fs_romfsutil.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static uint32_t romfs_devread32(struct romfs_mountpt_s *rm, int ndx) {
+  //// Stop if RAM Disk Memory is too small
+  DEBUGASSERT(&amp;rm-&gt;rm_buffer[ndx] &lt; __ramdisk_start + (size_t)__ramdisk_size); ////
+</code></pre></div>
+<p>Before making the above changes, here’s the log for QEMU Kernel Mode with Semihosting…</p>
+<div class="example-wrap"><pre class="language-text"><code>+ genromfs -f initrd -d ../apps/bin -V NuttXBootVol
++ riscv64-unknown-elf-size nuttx
+   text    data     bss     dec     hex filename
+ 171581     673   21872  194126   2f64e nuttx
++ riscv64-unknown-elf-objcopy -O binary nuttx nuttx.bin
++ cp .config nuttx.config
++ riscv64-unknown-elf-objdump -t -S --demangle --line-numbers --wide nuttx
++ sleep 10
++ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -initrd initrd -nographic
+ABCnx_start: Entry
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+nx_start_application: Starting init task: /system/bin/init
+hostfs_stat: relpath=bin/init
+hostfs_open: relpath=bin/init, oflags=0x1, mode=0x1b6
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
+elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
+
+NuttShell (NSH) NuttX-12.0.3
+nsh&gt; nx_start: CPU0: Beginning Idle Loop
+</code></pre></div>
+<p>Now we run QEMU Kernel Mode with Initial RAM Disk, without Semihosting…</p>
+<p>And it boots OK on QEMU yay!</p>
+<p><a href="https://gist.github.com/lupyuen/8afee5b07b61bb7f9f202f7f8c5e3ab3">See the Run Log</a></p>
+<h1 id="load-initial-ram-disk-in-nuttx-star64"><a href="#load-initial-ram-disk-in-nuttx-star64">4 Load Initial RAM Disk in NuttX Star64</a></h1>
+<p>TODO</p>
+<p>Now we can modify NuttX for Star64 JH7110 RISC-V SBC to mount the Apps Filesystem from an Initial RAM Disk. (Instead of Semihosting)</p>
+<p><img src="https://lupyuen.github.io/images/semihost-star64.jpg" alt="NuttX for Star64 JH7110 RISC-V SBC will mount the Apps Filesystem from an Initial RAM Disk" /></p>
+<p>We follow the steps from QEMU Kernel Mode’s Initial RAM Disk. (See previous section)</p>
+<p>We build NuttX Star64 in Kernel Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt">Build Steps</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>## Build NuttX Star64 in Kernel Mode
+tools/configure.sh rv-virt:knsh64
+make V=1 -j7
+
+## Build Apps Filesystem
+make export V=1
+pushd ../apps
+./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+make import V=1
+popd
+</code></pre></div>
+<p>We generate the Initial RAM Disk <code>initrd</code> and copy to TFTP Folder (for Network Booting)…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Generate Initial RAM Disk
+cd nuttx
+genromfs -f initrd -d ../apps/bin -V &quot;NuttXBootVol&quot;
+
+## Copy NuttX Binary Image, Device Tree and Initial RAM Disk to TFTP Folder
+cp nuttx.bin $HOME/tftproot/Image
+cp ../jh7110-star64-pine64.dtb $HOME/tftproot
+cp initrd $HOME/tftproot
+</code></pre></div>
+<p><a href="https://www.systutorials.com/docs/linux/man/8-genromfs/">(About <code>genromfs</code>)</a></p>
+<p>Initial RAM Disk <code>initrd</code> is 7.9 MB…</p>
+<div class="example-wrap"><pre class="language-text"><code>→ ls -l initrd
+-rw-r--r--  1 7930880 Jul 21 13:41 initrd
+</code></pre></div>
+<p>Below are the files that we changed in NuttX for Star64 to load the Initial RAM Disk (instead of Semihosting)…</p>
+<ul>
+<li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/34/files">Modified Files for Initial RAM Disk on Star64</a></li>
+</ul>
+<p>These are the same changes that we made earlier for QEMU Kernel Mode’s Initial RAM Disk.</p>
+<p>(For a detailed explanation of the modified files, see the previous section_</p>
+<p>Note that we copy the Initial RAM Disk from <code>0x4610</code> <code>0000</code> (instead of QEMU’s <code>0x8400</code> <code>0000</code>): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L271-L280">qemu_rv_mm_init.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Copy 0x46100000 to __ramdisk_start (__ramdisk_size bytes)
+// TODO: RAM Disk must not exceed __ramdisk_size bytes
+memcpy((void *)__ramdisk_start, (void *)0x46100000, (size_t)__ramdisk_size);
+</code></pre></div>
+<p>(Why <code>0x4610</code> <code>0000</code>? See <code>ramdisk_addr_r</code> below)</p>
+<p>This is how we updated the NuttX Build Configuration in <code>make menuconfig</code>…</p>
+<ul>
+<li>
+<p>Board Selection &gt; Enable boardctl() interface &gt; Enable application space creation of ROM disks</p>
+</li>
+<li>
+<p>RTOS Features &gt; RTOS hooks &gt; Custom board late initialization</p>
+</li>
+<li>
+<p>File Systems &gt; ROMFS file system </p>
+</li>
+<li>
+<p>RTOS Features &gt; Tasks and Scheduling &gt; Auto-mount init file system </p>
+<p>Set to <code>/system/bin</code></p>
+</li>
+<li>
+<p>Build Setup &gt; Debug Options &gt; File System Debug Features &gt; File System Error, Warnings and Info Output</p>
+</li>
+<li>
+<p>Disable: File Systems &gt; Host File System</p>
+</li>
+<li>
+<p>Manually delete from <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig"><code>knsh64/defconfig</code></a>…</p>
+<div class="example-wrap"><pre class="language-text"><code>CONFIG_HOST_MACOS=y
+CONFIG_INIT_MOUNT_DATA=&quot;fs=../apps&quot;
+CONFIG_INIT_MOUNT_FSTYPE=&quot;hostfs&quot;
+CONFIG_INIT_MOUNT_SOURCE=&quot;&quot;
+</code></pre></div></li>
+</ul>
+<p>Updated Build Configuration: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig">knsh64/defconfig</a></p>
+<p><em>What is the RAM Address of the Initial RAM Disk in Star64?</em></p>
+<p>Initial RAM Disk is loaded by Star64’s U-Boot Bootloader at <code>0x4610</code> <code>0000</code>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>ramdisk_addr_r=0x46100000
+</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64">(Source)</a></p>
+<p>Which means that we need to add these TFTP Commands to U-Boot Bootloader…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Assume Initial RAM Disk is max 16 MB
+setenv ramdisk_size 0x1000000
+## Check that it&#39;s correct
+printenv ramdisk_size
+## Save it for future reboots
+saveenv
+
+## Load Kernel and Device Tree over TFTP
+tftpboot ${kernel_addr_r} ${tftp_server}:Image
+tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb
+fdt addr ${fdt_addr_r}
+
+## Added this: Load Initial RAM Disk over TFTP
+tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd
+
+## Changed this: Replaced `-` by `ramdisk_addr_r:ramdisk_size`
+booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r}
+</code></pre></div>
+<p>Which will change our U-Boot Boot Script to…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Load the NuttX Image from TFTP Server
+## kernel_addr_r=0x40200000
+## tftp_server=192.168.x.x
+if tftpboot ${kernel_addr_r} ${tftp_server}:Image;
+then
+
+  ## Load the Device Tree from TFTP Server
+  ## fdt_addr_r=0x46000000
+  if tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb;
+  then
+
+    ## Set the RAM Address of Device Tree
+    ## fdt_addr_r=0x46000000
+    if fdt addr ${fdt_addr_r};
+    then
+
+      ## Load the Intial RAM Disk from TFTP Server
+      ## ramdisk_addr_r=0x46100000
+      if tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd;
+      then
+
+        ## Boot the NuttX Image with the Initial RAM Disk and Device Tree
+        ## kernel_addr_r=0x40200000
+        ## ramdisk_addr_r=0x46100000
+        ## ramdisk_size=0x1000000
+        ## fdt_addr_r=0x46000000
+        booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r};
+      fi;
+    fi;
+  fi;
+fi
+</code></pre></div>
+<p>Which becomes…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Assume Initial RAM Disk is max 16 MB
+setenv ramdisk_size 0x1000000
+## Check that it&#39;s correct
+printenv ramdisk_size
+## Save it for future reboots
+saveenv
+
+## Add the Boot Command for TFTP
+setenv bootcmd_tftp &#39;if tftpboot ${kernel_addr_r} ${tftp_server}:Image ; then if tftpboot ${fdt_addr_r} ${tftp_server}:jh7110-star64-pine64.dtb ; then if fdt addr ${fdt_addr_r} ; then if tftpboot ${ramdisk_addr_r} ${tftp_server}:initrd ; then booti ${kernel_addr_r} ${ramdisk_addr_r}:${ramdisk_size} ${fdt_addr_r} ; fi ; fi ; fi ; fi&#39;
+## Check that it&#39;s correct
+printenv bootcmd_tftp
+## Save it for future reboots
+saveenv
+</code></pre></div>
+<p><em>What happens if we omit the RAM Disk Size?</em></p>
+<div class="example-wrap"><pre class="language-text"><code>$ booti ${kernel_addr_r} ${ramdisk_addr_r} ${fdt_addr_r}
+Wrong Ramdisk Image Format
+Ramdisk image is corrupt or invalid
+
+## Assume max 16 MB
+$ booti ${kernel_addr_r} ${ramdisk_addr_r}:0x1000000 ${fdt_addr_r}
+## Boots OK
+</code></pre></div>
+<p><em>Does the Initial RAM Disk work on Star64?</em></p>
+<p>Star64 JH7110 boots OK with the Initial RAM Disk yay!</p>
+<div class="example-wrap"><pre class="language-text"><code>StarFive # booti ${kernel_addr_r} ${ramdisk_addr_r}:0x1000000 ${fdt_addr_r}
+## Flattened Device Tree blob at 46000000
+   Booting using the fdt blob at 0x46000000
+   Using Device Tree in place at 0000000046000000, end 000000004600f43a
+
+Starting kernel ...
+
+clk u5_dw_i2c_clk_core already disabled
+clk u5_dw_i2c_clk_apb already disabled
+123067DFHBCInx_start: Entry
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+board_late_initialize: 
+nx_start_application: Starting init task: /system/bin/init
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
+elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
+nx_start_application: ret=3
+up_exit: TCB=0x404088d0 exiting
+nx_start: CPU0: Beginning Idle Loop
+</code></pre></div>
+<p>TODO: Why no shell?</p>
+<p>TODO: Why <code>nx_start_application: ret=3</code>?</p>
+<p>TODO: Check User Address Space</p>
+<p>TODO: Boot from MicroSD with Initial RAM Disk</p>
+<h1 id="whats-next"><a href="#whats-next">5 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -97,6 +658,175 @@
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/semihost.md"><strong>lupyuen.github.io/src/semihost.md</strong></a></p>
+<h1 id="appendix-initial-ram-disk-for-litex-arty-a7"><a href="#appendix-initial-ram-disk-for-litex-arty-a7">6 Appendix: Initial RAM Disk for LiteX Arty-A7</a></h1>
+<p>TODO</p>
+<p>Let’s modify NuttX for QEMU to mount the Apps Filesystem from an Initial RAM Disk (instead of Semihosting).</p>
+<p>(So later we can replicate this on Star64 JH7110 SBC)</p>
+<p>First we look at the Initial RAM Disk for LiteX Arty-A7…</p>
+<p><a href="https://cwiki.apache.org/confluence/plugins/servlet/mobile?contentId=139629548#content/view/139629548">(About NuttX RAM Disks and ROM Disks)</a></p>
+<p>To generate the RAM Disk, we run this command: <a href="https://nuttx.apache.org/docs/latest/platforms/risc-v/litex/cores/vexriscv_smp/index.html">VexRISCV_SMP Core</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>cd nuttx
+genromfs -f romfs.img -d ../apps/bin -V &quot;NuttXBootVol&quot;
+</code></pre></div>
+<p><a href="https://www.systutorials.com/docs/linux/man/8-genromfs/">(About <code>genromfs</code>)</a></p>
+<p>LiteX Memory Map says where the RAM Disk is loaded…</p>
+<div class="example-wrap"><pre class="language-text"><code>&quot;romfs.img&quot;:   &quot;0x40C00000&quot;,
+&quot;nuttx.bin&quot;:   &quot;0x40000000&quot;,
+&quot;opensbi.bin&quot;: &quot;0x40f00000&quot;
+</code></pre></div>
+<p>This is the LiteX Build Configuration for mounting the RAM Disk: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64/boards/risc-v/litex/arty_a7/configs/knsh/defconfig#L34">knsh/defconfig</a></p>
+<div class="example-wrap"><pre class="language-bash"><code>CONFIG_BOARDCTL_ROMDISK=y
+CONFIG_BOARD_LATE_INITIALIZE=y
+CONFIG_BUILD_KERNEL=y
+CONFIG_FS_ROMFS=y
+CONFIG_INIT_FILEPATH=&quot;/system/bin/init&quot;
+CONFIG_INIT_MOUNT=y
+CONFIG_INIT_MOUNT_FLAGS=0x1
+CONFIG_INIT_MOUNT_TARGET=&quot;/system/bin&quot;
+CONFIG_LITEX_APPLICATION_RAMDISK=y
+CONFIG_NSH_FILE_APPS=y
+CONFIG_NSH_READLINE=y
+CONFIG_PATH_INITIAL=&quot;/system/bin&quot;
+CONFIG_RAM_SIZE=4194304
+CONFIG_RAM_START=0x40400000
+CONFIG_RAW_BINARY=y
+CONFIG_SYSTEM_NSH_PROGNAME=&quot;init&quot;
+CONFIG_TESTING_GETPRIME=y
+</code></pre></div>
+<p>According to <a href="https://nuttx.apache.org/docs/latest/applications/nsh/nsh.html#nsh-start-up-script">NSH Start-Up Script</a>:</p>
+<div class="example-wrap"><pre class="language-text"><code>CONFIG_DISABLE_MOUNTPOINT not set
+CONFIG_FS_ROMFS enabled
+</code></pre></div>
+<p>The RAM Disk is mounted at LiteX Startup: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/litex/arty_a7/src/litex_appinit.c#L76-L103">litex_appinit.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>void board_late_initialize(void)
+{
+  #ifdef CONFIG_LITEX_APPLICATION_RAMDISK
+  litex_mount_ramdisk();
+  #endif
+
+  litex_bringup();
+}
+</code></pre></div>
+<p><code>litex_bringup</code> mounts the RAM Disk at startup: <a href="https://github.com/apache/nuttx/blob/master/boards/risc-v/litex/arty_a7/src/litex_ramdisk.c#L41-L98">litex_ramdisk.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#ifndef CONFIG_BUILD_KERNEL
+#error &quot;Ramdisk usage is intended to be used with kernel build only&quot;
+#endif
+
+#define SECTORSIZE   512
+#define NSECTORS(b)  (((b) + SECTORSIZE - 1) / SECTORSIZE)
+#define RAMDISK_DEVICE_MINOR 0
+
+// Mount a ramdisk defined in the ld-kernel.script to /dev/ramX.
+// The ramdisk is intended to contain a romfs with applications which can
+// be spawned at runtime.
+int litex_mount_ramdisk(void)
+{
+  int ret;
+  struct boardioc_romdisk_s desc;
+
+  desc.minor    = RAMDISK_DEVICE_MINOR;
+  desc.nsectors = NSECTORS((ssize_t)__ramdisk_size);
+  desc.sectsize = SECTORSIZE;
+  desc.image    = __ramdisk_start;
+
+  ret = boardctl(BOARDIOC_ROMDISK, (uintptr_t)&amp;desc);
+  if (ret &lt; 0)
+    {
+      syslog(LOG_ERR, &quot;Ramdisk register failed: %s\n&quot;, strerror(errno));
+      syslog(LOG_ERR, &quot;Ramdisk mountpoint /dev/ram%d\n&quot;,
+                                          RAMDISK_DEVICE_MINOR);
+      syslog(LOG_ERR, &quot;Ramdisk length %u, origin %x\n&quot;,
+                                          (ssize_t)__ramdisk_size,
+                                          (uintptr_t)__ramdisk_start);
+    }
+
+  return ret;
+}
+</code></pre></div>
+<p><code>__ramdisk_start</code> is defined in <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64b/boards/risc-v/litex/arty_a7/include/board_memorymap.h#L58-L91">board_memorymap.h</a>:</p>
+<div class="example-wrap"><pre class="language-c"><code>/* RAMDisk */
+#define RAMDISK_START     (uintptr_t)__ramdisk_start
+#define RAMDISK_SIZE      (uintptr_t)__ramdisk_size
+
+/* ramdisk (RW) */
+extern uint8_t          __ramdisk_start[];
+extern uint8_t          __ramdisk_size[];
+</code></pre></div>
+<p>And <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64b/boards/risc-v/litex/arty_a7/scripts/ld-kernel.script#L20-L49">ld-kernel.script</a>:</p>
+<div class="example-wrap"><pre class="language-text"><code>MEMORY
+{
+  kflash (rx)   : ORIGIN = 0x40000000, LENGTH = 4096K   /* w/ cache */
+  ksram (rwx)   : ORIGIN = 0x40400000, LENGTH = 4096K   /* w/ cache */
+  pgram (rwx)   : ORIGIN = 0x40800000, LENGTH = 4096K   /* w/ cache */
+  ramdisk (rwx) : ORIGIN = 0x40C00000, LENGTH = 4096K   /* w/ cache */
+}
+...
+/* Page heap */
+__pgheap_start = ORIGIN(pgram);
+__pgheap_size = LENGTH(pgram) + LENGTH(ramdisk);
+
+/* Application ramdisk */
+__ramdisk_start = ORIGIN(ramdisk);
+__ramdisk_size = LENGTH(ramdisk);
+__ramdisk_end  = ORIGIN(ramdisk) + LENGTH(ramdisk);
+</code></pre></div>
+<p>Note that <code>__pgheap_size</code> needs to include <code>ramdisk</code>.</p>
+<h1 id="appendix-ram-disk-address-for-risc-v-qemu"><a href="#appendix-ram-disk-address-for-risc-v-qemu">7 Appendix: RAM Disk Address for RISC-V QEMU</a></h1>
+<p>TODO</p>
+<p><em>Can we enable logging for RISC-V QEMU?</em></p>
+<p>Yep we use the <code>-trace &quot;*&quot;</code> option like this…</p>
+<div class="example-wrap"><pre class="language-bash"><code>qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on \
+  -cpu rv64 \
+  -smp 8 \
+  -bios none \
+  -kernel nuttx \
+  -initrd initrd \
+  -nographic \
+  -trace &quot;*&quot;
+</code></pre></div>
+<p>In the QEMU Command above we loaded the Initial RAM Disk <code>initrd</code>.</p>
+<p>To discover the RAM Address of the Initial RAM Disk, we check the QEMU Trace Log:</p>
+<div class="example-wrap"><pre class="language-text"><code>resettablloader_write_rom nuttx
+  ELF program header segment 0:
+  @0x80000000 size=0x2b374 ROM=0
+loader_write_rom nuttx
+  ELF program header segment 1:
+  @0x80200000 size=0x2a1 ROM=0
+loader_write_rom initrd:
+  @0x84000000 size=0x2fc3e8 ROM=0
+loader_write_rom fdt:
+  @0x87000000 size=0x100000 ROM=0
+</code></pre></div>
+<p>So Initial RAM Disk is loaded at <code>0x8400</code> <code>0000</code></p>
+<p>(<code>__ramdisk_start</code> from the previous section)</p>
+<p>Also we see that Kernel is loaded at <code>0x8000</code> <code>0000</code>, Device Tree at <code>0x8700</code> <code>0000</code>.</p>
+<h1 id="appendix-device-tree-for-risc-v-qemu"><a href="#appendix-device-tree-for-risc-v-qemu">8 Appendix: Device Tree for RISC-V QEMU</a></h1>
+<p>TODO</p>
+<p>To dump the Device Tree for QEMU RISC-V, we specify <code>dumpdtb</code>…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Dump Device Tree for QEMU RISC-V
+qemu-system-riscv64 \
+  -semihosting \
+  -M virt,aclint=on,dumpdtb=qemu-riscv64.dtb \
+  -cpu rv64 \
+  -smp 8 \
+  -bios none \
+  -kernel nuttx \
+  -nographic
+
+## Convert Device Tree to text format
+dtc \
+  -o qemu-riscv64.dts \
+  -O dts \
+  -I dtb \
+  qemu-riscv64.dtb
+</code></pre></div>
+<p>This produces the Device Tree for QEMU RISC-V…</p>
+<ul>
+<li><a href="https://github.com/lupyuen/nuttx-star64/blob/main/qemu-riscv64.dts">qemu-riscv64.dts: Device Tree for QEMU RISC-V</a></li>
+</ul>
+<p>Which is helpful for browsing the Memory Addresses of I/O Peripherals.</p>
 
     
 </body>
