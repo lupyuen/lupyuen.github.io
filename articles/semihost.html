@@ -217,9 +217,11 @@ static long host_call(
   );
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L55-L75">(Source)</a></p>
-<p><em>What’s the Semihosting Operation Number?</em></p>
-<p>The <strong>Semihosting Operation Number</strong> identifies the File Operation to be performed in the Semihosting Call: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L41-L49">riscv_hostfs.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define HOST_OPEN   0x01
+<p><em>What’s this operation number?</em></p>
+<p>The <strong>Semihosting Operation Numbers</strong> are defined here: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L41-L49">riscv_hostfs.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>// Semihosting Operation Numbers
+// (For File Operations)
+#define HOST_OPEN   0x01
 #define HOST_CLOSE  0x02
 #define HOST_WRITE  0x05
 #define HOST_READ   0x06
