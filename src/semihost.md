@@ -4,7 +4,7 @@
 
 ![TODO](https://lupyuen.github.io/images/semihost-title.jpg)
 
-> _Once upon a time: There was a Naive Person (me!) who connected a __Smartwatch to the internet...___
+> _Once upon a time: There was a Very Naive Bloke (me!) who connected a __Smartwatch to the internet...___
 
 > _Anyone in world could __flash their own firmware__ on the watch, and watch it run on a __Live Video Stream__!_
 
