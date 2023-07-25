@@ -4,6 +4,16 @@
 
 ![TODO](https://lupyuen.github.io/images/semihost-title.jpg)
 
+> _Once upon a time: There was a Naive Person who connected a __Smartwatch to the internet...___
+
+> _Anyone in world could __flash their own firmware__ on the watch, and watch it run on a __Live Video Stream__!_
+
+> _Until a Wise Person (politely) flashed some __very clever firmware__ on the watch, that could __acccess other devices__ connected to the watch..._
+
+> _All because of __Semihosting__!_
+
+Yep [__this really happened!__](https://liliputing.com/you-can-flash-firmware-on-this-pinetime-smartwatch-in-singapore-over-the-internet/) (Thankfully it was a [__harmless experiment__](https://github.com/lupyuen/remote-pinetime-bot/blob/master/README.md#semihosting-security))
+
 TODO
 
 We're in the super-early stage of porting [__Apache NuttX Real-Time Operating System (RTOS)__](https://lupyuen.github.io/articles/nuttx2) to the [__Pine64 Star64__](https://wiki.pine64.org/wiki/STAR64) 64-bit RISC-V Single-Board Computer.
