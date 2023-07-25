@@ -89,9 +89,11 @@
 <p><em>All because of <strong>Semihosting</strong>!</em></p>
 </blockquote>
 <p>Yep <a href="https://liliputing.com/you-can-flash-firmware-on-this-pinetime-smartwatch-in-singapore-over-the-internet/"><strong>this really happened!</strong></a> (Thankfully it was a <a href="https://github.com/lupyuen/remote-pinetime-bot/blob/master/README.md#semihosting-security"><strong>harmless experiment</strong></a>)</p>
-<p>TODO</p>
-<p>We’re in the super-early stage of porting <a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX Real-Time Operating System (RTOS)</strong></a> to the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer.</p>
+<p>Three years later we’re still having <strong>Semihosting Problems</strong>, but on a different gadget: the <a href="https://wiki.pine64.org/wiki/STAR64"><strong>Pine64 Star64</strong></a> 64-bit RISC-V Single-Board Computer. (Pic below)</p>
 <p>(Based on <a href="https://doc-en.rvspace.org/Doc_Center/jh7110.html"><strong>StarFive JH7110</strong></a> SoC)</p>
+<p>TODO</p>
+<p>We’re in the super-early stage of porting <a href="https://lupyuen.github.io/articles/nuttx2"><strong>Apache NuttX Real-Time Operating System (RTOS)</strong></a> to </p>
+<p><img src="https://lupyuen.github.io/images/nuttx2-star64.jpg" alt="TODO" /></p>
 <h1 id="qemu-semihosting-in-nuttx"><a href="#qemu-semihosting-in-nuttx">1 QEMU Semihosting in NuttX</a></h1>
 <p>TODO</p>
 <p>NuttX crashes while booting on Star64 JH7110 SBC. From the Crash Dump above, <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause"><code>mcause</code></a> is 3: “Machine Software Interrupt”.</p>
