@@ -154,9 +154,10 @@ MTVAL:     00000000
 <p>According to the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause"><strong>Machine Cause Register (MCAUSE)</strong></a>, value 3 says that it’s a <strong>“Machine Software Interrupt”</strong>.</p>
 <p>Which means that NuttX has intentionally triggered a <strong>Software Interrupt</strong>. Probably to execute a Special Function.</p>
 <p><em>Something special? Like what?</em></p>
-<p>We look up the <strong>Exception Program Counter (EPC) <code>0x4020</code> <code>0434</code></strong> in our NuttX Disassembly: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64c-0.0.1/nuttx.S">nuttx.S</a></p>
-<div class="example-wrap"><pre class="language-text"><code>smh_call():
-nuttx/arch/risc-v/src/common/riscv_semihost.S:37
+<p>We look up the <strong>Exception Program Counter (EPC) <code>0x4020</code> <code>0434</code></strong> in our NuttX Disassembly: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64a-0.0.1/nuttx.S">TODO nuttx.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>nuttx/arch/risc-v/src/common/riscv_semihost.S:37
+smh_call():
+  // Shift Left (does nothing)
   slli zero, zero, 0x1f
     40200430: 01f01013  slli zero, zero, 0x1f
 
@@ -164,6 +165,11 @@ nuttx/arch/risc-v/src/common/riscv_semihost.S:37
   // (Trigger Semihosting Breakpoint)
   ebreak
     40200434: 00100073  ebreak
+
+  // Shift Right (does nothing)
+  // Encodes Semihosting Call Number 7
+  srai zero, zero, 0x7
+    40200438:	40705013  srai zero, zero, 0x7
 </code></pre></div>
 <p>The code above has a special RISC-V Instruction: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_semihost.S#L38">riscv_semihost.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>ebreak
@@ -195,6 +201,26 @@ slli zero, zero, 0x1f
 <p>That doesn’t do anything meaningful!</p>
 <h1 id="nuttx-calls-semihosting"><a href="#nuttx-calls-semihosting">3 NuttX Calls Semihosting</a></h1>
 <p>TODO</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L55-L75">riscv_hostfs.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>static long host_call(
+  unsigned int nbr,
+  void *parm,
+  size_t size
+) {
+  long ret = smh_call(nbr, parm);
+</code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L41-L49">riscv_hostfs.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#define HOST_OPEN           0x01
+#define HOST_CLOSE          0x02
+#define HOST_WRITE          0x05
+#define HOST_READ           0x06
+#define HOST_SEEK           0x0a
+#define HOST_FLEN           0x0c
+#define HOST_REMOVE         0x0e
+#define HOST_RENAME         0x0f
+#define HOST_ERROR          0x13
+</code></pre></div>
+<p>When we match up the <a href="https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode"><strong>Stack Trace</strong></a> with the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64a-0.0.1/nuttx.S"><strong>NuttX Disassembly</strong></a></p>
 <p>Exception Program Counter <code>0x4020</code> <code>0434</code> is in RISC-V Semihosting <code>smh_call</code>…</p>
 <p>When we log <code>smh_call</code>…</p>
 <div class="example-wrap"><pre class="language-text"><code>host_call: nbr=0x1, parm=0x40406778, size=24
