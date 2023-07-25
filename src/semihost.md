@@ -18,9 +18,15 @@ Three years later we're still having __Semihosting Problems__, but on a differen
 
 (Based on [__StarFive JH7110__](https://doc-en.rvspace.org/Doc_Center/jh7110.html) SoC)
 
-TODO
+In this article, we find out...
 
-We're in the super-early stage of porting [__Apache NuttX Real-Time Operating System (RTOS)__](https://lupyuen.github.io/articles/nuttx2) to 
+- What's __RISC-V Semihosting__
+
+- Why it crashes [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/nuttx2) on Star64
+
+- How we replaced Semihosting by __Initial RAM Disk__ (pic above)
+
+- After testing it on the __QEMU Emulator__
 
 ![TODO](https://lupyuen.github.io/images/nuttx2-star64.jpg)
 
