@@ -76,7 +76,9 @@ Let's find out why...
 
 # QEMU Semihosting in NuttX
 
-_What's this RISC-V Exception?_
+_NuttX crashes with this RISC-V Exception..._
+
+_What does it mean?_
 
 ```text
 EXCEPTION: Breakpoint
@@ -89,33 +91,25 @@ MTVAL:     00000000
 
 TODO
 
+We look up the __Exception Program Counter (EPC) `0x4020` `0434`__ in the NuttX Disassembly: [nuttx.S](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64a-0.0.1/nuttx.S)
+
+```text
+smh_call():
+nuttx/arch/risc-v/src/common/riscv_semihost.S:37
+  slli zero, zero, 0x1f
+    40200430: 01f01013  slli	zero, zero, 0x1f
+
+  // Crashes here
+  // (Trigger semihosting breakpoint)
+  ebreak
+    40200434: 00100073  ebreak
+```
+
+TODO
+
 NuttX crashes while booting on Star64 JH7110 SBC. From the Crash Dump above, [`mcause`](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause) is 3: "Machine Software Interrupt".
 
 Exception Program Counter `0x4020` `0434` is in RISC-V Semihosting `smh_call`...
-
-```text
-0000000040200430 <smh_call>:
-smh_call():
-nuttx/arch/risc-v/src/common/riscv_semihost.S:37
-  .global smh_call
-  .type smh_call @function
-
-smh_call:
-
-  slli zero, zero, 0x1f
-    40200430:	01f01013          	slli	zero,zero,0x1f
-nuttx/arch/risc-v/src/common/riscv_semihost.S:38
-  ebreak
-    //// Crashes here (Trigger semihosting breakpoint)
-    40200434:	00100073          	ebreak
-nuttx/arch/risc-v/src/common/riscv_semihost.S:39
-  srai zero, zero, 0x7
-    40200438:	40705013          	srai	zero,zero,0x7
-nuttx/arch/risc-v/src/common/riscv_semihost.S:40
-  ret
-    4020043c:	00008067          	ret
-    40200440:	0000                	unimp
-```
 
 When we log `smh_call`...
 
