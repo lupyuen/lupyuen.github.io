@@ -18,6 +18,8 @@ We are also experimenting with newer, easier ways to create Smartphone Apps, wit
 
 [Articles on Apache NuttX RTOS for PinePhone](https://github.com/lupyuen/pinephone-nuttx#apache-nuttx-rtos-for-pinephone)
 
+[Apache NuttX RTOS for Star64 64-bit RISC-V SBC (StarFive JH7110)](https://github.com/lupyuen/nuttx-star64)
+
 <hr>
 
 # Lup's Presentation Slides for NuttX Online Workshop 2022
