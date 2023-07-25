@@ -24,7 +24,7 @@ In this article, we find out...
 
 - Why it crashes [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/nuttx2) on Star64
 
-- How we replaced Semihosting by __Initial RAM Disk__ (pic above)
+- How we replaced Semihosting by __Initial RAM Disk "initrd"__ (pic above)
 
 - After testing it on the __QEMU Emulator__
 
