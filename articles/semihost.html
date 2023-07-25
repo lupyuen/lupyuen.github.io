@@ -154,24 +154,24 @@ MTVAL:     00000000
 <p>According to the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause"><strong>Machine Cause Register (MCAUSE)</strong></a>, value 3 says that it’s a <strong>“Machine Software Interrupt”</strong>.</p>
 <p>Which means that NuttX has intentionally triggered a <strong>Software Interrupt</strong>. Probably to execute a Special Function.</p>
 <p><em>Something special? Like what?</em></p>
-<p>We look up the <strong>Exception Program Counter (EPC) <code>0x4020</code> <code>0434</code></strong> in our NuttX Disassembly: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64a-0.0.1/nuttx.S">TODO nuttx.S</a></p>
+<p>We look up the <strong>Exception Program Counter (EPC) <code>0x4020</code> <code>0434</code></strong> in our NuttX Disassembly…</p>
 <div class="example-wrap"><pre class="language-text"><code>nuttx/arch/risc-v/src/common/riscv_semihost.S:37
 smh_call():
+  // Register A0 contains the Semihosting Operation Number.
+  // Register A1 contains the Semihosting Parameter.
   // Shift Left (does nothing)
-  slli zero, zero, 0x1f
-    40200430: 01f01013  slli zero, zero, 0x1f
+  40200430: 01f01013  slli zero, zero, 0x1f
 
-  // Crashes here
-  // (Trigger Semihosting Breakpoint)
-  ebreak
-    40200434: 00100073  ebreak
+  // Crashes here:
+  // Trigger Semihosting Breakpoint
+  40200434: 00100073  ebreak
 
   // Shift Right (does nothing)
-  // Encodes Semihosting Call Number 7
-  srai zero, zero, 0x7
-    40200438:	40705013  srai zero, zero, 0x7
+  // Encodes the Semihosting Call Number 7
+  40200438: 40705013  srai zero, zero, 0x7
 </code></pre></div>
-<p>The code above has a special RISC-V Instruction: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_semihost.S#L38">riscv_semihost.S</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_semihost.S#L38">(Source)</a></p>
+<p>The code above has a special RISC-V Instruction…</p>
 <div class="example-wrap"><pre class="language-text"><code>ebreak
 </code></pre></div>
 <p><em>What’s this ebreak?</em></p>
@@ -199,30 +199,37 @@ smh_call():
 slli zero, zero, 0x1f
 </code></pre></div>
 <p>That doesn’t do anything meaningful!</p>
+<p>Let’s talk about Semihosting…</p>
 <h1 id="nuttx-calls-semihosting"><a href="#nuttx-calls-semihosting">3 NuttX Calls Semihosting</a></h1>
 <p><em>Who calls ebreak? And why?</em></p>
-<p>TODO</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L55-L75">riscv_hostfs.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>static long host_call(
-  unsigned int nbr,
-  void *parm,
-  size_t size
+<p><strong><code>ebreak</code></strong> is called by <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_semihost.S#L20-L40"><strong>smh_call</strong></a>, which is called by <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L55-L75"><strong>host_call</strong></a>…</p>
+<div class="example-wrap"><pre class="language-c"><code>// NuttX calls Semihosting to
+// access the Host Filesystem
+static long host_call(
+  unsigned int nbr,  // Semihosting Operation Number
+  void *parm,        // Semihosting Parameter
+  size_t size        // Size of Parameter
 ) {
-  long ret = smh_call(nbr, parm);
+  // Call Semihosting via `ebreak`
+  long ret = smh_call(
+    nbr,  // Semihosting Operation Number
+    parm  // Semihosting Parameter
+  );
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L41-L49">riscv_hostfs.c</a></p>
-<div class="example-wrap"><pre class="language-c"><code>#define HOST_OPEN           0x01
-#define HOST_CLOSE          0x02
-#define HOST_WRITE          0x05
-#define HOST_READ           0x06
-#define HOST_SEEK           0x0a
-#define HOST_FLEN           0x0c
-#define HOST_REMOVE         0x0e
-#define HOST_RENAME         0x0f
-#define HOST_ERROR          0x13
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L55-L75">(Source)</a></p>
+<p><em>What’s the Semihosting Operation Number?</em></p>
+<p>The <strong>Semihosting Operation Number</strong> identifies the File Operation to be performed in the Semihosting Call: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L41-L49">riscv_hostfs.c</a></p>
+<div class="example-wrap"><pre class="language-c"><code>#define HOST_OPEN   0x01
+#define HOST_CLOSE  0x02
+#define HOST_WRITE  0x05
+#define HOST_READ   0x06
+#define HOST_SEEK   0x0a
+#define HOST_FLEN   0x0c
+#define HOST_REMOVE 0x0e
+#define HOST_RENAME 0x0f
+#define HOST_ERROR  0x13
 </code></pre></div>
-<p>When we match up the <a href="https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode"><strong>Stack Trace</strong></a> with the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64a-0.0.1/nuttx.S"><strong>NuttX Disassembly</strong></a></p>
-<p>Exception Program Counter <code>0x4020</code> <code>0434</code> is in RISC-V Semihosting <code>smh_call</code>…</p>
+<p>TODO</p>
 <p>When we log <code>smh_call</code>…</p>
 <div class="example-wrap"><pre class="language-text"><code>host_call: nbr=0x1, parm=0x40406778, size=24
 </code></pre></div>
@@ -230,6 +237,7 @@ slli zero, zero, 0x1f
 <p>So NuttX crashes on Star64 because it’s trying to read <code>/system/bin/init</code> via Semihosting!</p>
 <p>(See next section)</p>
 <p><a href="https://embeddedinn.xyz/articles/tutorial/understanding-riscv-semihosting/">(More about <strong>RISC-V Semihosting</strong>)</a></p>
+<p><a href="https://github.com/riscv-software-src/riscv-semihosting/blob/main/riscv-semihosting-spec.adoc">(See the <strong>Semihosting Spec</strong>)</a></p>
 <p>Let’s disable Semihosting and replace by Initial RAM Disk and ROMFS.</p>
 <p>(See https://github.com/apache/nuttx/issues/9501)</p>
 <p><img src="https://lupyuen.github.io/images/semihost-qemu.jpg" alt="QEMU reads the Apps Filesystem over Semihosting" /></p>
