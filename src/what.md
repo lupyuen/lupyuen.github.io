@@ -1,12 +1,14 @@
 # NuttX RTOS for PinePhone: What is it?
 
-📝 _16 Jun 2023_
+📝 _25 Jul 2023_
 
 ![Apache NuttX RTOS on PinePhone](https://lupyuen.github.io/images/what-title.jpg)
 
 [_Apache NuttX RTOS on PinePhone_](https://youtu.be/kGI_0yK1vws)
 
 [(Watch the Demo on YouTube)](https://youtu.be/kGI_0yK1vws)
+
+[(Watch the Presentation on Google Drive)](https://drive.google.com/file/d/1WL-6HVjhtqktHRmZiDbPCOs6934fQlEQ/view?usp=drive_link)
 
 Over the past 5 months, we ported to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone) a different kind of Operating System... [__Apache NuttX RTOS__](https://nuttx.apache.org/docs/latest/)
 

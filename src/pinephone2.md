@@ -4,6 +4,8 @@
 
 ![Apache NuttX RTOS for Pine64 PinePhone](https://lupyuen.github.io/images/pinephone2-title.jpg)
 
+[(Watch the Presentation on Google Drive)](https://drive.google.com/file/d/1WL-6HVjhtqktHRmZiDbPCOs6934fQlEQ/view?usp=drive_link)
+
 One year ago we started porting [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/what) (Real-Time Operating System) to [__Pine64 PinePhone__](https://wiki.pine64.org/index.php/PinePhone)...
 
 -   [__"NuttX RTOS for PinePhone: What is it?"__](https://lupyuen.github.io/articles/what)
