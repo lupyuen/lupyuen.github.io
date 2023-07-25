@@ -68,14 +68,15 @@
     <h1 class="title">Star64 JH7110 + NuttX RTOS: RISC-V Semihosting and Initial RAM Disk</h1>
     <nav id="TOC"><ul>
 <li><a href="#nuttx-crashes-on-star64">1 NuttX Crashes On Star64</a><ul></ul></li>
-<li><a href="#qemu-semihosting-in-nuttx">2 QEMU Semihosting in NuttX</a><ul></ul></li>
-<li><a href="#nuttx-apps-filesystem">3 NuttX Apps Filesystem</a><ul></ul></li>
-<li><a href="#modify-nuttx-qemu-to-load-initial-ram-disk">4 Modify NuttX QEMU to Load Initial RAM Disk</a><ul></ul></li>
-<li><a href="#load-initial-ram-disk-in-nuttx-star64">5 Load Initial RAM Disk in NuttX Star64</a><ul></ul></li>
-<li><a href="#whats-next">6 What’s Next</a><ul></ul></li>
-<li><a href="#appendix-initial-ram-disk-for-litex-arty-a7">7 Appendix: Initial RAM Disk for LiteX Arty-A7</a><ul></ul></li>
-<li><a href="#appendix-ram-disk-address-for-risc-v-qemu">8 Appendix: RAM Disk Address for RISC-V QEMU</a><ul></ul></li>
-<li><a href="#appendix-device-tree-for-risc-v-qemu">9 Appendix: Device Tree for RISC-V QEMU</a><ul></ul></li></ul></nav><p>📝 <em>2 Aug 2023</em></p>
+<li><a href="#decipher-the-risc-v-exception">2 Decipher the RISC-V Exception</a><ul></ul></li>
+<li><a href="#nuttx-calls-semihosting">3 NuttX Calls Semihosting</a><ul></ul></li>
+<li><a href="#nuttx-apps-filesystem">4 NuttX Apps Filesystem</a><ul></ul></li>
+<li><a href="#modify-nuttx-qemu-to-load-initial-ram-disk">5 Modify NuttX QEMU to Load Initial RAM Disk</a><ul></ul></li>
+<li><a href="#load-initial-ram-disk-in-nuttx-star64">6 Load Initial RAM Disk in NuttX Star64</a><ul></ul></li>
+<li><a href="#whats-next">7 What’s Next</a><ul></ul></li>
+<li><a href="#appendix-initial-ram-disk-for-litex-arty-a7">8 Appendix: Initial RAM Disk for LiteX Arty-A7</a><ul></ul></li>
+<li><a href="#appendix-ram-disk-address-for-risc-v-qemu">9 Appendix: RAM Disk Address for RISC-V QEMU</a><ul></ul></li>
+<li><a href="#appendix-device-tree-for-risc-v-qemu">10 Appendix: Device Tree for RISC-V QEMU</a><ul></ul></li></ul></nav><p>📝 <em>2 Aug 2023</em></p>
 <p><img src="https://lupyuen.github.io/images/semihost-title.jpg" alt="TODO" /></p>
 <blockquote>
 <p><em>Once upon a time: There was a Very Naive Bloke (me!) who connected a <strong>Smartwatch to the internet…</strong></em></p>
@@ -141,7 +142,7 @@ MTVAL:     00000000
 <p><a href="https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode">(Source)</a></p>
 <p>Let’s find out why…</p>
 <p><img src="https://lupyuen.github.io/images/privilege-run2.png" alt="NuttX crashes due to a Semihosting Problem" /></p>
-<h1 id="qemu-semihosting-in-nuttx"><a href="#qemu-semihosting-in-nuttx">2 QEMU Semihosting in NuttX</a></h1>
+<h1 id="decipher-the-risc-v-exception"><a href="#decipher-the-risc-v-exception">2 Decipher the RISC-V Exception</a></h1>
 <p><em>NuttX crashes with this RISC-V Exception…</em></p>
 <p><em>What does it mean?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>EXCEPTION: Breakpoint
@@ -150,27 +151,58 @@ EPC:       40200434
 MTVAL:     00000000
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode">(Source)</a></p>
-<p>TODO</p>
-<p>We look up the <strong>Exception Program Counter (EPC) <code>0x4020</code> <code>0434</code></strong> in the NuttX Disassembly: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64a-0.0.1/nuttx.S">nuttx.S</a></p>
+<p>According to the <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause"><strong>Machine Cause Register (MCAUSE)</strong></a>, value 3 says that it’s a <strong>“Machine Software Interrupt”</strong>.</p>
+<p>Which means that NuttX has intentionally triggered a <strong>Software Interrupt</strong>. Probably to execute a Special Function.</p>
+<p><em>Something special? Like what?</em></p>
+<p>We look up the <strong>Exception Program Counter (EPC) <code>0x4020</code> <code>0434</code></strong> in our NuttX Disassembly: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64c-0.0.1/nuttx.S">nuttx.S</a></p>
 <div class="example-wrap"><pre class="language-text"><code>smh_call():
 nuttx/arch/risc-v/src/common/riscv_semihost.S:37
   slli zero, zero, 0x1f
-    40200430: 01f01013  slli	zero, zero, 0x1f
+    40200430: 01f01013  slli zero, zero, 0x1f
 
   // Crashes here
-  // (Trigger semihosting breakpoint)
+  // (Trigger Semihosting Breakpoint)
   ebreak
     40200434: 00100073  ebreak
 </code></pre></div>
+<p>The code above has a special RISC-V Instruction: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_semihost.S#L38">riscv_semihost.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>ebreak
+</code></pre></div>
+<p><em>What’s this ebreak?</em></p>
+<p>From the <a href="https://five-embeddev.com/quickref/instructions.html#-rv32--environment-call-and-breakpoints"><strong>RISC-V Spec</strong></a>…</p>
+<blockquote>
+<p>“The EBREAK instruction is used to return control to a debugging environment”</p>
+</blockquote>
+<blockquote>
+<p>“EBREAK was primarily designed to be used by a debugger to cause execution to stop and fall back into the debugger”</p>
+</blockquote>
+<p>OK thanks but we’re not doing any debugging! </p>
+<p>The next part is more relevant…</p>
+<blockquote>
+<p>“Another use of EBREAK is to support <strong>Semihosting</strong>, where the execution environment includes a debugger that can provide services over an Alternate System Call Interface built around the EBREAK instruction”</p>
+</blockquote>
+<p>Aha! NuttX is making a special <strong>System Call to Semihosting</strong>!</p>
+<p>(We’ll see why)</p>
+<blockquote>
+<p>“Because the RISC-V base ISA does not provide more than one EBREAK instruction, RISC-V Semihosting uses a <strong>special sequence of instructions</strong> to distinguish a Semihosting EBREAK from a Debugger Inserted EBREAK”</p>
+</blockquote>
+<p>Which explains this (strange) preceding RISC-V Instruction…</p>
+<div class="example-wrap"><pre class="language-text"><code>// Shift Left the value 0x1F
+// into Register X0...
+// Which is always 0!
+slli zero, zero, 0x1f
+</code></pre></div>
+<p>That doesn’t do anything meaningful!</p>
+<h1 id="nuttx-calls-semihosting"><a href="#nuttx-calls-semihosting">3 NuttX Calls Semihosting</a></h1>
 <p>TODO</p>
-<p>NuttX crashes while booting on Star64 JH7110 SBC. From the Crash Dump above, <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause"><code>mcause</code></a> is 3: “Machine Software Interrupt”.</p>
 <p>Exception Program Counter <code>0x4020</code> <code>0434</code> is in RISC-V Semihosting <code>smh_call</code>…</p>
 <p>When we log <code>smh_call</code>…</p>
 <div class="example-wrap"><pre class="language-text"><code>host_call: nbr=0x1, parm=0x40406778, size=24
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/common/riscv_hostfs.c#L35-L73">host_call</a> says that the Semihosting Call is for HOST_OPEN. (Open a file)</p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L35-L73">host_call</a> says that the Semihosting Call is for HOST_OPEN. (Open a file)</p>
 <p>So NuttX crashes on Star64 because it’s trying to read <code>/system/bin/init</code> via Semihosting!</p>
 <p>(See next section)</p>
+<p><a href="https://embeddedinn.xyz/articles/tutorial/understanding-riscv-semihosting/">(More about <strong>RISC-V Semihosting</strong>)</a></p>
 <p>Let’s disable Semihosting and replace by Initial RAM Disk and ROMFS.</p>
 <p>(See https://github.com/apache/nuttx/issues/9501)</p>
 <p><img src="https://lupyuen.github.io/images/semihost-qemu.jpg" alt="QEMU reads the Apps Filesystem over Semihosting" /></p>
@@ -256,7 +288,7 @@ dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK    
 dump_tasks:   ----   --- --- -------- ------- --- ------- ---------- -------- 0x404002b0      2048         0     0.0%    irq
 dump_task:       0     0   0 FIFO     Kthread N-- Running            0000000000000000 0x40406030      3024      2248    74.3%    Idle Task
 dump_task:       1     1 100 RR       Kthread --- Waiting Unlock     0000000000000000 0x4040a060      1952       264    13.5%    lpwork 0x404013e0
-</code></pre></div><h1 id="nuttx-apps-filesystem"><a href="#nuttx-apps-filesystem">3 NuttX Apps Filesystem</a></h1>
+</code></pre></div><h1 id="nuttx-apps-filesystem"><a href="#nuttx-apps-filesystem">4 NuttX Apps Filesystem</a></h1>
 <p>TODO</p>
 <p><em>Where is <code>/system/bin/init</code>? Why is it loaded by NuttX over Semihosting?</em></p>
 <p><code>/system/bin/init</code> is needed for starting the NuttX Shell (and NuttX Apps) on Star64 JH7110 SBC.</p>
@@ -351,7 +383,7 @@ host_call: nbr=0x2, parm=0x80209190, size=8
 </code></pre></div>
 <p>Semihosting won’t work on Star64 SBC. Let’s replace this with Initial RAM Disk and ROMFS…</p>
 <p>(See https://github.com/apache/nuttx/issues/9501)</p>
-<h1 id="modify-nuttx-qemu-to-load-initial-ram-disk"><a href="#modify-nuttx-qemu-to-load-initial-ram-disk">4 Modify NuttX QEMU to Load Initial RAM Disk</a></h1>
+<h1 id="modify-nuttx-qemu-to-load-initial-ram-disk"><a href="#modify-nuttx-qemu-to-load-initial-ram-disk">5 Modify NuttX QEMU to Load Initial RAM Disk</a></h1>
 <p>TODO</p>
 <p>Now we can modify NuttX for QEMU to mount the Apps Filesystem from an Initial RAM Disk instead of Semihosting.</p>
 <p>(So later we can replicate this on Star64 JH7110 SBC)</p>
@@ -513,7 +545,7 @@ nsh&gt; nx_start: CPU0: Beginning Idle Loop
 <p>Now we run QEMU Kernel Mode with Initial RAM Disk, without Semihosting…</p>
 <p>And it boots OK on QEMU yay!</p>
 <p><a href="https://gist.github.com/lupyuen/8afee5b07b61bb7f9f202f7f8c5e3ab3">See the Run Log</a></p>
-<h1 id="load-initial-ram-disk-in-nuttx-star64"><a href="#load-initial-ram-disk-in-nuttx-star64">5 Load Initial RAM Disk in NuttX Star64</a></h1>
+<h1 id="load-initial-ram-disk-in-nuttx-star64"><a href="#load-initial-ram-disk-in-nuttx-star64">6 Load Initial RAM Disk in NuttX Star64</a></h1>
 <p>TODO</p>
 <p>Now we can modify NuttX for Star64 JH7110 RISC-V SBC to mount the Apps Filesystem from an Initial RAM Disk. (Instead of Semihosting)</p>
 <p><img src="https://lupyuen.github.io/images/semihost-star64.jpg" alt="NuttX for Star64 JH7110 RISC-V SBC will mount the Apps Filesystem from an Initial RAM Disk" /></p>
@@ -696,7 +728,7 @@ nx_start: CPU0: Beginning Idle Loop
 <p>TODO: Why <code>nx_start_application: ret=3</code>?</p>
 <p>TODO: Check User Address Space</p>
 <p>TODO: Boot from MicroSD with Initial RAM Disk</p>
-<h1 id="whats-next"><a href="#whats-next">6 What’s Next</a></h1>
+<h1 id="whats-next"><a href="#whats-next">7 What’s Next</a></h1>
 <p>TODO</p>
 <p>Many Thanks to my <a href="https://github.com/sponsors/lupyuen"><strong>GitHub Sponsors</strong></a> for supporting my work! This article wouldn’t have been possible without your support.</p>
 <ul>
@@ -718,7 +750,7 @@ nx_start: CPU0: Beginning Idle Loop
 </ul>
 <p><em>Got a question, comment or suggestion? Create an Issue or submit a Pull Request here…</em></p>
 <p><a href="https://github.com/lupyuen/lupyuen.github.io/blob/master/src/semihost.md"><strong>lupyuen.github.io/src/semihost.md</strong></a></p>
-<h1 id="appendix-initial-ram-disk-for-litex-arty-a7"><a href="#appendix-initial-ram-disk-for-litex-arty-a7">7 Appendix: Initial RAM Disk for LiteX Arty-A7</a></h1>
+<h1 id="appendix-initial-ram-disk-for-litex-arty-a7"><a href="#appendix-initial-ram-disk-for-litex-arty-a7">8 Appendix: Initial RAM Disk for LiteX Arty-A7</a></h1>
 <p>TODO</p>
 <p>Let’s modify NuttX for QEMU to mount the Apps Filesystem from an Initial RAM Disk (instead of Semihosting).</p>
 <p>(So later we can replicate this on Star64 JH7110 SBC)</p>
@@ -803,7 +835,7 @@ int litex_mount_ramdisk(void)
   return ret;
 }
 </code></pre></div>
-<p><code>__ramdisk_start</code> is defined in <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64b/boards/risc-v/litex/arty_a7/include/board_memorymap.h#L58-L91">board_memorymap.h</a>:</p>
+<p><code>__ramdisk_start</code> is defined in <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/litex/arty_a7/include/board_memorymap.h#L58-L91">board_memorymap.h</a>:</p>
 <div class="example-wrap"><pre class="language-c"><code>/* RAMDisk */
 #define RAMDISK_START     (uintptr_t)__ramdisk_start
 #define RAMDISK_SIZE      (uintptr_t)__ramdisk_size
@@ -812,7 +844,7 @@ int litex_mount_ramdisk(void)
 extern uint8_t          __ramdisk_start[];
 extern uint8_t          __ramdisk_size[];
 </code></pre></div>
-<p>And <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64b/boards/risc-v/litex/arty_a7/scripts/ld-kernel.script#L20-L49">ld-kernel.script</a>:</p>
+<p>And <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/litex/arty_a7/scripts/ld-kernel.script#L20-L49">ld-kernel.script</a>:</p>
 <div class="example-wrap"><pre class="language-text"><code>MEMORY
 {
   kflash (rx)   : ORIGIN = 0x40000000, LENGTH = 4096K   /* w/ cache */
@@ -831,7 +863,7 @@ __ramdisk_size = LENGTH(ramdisk);
 __ramdisk_end  = ORIGIN(ramdisk) + LENGTH(ramdisk);
 </code></pre></div>
 <p>Note that <code>__pgheap_size</code> needs to include <code>ramdisk</code>.</p>
-<h1 id="appendix-ram-disk-address-for-risc-v-qemu"><a href="#appendix-ram-disk-address-for-risc-v-qemu">8 Appendix: RAM Disk Address for RISC-V QEMU</a></h1>
+<h1 id="appendix-ram-disk-address-for-risc-v-qemu"><a href="#appendix-ram-disk-address-for-risc-v-qemu">9 Appendix: RAM Disk Address for RISC-V QEMU</a></h1>
 <p>TODO</p>
 <p><em>Can we enable logging for RISC-V QEMU?</em></p>
 <p>Yep we use the <code>-trace &quot;*&quot;</code> option like this…</p>
@@ -862,7 +894,7 @@ loader_write_rom fdt:
 <p>So Initial RAM Disk is loaded at <code>0x8400</code> <code>0000</code></p>
 <p>(<code>__ramdisk_start</code> from the previous section)</p>
 <p>Also we see that Kernel is loaded at <code>0x8000</code> <code>0000</code>, Device Tree at <code>0x8700</code> <code>0000</code>.</p>
-<h1 id="appendix-device-tree-for-risc-v-qemu"><a href="#appendix-device-tree-for-risc-v-qemu">9 Appendix: Device Tree for RISC-V QEMU</a></h1>
+<h1 id="appendix-device-tree-for-risc-v-qemu"><a href="#appendix-device-tree-for-risc-v-qemu">10 Appendix: Device Tree for RISC-V QEMU</a></h1>
 <p>TODO</p>
 <p>To dump the Device Tree for QEMU RISC-V, we specify <code>dumpdtb</code>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Dump Device Tree for QEMU RISC-V
