@@ -8,7 +8,7 @@
 
 > _Anyone in world could __flash their own firmware__ on the watch, and watch it run on a __Live Video Stream__!_
 
-> _Until a Wise Person (politely) flashed some __very clever firmware__ on the watch, that could __acccess other devices__ connected to the watch..._
+> _Until a Wise Person (politely) flashed some __very clever firmware__ on the watch, that could __access other devices__ connected to the watch..._
 
 > _All because of __Semihosting__!_
 
