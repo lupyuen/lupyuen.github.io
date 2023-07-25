@@ -74,7 +74,7 @@ Let's find out why...
 
 ![NuttX crashes due to a Semihosting Problem](https://lupyuen.github.io/images/privilege-run2.png)
 
-# QEMU Semihosting in NuttX
+# Decipher the RISC-V Exception
 
 _NuttX crashes with this RISC-V Exception..._
 
@@ -89,25 +89,66 @@ MTVAL:     00000000
 
 [(Source)](https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode)
 
-TODO
+According to the [__Machine Cause Register (MCAUSE)__](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause), value 3 says that it's a __"Machine Software Interrupt"__.
 
-We look up the __Exception Program Counter (EPC) `0x4020` `0434`__ in the NuttX Disassembly: [nuttx.S](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64a-0.0.1/nuttx.S)
+Which means that NuttX has intentionally triggered a __Software Interrupt__. Probably to execute a Special Function.
+
+_Something special? Like what?_
+
+We look up the __Exception Program Counter (EPC) `0x4020` `0434`__ in our NuttX Disassembly: [nuttx.S](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64c-0.0.1/nuttx.S)
 
 ```text
 smh_call():
 nuttx/arch/risc-v/src/common/riscv_semihost.S:37
   slli zero, zero, 0x1f
-    40200430: 01f01013  slli	zero, zero, 0x1f
+    40200430: 01f01013  slli zero, zero, 0x1f
 
   // Crashes here
-  // (Trigger semihosting breakpoint)
+  // (Trigger Semihosting Breakpoint)
   ebreak
     40200434: 00100073  ebreak
 ```
 
-TODO
+The code above has a special RISC-V Instruction: [riscv_semihost.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_semihost.S#L38)
 
-NuttX crashes while booting on Star64 JH7110 SBC. From the Crash Dump above, [`mcause`](https://five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause) is 3: "Machine Software Interrupt".
+```text
+ebreak
+```
+
+_What's this ebreak?_
+
+From the [__RISC-V Spec__](https://five-embeddev.com/quickref/instructions.html#-rv32--environment-call-and-breakpoints)...
+
+> "The EBREAK instruction is used to return control to a debugging environment"
+
+> "EBREAK was primarily designed to be used by a debugger to cause execution to stop and fall back into the debugger"
+
+OK thanks but we're not doing any debugging! 
+
+The next part is more relevant...
+
+> "Another use of EBREAK is to support __Semihosting__, where the execution environment includes a debugger that can provide services over an Alternate System Call Interface built around the EBREAK instruction"
+
+Aha! NuttX is making a special __System Call to Semihosting__!
+
+(We'll see why)
+
+> "Because the RISC-V base ISA does not provide more than one EBREAK instruction, RISC-V Semihosting uses a __special sequence of instructions__ to distinguish a Semihosting EBREAK from a Debugger Inserted EBREAK"
+
+Which explains this (strange) preceding RISC-V Instruction...
+
+```text
+// Shift Left the value 0x1F
+// into Register X0...
+// Which is always 0!
+slli zero, zero, 0x1f
+```
+
+That doesn't do anything meaningful!
+
+# NuttX Calls Semihosting
+
+TODO
 
 Exception Program Counter `0x4020` `0434` is in RISC-V Semihosting `smh_call`...
 
@@ -117,11 +158,13 @@ When we log `smh_call`...
 host_call: nbr=0x1, parm=0x40406778, size=24
 ```
 
-[host_call](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64a/arch/risc-v/src/common/riscv_hostfs.c#L35-L73) says that the Semihosting Call is for HOST_OPEN. (Open a file)
+[host_call](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L35-L73) says that the Semihosting Call is for HOST_OPEN. (Open a file)
 
 So NuttX crashes on Star64 because it's trying to read `/system/bin/init` via Semihosting!
 
 (See next section)
+
+[(More about __RISC-V Semihosting__)](https://embeddedinn.xyz/articles/tutorial/understanding-riscv-semihosting/)
 
 Let's disable Semihosting and replace by Initial RAM Disk and ROMFS.
 
@@ -889,7 +932,7 @@ int litex_mount_ramdisk(void)
 }
 ```
 
-`__ramdisk_start` is defined in [board_memorymap.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64b/boards/risc-v/litex/arty_a7/include/board_memorymap.h#L58-L91):
+`__ramdisk_start` is defined in [board_memorymap.h](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/litex/arty_a7/include/board_memorymap.h#L58-L91):
 
 ```c
 /* RAMDisk */
@@ -901,7 +944,7 @@ extern uint8_t          __ramdisk_start[];
 extern uint8_t          __ramdisk_size[];
 ```
 
-And [ld-kernel.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64b/boards/risc-v/litex/arty_a7/scripts/ld-kernel.script#L20-L49):
+And [ld-kernel.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/litex/arty_a7/scripts/ld-kernel.script#L20-L49):
 
 ```text
 MEMORY
