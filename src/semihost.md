@@ -154,6 +154,8 @@ That doesn't do anything meaningful!
 
 # NuttX Calls Semihosting
 
+_Who calls ebreak? And why?_
+
 TODO
 
 [riscv_hostfs.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L55-L75)
