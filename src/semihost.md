@@ -95,27 +95,28 @@ Which means that NuttX has intentionally triggered a __Software Interrupt__. Pro
 
 _Something special? Like what?_
 
-We look up the __Exception Program Counter (EPC) `0x4020` `0434`__ in our NuttX Disassembly: [TODO nuttx.S](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64a-0.0.1/nuttx.S)
+We look up the __Exception Program Counter (EPC) `0x4020` `0434`__ in our NuttX Disassembly...
 
 ```text
 nuttx/arch/risc-v/src/common/riscv_semihost.S:37
 smh_call():
+  // Register A0 contains the Semihosting Operation Number.
+  // Register A1 contains the Semihosting Parameter.
   // Shift Left (does nothing)
-  slli zero, zero, 0x1f
-    40200430: 01f01013  slli zero, zero, 0x1f
+  40200430: 01f01013  slli zero, zero, 0x1f
 
-  // Crashes here
-  // (Trigger Semihosting Breakpoint)
-  ebreak
-    40200434: 00100073  ebreak
+  // Crashes here:
+  // Trigger Semihosting Breakpoint
+  40200434: 00100073  ebreak
 
   // Shift Right (does nothing)
-  // Encodes Semihosting Call Number 7
-  srai zero, zero, 0x7
-    40200438:	40705013  srai zero, zero, 0x7
+  // Encodes the Semihosting Call Number 7
+  40200438: 40705013  srai zero, zero, 0x7
 ```
 
-The code above has a special RISC-V Instruction: [riscv_semihost.S](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_semihost.S#L38)
+[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_semihost.S#L38)
+
+The code above has a special RISC-V Instruction...
 
 ```text
 ebreak
@@ -152,40 +153,48 @@ slli zero, zero, 0x1f
 
 That doesn't do anything meaningful!
 
+Let's talk about Semihosting...
+
 # NuttX Calls Semihosting
 
 _Who calls ebreak? And why?_
 
-TODO
-
-[riscv_hostfs.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L55-L75)
+__`ebreak`__ is called by [__smh_call__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_semihost.S#L20-L40), which is called by [__host_call__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L55-L75)...
 
 ```c
+// NuttX calls Semihosting to
+// access the Host Filesystem
 static long host_call(
-  unsigned int nbr,
-  void *parm,
-  size_t size
+  unsigned int nbr,  // Semihosting Operation Number
+  void *parm,        // Semihosting Parameter
+  size_t size        // Size of Parameter
 ) {
-  long ret = smh_call(nbr, parm);
+  // Call Semihosting via `ebreak`
+  long ret = smh_call(
+    nbr,  // Semihosting Operation Number
+    parm  // Semihosting Parameter
+  );
 ```
 
-[riscv_hostfs.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L41-L49)
+[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L55-L75)
+
+_What's the Semihosting Operation Number?_
+
+The __Semihosting Operation Number__ identifies the File Operation to be performed in the Semihosting Call: [riscv_hostfs.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L41-L49)
 
 ```c
-#define HOST_OPEN           0x01
-#define HOST_CLOSE          0x02
-#define HOST_WRITE          0x05
-#define HOST_READ           0x06
-#define HOST_SEEK           0x0a
-#define HOST_FLEN           0x0c
-#define HOST_REMOVE         0x0e
-#define HOST_RENAME         0x0f
-#define HOST_ERROR          0x13
+#define HOST_OPEN   0x01
+#define HOST_CLOSE  0x02
+#define HOST_WRITE  0x05
+#define HOST_READ   0x06
+#define HOST_SEEK   0x0a
+#define HOST_FLEN   0x0c
+#define HOST_REMOVE 0x0e
+#define HOST_RENAME 0x0f
+#define HOST_ERROR  0x13
 ```
 
-When we match up the [__Stack Trace__](https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode) with the [__NuttX Disassembly__](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64a-0.0.1/nuttx.S)
-
-Exception Program Counter `0x4020` `0434` is in RISC-V Semihosting `smh_call`...
+TODO
 
 When we log `smh_call`...
 
@@ -200,6 +209,8 @@ So NuttX crashes on Star64 because it's trying to read `/system/bin/init` via Se
 (See next section)
 
 [(More about __RISC-V Semihosting__)](https://embeddedinn.xyz/articles/tutorial/understanding-riscv-semihosting/)
+
+[(See the __Semihosting Spec__)](https://github.com/riscv-software-src/riscv-semihosting/blob/main/riscv-semihosting-spec.adoc)
 
 Let's disable Semihosting and replace by Initial RAM Disk and ROMFS.
 
