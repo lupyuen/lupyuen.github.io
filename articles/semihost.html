@@ -142,7 +142,8 @@ MTVAL:     00000000
 <p>Let’s find out why…</p>
 <p><img src="https://lupyuen.github.io/images/privilege-run2.png" alt="NuttX crashes due to a Semihosting Problem" /></p>
 <h1 id="qemu-semihosting-in-nuttx"><a href="#qemu-semihosting-in-nuttx">2 QEMU Semihosting in NuttX</a></h1>
-<p><em>What’s this RISC-V Exception?</em></p>
+<p><em>NuttX crashes with this RISC-V Exception…</em></p>
+<p><em>What does it mean?</em></p>
 <div class="example-wrap"><pre class="language-text"><code>EXCEPTION: Breakpoint
 MCAUSE:    00000003
 EPC:       40200434
@@ -150,30 +151,20 @@ MTVAL:     00000000
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode">(Source)</a></p>
 <p>TODO</p>
+<p>We look up the <strong>Exception Program Counter (EPC) <code>0x4020</code> <code>0434</code></strong> in the NuttX Disassembly: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64a-0.0.1/nuttx.S">nuttx.S</a></p>
+<div class="example-wrap"><pre class="language-text"><code>smh_call():
+nuttx/arch/risc-v/src/common/riscv_semihost.S:37
+  slli zero, zero, 0x1f
+    40200430: 01f01013  slli	zero, zero, 0x1f
+
+  // Crashes here
+  // (Trigger semihosting breakpoint)
+  ebreak
+    40200434: 00100073  ebreak
+</code></pre></div>
+<p>TODO</p>
 <p>NuttX crashes while booting on Star64 JH7110 SBC. From the Crash Dump above, <a href="https://five-embeddev.com/riscv-isa-manual/latest/machine.html#sec:mcause"><code>mcause</code></a> is 3: “Machine Software Interrupt”.</p>
 <p>Exception Program Counter <code>0x4020</code> <code>0434</code> is in RISC-V Semihosting <code>smh_call</code>…</p>
-<div class="example-wrap"><pre class="language-text"><code>0000000040200430 &lt;smh_call&gt;:
-smh_call():
-nuttx/arch/risc-v/src/common/riscv_semihost.S:37
-  .global smh_call
-  .type smh_call @function
-
-smh_call:
-
-  slli zero, zero, 0x1f
-    40200430:	01f01013          	slli	zero,zero,0x1f
-nuttx/arch/risc-v/src/common/riscv_semihost.S:38
-  ebreak
-    //// Crashes here (Trigger semihosting breakpoint)
-    40200434:	00100073          	ebreak
-nuttx/arch/risc-v/src/common/riscv_semihost.S:39
-  srai zero, zero, 0x7
-    40200438:	40705013          	srai	zero,zero,0x7
-nuttx/arch/risc-v/src/common/riscv_semihost.S:40
-  ret
-    4020043c:	00008067          	ret
-    40200440:	0000                	unimp
-</code></pre></div>
 <p>When we log <code>smh_call</code>…</p>
 <div class="example-wrap"><pre class="language-text"><code>host_call: nbr=0x1, parm=0x40406778, size=24
 </code></pre></div>
