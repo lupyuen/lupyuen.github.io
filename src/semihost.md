@@ -26,9 +26,55 @@ In this article, we find out...
 
 - How we replaced Semihosting by __Initial RAM Disk "initrd"__ (pic above)
 
-- After testing it on the __QEMU Emulator__
+- After testing on __QEMU Emulator__
 
-![TODO](https://lupyuen.github.io/images/nuttx2-star64.jpg)
+![Star64 RISC-V SBC](https://lupyuen.github.io/images/nuttx2-star64.jpg)
+
+# NuttX Crashes On Star64
+
+Last article we tried porting Apache NuttX RTOS from __QEMU Emulator to Star64 JH7110 SBC__...
+
+- [__"Star64 JH7110 + NuttX RTOS: RISC-V Privilege Levels and UART Registers"__](https://lupyuen.github.io/articles/privilege)
+
+NuttX seems to boot OK for a while...
+
+```text
+123067DFHBC
+qemu_rv_kernel_mappings: map I/O regions
+qemu_rv_kernel_mappings: map kernel text
+qemu_rv_kernel_mappings: map kernel data
+qemu_rv_kernel_mappings: connect the L1 and L2 page tables
+qemu_rv_kernel_mappings: map the page pool
+qemu_rv_mm_init: mmu_enable: satp=1077956608
+Inx_start: Entry
+elf_initialize: Registering ELF
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+nx_start_application: Starting init task: /system/bin/init
+load_absmodule: Loading /system/bin/init
+elf_loadbinary: Loading file: /system/bin/init
+elf_init: filename: /system/bin/init loadinfo: 0x404069e8
+```
+
+[(Source)](https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode)
+
+But then NuttX crashes with a __RISC-V Exception__ (pic below)...
+
+```text
+riscv_exception: EXCEPTION: Breakpoint. MCAUSE: 0000000000000003, EPC: 0000000040200434, MTVAL: 0000000000000000
+riscv_exception: PANIC!!! Exception = 0000000000000003
+_assert: Current Version: NuttX  12.0.3 2261b80-dirty Jul 15 2023 20:38:57 risc-v
+_assert: Assertion failed panic: at file: common/riscv_exception.c:85 task: Idle Task 0x40200ce6
+up_dump_register: EPC: 0000000040200434
+up_dump_register: A0: 0000000000000001 A1: 0000000040406778 A2: 0000000000000000 A3: 0000000000000001
+```
+
+[(Source)](https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode)
+
+Let's find out why...
+
+![NuttX crashes due to a Semihosting Problem](https://lupyuen.github.io/images/privilege-run2.png)
 
 # QEMU Semihosting in NuttX
 
