@@ -597,7 +597,7 @@ And it boots OK on QEMU yay!
 
 [See the Run Log](https://gist.github.com/lupyuen/8afee5b07b61bb7f9f202f7f8c5e3ab3)
 
-# NuttX Star64 loads Initial RAM Disk
+# NuttX Star64 with Initial RAM Disk
 
 TODO
 
