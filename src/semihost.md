@@ -255,6 +255,13 @@ pushd ../apps
 ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
 make import V=1
 popd
+
+## Dump the `init` disassembly to `init.S`
+riscv64-unknown-elf-objdump \
+  -t -S --demangle --line-numbers --wide \
+  ../apps/bin/init \
+  >init.S \
+  2>&1
 ```
 
 [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt)
