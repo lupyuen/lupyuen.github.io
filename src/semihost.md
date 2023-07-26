@@ -465,17 +465,25 @@ void qemu_rv_kernel_mappings(void) {
   );
 ```
 
-[(Because somehow `map_region` crashes when we try to map 0x84000000)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L280-L287)
+(More about __`0x8400` `0000`__ in a while)
 
-We check that the RAM Disk Memory is sufficient: [fs_romfsutil.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/fs/romfs/fs_romfsutil.c#L85-L105)
+[(Somehow __map_region__ crashes when we try to map the RAM Disk Memory)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L280-L287)
+
+Things get really wonky when we exceed the bounds of the RAM Disk. So we __verify the bounds__: [fs_romfsutil.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/fs/romfs/fs_romfsutil.c#L85-L105)
 
 ```c
+// While reading from RAM Disk...
 static uint32_t romfs_devread32(struct romfs_mountpt_s *rm, int ndx) {
-  //// Stop if RAM Disk Memory is too small
-  DEBUGASSERT(&rm->rm_buffer[ndx] < __ramdisk_start + (size_t)__ramdisk_size); ////
+
+  // If we're reading beyond the bounds of
+  // RAM Disk Memory, halt (and catch fire)
+  DEBUGASSERT(
+    &rm->rm_buffer[ndx] <
+      __ramdisk_start + (size_t)__ramdisk_size
+  );
 ```
 
-We configured QEMU to mount the RAM Disk as ROMFS (instead of Semihosting): [knsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig)
+Finally we configured NuttX QEMU to mount the __Initial RAM Disk as ROMFS__ (instead of Semihosting): [knsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig)
 
 ```bash
 CONFIG_BOARDCTL_ROMDISK=y
@@ -491,23 +499,25 @@ CONFIG_INIT_MOUNT_TARGET="/system/bin"
 ## CONFIG_RISCV_SEMIHOSTING_HOSTFS=y
 ```
 
-_What is the RAM Address of the Initial RAM Disk in QEMU?_
+That's it! These are the files that we modified in NuttX QEMU to load the Initial RAM Disk (instead of Semihosting)...
 
-Initial RAM Disk is loaded by QEMU at `0x8400` `0000`...
-
-- ["RAM Disk Address for RISC-V QEMU"](https://github.com/lupyuen/nuttx-star64#ram-disk-address-for-risc-v-qemu)
-
-Below are the files that we changed in NuttX for QEMU to load the Initial RAM Disk (instead of Semihosting)...
-
-- [Modified Files for QEMU with Initial RAM Disk](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/33/files)
-
-TODO
+- [__Modified Files for NuttX QEMU with Initial RAM Disk__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/33/files)
 
 _What's ROMFS?_
 
 [__ROMFS__](https://en.wikipedia.org/wiki/Romfs) is the Filesystem Format of our Initial RAM Disk. (It defines how the Files and Directories are stored in the RAM Disk)
 
 We could have used a FAT or EXT4 or NTFS Filesystem... But ROMFS is a lot simpler for NuttX.
+
+_Why did we copy the RAM Disk from __`0x8400` `0000`__?_
+
+QEMU loads the Initial RAM Disk into RAM at __`0x8400` `0000`__...
+
+- [__"RAM Disk Address for RISC-V QEMU"__](https://github.com/lupyuen/nuttx-star64#ram-disk-address-for-risc-v-qemu)
+
+That's why we copied the RAM Disk from __`0x8400` `0000`__.
+
+TODO: LiteX Arty-A7
 
 # Load Initial RAM Disk in NuttX QEMU
 
@@ -995,6 +1005,8 @@ So Initial RAM Disk is loaded at `0x8400` `0000`
 (`__ramdisk_start` from the previous section)
 
 Also we see that Kernel is loaded at `0x8000` `0000`, Device Tree at `0x8700` `0000`.
+
+We thought the Initial RAM Disk Address could be discovered from the Device Tree for RISC-V QEMU. But nope it's not there...
 
 # Appendix: Device Tree for RISC-V QEMU
 
