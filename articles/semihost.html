@@ -253,8 +253,10 @@ riscv_exception:
   EXCEPTION: Breakpoint
 </code></pre></div>
 <p><a href="https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode">(Source)</a></p>
+<p>NuttX is trying to read the file <strong>/system/bin/init</strong> via Semihosting!</p>
+<p>Why did it fail? Let’s find out…</p>
 <p>TODO</p>
-<p>So NuttX crashes on Star64 because it’s trying to read <code>/system/bin/init</code> via Semihosting!</p>
+<p>So NuttX crashes on Star64 because it’s trying to read `</p>
 <p>(See next section)</p>
 <p><a href="https://embeddedinn.xyz/articles/tutorial/understanding-riscv-semihosting/">(More about <strong>RISC-V Semihosting</strong>)</a></p>
 <p><a href="https://github.com/riscv-software-src/riscv-semihosting/blob/main/riscv-semihosting-spec.adoc">(See the <strong>Semihosting Spec</strong>)</a></p>
