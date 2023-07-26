@@ -333,7 +333,9 @@ This is why Semihosting won't work on Star64...
 
 # Semihosting on NuttX QEMU
 
-TODO
+_Why Semihosting won't work on Star64 SBC?_
+
+TODO: Semihosting was created for Hardware Debuggers and Virtual Machine Hypervisors (like QEMU)
 
 (See next section)
 
