@@ -517,7 +517,7 @@ That's why we copied the RAM Disk from __`0x8400` `0000`__ to __ramdisk_start__.
 
 TODO: LiteX Arty-A7
 
-# Load Initial RAM Disk in NuttX QEMU
+# Boot NuttX QEMU with Initial RAM Disk
 
 TODO
 
@@ -550,9 +550,10 @@ This is how we load the Initial RAM Disk on QEMU: [‘virt’ Generic Virtual Pl
 
 ```bash
 ## Start NuttX on QEMU
-## with Semihosting Enabled
+## with Initial RAM Disk `initrd`
 qemu-system-riscv64 \
   -kernel nuttx \
+  -initrd initrd \
   -cpu rv64 \
   -smp 8 \
   -M virt,aclint=on \
@@ -560,8 +561,6 @@ qemu-system-riscv64 \
   -bios none \
   -nographic
 ```
-
-[(Source)](https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v)
 
 Now we run QEMU Kernel Mode with Initial RAM Disk, without Semihosting...
 
