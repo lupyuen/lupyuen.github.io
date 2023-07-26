@@ -157,6 +157,8 @@ That doesn't do anything meaningful!
 
 Let's talk about Semihosting...
 
+![TODO](https://lupyuen.github.io/images/semihost-qemu3.jpg)
+
 # NuttX Calls Semihosting
 
 _Who calls ebreak? And why?_
