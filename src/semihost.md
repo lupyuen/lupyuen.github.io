@@ -319,7 +319,7 @@ apps/system/nsh/nsh_main.c:52
 
 [(Source)](TODO)
 
-Yep it's the Compiled ELF File of the [__NuttX Shell `nsh`__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85)!
+Yep it's the Compiled ELF Executable of the [__NuttX Shell `nsh`__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85)!
 
 Now everything makes sense: At startup, NuttX tries to load __/system/bin/init__ to start the [__NuttX Shell `nsh`__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85)...
 
