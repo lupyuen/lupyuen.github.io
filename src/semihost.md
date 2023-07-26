@@ -257,7 +257,11 @@ popd
 
 [(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt)
 
-The commands above will create the __Apps Filesystem__ for NuttX QEMU, which includes __/system/bin/init__...
+[(Why we use __Kernel Mode__)](https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode)
+
+The commands above will build the __Apps Filesystem__ for NuttX QEMU.
+
+Which includes __/system/bin/init__...
 
 ```text
 $ ls ../apps/bin       
@@ -267,7 +271,7 @@ init
 sh
 ```
 
-TODO
+TODO: What's inside /system/bin/init?
 
 (See next section)
 
