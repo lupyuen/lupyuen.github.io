@@ -228,11 +228,13 @@ riscv_exception:
 
 [(Source)](https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode)
 
+NuttX is trying to read the file __/system/bin/init__ via Semihosting!
 
+Why did it fail? Let's find out...
 
 TODO
 
-So NuttX crashes on Star64 because it's trying to read `/system/bin/init` via Semihosting!
+So NuttX crashes on Star64 because it's trying to read `
 
 (See next section)
 
