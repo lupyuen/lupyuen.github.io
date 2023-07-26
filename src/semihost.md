@@ -408,48 +408,24 @@ Below are the files that we changed in NuttX for QEMU to load the Initial RAM Di
 
 - [Modified Files for QEMU with Initial RAM Disk](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/33/files)
 
-We configured QEMU to mount the RAM Disk as ROMFS (instead of Semihosting): [knsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig)
-
-```bash
-CONFIG_BOARDCTL_ROMDISK=y
-CONFIG_BOARD_LATE_INITIALIZE=y
-CONFIG_FS_ROMFS=y
-CONFIG_INIT_FILEPATH="/system/bin/init"
-CONFIG_INIT_MOUNT=y
-CONFIG_INIT_MOUNT_FLAGS=0x1
-CONFIG_INIT_MOUNT_TARGET="/system/bin"
-
-## We removed these...
-## CONFIG_FS_HOSTFS=y
-## CONFIG_RISCV_SEMIHOSTING_HOSTFS=y
-```
-
 We defined the RAM Disk Memory in the Linker Script: [ld-kernel64.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel64.script#L20-L54)
 
 ```text
 MEMORY
 {
   ...
-  /* Added RAM Disk */
+  /* Added RAM Disk Memory (Max 16 MB) */
   ramdisk (rwx) : ORIGIN = 0x80800000, LENGTH = 16M   /* w/ cache */
-
-  /* This won't work, crashes with a Memory Mgmt Fault...
-     ramdisk (rwx) : ORIGIN = 0x84000000, LENGTH = 16M */   /* w/ cache */
 }
 
-/* Added RAM Disk */
-/* Page heap */
-
-__pgheap_start = ORIGIN(pgram);
+/* Increased Page Heap for RAM Disk */
 __pgheap_size = LENGTH(pgram) + LENGTH(ramdisk);
 /* Previously: __pgheap_size = LENGTH(pgram); */
 
-/* Added RAM Disk */
-/* Application ramdisk */
-
+/* Added RAM Disk Symbols */
 __ramdisk_start = ORIGIN(ramdisk);
-__ramdisk_size = LENGTH(ramdisk);
-__ramdisk_end  = ORIGIN(ramdisk) + LENGTH(ramdisk);
+__ramdisk_size  = LENGTH(ramdisk);
+__ramdisk_end   = ORIGIN(ramdisk) + LENGTH(ramdisk);
 ```
 
 (We increased RAM Disk Memory from 4 MB to 16 MB because our RAM Disk is now bigger)
@@ -459,10 +435,11 @@ At Startup, we mount the RAM Disk: [qemu_rv_appinit.c](https://github.com/lupyue
 ```c
 // Called at NuttX Startup
 void board_late_initialize(void) {
+
   // Mount the RAM Disk
   mount_ramdisk();
 
-  /* Perform board-specific initialization */
+  // Perform board-specific initialization
 #ifdef CONFIG_NSH_ARCHINIT
   mount(NULL, "/proc", "procfs", 0, NULL);
 #endif
@@ -470,27 +447,17 @@ void board_late_initialize(void) {
 
 // Mount the RAM Disk
 int mount_ramdisk(void) {
-  int ret;
-  struct boardioc_romdisk_s desc;
 
+  // Define the ROMFS
+  struct boardioc_romdisk_s desc;
   desc.minor    = RAMDISK_DEVICE_MINOR;
   desc.nsectors = NSECTORS((ssize_t)__ramdisk_size);
   desc.sectsize = SECTORSIZE;
   desc.image    = __ramdisk_start;
 
-  ret = boardctl(BOARDIOC_ROMDISK, (uintptr_t)&desc);
-  if (ret < 0)
-    {
-      syslog(LOG_ERR, "Ramdisk register failed: %s\n", strerror(errno));
-      syslog(LOG_ERR, "Ramdisk mountpoint /dev/ram%d\n",
-                                          RAMDISK_DEVICE_MINOR);
-      syslog(LOG_ERR, "Ramdisk length %lu, origin %lx\n",
-                                          (ssize_t)__ramdisk_size,
-                                          (uintptr_t)__ramdisk_start);
-    }
-
-  return ret;
-}
+  // Mount the ROMFS
+  int ret = boardctl(BOARDIOC_ROMDISK, (uintptr_t)&desc);
+  // Omitted: Handle errors
 ```
 
 We copied the RAM Disk from the QEMU Address (0x84000000) to the NuttX Address (__ramdisk_start): [qemu_rv_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L271-L280)
@@ -511,6 +478,22 @@ We check that the RAM Disk Memory is sufficient: [fs_romfsutil.c](https://github
 static uint32_t romfs_devread32(struct romfs_mountpt_s *rm, int ndx) {
   //// Stop if RAM Disk Memory is too small
   DEBUGASSERT(&rm->rm_buffer[ndx] < __ramdisk_start + (size_t)__ramdisk_size); ////
+```
+
+We configured QEMU to mount the RAM Disk as ROMFS (instead of Semihosting): [knsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig)
+
+```bash
+CONFIG_BOARDCTL_ROMDISK=y
+CONFIG_BOARD_LATE_INITIALIZE=y
+CONFIG_FS_ROMFS=y
+CONFIG_INIT_FILEPATH="/system/bin/init"
+CONFIG_INIT_MOUNT=y
+CONFIG_INIT_MOUNT_FLAGS=0x1
+CONFIG_INIT_MOUNT_TARGET="/system/bin"
+
+## We removed these...
+## CONFIG_FS_HOSTFS=y
+## CONFIG_RISCV_SEMIHOSTING_HOSTFS=y
 ```
 
 # Load Initial RAM Disk in NuttX QEMU
