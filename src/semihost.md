@@ -341,6 +341,29 @@ The pic above shows how it works: Semihosting enables a Virtual Machine (like Nu
 
 (Remember our story at the top of the article? Be careful with Semihosting!)
 
+That's why we __Enable Semihosting__ when we run NuttX on QEMU...
+
+```bash
+## Start NuttX on QEMU
+## with Semihosting Enabled
+qemu-system-riscv64 \
+  -kernel nuttx \
+  -cpu rv64 \
+  -smp 8 \
+  -M virt,aclint=on \
+  -semihosting \
+  -bios none \
+  -nographic
+```
+
+[(Source)](https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v)
+
+_This won't work on Star64?_
+
+Semihosting won't work because NuttX for Star64 runs on __Real SBC Hardware__ (Bare Metal)...
+
+There's nothing to "break out" to!
+
 TODO
 
 (See next section)
