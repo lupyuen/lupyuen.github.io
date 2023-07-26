@@ -333,7 +333,10 @@ CONFIG_NSH_ARCHINIT=y
 <p><img src="https://lupyuen.github.io/images/semihost-qemu.jpg" alt="QEMU reads the Apps Filesystem over Semihosting" /></p>
 <h1 id="semihosting-on-nuttx-qemu"><a href="#semihosting-on-nuttx-qemu">5 Semihosting on NuttX QEMU</a></h1>
 <p><em>Why Semihosting won’t work on Star64 SBC?</em></p>
-<p>TODO: Semihosting was created for Hardware Debuggers and Virtual Machine Hypervisors (like QEMU)</p>
+<p><a href="https://embeddedinn.xyz/articles/tutorial/understanding-riscv-semihosting/"><strong>Semihosting</strong></a> was created for <a href="https://en.wikipedia.org/wiki/Debugger#Hardware_support_for_debugging"><strong>Hardware Debuggers</strong></a> and <a href="https://en.wikipedia.org/wiki/Hypervisor"><strong>Virtual Machine Hypervisors</strong></a>, like QEMU Emulator.</p>
+<p>The pic above shows how it works: Semihosting enables a Virtual Machine (like NuttX) to <strong>“Break Out” of its Sandbox</strong> to access the Filesystem on the Host Machine / Our Computer.</p>
+<p>(Remember our story at the top of the article? Be careful with Semihosting!)</p>
+<p>TODO</p>
 <p>(See next section)</p>
 <p><a href="https://embeddedinn.xyz/articles/tutorial/understanding-riscv-semihosting/">(More about <strong>RISC-V Semihosting</strong>)</a></p>
 <p><a href="https://github.com/riscv-software-src/riscv-semihosting/blob/main/riscv-semihosting-spec.adoc">(See the <strong>Semihosting Spec</strong>)</a></p>
