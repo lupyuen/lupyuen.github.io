@@ -320,8 +320,15 @@ CONFIG_NSH_ARCHINIT=y
 </code></pre></div>
 <p><a href="TODO">(Source)</a></p>
 <p>Yep it’s the Compiled ELF Executable of the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85"><strong>NuttX Shell <code>nsh</code></strong></a>!</p>
-<p>Now everything makes sense: At startup, NuttX tries to load <strong>/system/bin/init</strong> to start the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85"><strong>NuttX Shell <code>nsh</code></strong></a>…</p>
-<p>But it fails because <strong>/system/bin/init</strong> doesn’t exist in the Semihosting Filesystem on Star64!</p>
+<p>Now everything makes sense…</p>
+<ol>
+<li>
+<p>At Startup: NuttX tries to load <strong>/system/bin/init</strong> to start the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85"><strong>NuttX Shell <code>nsh</code></strong></a></p>
+</li>
+<li>
+<p>But it Fails: Because <strong>/system/bin/init</strong> doesn’t exist in the Semihosting Filesystem on Star64!</p>
+</li>
+</ol>
 <p>This is why Semihosting won’t work on Star64…</p>
 <p><img src="https://lupyuen.github.io/images/semihost-qemu.jpg" alt="QEMU reads the Apps Filesystem over Semihosting" /></p>
 <h1 id="semihosting-on-nuttx-qemu"><a href="#semihosting-on-nuttx-qemu">5 Semihosting on NuttX QEMU</a></h1>
