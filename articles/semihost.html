@@ -417,15 +417,21 @@ int mount_ramdisk(void) {
 
   // Mount the ROMFS
   int ret = boardctl(BOARDIOC_ROMDISK, (uintptr_t)&amp;desc);
-  // Omitted: Handle errors
+  // Omitted: Handle Errors
 </code></pre></div>
-<p>TODO: Why ROMFS?</p>
+<p>(More about ROMFS in a while)</p>
+<p>TODO</p>
 <p>We copied the RAM Disk from the QEMU Address (0x84000000) to the NuttX Address (__ramdisk_start): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L271-L280">qemu_rv_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void qemu_rv_kernel_mappings(void) {
   ...
-  // Copy 0x84000000 to __ramdisk_start (__ramdisk_size bytes)
-  // TODO: RAM Disk must not exceed __ramdisk_size bytes
-  memcpy((void *)__ramdisk_start, (void *)0x84000000, (size_t)__ramdisk_size);
+  // Copy RAM Disk from 0x8400 0000 to
+  // `__ramdisk_start` (`__ramdisk_size` bytes)
+  // TODO: RAM Disk must not exceed `__ramdisk_size` bytes
+  memcpy(                     // Copy the RAM Disk...
+    (void *)__ramdisk_start,  // To RAM Disk Memory
+    (void *)0x84000000,       // From QEMU initrd Address
+    (size_t)__ramdisk_size    // For 16 MB
+  );
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L280-L287">(Because somehow <code>map_region</code> crashes when we try to map 0x84000000)</a></p>
 <p>We check that the RAM Disk Memory is sufficient: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/fs/romfs/fs_romfsutil.c#L85-L105">fs_romfsutil.c</a></p>
@@ -455,6 +461,10 @@ CONFIG_INIT_MOUNT_TARGET=&quot;/system/bin&quot;
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/33/files">Modified Files for QEMU with Initial RAM Disk</a></li>
 </ul>
+<p>TODO</p>
+<p><em>What’s ROMFS?</em></p>
+<p><a href="https://en.wikipedia.org/wiki/Romfs"><strong>ROMFS</strong></a> is the Filesystem Format of our Initial RAM Disk. (It defines how the Files and Directories are stored in the RAM Disk)</p>
+<p>We could have used a FAT or EXT4 or NTFS Filesystem… But ROMFS is a lot simpler for NuttX.</p>
 <h1 id="load-initial-ram-disk-in-nuttx-qemu"><a href="#load-initial-ram-disk-in-nuttx-qemu">7 Load Initial RAM Disk in NuttX QEMU</a></h1>
 <p>TODO</p>
 <p>We build NuttX QEMU in Kernel Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt">Build Steps</a></p>
