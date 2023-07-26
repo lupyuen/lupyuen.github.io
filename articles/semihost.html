@@ -231,11 +231,29 @@ static long host_call(
 #define HOST_RENAME 0x0f
 #define HOST_ERROR  0x13
 </code></pre></div>
-<p>TODO</p>
-<p>When we log <code>smh_call</code>…</p>
-<div class="example-wrap"><pre class="language-text"><code>host_call: nbr=0x1, parm=0x40406778, size=24
+<p><em>Aha! NuttX is calling Semihosting to access the File System!</em></p>
+<p>Indeed! When we log <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L55-L75"><strong>host_call</strong></a>, we see…</p>
+<div class="example-wrap"><pre class="language-text"><code>host_call:
+  nbr=0x1 (HOST_OPEN)
+  parm=0x40406778
+  size=24
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L35-L73">host_call</a> says that the Semihosting Call is for HOST_OPEN. (Open a file)</p>
+<p>Which calls Semihosting to <strong>open a file.</strong></p>
+<p><em>Open what file?</em></p>
+<p>If we look back at the <strong>NuttX Crash Log</strong>…</p>
+<div class="example-wrap"><pre class="language-text"><code>nx_start_application: 
+  Starting init task: /system/bin/init
+load_absmodule: 
+  Loading /system/bin/init
+elf_loadbinary: 
+  Loading file: /system/bin/init
+elf_init: filename: 
+  /system/bin/init loadinfo: 0x404069e8
+riscv_exception:
+  EXCEPTION: Breakpoint
+</code></pre></div>
+<p><a href="https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode">(Source)</a></p>
+<p>TODO</p>
 <p>So NuttX crashes on Star64 because it’s trying to read <code>/system/bin/init</code> via Semihosting!</p>
 <p>(See next section)</p>
 <p><a href="https://embeddedinn.xyz/articles/tutorial/understanding-riscv-semihosting/">(More about <strong>RISC-V Semihosting</strong>)</a></p>
