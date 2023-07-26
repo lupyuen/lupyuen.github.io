@@ -273,6 +273,13 @@ pushd ../apps
 ./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
 make import V=1
 popd
+
+## Dump the `init` disassembly to `init.S`
+riscv64-unknown-elf-objdump \
+  -t -S --demangle --line-numbers --wide \
+  ../apps/bin/init \
+  &gt;init.S \
+  2&gt;&amp;1
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt">(Source)</a></p>
 <p><a href="https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode">(Why we use <strong>Kernel Mode</strong>)</a></p>
