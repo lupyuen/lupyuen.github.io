@@ -242,7 +242,7 @@ _Why is NuttX reading it at startup?_
 
 Remember we copied __NuttX from QEMU__ and (naively) ran it on Star64?
 
-We head back to the origin (NuttX on QEMU) and figure out what's __/system/bin/init__...
+We backtrack to the origin (NuttX on QEMU) and figure out what's __/system/bin/init__...
 
 ```bash
 ## Build NuttX QEMU in Kernel Mode
@@ -252,7 +252,9 @@ make V=1 -j7
 ## Build Apps Filesystem for NuttX QEMU
 make export V=1
 pushd ../apps
-./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+./tools/mkimport.sh \
+  -z -x \
+  ../nuttx/nuttx-export-*.tar.gz
 make import V=1
 popd
 
@@ -264,11 +266,11 @@ riscv64-unknown-elf-objdump \
   2>&1
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt)
+[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64c/boards/risc-v/qemu-rv/rv-virt)
 
 [(Why we use __Kernel Mode__)](https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode)
 
-The commands above will build the __Apps Filesystem__ for NuttX QEMU.
+The above commands will build the __Apps Filesystem__ for NuttX QEMU.
 
 Which includes __/system/bin/init__...
 
