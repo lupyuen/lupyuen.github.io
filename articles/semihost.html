@@ -187,11 +187,11 @@ smh_call():
 <p>“EBREAK was primarily designed to be used by a debugger to cause execution to stop and fall back into the debugger”</p>
 </blockquote>
 <p>OK thanks but we’re not doing any debugging! </p>
-<p>The next part is more relevant…</p>
+<p>The next part is more helpful…</p>
 <blockquote>
 <p>“Another use of EBREAK is to support <strong>Semihosting</strong>, where the execution environment includes a debugger that can provide services over an Alternate System Call Interface built around the EBREAK instruction”</p>
 </blockquote>
-<p>Aha! NuttX is making a special <strong>System Call to Semihosting</strong>!</p>
+<p>Aha! NuttX is making a special <a href="https://embeddedinn.xyz/articles/tutorial/understanding-riscv-semihosting/"><strong>System Call to Semihosting</strong></a>!</p>
 <p>(We’ll see why)</p>
 <blockquote>
 <p>“Because the RISC-V base ISA does not provide more than one EBREAK instruction, RISC-V Semihosting uses a <strong>special sequence of instructions</strong> to distinguish a Semihosting EBREAK from a Debugger Inserted EBREAK”</p>
@@ -315,14 +315,15 @@ CONFIG_NSH_ARCHINIT=y
 <p><em>What’s inside /system/bin/init?</em></p>
 <p>The RISC-V Disassembly of <strong>/system/bin/init</strong> shows this…</p>
 <div class="example-wrap"><pre class="language-text"><code>apps/system/nsh/nsh_main.c:52
-  000000000000006e &lt;main&gt;:
+  0000006e &lt;main&gt;:
     int main(int argc, FAR char *argv[]) {
 </code></pre></div>
 <p><a href="TODO">(Source)</a></p>
 <p>Yep it’s the Compiled ELF File of the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85"><strong>NuttX Shell <code>nsh</code></strong></a>!</p>
-<p>Now everything makes sense: At startup, NuttX tries to load <strong>/system/bin/init</strong> to start the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85"><strong>NuttX Shell <code>nsh</code></strong></a>.</p>
+<p>Now everything makes sense: At startup, NuttX tries to load <strong>/system/bin/init</strong> to start the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85"><strong>NuttX Shell <code>nsh</code></strong></a>…</p>
 <p>But it fails because <strong>/system/bin/init</strong> doesn’t exist in the Semihosting Filesystem on Star64!</p>
 <p>This is why Semihosting won’t work on Star64…</p>
+<p><img src="https://lupyuen.github.io/images/semihost-qemu.jpg" alt="QEMU reads the Apps Filesystem over Semihosting" /></p>
 <h1 id="semihosting-on-nuttx-qemu"><a href="#semihosting-on-nuttx-qemu">5 Semihosting on NuttX QEMU</a></h1>
 <p>TODO</p>
 <p>(See next section)</p>
@@ -330,8 +331,6 @@ CONFIG_NSH_ARCHINIT=y
 <p><a href="https://github.com/riscv-software-src/riscv-semihosting/blob/main/riscv-semihosting-spec.adoc">(See the <strong>Semihosting Spec</strong>)</a></p>
 <p>Let’s disable Semihosting and replace by Initial RAM Disk and ROMFS.</p>
 <p>(See https://github.com/apache/nuttx/issues/9501)</p>
-<p><img src="https://lupyuen.github.io/images/semihost-qemu.jpg" alt="QEMU reads the Apps Filesystem over Semihosting" /></p>
-<p><img src="https://lupyuen.github.io/images/semihost-qemu.jpg" alt="QEMU reads the Apps Filesystem over Semihosting" /></p>
 <p>We traced the Semihosting Calls in QEMU Kernel Mode, here’s what we observed…</p>
 <p><a href="https://gist.github.com/lupyuen/6888376da6561bdc060c2459dffdef01">QEMU Kernel Mode Run Log</a></p>
 <div class="example-wrap"><pre class="language-text"><code>nx_start_application: Starting init task: /system/bin/init
