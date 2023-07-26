@@ -360,6 +360,10 @@ qemu-system-riscv64 \
 
 So that NuttX can access the __Apps Filesystem__ (from previous section) as a Semihosting Filesystem! (Pic above)
 
+[(More about __RISC-V Semihosting__)](https://embeddedinn.xyz/articles/tutorial/understanding-riscv-semihosting/)
+
+[(See the __Semihosting Spec__)](https://github.com/riscv-software-src/riscv-semihosting/blob/main/riscv-semihosting-spec.adoc)
+
 _This won't work on Star64?_
 
 Semihosting won't work because NuttX for Star64 runs on __Real SBC Hardware__ (Bare Metal)...
@@ -372,104 +376,25 @@ _If not Semihosting... Then what?_
 
 In the world of Linux (and QEMU), there's something cool called an [__Initial RAM Disk (initrd)__](https://en.wikipedia.org/wiki/Initial_ramdisk)...
 
-- It's a __RAM Disk__, loaded into RAM (pic above)
+- It's a __RAM Disk__, located in RAM (pic above)
 
 - But it's an __Initial__ RAM Disk. Which means there's a Filesystem inside, preloaded with Files and Directories.
 
 Perfect for our NuttX Apps Filesystem!
 
-TODO
+_That's awesome but where do we start?_
 
-(See next section)
+We begin by modding NuttX QEMU to load the Initial RAM Disk...
 
-[(More about __RISC-V Semihosting__)](https://embeddedinn.xyz/articles/tutorial/understanding-riscv-semihosting/)
+![NuttX for QEMU will mount the Apps Filesystem from an Initial RAM Disk](https://lupyuen.github.io/images/semihost-qemu2.jpg)
 
-[(See the __Semihosting Spec__)](https://github.com/riscv-software-src/riscv-semihosting/blob/main/riscv-semihosting-spec.adoc)
-
-Let's disable Semihosting and replace by Initial RAM Disk and ROMFS.
-
-We traced the Semihosting Calls in QEMU Kernel Mode, here's what we observed...
-
-[QEMU Kernel Mode Run Log](https://gist.github.com/lupyuen/6888376da6561bdc060c2459dffdef01)
-
-```text
-nx_start_application: Starting init task: /system/bin/init
-load_absmodule: Loading /system/bin/init
-elf_loadbinary: Loading file: /system/bin/init
-elf_init: filename: /system/bin/init loadinfo: 0x802069e8
-hostfs_open: relpath=bin/init, oflags=0x1, mode=0x1b6
-...
-NuttShell (NSH) NuttX-12.2.1-RC0
-nsh> nx_start: CPU0: Beginning Idle Loop
-
-nsh> 
-nsh> uname -a
-posix_spawn: pid=0xc0202978 path=uname file_actions=0xc0202980 attr=0xc0202988 argv=0xc0202a28
-hostfs_stat: relpath=bin/uname
-host_call: nbr=0x1, parm=0x80208fe0, size=24
-exec_spawn: ERROR: Failed to load program 'uname': -2
-nxposix_spawn_exec: ERROR: exec failed: 2
-NuttX 12.2.1-RC0 cafbbb1 Jul 15 2023 16:55:00 risc-v rv-virt
-nsh> 
-nsh> ls /
-posix_spawn: pid=0xc0202978 path=ls file_actions=0xc0202980 attr=0xc0202988 argv=0xc0202a28
-hostfs_stat: relpath=bin/ls
-host_call: nbr=0x1, parm=0x80208fe0, size=24
-exec_spawn: ERROR: Failed to load program 'ls': -2
-nxposix_spawn_exec: ERROR: exec failed: 2
-/:
- dev/
- proc/
- system/
-nsh> 
-nsh> ls /system
-posix_spawn: pid=0xc0202978 path=ls file_actions=0xc0202980 attr=0xc0202988 argv=0xc0202a28
-hostfs_stat: relpath=bin/ls
-host_call: nbr=0x1, parm=0x80208fe0, size=24
-exec_spawn: ERROR: Failed to load program 'ls': -2
-nxposix_spawn_exec: ERROR: exec failed: 2
-hostfs_stat: relpath=
-host_call: nbr=0x1, parm=0x80209180, size=24
-host_call: nbr=0xc, parm=0x80209180, size=8
-host_call: nbr=0x2, parm=0x80209190, size=8
- /system
-nsh> 
-nsh> ls /system/bin
-posix_spawn: pid=0xc0202978 path=ls file_actions=0xc0202980 attr=0xc0202988 argv=0xc0202a28
-hostfs_stat: relpath=bin/ls
-host_call: nbr=0x1, parm=0x80208fe0, size=24
-exec_spawn: ERROR: Failed to load program 'ls': -2
-nxposix_spawn_exec: ERROR: exec failed: 2
-hostfs_stat: relpath=bin
-host_call: nbr=0x1, parm=0x80209180, size=24
-host_call: nbr=0xc, parm=0x80209180, size=8
-host_call: nbr=0x2, parm=0x80209190, size=8
- /system/bin
-nsh> 
-nsh> ls /system/bin/init
-posix_spawn: pid=0xc0202978 path=ls file_actions=0xc0202980 attr=0xc0202988 argv=0xc0202a28
-hostfs_stat: relpath=bin/ls
-host_call: nbr=0x1, parm=0x80208fe0, size=24
-exec_spawn: ERROR: Failed to load program 'ls': -2
-nxposix_spawn_exec: ERROR: exec failed: 2
-hostfs_stat: relpath=bin/init
-host_call: nbr=0x1, parm=0x80209180, size=24
-host_call: nbr=0xc, parm=0x80209180, size=8
-host_call: nbr=0x2, parm=0x80209190, size=8
- /system/bin/init
-```
-
-Semihosting won't work on Star64 SBC. Let's replace this with Initial RAM Disk and ROMFS...
-
-# Modify NuttX QEMU to Load Initial RAM Disk
+# Load Initial RAM Disk in NuttX QEMU
 
 TODO
 
 Now we can modify NuttX for QEMU to mount the Apps Filesystem from an Initial RAM Disk instead of Semihosting.
 
 (So later we can replicate this on Star64 JH7110 SBC)
-
-![NuttX for QEMU will mount the Apps Filesystem from an Initial RAM Disk](https://lupyuen.github.io/images/semihost-qemu2.jpg)
 
 We follow the steps from LiteX Arty-A7 (from the previous section)...
 
@@ -666,7 +591,7 @@ And it boots OK on QEMU yay!
 
 [See the Run Log](https://gist.github.com/lupyuen/8afee5b07b61bb7f9f202f7f8c5e3ab3)
 
-# Load Initial RAM Disk in NuttX Star64
+# NuttX Star64 loads Initial RAM Disk
 
 TODO
 
