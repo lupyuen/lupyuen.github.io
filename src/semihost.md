@@ -374,8 +374,6 @@ TODO
 
 Let's disable Semihosting and replace by Initial RAM Disk and ROMFS.
 
-(See https://github.com/apache/nuttx/issues/9501)
-
 We traced the Semihosting Calls in QEMU Kernel Mode, here's what we observed...
 
 [QEMU Kernel Mode Run Log](https://gist.github.com/lupyuen/6888376da6561bdc060c2459dffdef01)
@@ -448,8 +446,6 @@ host_call: nbr=0x2, parm=0x80209190, size=8
 ```
 
 Semihosting won't work on Star64 SBC. Let's replace this with Initial RAM Disk and ROMFS...
-
-(See https://github.com/apache/nuttx/issues/9501)
 
 # Modify NuttX QEMU to Load Initial RAM Disk
 

@@ -148,6 +148,8 @@ The above command starts the [__QEMU Emulator for RISC-V__](https://www.qemu.org
 
 - Enable [__Semihosting Debugging__](https://www.qemu.org/docs/master/about/emulation.html#semihosting) without BIOS
 
+  [(Why Semihosting)](https://lupyuen.github.io/articles/semihost#semihosting-on-nuttx-qemu)
+
 - Run Emulator in __Console Mode__ (instead of Graphical Mode)
 
 _Which RISC-V Instructions are supported by QEMU?_
