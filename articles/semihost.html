@@ -262,7 +262,7 @@ riscv_exception:
 <p><em>What’s /system/bin/init?</em></p>
 <p><em>Why is NuttX reading it at startup?</em></p>
 <p>Remember we copied <strong>NuttX from QEMU</strong> and (naively) ran it on Star64?</p>
-<p>We head back to the origin (NuttX on QEMU) and figure out what’s <strong>/system/bin/init</strong>…</p>
+<p>We backtrack to the origin (NuttX on QEMU) and figure out what’s <strong>/system/bin/init</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Build NuttX QEMU in Kernel Mode
 tools/configure.sh rv-virt:knsh64
 make V=1 -j7
@@ -270,7 +270,9 @@ make V=1 -j7
 ## Build Apps Filesystem for NuttX QEMU
 make export V=1
 pushd ../apps
-./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
+./tools/mkimport.sh \
+  -z -x \
+  ../nuttx/nuttx-export-*.tar.gz
 make import V=1
 popd
 
@@ -281,9 +283,9 @@ riscv64-unknown-elf-objdump \
   &gt;init.S \
   2&gt;&amp;1
 </code></pre></div>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt">(Source)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64c/boards/risc-v/qemu-rv/rv-virt">(Source)</a></p>
 <p><a href="https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode">(Why we use <strong>Kernel Mode</strong>)</a></p>
-<p>The commands above will build the <strong>Apps Filesystem</strong> for NuttX QEMU.</p>
+<p>The above commands will build the <strong>Apps Filesystem</strong> for NuttX QEMU.</p>
 <p>Which includes <strong>/system/bin/init</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ ls ../apps/bin       
 getprime
