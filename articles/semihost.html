@@ -319,7 +319,7 @@ CONFIG_NSH_ARCHINIT=y
     int main(int argc, FAR char *argv[]) {
 </code></pre></div>
 <p><a href="TODO">(Source)</a></p>
-<p>Yep it’s the Compiled ELF File of the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85"><strong>NuttX Shell <code>nsh</code></strong></a>!</p>
+<p>Yep it’s the Compiled ELF Executable of the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85"><strong>NuttX Shell <code>nsh</code></strong></a>!</p>
 <p>Now everything makes sense: At startup, NuttX tries to load <strong>/system/bin/init</strong> to start the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85"><strong>NuttX Shell <code>nsh</code></strong></a>…</p>
 <p>But it fails because <strong>/system/bin/init</strong> doesn’t exist in the Semihosting Filesystem on Star64!</p>
 <p>This is why Semihosting won’t work on Star64…</p>
