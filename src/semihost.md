@@ -388,7 +388,7 @@ We begin by modding NuttX QEMU to load the Initial RAM Disk...
 
 ![NuttX for QEMU will mount the Apps Filesystem from an Initial RAM Disk](https://lupyuen.github.io/images/semihost-qemu2.jpg)
 
-# Load Initial RAM Disk in NuttX QEMU
+# Modify NuttX QEMU for Initial RAM Disk
 
 TODO
 
@@ -397,57 +397,6 @@ Now we can modify NuttX for QEMU to mount the Apps Filesystem from an Initial RA
 (So later we can replicate this on Star64 JH7110 SBC)
 
 We follow the steps from LiteX Arty-A7 (from the previous section)...
-
-We build NuttX QEMU in Kernel Mode: [Build Steps](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt)
-
-```bash
-## Build NuttX QEMU Kernel Mode
-./tools/configure.sh rv-virt:knsh64 
-make V=1 -j7
-
-## Build Apps Filesystem
-make export V=1
-pushd ../apps
-./tools/mkimport.sh -z -x ../nuttx/nuttx-export-*.tar.gz
-make import V=1
-popd
-```
-
-We generate the Initial RAM Disk `initrd`...
-
-```bash
-cd nuttx
-genromfs \
-  -f initrd \
-  -d ../apps/bin \
-  -V "NuttXBootVol"
-```
-
-[(About `genromfs`)](https://www.systutorials.com/docs/linux/man/8-genromfs/)
-
-Initial RAM Disk `initrd` is 7.9 MB...
-
-```text
-$ ls -l initrd
--rw-r--r--  1 7902208 Jul 21 13:41 initrd
-```
-
-This is how we load the Initial RAM Disk on QEMU: [‘virt’ Generic Virtual Platform (virt)](https://www.qemu.org/docs/master/system/riscv/virt.html#running-linux-kernel)
-
-```bash
-## Start NuttX on QEMU
-## with Semihosting Enabled
-qemu-system-riscv64 \
-  -kernel nuttx \
-  -cpu rv64 \
-  -smp 8 \
-  -M virt,aclint=on \
-  -semihosting \
-  -bios none \
-  -nographic
-```
-
-[(Source)](https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v)
 
 _What is the RAM Address of the Initial RAM Disk in QEMU?_
 
@@ -564,32 +513,49 @@ static uint32_t romfs_devread32(struct romfs_mountpt_s *rm, int ndx) {
   DEBUGASSERT(&rm->rm_buffer[ndx] < __ramdisk_start + (size_t)__ramdisk_size); ////
 ```
 
-Before making the above changes, here's the log for QEMU Kernel Mode with Semihosting...
+# Load Initial RAM Disk in NuttX QEMU
+
+We build NuttX QEMU in Kernel Mode: [Build Steps](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt)
+
+We generate the Initial RAM Disk __initrd__...
+
+```bash
+## Omitted: Build NuttX QEMU in Kernel Mode
+...
+## Omitted: Build Apps Filesystem for NuttX QEMU
+...
+## Generate Initial RAM Disk `initrd`
+genromfs \
+  -f initrd \
+  -d ../apps/bin \
+  -V "NuttXBootVol"
+```
+
+[(About __genromfs__)](https://www.systutorials.com/docs/linux/man/8-genromfs/)
+
+Initial RAM Disk __initrd__ is 7.9 MB...
 
 ```text
-+ genromfs -f initrd -d ../apps/bin -V NuttXBootVol
-+ riscv64-unknown-elf-size nuttx
-   text    data     bss     dec     hex filename
- 171581     673   21872  194126   2f64e nuttx
-+ riscv64-unknown-elf-objcopy -O binary nuttx nuttx.bin
-+ cp .config nuttx.config
-+ riscv64-unknown-elf-objdump -t -S --demangle --line-numbers --wide nuttx
-+ sleep 10
-+ qemu-system-riscv64 -semihosting -M virt,aclint=on -cpu rv64 -smp 8 -bios none -kernel nuttx -initrd initrd -nographic
-ABCnx_start: Entry
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-work_start_lowpri: Starting low-priority kernel worker thread(s)
-nx_start_application: Starting init task: /system/bin/init
-hostfs_stat: relpath=bin/init
-hostfs_open: relpath=bin/init, oflags=0x1, mode=0x1b6
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
-
-NuttShell (NSH) NuttX-12.0.3
-nsh> nx_start: CPU0: Beginning Idle Loop
+$ ls -l initrd
+-rw-r--r--  1 7902208 initrd
 ```
+
+This is how we load the Initial RAM Disk on QEMU: [‘virt’ Generic Virtual Platform (virt)](https://www.qemu.org/docs/master/system/riscv/virt.html#running-linux-kernel)
+
+```bash
+## Start NuttX on QEMU
+## with Semihosting Enabled
+qemu-system-riscv64 \
+  -kernel nuttx \
+  -cpu rv64 \
+  -smp 8 \
+  -M virt,aclint=on \
+  -semihosting \
+  -bios none \
+  -nographic
+```
+
+[(Source)](https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v)
 
 Now we run QEMU Kernel Mode with Initial RAM Disk, without Semihosting...
 
