@@ -266,7 +266,7 @@ riscv64-unknown-elf-objdump \
   2>&1
 ```
 
-[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/star64c/boards/risc-v/qemu-rv/rv-virt)
+[(Source)](https://github.com/apache/nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt)
 
 [(Why we use __Kernel Mode__)](https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode)
 
@@ -274,7 +274,7 @@ The above commands will build the __Apps Filesystem__ for NuttX QEMU.
 
 Which includes __/system/bin/init__...
 
-```text
+```bash
 $ ls ../apps/bin       
 getprime
 hello
@@ -282,7 +282,54 @@ init
 sh
 ```
 
-TODO: What's inside /system/bin/init?
+_Isn't it supposed to be /system/bin/init? Not /apps/bin/init?_
+
+When we check the __NuttX Build Configuration__...
+
+```bash
+$ grep INIT .config
+CONFIG_INIT_FILE=y
+CONFIG_INIT_ARGS=""
+CONFIG_INIT_FILEPATH="/system/bin/init"
+CONFIG_INIT_MOUNT=y
+CONFIG_INIT_MOUNT_SOURCE=""
+CONFIG_INIT_MOUNT_TARGET="/system"
+CONFIG_INIT_MOUNT_FSTYPE="hostfs"
+CONFIG_INIT_MOUNT_FLAGS=0x1
+CONFIG_INIT_MOUNT_DATA="fs=../apps"
+CONFIG_PATH_INITIAL="/system/bin"
+CONFIG_NSH_ARCHINIT=y
+```
+
+[(Source)](https://github.com/apache/nuttx/blob/master/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig)
+
+We see that NuttX will mount the __/apps__ filesystem as __/system__, via the [__Semihosting Host Filesystem__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c).
+
+That's why it appears as __/system/bin/init__!
+
+_What's inside /system/bin/init?_
+
+The RISC-V Disassembly of __/system/bin/init__ shows this...
+
+```text
+apps/system/nsh/nsh_main.c:52
+  000000000000006e <main>:
+    int main(int argc, FAR char *argv[]) {
+```
+
+[(Source)](TODO)
+
+Yep it's the Compiled ELF File of the [__NuttX Shell `nsh`__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85)!
+
+Now everything makes sense: At startup, NuttX tries to load __/system/bin/init__ to start the [__NuttX Shell `nsh`__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85).
+
+But it fails because __/system/bin/init__ doesn't exist in the Semihosting Filesystem on Star64!
+
+This is why Semihosting won't work on Star64...
+
+# Semihosting on NuttX QEMU
+
+TODO
 
 (See next section)
 
@@ -295,40 +342,6 @@ Let's disable Semihosting and replace by Initial RAM Disk and ROMFS.
 (See https://github.com/apache/nuttx/issues/9501)
 
 ![QEMU reads the Apps Filesystem over Semihosting](https://lupyuen.github.io/images/semihost-qemu.jpg)
-
-TODO
-
-_Where is `/system/bin/init`? Why is it loaded by NuttX over Semihosting?_
-
-`/system/bin/init` is needed for starting the NuttX Shell (and NuttX Apps) on Star64 JH7110 SBC.
-
-We see it in the NuttX Build Configuration...
-
-```text
-→ grep INIT .config
-CONFIG_INIT_FILE=y
-CONFIG_INIT_ARGS=""
-CONFIG_INIT_STACKSIZE=3072
-CONFIG_INIT_PRIORITY=100
-CONFIG_INIT_FILEPATH="/system/bin/init"
-CONFIG_INIT_MOUNT=y
-CONFIG_INIT_MOUNT_SOURCE=""
-CONFIG_INIT_MOUNT_TARGET="/system"
-CONFIG_INIT_MOUNT_FSTYPE="hostfs"
-CONFIG_INIT_MOUNT_FLAGS=0x1
-CONFIG_INIT_MOUNT_DATA="fs=../apps"
-CONFIG_PATH_INITIAL="/system/bin"
-CONFIG_NSH_ARCHINIT=y
-```
-
-Which says that `../apps` is mounted as `/system`, via Semihosting HostFS.
-
-That's how `/system/bin/init` gets loaded over Semihosting...
-
-```
-→ ls ../apps/bin       
-getprime hello    init     sh
-```
 
 ![QEMU reads the Apps Filesystem over Semihosting](https://lupyuen.github.io/images/semihost-qemu.jpg)
 
