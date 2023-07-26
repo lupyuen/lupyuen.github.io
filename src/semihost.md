@@ -358,11 +358,17 @@ qemu-system-riscv64 \
 
 [(Source)](https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v)
 
+So that NuttX can access the __Apps Filesystem__ (from previous section) as a Semihosting Filesystem! (Pic above)
+
 _This won't work on Star64?_
 
 Semihosting won't work because NuttX for Star64 runs on __Real SBC Hardware__ (Bare Metal)...
 
 There's nothing to "break out" to!
+
+_If not Semihosting... Then what?_
+
+
 
 TODO
 
