@@ -491,12 +491,13 @@ genromfs \
   -V &quot;NuttXBootVol&quot;
 </code></pre></div>
 <p><a href="https://gist.github.com/lupyuen/394bc4da808ee5e4f5fb8da70cb2ae3e">(See the <strong>Build Log</strong>)</a></p>
-<p><a href="https://gist.github.com/lupyuen/394bc4da808ee5e4f5fb8da70cb2ae3e">(See the <strong>Build Steps</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ramdisk-0.0.1">(See the <strong>Build Steps</strong>)</a></p>
 <p><a href="https://www.systutorials.com/docs/linux/man/8-genromfs/">(<strong>genromfs</strong> generates a <strong>ROMFS Filesystem</strong>)</a></p>
 <p>This creates an Initial RAM Disk <strong>initrd</strong> (in ROMFS format) that’s 7.9 MB…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ ls -l initrd
 -rw-r--r--  1 7902208 initrd
 </code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ramdisk-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
 <p>Finally we start QEMU and <strong>load our Initial RAM Disk</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Start NuttX on QEMU
 ## with Initial RAM Disk `initrd`
@@ -564,11 +565,14 @@ cp nuttx.bin $HOME/tftproot/Image
 cp ../jh7110-star64-pine64.dtb $HOME/tftproot
 cp initrd $HOME/tftproot
 </code></pre></div>
+<p><a href="https://gist.github.com/lupyuen/ae59a840c94280ce8d618699278a0436">(See the <strong>Build Log</strong>)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1">(See the <strong>Build Steps</strong>)</a></p>
 <p><a href="https://www.systutorials.com/docs/linux/man/8-genromfs/">(About <code>genromfs</code>)</a></p>
 <p>Initial RAM Disk <code>initrd</code> is 7.9 MB…</p>
 <div class="example-wrap"><pre class="language-text"><code>→ ls -l initrd
 -rw-r--r--  1 7930880 Jul 21 13:41 initrd
 </code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1">(See the <strong>Build Outputs</strong>)</a></p>
 <p>Below are the files that we changed in NuttX for Star64 to load the Initial RAM Disk (instead of Semihosting)…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/34/files">Modified Files for Initial RAM Disk on Star64</a></li>
@@ -716,6 +720,7 @@ nx_start_application: ret=3
 up_exit: TCB=0x404088d0 exiting
 nx_start: CPU0: Beginning Idle Loop
 </code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1">(See the <strong>Output Log</strong>)</a></p>
 <p>TODO: Why no shell?</p>
 <p>TODO: Why <code>nx_start_application: ret=3</code>?</p>
 <p>TODO: Check User Address Space</p>
