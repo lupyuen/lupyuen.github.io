@@ -319,7 +319,7 @@ CONFIG_NSH_ARCHINIT=y
   0000006e &lt;main&gt;:
     int main(int argc, FAR char *argv[]) {
 </code></pre></div>
-<p><a href="TODO">(Source)</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64c-0.0.1/init.S">(Source)</a></p>
 <p>Yep it’s the Compiled ELF Executable of the <a href="https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85"><strong>NuttX Shell <code>nsh</code></strong></a>!</p>
 <p>Now everything makes sense…</p>
 <ol>
@@ -473,6 +473,7 @@ int mount_ramdisk(void) {
   //// Stop if RAM Disk Memory is too small
   DEBUGASSERT(&amp;rm-&gt;rm_buffer[ndx] &lt; __ramdisk_start + (size_t)__ramdisk_size); ////
 </code></pre></div><h1 id="load-initial-ram-disk-in-nuttx-qemu"><a href="#load-initial-ram-disk-in-nuttx-qemu">7 Load Initial RAM Disk in NuttX QEMU</a></h1>
+<p>TODO</p>
 <p>We build NuttX QEMU in Kernel Mode: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt">Build Steps</a></p>
 <p>We generate the Initial RAM Disk <strong>initrd</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Omitted: Build NuttX QEMU in Kernel Mode
