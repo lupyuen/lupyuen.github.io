@@ -517,6 +517,8 @@ That's why we copied the RAM Disk from __`0x8400` `0000`__ to __ramdisk_start__.
 
 TODO: LiteX Arty-A7
 
+![TODO](https://lupyuen.github.io/images/semihost-runqemu.png)
+
 # Boot NuttX QEMU with Initial RAM Disk
 
 We're ready to run our modified NuttX QEMU... That loads the Initial RAM Disk!
@@ -538,7 +540,9 @@ genromfs \
   -V "NuttXBootVol"
 ```
 
-[(See the earlier __Build Steps__)](https://lupyuen.github.io/articles/semihost#nuttx-apps-filesystem)
+[(See the __Build Log__)](https://gist.github.com/lupyuen/394bc4da808ee5e4f5fb8da70cb2ae3e)
+
+[(See the __Build Steps__)](https://gist.github.com/lupyuen/394bc4da808ee5e4f5fb8da70cb2ae3e)
 
 [(__genromfs__ generates a __ROMFS Filesystem__)](https://www.systutorials.com/docs/linux/man/8-genromfs/)
 
@@ -571,7 +575,34 @@ TODO
 
 And it boots OK on QEMU yay!
 
-[See the Run Log](https://gist.github.com/lupyuen/8afee5b07b61bb7f9f202f7f8c5e3ab3)
+```text
+ABCnx_start: Entry
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+board_late_initialize:
+nx_start_application: Starting init task: /system/bin/init
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
+elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
+up_exit: TCB=0x802088d0 exiting
+
+NuttShell (NSH) NuttX-12.0.3
+nsh> nx_start: CPU0: Beginning Idle Loop
+
+nsh> ls -l /system/bin/init
+posix_spawn: pid=0xc0202978 path=ls file_actions=0xc0202980 attr=0xc0202988 argv=0xc0202a28
+exec_spawn: ERROR: Failed to load program 'ls': -2
+nxposix_spawn_exec: ERROR: exec failed: 2
+ -r-xr-xr-x 3278720 /system/bin/init
+nsh>
+```
+
+[(See the __Run Log__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ramdisk-0.0.1)
+
+[(See the __Detailed Run Log__)](https://gist.github.com/lupyuen/8afee5b07b61bb7f9f202f7f8c5e3ab3)
+
+![TODO](https://lupyuen.github.io/images/semihost-runstar64.png)
 
 # NuttX Star64 with Initial RAM Disk
 
