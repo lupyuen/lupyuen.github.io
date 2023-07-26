@@ -519,34 +519,37 @@ TODO: LiteX Arty-A7
 
 # Boot NuttX QEMU with Initial RAM Disk
 
-TODO
+We're ready to run our modified NuttX QEMU... That loads the Initial RAM Disk!
 
-We build NuttX QEMU in Kernel Mode: [Build Steps](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt)
-
-We generate the Initial RAM Disk __initrd__...
+We build NuttX QEMU in Kernel Mode (as before). Then we generate the Initial RAM Disk __initrd__...
 
 ```bash
 ## Omitted: Build NuttX QEMU in Kernel Mode
 ...
 ## Omitted: Build Apps Filesystem for NuttX QEMU
 ...
-## Generate Initial RAM Disk `initrd`
+## Generate the Initial RAM Disk `initrd`
+## in ROMFS Filesystem Format
+## from the Apps Filesystem `../apps/bin`
+## and label it `NuttXBootVol`
 genromfs \
   -f initrd \
   -d ../apps/bin \
   -V "NuttXBootVol"
 ```
 
-[(About __genromfs__)](https://www.systutorials.com/docs/linux/man/8-genromfs/)
+[(See the earlier __Build Steps__)](https://lupyuen.github.io/articles/semihost#nuttx-apps-filesystem)
 
-Initial RAM Disk __initrd__ is 7.9 MB...
+[(__genromfs__ generates a __ROMFS Filesystem__)](https://www.systutorials.com/docs/linux/man/8-genromfs/)
+
+This creates an Initial RAM Disk __initrd__ (in ROMFS format) that's 7.9 MB...
 
 ```text
 $ ls -l initrd
 -rw-r--r--  1 7902208 initrd
 ```
 
-This is how we load the Initial RAM Disk on QEMU: [‘virt’ Generic Virtual Platform (virt)](https://www.qemu.org/docs/master/system/riscv/virt.html#running-linux-kernel)
+Finally we start QEMU and __load the Initial RAM Disk__...
 
 ```bash
 ## Start NuttX on QEMU
@@ -562,7 +565,9 @@ qemu-system-riscv64 \
   -nographic
 ```
 
-Now we run QEMU Kernel Mode with Initial RAM Disk, without Semihosting...
+[(Source)](https://www.qemu.org/docs/master/system/riscv/virt.html#running-linux-kernel)
+
+TODO
 
 And it boots OK on QEMU yay!
 
