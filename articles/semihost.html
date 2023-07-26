@@ -497,7 +497,7 @@ genromfs \
 <div class="example-wrap"><pre class="language-text"><code>$ ls -l initrd
 -rw-r--r--  1 7902208 initrd
 </code></pre></div>
-<p>Finally we start QEMU and <strong>load the Initial RAM Disk</strong>…</p>
+<p>Finally we start QEMU and <strong>load our Initial RAM Disk</strong>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>## Start NuttX on QEMU
 ## with Initial RAM Disk `initrd`
 qemu-system-riscv64 \
@@ -511,8 +511,7 @@ qemu-system-riscv64 \
   -nographic
 </code></pre></div>
 <p><a href="https://www.qemu.org/docs/master/system/riscv/virt.html#running-linux-kernel">(Source)</a></p>
-<p>TODO</p>
-<p>And it boots OK on QEMU yay!</p>
+<p>And NuttX QEMU boots OK with our Initial RAM Disk yay! (Ignore the warnings)</p>
 <div class="example-wrap"><pre class="language-text"><code>ABCnx_start: Entry
 uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
@@ -526,16 +525,17 @@ up_exit: TCB=0x802088d0 exiting
 
 NuttShell (NSH) NuttX-12.0.3
 nsh&gt; nx_start: CPU0: Beginning Idle Loop
-
-nsh&gt; ls -l /system/bin/init
-posix_spawn: pid=0xc0202978 path=ls file_actions=0xc0202980 attr=0xc0202988 argv=0xc0202a28
-exec_spawn: ERROR: Failed to load program &#39;ls&#39;: -2
-nxposix_spawn_exec: ERROR: exec failed: 2
- -r-xr-xr-x 3278720 /system/bin/init
 nsh&gt;
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ramdisk-0.0.1">(See the <strong>Run Log</strong>)</a></p>
 <p><a href="https://gist.github.com/lupyuen/8afee5b07b61bb7f9f202f7f8c5e3ab3">(See the <strong>Detailed Run Log</strong>)</a></p>
+<p>TODO</p>
+<div class="example-wrap"><pre class="language-text"><code>nsh&gt; ls -l /system/bin/init
+posix_spawn: pid=0xc0202978 path=ls file_actions=0xc0202980 attr=0xc0202988 argv=0xc0202a28
+exec_spawn: ERROR: Failed to load program &#39;ls&#39;: -2
+nxposix_spawn_exec: ERROR: exec failed: 2
+ -r-xr-xr-x 3278720 /system/bin/init
+</code></pre></div>
 <p><img src="https://lupyuen.github.io/images/semihost-runstar64.png" alt="TODO" /></p>
 <h1 id="nuttx-star64-with-initial-ram-disk"><a href="#nuttx-star64-with-initial-ram-disk">8 NuttX Star64 with Initial RAM Disk</a></h1>
 <p>TODO</p>
