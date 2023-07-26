@@ -196,15 +196,41 @@ The __Semihosting Operation Numbers__ are defined here: [riscv_hostfs.c](https:/
 #define HOST_ERROR  0x13
 ```
 
-TODO
+_Aha! NuttX is calling Semihosting to access the File System!_
 
-When we log `smh_call`...
+Indeed! When we log [__host_call__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L55-L75), we see...
 
 ```text
-host_call: nbr=0x1, parm=0x40406778, size=24
+host_call:
+  nbr=0x1 (HOST_OPEN)
+  parm=0x40406778
+  size=24
 ```
 
-[host_call](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/common/riscv_hostfs.c#L35-L73) says that the Semihosting Call is for HOST_OPEN. (Open a file)
+Which calls Semihosting to __open a file.__
+
+_Open what file?_
+
+If we look back at the __NuttX Crash Log__...
+
+```text
+nx_start_application: 
+  Starting init task: /system/bin/init
+load_absmodule: 
+  Loading /system/bin/init
+elf_loadbinary: 
+  Loading file: /system/bin/init
+elf_init: filename: 
+  /system/bin/init loadinfo: 0x404069e8
+riscv_exception:
+  EXCEPTION: Breakpoint
+```
+
+[(Source)](https://github.com/lupyuen/nuttx-star64/blob/6f422cb3075f57e2acf312edcc21112fe42660e8/README.md#initialise-risc-v-supervisor-mode)
+
+
+
+TODO
 
 So NuttX crashes on Star64 because it's trying to read `/system/bin/init` via Semihosting!
 
