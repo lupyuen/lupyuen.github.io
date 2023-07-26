@@ -357,7 +357,6 @@ qemu-system-riscv64 \
 <p><a href="https://embeddedinn.xyz/articles/tutorial/understanding-riscv-semihosting/">(More about <strong>RISC-V Semihosting</strong>)</a></p>
 <p><a href="https://github.com/riscv-software-src/riscv-semihosting/blob/main/riscv-semihosting-spec.adoc">(See the <strong>Semihosting Spec</strong>)</a></p>
 <p>Let’s disable Semihosting and replace by Initial RAM Disk and ROMFS.</p>
-<p>(See https://github.com/apache/nuttx/issues/9501)</p>
 <p>We traced the Semihosting Calls in QEMU Kernel Mode, here’s what we observed…</p>
 <p><a href="https://gist.github.com/lupyuen/6888376da6561bdc060c2459dffdef01">QEMU Kernel Mode Run Log</a></p>
 <div class="example-wrap"><pre class="language-text"><code>nx_start_application: Starting init task: /system/bin/init
@@ -426,7 +425,6 @@ host_call: nbr=0x2, parm=0x80209190, size=8
  /system/bin/init
 </code></pre></div>
 <p>Semihosting won’t work on Star64 SBC. Let’s replace this with Initial RAM Disk and ROMFS…</p>
-<p>(See https://github.com/apache/nuttx/issues/9501)</p>
 <h1 id="modify-nuttx-qemu-to-load-initial-ram-disk"><a href="#modify-nuttx-qemu-to-load-initial-ram-disk">6 Modify NuttX QEMU to Load Initial RAM Disk</a></h1>
 <p>TODO</p>
 <p>Now we can modify NuttX for QEMU to mount the Apps Filesystem from an Initial RAM Disk instead of Semihosting.</p>
