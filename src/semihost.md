@@ -232,9 +232,13 @@ NuttX is trying to read the file __/system/bin/init__ via Semihosting!
 
 Why did it fail? Let's find out...
 
-TODO
+# NuttX Apps Filesystem
 
-So NuttX crashes on Star64 because it's trying to read `
+_What's /system/bin/init?_
+
+_Why is NuttX reading it at startup?_
+
+TODO
 
 (See next section)
 
