@@ -443,19 +443,26 @@ int mount_ramdisk(void) {
 
   // Mount the ROMFS
   int ret = boardctl(BOARDIOC_ROMDISK, (uintptr_t)&desc);
-  // Omitted: Handle errors
+  // Omitted: Handle Errors
 ```
 
-TODO: Why ROMFS?
+(More about ROMFS in a while)
+
+TODO
 
 We copied the RAM Disk from the QEMU Address (0x84000000) to the NuttX Address (__ramdisk_start): [qemu_rv_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L271-L280)
 
 ```c
 void qemu_rv_kernel_mappings(void) {
   ...
-  // Copy 0x84000000 to __ramdisk_start (__ramdisk_size bytes)
-  // TODO: RAM Disk must not exceed __ramdisk_size bytes
-  memcpy((void *)__ramdisk_start, (void *)0x84000000, (size_t)__ramdisk_size);
+  // Copy RAM Disk from 0x8400 0000 to
+  // `__ramdisk_start` (`__ramdisk_size` bytes)
+  // TODO: RAM Disk must not exceed `__ramdisk_size` bytes
+  memcpy(                     // Copy the RAM Disk...
+    (void *)__ramdisk_start,  // To RAM Disk Memory
+    (void *)0x84000000,       // From QEMU initrd Address
+    (size_t)__ramdisk_size    // For 16 MB
+  );
 ```
 
 [(Because somehow `map_region` crashes when we try to map 0x84000000)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L280-L287)
@@ -493,6 +500,14 @@ Initial RAM Disk is loaded by QEMU at `0x8400` `0000`...
 Below are the files that we changed in NuttX for QEMU to load the Initial RAM Disk (instead of Semihosting)...
 
 - [Modified Files for QEMU with Initial RAM Disk](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/33/files)
+
+TODO
+
+_What's ROMFS?_
+
+[__ROMFS__](https://en.wikipedia.org/wiki/Romfs) is the Filesystem Format of our Initial RAM Disk. (It defines how the Files and Directories are stored in the RAM Disk)
+
+We could have used a FAT or EXT4 or NTFS Filesystem... But ROMFS is a lot simpler for NuttX.
 
 # Load Initial RAM Disk in NuttX QEMU
 
