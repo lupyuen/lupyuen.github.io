@@ -336,6 +336,22 @@ CONFIG_NSH_ARCHINIT=y
 <p><a href="https://embeddedinn.xyz/articles/tutorial/understanding-riscv-semihosting/"><strong>Semihosting</strong></a> was created for <a href="https://en.wikipedia.org/wiki/Debugger#Hardware_support_for_debugging"><strong>Hardware Debuggers</strong></a> and <a href="https://en.wikipedia.org/wiki/Hypervisor"><strong>Virtual Machine Hypervisors</strong></a>, like QEMU Emulator.</p>
 <p>The pic above shows how it works: Semihosting enables a Virtual Machine (like NuttX) to <strong>“Break Out” of its Sandbox</strong> to access the Filesystem on the Host Machine / Our Computer.</p>
 <p>(Remember our story at the top of the article? Be careful with Semihosting!)</p>
+<p>That’s why we <strong>Enable Semihosting</strong> when we run NuttX on QEMU…</p>
+<div class="example-wrap"><pre class="language-bash"><code>## Start NuttX on QEMU
+## with Semihosting Enabled
+qemu-system-riscv64 \
+  -kernel nuttx \
+  -cpu rv64 \
+  -smp 8 \
+  -M virt,aclint=on \
+  -semihosting \
+  -bios none \
+  -nographic
+</code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v">(Source)</a></p>
+<p><em>This won’t work on Star64?</em></p>
+<p>Semihosting won’t work because NuttX for Star64 runs on <strong>Real SBC Hardware</strong> (Bare Metal)…</p>
+<p>There’s nothing to “break out” to!</p>
 <p>TODO</p>
 <p>(See next section)</p>
 <p><a href="https://embeddedinn.xyz/articles/tutorial/understanding-riscv-semihosting/">(More about <strong>RISC-V Semihosting</strong>)</a></p>
