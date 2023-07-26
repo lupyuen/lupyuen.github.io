@@ -321,9 +321,11 @@ apps/system/nsh/nsh_main.c:52
 
 Yep it's the Compiled ELF Executable of the [__NuttX Shell `nsh`__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85)!
 
-Now everything makes sense: At startup, NuttX tries to load __/system/bin/init__ to start the [__NuttX Shell `nsh`__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85)...
+Now everything makes sense...
 
-But it fails because __/system/bin/init__ doesn't exist in the Semihosting Filesystem on Star64!
+1.  At Startup: NuttX tries to load __/system/bin/init__ to start the [__NuttX Shell `nsh`__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85)
+
+1.  But it Fails: Because __/system/bin/init__ doesn't exist in the Semihosting Filesystem on Star64!
 
 This is why Semihosting won't work on Star64...
 
