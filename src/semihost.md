@@ -335,7 +335,13 @@ This is why Semihosting won't work on Star64...
 
 _Why Semihosting won't work on Star64 SBC?_
 
-TODO: Semihosting was created for Hardware Debuggers and Virtual Machine Hypervisors (like QEMU)
+[__Semihosting__](https://embeddedinn.xyz/articles/tutorial/understanding-riscv-semihosting/) was created for [__Hardware Debuggers__](https://en.wikipedia.org/wiki/Debugger#Hardware_support_for_debugging) and [__Virtual Machine Hypervisors__](https://en.wikipedia.org/wiki/Hypervisor), like QEMU Emulator.
+
+The pic above shows how it works: Semihosting enables a Virtual Machine (like NuttX) to __"Break Out" of its Sandbox__ to access the Filesystem on the Host Machine / Our Computer.
+
+(Remember our story at the top of the article? Be careful with Semihosting!)
+
+TODO
 
 (See next section)
 
