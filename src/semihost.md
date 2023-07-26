@@ -417,7 +417,10 @@ We generate the Initial RAM Disk `initrd`...
 
 ```bash
 cd nuttx
-genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
+genromfs \
+  -f initrd \
+  -d ../apps/bin \
+  -V "NuttXBootVol"
 ```
 
 [(About `genromfs`)](https://www.systutorials.com/docs/linux/man/8-genromfs/)
@@ -425,23 +428,26 @@ genromfs -f initrd -d ../apps/bin -V "NuttXBootVol"
 Initial RAM Disk `initrd` is 7.9 MB...
 
 ```text
-→ ls -l initrd
+$ ls -l initrd
 -rw-r--r--  1 7902208 Jul 21 13:41 initrd
 ```
 
 This is how we load the Initial RAM Disk on QEMU: [‘virt’ Generic Virtual Platform (virt)](https://www.qemu.org/docs/master/system/riscv/virt.html#running-linux-kernel)
 
 ```bash
+## Start NuttX on QEMU
+## with Semihosting Enabled
 qemu-system-riscv64 \
-  -semihosting \
-  -M virt,aclint=on \
+  -kernel nuttx \
   -cpu rv64 \
   -smp 8 \
+  -M virt,aclint=on \
+  -semihosting \
   -bios none \
-  -kernel nuttx \
-  -initrd initrd \
   -nographic
 ```
+
+[(Source)](https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v)
 
 _What is the RAM Address of the Initial RAM Disk in QEMU?_
 
