@@ -389,24 +389,29 @@ popd
 </code></pre></div>
 <p>We generate the Initial RAM Disk <code>initrd</code>…</p>
 <div class="example-wrap"><pre class="language-bash"><code>cd nuttx
-genromfs -f initrd -d ../apps/bin -V &quot;NuttXBootVol&quot;
+genromfs \
+  -f initrd \
+  -d ../apps/bin \
+  -V &quot;NuttXBootVol&quot;
 </code></pre></div>
 <p><a href="https://www.systutorials.com/docs/linux/man/8-genromfs/">(About <code>genromfs</code>)</a></p>
 <p>Initial RAM Disk <code>initrd</code> is 7.9 MB…</p>
-<div class="example-wrap"><pre class="language-text"><code>→ ls -l initrd
+<div class="example-wrap"><pre class="language-text"><code>$ ls -l initrd
 -rw-r--r--  1 7902208 Jul 21 13:41 initrd
 </code></pre></div>
 <p>This is how we load the Initial RAM Disk on QEMU: <a href="https://www.qemu.org/docs/master/system/riscv/virt.html#running-linux-kernel">‘virt’ Generic Virtual Platform (virt)</a></p>
-<div class="example-wrap"><pre class="language-bash"><code>qemu-system-riscv64 \
-  -semihosting \
-  -M virt,aclint=on \
+<div class="example-wrap"><pre class="language-bash"><code>## Start NuttX on QEMU
+## with Semihosting Enabled
+qemu-system-riscv64 \
+  -kernel nuttx \
   -cpu rv64 \
   -smp 8 \
+  -M virt,aclint=on \
+  -semihosting \
   -bios none \
-  -kernel nuttx \
-  -initrd initrd \
   -nographic
 </code></pre></div>
+<p><a href="https://lupyuen.github.io/articles/riscv#qemu-emulator-for-risc-v">(Source)</a></p>
 <p><em>What is the RAM Address of the Initial RAM Disk in QEMU?</em></p>
 <p>Initial RAM Disk is loaded by QEMU at <code>0x8400</code> <code>0000</code>…</p>
 <ul>
