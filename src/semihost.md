@@ -555,7 +555,7 @@ $ ls -l initrd
 -rw-r--r--  1 7902208 initrd
 ```
 
-Finally we start QEMU and __load the Initial RAM Disk__...
+Finally we start QEMU and __load our Initial RAM Disk__...
 
 ```bash
 ## Start NuttX on QEMU
@@ -573,9 +573,7 @@ qemu-system-riscv64 \
 
 [(Source)](https://www.qemu.org/docs/master/system/riscv/virt.html#running-linux-kernel)
 
-TODO
-
-And it boots OK on QEMU yay!
+And NuttX QEMU boots OK with our Initial RAM Disk yay! (Ignore the warnings)
 
 ```text
 ABCnx_start: Entry
@@ -591,18 +589,22 @@ up_exit: TCB=0x802088d0 exiting
 
 NuttShell (NSH) NuttX-12.0.3
 nsh> nx_start: CPU0: Beginning Idle Loop
-
-nsh> ls -l /system/bin/init
-posix_spawn: pid=0xc0202978 path=ls file_actions=0xc0202980 attr=0xc0202988 argv=0xc0202a28
-exec_spawn: ERROR: Failed to load program 'ls': -2
-nxposix_spawn_exec: ERROR: exec failed: 2
- -r-xr-xr-x 3278720 /system/bin/init
 nsh>
 ```
 
 [(See the __Run Log__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ramdisk-0.0.1)
 
 [(See the __Detailed Run Log__)](https://gist.github.com/lupyuen/8afee5b07b61bb7f9f202f7f8c5e3ab3)
+
+TODO
+
+```text
+nsh> ls -l /system/bin/init
+posix_spawn: pid=0xc0202978 path=ls file_actions=0xc0202980 attr=0xc0202988 argv=0xc0202a28
+exec_spawn: ERROR: Failed to load program 'ls': -2
+nxposix_spawn_exec: ERROR: exec failed: 2
+ -r-xr-xr-x 3278720 /system/bin/init
+```
 
 ![TODO](https://lupyuen.github.io/images/semihost-runstar64.png)
 
