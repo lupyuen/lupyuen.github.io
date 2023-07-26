@@ -134,11 +134,11 @@ From the [__RISC-V Spec__](https://five-embeddev.com/quickref/instructions.html#
 
 OK thanks but we're not doing any debugging! 
 
-The next part is more relevant...
+The next part is more helpful...
 
 > "Another use of EBREAK is to support __Semihosting__, where the execution environment includes a debugger that can provide services over an Alternate System Call Interface built around the EBREAK instruction"
 
-Aha! NuttX is making a special __System Call to Semihosting__!
+Aha! NuttX is making a special [__System Call to Semihosting__](https://embeddedinn.xyz/articles/tutorial/understanding-riscv-semihosting/)!
 
 (We'll see why)
 
@@ -313,7 +313,7 @@ The RISC-V Disassembly of __/system/bin/init__ shows this...
 
 ```text
 apps/system/nsh/nsh_main.c:52
-  000000000000006e <main>:
+  0000006e <main>:
     int main(int argc, FAR char *argv[]) {
 ```
 
@@ -321,11 +321,13 @@ apps/system/nsh/nsh_main.c:52
 
 Yep it's the Compiled ELF File of the [__NuttX Shell `nsh`__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85)!
 
-Now everything makes sense: At startup, NuttX tries to load __/system/bin/init__ to start the [__NuttX Shell `nsh`__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85).
+Now everything makes sense: At startup, NuttX tries to load __/system/bin/init__ to start the [__NuttX Shell `nsh`__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85)...
 
 But it fails because __/system/bin/init__ doesn't exist in the Semihosting Filesystem on Star64!
 
 This is why Semihosting won't work on Star64...
+
+![QEMU reads the Apps Filesystem over Semihosting](https://lupyuen.github.io/images/semihost-qemu.jpg)
 
 # Semihosting on NuttX QEMU
 
@@ -340,10 +342,6 @@ TODO
 Let's disable Semihosting and replace by Initial RAM Disk and ROMFS.
 
 (See https://github.com/apache/nuttx/issues/9501)
-
-![QEMU reads the Apps Filesystem over Semihosting](https://lupyuen.github.io/images/semihost-qemu.jpg)
-
-![QEMU reads the Apps Filesystem over Semihosting](https://lupyuen.github.io/images/semihost-qemu.jpg)
 
 We traced the Semihosting Calls in QEMU Kernel Mode, here's what we observed...
 
