@@ -390,25 +390,11 @@ We begin by modding NuttX QEMU to load the Initial RAM Disk...
 
 # Modify NuttX QEMU for Initial RAM Disk
 
-TODO
+_NuttX QEMU will load an Initial RAM Disk..._
 
-Now we can modify NuttX for QEMU to mount the Apps Filesystem from an Initial RAM Disk instead of Semihosting.
+_Instead of using Semihosting. How?_
 
-(So later we can replicate this on Star64 JH7110 SBC)
-
-We follow the steps from LiteX Arty-A7 (from the previous section)...
-
-_What is the RAM Address of the Initial RAM Disk in QEMU?_
-
-Initial RAM Disk is loaded by QEMU at `0x8400` `0000`...
-
-- ["RAM Disk Address for RISC-V QEMU"](https://github.com/lupyuen/nuttx-star64#ram-disk-address-for-risc-v-qemu)
-
-Below are the files that we changed in NuttX for QEMU to load the Initial RAM Disk (instead of Semihosting)...
-
-- [Modified Files for QEMU with Initial RAM Disk](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/33/files)
-
-We defined the RAM Disk Memory in the Linker Script: [ld-kernel64.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel64.script#L20-L54)
+To modify NuttX QEMU to load an __Initial RAM Disk__, we define the address of the __RAM Disk Memory__ in the Linker Script: [ld-kernel64.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel64.script#L20-L54)
 
 ```text
 MEMORY
@@ -428,9 +414,9 @@ __ramdisk_size  = LENGTH(ramdisk);
 __ramdisk_end   = ORIGIN(ramdisk) + LENGTH(ramdisk);
 ```
 
-(We increased RAM Disk Memory from 4 MB to 16 MB because our RAM Disk is now bigger)
+(__`0x8080` `0000`__ is the next available RAM Address)
 
-At Startup, we mount the RAM Disk: [qemu_rv_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L83C1-L179C2)
+At NuttX Startup, we __mount the RAM Disk__: [qemu_rv_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L83C1-L179C2)
 
 ```c
 // Called at NuttX Startup
@@ -459,6 +445,8 @@ int mount_ramdisk(void) {
   int ret = boardctl(BOARDIOC_ROMDISK, (uintptr_t)&desc);
   // Omitted: Handle errors
 ```
+
+TODO: Why ROMFS?
 
 We copied the RAM Disk from the QEMU Address (0x84000000) to the NuttX Address (__ramdisk_start): [qemu_rv_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L271-L280)
 
@@ -495,6 +483,16 @@ CONFIG_INIT_MOUNT_TARGET="/system/bin"
 ## CONFIG_FS_HOSTFS=y
 ## CONFIG_RISCV_SEMIHOSTING_HOSTFS=y
 ```
+
+_What is the RAM Address of the Initial RAM Disk in QEMU?_
+
+Initial RAM Disk is loaded by QEMU at `0x8400` `0000`...
+
+- ["RAM Disk Address for RISC-V QEMU"](https://github.com/lupyuen/nuttx-star64#ram-disk-address-for-risc-v-qemu)
+
+Below are the files that we changed in NuttX for QEMU to load the Initial RAM Disk (instead of Semihosting)...
+
+- [Modified Files for QEMU with Initial RAM Disk](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/33/files)
 
 # Load Initial RAM Disk in NuttX QEMU
 
