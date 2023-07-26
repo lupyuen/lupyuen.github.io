@@ -317,7 +317,7 @@ apps/system/nsh/nsh_main.c:52
     int main(int argc, FAR char *argv[]) {
 ```
 
-[(Source)](TODO)
+[(Source)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/download/star64c-0.0.1/init.S)
 
 Yep it's the Compiled ELF Executable of the [__NuttX Shell `nsh`__](https://github.com/lupyuen2/wip-pinephone-nuttx-apps/blob/star64c/system/nsh/nsh_main.c#L40-L85)!
 
@@ -514,6 +514,8 @@ static uint32_t romfs_devread32(struct romfs_mountpt_s *rm, int ndx) {
 ```
 
 # Load Initial RAM Disk in NuttX QEMU
+
+TODO
 
 We build NuttX QEMU in Kernel Mode: [Build Steps](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt)
 
