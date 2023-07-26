@@ -472,6 +472,7 @@ CONFIG_INIT_MOUNT_TARGET=&quot;/system/bin&quot;
 </ul>
 <p>That’s why we copied the RAM Disk from <strong><code>0x8400</code> <code>0000</code></strong> to <strong>ramdisk_start</strong>.</p>
 <p>TODO: LiteX Arty-A7</p>
+<p><img src="https://lupyuen.github.io/images/semihost-runqemu.png" alt="TODO" /></p>
 <h1 id="boot-nuttx-qemu-with-initial-ram-disk"><a href="#boot-nuttx-qemu-with-initial-ram-disk">7 Boot NuttX QEMU with Initial RAM Disk</a></h1>
 <p>We’re ready to run our modified NuttX QEMU… That loads the Initial RAM Disk!</p>
 <p>We build NuttX QEMU in Kernel Mode (as before). Then we generate the Initial RAM Disk <strong>initrd</strong>…</p>
@@ -488,7 +489,8 @@ genromfs \
   -d ../apps/bin \
   -V &quot;NuttXBootVol&quot;
 </code></pre></div>
-<p><a href="https://lupyuen.github.io/articles/semihost#nuttx-apps-filesystem">(See the earlier <strong>Build Steps</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/394bc4da808ee5e4f5fb8da70cb2ae3e">(See the <strong>Build Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/394bc4da808ee5e4f5fb8da70cb2ae3e">(See the <strong>Build Steps</strong>)</a></p>
 <p><a href="https://www.systutorials.com/docs/linux/man/8-genromfs/">(<strong>genromfs</strong> generates a <strong>ROMFS Filesystem</strong>)</a></p>
 <p>This creates an Initial RAM Disk <strong>initrd</strong> (in ROMFS format) that’s 7.9 MB…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ ls -l initrd
@@ -510,7 +512,30 @@ qemu-system-riscv64 \
 <p><a href="https://www.qemu.org/docs/master/system/riscv/virt.html#running-linux-kernel">(Source)</a></p>
 <p>TODO</p>
 <p>And it boots OK on QEMU yay!</p>
-<p><a href="https://gist.github.com/lupyuen/8afee5b07b61bb7f9f202f7f8c5e3ab3">See the Run Log</a></p>
+<div class="example-wrap"><pre class="language-text"><code>ABCnx_start: Entry
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+board_late_initialize:
+nx_start_application: Starting init task: /system/bin/init
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
+elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
+up_exit: TCB=0x802088d0 exiting
+
+NuttShell (NSH) NuttX-12.0.3
+nsh&gt; nx_start: CPU0: Beginning Idle Loop
+
+nsh&gt; ls -l /system/bin/init
+posix_spawn: pid=0xc0202978 path=ls file_actions=0xc0202980 attr=0xc0202988 argv=0xc0202a28
+exec_spawn: ERROR: Failed to load program &#39;ls&#39;: -2
+nxposix_spawn_exec: ERROR: exec failed: 2
+ -r-xr-xr-x 3278720 /system/bin/init
+nsh&gt;
+</code></pre></div>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ramdisk-0.0.1">(See the <strong>Run Log</strong>)</a></p>
+<p><a href="https://gist.github.com/lupyuen/8afee5b07b61bb7f9f202f7f8c5e3ab3">(See the <strong>Detailed Run Log</strong>)</a></p>
+<p><img src="https://lupyuen.github.io/images/semihost-runstar64.png" alt="TODO" /></p>
 <h1 id="nuttx-star64-with-initial-ram-disk"><a href="#nuttx-star64-with-initial-ram-disk">8 NuttX Star64 with Initial RAM Disk</a></h1>
 <p>TODO</p>
 <p>Now we can modify NuttX for Star64 JH7110 RISC-V SBC to mount the Apps Filesystem from an Initial RAM Disk. (Instead of Semihosting)</p>
