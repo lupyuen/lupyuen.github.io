@@ -420,8 +420,7 @@ int mount_ramdisk(void) {
   // Omitted: Handle Errors
 </code></pre></div>
 <p>(More about ROMFS in a while)</p>
-<p>TODO</p>
-<p>We copied the RAM Disk from the QEMU Address (0x84000000) to the NuttX Address (__ramdisk_start): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L271-L280">qemu_rv_mm_init.c</a></p>
+<p>We copied the RAM Disk from <strong><code>0x8400</code> <code>0000</code></strong> to <strong>ramdisk_start</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L271-L280">qemu_rv_mm_init.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>void qemu_rv_kernel_mappings(void) {
   ...
   // Copy RAM Disk from 0x8400 0000 to
@@ -434,8 +433,8 @@ int mount_ramdisk(void) {
   );
 </code></pre></div>
 <p>(More about <strong><code>0x8400</code> <code>0000</code></strong> in a while)</p>
-<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L280-L287">(Somehow <strong>map_region</strong> crashes when we try to map the RAM Disk Memory)</a></p>
-<p>Things get really wonky when we exceed the bounds of the RAM Disk. So we <strong>verify the bounds</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/fs/romfs/fs_romfsutil.c#L85-L105">fs_romfsutil.c</a></p>
+<p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L280-L287">(Somehow <strong>map_region</strong> crashes when we map the RAM Disk Memory)</a></p>
+<p>Things get really wonky when we exceed the bounds of the RAM Disk. So we <strong>validate the bounds</strong>: <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/fs/romfs/fs_romfsutil.c#L85-L105">fs_romfsutil.c</a></p>
 <div class="example-wrap"><pre class="language-c"><code>// While reading from RAM Disk...
 static uint32_t romfs_devread32(struct romfs_mountpt_s *rm, int ndx) {
 
@@ -446,7 +445,7 @@ static uint32_t romfs_devread32(struct romfs_mountpt_s *rm, int ndx) {
       __ramdisk_start + (size_t)__ramdisk_size
   );
 </code></pre></div>
-<p>Finally we configured NuttX QEMU to mount the <strong>Initial RAM Disk as ROMFS</strong> (instead of Semihosting): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig">knsh64/defconfig</a></p>
+<p>Finally we configure NuttX QEMU to mount the <strong>Initial RAM Disk as ROMFS</strong> (instead of Semihosting): <a href="https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig">knsh64/defconfig</a></p>
 <div class="example-wrap"><pre class="language-bash"><code>CONFIG_BOARDCTL_ROMDISK=y
 CONFIG_BOARD_LATE_INITIALIZE=y
 CONFIG_FS_ROMFS=y
@@ -459,19 +458,19 @@ CONFIG_INIT_MOUNT_TARGET=&quot;/system/bin&quot;
 ## CONFIG_FS_HOSTFS=y
 ## CONFIG_RISCV_SEMIHOSTING_HOSTFS=y
 </code></pre></div>
-<p>That’s it! These are the files that we modified in NuttX QEMU to load the Initial RAM Disk (instead of Semihosting)…</p>
+<p>That’s it! These are the files that we modified in NuttX QEMU to load the Initial RAM Disk (without Semihosting)…</p>
 <ul>
 <li><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/pull/33/files"><strong>Modified Files for NuttX QEMU with Initial RAM Disk</strong></a></li>
 </ul>
 <p><em>What’s ROMFS?</em></p>
-<p><a href="https://en.wikipedia.org/wiki/Romfs"><strong>ROMFS</strong></a> is the Filesystem Format of our Initial RAM Disk. (It defines how the Files and Directories are stored in the RAM Disk)</p>
+<p><a href="https://en.wikipedia.org/wiki/Romfs"><strong>ROMFS</strong></a> is the <strong>Filesystem Format</strong> of our Initial RAM Disk. (It defines how the Files and Directories are stored in the RAM Disk)</p>
 <p>We could have used a FAT or EXT4 or NTFS Filesystem… But ROMFS is a lot simpler for NuttX.</p>
 <p><em>Why did we copy the RAM Disk from <strong><code>0x8400</code> <code>0000</code></strong>?</em></p>
 <p>QEMU loads the Initial RAM Disk into RAM at <strong><code>0x8400</code> <code>0000</code></strong>…</p>
 <ul>
 <li><a href="https://github.com/lupyuen/nuttx-star64#ram-disk-address-for-risc-v-qemu"><strong>“RAM Disk Address for RISC-V QEMU”</strong></a></li>
 </ul>
-<p>That’s why we copied the RAM Disk from <strong><code>0x8400</code> <code>0000</code></strong>.</p>
+<p>That’s why we copied the RAM Disk from <strong><code>0x8400</code> <code>0000</code></strong> to <strong>ramdisk_start</strong>.</p>
 <p>TODO: LiteX Arty-A7</p>
 <h1 id="load-initial-ram-disk-in-nuttx-qemu"><a href="#load-initial-ram-disk-in-nuttx-qemu">7 Load Initial RAM Disk in NuttX QEMU</a></h1>
 <p>TODO</p>
