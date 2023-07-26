@@ -272,14 +272,16 @@ make import V=1
 popd
 </code></pre></div>
 <p><a href="https://github.com/lupyuen2/wip-pinephone-nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt">(Source)</a></p>
-<p>The commands above will create the <strong>Apps Filesystem</strong> for NuttX QEMU, which includes <strong>/system/bin/init</strong>…</p>
+<p><a href="https://lupyuen.github.io/articles/privilege#nuttx-flat-mode-becomes-kernel-mode">(Why we use <strong>Kernel Mode</strong>)</a></p>
+<p>The commands above will build the <strong>Apps Filesystem</strong> for NuttX QEMU.</p>
+<p>Which includes <strong>/system/bin/init</strong>…</p>
 <div class="example-wrap"><pre class="language-text"><code>$ ls ../apps/bin       
 getprime
 hello
 init
 sh
 </code></pre></div>
-<p>TODO</p>
+<p>TODO: What’s inside /system/bin/init?</p>
 <p>(See next section)</p>
 <p><a href="https://embeddedinn.xyz/articles/tutorial/understanding-riscv-semihosting/">(More about <strong>RISC-V Semihosting</strong>)</a></p>
 <p><a href="https://github.com/riscv-software-src/riscv-semihosting/blob/main/riscv-semihosting-spec.adoc">(See the <strong>Semihosting Spec</strong>)</a></p>
