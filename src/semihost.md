@@ -366,9 +366,17 @@ Semihosting won't work because NuttX for Star64 runs on __Real SBC Hardware__ (B
 
 There's nothing to "break out" to!
 
+![Initial RAM Disk for NuttX](https://lupyuen.github.io/images/semihost-star64a.jpg)
+
 _If not Semihosting... Then what?_
 
+In the world of Linux (and QEMU), there's something cool called an [__Initial RAM Disk (initrd)__](https://en.wikipedia.org/wiki/Initial_ramdisk)...
 
+- It's a __RAM Disk__, loaded into RAM (pic above)
+
+- But it's an __Initial__ RAM Disk. Which means there's a Filesystem inside, preloaded with Files and Directories.
+
+Perfect for our NuttX Apps Filesystem!
 
 TODO
 
