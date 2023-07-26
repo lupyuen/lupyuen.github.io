@@ -544,7 +544,7 @@ genromfs \
 
 [(See the __Build Log__)](https://gist.github.com/lupyuen/394bc4da808ee5e4f5fb8da70cb2ae3e)
 
-[(See the __Build Steps__)](https://gist.github.com/lupyuen/394bc4da808ee5e4f5fb8da70cb2ae3e)
+[(See the __Build Steps__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ramdisk-0.0.1)
 
 [(__genromfs__ generates a __ROMFS Filesystem__)](https://www.systutorials.com/docs/linux/man/8-genromfs/)
 
@@ -554,6 +554,8 @@ This creates an Initial RAM Disk __initrd__ (in ROMFS format) that's 7.9 MB...
 $ ls -l initrd
 -rw-r--r--  1 7902208 initrd
 ```
+
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/ramdisk-0.0.1)
 
 Finally we start QEMU and __load our Initial RAM Disk__...
 
@@ -646,6 +648,10 @@ cp ../jh7110-star64-pine64.dtb $HOME/tftproot
 cp initrd $HOME/tftproot
 ```
 
+[(See the __Build Log__)](https://gist.github.com/lupyuen/ae59a840c94280ce8d618699278a0436)
+
+[(See the __Build Steps__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1)
+
 [(About `genromfs`)](https://www.systutorials.com/docs/linux/man/8-genromfs/)
 
 Initial RAM Disk `initrd` is 7.9 MB...
@@ -654,6 +660,8 @@ Initial RAM Disk `initrd` is 7.9 MB...
 → ls -l initrd
 -rw-r--r--  1 7930880 Jul 21 13:41 initrd
 ```
+
+[(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1)
 
 Below are the files that we changed in NuttX for Star64 to load the Initial RAM Disk (instead of Semihosting)...
 
@@ -825,6 +833,8 @@ nx_start_application: ret=3
 up_exit: TCB=0x404088d0 exiting
 nx_start: CPU0: Beginning Idle Loop
 ```
+
+[(See the __Output Log__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1)
 
 TODO: Why no shell?
 
