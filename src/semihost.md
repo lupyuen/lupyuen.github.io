@@ -763,7 +763,19 @@ We'll find out in the next article!
 
 # What's Next
 
-TODO
+TODO: No more Semihosting Problems on Star64 JH7110 SBC!
+
+- What's __RISC-V Semihosting__
+
+- Why it crashes [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/nuttx2) on Star64
+
+- What's the __Apps Filesystem__ for NuttX
+
+- How we replaced Semihosting by __Initial RAM Disk "initrd"__ (pic above)
+
+- After testing on __QEMU Emulator__
+
+- Thanks to NuttX on __LiteX Arty-A7__ for the guidance!
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
