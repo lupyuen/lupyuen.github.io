@@ -726,7 +726,7 @@ $ ls -l initrd
 
 And we boot NuttX on Star64 over TFTP! [(Like this)](https://lupyuen.github.io/articles/semihost#appendix-boot-nuttx-over-tftp-with-initial-ram-disk)
 
-_Does the Initial RAM Disk work on Star64?_
+_Does it work?_
 
 Now Star64 JH7110 boots OK with the Initial RAM Disk yay! (Not completely though)
 
