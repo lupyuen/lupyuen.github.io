@@ -767,6 +767,8 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/semihost.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/semihost.md)
 
+![NuttX for Star64 JH7110 RISC-V SBC will mount the Apps Filesystem from an Initial RAM Disk](https://lupyuen.github.io/images/semihost-star64.jpg)
+
 # Appendix: Boot NuttX over TFTP with Initial RAM Disk
 
 TODO
@@ -868,6 +870,8 @@ Ramdisk image is corrupt or invalid
 $ booti ${kernel_addr_r} ${ramdisk_addr_r}:0x1000000 ${fdt_addr_r}
 ## Boots OK
 ```
+
+![TODO](https://lupyuen.github.io/images/semihost-runstar64.png)
 
 # Appendix: Configure NuttX for Initial RAM Disk
 
