@@ -944,7 +944,7 @@ _We need the RAM Disk Address for RISC-V QEMU..._
 
 _Can we enable logging for RISC-V QEMU?_
 
-Yep we use the __`-trace "*"`__ option like this...
+Yep we use this QEMU Option: __`-trace "*"`__
 
 ```bash
 ## Start NuttX on QEMU
