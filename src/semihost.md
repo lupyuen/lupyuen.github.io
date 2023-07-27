@@ -580,7 +580,8 @@ qemu-system-riscv64 \
 And NuttX QEMU boots OK with our Initial RAM Disk yay! (Ignore the warnings)
 
 ```text
-ABCnx_start: Entry
+ABC
+nx_start: Entry
 uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
 work_start_lowpri: Starting low-priority kernel worker thread(s)
@@ -700,7 +701,7 @@ cp initrd $HOME/tftproot
 
 [(__genromfs__ generates a __ROMFS Filesystem__)](https://www.systutorials.com/docs/linux/man/8-genromfs/)
 
-Initial RAM Disk __initrd__ (with ROMFS inside) is still 7.9 MB...
+Our Initial RAM Disk __initrd__ (with ROMFS inside) is 7.9 MB (slightly bigger)...
 
 ```text
 $ ls -l initrd
@@ -713,13 +714,12 @@ And we boot NuttX on Star64 over TFTP! [(Like this)](https://lupyuen.github.io/a
 
 _Does the Initial RAM Disk work on Star64?_
 
-Star64 JH7110 boots OK with the Initial RAM Disk yay! (Not completely though)
+Now Star64 JH7110 boots OK with the Initial RAM Disk yay! (Not completely though)
 
 ```text
 Starting kernel ...
-clk u5_dw_i2c_clk_core already disabled
-clk u5_dw_i2c_clk_apb already disabled
-123067DFHBCInx_start: Entry
+123067DFHBCI
+nx_start: Entry
 uart_register: Registering /dev/console
 uart_register: Registering /dev/ttyS0
 work_start_lowpri: Starting low-priority kernel worker thread(s)
@@ -737,13 +737,13 @@ nx_start: CPU0: Beginning Idle Loop
 
 So many questions...
 
-TODO: Why no shell?
+- Why no __NuttX Shell__?
 
-TODO: Why `nx_start_application: ret=3`?
+- Why did __nx_start_application__ quit with "__`ret=3`__"?
 
-TODO: Check User Address Space
+- Are we using the right [__User Address Space__](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/qemu-rv/rv-virt/include/board_memorymap.h#L33-L38)?
 
-TODO: Boot from MicroSD with Initial RAM Disk
+We'll find out in the next article!
 
 ![TODO](https://lupyuen.github.io/images/semihost-runstar64.png)
 
@@ -775,7 +775,7 @@ TODO
 
 _What is the RAM Address of the Initial RAM Disk in Star64?_
 
-Initial RAM Disk is loaded by Star64's U-Boot Bootloader at `0x4610` `0000`...
+Initial RAM Disk is loaded by Star64's U-Boot Bootloader at __`0x4610` `0000`__...
 
 ```bash
 ramdisk_addr_r=0x46100000
