@@ -681,32 +681,83 @@ memcpy((void *)__ramdisk_start, (void *)0x46100000, (size_t)__ramdisk_size);
 
 (Why `0x4610` `0000`? See `ramdisk_addr_r` below)
 
-This is how we updated the NuttX Build Configuration in `make menuconfig`...
-
-- Board Selection > Enable boardctl() interface > Enable application space creation of ROM disks
-
-- RTOS Features > RTOS hooks > Custom board late initialization   
-
-- File Systems > ROMFS file system 
-
-- RTOS Features > Tasks and Scheduling > Auto-mount init file system 
-
-  Set to `/system/bin`
-
-- Build Setup > Debug Options > File System Debug Features > File System Error, Warnings and Info Output
-
-- Disable: File Systems > Host File System   
-
-- Manually delete from [`knsh64/defconfig`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig)...
-
-  ```text
-  CONFIG_HOST_MACOS=y
-  CONFIG_INIT_MOUNT_DATA="fs=../apps"
-  CONFIG_INIT_MOUNT_FSTYPE="hostfs"
-  CONFIG_INIT_MOUNT_SOURCE=""
-  ```
+TODO: Build Configuration
 
 Updated Build Configuration: [knsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig)
+
+_What is the RAM Address of the Initial RAM Disk in Star64?_
+
+Initial RAM Disk is loaded by Star64's U-Boot Bootloader at `0x4610` `0000`...
+
+```bash
+ramdisk_addr_r=0x46100000
+```
+
+[(Source)](https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64)
+
+TODO: Boot over TFTP
+
+_Does the Initial RAM Disk work on Star64?_
+
+Star64 JH7110 boots OK with the Initial RAM Disk yay!
+
+```text
+StarFive # booti ${kernel_addr_r} ${ramdisk_addr_r}:0x1000000 ${fdt_addr_r}
+## Flattened Device Tree blob at 46000000
+   Booting using the fdt blob at 0x46000000
+   Using Device Tree in place at 0000000046000000, end 000000004600f43a
+
+Starting kernel ...
+
+clk u5_dw_i2c_clk_core already disabled
+clk u5_dw_i2c_clk_apb already disabled
+123067DFHBCInx_start: Entry
+uart_register: Registering /dev/console
+uart_register: Registering /dev/ttyS0
+work_start_lowpri: Starting low-priority kernel worker thread(s)
+board_late_initialize: 
+nx_start_application: Starting init task: /system/bin/init
+elf_symname: Symbol has no name
+elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
+elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
+nx_start_application: ret=3
+up_exit: TCB=0x404088d0 exiting
+nx_start: CPU0: Beginning Idle Loop
+```
+
+[(See the __Output Log__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1)
+
+TODO: Why no shell?
+
+TODO: Why `nx_start_application: ret=3`?
+
+TODO: Check User Address Space
+
+TODO: Boot from MicroSD with Initial RAM Disk
+
+# What's Next
+
+TODO
+
+Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+
+-   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+
+-   [__My Current Project: "Apache NuttX RTOS for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
+
+-   [__My Other Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
+
+-   [__Check out my articles__](https://lupyuen.github.io)
+
+-   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
+
+_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+
+[__lupyuen.github.io/src/semihost.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/semihost.md)
+
+# Appendix: Boot NuttX Star64 over TFTP with Initial RAM Disk
+
+TODO
 
 _What is the RAM Address of the Initial RAM Disk in Star64?_
 
@@ -806,63 +857,36 @@ $ booti ${kernel_addr_r} ${ramdisk_addr_r}:0x1000000 ${fdt_addr_r}
 ## Boots OK
 ```
 
-_Does the Initial RAM Disk work on Star64?_
-
-Star64 JH7110 boots OK with the Initial RAM Disk yay!
-
-```text
-StarFive # booti ${kernel_addr_r} ${ramdisk_addr_r}:0x1000000 ${fdt_addr_r}
-## Flattened Device Tree blob at 46000000
-   Booting using the fdt blob at 0x46000000
-   Using Device Tree in place at 0000000046000000, end 000000004600f43a
-
-Starting kernel ...
-
-clk u5_dw_i2c_clk_core already disabled
-clk u5_dw_i2c_clk_apb already disabled
-123067DFHBCInx_start: Entry
-uart_register: Registering /dev/console
-uart_register: Registering /dev/ttyS0
-work_start_lowpri: Starting low-priority kernel worker thread(s)
-board_late_initialize: 
-nx_start_application: Starting init task: /system/bin/init
-elf_symname: Symbol has no name
-elf_symvalue: SHN_UNDEF: Failed to get symbol name: -3
-elf_relocateadd: Section 2 reloc 2: Undefined symbol[0] has no name: -3
-nx_start_application: ret=3
-up_exit: TCB=0x404088d0 exiting
-nx_start: CPU0: Beginning Idle Loop
-```
-
-[(See the __Output Log__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1)
-
-TODO: Why no shell?
-
-TODO: Why `nx_start_application: ret=3`?
-
-TODO: Check User Address Space
-
-TODO: Boot from MicroSD with Initial RAM Disk
-
-# What's Next
+# Appendix: Configure NuttX Star64 for Initial RAM Disk
 
 TODO
 
-Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
+This is how we updated the NuttX Build Configuration in `make menuconfig`...
 
--   [__Sponsor me a coffee__](https://github.com/sponsors/lupyuen)
+- Board Selection > Enable boardctl() interface > Enable application space creation of ROM disks
 
--   [__My Current Project: "Apache NuttX RTOS for Star64 JH7110"__](https://github.com/lupyuen/nuttx-star64)
+- RTOS Features > RTOS hooks > Custom board late initialization   
 
--   [__My Other Project: "NuttX for PinePhone"__](https://github.com/lupyuen/pinephone-nuttx)
+- File Systems > ROMFS file system 
 
--   [__Check out my articles__](https://lupyuen.github.io)
+- RTOS Features > Tasks and Scheduling > Auto-mount init file system 
 
--   [__RSS Feed__](https://lupyuen.github.io/rss.xml)
+  Set to `/system/bin`
 
-_Got a question, comment or suggestion? Create an Issue or submit a Pull Request here..._
+- Build Setup > Debug Options > File System Debug Features > File System Error, Warnings and Info Output
 
-[__lupyuen.github.io/src/semihost.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/semihost.md)
+- Disable: File Systems > Host File System   
+
+- Manually delete from [`knsh64/defconfig`](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig)...
+
+  ```text
+  CONFIG_HOST_MACOS=y
+  CONFIG_INIT_MOUNT_DATA="fs=../apps"
+  CONFIG_INIT_MOUNT_FSTYPE="hostfs"
+  CONFIG_INIT_MOUNT_SOURCE=""
+  ```
+
+Updated Build Configuration: [knsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig)
 
 # Appendix: Initial RAM Disk for LiteX Arty-A7
 
