@@ -499,6 +499,8 @@ CONFIG_INIT_MOUNT_TARGET="/system/bin"
 ## CONFIG_RISCV_SEMIHOSTING_HOSTFS=y
 ```
 
+[(How we configured for RAM Disk)](https://lupyuen.github.io/articles/semihost#appendix-configure-nuttx-star64-for-initial-ram-disk)
+
 That's it! These are the files that we modified in NuttX QEMU to load the Initial RAM Disk (without Semihosting)...
 
 - [__Modified Files for NuttX QEMU with Initial RAM Disk__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/33/files)
@@ -612,52 +614,69 @@ nxposix_spawn_exec: ERROR: exec failed: 2
 
 # NuttX Star64 with Initial RAM Disk
 
-TODO
+One last thing for today... Booting NuttX on __Star64 with Initial RAM Disk__! (Instead of Semihosting)
 
-Now we can modify NuttX for Star64 JH7110 RISC-V SBC to mount the Apps Filesystem from an Initial RAM Disk. (Instead of Semihosting)
+We modify NuttX Star64 with the exact same steps as [__NuttX QEMU with Initial RAM Disk__](https://lupyuen.github.io/articles/semihost#modify-nuttx-qemu-for-initial-ram-disk)...
 
-We follow the steps from QEMU Kernel Mode's Initial RAM Disk. (See previous section)
+- [__Modified Files for Initial RAM Disk on Star64__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/34/files)
 
-Below are the files that we changed in NuttX for Star64 to load the Initial RAM Disk (instead of Semihosting)...
+- [__qemu_rv_mm_init.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/34/files#diff-a663261ea6b68497baecd83562df554d2c7903261090bf627042860d90fb920f): Copy RAM Disk at Startup
 
-- [Modified Files for Initial RAM Disk on Star64](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/34/files)
+- [__qemu_rv_appinit.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/34/files#diff-beeaeb03fa5642002a542446c89251c9a7c5c1681cfe915387740ea0975e91b3): Mount RAM Disk at Startup
 
-These are the same changes that we made earlier for QEMU Kernel Mode's Initial RAM Disk.
+- [__fs_romfsutil.c__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/34/files#diff-a1d53d0735749ccfb3072e986511d0b6cae6f7ce850d8c91195cc027201a0132): Validate RAM Disk Bounds
 
-(For a detailed explanation of the modified files, see the previous section)
+- [__ld-kernel64.script__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/34/files#diff-fbe356a2692accfbf05c87b4b1a3ecb7275bf38d06f9ceb7730928249f15d605): Linker Script with RAM Disk Memory
 
-Note that we copy the Initial RAM Disk from `0x4610` `0000` (instead of QEMU's `0x8400` `0000`): [qemu_rv_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L271-L280)
+- [__knsh64/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/34/files#diff-4018c37bf9b08236b37a84273281d5511d48596be9e0e4c0980d730aa95dbbe8): Build Configuration for RAM Disk
+
+  [(How we configured for RAM Disk)](https://lupyuen.github.io/articles/semihost#appendix-configure-nuttx-star64-for-initial-ram-disk)
+
+Note that we copy the Initial RAM Disk from __`0x4610` `0000`__ (instead of QEMU's `0x8400` `0000`): [qemu_rv_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L271-L280)
 
 ```c
-// Copy 0x46100000 to __ramdisk_start (__ramdisk_size bytes)
-// TODO: RAM Disk must not exceed __ramdisk_size bytes
-memcpy((void *)__ramdisk_start, (void *)0x46100000, (size_t)__ramdisk_size);
+// Copy RAM Disk from 0x4610 0000 to
+// `__ramdisk_start` (`__ramdisk_size` bytes)
+// TODO: RAM Disk must not exceed `__ramdisk_size` bytes
+memcpy(                     // Copy the RAM Disk...
+  (void *)__ramdisk_start,  // To RAM Disk Memory
+  (void *)0x46100000,       // From U-Boot initrd Address
+  (size_t)__ramdisk_size    // For 16 MB
+);
 ```
 
-(Why `0x4610` `0000`? See `ramdisk_addr_r` below)
+[(U-Boot Bootloader loads the RAM Disk at __`0x4610` `0000`__)](https://lupyuen.github.io/articles/semihost#appendix-ram-disk-address-for-risc-v-qemu)
 
-TODO: Build Configuration
+And the __RAM Disk Memory__ is now located at __`0x40A0` `0000`__ (the next available RAM Address): [ld-kernel64.script](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/qemu-rv/rv-virt/scripts/ld-kernel64.script#L20-L56)
 
-Updated Build Configuration: [knsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig)
+```text
+MEMORY
+{
+  ...
+  /* Added RAM Disk Memory (Max 16 MB) */
+  ramdisk (rwx) : ORIGIN = 0x40A00000, LENGTH = 16M   /* w/ cache */
+}
 
-_What is the RAM Address of the Initial RAM Disk in Star64?_
+/* Increased Page Heap for RAM Disk */
+__pgheap_size = LENGTH(pgram) + LENGTH(ramdisk);
+/* Previously: __pgheap_size = LENGTH(pgram); */
 
-Initial RAM Disk is loaded by Star64's U-Boot Bootloader at `0x4610` `0000`...
-
-```bash
-ramdisk_addr_r=0x46100000
+/* Added RAM Disk Symbols */
+__ramdisk_start = ORIGIN(ramdisk);
+__ramdisk_size  = LENGTH(ramdisk);
+__ramdisk_end   = ORIGIN(ramdisk) + LENGTH(ramdisk);
 ```
 
-[(Source)](https://lupyuen.github.io/articles/linux#u-boot-settings-for-star64)
+The [__other modified files__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/34/files) are the same as for NuttX QEMU with Initial RAM Disk.
 
-We build NuttX Star64 in Kernel Mode: [Build Steps](https://github.com/lupyuen2/wip-pinephone-nuttx/tree/master/boards/risc-v/qemu-rv/rv-virt)
+_How do we run this on Star64?_
 
-We generate the Initial RAM Disk `initrd` and copy to TFTP Folder (for Network Booting)...
+We build NuttX Star64, generate the Initial RAM Disk __initrd__ and copy to our TFTP Folder [(for __Network Booting__)](https://lupyuen.github.io/articles/semihost#appendix-boot-nuttx-star64-over-tftp-with-initial-ram-disk)...
 
 ```bash
-## Omitted: Build NuttX QEMU in Kernel Mode
+## Omitted: Build NuttX Star64
 ...
-## Omitted: Build Apps Filesystem for NuttX QEMU
+## Omitted: Build Apps Filesystem for NuttX Star64
 ...
 ## Generate the Initial RAM Disk `initrd`
 ## in ROMFS Filesystem Format
@@ -690,21 +709,14 @@ $ ls -l initrd
 
 [(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1)
 
-
-TODO: Boot over TFTP
+And we boot NuttX on Star64 over TFTP! [(Like this)](https://lupyuen.github.io/articles/semihost#appendix-boot-nuttx-star64-over-tftp-with-initial-ram-disk)
 
 _Does the Initial RAM Disk work on Star64?_
 
-Star64 JH7110 boots OK with the Initial RAM Disk yay!
+Star64 JH7110 boots OK with the Initial RAM Disk yay! (Not completely though)
 
 ```text
-StarFive # booti ${kernel_addr_r} ${ramdisk_addr_r}:0x1000000 ${fdt_addr_r}
-## Flattened Device Tree blob at 46000000
-   Booting using the fdt blob at 0x46000000
-   Using Device Tree in place at 0000000046000000, end 000000004600f43a
-
 Starting kernel ...
-
 clk u5_dw_i2c_clk_core already disabled
 clk u5_dw_i2c_clk_apb already disabled
 123067DFHBCInx_start: Entry
@@ -755,7 +767,7 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
 [__lupyuen.github.io/src/semihost.md__](https://github.com/lupyuen/lupyuen.github.io/blob/master/src/semihost.md)
 
-# Appendix: Boot NuttX Star64 over TFTP with Initial RAM Disk
+# Appendix: Boot NuttX over TFTP with Initial RAM Disk
 
 TODO
 
@@ -857,7 +869,7 @@ $ booti ${kernel_addr_r} ${ramdisk_addr_r}:0x1000000 ${fdt_addr_r}
 ## Boots OK
 ```
 
-# Appendix: Configure NuttX Star64 for Initial RAM Disk
+# Appendix: Configure NuttX for Initial RAM Disk
 
 TODO
 
@@ -886,7 +898,11 @@ This is how we updated the NuttX Build Configuration in `make menuconfig`...
   CONFIG_INIT_MOUNT_SOURCE=""
   ```
 
-Updated Build Configuration: [knsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig)
+Updated Build Configuration:
+
+QEMU: [knsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig)
+
+Star64: [knsh64/defconfig](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/boards/risc-v/qemu-rv/rv-virt/configs/knsh64/defconfig)
 
 # Appendix: Initial RAM Disk for LiteX Arty-A7
 
