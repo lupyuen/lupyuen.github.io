@@ -889,7 +889,21 @@ saveenv
 
 [(Remember to set __tftp_server__ and __boot_targets__)](https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp)
 
-Run the above commands in U-Boot. Power Star64 off and on.
+Run the above commands in U-Boot. 
+
+Copy the Initial RAM Disk __initrd__ to the TFTP Folder...
+
+```bash
+## Copy NuttX Binary Image, Device Tree and
+## Initial RAM Disk to TFTP Folder
+cp nuttx.bin $HOME/tftproot/Image
+cp jh7110-star64-pine64.dtb $HOME/tftproot
+cp initrd $HOME/tftproot
+```
+
+[(Source)](https://lupyuen.github.io/articles/semihost#nuttx-star64-with-initial-ram-disk)
+
+Power Star64 off and on.
 
 NuttX now boots with our Initial RAM Disk over TFTP...
 
