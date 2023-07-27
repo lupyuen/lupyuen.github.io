@@ -577,11 +577,11 @@ _Got a question, comment or suggestion? Create an Issue or submit a Pull Request
 
     [(Source)](https://news.ycombinator.com/item?id=36453810#36455404)
 
-1.  To __Enable Logging__ for RISC-V QEMU: Use the `-trace "*"` option.
+1.  To __Enable Logging__ for RISC-V QEMU: Use the QEMU Option __`-trace "*"`__
 
-    [(Like this)](https://github.com/lupyuen/nuttx-star64#ram-disk-address-for-risc-v-qemu)
+    [(Like this)](https://lupyuen.github.io/articles/semihost#appendix-ram-disk-address-for-risc-v-qemu)
 
-1.  Here's the [__Device Tree__](https://github.com/lupyuen/nuttx-star64#device-tree-for-risc-v-qemu) for RISC-V QEMU
+1.  Here's the [__Device Tree__](https://lupyuen.github.io/articles/semihost#appendix-device-tree-for-risc-v-qemu) for RISC-V QEMU
 
 ![RISC-V Boot Code for Apache NuttX RTOS](https://lupyuen.github.io/images/riscv-code.png)
 
