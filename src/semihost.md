@@ -765,19 +765,27 @@ We'll find out in the next article!
 
 # What's Next
 
-TODO: No more Semihosting Problems on Star64 JH7110 SBC!
+No more __Semihosting Problems__ with NuttX on Star64 JH7110 SBC!
 
-- What's __RISC-V Semihosting__
+- We discovered that NuttX calls __RISC-V Semihosting__
 
-- Why it crashes [__Apache NuttX RTOS__](https://lupyuen.github.io/articles/nuttx2) on Star64
+  (To access the Apps Filesystem)
 
-- What's the __Apps Filesystem__ for NuttX
+- But it crashes __NuttX on Star64__
 
-- How we replaced Semihosting by __Initial RAM Disk "initrd"__ (pic above)
+  (Because Semihosting won't work on Bare Metal)
 
-- After testing on __QEMU Emulator__
+- NuttX Shell lives in the NuttX __Apps Filesystem__
 
-- Thanks to NuttX on __LiteX Arty-A7__ for the guidance!
+  (So it's mandatory for booting NuttX)
+
+- Thus we replaced Semihosting by __Initial RAM Disk "initrd"__
+
+  (And it works on Star64!)
+
+- By adapting the code from NuttX on __LiteX Arty-A7__
+
+  (Which we also tested on __QEMU Emulator__)
 
 Many Thanks to my [__GitHub Sponsors__](https://github.com/sponsors/lupyuen) for supporting my work! This article wouldn't have been possible without your support.
 
