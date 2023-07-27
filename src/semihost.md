@@ -724,7 +724,9 @@ $ ls -l initrd
 
 [(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1)
 
-And we boot NuttX on Star64 over TFTP! [(Like this)](https://lupyuen.github.io/articles/semihost#appendix-boot-nuttx-over-tftp-with-initial-ram-disk)
+And we boot NuttX on Star64 over TFTP...
+
+- [__"Boot NuttX over TFTP with Initial RAM Disk"__](https://lupyuen.github.io/articles/semihost#appendix-boot-nuttx-over-tftp-with-initial-ram-disk)
 
 _Does it work?_
 
@@ -884,6 +886,8 @@ printenv bootcmd_tftp
 ## Save it for future reboots
 saveenv
 ```
+
+[(Remember to set __tftp_server__ and __boot_targets__)](https://lupyuen.github.io/articles/tftp#configure-u-boot-for-tftp)
 
 Run the above commands in U-Boot. Power Star64 off and on.
 

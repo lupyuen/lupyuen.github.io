@@ -308,7 +308,11 @@ clk u5_dw_i2c_clk_apb already disabled
 123067DFAGHBC
 ```
 
-__For Linux:__ We might need to load the [__Initial RAM Disk initrd__](https://lupyuen.github.io/articles/tftp#booti-command)
+The latest version of NuttX on Star64 needs an __Initial RAM Disk__...
+
+- [__"Boot NuttX over TFTP with Initial RAM Disk"__](https://lupyuen.github.io/articles/semihost#appendix-boot-nuttx-over-tftp-with-initial-ram-disk)
+
+  (Same for Linux)
 
 ![Auto-Boot from Network, every time we power on](https://lupyuen.github.io/images/privilege-run1.png)
 
