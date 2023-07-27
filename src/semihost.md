@@ -420,7 +420,7 @@ __ramdisk_end   = ORIGIN(ramdisk) + LENGTH(ramdisk);
 
 (__`0x8080` `0000`__ is the next available RAM Address)
 
-At NuttX Startup, we __mount the RAM Disk__: [qemu_rv_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L83C1-L179C2)
+At NuttX Startup, we __mount the RAM Disk__: [qemu_rv_appinit.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/boards/risc-v/qemu-rv/rv-virt/src/qemu_rv_appinit.c#L83-L179)
 
 ```c
 // Called at NuttX Startup
@@ -471,7 +471,7 @@ void qemu_rv_kernel_mappings(void) {
 
 [(Somehow __map_region__ crashes when we map the RAM Disk Memory)](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L280-L287)
 
-Things get really wonky when we exceed the bounds of the RAM Disk. So we __validate the bounds__: [fs_romfsutil.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/fs/romfs/fs_romfsutil.c#L85-L105)
+Things get really wonky when we exceed the bounds of the RAM Disk. So we __validate the bounds__: [fs_romfsutil.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/ramdisk/fs/romfs/fs_romfsutil.c#L79-L84)
 
 ```c
 // While reading from RAM Disk...
@@ -501,7 +501,7 @@ CONFIG_INIT_MOUNT_TARGET="/system/bin"
 ## CONFIG_RISCV_SEMIHOSTING_HOSTFS=y
 ```
 
-[(How we configured NuttX for RAM Disk)](https://lupyuen.github.io/articles/semihost#appendix-configure-nuttx-star64-for-initial-ram-disk)
+[(How we configured NuttX for RAM Disk)](https://lupyuen.github.io/articles/semihost#appendix-configure-nuttx-for-initial-ram-disk)
 
 That's it! These are the files that we modified in NuttX QEMU to load the Initial RAM Disk (without Semihosting)...
 
@@ -513,11 +513,13 @@ _What's ROMFS?_
 
 We could have used a FAT or EXT4 or NTFS Filesystem... But ROMFS is a lot simpler for NuttX.
 
+[(__ROMFS__ in NuttX)](https://nuttx.apache.org/docs/latest/components/filesystem.html)
+
 _Why did we copy the RAM Disk from __`0x8400` `0000`__?_
 
 QEMU loads the Initial RAM Disk into RAM at __`0x8400` `0000`__...
 
-- [__"RAM Disk Address for RISC-V QEMU"__](https://github.com/lupyuen/nuttx-star64#ram-disk-address-for-risc-v-qemu)
+- [__"RAM Disk Address for RISC-V QEMU"__](https://lupyuen.github.io/articles/semihost#appendix-ram-disk-address-for-risc-v-qemu)
 
 That's why we copied the RAM Disk from __`0x8400` `0000`__ to __ramdisk_start__.
 
@@ -554,7 +556,7 @@ genromfs \
 
 [(See the __Build Log__)](https://gist.github.com/lupyuen/394bc4da808ee5e4f5fb8da70cb2ae3e)
 
-[(__genromfs__ generates a __ROMFS Filesystem__)](https://www.systutorials.com/docs/linux/man/8-genromfs/)
+[(__genromfs__ generates a __ROMFS Filesystem__)](https://manpages.ubuntu.com/manpages/trusty/man8/genromfs.8.html)
 
 This creates an Initial RAM Disk __initrd__ (in ROMFS format) that's 7.9 MB...
 
@@ -607,7 +609,7 @@ nsh>
 
 [(See the __Detailed Run Log__)](https://gist.github.com/lupyuen/8afee5b07b61bb7f9f202f7f8c5e3ab3)
 
-We'll see __exec_spawn__ warnings like this...
+We see __exec_spawn__ warnings like this...
 
 ```text
 nsh> ls -l /system/bin/init
@@ -617,7 +619,9 @@ nxposix_spawn_exec: ERROR: exec failed: 2
  -r-xr-xr-x 3278720 /system/bin/init
 ```
 
-But it's OK to ignore them, because "__`ls`__" is a built-in Shell Command. (Not an Executable File from our Apps Filesystem)
+But it's OK to ignore them, because "__`ls`__" is a built-in Shell Command.
+
+(Not an Executable File from our Apps Filesystem)
 
 Now that we figured out Initial RAM Disk on QEMU, let's do the same for Star64...
 
@@ -641,7 +645,7 @@ We modify NuttX Star64 with the exact same steps as [__NuttX QEMU with Initial R
 
 - [__knsh64/defconfig__](https://github.com/lupyuen2/wip-pinephone-nuttx/pull/34/files#diff-4018c37bf9b08236b37a84273281d5511d48596be9e0e4c0980d730aa95dbbe8): Build Configuration for RAM Disk
 
-  [(How we configured NuttX for RAM Disk)](https://lupyuen.github.io/articles/semihost#appendix-configure-nuttx-star64-for-initial-ram-disk)
+  [(How we configured NuttX for RAM Disk)](https://lupyuen.github.io/articles/semihost#appendix-configure-nuttx-for-initial-ram-disk)
 
 Note that we copy the Initial RAM Disk from __`0x4610` `0000`__ (instead of QEMU's `0x8400` `0000`): [qemu_rv_mm_init.c](https://github.com/lupyuen2/wip-pinephone-nuttx/blob/star64c/arch/risc-v/src/qemu-rv/qemu_rv_mm_init.c#L271-L280)
 
@@ -682,7 +686,7 @@ The [__other modified files__](https://github.com/lupyuen2/wip-pinephone-nuttx/p
 
 _How do we run this on Star64?_
 
-We build NuttX Star64, generate the Initial RAM Disk __initrd__ and copy to our TFTP Folder [(for __Network Booting__)](https://lupyuen.github.io/articles/semihost#appendix-boot-nuttx-star64-over-tftp-with-initial-ram-disk)...
+We build NuttX Star64, generate the Initial RAM Disk __initrd__ and copy to our TFTP Folder [(for __Network Booting__)](https://lupyuen.github.io/articles/semihost#appendix-boot-nuttx-over-tftp-with-initial-ram-disk)...
 
 ```bash
 ## Omitted: Build NuttX Star64
@@ -709,7 +713,7 @@ cp initrd $HOME/tftproot
 
 [(See the __Build Log__)](https://gist.github.com/lupyuen/ae59a840c94280ce8d618699278a0436)
 
-[(__genromfs__ generates a __ROMFS Filesystem__)](https://www.systutorials.com/docs/linux/man/8-genromfs/)
+[(__genromfs__ generates a __ROMFS Filesystem__)](https://manpages.ubuntu.com/manpages/trusty/man8/genromfs.8.html)
 
 Our Initial RAM Disk __initrd__ (with ROMFS inside) is 7.9 MB (slightly bigger)...
 
@@ -720,7 +724,7 @@ $ ls -l initrd
 
 [(See the __Build Outputs__)](https://github.com/lupyuen2/wip-pinephone-nuttx/releases/tag/star64c-0.0.1)
 
-And we boot NuttX on Star64 over TFTP! [(Like this)](https://lupyuen.github.io/articles/semihost#appendix-boot-nuttx-star64-over-tftp-with-initial-ram-disk)
+And we boot NuttX on Star64 over TFTP! [(Like this)](https://lupyuen.github.io/articles/semihost#appendix-boot-nuttx-over-tftp-with-initial-ram-disk)
 
 _Does the Initial RAM Disk work on Star64?_
 
@@ -1025,11 +1029,9 @@ Earlier we modified NuttX QEMU and NuttX Star64 to load our __Initial RAM Disk__
 
 - [__"NuttX Star64 with Initial RAM Disk"__](https://lupyuen.github.io/articles/semihost#nuttx-star64-with-initial-ram-disk)
 
-We did it with plenty of guidance from NuttX on __LiteX Arty-A7__. Here's our Detailed Analysis...
+We did it with plenty of guidance from NuttX on __LiteX Arty-A7__, below is our Detailed Analysis.
 
-First we look at the Initial RAM Disk for LiteX Arty-A7...
-
-To generate the RAM Disk, we run this command...
+First we look at the Initial RAM Disk for LiteX Arty-A7. To generate the RAM Disk, we run this command...
 
 ```bash
 cd nuttx
@@ -1038,7 +1040,7 @@ genromfs -f romfs.img -d ../apps/bin -V "NuttXBootVol"
 
 [(Source)](https://nuttx.apache.org/docs/latest/platforms/risc-v/litex/cores/vexriscv_smp/index.html)
 
-[(About `genromfs`)](https://www.systutorials.com/docs/linux/man/8-genromfs/)
+[(About `genromfs`)](https://manpages.ubuntu.com/manpages/trusty/man8/genromfs.8.html)
 
 [(About NuttX RAM Disks and ROM Disks)](https://cwiki.apache.org/confluence/plugins/servlet/mobile?contentId=139629548#content/view/139629548)
 
